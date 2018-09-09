@@ -1,2 +1,4 @@
+v0.3
+Changed marker to just be the green dome instead of the outer bars as well.
 v0.2
 Problem with the planet rotating.

@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v0.9 (Unreleased)
+### Changed:
+- Made turning off the log for ECM more obvious.
 
 ## v0.8 (08 Sep 2018)
 ### Fixed:

@@ -1336,7 +1336,7 @@ do -- LoadGame/CityStart
 		if ChoGGi.UserSettings.FirstRun ~= false then
 			ChoGGi.ComFuncs.MsgWait(
 				string.format("%s\n%s",S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button to stop showing console log."--]]]),
+If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button then uncheck ""Console Log"" to stop showing console log (instead of pressing F9 each time)."--]]]),
 				string.format("%s %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000201--[[Active--]]]),
 				string.format("%sPreview.png",ChoGGi.ModPath)
 			)
@@ -1369,7 +1369,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 		if not ChoGGi.testing then
 			-- getting tired of people asking how to disable console log
-			print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button to stop showing console log."--]]])
+			print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button then uncheck ""Console Log"" to stop showing console log (instead of pressing F9 each time)."--]]])
 		end
 
 		-- used to check when game has started and it's safe to print() etc
