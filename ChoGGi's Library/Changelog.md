@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v1.0 (Unreleased)
+## v0.10 (Unreleased)
+### Fixed:
+- Esc will close my dialogs if the title bar is blue.
 
 ## v0.9 (09 Sep 2018)
 ### Added:

@@ -68,7 +68,7 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 		RolloverText = S[302535920000806--[["Only show items containing this text.
 
 Press Enter to show all items."--]]],
-		Hint = S[302535920000068--[[Filter Text--]]],
+		Hint = S[302535920000068--[[Filter Items--]]],
 		OnTextChanged = function()
 			self:FilterText(self.idFilter:GetText())
 		end,
@@ -186,9 +186,6 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 	-- we need to build this before the colourpicker stuff, or do another check for the colourpicker
 	self:BuildList()
-
-	-- focus on list
-	self.idList:SetFocus()
 
 	-- add the colour picker?
 	if self.custom_type == 2 or self.custom_type == 5 then

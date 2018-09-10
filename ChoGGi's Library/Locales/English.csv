@@ -260,7 +260,7 @@ Press Ctrl-Enter or Shift-Enter to execute code.",
 302535920001341,Double-click to apply without closing list.,
 302535920001167,Use Ctrl/Shift for multiple selection.,
 302535920001324,ECM: OpenInListChoice(list) is blank... This shouldn't happen.,
-302535920000068,Filter Text,
+302535920000068,Filter Items,
 302535920000806,"Only show items containing this text.
 
 Press Enter to show all items.",

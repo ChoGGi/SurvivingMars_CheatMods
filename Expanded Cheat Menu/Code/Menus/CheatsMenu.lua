@@ -184,6 +184,17 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {
 		ActionMenubar = str_Cheats_Research,
+		ActionName = string.format("%s %s",S[311--[[Research--]]],S[3734--[[Tech--]]]),
+		ActionId = ".Research Tech",
+		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
+		RolloverText = S[302535920000346--[[Pick what you want to unlock/research.--]]],
+		OnAction = ChoGGi.MenuFuncs.ShowResearchTechList,
+		ActionSortKey = "-1",
+	}
+
+	c = c + 1
+	Actions[c] = {
+		ActionMenubar = str_Cheats_Research,
 		ActionName = S[302535920001278--[[Instant Research--]]],
 		ActionId = ".Instant Research",
 		ActionIcon = "CommonAssets/UI/Menu/DarkSideOfTheMoon.tga",
@@ -194,16 +205,6 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.InstantResearch_toggle,
-	}
-
-	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_Cheats_Research,
-		ActionName = string.format("%s %s",S[311--[[Research--]]],S[3734--[[Tech--]]]),
-		ActionId = ".Research Tech",
-		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
-		RolloverText = S[302535920000346--[[Pick what you want to unlock/research.--]]],
-		OnAction = ChoGGi.MenuFuncs.ShowResearchTechList,
 	}
 
 	c = c + 1

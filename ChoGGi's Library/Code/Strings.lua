@@ -113,6 +113,7 @@ local Strings = {
 	[729] = TranslationTable[729], -- Sanity change on visit
 	[730] = TranslationTable[730], -- Service Comfort
 	[731] = TranslationTable[731], -- Comfort increase on visit
+	[732] = TranslationTable[732], -- Service interest
 	[734] = TranslationTable[734], -- Visit duration
 	[735] = TranslationTable[735], -- Usable by children
 	[736] = TranslationTable[736], -- Children Only

@@ -94,6 +94,13 @@ DefineClass.ChoGGi_MoveControl = {
 	RolloverTitle = S[126095410863--[[Info--]]],
 	RolloverTemplate = "Rollover",
 }
+function ChoGGi_MoveControl:OnKbdKeyDown(vk,...)
+	if vk == const.vkEsc then
+		self.dialog.idCloseX:Press()
+		return "break"
+	end
+	return XMoveControl.OnKbdKeyDown(self,vk,...)
+end
 
 DefineClass.ChoGGi_Buttons = {
 	__parents = {"XTextButton"},
@@ -284,6 +291,7 @@ function ChoGGi_Window:AddElements(_,context)
 	}, self.idDialog)
 
 	self.idMoveControl = g_Classes.ChoGGi_MoveControl:new({
+		dialog = self,
 	}, self.idDialog)
 
 	self.idCloseX = ChoGGi_CloseButton:new({
@@ -315,6 +323,8 @@ function ChoGGi_Window:AddElements(_,context)
 
 	-- needed for :Wait()
 	self.idDialog:Open()
+
+	self.idMoveControl:SetFocus()
 end
 
 -- returns point(x,y)

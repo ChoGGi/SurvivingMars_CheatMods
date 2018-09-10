@@ -1101,8 +1101,9 @@ do -- DeleteObject
 		DeleteObject_ExecFunc(obj,"Done")
 		DeleteObject_ExecFunc(obj,"Gossip","done")
 		DeleteObject_ExecFunc(obj,"SetHolder",false)
-		-- takes too long for domes
-		if not dome and obj:CountAttaches() > 0 then
+
+		-- only fire for stuff with holes in the ground (takes too long otherwise)
+		if IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor") then
 			DeleteObject_ExecFunc(obj,"DestroyAttaches","")
 		end
 
@@ -1923,7 +1924,7 @@ function ChoGGi.CodeFuncs.ReturnEditorType(list,key,value)
 	-- I use it to compare to type() so
 	if value == "bool" then
 		return "boolean"
-	elseif value == "text" then
+	elseif value == "text" or value == "combo" then
 		return "string"
 	else
 		-- at least number is number, and i don't give a shit about the rest
@@ -1937,26 +1938,35 @@ function ChoGGi.CodeFuncs.UpdateServiceComfortBld(obj,service_stats)
 	end
 	local type = type
 	if type(service_stats.health_change) ~= "nil" then
-		obj.health_change = service_stats.health_change
+		obj.base_health_change = service_stats.health_change
 	end
 	if type(service_stats.sanity_change) ~= "nil" then
-		obj.sanity_change = service_stats.sanity_change
+		obj.base_sanity_change = service_stats.sanity_change
 	end
 	if type(service_stats.service_comfort) ~= "nil" then
-		obj.service_comfort = service_stats.service_comfort
+		obj.base_service_comfort = service_stats.service_comfort
 	end
 	if type(service_stats.comfort_increase) ~= "nil" then
-		obj.comfort_increase = service_stats.comfort_increase
+		obj.base_comfort_increase = service_stats.comfort_increase
 	end
-	if type(service_stats.visit_duration) ~= "nil" then
-		obj.visit_duration = service_stats.visit_duration
+	if obj:IsKindOf("Service") then
+		if type(service_stats.visit_duration) ~= "nil" then
+			obj.base_visit_duration = service_stats.visit_duration
+		end
+		if type(service_stats.usable_by_children) ~= "nil" then
+			obj.usable_by_children = service_stats.usable_by_children
+		end
+		if type(service_stats.children_only) ~= "nil" then
+			obj.children_only = service_stats.children_only
+		end
+		for i = 1, 11 do
+			local name = string.format("interest%s",i)
+			if service_stats[name] ~= "" and type(service_stats[name]) ~= "nil" then
+				obj[name] = service_stats[name]
+			end
+		end
 	end
-	if type(service_stats.usable_by_children) ~= "nil" then
-		obj.usable_by_children = service_stats.usable_by_children
-	end
-	if type(service_stats.children_only) ~= "nil" then
-		obj.children_only = service_stats.children_only
-	end
+
 end
 
 do -- AddBlinkyToObj

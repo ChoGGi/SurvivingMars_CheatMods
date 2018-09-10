@@ -91,7 +91,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetServiceBuildingStats()
 		local ChoGGi = ChoGGi
 		local sel = ChoGGi.ComFuncs.SelObject()
-		if not sel or not IsKindOf(sel,"Service") then
+		if not sel or not IsKindOf(sel,"StatsChange") then
 			MsgPopup(
 				S[302535920001116--[[Select a %s.--]]]:format(S[5439--[[Service Buildings--]]]),
 				4810--[[Service--]],
@@ -101,20 +101,29 @@ function OnMsg.ClassesGenerate()
 		end
 		local r = ChoGGi.Consts.ResourceScale
 		local id = sel.encyclopedia_id
+		local ServiceInterestsList = table.concat(ServiceInterestsList,", ")
 		local name = RetName(sel)
+		local is_service = sel:IsKindOf("Service")
 
 		local ReturnEditorType = ChoGGi.CodeFuncs.ReturnEditorType
 		local hint_type = S[302535920000138--[[Value needs to be a %s.--]]]
 		local ItemList = {
-			{text = S[728--[[Health change on visit--]]],value = sel.health_change / r,setting = "health_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","health_change"))},
-			{text = S[729--[[Sanity change on visit--]]],value = sel.sanity_change / r,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","sanity_change"))},
-			{text = S[730--[[Service Comfort--]]],value = sel.service_comfort / r,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(sel.properties,"id","service_comfort"))},
-			{text = S[731--[[Comfort increase on visit--]]],value = sel.comfort_increase / r,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(sel.properties,"id","comfort_increase"))},
-			{text = S[734--[[Visit duration--]]],value = sel.visit_duration / r,setting = "visit_duration",hint = hint_type:format(ReturnEditorType(sel.properties,"id","visit_duration"))},
-			-- bool
-			{text = S[735--[[Usable by children--]]],value = sel.usable_by_children,setting = "usable_by_children",hint = hint_type:format(ReturnEditorType(sel.properties,"id","usable_by_children"))},
-			{text = S[736--[[Children Only--]]],value = sel.children_only,setting = "children_only",hint = hint_type:format(ReturnEditorType(sel.properties,"id","children_only"))},
+			{text = S[728--[[Health change on visit--]]],value = sel.base_health_change / r,setting = "health_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","health_change"))},
+			{text = S[729--[[Sanity change on visit--]]],value = sel.base_sanity_change / r,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","sanity_change"))},
+			{text = S[730--[[Service Comfort--]]],value = sel.base_service_comfort / r,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(sel.properties,"id","service_comfort"))},
+			{text = S[731--[[Comfort increase on visit--]]],value = sel.base_comfort_increase / r,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(sel.properties,"id","comfort_increase"))},
 		}
+		if is_service then
+			ItemList[#ItemList+1] = {text = S[734--[[Visit duration--]]],value = sel.base_visit_duration,setting = "visit_duration",hint = hint_type:format(ReturnEditorType(sel.properties,"id","visit_duration"))}
+			-- bool
+			ItemList[#ItemList+1] = {text = S[735--[[Usable by children--]]],value = sel.base_usable_by_children,setting = "usable_by_children",hint = hint_type:format(ReturnEditorType(sel.properties,"id","usable_by_children"))}
+			ItemList[#ItemList+1] = {text = S[736--[[Children Only--]]],value = sel.base_children_only,setting = "children_only",hint = hint_type:format(ReturnEditorType(sel.properties,"id","children_only"))}
+
+			for i = 1, 11 do
+				local name = string.format("interest%s",i)
+				ItemList[#ItemList+1] = {text = string.format("%s %s",S[732--[[Service interest--]]],i),value = sel[name],setting = name,hint = string.format("%s\n\n%s",hint_type:format(ReturnEditorType(sel.properties,"id",name)),ServiceInterestsList)}
+			end
+		end
 
 		local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
 		if not BuildingSettings[id] then
@@ -142,21 +151,34 @@ function OnMsg.ClassesGenerate()
 					sanity_change = sel:GetDefaultPropertyValue("sanity_change"),
 					service_comfort = sel:GetDefaultPropertyValue("service_comfort"),
 					comfort_increase = sel:GetDefaultPropertyValue("comfort_increase"),
-					visit_duration = sel:GetDefaultPropertyValue("visit_duration"),
-					usable_by_children = sel:GetDefaultPropertyValue("usable_by_children"),
-					children_only = sel:GetDefaultPropertyValue("children_only"),
 				}
+				if is_service then
+					temp.visit_duration = sel:GetDefaultPropertyValue("visit_duration")
+					temp.usable_by_children = sel:GetDefaultPropertyValue("usable_by_children")
+					temp.children_only = sel:GetDefaultPropertyValue("children_only")
+					for i = 1, 11 do
+						local name = string.format("interest%s",i)
+						temp[name] = sel:GetDefaultPropertyValue(name)
+					end
+				end
+
 				-- reset existing to defaults
 				local objs = UICity.labels[id] or ""
 				for i = 1, #objs do
 					local obj = objs[i]
-					obj.health_change = temp.health_change
-					obj.sanity_change = temp.sanity_change
-					obj.service_comfort = temp.service_comfort
-					obj.comfort_increase = temp.comfort_increase
-					obj.visit_duration = temp.visit_duration
-					obj.usable_by_children = temp.usable_by_children
-					obj.children_only = temp.children_only
+					obj.base_health_change = temp.health_change
+					obj.base_sanity_change = temp.sanity_change
+					obj.base_service_comfort = temp.service_comfort
+					obj.base_comfort_increase = temp.comfort_increase
+					if is_service then
+						obj.base_visit_duration = temp.visit_duration
+						obj.base_usable_by_children = temp.usable_by_children
+						obj.base_children_only = temp.children_only
+						for j = 1, 11 do
+							local name = string.format("interest%s",j)
+							obj[name] = temp[name]
+						end
+					end
 				end
 			else
 				-- build setting to save
@@ -168,6 +190,8 @@ function OnMsg.ClassesGenerate()
 					if type(value) == editor_type then
 						if editor_type == "number" then
 							bs_setting.service_stats[setting] = value * r
+						elseif value == "" then
+							bs_setting.service_stats[setting] = nil
 						else
 							bs_setting.service_stats[setting] = value
 						end
@@ -179,7 +203,6 @@ function OnMsg.ClassesGenerate()
 					ChoGGi.CodeFuncs.UpdateServiceComfortBld(objs[i],bs_setting.service_stats)
 				end
 			end
-
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(

@@ -9,7 +9,12 @@
 - Buildings>Points To Train: How many points are needed to finish training.
 
 ### Changed:
-- Building Stats doesn't show the number multiplied by a thousand anymore.
+- Building Stats:
+- > The list doesn't show the number multiplied by a thousand anymore.
+- > You can now change buildings with stats that aren't services (residences, etc).
+
+### Fixed:
+- Building Stats were being overridden by Martian Festivals (thanks hchsiao).
 
 ## v8.8 (07 Sep 2018)
 ### Added:

@@ -42,8 +42,6 @@ function OnMsg.ClassesGenerate()
 				return self:idEditOnKbdKeyDown(obj, vk)
 			end,
 		}, self.idTextArea)
-		-- focus on textbox
-		self.idEdit:SetFocus()
 
 		self.idLimit = g_Classes.ChoGGi_TextInput:new({
 			Id = "idLimit",

@@ -30,8 +30,6 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 
 	self:AddScrollEdit()
 	self.idEdit:SetText(context.text)
-	-- focus on textbox
-	self.idEdit:SetFocus()
 
 --~	 -- let us override enter/esc
 --~	 self.idEdit.OnKbdKeyDown = function(obj, vk)

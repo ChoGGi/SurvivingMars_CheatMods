@@ -30,7 +30,6 @@ function OnMsg.ClassesGenerate()
 		self:AddElements(parent, context)
 
 		self:AddScrollEdit()
-		self.idEdit:SetFocus()
 		self.idEdit:SetText([[See what shows up in the console log when you press different keys]])
 
 		-- let us override enter/esc

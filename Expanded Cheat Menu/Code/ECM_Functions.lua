@@ -120,19 +120,22 @@ function OnMsg.ClassesGenerate()
 	do -- WriteLogs_Toggle
 		local Dump = ChoGGi.ComFuncs.Dump
 		local select,type = select,type
+		local StringFormat = string.format
 
 		local function ReplaceFunc(funcname,filename)
 			local ChoGGi = ChoGGi
 			ChoGGi.ComFuncs.SaveOrigFunc(funcname)
 
 			_G[funcname] = function(...)
+				-- i think print sends a succeeded as well?
 				local arg2 = select(2,...)
 				if arg2 and type(arg2) == "boolean" then
-					Dump(string.format("%s\r\n",select(1,...)),nil,filename,"log",true)
+					Dump(StringFormat("%s\r\n",select(1,...)),nil,filename,"log",true)
 				else
-					Dump(string.format("%s\r\n",... or ""),nil,filename,"log",true)
+					Dump(StringFormat("%s\r\n",... or ""),nil,filename,"log",true)
 				end
-				if type(ChoGGi.OrigFuncs[funcname]) == "function" then
+				-- fire off orig func...
+				if ChoGGi.OrigFuncs[funcname] then
 					ChoGGi.OrigFuncs[funcname](...)
 				end
 			end
@@ -162,6 +165,7 @@ function OnMsg.ClassesGenerate()
 				-- redirect functions
 				if ChoGGi.testing then
 					ReplaceFunc("dlc_print","ConsoleLog")
+					ReplaceFunc("assert","ConsoleLog")
 	--~				 ReplaceFunc("printf","DebugLog",ChoGGi)
 	--~				 ReplaceFunc("DebugPrint","DebugLog",ChoGGi)
 	--~				 ReplaceFunc("OutputDebugString","DebugLog",ChoGGi)
@@ -171,6 +175,7 @@ function OnMsg.ClassesGenerate()
 			else
 				if ChoGGi.testing then
 					ResetFunc("dlc_print")
+					ResetFunc("assert")
 	--~				 ResetFunc("printf",ChoGGi)
 	--~				 ResetFunc("DebugPrint",ChoGGi)
 	--~				 ResetFunc("OutputDebugString",ChoGGi)
