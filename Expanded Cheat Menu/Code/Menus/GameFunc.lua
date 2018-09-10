@@ -1,13 +1,7 @@
 -- See LICENSE for terms
 
--- nope not hacky at all
-local is_loaded
-function OnMsg.ChoGGi_Library_Loaded()
-	if is_loaded then
-		return
-	end
-	is_loaded = true
-	-- nope nope nope
+-- generate is late enough that my library is loaded, but early enough to replace anything i need to
+function OnMsg.ClassesGenerate()
 
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -348,28 +342,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 		end
 	end -- do
 
-	local function ToggleCollisions(ChoGGi)
-		MapForEach("map","LifeSupportGridElement",function(o)
-			ChoGGi.CodeFuncs.CollisionsObject_Toggle(o,true)
-		end)
-	end
-
-	function ChoGGi.MenuFuncs.TerrainEditor_Toggle()
-		local ChoGGi = ChoGGi
-		ChoGGi.CodeFuncs.Editor_Toggle()
-		if Platform.editor then
-			editor.ClearSel()
-			SetEditorBrush(const.ebtTerrainType)
-		else
-			-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
-			ToggleCollisions(ChoGGi)
-			-- update uneven terrain checker thingy
-			RecalcBuildableGrid()
-			-- and back on when we're done
-			ToggleCollisions(ChoGGi)
-		end
-	end
-
 	do -- ListAllObjects
 		local function CallBackFunc_Objects(choice)
 			if #choice < 1 then
@@ -463,27 +435,6 @@ function OnMsg.ChoGGi_Library_Loaded()
 		end
 	end -- do
 
-	function ChoGGi.MenuFuncs.DeleteAllRocks()
-		local function CallBackFunc(answer)
-			if answer then
-				CreateGameTimeThread(function()
-					MapDelete("map", "Deposition")
-					Sleep(10)
-					MapDelete("map", "WasteRockObstructorSmall")
-					Sleep(10)
-					MapDelete("map", "WasteRockObstructor")
-					Sleep(10)
-					MapDelete("map", "StoneSmall")
-				end)
-			end
-		end
-		ChoGGi.ComFuncs.QuestionBox(
-			string.format("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]]),
-			CallBackFunc,
-			string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
-		)
-	end
-
 	function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
 		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.DisableTextureCompression = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DisableTextureCompression)
@@ -497,6 +448,11 @@ function OnMsg.ChoGGi_Library_Loaded()
 	end
 
 	do --FlattenGround
+		local function ToggleCollisions(ChoGGi)
+			MapForEach("map","LifeSupportGridElement",function(o)
+				ChoGGi.CodeFuncs.CollisionsObject_Toggle(o,true)
+			end)
+		end
 
 		-- we also save the height offset of all the rocks if user wants to change that as well (optionally as it takes awhile)
 

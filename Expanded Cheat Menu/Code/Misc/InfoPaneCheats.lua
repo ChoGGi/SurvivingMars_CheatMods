@@ -2,14 +2,7 @@
 
 -- add items/hint to the cheats pane
 
--- nope not hacky at all
-local is_loaded
-function OnMsg.ChoGGi_Library_Loaded()
-	if is_loaded then
-		return
-	end
-	is_loaded = true
-	-- nope nope nope
+function OnMsg.ClassesGenerate()
 
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Random = ChoGGi.ComFuncs.Random

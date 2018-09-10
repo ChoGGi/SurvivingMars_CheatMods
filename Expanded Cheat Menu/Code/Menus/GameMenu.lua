@@ -1,13 +1,6 @@
 -- See LICENSE for terms
 
--- nope not hacky at all
-local is_loaded
-function OnMsg.ChoGGi_Library_Loaded()
-	if is_loaded then
-		return
-	end
-	is_loaded = true
-	-- nope nope nope
+function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
@@ -42,7 +35,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 		ActionId = ".Delete All Rocks",
 		ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
 		RolloverText = S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]],
-		OnAction = ChoGGi.MenuFuncs.DeleteAllRocks,
+		OnAction = ChoGGi.CodeFuncs.DeleteAllRocks,
 	}
 
 	c = c + 1
@@ -52,7 +45,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 		ActionId = ".Terrain Editor Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/smooth_terrain.tga",
 		RolloverText = S[302535920000675--[[Opens up the map editor with the brush tool visible.--]]],
-		OnAction = ChoGGi.MenuFuncs.TerrainEditor_Toggle,
+		OnAction = ChoGGi.CodeFuncs.TerrainEditor_Toggle,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.TerrainEditor_Toggle,
 		ActionBindable = true,
 	}

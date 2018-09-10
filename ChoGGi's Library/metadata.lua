@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "ChoGGi's Library v0.8",
-	"version", 8,
-	"saved", 1536408000,
+	"title", "ChoGGi's Library v0.9",
+	"version", 9,
+	"saved", 1536580800,
 	"image", "Preview.png",
 	"id", "ChoGGi_Library",
 	"steam_id", "1504386374",
@@ -29,7 +29,7 @@ return PlaceObj("ModDef", {
 		"Code/ListChoice.lua",
 		"Code/MultiLineText.lua",
 
-		-- let my mods know we're good to go (well the ones loaded before it, any others will execute at ClassesGenerate)
+		-- only needed for mods i have yet to update.
 		"LibraryLoaded.lua",
 	},
 	-- yeah this is getting removed... come on devs allow users to override and deal with outdated mods if they want to (just print it in the log).

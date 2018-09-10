@@ -2,14 +2,7 @@
 
 -- go away... (though there's HexPainter(building) if you wanna have some fun)
 
--- nope not hacky at all
-local is_loaded
-function OnMsg.ChoGGi_Library_Loaded()
-	if is_loaded then
-		return
-	end
-	is_loaded = true
-	-- nope nope nope
+function OnMsg.ClassesGenerate()
 
 	if ChoGGi.testing then
 

@@ -15,17 +15,8 @@ Press Ok to download it or check Mod Manager to make sure it's enabled.]]) == "o
 	end
 end
 
--- nope not hacky at all
-local is_loaded
+-- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
-	Msg("ChoGGi_Library_Loaded")
-end
-function OnMsg.ChoGGi_Library_Loaded()
-	if is_loaded then
-		return
-	end
-	is_loaded = true
-	-- nope nope nope
 
 	local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	local RetName = ChoGGi.ComFuncs.RetName

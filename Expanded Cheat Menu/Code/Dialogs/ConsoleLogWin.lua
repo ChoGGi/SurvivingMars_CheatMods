@@ -2,14 +2,7 @@
 
 -- displays the log in a dialog
 
--- nope not hacky at all
-local is_loaded
-function OnMsg.ChoGGi_Library_Loaded()
-	if is_loaded then
-		return
-	end
-	is_loaded = true
-	-- nope nope nope
+function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist

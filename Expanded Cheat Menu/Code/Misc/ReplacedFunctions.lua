@@ -2,25 +2,19 @@
 
 -- in-game functions replaced with custom ones
 
--- nope not hacky at all
-local is_loaded
-function OnMsg.ChoGGi_Library_Loaded()
-	if is_loaded then
-		return
-	end
-	is_loaded = true
-	-- nope nope nope
+--~ local Trans
+local MsgPopup
+local S
+local blacklist
+local ChoGGi_OrigFuncs
 
-	--~ local Trans = ChoGGi.ComFuncs.Translate
-	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-	local S = ChoGGi.Strings
-	local blacklist = ChoGGi.blacklist
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+function OnMsg.ClassesGenerate()
 
-	local type,next,rawset,rawget,assert,setmetatable,table = type,next,rawset,rawget,assert,setmetatable,table
-
-	local guim = guim
-	local OnMsg = OnMsg
+	--~ Trans = ChoGGi.ComFuncs.Translate
+	MsgPopup = ChoGGi.ComFuncs.MsgPopup
+	S = ChoGGi.Strings
+	blacklist = ChoGGi.blacklist
+	ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
 	-- do some stuff
 	local Platform = Platform
@@ -500,862 +494,859 @@ function OnMsg.ChoGGi_Library_Loaded()
 		return ChoGGi_OrigFuncs.BaseRover_GetCableNearby(self, rad)
 	end
 
-	--~ -- ClassesGenerate
-	--~ function OnMsg.ClassesGenerate()
-	--~ end -- ClassesGenerate
+end --onmsg library
 
-	-- ClassesPreprocess
-	function OnMsg.ClassesPreprocess()
-		SaveOrigFunc("InfopanelObj","CreateCheatActions")
+-- ClassesPreprocess
+function OnMsg.ClassesPreprocess()
+	SaveOrigFunc("InfopanelObj","CreateCheatActions")
 
-		local GetActionsHost = GetActionsHost
-		function InfopanelObj:CreateCheatActions(win)
-			-- fire orig func to build cheats
-			if ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions(self,win) then
-				--then we can add some hints to the cheats
-				return ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
+	local GetActionsHost = GetActionsHost
+	function InfopanelObj:CreateCheatActions(win)
+		-- fire orig func to build cheats
+		if ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions(self,win) then
+			--then we can add some hints to the cheats
+			return ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
+		end
+	end
+
+end -- ClassesPreprocess
+
+-- ClassesPostprocess
+--~ function OnMsg.ClassesPostprocess()
+--~ end -- ClassesPostprocess
+
+-- ClassesBuilt
+function OnMsg.ClassesBuilt()
+	SaveOrigFunc("Colonist","ChangeComfort")
+	SaveOrigFunc("Console","AddHistory")
+	SaveOrigFunc("Console","Exec")
+	SaveOrigFunc("Console","HistoryDown")
+	SaveOrigFunc("Console","HistoryUp")
+	SaveOrigFunc("Console","Show")
+	SaveOrigFunc("Console","TextChanged")
+	SaveOrigFunc("ConsoleLog","SetVisible")
+	SaveOrigFunc("ConsoleLog","ShowBackground")
+	SaveOrigFunc("ConstructionController","CreateCursorObj")
+	SaveOrigFunc("ConstructionController","UpdateConstructionStatuses")
+	SaveOrigFunc("ConstructionController","UpdateCursor")
+	SaveOrigFunc("DroneHub","SetWorkRadius")
+	SaveOrigFunc("InfopanelDlg","Open")
+	SaveOrigFunc("MartianUniversity","OnTrainingCompleted")
+	SaveOrigFunc("MG_Colonists","GetProgress")
+	SaveOrigFunc("MG_Martianborn","GetProgress")
+	SaveOrigFunc("RCRover","SetWorkRadius")
+	SaveOrigFunc("RCTransport","TransportRouteLoad")
+	SaveOrigFunc("RCTransport","TransportRouteUnload")
+	SaveOrigFunc("RequiresMaintenance","AddDust")
+	SaveOrigFunc("SA_WaitMarsTime","StopWait")
+	SaveOrigFunc("SA_WaitTime","StopWait")
+	SaveOrigFunc("SingleResourceProducer","Produce")
+	SaveOrigFunc("SubsurfaceHeater","UpdatElectricityConsumption")
+	SaveOrigFunc("SupplyGridElement","SetProduction")
+	SaveOrigFunc("SupplyGridFragment","RandomElementBreakageOnWorkshiftChange")
+	SaveOrigFunc("terminal","SysEvent")
+	SaveOrigFunc("TriboelectricScrubber","OnPostChangeRange")
+	SaveOrigFunc("TunnelConstructionController","UpdateConstructionStatuses")
+	SaveOrigFunc("XBlinkingButtonWithRMB","SetBlinking")
+	SaveOrigFunc("XDesktop","MouseEvent")
+	SaveOrigFunc("XWindow","OnMouseEnter")
+	SaveOrigFunc("XWindow","OnMouseLeft")
+	SaveOrigFunc("XWindow","SetId")
+	SaveOrigFunc("SpaceElevator","ToggleAllowExport")
+	SaveOrigFunc("SpaceElevator","DroneUnloadResource")
+--~	 SaveOrigFunc("RCRover","LeadIn")
+	local UserSettings = ChoGGi.UserSettings
+
+	function SpaceElevator:DroneUnloadResource(...)
+		local export_when = ChoGGi.ComFuncs.DotNameToObject("ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount")
+		local amount = s.max_export_storage - s.export_request:GetActualAmount()
+		if export_when and amount >= export_when then
+			self.pod_thread = CreateGameTimeThread(function()
+				self:ExportGoods()
+				self.pod_thread = nil
+			end)
+		end
+		return ChoGGi_OrigFuncs.SpaceElevator_DroneUnloadResource(self,...)
+	end
+
+	function SpaceElevator:ToggleAllowExport(...)
+		ChoGGi_OrigFuncs.SpaceElevator_ToggleAllowExport(self,...)
+		if self.allow_export and ChoGGi.UserSettings.SpaceElevatorToggleInstantExport then
+			self.pod_thread = CreateGameTimeThread(function()
+				self:ExportGoods()
+				self.pod_thread = nil
+			end)
+		end
+	end
+
+--~	 function RCRover:LeadIn(drone)
+--~		 self.drone_charged = drone
+
+--~		 drone:GotoUnitSpot(self, "Charge", true) --get in pos to charge
+--~		 if ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle then
+--~		 print("fix")
+--~			 drone:Face(self:GetSpotRotation(self:GetSpotBeginIndex("Charge")), 200)
+--~		 else
+--~		 print("not")
+--~			 drone:SetAngle(self:GetSpotRotation(self:GetSpotBeginIndex("Charge")), 200)
+--~		 end
+
+--~		 drone:StartFX("EmergencyRecharge")
+--~		 drone:PlayState( "rechargeDroneStart" )
+--~	 end
+
+	-- hopefully they fix this in the next update... (though they didn't fix it in Curo so, or maybe they fixed one type of it)
+	if LuaRevision == 231777 then
+		-- check transports for borked paths
+		function RCTransport:TransportRouteLoad()
+			ChoGGi_OrigFuncs.RCTransport_TransportRouteLoad(self)
+			if ChoGGi.UserSettings.CheckForBorkedTransportPath then
+				ChoGGi.CodeFuncs.CheckForBorkedTransportPath(self)
 			end
 		end
-
-	end -- ClassesPreprocess
-
-	-- ClassesPostprocess
-	--~ function OnMsg.ClassesPostprocess()
-	--~ end -- ClassesPostprocess
-
-	-- ClassesBuilt
-	function OnMsg.ClassesBuilt()
-		SaveOrigFunc("Colonist","ChangeComfort")
-		SaveOrigFunc("Console","AddHistory")
-		SaveOrigFunc("Console","Exec")
-		SaveOrigFunc("Console","HistoryDown")
-		SaveOrigFunc("Console","HistoryUp")
-		SaveOrigFunc("Console","Show")
-		SaveOrigFunc("Console","TextChanged")
-		SaveOrigFunc("ConsoleLog","SetVisible")
-		SaveOrigFunc("ConsoleLog","ShowBackground")
-		SaveOrigFunc("ConstructionController","CreateCursorObj")
-		SaveOrigFunc("ConstructionController","UpdateConstructionStatuses")
-		SaveOrigFunc("ConstructionController","UpdateCursor")
-		SaveOrigFunc("DroneHub","SetWorkRadius")
-		SaveOrigFunc("InfopanelDlg","Open")
-		SaveOrigFunc("MartianUniversity","OnTrainingCompleted")
-		SaveOrigFunc("MG_Colonists","GetProgress")
-		SaveOrigFunc("MG_Martianborn","GetProgress")
-		SaveOrigFunc("RCRover","SetWorkRadius")
-		SaveOrigFunc("RCTransport","TransportRouteLoad")
-		SaveOrigFunc("RCTransport","TransportRouteUnload")
-		SaveOrigFunc("RequiresMaintenance","AddDust")
-		SaveOrigFunc("SA_WaitMarsTime","StopWait")
-		SaveOrigFunc("SA_WaitTime","StopWait")
-		SaveOrigFunc("SingleResourceProducer","Produce")
-		SaveOrigFunc("SubsurfaceHeater","UpdatElectricityConsumption")
-		SaveOrigFunc("SupplyGridElement","SetProduction")
-		SaveOrigFunc("SupplyGridFragment","RandomElementBreakageOnWorkshiftChange")
-		SaveOrigFunc("terminal","SysEvent")
-		SaveOrigFunc("TriboelectricScrubber","OnPostChangeRange")
-		SaveOrigFunc("TunnelConstructionController","UpdateConstructionStatuses")
-		SaveOrigFunc("XBlinkingButtonWithRMB","SetBlinking")
-		SaveOrigFunc("XDesktop","MouseEvent")
-		SaveOrigFunc("XWindow","OnMouseEnter")
-		SaveOrigFunc("XWindow","OnMouseLeft")
-		SaveOrigFunc("XWindow","SetId")
-		SaveOrigFunc("SpaceElevator","ToggleAllowExport")
-		SaveOrigFunc("SpaceElevator","DroneUnloadResource")
-	--~	 SaveOrigFunc("RCRover","LeadIn")
-		local UserSettings = ChoGGi.UserSettings
-
-		function SpaceElevator:DroneUnloadResource(...)
-			local export_when = ChoGGi.ComFuncs.DotNameToObject("ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount")
-			local amount = s.max_export_storage - s.export_request:GetActualAmount()
-			if export_when and amount >= export_when then
-				self.pod_thread = CreateGameTimeThread(function()
-					self:ExportGoods()
-					self.pod_thread = nil
-				end)
-			end
-			return ChoGGi_OrigFuncs.SpaceElevator_DroneUnloadResource(self,...)
-		end
-
-		function SpaceElevator:ToggleAllowExport(...)
-			ChoGGi_OrigFuncs.SpaceElevator_ToggleAllowExport(self,...)
-			if self.allow_export and ChoGGi.UserSettings.SpaceElevatorToggleInstantExport then
-				self.pod_thread = CreateGameTimeThread(function()
-					self:ExportGoods()
-					self.pod_thread = nil
-				end)
+		function RCTransport:TransportRouteUnload()
+			ChoGGi_OrigFuncs.RCTransport_TransportRouteUnload(self)
+			if ChoGGi.UserSettings.CheckForBorkedTransportPath then
+				ChoGGi.CodeFuncs.CheckForBorkedTransportPath(self)
 			end
 		end
+	end
 
-	--~	 function RCRover:LeadIn(drone)
-	--~		 self.drone_charged = drone
-
-	--~		 drone:GotoUnitSpot(self, "Charge", true) --get in pos to charge
-	--~		 if ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle then
-	--~		 print("fix")
-	--~			 drone:Face(self:GetSpotRotation(self:GetSpotBeginIndex("Charge")), 200)
-	--~		 else
-	--~		 print("not")
-	--~			 drone:SetAngle(self:GetSpotRotation(self:GetSpotBeginIndex("Charge")), 200)
-	--~		 end
-
-	--~		 drone:StartFX("EmergencyRecharge")
-	--~		 drone:PlayState( "rechargeDroneStart" )
-	--~	 end
-
-		-- hopefully they fix this in the next update... (though they didn't fix it in Curo so, or maybe they fixed one type of it)
-		if LuaRevision == 231777 then
-			-- check transports for borked paths
-			function RCTransport:TransportRouteLoad()
-				ChoGGi_OrigFuncs.RCTransport_TransportRouteLoad(self)
-				if ChoGGi.UserSettings.CheckForBorkedTransportPath then
-					ChoGGi.CodeFuncs.CheckForBorkedTransportPath(self)
-				end
-			end
-			function RCTransport:TransportRouteUnload()
-				ChoGGi_OrigFuncs.RCTransport_TransportRouteUnload(self)
-				if ChoGGi.UserSettings.CheckForBorkedTransportPath then
-					ChoGGi.CodeFuncs.CheckForBorkedTransportPath(self)
-				end
-			end
+	-- unbreakable cables/pipes
+	function SupplyGridFragment:RandomElementBreakageOnWorkshiftChange()
+		if not ChoGGi.UserSettings.BreakChanceCablePipe then
+			return ChoGGi_OrigFuncs.SupplyGridFragment_RandomElementBreakageOnWorkshiftChange(self)
 		end
+	end
 
-		-- unbreakable cables/pipes
-		function SupplyGridFragment:RandomElementBreakageOnWorkshiftChange()
-			if not ChoGGi.UserSettings.BreakChanceCablePipe then
-				return ChoGGi_OrigFuncs.SupplyGridFragment_RandomElementBreakageOnWorkshiftChange(self)
-			end
+	-- stops the help webpage from showing up every single time
+	if Platform.editor and UserSettings.SkipModHelpPage then
+		function GedOpHelpMod() end
+	end
+
+	-- no more pulsating pin motion
+	function XBlinkingButtonWithRMB:SetBlinking(...)
+		if ChoGGi.UserSettings.DisablePulsatingPinsMotion then
+			self.blinking = false
+		else
+			return ChoGGi_OrigFuncs.XBlinkingButtonWithRMB_SetBlinking(self,...)
 		end
+	end
 
-		-- stops the help webpage from showing up every single time
-		if Platform.editor and UserSettings.SkipModHelpPage then
-			function GedOpHelpMod() end
-		end
-
-		-- no more pulsating pin motion
-		function XBlinkingButtonWithRMB:SetBlinking(...)
-			if ChoGGi.UserSettings.DisablePulsatingPinsMotion then
-				self.blinking = false
+	-- no more stuck focus on textboxes and so on
+	function XDesktop:MouseEvent(event, pt, button, time)
+--~ 		if event == "OnMouseButtonDown" and self.keyboard_focus and self.keyboard_focus:IsKindOf("XTextEditor") then
+		if event == "OnMouseButtonDown" and self.keyboard_focus and self.keyboard_focus:IsKindOfClasses("XTextEditor","XList") then
+			local hud = Dialogs.HUD
+			if hud then
+				hud:SetFocus()
 			else
-				return ChoGGi_OrigFuncs.XBlinkingButtonWithRMB_SetBlinking(self,...)
+				-- hud should always be visible, but just in case focus on desktop
+				self:SetFocus()
 			end
 		end
 
-		-- no more stuck focus on textboxes and so on
-		function XDesktop:MouseEvent(event, pt, button, time)
-	--~ 		if event == "OnMouseButtonDown" and self.keyboard_focus and self.keyboard_focus:IsKindOf("XTextEditor") then
-			if event == "OnMouseButtonDown" and self.keyboard_focus and self.keyboard_focus:IsKindOfClasses("XTextEditor","XList") then
-				local hud = Dialogs.HUD
-				if hud then
-					hud:SetFocus()
-				else
-					-- hud should always be visible, but just in case focus on desktop
-					self:SetFocus()
-				end
+		return ChoGGi_OrigFuncs.XDesktop_MouseEvent(self, event, pt, button, time)
+	end
+
+	-- function from github as the actual function has a whoopsie, or something does...
+	-- going to be a fix in next version:
+	-- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-becomes-unresponsive-under-certain-circumstances.1102544/page-2#post-24366021
+	if LuaRevision <= 231139 then
+		local CurrentThread = CurrentThread
+		local DeleteThread = DeleteThread
+		local IsValid = IsValid
+		local Sleep = Sleep
+		local WaitWakeup = WaitWakeup
+		function RCRover:ExitAllDrones()
+			if self.exit_drones_thread and self.exit_drones_thread ~= CurrentThread() then
+				DeleteThread(self.exit_drones_thread)
+				self.exit_drones_thread = CurrentThread()
 			end
 
-			return ChoGGi_OrigFuncs.XDesktop_MouseEvent(self, event, pt, button, time)
-		end
-
-		-- function from github as the actual function has a whoopsie, or something does...
-		-- going to be a fix in next version:
-		-- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-becomes-unresponsive-under-certain-circumstances.1102544/page-2#post-24366021
-		if LuaRevision <= 231139 then
-			local CurrentThread = CurrentThread
-			local DeleteThread = DeleteThread
-			local IsValid = IsValid
-			local Sleep = Sleep
-			local WaitWakeup = WaitWakeup
-			function RCRover:ExitAllDrones()
-				if self.exit_drones_thread and self.exit_drones_thread ~= CurrentThread() then
-					DeleteThread(self.exit_drones_thread)
-					self.exit_drones_thread = CurrentThread()
-				end
-
-				while #self.attached_drones > 0 and self.siege_state_name == "Siege" do
-					local drone = self.attached_drones[#self.attached_drones]
-					if IsValid(drone) then
-						if drone.command_center ~= self then
-							--damage control, this should never happen
-							assert(false, "Rover has foreign drones attached")
-							drone:Detach()
-							assert(drone == table.remove(self.attached_drones))
-						else
-							while self.guided_drone or #self.embarking_drones > 0 do
-								Sleep(1000)
-							end
-							if IsValid(drone) then
-								self.guided_drone = drone
-								drone:SetCommand("ExitRover", self)
-								while not WaitWakeup(10000) do end
-							end
-						end
-					end
-				end
-
-				if self.exit_drones_thread and self.exit_drones_thread == CurrentThread() then
-					self.exit_drones_thread = false
-				end
-			end
-		end
-
-		--remove annoying msg that happens everytime you click anything (nice)
-		function XWindow:SetId(id)
-			local node = self.parent
-			while node and not node.IdNode do
-				node = node.parent
-			end
-			if node then
-				local old_id = self.Id
-				if old_id ~= "" then
-					rawset(node, old_id, nil)
-				end
-				if id ~= "" then
-					--local win = rawget(node, id)
-					--if win and win ~= self then
-					--	printf("[UI WARNING] Assigning window id '%s' of %s to %s", tostring(id), win.class, self.class)
-					--end
-					rawset(node, id, self)
-				end
-			end
-			self.Id = id
-		end
-
-		--removes earthsick effect
-		function Colonist:ChangeComfort(...)
-			ChoGGi_OrigFuncs.Colonist_ChangeComfort(self, ...)
-			if ChoGGi.UserSettings.NoMoreEarthsick and self.status_effects.StatusEffect_Earthsick then
-				self:Affect("StatusEffect_Earthsick", false)
-			end
-		end
-
-		--make sure heater keeps the powerless setting
-		function SubsurfaceHeater:UpdatElectricityConsumption()
-			ChoGGi_OrigFuncs.SubsurfaceHeater_UpdatElectricityConsumption(self)
-			if self.ChoGGi_mod_electricity_consumption then
-				ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
-			end
-		end
-		--same for tribby
-		function TriboelectricScrubber:OnPostChangeRange()
-			ChoGGi_OrigFuncs.TriboelectricScrubber_OnPostChangeRange(self)
-			if self.ChoGGi_mod_electricity_consumption then
-				ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
-			end
-		end
-
-		--remove idiot trait from uni grads (hah!)
-		function MartianUniversity:OnTrainingCompleted(unit)
-			if ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait then
-				unit:RemoveTrait("Idiot")
-			end
-			ChoGGi_OrigFuncs.MartianUniversity_OnTrainingCompleted(self, unit)
-		end
-
-		--used to skip mystery sequences
-		do -- SkipMystStep
-			local function SkipMystStep(self,MystFunc)
-				local ChoGGi = ChoGGi
-				local StopWait = ChoGGi.Temp.SA_WaitMarsTime_StopWait
-				local p = self.meta.player
-
-				if StopWait and p and StopWait.seed == p.seed then
-					--inform user, or if it's a dbl then skip
-					if StopWait.skipmsg then
-						StopWait.skipmsg = nil
+			while #self.attached_drones > 0 and self.siege_state_name == "Siege" do
+				local drone = self.attached_drones[#self.attached_drones]
+				if IsValid(drone) then
+					if drone.command_center ~= self then
+						--damage control, this should never happen
+						assert(false, "Rover has foreign drones attached")
+						drone:Detach()
+						assert(drone == table.remove(self.attached_drones))
 					else
-						MsgPopup(
-							302535920000735--[[Timer delay skipped--]],
-							3486--[[Mystery--]]
-						)
-					end
-
-					--only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...
-					if StopWait.again == true then
-						StopWait.again = nil
-						StopWait.skipmsg = true
-					else
-						--reset it for next time
-						StopWait.seed = false
-						StopWait.again = false
-					end
-
-					--skip
-					return 1
-				end
-
-				return ChoGGi_OrigFuncs[MystFunc](self)
-			end
-
-			function SA_WaitTime:StopWait()
-				SkipMystStep(self,"SA_WaitTime_StopWait")
-			end
-			function SA_WaitMarsTime:StopWait()
-				SkipMystStep(self,"SA_WaitMarsTime_StopWait")
-			end
-		end -- do
-
-		do -- GetProgress
-			local GetMissionSponsor = GetMissionSponsor
-			--some mission goals check colonist amounts
-			function MG_Colonists:GetProgress()
-				if ChoGGi.Temp.InstantMissionGoal then
-					return GetMissionSponsor().goal_target + 1
-				else
-					return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
-				end
-			end
-			function MG_Martianborn:GetProgress()
-				if ChoGGi.Temp.InstantMissionGoal then
-					return GetMissionSponsor().goal_target + 1
-				else
-					return ChoGGi_OrigFuncs.MG_Martianborn_GetProgress(self)
-				end
-			end
-		end -- do
-
-		--keep prod at saved values for grid producers (air/water/elec)
-		function SupplyGridElement:SetProduction(new_production, new_throttled_production, update)
-			local amount = ChoGGi.UserSettings.BuildingSettings[self.building.encyclopedia_id]
-			if amount and amount.production then
-				--set prod
-				new_production = self.building.working and amount.production or 0
-				--set displayed prod
-				if self:IsKindOf("AirGridFragment") then
-					self.building.air_production = self.building.working and amount.production or 0
-				elseif self:IsKindOf("WaterGrid") then
-					self.building.water_production = self.building.working and amount.production or 0
-				elseif self:IsKindOf("ElectricityGrid") then
-					self.building.electricity_production = self.building.working and amount.production or 0
-				end
-			end
-			ChoGGi_OrigFuncs.SupplyGridElement_SetProduction(self, new_production, new_throttled_production, update)
-		end
-
-		--and for regular producers (factories/extractors)
-		function SingleResourceProducer:Produce(amount_to_produce)
-			local amount = ChoGGi.UserSettings.BuildingSettings[self.parent.encyclopedia_id]
-			if amount and amount.production then
-				--set prod
-				amount_to_produce = amount.production / guim
-				--set displayed prod
-				self.production_per_day = amount.production
-			end
-
-	--see if this gets called less then produce
-	--~ function SingleResourceProducer:DroneUnloadResource(drone, request, resource, amount)
-	--~	 if resource == self.resource_produced and self.parent and self.parent ~= self then
-	--~		 self.parent:DroneUnloadResource(drone, request, resource, amount)
-	--~	 end
-	--~ end
-			--get them lazy drones working (bugfix for drones ignoring amounts less then their carry amount)
-			if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
-				ChoGGi.CodeFuncs.FuckingDrones(self)
-			end
-
-			return ChoGGi_OrigFuncs.SingleResourceProducer_Produce(self, amount_to_produce)
-		end
-
-		-- larger drone work radius
-		do -- SetWorkRadius
-			local function SetHexRadius(orig_func,setting,obj,orig_radius)
-				local UserSettings = ChoGGi.UserSettings[setting]
-				if UserSettings then
-					return ChoGGi_OrigFuncs[orig_func](obj,UserSettings)
-				end
-				return ChoGGi_OrigFuncs[orig_func](obj,orig_radius)
-			end
-			function RCRover:SetWorkRadius(radius)
-				SetHexRadius("RCRover_SetWorkRadius","RCRoverMaxRadius",self,radius)
-			end
-			function DroneHub:SetWorkRadius(radius)
-				SetHexRadius("DroneHub_SetWorkRadius","CommandCenterMaxRadius",self,radius)
-			end
-		end -- do
-
-		--toggle trans on mouseover
-		function XWindow:OnMouseEnter(pt, child)
-			if ChoGGi.UserSettings.TransparencyToggle then
-				self:SetTransparency(0)
-			end
-			return ChoGGi_OrigFuncs.XWindow_OnMouseEnter(self, pt, child)
-		end
-		function XWindow:OnMouseLeft(pt, child)
-			if ChoGGi.UserSettings.TransparencyToggle then
-				SetTrans(self)
-			end
-			return ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, pt, child)
-		end
-
-		--remove spire spot limit
-		do -- ConstructionController:UpdateCursor
-			local IsValid = IsValid
-			local UnbuildableZ = buildUnbuildableZ()
-			local HexGetNearestCenter = HexGetNearestCenter
-			local GetBuildableZ = GetBuildableZ
-			local WorldToHex = WorldToHex
-			local GetHeight = terrain.GetHeight
-			local FixConstructPos = FixConstructPos
-			local ShowNearbyHexGrid = ShowNearbyHexGrid
-			local ObjModified = ObjModified
-
-			function ConstructionController:UpdateCursor(pos, force)
-				if ChoGGi.UserSettings.Building_dome_spot then
-					if IsValid(self.cursor_obj) then
-						self.spireless_dome = false
-						local hex_world_pos = HexGetNearestCenter(pos)
-						local build_z = g_BuildableZ and GetBuildableZ(WorldToHex(hex_world_pos)) or UnbuildableZ
-						if build_z == UnbuildableZ then
-							build_z = pos:z() or GetHeight(pos)
-						end
-						hex_world_pos = hex_world_pos:SetZ(build_z)
-
-						local new_pos = self.snap_to_grid and hex_world_pos or pos
-						new_pos = FixConstructPos(new_pos)
-
-						if force or (self.cursor_obj:GetPos() ~= new_pos and hex_world_pos:InBox2D(ConstructableArea)) then
-							ShowNearbyHexGrid(hex_world_pos)
-							self.cursor_obj:SetPos(new_pos)
-							self:UpdateConstructionObstructors()
-							self:UpdateConstructionStatuses() --should go after obstructors
-							self:UpdateShortConstructionStatus()
-							ObjModified(self)
-						end
-					end
-				else
-					return ChoGGi_OrigFuncs.ConstructionController_UpdateCursor(self, pos, force)
-				end
-
-			end
-		end -- do
-
-		-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
-		do -- InfopanelDlg:Open
-			local CreateRealTimeThread = CreateRealTimeThread
-			local DeleteThread = DeleteThread
-			local Sleep = Sleep
-			local TGetID = TGetID
-			local function ToggleVis(idx,content,v,h)
-				for i = 6, idx do
-					content[i]:SetVisible(v)
-					content[i]:SetMaxHeight(h)
-				end
-			end
-
-			local infopanel_list = {
-				ipBuilding = true,
-				ipColonist = true,
-	--~ 			ipConstruction = true,
-				ipDrone = true,
-				ipRover = true,
-			}
-
-			local function InfopanelDlgOpen(self)
-				local UserSettings = ChoGGi.UserSettings
-
-				-- give me the scroll. goddamn it blinky
-				if UserSettings.ScrollSelection and infopanel_list[self.XTemplate] then
-					self.idActionsFrame.parent:SetZOrder(2)
-					ChoGGi.CodeFuncs.AddScrollDialogXTemplates(self)
-				end
-
-				local c = self.idContent
-				if not c then
-					return
-				end
-
-				-- this limits height of traits you can choose to 3 till mouse over
-				if not UserSettings.ScrollSelection and UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses("Sanatorium","School") then
-
-					local idx
-					if self.context:IsKindOf("School") then
-						idx = 20
-					else
-						-- Sanitarium
-						idx = 18
-					end
-
-					-- initially set to hidden
-					ToggleVis(idx,c,false,0)
-
-					local visthread
-					self.OnMouseEnter = function()
-						DeleteThread(visthread)
-						ToggleVis(idx,c,true)
-					end
-					self.OnMouseLeft = function()
-						visthread = CreateRealTimeThread(function()
+						while self.guided_drone or #self.embarking_drones > 0 do
 							Sleep(1000)
-							ToggleVis(idx,c,false,0)
-						end)
+						end
+						if IsValid(drone) then
+							self.guided_drone = drone
+							drone:SetCommand("ExitRover", self)
+							while not WaitWakeup(10000) do end
+						end
 					end
+				end
+			end
 
+			if self.exit_drones_thread and self.exit_drones_thread == CurrentThread() then
+				self.exit_drones_thread = false
+			end
+		end
+	end
+
+	--remove annoying msg that happens everytime you click anything (nice)
+	function XWindow:SetId(id)
+		local node = self.parent
+		while node and not node.IdNode do
+			node = node.parent
+		end
+		if node then
+			local old_id = self.Id
+			if old_id ~= "" then
+				rawset(node, old_id, nil)
+			end
+			if id ~= "" then
+				--local win = rawget(node, id)
+				--if win and win ~= self then
+				--	printf("[UI WARNING] Assigning window id '%s' of %s to %s", tostring(id), win.class, self.class)
+				--end
+				rawset(node, id, self)
+			end
+		end
+		self.Id = id
+	end
+
+	--removes earthsick effect
+	function Colonist:ChangeComfort(...)
+		ChoGGi_OrigFuncs.Colonist_ChangeComfort(self, ...)
+		if ChoGGi.UserSettings.NoMoreEarthsick and self.status_effects.StatusEffect_Earthsick then
+			self:Affect("StatusEffect_Earthsick", false)
+		end
+	end
+
+	--make sure heater keeps the powerless setting
+	function SubsurfaceHeater:UpdatElectricityConsumption()
+		ChoGGi_OrigFuncs.SubsurfaceHeater_UpdatElectricityConsumption(self)
+		if self.ChoGGi_mod_electricity_consumption then
+			ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
+		end
+	end
+	--same for tribby
+	function TriboelectricScrubber:OnPostChangeRange()
+		ChoGGi_OrigFuncs.TriboelectricScrubber_OnPostChangeRange(self)
+		if self.ChoGGi_mod_electricity_consumption then
+			ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
+		end
+	end
+
+	--remove idiot trait from uni grads (hah!)
+	function MartianUniversity:OnTrainingCompleted(unit)
+		if ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait then
+			unit:RemoveTrait("Idiot")
+		end
+		ChoGGi_OrigFuncs.MartianUniversity_OnTrainingCompleted(self, unit)
+	end
+
+	--used to skip mystery sequences
+	do -- SkipMystStep
+		local function SkipMystStep(self,MystFunc)
+			local ChoGGi = ChoGGi
+			local StopWait = ChoGGi.Temp.SA_WaitMarsTime_StopWait
+			local p = self.meta.player
+
+			if StopWait and p and StopWait.seed == p.seed then
+				--inform user, or if it's a dbl then skip
+				if StopWait.skipmsg then
+					StopWait.skipmsg = nil
+				else
+					MsgPopup(
+						302535920000735--[[Timer delay skipped--]],
+						3486--[[Mystery--]]
+					)
 				end
 
-				-- loop all the sections
-				for i = 1, #c do
-					local section = c[i]
-					if section.class == "XSection" then
-						local title = TGetID(section.idSectionTitle.Text)
-						local content = section.idContent[2]
+				--only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...
+				if StopWait.again == true then
+					StopWait.again = nil
+					StopWait.skipmsg = true
+				else
+					--reset it for next time
+					StopWait.seed = false
+					StopWait.again = false
+				end
 
-						-- enlarge worker section if over the max amount visible
-						if section.idWorkers and #section.idWorkers > 14 then
-							-- set height to default height
-							content:SetMaxHeight(32)
+				--skip
+				return 1
+			end
+
+			return ChoGGi_OrigFuncs[MystFunc](self)
+		end
+
+		function SA_WaitTime:StopWait()
+			SkipMystStep(self,"SA_WaitTime_StopWait")
+		end
+		function SA_WaitMarsTime:StopWait()
+			SkipMystStep(self,"SA_WaitMarsTime_StopWait")
+		end
+	end -- do
+
+	do -- GetProgress
+		local GetMissionSponsor = GetMissionSponsor
+		--some mission goals check colonist amounts
+		function MG_Colonists:GetProgress()
+			if ChoGGi.Temp.InstantMissionGoal then
+				return GetMissionSponsor().goal_target + 1
+			else
+				return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
+			end
+		end
+		function MG_Martianborn:GetProgress()
+			if ChoGGi.Temp.InstantMissionGoal then
+				return GetMissionSponsor().goal_target + 1
+			else
+				return ChoGGi_OrigFuncs.MG_Martianborn_GetProgress(self)
+			end
+		end
+	end -- do
+
+	--keep prod at saved values for grid producers (air/water/elec)
+	function SupplyGridElement:SetProduction(new_production, new_throttled_production, update)
+		local amount = ChoGGi.UserSettings.BuildingSettings[self.building.encyclopedia_id]
+		if amount and amount.production then
+			--set prod
+			new_production = self.building.working and amount.production or 0
+			--set displayed prod
+			if self:IsKindOf("AirGridFragment") then
+				self.building.air_production = self.building.working and amount.production or 0
+			elseif self:IsKindOf("WaterGrid") then
+				self.building.water_production = self.building.working and amount.production or 0
+			elseif self:IsKindOf("ElectricityGrid") then
+				self.building.electricity_production = self.building.working and amount.production or 0
+			end
+		end
+		ChoGGi_OrigFuncs.SupplyGridElement_SetProduction(self, new_production, new_throttled_production, update)
+	end
+
+	--and for regular producers (factories/extractors)
+	function SingleResourceProducer:Produce(amount_to_produce)
+		local amount = ChoGGi.UserSettings.BuildingSettings[self.parent.encyclopedia_id]
+		if amount and amount.production then
+			--set prod
+			amount_to_produce = amount.production / guim
+			--set displayed prod
+			self.production_per_day = amount.production
+		end
+
+--see if this gets called less then produce
+--~ function SingleResourceProducer:DroneUnloadResource(drone, request, resource, amount)
+--~	 if resource == self.resource_produced and self.parent and self.parent ~= self then
+--~		 self.parent:DroneUnloadResource(drone, request, resource, amount)
+--~	 end
+--~ end
+		--get them lazy drones working (bugfix for drones ignoring amounts less then their carry amount)
+		if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
+			ChoGGi.CodeFuncs.FuckingDrones(self)
+		end
+
+		return ChoGGi_OrigFuncs.SingleResourceProducer_Produce(self, amount_to_produce)
+	end
+
+	-- larger drone work radius
+	do -- SetWorkRadius
+		local function SetHexRadius(orig_func,setting,obj,orig_radius)
+			local UserSettings = ChoGGi.UserSettings[setting]
+			if UserSettings then
+				return ChoGGi_OrigFuncs[orig_func](obj,UserSettings)
+			end
+			return ChoGGi_OrigFuncs[orig_func](obj,orig_radius)
+		end
+		function RCRover:SetWorkRadius(radius)
+			SetHexRadius("RCRover_SetWorkRadius","RCRoverMaxRadius",self,radius)
+		end
+		function DroneHub:SetWorkRadius(radius)
+			SetHexRadius("DroneHub_SetWorkRadius","CommandCenterMaxRadius",self,radius)
+		end
+	end -- do
+
+	--toggle trans on mouseover
+	function XWindow:OnMouseEnter(pt, child)
+		if ChoGGi.UserSettings.TransparencyToggle then
+			self:SetTransparency(0)
+		end
+		return ChoGGi_OrigFuncs.XWindow_OnMouseEnter(self, pt, child)
+	end
+	function XWindow:OnMouseLeft(pt, child)
+		if ChoGGi.UserSettings.TransparencyToggle then
+			SetTrans(self)
+		end
+		return ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, pt, child)
+	end
+
+	--remove spire spot limit
+	do -- ConstructionController:UpdateCursor
+		local IsValid = IsValid
+		local UnbuildableZ = buildUnbuildableZ()
+		local HexGetNearestCenter = HexGetNearestCenter
+		local GetBuildableZ = GetBuildableZ
+		local WorldToHex = WorldToHex
+		local GetHeight = terrain.GetHeight
+		local FixConstructPos = FixConstructPos
+		local ShowNearbyHexGrid = ShowNearbyHexGrid
+		local ObjModified = ObjModified
+
+		function ConstructionController:UpdateCursor(pos, force)
+			if ChoGGi.UserSettings.Building_dome_spot then
+				if IsValid(self.cursor_obj) then
+					self.spireless_dome = false
+					local hex_world_pos = HexGetNearestCenter(pos)
+					local build_z = g_BuildableZ and GetBuildableZ(WorldToHex(hex_world_pos)) or UnbuildableZ
+					if build_z == UnbuildableZ then
+						build_z = pos:z() or GetHeight(pos)
+					end
+					hex_world_pos = hex_world_pos:SetZ(build_z)
+
+					local new_pos = self.snap_to_grid and hex_world_pos or pos
+					new_pos = FixConstructPos(new_pos)
+
+					if force or (self.cursor_obj:GetPos() ~= new_pos and hex_world_pos:InBox2D(ConstructableArea)) then
+						ShowNearbyHexGrid(hex_world_pos)
+						self.cursor_obj:SetPos(new_pos)
+						self:UpdateConstructionObstructors()
+						self:UpdateConstructionStatuses() --should go after obstructors
+						self:UpdateShortConstructionStatus()
+						ObjModified(self)
+					end
+				end
+			else
+				return ChoGGi_OrigFuncs.ConstructionController_UpdateCursor(self, pos, force)
+			end
+
+		end
+	end -- do
+
+	-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
+	do -- InfopanelDlg:Open
+		local CreateRealTimeThread = CreateRealTimeThread
+		local DeleteThread = DeleteThread
+		local Sleep = Sleep
+		local TGetID = TGetID
+		local function ToggleVis(idx,content,v,h)
+			for i = 6, idx do
+				content[i]:SetVisible(v)
+				content[i]:SetMaxHeight(h)
+			end
+		end
+
+		local infopanel_list = {
+			ipBuilding = true,
+			ipColonist = true,
+--~ 			ipConstruction = true,
+			ipDrone = true,
+			ipRover = true,
+		}
+
+		local function InfopanelDlgOpen(self)
+			local UserSettings = ChoGGi.UserSettings
+
+			-- give me the scroll. goddamn it blinky
+			if UserSettings.ScrollSelection and infopanel_list[self.XTemplate] then
+				self.idActionsFrame.parent:SetZOrder(2)
+				ChoGGi.CodeFuncs.AddScrollDialogXTemplates(self)
+			end
+
+			local c = self.idContent
+			if not c then
+				return
+			end
+
+			-- this limits height of traits you can choose to 3 till mouse over
+			if not UserSettings.ScrollSelection and UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses("Sanatorium","School") then
+
+				local idx
+				if self.context:IsKindOf("School") then
+					idx = 20
+				else
+					-- Sanitarium
+					idx = 18
+				end
+
+				-- initially set to hidden
+				ToggleVis(idx,c,false,0)
+
+				local visthread
+				self.OnMouseEnter = function()
+					DeleteThread(visthread)
+					ToggleVis(idx,c,true)
+				end
+				self.OnMouseLeft = function()
+					visthread = CreateRealTimeThread(function()
+						Sleep(1000)
+						ToggleVis(idx,c,false,0)
+					end)
+				end
+
+			end
+
+			-- loop all the sections
+			for i = 1, #c do
+				local section = c[i]
+				if section.class == "XSection" then
+					local title = TGetID(section.idSectionTitle.Text)
+					local content = section.idContent[2]
+
+					-- enlarge worker section if over the max amount visible
+					if section.idWorkers and #section.idWorkers > 14 then
+						-- set height to default height
+						content:SetMaxHeight(32)
+
+						local expandthread
+						section.OnMouseEnter = function()
+							DeleteThread(expandthread)
+							content:SetLayoutMethod("HWrap")
+							content:SetMaxHeight()
+						end
+						section.OnMouseLeft = function()
+							expandthread = CreateRealTimeThread(function()
+								Sleep(500)
+								content:SetLayoutMethod("HList")
+								content:SetMaxHeight(32)
+							end)
+						end
+
+					elseif not UserSettings.ScrollSelection then
+						if title == 27--[[Cheats--]] then
 
 							local expandthread
 							section.OnMouseEnter = function()
 								DeleteThread(expandthread)
-								content:SetLayoutMethod("HWrap")
+								content:SetMaxHeight()
+							end
+							section.OnMouseLeft = function()
+								expandthread = CreateRealTimeThread(function()
+									Sleep(UserSettings.CheatsInfoPanelHideDelay or 1500)
+									content:SetMaxHeight(0)
+								end)
+							end
+
+						elseif title == 235--[[Traits--]] or title == 702480492408--[[Residents--]] then
+
+							if title == 702480492408 then
+								-- in certain situations the UI will flash if you make Clip = true, so we'll only set it if the cap has been changed
+								if self.context.capacity ~= self.context.base_capacity then
+									content.Clip = true
+								end
+							else
+								content.Clip = true
+							end
+
+							local expandthread
+							section.OnMouseEnter = function()
+								DeleteThread(expandthread)
 								content:SetMaxHeight()
 							end
 							section.OnMouseLeft = function()
 								expandthread = CreateRealTimeThread(function()
 									Sleep(500)
-									content:SetLayoutMethod("HList")
-									content:SetMaxHeight(32)
+									content:SetMaxHeight(256)
 								end)
 							end
 
-						elseif not UserSettings.ScrollSelection then
-							if title == 27--[[Cheats--]] then
-
-								local expandthread
-								section.OnMouseEnter = function()
-									DeleteThread(expandthread)
-									content:SetMaxHeight()
-								end
-								section.OnMouseLeft = function()
-									expandthread = CreateRealTimeThread(function()
-										Sleep(UserSettings.CheatsInfoPanelHideDelay or 1500)
-										content:SetMaxHeight(0)
-									end)
-								end
-
-							elseif title == 235--[[Traits--]] or title == 702480492408--[[Residents--]] then
-
-								if title == 702480492408 then
-									-- in certain situations the UI will flash if you make Clip = true, so we'll only set it if the cap has been changed
-									if self.context.capacity ~= self.context.base_capacity then
-										content.Clip = true
-									end
-								else
-									content.Clip = true
-								end
-
-								local expandthread
-								section.OnMouseEnter = function()
-									DeleteThread(expandthread)
-									content:SetMaxHeight()
-								end
-								section.OnMouseLeft = function()
-									expandthread = CreateRealTimeThread(function()
-										Sleep(500)
-										content:SetMaxHeight(256)
-									end)
-								end
-
-							end
-						end -- UserSettings.ScrollSelection
-
-					end -- if XSection
-				end
-			end
-
-			-- the actual function
-			function InfopanelDlg:Open(...)
-				CreateRealTimeThread(function()
-					while not self.visible do
-						Sleep(10)
-					end
-					InfopanelDlgOpen(self)
-				end)
-
-				return ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)
-			end
-		end -- do
-
-		-- make the background hide when console not visible (instead of after a second or two)
-		do -- ConsoleLog:ShowBackground
-			local DeleteThread = DeleteThread
-			local RGBA = RGBA
-			function ConsoleLog:ShowBackground(visible, immediate)
-				if config.ConsoleDim ~= 0 then
-					DeleteThread(self.background_thread)
-					if visible or immediate then
-						self:SetBackground(RGBA(0, 0, 0, visible and 96 or 0))
-					else
-						self:SetBackground(RGBA(0, 0, 0, 0))
-					end
-				end
-			end
-		end -- do
-
-		-- make sure console is focused even when construction is opened
-		function Console:Show(show)
-			ChoGGi_OrigFuncs.Console_Show(self, show)
-			local was_visible = self:GetVisible()
-			if show and not was_visible then
-				-- always on top
-				self:SetModal()
-			end
-			if not show then
-				-- always on top off
-				self:SetModal(false)
-			end
-			-- adding transparency for console stuff
-			SetTrans(self)
-
-			-- and rebuild the console buttons (added by ECM)
-			ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(self)
-		end
-
-		do -- skip quit from being added to console history to prevent annoyances
-			local skip_cmds = {
-				quit = true,
-				["quit()"] = true,
-				exit = true,
-				["exit()"] = true,
-				reboot = true,
-				["reboot()"] = true,
-				restart = true,
-				["restart()"] = true,
-			}
-			function Console:AddHistory(text)
-				if skip_cmds[text] then
-					return
-				end
-				return ChoGGi_OrigFuncs.Console_AddHistory(self,text)
-			end
-		end -- do
-
-		-- kind of an ugly way of making sure console doesn't include ` when using tilde to open console
-		function Console:TextChanged()
-			ChoGGi_OrigFuncs.Console_TextChanged(self)
-			if self.idEdit:GetText() == "`" then
-				self.idEdit:SetText("")
-			end
-		end
-
-		--make it so caret is at the end of the text when you use history
-		function Console:HistoryDown()
-			ChoGGi_OrigFuncs.Console_HistoryDown(self)
-			self.idEdit:SetCursor(1,#self.idEdit:GetText())
-		end
-
-		function Console:HistoryUp()
-			ChoGGi_OrigFuncs.Console_HistoryUp(self)
-			self.idEdit:SetCursor(1,#self.idEdit:GetText())
-		end
-
-		do -- RequiresMaintenance:AddDust
-			local IsBox = IsBox
-			local IsPoint = IsPoint
-			local MulDivRound = MulDivRound
-			--was giving a nil error in log, I assume devs'll fix it one day
-			function RequiresMaintenance:AddDust(amount)
-				--this wasn't checking if it was a number/point/box so errors in log, now it checks
-				if type(amount) == "number" or IsPoint(amount) or IsBox(amount) then
-					if self:IsKindOf("Building") then
-						amount = MulDivRound(amount, g_Consts.BuildingDustModifier, 100)
-					end
-					if self.accumulate_dust then
-						self:AccumulateMaintenancePoints(amount)
-					end
-				end
-			end
-		end -- do
-
-		do -- ConstructionController:CreateCursorObj
-			local IsValid = IsValid
-			-- set orientation to same as last object
-			function ConstructionController:CreateCursorObj(...)
-				local ChoGGi = ChoGGi
-				local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
-
-				local last = ChoGGi.Temp.LastPlacedObject
-				if IsValid(last) and ChoGGi.UserSettings.UseLastOrientation then
-					if type(ret[1].SetAngle) == "function" then
-						ret[1]:SetAngle(last:GetAngle() or 0)
-					end
-				end
-
-				return table.unpack(ret)
-			end
-		end -- do
-
-		--so we can build without (as many) limits
-		function ConstructionController:UpdateConstructionStatuses(dont_finalize)
-			if ChoGGi.UserSettings.RemoveBuildingLimits then
-				--send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
-				ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,"dont_finalize")
-
-				local status = self.construction_statuses
-
-				if self.is_template then
-					local cobj = rawget(self.cursor_obj, true)
-					local tobj = setmetatable({
-						[true] = cobj,
-	--~ 					["city"] = UICity
-						city = UICity
-					}, {
-						__index = self.template_obj
-					})
-					tobj:GatherConstructionStatuses(self.construction_statuses)
-				end
-
-				--remove errors we want to remove
-				local statusNew = {}
-				local c = 0
-				local ConstructionStatus = ConstructionStatus
-				if type(status) == "table" and #status > 0 then
-					for i = 1, #status do
-						if status[i].type == "warning" then
-							c = c + 1
-							statusNew[c] = status[i]
-						--ResourceRequired < no point in building an extractor when there's nothing to extract
-						--BlockingObjects < place buildings in each other
-						--NoPlaceForSpire
-						--PassageTooCloseToLifeSupport
-						--PassageAngleToSteep might be needed?
-
-						--UnevenTerrain < causes issues when placing buildings (martian ground viagra)
-						elseif status[i] == ConstructionStatus.UnevenTerrain then
-							c = c + 1
-							statusNew[c] = status[i]
 						end
+					end -- UserSettings.ScrollSelection
+
+				end -- if XSection
+			end
+		end
+
+		-- the actual function
+		function InfopanelDlg:Open(...)
+			CreateRealTimeThread(function()
+				while not self.visible do
+					Sleep(10)
+				end
+				InfopanelDlgOpen(self)
+			end)
+
+			return ChoGGi_OrigFuncs.InfopanelDlg_Open(self,...)
+		end
+	end -- do
+
+	-- make the background hide when console not visible (instead of after a second or two)
+	do -- ConsoleLog:ShowBackground
+		local DeleteThread = DeleteThread
+		local RGBA = RGBA
+		function ConsoleLog:ShowBackground(visible, immediate)
+			if config.ConsoleDim ~= 0 then
+				DeleteThread(self.background_thread)
+				if visible or immediate then
+					self:SetBackground(RGBA(0, 0, 0, visible and 96 or 0))
+				else
+					self:SetBackground(RGBA(0, 0, 0, 0))
+				end
+			end
+		end
+	end -- do
+
+	-- make sure console is focused even when construction is opened
+	function Console:Show(show)
+		ChoGGi_OrigFuncs.Console_Show(self, show)
+		local was_visible = self:GetVisible()
+		if show and not was_visible then
+			-- always on top
+			self:SetModal()
+		end
+		if not show then
+			-- always on top off
+			self:SetModal(false)
+		end
+		-- adding transparency for console stuff
+		SetTrans(self)
+
+		-- and rebuild the console buttons (added by ECM)
+		ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(self)
+	end
+
+	do -- skip quit from being added to console history to prevent annoyances
+		local skip_cmds = {
+			quit = true,
+			["quit()"] = true,
+			exit = true,
+			["exit()"] = true,
+			reboot = true,
+			["reboot()"] = true,
+			restart = true,
+			["restart()"] = true,
+		}
+		function Console:AddHistory(text)
+			if skip_cmds[text] then
+				return
+			end
+			return ChoGGi_OrigFuncs.Console_AddHistory(self,text)
+		end
+	end -- do
+
+	-- kind of an ugly way of making sure console doesn't include ` when using tilde to open console
+	function Console:TextChanged()
+		ChoGGi_OrigFuncs.Console_TextChanged(self)
+		if self.idEdit:GetText() == "`" then
+			self.idEdit:SetText("")
+		end
+	end
+
+	--make it so caret is at the end of the text when you use history
+	function Console:HistoryDown()
+		ChoGGi_OrigFuncs.Console_HistoryDown(self)
+		self.idEdit:SetCursor(1,#self.idEdit:GetText())
+	end
+
+	function Console:HistoryUp()
+		ChoGGi_OrigFuncs.Console_HistoryUp(self)
+		self.idEdit:SetCursor(1,#self.idEdit:GetText())
+	end
+
+	do -- RequiresMaintenance:AddDust
+		local IsBox = IsBox
+		local IsPoint = IsPoint
+		local MulDivRound = MulDivRound
+		--was giving a nil error in log, I assume devs'll fix it one day
+		function RequiresMaintenance:AddDust(amount)
+			--this wasn't checking if it was a number/point/box so errors in log, now it checks
+			if type(amount) == "number" or IsPoint(amount) or IsBox(amount) then
+				if self:IsKindOf("Building") then
+					amount = MulDivRound(amount, g_Consts.BuildingDustModifier, 100)
+				end
+				if self.accumulate_dust then
+					self:AccumulateMaintenancePoints(amount)
+				end
+			end
+		end
+	end -- do
+
+	do -- ConstructionController:CreateCursorObj
+		local IsValid = IsValid
+		-- set orientation to same as last object
+		function ConstructionController:CreateCursorObj(...)
+			local ChoGGi = ChoGGi
+			local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
+
+			local last = ChoGGi.Temp.LastPlacedObject
+			if IsValid(last) and ChoGGi.UserSettings.UseLastOrientation then
+--~ 				if type(ret[1].SetAngle) == "function" then
+				if ret[1].SetAngle then
+					ret[1]:SetAngle(last:GetAngle() or 0)
+				end
+			end
+
+			return table.unpack(ret)
+		end
+	end -- do
+
+	--so we can build without (as many) limits
+	function ConstructionController:UpdateConstructionStatuses(dont_finalize)
+		if ChoGGi.UserSettings.RemoveBuildingLimits then
+			--send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
+			ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,"dont_finalize")
+
+			local status = self.construction_statuses
+
+			if self.is_template then
+				local cobj = rawget(self.cursor_obj, true)
+				local tobj = setmetatable({
+					[true] = cobj,
+--~ 					["city"] = UICity
+					city = UICity
+				}, {
+					__index = self.template_obj
+				})
+				tobj:GatherConstructionStatuses(self.construction_statuses)
+			end
+
+			--remove errors we want to remove
+			local statusNew = {}
+			local c = 0
+			local ConstructionStatus = ConstructionStatus
+			if type(status) == "table" and #status > 0 then
+				for i = 1, #status do
+					if status[i].type == "warning" then
+						c = c + 1
+						statusNew[c] = status[i]
+					--ResourceRequired < no point in building an extractor when there's nothing to extract
+					--BlockingObjects < place buildings in each other
+					--NoPlaceForSpire
+					--PassageTooCloseToLifeSupport
+					--PassageAngleToSteep might be needed?
+
+					--UnevenTerrain < causes issues when placing buildings (martian ground viagra)
+					elseif status[i] == ConstructionStatus.UnevenTerrain then
+						c = c + 1
+						statusNew[c] = status[i]
 					end
 				end
-				--make sure we don't get errors down the line
-				if type(statusNew) == "boolean" then
-					statusNew = {}
-				end
-
-				self.construction_statuses = statusNew
-				status = self.construction_statuses
-
-				if not dont_finalize then
-					self:FinalizeStatusGathering(status)
-				else
-					return status
-				end
-			else
-				return ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,dont_finalize)
 			end
-		end --ConstructionController:UpdateConstructionStatuses
-
-		--so we can do long spaced tunnels
-		function TunnelConstructionController:UpdateConstructionStatuses()
-			if ChoGGi.UserSettings.RemoveBuildingLimits then
-				local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
-				self:FinalizeStatusGathering(old_t)
-			else
-				return ChoGGi_OrigFuncs.TunnelConstructionController_UpdateConstructionStatuses(self)
+			--make sure we don't get errors down the line
+			if type(statusNew) == "boolean" then
+				statusNew = {}
 			end
-		end
 
-		--add a bunch of rules to console input
-		local ConsoleRules = {
+			self.construction_statuses = statusNew
+			status = self.construction_statuses
 
-			-- print info in console log
-			{
-				-- $userdata/string id
-				"^$(.*)",
-				"print(ChoGGi.ComFuncs.Translate(%s))"
-			},
-			{
-				-- @function
-				"^@(.*)",
-				"print(debug.getinfo(%s))"
-			},
-			{
-				-- @@anything
-				"^@@(.*)",
-				"print(type(%s))"
-			},
-
-			-- do stuff
-			{
-				-- !obj_on_map
-				"^!(.*)",
-				"ViewAndSelectObject(%s)"
-			},
-			{
-				-- ~anything
-				"^~(.*)",
-				"ChoGGi.ComFuncs.OpenInExamineDlg(%s)"
-			},
-			{
-				-- &handle
-				"^&(.*)",
-				"ChoGGi.ComFuncs.OpenInExamineDlg(HandleToObject[%s])"
-			},
-			{
-				-- !!obj_with_attachments
-				"^!!(.*)",
-				"local o = (%s) local attaches = type(o) == 'table' and o:IsKindOf('ComponentAttach') and o:GetAttaches() if attaches and #attaches > 0 then ChoGGi.ComFuncs.OpenInExamineDlg(attaches,true) end"
-			},
-
-			-- built-in
-			{
-				-- r* some function/cmd that needs a realtime thread
-				"^*r%s*(.*)",
-				"CreateRealTimeThread(function() %s end) return"
-			},
-			{
-				-- g* or a gametime
-				"^*g%s*(.*)",
-				"CreateGameTimeThread(function() %s end) return"
-			},
-			{
-				-- m* or a maprealtime
-				"^*g%s*(.*)",
-				"CreateMapRealTimeThread(function() %s end) return"
-			},
-			-- something screenshot
-			{
-			"^SSA?A?0%d+ (.*)",
-			"ViewShot([[%s]])"
-			},
-
-			-- prints out cmds entered I assume?
-			{
-				"^(%a[%w.]*)$",
-				"ConsolePrint(print_format(__run(%s)))"
-			},
-			{
-				"(.*)",
-				"ConsolePrint(print_format(%s))"
-			},
-			{
-				"(.*)",
-				"%s"
-			},
-		}
-
-		local AddConsoleLog = AddConsoleLog
-		local ConsoleExecute
-		if blacklist then
-			dlgConsole:Exec("ChoGGi.Temp.ConsoleExec=ConsoleExec")
-			ConsoleExecute = ChoGGi.Temp.ConsoleExec
+			if not dont_finalize then
+				self:FinalizeStatusGathering(status)
+			else
+				return status
+			end
 		else
-			ConsoleExecute = ConsoleExec
+			return ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,dont_finalize)
 		end
-		local ConsolePrint = ConsolePrint
-		function Console:Exec(text,skip)
-			if not skip then
-				self:AddHistory(text)
-				AddConsoleLog("> ", true)
-				AddConsoleLog(text, false)
-			end
-			-- i like my rules kthxbai
-			local err = ConsoleExecute(text, ConsoleRules)
-			if err then
-				ConsolePrint(err)
-			end
+	end --ConstructionController:UpdateConstructionStatuses
+
+	--so we can do long spaced tunnels
+	function TunnelConstructionController:UpdateConstructionStatuses()
+		if ChoGGi.UserSettings.RemoveBuildingLimits then
+			local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
+			self:FinalizeStatusGathering(old_t)
+		else
+			return ChoGGi_OrigFuncs.TunnelConstructionController_UpdateConstructionStatuses(self)
 		end
+	end
 
-	end -- ClassesBuilt
+	--add a bunch of rules to console input
+	local ConsoleRules = {
 
-end
+		-- print info in console log
+		{
+			-- $userdata/string id
+			"^$(.*)",
+			"print(ChoGGi.ComFuncs.Translate(%s))"
+		},
+		{
+			-- @function
+			"^@(.*)",
+			"print(debug.getinfo(%s))"
+		},
+		{
+			-- @@anything
+			"^@@(.*)",
+			"print(type(%s))"
+		},
+
+		-- do stuff
+		{
+			-- !obj_on_map
+			"^!(.*)",
+			"ViewAndSelectObject(%s)"
+		},
+		{
+			-- ~anything
+			"^~(.*)",
+			"ChoGGi.ComFuncs.OpenInExamineDlg(%s)"
+		},
+		{
+			-- &handle
+			"^&(.*)",
+			"ChoGGi.ComFuncs.OpenInExamineDlg(HandleToObject[%s])"
+		},
+		{
+			-- !!obj_with_attachments
+			"^!!(.*)",
+			"local o = (%s) local attaches = type(o) == 'table' and o:IsKindOf('ComponentAttach') and o:GetAttaches() if attaches and #attaches > 0 then ChoGGi.ComFuncs.OpenInExamineDlg(attaches,true) end"
+		},
+
+		-- built-in
+		{
+			-- r* some function/cmd that needs a realtime thread
+			"^*r%s*(.*)",
+			"CreateRealTimeThread(function() %s end) return"
+		},
+		{
+			-- g* or a gametime
+			"^*g%s*(.*)",
+			"CreateGameTimeThread(function() %s end) return"
+		},
+		{
+			-- m* or a maprealtime
+			"^*g%s*(.*)",
+			"CreateMapRealTimeThread(function() %s end) return"
+		},
+		-- something screenshot
+		{
+		"^SSA?A?0%d+ (.*)",
+		"ViewShot([[%s]])"
+		},
+
+		-- prints out cmds entered I assume?
+		{
+			"^(%a[%w.]*)$",
+			"ConsolePrint(print_format(__run(%s)))"
+		},
+		{
+			"(.*)",
+			"ConsolePrint(print_format(%s))"
+		},
+		{
+			"(.*)",
+			"%s"
+		},
+	}
+
+	local AddConsoleLog = AddConsoleLog
+	local ConsoleExecute
+	if blacklist then
+		dlgConsole:Exec("ChoGGi.Temp.ConsoleExec=ConsoleExec")
+		ConsoleExecute = ChoGGi.Temp.ConsoleExec
+	else
+		ConsoleExecute = ConsoleExec
+	end
+	local ConsolePrint = ConsolePrint
+	function Console:Exec(text,skip)
+		if not skip then
+			self:AddHistory(text)
+			AddConsoleLog("> ", true)
+			AddConsoleLog(text, false)
+		end
+		-- i like my rules kthxbai
+		local err = ConsoleExecute(text, ConsoleRules)
+		if err then
+			ConsolePrint(err)
+		end
+	end
+
+end -- ClassesBuilt

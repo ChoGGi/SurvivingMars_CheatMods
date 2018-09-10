@@ -2084,3 +2084,113 @@ do -- ShowAnimDebug_Toggle
 		end
 	end
 end -- do
+
+-- fixup name we get from Object
+function ChoGGi.CodeFuncs.ConstructionModeNameClean(itemname)
+	--we want template_name or we have to guess from the placeobj name
+	local tempname = itemname:match("^.+template_name%A+([A-Za-z_%s]+).+$")
+	if not tempname then
+		tempname = itemname:match("^PlaceObj%('(%a+).+$")
+	end
+
+--~	 print(tempname)
+	if tempname:find("Deposit") then
+		local obj = PlaceObj(tempname, {
+			"Pos", ChoGGi.CodeFuncs.CursorNearestHex(),
+			"revealed", true,
+		})
+		obj.max_amount = ChoGGi.ComFuncs.Random(1000 * ChoGGi.Consts.ResourceScale,100000 * ChoGGi.Consts.ResourceScale)
+		obj:CheatRefill()
+		obj.amount = obj.max_amount
+	else
+		ChoGGi.CodeFuncs.ConstructionModeSet(tempname)
+	end
+end
+
+-- place item under the mouse for construction
+function ChoGGi.CodeFuncs.ConstructionModeSet(itemname)
+	-- make sure it's closed so we don't mess up selection
+	if GetDialog("XBuildMenu") then
+		CloseDialog("XBuildMenu")
+	end
+	-- fix up some names
+	local fixed = ChoGGi.Tables.ConstructionNamesListFix[itemname]
+	if fixed then
+		itemname = fixed
+	end
+	-- n all the rest
+	local igi = Dialogs.InGameInterface
+	if not igi or not igi:GetVisible() then
+		return
+	end
+
+	local bld_template = BuildingTemplates[itemname]
+	if not bld_template then
+		return
+	end
+	local _,_,can_build,action = UIGetBuildingPrerequisites(bld_template.build_category,bld_template,true)
+
+	local dlg = Dialogs.XBuildMenu
+	if action then
+		action(dlg,{
+			enabled = can_build,
+			name = bld_template.id ~= "" and bld_template.id or bld_template.encyclopedia_id,
+			construction_mode = bld_template.construction_mode
+		})
+	else
+		igi:SetMode("construction",{
+			template = bld_template.id ~= "" and bld_template.id or bld_template.encyclopedia_id,
+			selected_dome = dlg and dlg.context.selected_dome
+		})
+	end
+	CloseXBuildMenu()
+end
+
+do -- TerrainEditor_Toggle
+	local function ToggleCollisions(ChoGGi)
+		MapForEach("map","LifeSupportGridElement",function(o)
+			ChoGGi.CodeFuncs.CollisionsObject_Toggle(o,true)
+		end)
+	end
+
+	function ChoGGi.CodeFuncs.TerrainEditor_Toggle()
+		local ChoGGi = ChoGGi
+		ChoGGi.CodeFuncs.Editor_Toggle()
+		if Platform.editor then
+			editor.ClearSel()
+			SetEditorBrush(const.ebtTerrainType)
+		else
+			-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
+			ToggleCollisions(ChoGGi)
+			-- update uneven terrain checker thingy
+			RecalcBuildableGrid()
+			-- and back on when we're done
+			ToggleCollisions(ChoGGi)
+		end
+	end
+end -- do
+
+do -- DeleteAllRocks
+	local MapDelete = MapDelete
+	local Sleep = Sleep
+	local function CallBackFunc(answer)
+		if answer then
+			CreateGameTimeThread(function()
+				MapDelete("map", "Deposition")
+				Sleep(1)
+				MapDelete("map", "WasteRockObstructorSmall")
+				Sleep(1)
+				MapDelete("map", "WasteRockObstructor")
+				Sleep(1)
+				MapDelete("map", "StoneSmall")
+			end)
+		end
+	end
+	function ChoGGi.CodeFuncs.DeleteAllRocks()
+		ChoGGi.ComFuncs.QuestionBox(
+			string.format("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]]),
+			CallBackFunc,
+			string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
+		)
+	end
+end -- do

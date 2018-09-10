@@ -2,14 +2,7 @@
 
 -- stores default values and some tables
 
--- nope not hacky at all
-local is_loaded
-function OnMsg.ChoGGi_Library_Loaded()
-	if is_loaded then
-		return
-	end
-	is_loaded = true
-	-- nope nope nope
+function OnMsg.ClassesGenerate()
 
 	--~ local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings

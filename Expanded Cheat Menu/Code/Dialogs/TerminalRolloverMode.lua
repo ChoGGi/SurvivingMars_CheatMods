@@ -2,14 +2,7 @@
 
 -- this is used for select ui element on click
 
--- nope not hacky at all
-local is_loaded
-function OnMsg.ChoGGi_Library_Loaded()
-	if is_loaded then
-		return
-	end
-	is_loaded = true
-	-- nope nope nope
+function OnMsg.ClassesGenerate()
 
 	local terminal_target
 	local terminal_dialog

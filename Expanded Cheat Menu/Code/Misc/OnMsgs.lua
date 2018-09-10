@@ -10,14 +10,7 @@ local MsgPopup
 local S
 local blacklist
 
--- nope not hacky at all
-local is_loaded
-function OnMsg.ChoGGi_Library_Loaded()
-	if is_loaded then
-		return
-	end
-	is_loaded = true
-	-- nope nope nope
+function OnMsg.ClassesGenerate()
 
 	MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	S = ChoGGi.Strings
@@ -291,62 +284,10 @@ function OnMsg.PersistPostLoad()
 	end
 end
 
--- removes all the dev shortcuts/etc and adds mine
-local function Rebuildshortcuts()
-	local XShortcutsTarget = XShortcutsTarget
-
-	-- remove all built-in shortcuts (pretty much just a cutdown copy of ReloadShortcuts)
-	XShortcutsTarget.actions = {}
-	-- re-add certain ones
-	if not Platform.ged then
-		if XTemplates.GameShortcuts then
-			XTemplateSpawn("GameShortcuts", XShortcutsTarget)
-		end
-	elseif XTemplates.GedShortcuts then
-		XTemplateSpawn("GedShortcuts", XShortcutsTarget)
-	end
-
-	-- remove stuff from GameShortcuts
-	local table_remove = table.remove
-	for i = #XShortcutsTarget.actions, 1, -1 do
-		-- removes pretty much all the dev actions added, and leaves the game ones intact
-		local id = XShortcutsTarget.actions[i].ActionId
-		if id and (not id:starts_with("action") --[[or id:starts_with("actionPOC")--]] or id == "actionToggleFullscreen") then
-			table_remove(XShortcutsTarget.actions,i)
-		end
-	end
-
-	-- and add mine
-	local XAction = XAction
-	local Actions = ChoGGi.Temp.Actions
-
---~ Actions = {}
---~ Actions[#Actions+1] = {
---~	 ActionId = "ChoGGi_ShowConsoleTilde",
---~	 OnAction = function()
---~	 local dlgConsole = dlgConsole
---~	 if dlgConsole then
---~		 ShowConsole(not dlgConsole:GetVisible())
---~	 end
---~	 end,
---~	 ActionShortcut = ChoGGi.Defaults.KeyBindings.ShowConsoleTilde,
---~ }
-
-	for i = 1, #Actions do
-		-- and add to the actual actions
-		XShortcutsTarget:AddAction(XAction:new(Actions[i]))
-	end
-
-	-- add rightclick action to menuitems
-	XShortcutsTarget:UpdateToolbar()
-	-- got me
-	XShortcutsThread = false
-end
-
 function OnMsg.ShortcutsReloaded()
 	-- we don't add shortcuts and ain't supposed to drink no booze
 	if not ChoGGi.UserSettings.DisableECM then
-		Rebuildshortcuts()
+		ChoGGi.ComFuncs.Rebuildshortcuts(nil,true)
 
 		local dlgConsole = dlgConsole
 		if dlgConsole then
@@ -568,7 +509,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			-- large protect_range for defence buildings
 			if bs.protect_range then
 				obj.protect_range = bs.protect_range
-				obj.shoot_range = bs.protect_range * ChoGGi.Consts.guim
+				obj.shoot_range = bs.protect_range * guim
 			end
 			-- fully auto building
 			if bs.auto_performance then

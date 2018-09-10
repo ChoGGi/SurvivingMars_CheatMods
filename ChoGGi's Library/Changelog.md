@@ -1,6 +1,11 @@
 ## Library Changelog
 
-## v0.9 (Unreleased)
+## v1.0 (Unreleased)
+
+## v0.9 (09 Sep 2018)
+### Added:
+- More functions.
+- My actions reload code.
 ### Changed:
 - Made turning off the log for ECM more obvious.
 

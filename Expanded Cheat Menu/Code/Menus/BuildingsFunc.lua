@@ -1,13 +1,6 @@
 -- See LICENSE for terms
 
--- nope not hacky at all
-local is_loaded
-function OnMsg.ChoGGi_Library_Loaded()
-	if is_loaded then
-		return
-	end
-	is_loaded = true
-	-- nope nope nope
+function OnMsg.ClassesGenerate()
 
 	local default_icon = "UI/Icons/IPButtons/dome_buildings.tga"
 	local default_icon2 = "UI/Icons/Sections/storage.tga"
@@ -424,7 +417,7 @@ function OnMsg.ChoGGi_Library_Loaded()
 				local tab = UICity.labels[id] or ""
 				for i = 1, #tab do
 					tab[i].protect_range = value
-					tab[i].shoot_range = value * ChoGGi.Consts.guim
+					tab[i].shoot_range = value * guim
 				end
 
 				if value == DefaultSetting then
