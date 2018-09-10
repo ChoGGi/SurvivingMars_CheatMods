@@ -10,10 +10,88 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 
+	function ChoGGi.MenuFuncs.SetTrainingPoints()
+		local ChoGGi = ChoGGi
+		local sel = ChoGGi.ComFuncs.SelObject()
+		if not sel or not IsKindOf(sel,"TrainingBuilding") then
+			MsgPopup(
+				S[302535920001116--[[Select a %s.--]]]:format(S[5443--[[Training Buildings--]]]),
+				5443--[[Training Buildings--]]
+			)
+			return
+		end
+		local id = sel.encyclopedia_id
+		local name = RetName(sel)
+		local DefaultSetting = sel.base_evaluation_points
+		local UserSettings = ChoGGi.UserSettings
+
+		local ItemList = {
+			{text = S[1000121--[[Default--]]],value = DefaultSetting},
+			{text = 10,value = 10},
+			{text = 15,value = 15},
+			{text = 20,value = 20},
+			{text = 25,value = 25},
+			{text = 50,value = 50},
+			{text = 75,value = 75},
+			{text = 100,value = 100},
+			{text = 250,value = 250},
+			{text = 500,value = 500},
+			{text = 1000,value = 1000},
+		}
+
+		if not UserSettings.BuildingSettings[id] then
+			UserSettings.BuildingSettings[id] = {}
+		end
+
+		local hint = DefaultSetting
+		local setting = UserSettings.BuildingSettings[id]
+		if setting and setting.evaluation_points then
+			hint = setting.evaluation_points
+		end
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+			local value = choice[1].value
+
+			if type(value) == "number" then
+				local objs = UICity.labels[sel.class] or ""
+
+				if value == DefaultSetting then
+					setting.evaluation_points = nil
+					-- remove setting so it uses base_ value
+					for i = 1, #objs do
+						objs[i].evaluation_points = nil
+					end
+				else
+					setting.evaluation_points = value
+					for i = 1, #objs do
+						objs[i].evaluation_points = value
+					end
+				end
+
+				ChoGGi.SettingFuncs.WriteSettings()
+				MsgPopup(
+					ChoGGi.ComFuncs.SettingState(choice[1].value,302535920001344--[[Points To Train--]]),
+					name
+				)
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = 302535920001344--[[Points To Train--]],
+			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
+			skip_sort = true,
+		}
+	end
+
 	function ChoGGi.MenuFuncs.SetServiceBuildingStats()
 		local ChoGGi = ChoGGi
 		local sel = ChoGGi.ComFuncs.SelObject()
-		if not sel or not sel:IsKindOf("Service") then
+		if not sel or not IsKindOf(sel,"Service") then
 			MsgPopup(
 				S[302535920001116--[[Select a %s.--]]]:format(S[5439--[[Service Buildings--]]]),
 				4810--[[Service--]],
@@ -21,17 +99,19 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
+		local r = ChoGGi.Consts.ResourceScale
 		local id = sel.encyclopedia_id
 		local name = RetName(sel)
 
 		local ReturnEditorType = ChoGGi.CodeFuncs.ReturnEditorType
 		local hint_type = S[302535920000138--[[Value needs to be a %s.--]]]
 		local ItemList = {
-			{text = S[728--[[Health change on visit--]]],value = sel.health_change,setting = "health_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","health_change"))},
-			{text = S[729--[[Sanity change on visit--]]],value = sel.sanity_change,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","sanity_change"))},
-			{text = S[730--[[Service Comfort--]]],value = sel.service_comfort,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(sel.properties,"id","service_comfort"))},
-			{text = S[731--[[Comfort increase on visit--]]],value = sel.comfort_increase,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(sel.properties,"id","comfort_increase"))},
-			{text = S[734--[[Visit duration--]]],value = sel.visit_duration,setting = "visit_duration",hint = hint_type:format(ReturnEditorType(sel.properties,"id","visit_duration"))},
+			{text = S[728--[[Health change on visit--]]],value = sel.health_change / r,setting = "health_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","health_change"))},
+			{text = S[729--[[Sanity change on visit--]]],value = sel.sanity_change / r,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","sanity_change"))},
+			{text = S[730--[[Service Comfort--]]],value = sel.service_comfort / r,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(sel.properties,"id","service_comfort"))},
+			{text = S[731--[[Comfort increase on visit--]]],value = sel.comfort_increase / r,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(sel.properties,"id","comfort_increase"))},
+			{text = S[734--[[Visit duration--]]],value = sel.visit_duration / r,setting = "visit_duration",hint = hint_type:format(ReturnEditorType(sel.properties,"id","visit_duration"))},
+			-- bool
 			{text = S[735--[[Usable by children--]]],value = sel.usable_by_children,setting = "usable_by_children",hint = hint_type:format(ReturnEditorType(sel.properties,"id","usable_by_children"))},
 			{text = S[736--[[Children Only--]]],value = sel.children_only,setting = "children_only",hint = hint_type:format(ReturnEditorType(sel.properties,"id","children_only"))},
 		}
@@ -84,8 +164,13 @@ function OnMsg.ClassesGenerate()
 					local setting = choice[i].setting
 					local value = ChoGGi.ComFuncs.RetProperType(choice[i].value)
 					-- check user added correct
-					if type(value) == ReturnEditorType(sel.properties,"id",setting) then
-						bs_setting.service_stats[setting] = value
+					local editor_type = ReturnEditorType(sel.properties,"id",setting)
+					if type(value) == editor_type then
+						if editor_type == "number" then
+							bs_setting.service_stats[setting] = value * r
+						else
+							bs_setting.service_stats[setting] = value
+						end
 					end
 				end
 				-- update existing buildings
@@ -929,7 +1014,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 		local ChoGGi = ChoGGi
 		local sel = SelectedObj
-		if not sel or sel and not sel:IsKindOf("Workplace") then
+		if not sel or not IsKindOf(sel,"Workplace") then
 			MsgPopup(
 				302535920000141--[[Select a building with workers.--]],
 				3980--[[Buildings--]],

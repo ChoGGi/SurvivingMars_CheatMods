@@ -549,6 +549,9 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 				obj[prod_type].max_discharge = bs.discharge
 				obj[string.format("max_%s_discharge",prod_type)] = bs.discharge
 			end
+			if bs.evaluation_points then
+				obj.evaluation_points = bs.evaluation_points
+			end
 
 		else
 			-- empty table so remove

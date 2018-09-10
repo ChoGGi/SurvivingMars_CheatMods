@@ -6,6 +6,10 @@
 ## v8.9 (Unreleased)
 ### Added:
 - Cheats>Research>Change Outsource Limit: How many times you can outsource in a row.
+- Buildings>Points To Train: How many points are needed to finish training.
+
+### Changed:
+- Building Stats doesn't show the number multiplied by a thousand anymore.
 
 ## v8.8 (07 Sep 2018)
 ### Added:

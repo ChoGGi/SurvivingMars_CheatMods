@@ -168,6 +168,22 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SanatoriumSchoolShowAll,
 	}
 
+	c = c + 1
+	Actions[c] = {
+		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
+		ActionName = S[302535920001344--[[Points To Train--]]],
+		ActionId = ".Points To Train",
+		ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				string.format("ChoGGi.UserSettings.BuildingSettings.%s.evaluation_points",sel and sel.encyclopedia_id),
+				302535920001345--[[How many points are needed to finish training.--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.SetTrainingPoints,
+	}
+
 	local str_ExpandedCM_Buildings_Farms = "Expanded CM.Buildings.Farms"
 	c = c + 1
 	Actions[c] = {

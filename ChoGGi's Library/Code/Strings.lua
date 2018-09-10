@@ -206,6 +206,7 @@ local Strings = {
 	[5433] = TranslationTable[5433], -- Drone Control
 	[5438] = TranslationTable[5438], -- Rovers
 	[5439] = TranslationTable[5439], -- Service Buildings
+	[5443] = TranslationTable[5443], -- Training Buildings
 	[5444] = TranslationTable[5444], -- Workplaces
 	[5451] = TranslationTable[5451], -- DELETE
 	[5452] = TranslationTable[5452], -- START
