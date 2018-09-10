@@ -193,7 +193,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = S[302535920000693--[[Select/mouse over an object to change the colours
 	Use Shift- or Ctrl- for random colours/reset colours.--]]],
 		OnAction = function()
-			ChoGGi.MenuFuncs.CreateObjectListAndAttaches()
+			ChoGGi.CodeFuncs.CreateObjectListAndAttaches()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.CreateObjectListAndAttaches,
 		ActionBindable = true,

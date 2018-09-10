@@ -7,6 +7,19 @@ local MsgPopup
 local S
 local blacklist
 local ChoGGi_OrigFuncs
+local SaveOrigFunc
+
+-- set UI transparency:
+local function SetTrans(obj)
+	if not obj then
+		return
+	end
+	local trans = ChoGGi.UserSettings.Transparency
+	if obj.class and trans[obj.class] then
+		obj:SetTransparency(trans[obj.class])
+	end
+end
+
 
 function OnMsg.ClassesGenerate()
 
@@ -15,6 +28,18 @@ function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 	ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+	SaveOrigFunc = function(class_or_func,func_name)
+		if func_name then
+			local newname = string.format("%s_%s",class_or_func,func_name)
+			if not ChoGGi_OrigFuncs[newname] then
+				ChoGGi_OrigFuncs[newname] = _G[class_or_func][func_name]
+			end
+		else
+			if not ChoGGi_OrigFuncs[class_or_func] then
+				ChoGGi_OrigFuncs[class_or_func] = _G[class_or_func]
+			end
+		end
+	end
 
 	-- do some stuff
 	local Platform = Platform
@@ -32,23 +57,12 @@ function OnMsg.ClassesGenerate()
 	function UpdateMapRevision()end
 	function AsyncGetSourceInfo()end
 
-	-- set UI transparency:
-	local function SetTrans(obj)
-		if not obj then
-			return
-		end
-		local trans = ChoGGi.UserSettings.Transparency
-		if obj.class and trans[obj.class] then
-			obj:SetTransparency(trans[obj.class])
-		end
-	end
-
 	do -- funcs without a class
-		local function SaveOrigFunc(func_name)
-			if not ChoGGi_OrigFuncs[func_name] then
-				ChoGGi_OrigFuncs[func_name] = _G[func_name]
-			end
-		end
+--~ 		local function SaveOrigFunc(func_name)
+--~ 			if not ChoGGi_OrigFuncs[func_name] then
+--~ 				ChoGGi_OrigFuncs[func_name] = _G[func_name]
+--~ 			end
+--~ 		end
 
 		SaveOrigFunc("OpenDialog")
 		SaveOrigFunc("ShowConsole")
@@ -222,13 +236,6 @@ function OnMsg.ClassesGenerate()
 	AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","water_production")
 	AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducer","production_per_day")
 	AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
-
-	local function SaveOrigFunc(class_name,func_name)
-		local new_name = string.format("%s_%s",class_name,func_name)
-		if not ChoGGi_OrigFuncs[new_name] then
-			ChoGGi_OrigFuncs[new_name] = _G[class_name][func_name]
-		end
-	end
 
 	-- Custom Msgs
 	SaveOrigFunc("CursorBuilding","GameInit")

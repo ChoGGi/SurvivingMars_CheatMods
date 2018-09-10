@@ -54,7 +54,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {-- ChoGGi_ObjectColourRandom
 		ActionId = "ChoGGi_ObjectColourRandom",
 		OnAction = function()
 			ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
@@ -64,7 +64,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {-- ChoGGi_ObjectColourDefault
 		ActionId = "ChoGGi_ObjectColourDefault",
 		OnAction = function()
 			ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())
@@ -118,9 +118,8 @@ function OnMsg.ClassesGenerate()
 		ActionBindable = true,
 	}
 
-	-- goes to placement mode with last built object
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {-- goes to placement mode with last built object
 		ActionId = "ChoGGi_LastConstructedBuilding",
 		OnAction = function()
 			local last = UICity.LastConstructedBuilding
@@ -132,9 +131,8 @@ function OnMsg.ClassesGenerate()
 		ActionBindable = true,
 	}
 
-	-- goes to placement mode with SelectedObj
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {-- goes to placement mode with SelectedObj
 		ActionId = "ChoGGi_LastPlacedObject",
 		OnAction = function()
 			local ChoGGi = ChoGGi

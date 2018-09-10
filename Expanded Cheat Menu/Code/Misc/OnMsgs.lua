@@ -711,12 +711,6 @@ end
 --~ function OnMsg.NewMinute()
 --~ end
 
-ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100 or 100
--- used for resizing my dialogs to scale
-function OnMsg.SystemSize()
-	ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
-end
-
 function OnMsg.ResearchQueueChange(city, tech_id)
 	if ChoGGi.UserSettings.InstantResearch then
 		GrantResearchPoints(city.tech_status[tech_id].cost)
@@ -854,7 +848,7 @@ end
 -- so we at least have keys when it happens
 function OnMsg.ReloadLua()
 	if type(XShortcutsTarget.UpdateToolbar) == "function" then
-		Rebuildshortcuts()
+		ChoGGi.ComFuncs.Rebuildshortcuts(nil,true)
 	end
 end
 
@@ -977,7 +971,7 @@ do -- LoadGame/CityStart
 			end
 
 			-- reloads actions (cheat menu/menu items/shortcuts)
-			Rebuildshortcuts()
+			ChoGGi.ComFuncs.Rebuildshortcuts(nil,true)
 
 			-- cheats menu fun
 			local XShortcutsTarget = XShortcutsTarget

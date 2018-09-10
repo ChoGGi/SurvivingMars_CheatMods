@@ -8,6 +8,8 @@
 - My actions reload code.
 ### Changed:
 - Made turning off the log for ECM more obvious.
+### Fixed:
+- Missed the UIScale Msg
 
 ## v0.8 (08 Sep 2018)
 ### Fixed:

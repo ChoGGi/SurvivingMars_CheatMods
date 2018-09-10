@@ -23,6 +23,8 @@ return PlaceObj("ModDef", {
 		"Code/Settings.lua",
 		-- more like in-game functions?
 		"Code/GameFunctions.lua",
+		-- for OnMsg functions
+		"Code/OnMsgs.lua",
 
 		-- custom dialogs
 		"Code/_Classes.lua",

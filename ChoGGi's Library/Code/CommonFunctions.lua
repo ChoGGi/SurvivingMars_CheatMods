@@ -16,30 +16,30 @@ DefineClass.ChoGGi_HexSpot = {
 }
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
-function ChoGGi.ComFuncs.SaveOrigFunc(ClassOrFunc,Func)
+function ChoGGi.ComFuncs.SaveOrigFunc(class_or_func,func_name)
 	local ChoGGi = ChoGGi
-	if Func then
-		local newname = string.format("%s_%s",ClassOrFunc,Func)
+	if func_name then
+		local newname = string.format("%s_%s",class_or_func,func_name)
 		if not ChoGGi.OrigFuncs[newname] then
-			ChoGGi.OrigFuncs[newname] = _G[ClassOrFunc][Func]
+			ChoGGi.OrigFuncs[newname] = _G[class_or_func][func_name]
 		end
 	else
-		if not ChoGGi.OrigFuncs[ClassOrFunc] then
-			ChoGGi.OrigFuncs[ClassOrFunc] = _G[ClassOrFunc]
+		if not ChoGGi.OrigFuncs[class_or_func] then
+			ChoGGi.OrigFuncs[class_or_func] = _G[class_or_func]
 		end
 	end
 end
 
 -- changes a function to also post a Msg for use with OnMsg
-function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg,...)
+function ChoGGi.ComFuncs.AddMsgToFunc(class_name,func_name,msg_str,...)
 	local vararg = ...
 	local ChoGGi = ChoGGi
 	-- save orig
-	ChoGGi.ComFuncs.SaveOrigFunc(ClassName,FuncName)
+	ChoGGi.ComFuncs.SaveOrigFunc(class_name,func_name)
 	-- redefine it
-	_G[ClassName][FuncName] = function(...)
+	_G[class_name][func_name] = function(...)
 		-- I just care about adding self to the msgs
-		Msg(sMsg,select(1,...),vararg)
+		Msg(msg_str,select(1,...),vararg)
 
 --~		 -- use to debug if getting an error
 --~		 local params = {...}
@@ -51,7 +51,7 @@ function ChoGGi.ComFuncs.AddMsgToFunc(ClassName,FuncName,sMsg,...)
 --~			 ChoGGi.ComFuncs.OpenInExamineDlg({params})
 --~		 end
 
-		return ChoGGi.OrigFuncs[string.format("%s_%s",ClassName,FuncName)](...)
+		return ChoGGi.OrigFuncs[string.format("%s_%s",class_name,func_name)](...)
 	end
 end
 do -- Translate
