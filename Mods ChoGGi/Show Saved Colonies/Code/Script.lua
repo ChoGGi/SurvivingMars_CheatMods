@@ -4,6 +4,7 @@ local StringFormat = string.format
 
 local img = StringFormat("%sUI/pm_landed.png",CurrentModPath)
 local idmarker = "idMarker%s"
+local marker_name = "%s_%s"
 
 -- stores saved game spots
 local new_markers = {}
@@ -60,7 +61,7 @@ local function AddSpots(obj)
 		local save = SavegamesList[i]
 		if type(save.longitude) == "number" and type(save.latitude) == "number" then
 			-- use this to build a table of locations for ease of dupe checking
-			local table_name = StringFormat("%s_%s",save.latitude,save.longitude)
+			local table_name = marker_name:format(save.latitude,save.longitude)
 
 			-- check if this location is already added
 			if new_markers[table_name] then
@@ -78,7 +79,7 @@ local function AddSpots(obj)
 				new_markers[table_name] = {
 					id = marker_id,
 					longitude = save.longitude,
-					latitude = save.latitude,
+--~ 					latitude = save.latitude,
 					text = save.displayname,
 				}
 
@@ -117,9 +118,7 @@ function LandingSiteObject:CalcMarkersVisibility()
 	for _,obj in pairs(new_markers) do
 		local phase = self:CalcAnimPhaseUsingLongitude(obj.longitude * 60)
 		local dist = Min((cur_phase-phase)%self.anim_duration, (phase-cur_phase)%self.anim_duration)
-
-		local vis_dist = dist <= 2400
-		self.dialog[obj.id]:SetVisible(vis_dist)
+		self.dialog[obj.id]:SetVisible(dist <= 2400)
 	end
 
 	return orig_LandingSiteObject_CalcMarkersVisibility(self)
@@ -131,7 +130,7 @@ function LandingSiteObject:DisplayCoord(pt, lat, long, lat_org, long_org)
 
 	-- is it one of ours
 	local g_CurrentMapParams = g_CurrentMapParams
-	local marker = new_markers[StringFormat("%s_%s",g_CurrentMapParams.latitude,g_CurrentMapParams.longitude)]
+	local marker = new_markers[marker_name:format(g_CurrentMapParams.latitude,g_CurrentMapParams.longitude)]
 	if marker then
 		local text = self.dialog.idtxtCoord.text
 		self.dialog.idtxtCoord:SetText(StringFormat("<font HelpHint>%s</font>\n%s",marker.text,text))

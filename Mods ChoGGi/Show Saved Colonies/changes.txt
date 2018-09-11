@@ -1,3 +1,6 @@
+v0.5
+New icon thanks to SkiRich.
+New name.
 v0.4
 Moved saved names to the pointer thingy.
 v0.3
