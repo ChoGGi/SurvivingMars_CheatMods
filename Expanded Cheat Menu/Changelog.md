@@ -15,6 +15,7 @@
 
 ### Fixed:
 - Building Stats were being overridden by Martian Festivals (thanks hchsiao).
+- Some of the bindable stuff didn't have proper names in Options.
 
 ## v8.8 (07 Sep 2018)
 ### Added:

@@ -30,8 +30,8 @@ Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits
 Ctrl-Alt-Shift-D: Delete object (select multiple objects in editor and use this to delete them all).
 Shift-Q: Clone selected object to mouse position.
 Ctrl-Shift-T: Terrain Editor Mode (manipulate/paint ground).
-More shortcut keys are available, see menu items.
-You can edit the shortcut keys (or blank them to disable), see below.
+More shortcut keys are available; see cheat menu items.
+You can edit the shortcut keys; see in-game keybindings.
 
 When I say object that means either the selected object or the object under the mouse cursor.
 

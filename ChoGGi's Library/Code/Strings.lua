@@ -63,6 +63,7 @@ local Strings = {
 	[1685] = TranslationTable[1685], -- Rocket
 	[1694] = TranslationTable[1694], -- Start
 	[1859] = TranslationTable[1859], -- White
+	[2993] = TranslationTable[2993], -- Tilde
 
 	[2] = TranslationTable[2], -- Unlock Tech
 	[3] = TranslationTable[3], -- Grant Research
@@ -273,6 +274,8 @@ local Strings = {
 	[1000207] = TranslationTable[1000207], -- Misc
 	[1000220] = TranslationTable[1000220], -- Refresh
 	[1000232] = TranslationTable[1000232], -- Next
+	[1000447] = TranslationTable[1000447], -- Enter
+	[1000544] = TranslationTable[1000544], -- ~
 	[1000592] = TranslationTable[1000592], -- Error
 	[1000615] = TranslationTable[1000615], -- Delete
 	[109035890389] = TranslationTable[109035890389], -- Capacity

@@ -51,6 +51,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = cls,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ClearConsoleLog,
 		ActionBindable = true,
+		ActionName = S[302535920000734--[[Clear Log--]]],
 	}
 
 	c = c + 1
@@ -61,6 +62,7 @@ function OnMsg.ClassesGenerate()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjectColourRandom,
 		ActionBindable = true,
+		ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920001346--[[Random Colour--]]]),
 	}
 
 	c = c + 1
@@ -71,6 +73,7 @@ function OnMsg.ClassesGenerate()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjectColourDefault,
 		ActionBindable = true,
+		ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920000025--[[Default Colour--]]]),
 	}
 
 	local function ToggleConsole()
@@ -89,6 +92,7 @@ function OnMsg.ClassesGenerate()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ShowConsoleTilde,
 		ActionBindable = true,
+		ActionName = string.format("%s %s",S[302535920001347--[[Show Console--]]],S[1000544--[[~--]]]),
 	}
 
 	c = c + 1
@@ -99,6 +103,7 @@ function OnMsg.ClassesGenerate()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ShowConsoleEnter,
 		ActionBindable = true,
+		ActionName = string.format("%s %s",S[302535920001347--[[Show Console--]]],S[1000447--[[Enter--]]]),
 	}
 
 	c = c + 1
@@ -116,6 +121,7 @@ function OnMsg.ClassesGenerate()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ConsoleRestart,
 		ActionBindable = true,
+		ActionName = S[302535920001348--[[Restart--]]],
 	}
 
 	c = c + 1
@@ -129,6 +135,7 @@ function OnMsg.ClassesGenerate()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.LastConstructedBuilding,
 		ActionBindable = true,
+		ActionName = S[302535920001349--[[Place Last Constructed Building--]]],
 	}
 
 	c = c + 1
@@ -144,6 +151,7 @@ function OnMsg.ClassesGenerate()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.LastPlacedObject,
 		ActionBindable = true,
+		ActionName = S[302535920001350--[[Place Last Placed Object--]]],
 	}
 
 end

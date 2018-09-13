@@ -1,3 +1,5 @@
+v0.7
+Accidentally made it Ctrl-F instead of Shift-F.
 v0.6
 Keys work properly now (in editor mode).
 Cleaning up code (ChoGGi's Library).

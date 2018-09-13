@@ -188,7 +188,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {
 		ActionMenubar = "Game",
 		ActionName = S[174--[[Color Modifier--]]],
-		ActionId = ".Change Colour",
+		ActionId = ".Color Modifier",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 		RolloverText = S[302535920000693--[[Select/mouse over an object to change the colours
 	Use Shift- or Ctrl- for random colours/reset colours.--]]],

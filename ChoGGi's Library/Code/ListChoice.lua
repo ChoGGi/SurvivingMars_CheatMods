@@ -39,6 +39,7 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 	self.obj = context.obj or self.items[1].obj
 	self.custom_func = self.list.custom_func
 	self.custom_type = self.list.custom_type
+	self.close_func = self.list.close_func
 	self.title = self.list.title
 	self.select_flash = self.list.select_flash
 

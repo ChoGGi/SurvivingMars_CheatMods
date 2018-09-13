@@ -31,16 +31,18 @@ function AsyncGetSourceInfo()end
 
 local Actions = {
 	{
-		ActionId = "Terraformer.Terrain Editor Toggle",
+		ActionId = "Game.Terrain Editor Toggle",
 		OnAction = ChoGGi.CodeFuncs.TerrainEditor_Toggle,
-		ActionShortcut = "Ctrl-F",
+		ActionShortcut = "Shift-F",
 		replace_matching_id = true,
+		ActionBindable = true,
 	},
 	{
-		ActionId = "Terraformer.Delete All Rocks",
+		ActionId = "Game.Delete All Rocks",
 		OnAction = ChoGGi.CodeFuncs.DeleteAllRocks,
-		ActionShortcut = "Ctrl-Shift-F",
+		ActionShortcut = "Shift-Ctrl-F",
 		replace_matching_id = true,
+		ActionBindable = true,
 	},
 }
 

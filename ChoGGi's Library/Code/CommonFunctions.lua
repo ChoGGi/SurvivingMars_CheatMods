@@ -901,6 +901,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 	multisel = true,
 	custom_type = custom_type,
 	custom_func = CustomFunc,
+	close_func = function()end,
 	check = {
 		{
 			title = "Check1",

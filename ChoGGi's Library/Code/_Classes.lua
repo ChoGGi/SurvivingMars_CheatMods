@@ -294,8 +294,10 @@ function ChoGGi_Window:AddElements(_,context)
 		dialog = self,
 	}, self.idDialog)
 
+	local close = self.close_func or function()end
 	self.idCloseX = ChoGGi_CloseButton:new({
-		OnPress = context.func or function()
+		OnPress = function()
+			close()
 			self:Close("cancel",false)
 		end,
 	}, self.idMoveControl)

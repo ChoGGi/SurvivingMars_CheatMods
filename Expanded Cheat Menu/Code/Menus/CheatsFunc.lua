@@ -460,11 +460,10 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				302535920000262--[[Alice thought to herself.
-	""Now you will see a film made for children"".
-	Perhaps.
-	But I nearly forgot! You must close your eyes.
-	Otherwise you won't see anything."--]],
+				302535920000262--[[Alice thought to herself. ""Now you will see a film made for children"".
+Perhaps.
+But I nearly forgot! You must close your eyes.
+Otherwise you won't see anything."--]],
 				987648737170--[[Map--]],
 				"UI/Achievements/TheRabbitHole.tga",
 				true

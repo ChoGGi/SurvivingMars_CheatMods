@@ -575,19 +575,18 @@ function OnMsg.ClassesGenerate()
 	--~ terrain.SetTypeCircle(GetTerrainCursor(), 5000, terrain_type_idx)
 
 	function ChoGGi.MenuFuncs.ChangeMap()
-		local g_Classes = g_Classes
 		local str_hint_rules = S[302535920000803--[[For rules separate with spaces: Hunger ColonyPrefab (or leave blank for none).--]]]
 		local NewMissionParams = {}
 
-		--open a list dialog to set g_CurrentMissionParams
-		local ItemList = {
+		-- open a list dialog to set g_CurrentMissionParams
+		local ItemList_MissionParams = {
 			{text = S[3474--[[Mission Sponsor--]]],value = "IMM"},
 			{text = S[3478--[[Commander Profile--]]],value = "rocketscientist"},
 			{text = S[3486--[[Mystery--]]],value = "random"},
 			{text = S[8800--[[Game Rules--]]],value = "",hint = str_hint_rules},
 		}
 
-		local function CallBackFunc(choice)
+		local function CallBackFunc_MissionParams(choice)
 			if #choice < 1 then
 				return
 			end
@@ -615,113 +614,85 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local dlg_list = ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
+			callback = CallBackFunc_MissionParams,
+			items = ItemList_MissionParams,
 			title = 302535920000866--[[Set MissionParams NewMap--]],
 			hint = string.format("%s\n\n%s",S[302535920000867--[["Attention: You must press ""OK"" for these settings to take effect before choosing a map!
 
-	See the examine list on the left for ids."--]]],str_hint_rules),
+See the examine list on the left for ids."--]]],str_hint_rules),
 			custom_type = 4,
 		}
 
 		-- shows the mission params for people to look at
 		local ex = ChoGGi.ComFuncs.OpenInExamineDlg(MissionParams)
 
-		--map list dialog
-		CreateRealTimeThread(function()
-			local caption = S[302535920000868--[[Choose map with settings presets:--]]]
-			local maps = ListMaps()
-			local items = {}
-			for i = 1, #maps do
-	--~			 if not maps[i]:lower():find("^prefab") and not maps[i]:find("^__") then
-				if not maps[i]:find_lower("^prefab") and not maps[i]:find("^__") then
-					items[#items+1] = {
-						text = maps[i],
-						map = maps[i]
-					}
-				end
+		-- map list dialog
+		local ItemList_MapList = {}
+		local maps = ListMaps()
+		for i = 1, #maps do
+			if not (maps[i]:find_lower("^prefab") and maps[i]:find("^_")) then
+				ItemList_MapList[#ItemList_MapList+1] = {
+					text = maps[i],
+					value = maps[i],
+				}
 			end
+		end
 
-	--~             local caption = "Choose map:"
-	--~             local maps = ListMaps()
-	--~             local default_selection = table.find(maps, GetMapName())
-	--~             local parent_container = XWindow:new({}, terminal.desktop)
-	--~             parent_container:SetScaleModifier(point(1250, 1250))
-	--~             local map = WaitListChoice(maps, caption, parent_container, default_selection)
-	--~             if not map or map == "" then
-	--~               return
-	--~             end
-	--~             local ineditor = Platform.editor and IsEditorActive()
-	--~             XShortcutsSetMode("Game")
-	--~             CloseMenuDialogs()
-	--~             ChangeMap(map)
-	--~             LocalStorage.last_map = map
-	--~             SaveLocalStorage()
-
-			local default_selection = table.find(maps, GetMapName())
-			local map_settings = {}
-			local mapdata = mapdata
-			local class_names = ClassDescendantsList("MapSettings")
-			for i = 1, #class_names do
-				map_settings[class_names[i]] = mapdata[class_names[i]]
-			end
-
-			local sel_idx
-			local dlg = CreateMapSettingsDialog(items, caption, nil, map_settings)
-			if default_selection then
-				dlg.idList:SetSelection(default_selection, true)
-			end
-	--~ 		--QoL
-	--~ 		dlg.idCaption.HandleMouse = false
-	--~ 		dlg:SetMovable(true)
-			Sleep(1)
-	--~ 		dlg.move:SetZOrder(10)
-
-			sel_idx, map_settings = dlg:Wait()
-
+		local function CallBackFunc_MapList(choice)
 			-- close dialogs we opened
 			dlg_list:delete()
 			ex:delete()
-
-			if sel_idx ~= "idCancel" then
-				local g_CurrentMissionParams = g_CurrentMissionParams
-				local map = sel_idx and items[sel_idx].map
-				if not map or map == "" then
-					return
-				end
-				CloseMenuDialogs()
-
-				--cleans out missions params
-				InitNewGameMissionParams()
-
-				--select new MissionParams
-				g_CurrentMissionParams.idMissionSponsor = NewMissionParams.idMissionSponsor or "IMM"
-				g_CurrentMissionParams.idCommanderProfile = NewMissionParams.idCommanderProfile or "rocketscientist"
-				g_CurrentMissionParams.idMystery = NewMissionParams.idMystery or "random"
-				g_CurrentMissionParams.idGameRules = NewMissionParams.idGameRules or empty_table
-				g_CurrentMissionParams.GameSessionID = g_Classes.srp.random_encode64(96)
-
-				--items in spawn rocket
-				GenerateRocketCargo()
-
-				--landing spot/rocket name / resource amounts?, see g_CurrentMapParams
-				GenerateRandomMapParams()
-
-				--and change the map
-				local props = GetModifiedProperties(DataInstances.RandomMapPreset.MAIN)
-				local gen = g_Classes.RandomMapGenerator:new()
-				gen:SetProperties(props)
-				FillRandomMapProps(gen)
-				gen.BlankMap = map
-
-				--generates/loads map
-				gen:Generate(nil, nil, nil, nil, map_settings)
-
-				--update local store
-				LocalStorage.last_map = map
-				SaveLocalStorage()
+			if #choice < 1 then
+				return
 			end
-		end)
+			local map = choice[1].value
+			local g_CurrentMissionParams = g_CurrentMissionParams
+			CloseMenuDialogs()
+
+			-- cleans out missions params
+			InitNewGameMissionParams()
+
+			-- select new MissionParams
+			g_CurrentMissionParams.idMissionSponsor = NewMissionParams.idMissionSponsor or "IMM"
+			g_CurrentMissionParams.idCommanderProfile = NewMissionParams.idCommanderProfile or "rocketscientist"
+			g_CurrentMissionParams.idMystery = NewMissionParams.idMystery or "random"
+			g_CurrentMissionParams.idGameRules = NewMissionParams.idGameRules or {}
+			g_CurrentMissionParams.GameSessionID = srp.random_encode64(96)
+
+			-- items in spawn rocket
+			GenerateRocketCargo()
+
+			-- landing spot/rocket name / resource amounts?, see g_CurrentMapParams
+			GenerateRandomMapParams()
+
+			--and change the map
+			local props = GetModifiedProperties(DataInstances.RandomMapPreset.MAIN)
+			local gen = RandomMapGenerator:new()
+			gen:SetProperties(props)
+			FillRandomMapProps(gen)
+			gen.BlankMap = map
+
+			-- generates/loads map
+--~ 			gen:Generate(nil, nil, nil, nil, map_settings)
+			gen:Generate()
+
+			-- update local store
+			LocalStorage.last_map = map
+			SaveLocalStorage()
+		end
+
+		local dlg_list = ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc_MapList,
+			close_func = function()
+				-- close dialogs we opened
+				dlg_list:delete()
+				ex:delete()
+			end,
+			items = ItemList_MapList,
+			title = 302535920000868--[[Choose Map--]],
+--~ 			hint = string.format("%s\n\n%s",S[302535920000867--[[XXXXXXXXXX--]],str_hint_rules),
+--~ 			custom_type = 4,
+		}
 	end
 
 	function ChoGGi.MenuFuncs.PulsatingPins_Toggle()
