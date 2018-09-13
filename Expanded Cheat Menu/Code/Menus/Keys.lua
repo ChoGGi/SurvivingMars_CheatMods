@@ -3,6 +3,7 @@
 function OnMsg.ClassesGenerate()
 
 	local Actions = ChoGGi.Temp.Actions
+	local S = ChoGGi.Strings
 
 	local c = #Actions
 	--use number keys to activate/hide build menus
