@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v8.9 (Unreleased)
+## v9.0 (Unreleased)
+
+## v8.9 (12 Sep 2018)
 ### Added:
 - Cheats>Research>Change Outsource Limit: How many times you can outsource in a row.
 - Buildings>Points To Train: How many points are needed to finish training.
