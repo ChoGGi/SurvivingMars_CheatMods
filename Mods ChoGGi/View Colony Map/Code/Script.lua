@@ -1,7 +1,25 @@
+-- See LICENSE for terms
+
+function OnMsg.ModsLoaded()
+	if not table.find(ModsLoaded,"id","ChoGGi_Library") then
+		CreateRealTimeThread(function()
+			local Sleep = Sleep
+			while not UICity do
+				Sleep(1000)
+			end
+			if WaitMarsQuestion(nil,nil,[[Error: This mod requires ChoGGi's Library.
+Press Ok to download it or check Mod Manager to make sure it's enabled.]]) == "ok" then
+				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
+			end
+		end)
+	end
+end
+
+
 local image_str = string.format("%sMaps/%s.png",CurrentModPath,"%s")
 local showimage
-
 local skip_showing_image
+local lso
 
 -- override this func to create/update image when site changes
 local orig_FillRandomMapProps = FillRandomMapProps
@@ -12,12 +30,29 @@ function FillRandomMapProps(gen, params)
 	if not skip_showing_image then
 		-- check if we already created image viewer, and make one if not
 		if not showimage then
-			showimage = ChoGGi_ShowImage:new({}, terminal.desktop,{})
+			showimage = ChoGGi_ShowImageDlg:new({}, terminal.desktop,{})
 		end
 		-- pretty little image
 		showimage.idImage:SetImage(image_str:format(map))
-		-- eh why not?
-		showimage.idCaption:SetText(map)
+		-- add map name/location to title bar
+		if not lso then
+			-- see if we can get the right-side list and position based on that, otherwise 25
+			local idx = table.find(terminal.desktop,"XTemplate","PGMainMenu")
+			local dlg
+			pcall(function()
+				dlg = terminal.desktop[idx].idContent[1][2][1]
+			end)
+			if dlg then
+				lso = dlg.context
+			end
+		end
+		if lso then
+			showimage.idCaption:SetText(string.format("%s: %s",lso.input_prompt,map))
+		else
+			-- just in case
+			showimage.idCaption:SetText(map)
+		end
+
 	end
 
 	return map
@@ -27,7 +62,7 @@ end
 function OnMsg.ChangeMapDone()
 	local term = terminal.desktop
 	for i = #term, 1, -1 do
-		if term[i]:IsKindOf("ChoGGi_ShowImage") then
+		if term[i]:IsKindOf("ChoGGi_ShowImageDlg") then
 			term[i]:delete()
 		end
 	end
@@ -53,79 +88,40 @@ end
 
 -- a dialog that shows an image
 
-
-local white = white
-local dark_gray = -13158858
-local medium_gray = -10592674
-local light_gray = -2368549
-local invis_less = 268435456
-
-DefineClass.ChoGGi_ShowImage = {
-	__parents = {"XWindow"},
+DefineClass.ChoGGi_ShowImageDlg = {
+	__parents = {"ChoGGi_Window"},
 	dialog_width = 500.0,
 	dialog_height = 500.0,
 }
 
-function ChoGGi_ShowImage:Init(parent, context)
-	local g_Classes = g_Classes
+function ChoGGi_ShowImageDlg:Init(parent, context)
+	-- By the Power of Grayskull!
+	self:AddElements(parent, context)
 
-	-- add container dialog for everything to fit in
-	self.idDialog = g_Classes.XDialog:new({
-		Translate = false,
-		MinHeight = 50,
-		MinWidth = 150,
-		BackgroundColor = invis_less,
-		Dock = "ignore",
-		RolloverTemplate = "Rollover",
-
-		Background = dark_gray,
-		BorderWidth = 2,
-		BorderColor = light_gray,
-	}, self)
-	-- needed for :Wait()
-	self.idDialog:Open()
-	self.idDialog:SetBox(100, 100, self.dialog_width, self.dialog_height)
-
-	self.idSizeControl = g_Classes.XSizeControl:new({
-	}, self.idDialog)
-
-	self.idTitleArea = g_Classes.XWindow:new({
-		Id = "idTitleArea",
-		Dock = "top",
-		Background = medium_gray,
-		Margins = box(0,0,0,0),
-	}, self.idDialog)
-
-	self.idMoveControl = g_Classes.XMoveControl:new({
-		MinHeight = 30,
-		Margins = box(0, -30, 0, 0),
-		VAlign = "top",
-	}, self.idTitleArea)
-
-	self.idCloseX = g_Classes.XTextButton:new({
-		RolloverText = TranslationTable[1011--[[Close--]]],
-		RolloverAnchor = "right",
-		Image = "UI/Common/mission_no.tga",
-		Dock = "top",
-		HAlign = "right",
-		Margins = box(0, 1, 1, 0),
-
-		OnPress = context.func or function()
-			showimage = nil
-			self:Close("cancel",false)
-		end,
-	}, self.idTitleArea)
-
-	self.idCaption = g_Classes.XLabel:new({
-		Id = "idCaption",
-		TextFont = "Editor14Bold",
-		Margins = box(4, -20, 4, 2),
-		Translate = self.Translate,
-		TextColor = white,
-	}, self.idTitleArea)
-
-	self.idImage = g_Classes.XFrame:new({
+	self.idImage = XFrame:new({
 		Id = "idImage",
 	}, self.idDialog)
 
+	local x,y = 25,25
+	-- see if we can get the right-side list and position based on that, otherwise 25
+	local idx = table.find(self.parent,"XTemplate","PGMainMenu")
+	local dlg
+	pcall(function()
+		dlg = self.parent[idx].idContent[1][2][1]
+	end)
+	if dlg then
+		dlg = dlg.idContent.box
+		x = dlg:minx() - dlg:sizex() - 100
+	end
+	-- and do the same for y, using the diff chal text at the top
+	idx = table.find(self.parent,"XTemplate","DifficultyBonus")
+	pcall(function()
+		dlg = self.parent[idx][1]
+	end)
+	if dlg then
+		dlg = dlg.box
+		y = dlg:miny() + dlg:sizey() + 25
+	end
+
+	self:SetInitPos(nil,point(x,y))
 end

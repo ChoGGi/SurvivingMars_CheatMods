@@ -395,21 +395,27 @@ end
 
 local GetMousePos = terminal.GetMousePos
 local GetSafeAreaBox = GetSafeAreaBox
-function ChoGGi_Window:SetInitPos(parent)
+function ChoGGi_Window:SetInitPos(parent,pt)
 	local x,y,w,h
 
 	-- if we're opened from another dialog then offset it, else open at mouse cursor
 	if parent then
 		x,y,w,h = BoxSize(parent,self)
 	end
-
+	-- if BoxSize failed or there isn't a parent we don't change the size, just re-pos
 	if not parent or not x then
-		local pt = GetMousePos()
 		local box = self.idDialog.box
-		x = pt:x()
-		y = pt:y()
 		w = box:sizex()
 		h = box:sizey()
+	end
+
+	if pt then
+		x = pt:x()
+		y = pt:y()
+	else
+		local pt = GetMousePos()
+		x = pt:x()
+		y = pt:y()
 	end
 
 	-- if it's negative then set it to 100

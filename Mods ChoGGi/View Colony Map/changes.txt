@@ -1,3 +1,8 @@
+v0.4
+Made the map size based on uiscale.
+The map defaults to the right-side.
+Added position to title bar.
+Cleaning up code (ChoGGi's Library).
 v0.3
 As best I can tell some other mod is also using the same function, so I added a check for when a game is started to just skip showing the image.
 v0.2

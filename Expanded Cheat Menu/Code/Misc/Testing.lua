@@ -6,6 +6,40 @@ function OnMsg.ClassesGenerate()
 
 	if ChoGGi.testing then
 
+--~ 		function ChoGGi.testing.GetMapNamesPos(mod,ext)
+--~ 			local MapData = MapData
+--~ 			params = params or g_CurrentMapParams
+--~ 			local location = params.Locales
+--~ 			local altitude = OverlayAltitudeValue(params.Altitude) -- [0, 255]
+--~ 			local maps = {}
+--~ 			for map, data in pairs(MapData) do
+--~ 				if data.IsRandomMap then
+--~ 					local locations = data.map_location or empty_table
+--~ 					if #locations == 0 or table.find(locations, location) then
+--~ 						if altitude >= data.map_altitude.from and altitude <= data.map_altitude.to then
+--~ 							maps[#maps + 1] = map
+--~ 						end
+--~ 					end
+--~ 				end
+--~ 			end
+--~ 			table.sort(maps)
+--~ 			local seed, idx, value = params.seed
+--~ 			local function trand(tbl, weight)
+--~ 				if weight then
+--~ 					value, idx, seed = table.weighted_rand(tbl, weight, seed)
+--~ 				else
+--~ 					value, idx, seed = table.rand(tbl, seed)
+--~ 				end
+--~ 				return value
+--~ 			end
+--~ 			local map = trand(maps, function(map)
+--~ 				return MapData[map].weight
+--~ 			end)
+
+--~ 			print(map)
+--~ 		end
+
+
 	--~ 	ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_CommieMarxLogos)
 
 		-- checks for /Logos folder and adds all images to mod as logos (have to be min of 8bit, and makes them power of 2 if they aren't already)
