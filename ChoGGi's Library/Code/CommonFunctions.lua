@@ -874,12 +874,12 @@ function ChoGGi.ComFuncs.OpenInFindValueDlg(obj,parent)
 	})
 end
 
-function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(list)
-	if not list then
+function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(obj)
+	if not obj then
 		return
 	end
 
-	return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,list)
+	return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,obj)
 end
 
 --[[

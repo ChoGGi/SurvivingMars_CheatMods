@@ -31,6 +31,7 @@ local S
 local blacklist
 local idLinks_hypertext
 
+-- need to wait till Library mod is loaded
 function OnMsg.ClassesGenerate()
 	local ChoGGi = ChoGGi
 	TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -375,6 +376,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 					checkbox = true,
 					text = str,
+					scrollto = self.idScrollArea.OffsetY,
 					title = string.format("%s/%s %s",S[302535920000048--[[View--]]],S[302535920000004--[[Dump--]]],S[1000145--[[Text--]]]),
 					hint_ok = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 					custom_func = function(answer,overwrite)

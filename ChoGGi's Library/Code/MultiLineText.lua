@@ -16,8 +16,8 @@ DefineClass.ChoGGi_MultiLineTextDlg = {
 function ChoGGi_MultiLineTextDlg:Init(parent, context)
 	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
-
 	self.context = context
+
 	-- store func for calling from :OnShortcut
 	self.retfunc = context.custom_func
 	-- overwrite dumped file
@@ -91,6 +91,12 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 	}, self.idButtonContainer)
 
 	self:SetInitPos(context.parent)
+
+	if context.scrollto then
+		DelayedCall(1,function()
+			self.idEdit:ScrollTo(0, context.scrollto)
+		end)
+	end
 end
 
 --~ function ChoGGi_MultiLineTextDlg:OnShortcut(shortcut)
