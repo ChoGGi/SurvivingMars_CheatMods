@@ -7,6 +7,9 @@
 ### Added:
 - Fixes>Rocket Crashes Game On Landing: When you select a landing site with certain rockets; your game will crash to desktop.
 
+### Fixed:
+- Issue with Buildings>SpaceElevator>Export When This Amount (thanks SkiRich).
+
 ## v8.9 (12 Sep 2018)
 ### Added:
 - Cheats>Research>Change Outsource Limit: How many times you can outsource in a row.
