@@ -21,12 +21,23 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {
 		ActionMenubar = str_ExpandedCM_Fixes,
+		ActionName = S[302535920001351--[[Rocket Crashes Game On Landing--]]],
+		ActionId = ".Rocket Crashes Game On Landing",
+		ActionIcon = icon,
+		RolloverText = S[302535920001352--[[When you select a landing site with certain rockets; your game will crash to desktop.--]]],
+		OnAction = ChoGGi.MenuFuncs.RocketCrashesGameOnLanding,
+		ActionSortKey = "9Rocket Crashes Game On Landing",
+	}
+
+	c = c + 1
+	Actions[c] = {
+		ActionMenubar = str_ExpandedCM_Fixes,
 		ActionName = S[302535920001299--[[Toggle Working On All Buildings--]]],
 		ActionId = ".Toggle Working On All Buildings",
 		ActionIcon = icon,
 		RolloverText = S[302535920001300--[[Does what it says; all buildings will have their working status toggled (fixes a couple issues).--]]],
 		OnAction = ChoGGi.MenuFuncs.ToggleWorkingAll,
-		ActionSortKey = "9",
+		ActionSortKey = "9Toggle Working On All Buildings",
 	}
 
 	c = c + 1
@@ -37,7 +48,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = icon,
 		RolloverText = S[302535920001296--[[If your drones are just dumping polymers into the centre of your dome.--]]],
 		OnAction = ChoGGi.MenuFuncs.DronesNotRepairingDomes,
-		ActionSortKey = "9",
+		ActionSortKey = "9Drones Not Repairing Domes",
 	}
 
 	c = c + 1
@@ -49,20 +60,20 @@ function OnMsg.ClassesGenerate()
 		RolloverText = S[302535920000463--[[Large Water Tank + Pipes + Chrome skin = borked looking connections.
 	This resets all pipes to the default skin.--]]],
 		OnAction = ChoGGi.MenuFuncs.AllPipeSkinsToDefault,
-		ActionSortKey = "9",
+		ActionSortKey = "9All Pipe Skins To Default",
 	}
 
 	c = c + 1
 	Actions[c] = {
 		ActionMenubar = str_ExpandedCM_Fixes,
 		ActionName = string.format("%s %s",S[302535920001084--[[Reset--]]],S[5221--[[RC Commanders--]]]),
-		ActionId = ".Reset Commanders",
+		ActionId = ".Reset RC Commanders",
 		ActionIcon = icon,
 		RolloverText = S[302535920000882--[[If you have borked commanders, this will probably fix them (may take a few seconds to apply).
 
 	You may need to toggle the recall drones button (for certain issues).--]]],
 		OnAction = ChoGGi.MenuFuncs.ResetCommanders,
-		ActionSortKey = "9",
+		ActionSortKey = "9Reset RC Commanders",
 	}
 
 	c = c + 1
@@ -73,7 +84,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = icon,
 		RolloverText = S[302535920000939--[[Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20.--]]],
 		OnAction = ChoGGi.MenuFuncs.ResetAllColonists,
-		ActionSortKey = "9",
+		ActionSortKey = "9Reset All Colonists",
 	}
 
 	c = c + 1
@@ -86,7 +97,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			ChoGGi.CodeFuncs.CollisionsObject_Toggle()
 		end,
-		ActionSortKey = "9",
+		ActionSortKey = "9Toggle Collisions On Selected Object",
 	}
 
 	c = c + 1
@@ -97,7 +108,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = icon,
 		RolloverText = S[302535920000584--[[Useful? who knows, won't hurt.--]]],
 		OnAction = ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes,
-		ActionSortKey = "9",
+		ActionSortKey = "9Rebuild Walkable Points In Domes",
 	}
 
 	c = c + 1
@@ -110,7 +121,7 @@ function OnMsg.ClassesGenerate()
 
 	This will do a little copy n paste fix (they'll keep the same traits/whatnot).--]]],
 		OnAction = ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket,
-		ActionSortKey = "9",
+		ActionSortKey = "9Colonists Stuck Outside Rocket",
 	}
 
 	c = c + 1
@@ -121,7 +132,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = icon,
 		RolloverText = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]]),
 		OnAction = ChoGGi.MenuFuncs.RemoveMissingClassObjects,
-		ActionSortKey = "9",
+		ActionSortKey = "9Remove Missing Class Objects (Warning)",
 	}
 
 	c = c + 1
@@ -133,7 +144,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = S[302535920000590--[[Fires all the fixes in the "Most" menu (nuke 'em from orbit and all that).
 	Should be safe to use without breaking anything.--]]],
 		OnAction = ChoGGi.MenuFuncs.FireMostFixes,
-		ActionSortKey = "-1",
+		ActionSortKey = "-1Fire Most Fixes",
 	}
 
 	local str_ExpandedCM_Fixes_Most = "Expanded CM.Fixes.Most"
@@ -360,6 +371,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".See tooltip",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
 		RolloverText = S[302535920000618--[[Fixes for stuff that I messed up, these should all be fine to fire even without the issues, but they shouldn't be needed.--]]],
+		ActionSortKey = "-1",
 	}
 
 	c = c + 1
@@ -370,7 +382,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = icon,
 		RolloverText = S[302535920000620--[[If any colonists are black cubes click this.--]]],
 		OnAction = ChoGGi.MenuFuncs.ColonistsFixBlackCube,
-		ActionSortKey = "1",
 	}
 
 	c = c + 1
@@ -381,7 +392,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = icon,
 		RolloverText = S[302535920000622--[[If you have any buildings that aren't aligned to the hex grids use this.--]]],
 		OnAction = ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid,
-		ActionSortKey = "1",
 	}
 
 end

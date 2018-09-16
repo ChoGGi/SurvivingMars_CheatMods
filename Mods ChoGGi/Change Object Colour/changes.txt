@@ -1,7 +1,9 @@
+v0.6
+You can re-bind keys with in-game options.
+
 v0.5
 Da Vinci.
 Cleaning up code (ChoGGi's Library).
-
 v0.4
 Random colour now works with attachments now. 
 Updated code to parity with ECM code and steam version (GUI might look slightly different).

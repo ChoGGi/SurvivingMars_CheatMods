@@ -4,6 +4,9 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
+	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+	local RetName = ChoGGi.ComFuncs.RetName
+	local Trans = ChoGGi.ComFuncs.Translate
 
 	local string = string
 	local AsyncStringToFile = _G.AsyncStringToFile

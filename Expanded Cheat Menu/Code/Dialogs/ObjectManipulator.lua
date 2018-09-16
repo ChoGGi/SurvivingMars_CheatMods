@@ -385,20 +385,20 @@ function OnMsg.ClassesGenerate()
 			local c = 0
 			for k, v in pairs(obj) do
 				-- pretty colours (red for func, blue for tables)
-				local sort = self:CreateProp(k)
+				local sort_prop = self:CreateProp(k)
 				local text
 				local v_type = type(v)
 				if v_type == "table" then
-					text = string.format("<color 75 75 255>%s</color>",sort)
+					text = string.format("<color 75 75 255>%s</color>",sort_prop)
 				elseif v_type == "function" then
-					text = string.format("<color 255 75 75>%s</color>",sort)
+					text = string.format("<color 255 75 75>%s</color>",sort_prop)
 				else
-					text = sort
+					text = sort_prop
 				end
 
 				c = c + 1
 				res[c] = {
-					sort = sort,
+					sort = sort_prop,
 					text = text,
 					value = self:CreateProp(v),
 					object = v

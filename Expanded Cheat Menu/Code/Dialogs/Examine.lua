@@ -2,7 +2,7 @@
 
 -- examine objects
 
-local pairs,type,tostring,tonumber,rawget,table,debug = pairs,type,tostring,tonumber,rawget,table,debug
+local pairs,type,tostring,tonumber,rawget,table = pairs,type,tostring,tonumber,rawget,table
 
 local CmpLower = CmpLower
 local GetStateName = GetStateName

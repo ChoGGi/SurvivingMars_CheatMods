@@ -42,6 +42,21 @@ function OnMsg.ClassesGenerate()
 		end)
 	end
 
+	function ChoGGi.MenuFuncs.RocketCrashesGameOnLanding()
+		local rockets = UICity.labels.AllRockets or ""
+		for i = 1, #rockets do
+			rockets[i]:ForEachAttach("ParSystem",function(a)
+				if type(a.polyline) == "string" and a.polyline:find("\0") then
+					a:delete()
+				end
+			end)
+		end
+		MsgPopup(
+			4493--[[All--]],
+			302535920001351--[[Rocket Crashes Game On Landing--]]
+		)
+	end
+
 	function ChoGGi.MenuFuncs.ToggleWorkingAll()
 		MapForEach("map","BaseBuilding",function(o)
 			if type(o.ToggleWorking) == "function" and not o:IsKindOfClasses("OrbitalProbe","ResourceStockpile","WasteRockStockpile","BaseRover") then
@@ -84,19 +99,9 @@ function OnMsg.ClassesGenerate()
 						-- get a list of all res in the center of dome
 						local pos = domes[i]:GetSpotPos(-1)
 						local objs = MapGet(pos, 1000, "ResourcePile")
-	--~ 					local objs = GetObjects{
-	--~ 						class = "ResourcePile",
-	--~ 						-- we only want stuff within *radius*
-	--~ 						filter = function(o)
-	--~ 							if o:GetDist2D(pos) <= 1000 then
-	--~ 								return o
-	--~ 							end
-	--~ 						end,
-	--~ 					}
-
 						-- loop through the spots till we find a Workdrone outside the dome (any spot outside will do)
-						local start_id, end_id = domes[i]:GetAllSpots(domes[i]:GetState())
-						for j = start_id, end_id do
+						local id_start, id_end = domes[i]:GetAllSpots(domes[i]:GetState())
+						for j = id_start, id_end do
 							if domes[i]:GetSpotName(j) == "Workdrone" then
 								local spot_pos = domes[i]:GetSpotPos(j)
 								-- and goodbye res
@@ -333,7 +338,7 @@ function OnMsg.ClassesGenerate()
 			end
 			MsgPopup(
 				302535920000585--[[Colonists Stuck Outside Rocket--]],
-				4493--[[All--]]
+				5238--[[Rockets--]]
 			)
 		end
 

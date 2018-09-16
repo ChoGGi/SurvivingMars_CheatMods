@@ -404,6 +404,7 @@ function OnMsg.ClassesGenerate()
 				end
 			end)
 		end
+    local rock_objects
 		local function UpdateRockList()
 			rock_objects = {}
 			SaveRocks("Deposition",rock_objects)
@@ -413,7 +414,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		function ChoGGi.MenuFuncs.SaveRockHeight()
-			local rock_objects = UICity.ChoGGi.map_rock_objects
+			rock_objects = UICity.ChoGGi.map_rock_objects
 			-- make a list of rocks to henceforth be a reference
 			if not rock_objects then
 				UpdateRockList()
@@ -613,7 +614,7 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
-		local dlg_list = ChoGGi.ComFuncs.OpenInListChoice{
+		local dlg_list_MissionParams = ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc_MissionParams,
 			items = ItemList_MissionParams,
 			title = 302535920000866--[[Set MissionParams NewMap--]],
@@ -640,7 +641,7 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 
 		local function CallBackFunc_MapList(choice)
 			-- close dialogs we opened
-			dlg_list:delete()
+			dlg_list_MissionParams:delete()
 			ex:delete()
 			if #choice < 1 then
 				return
@@ -681,11 +682,11 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 			SaveLocalStorage()
 		end
 
-		local dlg_list = ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc_MapList,
 			close_func = function()
 				-- close dialogs we opened
-				dlg_list:delete()
+				dlg_list_MissionParams:delete()
 				ex:delete()
 			end,
 			items = ItemList_MapList,
