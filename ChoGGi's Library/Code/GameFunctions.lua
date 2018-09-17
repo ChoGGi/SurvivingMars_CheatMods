@@ -1936,22 +1936,30 @@ function ChoGGi.CodeFuncs.UpdateServiceComfortBld(obj,service_stats)
 	if not obj or not service_stats then
 		return
 	end
+
 	local type = type
+	-- check for type as some are boolean
 	if type(service_stats.health_change) ~= "nil" then
 		obj.base_health_change = service_stats.health_change
+		obj.health_change = service_stats.health_change
 	end
 	if type(service_stats.sanity_change) ~= "nil" then
 		obj.base_sanity_change = service_stats.sanity_change
+		obj.sanity_change = service_stats.sanity_change
 	end
 	if type(service_stats.service_comfort) ~= "nil" then
 		obj.base_service_comfort = service_stats.service_comfort
+		obj.service_comfort = service_stats.service_comfort
 	end
 	if type(service_stats.comfort_increase) ~= "nil" then
 		obj.base_comfort_increase = service_stats.comfort_increase
+		obj.comfort_increase = service_stats.comfort_increase
 	end
+
 	if obj:IsKindOf("Service") then
 		if type(service_stats.visit_duration) ~= "nil" then
 			obj.base_visit_duration = service_stats.visit_duration
+			obj.visit_duration = service_stats.visit_duration
 		end
 		if type(service_stats.usable_by_children) ~= "nil" then
 			obj.usable_by_children = service_stats.usable_by_children

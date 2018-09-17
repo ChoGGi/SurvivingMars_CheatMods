@@ -369,6 +369,8 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 
+	-- not working code from when tried to have passages placed in entrances
+
 --~ 	-- if it's a fancy dome then we allow building in the removed entrances
 --~ 	if obj:IsKindOf("Dome") then
 --~ 		local id_start, id_end = obj:GetAllSpots(obj:GetState())
