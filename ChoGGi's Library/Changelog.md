@@ -1,6 +1,14 @@
 ## Library Changelog
 
-## v1.1 (Unreleased)
+## v1.2 (Unreleased)
+
+## v1.1 (17 Sep 2018)
+### Changed:
+- Double-clicking a title bar will rollup the dialog into the title bar.
+- If a dialog is highlighted (in blue) Shift-Esc will close it.
+
+### Fixed:
+- Couple minor issues for list choice dialogs.
 
 ## v1.0 (12 Sep 2018)
 ### Fixed:

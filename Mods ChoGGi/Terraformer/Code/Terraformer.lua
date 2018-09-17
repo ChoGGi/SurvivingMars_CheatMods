@@ -29,23 +29,38 @@ GlobalVar("g_revision_map",{})
 function UpdateMapRevision()end
 function AsyncGetSourceInfo()end
 
-local Actions = {
-	{
-		ActionId = "Game.Terrain Editor Toggle",
-		OnAction = ChoGGi.CodeFuncs.TerrainEditor_Toggle,
-		ActionShortcut = "Shift-F",
-		replace_matching_id = true,
-		ActionBindable = true,
-	},
-	{
-		ActionId = "Game.Delete All Rocks",
-		OnAction = ChoGGi.CodeFuncs.DeleteAllRocks,
-		ActionShortcut = "Shift-Ctrl-F",
-		replace_matching_id = true,
-		ActionBindable = true,
-	},
-}
+local Actions
 
-function OnMsg.ShortcutsReloaded()
-	ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
+function OnMsg.ClassesGenerate()
+
+	local S = ChoGGi.Strings
+
+	Actions = {
+		{
+			ActionShortcut = "Shift-F",
+			replace_matching_id = true,
+
+			ActionName = S[302535920000674--[[Terrain Editor Toggle--]]],
+			ActionId = "Game.Terrain Editor Toggle",
+			RolloverText = S[302535920000675--[[Opens up the map editor with the brush tool visible.--]]],
+			OnAction = ChoGGi.CodeFuncs.TerrainEditor_Toggle,
+			ActionBindable = true,
+
+		},
+		{
+			replace_matching_id = true,
+			ActionBindable = true,
+
+			ActionName = S[302535920000864--[[Delete All Rocks--]]],
+			ActionId = "Game.Delete All Rocks",
+			RolloverText = S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]],
+			OnAction = ChoGGi.CodeFuncs.DeleteAllRocks,
+
+		},
+	}
+
+	function OnMsg.ShortcutsReloaded()
+		ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
+	end
+
 end

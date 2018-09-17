@@ -19,7 +19,6 @@ end
 local image_str = string.format("%sMaps/%s.png",CurrentModPath,"%s")
 local showimage
 local skip_showing_image
-local lso
 
 -- override this func to create/update image when site changes
 local orig_FillRandomMapProps = FillRandomMapProps
@@ -34,25 +33,7 @@ function FillRandomMapProps(gen, params)
 		end
 		-- pretty little image
 		showimage.idImage:SetImage(image_str:format(map))
-		-- add map name/location to title bar
-		if not lso then
-			-- see if we can get the right-side list and position based on that, otherwise 25
-			local idx = table.find(terminal.desktop,"XTemplate","PGMainMenu")
-			local dlg
-			pcall(function()
-				dlg = terminal.desktop[idx].idContent[1][2][1]
-			end)
-			if dlg then
-				lso = dlg.context
-			end
-		end
-		if lso then
-			showimage.idCaption:SetText(string.format("%s: %s",lso.input_prompt,map))
-		else
-			-- just in case
-			showimage.idCaption:SetText(map)
-		end
-
+		showimage.idCaption:SetText(map)
 	end
 
 	return map

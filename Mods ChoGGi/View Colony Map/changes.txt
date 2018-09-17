@@ -1,3 +1,5 @@
+v0.5
+There's no point in havinbg the position in the title bar, so removed.
 v0.4
 Made the map size based on uiscale.
 The map defaults to the right-side.

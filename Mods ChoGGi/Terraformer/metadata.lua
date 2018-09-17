@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Terraformer v0.7",
-	"version", 7,
-  "saved", 1536753600,
+	"title", "Terraformer v0.8",
+	"version", 8,
+  "saved", 1537185600,
 	"id", "ChoGGi_Terraformer",
 	"author", "ChoGGi",
   "code", {

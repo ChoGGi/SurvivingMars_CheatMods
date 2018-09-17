@@ -94,12 +94,40 @@ DefineClass.ChoGGi_MoveControl = {
 	RolloverTitle = S[126095410863--[[Info--]]],
 	RolloverTemplate = "Rollover",
 }
+local IsKeyPressed = terminal.IsKeyPressed
 function ChoGGi_MoveControl:OnKbdKeyDown(vk,...)
-	if vk == const.vkEsc then
+	if vk == const.vkEsc and IsKeyPressed(const.vkShift) then
 		self.dialog.idCloseX:Press()
 		return "break"
 	end
 	return XMoveControl.OnKbdKeyDown(self,vk,...)
+end
+
+local function ToggleRoll(win,bool)
+	for i = 1, #win.idDialog do
+		if win.idDialog[i].class ~= "ChoGGi_MoveControl" then
+			win.idDialog[i]:SetVisible(bool)
+		end
+	end
+end
+
+function ChoGGi_MoveControl:OnMouseButtonDoubleClick(pt,button,...)
+	-- window object
+	local win = self.parent.parent
+	if win.idDialog then
+		if win.dialog_rolled_up then
+			-- already rolled up so unhide sections and get saved size
+			ToggleRoll(win,true)
+			win:SetHeight(win.dialog_rolled_up)
+			win.dialog_rolled_up = nil
+		else
+			-- save size and hide sections
+			ToggleRoll(win,false)
+			win.dialog_rolled_up = win:GetHeight()
+			win:SetHeight(win.header)
+		end
+	end
+	return XMoveControl.OnMouseButtonDoubleClick(self,pt,button,...)
 end
 
 DefineClass.ChoGGi_Buttons = {
@@ -391,6 +419,12 @@ end
 function ChoGGi_Window:GetSize(dialog)
 	local b = self[dialog or "idDialog"].box
 	return point(b:sizex(),b:sizey())
+end
+function ChoGGi_Window:GetHeight(dialog)
+	return (self[dialog or "idDialog"].box):sizey()
+end
+function ChoGGi_Window:GetWidth(dialog)
+	return (self[dialog or "idDialog"].box):sizex()
 end
 
 local GetMousePos = terminal.GetMousePos

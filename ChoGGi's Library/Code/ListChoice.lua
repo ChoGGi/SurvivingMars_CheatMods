@@ -257,7 +257,11 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 	if self.list.multisel then
 		-- if it's a multiselect then add a hint
-		self.list.hint = string.format("%s\n\n%s",CheckText(self.list.hint),S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]])
+		if self.list.hint then
+			self.list.hint = string.format("%s\n\n%s",CheckText(self.list.hint),S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]])
+		else
+			self.list.hint = S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]]
+		end
 
 		self.idList.MultipleSelection = true
 		if type(self.list.multisel) == "number" then
@@ -280,11 +284,15 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	end
 
 	if self.custom_type == 7 then
-		self.list.hint = string.format("%s\n\n%s",CheckText(self.list.hint),S[302535920001341--[[Double-click to apply without closing list.--]]])
+		if self.list.hint then
+			self.list.hint = string.format("%s\n\n%s",CheckText(self.list.hint),S[302535920001341--[[Double-click to apply without closing list.--]]])
+		else
+			self.list.hint = S[302535920001341--[[Double-click to apply without closing list.--]]]
+		end
 	end
 
 	-- are we showing a hint?
-	local hint = CheckText(self.list.hint)
+	local hint = CheckText(self.list.hint,"")
 	if hint ~= "" then
 		self.idMoveControl.RolloverText = hint
 		self.idList.RolloverText = hint

@@ -25,10 +25,14 @@ function OnMsg.ClassesGenerate()
 			if a.OnActionEffect ~= "popup" and a.ActionName ~= "" then
 				c = c + 1
 				local hint_text = type(a.RolloverText) == "function" and a.RolloverText() or a.RolloverText
+				local icon_str
+				if a.ActionIcon and a.ActionIcon ~= "" then
+					icon_str = icon:format(a.ActionIcon)
+				end
 				ItemList[c] = {
 					text = a.ActionName,
 					value = a.ActionName,
-					icon = icon:format(a.ActionIcon),
+					icon = icon_str,
 					func = a.OnAction,
 					hint = hint:format(hint_text,a.ActionId),
 				}
@@ -49,9 +53,7 @@ function OnMsg.ClassesGenerate()
 			custom_type = 7,
 			custom_func = CallBackFunc,
 			height = 800.0,
-	--~ 		hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
 		}
-
 	end
 
 	function ChoGGi.MenuFuncs.Interface_Toggle()

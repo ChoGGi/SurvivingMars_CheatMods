@@ -1,3 +1,6 @@
+v0.8
+Fixed Delete all Rocks being Shift-Ctrl-F instead of Ctrl-Shift-F.
+Made sure bindings are now named in keybindings in in-game options, so you can change them to whatever.
 v0.7
 Accidentally made it Ctrl-F instead of Shift-F.
 v0.6

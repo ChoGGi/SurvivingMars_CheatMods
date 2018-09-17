@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v9.0 (Unreleased)
+## v9.1 (Unreleased)
+
+## v9.0 (17 Sep 2018)
 ### Added:
 - Fixes>Rocket Crashes Game On Landing: When you select a landing site with certain rockets; your game will crash to desktop.
 
