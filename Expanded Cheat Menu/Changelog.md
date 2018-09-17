@@ -4,6 +4,8 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v9.1 (Unreleased)
+### Fixed:
+- Hopefully last issue with service stats buildings (thanks hchsiao).
 
 ## v9.0 (17 Sep 2018)
 ### Added:
