@@ -230,7 +230,7 @@ function OnMsg.ClassesGenerate()
 
 	local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
 	AddMsgToFunc("BaseBuilding","GameInit","ChoGGi_SpawnedBaseBuilding")
-	AddMsgToFunc("DroneBase","GameInit","ChoGGi_SpawnedDrone")
+	AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
 	AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducer","electricity_production")
 	AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","air_production")
 	AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","water_production")

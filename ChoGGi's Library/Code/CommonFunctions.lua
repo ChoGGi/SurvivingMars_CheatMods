@@ -36,22 +36,27 @@ function ChoGGi.ComFuncs.AddMsgToFunc(class_name,func_name,msg_str,...)
 	local varargs = ...
 	-- save orig
 	ChoGGi.ComFuncs.SaveOrigFunc(class_name,func_name)
+	-- local stuff
+	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+	local StringFormat = string.format
+	local select = select
+	local Msg = Msg
 	-- redefine it
 	_G[class_name][func_name] = function(...)
 		-- I just care about adding self to the msgs
 		Msg(msg_str,select(1,...),varargs)
 
---~		 -- use to debug if getting an error
---~		 local params = {...}
---~		 -- pass on args to orig func
---~		 if not pcall(function()
---~			 return ChoGGi.OrigFuncs[string.format("%s_%s",ClassName,FuncName)](table.unpack(params))
---~		 end) then
---~			 print("Function Error: ",string.format("%s_%s",ClassName,FuncName))
---~			 ChoGGi.ComFuncs.OpenInExamineDlg({params})
---~		 end
+--~ 		-- use to debug if getting an error
+--~ 		local params = {...}
+--~ 		-- pass on args to orig func
+--~ 		if not pcall(function()
+--~ 			return ChoGGi_OrigFuncs[StringFormat("%s_%s",class_name,func_name)](table.unpack(params))
+--~ 		end) then
+--~ 			print("Function Error: ",StringFormat("%s_%s",class_name,func_name))
+--~ 			ChoGGi.ComFuncs.OpenInExamineDlg{params}
+--~ 		end
 
-		return ChoGGi.OrigFuncs[string.format("%s_%s",class_name,func_name)](...)
+		return ChoGGi_OrigFuncs[StringFormat("%s_%s",class_name,func_name)](...)
 	end
 end
 
