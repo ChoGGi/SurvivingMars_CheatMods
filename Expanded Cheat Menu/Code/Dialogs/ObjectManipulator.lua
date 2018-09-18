@@ -279,31 +279,24 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi_ObjectManipulatorDlg:UpdateListContent()
 		local obj = self.obj
-		self.idList:Clear()
-	--~	 for i = 1, #self.items do
-	--~		 local listitem = self.idList:CreateTextItem(self.items[i].text)
-	--~		 listitem.item = self.items[i]
-	--~		 listitem.RolloverText = self:UpdateHintText(self.items[i])
-	--~	 end
-
 		-- get scroll pos
 		local scroll_x = self.idScrollArea.OffsetX
 		local scroll_y = self.idScrollArea.OffsetY
 
 		-- create prop list for list
 		self.items = self:CreatePropList(obj)
-		if not self.items then
-			local err = S[302535920000090--[[Error opening: %s--]]]:format(self.obj_name)
+		if self.items then
+			-- populate it
+			self:BuildList()
+			-- and scroll to old pos
+			self.idScrollArea:ScrollTo(scroll_x,scroll_y)
+		else
+			-- let user know
 			self.idList:Clear()
+			local err = S[302535920000090--[[Error opening: %s--]]]:format(self.obj_name)
 			local listitem = self.idList:CreateTextItem(err)
 			listitem.RolloverText = err
-			return
 		end
-		-- populate it
-		self:BuildList()
-
-		-- and scroll to old pos
-		self.idScrollArea:ScrollTo(scroll_x,scroll_y)
 	end
 
 	function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
@@ -389,9 +382,9 @@ function OnMsg.ClassesGenerate()
 				local text
 				local v_type = type(v)
 				if v_type == "table" then
-					text = string.format("<color 75 75 255>%s</color>",sort_prop)
+					text = string.format("<color 150 170 250>%s</color>",sort_prop)
 				elseif v_type == "function" then
-					text = string.format("<color 255 75 75>%s</color>",sort_prop)
+					text = string.format("<color 255 150 150>%s</color>",sort_prop)
 				else
 					text = sort_prop
 				end
@@ -415,8 +408,9 @@ function OnMsg.ClassesGenerate()
 				if sort[a] or sort[b] then
 					return sort[a] and true
 				end
-				return CmpLower(a, b)
+				return CmpLower(a.sort, b.sort)
 			end)
+
 			return res
 		else
 			return self:CreateProp(res)

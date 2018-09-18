@@ -48,6 +48,7 @@ function OnMsg.ClassesGenerate()
 
 		},
 		{
+			ActionShortcut = "Ctrl-Shift-F",
 			replace_matching_id = true,
 			ActionBindable = true,
 

@@ -332,9 +332,9 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 		}
 		local item = self.items[#self.items]
 		local listitem = self.idList[#self.idList]
-		listitem[1]:SetText(item.text)
-		listitem.item = item
 		listitem.RolloverText = CheckText(item.hint)
+		listitem.idText:SetText(item.text)
+		listitem.item = item
 	end
 end
 

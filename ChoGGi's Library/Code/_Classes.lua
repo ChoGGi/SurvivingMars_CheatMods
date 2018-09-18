@@ -16,7 +16,9 @@ local box,point = box,point
 local white = white
 local black = black
 local dark_blue = -12235133
+local darker_blue = -16767678
 local dark_gray = -13158858
+local darker_gray = -13684945
 --~ local less_dark_gray = -12500671
 local medium_gray = -10592674
 local light_gray = -2368549
@@ -26,6 +28,7 @@ local invis = 0
 
 DefineClass.ChoGGi_Text = {
 	__parents = {"XText"},
+	TextFont = text,
 	-- default
 	Background = dark_gray,
 	TextColor = white,
@@ -35,8 +38,14 @@ DefineClass.ChoGGi_Text = {
 	-- selected
 	SelectionBackground = light_gray,
 	SelectionColor = black,
-	TextFont = text,
 
+	RolloverTemplate = "Rollover",
+	RolloverTitle = S[126095410863--[[Info--]]],
+}
+DefineClass.ChoGGi_TextList = {
+	__parents = {"XText"},
+	TextColor = white,
+	RolloverTextColor = light_gray,
 	RolloverTemplate = "Rollover",
 	RolloverTitle = S[126095410863--[[Info--]]],
 }
@@ -50,7 +59,7 @@ DefineClass.ChoGGi_MultiLineEdit = {
 	Background = dark_gray,
 	TextColor = white,
 	-- focused
-	FocusedBackground = dark_gray,
+	FocusedBackground = darker_gray,
 	RolloverTextColor = white,
 	-- selected
 	SelectionBackground = light_gray,
@@ -139,6 +148,7 @@ DefineClass.ChoGGi_Buttons = {
 	Margins = box(4,4,4,4),
 	PressedBackground = medium_gray,
 	PressedTextColor = white,
+	RolloverZoom = 1100,
 }
 
 DefineClass.ChoGGi_Button = {
@@ -192,6 +202,10 @@ DefineClass.ChoGGi_ComboButton = {
 	PressedBackground = medium_gray,
 	PressedTextColor = white,
 	Margins = box(4,4,0,4),
+	RolloverZoom = 1100,
+	BorderWidth = 1,
+	BorderColor = black,
+	RolloverBorderColor = black,
 }
 
 DefineClass.ChoGGi_CheckButton = {
@@ -203,6 +217,7 @@ DefineClass.ChoGGi_CheckButton = {
 	TextColor = white,
 	MinWidth = 60,
 	Text = S[6878--[[OK--]]],
+	RolloverZoom = 1100,
 }
 function ChoGGi_CheckButton:Init()
 --~	 XCheckButton.Init(self)
@@ -238,8 +253,30 @@ DefineClass.ChoGGi_List = {
 	__parents = {"XList"},
 	RolloverTemplate = "Rollover",
 	MinWidth = 50,
-  Background = light_gray,
-	FocusedBackground = light_gray,
+
+  Background = dark_gray,
+	TextColor = white,
+	FocusedBackground = darker_gray,
+	RolloverTextColor = light_gray,
+}
+function ChoGGi_List:CreateTextItem(text, props, context)
+	local g_Classes = g_Classes
+  props = props or {}
+  local item = g_Classes.ChoGGi_ListItem:new({
+    selectable = props.selectable
+  }, self)
+  props.selectable = nil
+  local text_control = g_Classes.ChoGGi_TextList:new(props, item, context)
+	item.idText = text_control
+  text_control:SetText(text)
+  return item
+end
+
+DefineClass.ChoGGi_ListItem = {
+	__parents = {"XListItem"},
+	RolloverZoom = 1100,
+--~ 	Background = dark_gray,
+	SelectionBackground = darker_blue,
 }
 
 DefineClass.ChoGGi_Dialog = {

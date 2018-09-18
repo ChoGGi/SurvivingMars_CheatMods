@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v1.2 (Unreleased)
+### Changed:
+- Darker list items, and some hover action.
 
 ## v1.1 (17 Sep 2018)
 ### Changed:

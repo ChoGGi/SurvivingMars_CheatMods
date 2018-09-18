@@ -1330,17 +1330,29 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			if #choice < 1 then
 				return
 			end
+
+			local check1,check2 = choice[1].check1,choice[1].check2
+			if check1 and check2 then
+				MsgPopup(
+					302535920000039--[[Don't pick both checkboxes next time...--]],
+					547--[[Colonists--]]
+				)
+				return
+			end
+
 			local sel = SelectedObj
 			local dome
-			if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
+			if sel and sel.class == "Colonist" and sel.dome and check1 then
 				dome = sel.dome
 			end
 
-			--create list of traits
-			local TraitsListTemp = {}
+			-- create list of traits
+			local traits_list_temp = {}
+			local c = 0
 			local function AddToTable(list)
 				for x = 1, #list do
-					TraitsListTemp[#TraitsListTemp+1] = list[x]
+					c = c + 1
+					traits_list_temp[c] = list[x]
 				end
 			end
 
@@ -1357,72 +1369,91 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 					AddToTable(ChoGGi.Tables.NegativeTraits)
 				else
 					if choice[i].value then
-						TraitsListTemp[#TraitsListTemp+1] = choice[i].value
+						c = c + 1
+						traits_list_temp[c] = choice[i].value
 					end
 				end
 			end
 
-			--remove dupes
-			table.sort(TraitsListTemp)
-			local TraitsList = {}
-			for i = 1, #TraitsListTemp do
-				if TraitsListTemp[i] ~= TraitsListTemp[i-1] then
-					TraitsList[#TraitsList+1] = TraitsListTemp[i]
+			-- remove dupes
+			table.sort(traits_list_temp)
+			local traits_list = {}
+			c = 0
+			for i = 1, #traits_list_temp do
+				if traits_list_temp[i] ~= traits_list_temp[i-1] then
+					c = c + 1
+					traits_list[c] = traits_list_temp[i]
 				end
 			end
 
-			--new
+			-- new
 			if iType == 1 then
 				if choice[1].value == DefaultSetting then
 					ChoGGi.UserSettings.NewColonistTraits = false
 				else
-					ChoGGi.UserSettings.NewColonistTraits = TraitsList
+					ChoGGi.UserSettings.NewColonistTraits = traits_list
 				end
 				ChoGGi.SettingFuncs.WriteSettings()
 
-			--existing
+			-- existing
 			elseif iType == 2 then
 				--random 3x3
 				if choice[1].value == DefaultSetting then
 					local function RandomTraits(o)
-						--remove all traits
+						-- remove all traits
 						ChoGGi.CodeFuncs.ColonistUpdateTraits(o,false,ChoGGi.Tables.OtherTraits)
 						ChoGGi.CodeFuncs.ColonistUpdateTraits(o,false,ChoGGi.Tables.PositiveTraits)
 						ChoGGi.CodeFuncs.ColonistUpdateTraits(o,false,ChoGGi.Tables.NegativeTraits)
-						--add random ones
-						o:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,#ChoGGi.Tables.PositiveTraits)],true)
-						o:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,#ChoGGi.Tables.PositiveTraits)],true)
-						o:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,#ChoGGi.Tables.PositiveTraits)],true)
-						o:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,#ChoGGi.Tables.NegativeTraits)],true)
-						o:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,#ChoGGi.Tables.NegativeTraits)],true)
-						o:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,#ChoGGi.Tables.NegativeTraits)],true)
+						-- add random ones
+						local count = #ChoGGi.Tables.PositiveTraits
+						o:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,count)],true)
+						o:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,count)],true)
+						o:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,count)],true)
+						count = #ChoGGi.Tables.NegativeTraits
+						o:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,count)],true)
+						o:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,count)],true)
+						o:AddTrait(ChoGGi.Tables.NegativeTraits[Random(1,count)],true)
 						Notify(o,"UpdateMorale")
 					end
-					local tab = UICity.labels.Colonist or ""
-					for i = 1, #tab do
-						if dome then
-							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								RandomTraits(tab[i])
+					if check2 then
+						if sel then
+							RandomTraits(sel)
+						end
+					else
+						local c = UICity.labels.Colonist or ""
+						for i = 1, #c do
+							if dome then
+								if c[i].dome and c[i].dome.handle == dome.handle then
+									RandomTraits(c[i])
+								end
+							else
+								RandomTraits(c[i])
 							end
-						else
-							RandomTraits(tab[i])
 						end
 					end
 
 				else
-					local Type = "AddTrait"
-					if choice[1].check2 then
-						Type = "RemoveTrait"
+					local t_type = "AddTrait"
+					if choice[1].check3 then
+						t_type = "RemoveTrait"
 					end
-					local tab = UICity.labels.Colonist or ""
-					for i = 1, #tab do
-						for j = 1, #TraitsList do
-							if dome then
-								if tab[i].dome and tab[i].dome.handle == dome.handle then
-									tab[i][Type](tab[i],TraitsList[j],true)
+					if check2 then
+						if sel then
+							for i = 1, #traits_list do
+								sel[t_type](sel,traits_list[i],true)
+							end
+						end
+					else
+						local c = UICity.labels.Colonist or ""
+						for i = 1, #c do
+							for j = 1, #traits_list do
+								if dome then
+									if c[i].dome and c[i].dome.handle == dome.handle then
+										c[i][t_type](c[i],traits_list[j],true)
+									end
+								else
+									c[i][t_type](c[i],traits_list[j],true)
 								end
-							else
-								tab[i][Type](tab[i],TraitsList[j],true)
 							end
 						end
 					end
@@ -1432,7 +1463,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			end
 
 			MsgPopup(
-				string.format("%s: %s%s",#TraitsList,sType,S[302535920000830--[[Colonists traits set--]]]),
+				string.format("%s: %s%s",#traits_list,sType,S[302535920000830--[[Colonists traits set--]]]),
 				547--[[Colonists--]],
 				default_icon
 			)
@@ -1458,16 +1489,16 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 						title = 302535920000750--[[Dome Only--]],
 						hint = 302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]],
 					},
-	--~ 				{
-	--~ 					title = 302535920000752--[[Selected Only--]],
-	--~ 					hint = 302535920000753--[[Will only apply to selected colonist.--]],
-	--~ 				},
 					{
-						title = 302535920000752302535920000281--[[Remove--]],
+						title = 302535920000752--[[Selected Only--]],
+						hint = 302535920000753--[[Will only apply to selected colonist.--]],
+					},
+					{
+						title = 302535920000281--[[Remove--]],
 						hint = 302535920000832--[[Check to remove traits--]],
 					},
 				},
-				height = 800,
+				height = 800.0,
 			}
 		end
 	end

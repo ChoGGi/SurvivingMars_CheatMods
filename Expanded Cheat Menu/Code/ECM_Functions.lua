@@ -161,9 +161,8 @@ function OnMsg.ClassesGenerate()
 			local ChoGGi = ChoGGi
 			if which then
 				-- remove old logs
-				local console = "AppData/logs/ConsoleLog.log"
-				AsyncCopyFile(console, "AppData/logs/ConsoleLog.previous.log")
-				AsyncStringToFile(console,"")
+				AsyncCopyFile("AppData/logs/ConsoleLog.log","AppData/logs/ConsoleLog.previous.log","raw")
+				AsyncStringToFile("AppData/logs/ConsoleLog.log"," ")
 
 				-- redirect functions
 				if ChoGGi.testing then
