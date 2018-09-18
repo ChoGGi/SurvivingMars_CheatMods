@@ -32,14 +32,14 @@ end
 
 -- changes a function to also post a Msg for use with OnMsg
 function ChoGGi.ComFuncs.AddMsgToFunc(class_name,func_name,msg_str,...)
-	local vararg = ...
-	local ChoGGi = ChoGGi
+	-- anything i want to pass onto the msg
+	local varargs = ...
 	-- save orig
 	ChoGGi.ComFuncs.SaveOrigFunc(class_name,func_name)
 	-- redefine it
 	_G[class_name][func_name] = function(...)
 		-- I just care about adding self to the msgs
-		Msg(msg_str,select(1,...),vararg)
+		Msg(msg_str,select(1,...),varargs)
 
 --~		 -- use to debug if getting an error
 --~		 local params = {...}
@@ -54,6 +54,7 @@ function ChoGGi.ComFuncs.AddMsgToFunc(class_name,func_name,msg_str,...)
 		return ChoGGi.OrigFuncs[string.format("%s_%s",class_name,func_name)](...)
 	end
 end
+
 do -- Translate
 	local T,_InternalTranslate = T,_InternalTranslate
 	local type,select = type,select
