@@ -919,16 +919,24 @@ ThreadHasFlags(): %s</color>]],
 		end
 		c = c + 1
 		totextex_res[c] = tostring(str)
+		if obj_metatable then
+			local userdata_value = "\ngetmetatable(): "
+			for key,value in pairs(obj_metatable) do
+				userdata_value = string.format("%s\n%s: %s",userdata_value,key,self:valuetotextex(value))
+			end
+			c = c + 1
+			totextex_res[c] = userdata_value
+		end
 
 	-- add some extra info for funcs
 	elseif obj_type == "function" then
-		local dbg_value = "\ndebug.getinfo: "
+		local dbg_value
 		if blacklist then
-			dbg_value = string.format("%s%s",dbg_value,DebugGetInfo(obj))
+			dbg_value = string.format("\ndebug.getinfo(): %s",DebugGetInfo(obj))
 		else
-			local dbg_table = debug.getinfo(obj) or empty_table
-			for key,value in pairs(dbg_table) do
-				dbg_value = string.format("%s\n%s: %s",dbg_value,key,value)
+			dbg_value = "\ndebug.getinfo(): "
+			for key,value in pairs(debug.getinfo(obj) or empty_table) do
+				dbg_value = string.format("%s\n%s: %s",dbg_value,key,self:valuetotextex(value))
 			end
 		end
 		c = c + 1

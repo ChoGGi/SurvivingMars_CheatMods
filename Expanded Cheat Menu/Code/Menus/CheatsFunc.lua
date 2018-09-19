@@ -551,7 +551,7 @@ Otherwise you won't see anything."--]],
 			title = 302535920000268--[[Start A Mystery--]],
 			hint = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
 
-	See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
+See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
 			check = {
 				{
 					title = 302535920000270--[[Instant Start--]],
@@ -564,12 +564,16 @@ Otherwise you won't see anything."--]],
 	function ChoGGi.MenuFuncs.StartMystery(mystery_id,instant)
 		local ChoGGi = ChoGGi
 		local UICity = UICity
+--~ 		local DiscoverTech = DiscoverTech
+
 		-- inform people of actions, so they don't add a bunch of them
 		ChoGGi.UserSettings.ShowMysteryMsgs = true
 
 		UICity.mystery_id = mystery_id
+
 		for tech_id,tech in pairs(TechDef) do
 			if tech.mystery == mystery_id then
+--~ 				DiscoverTech(tech_id)
 				if not UICity.tech_status[tech_id] then
 					UICity.tech_status[tech_id] = {points = 0, field = tech.group}
 					tech:EffectsInit(UICity)
@@ -580,7 +584,6 @@ Otherwise you won't see anything."--]],
 
 		-- might help
 		if UICity.mystery then
-			UICity.mystery_id = UICity.mystery.class
 			UICity.mystery:ApplyMysteryResourceProperties()
 		end
 

@@ -37,10 +37,11 @@ function ChoGGi.ComFuncs.AddMsgToFunc(class_name,func_name,msg_str,...)
 	-- save orig
 	ChoGGi.ComFuncs.SaveOrigFunc(class_name,func_name)
 	-- local stuff
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 	local StringFormat = string.format
 	local select = select
 	local Msg = Msg
+	-- we want to local this after SaveOrigFunc just in case
+	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 	-- redefine it
 	_G[class_name][func_name] = function(...)
 		-- I just care about adding self to the msgs
