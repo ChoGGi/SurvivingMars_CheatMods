@@ -337,19 +337,6 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
-	function ChoGGi.MenuFuncs.CheatsMenu_Toggle()
-		local ChoGGi = ChoGGi
-		if ChoGGi.UserSettings.ShowCheatsMenu then
-			-- needs default
-			ChoGGi.UserSettings.ShowCheatsMenu = false
-			XShortcutsTarget:SetVisible()
-		else
-			ChoGGi.UserSettings.ShowCheatsMenu = true
-			XShortcutsTarget:SetVisible(true)
-		end
-		ChoGGi.SettingFuncs.WriteSettings()
-	end
-
 	function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
 		local ChoGGi = ChoGGi
 		hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1

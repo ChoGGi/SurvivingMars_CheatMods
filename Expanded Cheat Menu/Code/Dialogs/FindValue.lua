@@ -115,25 +115,20 @@ function OnMsg.ClassesGenerate()
 		)
 
 		-- and fire off a new dialog
-		ChoGGi.ComFuncs.OpenInExamineDlg(self.found_objs):SetPos(self:GetPos()+point(0,self.header))
+		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(self.found_objs)
+		-- should do this nicer, but whatever
+		CreateRealTimeThread(function()
+			Sleep(10)
+			dlg:SetPos(self:GetPos()+point(0,self.idDialog.box:sizey()))
+		end)
 	end
 
 	local function ReturnStr(obj,case)
 		local obj_type = type(obj)
 		if obj_type == "string" then
 			return case and obj or obj:lower(), obj_type
-	--~ 		if case then
-	--~ 			return obj, obj_type
-	--~ 		else
-	--~ 			return obj:lower(), obj_type
-	--~ 		end
 		else
 			return case and tostring(obj) or tostring(obj):lower(), obj_type
-	--~ 		if case then
-	--~ 			return tostring(obj), obj_type
-	--~ 		else
-	--~ 			return tostring(obj):lower(), obj_type
-	--~ 		end
 		end
 	end
 
@@ -159,7 +154,6 @@ function OnMsg.ClassesGenerate()
 				local value_str,value_type = ReturnStr(value,case)
 
 				if key_str:find(str,1,true) or value_str:find(str,1,true) then
-	--~ 			if key_str:find_lower(str) or value_str:find_lower(str) then
 					-- makes dupes
 					-- self.found_objs[#self.found_objs+1] = obj
 					-- should be decent enough?

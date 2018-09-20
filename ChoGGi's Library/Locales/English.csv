@@ -306,7 +306,7 @@ Press Ctrl-Enter or Shift-Enter to execute code.",
 302535920000806,"Only show items containing this text.
 
 Press Enter to show all items.",
-302535920000077,"You can enter a custom value to be applied (it needs to be selected to take effect).
+302535920000077,"You can enter a custom value to be applied. The list item needs to be selected to take effect (see last entry).
 
 Warning: Entering the wrong value may crash the game or otherwise cause issues.",
 302535920000078,Add Custom Value,

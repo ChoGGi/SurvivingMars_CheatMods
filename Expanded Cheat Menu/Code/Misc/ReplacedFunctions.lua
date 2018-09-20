@@ -603,18 +603,19 @@ function OnMsg.ClassesBuilt()
 --~	 end
 
 	-- hopefully they fix this in the next update... (though they didn't fix it in Curo so, or maybe they fixed one type of it)
-	if LuaRevision == 231777 then
+	if LuaRevision == 233467 then
+		local CheckForBorkedTransportPath = ChoGGi.CodeFuncs.CheckForBorkedTransportPath
 		-- check transports for borked paths
 		function RCTransport:TransportRouteLoad()
 			ChoGGi_OrigFuncs.RCTransport_TransportRouteLoad(self)
 			if ChoGGi.UserSettings.CheckForBorkedTransportPath then
-				ChoGGi.CodeFuncs.CheckForBorkedTransportPath(self)
+				CheckForBorkedTransportPath(self)
 			end
 		end
 		function RCTransport:TransportRouteUnload()
 			ChoGGi_OrigFuncs.RCTransport_TransportRouteUnload(self)
 			if ChoGGi.UserSettings.CheckForBorkedTransportPath then
-				ChoGGi.CodeFuncs.CheckForBorkedTransportPath(self)
+				CheckForBorkedTransportPath(self)
 			end
 		end
 	end

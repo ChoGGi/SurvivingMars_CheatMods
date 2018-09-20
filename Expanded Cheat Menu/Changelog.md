@@ -4,6 +4,8 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v9.1 (Unreleased)
+### Changed:
+- More info added to examine:userdata (thanks SkiRich).
 ### Fixed:
 - Hopefully last issue with service stats buildings (thanks hchsiao).
 

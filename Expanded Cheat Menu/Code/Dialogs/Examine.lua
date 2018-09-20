@@ -374,6 +374,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 				-- remove html tags
 				str = str:gsub("<[/%s%a%d]*>","")
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+					parent = self,
 					checkbox = true,
 					text = str,
 					scrollto = self.idScrollArea.OffsetY,
@@ -395,6 +396,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			clicked = function()
 				local str = ValueToLuaCode(self.obj)
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+					parent = self,
 					checkbox = true,
 					text = str,
 					title = string.format("%s/%s %s",S[302535920000048--[[View--]]],S[302535920000004--[[Dump--]]],S[298035641454--[[Object--]]]),

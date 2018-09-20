@@ -222,7 +222,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Hide Cheats Menu",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 		RolloverText = S[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again (Ctrl-F2 to toggle the Cheats selection panel).--]]],
-		OnAction = ChoGGi.MenuFuncs.CheatsMenu_Toggle,
+		OnAction = ChoGGi.CodeFuncs.CheatsMenu_Toggle,
 		ActionSortKey = "5",
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.CheatsMenu_Toggle,
 		ActionBindable = true,

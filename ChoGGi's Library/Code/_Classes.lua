@@ -400,6 +400,8 @@ function ChoGGi_Window:GetPos(dialog)
 	return point(b:minx(),b:miny())
 end
 
+local GetMousePos = terminal.GetMousePos
+local GetSafeAreaBox = GetSafeAreaBox
 -- get size of box and offset header
 local function BoxSize(obj,self)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
@@ -413,7 +415,7 @@ local function BoxSize(obj,self)
 	x = box:minx()
 	y = box:miny() + self.header
 	if self.class == "Examine" then
-		-- it's a copy of examine wanting a new window offset, so we want the size of it
+		-- it's a copy of examine/find value wanting a new window offset, so we want the size of it
 		w = box:sizex()
 		h = box:sizey()
 	else
@@ -426,32 +428,42 @@ local function BoxSize(obj,self)
 end
 
 -- takes either a point, or obj to set pos
-function ChoGGi_Window:SetPos(obj)
+function ChoGGi_Window:SetPos(obj,dialog)
+	local dlg = self[dialog or "idDialog"]
 	local x,y,w,h = BoxSize(obj,self)
 
-	if not x or IsPoint(obj) then
+	if IsPoint(obj) then
+		local box = dlg.box
+		x = obj:x()
+		y = obj:y()
+		w = box:sizex()
+		h = box:sizey()
+	end
+
+	if not x then
 		local pt = GetMousePos()
-		local box = self.idDialog.box
+		local box = dlg.box
 		x = pt:x()
 		y = pt:y()
 		w = box:sizex()
 		h = box:sizey()
 	end
 
-	self.idDialog:SetBox(x,y,w,h)
+	dlg:SetBox(x,y,w,h)
 end
 
-function ChoGGi_Window:SetSize(size)
-	local box = self.idDialog.box
+function ChoGGi_Window:SetSize(size,dialog)
+	local dlg = self[dialog or "idDialog"]
+	local box = dlg.box
 	local x,y = box:minx(),box:miny()
 	local w,h = size:x(),size:y()
-	self.idDialog:SetBox(x,y,w,h)
+	dlg:SetBox(x,y,w,h)
 end
-function ChoGGi_Window:SetWidth(w)
-	self:SetSize(point(w,self.idDialog.box:sizey()))
+function ChoGGi_Window:SetWidth(w,dialog)
+	self:SetSize(point(w,self[dialog or "idDialog"].box:sizey()))
 end
-function ChoGGi_Window:SetHeight(h)
-	self:SetSize(point(self.idDialog.box:sizex(),h))
+function ChoGGi_Window:SetHeight(h,dialog)
+	self:SetSize(point(self[dialog or "idDialog"].box:sizex(),h))
 end
 function ChoGGi_Window:GetSize(dialog)
 	local b = self[dialog or "idDialog"].box
@@ -464,8 +476,6 @@ function ChoGGi_Window:GetWidth(dialog)
 	return (self[dialog or "idDialog"].box):sizex()
 end
 
-local GetMousePos = terminal.GetMousePos
-local GetSafeAreaBox = GetSafeAreaBox
 function ChoGGi_Window:SetInitPos(parent,pt)
 	local x,y,w,h
 
@@ -483,7 +493,7 @@ function ChoGGi_Window:SetInitPos(parent,pt)
 	if pt then
 		x = pt:x()
 		y = pt:y()
-	else
+	elseif not parent then
 		local pt = GetMousePos()
 		x = pt:x()
 		y = pt:y()

@@ -3,6 +3,10 @@
 ## v1.2 (Unreleased)
 ### Changed:
 - Darker list items, and some hover action.
+- List filter items now checks hints as well.
+
+### Fixed:
+- Messed up some of my dialog positioning code somewhere along the line.
 
 ## v1.1 (17 Sep 2018)
 ### Changed:

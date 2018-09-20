@@ -129,7 +129,7 @@ Press Enter to show all items."--]]],
 
 		self.idEditValue = g_Classes.ChoGGi_TextInput:new({
 			Id = "idEditValue",
-			RolloverText = S[302535920000077--[["You can enter a custom value to be applied (it needs to be selected to take effect).
+			RolloverText = S[302535920000077--[["You can enter a custom value to be applied. The item needs to be selected for this to take effect (see last entry).
 
 Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]],
 			Hint = S[302535920000078--[[Add Custom Value--]]],
@@ -181,7 +181,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		)
 	end
 	-- append blank item for adding custom value
-	if not self.list.custom_type then
+	if self.custom_type == 0 then
 		self.list.items[#self.list.items+1] = {text = "",hint = "",value = false}
 	end
 
@@ -332,7 +332,8 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 		}
 		local item = self.items[#self.items]
 		local listitem = self.idList[#self.idList]
-		listitem.RolloverText = CheckText(item.hint)
+		listitem.RolloverText = S[302535920000079--[[< Use custom value--]]]
+		listitem.RolloverTitle = item.text
 		listitem.idText:SetText(item.text)
 		listitem.item = item
 	end
@@ -401,9 +402,10 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 		return
 	end
 	-- loop through all the list items and remove any we can't find
-	for i = #self.idList, 1, -1 do
+	local count = #self.idList
+	for i = count, 1, -1 do
 		local li = self.idList[i]
-		if not li[1].text:find_lower(txt) then
+		if not (li.idText.text:find_lower(txt) or li.RolloverText:find_lower(txt) or i == count) then
 			table.remove(self.idList,i)
 		end
 	end
@@ -461,11 +463,11 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
 		return
 	end
 
-	-- update selection
+	-- update my selection
 	self.sel = self.idList[self.idList.focused_item].item
 
+	-- update the custom value box
 	if self.idEditValue then
-		-- update the custom value box
 		self.idEditValue:SetText(tostring(self.sel.value))
 	end
 

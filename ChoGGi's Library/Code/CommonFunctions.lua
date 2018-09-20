@@ -863,30 +863,30 @@ function ChoGGi.ComFuncs.FilterFromTableFunc(list,func,value,is_bool)
 	},list)
 end
 
-function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,parent)
+function ChoGGi.ComFuncs.OpenInExecCodeDlg(context,parent)
 	return ChoGGi_ExecCodeDlg:new({}, terminal.desktop,{
-		obj = obj,
+		obj = context,
 		parent = parent,
 	})
 end
 
-function ChoGGi.ComFuncs.OpenInFindValueDlg(obj,parent)
-	if not obj then
+function ChoGGi.ComFuncs.OpenInFindValueDlg(context,parent)
+	if not context then
 		return
 	end
 
 	return ChoGGi_FindValueDlg:new({}, terminal.desktop,{
-		obj = obj,
+		obj = context,
 		parent = parent,
 	})
 end
 
-function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(obj)
-	if not obj then
+function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(context)
+	if not context then
 		return
 	end
 
-	return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,obj)
+	return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,context)
 end
 
 --[[

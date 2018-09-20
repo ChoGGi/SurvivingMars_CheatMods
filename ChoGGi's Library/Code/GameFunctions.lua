@@ -1385,8 +1385,9 @@ do -- CollisionsObject_Toggle
 end -- do
 
 function ChoGGi.CodeFuncs.CheckForBorkedTransportPath(obj)
-	-- let it sleep for awhile
-	DelayedCall(1000, function()
+	CreateRealTimeThread(function()
+		-- let it sleep for awhile
+		Sleep(1000)
 		-- 0 means it's stopped, so anything above that and without a path means it's borked (probably)
 		if obj:GetAnim() > 0 and obj:GetPathLen() == 0 then
 			obj:InterruptCommand()
@@ -1796,12 +1797,12 @@ function ChoGGi.CodeFuncs.DraggableCheatsMenu(which)
 
 	if which then
 		-- add a bit of spacing above menu
-		XShortcutsTarget.idMenuBar:SetPadding(box(0, 8, 0, 0))
+		XShortcutsTarget.idMenuBar:SetPadding(box(0, 6, 0, 0))
 
 		-- add move control to menu
 		XShortcutsTarget.idMoveControl = g_Classes.XMoveControl:new({
 			Id = "idMoveControl",
-			MinHeight = 8,
+			MinHeight = 6,
 			VAlign = "top",
 		}, XShortcutsTarget)
 
@@ -1812,9 +1813,26 @@ function ChoGGi.CodeFuncs.DraggableCheatsMenu(which)
 			XShortcutsTarget.idMoveControl:SetMargins(box(0,height,0,0))
 		end)
 	elseif XShortcutsTarget.idMoveControl then
+		-- remove my control and padding
 		XShortcutsTarget.idMoveControl:delete()
 		XShortcutsTarget.idMenuBar:SetPadding(box(0, 0, 0, 0))
+		-- restore to original pos by toggling menu
+		ChoGGi.CodeFuncs.CheatsMenu_Toggle()
+		ChoGGi.CodeFuncs.CheatsMenu_Toggle()
 	end
+end
+
+function ChoGGi.CodeFuncs.CheatsMenu_Toggle()
+	local ChoGGi = ChoGGi
+	if ChoGGi.UserSettings.ShowCheatsMenu then
+		-- needs default
+		ChoGGi.UserSettings.ShowCheatsMenu = false
+		XShortcutsTarget:SetVisible()
+	else
+		ChoGGi.UserSettings.ShowCheatsMenu = true
+		XShortcutsTarget:SetVisible(true)
+	end
+	ChoGGi.SettingFuncs.WriteSettings()
 end
 
 function ChoGGi.CodeFuncs.Editor_Toggle()
