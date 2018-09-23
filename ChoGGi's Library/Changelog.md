@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v1.2 (Unreleased)
+## v1.3 (Unreleased)
+
+## v1.2 (22 Sep 2018)
 ### Changed:
 - Darker list items, and some hover action.
 - List filter items now checks hints as well.

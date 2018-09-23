@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "ChoGGi's Library v1.2 Test",
+	"title", "ChoGGi's Library v1.2",
 	"version", 12,
-	"saved", 1537185600,
+	"saved", 1537617600,
 	"image", "Preview.png",
 	"id", "ChoGGi_Library",
 	"steam_id", "1504386374",

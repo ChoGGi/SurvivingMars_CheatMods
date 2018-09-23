@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v9.1 (Unreleased)
+## v9.2 (Unreleased)
+
+## v9.1 (22 Sep 2018)
 ### Changed:
 - More info added to examine:userdata (thanks SkiRich).
 ### Fixed:
