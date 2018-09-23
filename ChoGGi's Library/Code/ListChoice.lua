@@ -363,6 +363,10 @@ function ChoGGi_ListChoiceDlg:BuildList()
 		--
 		local listitem = self.idList:CreateTextItem(text)
 
+		if item.hint_bottom then
+			listitem.RolloverHint = item.hint_bottom
+		end
+
 		if display_icon then
 			listitem.idImage = g_Classes.ChoGGi_Image:new({
 				Id = "idImage",
