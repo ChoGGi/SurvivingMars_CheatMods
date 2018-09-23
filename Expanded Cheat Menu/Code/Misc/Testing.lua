@@ -6,7 +6,8 @@ function OnMsg.ClassesGenerate()
 
 	if ChoGGi.testing then
 
-	--~ 	ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_CommieMarxLogos)
+--~ 		ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_CommieMarxLogos)
+--~ 		ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_XXXXXXXXXX)
 
 		-- checks for /Logos folder and adds all images to mod as logos (have to be min of 8bit, and makes them power of 2 if they aren't already)
 		-- (Mods.MODID,".png")
