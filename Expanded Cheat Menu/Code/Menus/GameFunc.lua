@@ -7,6 +7,8 @@ function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local S = ChoGGi.Strings
 	local RetName = ChoGGi.ComFuncs.RetName
+	local RetIcon = ChoGGi.ComFuncs.RetIcon
+	local RetHint = ChoGGi.ComFuncs.RetHint
 	local default_icon = "UI/Icons/Anomaly_Event.tga"
 
 	local print,type,tostring = print,type,tostring
@@ -273,13 +275,12 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	do -- ListAllObjects
-		local function CallBackFunc_Objects(choice)
+		local function ViewAndSelectObject(choice)
 			if #choice < 1 then
 				return
 			end
-			local obj = choice[1].obj
-			ViewObjectMars(obj)
-			SelectObj(obj)
+			ViewObjectMars(choice[1].obj)
+			SelectObj(choice[1].obj)
 		end
 
 		local function CallBackFunc_List(choice)
@@ -312,6 +313,7 @@ function OnMsg.ClassesGenerate()
 
 			-- and build the ass table into an idx one
 			local ItemList = {}
+			local c = 0
 			for _,obj in pairs(handles) do
 				if IsValid(obj) then
 					local name = RetName(obj)
@@ -319,21 +321,26 @@ function OnMsg.ClassesGenerate()
 					if name ~= class then
 						name = string.format("%s: %s",class,name)
 					end
-					ItemList[#ItemList+1] = {
+					local icon,icon_scale = RetIcon(obj)
+					c = c + 1
+					ItemList[c] = {
 						text = name,
 						value = tostring(obj:GetVisualPos()),
 						obj = obj,
+						hint = RetHint(obj),
+						icon = icon,
+						icon_scale = icon_scale,
 					}
 				end
 			end
 
 			-- and display them
 			ChoGGi.ComFuncs.OpenInListChoice{
-				callback = CallBackFunc_Objects,
+				callback = ViewAndSelectObject,
 				items = ItemList,
 				title = string.format("%s: %s",S[302535920001292--[[List All Objects--]]],choice[1].text),
 				custom_type = 1,
-				custom_func = CallBackFunc_Objects,
+				custom_func = ViewAndSelectObject,
 	--~ 			check = {
 	--~ 				{
 	--~ 					title = 302535920000084--[[Auto-Refresh--]]
@@ -348,9 +355,19 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.MenuFuncs.ListAllObjects()
 			local ItemList = {{text = string.format(" %s",S[302535920000306--[[Everything--]]]),value = S[302535920000306--[[Everything--]]],hint = 302535920001294--[[Laggy--]]}}
+			local c = 1
 			for label,list in pairs(UICity.labels) do
 				if label ~= "Consts" and #list > 0 then
-					ItemList[#ItemList+1] = {text = string.format("%s: %s",label,#list),value = label}
+					local item = list[1]
+					local icon,icon_scale = RetIcon(item)
+					c = c + 1
+					ItemList[c] = {
+						text = string.format("%s: %s",label,#list),
+						value = label,
+						hint = RetHint(item),
+						icon = icon,
+						icon_scale = icon_scale,
+					}
 				end
 			end
 

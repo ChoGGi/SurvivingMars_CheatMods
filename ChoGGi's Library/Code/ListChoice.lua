@@ -340,23 +340,39 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 end
 
 function ChoGGi_ListChoiceDlg:BuildList()
+	local g_Classes = g_Classes
+	local point = point
+
 	self.idList:Clear()
 	for i = 1, #self.items do
 		local item = self.items[i]
 
 		-- is there an icon to add
 		local text
+		local display_icon
 		if item.icon then
 			if item.icon:find("<image ",1,true) then
 				text = string.format("%s %s",item.icon,item.text)
 			else
-				text = string.format("<image %s> %s",item.icon,item.text)
+				display_icon = true
+				text = item.text
 			end
 		else
 			text = item.text
 		end
 		--
 		local listitem = self.idList:CreateTextItem(text)
+
+		if display_icon then
+			listitem.idImage = g_Classes.ChoGGi_Image:new({
+				Id = "idImage",
+				Dock = "left",
+			}, listitem)
+			listitem.idImage:SetImage(item.icon)
+			if item.icon_scale then
+				listitem.idImage:SetImageScale(point(item.icon_scale, item.icon_scale))
+			end
+		end
 		-- easier access
 		listitem.item = item
 

@@ -79,11 +79,18 @@ DefineClass.ChoGGi_Label = {
 	VAlign = "center",
 }
 function ChoGGi_Label:SetTitle(win,title)
+	local new_title
 	if win.prefix then
-		win.idCaption:SetText(string.format("%s: %s",CheckText(win.prefix,""),CheckText(title or win.title,RetName(self))))
+		new_title = string.format(
+			"%s: %s",
+			CheckText(win.prefix,""),
+			CheckText(title or win.title,RetName(self))
+		)
 	else
-		win.idCaption:SetText(CheckText(title or win.title,RetName(self)))
+		new_title = CheckText(title or win.title,RetName(self))
 	end
+	-- limit title width
+	win.idCaption:SetText(utf8.sub(new_title,1,45))
 end
 DefineClass.ChoGGi_Image = {
 	__parents = {"XImage"},

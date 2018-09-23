@@ -164,6 +164,37 @@ do -- RetName
 end -- do
 local RetName = ChoGGi.ComFuncs.RetName
 
+function ChoGGi.ComFuncs.RetIcon(obj)
+	-- most icons
+	if obj.display_icon and obj.display_icon ~= "" then
+		return obj.display_icon
+
+	elseif obj.pin_icon and obj.pin_icon ~= "" then
+		-- colonist
+		return obj.pin_icon
+
+	else
+		-- generic icon (and scale as it isn't same size as the usual icons)
+		return "UI/Icons/console_encyclopedia.tga",150
+	end
+end
+
+function ChoGGi.ComFuncs.RetHint(obj)
+	if type(obj.description) == "userdata" then
+		return obj.description
+
+--~ 	elseif obj.GetPinDescription then
+--~ 		return obj:GetPinDescription()
+
+	elseif obj.GetDescription then
+		return obj:GetDescription()
+
+	else
+		-- eh
+		return S[3718--[[NONE--]]]
+	end
+end
+
 -- shows a popup msg with the rest of the notifications
 -- objects can be a single obj, or {obj1,obj2,etc}
 function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
