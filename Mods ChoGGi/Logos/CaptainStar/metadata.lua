@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "CaptainStar (Logo)",
+	"title", "Captain Star (Logo)",
 	"version", 1,
 	"saved", 1537704000,
 	"image", "Preview.png",

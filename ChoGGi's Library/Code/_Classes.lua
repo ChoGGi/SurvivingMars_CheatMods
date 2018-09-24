@@ -126,7 +126,6 @@ local function ToggleRoll(win,bool)
 		end
 	end
 end
-
 function ChoGGi_MoveControl:OnMouseButtonDoubleClick(pt,button,...)
 	-- window object
 	local win = self.parent.parent
@@ -338,7 +337,7 @@ DefineClass.ChoGGi_Window = {
 	-- above console
 	ZOrder = 5,
 	-- how far down to y-offset new dialogs
-	header = 33.0,
+	header = 34.0,
 
 	RolloverTemplate = "Rollover",
 }
@@ -397,7 +396,9 @@ function ChoGGi_Window:AddElements(_,context)
 
 	-- needed for :Wait()
 	self.idDialog:Open()
-
+	-- need a bit of space on the bottom for so the X fits in the header
+	self.idMoveControl:SetPadding(box(0,1,0,1))
+	-- it's so blue
 	self.idMoveControl:SetFocus()
 end
 

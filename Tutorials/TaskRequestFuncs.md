@@ -25,6 +25,8 @@ req:ResetAmount(amount)
 
 -- get amount stored
 local stored = obj.requested_amount - req:GetActualAmount()
+
+-- if you use ECM, you can Examine task requests to get the full list of funcs
 ```
 
 #### Change the limit of a request without changing how many are stored

@@ -14,6 +14,7 @@ return PlaceObj("ModDef", {
 From Marx with love.
 
 
+You can use ECM to change the logo of an existing game.
 
 
 
