@@ -7,6 +7,8 @@
 ### Fixed:
 - Removed some log spam when blacklist is enabled.
 - Use Last Orientation wasn't staying disabled (thanks McKaby).
+- For traits list: Default option was mixed in with the rest of the traits.
+- Nasty bug with Mysteries and StopWait (thanks SkiRich).
 
 ## v9.1 (22 Sep 2018)
 ### Changed:

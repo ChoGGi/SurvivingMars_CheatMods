@@ -520,97 +520,98 @@ Otherwise you won't see anything."--]],
 		}
 	end
 
-	function ChoGGi.MenuFuncs.ShowMysteryList()
-		local ChoGGi = ChoGGi
-		local ItemList = {}
-		local mysteries = ChoGGi.Tables.Mystery
-		for i = 1, #mysteries do
-			ItemList[i] = {
-				text = string.format("%s: %s",mysteries[i].number,mysteries[i].name),
-				value = mysteries[i].class,
-				hint = string.format("%s\n\n\n\n<image %s>\n\n",mysteries[i].description,mysteries[i].image),
+	do -- StartMystery
+		local function StartMystery(mystery_id,instant)
+			local ChoGGi = ChoGGi
+			local UICity = UICity
+
+			-- inform people of actions, so they don't add a bunch of them
+			ChoGGi.UserSettings.ShowMysteryMsgs = true
+
+			UICity.mystery_id = mystery_id
+
+			for tech_id,tech in pairs(TechDef) do
+				if tech.mystery == mystery_id then
+					if not UICity.tech_status[tech_id] then
+						UICity.tech_status[tech_id] = {points = 0, field = tech.group}
+						tech:EffectsInit(UICity)
+					end
+				end
+			end
+			UICity:InitMystery()
+
+			-- might help
+			if UICity.mystery then
+				UICity.mystery:ApplyMysteryResourceProperties()
+			end
+
+			-- instant start
+			if instant then
+				local seqs = UICity.mystery.seq_player.seq_list[1]
+				for i = 1, #seqs do
+					local seq = seqs[i]
+					if seq.class == "SA_WaitExpression" then
+						seq.duration = 0
+						seq.expression = nil
+					elseif seq.class == "SA_WaitMarsTime" then
+						seq.duration = 0
+						seq.rand_duration = 0
+						break
+					end
+				end
+			end
+
+
+			-- needed to start mystery
+			UICity.mystery.seq_player:AutostartSequences()
+		end
+
+		function ChoGGi.MenuFuncs.ShowMysteryList()
+			local ChoGGi = ChoGGi
+			local ItemList = {}
+			local mysteries = ChoGGi.Tables.Mystery
+			for i = 1, #mysteries do
+				ItemList[i] = {
+					text = string.format("%s: %s",mysteries[i].number,mysteries[i].name),
+					value = mysteries[i].class,
+					hint = string.format("%s\n\n\n\n<image %s>\n\n",mysteries[i].description,mysteries[i].image),
+				}
+			end
+
+			local function CallBackFunc(choice)
+				if #choice < 1 then
+					return
+				end
+				local value = choice[1].value
+				if choice[1].check1 then
+					-- instant
+					StartMystery(value,true)
+				else
+					StartMystery(value)
+				end
+			end
+
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = ItemList,
+				title = 302535920000268--[[Start A Mystery--]],
+				hint = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
+
+	See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
+				check = {
+					{
+						title = 302535920000270--[[Instant Start--]],
+						hint = 302535920000271--[["May take up to one Sol to ""instantly"" activate mystery."--]],
+					},
+				},
 			}
 		end
-
-		local function CallBackFunc(choice)
-			if #choice < 1 then
-				return
-			end
-			local value = choice[1].value
-			if choice[1].check1 then
-				-- instant
-				ChoGGi.MenuFuncs.StartMystery(value,true)
-			else
-				ChoGGi.MenuFuncs.StartMystery(value)
-			end
-		end
-
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = 302535920000268--[[Start A Mystery--]],
-			hint = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
-
-See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
-			check = {
-				{
-					title = 302535920000270--[[Instant Start--]],
-					hint = 302535920000271--[["May take up to one Sol to ""instantly"" activate mystery."--]],
-				},
-			},
-		}
-	end
-
-	function ChoGGi.MenuFuncs.StartMystery(mystery_id,instant)
-		local ChoGGi = ChoGGi
-		local UICity = UICity
---~ 		local DiscoverTech = DiscoverTech
-
-		-- inform people of actions, so they don't add a bunch of them
-		ChoGGi.UserSettings.ShowMysteryMsgs = true
-
-		UICity.mystery_id = mystery_id
-
-		for tech_id,tech in pairs(TechDef) do
-			if tech.mystery == mystery_id then
---~ 				DiscoverTech(tech_id)
-				if not UICity.tech_status[tech_id] then
-					UICity.tech_status[tech_id] = {points = 0, field = tech.group}
-					tech:EffectsInit(UICity)
-				end
-			end
-		end
-		UICity:InitMystery()
-
-		-- might help
-		if UICity.mystery then
-			UICity.mystery:ApplyMysteryResourceProperties()
-		end
-
-		-- instant start
-		if instant then
-			local seqs = UICity.mystery.seq_player.seq_list[1]
-			for i = 1, #seqs do
-				local seq = seqs[i]
-				if seq.class == "SA_WaitExpression" then
-					seq.duration = 0
-					seq.expression = nil
-				elseif seq.class == "SA_WaitMarsTime" then
-					seq.duration = 0
-					seq.rand_duration = 0
-					break
-				end
-			end
-		end
-
-		-- needed to start mystery
-		UICity.mystery.seq_player:AutostartSequences()
-	end
+	end -- do
 
 	-- loops through all the sequences and adds the logs we've already seen
 	local function ShowMysteryLog(MystName)
 		local msgs = {string.format("%s\n\n%s\n",MystName,S[302535920000272--[["To play back speech use ""Tools>Exec"" and type in
-	g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
+g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		local Players = s_SeqListPlayers
 		-- 1 is some default map thing
 		if #Players < 2 then
@@ -745,14 +746,7 @@ See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
 			custom_func = ShowMysteryLog,
 		}
 	end
-	--~	 local idx = 0
-	--~	 for Thread in pairs(ThreadsMessageToThreads) do
-	--~		 if Thread.thread and IsValidThread(Thread.thread) then
-	--~			 idx = idx + 1
-	--~			 print("idx ",idx)
-	--~		 end
-	--~	 end
-	--~ ex(s_SeqListPlayers)
+
 	function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
 		local ChoGGi = ChoGGi
 		local g_Classes = g_Classes
@@ -797,9 +791,9 @@ See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
 
 							Thread.finished = true
 							--Thread.action:EndWait(Thread)
-							--may not be needed
+							-- may not be needed
 							Player:UpdateCurrentIP(seq_list)
-							--let them know
+							-- let them know
 							MsgPopup(
 								302535920000287--[[Timer delay removed (may take upto a Sol).--]],
 								title

@@ -364,6 +364,10 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.ObjectCloner(obj)
 		obj = obj or ChoGGi.ComFuncs.SelObject()
+		if not IsValid(obj) then
+			return
+		end
+
 		-- clone dome = crashy
 		local new
 		if obj:IsKindOf("Dome") then

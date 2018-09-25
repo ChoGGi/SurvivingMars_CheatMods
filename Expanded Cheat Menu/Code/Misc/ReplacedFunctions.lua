@@ -759,15 +759,15 @@ function OnMsg.ClassesBuilt()
 		ChoGGi_OrigFuncs.MartianUniversity_OnTrainingCompleted(self, unit)
 	end
 
-	--used to skip mystery sequences
+	-- used to skip mystery sequences
 	do -- SkipMystStep
-		local function SkipMystStep(self,MystFunc)
+		local function SkipMystStep(self,myst_func)
 			local ChoGGi = ChoGGi
 			local StopWait = ChoGGi.Temp.SA_WaitMarsTime_StopWait
 			local p = self.meta.player
 
 			if StopWait and p and StopWait.seed == p.seed then
-				--inform user, or if it's a dbl then skip
+				-- inform user, or if it's a dbl then skip
 				if StopWait.skipmsg then
 					StopWait.skipmsg = nil
 				else
@@ -777,7 +777,7 @@ function OnMsg.ClassesBuilt()
 					)
 				end
 
-				--only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...
+				-- only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...
 				if StopWait.again == true then
 					StopWait.again = nil
 					StopWait.skipmsg = true
@@ -787,7 +787,7 @@ function OnMsg.ClassesBuilt()
 					StopWait.again = false
 				end
 
-				--skip
+				-- skip
 				return 1
 			end
 
@@ -795,10 +795,10 @@ function OnMsg.ClassesBuilt()
 		end
 
 		function SA_WaitTime:StopWait()
-			SkipMystStep(self,"SA_WaitTime_StopWait")
+			return SkipMystStep(self,"SA_WaitTime_StopWait")
 		end
 		function SA_WaitMarsTime:StopWait()
-			SkipMystStep(self,"SA_WaitMarsTime_StopWait")
+			return SkipMystStep(self,"SA_WaitMarsTime_StopWait")
 		end
 	end -- do
 
