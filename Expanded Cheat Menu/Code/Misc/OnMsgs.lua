@@ -454,7 +454,10 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 
 	-- if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
 	if obj:IsKindOfClasses("Residence","Workplace","SpireBase") then
-		ChoGGi.CodeFuncs.AttachToNearestDome(obj)
+		-- seems to need a delay in DA
+		DelayedCall(100, function()
+			ChoGGi.CodeFuncs.AttachToNearestDome(obj)
+		end)
 	end
 
 	if UserSettings.StorageOtherDepot then

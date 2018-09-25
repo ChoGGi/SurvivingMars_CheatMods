@@ -534,9 +534,10 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
 		local ChoGGi = ChoGGi
+		local AttachToNearestDome = ChoGGi.CodeFuncs.AttachToNearestDome
 		local objs = UICity.labels.InsideBuildings or ""
 		for i = 1, #objs do
-			ChoGGi.CodeFuncs.AttachToNearestDome(objs[i])
+			AttachToNearestDome(objs[i])
 		end
 
 		MsgPopup(

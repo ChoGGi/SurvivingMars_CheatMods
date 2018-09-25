@@ -159,42 +159,44 @@ do -- get tech stuff
 	end
 end
 
---if building requires a dome and that dome is borked then assign it to nearest dome
-function ChoGGi.CodeFuncs.AttachToNearestDome(building)
+-- if building requires a dome and that dome is borked then assign it to nearest dome
+function ChoGGi.CodeFuncs.AttachToNearestDome(obj)
 	local workingdomes = ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Dome,nil,nil,"working")
 
-	--check for dome and ignore outdoor buildings *and* if there aren't any domes on map
-	if not building.parent_dome and building:GetDefaultPropertyValue("dome_required") and #workingdomes > 0 then
-		--find the nearest dome
-		local dome = FindNearestObject(workingdomes,building)
+	-- check for dome and ignore outdoor buildings *and* if there aren't any domes on map
+	if not obj.parent_dome and obj:GetDefaultPropertyValue("dome_required") and #workingdomes > 0 then
+		-- find the nearest dome
+		local dome = FindNearestObject(workingdomes,obj)
 		if dome and dome.labels then
-			building.parent_dome = dome
-			--add to dome labels
-			dome:AddToLabel("InsideBuildings", building)
-			--work/res
-			if building:IsKindOf("Workplace") then
-				dome:AddToLabel("Workplace", building)
-			elseif building:IsKindOf("Residence") then
-				dome:AddToLabel("Residence", building)
+			obj.parent_dome = dome
+			-- add to dome labels
+			dome:AddToLabel("InsideBuildings", obj)
+
+			-- work/res
+			if obj:IsKindOf("Workplace") then
+				dome:AddToLabel("Workplace", obj)
+			elseif obj:IsKindOf("Residence") then
+				dome:AddToLabel("Residence", obj)
 			end
-			--spires
-			if building:IsKindOf("WaterReclamationSpire") then
---~				 dome:AddToLabel("WaterReclamationSpires", building)
-				building:SetDome(dome)
-			elseif building:IsKindOf("NetworkNode") then
-				building.parent_dome:SetLabelModifier("BaseResearchLab", "NetworkNode", building.modifier)
+
+			-- spires
+			if obj:IsKindOf("WaterReclamationSpire") then
+				obj:SetDome(dome)
+			elseif obj:IsKindOf("NetworkNode") then
+				obj.parent_dome:SetLabelModifier("BaseResearchLab", "NetworkNode", obj.modifier)
 			end
+
 		end
 	end
 end
 
 --toggle working status
-function ChoGGi.CodeFuncs.ToggleWorking(building)
-	if IsValid(building) then
+function ChoGGi.CodeFuncs.ToggleWorking(obj)
+	if IsValid(obj) then
 		CreateRealTimeThread(function()
-			building:ToggleWorking()
+			obj:ToggleWorking()
 			Sleep(5)
-			building:ToggleWorking()
+			obj:ToggleWorking()
 		end)
 	end
 end
