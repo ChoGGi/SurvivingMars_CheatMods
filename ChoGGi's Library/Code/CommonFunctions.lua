@@ -304,10 +304,11 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen)
 			local item = items[i]
 			local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
 			-- defaults to ChoGGi_ButtonMenu. class = "ChoGGi_CheckButtonMenu",
+
 			local button = cls:new({
 				TextColor = black,
-				RolloverText = CheckText(item.hint),
 				RolloverTitle = item.hint_title and CheckText(item.hint_title,item.obj and RetName(item.obj) or S[126095410863--[[Info--]]]),
+				RolloverText = CheckText(item.hint,""),
 				Text = CheckText(item.name),
 				OnMouseButtonUp = function()
 					popup:Close()

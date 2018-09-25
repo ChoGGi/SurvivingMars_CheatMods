@@ -226,7 +226,7 @@ function OnMsg.ModsLoaded()
 			ChoGGi.ComFuncs.ShowConsoleLogWin(true)
 		end
 
-		--dim that console bg
+		-- dim that console bg
 		if ChoGGi.UserSettings.ConsoleDim then
 			config.ConsoleDim = 1
 		end

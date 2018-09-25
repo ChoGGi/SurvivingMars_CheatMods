@@ -35,7 +35,7 @@ function OnMsg.ClassesGenerate()
 	ChoGGi.Defaults = {
 		-- oh we'll change it
 		_VERSION = 0,
-		--dark background for the console log
+		-- dark background for the console log
 		ConsoleDim = true,
 		-- shows the console log on screen
 		ConsoleToggleHistory = true,
@@ -80,8 +80,6 @@ function OnMsg.ClassesGenerate()
 		FlushLogConstantly = false,
 		-- okay, maybe some people don't want a mod to change the title of their game
 		ChangeWindowTitle = true,
-		-- msg that shows in the console after tabbing back to the game and "heaven forbid" you have the cheats menu open
-		HideuiWindowErrorMsg = true,
 		-- how wide the starting radius, how much to step per press
 		FlattenGround_Radius = 2500,
 		FlattenGround_HeightDiff = 100,

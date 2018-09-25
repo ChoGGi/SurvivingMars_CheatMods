@@ -763,7 +763,7 @@ See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
 		for Thread in pairs(ThreadsMessageToThreads) do
 			if Thread.player and Thread.player.seed == seed then
 
-				--only remove finished waittime threads, can cause issues removing other threads
+				-- only remove finished waittime threads, can cause issues removing other threads
 				if Thread.finished == true and (Thread.action.class == "SA_WaitMarsTime" or Thread.action.class == "SA_WaitTime" or Thread.action.class == "SA_RunSequence") then
 					DeleteThread(Thread.thread)
 				end
@@ -779,7 +779,7 @@ See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
 						local seq = seq_list[i]
 						local title = string.format("%s %s: %s",name,S[302535920000286--[[Part--]]],ip)
 
-						--seqs that add delays/tasks
+						-- seqs that add delays/tasks
 						if seq.class == "SA_WaitMarsTime" or seq.class == "SA_WaitTime" then
 							ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed}
 							--we don't want to wait
@@ -807,7 +807,7 @@ See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
 							break
 
 						elseif seq.class == "SA_WaitExpression" then
-							seq.duration = 0
+							seq.duration = 1
 							local function CallBackFunc(answer)
 								if answer then
 									seq.expression = nil
@@ -838,7 +838,7 @@ See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
 							local function CallBackFunc(answer)
 								if answer then
 									ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed,again = true}
-									--send fake msg (ok it's real, but it hasn't happened)
+									-- send fake msg (ok it's real, but it hasn't happened)
 									Msg(seq.msg)
 									Player:UpdateCurrentIP(seq_list)
 								end
