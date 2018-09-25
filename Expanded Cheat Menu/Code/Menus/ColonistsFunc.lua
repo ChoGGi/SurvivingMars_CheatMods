@@ -1289,7 +1289,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		hint = string.format("%s\n\n%s",hint,S[302535920000821--[[Defaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits.--]]])
 
 		local ItemList = {
-			{text = DefaultSetting,value = DefaultSetting,hint = 302535920000822--[[Use game defaults--]]},
+			{text = string.format(" %s",DefaultSetting),value = DefaultSetting,hint = 302535920000822--[[Use game defaults--]]},
 			{text = string.format(" %s",S[302535920000823--[[All Positive Traits--]]]),value = "PositiveTraits",hint = 302535920000824--[[All the positive traits...--]]},
 			{text = string.format(" %s",S[302535920000825--[[All Negative Traits--]]]),value = "NegativeTraits",hint = 302535920000826--[[All the negative traits...--]]},
 			{text = string.format(" %s",S[302535920001040--[[All Other Traits--]]]),value = "OtherTraits",hint = 302535920001050--[[All the other traits...--]]},
