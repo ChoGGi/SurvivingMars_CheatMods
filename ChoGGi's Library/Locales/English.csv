@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001354,,
 302535920001355,,
 302535920001356,,
 302535920001357,,
@@ -48,6 +47,7 @@ ID,Text,Translation,Old Translation,Gender
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
 302535920000104,Expanded CM,
+302535920001354,"This dome (%s) has buildings, which = crash if removed...",
 302535920000723,Lua,
 302535920001257,Auto-refresh list every second.,
 302535920001288,Wrap Lines,

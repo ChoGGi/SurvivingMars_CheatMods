@@ -38,6 +38,12 @@ function OnMsg.ClassesGenerate()
 
 			local function CallBackFunc(answer)
 				if answer then
+					local dome = self:IsKindOf("Dome")
+					if dome and #self.labels.Buildings > 0 then
+						print(S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]])
+						return
+					end
+
 					self.indestructible = false
 					DestroyBuildingImmediate(self)
 				end
