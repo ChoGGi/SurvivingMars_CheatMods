@@ -175,8 +175,8 @@ function OnMsg.ClassesGenerate()
 
 
 		function ChoGGi.Temp.ReplaceDome(dome)
-			dome = dome or empty_table
-			local olddome = empty_table
+			dome = dome or {}
+			local olddome = {}
 			for Key,Value in pairs(dome) do
 				olddome[Key] = Value
 			end

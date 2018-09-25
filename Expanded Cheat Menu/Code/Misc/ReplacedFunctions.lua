@@ -29,6 +29,8 @@ function OnMsg.ClassesGenerate()
 	MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
+
+
 	ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 	SaveOrigFunc = function(class_or_func,func_name)
 		if func_name then
@@ -240,18 +242,18 @@ function OnMsg.ClassesGenerate()
 	AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
 
 	-- Custom Msgs
-	SaveOrigFunc("CursorBuilding","GameInit")
-	SaveOrigFunc("SupplyRocket","HasEnoughFuelToLaunch")
-	SaveOrigFunc("Workplace","GetWorkshiftPerformance")
 	SaveOrigFunc("BaseRover","GetCableNearby")
+	SaveOrigFunc("Building","ApplyUpgrade")
 	SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
+	SaveOrigFunc("CursorBuilding","GameInit")
+	SaveOrigFunc("DustGridElement","AddDust")
 	SaveOrigFunc("GridObject","GetPipeConnections")
+	SaveOrigFunc("SupplyRocket","HasEnoughFuelToLaunch")
 	SaveOrigFunc("UIRangeBuilding","SetUIRange")
 	SaveOrigFunc("Workplace","AddWorker")
+	SaveOrigFunc("Workplace","GetWorkshiftPerformance")
 	SaveOrigFunc("XPopupMenu","RebuildActions")
 	SaveOrigFunc("XShortcutsHost","SetVisible")
-	SaveOrigFunc("DustGridElement","AddDust")
-	SaveOrigFunc("Building","ApplyUpgrade")
 
 	-- allows you to build outside buildings inside and vice
 	do -- CursorBuilding:GameInit
@@ -458,16 +460,11 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 			if restrict then
-				self.workers[shift] = self.workers[shift] or empty_table
-				self.workers[shift][#self.workers[shift]+1] = worker
-				--table.insert(self.workers[shift], worker)
-				self:UpdatePerformance()
-				self:SetWorkplaceWorking()
-				self:UpdateAttachedSigns()
+				ChoGGi_OrigFuncs.Workplace_AddWorker(self, worker, shift)
 			end
 
 		else
-			return ChoGGi_OrigFuncs.Workplace_AddWorker(self, worker, shift)
+			ChoGGi_OrigFuncs.Workplace_AddWorker(self, worker, shift)
 		end
 	end
 
@@ -555,6 +552,8 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("SA_WaitMarsTime","StopWait")
 	SaveOrigFunc("SA_WaitTime","StopWait")
 	SaveOrigFunc("SingleResourceProducer","Produce")
+	SaveOrigFunc("SpaceElevator","DroneUnloadResource")
+	SaveOrigFunc("SpaceElevator","ToggleAllowExport")
 	SaveOrigFunc("SubsurfaceHeater","UpdatElectricityConsumption")
 	SaveOrigFunc("SupplyGridElement","SetProduction")
 	SaveOrigFunc("SupplyGridFragment","RandomElementBreakageOnWorkshiftChange")
@@ -566,8 +565,6 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("XWindow","OnMouseEnter")
 	SaveOrigFunc("XWindow","OnMouseLeft")
 	SaveOrigFunc("XWindow","SetId")
-	SaveOrigFunc("SpaceElevator","ToggleAllowExport")
-	SaveOrigFunc("SpaceElevator","DroneUnloadResource")
 --~	 SaveOrigFunc("RCRover","LeadIn")
 	local UserSettings = ChoGGi.UserSettings
 

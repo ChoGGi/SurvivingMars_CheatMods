@@ -322,7 +322,7 @@ end
 -- adds class name then list of functions below
 function Examine:BuildFuncList(obj_name,prefix)
 	prefix = prefix or ""
-	local class = _G[obj_name] or empty_table
+	local class = _G[obj_name] or {}
 	local skip = true
 	for key,_ in pairs(class) do
 		if type(class[key]) == "function" then
@@ -506,7 +506,7 @@ This dialog will freeze till you click something."--]]],
 end
 
 function Examine:FindNext(filter)
-	local drawBuffer = self.idText.draw_cache or empty_table
+	local drawBuffer = self.idText.draw_cache or {}
 	local current_y = self.idScrollArea.OffsetY
 	local min_match, closest_match = false, false
 	for y, list_draw_info in pairs(drawBuffer) do
@@ -942,7 +942,7 @@ function Examine:totextex(obj)
 			dbg_value = StringFormat("\ndebug.getinfo(): %s",DebugGetInfo(obj))
 		else
 			dbg_value = "\ndebug.getinfo(): "
-			for key,value in pairs(debug.getinfo(obj) or empty_table) do
+			for key,value in pairs(debug.getinfo(obj) or {}) do
 				dbg_value = StringFormat("%s\n%s: %s",dbg_value,key,self:valuetotextex(value))
 			end
 		end

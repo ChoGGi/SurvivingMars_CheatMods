@@ -251,7 +251,7 @@ function OnMsg.PersistPostLoad()
 		end
 
 		--[LUA ERROR] Mars/Lua/Heat.lua:65: attempt to call a nil value (method 'ApplyForm')
-		local s_Heaters = s_Heaters or empty_table
+		local s_Heaters = s_Heaters or {}
 		for obj,_ in pairs(s_Heaters) do
 			if obj:IsKindOf("UnpersistedMissingClass") then
 				s_Heaters[obj] = nil
@@ -260,7 +260,7 @@ function OnMsg.PersistPostLoad()
 
 		--GetFreeSpace,GetFreeLivingSpace,GetFreeWorkplaces,GetFreeWorkplacesAround
 		local UICity = UICity
-		for _,label in pairs(UICity.labels or empty_table) do
+		for _,label in pairs(UICity.labels or {}) do
 			for i = #label, 1, -1 do
 				if IsKindOf(label[i],"UnpersistedMissingClass") then
 					label[i]:delete()
@@ -271,7 +271,7 @@ function OnMsg.PersistPostLoad()
 
 --~		 local domes = UICity.labels.Dome or ""
 --~		 for i = 1, #domes do
---~			 for _,label in pairs(domes[i].labels or empty_table) do
+--~			 for _,label in pairs(domes[i].labels or {}) do
 --~				 for j = #label, 1, -1 do
 --~					 if type(label[j].SetBase) ~= "function" then
 --~						 label[j]:delete()
@@ -943,7 +943,7 @@ do -- LoadGame/CityStart
 
 		-- update cargo resupply
 		ChoGGi.ComFuncs.UpdateDataTables(true)
-		for Key,Value in pairs(UserSettings.CargoSettings or empty_table) do
+		for Key,Value in pairs(UserSettings.CargoSettings or {}) do
 			if ChoGGi.Tables.Cargo[Key] then
 				if Value.pack then
 					ChoGGi.Tables.Cargo[Key].pack = Value.pack
@@ -1210,7 +1210,7 @@ do -- LoadGame/CityStart
 
 		CreateRealTimeThread(function()
 			--clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
-			local shown = g_ShownOnScreenNotifications or empty_table
+			local shown = g_ShownOnScreenNotifications or {}
 			for Key,_ in pairs(shown) do
 				if type(Key) == "number" or tostring(Key):find("ChoGGi_")then
 					shown[Key] = nil
@@ -1250,12 +1250,6 @@ do -- LoadGame/CityStart
 				end
 			end
 
---~			 -- make the change map dialog movable
---~ print("DataInstances.UIDesignerData")
---~			 if next(DataInstances.UIDesignerData) then
---~				 DataInstances.UIDesignerData.MapSettingsDialog.parent_control.Movable = true
---~				 DataInstances.UIDesignerData.MessageQuestionBox.parent_control.Movable = true
---~			 end
 		end)
 
 		-- print startup msgs to console log

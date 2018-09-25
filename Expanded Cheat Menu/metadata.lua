@@ -6,11 +6,6 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_CheatMenu",
 	"image", "Preview.png",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
-	"TagGameplay", true,
-	"TagInterface", true,
-	"TagTools", true,
-	"TagOther", true,
-	"TagCheats", true,
 	"code", {
 		-- start 'er up
 		"Init.lua",
@@ -123,4 +118,10 @@ Everyone else giving suggestions/pointing out issues.
 ##### Access to missing functionality
 Da Vinci update added a blacklist of functions, you can use this to bypass them.
 %sHelperMod]],ConvertToOSPath(CurrentModPath)),
+
+	"TagGameplay", true,
+	"TagInterface", true,
+	"TagTools", true,
+	"TagOther", true,
+	"TagCheats", true,
 })

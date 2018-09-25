@@ -202,7 +202,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.DisastersStop()
-		local mis = g_IncomingMissiles or empty_table
+		local mis = g_IncomingMissiles or {}
 		for Key,_ in pairs(mis) do
 			Key:ExplodeInAir()
 		end

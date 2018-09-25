@@ -1013,16 +1013,18 @@ end
 
 
 function ChoGGi.ComFuncs.RetBuildingPermissions(traits,settings)
-	local block = false
-	local restrict = false
+	settings.restricttraits = settings.restricttraits or {}
+	settings.blocktraits = settings.blocktraits or {}
+	traits = traits or {}
+	local block,restrict
 
 	local rtotal = 0
-	for _,_ in pairs(settings.restricttraits or empty_table) do
+	for _,_ in pairs(settings.restricttraits) do
 		rtotal = rtotal + 1
 	end
 
 	local rcount = 0
-	for trait,_ in pairs(traits or empty_table) do
+	for trait,_ in pairs(traits) do
 		if settings.restricttraits[trait] then
 			rcount = rcount + 1
 		end
@@ -1030,7 +1032,8 @@ function ChoGGi.ComFuncs.RetBuildingPermissions(traits,settings)
 			block = true
 		end
 	end
-	--restrict is empty so allow all or since we're restricting then they need to be the same
+
+	-- restrict is empty so allow all or since we're restricting then they need to be the same
 	if not next(settings.restricttraits) or rcount == rtotal then
 		restrict = true
 	end

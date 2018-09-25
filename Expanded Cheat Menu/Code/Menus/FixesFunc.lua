@@ -227,7 +227,7 @@ function OnMsg.ClassesGenerate()
 		local GenerateColonistData = GenerateColonistData
 
 		local function SpawnColonist(old_c,building,pos,city)
-			local dome = FindNearestObject(city.labels.Dome or empty_table,old_c or building)
+			local dome = FindNearestObject(city.labels.Dome or {},old_c or building)
 			if not dome then
 				return
 			end
@@ -293,7 +293,7 @@ function OnMsg.ClassesGenerate()
 			for i = 1, #objs do
 				local c = objs[i]
 				if IsValid(c) and c:GetStateText() == "movePlanet" then
-					local rocket = FindNearestObject(UICity.labels.AllRockets or empty_table,c)
+					local rocket = FindNearestObject(UICity.labels.AllRockets or {},c)
 					SpawnColonist(c,rocket,c:GetVisualPos(),UICity)
 					if type(c.Done) == "function" then
 						c:Done()
@@ -456,12 +456,12 @@ function OnMsg.ClassesGenerate()
 		local type,pairs = type,pairs
 		local function RemoveUnreachable(cls_name)
 			MapForEach("map",cls_name,function(o)
-				for bld,_ in pairs(o.unreachable_buildings or empty_table) do
+				for bld,_ in pairs(o.unreachable_buildings or {}) do
 					if type(bld.IsKindOf) == "function" and bld:IsKindOf("ConstructionSite") then
 						bld:Cancel()
 					end
 				end
-				o.unreachable_buildings = empty_table
+				o.unreachable_buildings = {}
 			end)
 		end
 

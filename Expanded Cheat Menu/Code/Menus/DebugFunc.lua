@@ -390,7 +390,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local ItemList = {}
-		local Table = sel:GetStates() or empty_table
+		local Table = sel:GetStates() or {}
 
 		for Key,State in pairs(Table) do
 			ItemList[#ItemList+1] = {
@@ -424,7 +424,7 @@ function OnMsg.ClassesGenerate()
 	local ObjectSpawner_ItemList = {}
 	function ChoGGi.MenuFuncs.ObjectSpawner()
 		local ChoGGi = ChoGGi
-		local EntityData = EntityData or empty_table
+		local EntityData = EntityData or {}
 		if #ObjectSpawner_ItemList == 0 then
 			for Key,_ in pairs(EntityData) do
 				ObjectSpawner_ItemList[#ObjectSpawner_ItemList+1] = {

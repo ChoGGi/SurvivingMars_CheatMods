@@ -456,7 +456,7 @@ function OnMsg.ClassesGenerate()
 				RetError(err)
 			end
 
-			if ChoGGi.UserSettings == empty_table or type(ChoGGi.UserSettings) ~= "table" then
+			if ChoGGi.UserSettings == {} or type(ChoGGi.UserSettings) ~= "table" then
 				-- so now at least the game will start
 				ChoGGi.UserSettings = ChoGGi.Defaults
 				return ChoGGi.Defaults
@@ -527,7 +527,7 @@ function OnMsg.ClassesGenerate()
 		local function AddOldSettings(ChoGGi,old_cat,new_name)
 			local BuildingTemplates = BuildingTemplates
 			-- then loop through it
-			for key,value in pairs(ChoGGi.UserSettings[old_cat] or empty_table) do
+			for key,value in pairs(ChoGGi.UserSettings[old_cat] or {}) do
 				--it likely doesn't exist, but check first and add a blank table
 				if not ChoGGi.UserSettings.BuildingSettings[key] then
 					ChoGGi.UserSettings.BuildingSettings[key] = {}
@@ -550,9 +550,9 @@ function OnMsg.ClassesGenerate()
 			-- remove empty entries in BuildingSettings
 			if next(ChoGGi.UserSettings.BuildingSettings) then
 				--remove any empty building tables
-				for Key,_ in pairs(ChoGGi.UserSettings.BuildingSettings) do
-					if not next(ChoGGi.UserSettings.BuildingSettings[Key]) then
-						ChoGGi.UserSettings.BuildingSettings[Key] = nil
+				for key,_ in pairs(ChoGGi.UserSettings.BuildingSettings) do
+					if not next(ChoGGi.UserSettings.BuildingSettings[key]) then
+						ChoGGi.UserSettings.BuildingSettings[key] = nil
 					end
 				end
 			-- if empty table then new settings file or old settings
@@ -568,9 +568,9 @@ function OnMsg.ClassesGenerate()
 			end
 
 			-- remove empty entries in CargoSettings
-			for Key,_ in pairs(ChoGGi.UserSettings.CargoSettings or empty_table) do
-				if not next(ChoGGi.UserSettings.CargoSettings[Key]) then
-					ChoGGi.UserSettings.CargoSettings[Key] = nil
+			for key,_ in pairs(ChoGGi.UserSettings.CargoSettings or {}) do
+				if not next(ChoGGi.UserSettings.CargoSettings[key]) then
+					ChoGGi.UserSettings.CargoSettings[key] = nil
 				end
 			end
 		end

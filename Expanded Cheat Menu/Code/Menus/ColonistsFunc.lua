@@ -1265,7 +1265,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 	function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
 		local ChoGGi = ChoGGi
-		local DataInstances = DataInstances
+		local TraitPresets = TraitPresets
 		local DefaultSetting = S[1000121--[[Default--]]]
 		local sSetting = "NewColonistTraits"
 		local sType = string.format("%s ",S[398847925160--[[New--]]])
@@ -1320,7 +1320,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		end
 		-- add hint descriptions
 		for i = 1, #ItemList do
-			local hinttemp = DataInstances.Trait[ItemList[i].text]
+			local hinttemp = TraitPresets[ItemList[i].text]
 			if hinttemp then
 				ItemList[i].hint = string.format(": %s",Trans(hinttemp.description))
 			end
@@ -1773,10 +1773,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 	function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
 		local ChoGGi = ChoGGi
-		local DataInstances = DataInstances
+		local TraitPresets = TraitPresets
 
 		local sel = ChoGGi.ComFuncs.SelObject()
-		if not sel or (not sel:IsKindOf("Workplace") and not sel:IsKindOf("TrainingBuilding")) then
+		if not sel or sel and not (sel:IsKindOf("Workplace") or sel:IsKindOf("TrainingBuilding")) then
 			MsgPopup(
 				302535920000842--[[Select a workplace or training building.--]],
 				302535920000992--[[Building Traits--]],
@@ -1788,8 +1788,11 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local id = sel.encyclopedia_id
 		local name = Trans(sel.display_name)
 		local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
-		if not BuildingSettings[id] then
-			BuildingSettings[id] = {restricttraits = {},blocktraits = {},}
+		if not BuildingSettings[id] or BuildingSettings[id] and not next(BuildingSettings[id]) then
+			BuildingSettings[id] = {
+				restricttraits = {},
+				blocktraits = {},
+			}
 		end
 
 		local ItemList = {}
@@ -1800,7 +1803,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			ItemList[#ItemList+1] = {
 				text = trait,
 				value = trait,
-				hint = string.format("%s\n%s",str_hint:format(status),Trans(DataInstances.Trait[trait].description)),
+				hint = string.format("%s\n%s",str_hint:format(status),Trans(TraitPresets[trait].description)),
 			}
 		end
 		for i = 1, #ChoGGi.Tables.PositiveTraits do
@@ -1809,7 +1812,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			ItemList[#ItemList+1] = {
 				text = trait,
 				value = trait,
-				hint = string.format("%s\n%s",str_hint:format(status),Trans(DataInstances.Trait[trait].description)),
+				hint = string.format("%s\n%s",str_hint:format(status),Trans(TraitPresets[trait].description)),
 			}
 		end
 		for i = 1, #ChoGGi.Tables.OtherTraits do
@@ -1818,7 +1821,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			ItemList[#ItemList+1] = {
 				text = trait,
 				value = trait,
-				hint = string.format("%s\n%s",str_hint:format(status),Trans(DataInstances.Trait[trait].description)),
+				hint = string.format("%s\n%s",str_hint:format(status),Trans(TraitPresets[trait].description)),
 			}
 		end
 
@@ -1839,15 +1842,14 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 			if check1 then
 				MapForEach("map",sel.class,function(workplace)
-					--all three shifts
+					-- all three shifts
 					for j = 1, #workplace.workers do
-						--workers in shifts (go through table backwards for when someone gets fired)
+						-- workers in shifts (go through table backwards for when someone gets fired)
 						for k = #workplace.workers[j], 1, -1 do
 							local worker = workplace.workers[j][k]
 							local block,restrict = ChoGGi.ComFuncs.RetBuildingPermissions(worker.traits,BuildingSettings[id])
 							if block or not restrict then
 								table.remove_entry(workplace.workers[j], worker)
-								--table.remove(workplace.workers[j],k)
 								workplace:SetWorkplaceWorking()
 								workplace:StopWorkCycle(worker)
 								if worker:IsInWorkCommand() then
@@ -1860,7 +1862,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				end)
 			end
 
-			--remove empty tables
+			-- remove empty tables
 			if not next(BuildingSettings[id].restricttraits) and not next(BuildingSettings[id].blocktraits) then
 				BuildingSettings[id].restricttraits = nil
 				BuildingSettings[id].blocktraits = nil
@@ -1869,7 +1871,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			ChoGGi.SettingFuncs.WriteSettings()
 
 			MsgPopup(
-				string.format("%s: %s%s%s",S[302535920000843--[[Toggled traits--]]],#choice,check1 and " ",check1 and S[302535920000844--[[Fired workers--]]] or ""),
+				string.format("%s: %s%s%s",S[302535920000843--[[Toggled traits--]]],#choice,check1 and " " or "",check1 and S[302535920000844--[[Fired workers--]]] or ""),
 				4801--[[Workplace--]],
 				default_icon
 			)
