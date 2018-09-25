@@ -4,6 +4,9 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v9.2 (Unreleased)
+### Fixed:
+- Removed some log spam when blacklist is enabled.
+- Use Last Orientation wasn't staying disabled (thanks McKaby).
 
 ## v9.1 (22 Sep 2018)
 ### Changed:

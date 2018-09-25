@@ -862,7 +862,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.UseLastOrientation_Toggle()
 		local ChoGGi = ChoGGi
-		ChoGGi.UserSettings.UseLastOrientation = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.UseLastOrientation)
+		ChoGGi.UserSettings.UseLastOrientation = not ChoGGi.UserSettings.UseLastOrientation
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(

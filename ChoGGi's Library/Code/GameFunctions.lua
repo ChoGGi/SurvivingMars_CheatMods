@@ -9,6 +9,8 @@ local Random = ChoGGi.ComFuncs.Random
 local S = ChoGGi.Strings
 local Trans = ChoGGi.ComFuncs.Translate
 
+local StringFormat = string.format
+
 -- check if tech is researched before we get value
 do -- get tech stuff
 	local ChoGGi = ChoGGi
@@ -284,7 +286,7 @@ function ChoGGi.CodeFuncs.ColonistUpdateAge(c,age)
 	if age == "Retiree" then
 		c.age = 65 --why isn't there a base_MinAge_Retiree...
 	else
-		c.age = c[string.format("base_MinAge_%s",age)]
+		c.age = c[StringFormat("base_MinAge_%s",age)]
 	end
 
 	if age == "Child" then
@@ -694,7 +696,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 	end
 
 	local res = oldobj.resource
-	local amount = oldobj[string.format("GetStored_%s",res)](oldobj)
+	local amount = oldobj[StringFormat("GetStored_%s",res)](oldobj)
 	-- not good to be larger then this when game is saved (height limit of map objects seems to be 65536)
 	if amount > 20000000 then
 		amount = amount
@@ -735,7 +737,7 @@ function ChoGGi.CodeFuncs.EmptyMechDepot(oldobj)
 
 	-- create new depot, and set max amount to stored amount of old depot
 	local newobj = PlaceObj("UniversalStorageDepot", {
-		"template_name", string.format("Storage%s",res2),
+		"template_name", StringFormat("Storage%s",res2),
 		"storable_resources", {res},
 		"max_storage_per_resource", amount,
 		-- so it doesn't look weird make sure it's on a hex point
@@ -813,21 +815,21 @@ do -- ChangeObjectColour
 		local ItemList = {}
 		local c = 0
 		for i = 1, 4 do
-			local text = string.format("Color%s",i)
+			local text = StringFormat("Color%s",i)
 			c = c + 1
 			ItemList[c] = {
 				text = text,
 				value = pal[text],
 				hint = 302535920000017--[[Use the colour picker (dbl right-click for instant change).--]],
 			}
-			text = string.format("Metallic%s",i)
+			text = StringFormat("Metallic%s",i)
 			c = c + 1
 			ItemList[c] = {
 				text = text,
 				value = pal[text],
 				hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
 			}
-			text = string.format("Roughness%s",i)
+			text = StringFormat("Roughness%s",i)
 			c = c + 1
 			ItemList[c] = {
 				text = text,
@@ -914,7 +916,7 @@ do -- ChangeObjectColour
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s: %s",S[174--[[Color Modifier--]]],RetName(obj)),
+			title = StringFormat("%s: %s",S[174--[[Color Modifier--]]],RetName(obj)),
 			hint = 302535920000022--[["If number is 8421504 then you probably can't change that colour.
 
 You can copy and paste numbers if you want."--]],
@@ -970,7 +972,7 @@ do -- FindNearestResource
 			ItemList[i] = {
 				text = Trans(item.display_name),
 				value = item.name,
-				icon = TagLookupTable[string.format("icon_%s",item.name)],
+				icon = TagLookupTable[StringFormat("icon_%s",item.name)],
 			}
 		end
 
@@ -985,7 +987,7 @@ do -- FindNearestResource
 				local labels = UICity.labels
 
 				local stockpiles = {}
-				table.append(stockpiles,labels[string.format("MechanizedDepot%s",value)])
+				table.append(stockpiles,labels[StringFormat("MechanizedDepot%s",value)])
 				if value == "BlackCube" then
 					table.append(stockpiles,labels.BlackCubeDumpSite)
 				elseif value == "MysteryResource" then
@@ -996,7 +998,7 @@ do -- FindNearestResource
 					table.append(stockpiles,labels.UniversalStorageDepot)
 				end
 				-- filter out empty/diff res stockpiles
-				local GetStored = string.format("GetStored_%s",value)
+				local GetStored = StringFormat("GetStored_%s",value)
 				stockpiles = FilterObjectsC({
 					filter = function(o)
 						if o[GetStored] and o[GetStored](o) > 999 then
@@ -1031,7 +1033,7 @@ do -- FindNearestResource
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s %s",S[302535920000031--[[Find Nearest Resource--]]],RetName(obj)),
+			title = StringFormat("%s %s",S[302535920000031--[[Find Nearest Resource--]]],RetName(obj)),
 			hint = 302535920000032--[[Select a resource to find--]],
 			skip_sort = true,
 			custom_type = 7,
@@ -1116,7 +1118,7 @@ end -- do
 
 do -- BuildingConsumption
 	local function AddConsumption(obj,name)
-		local tempname = string.format("ChoGGi_mod_%s",name)
+		local tempname = StringFormat("ChoGGi_mod_%s",name)
 		-- if this is here we know it has what we need so no need to check for mod/consump
 		if obj[tempname] then
 			local mod = obj.modifications[name]
@@ -1142,7 +1144,7 @@ do -- BuildingConsumption
 			if mod[1] then
 				mod = mod[1]
 			end
-			local tempname = string.format("ChoGGi_mod_%s",name)
+			local tempname = StringFormat("ChoGGi_mod_%s",name)
 			if not obj[tempname] then
 				obj[tempname] = {
 					amount = mod.amount,
@@ -1408,7 +1410,7 @@ function ChoGGi.CodeFuncs.RetHardwareInfo()
 
 	for key,value in pairs(GetMemoryInfo()) do
 		cm = cm + 1
-		mem[cm] = string.format("%s: %s\n",key,value)
+		mem[cm] = StringFormat("%s: %s\n",key,value)
 	end
 
 	local hw = {}
@@ -1416,17 +1418,17 @@ function ChoGGi.CodeFuncs.RetHardwareInfo()
 	for key,value in pairs(GetHardwareInfo(0)) do
 		if key == "gpu" then
 			chw = chw + 1
-			hw[chw] = string.format("%s: %s\n",key,GetGpuDescription())
+			hw[chw] = StringFormat("%s: %s\n",key,GetGpuDescription())
 		else
 			chw = chw + 1
-			hw[chw] = string.format("%s: %s\n",key,value)
+			hw[chw] = StringFormat("%s: %s\n",key,value)
 		end
 	end
 	table.sort(hw)
 	chw = chw + 1
 	hw[chw] = "\n"
 
-	return string.format([[GetHardwareInfo(0): %s
+	return StringFormat([[GetHardwareInfo(0): %s
 
 GetMemoryInfo(): %s
 AdapterMode(0): %s
@@ -1482,7 +1484,7 @@ function ChoGGi.CodeFuncs.AddXTemplate(name,template,list,toplevel)
 		print("Borked template: ",name, template, list)
 		return
 	end
-	local stored_name = string.format("ChoGGi_Template_%s",name)
+	local stored_name = StringFormat("ChoGGi_Template_%s",name)
 	local XTemplates = XTemplates
 
 	if toplevel then
@@ -1986,7 +1988,7 @@ function ChoGGi.CodeFuncs.UpdateServiceComfortBld(obj,service_stats)
 			obj.children_only = service_stats.children_only
 		end
 		for i = 1, 11 do
-			local name = string.format("interest%s",i)
+			local name = StringFormat("interest%s",i)
 			if service_stats[name] ~= "" and type(service_stats[name]) ~= "nil" then
 				obj[name] = service_stats[name]
 			end
@@ -2056,7 +2058,7 @@ do -- ShowAnimDebug_Toggle
 	local function AnimDebug_Show(obj,colour)
 		local text = PlaceObject("Text")
 		text:SetColor(colour or ChoGGi.CodeFuncs.RandomColour())
-		text:SetFontId(UIL.GetFontID(string.format("%s, 14, bold, aa",ChoGGi.font)))
+		text:SetFontId(UIL.GetFontID(StringFormat("%s, 14, bold, aa",ChoGGi.font)))
 		text:SetCenter(true)
 		local orient = Orientation:new()
 
@@ -2224,9 +2226,9 @@ do -- DeleteAllRocks
 	end
 	function ChoGGi.CodeFuncs.DeleteAllRocks()
 		ChoGGi.ComFuncs.QuestionBox(
-			string.format("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]]),
+			StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]]),
 			CallBackFunc,
-			string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
+			StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
 		)
 	end
 end -- do
@@ -2251,7 +2253,7 @@ function ChoGGi.CodeFuncs.CreateObjectListAndAttaches(obj)
 		return
 	else
 		ItemList[#ItemList+1] = {
-			text = string.format(" %s",obj.class),
+			text = StringFormat(" %s",obj.class),
 			value = obj.class,
 			obj = obj,
 			hint = 302535920001106--[[Change main object colours.--]],
@@ -2265,7 +2267,7 @@ function ChoGGi.CodeFuncs.CreateObjectListAndAttaches(obj)
 						value = a.class,
 						parentobj = obj,
 						obj = a,
-						hint = string.format("%s\n%s: %s",S[302535920001107--[[Change colours of an attached object.--]]],S[302535920000955--[[Handle--]]],a.handle),
+						hint = StringFormat("%s\n%s: %s",S[302535920001107--[[Change colours of an attached object.--]]],S[302535920000955--[[Handle--]]],a.handle),
 					}
 				end
 			end)
@@ -2293,7 +2295,7 @@ function ChoGGi.CodeFuncs.CreateObjectListAndAttaches(obj)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = function()end,
 		items = ItemList,
-		title = string.format("%s: %s",S[174--[[Color Modifier--]]],RetName(obj)),
+		title = StringFormat("%s: %s",S[174--[[Color Modifier--]]],RetName(obj)),
 		hint = 302535920001108--[[Double click to open object/attachment to edit (select to flash object).--]],
 		custom_type = 1,
 		custom_func = FiredOnMenuClick,

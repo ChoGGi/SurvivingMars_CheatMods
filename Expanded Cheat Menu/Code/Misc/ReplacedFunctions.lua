@@ -9,6 +9,8 @@ local blacklist
 local ChoGGi_OrigFuncs
 local SaveOrigFunc
 
+local StringFormat = string.format
+
 -- set UI transparency:
 local function SetTrans(obj)
 	if not obj then
@@ -30,7 +32,7 @@ function OnMsg.ClassesGenerate()
 	ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 	SaveOrigFunc = function(class_or_func,func_name)
 		if func_name then
-			local newname = string.format("%s_%s",class_or_func,func_name)
+			local newname = StringFormat("%s_%s",class_or_func,func_name)
 			if not ChoGGi_OrigFuncs[newname] then
 				ChoGGi_OrigFuncs[newname] = _G[class_or_func][func_name]
 			end
@@ -161,13 +163,13 @@ function OnMsg.ClassesGenerate()
 	--~			 if not pcall(function()
 	--~				 local function ColourText(Text,Bool)
 	--~					 if Bool == true then
-	--~						 return string.format("<color 200 200 200>%s</color>",Text)
+	--~						 return StringFormat("<color 200 200 200>%s</color>",Text)
 	--~					 else
-	--~						 return string.format("<color 75 255 75>%s</color>",Text)
+	--~						 return StringFormat("<color 75 255 75>%s</color>",Text)
 	--~					 end
 	--~				 end
 	--~				 local function ReplaceParam(Name,Text,SearchName)
-	--~					 SearchName = SearchName or string.format("<%s>",Name)
+	--~					 SearchName = SearchName or StringFormat("<%s>",Name)
 	--~					 if not Text:find(SearchName) then
 	--~						 return Text
 	--~					 end
@@ -428,25 +430,30 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	--larger trib/subsurfheater radius
+	-- larger trib/subsurfheater radius
 	function UIRangeBuilding:SetUIRange(radius)
-		local rad = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
-		if rad and rad.uirange then
-			radius = rad.uirange
+		local bs = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
+		if bs and bs.uirange then
+			radius = bs.uirange
 		end
 		return ChoGGi_OrigFuncs.UIRangeBuilding_SetUIRange(self, radius)
 	end
 
-	--block certain traits from workplaces
+	-- block certain traits from workplaces
 	function Workplace:AddWorker(worker, shift)
 		local ChoGGi = ChoGGi
-		local s = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
-		--check that the tables contain at least one trait
-		local bt = s and s.blocktraits and type(s.blocktraits) == "table" and next(s.blocktraits) and s.blocktraits
-		local rt = s and s.restricttraits and type(s.restricttraits) == "table" and next(s.restricttraits) and s.restricttraits
-		if bt or rt then
+		local bs = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
+		-- check that the tables contain at least one trait
+		local bt
+		local rt
+		if bs then
+			bt = type(bs.blocktraits) == "table" and next(bs.blocktraits) and bs.blocktraits
+			rt = type(bs.restricttraits) == "table" and next(bs.restricttraits) and bs.restricttraits
+		end
 
-			local block,restrict = ChoGGi.ComFuncs.RetBuildingPermissions(worker.traits,s)
+		if bt or rt then
+			local block,restrict = ChoGGi.ComFuncs.RetBuildingPermissions(worker.traits,bs)
+
 			if block then
 				return
 			end

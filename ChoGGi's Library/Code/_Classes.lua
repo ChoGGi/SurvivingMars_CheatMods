@@ -13,8 +13,8 @@ end
 
 local box,point = box,point
 
-local white = white
-local black = black
+local white = -1
+local black = -16777216
 local dark_blue = -12235133
 local darker_blue = -16767678
 local dark_gray = -13158858

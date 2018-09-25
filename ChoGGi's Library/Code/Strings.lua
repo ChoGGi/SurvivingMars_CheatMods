@@ -13,7 +13,7 @@ local TranslationTable = TranslationTable
 -- devs didn't bother changing droid font to one that supports unicode, so we do this for not eng
 -- pretty sure anything using droid is just for dev work so...
 if ChoGGi.lang ~= "English" then
-	local string = string
+	local StringFormat = string.format
 	-- first get the unicode font name
 	local f = TranslationTable[984--[[SchemeBk, 15, aa--]]]
 	f = f:sub(1,f:find(",")-1)
@@ -21,31 +21,31 @@ if ChoGGi.lang ~= "English" then
 
 	-- replace any fonts using droid
 	local __game_font_styles = __game_font_styles
-	__game_font_styles[false] = string.format("%s, 12, aa",f)
-	__game_font_styles.Editor9 = string.format("%s, 9, aa",f)
-	__game_font_styles.Editor11Bold = string.format("%s, 11, bold, aa",f)
-	__game_font_styles.Editor11 = string.format("%s, 11, aa",f)
-	__game_font_styles.Editor12Bold = string.format("%s, 12, bold, aa",f)
-	__game_font_styles.Editor12 = string.format("%s, 12, aa",f)
-	__game_font_styles.Editor13 = string.format("%s, 13, aa",f)
-	__game_font_styles.Editor13Bold = string.format("%s, 13, bold, aa",f)
-	__game_font_styles.Editor14 = string.format("%s, 14, aa",f)
-	__game_font_styles.Editor14Bold = string.format("%s, 14, bold, aa",f)
-	__game_font_styles.Editor16 = string.format("%s, 16, aa",f)
-	__game_font_styles.Editor16Bold = string.format("%s, 16, bold, aa",f)
-	__game_font_styles.Editor17 = string.format("%s, 17, aa",f)
-	__game_font_styles.Editor17Bold = string.format("%s, 17, bold, aa",f)
-	__game_font_styles.Editor18 = string.format("%s, 18, aa",f)
-	__game_font_styles.Editor18Bold = string.format("%s, 18, bold, aa",f)
-	__game_font_styles.Editor21Bold = string.format("%s, 21, bold, aa",f)
-	__game_font_styles.Editor32Bold = string.format("%s, 32, bold",f)
-	__game_font_styles.Rollover = string.format("%s, 14, bold, aa",f)
---~	 __game_font_styles.DesignerCaption = string.format("%s, 18, bold, aa",f)
---~	 __game_font_styles.DesignerPropEditor = string.format("%s,f,", 12, aa"")
-	__game_font_styles.Console = string.format("%s, 13, bold, aa",f)
---~	 __game_font_styles.UAMenu = string.format("%s, 14, aa",f)
---~	 __game_font_styles.UAToolbar = string.format("%s, 14, bold, aa",f)
-	__game_font_styles.EditorCaption = string.format("%s, 14, bold, aa",f)
+	__game_font_styles[false] = StringFormat("%s, 12, aa",f)
+	__game_font_styles.Editor9 = StringFormat("%s, 9, aa",f)
+	__game_font_styles.Editor11Bold = StringFormat("%s, 11, bold, aa",f)
+	__game_font_styles.Editor11 = StringFormat("%s, 11, aa",f)
+	__game_font_styles.Editor12Bold = StringFormat("%s, 12, bold, aa",f)
+	__game_font_styles.Editor12 = StringFormat("%s, 12, aa",f)
+	__game_font_styles.Editor13 = StringFormat("%s, 13, aa",f)
+	__game_font_styles.Editor13Bold = StringFormat("%s, 13, bold, aa",f)
+	__game_font_styles.Editor14 = StringFormat("%s, 14, aa",f)
+	__game_font_styles.Editor14Bold = StringFormat("%s, 14, bold, aa",f)
+	__game_font_styles.Editor16 = StringFormat("%s, 16, aa",f)
+	__game_font_styles.Editor16Bold = StringFormat("%s, 16, bold, aa",f)
+	__game_font_styles.Editor17 = StringFormat("%s, 17, aa",f)
+	__game_font_styles.Editor17Bold = StringFormat("%s, 17, bold, aa",f)
+	__game_font_styles.Editor18 = StringFormat("%s, 18, aa",f)
+	__game_font_styles.Editor18Bold = StringFormat("%s, 18, bold, aa",f)
+	__game_font_styles.Editor21Bold = StringFormat("%s, 21, bold, aa",f)
+	__game_font_styles.Editor32Bold = StringFormat("%s, 32, bold",f)
+	__game_font_styles.Rollover = StringFormat("%s, 14, bold, aa",f)
+--~	 __game_font_styles.DesignerCaption = StringFormat("%s, 18, bold, aa",f)
+--~	 __game_font_styles.DesignerPropEditor = StringFormat("%s,f,", 12, aa"")
+	__game_font_styles.Console = StringFormat("%s, 13, bold, aa",f)
+--~	 __game_font_styles.UAMenu = StringFormat("%s, 14, aa",f)
+--~	 __game_font_styles.UAToolbar = StringFormat("%s, 14, bold, aa",f)
+	__game_font_styles.EditorCaption = StringFormat("%s, 14, bold, aa",f)
 
 	-- normally called when translation is changed, but i try to keep Init.lua simple
 	InitGameFontStyles()
@@ -266,6 +266,7 @@ local Strings = {
 	[1000097] = TranslationTable[1000097], -- Category
 	[1000100] = TranslationTable[1000100], -- Amount
 	[1000107] = TranslationTable[1000107], -- Mod
+	[1000110] = TranslationTable[1000110], -- Type
 	[1000113] = TranslationTable[1000113], -- Debug
 	[1000121] = TranslationTable[1000121], -- Default
 	[1000145] = TranslationTable[1000145], -- Text

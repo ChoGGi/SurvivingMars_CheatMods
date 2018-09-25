@@ -682,7 +682,6 @@ See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
 				return
 			end
 			local value = choice[1].value
-			local ThreadsMessageToThreads = ThreadsMessageToThreads or empty_table
 			local seed = choice[1].seed
 			if choice[1].check2 then
 				--remove all
@@ -757,7 +756,6 @@ See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
 	function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
 		local ChoGGi = ChoGGi
 		local g_Classes = g_Classes
-		local ThreadsMessageToThreads = ThreadsMessageToThreads
 
 		local warning = string.format("\n\n%s",S[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]])
 		local name = string.format("%s: %s",S[3486--[[Mystery--]]],ChoGGi.Tables.Mystery[Mystery].name)

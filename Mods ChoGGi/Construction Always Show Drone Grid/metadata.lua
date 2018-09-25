@@ -4,7 +4,9 @@ return PlaceObj("ModDef", {
   "saved", 1534334400,
   "id", "ChoGGi_ConstructionAlwaysShowDroneGrid",
   "author", "ChoGGi",
-	"code", {"Script.lua"},
+	"code", {
+		"Code/Script.lua"
+	},
 	"image", "Preview.png",
   "steam_id", "1424918098",
 	"lua_revision", LuaRevision,

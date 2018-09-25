@@ -9,7 +9,8 @@ local RetProperType = ChoGGi.ComFuncs.RetProperType
 local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
-local type,tostring,string = type,tostring,string
+local type,tostring = type,tostring
+local StringFormat = string.format
 
 DefineClass.ChoGGi_ListChoiceDlg = {
 	__parents = {"ChoGGi_Window"},
@@ -87,7 +88,7 @@ Press Enter to show all items."--]]],
 		}, self.idDialog)
 
 		for i = 1, #self.list.check do
-			local name1 = string.format("idCheckBox%s",i)
+			local name1 = StringFormat("idCheckBox%s",i)
 			self[name1] = g_Classes.ChoGGi_CheckButton:new({
 				Id = name1,
 				Text = S[588--[[Empty--]]],
@@ -258,7 +259,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	if self.list.multisel then
 		-- if it's a multiselect then add a hint
 		if self.list.hint then
-			self.list.hint = string.format("%s\n\n%s",CheckText(self.list.hint),S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]])
+			self.list.hint = StringFormat("%s\n\n%s",CheckText(self.list.hint),S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]])
 		else
 			self.list.hint = S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]]
 		end
@@ -285,7 +286,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 	if self.custom_type == 7 then
 		if self.list.hint then
-			self.list.hint = string.format("%s\n\n%s",CheckText(self.list.hint),S[302535920001341--[[Double-click to apply without closing list.--]]])
+			self.list.hint = StringFormat("%s\n\n%s",CheckText(self.list.hint),S[302535920001341--[[Double-click to apply without closing list.--]]])
 		else
 			self.list.hint = S[302535920001341--[[Double-click to apply without closing list.--]]]
 		end
@@ -296,7 +297,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	if hint ~= "" then
 		self.idMoveControl.RolloverText = hint
 		self.idList.RolloverText = hint
-		self.idOK.RolloverText = string.format("%s\n\n\n%s",self.idOK:GetRolloverText(),hint)
+		self.idOK.RolloverText = StringFormat("%s\n\n\n%s",self.idOK:GetRolloverText(),hint)
 	end
 
 	-- hide ok/cancel buttons as they don't do jack
@@ -352,7 +353,7 @@ function ChoGGi_ListChoiceDlg:BuildList()
 		local display_icon
 		if item.icon then
 			if item.icon:find("<image ",1,true) then
-				text = string.format("%s %s",item.icon,item.text)
+				text = StringFormat("%s %s",item.icon,item.text)
 			else
 				display_icon = true
 				text = item.text
@@ -389,7 +390,7 @@ function ChoGGi_ListChoiceDlg:BuildList()
 			else
 				value_str = item.value
 			end
-			title = string.format("%s: <color 200 255 200>%s</color>",item.text,value_str)
+			title = StringFormat("%s: <color 200 255 200>%s</color>",item.text,value_str)
 		end
 		listitem.RolloverTitle = title
 
@@ -603,7 +604,7 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 	-- add checkbox statuses
 	if self.list.check and #self.list.check > 0 then
 		for i = 1, #self.list.check do
-			self.choices[1][string.format("check%s",i)] = self[string.format("idCheckBox%s",i)]:GetCheck()
+			self.choices[1][StringFormat("check%s",i)] = self[StringFormat("idCheckBox%s",i)]:GetCheck()
 		end
 	end
 	-- and if it's a colourpicker list send that back as well

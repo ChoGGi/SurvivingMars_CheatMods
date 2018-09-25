@@ -12,7 +12,7 @@ function OnMsg.ClassesGenerate()
 
 	local function ShowFileLog()
 		if blacklist then
-			print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]])
+			print(string.format(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]],"ShowFileLog"))
 			return
 		end
 		FlushLogFile()

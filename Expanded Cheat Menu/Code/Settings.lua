@@ -193,17 +193,6 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.Defaults.SkipMissingDLC = true
 	end
 
-	--~ function OnMsg.ChoGGi_Loaded()
-	--~ if blacklist then
-	--~	 dlgConsole:Exec([[ChoGGi.Temp.g = _G
-	--~ dlgConsole.history_queue_idx = 0
-	--~ dlgConsole.history_queue = {}
-	--~ LocalStorage.history_log = {}
-	--~ SaveLocalStorage()]])
-	--~	 dlgConsole:AddHistory("print(ChoGGi.Strings[302535920000242])")
-	--~ end
-	--~ end
-
 	--set game values to saved values
 	do -- SetConstsToSaved
 		local function SetConstsG(ChoGGi,name)
@@ -457,7 +446,7 @@ function OnMsg.ClassesGenerate()
 					settings_data = ChoGGi.SettingFuncs.WriteSettingsAcct(ChoGGi.Defaults)
 				end
 
-				some_error, settings_table = AsyncDecompress(settings_data)
+				err,settings_table = AsyncDecompress(settings_data)
 				if err then
 					RetError(err)
 				end

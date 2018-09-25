@@ -8,12 +8,11 @@ function OnMsg.ClassesGenerate()
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Trans = ChoGGi.ComFuncs.Translate
 
-	local string = string
-	local AsyncStringToFile = _G.AsyncStringToFile
+	local StringFormat = string.format
 
 	function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg)
 		if blacklist then
-			print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]])
+			print(StringFormat(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]],"Dump"))
 			return
 		end
 
@@ -22,7 +21,7 @@ function OnMsg.ClassesGenerate()
 		else
 			mode = "-1"
 		end
-		local filename = string.format("AppData/logs/%s.%s",file or "DumpedText",ext or "txt")
+		local filename = StringFormat("AppData/logs/%s.%s",file or "DumpedText",ext or "txt")
 
 		ThreadLockKey(filename)
 		AsyncStringToFile(filename,obj,mode)
@@ -41,7 +40,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.ComFuncs.DumpLua(obj)
-		ChoGGi.ComFuncs.Dump(string.format("\r\n%s",ValueToLuaCode(obj)),nil,"DumpedLua","lua")
+		ChoGGi.ComFuncs.Dump(StringFormat("\r\n%s",ValueToLuaCode(obj)),nil,"DumpedLua","lua")
 	end
 
 	do -- DumpTableFunc
@@ -51,9 +50,9 @@ function OnMsg.ClassesGenerate()
 			if obj_type == "userdata" then
 				return Trans(obj)
 			elseif funcs and obj_type == "function" then
-				return string.format("Func: \r\n\r\n%s\r\n\r\n",obj:dump())
+				return StringFormat("Func: \r\n\r\n%s\r\n\r\n",obj:dump())
 			elseif obj_type == "table" then
-				return string.format("%s len: %s",tostring(obj),#obj)
+				return StringFormat("%s len: %s",tostring(obj),#obj)
 			else
 				return tostring(obj)
 			end
@@ -68,19 +67,19 @@ function OnMsg.ClassesGenerate()
 
 			if type(obj) == "table" then
 				if obj.id then
-					output_string = string.format("%s\n-----------------obj.id: %s :",output_string,obj.id)
+					output_string = StringFormat("%s\n-----------------obj.id: %s :",output_string,obj.id)
 				end
 				for k,v in pairs(obj) do
 					if type(v) == "table" then
 						DumpTableFunc(v, hierarchyLevel+1)
 					else
 						if k ~= nil then
-							output_string = string.format("%s\n%s = ",output_string,k)
+							output_string = StringFormat("%s\n%s = ",output_string,k)
 						end
 						if v ~= nil then
-							output_string = string.format("%s%s",output_string,RetTextForDump(v,funcs))
+							output_string = StringFormat("%s%s",output_string,RetTextForDump(v,funcs))
 						end
-						output_string = string.format("%s\n",output_string)
+						output_string = StringFormat("%s\n",output_string)
 					end
 				end
 			end
@@ -93,7 +92,7 @@ function OnMsg.ClassesGenerate()
 		--]]
 		function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
 			if blacklist then
-				print(302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]])
+				print(StringFormat(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]],"DumpTable"))
 				return
 			end
 			if not obj then
@@ -123,7 +122,7 @@ function OnMsg.ClassesGenerate()
 	do -- WriteLogs_Toggle
 		local Dump = ChoGGi.ComFuncs.Dump
 		local select,type = select,type
-		local StringFormat = string.format
+		local StringFormat = StringFormat
 
 		local function ReplaceFunc(funcname,filename)
 			local ChoGGi = ChoGGi
@@ -154,7 +153,7 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.ComFuncs.WriteLogs_Toggle(which)
 			if blacklist then
-				print(S[302535920000242--[[Blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]])
+				print(StringFormat(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]],"WriteLogs_Toggle"))
 				return
 			end
 
@@ -188,46 +187,42 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
-	do -- RetFilesInFolder/RetFoldersInFolder
-		local AsyncListFiles = _G.AsyncListFiles
-		-- returns table with list of files without path or ext and path, or exclude ext to return all files
-		function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
-			local err, files = AsyncListFiles(folder,ext and string.format("*%s",ext) or "*")
-			if not err and #files > 0 then
-				local table_path = {}
-				local path = string.format("%s/",folder)
-				for i = 1, #files do
-					local name
-					if ext then
-						name = files[i]:gsub(path,""):gsub(ext,"")
-					else
-						name = files[i]:gsub(path,"")
-					end
-					table_path[i] = {
-						path = files[i],
-						name = name,
-					}
+	-- returns table with list of files without path or ext and path, or exclude ext to return all files
+	function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
+		local err, files = AsyncListFiles(folder,ext and StringFormat("*%s",ext) or "*")
+		if not err and #files > 0 then
+			local table_path = {}
+			local path = StringFormat("%s/",folder)
+			for i = 1, #files do
+				local name
+				if ext then
+					name = files[i]:gsub(path,""):gsub(ext,"")
+				else
+					name = files[i]:gsub(path,"")
 				end
-				return table_path
+				table_path[i] = {
+					path = files[i],
+					name = name,
+				}
 			end
+			return table_path
 		end
+	end
 
-		function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
-			--local err, folders = AsyncListFiles(Folder, "*", "recursive,folders")
-			local err, folders = AsyncListFiles(folder,"*","folders")
-			if not err and #folders > 0 then
-				local table_path = {}
-				local temp_path = string.format("%s/",folder)
-				for i = 1, #folders do
-					table_path[i] = {
-						path = folders[i],
-						name = folders[i]:gsub(temp_path,""),
-					}
-				end
-				return table_path
+	function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
+		local err, folders = AsyncListFiles(folder,"*","folders")
+		if not err and #folders > 0 then
+			local table_path = {}
+			local temp_path = StringFormat("%s/",folder)
+			for i = 1, #folders do
+				table_path[i] = {
+					path = folders[i],
+					name = folders[i]:gsub(temp_path,""),
+				}
 			end
+			return table_path
 		end
-	end -- do
+	end
 
 	do -- OpenInExamineDlg
 		local function OpenInExamineDlg(obj,parent,title)
@@ -267,6 +262,24 @@ function OnMsg.ClassesGenerate()
 
 		return ChoGGi_ObjectManipulatorDlg:new({}, terminal.desktop,{
 			obj = obj,
+			parent = parent,
+		})
+	end
+
+	function ChoGGi.ComFuncs.OpenInExecCodeDlg(context,parent)
+		return ChoGGi_ExecCodeDlg:new({}, terminal.desktop,{
+			obj = context,
+			parent = parent,
+		})
+	end
+
+	function ChoGGi.ComFuncs.OpenInFindValueDlg(context,parent)
+		if not context then
+			return
+		end
+
+		return ChoGGi_FindValueDlg:new({}, terminal.desktop,{
+			obj = context,
 			parent = parent,
 		})
 	end

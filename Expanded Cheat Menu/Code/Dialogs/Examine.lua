@@ -820,13 +820,14 @@ function Examine:totextex(obj)
 				info = debug.getinfo(obj, level, "Slfun")
 				if info then
 					c = c + 1
-					totextex_res[c] = StringFormat("%s%s%s(%s)%s%s",
+					totextex_res[c] = StringFormat("%s%s%s(%s) %s: %s%s",
 						self:HyperLink(function(level, info)
 							ExamineThreadLevel_totextex(level, info, obj,self)
 						end),
 						self:HyperLink(ExamineThreadLevel_totextex(level, info, obj,self)),
 						info.short_src,
 						info.currentline,
+						S[1000110--[[Type--]]],
 						info.name or info.name_what or S[302535920000723--[[Lua--]]],
 						HLEnd
 					)
@@ -836,21 +837,6 @@ function Examine:totextex(obj)
 				level = level + 1
 			end
 		end
-
-		c = c + 1
-		totextex_res[c] = StringFormat([[
-<color 200 200 200>Thread info:
-IsValidThread(): %s
-GetThreadStatus(): %s
-IsGameTimeThread(): %s
-IsRealTimeThread(): %s
-ThreadHasFlags(): %s</color>]],
-			IsValidThread(obj),
-			GetThreadStatus(obj),
-			IsGameTimeThread(obj),
-			IsRealTimeThread(obj),
-			ThreadHasFlags(obj)
-		)
 
 	elseif obj_type == "function" then
 		if blacklist then
@@ -962,6 +948,25 @@ ThreadHasFlags(): %s</color>]],
 		end
 		c = c + 1
 		totextex_res[c] = dbg_value
+
+	elseif obj_type == "thread" then
+		c = c + 1
+		totextex_res[c] = StringFormat([[
+
+<color 255 255 255>%s:
+IsValidThread(): %s
+GetThreadStatus(): %s
+IsGameTimeThread(): %s
+IsRealTimeThread(): %s
+ThreadHasFlags(): %s</color>]],
+			S[302535920001353--[[Thread info--]]],
+			IsValidThread(obj),
+			GetThreadStatus(obj),
+			IsGameTimeThread(obj),
+			IsRealTimeThread(obj),
+			ThreadHasFlags(obj)
+		)
+
 	end
 
 	return TableConcat(totextex_res,"\n")

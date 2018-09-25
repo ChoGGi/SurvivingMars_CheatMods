@@ -3,11 +3,11 @@
 --~ local TableConcat = ChoGGi.ComFuncs.TableConcat -- added in Init.lua
 local S = ChoGGi.Strings
 
-local string = string
 local AsyncRand = AsyncRand
 local IsValid = IsValid
 local GetTerrainCursor = GetTerrainCursor
 local FilterObjectsC = FilterObjectsC
+local StringFormat = string.format
 
 -- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
 DefineClass.ChoGGi_HexSpot = {
@@ -19,7 +19,7 @@ DefineClass.ChoGGi_HexSpot = {
 function ChoGGi.ComFuncs.SaveOrigFunc(class_or_func,func_name)
 	local ChoGGi = ChoGGi
 	if func_name then
-		local newname = string.format("%s_%s",class_or_func,func_name)
+		local newname = StringFormat("%s_%s",class_or_func,func_name)
 		if not ChoGGi.OrigFuncs[newname] then
 			ChoGGi.OrigFuncs[newname] = _G[class_or_func][func_name]
 		end
@@ -37,7 +37,7 @@ function ChoGGi.ComFuncs.AddMsgToFunc(class_name,func_name,msg_str,...)
 	-- save orig
 	ChoGGi.ComFuncs.SaveOrigFunc(class_name,func_name)
 	-- local stuff
-	local StringFormat = string.format
+	local StringFormat = StringFormat
 	local select = select
 	local Msg = Msg
 	-- we want to local this after SaveOrigFunc just in case
@@ -64,7 +64,7 @@ end
 do -- Translate
 	local T,_InternalTranslate = T,_InternalTranslate
 	local type,select = type,select
-	local StringFormat = string.format
+	local StringFormat = StringFormat
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
 		local str
@@ -115,13 +115,9 @@ end -- do
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
-	local IsObjlist = IsObjlist
-	-- try to return a decent name for the obj, failing that return some sort of string
+	local IsObjlist,type,tostring = IsObjlist,type,tostring
+	-- try to return a decent name for the obj, failing that return a string
 	function ChoGGi.ComFuncs.RetName(obj)
-		if obj == _G then
-			return "_G"
-		end
-
 		if type(obj) == "table" then
 
 			local name_type = type(obj.name)
@@ -130,7 +126,7 @@ do -- RetName
 				return obj.name
 			-- colonist names
 			elseif name_type == "table" and #obj.name == 3 then
-				return string.format("%s %s",Trans(obj.name[1]),Trans(obj.name[3]))
+				return StringFormat("%s %s",Trans(obj.name[1]),Trans(obj.name[3]))
 
 			-- translated name
 			elseif obj.display_name and obj.display_name ~= "" then
@@ -139,7 +135,6 @@ do -- RetName
 			-- encyclopedia_id
 			elseif obj.encyclopedia_id and obj.encyclopedia_id ~= "" then
 				return obj.encyclopedia_id
-
 			-- plain old id
 			elseif obj.id and obj.id ~= "" then
 				return obj.id
@@ -150,7 +145,7 @@ do -- RetName
 			elseif obj.class and obj.class ~= "" then
 				return obj.class
 
-			-- added this here as doing tostring lags the shit outta kansas if this is a large objlist
+			-- added this here as doing tostring lags the shit outta kansas if this is a large objlist (could also be from just having a large string for something?)
 			elseif IsObjlist(obj) then
 				return "objlist"
 			end
@@ -158,8 +153,9 @@ do -- RetName
 		end
 
 		-- falling back baby
---~ 		return tostring(obj):sub(1,150) --limit length of string in case it's a large one
 		return tostring(obj)
+--~ 		-- limit length of string in case it's a large one?
+--~ 		return tostring(obj):sub(1,150)
 	end
 end -- do
 local RetName = ChoGGi.ComFuncs.RetName
@@ -182,9 +178,6 @@ end
 function ChoGGi.ComFuncs.RetHint(obj)
 	if type(obj.description) == "userdata" then
 		return obj.description
-
---~ 	elseif obj.GetPinDescription then
---~ 		return obj:GetPinDescription()
 
 	elseif obj.GetDescription then
 		return obj:GetDescription()
@@ -227,7 +220,7 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 		id = AsyncRand(),
 		title = CheckText(title),
 		text = CheckText(text,S[3718--[[NONE--]]]),
-		image = type(tostring(icon):find(".tga")) == "number" and icon or string.format("%sCode/TheIncal.png",ChoGGi.LibraryPath)
+		image = type(tostring(icon):find(".tga")) == "number" and icon or StringFormat("%sCode/TheIncal.png",ChoGGi.LibraryPath)
 	}
 	table.set_defaults(data, params)
 	table.set_defaults(data, g_Classes.OnScreenNotificationPreset)
@@ -575,9 +568,9 @@ function ChoGGi.ComFuncs.PrintIds(list)
 	local text = ""
 
 	for i = 1, #list do
-		text = string.format("%s----------------- %s: %s\r\n",text,list[i].id,i)
+		text = StringFormat("%s----------------- %s: %s\r\n",text,list[i].id,i)
 		for j = 1, #list[i] do
-			text = string.format("%s%s: %s\r\n",text,list[i][j].id,j)
+			text = StringFormat("%s%s: %s\r\n",text,list[i][j].id,j)
 		end
 	end
 
@@ -894,24 +887,6 @@ function ChoGGi.ComFuncs.FilterFromTableFunc(list,func,value,is_bool)
 	},list)
 end
 
-function ChoGGi.ComFuncs.OpenInExecCodeDlg(context,parent)
-	return ChoGGi_ExecCodeDlg:new({}, terminal.desktop,{
-		obj = context,
-		parent = parent,
-	})
-end
-
-function ChoGGi.ComFuncs.OpenInFindValueDlg(context,parent)
-	if not context then
-		return
-	end
-
-	return ChoGGi_FindValueDlg:new({}, terminal.desktop,{
-		obj = context,
-		parent = parent,
-	})
-end
-
 function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(context)
 	if not context then
 		return
@@ -935,7 +910,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 	callback = CallBackFunc,
 	items = ItemList,
 	title = "Title",
-	hint = string.format("Current: %s",hint),
+	hint = StringFormat("Current: %s",hint),
 	multisel = true,
 	custom_type = custom_type,
 	custom_func = CustomFunc,
@@ -993,7 +968,7 @@ function ChoGGi.ComFuncs.SettingState(setting,text)
 		setting = false
 	end
 
-	return string.format("%s: %s",setting,CheckText(S[text],text))
+	return StringFormat("%s: %s",setting,CheckText(S[text],text))
 end
 
 -- Copyright L. H. de Figueiredo, W. Celes, R. Ierusalimschy: Lua Programming Gems
@@ -1010,7 +985,7 @@ function ChoGGi.ComFuncs.VarDump(value, depth, key)
 	else
 		depth = depth + 1
 		for _ = 1, depth do
-			spaces = string.format("%s ",spaces)
+			spaces = StringFormat("%s ",spaces)
 		end
 	end
 	if v_type == "table" then

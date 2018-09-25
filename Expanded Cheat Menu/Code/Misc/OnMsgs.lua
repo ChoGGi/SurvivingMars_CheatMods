@@ -10,6 +10,7 @@ local MsgPopup
 local S
 local blacklist
 
+-- use this message to mess with the classdefs (before classes are built)
 function OnMsg.ClassesGenerate()
 
 	MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -37,10 +38,6 @@ function OnMsg.ClassesGenerate()
 	XPopupMenu.Background = dark_gray
 	XPopupMenu.TextColor = -1
 end
-
--- use this message to mess with the classdefs (before classes are built)
---~ function OnMsg.ClassesGenerate()
---~ end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
@@ -243,6 +240,9 @@ function OnMsg.ModsLoaded()
 	end -- DisableECM
 end
 
+-- earliest on-ground objects are loaded?
+--~ function OnMsg.PersistLoad()
+--~ end
 function OnMsg.PersistPostLoad()
 	if ChoGGi.UserSettings.FixMissingModBuildings then
 		--[LUA ERROR] Mars/Lua/Construction.lua:860: attempt to index a boolean value (global 'ControllerMarkers')
@@ -304,30 +304,31 @@ function OnMsg.BuildingPlaced(obj)
 	end
 end --OnMsg
 
-local function QuickBuild(sites)
-	for i = 1, #sites do
-		if not sites[i].construction_group or sites[i].construction_group[1] == sites[i] then
-			sites[i]:Complete("quick_build")
+do -- ConstructionSitePlaced
+	local function QuickBuild(sites)
+		for i = 1, #sites do
+			if not sites[i].construction_group or sites[i].construction_group[1] == sites[i] then
+				sites[i]:Complete("quick_build")
+			end
 		end
 	end
-end
+	-- regular build
+	function OnMsg.ConstructionSitePlaced(obj)
+		local ChoGGi = ChoGGi
+		if obj:IsKindOf("Building") then
+			ChoGGi.Temp.LastPlacedObject = obj
+		end
 
--- regular build
-function OnMsg.ConstructionSitePlaced(obj)
-	local ChoGGi = ChoGGi
-	if obj:IsKindOf("Building") then
-		ChoGGi.Temp.LastPlacedObject = obj
-	end
-
-	if ChoGGi.UserSettings.Building_instant_build then
-		-- i do it this way instead of using .instant_build so domes don't fuck up
-		DelayedCall(100, function()
-			local UICity = UICity
-			QuickBuild(UICity.labels.ConstructionSite or "")
-			QuickBuild(UICity.labels.ConstructionSiteWithHeightSurfaces or "")
-		end)
-	end
-end --OnMsg
+		if ChoGGi.UserSettings.Building_instant_build then
+			-- i do it this way instead of using .instant_build so domes don't fuck up
+			DelayedCall(100, function()
+				local UICity = UICity
+				QuickBuild(UICity.labels.ConstructionSite or "")
+				QuickBuild(UICity.labels.ConstructionSiteWithHeightSurfaces or "")
+			end)
+		end
+	end --OnMsg
+end -- do
 
 -- make sure they use with our new values
 function OnMsg.ChoGGi_SpawnedProducer(obj,prod_type)
@@ -839,9 +840,6 @@ function OnMsg.ChoGGi_Childkiller()
 	end
 end
 
--- earliest on-ground objects are loaded?
---~ function OnMsg.PersistLoad()
---~ end
 -- show how long loading takes
 function OnMsg.ChangeMap()
 	local ChoGGi = ChoGGi
@@ -857,23 +855,22 @@ function OnMsg.ReloadLua()
 	end
 end
 
--- saved game is loaded
-function OnMsg.LoadGame()
-	ChoGGi.Temp.IsChoGGiMsgLoaded = false
-	Msg("ChoGGi_Loaded")
-end
-
--- for new games
-function OnMsg.CityStart()
-	local ChoGGi = ChoGGi
-	ChoGGi.Temp.IsChoGGiMsgLoaded = false
-	-- reset my mystery msgs to hidden
-	ChoGGi.UserSettings.ShowMysteryMsgs = nil
-	Msg("ChoGGi_Loaded")
-end
-
-
 do -- LoadGame/CityStart
+	-- saved game is loaded
+	function OnMsg.LoadGame()
+		ChoGGi.Temp.IsChoGGiMsgLoaded = false
+		Msg("ChoGGi_Loaded")
+	end
+
+	-- for new games
+	function OnMsg.CityStart()
+		local ChoGGi = ChoGGi
+		ChoGGi.Temp.IsChoGGiMsgLoaded = false
+		-- reset my mystery msgs to hidden
+		ChoGGi.UserSettings.ShowMysteryMsgs = nil
+		Msg("ChoGGi_Loaded")
+	end
+
 	local function SetMissionBonuses(UserSettings,Presets,preset,which,Func)
 		local tab = Presets[preset].Default or ""
 		for i = 1, #tab do
