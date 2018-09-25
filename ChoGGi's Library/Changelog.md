@@ -1,6 +1,10 @@
 ## Library Changelog
 
-## v1.3 (Unreleased)
+## v1.4 (Unreleased)
+
+## v1.3 (25 Sep 2018)
+### Changed:
+- Misc touchups.
 
 ## v1.2 (22 Sep 2018)
 ### Changed:
