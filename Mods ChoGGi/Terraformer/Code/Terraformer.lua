@@ -1,14 +1,29 @@
 -- See LICENSE for terms
 
+-- tell people know how to get the library
 function OnMsg.ModsLoaded()
-	if not table.find(ModsLoaded,"id","ChoGGi_Library") then
+	local library_version = 13
+
+	local ModsLoaded = ModsLoaded
+	local not_found_or_wrong_version
+	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
+
+	if idx then
+		if library_version < ModsLoaded[idx].version then
+			not_found_or_wrong_version = true
+		end
+	else
+		not_found_or_wrong_version = true
+	end
+
+	if not_found_or_wrong_version then
 		CreateRealTimeThread(function()
 			local Sleep = Sleep
 			while not UICity do
 				Sleep(1000)
 			end
-			if WaitMarsQuestion(nil,nil,[[Error: This mod requires ChoGGi's Library.
-Press Ok to download it or check Mod Manager to make sure it's enabled.]]) == "ok" then
+			if WaitMarsQuestion(nil,nil,string.format([[Error: This mod requires ChoGGi's Library v%s.
+Press Ok to download it or check Mod Manager to make sure it's enabled.]],library_version)) == "ok" then
 				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
 			end
 		end)
@@ -31,6 +46,7 @@ function AsyncGetSourceInfo()end
 
 local Actions
 
+-- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
