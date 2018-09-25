@@ -1076,7 +1076,7 @@ do -- DeleteObject
 		-- deleting domes will freeze game if they have anything in them.
 		local dome = obj:IsKindOf("Dome")
 		if dome and #obj.labels.Buildings > 0 then
-			print(string.format(S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]],RetName(obj)))
+			print(S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]]:format(RetName(obj)))
 			return
 		end
 

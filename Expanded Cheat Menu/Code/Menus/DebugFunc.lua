@@ -115,7 +115,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.DeleteSavedGames()
 		if blacklist then
-			print(string.format(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]],"DeleteSavedGames"))
+			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("DeleteSavedGames"))
 			return
 		end
 		local SavegamesList = SavegamesList

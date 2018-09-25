@@ -4,6 +4,7 @@
 
 function OnMsg.ClassesGenerate()
 
+	local StringFormat = string.format
 	local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
@@ -12,7 +13,7 @@ function OnMsg.ClassesGenerate()
 
 	local function ShowFileLog()
 		if blacklist then
-			print(string.format(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]],"ShowFileLog"))
+			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ShowFileLog"))
 			return
 		end
 		FlushLogFile()
@@ -116,7 +117,7 @@ function OnMsg.ClassesGenerate()
 				items[i] = {
 					-- these can get long so keep 'em short
 					name = text:sub(1,ConsoleHistoryMenuLength),
-					hint = string.format("%s\n\n%s",S[302535920001138--[[Execute this command in the console.--]]],text),
+					hint = StringFormat("%s\n\n%s",S[302535920001138--[[Execute this command in the console.--]]],text),
 					clicked = function()
 						dlgConsole:Exec(text)
 					end,
@@ -147,7 +148,7 @@ function OnMsg.ClassesGenerate()
 		for i = 0, #list do
 			ExamineMenuToggle_list[i] = {
 				name = list[i],
-				hint = string.format("%s: %s",S[302535920000491--[[Examine Object--]]],list[i]),
+				hint = StringFormat("%s: %s",S[302535920000491--[[Examine Object--]]],list[i]),
 				clicked = function()
 					local obj = ChoGGi.ComFuncs.DotNameToObject(list[i])
 					if type(obj) == "function" then
@@ -258,7 +259,7 @@ function OnMsg.ClassesGenerate()
 						local _, script = AsyncFileToString(scripts[i].path)
 						items[i] = {
 							name = scripts[i].name,
-							hint = string.format("%s\n\n%s",S[302535920001138--[[Execute this command in the console.--]]],script),
+							hint = StringFormat("%s\n\n%s",S[302535920001138--[[Execute this command in the console.--]]],script),
 							clicked = function()
 								dlg:Exec(script)
 							end,
@@ -314,7 +315,7 @@ function OnMsg.ClassesGenerate()
 				BuildSciptButton(scripts,dlg,{
 					Text = folders[i].name,
 					RolloverText = hint_str:format(folders[i].path),
-					id = string.format("id%sMenu",folders[i].name),
+					id = StringFormat("id%sMenu",folders[i].name),
 					script_path = folders[i].path,
 				})
 			end
@@ -326,15 +327,15 @@ function OnMsg.ClassesGenerate()
 		--create folder and some example scripts if folder doesn't exist
 		local err,_ = AsyncGetFileAttribute(script_path,"size")
 		if err then
-			AsyncCreatePath(string.format("%s/Examine",script_path))
-			AsyncCreatePath(string.format("%s/Functions",script_path))
+			AsyncCreatePath(StringFormat("%s/Examine",script_path))
+			AsyncCreatePath(StringFormat("%s/Functions",script_path))
 			--print some info
 			print(S[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."--]]]:format(script_path))
 			--add some example files and a readme
-			AsyncStringToFile(string.format("%s/readme.txt",script_path),S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
-			AsyncStringToFile(string.format("%s/Help Me.lua",script_path),[[ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
-			AsyncStringToFile(string.format("%s/Functions/Amount of colonists.lua",script_path),[[#(UICity.labels.Colonist or "")]])
-			AsyncStringToFile(string.format("%s/Functions/Toggle Working SelectedObj.lua",script_path),[[SelectedObj:ToggleWorking()]])
+			AsyncStringToFile(StringFormat("%s/readme.txt",script_path),S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
+			AsyncStringToFile(StringFormat("%s/Help Me.lua",script_path),[[ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
+			AsyncStringToFile(StringFormat("%s/Functions/Amount of colonists.lua",script_path),[[#(UICity.labels.Colonist or "")]])
+			AsyncStringToFile(StringFormat("%s/Functions/Toggle Working SelectedObj.lua",script_path),[[SelectedObj:ToggleWorking()]])
 		end
 	end
 

@@ -4,6 +4,7 @@
 
 function OnMsg.ClassesGenerate()
 
+	local StringFormat = string.format
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Random = ChoGGi.ComFuncs.Random
 	local Trans = ChoGGi.ComFuncs.Translate
@@ -40,7 +41,7 @@ function OnMsg.ClassesGenerate()
 				if answer then
 					local dome = self:IsKindOf("Dome")
 					if dome and #self.labels.Buildings > 0 then
-						print(string.format(S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]],RetName(self)))
+						print(S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]]:format(RetName(self)))
 						return
 					end
 
@@ -49,10 +50,10 @@ function OnMsg.ClassesGenerate()
 				end
 			end
 			ChoGGi.ComFuncs.QuestionBox(
-				string.format("%s!\n%s\n%s",S[6779--[[Warning--]]],obj_type,name),
+				StringFormat("%s!\n%s\n%s",S[6779--[[Warning--]]],obj_type,name),
 				CallBackFunc,
-				string.format("%s: %s",S[6779--[[Warning--]]],obj_type),
-				string.format("%s %s",obj_type,name),
+				StringFormat("%s: %s",S[6779--[[Warning--]]],obj_type),
+				StringFormat("%s %s",obj_type,name),
 				S[1176--[[Cancel Destroy--]]]
 			)
 		end
@@ -65,11 +66,11 @@ function OnMsg.ClassesGenerate()
 				end
 			end
 			ChoGGi.ComFuncs.QuestionBox(
-				string.format("%s!\n%s?",S[6779--[[Warning--]]],S[302535920000885--[[Permanently delete %s?--]]]:format(name)),
+				StringFormat("%s!\n%s?",S[6779--[[Warning--]]],S[302535920000885--[[Permanently delete %s?--]]]:format(name)),
 				CallBackFunc,
-				string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]]),
-				string.format("%s: %s",S[5451--[[DELETE--]]],name),
-				string.format("%s %s",S[6879--[[Cancel--]]],S[1000615--[[Delete--]]])
+				StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]]),
+				StringFormat("%s: %s",S[5451--[[DELETE--]]],name),
+				StringFormat("%s %s",S[6879--[[Cancel--]]],S[1000615--[[Delete--]]])
 			)
 		end
 
@@ -481,7 +482,7 @@ function OnMsg.ClassesGenerate()
 					SetHint(action,S[302535920000885--[[Permanently delete %s--]]]:format(name))
 
 				elseif action.ActionId == "Malfunction" then
-					SetHint(action,string.format("%s...\n%s?",S[8039--[[Trait: Idiot (can cause a malfunction)--]]],S[53--[[Malfunction--]]]))
+					SetHint(action,StringFormat("%s...\n%s?",S[8039--[[Trait: Idiot (can cause a malfunction)--]]],S[53--[[Malfunction--]]]))
 				elseif action.ActionId == "PowerFree" then
 					if obj.electricity_consumption then
 						SetHint(action,S[302535920001220--[[Change this %s so it doesn't need a power source.--]]]:format(name))
@@ -560,7 +561,7 @@ function OnMsg.ClassesGenerate()
 					end
 				elseif action.ActionId == "Empty" then
 					if obj.class:find("SubsurfaceDeposit") then
-						SetHint(action,string.format("%s: %s",S[6779--[[Warning--]]],S[302535920001228--[[This will remove the %s object from the map.--]]]:format(name)))
+						SetHint(action,StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920001228--[[This will remove the %s object from the map.--]]]:format(name)))
 					else
 						SetHint(action,S[302535920001230--[[Empties the storage of this building.
 
@@ -571,7 +572,7 @@ function OnMsg.ClassesGenerate()
 				elseif action.ActionId == "Fill" then
 					SetHint(action,S[302535920001232--[[Fill the storage of this building.--]]])
 				elseif action.ActionId == "Launch" then
-					SetHint(action,string.format("%s: %s",S[6779--[[Warning--]]],S[302535920001233--[[Launches rocket without asking.--]]]))
+					SetHint(action,StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920001233--[[Launches rocket without asking.--]]]))
 				elseif action.ActionId == "DoubleMaxAmount" then
 					SetHint(action,S[302535920001234--[[Double the amount this %s can hold.--]]]:format(name))
 				elseif action.ActionId == "ReneagadeCapDbl" then

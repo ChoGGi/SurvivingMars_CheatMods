@@ -4,7 +4,7 @@ local S = ChoGGi.Strings
 
 -- easy access to colonist data, cargo, mystery
 ChoGGi.Tables = {
-	-- display names only! (stored as numbers, not names like the rest; which is why i'm guessing)
+	-- display names only! (they're stored as numbers, not names like the rest; which is why i'm guessing)
 	ColonistRaces = {
 		S[1859--[[White--]]],[S[1859--[[White--]]]] = true,
 		S[302535920000739--[[Black--]]],[S[302535920000739--[[Black--]]]] = true,
@@ -15,28 +15,29 @@ ChoGGi.Tables = {
 --~ s.race = 1
 --~ s:ChooseEntity()
 
--- some names need to be fixed when doing construction placement
-ConstructionNamesListFix = {
-	RCRover = "RCRoverBuilding",
-	RCDesireTransport = "RCDesireTransportBuilding",
-	RCTransport = "RCTransportBuilding",
-	ExplorerRover = "RCExplorerBuilding",
-	Rocket = "SupplyRocket",
-},
-Cargo = {},
-CargoPresets = {},
-Mystery = {},
-NegativeTraits = {},
-PositiveTraits = {},
-OtherTraits = {},
-ColonistAges = {},
-ColonistGenders = {},
-ColonistSpecializations = {},
-ColonistBirthplaces = {},
-Resources = {},
-SchoolTraits = {},
-SanatoriumTraits = {},
+	-- some names need to be fixed when doing construction placement
+	ConstructionNamesListFix = {
+		RCRover = "RCRoverBuilding",
+		RCDesireTransport = "RCDesireTransportBuilding",
+		RCTransport = "RCTransportBuilding",
+		ExplorerRover = "RCExplorerBuilding",
+		Rocket = "SupplyRocket",
+	},
+	Cargo = {},
+	CargoPresets = {},
+	Mystery = {},
+	NegativeTraits = {},
+	PositiveTraits = {},
+	OtherTraits = {},
+	ColonistAges = {},
+	ColonistGenders = {},
+	ColonistSpecializations = {},
+	ColonistBirthplaces = {},
+	Resources = {},
+	SchoolTraits = {},
+	SanatoriumTraits = {},
 }
+-- also called after mods are loaded, we call it now for any functions that use it before then
 ChoGGi.ComFuncs.UpdateDataTables()
 
 -- and constants
@@ -69,8 +70,7 @@ ChoGGi.Consts = {
 	ResourceScale = 1000,
 	ResearchPointsScale = 1000,
 	guim = 100,
-	AutosavePeriod = 5,
---Consts.* (Consts is a prop object, so we can get the defaults with ReadSettingsInGame below.) _const.lua
+-- Consts.* (Consts is a prop object, so we can get the defaults later on from OnMsg.OptionsApply(), we declare them now so we can loop them later) _const.lua
 	AvoidWorkplaceSols = false,
 	BirthThreshold = false,
 	CargoCapacity = false,
@@ -89,7 +89,6 @@ ChoGGi.Consts = {
 	DroneConstructAmount = false,
 	DroneConstructBatteryUse = false,
 	DroneDeconstructBatteryUse = false,
---~	 DroneMeteorMalfunctionChance = false,
 	DroneMoveBatteryUse = false,
 	DroneRechargeTime = false,
 	DroneRepairSupplyLeak = false,

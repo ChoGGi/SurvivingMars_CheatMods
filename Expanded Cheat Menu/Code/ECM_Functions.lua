@@ -12,7 +12,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg)
 		if blacklist then
-			print(StringFormat(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]],"Dump"))
+			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("Dump"))
 			return
 		end
 
@@ -92,7 +92,7 @@ function OnMsg.ClassesGenerate()
 		--]]
 		function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
 			if blacklist then
-				print(StringFormat(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]],"DumpTable"))
+				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("DumpTable"))
 				return
 			end
 			if not obj then
@@ -153,7 +153,7 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.ComFuncs.WriteLogs_Toggle(which)
 			if blacklist then
-				print(StringFormat(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]],"WriteLogs_Toggle"))
+				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("WriteLogs_Toggle"))
 				return
 			end
 

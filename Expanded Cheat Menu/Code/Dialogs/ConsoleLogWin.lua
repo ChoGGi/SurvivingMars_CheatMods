@@ -51,7 +51,7 @@ function OnMsg.ClassesGenerate()
 			RolloverText = S[302535920001091--[[Flushes log to disk and displays in console log.--]]],
 			OnMouseButtonDown = function()
 				if blacklist then
-					print(string.format(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]],"Show File Log"))
+					print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("Show File Log"))
 					return
 				end
 				FlushLogFile()

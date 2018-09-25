@@ -6,6 +6,7 @@
 ## v9.3 (Unreleased)
 ### Fixed:
 - Destroy Object removed domes with buildings in them, which may cause a crash (thanks Encei).
+- Inside buildings built outside weren't getting colonists (thanks Encei).
 
 ## v9.2 (25 Sep 2018)
 ### Fixed:

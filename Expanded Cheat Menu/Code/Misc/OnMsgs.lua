@@ -2,6 +2,7 @@
 
 -- most OnMsgs
 
+local StringFormat = string.format
 local FlushLogFile = FlushLogFile
 local Msg = Msg
 local OnMsg = OnMsg
@@ -194,7 +195,7 @@ function OnMsg.ModsLoaded()
 			Actions[c] = {
 				ActionMenubar = "Presets",
 				ActionName = name,
-				ActionId = string.format("Presets.%s",name),
+				ActionId = StringFormat("Presets.%s",name),
 				ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
 				RolloverText = S[302535920000733--[[Open a preset in the editor.--]]],
 				OnAction = function()
@@ -213,7 +214,7 @@ function OnMsg.ModsLoaded()
 			if a.ActionId:sub(1,1) == "." then
 				a.ActionTranslate = false
 				a.replace_matching_id = true
-				a.ActionId = string.format("%s%s",a.ActionMenubar,a.ActionId)
+				a.ActionId = StringFormat("%s%s",a.ActionMenubar,a.ActionId)
 			end
 		end
 
@@ -549,11 +550,11 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			local prod_type = obj.GetStoredAir and "air" or obj.GetStoredWater and "water" or obj.GetStoredPower and "electricity"
 			if bs.charge then
 				obj[prod_type].max_charge = bs.charge
-				obj[string.format("max_%s_charge",prod_type)] = bs.charge
+				obj[StringFormat("max_%s_charge",prod_type)] = bs.charge
 			end
 			if bs.discharge then
 				obj[prod_type].max_discharge = bs.discharge
-				obj[string.format("max_%s_discharge",prod_type)] = bs.discharge
+				obj[StringFormat("max_%s_discharge",prod_type)] = bs.discharge
 			end
 			if bs.evaluation_points then
 				obj.evaluation_points = bs.evaluation_points
@@ -877,7 +878,7 @@ do -- LoadGame/CityStart
 	local function SetMissionBonuses(UserSettings,Presets,preset,which,Func)
 		local tab = Presets[preset].Default or ""
 		for i = 1, #tab do
-			if UserSettings[string.format("%s%s",which,tab[i].id)] then
+			if UserSettings[StringFormat("%s%s",which,tab[i].id)] then
 				Func(tab[i].id)
 			end
 		end
@@ -1035,7 +1036,7 @@ do -- LoadGame/CityStart
 
 		-- all yours XxUnkn0wnxX
 		if not blacklist then
-			local autoexec = string.format("%s/autoexec.lua",ChoGGi.scripts)
+			local autoexec = StringFormat("%s/autoexec.lua",ChoGGi.scripts)
 			if ChoGGi.ComFuncs.FileExists(autoexec) then
 				print("ECM executing: ",autoexec)
 				dofile(autoexec)
@@ -1263,16 +1264,16 @@ do -- LoadGame/CityStart
 
 		-- everyone loves a new titlebar, unless they don't
 		if UserSettings.ChangeWindowTitle then
-			terminal.SetOSWindowTitle(string.format("%s: %s v%s",S[1079--[[Surviving Mars--]]],S[302535920000887--[[ECM--]]],ChoGGi._VERSION))
+			terminal.SetOSWindowTitle(StringFormat("%s: %s v%s",S[1079--[[Surviving Mars--]]],S[302535920000887--[[ECM--]]],ChoGGi._VERSION))
 		end
 
 		-- first time run info
 		if ChoGGi.UserSettings.FirstRun ~= false then
 			ChoGGi.ComFuncs.MsgWait(
-				string.format("%s\n%s",S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+				StringFormat("%s\n%s",S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button then uncheck ""Console Log"" to stop showing console log (instead of pressing F9 each time)."--]]]),
-				string.format("%s %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000201--[[Active--]]]),
-				string.format("%sPreview.png",ChoGGi.ModPath)
+				StringFormat("%s %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000201--[[Active--]]]),
+				StringFormat("%sPreview.png",ChoGGi.ModPath)
 			)
 			ChoGGi.UserSettings.FirstRun = false
 			ChoGGi.Temp.WriteSettings = true

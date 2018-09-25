@@ -9,6 +9,7 @@ function OnMsg.ClassesGenerate()
 	local blacklist = ChoGGi.blacklist
 
 	local next,pairs,type,table = next,pairs,type,table
+	local StringFormat = string.format
 
 	do -- cheat menu custom menus
 		local Actions = ChoGGi.Temp.Actions
@@ -302,7 +303,7 @@ function OnMsg.ClassesGenerate()
 			local ChoGGi = ChoGGi
 			settings = settings or ChoGGi.UserSettings
 
-			local bak = string.format("%s.bak",ChoGGi.SettingsFile)
+			local bak = StringFormat("%s.bak",ChoGGi.SettingsFile)
 			--locks the file while we write (i mean it says thread, ah well can't hurt)?
 			ThreadLockKey(bak)
 			AsyncCopyFile(ChoGGi.SettingsFile,bak)
@@ -339,7 +340,7 @@ function OnMsg.ClassesGenerate()
 					file_error, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
 					-- something is definitely wrong so just abort, and let user know
 					if file_error then
-						ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(file_error))
+						ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = StringFormat("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(file_error))
 						is_error = true
 					end
 				end
@@ -349,7 +350,7 @@ function OnMsg.ClassesGenerate()
 			local code_error
 			code_error, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
 			if code_error then
-				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(code_error))
+				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = StringFormat("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(code_error))
 				is_error = true
 			end
 
@@ -372,9 +373,9 @@ function OnMsg.ClassesGenerate()
 		local MaxModDataSize = const.MaxModDataSize
 		local function RetError(err)
 			if ChoGGi.Temp.GameLoaded then
-				print(string.format("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err)))
+				print(StringFormat("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err)))
 			else
-				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err))
+				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = StringFormat("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err))
 			end
 		end
 		function ChoGGi.SettingFuncs.WriteSettingsAcct(settings)
@@ -425,9 +426,9 @@ function OnMsg.ClassesGenerate()
 		local LuaCodeToTuple = LuaCodeToTuple
 		local function RetError(err)
 			if ChoGGi.Temp.GameLoaded then
-				print(string.format("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(err)))
+				print(StringFormat("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(err)))
 			else
-				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(err))
+				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = StringFormat("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000007--[[Problem loading settings! Error: %s--]]]:format(err))
 			end
 		end
 		function ChoGGi.SettingFuncs.ReadSettingsAcct(settings_table)
@@ -473,7 +474,6 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local Consts = Consts
 		local g_Classes = g_Classes
-		local r = ChoGGi.Consts.ResourceScale
 
 		-- if setting doesn't exist then add default
 		for key,value in pairs(ChoGGi.Defaults) do
@@ -489,13 +489,16 @@ function OnMsg.ClassesGenerate()
 	--~ 	end
 
 		-- get the default values for our Consts
-		for SettingName,_ in pairs(ChoGGi.Consts) do
-			local setting = Consts:GetDefaultPropertyValue(SettingName)
-			if setting then
-				ChoGGi.Consts[SettingName] = setting
+		for key,value in pairs(ChoGGi.Consts) do
+			if value == false then
+				local setting = Consts:GetDefaultPropertyValue(key)
+				if setting then
+					ChoGGi.Consts[key] = setting
+				end
 			end
 		end
 
+		local r = ChoGGi.Consts.ResourceScale
 		-- get other defaults not stored in Consts
 		ChoGGi.Consts.DroneFactoryBuildSpeed = g_Classes.DroneFactory:GetDefaultPropertyValue("performance")
 		ChoGGi.Consts.StorageShuttle = g_Classes.CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
@@ -509,7 +512,7 @@ function OnMsg.ClassesGenerate()
 	--~ 	ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
 		ChoGGi.Consts.StorageWasteDepot = 70 * r --^ that has 45000 as default...
 		ChoGGi.Consts.StorageOtherDepot = 180 * r
-		ChoGGi.Consts.StorageMechanizedDepot = 3950 * r
+		ChoGGi.Consts.StorageMechanizedDepot = 3950 * r -- the other 50 is stored on the "porch"
 		-- ^ they're all UniversalStorageDepot
 		ChoGGi.Consts.GravityColonist = 0
 		ChoGGi.Consts.GravityDrone = 0
@@ -519,7 +522,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.Consts.LaunchFuelPerRocket = 60 * r
 
 		ChoGGi.Consts.CameraZoomToggle = 8000
-		ChoGGi.Consts.HigherRenderDist = 120 --hr.LODDistanceModifier
+		ChoGGi.Consts.HigherRenderDist = 120 -- hr.LODDistanceModifier
 	end
 
 	do -- AddOldSettings
@@ -557,13 +560,12 @@ function OnMsg.ClassesGenerate()
 				end
 			-- if empty table then new settings file or old settings
 			else
-				--then we check if this is an older version still using the old way of storing building settings and convert over to new
-				local errormsg = string.format("%s: ",S[302535920000008--[[Error: Couldn't convert old settings to new settings--]]])
+				-- then we check if this is an older version still using the old way of storing building settings and convert over to new
 				if not AddOldSettings(ChoGGi,"BuildingsCapacity","capacity") then
-					ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sBuildingsCapacity",errormsg)
+					ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsCapacity")
 				end
 				if not AddOldSettings(ChoGGi,"BuildingsProduction","production") then
-					ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sBuildingsProduction",errormsg)
+					ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsProduction")
 				end
 			end
 
@@ -595,7 +597,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.Temp.StartupTicks = GetPreciseTicks()
 	end
 
-	--bloody hint popups
+	-- bloody hint popups
 	if ChoGGi.UserSettings.DisableHints then
 		mapdata.DisableHints = true
 		HintsEnabled = false
