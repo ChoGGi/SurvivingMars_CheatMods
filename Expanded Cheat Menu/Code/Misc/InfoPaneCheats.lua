@@ -40,7 +40,7 @@ function OnMsg.ClassesGenerate()
 				if answer then
 					local dome = self:IsKindOf("Dome")
 					if dome and #self.labels.Buildings > 0 then
-						print(S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]])
+						print(string.format(S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]],RetName(self)))
 						return
 					end
 
