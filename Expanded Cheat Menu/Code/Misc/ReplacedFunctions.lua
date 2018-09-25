@@ -788,7 +788,7 @@ function OnMsg.ClassesBuilt()
 				return 1
 			end
 
-			return ChoGGi_OrigFuncs[MystFunc](self)
+			return ChoGGi_OrigFuncs[myst_func](self)
 		end
 
 		function SA_WaitTime:StopWait()
