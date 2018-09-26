@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v9.3 (Unreleased)
+## v9.4 (Unreleased)
+
+## v9.3 (26 Sep 2018)
 ### Fixed:
 - Sagan Update.
 - Destroy Object removed domes with buildings in them, which may cause a crash (thanks Encei).

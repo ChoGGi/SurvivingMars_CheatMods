@@ -1,6 +1,9 @@
 ## Library Changelog
 
-## v1.4 (Unreleased)
+## v1.5 (Unreleased)
+
+## v1.4 (26 Sep 2018)
+- Sagan Update.
 
 ## v1.3 (25 Sep 2018)
 ### Changed:

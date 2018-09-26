@@ -420,9 +420,10 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image)
 		PopupNotificationPresets.ChoGGi_TempPopup.image = image
 	end
 
+	-- we need a thread for the wait
 	CreateRealTimeThread(function()
---~ 		WaitPopupNotification("ChoGGi_TempPopup", {title = title, text = text})
 		WaitPopupNotification("ChoGGi_TempPopup")
+		-- and remove my preset after (if there's an image we don't want it added to the next msg)
 		PopupNotificationPresets.ChoGGi_TempPopup = nil
 	end)
 end
