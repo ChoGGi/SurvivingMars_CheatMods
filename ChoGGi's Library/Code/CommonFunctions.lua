@@ -412,21 +412,17 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image)
 
 	local PopupNotificationPresets = PopupNotificationPresets
 
-	local preset
-	if image then
-		preset = "ChoGGi_TempPopup"
-		local temppop = {
-			name = preset,
-			image = image,
-		}
-		PopupNotificationPresets[preset] = temppop
-	end
+	local preset = "ChoGGi_TempPopup"
+	local temp_msg = {
+		name = preset,
+		image = image,
+		start_minimized = false,
+	}
+	PopupNotificationPresets[preset] = temp_msg
 
 	CreateRealTimeThread(function()
 		WaitPopupNotification(preset, {title = title, text = text})
-		if preset then
-			PopupNotificationPresets[preset] = nil
-		end
+		PopupNotificationPresets[preset] = nil
 	end)
 end
 
