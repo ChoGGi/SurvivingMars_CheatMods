@@ -9,7 +9,7 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {
 		ActionMenubar = "Cheats",
-		ActionName = string.format("%s %s",S[987648737170--[[Map--]]],S[5422--[[Exploration--]]]),
+		ActionName = string.format("%s %s",S[302535920001355--[[Map--]]],S[5422--[[Exploration--]]]),
 		ActionId = ".Map Exploration",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = S[302535920000328--[[Scanning, deep scanning, core mines, and alien imprints.--]]],

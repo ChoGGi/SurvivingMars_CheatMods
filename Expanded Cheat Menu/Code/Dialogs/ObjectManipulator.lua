@@ -86,7 +86,7 @@ function OnMsg.ClassesGenerate()
 
 		self.idAddNew = g_Classes.ChoGGi_Button:new({
 			Id = "idAddNew",
-			Text = S[398847925160--[[New--]]],
+			Text = S[302535920001356--[[New--]]],
 			Dock = "left",
 			RolloverText = S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(self.obj_name),
 			RolloverAnchor = "top",

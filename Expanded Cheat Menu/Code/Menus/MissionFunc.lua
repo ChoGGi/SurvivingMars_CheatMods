@@ -22,7 +22,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.Temp.InstantMissionGoal = true
 		MsgPopup(
 			302535920001158--[[Mission goal--]],
-			589254325694--[[Goal--]],
+			1635--[[Mission--]],
 			default_icon
 		)
 	end
@@ -453,7 +453,7 @@ function OnMsg.ClassesGenerate()
 	%s
 	%s: %s
 
-	%s: %s]],Trans(def.description),Trans(def.flavor),S[3491--[[Challenge Mod (%)--]]],def.challenge_mod,S[452690473931--[[Exclusion List--]]],def.exclusionlist or "")
+	%s: %s]],Trans(def.description),Trans(def.flavor),S[3491--[[Challenge Mod (%)--]]],def.challenge_mod,S[302535920001357--[[Exclusion List--]]],def.exclusionlist or "")
 			}
 		end
 

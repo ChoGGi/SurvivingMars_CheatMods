@@ -18,7 +18,7 @@ Autorun
 ShortcutsReloaded
 Reloading done
 [mod] Loading Expanded Cheat Menu v* Test(id ChoGGi_CheatMenu, version *) items from AppData/Mods/Expanded Cheat Menu/
-ModsLoaded
+ModsReloaded
 HexShapesRebuilt
 EntitiesLoaded
 BinAssetsLoaded

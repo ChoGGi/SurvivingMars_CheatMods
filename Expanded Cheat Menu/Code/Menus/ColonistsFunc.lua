@@ -842,7 +842,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local sSetting = "NewColonistAge"
 
 		if iType == 1 then
-			sType = string.format("%s ",S[398847925160--[[New--]]])
+			sType = string.format("%s ",S[302535920001356--[[New--]]])
 		else
 			sType = ""
 			DefaultSetting = S[3490--[[Random--]]]
@@ -944,7 +944,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local sSetting = "NewColonistGender"
 
 		if iType == 1 then
-			sType = string.format("%s ",S[398847925160--[[New--]]])
+			sType = string.format("%s ",S[302535920001356--[[New--]]])
 		else
 			sType = ""
 			DefaultSetting = S[3490--[[Random--]]]
@@ -1048,7 +1048,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local sSetting = "NewColonistSpecialization"
 
 		if iType == 1 then
-			sType = string.format("%s ",S[398847925160--[[New--]]])
+			sType = string.format("%s ",S[302535920001356--[[New--]]])
 		else
 			sType = ""
 			DefaultSetting = S[3490--[[Random--]]]
@@ -1159,7 +1159,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local sSetting = "NewColonistRace"
 
 		if iType == 1 then
-			sType = string.format("%s ",S[398847925160--[[New--]]])
+			sType = string.format("%s ",S[302535920001356--[[New--]]])
 		else
 			sType = ""
 			DefaultSetting = S[3490--[[Random--]]]
@@ -1268,7 +1268,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local TraitPresets = TraitPresets
 		local DefaultSetting = S[1000121--[[Default--]]]
 		local sSetting = "NewColonistTraits"
-		local sType = string.format("%s ",S[398847925160--[[New--]]])
+		local sType = string.format("%s ",S[302535920001356--[[New--]]])
 
 		local hint = ""
 		if iType == 1 then

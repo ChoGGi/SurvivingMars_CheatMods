@@ -285,7 +285,7 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {
 		ActionMenubar = str_Help_Text,
-		ActionName = string.format("*%s & %s %s*",S[283142739680--[[Game--]]],S[987648737170--[[Map--]]],S[126095410863--[[Info--]]]),
+		ActionName = string.format("*%s & %s %s*",S[283142739680--[[Game--]]],S[302535920001355--[[Map--]]],S[126095410863--[[Info--]]]),
 		ActionId = ".*Game & Map Info*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 		RolloverText = S[302535920001282--[[Information about this saved game (mostly objects).--]]],

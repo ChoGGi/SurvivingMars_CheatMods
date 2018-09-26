@@ -167,7 +167,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 
 end -- do
 
-function OnMsg.ModsLoaded()
+function OnMsg.ModsReloaded()
 	local ChoGGi = ChoGGi
 
 	-- easy access to colonist data, cargo, mystery

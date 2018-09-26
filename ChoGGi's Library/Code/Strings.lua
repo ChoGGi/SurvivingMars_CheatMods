@@ -285,19 +285,15 @@ local Strings = {
 	[298035641454] = TranslationTable[298035641454], -- Object
 	[313911890683] = _InternalTranslate(T{313911890683}), -- <description>
 	[327465361219] = TranslationTable[327465361219], -- Edit
-	[398847925160] = TranslationTable[398847925160], -- New
-	[452690473931] = TranslationTable[452690473931], -- Exclusion List
 	[454042608125] = TranslationTable[454042608125], -- <ButtonA> Toggle
 	[487939677892] = TranslationTable[487939677892], -- Help
 	[584248706535] = _InternalTranslate(T{584248706535}), -- Carrying<right><ResourceAmount>
-	[589254325694] = TranslationTable[589254325694], -- Goal
 	[619281504128] = TranslationTable[619281504128], -- Maintenance
 	[640016954592] = TranslationTable[640016954592], -- Remove this switch or valve.
 	[652319561018] = TranslationTable[652319561018], -- All Traits
 	[885971788025] = TranslationTable[885971788025], -- Outside Buildings
 	[889032422791] = TranslationTable[889032422791], -- OUTSOURCE
 	[987289847467] = TranslationTable[987289847467], -- Age Groups
-	[987648737170] = TranslationTable[987648737170], -- Map
 }
 
 Strings[454042608125] = Strings[454042608125]:gsub("<ButtonA> ","")
