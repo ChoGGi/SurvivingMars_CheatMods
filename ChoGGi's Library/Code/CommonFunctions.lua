@@ -215,7 +215,7 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 		end
 		dlg = OpenDialog("OnScreenNotificationsDlg", igi)
 	end
-	--build the popup
+	-- build the popup
 	local data = {
 		id = AsyncRand(),
 		title = CheckText(title),
@@ -230,6 +230,12 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 		end
 		params.cycle_objs = objects
 	end
+
+	-- needed in Sagan update
+	local aosn = g_ActiveOnScreenNotifications
+	local idx = table.find(aosn, 1, data.id) or #aosn + 1
+	aosn[idx] = {data.id}
+
 	-- and show the popup
 	CreateRealTimeThread(function()
 		local popup = g_Classes.OnScreenNotification:new({}, dlg.idNotifications)

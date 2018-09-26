@@ -5,6 +5,7 @@
 
 ## v9.3 (Unreleased)
 ### Fixed:
+- Sagan Update.
 - Destroy Object removed domes with buildings in them, which may cause a crash (thanks Encei).
 - Inside buildings built outside weren't getting colonists (thanks Encei).
 
