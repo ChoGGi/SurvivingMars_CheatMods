@@ -36,8 +36,8 @@ SOFTWARE.
 ]]
 
 -- tell people know how to get the library
-function OnMsg.ModsLoaded()
-	local library_version = 14
+function OnMsg.ModsReloaded()
+	local library_version = 15
 
 	local ModsLoaded = ModsLoaded
 	local not_found_or_wrong_version
@@ -71,7 +71,8 @@ function OnMsg.ClassesGenerate()
 	local ChoGGi,Mods = ChoGGi,Mods
 	ChoGGi._LICENSE = LICENSE
 
-	-- I should really split this into funcs and settings... one of these days
+	-- I should really split ChoGGi into funcs and settings... one of these days
+
 	ChoGGi._VERSION = Mods[ChoGGi.id].version
 	-- is ECM shanghaied by the blacklist?
 	ChoGGi.blacklist = Mods[ChoGGi.id].env
@@ -84,7 +85,6 @@ function OnMsg.ClassesGenerate()
 
 	if not ChoGGi.blacklist then
 		local AsyncGetFileAttribute = AsyncGetFileAttribute
-
 		function ChoGGi.ComFuncs.FileExists(file)
 			-- folders don't have a size
 			local err,_ = AsyncGetFileAttribute(file,"size")

@@ -4,7 +4,7 @@ local FlushLogFile = FlushLogFile
 -- early as possible
 FlushLogFile()
 
-function OnMsg.ModsLoaded()
+function OnMsg.ModsReloaded()
   FlushLogFile()
 end
 

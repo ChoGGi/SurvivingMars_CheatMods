@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
 -- tell people know how to get the library
-function OnMsg.ModsLoaded()
-	local library_version = 13
+function OnMsg.ModsReloaded()
+	local library_version = 14
 
 	local ModsLoaded = ModsLoaded
 	local not_found_or_wrong_version

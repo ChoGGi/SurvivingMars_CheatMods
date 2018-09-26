@@ -35,7 +35,7 @@ EveryFlagOnWikipedia = {
 }
 
 -- just in case anyone adds some custom HumanNames
-function OnMsg.ModsLoaded()
+function OnMsg.ModsReloaded()
 
 	local AsyncRand = AsyncRand
 	local HumanNames = HumanNames

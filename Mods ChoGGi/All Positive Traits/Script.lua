@@ -2,7 +2,7 @@ local PositiveTraits
 local NegativeTraits
 
 -- this will allow us to add/remove any custom traits
-function OnMsg.ModsLoaded()
+function OnMsg.ModsReloaded()
   PositiveTraits = {}
   NegativeTraits = {}
   local traits = DataInstances.Trait

@@ -547,7 +547,7 @@ function OnMsg.ClassesGenerate()
 			return true
 		end
 
-		function OnMsg.ModsLoaded()
+		function OnMsg.ModsReloaded()
 			local ChoGGi = ChoGGi
 
 			-- remove empty entries in BuildingSettings
