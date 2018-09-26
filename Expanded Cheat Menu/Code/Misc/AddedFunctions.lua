@@ -3,25 +3,27 @@
 function OnMsg.ClassesGenerate()
 
 	-- add some shortened func names
-	do -- for those that don't know "do ... end" is a way of keeping "local =" local to the do
-		-- make some easy to type names
+	do
 		local ChoGGi = ChoGGi
-		if not ChoGGi.blacklist then
-			function dump(...)
-				ChoGGi.ComFuncs.Dump(...)
-			end
-			function dumplua(...)
-				ChoGGi.ComFuncs.DumpLua(...)
-			end
-			function dumptable(...)
-				ChoGGi.ComFuncs.DumpTable(...)
-			end
-			function dumpl(...)
-				ChoGGi.ComFuncs.DumpLua(...)
-			end
-			function dumpt(...)
-				ChoGGi.ComFuncs.DumpTable(...)
-			end
+		-- make some easy to type names
+		function dump(...)
+			ChoGGi.ComFuncs.Dump(...)
+		end
+		function dumplua(...)
+			ChoGGi.ComFuncs.DumpLua(...)
+		end
+		function dumptable(...)
+			ChoGGi.ComFuncs.DumpTable(...)
+		end
+		function dumpl(...)
+			ChoGGi.ComFuncs.DumpLua(...)
+		end
+		function dumpt(...)
+			ChoGGi.ComFuncs.DumpTable(...)
+		end
+		trans = ChoGGi.ComFuncs.Translate
+		function so()
+			return ChoGGi.ComFuncs.SelObject()
 		end
 
 	--~	 local function RemoveLast(str)
@@ -40,13 +42,8 @@ function OnMsg.ClassesGenerate()
 	--~		 orig_quit(...)
 	--~		 RemoveLast("quit")
 	--~	 end
-
-		-- works with userdata or index number
-		trans = ChoGGi.ComFuncs.Translate
-		function so()
-			return ChoGGi.ComFuncs.SelObject()
-		end
 	end
+
 	-- no need to have these in the do
 	function restart()
 		quit("restart")
@@ -61,7 +58,6 @@ function OnMsg.ClassesGenerate()
 	cs = terminal.GetMousePos -- cursor pos on screen
 	s = false -- used to store SelectedObj
 
-
 	-- add some simple functions to the cheatmenu for moving it/getting pos
 	XShortcutsHost.SetPos = function(self,pt)
 		self:SetBox(pt:x(),pt:y(),self.box:sizex(),self.box:sizey())
@@ -74,5 +70,8 @@ function OnMsg.ClassesGenerate()
 		return GetSize(self,"idMenuBar") + GetSize(self,"idBottomContainer")
 	end
 
-	-- some other functions someday
+	function DiscoverTech(tech_id)
+		UICity:SetTechDiscovered(tech_id)
+	end
+
 end
