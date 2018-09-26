@@ -407,22 +407,23 @@ end
 -- centred msgbox with Ok, and optional image
 local WaitPopupNotification = WaitPopupNotification
 function ChoGGi.ComFuncs.MsgWait(text,title,image)
-	text = CheckText(text,text)
-	title = CheckText(title,S[1000016--[[Title--]]])
-
 	local PopupNotificationPresets = PopupNotificationPresets
-
-	local preset = "ChoGGi_TempPopup"
-	local temp_msg = {
-		name = preset,
-		image = image,
+	-- add my fake preset popup
+	PopupNotificationPresets.ChoGGi_TempPopup = {
+		title = CheckText(title,S[1000016--[[Title--]]]),
+		text = CheckText(text,text),
+		name = "ChoGGi_TempPopup",
+		-- so it appears on screen instead of in a little popup
 		start_minimized = false,
 	}
-	PopupNotificationPresets[preset] = temp_msg
+	if image then
+		PopupNotificationPresets.ChoGGi_TempPopup.image = image
+	end
 
 	CreateRealTimeThread(function()
-		WaitPopupNotification(preset, {title = title, text = text})
-		PopupNotificationPresets[preset] = nil
+--~ 		WaitPopupNotification("ChoGGi_TempPopup", {title = title, text = text})
+		WaitPopupNotification("ChoGGi_TempPopup")
+		PopupNotificationPresets.ChoGGi_TempPopup = nil
 	end)
 end
 
