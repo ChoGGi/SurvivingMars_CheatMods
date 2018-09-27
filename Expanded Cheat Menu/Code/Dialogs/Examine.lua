@@ -18,10 +18,12 @@ local IsValidEntity = IsValidEntity
 
 local getlocal
 local getupvalue
+local getinfo
 local debug = rawget(_G, "debug")
 if debug then
 	getlocal = debug.getlocal
 	getupvalue = debug.getupvalue
+	getinfo = debug.getinfo
 end
 
 transp_mode = rawget(_G, "transp_mode") or false
@@ -816,8 +818,8 @@ function Examine:totextex(obj)
 			)
 		else
 			local info, level = true, 0
-			while true do
-				info = debug.getinfo(obj, level, "Slfun")
+			while info do
+				info = getinfo(obj, level, "Slfun")
 				if info then
 					c = c + 1
 					totextex_res[c] = StringFormat("%s%s%s(%s) %s: %s%s",
@@ -825,10 +827,10 @@ function Examine:totextex(obj)
 							ExamineThreadLevel_totextex(level, info, obj,self)
 						end),
 						self:HyperLink(ExamineThreadLevel_totextex(level, info, obj,self)),
-						info.short_src,
+						info.short_src or info.source,
 						info.currentline,
 						S[1000110--[[Type--]]],
-						info.name or info.name_what or S[302535920000723--[[Lua--]]],
+						info.name ~= "" and info.name or info.name_what ~= "" and info.name_what or info.what ~= "" and info.what or S[302535920000723--[[Lua--]]],
 						HLEnd
 					)
 				else
@@ -843,21 +845,24 @@ function Examine:totextex(obj)
 			c = c + 1
 			totextex_res[c] = self:valuetotextex(DebugGetInfo(obj))
 		else
-			local i = 1
-			while true do
-				local k, v = getupvalue(obj, i)
+			local level = 1
+			local k, v = true
+			while k do
+				k, v = getupvalue(obj, level)
 				if k then
 					c = c + 1
-					totextex_res[c] = StringFormat("%s = %s",
+					totextex_res[c] = StringFormat("%s = %s < %s: %s",
 						self:valuetotextex(k),
-						self:valuetotextex(v)
+						self:valuetotextex(v),
+						S[302535920001358--[[debug.upvalue() level--]]],
+						level
 					)
 				else
 					c = c + 1
 					totextex_res[c] = self:valuetotextex(obj)
 					break
 				end
-				i = i + 1
+				level = level + 1
 			end
 		end
 	end
@@ -942,7 +947,7 @@ function Examine:totextex(obj)
 			dbg_value = StringFormat("\ndebug.getinfo(): %s",DebugGetInfo(obj))
 		else
 			dbg_value = "\ndebug.getinfo(): "
-			for key,value in pairs(debug.getinfo(obj) or {}) do
+			for key,value in pairs(getinfo(obj) or {}) do
 				dbg_value = StringFormat("%s\n%s: %s",dbg_value,key,self:valuetotextex(value))
 			end
 		end

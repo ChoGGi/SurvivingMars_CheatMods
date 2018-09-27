@@ -1,4 +1,7 @@
-### Load order when you load a game; excluding spammy ones.
+### "Load Game" (last updated DA)
+
+##### Returns a list of OnMsgs that are waiting for Msgs.
+GetHandledMsg(true)
 
 ##### Tabs denote repetition of Msg
 ```

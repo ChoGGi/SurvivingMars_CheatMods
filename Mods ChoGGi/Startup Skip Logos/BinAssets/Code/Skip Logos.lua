@@ -4,7 +4,7 @@ function OnMsg.DesktopCreated()
 end
 
 local are_we_setup
-local function ChoGGi_Setup()
+function OnMsg.ReloadLua()
   if are_we_setup then
     return
   end
@@ -14,11 +14,16 @@ local function ChoGGi_Setup()
   ParadoxBuildsModEditorWarning = true
   ParadoxBuildsModManagerWarning = true
 
-end
+    -- opens to load game menu
+--~ 		local idx
+--~ 		local desktop = terminal.desktop
+--~ 		local TableFind = table.find
+--~ 		local Sleep = Sleep
+--~ 		while not idx do
+--~ 			-- since there's just the one dialog opened, that's all we look for
+--~ 			idx = TableFind(desktop,"class","XDialog")
+--~ 			Sleep(50)
+--~ 		end
+--~ 		desktop[idx]:SetMode("Load")
 
-function OnMsg.ReloadLua()
-  ChoGGi_Setup()
-end
-function OnMsg.UASetMode()
-  ChoGGi_Setup()
 end

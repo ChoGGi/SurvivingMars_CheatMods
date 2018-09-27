@@ -1,3 +1,5 @@
+v0.7
+Sagan.
 v0.6
 Fixed not being able to launch rockets (hopefully, never been able to repro it).
 Battery drains.

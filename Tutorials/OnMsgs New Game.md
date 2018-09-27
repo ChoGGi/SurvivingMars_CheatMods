@@ -1,4 +1,7 @@
-### "New Game"
+### "New Game" (last updated DA)
+
+##### Returns a list of OnMsgs that are waiting for Msgs.
+GetHandledMsg(true)
 
 ##### Tabs denote repetition of Msg
 ```

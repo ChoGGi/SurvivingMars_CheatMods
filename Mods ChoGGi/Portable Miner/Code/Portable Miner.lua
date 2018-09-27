@@ -26,9 +26,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.]]
 
--- if we use global func more then once: make them local for that small bit o' speed
-local select,tostring,type,pcall,table = select,tostring,type,pcall,table
-
+local table = table
 local DoneObject = DoneObject
 local GetEntityCombinedShape = GetEntityCombinedShape
 local GetObjects = GetObjects
@@ -86,7 +84,7 @@ DefineClass.PortableMiner = {
 
 	last_serviced_time = 0,
 	resource = "Metals",
-	nearby_deposits = false,
+	nearby_deposit = false,
 	accumulate_dust = true,
 	notworking_sign = false,
 	pooper_shooter = "Droneentrance",
@@ -167,12 +165,12 @@ function PortableMiner:DepositNearby()
 				(res:IsKindOfClasses("SubsurfaceDepositPreciousMetals","SubsurfaceDepositMetals") and
 				(res.depth_layer < 2 or UICity:IsTechResearched("DeepMetalExtraction"))) then
 			self.resource = res.resource
-			self.nearby_deposits = res
+			self.nearby_deposit = res
 			return true
 		end
 	end
 	-- nadda
-	self.nearby_deposits = false
+	self.nearby_deposit = false
 	return false
 end
 
@@ -192,7 +190,7 @@ end
 -- called it Load so it uses the load resource icon in pins
 function PortableMiner:Load()
 
-  if self.nearby_deposits then
+  if self.nearby_deposit then
     -- remove removed stockpile
     if not IsValid(self.stockpile) then
       self.stockpile = false
@@ -273,20 +271,20 @@ function PortableMiner:GetResourceProduced()
 end
 
 function PortableMiner:DigErUpMetals(amount)
-  if not IsValid(self.nearby_deposits) then
-    self.nearby_deposits = false
+  if not IsValid(self.nearby_deposit) then
+    self.nearby_deposit = false
     return
   end
 
 	-- stupid surface deposits
---~ 	if self.nearby_deposits:IsKindOfClasses("SurfaceDepositGroup","SurfaceDepositMetals","SurfaceDepositConcrete","SurfaceDepositPolymers") then
---~ 		local res = self.nearby_deposits
+--~ 	if self.nearby_deposit:IsKindOfClasses("SurfaceDepositGroup","SurfaceDepositMetals","SurfaceDepositConcrete","SurfaceDepositPolymers") then
+--~ 		local res = self.nearby_deposit
 --~ 		res = res.group and res.group[1] or res
 --~ 		-- get one with amounts
 --~ 		while true do
 --~ 			if res.transport_request:GetActualAmount() == 0 then
---~ 				table.remove(self.nearby_deposits.group,1)
---~ 				res = self.nearby_deposits
+--~ 				table.remove(self.nearby_deposit.group,1)
+--~ 				res = self.nearby_deposit
 --~ 				res = res.group and res.group[1] or res
 --~ 			else
 --~ 				break
@@ -297,51 +295,41 @@ function PortableMiner:DigErUpMetals(amount)
 --~ 			res.transport_request:SetAmount(amount * -1)
 --~ 		end
 --~ 	else
---~ 		amount = self.nearby_deposits:TakeAmount(amount)
+--~ 		amount = self.nearby_deposit:TakeAmount(amount)
 --~ 	end
-	amount = self.nearby_deposits:TakeAmount(amount)
-	Msg("ResourceExtracted", self.nearby_deposits.resource, amount)
+	amount = self.nearby_deposit:TakeAmount(amount)
+	Msg("ResourceExtracted", self.nearby_deposit.resource, amount)
 
-  if self.nearby_deposits:IsDepleted() then
+  if self.nearby_deposit:IsDepleted() then
     -- omg it's isn't doing anythings @!@!#!?
 		table.insert_unique(g_IdleExtractors, self)
     self:ShowNotWorkingSign(true)
     self.produced_last_deposit = 0
 
-    self.nearby_deposits = false
-    self:OnDepositDepleted(self.nearby_deposits)
+    self.nearby_deposit = false
+    self:OnDepositDepleted(self.nearby_deposit)
   end
   return amount
 end
 
 function PortableMiner:DigErUpConcrete(amount)
-  if not IsValid(self.nearby_deposits) then
-    self.nearby_deposits = false
+	local d = self.nearby_deposit
+
+  if not IsValid(d) then
+    self.nearby_deposit = false
     return
   end
 
-  local info = self:GetRessourceInfo()
-  -- local shape = self:GetExtractionShape()
-  -- there's QuarryExcavator,QuarryClosedShape, and Quarry. but those won't get the whole thing from the center
-  local shape = GetEntityCombinedShape(self.mine_area)
-  if not info or not shape then
-    return
-  end
+	local extracted = self:ExtractResource(amount)
 
-  local extracted, remaining = TerrainDeposit_Extract(shape, self, TerrainDepositGrid, info, amount)
-  Msg("ResourceExtracted", self.resource, extracted)
-
-  if remaining == 0 then
+  if d and d.amount == 0 or not d then
     -- omg it's isn't doing anythings @!@!#!?
 		table.insert_unique(g_IdleExtractors, self)
     -- delete that shit
-    local deposit = self.nearby_deposits
     self.produced_last_deposit = 0
-    if IsValid(deposit) and deposit:GetAmount() < 10 * const.ResourceScale then
---~     if IsValid(deposit) then
-      deposit.depleted = true
-      DoneObject(deposit)
-      self.nearby_deposits = false
+		-- if under 1000 then nothing for us to care about?
+    if IsValid(d) and d:GetAmount() < 1000 then
+      self.nearby_deposit = false
     end
   end
 
@@ -352,8 +340,13 @@ function PortableMiner:DigErUpConcrete(amount)
   return extracted
 end
 
+-- area we can mine around us
+function PortableMiner:GetExtractionShape(amount)
+  return GetEntityCombinedShape(self.mine_area)
+end
+
 function PortableMiner:CanExploit(deposit)
-	deposit = deposit or self.nearby_deposits
+	deposit = deposit or self.nearby_deposit
 	return IsValid(deposit)
 end
 

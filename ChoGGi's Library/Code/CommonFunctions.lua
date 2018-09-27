@@ -2,6 +2,7 @@
 
 --~ local TableConcat = ChoGGi.ComFuncs.TableConcat -- added in Init.lua
 local S = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 
 local AsyncRand = AsyncRand
 local IsValid = IsValid
@@ -1206,7 +1207,11 @@ function ChoGGi.ComFuncs.SelectConsoleLogText()
 end
 
 do -- ShowConsoleLogWin
-	local AsyncFileToString = _G.AsyncFileToString
+	local AsyncFileToString
+	if not blacklist then
+		AsyncFileToString = AsyncFileToString
+	end
+
 	local GetLogFile = GetLogFile
 	function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
 		if visible and not dlgChoGGi_ConsoleLogWin then
@@ -1216,7 +1221,7 @@ do -- ShowConsoleLogWin
 			local dlg = dlgConsoleLog
 			if dlg then
 				dlgChoGGi_ConsoleLogWin.idText:SetText(dlg.idText:GetText())
-			elseif not ChoGGi.blacklist then
+			elseif not blacklist then
 				--if for some reason consolelog isn't around, then grab the log file
 				local err,str = AsyncFileToString(GetLogFile())
 				if not err then

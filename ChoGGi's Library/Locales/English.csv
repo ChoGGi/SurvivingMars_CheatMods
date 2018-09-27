@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001358,,
 302535920001359,,
 302535920001360,,
 302535920001361,,
@@ -240,6 +239,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
 302535920000865,Toggle Trans,
+302535920001358,debug.upvalue() level,
 302535920001353,Thread info,
 302535920000016,Remove any green spheres/reset green coloured objects.,
 302535920000021,Mark object with green sphere and/or paint.,

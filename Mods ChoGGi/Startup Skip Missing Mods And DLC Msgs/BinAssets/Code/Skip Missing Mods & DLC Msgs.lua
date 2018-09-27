@@ -1,5 +1,5 @@
 local are_we_setup
-local function ChoGGi_Setup()
+function OnMsg.ReloadLua()
   if are_we_setup then
     return
   end
@@ -16,11 +16,4 @@ local function ChoGGi_Setup()
       return true
     end
   end)
-end
-
-function OnMsg.ReloadLua()
-  ChoGGi_Setup()
-end
-function OnMsg.UASetMode()
-  ChoGGi_Setup()
 end
