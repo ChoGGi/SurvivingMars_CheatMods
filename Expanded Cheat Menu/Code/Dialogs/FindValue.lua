@@ -6,6 +6,11 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local RetName = ChoGGi.ComFuncs.RetName
+	local FindThreadFunc = ChoGGi.ComFuncs.FindThreadFunc
+	local IsValidThread = IsValidThread
+
+	local pairs,type,tostring = pairs,type,tostring
+	local StringFormat = string.format
 
 	DefineClass.ChoGGi_FindValueDlg = {
 		__parents = {"ChoGGi_Window"},
@@ -22,7 +27,7 @@ function OnMsg.ClassesGenerate()
 
 		self.obj = context.obj
 		self.obj_name = RetName(self.obj)
-		self.title = string.format("%s: %s",S[302535920001305--[[Find Within--]]],self.obj_name)
+		self.title = StringFormat("%s: %s",S[302535920001305--[[Find Within--]]],self.obj_name)
 
 		-- By the Power of Grayskull!
 		self:AddElements(parent, context)
@@ -77,6 +82,15 @@ function OnMsg.ClassesGenerate()
 			RolloverText = S[302535920000502--[[Treat uppercase and lowercase as distinct.--]]],
 		}, self.idButtonContainer)
 
+		self.idThreads = g_Classes.ChoGGi_CheckButton:new({
+			Id = "idThreads",
+			Dock = "left",
+			RolloverAnchor = "bottom",
+			Margins = box(4, 0, 0, 0),
+			Text = S[302535920001360--[[Threads--]]],
+			RolloverText = S[302535920001361--[[Will also search thread func names for value (case is ignored for this).--]]],
+		}, self.idButtonContainer)
+
 		self.idCancel = g_Classes.ChoGGi_Button:new({
 			Id = "idCancel",
 			Dock = "right",
@@ -90,6 +104,15 @@ function OnMsg.ClassesGenerate()
 		self:SetInitPos(context.parent)
 	end
 
+	local function RetStringCase(obj,case)
+		local obj_type = type(obj)
+		if obj_type == "string" then
+			return case and obj or obj:lower(), obj_type
+		else
+			return case and tostring(obj) or tostring(obj):lower(), obj_type
+		end
+	end
+
 	function ChoGGi_FindValueDlg:FindText()
 		local str = self.idEdit:GetText()
 		-- no sense in finding nothing
@@ -98,6 +121,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local case = self.idCaseSen:GetCheck()
+		local threads = self.idThreads:GetCheck()
 
 		if not case then
 			str = str:lower()
@@ -111,6 +135,7 @@ function OnMsg.ClassesGenerate()
 			self.obj,
 			str,
 			case,
+			threads,
 			tonumber(self.idLimit:GetText()) or 1
 		)
 
@@ -123,16 +148,7 @@ function OnMsg.ClassesGenerate()
 		end)
 	end
 
-	local function ReturnStr(obj,case)
-		local obj_type = type(obj)
-		if obj_type == "string" then
-			return case and obj or obj:lower(), obj_type
-		else
-			return case and tostring(obj) or tostring(obj):lower(), obj_type
-		end
-	end
-
-	function ChoGGi_FindValueDlg:RetObjects(obj,str,case,limit,level)
+	function ChoGGi_FindValueDlg:RetObjects(obj,str,case,threads,limit,level)
 		if not level then
 			level = 0
 		end
@@ -145,26 +161,28 @@ function OnMsg.ClassesGenerate()
 			local name2 = tostring(obj)
 			local obj_string
 			if name1 == name2 then
-				obj_string = string.format("%s: %s",S[302535920001307--[[L%s--]]]:format(level),name1)
+				obj_string = StringFormat("%s: %s",S[302535920001307--[[L%s--]]]:format(level),name1)
 			else
-				obj_string = string.format("%s: %s (%s)",S[302535920001307--[[L%s--]]]:format(level),name1,name2)
+				obj_string = StringFormat("%s: %s (%s)",S[302535920001307--[[L%s--]]]:format(level),name1,name2)
 			end
 			for key,value in pairs(obj) do
-				local key_str,key_type = ReturnStr(key,case)
-				local value_str,value_type = ReturnStr(value,case)
+				local key_str,key_type = RetStringCase(key,case)
+				local value_str,value_type = RetStringCase(value,case)
 
-				if key_str:find(str,1,true) or value_str:find(str,1,true) then
-					-- makes dupes
-					-- self.found_objs[#self.found_objs+1] = obj
-					-- should be decent enough?
-					if not self.found_objs[obj_string] then
-						self.found_objs[obj_string] = obj
+				if (key_str:find(str,1,true) or value_str:find(str,1,true)) and not self.found_objs[obj_string] then
+					self.found_objs[obj_string] = obj
+				elseif threads then
+					if key_type == "thread" and FindThreadFunc(key,str) and not self.found_objs[key_str] then
+						self.found_objs[StringFormat("%s, %s",obj_string,key_str)] = key
+					elseif value_type == "thread" and FindThreadFunc(value,str) and not self.found_objs[value_str] then
+						self.found_objs[StringFormat("%s, %s",obj_string,value_str)] = value
 					end
+
 				else
 					if key_type == "table" then
-						self:RetObjects(key,str,case,limit,level+1)
+						self:RetObjects(key,str,case,threads,limit,level+1)
 					elseif value_type == "table" then
-						self:RetObjects(value,str,case,limit,level+1)
+						self:RetObjects(value,str,case,threads,limit,level+1)
 					end
 				end
 

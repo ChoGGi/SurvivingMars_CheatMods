@@ -4,6 +4,11 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v9.4 (Unreleased)
+### Added:
+- Threads checkbox to Find Value (allows you to search thread func names).
+
+### Changed:
+- More info shown for threads in examine (with blacklist).
 
 ## v9.3 (26 Sep 2018)
 ### Fixed:

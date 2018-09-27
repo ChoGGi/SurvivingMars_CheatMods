@@ -514,4 +514,16 @@ function OnMsg.ClassesGenerate()
 		end,
 	}
 
+	c = c + 1
+	Actions[c] = {
+		ActionMenubar = str_Help_Text,
+		ActionName = [[Threads]],
+		ActionId = ".Threads",
+		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+		OnAction = function()
+			OpenUrl(str_url:format("Tutorials/Threads.md"))
+		end,
+	}
+
 end

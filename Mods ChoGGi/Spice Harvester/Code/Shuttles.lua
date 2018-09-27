@@ -113,7 +113,8 @@ function OnMsg.ClassesGenerate()
 			local GetHeight = terrain.GetHeight
 			while IsValid(self.SpiceHarvester_Harvester) do
 				if SpiceHarvester.game_paused then
-					Sleep(1000)
+--~ 					Sleep(1000)
+					WaitMsg("SpiceHarvester.Game_Resume")
 				else
 					local pos1 = self:GetVisualPos()
 					if pos1 and (pos1:z() - GetHeight(pos1)) < 1500 then
@@ -138,7 +139,8 @@ function OnMsg.ClassesGenerate()
 		-- movement thread
 		while IsValid(self.SpiceHarvester_Harvester) do
 			if SpiceHarvester.game_paused then
-				Sleep(1000)
+--~ 				Sleep(1000)
+				WaitMsg("SpiceHarvester.Game_Resume")
 			else
 				self.hover_height = Random(800,20000)
 				local x,y,_ = self.SpiceHarvester_Harvester:GetVisualPosXYZ()

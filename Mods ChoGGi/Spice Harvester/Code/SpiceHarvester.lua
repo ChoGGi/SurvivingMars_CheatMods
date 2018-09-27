@@ -63,6 +63,7 @@ function OnMsg.ClassesGenerate()
 			SpiceHarvester.game_paused = true
 		else
 			SpiceHarvester.game_paused = false
+			Msg("SpiceHarvester.Game_Resume")
 		end
 
 		function OnMsg.MarsPause()
@@ -70,6 +71,7 @@ function OnMsg.ClassesGenerate()
 		end
 		function OnMsg.MarsResume()
 			SpiceHarvester.game_paused = false
+			Msg("SpiceHarvester.Game_Resume")
 		end
 	end -- do
 
@@ -128,7 +130,8 @@ function OnMsg.ClassesGenerate()
 			while IsValid(self) do
 				-- if I use gametime then it'll speed up the sounds and such, but realtime doesn't pause on pause
 				if SpiceHarvester.game_paused then
-					Sleep(1000)
+--~ 					Sleep(1000)
+					WaitMsg("SpiceHarvester.Game_Resume")
 				else
 					Sleep(50)
 					delay = delay + 1

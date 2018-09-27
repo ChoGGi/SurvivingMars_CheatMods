@@ -1539,3 +1539,58 @@ function ChoGGi.ComFuncs.Rebuildshortcuts(Actions,ECM)
 	XShortcutsThread = false
 end
 
+do -- RetThreadInfo/FindThreadFunc
+	local GedInspectorFormatObject = GedInspectorFormatObject
+	local IsValidThread = IsValidThread
+	local pairs = pairs
+	-- returns some info if blacklist enabled
+	function ChoGGi.ComFuncs.RetThreadInfo(thread)
+		if not IsValidThread then
+			return
+		end
+		-- needs an empty table to work it's magic
+		GedInspectedObjects[thread] = {}
+		-- returns a table of the funcs in the thread
+		local threads = GedInspectorFormatObject(thread).members
+		-- build a list of func name / level
+		local funcs = {}
+		local c = 0
+		for i = 1, #threads do
+			c = c + 1
+			funcs[c] = {level = false,func = false}
+
+			for key,value in pairs(threads[i]) do
+				if key == "key" then
+					funcs[c].level = value
+				elseif key == "value" then
+					funcs[c].func = value
+				end
+			end
+		end
+		-- and last we merge it all into a string to return
+		local str = ""
+		for i = 1, #funcs do
+			str = StringFormat("%s\n%s %s: %s",str,funcs[i].func,S[302535920001359--[[debug.getinfo() level--]]],funcs[i].level)
+		end
+		return str
+	end
+
+	-- find/return func if str in func name
+	function ChoGGi.ComFuncs.FindThreadFunc(thread,str)
+--~ 		if not IsValidThread then
+--~ 			return
+--~ 		end
+		-- needs an empty table to work it's magic
+		GedInspectedObjects[thread] = {}
+		-- returns a table of the funcs in the thread
+		local threads = GedInspectorFormatObject(thread).members
+		for i = 1, #threads do
+			for key,value in pairs(threads[i]) do
+				if key == "value" and value:find_lower(str,1,true) then
+					return value
+				end
+			end
+		end
+	end
+
+end -- do

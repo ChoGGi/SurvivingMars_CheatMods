@@ -16,13 +16,13 @@ You need the blacklist disabled to be able to use debug.*
 This probably only works for Create*TimeThread threads.
 ```
 local lua_filename = "Example_file.lua"
--- could try 2 or more, but 1 is usually fine and dandy.
-local level = 1
-for key,value in pairs(ThreadsRegister) do
+local threads = {}
+local level = 1 --[[could try 2 or more, but 1 is usually fine and dandy.--]]
+for key in pairs(ThreadsRegister) do
 	local info = debug.getinfo(key, level)
 	if info and info.source:find(lua_filename,1,true) then
-		OpenExamine(info)
-		break
+		threads[#threads+1] = info
 	end
 end
+OpenExamine(threads)
 ```

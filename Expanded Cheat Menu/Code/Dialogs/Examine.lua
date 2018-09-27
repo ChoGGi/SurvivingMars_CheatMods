@@ -34,6 +34,7 @@ local PopupToggle
 local RetName
 local ShowMe
 local DebugGetInfo
+local RetThreadInfo
 local Trans
 local S
 local blacklist
@@ -47,6 +48,7 @@ function OnMsg.ClassesGenerate()
 	RetName = ChoGGi.ComFuncs.RetName
 	ShowMe = ChoGGi.ComFuncs.ShowMe
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
+	RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
 	Trans = ChoGGi.ComFuncs.Translate
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
@@ -752,12 +754,13 @@ local ExamineThreadLevel_data = {}
 local function ExamineThreadLevel_totextex(level, info, obj,self)
 	if blacklist then
 		TableClear(ExamineThreadLevel_data)
-		ExamineThreadLevel_data = {DebugGetInfo(obj)}
+		ExamineThreadLevel_data = RetThreadInfo(obj)
 	else
 		TableClear(ExamineThreadLevel_data)
 		local l = 1
-		while true do
-			local name, val = getlocal(obj, level, l)
+		local name, val = true
+		while name do
+			name, val = getlocal(obj, level, l)
 			if name then
 				ExamineThreadLevel_data[name] = val
 				l = l + 1
@@ -808,14 +811,7 @@ function Examine:totextex(obj)
 
 		if blacklist then
 			c = c + 1
-			totextex_res[c] = StringFormat("%s%s%s%s",
-				self:HyperLink(function(_, _)
-					ExamineThreadLevel_totextex(nil, nil, obj, self)
-				end),
-				self:HyperLink(ExamineThreadLevel_totextex(nil, nil, obj, self)),
-				DebugGetInfo(obj),
-				HLEnd
-			)
+			totextex_res[c] = RetThreadInfo(obj)
 		else
 			local info, level = true, 0
 			while info do
