@@ -1,14 +1,14 @@
 return PlaceObj("ModDef", {
-	"title", "Change Object Colour v0.5",
-	"version", 5,
-  "saved", 1536580800,
+	"title", "Change Object Colour v0.6",
+	"version", 6,
+  "saved", 1538136000,
 	"image", "Preview.png",
 	"tags", "Objects",
 	"id", "ChoGGi_ChangeObjectColour",
 	"author", "ChoGGi",
   "steam_id", "1411106049",
 	"code", {
-		"Code/Change Object Colour.lua"
+		"Code/Script.lua"
 	},
 	"lua_revision", LuaRevision,
 	"description", [[Press F6 to change the colour of selected/moused over object, or all objects of selected type

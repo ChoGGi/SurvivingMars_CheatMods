@@ -8,6 +8,8 @@
 - Game>Camera>Reset: If something makes the camera view wonky you can use this to fix it.
 
 ### Changed:
+- You can change concrete deposit amount/max in Cheats selection.
+- Overrode the Empty Deposit cheat so it looks like 0, but it won't get removed (if you mis-click).
 - Moved Presets menu to Debug as a submenu.
 - Added settings to some more menu item hints.
 - Added Ged Editor to the Tools menu in Examine.
@@ -18,6 +20,7 @@
 - Made sure Mod Upload works correctly with screenshots.
 - Some missing/borked text in menus.
 - Measure Tool.
+- Issue with shortcuts and multiple of my mods that use shortcuts.
 
 ## v9.4 (28 Sep 2018)
 ### Added:

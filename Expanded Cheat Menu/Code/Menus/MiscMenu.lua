@@ -35,7 +35,7 @@ function OnMsg.ClassesGenerate()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			if IsValid(sel) then
 				return ChoGGi.ComFuncs.SettingState(
-					sel:GetScale()
+					sel:GetScale(),
 					302535920000685--[[You want them big, you want them small; have at it.--]]
 				)
 			else

@@ -2,7 +2,7 @@
 
 -- tell people know how to get the library
 function OnMsg.ModsReloaded()
-	local library_version = 14
+	local library_version = 16
 
 	local ModsLoaded = ModsLoaded
 	local not_found_or_wrong_version
@@ -32,38 +32,40 @@ end
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
-	local Actions = {
-		-- goes to placement mode with last built object
-		{
-			ActionId = "BuildingPlacementOrientation.LastPlacedBuildingObj1",
-			OnAction = function()
-				local last = UICity.LastConstructedBuilding
-				if type(last) == "table" then
-					ChoGGi.CodeFuncs.ConstructionModeSet(last.encyclopedia_id ~= "" and last.encyclopedia_id or last.entity)
-				end
-			end,
-			ActionShortcut = "Ctrl-Space",
-			replace_matching_id = true,
-		},
-		-- goes to placement mode with SelectedObj
-		{
-			ActionId = "BuildingPlacementOrientation.LastPlacedBuildingObj2",
-			OnAction = function()
-				local ChoGGi = ChoGGi
-				local sel = ChoGGi.ComFuncs.SelObject()
-				if type(sel) == "table" then
-					ChoGGi.Temp.LastPlacedObject = sel
-					ChoGGi.CodeFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
-				end
-			end,
-			ActionShortcut = "Ctrl-Shift-Space",
-			replace_matching_id = true,
-		},
+
+	local S = ChoGGi.Strings
+	local Actions = ChoGGi.Temp.Actions
+	local c = #Actions
+
+	-- goes to placement mode with last built object
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001349--[[Place Last Constructed Building--]]],
+		ActionId = "BuildingPlacementOrientation.LastConstructedBuilding",
+		OnAction = function()
+			local last = UICity.LastConstructedBuilding
+			if type(last) == "table" then
+				ChoGGi.CodeFuncs.ConstructionModeSet(last.encyclopedia_id ~= "" and last.encyclopedia_id or last.entity)
+			end
+		end,
+		ActionShortcut = "Ctrl-Space",
+		replace_matching_id = true,
 	}
 
-	function OnMsg.ShortcutsReloaded()
-		ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
-	end
+	-- goes to placement mode with SelectedObj
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001350--[[Place Last Selected Object--]]],
+		ActionId = "BuildingPlacementOrientation.LastSelectedObject",
+		OnAction = function()
+			local ChoGGi = ChoGGi
+			local sel = ChoGGi.ComFuncs.SelObject()
+			if type(sel) == "table" then
+				ChoGGi.Temp.LastPlacedObject = sel
+				ChoGGi.CodeFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
+			end
+		end,
+		ActionShortcut = "Ctrl-Shift-Space",
+		replace_matching_id = true,
+	}
 end
 
 function OnMsg.BuildingPlaced(obj)

@@ -1043,7 +1043,7 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 			end
 			for i = 1, #uilist do
 				local ui = uilist[i]
-				if ui.class == sName then
+				if ui:IsKindOf(sName) then
 					if iWhich then
 						ui:SetTransparency(iWhich)
 					else

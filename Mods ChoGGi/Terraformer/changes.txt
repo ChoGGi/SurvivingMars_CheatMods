@@ -1,8 +1,10 @@
+v1.0
+Fixed issue with shortcuts and multiple of my mods that use shortcuts.
+
 v0.9
 Rock removal now takes about a second.
 Added Ctrl-Shift-Alt-D to delete objects (careful: it doesn't ask and will delete any object).
 Changed default delete rocks key to Ctrl-Shift-1, and moved small rocks to Ctrl-Shift-2.
-
 v0.8
 Fixed Delete all Rocks being Shift-Ctrl-F instead of Ctrl-Shift-F.
 Made sure bindings are now named in keybindings in in-game options, so you can change them to whatever.

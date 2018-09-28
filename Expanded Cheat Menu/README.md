@@ -226,24 +226,16 @@ If you increase a number high enough it'll go negative.
 
 Depot capacities have been limited, so adding too much won't crash and delete your game when you save.
   >Best I can tell is a height limit of 65536 for any objects.
-
-You can't cheat fill concrete deposits.
-  >Just stick with spamming "The Excavator" around.
 ```
 
 ##### Modder related (Misc Info)
 ```
-OnMsg.ChoGGi_ComFuncs()
-OpenExamine is ready to use
-
-OnMsg.ChoGGi_Dialogs()
-All the stuff in Dialogs/ is loaded
-
-OnMsg.ChoGGi_CodeFuncs()
-All the stuff in Misc/ is loaded
-
-OnMsg.ChoGGi_MenuFuncs()
-All the stuff in Menus/ is loaded
+If you want to examine an object that could get replaced with a new obj (and have examine refresh on the new obj):
+OpenExamine("ChoGGi.UserSetting.ThisObjCanChange","str")
+To choose where to open the examine dialog
+OpenExamine(object,point(x,y))
+To have a custom title
+OpenExamine(object,nil,"Custom Title")
 ```
 
 ##### New locales
@@ -255,7 +247,7 @@ Send me the file to include it.
 OpenExamine(AllLanguages) for a list of language names (use the "value" for the file name).
 ```
 
-##### Thanks
+##### Thank You
 ```
 chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 admbraden (for gifting me a Steam copy): https://steamcommunity.com/id/admbraden

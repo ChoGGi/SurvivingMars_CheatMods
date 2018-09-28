@@ -2,11 +2,11 @@
 
 function OnMsg.ClassesGenerate()
 
-	local Actions = ChoGGi.Temp.Actions
 	local S = ChoGGi.Strings
-
+	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
-	--use number keys to activate/hide build menus
+
+	-- use number keys to activate/hide build menus
 	do -- NumberKeysBuildMenu
 		local function AddMenuKey(num,key)
 			c = c + 1
@@ -47,69 +47,60 @@ function OnMsg.ClassesGenerate()
 	end
 
 	c = c + 1
-	Actions[c] = {
-		ActionId = "ChoGGi_ClearConsoleLog",
+	Actions[c] = {ActionName = S[302535920000734--[[Clear Log--]]],
+		ActionId = "ECM.Keys.ClearConsoleLog",
 		OnAction = cls,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ClearConsoleLog,
 		ActionBindable = true,
-		ActionName = S[302535920000734--[[Clear Log--]]],
 	}
 
 	c = c + 1
-	Actions[c] = {-- ChoGGi_ObjectColourRandom
-		ActionId = "ChoGGi_ObjectColourRandom",
+	Actions[c] = {ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920001346--[[Random Colour--]]]),
+		ActionId = "ECM.Keys.ObjectColourRandom",
 		OnAction = function()
 			ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjectColourRandom,
 		ActionBindable = true,
-		ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920001346--[[Random Colour--]]]),
 	}
 
 	c = c + 1
-	Actions[c] = {-- ChoGGi_ObjectColourDefault
-		ActionId = "ChoGGi_ObjectColourDefault",
+	Actions[c] = {ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920000025--[[Default Colour--]]]),
+		ActionId = "ECM.Keys.ObjectColourDefault",
 		OnAction = function()
 			ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjectColourDefault,
 		ActionBindable = true,
-		ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920000025--[[Default Colour--]]]),
 	}
 
 	local function ToggleConsole()
 		local dlgConsole = dlgConsole
 		if dlgConsole then
 			ShowConsole(not dlgConsole:GetVisible())
-	--~ 		dlgConsole.idEdit:SetFocus()
+			dlgConsole.idEdit:SetFocus()
 		end
 	end
 
 	c = c + 1
-	Actions[c] = {
-		ActionId = "ChoGGi_ShowConsoleTilde",
-		OnAction = function()
-			ToggleConsole()
-		end,
+	Actions[c] = {ActionName = string.format("%s %s",S[302535920001347--[[Show Console--]]],S[1000544--[[~--]]]),
+		ActionId = "ECM.Keys.ShowConsoleTilde",
+		OnAction = ToggleConsole,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ShowConsoleTilde,
 		ActionBindable = true,
-		ActionName = string.format("%s %s",S[302535920001347--[[Show Console--]]],S[1000544--[[~--]]]),
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionId = "ChoGGi_ShowConsoleEnter",
-		OnAction = function()
-			ToggleConsole()
-		end,
+	Actions[c] = {ActionName = string.format("%s %s",S[302535920001347--[[Show Console--]]],S[1000447--[[Enter--]]]),
+		ActionId = "ECM.Keys.ShowConsoleEnter",
+		OnAction = ToggleConsole,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ShowConsoleEnter,
 		ActionBindable = true,
-		ActionName = string.format("%s %s",S[302535920001347--[[Show Console--]]],S[1000447--[[Enter--]]]),
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionId = "ChoGGi_ConsoleRestart",
+	Actions[c] = {ActionName = S[302535920001348--[[Restart--]]],
+		ActionId = "ECM.Keys.ConsoleRestart",
 		OnAction = function()
 			local dlgConsole = dlgConsole
 			if dlgConsole then
@@ -122,12 +113,12 @@ function OnMsg.ClassesGenerate()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ConsoleRestart,
 		ActionBindable = true,
-		ActionName = S[302535920001348--[[Restart--]]],
 	}
 
+	-- goes to placement mode with last built object
 	c = c + 1
-	Actions[c] = {-- goes to placement mode with last built object
-		ActionId = "ChoGGi_LastConstructedBuilding",
+	Actions[c] = {ActionName = S[302535920001349--[[Place Last Constructed Building--]]],
+		ActionId = "ECM.Keys.LastConstructedBuilding",
 		OnAction = function()
 			local last = UICity.LastConstructedBuilding
 			if type(last) == "table" then
@@ -136,12 +127,12 @@ function OnMsg.ClassesGenerate()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.LastConstructedBuilding,
 		ActionBindable = true,
-		ActionName = S[302535920001349--[[Place Last Constructed Building--]]],
 	}
 
+	-- goes to placement mode with SelectedObj
 	c = c + 1
-	Actions[c] = {-- goes to placement mode with SelectedObj
-		ActionId = "ChoGGi_LastPlacedObject",
+	Actions[c] = {ActionName = S[302535920001350--[[Place Last Selected Object--]]],
+		ActionId = "ECM.Keys.LastSelectedObject",
 		OnAction = function()
 			local ChoGGi = ChoGGi
 			local sel = ChoGGi.ComFuncs.SelObject()
@@ -152,7 +143,6 @@ function OnMsg.ClassesGenerate()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.LastPlacedObject,
 		ActionBindable = true,
-		ActionName = S[302535920001350--[[Place Last Placed Object--]]],
 	}
 
 end

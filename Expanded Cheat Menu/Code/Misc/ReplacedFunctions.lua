@@ -1022,7 +1022,7 @@ function OnMsg.ClassesBuilt()
 			-- loop all the sections
 			for i = 1, #c do
 				local section = c[i]
-				if section.class == "XSection" then
+				if section:IsKindOf("XSection") then
 					local title = TGetID(section.idSectionTitle.Text)
 					local content = section.idContent[2]
 

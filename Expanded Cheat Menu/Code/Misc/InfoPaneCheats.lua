@@ -168,7 +168,7 @@ function OnMsg.ClassesGenerate()
 		FungalFarm.CheatAllShiftsOn = CheatAllShiftsOn
 		Farm.CheatAllShiftsOn = CheatAllShiftsOn
 
-		--CheatFullyAuto
+		-- CheatFullyAuto
 		function Workplace:CheatWorkersDbl()
 			self.max_workers = self.max_workers * 2
 		end
@@ -196,11 +196,21 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.CodeFuncs.ToggleWorking(self)
 		end
 
-		--CheatDoubleMaxAmount
+		-- Deposits
 		function Deposit:CheatDoubleMaxAmount()
 			self.max_amount = self.max_amount * 2
 		end
-		--CheatCapDbl storage
+		local function CheatEmpty(self)
+			-- it'll look empty, but it won't actually remove it
+			self.amount = 1
+		end
+		SubsurfaceDeposit.CheatEmpty = CheatEmpty
+		TerrainDeposit.CheatEmpty = CheatEmpty
+		function TerrainDeposit:CheatRefill()
+			self.amount = self.max_amount
+		end
+
+		-- CheatCapDbl storage
 		function ElectricityStorage:CheatCapDbl()
 			self.capacity = self.capacity * 2
 			self.electricity.storage_capacity = self.capacity
@@ -370,9 +380,9 @@ function OnMsg.ClassesGenerate()
 
 	do -- SetInfoPanelCheatHints
 		local function SetHint(action,hint)
-			--name has to be set to make the hint show up
+			-- name has to be set to make the hint show up
 			action.ActionName = action.ActionId
-			action.RolloverHint = hint
+			action.RolloverText = hint
 		end
 
 		function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
@@ -526,7 +536,7 @@ function OnMsg.ClassesGenerate()
 					end
 
 				elseif action.ActionId == "HideSigns" then
-					if obj:IsKindOf("SurfaceDeposit") or obj:IsKindOf("SubsurfaceDeposit") or obj:IsKindOf("WasteRockDumpSite") or obj:IsKindOf("UniversalStorageDepot") then
+					if obj:IsKindOfClasses("SurfaceDeposit","SubsurfaceDeposit","WasteRockDumpSite","UniversalStorageDepot") then
 						action.ActionId = ""
 					else
 						SetHint(action,S[302535920001223--[[Hides any signs above %s (until state is changed).--]]]:format(name))
@@ -545,26 +555,26 @@ function OnMsg.ClassesGenerate()
 						SetHint(action,S[302535920001246--[[Changes colour of %s back to default.--]]]:format(name))
 					end
 				elseif action.ActionId == "AddDust" then
-					if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
+					if obj:IsKindOfClasses("SupplyRocket","UniversalStorageDepot","WasteRockDumpSite") then
 						action.ActionId = ""
 					else
 						SetHint(action,S[302535920001225--[[Add visual dust and maintenance points.--]]])
 					end
 				elseif action.ActionId == "CleanAndFix" then
-					if obj.class == "SupplyRocket" or obj.class == "UniversalStorageDepot" or obj.class == "WasteRockDumpSite" then
+					if obj:IsKindOfClasses("SupplyRocket","UniversalStorageDepot","WasteRockDumpSite") then
 						action.ActionId = ""
 					else
 						SetHint(action,S[302535920001226--[[You may need to use AddDust before using this to change the building visually.--]]])
 					end
 				elseif action.ActionId == "Destroy" then
-					if obj.class == "SupplyRocket" then
+					if obj:IsKindOf("SupplyRocket") then
 						action.ActionId = ""
 					else
 						SetHint(action,S[302535920001227--[[Turns object into ruin.--]]])
 					end
 				elseif action.ActionId == "Empty" then
-					if obj.class:find("SubsurfaceDeposit") then
-						SetHint(action,StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920001228--[[This will remove the %s object from the map.--]]]:format(name)))
+					if obj:IsKindOfClasses("SubsurfaceDeposit","TerrainDeposit") then
+						SetHint(action,S[302535920001228--[[Set the stored amount of this %s to 0.--]]]:format(name))
 					else
 						SetHint(action,S[302535920001230--[[Empties the storage of this building.
 

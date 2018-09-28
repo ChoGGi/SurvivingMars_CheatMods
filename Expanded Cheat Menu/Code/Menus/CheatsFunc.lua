@@ -363,7 +363,7 @@ function OnMsg.ClassesGenerate()
 				else
 					local a = UICity.labels.Anomaly or ""
 					for j = #a, 1, -1 do
-						if a[j].class == value then
+						if a[j]:IsKindOf(value) then
 							a[j]:CheatScan()
 						end
 					end
@@ -551,10 +551,10 @@ Otherwise you won't see anything."--]],
 				local seqs = UICity.mystery.seq_player.seq_list[1]
 				for i = 1, #seqs do
 					local seq = seqs[i]
-					if seq.class == "SA_WaitExpression" then
+					if seq:IsKindOf("SA_WaitExpression") then
 						seq.duration = 0
 						seq.expression = nil
-					elseif seq.class == "SA_WaitMarsTime" then
+					elseif seq:IsKindOf("SA_WaitMarsTime") then
 						seq.duration = 0
 						seq.rand_duration = 0
 						break
@@ -630,7 +630,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 	--~						local ip = state and (state.ip or state.end_ip or 10000)
 							for k = 1, #scenarios do
 								local seq = scenarios[k]
-								if seq.class == "SA_WaitMessage" then
+								if seq:IsKindOf("SA_WaitMessage") then
 									-- add to msg list
 									msgs[#msgs+1] = {
 										[" "] = StringFormat("%s: %s\n\n\n\n%s: %s",S[302535920000273--[[Speech--]]],Trans(seq.voiced_text),S[302535920000274--[[Message--]]],Trans(seq.text)),
@@ -759,7 +759,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 			if Thread.player and Thread.player.seed == seed then
 
 				-- only remove finished waittime threads, can cause issues removing other threads
-				if Thread.finished == true and (Thread.action.class == "SA_WaitMarsTime" or Thread.action.class == "SA_WaitTime" or Thread.action.class == "SA_RunSequence") then
+				if Thread.finished == true and Thread.action:IsKindOfClasses("SA_WaitMarsTime","SA_WaitTime","SA_RunSequence") then
 					DeleteThread(Thread.thread)
 				end
 
@@ -775,7 +775,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 						local title = StringFormat("%s %s: %s",name,S[302535920000286--[[Part--]]],ip)
 
 						-- seqs that add delays/tasks
-						if seq.class == "SA_WaitMarsTime" or seq.class == "SA_WaitTime" then
+						if seq:IsKindOfClasses("SA_WaitMarsTime","SA_WaitTime") then
 							ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed}
 							--we don't want to wait
 							seq.wait_type = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_type")
@@ -801,7 +801,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 							)
 							break
 
-						elseif seq.class == "SA_WaitExpression" then
+						elseif seq:IsKindOf("SA_WaitExpression") then
 							seq.duration = 1
 							local function CallBackFunc(answer)
 								if answer then
@@ -829,7 +829,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 							)
 							break
 
-						elseif seq.class == "SA_WaitMsg" then
+						elseif seq:IsKindOf("SA_WaitMsg") then
 							local function CallBackFunc(answer)
 								if answer then
 									ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed,again = true}
@@ -845,7 +845,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 							)
 							break
 
-						elseif seq.class == "SA_WaitResearch" then
+						elseif seq:IsKindOf("SA_WaitResearch") then
 							local function CallBackFunc(answer)
 								if answer then
 									GrantTech(seq.Research)
@@ -859,7 +859,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 								title
 							)
 
-						elseif seq.class == "SA_RunSequence" then
+						elseif seq:IsKindOf("SA_RunSequence") then
 							local function CallBackFunc(answer)
 								if answer then
 									seq.wait = false

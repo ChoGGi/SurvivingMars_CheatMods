@@ -1,14 +1,14 @@
 return PlaceObj("ModDef", {
-	"title", "Building Placement Orientation v0.4",
-	"version", 4,
-	"saved", 1536494400,
+	"title", "Building Placement Orientation v0.5",
+	"version", 5,
+	"saved", 1538136000,
 	"image", "Preview.png",
 	"tags", "Building",
 	"id", "ChoGGi_BuildingPlacementOrientation",
 	"steam_id", "1411105601",
 	"author", "ChoGGi",
 	"code", {
-		"Code/Building Placement Orientation.lua"
+		"Code/Script.lua"
 	},
 	"lua_revision", LuaRevision,
 	"description", [[Any object you place will have the same orientation as the last placed object.

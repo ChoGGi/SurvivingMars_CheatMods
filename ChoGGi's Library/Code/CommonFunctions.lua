@@ -3,6 +3,7 @@
 --~ local TableConcat = ChoGGi.ComFuncs.TableConcat -- added in Init.lua
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
+local testing = ChoGGi.testing
 
 local AsyncRand = AsyncRand
 local IsValid = IsValid
@@ -1487,35 +1488,34 @@ function ChoGGi.ComFuncs.SelObject()
 end
 
 -- removes all the dev shortcuts/etc and adds mine
-function ChoGGi.ComFuncs.Rebuildshortcuts(Actions,ECM)
+function ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
 	local XShortcutsTarget = XShortcutsTarget
 
 	-- remove all built-in shortcuts (pretty much just a cutdown copy of ReloadShortcuts)
 	XShortcutsTarget.actions = {}
 	-- re-add certain ones
-	if not Platform.ged then
-		if XTemplates.GameShortcuts then
-			XTemplateSpawn("GameShortcuts", XShortcutsTarget)
-		end
-	elseif XTemplates.GedShortcuts then
+	if Platform.ged and XTemplates.GedShortcuts then
 		XTemplateSpawn("GedShortcuts", XShortcutsTarget)
+	elseif XTemplates.GameShortcuts then
+		XTemplateSpawn("GameShortcuts", XShortcutsTarget)
 	end
 
-	if ECM then
-		-- remove stuff from GameShortcuts
-		local table_remove = table.remove
-		for i = #XShortcutsTarget.actions, 1, -1 do
-			-- removes pretty much all the dev actions added, and leaves the game ones intact
-			local id = XShortcutsTarget.actions[i].ActionId
-			if id and (not id:starts_with("action") --[[or id:starts_with("actionPOC")--]] or id == "actionToggleFullscreen") then
-				table_remove(XShortcutsTarget.actions,i)
-			end
+	-- remove stuff from GameShortcuts
+	local table_remove = table.remove
+	for i = #XShortcutsTarget.actions, 1, -1 do
+		-- removes pretty much all the dev actions added, and leaves the game ones intact
+		local id = XShortcutsTarget.actions[i].ActionId
+		if id and not id:starts_with("action") then
+			table_remove(XShortcutsTarget.actions,i)
 		end
+	end
+	if testing then
+		table.remove(XShortcutsTarget.actions,table.find(XShortcutsTarget.actions,"ActionId","actionToggleFullscreen"))
 	end
 
 	-- and add mine
 	local XAction = XAction
-	local Actions = Actions or ChoGGi.Temp.Actions
+	local Actions = ChoGGi.Temp.Actions
 
 --~ Actions = {}
 --~ Actions[#Actions+1] = {
@@ -1529,15 +1529,35 @@ function ChoGGi.ComFuncs.Rebuildshortcuts(Actions,ECM)
 --~	 ActionShortcut = ChoGGi.Defaults.KeyBindings.ShowConsoleTilde,
 --~ }
 
+	local DisableECM = ChoGGi.UserSettings.DisableECM
 	for i = 1, #Actions do
-		-- and add to the actual actions
-		XShortcutsTarget:AddAction(XAction:new(Actions[i]))
+		local a = Actions[i]
+		-- added by ECM
+		if a.IsECM then
+			-- can we enable ECM actions?
+			if not DisableECM then
+				-- and add to the actual actions
+				XShortcutsTarget:AddAction(XAction:new(a))
+			end
+		else
+			XShortcutsTarget:AddAction(XAction:new(a))
+		end
 	end
 
 	-- add rightclick action to menuitems
 	XShortcutsTarget:UpdateToolbar()
 	-- got me
 	XShortcutsThread = false
+
+	-- if it's bool then ECM is active
+	if type(DisableECM) == "boolean" and not DisableECM then
+		-- i forget why i'm toggling this...
+		local dlgConsole = dlgConsole
+		if dlgConsole then
+			ShowConsole(not dlgConsole:GetVisible())
+			ShowConsole(not dlgConsole:GetVisible())
+		end
+	end
 end
 
 do -- RetThreadInfo/FindThreadFunc

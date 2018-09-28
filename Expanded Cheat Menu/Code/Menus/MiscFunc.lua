@@ -411,19 +411,19 @@ function OnMsg.ClassesGenerate()
 			--and it needs a slight delay
 			CreateRealTimeThread(function()
 				Sleep(500)
-				if obj.class == "Drone" then
+				if obj:IsKindOf("Drone") then
 					if cUserSettings.SpeedDrone then
 						SetStepLen(obj,cUserSettings.SpeedDrone)
 					else
 						obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedDrone())
 					end
-				elseif obj.class == "CargoShuttle" then
+				elseif obj:IsKindOf("CargoShuttle") then
 					if cUserSettings.SpeedShuttle then
 						obj.move_speed = ChoGGi.Consts.SpeedShuttle
 					else
 						obj.move_speed = ChoGGi.Consts.SpeedShuttle
 					end
-				elseif obj.class == "Colonist" then
+				elseif obj:IsKindOf("Colonist") then
 					if cUserSettings.SpeedColonist then
 						SetStepLen(obj,cUserSettings.SpeedColonist)
 					else

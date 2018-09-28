@@ -1,6 +1,5 @@
 v0.5
 You can re-bind keys with in-game options.
-
 v0.4
 Da Vinci
 v0.2

@@ -1,6 +1,9 @@
 ## Library Changelog
 
 ## v1.6 (Unreleased)
+- More strings.
+- Added another custom_type to ListChoice.
+- Fix for shortcuts in multiple mods.
 
 ## v1.5 (28 Sep 2018)
 - More strings.

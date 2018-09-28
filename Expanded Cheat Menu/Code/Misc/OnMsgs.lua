@@ -85,13 +85,24 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		local XTemplates = XTemplates
 		local PlaceObj = PlaceObj
 
+		-- add cheats section to concrete
+		local list = XTemplates.ipTerrainDeposit[1]
+		local idx = table.find(list,"__template","sectionCheats")
+		if idx then
+			table.remove(list,idx)
+		end
+		list[#list+1] = PlaceObj("XTemplateTemplate", {
+			"__template", "sectionCheats",
+		})
+
 		XTemplates.sectionCheats[1].__condition = function(parent, context)
 			-- no sense in doing anything without cheats pane enabled, and there's not cheats for res overview
-			if not config.BuildingInfopanelCheats or context.class == "ResourceOverview" then
+			if not config.BuildingInfopanelCheats or context:IsKindOf("ResourceOverview") then
 				return false
 			end
 			return context:CreateCheatActions(parent)
 		end
+
 
 		if not ChoGGi.UserSettings.ScrollSelection then
 			-- limit height of cheats pane and others in the selection panel
@@ -226,6 +237,7 @@ function OnMsg.ModsReloaded()
 				a.ActionTranslate = false
 				a.replace_matching_id = true
 				a.ActionId = StringFormat("%s%s",a.ActionMenubar,a.ActionId)
+				a.IsECM = true
 			end
 		end
 
@@ -293,20 +305,6 @@ function OnMsg.PersistPostLoad()
 --~			 end
 --~		 end
 
-	end
-end
-
-function OnMsg.ShortcutsReloaded()
-	-- we don't add shortcuts and ain't supposed to drink no booze
-	if not ChoGGi.UserSettings.DisableECM then
-		ChoGGi.ComFuncs.Rebuildshortcuts(nil,true)
-
-		-- i forget why i'm toggling this...
-		local dlgConsole = dlgConsole
-		if dlgConsole then
-			ShowConsole(not dlgConsole:GetVisible())
-			ShowConsole(not dlgConsole:GetVisible())
-		end
 	end
 end
 
@@ -478,7 +476,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 	if UserSettings.StorageOtherDepot then
 		if (obj.entity ~= "StorageDepot" and obj:IsKindOf("UniversalStorageDepot")) or obj:IsKindOf("MysteryDepot") then
 			obj.max_storage_per_resource = UserSettings.StorageOtherDepot
-		elseif UserSettings.StorageOtherDepot and obj.class == "BlackCubeDumpSite" then
+		elseif UserSettings.StorageOtherDepot and obj:IsKindOf("BlackCubeDumpSite") then
 			obj.max_amount_BlackCube = UserSettings.StorageOtherDepot
 		end
 	end
@@ -821,7 +819,7 @@ function OnMsg.ChoGGi_TogglePinnableObject(obj)
 	if type(UnpinObjects) == "table" and next(UnpinObjects) then
 		local table_temp = UnpinObjects or ""
 		for i = 1, #table_temp do
-			if obj.class == table_temp[i] and obj:IsPinned() then
+			if obj:IsKindOf(table_temp[i]) and obj:IsPinned() then
 				obj:TogglePin()
 				break
 			end
@@ -865,13 +863,6 @@ function OnMsg.ChangeMap()
 	local ChoGGi = ChoGGi
 	if ChoGGi.testing or ChoGGi.UserSettings.ShowStartupTicks then
 		ChoGGi.Temp.StartupTicks = GetPreciseTicks()
-	end
-end
-
--- so we at least have keys when it happens
-function OnMsg.ReloadLua()
-	if type(XShortcutsTarget.UpdateToolbar) == "function" then
-		ChoGGi.ComFuncs.Rebuildshortcuts(nil,true)
 	end
 end
 
@@ -992,18 +983,15 @@ do -- LoadGame/CityStart
 				ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
 			end
 
-			-- reloads actions (cheat menu/menu items/shortcuts)
-			ChoGGi.ComFuncs.Rebuildshortcuts(nil,true)
-
 			-- cheats menu fun
 			local XShortcutsTarget = XShortcutsTarget
 			if XShortcutsTarget then
 
 				-- add some ids for easier selection later on
 				for i = 1, #XShortcutsTarget do
-					if XShortcutsTarget[i].class == "XMenuBar" then
+					if XShortcutsTarget[i]:IsKindOf("XMenuBar") then
 						XShortcutsTarget.idMenuBar = XShortcutsTarget[i]
-					elseif XShortcutsTarget[i].class == "XWindow" then
+					elseif XShortcutsTarget[i]:IsKindOf("XWindow") then
 						XShortcutsTarget.idToolbar = XShortcutsTarget[i]
 						break
 					end
@@ -1024,7 +1012,7 @@ do -- LoadGame/CityStart
 
 				-- that info text about right-clicking expands the menu instead of just hiding or something
 				for i = 1, #XShortcutsTarget.idToolbar do
-					if XShortcutsTarget.idToolbar[i].class == "XText" then
+					if XShortcutsTarget.idToolbar[i]:IsKindOf("XText") then
 						XShortcutsTarget.idToolbar[i]:delete()
 					end
 				end
@@ -1242,21 +1230,21 @@ do -- LoadGame/CityStart
 
 			--remove any outside buildings i accidentally attached to domes ;)
 			table_temp = UICity.labels.BuildingNoDomes or ""
-			local sType
+			local bld_type
 			for i = 1, #table_temp do
 				if table_temp[i].dome_required == false and table_temp[i].parent_dome then
 
-					sType = false
+					bld_type = false
 					--remove it from the dome label
 					if table_temp[i].closed_shifts then
-						sType = "Residence"
+						bld_type = "Residence"
 					elseif table_temp[i].colonists then
-						sType = "Workplace"
+						bld_type = "Workplace"
 					end
 
-					if sType then --get a fucking continue lua
-						if table_temp[i].parent_dome.labels and table_temp[i].parent_dome.labels[sType] then
-							local dome = table_temp[i].parent_dome.labels[sType]
+					if bld_type then --get a fucking continue lua
+						if table_temp[i].parent_dome.labels and table_temp[i].parent_dome.labels[bld_type] then
+							local dome = table_temp[i].parent_dome.labels[bld_type]
 							for j = 1, #dome do
 								if dome[j].class == table_temp[i].class then
 									dome[j] = nil

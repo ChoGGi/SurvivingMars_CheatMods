@@ -599,7 +599,7 @@ function OnMsg.ClassesGenerate()
 			local Objterr = terrain.GetHeight(Objpos)
 			local Objheight = obj:GetObjectBBox():sizez() / 2
 			local shuttle
-			if obj.class == "CargoShuttle" then
+			if obj:IsKindOf("CargoShuttle") then
 				shuttle = obj:GetPos():z()
 			end
 			--some objects don't have pos as waypoint
@@ -632,7 +632,7 @@ function OnMsg.ClassesGenerate()
 			local path
 
 			--we need to build a path for shuttles (and figure out a way to get their dest properly...)
-			if obj.class == "CargoShuttle" then
+			if obj:IsKindOf("CargoShuttle") then
 
 				path = {}
 				-- going to pickup colonist
@@ -726,7 +726,7 @@ function OnMsg.ClassesGenerate()
 				if ChoGGi.Temp.UnitPathingHandles[obj.handle] then
 					--already exists so remove thread
 					ChoGGi.Temp.UnitPathingHandles[obj.handle] = nil
-				elseif IsValid(obj) and (type(obj.GetPath) == "function" or obj.class == "CargoShuttle") then
+				elseif IsValid(obj) and (obj.GetPath or obj:IsKindOf("CargoShuttle")) then
 
 					--continous loooop of object for pathing it
 					ChoGGi.Temp.UnitPathingHandles[obj.handle] = CreateGameTimeThread(function()
@@ -777,12 +777,12 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
-		local function RemoveWPDupePos(Class,obj)
+		local function RemoveWPDupePos(cls,obj)
 			--remove dupe pos
 			if type(obj.ChoGGi_Stored_Waypoints) == "table" then
 				for i = 1, #obj.ChoGGi_Stored_Waypoints do
 					local wp = obj.ChoGGi_Stored_Waypoints[i]
-					if wp.class == Class then
+					if wp:IsKindOf(cls) then
 						local pos = tostring(wp:GetPos())
 						if dupewppos[pos] then
 							dupewppos[pos]:SetColorModifier(6579300)

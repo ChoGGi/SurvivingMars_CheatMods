@@ -90,7 +90,7 @@ function OnMsg.ClassesGenerate()
 
 		--one meatbag at a time
 		local sel = ChoGGi.ComFuncs.SelObject()
-		if sel and sel.class == "Colonist"then
+		if IsKindOf(sel,"Colonist") then
 			MeatbagsToSoylent(sel)
 			return
 		end
@@ -135,7 +135,7 @@ function OnMsg.ClassesGenerate()
 			local check1 = choice[1].check1
 			local dome
 			sel = SelectedObj
-			if sel and sel.class == "Colonist" and sel.dome and choice[1].check2 then
+			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check2 then
 				dome = sel.dome
 			end
 
@@ -467,7 +467,7 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			local dome
 			local sel = SelectedObj
-			if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
+			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
 				dome = sel.dome
 			end
 			local Type
@@ -880,10 +880,11 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local value = choice[1].value
 			local sel = SelectedObj
 			local dome
-			if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
+			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
 				dome = sel.dome
 			end
-			--new
+
+			-- new
 			if iType == 1 then
 				if value == default_str then
 					ChoGGi.UserSettings.NewColonistAge = nil
@@ -892,7 +893,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				end
 				ChoGGi.SettingFuncs.WriteSettings()
 
-			--existing
+			-- existing
 			elseif iType == 2 then
 				if choice[1].check2 then
 					if sel then
@@ -987,10 +988,11 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local value = choice[1].value
 			local sel = SelectedObj
 			local dome
-			if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
+			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
 				dome = sel.dome
 			end
-			--new
+
+			-- new
 			if iType == 1 then
 				if value == S[1000121--[[Default--]]] then
 					ChoGGi.UserSettings.NewColonistGender = nil
@@ -998,7 +1000,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 					ChoGGi.ComFuncs.SetSavedSetting("NewColonistGender",value)
 				end
 				ChoGGi.SettingFuncs.WriteSettings()
-			--existing
+
+			-- existing
 			elseif iType == 2 then
 				if choice[1].check2 then
 					if sel then
@@ -1098,10 +1101,11 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local value = choice[1].value
 			local sel = SelectedObj
 			local dome
-			if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
+			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
 				dome = sel.dome
 			end
-			--new
+
+			-- new
 			if iType == 1 then
 				if value == S[1000121--[[Default--]]] then
 					ChoGGi.UserSettings.NewColonistSpecialization = nil
@@ -1109,7 +1113,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 					ChoGGi.ComFuncs.SetSavedSetting("NewColonistSpecialization",value)
 				end
 				ChoGGi.SettingFuncs.WriteSettings()
-			--existing
+
+			-- existing
 			elseif iType == 2 then
 				if choice[1].check2 then
 					if sel then
@@ -1199,10 +1204,11 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local value = choice[1].value
 			local sel = SelectedObj
 			local dome
-			if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
+			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
 				dome = sel.dome
 			end
-			--new
+
+			-- new
 			if iType == 1 then
 				if value == S[1000121--[[Default--]]] then
 					ChoGGi.UserSettings.NewColonistRace = nil
@@ -1210,7 +1216,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 					ChoGGi.ComFuncs.SetSavedSetting("NewColonistRace",value)
 				end
 				ChoGGi.SettingFuncs.WriteSettings()
-			--existing
+
+			-- existing
 			elseif iType == 2 then
 				if choice[1].check2 then
 					if sel then
@@ -1344,7 +1351,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 			local sel = SelectedObj
 			local dome
-			if sel and sel.class == "Colonist" and sel.dome and check1 then
+			if IsKindOf(sel,"Colonist") and sel.dome and check1 then
 				dome = sel.dome
 			end
 
@@ -1527,9 +1534,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local value = choice[1].value
 			local sel = SelectedObj
 			local dome
-			if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
+			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
 				dome = sel.dome
 			end
+
 			local max = 100000 * r
 			local fill = 100 * r
 			local function SetStat(Stat,v)
@@ -1636,9 +1644,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local value = choice[1].value
 			local sel = SelectedObj
 			local dome
-			if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
+			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
 				dome = sel.dome
 			end
+
 			if type(value) == "number" then
 				if choice[1].check2 then
 					if sel then
@@ -1721,9 +1730,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local value = choice[1].value
 			local sel = SelectedObj
 			local dome
-			if sel and sel.class == "Colonist" and sel.dome and choice[1].check1 then
+			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
 				dome = sel.dome
 			end
+
 			if type(value) == "number" then
 				value = value * r
 				if choice[1].check2 then

@@ -28,7 +28,6 @@ function OnMsg.ClassesGenerate()
 				302535920000720--[[Add more probes.--]]
 			)
 		end,
-		RolloverText = S[--[[--]]],
 		OnAction = ChoGGi.MenuFuncs.AddOrbitalProbes,
 	}
 
