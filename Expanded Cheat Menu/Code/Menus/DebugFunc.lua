@@ -329,8 +329,12 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.MeasureTool_Toggle()
 		local MeasureTool = MeasureTool
-		MeasureTool.SetEnabled(not MeasureTool.enabled)
-		MeasureTool.OnMouseButtonDown(GetTerrainCursor(),"L")
+		MeasureTool.Toggle()
+		if MeasureTool.enabled then
+			MeasureTool.OnMouseButtonDown(_,"L")
+		else
+			MeasureTool.OnMouseButtonDown(_,"R")
+		end
 	end
 
 	function ChoGGi.MenuFuncs.ReloadLua()

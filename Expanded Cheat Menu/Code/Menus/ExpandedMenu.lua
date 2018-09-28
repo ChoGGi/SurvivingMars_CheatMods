@@ -4,12 +4,12 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
+	local StringFormat = string.format
 	local c = #Actions
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000031--[[Find Nearest Resource--]]],
 		ActionMenubar = "Expanded CM",
-		ActionName = S[302535920000031--[[Find Nearest Resource--]]],
 		ActionId = ".Find Nearest Resource",
 		ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 		RolloverText = S[302535920000554--[[Select an object and click this to display a list of resources.--]]],
@@ -20,9 +20,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000333--[[Building Info--]]],
 		ActionMenubar = "Expanded CM",
-		ActionName = S[302535920000333--[[Building Info--]]],
 		ActionId = ".Building Info",
 		ActionIcon = "CommonAssets/UI/Menu/ExportImageSequence.tga",
 		RolloverText = S[302535920000345--[[Shows info about building in text above it.--]]],
@@ -31,9 +30,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	--~ c = c + 1
-	--~ Actions[c] = {
+	--~ Actions[c] = {ActionName = S[302535920000555--[[Monitor Info--]]],
 	--~ 	ActionMenubar = "Expanded CM",
-	--~ 	ActionName = S[302535920000555--[[Monitor Info--]]],
 	--~ 	ActionId = ".Monitor Info",
 	--~ 	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 	--~ 	RolloverText = S[302535920000556--[[Shows a list of updated information about your city.--]]],
@@ -42,9 +40,8 @@ function OnMsg.ClassesGenerate()
 	--~ }
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000469--[[Close Dialogs--]]],
 		ActionMenubar = "Expanded CM",
-		ActionName = S[302535920000469--[[Close Dialogs--]]],
 		ActionId = ".Close Dialogs",
 		ActionIcon = "CommonAssets/UI/Menu/remove_water.tga",
 		RolloverText = S[302535920000470--[[Close any dialogs opened by ECM (Examine, ObjectManipulator, Change Colours, etc...)--]]],

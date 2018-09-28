@@ -27,9 +27,8 @@ function OnMsg.ClassesGenerate()
 		AddMenuitem("Cheats",27,"01")
 		AddMenuitem("Expanded CM",302535920000104,"02")
 		AddMenuitem("Game",283142739680,"03")
-		AddMenuitem("Presets",302535920000979,"04")
-		AddMenuitem("Debug",1000113,"05")
-		AddMenuitem("Help",487939677892,"06")
+		AddMenuitem("Debug",1000113,"04")
+		AddMenuitem("Help",487939677892,"05")
 	end -- do
 
 	-- stores defaults

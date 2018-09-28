@@ -1430,7 +1430,8 @@ function ChoGGi.CodeFuncs.RetHardwareInfo()
 	chw = chw + 1
 	hw[chw] = "\n"
 
-	return StringFormat([[GetHardwareInfo(0): %s
+	return StringFormat([[%s:
+GetHardwareInfo(0): %s
 
 GetMemoryInfo(): %s
 AdapterMode(0): %s
@@ -1453,6 +1454,7 @@ GetComputerName(): %s
 
 
 ]],
+		S[5568--[[Stats--]]],
 		TableConcat(hw),
 		TableConcat(mem),
 		TableConcat({GetAdapterMode(0)}," "),

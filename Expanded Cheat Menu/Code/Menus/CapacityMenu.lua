@@ -4,13 +4,13 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
+	local StringFormat = string.format
 	local c = #Actions
 
 	local str_ExpandedCM_Capacity = "Expanded CM.Capacity"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[109035890389--[[Capacity--]]]),
 		ActionMenubar = "Expanded CM",
-		ActionName = string.format("%s ..",S[109035890389--[[Capacity--]]]),
 		ActionId = ".Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -18,9 +18,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000565--[[Storage Mechanized Depots Temp--]]],
 		ActionMenubar = str_ExpandedCM_Capacity,
-		ActionName = S[302535920000565--[[Storage Mechanized Depots Temp--]]],
 		ActionId = ".Storage Mechanized Depots Temp",
 		ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 		RolloverText = function()
@@ -33,45 +32,59 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000567--[[Worker Capacity--]]],
 		ActionMenubar = str_ExpandedCM_Capacity,
-		ActionName = S[302535920000567--[[Worker Capacity--]]],
 		ActionId = ".Worker Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
-		RolloverText = S[302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.workers",sel and sel.encyclopedia_id),
+				302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.SetWorkerCapacity,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetWorkerCapacity,
 		ActionBindable = true,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000569--[[Building Capacity--]]],
 		ActionMenubar = str_ExpandedCM_Capacity,
-		ActionName = S[302535920000569--[[Building Capacity--]]],
 		ActionId = ".Building Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
-		RolloverText = S[302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.capacity",sel and sel.encyclopedia_id),
+				302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.SetBuildingCapacity,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetBuildingCapacity,
 		ActionBindable = true,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000571--[[Building Visitor Capacity--]]],
 		ActionMenubar = str_ExpandedCM_Capacity,
-		ActionName = S[302535920000571--[[Building Visitor Capacity--]]],
 		ActionId = ".Building Visitor Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
-		RolloverText = S[302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.visitors",sel and sel.encyclopedia_id),
+				302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.SetVisitorCapacity,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetVisitorCapacity,
 		ActionBindable = true,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000573--[[Storage Universal Depot--]]],
 		ActionMenubar = str_ExpandedCM_Capacity,
-		ActionName = S[302535920000573--[[Storage Universal Depot--]]],
 		ActionId = ".Storage Universal Depot",
 		ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 		RolloverText = function()
@@ -86,9 +99,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000575--[[Storage Other Depot--]]],
 		ActionMenubar = str_ExpandedCM_Capacity,
-		ActionName = S[302535920000575--[[Storage Other Depot--]]],
 		ActionId = ".Storage Other Depot",
 		ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 		RolloverText = function()
@@ -103,9 +115,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000577--[[Storage Waste Depot--]]],
 		ActionMenubar = str_ExpandedCM_Capacity,
-		ActionName = S[302535920000577--[[Storage Waste Depot--]]],
 		ActionId = ".Storage Waste Depot",
 		ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 		RolloverText = function()
@@ -120,9 +131,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000579--[[Storage Mechanized Depots--]]],
 		ActionMenubar = str_ExpandedCM_Capacity,
-		ActionName = S[302535920000579--[[Storage Mechanized Depots--]]],
 		ActionId = ".Storage Mechanized Depots",
 		ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 		RolloverText = function()

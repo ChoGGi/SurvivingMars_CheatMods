@@ -4,14 +4,14 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
+	local StringFormat = string.format
 	local StarkFistOfRemoval = "CommonAssets/UI/Menu/AlignSel.tga"
 	local c = #Actions
 
 	local str_ExpandedCM_Colonists = "Expanded CM.Colonists"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[547--[[Colonists--]]]),
 		ActionMenubar = "Expanded CM",
-		ActionName = string.format("%s ..",S[547--[[Colonists--]]]),
 		ActionId = ".Colonists",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -19,9 +19,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000369--[[No More Earthsick--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000369--[[No More Earthsick--]]],
 		ActionId = ".No More Earthsick",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -34,33 +33,42 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000371--[[Traits: Restrict For Selected Building Type--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000371--[[Traits: Restrict For Selected Building Type--]]],
 		ActionId = ".Traits: Restrict For Selected Building Type",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
-		RolloverText = S[302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block overrides).--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.restricttraits",sel and sel.encyclopedia_id),
+				302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block will override).--]]
+			)
+		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetBuildingTraits("restricttraits")
 		end,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000373--[[Traits: Block For Selected Building Type--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000373--[[Traits: Block For Selected Building Type--]]],
 		ActionId = ".Traits: Block For Selected Building Type",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
-		RolloverText = S[302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.blocktraits",sel and sel.encyclopedia_id),
+				302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]
+			)
+		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetBuildingTraits("blocktraits")
 		end,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000375--[[The Soylent Option--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000375--[[The Soylent Option--]]],
 		ActionId = ".The Soylent Option",
 		ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 		RolloverText = S[302535920000376--[[Turns selected/moused over colonist into food (between 1-5), or shows a list with choices.--]]],
@@ -70,9 +78,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000377--[[Colonists Move Speed--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000377--[[Colonists Move Speed--]]],
 		ActionId = ".Colonists Move Speed",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -85,9 +92,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000379--[[Add Or Remove Applicants--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000379--[[Add Or Remove Applicants--]]],
 		ActionId = ".Add Or Remove Applicants",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000380--[[Add random applicants to the passenger pool (has option to remove all).--]]],
@@ -95,9 +101,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000381--[[Colonists Gravity--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000381--[[Colonists Gravity--]]],
 		ActionId = ".Colonists Gravity",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -110,9 +115,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000416--[[Colonists Suffocate--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000416--[[Colonists Suffocate--]]],
 		ActionId = ".Colonists Suffocate",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -126,9 +130,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000418--[[Colonists Starve--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000418--[[Colonists Starve--]]],
 		ActionId = ".Colonists Starve",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -142,9 +145,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000424--[[Set Age New--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000424--[[Set Age New--]]],
 		ActionId = ".Set Age New",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -159,9 +161,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000426--[[Set Age--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000426--[[Set Age--]]],
 		ActionId = ".Set Age",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000427--[[This will make all colonists a certain age.--]]],
@@ -171,9 +172,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000428--[[Set Gender New--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000428--[[Set Gender New--]]],
 		ActionId = ".Set Gender New",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -188,9 +188,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000430--[[Set Gender--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000430--[[Set Gender--]]],
 		ActionId = ".Set Gender",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000431--[[This will make all colonists a certain gender.--]]],
@@ -200,9 +199,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000432--[[Set Specialization New--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000432--[[Set Specialization New--]]],
 		ActionId = ".Set Specialization New",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -217,9 +215,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000434--[[Set Specialization--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000434--[[Set Specialization--]]],
 		ActionId = ".Set Specialization",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000435--[[This will make all colonists a certain specialization.--]]],
@@ -229,9 +226,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000436--[[Set Race New--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000436--[[Set Race New--]]],
 		ActionId = ".Set Race New",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -246,9 +242,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000438--[[Set Race--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000438--[[Set Race--]]],
 		ActionId = ".Set Race",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000439--[[This will make all colonists a certain race.--]]],
@@ -258,9 +253,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000440--[[Set Traits New--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000440--[[Set Traits New--]]],
 		ActionId = ".Set Traits New",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -275,9 +269,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000442--[[Set Traits--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000442--[[Set Traits--]]],
 		ActionId = ".Set Traits",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000443--[[Choose traits for all colonists.--]]],
@@ -287,9 +280,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000444--[[Set Stats--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000444--[[Set Stats--]]],
 		ActionId = ".Set Stats",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000445--[["Change the stats of all colonists (health/sanity/comfort/morale).
@@ -299,9 +291,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000446--[[Colonist Death Age--]]],
 		ActionMenubar = str_ExpandedCM_Colonists,
-		ActionName = S[302535920000446--[[Colonist Death Age--]]],
 		ActionId = ".Colonist Death Age",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -315,9 +306,8 @@ Works after colonist idle."--]]
 
 	local str_ExpandedCM_Colonists_Work = "Expanded CM.Colonists.Work"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000212--[[Work--]]]),
 		ActionMenubar = "Expanded CM.Colonists",
-		ActionName = string.format("%s ..",S[302535920000212--[[Work--]]]),
 		ActionId = ".Work",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -325,9 +315,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000383--[[Fire All Colonists!--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Work,
-		ActionName = S[302535920000383--[[Fire All Colonists!--]]],
 		ActionId = ".Fire All Colonists!",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 		RolloverText = S[302535920000384--[[Fires everyone from every job.--]]],
@@ -335,9 +324,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000385--[[Set All Work Shifts--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Work,
-		ActionName = S[302535920000385--[[Set All Work Shifts--]]],
 		ActionId = ".Set All Work Shifts",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 		RolloverText = S[302535920000386--[[Set all shifts on or off (able to cancel).--]]],
@@ -345,9 +333,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000387--[[Colonists Avoid Fired Workplace--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Work,
-		ActionName = S[302535920000387--[[Colonists Avoid Fired Workplace--]]],
 		ActionId = ".Colonists Avoid Fired Workplace",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -361,9 +348,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000389--[[Performance Penalty Non-Specialist--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Work,
-		ActionName = S[302535920000389--[[Performance Penalty Non-Specialist--]]],
 		ActionId = ".Performance Penalty Non-Specialist",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -377,9 +363,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000392--[[Outside Workplace Radius--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Work,
-		ActionName = S[302535920000392--[[Outside Workplace Radius--]]],
 		ActionId = ".Outside Workplace Radius",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -392,9 +377,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000393--[[Add Specialization To All--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Work,
-		ActionName = S[302535920000393--[[Add Specialization To All--]]],
 		ActionId = ".Add Specialization To All",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000394--[[If Colonist has no Specialization then add a random one--]]],
@@ -403,9 +387,8 @@ Works after colonist idle."--]]
 
 	local str_ExpandedCM_Colonists_Stats = "Expanded CM.Colonists.Stats"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[5568--[[Stats--]]]),
 		ActionMenubar = "Expanded CM.Colonists",
-		ActionName = string.format("%s ..",S[5568--[[Stats--]]]),
 		ActionId = ".Stats",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -413,9 +396,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000395--[[Min Comfort Birth--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Stats,
-		ActionName = S[302535920000395--[[Min Comfort Birth--]]],
 		ActionId = ".Min Comfort Birth",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -428,9 +410,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000397--[[Visit Fail Penalty--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Stats,
-		ActionName = S[302535920000397--[[Visit Fail Penalty--]]],
 		ActionId = ".Visit Fail Penalty",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -443,9 +424,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000399--[[Renegade Creation Toggle--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Stats,
-		ActionName = S[302535920000399--[[Renegade Creation Toggle--]]],
 		ActionId = ".Renegade Creation Toggle",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -459,9 +439,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000401--[[Set Renegade Status--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Stats,
-		ActionName = S[302535920000401--[[Set Renegade Status--]]],
 		ActionId = ".Set Renegade Status",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000448--[[I'm afraid it could be 9/11 times 1,000.--]]],
@@ -469,9 +448,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000402--[[Morale Always Max--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Stats,
-		ActionName = S[302535920000402--[[Morale Always Max--]]],
 		ActionId = ".Morale Always Max",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -485,9 +463,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000404--[[See Dead Sanity Damage--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Stats,
-		ActionName = S[302535920000404--[[See Dead Sanity Damage--]]],
 		ActionId = ".See Dead Sanity Damage",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -501,9 +478,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000406--[[No Home Comfort Damage--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Stats,
-		ActionName = S[302535920000406--[[No Home Comfort Damage--]]],
 		ActionId = ".No Home Comfort Damage",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -517,9 +493,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000408--[[Chance Of Sanity Damage--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Stats,
-		ActionName = S[302535920000408--[[Chance Of Sanity Damage--]]],
 		ActionId = ".Chance Of Sanity Damage",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -533,9 +508,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[4576--[[Chance Of Suicide--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Stats,
-		ActionName = S[4576--[[Chance Of Suicide--]]],
 		ActionId = ".Chance Of Suicide",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -550,9 +524,8 @@ Works after colonist idle."--]]
 
 	local str_ExpandedCM_Colonists_Traits = "Expanded CM.Colonists.Traits"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[235--[[Traits--]]]),
 		ActionMenubar = "Expanded CM.Colonists",
-		ActionName = string.format("%s ..",S[235--[[Traits--]]]),
 		ActionId = ".Traits",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -560,9 +533,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000410--[[University Grad Remove Idiot--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Traits,
-		ActionName = S[302535920000410--[[University Grad Remove Idiot--]]],
 		ActionId = ".University Grad Remove Idiot",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -575,9 +547,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000412--[[Chance Of Negative Trait--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Traits,
-		ActionName = S[302535920000412--[[Chance Of Negative Trait--]]],
 		ActionId = ".Chance Of Negative Trait",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -591,9 +562,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000420--[[Positive Playground--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Traits,
-		ActionName = S[302535920000420--[[Positive Playground--]]],
 		ActionId = ".Positive Playground",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -606,9 +576,8 @@ Works after colonist idle."--]]
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000422--[[Project Morpheus Positive Trait--]]],
 		ActionMenubar = str_ExpandedCM_Colonists_Traits,
-		ActionName = S[302535920000422--[[Project Morpheus Positive Trait--]]],
 		ActionId = ".Project Morpheus Positive Trait",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()

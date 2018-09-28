@@ -4,13 +4,13 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
+	local StringFormat = string.format
 	local c = #Actions
 
 	local str_ExpandedCM_Misc = "Expanded CM.Misc"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[1000207--[[Misc--]]]),
 		ActionMenubar = "Expanded CM",
-		ActionName = string.format("%s ..",S[1000207--[[Misc--]]]),
 		ActionId = ".Misc",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -18,9 +18,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000682--[[Change Entity--]]],
 		ActionMenubar = str_ExpandedCM_Misc,
-		ActionName = S[302535920000682--[[Change Entity--]]],
 		ActionId = ".Change Entity",
 		ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
 		RolloverText = S[302535920000683--[[Changes the entity of selected object, all of same type or all of same type in selected object's dome.--]]],
@@ -28,29 +27,41 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000684--[[Change Entity Scale--]]],
 		ActionMenubar = str_ExpandedCM_Misc,
-		ActionName = S[302535920000684--[[Change Entity Scale--]]],
 		ActionId = ".Change Entity Scale",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
-		RolloverText = S[302535920000685--[[You want them big, you want them small; have at it.--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			if IsValid(sel) then
+				return ChoGGi.ComFuncs.SettingState(
+					sel:GetScale()
+					302535920000685--[[You want them big, you want them small; have at it.--]]
+				)
+			else
+				return S[302535920000685--[[You want them big, you want them small; have at it.--]]]
+			end
+		end,
 		OnAction = ChoGGi.MenuFuncs.SetEntityScale,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000686--[[Auto Unpin Objects--]]],
 		ActionMenubar = str_ExpandedCM_Misc,
-		ActionName = S[302535920000686--[[Auto Unpin Objects--]]],
 		ActionId = ".Auto Unpin Objects",
 		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
-		RolloverText = S[302535920000687--[[Will automagically stop any of these objects from being added to the pinned list.--]]],
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.UnpinObjects,
+				302535920000687--[[Will automagically stop any of these objects from being added to the pinned list.--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.ShowAutoUnpinObjectList,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000688--[[Clean All Objects--]]],
 		ActionMenubar = str_ExpandedCM_Misc,
-		ActionName = S[302535920000688--[[Clean All Objects--]]],
 		ActionId = ".Clean All Objects",
 		ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 		RolloverText = S[302535920000689--[[Removes all dust from all objects.--]]],
@@ -58,9 +69,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000690--[[Fix All Objects--]]],
 		ActionMenubar = str_ExpandedCM_Misc,
-		ActionName = S[302535920000690--[[Fix All Objects--]]],
 		ActionId = ".Fix All Objects",
 		ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 		RolloverText = S[302535920000691--[[Fixes all broken objects.--]]],
@@ -68,9 +78,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000696--[[Infopanel Cheats--]]],
 		ActionMenubar = str_ExpandedCM_Misc,
-		ActionName = S[302535920000696--[[Infopanel Cheats--]]],
 		ActionId = ".Infopanel Cheats",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 		RolloverText = function()
@@ -86,9 +95,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000698--[[Infopanel Cheats Cleanup--]]],
 		ActionMenubar = str_ExpandedCM_Misc,
-		ActionName = S[302535920000698--[[Infopanel Cheats Cleanup--]]],
 		ActionId = ".Infopanel Cheats Cleanup",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 		RolloverText = function()
@@ -104,9 +112,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000700--[[Scanner Queue Larger--]]],
 		ActionMenubar = str_ExpandedCM_Misc,
-		ActionName = S[302535920000700--[[Scanner Queue Larger--]]],
 		ActionId = ".Scanner Queue Larger",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = function()
@@ -119,9 +126,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000702--[[Game Speed--]]],
 		ActionMenubar = str_ExpandedCM_Misc,
-		ActionName = S[302535920000702--[[Game Speed--]]],
 		ActionId = ".Game Speed",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionToTemplates.tga",
 		RolloverText = function()

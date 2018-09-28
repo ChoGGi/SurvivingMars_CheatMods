@@ -252,6 +252,7 @@ function OnMsg.ClassesGenerate()
 	SaveOrigFunc("UIRangeBuilding","SetUIRange")
 	SaveOrigFunc("Workplace","AddWorker")
 	SaveOrigFunc("Workplace","GetWorkshiftPerformance")
+	SaveOrigFunc("XMenuEntry","SetShortcut")
 	SaveOrigFunc("XPopupMenu","RebuildActions")
 	SaveOrigFunc("XShortcutsHost","SetVisible")
 
@@ -295,17 +296,36 @@ function OnMsg.ClassesGenerate()
 		return ChoGGi_OrigFuncs.XShortcutsHost_SetVisible(self,...)
 	end
 
+	-- pretty much a copy n paste, just slight addition to change font colour (i use a darker menu, so the menu icons background blends)
+	function XMenuEntry:SetShortcut(shortcut_text)
+		local shortcut = rawget(self, "idShortcut") or shortcut_text ~= "" and XLabel:new({
+			Dock = "right",
+			VAlign = "center",
+			Margins = box(10, 0, 0, 0)
+		}, self)
+		if shortcut then
+			shortcut:SetFontProps(self)
+			shortcut:SetText(shortcut_text)
+		end
+	end
+
 	-- yeah who gives a shit about mouseover hints on menu items
 	function XPopupMenu:RebuildActions(host)
+--~ 		ChoGGi_OrigFuncs.XPopupMenu_RebuildActions(self,host)
+
 		local menu = self.MenuEntries
+		local popup = self.ActionContextEntries
 		local context = host.context
 		local ShowIcons = self.ShowIcons
 		self.idContainer:DeleteChildren()
+--~ 		local entries = {}
+--~ 		local c = 0
 		for i = 1, #host.actions do
 			local action = host.actions[i]
-			if action.ActionMenubar == menu and host:FilterAction(action) then
+			if #popup == 0 and #menu ~= 0 and action.ActionMenubar == menu and host:FilterAction(action) or #popup ~= 0 and host:FilterAction(action, popup) then
 				local entry = XTemplateSpawn(action.ActionToggle and self.ToggleButtonTemplate or self.ButtonTemplate, self.idContainer, context)
-
+--~ 				c = c + 1
+--~ 				entries[c] = entry
 				-- that was hard...
 				if type(action.RolloverText) == "function" then
 					entry.RolloverText = action.RolloverText()
@@ -325,7 +345,9 @@ function OnMsg.ClassesGenerate()
 				end
 				function entry.OnAltPress(this, _)
 					self:ClosePopupMenus()
-					action:OnAltAction(host, this)
+					if action.OnAltAction then
+						action:OnAltAction(host, this)
+					end
 				end
 				entry:SetFontProps(self)
 				entry:SetTranslate(action.ActionTranslate)
@@ -342,6 +364,7 @@ function OnMsg.ClassesGenerate()
 				entry:Open()
 			end
 		end
+--~ 		ex(entries[1])
 	end
 
 	do -- Large Water Tank + Pipes + Chrome skin = borked looking pipes

@@ -159,7 +159,6 @@ local Strings = {
 	[3983] = TranslationTable[3983], -- Disasters
 	[3984] = TranslationTable[3984], -- Anomalies
 	[4099] = TranslationTable[4099], -- Game Time
-	[4107] = TranslationTable[4107], -- Sound FX
 	[4139] = TranslationTable[4139], -- Rare Metals
 	[4142] = TranslationTable[4142], -- Dust Devils
 	[4144] = TranslationTable[4144], -- Dust Storms
@@ -286,7 +285,6 @@ local Strings = {
 	[298035641454] = TranslationTable[298035641454], -- Object
 	[313911890683] = _InternalTranslate(T{313911890683}), -- <description>
 	[327465361219] = TranslationTable[327465361219], -- Edit
-	[454042608125] = TranslationTable[454042608125], -- <ButtonA> Toggle
 	[487939677892] = TranslationTable[487939677892], -- Help
 	[584248706535] = _InternalTranslate(T{584248706535}), -- Carrying<right><ResourceAmount>
 	[619281504128] = TranslationTable[619281504128], -- Maintenance
@@ -296,8 +294,6 @@ local Strings = {
 	[889032422791] = TranslationTable[889032422791], -- OUTSOURCE
 	[987289847467] = TranslationTable[987289847467], -- Age Groups
 }
-
-Strings[454042608125] = Strings[454042608125]:gsub("<ButtonA> ","")
 
 -- for string.format ease of use
 Strings[4356] = Strings[4356]:gsub("<right><Gender>","")

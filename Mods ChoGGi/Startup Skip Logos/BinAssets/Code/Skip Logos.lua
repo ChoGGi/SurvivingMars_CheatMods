@@ -1,3 +1,7 @@
+-- if we open something in ged we may get a create new global error from below if these aren't already globals
+PlayInitialMovies = nil
+ParadoxBuildsModManagerWarning = true
+
 function OnMsg.DesktopCreated()
   -- skip the two logos
   PlayInitialMovies = nil

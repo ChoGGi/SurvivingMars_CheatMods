@@ -1152,19 +1152,19 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
-	function ChoGGi.MenuFuncs.LaunchEmptyRocket()
-		local function CallBackFunc(answer)
-			if answer then
-				UICity:OrderLanding()
-			end
-		end
-		ChoGGi.ComFuncs.QuestionBox(
-			302535920000942--[[Are you sure you want to launch an empty rocket?--]],
-			CallBackFunc,
-			302535920000943--[[Launch rocket to Mars.--]],
-			302535920000944--[[Yamato Hasshin!--]]
-		)
-	end
+--~ 	function ChoGGi.MenuFuncs.LaunchEmptyRocket()
+--~ 		local function CallBackFunc(answer)
+--~ 			if answer then
+--~ 				UICity:OrderLanding()
+--~ 			end
+--~ 		end
+--~ 		ChoGGi.ComFuncs.QuestionBox(
+--~ 			302535920000942--[[Are you sure you want to launch an empty rocket?--]],
+--~ 			CallBackFunc,
+--~ 			302535920000943--[[Launch rocket to Mars.--]],
+--~ 			302535920000944--[[Yamato Hasshin!--]]
+--~ 		)
+--~ 	end
 
 	function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 		local ChoGGi = ChoGGi

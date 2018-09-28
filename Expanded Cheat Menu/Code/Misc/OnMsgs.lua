@@ -34,10 +34,11 @@ function OnMsg.ClassesGenerate()
 	XShortcutsHost.ZOrder = 4
 	-- make cheats menu look like older one (more gray, less white)
 	local dark_gray = -9868951
+	local white = white
 	XMenuBar.Background = dark_gray
-	XMenuBar.TextColor = -1
+	XMenuBar.TextColor = white
 	XPopupMenu.Background = dark_gray
-	XPopupMenu.TextColor = -1
+	XPopupMenu.TextColor = white
 end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
@@ -189,13 +190,23 @@ function OnMsg.ModsReloaded()
 		local Actions = ChoGGi.Temp.Actions
 		local c = #Actions
 
+		c = c + 1
+		Actions[c] = {
+			ActionMenubar = "Debug",
+			ActionName = StringFormat("%s ..",S[302535920000979--[[Presets--]]]),
+			ActionId = ".Presets",
+			ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+			OnActionEffect = "popup",
+			ActionSortKey = "1Presets",
+		}
+
 		-- add preset menu items
 		ClassDescendantsList("Preset", function(name, cls)
 			c = c + 1
 			Actions[c] = {
-				ActionMenubar = "Presets",
+				ActionMenubar = "Debug.Presets",
 				ActionName = name,
-				ActionId = StringFormat("Presets.%s",name),
+				ActionId = StringFormat(".%s",name),
 				ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
 				RolloverText = S[302535920000733--[[Open a preset in the editor.--]]],
 				OnAction = function()
@@ -290,6 +301,7 @@ function OnMsg.ShortcutsReloaded()
 	if not ChoGGi.UserSettings.DisableECM then
 		ChoGGi.ComFuncs.Rebuildshortcuts(nil,true)
 
+		-- i forget why i'm toggling this...
 		local dlgConsole = dlgConsole
 		if dlgConsole then
 			ShowConsole(not dlgConsole:GetVisible())

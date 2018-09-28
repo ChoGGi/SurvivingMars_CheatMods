@@ -70,6 +70,7 @@ DefineClass.Examine = {
 	prefix = false,
 	-- what we're examining
 	obj = false,
+	str_object = false,
 	-- used to store visibility of obj
 	orig_vis_flash = false,
 
@@ -110,6 +111,13 @@ function Examine:Init(parent, context)
 	self.onclick_handles = {}
 
 	self.obj = context.obj
+
+	-- if we're examining a string we want to convert to an object
+	if type(context.parent) == "string" then
+		self.str_object = context.parent
+		context.parent = nil
+	end
+
 	self.title = context.title
 
 	self.prefix = S[302535920000069--[[Examine--]]]
@@ -470,6 +478,14 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
 			clicked = function()
 				ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj,self)
+			end,
+		},
+		{
+			name = S[302535920001369--[[Ged Editor--]]],
+			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
+			clicked = function()
+				GedObjectEditor = false
+				OpenGedGameObjectEditor{ChoGGi.ComFuncs.SelObject()}
 			end,
 		},
 		{
@@ -1105,7 +1121,7 @@ function Examine:SetObj(obj,skip_thread)
 	self.onclick_handles = {}
 
 	local obj_type = type(obj)
-	if obj_type == "string" then
+	if obj_type == "string" and self.str_object == "str" then
 		-- check if obj string is a ref to an actual object
 		local obj_ref  = ChoGGi.ComFuncs.DotNameToObject(obj)
 		-- if it is then we use that as the obj to examine

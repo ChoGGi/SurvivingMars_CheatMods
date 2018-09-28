@@ -21,23 +21,33 @@ function OnMsg.ClassesGenerate()
 	--~   RebuildFXRules()
 	--~ end
 
+	function ChoGGi.MenuFuncs.ResetCamera()
+		SetMouseDeltaMode(false)
+		ShowMouseCursor("InGameCursor")
+		cameraRTS.Activate(1)
+		engineShowMouseCursor()
+		ChoGGi.CodeFuncs.SetCameraSettings()
+	end
+
 	function ChoGGi.MenuFuncs.WhiterRocks()
 		-- less brown rocks
-		local function WhiteThoseRocks(cls)
-			MapForEach("map",cls,function(o)
-				if o.class:find("Dark") then
-					o:SetColorModifier(white)
-				-- skip delete StoneSmall since it takes too damned long
-				elseif not cls ~= "StoneSmall" then
-					-- these ones don't look good like this so buhbye
-					o:delete()
-				end
-			end)
-		end
-		WhiteThoseRocks("Deposition")
-		WhiteThoseRocks("WasteRockObstructorSmall")
-		WhiteThoseRocks("WasteRockObstructor")
-		WhiteThoseRocks("StoneSmall")
+		SuspendPassEdits("Deposition")
+		SuspendPassEdits("WasteRockObstructorSmall")
+		SuspendPassEdits("WasteRockObstructor")
+		SuspendPassEdits("StoneSmall")
+		local white = white
+		MapForEach("map",{"Deposition","WasteRockObstructorSmall","WasteRockObstructor","StoneSmall"},function(o)
+			if o.class:find("Dark") then
+				o:SetColorModifier(white)
+			else
+				-- these ones don't look good like this so buhbye
+				o:delete()
+			end
+		end)
+		ResumePassEdits("Deposition")
+		ResumePassEdits("WasteRockObstructorSmall")
+		ResumePassEdits("WasteRockObstructor")
+		ResumePassEdits("StoneSmall")
 	end
 
 	do -- ChangeSurfaceSignsToMaterials
@@ -197,7 +207,7 @@ function OnMsg.ClassesGenerate()
 	--~	 end
 	--~	 TestSound("Object MOXIE Loop")
 
-		function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle(which)
+		function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle(manual)
 			local ChoGGi = ChoGGi
 			--make a list
 			local ItemList = {
@@ -208,7 +218,6 @@ function OnMsg.ClassesGenerate()
 				{text = S[302535920000220--[[RC Rover Emergency Power--]]],value = "RCRoverEmergencyPower"},
 			}
 
-			--callback
 			local function CallBackFunc(choice,skip)
 				if #choice < 1 then
 					return
@@ -261,8 +270,9 @@ function OnMsg.ClassesGenerate()
 				end
 			end
 
-			if which then
-				CallBackFunc({{value = which}},true)
+			if manual then
+				-- added this for someone i think?
+				CallBackFunc({{value = manual}},true)
 			else
 				ChoGGi.ComFuncs.OpenInListChoice{
 					callback = CallBackFunc,
@@ -748,7 +758,7 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 			end
 			local value = choice[1].value
 			if type(value) == "number" then
-				terrain.SetTerrainType{type = 1}
+				terrain.SetTerrainType{type = value}
 
 				-- add back dome grass
 				local domes = UICity.labels.Domes or ""
@@ -756,42 +766,42 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 					domes[i]:ChangeSkin(domes[i]:GetCurrentSkin())
 				end
 
-				-- re-paint concrete
-				local new_texture = 30 -- I perfer 24, but you're the boss
-				local SetTypeCircle = terrain.SetTypeCircle
-				local GetHeight = terrain.GetHeight
-				local TerrainDeposit_Decode = TerrainDeposit_Decode
-				local point = point
-				local grid_spacing = const.GridSpacing/2
-				local TerrainDepositsInfo = TerrainDepositsInfo
-				local guim = guim
+--~ 				-- re-paint concrete
+--~ 				local new_texture = 30 -- I perfer 24, but you're the boss
+--~ 				local SetTypeCircle = terrain.SetTypeCircle
+--~ 				local GetHeight = terrain.GetHeight
+--~ 				local TerrainDeposit_Decode = TerrainDeposit_Decode
+--~ 				local point = point
+--~ 				local grid_spacing = const.GridSpacing/2
+--~ 				local TerrainDepositsInfo = TerrainDepositsInfo
+--~ 				local guim = guim
 
-				local gpts = HexGridWorldValues(TerrainDepositGrid, true)
-				if #gpts == 0 then
-					return
-				end
-				local mx, my, data = gpts[1]:xyz()
-				local gtype, gvol = TerrainDeposit_Decode(data)
-				local gmin, gmax = gvol, gvol
-				for i = 2, #gpts do
-					mx, my, data = gpts[i]:xyz()
-					gtype, gvol = TerrainDeposit_Decode(data)
-					if gvol < gmin then gmin = gvol
-					elseif gvol > gmax then gmax = gvol
-					end
-				end
-				if gmax <= gmin then
-					return
-				end
-				for i = 1, #gpts do
-					mx, my, data = gpts[i]:xyz()
-					gtype, gvol = TerrainDeposit_Decode(data)
-					local info = TerrainDepositsInfo[gtype]
-					local dv = gvol - gmin
-					if dv > 0 and info then
-						SetTypeCircle(point(mx, my, GetHeight(mx, my) + guim), grid_spacing, new_texture)
-					end
-				end
+--~ 				local gpts = HexGridWorldValues(TerrainDepositGrid, true)
+--~ 				if #gpts == 0 then
+--~ 					return
+--~ 				end
+--~ 				local mx, my, data = gpts[1]:xyz()
+--~ 				local gtype, gvol = TerrainDeposit_Decode(data)
+--~ 				local gmin, gmax = gvol, gvol
+--~ 				for i = 2, #gpts do
+--~ 					mx, my, data = gpts[i]:xyz()
+--~ 					gtype, gvol = TerrainDeposit_Decode(data)
+--~ 					if gvol < gmin then gmin = gvol
+--~ 					elseif gvol > gmax then gmax = gvol
+--~ 					end
+--~ 				end
+--~ 				if gmax <= gmin then
+--~ 					return
+--~ 				end
+--~ 				for i = 1, #gpts do
+--~ 					mx, my, data = gpts[i]:xyz()
+--~ 					gtype, gvol = TerrainDeposit_Decode(data)
+--~ 					local info = TerrainDepositsInfo[gtype]
+--~ 					local dv = gvol - gmin
+--~ 					if dv > 0 and info then
+--~ 						SetTypeCircle(point(mx, my, GetHeight(mx, my) + guim), grid_spacing, new_texture)
+--~ 					end
+--~ 				end
 
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(choice[1].text,904--[[Terrain--]]),
@@ -805,6 +815,8 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 			items = ItemList,
 			title = 302535920000973--[[Change Terrain Texture--]],
 			hint = S[302535920000974--[[Map default: %s--]]]:format(mapdata.BaseLayer),
+			custom_type = 8,
+			custom_func = CallBackFunc,
 		}
 	end
 
@@ -1354,59 +1366,65 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 
 	--use hr.FarZ = 7000000 for viewing full map with 128K zoom
 	function ChoGGi.MenuFuncs.CameraFree_Toggle()
-		--if not mapdata.GameLogic then
-		--	return
-		--end
 		if cameraFly.IsActive() then
 			SetMouseDeltaMode(false)
 			ShowMouseCursor("InGameCursor")
 			cameraRTS.Activate(1)
 			engineShowMouseCursor()
-			print(S[302535920001058--[[Camera--]]]," ",S[302535920001059--[[RTS--]]])
+			MsgPopup(
+				302535920001059--[[RTS--]],
+				302535920001058--[[Camera--]]
+			)
 		else
 			cameraFly.Activate(1)
 			HideMouseCursor("InGameCursor")
 			SetMouseDeltaMode(true)
-			--IsMouseCursorHidden works by checking whatever this sets, not what EnableMouseControl sets
+			-- IsMouseCursorHidden works by checking whatever this sets, not what EnableMouseControl sets
 			engineHideMouseCursor()
-			print(S[302535920001058--[[Camera--]]]," ",S[302535920001060--[[Fly--]]])
+			MsgPopup(
+				302535920001060--[[Fly--]],
+				302535920001058--[[Camera--]]
+			)
 		end
-		--resets zoom so...
+		-- resets zoom so...
 		ChoGGi.CodeFuncs.SetCameraSettings()
 	end
 
 	function ChoGGi.MenuFuncs.CameraFollow_Toggle()
-		--it was on the free camera so
+		-- it was on the free camera so
 		if not mapdata.GameLogic then
 			return
 		end
 		local obj = ChoGGi.ComFuncs.SelObject()
 
-		--turn it off?
+		-- turn it off?
 		if camera3p.IsActive() then
 			engineShowMouseCursor()
 			SetMouseDeltaMode(false)
 			ShowMouseCursor("InGameCursor")
 			cameraRTS.Activate(1)
-			--reset camera fov settings
+			-- reset camera fov settings
 			if ChoGGi.cameraFovX then
 				camera.SetFovX(ChoGGi.cameraFovX)
 			end
-			--show log again if it was hidden
+			-- show log again if it was hidden
 			if ChoGGi.UserSettings.ConsoleToggleHistory then
 				cls() --if it's going to spam the log, might as well clear it
 				ChoGGi.CodeFuncs.ToggleConsoleLog()
 			end
-			--reset camera zoom settings
+			-- reset camera zoom settings
 			ChoGGi.CodeFuncs.SetCameraSettings()
 			return
-		--crashes game if we attach to "false"
+		-- crashes game if we attach to "false"
 		elseif not obj then
 			return
 		end
-		--let user know the camera mode
-		print(S[302535920001058--[[Camera--]]]," ",S[302535920001061--[[Follow--]]])
-		--we only want to follow one object
+		-- let user know the camera mode
+		MsgPopup(
+			302535920001061--[[Follow--]],
+			302535920001058--[[Camera--]]
+		)
+		-- we only want to follow one object
 		if ChoGGi.LastFollowedObject then
 			camera3p.DetachObject(ChoGGi.LastFollowedObject)
 		end

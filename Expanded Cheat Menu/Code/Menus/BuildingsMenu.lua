@@ -4,14 +4,14 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
+	local StringFormat = string.format
 	local icon = "CommonAssets/UI/Menu/Cube.tga"
 	local c = #Actions
 
 	local str_ExpandedCM_Buildings = "Expanded CM.Buildings"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[3980--[[Buildings--]]]),
 		ActionMenubar = "Expanded CM",
-		ActionName = string.format("%s ..",S[3980--[[Buildings--]]]),
 		ActionId = ".Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -19,9 +19,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000164--[[Storage Amount Of Diner & Grocery--]]],
 		ActionMenubar = str_ExpandedCM_Buildings,
-		ActionName = S[302535920000164--[[Storage Amount Of Diner & Grocery--]]],
 		ActionId = ".Storage Amount Of Diner & Grocery",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -34,9 +33,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000168--[[Triboelectric Scrubber Radius--]]],
 		ActionMenubar = str_ExpandedCM_Buildings,
-		ActionName = S[302535920000168--[[Triboelectric Scrubber Radius--]]],
 		ActionId = ".Triboelectric Scrubber Radius",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -53,9 +51,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000171--[[SubsurfaceHeater Radius--]]],
 		ActionMenubar = str_ExpandedCM_Buildings,
-		ActionName = S[302535920000171--[[SubsurfaceHeater Radius--]]],
 		ActionId = ".SubsurfaceHeater Radius",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -70,9 +67,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000176--[[Empty Mech Depot--]]],
 		ActionMenubar = str_ExpandedCM_Buildings,
-		ActionName = S[302535920000176--[[Empty Mech Depot--]]],
 		ActionId = ".Empty Mech Depot",
 		ActionIcon = icon,
 		RolloverText = S[302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.--]]],
@@ -82,9 +78,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000210--[[Moisture Vaporator Penalty--]]],
 		ActionMenubar = str_ExpandedCM_Buildings,
-		ActionName = S[302535920000210--[[Moisture Vaporator Penalty--]]],
 		ActionId = ".Moisture Vaporator Penalty",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -97,11 +92,10 @@ function OnMsg.ClassesGenerate()
 	}
 
 	local str_ExpandedCM_Buildings_SanatoriumsSchools = "Expanded CM.Buildings.Sanatoriums & Schools"
-	local SandS = string.format("%s & %s",S[5245--[[Sanatoriums--]]],S[5248--[[Schools--]]])
+	local SandS = StringFormat("%s & %s",S[5245--[[Sanatoriums--]]],S[5248--[[Schools--]]])
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",SandS),
 		ActionMenubar = "Expanded CM.Buildings",
-		ActionName = string.format("%s ..",SandS),
 		ActionId = ".Sanatoriums & Schools",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -109,9 +103,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s %s",S[5245--[[Sanatoriums--]]],S[302535920000198--[[Cure All--]]]),
 		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
-		ActionName = string.format("%s %s",S[5245--[[Sanatoriums--]]],S[302535920000198--[[Cure All--]]]),
 		ActionId = ".Sanatoriums Cure All",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -124,9 +117,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s %s",S[5248--[[Schools--]]],S[302535920000200--[[Train All--]]]),
 		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
-		ActionName = string.format("%s %s",S[5248--[[Schools--]]],S[302535920000200--[[Train All--]]]),
 		ActionId = ".Schools Train All",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -139,9 +131,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s: %s",SandS,S[302535920000202--[[Show All Traits--]]]),
 		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
-		ActionName = string.format("%s: %s",SandS,S[302535920000202--[[Show All Traits--]]]),
 		ActionId = ".Sanatoriums & Schools: Show All Traits",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = function()
@@ -154,9 +145,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s: %s",SandS,S[302535920000204--[[Show Full List--]]]),
 		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
-		ActionName = string.format("%s: %s",SandS,S[302535920000204--[[Show Full List--]]]),
 		ActionId = ".Sanatoriums & Schools: Show Full List",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = function()
@@ -169,15 +159,14 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001344--[[Points To Train--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
-		ActionName = S[302535920001344--[[Points To Train--]]],
 		ActionId = ".Points To Train",
 		ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				string.format("ChoGGi.UserSettings.BuildingSettings.%s.evaluation_points",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.evaluation_points",sel and sel.encyclopedia_id),
 				302535920001345--[[How many points are needed to finish training.--]]
 			)
 		end,
@@ -186,9 +175,8 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Buildings_Farms = "Expanded CM.Buildings.Farms"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[5068--[[Farms--]]]),
 		ActionMenubar = "Expanded CM.Buildings",
-		ActionName = string.format("%s ..",S[5068--[[Farms--]]]),
 		ActionId = ".Farms",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -196,9 +184,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000192--[[Farm Shifts All On--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_Farms,
-		ActionName = S[302535920000192--[[Farm Shifts All On--]]],
 		ActionId = ".Farm Shifts All On",
 		ActionIcon = icon,
 		RolloverText = S[302535920000193--[[Turns on all the farm shifts.--]]],
@@ -206,9 +193,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[4711--[[Crop Fail Threshold--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_Farms,
-		ActionName = S[4711--[[Crop Fail Threshold--]]],
 		ActionId = ".Crop Fail Threshold",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -222,9 +208,8 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Buildings_CablesPipes = "Expanded CM.Buildings.Cables & Pipes"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000157--[[Cables & Pipes--]]]),
 		ActionMenubar = "Expanded CM.Buildings",
-		ActionName = string.format("%s ..",S[302535920000157--[[Cables & Pipes--]]]),
 		ActionId = ".Cables & Pipes",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -232,30 +217,28 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000218--[[No Chance Of Break--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_CablesPipes,
-		ActionName = S[302535920000218--[[No Chance Of Break--]]],
 		ActionId = ".Cables & Pipes: No Chance Of Break",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.BreakChanceCablePipe,
-				string.format("%s: %s",S[302535920000157--[[Cables & Pipes--]]],S[302535920000219--[[will never break.--]]])
+				StringFormat("%s: %s",S[302535920000157--[[Cables & Pipes--]]],S[302535920000219--[[will never break.--]]])
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[134--[[Instant Build--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_CablesPipes,
-		ActionName = S[134--[[Instant Build--]]],
 		ActionId = ".Cables & Pipes: Instant Build",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.InstantCables,
-				string.format("%s: %s",S[302535920000157--[[Cables & Pipes--]]],S[302535920000221--[[are built instantly.--]]])
+				StringFormat("%s: %s",S[302535920000157--[[Cables & Pipes--]]],S[302535920000221--[[are built instantly.--]]])
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle,
@@ -263,9 +246,8 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Buildings_Buildings = "Expanded CM.Buildings.Buildings"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[3980--[[Buildings--]]]),
 		ActionMenubar = "Expanded CM.Buildings",
-		ActionName = string.format("%s ..",S[3980--[[Buildings--]]]),
 		ActionId = ".Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -274,55 +256,74 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000194--[[Production Amount Set--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
-		ActionName = S[302535920000194--[[Production Amount Set--]]],
 		ActionId = ".Production Amount Set",
 		ActionIcon = icon,
-		RolloverText = S[302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
-	Works on any building that produces."--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.production",sel and sel.encyclopedia_id),
+				302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
+	Works on any building that produces."--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.SetProductionAmount,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetProductionAmount,
 		ActionBindable = true,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000186--[[Power-free Building--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
-		ActionName = S[302535920000186--[[Power-free Building--]]],
 		ActionId = ".Power-free Building",
 		ActionIcon = icon,
-		RolloverText = S[302535920000187--[[Toggle electricity use for selected building type.--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.nopower",sel and sel.encyclopedia_id),
+				302535920000187--[[Toggle electricity use for selected building type.--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingPower_Toggle,
 		ActionSortKey = "2Power-free Building",
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001251--[[Water-free Building--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
-		ActionName = S[302535920001251--[[Water-free Building--]]],
 		ActionId = ".Water-free Building",
 		ActionIcon = icon,
-		RolloverText = S[302535920001252--[[Toggle water use for selected building type.--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.nowater",sel and sel.encyclopedia_id),
+				302535920001252--[[Toggle water use for selected building type.--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingWater_Toggle,
 		ActionSortKey = "2Water-free Building",
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001253--[[Oxygen-free Building--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
-		ActionName = S[302535920001253--[[Oxygen-free Building--]]],
 		ActionId = ".Oxygen-free Building",
 		ActionIcon = icon,
-		RolloverText = S[302535920001254--[[Toggle oxygen use for selected building type.--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.noair",sel and sel.encyclopedia_id),
+				302535920001254--[[Toggle oxygen use for selected building type.--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingAir_Toggle,
 		ActionSortKey = "2Oxygen-free Building",
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000188--[[Set Charge & Discharge Rates--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
-		ActionName = S[302535920000188--[[Set Charge & Discharge Rates--]]],
 		ActionId = ".Set Charge & Discharge Rates",
 		ActionIcon = icon,
 		RolloverText = S[302535920000189--[[Change how fast Air/Water/Battery storage capacity changes.--]]],
@@ -332,53 +333,66 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000178--[[Protection Radius--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
-		ActionName = S[302535920000178--[[Protection Radius--]]],
 		ActionId = ".Protection Radius",
 		ActionIcon = icon,
-		RolloverText = S[302535920000179--[[Change threat protection coverage distance.--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.protect_range",sel and sel.encyclopedia_id),
+				302535920000179--[[Change threat protection coverage distance.--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.SetProtectionRadius,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000196--[[Fully Automated Building--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
-		ActionName = S[302535920000196--[[Fully Automated Building--]]],
 		ActionId = ".Fully Automated Building",
 		ActionIcon = icon,
-		RolloverText = S[302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.auto_performance",sel and sel.encyclopedia_id),
+				302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.SetFullyAutomatedBuildings,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001114--[[Service Building Stats--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
-		ActionName = S[302535920001114--[[Service Building Stats--]]],
 		ActionId = ".Service Building Stats",
 		ActionIcon = icon,
-		RolloverText = S[302535920001115--[["Tweak settings for parks and such.
-	Health change, Sanity change, Service Comfort, Comfort increase."--]]],
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.service_stats",sel and sel.encyclopedia_id),
+				302535920001115--[["Tweak settings for parks and such.
+	Health change, Sanity change, Service Comfort, Comfort increase."--]]
+			)
+		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetServiceBuildingStats()
 		end,
 	}
 
-	local str_ExpandedCM_Buildings_Toggle = "Expanded CM.Buildings.Toggle"
+	local str_ExpandedCM_Buildings_Toggles = "Expanded CM.Buildings.Toggles"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920001367--[[Toggles--]]]),
 		ActionMenubar = "Expanded CM.Buildings",
-		ActionName = string.format("%s ..",S[454042608125--[[Toggle--]]]),
-		ActionId = ".Toggle",
+		ActionId = ".Toggles",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
 		ActionSortKey = "1Toggle",
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000159--[[Unlimited Wonders--]]],
+	Actions[c] = {ActionName = S[302535920000159--[[Unlimited Wonders--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Unlimited Wonders",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = function()
@@ -391,9 +405,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000224--[[Show Hidden Buildings--]]],
+	Actions[c] = {ActionName = S[302535920000224--[[Show Hidden Buildings--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Show Hidden Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = function()
@@ -406,9 +419,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920001241--[[Instant Build--]]],
+	Actions[c] = {ActionName = S[302535920001241--[[Instant Build--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Instant Build",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = function()
@@ -421,9 +433,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000226--[[Remove Spire Point Limit--]]],
+	Actions[c] = {ActionName = S[302535920000226--[[Remove Spire Point Limit--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Remove Spire Point Limit",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = function()
@@ -437,9 +448,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000230--[[Remove Building Limits--]]],
+	Actions[c] = {ActionName = S[302535920000230--[[Remove Building Limits--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Remove Building Limits",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = function()
@@ -453,9 +463,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000214--[[Cheap Construction--]]],
+	Actions[c] = {ActionName = S[302535920000214--[[Cheap Construction--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Cheap Construction",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -468,9 +477,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000216--[[Building Damage Crime--]]],
+	Actions[c] = {ActionName = S[302535920000216--[[Building Damage Crime--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Building Damage Crime",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -483,9 +491,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000206--[[Maintenance Free Inside--]]],
+	Actions[c] = {ActionName = S[302535920000206--[[Maintenance Free Inside--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Maintenance Free Inside",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -498,9 +505,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000208--[[Maintenance Free--]]],
+	Actions[c] = {ActionName = S[302535920000208--[[Maintenance Free--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Maintenance Free",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -513,9 +519,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000191--[[Use Last Orientation--]]],
+	Actions[c] = {ActionName = S[302535920000191--[[Use Last Orientation--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Use Last Orientation",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleMapAreaEditor.tga",
 		RolloverText = function()
@@ -530,9 +535,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000174--[[Always Dusty--]]],
+	Actions[c] = {ActionName = S[302535920000174--[[Always Dusty--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Always Dusty",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -546,9 +550,8 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000037--[[Always Clean--]]],
+	Actions[c] = {ActionName = S[302535920000037--[[Always Clean--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Always Clean",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -561,9 +564,8 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000182--[[Pipes Pillars Spacing--]]],
+	Actions[c] = {ActionName = S[302535920000182--[[Pipes Pillars Spacing--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Pipes Pillars Spacing",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = function()
@@ -576,9 +578,8 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000184--[[Unlimited Connection Length--]]],
+	Actions[c] = {ActionName = S[302535920000184--[[Unlimited Connection Length--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Unlimited Connection Length",
 		ActionIcon = "CommonAssets/UI/Menu/road_type.tga",
 		RolloverText = function()
@@ -591,9 +592,8 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_ExpandedCM_Buildings_Toggle,
-		ActionName = S[302535920000180--[[Unlock Locked Buildings--]]],
+	Actions[c] = {ActionName = S[302535920000180--[[Unlock Locked Buildings--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
 		ActionId = ".Unlock Locked Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = S[302535920000181--[[Gives you a list of buildings you can unlock in the build menu.--]]],
@@ -602,9 +602,8 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	local str_ExpandedCM_Buildings_SpaceElevator = "Expanded CM.Buildings.Space Elevator"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[1120--[[Space Elevator--]]]),
 		ActionMenubar = "Expanded CM.Buildings",
-		ActionName = string.format("%s ..",S[1120--[[Space Elevator--]]]),
 		ActionId = ".Space Elevator",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -612,9 +611,8 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001330--[[Instant Export On Toggle--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_SpaceElevator,
-		ActionName = S[302535920001330--[[Instant Export On Toggle--]]],
 		ActionId = ".Instant Export On Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 		RolloverText = function()
@@ -627,9 +625,8 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001336--[[Export When This Amount--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_SpaceElevator,
-		ActionName = S[302535920001336--[[Export When This Amount--]]],
 		ActionId = ".Export When This Amount",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
@@ -642,9 +639,8 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001332--[[Export Amount Per Trip--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_SpaceElevator,
-		ActionName = S[302535920001332--[[Export Amount Per Trip--]]],
 		ActionId = ".Export Amount Per Trip",
 		ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
 		RolloverText = function()
@@ -659,9 +655,8 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001334--[[Import Amount Per Trip--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_SpaceElevator,
-		ActionName = S[302535920001334--[[Import Amount Per Trip--]]],
 		ActionId = ".Import Amount Per Trip",
 		ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
 		RolloverText = function()

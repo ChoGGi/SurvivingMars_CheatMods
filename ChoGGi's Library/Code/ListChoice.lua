@@ -290,6 +290,12 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		else
 			self.list.hint = S[302535920001341--[[Double-click to apply without closing list.--]]]
 		end
+	elseif self.custom_type == 8 then
+		if self.list.hint then
+			self.list.hint = StringFormat("%s\n\n%s",CheckText(self.list.hint),S[302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."--]]])
+		else
+			self.list.hint = S[302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."--]]]
+		end
 	end
 
 	-- are we showing a hint?
@@ -523,18 +529,20 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(button)
 	end
 	if button == "L" then
 		-- fire custom_func with sel
-		if self.custom_type == 1 or self.custom_type == 7 then
+		if self.custom_func and (self.custom_type == 1 or self.custom_type == 7) then
 			self.custom_func({self.sel},self)
-		elseif self.custom_type ~= 5 and self.custom_type ~= 2 then
+		elseif self.custom_type ~= 5 and self.custom_type ~= 2 or self.custom_type == 8 then
 			-- dblclick to close and ret item
 			self.idOK.OnPress()
 		end
 	elseif button == "R" then
-		-- applies the lightmodel without closing dialog,
+		-- does stuff without closing list
 		if self.custom_type == 5 then
 			self:BuildAndApplyLightmodel()
 		elseif self.custom_type == 6 and self.custom_func then
 			self.custom_func(self.sel.func,self)
+		elseif self.custom_type == 8 and self.custom_func then
+			self.custom_func({self.sel},self)
 		elseif self.idEditValue then
 			self.idEditValue:SetText(self.sel.text)
 		end

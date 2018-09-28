@@ -6,7 +6,20 @@ function OnMsg.ClassesGenerate()
 
 	if ChoGGi.testing then
 
---~ 		-- stop welcome to mars msg
+		-- for some fucking annoying reason my account settings are sometimes reset, so
+		if not ChoGGi.blacklist then
+			local as = AccountStorage
+			as.Options.AutoPinDomes = false
+			as.Options.AutoPinDroneHubs = false
+			as.Options.AutoPinFounders = false
+			as.Options.AutoPinRareColonists = false
+			as.Options.AutoPinRovers = false
+			as.Options.Autosave = false
+			as.Options.HintsEnabled = false
+			as.Shortcuts["Debug.Delete Object(s).Delete Object(s)"] = {"Ctrl-Shift-D"}
+		end
+
+--~ 		-- stop welcome to mars msg for LoadMapForScreenShot
 --~ 		ShowStartGamePopup = function() end
 		-- pretty much just for View Colony Map. it loads, positions camera to fixed pos, and takes named screenshot
 --~ 		ChoGGi.testing.LoadMapForScreenShot("BlankBigTerraceCMix_13")

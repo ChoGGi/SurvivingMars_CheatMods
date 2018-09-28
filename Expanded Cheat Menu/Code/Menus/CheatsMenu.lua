@@ -4,12 +4,12 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
+	local StringFormat = string.format
 	local c = #Actions
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920001355--[[Map--]]],S[5422--[[Exploration--]]]),
 		ActionMenubar = "Cheats",
-		ActionName = string.format("%s %s",S[302535920001355--[[Map--]]],S[5422--[[Exploration--]]]),
 		ActionId = ".Map Exploration",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = S[302535920000328--[[Scanning, deep scanning, core mines, and alien imprints.--]]],
@@ -18,9 +18,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[25--[[Anomaly Scanning--]]],
 		ActionMenubar = "Cheats",
-		ActionName = S[25--[[Anomaly Scanning--]]],
 		ActionId = ".Anomaly Scanning",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = S[302535920001286--[[Scan all or certain types of anomalies.--]]],
@@ -29,9 +28,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[5661--[[Mystery Log--]]],
 		ActionMenubar = "Cheats",
-		ActionName = S[5661--[[Mystery Log--]]],
 		ActionId = ".Mystery Log",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
 		RolloverText = S[302535920000330--[[Advance to next part, show what part you're on, or remove mysteries.--]]],
@@ -40,9 +38,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000331--[[Start Mystery--]]],
 		ActionMenubar = "Cheats",
-		ActionName = S[302535920000331--[[Start Mystery--]]],
 		ActionId = ".Start Mystery",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
 		RolloverText = S[302535920000332--[[Pick and start a mystery (with instant start option).--]]],
@@ -51,9 +48,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[3983--[[Disasters--]]],
 		ActionMenubar = "Cheats",
-		ActionName = S[3983--[[Disasters--]]],
 		ActionId = ".Start Disasters",
 		ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
 		RolloverText = S[302535920000334--[[Show the disasters list and optionally start one.--]]],
@@ -62,9 +58,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000266--[[Spawn--]]],S[547--[[Colonists--]]]),
 		ActionMenubar = "Cheats",
-		ActionName = string.format("%s %s",S[302535920000266--[[Spawn--]]],S[547--[[Colonists--]]]),
 		ActionId = ".Spawn Colonists",
 		ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
 		RolloverText = S[302535920000336--[[Spawn certain amount of colonists.--]]],
@@ -73,9 +68,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000337--[[Unlock all buildings--]]],
 		ActionMenubar = "Cheats",
-		ActionName = S[302535920000337--[[Unlock all buildings--]]],
 		ActionId = ".Unlock all buildings",
 		ActionIcon = "CommonAssets/UI/Menu/TerrainConfigEditor.tga",
 		RolloverText = S[302535920000338--[[Unlock all buildings for construction.--]]],
@@ -84,9 +78,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000361--[[Unpin All Pinned Objects--]]],
 		ActionMenubar = "Cheats",
-		ActionName = S[302535920000361--[[Unpin All Pinned Objects--]]],
 		ActionId = ".Unpin All Pinned Objects",
 		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
 		RolloverText = S[302535920000362--[[Removes all objects from the "Pin" menu.--]]],
@@ -95,9 +88,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000363--[[Complete Wires & Pipes--]]],
 		ActionMenubar = "Cheats",
-		ActionName = S[302535920000363--[[Complete Wires & Pipes--]]],
 		ActionId = ".Complete Wires & Pipes",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = S[302535920000364--[[Complete all wires and pipes instantly.--]]],
@@ -106,9 +98,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000365--[[Complete Constructions--]]],
 		ActionMenubar = "Cheats",
-		ActionName = S[302535920000365--[[Complete Constructions--]]],
 		ActionId = ".Complete Constructions",
 		ActionIcon = "CommonAssets/UI/Menu/place_custom_object.tga",
 		RolloverText = S[302535920000366--[[Complete all constructions instantly.--]]],
@@ -119,9 +110,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000236--[[Mod Editor--]]],
 		ActionMenubar = "Cheats",
-		ActionName = S[302535920000236--[[Mod Editor--]]],
 		ActionId = ".Mod Editor",
 		ActionIcon = "CommonAssets/UI/Menu/Action.tga",
 		RolloverText = S[302535920000368--[[Switch to the mod editor.--]]],
@@ -131,9 +121,8 @@ function OnMsg.ClassesGenerate()
 
 	local str_Cheats_Workplaces = "Cheats.Workplaces"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[5444--[[Workplaces--]]]),
 		ActionMenubar = "Cheats",
-		ActionName = string.format("%s ..",S[5444--[[Workplaces--]]]),
 		ActionId = ".Workplaces",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -141,9 +130,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000339--[[Toggle All Shifts--]]],
 		ActionMenubar = str_Cheats_Workplaces,
-		ActionName = S[302535920000339--[[Toggle All Shifts--]]],
 		ActionId = ".Toggle All Shifts",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = S[302535920000340--[[Toggle all workshifts on or off (farms only get one on).--]]],
@@ -151,9 +139,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000341--[[Update All Workplaces--]]],
 		ActionMenubar = str_Cheats_Workplaces,
-		ActionName = S[302535920000341--[[Update All Workplaces--]]],
 		ActionId = ".Update All Workplaces",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = S[302535920000342--[[Updates all colonist's workplaces.--]]],
@@ -161,9 +148,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000343--[[Clear Forced Workplaces--]]],
 		ActionMenubar = str_Cheats_Workplaces,
-		ActionName = S[302535920000343--[[Clear Forced Workplaces--]]],
 		ActionId = ".Clear Forced Workplaces",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = S[302535920000344--[["Removes ""user_forced_workplace"" from all colonists."--]]],
@@ -172,9 +158,8 @@ function OnMsg.ClassesGenerate()
 
 	local str_Cheats_Research = "Cheats.Research"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[311--[[Research--]]]),
 		ActionMenubar = "Cheats",
-		ActionName = string.format("%s ..",S[311--[[Research--]]]),
 		ActionId = ".Research",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -182,9 +167,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s %s",S[311--[[Research--]]],S[3734--[[Tech--]]]),
 		ActionMenubar = str_Cheats_Research,
-		ActionName = string.format("%s %s",S[311--[[Research--]]],S[3734--[[Tech--]]]),
 		ActionId = ".Research Tech",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = S[302535920000346--[[Pick what you want to unlock/research.--]]],
@@ -193,9 +177,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001278--[[Instant Research--]]],
 		ActionMenubar = str_Cheats_Research,
-		ActionName = S[302535920001278--[[Instant Research--]]],
 		ActionId = ".Instant Research",
 		ActionIcon = "CommonAssets/UI/Menu/DarkSideOfTheMoon.tga",
 		RolloverText = function()
@@ -208,9 +191,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000305--[[Research Queue Size--]]],
 		ActionMenubar = str_Cheats_Research,
-		ActionName = S[302535920000305--[[Research Queue Size--]]],
 		ActionId = ".Research Queue Size",
 		ActionIcon = "CommonAssets/UI/Menu/ShowOcclusion.tga",
 		RolloverText = function()
@@ -223,9 +205,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000349--[[Reset All Research--]]],
 		ActionMenubar = str_Cheats_Research,
-		ActionName = S[302535920000349--[[Reset All Research--]]],
 		ActionId = ".Reset All Research",
 		ActionIcon = "CommonAssets/UI/Menu/UnlockCollection.tga",
 		RolloverText = S[302535920000350--[[Resets all research (includes breakthrough tech).--]]],
@@ -233,9 +214,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[7790--[[Research Current Tech--]]],
 		ActionMenubar = str_Cheats_Research,
-		ActionName = S[7790--[[Research Current Tech--]]],
 		ActionId = ".Research Current Tec",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = S[302535920000352--[[Complete item currently being researched.--]]],
@@ -243,9 +223,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000295--[[Add Research Points--]]],
 		ActionMenubar = str_Cheats_Research,
-		ActionName = S[302535920000295--[[Add Research Points--]]],
 		ActionId = ".Add Research Points",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 		RolloverText = S[302535920000354--[[Add a specified amount of research points.--]]],
@@ -253,9 +232,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000355--[[Outsourcing For Free--]]],
 		ActionMenubar = str_Cheats_Research,
-		ActionName = S[302535920000355--[[Outsourcing For Free--]]],
 		ActionId = ".Outsourcing For Free",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 		RolloverText = function()
@@ -268,9 +246,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001342--[[Change Outsource Limit--]]],
 		ActionMenubar = str_Cheats_Research,
-		ActionName = S[302535920001342--[[Change Outsource Limit--]]],
 		ActionId = ".Change Outsource Limit",
 		ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
 		RolloverText = function()
@@ -283,9 +260,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000357--[[Set Amount Of Breakthroughs Allowed--]]],
 		ActionMenubar = str_Cheats_Research,
-		ActionName = S[302535920000357--[[Set Amount Of Breakthroughs Allowed--]]],
 		ActionId = ".Set Amount Of Breakthroughs Allowed",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = function()
@@ -299,9 +275,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000359--[[Breakthroughs From OmegaTelescope--]]],
 		ActionMenubar = str_Cheats_Research,
-		ActionName = S[302535920000359--[[Breakthroughs From OmegaTelescope--]]],
 		ActionId = ".Breakthroughs From OmegaTelescope",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = function()
@@ -316,17 +291,15 @@ function OnMsg.ClassesGenerate()
 
 	local str_Cheats_Menu = "Cheats.Menu"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[1000162--[[Menu--]]]),
 		ActionMenubar = "Cheats",
-		ActionName = string.format("%s ..",S[1000162--[[Menu--]]]),
 		ActionId = ".Menu",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
 		ActionSortKey = "99",
 	}
 	c = c + 1
-	Actions[c] = {
-		ActionName = S[302535920000232--[[Draggable Cheats Menu--]]],
+	Actions[c] = {ActionName = S[302535920000232--[[Draggable Cheats Menu--]]],
 		ActionMenubar = str_Cheats_Menu,
 		ActionId = ".Draggable Cheats Menu",
 		ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
@@ -340,8 +313,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
-		ActionName = S[302535920000325--[[Keep Cheats Menu Position--]]],
+	Actions[c] = {ActionName = S[302535920000325--[[Keep Cheats Menu Position--]]],
 		ActionMenubar = str_Cheats_Menu,
 		ActionId = ".Keep Cheats Menu Position",
 		ActionIcon = "CommonAssets/UI/Menu/CollectionsEditor.tga",

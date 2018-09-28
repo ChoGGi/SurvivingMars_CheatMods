@@ -4,6 +4,20 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v9.5 (Unreleased)
+### Added:
+- Game>Camera>Reset: If something makes the camera view wonky you can use this to fix it.
+
+### Changed:
+- Moved Presets menu to Debug as a submenu.
+- Added settings to some more menu item hints.
+- Added Ged Editor to the Tools menu in Examine.
+- When you use a string to examine an object; you now need to pass ,"str" along with it: OpenExamine("ChoGGi.UserSetting","str")
+
+### Fixed:
+- Some menu item hints with settings in them weren't being updated.
+- Made sure Mod Upload works correctly with screenshots.
+- Some missing/borked text in menus.
+- Measure Tool.
 
 ## v9.4 (28 Sep 2018)
 ### Added:

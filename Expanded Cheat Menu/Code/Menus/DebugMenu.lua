@@ -4,12 +4,12 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
+	local StringFormat = string.format
 	local c = #Actions
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001314--[[Toggle Render--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920001314--[[Toggle Render--]]],
 		ActionId = ".Toggle Render",
 		ActionIcon = "CommonAssets/UI/Menu/Shot.tga",
 		RolloverText = S[302535920001315--[[Toggle rendering certain stuff.--]]],
@@ -17,29 +17,36 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001310--[[DTM Slots Display--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920001310--[[DTM Slots Display--]]],
 		ActionId = ".DTM Slots Display",
 		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
-		RolloverText = S[302535920001311--[[Toggle DTM slots display--]]],
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				GetDialog("DTMSlotsDlg") and true,
+				302535920001311--[[Toggle DTM slots display--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.DTMSlotsDlg_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001312--[[FPS Counter Location--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920001312--[[FPS Counter Location--]]],
 		ActionId = ".FPS Counter Location",
 		ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",
-		RolloverText = S[302535920001313--[[One of the four corners of your screen.--]]],
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				hr.FpsCounterPos or 0,
+				302535920001313--[[One of the four corners of your screen.--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.FpsCounterLocation,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001208--[[Export Colonist Data To CSV--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920001208--[[Export Colonist Data To CSV--]]],
 		ActionId = ".Export Colonist Data To CSV",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = S[302535920001219--[[Exports data about colonists to %sColonists.csv--]]]:format(ConvertToOSPath("AppData/")),
@@ -47,9 +54,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000449--[[Attach Spots Toggle--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000449--[[Attach Spots Toggle--]]],
 		ActionId = ".Attach Spots Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/ShowAll.tga",
 		RolloverText = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
@@ -59,21 +65,24 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000451--[[Measure Tool--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000451--[[Measure Tool--]]],
 		ActionId = ".Measure Tool",
 		ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
-		RolloverText = S[302535920000452--[[Measures stuff (Use Ctrl-Shift-M to remove the lines).--]]],
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				MeasureTool.enabled,
+				302535920000452--[[Measures stuff (Use Ctrl-Shift-M to remove the lines).--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.MeasureTool_Toggle,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.MeasureTool_Toggle,
 		ActionBindable = true,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000453--[[Reload Lua--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000453--[[Reload Lua--]]],
 		ActionId = ".Reload Lua",
 		ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 		RolloverText = S[302535920000454--[[Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).--]]],
@@ -81,9 +90,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000455--[[Object Cloner--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000455--[[Object Cloner--]]],
 		ActionId = ".Object Cloner",
 		ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",
 		RolloverText = S[302535920000456--[[Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).--]]],
@@ -95,9 +103,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000457--[[Anim State Set--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000457--[[Anim State Set--]]],
 		ActionId = ".Anim State Set",
 		ActionIcon = "CommonAssets/UI/Menu/UnlockCamera.tga",
 		RolloverText = S[302535920000458--[[Make object dance on command.--]]],
@@ -107,9 +114,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000459--[[Anim Debug Toggle--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000459--[[Anim Debug Toggle--]]],
 		ActionId = ".Anim Debug Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/CameraEditor.tga",
 		RolloverText = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
@@ -119,9 +125,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000471--[[Object Manipulator--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000471--[[Object Manipulator--]]],
 		ActionId = ".Object Manipulator",
 		ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
 		RolloverText = S[302535920000472--[[Manipulate objects (selected or under mouse cursor)--]]],
@@ -133,9 +138,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000475--[[Object Spawner--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000475--[[Object Spawner--]]],
 		ActionId = ".Object Spawner",
 		ActionIcon = "CommonAssets/UI/Menu/add_water.tga",
 		RolloverText = S[302535920000476--[["Shows list of objects, and spawns at mouse cursor.
@@ -148,9 +152,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000479--[[Toggle Editor--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000479--[[Toggle Editor--]]],
 		ActionId = ".Toggle Editor",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionEditor.tga",
 		RolloverText = S[302535920000480--[["Select object(s) then hold ctrl/shift/alt and drag mouse.
@@ -163,21 +166,20 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000481--[[Open In Ged Object Editor--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000481--[[Open In Ged Object Editor--]]],
 		ActionId = ".Open In Ged Object Editor",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionEditor.tga",
-		RolloverText = S[302535920000482--[[It edits stuff?--]]],
+		RolloverText = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
 		OnAction = function()
-			OpenGedGameObjectEditor(ChoGGi.ComFuncs.SelObject())
+			GedObjectEditor = false
+			OpenGedGameObjectEditor{ChoGGi.ComFuncs.SelObject()}
 		end,
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000491--[[Examine Object--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000491--[[Examine Object--]]],
 		ActionId = ".Examine Object",
 		ActionIcon = "CommonAssets/UI/Menu/PlayerInfo.tga",
 		RolloverText = S[302535920000492--[[Opens the object examiner for the selected or moused-over obj.--]]],
@@ -192,9 +194,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000495--[[Particles Reload--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000495--[[Particles Reload--]]],
 		ActionId = ".Particles Reload",
 		ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 		RolloverText = S[302535920000496--[[Reloads particles from "Data/Particles"...--]]],
@@ -203,9 +204,8 @@ function OnMsg.ClassesGenerate()
 
 	local str_Debug_Grids = "Debug.Grids"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000035--[[Grids--]]]),
 		ActionMenubar = "Debug",
-		ActionName = string.format("%s ..",S[302535920000035--[[Grids--]]]),
 		ActionId = ".Grids",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -213,9 +213,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000499--[[Toggle Grid Follow Mouse--]]],
 		ActionMenubar = str_Debug_Grids,
-		ActionName = S[302535920000499--[[Toggle Grid Follow Mouse--]]],
 		ActionId = ".Toggle Grid Follow Mouse",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 		RolloverText = S[302535920000500--[[Shows a hex grid with green for buildable/walkable.--]]],
@@ -225,9 +224,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001297--[[Toggle Flight Grid--]]],
 		ActionMenubar = str_Debug_Grids,
-		ActionName = S[302535920001297--[[Toggle Flight Grid--]]],
 		ActionId = ".Toggle Flight Grid",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleCollisions.tga",
 		RolloverText = S[302535920001298--[[Shows a square grid with terrain/objects shape.--]]],
@@ -238,22 +236,20 @@ function OnMsg.ClassesGenerate()
 		ActionBindable = true,
 	}
 
-	c = c + 1
-	Actions[c] = {
-		ActionMenubar = str_Debug_Grids,
-		ActionName = S[302535920000497--[[Toggle Terrain Deposit Grid--]]],
-		ActionId = ".Toggle Terrain Deposit Grid",
-		ActionIcon = "CommonAssets/UI/Menu/ToggleBlockPass.tga",
-		RolloverText = S[302535920000498--[[Shows a grid around concrete.--]]],
-		OnAction = ToggleTerrainDepositGrid,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.ToggleTerrainDepositGrid,
-		ActionBindable = true,
-	}
+--~ 	c = c + 1
+--~ 	Actions[c] = {ActionName = S[302535920000497--[[Toggle Terrain Deposit Grid--]]],
+--~ 		ActionMenubar = str_Debug_Grids,
+--~ 		ActionId = ".Toggle Terrain Deposit Grid",
+--~ 		ActionIcon = "CommonAssets/UI/Menu/ToggleBlockPass.tga",
+--~ 		RolloverText = S[302535920000498--[[Shows a grid around concrete.--]]],
+--~ 		OnAction = ToggleTerrainDepositGrid,
+--~ 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ToggleTerrainDepositGrid,
+--~ 		ActionBindable = true,
+--~ 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000724--[[Show Grid Square--]]],
 		ActionMenubar = str_Debug_Grids,
-		ActionName = S[302535920000724--[[Show Grid Square--]]],
 		ActionId = ".Show Grid Square",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 		RolloverText = S[302535920000725--[[Square (use Disable to hide).--]]],
@@ -263,9 +259,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001192--[[Show Grid 45 Square--]]],
 		ActionMenubar = str_Debug_Grids,
-		ActionName = S[302535920001192--[[Show Grid 45 Square--]]],
 		ActionId = ".Show Grid 45 Square",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 		RolloverText = S[302535920001325--[[Square 45 (use Disable to hide).--]]],
@@ -275,9 +270,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001326--[[Show Grid Hex--]]],
 		ActionMenubar = str_Debug_Grids,
-		ActionName = S[302535920001326--[[Show Grid Hex--]]],
 		ActionId = ".Show Grid Hex",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 		RolloverText = S[302535920001327--[[Hex (use Disable to hide).--]]],
@@ -287,9 +281,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001328--[[Show Grid Disable--]]],
 		ActionMenubar = str_Debug_Grids,
-		ActionName = S[302535920001328--[[Show Grid Disable--]]],
 		ActionId = ".Show Grid Disable",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 		RolloverText = S[302535920001329--[[Hide the white ground grids.--]]],
@@ -301,9 +294,8 @@ function OnMsg.ClassesGenerate()
 
 	local str_Debug_DebugFX = "Debug.Debug FX"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920001175--[[Debug FX--]]]),
 		ActionMenubar = "Debug",
-		ActionName = string.format("%s ..",S[302535920001175--[[Debug FX--]]]),
 		ActionId = ".Debug FX",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -311,9 +303,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001175--[[Debug FX--]]],
 		ActionMenubar = str_Debug_DebugFX,
-		ActionName = S[302535920001175--[[Debug FX--]]],
 		ActionId = ".Debug FX",
 		ActionIcon = "CommonAssets/UI/Menu/FXEditor.tga",
 		RolloverText = function()
@@ -328,9 +319,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001184--[[Particles--]]],
 		ActionMenubar = str_Debug_DebugFX,
-		ActionName = S[302535920001184--[[Particles--]]],
 		ActionId = ".Particles",
 		ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 		RolloverText = function()
@@ -345,9 +335,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001368--[[Sound FX--]]],
 		ActionMenubar = str_Debug_DebugFX,
-		ActionName = S[4107--[[Sound FX--]]],
 		ActionId = ".Sound FX",
 		ActionIcon = "CommonAssets/UI/Menu/DisableEyeSpec.tga",
 		RolloverText = function()
@@ -357,15 +346,14 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = function()
-			ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXSound",4107)
+			ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXSound",302535920001368)
 		end,
 	}
 
 	local str_Debug_PathMarkers = "Debug.Path Markers"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000467--[[Path Markers--]]]),
 		ActionMenubar = "Debug",
-		ActionName = string.format("%s ..",S[302535920000467--[[Path Markers--]]]),
 		ActionId = ".Path Markers",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -373,12 +361,11 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000467--[[Path Markers--]]],S[4099--[[Game Time--]]]),
 		ActionMenubar = str_Debug_PathMarkers,
-		ActionName = string.format("%s %s",S[302535920000467--[[Path Markers--]]],S[4099--[[Game Time--]]]),
 		ActionId = ".Game Time",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
-		RolloverText = string.format("%s %s",S[302535920000462--[[Maps paths in real time--]]],S[302535920000874--[[(see "Path Markers" to mark more than one at a time).--]]]),
+		RolloverText = StringFormat("%s %s",S[302535920000462--[[Maps paths in real time--]]],S[302535920000874--[[(see "Path Markers" to mark more than one at a time).--]]]),
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,true)
 		end,
@@ -387,9 +374,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000467--[[Path Markers--]]],
 		ActionMenubar = str_Debug_PathMarkers,
-		ActionName = S[302535920000467--[[Path Markers--]]],
 		ActionId = ".Path Markers",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = S[302535920000468--[[Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.--]]],
@@ -401,20 +387,18 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000146--[[Delete Saved Games--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000146--[[Delete Saved Games--]]],
 		ActionId = ".Delete Saved Games",
 		ActionIcon = "CommonAssets/UI/Menu/DeleteArea.tga",
-		RolloverText = string.format("%s\n\n%s",S[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."--]]],S[302535920001274--[[This is permanent!--]]]),
+		RolloverText = StringFormat("%s\n\n%s",S[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."--]]],S[302535920001274--[[This is permanent!--]]]),
 		OnAction = ChoGGi.MenuFuncs.DeleteSavedGames,
 		ActionSortKey = "98.Delete Saved Games",
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000487--[[Delete All Of Selected Object--]]],
 		ActionMenubar = "Debug",
-		ActionName = S[302535920000487--[[Delete All Of Selected Object--]]],
 		ActionId = ".Delete All Of Selected Object",
 		ActionIcon = "CommonAssets/UI/Menu/delete_objects.tga",
 		RolloverText = S[302535920000488--[[Will ask for confirmation beforehand (will not delete domes).--]]],
@@ -426,18 +410,16 @@ function OnMsg.ClassesGenerate()
 
 	local str_Debug_DeleteObjects = "Debug.Delete Object(s)"
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000489--[[Delete Object(s)--]]]),
 		ActionMenubar = "Debug",
-		ActionName = string.format("%s ..",S[302535920000489--[[Delete Object(s)--]]]),
 		ActionId = ".Delete Object(s)",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
 		ActionSortKey = "99.Delete Object(s)",
 	}
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920000489--[[Delete Object(s)--]]],
 		ActionMenubar = str_Debug_DeleteObjects,
-		ActionName = S[302535920000489--[[Delete Object(s)--]]],
 		ActionId = ".Delete Object(s)",
 		ActionIcon = "CommonAssets/UI/Menu/delete_objects.tga",
 		RolloverText = S[302535920000490--[["Deletes selected object or object under mouse cursor (most objs, not all).
