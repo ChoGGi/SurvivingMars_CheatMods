@@ -6,6 +6,7 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
+	local StringFormat = string.format
 
 	DefineClass.ChoGGi_ConsoleLogWin = {
 		__parents = {"ChoGGi_Window"},
@@ -127,9 +128,9 @@ function OnMsg.ClassesGenerate()
 			local old_text = dlg.idText:GetText()
 
 			if bNewLine then
-				text = string.format("%s\n%s",old_text,text)
+				text = StringFormat("%s\n%s",old_text,text)
 			else
-				text = string.format("%s%s",old_text,text)
+				text = StringFormat("%s%s",old_text,text)
 			end
 			dlg.idText:SetText(text)
 

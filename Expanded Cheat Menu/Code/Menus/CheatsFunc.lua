@@ -8,12 +8,13 @@ function OnMsg.ClassesGenerate()
 	local default_icon = "UI/Icons/Notifications/research.tga"
 
 	local pairs,type = pairs,type
+	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.OutsourceMaxOrderCount
 		local ItemList = {
-			{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = 100,value = 100},
 			{text = 150,value = 150},
 			{text = 250,value = 250},
@@ -54,7 +55,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920001342--[[Change Outsource Limit--]],
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
 			skip_sort = true,
 		}
 	end
@@ -108,10 +109,10 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			string.format("%s!\n%s",S[6779--[[Warning--]]],S[302535920000235--[[Save your game.
+			StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920000235--[[Save your game.
 	This will switch to a new map.--]]]),
 			CallBackFunc,
-			string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000236--[[Mod Editor--]]]),
+			StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000236--[[Mod Editor--]]]),
 			302535920000237--[[Okay (change map)--]]
 		)
 	end
@@ -125,11 +126,11 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			string.format("%s!\n%s",S[6779--[[Warning--]]],S[302535920000238--[[Are you sure you want to reset all research (includes breakthrough tech)?
+			StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920000238--[[Are you sure you want to reset all research (includes breakthrough tech)?
 
 	Buildings are still unlocked.--]]]),
 			CallBackFunc,
-			string.format("%s!",S[6779--[[Warning--]]])
+			StringFormat("%s!",S[6779--[[Warning--]]])
 		)
 	end
 
@@ -240,27 +241,27 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.DisastersTrigger()
 		local ChoGGi = ChoGGi
 		local ItemList = {
-			{text = string.format("%s %s",S[302535920000240--[[Stop--]]],S[3983--[[Disasters--]]]),value = "Stop",hint = S[302535920000123--[[Stops most disasters--]]]},
+			{text = StringFormat("%s %s",S[302535920000240--[[Stop--]]],S[3983--[[Disasters--]]]),value = "Stop",hint = S[302535920000123--[[Stops most disasters--]]]},
 
 			{text = S[4149--[[Cold Wave--]]],value = "ColdWave"},
 
 			{text = S[4142--[[Dust Devils--]]],value = "DustDevils"},
-			{text = string.format("%s %s",S[4142--[[Dust Devils--]]],S[302535920000241--[[Major--]]]),value = "DustDevilsMajor"},
+			{text = StringFormat("%s %s",S[4142--[[Dust Devils--]]],S[302535920000241--[[Major--]]]),value = "DustDevilsMajor"},
 
 			{text = S[4250--[[Dust Storm--]]],value = "DustStorm"},
 			{text = S[5627--[[Great Dust Storm--]]],value = "DustStormGreat"},
 			{text = S[5628--[[Electrostatic Dust Storm--]]],value = "DustStormElectrostatic"},
 
 			{text = S[4146--[[Meteors--]]],value = "Meteor"},
-			{text = string.format("%s %s",S[4146--[[Meteors--]]],S[302535920000245--[[Multi-Spawn--]]]),value = "MeteorMultiSpawn"},
+			{text = StringFormat("%s %s",S[4146--[[Meteors--]]],S[302535920000245--[[Multi-Spawn--]]]),value = "MeteorMultiSpawn"},
 			{text = S[5620--[[Meteor Storm--]]],value = "MeteorStorm"},
 
 			{text = S[302535920000251--[[Metatron Ion Storm--]]],value = "MetatronIonStorm"},
 
-			{text = string.format("%s %s",S[302535920000246--[[Missle--]]],1),value = "Missle1"},
-			{text = string.format("%s %s",S[302535920000246--[[Missle--]]],10),value = "Missle10"},
-			{text = string.format("%s %s",S[302535920000246--[[Missle--]]],100),value = "Missle100"},
-			{text = string.format("%s %s",S[302535920000246--[[Missle--]]],500),value = "Missle500",hint = 302535920000250--[[Might be a little laggy--]]},
+			{text = StringFormat("%s %s",S[302535920000246--[[Missle--]]],1),value = "Missle1"},
+			{text = StringFormat("%s %s",S[302535920000246--[[Missle--]]],10),value = "Missle10"},
+			{text = StringFormat("%s %s",S[302535920000246--[[Missle--]]],100),value = "Missle100"},
+			{text = StringFormat("%s %s",S[302535920000246--[[Missle--]]],500),value = "Missle500",hint = 302535920000250--[[Might be a little laggy--]]},
 		}
 
 	--~	 local Table = DataInstances.MapSettings_ColdWave
@@ -327,7 +328,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s %s",S[1694--[[Start--]]],S[3983--[[Disasters--]]]),
+			title = StringFormat("%s %s",S[1694--[[Start--]]],S[3983--[[Disasters--]]]),
 			hint = 302535920000252--[[Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select).--]],
 			multisel = true,
 			skip_sort = true,
@@ -387,17 +388,17 @@ function OnMsg.ClassesGenerate()
 		local hint_core = S[302535920000253--[[Core: Repeatable, exploit core resources.--]]]
 		local hint_deep = S[302535920000254--[[Deep: Toggleable, exploit deep resources.--]]]
 		local ItemList = {
-			{text = S[4493--[[All--]]],value = 1,hint = string.format("%s\n%s",hint_core,hint_deep)},
+			{text = S[4493--[[All--]]],value = 1,hint = StringFormat("%s\n%s",hint_core,hint_deep)},
 			{text = S[302535920000255--[[Deep--]]],value = 2,hint = hint_deep},
 			{text = S[302535920000256--[[Core--]]],value = 3,hint = hint_core},
 
 			{text = S[302535920000258--[[Reveal Map--]]],value = 12,hint = 302535920000259--[[Reveals the map squares--]]},
 			{text = S[302535920000260--[[Reveal Map (Deep)--]]],value = 13,hint = 302535920000261--[[Reveals the map and unlocks "Deep" resources--]]},
 
-			{text = S[302535920000257--[[Deep Scan--]]],value = 4,hint = string.format("%s\n%s: %s",hint_deep,S[302535920000030--[[Enabled--]]],Consts.DeepScanAvailable)},
-			{text = S[797--[[Deep Water--]]],value = 5,hint = string.format("%s\n%s: %s",hint_deep,S[302535920000030--[[Enabled--]]],Consts.IsDeepWaterExploitable)},
-			{text = S[793--[[Deep Metals--]]],value = 6,hint = string.format("%s\n%s: %s",hint_deep,S[302535920000030--[[Enabled--]]],Consts.IsDeepMetalsExploitable)},
-			{text = S[801--[[Deep Rare Metals--]]],value = 7,hint = string.format("%s\n%s: %s",hint_deep,S[302535920000030--[[Enabled--]]],Consts.IsDeepPreciousMetalsExploitable)},
+			{text = S[302535920000257--[[Deep Scan--]]],value = 4,hint = StringFormat("%s\n%s: %s",hint_deep,S[302535920000030--[[Enabled--]]],Consts.DeepScanAvailable)},
+			{text = S[797--[[Deep Water--]]],value = 5,hint = StringFormat("%s\n%s: %s",hint_deep,S[302535920000030--[[Enabled--]]],Consts.IsDeepWaterExploitable)},
+			{text = S[793--[[Deep Metals--]]],value = 6,hint = StringFormat("%s\n%s: %s",hint_deep,S[302535920000030--[[Enabled--]]],Consts.IsDeepMetalsExploitable)},
+			{text = S[801--[[Deep Rare Metals--]]],value = 7,hint = StringFormat("%s\n%s: %s",hint_deep,S[302535920000030--[[Enabled--]]],Consts.IsDeepPreciousMetalsExploitable)},
 			{text = S[6548--[[Core Water--]]],value = 8,hint = hint_core},
 			{text = S[6546--[[Core Metals--]]],value = 9,hint = hint_core},
 			{text = S[6550--[[Core Rare Metals--]]],value = 10,hint = hint_core},
@@ -515,7 +516,7 @@ Otherwise you won't see anything."--]],
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s %s",S[302535920000266--[[Spawn--]]],S[547--[[Colonists--]]]),
+			title = StringFormat("%s %s",S[302535920000266--[[Spawn--]]],S[547--[[Colonists--]]]),
 			hint = 302535920000267--[[Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes.--]],
 		}
 	end
@@ -572,9 +573,9 @@ Otherwise you won't see anything."--]],
 			local mysteries = ChoGGi.Tables.Mystery
 			for i = 1, #mysteries do
 				ItemList[i] = {
-					text = string.format("%s: %s",mysteries[i].number,mysteries[i].name),
+					text = StringFormat("%s: %s",mysteries[i].number,mysteries[i].name),
 					value = mysteries[i].class,
-					hint = string.format("%s\n\n\n\n<image %s>\n\n",mysteries[i].description,mysteries[i].image),
+					hint = StringFormat("%s\n\n\n\n<image %s>\n\n",mysteries[i].description,mysteries[i].image),
 				}
 			end
 
@@ -595,7 +596,7 @@ Otherwise you won't see anything."--]],
 				callback = CallBackFunc,
 				items = ItemList,
 				title = 302535920000268--[[Start A Mystery--]],
-				hint = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
+				hint = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
 
 	See Cheats>%s to remove."--]]]:format(S[5661--[[Mystery Log--]]])),
 				check = {
@@ -610,7 +611,7 @@ Otherwise you won't see anything."--]],
 
 	-- loops through all the sequences and adds the logs we've already seen
 	local function ShowMysteryLog(MystName)
-		local msgs = {string.format("%s\n\n%s\n",MystName,S[302535920000272--[["To play back speech use ""Tools>Exec"" and type in
+		local msgs = {StringFormat("%s\n\n%s\n",MystName,S[302535920000272--[["To play back speech use ""Tools>Exec"" and type in
 g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		local Players = s_SeqListPlayers
 		-- 1 is some default map thing
@@ -632,7 +633,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 								if seq.class == "SA_WaitMessage" then
 									-- add to msg list
 									msgs[#msgs+1] = {
-										[" "] = string.format("%s: %s\n\n\n\n%s: %s",S[302535920000273--[[Speech--]]],Trans(seq.voiced_text),S[302535920000274--[[Message--]]],Trans(seq.text)),
+										[" "] = StringFormat("%s: %s\n\n\n\n%s: %s",S[302535920000273--[[Speech--]]],Trans(seq.voiced_text),S[302535920000274--[[Message--]]],Trans(seq.text)),
 										speech = seq.voiced_text,
 										class = Trans(seq.title)
 									}
@@ -661,11 +662,11 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 				local ip = PlayerList[i].seq_states[seq_list[1].name].ip
 
 				ItemList[#ItemList+1] = {
-					text = string.format("%s: %s",id,mysteries[id].name),
+					text = StringFormat("%s: %s",id,mysteries[id].name),
 					value = id,
 					func = id,
 					seed = PlayerList[i].seed,
-					hint = string.format(
+					hint = StringFormat(
 						"%s\n\n<color 255 75 75>%s</color>: %s <color 255 75 75>%s</color>: %s\n\n\n\n<image %s>\n\n",
 						mysteries[id].description,
 						S[302535920000275--[[Total parts--]]],
@@ -713,7 +714,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 					end
 				end
 				MsgPopup(
-					string.format("%s: %s %s!",choice[1].text,S[3486--[[Mystery--]]],S[302535920000278--[[Removed--]]]),
+					StringFormat("%s: %s %s!",choice[1].text,S[3486--[[Mystery--]]],S[302535920000278--[[Removed--]]]),
 					3486--[[Mystery--]]
 				)
 			elseif value then
@@ -735,11 +736,11 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 			check = {
 				{
 					title = 302535920000281--[[Remove--]],
-					hint = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.--]]]),
+					hint = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.--]]]),
 				},
 				{
 					title = 302535920000283--[[Remove All--]],
-					hint = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000284--[[This will remove all the mysteries!--]]]),
+					hint = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000284--[[This will remove all the mysteries!--]]]),
 				},
 			},
 			custom_type = 6,
@@ -751,8 +752,8 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		local ChoGGi = ChoGGi
 		local g_Classes = g_Classes
 
-		local warning = string.format("\n\n%s",S[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]])
-		local name = string.format("%s: %s",S[3486--[[Mystery--]]],ChoGGi.Tables.Mystery[Mystery].name)
+		local warning = StringFormat("\n\n%s",S[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]])
+		local name = StringFormat("%s: %s",S[3486--[[Mystery--]]],ChoGGi.Tables.Mystery[Mystery].name)
 
 		for Thread in pairs(ThreadsMessageToThreads) do
 			if Thread.player and Thread.player.seed == seed then
@@ -771,7 +772,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 					-- skip older seqs
 					if i >= ip then
 						local seq = seq_list[i]
-						local title = string.format("%s %s: %s",name,S[302535920000286--[[Part--]]],ip)
+						local title = StringFormat("%s %s: %s",name,S[302535920000286--[[Part--]]],ip)
 
 						-- seqs that add delays/tasks
 						if seq.class == "SA_WaitMarsTime" or seq.class == "SA_WaitTime" then
@@ -817,7 +818,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 								end
 							end
 							ChoGGi.ComFuncs.QuestionBox(
-								string.format("%s: %s\n\n%s%s",
+								StringFormat("%s: %s\n\n%s%s",
 									S[302535920000288--[[Advancement requires--]]],seq.expression,S[302535920000290--[[Time duration has been set to 0 (you still need to complete the requirements).
 
 	Wait for a Sol or two for it to update (should give a popup msg).--]]],
@@ -838,7 +839,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 								end
 							end
 							ChoGGi.ComFuncs.QuestionBox(
-								string.format("%s: %s%s",S[302535920000288--[[Advancement requires--]]],seq.msg,warning),
+								StringFormat("%s: %s%s",S[302535920000288--[[Advancement requires--]]],seq.msg,warning),
 								CallBackFunc,
 								title
 							)
@@ -853,7 +854,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 								end
 							end
 							ChoGGi.ComFuncs.QuestionBox(
-								string.format("%s: %s%s",S[302535920000288--[[Advancement requires--]]],seq.Research,warning),
+								StringFormat("%s: %s%s",S[302535920000288--[[Advancement requires--]]],seq.Research,warning),
 								CallBackFunc,
 								title
 							)
@@ -961,7 +962,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		local DefaultSetting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
 		local MaxAmount = #UICity.tech_field.Breakthroughs
 		local ItemList = {
-			{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = 6,value = 6},
 			{text = 12,value = 12},
 			{text = 24,value = 24},
@@ -995,7 +996,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000300--[[BreakThroughs From Omega--]],
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
 			skip_sort = true,
 		}
 	end
@@ -1005,7 +1006,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		local DefaultSetting = ChoGGi.Consts.BreakThroughTechsPerGame
 		local MaxAmount = #UICity.tech_field.Breakthroughs
 		local ItemList = {
-			{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = 26,value = 26,hint = 302535920000301--[[Doubled the base amount.--]]},
 			{text = MaxAmount,value = MaxAmount,hint = hint_maxa},
 		}
@@ -1037,7 +1038,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000303--[[BreakThroughs Allowed--]],
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
 			skip_sort = true,
 		}
 	end
@@ -1046,7 +1047,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.ResearchQueueSize
 		local ItemList = {
-			{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -1086,7 +1087,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000305--[[Research Queue Size--]],
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
 			skip_sort = true,
 		}
 	end
@@ -1096,25 +1097,25 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		local ItemList = {}
 		local c = 1
 		ItemList[c] = {
-			text = string.format(" %s",S[302535920000306--[[Everything--]]]),
+			text = StringFormat(" %s",S[302535920000306--[[Everything--]]]),
 			value = "Everything",
 			hint = 302535920000307--[[All the tech/breakthroughs/mysteries--]],
 		}
 		c = c + 1
 		ItemList[c] = {
-			text = string.format(" %s",S[302535920000308--[[All Tech--]]]),
+			text = StringFormat(" %s",S[302535920000308--[[All Tech--]]]),
 			value = "AllTech",
 			hint = 302535920000309--[[All the regular tech--]],
 		}
 		c = c + 1
 		ItemList[c] = {
-			text = string.format(" %s",S[302535920000310--[[All Breakthroughs--]]]),
+			text = StringFormat(" %s",S[302535920000310--[[All Breakthroughs--]]]),
 			value = "AllBreakthroughs",
 			hint = 302535920000311--[[All the breakthroughs--]],
 		}
 		c = c + 1
 		ItemList[c] = {
-			text = string.format(" %s",S[302535920000312--[[All Mysteries--]]]),
+			text = StringFormat(" %s",S[302535920000312--[[All Mysteries--]]]),
 			value = "AllMysteries",
 			hint = 302535920000313--[[All the mysteries--]],
 		}
@@ -1191,7 +1192,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s %s",S[311--[[Research--]]],S[3734--[[Tech--]]]),
+			title = StringFormat("%s %s",S[311--[[Research--]]],S[3734--[[Tech--]]]),
 			hint = 302535920000317--[[Select Unlock or Research then select the tech you want. Most mystery tech is locked to that mystery.--]],
 			multisel = true,
 			check = {

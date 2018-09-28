@@ -9,6 +9,7 @@ function OnMsg.ClassesGenerate()
 	local default_icon = "UI/Icons/Notifications/colonist.tga"
 
 	local type,table = type,table
+	local StringFormat = string.format
 
 	local pf_SetStepLen = pf.SetStepLen
 
@@ -96,15 +97,15 @@ function OnMsg.ClassesGenerate()
 
 		--culling the herd
 		local ItemList = {
-			{text = string.format(" %s",S[7553--[[Homeless--]]]),value = "Homeless"},
-			{text = string.format(" %s",S[6859--[[Unemployed--]]]),value = "Unemployed"},
-			{text = string.format(" %s",S[7031--[[Renegades--]]]),value = "Renegade"},
-			{text = string.format(" %s: %s",S[240--[[Specialization--]]],S[6761--[[None--]]]),value = "none"},
+			{text = StringFormat(" %s",S[7553--[[Homeless--]]]),value = "Homeless"},
+			{text = StringFormat(" %s",S[6859--[[Unemployed--]]]),value = "Unemployed"},
+			{text = StringFormat(" %s",S[7031--[[Renegades--]]]),value = "Renegade"},
+			{text = StringFormat(" %s: %s",S[240--[[Specialization--]]],S[6761--[[None--]]]),value = "none"},
 		}
 		local function AddToList(c,text)
 			for i = 1, #c do
 				ItemList[#ItemList+1] = {
-					text = string.format("%s: %s",S[text],c[i]),
+					text = StringFormat("%s: %s",S[text],c[i]),
 					value = c[i],
 					idx = i,
 				}
@@ -119,7 +120,7 @@ function OnMsg.ClassesGenerate()
 		for i = 1, #birth do
 			local name = Trans(birth[i].text)
 			ItemList[#ItemList+1] = {
-				text = string.format("%s: %s",S[4357--[[Birthplace--]]],name),
+				text = StringFormat("%s: %s",S[4357--[[Birthplace--]]],name),
 				value = birth[i].value,
 				idx = i,
 				hint = icon:format(name,birth[i].flag),
@@ -308,7 +309,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000757--[[Add Applicants To Pool--]],
-			hint = string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000758--[[Will take some time for 25K and up.--]]]),
+			hint = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000758--[[Will take some time for 25K and up.--]]]),
 			check = {
 				{
 					title = 302535920000759--[[Clear Applicant Pool--]],
@@ -382,7 +383,7 @@ function OnMsg.ClassesGenerate()
 		local hint_low = S[302535920000767--[[Lower = more babies--]]]
 		local hint_high = S[302535920000768--[[Higher = less babies--]]]
 		local ItemList = {
-			{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = 0,value = 0,hint = hint_low},
 			{text = 35,value = 35,hint = hint_low},
 			{text = 140,value = 140,hint = hint_high},
@@ -406,7 +407,7 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					string.format("%s: %s%s",S[302535920000769--[[Selected--]]],choice[1].text,S[302535920000770--[[
+					StringFormat("%s: %s%s",S[302535920000769--[[Selected--]]],choice[1].text,S[302535920000770--[[
 	Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.--]]]),
 					547--[[Colonists--]],
 					default_icon,
@@ -419,7 +420,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000771--[[Set the minimum comfort needed for birth--]],
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
 			skip_sort = true,
 		}
 	end
@@ -690,7 +691,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.DefaultOutsideWorkplacesRadius
 		local ItemList = {
-			{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
 			{text = 25,value = 25},
@@ -731,7 +732,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000790--[[Set Outside Workplace Radius--]],
-			hint = string.format("%s: %s\n\n%s",S[302535920000791--[[Current distance--]]],hint,S[302535920000792--[[You may not want to make it too far away unless you turned off suffocation.--]]]),
+			hint = StringFormat("%s: %s\n\n%s",S[302535920000791--[[Current distance--]]],hint,S[302535920000792--[[You may not want to make it too far away unless you turned off suffocation.--]]]),
 			skip_sort = true,
 		}
 	end
@@ -832,7 +833,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 	local function IsChild(value)
 		if value == "Child" then
-			return string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000805--[[Child will remove specialization.--]]])
+			return StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000805--[[Child will remove specialization.--]]])
 		end
 	end
 	function ChoGGi.MenuFuncs.SetColonistsAge(iType)
@@ -843,7 +844,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local sSetting = "NewColonistAge"
 
 		if iType == 1 then
-			sType = string.format("%s ",S[302535920001356--[[New--]]])
+			sType = StringFormat("%s ",S[302535920001356--[[New--]]])
 		else
 			sType = ""
 			DefaultSetting = S[3490--[[Random--]]]
@@ -852,7 +853,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		local ItemList = {}
 		ItemList[#ItemList+1] = {
-			text = string.format(" %s",DefaultSetting),
+			text = StringFormat(" %s",DefaultSetting),
 			value = DefaultSetting,
 		}
 		for i = 1, #ChoGGi.Tables.ColonistAges do
@@ -869,7 +870,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			if ChoGGi.UserSettings[sSetting] then
 				hint = ChoGGi.UserSettings[sSetting]
 			end
-			hint = string.format("%s: %s\n\n%s",S[302535920000106--[[Current--]]],hint,S[302535920000805--[[Warning: Child will remove specialization.--]]])
+			hint = StringFormat("%s: %s\n\n%s",S[302535920000106--[[Current--]]],hint,S[302535920000805--[[Warning: Child will remove specialization.--]]])
 		end
 
 		local function CallBackFunc(choice)
@@ -913,7 +914,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			end
 
 			MsgPopup(
-				string.format("%s: %s%s",choice[1].text,sType,S[547--[[Colonists--]]]),
+				StringFormat("%s: %s%s",choice[1].text,sType,S[547--[[Colonists--]]]),
 				547--[[Colonists--]],
 				default_icon
 			)
@@ -922,7 +923,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000807--[[Colonist Age--]]]),
+			title = StringFormat("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000807--[[Colonist Age--]]]),
 			hint = hint,
 			check = {
 				{
@@ -945,7 +946,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local sSetting = "NewColonistGender"
 
 		if iType == 1 then
-			sType = string.format("%s ",S[302535920001356--[[New--]]])
+			sType = StringFormat("%s ",S[302535920001356--[[New--]]])
 		else
 			sType = ""
 			DefaultSetting = S[3490--[[Random--]]]
@@ -954,12 +955,12 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		local ItemList = {}
 		ItemList[#ItemList+1] = {
-			text = string.format(" %s",DefaultSetting),
+			text = StringFormat(" %s",DefaultSetting),
 			value = DefaultSetting,
 			hint = 302535920000808--[[How the game normally works--]],
 		}
 		ItemList[#ItemList+1] = {
-			text = string.format(" %s",MaleOrFemale),
+			text = StringFormat(" %s",MaleOrFemale),
 			value = MaleOrFemale,
 			hint = 302535920000809--[[Only set as male or female--]],
 		}
@@ -976,7 +977,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			if ChoGGi.UserSettings[sSetting] then
 				hint = ChoGGi.UserSettings[sSetting]
 			end
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint)
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint)
 		end
 
 		local function CallBackFunc(choice)
@@ -1018,7 +1019,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 			end
 			MsgPopup(
-				string.format("%s: %s",choice[1].text,sType,S[547--[[Colonists--]]]),
+				StringFormat("%s: %s",choice[1].text,sType,S[547--[[Colonists--]]]),
 				547--[[Colonists--]],
 				default_icon
 			)
@@ -1027,7 +1028,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000810--[[Colonist Gender--]]]),
+			title = StringFormat("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000810--[[Colonist Gender--]]]),
 			hint = hint,
 			check = {
 				{
@@ -1049,7 +1050,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local sSetting = "NewColonistSpecialization"
 
 		if iType == 1 then
-			sType = string.format("%s ",S[302535920001356--[[New--]]])
+			sType = StringFormat("%s ",S[302535920001356--[[New--]]])
 		else
 			sType = ""
 			DefaultSetting = S[3490--[[Random--]]]
@@ -1087,7 +1088,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			if ChoGGi.UserSettings[sSetting] then
 				hint = ChoGGi.UserSettings[sSetting]
 			end
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint)
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint)
 		end
 
 		local function CallBackFunc(choice)
@@ -1138,7 +1139,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000813--[[Colonist Specialization--]]]),
+			title = StringFormat("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000813--[[Colonist Specialization--]]]),
 			hint = hint,
 			check = {
 				{
@@ -1160,7 +1161,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local sSetting = "NewColonistRace"
 
 		if iType == 1 then
-			sType = string.format("%s ",S[302535920001356--[[New--]]])
+			sType = StringFormat("%s ",S[302535920001356--[[New--]]])
 		else
 			sType = ""
 			DefaultSetting = S[3490--[[Random--]]]
@@ -1169,7 +1170,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		local ItemList = {}
 		ItemList[#ItemList+1] = {
-			text = string.format(" %s",DefaultSetting),
+			text = StringFormat(" %s",DefaultSetting),
 			value = DefaultSetting,
 			race = DefaultSetting,
 		}
@@ -1188,7 +1189,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			if ChoGGi.UserSettings[sSetting] then
 				hint = ChoGGi.UserSettings[sSetting]
 			end
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint)
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint)
 		end
 
 		local function CallBackFunc(choice)
@@ -1249,7 +1250,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000820--[[Colonist Race--]]]),
+			title = StringFormat("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000820--[[Colonist Race--]]]),
 			hint = hint,
 			check = {
 				{
@@ -1269,7 +1270,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local TraitPresets = TraitPresets
 		local DefaultSetting = S[1000121--[[Default--]]]
 		local sSetting = "NewColonistTraits"
-		local sType = string.format("%s ",S[302535920001356--[[New--]]])
+		local sType = StringFormat("%s ",S[302535920001356--[[New--]]])
 
 		local hint = ""
 		if iType == 1 then
@@ -1278,23 +1279,23 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			if saved then
 				hint = ""
 				for i = 1, #saved do
-					hint = string.format("%s%s,",hint,saved[i])
+					hint = StringFormat("%s%s,",hint,saved[i])
 				end
 			end
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint)
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint)
 		elseif iType == 2 then
 			sType = ""
 			DefaultSetting = S[3490--[[Random--]]]
 		end
 
-		hint = string.format("%s\n\n%s",hint,S[302535920000821--[[Defaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits.--]]])
+		hint = StringFormat("%s\n\n%s",hint,S[302535920000821--[[Defaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits.--]]])
 
 		local ItemList = {
-			{text = string.format(" %s",DefaultSetting),value = DefaultSetting,hint = 302535920000822--[[Use game defaults--]]},
-			{text = string.format(" %s",S[302535920000823--[[All Positive Traits--]]]),value = "PositiveTraits",hint = 302535920000824--[[All the positive traits...--]]},
-			{text = string.format(" %s",S[302535920000825--[[All Negative Traits--]]]),value = "NegativeTraits",hint = 302535920000826--[[All the negative traits...--]]},
-			{text = string.format(" %s",S[302535920001040--[[All Other Traits--]]]),value = "OtherTraits",hint = 302535920001050--[[All the other traits...--]]},
-			{text = string.format(" %s",S[652319561018--[[All Traits--]]]),value = "AllTraits",hint = 302535920000828--[[All the traits...--]]},
+			{text = StringFormat(" %s",DefaultSetting),value = DefaultSetting,hint = 302535920000822--[[Use game defaults--]]},
+			{text = StringFormat(" %s",S[302535920000823--[[All Positive Traits--]]]),value = "PositiveTraits",hint = 302535920000824--[[All the positive traits...--]]},
+			{text = StringFormat(" %s",S[302535920000825--[[All Negative Traits--]]]),value = "NegativeTraits",hint = 302535920000826--[[All the negative traits...--]]},
+			{text = StringFormat(" %s",S[302535920001040--[[All Other Traits--]]]),value = "OtherTraits",hint = 302535920001050--[[All the other traits...--]]},
+			{text = StringFormat(" %s",S[652319561018--[[All Traits--]]]),value = "AllTraits",hint = 302535920000828--[[All the traits...--]]},
 		}
 
 		if iType == 2 then
@@ -1323,7 +1324,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		for i = 1, #ItemList do
 			local hinttemp = TraitPresets[ItemList[i].text]
 			if hinttemp then
-				ItemList[i].hint = string.format(": %s",Trans(hinttemp.description))
+				ItemList[i].hint = StringFormat(": %s",Trans(hinttemp.description))
 			end
 		end
 
@@ -1464,7 +1465,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			end
 
 			MsgPopup(
-				string.format("%s: %s%s",#traits_list,sType,S[302535920000830--[[Colonists traits set--]]]),
+				StringFormat("%s: %s%s",#traits_list,sType,S[302535920000830--[[Colonists traits set--]]]),
 				547--[[Colonists--]],
 				default_icon
 			)
@@ -1474,7 +1475,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = string.format("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000831--[[Colonist Traits--]]]),
+				title = StringFormat("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000831--[[Colonist Traits--]]]),
 				hint = hint,
 				multisel = true,
 			}
@@ -1482,7 +1483,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = string.format("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000831--[[Colonist Traits--]]]),
+				title = StringFormat("%s %s%s",S[302535920000129--[[Set--]]],sType,S[302535920000831--[[Colonist Traits--]]]),
 				hint = hint,
 				multisel = true,
 				check = {
@@ -1508,15 +1509,15 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local ItemList = {
-			{text = string.format("%s %s",S[302535920000833--[[All Stats--]]],S[302535920000834--[[Max--]]]),value = 1},
-			{text = string.format("%s %s",S[302535920000833--[[All Stats--]]],S[302535920000835--[[Fill--]]]),value = 2},
-			{text = string.format("%s %s",S[4291--[[Health--]]],S[302535920000834--[[Max--]]]),value = 3},
-			{text = string.format("%s %s",S[4291--[[Health--]]],S[302535920000835--[[Fill--]]]),value = 4},
-			{text = string.format("%s %s",S[4297--[[Morale--]]],S[302535920000835--[[Fill--]]]),value = 5},
-			{text = string.format("%s %s",S[4293--[[Sanity--]]],S[302535920000834--[[Max--]]]),value = 6},
-			{text = string.format("%s %s",S[4293--[[Sanity--]]],S[302535920000835--[[Fill--]]]),value = 7},
-			{text = string.format("%s %s",S[4295--[[Comfort--]]],S[302535920000834--[[Max--]]]),value = 8},
-			{text = string.format("%s %s",S[4295--[[Comfort--]]],S[302535920000835--[[Fill--]]]),value = 9},
+			{text = StringFormat("%s %s",S[302535920000833--[[All Stats--]]],S[302535920000834--[[Max--]]]),value = 1},
+			{text = StringFormat("%s %s",S[302535920000833--[[All Stats--]]],S[302535920000835--[[Fill--]]]),value = 2},
+			{text = StringFormat("%s %s",S[4291--[[Health--]]],S[302535920000834--[[Max--]]]),value = 3},
+			{text = StringFormat("%s %s",S[4291--[[Health--]]],S[302535920000835--[[Fill--]]]),value = 4},
+			{text = StringFormat("%s %s",S[4297--[[Morale--]]],S[302535920000835--[[Fill--]]]),value = 5},
+			{text = StringFormat("%s %s",S[4293--[[Sanity--]]],S[302535920000834--[[Max--]]]),value = 6},
+			{text = StringFormat("%s %s",S[4293--[[Sanity--]]],S[302535920000835--[[Fill--]]]),value = 7},
+			{text = StringFormat("%s %s",S[4295--[[Comfort--]]],S[302535920000834--[[Max--]]]),value = 8},
+			{text = StringFormat("%s %s",S[4295--[[Comfort--]]],S[302535920000835--[[Fill--]]]),value = 9},
 		}
 
 		local function CallBackFunc(choice)
@@ -1612,7 +1613,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = ChoGGi.Consts.SpeedColonist
 		local ItemList = {
-			{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting / r),value = DefaultSetting},
+			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting / r),value = DefaultSetting},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
 			{text = 15,value = 15 * r},
@@ -1692,7 +1693,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local DefaultSetting = ChoGGi.Consts.GravityColonist
 		local r = ChoGGi.Consts.ResourceScale
 		local ItemList = {
-			{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = 1,value = 1},
 			{text = 2,value = 2},
 			{text = 3,value = 3},
@@ -1797,14 +1798,14 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		end
 
 		local ItemList = {}
-		local str_hint = string.format("%s: %s",S[302535920000106--[[Current--]]],"%s")
+		local str_hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],"%s")
 		for i = 1, #ChoGGi.Tables.NegativeTraits do
 			local trait = ChoGGi.Tables.NegativeTraits[i]
 			local status = type(BuildingSettings[id][toggle_type][trait]) == "boolean" and "true" or "false"
 			ItemList[#ItemList+1] = {
 				text = trait,
 				value = trait,
-				hint = string.format("%s\n%s",str_hint:format(status),Trans(TraitPresets[trait].description)),
+				hint = StringFormat("%s\n%s",str_hint:format(status),Trans(TraitPresets[trait].description)),
 			}
 		end
 		for i = 1, #ChoGGi.Tables.PositiveTraits do
@@ -1813,7 +1814,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			ItemList[#ItemList+1] = {
 				text = trait,
 				value = trait,
-				hint = string.format("%s\n%s",str_hint:format(status),Trans(TraitPresets[trait].description)),
+				hint = StringFormat("%s\n%s",str_hint:format(status),Trans(TraitPresets[trait].description)),
 			}
 		end
 		for i = 1, #ChoGGi.Tables.OtherTraits do
@@ -1822,7 +1823,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			ItemList[#ItemList+1] = {
 				text = trait,
 				value = trait,
-				hint = string.format("%s\n%s",str_hint:format(status),Trans(TraitPresets[trait].description)),
+				hint = StringFormat("%s\n%s",str_hint:format(status),Trans(TraitPresets[trait].description)),
 			}
 		end
 
@@ -1872,7 +1873,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			ChoGGi.SettingFuncs.WriteSettings()
 
 			MsgPopup(
-				string.format("%s: %s%s%s",S[302535920000843--[[Toggled traits--]]],#choice,check1 and " " or "",check1 and S[302535920000844--[[Fired workers--]]] or ""),
+				StringFormat("%s: %s%s%s",S[302535920000843--[[Toggled traits--]]],#choice,check1 and " " or "",check1 and S[302535920000844--[[Fired workers--]]] or ""),
 				4801--[[Workplace--]],
 				default_icon
 			)
@@ -1882,7 +1883,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		if BuildingSettings[id] and BuildingSettings[id][toggle_type] then
 			hint[#hint+1] = S[302535920000106--[[Current--]]]
 			hint[#hint+1] = ": "
-			hint[#hint+1] = string.format("%s,",BuildingSettings[id][toggle_type])
+			hint[#hint+1] = StringFormat("%s,",BuildingSettings[id][toggle_type])
 		end
 
 		hint[#hint+1] = "\n\n"
@@ -1890,7 +1891,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s %s %s %s",S[302535920000129--[[Set--]]],S[302535920000992--[[Building Traits--]]],S[302535920000846--[[For--]]],name),
+			title = StringFormat("%s %s %s %s",S[302535920000129--[[Set--]]],S[302535920000992--[[Building Traits--]]],S[302535920000846--[[For--]]],name),
 			hint = ChoGGi.ComFuncs.TableConcat(hint),
 			multisel = true,
 			check = {

@@ -1343,3 +1343,8 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 	end --OnMsg
 end -- do
+
+-- if i need to do something on a new game later then CityStart
+--~ CreateRealTimeThread(function()
+--~ 	WaitMsg("RocketLaunchFromEarth")
+--~ end)

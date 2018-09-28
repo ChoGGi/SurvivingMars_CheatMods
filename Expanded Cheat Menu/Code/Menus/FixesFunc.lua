@@ -7,6 +7,7 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 
 	local pairs,pcall,type = pairs,pcall,type
+	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.FireMostFixes()
 		CreateRealTimeThread(function()
@@ -282,9 +283,9 @@ function OnMsg.ClassesGenerate()
 			end
 
 			ChoGGi.ComFuncs.QuestionBox(
-				string.format("%s!\n%s\n%s",S[6779--[[Warning--]]],S[302535920000055--[[Reset All Colonists--]]],S[302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."--]]]),
+				StringFormat("%s!\n%s\n%s",S[6779--[[Warning--]]],S[302535920000055--[[Reset All Colonists--]]],S[302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."--]]]),
 				CallBackFunc,
-				string.format("%s: %s",S[6779--[[Warning--]]],S[302535920000055--[[Reset All Colonists--]]])
+				StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000055--[[Reset All Colonists--]]])
 			)
 		end
 

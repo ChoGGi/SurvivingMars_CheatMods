@@ -12,6 +12,7 @@ function OnMsg.ClassesGenerate()
 	--~ local default_icon3 = "UI/Icons/IPButtons/rare_metals.tga"
 
 	local type,string = type,string
+	local StringFormat = string.format
 
 	do -- ViewObjInfo_Toggle
 		local r = ChoGGi.Consts.ResearchPointsScale
@@ -42,7 +43,7 @@ function OnMsg.ClassesGenerate()
 
 		local GetInfo = {
 			OutsideBuildings = function(obj)
-				return string.format("- %s -\n%s: %s(%s) %s(%s) %s(%s)",
+				return StringFormat("- %s -\n%s: %s(%s) %s(%s) %s(%s)",
 					RetName(obj),
 					S[302535920000035--[[Grids--]]],
 					S[682--[[Oxygen--]]],obj.air and obj.air.grid.ChoGGi_GridHandle,
@@ -55,7 +56,7 @@ function OnMsg.ClassesGenerate()
 	--~ 		["Life-Support"] = function(obj)
 	--~ 		end,
 			SubsurfaceDeposit = function(obj)
-				return string.format("- %s -\n%s: %s, %s: %s\n%s: %s, %s: %s/%s",
+				return StringFormat("- %s -\n%s: %s, %s: %s\n%s: %s, %s: %s/%s",
 					RetName(obj),
 					S[6--[[Depth Layer--]]],obj.depth_layer,
 					S[7--[[Is Revealed--]]],obj.revealed,
@@ -64,7 +65,7 @@ function OnMsg.ClassesGenerate()
 				)
 			end,
 			DroneControl = function(obj)
-				return string.format("- %s -\n%s: %s/%s\n%s, %s: %s, %s, %s",
+				return StringFormat("- %s -\n%s: %s/%s\n%s, %s: %s, %s, %s",
 					RetName(obj),
 					S[517--[[Drones: %s--]]],#(obj.drones or ""),obj:GetMaxDronesCount(),
 					S[295--[[Idle: %s--]]]:format(obj:GetIdleDronesCount()),
@@ -74,7 +75,7 @@ function OnMsg.ClassesGenerate()
 				)
 			end,
 			Drone = function(obj)
-				return string.format("- %s -\n%s (%s), %s: %s, %s: %s\n%s: %s/%s, %s: %s/%s",
+				return StringFormat("- %s -\n%s (%s), %s: %s, %s: %s\n%s: %s/%s, %s: %s/%s",
 					RetName(obj),
 					S[584248706535--[[Carrying: %s--]]]:format((obj.amount or 0) / r),obj.resource,
 					S[63--[[Travelling--]]],obj.moving,
@@ -99,7 +100,7 @@ function OnMsg.ClassesGenerate()
 						prefix = ""
 						predprod = predprod / r
 					end
-					waste = string.format("\n-%s-\n%s: %s%s, %s, %s\n%s: %s/%s",
+					waste = StringFormat("\n-%s-\n%s: %s%s, %s, %s\n%s: %s/%s",
 					S[4518--[[Waste Rock--]]],
 					S[80--[[Production--]]],prefix,predprod,
 					S[6729--[[Daily Production : %s--]]]:format(waste:GetPredictedDailyProduction() / r),
@@ -113,7 +114,7 @@ function OnMsg.ClassesGenerate()
 					prefix = ""
 					predprod = predprod / r
 				end
-				return TableConcat{string.format("- %s -\n%s: %s%s, %s, %s\n%s: %s/%s",
+				return TableConcat{StringFormat("- %s -\n%s: %s%s, %s, %s\n%s: %s/%s",
 					RetName(obj),
 					S[80--[[Production--]]],prefix,predprod,
 					S[6729--[[Daily Production : %s--]]]:format(prod:GetPredictedDailyProduction() / r),
@@ -139,7 +140,7 @@ function OnMsg.ClassesGenerate()
 						end
 					end
 				end
-				return string.format([[- %s -
+				return StringFormat([[- %s -
 	%s: %s
 	%s: %s/%s, %s: %s/%s
 	%s: %s, %s\n%s: %s, %s: %s, %s: %s, %s: %s
@@ -319,10 +320,10 @@ function OnMsg.ClassesGenerate()
 		local ItemList = {
 			{text = S[302535920000936--[[Something you'd like to see added?--]]],value = "New"},
 			{text = "",value = "New"},
-			{text = string.format("%s: %s",S[302535920000035--[[Grids--]]],S[891--[[Air--]]]),value = "Air"},
-			{text = string.format("%s: %s",S[302535920000035--[[Grids--]]],S[79--[[Power--]]]),value = "Power"},
-			{text = string.format("%s: %s",S[302535920000035--[[Grids--]]],S[681--[[Water--]]]),value = "Water"},
-			{text = string.format("%s: %s/%s/%s",S[302535920000035--[[Grids--]]],S[891--[[Air--]]],S[79--[[Power--]]],S[681--[[Water--]]]),value = "Grids"},
+			{text = StringFormat("%s: %s",S[302535920000035--[[Grids--]]],S[891--[[Air--]]]),value = "Air"},
+			{text = StringFormat("%s: %s",S[302535920000035--[[Grids--]]],S[79--[[Power--]]]),value = "Power"},
+			{text = StringFormat("%s: %s",S[302535920000035--[[Grids--]]],S[681--[[Water--]]]),value = "Water"},
+			{text = StringFormat("%s: %s/%s/%s",S[302535920000035--[[Grids--]]],S[891--[[Air--]]],S[79--[[Power--]]],S[681--[[Water--]]]),value = "Grids"},
 			{text = S[302535920000042--[[City--]]],value = "City"},
 			{text = S[547--[[Colonists--]]],value = "Colonists",hint = 302535920000937--[[Laggy with lots of colonists.--]]},
 			{text = S[5238--[[Rockets--]]],value = "Rockets"},

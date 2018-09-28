@@ -8,6 +8,7 @@ function OnMsg.ClassesGenerate()
 	local default_icon = "UI/Icons/Sections/spaceship.tga"
 
 	local type = type
+	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.InstantMissionGoal()
 		local UICity = UICity
@@ -112,7 +113,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000712--[[Set Sponsor--]],
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],Trans(GetMissionSponsor().display_name)),
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],Trans(GetMissionSponsor().display_name)),
 		}
 	end
 
@@ -140,7 +141,7 @@ function OnMsg.ClassesGenerate()
 				ItemList[c] = {
 					text = Trans(obj.display_name),
 					value = obj.id,
-					hint = string.format("%s\n\n%s: %s",Trans(T{obj.effect,stats[2]}),S[302535920001165--[[Enabled Status--]]],ChoGGi.UserSettings[string.format("Sponsor%s",obj.id)])
+					hint = StringFormat("%s\n\n%s: %s",Trans(T{obj.effect,stats[2]}),S[302535920001165--[[Enabled Status--]]],ChoGGi.UserSettings[StringFormat("Sponsor%s",obj.id)])
 				}
 			end
 		end
@@ -153,7 +154,7 @@ function OnMsg.ClassesGenerate()
 				for i = 1, #ItemList do
 					local value = ItemList[i].value
 					if type(value) == "string" then
-						value = string.format("Sponsor%s",value)
+						value = StringFormat("Sponsor%s",value)
 						ChoGGi.UserSettings[value] = nil
 					end
 				end
@@ -163,7 +164,7 @@ function OnMsg.ClassesGenerate()
 						--check to make sure it isn't a fake name (no sense in saving it)
 						local value = choice[i].value
 						if ItemList[j].value == value and type(value) == "string" then
-							local name = string.format("Sponsor%s",value)
+							local name = StringFormat("Sponsor%s",value)
 							if choice[1].check1 then
 								ChoGGi.UserSettings[name] = nil
 							else
@@ -187,8 +188,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s %s",S[302535920001162--[[Sponsor--]]],S[302535920001166--[[Bonuses--]]]),
-			hint = string.format("%s: %s\n\n%s",S[302535920000106--[[Current--]]],Trans(GetMissionSponsor().display_name),S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]]),
+			title = StringFormat("%s %s",S[302535920001162--[[Sponsor--]]],S[302535920001166--[[Bonuses--]]]),
+			hint = StringFormat("%s: %s\n\n%s",S[302535920000106--[[Current--]]],Trans(GetMissionSponsor().display_name),S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]]),
 			multisel = true,
 			check = {
 				{
@@ -256,7 +257,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000716--[[Set Commander--]],
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],Trans(GetCommanderProfile().display_name)),
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],Trans(GetCommanderProfile().display_name)),
 		}
 	end
 
@@ -272,7 +273,7 @@ function OnMsg.ClassesGenerate()
 				ItemList[#ItemList+1] = {
 					text = Trans(obj.display_name),
 					value = obj.id,
-					hint = string.format("%s\n\n%s: %s",Trans(obj.effect),S[302535920001165--[[Enabled Status--]]],ChoGGi.UserSettings[string.format("Commander%s",obj.id)])
+					hint = StringFormat("%s\n\n%s: %s",Trans(obj.effect),S[302535920001165--[[Enabled Status--]]],ChoGGi.UserSettings[StringFormat("Commander%s",obj.id)])
 				}
 			end
 		end
@@ -285,7 +286,7 @@ function OnMsg.ClassesGenerate()
 				for i = 1, #ItemList do
 					local value = ItemList[i].value
 					if type(value) == "string" then
-						value = string.format("Commander%s",value)
+						value = StringFormat("Commander%s",value)
 						ChoGGi.UserSettings[value] = nil
 					end
 				end
@@ -295,7 +296,7 @@ function OnMsg.ClassesGenerate()
 						--check to make sure it isn't a fake name (no sense in saving it)
 						local value = choice[i].value
 						if ItemList[j].value == value and type(value) == "string" then
-							local name = string.format("Commander%s",value)
+							local name = StringFormat("Commander%s",value)
 							if choice[1].check1 then
 								ChoGGi.UserSettings[name] = nil
 							else
@@ -319,8 +320,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s %s",S[302535920001174--[[Commander--]]],S[302535920001166--[[Bonuses--]]]),
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],Trans(GetCommanderProfile().display_name)),
+			title = StringFormat("%s %s",S[302535920001174--[[Commander--]]],S[302535920001166--[[Bonuses--]]]),
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],Trans(GetCommanderProfile().display_name)),
 			multisel = true,
 			check = {
 				{
@@ -344,7 +345,7 @@ function OnMsg.ClassesGenerate()
 			ItemList[#ItemList+1] = {
 				text = Trans(def.display_name),
 				value = id,
-				hint = string.format("<image %s>",def.image),
+				hint = StringFormat("<image %s>",def.image),
 			}
 		end
 
@@ -387,7 +388,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920001178--[[Set New Logo--]],
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],Trans(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name)),
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],Trans(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name)),
 			height = 800.0,
 			custom_type = 7,
 			custom_func = CallBackFunc,
@@ -398,10 +399,10 @@ function OnMsg.ClassesGenerate()
 		local mapdata = mapdata
 
 		local ItemList = {{
-			text = string.format(" %s",S[302535920000036--[[Disabled--]]]),
+			text = StringFormat(" %s",S[302535920000036--[[Disabled--]]]),
 			value = "disabled"
 		}}
-		local set_name = string.format("MapSettings_%s",sType)
+		local set_name = StringFormat("MapSettings_%s",sType)
 		local data = DataInstances[set_name]
 
 		for i = 1, #data do
@@ -435,8 +436,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = string.format("%s %s %s",S[302535920000129--[[Set--]]],sType,S[302535920001180--[[Disaster Occurrences--]]]),
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],mapdata[set_name]),
+			title = StringFormat("%s %s %s",S[302535920000129--[[Set--]]],sType,S[302535920001180--[[Disaster Occurrences--]]]),
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],mapdata[set_name]),
 		}
 	end
 
@@ -449,7 +450,7 @@ function OnMsg.ClassesGenerate()
 			ItemList[#ItemList+1] = {
 				text = Trans(def.display_name),
 				value = id,
-				hint = string.format([[%s
+				hint = StringFormat([[%s
 	%s
 	%s: %s
 

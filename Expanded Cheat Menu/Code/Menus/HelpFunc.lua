@@ -8,9 +8,9 @@ function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
-	local StringFormat = string.format
 
 	local print,tostring = print,tostring
+	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.ExtractHPKs()
 		if blacklist then
@@ -216,7 +216,7 @@ function OnMsg.ClassesGenerate()
 
 					-- add new mod
 					local err,item_id,bShowLegalAgreement
-					if Platform.steam then
+--~ 					if Platform.steam then
 						if mod.steam_id ~= 0 then
 							local exists
 							local appId = SteamGetAppId()
@@ -226,11 +226,12 @@ function OnMsg.ClassesGenerate()
 								mod.steam_id = 0
 							end
 						end
+
 						if mod.steam_id == 0 then
 							err,item_id,bShowLegalAgreement = AsyncSteamWorkshopCreateItem()
 							mod.steam_id = item_id or nil
 						end
-					end
+--~ 					end
 
 					-- update mod, and copy files to ModUpload
 					if copy_files and not blank_mod and not err then
@@ -263,7 +264,14 @@ function OnMsg.ClassesGenerate()
 							os_dest = ConvertToOSPath(dest)
 						end
 
-						if Platform.steam then
+--~ 						if Platform.steam then
+							local screenshots = {}
+							for i = 1, 5 do
+								local screenshot = mod[StringFormat("screenshot%s",i)]
+								if io.exists(screenshot) then
+									screenshots[#screenshots+1] = screenshot
+								end
+							end
 							err = AsyncSteamWorkshopUpdateItem{
 								item_id = mod.steam_id,
 								title = mod.title,
@@ -272,11 +280,13 @@ function OnMsg.ClassesGenerate()
 								content_os_folder = os_dest,
 								image_os_filename = mod.image ~= "" and ConvertToOSPath(mod.image) or "",
 								change_note = mod.last_changes or tostring(mod.version),
+								screenshots = screenshots,
 							}
-						else
-							err = "no steam"
-						end
+--~ 						else
+--~ 							err = "no steam"
+--~ 						end
 					end
+
 					local msg, title
 					if err and not blank_mod then
 						msg = S[1000013--[[Mod %s was not uploaded to Steam. Error: %s--]]]:format(mod.title,err)
@@ -324,6 +334,13 @@ function OnMsg.ClassesGenerate()
 		function ChoGGi.MenuFuncs.ModUpload()
 			if blacklist then
 				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ModUpload"))
+				return
+			end
+			if not Platform.steam then
+				MsgPopup(
+					1000760--[[Not Steam--]],
+					302535920000367--[[Mod Upload--]]
+				)
 				return
 			end
 

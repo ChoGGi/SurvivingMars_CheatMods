@@ -11,6 +11,7 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 
 	local tostring,type,table = tostring,type,table
+	local StringFormat = string.format
 
 	local IsPoint = IsPoint
 	local Min = Min
@@ -32,7 +33,7 @@ function OnMsg.ClassesGenerate()
 
 		self.obj_name = RetName(context.obj)
 		self.obj = context.obj
-		self.title = string.format("%s: %s",S[302535920000471--[[Object Manipulator--]]],self.obj_name)
+		self.title = StringFormat("%s: %s",S[302535920000471--[[Object Manipulator--]]],self.obj_name)
 
 		-- By the Power of Grayskull!
 		self:AddElements(parent, context)
@@ -224,7 +225,7 @@ function OnMsg.ClassesGenerate()
 				(obj_type ~= "number" and edit_type ~= "boolean") then
 			-- list item
 			self.idList[sel_idx].item.value = edit_text
-			self.idList[sel_idx][1]:SetText(string.format("%s = %s",self.idList[sel_idx].item.text,edit_text))
+			self.idList[sel_idx][1]:SetText(StringFormat("%s = %s",self.idList[sel_idx].item.text,edit_text))
 			-- stored obj
 			self.items[sel_idx].value = edit_text
 			-- actual object
@@ -272,7 +273,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi_ObjectManipulatorDlg:BuildList()
 		self.idList:Clear()
 		for i = 1, #self.items do
-			local listitem = self.idList:CreateTextItem(string.format("%s = %s",self.items[i].text,self.items[i].value))
+			local listitem = self.idList:CreateTextItem(StringFormat("%s = %s",self.items[i].text,self.items[i].value))
 			listitem.item = self.items[i]
 		end
 	end
@@ -309,11 +310,11 @@ function OnMsg.ClassesGenerate()
 
 		if IsValid(obj) then
 			local x,y,z = obj:GetVisualPosXYZ()
-			return string.format("%s @ (%s,%s,%s)",obj.class,x,y,z)
+			return StringFormat("%s @ (%s,%s,%s)",obj.class,x,y,z)
 		end
 
 		if IsPoint(obj) then
-			return string.format("(%s,%s,%s)",obj:x(),obj:y(),obj:z())
+			return StringFormat("(%s,%s,%s)",obj:x(),obj:y(),obj:z())
 		end
 
 		if obj_type == "thread" then
@@ -335,11 +336,11 @@ function OnMsg.ClassesGenerate()
 				if #obj > 3 then
 					res[#res+1] = "..."
 				end
-				return string.format("objlist{%s}","",TableConcat(res,", "))
+				return StringFormat("objlist{%s}","",TableConcat(res,", "))
 			end
 
 			if IsT(obj) then
-				return string.format([[T{"%s"}]],Trans(obj))
+				return StringFormat([[T{"%s"}]],Trans(obj))
 			else
 				-- regular table
 				local table_data
@@ -348,7 +349,7 @@ function OnMsg.ClassesGenerate()
 
 				if len > 0 and is_next then
 					-- next works for both
-					table_data = string.format("%s / %s",len,S[302535920001057--[[Data--]]])
+					table_data = StringFormat("%s / %s",len,S[302535920001057--[[Data--]]])
 				elseif is_next then
 					-- ass based
 					table_data = S[302535920001057--[[Data--]]]
@@ -359,9 +360,9 @@ function OnMsg.ClassesGenerate()
 
 				local name = RetName(obj)
 				if obj.class and name ~= obj.class then
-					name = string.format("%s (len: %s, %s)",obj.class,table_data,name)
+					name = StringFormat("%s (len: %s, %s)",obj.class,table_data,name)
 				else
-					name = string.format("%s (len: %s)",name,table_data)
+					name = StringFormat("%s (len: %s)",name,table_data)
 				end
 
 				return name
@@ -382,9 +383,9 @@ function OnMsg.ClassesGenerate()
 				local text
 				local v_type = type(v)
 				if v_type == "table" then
-					text = string.format("<color 150 170 250>%s</color>",sort_prop)
+					text = StringFormat("<color 150 170 250>%s</color>",sort_prop)
 				elseif v_type == "function" then
-					text = string.format("<color 255 150 150>%s</color>",sort_prop)
+					text = StringFormat("<color 255 150 150>%s</color>",sort_prop)
 				else
 					text = sort_prop
 				end

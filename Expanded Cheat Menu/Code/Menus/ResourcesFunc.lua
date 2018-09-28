@@ -10,6 +10,7 @@ function OnMsg.ClassesGenerate()
 	local default_icon2 = "UI/Icons/IPButtons/rare_metals.tga"
 
 	local type = type
+	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.AddOrbitalProbes()
 		local ItemList = {
@@ -48,7 +49,7 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = ChoGGi.Consts.FoodPerRocketPassenger / r
 		local ItemList = {
-			{text = string.format("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -88,7 +89,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920001190--[[Set Food Per Rocket Passenger--]],
-			hint = string.format("%s: %s",S[302535920000106--[[Current--]]],hint),
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
 			skip_sort = true,
 		}
 	end
