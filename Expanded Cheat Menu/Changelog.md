@@ -5,6 +5,7 @@
 
 ## v9.4 (Unreleased)
 ### Added:
+- Help>Extract HPKs: Shows list of Steam downloaded mod hpk files, so you can extract them.
 - Threads checkbox to Find Value (allows you to search thread func names).
 
 ### Changed:

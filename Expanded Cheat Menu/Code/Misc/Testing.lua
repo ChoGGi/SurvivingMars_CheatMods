@@ -6,12 +6,68 @@ function OnMsg.ClassesGenerate()
 
 	if ChoGGi.testing then
 
---~ 		ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_CommieMarxLogos)
---~ 		ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_XXXXXXXXXX)
+--~ 		-- stop welcome to mars msg
+--~ 		ShowStartGamePopup = function() end
+		-- pretty much just for View Colony Map. it loads, positions camera to fixed pos, and takes named screenshot
+--~ 		ChoGGi.testing.LoadMapForScreenShot("BlankBigTerraceCMix_13")
+		function ChoGGi.testing.LoadMapForScreenShot(map)
+
+			-- need a mystery without anything added to the ground
+			g_CurrentMissionParams.idMystery = "BlackCubeMystery"
+			local gen = RandomMapGenerator:new()
+			gen.BlankMap = map
+			-- see PrefabMarker.lua for these
+			gen.AnomEventCount = 0
+			gen.AnomTechUnlockCount = 0
+			gen.AnomFreeTechCount = 0
+			gen.FeaturesRatio = 0
+			-- load the map
+			gen:Generate()
+			CreateRealTimeThread(function()
+				-- don't fire this stuff till map is good n loaded
+				WaitMsg("RocketLaunchFromEarth")
+				Sleep(350)
+				-- hide signs (just in case any are in the currently exposed sector)
+				SetSignsVisible(false)
+				-- hide all the sector markers
+				for sector,_ in pairs(g_MapSectors) do
+					if type(sector) ~= "number" then
+						sector.decal:SetVisible(false)
+					end
+				end
+
+				-- lightmodel
+				LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
+				SetLightmodelOverride(1,"TheMartian1_Night")
+
+				-- larger render dist
+				hr.FarZ = 7000000
+				-- zoom out for the whole map (more purple)
+				local cam_params = {GetCamera()}
+				cam_params[4] = 25000
+				SetCamera(table.unpack(cam_params))
+
+				-- remove some interfaces
+				local idx = table.find(terminal.desktop,XTemplate,"OverviewMapCurtains")
+				if idx then
+					terminal.desktop[idx]:delete()
+				end
+				for _,value in pairs(Dialogs) do
+					if type(value) ~= "string" then
+						value:delete()
+					end
+				end
+
+				-- no sense in taking a shot of the loading screen
+				Sleep(100)
+				WriteScreenshot(string.format("AppData/%s.png",map))
+			end)
+		end
 
 		-- checks for /Logos folder and adds all images to mod as logos (have to be min of 8bit, and makes them power of 2 if they aren't already)
 		-- (Mods.MODID,".png")
 		-- p.s. it adds tga files after converting, but you can just use the pngs
+--~ 		ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_CommieMarxLogos)
 		function ChoGGi.testing.ConvertImagesPathToLogos(mod,ext)
 			ext = ext or ".png"
 			local mod_path = string.format("%s/Logos",mod.env.CurrentModPath or mod.content_path or mod.path)
@@ -30,6 +86,7 @@ function OnMsg.ClassesGenerate()
 
 		end
 
+		-- benchmarking stuff
 
 		local TickStart = ChoGGi.ComFuncs.TickStart
 		local TickEnd = ChoGGi.ComFuncs.TickEnd

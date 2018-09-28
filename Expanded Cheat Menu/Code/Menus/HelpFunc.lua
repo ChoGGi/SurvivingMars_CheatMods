@@ -8,8 +8,85 @@ function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
+	local StringFormat = string.format
 
 	local print,tostring = print,tostring
+
+	function ChoGGi.MenuFuncs.ExtractHPKs()
+		if blacklist then
+			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ExtractHPKs"))
+			return
+		end
+
+		local ItemList = {}
+		local c = 0
+		-- not much point without steam
+		if Platform.steam and IsSteamAvailable() then
+			-- loop through each mod and make a table of steam ids, so we don't have to loop for each mod below
+			local mod_table = {}
+			for key,value in pairs(Mods) do
+				-- default id is 0 for non-steam mods (which we don't care about)
+				mod_table[value.steam_id] = value
+			end
+
+			local steam_folders = SteamWorkshopItems()
+			for i = 1, #steam_folders do
+				local mod = steam_folders[i]
+				-- need to reverse string so it finds the last \, since find looks ltr
+				local slash = mod:reverse():find("\\")
+				-- we need a neg number for sub + 1 to remove the slash
+				local id = mod:sub((slash * -1) + 1)
+				local hpk = StringFormat("%s/ModContent.hpk",mod:gsub("\\", "/"))
+				-- skip any mods that aren't packed (uploaded by ECM, or just old)
+				if ChoGGi.ComFuncs.FileExists(hpk) then
+					c = c + 1
+					ItemList[c] = {
+						author = mod_table[id].author,
+						text = mod_table[id].title,
+						value = hpk,
+						hint = StringFormat("\n%s\n\n\n\n<image %s>",
+							S[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.--]]]:format(mod_table[id].author),
+							mod_table[id].image
+						),
+						id = id,
+					}
+				end
+			end
+		else
+			MsgPopup(
+				1000760--[[Not Steam--]],
+				302535920001362--[[Extract HPKs--]]
+			)
+			return
+		end
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+			for i = 1, #choice do
+				local path = StringFormat("AppData/Mods/%s",choice[i].id)
+				AsyncUnpack(choice[i].value,path)
+				-- add a note telling people not to be assholes :)
+				AsyncStringToFile(
+					StringFormat("%s/This is not your mod.txt",path),
+					S[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.--]]]:format(choice[i].author)
+				)
+			end
+			MsgPopup(
+				StringFormat("%s: %s",S[302535920000004--[[Dump--]]],#choice),
+				302535920001362--[[Extract HPKs--]]
+			)
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = 302535920001362--[[Extract HPKs--]],
+			hint = 302535920001365--[[HPK files will be unpacked into AppData/Mods/ModSteamId--]],
+			multisel = true,
+		}
+	end
 
 	function ChoGGi.MenuFuncs.ListAllMenuItems()
 		local ChoGGi = ChoGGi
@@ -59,8 +136,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.Interface_Toggle()
 		rawset(_G, "OrgXRender", rawget(_G, "OrgXRender") or XRender)
 		if XRender == OrgXRender then
-			function XRender()
-			end
+			function XRender() end
 		else
 			XRender = OrgXRender
 		end
@@ -160,10 +236,10 @@ function OnMsg.ClassesGenerate()
 						err, files = AsyncListFiles(mod.path, "*", "recursive,relative")
 						if not err then
 							for i = 1, #(files or "") do
-								local dest_file = string.format("%s%s",dest,files[i])
+								local dest_file = StringFormat("%s%s",dest,files[i])
 								local dir = SplitPath(dest_file)
 								AsyncCreatePath(dir)
-								err = AsyncCopyFile(string.format("%s%s",mod.path,files[i]), dest_file, "raw")
+								err = AsyncCopyFile(StringFormat("%s%s",mod.path,files[i]), dest_file, "raw")
 							end
 						end
 					end
@@ -171,7 +247,7 @@ function OnMsg.ClassesGenerate()
 					-- update mod on workshop
 					if not err or blank_mod then
 						-- check if .hpk exists, and use it if so
-						local os_dest = string.format("%sPack/ModContent.hpk",dest)
+						local os_dest = StringFormat("%sPack/ModContent.hpk",dest)
 						if ChoGGi.ComFuncs.FileExists(os_dest) then
 							os_dest = ConvertToOSPath(os_dest)
 						else
@@ -202,7 +278,7 @@ function OnMsg.ClassesGenerate()
 					end
 
 					-- update mod log and print it to console log
-					ModLog(string.format("\n%s: %s",msg,mod.title))
+					ModLog(StringFormat("\n%s: %s",msg,mod.title))
 					local ModMessageLog = ModMessageLog
 					print(S[302535920001265--[[ModMessageLog--]]],":")
 					for i = 1, #ModMessageLog do
@@ -217,7 +293,7 @@ function OnMsg.ClassesGenerate()
 					-- let user know if we're good or not
 					ChoGGi.ComFuncs.MsgWait(
 						msg,
-						string.format("%s: %s",title,mod.title),
+						StringFormat("%s: %s",title,mod.title),
 						"UI/Common/mod_steam_workshop.tga"
 					)
 
@@ -257,7 +333,7 @@ function OnMsg.ClassesGenerate()
 					-- i don't know how to find rtl, so we'll reverse and find it that way. that said what's up with appending the path, can't you just do it when you need to?
 					local slash = string.find(mod.image:reverse(),"/",1,true)
 					local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path
-					image = string.format("%s%s",path,mod.image:sub((slash - 1) * -1))
+					image = StringFormat("%s%s",path,mod.image:sub((slash - 1) * -1))
 				end
 				c = c + 1
 				ItemList[c] = {
@@ -310,7 +386,7 @@ function OnMsg.ClassesGenerate()
 						-- now I just need to have some stuff update when this happens
 						Msg("ChoGGi_SettingsUpdated")
 						MsgPopup(
-							S[4273--[[Saved on %s--]]]:format(string.format("%s:%s:%s",FormatElapsedTime(os.time(), "dhm"))),
+							S[4273--[[Saved on %s--]]]:format(StringFormat("%s:%s:%s",FormatElapsedTime(os.time(), "dhm"))),
 							302535920001308--[[Settings--]]
 						)
 					end
@@ -330,7 +406,7 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			string.format("%s\n\n%s",S[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
+			StringFormat("%s\n\n%s",S[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
 	CheatMenuModSettings.lua > DisableECM to re-enable them."--]]],S[302535920001070--[[Restart to take effect.--]]]),
 			CallBackFunc,
 			302535920000142--[[Disable--]]
@@ -366,7 +442,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.ResetECMSettings()
 
 		local file = ChoGGi.SettingsFile
-		local old = string.format("%s.old",file)
+		local old = StringFormat("%s.old",file)
 
 		local function CallBackFunc(answer)
 			if answer then
@@ -394,10 +470,10 @@ function OnMsg.ClassesGenerate()
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
-			string.format("%s\n\n%s",S[302535920001072--[[Are you sure you want to reset ECM settings?
+			StringFormat("%s\n\n%s",S[302535920001072--[[Are you sure you want to reset ECM settings?
 	Old settings are saved as %s (or not saved if you don't use the HelperMod)--]]]:format(old),S[302535920001070--[[Restart to take effect.--]]]),
 			CallBackFunc,
-			string.format("%s!",S[302535920001084--[[Reset--]]])
+			StringFormat("%s!",S[302535920001084--[[Reset--]]])
 		)
 	end
 

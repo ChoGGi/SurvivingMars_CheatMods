@@ -279,6 +279,7 @@ local Strings = {
 	[1000544] = TranslationTable[1000544], -- ~
 	[1000592] = TranslationTable[1000592], -- Error
 	[1000615] = TranslationTable[1000615], -- Delete
+	[1000760] = TranslationTable[1000760], -- Not Steam
 	[109035890389] = TranslationTable[109035890389], -- Capacity
 	[126095410863] = TranslationTable[126095410863], -- Info
 	[283142739680] = TranslationTable[283142739680], -- Game

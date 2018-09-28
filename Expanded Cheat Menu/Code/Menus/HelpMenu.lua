@@ -16,7 +16,18 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 		RolloverText = S[302535920001323--[[Show all the cheat menu items in a list dialog.--]]],
 		OnAction = ChoGGi.MenuFuncs.ListAllMenuItems,
-		ActionSortKey = "99",
+		ActionSortKey = "99.List All Menu Items",
+	}
+
+	c = c + 1
+	Actions[c] = {
+		ActionMenubar = "Help",
+		ActionName = S[302535920001362--[[Extract HPKs--]]],
+		ActionId = ".Extract HPKs",
+		ActionIcon = "CommonAssets/UI/Menu/editmapdata.tga",
+		RolloverText = S[302535920001363--[["Shows list of Steam downloaded mod hpk files, so you can extract them."--]]],
+		OnAction = ChoGGi.MenuFuncs.ExtractHPKs,
+		ActionSortKey = "99.Extract HPKs",
 	}
 
 	c = c + 1
@@ -27,7 +38,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/gear.tga",
 		RolloverText = S[302535920001264--[[Show list of mods to upload to Steam Workshop.--]]],
 		OnAction = ChoGGi.MenuFuncs.ModUpload,
-		ActionSortKey = "99",
+		ActionSortKey = "99.Mod Upload",
 	}
 
 	c = c + 1
@@ -40,7 +51,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			Msg("ShortcutsReloaded")
 		end,
-		ActionSortKey = "99",
+		ActionSortKey = "99.Reload ECM Menu",
 	}
 
 	local str_Help_Screenshot = "Help.Screenshot"

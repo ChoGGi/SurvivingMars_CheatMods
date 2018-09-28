@@ -683,7 +683,7 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 			-- landing spot/rocket name / resource amounts?, see g_CurrentMapParams
 			GenerateRandomMapParams()
 
-			--and change the map
+			-- and change the map
 			local props = GetModifiedProperties(DataInstances.RandomMapPreset.MAIN)
 			local gen = RandomMapGenerator:new()
 			gen:SetProperties(props)
@@ -808,7 +808,7 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 	end
 
 	--add button to import model
-	function ChoGGi.MenuFuncs.ChangeLightmodelCustom(name)
+	function ChoGGi.MenuFuncs.EditLightmodelCustom(name)
 		local ItemList = {}
 
 		-- always load defaults, then override with custom settings so list is always full

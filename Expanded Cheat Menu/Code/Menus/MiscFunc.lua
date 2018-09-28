@@ -408,7 +408,8 @@ function OnMsg.ClassesGenerate()
 
 			--changing entity to a static one and changing scale can make things not move so re-apply speeds.
 			--and it needs a slight delay
-			DelayedCall(500, function()
+			CreateRealTimeThread(function()
+				Sleep(500)
 				if obj.class == "Drone" then
 					if cUserSettings.SpeedDrone then
 						SetStepLen(obj,cUserSettings.SpeedDrone)

@@ -322,7 +322,8 @@ do -- ConstructionSitePlaced
 
 		if ChoGGi.UserSettings.Building_instant_build then
 			-- i do it this way instead of using .instant_build so domes don't fuck up
-			DelayedCall(100, function()
+			CreateRealTimeThread(function()
+				Sleep(100)
 				local UICity = UICity
 				QuickBuild(UICity.labels.ConstructionSite or "")
 				QuickBuild(UICity.labels.ConstructionSiteWithHeightSurfaces or "")
@@ -456,7 +457,8 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 	-- if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
 	if obj:IsKindOfClasses("Residence","Workplace","SpireBase") then
 		-- seems to need a delay in DA
-		DelayedCall(100, function()
+		CreateRealTimeThread(function()
+			Sleep(100)
 			ChoGGi.CodeFuncs.AttachToNearestDome(obj)
 		end)
 	end
@@ -642,7 +644,8 @@ end
 -- const.Scale.sols is 720 000 ticks (GameTime)
 function OnMsg.NewDay() -- NewSol...
 	-- let everyone else go first
-	DelayedCall(1000, function()
+	CreateRealTimeThread(function()
+		Sleep(1000)
 		local ChoGGi = ChoGGi
 
 		-- sorts cc list by dist to building
@@ -683,7 +686,8 @@ end
 -- const.Scale.hours is 30 000 ticks (GameTime)
 function OnMsg.NewHour()
 	-- let everyone else go first
-	DelayedCall(500, function()
+	CreateRealTimeThread(function()
+		Sleep(500)
 		local ChoGGi = ChoGGi
 
 		-- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)

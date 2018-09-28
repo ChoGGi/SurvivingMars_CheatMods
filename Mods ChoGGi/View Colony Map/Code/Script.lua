@@ -9,7 +9,7 @@ function OnMsg.ModsReloaded()
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	if idx then
-		if library_version < ModsLoaded[idx].version then
+		if library_version > ModsLoaded[idx].version then
 			not_found_or_wrong_version = true
 		end
 	else
@@ -22,7 +22,7 @@ function OnMsg.ModsReloaded()
 			while not UICity do
 				Sleep(1000)
 			end
-			if WaitMarsQuestion(nil,nil,string.format([[Error: This mod requires ChoGGi's Library v%s.
+			if WaitMarsQuestion(nil,nil,string.format([[Error: This mod requires ChoGGi's Library (at least v%s).
 Press Ok to download it or check Mod Manager to make sure it's enabled.]],library_version)) == "ok" then
 				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
 			end
@@ -43,6 +43,10 @@ function FillRandomMapProps(gen, params)
 	if not skip_showing_image then
 		-- check if we already created image viewer, and make one if not
 		if not showimage then
+			-- just to make it obvious to me for later SM updates (this only fires once so it shouldn't spam the log...)
+			if not ChoGGi_ShowImageDlg then
+				print("ChoGGi_ShowImageDlg is borked")
+			end
 			showimage = ChoGGi_ShowImageDlg:new({}, terminal.desktop,{})
 		end
 		-- pretty little image
@@ -97,25 +101,25 @@ function ChoGGi_ShowImageDlg:Init(parent, context)
 		Id = "idImage",
 	}, self.idDialog)
 
+	-- position dialog just off to the side of the colony site text on the right (or 25,25 if we can't)
 	local x,y = 25,25
-	-- see if we can get the right-side list and position based on that, otherwise 25
-	local idx = table.find(self.parent,"XTemplate","PGMainMenu")
 	local dlg
-	pcall(function()
-		dlg = self.parent[idx].idContent[1][2][1]
-	end)
-	if dlg then
-		dlg = dlg.idContent.box
-		x = dlg:minx() - dlg:sizex() - 100
+	-- parent being XDesktop
+	local idx = table.find(self.parent,"XTemplate","PGMainMenu")
+	if idx then
+		-- wrapped in a pcall, so if we fail then it doesn't matter (other than an error in the log)
+		pcall(function()
+			dlg = self.parent[idx].idContent[1][2][1].idContent.box
+			x = dlg:minx() - dlg:sizex() - 100
+		end)
 	end
 	-- and do the same for y, using the diff chal text at the top
-	idx = table.find(self.parent,"XTemplate","DifficultyBonus")
-	pcall(function()
-		dlg = self.parent[idx][1]
-	end)
-	if dlg then
-		dlg = dlg.box
-		y = dlg:miny() + dlg:sizey() + 25
+	idx = table.find(self.parent,"XTemplate","TitleLayer")
+	if idx then
+		pcall(function()
+			dlg = self.parent[idx][1].box
+			y = dlg:miny() + dlg:sizey() + 25
+		end)
 	end
 
 	self:SetInitPos(nil,point(x,y))

@@ -132,7 +132,8 @@ function OnMsg.ClassesGenerate()
 		end
 		function Colonist:CheatRenegadeClear()
 			self:RemoveTrait("Renegade")
-			DelayedCall(100, function()
+			CreateRealTimeThread(function()
+				Sleep(100)
 				self:CheatFillMorale()
 			end)
 		end
@@ -312,13 +313,15 @@ function OnMsg.ClassesGenerate()
 		--CheatCleanAndFix
 		local function CheatCleanAndFix(self)
 			self:CheatMalfunction()
-			DelayedCall(1, function()
+			CreateRealTimeThread(function()
+				Sleep(1)
 				self:Repair()
 		 end)
 		end
 		local function CheatCleanAndFixDrone(self)
 			self:CheatMalfunction()
-			DelayedCall(1, function()
+			CreateRealTimeThread(function()
+				Sleep(1)
 				self.auto_connect = false
 				if self.malfunction_end_state then
 					self:PlayState(self.malfunction_end_state, 1)

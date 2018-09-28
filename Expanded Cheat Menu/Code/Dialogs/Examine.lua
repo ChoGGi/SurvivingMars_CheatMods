@@ -1175,7 +1175,8 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,S[302535920000059-
 		self.idText:SetText(self:totextex(obj))
 	else
 		-- we add a slight delay, so the rest of the dialog loads, and we can let user see the loading msg
-		DelayedCall(5, function()
+		CreateRealTimeThread(function()
+			Sleep(5)
 			self.idText:SetText(self:totextex(obj))
 		end)
 	end

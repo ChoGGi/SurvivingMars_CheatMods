@@ -141,7 +141,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = function()
-			ChoGGi.MenuFuncs.ChangeLightmodelCustom()
+			ChoGGi.MenuFuncs.EditLightmodelCustom()
 		end,
 	}
 

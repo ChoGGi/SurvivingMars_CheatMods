@@ -11,19 +11,20 @@ function OnMsg.ReloadLua()
   are_we_setup = true
 
   -- get rid of mod manager warnings (not the reboot one though)
-  ParadoxBuildsModEditorWarning = true
   ParadoxBuildsModManagerWarning = true
 
-    -- opens to load game menu
---~ 		local idx
---~ 		local desktop = terminal.desktop
---~ 		local TableFind = table.find
---~ 		local Sleep = Sleep
---~ 		while not idx do
---~ 			-- since there's just the one dialog opened, that's all we look for
---~ 			idx = TableFind(desktop,"class","XDialog")
---~ 			Sleep(50)
---~ 		end
---~ 		desktop[idx]:SetMode("Load")
+	-- opens to load game menu
+	--[[
+		local idx
+		local desktop = terminal.desktop
+		local TableFind = table.find
+		local Sleep = Sleep
+		while not idx do
+			-- since there's just the one dialog opened, that's all we look for
+			idx = TableFind(desktop,"class","XDialog")
+			Sleep(50)
+		end
+		desktop[idx]:SetMode("Load")
+	--]]
 
 end

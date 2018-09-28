@@ -29,7 +29,8 @@ function OnMsg.ClassesGenerate()
 			end)
 
 			-- loop through and remove all my msgs from the onscreen popups
-			DelayedCall(1000, function()
+			CreateRealTimeThread(function()
+				Sleep(1000)
 				while #ChoGGi.Temp.MsgPopups < 10 do
 					Sleep(500)
 				end

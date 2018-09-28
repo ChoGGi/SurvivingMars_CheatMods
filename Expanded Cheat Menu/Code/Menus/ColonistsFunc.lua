@@ -75,7 +75,8 @@ function OnMsg.ClassesGenerate()
 			MeatBag:SetCommand("Die","ChoGGi_Soylent")
 			MeatBag.ChoGGi_Soylent = true
 			-- gotta wait for a tad else log gets spammed with changepath and other stuff
-			DelayedCall(100, function()
+			CreateRealTimeThread(function()
+				Sleep(100)
 				local Table = UICity.labels.Colonist or ""
 				for i = 1, #Table do
 					if Table[i].ChoGGi_Soylent then
