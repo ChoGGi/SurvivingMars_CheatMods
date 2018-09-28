@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v9.4 (Unreleased)
+## v9.5 (Unreleased)
+
+## v9.4 (28 Sep 2018)
 ### Added:
 - Help>Extract HPKs: Shows list of Steam downloaded mod hpk files, so you can extract them.
 - Threads checkbox to Find Value (allows you to search thread func names).

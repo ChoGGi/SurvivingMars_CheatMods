@@ -346,9 +346,16 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		obj = obj or ChoGGi.ComFuncs.SelObject()
 
+		-- domes with shit in them = crashy
+		if IsKindOf(obj,"Dome") then
+			return
+		end
+
 		local function CallBackFunc(answer)
 			if answer then
-				MapDelete("map", obj.class)
+				SuspendPassEdits(obj.class)
+				MapDelete("map",obj.class)
+				ResumePassEdits(obj.class)
 			end
 		end
 

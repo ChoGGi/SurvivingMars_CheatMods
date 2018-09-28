@@ -31,11 +31,21 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {
 		ActionMenubar = "Game",
-		ActionName = S[302535920000864--[[Delete All Rocks--]]],
-		ActionId = ".Delete All Rocks",
+		ActionName = S[302535920000864--[[Delete Large Rocks--]]],
+		ActionId = ".Delete Large Rocks",
 		ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
-		RolloverText = S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]],
-		OnAction = ChoGGi.CodeFuncs.DeleteAllRocks,
+		RolloverText = S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
+		OnAction = ChoGGi.CodeFuncs.DeleteLargeRocks,
+	}
+
+	c = c + 1
+	Actions[c] = {
+		ActionMenubar = "Game",
+		ActionName = S[302535920001366--[[Delete Small Rocks--]]],
+		ActionId = ".Delete Small Rocks",
+		ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
+		RolloverText = S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
+		OnAction = ChoGGi.CodeFuncs.DeleteSmallRocks,
 	}
 
 	c = c + 1
@@ -76,9 +86,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {
+	Actions[c] = {ActionName = S[302535920001111--[[Whiter Rocks--]]],
 		ActionMenubar = "Game",
-		ActionName = S[302535920001111--[[Whiter Rocks--]]],
 		ActionId = ".Whiter Rocks",
 		ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 		RolloverText = S[302535920001113--[[Helps the rocks blend in better when using the polar ground texture.--]]],

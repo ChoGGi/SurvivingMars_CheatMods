@@ -296,7 +296,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	local hint = CheckText(self.list.hint,"")
 	if hint ~= "" then
 		self.idMoveControl.RolloverText = hint
-		self.idList.RolloverText = hint
+--~ 		self.idList.RolloverText = hint
 		self.idOK.RolloverText = StringFormat("%s\n\n\n%s",self.idOK:GetRolloverText(),hint)
 	end
 

@@ -1,6 +1,11 @@
 ## Library Changelog
 
-## v1.5 (Unreleased)
+## v1.6 (Unreleased)
+
+## v1.5 (28 Sep 2018)
+- More strings.
+- Added/Changed some funcs.
+- Removed hint from list choice list box (still shows up for title bar and Ok button).
 
 ## v1.4 (26 Sep 2018)
 - Sagan Update.

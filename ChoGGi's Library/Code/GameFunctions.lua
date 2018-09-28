@@ -2210,26 +2210,39 @@ do -- TerrainEditor_Toggle
 	end
 end -- do
 
-do -- DeleteAllRocks
-	local MapDelete = MapDelete
-	local Sleep = Sleep
-	local function CallBackFunc(answer)
+do -- DeleteLargeRocks/DeleteSmallRocks
+	-- got me what pass edits are, but they speed it up crazy fast (50k ticks to 500)
+	local function CallBackFuncLarge(answer)
 		if answer then
-			CreateGameTimeThread(function()
-				MapDelete("map", "Deposition")
-				Sleep(1)
-				MapDelete("map", "WasteRockObstructorSmall")
-				Sleep(1)
-				MapDelete("map", "WasteRockObstructor")
-				Sleep(1)
-				MapDelete("map", "StoneSmall")
-			end)
+			SuspendPassEdits("Deposition")
+			SuspendPassEdits("WasteRockObstructorSmall")
+			SuspendPassEdits("WasteRockObstructor")
+			MapDelete("map", {"Deposition","WasteRockObstructorSmall","WasteRockObstructor"})
+			ResumePassEdits("Deposition")
+			ResumePassEdits("WasteRockObstructorSmall")
+			ResumePassEdits("WasteRockObstructor")
 		end
 	end
-	function ChoGGi.CodeFuncs.DeleteAllRocks()
+	local function CallBackFuncSmall(answer)
+		if answer then
+			SuspendPassEdits("StoneSmall")
+			MapDelete("map", "StoneSmall")
+			ResumePassEdits("StoneSmall")
+		end
+	end
+
+	function ChoGGi.CodeFuncs.DeleteLargeRocks()
 		ChoGGi.ComFuncs.QuestionBox(
-			StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]]),
-			CallBackFunc,
+			StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes rocks for that smooth map feel.--]]]),
+			CallBackFuncLarge,
+			StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
+		)
+	end
+
+	function ChoGGi.CodeFuncs.DeleteSmallRocks()
+		ChoGGi.ComFuncs.QuestionBox(
+			StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes rocks for that smooth map feel.--]]]),
+			CallBackFuncSmall,
 			StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
 		)
 	end

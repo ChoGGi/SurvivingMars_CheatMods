@@ -1,11 +1,11 @@
 return PlaceObj("ModDef", {
-	"title", "Terraformer v0.8",
-	"version", 8,
-  "saved", 1537185600,
+	"title", "Terraformer v0.9",
+	"version", 9,
+  "saved", 1538136000,
 	"id", "ChoGGi_Terraformer",
 	"author", "ChoGGi",
   "code", {
-    "Code/Terraformer.lua",
+    "Code/Script.lua",
   },
 	"TagOther", true,
 	"image", "Preview.png",
@@ -14,7 +14,10 @@ return PlaceObj("ModDef", {
 	"description", [[If you're feeling OCD about a perfect layout for your base then look no further.
 
 Press Shift-F to begin, press Shift-F again to update buildable area.
-Press Ctrl-Shift-F to remove all rocks (takes awhile).
+Press Ctrl-Shift-1 to remove large rocks, Ctrl-Shift-2 for small ones (shows a confirmation before).
+Ctrl-Shift-Alt-D to delete object under mouse (any object and there's no confirmation).
+
+You can rebind keys with the in-game options (scroll to the bottom).
 
 There's a hard limit on how close to the edge you can build (I'll probably figure that out one of these days), so I wouldn't bother flattening the border mountains.
 

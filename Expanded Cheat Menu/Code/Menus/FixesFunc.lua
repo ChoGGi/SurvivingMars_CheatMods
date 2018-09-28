@@ -359,14 +359,9 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
-	--~ 	ForEach{
-	--~ 		class = "UnpersistedMissingClass",
-	--~ 		area = "realm",
-	--~ 		exec = function(obj)
-	--~ 			DeleteObject(obj)
-	--~ 		end
-	--~ 	}
+		SuspendPassEdits("UnpersistedMissingClass")
 		MapDelete("map", "UnpersistedMissingClass")
+		ResumePassEdits("UnpersistedMissingClass")
 		MsgPopup(
 			302535920000587--[[Remove Missing Class Objects (Warning)--]],
 			4493--[[All--]]
@@ -483,13 +478,9 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
-	--~ 	ForEach{
-	--~ 		class = "GridTile",
-	--~ 		exec = function(obj)
-	--~ 			obj:delete()
-	--~ 		end
-	--~ 	}
+		SuspendPassEdits("GridTile")
 		MapDelete("map", "GridTile")
+		ResumePassEdits("GridTile")
 		MsgPopup(
 			302535920000603--[[Remove Yellow Grid Marks--]],
 			4493--[[All--]]
@@ -497,13 +488,18 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
-	--~ 	ForEach{
-	--~ 		class = "RangeHexRadius",
-	--~ 		exec = function(obj)
-	--~ 			obj:delete()
-	--~ 		end
-	--~ 	}
+		SuspendPassEdits("RangeHexRadius")
+		SuspendPassEdits("WireFramedPrettification")
 		MapDelete("map", "RangeHexRadius")
+		-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
+		MapDelete("map", "WireFramedPrettification",function(o)
+			if o.entity == "RoverTransport" then
+				return true
+			end
+		end)
+		ResumePassEdits("RangeHexRadius")
+		ResumePassEdits("WireFramedPrettification")
+
 		MsgPopup(
 			302535920001193--[[Remove Blue Grid Marks--]],
 			4493--[[All--]]

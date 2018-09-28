@@ -60,6 +60,15 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 
+		if #ItemList == 0 then
+			-- good enough msg, probably...
+			MsgPopup(
+				StringFormat("%s: %s",S[302535920000004--[[Dump--]]],#ItemList),
+				302535920001362--[[Extract HPKs--]]
+			)
+			return
+		end
+
 		local function CallBackFunc(choice)
 			if #choice < 1 then
 				return

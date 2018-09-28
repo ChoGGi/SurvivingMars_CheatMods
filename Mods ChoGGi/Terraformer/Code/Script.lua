@@ -2,7 +2,7 @@
 
 -- tell people know how to get the library
 function OnMsg.ModsReloaded()
-	local library_version = 14
+	local library_version = 15
 
 	local ModsLoaded = ModsLoaded
 	local not_found_or_wrong_version
@@ -44,7 +44,11 @@ GlobalVar("g_revision_map",{})
 function UpdateMapRevision()end
 function AsyncGetSourceInfo()end
 
+-- make a ref to Actions here, but create the table after my library is good to go
 local Actions
+function OnMsg.ShortcutsReloaded()
+	ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
+end
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
@@ -53,31 +57,43 @@ function OnMsg.ClassesGenerate()
 
 	Actions = {
 		{
-			ActionShortcut = "Shift-F",
 			replace_matching_id = true,
-
 			ActionName = S[302535920000674--[[Terrain Editor Toggle--]]],
 			ActionId = "Game.Terrain Editor Toggle",
 			RolloverText = S[302535920000675--[[Opens up the map editor with the brush tool visible.--]]],
 			OnAction = ChoGGi.CodeFuncs.TerrainEditor_Toggle,
+			ActionShortcut = "Shift-F",
 			ActionBindable = true,
-
 		},
 		{
-			ActionShortcut = "Ctrl-Shift-F",
 			replace_matching_id = true,
+			ActionName = S[302535920000864--[[Delete Large Rocks--]]],
+			ActionId = "Game.Delete Large Rocks",
+			RolloverText = S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
+			OnAction = ChoGGi.CodeFuncs.DeleteLargeRocks,
+			ActionShortcut = "Ctrl-Shift-1",
 			ActionBindable = true,
-
+		},
+		{
+			replace_matching_id = true,
+			ActionName = S[302535920001366--[[Delete Small Rocks--]]],
+			ActionId = "Game.Delete Small Rocks",
+			RolloverText = S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
+			OnAction = ChoGGi.CodeFuncs.DeleteSmallRocks,
+			ActionShortcut = "Ctrl-Shift-2",
+			ActionBindable = true,
+		},
+		{
+			replace_matching_id = true,
 			ActionName = S[302535920000864--[[Delete All Rocks--]]],
-			ActionId = "Game.Delete All Rocks",
+			ActionId = "Game.Delete Object(s)",
 			RolloverText = S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]],
-			OnAction = ChoGGi.CodeFuncs.DeleteAllRocks,
-
+			OnAction = function()
+				ChoGGi.CodeFuncs.DeleteObject()
+			end,
+			ActionShortcut = "Ctrl-Shift-Alt-D",
+			ActionBindable = true,
 		},
 	}
-
-	function OnMsg.ShortcutsReloaded()
-		ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
-	end
 
 end

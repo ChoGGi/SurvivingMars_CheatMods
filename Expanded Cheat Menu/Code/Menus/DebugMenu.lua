@@ -215,8 +215,8 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {
 		ActionMenubar = str_Debug_Grids,
-		ActionName = S[302535920000499--[[Toggle Hex Build + Passability Grid Visibility--]]],
-		ActionId = ".Toggle Hex Build + Passability Grid Visibility",
+		ActionName = S[302535920000499--[[Toggle Grid Follow Mouse--]]],
+		ActionId = ".Toggle Grid Follow Mouse",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 		RolloverText = S[302535920000500--[[Shows a hex grid with green for buildable/walkable.--]]],
 		OnAction = ChoGGi.MenuFuncs.debug_build_grid,
@@ -296,6 +296,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			ChoGGi.MenuFuncs.PostProcGrids()
 		end,
+		ActionSortKey = "0.Show Grid Disable",
 	}
 
 	local str_Debug_DebugFX = "Debug.Debug FX"
@@ -389,7 +390,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {
 		ActionMenubar = str_Debug_PathMarkers,
 		ActionName = S[302535920000467--[[Path Markers--]]],
-		ActionId = " MENUITEM",
+		ActionId = ".Path Markers",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = S[302535920000468--[[Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.--]]],
 		OnAction = function()
@@ -397,17 +398,6 @@ function OnMsg.ClassesGenerate()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetPathMarkersVisible,
 		ActionBindable = true,
-	}
-
-	local str_Debug_DeleteObjects = "Debug.Delete Object(s)"
-	c = c + 1
-	Actions[c] = {
-		ActionMenubar = "Debug",
-		ActionName = string.format("%s ..",S[302535920000489--[[Delete Object(s)--]]]),
-		ActionId = ".Delete Object(s)",
-		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
-		OnActionEffect = "popup",
-		ActionSortKey = "99",
 	}
 
 	c = c + 1
@@ -418,7 +408,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/DeleteArea.tga",
 		RolloverText = string.format("%s\n\n%s",S[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."--]]],S[302535920001274--[[This is permanent!--]]]),
 		OnAction = ChoGGi.MenuFuncs.DeleteSavedGames,
-		ActionSortKey = "98",
+		ActionSortKey = "98.Delete Saved Games",
 	}
 
 	c = c + 1
@@ -431,24 +421,34 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
 		end,
-		ActionSortKey = "99",
+		ActionSortKey = "99.Delete All Of Selected Object",
 	}
 
+	local str_Debug_DeleteObjects = "Debug.Delete Object(s)"
+	c = c + 1
+	Actions[c] = {
+		ActionMenubar = "Debug",
+		ActionName = string.format("%s ..",S[302535920000489--[[Delete Object(s)--]]]),
+		ActionId = ".Delete Object(s)",
+		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+		OnActionEffect = "popup",
+		ActionSortKey = "99.Delete Object(s)",
+	}
 	c = c + 1
 	Actions[c] = {
 		ActionMenubar = str_Debug_DeleteObjects,
 		ActionName = S[302535920000489--[[Delete Object(s)--]]],
-		ActionId = ".Delete Object(s).Delete Object(s)",
+		ActionId = ".Delete Object(s)",
 		ActionIcon = "CommonAssets/UI/Menu/delete_objects.tga",
 		RolloverText = S[302535920000490--[["Deletes selected object or object under mouse cursor (most objs, not all).
 
-	Use Editor Mode and mouse drag to select multiple objects for deletion."--]]],
+Use Editor Mode and mouse drag to select multiple objects for deletion."--]]],
 		OnAction = function()
 			ChoGGi.CodeFuncs.DeleteObject()
 		end,
 		ActionShortcut = ChoGGi.Defaults.KeyBindings.DeleteObject,
 		ActionBindable = true,
-		ActionSortKey = "99",
+		ActionSortKey = "99.Delete Object(s)",
 	}
 
 end

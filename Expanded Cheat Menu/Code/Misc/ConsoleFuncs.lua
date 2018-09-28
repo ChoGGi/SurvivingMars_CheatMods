@@ -226,16 +226,14 @@ function OnMsg.ClassesGenerate()
 			end,
 		}, dlgConsole.idContainer)
 
-	--------------------------------History popup
-		if not blacklist then
-			dlgConsole.idHistoryMenu = g_Classes.ChoGGi_ConsoleButton:new({
-				Id = "idHistoryMenu",
-				RolloverText = S[302535920001080--[[Console history items (mouse-over to see code).--]]],
-				Text = S[302535920000793--[[History--]]],
-				OnPress = HistoryPopup,
-			}, dlgConsole.idContainer)
+		dlgConsole.idHistoryMenu = g_Classes.ChoGGi_ConsoleButton:new({
+			Id = "idHistoryMenu",
+			RolloverText = S[302535920001080--[[Console history items (mouse-over to see code).--]]],
+			Text = S[302535920000793--[[History--]]],
+			OnPress = HistoryPopup,
+		}, dlgConsole.idContainer)
 
-			--------------------------------Scripts buttons
+		if not blacklist then
 			dlgConsole.idScripts = g_Classes.XWindow:new({
 				Id = "idScripts",
 				LayoutMethod = "HList",
@@ -247,7 +245,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	local function BuildSciptButton(scripts,dlg,folder)
-		ChoGGi_ConsoleButton:new({
+		g_Classes.ChoGGi_ConsoleButton:new({
 			RolloverText = folder.RolloverText,
 			Text = folder.Text,
 			OnPress = function(self)
