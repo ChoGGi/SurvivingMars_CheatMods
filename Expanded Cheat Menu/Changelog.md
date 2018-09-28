@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v9.5 (Unreleased)
+## v9.6 (Unreleased)
+
+## v9.5 (28 Sep 2018)
 ### Added:
 - Game>Camera>Reset: If something makes the camera view wonky you can use this to fix it.
 
