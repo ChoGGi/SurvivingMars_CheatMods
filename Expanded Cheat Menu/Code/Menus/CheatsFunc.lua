@@ -4,6 +4,7 @@ function OnMsg.ClassesGenerate()
 
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local Trans = ChoGGi.ComFuncs.Translate
+	local Random = ChoGGi.ComFuncs.Random
 	local S = ChoGGi.Strings
 	local default_icon = "UI/Icons/Notifications/research.tga"
 
@@ -134,15 +135,38 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
-	function ChoGGi.MenuFuncs.DisasterTriggerMissle(Amount)
-		Amount = Amount or 1
-		--(obj, radius, count, delay_min, delay_max)
-		StartBombard(
-			ChoGGi.ComFuncs.SelObject() or GetTerrainCursor(),
-			1000,
-			Amount
-		)
+	function ChoGGi.MenuFuncs.DisasterTriggerMissle(amount)
+		amount = amount or 1
+		if amount == 1 then
+			-- (pt, radius, count, delay_min, delay_max)
+			StartBombard(
+				ChoGGi.ComFuncs.SelObject() or GetTerrainCursor(),
+				1000,
+				amount
+			)
+		else
+			-- stop that popup msg (it triggers over n over)
+			local osnp = OnScreenNotificationPresets
+			local preset = osnp.Bombardment
+			osnp.Bombardment = nil
+
+			local GetRandomPassable = GetRandomPassable
+			local Sleep = Sleep
+			CreateGameTimeThread(function()
+				for _ = 1, amount do
+					StartBombard(
+						GetRandomPassable(),
+						1000,
+						1
+					)
+					Sleep(Random(100,750))
+				end
+				-- restore popup
+				osnp.Bombardment = preset
+			end)
+		end
 	end
+
 	function ChoGGi.MenuFuncs.DisasterTriggerColdWave(severity)
 		CreateGameTimeThread(function()
 			local data = DataInstances.MapSettings_ColdWave
@@ -154,7 +178,7 @@ function OnMsg.ClassesGenerate()
 		CreateGameTimeThread(function()
 			local data = DataInstances.MapSettings_DustStorm
 			local descr = data[severity] or data[mapdata.MapSettings_DustStorm] or data.DustStorm_VeryLow
-			StartDustStorm(storm_type,descr)
+			StartDustStorm(storm_type or "normal",descr)
 		end)
 	end
 	function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity,major)
@@ -168,6 +192,7 @@ function OnMsg.ClassesGenerate()
 		GenerateDustDevil(pos, descr, nil, major):Start()
 	end
 	function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity,meteors_type)
+		meteors_type = meteors_type or "single"
 		local pos = ChoGGi.ComFuncs.SelObject() or GetTerrainCursor()
 		if type(pos) == "table" then
 			pos = pos:GetPos()
@@ -201,6 +226,84 @@ function OnMsg.ClassesGenerate()
 		storm:SetPos(pos)
 		storm:SetAngle(ChoGGi.ComFuncs.Random(1,21600))
 	end
+
+	do -- DisasterTriggerLightningStrike
+		local dust_storm
+		local strike_radius
+		local fuel_explosions
+		local fuel_exp_count
+		local strike_pos
+
+		local Sleep = Sleep
+		local MapForEach = MapForEach
+		local GetRandomPassable = GetRandomPassable
+		local PlayFX = PlayFX
+		local IsValid = IsValid
+		local IsObjInDome = IsObjInDome
+		local IsCloser2D = IsCloser2D
+		local FuelExplosion = FuelExplosion
+		local function MapForEachObjStrike(obj)
+			if not IsCloser2D(obj, strike_pos, strike_radius) or IsObjInDome(obj) then
+				return
+			end
+			PlayFX("ElectrostaticStormObject", "start", nil, obj, strike_pos)
+			if IsValid(obj) then
+				if obj:IsKindOf("Drone") then
+					obj:UseBattery(obj.battery)
+				elseif obj:IsKindOf("RCRover") then
+					obj:SetCommand("Malfunction")
+				elseif obj:IsKindOf("UniversalStorageDepot") then
+					if not obj:IsKindOf("SupplyRocket") and obj:GetStoredAmount("Fuel") > 0 then
+						obj:CheatEmpty()
+						fuel_exp_count = fuel_exp_count + 1
+						fuel_explosions[fuel_exp_count] = obj
+					end
+				elseif obj:IsKindOf("ResourceStockpileBase") then
+					local amount = obj:GetStoredAmount()
+					if obj.resource == "Fuel" and amount > 0 then
+						obj:AddResourceAmount(-amount, true)
+						fuel_exp_count = fuel_exp_count + 1
+						fuel_explosions[fuel_exp_count] = obj
+					end
+				elseif obj:IsKindOf("Building") then
+					obj:SetSuspended(true, "Suspended", dust_storm.strike_suspend)
+					if obj:IsKindOf("ElectricityStorage") then
+						obj.electricity.current_storage = Max(0, obj.electricity.current_storage - dust_storm.strike_discharge)
+					end
+				elseif obj:IsKindOf("Citizen") and not self:IsDying() then
+					obj:SetCommand("Die", "lighting strike")
+				end
+			end
+		end
+
+		-- somewhat a copy/paste from StartDustStorm
+		function ChoGGi.MenuFuncs.DisasterTriggerLightningStrike(amount)
+			-- set/reset some vars
+			dust_storm = DataInstances.MapSettings_DustStorm.DustStorm_VeryHigh_1
+			strike_radius = dust_storm.strike_radius
+			fuel_explosions = {}
+			fuel_exp_count = 0
+			-- audio cue
+			PlayFX("ElectrostaticStorm", "start")
+			-- stick it in a thread so we can sleep
+			CreateGameTimeThread(function()
+				for _ = 1, amount or 1 do
+					strike_pos = GetRandomPassable()
+					PlayFX("ElectrostaticStormArea", "start", nil, nil, strike_pos)
+					PlayFX("ElectrostaticStorm", StringFormat("hit-moment%s",Random(1,5)), nil, nil, strike_pos)
+					MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(), "Colonist", "Building", "Drone", "RCRover", "ResourceStockpileBase", MapForEachObjStrike)
+					local exp = fuel_explosions or ""
+					for i = 1, #exp do
+						if IsValid(exp[i]) then
+							FuelExplosion(exp[i])
+						end
+					end
+					-- don't want to spam all at once
+					Sleep(Random(100,750))
+				end
+			end)
+		end
+	end -- do
 
 	function ChoGGi.MenuFuncs.DisastersStop()
 		local mis = g_IncomingMissiles or {}
@@ -238,102 +341,133 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	function ChoGGi.MenuFuncs.DisastersTrigger()
-		local ChoGGi = ChoGGi
-		local ItemList = {
-			{text = StringFormat("%s %s",S[302535920000240--[[Stop--]]],S[3983--[[Disasters--]]]),value = "Stop",hint = S[302535920000123--[[Stops most disasters--]]]},
-
-			{text = S[4149--[[Cold Wave--]]],value = "ColdWave"},
-
-			{text = S[4142--[[Dust Devils--]]],value = "DustDevils"},
-			{text = StringFormat("%s %s",S[4142--[[Dust Devils--]]],S[302535920000241--[[Major--]]]),value = "DustDevilsMajor"},
-
-			{text = S[4250--[[Dust Storm--]]],value = "DustStorm"},
-			{text = S[5627--[[Great Dust Storm--]]],value = "DustStormGreat"},
-			{text = S[5628--[[Electrostatic Dust Storm--]]],value = "DustStormElectrostatic"},
-
-			{text = S[4146--[[Meteors--]]],value = "Meteor"},
-			{text = StringFormat("%s %s",S[4146--[[Meteors--]]],S[302535920000245--[[Multi-Spawn--]]]),value = "MeteorMultiSpawn"},
-			{text = S[5620--[[Meteor Storm--]]],value = "MeteorStorm"},
-
-			{text = S[302535920000251--[[Metatron Ion Storm--]]],value = "MetatronIonStorm"},
-
-			{text = StringFormat("%s %s",S[302535920000246--[[Missle--]]],1),value = "Missle1"},
-			{text = StringFormat("%s %s",S[302535920000246--[[Missle--]]],10),value = "Missle10"},
-			{text = StringFormat("%s %s",S[302535920000246--[[Missle--]]],100),value = "Missle100"},
-			{text = StringFormat("%s %s",S[302535920000246--[[Missle--]]],500),value = "Missle500",hint = 302535920000250--[[Might be a little laggy--]]},
+	do -- DisastersTrigger
+		local trigger_table = {
+			Stop = ChoGGi.MenuFuncs.DisastersStop,
+			ColdWave = ChoGGi.MenuFuncs.DisasterTriggerColdWave,
+			DustDevils = ChoGGi.MenuFuncs.DisasterTriggerDustDevils,
+			DustDevilsMajor = function()
+				ChoGGi.MenuFuncs.DisasterTriggerDustDevils(nil,"major")
+			end,
+			DustStormElectrostatic = function()
+				ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil,"electrostatic")
+			end,
+			DustStormGreat = function()
+				ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil,"great")
+			end,
+			DustStorm = ChoGGi.MenuFuncs.DisasterTriggerDustStorm,
+			MeteorStorm = function()
+				ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil,"storm")
+			end,
+			MeteorMultiSpawn = function()
+				ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil,"multispawn")
+			end,
+			Meteor = ChoGGi.MenuFuncs.DisasterTriggerMeteor,
+			MetatronIonStorm = ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm,
 		}
+		local function AddTableToList(t,c,list,text,disaster,types)
+			local func_name = StringFormat("DisasterTrigger%s",disaster)
+			local remove_name = StringFormat("%s_",disaster)
+			-- blanky blank
+			types[#types+1] = false
+			-- go through the DataInstances
+			for i = 1, #list do
+				local severity = list[i].name
+				-- add one for each type
+				for j = 1, #types do
+					local d_type = types[j]
+					local name = StringFormat("%s %s",severity,d_type or "")
 
-	--~	 local Table = DataInstances.MapSettings_ColdWave
-	--~	 local Table = DataInstances.MapSettings_DustStorm
-	--~	 local Table = DataInstances.MapSettings_DustDevils
-	--~	 local Table = DataInstances.MapSettings_Meteor
-	--~	 for i = 1, #Table do
-	--~		 ItemList[#ItemList+1] = {
-	--~			 text = Table[i].name,
-	--~			 value = Table[i].name,
-	--~		 }
-	--~	 end
-
-		local function CallBackFunc(choice)
-			if #choice < 1 then
-				return
-			end
-			for i = 1, #choice do
-				local value = choice[i].value
-				if value == "Stop" then
-					ChoGGi.MenuFuncs.DisastersStop()
-				elseif value == "ColdWave" then
-					ChoGGi.MenuFuncs.DisasterTriggerColdWave()
-
-				elseif value == "DustDevilsMajor" then
-					ChoGGi.MenuFuncs.DisasterTriggerDustDevils(nil,"major")
-				elseif value == "DustDevils" then
-					ChoGGi.MenuFuncs.DisasterTriggerDustDevils()
-
-				elseif value == "DustStormElectrostatic" then
-					ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil,"electrostatic")
-				elseif value == "DustStormGreat" then
-					ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil,"great")
-				elseif value == "DustStorm" then
-					ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil,"normal")
-
-				elseif value == "MeteorStorm" then
-					ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil,"storm")
-				elseif value == "MeteorMultiSpawn" then
-					ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil,"multispawn")
-				elseif value == "Meteor" then
-					ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil,"single")
-
-				elseif value == "Missle1" then
-					ChoGGi.MenuFuncs.DisasterTriggerMissle(1)
-				elseif value == "Missle10" then
-					ChoGGi.MenuFuncs.DisasterTriggerMissle(10)
-				elseif value == "Missle100" then
-					ChoGGi.MenuFuncs.DisasterTriggerMissle(100)
-				elseif value == "Missle500" then
-					ChoGGi.MenuFuncs.DisasterTriggerMissle(500)
-
-				elseif value == "MetatronIonStorm" then
-					ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm()
+					trigger_table[name] = function()
+						ChoGGi.MenuFuncs[func_name](name,d_type)
+					end
+					c = c + 1
+					t[c] = {
+						text = StringFormat("%s: %s",S[text],name:gsub(remove_name,"")),
+						value = name,
+					}
 				end
-
-				MsgPopup(
-					choice[i].text,
-					3983--[[Disasters--]]
-				)
 			end
+			return t,c
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = StringFormat("%s %s",S[1694--[[Start--]]],S[3983--[[Disasters--]]]),
-			hint = 302535920000252--[[Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select).--]],
-			multisel = true,
-			skip_sort = true,
-		}
-	end
+		local missile_hint = S[302535920001372--[[Change the number on the end to fire that amount (ex: %s25).--]]]:format(S[302535920000246--[[Missle--]]])
+		local strike_hint = S[302535920001372--[[Change the number on the end to fire that amount (ex: %s25).--]]]:format(S[302535920001374--[[LightningStrike--]]])
+		local default_mapdata_type = S[302535920000250--[[Default mapdata type--]]]
+		function ChoGGi.MenuFuncs.DisastersTrigger()
+			local ChoGGi = ChoGGi
+			local ItemList = {
+				{text = StringFormat(" %s %s",S[302535920000240--[[Stop--]]],S[3983--[[Disasters--]]]),value = "Stop",hint = S[302535920000123--[[Stops most disasters--]]]},
+
+				{text = S[4149--[[Cold Wave--]]],value = "ColdWave",hint = default_mapdata_type},
+
+				{text = S[4142--[[Dust Devils--]]],value = "DustDevils",hint = default_mapdata_type},
+				{text = StringFormat("%s %s",S[4142--[[Dust Devils--]]],S[302535920000241--[[Major--]]]),value = "DustDevilsMajor",hint = default_mapdata_type},
+
+				{text = S[4250--[[Dust Storm--]]],value = "DustStorm",hint = default_mapdata_type},
+				{text = S[5627--[[Great Dust Storm--]]],value = "DustStormGreat",hint = default_mapdata_type},
+				{text = S[5628--[[Electrostatic Dust Storm--]]],value = "DustStormElectrostatic",hint = default_mapdata_type},
+
+				{text = S[4146--[[Meteors--]]],value = "Meteor",hint = default_mapdata_type},
+				{text = StringFormat("%s %s",S[4146--[[Meteors--]]],S[302535920000245--[[Multi-Spawn--]]]),value = "MeteorMultiSpawn",hint = default_mapdata_type},
+				{text = S[5620--[[Meteor Storm--]]],value = "MeteorStorm",hint = default_mapdata_type},
+
+				{text = S[302535920000251--[[Metatron Ion Storm--]]],value = "MetatronIonStorm"},
+
+				{text = StringFormat("%s %s",S[302535920000246--[[Missle--]]],1),value = "Missle1",hint = missile_hint},
+				{text = StringFormat("%s %s",S[302535920000246--[[Missle--]]],50),value = "Missle50",hint = missile_hint},
+				{text = StringFormat("%s %s",S[302535920000246--[[Missle--]]],100),value = "Missle100",hint = missile_hint},
+				{text = StringFormat("%s %s",S[302535920000246--[[Missle--]]],500),value = "Missle500",hint = missile_hint},
+
+				{text = StringFormat("%s %s",S[302535920001373--[[Lightning Strike--]]],1),value = "LightningStrike1",hint = strike_hint},
+				{text = StringFormat("%s %s",S[302535920001373--[[Lightning Strike--]]],50),value = "LightningStrike50",hint = strike_hint},
+				{text = StringFormat("%s %s",S[302535920001373--[[Lightning Strike--]]],100),value = "LightningStrike100",hint = strike_hint},
+				{text = StringFormat("%s %s",S[302535920001373--[[Lightning Strike--]]],500),value = "LightningStrike500",hint = strike_hint},
+			}
+			-- add map settings for disasters
+			local DataInstances = DataInstances
+			local c = #ItemList
+			ItemList,c = AddTableToList(ItemList,c,DataInstances.MapSettings_ColdWave,4149--[[Cold Wave--]],"ColdWave",{})
+			ItemList,c = AddTableToList(ItemList,c,DataInstances.MapSettings_DustStorm,4250--[[Dust Storm--]],"DustStorm",{"major"})
+			ItemList,c = AddTableToList(ItemList,c,DataInstances.MapSettings_DustDevils,4142--[[Dust Devils--]],"DustDevils",{"electrostatic","great"})
+			ItemList,c = AddTableToList(ItemList,c,DataInstances.MapSettings_Meteor,4146--[[Meteors--]],"Meteor",{"storm","multispawn"})
+
+			local function CallBackFunc(choice)
+				if #choice < 1 then
+					return
+				end
+				for i = 1, #choice do
+					local value = choice[i].value
+					if trigger_table[value] then
+						trigger_table[value]()
+					elseif value:find("Missle") then
+						local amount = tonumber(value:sub(7))
+						if amount then
+							ChoGGi.MenuFuncs.DisasterTriggerMissle(amount)
+						end
+					elseif value:find("LightningStrike") then
+						local amount = tonumber(value:sub(16))
+						if amount then
+							ChoGGi.MenuFuncs.DisasterTriggerLightningStrike(amount)
+						end
+					end
+
+					MsgPopup(
+						choice[i].text,
+						3983--[[Disasters--]]
+					)
+				end
+			end
+
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = ItemList,
+				title = StringFormat("%s %s",S[1694--[[Start--]]],S[3983--[[Disasters--]]]),
+				hint = 302535920000252--[[Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select).--]],
+				multisel = true,
+			}
+		end
+	end -- do
 
 	function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 		local ItemList = {

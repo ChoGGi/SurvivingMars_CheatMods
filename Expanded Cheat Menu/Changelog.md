@@ -4,6 +4,10 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v9.6 (Unreleased)
+### Changed:
+- Added lightning strikes option to Disasters (also added option to set amount of missiles/strikes).
+- Added mapdata setting options to Disasters.
+- Slight random delay added to missiles/strikes (you can do as many as you want without it getting crazy laggy).
 
 ## v9.5 (28 Sep 2018)
 ### Added:
