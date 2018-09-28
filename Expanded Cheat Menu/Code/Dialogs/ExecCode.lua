@@ -35,11 +35,11 @@ function OnMsg.ClassesGenerate()
 
 		self:AddScrollEdit()
 
+		-- hinty hint
+		self.idMoveControl.RolloverText = S[302535920000072--[["Paste or type code to be executed here, ChoGGi.CurObj is the examined object (ignored when opened from Console).
+Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 		-- start off with this as code
 		self.idEdit:SetText(GetFromClipboard() or (self.obj and "ChoGGi.CurObj" or ""))
-		-- hinty hint
-		self.idEdit:SetRolloverText(S[302535920000072--[["Paste or type code to be executed here, ChoGGi.CurObj is the examined object (ignored when opened from Console).
-	Press Ctrl-Enter or Shift-Enter to execute code."--]]])
 		-- let us override enter/esc
 		self.idEdit.OnKbdKeyDown = function(obj, vk)
 			return self:idEditOnKbdKeyDown(obj, vk)
