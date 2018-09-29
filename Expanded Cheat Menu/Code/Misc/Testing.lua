@@ -3,6 +3,9 @@
 -- go away... (though there's HexPainter(building) if you wanna have some fun)
 
 function OnMsg.ClassesGenerate()
+-- flatten sign to ground
+--~ local pos = s:GetPos()
+--~ s:SetPos(point(pos:x(),pos:y(),terrain.GetSurfaceHeight(pos)-45))
 
 	if ChoGGi.testing then
 

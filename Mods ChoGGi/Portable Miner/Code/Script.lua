@@ -38,7 +38,7 @@ local GetUIRollover = ResourceProducer.GetUISectionResourceProducerRollover
 
 local name = [[RC Miner]]
 local description = [[Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile.]]
-local display_icon = StringFormat("%srover_combat.tga",CurrentModPath)
+local display_icon = StringFormat("%srover_combat.png",CurrentModPath)
 
 -- how much to mine each time
 local mine_amount = 1 * const.ResourceScale
@@ -129,6 +129,7 @@ DefineClass.PortableMiner = {
 		Metals = 0,
 		PreciousMetals = 0,
 		Concrete = 0,
+		All = 0,
 	},
 	lifetime_production = 0,
 	production_per_day = 0,
@@ -191,7 +192,10 @@ function PortableMiner:GetCargoManifest()
 	BuildProdInfo(self,info,"Metals")
 	BuildProdInfo(self,info,"PreciousMetals")
 	BuildProdInfo(self,info,"Concrete")
+	-- change lifetime to lifetime of that res
+	self.lifetime_production = self.lifetime_table[self.resource]
 	info[#info+1] = GetUIRollover(self)
+	self.lifetime_production = self.lifetime_table.All
 	return table.concat(info, "<newline><left>")
 end
 -- fake it till you make it (needed by GetUISectionResourceProducerRollover)
@@ -370,8 +374,13 @@ function PortableMiner:Load()
 				end
 				local infoamount = ResourceOverviewObj.data[self.resource]
 				infoamount = infoamount + 1
+				-- per res
 				self.lifetime_table[self.resource] = self.lifetime_table[self.resource] + mined
-				self.lifetime_production = self.lifetime_table[self.resource]
+				-- combined
+				self.lifetime_table.All = self.lifetime_table.All + mined
+				-- probably need to do this for infobar?
+				self.lifetime_production = self.lifetime_table.All
+				-- daily reset
 				self.production_per_day = self.production_per_day + mined
       end
     else

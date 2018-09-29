@@ -188,6 +188,9 @@ function OnMsg.ClassesGenerate()
 					S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title),
 					"\n",
 					S[302535920000051--[[Mod will not be packed in an hpk file like the Mod Editor does for uploading (but you can pack it manually: ModFolder/Pack/ModContent.hpk).--]]],
+					"\n\n",
+					S[302535920001375--[[<color red>WARNING: Backup your first five workshop images.</color>--]]],
+					"\n\n",
 				}
 				if not copy_files then
 					upload_msg[#upload_msg+1] = "\n\n<color 203 120 30>"
@@ -269,7 +272,7 @@ function OnMsg.ClassesGenerate()
 							for i = 1, 5 do
 								local screenshot = mod[StringFormat("screenshot%s",i)]
 								if io.exists(screenshot) then
-									screenshots[#screenshots+1] = screenshot
+									screenshots[#screenshots+1] = false
 								end
 							end
 							err = AsyncSteamWorkshopUpdateItem{
