@@ -20,5 +20,7 @@ You can use the hud button to toggle it, which also stops it from showing up on 
 
 
 Known Issues:
-HUD button: For new games it'll be last, for loaded games it'll be in the correct position.]],
+HUD button: For new games it'll be last, for loaded games it'll be in the correct position.
+
+Discussion: https://steamcommunity.com/app/464920/discussions/0/1733214357976953662/]],
 })

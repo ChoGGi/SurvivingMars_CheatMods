@@ -1,20 +1,25 @@
 return PlaceObj("ModDef", {
-  "title", "Portable Miner v0.7",
-  "version", 7,
-  "saved", 1537963200,
+  "title", "Portable Miner v0.8",
+  "version", 8,
+  "saved", 1538222400,
 	"image", "Preview.png",
   "tags", "Buildings",
   "id", "ChoGGi_PortableMiner",
   "author", "ChoGGi",
   "steam_id", "1411113412",
   "code", {
-		"Code/Portable Miner.lua",
+		"Code/Script.lua",
 	},
 	"lua_revision", LuaRevision,
   "description", [[It's a rover that mines, tell it where to go and if there's a resource (Metals/Concrete) close by it'll start mining it.
+Supports the Auto-mode added in Sagan (boosts the amount stored per stockpile when enabled).
 
-Uses the Attack Rover model.
-The ground where concrete is mined won't change (this will clear the whole concrete mine without having to move).
+Uses the Attack Rover model (check script.lua to change it to something else).
+
+
+
+Known Issues:
+The ground where concrete is mined won't change.
 
 
 
