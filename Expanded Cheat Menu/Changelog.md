@@ -9,6 +9,9 @@
 - Added mapdata setting options to Disasters.
 - Slight random delay added to missiles/strikes (you can do as many as you want without it getting crazy laggy).
 
+### Fixed:
+- Mystery Log skip was borked by Sagan (thanks Encei).
+
 ## v9.5 (28 Sep 2018)
 ### Added:
 - Game>Camera>Reset: If something makes the camera view wonky you can use this to fix it.

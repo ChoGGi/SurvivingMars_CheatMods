@@ -747,18 +747,18 @@ Otherwise you won't see anything."--]],
 	local function ShowMysteryLog(MystName)
 		local msgs = {StringFormat("%s\n\n%s\n",MystName,S[302535920000272--[["To play back speech use ""Tools>Exec"" and type in
 g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
-		local Players = s_SeqListPlayers
+		local s_SeqListPlayers = s_SeqListPlayers
 		-- 1 is some default map thing
-		if #Players < 2 then
+		if #s_SeqListPlayers < 2 then
 			return
 		end
-		for i = 1, #Players do
+		for i = 1, #s_SeqListPlayers do
 			if i > 1 then
-				local seq_list = Players[i].seq_list
+				local seq_list = s_SeqListPlayers[i].seq_list
 				if seq_list.name == MystName then
 					for j = 1, #seq_list do
 						local scenarios = seq_list[j]
-						local state = Players[i].seq_states[scenarios.name]
+						local state = s_SeqListPlayers[i].seq_states[scenarios.name]
 						--have we started this seq yet?
 						if state then
 	--~						local ip = state and (state.ip or state.end_ip or 10000)
@@ -779,27 +779,28 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 			end
 		end
 		-- display to user
-		ChoGGi.ComFuncs.OpenInExamineDlg(msgs, point(550,100))
+		ChoGGi.ComFuncs.OpenInExamineDlg(msgs,nil,point(550,100))
 	end
 
 	function ChoGGi.MenuFuncs.ShowStartedMysteryList()
 		local ChoGGi = ChoGGi
 		local ItemList = {}
-		local PlayerList = s_SeqListPlayers
+		local s_SeqListPlayers = s_SeqListPlayers
 		local mysteries = ChoGGi.Tables.Mystery
-		for i = 1, #PlayerList do
+		for i = 1, #s_SeqListPlayers do
 			--1 is always there from map loading
 			if i > 1 then
-				local seq_list = PlayerList[i].seq_list
+				local seq_list = s_SeqListPlayers[i].seq_list
 				local totalparts = #seq_list[1]
 				local id = seq_list.name
-				local ip = PlayerList[i].seq_states[seq_list[1].name].ip
+				local ip = s_SeqListPlayers[i].seq_states[seq_list[1].name].ip
 
+				s_SeqListPlayers[i].mystery_idx = i
 				ItemList[#ItemList+1] = {
 					text = StringFormat("%s: %s",id,mysteries[id].name),
 					value = id,
 					func = id,
-					seed = PlayerList[i].seed,
+					mystery_idx = i,
 					hint = StringFormat(
 						"%s\n\n<color 255 75 75>%s</color>: %s <color 255 75 75>%s</color>: %s\n\n\n\n<image %s>\n\n",
 						mysteries[id].description,
@@ -818,17 +819,19 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 				return
 			end
 			local value = choice[1].value
-			local seed = choice[1].seed
+			local mystery_idx = choice[1].mystery_idx
 			if choice[1].check2 then
 				--remove all
-				for i = #PlayerList, 1, -1 do
+				for i = #s_SeqListPlayers, 1, -1 do
 					if i > 1 then
-						PlayerList[i]:delete()
+						s_SeqListPlayers[i]:delete()
+--~ 						table.remove(s_SeqListPlayers,i)
 					end
 				end
-				for Thread in pairs(ThreadsMessageToThreads) do
-					if Thread.player and Thread.player.seq_list.file_name then
-						DeleteThread(Thread.thread)
+				for t in pairs(ThreadsMessageToThreads) do
+					if t.player and t.player.seq_list.file_name then
+						DeleteThread(t.thread)
+						t = nil
 					end
 				end
 				MsgPopup(
@@ -836,15 +839,18 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 					3486--[[Mystery--]]
 				)
 			elseif choice[1].check1 then
-				--remove mystery
-				for i = #PlayerList, 1, -1 do
-					if PlayerList[i].seed == seed then
-						PlayerList[i]:delete()
+				-- remove mystery
+				for i = #s_SeqListPlayers, 1, -1 do
+					if s_SeqListPlayers[i].mystery_idx == mystery_idx then
+						s_SeqListPlayers[i]:delete()
+--~ 						table.remove(s_SeqListPlayers,i)
+						break
 					end
 				end
-				for Thread in pairs(ThreadsMessageToThreads) do
-					if Thread.player and Thread.player.seed == seed then
-						DeleteThread(Thread.thread)
+				for t in pairs(ThreadsMessageToThreads) do
+					if t.player and t.player.mystery_idx == mystery_idx then
+						DeleteThread(t.thread)
+						t = nil
 					end
 				end
 				MsgPopup(
@@ -852,8 +858,8 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 					3486--[[Mystery--]]
 				)
 			elseif value then
-				--next step
-				ChoGGi.MenuFuncs.NextMysterySeq(value,seed)
+				-- next step
+				ChoGGi.MenuFuncs.NextMysterySeq(value,mystery_idx)
 			end
 
 		end
@@ -882,23 +888,23 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		}
 	end
 
-	function ChoGGi.MenuFuncs.NextMysterySeq(Mystery,seed)
+	function ChoGGi.MenuFuncs.NextMysterySeq(mystery,mystery_idx)
 		local ChoGGi = ChoGGi
 		local g_Classes = g_Classes
 
 		local warning = StringFormat("\n\n%s",S[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]])
-		local name = StringFormat("%s: %s",S[3486--[[Mystery--]]],ChoGGi.Tables.Mystery[Mystery].name)
+		local name = StringFormat("%s: %s",S[3486--[[Mystery--]]],ChoGGi.Tables.Mystery[mystery].name)
 
-		for Thread in pairs(ThreadsMessageToThreads) do
-			if Thread.player and Thread.player.seed == seed then
+		for t in pairs(ThreadsMessageToThreads) do
+			if t.player and t.player.mystery_idx == mystery_idx then
 
 				-- only remove finished waittime threads, can cause issues removing other threads
-				if Thread.finished == true and Thread.action:IsKindOfClasses("SA_WaitMarsTime","SA_WaitTime","SA_RunSequence") then
-					DeleteThread(Thread.thread)
+				if t.finished == true and t.action:IsKindOfClasses("SA_WaitMarsTime","SA_WaitTime","SA_RunSequence") then
+					DeleteThread(t.thread)
 				end
 
-				local Player = Thread.player
-				local seq_list = Thread.sequence
+				local Player = t.player
+				local seq_list = t.sequence
 				local state = Player.seq_states
 				local ip = state[seq_list.name].ip
 
@@ -910,22 +916,22 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 
 						-- seqs that add delays/tasks
 						if seq:IsKindOfClasses("SA_WaitMarsTime","SA_WaitTime") then
-							ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed}
+							ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx}
 							--we don't want to wait
 							seq.wait_type = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_type")
 							seq.wait_subtype = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_subtype")
 							seq.loops = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("loops")
 							seq.duration = 1
 							seq.rand_duration = 1
-							local wait = Thread.action
+							local wait = t.action
 							wait.wait_type = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_type")
 							wait.wait_subtype = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_subtype")
 							wait.loops = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("loops")
 							wait.duration = 1
 							wait.rand_duration = 1
 
-							Thread.finished = true
-							--Thread.action:EndWait(Thread)
+							t.finished = true
+							--t.action:EndWait(t)
 							-- may not be needed
 							Player:UpdateCurrentIP(seq_list)
 							-- let them know
@@ -942,12 +948,12 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 									seq.expression = nil
 									--the first SA_WaitExpression always has a SA_WaitMarsTime, if they're skipping the first then i doubt they want this
 									if i == 1 or i == 2 then
-										ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed,again = true}
+										ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx,again = true}
 									else
-										ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed}
+										ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx}
 									end
 
-									Thread.finished = true
+									t.finished = true
 									Player:UpdateCurrentIP(seq_list)
 								end
 							end
@@ -966,7 +972,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 						elseif seq:IsKindOf("SA_WaitMsg") then
 							local function CallBackFunc(answer)
 								if answer then
-									ChoGGi.Temp.SA_WaitMarsTime_StopWait = {seed = seed,again = true}
+									ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx,again = true}
 									-- send fake msg (ok it's real, but it hasn't happened)
 									Msg(seq.msg)
 									Player:UpdateCurrentIP(seq_list)
@@ -983,7 +989,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 							local function CallBackFunc(answer)
 								if answer then
 									GrantTech(seq.Research)
-									Thread.finished = true
+									t.finished = true
 									Player:UpdateCurrentIP(seq_list)
 								end
 							end
@@ -997,7 +1003,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 							local function CallBackFunc(answer)
 								if answer then
 									seq.wait = false
-									Thread.finished = true
+									t.finished = true
 									Player:UpdateCurrentIP(seq_list)
 								end
 							end
@@ -1015,7 +1021,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 				end --for seq_list
 
 			end --if mystery thread
-		end --for Thread
+		end --for t
 
 	end
 
