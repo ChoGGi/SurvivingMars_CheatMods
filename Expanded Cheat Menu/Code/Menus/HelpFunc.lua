@@ -273,8 +273,8 @@ function OnMsg.ClassesGenerate()
 
 							local screenshots = {}
 							for i = 1, 5 do
-								local screenshot1 = StringFormat("AppData/Mod Images/%s_screenshot%s.png",mod.id,i)
-								local screenshot2 = StringFormat("AppData/Mod Images/%s_screenshot%s.jpg",mod.id,i)
+								local screenshot1 = StringFormat("AppData/Mod Images/%s_%s.png",mod.id,i)
+								local screenshot2 = StringFormat("AppData/Mod Images/%s_%s.jpg",mod.id,i)
 								local screenshot3 = mod[StringFormat("screenshot%s",i)]
 
 								if FileExists(screenshot1) then
