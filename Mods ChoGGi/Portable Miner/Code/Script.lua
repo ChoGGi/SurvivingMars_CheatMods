@@ -42,13 +42,13 @@ local display_icon = StringFormat("%srover_combat.png",CurrentModPath)
 
 -- how much to mine each time
 local mine_amount = 1 * const.ResourceScale
--- how high we stack on the pile (10 per stack)
-local max_z_stack = 10
 -- how much to store in res pile (10*10 = 100)
 local max_res_amount = 100 * const.ResourceScale
+-- how high we stack on the pile (10 per stack)
+local max_z_stack = max_res_amount / 10
 -- amount in auto
-local max_res_amount_auto = 2500 * const.ResourceScale
 local max_z_stack_auto = 250
+local max_res_amount_auto = 2500 * const.ResourceScale
 
 --[[testing
 local mine_amount = 100 * const.ResourceScale
@@ -530,15 +530,16 @@ function OnMsg.ClassesBuilt()
 	if idx then
 		table.remove(rover,idx)
 	end
-	-- insert below status
+
+	-- we want to insert below status
 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
 	if status then
 		status = status + 1
 	else
+		-- fuck it stick it at the end
 		status = #rover
 	end
 
-	local prod_text
 	table.insert(
 		rover,
 		status,

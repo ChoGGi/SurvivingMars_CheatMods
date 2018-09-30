@@ -1,25 +1,23 @@
 ### Random info about random stuff.
 
 ```
-Surviving Mars comes with LuaFileSystem 1.2 (which is weird as lfs 1.6.3 is the one with lua 5.3 support).
-though SM has a bunch of AsyncFile* functions that should probably be used instead.
-lfs._VERSION
-
-lpeg v0.10 : lpeg.version()
-require("leg.grammar") --LPeg grammar manipulation
-require("leg.parser") --LPeg Lua parser
-
-socket = require("socket")
-print(socket._VERSION)
+Be careful when using CreateGameTimeThread(), as they are persistent.
+If you have one with an inf loop the next time you load a game it'll still be there.
+Store a ref and check with IsValidThread() or DeleteThread()
 
 To get your mod path (if user renames your mod folder):
-Mods["MOD_ID"].path
+CurrentModPath
 
 List all objects (zoom close into the ground for 200-400 ticks faster):
-OpenExamine(GetObjects{area = ""})
-^ area means all objects (default ignores items not on the maps).
+OpenExamine(MapGet(true))
 Just domes:
-OpenExamine(GetObjects{class = "Dome"})
+OpenExamine(MapGet(true,"Dome"))
+Just get objects on the map (colonists in a building are off the map)
+MapGet("map",{"ResourceStockpile","ResourceStockpileLR"})
+Filter out which objects are returned
+MapGet("map", "Building", function(o)
+	return o.ui_working
+end)
 
 Add cargo to the initial rocket:
 https://steamcommunity.com/workshop/discussions/18446744073709551615/1694923613869322889/?appid=464920
@@ -32,14 +30,31 @@ Use select(index,...) index being the argument you want to select, or run it thr
 for i = 1, select("#",...) do
 	local arg = select(i,...)
 end
+Or use: local vararg = {...}
+and you can access them like a regular table
 
-Countdown timer (use CreateGameTimeThread to have it pause when the game pauses):
+Countdown timer (use CreateGameTimeThread to have it follow the speed of the game):
 local countdown = CreateRealTimeThread(function()
 	Sleep(10000)
-	--do something after
+	-- do something after 10 seconds
 end)
 if you_want_stop_it_from_outside then
 	DeleteThread(countdown)
+end
+if you want to use a realtime and pause it:
+local we_paused
+function OnMsg.MarsPause()
+	we_paused = true
+end
+CreateRealTimeThread(function()
+	while true do
+		if we_paused then
+			WaitMsg("MarsResume")
+			we_paused = false
+		end
+		-- other stuff
+		Sleep(1000)
+	end
 end
 
 Loop backwards through a table (good for deleting as you go):
@@ -47,6 +62,12 @@ for i = #some_table, 1, -1 do
 	print(some_table[i])
 	table.remove(some_table,i)
 end
+
+If deleting a large amount of objects:
+SuspendPassEdits("Building")
+MapDelete("map", "Building")
+ResumePassEdits("Building")
+Probably good for doing other stuff as well...
 
 Info from other people:
 

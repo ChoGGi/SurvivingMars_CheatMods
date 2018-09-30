@@ -63,15 +63,11 @@ function OnMsg.ClassesGenerate()
 			SpiceHarvester.game_paused = true
 		else
 			SpiceHarvester.game_paused = false
-			Msg("SpiceHarvester.Game_Resume")
+			Msg("MarsResume")
 		end
 
 		function OnMsg.MarsPause()
 			SpiceHarvester.game_paused = true
-		end
-		function OnMsg.MarsResume()
-			SpiceHarvester.game_paused = false
-			Msg("SpiceHarvester.Game_Resume")
 		end
 	end -- do
 
@@ -130,22 +126,21 @@ function OnMsg.ClassesGenerate()
 			while IsValid(self) do
 				-- if I use gametime then it'll speed up the sounds and such, but realtime doesn't pause on pause
 				if SpiceHarvester.game_paused then
---~ 					Sleep(1000)
-					WaitMsg("SpiceHarvester.Game_Resume")
-				else
-					Sleep(50)
-					delay = delay + 1
-					if delay > 125 then
-						delay = 0
-						self.fake_obj:PlayFX("Dust", "start")
-						Sleep(250)
-						StopSound(snd)
-						snd = PlaySound("Object PreciousExtractor LoopPeaks", "ObjectOneshot", nil, 0, false, self, 50)
-						-- PlaySound(sound, _type, volume, fade_time, looping, point_or_object, loud_distance)
-						Sleep(2250)
-						StopSound(snd)
-						self.fake_obj:PlayFX("Dust", "end")
-					end
+					WaitMsg("MarsResume")
+					SpiceHarvester.game_paused = false
+				end
+				Sleep(50)
+				delay = delay + 1
+				if delay > 125 then
+					delay = 0
+					self.fake_obj:PlayFX("Dust", "start")
+					Sleep(250)
+					StopSound(snd)
+					snd = PlaySound("Object PreciousExtractor LoopPeaks", "ObjectOneshot", nil, 0, false, self, 50)
+					-- PlaySound(sound, _type, volume, fade_time, looping, point_or_object, loud_distance)
+					Sleep(2250)
+					StopSound(snd)
+					self.fake_obj:PlayFX("Dust", "end")
 				end
 			end
 		end)
@@ -155,11 +150,11 @@ function OnMsg.ClassesGenerate()
 			local terrain_type_idx = table.find(TerrainTextures, "name", "Sand_01")
 			while IsValid(self) do
 				if SpiceHarvester.game_paused then
-					Sleep(1000)
-				else
-					SetTypeCircle(self:GetVisualPos(), 900, terrain_type_idx)
-					Sleep(Random(2000,4000))
+					WaitMsg("MarsResume")
+					SpiceHarvester.game_paused = false
 				end
+				SetTypeCircle(self:GetVisualPos(), 900, terrain_type_idx)
+				Sleep(Random(2000,4000))
 			end
 		end)
 

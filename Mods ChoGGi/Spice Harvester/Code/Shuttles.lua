@@ -113,50 +113,48 @@ function OnMsg.ClassesGenerate()
 			local GetHeight = terrain.GetHeight
 			while IsValid(self.SpiceHarvester_Harvester) do
 				if SpiceHarvester.game_paused then
---~ 					Sleep(1000)
-					WaitMsg("SpiceHarvester.Game_Resume")
-				else
-					local pos1 = self:GetVisualPos()
-					if pos1 and (pos1:z() - GetHeight(pos1)) < 1500 then
-						self:PlayFX("Dust", "start")
-						while IsValid(self) do
-							if SpiceHarvester.game_paused then
-								break
-							end -- sleep if
-							local pos2 = self:GetVisualPos()
-							if (pos2:z() - GetHeight(pos2)) > 1500 then
-								break
-							end
-							Sleep(1000)
-						end -- while play dust
-						self:PlayFX("Dust", "end")
-					end
-					Sleep(1000)
-				end -- sleep if
+					WaitMsg("MarsResume")
+					SpiceHarvester.game_paused = false
+				end
+				local pos1 = self:GetVisualPos()
+				if pos1 and (pos1:z() - GetHeight(pos1)) < 1500 then
+					self:PlayFX("Dust", "start")
+					while IsValid(self) do
+						if SpiceHarvester.game_paused then
+							break
+						end -- sleep if
+						local pos2 = self:GetVisualPos()
+						if (pos2:z() - GetHeight(pos2)) > 1500 then
+							break
+						end
+						Sleep(1000)
+					end -- while play dust
+					self:PlayFX("Dust", "end")
+				end
+				Sleep(1000)
 			end -- while valid
 		end)
 
 		-- movement thread
 		while IsValid(self.SpiceHarvester_Harvester) do
 			if SpiceHarvester.game_paused then
---~ 				Sleep(1000)
-				WaitMsg("SpiceHarvester.Game_Resume")
-			else
-				self.hover_height = Random(800,20000)
-				local x,y,_ = self.SpiceHarvester_Harvester:GetVisualPosXYZ()
-				local path = self:CalcPath(
-					self:GetVisualPos(),
-					point(x+Random(-25000,25000), y+Random(-25000,25000))
-				)
-
-				local temp = CreateGameTimeThread(function()
-					self:FollowPathCmd(path)
-				end)
-				repeat
-					Sleep(500)
-				until not IsValidThread(temp)
-				Sleep(Random(2500,10000))
+				WaitMsg("MarsResume")
+				SpiceHarvester.game_paused = false
 			end
+			self.hover_height = Random(800,20000)
+			local x,y,_ = self.SpiceHarvester_Harvester:GetVisualPosXYZ()
+			local path = self:CalcPath(
+				self:GetVisualPos(),
+				point(x+Random(-25000,25000), y+Random(-25000,25000))
+			)
+
+			local temp = CreateGameTimeThread(function()
+				self:FollowPathCmd(path)
+			end)
+			repeat
+				Sleep(500)
+			until not IsValidThread(temp)
+			Sleep(Random(2500,10000))
 		end
 
 		-- soundless sleep
