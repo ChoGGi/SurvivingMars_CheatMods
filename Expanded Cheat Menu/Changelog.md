@@ -8,6 +8,9 @@
 - Added lightning strikes option to Disasters (also added option to set amount of missiles/strikes).
 - Added mapdata setting options to Disasters.
 - Slight random delay added to missiles/strikes (you can do as many as you want without it getting crazy laggy).
+- Mod Upload will now also check for AppData/Mod Images/ModId_screenshot*.png/jpg, and upload those if found.
+- > Since the upload function will delete images on workshop without screenshots in moddef and without asking, I might as well...
+- > I didn't want to have to upload a bunch of images to github as well, so that's why I added this option.
 
 ### Fixed:
 - Mystery Log skip was borked by Sagan (thanks Encei).

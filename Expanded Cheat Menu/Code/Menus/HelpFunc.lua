@@ -6,6 +6,7 @@ function OnMsg.ClassesGenerate()
 
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
+	local FileExists = ChoGGi.ComFuncs.FileExists
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 
@@ -38,7 +39,7 @@ function OnMsg.ClassesGenerate()
 				local id = mod:sub((slash * -1) + 1)
 				local hpk = StringFormat("%s/ModContent.hpk",mod:gsub("\\", "/"))
 				-- skip any mods that aren't packed (uploaded by ECM, or just old)
-				if ChoGGi.ComFuncs.FileExists(hpk) then
+				if FileExists(hpk) then
 					c = c + 1
 					ItemList[c] = {
 						author = mod_table[id].author,
@@ -161,6 +162,7 @@ function OnMsg.ClassesGenerate()
 	do -- ModUpload
 		local ChoGGi = ChoGGi
 		local mod_upload_thread
+		local ConvertToOSPath = ConvertToOSPath
 
 		local function CallBackFunc(choice)
 			-- abort if upload already happening
@@ -261,20 +263,31 @@ function OnMsg.ClassesGenerate()
 					if not err or blank_mod then
 						-- check if .hpk exists, and use it if so
 						local os_dest = StringFormat("%sPack/ModContent.hpk",dest)
-						if ChoGGi.ComFuncs.FileExists(os_dest) then
+						if FileExists(os_dest) then
 							os_dest = ConvertToOSPath(os_dest)
 						else
 							os_dest = ConvertToOSPath(dest)
 						end
 
 --~ 						if Platform.steam then
+
 							local screenshots = {}
 							for i = 1, 5 do
-								local screenshot = mod[StringFormat("screenshot%s",i)]
-								if io.exists(screenshot) then
-									screenshots[#screenshots+1] = false
+								local screenshot1 = StringFormat("AppData/Mod Images/%s_screenshot%s.png",mod.id,i)
+								local screenshot2 = StringFormat("AppData/Mod Images/%s_screenshot%s.jpg",mod.id,i)
+								local screenshot3 = mod[StringFormat("screenshot%s",i)]
+
+								if FileExists(screenshot1) then
+									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.png",i))
+									AsyncCopyFile(screenshot1,StringFormat("AppData/ModUpload/screenshot%s.png",i),"raw")
+								elseif FileExists(screenshot2) then
+									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.jpg",i))
+									AsyncCopyFile(screenshot2,StringFormat("AppData/ModUpload/screenshot%s.jpg",i),"raw")
+								elseif io.exists(screenshot3) then
+									screenshots[#screenshots+1] = screenshot3
 								end
 							end
+
 							err = AsyncSteamWorkshopUpdateItem{
 								item_id = mod.steam_id,
 								title = mod.title,

@@ -1481,10 +1481,9 @@ function ChoGGi.ComFuncs.CreateSetting(str,setting_type)
 	end
 end
 
---returns whatever is selected > moused over > nearest non particle object to cursor (the selection hex is a ParSystem)
+-- returns whatever is selected > moused over > nearest object to cursor
 function ChoGGi.ComFuncs.SelObject()
-	local c = GetTerrainCursor()
-	return SelectedObj or SelectionMouseObj() or MapFindNearest(c, c, 1500)
+	return SelectedObj or SelectionMouseObj() or MapFindNearest(GetTerrainCursor(), 1500)
 end
 
 -- removes all the dev shortcuts/etc and adds mine

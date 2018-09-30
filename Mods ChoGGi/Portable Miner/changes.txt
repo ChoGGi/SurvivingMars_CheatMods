@@ -1,3 +1,6 @@
+v0.9
+Concrete is fixed now.
+
 v0.8
 Fixed all the niggly little issues...
 The code is (hopefully) quite a bit more fault-tolerant.
@@ -5,8 +8,6 @@ The code is (hopefully) quite a bit more fault-tolerant.
 Added production info to selection and pin hint.
 Added support for auto-mode.
 It switches to extra large stockpiles for auto: 2500 instead of 100.
-Too cheap?
-
 v0.7
 Sagan.
 v0.6

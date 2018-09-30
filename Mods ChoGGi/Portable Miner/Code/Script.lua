@@ -31,7 +31,7 @@ local table = table
 local StringFormat = string.format
 local IsValid = IsValid
 local MovePointAway = MovePointAway
-local NearestObject = NearestObject
+local MapFindNearest = MapFindNearest
 local PlaceObj = PlaceObj
 local Sleep = Sleep
 local GetUIRollover = ResourceProducer.GetUISectionResourceProducerRollover
@@ -148,6 +148,11 @@ DefineClass.PortableMiner = {
 DefineClass.PortableMinerBuilding = {
 	__parents = {"BaseRoverBuilding"},
 	rover_class = "PortableMiner",
+}
+
+
+DefineClass.PortableStockpile = {
+	__parents = {"ResourceStockpile"},
 }
 
 function PortableMiner:GameInit()
@@ -279,27 +284,24 @@ function PortableMiner:Idle()
 end
 
 function PortableMiner:DepositNearby()
-  local d = NearestObject(self:GetLogicalPos(),UICity.labels.SubsurfaceDeposit,self.mine_dist)
-	if not d then
-		d = NearestObject(self:GetLogicalPos(),UICity.labels.TerrainDeposit,self.mine_dist)
-	end
---~ 	if not d then
---~ 		d = NearestObject(self:GetLogicalPos(),UICity.labels.SurfaceDeposit,self.mine_dist)
---~ 	end
+	local d = MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit",--]] function(o)
+		return self:GetDist2D(o) < self.mine_dist
+	end)
 
-	if d then
 		-- if it's concrete and there's a marker then we're good, if it's sub then check depth + tech researched
-		if d:IsKindOf("TerrainDepositConcrete") and d:GetDepositMarker() or
-				(d:IsKindOfClasses("SubsurfaceDepositPreciousMetals","SubsurfaceDepositMetals") and
-				(d.depth_layer < 2 or UICity:IsTechResearched("DeepMetalExtraction"))) then
-			self.resource = d.resource
-			-- we need to store res as [1] to use the built-in metal extract func
-			self.nearby_deposits = {d}
-				-- untouched concrete starts off with false for the amount...
-			d.amount = d.amount or d.max_amount
-			return true
-		end
+	if d and (d:IsKindOf("TerrainDepositConcrete") and d:GetDepositMarker() or
+					(d:IsKindOfClasses("SubsurfaceDepositPreciousMetals","SubsurfaceDepositMetals") and
+					(d.depth_layer < 2 or UICity:IsTechResearched("DeepMetalExtraction")))) then
+		-- let miner know what kind we're mining
+		self.resource = d.resource
+		-- we need to store res as [1] to use the built-in metal extract func
+		self.nearby_deposits[1] = d
+		-- untouched concrete starts off with false for the amount...
+		d.amount = d.amount or d.max_amount
+
+		return true
 	end
+
 	-- nadda
 	table.iclear(self.nearby_deposits)
 	return false
@@ -326,15 +328,19 @@ function PortableMiner:Load()
     if not IsValid(self.stockpile) then
       self.stockpile = false
     end
+		-- check if a stockpile is in dist, and if it's the correct res, and not another miner's pile
+    if not self.stockpile or self:GetDist2D(self.stockpile) > 5000 or
+					self.stockpile and (self.stockpile.resource ~= self.resource or self.stockpile.miner_handle ~= self.handle) then
+			-- try to get one close by
+--~       local stockpile = NearestObject(self:GetLogicalPos(),UICity.labels.PortableStockpile,5000)
+			local stockpile = MapFindNearest(self, "map", "PortableStockpile", function(o)
+				return self:GetDist2D(o) < 5000
+			end)
+
     -- add new stockpile if none
-    if not self.stockpile or self:GetDist2D(self.stockpile) >= 5000 or
-					self.stockpile and (self.stockpile.resource ~= self.resource or self.stockpile.Miner_Handle ~= self.handle) then
-
-      local stockpile = NearestObject(self:GetLogicalPos(),UICity.labels.ResourceStockpile,5000)
-
-      if not stockpile or stockpile and (stockpile.resource ~= self.resource or stockpile.Miner_Handle ~= self.handle) then
+      if not stockpile or stockpile and (stockpile.resource ~= self.resource or stockpile.miner_handle ~= self.handle) then
         -- plunk down a new res stockpile
-        stockpile = PlaceObj("ResourceStockpile", {
+        stockpile = PlaceObj("PortableStockpile", {
           -- time to get all humping robot on christmas
           "Pos", MovePointAway(self:GetDestination(), self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)), -800),
           "Angle", self:GetAngle(),
@@ -342,7 +348,7 @@ function PortableMiner:Load()
           "destroy_when_empty", true
         })
       end
-      stockpile.Miner_Handle = self.handle
+      stockpile.miner_handle = self.handle
       -- why doesn't this work in PlaceObj? needs happen after GameInit maybe?
       stockpile.max_z = self.max_z_stack
 			-- assign it to the miner
@@ -400,17 +406,12 @@ function PortableMiner:Load()
 	end
 end
 
-function PortableMiner:SetCommand(command,...)
-  if command ~= "Load" then
-    self.production_per_day = 0
-  end
-  CommandObject.SetCommand(self,command, ...)
-end
-
 -- called when the mine is gone/empty (returns nil to skip the add res amount stuff)
 local function MineIsEmpty(miner)
 	-- it's done so remove our ref to it
 	table.iclear(miner.nearby_deposits)
+	-- needed to mine other concrete
+	miner.found_deposit = false
 	-- if there's a mine nearby then off we go
   if miner:DepositNearby() then
     miner:SetCommand("Load")
@@ -466,9 +467,6 @@ function PortableMiner:DigErUp(amount,res_type)
 		amount = d.amount
 	end
 
-	-- save a ref to marker incase extract removes deposit
-	local marker = d:GetDepositMarker()
-
 	local extracted
 	if res_type then
 		extracted = TerrainDepositExtractor.ExtractResource(self,amount)
@@ -478,10 +476,6 @@ function PortableMiner:DigErUp(amount,res_type)
 
 	-- if it's empty ExtractResource will delete it
   if extracted == 0 or not IsValid(d) then
-		-- remove the marker as well
-		if IsValid(marker) then
-			DoneObject(marker)
-		end
     return MineIsEmpty(self)
   end
 

@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-  "title", "Portable Miner v0.8",
-  "version", 8,
+  "title", "Portable Miner v0.9",
+  "version", 9,
   "saved", 1538222400,
 	"image", "Preview.png",
   "tags", "Buildings",
