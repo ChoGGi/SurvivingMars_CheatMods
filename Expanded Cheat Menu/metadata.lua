@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
 	"code", {
 		-- start 'er up
-		"Init.lua",
+		"Code/Init.lua",
 		-- common functions
 		"Code/ECM_Functions.lua",
 		-- defaults,consts,read/save settings

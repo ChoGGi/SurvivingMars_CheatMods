@@ -74,17 +74,19 @@ function OnMsg.ClassesGenerate()
 			end
 			PlaceResourcePile(MeatBag:GetVisualPos(), res, Random(1,5) * ChoGGi.Consts.ResourceScale)
 			MeatBag:SetCommand("Die","ChoGGi_Soylent")
-			MeatBag.ChoGGi_Soylent = true
+--~ 			MeatBag.ChoGGi_Soylent = true
 			-- gotta wait for a tad else log gets spammed with changepath and other stuff
 			CreateRealTimeThread(function()
 				Sleep(100)
-				local Table = UICity.labels.Colonist or ""
-				for i = 1, #Table do
-					if Table[i].ChoGGi_Soylent then
-						Table[i]:Done()
-						DoneObject(Table[i])
-					end
-				end
+				MeatBag:Done()
+				DoneObject(MeatBag)
+--~ 				local Table = UICity.labels.Colonist or ""
+--~ 				for i = 1, #Table do
+--~ 					if Table[i].ChoGGi_Soylent then
+--~ 						Table[i]:Done()
+--~ 						DoneObject(Table[i])
+--~ 					end
+--~ 				end
 			end)
 		end
 

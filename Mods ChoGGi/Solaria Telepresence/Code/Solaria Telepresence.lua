@@ -359,7 +359,7 @@ Worker amount is dependent on controlled building.
 Telepresence control may take up to a shift to propagate to controlled building.]],
 			"Group", "Dome Services",
 			"build_category", "Dome Services",
-			"display_icon", string.format("%sCode/TheIncal.png",CurrentModPath),
+			"display_icon", string.format("%sUI/TheIncal.png",CurrentModPath),
 			"build_pos", 12,
 			"label1", "InsideBuildings",
 			"label2", "Workshop",

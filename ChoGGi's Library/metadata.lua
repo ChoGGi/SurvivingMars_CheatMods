@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/ChoGGi's%20Library/Changelog.md#library-changelog",
 	"code", {
 		-- build the ChoGGi object
-		"Init.lua",
+		"Code/Init.lua",
 		-- gets the font (if not eng lang), and builds a table of translated strings
 		"Code/Strings.lua",
 		-- common functions
@@ -32,7 +32,7 @@ return PlaceObj("ModDef", {
 		"Code/MultiLineText.lua",
 
 		-- only needed for mods i have yet to update.
-		"LibraryLoaded.lua",
+		"Code/LibraryLoaded.lua",
 	},
 	-- yeah this is getting removed... come on devs allow users to override and deal with outdated mods if they want to (just print it in the log).
 	"lua_revision", LuaRevision,
