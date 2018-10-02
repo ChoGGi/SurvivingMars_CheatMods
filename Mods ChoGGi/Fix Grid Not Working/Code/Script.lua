@@ -1,38 +1,39 @@
-local function CleanGrids(name)
-	local g_Classes = g_Classes
-	local type = type
+local g_Classes = g_Classes
+local type = type
 
-	local grids = UICity[name]
-	-- go backwards (if anything gets removed)
-	for i = #grids, 1, -1 do
-		-- elements is a combined list of all objects attached to the grid
-		local list = grids[i].elements
-		for j = #list, 1, -1 do
-
-			local b = list[j].building
-			-- check what the class says; false means could be, nil means not happening.
-			if type(g_Classes[b.class][name]) == "nil" then
-				if name == "electricity" and b.electricity then
-					b.SetSupply = ElectricityConsumer.SetSupply
-					ElectricityGridObject.SupplyGridDisconnectElement(b, b.electricity, ElectricityGrid)
-					b.electricity = nil
-					b.SetSupply = nil
-				-- air+water
-				elseif b.water then
-					b.SetSupply = LifeSupportConsumer.SetSupply
-					LifeSupportGridObject.SupplyGridDisconnectElement(b, b.water, WaterGrid)
-					b.water = nil
-					b.air = nil
-					b.SetSupply = nil
-				end
+local function CleanGrid(list)
+	for i = #list, 1, -1 do
+		local b = list[i].building
+		-- check what the class says; false means could be, nil means not happening.
+		if type(g_Classes[b.class][name]) == "nil" then
+			if name == "electricity" and b.electricity then
+				b.SetSupply = ElectricityConsumer.SetSupply
+				ElectricityGridObject.SupplyGridDisconnectElement(b, b.electricity, ElectricityGrid)
+				b.electricity = nil
+				b.SetSupply = nil
+			-- water/air
+			elseif b.water then
+				b.SetSupply = LifeSupportConsumer.SetSupply
+				LifeSupportGridObject.SupplyGridDisconnectElement(b, b.water, WaterGrid)
+				b.water = nil
+				b.air = nil
+				b.SetSupply = nil
 			end
-
 		end
 	end
 end
 
+local function LoopGrids(name)
+	local grids = UICity[name]
+	-- go backwards (if anything gets removed)
+	for i = #grids, 1, -1 do
+		-- elements is a combined list of all objects attached to the grid
+		CleanGrid(grids[i].elements)
+	end
+end
+
 function OnMsg.LoadGame()
-	CleanGrids("electricity")
-	CleanGrids("water")
-	CleanGrids("air")
+	LoopGrids("electricity")
+	LoopGrids("water")
+	LoopGrids("air")
 end
