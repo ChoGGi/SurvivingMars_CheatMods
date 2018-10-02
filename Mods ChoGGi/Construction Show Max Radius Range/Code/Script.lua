@@ -1,8 +1,9 @@
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+-- See LICENSE for terms
 
 local white = -1
 local GridSpacing = const.GridSpacing
 
+local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()
 	if self.template:IsKindOfClasses("TriboelectricScrubber","SubsurfaceHeater") then
 		local circle = Circle:new()
@@ -25,11 +26,18 @@ You can ignore the above error msg (it's just checking for ECM).
 ]])
 		end
 
-		circle:SetRadius(radius or GridSpacing * self.template:GetPropertyMetadata("UIRange").max)
+		radius = radius or GridSpacing * self.template:GetPropertyMetadata("UIRange").max
+
+		circle:SetRadius(radius)
 		circle:SetColor(white)
 		self:Attach(circle)
+
+		-- and also change the visible hex grid to max
+		self.template:SetUIRange(50)
+
 	end
 
+--~ 	ex(self)
 	return orig_CursorBuilding_GameInit(self)
 end
 

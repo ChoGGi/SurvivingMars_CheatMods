@@ -7,7 +7,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1498826528",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
-	"code", {"Code/Script.lua"},
+	"code", {
+		"Code/Script.lua"
+	},
 	"description", [[Extend length of pipes/cables/passages from 20 to 1000.
 
 Requested by Adi.

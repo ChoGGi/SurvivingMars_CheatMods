@@ -12,13 +12,11 @@ local function CleanGrids(name)
 			local b = list[j].building
 			-- check what the class says; false means could be, nil means not happening.
 			if type(g_Classes[b.class][name]) == "nil" then
-				if name == "electricity" then
-					if b.electricity then
-						b.SetSupply = ElectricityConsumer.SetSupply
-						ElectricityGridObject.SupplyGridDisconnectElement(b, b.electricity, ElectricityGrid)
-						b.electricity = nil
-						b.SetSupply = nil
-					end
+				if name == "electricity" and b.electricity then
+					b.SetSupply = ElectricityConsumer.SetSupply
+					ElectricityGridObject.SupplyGridDisconnectElement(b, b.electricity, ElectricityGrid)
+					b.electricity = nil
+					b.SetSupply = nil
 				-- air+water
 				elseif b.water then
 					b.SetSupply = LifeSupportConsumer.SetSupply
