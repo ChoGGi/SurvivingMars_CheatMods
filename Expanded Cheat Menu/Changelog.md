@@ -11,6 +11,7 @@
 
 ### Fixed:
 - Messed up the select object func last update? (thanks McKaby).
+- Building Info>Production didn't work.
 
 ### Removed:
 - Help>Interface>Toggle Signs: No point in having it as you can just use the built in one (I left the interface one since you can't? rebind that).

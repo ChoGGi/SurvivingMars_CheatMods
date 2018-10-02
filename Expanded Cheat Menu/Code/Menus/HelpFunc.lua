@@ -179,6 +179,7 @@ function OnMsg.ClassesGenerate()
 				local mod = choice[1].mod
 				local copy_files = choice[1].check1
 				local blank_mod = choice[1].check2
+				local clipboard = choice[1].check3
 				local dest = "AppData/ModUpload/"
 				local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
 				if mod.id == "ChoGGi_CheatMenu" or mod.id == "ChoGGi_Library" then
@@ -288,14 +289,20 @@ function OnMsg.ClassesGenerate()
 								end
 							end
 
+
+							local image = mod.image ~= "" and ConvertToOSPath(mod.image)
+							if not io.exists(image) then
+								image = ""
+							end
+
 							err = AsyncSteamWorkshopUpdateItem{
 								item_id = mod.steam_id,
-								title = mod.title,
-								description = mod.description,
+								title = mod.title or "",
+								description = mod.description or "",
 								tags = mod:GetTags(),
 								content_os_folder = os_dest,
-								image_os_filename = mod.image ~= "" and ConvertToOSPath(mod.image) or "",
-								change_note = mod.last_changes or tostring(mod.version),
+								image_os_filename = image,
+								change_note = mod.last_changes or tostring(mod.version) or "",
 								screenshots = screenshots,
 							}
 --~ 						else
@@ -322,6 +329,9 @@ function OnMsg.ClassesGenerate()
 
 					-- show id in console (figure out a decent way to add this to metadata.lua?)
 					if item_id then
+						if clipboard then
+							CopyToClipboard(item_id)
+						end
 						print(mod.title,":",S[1000107--[[Mod--]]],S[1000021--[[Steam ID--]]],":",item_id)
 					end
 
@@ -399,6 +409,11 @@ function OnMsg.ClassesGenerate()
 					{
 						title = 302535920001260--[[Blank Mod--]],
 						hint = 302535920001261--[["Uploads a blank private mod to Steam Workshop, and prints Workshop id in log."--]],
+					},
+					{
+						title = 302535920000664--[[Clipboard--]],
+						hint = 302535920000665--[[If uploading a new mod this copies steam_id to clipboard.--]],
+						checked = true,
 					},
 				},
 				height = 800.0,

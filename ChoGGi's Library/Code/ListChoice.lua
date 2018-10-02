@@ -328,6 +328,7 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 				if type(value) == "number" then
 					self.idColorPicker:SetColor(value)
 				end
+				self.idEditValue:SetCursor(1,#text)
 			end
 		end
 	else

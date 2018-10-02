@@ -1540,9 +1540,13 @@ function ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
 	-- remove stuff from GameShortcuts
 	for i = #XShortcutsTarget.actions, 1, -1 do
 		-- removes pretty much all the dev actions added, and leaves the game ones intact
-		local id = XShortcutsTarget.actions[i].ActionId
-		if id and not id:starts_with("action") and not id:find("G_") then
+		local a = XShortcutsTarget.actions[i]
+		local g = a.ActionId:sub(1,2) == "G_"
+		if a.ActionId and (not a.ActionId:starts_with("action") and not g or a.ActionId == "G_CompleteConstructions")  then
 			TableRemove(XShortcutsTarget.actions,i)
+		elseif g then
+			-- hide the orig cheats
+			a.ActionMenubar = nil
 		end
 	end
 	if testing then

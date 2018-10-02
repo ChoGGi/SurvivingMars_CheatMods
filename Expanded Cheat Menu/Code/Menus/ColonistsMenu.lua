@@ -96,7 +96,12 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_ExpandedCM_Colonists,
 		ActionId = ".Add Or Remove Applicants",
 		ActionIcon = StarkFistOfRemoval,
-		RolloverText = S[302535920000380--[[Add random applicants to the passenger pool (has option to remove all).--]]],
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				#g_ApplicantPool,
+				302535920000380--[[Add random applicants to the passenger pool (has option to remove all).--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.AddApplicantsToPool,
 	}
 

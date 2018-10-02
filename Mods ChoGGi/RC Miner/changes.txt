@@ -1,6 +1,14 @@
+v1.1
+Precious idle time wasn't changeable.
+Added some paint around mining area (toggle in ModConfig).
+
+v1.0
+Changed mining speeds of Metal/Precious to 50%/10%.
+Added support for ModConfig.
+Fixed issue with auto-mode not changing stack size.
+
 v0.9
 Concrete is fixed now.
-
 v0.8
 Fixed all the niggly little issues...
 The code is (hopefully) quite a bit more fault-tolerant.

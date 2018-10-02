@@ -42,6 +42,10 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local GetInfo = {
+	--~ 		Power = function(obj)
+	--~ 		end,
+	--~ 		["Life-Support"] = function(obj)
+	--~ 		end,
 			OutsideBuildings = function(obj)
 				return StringFormat("- %s -\n%s: %s(%s) %s(%s) %s(%s)",
 					RetName(obj),
@@ -51,10 +55,6 @@ function OnMsg.ClassesGenerate()
 					S[79--[[Power--]]],obj.electricity and obj.electricity.grid.ChoGGi_GridHandle
 				)
 			end,
-	--~ 		Power = function(obj)
-	--~ 		end,
-	--~ 		["Life-Support"] = function(obj)
-	--~ 		end,
 			SubsurfaceDeposit = function(obj)
 				return StringFormat("- %s -\n%s: %s, %s: %s\n%s: %s, %s: %s/%s",
 					RetName(obj),
@@ -94,7 +94,7 @@ function OnMsg.ClassesGenerate()
 				local prefix
 				local waste = obj.wasterock_producer or nil -- can't use booleans for table.concat, so make it nil
 				if waste then
-					predprod = waste:GetPredictedProduction()
+					predprod = tostring(waste:GetPredictedProduction())
 					prefix = "0."
 					if predprod:len() > 3 then
 						prefix = ""
@@ -108,7 +108,7 @@ function OnMsg.ClassesGenerate()
 					S[519--[[Storage--]]],waste:GetAmountStored() / r,waste.max_storage / r
 					)
 				end
-				predprod = prod:GetPredictedProduction()
+				predprod = tostring(prod:GetPredictedProduction())
 				prefix = "0."
 				if predprod:len() > 3 then
 					prefix = ""

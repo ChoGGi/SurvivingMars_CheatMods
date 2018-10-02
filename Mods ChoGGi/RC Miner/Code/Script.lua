@@ -26,6 +26,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.]]
 
+PortableMinerSettings = {
+	-- how much to mine each time
+	mine_amount = 1 * const.ResourceScale,
+	-- how much to store in res pile (10*10 = 100)
+	max_res_amount_man = 90 * const.ResourceScale,
+	-- how high we stack on the pile (10 per stack)
+	max_z_stack_man = 9,
+	-- amount in auto
+	max_z_stack_auto = 250,
+	max_res_amount_auto = 2500 * const.ResourceScale,
+	-- ground paint
+	visual_cues = true,
+
+	mine_time_anim = {
+		Concrete = 1000,
+		Metals = 2000,
+		PreciousMetals = 10000,
+	},
+	mine_time_idle = {
+		Concrete = 1500,
+		Metals = 3000,
+		PreciousMetals = 15000,
+	},
+}
+
 -- local some repeat funcs
 local table = table
 local StringFormat = string.format
@@ -38,54 +63,15 @@ local GetUIRollover = ResourceProducer.GetUISectionResourceProducerRollover
 
 local name = [[RC Miner]]
 local description = [[Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile.]]
-local display_icon = StringFormat("%srover_combat.png",CurrentModPath)
+local display_icon = StringFormat("%sUI/rover_combat.png",CurrentModPath)
 
--- how much to mine each time
-local mine_amount = 1 * const.ResourceScale
--- how much to store in res pile (10*10 = 100)
-local max_res_amount = 90 * const.ResourceScale
--- how high we stack on the pile (10 per stack)
-local max_z_stack = max_res_amount / 10
--- amount in auto
-local max_z_stack_auto = 250
-local max_res_amount_auto = 2500 * const.ResourceScale
-
---[[testing
-local mine_amount = 100 * const.ResourceScale
-local max_res_amount = 10000 * const.ResourceScale
-local max_z_stack = 1000
--- careful about stacking too high, SM has a world height limit of 65536 (if you save with an object's origin? above that goodbye save)
-
-local mine_amount = 1 * const.ResourceScale
-local max_res_amount = 10 * const.ResourceScale
-local max_z_stack = 1
---]]
-
--- how close to the resource icon do we need to be
-local mine_dist = 1500
--- area around it to mine for concrete. this gets called everytime you mine, so we just get the default shape once and use that instead of this func
-local mine_area = RegolithExtractor.GetExtractionShape()
-
--- set to false to use length of animation (these are in game times, i think at normal speed 1 is 1 millisecond)
---~ local anim_time = 1000
---~ local idle_time = 1500
---~ local anim_time = false
---~ local idle_time = false
-
--- what spot on the entity to use as placement for the stockpile
-local pooper_shooter = "Droneentrance"
-
-local entity = "CombatRover"
-local custom_scale
-local custom_anim
-local custom_anim_idle
 -- if you want to change the entity, scale, animation
---~ local entity = "Lama"
---~ local entity = "Kosmonavt"
---~ local custom_scale = 500 -- 100 is default size
---~ local custom_anim = "playBasketball" -- object:GetStates()
---~ local custom_anim = "playTaiChi" -- takes quite awhile, may want to increase mined amount or set limit on time
---~ local custom_anim_idle = "layDying"
+--~ entity = "Lama"
+--~ entity = "Kosmonavt"
+--~ custom_scale = 500 -- 100 is default size
+--~ custom_anim = "playBasketball" -- object:GetStates()
+--~ custom_anim = "playTaiChi" -- takes quite awhile, may want to increase mined amount or set limit on time
+--~ custom_anim_idle = "layDying"
 
 DefineClass.PortableMiner = {
 	__parents = {
@@ -98,58 +84,56 @@ DefineClass.PortableMiner = {
 	},
 	-- these are all set above
   name = name,
+	display_name = name,
 	description = description,
 	display_icon = display_icon,
-	mine_amount = mine_amount,
-	max_res_amount = max_res_amount,
-	max_z_stack = max_z_stack,
---~ 	anim_time = anim_time,
---~ 	idle_time = idle_time,
-	entity = entity,
-	custom_scale = custom_scale,
-	custom_anim = custom_anim,
-	custom_anim_idle = custom_anim_idle,
-	mine_dist = mine_dist,
-	mine_area = mine_area,
-	pooper_shooter = pooper_shooter,
 
-	-- erm... something?
-	last_serviced_time = 0,
-	-- probably doesn't need a default res, but it may stop some error in the log?
-	resource = "Metals",
-	-- used for building prod info
-	resource_fake = false,
-	-- nearby_deposits name is needed for metal extractor func
-	nearby_deposits = {},
-	accumulate_dust = true,
-	notworking_sign = false,
+	entity = "CombatRover",
+	default_anim = "attackIdle",
+	default_anim_idle = "idle",
+	entity_scale = false,
+
+	-- how close to the resource icon do we need to be
+	mine_dist = 1500,
+	-- area around it to mine for concrete. this gets called everytime you mine, so we just get the default shape once and use that instead of this func
+	mine_area = RegolithExtractor.GetExtractionShape(),
+	-- what spot on the entity to use as placement for the stockpile
+	pooper_shooter = "Droneentrance",
 
 	-- we store each type of res in here, and just use lifetime_production as something to update from this. That way we can show each type in hint
 	lifetime_table = {
+		All = 0,
+		Concrete = 0,
 		Metals = 0,
 		PreciousMetals = 0,
-		Concrete = 0,
-		All = 0,
 	},
 	lifetime_production = 0,
 	production_per_day = 0,
 
-	-- be nice to get this working as well
 	has_auto_mode = true,
 
 	malfunction_start_state = "malfunction",
 	malfunction_idle_state = "malfunctionIdle",
 	malfunction_end_state = "malfunctionEnd",
 
-	-- stop error when adding signs (Missing spot 'Top'), it doesn't get a Top spot, but Rocket is slightly higher then Origin
+	-- stops error when adding signs (Missing spot 'Top'), it doesn't have a Top spot, but Rocket is slightly higher then Origin
 	sign_spot = "Rocket",
+
+	-- erm... something?
+	last_serviced_time = 0,
+	-- probably doesn't need a default res, but it may stop some error in the log?
+	resource = "Metals",
+	-- nearby_deposits name is needed for metal extractor func
+	nearby_deposits = {},
+	accumulate_dust = true,
+	-- changed below
+	notworking_sign = false,
 }
 
 DefineClass.PortableMinerBuilding = {
 	__parents = {"BaseRoverBuilding"},
 	rover_class = "PortableMiner",
 }
-
 
 DefineClass.PortableStockpile = {
 	__parents = {"ResourceStockpile"},
@@ -165,18 +149,8 @@ function PortableMiner:GameInit()
 	-- color of bands
 	self:SetColorizationMaterial(3, -13031651, -128, 48)
 
-  if self.custom_scale then
-    self:SetScale(self.custom_scale)
-  end
-  if self.custom_anim then
-    self.default_anim = self.custom_anim
-  else
-    self.default_anim = "attackIdle"
-  end
-  if self.custom_anim_idle then
-    self.default_anim_idle = self.custom_anim_idle
-  else
-    self.default_anim_idle = "idle"
+  if self.entity_scale then
+    self:SetScale(self.entity_scale)
   end
 
 	-- show the pin info
@@ -248,19 +222,16 @@ end
 
 -- if we're in auto-mode then make the stockpile take more
 function PortableMiner:ToggleAutoMode(broadcast)
+	local pms = PortableMinerSettings
 	-- if it's on it's about to be turned off
-	if auto_mode_on then
-		self.max_res_amount = max_res_amount
-		self.max_z_stack = max_z_stack
-	else
-		self.max_res_amount = max_res_amount_auto
-		self.max_z_stack = max_z_stack_auto
+	if IsValid(self.stockpile) then
+		self.stockpile.max_z = self.auto_mode_on and pms.max_z_stack_man or pms.max_z_stack_auto
 	end
 	return BaseRover.ToggleAutoMode(self,broadcast)
 end
 
 function PortableMiner:Idle()
-
+	local pms = PortableMinerSettings
 	-- if there's one near then mine that shit
   if self:DepositNearby() then
     self:ShowNotWorkingSign(false)
@@ -273,14 +244,14 @@ function PortableMiner:Idle()
 		Sleep(1000)
 	-- check if stockpile is existing and full
   elseif not self.notworking_sign and self.stockpile and (self:GetDist2D(self.stockpile) >= 5000 or
-						self.stockpile:GetStoredAmount() < self.max_res_amount) then
+						self.stockpile:GetStoredAmount() < (self.auto_mode_on and pms.max_res_amount_auto or pms.max_res_amount_man)) then
     self:ShowNotWorkingSign(false)
   end
 
 	self:Gossip("Idle")
 	self:SetStateText(self.default_anim_idle)
-	-- kill off thread if we're in one
-	Halt()
+--~ 	-- kill off thread if we're in one
+--~ 	Halt()
 end
 
 function PortableMiner:DepositNearby()
@@ -321,6 +292,7 @@ end
 
 -- called it Load so it uses the load resource icon in pins
 function PortableMiner:Load()
+	local pms = PortableMinerSettings
 
 	local skip_end
   if #self.nearby_deposits > 0 then
@@ -332,7 +304,6 @@ function PortableMiner:Load()
     if not self.stockpile or self:GetDist2D(self.stockpile) > 5000 or
 					self.stockpile and (self.stockpile.resource ~= self.resource or self.stockpile.miner_handle ~= self.handle) then
 			-- try to get one close by
---~       local stockpile = NearestObject(self:GetLogicalPos(),UICity.labels.PortableStockpile,5000)
 			local stockpile = MapFindNearest(self, "map", "PortableStockpile", function(o)
 				return self:GetDist2D(o) < 5000
 			end)
@@ -350,25 +321,20 @@ function PortableMiner:Load()
       end
       stockpile.miner_handle = self.handle
       -- why doesn't this work in PlaceObj? needs happen after GameInit maybe?
-      stockpile.max_z = self.max_z_stack
+      stockpile.max_z = self.auto_mode_on and pms.max_z_stack_auto or pms.max_z_stack_man
 			-- assign it to the miner
       self.stockpile = stockpile
     end
     --  stop at max_res_amount per stockpile
-    if self.stockpile:GetStoredAmount() < self.max_res_amount then
+    if self.stockpile:GetStoredAmount() < (self.auto_mode_on and pms.max_res_amount_auto or pms.max_res_amount_man) then
       -- remove the sign
       self:ShowNotWorkingSign(false)
       -- up n down n up n down
       self:SetStateText(self.default_anim)
-      Sleep(self:TimeToAnimEnd())
+      Sleep(pms.mine_time_anim[self.resource] or self:TimeToAnimEnd())
 
       -- mine some shit
-      local mined
-      if self.resource == "Concrete" then
-        mined = self:DigErUp(self.mine_amount,true)
-      elseif self.resource == "Metals" or self.resource == "PreciousMetals" then
-        mined = self:DigErUp(self.mine_amount)
-      end
+      local mined = self:DigErUp(pms)
       if mined then
 				-- if it gets deleted by somebody mid mine :)
 				if IsValid(self.stockpile) then
@@ -402,7 +368,15 @@ function PortableMiner:Load()
 		if self:GetState() ~= 0 then
 			self:SetStateText(self.default_anim_idle)
 		end
-		Sleep(self:TimeToAnimEnd())
+		Sleep(pms.mine_time_idle[self.resource] or self:TimeToAnimEnd())
+	end
+end
+
+function OnMsg.NewDay() -- NewSol...
+	-- reset the prod count (for overview or something)
+	local miners = UICity.labels.PortableMiner or ""
+	for i = 1, #miners do
+		miners[i].production_per_day = 0
 	end
 end
 
@@ -423,15 +397,15 @@ local function MineIsEmpty(miner)
 	miner:ShowNotWorkingSign(true)
 end
 
-function OnMsg.NewDay() -- NewSol...
-	-- reset the prod count (for overview or something)
-	local miners = UICity.labels.PortableMiner or ""
-	for i = 1, #miners do
-		miners[i].production_per_day = 0
-	end
+-- for painting the ground
+local concrete_paint = table.find(TerrainTextures, "name", "Dig")
+local metal_paint = table.find(TerrainTextures, "name", "SandFrozen")
+local SetTypeCircle = terrain.SetTypeCircle
+local function Random(m, n)
+	return AsyncRand(n - m + 1) + m
 end
 
-function PortableMiner:DigErUp(amount,res_type)
+function PortableMiner:DigErUp(pms)
 	local d = self.nearby_deposits[1]
 
   if not IsValid(d) then
@@ -462,22 +436,32 @@ function PortableMiner:DigErUp(amount,res_type)
 	end
 --]]
 
+	local amount = pms.mine_amount
 	-- if there isn't much left get what's left
 	if amount > d.amount then
 		amount = d.amount
 	end
 
-	local extracted
-	if res_type then
+	local extracted,paint
+	if self.resource == "Concrete" then
 		extracted = TerrainDepositExtractor.ExtractResource(self,amount)
-	else
+		paint = concrete_paint
+	elseif self.resource == "Metals" or self.resource == "PreciousMetals" then
 		extracted = BuildingDepositExploiterComponent.ExtractResource(self,amount)
+		paint = metal_paint
 	end
 
 	-- if it's empty ExtractResource will delete it
   if extracted == 0 or not IsValid(d) then
     return MineIsEmpty(self)
   end
+
+	-- visual cues
+	if pms.visual_cues then
+		local pt = self:GetLogicalPos()
+		pt = point(pt:x()+Random(-5000, 5000),pt:y()+Random(-5000, 5000))
+		SetTypeCircle(pt, 250, paint)
+	end
 
   return extracted
 end

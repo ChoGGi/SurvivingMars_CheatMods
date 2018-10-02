@@ -593,8 +593,6 @@ function OnMsg.ClassesGenerate()
 	if #ChoGGi.UserSettings.ConsoleExamineList == 16 then
 		ChoGGi.UserSettings.ConsoleExamineList = ChoGGi.Defaults.ConsoleExamineList
 	end
-	-- remove this some day
-	ChoGGi.UserSettings.KeyBindings.SignsInterface_Toggle = nil
 
 	if ChoGGi.testing or ChoGGi.UserSettings.ShowStartupTicks then
 		-- from here to the end of OnMsg.ChoGGi_Loaded()
