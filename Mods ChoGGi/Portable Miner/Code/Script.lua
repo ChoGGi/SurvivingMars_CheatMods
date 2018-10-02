@@ -43,7 +43,7 @@ local display_icon = StringFormat("%srover_combat.png",CurrentModPath)
 -- how much to mine each time
 local mine_amount = 1 * const.ResourceScale
 -- how much to store in res pile (10*10 = 100)
-local max_res_amount = 100 * const.ResourceScale
+local max_res_amount = 90 * const.ResourceScale
 -- how high we stack on the pile (10 per stack)
 local max_z_stack = max_res_amount / 10
 -- amount in auto
@@ -67,8 +67,8 @@ local mine_dist = 1500
 local mine_area = RegolithExtractor.GetExtractionShape()
 
 -- set to false to use length of animation (these are in game times, i think at normal speed 1 is 1 millisecond)
-local anim_time = 1000
-local idle_time = 1500
+--~ local anim_time = 1000
+--~ local idle_time = 1500
 --~ local anim_time = false
 --~ local idle_time = false
 
@@ -103,8 +103,8 @@ DefineClass.PortableMiner = {
 	mine_amount = mine_amount,
 	max_res_amount = max_res_amount,
 	max_z_stack = max_z_stack,
-	anim_time = anim_time,
-	idle_time = idle_time,
+--~ 	anim_time = anim_time,
+--~ 	idle_time = idle_time,
 	entity = entity,
 	custom_scale = custom_scale,
 	custom_anim = custom_anim,
@@ -360,7 +360,7 @@ function PortableMiner:Load()
       self:ShowNotWorkingSign(false)
       -- up n down n up n down
       self:SetStateText(self.default_anim)
-      Sleep(self.anim_time or self:TimeToAnimEnd())
+      Sleep(self:TimeToAnimEnd())
 
       -- mine some shit
       local mined
@@ -402,7 +402,7 @@ function PortableMiner:Load()
 		if self:GetState() ~= 0 then
 			self:SetStateText(self.default_anim_idle)
 		end
-		Sleep(self.idle_time or self:TimeToAnimEnd())
+		Sleep(self:TimeToAnimEnd())
 	end
 end
 

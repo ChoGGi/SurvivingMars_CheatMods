@@ -39,7 +39,7 @@ function OnMsg.ClassesGenerate()
 				local id = mod:sub((slash * -1) + 1)
 				local hpk = StringFormat("%s/ModContent.hpk",mod:gsub("\\", "/"))
 				-- skip any mods that aren't packed (uploaded by ECM, or just old)
-				if FileExists(hpk) then
+				if mod_table[id] and FileExists(hpk) then
 					c = c + 1
 					ItemList[c] = {
 						author = mod_table[id].author,

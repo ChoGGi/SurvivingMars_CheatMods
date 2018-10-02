@@ -298,21 +298,27 @@ function OnMsg.ClassesGenerate()
 		end
 
 		function ChoGGi.ComFuncs.CloseDialogsECM()
-			local RemoveOldDialogs = ChoGGi.ComFuncs.RemoveOldDialogs
-			RemoveOldDialogs("Examine")
-			RemoveOldDialogs("ChoGGi_ObjectManipulatorDlg")
-			RemoveOldDialogs("ChoGGi_ListChoiceDlg")
-			RemoveOldDialogs("ChoGGi_MonitorInfoDlg")
-			RemoveOldDialogs("ChoGGi_ExecCodeDlg")
-			RemoveOldDialogs("ChoGGi_MultiLineTextDlg")
-			RemoveOldDialogs("ChoGGi_FindValueDlg")
+			if ChoGGi.UserSettings.CloseDialogsECM then
+				local RemoveOldDialogs = ChoGGi.ComFuncs.RemoveOldDialogs
+				RemoveOldDialogs("Examine")
+				RemoveOldDialogs("ChoGGi_ObjectManipulatorDlg")
+				RemoveOldDialogs("ChoGGi_ListChoiceDlg")
+				RemoveOldDialogs("ChoGGi_MonitorInfoDlg")
+				RemoveOldDialogs("ChoGGi_ExecCodeDlg")
+				RemoveOldDialogs("ChoGGi_MultiLineTextDlg")
+				RemoveOldDialogs("ChoGGi_FindValueDlg")
+			end
 		end
 	end
 
-	-- if ECM is running without the bl, then we use the _G from ECM instead of the Library mod
+	-- if ECM is running without the bl, then we use the _G from ECM instead of the Library mod (since it's limited to per mod)
 	if not blacklist then
 		-- "some.some.some.etc" = returns etc as object
 		function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
+			-- there's always one
+			if str == "_G" then
+				return _G
+			end
 			-- always start with _G
 			local obj = root or _G
 			-- https://www.lua.org/pil/14.1.html

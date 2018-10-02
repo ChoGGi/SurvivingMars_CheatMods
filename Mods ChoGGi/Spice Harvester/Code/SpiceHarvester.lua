@@ -2,14 +2,14 @@
 
 -- tell people know how to get the library
 function OnMsg.ModsReloaded()
-	local library_version = 14
+	local library_version = 18
 
 	local ModsLoaded = ModsLoaded
 	local not_found_or_wrong_version
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	if idx then
-		if library_version > ModsLoaded[idx].version then
+		if ModsLoaded[idx].version > library_version then
 			not_found_or_wrong_version = true
 		end
 	else
@@ -71,7 +71,10 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
+	-- for painting the terrain
+	local terrain_type_idx = table.find(TerrainTextures, "name", "Sand_01")
 	local SetTypeCircle = terrain.SetTypeCircle
+
 	function Melanger:GameInit()
 		self.shuttles = {}
 
@@ -147,7 +150,6 @@ function OnMsg.ClassesGenerate()
 
 		-- a slimy trail of sand
 		CreateRealTimeThread(function()
-			local terrain_type_idx = table.find(TerrainTextures, "name", "Sand_01")
 			while IsValid(self) do
 				if SpiceHarvester.game_paused then
 					WaitMsg("MarsResume")
@@ -256,7 +258,7 @@ function OnMsg.ClassesGenerate()
 					[[Little-death]],
 					[[Destroy the poor defenseless harvester]],
 					[[Spareth ye sprynge]],
-					string.format("%sImages/Wormy.png",CurrentModPath)
+					string.format("%sUI/Wormy.png",CurrentModPath)
 				)
 				---
 			end,

@@ -356,7 +356,7 @@ function OnMsg.ChoGGi_SpawnedDrone(obj)
 		obj:SetGravity(UserSettings.GravityDrone)
 	end
 	if UserSettings.SpeedDrone then
-		pf.SetStepLen(obj,UserSettings.SpeedDrone)
+		obj:SetMoveSpeed(UserSettings.SpeedDrone)
 	end
 end
 
@@ -407,7 +407,8 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 	elseif UserSettings.RocketMaxExportAmount and obj:IsKindOf("SupplyRocket") then
 		obj.max_export_storage = UserSettings.RocketMaxExportAmount
 
-	elseif obj:IsKindOfClasses("RCTransport","RCRover","ExplorerRover") then
+--~ 	elseif obj:IsKindOfClasses("RCTransport","RCRover","ExplorerRover") then
+	elseif obj:IsKindOf("BaseRover") then
 		if UserSettings.RCTransportStorageCapacity and obj:IsKindOf("RCTransport") then
 			obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
 		elseif UserSettings.RCRoverMaxRadius and obj:IsKindOf("RCRover") then

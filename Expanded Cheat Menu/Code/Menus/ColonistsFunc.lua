@@ -11,8 +11,6 @@ function OnMsg.ClassesGenerate()
 	local type,table = type,table
 	local StringFormat = string.format
 
-	local pf_SetStepLen = pf.SetStepLen
-
 	function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
 		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.NoMoreEarthsick then
@@ -1653,19 +1651,17 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			if type(value) == "number" then
 				if choice[1].check2 then
 					if sel then
-						pf_SetStepLen(sel,value)
+						sel:SetMoveSpeed(value)
 					end
 				else
 					local tab = UICity.labels.Colonist or ""
 					for i = 1, #tab do
 						if dome then
 							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								--tab[i]:SetMoveSpeed(value)
-								pf_SetStepLen(tab[i],value)
+								tab[i]:SetMoveSpeed(value)
 							end
 						else
-							--tab[i]:SetMoveSpeed(value)
-							pf_SetStepLen(tab[i],value)
+							tab[i]:SetMoveSpeed(value)
 						end
 					end
 				end

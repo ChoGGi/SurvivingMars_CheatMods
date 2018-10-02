@@ -219,7 +219,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_ExpandedCM_Fixes_Most,
 		ActionId = ".Remove Blue Grid Marks",
 		ActionIcon = icon,
-		RolloverText = S[302535920001197--[[If you have any buildings with the selection grid around it, and you don't have it selected.--]]],
+		RolloverText = S[302535920001197--[[If you have any buildings with the selection grid around it, and you don't have it selected (also fixes stuck RC Transport Ghosts).--]]],
 		OnAction = ChoGGi.MenuFuncs.RemoveBlueGridMarks,
 	}
 

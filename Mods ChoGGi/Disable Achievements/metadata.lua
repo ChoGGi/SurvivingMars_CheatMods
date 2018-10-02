@@ -10,5 +10,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision,
   "description", [[Stops you from being able to unlock any Steam achievements.
 
+This isn't permanent, you can disable this anytime to have them working again.
+
 Requested by: I know someone did, but I forgot who...]],
 })

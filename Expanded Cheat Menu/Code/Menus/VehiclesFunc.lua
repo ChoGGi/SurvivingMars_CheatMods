@@ -12,8 +12,6 @@ function OnMsg.ClassesGenerate()
 	local tostring,type = tostring,type
 	local StringFormat = string.format
 
-	local pf_SetStepLen = pf.SetStepLen
-
 	function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = 0
@@ -251,8 +249,7 @@ function OnMsg.ClassesGenerate()
 			if type(value) == "number" then
 				local tab = UICity.labels.Drone or ""
 				for i = 1, #tab do
-					--tab[i]:SetMoveSpeed(value)
-					pf_SetStepLen(tab[i],value)
+					tab[i]:SetMoveSpeed(value)
 				end
 				ChoGGi.ComFuncs.SetSavedSetting("SpeedDrone",value)
 
@@ -308,8 +305,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.ComFuncs.SetSavedSetting("SpeedRC",value)
 				local tab = UICity.labels.Rover or ""
 				for i = 1, #tab do
-					--tab[i]:SetMoveSpeed(value)
-					pf_SetStepLen(tab[i],value)
+					tab[i]:SetMoveSpeed(value)
 				end
 
 				ChoGGi.SettingFuncs.WriteSettings()

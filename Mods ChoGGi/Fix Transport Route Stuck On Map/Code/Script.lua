@@ -28,16 +28,16 @@ end
 function OnMsg.LoadGame()
 
 	-- remove any crap stuck on the map
-	SuspendPassEdits("RangeHexRadius")
+	SuspendPassEdits("RangeHexMovableRadius")
 	SuspendPassEdits("WireFramedPrettification")
-	MapDelete("map", "RangeHexRadius")
+	MapDelete("map", "RangeHexMovableRadius")
 	-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
 	MapDelete("map", "WireFramedPrettification",function(o)
 		if o.entity == "RoverTransport" then
 			return true
 		end
 	end)
-	ResumePassEdits("RangeHexRadius")
+	ResumePassEdits("RangeHexMovableRadius")
 	ResumePassEdits("WireFramedPrettification")
 
 end

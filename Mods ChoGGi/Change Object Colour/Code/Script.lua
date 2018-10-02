@@ -2,14 +2,14 @@
 
 -- tell people know how to get the library
 function OnMsg.ModsReloaded()
-	local library_version = 16
+	local library_version = 18
 
 	local ModsLoaded = ModsLoaded
 	local not_found_or_wrong_version
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	if idx then
-		if library_version > ModsLoaded[idx].version then
+		if ModsLoaded[idx].version > library_version then
 			not_found_or_wrong_version = true
 		end
 	else

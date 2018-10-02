@@ -53,24 +53,24 @@ function OnMsg.ClassesGenerate()
 		UseLastOrientation = true,
 		-- show the cheats menu...
 		ShowCheatsMenu = true,
+		-- close any opened dialogs when loading into a game.
+		CloseDialogsECM = true,
 		-- stuff to show in Console>Examine list (tables/values/functions are fine)
 		ConsoleExamineList = {
 			"_G",
 			"ChoGGi",
-			"DataInstances",
 			"Consts",
-			"const",
+			"DataInstances",
+			"Dialogs",
+			"Flags",
 			"FXRules",
 			"g_Classes",
 			"GetInGameInterface",
-			"MsgThreads",
 			"Presets",
 			"TaskRequesters",
-			"terminal.desktop",
+			"ThreadsRegister",
 			"UICity",
 			"XTemplates",
-			"Dialogs",
-			"Flags",
 		},
 		-- blinky blink
 		FlashExamineObject = true,
@@ -590,6 +590,10 @@ function OnMsg.ClassesGenerate()
 
 	-- read settings from AppData/CheatMenuModSettings.lua
 	ChoGGi.SettingFuncs.ReadSettings()
+	-- not changed so update with new one
+	if #ChoGGi.UserSettings.ConsoleExamineList == 16 then
+		ChoGGi.UserSettings.ConsoleExamineList = ChoGGi.Defaults.ConsoleExamineList
+	end
 
 	if ChoGGi.testing or ChoGGi.UserSettings.ShowStartupTicks then
 		-- from here to the end of OnMsg.ChoGGi_Loaded()

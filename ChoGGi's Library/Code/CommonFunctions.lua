@@ -190,6 +190,33 @@ function ChoGGi.ComFuncs.RetHint(obj)
 	end
 end
 
+-- "some.some.some.etc" = returns etc as object
+function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
+	-- there's always one
+	if str == "_G" then
+		return _G
+	end
+	-- always start with _G
+	local obj = root or _G
+	-- https://www.lua.org/pil/14.1.html
+	for name,match in str:gmatch("([%w_]+)(.?)") do
+		-- . means we're not at the end yet
+		if match == "." then
+			-- create is for adding new settings in non-existent tables
+			if not obj[name] and not create then
+				-- our treasure hunt is cut short, so return nadda
+				return
+			end
+			-- change the parent to the child (create table if absent, this'll only fire when create)
+			obj = obj[name] or {}
+		else
+			-- no more . so we return as conquering heroes with the obj
+			return obj[name]
+		end
+	end
+end
+local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
+
 -- shows a popup msg with the rest of the notifications
 -- objects can be a single obj, or {obj1,obj2,etc}
 function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
@@ -267,129 +294,224 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 	end)
 end
 --~ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+do -- ShowMe
+	local IsPoint = IsPoint
+	local green = green
+	local guic = guic
+	local IsPointInBounds = terrain.IsPointInBounds
+	local ViewObjectMars = ViewObjectMars
 
-function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen)
+	local markers = {}
+	function ChoGGi.ComFuncs.ClearShowMe()
+		for k, v in pairs(markers) do
+			if IsValid(k) then
+				if v == "point" then
+					k:delete()
+				else
+					k:SetColorModifier(v)
+				end
+				markers[k] = nil
+			end
+		end
+	end
+
+	local clear = ChoGGi.ComFuncs.ClearShowMe
+	function ChoGGi.ComFuncs.ShowMe(o, color, time, both)
+		if not o then
+			return clear()
+		end
+		local g_Classes = g_Classes
+		color = color or green
+
+		if type(o) == "table" and #o == 2 then
+			if IsPoint(o[1]) and IsPointInBounds(o[1]) and IsPoint(o[2]) and IsPointInBounds(o[2]) then
+				local m = g_Classes.Vector:new()
+				m:Set(o[1], o[2], color)
+				markers[m] = "vector"
+				o = m
+			end
+		else
+			-- both is for objs i also want a sphere over
+			if IsPoint(o) or both then
+				local o2 = IsPoint(o) and o or IsValid(o) and o:GetVisualPos()
+				if o2 and IsPointInBounds(o2) then
+					local m = g_Classes.Sphere:new()
+					m:SetPos(o2)
+					m:SetRadius(50 * guic)
+					m:SetColor(color)
+					markers[m] = "point"
+					if not time then
+						ViewObjectMars(o2)
+					end
+					o2 = m
+				end
+			end
+
+			if IsValid(o) then
+				markers[o] = markers[o] or o:GetColorModifier()
+				o:SetColorModifier(color)
+				local pos = o:GetVisualPos()
+				if not time and IsPointInBounds(pos) then
+					ViewObjectMars(pos)
+				end
+			end
+		end
+	end
+end -- do
+local ShowMe = ChoGGi.ComFuncs.ShowMe
+local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
+
+function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
+	local g_Classes = g_Classes
+	for i = 1, #items do
+		local item = items[i]
+		-- "ChoGGi_CheckButtonMenu"
+		local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
+
+		local button = cls:new({
+			TextColor = black,
+			RolloverTitle = item.hint_title and CheckText(item.hint_title,item.obj and RetName(item.obj) or S[126095410863--[[Info--]]]),
+			RolloverText = CheckText(item.hint,""),
+			Text = CheckText(item.name),
+		}, popup.idContainer)
+
+		if item.image then
+			button.idIcon:SetImage(item.image)
+		end
+
+		if item.clicked then
+			function button.OnPress(...)
+				cls.OnPress(...)
+				item.clicked(...)
+				popup:Close()
+			end
+		else
+			function button.OnPress(...)
+				cls.OnPress(...)
+				popup:Close()
+			end
+		end
+
+		-- checkboxes (with a value (naturally))
+		if item.value then
+
+			local is_vis
+			local value = DotNameToObject(item.value)
+
+			-- dlgConsole.visible i think? damn me and my lazy commenting
+			if type(value) == "table" then
+				if value.visible then
+					is_vis = true
+				end
+			else
+				if value then
+					is_vis = true
+				end
+			end
+
+			-- oh yeah, you toggle that check
+			if is_vis then
+				button:SetCheck(true)
+			else
+				button:SetCheck(false)
+			end
+		end
+
+		local showme_func
+		if item.showme then
+			showme_func = function(self, pt, child)
+				ClearShowMe()
+				ShowMe(item.showme, nil, true, true)
+			end
+		end
+
+		local pos_func
+		if item.pos then
+			pos_func = function(self, pt, child)
+				ViewObjectMars(item.pos)
+			end
+		end
+
+		-- my ugly submenu hack
+		local submenu_func
+		if item.submenu then
+			local name = StringFormat("ChoGGi_submenu_%s",item.name)
+			submenu_func = function(self, pt, child)
+				if popup[name] then
+					popup[name]:Close()
+				end
+				popup[name] = g_Classes.XPopupList:new({
+					Opened = true,
+					Id = "ChoGGi_submenu_popup",
+					popup_parent = popup,
+					ZOrder = max_int - 1000,
+					LayoutMethod = "VList",
+					MaxItems = 8,
+					AnchorType = "right",
+					Anchor = self.box,
+				}, terminal.desktop)
+				ChoGGi.ComFuncs.PopupBuildMenu(item.submenu,popup[name])
+				popup[name]:Open()
+			end
+		end
+
+		-- add our mouseenter funcs
+		if showme_func or pos_func or submenu_func then
+			function button:OnMouseEnter(pt, child)
+				cls.OnMouseEnter(self, pt, child)
+				if showme_func then
+					showme_func(self, pt, child)
+				end
+				if pos_func then
+					pos_func(self, pt, child)
+				end
+				if submenu_func then
+					submenu_func(self, pt, child)
+				end
+			end
+		end
+	end
+end
+
+function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu)
 	local popup = rawget(terminal.desktop,popup_id)
-	local opened = popup
-	if opened then
+	if popup then
 		popup:Close()
+		local submenu = rawget(terminal.desktop,"ChoGGi_submenu_popup")
+		if submenu then
+			submenu:Close()
+		end
 	end
 
 	if not parent then
 		return
 	end
 
-	if not opened or reopen then
+	if not popup or reopen then
 		local ChoGGi = ChoGGi
 		local g_Classes = g_Classes
-		local ShowMe = ChoGGi.ComFuncs.ShowMe
-		local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
-		local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 		local ViewObjectMars = ViewObjectMars
 		local black = black
 		local IsKeyPressed = terminal.IsKeyPressed
 		local vkShift = const.vkShift
 
 		popup = g_Classes.XPopupList:new({
-			-- default to showing it, since we close it ourselves
 			Opened = true,
 			Id = popup_id,
 			-- -1000 is for XRollovers which get max_int
 			ZOrder = max_int - 1000,
 			LayoutMethod = "VList",
+			-- "top" for the console, default "none"
+			AnchorType = anchor or "top",
+			-- "none","smart","left","right","top","center-top","bottom","mouse"
+			Anchor = parent.box,
+
 		}, terminal.desktop)
 
-		-- hide any highlights
-		function popup.OnKillFocus(pop,new_focus)
-			ClearShowMe()
-			if not reopen or reopen and not IsKeyPressed(vkShift) then
-				g_Classes.XPopupList.OnKillFocus(pop,new_focus)
-				popup:Close()
-			end
-		end
-
-		for i = 1, #items do
-			local item = items[i]
-			local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
-			-- defaults to ChoGGi_ButtonMenu. class = "ChoGGi_CheckButtonMenu",
-
-			local button = cls:new({
-				TextColor = black,
-				RolloverTitle = item.hint_title and CheckText(item.hint_title,item.obj and RetName(item.obj) or S[126095410863--[[Info--]]]),
-				RolloverText = CheckText(item.hint,""),
-				Text = CheckText(item.name),
-				OnMouseButtonUp = function()
-					popup:Close()
-				end,
-			}, popup.idContainer)
-
-			if item.image then
-				button.idIcon:SetImage(item.image)
-			end
-
-			if item.clicked then
-				function button.OnMouseButtonDown(...)
-					cls.OnMouseButtonDown(...)
-					item.clicked(...)
-				end
-			end
-
-			if item.showme then
-				function button.OnMouseEnter(self, pt, child)
-					cls.OnMouseEnter(self, pt, child)
-					ClearShowMe()
-					ShowMe(item.showme, nil, true, true)
-				end
-			end
-
-			if item.pos then
-				function button.OnMouseEnter(self, pt, child)
-					cls.OnMouseEnter(self, pt, child)
-					ViewObjectMars(item.pos)
-				end
-			end
-
-			-- checkboxes (with a value (naturally))
-			if item.value then
-
-				local is_vis
-				local value = DotNameToObject(item.value)
-
-				-- dlgConsole.visible i think? damn me and my lazy commenting
-				if type(value) == "table" then
-					if value.visible then
-						is_vis = true
-					end
-				else
-					if value then
-						is_vis = true
-					end
-				end
-
-				-- oh yeah, you toggle that check
-				if is_vis then
-					button:SetCheck(true)
-				else
-					button:SetCheck(false)
-				end
-			end
-
-		end
-
-		popup:SetAnchor(parent.box)
-		-- top for the console, XPopupList defaults to smart which just looks ugly for console
-		popup:SetAnchorType(anchor or "top")
-	--~		 "smart",
-	--~		 "left",
-	--~		 "right",
-	--~		 "top",
-	--~		 "center-top",
-	--~		 "bottom",
-	--~		 "mouse"
+		ChoGGi.ComFuncs.PopupBuildMenu(items,popup,popup_id)
 
 		popup:Open()
-		popup:SetFocus()
---~			 return popup
+	--~			 return popup
 	end
 end
 
@@ -1118,70 +1240,6 @@ function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
 	return temp_table
 end
 
-do -- ShowMe
-	local IsPoint = IsPoint
-	local green = green
-	local guic = guic
-	local IsPointInBounds = terrain.IsPointInBounds
-	local ViewObjectMars = ViewObjectMars
-
-	local markers = {}
-	function ChoGGi.ComFuncs.ClearShowMe()
-		for k, v in pairs(markers) do
-			if IsValid(k) then
-				if v == "point" then
-					k:delete()
-				else
-					k:SetColorModifier(v)
-				end
-				markers[k] = nil
-			end
-		end
-	end
-
-	function ChoGGi.ComFuncs.ShowMe(o, color, time, both)
-		if not o then
-			return ChoGGi.ComFuncs.ClearShowMe()
-		end
-		local g_Classes = g_Classes
-		color = color or green
-
-		if type(o) == "table" and #o == 2 then
-			if IsPoint(o[1]) and IsPointInBounds(o[1]) and IsPoint(o[2]) and IsPointInBounds(o[2]) then
-				local m = g_Classes.Vector:new()
-				m:Set(o[1], o[2], color)
-				markers[m] = "vector"
-				o = m
-			end
-		else
-			-- both is for objs i also want a sphere over
-			if IsPoint(o) or both then
-				local o2 = IsPoint(o) and o or IsValid(o) and o:GetVisualPos()
-				if o2 and IsPointInBounds(o2) then
-					local m = g_Classes.Sphere:new()
-					m:SetPos(o2)
-					m:SetRadius(50 * guic)
-					m:SetColor(color)
-					markers[m] = "point"
-					if not time then
-						ViewObjectMars(o2)
-					end
-					o2 = m
-				end
-			end
-
-			if IsValid(o) then
-				markers[o] = markers[o] or o:GetColorModifier()
-				o:SetColorModifier(color)
-				local pos = o:GetVisualPos()
-				if not time and IsPointInBounds(pos) then
-					ViewObjectMars(pos)
-				end
-			end
-		end
-	end
-end -- do
-
 do -- Ticks
 	local times = {}
 	local GetPreciseTicks = GetPreciseTicks
@@ -1450,28 +1508,6 @@ end
 
 function ChoGGi.ComFuncs.OpenKeyPresserDlg()
 	ChoGGi_KeyPresserDlg:new({}, terminal.desktop,{})
-end
-
--- "some.some.some.etc" = returns etc as object
-function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
-	-- always start with _G
-	local obj = root or _G
-	-- https://www.lua.org/pil/14.1.html
-	for name,match in str:gmatch("([%w_]+)(.?)") do
-		-- . means we're not at the end yet
-		if match == "." then
-			-- create is for adding new settings in non-existent tables
-			if not obj[name] and not create then
-				-- our treasure hunt is cut short, so return nadda
-				return
-			end
-			-- change the parent to the child (create table if absent, this'll only fire when create)
-			obj = obj[name] or {}
-		else
-			-- no more . so we return as conquering heroes with the obj
-			return obj[name]
-		end
-	end
 end
 
 function ChoGGi.ComFuncs.CreateSetting(str,setting_type)

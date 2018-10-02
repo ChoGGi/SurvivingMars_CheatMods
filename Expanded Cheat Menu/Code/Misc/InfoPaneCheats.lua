@@ -297,12 +297,10 @@ function OnMsg.ClassesGenerate()
 		BaseRover.CheatBattEmpty = CheatBattEmpty
 		--CheatMoveSpeedDbl
 		local function CheatMoveSpeedDbl(self)
-			--self:SetMoveSpeed(self:GetMoveSpeed() * 2)
-			pf.SetStepLen(self,self:GetMoveSpeed() * 2)
+			self:SetMoveSpeed(self:GetMoveSpeed() * 2)
 		end
 		local function CheatMoveSpeedDef(self)
-			--self:SetMoveSpeed(self.base_move_speed)
-			pf.SetStepLen(self,self.base_move_speed)
+			self:SetMoveSpeed(self.base_move_speed)
 		end
 		Drone.CheatMoveSpeedDbl = CheatMoveSpeedDbl
 		Drone.CheatMoveSpeedDef = CheatMoveSpeedDef

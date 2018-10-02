@@ -6,6 +6,8 @@ function OnMsg.ClassesGenerate()
 
 	local StringFormat = string.format
 	local PopupToggle = ChoGGi.ComFuncs.PopupToggle
+	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+	local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 
@@ -124,12 +126,31 @@ function OnMsg.ClassesGenerate()
 				}
 			end
 		end
-		PopupToggle(self,"idHistoryMenu",items)
+		PopupToggle(self,"idHistoryMenuPopup",items)
 	end
 
 	-- created when we create the controls controls the first time
 	local ExamineMenuToggle_list
-
+	-- to add each item
+	local function BuildExamineItem(name)
+		if not name then
+			return
+		end
+		local obj = DotNameToObject(name)
+		local func = type(obj) == "function"
+		local disp = StringFormat("%s%s",name,func and "()" or "")
+		return {
+			name = disp,
+			hint = StringFormat("%s: %s",S[302535920000491--[[Examine Object--]]],disp),
+			clicked = function()
+				if func then
+					OpenInExamineDlg(obj(),nil,disp)
+				else
+					OpenInExamineDlg(name,"str",disp)
+				end
+			end,
+		}
+	end
 	-- build list of objects to examine
 	local CmpLower = CmpLower
 	local function BuildExamineMenu()
@@ -140,23 +161,80 @@ function OnMsg.ClassesGenerate()
 		table.sort(list,
 			function(a,b)
 				-- damn eunuchs
-	--~ 			return a:lower() < b:lower()
 				return CmpLower(a,b)
 			end
 		)
 
 		for i = 0, #list do
-			ExamineMenuToggle_list[i] = {
-				name = list[i],
-				hint = StringFormat("%s: %s",S[302535920000491--[[Examine Object--]]],list[i]),
-				clicked = function()
-					local obj = ChoGGi.ComFuncs.DotNameToObject(list[i])
-					if type(obj) == "function" then
-						ChoGGi.ComFuncs.OpenInExamineDlg(obj())
-					else
-						ChoGGi.ComFuncs.OpenInExamineDlg(obj)
-					end
-				end,
+			ExamineMenuToggle_list[i] = BuildExamineItem(list[i])
+		end
+
+		-- if Presets then add a submenu with each DefGlobalMap in PresetDefs (hopefully showing people the correct way to access them)
+		local submenu = table.find(ExamineMenuToggle_list,"name","Presets")
+		if submenu then
+			-- remove hint from "submenu" menu
+			ExamineMenuToggle_list[submenu].hint = nil
+			-- build our list
+			local submenu_table = {}
+			local c = 0
+			for _,value in pairs(PresetDefs) do
+				if value.DefGlobalMap ~= "" then
+					c = c + 1
+					submenu_table[c] = BuildExamineItem(value.DefGlobalMap)
+				end
+			end
+			table.sort(submenu_table,
+				function(a,b)
+					-- damn eunuchs
+					return CmpLower(a.name,b.name)
+				end
+			)
+			-- add orig to the menu
+			table.insert(submenu_table,1,BuildExamineItem("Presets"))
+			-- and done
+			ExamineMenuToggle_list[submenu].submenu = submenu_table
+		end
+		-- add some stuff to UICity
+		submenu = table.find(ExamineMenuToggle_list,"name","UICity")
+		if submenu then
+			ExamineMenuToggle_list[submenu].hint = nil
+			ExamineMenuToggle_list[submenu].submenu = {
+				BuildExamineItem("UICity"),
+				BuildExamineItem("UICity.labels"),
+				BuildExamineItem("UICity.tech_status"),
+			}
+		end
+		-- merged const Consts g_Consts
+		submenu = table.find(ExamineMenuToggle_list,"name","Consts")
+		if submenu then
+			ExamineMenuToggle_list[submenu].hint = nil
+			ExamineMenuToggle_list[submenu].submenu = {
+				BuildExamineItem("Consts"),
+				BuildExamineItem("g_Consts"),
+				BuildExamineItem("const"),
+			}
+		end
+
+		-- merged const Consts g_Consts
+		submenu = table.find(ExamineMenuToggle_list,"name","ThreadsRegister")
+		if submenu then
+			ExamineMenuToggle_list[submenu].hint = nil
+			ExamineMenuToggle_list[submenu].submenu = {
+				BuildExamineItem("ThreadsRegister"),
+				BuildExamineItem("ThreadsMessageToThreads"),
+				BuildExamineItem("ThreadsThreadToMessage"),
+				BuildExamineItem("s_SeqListPlayers"),
+			}
+		end
+
+		-- Dialogs
+		submenu = table.find(ExamineMenuToggle_list,"name","Dialogs")
+		if submenu then
+			ExamineMenuToggle_list[submenu].hint = nil
+			ExamineMenuToggle_list[submenu].submenu = {
+				BuildExamineItem("Dialogs"),
+				BuildExamineItem("terminal.desktop"),
+				BuildExamineItem("GetInGameInterface"),
 			}
 		end
 

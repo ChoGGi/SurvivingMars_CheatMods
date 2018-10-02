@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Transport Route Stuck On Map v0.1",
-	"version", 1,
-	"saved", 1538308800,
+	"title", "Fix: Transport Route Stuck On Map v0.2",
+	"version", 2,
+	"saved", 1538395200,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixTransportRouteStuckOnMap",
 	"steam_id", "1526896729",

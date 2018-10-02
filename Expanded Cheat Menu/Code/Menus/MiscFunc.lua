@@ -401,10 +401,9 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	do -- SetEntityScale
-		local SetStepLen = pf.SetStepLen
 		local function SetScale(obj,Scale)
 			local ChoGGi = ChoGGi
-			local cUserSettings = ChoGGi.UserSettings
+			local UserSettings = ChoGGi.UserSettings
 			obj:SetScale(Scale)
 
 			--changing entity to a static one and changing scale can make things not move so re-apply speeds.
@@ -412,26 +411,26 @@ function OnMsg.ClassesGenerate()
 			CreateRealTimeThread(function()
 				Sleep(500)
 				if obj:IsKindOf("Drone") then
-					if cUserSettings.SpeedDrone then
-						SetStepLen(obj,cUserSettings.SpeedDrone)
+					if UserSettings.SpeedDrone then
+						obj:SetMoveSpeed(UserSettings.SpeedDrone)
 					else
 						obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedDrone())
 					end
 				elseif obj:IsKindOf("CargoShuttle") then
-					if cUserSettings.SpeedShuttle then
+					if UserSettings.SpeedShuttle then
 						obj.move_speed = ChoGGi.Consts.SpeedShuttle
 					else
 						obj.move_speed = ChoGGi.Consts.SpeedShuttle
 					end
 				elseif obj:IsKindOf("Colonist") then
-					if cUserSettings.SpeedColonist then
-						SetStepLen(obj,cUserSettings.SpeedColonist)
+					if UserSettings.SpeedColonist then
+						obj:SetMoveSpeed(UserSettings.SpeedColonist)
 					else
 						obj:SetMoveSpeed(ChoGGi.Consts.SpeedColonist)
 					end
 				elseif obj:IsKindOf("BaseRover") then
-					if cUserSettings.SpeedRC then
-						SetStepLen(obj,cUserSettings.SpeedRC)
+					if UserSettings.SpeedRC then
+						obj:SetMoveSpeed(UserSettings.SpeedRC)
 					else
 						obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedRC())
 					end
