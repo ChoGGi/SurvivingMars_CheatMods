@@ -183,6 +183,9 @@ function OnMsg.ClassesGenerate()
 					submenu_table[c] = BuildExamineItem(value.DefGlobalMap)
 				end
 			end
+			c = c + 1
+			submenu_table[c] = BuildExamineItem("BuildingTemplates")
+
 			table.sort(submenu_table,
 				function(a,b)
 					-- damn eunuchs

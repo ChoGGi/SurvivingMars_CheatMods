@@ -9,6 +9,9 @@
 - Moved Points To Train from Sanatoriums Schools to Buildings.
 - Examine will only open one dialog per object examined (when you use it in a loop, and don't want a couple dozen dialogs).
 
+### Fixed:
+- Messed up the select object func last update? (thanks McKaby).
+
 ### Removed:
 - Help>Interface>Toggle Signs: No point in having it as you can just use the built in one (I left the interface one since you can't? rebind that).
 - Some Cheat panel text buttons for the wrong objects.

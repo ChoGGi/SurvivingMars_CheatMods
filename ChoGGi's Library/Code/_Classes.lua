@@ -487,6 +487,11 @@ end
 function ChoGGi_Window:SetInitPos(parent,pt)
 	local x,y,w,h
 
+	-- some funcs opened in examine have more than one return value
+	if type(parent) ~= "table" then
+		parent = nil
+	end
+
 	-- if we're opened from another dialog then offset it, else open at mouse cursor
 	if parent then
 		x,y,w,h = BoxSize(parent,self)
@@ -498,11 +503,11 @@ function ChoGGi_Window:SetInitPos(parent,pt)
 		h = box:sizey()
 	end
 
-	if pt then
+	if pt and IsPoint(pt) then
 		x = pt:x()
 		y = pt:y()
 	elseif not parent then
-		local pt = GetMousePos()
+		pt = GetMousePos()
 		x = pt:x()
 		y = pt:y()
 	end

@@ -10,6 +10,7 @@ local IsValid = IsValid
 local GetTerrainCursor = GetTerrainCursor
 local FilterObjectsC = FilterObjectsC
 local StringFormat = string.format
+local TableRemove = table.remove
 
 -- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
 DefineClass.ChoGGi_HexSpot = {
@@ -363,6 +364,9 @@ local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
 
 function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 	local g_Classes = g_Classes
+	local ViewObjectMars = ViewObjectMars
+	local black = black
+
 	for i = 1, #items do
 		local item = items[i]
 		-- "ChoGGi_CheckButtonMenu"
@@ -488,14 +492,8 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 	end
 
 	if not popup or reopen then
-		local ChoGGi = ChoGGi
-		local g_Classes = g_Classes
-		local ViewObjectMars = ViewObjectMars
-		local black = black
-		local IsKeyPressed = terminal.IsKeyPressed
-		local vkShift = const.vkShift
 
-		popup = g_Classes.XPopupList:new({
+		popup = XPopupList:new({
 			Opened = true,
 			Id = popup_id,
 			-- -1000 is for XRollovers which get max_int
@@ -712,7 +710,7 @@ function ChoGGi.ComFuncs.RemoveMissingLabelObjects(label)
 	local list = UICity.labels[label] or ""
 	for i = #list, 1, -1 do
 		if not IsValid(list[i]) then
-			table.remove(UICity.labels[label],i)
+			TableRemove(UICity.labels[label],i)
 		end
 	end
 end
@@ -721,13 +719,13 @@ function ChoGGi.ComFuncs.RemoveMissingTableObjects(list,obj)
 	if obj then
 		for i = #list, 1, -1 do
 			if #list[i][list] == 0 then
-				table.remove(list,i)
+				TableRemove(list,i)
 			end
 		end
 	else
 		for i = #list, 1, -1 do
 			if not IsValid(list[i]) then
-				table.remove(list,i)
+				TableRemove(list,i)
 			end
 		end
 	end
@@ -739,7 +737,7 @@ function ChoGGi.ComFuncs.RemoveFromLabel(label,obj)
 	local tab = UICity.labels[label] or ""
 	for i = 1, #tab do
 		if tab[i] and tab[i].handle and tab[i] == obj.handle then
-			table.remove(UICity.labels[label],i)
+			TableRemove(UICity.labels[label],i)
 		end
 	end
 end
@@ -1518,11 +1516,15 @@ function ChoGGi.ComFuncs.CreateSetting(str,setting_type)
 end
 
 -- returns whatever is selected > moused over > nearest object to cursor
-function ChoGGi.ComFuncs.SelObject()
-	return SelectedObj or SelectionMouseObj() or MapFindNearest(GetTerrainCursor(), 1500)
+function ChoGGi.ComFuncs.SelObject(radius)
+	local obj = SelectedObj or SelectionMouseObj()
+	if not obj then
+		local pt = GetTerrainCursor()
+		obj = MapFindNearest(pt,pt,radius or 1500)
+	end
+	return obj
 end
 
--- removes all the dev shortcuts/etc and adds mine
 function ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
 	local XShortcutsTarget = XShortcutsTarget
 
@@ -1536,16 +1538,15 @@ function ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
 	end
 
 	-- remove stuff from GameShortcuts
-	local table_remove = table.remove
 	for i = #XShortcutsTarget.actions, 1, -1 do
 		-- removes pretty much all the dev actions added, and leaves the game ones intact
 		local id = XShortcutsTarget.actions[i].ActionId
-		if id and not id:starts_with("action") then
-			table_remove(XShortcutsTarget.actions,i)
+		if id and not id:starts_with("action") and not id:find("G_") then
+			TableRemove(XShortcutsTarget.actions,i)
 		end
 	end
 	if testing then
-		table.remove(XShortcutsTarget.actions,table.find(XShortcutsTarget.actions,"ActionId","actionToggleFullscreen"))
+		TableRemove(XShortcutsTarget.actions,table.find(XShortcutsTarget.actions,"ActionId","actionToggleFullscreen"))
 	end
 
 	-- and add mine

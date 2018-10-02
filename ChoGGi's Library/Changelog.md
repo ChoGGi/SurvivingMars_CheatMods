@@ -1,8 +1,11 @@
 ## Library Changelog
 
-## v1.8 (Unreleased)
+## v1.9 (Unreleased)
+
+## v1.8 (2 Oct 2018)
 - Submenus added to PopupToggle.
 - Cleaned up a minor issue with DotNameToObject.
+- Fixed issue with some overridden keybindings (thanks Bobcupcatdolphin).
 
 ## v1.7 (30 Sep 2018)
 - ECM bump.

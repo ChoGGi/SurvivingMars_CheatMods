@@ -37,7 +37,7 @@ SOFTWARE.
 
 -- tell people know how to get the library
 function OnMsg.ModsReloaded()
-	local library_version = 18
+	local library_version = 19
 
 	local ModsLoaded = ModsLoaded
 	-- we need a version check to remind Nexus/GoG users
