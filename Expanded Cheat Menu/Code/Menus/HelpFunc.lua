@@ -519,18 +519,6 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
-	function ChoGGi.MenuFuncs.SignsInterface_Toggle()
-		ToggleSigns()
-		MsgPopup(
-			302535920001074--[[Sign, sign, everywhere a sign.
-	Blockin' out the scenery, breakin' my mind.
-	Do this, don't do that, can't you read the sign?--]],
-			302535920001075--[[Signs--]],
-			nil,
-			true
-		)
-	end
-
 	function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
 		HintsEnabled = not HintsEnabled
 		SetHintNotificationsEnabled(HintsEnabled)

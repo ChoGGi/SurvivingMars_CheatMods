@@ -571,21 +571,33 @@ function OnMsg.ClassesGenerate()
 						SetHint(action,S[302535920001227--[[Turns object into ruin.--]]])
 					end
 				elseif action.ActionId == "Empty" then
-					if obj:IsKindOfClasses("SubsurfaceDeposit","TerrainDeposit") then
-						SetHint(action,S[302535920001228--[[Set the stored amount of this %s to 0.--]]]:format(name))
+					if obj:IsKindOf("SubsurfaceAnomaly") then
+						action.ActionId = nil
 					else
-						SetHint(action,S[302535920001230--[[Empties the storage of this building.
+						if obj:IsKindOfClasses("SubsurfaceDeposit","TerrainDeposit") then
+							SetHint(action,S[302535920001228--[[Set the stored amount of this %s to 0.--]]]:format(name))
+						else
+							SetHint(action,S[302535920001230--[[Empties the storage of this building.
 
-	If this isn't a dumping site then waste rock will not be emptied.--]]])
+		If this isn't a dumping site then waste rock will not be emptied.--]]])
+						end
 					end
 				elseif action.ActionId == "Refill" then
-					SetHint(action,S[302535920001231--[[Refill the deposit to full capacity.--]]])
+					if obj:IsKindOf("SubsurfaceAnomaly") then
+						action.ActionId = nil
+					else
+						SetHint(action,S[302535920001231--[[Refill the deposit to full capacity.--]]])
+					end
 				elseif action.ActionId == "Fill" then
 					SetHint(action,S[302535920001232--[[Fill the storage of this building.--]]])
 				elseif action.ActionId == "Launch" then
 					SetHint(action,StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920001233--[[Launches rocket without asking.--]]]))
 				elseif action.ActionId == "DoubleMaxAmount" then
-					SetHint(action,S[302535920001234--[[Double the amount this %s can hold.--]]]:format(name))
+					if obj:IsKindOf("SubsurfaceAnomaly") then
+						action.ActionId = nil
+					else
+						SetHint(action,S[302535920001234--[[Double the amount this %s can hold.--]]]:format(name))
+					end
 				elseif action.ActionId == "ReneagadeCapDbl" then
 					SetHint(action,S[302535920001236--[[Double amount of reneagades this station can negate (currently: %s) < Reselect to update amount.--]]]:format(obj.negated_renegades))
 				end

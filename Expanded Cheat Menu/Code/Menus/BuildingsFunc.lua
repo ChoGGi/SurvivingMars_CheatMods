@@ -84,7 +84,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001344--[[Points To Train--]],
+			title = StringFormat("%s: %s",name,S[302535920001344--[[Points To Train--]]]),
 			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
 			skip_sort = true,
 		}

@@ -291,7 +291,7 @@ function OnMsg.ClassesGenerate()
 			while ChoGGi.ComFuncs.CheckForTypeInList(term,dialog) do
 				for i = #term, 1, -1 do
 					if term[i]:IsKindOf(dialog) then
-						term[i]:delete()
+						term[i]:Done()
 					end
 				end
 			end

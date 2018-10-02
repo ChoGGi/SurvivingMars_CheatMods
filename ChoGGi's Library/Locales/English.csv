@@ -1,4 +1,8 @@
 ID,Text,Translation,Old Translation,Gender
+302535920000664,,
+302535920000665,,
+302535920001074,,
+302535920001075,,
 302535920001376,,
 302535920001377,,
 302535920001378,,
@@ -1400,10 +1404,6 @@ CheatMenuModSettings.lua > DisableECM to re-enable them.",
 302535920001070,Restart to take effect.,
 302535920001072,"Are you sure you want to reset ECM settings?
 Old settings are saved as %s (or not saved if you don't use the HelperMod).",
-302535920001074,"Sign, sign, everywhere a sign.
-Blockin' out the scenery, breakin' my mind.
-Do this, don't do that, can't you read the sign?",
-302535920001075,Signs,
 302535920001076,Hints Reset!,
 302535920001077,%s: Bye bye hints,
 302535920001078,"Hover mouse over menu item to get description and enabled status
@@ -1429,8 +1429,6 @@ For any issues; please report them to my Github/Steam/NexusMods page, or email %
 302535920000661,Show Interface in Screenshots,
 302535920000662,Do you want to see the interface in screenshots?,
 302535920000663,Toggle Interface,
-302535920000664,Toggle Signs,
-302535920000665,"Concrete, metal deposits, not working, etc...",
 302535920000666,Toggle on-screen hints,
 302535920000667,Don't show hints for this game.,
 302535920000668,Reset on-screen hints,

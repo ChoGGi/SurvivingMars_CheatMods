@@ -6,6 +6,12 @@
 ## v9.7 (Unreleased)
 ### Changed:
 - Examine menu for console now shows object name for title, and has submenus for certain items.
+- Moved Points To Train from Sanatoriums Schools to Buildings.
+- Examine will only open one dialog per object examined (when you use it in a loop, and don't want a couple dozen dialogs).
+
+### Removed:
+- Help>Interface>Toggle Signs: No point in having it as you can just use the built in one (I left the interface one since you can't? rebind that).
+- Some Cheat panel text buttons for the wrong objects.
 
 ## v9.6 (30 Sep 2018)
 ### Changed:

@@ -12,7 +12,7 @@ local new_markers = {}
 local LandingSite_object
 local PlanetRotation_object
 
--- draws the saved game spot image
+-- draws the saved game spot image (needed to slightly tweak LandingSiteObject:DrawSpot)
 local ScaleXY = ScaleXY
 local box = box
 local DrawImage = UIL.DrawImage
@@ -30,10 +30,9 @@ end
 -- add our visited icons
 local MulDivRound = MulDivRound
 local PlaceObject = PlaceObject
-local function AddSpots(obj)
-	local landing_dlg = obj[2][1]
---~ ex(landing_dlg)
-	LandingSite_object = landing_dlg.context
+local RotateAxis = RotateAxis
+local function BuildMySpots()
+	local landing_dlg = LandingSite_object.dialog
 	PlanetRotation_object = PlanetRotationObj
 
 	-- double maxwidth limit for text (some people have lots of saves)
@@ -48,7 +47,7 @@ local function AddSpots(obj)
 	template:SetVisible(true)
 
 	-- always start with a blank table
-	new_markers = {}
+	table.clear(new_markers)
 
 	-- start above the default landing spots added
 	local idx = #Presets.LandingSpot.Default+1
@@ -79,7 +78,6 @@ local function AddSpots(obj)
 				new_markers[table_name] = {
 					id = marker_id,
 					longitude = save.longitude,
---~ 					latitude = save.latitude,
 					text = save.displayname,
 				}
 
@@ -105,8 +103,14 @@ local function AddSpots(obj)
 	template:SetVisible(false)
 	template.DrawContent = orig_template_DrawContent
 
-	-- stop our new stuff from floating around
-	PlanetRotation_object:SetAnimPhase(1,0)
+end
+
+local orig_LandingSiteObject_AttachPredefinedSpots = LandingSiteObject.AttachPredefinedSpots
+function LandingSiteObject:AttachPredefinedSpots(...)
+	orig_LandingSiteObject_AttachPredefinedSpots(self,...)
+	LandingSite_object = self
+	-- if I don't thread it I get an error from LandingSiteObject:DrawSpot
+	CreateRealTimeThread(BuildMySpots)
 end
 
 -- are our icons vis?
@@ -115,7 +119,7 @@ local Min = Min
 local orig_LandingSiteObject_CalcMarkersVisibility = LandingSiteObject.CalcMarkersVisibility
 function LandingSiteObject:CalcMarkersVisibility()
 	local cur_phase = PlanetRotationObj:GetAnimPhase()
-	for _,obj in pairs(new_markers) do
+	for name,obj in pairs(new_markers) do
 		local phase = self:CalcAnimPhaseUsingLongitude(obj.longitude * 60)
 		local dist = Min((cur_phase-phase)%self.anim_duration, (phase-cur_phase)%self.anim_duration)
 		self.dialog[obj.id]:SetVisible(dist <= 2400)
@@ -135,32 +139,4 @@ function LandingSiteObject:DisplayCoord(pt, lat, long, lat_org, long_org)
 		local text = self.dialog.idtxtCoord.text
 		self.dialog.idtxtCoord:SetText(StringFormat("<font HelpHint>%s</font>\n%s",marker.text,text))
 	end
-end
-
--- hook into mode change for the main menu
-function OnMsg.ClassesBuilt()
-	local XTemplates = XTemplates
-	local Sleep = Sleep
-
-	-- fires AddSpots when the mode changes to landing
-	local idx = table.find(XTemplates.PGMission[1],"name","SetMode")
-	local orig_SetMode = XTemplates.PGMission[1][idx].func
-	XTemplates.PGMission[1][idx].func = function(self, mode, ...)
-		---
-		orig_SetMode(self, mode, ...)
-		if mode == "landing" then
-			CreateRealTimeThread(function()
-				-- wait till the landing dialog is ready
-				while true do
-					Sleep(100)
-					if self.Mode == "landing" then
-						break
-					end
-				end
-				AddSpots(self)
-			end)
-		end
-		---
-	end
-
 end

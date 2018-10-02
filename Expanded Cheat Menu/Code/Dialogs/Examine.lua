@@ -53,6 +53,7 @@ function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 
+
 	-- used for updating text button rollover hints
 	idLinks_hypertext = {
 		[StringFormat("[%s]",S[1000220--[[Refresh--]]])] = S[302535920000092--[[Updates list with any changed values.--]]],
@@ -91,9 +92,21 @@ DefineClass.Examine = {
 	menu_list_items = false,
 	-- clickable purple text
 	onclick_handles = false,
+
+	examine_dialogs = {},
 }
 
 function Examine:Init(parent, context)
+	self.obj = context.obj
+
+	-- already examining, so focus and return
+	local ex_dia = Examine.examine_dialogs
+	if ex_dia[self.obj] then
+		ex_dia[self.obj].idMoveControl:SetFocus()
+		return
+	end
+	ex_dia[self.obj] = self
+
 	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 	local const = const
@@ -109,8 +122,6 @@ function Examine:Init(parent, context)
 	self.menu_list_items = {}
 	-- clickable purple text
 	self.onclick_handles = {}
-
-	self.obj = context.obj
 
 	-- if we're examining a string we want to convert to an object
 	if type(context.parent) == "string" then
@@ -1212,5 +1223,6 @@ function Examine:Done(result)
 	PopupClose(self.idAttachesMenu)
 	PopupClose(self.idParentsMenu)
 	PopupClose(self.idToolsMenu)
+	Examine.examine_dialogs[self.obj] = nil
 	ChoGGi_Window.Done(self,result)
 end

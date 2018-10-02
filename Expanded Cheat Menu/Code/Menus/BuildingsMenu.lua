@@ -158,21 +158,6 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SanatoriumSchoolShowAll,
 	}
 
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920001344--[[Points To Train--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
-		ActionId = ".Points To Train",
-		ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
-		RolloverText = function()
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.evaluation_points",sel and sel.encyclopedia_id),
-				302535920001345--[[How many points are needed to finish training.--]]
-			)
-		end,
-		OnAction = ChoGGi.MenuFuncs.SetTrainingPoints,
-	}
-
 	local str_ExpandedCM_Buildings_Farms = "Expanded CM.Buildings.Farms"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[5068--[[Farms--]]]),
@@ -378,6 +363,21 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetServiceBuildingStats()
 		end,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001344--[[Points To Train--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
+		ActionId = ".Points To Train",
+		ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
+		RolloverText = function()
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return ChoGGi.ComFuncs.SettingState(
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.evaluation_points",sel and sel.encyclopedia_id),
+				302535920001345--[[How many points are needed to finish training.--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.SetTrainingPoints,
 	}
 
 	local str_ExpandedCM_Buildings_Toggles = "Expanded CM.Buildings.Toggles"

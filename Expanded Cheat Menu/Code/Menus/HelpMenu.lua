@@ -121,17 +121,6 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000664--[[Toggle Signs--]]],
-		ActionMenubar = str_Help_Interface,
-		ActionId = ".Toggle Signs",
-		ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",
-		RolloverText = S[302535920000665--[[Concrete, metal deposits, not working, etc...--]]],
-		OnAction = ChoGGi.MenuFuncs.SignsInterface_Toggle,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.SignsInterface_Toggle,
-		ActionBindable = true,
-	}
-
-	c = c + 1
 	Actions[c] = {ActionName = S[302535920000666--[[Toggle on-screen hints--]]],
 		ActionMenubar = str_Help_Interface,
 		ActionId = ".Toggle on-screen hints",

@@ -13,6 +13,7 @@ local blacklist
 
 -- use this message to mess with the classdefs (before classes are built)
 function OnMsg.ClassesGenerate()
+	local ChoGGi = ChoGGi
 
 	MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	S = ChoGGi.Strings
@@ -182,6 +183,11 @@ end -- do
 function OnMsg.ModsReloaded()
 	local ChoGGi = ChoGGi
 
+	-- seems a decent place for this...
+	table.clear(Examine.examine_dialogs)
+	-- just in case we examine some numbers
+	table.iclear(Examine.examine_dialogs)
+
 	-- easy access to colonist data, cargo, mystery
 	ChoGGi.ComFuncs.UpdateDataTables()
 
@@ -196,8 +202,9 @@ function OnMsg.ModsReloaded()
 --~		 end
 --~	 end)
 
+	local UserSettings = ChoGGi.UserSettings
 	-- added this here, as it's early enough to load during the New Game Menu
-	if not ChoGGi.UserSettings.DisableECM then
+	if not UserSettings.DisableECM then
 		local Actions = ChoGGi.Temp.Actions
 		local c = #Actions
 
@@ -242,16 +249,16 @@ function OnMsg.ModsReloaded()
 		end
 
 		-- show console log history
-		if ChoGGi.UserSettings.ConsoleToggleHistory then
+		if UserSettings.ConsoleToggleHistory then
 			ShowConsoleLog(true)
 		end
 
-		if ChoGGi.UserSettings.ConsoleHistoryWin then
+		if UserSettings.ConsoleHistoryWin then
 			ChoGGi.ComFuncs.ShowConsoleLogWin(true)
 		end
 
 		-- dim that console bg
-		if ChoGGi.UserSettings.ConsoleDim then
+		if UserSettings.ConsoleDim then
 			config.ConsoleDim = 1
 		end
 
@@ -259,6 +266,55 @@ function OnMsg.ModsReloaded()
 		if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
 			dlgConsole.ChoGGi_MenuAdded = true
 			ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
+		end
+
+		-- show cheat pane in selection panel
+		if UserSettings.InfopanelCheats then
+			config.BuildingInfopanelCheats = true
+		end
+
+		-- remove some uselessish Cheats to clear up space
+		if UserSettings.CleanupCheatsInfoPane then
+			ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
+		end
+
+		-- cheats menu fun
+		local XShortcutsTarget = XShortcutsTarget
+		if XShortcutsTarget then
+
+			-- add some ids for easier selection later on
+			for i = 1, #XShortcutsTarget do
+				if XShortcutsTarget[i]:IsKindOf("XMenuBar") then
+					XShortcutsTarget.idMenuBar = XShortcutsTarget[i]
+				elseif XShortcutsTarget[i]:IsKindOf("XWindow") then
+					XShortcutsTarget.idToolbar = XShortcutsTarget[i]
+					break
+				end
+			end
+
+			-- add a hint about rightclicking
+			XShortcutsTarget:SetRolloverTemplate("Rollover")
+			XShortcutsTarget:SetRolloverTitle(S[126095410863--[[Info--]]])
+			XShortcutsTarget:SetRolloverText(S[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
+
+			-- yeah... i don't need the menu taking up the whole width of my screen
+			XShortcutsTarget:SetHAlign("left")
+
+			-- always show menu on my computer
+			if UserSettings.ShowCheatsMenu or ChoGGi.testing then
+				XShortcutsTarget:SetVisible(true)
+			end
+
+			-- that info text about right-clicking expands the menu instead of just hiding or something
+			for i = 1, #XShortcutsTarget.idToolbar do
+				if XShortcutsTarget.idToolbar[i]:IsKindOf("XText") then
+					XShortcutsTarget.idToolbar[i]:delete()
+				end
+			end
+
+			ChoGGi.CodeFuncs.DraggableCheatsMenu(
+				UserSettings.DraggableCheatsMenu
+			)
 		end
 
 	end -- DisableECM
@@ -971,59 +1027,6 @@ do -- LoadGame/CityStart
 
 		SetMissionBonuses(UserSettings,Presets,"MissionSponsorPreset","Sponsor",ChoGGi.CodeFuncs.SetSponsorBonuses)
 		SetMissionBonuses(UserSettings,Presets,"CommanderProfilePreset","Commander",ChoGGi.CodeFuncs.SetCommanderBonuses)
-
-		if not UserSettings.DisableECM then
-
-			-- show cheat pane in selection panel
-			if UserSettings.InfopanelCheats then
-				config.BuildingInfopanelCheats = true
-			end
-
-			-- remove some uselessish Cheats to clear up space
-			if UserSettings.CleanupCheatsInfoPane then
-				ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
-			end
-
-			-- cheats menu fun
-			local XShortcutsTarget = XShortcutsTarget
-			if XShortcutsTarget then
-
-				-- add some ids for easier selection later on
-				for i = 1, #XShortcutsTarget do
-					if XShortcutsTarget[i]:IsKindOf("XMenuBar") then
-						XShortcutsTarget.idMenuBar = XShortcutsTarget[i]
-					elseif XShortcutsTarget[i]:IsKindOf("XWindow") then
-						XShortcutsTarget.idToolbar = XShortcutsTarget[i]
-						break
-					end
-				end
-
-				-- add a hint about rightclicking
-				XShortcutsTarget:SetRolloverTemplate("Rollover")
-				XShortcutsTarget:SetRolloverTitle(S[126095410863--[[Info--]]])
-				XShortcutsTarget:SetRolloverText(S[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
-
-				-- yeah... i don't need the menu taking up the whole width of my screen
-				XShortcutsTarget:SetHAlign("left")
-
-				-- always show menu on my computer
-				if UserSettings.ShowCheatsMenu or ChoGGi.testing then
-					XShortcutsTarget:SetVisible(true)
-				end
-
-				-- that info text about right-clicking expands the menu instead of just hiding or something
-				for i = 1, #XShortcutsTarget.idToolbar do
-					if XShortcutsTarget.idToolbar[i]:IsKindOf("XText") then
-						XShortcutsTarget.idToolbar[i]:delete()
-					end
-				end
-
-				ChoGGi.CodeFuncs.DraggableCheatsMenu(
-					UserSettings.DraggableCheatsMenu
-				)
-			end
-		end -- DisableECM
-
 
 
 

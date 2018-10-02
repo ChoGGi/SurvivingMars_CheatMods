@@ -1,3 +1,6 @@
+v0.6
+Sagan.
+
 v0.5
 New icon thanks to SkiRich.
 New name.

@@ -472,10 +472,10 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 		local ItemList = {
 			{text = S[4493--[[All--]]],value = "All",hint = S[302535920000329--[[Scan all anomalies.--]]]},
-			{text = S[9--[[Anomaly--]]],value = "SubsurfaceAnomaly",icon = "UI/Icons/Anomaly_Event.tga",hint = S[14--[[We have detected alien artifacts at this location that will <em>speed up</em> our Research efforts.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]]]},
-			{text = S[8--[[Breakthrough Tech--]]],value = "SubsurfaceAnomaly_breakthrough",icon = "UI/Icons/Anomaly_Breakthrough.tga",hint = S[11--[[Our scientists believe that this Anomaly may lead to a <em>Breakthrough</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]]]},
-			{text = S[3--[[Grant Research--]]],value = "SubsurfaceAnomaly_complete",icon = "UI/Icons/Anomaly_Research.tga",hint = S[13--[[Sensors readings suggest that this Anomaly will help us with our current <em>Research</em> goals.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]]]},
-			{text = S[2--[[Unlock Tech--]]],value = "SubsurfaceAnomaly_unlock",icon = "UI/Icons/Anomaly_Tech.tga",hint = S[12--[[Scans have detected some interesting readings that might help us discover <em>new Technologies</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]]]},
+			{text = S[9--[[Anomaly--]]],value = "SubsurfaceAnomaly",icon = "<image UI/Icons/Anomaly_Event.tga 750>",hint = S[14--[[We have detected alien artifacts at this location that will <em>speed up</em> our Research efforts.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]]]},
+			{text = S[8--[[Breakthrough Tech--]]],value = "SubsurfaceAnomaly_breakthrough",icon = "<image UI/Icons/Anomaly_Breakthrough.tga 750>",hint = S[11--[[Our scientists believe that this Anomaly may lead to a <em>Breakthrough</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]]]},
+			{text = S[3--[[Grant Research--]]],value = "SubsurfaceAnomaly_complete",icon = "<image UI/Icons/Anomaly_Research.tga 750>",hint = S[13--[[Sensors readings suggest that this Anomaly will help us with our current <em>Research</em> goals.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]]]},
+			{text = S[2--[[Unlock Tech--]]],value = "SubsurfaceAnomaly_unlock",icon = "<image UI/Icons/Anomaly_Tech.tga 750>",hint = S[12--[[Scans have detected some interesting readings that might help us discover <em>new Technologies</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]]]},
 		}
 
 		local function CallBackFunc(choice)
