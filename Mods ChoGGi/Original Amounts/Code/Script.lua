@@ -57,11 +57,13 @@ bt.DefenceTower.maintenance_build_up_per_hr = 600
 bt.DefenceTower.maintenance_resource_amount = 1000
 bt.DefenceTower.maintenance_resource_type = "Electronics"
 
-bt.Diner.construction_cost_Concrete = 10000
-bt.Diner.construction_cost_Metals = 5000
-bt.Diner.maintenance_build_up_per_hr = 600
-bt.Diner.maintenance_resource_amount = 1000
-bt.Diner.maintenance_resource_type = "Concrete"
+if bt.Diner then
+	bt.Diner.construction_cost_Concrete = 10000
+	bt.Diner.construction_cost_Metals = 5000
+	bt.Diner.maintenance_build_up_per_hr = 600
+	bt.Diner.maintenance_resource_amount = 1000
+	bt.Diner.maintenance_resource_type = "Concrete"
+end
 
 bt.DomeBasic.construction_cost_Concrete = 80000
 bt.DomeBasic.construction_cost_Metals = 20000
@@ -312,12 +314,14 @@ bt.MechanizedDepotRareMetals.maintenance_build_up_per_hr = 600
 bt.MechanizedDepotRareMetals.maintenance_resource_amount = 1000
 bt.MechanizedDepotRareMetals.maintenance_resource_type = "MachineParts"
 
-bt.MedicalCenter.construction_cost_Concrete = 30000
-bt.MedicalCenter.construction_cost_Metals = 30000
-bt.MedicalCenter.construction_cost_Polymers = 10000
-bt.MedicalCenter.maintenance_build_up_per_hr = 600
-bt.MedicalCenter.maintenance_resource_amount = 3000
-bt.MedicalCenter.maintenance_resource_type = "Polymers"
+if bt.MedicalCenter then
+	bt.MedicalCenter.construction_cost_Concrete = 30000
+	bt.MedicalCenter.construction_cost_Metals = 30000
+	bt.MedicalCenter.construction_cost_Polymers = 10000
+	bt.MedicalCenter.maintenance_build_up_per_hr = 600
+	bt.MedicalCenter.maintenance_resource_amount = 3000
+	bt.MedicalCenter.maintenance_resource_type = "Polymers"
+end
 
 bt.MetalsExtractor.construction_cost_Concrete = 20000
 bt.MetalsExtractor.construction_cost_MachineParts = 5000
@@ -441,11 +445,13 @@ bt.ScienceInstitute.maintenance_build_up_per_hr = 600
 bt.ScienceInstitute.maintenance_resource_amount = 4000
 bt.ScienceInstitute.maintenance_resource_type = "Electronics"
 
-bt.SecurityStation.construction_cost_Concrete = 15000
-bt.SecurityStation.construction_cost_Metals = 5000
-bt.SecurityStation.maintenance_build_up_per_hr = 600
-bt.SecurityStation.maintenance_resource_amount = 1000
-bt.SecurityStation.maintenance_resource_type = "Concrete"
+if bt.SecurityStation then
+	bt.SecurityStation.construction_cost_Concrete = 15000
+	bt.SecurityStation.construction_cost_Metals = 5000
+	bt.SecurityStation.maintenance_build_up_per_hr = 600
+	bt.SecurityStation.maintenance_resource_amount = 1000
+	bt.SecurityStation.maintenance_resource_type = "Concrete"
+en
 
 bt.SensorTower.construction_cost_Electronics = 1000
 bt.SensorTower.construction_cost_Metals = 1000
@@ -459,10 +465,12 @@ bt.ShopsElectronics.maintenance_build_up_per_hr = 600
 bt.ShopsElectronics.maintenance_resource_amount = 1000
 bt.ShopsElectronics.maintenance_resource_type = "Concrete"
 
-bt.ShopsFood.construction_cost_Concrete = 10000
-bt.ShopsFood.maintenance_build_up_per_hr = 600
-bt.ShopsFood.maintenance_resource_amount = 1000
-bt.ShopsFood.maintenance_resource_type = "Concrete"
+if bt.ShopsFood then
+	bt.ShopsFood.construction_cost_Concrete = 10000
+	bt.ShopsFood.maintenance_build_up_per_hr = 600
+	bt.ShopsFood.maintenance_resource_amount = 1000
+	bt.ShopsFood.maintenance_resource_type = "Concrete"
+end
 
 bt.ShopsJewelry.construction_cost_Concrete = 10000
 bt.ShopsJewelry.construction_cost_Polymers = 2000

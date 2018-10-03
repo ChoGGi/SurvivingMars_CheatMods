@@ -38,8 +38,12 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision,
 
 	"description", [[Contains stuff needed by most of my mods.
+The load order for my library in relation to my mods isn't an issue.
 
-Getting tired of the copy n paste updating.
+Reason for this mod:
+I got tired of copying and pasting functions between different mods to update them, now I just update this mod for those functions.
+
+
 
 Also available at https://www.nexusmods.com/survivingmars/mods/89]],
 })

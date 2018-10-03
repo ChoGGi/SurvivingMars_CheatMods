@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Transport Route Stuck On Map v0.2",
-	"version", 2,
+	"title", "Fix: Transport Route Stuck On Map v0.3",
+	"version", 3,
 	"saved", 1538395200,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixTransportRouteStuckOnMap",

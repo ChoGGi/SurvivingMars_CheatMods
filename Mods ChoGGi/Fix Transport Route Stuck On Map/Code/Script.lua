@@ -1,28 +1,31 @@
 -- we store a ref to the blue route crap here
-local cursor_obj
+local cursor_objs = {}
 
-local CreateRealTimeThread = CreateRealTimeThread
-local Sleep = Sleep
-local DoneObject = DoneObject
+local orig_UnitDirectionModeDialog_UpdateCursorObj = UnitDirectionModeDialog.UpdateCursorObj
+function UnitDirectionModeDialog:UpdateCursorObj(...)
+	orig_UnitDirectionModeDialog_UpdateCursorObj(self,...)
 
-local orig_UnitDirectionModeDialog_SetCreateRouteMode = UnitDirectionModeDialog.SetCreateRouteMode
-function UnitDirectionModeDialog:SetCreateRouteMode(...)
-	-- we wait till cursor_obj is created
-	CreateRealTimeThread(function()
-		while not self.cursor_obj do
-			Sleep(50)
-		end
-		cursor_obj = self.cursor_obj
-	end)
-	return orig_UnitDirectionModeDialog_SetCreateRouteMode(self,...)
+	if self.cursor_obj then
+		cursor_objs[self.cursor_obj.handle] = self.cursor_obj
+	end
+end
+
+local orig_UnitDirectionModeDialog_UpdateTransportRouteVisuals = UnitDirectionModeDialog.UpdateTransportRouteVisuals
+function UnitDirectionModeDialog:UpdateTransportRouteVisuals(...)
+	orig_UnitDirectionModeDialog_UpdateTransportRouteVisuals(self,...)
+
+	if self.route_visuals then
+		cursor_objs[self.route_visuals.handle] = self.route_visuals
+	end
 end
 
 -- kill off stuck crap when selection is changed
+local DoneObject = DoneObject
 function OnMsg.SelectedObjChange()
-	if cursor_obj then
+	for _,cursor_obj in pairs(cursor_objs) do
 		DoneObject(cursor_obj)
-		cursor_obj = nil
 	end
+	table.clear(cursor_objs)
 end
 
 function OnMsg.LoadGame()

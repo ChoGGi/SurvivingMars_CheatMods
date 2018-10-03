@@ -206,6 +206,8 @@ function PortableMiner:ProcAutomation()
 	if deposit then
 		local deposit_pos = deposit:GetPos()
 		if pf.HasPath(self:GetPos(), self.pfclass, deposit_pos) then
+			-- if leaving an empty site then this sign should be turned off
+			self:ShowNotWorkingSign(false)
 			self:SetCommand("Goto",deposit_pos)
 		else
 			unreachable_objects[deposit] = true
@@ -215,9 +217,11 @@ function PortableMiner:ProcAutomation()
 		local miners = UICity.labels.PortableMiner or ""
 		for i = 1, #miners do
 			miners[i].auto_mode_on = false
-			miners[i]:SetCommand("Idle")
+			miners[i]:ShowNotWorkingSign(true)
+			miners[i]:SetCommand("Idle",10000)
 		end
 	end
+	Sleep(2500)
 end
 
 -- if we're in auto-mode then make the stockpile take more
@@ -230,7 +234,7 @@ function PortableMiner:ToggleAutoMode(broadcast)
 	return BaseRover.ToggleAutoMode(self,broadcast)
 end
 
-function PortableMiner:Idle()
+function PortableMiner:Idle(delay)
 	local pms = PortableMinerSettings
 	-- if there's one near then mine that shit
   if self:DepositNearby() then
@@ -240,18 +244,17 @@ function PortableMiner:Idle()
 	-- we in auto-mode?
 	elseif g_RoverAIResearched and self.auto_mode_on then
 		self:ProcAutomation()
-		-- probably not needed anymore
-		Sleep(1000)
 	-- check if stockpile is existing and full
   elseif not self.notworking_sign and self.stockpile and (self:GetDist2D(self.stockpile) >= 5000 or
 						self.stockpile:GetStoredAmount() < (self.auto_mode_on and pms.max_res_amount_auto or pms.max_res_amount_man)) then
     self:ShowNotWorkingSign(false)
   end
+	Sleep(delay or 2500)
 
 	self:Gossip("Idle")
-	self:SetStateText(self.default_anim_idle)
---~ 	-- kill off thread if we're in one
---~ 	Halt()
+	self:SetState("idle")
+	-- kill off thread if we're in one
+	Halt()
 end
 
 function PortableMiner:DepositNearby()

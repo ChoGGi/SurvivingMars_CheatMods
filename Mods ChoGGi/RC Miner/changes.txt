@@ -1,12 +1,28 @@
+v1.3
+1.2 Borked new rovers (it's cause you didn't buy enough card packs to elevate your gameplay).
+In auto-mode the not working sign didn't get removed when moving to a new site.
+
+Again buy card packs you leeches, this ain't no BF backing out on their commitment to suck you dry. We're FIFA all the way.
+
+v1.2
+Re-branded to RC Miner.
+
+Now added Premium Mining:
+Buy card packs to speed up mining.
+
+5 cards for 4.99 USD.
+11 cards for 9.99 USD.
+501 cards for 499.999 USD (Best Value!).
+
+No more waiting around for your loot, now you can build your premium custom base sooner!
+
 v1.1
 Precious idle time wasn't changeable.
 Added some paint around mining area (toggle in ModConfig).
-
 v1.0
 Changed mining speeds of Metal/Precious to 50%/10%.
 Added support for ModConfig.
 Fixed issue with auto-mode not changing stack size.
-
 v0.9
 Concrete is fixed now.
 v0.8
