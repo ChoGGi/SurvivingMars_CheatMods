@@ -3,19 +3,19 @@ PlayInitialMovies = nil
 ParadoxBuildsModManagerWarning = true
 
 function OnMsg.DesktopCreated()
-  -- skip the two logos
-  PlayInitialMovies = nil
+	-- skip the two logos
+	PlayInitialMovies = nil
 end
 
 local are_we_setup
 function OnMsg.ReloadLua()
-  if are_we_setup then
-    return
-  end
-  are_we_setup = true
+	if are_we_setup then
+		return
+	end
+	are_we_setup = true
 
-  -- get rid of mod manager warnings (not the reboot one though)
-  ParadoxBuildsModManagerWarning = true
+	-- get rid of mod manager warnings (not the reboot one though)
+	ParadoxBuildsModManagerWarning = true
 
 	-- opens to load game menu
 	--[[

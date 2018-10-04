@@ -7,8 +7,8 @@ function OnMsg.NewDay()
 
 	MapForEach("map","SubsurfaceDepositWater",function(o)
 		o.amount = o.amount + water
-    if o.amount > o.max_amount then
-      o.amount = o.max_amount
-    end
+		if o.amount > o.max_amount then
+			o.amount = o.max_amount
+		end
 	end)
 end

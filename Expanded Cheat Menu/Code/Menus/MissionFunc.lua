@@ -55,7 +55,7 @@ function OnMsg.ClassesGenerate()
 		local Presets = Presets
 
 		local ItemList = {}
-    local c = 0
+		local c = 0
 		local objs = Presets.MissionSponsorPreset.Default or ""
 		for i = 1, #objs do
 			local obj = objs[i]
@@ -69,7 +69,7 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 
-        c = c + 1
+				c = c + 1
 				ItemList[c] = {
 					text = Trans(obj.display_name),
 					value = obj.id,
@@ -123,7 +123,7 @@ function OnMsg.ClassesGenerate()
 		local Presets = Presets
 
 		local ItemList = {}
-    local c = 0
+		local c = 0
 		local objs = Presets.MissionSponsorPreset.Default or ""
 		for i = 1, #objs do
 			local obj = objs[i]
@@ -137,7 +137,7 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 
-        c = c + 1
+				c = c + 1
 				ItemList[c] = {
 					text = Trans(obj.display_name),
 					value = obj.id,

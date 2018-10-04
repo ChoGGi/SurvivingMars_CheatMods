@@ -1153,7 +1153,7 @@ function Examine:SetObj(obj,skip_thread)
 	local obj_type = type(obj)
 	if obj_type == "string" and self.str_object == "str" then
 		-- check if obj string is a ref to an actual object
-		local obj_ref  = ChoGGi.ComFuncs.DotNameToObject(obj)
+		local obj_ref = ChoGGi.ComFuncs.DotNameToObject(obj)
 		-- if it is then we use that as the obj to examine
 		if obj_ref then
 			obj = obj_ref

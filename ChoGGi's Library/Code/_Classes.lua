@@ -260,22 +260,22 @@ DefineClass.ChoGGi_List = {
 	RolloverTemplate = "Rollover",
 	MinWidth = 50,
 
-  Background = dark_gray,
+	Background = dark_gray,
 	TextColor = white,
 	FocusedBackground = darker_gray,
 	RolloverTextColor = light_gray,
 }
 function ChoGGi_List:CreateTextItem(text, props, context)
 	local g_Classes = g_Classes
-  props = props or {}
-  local item = g_Classes.ChoGGi_ListItem:new({
-    selectable = props.selectable
-  }, self)
-  props.selectable = nil
-  local text_control = g_Classes.ChoGGi_TextList:new(props, item, context)
+	props = props or {}
+	local item = g_Classes.ChoGGi_ListItem:new({
+		selectable = props.selectable
+	}, self)
+	props.selectable = nil
+	local text_control = g_Classes.ChoGGi_TextList:new(props, item, context)
 	item.idText = text_control
-  text_control:SetText(text)
-  return item
+	text_control:SetText(text)
+	return item
 end
 
 DefineClass.ChoGGi_ListItem = {

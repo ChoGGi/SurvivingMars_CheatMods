@@ -18,7 +18,7 @@ function OnMsg.ClassesGenerate()
 	local guic = guic
 
 	--~ function OnMsg.DataLoaded()
-	--~   RebuildFXRules()
+	--~	 RebuildFXRules()
 	--~ end
 
 	function ChoGGi.MenuFuncs.ResetCamera()
@@ -432,7 +432,7 @@ function OnMsg.ClassesGenerate()
 				end
 			end)
 		end
-    local rock_objects
+		local rock_objects
 		local function UpdateRockList()
 			rock_objects = {}
 			SaveRocks("Deposition",rock_objects)
