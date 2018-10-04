@@ -8,7 +8,7 @@ function OnMsg.ClassesGenerate()
 	local icon = "CommonAssets/UI/Menu/Cube.tga"
 	local c = #Actions
 
-	local str_ExpandedCM_Buildings = "Expanded CM.Buildings"
+	local str_ExpandedCM_Buildings = "ECM.Expanded CM.Buildings"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[3980--[[Buildings--]]]),
 		ActionMenubar = "ECM.Expanded CM",
@@ -91,11 +91,11 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle,
 	}
 
-	local str_ExpandedCM_Buildings_SanatoriumsSchools = "Expanded CM.Buildings.Sanatoriums & Schools"
+	local str_ExpandedCM_Buildings_SanatoriumsSchools = "ECM.Expanded CM.Buildings.Sanatoriums & Schools"
 	local SandS = StringFormat("%s & %s",S[5245--[[Sanatoriums--]]],S[5248--[[Schools--]]])
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",SandS),
-		ActionMenubar = "Expanded CM.Buildings",
+		ActionMenubar = "ECM.Expanded CM.Buildings",
 		ActionId = ".Sanatoriums & Schools",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -158,10 +158,10 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SanatoriumSchoolShowAll,
 	}
 
-	local str_ExpandedCM_Buildings_Farms = "Expanded CM.Buildings.Farms"
+	local str_ExpandedCM_Buildings_Farms = "ECM.Expanded CM.Buildings.Farms"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[5068--[[Farms--]]]),
-		ActionMenubar = "Expanded CM.Buildings",
+		ActionMenubar = "ECM.Expanded CM.Buildings",
 		ActionId = ".Farms",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -191,10 +191,10 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.CropFailThreshold_Toggle,
 	}
 
-	local str_ExpandedCM_Buildings_CablesPipes = "Expanded CM.Buildings.Cables & Pipes"
+	local str_ExpandedCM_Buildings_CablesPipes = "ECM.Expanded CM.Buildings.Cables & Pipes"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000157--[[Cables & Pipes--]]]),
-		ActionMenubar = "Expanded CM.Buildings",
+		ActionMenubar = "ECM.Expanded CM.Buildings",
 		ActionId = ".Cables & Pipes",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -229,10 +229,10 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle,
 	}
 
-	local str_ExpandedCM_Buildings_Buildings = "Expanded CM.Buildings.Buildings"
+	local str_ExpandedCM_Buildings_Buildings = "ECM.Expanded CM.Buildings.Buildings"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[3980--[[Buildings--]]]),
-		ActionMenubar = "Expanded CM.Buildings",
+		ActionMenubar = "ECM.Expanded CM.Buildings",
 		ActionId = ".Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -380,10 +380,10 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SetTrainingPoints,
 	}
 
-	local str_ExpandedCM_Buildings_Toggles = "Expanded CM.Buildings.Toggles"
+	local str_ExpandedCM_Buildings_Toggles = "ECM.Expanded CM.Buildings.Toggles"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920001367--[[Toggles--]]]),
-		ActionMenubar = "Expanded CM.Buildings",
+		ActionMenubar = "ECM.Expanded CM.Buildings",
 		ActionId = ".Toggles",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -600,10 +600,10 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		OnAction = ChoGGi.MenuFuncs.UnlockLockedBuildings,
 	}
 
-	local str_ExpandedCM_Buildings_SpaceElevator = "Expanded CM.Buildings.Space Elevator"
+	local str_ExpandedCM_Buildings_SpaceElevator = "ECM.Expanded CM.Buildings.Space Elevator"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[1120--[[Space Elevator--]]]),
-		ActionMenubar = "Expanded CM.Buildings",
+		ActionMenubar = "ECM.Expanded CM.Buildings",
 		ActionId = ".Space Elevator",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",

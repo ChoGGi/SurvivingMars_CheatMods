@@ -218,7 +218,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials,
 	}
 
-	local str_Game_Camera = "Game.Camera"
+	local str_Game_Camera = "ECM.Game.Camera"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920001058--[[Camera--]]]),
 		ActionMenubar = "ECM.Game",
@@ -308,7 +308,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.ResetCamera,
 	}
 
-	local str_Game_Render = "Game.Render"
+	local str_Game_Render = "ECM.Game.Render"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000845--[[Render--]]]),
 		ActionMenubar = "ECM.Game",

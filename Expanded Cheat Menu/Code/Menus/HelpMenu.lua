@@ -51,7 +51,7 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "99.Reload ECM Menu",
 	}
 
-	local str_Help_Screenshot = "Help.Screenshot"
+	local str_Help_Screenshot = "ECM.Help.Screenshot"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000892--[[Screenshot--]]]),
 		ActionMenubar = "ECM.Help",
@@ -99,7 +99,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle,
 	}
 
-	local str_Help_Interface = "Help.Interface"
+	local str_Help_Interface = "ECM.Help.Interface"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000893--[[Interface--]]]),
 		ActionMenubar = "ECM.Help",
@@ -157,7 +157,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.NeverShowHints_Toggle,
 	}
 
-	local str_Help_ECM = "Help.Expanded Cheat Menu"
+	local str_Help_ECM = "ECM.Help.Expanded Cheat Menu"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000000--[[Expanded Cheat Menu--]]]),
 		ActionMenubar = "ECM.Help",
@@ -243,7 +243,7 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "8",
 	}
 
-	local str_Help_Text = "Help.Text"
+	local str_Help_Text = "ECM.Help.Text"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[1000145--[[Text--]]]),
 		ActionMenubar = "ECM.Help",

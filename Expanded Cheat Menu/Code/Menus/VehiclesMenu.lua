@@ -9,7 +9,7 @@ function OnMsg.ClassesGenerate()
 	local iconRC = "CommonAssets/UI/Menu/HostGame.tga"
 	local c = #Actions
 
-	local str_ExpandedCM_Drones = "Expanded CM.Drones"
+	local str_ExpandedCM_Drones = "ECM.Expanded CM.Drones"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[517--[[Drones--]]]),
 		ActionMenubar = "ECM.Expanded CM",
@@ -236,7 +236,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SetDronesPerRCRover,
 	}
 
-	local str_ExpandedCM_Shuttles = "Expanded CM.Shuttles"
+	local str_ExpandedCM_Shuttles = "ECM.Expanded CM.Shuttles"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[745--[[Shuttles--]]]),
 		ActionMenubar = "ECM.Expanded CM",
@@ -288,7 +288,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SetShuttleSpeed,
 	}
 
-	local str_ExpandedCM_Rovers = "Expanded CM.Rovers"
+	local str_ExpandedCM_Rovers = "ECM.Expanded CM.Rovers"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[5438--[[Rovers--]]]),
 		ActionMenubar = "ECM.Expanded CM",
@@ -382,7 +382,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SetRCTransportStorageCapacity,
 	}
 
-	local str_ExpandedCM_Rockets = "Expanded CM.Rockets"
+	local str_ExpandedCM_Rockets = "ECM.Expanded CM.Rockets"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[5238--[[Rockets--]]]),
 		ActionMenubar = "ECM.Expanded CM",

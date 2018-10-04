@@ -8,7 +8,7 @@ function OnMsg.ClassesGenerate()
 	local StarkFistOfRemoval = "CommonAssets/UI/Menu/AlignSel.tga"
 	local c = #Actions
 
-	local str_ExpandedCM_Colonists = "Expanded CM.Colonists"
+	local str_ExpandedCM_Colonists = "ECM.Expanded CM.Colonists"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[547--[[Colonists--]]]),
 		ActionMenubar = "ECM.Expanded CM",
@@ -309,10 +309,10 @@ Works after colonist idle."--]]
 		OnAction = ChoGGi.MenuFuncs.SetDeathAge,
 	}
 
-	local str_ExpandedCM_Colonists_Work = "Expanded CM.Colonists.Work"
+	local str_ExpandedCM_Colonists_Work = "ECM.Expanded CM.Colonists.Work"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000212--[[Work--]]]),
-		ActionMenubar = "Expanded CM.Colonists",
+		ActionMenubar = "ECM.Expanded CM.Colonists",
 		ActionId = ".Work",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -390,10 +390,10 @@ Works after colonist idle."--]]
 		OnAction = ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll,
 	}
 
-	local str_ExpandedCM_Colonists_Stats = "Expanded CM.Colonists.Stats"
+	local str_ExpandedCM_Colonists_Stats = "ECM.Expanded CM.Colonists.Stats"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[5568--[[Stats--]]]),
-		ActionMenubar = "Expanded CM.Colonists",
+		ActionMenubar = "ECM.Expanded CM.Colonists",
 		ActionId = ".Stats",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -527,10 +527,10 @@ Works after colonist idle."--]]
 		OnAction = ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle,
 	}
 
-	local str_ExpandedCM_Colonists_Traits = "Expanded CM.Colonists.Traits"
+	local str_ExpandedCM_Colonists_Traits = "ECM.Expanded CM.Colonists.Traits"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[235--[[Traits--]]]),
-		ActionMenubar = "Expanded CM.Colonists",
+		ActionMenubar = "ECM.Expanded CM.Colonists",
 		ActionId = ".Traits",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",

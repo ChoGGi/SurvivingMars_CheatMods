@@ -1,27 +1,20 @@
-local function CheckMM(action)
-	if action.ActionId == "idModManager" then
-		action.__condition = function()
-			-- return true whenever it isn't a console
-			return not Platform.console
-		end
-		return true
-	end
-end
 
 function OnMsg.ReloadLua()
 
-	-- loop through a bunch of menu items till we find the correct one
-	CreateRealTimeThread(function()
+  CreateRealTimeThread(function()
+		-- loop through menu items till we find the correct one
 		local buttons = XTemplates.PGMenu[1][2][3]
+		local TableFind = table.find
 		for i = 1, #buttons do
-			if CheckMM(buttons[i]) then
+
+			local idx = TableFind(buttons[i],"ActionId","idModManager")
+			if idx then
+				buttons[i][idx].__condition = function()
+					return true
+				end
 				break
 			end
-			for j = 1, #buttons[i] do
-				if CheckMM(buttons[i][j]) then
-					break
-				end
-			end
+
 		end
 	end)
 

@@ -7,7 +7,7 @@ function OnMsg.ClassesGenerate()
 	local StringFormat = string.format
 	local c = #Actions
 
-	local str_ExpandedCM_Mission = "Expanded CM.Mission"
+	local str_ExpandedCM_Mission = "ECM.Expanded CM.Mission"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[1635--[[Mission--]]]),
 		ActionMenubar = "ECM.Expanded CM",
@@ -101,10 +101,10 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.ChangeRules,
 	}
 
-	local str_ExpandedCM_Mission_Disasters = "Expanded CM.Mission.Disasters"
+	local str_ExpandedCM_Mission_Disasters = "ECM.Expanded CM.Mission.Disasters"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[3983--[[Disasters--]]]),
-		ActionMenubar = "Expanded CM.Mission",
+		ActionMenubar = "ECM.Expanded CM.Mission",
 		ActionId = ".Disasters",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",

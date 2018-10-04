@@ -7,7 +7,7 @@ function OnMsg.ClassesGenerate()
 	local StringFormat = string.format
 	local c = #Actions
 
-	local str_ExpandedCM_Capacity = "Expanded CM.Capacity"
+	local str_ExpandedCM_Capacity = "ECM.Expanded CM.Capacity"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[109035890389--[[Capacity--]]]),
 		ActionMenubar = "ECM.Expanded CM",

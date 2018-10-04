@@ -1,3 +1,6 @@
+v0.6
+Sagan.
+
 v0.5
 Cleaning up code (ChoGGi's Library).
 v0.4

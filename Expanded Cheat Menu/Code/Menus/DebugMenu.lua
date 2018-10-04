@@ -202,7 +202,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.ParticlesReload,
 	}
 
-	local str_Debug_Grids = "Debug.Grids"
+	local str_Debug_Grids = "ECM.Debug.Grids"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000035--[[Grids--]]]),
 		ActionMenubar = "ECM.Debug",
@@ -292,7 +292,7 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "0.Show Grid Disable",
 	}
 
-	local str_Debug_DebugFX = "Debug.Debug FX"
+	local str_Debug_DebugFX = "ECM.Debug.Debug FX"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920001175--[[Debug FX--]]]),
 		ActionMenubar = "ECM.Debug",
@@ -350,7 +350,7 @@ function OnMsg.ClassesGenerate()
 		end,
 	}
 
-	local str_Debug_PathMarkers = "Debug.Path Markers"
+	local str_Debug_PathMarkers = "ECM.Debug.Path Markers"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000467--[[Path Markers--]]]),
 		ActionMenubar = "ECM.Debug",
@@ -408,7 +408,7 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "99.Delete All Of Selected Object",
 	}
 
-	local str_Debug_DeleteObjects = "Debug.Delete Object(s)"
+	local str_Debug_DeleteObjects = "ECM.Debug.Delete Object(s)"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000489--[[Delete Object(s)--]]]),
 		ActionMenubar = "ECM.Debug",

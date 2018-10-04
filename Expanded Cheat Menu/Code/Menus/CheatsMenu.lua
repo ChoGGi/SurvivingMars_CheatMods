@@ -119,7 +119,7 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "12Mod Editor",
 	}
 
-	local str_Cheats_Workplaces = "Cheats.Workplaces"
+	local str_Cheats_Workplaces = "ECM.Cheats.Workplaces"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[5444--[[Workplaces--]]]),
 		ActionMenubar = "ECM.Cheats",
@@ -156,7 +156,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = CheatClearForcedWorkplaces,
 	}
 
-	local str_Cheats_Research = "Cheats.Research"
+	local str_Cheats_Research = "ECM.Cheats.Research"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[311--[[Research--]]]),
 		ActionMenubar = "ECM.Cheats",
@@ -289,7 +289,7 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "2Breakthroughs From OmegaTelescope",
 	}
 
-	local str_Cheats_Menu = "Cheats.Menu"
+	local str_Cheats_Menu = "ECM.Cheats.Menu"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[1000162--[[Menu--]]]),
 		ActionMenubar = "ECM.Cheats",

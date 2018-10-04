@@ -8,7 +8,7 @@ function OnMsg.ClassesGenerate()
 	local icon = "CommonAssets/UI/Menu/ReportBug.tga"
 	local c = #Actions
 
-	local str_ExpandedCM_Fixes = "Expanded CM.Fixes"
+	local str_ExpandedCM_Fixes = "ECM.Expanded CM.Fixes"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000922--[[Fixes--]]]),
 		ActionMenubar = "ECM.Expanded CM",
@@ -136,10 +136,10 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "-1Fire Most Fixes",
 	}
 
-	local str_ExpandedCM_Fixes_Most = "Expanded CM.Fixes.Most"
+	local str_ExpandedCM_Fixes_Most = "ECM.Expanded CM.Fixes.Most"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000935--[[Most--]]]),
-		ActionMenubar = "Expanded CM.Fixes",
+		ActionMenubar = "ECM.Expanded CM.Fixes",
 		ActionId = ".Most",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -250,10 +250,10 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome,
 	}
 
-	local str_ExpandedCM_Fixes_Toggles = "Expanded CM.Fixes.Toggles"
+	local str_ExpandedCM_Fixes_Toggles = "ECM.Expanded CM.Fixes.Toggles"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000938--[[Toggles--]]]),
-		ActionMenubar = "Expanded CM.Fixes",
+		ActionMenubar = "ECM.Expanded CM.Fixes",
 		ActionId = ".Toggles",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -325,10 +325,10 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle,
 	}
 
-	local str_ExpandedCM_Fixes_ECMFixes = "Expanded CM.Fixes.ECM Fixes"
+	local str_ExpandedCM_Fixes_ECMFixes = "ECM.Expanded CM.Fixes.ECM Fixes"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s %s ..",S[302535920000887--[[ECM--]]],S[302535920000922--[[Fixes--]]]),
-		ActionMenubar = "Expanded CM.Fixes",
+		ActionMenubar = "ECM.Expanded CM.Fixes",
 		ActionId = ".ECM Fixes",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
