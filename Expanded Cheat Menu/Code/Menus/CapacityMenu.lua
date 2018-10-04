@@ -61,7 +61,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetBuildingCapacity,
-		ActionShortcut = SetBuildingCapacity = "Ctrl-Shift-C",
+		ActionShortcut = "Ctrl-Shift-C",
 		ActionBindable = true,
 	}
 
@@ -78,7 +78,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetVisitorCapacity,
-		ActionShortcut = SetBuildingCapacity = "Ctrl-Shift-V",
+		ActionShortcut = "Ctrl-Shift-V",
 		ActionBindable = true,
 	}
 

@@ -11,6 +11,7 @@ local TableClear = table.clear
 local TableIClear = table.iclear
 
 local CmpLower = CmpLower
+local IsObjlist = IsObjlist
 local GetStateName = GetStateName
 local IsPoint = IsPoint
 local IsValid = IsValid
@@ -627,7 +628,6 @@ local function Examine_valuetotextex(_, _, button,obj,self)
 end
 
 function Examine:valuetotextex(obj)
-	local objlist = objlist
 	local obj_type = type(obj)
 
 	if obj_type == "function" then
@@ -702,7 +702,7 @@ function Examine:valuetotextex(obj)
 			local obj_metatable = getmetatable(obj)
 
 			-- if it's an objlist then we just return a list of the objects
-			if obj_metatable and obj_metatable == objlist then
+			if obj_metatable and IsObjlist(obj_metatable) then
 				local res = {
 					self:HyperLink(function(_,_,button)
 						Examine_valuetotextex(_,_,button,obj,self)
@@ -1001,6 +1001,13 @@ ThreadHasFlags(): %s</color>]],
 end
 ---------------------------------------------------------------------------------------------------------------------
 --menu
+local function MarkAll_menu(obj)
+	for _, v in pairs(obj) do
+		if IsPoint(v) or IsValid(v) then
+			ShowMe(v, nil, nil, "single")
+		end
+	end
+end
 local function Show_menu(obj)
 	if IsValid(obj) then
 		ShowMe(obj)
@@ -1092,6 +1099,18 @@ function Examine:menu(obj)
 			c = c + 1
 			res[c] = HLEnd
 		end
+
+		if IsObjlist(obj) then
+			c = c + 1
+			res[c] = self:HyperLink(function()
+				MarkAll_menu(obj)
+			end)
+			c = c + 1
+			res[c] = S[302535920001074--[[[Mark All]--]]]
+			c = c + 1
+			res[c] = HLEnd
+		end
+
 	end
 
 	return TableConcat(res)

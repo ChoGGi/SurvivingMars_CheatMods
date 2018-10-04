@@ -6,6 +6,7 @@
 ## v9.7 (Unreleased)
 ### Added:
 - Examine Objects: It'll show a group of objects in an examine dialog instead of a single object (Shift-F4).
+- Mark All to examine dialogs for objlists.
 
 ### Changed:
 - Examine menu for console now shows object name for examine title, and has submenus for certain items.

@@ -150,7 +150,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000069--[[Examine--]]],S[302535920001103--[[Objects--]]]),
 		ActionId = "ECM.Keys.Examine Objects",
 		OnAction = function()
-			local obj = ChoGGi.ComFuncs.ReturnAllNearby(10000,nil,GetTerrainCursor())
+			local obj = MapGet(GetTerrainCursor(),2500)
 			if #obj > 0 then
 				ChoGGi.ComFuncs.OpenInExamineDlg(obj)
 			end

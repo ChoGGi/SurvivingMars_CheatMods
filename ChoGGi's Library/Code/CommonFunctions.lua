@@ -348,7 +348,7 @@ do -- ShowMe
 				end
 			end
 
-			if IsValid(o) then
+			if IsValid(o) and both ~= "single" then
 				markers[o] = markers[o] or o:GetColorModifier()
 				o:SetColorModifier(color)
 				local pos = o:GetVisualPos()
