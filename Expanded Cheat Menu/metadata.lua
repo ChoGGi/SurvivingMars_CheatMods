@@ -91,8 +91,6 @@ Ctrl-Shift-T: Terrain Editor Mode (manipulate/paint ground).
 More shortcut keys are available; see cheat menu items.
 You can edit the shortcut keys; see in-game keybindings.
 
-When I say object that means either the selected object or the object under the mouse cursor.
-
 There's a cheats section in most selection panels on the right side of the screen.
 Menu>ECM>Misc>Infopanel Cheats (on by default)
 

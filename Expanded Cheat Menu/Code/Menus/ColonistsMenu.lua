@@ -11,7 +11,7 @@ function OnMsg.ClassesGenerate()
 	local str_ExpandedCM_Colonists = "Expanded CM.Colonists"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[547--[[Colonists--]]]),
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Colonists",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -73,7 +73,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 		RolloverText = S[302535920000376--[[Turns selected/moused over colonist into food (between 1-5), or shows a list with choices.--]]],
 		OnAction = ChoGGi.MenuFuncs.TheSoylentOption,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.TheSoylentOption,
+		ActionShortcut = "Ctrl-Alt-Numpad 1",
 		ActionBindable = true,
 	}
 

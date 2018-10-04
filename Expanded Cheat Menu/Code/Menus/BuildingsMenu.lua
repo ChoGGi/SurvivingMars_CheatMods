@@ -11,7 +11,7 @@ function OnMsg.ClassesGenerate()
 	local str_ExpandedCM_Buildings = "Expanded CM.Buildings"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[3980--[[Buildings--]]]),
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -254,7 +254,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetProductionAmount,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetProductionAmount,
+		ActionShortcut = "Ctrl-Shift-P",
 		ActionBindable = true,
 	}
 
@@ -313,7 +313,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = icon,
 		RolloverText = S[302535920000189--[[Change how fast Air/Water/Battery storage capacity changes.--]]],
 		OnAction = ChoGGi.MenuFuncs.SetMaxChangeOrDischarge,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetMaxChangeOrDischarge,
+		ActionShortcut = "Ctrl-Shift-R",
 		ActionBindable = true,
 	}
 
@@ -530,7 +530,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.UseLastOrientation_Toggle,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.UseLastOrientation,
+		ActionShortcut = "F7",
 		ActionBindable = true,
 	}
 

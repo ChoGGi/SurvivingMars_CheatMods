@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 	local str_ExpandedCM_Mission = "Expanded CM.Mission"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[1635--[[Mission--]]]),
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Mission",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",

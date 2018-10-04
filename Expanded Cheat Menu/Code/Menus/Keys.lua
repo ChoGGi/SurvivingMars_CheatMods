@@ -5,6 +5,7 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
+	local StringFormat = string.format
 
 	-- use number keys to activate/hide build menus
 	do -- NumberKeysBuildMenu
@@ -50,7 +51,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = S[302535920000734--[[Clear Log--]]],
 		ActionId = "ECM.Keys.ClearConsoleLog",
 		OnAction = cls,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.ClearConsoleLog,
+		ActionShortcut = "F9",
 		ActionBindable = true,
 	}
 
@@ -60,7 +61,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjectColourRandom,
+		ActionShortcut = "Shift-F6",
 		ActionBindable = true,
 	}
 
@@ -70,7 +71,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjectColourDefault,
+		ActionShortcut = "Ctrl-F6",
 		ActionBindable = true,
 	}
 
@@ -86,7 +87,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = string.format("%s %s",S[302535920001347--[[Show Console--]]],S[1000544--[[~--]]]),
 		ActionId = "ECM.Keys.ShowConsoleTilde",
 		OnAction = ToggleConsole,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.ShowConsoleTilde,
+		ActionShortcut = "~",
 		ActionBindable = true,
 	}
 
@@ -94,7 +95,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = string.format("%s %s",S[302535920001347--[[Show Console--]]],S[1000447--[[Enter--]]]),
 		ActionId = "ECM.Keys.ShowConsoleEnter",
 		OnAction = ToggleConsole,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.ShowConsoleEnter,
+		ActionShortcut = "Enter",
 		ActionBindable = true,
 	}
 
@@ -111,7 +112,7 @@ function OnMsg.ClassesGenerate()
 				dlgConsole.idEdit:SetText("restart")
 			end
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.ConsoleRestart,
+		ActionShortcut = "Ctrl-Alt-R",
 		ActionBindable = true,
 	}
 
@@ -125,7 +126,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.CodeFuncs.ConstructionModeSet(last.encyclopedia_id ~= "" and last.encyclopedia_id or last.entity)
 			end
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.LastConstructedBuilding,
+		ActionShortcut = "Ctrl-Space",
 		ActionBindable = true,
 	}
 
@@ -141,7 +142,20 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.CodeFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
 			end
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.LastPlacedObject,
+		ActionShortcut = "Ctrl-Shift-Space",
+		ActionBindable = true,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000069--[[Examine--]]],S[302535920001103--[[Objects--]]]),
+		ActionId = "ECM.Keys.Examine Objects",
+		OnAction = function()
+			local obj = ChoGGi.ComFuncs.ReturnAllNearby(10000,nil,GetTerrainCursor())
+			if #obj > 0 then
+				ChoGGi.ComFuncs.OpenInExamineDlg(obj)
+			end
+		end,
+		ActionShortcut = "Shift-F4",
 		ActionBindable = true,
 	}
 

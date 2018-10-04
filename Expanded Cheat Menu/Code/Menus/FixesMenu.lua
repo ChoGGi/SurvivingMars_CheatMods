@@ -11,7 +11,7 @@ function OnMsg.ClassesGenerate()
 	local str_ExpandedCM_Fixes = "Expanded CM.Fixes"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000922--[[Fixes--]]]),
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Fixes",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",

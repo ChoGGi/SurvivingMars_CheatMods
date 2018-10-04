@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 	local str_ExpandedCM_Resources = "Expanded CM.Resources"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[692--[[Resources--]]]),
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Resources",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -66,8 +66,6 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetFunding,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetFunding,
-		ActionBindable = true,
 	}
 
 	c = c + 1
@@ -77,7 +75,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 		RolloverText = S[302535920000728--[[Fill the selected/moused over object's resource(s)--]]],
 		OnAction = ChoGGi.MenuFuncs.FillResource,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.FillResource,
+		ActionShortcut = "Ctrl-F",
 		ActionBindable = true,
 	}
 

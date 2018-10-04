@@ -9,7 +9,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001314--[[Toggle Render--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Toggle Render",
 		ActionIcon = "CommonAssets/UI/Menu/Shot.tga",
 		RolloverText = S[302535920001315--[[Toggle rendering certain stuff.--]]],
@@ -18,7 +18,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001310--[[DTM Slots Display--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".DTM Slots Display",
 		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
 		RolloverText = function()
@@ -32,7 +32,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001312--[[FPS Counter Location--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".FPS Counter Location",
 		ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",
 		RolloverText = function()
@@ -46,7 +46,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001208--[[Export Colonist Data To CSV--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Export Colonist Data To CSV",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = S[302535920001219--[[Exports data about colonists to %sColonists.csv--]]]:format(ConvertToOSPath("AppData/")),
@@ -55,7 +55,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000449--[[Attach Spots Toggle--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Attach Spots Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/ShowAll.tga",
 		RolloverText = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
@@ -66,7 +66,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000451--[[Measure Tool--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Measure Tool",
 		ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 		RolloverText = function()
@@ -76,13 +76,13 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.MeasureTool_Toggle,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.MeasureTool_Toggle,
+		ActionShortcut = "Ctrl-M",
 		ActionBindable = true,
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000453--[[Reload Lua--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Reload Lua",
 		ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 		RolloverText = S[302535920000454--[[Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).--]]],
@@ -91,20 +91,20 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000455--[[Object Cloner--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Cloner",
 		ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",
 		RolloverText = S[302535920000456--[[Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).--]]],
 		OnAction = function()
 			ChoGGi.MenuFuncs.ObjectCloner()
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjectCloner,
+		ActionShortcut = "Shift-Q",
 		ActionBindable = true,
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000457--[[Anim State Set--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Anim State Set",
 		ActionIcon = "CommonAssets/UI/Menu/UnlockCamera.tga",
 		RolloverText = S[302535920000458--[[Make object dance on command.--]]],
@@ -115,7 +115,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000459--[[Anim Debug Toggle--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Anim Debug Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/CameraEditor.tga",
 		RolloverText = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
@@ -126,20 +126,20 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000471--[[Object Manipulator--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Manipulator",
 		ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
 		RolloverText = S[302535920000472--[[Manipulate objects (selected or under mouse cursor)--]]],
 		OnAction = function()
 			ChoGGi.ComFuncs.OpenInObjectManipulatorDlg()
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.OpenInObjectManipulator,
+		ActionShortcut = "F5",
 		ActionBindable = true,
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000475--[[Object Spawner--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Spawner",
 		ActionIcon = "CommonAssets/UI/Menu/add_water.tga",
 		RolloverText = S[302535920000476--[["Shows list of objects, and spawns at mouse cursor.
@@ -147,13 +147,13 @@ function OnMsg.ClassesGenerate()
 	Warning: Unable to mouse select items after spawn
 	hover mouse over and use Delete Selected Object"--]]],
 		OnAction = ChoGGi.MenuFuncs.ObjectSpawner,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjectSpawner,
+		ActionShortcut = "Ctrl-Shift-S",
 		ActionBindable = true,
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000479--[[Toggle Editor--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Toggle Editor",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionEditor.tga",
 		RolloverText = S[302535920000480--[["Select object(s) then hold ctrl/shift/alt and drag mouse.
@@ -161,13 +161,13 @@ function OnMsg.ClassesGenerate()
 
 	It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look)."--]]],
 		OnAction = ChoGGi.CodeFuncs.Editor_Toggle,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.Editor_Toggle,
+		ActionShortcut = "Ctrl-Shift-E",
 		ActionBindable = true,
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000481--[[Open In Ged Object Editor--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Open In Ged Object Editor",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionEditor.tga",
 		RolloverText = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
@@ -179,7 +179,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000491--[[Examine Object--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Examine Object",
 		ActionIcon = "CommonAssets/UI/Menu/PlayerInfo.tga",
 		RolloverText = S[302535920000492--[[Opens the object examiner for the selected or moused-over obj.--]]],
@@ -189,13 +189,13 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.ComFuncs.OpenInExamineDlg(obj)
 			end
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.ObjExaminer,
+		ActionShortcut = "F4",
 		ActionBindable = true,
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000495--[[Particles Reload--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Particles Reload",
 		ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 		RolloverText = S[302535920000496--[[Reloads particles from "Data/Particles"...--]]],
@@ -205,7 +205,7 @@ function OnMsg.ClassesGenerate()
 	local str_Debug_Grids = "Debug.Grids"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000035--[[Grids--]]]),
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Grids",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -219,7 +219,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 		RolloverText = S[302535920000500--[[Shows a hex grid with green for buildable/walkable.--]]],
 		OnAction = ChoGGi.MenuFuncs.debug_build_grid,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.debug_grid_build,
+		ActionShortcut = "Shift-F1",
 		ActionBindable = true,
 	}
 
@@ -232,7 +232,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			ChoGGi.CodeFuncs.FlightGrid_Toggle()
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.debug_grid_squares,
+		ActionShortcut = "Shift-F2",
 		ActionBindable = true,
 	}
 
@@ -243,7 +243,7 @@ function OnMsg.ClassesGenerate()
 --~ 		ActionIcon = "CommonAssets/UI/Menu/ToggleBlockPass.tga",
 --~ 		RolloverText = S[302535920000498--[[Shows a grid around concrete.--]]],
 --~ 		OnAction = ToggleTerrainDepositGrid,
---~ 		ActionShortcut = ChoGGi.Defaults.KeyBindings.ToggleTerrainDepositGrid,
+--~ 		ActionShortcut = "Shift-F3",
 --~ 		ActionBindable = true,
 --~ 	}
 
@@ -295,7 +295,7 @@ function OnMsg.ClassesGenerate()
 	local str_Debug_DebugFX = "Debug.Debug FX"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920001175--[[Debug FX--]]]),
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Debug FX",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -353,7 +353,7 @@ function OnMsg.ClassesGenerate()
 	local str_Debug_PathMarkers = "Debug.Path Markers"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000467--[[Path Markers--]]]),
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Path Markers",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -369,7 +369,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,true)
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetPathMarkersGameTime,
+		ActionShortcut = "Ctrl-Numpad .",
 		ActionBindable = true,
 	}
 
@@ -382,13 +382,13 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetPathMarkersVisible()
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetPathMarkersVisible,
+		ActionShortcut = "Ctrl-Numpad 0",
 		ActionBindable = true,
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000146--[[Delete Saved Games--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Delete Saved Games",
 		ActionIcon = "CommonAssets/UI/Menu/DeleteArea.tga",
 		RolloverText = StringFormat("%s\n\n%s",S[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."--]]],S[302535920001274--[[This is permanent!--]]]),
@@ -398,7 +398,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000487--[[Delete All Of Selected Object--]]],
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Delete All Of Selected Object",
 		ActionIcon = "CommonAssets/UI/Menu/delete_objects.tga",
 		RolloverText = S[302535920000488--[[Will ask for confirmation beforehand (will not delete domes).--]]],
@@ -411,7 +411,7 @@ function OnMsg.ClassesGenerate()
 	local str_Debug_DeleteObjects = "Debug.Delete Object(s)"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000489--[[Delete Object(s)--]]]),
-		ActionMenubar = "Debug",
+		ActionMenubar = "ECM.Debug",
 		ActionId = ".Delete Object(s)",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -428,7 +428,7 @@ Use Editor Mode and mouse drag to select multiple objects for deletion."--]]],
 		OnAction = function()
 			ChoGGi.CodeFuncs.DeleteObject()
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.DeleteObject,
+		ActionShortcut = "Ctrl-Alt-Shift-D",
 		ActionBindable = true,
 		ActionSortKey = "99.Delete Object(s)",
 	}

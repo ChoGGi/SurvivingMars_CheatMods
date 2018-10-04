@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 	local str_ExpandedCM_Misc = "Expanded CM.Misc"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[1000207--[[Misc--]]]),
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Misc",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -89,7 +89,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.InfopanelCheats_Toggle,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.InfopanelCheats_Toggle,
+		ActionShortcut = "Ctrl-F2",
 		ActionBindable = true,
 		ActionSortKey = "-1Infopanel Cheats",
 	}

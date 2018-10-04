@@ -11,7 +11,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000504--[[List All Menu Items--]]],
-		ActionMenubar = "Help",
+		ActionMenubar = "ECM.Help",
 		ActionId = ".List All Menu Items",
 		ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 		RolloverText = S[302535920001323--[[Show all the cheat menu items in a list dialog.--]]],
@@ -21,7 +21,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001362--[[Extract HPKs--]]],
-		ActionMenubar = "Help",
+		ActionMenubar = "ECM.Help",
 		ActionId = ".Extract HPKs",
 		ActionIcon = "CommonAssets/UI/Menu/editmapdata.tga",
 		RolloverText = S[302535920001363--[["Shows list of Steam downloaded mod hpk files, so you can extract them."--]]],
@@ -31,7 +31,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000367--[[Mod Upload--]]],
-		ActionMenubar = "Help",
+		ActionMenubar = "ECM.Help",
 		ActionId = ".Mod Upload",
 		ActionIcon = "CommonAssets/UI/Menu/gear.tga",
 		RolloverText = S[302535920001264--[[Show list of mods to upload to Steam Workshop.--]]],
@@ -41,7 +41,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000473--[[Reload ECM Menu--]]],
-		ActionMenubar = "Help",
+		ActionMenubar = "ECM.Help",
 		ActionId = ".Reload ECM Menu",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 		RolloverText = S[302535920000474--[[Fiddling around in the editor mode can break the menu / shortcuts added by ECM (use this to fix).--]]],
@@ -54,7 +54,7 @@ function OnMsg.ClassesGenerate()
 	local str_Help_Screenshot = "Help.Screenshot"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000892--[[Screenshot--]]]),
-		ActionMenubar = "Help",
+		ActionMenubar = "ECM.Help",
 		ActionId = ".Screenshot",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -68,7 +68,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 		RolloverText = S[302535920000658--[[Write screenshot--]]],
 		OnAction = ChoGGi.MenuFuncs.TakeScreenshot,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.TakeScreenshot,
+		ActionShortcut = "-PrtScr",
 		ActionBindable = true,
 	}
 
@@ -81,7 +81,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			ChoGGi.MenuFuncs.TakeScreenshot(true)
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.TakeScreenshotUpsampled,
+		ActionShortcut = "-Ctrl-PrtScr",
 		ActionBindable = true,
 	}
 
@@ -102,7 +102,7 @@ function OnMsg.ClassesGenerate()
 	local str_Help_Interface = "Help.Interface"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000893--[[Interface--]]]),
-		ActionMenubar = "Help",
+		ActionMenubar = "ECM.Help",
 		ActionId = ".Interface",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -116,7 +116,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/ToggleSelectionOcclusion.tga",
 		RolloverText = S[302535920000244--[[Warning! This will hide everything. Remember the shortcut or have fun restarting.--]]],
 		OnAction = ChoGGi.MenuFuncs.Interface_Toggle,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.ToggleInterface,
+		ActionShortcut = "Ctrl-Alt-I",
 		ActionBindable = true,
 	}
 
@@ -160,7 +160,7 @@ function OnMsg.ClassesGenerate()
 	local str_Help_ECM = "Help.Expanded Cheat Menu"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000000--[[Expanded Cheat Menu--]]]),
-		ActionMenubar = "Help",
+		ActionMenubar = "ECM.Help",
 		ActionId = ".Expanded Cheat Menu",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -209,7 +209,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = S[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again (Ctrl-F2 to toggle the Cheats selection panel).--]]],
 		OnAction = ChoGGi.CodeFuncs.CheatsMenu_Toggle,
 		ActionSortKey = "5",
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.CheatsMenu_Toggle,
+		ActionShortcut = "F2",
 		ActionBindable = true,
 	}
 
@@ -246,7 +246,7 @@ function OnMsg.ClassesGenerate()
 	local str_Help_Text = "Help.Text"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[1000145--[[Text--]]]),
-		ActionMenubar = "Help",
+		ActionMenubar = "ECM.Help",
 		ActionId = ".Text",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",

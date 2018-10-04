@@ -1566,7 +1566,7 @@ function ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
 --~		 ShowConsole(not dlgConsole:GetVisible())
 --~	 end
 --~	 end,
---~	 ActionShortcut = ChoGGi.Defaults.KeyBindings.ShowConsoleTilde,
+--~	 ActionShortcut = "~",
 --~ }
 
 	local DisableECM = ChoGGi.UserSettings.DisableECM

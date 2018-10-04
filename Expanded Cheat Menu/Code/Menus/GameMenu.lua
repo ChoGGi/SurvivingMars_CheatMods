@@ -9,7 +9,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000680--[[Annoying Sounds--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Annoying Sounds",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleCutSmoothTrans.tga",
 		RolloverText = S[302535920000681--[[Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping).--]]],
@@ -20,7 +20,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001292--[[List All Objects--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".List All Objects",
 		ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
 		RolloverText = S[302535920001293--[[A list of objects; double-click on one to select and move the camera to it.--]]],
@@ -29,7 +29,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000864--[[Delete Large Rocks--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Delete Large Rocks",
 		ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
 		RolloverText = S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
@@ -38,7 +38,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001366--[[Delete Small Rocks--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Delete Small Rocks",
 		ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
 		RolloverText = S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
@@ -47,31 +47,31 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000674--[[Terrain Editor Toggle--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Terrain Editor Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/smooth_terrain.tga",
 		RolloverText = S[302535920000675--[[Opens up the map editor with the brush tool visible.--]]],
 		OnAction = ChoGGi.CodeFuncs.TerrainEditor_Toggle,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.TerrainEditor_Toggle,
+		ActionShortcut = "Ctrl-Shift-T",
 		ActionBindable = true,
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000485--[[Terrain Flatten Toggle--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Terrain Flatten Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
 		RolloverText = S[302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
 
 	Use Shift + Arrow keys to change the height/radius.--]]],
 		OnAction = ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.FlattenTerrain_Toggle,
+		ActionShortcut = "Shift-F",
 		ActionBindable = true,
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000623--[[Change Terrain Type--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Change Terrain Type",
 		ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
 		RolloverText = function()
@@ -86,7 +86,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001111--[[Whiter Rocks--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Whiter Rocks",
 		ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 		RolloverText = S[302535920001113--[[Helps the rocks blend in better when using the polar ground texture.--]]],
@@ -95,7 +95,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000493--[[Change Map--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Change Map",
 		ActionIcon = "CommonAssets/UI/Menu/load_city.tga",
 		RolloverText = S[302535920000494--[[Change map (options to pick commander, sponsor, etc...
@@ -107,7 +107,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000265--[[Pulsating Pins--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Pulsating Pins",
 		ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
 		RolloverText = function()
@@ -121,7 +121,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000625--[[Change Light Model--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Change Light Model",
 		ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 		RolloverText = function()
@@ -135,7 +135,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000627--[[Change Light Model Custom--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Change Light Model Custom",
 		ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 		RolloverText = function()
@@ -151,18 +151,18 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000629--[[UI Transparency--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".UI Transparency",
 		ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
 		RolloverText = S[302535920000630--[[Change the transparency of UI items (info panel, menu, pins).--]]],
 		OnAction = ChoGGi.MenuFuncs.SetTransparencyUI,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetTransparencyUI,
+		ActionShortcut = "Ctrl-F3",
 		ActionBindable = true,
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000631--[[UI Transparency Mouseover--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".UI Transparency Mouseover",
 		ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
 		RolloverText = function()
@@ -176,7 +176,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000694--[[Set Opacity--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Set Opacity",
 		ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
 		RolloverText = function()
@@ -191,13 +191,13 @@ function OnMsg.ClassesGenerate()
 			end
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetObjectOpacity,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetObjectOpacity,
+		ActionShortcut = "F3",
 		ActionBindable = true,
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[174--[[Color Modifier--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Color Modifier",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 		RolloverText = S[302535920000693--[[Select/mouse over an object to change the colours
@@ -205,13 +205,13 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			ChoGGi.CodeFuncs.CreateObjectListAndAttaches()
 		end,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.CreateObjectListAndAttaches,
+		ActionShortcut = "F6",
 		ActionBindable = true,
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000678--[[Change Surface Signs To Materials--]]],
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Change Surface Signs To Materials",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = S[302535920000679--[[Changes all the ugly immersion breaking signs to materials (reversible).--]]],
@@ -221,7 +221,7 @@ function OnMsg.ClassesGenerate()
 	local str_Game_Camera = "Game.Camera"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920001058--[[Camera--]]]),
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Camera",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -268,7 +268,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.CameraFree_Toggle,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.CameraFree_Toggle,
+		ActionShortcut = "Shift-C",
 		ActionBindable = true,
 	}
 
@@ -284,7 +284,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.CameraFollow_Toggle,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.CameraFollow_Toggle,
+		ActionShortcut = "Ctrl-Shift-F",
 		ActionBindable = true,
 	}
 
@@ -295,7 +295,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
 		RolloverText = S[302535920000656--[[Toggle between moving camera and selecting objects.--]]],
 		OnAction = ChoGGi.MenuFuncs.CursorVisible_Toggle,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.CursorVisible_Toggle,
+		ActionShortcut = "Ctrl-Alt-F",
 		ActionBindable = true,
 	}
 
@@ -311,7 +311,7 @@ function OnMsg.ClassesGenerate()
 	local str_Game_Render = "Game.Render"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000845--[[Render--]]]),
-		ActionMenubar = "Game",
+		ActionMenubar = "ECM.Game",
 		ActionId = ".Render",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",

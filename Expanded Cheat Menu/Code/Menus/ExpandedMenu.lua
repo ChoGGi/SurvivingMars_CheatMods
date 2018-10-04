@@ -9,7 +9,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000031--[[Find Nearest Resource--]]],
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Find Nearest Resource",
 		ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 		RolloverText = S[302535920000554--[[Select an object and click this to display a list of resources.--]]],
@@ -21,7 +21,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000333--[[Building Info--]]],
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Building Info",
 		ActionIcon = "CommonAssets/UI/Menu/ExportImageSequence.tga",
 		RolloverText = S[302535920000345--[[Shows info about building in text above it.--]]],
@@ -31,7 +31,7 @@ function OnMsg.ClassesGenerate()
 
 	--~ c = c + 1
 	--~ Actions[c] = {ActionName = S[302535920000555--[[Monitor Info--]]],
-	--~ 	ActionMenubar = "Expanded CM",
+	--~ 	ActionMenubar = "ECM.Expanded CM",
 	--~ 	ActionId = ".Monitor Info",
 	--~ 	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 	--~ 	RolloverText = S[302535920000556--[[Shows a list of updated information about your city.--]]],
@@ -41,7 +41,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000469--[[Close Dialogs--]]],
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Close Dialogs",
 		ActionIcon = "CommonAssets/UI/Menu/remove_water.tga",
 		RolloverText = S[302535920000470--[[Close any dialogs opened by ECM (Examine, ObjectManipulator, Change Colours, etc...)--]]],

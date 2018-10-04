@@ -4,8 +4,11 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v9.7 (Unreleased)
+### Added:
+- Examine Objects: It'll show a group of objects in an examine dialog instead of a single object (Shift-F4).
+
 ### Changed:
-- Examine menu for console now shows object name for title, and has submenus for certain items.
+- Examine menu for console now shows object name for examine title, and has submenus for certain items.
 - Moved Points To Train from Sanatoriums Schools to Buildings.
 - Examine will only open one dialog per object examined (when you use it in a loop, and don't want a couple dozen dialogs).
 

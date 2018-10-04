@@ -12,7 +12,7 @@ function OnMsg.ClassesGenerate()
 	local str_ExpandedCM_Drones = "Expanded CM.Drones"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[517--[[Drones--]]]),
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Drones",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -92,7 +92,7 @@ function OnMsg.ClassesGenerate()
 			end
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDroneAmountDroneHub,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetDroneAmountDroneHub,
+		ActionShortcut = "Shift-D",
 		ActionBindable = true,
 	}
 
@@ -239,7 +239,7 @@ function OnMsg.ClassesGenerate()
 	local str_ExpandedCM_Shuttles = "Expanded CM.Shuttles"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[745--[[Shuttles--]]]),
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Shuttles",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -291,7 +291,7 @@ function OnMsg.ClassesGenerate()
 	local str_ExpandedCM_Rovers = "Expanded CM.Rovers"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[5438--[[Rovers--]]]),
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Rovers",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -385,7 +385,7 @@ function OnMsg.ClassesGenerate()
 	local str_ExpandedCM_Rockets = "Expanded CM.Rockets"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[5238--[[Rockets--]]]),
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Rockets",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",

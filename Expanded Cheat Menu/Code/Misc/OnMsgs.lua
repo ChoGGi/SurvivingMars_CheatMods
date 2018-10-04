@@ -210,7 +210,7 @@ function OnMsg.ModsReloaded()
 
 		c = c + 1
 		Actions[c] = {
-			ActionMenubar = "Debug",
+			ActionMenubar = "ECM.Debug",
 			ActionName = StringFormat("%s ..",S[302535920000979--[[Presets--]]]),
 			ActionId = ".Presets",
 			ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -222,7 +222,7 @@ function OnMsg.ModsReloaded()
 		ClassDescendantsList("Preset", function(name, cls)
 			c = c + 1
 			Actions[c] = {
-				ActionMenubar = "Debug.Presets",
+				ActionMenubar = "ECM.Debug.Presets",
 				ActionName = name,
 				ActionId = StringFormat(".%s",name),
 				ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",

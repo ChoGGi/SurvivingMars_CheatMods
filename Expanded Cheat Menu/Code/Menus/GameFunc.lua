@@ -488,7 +488,7 @@ function OnMsg.ClassesGenerate()
 						end
 						flatten_height = temp_height
 					end,
-					ActionShortcut = ChoGGi.Defaults.KeyBindings.FlattenGround_RaiseHeight,
+					ActionShortcut = "Shift-Up",
 				})
 				XShortcutsTarget:AddAction(XAction:new{
 					ActionId = "ChoGGi_FlattenGround_LowerHeight",
@@ -500,7 +500,7 @@ function OnMsg.ClassesGenerate()
 						end
 						flatten_height = temp_height
 					end,
-					ActionShortcut = ChoGGi.Defaults.KeyBindings.FlattenGround_LowerHeight,
+					ActionShortcut = "Shift-Down",
 				})
 				XShortcutsTarget:AddAction(XAction:new{
 					ActionId = "ChoGGi_FlattenGround_WidenRadius",
@@ -510,7 +510,7 @@ function OnMsg.ClassesGenerate()
 						visual_circle:SetRadius(size)
 						radius = size * guic
 					end,
-					ActionShortcut = ChoGGi.Defaults.KeyBindings.FlattenGround_WidenRadius,
+					ActionShortcut = "Shift-Right",
 				})
 				XShortcutsTarget:AddAction(XAction:new{
 					ActionId = "ChoGGi_FlattenGround_ShrinkRadius",
@@ -520,7 +520,7 @@ function OnMsg.ClassesGenerate()
 						visual_circle:SetRadius(size)
 						radius = size * guic
 					end,
-					ActionShortcut = ChoGGi.Defaults.KeyBindings.FlattenGround_ShrinkRadius,
+					ActionShortcut = "Shift-Left",
 				})
 			else
 				ReloadShortcuts()

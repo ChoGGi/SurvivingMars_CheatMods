@@ -24,11 +24,11 @@ function OnMsg.ClassesGenerate()
 				ActionSortKey = sort,
 			}
 		end
-		AddMenuitem("Cheats",27,"01")
-		AddMenuitem("Expanded CM",302535920000104,"02")
-		AddMenuitem("Game",283142739680,"03")
-		AddMenuitem("Debug",1000113,"04")
-		AddMenuitem("Help",487939677892,"05")
+		AddMenuitem("ECM.Cheats",27,"01")
+		AddMenuitem("ECM.Expanded CM",302535920000104,"02")
+		AddMenuitem("ECM.Game",283142739680,"03")
+		AddMenuitem("ECM.Debug",1000113,"04")
+		AddMenuitem("ECM.Help",487939677892,"05")
 	end -- do
 
 	-- stores defaults
@@ -105,72 +105,6 @@ function OnMsg.ClassesGenerate()
 		Transparency = {},
 		-- wrap lines in text editors
 		WordWrap = false,
-		-- shortcut keys
-		KeyBindings = {
-			-- Keys.lua
-			ClearConsoleLog = "F9",
-			ObjectColourRandom = "Shift-F6",
-			ObjectColourDefault = "Ctrl-F6",
-			ShowConsoleTilde = "~",
-			ShowConsoleEnter = "Enter",
-			ConsoleRestart = "Ctrl-Alt-Shift-R",
-			LastConstructedBuilding = "Ctrl-Space",
-			LastPlacedObject = "Ctrl-Shift-Space",
-			-- Buildings.lua
-			SetMaxChangeOrDischarge = "Ctrl-Shift-R",
-			SetProductionAmount = "Ctrl-Shift-P",
-			UseLastOrientation = "F7",
-			-- CheatsMenu.lua
-			CheatCompleteAllConstructions = "Alt-B",
-			-- ColonistsMenu.lua
-			TheSoylentOption = "Ctrl-Alt-Numpad 1",
-			-- DebugMenu.lua
-			MeasureTool_Toggle = "Ctrl-M",
-	--~		 MeasureTool_Clear = "Ctrl-Shift-M",
-			ObjectCloner = "Shift-Q",
-			SetPathMarkersGameTime = "Ctrl-Numpad .",
-			SetPathMarkersVisible = "Ctrl-Numpad 0",
-			OpenInObjectManipulator = "F5",
-			ObjectSpawner = "Ctrl-Shift-S",
-			Editor_Toggle = "Ctrl-Shift-E",
-			DeleteObject = "Ctrl-Alt-Shift-D",
-			ObjExaminer = "F4",
-			debug_grid_build = "Shift-F1",
-			debug_grid_squares = "Shift-F2",
-			ToggleTerrainDepositGrid = "Shift-F3",
-			-- DronesAndRCMenu.lua
-			SetDroneAmountDroneHub = "Shift-D",
-			-- ExpandedMenu
-			SetWorkerCapacity = "Ctrl-Shift-W",
-			SetBuildingCapacity = "Ctrl-Shift-C",
-			SetVisitorCapacity = "Ctrl-Shift-V",
-			SetFunding = "Ctrl-Shift-0",
-			FillResource = "Ctrl-F",
-			-- GameMenu.lua
-			SetTransparencyUI = "Ctrl-F3",
-			CameraFree_Toggle = "Shift-C",
-			CameraFollow_Toggle = "Ctrl-Shift-F",
-			CursorVisible_Toggle = "Ctrl-Alt-F",
-			FlattenTerrain_Toggle = "Shift-F",
-			FlattenGround_RaiseHeight = "Shift-Up",
-			FlattenGround_LowerHeight = "Shift-Down",
-			FlattenGround_WidenRadius = "Shift-Right",
-			FlattenGround_ShrinkRadius = "Shift-Left",
-			TerrainEditor_Toggle = "Ctrl-Shift-T",
-			-- HelpMenu.lua
-			TakeScreenshot = "-PrtScr",
-			TakeScreenshotUpsampled = "-Ctrl-PrtScr",
-			ToggleInterface = "Ctrl-Alt-I",
-			ReportBugDlg = "Ctrl-F1",
-			CheatsMenu_Toggle = "F2",
-			-- MiscMenu.lua
-			CreateObjectListAndAttaches = "F6",
-			SetObjectOpacity = "F3",
-			InfopanelCheats_Toggle = "Ctrl-F2",
-		},
-
-		-- if transport on a route has a borked route then lag happens (can't set faster game speeds)
-	--~	 CheckForBorkedTransportPath = true,
 	}
 	-- my defaults
 	if ChoGGi.testing then

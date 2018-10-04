@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 	local str_ExpandedCM_Capacity = "Expanded CM.Capacity"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[109035890389--[[Capacity--]]]),
-		ActionMenubar = "Expanded CM",
+		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -44,7 +44,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetWorkerCapacity,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetWorkerCapacity,
+		ActionShortcut = "Ctrl-Shift-W",
 		ActionBindable = true,
 	}
 
@@ -61,7 +61,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetBuildingCapacity,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetBuildingCapacity,
+		ActionShortcut = SetBuildingCapacity = "Ctrl-Shift-C",
 		ActionBindable = true,
 	}
 
@@ -78,7 +78,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetVisitorCapacity,
-		ActionShortcut = ChoGGi.Defaults.KeyBindings.SetVisitorCapacity,
+		ActionShortcut = SetBuildingCapacity = "Ctrl-Shift-V",
 		ActionBindable = true,
 	}
 
