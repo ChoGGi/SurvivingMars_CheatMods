@@ -624,44 +624,42 @@ function ChoGGi.CodeFuncs.ObjectColourRandom(obj)
 
 end
 
-do -- SetDefColour
-	local function SetDefColour(obj)
-		obj:SetColorModifier(6579300)
-		if obj.ChoGGi_origcolors then
-			local c = obj.ChoGGi_origcolors
-			obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
-			obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
-			obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
-			obj:SetColorizationMaterial(4, c[4][1], c[4][2], c[4][3])
+function ChoGGi.CodeFuncs.SetDefColour(obj)
+	obj:SetColorModifier(6579300)
+	if obj.ChoGGi_origcolors then
+		local c = obj.ChoGGi_origcolors
+		obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
+		obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
+		obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
+		obj:SetColorizationMaterial(4, c[4][1], c[4][2], c[4][3])
+	end
+end
+
+function ChoGGi.CodeFuncs.ObjectColourDefault(obj)
+	obj = obj or ChoGGi.ComFuncs.SelObject()
+	if not obj then
+		return
+	end
+	local SetDefColour = ChoGGi.CodeFuncs.SetDefColour
+
+	if IsValid(obj) and obj:IsKindOf("ColorizableObject") then
+		SetDefColour(obj)
+	end
+	-- regular attaches
+	if obj:IsKindOf("ComponentAttach") then
+		obj:ForEachAttach("ColorizableObject",function(a)
+			SetDefColour(a)
+		end)
+	end
+	-- other attaches
+	local IsValid = IsValid
+	for _,a in pairs(obj) do
+		if IsValid(a) and a:IsKindOf("ColorizableObject") then
+			SetDefColour(a)
 		end
 	end
 
-	function ChoGGi.CodeFuncs.ObjectColourDefault(obj)
-		obj = obj or ChoGGi.ComFuncs.SelObject()
-		if not obj then
-			return
-		end
-
-		if IsValid(obj) and obj:IsKindOf("ColorizableObject") then
-			SetDefColour(obj)
-		end
-		-- regular attaches
-		if obj:IsKindOf("ComponentAttach") then
-			obj:ForEachAttach("ColorizableObject",function(a)
-				SetDefColour(a)
-			end)
-		end
-		-- other attaches
-		local IsValid = IsValid
-		for _,a in pairs(obj) do
-			if IsValid(a) and a:IsKindOf("ColorizableObject") then
-				SetDefColour(a)
-			end
-		end
-
-	end
-end -- do
-
+end
 
 function ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(obj,amount)
 	amount = amount or 10
@@ -1136,7 +1134,7 @@ do -- BuildingConsumption
 			end
 			obj[tempname] = nil
 		end
-		local amount = BuildingTemplates[obj.id ~= "" and obj.id or obj.encyclopedia_id][name]
+		local amount = BuildingTemplates[obj.id ~= "" and obj.id or obj.encyclopedia_id ~= "" and obj.encyclopedia_id or obj.class][name]
 		obj:SetBase(name, amount)
 	end
 	local function RemoveConsumption(obj,name)

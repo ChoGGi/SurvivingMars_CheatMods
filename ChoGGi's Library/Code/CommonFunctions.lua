@@ -17,6 +17,12 @@ DefineClass.ChoGGi_HexSpot = {
 	__parents = {"CObject"},
 	entity = "GridTile"
 }
+DefineClass.ChoGGi_Vector = {
+	__parents = {"Vector"},
+}
+DefineClass.ChoGGi_Sphere = {
+	__parents = {"Sphere"},
+}
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 function ChoGGi.ComFuncs.SaveOrigFunc(class_or_func,func_name)
@@ -304,15 +310,26 @@ do -- ShowMe
 
 	local markers = {}
 	function ChoGGi.ComFuncs.ClearShowMe()
-		for k, v in pairs(markers) do
-			if IsValid(k) then
-				if v == "point" then
-					k:delete()
-				else
-					k:SetColorModifier(v)
+		-- some markers have been added
+		if next(markers) then
+			for k, v in pairs(markers) do
+				if IsValid(k) then
+					if v == "point" or v == "vector" then
+						k:delete()
+					else
+						k:SetColorModifier(v)
+					end
+					markers[k] = nil
 				end
-				markers[k] = nil
 			end
+		-- could be from a saved game so remove any objects on the map
+		else
+			SuspendPassEdits("ChoGGi_Vector")
+			SuspendPassEdits("ChoGGi_Sphere")
+			MapDelete("map", "ChoGGi_Vector")
+			MapDelete("map", "ChoGGi_Sphere")
+			ResumePassEdits("ChoGGi_Vector")
+			ResumePassEdits("ChoGGi_Sphere")
 		end
 	end
 
@@ -326,7 +343,7 @@ do -- ShowMe
 
 		if type(o) == "table" and #o == 2 then
 			if IsPoint(o[1]) and IsPointInBounds(o[1]) and IsPoint(o[2]) and IsPointInBounds(o[2]) then
-				local m = g_Classes.Vector:new()
+				local m = g_Classes.ChoGGi_Vector:new()
 				m:Set(o[1], o[2], color)
 				markers[m] = "vector"
 				o = m
@@ -336,7 +353,7 @@ do -- ShowMe
 			if IsPoint(o) or both then
 				local o2 = IsPoint(o) and o or IsValid(o) and o:GetVisualPos()
 				if o2 and IsPointInBounds(o2) then
-					local m = g_Classes.Sphere:new()
+					local m = g_Classes.ChoGGi_Sphere:new()
 					m:SetPos(o2)
 					m:SetRadius(50 * guic)
 					m:SetColor(color)
@@ -344,7 +361,7 @@ do -- ShowMe
 					if not time then
 						ViewObjectMars(o2)
 					end
-					o2 = m
+--~ 					o2 = m
 				end
 			end
 
@@ -1245,7 +1262,7 @@ do -- Ticks
 		times[id] = GetPreciseTicks()
 	end
 	function ChoGGi.ComFuncs.TickEnd(id)
-		print(id,": ",GetPreciseTicks() - times[id])
+		print(id,":",GetPreciseTicks() - times[id])
 		times[id] = nil
 	end
 end -- do

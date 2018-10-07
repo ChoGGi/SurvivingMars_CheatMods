@@ -11,7 +11,9 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "1415296985",
 	"lua_revision", LuaRevision,
-	"description", [[If you're feeling OCD about a perfect layout for your base then look no further.
+	"description", [[Simple guide: https://steamcommunity.com/sharedfiles/filedetails/?id=1530394137
+
+If you're feeling OCD about a perfect layout for your base then look no further.
 
 Press Shift-F to begin, press Shift-F again to update buildable area.
 Press Ctrl-Shift-1 to remove large rocks, Ctrl-Shift-2 for small ones (shows a confirmation before).

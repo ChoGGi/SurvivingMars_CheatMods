@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v1.9 (Unreleased)
+- Fixed issue with the Need/Free stuff in cheats pane not working with all buildings.
+- Made sure clear markers will always clear markers.
 
 ## v1.8 (2 Oct 2018)
 - Submenus added to PopupToggle.

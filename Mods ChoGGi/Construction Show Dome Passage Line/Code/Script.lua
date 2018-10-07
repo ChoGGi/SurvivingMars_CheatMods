@@ -8,7 +8,7 @@ local HexToWorld = HexToWorld
 local point = point
 local WorldToHex = WorldToHex
 
--- simplest entity object as possible for hexgrids
+-- simple entity object for hexgrids
 DefineClass.ChoGGi_HexSpot = {
   __parents = {"CObject"},
   entity = "GridTile"
