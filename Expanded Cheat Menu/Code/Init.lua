@@ -37,7 +37,7 @@ SOFTWARE.
 
 -- tell people know how to get the library
 function OnMsg.ModsReloaded()
-	local min_version = 19
+	local min_version = 20
 
 	local ModsLoaded = ModsLoaded
 	-- we need a version check to remind Nexus/GoG users
@@ -45,7 +45,7 @@ function OnMsg.ModsReloaded()
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	if idx then
-		if ModsLoaded[idx].version > min_version then
+		if min_version > ModsLoaded[idx].version then
 			not_found_or_wrong_version = true
 		end
 	else

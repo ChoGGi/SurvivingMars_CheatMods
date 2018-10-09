@@ -2,7 +2,7 @@
 
 -- tell people know how to get the library
 function OnMsg.ModsReloaded()
-	local min_version = 18
+	local min_version = 20
 
 	local ModsLoaded = ModsLoaded
 	local not_found_or_wrong_version
