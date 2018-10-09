@@ -39,7 +39,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.workers",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.workers",sel and sel.template_name),
 				302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]
 			)
 		end,
@@ -56,7 +56,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.capacity",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.capacity",sel and sel.template_name),
 				302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]
 			)
 		end,
@@ -73,7 +73,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.visitors",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.visitors",sel and sel.template_name),
 				302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]
 			)
 		end,

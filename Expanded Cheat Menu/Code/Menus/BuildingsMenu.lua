@@ -248,7 +248,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.production",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.production",sel and sel.template_name),
 				302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
 	Works on any building that produces."--]]
 			)
@@ -266,7 +266,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.nopower",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.nopower",sel and sel.template_name),
 				302535920000187--[[Toggle electricity use for selected building type.--]]
 			)
 		end,
@@ -282,7 +282,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.nowater",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.nowater",sel and sel.template_name),
 				302535920001252--[[Toggle water use for selected building type.--]]
 			)
 		end,
@@ -298,7 +298,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.noair",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.noair",sel and sel.template_name),
 				302535920001254--[[Toggle oxygen use for selected building type.--]]
 			)
 		end,
@@ -325,7 +325,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.protect_range",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.protect_range",sel and sel.template_name),
 				302535920000179--[[Change threat protection coverage distance.--]]
 			)
 		end,
@@ -340,7 +340,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.auto_performance",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.auto_performance",sel and sel.template_name),
 				302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).--]]
 			)
 		end,
@@ -355,7 +355,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.service_stats",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.service_stats",sel and sel.template_name),
 				302535920001115--[["Tweak settings for parks and such.
 	Health change, Sanity change, Service Comfort, Comfort increase."--]]
 			)
@@ -373,7 +373,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.evaluation_points",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.evaluation_points",sel and sel.template_name),
 				302535920001345--[[How many points are needed to finish training.--]]
 			)
 		end,

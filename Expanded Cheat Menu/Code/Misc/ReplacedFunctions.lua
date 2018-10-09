@@ -283,7 +283,7 @@ function OnMsg.ClassesGenerate()
 
 	-- override any performance changes if needed
 	function Workplace:GetWorkshiftPerformance(...)
-		local set = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
+		local set = ChoGGi.UserSettings.BuildingSettings[self.template_name]
 		if set and set.performance_notauto then
 			return set.performance_notauto
 		end
@@ -457,7 +457,7 @@ function OnMsg.ClassesGenerate()
 
 	-- larger trib/subsurfheater radius
 	function UIRangeBuilding:SetUIRange(radius)
-		local bs = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
+		local bs = ChoGGi.UserSettings.BuildingSettings[self.template_name]
 		if bs and bs.uirange then
 			radius = bs.uirange
 		end
@@ -467,7 +467,7 @@ function OnMsg.ClassesGenerate()
 	-- block certain traits from workplaces
 	function Workplace:AddWorker(worker, shift)
 		local ChoGGi = ChoGGi
-		local bs = ChoGGi.UserSettings.BuildingSettings[self.encyclopedia_id]
+		local bs = ChoGGi.UserSettings.BuildingSettings[self.template_name]
 		-- check that the tables contain at least one trait
 		local bt
 		local rt
@@ -843,7 +843,7 @@ function OnMsg.ClassesBuilt()
 
 	--keep prod at saved values for grid producers (air/water/elec)
 	function SupplyGridElement:SetProduction(new_production, new_throttled_production, update)
-		local amount = ChoGGi.UserSettings.BuildingSettings[self.building.encyclopedia_id]
+		local amount = ChoGGi.UserSettings.BuildingSettings[self.building.template_name]
 		if amount and amount.production then
 			--set prod
 			new_production = self.building.working and amount.production or 0
@@ -861,7 +861,7 @@ function OnMsg.ClassesBuilt()
 
 	--and for regular producers (factories/extractors)
 	function SingleResourceProducer:Produce(amount_to_produce)
-		local amount = ChoGGi.UserSettings.BuildingSettings[self.parent.encyclopedia_id]
+		local amount = ChoGGi.UserSettings.BuildingSettings[self.parent.template_name]
 		if amount and amount.production then
 			--set prod
 			amount_to_produce = amount.production / guim

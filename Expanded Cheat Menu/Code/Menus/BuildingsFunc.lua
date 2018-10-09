@@ -22,7 +22,7 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = sel.encyclopedia_id
+		local id = sel.template_name
 		local name = RetName(sel)
 		local DefaultSetting = sel.base_evaluation_points
 		local UserSettings = ChoGGi.UserSettings
@@ -102,7 +102,7 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 		local r = ChoGGi.Consts.ResourceScale
-		local id = sel.encyclopedia_id
+		local id = sel.template_name
 		local ServiceInterestsList = table.concat(ServiceInterestsList,", ")
 		local name = RetName(sel)
 		local is_service = sel:IsKindOf("Service")
@@ -496,7 +496,7 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = sel.encyclopedia_id
+		local id = sel.template_name
 		local DefaultSetting = g_Classes[id]:GetDefaultPropertyValue("protect_range")
 		local ItemList = {
 			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
@@ -559,10 +559,10 @@ function OnMsg.ClassesGenerate()
 
 		local ItemList = {}
 		for _,bld in pairs(BuildingTemplates or {}) do
-			if not GetBuildingTechsStatus(bld.encyclopedia_id) then
+			if not GetBuildingTechsStatus(bld.template_name) then
 				ItemList[#ItemList+1] = {
 					text = Trans(bld.display_name),
-					value = bld.encyclopedia_id
+					value = bld.template_name
 				}
 			end
 		end
@@ -633,7 +633,7 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = sel.encyclopedia_id
+		local id = sel.template_name
 		local UserSettings = ChoGGi.UserSettings
 
 		if not UserSettings.BuildingSettings[id] then
@@ -707,7 +707,7 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = sel.encyclopedia_id
+		local id = sel.template_name
 		local name = Trans(sel.display_name)
 		local r = ChoGGi.Consts.ResourceScale
 
@@ -804,7 +804,7 @@ function OnMsg.ClassesGenerate()
 				if CapType == "electricity" then
 					local tab = UICity.labels.Power or ""
 					for i = 1, #tab do
-						if tab[i].encyclopedia_id == id then
+						if tab[i].template_name == id then
 							if check1 then
 								tab[i][CapType].max_charge = numberC
 								tab[i][StringFormat("max_%s_charge",CapType)] = numberC
@@ -819,7 +819,7 @@ function OnMsg.ClassesGenerate()
 				else -- water and air
 					local tab = UICity.labels["Life-Support"] or ""
 					for i = 1, #tab do
-						if tab[i].encyclopedia_id == id then
+						if tab[i].template_name == id then
 							if check1 then
 								tab[i][CapType].max_charge = numberC
 								tab[i][StringFormat("max_%s_charge",CapType)] = numberC
@@ -911,7 +911,7 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = sel.encyclopedia_id
+		local id = sel.template_name
 		local name = Trans(sel.display_name)
 
 		--get type of producer
@@ -984,7 +984,7 @@ function OnMsg.ClassesGenerate()
 				local function SetProd(Label)
 					local tab = UICity.labels[Label] or ""
 					for i = 1, #tab do
-						if tab[i].encyclopedia_id == id then
+						if tab[i].template_name == id then
 							tab[i][ProdType]:SetProduction(amount)
 						end
 					end
@@ -1000,7 +1000,7 @@ function OnMsg.ClassesGenerate()
 					local function SetProdOther(Label)
 						local tab = UICity.labels[Label] or ""
 						for i = 1, #tab do
-							if tab[i].encyclopedia_id == id then
+							if tab[i].template_name == id then
 								tab[i]:GetProducerObj().production_per_day = amount
 								tab[i]:GetProducerObj():Produce(amount)
 							end
@@ -1047,7 +1047,7 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = sel.encyclopedia_id
+		local id = sel.template_name
 
 		local ItemList = {
 			{text = S[302535920000142--[[Disable--]]],value = "Disable"},

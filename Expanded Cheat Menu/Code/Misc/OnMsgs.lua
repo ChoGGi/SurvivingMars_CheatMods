@@ -400,7 +400,7 @@ end -- do
 
 -- make sure they use with our new values
 function OnMsg.ChoGGi_SpawnedProducer(obj,prod_type)
-	local prod = ChoGGi.UserSettings.BuildingSettings[obj.encyclopedia_id]
+	local prod = ChoGGi.UserSettings.BuildingSettings[obj.template_name]
 	if prod and prod.production then
 		obj[prod_type] = prod.production
 	end
@@ -549,7 +549,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 	end
 
 	-- saved building settings
-	local bs = UserSettings.BuildingSettings[obj.encyclopedia_id]
+	local bs = UserSettings.BuildingSettings[obj.template_name]
 	if bs then
 		if next(bs) then
 			-- saved settings for capacity, shuttles
@@ -631,7 +631,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 
 		else
 			-- empty table so remove
-			UserSettings.BuildingSettings[obj.encyclopedia_id] = nil
+			UserSettings.BuildingSettings[obj.template_name] = nil
 		end
 	end
 

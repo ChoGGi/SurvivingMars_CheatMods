@@ -180,7 +180,7 @@ function OnMsg.ClassesGenerate()
 			self.max_workers = 0
 			self.automation = 1
 			local bs = ChoGGi.UserSettings.BuildingSettings
-			bs = bs and bs[self.encyclopedia_id]
+			bs = bs and bs[self.template_name]
 			if bs then
 				-- changed saving as performance to auto_performance, get rid of this in a few months
 				self.auto_performance = bs.auto_performance or bs.performance
@@ -386,7 +386,7 @@ function OnMsg.ClassesGenerate()
 		function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 			local obj = win.context
 			local name = RetName(obj)
-			local id = obj.encyclopedia_id
+			local id = obj.template_name
 			--needs to be strings or else!@!$@!
 			local doublec = ""
 			local resetc = ""

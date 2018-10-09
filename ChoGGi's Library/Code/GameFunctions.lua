@@ -1134,7 +1134,7 @@ do -- BuildingConsumption
 			end
 			obj[tempname] = nil
 		end
-		local amount = BuildingTemplates[obj.id ~= "" and obj.id or obj.encyclopedia_id ~= "" and obj.encyclopedia_id or obj.class][name]
+		local amount = BuildingTemplates[obj.template_name][name]
 		obj:SetBase(name, amount)
 	end
 	local function RemoveConsumption(obj,name)
@@ -2174,12 +2174,12 @@ function ChoGGi.CodeFuncs.ConstructionModeSet(itemname)
 	if action then
 		action(dlg,{
 			enabled = can_build,
-			name = bld_template.id ~= "" and bld_template.id or bld_template.encyclopedia_id,
+			name = bld_template.id ~= "" and bld_template.id or bld_template.template_name,
 			construction_mode = bld_template.construction_mode
 		})
 	else
 		igi:SetMode("construction",{
-			template = bld_template.id ~= "" and bld_template.id or bld_template.encyclopedia_id,
+			template = bld_template.template_name,
 			selected_dome = dlg and dlg.context.selected_dome
 		})
 	end

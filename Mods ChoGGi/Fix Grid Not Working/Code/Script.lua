@@ -4,8 +4,9 @@ local type = type
 local function CleanGrid(list)
 	for i = #list, 1, -1 do
 		local b = list[i].building
-		-- check what the class says; false means could be, nil means not happening.
+		-- if it's nil then it shouldn't be part of this grid (false means it could be)
 		if type(g_Classes[b.class][name]) == "nil" then
+			-- remove elec grid from this object
 			if name == "electricity" and b.electricity then
 				b.SetSupply = ElectricityConsumer.SetSupply
 				ElectricityGridObject.SupplyGridDisconnectElement(b, b.electricity, ElectricityGrid)

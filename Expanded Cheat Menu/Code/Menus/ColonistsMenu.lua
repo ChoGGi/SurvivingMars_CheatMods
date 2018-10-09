@@ -40,7 +40,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.restricttraits",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.restricttraits",sel and sel.template_name),
 				302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block will override).--]]
 			)
 		end,
@@ -57,7 +57,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.blocktraits",sel and sel.encyclopedia_id),
+				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.blocktraits",sel and sel.template_name),
 				302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]
 			)
 		end,
@@ -98,7 +98,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
-				#g_ApplicantPool,
+				#(g_ApplicantPool or ""),
 				302535920000380--[[Add random applicants to the passenger pool (has option to remove all).--]]
 			)
 		end,

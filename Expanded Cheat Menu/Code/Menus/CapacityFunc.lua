@@ -67,12 +67,12 @@ function OnMsg.ClassesGenerate()
 		}
 
 		-- check if there's an entry for building
-		if not ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] then
-			ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] = {}
+		if not ChoGGi.UserSettings.BuildingSettings[sel.template_name] then
+			ChoGGi.UserSettings.BuildingSettings[sel.template_name] = {}
 		end
 
 		local hint = DefaultSetting
-		local setting = ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id]
+		local setting = ChoGGi.UserSettings.BuildingSettings[sel.template_name]
 		if setting and setting.workers then
 			hint = tostring(setting.workers)
 		end
@@ -86,15 +86,15 @@ function OnMsg.ClassesGenerate()
 
 				local tab = UICity.labels.Workplace or ""
 				for i = 1, #tab do
-					if tab[i].encyclopedia_id == sel.encyclopedia_id then
+					if tab[i].template_name == sel.template_name then
 						tab[i].max_workers = value
 					end
 				end
 
 				if value == DefaultSetting then
-					ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id].workers = nil
+					ChoGGi.UserSettings.BuildingSettings[sel.template_name].workers = nil
 				else
-					ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id].workers = value
+					ChoGGi.UserSettings.BuildingSettings[sel.template_name].workers = value
 				end
 
 				ChoGGi.SettingFuncs.WriteSettings()
@@ -174,12 +174,12 @@ function OnMsg.ClassesGenerate()
 		}
 
 		--check if there's an entry for building
-		if not ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] then
-			ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] = {}
+		if not ChoGGi.UserSettings.BuildingSettings[sel.template_name] then
+			ChoGGi.UserSettings.BuildingSettings[sel.template_name] = {}
 		end
 
 		local hint = DefaultSetting
-		local setting = ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id]
+		local setting = ChoGGi.UserSettings.BuildingSettings[sel.template_name]
 		if setting and setting.capacity then
 			if CapType ~= "colonist" then
 				hint = tostring(setting.capacity / r)
@@ -218,7 +218,7 @@ function OnMsg.ClassesGenerate()
 				if CapType == "electricity" then
 					local tab = UICity.labels.Power or ""
 					for i = 1, #tab do
-						if tab[i].encyclopedia_id == sel.encyclopedia_id then
+						if tab[i].template_name == sel.template_name then
 							tab[i].capacity = amount
 							tab[i][CapType].storage_capacity = amount
 							tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
@@ -229,7 +229,7 @@ function OnMsg.ClassesGenerate()
 				elseif CapType == "colonist" then
 					local tab = UICity.labels.Residence or ""
 					for i = 1, #tab do
-						if tab[i].encyclopedia_id == sel.encyclopedia_id then
+						if tab[i].template_name == sel.template_name then
 							tab[i].capacity = amount
 						end
 					end
@@ -237,7 +237,7 @@ function OnMsg.ClassesGenerate()
 				else --water and air
 					local tab = UICity.labels["Life-Support"] or ""
 					for i = 1, #tab do
-						if tab[i].encyclopedia_id == sel.encyclopedia_id then
+						if tab[i].template_name == sel.template_name then
 							tab[i][StringFormat("%s_capacity",CapType)] = amount
 							tab[i][CapType].storage_capacity = amount
 							tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
@@ -296,12 +296,12 @@ function OnMsg.ClassesGenerate()
 		}
 
 		--check if there's an entry for building
-		if not ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] then
-			ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id] = {}
+		if not ChoGGi.UserSettings.BuildingSettings[sel.template_name] then
+			ChoGGi.UserSettings.BuildingSettings[sel.template_name] = {}
 		end
 
 		local hint = DefaultSetting
-		local setting = ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id]
+		local setting = ChoGGi.UserSettings.BuildingSettings[sel.template_name]
 		if setting and setting.visitors then
 			hint = tostring(setting.visitors)
 		end
@@ -314,15 +314,15 @@ function OnMsg.ClassesGenerate()
 			if type(value) == "number" then
 				local tab = UICity.labels.BuildingNoDomes or ""
 				for i = 1, #tab do
-					if tab[i].encyclopedia_id == sel.encyclopedia_id then
+					if tab[i].template_name == sel.template_name then
 						tab[i].max_visitors = value
 					end
 				end
 
 				if value == DefaultSetting then
-					ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id].visitors = nil
+					ChoGGi.UserSettings.BuildingSettings[sel.template_name].visitors = nil
 				else
-					ChoGGi.UserSettings.BuildingSettings[sel.encyclopedia_id].visitors = value
+					ChoGGi.UserSettings.BuildingSettings[sel.template_name].visitors = value
 				end
 
 				ChoGGi.SettingFuncs.WriteSettings()

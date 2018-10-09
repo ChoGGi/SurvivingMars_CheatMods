@@ -1795,7 +1795,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			return
 		end
 
-		local id = sel.encyclopedia_id
+		local id = sel.template_name
 		local name = Trans(sel.display_name)
 		local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
 		if not BuildingSettings[id] or BuildingSettings[id] and not next(BuildingSettings[id]) then

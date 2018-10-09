@@ -150,6 +150,9 @@ do -- RetName
 			elseif obj.Id and obj.Id ~= "" then
 				return obj.Id
 
+			-- class template name
+			elseif obj.template_name and obj.template_name ~= "" then
+				return obj.template_name
 			-- class
 			elseif obj.class and obj.class ~= "" then
 				return obj.class
