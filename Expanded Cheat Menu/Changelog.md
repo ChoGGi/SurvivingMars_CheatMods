@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v9.7 (Unreleased)
+## v9.8 (Unreleased)
+
+## v9.7 (08 Oct 2018)
 ### Added:
 - Examine Objects: It'll show a group of objects in an examine dialog instead of a single object (Shift-F4).
 - Mark All to examine dialogs for objlists.

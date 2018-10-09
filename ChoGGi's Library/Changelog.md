@@ -1,7 +1,9 @@
 ## Library Changelog
 
-## v1.9 (Unreleased)
-- Fixed issue with the Need/Free stuff in cheats pane not working with all buildings.
+## v2.0 (Unreleased)
+
+## v1.9 (08 Oct 2018)
+- Fixed issue with the Need/Free stuff in cheats pane not working with all/modded buildings.
 - Made sure clear markers will always clear markers.
 
 ## v1.8 (2 Oct 2018)
