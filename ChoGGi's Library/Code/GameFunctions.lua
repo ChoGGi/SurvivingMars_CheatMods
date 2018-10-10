@@ -1506,11 +1506,11 @@ function ChoGGi.CodeFuncs.AddXTemplate(name,template,list,toplevel)
 			"OnContextUpdate", list.OnContextUpdate or function()end,
 		}, {
 			PlaceObj("XTemplateFunc", {
-			"name", "OnActivate(self, context)",
-			"parent", function(parent, _)
-					return parent.parent
-				end,
-			"func", list.func or function()end,
+				"name", "OnActivate(self, context)",
+				"parent", function(parent, _)
+						return parent.parent
+					end,
+				"func", list.func or function()end,
 			})
 		})
 	else
@@ -2010,8 +2010,8 @@ do -- AddBlinkyToObj
 			return
 		end
 		-- if it was attached to something deleted, or fresh start
-		if not blinky_obj then
-			blinky_obj = RotatyThing:new()
+		if not IsValid(blinky_obj) then
+			blinky_obj = ChoGGi_RotatyThing:new()
 		end
 		-- stop any previous countdown
 		DeleteThread(blinky_thread)
@@ -2031,10 +2031,10 @@ do -- AddBlinkyToObj
 				offset = 250
 			end
 		end
-		-- attach blinky so it's obvious
+		-- attach blinky so it's noticeable
 		obj:Attach(blinky_obj,spot)
 		blinky_obj:SetAttachOffset(point(0,0,offset))
-		-- hide blinky after timeout or 10s
+		-- hide blinky after we select something else or timeout, we don't delete since we move it from obj to obj
 		blinky_thread = CreateRealTimeThread(function()
 			WaitMsg("SelectedObjChange",timeout or 10000)
 			blinky_obj:SetOpacity(0)

@@ -128,6 +128,8 @@ DefineClass.PortableMiner = {
 	accumulate_dust = true,
 	-- changed below
 	notworking_sign = false,
+	-- refund res
+	on_demolish_resource_refund = { Metals = 20 * const.ResourceScale, MachineParts = 20 * const.ResourceScale , Electronics = 10 * const.ResourceScale },
 }
 
 DefineClass.PortableMinerBuilding = {

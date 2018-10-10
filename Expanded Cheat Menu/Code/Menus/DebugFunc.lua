@@ -432,67 +432,6 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	--no sense in building the list more then once (it's a big list)
-	local ObjectSpawner_ItemList = {}
-	function ChoGGi.MenuFuncs.ObjectSpawner()
-		local ChoGGi = ChoGGi
-		local EntityData = EntityData or {}
-		if #ObjectSpawner_ItemList == 0 then
-			for Key,_ in pairs(EntityData) do
-				ObjectSpawner_ItemList[#ObjectSpawner_ItemList+1] = {
-					text = Key,
-					value = Key
-				}
-			end
-		end
-
-		local function CallBackFunc(choice)
-			if #choice < 1 then
-				return
-			end
-			local value = choice[1].value
-			if g_Classes[value] then
-
-				local NewObj = PlaceObj(value,{"Pos",ChoGGi.CodeFuncs.CursorNearestHex()})
-				NewObj.__parents[#NewObj.__parents] = "InfopanelObj"
-				NewObj.ip_template = "ipChoGGi_Everything"
-				NewObj.ChoGGi_Spawned = true
-				NewObj:SetEnumFlags(const.efSelectable)
-
-				-- so user knows something is selected
-				local orig_OnSelected = NewObj.OnSelected
-				function NewObj:OnSelected(...)
-					-- all the help i can give
-					print(S[302535920001110--[[Press F4--]]])
-
-					SelectionArrowAdd(self)
-					orig_OnSelected(self,...)
-				end
-
-				ObjModified(NewObj)
-				-- be nice to populate with default values, but causes issues
-				--[[
-				local props = NewObj:GetProperties()
-				for i = 1, #props do
-					NewObj:SetProperty(props[i].id, NewObj:GetDefaultPropertyValue(props[i].id, props[i]))
-				end
-				--]]
-
-				MsgPopup(
-					StringFormat("%s: %s %s",choice[1].text,S[302535920000014--[[Spawned--]]],S[298035641454--[[Object--]]]),
-					302535920000014--[[Spawned--]]
-				)
-			end
-		end
-
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ObjectSpawner_ItemList,
-			title = 302535920000862--[[Object Spawner (EntityData list)--]],
-			hint = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000863--[[Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).--]]]),
-		}
-	end
-
 	do -- debug_build_grid
 		local build_grid_debug_objs = {}
 		local build_grid_debug_thread = false

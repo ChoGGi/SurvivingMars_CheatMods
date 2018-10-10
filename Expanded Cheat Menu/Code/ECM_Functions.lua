@@ -340,4 +340,47 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
+	function ChoGGi.CodeFuncs.ObjectSpawner(obj)
+		local ChoGGi = ChoGGi
+		local g_Classes = g_Classes
+		local EntityData = EntityData or {}
+		local ObjectSpawner_ItemList = {}
+		local c = 0
+		for Key,_ in pairs(EntityData) do
+			c = c + 1
+			ObjectSpawner_ItemList[c] = {
+				text = Key,
+				value = Key
+			}
+		end
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+			local value = choice[1].value
+			if g_Classes[value] then
+
+				if not obj then
+					obj = PlaceObj("ChoGGi_BuildingEntityClass",{
+						"Pos",ChoGGi.CodeFuncs.CursorNearestHex()
+					})
+				end
+				obj:ChangeEntity(value)
+
+				MsgPopup(
+					StringFormat("%s: %s %s",choice[1].text,S[302535920000014--[[Spawned--]]],S[298035641454--[[Object--]]]),
+					302535920000014--[[Spawned--]]
+				)
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ObjectSpawner_ItemList,
+			title = 302535920000862--[[Object Spawner (EntityData list)--]],
+			hint = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000863--[[Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).--]]]),
+		}
+	end
+
 end

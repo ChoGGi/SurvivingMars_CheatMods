@@ -15,7 +15,6 @@ DefineClass.Carwash = {
     "Building",
     "ElectricityConsumer",
     "LifeSupportConsumer",
---~     "InteriorAmbientLife",
 
     "OutsideBuildingWithShifts",
 
@@ -37,6 +36,7 @@ DefineClass.Carwash = {
   anim_thread = false,
   is_up = false,
   nearby_thread = false,
+
 }
 
 function Carwash:GameInit()
@@ -107,7 +107,6 @@ function Carwash:Done()
     DeleteThread(self.nearby_thread)
   end
 end
---~ end
 
 -- add building to building template list
 function OnMsg.ClassesPostprocess()
@@ -116,15 +115,15 @@ function OnMsg.ClassesPostprocess()
     "Id", "Carwash",
     "template_class", "Carwash",
     "dome_forbidden", true,
-    "display_name", "Martian Carwash",
-    "display_name_pl", "Martian Carwash",
+    "display_name", [[Martian Carwash]],
+    "display_name_pl", [[Martian Carwashing]],
     "description", [[Working at the car wash
 Working at the car wash, yeah
 Come on and sing it with me, car wash
 Sing it with the feeling now, car wash, yeah]],
     "Group", "Wonders",
     "build_category", "Wonders", -- oh it's wonderful, be even more wonderful if I could figure out how to add a pipe connection, and have it suck up water
-    "display_icon", string.format("%scarwash.tga",CurrentModPath),
+    "display_icon", string.format("%sUI/carwash.png",CurrentModPath),
     "entity", "Farm",
     "electricity_consumption", 2500,
     "water_consumption", 0,

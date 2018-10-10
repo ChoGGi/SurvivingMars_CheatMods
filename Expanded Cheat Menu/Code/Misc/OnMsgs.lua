@@ -8,6 +8,7 @@ local Msg = Msg
 local OnMsg = OnMsg
 
 local MsgPopup
+local RetName
 local S
 local blacklist
 
@@ -16,6 +17,7 @@ function OnMsg.ClassesGenerate()
 	local ChoGGi = ChoGGi
 
 	MsgPopup = ChoGGi.ComFuncs.MsgPopup
+	RetName = ChoGGi.ComFuncs.RetName
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 
@@ -74,6 +76,7 @@ function OnMsg.ClassesPreprocess()
 		c = c + 1
 		umc.__parents[c] = "PinnableObject"
 	end
+
 end
 
 -- where we can add new BuildingTemplates
@@ -115,53 +118,37 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"
 
 		-- added to stuff spawned with object spawner
-		if XTemplates.ipChoGGi_Everything then
-			XTemplates.ipChoGGi_Everything:delete()
+		if XTemplates.ipChoGGi_Entity then
+			XTemplates.ipChoGGi_Entity:delete()
 		end
-		PlaceObj('XTemplate', {
+
+		PlaceObj("XTemplate", {
 			group = "Infopanel Sections",
-			id = "ipChoGGi_Everything",
-			PlaceObj('XTemplateTemplate', {
-				'__condition', function (_, context) return context.ChoGGi_Spawned end,
-				'__template', "Infopanel",
-				'Description', S[313911890683--[[<description>--]]],
+			id = "ipChoGGi_Entity",
+			PlaceObj("XTemplateTemplate", {
+				"__condition", function (_, context) return context.ChoGGi_Spawned end,
+				"__template", "Infopanel",
 			}, {
-			PlaceObj('XTemplateTemplate', {
-				'comment', "salvage",
-				'__template', "InfopanelButton",
-				'RolloverText', S[640016954592--[[Remove this switch or valve.--]]],
-				'RolloverTitle', S[3973--[[Salvage--]]],
-				'RolloverHintGamepad', S[7657--[[<ButtonY> Activate--]]],
-				'ContextUpdateOnOpen', false,
-				'OnPressParam', "Demolish",
-				'Icon', "UI/Icons/IPButtons/salvage_1.tga",
-			}, {
-					PlaceObj('XTemplateFunc', {
-						'name', "OnXButtonDown(self, button)",
-						'func', function (self, button)
-							if button == "ButtonY" then
-								return self:OnButtonDown(false)
-							elseif button == "ButtonX" then
-								return self:OnButtonDown(true)
-							end
-							return (button == "ButtonA") and "break"
-						end,
-					}),
-					PlaceObj('XTemplateFunc', {
-						'name', "OnXButtonUp(self, button)",
-						'func', function (self, button)
-							if button == "ButtonY" then
-								return self:OnButtonUp(false)
-							elseif button == "ButtonX" then
-								return self:OnButtonUp(true)
-							end
-							return (button == "ButtonA") and "break"
-						end,
-					}),
+
+				PlaceObj("XTemplateTemplate", {
+					"__template", "InfopanelButton",
+					"RolloverTitle", S[302535920000682--[[Change Entity--]]],
+					"ContextUpdateOnOpen", false,
+					"OnContextUpdate", function(self)
+						self:SetRolloverText(S[302535920001151--[[Set Entity For %s--]]]:format(RetName(self.context)))
+					end,
+					"OnPress", function(self)
+						ChoGGi.CodeFuncs.ObjectSpawner(self.context)
+					end,
+					"Icon", "UI/Icons/IPButtons/tunnel.tga",
+				}),
+				PlaceObj("XTemplateTemplate", {
+					"__template", "sectionCheats",
 				}),
 			}),
 		})
 	end
+
 
 	-- called when new DLC is added (or a new game)
 	function OnMsg.XTemplatesLoaded()

@@ -4,6 +4,8 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v9.8 (Unreleased)
+### Changed:
+- Manually spawned entity objects have a usable menu.
 
 ## v9.7 (08 Oct 2018)
 ### Added:

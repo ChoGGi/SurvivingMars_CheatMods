@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "ChoGGi's Library v2.0 Test",
+	"title", "ChoGGi's Library v2.0",
 	"version", 20,
 	"saved", 1539000000,
 	"image", "Preview.png",
@@ -26,8 +26,9 @@ return PlaceObj("ModDef", {
 		-- for OnMsg functions
 		"Code/OnMsgs.lua",
 
+		"Code/Classes_Objects.lua",
 		-- custom dialogs
-		"Code/_Classes.lua",
+		"Code/Classes_UI.lua",
 		"Code/ListChoice.lua",
 		"Code/MultiLineText.lua",
 

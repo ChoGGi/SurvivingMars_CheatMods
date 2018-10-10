@@ -63,6 +63,7 @@ function OnMsg.ClassesGenerate()
 			local function CallBackFunc(answer)
 				if answer then
 					ChoGGi.CodeFuncs.DeleteObject(self)
+					SelectObj()
 				end
 			end
 			ChoGGi.ComFuncs.QuestionBox(

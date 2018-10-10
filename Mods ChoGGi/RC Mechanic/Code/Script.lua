@@ -48,6 +48,8 @@ DefineClass.RCMechanic = {
 	entity = "CombatRover",
 	accumulate_dust = false,
 	status_text = idle_text,
+	-- refund res
+	on_demolish_resource_refund = { Metals = 20 * const.ResourceScale, MachineParts = 20 * const.ResourceScale , Electronics = 10 * const.ResourceScale },
 }
 
 DefineClass.RCMechanicBuilding = {
@@ -124,7 +126,6 @@ function RCMechanic:Idle()
 	Sleep(sleep or 1000)
 	self:Gossip("Idle")
 end
-
 
 function OnMsg.ClassesPostprocess()
 

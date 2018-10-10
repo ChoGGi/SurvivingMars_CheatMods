@@ -1,8 +1,13 @@
 ## Library Changelog
 
-## v2.0 (Unreleased)
+## v2.1 (Unreleased)
 
-## v1.9 (08 Oct 2018)
+## v2.0 (10 Oct 2018)
+- Cleaned up locales.
+- Added more functionality to spawned entity objects.
+- Fixed possible issue with RotatyThing (change object colour, and some others).
+
+## v1.9 (8 Oct 2018)
 - Fixed issue with the Need/Free stuff in cheats pane not working with all/modded buildings.
 - Made sure clear markers will always clear markers.
 

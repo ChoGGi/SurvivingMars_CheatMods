@@ -5,6 +5,7 @@ function OnMsg.ModsReloaded()
 	local min_version = 19
 
 	local ModsLoaded = ModsLoaded
+	-- we need a version check to remind Nexus/GoG users
 	local not_found_or_wrong_version
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
@@ -30,28 +31,20 @@ Press Ok to download it or check Mod Manager to make sure it's enabled.]],librar
 	end
 end
 
-function OnMsg.ClassesBuilt()
-	local S = ChoGGi.Strings
+local orig_BaseBuilding_GameInit = BaseBuilding.GameInit
+function BaseBuilding:GameInit(...)
+	orig_BaseBuilding_GameInit(self,...)
 
-	-- list controlled buildings
-	ChoGGi.CodeFuncs.AddXTemplate("EmptyMechDepot","sectionStorage",{
-		__context_of_kind = "MechanizedDepot",
-		Icon = "UI/Icons/Sections/storage.tga",
-		Title = S[302535920000176--[[Empty Mech Depot--]]],
-		RolloverTitle = S[302535920000176--[[Empty Mech Depot--]]],
-		RolloverText = S[302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.--]]],
-		OnContextUpdate = function(self, context)
-			if context.stockpiled_amount > 0 then
-				self:SetVisible(true)
-				self:SetMaxHeight()
-			else
-				self:SetVisible(false)
-				self:SetMaxHeight(0)
-			end
-		end,
-		func = function(_, context)
-			ChoGGi.CodeFuncs.EmptyMechDepot(context)
-		end,
-	},true)
+	-- we need to wait a sec before we can edit attaches
+	CreateRealTimeThread(function()
+		ChoGGi.CodeFuncs.ObjectColourRandom(self)
+		-- reset any signs to default colour
+		local SetDefColour = ChoGGi.CodeFuncs.SetDefColour
+		if self:IsKindOf("ComponentAttach") then
+			self:ForEachAttach("BuildingSign",function(a)
+				SetDefColour(a)
+			end)
+		end
+	end)
 
 end

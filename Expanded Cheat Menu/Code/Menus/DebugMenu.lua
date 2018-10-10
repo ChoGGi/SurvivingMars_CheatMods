@@ -146,7 +146,9 @@ function OnMsg.ClassesGenerate()
 
 	Warning: Unable to mouse select items after spawn
 	hover mouse over and use Delete Selected Object"--]]],
-		OnAction = ChoGGi.MenuFuncs.ObjectSpawner,
+		OnAction = function()
+			ChoGGi.CodeFuncs.ObjectSpawner()
+		end,
 		ActionShortcut = "Ctrl-Shift-S",
 		ActionBindable = true,
 	}

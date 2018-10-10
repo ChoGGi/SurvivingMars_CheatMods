@@ -1,0 +1,2 @@
+v0.2
+Refunds 1/2 amount of cost for building (instead of 5 Metals/Poly) on demo.
