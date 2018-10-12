@@ -4,6 +4,12 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v9.9 (Unreleased)
+### Changed:
+- Examine link buttons are icons now.
+
+### Fixed:
+- Removed battery cheats from rover cheat pane.
+- Close Dialogs wasn't working.
 
 ## v9.8 (12 Oct 2018)
 ### Changed:

@@ -10,6 +10,7 @@ local S = ChoGGi.Strings
 local Trans = ChoGGi.ComFuncs.Translate
 
 local StringFormat = string.format
+local TableFind = table.find
 
 -- check if tech is researched before we get value
 do -- get tech stuff
@@ -968,7 +969,7 @@ do -- FindNearestResource
 		local res = ChoGGi.Tables.Resources
 		local TagLookupTable = const.TagLookupTable
 		for i = 1, #res do
-			local item = ResourceDescription[table.find(ResourceDescription, "name", res[i])]
+			local item = ResourceDescription[TableFind(ResourceDescription, "name", res[i])]
 			ItemList[i] = {
 				text = Trans(item.display_name),
 				value = item.name,
@@ -1475,7 +1476,7 @@ end
 
 -- check for and remove old object (these are created on new game / new dlc)
 function ChoGGi.ComFuncs.RemoveXTemplateSections(list,name)
-	local idx = table.find(list, name, true)
+	local idx = TableFind(list, name, true)
 	if idx then
 		table.remove(list,idx)
 	end
@@ -1941,7 +1942,7 @@ function ChoGGi.ComFuncs.SetTaskReqAmount(obj,value,task,setting)
 end
 
 function ChoGGi.ComFuncs.ReturnEditorType(list,key,value)
-	local idx = table.find(list, key, value)
+	local idx = TableFind(list, key, value)
 	value = list[idx].editor
 	-- I use it to compare to type() so
 	if value == "bool" then

@@ -37,7 +37,7 @@ SOFTWARE.
 
 -- tell people know how to get the library
 function OnMsg.ModsReloaded()
-	local min_version = 20
+	local min_version = 22
 
 	local ModsLoaded = ModsLoaded
 	-- we need a version check to remind Nexus/GoG users
@@ -56,7 +56,7 @@ function OnMsg.ModsReloaded()
 		CreateRealTimeThread(function()
 			local Sleep = Sleep
 			while not UICity do
-				Sleep(1000)
+				Sleep(2500)
 			end
 			if WaitMarsQuestion(nil,nil,string.format([[Error: Expanded Cheat Menu requires ChoGGi's Library (at least v%s).
 Press Ok to download it or check Mod Manager to make sure it's enabled.]],library_version)) == "ok" then

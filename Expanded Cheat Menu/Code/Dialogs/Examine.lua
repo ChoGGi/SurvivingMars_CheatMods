@@ -59,11 +59,34 @@ function OnMsg.ClassesGenerate()
 
 	-- used for updating text button rollover hints
 	idLinks_hypertext = {
-		[StringFormat("[%s]",S[1000220--[[Refresh--]]])] = S[302535920000092--[[Updates list with any changed values.--]]],
-		[S[302535920000059--[[[Clear Markers]--]]]] = S[302535920000016--[[Remove any green spheres/reset green coloured objects.--]]],
-		[S[302535920000064--[[[Transp]--]]]] = StringFormat("%s %s",S[302535920000069--[[Examine--]]],S[302535920000629--[[UI Transparency--]]]),
-		[S[302535920000058--[[[Show It]--]]]] = S[302535920000021--[[Mark object with green sphere and/or paint.--]]],
-		[S[302535920000060--[[[Destroy It!]--]]]] = S[302535920000414--[[Are you sure you wish to destroy it?--]]],
+		["CommonAssets/UI/Menu/reload.tga"] = {
+			title = S[1000220--[[Refresh--]]],
+			text = S[302535920000092--[[Updates list with any changed values.--]]],
+		},
+		["CommonAssets/UI/Menu/CutSceneArea.tga"] = {
+			title = S[302535920000865--[[Toggle Trans--]]],
+			text = StringFormat("%s %s",S[302535920000069--[[Examine--]]],S[302535920000629--[[UI Transparency--]]])
+		},
+		["CommonAssets/UI/Menu/DisableEyeSpec.tga"] = {
+			title = S[302535920000057--[[Mark Object--]]],
+			text = S[302535920000021--[[Mark object with green sphere and/or paint.--]]]
+		},
+		["CommonAssets/UI/Menu/delete_objects.tga"] = {
+			title = S[697--[[Destroy--]]],
+			text = S[302535920000414--[[Are you sure you wish to destroy it?--]]]
+		},
+		["CommonAssets/UI/Menu/UnlockCollection.tga"] = {
+			title = S[3768--[[Destroy all?--]]],
+			text = S[302535920000059--[[Destroy all objects in objlist!--]]]
+		},
+		["CommonAssets/UI/Menu/NoblePreview.tga"] = {
+			title = S[594--[[Clear--]]],
+			text = S[302535920000016--[[Remove any green spheres/reset green coloured objects.--]]]
+		},
+		["CommonAssets/UI/Menu/ExportImageSequence.tga"] = {
+			title = S[302535920000058--[[Mark All Objects--]]],
+			text = S[302535920000056--[[Mark all items in objlist with green spheres.--]]]
+		},
 	}
 
 end
@@ -156,9 +179,21 @@ function Examine:Init(parent, context)
 		VAlign = "top",
 		FontStyle = "Editor14",
 		Margins = box(4,0,0,0),
-		OnHyperLinkRollover = function(links)
+		-- same colour as background of icons (so they blend)
+		Background = -9868951,
+		OnHyperLinkRollover = function(links,id)
 			if links.hovered_hyperlink then
-				links.RolloverText = idLinks_hypertext[links.hovered_hyperlink.text]
+				local info = idLinks_hypertext[links.hovered_hyperlink.image]
+				if info then
+					links.RolloverText = info.text
+					links.RolloverTitle = info.title
+				end
+				-- blinky icon
+				CreateRealTimeThread(function()
+					links.hovered_hyperlink.image = nil
+					Sleep(100)
+					links:ParseText()
+				end)
 			end
 		end,
 		OnHyperLink = function(_, link, _, box, pos, button)
@@ -1005,7 +1040,7 @@ end
 --menu
 local function DeleteAll_menu(obj)
 	ChoGGi.ComFuncs.QuestionBox(
-		S[302535920000414--[[Are you sure you wish to destroy it?--]]],
+		S[302535920000059--[[Destroy all objects in objlist!--]]],
 		function(answer)
 			if answer then
 				for _, v in pairs(obj) do
@@ -1074,45 +1109,38 @@ function Examine:menu(obj)
 		self:HyperLink(function()
 			Refresh_menu(self)
 		end),
-		"[",
-		S[1000220--[[Refresh--]]],
-		"]",
+		" <image CommonAssets/UI/Menu/reload.tga 2000> ",
 		HLEnd,
-		" ",
 		self:HyperLink(function()
 			SetTransp_menu(self)
 		end),
-		S[302535920000064--[[[Transp]--]]],
+		" <image CommonAssets/UI/Menu/CutSceneArea.tga 2000> ",
 		HLEnd,
-		" ",
 		self:HyperLink(ClearShowMe_menu),
-		S[302535920000059--[[[Clear Markers]--]]],
+		" <image CommonAssets/UI/Menu/NoblePreview.tga 2000> ",
 		HLEnd,
-		" ",
 	}
 
 	if obj_type == "table" then
-		local c = 14
+		local c = #res
 		if IsValid(obj) then
 			c = c + 1
 			res[c] = self:HyperLink(function()
 				Show_menu(obj)
 			end)
 			c = c + 1
-			res[c] = S[302535920000058--[[[Show]--]]]
+			res[c] = " <image CommonAssets/UI/Menu/DisableEyeSpec.tga 2000> "
 			c = c + 1
 			res[c] = HLEnd
 		end
 
 		if obj.class then
 			c = c + 1
-			res[c] = " "
-			c = c + 1
 			res[c] = self:HyperLink(function()
 				Destroy_menu(obj,self)
 			end)
 			c = c + 1
-			res[c] = S[302535920000060--[[[Destroy]--]]]
+			res[c] = " <image CommonAssets/UI/Menu/delete_objects.tga 2000> "
 			c = c + 1
 			res[c] = HLEnd
 		end
@@ -1124,18 +1152,16 @@ function Examine:menu(obj)
 				MarkAll_menu(obj)
 			end)
 			c = c + 1
-			res[c] = S[302535920001074--[[[Mark All]--]]]
+			res[c] = " <image CommonAssets/UI/Menu/ExportImageSequence.tga 2000> "
 			c = c + 1
 			res[c] = HLEnd
 			-- delete all
-			c = c + 1
-			res[c] = " "
 			c = c + 1
 			res[c] = self:HyperLink(function()
 				DeleteAll_menu(obj)
 			end)
 			c = c + 1
-			res[c] = S[302535920001075--[[[Delete All]--]]]
+			res[c] = " <image CommonAssets/UI/Menu/UnlockCollection.tga 2000> "
 			c = c + 1
 			res[c] = HLEnd
 		end
@@ -1234,7 +1260,7 @@ function Examine:SetObj(obj,skip_thread)
 
 					self.idAttaches:SetVisible(true)
 					self.idAttaches.RolloverText = S[302535920000070--[["Shows list of attachments. This %s has %s.
-Use %s to hide green markers."--]]]:format(name,attach_amount,S[302535920000059--[[[Clear Markers]--]]])
+Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAssets/UI/Menu/NoblePreview.tga 2500>")
 				else
 					self.idAttaches:SetVisible()
 				end

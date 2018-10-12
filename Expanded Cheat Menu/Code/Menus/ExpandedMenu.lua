@@ -45,7 +45,9 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Close Dialogs",
 		ActionIcon = "CommonAssets/UI/Menu/remove_water.tga",
 		RolloverText = S[302535920000470--[[Close any dialogs opened by ECM (Examine, ObjectManipulator, Change Colours, etc...)--]]],
-		OnAction = ChoGGi.ComFuncs.CloseDialogsECM,
+		OnAction = function()
+			ChoGGi.ComFuncs.CloseDialogsECM(true)
+		end,
 		ActionSortKey = "99",
 	}
 

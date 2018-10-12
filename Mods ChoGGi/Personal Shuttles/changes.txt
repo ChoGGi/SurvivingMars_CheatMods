@@ -1,0 +1,21 @@
+v0.5
+Sagan.
+Added pick up/drop anims.
+Nearby drones will use resources from moved piles.
+
+v0.4
+Just updating code to parity with ECM code and steam version.
+v0.3
+Curiosity update
+v0.2
+Changed:
+Follower shuttles now break path when you move the mouse (they do get confused at times, figured decent tradeoff).
+Removed pin option (it'll follow you around always, so not needed).
+Follower shuttles show what they're carrying.
+Only shows shuttle control button when it's a follower shuttle.
+Follower shuttles now carry visible objects (ah yeah).
+Follower shuttles will now only pick up one item at a time.
+
+Fixed:
+Shuttles were spamming error log because I made them pinnable.
+Non-follower shuttles won't swing by and check out your cursor anymore.

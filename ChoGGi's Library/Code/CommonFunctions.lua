@@ -818,20 +818,6 @@ function ChoGGi.ComFuncs.StringToTable(str)
 	return temp
 end
 
--- while ChoGGi.ComFuncs.CheckForTypeInList(terminal.desktop,"Examine") do
-function ChoGGi.ComFuncs.CheckForTypeInList(list,cls)
-	if type(list) ~= "table" then
-		return false
-	end
-	local ret = false
-	for i = 1, #list do
-		if list[i]:IsKindOf(cls) then
-			ret = true
-		end
-	end
-	return ret
-end
-
 --[[
 ChoGGi.ComFuncs.ReturnTechAmount(Tech,Prop)
 returns number from Object (so you know how much it changes)

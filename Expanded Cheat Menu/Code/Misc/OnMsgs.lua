@@ -299,6 +299,7 @@ function OnMsg.ModsReloaded()
 				end
 			end
 
+			-- add a little spacer to the top of cheats menu you can drag around
 			ChoGGi.ComFuncs.DraggableCheatsMenu(
 				UserSettings.DraggableCheatsMenu
 			)

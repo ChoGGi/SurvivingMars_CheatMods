@@ -2,7 +2,7 @@
 
 -- tell people know how to get the library
 function OnMsg.ModsReloaded()
-	local min_version = 19
+	local min_version = 22
 
 	local ModsLoaded = ModsLoaded
 	local not_found_or_wrong_version
@@ -20,7 +20,7 @@ function OnMsg.ModsReloaded()
 		CreateRealTimeThread(function()
 			local Sleep = Sleep
 			while not UICity do
-				Sleep(1000)
+				Sleep(2500)
 			end
 			if WaitMarsQuestion(nil,nil,string.format([[Error: Defence Tower Attack Devils requires ChoGGi's Library (at least v%s).
 Press Ok to download it or check Mod Manager to make sure it's enabled.]],library_version)) == "ok" then

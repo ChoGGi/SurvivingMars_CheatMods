@@ -2,7 +2,7 @@
 
 -- tell people know how to get the library
 function OnMsg.ModsReloaded()
-	local min_version = 19
+	local min_version = 21
 
 	local ModsLoaded = ModsLoaded
 	local not_found_or_wrong_version
@@ -20,7 +20,7 @@ function OnMsg.ModsReloaded()
 		CreateRealTimeThread(function()
 			local Sleep = Sleep
 			while not UICity do
-				Sleep(1000)
+				Sleep(2500)
 			end
 			if WaitMarsQuestion(nil,nil,string.format([[Error: Restore Request Main requires ChoGGi's Library (at least v%s).
 Press Ok to download it or check Mod Manager to make sure it's enabled.]],library_version)) == "ok" then
@@ -35,13 +35,19 @@ function OnMsg.ClassesGenerate()
 
 	-- removed functions
 	local T = T
+	local _InternalTranslate = _InternalTranslate
+	local RebuildInfopanel = RebuildInfopanel
+	local StringFormat = string.format
+
 	function RequiresMaintenance:GetUIRequestMaintenanceStatus()
+		local status
 		if self.accumulated_maintenance_points > 0 then
 			if self.maintenance_phase == false then
-				return T{7329, "Maintenance needed"}
+				status = _InternalTranslate(T{7329, "Maintenance needed"})
 			else
-				return T{389, "Maintenance already requested"}
+				status = _InternalTranslate(T{389, "Maintenance already requested"})
 			end
+			return StringFormat("%s, Remaining: %s",status,self.maintenance_threshold_current - self.accumulated_maintenance_points)
 		end
 		return T{390, "No deterioration"}
 	end
@@ -58,8 +64,10 @@ function OnMsg.ClassesBuilt()
 		table.remove(XTemplates.ipBuilding[1][1],#XTemplates.ipBuilding[1][1])
 		XTemplates.ipBuilding.ChoGGi_RestoreMain = nil
 	end
+	local PlayFX = PlayFX
+	local IsKindOf = IsKindOf
 
-	--restore the button
+	-- restore the button
 	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipBuilding[1][1],"ChoGGi_RestoreMaintenance")
 	XTemplates.ipBuilding[1][1][#XTemplates.ipBuilding[1][1]+1] = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_RestoreMaintenance", true,
@@ -73,7 +81,7 @@ function OnMsg.ClassesBuilt()
 		"RolloverHint", T{238148642034, "<left_click> Activate <newline><em>Ctrl + <left_click></em> Activate for all <display_name_pl>"},
 		"RolloverHintGamepad", T{919224409562, "<ButtonA> Activate <newline><ButtonX> Activate for all <display_name_pl>"},
 		"OnContextUpdate", function(self, context)
-			--changed it so it only shows the button when main is needed/requested
+			-- changed it so it only shows the button when main is needed/requested
 			self:SetVisible(context.accumulated_maintenance_points > 0)
 			self:SetEnabled(context.accumulated_maintenance_points > 0 and context.maintenance_phase == false)
 		end,

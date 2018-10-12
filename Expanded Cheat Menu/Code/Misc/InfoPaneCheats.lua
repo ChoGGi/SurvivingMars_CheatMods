@@ -280,22 +280,20 @@ function OnMsg.ClassesGenerate()
 		function ShuttleHub:CheatMaxShuttlesDef()
 			self.max_shuttles = self.base_max_shuttles
 		end
-		--CheatBattCapDbl
-		local function CheatBattCapDbl(self)
+
+		function Drone:CheatBattCapDbl()
 			self.battery_max = self.battery_max * 2
 		end
-		local function CheatBattCapDef(self)
+		function Drone:CheatBattCapDef()
 			self.battery_max = const.BaseRoverMaxBattery
 		end
-		local function CheatBattEmpty(self)
+		function Drone:CheatBattEmpty()
 			self:ApplyBatteryChange(self.battery_max * -1)
 		end
-		Drone.CheatBattCapDbl = CheatBattCapDbl
-		Drone.CheatBattCapDef = CheatBattCapDef
-		Drone.CheatBattEmpty = CheatBattEmpty
-		BaseRover.CheatBattCapDbl = CheatBattCapDbl
-		BaseRover.CheatBattCapDef = CheatBattCapDef
-		BaseRover.CheatBattEmpty = CheatBattEmpty
+		function Drone:CheatBattRefill()
+			self.battery = self.battery_max
+		end
+
 		--CheatMoveSpeedDbl
 		local function CheatMoveSpeedDbl(self)
 			self:SetMoveSpeed(self:GetMoveSpeed() * 2)
@@ -307,13 +305,6 @@ function OnMsg.ClassesGenerate()
 		Drone.CheatMoveSpeedDef = CheatMoveSpeedDef
 		BaseRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
 		BaseRover.CheatMoveSpeedDef = CheatMoveSpeedDef
-		local function CheatBattRefill(self)
-			self.battery_current = self.battery_max
-		end
-		BaseRover.CheatBattRefill = CheatBattRefill
-		function Drone:CheatBattRefill()
-			self.battery = self.battery_max
-		end
 		local function CheatFindResource(self)
 			ChoGGi.ComFuncs.FindNearestResource(self)
 		end

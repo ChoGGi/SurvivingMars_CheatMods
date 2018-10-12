@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 	"saved", 1538308800,
 	"image", "Preview.png",
 	"id", "ChoGGi_StopColonistDeathFailure",
---~ 	"steam_id", "000000000",
+	"steam_id", "1526828043",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
 	"code", {

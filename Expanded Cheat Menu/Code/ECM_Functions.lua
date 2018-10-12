@@ -9,6 +9,7 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 
 	local StringFormat = string.format
+	local TableFind = table.find
 
 	function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg)
 		if blacklist then
@@ -284,30 +285,27 @@ function OnMsg.ClassesGenerate()
 		})
 	end
 
-	do -- CloseDialogsECM
-		local ChoGGi = ChoGGi
-		local term = terminal.desktop
-		function ChoGGi.ComFuncs.RemoveOldDialogs(dialog)
-			while ChoGGi.ComFuncs.CheckForTypeInList(term,dialog) do
-				for i = #term, 1, -1 do
-					if term[i]:IsKindOf(dialog) then
-						term[i]:Done()
-					end
+	function ChoGGi.ComFuncs.RemoveOldDialogs(dlg)
+		local desktop = terminal.desktop
+		while TableFind(desktop,"class",dlg) do
+			for i = #desktop, 1, -1 do
+				if desktop[i]:IsKindOf(dlg) then
+					desktop[i]:Done()
 				end
 			end
 		end
+	end
 
-		function ChoGGi.ComFuncs.CloseDialogsECM()
-			if ChoGGi.UserSettings.CloseDialogsECM then
-				local RemoveOldDialogs = ChoGGi.ComFuncs.RemoveOldDialogs
-				RemoveOldDialogs("Examine")
-				RemoveOldDialogs("ChoGGi_ObjectManipulatorDlg")
-				RemoveOldDialogs("ChoGGi_ListChoiceDlg")
-				RemoveOldDialogs("ChoGGi_MonitorInfoDlg")
-				RemoveOldDialogs("ChoGGi_ExecCodeDlg")
-				RemoveOldDialogs("ChoGGi_MultiLineTextDlg")
-				RemoveOldDialogs("ChoGGi_FindValueDlg")
-			end
+	function ChoGGi.ComFuncs.CloseDialogsECM(menu)
+		if menu or ChoGGi.UserSettings.CloseDialogsECM then
+			local RemoveOldDialogs = ChoGGi.ComFuncs.RemoveOldDialogs
+			RemoveOldDialogs("Examine")
+			RemoveOldDialogs("ChoGGi_ObjectManipulatorDlg")
+			RemoveOldDialogs("ChoGGi_ListChoiceDlg")
+			RemoveOldDialogs("ChoGGi_MonitorInfoDlg")
+			RemoveOldDialogs("ChoGGi_ExecCodeDlg")
+			RemoveOldDialogs("ChoGGi_MultiLineTextDlg")
+			RemoveOldDialogs("ChoGGi_FindValueDlg")
 		end
 	end
 

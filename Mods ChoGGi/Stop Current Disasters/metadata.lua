@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	"code", {"Script.lua"},
 	"image", "Preview.png",
 	"lua_revision", LuaRevision,
-  "description", [[Stops any running disasters (duststorms, coldwaves, and current meteors/dustdevil) when you load a save (you don"t need to leave it enabled afterwards).
+  "description", [[Stops any running disasters (duststorms, coldwaves, and current meteors/dustdevil) when you load a save (you don't need to leave it enabled afterwards).
 
 Part of ECM.]],
 })
