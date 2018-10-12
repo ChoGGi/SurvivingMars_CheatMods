@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Tower Defense v0.1",
+	"title", "Tower Defence v0.1",
 	"version", 1,
 	"saved", 1536148800,
 	"image", "Preview.png",

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Drones Carry Amount Fix v0.7",
+	"title", "Fix: Drones Carry Amount v0.7",
 	"version", 7,
 	"saved", 1539345600,
 	"image", "Preview.png",
@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411107961",
 	"author", "ChoGGi",
 	"code", {
-		"Code/Drones Carry Amount Fix.lua",
+		"Code/Script.lua",
 	},
 	"lua_revision", LuaRevision,
 	"description", [[Drones normally only pick up resources from buildings when the amount stored is equal or greater to their carry amount.
