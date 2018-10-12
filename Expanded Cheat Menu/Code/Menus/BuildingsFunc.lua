@@ -107,7 +107,7 @@ function OnMsg.ClassesGenerate()
 		local name = RetName(sel)
 		local is_service = sel:IsKindOf("Service")
 
-		local ReturnEditorType = ChoGGi.CodeFuncs.ReturnEditorType
+		local ReturnEditorType = ChoGGi.ComFuncs.ReturnEditorType
 		local hint_type = S[302535920000138--[[Value needs to be a %s.--]]]
 		local ItemList = {
 			{text = S[728--[[Health change on visit--]]],value = sel.base_health_change / r,setting = "health_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","health_change"))},
@@ -202,7 +202,7 @@ function OnMsg.ClassesGenerate()
 				-- update existing buildings
 				local objs = UICity.labels[id] or ""
 				for i = 1, #objs do
-					ChoGGi.CodeFuncs.UpdateServiceComfortBld(objs[i],bs_setting.service_stats)
+					ChoGGi.ComFuncs.UpdateServiceComfortBld(objs[i],bs_setting.service_stats)
 				end
 			end
 
@@ -339,7 +339,7 @@ function OnMsg.ClassesGenerate()
 
 				local objs = UICity.labels.SpaceElevator or ""
 				for i = 1, #objs do
-					ChoGGi.CodeFuncs.SetTaskReqAmount(objs[i],value,"export_request",setting_name)
+					ChoGGi.ComFuncs.SetTaskReqAmount(objs[i],value,"export_request",setting_name)
 				end
 
 				ChoGGi.SettingFuncs.WriteSettings()
@@ -574,7 +574,7 @@ function OnMsg.ClassesGenerate()
 			for i = 1, #choice do
 				UnlockBuilding(choice[i].value)
 			end
-			ChoGGi.CodeFuncs.BuildMenu_Toggle()
+			ChoGGi.ComFuncs.BuildMenu_Toggle()
 			MsgPopup(
 				S[302535920000116--[[%s: Buildings unlocked.--]]]:format(#choice),
 				8690--[[Protect--]],
@@ -813,7 +813,7 @@ function OnMsg.ClassesGenerate()
 								tab[i][CapType].max_discharge = numberD
 								tab[i][StringFormat("max_%s_discharge",CapType)] = numberD
 							end
-							ChoGGi.CodeFuncs.ToggleWorking(tab[i])
+							ChoGGi.ComFuncs.ToggleWorking(tab[i])
 						end
 					end
 				else -- water and air
@@ -828,7 +828,7 @@ function OnMsg.ClassesGenerate()
 								tab[i][CapType].max_discharge = numberD
 								tab[i][StringFormat("max_%s_discharge",CapType)] = numberD
 							end
-							ChoGGi.CodeFuncs.ToggleWorking(tab[i])
+							ChoGGi.ComFuncs.ToggleWorking(tab[i])
 						end
 					end
 				end
@@ -1076,7 +1076,7 @@ function OnMsg.ClassesGenerate()
 					sel.max_workers = sel.base_max_workers
 					sel.automation = sel.base_automation
 					sel.auto_performance = sel.base_auto_performance
-					ChoGGi.CodeFuncs.ToggleWorking(sel)
+					ChoGGi.ComFuncs.ToggleWorking(sel)
 				else
 					local blds = UICity.labels[sel.class] or ""
 					for i = 1, #blds do
@@ -1084,7 +1084,7 @@ function OnMsg.ClassesGenerate()
 						bld.max_workers = bld.base_max_workers
 						bld.automation = bld.base_automation
 						bld.auto_performance = bld.base_auto_performance
-						ChoGGi.CodeFuncs.ToggleWorking(bld)
+						ChoGGi.ComFuncs.ToggleWorking(bld)
 					end
 				end
 			elseif type(value) == "number" then
@@ -1092,7 +1092,7 @@ function OnMsg.ClassesGenerate()
 					sel.max_workers = 0
 					sel.automation = 1
 					sel.auto_performance = value
-					ChoGGi.CodeFuncs.ToggleWorking(sel)
+					ChoGGi.ComFuncs.ToggleWorking(sel)
 				else
 					local blds = UICity.labels[sel.class] or ""
 					for i = 1, #blds do
@@ -1100,7 +1100,7 @@ function OnMsg.ClassesGenerate()
 						bld.max_workers = 0
 						bld.automation = 1
 						bld.auto_performance = value
-						ChoGGi.CodeFuncs.ToggleWorking(bld)
+						ChoGGi.ComFuncs.ToggleWorking(bld)
 					end
 				end
 			end

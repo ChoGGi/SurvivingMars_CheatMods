@@ -119,9 +119,9 @@ Living Spaces: %s]],
 			table.remove(XTemplates.sectionDome[1],#XTemplates.sectionDome[1])
 			XTemplates.sectionDome.ChoGGi_ForceNewDome = nil
 		end
-		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.sectionDome[1],"ChoGGi_ForceNewDome")
+		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionDome[1],"ChoGGi_ForceNewDome")
 
-		ChoGGi.CodeFuncs.AddXTemplate("ForceNewDome","sectionDome",{
+		ChoGGi.ComFuncs.AddXTemplate("ForceNewDome","sectionDome",{
 			-- skip any ruined domes
 			__condition = function(parent, context)
 				return context.working

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Random Building Colour v0.1",
+	"title", "Random Object Colour v0.1",
 	"version", 1,
 	"saved", 1538913600,
 	"image", "Preview.png",

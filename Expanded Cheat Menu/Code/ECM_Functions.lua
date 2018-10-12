@@ -340,7 +340,7 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	function ChoGGi.CodeFuncs.ObjectSpawner(obj)
+	function ChoGGi.ComFuncs.ObjectSpawner(obj)
 		local ChoGGi = ChoGGi
 		local g_Classes = g_Classes
 		local EntityData = EntityData or {}
@@ -363,7 +363,7 @@ function OnMsg.ClassesGenerate()
 
 				if not obj then
 					obj = PlaceObj("ChoGGi_BuildingEntityClass",{
-						"Pos",ChoGGi.CodeFuncs.CursorNearestHex()
+						"Pos",ChoGGi.ComFuncs.CursorNearestHex()
 					})
 				end
 				obj:ChangeEntity(value)

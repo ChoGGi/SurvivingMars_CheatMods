@@ -184,7 +184,7 @@ function OnMsg.ClassesGenerate()
 		end
 		function ChoGGi.testing.TestRandomColour(amount)
 			TickStart("TestRandomColour.Total")
-			local RandomColour = ChoGGi.CodeFuncs.RandomColour
+			local RandomColour = ChoGGi.ComFuncs.RandomColour
 			for _ = 1, amount or 5 do
 				TickStart("TestRandomColour.Tick")
 				RandomColour(100000)
@@ -195,7 +195,7 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.testing.TestRandomColour2(amount)
 			TickStart("TestRandomColour.Total")
-			local RandomColour = ChoGGi.CodeFuncs.RandomColour2
+			local RandomColour = ChoGGi.ComFuncs.RandomColour2
 			for _ = 1, amount or 5 do
 				TickStart("TestRandomColour.Tick")
 				RandomColour(100000)

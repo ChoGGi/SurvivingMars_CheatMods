@@ -220,7 +220,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = ChoGGi.Consts.SpeedDrone
-		local UpgradedSetting = ChoGGi.CodeFuncs.GetSpeedDrone()
+		local UpgradedSetting = ChoGGi.ComFuncs.GetSpeedDrone()
 		local ItemList = {
 			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting / r),value = DefaultSetting,hint = 302535920000889--[[base speed--]]},
 			{text = 5,value = 5 * r},
@@ -275,7 +275,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = ChoGGi.Consts.SpeedRC
-		local UpgradedSetting = ChoGGi.CodeFuncs.GetSpeedRC()
+		local UpgradedSetting = ChoGGi.ComFuncs.GetSpeedRC()
 		local ItemList = {
 			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting / r),value = DefaultSetting,hint = 302535920000889--[[base speed--]]},
 			{text = 5,value = 5 * r},
@@ -506,7 +506,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle()
 		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("RCRoverTransferResourceWorkTime",ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverTransferResourceWorkTime,0,ChoGGi.Consts.RCRoverTransferResourceWorkTime))
-		ChoGGi.ComFuncs.SetConstsG("RCTransportGatherResourceWorkTime",ChoGGi.ComFuncs.NumRetBool(Consts.RCTransportGatherResourceWorkTime,0,ChoGGi.CodeFuncs.GetRCTransportGatherResourceWorkTime()))
+		ChoGGi.ComFuncs.SetConstsG("RCTransportGatherResourceWorkTime",ChoGGi.ComFuncs.NumRetBool(Consts.RCTransportGatherResourceWorkTime,0,ChoGGi.ComFuncs.GetRCTransportGatherResourceWorkTime()))
 		ChoGGi.ComFuncs.SetSavedSetting("RCRoverTransferResourceWorkTime",Consts.RCRoverTransferResourceWorkTime)
 		ChoGGi.ComFuncs.SetSavedSetting("RCTransportGatherResourceWorkTime",Consts.RCTransportGatherResourceWorkTime)
 
@@ -560,7 +560,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.CodeFuncs.GetDroneResourceCarryAmount()
+		local DefaultSetting = ChoGGi.ComFuncs.GetDroneResourceCarryAmount()
 		local hinttoolarge = S[302535920000909--[["If you set this amount larger then a building's ""Storage"" amount then the drones will NOT pick up storage (See: Fixes>%s)."--]]]:format(S[302535920000613--[[Drone Carry Amount--]]])
 		local ItemList = {
 			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
@@ -614,7 +614,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.CodeFuncs.GetCommandCenterMaxDrones()
+		local DefaultSetting = ChoGGi.ComFuncs.GetCommandCenterMaxDrones()
 		local ItemList = {
 			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = 5,value = 5},
@@ -662,7 +662,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.CodeFuncs.GetRCRoverMaxDrones()
+		local DefaultSetting = ChoGGi.ComFuncs.GetRCRoverMaxDrones()
 		local ItemList = {
 			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = 5,value = 5},
@@ -711,7 +711,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.CodeFuncs.GetRCTransportStorageCapacity() / r
+		local DefaultSetting = ChoGGi.ComFuncs.GetRCTransportStorageCapacity() / r
 		local ItemList = {
 			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = 50,value = 50},
@@ -1164,7 +1164,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.CodeFuncs.GetCargoCapacity()
+		local DefaultSetting = ChoGGi.ComFuncs.GetCargoCapacity()
 		local ItemList = {
 			{text = StringFormat("%s: %s kg",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = "50 000 kg",value = 50000},
@@ -1207,7 +1207,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetRocketTravelTime()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.CodeFuncs.GetTravelTimeEarthMars() / r
+		local DefaultSetting = ChoGGi.ComFuncs.GetTravelTimeEarthMars() / r
 		local ItemList = {
 			{text = S[302535920000947--[[Instant--]]],value = 0},
 			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
@@ -1262,7 +1262,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.CodeFuncs.GetMaxColonistsPerRocket()
+		local DefaultSetting = ChoGGi.ComFuncs.GetMaxColonistsPerRocket()
 		local ItemList = {
 			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
 			{text = 25,value = 25},
@@ -1337,7 +1337,7 @@ function OnMsg.ClassesGenerate()
 				local rockets = UICity.labels.AllRockets
 				for i = 1, #rockets do
 					if rockets[i].export_requests then
-						ChoGGi.CodeFuncs.SetTaskReqAmount(rockets[i],value,"export_requests","max_export_storage")
+						ChoGGi.ComFuncs.SetTaskReqAmount(rockets[i],value,"export_requests","max_export_storage")
 					else
 						rockets[i].max_export_storage = value
 					end
@@ -1365,7 +1365,7 @@ function OnMsg.ClassesGenerate()
 		local rockets = UICity.labels.AllRockets
 		for i = 1, #rockets do
 			if rockets[i].refuel_request then
-				ChoGGi.CodeFuncs.SetTaskReqAmount(rockets[i],amount,"refuel_request","launch_fuel")
+				ChoGGi.ComFuncs.SetTaskReqAmount(rockets[i],amount,"refuel_request","launch_fuel")
 			else
 				rockets[i].launch_fuel = amount
 			end
@@ -1394,7 +1394,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = ChoGGi.Consts.LaunchFuelPerRocket
-		local UpgradedSetting = ChoGGi.CodeFuncs.GetFuelRocket()
+		local UpgradedSetting = ChoGGi.ComFuncs.GetFuelRocket()
 		local ItemList = {
 			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting / r),value = DefaultSetting},
 			{text = 5,value = 5 * r},

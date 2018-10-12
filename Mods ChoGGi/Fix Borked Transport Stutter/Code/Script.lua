@@ -35,7 +35,7 @@ function OnMsg.ClassesBuilt()
 	ChoGGi.ComFuncs.SaveOrigFunc("RCTransport","TransportRouteLoad")
 	ChoGGi.ComFuncs.SaveOrigFunc("RCTransport","TransportRouteUnload")
 	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-	local CheckForBorkedTransportPath = ChoGGi.CodeFuncs.CheckForBorkedTransportPath
+	local CheckForBorkedTransportPath = ChoGGi.ComFuncs.CheckForBorkedTransportPath
 
 	function RCTransport:TransportRouteLoad(...)
 		ChoGGi_OrigFuncs.RCTransport_TransportRouteLoad(self,...)

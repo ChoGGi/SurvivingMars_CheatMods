@@ -1,6 +1,8 @@
+v0.7
+Library.
+
 v0.6
 You can re-bind keys with in-game options.
-
 v0.5
 Da Vinci.
 Cleaning up code (ChoGGi's Library).

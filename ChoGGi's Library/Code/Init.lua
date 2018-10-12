@@ -61,8 +61,6 @@ ChoGGi = {
 	},
 	-- orig funcs that get replaced
 	OrigFuncs = {},
-	-- _Functions.lua
-	CodeFuncs = {},
 	-- /Menus/*
 	MenuFuncs = {},
 	-- OnMsgs.lua

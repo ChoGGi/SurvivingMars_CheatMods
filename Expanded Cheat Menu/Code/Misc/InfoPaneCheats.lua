@@ -62,7 +62,7 @@ function OnMsg.ClassesGenerate()
 			local name = RetName(self)
 			local function CallBackFunc(answer)
 				if answer then
-					ChoGGi.CodeFuncs.DeleteObject(self)
+					ChoGGi.ComFuncs.DeleteObject(self)
 					SelectObj()
 				end
 			end
@@ -79,34 +79,34 @@ function OnMsg.ClassesGenerate()
 
 		-- consumption
 		function Building:CheatPowerFree()
-			ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
+			ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
 		end
 		function Building:CheatPowerNeed()
-			ChoGGi.CodeFuncs.AddBuildingElecConsump(self)
+			ChoGGi.ComFuncs.AddBuildingElecConsump(self)
 		end
 		--
 		function Building:CheatWaterFree()
-			ChoGGi.CodeFuncs.RemoveBuildingWaterConsump(self)
+			ChoGGi.ComFuncs.RemoveBuildingWaterConsump(self)
 		end
 		function Building:CheatWaterNeed()
-			ChoGGi.CodeFuncs.AddBuildingWaterConsump(self)
+			ChoGGi.ComFuncs.AddBuildingWaterConsump(self)
 		end
 		--
 		function Building:CheatOxygenFree()
-			ChoGGi.CodeFuncs.RemoveBuildingAirConsump(self)
+			ChoGGi.ComFuncs.RemoveBuildingAirConsump(self)
 		end
 		function Building:CheatOxygenNeed()
-			ChoGGi.CodeFuncs.AddBuildingAirConsump(self)
+			ChoGGi.ComFuncs.AddBuildingAirConsump(self)
 		end
 		--~
 		function Object:CheatHideSigns()
 			self:DestroyAttaches("BuildingSign")
 		end
 		function Object:CheatColourRandom()
-			ChoGGi.CodeFuncs.ObjectColourRandom(self)
+			ChoGGi.ComFuncs.ObjectColourRandom(self)
 		end
 		function Object:CheatColourDefault()
-			ChoGGi.CodeFuncs.ObjectColourDefault(self)
+			ChoGGi.ComFuncs.ObjectColourDefault(self)
 		end
 
 		--colonists
@@ -155,10 +155,10 @@ function OnMsg.ClassesGenerate()
 			self.performance = self.base_performance
 		end
 		function Colonist:CheatRandomGender()
-			ChoGGi.CodeFuncs.ColonistUpdateGender(self,ChoGGi.Tables.ColonistGenders[Random(1,5)])
+			ChoGGi.ComFuncs.ColonistUpdateGender(self,ChoGGi.Tables.ColonistGenders[Random(1,5)])
 		end
 		function Colonist:CheatRandomAge()
-			ChoGGi.CodeFuncs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[Random(1,6)])
+			ChoGGi.ComFuncs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[Random(1,6)])
 		end
 		--CheatAllShifts
 		local function CheatAllShiftsOn(self)
@@ -188,13 +188,13 @@ function OnMsg.ClassesGenerate()
 			else
 				self.auto_performance = 150
 			end
-			ChoGGi.CodeFuncs.ToggleWorking(self)
+			ChoGGi.ComFuncs.ToggleWorking(self)
 		end
 		function Workplace:CheatWorkManual()
 			self.max_workers = nil
 			self.automation = nil
 			self.auto_performance = nil
-			ChoGGi.CodeFuncs.ToggleWorking(self)
+			ChoGGi.ComFuncs.ToggleWorking(self)
 		end
 
 		-- Deposits
@@ -216,39 +216,39 @@ function OnMsg.ClassesGenerate()
 			self.capacity = self.capacity * 2
 			self.electricity.storage_capacity = self.capacity
 			self.electricity.storage_mode = "charging"
-			ChoGGi.CodeFuncs.ToggleWorking(self)
+			ChoGGi.ComFuncs.ToggleWorking(self)
 		end
 		function ElectricityStorage:CheatCapDef()
 			self.capacity = self.base_capacity
 			self.electricity.storage_capacity = self.capacity
 			self.electricity.storage_mode = "full"
-			ChoGGi.CodeFuncs.ToggleWorking(self)
+			ChoGGi.ComFuncs.ToggleWorking(self)
 		end
 		--
 		function WaterTank:CheatCapDbl()
 			self.water_capacity = self.water_capacity * 2
 			self.water.storage_capacity = self.water_capacity
 			self.water.storage_mode = "charging"
-			ChoGGi.CodeFuncs.ToggleWorking(self)
+			ChoGGi.ComFuncs.ToggleWorking(self)
 		end
 		function WaterTank:CheatCapDef()
 			self.water_capacity = self.base_water_capacity
 			self.water.storage_capacity = self.water_capacity
 			self.water.storage_mode = "full"
-			ChoGGi.CodeFuncs.ToggleWorking(self)
+			ChoGGi.ComFuncs.ToggleWorking(self)
 		end
 		--
 		function OxygenTank:CheatCapDbl()
 			self.air_capacity = self.air_capacity * 2
 			self.air.storage_capacity = self.air_capacity
 			self.air.storage_mode = "charging"
-			ChoGGi.CodeFuncs.ToggleWorking(self)
+			ChoGGi.ComFuncs.ToggleWorking(self)
 		end
 		function OxygenTank:CheatCapDef()
 			self.air_capacity = self.base_air_capacity
 			self.air.storage_capacity = self.air_capacity
 			self.air.storage_mode = "full"
-			ChoGGi.CodeFuncs.ToggleWorking(self)
+			ChoGGi.ComFuncs.ToggleWorking(self)
 		end
 		--
 		--CheatCapDbl people
@@ -315,7 +315,7 @@ function OnMsg.ClassesGenerate()
 			self.battery = self.battery_max
 		end
 		local function CheatFindResource(self)
-			ChoGGi.CodeFuncs.FindNearestResource(self)
+			ChoGGi.ComFuncs.FindNearestResource(self)
 		end
 		Drone.CheatFindResource = CheatFindResource
 		RCTransport.CheatFindResource = CheatFindResource
@@ -356,14 +356,14 @@ function OnMsg.ClassesGenerate()
 			self.negated_renegades = self.max_negated_renegades
 		end
 		function MechanizedDepot:CheatEmptyDepot()
-			ChoGGi.CodeFuncs.EmptyMechDepot(self)
+			ChoGGi.ComFuncs.EmptyMechDepot(self)
 		end
 
 		function SupplyRocket:CheatCapDbl()
-			ChoGGi.CodeFuncs.SetTaskReqAmount(self,self.max_export_storage * 2,"export_requests","max_export_storage")
+			ChoGGi.ComFuncs.SetTaskReqAmount(self,self.max_export_storage * 2,"export_requests","max_export_storage")
 		end
 		function SupplyRocket:CheatCapDef()
-			ChoGGi.CodeFuncs.SetTaskReqAmount(self,self.base_max_export_storage,"export_requests","max_export_storage")
+			ChoGGi.ComFuncs.SetTaskReqAmount(self,self.base_max_export_storage,"export_requests","max_export_storage")
 		end
 	end -- do
 

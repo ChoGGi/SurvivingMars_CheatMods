@@ -631,7 +631,7 @@ function OnMsg.ClassesBuilt()
 
 	-- hopefully they fix this in the next update... (though they didn't fix it in Curo so, or maybe they fixed one type of it)
 	if LuaRevision == 233467 then
-		local CheckForBorkedTransportPath = ChoGGi.CodeFuncs.CheckForBorkedTransportPath
+		local CheckForBorkedTransportPath = ChoGGi.ComFuncs.CheckForBorkedTransportPath
 		-- check transports for borked paths
 		function RCTransport:TransportRouteLoad()
 			ChoGGi_OrigFuncs.RCTransport_TransportRouteLoad(self)
@@ -760,14 +760,14 @@ function OnMsg.ClassesBuilt()
 	function SubsurfaceHeater:UpdatElectricityConsumption()
 		ChoGGi_OrigFuncs.SubsurfaceHeater_UpdatElectricityConsumption(self)
 		if self.ChoGGi_mod_electricity_consumption then
-			ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
+			ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
 		end
 	end
 	--same for tribby
 	function TriboelectricScrubber:OnPostChangeRange()
 		ChoGGi_OrigFuncs.TriboelectricScrubber_OnPostChangeRange(self)
 		if self.ChoGGi_mod_electricity_consumption then
-			ChoGGi.CodeFuncs.RemoveBuildingElecConsump(self)
+			ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
 		end
 	end
 
@@ -877,7 +877,7 @@ function OnMsg.ClassesBuilt()
 --~ end
 		--get them lazy drones working (bugfix for drones ignoring amounts less then their carry amount)
 		if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
-			ChoGGi.CodeFuncs.FuckingDrones(self)
+			ChoGGi.ComFuncs.FuckingDrones(self)
 		end
 
 		return ChoGGi_OrigFuncs.SingleResourceProducer_Produce(self, amount_to_produce)
@@ -983,7 +983,7 @@ function OnMsg.ClassesBuilt()
 			-- give me the scroll. goddamn it blinky
 			if UserSettings.ScrollSelection and infopanel_list[self.XTemplate] then
 				self.idActionsFrame.parent:SetZOrder(2)
-				ChoGGi.CodeFuncs.AddScrollDialogXTemplates(self)
+				ChoGGi.ComFuncs.AddScrollDialogXTemplates(self)
 			end
 
 			local c = self.idContent

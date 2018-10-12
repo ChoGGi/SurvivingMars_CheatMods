@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "Empty Mech Depot v0.5",
-  "version", 5,
-  "saved", 1536408000,
+  "title", "Empty Mech Depot v0.6",
+  "version", 6,
+  "saved", 1539345600,
 	"image", "Preview.png",
   "tags", "Building",
   "id", "ChoGGi_EmptyMechDepot",

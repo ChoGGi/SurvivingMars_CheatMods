@@ -41,7 +41,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = S[174--[[Color Modifier--]]],
 		ActionId = "ChangeObjectColour.Color Modifier",
 		OnAction = function()
-			ChoGGi.CodeFuncs.CreateObjectListAndAttaches()
+			ChoGGi.ComFuncs.CreateObjectListAndAttaches()
 		end,
 		ActionShortcut = "F6",
 		replace_matching_id = true,
@@ -52,7 +52,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920001346--[[Random Colour--]]]),
 		ActionId = "ChangeObjectColour.ObjectColourRandom",
 		OnAction = function()
-			ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
+			ChoGGi.ComFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
 		end,
 		ActionShortcut = "Shift-F6",
 		ActionBindable = true,
@@ -62,7 +62,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920000025--[[Default Colour--]]]),
 		ActionId = "ChangeObjectColour.ObjectColourDefault",
 		OnAction = function()
-			ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())
+			ChoGGi.ComFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())
 		end,
 		ActionShortcut = "Ctrl-F6",
 		ActionBindable = true,

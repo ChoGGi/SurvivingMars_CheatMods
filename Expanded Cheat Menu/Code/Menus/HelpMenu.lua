@@ -207,7 +207,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Hide Cheats Menu",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 		RolloverText = S[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again (Ctrl-F2 to toggle the Cheats selection panel).--]]],
-		OnAction = ChoGGi.CodeFuncs.CheatsMenu_Toggle,
+		OnAction = ChoGGi.ComFuncs.CheatsMenu_Toggle,
 		ActionSortKey = "5",
 		ActionShortcut = "F2",
 		ActionBindable = true,
@@ -279,7 +279,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 		RolloverText = S[302535920001281--[[Information about your computer (as seen by SM).--]]],
 		OnAction = function()
-			ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.CodeFuncs.RetHardwareInfo())
+			ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.ComFuncs.RetHardwareInfo())
 		end,
 		ActionSortKey = "-2*Stats*",
 	}

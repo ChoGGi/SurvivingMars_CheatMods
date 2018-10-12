@@ -33,8 +33,6 @@ SOFTWARE.]],
   ComFuncs = {},
   --OnMsgs.lua
   MsgFuncs = {},
-  --/Code/_Functions.lua
-  CodeFuncs = {},
   --InfoPaneCheats.lua
   InfoFuncs = {},
   --Defaults.lua

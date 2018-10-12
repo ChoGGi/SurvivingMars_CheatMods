@@ -60,7 +60,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/ShowAll.tga",
 		RolloverText = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 		OnAction = function()
-			ChoGGi.CodeFuncs.AttachSpots_Toggle()
+			ChoGGi.ComFuncs.AttachSpots_Toggle()
 		end,
 	}
 
@@ -120,7 +120,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/CameraEditor.tga",
 		RolloverText = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
 		OnAction = function()
-			ChoGGi.CodeFuncs.ShowAnimDebug_Toggle()
+			ChoGGi.ComFuncs.ShowAnimDebug_Toggle()
 		end,
 	}
 
@@ -147,7 +147,7 @@ function OnMsg.ClassesGenerate()
 	Warning: Unable to mouse select items after spawn
 	hover mouse over and use Delete Selected Object"--]]],
 		OnAction = function()
-			ChoGGi.CodeFuncs.ObjectSpawner()
+			ChoGGi.ComFuncs.ObjectSpawner()
 		end,
 		ActionShortcut = "Ctrl-Shift-S",
 		ActionBindable = true,
@@ -162,7 +162,7 @@ function OnMsg.ClassesGenerate()
 	click+drag for multiple selection.
 
 	It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look)."--]]],
-		OnAction = ChoGGi.CodeFuncs.Editor_Toggle,
+		OnAction = ChoGGi.ComFuncs.Editor_Toggle,
 		ActionShortcut = "Ctrl-Shift-E",
 		ActionBindable = true,
 	}
@@ -232,7 +232,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/ToggleCollisions.tga",
 		RolloverText = S[302535920001298--[[Shows a square grid with terrain/objects shape.--]]],
 		OnAction = function()
-			ChoGGi.CodeFuncs.FlightGrid_Toggle()
+			ChoGGi.ComFuncs.FlightGrid_Toggle()
 		end,
 		ActionShortcut = "Shift-F2",
 		ActionBindable = true,
@@ -428,7 +428,7 @@ function OnMsg.ClassesGenerate()
 
 Use Editor Mode and mouse drag to select multiple objects for deletion."--]]],
 		OnAction = function()
-			ChoGGi.CodeFuncs.DeleteObject()
+			ChoGGi.ComFuncs.DeleteObject()
 		end,
 		ActionShortcut = "Ctrl-Alt-Shift-D",
 		ActionBindable = true,

@@ -73,7 +73,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = icon,
 		RolloverText = S[302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.--]]],
 		OnAction = function()
-			ChoGGi.CodeFuncs.EmptyMechDepot()
+			ChoGGi.ComFuncs.EmptyMechDepot()
 		end,
 	}
 

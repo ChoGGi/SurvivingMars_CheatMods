@@ -446,7 +446,7 @@ function ChoGGi_ListChoiceDlg:UpdateColour()
 		self.obj = self.idList[#self.idList].item.obj
 	end
 	-- checks/backs up old colours
-	ChoGGi.CodeFuncs.SaveOldPalette(self.obj)
+	ChoGGi.ComFuncs.SaveOldPalette(self.obj)
 	-- update object colour
 	local items = self.idList
 	for i = 1, 4 do
@@ -500,7 +500,7 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
 	end
 
 	if self.select_flash and self.sel.obj then
-		ChoGGi.CodeFuncs.AddBlinkyToObj(self.sel.obj,8000)
+		ChoGGi.ComFuncs.AddBlinkyToObj(self.sel.obj,8000)
 	end
 
 	if self.custom_type > 0 then

@@ -60,7 +60,7 @@ function OnMsg.ClassesBuilt()
 	end
 
 	--restore the button
-	ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.ipBuilding[1][1],"ChoGGi_RestoreMaintenance")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipBuilding[1][1],"ChoGGi_RestoreMaintenance")
 	XTemplates.ipBuilding[1][1][#XTemplates.ipBuilding[1][1]+1] = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_RestoreMaintenance", true,
 		"__condition", function(parent, context)

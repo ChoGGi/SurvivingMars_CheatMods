@@ -76,7 +76,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.DraggableCheatsMenu = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DraggableCheatsMenu)
 
-		ChoGGi.CodeFuncs.DraggableCheatsMenu(ChoGGi.UserSettings.DraggableCheatsMenu)
+		ChoGGi.ComFuncs.DraggableCheatsMenu(ChoGGi.UserSettings.DraggableCheatsMenu)
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(

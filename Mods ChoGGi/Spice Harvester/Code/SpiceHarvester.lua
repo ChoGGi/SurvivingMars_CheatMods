@@ -217,10 +217,10 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 
 		local XTemplates = XTemplates
-		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1],"Melanger_Destroy")
-		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1],"SolariaTelepresence_Melanger_Section")
+		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1],"Melanger_Destroy")
+		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1],"SolariaTelepresence_Melanger_Section")
 
-		ChoGGi.CodeFuncs.AddXTemplate("Melanger_Destroy","ipAttackRover",{
+		ChoGGi.ComFuncs.AddXTemplate("Melanger_Destroy","ipAttackRover",{
 			__context_of_kind = "Melanger",
 			Icon = "UI/Icons/Sections/resource_no_accept.tga",
 			Title = [[Destroy]],

@@ -88,7 +88,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = icon,
 		RolloverText = S[302535920000582--[[Just in case you get something stuck somewhere.--]]],
 		OnAction = function()
-			ChoGGi.CodeFuncs.CollisionsObject_Toggle()
+			ChoGGi.ComFuncs.CollisionsObject_Toggle()
 		end,
 		ActionSortKey = "9Toggle Collisions On Selected Object",
 	}

@@ -226,7 +226,7 @@ function OnMsg.ClassesGenerate()
 			update_info_thread[label] = CreateRealTimeThread(function()
 				while update_info_thread[label] do
 					-- add a grid number we can reference
-					ChoGGi.CodeFuncs.UpdateGridHandles()
+					ChoGGi.ComFuncs.UpdateGridHandles()
 
 					local objs = UICity.labels[label] or ""
 					local mine
@@ -344,7 +344,7 @@ function OnMsg.ClassesGenerate()
 					302535920000034--[[Request--]]
 				)
 			else
-				ChoGGi.CodeFuncs.DisplayMonitorList(value)
+				ChoGGi.ComFuncs.DisplayMonitorList(value)
 			end
 		end
 
@@ -355,7 +355,7 @@ function OnMsg.ClassesGenerate()
 			hint = 302535920000940--[[Select something to monitor.--]],
 			custom_type = 7,
 			custom_func = function(sel)
-				ChoGGi.CodeFuncs.DisplayMonitorList(sel[1].value,sel[1].parentobj)
+				ChoGGi.ComFuncs.DisplayMonitorList(sel[1].value,sel[1].parentobj)
 			end,
 			skip_sort = true,
 		}

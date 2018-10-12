@@ -55,11 +55,11 @@ function OnMsg.ClassesGenerate()
 
 	function OnMsg.ClassesBuilt()
 
-		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.ipColonist[1],"ChoGGi_LockworkplaceColonist")
-		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"ChoGGi_LockworkplaceWorkplace")
+		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipColonist[1],"ChoGGi_LockworkplaceColonist")
+		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"ChoGGi_LockworkplaceWorkplace")
 
 		-- add button to colonists
-		ChoGGi.CodeFuncs.AddXTemplate("LockworkplaceColonist","ipColonist",{
+		ChoGGi.ComFuncs.AddXTemplate("LockworkplaceColonist","ipColonist",{
 			__context_of_kind = "Colonist",
 			OnContextUpdate = function(self, context)
 				---
@@ -96,7 +96,7 @@ function OnMsg.ClassesGenerate()
 			end,
 		})
 
-		ChoGGi.CodeFuncs.AddXTemplate("LockworkplaceWorkplace","sectionWorkplace",{
+		ChoGGi.ComFuncs.AddXTemplate("LockworkplaceWorkplace","sectionWorkplace",{
 			__context_of_kind = "Workplace",
 			OnContextUpdate = function(self, context)
 				---

@@ -34,7 +34,7 @@ function OnMsg.ClassesBuilt()
 	local XTemplates = XTemplates
 	local str = [[Per Rare: %s]]
 
-	ChoGGi.CodeFuncs.AddXTemplate("ShowAmountPerRareOnRockets","customSupplyRocket",{
+	ChoGGi.ComFuncs.AddXTemplate("ShowAmountPerRareOnRockets","customSupplyRocket",{
 		Icon = "UI/Icons/res_precious_metals.tga",
 		RolloverText = [[Amount received per rare/precious exported.]],
 		OnContextUpdate = function(self, context)

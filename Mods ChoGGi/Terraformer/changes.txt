@@ -1,6 +1,8 @@
+v1.1
+Library.
+
 v1.0
 Fixed issue with shortcuts and multiple of my mods that use shortcuts.
-
 v0.9
 Rock removal now takes about a second.
 Added Ctrl-Shift-Alt-D to delete objects (careful: it doesn't ask and will delete any object).

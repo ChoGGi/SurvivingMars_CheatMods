@@ -138,7 +138,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 						self:SetRolloverText(S[302535920001151--[[Set Entity For %s--]]]:format(RetName(self.context)))
 					end,
 					"OnPress", function(self)
-						ChoGGi.CodeFuncs.ObjectSpawner(self.context)
+						ChoGGi.ComFuncs.ObjectSpawner(self.context)
 					end,
 					"Icon", "UI/Icons/IPButtons/tunnel.tga",
 				}),
@@ -299,7 +299,7 @@ function OnMsg.ModsReloaded()
 				end
 			end
 
-			ChoGGi.CodeFuncs.DraggableCheatsMenu(
+			ChoGGi.ComFuncs.DraggableCheatsMenu(
 				UserSettings.DraggableCheatsMenu
 			)
 		end
@@ -505,7 +505,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 
 	if UserSettings.StorageMechanizedDepotsTemp and obj:IsKindOf("ResourceStockpileLR") and obj.parent:IsKindOf("MechanizedDepot") then
 		-- attached temporary resource depots
-		ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(obj.parent)
+		ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj.parent)
 	end
 
 	-- if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
@@ -513,7 +513,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		-- seems to need a delay in DA
 		CreateRealTimeThread(function()
 			Sleep(100)
-			ChoGGi.CodeFuncs.AttachToNearestDome(obj)
+			ChoGGi.ComFuncs.AttachToNearestDome(obj)
 		end)
 	end
 
@@ -561,13 +561,13 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			end
 			-- no power needed
 			if bs.nopower then
-				ChoGGi.CodeFuncs.RemoveBuildingElecConsump(obj)
+				ChoGGi.ComFuncs.RemoveBuildingElecConsump(obj)
 			end
 			if bs.noair then
-				ChoGGi.CodeFuncs.RemoveBuildingAirConsump(obj)
+				ChoGGi.ComFuncs.RemoveBuildingAirConsump(obj)
 			end
 			if bs.nowater then
-				ChoGGi.CodeFuncs.RemoveBuildingWaterConsump(obj)
+				ChoGGi.ComFuncs.RemoveBuildingWaterConsump(obj)
 			end
 			-- large protect_range for defence buildings
 			if bs.protect_range then
@@ -600,7 +600,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			end
 			-- service comforts
 			if bs.service_stats and next(bs.service_stats) then
-				ChoGGi.CodeFuncs.UpdateServiceComfortBld(obj,bs.service_stats)
+				ChoGGi.ComFuncs.UpdateServiceComfortBld(obj,bs.service_stats)
 			end
 			-- dis/charge rates
 			local prod_type = obj.GetStoredAir and "air" or obj.GetStoredWater and "water" or obj.GetStoredPower and "electricity"
@@ -648,20 +648,20 @@ do -- ColonistCreated
 			obj:SetGravity(UserSettings.GravityColonist)
 		end
 		if UserSettings.NewColonistGender then
-			ChoGGi.CodeFuncs.ColonistUpdateGender(obj,UserSettings.NewColonistGender)
+			ChoGGi.ComFuncs.ColonistUpdateGender(obj,UserSettings.NewColonistGender)
 		end
 		if UserSettings.NewColonistAge then
-			ChoGGi.CodeFuncs.ColonistUpdateAge(obj,UserSettings.NewColonistAge)
+			ChoGGi.ComFuncs.ColonistUpdateAge(obj,UserSettings.NewColonistAge)
 		end
 		-- children don't have spec models so they get black cube
 		if UserSettings.NewColonistSpecialization and not skip then
-			ChoGGi.CodeFuncs.ColonistUpdateSpecialization(obj,UserSettings.NewColonistSpecialization)
+			ChoGGi.ComFuncs.ColonistUpdateSpecialization(obj,UserSettings.NewColonistSpecialization)
 		end
 		if UserSettings.NewColonistRace then
-			ChoGGi.CodeFuncs.ColonistUpdateRace(obj,UserSettings.NewColonistRace)
+			ChoGGi.ComFuncs.ColonistUpdateRace(obj,UserSettings.NewColonistRace)
 		end
 		if UserSettings.NewColonistTraits then
-			ChoGGi.CodeFuncs.ColonistUpdateTraits(obj,true,UserSettings.NewColonistTraits)
+			ChoGGi.ComFuncs.ColonistUpdateTraits(obj,true,UserSettings.NewColonistTraits)
 		end
 		if UserSettings.SpeedColonist then
 			obj:SetMoveSpeed(UserSettings.SpeedColonist)
@@ -751,21 +751,21 @@ function OnMsg.NewHour()
 			-- Hey. Do I preach at you when you're lying stoned in the gutter? No!
 			local prods = labels.ResourceProducer or ""
 			for i = 1, #prods do
-				ChoGGi.CodeFuncs.FuckingDrones(prods[i]:GetProducerObj())
+				ChoGGi.ComFuncs.FuckingDrones(prods[i]:GetProducerObj())
 				if prods[i].wasterock_producer then
-					ChoGGi.CodeFuncs.FuckingDrones(prods[i].wasterock_producer)
+					ChoGGi.ComFuncs.FuckingDrones(prods[i].wasterock_producer)
 				end
 			end
 			prods = labels.BlackCubeStockpiles or ""
 			for i = 1, #prods do
-				ChoGGi.CodeFuncs.FuckingDrones(prods[i])
+				ChoGGi.ComFuncs.FuckingDrones(prods[i])
 			end
 		end
 
 		-- pathing? pathing in domes works great... watch out for that invisible wall!
 		-- update: seems like this is an issue from one of those smarter work ai mods
 		if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
-			ChoGGi.CodeFuncs.ResetHumanCentipedes()
+			ChoGGi.ComFuncs.ResetHumanCentipedes()
 		end
 
 		-- some types of crashing won't allow SM to gracefully close and leave a log/minidump as the devs envisioned... No surprise to anyone who's ever done any sort of debugging before.
@@ -1012,8 +1012,8 @@ do -- LoadGame/CityStart
 			end
 		end
 
-		SetMissionBonuses(UserSettings,Presets,"MissionSponsorPreset","Sponsor",ChoGGi.CodeFuncs.SetSponsorBonuses)
-		SetMissionBonuses(UserSettings,Presets,"CommanderProfilePreset","Commander",ChoGGi.CodeFuncs.SetCommanderBonuses)
+		SetMissionBonuses(UserSettings,Presets,"MissionSponsorPreset","Sponsor",ChoGGi.ComFuncs.SetSponsorBonuses)
+		SetMissionBonuses(UserSettings,Presets,"CommanderProfilePreset","Commander",ChoGGi.ComFuncs.SetCommanderBonuses)
 
 
 
@@ -1192,7 +1192,7 @@ do -- LoadGame/CityStart
 		end
 
 		--set zoom/border scrolling
-		ChoGGi.CodeFuncs.SetCameraSettings()
+		ChoGGi.ComFuncs.SetCameraSettings()
 
 		--show all traits
 		if UserSettings.SanatoriumSchoolShowAll then

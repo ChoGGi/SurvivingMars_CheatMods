@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Spice Harvester v0.5",
-	"version", 5,
-	"saved", 1536148800,
+	"title", "Spice Harvester v0.6",
+	"version", 6,
+	"saved", 1539345600,
 	"image", "Preview.png",
 	"tags", "Buildings",
 	"id", "ChoGGi_SpiceHarvester",

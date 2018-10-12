@@ -34,7 +34,7 @@ function OnMsg.ClassesBuilt()
         end
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane1","ipShuttle",Table,XTemplates)
+    PersonalShuttles.ComFuncs.AddXTemplate("PersonalShuttles_CustomPane1","ipShuttle",Table,XTemplates)
 --info showing carried item
     Table = {
       __context_of_kind = "CargoShuttle",
@@ -47,7 +47,7 @@ function OnMsg.ClassesBuilt()
         if Obj then
           self:SetVisible(true)
           self:SetMaxHeight()
-          self:SetTitle("Carried: " .. PersonalShuttles.CodeFuncs.Trans(Obj.display_name))
+          self:SetTitle("Carried: " .. PersonalShuttles.ComFuncs.Trans(Obj.display_name))
         else
           self:SetVisible(false)
           self:SetMaxHeight(0)
@@ -55,7 +55,7 @@ function OnMsg.ClassesBuilt()
       end,
       func = function()end
       }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane2","ipShuttle",Table,XTemplates)
+    PersonalShuttles.ComFuncs.AddXTemplate("PersonalShuttles_CustomPane2","ipShuttle",Table,XTemplates)
 --spawn shuttle buttons for hub and return shuttle button
     Table = {
       __context_of_kind = "ShuttleHub",
@@ -64,10 +64,10 @@ function OnMsg.ClassesBuilt()
       RolloverTitle = "Spawn Attacker",
       RolloverHint = "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up resources you've selected and marked for pickup.",
       func = function(self, context)
-        PersonalShuttles.CodeFuncs.SpawnShuttle(context,true)
+        PersonalShuttles.ComFuncs.SpawnShuttle(context,true)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane1","customShuttleHub",Table,XTemplates)
+    PersonalShuttles.ComFuncs.AddXTemplate("PersonalShuttles_CustomPane1","customShuttleHub",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "ShuttleHub",
@@ -76,10 +76,10 @@ function OnMsg.ClassesBuilt()
       RolloverTitle = "Spawn Friend",
       RolloverHint = "Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, and pick up resources you've selected and marked for pickup.",
       func = function(self, context)
-        PersonalShuttles.CodeFuncs.SpawnShuttle(context)
+        PersonalShuttles.ComFuncs.SpawnShuttle(context)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane2","customShuttleHub",Table,XTemplates)
+    PersonalShuttles.ComFuncs.AddXTemplate("PersonalShuttles_CustomPane2","customShuttleHub",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "ShuttleHub",
@@ -88,10 +88,10 @@ function OnMsg.ClassesBuilt()
       RolloverTitle = "Recall Shuttles",
       RolloverHint = "Recalls all shuttles you've spawned at this ShuttleHub.",
       func = function(self, context)
-        PersonalShuttles.CodeFuncs.RecallShuttlesHub(context)
+        PersonalShuttles.ComFuncs.RecallShuttlesHub(context)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane3","customShuttleHub",Table,XTemplates)
+    PersonalShuttles.ComFuncs.AddXTemplate("PersonalShuttles_CustomPane3","customShuttleHub",Table,XTemplates)
 --add mark for pickup buttons to certain resource piles
     local hint_mark = "Change this to Pickup, then select a spawned shuttle and have it come on by."
     local title1 = "Ignore Item"
@@ -120,7 +120,7 @@ function OnMsg.ClassesBuilt()
         ObjModified(context)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane1","ipResourcePile",Table,XTemplates)
+    PersonalShuttles.ComFuncs.AddXTemplate("PersonalShuttles_CustomPane1","ipResourcePile",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "Drone",
@@ -142,7 +142,7 @@ function OnMsg.ClassesBuilt()
         ObjModified(context)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane3","ipDrone",Table,XTemplates)
+    PersonalShuttles.ComFuncs.AddXTemplate("PersonalShuttles_CustomPane3","ipDrone",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "BaseRover",
@@ -164,7 +164,7 @@ function OnMsg.ClassesBuilt()
         ObjModified(context)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane3","ipRover",Table,XTemplates)
+    PersonalShuttles.ComFuncs.AddXTemplate("PersonalShuttles_CustomPane3","ipRover",Table,XTemplates)
     --
     Table = {
       __context_of_kind = "UniversalStorageDepot",
@@ -186,7 +186,7 @@ function OnMsg.ClassesBuilt()
         ObjModified(context)
       end
     }
-    PersonalShuttles.CodeFuncs.AddXTemplate("PersonalShuttles_CustomPane4","sectionStorage",Table,XTemplates)
+    PersonalShuttles.ComFuncs.AddXTemplate("PersonalShuttles_CustomPane4","sectionStorage",Table,XTemplates)
   --[[
   --adds to the bottom of every selection :) :(
   Infopanel
@@ -199,7 +199,7 @@ function OnMsg.ClassesBuilt()
   --dustdevil thread for rockets
   function CargoShuttle:PersonalShuttles_DefenceTickD(PersonalShuttles)
     if self.PersonalShuttles_FollowMouseShuttle and UICity.PersonalShuttles.CargoShuttleThreads[self.handle] then
-      return PersonalShuttles.CodeFuncs.DefenceTick(self,PersonalShuttles.Temp.ShuttleRocketDD)
+      return PersonalShuttles.ComFuncs.DefenceTick(self,PersonalShuttles.Temp.ShuttleRocketDD)
     end
   end
 
@@ -385,7 +385,7 @@ function OnMsg.ClassesBuilt()
         if anomaly and sel == anomaly and not UICity.PersonalShuttles.CargoShuttleScanningAnomaly[anomaly.handle] then
           PlayFX("ArtificialSunCharge", "start",anomaly)
           UICity.PersonalShuttles.CargoShuttleScanningAnomaly[anomaly.handle] = true
-          PersonalShuttles.CodeFuncs.AnalyzeAnomaly(self, anomaly)
+          PersonalShuttles.ComFuncs.AnalyzeAnomaly(self, anomaly)
           PlayFX("ArtificialSunCharge", "end",anomaly)
         end
       --resource moving

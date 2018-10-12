@@ -56,7 +56,7 @@ function OnMsg.ClassesGenerate()
 		replace_matching_id = true,
 		ActionId = "Terraformer.Terrain Editor Toggle",
 		RolloverText = S[302535920000675--[[Opens up the map editor with the brush tool visible.--]]],
-		OnAction = ChoGGi.CodeFuncs.TerrainEditor_Toggle,
+		OnAction = ChoGGi.ComFuncs.TerrainEditor_Toggle,
 		ActionShortcut = "Shift-F",
 		ActionBindable = true,
 	}
@@ -66,7 +66,7 @@ function OnMsg.ClassesGenerate()
 		replace_matching_id = true,
 		ActionId = "Terraformer.Delete Large Rocks",
 		RolloverText = S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
-		OnAction = ChoGGi.CodeFuncs.DeleteLargeRocks,
+		OnAction = ChoGGi.ComFuncs.DeleteLargeRocks,
 		ActionShortcut = "Ctrl-Shift-1",
 		ActionBindable = true,
 	}
@@ -76,7 +76,7 @@ function OnMsg.ClassesGenerate()
 		replace_matching_id = true,
 		ActionId = "Terraformer.Delete Small Rocks",
 		RolloverText = S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
-		OnAction = ChoGGi.CodeFuncs.DeleteSmallRocks,
+		OnAction = ChoGGi.ComFuncs.DeleteSmallRocks,
 		ActionShortcut = "Ctrl-Shift-2",
 		ActionBindable = true,
 	}
@@ -87,7 +87,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = "Terraformer.Delete Object(s)",
 		RolloverText = S[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]],
 		OnAction = function()
-			ChoGGi.CodeFuncs.DeleteObject()
+			ChoGGi.ComFuncs.DeleteObject()
 		end,
 		ActionShortcut = "Ctrl-Shift-Alt-D",
 		ActionBindable = true,

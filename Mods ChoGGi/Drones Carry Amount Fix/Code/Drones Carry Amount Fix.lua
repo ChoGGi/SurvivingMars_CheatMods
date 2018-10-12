@@ -33,9 +33,9 @@ end
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
 
-	local FuckingDrones = ChoGGi.CodeFuncs.FuckingDrones
-	local CompareTableFuncs = ChoGGi.CodeFuncs.CompareTableFuncs
-	local GetNearestIdleDrone = ChoGGi.CodeFuncs.GetNearestIdleDrone
+	local FuckingDrones = ChoGGi.ComFuncs.FuckingDrones
+	local CompareTableFuncs = ChoGGi.ComFuncs.CompareTableFuncs
+	local GetNearestIdleDrone = ChoGGi.ComFuncs.GetNearestIdleDrone
 
 	function OnMsg.ClassesBuilt()
 		ChoGGi.ComFuncs.SaveOrigFunc("SingleResourceProducer","Produce")

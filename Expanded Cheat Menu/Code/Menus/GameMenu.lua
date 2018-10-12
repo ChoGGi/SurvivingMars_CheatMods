@@ -33,7 +33,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Delete Large Rocks",
 		ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
 		RolloverText = S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
-		OnAction = ChoGGi.CodeFuncs.DeleteLargeRocks,
+		OnAction = ChoGGi.ComFuncs.DeleteLargeRocks,
 	}
 
 	c = c + 1
@@ -42,7 +42,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Delete Small Rocks",
 		ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
 		RolloverText = S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
-		OnAction = ChoGGi.CodeFuncs.DeleteSmallRocks,
+		OnAction = ChoGGi.ComFuncs.DeleteSmallRocks,
 	}
 
 	c = c + 1
@@ -51,7 +51,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Terrain Editor Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/smooth_terrain.tga",
 		RolloverText = S[302535920000675--[[Opens up the map editor with the brush tool visible.--]]],
-		OnAction = ChoGGi.CodeFuncs.TerrainEditor_Toggle,
+		OnAction = ChoGGi.ComFuncs.TerrainEditor_Toggle,
 		ActionShortcut = "Ctrl-Shift-T",
 		ActionBindable = true,
 	}
@@ -203,7 +203,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = S[302535920000693--[[Select/mouse over an object to change the colours
 	Use Shift- or Ctrl- for random colours/reset colours.--]]],
 		OnAction = function()
-			ChoGGi.CodeFuncs.CreateObjectListAndAttaches()
+			ChoGGi.ComFuncs.CreateObjectListAndAttaches()
 		end,
 		ActionShortcut = "F6",
 		ActionBindable = true,

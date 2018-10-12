@@ -36,6 +36,7 @@ local RetName
 local ShowMe
 local DebugGetInfo
 local RetThreadInfo
+local DeleteObject
 local Trans
 local S
 local blacklist
@@ -49,6 +50,7 @@ function OnMsg.ClassesGenerate()
 	RetName = ChoGGi.ComFuncs.RetName
 	ShowMe = ChoGGi.ComFuncs.ShowMe
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
+	DeleteObject = ChoGGi.ComFuncs.DeleteObject
 	RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
 	Trans = ChoGGi.ComFuncs.Translate
 	S = ChoGGi.Strings
@@ -474,14 +476,14 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			name = S[302535920000449--[[Attach Spots Toggle--]]],
 			hint = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 			clicked = function()
-				ChoGGi.CodeFuncs.AttachSpots_Toggle(self.obj)
+				ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj)
 			end,
 		},
 		{
 			name = S[302535920000459--[[Anim Debug Toggle--]]],
 			hint = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
 			clicked = function()
-				ChoGGi.CodeFuncs.ShowAnimDebug_Toggle(self.obj)
+				ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj)
 			end,
 		},
 		{name = "	 ---- "},
@@ -1001,6 +1003,21 @@ ThreadHasFlags(): %s</color>]],
 end
 ---------------------------------------------------------------------------------------------------------------------
 --menu
+local function DeleteAll_menu(obj)
+	ChoGGi.ComFuncs.QuestionBox(
+		S[302535920000414--[[Are you sure you wish to destroy it?--]]],
+		function(answer)
+			if answer then
+				for _, v in pairs(obj) do
+					if IsValid(v) then
+						DeleteObject(v)
+					end
+				end
+			end
+		end,
+		S[697--[[Destroy--]]]
+	)
+end
 local function MarkAll_menu(obj)
 	for _, v in pairs(obj) do
 		if IsPoint(v) or IsValid(v) then
@@ -1082,7 +1099,7 @@ function Examine:menu(obj)
 				Show_menu(obj)
 			end)
 			c = c + 1
-			res[c] = S[302535920000058--[[[Show It]--]]]
+			res[c] = S[302535920000058--[[[Show]--]]]
 			c = c + 1
 			res[c] = HLEnd
 		end
@@ -1095,18 +1112,30 @@ function Examine:menu(obj)
 				Destroy_menu(obj,self)
 			end)
 			c = c + 1
-			res[c] = S[302535920000060--[[[Destroy It!]--]]]
+			res[c] = S[302535920000060--[[[Destroy]--]]]
 			c = c + 1
 			res[c] = HLEnd
 		end
 
 		if IsObjlist(obj) then
+			-- mark all
 			c = c + 1
 			res[c] = self:HyperLink(function()
 				MarkAll_menu(obj)
 			end)
 			c = c + 1
 			res[c] = S[302535920001074--[[[Mark All]--]]]
+			c = c + 1
+			res[c] = HLEnd
+			-- delete all
+			c = c + 1
+			res[c] = " "
+			c = c + 1
+			res[c] = self:HyperLink(function()
+				DeleteAll_menu(obj)
+			end)
+			c = c + 1
+			res[c] = S[302535920001075--[[[Delete All]--]]]
 			c = c + 1
 			res[c] = HLEnd
 		end

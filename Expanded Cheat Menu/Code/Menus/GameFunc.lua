@@ -26,7 +26,7 @@ function OnMsg.ClassesGenerate()
 		ShowMouseCursor("InGameCursor")
 		cameraRTS.Activate(1)
 		engineShowMouseCursor()
-		ChoGGi.CodeFuncs.SetCameraSettings()
+		ChoGGi.ComFuncs.SetCameraSettings()
 	end
 
 	function ChoGGi.MenuFuncs.WhiterRocks()
@@ -181,7 +181,7 @@ function OnMsg.ClassesGenerate()
 			local ChoGGi = ChoGGi
 			local tab = UICity.labels.SensorTower or ""
 			for i = 1, #tab do
-				ChoGGi.CodeFuncs.ToggleWorking(tab[i])
+				ChoGGi.ComFuncs.ToggleWorking(tab[i])
 			end
 		end
 		local function RCRoverDeploy_Toggle()
@@ -408,7 +408,7 @@ function OnMsg.ClassesGenerate()
 	do --FlattenGround
 		local function ToggleCollisions(ChoGGi)
 			MapForEach("map","LifeSupportGridElement",function(o)
-				ChoGGi.CodeFuncs.CollisionsObject_Toggle(o,true)
+				ChoGGi.ComFuncs.CollisionsObject_Toggle(o,true)
 			end)
 		end
 
@@ -1387,7 +1387,7 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 			)
 		end
 		-- resets zoom so...
-		ChoGGi.CodeFuncs.SetCameraSettings()
+		ChoGGi.ComFuncs.SetCameraSettings()
 	end
 
 	function ChoGGi.MenuFuncs.CameraFollow_Toggle()
@@ -1410,10 +1410,10 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 			-- show log again if it was hidden
 			if ChoGGi.UserSettings.ConsoleToggleHistory then
 				cls() --if it's going to spam the log, might as well clear it
-				ChoGGi.CodeFuncs.ToggleConsoleLog()
+				ChoGGi.ComFuncs.ToggleConsoleLog()
 			end
 			-- reset camera zoom settings
-			ChoGGi.CodeFuncs.SetCameraSettings()
+			ChoGGi.ComFuncs.SetCameraSettings()
 			return
 		-- crashes game if we attach to "false"
 		elseif not obj then
@@ -1451,7 +1451,7 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 
 		--toggle showing console history as console spams transparent something (and it'd be annoying to replace that function)
 		if ChoGGi.UserSettings.ConsoleToggleHistory then
-			ChoGGi.CodeFuncs.ToggleConsoleLog()
+			ChoGGi.ComFuncs.ToggleConsoleLog()
 		end
 
 		--if it's a rover then stop the ctrl control mode from being active (from pressing ctrl-shift-f)
@@ -1498,7 +1498,7 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 			end
 			if type(value) == "number" then
 				ChoGGi.ComFuncs.SetSavedSetting("BorderScrollingArea",value)
-				ChoGGi.CodeFuncs.SetCameraSettings()
+				ChoGGi.ComFuncs.SetCameraSettings()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
@@ -1540,7 +1540,7 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 			end
 			if type(value) == "number" then
 				ChoGGi.ComFuncs.SetSavedSetting("CameraZoomToggle",value)
-				ChoGGi.CodeFuncs.SetCameraSettings()
+				ChoGGi.ComFuncs.SetCameraSettings()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(

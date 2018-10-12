@@ -388,7 +388,7 @@ function OnMsg.ClassesGenerate()
 		else
 			new = obj:Clone()
 		end
-		new:SetPos(ChoGGi.CodeFuncs.CursorNearestHex())
+		new:SetPos(ChoGGi.ComFuncs.CursorNearestHex())
 		if type(new.CheatRefill) == "function" then
 			new:CheatRefill()
 		end
@@ -528,7 +528,7 @@ function OnMsg.ClassesGenerate()
 		local terrain_HeightTileSize = terrain.HeightTileSize()
 
 		local function ShowWaypoints(waypoints, colour, obj, skipheight)
-			colour = tonumber(colour) or ChoGGi.CodeFuncs.RandomColour()
+			colour = tonumber(colour) or ChoGGi.ComFuncs.RandomColour()
 			--also used for line height
 			if not skipheight then
 				flag_height = flag_height + 4
@@ -624,7 +624,7 @@ function OnMsg.ClassesGenerate()
 				if setcolour then
 					colour = setcolour
 				else
-					local randomcolour = ChoGGi.CodeFuncs.RandomColour()
+					local randomcolour = ChoGGi.ComFuncs.RandomColour()
 					if #randcolours < 1 then
 						colour = randomcolour
 					else
@@ -669,7 +669,7 @@ function OnMsg.ClassesGenerate()
 
 					--continous loooop of object for pathing it
 					ChoGGi.Temp.UnitPathingHandles[obj.handle] = CreateGameTimeThread(function()
-						local colour = ChoGGi.CodeFuncs.RandomColour()
+						local colour = ChoGGi.ComFuncs.RandomColour()
 						if type(obj.ChoGGi_Stored_Waypoints) ~= "table" then
 							obj.ChoGGi_Stored_Waypoints = {}
 						end
@@ -767,7 +767,7 @@ function OnMsg.ClassesGenerate()
 			local ChoGGi = ChoGGi
 			local sel = SelectedObj
 			if sel then
-				randcolours = ChoGGi.CodeFuncs.RandomColour(#randcolours + 1)
+				randcolours = ChoGGi.ComFuncs.RandomColour(#randcolours + 1)
 				ChoGGi.MenuFuncs.SetWaypoint(sel)
 				return
 			end
@@ -828,7 +828,7 @@ function OnMsg.ClassesGenerate()
 						colourcount = colourcount + #table1
 						colourcount = colourcount + #table2
 						colourcount = colourcount + #table3
-						randcolours = ChoGGi.CodeFuncs.RandomColour(colourcount + 1)
+						randcolours = ChoGGi.ComFuncs.RandomColour(colourcount + 1)
 						swp(table1)
 						swp(table2)
 						swp(table3)
@@ -843,7 +843,7 @@ function OnMsg.ClassesGenerate()
 							end,
 						}
 						colourcount = colourcount + #table1
-						randcolours = ChoGGi.CodeFuncs.RandomColour(colourcount + 1)
+						randcolours = ChoGGi.ComFuncs.RandomColour(colourcount + 1)
 						swp(table1)
 					end
 

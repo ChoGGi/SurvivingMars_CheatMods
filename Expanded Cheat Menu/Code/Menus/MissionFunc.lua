@@ -171,7 +171,7 @@ function OnMsg.ClassesGenerate()
 								ChoGGi.UserSettings[name] = true
 							end
 							if ChoGGi.UserSettings[name] then
-								ChoGGi.CodeFuncs.SetSponsorBonuses(value)
+								ChoGGi.ComFuncs.SetSponsorBonuses(value)
 							end
 						end
 					end
@@ -303,7 +303,7 @@ function OnMsg.ClassesGenerate()
 								ChoGGi.UserSettings[name] = true
 							end
 							if ChoGGi.UserSettings[name] then
-								ChoGGi.CodeFuncs.SetCommanderBonuses(value)
+								ChoGGi.ComFuncs.SetCommanderBonuses(value)
 							end
 						end
 					end

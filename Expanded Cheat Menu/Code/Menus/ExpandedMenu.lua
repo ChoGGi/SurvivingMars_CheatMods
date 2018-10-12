@@ -14,7 +14,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 		RolloverText = S[302535920000554--[[Select an object and click this to display a list of resources.--]]],
 		OnAction = function()
-			ChoGGi.CodeFuncs.FindNearestResource()
+			ChoGGi.ComFuncs.FindNearestResource()
 		end,
 		ActionSortKey = "96",
 	}

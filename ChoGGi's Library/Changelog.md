@@ -1,6 +1,9 @@
 ## Library Changelog
 
-## v2.1 (Unreleased)
+## v2.2 (Unreleased)
+
+## v2.1 (12 Oct 2018)
+- Code cleanup.
 
 ## v2.0 (10 Oct 2018)
 - Cleaned up locales.

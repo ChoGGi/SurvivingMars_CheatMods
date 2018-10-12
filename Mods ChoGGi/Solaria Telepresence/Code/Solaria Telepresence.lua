@@ -390,11 +390,11 @@ Telepresence control may take up to a shift to propagate to controlled building.
 	end -- ClassesPostprocess
 
 	function OnMsg.ClassesBuilt()
-		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace1")
-		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace2")
-		ChoGGi.CodeFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace3")
+		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace1")
+		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace2")
+		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace3")
 
-		ChoGGi.CodeFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace1","sectionWorkplace",{
+		ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace1","sectionWorkplace",{
 			__context_of_kind = "Solaria",
 			RolloverTitle = [[Telepresence]],
 			RolloverHint = [[Change to Pickup and select resource pile you've previously marked for pickup.
@@ -437,7 +437,7 @@ Right click in list to view (closes menu).]])
 		})
 
 		-- list controlled buildings
-		ChoGGi.CodeFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace2","sectionWorkplace",{
+		ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace2","sectionWorkplace",{
 			__context_of_kind = "Solaria",
 			Icon = "UI/Icons/Upgrades/build_2.tga",
 			Title = [[All Attached Buildings]],
@@ -462,7 +462,7 @@ Right click list item to view (closes menu).]],
 		})
 
 		-- go to controlled/controller building
-		ChoGGi.CodeFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace3","sectionWorkplace",{
+		ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace3","sectionWorkplace",{
 			__context_of_kind = "Workplace",
 			Icon = "UI/Icons/Anomaly_Event.tga",
 			RolloverTitle = [[Telepresence]],

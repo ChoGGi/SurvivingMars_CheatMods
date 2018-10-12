@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Show Amount Per Rare On Rockets v0.1",
-	"version", 1,
-	"saved", 1537185600,
+	"title", "Show Amount Per Rare On Rockets v0.2",
+	"version", 2,
+	"saved", 1539345600,
 	"image", "Preview.png",
 	"id", "ChoGGi_ShowAmountPerRareOnRockets",
 	"steam_id", "1515279344",

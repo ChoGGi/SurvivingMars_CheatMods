@@ -62,7 +62,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.ToggleWorkingAll()
 		MapForEach("map","BaseBuilding",function(o)
 			if type(o.ToggleWorking) == "function" and not o:IsKindOfClasses("OrbitalProbe","ResourceStockpile","WasteRockStockpile","BaseRover") then
-				ChoGGi.CodeFuncs.ToggleWorking(o)
+				ChoGGi.ComFuncs.ToggleWorking(o)
 			end
 		end)
 
@@ -398,11 +398,11 @@ function OnMsg.ClassesGenerate()
 		local objs = UICity.labels.Unit or ""
 		--CargoShuttle
 		for i = 1, #objs do
-			ChoGGi.CodeFuncs.CheckForBorkedTransportPath(objs[i])
+			ChoGGi.ComFuncs.CheckForBorkedTransportPath(objs[i])
 		end
 
 		if skip ~= true then
-			ChoGGi.CodeFuncs.ResetHumanCentipedes()
+			ChoGGi.ComFuncs.ResetHumanCentipedes()
 		end
 		MsgPopup(
 			302535920000597--[[Stutter With High FPS--]],
@@ -429,7 +429,7 @@ function OnMsg.ClassesGenerate()
 			ResetPriorityQueue("DroneHub")
 			-- toggle working state on all ConstructionSite (wakes up drones else they'll wait at hub)
 			MapForEach("map","ConstructionSite",function(o)
-				ChoGGi.CodeFuncs.ToggleWorking(o)
+				ChoGGi.ComFuncs.ToggleWorking(o)
 			end)
 			MsgPopup(
 				302535920000599--[[Drones Keep Trying Blocked Areas--]],
@@ -532,7 +532,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
 		local ChoGGi = ChoGGi
-		local AttachToNearestDome = ChoGGi.CodeFuncs.AttachToNearestDome
+		local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
 		local objs = UICity.labels.InsideBuildings or ""
 		for i = 1, #objs do
 			AttachToNearestDome(objs[i])
@@ -614,7 +614,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings = nil
 		else
 			ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings = true
-			ChoGGi.CodeFuncs.ResetHumanCentipedes()
+			ChoGGi.ComFuncs.ResetHumanCentipedes()
 		end
 
 		ChoGGi.SettingFuncs.WriteSettings()

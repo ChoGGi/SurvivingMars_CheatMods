@@ -1,3 +1,6 @@
+v0.6
+Library.
+
 v0.5
 You can re-bind keys with in-game options.
 v0.4

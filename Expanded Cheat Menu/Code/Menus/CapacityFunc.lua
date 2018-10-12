@@ -23,7 +23,7 @@ function OnMsg.ClassesGenerate()
 		end
 		local tab = UICity.labels.MechanizedDepots or ""
 		for i = 1, #tab do
-			ChoGGi.CodeFuncs.SetMechanizedDepotTempAmount(tab[i],amount)
+			ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(tab[i],amount)
 		end
 
 		ChoGGi.SettingFuncs.WriteSettings()
@@ -222,7 +222,7 @@ function OnMsg.ClassesGenerate()
 							tab[i].capacity = amount
 							tab[i][CapType].storage_capacity = amount
 							tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
-							ChoGGi.CodeFuncs.ToggleWorking(tab[i])
+							ChoGGi.ComFuncs.ToggleWorking(tab[i])
 						end
 					end
 
@@ -241,7 +241,7 @@ function OnMsg.ClassesGenerate()
 							tab[i][StringFormat("%s_capacity",CapType)] = amount
 							tab[i][CapType].storage_capacity = amount
 							tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
-							ChoGGi.CodeFuncs.ToggleWorking(tab[i])
+							ChoGGi.ComFuncs.ToggleWorking(tab[i])
 						end
 					end
 				end

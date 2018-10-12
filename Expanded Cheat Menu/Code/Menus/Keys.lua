@@ -14,7 +14,7 @@ function OnMsg.ClassesGenerate()
 			Actions[c] = {
 				ActionId = string.format("ChoGGi_AddMenuKey%s",num),
 				OnAction = function()
-					ChoGGi.CodeFuncs.ShowBuildMenu(num)
+					ChoGGi.ComFuncs.ShowBuildMenu(num)
 				end,
 				ActionShortcut = key,
 			}
@@ -59,7 +59,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920001346--[[Random Colour--]]]),
 		ActionId = "ECM.Keys.ObjectColourRandom",
 		OnAction = function()
-			ChoGGi.CodeFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
+			ChoGGi.ComFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
 		end,
 		ActionShortcut = "Shift-F6",
 		ActionBindable = true,
@@ -69,7 +69,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920000025--[[Default Colour--]]]),
 		ActionId = "ECM.Keys.ObjectColourDefault",
 		OnAction = function()
-			ChoGGi.CodeFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())
+			ChoGGi.ComFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())
 		end,
 		ActionShortcut = "Ctrl-F6",
 		ActionBindable = true,
@@ -123,7 +123,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			local last = UICity.LastConstructedBuilding
 			if type(last) == "table" then
-				ChoGGi.CodeFuncs.ConstructionModeSet(last.template_name ~= "" and last.template_name or last.entity)
+				ChoGGi.ComFuncs.ConstructionModeSet(last.template_name ~= "" and last.template_name or last.entity)
 			end
 		end,
 		ActionShortcut = "Ctrl-Space",
@@ -139,7 +139,7 @@ function OnMsg.ClassesGenerate()
 			local sel = ChoGGi.ComFuncs.SelObject()
 			if type(sel) == "table" then
 				ChoGGi.Temp.LastPlacedObject = sel
-				ChoGGi.CodeFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
+				ChoGGi.ComFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
 			end
 		end,
 		ActionShortcut = "Ctrl-Shift-Space",

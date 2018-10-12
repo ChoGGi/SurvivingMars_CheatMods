@@ -1,4 +1,4 @@
-function PersonalShuttles.CodeFuncs.Trans(...)
+function PersonalShuttles.ComFuncs.Trans(...)
   local data = select(1,...)
   if type(data) == "userdata" then
     return _InternalTranslate(...)
@@ -7,7 +7,7 @@ function PersonalShuttles.CodeFuncs.Trans(...)
 end
 
 --pretty much a direct copynpaste from explorer (just removed stuff that's rover only)
-function PersonalShuttles.CodeFuncs.AnalyzeAnomaly(self,anomaly)
+function PersonalShuttles.ComFuncs.AnalyzeAnomaly(self,anomaly)
   local PersonalShuttles = PersonalShuttles
   local IsValid = IsValid
   local Sleep = Sleep
@@ -26,7 +26,7 @@ function PersonalShuttles.CodeFuncs.AnalyzeAnomaly(self,anomaly)
   RebuildInfopanel(self)
   self:PushDestructor(function(self)
     if IsValid(anomaly) then
-      anomaly.scanning_progress = PersonalShuttles.CodeFuncs.GetScanAnomalyProgress(self)
+      anomaly.scanning_progress = PersonalShuttles.ComFuncs.GetScanAnomalyProgress(self)
       if anomaly.scanning_progress >= 100 then
         self:Gossip("ScanAnomaly", anomaly.class, anomaly.handle)
         anomaly:ScanCompleted(self)
@@ -46,7 +46,7 @@ function PersonalShuttles.CodeFuncs.AnalyzeAnomaly(self,anomaly)
   while time > 0 and IsValid(self) and IsValid(anomaly) do
     Sleep(1000)
     time = time - 1000
-    anomaly.scanning_progress = PersonalShuttles.CodeFuncs.GetScanAnomalyProgress(self)
+    anomaly.scanning_progress = PersonalShuttles.ComFuncs.GetScanAnomalyProgress(self)
     if anomaly == SelectedObj then
       Msg("UIPropertyChanged", anomaly)
     end
@@ -55,11 +55,11 @@ function PersonalShuttles.CodeFuncs.AnalyzeAnomaly(self,anomaly)
   UICity.PersonalShuttles.CargoShuttleScanningAnomaly[anomaly.handle] = nil
 end
 
-function PersonalShuttles.CodeFuncs.GetScanAnomalyProgress(self)
+function PersonalShuttles.ComFuncs.GetScanAnomalyProgress(self)
   return self.scanning_start and MulDivRound(GameTime() - self.scanning_start, 100, self.scan_time) or 0
 end
 
-function PersonalShuttles.CodeFuncs.DefenceTick(self,already_fired)
+function PersonalShuttles.ComFuncs.DefenceTick(self,already_fired)
   local CreateGameTimeThread = CreateGameTimeThread
   local Sleep = Sleep
   local PlayFX = PlayFX
@@ -137,7 +137,7 @@ function PersonalShuttles.CodeFuncs.DefenceTick(self,already_fired)
   end
 end
 
-function PersonalShuttles.CodeFuncs.RecallShuttlesHub(hub)
+function PersonalShuttles.ComFuncs.RecallShuttlesHub(hub)
   local UICity = UICity
   for _, s_i in pairs(hub.shuttle_infos) do
     local shuttle = s_i.shuttle_obj
@@ -156,7 +156,7 @@ function PersonalShuttles.CodeFuncs.RecallShuttlesHub(hub)
 end
 
 --which true=attack,false=friend
-function PersonalShuttles.CodeFuncs.SpawnShuttle(hub,which)
+function PersonalShuttles.ComFuncs.SpawnShuttle(hub,which)
   local PersonalShuttles = PersonalShuttles
   for _, s_i in pairs(hub.shuttle_infos) do
     if s_i:CanLaunch() and s_i.hub and s_i.hub.has_free_landing_slots then
@@ -221,7 +221,7 @@ function PersonalShuttles.CodeFuncs.SpawnShuttle(hub,which)
 end
 
 --only add unique template names
-function PersonalShuttles.CodeFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
+function PersonalShuttles.ComFuncs.AddXTemplate(Name,Template,Table,XT,InnerTable)
   if not (Name or Template or Table) then
     return
   end

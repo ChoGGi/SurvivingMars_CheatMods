@@ -3,11 +3,14 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v9.8 (Unreleased)
+## v9.9 (Unreleased)
+
+## v9.8 (12 Oct 2018)
 ### Changed:
 - Manually spawned entity objects have a usable menu.
+- Examine: Delete All added for objlists.
 
-## v9.7 (08 Oct 2018)
+## v9.7 (8 Oct 2018)
 ### Added:
 - Examine Objects: It'll show a group of objects in an examine dialog instead of a single object (Shift-F4).
 - Mark All to examine dialogs for objlists.

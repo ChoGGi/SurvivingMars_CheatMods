@@ -414,7 +414,7 @@ function OnMsg.ClassesGenerate()
 					if UserSettings.SpeedDrone then
 						obj:SetMoveSpeed(UserSettings.SpeedDrone)
 					else
-						obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedDrone())
+						obj:SetMoveSpeed(ChoGGi.ComFuncs.GetSpeedDrone())
 					end
 				elseif obj:IsKindOf("CargoShuttle") then
 					if UserSettings.SpeedShuttle then
@@ -432,7 +432,7 @@ function OnMsg.ClassesGenerate()
 					if UserSettings.SpeedRC then
 						obj:SetMoveSpeed(UserSettings.SpeedRC)
 					else
-						obj:SetMoveSpeed(ChoGGi.CodeFuncs.GetSpeedRC())
+						obj:SetMoveSpeed(ChoGGi.ComFuncs.GetSpeedRC())
 					end
 				end
 			end)

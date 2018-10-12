@@ -581,7 +581,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle()
 		local ChoGGi = ChoGGi
-		ChoGGi.ComFuncs.SetConstsG("LowSanityNegativeTraitChance",ChoGGi.ComFuncs.NumRetBool(Consts.LowSanityNegativeTraitChance,0,ChoGGi.CodeFuncs.GetLowSanityNegativeTraitChance()))
+		ChoGGi.ComFuncs.SetConstsG("LowSanityNegativeTraitChance",ChoGGi.ComFuncs.NumRetBool(Consts.LowSanityNegativeTraitChance,0,ChoGGi.ComFuncs.GetLowSanityNegativeTraitChance()))
 		ChoGGi.ComFuncs.SetSavedSetting("LowSanityNegativeTraitChance",Consts.LowSanityNegativeTraitChance)
 
 		ChoGGi.SettingFuncs.WriteSettings()
@@ -675,7 +675,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 	function ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle()
 		local ChoGGi = ChoGGi
-		ChoGGi.ComFuncs.SetConstsG("NonSpecialistPerformancePenalty",ChoGGi.ComFuncs.NumRetBool(Consts.NonSpecialistPerformancePenalty,0,ChoGGi.CodeFuncs.GetNonSpecialistPerformancePenalty()))
+		ChoGGi.ComFuncs.SetConstsG("NonSpecialistPerformancePenalty",ChoGGi.ComFuncs.NumRetBool(Consts.NonSpecialistPerformancePenalty,0,ChoGGi.ComFuncs.GetNonSpecialistPerformancePenalty()))
 		ChoGGi.ComFuncs.SetSavedSetting("NonSpecialistPerformancePenalty",Consts.NonSpecialistPerformancePenalty)
 
 		ChoGGi.SettingFuncs.WriteSettings()
@@ -820,7 +820,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local tab = UICity.labels.Colonist or ""
 		for i = 1, #tab do
 			if tab[i].specialist == "none" then
-				ChoGGi.CodeFuncs.ColonistUpdateSpecialization(tab[i],S[3490--[[Random--]]])
+				ChoGGi.ComFuncs.ColonistUpdateSpecialization(tab[i],S[3490--[[Random--]]])
 			end
 		end
 
@@ -897,17 +897,17 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			elseif iType == 2 then
 				if choice[1].check2 then
 					if sel then
-						ChoGGi.CodeFuncs.ColonistUpdateAge(sel,value)
+						ChoGGi.ComFuncs.ColonistUpdateAge(sel,value)
 					end
 				else
 					local tab = UICity.labels.Colonist or ""
 					for i = 1, #tab do
 						if dome then
 							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								ChoGGi.CodeFuncs.ColonistUpdateAge(tab[i],value)
+								ChoGGi.ComFuncs.ColonistUpdateAge(tab[i],value)
 							end
 						else
-							ChoGGi.CodeFuncs.ColonistUpdateAge(tab[i],value)
+							ChoGGi.ComFuncs.ColonistUpdateAge(tab[i],value)
 						end
 					end
 				end
@@ -1005,17 +1005,17 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			elseif iType == 2 then
 				if choice[1].check2 then
 					if sel then
-						ChoGGi.CodeFuncs.ColonistUpdateGender(sel,value)
+						ChoGGi.ComFuncs.ColonistUpdateGender(sel,value)
 					end
 				else
 					local tab = UICity.labels.Colonist or ""
 					for i = 1, #tab do
 						if dome then
 							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								ChoGGi.CodeFuncs.ColonistUpdateGender(tab[i],value)
+								ChoGGi.ComFuncs.ColonistUpdateGender(tab[i],value)
 							end
 						else
-							ChoGGi.CodeFuncs.ColonistUpdateGender(tab[i],value)
+							ChoGGi.ComFuncs.ColonistUpdateGender(tab[i],value)
 						end
 					end
 				end
@@ -1118,17 +1118,17 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			elseif iType == 2 then
 				if choice[1].check2 then
 					if sel then
-						ChoGGi.CodeFuncs.ColonistUpdateSpecialization(sel,value)
+						ChoGGi.ComFuncs.ColonistUpdateSpecialization(sel,value)
 					end
 				else
 					local tab = UICity.labels.Colonist or ""
 					for i = 1, #tab do
 						if dome then
 							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								ChoGGi.CodeFuncs.ColonistUpdateSpecialization(tab[i],value)
+								ChoGGi.ComFuncs.ColonistUpdateSpecialization(tab[i],value)
 							end
 						else
-							ChoGGi.CodeFuncs.ColonistUpdateSpecialization(tab[i],value)
+							ChoGGi.ComFuncs.ColonistUpdateSpecialization(tab[i],value)
 						end
 					end
 				end
@@ -1221,17 +1221,17 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			elseif iType == 2 then
 				if choice[1].check2 then
 					if sel then
-						ChoGGi.CodeFuncs.ColonistUpdateRace(sel,value)
+						ChoGGi.ComFuncs.ColonistUpdateRace(sel,value)
 					end
 				else
 					local tab = UICity.labels.Colonist or ""
 					for i = 1, #tab do
 						if dome then
 							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								ChoGGi.CodeFuncs.ColonistUpdateRace(tab[i],value)
+								ChoGGi.ComFuncs.ColonistUpdateRace(tab[i],value)
 							end
 						else
-							ChoGGi.CodeFuncs.ColonistUpdateRace(tab[i],value)
+							ChoGGi.ComFuncs.ColonistUpdateRace(tab[i],value)
 						end
 					end
 				end
@@ -1410,9 +1410,9 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				if choice[1].value == DefaultSetting then
 					local function RandomTraits(o)
 						-- remove all traits
-						ChoGGi.CodeFuncs.ColonistUpdateTraits(o,false,ChoGGi.Tables.OtherTraits)
-						ChoGGi.CodeFuncs.ColonistUpdateTraits(o,false,ChoGGi.Tables.PositiveTraits)
-						ChoGGi.CodeFuncs.ColonistUpdateTraits(o,false,ChoGGi.Tables.NegativeTraits)
+						ChoGGi.ComFuncs.ColonistUpdateTraits(o,false,ChoGGi.Tables.OtherTraits)
+						ChoGGi.ComFuncs.ColonistUpdateTraits(o,false,ChoGGi.Tables.PositiveTraits)
+						ChoGGi.ComFuncs.ColonistUpdateTraits(o,false,ChoGGi.Tables.NegativeTraits)
 						-- add random ones
 						local count = #ChoGGi.Tables.PositiveTraits
 						o:AddTrait(ChoGGi.Tables.PositiveTraits[Random(1,count)],true)
