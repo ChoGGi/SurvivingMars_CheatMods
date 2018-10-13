@@ -566,8 +566,11 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("DroneHub","SetWorkRadius")
 	SaveOrigFunc("InfopanelDlg","Open")
 	SaveOrigFunc("MartianUniversity","OnTrainingCompleted")
-	SaveOrigFunc("MG_Colonists","GetProgress")
-	SaveOrigFunc("MG_Martianborn","GetProgress")
+	-- got removed in Garagin
+	if rawget(_G, "MG_Colonists") then
+		SaveOrigFunc("MG_Colonists","GetProgress")
+		SaveOrigFunc("MG_Martianborn","GetProgress")
+	end
 	SaveOrigFunc("RCRover","SetWorkRadius")
 	SaveOrigFunc("RCTransport","TransportRouteLoad")
 	SaveOrigFunc("RCTransport","TransportRouteUnload")
@@ -823,20 +826,23 @@ function OnMsg.ClassesBuilt()
 	end -- do
 
 	do -- GetProgress
-		local GetMissionSponsor = GetMissionSponsor
-		--some mission goals check colonist amounts
-		function MG_Colonists:GetProgress()
-			if ChoGGi.Temp.InstantMissionGoal then
-				return GetMissionSponsor().goal_target + 1
-			else
-				return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
+		-- got removed in Garagin
+		if rawget(_G, "MG_Colonists") then
+			local GetMissionSponsor = GetMissionSponsor
+			--some mission goals check colonist amounts
+			function MG_Colonists:GetProgress()
+				if ChoGGi.Temp.InstantMissionGoal then
+					return GetMissionSponsor().goal_target + 1
+				else
+					return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
+				end
 			end
-		end
-		function MG_Martianborn:GetProgress()
-			if ChoGGi.Temp.InstantMissionGoal then
-				return GetMissionSponsor().goal_target + 1
-			else
-				return ChoGGi_OrigFuncs.MG_Martianborn_GetProgress(self)
+			function MG_Martianborn:GetProgress()
+				if ChoGGi.Temp.InstantMissionGoal then
+					return GetMissionSponsor().goal_target + 1
+				else
+					return ChoGGi_OrigFuncs.MG_Martianborn_GetProgress(self)
+				end
 			end
 		end
 	end -- do
