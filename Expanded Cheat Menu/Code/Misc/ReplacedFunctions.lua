@@ -566,8 +566,8 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("DroneHub","SetWorkRadius")
 	SaveOrigFunc("InfopanelDlg","Open")
 	SaveOrigFunc("MartianUniversity","OnTrainingCompleted")
-	-- got removed in Garagin
-	if rawget(_G, "MG_Colonists") then
+	-- removed in Garagin
+	if LuaRevision == 235636 then
 		SaveOrigFunc("MG_Colonists","GetProgress")
 		SaveOrigFunc("MG_Martianborn","GetProgress")
 	end
@@ -825,27 +825,25 @@ function OnMsg.ClassesBuilt()
 		end
 	end -- do
 
-	do -- GetProgress
-		-- got removed in Garagin
-		if rawget(_G, "MG_Colonists") then
-			local GetMissionSponsor = GetMissionSponsor
-			--some mission goals check colonist amounts
-			function MG_Colonists:GetProgress()
-				if ChoGGi.Temp.InstantMissionGoal then
-					return GetMissionSponsor().goal_target + 1
-				else
-					return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
-				end
-			end
-			function MG_Martianborn:GetProgress()
-				if ChoGGi.Temp.InstantMissionGoal then
-					return GetMissionSponsor().goal_target + 1
-				else
-					return ChoGGi_OrigFuncs.MG_Martianborn_GetProgress(self)
-				end
+	-- removed in Garagin
+	if LuaRevision == 235636 then
+		local GetMissionSponsor = GetMissionSponsor
+		--some mission goals check colonist amounts
+		function MG_Colonists:GetProgress()
+			if ChoGGi.Temp.InstantMissionGoal then
+				return GetMissionSponsor().goal_target + 1
+			else
+				return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
 			end
 		end
-	end -- do
+		function MG_Martianborn:GetProgress()
+			if ChoGGi.Temp.InstantMissionGoal then
+				return GetMissionSponsor().goal_target + 1
+			else
+				return ChoGGi_OrigFuncs.MG_Martianborn_GetProgress(self)
+			end
+		end
+	end
 
 	--keep prod at saved values for grid producers (air/water/elec)
 	function SupplyGridElement:SetProduction(new_production, new_throttled_production, update)

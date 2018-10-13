@@ -1296,7 +1296,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 			local func
 			local text
 			if check1 then
-				func = "DiscoverTech"
+				func = "DiscoverTech_Old"
 				text = S[2--[[Unlock Tech--]]]
 			end
 			-- override if both checked
@@ -1350,7 +1350,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		}
 	end
 
-	-- tech_func = DiscoverTech/GrantTech
+	-- tech_func = DiscoverTech_Old/GrantTech
 	local function ListFields(tech_func,group)
 		for tech_id,tech in pairs(TechDef) do
 			if tech.group == group then

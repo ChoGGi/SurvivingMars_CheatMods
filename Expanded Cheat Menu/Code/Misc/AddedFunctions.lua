@@ -59,18 +59,25 @@ function OnMsg.ClassesGenerate()
 	s = false -- used to store SelectedObj
 
 	-- add some simple functions to the cheatmenu for moving it/getting pos
-	XShortcutsHost.SetPos = function(self,pt)
+	function XShortcutsHost:SetPos(pt)
 		self:SetBox(pt:x(),pt:y(),self.box:sizex(),self.box:sizey())
 	end
-	XShortcutsHost.GetPos = function(self)
+	function XShortcutsHost:GetPos()
 		return ChoGGi_Window.GetPos(self,"idMenuBar")
 	end
-	XShortcutsHost.GetSize = function(self)
+	function XShortcutsHost:GetSize()
 		local GetSize = ChoGGi_Window.GetSize
 		return GetSize(self,"idMenuBar") + GetSize(self,"idBottomContainer")
 	end
 
-	function DiscoverTech(tech_id)
+	-- for anyone still wanting to use it pre-gagarin
+	if not rawget(_G, "DiscoverTech") then
+		function DiscoverTech(tech_id)
+			UICity:SetTechDiscovered(tech_id)
+		end
+	end
+
+	function DiscoverTech_Old(tech_id)
 		UICity:SetTechDiscovered(tech_id)
 	end
 
