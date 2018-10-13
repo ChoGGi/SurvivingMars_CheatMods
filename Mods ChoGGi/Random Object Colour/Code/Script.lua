@@ -24,7 +24,7 @@ function OnMsg.ModsReloaded()
 				Sleep(2500)
 			end
 			if WaitMarsQuestion(nil,nil,string.format([[Error: Random Object Colour requires ChoGGi's Library (at least v%s).
-Press Ok to download it or check Mod Manager to make sure it's enabled.]],library_version)) == "ok" then
+Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_version)) == "ok" then
 				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
 			end
 		end)

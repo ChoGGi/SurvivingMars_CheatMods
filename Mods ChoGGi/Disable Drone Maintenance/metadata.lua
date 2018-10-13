@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
   "steam_id", "1411107464",
   "code", {
-		"Code/Disable Drone Maintenance.lua",
+		"Code/Script.lua",
 	},
 	"lua_revision", LuaRevision,
   "description", [[Adds a menu button to buildings to disable drones from performing maintenance (on all of type or just selected).]],

@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
   "steam_id", "1422914403",
   "code", {
-		"Code/Lock Workplace.lua",
+		"Code/Script.lua",
 	},
 	"lua_revision", LuaRevision,
   "description", [[Adds a "Lock Workplace" button to the selection panel for colonists, and workplaces ("Lock Workers").

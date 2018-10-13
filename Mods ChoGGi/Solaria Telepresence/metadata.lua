@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
   "steam_id", "1411115080",
   "code", {
-		"Code/Solaria Telepresence.lua",
+		"Code/Script.lua",
 		"Code/WorkVRWorkshop.lua",
 	},
 	"lua_revision", LuaRevision,

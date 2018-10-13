@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"code", {
 		"Code/Shuttles.lua",
-		"Code/SpiceHarvester.lua",
+		"Code/Script.lua",
 	},
 	"steam_id", "1416040484",
 	"lua_revision", LuaRevision,

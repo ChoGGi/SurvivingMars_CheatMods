@@ -5,7 +5,7 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_ColonistsForceToNewDome",
   "author", "ChoGGi",
 	"code", {
-		"Code/Force To New Dome.lua",
+		"Code/Script.lua",
 	},
 	"image", "Preview.png",
   "steam_id", "1432964482",

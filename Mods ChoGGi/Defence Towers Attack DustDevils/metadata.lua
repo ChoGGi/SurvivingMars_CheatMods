@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_DefenceTowersAttackDustDevils",
   "author", "ChoGGi",
 	"code", {
-		"Code/Defence Towers Attack DustDevils.lua",
+		"Code/Script.lua",
 	},
 	"image", "Preview.png",
 	"lua_revision", LuaRevision,

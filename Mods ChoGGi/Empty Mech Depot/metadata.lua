@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
   "steam_id", "1411108310",
   "author", "ChoGGi",
 	"code", {
-		"Code/Empty Mech Depot.lua",
+		"Code/Script.lua",
 	},
 	"lua_revision", LuaRevision,
   "description", [[Adds a button to mech depots to empty them out into a small depot in front of them.]],
