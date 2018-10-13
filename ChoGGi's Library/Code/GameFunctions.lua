@@ -1333,59 +1333,52 @@ function ChoGGi.ComFuncs.ResetHumanCentipedes()
 	end
 end
 
-do -- CollisionsObject_Toggle
-	local function AttachmentsCollisionToggle(sel,which)
-		if sel:IsKindOf("ComponentAttach") then
-			local c = const.efCollision + const.efApplyToGrids
-			-- are we disabling col or enabling
-			if which then
-				sel:ForEachAttach("",function(a)
-					a:ClearEnumFlags(c)
-				end)
-			else
-				sel:ForEachAttach("",function(a)
-					a:SetEnumFlags(c)
-				end)
-			end
-		end
-	end
-
-	function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
-		obj = obj or ChoGGi.ComFuncs.SelObject()
-		if not obj then
-			if not skip_msg then
-				MsgPopup(
-					302535920000967--[[Nothing selected.--]],
-					302535920000968--[[Collisions--]]
-				)
-			end
-			return
-		end
-
-		local which
-		if obj.ChoGGi_CollisionsDisabled then
-			obj:SetEnumFlags(const.efCollision + const.efApplyToGrids)
-			AttachmentsCollisionToggle(obj,false)
-			obj.ChoGGi_CollisionsDisabled = nil
-			which = "enabled"
-		else
-			obj:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
-			AttachmentsCollisionToggle(obj,true)
-			obj.ChoGGi_CollisionsDisabled = true
-			which = "disabled"
-		end
-
+function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
+	obj = obj or ChoGGi.ComFuncs.SelObject()
+	if not obj then
 		if not skip_msg then
 			MsgPopup(
-				S[302535920000969--[[Collisions %s on %s--]]]:format(which,RetName(obj)),
-				302535920000968--[[Collisions--]],
-				nil,
-				nil,
-				obj
+				302535920000967--[[Nothing selected.--]],
+				302535920000968--[[Collisions--]]
 			)
 		end
+		return
 	end
-end -- do
+	-- not sure why i have the efApplyToGrids...
+	local coll = const.efCollision + const.efApplyToGrids
+
+	local which
+	-- re-enable col on obj and any attaches
+	if obj.ChoGGi_CollisionsDisabled then
+		obj:SetEnumFlags(coll)
+		if obj:IsKindOf("ComponentAttach") then
+			obj:ForEachAttach(function(a)
+				a:SetEnumFlags(coll)
+			end)
+		end
+		obj.ChoGGi_CollisionsDisabled = nil
+		which = S[460479110814--[[Enabled--]]]
+	else
+		obj:ClearEnumFlags(coll)
+		if obj:IsKindOf("ComponentAttach") then
+			obj:ForEachAttach(function(a)
+				a:ClearEnumFlags(coll)
+			end)
+		end
+		obj.ChoGGi_CollisionsDisabled = true
+		which = S[847439380056--[[Disabled--]]]
+	end
+
+	if not skip_msg then
+		MsgPopup(
+			S[302535920000969--[[Collisions %s on %s--]]]:format(which,RetName(obj)),
+			302535920000968--[[Collisions--]],
+			nil,
+			nil,
+			obj
+		)
+	end
+end
 
 function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj)
 	CreateRealTimeThread(function()
@@ -1508,8 +1501,8 @@ function ChoGGi.ComFuncs.AddXTemplate(name,template,list,toplevel)
 		}, {
 			PlaceObj("XTemplateFunc", {
 				"name", "OnActivate(self, context)",
-				"parent", function(parent, _)
-						return parent.parent
+				"parent", function(self)
+						return self.parent
 					end,
 				"func", list.func or function()end,
 			})
@@ -1531,11 +1524,11 @@ function ChoGGi.ComFuncs.AddXTemplate(name,template,list,toplevel)
 			"OnContextUpdate", list.OnContextUpdate or function()end,
 		}, {
 			PlaceObj("XTemplateFunc", {
-			"name", "OnActivate(self, context)",
-			"parent", function(parent, _)
-					return parent.parent
-				end,
-			"func", list.func or function()end,
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+						return self.parent
+					end,
+				"func", list.func or function()end,
 			})
 		})
 	end
@@ -1874,6 +1867,7 @@ function ChoGGi.ComFuncs.Editor_Toggle()
 end
 
 do -- AddScrollDialogXTemplates
+	-- get around to finishing this (scrollable selection panel)
 	local GetSafeAreaBox = GetSafeAreaBox
 	function ChoGGi.ComFuncs.AddScrollDialogXTemplates(obj)
 		local g_Classes = g_Classes
@@ -2086,7 +2080,7 @@ do -- ShowAnimDebug_Toggle
 	end
 
 	local function AnimDebug_Hide(obj)
-		obj:ForEachAttach("",function(a)
+		obj:ForEachAttach(function(a)
 			if a.ChoGGi_AnimDebug then
 				a:delete()
 			end
@@ -2187,29 +2181,22 @@ function ChoGGi.ComFuncs.ConstructionModeSet(itemname)
 	CloseXBuildMenu()
 end
 
-do -- TerrainEditor_Toggle
-	local function ToggleCollisions(ChoGGi)
-		MapForEach("map","LifeSupportGridElement",function(o)
-			ChoGGi.ComFuncs.CollisionsObject_Toggle(o,true)
-		end)
+function ChoGGi.ComFuncs.TerrainEditor_Toggle()
+	local ChoGGi = ChoGGi
+	ChoGGi.ComFuncs.Editor_Toggle()
+	local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
+	if Platform.editor then
+		editor.ClearSel()
+		SetEditorBrush(const.ebtTerrainType)
+	else
+		-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
+		ToggleCollisions()
+		-- update uneven terrain checker thingy
+		RecalcBuildableGrid()
+		-- and back on when we're done
+		ToggleCollisions()
 	end
-
-	function ChoGGi.ComFuncs.TerrainEditor_Toggle()
-		local ChoGGi = ChoGGi
-		ChoGGi.ComFuncs.Editor_Toggle()
-		if Platform.editor then
-			editor.ClearSel()
-			SetEditorBrush(const.ebtTerrainType)
-		else
-			-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
-			ToggleCollisions(ChoGGi)
-			-- update uneven terrain checker thingy
-			RecalcBuildableGrid()
-			-- and back on when we're done
-			ToggleCollisions(ChoGGi)
-		end
-	end
-end -- do
+end
 
 do -- DeleteLargeRocks/DeleteSmallRocks
 	-- got me what pass edits are, but they speed it up crazy fast (50k ticks to 500)
@@ -2276,7 +2263,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 		}
 		-- check and add attachments
 		if obj:IsKindOf("ComponentAttach") then
-			obj:ForEachAttach("",function(a)
+			obj:ForEachAttach(function(a)
 				if a:IsKindOf("ColorizableObject") then
 					ItemList[#ItemList+1] = {
 						text = a.class,
@@ -2319,3 +2306,14 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 	}
 end
 
+function ChoGGi.ComFuncs.ToggleCollisions(cls)
+	-- pretty much the only thing I use it for, but just in case
+	cls = cls or "LifeSupportGridElement"
+	local CollisionsObject_Toggle = ChoGGi.ComFuncs.CollisionsObject_Toggle
+	-- hopefully give it a bit more speed
+	SuspendPassEdits(cls)
+	MapForEach("map",cls,function(o)
+		CollisionsObject_Toggle(o,true)
+	end)
+	ResumePassEdits(cls)
+end

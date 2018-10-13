@@ -1234,7 +1234,7 @@ function Examine:SetObj(obj,skip_thread)
 			if IsValid(obj) and obj:IsKindOf("ComponentAttach") then
 				TableIClear(self.attaches_menu_popup)
 				local attach_amount = 0
-				obj:ForEachAttach("",function(a)
+				obj:ForEachAttach(function(a)
 					attach_amount = attach_amount + 1
 					local pos = a.GetVisualPos and a:GetVisualPos()
 

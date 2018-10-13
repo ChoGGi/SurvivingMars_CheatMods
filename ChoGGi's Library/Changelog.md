@@ -1,6 +1,10 @@
 ## Library Changelog
 
-## v2.2 (Unreleased)
+## v2.3 (Unreleased)
+
+## v2.2 (12 Oct 2018)
+- Right-clicking in list dialogs will update selection.
+- Sped up ToggleCollisions func.
 
 ## v2.1 (12 Oct 2018)
 - Code cleanup.

@@ -1304,25 +1304,29 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			{text = StringFormat(" %s",S[302535920001040--[[All Other Traits--]]]),value = "OtherTraits",hint = 302535920001050--[[All the other traits...--]]},
 			{text = StringFormat(" %s",S[652319561018--[[All Traits--]]]),value = "AllTraits",hint = 302535920000828--[[All the traits...--]]},
 		}
+		local c = #ItemList
 
 		if iType == 2 then
 			ItemList[1].hint = 302535920000829--[[Random: Each colonist gets three positive and three negative traits (if it picks same traits then you won't get all six).--]]
 		end
 
 		for i = 1, #ChoGGi.Tables.NegativeTraits do
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			ItemList[c] = {
 				text = ChoGGi.Tables.NegativeTraits[i],
 				value = ChoGGi.Tables.NegativeTraits[i],
 			}
 		end
 		for i = 1, #ChoGGi.Tables.PositiveTraits do
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			ItemList[c] = {
 				text = ChoGGi.Tables.PositiveTraits[i],
 				value = ChoGGi.Tables.PositiveTraits[i],
 			}
 		end
 		for i = 1, #ChoGGi.Tables.OtherTraits do
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			ItemList[c] = {
 				text = ChoGGi.Tables.OtherTraits[i],
 				value = ChoGGi.Tables.OtherTraits[i],
 			}
@@ -1806,11 +1810,13 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		end
 
 		local ItemList = {}
+		local c = 0
 		local str_hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],"%s")
 		for i = 1, #ChoGGi.Tables.NegativeTraits do
 			local trait = ChoGGi.Tables.NegativeTraits[i]
 			local status = type(BuildingSettings[id][toggle_type][trait]) == "boolean" and "true" or "false"
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			ItemList[c] = {
 				text = trait,
 				value = trait,
 				hint = StringFormat("%s\n%s",str_hint:format(status),Trans(TraitPresets[trait].description)),
@@ -1819,7 +1825,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		for i = 1, #ChoGGi.Tables.PositiveTraits do
 			local trait = ChoGGi.Tables.PositiveTraits[i]
 			local status = type(BuildingSettings[id][toggle_type][trait]) == "boolean" and "true" or "false"
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			ItemList[c] = {
 				text = trait,
 				value = trait,
 				hint = StringFormat("%s\n%s",str_hint:format(status),Trans(TraitPresets[trait].description)),
@@ -1828,7 +1835,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		for i = 1, #ChoGGi.Tables.OtherTraits do
 			local trait = ChoGGi.Tables.OtherTraits[i]
 			local status = type(BuildingSettings[id][toggle_type][trait]) == "boolean" and "true" or "false"
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			ItemList[c] = {
 				text = trait,
 				value = trait,
 				hint = StringFormat("%s\n%s",str_hint:format(status),Trans(TraitPresets[trait].description)),

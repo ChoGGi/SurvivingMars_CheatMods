@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Show Resource Overview v0.1",
-	"version", 1,
-	"saved", 1538136000,
+	"title", "Show Resource Overview v0.2",
+	"version", 2,
+	"saved", 1539432000,
 	"image", "Preview.png",
 	"id", "ChoGGi_ShowResourceOverview",
 	"steam_id", "1524654007",

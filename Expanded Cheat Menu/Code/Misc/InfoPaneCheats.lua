@@ -145,7 +145,7 @@ function OnMsg.ClassesGenerate()
 		function Colonist:CheatRandomSpec()
 			-- skip children, or they'll be a black cube
 			if not self.entity:find("Child") then
-				self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[Random(1,6)],"init")
+				self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[Random(1,#ChoGGi.Tables.ColonistSpecializations)],"init")
 			end
 		end
 		function Colonist:CheatPrefDbl()
@@ -155,10 +155,10 @@ function OnMsg.ClassesGenerate()
 			self.performance = self.base_performance
 		end
 		function Colonist:CheatRandomGender()
-			ChoGGi.ComFuncs.ColonistUpdateGender(self,ChoGGi.Tables.ColonistGenders[Random(1,5)])
+			ChoGGi.ComFuncs.ColonistUpdateGender(self,ChoGGi.Tables.ColonistGenders[Random(1,#ChoGGi.Tables.ColonistGenders)])
 		end
 		function Colonist:CheatRandomAge()
-			ChoGGi.ComFuncs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[Random(1,6)])
+			ChoGGi.ComFuncs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[Random(1,#ChoGGi.Tables.ColonistAges)])
 		end
 		--CheatAllShifts
 		local function CheatAllShiftsOn(self)
@@ -393,7 +393,7 @@ function OnMsg.ClassesGenerate()
 			for i = 1, #win.actions do
 				local action = win.actions[i]
 
-	--Colonists
+	-- Colonists
 				if action.ActionId == "FillAll" then
 					SetHint(action,S[302535920001202--[[Fill all stat bars.--]]])
 				elseif action.ActionId == "SpawnColonist" then
@@ -405,7 +405,7 @@ function OnMsg.ClassesGenerate()
 				elseif action.ActionId == "RandomSpecialization" then
 					SetHint(action,S[302535920001205--[[Randomly set %s's specialization.--]]]:format(name))
 
-	--Buildings
+	-- Buildings
 				elseif action.ActionId == "VisitorsDbl" then
 					SetHint(action,doublec)
 				elseif action.ActionId == "VisitorsDef" then
@@ -462,6 +462,8 @@ function OnMsg.ClassesGenerate()
 					SetHint(action,S[302535920001213--[[Reset the storage capacity of this %s to default.--]]]:format(name))
 				elseif action.ActionId == "EmptyDepot" then
 					SetHint(action,S[302535920001214--[[sticks small depot in front of mech depot and moves all resources to it (max of 20 000).--]]])
+				elseif action.ActionId == "Quick build" then
+					SetHint(action,S[302535920000060--[[Instantly complete building without needing resources.--]]])
 
 	--Farms
 				elseif action.ActionId == "AllShifts" then

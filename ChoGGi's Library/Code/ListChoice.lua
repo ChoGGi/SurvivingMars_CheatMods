@@ -487,7 +487,7 @@ function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged(colour)
 end
 
 function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
-	if button ~= "L" or not self.idList.focused_item then
+	if not self.idList.focused_item then
 		return
 	end
 
@@ -501,6 +501,10 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
 
 	if self.select_flash and self.sel.obj then
 		ChoGGi.ComFuncs.AddBlinkyToObj(self.sel.obj,8000)
+	end
+
+	if button ~= "L" then
+		return
 	end
 
 	if self.custom_type > 0 then

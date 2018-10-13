@@ -406,12 +406,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do --FlattenGround
-		local function ToggleCollisions(ChoGGi)
-			MapForEach("map","LifeSupportGridElement",function(o)
-				ChoGGi.ComFuncs.CollisionsObject_Toggle(o,true)
-			end)
-		end
-
+		local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
 		-- we also save the height offset of all the rocks if user wants to change that as well (optionally as it takes awhile)
 
 		-- some rocks are Deposition as well as WasteRockObstructor, and we don't want dupes
@@ -763,7 +758,9 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 				-- add back dome grass
 				local domes = UICity.labels.Domes or ""
 				for i = 1, #domes do
-					domes[i]:ChangeSkin(domes[i]:GetCurrentSkin())
+					if domes[i].GetCurrentSkin then
+						domes[i]:ChangeSkin(domes[i]:GetCurrentSkin())
+					end
 				end
 
 --~ 				-- re-paint concrete

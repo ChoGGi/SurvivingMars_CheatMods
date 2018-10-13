@@ -49,8 +49,8 @@ function OnMsg.ClassesBuilt()
 	}, {
 		PlaceObj("XTemplateFunc", {
 			"name", "OnActivate(self, context)",
-			"parent", function(parent, context)
-				return parent.parent
+			"parent", function(self)
+				return self.parent
 			end,
 			"func", function(self, context)
 				---
@@ -64,7 +64,7 @@ function OnMsg.ClassesBuilt()
 				ObjModified(context)
 				---
 			end
-		})
+		}),
 	})
 
 	RemoveXTemplateSections(XTemplates.sectionWorkplace,"SOMETHINGUNIQUE2")

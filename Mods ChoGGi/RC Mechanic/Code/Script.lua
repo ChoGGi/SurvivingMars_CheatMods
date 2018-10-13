@@ -164,15 +164,12 @@ function OnMsg.ClassesBuilt()
 	-- we want to insert below status
 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
 	if status then
---~ 		status = status + 1
 		status = status
+		table.remove(rover,status)
 	else
 		-- fuck it stick it at the end
 		status = #rover
 	end
-
-
-	table.remove(rover,status)
 
 	table.insert(
 		rover,

@@ -3,13 +3,18 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v9.9 (Unreleased)
+## v10.0 (Unreleased)
+
+## v9.9 (12 Oct 2018)
 ### Changed:
 - Examine link buttons are icons now.
 
 ### Fixed:
-- Removed battery cheats from rover cheat pane.
+- Removed battery cheats from rover Cheats pane (game freezes when used).
 - Close Dialogs wasn't working.
+- Cheats pane:
+- > Quick build didn't have a tooltip.
+- > RandomAge would sometimes freeze the game (thanks Encei).
 
 ## v9.8 (12 Oct 2018)
 ### Changed:
