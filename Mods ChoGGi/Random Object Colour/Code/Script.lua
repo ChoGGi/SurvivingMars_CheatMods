@@ -10,7 +10,8 @@ function OnMsg.ModsReloaded()
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	if idx then
-		if min_version > ModsLoaded[idx].version then
+		-- steam updates automatically
+		if not Platform.steam and min_version > ModsLoaded[idx].version then
 			not_found_or_wrong_version = true
 		end
 	else
