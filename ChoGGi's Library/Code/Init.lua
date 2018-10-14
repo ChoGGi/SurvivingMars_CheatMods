@@ -26,9 +26,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
--- thanks for replacing concat... what's wrong with using table.concat2?
-local TableConcat = oldTableConcat or table.concat
-
 -- I should really split this into funcs and settings... one of these days
 ChoGGi = {
 	-- see above
@@ -56,7 +53,6 @@ ChoGGi = {
 
 	-- CommonFunctions.lua
 	ComFuncs = {
-		TableConcat = TableConcat,
 		DebugGetInfo = format_value,
 	},
 	-- orig funcs that get replaced

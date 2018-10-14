@@ -958,7 +958,6 @@ do -- LoadGame/CityStart
 
 		local UserSettings = ChoGGi.UserSettings
 		local g_Classes = g_Classes
-		local config = config
 		local const = const
 		local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
 		local Presets = Presets

@@ -36,7 +36,7 @@ end
 local ToggleCollisions
 
 local StringFormat = string.format
-local TableConcat = table.concat
+local TableConcat = rawget(_G, "oldTableConcat") or table.concat
 local GetHeight = terrain.GetHeight
 local SetHeightCircle = terrain.SetHeightCircle
 local SetTypeCircle = terrain.SetTypeCircle

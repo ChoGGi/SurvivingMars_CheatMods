@@ -30,13 +30,8 @@ SOFTWARE.]]
 local select,tostring,type,pcall,table = select,tostring,type,pcall,table
 local Mods = Mods
 
-local TableConcat
--- just in case they remove oldTableConcat
-pcall(function()
-  TableConcat = oldTableConcat
-end)
 -- thanks for replacing concat... what's wrong with using table.concat2?
-TableConcat = TableConcat or table.concat
+local TableConcat = rawget(_G, "oldTableConcat") or table.concat
 
 -- SM has a tendency to inf loop when you return a non-string value that they want to table.concat
 -- so now if i accidentally return say a menu item with a function for a name, it'll just look ugly instead of freezing (cursor moves screen wasd doesn't)

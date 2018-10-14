@@ -7,7 +7,6 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 	local RetName = ChoGGi.ComFuncs.RetName
 	local FindThreadFunc = ChoGGi.ComFuncs.FindThreadFunc
-	local IsValidThread = IsValidThread
 
 	local pairs,type,tostring = pairs,type,tostring
 	local StringFormat = string.format

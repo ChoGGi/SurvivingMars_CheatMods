@@ -4,7 +4,7 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-	local StringFormat = string.format
+--~	local StringFormat = string.format
 	local c = #Actions
 
 	c = c + 1

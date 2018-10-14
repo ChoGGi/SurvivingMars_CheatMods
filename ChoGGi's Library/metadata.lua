@@ -17,12 +17,10 @@ return PlaceObj("ModDef", {
 		"Code/Init.lua",
 		-- gets the font (if not eng lang), and builds a table of translated strings
 		"Code/Strings.lua",
-		-- common functions
+		-- functions used in a couple places
 		"Code/CommonFunctions.lua",
 		-- defaults,consts
 		"Code/Settings.lua",
-		-- more like in-game functions?
-		"Code/GameFunctions.lua",
 		-- for OnMsg functions
 		"Code/OnMsgs.lua",
 

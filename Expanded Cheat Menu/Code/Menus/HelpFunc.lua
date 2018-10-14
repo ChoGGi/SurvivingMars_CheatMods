@@ -25,7 +25,7 @@ function OnMsg.ClassesGenerate()
 		if Platform.steam and IsSteamAvailable() then
 			-- loop through each mod and make a table of steam ids, so we don't have to loop for each mod below
 			local mod_table = {}
-			for key,value in pairs(Mods) do
+			for _,value in pairs(Mods) do
 				-- default id is 0 for non-steam mods (which we don't care about)
 				mod_table[value.steam_id] = value
 			end

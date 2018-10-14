@@ -13,5 +13,7 @@ return PlaceObj("ModDef", {
 	"description", [[Adds a single loading screen as an example to make your own pack.
 This will block the old ones, see Script.lua to add them back as well.
 
+You don't need to sub; this is also available at: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Loading%20Screen%20Example
+
 Requested by... A friend.]],
 })

@@ -11,7 +11,7 @@ function OnMsg.ClassesGenerate()
 	local RetHint = ChoGGi.ComFuncs.RetHint
 	local default_icon = "UI/Icons/Anomaly_Event.tga"
 
-	local print,type,tostring = print,type,tostring
+	local type,tostring = type,tostring
 	local StringFormat = string.format
 
 	local white = white

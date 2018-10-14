@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+-- shortcut keys without a menu item (maybe Menus isn't the best folder for this)
+
 function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings

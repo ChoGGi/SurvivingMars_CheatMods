@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
--- examine objects
+-- used to examine objects
 
 local pairs,type,tostring,rawget = pairs,type,tostring,rawget
 
@@ -181,17 +181,22 @@ function Examine:Init(parent, context)
 		Margins = box(4,0,0,0),
 		-- same colour as background of icons (so they blend)
 		Background = -9868951,
-		OnHyperLinkRollover = function(links,id)
+		-- (links,id)
+		OnHyperLinkRollover = function(links)
 			if links.hovered_hyperlink then
 				local info = idLinks_hypertext[links.hovered_hyperlink.image]
 				if info then
 					links.RolloverText = info.text
 					links.RolloverTitle = info.title
 				end
-				-- blinky icon
+				-- flash icon vis
 				CreateRealTimeThread(function()
-					links.hovered_hyperlink.image = nil
+					-- if user is quick on the mouse then this won't be here
+					if links.hovered_hyperlink then
+						links.hovered_hyperlink.image = nil
+					end
 					Sleep(100)
+					-- redraws "text"
 					links:ParseText()
 				end)
 			end
@@ -1038,7 +1043,7 @@ ThreadHasFlags(): %s</color>]],
 end
 ---------------------------------------------------------------------------------------------------------------------
 --menu
-local function DeleteAll_menu(obj)
+local function DeleteAll_menu(self,obj)
 	ChoGGi.ComFuncs.QuestionBox(
 		S[302535920000059--[[Destroy all objects in objlist!--]]],
 		function(answer)
@@ -1048,6 +1053,8 @@ local function DeleteAll_menu(obj)
 						DeleteObject(v)
 					end
 				end
+				-- force a refresh on the list, so people can see something as well
+				self:SetObj(obj,true)
 			end
 		end,
 		S[697--[[Destroy--]]]
@@ -1158,7 +1165,7 @@ function Examine:menu(obj)
 			-- delete all
 			c = c + 1
 			res[c] = self:HyperLink(function()
-				DeleteAll_menu(obj)
+				DeleteAll_menu(self,obj)
 			end)
 			c = c + 1
 			res[c] = " <image CommonAssets/UI/Menu/UnlockCollection.tga 2000> "
