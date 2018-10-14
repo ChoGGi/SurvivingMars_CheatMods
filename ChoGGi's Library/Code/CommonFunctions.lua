@@ -12,10 +12,6 @@ local StringFormat = string.format
 local TableRemove = table.remove
 local TableFind = table.find
 
--- thanks for replacing concat... what's wrong with using table.concat2?
-local TableConcat = rawget(_G, "oldTableConcat") or table.concat
-ChoGGi.ComFuncs.TableConcat = TableConcat
-
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 function ChoGGi.ComFuncs.SaveOrigFunc(class_or_func,func_name)
 	local ChoGGi = ChoGGi

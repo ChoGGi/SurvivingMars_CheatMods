@@ -53,6 +53,8 @@ ChoGGi = {
 
 	-- CommonFunctions.lua
 	ComFuncs = {
+	-- thanks for replacing concat... what's wrong with using table.concat2?
+		TableConcat = rawget(_G, "oldTableConcat") or table.concat,
 		DebugGetInfo = format_value,
 	},
 	-- orig funcs that get replaced
