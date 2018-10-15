@@ -1,0 +1,1 @@
+figure out what cleans up the grid when you place a con site.

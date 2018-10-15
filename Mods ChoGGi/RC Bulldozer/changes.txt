@@ -1,2 +1,3 @@
 v0.2
-Refunds 1/2 amount of cost for building (instead of 5 Metals/Poly) on demo.
+Changed texture to one that doesn't paint over landing site.
+Slowed down the flatten loop a tad (easier on cpu usage).

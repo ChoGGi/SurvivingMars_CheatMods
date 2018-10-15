@@ -591,7 +591,6 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("XWindow","OnMouseEnter")
 	SaveOrigFunc("XWindow","OnMouseLeft")
 	SaveOrigFunc("XWindow","SetId")
---~	 SaveOrigFunc("RCRover","LeadIn")
 	local UserSettings = ChoGGi.UserSettings
 
 	function SpaceElevator:DroneUnloadResource(...)
@@ -615,22 +614,6 @@ function OnMsg.ClassesBuilt()
 			end)
 		end
 	end
-
---~	 function RCRover:LeadIn(drone)
---~		 self.drone_charged = drone
-
---~		 drone:GotoUnitSpot(self, "Charge", true) --get in pos to charge
---~		 if ChoGGi.UserSettings.DroneChargesFromRoverWrongAngle then
---~		 print("fix")
---~			 drone:Face(self:GetSpotRotation(self:GetSpotBeginIndex("Charge")), 200)
---~		 else
---~		 print("not")
---~			 drone:SetAngle(self:GetSpotRotation(self:GetSpotBeginIndex("Charge")), 200)
---~		 end
-
---~		 drone:StartFX("EmergencyRecharge")
---~		 drone:PlayState( "rechargeDroneStart" )
---~	 end
 
 	-- hopefully they fix this in the next update... (though they didn't fix it in Curo so, or maybe they fixed one type of it)
 	if LuaRevision == 233467 then
@@ -863,6 +846,12 @@ function OnMsg.ClassesBuilt()
 		ChoGGi_OrigFuncs.SupplyGridElement_SetProduction(self, new_production, new_throttled_production, update)
 	end
 
+--~ -- see if this gets called less then produce
+--~ function SingleResourceProducer:DroneUnloadResource(drone, request, resource, amount)
+--~ 	 if resource == self.resource_produced and self.parent and self.parent ~= self then
+--~ 		 self.parent:DroneUnloadResource(drone, request, resource, amount)
+--~ 	 end
+--~ end
 	--and for regular producers (factories/extractors)
 	function SingleResourceProducer:Produce(amount_to_produce)
 		local amount = ChoGGi.UserSettings.BuildingSettings[self.parent.template_name]
@@ -873,12 +862,6 @@ function OnMsg.ClassesBuilt()
 			self.production_per_day = amount.production
 		end
 
---see if this gets called less then produce
---~ function SingleResourceProducer:DroneUnloadResource(drone, request, resource, amount)
---~	 if resource == self.resource_produced and self.parent and self.parent ~= self then
---~		 self.parent:DroneUnloadResource(drone, request, resource, amount)
---~	 end
---~ end
 		--get them lazy drones working (bugfix for drones ignoring amounts less then their carry amount)
 		if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
 			ChoGGi.ComFuncs.FuckingDrones(self)
@@ -1229,7 +1212,6 @@ function OnMsg.ClassesBuilt()
 				local cobj = rawget(self.cursor_obj, true)
 				local tobj = setmetatable({
 					[true] = cobj,
---~ 					["city"] = UICity
 					city = UICity
 				}, {
 					__index = self.template_obj
@@ -1371,6 +1353,10 @@ function OnMsg.ClassesBuilt()
 	if blacklist then
 		dlgConsole:Exec("ChoGGi.Temp.ConsoleExec=ConsoleExec")
 		ConsoleExecute = ChoGGi.Temp.ConsoleExec
+		-- history gets blanked out by something?, so this is our saved copy of it
+		LocalStorage.history_log = ChoGGi.UserSettings.history_log
+		-- this loads it in
+		dlgConsole:ReadHistory()
 	else
 		ConsoleExecute = ConsoleExec
 	end

@@ -84,20 +84,20 @@ DefineClass.RCBulldozer = {
 	on_demolish_resource_refund = { Metals = 20 * const.ResourceScale, MachineParts = 20 * const.ResourceScale , Electronics = 10 * const.ResourceScale },
 	-- stores the flatten thread
 	are_we_flattening = false,
-	-- colour of ground after dozing
-	terrain_type_idx = table.find(TerrainTextures, "name", "DomeDemolish"),
+	-- ground texture after dozing
+	terrain_type_idx = table.find(TerrainTextures, "name", "Dig"),
 	-- store ref to circle obj
 	visual_circle = false,
 	-- show a circle where we doze
 	visual_circle_toggle = true,
 	-- store radius here, so we're not updating it all the time
 	visual_circle_size = false,
-	-- likely useless...
-	orient_mode = "terrain",
+--~ 	-- likely useless...
+--~ 	orient_mode = "terrain",
 	-- change texture when dozing
 	texture_terrain = true,
-	-- need something to update driveable area, this is about as big as the largest we can make the hex
-	shape_obj = false,
+--~ 	-- need something to update driveable area
+--~ 	shape_obj = false,
 }
 
 DefineClass.RCBulldozerBuilding = {
@@ -118,8 +118,8 @@ function RCBulldozer:GameInit()
 	-- show the pin info
 	self.pin_rollover = T{0,"<StatusUpdate>"}
 
-	-- have to wait for HexOutlineShapes to be built
-	self.shape_obj = HexOutlineShapes.DomeMega
+--~ 	-- have to wait for HexOutlineShapes to be built, this one is about as big as the largest we can make the hex
+--~ 	self.shape_obj = HexOutlineShapes.DomeMega
 end
 
 function RCBulldozer:GetStatusUpdate()
@@ -210,7 +210,7 @@ function RCBulldozer:GotoFromUser(...)
 					if self.texture_terrain then
 						SetTypeCircle(pos, self.radius, self.terrain_type_idx)
 					end
-					Sleep(10)
+					Sleep(25)
 				end
 			end
 		end)
@@ -305,7 +305,7 @@ function OnMsg.ClassesBuilt()
 		}, {
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelText",
-				"Text", [[<StatusUpdate>]],
+				"Text", T{0,"<StatusUpdate>"},
 			}),
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelSlider",
