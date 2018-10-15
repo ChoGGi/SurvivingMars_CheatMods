@@ -9,6 +9,7 @@ function OnMsg.ClassesGenerate()
 	local RetName = ChoGGi.ComFuncs.RetName
 	local RetIcon = ChoGGi.ComFuncs.RetIcon
 	local RetHint = ChoGGi.ComFuncs.RetHint
+	local Random = ChoGGi.ComFuncs.Random
 	local default_icon = "UI/Icons/Anomaly_Event.tga"
 
 	local type,tostring = type,tostring
@@ -594,8 +595,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	--~ -- we'll get more concrete one of these days
-	--~ local terrain_type = "Regolith"		-- applied terrain type
-	--~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+	--~ local terrain_type_idx = table.find(TerrainTextures, "name", "Regolith")
 	--~ terrain.SetTypeCircle(GetTerrainCursor(), 5000, terrain_type_idx)
 
 	function ChoGGi.MenuFuncs.ChangeMap()
@@ -731,16 +731,26 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 	end
 
 	function ChoGGi.MenuFuncs.ChangeTerrainType()
-		local ItemList = {}
-		local objs = TerrainTextures
+		local GetTerrainImage = GetTerrainImage
+		local GridOpFree = GridOpFree
+		local SetTypeGrid = terrain.SetTypeGrid
+		local TerrainTextures = TerrainTextures
+		local MulDivRound = MulDivRound
+		local sqrt = sqrt
+
+		local NoisePreset = DataInstances.NoisePreset
+		local r = ChoGGi.Consts.ResourceScale
+		local guim = ChoGGi.Consts.guim
 
 		local image = "<image %s 100>"
 		local imageL = "<image %s>\n\n"
-		local GetTerrainImage = GetTerrainImage
-		for i = 1, #objs do
-			local filename = GetTerrainImage(objs[i].texture)
-			ItemList[#ItemList+1] = {
-				text = objs[i].name,
+		local ItemList = {}
+		local c = 0
+		for i = 1, #TerrainTextures do
+			local filename = GetTerrainImage(TerrainTextures[i].texture)
+			c = c + 1
+			ItemList[c] = {
+				text = TerrainTextures[i].name,
 				value = i,
 				icon = image:format(filename),
 				hint = imageL:format(filename),
@@ -756,54 +766,39 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 				terrain.SetTerrainType{type = value}
 
 				-- add back dome grass
-				local domes = UICity.labels.Domes or ""
+				local domes = UICity.labels.Dome or ""
 				for i = 1, #domes do
-					if domes[i].GetCurrentSkin then
-						domes[i]:ChangeSkin(domes[i]:GetCurrentSkin())
-					end
+					domes[i]:ChangeSkin(domes[i]:GetCurrentSkin())
 				end
 
---~ 				-- re-paint concrete
---~ 				local new_texture = 30 -- I perfer 24, but you're the boss
---~ 				local SetTypeCircle = terrain.SetTypeCircle
---~ 				local GetHeight = terrain.GetHeight
---~ 				local TerrainDeposit_Decode = TerrainDeposit_Decode
---~ 				local point = point
---~ 				local grid_spacing = const.GridSpacing/2
---~ 				local TerrainDepositsInfo = TerrainDepositsInfo
---~ 				local guim = guim
+				-- re-build concrete marker textures
+				local texture_idx1 = table.find(TerrainTextures, "name", "Regolith") + 1
+				local texture_idx2 = table.find(TerrainTextures, "name", "Regolith_02") + 1
+				local deposits = UICity.labels.TerrainDeposit or ""
+				for i = 1, #deposits do
+					local d = deposits[i]
 
---~ 				local gpts = HexGridWorldValues(TerrainDepositGrid, true)
---~ 				if #gpts == 0 then
---~ 					return
---~ 				end
---~ 				local mx, my, data = gpts[1]:xyz()
---~ 				local gtype, gvol = TerrainDeposit_Decode(data)
---~ 				local gmin, gmax = gvol, gvol
---~ 				for i = 2, #gpts do
---~ 					mx, my, data = gpts[i]:xyz()
---~ 					gtype, gvol = TerrainDeposit_Decode(data)
---~ 					if gvol < gmin then gmin = gvol
---~ 					elseif gvol > gmax then gmax = gvol
---~ 					end
---~ 				end
---~ 				if gmax <= gmin then
---~ 					return
---~ 				end
---~ 				for i = 1, #gpts do
---~ 					mx, my, data = gpts[i]:xyz()
---~ 					gtype, gvol = TerrainDeposit_Decode(data)
---~ 					local info = TerrainDepositsInfo[gtype]
---~ 					local dv = gvol - gmin
---~ 					if dv > 0 and info then
---~ 						SetTypeCircle(point(mx, my, GetHeight(mx, my) + guim), grid_spacing, new_texture)
---~ 					end
---~ 				end
-
-				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,904--[[Terrain--]]),
-					904--[[Terrain--]]
-				)
+					local pattern = NoisePreset.ConcreteForm:GetNoise(128, Random())
+					pattern:land_i(NoisePreset.ConcreteNoise:GetNoise(128, Random()))
+					-- any over 1000 get the more noticeable texture
+					if d.max_amount > 1000000 then
+						pattern:mul_i(texture_idx2, 1)
+					else
+						pattern:mul_i(texture_idx1, 1)
+					end
+					-- blend in with surrounding ground
+					pattern:sub_i(1, 1)
+					-- ?
+					pattern = GridOpFree(pattern, "repack", 8)
+					-- paint deposit
+					SetTypeGrid{
+						type_grid = pattern,
+						pos = d:GetPos(),
+						scale = sqrt(MulDivRound(10000, d.max_amount / guim, d.radius_max)),
+						centered = true,
+						invalid_type = -1,
+					}
+				end
 			end
 		end
 

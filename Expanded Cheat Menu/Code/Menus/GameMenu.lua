@@ -218,6 +218,15 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials,
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000061--[[Place Objects--]]],
+		ActionMenubar = "ECM.Game",
+		ActionId = ".Place Objects",
+		ActionIcon = "CommonAssets/UI/Menu/enrich_terrain.tga",
+		RolloverText = S[302535920000062--[[Opens editor mode with the place objects dialog.--]]],
+		OnAction = ChoGGi.ComFuncs.PlaceObjects_Toggle,
+	}
+
 	local str_Game_Camera = "ECM.Game.Camera"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920001058--[[Camera--]]]),

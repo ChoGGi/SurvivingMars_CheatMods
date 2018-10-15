@@ -4,6 +4,14 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v10.0 (Unreleased)
+### Added:
+- Game>Place Objects: Opens editor mode with the place objects dialog.
+
+### Changed:
+- Cleaned up and slightly sped up the debug grid (green/red one).
+
+### Fixed:
+- Change Terrain Type restores concrete textures (like pre-Sagan).
 
 ## v9.9 (12 Oct 2018)
 ### Changed:

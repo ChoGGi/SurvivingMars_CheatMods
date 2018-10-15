@@ -3474,13 +3474,13 @@ end
 
 function ChoGGi.ComFuncs.Editor_Toggle()
 	local Platform = Platform
-
 	-- copy n paste from... somewhere?
 	if IsEditorActive() then
-		EditorState(0)
-		table.restore(hr, "Editor")
-		editor.SavedDynRes = false
-		XShortcutsSetMode("Game")
+		EditorDeactivate()
+--~ 		EditorState(0)
+--~ 		table.restore(hr, "Editor")
+--~ 		editor.SavedDynRes = false
+--~ 		XShortcutsSetMode("Game")
 		Platform.editor = false
 		Platform.developer = false
 		-- restore cheats menu if enabled
@@ -3509,6 +3509,42 @@ function ChoGGi.ComFuncs.Editor_Toggle()
 
 	camera.Unlock(1)
 	ChoGGi.ComFuncs.SetCameraSettings()
+end
+
+function ChoGGi.ComFuncs.TerrainEditor_Toggle()
+	local ChoGGi = ChoGGi
+	ChoGGi.ComFuncs.Editor_Toggle()
+	local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
+	if Platform.editor then
+		editor.ClearSel()
+		-- need to set it to something
+		SetEditorBrush(const.ebtTerrainType)
+	else
+		-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
+		ToggleCollisions()
+		-- update uneven terrain checker thingy
+		RecalcBuildableGrid()
+		-- and back on when we're done
+		ToggleCollisions()
+		-- close dialog
+		if Dialogs.TerrainBrushesDlg then
+			Dialogs.TerrainBrushesDlg:delete()
+		end
+	end
+end
+
+function ChoGGi.ComFuncs.PlaceObjects_Toggle()
+	ChoGGi.ComFuncs.Editor_Toggle()
+	if Platform.editor then
+		editor.ClearSel()
+		-- place rocks/etc
+		SetEditorBrush(const.ebtPlaceSingleObject)
+	else
+		-- close dialog
+		if Dialogs.PlaceObjectDlg then
+			Dialogs.PlaceObjectDlg:delete()
+		end
+	end
 end
 
 do -- AddScrollDialogXTemplates
@@ -3824,23 +3860,6 @@ function ChoGGi.ComFuncs.ConstructionModeSet(itemname)
 		})
 	end
 	CloseXBuildMenu()
-end
-
-function ChoGGi.ComFuncs.TerrainEditor_Toggle()
-	local ChoGGi = ChoGGi
-	ChoGGi.ComFuncs.Editor_Toggle()
-	local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
-	if Platform.editor then
-		editor.ClearSel()
-		SetEditorBrush(const.ebtTerrainType)
-	else
-		-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
-		ToggleCollisions()
-		-- update uneven terrain checker thingy
-		RecalcBuildableGrid()
-		-- and back on when we're done
-		ToggleCollisions()
-	end
 end
 
 do -- DeleteLargeRocks/DeleteSmallRocks

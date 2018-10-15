@@ -433,76 +433,88 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- debug_build_grid
-		local build_grid_debug_objs = {}
-		local build_grid_debug_thread = false
+		local grid_objs = {}
+		local grid_thread = false
 
 		function ChoGGi.MenuFuncs.debug_build_grid()
-			-- local all the globals we use for some much needed speed
+			-- local all the globals we use more than once for some much needed speed
 			local IsSCell = terrain.IsSCell
 			local IsPassable = terrain.IsPassable
-			local HexToWorld = HexToWorld
+			local IsVerticalTerrain = terrain.IsVerticalTerrain
 			local GetTerrainCursor = GetTerrainCursor
-			local DeleteThread = DeleteThread
-			local CreateRealTimeThread = CreateRealTimeThread
-			local ChoGGi_HexSpot = ChoGGi_HexSpot
+			local HexGridGetObject = HexGridGetObject
+			local HexToWorld = HexToWorld
+			local WorldToHex = WorldToHex
+			local point = point
 
+			local red = -65536
+			local green = -16711936
+			local blue = -16776961
+			local ChoGGi_HexSpot = ChoGGi_HexSpot
 			local ObjectGrid = ObjectGrid
 			local UserSettings = ChoGGi.UserSettings
-			local build_grid_debug_range = 10
-			local opacity = 15
-			if type(UserSettings.DebugGridSize) == "number" then
-				build_grid_debug_range = UserSettings.DebugGridSize
-			end
-			if type(UserSettings.DebugGridOpacity) == "number" then
-				opacity = UserSettings.DebugGridOpacity
-			end
+			local grid_range = type(UserSettings.DebugGridSize) == "number" and UserSettings.DebugGridSize or 10
+			local grid_opacity = type(UserSettings.DebugGridOpacity) == "number" and UserSettings.DebugGridOpacity or 15
 
-			-- might as well make it smoother (and suck up some yummy cpu), i assume nobody is going to leave it on, but it seems fine even if they do
+			-- might as well make it smoother (and suck up some yummy cpu), i assume nobody is going to leave it on
 			local sleep = 10
 			-- 150 = 67951 objects (had a crash at 250, and it's not like you need one that big)
-			if build_grid_debug_range > 150 then
-				build_grid_debug_range = 150
+			if grid_range > 150 then
+				grid_range = 150
 			end
-			if build_grid_debug_range > 50 and build_grid_debug_range < 99 then
+			-- sleep a bit more for larger ones
+			if grid_range > 50 and grid_range < 99 then
 				sleep = 50
-			elseif build_grid_debug_range > 99 then
+			elseif grid_range > 99 then
 				sleep = 75
 			end
 
-			if build_grid_debug_thread then
-				DeleteThread(build_grid_debug_thread)
-				build_grid_debug_thread = false
-				if build_grid_debug_objs then
-					for i = #build_grid_debug_objs, 1, -1 do
-						build_grid_debug_objs[i]:delete()
-					end
-					build_grid_debug_objs = {}
+			-- already running
+			if grid_thread then
+				-- kill off thread
+				DeleteThread(grid_thread)
+				-- just in case
+				grid_thread = false
+				-- remove markers from map, and clear out table for next go round
+				for i = #grid_objs, 1, -1 do
+					grid_objs[i]:delete()
 				end
+				table.iclear(grid_objs)
 			else
-				build_grid_debug_thread = CreateRealTimeThread(function()
+				-- fire up a new thread and off we go
+				grid_thread = CreateRealTimeThread(function()
 					local last_q, last_r
-					while build_grid_debug_thread do
+					while grid_thread do
 						local q, r = WorldToHex(GetTerrainCursor())
 						if last_q ~= q or last_r ~= r then
 							local z = -q - r
 							local idx = 0
-							for q_i = q - build_grid_debug_range, q + build_grid_debug_range do
-								for r_i = r - build_grid_debug_range, r + build_grid_debug_range do
-									for z_i = z - build_grid_debug_range, z + build_grid_debug_range do
+							for q_i = q - grid_range, q + grid_range do
+								for r_i = r - grid_range, r + grid_range do
+									for z_i = z - grid_range, z + grid_range do
 										if q_i + r_i + z_i == 0 then
 											idx = idx + 1
-											local x,y = HexToWorld(q_i, r_i)
-											local c = build_grid_debug_objs[idx] or ChoGGi_HexSpot:new()
-											if (IsSCell(x,y) or IsPassable(x,y)) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
-												-- green
-												c:SetColorModifier(-16711936)
+											local pt = point(HexToWorld(q_i, r_i))
+											local c = grid_objs[idx] or ChoGGi_HexSpot:new()
+
+											if IsVerticalTerrain(pt) then
+												c:SetColorModifier(red)
 											else
-												-- red
-												c:SetColorModifier(-65536)
+												local is_cell = IsSCell(pt)
+												if (is_cell or IsPassable(pt)) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
+													if is_cell then
+														c:SetColorModifier(green)
+													else
+														c:SetColorModifier(blue)
+													end
+												else
+													c:SetColorModifier(red)
+												end
 											end
-											c:SetPos(point(x,y))
-											c:SetOpacity(opacity)
-											build_grid_debug_objs[idx] = c
+
+											c:SetPos(pt)
+											c:SetOpacity(grid_opacity)
+											grid_objs[idx] = c
 										end
 									end
 								end
@@ -514,7 +526,7 @@ function OnMsg.ClassesGenerate()
 						end
 						Sleep(sleep)
 					end
-				end) -- build_grid_debug_thread
+				end) -- grid_thread
 			end
 		end
 	end
