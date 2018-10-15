@@ -875,11 +875,10 @@ end
 		Consts["TravelTimeMarsEarth"] = Value
 	end
 --]]
--- function ChoGGi.ComFuncs.SetConstsG(Name,Value,IsResearched)
 function ChoGGi.ComFuncs.SetConstsG(name,value)
-	--we only want to change it if user set value
+	-- we only want to change it if user set value
 	if value then
-		--some mods change Consts or g_Consts, so we'll just do both to be sure
+		--some mods check Consts or g_Consts, so we'll just do both to be sure
 		Consts[name] = value
 		g_Consts[name] = value
 	end

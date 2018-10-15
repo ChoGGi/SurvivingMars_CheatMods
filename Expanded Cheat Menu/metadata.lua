@@ -74,7 +74,7 @@ Random internet users reporting bugs/requesting features.]],
 ##### Info
 F2: Toggle the cheats menu (Ctrl-F2 to toggle cheats panel).
 F3: Set object opacity.
-F4: Open object examiner.
+F4: Open object examiner (Shift-F4 for area).
 F5: Open object manipulator (or use Tools>Edit obj in Examine).
 F6: Change building colour (Shift- or Ctrl- to apply random/default).
 F7: Toggle using last building orientation.

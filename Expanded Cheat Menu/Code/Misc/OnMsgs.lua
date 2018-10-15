@@ -856,7 +856,9 @@ function OnMsg.ApplicationQuit()
 	end
 
 	-- blocklist something resets this log
-	ChoGGi.UserSettings.history_log = LocalStorage.history_log
+	if not blacklist then
+		ChoGGi.UserSettings.history_log = LocalStorage.history_log
+	end
 
 	-- save any unsaved settings on exit
 	ChoGGi.SettingFuncs.WriteSettings()

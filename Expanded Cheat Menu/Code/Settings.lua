@@ -65,7 +65,6 @@ function OnMsg.ClassesGenerate()
 			"Flags",
 			"FXRules",
 			"g_Classes",
-			"GetInGameInterface",
 			"Presets",
 			"TaskRequesters",
 			"ThreadsRegister",
@@ -124,105 +123,108 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.Defaults.SkipMissingDLC = true
 	end
 
-	--set game values to saved values
-	do -- SetConstsToSaved
-		local function SetConstsG(ChoGGi,name)
-			ChoGGi.ComFuncs.SetConstsG(name,ChoGGi.UserSettings[name])
+	-- set game values to saved values
+	function ChoGGi.SettingFuncs.SetConstsToSaved()
+		local UserSettings = ChoGGi.UserSettings
+--Consts.
+		local list = {
+			"AvoidWorkplaceSols",
+			"BirthThreshold",
+			"CargoCapacity",
+			"ColdWaveSanityDamage",
+			"CommandCenterMaxDrones",
+			"Concrete_cost_modifier",
+			"Concrete_dome_cost_modifier",
+			"CrimeEventDestroyedBuildingsCount",
+			"CrimeEventSabotageBuildingsCount ",
+			"CropFailThreshold",
+			"DeepScanAvailable",
+			"DefaultOutsideWorkplacesRadius",
+			"DroneBuildingRepairAmount",
+			"DroneBuildingRepairBatteryUse",
+			"DroneCarryBatteryUse",
+			"DroneConstructAmount",
+			"DroneConstructBatteryUse",
+			"DroneDeconstructBatteryUse",
+--~ 			"DroneMeteorMalfunctionChance",
+			"DroneMoveBatteryUse",
+			"DroneRechargeTime",
+			"DroneRepairSupplyLeak",
+			"DroneResourceCarryAmount",
+			"DroneTransformWasteRockObstructorToStockpileAmount",
+			"DroneTransformWasteRockObstructorToStockpileBatteryUse",
+			"DustStormSanityDamage",
+			"Electronics_cost_modifier",
+			"Electronics_dome_cost_modifier",
+			"FoodPerRocketPassenger",
+			"HighStatLevel",
+			"HighStatMoraleEffect",
+			"InstantCables",
+			"InstantPipes",
+			"IsDeepMetalsExploitable",
+			"IsDeepPreciousMetalsExploitable",
+			"IsDeepWaterExploitable",
+			"LowSanityNegativeTraitChance",
+			"LowSanitySuicideChance",
+			"LowStatLevel",
+			"MachineParts_cost_modifier",
+			"MachineParts_dome_cost_modifier",
+			"MaxColonistsPerRocket",
+			"Metals_cost_modifier",
+			"Metals_dome_cost_modifier",
+			"MeteorHealthDamage",
+			"MeteorSanityDamage",
+			"MinComfortBirth",
+			"MysteryDreamSanityDamage",
+			"NoHomeComfort",
+			"NonSpecialistPerformancePenalty",
+			"OutsourceMaxOrderCount",
+			"OutsourceResearch",
+			"OutsourceResearchCost",
+			"OxygenMaxOutsideTime",
+			"PipesPillarSpacing",
+			"Polymers_cost_modifier",
+			"Polymers_dome_cost_modifier",
+			"positive_playground_chance",
+			"PreciousMetals_cost_modifier",
+			"PreciousMetals_dome_cost_modifier",
+			"ProjectMorphiousPositiveTraitChance",
+			"RCRoverDroneRechargeCost",
+			"RCRoverMaxDrones",
+			"RCRoverTransferResourceWorkTime",
+			"RCTransportGatherResourceWorkTime",
+			"rebuild_cost_modifier",
+			"RenegadeCreation",
+			"SeeDeadSanity",
+			"TimeBeforeStarving",
+			"TravelTimeEarthMars",
+			"TravelTimeMarsEarth",
+			"VisitFailPenalty",
+		}
+		local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+		for i = 1, #list do
+			SetConstsG(list[i],UserSettings[list[i]])
 		end
-		local function SetConst(ChoGGi,const,name)
-			if ChoGGi.UserSettings[name] then
-				const[name] = ChoGGi.UserSettings[name]
+--const.
+		list = {
+			"BreakThroughTechsPerGame",
+			"ExplorationQueueMaxSize",
+			"fastGameSpeed",
+			"mediumGameSpeed",
+			"MoistureVaporatorPenaltyPercent",
+			"MoistureVaporatorRange",
+			"ResearchQueueSize",
+			"RCRoverMaxRadius",
+			"CommandCenterMaxRadius",
+			"OmegaTelescopeBreakthroughsCount",
+		}
+		local const = const
+		for i = 1, #list do
+			if UserSettings[list[i]] then
+				const[list[i]] = UserSettings[list[i]]
 			end
 		end
-		function ChoGGi.SettingFuncs.SetConstsToSaved()
-			local ChoGGi = ChoGGi
-			local const = const
-	--Consts.
-			SetConstsG(ChoGGi,"AvoidWorkplaceSols")
-			SetConstsG(ChoGGi,"BirthThreshold")
-			SetConstsG(ChoGGi,"CargoCapacity")
-			SetConstsG(ChoGGi,"ColdWaveSanityDamage")
-			SetConstsG(ChoGGi,"CommandCenterMaxDrones")
-			SetConstsG(ChoGGi,"Concrete_cost_modifier")
-			SetConstsG(ChoGGi,"Concrete_dome_cost_modifier")
-			SetConstsG(ChoGGi,"CrimeEventDestroyedBuildingsCount")
-			SetConstsG(ChoGGi,"CrimeEventSabotageBuildingsCount ")
-			SetConstsG(ChoGGi,"CropFailThreshold")
-			SetConstsG(ChoGGi,"DeepScanAvailable")
-			SetConstsG(ChoGGi,"DefaultOutsideWorkplacesRadius")
-			SetConstsG(ChoGGi,"DroneBuildingRepairAmount")
-			SetConstsG(ChoGGi,"DroneBuildingRepairBatteryUse")
-			SetConstsG(ChoGGi,"DroneCarryBatteryUse")
-			SetConstsG(ChoGGi,"DroneConstructAmount")
-			SetConstsG(ChoGGi,"DroneConstructBatteryUse")
-			SetConstsG(ChoGGi,"DroneDeconstructBatteryUse")
-	--~		 SetConstsG(ChoGGi,"DroneMeteorMalfunctionChance")
-			SetConstsG(ChoGGi,"DroneMoveBatteryUse")
-			SetConstsG(ChoGGi,"DroneRechargeTime")
-			SetConstsG(ChoGGi,"DroneRepairSupplyLeak")
-			SetConstsG(ChoGGi,"DroneResourceCarryAmount")
-			SetConstsG(ChoGGi,"DroneTransformWasteRockObstructorToStockpileAmount")
-			SetConstsG(ChoGGi,"DroneTransformWasteRockObstructorToStockpileBatteryUse")
-			SetConstsG(ChoGGi,"DustStormSanityDamage")
-			SetConstsG(ChoGGi,"Electronics_cost_modifier")
-			SetConstsG(ChoGGi,"Electronics_dome_cost_modifier")
-			SetConstsG(ChoGGi,"FoodPerRocketPassenger")
-			SetConstsG(ChoGGi,"HighStatLevel")
-			SetConstsG(ChoGGi,"HighStatMoraleEffect")
-			SetConstsG(ChoGGi,"InstantCables")
-			SetConstsG(ChoGGi,"InstantPipes")
-			SetConstsG(ChoGGi,"IsDeepMetalsExploitable")
-			SetConstsG(ChoGGi,"IsDeepPreciousMetalsExploitable")
-			SetConstsG(ChoGGi,"IsDeepWaterExploitable")
-			SetConstsG(ChoGGi,"LowSanityNegativeTraitChance")
-			SetConstsG(ChoGGi,"LowSanitySuicideChance")
-			SetConstsG(ChoGGi,"LowStatLevel")
-			SetConstsG(ChoGGi,"MachineParts_cost_modifier")
-			SetConstsG(ChoGGi,"MachineParts_dome_cost_modifier")
-			SetConstsG(ChoGGi,"MaxColonistsPerRocket")
-			SetConstsG(ChoGGi,"Metals_cost_modifier")
-			SetConstsG(ChoGGi,"Metals_dome_cost_modifier")
-			SetConstsG(ChoGGi,"MeteorHealthDamage")
-			SetConstsG(ChoGGi,"MeteorSanityDamage")
-			SetConstsG(ChoGGi,"MinComfortBirth")
-			SetConstsG(ChoGGi,"MysteryDreamSanityDamage")
-			SetConstsG(ChoGGi,"NoHomeComfort")
-			SetConstsG(ChoGGi,"NonSpecialistPerformancePenalty")
-			SetConstsG(ChoGGi,"OutsourceMaxOrderCount")
-			SetConstsG(ChoGGi,"OutsourceResearch")
-			SetConstsG(ChoGGi,"OutsourceResearchCost")
-			SetConstsG(ChoGGi,"OxygenMaxOutsideTime")
-			SetConstsG(ChoGGi,"PipesPillarSpacing")
-			SetConstsG(ChoGGi,"Polymers_cost_modifier")
-			SetConstsG(ChoGGi,"Polymers_dome_cost_modifier")
-			SetConstsG(ChoGGi,"positive_playground_chance")
-			SetConstsG(ChoGGi,"PreciousMetals_cost_modifier")
-			SetConstsG(ChoGGi,"PreciousMetals_dome_cost_modifier")
-			SetConstsG(ChoGGi,"ProjectMorphiousPositiveTraitChance")
-			SetConstsG(ChoGGi,"RCRoverDroneRechargeCost")
-			SetConstsG(ChoGGi,"RCRoverMaxDrones")
-			SetConstsG(ChoGGi,"RCRoverTransferResourceWorkTime")
-			SetConstsG(ChoGGi,"RCTransportGatherResourceWorkTime")
-			SetConstsG(ChoGGi,"rebuild_cost_modifier")
-			SetConstsG(ChoGGi,"RenegadeCreation")
-			SetConstsG(ChoGGi,"SeeDeadSanity")
-			SetConstsG(ChoGGi,"TimeBeforeStarving")
-			SetConstsG(ChoGGi,"TravelTimeEarthMars")
-			SetConstsG(ChoGGi,"TravelTimeMarsEarth")
-			SetConstsG(ChoGGi,"VisitFailPenalty")
-	--const.
-			SetConst(ChoGGi,const,"BreakThroughTechsPerGame")
-			SetConst(ChoGGi,const,"ExplorationQueueMaxSize")
-			SetConst(ChoGGi,const,"fastGameSpeed")
-			SetConst(ChoGGi,const,"mediumGameSpeed")
-			SetConst(ChoGGi,const,"MoistureVaporatorPenaltyPercent")
-			SetConst(ChoGGi,const,"MoistureVaporatorRange")
-			SetConst(ChoGGi,const,"ResearchQueueSize")
-			SetConst(ChoGGi,const,"RCRoverMaxRadius")
-			SetConst(ChoGGi,const,"CommandCenterMaxRadius")
-			SetConst(ChoGGi,const,"OmegaTelescopeBreakthroughsCount")
-		end
-	end -- do
+	end
 
 	do -- WriteSettingsOrig
 		local AsyncCopyFile = AsyncCopyFile
@@ -539,8 +541,8 @@ function OnMsg.ClassesGenerate()
 		HintsEnabled = false
 	end
 
-	-- if writelogs option
-	if ChoGGi.UserSettings.WriteLogs then
+	-- write logs to file (in-game instead of when quitting)
+	if not blacklist and ChoGGi.UserSettings.WriteLogs then
 		ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
 	end
 
