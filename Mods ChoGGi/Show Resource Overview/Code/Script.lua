@@ -1,13 +1,9 @@
 -- add action to GameShortcuts
 function OnMsg.ClassesPostprocess()
 
-	-- if out of some miracle it's here, remove it so it doesn't interfere
+	-- if action exists then replace it, otherwise add to the end
 	local GameShortcuts = XTemplates.GameShortcuts
 	local idx = table.find(GameShortcuts,"ActionId","actionColonyOverview")
---~ 	if idx then
---~ 		GameShortcuts[idx] = nil
---~ 	end
-
 	-- add the actual shortcut
 	GameShortcuts[idx or #GameShortcuts+1] = PlaceObj("XTemplateAction", {
 		"ActionId", "actionColonyOverview",
