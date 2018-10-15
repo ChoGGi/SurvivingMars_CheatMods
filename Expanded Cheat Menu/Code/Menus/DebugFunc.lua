@@ -501,12 +501,14 @@ function OnMsg.ClassesGenerate()
 												c:SetColorModifier(red)
 											else
 												local is_cell = IsSCell(pt)
-												if (is_cell or IsPassable(pt)) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
+												if is_cell and not HexGridGetObject(ObjectGrid, q_i, r_i) then
 													if is_cell then
 														c:SetColorModifier(green)
 													else
 														c:SetColorModifier(blue)
 													end
+												elseif IsPassable(pt) then
+													c:SetColorModifier(blue)
 												else
 													c:SetColorModifier(red)
 												end

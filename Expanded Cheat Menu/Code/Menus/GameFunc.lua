@@ -733,7 +733,7 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 	function ChoGGi.MenuFuncs.ChangeTerrainType()
 		local GetTerrainImage = GetTerrainImage
 		local GridOpFree = GridOpFree
-		local SetTypeGrid = terrain.SetTypeGrid
+		local AsyncSetTypeGrid = AsyncSetTypeGrid
 		local TerrainTextures = TerrainTextures
 		local MulDivRound = MulDivRound
 		local sqrt = sqrt
@@ -791,7 +791,7 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 					-- ?
 					pattern = GridOpFree(pattern, "repack", 8)
 					-- paint deposit
-					SetTypeGrid{
+					AsyncSetTypeGrid{
 						type_grid = pattern,
 						pos = d:GetPos(),
 						scale = sqrt(MulDivRound(10000, d.max_amount / guim, d.radius_max)),
