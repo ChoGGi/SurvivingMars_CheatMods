@@ -9,6 +9,7 @@
 
 ### Changed:
 - Cleaned up and slightly sped up the debug grid (green/red one).
+- Whiter Rocks now leaves rocks it can't whiten (instead of deleting).
 
 ### Fixed:
 - Change Terrain Type restores concrete textures (like pre-Sagan).

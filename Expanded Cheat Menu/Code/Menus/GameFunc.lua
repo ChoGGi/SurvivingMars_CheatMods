@@ -14,6 +14,8 @@ function OnMsg.ClassesGenerate()
 
 	local type,tostring = type,tostring
 	local StringFormat = string.format
+	local SuspendPassEdits = SuspendPassEdits
+	local ResumePassEdits = ResumePassEdits
 
 	local white = white
 	local guic = guic
@@ -40,9 +42,9 @@ function OnMsg.ClassesGenerate()
 		MapForEach("map",{"Deposition","WasteRockObstructorSmall","WasteRockObstructor","StoneSmall"},function(o)
 			if o.class:find("Dark") then
 				o:SetColorModifier(white)
-			else
-				-- these ones don't look good like this so buhbye
-				o:delete()
+--~ 			else
+--~ 				-- these ones don't look good like this so buhbye
+--~ 				o:delete()
 			end
 		end)
 		ResumePassEdits("Deposition")
@@ -53,6 +55,7 @@ function OnMsg.ClassesGenerate()
 
 	do -- ChangeSurfaceSignsToMaterials
 		local function ChangeEntity(cls,entity,random)
+			SuspendPassEdits(cls)
 			MapForEach("map",cls,function(o)
 				if random then
 					o:ChangeEntity(StringFormat("%s%s",entity,Random(1,random)))
@@ -60,6 +63,7 @@ function OnMsg.ClassesGenerate()
 					o:ChangeEntity(entity)
 				end
 			end)
+			ResumePassEdits(cls)
 		end
 
 		function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
