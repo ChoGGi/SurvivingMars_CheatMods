@@ -1,12 +1,15 @@
 -- add action to GameShortcuts
 function OnMsg.ClassesPostprocess()
+
+	-- if out of some miracle it's here, remove it so it doesn't interfere
 	local GameShortcuts = XTemplates.GameShortcuts
 	local idx = table.find(GameShortcuts,"ActionId","actionColonyOverview")
-	if idx then
-		GameShortcuts[idx] = nil
-	end
+--~ 	if idx then
+--~ 		GameShortcuts[idx] = nil
+--~ 	end
 
-	GameShortcuts[#GameShortcuts+1] = PlaceObj("XTemplateAction", {
+	-- add the actual shortcut
+	GameShortcuts[idx or #GameShortcuts+1] = PlaceObj("XTemplateAction", {
 		"ActionId", "actionColonyOverview",
 		"ActionName", T{7849, "Colony Overview"},
 		"ActionShortcut", "O",
@@ -30,7 +33,7 @@ local function AddHUDButton()
 	local Dialogs = Dialogs
 	local Sleep = Sleep
 	while not Dialogs.HUD do
-		Sleep(100)
+		Sleep(500)
 	end
 	-- if it's already been added somehow
 	if Dialogs.HUD.idColonyOverview then
@@ -51,6 +54,7 @@ local function AddHUDButton()
 		Id = "idColonyOverviewHighlight",
 		Image = button.shine,
 	}, win)
+	-- only vis when mouseover/enabled?
 	Dialogs.HUD.idColonyOverviewHighlight:SetVisible(false)
 
 	-- needed for the button to actally do anything
