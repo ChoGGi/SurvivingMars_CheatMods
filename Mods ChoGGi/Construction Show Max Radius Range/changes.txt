@@ -1,0 +1,4 @@
+v0.2
+Shows maxed grid marker for both (circle now only shows for heater).
+Got rid of log spam when ECM isn't installed.
+Slightly larger radius for heater to match visible area.

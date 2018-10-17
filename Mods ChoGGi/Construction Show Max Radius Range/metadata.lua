@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "Construction: Show Max Radius Range v0.1",
-  "version", 1,
-  "saved", 1537790400,
+  "title", "Construction: Show Max Radius Range v0.2",
+  "version", 2,
+  "saved", 1539777600,
   "id", "ChoGGi_ShowMaxRadiusRange",
   "author", "ChoGGi",
 	"code", {
@@ -10,9 +10,9 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
   "steam_id", "1522200776",
 	"lua_revision", LuaRevision,
-  "description", [[Shows maximum radius for ranged buildings (Triboelectric Scrubber and Subsurface Heater).
+  "description", [[Shows maxed grid for ranged buildings (Triboelectric Scrubber and Subsurface Heater) when in construction mode.
 
-This shows a circle instead of hex grid (since the heater heats a circle, and I'm too lazy to bother with the tribby).
+This also shows a circle for the heater (it heats a circle).
 
 Not exactly requested by MGoods.]],
 })

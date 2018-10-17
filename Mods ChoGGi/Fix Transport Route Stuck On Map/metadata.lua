@@ -12,5 +12,9 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[While making a transport route with the RC, certain things will pull focus away and leave the grid/blue RC stuck on your map.
 
-This prevents that from happening and when you load a game will look for and remove any left over (from before enabling this mod).]],
+This prevents that from happening and when you load a game will look for and remove any left over (from before enabling this mod).
+
+
+
+First timers: You need to enable mods with the in-game mod manager at the main menu.]],
 })

@@ -84,6 +84,7 @@ function OnMsg.ClassesGenerate()
 		-- (Mods.MODID,".png")
 		-- p.s. it adds tga files after converting, but you can just use the pngs
 --~ 		ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_CommieMarxLogos)
+--~ 		ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_XXXXXXXXXX)
 		function ChoGGi.testing.ConvertImagesPathToLogos(mod,ext)
 			ext = ext or ".png"
 			local mod_path = string.format("%s/Logos",mod.env.CurrentModPath or mod.content_path or mod.path)

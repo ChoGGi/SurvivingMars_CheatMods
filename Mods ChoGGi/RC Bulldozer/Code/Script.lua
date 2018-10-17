@@ -1,8 +1,13 @@
 -- See LICENSE for terms
 
 -- tell people know how to get the library
+local fire_once
 function OnMsg.ModsReloaded()
-	local min_version = 22
+	if fire_once then
+		return
+	end
+	fire_once = true
+	local min_version = 23
 
 	local ModsLoaded = ModsLoaded
 	-- we need a version check to remind Nexus/GoG users

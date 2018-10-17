@@ -2,43 +2,40 @@
 
 local white = -1
 local GridSpacing = const.GridSpacing
+local HexSize = const.HexSize
+local ShowHexRanges = ShowHexRanges
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()
 	if self.template:IsKindOfClasses("TriboelectricScrubber","SubsurfaceHeater") then
-		local circle = Circle:new()
+		-- if ecm is active we check for custom range, otherwise use default
+		local uirange
 
---~ 		local ChoGGi = rawget(_G,"ChoGGi")
-		-- ^ that doesn't work since each mod has it's own _G (well for rawget, works fine using the below line).
-		local ChoGGi = _G.ChoGGi
-		-- other than the error msg...
-
-		local radius
-		if ChoGGi then
-			local bs = ChoGGi.UserSettings.BuildingSettings[self.template.encyclopedia_id]
+		local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
+		if idx then
+			local bs = ChoGGi.UserSettings.BuildingSettings[self.template.template_name]
 			if bs and bs.uirange then
-				radius = GridSpacing * bs.uirange
+				uirange = bs.uirange
 			end
-		else
-			print([[
-Thanks for breaking rawget(_G devs...
-You can ignore the above error msg (it's just checking for ECM).
-]])
 		end
+		uirange = uirange or self.template:GetPropertyMetadata("UIRange").max
+		-- update with max size
+		self.GetSelectionRadiusScale = uirange
+		-- and call this again to update grid marker
+		ShowHexRanges(UICity, false, self, "GetSelectionRadiusScale")
 
-		radius = radius or GridSpacing * self.template:GetPropertyMetadata("UIRange").max
+		if self.template:IsKindOf("SubsurfaceHeater") then
+			local circle = Circle:new()
 
-		circle:SetRadius(radius)
-		circle:SetColor(white)
-		self:Attach(circle)
+			circle:SetRadius((uirange * GridSpacing) + HexSize)
+			circle:SetColor(white)
+			self:Attach(circle)
 
-		-- and also change the visible hex grid to max
-		self.template:SetUIRange(50)
-
+		end
 	end
 
 --~ 	ex(self)
 	return orig_CursorBuilding_GameInit(self)
 end
 
--- since it's attached to the CursorBuilding it'll be removed when it's removed, no need to fiddle with :Done()
+-- since the circle's attached to the CursorBuilding it'll be removed when it's removed, no need to fiddle with :Done()

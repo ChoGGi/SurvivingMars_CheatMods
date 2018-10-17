@@ -1,10 +1,16 @@
 -- See LICENSE for terms
 
 -- tell people know how to get the library
+local fire_once
 function OnMsg.ModsReloaded()
-	local min_version = 22
+	if fire_once then
+		return
+	end
+	fire_once = true
+	local min_version = 23
 
 	local ModsLoaded = ModsLoaded
+	-- we need a version check to remind Nexus/GoG users
 	local not_found_or_wrong_version
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
@@ -45,7 +51,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			local last = UICity.LastConstructedBuilding
 			if type(last) == "table" then
-				ChoGGi.ComFuncs.ConstructionModeSet(last.encyclopedia_id ~= "" and last.encyclopedia_id or last.entity)
+				ChoGGi.ComFuncs.ConstructionModeSet(last.template_name ~= "" and last.template_name or last.entity)
 			end
 		end,
 		ActionShortcut = "Ctrl-Space",
