@@ -122,11 +122,11 @@ Living Spaces: %s]],
 	function OnMsg.ClassesBuilt()
 		local XTemplates = XTemplates
 
+		-- old version cleanup
 		if XTemplates.sectionDome.ChoGGi_ForceNewDome then
-			table.remove(XTemplates.sectionDome[1],#XTemplates.sectionDome[1])
+			ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionDome[1],"ChoGGi_ForceNewDome")
 			XTemplates.sectionDome.ChoGGi_ForceNewDome = nil
 		end
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionDome[1],"ChoGGi_ForceNewDome")
 
 		ChoGGi.ComFuncs.AddXTemplate("ForceNewDome","sectionDome",{
 			-- skip any ruined domes

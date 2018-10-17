@@ -158,6 +158,7 @@ function OnMsg.ClassesBuilt()
 	-- check for and remove existing template
 	local idx = table.find(rover, "ChoGGi_Template_RCMechanic_Prod", true)
 	if idx then
+		rover[idx]:delete()
 		table.remove(rover,idx)
 	end
 
@@ -165,6 +166,7 @@ function OnMsg.ClassesBuilt()
 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
 	if status then
 		status = status
+		rover[status]:delete()
 		table.remove(rover,status)
 	else
 		-- fuck it stick it at the end

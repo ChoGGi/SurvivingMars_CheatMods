@@ -55,11 +55,11 @@ function OnMsg.ClassesGenerate()
 	function OnMsg.ClassesBuilt()
 		local XTemplates = XTemplates
 
+		-- old version cleanup
 		if XTemplates.ipBuilding.ChoGGi_DisableMaintenance then
-			table.remove(XTemplates.ipBuilding[1],#XTemplates.ipBuilding[1])
+			ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipBuilding[1],"ChoGGi_DisableMaintenance")
 			XTemplates.ipBuilding.ChoGGi_DisableMaintenance = nil
 		end
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipBuilding[1],"ChoGGi_DisableMaintenance")
 
 		ChoGGi.ComFuncs.AddXTemplate("DisableMaintenance","ipBuilding",{
 			__context_of_kind = "Building",

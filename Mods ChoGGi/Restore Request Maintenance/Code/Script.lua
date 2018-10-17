@@ -67,12 +67,13 @@ end
 
 function OnMsg.ClassesBuilt()
 
-	if XTemplates.ipBuilding.ChoGGi_RestoreMain then
-		table.remove(XTemplates.ipBuilding[1][1],#XTemplates.ipBuilding[1][1])
-		XTemplates.ipBuilding.ChoGGi_RestoreMain = nil
-	end
 	local PlayFX = PlayFX
 	local IsKindOf = IsKindOf
+
+	-- old version cleanup
+	if XTemplates.ipBuilding.ChoGGi_RestoreMain then
+		XTemplates.ipBuilding.ChoGGi_RestoreMain = nil
+	end
 
 	-- restore the button
 	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipBuilding[1][1],"ChoGGi_RestoreMaintenance")

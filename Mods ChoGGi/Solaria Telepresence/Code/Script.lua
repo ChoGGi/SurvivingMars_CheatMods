@@ -397,10 +397,6 @@ Telepresence control may take up to a shift to propagate to controlled building.
 	end -- ClassesPostprocess
 
 	function OnMsg.ClassesBuilt()
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace1")
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace2")
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace3")
-
 		ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace1","sectionWorkplace",{
 			__context_of_kind = "Solaria",
 			RolloverTitle = [[Telepresence]],

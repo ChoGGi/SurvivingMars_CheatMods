@@ -5,9 +5,9 @@ local g_Classes = g_Classes
 function OnMsg.ClassesBuilt()
 
   -- saved per each game
-  XTemplates.ipCable = nil
+  XTemplates.ipCable:delete()
 
-  PlaceObj('XTemplate', {
+  XTemplates.ipCable = PlaceObj('XTemplate', {
     group = "Infopanel Sections",
     id = "ipCable",
     PlaceObj('XTemplateTemplate', {

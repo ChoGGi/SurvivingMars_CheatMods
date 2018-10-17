@@ -1,2 +1,5 @@
+v0.3
+Cleaning up code (ChoGGi's Library).
+
 v0.2
 Da Vinci

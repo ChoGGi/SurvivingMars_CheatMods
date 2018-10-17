@@ -93,6 +93,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		local list = XTemplates.ipTerrainDeposit[1]
 		local idx = table.find(list,"__template","sectionCheats")
 		if idx then
+			list[idx]:delete()
 			table.remove(list,idx)
 		end
 		list[#list+1] = PlaceObj("XTemplateTemplate", {

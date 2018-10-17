@@ -403,8 +403,9 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
-	-- OptionsApply is the earliest we can call Consts:GetProperties()
-	function OnMsg.OptionsApply()
+	-- ClassesBuilt is the earliest we can call Consts funcs
+--~ 	function OnMsg.OptionsApply()
+	function OnMsg.ClassesBuilt()
 		local ChoGGi = ChoGGi
 		local Consts = Consts
 		local g_Classes = g_Classes

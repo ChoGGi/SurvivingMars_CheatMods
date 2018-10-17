@@ -3105,17 +3105,18 @@ GetComputerName(): %s
 	)
 end
 
--- check for and remove old object (these are created on new game / new dlc)
+-- check for and remove old object (XTemplates are created on new game/new dlc ?)
 function ChoGGi.ComFuncs.RemoveXTemplateSections(list,name)
 	local idx = TableFind(list, name, true)
 	if idx then
+		list[idx]:delete()
 		table.remove(list,idx)
 	end
 end
 
 function ChoGGi.ComFuncs.AddXTemplate(name,template,list,toplevel)
 	if not name or not template or not list then
-		print("Borked template: ",name, template, list)
+		print("AddXTemplate borked template: ", name, template, list)
 		return
 	end
 	local stored_name = StringFormat("ChoGGi_Template_%s",name)

@@ -390,7 +390,7 @@ function ChoGGi_ListChoiceDlg:BuildList()
 
 		-- add rollover text
 		local title = item.text
-		if item.value and item.value ~= item.text then
+		if type(item.value) ~= nil and item.value ~= item.text then
 			local value_str
 			if type(item.value) == "userdata" then
 				value_str = Trans(item.value)

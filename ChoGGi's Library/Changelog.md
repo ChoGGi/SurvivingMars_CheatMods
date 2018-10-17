@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v2.3 (Unreleased)
+- List choice didn't show value in hint if it was false.
 
 ## v2.2 (12 Oct 2018)
 - Right-clicking in list dialogs will update selection.

@@ -517,6 +517,7 @@ function OnMsg.ClassesBuilt()
 	-- check for and remove existing template
 	local idx = table.find(rover, "ChoGGi_Template_PortableMiner_Prod", true)
 	if idx then
+		rover[idx]:delete()
 		table.remove(rover,idx)
 	end
 
