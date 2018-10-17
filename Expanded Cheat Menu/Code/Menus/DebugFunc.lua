@@ -435,10 +435,27 @@ function OnMsg.ClassesGenerate()
 	do -- debug_build_grid
 		local grid_objs = {}
 		local grid_thread = false
-		local HexSize = const.HexSize * 2
-		local MapGet = MapGet
+		local function ClearGrid()
+			-- kill off thread
+			DeleteThread(grid_thread)
+			-- just in case
+			grid_thread = false
+			-- remove markers from map, and clear out table for next go round
+			for i = #grid_objs, 1, -1 do
+				grid_objs[i]:delete()
+			end
+			table.iclear(grid_objs)
+		end
+		-- if grid is left on when map changes it gets real laggy
+		function OnMsg.ChangeMap()
+			ClearGrid()
+		end
+
 		-- geysers mostly
+		local HexSize = const.HexSize
+		local MapGet = MapGet
 		local function DontBuildHere(pt)
+			local g_DontBuildHere = g_DontBuildHere
 			return g_DontBuildHere and g_DontBuildHere:Check(pt)
 		end
 		local function IsRockOrDeposit(pt)
@@ -454,7 +471,6 @@ function OnMsg.ClassesGenerate()
 			-- local all the globals we use more than once for some much needed speed
 			local IsSCell = terrain.IsSCell
 			local IsPassable = terrain.IsPassable
-			local IsVerticalTerrain = terrain.IsVerticalTerrain
 			local IsTerrainFlatForPlacement = ConstructionController.IsTerrainFlatForPlacement
 			local GetTerrainCursor = GetTerrainCursor
 			local HexGridGetObject = HexGridGetObject
@@ -487,20 +503,13 @@ function OnMsg.ClassesGenerate()
 
 			-- already running
 			if grid_thread then
-				-- kill off thread
-				DeleteThread(grid_thread)
-				-- just in case
-				grid_thread = false
-				-- remove markers from map, and clear out table for next go round
-				for i = #grid_objs, 1, -1 do
-					grid_objs[i]:delete()
-				end
-				table.iclear(grid_objs)
+				ClearGrid()
 			else
 				-- fire up a new thread and off we go
 				grid_thread = CreateRealTimeThread(function()
 					local last_q, last_r
 					while grid_thread do
+						local ObjectGrid = ObjectGrid
 						local q, r = WorldToHex(GetTerrainCursor())
 						if last_q ~= q or last_r ~= r then
 							local z = -q - r
@@ -516,20 +525,16 @@ function OnMsg.ClassesGenerate()
 											-- green = pass/build, yellow = no pass/build, blue = pass/no build, red = blocked
 											if DontBuildHere(pt) then
 												c:SetColorModifier(blue)
-											elseif IsVerticalTerrain(pt) then
-												c:SetColorModifier(red)
-											else
-												if IsPassable(pt) then
-													if IsTerrainFlatForPlacement(nil, pt20t, pt, 0) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
-														c:SetColorModifier(green)
-													else
-														c:SetColorModifier(blue)
-													end
-												elseif IsRockOrDeposit(pt) then
-													c:SetColorModifier(yellow)
+											elseif IsPassable(pt) then
+												if IsTerrainFlatForPlacement(nil, pt20t, pt, 0) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
+													c:SetColorModifier(green)
 												else
-													c:SetColorModifier(red)
+													c:SetColorModifier(blue)
 												end
+											elseif IsRockOrDeposit(pt) then
+												c:SetColorModifier(yellow)
+											else
+												c:SetColorModifier(red)
 											end
 
 											c:SetPos(pt)

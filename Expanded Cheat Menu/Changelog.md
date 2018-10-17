@@ -14,6 +14,7 @@
 ### Fixed:
 - Change Terrain Type restores concrete textures (like pre-Sagan).
 - Console history log is no longer wiped out when blocklist is enabled (somewhat).
+- Lag if you leave Toggle Grid Follow Mouse on and load a map.
 
 ## v9.9 (12 Oct 2018)
 ### Changed:
