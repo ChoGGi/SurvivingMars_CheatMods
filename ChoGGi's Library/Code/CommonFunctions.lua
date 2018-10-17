@@ -1907,82 +1907,67 @@ function ChoGGi.ComFuncs.ShowBuildMenu(which)
 end
 
 function ChoGGi.ComFuncs.ColonistUpdateAge(c,age)
+	local ages = ChoGGi.Tables.ColonistAges
 	if age == S[3490--[[Random--]]] then
-		age = ChoGGi.Tables.ColonistAges[Random(1,6)]
+		age = ages[Random(1,6)]
 	end
-	--remove all age traits
-	c:RemoveTrait("Child")
-	c:RemoveTrait("Youth")
-	c:RemoveTrait("Adult")
-	c:RemoveTrait("Middle Aged")
-	c:RemoveTrait("Senior")
-	c:RemoveTrait("Retiree")
-	--add new age trait
+	-- remove all age traits
+	for i = 1, #ages do
+		c:RemoveTrait(ages[i])
+	end
+	-- add new age trait
 	c:AddTrait(age)
 
-	--needed for comparison
+	-- needed for comparison
 	local orig_age = c.age_trait
-	--needed for updating entity
+	-- needed for updating entity
 	c.age_trait = age
 
 	if age == "Retiree" then
-		c.age = 65 --why isn't there a base_MinAge_Retiree...
+		c.age = 65 -- why isn't there a base_MinAge_Retiree...
 	else
 		c.age = c[StringFormat("base_MinAge_%s",age)]
 	end
 
 	if age == "Child" then
-		--there aren't any child specialist entities
+		-- there aren't any child specialist entities
 		c.specialist = "none"
-		--only children live in nurseries
+		-- children live in nurseries
 		if orig_age ~= "Child" then
 			c:SetResidence(false)
 		end
 	end
-	--only children live in nurseries
+	-- children live in nurseries
 	if orig_age == "Child" and age ~= "Child" then
 		c:SetResidence(false)
 	end
-	--now we can set the new entity
+	-- now we can set the new entity
 	c:ChooseEntity()
-	--and (hopefully) prod them into finding a new residence
+	-- and (hopefully) prod them into finding a new residence
 	c:UpdateWorkplace()
 	c:UpdateResidence()
-	--c:TryToEmigrate()
 end
 
-function ChoGGi.ComFuncs.ColonistUpdateGender(c,gender,cloned)
+function ChoGGi.ComFuncs.ColonistUpdateGender(c,gender)
 	local ChoGGi = ChoGGi
+	local genders = ChoGGi.Tables.ColonistGenders
+
 	if gender == S[3490--[[Random--]]] then
-		gender = ChoGGi.Tables.ColonistGenders[Random(1,5)]
+		gender = genders[Random(1,3)]
 	elseif gender == S[302535920000800--[[MaleOrFemale--]]] then
-		gender = ChoGGi.Tables.ColonistGenders[Random(4,5)]
+		gender = genders[Random(1,2)]
 	end
-	--remove all gender traits
-	c:RemoveTrait("OtherGender")
-	c:RemoveTrait("Android")
-	c:RemoveTrait("Clone")
-	c:RemoveTrait("Male")
-	c:RemoveTrait("Female")
-	--add new gender trait
+	-- remove all gender traits
+	for i = 1, #genders do
+		c:RemoveTrait(genders[i])
+	end
+	-- add new gender trait
 	c:AddTrait(gender)
-	--needed for updating entity
+	-- needed for updating entity
 	c.gender = gender
-	--set entity gender
-	if gender == "Male" or gender == "Female" then
-		c.entity_gender = gender
-	else --random
-		if cloned then
-			c.entity_gender = cloned
-		else
-			if Random(1,2) == 1 then
-				c.entity_gender = "Male"
-			else
-				c.entity_gender = "Female"
-			end
-		end
-	end
-	--now we can set the new entity
+	-- set entity gender
+	c.entity_gender = gender
+	-- now we can set the new entity
 	c:ChooseEntity()
 end
 

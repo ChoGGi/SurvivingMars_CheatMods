@@ -1,7 +1,10 @@
 ## Library Changelog
 
-## v2.3 (Unreleased)
+## v2.4 (Unreleased)
+
+## v2.3 (17 Oct 2018)
 - List choice didn't show value in hint if it was false.
+- Fixed Colonists>Set Gender New.
 
 ## v2.2 (12 Oct 2018)
 - Right-clicking in list dialogs will update selection.
