@@ -1,6 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000064,,
-302535920000065,,
 302535920000066,,
 302535920000067,,
 302535920001075,,
@@ -325,6 +323,8 @@ Press Enter to refresh list (update names).
 Double click selected item to open in new manipulator.",
 302535920000102,Use to change values of selected list item.,
 302535920000103,Edit Value,
+302535920000064,Build On Geysers,
+302535920000065,Allows you to build on geysers (Warning: permanent).,
 302535920001367,Toggles,
 302535920001344,Points To Train,
 302535920001345,How many points are needed to finish training.,

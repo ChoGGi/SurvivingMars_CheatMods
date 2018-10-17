@@ -91,6 +91,17 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle,
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000064--[[Build On Geysers--]]],
+		ActionMenubar = str_ExpandedCM_Buildings,
+		ActionId = ".Build On Geysers",
+		ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
+		RolloverText = S[302535920000065--[[Allows you to build on geysers (Warning: Permanent for this save).--]]],
+		OnAction = function()
+			g_DontBuildHere:delete()
+		end,
+	}
+
 	local str_ExpandedCM_Buildings_SanatoriumsSchools = "ECM.Expanded CM.Buildings.Sanatoriums & Schools"
 	local SandS = StringFormat("%s & %s",S[5245--[[Sanatoriums--]]],S[5248--[[Schools--]]])
 	c = c + 1

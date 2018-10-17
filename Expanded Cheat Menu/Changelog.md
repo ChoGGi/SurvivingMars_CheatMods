@@ -5,6 +5,7 @@
 
 ## v10.0 (Unreleased)
 ### Added:
+- Buildings>Build On Geysers: Allows you to build on geysers.
 - Game>Place Objects: Opens editor mode with the place objects dialog.
 
 ### Changed:
