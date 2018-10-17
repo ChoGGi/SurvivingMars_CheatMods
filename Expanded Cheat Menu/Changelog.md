@@ -8,7 +8,7 @@
 - Game>Place Objects: Opens editor mode with the place objects dialog.
 
 ### Changed:
-- Cleaned up and slightly sped up the debug grid (green/red one).
+- Cleaned up Toggle Grid Follow Mouse: Green = pass/build, Yellow = no pass/build, Blue = pass/no build, Red = no pass/no build.
 - Whiter Rocks now leaves rocks it can't whiten (instead of deleting).
 
 ### Fixed:

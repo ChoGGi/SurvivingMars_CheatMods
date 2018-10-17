@@ -435,12 +435,27 @@ function OnMsg.ClassesGenerate()
 	do -- debug_build_grid
 		local grid_objs = {}
 		local grid_thread = false
+		local HexSize = const.HexSize * 2
+		local MapGet = MapGet
+		-- geysers mostly
+		local function DontBuildHere(pt)
+			return g_DontBuildHere and g_DontBuildHere:Check(pt)
+		end
+		local function IsRockOrDeposit(pt)
+			local objs = MapGet(pt,HexSize,function(o)
+				return o:IsKindOfClasses("DoesNotObstructConstruction","SurfaceDeposit","StoneSmall")
+			end)
+			if #objs > 0 then
+				return true
+			end
+		end
 
 		function ChoGGi.MenuFuncs.debug_build_grid()
 			-- local all the globals we use more than once for some much needed speed
 			local IsSCell = terrain.IsSCell
 			local IsPassable = terrain.IsPassable
 			local IsVerticalTerrain = terrain.IsVerticalTerrain
+			local IsTerrainFlatForPlacement = ConstructionController.IsTerrainFlatForPlacement
 			local GetTerrainCursor = GetTerrainCursor
 			local HexGridGetObject = HexGridGetObject
 			local HexToWorld = HexToWorld
@@ -449,9 +464,10 @@ function OnMsg.ClassesGenerate()
 
 			local red = -65536
 			local green = -16711936
+			local yellow = -256
 			local blue = -16776961
+			local pt20t = {point20}
 			local ChoGGi_HexSpot = ChoGGi_HexSpot
-			local ObjectGrid = ObjectGrid
 			local UserSettings = ChoGGi.UserSettings
 			local grid_range = type(UserSettings.DebugGridSize) == "number" and UserSettings.DebugGridSize or 10
 			local grid_opacity = type(UserSettings.DebugGridOpacity) == "number" and UserSettings.DebugGridOpacity or 15
@@ -497,18 +513,20 @@ function OnMsg.ClassesGenerate()
 											local pt = point(HexToWorld(q_i, r_i))
 											local c = grid_objs[idx] or ChoGGi_HexSpot:new()
 
-											if IsVerticalTerrain(pt) then
+											-- green = pass/build, yellow = no pass/build, blue = pass/no build, red = blocked
+											if DontBuildHere(pt) then
+												c:SetColorModifier(blue)
+											elseif IsVerticalTerrain(pt) then
 												c:SetColorModifier(red)
 											else
-												local is_cell = IsSCell(pt)
-												if is_cell and not HexGridGetObject(ObjectGrid, q_i, r_i) then
-													if is_cell then
+												if IsPassable(pt) then
+													if IsTerrainFlatForPlacement(nil, pt20t, pt, 0) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
 														c:SetColorModifier(green)
 													else
 														c:SetColorModifier(blue)
 													end
-												elseif IsPassable(pt) then
-													c:SetColorModifier(blue)
+												elseif IsRockOrDeposit(pt) then
+													c:SetColorModifier(yellow)
 												else
 													c:SetColorModifier(red)
 												end

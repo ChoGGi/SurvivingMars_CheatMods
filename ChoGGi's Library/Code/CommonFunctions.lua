@@ -1197,14 +1197,14 @@ do -- RetObjectAtPos/RetObjectsAtPos
 
 	function ChoGGi.ComFuncs.RetObjectAtPos(pos,q,r)
 		if pos then
-			q, r = WorldToHex(pos or GetTerrainCursor())
+			q, r = WorldToHex(pos)
 		end
 		return HexGridGetObject(ObjectGrid, q, r)
 	end
 
 	function ChoGGi.ComFuncs.RetObjectsAtPos(pos,q,r)
 		if pos then
-			q, r = WorldToHex(pos or GetTerrainCursor())
+			q, r = WorldToHex(pos)
 		end
 		return HexGridGetObjects(ObjectGrid, q, r)
 	end

@@ -219,7 +219,8 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_Debug_Grids,
 		ActionId = ".Toggle Grid Follow Mouse",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
-		RolloverText = S[302535920000500--[[Shows a hex grid with green for buildable/walkable.--]]],
+		RolloverText = S[302535920000500--[["Show a hex grid around mouse: Green = pass/build, Yellow = no pass/build, Blue = pass/no build, Red = no pass/no build.
+See Help>%s to increase size."--]]]:format(S[302535920001242--[[Edit ECM Settings--]]]),
 		OnAction = ChoGGi.MenuFuncs.debug_build_grid,
 		ActionShortcut = "Shift-F1",
 		ActionBindable = true,

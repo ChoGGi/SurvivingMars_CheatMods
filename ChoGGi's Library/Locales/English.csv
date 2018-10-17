@@ -968,7 +968,10 @@ The map disaster settings don't do jack (use ECM>Mission>Disasters).",
 302535920000497,Toggle Terrain Deposit Grid,
 302535920000498,Shows a grid around concrete.,
 302535920000499,Toggle Grid Follow Mouse,
-302535920000500,Shows a hex grid with green for buildable/walkable.,
+302535920000500,"Show a hex grid around mouse:
+Green = pass/build, Yellow = no pass/build,
+Blue = pass/no build, Red = no pass/no build.
+See Help>%s to increase size.",
 302535920001317,Launch Fuel Per Rocket,
 302535920001318,Change how much fuel rockets need to launch.,
 302535920001319,Rockets Ignore Fuel,

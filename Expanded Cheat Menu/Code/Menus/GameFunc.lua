@@ -417,11 +417,13 @@ function OnMsg.ClassesGenerate()
 		-- some rocks are Deposition as well as WasteRockObstructor, and we don't want dupes
 		-- rocks don't have handles, so we use their position to build a table of no dupes
 		local positions = {}
+		local GetHeight = terrain.GetHeight
+
 		local function SaveRocks(rock_cls,rock_objects)
 			MapForEach("map",rock_cls,function(o)
 				local pos = o:GetVisualPos()
 				if not positions[pos] then
-					local terrain_height = terrain.GetHeight(pos)
+					local terrain_height = GetHeight(pos)
 					rock_objects[#rock_objects+1] = {
 						obj = o,
 						pos = point(pos:x(),pos:y()),
@@ -529,7 +531,6 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.MenuFuncs.FlattenTerrain_Toggle(square)
 			local ChoGGi = ChoGGi
-			local GetTerrainCursor = GetTerrainCursor
 
 	if ChoGGi.Test then
 			-- make a list of rocks to henceforth be a reference
@@ -560,24 +561,25 @@ function OnMsg.ClassesGenerate()
 				ToggleCollisions(ChoGGi)
 
 			else
+				local GetTerrainCursor = GetTerrainCursor
+				local SetHeightCircle = terrain.SetHeightCircle
+				local Sleep = Sleep
 				-- have to set it here after settings are loaded or it'll be default radius till user adjusts it
 				size = ChoGGi.UserSettings.FlattenGround_Radius or 2500
 				radius = size * guic
 
 				ToggleHotkeys(true)
-				flatten_height = terrain.GetHeight(GetTerrainCursor())
+				flatten_height = GetHeight(GetTerrainCursor())
 				MsgPopup(
 					S[302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.--]]]:format(flatten_height),
 					904--[[Terrain--]],
 					"UI/Icons/Sections/warning.tga"
 				)
-	--~ local terrain_type_idx = table.find(TerrainTextures, "name", "Grass_01")
 				visual_circle = Circle:new()
 				visual_circle:SetRadius(size)
 				visual_circle:SetColor(white)
 
-				local SetHeightCircle = terrain.SetHeightCircle
-				local Sleep = Sleep
+--~ 				local terrain_type_idx = table.find(TerrainTextures, "name", "Grass_03")
 				are_we_flattening = CreateRealTimeThread(function()
 					-- thread gets deleted, but just in case
 					while are_we_flattening do
@@ -588,7 +590,7 @@ function OnMsg.ClassesGenerate()
 							outer = radius / 2
 						end
 						SetHeightCircle(cursor, radius, outer or radius, flatten_height)
-	--~ terrain.SetTypeCircle(cursor, radius, terrain_type_idx)
+--~ 						terrain.SetTypeCircle(cursor, radius, terrain_type_idx)
 						--used to set terrain type (see above)
 						Sleep(10)
 					end
