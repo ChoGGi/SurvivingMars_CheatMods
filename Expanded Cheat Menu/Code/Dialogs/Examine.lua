@@ -38,6 +38,7 @@ local DebugGetInfo
 local RetThreadInfo
 local DeleteObject
 local Trans
+local InvalidPos
 local S
 local blacklist
 local idLinks_hypertext
@@ -53,6 +54,7 @@ function OnMsg.ClassesGenerate()
 	DeleteObject = ChoGGi.ComFuncs.DeleteObject
 	RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
 	Trans = ChoGGi.ComFuncs.Translate
+	InvalidPos = ChoGGi.Consts.InvalidPos
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 
@@ -698,15 +700,19 @@ function Examine:valuetotextex(obj)
 
 		-- point() is userdata (keep before it)
 		if IsPoint(obj) then
-			return StringFormat("%s(%s,%s,%s)%s",
-				self:HyperLink(function()
-					ShowMe(obj)
-				end),
-				obj:x(),
-				obj:y(),
-				obj:z() or terrain.GetHeight(obj),
-				HLEnd
-			)
+			if obj == InvalidPos then
+				return S[302535920000066--[[<color 203 120 30>Off-Map Pos</color>--]]]
+			else
+				return StringFormat("%s(%s,%s,%s)%s",
+					self:HyperLink(function()
+						ShowMe(obj)
+					end),
+					obj:x(),
+					obj:y(),
+					obj:z() or terrain.GetHeight(obj),
+					HLEnd
+				)
+			end
 		else
 			local str = tostring(obj)
 			local trans = Trans(obj)

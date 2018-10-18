@@ -1164,12 +1164,12 @@ end
 
 -- get all objects, then filter for ones within *radius*, returned sorted by dist, or *sort* for name
 -- ChoGGi.ComFuncs.OpenInExamineDlg(ReturnAllNearby(1000,"class"))
-function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pos)
+function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pt)
 	radius = radius or 5000
-	pos = pos or GetTerrainCursor()
+	pt = pt or GetTerrainCursor()
 
 	-- get all objects within radius
-	local list = MapGet(pos,radius)
+	local list = MapGet(pt,radius)
 
 	-- sort list custom
 	if sort then
@@ -1182,7 +1182,7 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pos)
 		-- sort nearest
 		table.sort(list,
 			function(a,b)
-				return a:GetDist2D(pos) < b:GetDist2D(pos)
+				return a:GetDist2D(pt) < b:GetDist2D(pt)
 			end
 		)
 	end
@@ -1195,16 +1195,17 @@ do -- RetObjectAtPos/RetObjectsAtPos
 	local HexGridGetObject = HexGridGetObject
 	local HexGridGetObjects = HexGridGetObjects
 
-	function ChoGGi.ComFuncs.RetObjectAtPos(pos,q,r)
-		if pos then
-			q, r = WorldToHex(pos)
+	-- q can be pt or q
+	function ChoGGi.ComFuncs.RetObjectAtPos(q,r)
+		if not r then
+			q, r = WorldToHex(q)
 		end
 		return HexGridGetObject(ObjectGrid, q, r)
 	end
 
-	function ChoGGi.ComFuncs.RetObjectsAtPos(pos,q,r)
-		if pos then
-			q, r = WorldToHex(pos)
+	function ChoGGi.ComFuncs.RetObjectsAtPos(q,r)
+		if not r then
+			q, r = WorldToHex(q)
 		end
 		return HexGridGetObjects(ObjectGrid, q, r)
 	end

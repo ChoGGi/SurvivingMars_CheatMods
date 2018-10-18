@@ -11,6 +11,7 @@
 ### Changed:
 - Cleaned up Toggle Grid Follow Mouse: Green = pass/build, Yellow = no pass/build, Blue = pass/no build, Red = no pass/no build.
 - Whiter Rocks now leaves rocks it can't whiten (instead of deleting).
+- Examine now shows "Off-Map Pos" instead of a clickable link to nothing.
 
 ### Fixed:
 - Change Terrain Type restores concrete textures (like pre-Sagan).

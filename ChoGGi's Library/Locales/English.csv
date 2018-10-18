@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000066,,
 302535920000067,,
 302535920001075,,
 302535920001074,,
@@ -232,6 +231,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000870,Shows any errors from loading mods in console log.,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920000066,<color 203 120 30>Off-Map Pos</color>,
 302535920000059,Destroy all objects in objlist!,
 302535920000057,Mark Object,
 302535920000058,Mark All Objects,

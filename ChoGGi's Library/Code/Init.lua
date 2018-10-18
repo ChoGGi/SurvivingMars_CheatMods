@@ -62,6 +62,7 @@ ChoGGi = {
 		ResourceScale = 1000,
 		ResearchPointsScale = 1000,
 		guim = 100,
+		InvalidPos = InvalidPos(),
 	-- Consts.* (Consts is a prop object, so we can get the defaults later on from OnMsg.OptionsApply(), we declare them now so we can loop them later) _const.lua
 		AvoidWorkplaceSols = false,
 		BirthThreshold = false,
