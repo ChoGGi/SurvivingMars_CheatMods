@@ -778,6 +778,7 @@ function Examine:valuetotextex(obj)
 				local table_data
 				local is_next = next(obj)
 
+				-- not sure how to check if it's an index non-ass table
 				if len > 0 and is_next then
 					-- next works for both
 					table_data = StringFormat("%s / %s",len,S[302535920001057--[[Data--]]])

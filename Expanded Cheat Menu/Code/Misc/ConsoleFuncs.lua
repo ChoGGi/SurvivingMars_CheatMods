@@ -218,7 +218,7 @@ function OnMsg.ClassesGenerate()
 			}
 		end
 
-		-- merged const Consts g_Consts
+		-- threads
 		submenu = table.find(ExamineMenuToggle_list,"name","ThreadsRegister")
 		if submenu then
 			ExamineMenuToggle_list[submenu].hint = nil
@@ -238,6 +238,16 @@ function OnMsg.ClassesGenerate()
 				BuildExamineItem("Dialogs"),
 				BuildExamineItem("terminal.desktop"),
 				BuildExamineItem("GetInGameInterface"),
+			}
+		end
+
+		-- g_Classes
+		submenu = table.find(ExamineMenuToggle_list,"name","g_Classes")
+		if submenu then
+			ExamineMenuToggle_list[submenu].hint = nil
+			ExamineMenuToggle_list[submenu].submenu = {
+				BuildExamineItem("g_Classes"),
+				BuildExamineItem("EntityData"),
 			}
 		end
 

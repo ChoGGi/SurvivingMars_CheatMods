@@ -3115,7 +3115,7 @@ function ChoGGi.ComFuncs.AddXTemplate(name,template,list,toplevel)
 				return true
 			end,
 			"__context_of_kind", list.__context_of_kind or "",
-			"__template", list.__template or "InfopanelSection",
+			"__template", list.__template or "InfopanelActiveSection",
 			"Title", list.Title or S[1000016--[[Title--]]],
 			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
 			"RolloverTitle", list.RolloverTitle or S[126095410863--[[Info--]]],
@@ -3139,7 +3139,7 @@ function ChoGGi.ComFuncs.AddXTemplate(name,template,list,toplevel)
 				return true
 			end,
 			"__context_of_kind", list.__context_of_kind or "",
-			"__template", list.__template or "InfopanelSection",
+			"__template", list.__template or "InfopanelActiveSection",
 			"Title", list.Title or S[1000016--[[Title--]]],
 			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
 			"RolloverTitle", list.RolloverTitle or S[126095410863--[[Info--]]],

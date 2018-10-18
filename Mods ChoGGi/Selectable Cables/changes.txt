@@ -1,3 +1,7 @@
+v0.4
+Changed selection arrow to the usual hexy selection thing.
+Cleaned up the code.
+
 v0.3
 Da Vinci
 v0.2

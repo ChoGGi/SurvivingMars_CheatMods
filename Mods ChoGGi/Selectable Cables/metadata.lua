@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Selectable Cables v0.3",
-	"version", 3,
-	"saved", 1534680000,
+	"title", "Selectable Cables v0.4",
+	"version", 4,
+	"saved", 1539777600,
 	"image", "Preview.png",
 	"id", "ChoGGi_SelectableCables",
 	"author", "ChoGGi",
