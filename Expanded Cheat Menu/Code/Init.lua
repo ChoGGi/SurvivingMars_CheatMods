@@ -42,7 +42,7 @@ function OnMsg.ModsReloaded()
 		return
 	end
 	fire_once = true
-	local min_version = 23
+	local min_version = 24
 
 	local ModsLoaded = ModsLoaded
 	-- we need a version check to remind Nexus/GoG users
