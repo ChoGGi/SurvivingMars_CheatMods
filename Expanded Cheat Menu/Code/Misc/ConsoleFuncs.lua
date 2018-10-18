@@ -205,6 +205,7 @@ function OnMsg.ClassesGenerate()
 				BuildExamineItem("UICity"),
 				BuildExamineItem("UICity.labels"),
 				BuildExamineItem("UICity.tech_status"),
+				BuildExamineItem("g_ApplicantPool"),
 			}
 		end
 		-- merged const Consts g_Consts

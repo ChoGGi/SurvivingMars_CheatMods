@@ -539,7 +539,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 
 	-- saved building settings
 	local bs = UserSettings.BuildingSettings[obj.template_name]
-	if bs then
+	if type(bs) == "table" then
 		if next(bs) then
 			-- saved settings for capacity, shuttles
 			if bs.capacity then
@@ -918,12 +918,20 @@ function OnMsg.ChangeMap()
 end
 
 do -- LoadGame/CityStart
+	local function SetMissionBonuses(UserSettings,Presets,preset,which,Func)
+		local list = Presets[preset].Default or ""
+		for i = 1, #list do
+			if UserSettings[StringFormat("%s%s",which,list[i].id)] then
+				Func(list[i].id)
+			end
+		end
+	end
+
 	-- saved game is loaded
 	function OnMsg.LoadGame()
 		ChoGGi.Temp.IsChoGGiMsgLoaded = false
 		Msg("ChoGGi_Loaded")
 	end
-
 	-- for new games
 	function OnMsg.CityStart()
 		local ChoGGi = ChoGGi
@@ -931,15 +939,6 @@ do -- LoadGame/CityStart
 		-- reset my mystery msgs to hidden
 		ChoGGi.UserSettings.ShowMysteryMsgs = nil
 		Msg("ChoGGi_Loaded")
-	end
-
-	local function SetMissionBonuses(UserSettings,Presets,preset,which,Func)
-		local tab = Presets[preset].Default or ""
-		for i = 1, #tab do
-			if UserSettings[StringFormat("%s%s",which,tab[i].id)] then
-				Func(tab[i].id)
-			end
-		end
 	end
 
 	function OnMsg.ChoGGi_Loaded()
