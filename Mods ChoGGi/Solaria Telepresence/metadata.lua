@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "Solaria Telepresence v0.8",
-  "version", 8,
-  "saved", 1539345600,
+  "title", "Solaria Telepresence v0.9",
+  "version", 9,
+  "saved", 1539950400,
   "tags", "Buildings",
 	"image", "Preview.png",
   "id", "ChoGGi_SolariaTelepresence",

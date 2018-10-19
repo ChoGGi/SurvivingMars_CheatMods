@@ -1,8 +1,10 @@
+v0.6
+Library update.
+
 v0.5
 Sagan.
 Added the nine new maps (re-did all of them just in case of differences).
 There's no point in having the position in the title bar, so removed.
-
 v0.4
 Made the map size based on uiscale.
 The map defaults to the right-side.

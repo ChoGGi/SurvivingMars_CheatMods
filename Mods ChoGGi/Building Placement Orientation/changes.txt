@@ -1,10 +1,15 @@
+v0.7
+Library update.
+
 v0.6
 Library.
 
 v0.5
 You can re-bind keys with in-game options.
+
 v0.4
 Da Vinci
+
 v0.2
 Compatibly with ECM
 May sometimes place buildings not aligned to the hex grid (thanks kajb139).

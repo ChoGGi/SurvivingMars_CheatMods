@@ -1,3 +1,6 @@
+v0.4
+Library update.
+
 v0.3
 Cleaning up code (ChoGGi's Library).
 

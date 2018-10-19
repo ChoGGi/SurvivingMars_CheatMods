@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Auto Empty Waste Storage v0.3",
-	"version", 3,
-	"saved", 1539777600,
+	"title", "Auto Empty Waste Storage v0.4",
+	"version", 4,
+	"saved", 1539950400,
 	"id", "ChoGGi_AutoEmptyWasteStorage",
 	"author", "ChoGGi",
 	"image","Preview.png",

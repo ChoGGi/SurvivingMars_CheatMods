@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "ChoGGi's Library v2.4 Test",
-	"version", 24,
-	"saved", 1539777600,
+	"title", "ChoGGi's Library v2.5 Test",
+	"version", 25,
+	"saved", 1539950400,
 	"image", "Preview.png",
 	"id", "ChoGGi_Library",
 	"steam_id", "1504386374",
@@ -29,9 +29,6 @@ return PlaceObj("ModDef", {
 		"Code/Classes_UI.lua",
 		"Code/ListChoice.lua",
 		"Code/MultiLineText.lua",
-
-		-- only needed for mods i have yet to update.
-		"Code/LibraryLoaded.lua",
 	},
 	-- yeah this is getting removed... come on devs allow users to override and deal with outdated mods if they want to (just print it in the log).
 	"lua_revision", LuaRevision,

@@ -1,6 +1,8 @@
+v0.7
+Library update.
+
 v0.6
 Library.
-
 v0.5
 Da Vinci.
 Cleaning up code (ChoGGi's Library).

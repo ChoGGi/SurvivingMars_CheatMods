@@ -1,6 +1,8 @@
+v1.2
+Library update.
+
 v1.1
 Library.
-
 v1.0
 Fixed issue with shortcuts and multiple of my mods that use shortcuts.
 v0.9

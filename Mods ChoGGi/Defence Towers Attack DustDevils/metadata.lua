@@ -1,8 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "Defence Towers Attack DustDevils v0.2",
-  "version", 2,
-  "saved", 1536148800,
-  "tags", "Cheats",
+  "title", "Defence Towers Attack DustDevils v0.3",
+  "version", 3,
+  "saved", 1539950400,
   "id", "ChoGGi_DefenceTowersAttackDustDevils",
   "author", "ChoGGi",
 	"code", {

@@ -1,6 +1,8 @@
+v0.9
+Library update.
+
 v0.8
 Added remaining maintenance points to mouseover.
-
 v0.7
 Library.
 v0.6

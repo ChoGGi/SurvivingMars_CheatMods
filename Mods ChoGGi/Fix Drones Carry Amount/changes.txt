@@ -1,6 +1,8 @@
+v0.8
+Library update.
+
 v0.7
 Library.
-
 v0.6
 Cleaning up code (ChoGGi's Library).
 v0.5

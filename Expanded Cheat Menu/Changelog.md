@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v10.0 (Unreleased)
+## v10.1 (Unreleased)
+
+## v10.0 (19 Oct 2018)
 ### Added:
 - Buildings>Build On Geysers: Allows you to build on geysers.
 - Game>Place Objects: Opens editor mode with the place objects dialog.
@@ -17,6 +19,7 @@
 - Change Terrain Type restores concrete textures (like pre-Sagan).
 - Console history log is no longer wiped out when blocklist is enabled (somewhat).
 - Lag if you leave Toggle Grid Follow Mouse on and load a map.
+- SetCommander/Sponsor bonuses wasn't working (thanks OyeBhotka).
 
 ## v9.9 (12 Oct 2018)
 ### Changed:

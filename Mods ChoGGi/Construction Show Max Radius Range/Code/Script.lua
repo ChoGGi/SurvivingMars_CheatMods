@@ -8,9 +8,9 @@ local ShowHexRanges = ShowHexRanges
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()
 	if self.template:IsKindOfClasses("TriboelectricScrubber","SubsurfaceHeater") then
+
 		-- if ecm is active we check for custom range, otherwise use default
 		local uirange
-
 		local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 		if idx then
 			local bs = ChoGGi.UserSettings.BuildingSettings[self.template.template_name]
@@ -19,6 +19,7 @@ function CursorBuilding:GameInit()
 			end
 		end
 		uirange = uirange or self.template:GetPropertyMetadata("UIRange").max
+
 		-- update with max size
 		self.GetSelectionRadiusScale = uirange
 		-- and call this again to update grid marker

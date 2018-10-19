@@ -1,8 +1,10 @@
+v0.6
+Library update.
+
 v0.5
 Sagan.
 Added pick up/drop anims.
 Nearby drones will use resources from moved piles.
-
 v0.4
 Just updating code to parity with ECM code and steam version.
 v0.3

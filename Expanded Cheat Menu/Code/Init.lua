@@ -35,14 +35,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
--- tell people know how to get the library
+-- tell people how to get my library mod (if needs be)
 local fire_once
 function OnMsg.ModsReloaded()
 	if fire_once then
 		return
 	end
 	fire_once = true
-	local min_version = 24
+	local min_version = 25
 
 	local ModsLoaded = ModsLoaded
 	-- we need a version check to remind Nexus/GoG users
@@ -60,10 +60,7 @@ function OnMsg.ModsReloaded()
 
 	if not_found_or_wrong_version then
 		CreateRealTimeThread(function()
-			local Sleep = Sleep
-			while not UICity do
-				Sleep(2500)
-			end
+			WaitMsg("InGameInterfaceCreated")
 			if WaitMarsQuestion(nil,nil,string.format([[Error: Expanded Cheat Menu requires ChoGGi's Library (at least v%s).
 Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_version)) == "ok" then
 				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")

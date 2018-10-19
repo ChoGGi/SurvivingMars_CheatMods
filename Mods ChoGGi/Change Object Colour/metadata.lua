@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Change Object Colour v0.7",
-	"version", 7,
-  "saved", 1539345600,
+	"title", "Change Object Colour v0.8",
+	"version", 8,
+  "saved", 1539950400,
 	"image", "Preview.png",
 	"tags", "Objects",
 	"id", "ChoGGi_ChangeObjectColour",

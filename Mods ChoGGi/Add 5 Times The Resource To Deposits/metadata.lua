@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Add 5 Times The Resource To Deposits v0.3",
-	"version", 3,
-	"saved", 1539777600,
+	"title", "Add 5 Times The Resource To Deposits v0.4",
+	"version", 4,
+	"saved", 1539950400,
 	"id", "ChoGGi_Add5TimesTheResourceToDeposits",
 	"author", "ChoGGi",
 	"code", {

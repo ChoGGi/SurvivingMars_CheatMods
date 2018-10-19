@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "Colonists: Force To New Dome v0.3",
-  "version", 3,
-  "saved", 1539345600,
+  "title", "Colonists: Force To New Dome v0.4",
+  "version", 4,
+  "saved", 1539950400,
   "id", "ChoGGi_ColonistsForceToNewDome",
   "author", "ChoGGi",
 	"code", {

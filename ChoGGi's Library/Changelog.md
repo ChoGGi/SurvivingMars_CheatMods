@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v2.4 (Unreleased)
+## v2.5 (Unreleased)
+
+## v2.4 (19 Oct 2018)
 - Horizontal buttons added by my mods now have a hover shine (selection panel).
 - Objects spawned by ECM (ctrl-shift-s) now have a selection particle around them.
 
