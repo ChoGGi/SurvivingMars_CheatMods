@@ -7,7 +7,7 @@ function OnMsg.ModsReloaded()
 		return
 	end
 	fire_once = true
-	local min_version = 24
+	local min_version = 25
 
 	local ModsLoaded = ModsLoaded
 	-- we need a version check to remind Nexus/GoG users
@@ -46,10 +46,16 @@ local Sleep = Sleep
 local DeleteThread = DeleteThread
 local IsValidThread = IsValidThread
 local CreateRealTimeThread = CreateRealTimeThread
+local IsValid = IsValid
 local RecalcBuildableGrid = RecalcBuildableGrid
 local MovePointAway = MovePointAway
-local FlattenTerrainInBuildShape = FlattenTerrainInBuildShape
 local MapDelete = MapDelete
+
+local SuspendTerrainInvalidations = SuspendTerrainInvalidations
+local SuspendPassEdits = SuspendPassEdits
+local PlaceObject = PlaceObject
+local ResumePassEdits = ResumePassEdits
+local ResumeTerrainInvalidations = ResumeTerrainInvalidations
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
@@ -70,7 +76,7 @@ local flatten_text = StringFormat([[Radius: %s, %s: %s]],"%s",Trans(49--[[Status
 DefineClass.RCBulldozer = {
 	__parents = {
 		"BaseRover",
-		"ComponentAttach",
+--~ 		"ComponentAttach",
 	},
   name = name,
 	description = description,
@@ -79,25 +85,26 @@ DefineClass.RCBulldozer = {
 
 	entity = "CombatRover",
 	accumulate_dust = false,
-	status_text = idle_text:format(1000 * guic),
+	status_text = idle_text:format(1000),
 	-- flatten area
-	radius = 1000 * guic,
+	radius = 1000,
 	-- refund res
 	on_demolish_resource_refund = { Metals = 20 * const.ResourceScale, MachineParts = 20 * const.ResourceScale , Electronics = 10 * const.ResourceScale },
 	-- stores the flatten thread
-	are_we_flattening = false,
-	-- ground texture after dozing
-	terrain_type_idx = table.find(TerrainTextures, "name", "Dig"),
+	flatten_thread = false,
 	-- store ref to circle obj
 	visual_circle = false,
 	-- show a circle where we doze
 	visual_circle_toggle = true,
 	-- store radius here, so we're not updating it all the time
 	visual_circle_size = false,
+	-- show the pin info
+	pin_rollover = T{0,"<StatusUpdate>"},
+	-- change texture when dozing
+	texture_terrain = table.find(TerrainTextures, "name", "Dig"),
+
 --~ 	-- likely useless...
 --~ 	orient_mode = "terrain",
-	-- change texture when dozing
-	texture_terrain = true,
 --~ 	-- need something to update driveable area
 --~ 	shape_obj = false,
 }
@@ -117,9 +124,6 @@ function RCBulldozer:GameInit()
 	-- color of bands
 	self:SetColorizationMaterial(3, -16244680, -128, 48)
 
-	-- show the pin info
-	self.pin_rollover = T{0,"<StatusUpdate>"}
-
 --~ 	-- have to wait for HexOutlineShapes to be built, this one is about as big as the largest we can make the hex
 --~ 	self.shape_obj = HexOutlineShapes.DomeMega
 end
@@ -128,7 +132,7 @@ function RCBulldozer:GetStatusUpdate()
 	return TableConcat({self.status_text}, "<newline><left>")
 end
 
-function RCBulldozer:ReturnDozPos()
+function RCBulldozer:ReturnDozeArea()
 	return MovePointAway(
 		self:GetVisualPos(),
 		self:GetSpotLoc(self:GetSpotBeginIndex("Droneentrance")),
@@ -145,10 +149,10 @@ function RCBulldozer:UpdateCircle()
 		-- only update radius if radius is changed
 		if self.visual_circle_size ~= self.radius then
 			self.visual_circle_size = self.radius
-			self.visual_circle:SetRadius(self.radius / guic)
+			self.visual_circle:SetRadius(self.radius)
 		end
 		-- always update pos of circle
-		self.visual_circle:SetPos(self:ReturnDozPos())
+		self.visual_circle:SetPos(self:ReturnDozeArea())
 	end
 
 	-- it should be created by now, but just in case
@@ -161,79 +165,139 @@ function RCBulldozer:UpdateCircle()
 	end
 end
 
+-- RecalcBuildableGrid is an expensive cmd so we don't want to fire often
 function RCBulldozer:UpdateBuildable()
-	if self.bulldozing and IsValidThread(self.are_we_flattening) then
-		DeleteThread(self.are_we_flattening)
-		-- we set it to self just in case there's another another thread running
-		self.are_we_flattening = false
-		-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
-		ToggleCollisions()
-		-- update uneven terrain checker thingy
-		RecalcBuildableGrid()
-		-- and back on when we're done
-		ToggleCollisions()
-	end
+	-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
+	ToggleCollisions()
+	-- update uneven terrain checker thingy
+	RecalcBuildableGrid()
+	-- and back on when we're done
+	ToggleCollisions()
 end
 
-local guic = guic
 local efRemoveUnderConstruction = const.efRemoveUnderConstruction
 function RCBulldozer:GotoFromUser(...)
 	if self.bulldozing then
 		self.status_text = flatten_text:format(self.radius)
-
-		-- kill off old thread if it's running
-		if IsValidThread(self.are_we_flattening) then
-			DeleteThread(self.are_we_flattening)
-		end
-
-		-- store this thread so we can stop it
-		self.are_we_flattening = CreateRealTimeThread(function()
-			-- thread gets deleted, but just in case
-			while self.are_we_flattening do
-				if self.command == "Idle" then
-					Sleep(250)
-				else
-					if self.visual_circle_toggle and self.visual_circle_size ~= self.radius then
-						self.visual_circle_size = self.radius
-						self.visual_circle:SetRadius(self.radius / guic)
-					end
-					-- stick it in front of dozer
-					local pos = self:ReturnDozPos()
-					if self.visual_circle_toggle then
-						self.visual_circle:SetPos(pos)
-					end
-					-- flatten func
-					SetHeightCircle(pos, self.radius, self.radius, GetHeight(self:GetVisualPos()))
-					-- remove any rocks in the way
-					MapDelete(pos, self.radius, efRemoveUnderConstruction)
-					-- update driveable?
---~ 					FlattenTerrainInBuildShape(self.shape_obj, self)
-					-- change ground texture?
-					if self.texture_terrain then
-						SetTypeCircle(pos, self.radius, self.terrain_type_idx)
-					end
-					Sleep(25)
-				end
-			end
-		end)
-
 	else
 		self.status_text = travel_text:format(self.radius)
 	end
 	return BaseRover.GotoFromUser(self,...)
 end
 
-function RCBulldozer:Idle()
-	-- run the buildable ground script
+function RCBulldozer:StopDozer()
+	-- kill off old thread if it's running
+	DeleteThread(self.flatten_thread)
+	-- visual cue for anyone in examine
+	self.flatten_thread = false
+	-- boolean toggle
+	self.bulldozing = false
+	-- hide circle if visible
+	self:UpdateCircle()
+
+	if IsValid(self.site) then
+		self.site:delete()
+		self.site = false
+	end
+
+	-- update buildable ground (expensive call)
 	self:UpdateBuildable()
+end
+
+-- we're using a realtime loop, so we use this to pause the flatten thread
+local game_paused
+if UISpeedState == "pause" then
+	game_paused = true
+else
+	game_paused = false
+end
+function OnMsg.MarsPause()
+	game_paused = true
+end
+
+function RCBulldozer:StartDozer()
+	self.bulldozing = true
+	-- add a circle for radius vis
+	self:UpdateCircle()
+
+	-- it shouldn't already be running, but fuck it
+	if not IsValidThread(self.flatten_thread) then
+		-- store this thread so we can stop it
+		self.flatten_thread = CreateRealTimeThread(function()
+			-- thread gets deleted, but just in case
+			while self.bulldozing do
+				-- no sense in doing anything when the game is paused
+				if game_paused then
+					WaitMsg("MarsResume")
+					game_paused = false
+				end
+
+				-- if we're idle then we're not moving
+				if self.command == "Idle" then
+					while self.command == "Idle" do
+						Sleep(100)
+					end
+				else
+					-- we want to doze in front of the dozer
+					local pos = self:ReturnDozeArea()
+
+					if self.visual_circle_toggle then
+						-- only call SetRadius if it's different
+						if self.visual_circle_size ~= self.radius then
+							self.visual_circle_size = self.radius
+							self.visual_circle:SetRadius(self.radius)
+						end
+						self.visual_circle:SetPos(pos)
+					end
+
+					-- flatten func
+					SetHeightCircle(pos, self.radius, self.radius, GetHeight(self:GetVisualPos()))
+					-- remove any rocks in the way
+					MapDelete(pos, self.radius, efRemoveUnderConstruction)
+					-- a very ugly hack to update driveable area
+					SuspendTerrainInvalidations("RCBulldozerUglyHack")
+					SuspendPassEdits("RCBulldozerUglyHack")
+					local site = PlaceObject("ConstructionSite", {})
+					site:SetOpacity(0)
+					site:SetBuildingClass("DomeMega")
+					site:SetPos(pos)
+					site:delete()
+					ResumePassEdits("RCBulldozerUglyHack")
+					ResumeTerrainInvalidations("RCBulldozerUglyHack")
+					-- change ground texture?
+					if type(self.texture_terrain) == "number" then
+						SetTypeCircle(pos, self.radius, self.texture_terrain)
+					end
+					Sleep(25)
+				end
+			end
+		end)
+	end
+end
+
+function RCBulldozer:Idle()
 	-- selection pane info
 	self.status_text = idle_text:format(self.radius)
 
-	self:SetStateText("idle")
 	self:Gossip("Idle")
+	self:SetState("idle")
 
-	Sleep(1000)
-	Halt()
+--~ 	Halt()
+	DeleteThread(self.command_thread,true)
+	self.command_thread = false
+end
+
+function OnMsg.SaveGame()
+	-- kill off the threads (spews c func persist errors in log)
+	local dozers = UICity.labels.RCBulldozer or ""
+	for i = 1, #dozers do
+		if dozers[i].bulldozing then
+			dozers[i]:StopDozer()
+		end
+		if dozers[i].command ~= "Idle" then
+			dozers[i]:Idle()
+		end
+	end
 end
 
 function OnMsg.ClassesPostprocess()
@@ -261,32 +325,64 @@ function OnMsg.ClassesPostprocess()
 
 end
 
+-- build list of textures for popup menu below
+local texture_list
+function OnMsg.InGameInterfaceCreated()
+	texture_list = {}
+	local TerrainTextures = TerrainTextures
+	local image = "<image %s>"
+	for i = 0, #TerrainTextures do
+		local hint
+		if TerrainTextures[i].name == "Dig" then
+			hint = string.format("Default texture\n%s",image:format(TerrainTextures[i].texture))
+		else
+			hint = image:format(TerrainTextures[i].texture)
+		end
+		texture_list[i] = {
+			name = TerrainTextures[i].name,
+			hint = hint,
+			image = TerrainTextures[i].texture,
+			image_scale = point(1,1),
+			clicked = function()
+				local info = Dialogs.Infopanel
+				if info then
+					local dozer = info.context
+					dozer.texture_terrain = i
+					ObjModified(dozer)
+				end
+			end,
+		}
+	end
+	-- sort by name
+	table.sort(texture_list,function(a,b)
+			return CmpLower(a.name,b.name)
+	end)
+	-- and add the no change one
+	table.insert(texture_list,1,{
+		name = [[No Change]],
+		hint = [[Don't change ground texture when dozing.]],
+		clicked = function()
+			local info = Dialogs.Infopanel
+			if info then
+				local dozer = info.context
+				dozer.texture_terrain = false
+				ObjModified(dozer)
+			end
+		end,
+	})
+end
+
 function OnMsg.ClassesBuilt()
 	local S = ChoGGi.Strings
+	local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 
 	-- add some prod info to selection panel
 	local rover = XTemplates.ipRover[1]
 	-- check for and remove existing templates
-	local idx = table.find(rover, "ChoGGi_Template_RCBulldozer_Status", true)
-	if idx then
-		rover[idx]:delete()
-		table.remove(rover,idx)
-	end
-	idx = table.find(rover, "ChoGGi_Template_RCBulldozer_Dozer", true)
-	if idx then
-		rover[idx]:delete()
-		table.remove(rover,idx)
-	end
-	idx = table.find(rover, "ChoGGi_Template_RCBulldozer_Texture", true)
-	if idx then
-		rover[idx]:delete()
-		table.remove(rover,idx)
-	end
-	idx = table.find(rover, "ChoGGi_Template_RCBulldozer_Circle", true)
-	if idx then
-		rover[idx]:delete()
-		table.remove(rover,idx)
-	end
+	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Status")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Dozer")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Texture")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Circle")
 
 	-- we want to insert below status
 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
@@ -341,14 +437,14 @@ function OnMsg.ClassesBuilt()
 		})
 	)
 
-	-- Texture toggle
+	-- texture toggle
 	table.insert(
 		rover,
 		status+1,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_RCBulldozer_Texture", true,
 			"__context_of_kind", "RCBulldozer",
-			"__template", "InfopanelSection",
+			"__template", "InfopanelActiveSection",
 			"RolloverTitle", [[Ground Texture]],
 			"OnContextUpdate", function(self, context)
 				-- context is the object selected
@@ -371,22 +467,22 @@ function OnMsg.ClassesBuilt()
 				end,
 				"func", function(self, context)
 					---
-					context.texture_terrain = not context.texture_terrain
-					ObjModified(context)
+--~ 					ex(texture_list)
+					PopupToggle(self,"idBullDozerMenuPopup",texture_list,"left")
 					---
 				end
 			})
 		})
 	)
 
-	-- see circle toggle
+	-- circle toggle
 	table.insert(
 		rover,
 		status+1,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_RCBulldozer_Circle", true,
 			"__context_of_kind", "RCBulldozer",
-			"__template", "InfopanelSection",
+			"__template", "InfopanelActiveSection",
 			"RolloverTitle", [[Visual Circle]],
 			"OnContextUpdate", function(self, context)
 				-- context is the object selected
@@ -418,6 +514,7 @@ function OnMsg.ClassesBuilt()
 		})
 	)
 
+	-- toggle button
 	table.insert(
 		rover,
 		-- after the salvage button
@@ -428,24 +525,11 @@ function OnMsg.ClassesBuilt()
 			"__template", "InfopanelButton",
 			"OnPress", function(self)
 				---
-				local context = self.context
-				if context.bulldozing then
-					if context.command ~= "Idle" then
-						context:UpdateBuildable()
-					end
-					context.bulldozing = false
-					if IsValidThread(context.are_we_flattening) then
-						DeleteThread(context.are_we_flattening)
-					end
-					if context.visual_circle then
-						context.visual_circle:SetVisible(false)
-					end
+				self = self.context
+				if self.bulldozing then
+					self:StopDozer()
 				else
-					context.bulldozing = true
-					-- easy way to make sure dozing is activated
-					context:SetCommand("Idle")
-					-- add a circle for radius vis
-					context:UpdateCircle()
+					self:StartDozer()
 				end
 				---
 			end,

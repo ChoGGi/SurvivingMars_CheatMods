@@ -24,7 +24,7 @@ function OnMsg.ClassesGenerate()
 
 --~ 		-- stop welcome to mars msg for LoadMapForScreenShot
 --~ 		ShowStartGamePopup = function() end
-		-- pretty much just for View Colony Map. it loads, positions camera to fixed pos, and takes named screenshot
+		-- this is just for View Colony Map. it loads map, positions camera to fixed pos, and takes named screenshot
 --~ 		ChoGGi.testing.LoadMapForScreenShot("BlankBigTerraceCMix_13")
 		function ChoGGi.testing.LoadMapForScreenShot(map)
 
@@ -40,14 +40,14 @@ function OnMsg.ClassesGenerate()
 			-- load the map
 			gen:Generate()
 			CreateRealTimeThread(function()
-				-- don't fire this stuff till map is good n loaded
+				-- don't fire the rest till map is good n loaded
 				WaitMsg("RocketLaunchFromEarth")
 				Sleep(350)
 				-- hide signs (just in case any are in the currently exposed sector)
 				SetSignsVisible(false)
 				-- hide all the sector markers
 				for sector,_ in pairs(g_MapSectors) do
-					if type(sector) ~= "number" then
+					if type(sector) ~= "number" and sector.decal then
 						sector.decal:SetVisible(false)
 					end
 				end
@@ -56,12 +56,13 @@ function OnMsg.ClassesGenerate()
 				LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
 				SetLightmodelOverride(1,"TheMartian1_Night")
 
-				-- larger render dist
+				-- larger render dist (we zoom out a fair bit)
 				hr.FarZ = 7000000
 				-- zoom out for the whole map (more purple)
 				local cam_params = {GetCamera()}
-				cam_params[4] = 25000
+				cam_params[4] = 10500
 				SetCamera(table.unpack(cam_params))
+--~ 				cam_params[4] = 25000
 
 				-- remove some interfaces
 				local idx = table.find(terminal.desktop,XTemplate,"OverviewMapCurtains")
@@ -73,35 +74,43 @@ function OnMsg.ClassesGenerate()
 						value:delete()
 					end
 				end
-
-				-- no sense in taking a shot of the loading screen
+				-- and a bit more delay
 				Sleep(100)
+
 				WriteScreenshot(string.format("AppData/%s.png",map))
 			end)
 		end
 
-		-- checks for /Logos folder and adds all images to mod as logos (have to be min of 8bit, and makes them power of 2 if they aren't already)
-		-- (Mods.MODID,".png")
-		-- p.s. it adds tga files after converting, but you can just use the pngs
---~ 		ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_CommieMarxLogos)
---~ 		ChoGGi.testing.ConvertImagesPathToLogos(Mods.ChoGGi_XXXXXXXXXX)
-		function ChoGGi.testing.ConvertImagesPathToLogos(mod,ext)
-			ext = ext or ".png"
-			local mod_path = string.format("%s/Logos",mod.env.CurrentModPath or mod.content_path or mod.path)
-			local images = ChoGGi.ComFuncs.RetFilesInFolder(mod_path,ext)
-			if images then
-				for i = 1, #images do
-					local item = ModItemDecalEntity:new{}
-					item.entity_name = images[i].name
-					item.name = images[i].name
-						-- it expects filename to be a fqpn with /
-					item.filename = ConvertToOSPath(images[i].path):gsub("\\","/")
-					item.mod = mod
-					item.Import(nil,item)
-				end
+		--~ *r ExportSave("ground")
+		-- expects to find AppData/ExportedSave
+		function ChoGGi.testing.ExportSave(name)
+			name = string.format("%s.savegame.sav",name)
+			local output_folder = string.format("%sExportedSave/%s",Savegame._PlatformExportFolder,"%s")
+
+			local err = MountPack("exported", output_folder:format(name), "create, compress")
+			if err then
+				return err
 			end
 
+			Savegame.LoadWithBackup(name, function(folder)
+				local err, files = AsyncListFiles(folder, "*", "relative")
+				if err then
+					return err
+				end
+				for i = 1, #files do
+					err = AsyncCopyFile(string.format("%s%s",folder,files[i]), output_folder:format(files[i]), "raw")
+					if err then
+						return err
+					end
+				end
+			end)
+
+			Unmount("exported")
+			return err
 		end
+
+
+
 
 		-- benchmarking stuff
 

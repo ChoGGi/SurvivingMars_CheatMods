@@ -1,6 +1,10 @@
 ## Library Changelog
 
-## v2.5 (Unreleased)
+## v2.6 (Unreleased)
+
+## v2.5 (20 Oct 2018)
+- Added image scaling to PopupToggle.
+- Sometimes tooltip image didn't show correctly.
 
 ## v2.4 (19 Oct 2018)
 - Horizontal buttons added by my mods now have a hover shine (selection panel).

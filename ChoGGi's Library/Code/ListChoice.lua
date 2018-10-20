@@ -375,16 +375,6 @@ function ChoGGi_ListChoiceDlg:BuildList()
 			listitem.RolloverHint = item.hint_bottom
 		end
 
-		if display_icon then
-			listitem.idImage = g_Classes.ChoGGi_Image:new({
-				Id = "idImage",
-				Dock = "left",
-			}, listitem)
-			listitem.idImage:SetImage(item.icon)
-			if item.icon_scale then
-				listitem.idImage:SetImageScale(point(item.icon_scale, item.icon_scale))
-			end
-		end
 		-- easier access
 		listitem.item = item
 
@@ -406,6 +396,17 @@ function ChoGGi_ListChoiceDlg:BuildList()
 				listitem.RolloverText = Trans(item.hint)
 			else
 				listitem.RolloverText = CheckText(item.hint)
+			end
+		end
+
+		if display_icon then
+			listitem.idImage = g_Classes.ChoGGi_Image:new({
+				Id = "idImage",
+				Dock = "left",
+			}, listitem)
+			listitem.idImage:SetImage(item.icon)
+			if item.icon_scale then
+				listitem.idImage:SetImageScale(point(item.icon_scale, item.icon_scale))
 			end
 		end
 

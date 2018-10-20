@@ -158,12 +158,10 @@ function OnMsg.ClassesGenerate()
 
 		local list = ChoGGi.UserSettings.ConsoleExamineList or ""
 
-		table.sort(list,
-			function(a,b)
-				-- damn eunuchs
-				return CmpLower(a,b)
-			end
-		)
+		table.sort(list,function(a,b)
+			-- damn eunuchs
+			return CmpLower(a,b)
+		end)
 
 		for i = 0, #list do
 			ExamineMenuToggle_list[i] = BuildExamineItem(list[i])
@@ -248,6 +246,7 @@ function OnMsg.ClassesGenerate()
 			ExamineMenuToggle_list[submenu].hint = nil
 			ExamineMenuToggle_list[submenu].submenu = {
 				BuildExamineItem("g_Classes"),
+				BuildExamineItem("ClassTemplates"),
 				BuildExamineItem("EntityData"),
 			}
 		end

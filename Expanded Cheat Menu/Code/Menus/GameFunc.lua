@@ -737,7 +737,6 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 	end
 
 	function ChoGGi.MenuFuncs.ChangeTerrainType()
-		local GetTerrainImage = GetTerrainImage
 		local GridOpFree = GridOpFree
 		local AsyncSetTypeGrid = AsyncSetTypeGrid
 		local TerrainTextures = TerrainTextures
@@ -753,13 +752,12 @@ See the examine list on the left for ids."--]]],str_hint_rules),
 		local ItemList = {}
 		local c = 0
 		for i = 1, #TerrainTextures do
-			local filename = GetTerrainImage(TerrainTextures[i].texture)
 			c = c + 1
 			ItemList[c] = {
 				text = TerrainTextures[i].name,
 				value = i,
-				icon = image:format(filename),
-				hint = imageL:format(filename),
+				icon = image:format(TerrainTextures[i].texture),
+				hint = imageL:format(TerrainTextures[i].texture),
 			}
 		end
 

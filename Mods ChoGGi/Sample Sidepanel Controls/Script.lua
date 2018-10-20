@@ -25,7 +25,7 @@ function OnMsg.ClassesBuilt()
 
 		-- added to the workplace panel, for more see OpenExamine(somebuilding) > click the class at the top till you get to metatable Building > then either __ancestors or __parents
 		"__context_of_kind", "Workplace", --change this to say SecurityStation to only show up for them, but you can just use OnContextUpdate to hide it
-		"__template", "InfopanelSection",
+		"__template", "InfopanelActiveSection",
 
 		-- you can set these here or in OnContextUpdate below
 		-- "Icon", "",
@@ -113,7 +113,7 @@ function OnMsg.ClassesBuilt()
 		"SOMETHINGUNIQUE3", true,
 
 		"__context_of_kind", "Workplace",
-		"__template", "InfopanelSection",
+		"__template", "InfopanelActiveSection",
 
 		-- only show up for buildings that require main
 		"__condition", function (parent, context) return context:DoesRequireMaintenance() end,

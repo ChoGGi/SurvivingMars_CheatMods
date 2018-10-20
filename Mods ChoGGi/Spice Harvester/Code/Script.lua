@@ -67,7 +67,7 @@ function OnMsg.ClassesGenerate()
 			SpiceHarvester.game_paused = true
 		else
 			SpiceHarvester.game_paused = false
-			Msg("MarsResume")
+--~ 			Msg("MarsResume")
 		end
 
 		function OnMsg.MarsPause()

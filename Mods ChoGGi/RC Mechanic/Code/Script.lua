@@ -179,7 +179,7 @@ function OnMsg.ClassesBuilt()
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_RCMechanic_Prod", true,
 			"__context_of_kind", "RCMechanic",
-			"__template", "InfopanelSection",
+			"__template", "InfopanelActiveSection",
 			"Title", T{6924, "Repair"},
 			"Icon", "UI/Icons/Sections/construction.tga",
 		}, {

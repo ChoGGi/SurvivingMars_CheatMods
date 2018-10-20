@@ -536,7 +536,7 @@ function OnMsg.ClassesBuilt()
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_PortableMiner_Prod", true,
 			"__context_of_kind", "PortableMiner",
-			"__template", "InfopanelSection",
+			"__template", "InfopanelActiveSection",
 			"Title", T{80, "Production"},
 			"Icon", "UI/Icons/Sections/storage.tga",
 		}, {

@@ -1,4 +1,0 @@
-figure out what cleans up the grid when you place a con site.
-menupopup with list of textures with preview in tooltip.
-
-only rebuild buildable when you turn it off.

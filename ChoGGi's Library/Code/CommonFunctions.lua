@@ -374,7 +374,7 @@ local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
 function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 	local g_Classes = g_Classes
 	local ViewObjectMars = ViewObjectMars
-	local black = black
+	local IsPoint = IsPoint
 
 	for i = 1, #items do
 		local item = items[i]
@@ -382,14 +382,18 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
 
 		local button = cls:new({
-			TextColor = black,
+			TextColor = -16777216,
 			RolloverTitle = item.hint_title and CheckText(item.hint_title,item.obj and RetName(item.obj) or S[126095410863--[[Info--]]]),
-			RolloverText = CheckText(item.hint,""),
+--~ 			RolloverText = CheckText(item.hint,""),
+			RolloverText = item.hint,
 			Text = CheckText(item.name),
 		}, popup.idContainer)
 
 		if item.image then
 			button.idIcon:SetImage(item.image)
+			if item.image_scale then
+				button.idIcon:SetImageScale(IsPoint(item.image_scale) and item.image_scale or point(item.image_scale,item.image_scale))
+			end
 		end
 
 		if item.clicked then
@@ -515,7 +519,7 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 
 		}, terminal.desktop)
 
-		ChoGGi.ComFuncs.PopupBuildMenu(items,popup,popup_id)
+		ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 
 		popup:Open()
 	--~			 return popup
@@ -3971,3 +3975,30 @@ function ChoGGi.ComFuncs.ToggleCollisions(cls)
 	end)
 	ResumePassEdits(cls)
 end
+
+-- any png files in AppData/Logos folder will be added to mod as converted logo files
+-- they have to be min of 8bit, and will be resized to power of 2.
+-- this doesn't add anything to metadata/items, it only converts files.
+-- ConvertImagesToLogoFiles(Mods.ExampleId,".tga")
+--~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.ChoGGi_XXXXXXXXXX)
+function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod,ext)
+	if blacklist then
+		print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ConvertImagesToLogoFiles"))
+		return
+	end
+	local images = ChoGGi.ComFuncs.RetFilesInFolder("AppData/Logos",ext or ".png")
+	if images then
+		local ModItemDecalEntity = ModItemDecalEntity
+		local Import = ModItemDecalEntity.Import
+		local ConvertToOSPath = ConvertToOSPath
+		for i = 1, #images do
+			Import(nil,ModItemDecalEntity:new{
+				entity_name = images[i].name,
+				name = images[i].name,
+				filename = ConvertToOSPath(images[i].path):gsub("\\","/"),
+				mod = mod,
+			})
+		end
+	end
+end
+
