@@ -1106,23 +1106,22 @@ function OnMsg.ClassesBuilt()
 		end
 	end -- do
 
-	-- make sure console is focused even when construction is opened
+--~ 	-- make sure console is focused even when construction is opened
 	function Console:Show(show)
 		ChoGGi_OrigFuncs.Console_Show(self, show)
-		local was_visible = self:GetVisible()
-		if show and not was_visible then
-			-- always on top
-			self:SetModal()
-		end
-		if not show then
-			-- always on top off
-			self:SetModal(false)
-		end
-		-- adding transparency for console stuff
-		SetTrans(self)
+		if show then
+--~ 			-- always on top
+--~ 			self:SetModal()
+--~ 			self.idEdit:SetFocus()
 
-		-- and rebuild the console buttons (added by ECM)
-		ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(self)
+			-- adding transparency for console stuff
+			SetTrans(self)
+			-- and rebuild my console buttons
+			ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(self)
+--~ 		else
+--~ 			-- always on top off
+--~ 			self:SetModal(false)
+		end
 	end
 
 	do -- skip quit from being added to console history to prevent annoyances

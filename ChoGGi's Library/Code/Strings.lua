@@ -40,11 +40,7 @@ if ChoGGi.lang ~= "English" then
 	__game_font_styles.Editor21Bold = StringFormat("%s, 21, bold, aa",f)
 	__game_font_styles.Editor32Bold = StringFormat("%s, 32, bold",f)
 	__game_font_styles.Rollover = StringFormat("%s, 14, bold, aa",f)
---~	 __game_font_styles.DesignerCaption = StringFormat("%s, 18, bold, aa",f)
---~	 __game_font_styles.DesignerPropEditor = StringFormat("%s,f,", 12, aa"")
 	__game_font_styles.Console = StringFormat("%s, 13, bold, aa",f)
---~	 __game_font_styles.UAMenu = StringFormat("%s, 14, aa",f)
---~	 __game_font_styles.UAToolbar = StringFormat("%s, 14, bold, aa",f)
 	__game_font_styles.EditorCaption = StringFormat("%s, 14, bold, aa",f)
 
 	-- normally called when translation is changed, but i try to keep Init.lua simple
@@ -290,6 +286,7 @@ local Strings = {
 	[460479110814] = TranslationTable[460479110814], -- Enabled
 	[487939677892] = TranslationTable[487939677892], -- Help
 	[584248706535] = _InternalTranslate(T{584248706535}), -- Carrying<right><ResourceAmount>
+	[591853191640] = _InternalTranslate(T{591853191640}), -- Empty list
 	[619281504128] = TranslationTable[619281504128], -- Maintenance
 	[640016954592] = TranslationTable[640016954592], -- Remove this switch or valve.
 	[652319561018] = TranslationTable[652319561018], -- All Traits

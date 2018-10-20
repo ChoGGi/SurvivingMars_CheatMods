@@ -384,8 +384,8 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		local button = cls:new({
 			TextColor = -16777216,
 			RolloverTitle = item.hint_title and CheckText(item.hint_title,item.obj and RetName(item.obj) or S[126095410863--[[Info--]]]),
---~ 			RolloverText = CheckText(item.hint,""),
-			RolloverText = item.hint,
+			RolloverText = CheckText(item.hint,""),
+--~ 			RolloverText = item.hint,
 			Text = CheckText(item.name),
 		}, popup.idContainer)
 

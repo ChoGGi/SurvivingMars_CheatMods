@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v2.6 (Unreleased)
+- Forgot to change a line back, and broke some tooltip hints.
 
 ## v2.5 (20 Oct 2018)
 - Added image scaling to PopupToggle.

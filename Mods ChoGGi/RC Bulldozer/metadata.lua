@@ -18,5 +18,5 @@ The buildable area won't be updated till you turn off Dozer Toggle (expensive fu
 
 
 Known issues:
-The sides of ground don't look that good, you can use Terraformer to smooth them.]],
+The sides of ground on tall hills don't look that good, you can use my Terraformer mod to smooth them.]],
 })

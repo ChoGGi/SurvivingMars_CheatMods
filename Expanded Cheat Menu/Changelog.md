@@ -4,6 +4,8 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v10.1 (Unreleased)
+### Changed:
+- ECM Scripts will skip any folders without .lua files in them.
 
 ## v10.0 (19 Oct 2018)
 ### Added:
