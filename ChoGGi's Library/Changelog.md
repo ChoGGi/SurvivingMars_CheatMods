@@ -1,7 +1,10 @@
 ## Library Changelog
 
-## v2.6 (Unreleased)
+## v2.7 (Unreleased)
+
+## v2.6 (20 Oct 2018)
 - Forgot to change a line back, and broke some tooltip hints.
+- It seems I broke my blinky object awhile back.
 
 ## v2.5 (20 Oct 2018)
 - Added image scaling to PopupToggle.

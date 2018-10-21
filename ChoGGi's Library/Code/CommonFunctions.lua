@@ -3672,17 +3672,18 @@ end
 do -- AddBlinkyToObj
 	local DeleteThread = DeleteThread
 	local IsValid = IsValid
-	local WaitMsg = WaitMsg
 	local blinky_obj
 	local blinky_thread
+
 	function ChoGGi.ComFuncs.AddBlinkyToObj(obj,timeout)
 		if not IsValid(obj) then
 			return
 		end
 		-- if it was attached to something deleted, or fresh start
 		if not IsValid(blinky_obj) then
-			blinky_obj = ChoGGi_RotatyThing:new()
+			blinky_obj = RotatyThing:new()
 		end
+		blinky_obj.ChoGGi_blinky = true
 		-- stop any previous countdown
 		DeleteThread(blinky_thread)
 		-- make it visible incase it isn't
@@ -3694,8 +3695,7 @@ do -- AddBlinkyToObj
 			spot = obj:GetSpotBeginIndex("Top")
 		else
 			spot = obj:GetSpotBeginIndex("Origin")
-			local bb = obj:GetEntityBBox()
-			offset = bb:sizey()
+			offset = obj:GetEntityBBox():sizey()
 			-- if it's larger then a dome, but isn't a BaseBuilding then we'll just ignore it (DomeGeoscapeWater)
 			if offset > 10000 and not obj:IsKindOf("BaseBuilding") or offset < 250 then
 				offset = 250

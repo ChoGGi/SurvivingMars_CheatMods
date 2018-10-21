@@ -918,6 +918,12 @@ function OnMsg.ChangeMap()
 end
 
 do -- LoadGame/CityStart
+	local function CleanUp(cls)
+		local objs = MapGet(true,cls)
+		for i = #objs, 1, -1 do
+			objs[i]:delete()
+		end
+	end
 	local function SetMissionBonuses(UserSettings,Presets,preset,which,Func)
 		local list = Presets[preset].Default or ""
 		for i = 1, #list do
@@ -929,6 +935,17 @@ do -- LoadGame/CityStart
 
 	-- saved game is loaded
 	function OnMsg.LoadGame()
+		-- just in case any are stuck on the map
+		local rotates = MapGet(true,"RotatyThing")
+		for i = #rotates, 1, -1 do
+			if rotates[i].ChoGGi_blinky then
+				rotates[i]:delete()
+			end
+		end
+		CleanUp("ChoGGi_HexSpot")
+		CleanUp("ChoGGi_Vector")
+		CleanUp("ChoGGi_Sphere")
+
 		ChoGGi.Temp.IsChoGGiMsgLoaded = false
 		Msg("ChoGGi_Loaded")
 	end

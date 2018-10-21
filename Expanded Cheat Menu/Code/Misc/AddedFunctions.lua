@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
 	-- add some shortened func names
 	do
 		local ChoGGi = ChoGGi
@@ -43,42 +42,43 @@ function OnMsg.ClassesGenerate()
 	--~		 RemoveLast("quit")
 	--~	 end
 	end
+end
 
-	-- no need to have these in the do
-	function restart()
-		quit("restart")
-	end
-	reboot = restart
-	exit = quit
-	mh = GetTerrainCursorObjSel -- only returns selected obj under cursor
-	mhc = GetTerrainCursorObj -- returns obj under cursor
-	mc = GetPreciseCursorObj
-	m = SelectionMouseObj
-	c = GetTerrainCursor -- cursor position on map
-	cs = terminal.GetMousePos -- cursor pos on screen
-	s = false -- used to store SelectedObj
 
-	-- add some simple functions to the cheatmenu for moving it/getting pos
-	function XShortcutsHost:SetPos(pt)
-		self:SetBox(pt:x(),pt:y(),self.box:sizex(),self.box:sizey())
-	end
-	function XShortcutsHost:GetPos()
-		return ChoGGi_Window.GetPos(self,"idMenuBar")
-	end
-	function XShortcutsHost:GetSize()
-		local GetSize = ChoGGi_Window.GetSize
-		return GetSize(self,"idMenuBar") + GetSize(self,"idBottomContainer")
-	end
+-- no need to have these in the do
+function restart()
+	quit("restart")
+end
+reboot = restart
+exit = quit
+mh = GetTerrainCursorObjSel -- only returns selected obj under cursor
+mhc = GetTerrainCursorObj -- returns obj under cursor
+mc = GetPreciseCursorObj
+m = SelectionMouseObj
+c = GetTerrainCursor -- cursor position on map
+cs = terminal.GetMousePos -- cursor pos on screen
+s = false -- used to store SelectedObj
 
-	-- for anyone still wanting to use it pre-gagarin
-	if not rawget(_G, "DiscoverTech") then
-		function DiscoverTech(tech_id)
-			UICity:SetTechDiscovered(tech_id)
-		end
-	end
+-- add some simple functions to the cheatmenu for moving it/getting pos
+function XShortcutsHost:SetPos(pt)
+	self:SetBox(pt:x(),pt:y(),self.box:sizex(),self.box:sizey())
+end
+function XShortcutsHost:GetPos()
+	return ChoGGi_Window.GetPos(self,"idMenuBar")
+end
+function XShortcutsHost:GetSize()
+	local GetSize = ChoGGi_Window.GetSize
+	return GetSize(self,"idMenuBar") + GetSize(self,"idBottomContainer")
+end
 
-	function DiscoverTech_Old(tech_id)
+-- for anyone still wanting to use it pre-gagarin
+if not rawget(_G, "DiscoverTech") then
+	function DiscoverTech(tech_id)
 		UICity:SetTechDiscovered(tech_id)
 	end
-
 end
+
+function DiscoverTech_Old(tech_id)
+	UICity:SetTechDiscovered(tech_id)
+end
+
