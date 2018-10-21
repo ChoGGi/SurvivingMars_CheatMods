@@ -1,6 +1,8 @@
 local bt = BuildingTemplates
 
--- I included all the "default" costs just in case they change them
+-- I included all the original costs just in case they change them later on.
+-- This won't block extra materials from being added to the cost.
+
 bt.ArtWorkshop.construction_cost_Concrete = 20000
 bt.ArtWorkshop.construction_cost_Polymers = 5000
 bt.ArtWorkshop.maintenance_build_up_per_hr = 600

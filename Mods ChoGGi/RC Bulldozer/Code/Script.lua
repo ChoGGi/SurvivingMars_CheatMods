@@ -328,21 +328,25 @@ end
 -- build list of textures for popup menu below
 local texture_list
 function OnMsg.InGameInterfaceCreated()
+	local smallest = point(1,1)
 	texture_list = {}
 	local TerrainTextures = TerrainTextures
 	local image = "<image %s>"
+
 	for i = 0, #TerrainTextures do
 		local hint
 		if TerrainTextures[i].name == "Dig" then
-			hint = string.format("Default texture\n%s",image:format(TerrainTextures[i].texture))
+			hint = string.format("Texture from original version\n%s",image:format(TerrainTextures[i].texture))
 		else
 			hint = image:format(TerrainTextures[i].texture)
 		end
 		texture_list[i] = {
 			name = TerrainTextures[i].name,
 			hint = hint,
+			-- this is just so the image loads (otherwise the tooltip image will be borked)
 			image = TerrainTextures[i].texture,
-			image_scale = point(1,1),
+			-- which is why I make it invisible
+			image_scale = smallest,
 			clicked = function()
 				local info = Dialogs.Infopanel
 				if info then

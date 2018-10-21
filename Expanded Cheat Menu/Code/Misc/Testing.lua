@@ -19,7 +19,7 @@ function OnMsg.ClassesGenerate()
 			as.Options.AutoPinRovers = false
 			as.Options.Autosave = false
 			as.Options.HintsEnabled = false
-			as.Shortcuts["Debug.Delete Object(s).Delete Object(s)"] = {"Ctrl-Shift-D"}
+			as.Shortcuts["ECM.Debug.Delete Object(s).Delete Object(s)"] = {"Ctrl-Shift-D"}
 		end
 
 --~ 		-- stop welcome to mars msg for LoadMapForScreenShot
@@ -28,7 +28,7 @@ function OnMsg.ClassesGenerate()
 --~ 		ChoGGi.testing.LoadMapForScreenShot("BlankBigTerraceCMix_13")
 		function ChoGGi.testing.LoadMapForScreenShot(map)
 
-			-- need a mystery without anything added to the ground
+			-- a mystery without anything visible added to the ground
 			g_CurrentMissionParams.idMystery = "BlackCubeMystery"
 			local gen = RandomMapGenerator:new()
 			gen.BlankMap = map

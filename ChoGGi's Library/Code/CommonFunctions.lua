@@ -762,9 +762,9 @@ do -- bool
 		while not dlgConsole do
 			Sleep(50)
 		end
-		dlgConsole:Exec("ChoGGi.Temp.AccountStorage=AccountStorage\nChoGGi.Temp.SaveAccountStorage=SaveAccountStorage",true)
-		acmpd = ChoGGi.Temp.AccountStorage.ModPersistentData
-		acsac = ChoGGi.Temp.SaveAccountStorage
+		dlgConsole:Exec("ChoGGi.Temp.as=AccountStorage\nChoGGi.Temp.sas=SaveAccountStorage",true)
+		acmpd = ChoGGi.Temp.as.ModPersistentData
+		acsac = ChoGGi.Temp.sas
 	end)
 end
 

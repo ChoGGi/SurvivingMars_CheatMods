@@ -670,7 +670,7 @@ function Examine:SetTranspMode(toggle)
 end
 --
 
-local function Examine_valuetotextex(_, _, button,obj,self)
+local function Examine_valuetotextex(button,obj,self)
 	if button == "L" then
 		ChoGGi.ComFuncs.OpenInExamineDlg(obj, self)
 	elseif IsValid(obj) then
@@ -684,7 +684,7 @@ function Examine:valuetotextex(obj)
 	if obj_type == "function" then
 		return StringFormat("%s%s%s",
 			self:HyperLink(function(_,_,button)
-				Examine_valuetotextex(_,_,button,obj,self)
+				Examine_valuetotextex(button,obj,self)
 			end),
 			DebugGetInfo(obj),
 			HLEnd
@@ -693,7 +693,7 @@ function Examine:valuetotextex(obj)
 	elseif obj_type == "thread" then
 		return StringFormat("%s%s%s",
 			self:HyperLink(function(_,_,button)
-				Examine_valuetotextex(_,_,button,obj,self)
+				Examine_valuetotextex(button,obj,self)
 			end),
 			tostring(obj),
 			HLEnd
@@ -705,7 +705,6 @@ function Examine:valuetotextex(obj)
 
 	elseif obj_type == "userdata" then
 
-		-- point() is userdata (keep before it)
 		if IsPoint(obj) then
 			if obj == InvalidPos then
 				return S[302535920000066--[[<color 203 120 30>Off-Map Pos</color>--]]]
@@ -721,23 +720,20 @@ function Examine:valuetotextex(obj)
 				)
 			end
 		else
-			local str = tostring(obj)
+			-- show translated text if possible and return a clickable link
 			local trans = Trans(obj)
-			-- if it isn't translatable then return a clickable link (not that useful, but it's highlighted)
 			if trans == "stripped" or trans:find("Missing locale string id") then
-				return StringFormat("%s%s%s",
-					self:HyperLink(function(_,_,button)
-						Examine_valuetotextex(_,_,button,obj,self)
-					end),
-					str,
-					HLEnd
-				)
-			else
-				return StringFormat([[%s</color></color> < "%s"]],
-					trans,
-					obj_type
-				)
+				trans = tostring(obj)
 			end
+			-- the </color> is to make sure it doesn't bleed into other text
+			return StringFormat("%s</color></color>%s < %s%s",
+				trans,
+				self:HyperLink(function(_,_,button)
+					Examine_valuetotextex(button,obj,self)
+				end),
+				getmetatable(obj).__name or obj_type,
+				HLEnd
+			)
 		end
 
 	elseif obj_type == "table" then
@@ -745,7 +741,7 @@ function Examine:valuetotextex(obj)
 		if IsValid(obj) then
 			return StringFormat("%s%s%s@%s",
 				self:HyperLink(function(_,_,button)
-					Examine_valuetotextex(_,_,button,obj,self)
+					Examine_valuetotextex(button,obj,self)
 				end),
 				obj.class,
 				HLEnd,
@@ -760,7 +756,7 @@ function Examine:valuetotextex(obj)
 			if obj_metatable and IsObjlist(obj_metatable) then
 				local res = {
 					self:HyperLink(function(_,_,button)
-						Examine_valuetotextex(_,_,button,obj,self)
+						Examine_valuetotextex(button,obj,self)
 					end),
 					"objlist",
 					HLEnd,
@@ -812,7 +808,7 @@ function Examine:valuetotextex(obj)
 
 				return StringFormat("%s%s%s",
 					self:HyperLink(function(_,_,button)
-						Examine_valuetotextex(_,_,button,obj,self)
+						Examine_valuetotextex(button,obj,self)
 					end),
 					name,
 					HLEnd
@@ -1013,7 +1009,42 @@ function Examine:totextex(obj)
 			TableSort(data_meta, function(a, b)
 				return CmpLower(a, b)
 			end)
-			TableInsert(data_meta,1,"\ngetmetatable():")
+			-- add some info if it's a task request
+			if obj_metatable.__name == "HGE.TaskRequest" then
+				TableInsert(data_meta,1,StringFormat("\nGetBuilding(): %s",self:valuetotextex(obj:GetBuilding())))
+				TableInsert(data_meta,2,StringFormat("GetWorkingUnits(): %s",self:valuetotextex(obj:GetWorkingUnits())))
+				TableInsert(data_meta,3,StringFormat("GetActualAmount(): %s",self:valuetotextex(obj:GetActualAmount())))
+				TableInsert(data_meta,4,StringFormat("GetDesiredAmount(): %s",self:valuetotextex(obj:GetDesiredAmount())))
+				TableInsert(data_meta,5,StringFormat("GetTargetAmount(): %s",self:valuetotextex(obj:GetTargetAmount())))
+				TableInsert(data_meta,6,StringFormat("GetFillIndex(): %s",self:valuetotextex(obj:GetFillIndex())))
+				TableInsert(data_meta,7,StringFormat("GetFlags(): %s",self:valuetotextex(obj:GetFlags())))
+				TableInsert(data_meta,8,StringFormat("GetFreeUnitSlots(): %s",self:valuetotextex(obj:GetFreeUnitSlots())))
+				TableInsert(data_meta,9,StringFormat("GetLastServiced(): %s",self:valuetotextex(obj:GetLastServiced())))
+				TableInsert(data_meta,10,StringFormat("GetReciprocalRequest(): %s",self:valuetotextex(obj:GetReciprocalRequest())))
+				TableInsert(data_meta,11,StringFormat("IsAnyFlagSet(): %s",self:valuetotextex(obj:IsAnyFlagSet())))
+				TableInsert(data_meta,12,StringFormat("Unpack(): %s",self:valuetotextex(obj:Unpack())))
+				TableInsert(data_meta,13,"\ngetmetatable():")
+			elseif obj_metatable.__name == "HGE.Grid" then
+				TableInsert(data_meta,1,StringFormat("\nsize(): %s",self:valuetotextex(obj:size())))
+				TableInsert(data_meta,2,StringFormat("max_value(): %s",self:valuetotextex(obj:max_value())))
+				TableInsert(data_meta,3,StringFormat("get_default(): %s",self:valuetotextex(obj:get_default())))
+				TableInsert(data_meta,4,"\ngetmetatable():")
+			elseif obj_metatable.__name == "HGE.Box" then
+				TableInsert(data_meta,1,StringFormat("\nsize(): %s",self:valuetotextex(obj:size())))
+				TableInsert(data_meta,2,StringFormat("Radius(): %s",self:valuetotextex(obj:Radius())))
+				TableInsert(data_meta,3,StringFormat("Radius2D(): %s",self:valuetotextex(obj:Radius2D())))
+				TableInsert(data_meta,4,StringFormat("ToPoints2D(): %s",self:valuetotextex(obj:ToPoints2D())))
+				TableInsert(data_meta,5,StringFormat("IsEmpty(): %s",self:valuetotextex(obj:IsEmpty())))
+				TableInsert(data_meta,6,StringFormat("IsValid(): %s",self:valuetotextex(obj:IsValid())))
+				TableInsert(data_meta,7,StringFormat("IsValidZ(): %s",self:valuetotextex(obj:IsValidZ())))
+				TableInsert(data_meta,8,StringFormat("Center(): %s",self:valuetotextex(obj:Center())))
+				TableInsert(data_meta,9,StringFormat("GetBSphere(): %s",self:valuetotextex(obj:GetBSphere())))
+				TableInsert(data_meta,10,StringFormat("max(): %s",self:valuetotextex(obj:max())))
+				TableInsert(data_meta,11,StringFormat("min(): %s",self:valuetotextex(obj:min())))
+				TableInsert(data_meta,12,"\ngetmetatable():")
+			else
+				TableInsert(data_meta,13,"\ngetmetatable():")
+			end
 
 			c = c + 1
 			totextex_res[c] = TableConcat(data_meta,"\n")
