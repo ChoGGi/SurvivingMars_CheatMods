@@ -731,7 +731,7 @@ function Examine:valuetotextex(obj)
 				self:HyperLink(function(_,_,button)
 					Examine_valuetotextex(button,obj,self)
 				end),
-				getmetatable(obj).__name or obj_type,
+				getmetatable(obj).__name or tostring(obj),
 				HLEnd
 			)
 		end
@@ -987,13 +987,15 @@ function Examine:totextex(obj)
 		totextex_res[c] = tostring(obj)
 
 	elseif obj_type == "userdata" then
-		local str = Trans(obj)
+		local trans = Trans(obj)
 		-- might as well just return userdata instead of these
-		if str == "stripped" or str:find("Missing locale string id") then
-			str = obj
+		if trans == "stripped" or trans:find("Missing locale string id") then
+			trans = tostring(obj)
+		else
+			trans = StringFormat("%s < %s",obj,trans)
 		end
 		c = c + 1
-		totextex_res[c] = tostring(str)
+		totextex_res[c] = trans
 
 		-- add any functions from getmeta to the (scant) list
 		if obj_metatable then
@@ -1009,41 +1011,85 @@ function Examine:totextex(obj)
 			TableSort(data_meta, function(a, b)
 				return CmpLower(a, b)
 			end)
-			-- add some info if it's a task request
-			if obj_metatable.__name == "HGE.TaskRequest" then
+
+			-- add some info for HGE. stuff
+			local name = obj_metatable.__name
+			if name == "HGE.TaskRequest" then
 				TableInsert(data_meta,1,StringFormat("\nGetBuilding(): %s",self:valuetotextex(obj:GetBuilding())))
 				TableInsert(data_meta,2,StringFormat("GetWorkingUnits(): %s",self:valuetotextex(obj:GetWorkingUnits())))
 				TableInsert(data_meta,3,StringFormat("GetActualAmount(): %s",self:valuetotextex(obj:GetActualAmount())))
 				TableInsert(data_meta,4,StringFormat("GetDesiredAmount(): %s",self:valuetotextex(obj:GetDesiredAmount())))
 				TableInsert(data_meta,5,StringFormat("GetTargetAmount(): %s",self:valuetotextex(obj:GetTargetAmount())))
 				TableInsert(data_meta,6,StringFormat("GetFillIndex(): %s",self:valuetotextex(obj:GetFillIndex())))
-				TableInsert(data_meta,7,StringFormat("GetFlags(): %s",self:valuetotextex(obj:GetFlags())))
-				TableInsert(data_meta,8,StringFormat("GetFreeUnitSlots(): %s",self:valuetotextex(obj:GetFreeUnitSlots())))
-				TableInsert(data_meta,9,StringFormat("GetLastServiced(): %s",self:valuetotextex(obj:GetLastServiced())))
-				TableInsert(data_meta,10,StringFormat("GetReciprocalRequest(): %s",self:valuetotextex(obj:GetReciprocalRequest())))
+				TableInsert(data_meta,7,StringFormat("GetFreeUnitSlots(): %s",self:valuetotextex(obj:GetFreeUnitSlots())))
+				TableInsert(data_meta,8,StringFormat("GetLastServiced(): %s",self:valuetotextex(obj:GetLastServiced())))
+				TableInsert(data_meta,9,StringFormat("GetReciprocalRequest(): %s",self:valuetotextex(obj:GetReciprocalRequest())))
+				TableInsert(data_meta,10,StringFormat("GetFlags(): %s",self:valuetotextex(obj:GetFlags())))
 				TableInsert(data_meta,11,StringFormat("IsAnyFlagSet(): %s",self:valuetotextex(obj:IsAnyFlagSet())))
 				TableInsert(data_meta,12,StringFormat("Unpack(): %s",self:valuetotextex(obj:Unpack())))
 				TableInsert(data_meta,13,"\ngetmetatable():")
-			elseif obj_metatable.__name == "HGE.Grid" then
+			elseif name == "HGE.Grid" then
 				TableInsert(data_meta,1,StringFormat("\nsize(): %s",self:valuetotextex(obj:size())))
 				TableInsert(data_meta,2,StringFormat("max_value(): %s",self:valuetotextex(obj:max_value())))
 				TableInsert(data_meta,3,StringFormat("get_default(): %s",self:valuetotextex(obj:get_default())))
 				TableInsert(data_meta,4,"\ngetmetatable():")
-			elseif obj_metatable.__name == "HGE.Box" then
+			elseif name == "HGE.XMGrid" then
+				TableInsert(data_meta,1,StringFormat("\nCenterOfMass(): %s",self:valuetotextex(obj:CenterOfMass())))
+				TableInsert(data_meta,2,StringFormat("EnumZones(): %s",self:valuetotextex(obj:EnumZones())))
+				TableInsert(data_meta,3,StringFormat("GetBilinear(): %s",self:valuetotextex(obj:GetBilinear())))
+				TableInsert(data_meta,4,StringFormat("GetPositiveCells(): %s",self:valuetotextex(obj:GetPositiveCells())))
+				TableInsert(data_meta,5,StringFormat("levels(): %s",self:valuetotextex(obj:levels())))
+				TableInsert(data_meta,6,"\ngetmetatable():")
+				local minmax = {obj:minmax()}
+				if minmax[1] then
+					TableInsert(data_meta,6,StringFormat("minmax(): %s %s",minmax[1],minmax[2]))
+				end
+			elseif name == "HGE.Box" then
+				TableInsert(data_meta,1,StringFormat("\nIsValid(): %s",self:valuetotextex(obj:IsValid())))
+				TableInsert(data_meta,2,StringFormat("IsValidZ(): %s",self:valuetotextex(obj:IsValidZ())))
+				TableInsert(data_meta,3,StringFormat("size(): %s",self:valuetotextex(obj:size())))
+				local Radius = self:valuetotextex(obj:Radius())
+				TableInsert(data_meta,4,StringFormat("Radius(): %s",Radius))
+				TableInsert(data_meta,5,StringFormat("ToPoints2D(): %s",self:valuetotextex(obj:ToPoints2D())))
+				TableInsert(data_meta,6,StringFormat("IsEmpty(): %s",self:valuetotextex(obj:IsEmpty())))
+				TableInsert(data_meta,7,StringFormat("Center(): %s",self:valuetotextex(obj:Center())))
+				TableInsert(data_meta,8,StringFormat("GetBSphere(): %s",self:valuetotextex(obj:GetBSphere())))
+				TableInsert(data_meta,9,StringFormat("max(): %s",self:valuetotextex(obj:max())))
+				TableInsert(data_meta,10,StringFormat("min(): %s",self:valuetotextex(obj:min())))
+				TableInsert(data_meta,11,"\ngetmetatable():")
+				local Radius2D = self:valuetotextex(obj:Radius2D())
+				if Radius ~= Radius2D then
+					TableInsert(data_meta,5,StringFormat("Radius2D(): %s",Radius2D))
+				end
+			elseif name == "HGE.Point" then
+				TableInsert(data_meta,1,StringFormat("\nIsValid(): %s",self:valuetotextex(obj:IsValid())))
+				TableInsert(data_meta,2,StringFormat("IsValidZ(): %s",self:valuetotextex(obj:IsValidZ())))
+				TableInsert(data_meta,3,StringFormat("x(): %s",self:valuetotextex(obj:x())))
+				TableInsert(data_meta,4,StringFormat("y(): %s",self:valuetotextex(obj:y())))
+				TableInsert(data_meta,5,StringFormat("z(): %s",self:valuetotextex(obj:z())))
+				TableInsert(data_meta,6,StringFormat("__unm(): %s",self:valuetotextex(obj:__unm())))
+				TableInsert(data_meta,7,"\ngetmetatable():")
+			elseif name == "HGE.RandState" then
+				TableInsert(data_meta,1,StringFormat("\nCount(): %s",self:valuetotextex(obj:Count())))
+				TableInsert(data_meta,2,StringFormat("Get(): %s",self:valuetotextex(obj:Get())))
+				TableInsert(data_meta,3,StringFormat("GetStable(): %s",self:valuetotextex(obj:GetStable())))
+				TableInsert(data_meta,4,StringFormat("Last(): %s",self:valuetotextex(obj:Last())))
+				TableInsert(data_meta,5,"\ngetmetatable():")
+			elseif name == "HGE.Quaternion" then
+				TableInsert(data_meta,1,StringFormat("\nGetAxisAngle(): %s",self:valuetotextex(obj:GetAxisAngle())))
+				TableInsert(data_meta,2,StringFormat("GetRollPitchYaw(): %s",self:valuetotextex(obj:GetRollPitchYaw())))
+				TableInsert(data_meta,3,StringFormat("Inv(): %s",self:valuetotextex(obj:Inv())))
+				TableInsert(data_meta,4,StringFormat("Norm(): %s",self:valuetotextex(obj:Norm())))
+				TableInsert(data_meta,5,"\ngetmetatable():")
+			elseif name == "LuaPStr" then
 				TableInsert(data_meta,1,StringFormat("\nsize(): %s",self:valuetotextex(obj:size())))
-				TableInsert(data_meta,2,StringFormat("Radius(): %s",self:valuetotextex(obj:Radius())))
-				TableInsert(data_meta,3,StringFormat("Radius2D(): %s",self:valuetotextex(obj:Radius2D())))
-				TableInsert(data_meta,4,StringFormat("ToPoints2D(): %s",self:valuetotextex(obj:ToPoints2D())))
-				TableInsert(data_meta,5,StringFormat("IsEmpty(): %s",self:valuetotextex(obj:IsEmpty())))
-				TableInsert(data_meta,6,StringFormat("IsValid(): %s",self:valuetotextex(obj:IsValid())))
-				TableInsert(data_meta,7,StringFormat("IsValidZ(): %s",self:valuetotextex(obj:IsValidZ())))
-				TableInsert(data_meta,8,StringFormat("Center(): %s",self:valuetotextex(obj:Center())))
-				TableInsert(data_meta,9,StringFormat("GetBSphere(): %s",self:valuetotextex(obj:GetBSphere())))
-				TableInsert(data_meta,10,StringFormat("max(): %s",self:valuetotextex(obj:max())))
-				TableInsert(data_meta,11,StringFormat("min(): %s",self:valuetotextex(obj:min())))
-				TableInsert(data_meta,12,"\ngetmetatable():")
+				TableInsert(data_meta,2,StringFormat("getInt(): %s",self:valuetotextex(obj:getInt())))
+				TableInsert(data_meta,3,StringFormat("parseTuples(): %s",self:valuetotextex(obj:parseTuples())))
+				TableInsert(data_meta,4,StringFormat("str(): %s",self:valuetotextex(obj:str())))
+				TableInsert(data_meta,5,StringFormat("hash(): %s",self:valuetotextex(obj:hash())))
+				TableInsert(data_meta,6,"\ngetmetatable():")
 			else
-				TableInsert(data_meta,13,"\ngetmetatable():")
+				TableInsert(data_meta,1,"\ngetmetatable():")
 			end
 
 			c = c + 1
