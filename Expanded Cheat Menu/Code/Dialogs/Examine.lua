@@ -541,7 +541,14 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
 			clicked = function()
 				GedObjectEditor = false
-				OpenGedGameObjectEditor{ChoGGi.ComFuncs.SelObject()}
+				OpenGedGameObjectEditor{self.obj}
+			end,
+		},
+		{
+			name = S[302535920000067--[[Ged Inspect--]]],
+			hint = S[302535920001075--[[Open this object in the Ged inspector.--]]],
+			clicked = function()
+				Inspect(self.obj)
 			end,
 		},
 		{

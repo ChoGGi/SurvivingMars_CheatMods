@@ -4,6 +4,9 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v10.1 (Unreleased)
+### Added:
+- Examine>Tools>Ged Inspect: Open object in the Ged inspector (use Inspect(obj) in the console manually).
+
 ### Changed:
 - ECM Scripts will skip any folders without .lua files in them.
 

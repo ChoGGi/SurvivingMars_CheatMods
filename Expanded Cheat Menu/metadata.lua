@@ -30,6 +30,7 @@ return PlaceObj("ModDef", {
 		"Code/Misc/Testing.lua",
 		"Code/Misc/ReplacedFunctions.lua",
 		"Code/Misc/OnMsgs.lua",
+		"Code/Misc/GedSocket.lua",
 
 		-- menus/menu items/shortcuts
 		"Code/Menus/BuildingsFunc.lua",
