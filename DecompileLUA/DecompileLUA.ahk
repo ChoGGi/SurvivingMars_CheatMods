@@ -83,16 +83,27 @@ If (bCalledFromMain)
 			File.Close()
 			}
 		}
-		;all done
-		MsgBox 4096,Done,Files Decompiled in:`n%bCalledFromMain%
 	}
 Else
 	{
-	;loops all folders
+	arr := []
+
+	;loops all folders, and add pid to array
 	Loop Files,*,D
 		{
-		Run %A_ScriptFullPath% `"%A_LoopFileLongPath%`" %sConvert%
+		Run %A_ScriptFullPath% `"%A_LoopFileLongPath%`" %sConvert%,,,PID
+		arr.Push(PID)
 		}
+
+	;wait till all processes are closed
+	Loop % arr.Length()
+		{
+		Process Wait,% arr[A_Index],5
+		Process WaitClose,% arr[A_Index]
+		}
+
+	;all done
+	MsgBox 4096,Done,Files Decompiled
 	}
 
 ;not needed just letting you know there's only functions below here
