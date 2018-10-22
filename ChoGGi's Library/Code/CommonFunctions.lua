@@ -2970,7 +2970,6 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 		end
 		return
 	end
-	-- not sure why i have the efApplyToGrids...
 	local coll = const.efCollision + const.efApplyToGrids
 
 	local which

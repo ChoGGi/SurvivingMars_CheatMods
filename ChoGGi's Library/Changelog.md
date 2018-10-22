@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v2.7 (Unreleased)
+- Code cleanup.
 
 ## v2.6 (20 Oct 2018)
 - Forgot to change a line back, and broke some tooltip hints.

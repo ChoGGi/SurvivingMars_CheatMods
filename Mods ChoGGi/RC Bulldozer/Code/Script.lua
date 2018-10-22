@@ -25,8 +25,7 @@ function OnMsg.ModsReloaded()
 
 	if not_found_or_wrong_version then
 		CreateRealTimeThread(function()
-			WaitMsg("InGameInterfaceCreated")
-			if WaitMarsQuestion(nil,nil,string.format([[Error: RC Bulldozer requires ChoGGi's Library (at least v%s).
+			if WaitMarsQuestion(nil,"Error",string.format([[RC Bulldozer requires ChoGGi's Library (at least v%s).
 Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_version)) == "ok" then
 				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
 			end
@@ -50,12 +49,9 @@ local IsValid = IsValid
 local RecalcBuildableGrid = RecalcBuildableGrid
 local MovePointAway = MovePointAway
 local MapDelete = MapDelete
-
-local SuspendTerrainInvalidations = SuspendTerrainInvalidations
-local SuspendPassEdits = SuspendPassEdits
+local engineSuspendPassEdits = engineSuspendPassEdits
+local engineResumePassEdits = engineResumePassEdits
 local PlaceObject = PlaceObject
-local ResumePassEdits = ResumePassEdits
-local ResumeTerrainInvalidations = ResumeTerrainInvalidations
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
@@ -192,6 +188,8 @@ function RCBulldozer:StopDozer()
 	self.flatten_thread = false
 	-- boolean toggle
 	self.bulldozing = false
+	-- back to normal colour
+	self:SetColorizationMaterial(2, -11845311, 120, 20)
 	-- hide circle if visible
 	self:UpdateCircle()
 
@@ -215,10 +213,38 @@ function OnMsg.MarsPause()
 	game_paused = true
 end
 
+local efCollision = const.efCollision + const.efApplyToGrids
+local efSelectable = const.efSelectable
+-- a very ugly hack to update driveable area
+function RCBulldozer:AddDriveable()
+	self.site = PlaceObject("ConstructionSite", {})
+	self.site:SetBuildingClass("DomeBasic")
+	self.site:SetOpacity(0)
+	-- so dozer doesn't get scared of itself
+	self.site:ClearHierarchyEnumFlags(efCollision + efSelectable)
+	self.site:InvalidateSurfaces()
+
+	self:Attach(self.site)
+	-- we don't want drones to bother with this site
+	CreateRealTimeThread(function()
+		Sleep(100)
+		self.site:DisconnectFromCommandCenters()
+		self.site.auto_connect = false
+		self.site.resource_stockpile:delete()
+		self.site.resource_stockpile = nil
+	end)
+end
+
 function RCBulldozer:StartDozer()
 	self.bulldozing = true
+	-- make it noticeable so people (hopefully) remember to turn it off
+	self:SetColorizationMaterial(2, -15464440, 120, 20)
 	-- add a circle for radius vis
 	self:UpdateCircle()
+	-- sigh
+	if not IsValid(self.site) then
+		self:AddDriveable()
+	end
 
 	-- it shouldn't already be running, but fuck it
 	if not IsValidThread(self.flatten_thread) then
@@ -252,26 +278,32 @@ function RCBulldozer:StartDozer()
 
 					-- flatten func
 					SetHeightCircle(pos, self.radius, self.radius, GetHeight(self:GetVisualPos()))
-					-- remove any rocks in the way
+					-- speed and needed for my ugly hack
+					engineSuspendPassEdits()
+					-- remove any pebbles in the way
 					MapDelete(pos, self.radius, efRemoveUnderConstruction)
-					-- a very ugly hack to update driveable area
-					SuspendTerrainInvalidations("RCBulldozerUglyHack")
-					SuspendPassEdits("RCBulldozerUglyHack")
-					local site = PlaceObject("ConstructionSite", {})
-					site:SetOpacity(0)
-					site:SetBuildingClass("DomeMega")
-					site:SetPos(pos)
-					site:delete()
-					ResumePassEdits("RCBulldozerUglyHack")
-					ResumeTerrainInvalidations("RCBulldozerUglyHack")
-					-- change ground texture?
+					-- add some dust
+--~ 					PlayFX("Dust", "start", self)
+--~ PlayFX(actionFXClass, actionFXMoment, actor, target, action_pos, action_dir)
+--~ PlayFX("MeteorDomeExplosion", "start", obj, nil, p2, p2 - p1)
+--~ PlayFX("MeteorHitDome", "start", dome, obj, hit, normal)
+					-- part of a very ugly hack to update driveable area
+					if not IsValid(self.site) then
+						self:AddDriveable()
+					end
+					self.site:SetEnumFlags(efCollision)
+					self.site:ClearHierarchyEnumFlags(efCollision)
+					-- are we changing ground texture
 					if type(self.texture_terrain) == "number" then
 						SetTypeCircle(pos, self.radius, self.texture_terrain)
 					end
+					engineResumePassEdits()
+					-- rest your weary soul
 					Sleep(25)
 				end
 			end
 		end)
+		self.site:ClearHierarchyEnumFlags(efCollision)
 	end
 end
 

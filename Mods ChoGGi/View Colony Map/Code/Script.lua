@@ -7,7 +7,7 @@ function OnMsg.ModsReloaded()
 		return
 	end
 	fire_once = true
-	local min_version = 24
+	local min_version = 26
 
 	local ModsLoaded = ModsLoaded
 	-- we need a version check to remind Nexus/GoG users
@@ -25,8 +25,7 @@ function OnMsg.ModsReloaded()
 
 	if not_found_or_wrong_version then
 		CreateRealTimeThread(function()
-			WaitMsg("InGameInterfaceCreated")
-			if WaitMarsQuestion(nil,nil,string.format([[Error: View Colony Map requires ChoGGi's Library (at least v%s).
+			if WaitMarsQuestion(nil,"Error",string.format([[View Colony Map requires ChoGGi's Library (at least v%s).
 Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_version)) == "ok" then
 				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
 			end
