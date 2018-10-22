@@ -1,10 +1,10 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
+
 	local default_icon = "UI/Icons/Sections/spaceship.tga"
 
 	local type = type

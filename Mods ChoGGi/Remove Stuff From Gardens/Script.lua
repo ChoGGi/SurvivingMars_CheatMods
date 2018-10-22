@@ -37,13 +37,13 @@ function Service:GameInit()
 
   -- only remove stuff if we're outside of a dome
   if not self.parent_dome and buildings_to_check[self.entity] then
-    local att = self:IsKindOf("ComponentAttach") and self:GetAttaches() or ""
-    -- since we're deleting then loop through backwards
-    for i = #att, 1, -1 do
-      if classes_to_remove[att[i].class] then
-        att[i]:delete()
-      end
-    end
+		if obj.ForEachAttach then
+			obj:ForEachAttach(function(a)
+				if classes_to_remove[a.class] then
+					a:delete()
+				end
+			end)
+		end
   end
 
   -- send the orig func on it's way

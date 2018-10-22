@@ -2,7 +2,7 @@
 
 function OnMsg.ClassesGenerate()
 
-	--~ local Trans = ChoGGi.ComFuncs.Translate
+--~ 	local Trans = ChoGGi.ComFuncs.Translate
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local S = ChoGGi.Strings
 

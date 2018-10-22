@@ -358,9 +358,9 @@ function OnMsg.ClassesGenerate()
 
 		local function CallBackFunc(answer)
 			if answer then
-				SuspendPassEdits(obj.class)
+				SuspendPassEdits("DeleteAllSelectedObjects")
 				MapDelete("map",obj.class)
-				ResumePassEdits(obj.class)
+				ResumePassEdits("DeleteAllSelectedObjects")
 			end
 		end
 

@@ -316,12 +316,10 @@ do -- ShowMe
 			end
 		-- could be from a saved game so remove any objects on the map
 		else
-			SuspendPassEdits("ChoGGi_Vector")
-			SuspendPassEdits("ChoGGi_Sphere")
+			SuspendPassEdits("ClearShowMe")
 			MapDelete("map", "ChoGGi_Vector")
 			MapDelete("map", "ChoGGi_Sphere")
-			ResumePassEdits("ChoGGi_Vector")
-			ResumePassEdits("ChoGGi_Sphere")
+			ResumePassEdits("ClearShowMe")
 		end
 	end
 
@@ -2193,7 +2191,7 @@ function ChoGGi.ComFuncs.ObjectColourRandom(obj)
 	local c = 0
 
 	-- add regular attachments
-	if obj:IsKindOf("ComponentAttach") then
+	if obj.ForEachAttach then
 		obj:ForEachAttach("ColorizableObject",function(a)
 			c = c + 1
 			attaches[c] = {obj = a,c = {}}
@@ -2276,7 +2274,7 @@ function ChoGGi.ComFuncs.ObjectColourDefault(obj)
 		SetDefColour(obj)
 	end
 	-- regular attaches
-	if obj:IsKindOf("ComponentAttach") then
+	if obj.ForEachAttach then
 		obj:ForEachAttach("ColorizableObject",function(a)
 			SetDefColour(a)
 		end)
@@ -2572,7 +2570,7 @@ function ChoGGi.ComFuncs.CursorNearestHex(pt)
 end
 
 function ChoGGi.ComFuncs.DeleteAllAttaches(obj)
-	if obj:IsKindOf("ComponentAttach") then
+	if obj.DestroyAttaches then
 		obj:DestroyAttaches()
 	end
 end
@@ -2979,7 +2977,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 	-- re-enable col on obj and any attaches
 	if obj.ChoGGi_CollisionsDisabled then
 		obj:SetEnumFlags(coll)
-		if obj:IsKindOf("ComponentAttach") then
+		if obj.ForEachAttach then
 			obj:ForEachAttach(function(a)
 				a:SetEnumFlags(coll)
 			end)
@@ -2988,7 +2986,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 		which = S[460479110814--[[Enabled--]]]
 	else
 		obj:ClearEnumFlags(coll)
-		if obj:IsKindOf("ComponentAttach") then
+		if obj.ForEachAttach then
 			obj:ForEachAttach(function(a)
 				a:ClearEnumFlags(coll)
 			end)
@@ -3856,43 +3854,35 @@ function ChoGGi.ComFuncs.ConstructionModeSet(itemname)
 	CloseXBuildMenu()
 end
 
-do -- DeleteLargeRocks/DeleteSmallRocks
-	-- got me what pass edits are, but they speed it up crazy fast (50k ticks to 500)
-	local function CallBackFuncLarge(answer)
+function ChoGGi.ComFuncs.DeleteLargeRocks()
+	local function CallBackFunc(answer)
 		if answer then
-			SuspendPassEdits("Deposition")
-			SuspendPassEdits("WasteRockObstructorSmall")
-			SuspendPassEdits("WasteRockObstructor")
+			SuspendPassEdits("DeleteLargeRocks")
 			MapDelete("map", {"Deposition","WasteRockObstructorSmall","WasteRockObstructor"})
-			ResumePassEdits("Deposition")
-			ResumePassEdits("WasteRockObstructorSmall")
-			ResumePassEdits("WasteRockObstructor")
+			ResumePassEdits("DeleteLargeRocks")
 		end
 	end
-	local function CallBackFuncSmall(answer)
+	ChoGGi.ComFuncs.QuestionBox(
+		StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes rocks for that smooth map feel.--]]]),
+		CallBackFunc,
+		StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
+	)
+end
+
+function ChoGGi.ComFuncs.DeleteSmallRocks()
+	local function CallBackFunc(answer)
 		if answer then
-			SuspendPassEdits("StoneSmall")
+			SuspendPassEdits("DeleteSmallRocks")
 			MapDelete("map", "StoneSmall")
-			ResumePassEdits("StoneSmall")
+			ResumePassEdits("DeleteSmallRocks")
 		end
 	end
-
-	function ChoGGi.ComFuncs.DeleteLargeRocks()
-		ChoGGi.ComFuncs.QuestionBox(
-			StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes rocks for that smooth map feel.--]]]),
-			CallBackFuncLarge,
-			StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
-		)
-	end
-
-	function ChoGGi.ComFuncs.DeleteSmallRocks()
-		ChoGGi.ComFuncs.QuestionBox(
-			StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes rocks for that smooth map feel.--]]]),
-			CallBackFuncSmall,
-			StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
-		)
-	end
-end -- do
+	ChoGGi.ComFuncs.QuestionBox(
+		StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes rocks for that smooth map feel.--]]]),
+		CallBackFunc,
+		StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
+	)
+end
 
 -- build and show a list of attachments for changing their colours
 function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
@@ -3920,7 +3910,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 			hint = 302535920001106--[[Change main object colours.--]],
 		}
 		-- check and add attachments
-		if obj:IsKindOf("ComponentAttach") then
+		if obj.ForEachAttach then
 			obj:ForEachAttach(function(a)
 				if a:IsKindOf("ColorizableObject") then
 					ItemList[#ItemList+1] = {
@@ -3969,11 +3959,11 @@ function ChoGGi.ComFuncs.ToggleCollisions(cls)
 	cls = cls or "LifeSupportGridElement"
 	local CollisionsObject_Toggle = ChoGGi.ComFuncs.CollisionsObject_Toggle
 	-- hopefully give it a bit more speed
-	SuspendPassEdits(cls)
+	SuspendPassEdits("ToggleCollisions")
 	MapForEach("map",cls,function(o)
 		CollisionsObject_Toggle(o,true)
 	end)
-	ResumePassEdits(cls)
+	ResumePassEdits("ToggleCollisions")
 end
 
 -- any png files in AppData/Logos folder will be added to mod as converted logo files

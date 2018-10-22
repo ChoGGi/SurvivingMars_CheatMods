@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 	local S = ChoGGi.Strings
@@ -360,9 +359,9 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
-		SuspendPassEdits("UnpersistedMissingClass")
+		SuspendPassEdits("RemoveMissingClassObjects")
 		MapDelete("map", "UnpersistedMissingClass")
-		ResumePassEdits("UnpersistedMissingClass")
+		ResumePassEdits("RemoveMissingClassObjects")
 		MsgPopup(
 			302535920000587--[[Remove Missing Class Objects (Warning)--]],
 			4493--[[All--]]
@@ -479,9 +478,9 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
-		SuspendPassEdits("GridTile")
+		SuspendPassEdits("RemoveYellowGridMarks")
 		MapDelete("map", "GridTile")
-		ResumePassEdits("GridTile")
+		ResumePassEdits("RemoveYellowGridMarks")
 		MsgPopup(
 			302535920000603--[[Remove Yellow Grid Marks--]],
 			4493--[[All--]]
@@ -489,8 +488,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
-		SuspendPassEdits("RangeHexRadius")
-		SuspendPassEdits("WireFramedPrettification")
+		SuspendPassEdits("RemoveBlueGridMarks")
 		MapDelete("map", "RangeHexRadius")
 		-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
 		MapDelete("map", "WireFramedPrettification",function(o)
@@ -498,8 +496,7 @@ function OnMsg.ClassesGenerate()
 				return true
 			end
 		end)
-		ResumePassEdits("RangeHexRadius")
-		ResumePassEdits("WireFramedPrettification")
+		ResumePassEdits("RemoveBlueGridMarks")
 
 		MsgPopup(
 			302535920001193--[[Remove Blue Grid Marks--]],

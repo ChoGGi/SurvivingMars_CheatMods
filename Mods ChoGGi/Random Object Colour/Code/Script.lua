@@ -43,7 +43,7 @@ function BaseBuilding:GameInit(...)
 		ChoGGi.ComFuncs.ObjectColourRandom(self)
 		-- reset any signs to default colour
 		local SetDefColour = ChoGGi.ComFuncs.SetDefColour
-		if self:IsKindOf("ComponentAttach") then
+		if self.ForEachAttach then
 			self:ForEachAttach("BuildingSign",function(a)
 				SetDefColour(a)
 			end)

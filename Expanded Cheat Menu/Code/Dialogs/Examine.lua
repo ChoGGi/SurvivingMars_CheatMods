@@ -315,7 +315,7 @@ Right-click to scroll to top."--]]],
 	self:SetTranspMode(self.transp_mode)
 
 	-- load up obj in text display
-	local is_obj = self:SetObj(self.obj)
+	local is_obj = self:SetObj(self.obj,true)
 
 	if is_obj then
 		self.parents_menu_popup = {}
@@ -359,9 +359,10 @@ function Examine:idAutoRefreshToggle()
 		local Sleep = Sleep
 		while true do
 			if self.obj then
-				self:SetObj(self.obj,true)
+				self:SetObj(self.obj)
 			else
-				Halt()
+				DeleteThread(self.autorefresh_thread)
+				break
 			end
 			Sleep(1000)
 		end
@@ -1145,7 +1146,7 @@ local function DeleteAll_menu(self,obj)
 					end
 				end
 				-- force a refresh on the list, so people can see something as well
-				self:SetObj(obj,true)
+				self:SetObj(obj)
 			end
 		end,
 		S[697--[[Destroy--]]]
@@ -1190,7 +1191,7 @@ end
 
 local function Refresh_menu(self)
 	if self.obj then
-		self:SetObj(self.obj,true)
+		self:SetObj(self.obj)
 		if IsKindOf(self.obj,"XWindow") and self.obj.class ~= "InGameInterface" then
 			self:FlashWindow(self.obj)
 		end
@@ -1299,7 +1300,7 @@ function Examine:BuildParents(list,list_type,title,sort_type)
 	end
 end
 
-function Examine:SetObj(obj,skip_thread)
+function Examine:SetObj(obj,firstrun)
 
 	self.onclick_handles = {}
 
@@ -1326,58 +1327,56 @@ function Examine:SetObj(obj,skip_thread)
 			name = StringFormat("%s (%s)",name,#obj)
 		end
 
-		if obj.class then
+		-- attaches button/menu
+		if IsValid(obj) and obj.ForEachAttach then
+			TableIClear(self.attaches_menu_popup)
+			local attach_amount = 0
 
-			-- attaches button/menu
-			if IsValid(obj) and obj:IsKindOf("ComponentAttach") then
-				TableIClear(self.attaches_menu_popup)
-				local attach_amount = 0
-				obj:ForEachAttach(function(a)
-					attach_amount = attach_amount + 1
-					local pos = a.GetVisualPos and a:GetVisualPos()
+			obj:ForEachAttach(function(a)
+				attach_amount = attach_amount + 1
+				local pos = a.GetVisualPos and a:GetVisualPos()
 
-					self.attaches_menu_popup[attach_amount] = {
-						name = RetName(a),
-						hint = StringFormat("%s\n%s: %s\npos: %s",
-							a.class,
-							S[302535920000955--[[Handle--]]],
-							a.handle or S[6761--[[None--]]],
-							pos
-						),
-						showme = a,
-						clicked = function()
-							ChoGGi.ComFuncs.OpenInExamineDlg(a,self)
-						end,
-					}
+				self.attaches_menu_popup[attach_amount] = {
+					name = RetName(a),
+					hint = StringFormat("%s\n%s: %s\npos: %s",
+						a.class,
+						S[302535920000955--[[Handle--]]],
+						a.handle or S[6761--[[None--]]],
+						pos
+					),
+					showme = a,
+					clicked = function()
+						ChoGGi.ComFuncs.OpenInExamineDlg(a,self)
+					end,
+				}
+			end)
+
+			if attach_amount > 0 then
+				TableSort(self.attaches_menu_popup, function(a, b)
+					return CmpLower(a.name, b.name)
 				end)
 
-				if attach_amount > 0 then
-					TableSort(self.attaches_menu_popup, function(a, b)
-						return CmpLower(a.name, b.name)
-					end)
-
-					self.idAttaches:SetVisible(true)
-					self.idAttaches.RolloverText = S[302535920000070--[["Shows list of attachments. This %s has %s.
+				self.idAttaches:SetVisible(true)
+				self.idAttaches.RolloverText = S[302535920000070--[["Shows list of attachments. This %s has %s.
 Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAssets/UI/Menu/NoblePreview.tga 2500>")
-				else
-					self.idAttaches:SetVisible()
-				end
+			else
+				self.idAttaches:SetVisible()
 			end
-		end -- obj.class
+		end
+
 	end -- istable
 
 	-- limit caption length so we don't cover up close button
 	self.idCaption:SetTitle(self,self.title or utf8.sub(name,1,45))
 
-	-- don't create a new thread if we're already in one from auto-refresh
-	if skip_thread then
-		self.idText:SetText(self:totextex(obj))
-	else
-		-- we add a slight delay, so the rest of the dialog loads, and we can let user see the loading msg
+	-- we add a slight delay, so the rest of the dialog loads, and we can let user see the loading msg
+	if firstrun then
 		CreateRealTimeThread(function()
 			Sleep(5)
 			self.idText:SetText(self:totextex(obj))
 		end)
+	else
+		self.idText:SetText(self:totextex(obj))
 	end
 
 	return obj_type == "table" and obj.class

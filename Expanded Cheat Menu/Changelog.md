@@ -10,6 +10,9 @@
 ### Changed:
 - ECM Scripts will skip any folders without .lua files in them.
 
+### Fixed:
+- Examine didn't always list all object attachments.
+
 ## v10.0 (19 Oct 2018)
 ### Added:
 - Buildings>Build On Geysers: Allows you to build on geysers.

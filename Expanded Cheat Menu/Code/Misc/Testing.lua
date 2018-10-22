@@ -244,7 +244,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.ComFuncs.ReturnAllNearby(1000))
 		ChoGGi.CurObj:SetPos(GetTerrainCursor())
 
-		local Attaches = type(s) == "table" and o:IsKindOf("ComponentAttach") and s:GetAttaches("Colonist") or ""
+		local Attaches = type(s) == "table" and o.ForEachAttach and s:GetAttaches("Colonist") or ""
 		for i = #Attaches, 1, -1 do
 				Attaches[i]:Detach()
 				Attaches[i]:SetState("idle")

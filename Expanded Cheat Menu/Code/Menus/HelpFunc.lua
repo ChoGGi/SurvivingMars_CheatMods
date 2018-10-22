@@ -1,14 +1,13 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
-	local default_icon = "UI/Icons/Sections/attention.tga"
-
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local FileExists = ChoGGi.ComFuncs.FileExists
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
+
+	local default_icon = "UI/Icons/Sections/attention.tga"
 
 	local print,tostring = print,tostring
 	local StringFormat = string.format
@@ -160,7 +159,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- ModUpload
-		local ChoGGi = ChoGGi
 		local mod_upload_thread
 		local ConvertToOSPath = ConvertToOSPath
 
@@ -176,6 +174,7 @@ function OnMsg.ClassesGenerate()
 			end
 
 			mod_upload_thread = CreateRealTimeThread(function()
+				local ChoGGi = ChoGGi
 				local mod = choice[1].mod
 				local copy_files = choice[1].check1
 				local blank_mod = choice[1].check2

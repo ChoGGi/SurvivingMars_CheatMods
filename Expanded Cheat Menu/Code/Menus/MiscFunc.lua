@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName

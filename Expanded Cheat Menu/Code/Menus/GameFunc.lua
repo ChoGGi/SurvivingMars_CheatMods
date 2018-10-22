@@ -34,10 +34,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.WhiterRocks()
 		-- less brown rocks
-		SuspendPassEdits("Deposition")
-		SuspendPassEdits("WasteRockObstructorSmall")
-		SuspendPassEdits("WasteRockObstructor")
-		SuspendPassEdits("StoneSmall")
+		SuspendPassEdits("WhiterRocks")
 		local white = white
 		MapForEach("map",{"Deposition","WasteRockObstructorSmall","WasteRockObstructor","StoneSmall"},function(o)
 			if o.class:find("Dark") then
@@ -47,15 +44,12 @@ function OnMsg.ClassesGenerate()
 --~ 				o:delete()
 			end
 		end)
-		ResumePassEdits("Deposition")
-		ResumePassEdits("WasteRockObstructorSmall")
-		ResumePassEdits("WasteRockObstructor")
-		ResumePassEdits("StoneSmall")
+		ResumePassEdits("WhiterRocks")
 	end
 
 	do -- ChangeSurfaceSignsToMaterials
 		local function ChangeEntity(cls,entity,random)
-			SuspendPassEdits(cls)
+			SuspendPassEdits("ChangeSurfaceSignsToMaterials")
 			MapForEach("map",cls,function(o)
 				if random then
 					o:ChangeEntity(StringFormat("%s%s",entity,Random(1,random)))
@@ -63,7 +57,7 @@ function OnMsg.ClassesGenerate()
 					o:ChangeEntity(entity)
 				end
 			end)
-			ResumePassEdits(cls)
+			ResumePassEdits("ChangeSurfaceSignsToMaterials")
 		end
 
 		function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
