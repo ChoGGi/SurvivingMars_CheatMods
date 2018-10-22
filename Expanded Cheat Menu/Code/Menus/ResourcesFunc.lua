@@ -97,21 +97,28 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.AddPrefabs()
 		local ItemList = {
 			{text = "Drone",value = 10},
-			{text = "DroneHub",value = 10},
-			{text = "ElectronicsFactory",value = 10},
-			{text = "FuelFactory",value = 10},
-			{text = "MachinePartsFactory",value = 10},
-			{text = "MoistureVaporator",value = 10},
-			{text = "PolymerPlant",value = 10},
-			{text = "StirlingGenerator",value = 10},
-			{text = "WaterReclamationSystem",value = 10},
-	--~ 		{text = "Arcology",value = 10},
-	--~ 		{text = "Sanatorium",value = 10},
-	--~ 		{text = "NetworkNode",value = 10},
-	--~ 		{text = "MedicalCenter",value = 10},
-	--~ 		{text = "HangingGardens",value = 10},
-	--~ 		{text = "CloningVat",value = 10},
+--~ 			{text = "DroneHub",value = 10},
+--~ 			{text = "ElectronicsFactory",value = 10},
+--~ 			{text = "FuelFactory",value = 10},
+--~ 			{text = "MachinePartsFactory",value = 10},
+--~ 			{text = "MoistureVaporator",value = 10},
+--~ 			{text = "PolymerPlant",value = 10},
+--~ 			{text = "StirlingGenerator",value = 10},
+--~ 			{text = "WaterReclamationSystem",value = 10},
+--~ 			{text = "Arcology",value = 10},
+--~ 			{text = "Sanatorium",value = 10},
+--~ 			{text = "NetworkNode",value = 10},
+--~ 			{text = "MedicalCenter",value = 10},
+--~ 			{text = "HangingGardens",value = 10},
+--~ 			{text = "CloningVat",value = 10},
 		}
+		local c = #ItemList
+		for id,cargo in pairs(CargoPreset) do
+			if cargo.group == "Prefabs" then
+				c = c + 1
+				ItemList[c] = {text = id,value = 10}
+			end
+		end
 
 		local function CallBackFunc(choice)
 			if #choice < 1 then
@@ -141,7 +148,6 @@ function OnMsg.ClassesGenerate()
 			title = 1110--[[Prefab Buildings--]],
 			hint = 302535920001194--[[Use edit box to enter amount of prefabs to add.--]],
 			custom_type = 3,
-			skip_sort = true,
 		}
 	end
 

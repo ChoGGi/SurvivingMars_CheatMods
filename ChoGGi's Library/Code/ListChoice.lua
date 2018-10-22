@@ -349,6 +349,7 @@ end
 
 function ChoGGi_ListChoiceDlg:BuildList()
 	local g_Classes = g_Classes
+	local bt = BuildingTemplates
 	local point = point
 
 	self.idList:Clear()
@@ -365,6 +366,14 @@ function ChoGGi_ListChoiceDlg:BuildList()
 				display_icon = true
 				text = item.text
 			end
+		elseif g_Classes[item.text] and g_Classes[item.text].display_icon ~= "" then
+			item.icon = g_Classes[item.text].display_icon
+			display_icon = true
+			text = item.text
+		elseif bt[item.text] and bt[item.text].display_icon ~= "" then
+			item.icon = bt[item.text].display_icon
+			display_icon = true
+			text = item.text
 		else
 			text = item.text
 		end

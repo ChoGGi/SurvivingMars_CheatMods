@@ -1,5 +1,3 @@
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
-local orig_CursorBuilding_Done = CursorBuilding.Done
 
 -- local whatever globals we call
 local ShowHexRanges = ShowHexRanges
@@ -13,6 +11,7 @@ function RCRover:GetSelectionRadiusScale_OverrideChoGGi()
 	return self.work_radius
 end
 
+local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()
 	local UICity = UICity
 	ShowHexRanges(UICity, "SupplyRocket")
@@ -35,6 +34,7 @@ function CursorBuilding:GameInit()
 	return orig_CursorBuilding_GameInit(self)
 end
 
+local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done()
 	local UICity = UICity
 	HideHexRanges(UICity, "SupplyRocket")

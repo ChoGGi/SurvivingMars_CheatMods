@@ -20,7 +20,7 @@ local IsValidEntity = IsValidEntity
 local getlocal
 local getupvalue
 local getinfo
-local debug = rawget(_G, "debug")
+local debug = rawget(_G,"debug")
 if debug then
 	getlocal = debug.getlocal
 	getupvalue = debug.getupvalue

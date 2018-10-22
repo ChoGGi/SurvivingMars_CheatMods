@@ -3,6 +3,11 @@
 -- needed to be able to open the inspector
 XTemplates.GedInspector.save_in = "Ged"
 
+-- if it gets added then
+if rawget(_G,"GedSocket") then
+	return
+end
+
 DefineClass.GedSocket = {
   __parents = {
     "MessageSocket"

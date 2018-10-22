@@ -194,10 +194,9 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity,meteors_type)
 		meteors_type = meteors_type or "single"
 		local pos = ChoGGi.ComFuncs.SelObject() or GetTerrainCursor()
-		if type(pos) == "table" then
-			pos = pos:GetPos()
+		if IsValid(pos) then
+			pos = pos.GetVisualPos and pos:GetVisualPos() or pos:GetPos()
 		end
-	--~	 pos = point(pos:x(),pos:y())
 
 		local data = DataInstances.MapSettings_Meteor
 		local descr = data[severity] or data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow

@@ -12,5 +12,7 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[Changes the colours of objects to random colours when placed.
 
+If someone wants the colours reset, let me know and I'll add something to ECM or this (whatever is easier).
+
 Requested by McKaby]],
 })
