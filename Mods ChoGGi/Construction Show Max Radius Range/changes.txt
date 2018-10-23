@@ -1,3 +1,6 @@
+v0.3
+Shows heat circles for Mohole Mine and Artificial Sun.
+
 v0.2
 Shows maxed grid marker for both (circle now only shows for heater).
 Got rid of log spam when ECM isn't installed.

@@ -1,0 +1,6 @@
+function object:SetGravity(accel)
+function object:GetGravityFallTime(height, accel)
+function object:GetGravityHeightTime(target, height, accel)
+function object:GetGravityAngleTime(target, angle, accel)
+
+detach rockets, drop them to ground or knocked away by explode?

@@ -31,12 +31,26 @@ function CursorBuilding:GameInit()
 			circle:SetRadius((uirange * GridSpacing) + HexSize)
 			circle:SetColor(white)
 			self:Attach(circle)
-
 		end
+
+	elseif self.template:IsKindOf("MoholeMine") then
+		local circle = Circle:new()
+
+		circle:SetRadius(MoholeMine.GetHeatRange(self.template))
+		circle:SetColor(white)
+		self:Attach(circle)
+
+	elseif self.template:IsKindOf("ArtificialSun") then
+		local circle = Circle:new()
+
+		circle:SetRadius(ArtificialSun.GetHeatRange(self.template))
+		circle:SetColor(white)
+		self:Attach(circle)
+
 	end
 
 --~ 	ex(self)
 	return orig_CursorBuilding_GameInit(self)
 end
 
--- since the circle's attached to the CursorBuilding it'll be removed when it's removed, no need to fiddle with :Done()
+-- since the circle gets attached to the CursorBuilding it'll be removed when it's removed, no need to fiddle with :Done()

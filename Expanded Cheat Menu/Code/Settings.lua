@@ -55,6 +55,8 @@ function OnMsg.ClassesGenerate()
 		ShowCheatsMenu = true,
 		-- close any opened dialogs when loading into a game.
 		CloseDialogsECM = false,
+		-- update the list when ECM updates it
+		ConsoleExamineListUpdate = true,
 		-- stuff to show in Console>Examine list (tables/values/functions are fine)
 		ConsoleExamineList = {
 			"_G",
@@ -513,6 +515,7 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
+	-- we can local this now
 	local ChoGGi = ChoGGi
 
 	-- saving settings to a file or (shudder) in-game
@@ -526,8 +529,13 @@ function OnMsg.ClassesGenerate()
 
 	-- read settings from AppData/CheatMenuModSettings.lua
 	ChoGGi.SettingFuncs.ReadSettings()
-	-- not changed so update with new one
-	if #ChoGGi.UserSettings.ConsoleExamineList == 16 then
+
+	-- could've been from when i used encyclopedia_id for this?
+	if ChoGGi.UserSettings.BuildingSettings[""] then
+		ChoGGi.UserSettings.BuildingSettings[""] = nil
+	end
+
+	if ChoGGi.UserSettings.ConsoleExamineListUpdate then
 		ChoGGi.UserSettings.ConsoleExamineList = ChoGGi.Defaults.ConsoleExamineList
 	end
 

@@ -247,10 +247,11 @@ function PortableMiner:Idle(delay)
 	elseif g_RoverAIResearched and self.auto_mode_on then
 		self:ProcAutomation()
 	-- check if stockpile is existing and full
-  elseif not self.notworking_sign and self.stockpile and (self:GetDist2D(self.stockpile) >= 5000 or
+  elseif not self.notworking_sign and IsValid(self.stockpile) and (self:GetDist2D(self.stockpile) >= 5000 or
 						self.stockpile:GetStoredAmount() < (self.auto_mode_on and pms.max_res_amount_auto or pms.max_res_amount_man)) then
     self:ShowNotWorkingSign(false)
   end
+
 	Sleep(delay or 2500)
 
 	self:Gossip("Idle")

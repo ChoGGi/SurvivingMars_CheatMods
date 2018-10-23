@@ -6,12 +6,17 @@
 ## v10.1 (Unreleased)
 ### Added:
 - Examine>Tools>Ged Inspect: Open object in the Ged inspector (use Inspect(obj) in the console manually).
+- Console>Examine>Auto Update List: Updates the examine list when ECM updates it.
 
 ### Changed:
 - ECM Scripts will skip any folders without .lua files in them.
+- Add Prefabs will base it's list on the cargo prefabs list.
+- Debug>Presets renamed to Ged Presets Editor.
 
 ### Fixed:
 - Examine didn't always list all object attachments.
+- Issues using the cheat menu in the main menu.
+- Issue when setting Charge/Discharge for buildings (thanks OyeBhotka).
 
 ## v10.0 (19 Oct 2018)
 ### Added:

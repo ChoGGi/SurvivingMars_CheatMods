@@ -75,11 +75,13 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Change Terrain Type",
 		ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
 		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
-				GetTerrainNamesCombo()[terrain.GetTerrainType(0,0)].text,
-				302535920000624--[[Green or Icy mars? Coming right up!
-(don't forget a light model)--]]
-			)
+			if UICity then
+				return ChoGGi.ComFuncs.SettingState(
+					GetTerrainNamesCombo()[terrain.GetTerrainType(0,0)].text,
+					302535920000624--[[Green or Icy mars? Coming right up!
+	(don't forget a light model)--]]
+				)
+			end
 		end,
 		OnAction = ChoGGi.MenuFuncs.ChangeTerrainType,
 	}

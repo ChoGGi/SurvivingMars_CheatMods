@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "RC Miner v1.4",
-  "version", 14,
-  "saved", 1539086400,
+  "title", "RC Miner v1.5",
+  "version", 15,
+  "saved", 1540296000,
 	"image", "Preview.png",
   "tags", "Buildings",
   "id", "ChoGGi_PortableMiner",

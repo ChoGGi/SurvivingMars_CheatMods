@@ -13,7 +13,7 @@ local orig_ConstructionSite_GameInit = ConstructionSite.GameInit
 function ConstructionSite:GameInit()
 	if self.prefab then
 		-- hide the actual site for now
-		self:SetOpacity(0)
+		self:SetVisible()
 
 		-- pretty much a copy n paste of AttackRover:Spawn()
 		CreateGameTimeThread(function()
@@ -130,7 +130,7 @@ function ConstructionSite:GameInit()
 
 			Sleep(250)
 			-- oh look a construction site
-			self:SetOpacity(100)
+			self:SetVisible(true)
 			-- it's like jebus
 			spawn_pos = spawn_pos - pt1000
 			self:SetPos(spawn_pos)

@@ -23,10 +23,12 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Add Orbital Probes",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
 		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
-				#(UICity.labels.OrbitalProbe or ""),
-				302535920000720--[[Add more probes.--]]
-			)
+			if UICity then
+				return ChoGGi.ComFuncs.SettingState(
+					#(UICity.labels.OrbitalProbe or ""),
+					302535920000720--[[Add more probes.--]]
+				)
+			end
 		end,
 		OnAction = ChoGGi.MenuFuncs.AddOrbitalProbes,
 	}

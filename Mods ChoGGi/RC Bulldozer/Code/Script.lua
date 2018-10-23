@@ -33,11 +33,11 @@ Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_ve
 	end
 end
 
--- local funcs
-local ToggleCollisions
-
+-- local funcs for that small bit o' speed
 local StringFormat = string.format
 local TableConcat = rawget(_G, "oldTableConcat") or table.concat
+local type = type
+
 local GetHeight = terrain.GetHeight
 local SetHeightCircle = terrain.SetHeightCircle
 local SetTypeCircle = terrain.SetTypeCircle
@@ -54,6 +54,7 @@ local engineResumePassEdits = engineResumePassEdits
 local PlaceObject = PlaceObject
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
+local ToggleCollisions
 function OnMsg.ClassesGenerate()
 	ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
 end
@@ -219,7 +220,7 @@ local efSelectable = const.efSelectable
 function RCBulldozer:AddDriveable()
 	self.site = PlaceObject("ConstructionSite", {})
 	self.site:SetBuildingClass("DomeBasic")
-	self.site:SetOpacity(0)
+	self.site:SetVisible()
 	-- so dozer doesn't get scared of itself
 	self.site:ClearHierarchyEnumFlags(efCollision + efSelectable)
 	self.site:InvalidateSurfaces()

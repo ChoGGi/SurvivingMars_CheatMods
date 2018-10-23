@@ -318,14 +318,10 @@ function OnMsg.ClassesGenerate()
 		local context = host.context
 		local ShowIcons = self.ShowIcons
 		self.idContainer:DeleteChildren()
---~ 		local entries = {}
---~ 		local c = 0
 		for i = 1, #host.actions do
 			local action = host.actions[i]
 			if #popup == 0 and #menu ~= 0 and action.ActionMenubar == menu and host:FilterAction(action) or #popup ~= 0 and host:FilterAction(action, popup) then
 				local entry = XTemplateSpawn(action.ActionToggle and self.ToggleButtonTemplate or self.ButtonTemplate, self.idContainer, context)
---~ 				c = c + 1
---~ 				entries[c] = entry
 				-- that was hard...
 				if type(action.RolloverText) == "function" then
 					entry.RolloverText = action.RolloverText()

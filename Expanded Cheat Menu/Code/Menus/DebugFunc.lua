@@ -435,20 +435,19 @@ function OnMsg.ClassesGenerate()
 	do -- debug_build_grid
 		local grid_objs = {}
 		local grid_thread = false
-		local function ClearGrid()
+		local function HideGrid()
 			-- kill off thread
 			DeleteThread(grid_thread)
 			-- just in case
 			grid_thread = false
-			-- remove markers from map, and clear out table for next go round
-			for i = #grid_objs, 1, -1 do
-				grid_objs[i]:delete()
+			-- we hide hexes instead of deleting them
+			for i = 1, #grid_objs do
+				grid_objs[i]:SetVisible()
 			end
-			table.iclear(grid_objs)
 		end
 		-- if grid is left on when map changes it gets real laggy
 		function OnMsg.ChangeMap()
-			ClearGrid()
+			HideGrid()
 		end
 
 		-- geysers mostly
@@ -472,11 +471,13 @@ function OnMsg.ClassesGenerate()
 			local IsSCell = terrain.IsSCell
 			local IsPassable = terrain.IsPassable
 			local IsTerrainFlatForPlacement = ConstructionController.IsTerrainFlatForPlacement
+			local IsValid = IsValid
 			local GetTerrainCursor = GetTerrainCursor
 			local HexGridGetObject = HexGridGetObject
 			local HexToWorld = HexToWorld
 			local WorldToHex = WorldToHex
 			local point = point
+			local Sleep = Sleep
 
 			local red = -65536
 			local green = -16711936
@@ -488,23 +489,42 @@ function OnMsg.ClassesGenerate()
 			local grid_range = type(UserSettings.DebugGridSize) == "number" and UserSettings.DebugGridSize or 10
 			local grid_opacity = type(UserSettings.DebugGridOpacity) == "number" and UserSettings.DebugGridOpacity or 15
 
-			-- might as well make it smoother (and suck up some yummy cpu), i assume nobody is going to leave it on
-			local sleep = 10
-			-- 150 = 67951 objects (had a crash at 250, and it's not like you need one that big)
-			if grid_range > 150 then
-				grid_range = 150
-			end
-			-- sleep a bit more for larger ones
-			if grid_range > 50 and grid_range < 99 then
-				sleep = 50
-			elseif grid_range > 99 then
-				sleep = 75
+			-- 125 = 47251 objects (had a crash at 250, and it's not like you need one that big)
+			if grid_range > 125 then
+				grid_range = 125
 			end
 
 			-- already running
 			if grid_thread then
-				ClearGrid()
+				HideGrid()
 			else
+				-- these two loop sections are just a way of building the table and applying the settings once instead of over n over in the while loop
+
+				-- get the count of grid_range objects
+				local grid_count = 0
+				local q,r = 1,1
+				local z = -q - r
+				for q_i = q - grid_range, q + grid_range do
+					for r_i = r - grid_range, r + grid_range do
+						for z_i = z - grid_range, z + grid_range do
+							if q_i + r_i + z_i == 0 then
+								grid_count = grid_count + 1
+							end
+						end
+					end
+				end
+				-- they can be deleted by ctrl-shift-d, so add any missing ones
+				local obj_count = #grid_objs
+				obj_count = obj_count >= grid_count and obj_count or grid_count >= obj_count and grid_count
+				for i = 1, obj_count do
+					if not IsValid(grid_objs[i]) then
+						grid_objs[i] = ChoGGi_HexSpot:new()
+						grid_objs[i]:SetOpacity(grid_opacity)
+					end
+					-- turning off the grid is just stopping thread and making hexes invis, so we restore vis here
+					grid_objs[i]:SetVisible(true)
+				end
+
 				-- fire up a new thread and off we go
 				grid_thread = CreateRealTimeThread(function()
 					local last_q, last_r
@@ -519,10 +539,11 @@ function OnMsg.ClassesGenerate()
 									for z_i = z - grid_range, z + grid_range do
 										if q_i + r_i + z_i == 0 then
 											idx = idx + 1
+											local c = grid_objs[idx]
 											local pt = point(HexToWorld(q_i, r_i))
-											local c = grid_objs[idx] or ChoGGi_HexSpot:new()
+											c:SetPos(pt)
 
-											-- green = pass/build, yellow = no pass/build, blue = pass/no build, red = blocked
+											-- green = pass/build, yellow = no pass/build, blue = pass/no build, red = no pass/no build
 											if DontBuildHere(pt) then
 												c:SetColorModifier(blue)
 											elseif IsPassable(pt) then
@@ -537,9 +558,6 @@ function OnMsg.ClassesGenerate()
 												c:SetColorModifier(red)
 											end
 
-											c:SetPos(pt)
-											c:SetOpacity(grid_opacity)
-											grid_objs[idx] = c
 										end
 									end
 								end
@@ -549,7 +567,8 @@ function OnMsg.ClassesGenerate()
 						else
 							Sleep(5)
 						end
-						Sleep(sleep)
+						-- might as well make it smoother (and suck up some yummy cpu), i assume nobody is going to leave it on
+						Sleep(10)
 					end
 				end) -- grid_thread
 			end
@@ -726,7 +745,7 @@ function OnMsg.ClassesGenerate()
 							ChoGGi.MenuFuncs.SetWaypoint(obj,colour,true)
 							Sleep(750)
 
-							--remove old wps
+							-- remove old wps
 							if type(obj.ChoGGi_Stored_Waypoints) == "table" then
 								for i = #obj.ChoGGi_Stored_Waypoints, 1, -1 do
 									obj.ChoGGi_Stored_Waypoints[i]:delete()

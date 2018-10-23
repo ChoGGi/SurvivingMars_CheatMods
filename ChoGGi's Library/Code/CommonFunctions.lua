@@ -1058,9 +1058,10 @@ ChoGGi.ComFuncs.OpenInListChoice{
 }
 --]]
 function ChoGGi.ComFuncs.OpenInListChoice(list)
-	-- if table isn't a table or it doesn't have items/callback func or it has zero items
-	if not list or (list and type(list) ~= "table" or not list.callback or not list.items) or #list.items < 1 then
-		print(S[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.--]]])
+	-- if list isn't a table or it has zero items or it doesn't have items/callback func
+	local list_table = type(list) == "table"
+	if not list_table or list_table and (list.items and #list.items < 1 or not (list.callback or list.items)) then
+		print(S[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.--]]],"\n",list and ValueToLuaCode(list))
 		return
 	end
 
@@ -1452,59 +1453,9 @@ function ChoGGi.ComFuncs.Random(m, n)
 end
 local Random = ChoGGi.ComFuncs.Random
 
-function ChoGGi.ComFuncs.GetObjects(query, obj, query_width, ignore_classes)
-
-	if type(query) ~= "table" then
-		return MapGet(true,query)
-	end
---~ 	MapGet(true,s.class)
---~ 	MapGet( GetTerrainCursor(), 100*guim, "Tree" )
-	return GetObjects({
-		class = query.class,
-		classes = query.classes,
-		area = query.area,
-		areapoint1 = query.areapoint1,
-		areapoint2 = query.areapoint2,
-		arearadius = query.arearadius,
-		areafilter = query.areafilter,
-		hexradius = query.hexradius,
-		collection = query.collection,
-		attached = query.attached,
-		recursive = query.recursive,
-		enum_flags_any = query.enum_flags_any,
-		game_flags_all = query.game_flags_all,
-		class_flags_all = query.class_flags_all,
-		filter = query.filter,
-	}, obj, query_width, ignore_classes)
---~		 area = "realm",
---~ "realm" = every object
---~ "outsiders" = prefab markers
---~ "detached" = invalid positions
---~ "line" = ?
---~		 areapoint1 = self.point0,
---~		 areapoint2 = self.point1,
---~		 arearadius = 100,
---~			 areafilter = function(o)
---~				 return o:GetParent() == nil
---~			 end,
---~		 class = "Object",
---~		 classes = {"EditorDummy","Text"},
---~		 hexradius = self.exploitation_radius,
---~		 collection = self.Index,
---~		 attached = false,
---~		 recursive = true,
---~		 enum_flags_any = const.efBakedTerrainDecal,
---~		 class_flags_all = const.cfLuaObject,
---~		 game_flags_all = const.gofPermanent,
---~		 filter = function(o)
---~			 return not IsKindOf(o, "Collection")
---~		 end,
-
-end
-
-function ChoGGi.ComFuncs.OpenKeyPresserDlg()
-	ChoGGi_KeyPresserDlg:new({}, terminal.desktop,{})
-end
+--~ function ChoGGi.ComFuncs.OpenKeyPresserDlg()
+--~ 	ChoGGi_KeyPresserDlg:new({}, terminal.desktop,{})
+--~ end
 
 function ChoGGi.ComFuncs.CreateSetting(str,setting_type)
 	local setting = ChoGGi.ComFuncs.DotNameToObject(str,nil,true)
@@ -1515,6 +1466,10 @@ end
 
 -- returns whatever is selected > moused over > nearest object to cursor
 function ChoGGi.ComFuncs.SelObject(radius)
+	-- just in case it's called from main menu
+	if not UICity then
+		return
+	end
 	local obj = SelectedObj or SelectionMouseObj()
 	if not obj then
 		local pt = GetTerrainCursor()
@@ -2230,13 +2185,13 @@ function ChoGGi.ComFuncs.ObjectColourRandom(obj)
 		end
 	end
 
-	local Random = Random
 	for i = 1, c do
 		obj = attaches[i].obj
 		local c = attaches[i].c
 
 		-- likely can only change basecolour
-		if obj:GetColorizationMaterial(1) == 8421504 and obj:GetColorizationMaterial(2) == 8421504 and obj:GetColorizationMaterial(3) == 8421504 and obj:GetColorizationMaterial(4) == 8421504 then
+--~ 		if obj:GetColorizationMaterial(1) == 8421504 and obj:GetColorizationMaterial(2) == 8421504 and obj:GetColorizationMaterial(3) == 8421504 and obj:GetColorizationMaterial(4) == 8421504 then
+		if obj:GetMaxColorizationMaterials() == 0 then
 			obj:SetColorModifier(c[1])
 		else
 			if not obj.ChoGGi_origcolors then
@@ -3684,7 +3639,7 @@ do -- AddBlinkyToObj
 		-- stop any previous countdown
 		DeleteThread(blinky_thread)
 		-- make it visible incase it isn't
-		blinky_obj:SetOpacity(100)
+		blinky_obj:SetVisible(true)
 		-- pick a spot to show it
 		local spot
 		local offset = 0
@@ -3704,7 +3659,7 @@ do -- AddBlinkyToObj
 		-- hide blinky after we select something else or timeout, we don't delete since we move it from obj to obj
 		blinky_thread = CreateRealTimeThread(function()
 			WaitMsg("SelectedObjChange",timeout or 10000)
-			blinky_obj:SetOpacity(0)
+			blinky_obj:SetVisible()
 		end)
 	end
 end -- do
@@ -3991,3 +3946,6 @@ function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod,ext)
 	end
 end
 
+function ChoGGi.ComFuncs.OpenGedApp(name)
+	OpenGedApp(name, terminal.desktop)
+end

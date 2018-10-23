@@ -1,3 +1,6 @@
+v1.5
+Removed some console log spam.
+
 v1.4
 Refunds 1/2 amount of cost for building (instead of 5 Metals/Poly) on demo.
 

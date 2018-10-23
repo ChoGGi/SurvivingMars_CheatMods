@@ -158,9 +158,14 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 
 	-- use this message to perform post-built actions on the final classes
 	function OnMsg.ClassesBuilt()
-		--add HiddenX cat for Hidden items
+		-- add HiddenX cat for Hidden items
 		if ChoGGi.UserSettings.Building_hide_from_build_menu then
-			BuildCategories[#BuildCategories+1] = {id = "HiddenX",name = S[1000155--[[Hidden--]]],img = "UI/Icons/bmc_placeholder.tga",highlight_img = "UI/Icons/bmc_placeholder_shine.tga",}
+			BuildCategories[#BuildCategories+1] = {
+				id = "HiddenX",
+				name = S[1000155--[[Hidden--]]],
+				img = "UI/Icons/bmc_placeholder.tga",
+				highlight_img = "UI/Icons/bmc_placeholder_shine.tga",
+			}
 		end
 
 		OnMsgXTemplates()
@@ -179,17 +184,6 @@ function OnMsg.ModsReloaded()
 	-- easy access to colonist data, cargo, mystery
 	ChoGGi.ComFuncs.UpdateDataTables()
 
---~ 	ForEachPreset("Cargo", function(cargo, group, self, props)
---~		 if cargo.id == "RegolithExtractor" then
---~			 -- needed to show it in the menu
---~			 cargo.locked = nil
---~			 cargo.group = "Prefabs"
---~			 -- set weight/price
---~			 cargo.kg = 1234
---~			 cargo.price = 123400000
---~		 end
---~	 end)
-
 	local UserSettings = ChoGGi.UserSettings
 	-- added this here, as it's early enough to load during the New Game Menu
 	if not UserSettings.DisableECM then
@@ -199,18 +193,18 @@ function OnMsg.ModsReloaded()
 		c = c + 1
 		Actions[c] = {
 			ActionMenubar = "ECM.Debug",
-			ActionName = StringFormat("%s ..",S[302535920000979--[[Presets--]]]),
-			ActionId = ".Presets",
+			ActionName = StringFormat("%s ..",S[302535920001074--[[Ged Presets Editor--]]]),
+			ActionId = ".Ged Presets Editor",
 			ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 			OnActionEffect = "popup",
-			ActionSortKey = "1Presets",
+			ActionSortKey = "1Ged Presets Editor",
 		}
 
 		-- add preset menu items
 		ClassDescendantsList("Preset", function(name, cls)
 			c = c + 1
 			Actions[c] = {
-				ActionMenubar = "ECM.Debug.Presets",
+				ActionMenubar = "ECM.Debug.Ged Presets Editor",
 				ActionName = name,
 				ActionId = StringFormat(".%s",name),
 				ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
@@ -604,19 +598,26 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			if bs.service_stats and next(bs.service_stats) then
 				ChoGGi.ComFuncs.UpdateServiceComfortBld(obj,bs.service_stats)
 			end
-			-- dis/charge rates
-			local prod_type = obj.GetStoredAir and "air" or obj.GetStoredWater and "water" or obj.GetStoredPower and "electricity"
-			if bs.charge then
-				obj[prod_type].max_charge = bs.charge
-				obj[StringFormat("max_%s_charge",prod_type)] = bs.charge
-			end
-			if bs.discharge then
-				obj[prod_type].max_discharge = bs.discharge
-				obj[StringFormat("max_%s_discharge",prod_type)] = bs.discharge
-			end
+			-- training points
 			if bs.evaluation_points then
 				obj.evaluation_points = bs.evaluation_points
 			end
+			-- need to wait a sec for the grid objects to be created
+			CreateRealTimeThread(function()
+				-- dis/charge rates
+				local prod_type = obj.GetStoredAir and "air" or obj.GetStoredWater and "water" or obj.GetStoredPower and "electricity"
+				while not obj[prod_type] do
+					Sleep(100)
+				end
+				if bs.charge then
+					obj[prod_type].max_charge = bs.charge
+					obj[StringFormat("max_%s_charge",prod_type)] = bs.charge
+				end
+				if bs.discharge then
+					obj[prod_type].max_discharge = bs.discharge
+					obj[StringFormat("max_%s_discharge",prod_type)] = bs.discharge
+				end
+			end)
 
 		else
 			-- empty table so remove

@@ -130,7 +130,7 @@ local function HistoryPopup(self)
 end
 
 -- created when we create the controls controls the first time
-local ExamineMenuToggle_list
+local ExamineMenuToggle_list = {}
 -- to add each item
 local function BuildExamineItem(name)
 	if not name then
@@ -154,7 +154,7 @@ end
 -- build list of objects to examine
 local CmpLower = CmpLower
 local function BuildExamineMenu()
-	ExamineMenuToggle_list = {}
+	table.iclear(ExamineMenuToggle_list)
 
 	local list = ChoGGi.UserSettings.ConsoleExamineList or ""
 
@@ -253,13 +253,25 @@ local function BuildExamineMenu()
 
 	-- bonus addition at bottom
 	ExamineMenuToggle_list[#ExamineMenuToggle_list+1] = {
-		name = "XWindowInspector",
-		hint = "XWindowInspector",
+		name = 302535920001378--[[XWindow Inspector--]],
+		hint = 302535920001379--[[Opens up the window inspector with terminal.desktop.--]],
 		clicked = function()
-			OpenGedApp("XWindowInspector", terminal.desktop)
+			ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
 		end,
 	}
+	-- bonus addition at the top
+	table.insert(ExamineMenuToggle_list,1,{
+		name = 302535920001376--[[Auto Update List--]],
+		hint = 302535920001377--[[Update this list when ECM updates it.--]],
+		class = "ChoGGi_CheckButtonMenu",
+		value = "ChoGGi.UserSettings.ConsoleExamineListUpdate",
+		clicked = function()
+			ChoGGi.UserSettings.ConsoleExamineListUpdate = not ChoGGi.UserSettings.ConsoleExamineListUpdate
+			ChoGGi.SettingFuncs.WriteSettings()
+		end,
+	})
 end
+
 -- rebuild list of objects to examine when user changes settings
 function OnMsg.ChoGGi_SettingsUpdated()
 	BuildExamineMenu()
