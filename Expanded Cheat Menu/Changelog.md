@@ -3,9 +3,14 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v10.2 (Unreleased)
+## v10.3 (Unreleased)
+
+## v10.2 (24 Oct 2018)
 ### Added:
 - Help>Report Bug: It's a bug report dialog.
+
+### Fixed:
+- I broke the load order for my library mod.
 
 ## v10.1 (24 Oct 2018)
 ### Added:

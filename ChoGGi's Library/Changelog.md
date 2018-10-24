@@ -1,6 +1,9 @@
 ## Library Changelog
 
-## v2.8 (Unreleased)
+## v2.9 (Unreleased)
+
+## v2.8 (24 Oct 2018)
+- Strings mostly (more of an update for ECM).
 
 ## v2.7 (24 Oct 2018)
 - Code cleanup.

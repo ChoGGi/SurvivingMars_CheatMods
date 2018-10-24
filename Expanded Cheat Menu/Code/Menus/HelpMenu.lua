@@ -56,7 +56,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Help",
 		ActionId = ".Report Bug",
 		ActionIcon = "CommonAssets/UI/Menu/ReportBug.tga",
-		RolloverText = S[302535920001381--[[Opens the bug report dialog.--]]],
+		RolloverText = S[302535920001381--[[Opens the bug report dialog (this will fill AppData\BugReport folder with screenshots).--]]],
 		OnAction = ChoGGi.MenuFuncs.CreateBugReportDlg,
 		ActionSortKey = "99.Report Bug",
 		ActionShortcut = "Ctrl-F1",

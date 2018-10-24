@@ -573,7 +573,7 @@ Which you can then mess around with some more in the console."--]]],
 			hint = S[302535920001322--[["Examine UI controls by clicking them.
 This dialog will freeze till you click something."--]]],
 			clicked = function()
-				ChoGGi_TerminalRolloverMode(true,self)
+				ChoGGi.ComFuncs.TerminalRolloverMode(true,self)
 			end,
 		},
 		{
