@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v10.1 (Unreleased)
+## v10.2 (Unreleased)
+
+## v10.1 (24 Oct 2018)
 ### Added:
 - Examine>Tools>Ged Inspect: Open object in the Ged inspector (use Inspect(obj) in the console manually).
 - Console>Examine>Auto Update List: Updates the examine list when ECM updates it.

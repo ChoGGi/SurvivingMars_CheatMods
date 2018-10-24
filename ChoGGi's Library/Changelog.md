@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v2.7 (Unreleased)
+## v2.8 (Unreleased)
+
+## v2.7 (24 Oct 2018)
 - Code cleanup.
 - More icons may show up in the list choices.
 
