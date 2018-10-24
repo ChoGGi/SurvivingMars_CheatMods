@@ -2654,10 +2654,15 @@ do -- DeleteObject
 		end
 
 		-- deleting domes will freeze game if they have anything in them.
-		local dome = obj:IsKindOf("Dome")
-		if dome and #obj.labels.Buildings > 0 then
+		if obj:IsKindOf("Dome") and #obj.labels.Buildings > 0 then
 			print(S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]]:format(RetName(obj)))
 			return
+		end
+
+		if obj:IsKindOf("Passage") then
+			for i = #obj.elements_under_construction, 1, -1 do
+				ChoGGi.ComFuncs.DeleteObject(obj.elements_under_construction[i])
+			end
 		end
 
 		-- some stuff will leave holes in the world if they're still working

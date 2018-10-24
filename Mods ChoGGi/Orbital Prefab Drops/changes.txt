@@ -1,0 +1,12 @@
+v0.2
+Halved the amount of rockets attached to containers.
+
+ModConfig options
+Inside/Outside buildings: If you don't want them being dropped off inside (or outside).
+Prefab Only: Only rocket drop prefabs (or all buildings dependant on above options).
+Detach Rockets: Rockets will detach and fall to the ground (the rockets are just visual, no damage will happen).
+Detach Rockets Passages: Blocks the rockets detaching for passages (gets quite busy).
+
+Defaults are PrefabOnly = true,Outside = true,Inside = false,DetachRockets = true,DetachRocketsPassages = false
+
+I did have to block pipes/cables from rockets as they're a little buggy.

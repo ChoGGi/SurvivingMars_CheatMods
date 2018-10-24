@@ -2,7 +2,7 @@ function OnMsg.ModConfigReady()
 	local ModConfig = ModConfig
 
 	-- get option/default
-	ChoGGi_AddWaterEachSol.AmountOfWater = ModConfig:Get("ChoGGi_AddWaterEachSol", "AmountOfWater") or 50
+	ChoGGi_AddWaterEachSol.AmountOfWater = ModConfig:Get("ChoGGi_AddWaterEachSol", "AmountOfWater")
 
 	-- setup menu options
 	ModConfig:RegisterMod("ChoGGi_AddWaterEachSol", "Adds water each sol to deposits.")
