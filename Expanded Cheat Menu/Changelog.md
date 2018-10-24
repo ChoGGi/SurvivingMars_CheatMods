@@ -4,11 +4,13 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v10.2 (Unreleased)
+### Added:
+- Help>Report Bug: It's a bug report dialog.
 
 ## v10.1 (24 Oct 2018)
 ### Added:
 - Examine>Tools>Ged Inspect: Open object in the Ged inspector (use Inspect(obj) in the console manually).
-- Console>Examine>Auto Update List: Updates the examine list when ECM updates it.
+- Console>Examine>Auto Update List: Updates the examine list when ECM updates.
 
 ### Changed:
 - ECM Scripts will skip any folders without .lua files in them.

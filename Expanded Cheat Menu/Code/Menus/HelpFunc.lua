@@ -12,6 +12,38 @@ function OnMsg.ClassesGenerate()
 	local print,tostring = print,tostring
 	local StringFormat = string.format
 
+	local function MissingMantis(name)
+		if not rawget(_G,name) then
+			_G[name] = empty_table
+		end
+	end
+	MissingMantis("mantis_level_designers")
+	MissingMantis("mantis_coders")
+	MissingMantis("mantis_artists")
+	MissingMantis("mantis_designers")
+	MissingMantis("mantis_animators")
+	-- I did not hit her!
+	LocalStorage.dlgBugReport.handler = "ECM sez: Oh, hai Mark!"
+
+	function ChoGGi.MenuFuncs.CreateBugReportDlg()
+		CreateRealTimeThread(function()
+			-- muhahaha
+			Platform.developer = true
+			function insideHG()
+				return true
+			end
+
+			CreateBugReportDlg()
+			while GetDialog("BugReport") do
+				Sleep(5000)
+			end
+
+			-- back to norm
+			Platform.developer = false
+			insideHG = nil
+		end)
+	end
+
 	function ChoGGi.MenuFuncs.ExtractHPKs()
 		if blacklist then
 			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ExtractHPKs"))

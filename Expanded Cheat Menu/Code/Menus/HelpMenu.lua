@@ -51,6 +51,18 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "99.Reload ECM Menu",
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001380--[[Report Bug--]]],
+		ActionMenubar = "ECM.Help",
+		ActionId = ".Report Bug",
+		ActionIcon = "CommonAssets/UI/Menu/ReportBug.tga",
+		RolloverText = S[302535920001381--[[Opens the bug report dialog.--]]],
+		OnAction = ChoGGi.MenuFuncs.CreateBugReportDlg,
+		ActionSortKey = "99.Report Bug",
+		ActionShortcut = "Ctrl-F1",
+		ActionBindable = true,
+	}
+
 	local str_Help_Screenshot = "ECM.Help.Screenshot"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000892--[[Screenshot--]]]),

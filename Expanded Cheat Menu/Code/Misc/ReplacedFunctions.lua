@@ -256,6 +256,17 @@ function OnMsg.ClassesGenerate()
 	SaveOrigFunc("XPopupMenu","RebuildActions")
 	SaveOrigFunc("XShortcutsHost","SetVisible")
 
+	-- i fucking hate modal windows
+	if ChoGGi.testing then
+		SaveOrigFunc("XWindow","SetModal")
+
+		function XWindow:SetModal(set,...)
+			if set == false then
+				return ChoGGi_OrigFuncs.XWindow_SetModal(self,set,...)
+			end
+		end
+	end
+
 	-- allows you to build outside buildings inside and vice
 	do -- CursorBuilding:GameInit
 		function CursorBuilding:GameInit()
