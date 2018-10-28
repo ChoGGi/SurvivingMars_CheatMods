@@ -1,0 +1,18 @@
+v0.5
+Library update.
+
+v0.4
+Cleaning up code (ChoGGi's Library).
+v0.3
+Clicking a rocket will work properly now.
+Non-spawned rockets are now hidden from view.
+v0.2
+Faster (3K+ colonists takes 1-2 seconds).
+
+Limited Colonists to same dome if over 5000.
+Hold Shift to show full list.
+
+More icons (see tooltip for "interpretation" of what each icon is for, English only).
+if list under 50 then add anything in same build category.
+Always groups Domes and Rovers.
+Hold Ctrl for old pin button functionality (might not work with a gamepad, but only console users would sink to that level).

@@ -1,0 +1,40 @@
+Emmote 5 hours ago  
+Out of all the resources Concrete would make the most sense for it to collect.
+
+
+The reason why the navigator trait idea I had would do what it would do is obviously because of how the Guild Navigators from DUNE are able to fold space and time, because of being so high on the spice and having consumed so much of it throughout their lives that it also horribly disfigured their bodies. But yea, navigator colonists could fold space and time with their minds to get rid of the travel time for whatever rocket they boarded, making it simply appear on Mars as soon as you place an order, or instantly be on Earth as soon as it launches from Mars and into space. THAT would be awesome.
+ 
+Deadspartan95 2 hours ago  
+Alsooooo, it would be cool if it was loaded onto rockets to generate more research or funding from the sponsor, or just funding.
+ 
+Deadspartan95 2 hours ago  
+-Increased Brain Capacity: Like those crazy smart human calculators that have the huge eyebrows, colonists have a lot of memory storage and can almost instantaneously graduate from the martian universities, and generates extra research (like geniuses but way more).
+
+-Telepathy: Colonists can increase production of wherever they are working (because it could be like they are helping communicate with or control the minds of their coworkers), but it causes minor discomfort and sanity losses to other colonists.
+
+-Navigator: This would make a colonist "Earthsick," but whatever rocket the colonist with the navigator trait boards can somehow have no travel time when coming from or returning to Earth, making it so that rocket has no wait time at all. However, that colonist will never be able to be an available colonist.
+
+(END)
+ 
+Deadspartan95 2 hours ago  Delete
+Spice could provide colonists with the following traits, if fed into a structure that colonists can gain these traits from:
+
+-Life Extension: Colonists can age a lot more slowly (maybe slow enough to see the year 10,191).
+
+-Blue Eyes: Generates happiness in the colony, and they can see much better in the dark than the average human, making them not show any discomfort or sanity losses while working hours during the night.
+
+(continued in next comment)...
+
+
+Gilrad 18 hours ago  
+My suggestions to add to @Apex Aurajin's comment are:
+
+Let each unit gather a user-defined basic resource.
+Make it slow af.
+Limit the number of overall units that can be active (similar to the RC Rover Control Limits), however, this might require a second "Control Tower" asset/mod. 
+
+Maybe, have the the units with a base hive mind limit, say 10 "Active" units on the map at any given time, no matter the distance. Make them randomly patrol the map. Use the Control Tower (if made) to allow increases in "Global Active Unit Limit".
+
+Dropoff point should be nearest depot of the corresponing resource. If they fill up, they simply make their way to said depot at a slightly elevated travel speed. If the Commander has the Shuttle Tech (CO2 Propulsion) and has built the appropriate Shuttle Bay, they could call a Shuttle to their locations, instead.
+
+Just a few thoughts.

@@ -1,0 +1,8 @@
+Open in Krita black cursors from the mod
+Select -> Select opaque
+Edit -> Stroke selection
+Type: current...
+Line: foreground...
+Color: white
+
+Thanks to Vavooon

@@ -1,0 +1,32 @@
+v1.2
+Library update.
+
+v1.1
+Library.
+v1.0
+Fixed issue with shortcuts and multiple of my mods that use shortcuts.
+v0.9
+Rock removal now takes about a second.
+Added Ctrl-Shift-Alt-D to delete objects (careful: it doesn't ask and will delete any object).
+Changed default delete rocks key to Ctrl-Shift-1, and moved small rocks to Ctrl-Shift-2.
+v0.8
+Fixed Delete all Rocks being Shift-Ctrl-F instead of Ctrl-Shift-F.
+Made sure bindings are now named in keybindings in in-game options, so you can change them to whatever.
+v0.7
+Accidentally made it Ctrl-F instead of Shift-F.
+v0.6
+Keys work properly now (in editor mode).
+Cleaning up code (ChoGGi's Library).
+v0.5
+Da Vinci
+Changed to use the built-in map editor as it can make smooth formations, paint, etc.
+If you like the old way then use ECM (can do both).
+Remove All Rocks also does the little rocks (takes longer).
+v0.4
+Added Remove All Rocks: Press Ctrl-Shift-F to show a confirmation dialog.
+v0.3
+Fixed issue with pipes getting marked as uneven terrain.
+v0.2
+Shift Left/Right to change radius.
+Shift Up/Down to change height.
+Added Mod Config support for the radius/height diff amount.

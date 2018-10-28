@@ -1,0 +1,10 @@
+v0.4
+Cleaned up the code (it's pretty old).
+Got rid of some log spam.
+
+v0.3
+Library update.
+
+v0.2
+Da Vinci.
+Cleaning up code (ChoGGi's Library).

@@ -1,0 +1,16 @@
+v0.5
+Added a bunch of Finnish names thanks to Jopo80.
+
+v0.4
+Converted all flags to png for some space saving.
+Replaced built-in nation flags with the larger ones from this mod (also removed dupes).
+Slightly faster loading.
+
+v0.3
+List of all names is now applied to built-in countries.
+Random birthplace defaults to true (use Mod Config to disable).
+Now with 10% more randomness (or something like that).
+Also now packed in an .hpk for size (5MB -> under 1MB).
+
+v0.2
+Da Vinci

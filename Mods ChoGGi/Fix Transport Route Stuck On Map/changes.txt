@@ -1,0 +1,5 @@
+v0.3
+In some cases it wouldn't clear the markings after they were added.
+
+v0.2
+Was removing the work grids from Toggle Hub Zone.

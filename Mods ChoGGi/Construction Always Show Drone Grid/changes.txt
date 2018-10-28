@@ -1,0 +1,6 @@
+v0.3
+Now shows grid for RC Commanders as well.
+Different colours for each type.
+
+v0.2
+Da Vinci

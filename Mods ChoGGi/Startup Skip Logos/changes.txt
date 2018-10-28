@@ -1,0 +1,20 @@
+v1.0
+Sagan.
+
+v0.9
+Intergrated with my HelperMod for ECM (easier to have the two both installed).
+v0.8
+Added the options from Skip Missing Mods & DLC Msgs (commented out).
+v0.7
+Now retrieves the correct Assets Revision, so no more need for version bumping.
+v0.6
+revision bump for Curiosity
+v0.4
+Added commented out option to skip the missing/outdated mods warning message
+v0.3
+bumped revision for Spirit
+v0.2
+Turns out starting a new game gives a blank map 
+You need to pass a somewhat correct revision 
+It's stored in Packs\BinAssets.hpk, or just check the log 
+It'll say Assets revision: 17650 (17000 works fine for now, I assume when it goes over 18000...)

@@ -1,0 +1,1 @@
+add a slider to transport panel for radius of pickup (show circle and fade out after 10s or selection change)
