@@ -1,0 +1,12 @@
+v0.6
+Library update.
+
+v0.5
+Library.
+v0.4
+Cleaning up code (ChoGGi's Library).
+v0.3
+Da Vinci
+Error that stopped the popup telling you about a borked path.
+v0.2
+Changed it from checking each RC once an hour (in-game) to checking when during load/unload of resources.

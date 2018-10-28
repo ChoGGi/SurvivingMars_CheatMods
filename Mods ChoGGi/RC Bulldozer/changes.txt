@@ -1,0 +1,15 @@
+v0.5
+Sped up the method I used to make ground drivable, but now it'll block objects from being placed nearby when Dozer Toggle is enabled.
+Dozer body colour is changed while Dozer Toggle is enabled, so you know to turn if off when idle.
+
+v0.4
+Rover isn't shy of bumpy ground anymore.
+Added popup list to Texture button.
+Got rid of the persist error that shows up in the log when you save a game (doesn't affect gameplay).
+
+v0.3
+Only updates buildable ground when you turn off dozing (instead of each time it stops moving).
+
+v0.2
+Changed texture to one that doesn't paint over landing site.
+Slowed down the flatten loop a tad (easier on cpu usage).

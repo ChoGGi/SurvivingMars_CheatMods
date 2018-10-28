@@ -1,0 +1,12 @@
+v0.6
+Sagan.
+
+v0.5
+New icon thanks to SkiRich.
+New name.
+v0.4
+Moved saved names to the pointer thingy.
+v0.3
+Changed marker to just be the green dome instead of the outer bars as well.
+v0.2
+Problem with the planet rotating.

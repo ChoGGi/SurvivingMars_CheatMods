@@ -1,0 +1,2 @@
+v0.2
+Gets a list of all traits (if any added from mods), instead of using a list I did.

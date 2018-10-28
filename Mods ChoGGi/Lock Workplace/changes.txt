@@ -1,0 +1,15 @@
+v0.8
+Library update.
+
+v0.7
+Library.
+v0.6
+Cleaning up code (ChoGGi's Library).
+v0.5
+Was spamming the console.
+v0.4
+Da Vinci.
+v0.3
+Stopped button showing up for colonists in training buildings (thanks SkiRich).
+v0.2
+Added a "Lock Workers" button to Workplaces.

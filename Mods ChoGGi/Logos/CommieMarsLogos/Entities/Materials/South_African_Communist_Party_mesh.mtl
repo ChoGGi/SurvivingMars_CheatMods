@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Materials>
+	<Material>
+		<BaseColorMap Name="mod_texture_South_African_Communist_Party.dds" mc="0"/>
+		<Property TwoSided="0"/>
+		<Property TwoSidedShading="0"/>
+		<Property SunFacingShading="0"/>
+		<Property ShadowBlob="0"/>
+		<Property Anisotropic="0"/>
+		<Property MarkVolume="0"/>
+		<Property Opacity="100"/>
+		<Property ViewDependentOpacity="0"/>
+		<Property SelfIllum="0"/>
+		<Property Wind="0"/>
+		<Property CastShadow="0"/>
+		<Property AlphaTest="1"/>
+		<Property UOffset="0.000000"/>
+		<Property VOffset="0.000000"/>
+		<Property USize="1.000000"/>
+		<Property VSize="1.000000"/>
+		<Property DepthWrite="1"/>
+		<Property NoDiffuse="0"/>
+		<Property TexScrollTime="0"/>
+		<Property DtmDisable="0"/>
+		<Property EnvMapped="0"/>
+		<Property Translucency="0"/>
+		<Property SpecularPower="0"/>
+		<Property SpecularPowerRGB="0"/>
+		<Property MaskedCM="0"/>
+		<Property GlossColor="0"/>
+		<Property Distortion="0"/>
+		<Property DepthSmooth="0"/>
+		<Property StretchFactor1="1.000000"/>
+		<Property StretchFactor2="1.000000"/>
+		<Property UnitLighting="0"/>
+		<Property Special="Decal"/>
+		<Property AlphaBlend="Blend"/>
+	</Material>
+</Materials>

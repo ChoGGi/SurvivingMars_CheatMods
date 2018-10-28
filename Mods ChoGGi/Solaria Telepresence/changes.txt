@@ -1,0 +1,22 @@
+v0.9
+Library update.
+
+v0.8
+Library.
+v0.7
+I accidently removed the code removing the limit on placing outside workplaces.
+Cleaning up code (ChoGGi's Library).
+v0.6
+0.5 was spamming the log. It still worked fine, but I like me a clean log.
+v0.5
+Da Vinci.
+Cleaned up the code a bit.
+Locked building behind a tech unlock.
+v0.4
+Removed list boxes for selection, now uses menus (right-click to close the menu).
+Uses 15 instead of 25 power.
+Counts as a Workshop now.
+v0.3
+Just updating code to parity with ECM code and steam version.
+v0.2
+Curiosity update

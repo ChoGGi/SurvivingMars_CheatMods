@@ -1,0 +1,27 @@
+v0.8
+Library update.
+
+v0.7
+Library.
+
+v0.6
+You can re-bind keys with in-game options.
+
+v0.5
+Da Vinci.
+Cleaning up code (ChoGGi's Library).
+
+v0.4
+Random colour now works with attachments now. 
+Updated code to parity with ECM code and steam version (GUI might look slightly different).
+
+v0.3
+Changed: 
+Change Colour now works with attachments (also moved the menu item to Misc, though you'll need to use F6 anyways for rocks/etc). 
+Added a base color modifier to Change Colour (you can change the colour of more items, like rocks/signs).
+
+v0.2
+Changed: 
+Change Colour now works with attachments (also moved the menu item to Misc, though you'll need to use F6 anyways for rocks/etc). 
+Added a base color modifier to Change Colour (you can change the colour of more items, like rocks/signs). 
+Esc just removes focus from text boxes now (just for windows ECM opens), Use Shift/Ctrl + Esc to close).

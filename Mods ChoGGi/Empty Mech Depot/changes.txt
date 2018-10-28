@@ -1,0 +1,15 @@
+v0.7
+Library update.
+
+v0.6
+Library.
+v0.5
+Da Vinci.
+Cleaning up code (ChoGGi's Library).
+v0.4
+Curo update.
+v0.3
+Removed shortcut/cheat section. 
+Added button to side panel instead.
+v0.2
+Fixed issue with Rare Metal depots.
