@@ -252,7 +252,10 @@ function OnMsg.ClassesGenerate()
 			ThreadUnlockKey(ChoGGi.SettingsFile)
 
 			if DoneFuckedUp then
-				print(S[302535920000006--[[Failed to save settings to %s : %s--]]]:format(ChoGGi.SettingsFile,DoneFuckedUp))
+				print(S[302535920000006--[[Failed to save settings to %s : %s--]]]:format(
+					ChoGGi.SettingsFile and ConvertToOSPath(ChoGGi.SettingsFile) or ChoGGi.SettingsFile,
+					DoneFuckedUp
+				))
 				return false, DoneFuckedUp
 			end
 		end

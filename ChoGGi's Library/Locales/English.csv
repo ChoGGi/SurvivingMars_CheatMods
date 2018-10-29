@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001383,,
 302535920001384,,
 302535920001385,,
 302535920001386,,
@@ -83,6 +82,7 @@ ID,Text,Translation,Old Translation,Gender
 302535920000201,Active,
 302535920000001,"F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""To import your old settings"".",
+302535920001383,AddXTemplate borked template name: %s template: %s list: %s,
 302535920000013,This shouldn't happen... Well shit something's bork bork bork.,
 302535920000002,Dumped: %s,
 302535920000003,Can't dump nothing,
@@ -132,7 +132,7 @@ You can copy and paste numbers if you want.",
 302535920000032,Select a resource to find,
 302535920001074,Ged Presets Editor,
 302535920000503,Right-click an item/submenu to add/remove it from the quickbar.,
-302535920001309,"Press Tilde or Enter and click the ""Settings"" button then uncheck ""Console Log"" to stop showing console log (instead of pressing F9 each time).",
+302535920001309,"Stop showing these msgs: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s"".",
 302535920000247,Startup ticks,
 302535920000729,You've started a mystery!,
 302535920000730,You've chosen a mystery!,

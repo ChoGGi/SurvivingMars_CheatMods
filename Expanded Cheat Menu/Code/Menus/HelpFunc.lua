@@ -530,7 +530,7 @@ function OnMsg.ClassesGenerate()
 			filename = GenerateScreenshotFilename("SS","AppData/")
 			WriteScreenshot(filename)
 		end
-		print(filename)
+		print(ConvertToOSPath(filename))
 	end
 
 	function ChoGGi.MenuFuncs.ResetECMSettings()

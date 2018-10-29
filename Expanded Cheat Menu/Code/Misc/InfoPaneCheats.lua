@@ -293,8 +293,11 @@ function Building:CheatDestroy()
 	local function CallBackFunc(answer)
 		if answer then
 			local dome = self:IsKindOf("Dome")
-			if dome and #self.labels.Buildings > 0 then
-				print(S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]]:format(RetName(self)))
+			if dome and #(self.labels.Buildings or "") > 0 then
+				MsgPopup(
+					S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]]:format(RetName(self)),
+					302535920000489--[[Delete Object(s)--]]
+				)
 				return
 			end
 

@@ -1062,7 +1062,7 @@ do -- LoadGame/CityStart
 		if not blacklist then
 			local autoexec = StringFormat("%s/autoexec.lua",ChoGGi.scripts)
 			if ChoGGi.ComFuncs.FileExists(autoexec) then
-				print("ECM executing: ",autoexec)
+				print("ECM executing: ",ConvertToOSPath(autoexec))
 				dofile(autoexec)
 			end
 		end
@@ -1328,7 +1328,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 		if not ChoGGi.testing then
 			-- getting tired of people asking how to disable console log
-			print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button then uncheck ""Console Log"" to stop showing console log (instead of pressing F9 each time)."--]]])
+			print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920001309--[["Stop showing these msgs: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(S[302535920001308--[[Settings--]]],S[302535920001112--[[Console Log--]]]))
 		end
 
 		-- used to check when game has started and it's safe to print() etc

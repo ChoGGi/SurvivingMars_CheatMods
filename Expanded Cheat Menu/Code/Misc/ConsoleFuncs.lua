@@ -427,7 +427,7 @@ function OnMsg.ClassesGenerate()
 		if not ChoGGi.ComFuncs.FileExists(script_path) then
 			AsyncCreatePath(StringFormat("%s/Functions",script_path))
 			-- print some info
-			print(S[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."--]]]:format(script_path))
+			print(S[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."--]]]:format(ConvertToOSPath(script_path)))
 			-- add some example files and a readme
 			AsyncStringToFile(StringFormat("%s/readme.txt",script_path),S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
 			AsyncStringToFile(StringFormat("%s/Read Me.lua",script_path),[[ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
