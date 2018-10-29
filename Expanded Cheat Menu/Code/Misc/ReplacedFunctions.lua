@@ -232,6 +232,7 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
+	-- Custom Msgs
 	local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
 	AddMsgToFunc("BaseBuilding","GameInit","ChoGGi_SpawnedBaseBuilding")
 	AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
@@ -241,7 +242,6 @@ function OnMsg.ClassesGenerate()
 	AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducer","production_per_day")
 	AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
 
-	-- Custom Msgs
 	SaveOrigFunc("BaseRover","GetCableNearby")
 	SaveOrigFunc("Building","ApplyUpgrade")
 	SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
@@ -255,33 +255,42 @@ function OnMsg.ClassesGenerate()
 	SaveOrigFunc("XMenuEntry","SetShortcut")
 	SaveOrigFunc("XPopupMenu","RebuildActions")
 	SaveOrigFunc("XShortcutsHost","SetVisible")
+	SaveOrigFunc("DontBuildHere","Check")
+	SaveOrigFunc("ConstructionController","IsObstructed")
 
-	-- i fucking hate modal windows
-	if ChoGGi.testing then
-		SaveOrigFunc("XWindow","SetModal")
-
-		function XWindow:SetModal(set,...)
-			if set == false then
-				return ChoGGi_OrigFuncs.XWindow_SetModal(self,set,...)
+	-- allows you to build on geysers
+	function ConstructionController:IsObstructed(...)
+		-- we need to make sure it's the only obstructor
+		if ChoGGi.UserSettings.BuildOnGeysers then
+			local o = self.construction_obstructors
+			if o and #o == 1 and o[1] == g_DontBuildHere then
+				return
 			end
+		return ChoGGi_OrigFuncs.ConstructionController_IsObstructed(self,...)
+	end
+
+	-- allows you to build on geysers
+	function DontBuildHere:Check(...)
+		if ChoGGi.UserSettings.BuildOnGeysers then
+			return false
+		else
+			return ChoGGi_OrigFuncs.DontBuildHere_Check(self,...)
 		end
 	end
 
 	-- allows you to build outside buildings inside and vice
-	do -- CursorBuilding:GameInit
-		function CursorBuilding:GameInit()
-			if self.template_obj then
-				if ChoGGi.UserSettings.RemoveBuildingLimits then
-					self.template_obj.dome_required = false
-					self.template_obj.dome_forbidden = false
-				elseif self.template_obj then
-					self.template_obj.dome_required = cc.template_obj:GetDefaultPropertyValue("dome_required")
-					self.template_obj.dome_forbidden = cc.template_obj:GetDefaultPropertyValue("dome_forbidden")
-				end
+	function CursorBuilding:GameInit()
+		if self.template_obj then
+			if ChoGGi.UserSettings.RemoveBuildingLimits then
+				self.template_obj.dome_required = false
+				self.template_obj.dome_forbidden = false
+			elseif self.template_obj then
+				self.template_obj.dome_required = cc.template_obj:GetDefaultPropertyValue("dome_required")
+				self.template_obj.dome_forbidden = cc.template_obj:GetDefaultPropertyValue("dome_forbidden")
 			end
-			return ChoGGi_OrigFuncs.CursorBuilding_GameInit(self)
 		end
-	end -- do
+		return ChoGGi_OrigFuncs.CursorBuilding_GameInit(self)
+	end
 
 	-- no need for fuel to launch rocket
 	function SupplyRocket:HasEnoughFuelToLaunch(...)
@@ -535,6 +544,17 @@ function OnMsg.ClassesGenerate()
 		return ChoGGi_OrigFuncs.BaseRover_GetCableNearby(self, rad)
 	end
 
+	-- i fucking hate modal windows
+	if ChoGGi.testing then
+		SaveOrigFunc("XWindow","SetModal")
+
+		function XWindow:SetModal(set,...)
+			if set == false then
+				return ChoGGi_OrigFuncs.XWindow_SetModal(self,set,...)
+			end
+		end
+	end
+
 end --onmsg library
 
 -- ClassesPreprocess
@@ -573,11 +593,6 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("DroneHub","SetWorkRadius")
 	SaveOrigFunc("InfopanelDlg","Open")
 	SaveOrigFunc("MartianUniversity","OnTrainingCompleted")
-	-- removed in Garagin
-	if LuaRevision == 235636 then
-		SaveOrigFunc("MG_Colonists","GetProgress")
-		SaveOrigFunc("MG_Martianborn","GetProgress")
-	end
 	SaveOrigFunc("RCRover","SetWorkRadius")
 	SaveOrigFunc("RCTransport","TransportRouteLoad")
 	SaveOrigFunc("RCTransport","TransportRouteUnload")
@@ -598,6 +613,12 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("XWindow","OnMouseEnter")
 	SaveOrigFunc("XWindow","OnMouseLeft")
 	SaveOrigFunc("XWindow","SetId")
+	-- removed in Garagin
+	if LuaRevision == 235636 then
+		SaveOrigFunc("MG_Colonists","GetProgress")
+		SaveOrigFunc("MG_Martianborn","GetProgress")
+	end
+
 	local UserSettings = ChoGGi.UserSettings
 
 	function SpaceElevator:DroneUnloadResource(...)
@@ -1209,7 +1230,7 @@ function OnMsg.ClassesBuilt()
 	--so we can build without (as many) limits
 	function ConstructionController:UpdateConstructionStatuses(dont_finalize)
 		if ChoGGi.UserSettings.RemoveBuildingLimits then
-			--send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
+			-- send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
 			ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,"dont_finalize")
 
 			local status = self.construction_statuses
@@ -1225,29 +1246,23 @@ function OnMsg.ClassesBuilt()
 				tobj:GatherConstructionStatuses(self.construction_statuses)
 			end
 
-			--remove errors we want to remove
+			-- just leave warnings and UnevenTerrain error
 			local statusNew = {}
 			local c = 0
-			local ConstructionStatus = ConstructionStatus
+			local UnevenTerrain = ConstructionStatus.UnevenTerrain
 			if type(status) == "table" and #status > 0 then
 				for i = 1, #status do
 					if status[i].type == "warning" then
 						c = c + 1
 						statusNew[c] = status[i]
-					--ResourceRequired < no point in building an extractor when there's nothing to extract
-					--BlockingObjects < place buildings in each other
-					--NoPlaceForSpire
-					--PassageTooCloseToLifeSupport
-					--PassageAngleToSteep might be needed?
-
-					--UnevenTerrain < causes issues when placing buildings (martian ground viagra)
-					elseif status[i] == ConstructionStatus.UnevenTerrain then
+					-- UnevenTerrain < causes issues when placing buildings (martian ground viagra)
+					elseif status[i] == UnevenTerrain then
 						c = c + 1
 						statusNew[c] = status[i]
 					end
 				end
 			end
-			--make sure we don't get errors down the line
+			-- make sure we don't get errors down the line
 			if type(statusNew) == "boolean" then
 				statusNew = {}
 			end

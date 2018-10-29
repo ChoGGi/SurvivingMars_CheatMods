@@ -12,6 +12,15 @@ function OnMsg.ClassesGenerate()
 
 	local StringFormat = string.format
 
+	function ChoGGi.MenuFuncs.BuildOnGeysers_Toggle()
+--~ 		g_DontBuildHere:delete()
+		ChoGGi.UserSettings.BuildOnGeysers = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.BuildOnGeysers)
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.BuildOnGeysers,302535920000064--[[Build On Geysers--]]),
+			302535920000064--[[Build On Geysers--]]
+		)
+	end
+
 	function ChoGGi.MenuFuncs.SetTrainingPoints()
 		local ChoGGi = ChoGGi
 		local sel = ChoGGi.ComFuncs.SelObject()

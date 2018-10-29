@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v2.9 (Unreleased)
+- AnimDebug_Toggle wasn't removing oriention obj.
 - Slight speed up for my random colour func.
 
 ## v2.8 (24 Oct 2018)

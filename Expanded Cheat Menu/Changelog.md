@@ -6,12 +6,14 @@
 ## v10.3 (Unreleased)
 
 ### Changed:
+- Build On Geysers: You can toggle it now (moved to Toggles menu).
 - It asks before firing Change Map (from the list).
 
 ### Fixed:
 - Issue with the cheat menu in the main menu (menu items using UICity to display values).
 - Buildings>*-free Building issue (thanks OyeBhotka).
 - Rocket>Change Resupply Settings didn't work unless you used Load Game (thanks OyeBhotka).
+- Turns out Examine thread (non-blacklisted) has been borked for awhile now...
 
 ## v10.2 (24 Oct 2018)
 ### Added:

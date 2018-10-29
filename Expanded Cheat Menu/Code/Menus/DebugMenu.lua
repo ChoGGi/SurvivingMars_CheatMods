@@ -58,7 +58,13 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Attach Spots Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/ShowAll.tga",
-		RolloverText = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
+		RolloverText = function()
+			local sel = SelectedObj
+			return ChoGGi.ComFuncs.SettingState(
+				sel and sel.ChoGGi_ShowAttachSpots,
+				302535920000450--[[Toggle showing attachment spots on selected object.--]]
+			)
+		end,
 		OnAction = function()
 			ChoGGi.ComFuncs.AttachSpots_Toggle()
 		end,
@@ -118,7 +124,20 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Anim Debug Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/CameraEditor.tga",
-		RolloverText = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
+		RolloverText = function()
+			local sel = SelectedObj
+			if sel then
+				return ChoGGi.ComFuncs.SettingState(
+					sel.ChoGGi_ShowAnimDebug,
+					302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]
+				)
+			else
+				return ChoGGi.ComFuncs.SettingState(
+					ChoGGi.Temp.ShowAnimDebug,
+					302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]
+				)
+			end
+		end,
 		OnAction = function()
 			ChoGGi.ComFuncs.ShowAnimDebug_Toggle()
 		end,
