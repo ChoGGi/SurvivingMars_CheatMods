@@ -266,6 +266,7 @@ function OnMsg.ClassesGenerate()
 			if o and #o == 1 and o[1] == g_DontBuildHere then
 				return
 			end
+		end
 		return ChoGGi_OrigFuncs.ConstructionController_IsObstructed(self,...)
 	end
 
