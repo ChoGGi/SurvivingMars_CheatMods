@@ -1,3 +1,7 @@
+v0.6
+Mod left marker objects in game, so you'd get some console spam if you removed it from a save.
+Wouldn't cause problems, just the spam.
+
 v0.5
 Hex marks are coloured green to make them distinct from dome marks.
 Raised the height of my marks just above dome marks.

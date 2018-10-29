@@ -7,6 +7,8 @@ local AsyncRand = AsyncRand
 local HexRotate = HexRotate
 local HexToWorld = HexToWorld
 local WorldToHex = WorldToHex
+local SuspendPassEdits = SuspendPassEdits
+local ResumePassEdits = ResumePassEdits
 local point = point
 local table = table
 local next = next
@@ -46,6 +48,15 @@ function ChoGGi_Polyline:Set(a, b)
 	line_table[1] = a
 	line_table[2] = b
 	self:SetPoints(line_table)
+end
+
+-- if these are here when a save is loaded without this mod then it'll spam the console
+function OnMsg.SaveGame()
+	SuspendPassEdits("DeleteChoGGiDomeLines")
+	MapDelete("map", "ChoGGi_HexSpot")
+	MapDelete("map", "ChoGGi_Polyline")
+	ResumePassEdits("DeleteChoGGiDomeLines")
+	dome_list = {}
 end
 
 -- add dome spots to dome_list
@@ -150,6 +161,7 @@ end
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done(...)
 	-- we're done construction hide all the markers
+	SuspendPassEdits("ChoGGi_CleanupOldMarkers")
 	for dome,item in pairs(dome_list) do
 		if IsValid(dome) then
 			item.line:SetVisible()
@@ -159,6 +171,7 @@ function CursorBuilding:Done(...)
 			ListCleanup(dome,item)
 		end
 	end
+	ResumePassEdits("ChoGGi_CleanupOldMarkers")
 	return orig_CursorBuilding_Done(self,...)
 end
 

@@ -10,6 +10,7 @@
 
 ### Fixed:
 - Issue with the cheat menu in the main menu (menu items using UICity to display values).
+- Buildings>*-free Building issue (thanks OyeBhotka).
 
 ## v10.2 (24 Oct 2018)
 ### Added:
