@@ -318,14 +318,14 @@ end
 
 function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	local text = self.idEditValue:GetText()
-	local value = RetProperType(text)
+	local value,value_type = RetProperType(text)
 	if self.custom_type > 0 then
 		if self.idList.focused_item then
 			self.idList[self.idList.focused_item].item.value = value
 			if self.idColourContainer then
 				-- update obj colours
 				self:UpdateColour()
-				if type(value) == "number" then
+				if value_type == "number" then
 					self.idColorPicker:SetColor(value)
 				end
 				self.idEditValue:SetCursor(1,#text)

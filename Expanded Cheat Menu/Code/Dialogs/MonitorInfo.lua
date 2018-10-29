@@ -127,8 +127,8 @@ function OnMsg.ClassesGenerate()
 		self.idTimerAmount:SetTextVAlign("center")
 		self.idTimerAmount:SetMaxLen(-1)
 		function self.idTimerAmount.OnValueChanged()
-			local delay = ChoGGi.ComFuncs.RetProperType(self.idTimerAmount:GetText())
-			if type(delay) == "number" and delay > 0 then
+			local delay,delay_type = ChoGGi.ComFuncs.RetProperType(self.idTimerAmount:GetText())
+			if delay_type == "number" and delay > 0 then
 				self.delay = delay
 			end
 		end

@@ -780,20 +780,20 @@ function ChoGGi.ComFuncs.RetProperType(value)
 	-- number?
 	local num = tonumber(value)
 	if num then
-		return num
+		return num,"number"
 	end
 	-- stringy boolean
 	if value == "true" then
-		return true
+		return true,"boolean"
 	elseif value == "false" then
-		return false
+		return false,"boolean"
 	end
 	-- nadda
 	if value == "nil" then
-		return
+		return nil,"nil"
 	end
 	-- then it's a string (probably)
-	return value
+	return value,"string"
 end
 
 do -- RetType
@@ -1311,6 +1311,7 @@ do -- ShowConsoleLogWin
 end -- do
 
 do -- UpdateDataTables
+	-- I should look around for a way
 	local mystery_images = {
 		MarsgateMystery = "UI/Messages/marsgate_mystery_01.tga",
 		BlackCubeMystery = "UI/Messages/power_of_three_mystery_01.tga",
@@ -1326,7 +1327,7 @@ do -- UpdateDataTables
 		MirrorSphereMystery = "UI/Messages/sphere_mystery_01.tga",
 	}
 
-	function ChoGGi.ComFuncs.UpdateDataTables(cargo_update)
+	function ChoGGi.ComFuncs.UpdateDataTables()
 		local Tables = ChoGGi.Tables
 		local c = 0
 
@@ -1412,27 +1413,14 @@ do -- UpdateDataTables
 		end
 
 ------------- cargo
-		-- we only need to call when ResupplyItemDefinitions is built (start of new games)
-		if cargo_update == true then
-			-- values rocket checks
-			Tables.Cargo = {}
-			-- defaults
-			Tables.CargoPresets = {}
 
-			local ResupplyItemDefinitions = ResupplyItemDefinitions
-			for i = 1, #ResupplyItemDefinitions do
-				local meta = getmetatable(ResupplyItemDefinitions[i]).__index
-				Tables.Cargo[i] = meta
-				Tables.Cargo[meta.id] = meta
-			end
-
-			-- used to check defaults for cargo
-			c = 0
-			for cargo_id,cargo in pairs(CargoPreset) do
-				c = c + 1
-				Tables.CargoPresets[c] = cargo
-				Tables.CargoPresets[cargo_id] = cargo
-			end
+		-- used to check defaults for cargo
+		Tables.CargoPresets = {}
+		c = 0
+		for cargo_id,cargo in pairs(CargoPreset) do
+			c = c + 1
+			Tables.CargoPresets[c] = cargo
+			Tables.CargoPresets[cargo_id] = cargo
 		end
 
 -------------- resources

@@ -921,6 +921,40 @@ function OnMsg.ChoGGi_Childkiller()
 	end
 end
 
+-- this is when RocketPayload_Init is called (CityStart is too soon)
+function OnMsg.NewMapLoaded()
+	if not UICity then
+		return
+	end
+	local Tables = ChoGGi.Tables
+
+	-- update cargo resupply
+	Tables.Cargo = {}
+	local ResupplyItemDefinitions = ResupplyItemDefinitions
+	for i = 1, #ResupplyItemDefinitions do
+		local def = ResupplyItemDefinitions[i]
+		Tables.Cargo[i] = def
+		Tables.Cargo[def.id] = def
+	end
+
+	for id,cargo in pairs(ChoGGi.UserSettings.CargoSettings or {}) do
+		if Tables.Cargo[id] then
+			if cargo.pack then
+				Tables.Cargo[id].pack = cargo.pack
+			end
+			if cargo.kg then
+				Tables.Cargo[id].kg = cargo.kg
+			end
+			if cargo.price then
+				Tables.Cargo[id].price = cargo.price
+			end
+			if type(cargo.locked) == "boolean" then
+				Tables.Cargo[id].locked = cargo.locked
+			end
+		end
+	end
+end
+
 -- show how long loading takes
 function OnMsg.ChangeMap()
 	local ChoGGi = ChoGGi
@@ -1021,22 +1055,6 @@ do -- LoadGame/CityStart
 				if key == "performance" and value == "disable" then
 					settings.performance = nil
 					ChoGGi.Temp.WriteSettings = true
-				end
-			end
-		end
-
-		-- update cargo resupply
-		ChoGGi.ComFuncs.UpdateDataTables(true)
-		for Key,Value in pairs(UserSettings.CargoSettings or {}) do
-			if ChoGGi.Tables.Cargo[Key] then
-				if Value.pack then
-					ChoGGi.Tables.Cargo[Key].pack = Value.pack
-				end
-				if Value.kg then
-					ChoGGi.Tables.Cargo[Key].kg = Value.kg
-				end
-				if Value.price then
-					ChoGGi.Tables.Cargo[Key].price = Value.price
 				end
 			end
 		end

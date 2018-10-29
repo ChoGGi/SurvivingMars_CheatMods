@@ -186,10 +186,10 @@ function OnMsg.ClassesGenerate()
 				-- build setting to save
 				for i = 1,#choice do
 					local setting = choice[i].setting
-					local value = ChoGGi.ComFuncs.RetProperType(choice[i].value)
+					local value,value_type = ChoGGi.ComFuncs.RetProperType(choice[i].value)
 					-- check user added correct
 					local editor_type = ReturnEditorType(sel.properties,"id",setting)
-					if type(value) == editor_type then
+					if value_type == editor_type then
 						if editor_type == "number" then
 							bs_setting.service_stats[setting] = value * r
 						elseif value == "" then
