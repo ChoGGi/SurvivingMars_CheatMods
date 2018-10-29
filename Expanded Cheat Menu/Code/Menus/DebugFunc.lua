@@ -666,9 +666,9 @@ function OnMsg.ClassesGenerate()
 
 			else
 				-- rovers/drones/colonists
-				if not pcall(function()
-					path = type(obj.GetPath) == "function" and obj:GetPath()
-				end) then
+				if obj.GetPath then
+					path = obj:GetPath()
+				else
 					ChoGGi.ComFuncs.OpenInExamineDlg(obj)
 					print(S[6779--[[Warning--]]],": ",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
 				end

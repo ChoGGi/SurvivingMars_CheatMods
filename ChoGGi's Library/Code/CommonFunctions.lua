@@ -2660,8 +2660,11 @@ do -- DeleteObject
 		end
 
 		-- deleting domes will freeze game if they have anything in them.
-		if obj:IsKindOf("Dome") and #obj.labels.Buildings > 0 then
-			print(S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]]:format(RetName(obj)))
+		if obj:IsKindOf("Dome") and #(obj.labels.Buildings or "") > 0 then
+			MsgPopup(
+				S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]]:format(RetName(obj)),
+				302535920000489--[[Delete Object(s)--]]
+			)
 			return
 		end
 
@@ -3069,7 +3072,8 @@ end
 
 function ChoGGi.ComFuncs.AddXTemplate(name,template,list,toplevel)
 	if not name or not template or not list then
-		print("AddXTemplate borked template: ", name, template, list)
+		local ValueToLuaCode = ValueToLuaCode
+		print(S[302535920001383--[[AddXTemplate borked template name: %s template: %s list: %s--]]]:format(name and ValueToLuaCode(name),template and ValueToLuaCode(template),list and ValueToLuaCode(list)))
 		return
 	end
 	local stored_name = StringFormat("ChoGGi_Template_%s",name)
@@ -3767,7 +3771,6 @@ function ChoGGi.ComFuncs.ConstructionModeNameClean(itemname)
 		tempname = itemname:match("^PlaceObj%('(%a+).+$")
 	end
 
---~	 print(tempname)
 	if tempname:find("Deposit") then
 		local obj = PlaceObj(tempname, {
 			"Pos", ChoGGi.ComFuncs.CursorNearestHex(),
