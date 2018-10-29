@@ -707,6 +707,7 @@ function Examine:valuetotextex(obj)
 	elseif obj_type == "userdata" then
 
 		if IsPoint(obj) then
+			-- InvalidPos()
 			if obj == InvalidPos then
 				return S[302535920000066--[[<color 203 120 30>Off-Map Pos</color>--]]]
 			else

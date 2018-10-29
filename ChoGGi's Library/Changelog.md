@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v2.9 (Unreleased)
+- Slight speed up for my random colour func.
 
 ## v2.8 (24 Oct 2018)
 - Strings mostly (more of an update for ECM).
