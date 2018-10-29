@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "Construction: Show Dome Passage Line v0.5",
-  "version", 5,
-  "saved", 1540728000,
+  "title", "Construction: Show Dome Passage Line v0.6",
+  "version", 6,
+  "saved", 1540814400,
   "id", "ChoGGi_ConstructionShowDomePassageLine",
   "author", "ChoGGi",
 	"code", {

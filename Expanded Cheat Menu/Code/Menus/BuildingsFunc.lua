@@ -652,7 +652,7 @@ function OnMsg.ClassesGenerate()
 
 		local blds = UICity.labels[id] or ""
 		for i = 1, #blds do
-			ChoGGi.CodeFuncs[which](blds[i])
+			ChoGGi.ComFuncs[which](blds[i])
 		end
 
 		ChoGGi.SettingFuncs.WriteSettings()
