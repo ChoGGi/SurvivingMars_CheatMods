@@ -516,17 +516,21 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
-	function ChoGGi.MenuFuncs.TakeScreenshot(Bool)
-		if Bool == true then
+	function ChoGGi.MenuFuncs.TakeScreenshot(boolean)
+		local filename
+		if boolean == true then
 			CreateRealTimeThread(function()
 				WaitNextFrame(3)
 				LockCamera("Screenshot")
-				MovieWriteScreenshot(GenerateScreenshotFilename("SSAA","AppData/"), 0, 64, false)
+				filename = GenerateScreenshotFilename("SSAA","AppData/")
+				MovieWriteScreenshot(filename, 0, 64, false)
 				UnlockCamera("Screenshot")
 			end)
 		else
-			WriteScreenshot(GenerateScreenshotFilename("SS", "AppData/"))
+			filename = GenerateScreenshotFilename("SS","AppData/")
+			WriteScreenshot(filename)
 		end
+		print(filename)
 	end
 
 	function ChoGGi.MenuFuncs.ResetECMSettings()

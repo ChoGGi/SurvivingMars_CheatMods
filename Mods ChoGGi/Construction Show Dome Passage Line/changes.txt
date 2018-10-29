@@ -1,8 +1,17 @@
+v0.5
+Hex marks are coloured green to make them distinct from dome marks.
+Raised the height of my marks just above dome marks.
+Marks are updated when you rotate a dome.
+Marks show up on construction sites.
+Since you can rebuild ruins, it'll also mark them as well (if it's a horrid notion to you then I can add a ModConfig option)...
+
 v0.4
 Da Vinci
+
 v0.3
 Added hex markers instead of just an arrow.
 Uses shape data instead of spot names to place markers.
+
 v0.2
 Slightly faster for large amounts of domes.
 Ignores dome ruins.

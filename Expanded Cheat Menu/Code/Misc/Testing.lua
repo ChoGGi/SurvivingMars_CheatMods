@@ -111,6 +111,7 @@ function OnMsg.ClassesGenerate()
 				end)
 
 				Unmount("exported")
+				print("Exported",name)
 				return err
 			end)
 		end
@@ -213,17 +214,15 @@ function OnMsg.ClassesGenerate()
 				TickEnd("TestRandomColour.Tick")
 			end
 			TickEnd("TestRandomColour.Total")
-		end
-
-		function ChoGGi.testing.TestRandomColour2(amount)
-			TickStart("TestRandomColour.Total")
+			print("\n\n")
+			TickStart("TestRandomColour2.Total")
 			local RandomColour = ChoGGi.ComFuncs.RandomColour2
 			for _ = 1, amount or 5 do
-				TickStart("TestRandomColour.Tick")
+				TickStart("TestRandomColour2.Tick")
 				RandomColour(100000)
-				TickEnd("TestRandomColour.Tick")
+				TickEnd("TestRandomColour2.Tick")
 			end
-			TickEnd("TestRandomColour.Total")
+			TickEnd("TestRandomColour2.Total")
 		end
 
 		function ChoGGi.testing.TestRandom(amount)
