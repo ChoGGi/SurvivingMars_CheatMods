@@ -194,13 +194,9 @@ function ChoGGi_ObjectManipulatorDlg:idAddNewOnPress()
 end
 
 function ChoGGi_ObjectManipulatorDlg:idApplyAllOnPress()
-	if not self.sel then
-		return
-	end
-	local value = self.sel.value
-	if value then
+	if self.sel and self.sel.value then
 		MapForEach("map",self.obj.class,function(o)
-			o[self.sel.text] = ChoGGi.ComFuncs.RetProperType(value)
+			o[self.sel.text] = ChoGGi.ComFuncs.RetProperType(self.sel.value)
 		end)
 	end
 end
@@ -212,8 +208,7 @@ function ChoGGi_ObjectManipulatorDlg:idEditValueOnTextChanged()
 	local sel_idx = self.idList.focused_item
 	--
 	local edit_text = self.idEditValue:GetText()
-	local edit_value = ChoGGi.ComFuncs.RetProperType(edit_text)
-	local edit_type = type(edit_value)
+	local edit_value,edit_type = ChoGGi.ComFuncs.RetProperType(edit_text)
 	local obj_value = self.obj[self.idList[sel_idx].item.text]
 	local obj_type = type(obj_value)
 	-- only update strings/numbers/boolean/nil

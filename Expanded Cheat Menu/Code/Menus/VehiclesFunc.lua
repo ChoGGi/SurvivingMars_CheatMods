@@ -1053,8 +1053,9 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	do --ChangeResupplySettings
-			local function CheckResupplySetting(cargo_val,name,value,meta)
+	do -- ChangeResupplySettings
+		local function CheckResupplySetting(cargo_val,name,value,meta)
+			local ChoGGi = ChoGGi
 			if ChoGGi.Tables.CargoPresets[name][cargo_val] == value then
 				ChoGGi.UserSettings.CargoSettings[name][cargo_val] = nil
 				meta[cargo_val] = value
@@ -1078,22 +1079,21 @@ function OnMsg.ClassesGenerate()
 				if #choice < 1 then
 					return
 				end
-				local value = choice[1].value
 
 				if not ChoGGi.UserSettings.CargoSettings[name] then
 					ChoGGi.UserSettings.CargoSettings[name] = {}
 				end
 
 				for i = 1, #choice do
-					value = ChoGGi.ComFuncs.RetProperType(choice[i].value)
+					local value,value_type = ChoGGi.ComFuncs.RetProperType(choice[i].value)
 					local text = choice[i].text
-					if text == "pack" and type(value) == "number" then
+					if text == "pack" and value_type == "number" then
 						CheckResupplySetting("pack",name,value,meta)
-					elseif text == "kg" and type(value) == "number" then
+					elseif text == "kg" and value_type == "number" then
 						CheckResupplySetting("kg",name,value,meta)
-					elseif text == "price" and type(value) == "number" then
+					elseif text == "price" and value_type == "number" then
 						CheckResupplySetting("price",name,value,meta)
-					elseif text == "locked" and type(value) == "boolean" then
+					elseif text == "locked" and value_type == "boolean" then
 						CheckResupplySetting("locked",name,value,meta)
 					end
 				end
