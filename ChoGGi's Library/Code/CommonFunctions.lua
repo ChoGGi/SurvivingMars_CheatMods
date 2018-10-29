@@ -3690,6 +3690,8 @@ do -- ShowAnimDebug_Toggle
 		text:SetCenter(true)
 		local orient = Orientation:new()
 
+		-- so we can delete them easy
+		orient.ChoGGi_AnimDebug = true
 		text.ChoGGi_AnimDebug = true
 		obj:Attach(text, 0)
 		obj:Attach(orient, 0)
@@ -3703,19 +3705,19 @@ do -- ShowAnimDebug_Toggle
 		end)
 	end
 
-	local function AnimDebug_ShowAll(cls)
-		local objs = UICity.labels[cls] or ""
-		for i = 1, #objs do
-			AnimDebug_Show(objs[i])
-		end
-	end
-
 	local function AnimDebug_Hide(obj)
 		obj:ForEachAttach(function(a)
 			if a.ChoGGi_AnimDebug then
 				a:delete()
 			end
 		end)
+	end
+
+	local function AnimDebug_ShowAll(cls)
+		local objs = UICity.labels[cls] or ""
+		for i = 1, #objs do
+			AnimDebug_Show(objs[i])
+		end
 	end
 
 	local function AnimDebug_HideAll(cls)

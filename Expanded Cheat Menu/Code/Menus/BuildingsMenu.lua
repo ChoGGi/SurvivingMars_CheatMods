@@ -91,17 +91,6 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle,
 	}
 
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920000064--[[Build On Geysers--]]],
-		ActionMenubar = str_ExpandedCM_Buildings,
-		ActionId = ".Build On Geysers",
-		ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
-		RolloverText = S[302535920000065--[[Allows you to build on geysers (Warning: Permanent for this save).--]]],
-		OnAction = function()
-			g_DontBuildHere:delete()
-		end,
-	}
-
 	local str_ExpandedCM_Buildings_SanatoriumsSchools = "ECM.Expanded CM.Buildings.Sanatoriums & Schools"
 	local SandS = StringFormat("%s & %s",S[5245--[[Sanatoriums--]]],S[5248--[[Schools--]]])
 	c = c + 1
@@ -609,6 +598,20 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = S[302535920000181--[[Gives you a list of buildings you can unlock in the build menu.--]]],
 		OnAction = ChoGGi.MenuFuncs.UnlockLockedBuildings,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000064--[[Build On Geysers--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionId = ".Build On Geysers",
+		ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
+		OnAction = ChoGGi.MenuFuncs.BuildOnGeysers_Toggle,
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.BuildOnGeysers,
+				302535920000065--[[Allows you to build on geysers. Use Shift-F4 around the area to delete the geyser objects (about 10-20 depending on size).--]]
+			)
+		end,
 	}
 
 	local str_ExpandedCM_Buildings_SpaceElevator = "ECM.Expanded CM.Buildings.Space Elevator"

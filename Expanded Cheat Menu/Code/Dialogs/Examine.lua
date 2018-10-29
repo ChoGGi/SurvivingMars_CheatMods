@@ -58,7 +58,6 @@ function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 
-
 	-- used for updating text button rollover hints
 	idLinks_hypertext = {
 		["CommonAssets/UI/Menu/reload.tga"] = {
@@ -67,38 +66,49 @@ function OnMsg.ClassesGenerate()
 		},
 		["CommonAssets/UI/Menu/CutSceneArea.tga"] = {
 			title = S[302535920000865--[[Toggle Trans--]]],
-			text = StringFormat("%s %s",S[302535920000069--[[Examine--]]],S[302535920000629--[[UI Transparency--]]])
+			text = StringFormat("%s %s",S[302535920000069--[[Examine--]]],S[302535920000629--[[UI Transparency--]]]),
 		},
 		["CommonAssets/UI/Menu/DisableEyeSpec.tga"] = {
 			title = S[302535920000057--[[Mark Object--]]],
-			text = S[302535920000021--[[Mark object with green sphere and/or paint.--]]]
+			text = S[302535920000021--[[Mark object with green sphere and/or paint.--]]],
 		},
 		["CommonAssets/UI/Menu/delete_objects.tga"] = {
 			title = S[697--[[Destroy--]]],
-			text = S[302535920000414--[[Are you sure you wish to destroy it?--]]]
+			text = S[302535920000414--[[Are you sure you wish to destroy it?--]]],
 		},
 		["CommonAssets/UI/Menu/UnlockCollection.tga"] = {
 			title = S[3768--[[Destroy all?--]]],
-			text = S[302535920000059--[[Destroy all objects in objlist!--]]]
+			text = S[302535920000059--[[Destroy all objects in objlist!--]]],
 		},
 		["CommonAssets/UI/Menu/NoblePreview.tga"] = {
 			title = S[594--[[Clear--]]],
-			text = S[302535920000016--[[Remove any green spheres/reset green coloured objects.--]]]
+			text = S[302535920000016--[[Remove any green spheres/reset green coloured objects.--]]],
 		},
 		["CommonAssets/UI/Menu/ExportImageSequence.tga"] = {
 			title = S[302535920000058--[[Mark All Objects--]]],
-			text = S[302535920000056--[[Mark all items in objlist with green spheres.--]]]
+			text = S[302535920000056--[[Mark all items in objlist with green spheres.--]]],
+		},
+		["CommonAssets/UI/Menu/CameraEditor.tga"] = {
+			title = S[302535920000459--[[Anim Debug Toggle--]]],
+			text = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
+		},
+		["CommonAssets/UI/Menu/ShowAll.tga"] = {
+			title = S[302535920000449--[[Attach Spots Toggle--]]],
+			text = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 		},
 	}
-
 end
 
 DefineClass.Examine = {
 	__parents = {"ChoGGi_Window"},
 
+	-- stores all opened examine dialogs
+	examine_dialogs = {},
+	-- prefix some string to the title
 	prefix = false,
 	-- what we're examining
 	obj = false,
+	-- if we're examining a string we want to convert to an object
 	str_object = false,
 	-- used to store visibility of obj
 	orig_vis_flash = false,
@@ -121,11 +131,15 @@ DefineClass.Examine = {
 	-- clickable purple text
 	onclick_handles = false,
 
-	examine_dialogs = {},
 }
 
 function Examine:Init(parent, context)
 	self.obj = context.obj
+
+	-- workaround for ex_dia to examine something nil
+	if type(context.obj) == "nil" then
+		self.obj = "nil"
+	end
 
 	-- already examining, so focus and return
 	local ex_dia = Examine.examine_dialogs
@@ -152,19 +166,14 @@ function Examine:Init(parent, context)
 	self.onclick_handles = {}
 
 	-- if we're examining a string we want to convert to an object
-	if type(context.parent) == "string" then
-		self.str_object = context.parent
+	if type(self.obj) == "string" and type(context.parent) == "string" then
+		self.str_object = context.parent == "str" and true
 		context.parent = nil
 	end
 
 	self.title = context.title
 
 	self.prefix = S[302535920000069--[[Examine--]]]
-
-	-- reset any marked objects
-	if not self.obj then
-		ChoGGi.ComFuncs.ClearShowMe()
-	end
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -204,7 +213,8 @@ function Examine:Init(parent, context)
 			end
 		end,
 		OnHyperLink = function(_, link, _, box, pos, button)
-			self.onclick_handles[tonumber(link)](box, pos, button)
+			-- this is what gets fired for any of my self:HyperLink(), also in Classes_UI.lua
+			self.onclick_handles[tonumber(link)](box, pos, button, self)
 		end,
 	}, self.idLinkArea)
 	self.idLinks:AddInterpolation{
@@ -315,7 +325,7 @@ Right-click to scroll to top."--]]],
 	self:SetTranspMode(self.transp_mode)
 
 	-- load up obj in text display
-	local is_obj = self:SetObj(self.obj,true)
+	local is_obj = self:SetObj(true)
 
 	if is_obj then
 		self.parents_menu_popup = {}
@@ -331,7 +341,7 @@ Right-click to scroll to top."--]]],
 
 	-- needs a bit of a delay since we delay in SetObj
 	if ChoGGi.UserSettings.FlashExamineObject and IsKindOf(self.obj,"XWindow") and self.obj.class ~= "InGameInterface" then
-		self:FlashWindow(self.obj)
+		self:FlashWindow()
 	end
 
 	self:SetInitPos(context.parent)
@@ -359,7 +369,7 @@ function Examine:idAutoRefreshToggle()
 		local Sleep = Sleep
 		while true do
 			if self.obj then
-				self:SetObj(self.obj)
+				self:SetObj()
 			else
 				DeleteThread(self.autorefresh_thread)
 				break
@@ -617,17 +627,15 @@ do -- FlashWindow
 	local DeleteThread = DeleteThread
 	local CreateRealTimeThread = CreateRealTimeThread
 
-	function Examine:FlashWindow(obj)
-		obj = obj or self.obj
-
+	function Examine:FlashWindow()
 		-- doesn't lead to good stuff
-		if not obj.desktop then
+		if not self.obj.desktop then
 			return
 		end
 
 		-- don't want to end up with something invis when it shouldn't be
 		if not self.orig_vis_flash then
-			self.orig_vis_flash = obj:GetVisible()
+			self.orig_vis_flash = self.obj:GetVisible()
 		end
 
 		-- always kill off old thread first
@@ -635,18 +643,18 @@ do -- FlashWindow
 
 		flashing_thread = CreateRealTimeThread(function()
 
-			local vis = nil
+			local vis
 			for _ = 1, 5 do
-				if obj.window_state == "destroying" then
+				if self.obj.window_state == "destroying" then
 					break
 				end
-				obj:SetVisible(vis)
+				self.obj:SetVisible(vis)
 				Sleep(100)
 				vis = not vis
 			end
 
-			if obj.window_state ~= "destroying" then
-				obj:SetVisible(self.orig_vis_flash)
+			if self.obj.window_state ~= "destroying" then
+				self.obj:SetVisible(self.orig_vis_flash)
 			end
 
 		end)
@@ -671,31 +679,30 @@ function Examine:SetTranspMode(toggle)
 end
 --
 
-local function Examine_valuetotextex(button,obj,self)
-	if button == "L" then
-		ChoGGi.ComFuncs.OpenInExamineDlg(obj, self)
-	elseif IsValid(obj) then
-		ShowMe(obj)
-	end
-end
-
 function Examine:valuetotextex(obj)
 	local obj_type = type(obj)
 
+	local function ShowMe_local()
+		ShowMe(obj)
+	end
+	local function Examine(_,_,button)
+		if button == "L" then
+			ChoGGi.ComFuncs.OpenInExamineDlg(obj, self)
+		else
+			ShowMe(obj)
+		end
+	end
+
 	if obj_type == "function" then
 		return StringFormat("%s%s%s",
-			self:HyperLink(function(_,_,button)
-				Examine_valuetotextex(button,obj,self)
-			end),
+			self:HyperLink(Examine),
 			DebugGetInfo(obj),
 			HLEnd
 		)
 
 	elseif obj_type == "thread" then
 		return StringFormat("%s%s%s",
-			self:HyperLink(function(_,_,button)
-				Examine_valuetotextex(button,obj,self)
-			end),
+			self:HyperLink(Examine),
 			tostring(obj),
 			HLEnd
 		)
@@ -712,9 +719,7 @@ function Examine:valuetotextex(obj)
 				return S[302535920000066--[[<color 203 120 30>Off-Map Pos</color>--]]]
 			else
 				return StringFormat("%s(%s,%s,%s)%s",
-					self:HyperLink(function()
-						ShowMe(obj)
-					end),
+					self:HyperLink(ShowMe_local),
 					obj:x(),
 					obj:y(),
 					obj:z() or terrain.GetHeight(obj),
@@ -730,9 +735,7 @@ function Examine:valuetotextex(obj)
 			-- the </color> is to make sure it doesn't bleed into other text
 			return StringFormat("%s</color></color>%s < %s%s",
 				trans,
-				self:HyperLink(function(_,_,button)
-					Examine_valuetotextex(button,obj,self)
-				end),
+				self:HyperLink(Examine),
 				getmetatable(obj).__name or tostring(obj),
 				HLEnd
 			)
@@ -742,9 +745,7 @@ function Examine:valuetotextex(obj)
 
 		if IsValid(obj) then
 			return StringFormat("%s%s%s@%s",
-				self:HyperLink(function(_,_,button)
-					Examine_valuetotextex(button,obj,self)
-				end),
+				self:HyperLink(Examine),
 				obj.class,
 				HLEnd,
 				self:valuetotextex(obj:GetPos())
@@ -757,9 +758,7 @@ function Examine:valuetotextex(obj)
 			-- if it's an objlist then we just return a list of the objects
 			if obj_metatable and IsObjlist(obj_metatable) then
 				local res = {
-					self:HyperLink(function(_,_,button)
-						Examine_valuetotextex(button,obj,self)
-					end),
+					self:HyperLink(Examine),
 					"objlist",
 					HLEnd,
 					"{",
@@ -809,9 +808,7 @@ function Examine:valuetotextex(obj)
 				end
 
 				return StringFormat("%s%s%s",
-					self:HyperLink(function(_,_,button)
-						Examine_valuetotextex(button,obj,self)
-					end),
+					self:HyperLink(Examine),
 					name,
 					HLEnd
 				)
@@ -832,15 +829,16 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------
 local ExamineThreadLevel_data = {}
-local function ExamineThreadLevel_totextex(level, info, obj,self)
+local function ExamineThreadLevel_totextex(level,info,obj,self)
 	if blacklist then
-		TableClear(ExamineThreadLevel_data)
+--~ 		TableClear(ExamineThreadLevel_data)
 		ExamineThreadLevel_data = RetThreadInfo(obj)
 	else
+
 		TableClear(ExamineThreadLevel_data)
 		local l = 1
-		local name, val = true
-		while name do
+		local name, val
+		repeat
 			name, val = getlocal(obj, level, l)
 			if name then
 				ExamineThreadLevel_data[name] = val
@@ -848,7 +846,8 @@ local function ExamineThreadLevel_totextex(level, info, obj,self)
 			else
 				break
 			end
-		end
+		until not name
+
 		for i = 1, info.nups do
 			local name, val = getupvalue(info.func, i)
 			if name ~= nil and val ~= nil then
@@ -857,25 +856,29 @@ local function ExamineThreadLevel_totextex(level, info, obj,self)
 		end
 	end
 
-	return function()
-		ChoGGi.ComFuncs.OpenInExamineDlg(ExamineThreadLevel_data, self)
-	end
+	ChoGGi.ComFuncs.OpenInExamineDlg(ExamineThreadLevel_data, self)
 end
 
-local function Examine_totextex(obj,self)
-	ChoGGi.ComFuncs.OpenInExamineDlg(obj, self)
+local function ExamineMetatable_totextex(_,_,_,self)
+	ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(self.obj), self)
 end
 
 local totextex_res = {}
 local totextex_sort = {}
-function Examine:totextex(obj)
+function Examine:totextex(obj,obj_type)
 	TableIClear(totextex_res)
 	TableClear(totextex_sort)
 	local obj_metatable = getmetatable(obj)
-	local obj_type = type(obj)
 	local c = 0
 
-	if obj_type == "table" then
+	if obj_type == "nil" then
+		return obj_type
+	elseif obj_type == "boolean" then
+		return tostring(obj)
+	elseif obj_type == "string" then
+		return obj
+
+	elseif obj_type == "table" then
 
 		for k, v in pairs(obj) do
 			c = c + 1
@@ -894,16 +897,16 @@ function Examine:totextex(obj)
 			c = c + 1
 			totextex_res[c] = RetThreadInfo(obj)
 		else
-			local info, level = true, 0
-			while info do
+			local level, info = 0
+			repeat
 				info = getinfo(obj, level, "Slfun")
 				if info then
+					local l_level, l_info = level, info
 					c = c + 1
-					totextex_res[c] = StringFormat("%s%s%s(%s) %s: %s%s",
-						self:HyperLink(function(level, info)
-							ExamineThreadLevel_totextex(level, info, obj,self)
+					totextex_res[c] = StringFormat("%s%s(%s) %s: %s%s",
+						self:HyperLink(function()
+							ExamineThreadLevel_totextex(l_level,l_info,obj,self)
 						end),
-						self:HyperLink(ExamineThreadLevel_totextex(level, info, obj,self)),
 						info.short_src or info.source,
 						info.currentline,
 						S[1000110--[[Type--]]],
@@ -914,7 +917,7 @@ function Examine:totextex(obj)
 					break
 				end
 				level = level + 1
-			end
+			until not info
 		end
 
 	elseif obj_type == "function" then
@@ -942,6 +945,7 @@ function Examine:totextex(obj)
 				level = level + 1
 			end
 		end
+
 	end
 
 	TableSort(totextex_res, function(a, b)
@@ -957,9 +961,7 @@ function Examine:totextex(obj)
 	if IsValid(obj) and obj:IsKindOf("CObject") then
 
 		TableInsert(totextex_res,1,StringFormat(--[[<center>----]]"\t\t\t\t--%s%s%s@%s--"--[[--<vspace 6><left>--]],
-			self:HyperLink(function()
-				Examine_totextex(obj_metatable,self)
-			end),
+			self:HyperLink(ExamineMetatable_totextex),
 			obj.class,
 			HLEnd,
 			self:valuetotextex(obj:GetPos())
@@ -1136,87 +1138,80 @@ ThreadHasFlags(): %s</color>]],
 end
 ---------------------------------------------------------------------------------------------------------------------
 --menu
-local function DeleteAll_menu(self,obj)
+local function DeleteAll_menu(_,_,_,self)
 	ChoGGi.ComFuncs.QuestionBox(
 		S[302535920000059--[[Destroy all objects in objlist!--]]],
 		function(answer)
 			if answer then
-				for _, v in pairs(obj) do
+				for _, v in pairs(self.obj) do
 					if IsValid(v) then
 						DeleteObject(v)
 					end
 				end
 				-- force a refresh on the list, so people can see something as well
-				self:SetObj(obj)
+				self:SetObj()
 			end
 		end,
 		S[697--[[Destroy--]]]
 	)
 end
-local function MarkAll_menu(obj)
-	for _, v in pairs(obj) do
+local function MarkAll_menu(_,_,_,self)
+	for _, v in pairs(self.obj) do
 		if IsPoint(v) or IsValid(v) then
 			ShowMe(v, nil, nil, "single")
 		end
 	end
 end
-local function Show_menu(obj)
-	if IsValid(obj) then
-		ShowMe(obj)
+local function MarkObject_menu(_,_,_,self)
+	if IsValid(self.obj) then
+		ShowMe(self.obj)
 	else
-		for k, v in pairs(obj) do
-			if IsPoint(k) or IsValid(k) then
-				ShowMe(k)
-			end
-			if IsPoint(v) or IsValid(v) then
-				ShowMe(v)
-			end
+		for k, v in pairs(self.obj) do
+			ShowMe(k)
+			ShowMe(v)
 		end
 	end
 end
-local function ClearShowMe_menu()
-	ChoGGi.ComFuncs.ClearShowMe()
-end
 
-local function Destroy_menu(obj,self)
+local function Destroy_menu(_,_,_,self)
 	ChoGGi.ComFuncs.QuestionBox(
 		S[302535920000414--[[Are you sure you wish to destroy it?--]]],
 		function(answer)
 			if answer then
-				DoneObject(obj)
+				DoneObject(self.obj)
 			end
 		end,
 		S[697--[[Destroy--]]]
 	)
 end
 
-local function Refresh_menu(self)
-	if self.obj then
-		self:SetObj(self.obj)
-		if IsKindOf(self.obj,"XWindow") and self.obj.class ~= "InGameInterface" then
-			self:FlashWindow(self.obj)
-		end
+local function Refresh_menu(_,_,_,self)
+	self:SetObj()
+	if IsKindOf(self.obj,"XWindow") and self.obj.class ~= "InGameInterface" then
+		self:FlashWindow()
 	end
 end
-local function SetTransp_menu(self)
+local function SetTransp_menu(_,_,_,self)
 	self.transp_mode = not self.transp_mode
 	self:SetTranspMode(self.transp_mode)
+end
+local function ShowAnimDebug_menu(_,_,_,self)
+	ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj)
+end
+local function ShowAttachSpots_menu(_,_,_,self)
+	ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj)
 end
 
 function Examine:menu(obj)
 	local obj_type = type(obj)
 	local res = {
-		self:HyperLink(function()
-			Refresh_menu(self)
-		end),
+		self:HyperLink(Refresh_menu),
 		" <image CommonAssets/UI/Menu/reload.tga 2000> ",
 		HLEnd,
-		self:HyperLink(function()
-			SetTransp_menu(self)
-		end),
+		self:HyperLink(SetTransp_menu),
 		" <image CommonAssets/UI/Menu/CutSceneArea.tga 2000> ",
 		HLEnd,
-		self:HyperLink(ClearShowMe_menu),
+		self:HyperLink(ChoGGi.ComFuncs.ClearShowMe),
 		" <image CommonAssets/UI/Menu/NoblePreview.tga 2000> ",
 		HLEnd,
 	}
@@ -1224,21 +1219,32 @@ function Examine:menu(obj)
 	if obj_type == "table" then
 		local c = #res
 		if IsValid(obj) then
+			-- show
 			c = c + 1
-			res[c] = self:HyperLink(function()
-				Show_menu(obj)
-			end)
+			res[c] = self:HyperLink(MarkObject_menu)
 			c = c + 1
 			res[c] = " <image CommonAssets/UI/Menu/DisableEyeSpec.tga 2000> "
+			c = c + 1
+			res[c] = HLEnd
+			-- show anim info
+			c = c + 1
+			res[c] = self:HyperLink(ShowAnimDebug_menu)
+			c = c + 1
+			res[c] = " <image CommonAssets/UI/Menu/CameraEditor.tga 2000> "
+			c = c + 1
+			res[c] = HLEnd
+			-- attach spots
+			c = c + 1
+			res[c] = self:HyperLink(ShowAttachSpots_menu)
+			c = c + 1
+			res[c] = " <image CommonAssets/UI/Menu/ShowAll.tga 2000> "
 			c = c + 1
 			res[c] = HLEnd
 		end
 
 		if obj.class then
 			c = c + 1
-			res[c] = self:HyperLink(function()
-				Destroy_menu(obj,self)
-			end)
+			res[c] = self:HyperLink(Destroy_menu)
 			c = c + 1
 			res[c] = " <image CommonAssets/UI/Menu/delete_objects.tga 2000> "
 			c = c + 1
@@ -1248,18 +1254,14 @@ function Examine:menu(obj)
 		if IsObjlist(obj) then
 			-- mark all
 			c = c + 1
-			res[c] = self:HyperLink(function()
-				MarkAll_menu(obj)
-			end)
+			res[c] = self:HyperLink(MarkAll_menu)
 			c = c + 1
 			res[c] = " <image CommonAssets/UI/Menu/ExportImageSequence.tga 2000> "
 			c = c + 1
 			res[c] = HLEnd
 			-- delete all
 			c = c + 1
-			res[c] = self:HyperLink(function()
-				DeleteAll_menu(self,obj)
-			end)
+			res[c] = self:HyperLink(DeleteAll_menu)
 			c = c + 1
 			res[c] = " <image CommonAssets/UI/Menu/UnlockCollection.tga 2000> "
 			c = c + 1
@@ -1301,12 +1303,12 @@ function Examine:BuildParents(list,list_type,title,sort_type)
 	end
 end
 
-function Examine:SetObj(obj,firstrun)
+function Examine:SetObj(startup)
+	local obj = self.obj
 
 	self.onclick_handles = {}
 
-	local obj_type = type(obj)
-	if obj_type == "string" and self.str_object == "str" then
+	if self.str_object then
 		-- check if obj string is a ref to an actual object
 		local obj_ref = ChoGGi.ComFuncs.DotNameToObject(obj)
 		-- if it is then we use that as the obj to examine
@@ -1314,6 +1316,8 @@ function Examine:SetObj(obj,firstrun)
 			obj = obj_ref
 		end
 	end
+
+	local obj_type = type(obj)
 
 	self.idLinks:SetText(self:menu(obj))
 
@@ -1371,13 +1375,13 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 	self.idCaption:SetTitle(self,self.title or utf8.sub(name,1,45))
 
 	-- we add a slight delay, so the rest of the dialog loads, and we can let user see the loading msg
-	if firstrun then
+	if startup then
 		CreateRealTimeThread(function()
 			Sleep(5)
-			self.idText:SetText(self:totextex(obj))
+			self.idText:SetText(self:totextex(obj,obj_type))
 		end)
 	else
-		self.idText:SetText(self:totextex(obj))
+		self.idText:SetText(self:totextex(obj,obj_type))
 	end
 
 	return obj_type == "table" and obj.class

@@ -572,8 +572,9 @@ function ChoGGi_Window:AddScrollText()
 
 	self.idText = g_Classes.ChoGGi_Text:new({
 		Id = "idText",
+		-- this is what gets fired for any of my self:HyperLink(), also in Examine.lua
 		OnHyperLink = function(_, link, _, box, pos, button)
-			self.onclick_handles[tonumber(link)](box, pos, button)
+			self.onclick_handles[tonumber(link)](box, pos, button, self)
 		end,
 	}, self.idScrollArea)
 end
