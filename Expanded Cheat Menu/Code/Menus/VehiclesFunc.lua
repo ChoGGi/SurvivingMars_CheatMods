@@ -734,17 +734,25 @@ function OnMsg.ClassesGenerate()
 			end
 			local value = choice[1].value
 			if type(value) == "number" then
+				local default = value == DefaultSetting
 				local value = value * r
-				--somewhere above 2000 fucks the save
+				-- somewhere above 2000 fucks the save
 				if value > 2000000 then
 					value = 2000000
 				end
-				--loop through and set all
-				local tab = UICity.labels.RCTransport or ""
-				for i = 1, #tab do
-					tab[i].max_shared_storage = value
+				-- loop through and set all
+				if UICity then
+					local list = UICity.labels.RCTransport or ""
+					for i = 1, #list do
+						list[i].max_shared_storage = value
+					end
 				end
-				ChoGGi.ComFuncs.SetSavedSetting("RCTransportStorageCapacity",value)
+
+				if default then
+					ChoGGi.UserSettings.RCTransportStorageCapacity = nil
+				else
+					ChoGGi.ComFuncs.SetSavedSetting("RCTransportStorageCapacity",value)
+				end
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
