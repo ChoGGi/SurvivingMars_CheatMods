@@ -121,25 +121,40 @@ function OnMsg.ClassesGenerate()
 	-- write logs funcs
 	do -- WriteLogs_Toggle
 		local Dump = ChoGGi.ComFuncs.Dump
-		local select,type = select,type
-		local StringFormat = StringFormat
+		local TableConcat = ChoGGi.ComFuncs.TableConcat
+		local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+		local TableIClear = table.iclear
 
-		local function ReplaceFunc(funcname,filename)
-			local ChoGGi = ChoGGi
-			ChoGGi.ComFuncs.SaveOrigFunc(funcname)
+		local buffer_table = {}
+		local buffer_cnt = 0
+		-- every 5s check buffer and print if anything
+		CreateRealTimeThread(function()
+			while true do
+				Sleep(5000)
+				if #buffer_table > 1 then
+					Dump(TableConcat(buffer_table,"\r\n"),nil,"ConsoleLog","log",true)
+					TableIClear(buffer_table)
+					buffer_table[1] = "\r\n"
+					buffer_cnt = 1
+				end
+			end
+		end)
 
+		local function ReplaceFunc(funcname)
+			SaveOrigFunc(funcname)
+			-- we want to local this after SaveOrigFunc just in case
+			local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 			_G[funcname] = function(...)
-				-- i think print sends a succeeded as well?
-				local arg2 = select(2,...)
-				if arg2 and type(arg2) == "boolean" then
-					Dump(StringFormat("%s\r\n",select(1,...)),nil,filename,"log",true)
-				else
-					Dump(StringFormat("%s\r\n",... or ""),nil,filename,"log",true)
+
+				-- table.concat don't work with non-strings/numbers
+				local str = tostring(...)
+				if buffer_table[buffer_cnt] ~= str then
+					buffer_cnt = buffer_cnt + 1
+					buffer_table[buffer_cnt] = str
 				end
+
 				-- fire off orig func...
-				if ChoGGi.OrigFuncs[funcname] then
-					ChoGGi.OrigFuncs[funcname](...)
-				end
+				ChoGGi_OrigFuncs[funcname](...)
 			end
 
 		end
@@ -159,27 +174,27 @@ function OnMsg.ClassesGenerate()
 
 			local ChoGGi = ChoGGi
 			if which then
-				-- remove old logs
+				-- move old log to previous and add a blank log
 				AsyncCopyFile("AppData/logs/ConsoleLog.log","AppData/logs/ConsoleLog.previous.log","raw")
 				AsyncStringToFile("AppData/logs/ConsoleLog.log"," ")
 
 				-- redirect functions
 				if ChoGGi.testing then
-					ReplaceFunc("dlc_print","ConsoleLog")
-					ReplaceFunc("assert","ConsoleLog")
-	--~				 ReplaceFunc("printf","DebugLog",ChoGGi)
-	--~				 ReplaceFunc("DebugPrint","DebugLog",ChoGGi)
-	--~				 ReplaceFunc("OutputDebugString","DebugLog",ChoGGi)
+					ReplaceFunc("dlc_print")
+					ReplaceFunc("assert")
+	--~				 ReplaceFunc("printf")
+	--~				 ReplaceFunc("DebugPrint")
+	--~				 ReplaceFunc("OutputDebugString")
 				end
-				ReplaceFunc("AddConsoleLog","ConsoleLog")
-				ReplaceFunc("print","ConsoleLog")
+				ReplaceFunc("AddConsoleLog")
+				ReplaceFunc("print")
 			else
 				if ChoGGi.testing then
 					ResetFunc("dlc_print")
 					ResetFunc("assert")
-	--~				 ResetFunc("printf",ChoGGi)
-	--~				 ResetFunc("DebugPrint",ChoGGi)
-	--~				 ResetFunc("OutputDebugString",ChoGGi)
+	--~				 ResetFunc("printf")
+	--~				 ResetFunc("DebugPrint")
+	--~				 ResetFunc("OutputDebugString")
 				end
 				ResetFunc("AddConsoleLog")
 				ResetFunc("print","ConsoleLog")
