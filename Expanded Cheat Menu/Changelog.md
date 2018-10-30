@@ -3,9 +3,11 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v10.3 (Unreleased)
+## v10.4 (Unreleased)
+
+## v10.3 (30 Oct 2018)
 ### Added:
-- A five second buffer for ConsoleLog.log (should be helpful when you print the wrong thing in a loop).
+- Write Logs now has a five second buffer for ConsoleLog.log (should be helpful when you print a large loop).
 
 ### Changed:
 - Build On Geysers: You can toggle it now (moved to Toggles menu).

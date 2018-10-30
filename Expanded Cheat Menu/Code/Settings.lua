@@ -102,10 +102,12 @@ function OnMsg.ClassesGenerate()
 		BuildingSettings = {},
 		-- resupply settings
 		CargoSettings = {},
-		-- transparent UI stored here
+		-- transparent UI options stored here
 		Transparency = {},
 		-- wrap lines in text editors
 		WordWrap = false,
+		-- outputs text from print() and consoleline to logs\Consolelog.log when it happens instead of after quit
+		WriteLogs = false,
 	}
 	-- my defaults
 	if ChoGGi.testing then

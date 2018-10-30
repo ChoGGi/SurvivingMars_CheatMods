@@ -1972,14 +1972,14 @@ end
 --]]
 --force drones to pickup from object even if they have a large carry cap
 function ChoGGi.ComFuncs.FuckingDrones(obj)
+	if not IsValid(obj) then
+		return
+	end
+
 	local ChoGGi = ChoGGi
 	local r = ChoGGi.Consts.ResourceScale
 	-- Come on, Bender. Grab a jack. I told these guys you were cool.
 	-- Well, if jacking on will make strangers think I'm cool, I'll do it.
-
-	if not IsValid(obj) then
-		return
-	end
 
 	local stored
 	local p
@@ -2068,7 +2068,7 @@ function ChoGGi.ComFuncs.GetNearestIdleDrone(bld)
 end
 
 function ChoGGi.ComFuncs.SaveOldPalette(obj)
-	if not obj.ChoGGi_origcolors and obj:IsKindOf("ColorizableObject") then
+	if obj and not obj.ChoGGi_origcolors and obj:IsKindOf("ColorizableObject") then
 		obj.ChoGGi_origcolors = {
 			{obj:GetColorizationMaterial(1)},
 			{obj:GetColorizationMaterial(2)},
@@ -2078,7 +2078,7 @@ function ChoGGi.ComFuncs.SaveOldPalette(obj)
 	end
 end
 function ChoGGi.ComFuncs.RestoreOldPalette(obj)
-	if obj.ChoGGi_origcolors then
+	if obj and obj.ChoGGi_origcolors then
 		local c = obj.ChoGGi_origcolors
 		obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
 		obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
@@ -2089,6 +2089,9 @@ function ChoGGi.ComFuncs.RestoreOldPalette(obj)
 end
 
 function ChoGGi.ComFuncs.GetPalette(obj)
+	if not obj then
+		return
+	end
 	local pal = {}
 	pal.Color1, pal.Roughness1, pal.Metallic1 = obj:GetColorizationMaterial(1)
 	pal.Color2, pal.Roughness2, pal.Metallic2 = obj:GetColorizationMaterial(2)
