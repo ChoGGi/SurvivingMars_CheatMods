@@ -34,7 +34,6 @@ function ChoGGi.ComFuncs.AddMsgToFunc(class_name,func_name,msg_str,...)
 	-- save orig
 	ChoGGi.ComFuncs.SaveOrigFunc(class_name,func_name)
 	-- local stuff
-	local StringFormat = StringFormat
 	local select = select
 	local Msg = Msg
 	-- we want to local this after SaveOrigFunc just in case
@@ -61,7 +60,6 @@ end
 do -- Translate
 	local T,_InternalTranslate = T,_InternalTranslate
 	local type,select = type,select
-	local StringFormat = StringFormat
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
 		local str

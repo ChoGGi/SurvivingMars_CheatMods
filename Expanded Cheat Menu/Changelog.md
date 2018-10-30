@@ -4,6 +4,8 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v10.3 (Unreleased)
+### Added:
+- A five second buffer for ConsoleLog.log (should be helpful when you print the wrong thing in a loop).
 
 ### Changed:
 - Build On Geysers: You can toggle it now (moved to Toggles menu).
@@ -658,7 +660,7 @@ Please and thank you.
 
 ### Changed:
 - HigherRenderDist now also effects hr.DistanceModifier (instead of just hr.LODDistanceModifier).
-- No more msg spamming the consolelog whenever you select something.
+- No more msg spamming the console log whenever you select something.
 
 ### Fixed:
 - Research menu items were broke.
