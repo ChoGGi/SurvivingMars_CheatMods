@@ -62,24 +62,34 @@ function OnMsg.ClassesGenerate()
 				[_G.XTemplates] = "XTemplates",
 			}
 			for _,value in pairs(PresetDefs) do
-				if value.DefGlobalMap ~= "" then
-					lookup_table[value] = value
+				if value.DefGlobalMap and value.DefGlobalMap ~= "" then
+					lookup_table[_G[value.DefGlobalMap]] = value.DefGlobalMap
 				end
 			end
+			ClassDescendantsList("Preset", function(name, cls)
+				if cls.GlobalMap then
+					lookup_table[_G[cls.GlobalMap]] = cls.GlobalMap
+				end
+			end)
+
 			-- have to wait for these to be created
 			function OnMsg.LoadGame()
+				lookup_table[_G.g_ApplicantPool] = "g_ApplicantPool"
+				lookup_table[_G.g_Consts] = "g_Consts"
+				lookup_table[_G.Mods] = "Mods"
+				lookup_table[_G.ModsLoaded] = "ModsLoaded"
 				lookup_table[_G.UICity] = "UICity"
 				lookup_table[_G.UICity.labels] = "UICity.labels"
 				lookup_table[_G.UICity.tech_status] = "UICity.tech_status"
-				lookup_table[_G.g_Consts] = "g_Consts"
-				lookup_table[_G.g_ApplicantPool] = "g_ApplicantPool"
 			end
 			function OnMsg.CityStart()
+				lookup_table[_G.g_ApplicantPool] = "g_ApplicantPool"
+				lookup_table[_G.g_Consts] = "g_Consts"
+				lookup_table[_G.Mods] = "Mods"
+				lookup_table[_G.ModsLoaded] = "ModsLoaded"
 				lookup_table[_G.UICity] = "UICity"
 				lookup_table[_G.UICity.labels] = "UICity.labels"
 				lookup_table[_G.UICity.tech_status] = "UICity.tech_status"
-				lookup_table[_G.g_Consts] = "g_Consts"
-				lookup_table[_G.g_ApplicantPool] = "g_ApplicantPool"
 			end
 
 			local IsObjlist,type,tostring = IsObjlist,type,tostring

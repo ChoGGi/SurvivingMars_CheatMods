@@ -111,48 +111,59 @@ local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
 	-- we use this table to display names of (some) tables
-	local g = _G
 	local lookup_table = {
-		[_G] = "_G",
-		[_G.BuildingTemplates] = "BuildingTemplates",
-		[_G.ChoGGi] = "ChoGGi",
-		[_G.ClassTemplates] = "ClassTemplates",
-		[_G.const] = "const",
-		[_G.Consts] = "Consts",
-		[_G.DataInstances] = "DataInstances",
-		[_G.Dialogs] = "Dialogs",
-		[_G.EntityData] = "EntityData",
-		[_G.Flags] = "Flags",
-		[_G.FXRules] = "FXRules",
-		[_G.g_Classes] = "g_Classes",
-		[_G.Presets] = "Presets",
-		[_G.s_SeqListPlayers] = "s_SeqListPlayers",
-		[_G.TaskRequesters] = "TaskRequesters",
-		[_G.terminal.desktop] = "terminal.desktop",
-		[_G.ThreadsMessageToThreads] = "ThreadsMessageToThreads",
-		[_G.ThreadsRegister] = "ThreadsRegister",
-		[_G.ThreadsThreadToMessage] = "ThreadsThreadToMessage",
-		[_G.XTemplates] = "XTemplates",
+		[ChoGGi] = "ChoGGi",
+		[ClassTemplates] = "ClassTemplates",
+		[const] = "const",
+		[Consts] = "Consts",
+		[DataInstances] = "DataInstances",
+		[Dialogs] = "Dialogs",
+		[EntityData] = "EntityData",
+		[Flags] = "Flags",
+		[FXRules] = "FXRules",
+		[g_Classes] = "g_Classes",
+		[Presets] = "Presets",
+		[s_SeqListPlayers] = "s_SeqListPlayers",
+		[TaskRequesters] = "TaskRequesters",
+		[terminal.desktop] = "terminal.desktop",
+		[ThreadsMessageToThreads] = "ThreadsMessageToThreads",
+		[ThreadsRegister] = "ThreadsRegister",
+		[ThreadsThreadToMessage] = "ThreadsThreadToMessage",
+		[XTemplates] = "XTemplates",
 	}
+	-- probably won't work since devs put different _G for each mod env...
+	local g = _G
 	for _,value in pairs(PresetDefs) do
-		if value.DefGlobalMap ~= "" then
-			lookup_table[value] = value
+		if value.DefGlobalMap and value.DefGlobalMap ~= "" then
+			lookup_table[g[value.DefGlobalMap]] = value.DefGlobalMap
 		end
 	end
+	ClassDescendantsList("Preset", function(name, cls)
+		if cls.GlobalMap then
+			lookup_table[g[cls.GlobalMap]] = cls.GlobalMap
+		end
+	end)
+
 	-- have to wait for these to be created
 	function OnMsg.LoadGame()
-		lookup_table[_G.UICity] = "UICity"
-		lookup_table[_G.UICity.labels] = "UICity.labels"
-		lookup_table[_G.UICity.tech_status] = "UICity.tech_status"
-		lookup_table[_G.g_Consts] = "g_Consts"
-		lookup_table[_G.g_ApplicantPool] = "g_ApplicantPool"
+		local UICity = UICity
+		lookup_table[g_ApplicantPool] = "g_ApplicantPool"
+		lookup_table[g_Consts] = "g_Consts"
+		lookup_table[Mods] = "Mods"
+		lookup_table[ModsLoaded] = "ModsLoaded"
+		lookup_table[UICity] = "UICity"
+		lookup_table[UICity.labels] = "UICity.labels"
+		lookup_table[UICity.tech_status] = "UICity.tech_status"
 	end
 	function OnMsg.CityStart()
-		lookup_table[_G.UICity] = "UICity"
-		lookup_table[_G.UICity.labels] = "UICity.labels"
-		lookup_table[_G.UICity.tech_status] = "UICity.tech_status"
-		lookup_table[_G.g_Consts] = "g_Consts"
-		lookup_table[_G.g_ApplicantPool] = "g_ApplicantPool"
+		local UICity = UICity
+		lookup_table[g_ApplicantPool] = "g_ApplicantPool"
+		lookup_table[g_Consts] = "g_Consts"
+		lookup_table[Mods] = "Mods"
+		lookup_table[ModsLoaded] = "ModsLoaded"
+		lookup_table[UICity] = "UICity"
+		lookup_table[UICity.labels] = "UICity.labels"
+		lookup_table[UICity.tech_status] = "UICity.tech_status"
 	end
 
 	local IsObjlist,type,tostring = IsObjlist,type,tostring

@@ -164,17 +164,28 @@ function OnMsg.ClassesGenerate()
 		if submenu then
 			-- remove hint from "submenu" menu
 			ExamineMenuToggle_list[submenu].hint = nil
-			-- build our list
-			local submenu_table = {}
-			local c = 0
+
+			-- first we build an ass list then the actual list
+			local temp_list = {}
 			for _,value in pairs(PresetDefs) do
 				if value.DefGlobalMap ~= "" then
-					c = c + 1
-					submenu_table[c] = BuildExamineItem(value.DefGlobalMap)
+					temp_list[value.DefGlobalMap] = true
 				end
 			end
-			c = c + 1
-			submenu_table[c] = BuildExamineItem("BuildingTemplates")
+			ClassDescendantsList("Preset", function(name, cls)
+				if cls.GlobalMap then
+					temp_list[cls.GlobalMap] = true
+				end
+			end)
+			temp_list.BuildingTemplates = true
+
+			-- now we build the actual list
+			local submenu_table = {}
+			local c = 0
+			for name in pairs(temp_list) do
+				c = c + 1
+				submenu_table[c] = BuildExamineItem(name)
+			end
 
 			table.sort(submenu_table,
 				function(a,b)
