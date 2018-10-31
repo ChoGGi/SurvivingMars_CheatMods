@@ -62,7 +62,6 @@ function OnMsg.ClassesGenerate()
 			"_G",
 			"ChoGGi",
 			"Consts",
-			"DataInstances",
 			"Dialogs",
 			"Flags",
 			"FXRules",

@@ -4,6 +4,11 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v10.4 (Unreleased)
+### Changed:
+- Added a modified prop button to examine dialogs
+
+### Removed:
+- Two menu items from examine (they were added as buttons in .3).
 
 ## v10.3 (30 Oct 2018)
 ### Added:

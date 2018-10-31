@@ -184,6 +184,8 @@ function OnMsg.ClassesGenerate()
 			)
 			-- add orig to the menu
 			table.insert(submenu_table,1,BuildExamineItem("Presets"))
+			-- poor guy is just getting crushed by the devs, and look at me not even giving it it's own menu
+			table.insert(submenu_table,1,BuildExamineItem("DataInstances"))
 			-- and done
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
