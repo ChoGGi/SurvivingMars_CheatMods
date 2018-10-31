@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
--- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
 
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -538,140 +537,215 @@ function OnMsg.ClassesGenerate()
 	--~ local terrain_type_idx = table.find(TerrainTextures, "name", "Regolith")
 	--~ terrain.SetTypeCircle(GetTerrainCursor(), 5000, terrain_type_idx)
 
-	function ChoGGi.MenuFuncs.ChangeMap()
-		local str_hint_rules = S[302535920000803--[[For rules separate with spaces: Hunger ColonyPrefab (or leave blank for none).--]]]
-		local NewMissionParams = {}
-
-		-- open a list dialog to set g_CurrentMissionParams
-		local ItemList_MissionParams = {
-			{text = S[3474--[[Mission Sponsor--]]],value = "IMM"},
-			{text = S[3478--[[Commander Profile--]]],value = "rocketscientist"},
-			{text = S[3486--[[Mystery--]]],value = "random"},
-			{text = S[8800--[[Game Rules--]]],value = "",hint = str_hint_rules},
+	do -- ChangeMap
+		local lookup_table = {
+			[S[3474--[[Mission Sponsor--]]]] = "idMissionSponsor",
+			[S[3478--[[Commander Profile--]]]] = "idCommanderProfile",
+			[S[3486--[[Mystery--]]]] = "idMystery",
+			[S[3482--[[Colony Logo--]]]] = "idMissionLogo",
+			ResPreset_Concrete = "ResPreset_Concrete",
+			ResPreset_Metals = "ResPreset_Metals",
+			ResPreset_Polymers = "ResPreset_Polymers",
+			ResPreset_PreciousMetals = "ResPreset_PreciousMetals",
+			ResPreset_Water = "ResPreset_Water",
+			ResTag_Concrete = "ResTag_Concrete",
+			ResTag_Metals = "ResTag_Metals",
+			ResTag_Polymers = "ResTag_Polymers",
+			ResTag_PreciousMetals = "ResTag_PreciousMetals",
+			ResTag_Water = "ResTag_Water",
 		}
 
-		local function CallBackFunc_MissionParams(choice)
-			if #choice < 1 then
-				return
-			end
-			for i = 1, #choice do
-				local text = choice[i].text
-				local value = choice[i].value
+		function ChoGGi.MenuFuncs.ChangeMap()
+			local custom_params = {
+				idGameRules = {},
+			}
+			local str_hint_rules = S[302535920000803--[[For rules separate with spaces: Hunger ColonyPrefab (or leave blank for none).--]]]
 
-				if text == S[3474--[[Mission Sponsor--]]] then
-					NewMissionParams.idMissionSponsor = value
-				elseif text == S[3478--[[Commander Profile--]]] then
-					NewMissionParams.idCommanderProfile = value
-				elseif text == S[3486--[[Mystery--]]] then
-					NewMissionParams.idMystery = value
-				elseif text == S[8800--[[Game Rules--]]] then
-					NewMissionParams.idGameRules = {}
-					if value:find(" ") then
-						for i in value:gmatch("%S+") do
-							NewMissionParams.idGameRules[i] = true
+			-- open a list dialog to set g_CurrentMissionParams
+			local ItemList_MissionParams = {
+				{text = S[3474--[[Mission Sponsor--]]],value = "IMM",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(S[302535920000887--[[ECM--]]],S[1635--[[Mission--]]],S[302535920000712--[[Set Sponsor--]]])},
+				{text = S[3478--[[Commander Profile--]]],value = "rocketscientist",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(S[302535920000887--[[ECM--]]],S[1635--[[Mission--]]],S[302535920000716--[[Set Commander--]]])},
+				{text = S[3486--[[Mystery--]]],value = "random",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(S[27--[[Cheats--]]],S[302535920000331--[[Start Mystery--]]],"")},
+				{text = S[3482--[[Colony Logo--]]],value = "MarsExpress",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(S[302535920000887--[[ECM--]]],S[1635--[[Mission--]]],S[302535920000710--[[Change Logo--]]])},
+				{text = S[8800--[[Game Rules--]]],value = "",hint = str_hint_rules},
+
+--~ 				{text = "ResPreset_Concrete",value = ""},
+--~ 				{text = "ResPreset_Metals",value = ""},
+--~ 				{text = "ResPreset_Polymers",value = ""},
+--~ 				{text = "ResPreset_PreciousMetals",value = ""},
+--~ 				{text = "ResPreset_Water",value = ""},
+--~ 				{text = "ResTag_Concrete",value = ""},
+--~ 				{text = "ResTag_Metals",value = ""},
+--~ 				{text = "ResTag_Polymers",value = ""},
+--~ 				{text = "ResTag_PreciousMetals",value = ""},
+--~ 				{text = "ResTag_Water",value = ""},
+			}
+
+			local function CallBackFunc_MissionParams(choice)
+				if #choice < 1 then
+					return
+				end
+				for i = 1, #choice do
+					local text = choice[i].text
+					local value = choice[i].value
+
+					-- only game rules needs something something, the rest can use the lookup_table
+					if text == S[8800--[[Game Rules--]]] then
+						-- if more than one entry
+						if value:find(" ") then
+							for i in value:gmatch("%S+") do
+								custom_params.idGameRules[i] = true
+							end
+						-- just the one
+						elseif value ~= "" then
+							custom_params.idGameRules[value] = true
 						end
-					elseif value ~= "" then
-						NewMissionParams.idGameRules[value] = true
+					else
+						custom_params[lookup_table[text]] = value
 					end
 				end
 			end
-		end
 
-		local dlg_list_MissionParams = ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc_MissionParams,
-			items = ItemList_MissionParams,
-			title = 302535920000866--[[Set MissionParams NewMap--]],
-			hint = StringFormat("%s\n\n%s",S[302535920000867--[["Attention: You must press ""OK"" for these settings to take effect before choosing a map!
+			local dlg_list_MissionParams = ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc_MissionParams,
+				items = ItemList_MissionParams,
+				title = 302535920000866--[[Set MissionParams NewMap--]],
+				hint = StringFormat("%s\n\n%s",S[302535920000867--[["Attention: You must press ""OK"" for these settings to take effect before choosing a map!
 
-See the examine list for ids."--]]],str_hint_rules),
-			custom_type = 4,
-		}
+	See the examine list for ids."--]]],str_hint_rules),
+				custom_type = 4,
+			}
 
-		-- shows the mission params for people to look at
-		local ex = ChoGGi.ComFuncs.OpenInExamineDlg(MissionParams)
+			-- shows the mission params for people to look at
+	--~ 		local dlg_ex_params = ChoGGi.ComFuncs.OpenInExamineDlg({MissionParams,DataInstances.ResourcePreset})
+			local info_lists = {
+				[0] = S[302535920001385--[[Use these lists to find the correct ids.--]]],
+				table.icopy(MissionParams.idCommanderProfile.items),
+				table.icopy(MissionParams.idMissionSponsor.items),
+				table.icopy(MissionParams.idMissionLogo.items),
+				table.icopy(MissionParams.idGameRules.items),
+				table.icopy(MissionParams.idMystery.items),
+				table.icopy(DataInstances.ResourcePreset),
+			}
+			info_lists[1].name = S[3478--[[Commander Profile--]]]
+			info_lists[2].name = S[3474--[[Mission Sponsor--]]]
+			info_lists[3].name = S[3482--[[Colony Logo--]]]
+			info_lists[4].name = S[8800--[[Game Rules--]]]
+			info_lists[5].name = S[3486--[[Mystery--]]]
+			info_lists[6].name = S[692--[[Resources--]]]
+			local dlg_ex_params = ChoGGi.ComFuncs.OpenInExamineDlg(info_lists)
 
-		-- map list dialog
-		local ItemList_MapList = {}
-		local c = 0
-		local maps = ListMaps()
-		for i = 1, #maps do
-			if not (maps[i]:find_lower("^prefab") and maps[i]:find("^_")) then
-				c = c + 1
-				ItemList_MapList[c] = {
-					text = maps[i],
-					value = maps[i],
-				}
-			end
-		end
+			local dlg_list_maps
 
-		local function CallBackFunc_LoadMapQuestion(choice)
-			if #choice < 1 then
-				return
-			end
-			-- close dialogs we opened
-			dlg_list_MissionParams:delete()
-			ex:delete()
-
-			local map = choice[1].value
-			local function CallBackFunc(answer)
-				if answer then
-					local g_CurrentMissionParams = g_CurrentMissionParams
-					CloseMenuDialogs()
-
-					-- cleans out missions params
-					InitNewGameMissionParams()
-
-					-- select new MissionParams
-					g_CurrentMissionParams.idMissionSponsor = NewMissionParams.idMissionSponsor or "IMM"
-					g_CurrentMissionParams.idCommanderProfile = NewMissionParams.idCommanderProfile or "rocketscientist"
-					g_CurrentMissionParams.idMystery = NewMissionParams.idMystery or "random"
-					g_CurrentMissionParams.idGameRules = NewMissionParams.idGameRules or {}
-					g_CurrentMissionParams.GameSessionID = srp.random_encode64(96)
-
-					-- items in spawn rocket
-					GenerateRocketCargo()
-
-					-- landing spot/rocket name / resource amounts?, see g_CurrentMapParams
-					GenerateRandomMapParams()
-
-					-- and change the map
-					local props = GetModifiedProperties(DataInstances.RandomMapPreset.MAIN)
-					local gen = RandomMapGenerator:new()
-					gen:SetProperties(props)
-					FillRandomMapProps(gen)
-					gen.BlankMap = map
-
-					-- generates/loads map
-		--~ 			gen:Generate(nil, nil, nil, nil, map_settings)
-					gen:Generate()
-
-					-- update local store
-					LocalStorage.last_map = map
-					SaveLocalStorage()
+			-- map list dialog
+			local ItemList_MapList = {}
+			local c = 0
+			local maps = ListMaps()
+			for i = 1, #maps do
+				if not (maps[i]:find_lower("^prefab") and maps[i]:find("^_")) then
+					c = c + 1
+					ItemList_MapList[c] = {
+						text = maps[i],
+						value = maps[i],
+					}
 				end
 			end
 
-			ChoGGi.ComFuncs.QuestionBox(
-				StringFormat("%s: %s?",S[302535920000868--[[Choose Map--]]],map),
-				CallBackFunc,
-				302535920000868--[[Choose Map--]]
-			)
+			local function CallBackFunc_LoadMapQuestion(choice)
+				if #choice < 1 then
+					return
+				end
+
+				local map = choice[1].value
+				local function CallBackFunc(answer)
+					if answer then
+--~ 						local g_CurrentMissionParams = g_CurrentMissionParams
+
+						-- close dialogs we opened
+						dlg_list_MissionParams:Done()
+						dlg_ex_params:Done()
+						dlg_list_maps:Done()
+
+						-- cleans out missions params
+						InitNewGameMissionParams()
+						-- rocket name
+						GenerateRandomMapParams()
+
+						-- select new MissionParams
+						g_CurrentMissionParams.idMissionSponsor = custom_params.idMissionSponsor or "IMM"
+						g_CurrentMissionParams.idCommanderProfile = custom_params.idCommanderProfile or "rocketscientist"
+						g_CurrentMissionParams.idMystery = custom_params.idMystery or "random"
+						g_CurrentMissionParams.idMissionLogo = custom_params.idMissionLogo or "MarsExpress"
+						g_CurrentMissionParams.idGameRules = custom_params.idGameRules or {}
+						g_CurrentMissionParams.GameSessionID = srp.random_encode64(96)
+
+						-- this is a mostly copy of GenerateCurrentRandomMap()
+						-- .rand returns a bunch of args, and we just want the first one (or it screws up getmod)
+						local rand_props = table.rand(DataInstances.RandomMapPreset)
+						local props = GetModifiedProperties(rand_props)
+
+						local gen = RandomMapGenerator:new()
+						gen:SetProperties(props)
+						FillRandomMapProps(gen)
+						-- add the name of map we want
+						gen.BlankMap = map
+						-- add any custom res values
+						for key,value in pairs(custom_params) do
+							if key:find("ResPreset_") or key:find("ResTag_") then
+								if value ~= "" then
+									gen[key] = value
+								end
+							end
+						end
+--~ ex(gen)
+
+--~ gen.ResPreset_Concrete = "Concrete_VeryHigh"
+--~ gen.ResPreset_Polymers = "Polymers_VeryHigh"
+--~ gen.ResPreset_PreciousMetals = "PreciousMetals_VeryHigh"
+--~ gen.ResPreset_Water = "Water_VeryHigh"
+--~ gen.ResPreset_Metals = "Metals_VeryHigh"
+--~ gen.ResTag_Concrete = "Concrete_VeryHigh"
+--~ gen.ResTag_Metals = "Metals_VeryHigh"
+--~ gen.ResTag_PreciousMetals = "PreciousMetals_VeryHigh"
+--~ gen.ResTag_Polymers = "Polymers_VeryHigh"
+--~ gen.ResTag_Water = "Water_VeryHigh"
+--~ MapDelete("SubsurfaceAnomaly")
+
+						-- generates/loads map
+						gen:Generate()
+						-- update local store
+						LocalStorage.last_map = map
+						SaveLocalStorage()
+
+					end
+				end
+
+				ChoGGi.ComFuncs.QuestionBox(
+					StringFormat("%s: %s?",S[302535920000868--[[Choose Map--]]],map),
+					CallBackFunc,
+					302535920000868--[[Choose Map--]]
+				)
+			end
+
+
+			dlg_list_maps = ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc_LoadMapQuestion,
+				custom_func = CallBackFunc_LoadMapQuestion,
+				close_func = function()
+					-- close dialogs we opened
+					dlg_list_MissionParams:Done()
+					dlg_ex_params:Done()
+				end,
+				items = ItemList_MapList,
+				title = 302535920000868--[[Choose Map--]],
+				custom_type = 7,
+			}
+
+			dlg_list_maps:SetPos(point(350,50))
+			dlg_list_MissionParams:SetPos(point(0,50))
+			dlg_ex_params:SetPos(point(750,50))
 		end
-
-		dlg_list_MissionParams:SetPos(point(0,50))
-		ex:SetPos(point(800,50))
-
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc_LoadMapQuestion,
-			close_func = function()
-				-- close dialogs we opened
-				dlg_list_MissionParams:delete()
-				ex:delete()
-			end,
-			items = ItemList_MapList,
-			title = 302535920000868--[[Choose Map--]],
-		}
-	end
+	end -- do
 
 	function ChoGGi.MenuFuncs.PulsatingPins_Toggle()
 		local ChoGGi = ChoGGi

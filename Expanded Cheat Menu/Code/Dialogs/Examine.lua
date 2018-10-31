@@ -96,6 +96,10 @@ function OnMsg.ClassesGenerate()
 			title = S[302535920000449--[[Attach Spots Toggle--]]],
 			text = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 		},
+		["CommonAssets/UI/Menu/AreaProperties.tga"] = {
+			title = S[931--[[Modified property--]]],
+			text = S[302535920001384--[[Properties different from base object?--]]],
+		},
 	}
 end
 
@@ -518,28 +522,14 @@ This can take time on something like the ""Building"" metatable (don't use this 
 						self:BuildFuncList("CObject",self.menu_added.CObject)
 					end
 
-					ChoGGi.ComFuncs.OpenInExamineDlg(self.menu_list_items,self)
+					ChoGGi.ComFuncs.OpenInExamineDlg(self.menu_list_items,self,StringFormat("%s: %s",S[302535920001239--[[Functions--]]],RetName(self.obj))
+					)
 				else
 					-- close enough
 					print(S[9763--[[No objects matching current filters.--]]])
 				end
 			end,
 		},
-		{
-			name = S[302535920000449--[[Attach Spots Toggle--]]],
-			hint = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
-			clicked = function()
-				ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj)
-			end,
-		},
-		{
-			name = S[302535920000459--[[Anim Debug Toggle--]]],
-			hint = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
-			clicked = function()
-				ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj)
-			end,
-		},
-		{name = "	 ---- "},
 		{
 			name = StringFormat("%s %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
 			hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
@@ -687,7 +677,7 @@ function Examine:valuetotextex(obj)
 	end
 	local function Examine(_,_,button)
 		if button == "L" then
-			ChoGGi.ComFuncs.OpenInExamineDlg(obj, self)
+			ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
 		else
 			ShowMe(obj)
 		end
@@ -856,11 +846,8 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInExamineDlg(ExamineThreadLevel_data, self)
-end
-
-local function ExamineMetatable_totextex(_,_,_,self)
-	ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(self.obj), self)
+	ChoGGi.ComFuncs.OpenInExamineDlg(ExamineThreadLevel_data,self,StringFormat("%s: %s",S[302535920001353--[[Thread info--]]],RetName(self.obj))
+	)
 end
 
 local totextex_res = {}
@@ -961,7 +948,9 @@ function Examine:totextex(obj,obj_type)
 	if IsValid(obj) and obj:IsKindOf("CObject") then
 
 		TableInsert(totextex_res,1,StringFormat(--[[<center>----]]"\t\t\t\t--%s%s%s@%s--"--[[--<vspace 6><left>--]],
-			self:HyperLink(ExamineMetatable_totextex),
+			self:HyperLink(function()
+				ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(obj),self)
+			end),
 			obj.class,
 			HLEnd,
 			self:valuetotextex(obj:GetPos())
@@ -1195,6 +1184,9 @@ local function SetTransp_menu(_,_,_,self)
 	self.transp_mode = not self.transp_mode
 	self:SetTranspMode(self.transp_mode)
 end
+local function ShowDiffProps_menu(_,_,_,self)
+	ChoGGi.ComFuncs.OpenInExamineDlg(GetModifiedProperties(self.obj),self,StringFormat("%s: %s",S[931--[[Modified property--]]],RetName(self.obj)))
+end
 local function ShowAnimDebug_menu(_,_,_,self)
 	ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj)
 end
@@ -1243,6 +1235,14 @@ function Examine:menu(obj)
 		end
 
 		if obj.class then
+			-- show diff props
+			c = c + 1
+			res[c] = self:HyperLink(ShowDiffProps_menu)
+			c = c + 1
+			res[c] = " <image CommonAssets/UI/Menu/AreaProperties.tga 2000> "
+			c = c + 1
+			res[c] = HLEnd
+			-- delete
 			c = c + 1
 			res[c] = self:HyperLink(Destroy_menu)
 			c = c + 1
