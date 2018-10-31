@@ -581,7 +581,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle()
 		local ChoGGi = ChoGGi
-		ChoGGi.ComFuncs.SetConstsG("LowSanityNegativeTraitChance",ChoGGi.ComFuncs.NumRetBool(Consts.LowSanityNegativeTraitChance,0,ChoGGi.ComFuncs.GetLowSanityNegativeTraitChance()))
+		ChoGGi.ComFuncs.SetConstsG("LowSanityNegativeTraitChance",ChoGGi.ComFuncs.NumRetBool(Consts.LowSanityNegativeTraitChance,0,ChoGGi.ComFuncs.GetResearchedTechValue("LowSanityNegativeTraitChance")))
 		ChoGGi.ComFuncs.SetSavedSetting("LowSanityNegativeTraitChance",Consts.LowSanityNegativeTraitChance)
 
 		ChoGGi.SettingFuncs.WriteSettings()
@@ -675,7 +675,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 	function ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle()
 		local ChoGGi = ChoGGi
-		ChoGGi.ComFuncs.SetConstsG("NonSpecialistPerformancePenalty",ChoGGi.ComFuncs.NumRetBool(Consts.NonSpecialistPerformancePenalty,0,ChoGGi.ComFuncs.GetNonSpecialistPerformancePenalty()))
+		ChoGGi.ComFuncs.SetConstsG("NonSpecialistPerformancePenalty",ChoGGi.ComFuncs.NumRetBool(Consts.NonSpecialistPerformancePenalty,0,ChoGGi.ComFuncs.GetResearchedTechValue("NonSpecialistPerformancePenalty")))
 		ChoGGi.ComFuncs.SetSavedSetting("NonSpecialistPerformancePenalty",Consts.NonSpecialistPerformancePenalty)
 
 		ChoGGi.SettingFuncs.WriteSettings()

@@ -1,0 +1,3 @@
+v0.2
+Doubled sleep time waiting for more res to show up (2.5s to 5).
+Added ModConfig option for minimum resources.
