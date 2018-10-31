@@ -2624,6 +2624,9 @@ do -- DeleteObject
 			return
 		end
 
+		-- hopefully i can remove all log spam one of these days
+		printC("DeleteObject",RetName(obj),"DeleteObject")
+
 		-- deleting domes will freeze game if they have anything in them.
 		if obj:IsKindOf("Dome") and #(obj.labels.Buildings or "") > 0 then
 			MsgPopup(
@@ -2661,13 +2664,16 @@ do -- DeleteObject
 		DeleteObject_ExecFunc(obj,"Destroy")
 		DeleteObject_ExecFunc(obj,"SetDome",false)
 		DeleteObject_ExecFunc(obj,"RemoveFromLabels")
-		DeleteObject_ExecFunc(obj,"Done")
+		-- causes log spam, transport still drops items carried so...
+		if not IsKindOf(obj,"RCTransport") then
+			DeleteObject_ExecFunc(obj,"Done")
+		end
 		DeleteObject_ExecFunc(obj,"Gossip","done")
 		DeleteObject_ExecFunc(obj,"SetHolder",false)
 
 		-- only fire for stuff with holes in the ground (takes too long otherwise)
-		if IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor") then
-			DeleteObject_ExecFunc(obj,"DestroyAttaches","")
+		if IsKindOfClasses(obj,"MoholeMine","ShuttleHub","MetalsExtractor") then
+			DeleteObject_ExecFunc(obj,"DestroyAttaches")
 		end
 
 		-- I did ask nicely

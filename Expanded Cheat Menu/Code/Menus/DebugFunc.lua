@@ -402,9 +402,9 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local ItemList = {}
-		local Table = sel:GetStates() or {}
+		local list = sel:GetStates() or {}
 
-		for Key,State in pairs(Table) do
+		for Key,State in pairs(list) do
 			ItemList[#ItemList+1] = {
 				text = StringFormat("%s: %s %s: %s",S[1000037--[[Name--]]],State,S[302535920000858--[[Idx--]]],Key),
 				value = State,
@@ -644,21 +644,22 @@ function OnMsg.ClassesGenerate()
 
 				local c = #path
 
-
-				--the next four points it's going to
-				local Table = obj.next_spline
-				if Table then
+				-- the next four points it's going to after current_spline
+				local list = obj.next_spline
+				if list then
 					-- :GetPath() has them backwards so we'll do the same
-					for i = #Table, 1, -1 do
+					for i = #list, 1, -1 do
 						c = c + 1
-						path[c] = Table[i]
+						path[c] = list[i]
 					end
 				end
 
-				Table = obj.current_spline
-				if Table then
-					for i = #Table, 1, -1 do
-						path[c] = Table[i]
+				-- the next four points it's going to
+				list = obj.current_spline
+				if list then
+					for i = #list, 1, -1 do
+						c = c + 1
+						path[c] = list[i]
 					end
 				end
 				c = c + 1

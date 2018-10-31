@@ -7,6 +7,11 @@
 ### Changed:
 - Added a modified prop button to examine dialogs
 
+### Fixed:
+- Shuttle realtime pathing flight path has more splines.
+- Log spam when deleting Transports.
+- Devs changing "stripped" to "Missing text" in Gagarin (thanks SkiRich).
+
 ### Removed:
 - Two menu items from examine (they were added as buttons in .3).
 

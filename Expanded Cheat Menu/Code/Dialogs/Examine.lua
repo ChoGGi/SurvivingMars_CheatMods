@@ -719,7 +719,8 @@ function Examine:valuetotextex(obj)
 		else
 			-- show translated text if possible and return a clickable link
 			local trans = Trans(obj)
-			if trans == "stripped" or trans:find("Missing locale string id") then
+			-- stripped = pre-Gagarin, Missing text = post-Gagarin
+			if trans == "stripped" or trans == "Missing text" or trans:find("Missing locale string id") then
 				trans = tostring(obj)
 			end
 			-- the </color> is to make sure it doesn't bleed into other text
