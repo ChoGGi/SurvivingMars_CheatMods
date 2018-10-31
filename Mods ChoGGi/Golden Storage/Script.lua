@@ -74,22 +74,24 @@ end
 
 --add building to building template list
 function OnMsg.ClassesPostprocess()
-  PlaceObj("BuildingTemplate", {
-    "Id", "GoldenStorage",
-    "Group", "Storages",
-    "template_class", "GoldenStorage",
-    "instant_build", true,
-    "dome_forbidden", true,
-    "display_name", [[Golden Storage]],
-    "display_name_pl", [[Golden Storage]],
-    "description", [[Converts Metals to PreciousMetals.]],
-    "build_category", "Storages",
-    "display_icon", string.format("%suniversal_storage.tga",CurrentModPath),
-    "entity", "ResourcePlatform",
-    "on_off_button", false,
-    "prio_button", false,
-    "count_as_building", false,
-    "switch_fill_order", false,
-    "fill_group_idx", 9,
-  })
+	if not BuildingTemplates.GoldenStorage then
+		PlaceObj("BuildingTemplate", {
+			"Id", "GoldenStorage",
+			"Group", "Storages",
+			"template_class", "GoldenStorage",
+			"instant_build", true,
+			"dome_forbidden", true,
+			"display_name", [[Golden Storage]],
+			"display_name_pl", [[Golden Storage]],
+			"description", [[Converts Metals to PreciousMetals.]],
+			"build_category", "Storages",
+			"display_icon", string.format("%suniversal_storage.tga",CurrentModPath),
+			"entity", "ResourcePlatform",
+			"on_off_button", false,
+			"prio_button", false,
+			"count_as_building", false,
+			"switch_fill_order", false,
+			"fill_group_idx", 9,
+		})
+	end
 end --ClassesPostprocess

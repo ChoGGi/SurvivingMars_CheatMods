@@ -512,6 +512,12 @@ function ChoGGi_Window:SetInitPos(parent,pt)
 		y = pt:y()
 	end
 
+	-- just in case
+	x = x or 0
+	y = y or 0
+	w = w or 100
+	h = h or 100
+
 	-- if it's negative then set it to 100
 	y = y < 0 and 100 or y
 	x = x < 0 and 100 or x

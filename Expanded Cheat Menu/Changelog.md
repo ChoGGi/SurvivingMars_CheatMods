@@ -6,11 +6,14 @@
 ## v10.4 (Unreleased)
 ### Changed:
 - Added a modified prop button to examine dialogs
+- Returns names of (some) tables.
+- Shows function file/line number instead of "function: 0000000008D7C100".
 
 ### Fixed:
 - Shuttle realtime pathing flight path has more splines.
 - Log spam when deleting Transports.
 - Devs changing "stripped" to "Missing text" in Gagarin (thanks SkiRich).
+- Console Log Window didn't update scrollbar properly.
 
 ### Removed:
 - Two menu items from examine (they were added as buttons in .3).

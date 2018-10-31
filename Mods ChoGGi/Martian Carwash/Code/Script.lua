@@ -110,30 +110,30 @@ end
 
 -- add building to building template list
 function OnMsg.ClassesPostprocess()
-
-  PlaceObj("BuildingTemplate", {
-    "Id", "Carwash",
-    "template_class", "Carwash",
-    "dome_forbidden", true,
-    "display_name", [[Martian Carwash]],
-    "display_name_pl", [[Martian Carwashing]],
-    "description", [[Working at the car wash
+	if not BuildingTemplates.Carwash then
+		PlaceObj("BuildingTemplate", {
+			"Id", "Carwash",
+			"template_class", "Carwash",
+			"dome_forbidden", true,
+			"display_name", [[Martian Carwash]],
+			"display_name_pl", [[Martian Carwashing]],
+			"description", [[Working at the car wash
 Working at the car wash, yeah
 Come on and sing it with me, car wash
 Sing it with the feeling now, car wash, yeah]],
-    "Group", "Wonders",
-    "build_category", "Wonders", -- oh it's wonderful, be even more wonderful if I could figure out how to add a pipe connection, and have it suck up water
-    "display_icon", string.format("%sUI/carwash.png",CurrentModPath),
-    "entity", "Farm",
-    "electricity_consumption", 2500,
-    "water_consumption", 0,
-    "air_consumption", 0,
-    "construction_cost_Concrete", 20000,
-    "construction_cost_Metals", 15000,
-    "construction_cost_Electronics", 1000,
-    "construction_cost_Polymers", 1000,
-    "maintenance_resource_type", "Metals",
-    "maintenance_resource_amount", 1000,
-  })
-
+			"Group", "Wonders",
+			"build_category", "Wonders", -- oh it's wonderful, be even more wonderful if I could figure out how to add a pipe connection, and have it suck up water
+			"display_icon", string.format("%sUI/carwash.png",CurrentModPath),
+			"entity", "Farm",
+			"electricity_consumption", 2500,
+			"water_consumption", 0,
+			"air_consumption", 0,
+			"construction_cost_Concrete", 20000,
+			"construction_cost_Metals", 15000,
+			"construction_cost_Electronics", 1000,
+			"construction_cost_Polymers", 1000,
+			"maintenance_resource_type", "Metals",
+			"maintenance_resource_amount", 1000,
+		})
+	end
 end --ClassesPostprocess

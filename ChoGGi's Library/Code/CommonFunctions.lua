@@ -110,10 +110,62 @@ end -- do
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
+	-- we use this table to display names of (some) tables
+	local g = _G
+	local lookup_table = {
+		[_G] = "_G",
+		[_G.BuildingTemplates] = "BuildingTemplates",
+		[_G.ChoGGi] = "ChoGGi",
+		[_G.ClassTemplates] = "ClassTemplates",
+		[_G.const] = "const",
+		[_G.Consts] = "Consts",
+		[_G.DataInstances] = "DataInstances",
+		[_G.Dialogs] = "Dialogs",
+		[_G.EntityData] = "EntityData",
+		[_G.Flags] = "Flags",
+		[_G.FXRules] = "FXRules",
+		[_G.g_Classes] = "g_Classes",
+		[_G.Presets] = "Presets",
+		[_G.s_SeqListPlayers] = "s_SeqListPlayers",
+		[_G.TaskRequesters] = "TaskRequesters",
+		[_G.terminal.desktop] = "terminal.desktop",
+		[_G.ThreadsMessageToThreads] = "ThreadsMessageToThreads",
+		[_G.ThreadsRegister] = "ThreadsRegister",
+		[_G.ThreadsThreadToMessage] = "ThreadsThreadToMessage",
+		[_G.XTemplates] = "XTemplates",
+	}
+	for _,value in pairs(PresetDefs) do
+		if value.DefGlobalMap ~= "" then
+			lookup_table[value] = value
+		end
+	end
+	-- have to wait for these to be created
+	function OnMsg.LoadGame()
+		lookup_table[_G.UICity] = "UICity"
+		lookup_table[_G.UICity.labels] = "UICity.labels"
+		lookup_table[_G.UICity.tech_status] = "UICity.tech_status"
+		lookup_table[_G.g_Consts] = "g_Consts"
+		lookup_table[_G.g_ApplicantPool] = "g_ApplicantPool"
+	end
+	function OnMsg.CityStart()
+		lookup_table[_G.UICity] = "UICity"
+		lookup_table[_G.UICity.labels] = "UICity.labels"
+		lookup_table[_G.UICity.tech_status] = "UICity.tech_status"
+		lookup_table[_G.g_Consts] = "g_Consts"
+		lookup_table[_G.g_ApplicantPool] = "g_ApplicantPool"
+	end
+
 	local IsObjlist,type,tostring = IsObjlist,type,tostring
+	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	-- try to return a decent name for the obj, failing that return a string
 	function ChoGGi.ComFuncs.RetName(obj)
-		if type(obj) == "table" then
+		if lookup_table[obj] then
+			return lookup_table[obj]
+		end
+
+		local obj_type = type(obj)
+
+		if obj_type == "table" then
 
 			local name_type = type(obj.name)
 			-- custom name from user (probably)
@@ -147,6 +199,9 @@ do -- RetName
 			elseif IsObjlist(obj) then
 				return "objlist"
 			end
+
+		elseif obj_type == "function" then
+			return DebugGetInfo(obj)
 
 		end
 

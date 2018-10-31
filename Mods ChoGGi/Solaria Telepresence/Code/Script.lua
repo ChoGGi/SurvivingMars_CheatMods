@@ -348,38 +348,39 @@ function Workplace:OnDestroyed()
 end
 
 function OnMsg.ClassesPostprocess()
-	-- add building to building template list
-	PlaceObj("BuildingTemplate", {
-		"Id", "Solaria",
-		"template_class", "Solaria",
-		"construction_cost_Concrete", 40000,
-		"construction_cost_Electronics", 10000,
-		"build_points", 10000,
-		"dome_required", true,
-		"maintenance_resource_type", "Concrete",
-		"consumption_resource_type", "Electronics",
-		"consumption_max_storage", 6000,
-		"consumption_amount", 1500,
-		"consumption_type", 4,
-		"display_name", [[Solaria Telepresence]],
-		"display_name_pl", [[Solaria Telepresence]],
-		"description", [[A telepresence VR building, remote control factories and mines (with reduced production).
+	if not BuildingTemplates.Solaria then
+		PlaceObj("BuildingTemplate", {
+			"Id", "Solaria",
+			"template_class", "Solaria",
+			"construction_cost_Concrete", 40000,
+			"construction_cost_Electronics", 10000,
+			"build_points", 10000,
+			"dome_required", true,
+			"maintenance_resource_type", "Concrete",
+			"consumption_resource_type", "Electronics",
+			"consumption_max_storage", 6000,
+			"consumption_amount", 1500,
+			"consumption_type", 4,
+			"display_name", [[Solaria Telepresence]],
+			"display_name_pl", [[Solaria Telepresence]],
+			"description", [[A telepresence VR building, remote control factories and mines (with reduced production).
 Worker amount is dependent on controlled building.
 
 Telepresence control may take up to a shift to propagate to controlled building.]],
-		"Group", "Dome Services",
-		"build_category", "Dome Services",
-		"display_icon", string.format("%sUI/TheIncal.png",CurrentModPath),
-		"build_pos", 12,
-		"label1", "InsideBuildings",
-		"label2", "Workshop",
-		"entity", "VRWorkshop",
-		"palettes", "VRWorkshop",
-		"demolish_sinking", range(5, 10),
-		"demolish_debris", 80,
-		"electricity_consumption", 15000,
-		"max_workers", 0, -- changed when controlling
-	})
+			"Group", "Dome Services",
+			"build_category", "Dome Services",
+			"display_icon", string.format("%sUI/TheIncal.png",CurrentModPath),
+			"build_pos", 12,
+			"label1", "InsideBuildings",
+			"label2", "Workshop",
+			"entity", "VRWorkshop",
+			"palettes", "VRWorkshop",
+			"demolish_sinking", range(5, 10),
+			"demolish_debris", 80,
+			"electricity_consumption", 15000,
+			"max_workers", 0, -- changed when controlling
+		})
+	end
 
 	PlaceObj("TechPreset", {
 		SortKey = 11,

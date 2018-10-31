@@ -334,28 +334,28 @@ function OnMsg.SaveGame()
 end
 
 function OnMsg.ClassesPostprocess()
+	if not BuildingTemplates.RCBulldozerBuilding then
+		PlaceObj("BuildingTemplate",{
+			"Id","RCBulldozerBuilding",
+			"template_class","RCBulldozerBuilding",
+			-- pricey?
+			"construction_cost_Metals",40000,
+			"construction_cost_MachineParts",40000,
+			"construction_cost_Electronics",20000,
 
-  PlaceObj("BuildingTemplate",{
-    "Id","RCBulldozerBuilding",
-    "template_class","RCBulldozerBuilding",
-    -- pricey?
-    "construction_cost_Metals",40000,
-    "construction_cost_MachineParts",40000,
-    "construction_cost_Electronics",20000,
-
-    "dome_forbidden",true,
-    "display_name",name,
-    "display_name_pl",name,
-    "description",description,
-    "build_category","Infrastructure",
-    "Group", "Infrastructure",
-    "display_icon", display_icon,
-    "encyclopedia_exclude",true,
-    "on_off_button",false,
-    "entity","CombatRover",
-    "palettes","AttackRoverBlue"
-  })
-
+			"dome_forbidden",true,
+			"display_name",name,
+			"display_name_pl",name,
+			"description",description,
+			"build_category","Infrastructure",
+			"Group", "Infrastructure",
+			"display_icon", display_icon,
+			"encyclopedia_exclude",true,
+			"on_off_button",false,
+			"entity","CombatRover",
+			"palettes","AttackRoverBlue",
+		})
+	end
 end
 
 -- build list of textures for popup menu below

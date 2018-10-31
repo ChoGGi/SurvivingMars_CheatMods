@@ -38,6 +38,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Id = "idToggleTrans",
 		Text = S[302535920000865--[[Toggle Trans--]]],
 		Dock = "left",
+		Margins = box(4,0,0,0),
 		OnChange = function()
 			self.transp_mode = not self.transp_mode
 			self:SetTranspMode(self.transp_mode)
@@ -139,6 +140,8 @@ function OnMsg.ConsoleLine(text, bNewLine)
 		dlg.idText:SetText(text)
 
 		-- always scroll to end of text
-		dlg.idScrollBox:ScrollTo(0, text:len())
+		dlg.idScrollArea:ScrollTo(0, #text)
+		-- update thumb scroll length
+		dlg.idScrollV:SetScrollRange(0, #text)
 	end
 end
