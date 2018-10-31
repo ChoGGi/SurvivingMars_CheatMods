@@ -829,56 +829,42 @@ ChoGGi.ComFuncs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePena
 ChoGGi.ComFuncs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
 ^ returns 0.7
 
-it returns percentages in decimal for ease of mathing (SM removed the math.functions from lua)
+it returns percentages in decimal for ease of mathing (SM has no math. funcs)
 ie: SupportiveCommunity is -70 this returns it as 0.7
 it also returns negative amounts as positive (I prefer num - Amt, not num + NegAmt)
 --]]
 function ChoGGi.ComFuncs.ReturnTechAmount(tech,prop)
-	local techdef = TechDef[tech] or ""
-	for i = 1, #techdef do
-		if techdef[i].Prop == prop then
-			tech = techdef[i]
-			local RetObj = {}
+	local techdef = TechDef[tech]
+	local idx = table.find(techdef,"Prop",prop)
+	if idx then
+		tech = techdef[idx]
+		local number
 
-			if tech.Percent then
-				local percent = tech.Percent
-				if percent < 0 then
-					percent = percent * -1 -- -50 > 50
-				end
-				RetObj.p = (percent + 0.0) / 100 -- (50 > 50.0) > 0.50
+		-- With enemies you know where they stand but with Neutrals, who knows?
+		-- defaults for the objects have both percent/amount, so whoever isn't 0 means something
+		if tech.Percent == 0 then
+			if tech.Amount < 0 then
+				number = tech.Amount * -1 -- always gotta be positive
+			else
+				number = tech.Amount
 			end
-
-			if tech.Amount then
-				if tech.Amount < 0 then
-					RetObj.a = tech.Amount * -1 -- always gotta be positive
-				else
-					RetObj.a = tech.Amount
-				end
+		-- probably just have an else here instead...
+		elseif tech.Amount == 0 then
+			if tech.Percent < 0 then
+				tech.Percent = tech.Percent * -1 -- -50 > 50
 			end
-
-			--With enemies you know where they stand but with Neutrals, who knows?
-			if RetObj.a == 0 then
-				return RetObj.p
-			elseif RetObj.p == 0.0 then
-				return RetObj.a
-			end
+			number = (tech.Percent + 0.0) / 100 -- (50 > 50.0) > 0.50
 		end
+
+		return number
 	end
 end
 
---[[
-	--need to see if research is unlocked
-	if IsResearched and UICity:IsTechResearched(IsResearched) then
-		--boolean consts
-		Value = ChoGGi.ComFuncs.ReturnTechAmount(IsResearched,Name)
-		--amount
-		Consts["TravelTimeMarsEarth"] = Value
-	end
---]]
+-- value is ChoGGi.UserSettings.name
 function ChoGGi.ComFuncs.SetConstsG(name,value)
 	-- we only want to change it if user set value
 	if value then
-		--some mods check Consts or g_Consts, so we'll just do both to be sure
+		-- some mods check Consts or g_Consts, so we'll just do both to be sure
 		Consts[name] = value
 		g_Consts[name] = value
 	end
@@ -1597,153 +1583,143 @@ do -- RetThreadInfo/FindThreadFunc
 
 end -- do
 
--- check if tech is researched before we get value
-do -- get tech stuff
-	local ChoGGi = ChoGGi
-	local r = ChoGGi.Consts.ResourceScale
-	function ChoGGi.ComFuncs.GetSpeedDrone()
-		local UICity = UICity
-		local MoveSpeed = ChoGGi.Consts.SpeedDrone
+do -- GetResearchedTechValue
+	-- we check if tech is researched before we return value
+	local funcs_table = {
+		SpeedDrone = function()
+			local move_speed = ChoGGi.Consts.SpeedDrone
 
-		if UICity and UICity:IsTechResearched("LowGDrive") then
-			local p = ChoGGi.ComFuncs.ReturnTechAmount("LowGDrive","move_speed")
-			MoveSpeed = MoveSpeed + MoveSpeed * p
-		end
-		if UICity and UICity:IsTechResearched("AdvancedDroneDrive") then
-			local p = ChoGGi.ComFuncs.ReturnTechAmount("AdvancedDroneDrive","move_speed")
-			MoveSpeed = MoveSpeed + MoveSpeed * p
-		end
+			if UICity:IsTechResearched("LowGDrive") then
+				local p = ChoGGi.ComFuncs.ReturnTechAmount("LowGDrive","move_speed")
+				move_speed = move_speed + (move_speed * p)
+			end
+			if UICity:IsTechResearched("AdvancedDroneDrive") then
+				local p = ChoGGi.ComFuncs.ReturnTechAmount("AdvancedDroneDrive","move_speed")
+				move_speed = move_speed + (move_speed * p)
+			end
 
-		return MoveSpeed
-	end
+			return move_speed
+		end,
+		--
+		MaxColonistsPerRocket = function()
+			local per_rocket = ChoGGi.Consts.MaxColonistsPerRocket
+			if UICity:IsTechResearched("CompactPassengerModule") then
+				local a = ChoGGi.ComFuncs.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket")
+				per_rocket = per_rocket + a
+			end
+			if UICity:IsTechResearched("CryoSleep") then
+				local a = ChoGGi.ComFuncs.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
+				per_rocket = per_rocket + a
+			end
+			return per_rocket
+		end,
+		--
+		FuelRocket = function()
+			if UICity:IsTechResearched("AdvancedMartianEngines") then
+				local a = ChoGGi.ComFuncs.ReturnTechAmount("AdvancedMartianEngines","launch_fuel")
+				return ChoGGi.Consts.LaunchFuelPerRocket - (a * ChoGGi.Consts.ResourceScale)
+			end
+			return ChoGGi.Consts.LaunchFuelPerRocket
+		end,
+		--
+		SpeedRC = function()
+			if UICity:IsTechResearched("LowGDrive") then
+				local p = ChoGGi.ComFuncs.ReturnTechAmount("LowGDrive","move_speed")
+				return ChoGGi.Consts.SpeedRC + ChoGGi.Consts.SpeedRC * p
+			end
+			return ChoGGi.Consts.SpeedRC
+		end,
+		--
+		CargoCapacity = function()
+			if UICity:IsTechResearched("FuelCompression") then
+				local a = ChoGGi.ComFuncs.ReturnTechAmount("FuelCompression","CargoCapacity")
+				return ChoGGi.Consts.CargoCapacity + a
+			end
+			return ChoGGi.Consts.CargoCapacity
+		end,
+		--
+		CommandCenterMaxDrones = function()
+			if UICity:IsTechResearched("DroneSwarm") then
+				local a = ChoGGi.ComFuncs.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones")
+				return ChoGGi.Consts.CommandCenterMaxDrones + a
+			end
+			return ChoGGi.Consts.CommandCenterMaxDrones
+		end,
+		--
+		DroneResourceCarryAmount = function()
+			if UICity:IsTechResearched("ArtificialMuscles") then
+				local a = ChoGGi.ComFuncs.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount")
+				return ChoGGi.Consts.DroneResourceCarryAmount + a
+			end
+			return ChoGGi.Consts.DroneResourceCarryAmount
+		end,
+		--
+		LowSanityNegativeTraitChance = function()
+			if UICity:IsTechResearched("SupportiveCommunity") then
+				local p = ChoGGi.ComFuncs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
+				--[[
+				LowSanityNegativeTraitChance = 30%
+				SupportiveCommunity = -70%
+				--]]
+				local LowSan = ChoGGi.Consts.LowSanityNegativeTraitChance + 0.0 --SM has no math.funcs so + 0.0
+				return p*LowSan/100*100
+			end
+			return ChoGGi.Consts.LowSanityNegativeTraitChance
+		end,
+		--
+		NonSpecialistPerformancePenalty = function()
+			if UICity:IsTechResearched("GeneralTraining") then
+				local a = ChoGGi.ComFuncs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
+				return ChoGGi.Consts.NonSpecialistPerformancePenalty - a
+			end
+			return ChoGGi.Consts.NonSpecialistPerformancePenalty
+		end,
+		--
+		RCRoverMaxDrones = function()
+			if UICity:IsTechResearched("RoverCommandAI") then
+				local a = ChoGGi.ComFuncs.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones")
+				return ChoGGi.Consts.RCRoverMaxDrones + a
+			end
+			return ChoGGi.Consts.RCRoverMaxDrones
+		end,
+		--
+		RCTransportGatherResourceWorkTime = function()
+			if UICity:IsTechResearched("TransportOptimization") then
+				local p = ChoGGi.ComFuncs.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime")
+				return ChoGGi.Consts.RCTransportGatherResourceWorkTime * p
+			end
+			return ChoGGi.Consts.RCTransportGatherResourceWorkTime
+		end,
+		--
+		RCTransportStorageCapacity = function()
+			if UICity:IsTechResearched("TransportOptimization") then
+				local a = ChoGGi.ComFuncs.ReturnTechAmount("TransportOptimization","max_shared_storage")
+				return ChoGGi.Consts.RCTransportStorageCapacity + (a * ChoGGi.Consts.ResourceScale)
+			end
+			return ChoGGi.Consts.RCTransportStorageCapacity
+		end,
+		--
+		TravelTimeEarthMars = function()
+			if UICity:IsTechResearched("PlasmaRocket") then
+				local p = ChoGGi.ComFuncs.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars")
+				return ChoGGi.Consts.TravelTimeEarthMars * p
+			end
+			return ChoGGi.Consts.TravelTimeEarthMars
+		end,
+		--
+		TravelTimeMarsEarth = function()
+			if UICity:IsTechResearched("PlasmaRocket") then
+				local p = ChoGGi.ComFuncs.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth")
+				return ChoGGi.Consts.TravelTimeMarsEarth * p
+			end
+			return ChoGGi.Consts.TravelTimeMarsEarth
+		end,
+	}
 
-	function ChoGGi.ComFuncs.GetFuelRocket()
-		local UICity = UICity
-		if UICity and UICity:IsTechResearched("AdvancedMartianEngines") then
-			local a = ChoGGi.ComFuncs.ReturnTechAmount("AdvancedMartianEngines","launch_fuel")
-			return ChoGGi.Consts.LaunchFuelPerRocket - (a * r)
-		end
-		return ChoGGi.Consts.LaunchFuelPerRocket
+	function ChoGGi.ComFuncs.GetResearchedTechValue(name)
+		return funcs_table[name]()
 	end
-
-	function ChoGGi.ComFuncs.GetSpeedRC()
-		local UICity = UICity
-		if UICity and UICity:IsTechResearched("LowGDrive") then
-			local p = ChoGGi.ComFuncs.ReturnTechAmount("LowGDrive","move_speed")
-			return ChoGGi.Consts.SpeedRC + ChoGGi.Consts.SpeedRC * p
-		end
-		return ChoGGi.Consts.SpeedRC
-	end
-
-	function ChoGGi.ComFuncs.GetCargoCapacity()
-		local UICity = UICity
-		if UICity and UICity:IsTechResearched("FuelCompression") then
-			local a = ChoGGi.ComFuncs.ReturnTechAmount("FuelCompression","CargoCapacity")
-			return ChoGGi.Consts.CargoCapacity + a
-		end
-		return ChoGGi.Consts.CargoCapacity
-	end
-	--
-	function ChoGGi.ComFuncs.GetCommandCenterMaxDrones()
-		local UICity = UICity
-		if UICity and UICity:IsTechResearched("DroneSwarm") then
-			local a = ChoGGi.ComFuncs.ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones")
-			return ChoGGi.Consts.CommandCenterMaxDrones + a
-		end
-		return ChoGGi.Consts.CommandCenterMaxDrones
-	end
-	--
-	function ChoGGi.ComFuncs.GetDroneResourceCarryAmount()
-		local UICity = UICity
-		if UICity and UICity:IsTechResearched("ArtificialMuscles") then
-			local a = ChoGGi.ComFuncs.ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount")
-			return ChoGGi.Consts.DroneResourceCarryAmount + a
-		end
-		return ChoGGi.Consts.DroneResourceCarryAmount
-	end
-	--
-	function ChoGGi.ComFuncs.GetLowSanityNegativeTraitChance()
-		local UICity = UICity
-		if UICity and UICity:IsTechResearched("SupportiveCommunity") then
-			local p = ChoGGi.ComFuncs.ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
-			--[[
-			LowSanityNegativeTraitChance = 30%
-			SupportiveCommunity = -70%
-			--]]
-			local LowSan = ChoGGi.Consts.LowSanityNegativeTraitChance + 0.0 --SM has no math.funcs so + 0.0
-			return p*LowSan/100*100
-		end
-		return ChoGGi.Consts.LowSanityNegativeTraitChance
-	end
-	--
-	function ChoGGi.ComFuncs.GetMaxColonistsPerRocket()
-		local UICity = UICity
-		local PerRocket = ChoGGi.Consts.MaxColonistsPerRocket
-		if UICity and UICity:IsTechResearched("CompactPassengerModule") then
-			local a = ChoGGi.ComFuncs.ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket")
-			PerRocket = PerRocket + a
-		end
-		if UICity and UICity:IsTechResearched("CryoSleep") then
-			local a = ChoGGi.ComFuncs.ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
-			PerRocket = PerRocket + a
-		end
-		return PerRocket
-	end
-	--
-	function ChoGGi.ComFuncs.GetNonSpecialistPerformancePenalty()
-		local UICity = UICity
-		if UICity and UICity:IsTechResearched("GeneralTraining") then
-			local a = ChoGGi.ComFuncs.ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
-			return ChoGGi.Consts.NonSpecialistPerformancePenalty - a
-		end
-		return ChoGGi.Consts.NonSpecialistPerformancePenalty
-	end
-	--
-	function ChoGGi.ComFuncs.GetRCRoverMaxDrones()
-		local UICity = UICity
-		if UICity and UICity:IsTechResearched("RoverCommandAI") then
-			local a = ChoGGi.ComFuncs.ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones")
-			return ChoGGi.Consts.RCRoverMaxDrones + a
-		end
-		return ChoGGi.Consts.RCRoverMaxDrones
-	end
-	--
-	function ChoGGi.ComFuncs.GetRCTransportGatherResourceWorkTime()
-		local UICity = UICity
-		if UICity and UICity:IsTechResearched("TransportOptimization") then
-			local p = ChoGGi.ComFuncs.ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime")
-			return ChoGGi.Consts.RCTransportGatherResourceWorkTime * p
-		end
-		return ChoGGi.Consts.RCTransportGatherResourceWorkTime
-	end
-	--
-	function ChoGGi.ComFuncs.GetRCTransportStorageCapacity()
-		local UICity = UICity
-		if UICity and UICity:IsTechResearched("TransportOptimization") then
-			local a = ChoGGi.ComFuncs.ReturnTechAmount("TransportOptimization","max_shared_storage")
-			return ChoGGi.Consts.RCTransportStorageCapacity + (a * r)
-		end
-		return ChoGGi.Consts.RCTransportStorageCapacity
-	end
-	--
-	function ChoGGi.ComFuncs.GetTravelTimeEarthMars()
-		local UICity = UICity
-		if UICity and UICity:IsTechResearched("PlasmaRocket") then
-			local p = ChoGGi.ComFuncs.ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars")
-			return ChoGGi.Consts.TravelTimeEarthMars * p
-		end
-		return ChoGGi.Consts.TravelTimeEarthMars
-	end
-	--
-	function ChoGGi.ComFuncs.GetTravelTimeMarsEarth()
-		local UICity = UICity
-		if UICity and UICity:IsTechResearched("PlasmaRocket") then
-			local p = ChoGGi.ComFuncs.ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth")
-			return ChoGGi.Consts.TravelTimeMarsEarth * p
-		end
-		return ChoGGi.Consts.TravelTimeMarsEarth
-	end
-end
+end -- do
 
 -- if building requires a dome and that dome is borked then assign it to nearest dome
 function ChoGGi.ComFuncs.AttachToNearestDome(obj)
