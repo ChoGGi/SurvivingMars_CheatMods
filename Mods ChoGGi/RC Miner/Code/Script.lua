@@ -488,28 +488,28 @@ function PortableMiner:GetExtractionShape()
 end
 
 function OnMsg.ClassesPostprocess()
+	if not BuildingTemplates.PortableMinerBuilding then
+		PlaceObj("BuildingTemplate",{
+			"Id","PortableMinerBuilding",
+			"template_class","PortableMinerBuilding",
+			-- pricey?
+			"construction_cost_Metals",40000,
+			"construction_cost_MachineParts",40000,
+			"construction_cost_Electronics",20000,
 
-  PlaceObj("BuildingTemplate",{
-    "Id","PortableMinerBuilding",
-    "template_class","PortableMinerBuilding",
-    -- pricey?
-    "construction_cost_Metals",40000,
-    "construction_cost_MachineParts",40000,
-    "construction_cost_Electronics",20000,
-
-    "dome_forbidden",true,
-    "display_name",name,
-    "display_name_pl",name,
-    "description",description,
-    "build_category","Infrastructure",
-    "Group", "Infrastructure",
-    "display_icon", display_icon,
-    "encyclopedia_exclude",true,
-    "on_off_button",false,
-    "entity","CombatRover",
-    "palettes","AttackRoverBlue"
-  })
-
+			"dome_forbidden",true,
+			"display_name",name,
+			"display_name_pl",name,
+			"description",description,
+			"build_category","Infrastructure",
+			"Group", "Infrastructure",
+			"display_icon", display_icon,
+			"encyclopedia_exclude",true,
+			"on_off_button",false,
+			"entity","CombatRover",
+			"palettes","AttackRoverBlue"
+		})
+	end
 end
 
 function OnMsg.ClassesBuilt()

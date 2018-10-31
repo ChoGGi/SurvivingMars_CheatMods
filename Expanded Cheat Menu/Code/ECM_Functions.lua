@@ -10,6 +10,135 @@ function OnMsg.ClassesGenerate()
 	local StringFormat = string.format
 	local TableFind = table.find
 
+	-- if ECM is running without the bl, then we use the _G from ECM instead of the Library mod (since it's limited to per mod)
+	if not blacklist then
+		-- "some.some.some.etc" = returns etc as object
+		function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
+			-- there's always one
+			if str == "_G" then
+				return _G
+			end
+			-- always start with _G
+			local obj = root or _G
+			-- https://www.lua.org/pil/14.1.html
+			for name,match in str:gmatch("([%w_]+)(.?)") do
+				-- . means we're not at the end yet
+				if match == "." then
+					-- create is for adding new settings in non-existent tables
+					if not obj[name] and not create then
+						-- our treasure hunt is cut short, so return nadda
+						return
+					end
+					-- change the parent to the child (create table if absent, this'll only fire when create)
+					obj = obj[name] or {}
+				else
+					-- no more . so we return as conquering heroes with the obj
+					return obj[name]
+				end
+			end
+		end
+		do -- RetName
+			-- we use this table to display names of (some) tables
+			local g = _G
+			local lookup_table = {
+				[_G] = "_G",
+				[_G.ChoGGi] = "ChoGGi",
+				[_G.ClassTemplates] = "ClassTemplates",
+				[_G.const] = "const",
+				[_G.Consts] = "Consts",
+				[_G.DataInstances] = "DataInstances",
+				[_G.Dialogs] = "Dialogs",
+				[_G.EntityData] = "EntityData",
+				[_G.Flags] = "Flags",
+				[_G.FXRules] = "FXRules",
+				[_G.g_Classes] = "g_Classes",
+				[_G.Presets] = "Presets",
+				[_G.s_SeqListPlayers] = "s_SeqListPlayers",
+				[_G.TaskRequesters] = "TaskRequesters",
+				[_G.terminal.desktop] = "terminal.desktop",
+				[_G.ThreadsMessageToThreads] = "ThreadsMessageToThreads",
+				[_G.ThreadsRegister] = "ThreadsRegister",
+				[_G.ThreadsThreadToMessage] = "ThreadsThreadToMessage",
+				[_G.XTemplates] = "XTemplates",
+			}
+			for _,value in pairs(PresetDefs) do
+				if value.DefGlobalMap ~= "" then
+					lookup_table[value] = value
+				end
+			end
+			-- have to wait for these to be created
+			function OnMsg.LoadGame()
+				lookup_table[_G.UICity] = "UICity"
+				lookup_table[_G.UICity.labels] = "UICity.labels"
+				lookup_table[_G.UICity.tech_status] = "UICity.tech_status"
+				lookup_table[_G.g_Consts] = "g_Consts"
+				lookup_table[_G.g_ApplicantPool] = "g_ApplicantPool"
+			end
+			function OnMsg.CityStart()
+				lookup_table[_G.UICity] = "UICity"
+				lookup_table[_G.UICity.labels] = "UICity.labels"
+				lookup_table[_G.UICity.tech_status] = "UICity.tech_status"
+				lookup_table[_G.g_Consts] = "g_Consts"
+				lookup_table[_G.g_ApplicantPool] = "g_ApplicantPool"
+			end
+
+			local IsObjlist,type,tostring = IsObjlist,type,tostring
+			local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
+			-- try to return a decent name for the obj, failing that return a string
+			function ChoGGi.ComFuncs.RetName(obj)
+				if lookup_table[obj] then
+					return lookup_table[obj]
+				end
+
+				local obj_type = type(obj)
+
+				if obj_type == "table" then
+
+					local name_type = type(obj.name)
+					-- custom name from user (probably)
+					if name_type == "string" and obj.name ~= "" then
+						return obj.name
+					-- colonist names
+					elseif name_type == "table" and #obj.name == 3 then
+						return StringFormat("%s %s",Trans(obj.name[1]),Trans(obj.name[3]))
+
+					-- translated name
+					elseif obj.display_name and obj.display_name ~= "" then
+						return Trans(obj.display_name)
+
+					-- encyclopedia_id
+					elseif obj.encyclopedia_id and obj.encyclopedia_id ~= "" then
+						return obj.encyclopedia_id
+					-- plain old id
+					elseif obj.id and obj.id ~= "" then
+						return obj.id
+					elseif obj.Id and obj.Id ~= "" then
+						return obj.Id
+
+					-- class template name
+					elseif obj.template_name and obj.template_name ~= "" then
+						return obj.template_name
+					-- class
+					elseif obj.class and obj.class ~= "" then
+						return obj.class
+
+					-- added this here as doing tostring lags the shit outta kansas if this is a large objlist (could also be from just having a large string for something?)
+					elseif IsObjlist(obj) then
+						return "objlist"
+					end
+
+				elseif obj_type == "function" then
+					return DebugGetInfo(obj)
+
+				end
+
+				-- falling back baby
+				return tostring(obj)
+			end
+		end -- do
+		RetName = ChoGGi.ComFuncs.RetName
+	end
+
 	function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg)
 		if blacklist then
 			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("Dump"))
@@ -322,36 +451,6 @@ function OnMsg.ClassesGenerate()
 			RemoveOldDialogs("ChoGGi_FindValueDlg")
 		end
 	end
-
-	-- if ECM is running without the bl, then we use the _G from ECM instead of the Library mod (since it's limited to per mod)
-	if not blacklist then
-		-- "some.some.some.etc" = returns etc as object
-		function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
-			-- there's always one
-			if str == "_G" then
-				return _G
-			end
-			-- always start with _G
-			local obj = root or _G
-			-- https://www.lua.org/pil/14.1.html
-			for name,match in str:gmatch("([%w_]+)(.?)") do
-				-- . means we're not at the end yet
-				if match == "." then
-					-- create is for adding new settings in non-existent tables
-					if not obj[name] and not create then
-						-- our treasure hunt is cut short, so return nadda
-						return
-					end
-					-- change the parent to the child (create table if absent, this'll only fire when create)
-					obj = obj[name] or {}
-				else
-					-- no more . so we return as conquering heroes with the obj
-					return obj[name]
-				end
-			end
-		end
-	end
-
 	function ChoGGi.ComFuncs.ObjectSpawner(obj)
 		local ChoGGi = ChoGGi
 		local g_Classes = g_Classes

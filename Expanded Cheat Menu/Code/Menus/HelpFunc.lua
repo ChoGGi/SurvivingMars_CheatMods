@@ -55,6 +55,10 @@ function OnMsg.ClassesGenerate()
 		local c = 0
 		-- not much point without steam
 		if Platform.steam and IsSteamAvailable() then
+			-- if user installed mod while game is running
+			print("ECM ExtractHPKs ModsReloadDefs:")
+			ModsReloadDefs()
+
 			-- loop through each mod and make a table of steam ids, so we don't have to loop for each mod below
 			local mod_table = {}
 			for _,value in pairs(Mods) do

@@ -136,9 +136,9 @@ function OnMsg.ClassesGenerate()
 			hint = StringFormat("%s: %s",S[302535920000491--[[Examine Object--]]],disp),
 			clicked = function()
 				if func then
-					OpenInExamineDlg(obj(),nil,disp)
+					OpenInExamineDlg(obj())
 				else
-					OpenInExamineDlg(name,"str",disp)
+					OpenInExamineDlg(name,"str")
 				end
 			end,
 		}

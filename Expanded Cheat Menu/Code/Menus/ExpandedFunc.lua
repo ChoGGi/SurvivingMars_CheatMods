@@ -96,7 +96,7 @@ function OnMsg.ClassesGenerate()
 				if waste then
 					predprod = tostring(waste:GetPredictedProduction())
 					prefix = "0."
-					if predprod:len() > 3 then
+					if #predprod > 3 then
 						prefix = ""
 						predprod = predprod / r
 					end
@@ -110,7 +110,7 @@ function OnMsg.ClassesGenerate()
 				end
 				predprod = tostring(prod:GetPredictedProduction())
 				prefix = "0."
-				if predprod:len() > 3 then
+				if #predprod > 3 then
 					prefix = ""
 					predprod = predprod / r
 				end

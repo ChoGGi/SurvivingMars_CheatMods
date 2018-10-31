@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v3.0 (Unreleased)
+- Returns names of (some) tables.
+- Shows function file/line number instead of "function: 0000000008D7C100".
 
 ## v2.9 (30 Oct 2018)
 - AnimDebug_Toggle wasn't removing oriention obj.

@@ -27,23 +27,24 @@ end
 
 --add building to building template list
 function OnMsg.ClassesPostprocess()
-  PlaceObj("BuildingTemplate", {
-    "Id", "BottomlessStorage",
-    "template_class", "BottomlessStorage",
-    "instant_build", true,
-    "dome_forbidden", true,
-    "display_name", [[Bottomless Storage]],
-    "display_name_pl", [[Bottomless Storage]],
-    "description", [[Anything added to this depot will disappear.]],
-    "Group", "Storages",
-    "build_category", "Storages",
-    "display_icon", string.format("%suniversal_storage.tga",CurrentModPath),
---~     "entity", "StorageDepot",
-    "entity", "ResourcePlatform",
-    "on_off_button", false,
-    "prio_button", false,
-    "count_as_building", false,
-    "switch_fill_order", false,
-    "fill_group_idx", 9,
-  })
+	if not BuildingTemplates.BottomlessStorage then
+		PlaceObj("BuildingTemplate", {
+			"Id", "BottomlessStorage",
+			"template_class", "BottomlessStorage",
+			"instant_build", true,
+			"dome_forbidden", true,
+			"display_name", [[Bottomless Storage]],
+			"display_name_pl", [[Bottomless Storage]],
+			"description", [[Anything added to this depot will disappear.]],
+			"Group", "Storages",
+			"build_category", "Storages",
+			"display_icon", string.format("%suniversal_storage.tga",CurrentModPath),
+			"entity", "ResourcePlatform",
+			"on_off_button", false,
+			"prio_button", false,
+			"count_as_building", false,
+			"switch_fill_order", false,
+			"fill_group_idx", 9,
+		})
+	end
 end --ClassesPostprocess

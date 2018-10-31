@@ -363,9 +363,10 @@ function OnMsg.ClassesGenerate()
 			if #const.SanatoriumTraits ~= 7 then
 				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sSanatoriumTraits%s",textstart,textend)
 			end
-			local fulllist = TraitsCombo()
-			if #fulllist ~= 55 then
-				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sTraitsCombo%s",textstart,textend)
+			local empty_table = empty_table
+			local nonerare,rare = GetCompatibleTraits(empty_table,empty_table,empty_table)
+			if #nonerare + #rare ~= 55 then
+				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sGetCompatibleTraits%s",textstart,textend)
 			end
 		end
 

@@ -911,8 +911,12 @@ function Examine:totextex(obj,obj_type)
 	elseif obj_type == "function" then
 		if blacklist then
 			c = c + 1
+			totextex_res[c] = self:valuetotextex(tostring(obj))
+			c = c + 1
 			totextex_res[c] = self:valuetotextex(DebugGetInfo(obj))
 		else
+			c = c + 1
+			totextex_res[c] = self:valuetotextex(tostring(obj))
 			local level = 1
 			local k, v = true
 			while k do

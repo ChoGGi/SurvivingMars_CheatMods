@@ -1,0 +1,17 @@
+
+function OnMsg.LoadGame()
+	-- suspending speeds up deleting
+	SuspendPassEdits("RemoveBlueYellowGridMarks")
+
+	-- blue/yellow markers
+	MapDelete("map", "GridTile","RangeHexRadius")
+
+	-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
+	MapDelete("map", "WireFramedPrettification",function(o)
+		if o.entity == "RoverTransport" then
+			return true
+		end
+	end)
+
+	ResumePassEdits("RemoveBlueYellowGridMarks")
+end

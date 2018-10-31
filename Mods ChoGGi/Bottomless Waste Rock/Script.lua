@@ -21,22 +21,24 @@ end
 
 --add building to building template list
 function OnMsg.ClassesPostprocess()
-  PlaceObj("BuildingTemplate", {
-    "Id", "BottomlessWasteRock",
-    "template_class", "BottomlessWasteRock",
-    "instant_build", true,
-    "dome_forbidden", true,
-    "display_name", [[Bottomless WasteRock]],
-    "display_name_pl", [[Bottomless WasteRock]],
-    "description", [[Any rocks dumped at this depot will disappear.]],
-    "Group", "Storages",
-    "build_category", "Storages",
-    "display_icon", string.format("%sres_waste_rock.tga",CurrentModPath),
-    "entity", "ResourcePlatform",
-    "on_off_button", false,
-    "prio_button", false,
-    "count_as_building", false,
-    "switch_fill_order", false,
-    "fill_group_idx", 9,
-  })
+	if not BuildingTemplates.BottomlessWasteRock then
+		PlaceObj("BuildingTemplate", {
+			"Id", "BottomlessWasteRock",
+			"template_class", "BottomlessWasteRock",
+			"instant_build", true,
+			"dome_forbidden", true,
+			"display_name", [[Bottomless WasteRock]],
+			"display_name_pl", [[Bottomless WasteRock]],
+			"description", [[Any rocks dumped at this depot will disappear.]],
+			"Group", "Storages",
+			"build_category", "Storages",
+			"display_icon", string.format("%sres_waste_rock.tga",CurrentModPath),
+			"entity", "ResourcePlatform",
+			"on_off_button", false,
+			"prio_button", false,
+			"count_as_building", false,
+			"switch_fill_order", false,
+			"fill_group_idx", 9,
+		})
+	end
 end --ClassesPostprocess

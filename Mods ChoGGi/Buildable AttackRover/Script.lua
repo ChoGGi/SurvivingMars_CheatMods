@@ -8,7 +8,7 @@ function OnMsg.ClassesGenerate()
       },
   }
 
-  DefineClass.AttackRoverBuilding = {
+  DefineClass.AttackRoverBuilding2 = {
     __parents = {
       "BaseRoverBuilding"
     },
@@ -18,26 +18,27 @@ function OnMsg.ClassesGenerate()
 end --ClassesGenerate
 
 function OnMsg.ClassesPostprocess()
-
-  PlaceObj("BuildingTemplate",{
-    "Id","AttackRoverBuilding",
-    "template_class","AttackRoverBuilding",
-    "construction_cost_Metals",20000,
-    "construction_cost_Electronics",10000,
-    "dome_forbidden",true,
-    "display_name","RC AttackRover",
-    "display_name_pl","RC AttackRover",
-    "description","Not much",
-    "Group","Infrastructure",
-    "build_category","Infrastructure",
-    "display_icon","UI/Icons/Buildings/rover_combat.tga",
-    "build_pos",2,
-    "entity","RoverTransportBuilding",
-    "encyclopedia_exclude",true,
-    "on_off_button",false,
-    "prio_button",false,
-    "palettes","AttackRoverRed"
-  })
+	if not BuildingTemplates.AttackRoverBuilding2 then
+		PlaceObj("BuildingTemplate",{
+			"Id","AttackRoverBuilding2",
+			"template_class","AttackRoverBuilding2",
+			"construction_cost_Metals",20000,
+			"construction_cost_Electronics",10000,
+			"dome_forbidden",true,
+			"display_name","RC AttackRover",
+			"display_name_pl","RC AttackRover",
+			"description","Not much",
+			"Group","Infrastructure",
+			"build_category","Infrastructure",
+			"display_icon","UI/Icons/Buildings/rover_combat.tga",
+			"build_pos",2,
+			"entity","RoverTransportBuilding",
+			"encyclopedia_exclude",true,
+			"on_off_button",false,
+			"prio_button",false,
+			"palettes","AttackRoverRed"
+		})
+	end
 
 end --ClassesPostprocess
 
