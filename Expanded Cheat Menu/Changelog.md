@@ -4,6 +4,9 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v10.4 (Unreleased)
+### Added:
+- More Presets to the presets list in Console>Examine.
+
 ### Changed:
 - Added a modified prop button to examine dialogs
 - Returns names of (some) tables.
