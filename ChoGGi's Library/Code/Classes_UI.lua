@@ -143,16 +143,14 @@ end
 
 DefineClass.ChoGGi_Buttons = {
 	__parents = {"XTextButton"},
+	TextStyle = "ChoGGi_Buttons",
 	RolloverTitle = S[126095410863--[[Info--]]],
 	RolloverTemplate = "Rollover",
 	RolloverBackground = rollover_blue,
-	RolloverTextColor = white,
 	Margins = box(4,4,4,4),
 	PressedBackground = medium_gray,
 	PressedTextColor = white,
 	RolloverZoom = 1100,
---~ 	TextStyle = "ChoGGi_Label",
-
 }
 
 DefineClass.ChoGGi_Button = {
@@ -178,28 +176,33 @@ DefineClass.ChoGGi_CloseButton = {
 
 DefineClass.ChoGGi_ConsoleButton = {
 	__parents = {"ChoGGi_Button"},
+	TextStyle = "ChoGGi_ConsoleButton",
 	Padding = box(5, 2, 5, 2),
-	TextFont = "Editor16Bold",
 	RolloverAnchor = "right",
 	BorderWidth = 1,
 	BorderColor = black,
 	RolloverBorderColor = black,
 	Margins = box(4,0,0,0),
+	-- remove gagarin
+	TextFont = "Editor16Bold",
+	RolloverTextColor = white,
 }
 
 DefineClass.ChoGGi_ButtonMenu = {
 	__parents = {"ChoGGi_Button"},
+	TextStyle = "ChoGGi_ButtonMenu",
 	LayoutMethod = "HList",
 	RolloverAnchor = "smart",
-	TextFont = "Editor16Bold",
-	TextColor = black,
 	Margins = box(0,0,0,0),
+	-- remove gagarin
+	TextFont = "Editor16Bold",
+	RolloverTextColor = white,
 }
 DefineClass.ChoGGi_ComboButton = {
 	__parents = {"XComboButton"},
+	TextStyle = "ChoGGi_ComboButton",
 	Background = light_gray,
 	RolloverBackground = rollover_blue,
-	RolloverTextColor = white,
 	RolloverAnchor = "top",
 	RolloverTitle = S[126095410863--[[Info--]]],
 	RolloverTemplate = "Rollover",
@@ -214,11 +217,10 @@ DefineClass.ChoGGi_ComboButton = {
 
 DefineClass.ChoGGi_CheckButton = {
 	__parents = {"XCheckButton"},
+	TextStyle = "ChoGGi_CheckButton",
 	RolloverTitle = S[126095410863--[[Info--]]],
 	RolloverTemplate = "Rollover",
 	RolloverAnchor = "right",
-	RolloverTextColor = light_gray,
-	TextColor = white,
 	MinWidth = 60,
 	Text = S[6878--[[OK--]]],
 	RolloverZoom = 1100,
@@ -230,14 +232,15 @@ end
 
 DefineClass.ChoGGi_CheckButtonMenu = {
 	__parents = {"ChoGGi_CheckButton"},
+	TextStyle = "ChoGGi_CheckButtonMenu",
 	RolloverAnchor = "smart",
 	Background = light_gray,
 	TextHAlign = "left",
-	TextFont = "Editor16Bold",
-	TextColor = black,
 	RolloverBackground = rollover_blue,
-	RolloverTextColor = white,
 	Margins = box(4,0,0,0),
+	-- remove gagarin
+	TextFont = "Editor16Bold",
+	RolloverTextColor = white,
 }
 
 DefineClass.ChoGGi_TextInput = {
@@ -255,13 +258,12 @@ DefineClass.ChoGGi_TextInput = {
 
 DefineClass.ChoGGi_List = {
 	__parents = {"XList"},
+	TextStyle = "ChoGGi_List",
 	RolloverTemplate = "Rollover",
 	MinWidth = 50,
 
 	Background = dark_gray,
-	TextColor = white,
 	FocusedBackground = darker_gray,
-	RolloverTextColor = light_gray,
 }
 function ChoGGi_List:CreateTextItem(text, props, context)
 	local g_Classes = g_Classes
@@ -289,7 +291,6 @@ DefineClass.ChoGGi_Dialog = {
 	Translate = false,
 	MinHeight = 50,
 	MinWidth = 150,
---~ 	BackgroundColor = invis_less,
 	Dock = "ignore",
 	RolloverTemplate = "Rollover",
 	RolloverTitle = S[126095410863--[[Info--]]],
