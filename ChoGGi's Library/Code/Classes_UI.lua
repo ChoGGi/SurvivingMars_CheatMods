@@ -6,13 +6,9 @@ local CheckText = ChoGGi.ComFuncs.CheckText
 local RetName = ChoGGi.ComFuncs.RetName
 local S = ChoGGi.Strings
 
-local text = "Editor12Bold"
-if ChoGGi.testing then
-	text = "Editor14Bold"
-end
-
 local box,point = box,point
 
+-- see also TextStyles.lua
 local white = -1
 local black = -16777216
 local dark_blue = -12235133
@@ -26,15 +22,19 @@ local rollover_blue = -14113793
 local invis = 0
 --~ local invis_less = 268435456
 
+local text_style1 = "ChoGGi_Text12"
+local text_style2 = "ChoGGi_Text12"
+if ChoGGi.testing then
+	text_style1 = "ChoGGi_Text14"
+	text_style2 = "ChoGGi_Text14"
+end
 DefineClass.ChoGGi_Text = {
 	__parents = {"XText"},
-	TextFont = text,
+	TextStyle = text_style1,
 	-- default
 	Background = dark_gray,
-	TextColor = white,
 	-- focused
 	FocusedBackground = dark_gray,
-	RolloverTextColor = white,
 	-- selected
 	SelectionBackground = light_gray,
 	SelectionColor = black,
@@ -44,8 +44,7 @@ DefineClass.ChoGGi_Text = {
 }
 DefineClass.ChoGGi_TextList = {
 	__parents = {"XText"},
-	TextColor = white,
-	RolloverTextColor = light_gray,
+	TextStyle = text_style2,
 	RolloverTemplate = "Rollover",
 	RolloverTitle = S[126095410863--[[Info--]]],
 }
@@ -54,13 +53,11 @@ DefineClass.ChoGGi_TextList = {
 
 DefineClass.ChoGGi_MultiLineEdit = {
 	__parents = {"XMultiLineEdit"},
-	TextFont = "Editor16",
+	TextStyle = "ChoGGi_MultiLineEdit",
 	-- default
 	Background = dark_gray,
-	TextColor = white,
 	-- focused
 	FocusedBackground = darker_gray,
-	RolloverTextColor = white,
 	-- selected
 	SelectionBackground = light_gray,
 	SelectionColor = black,
@@ -73,9 +70,8 @@ DefineClass.ChoGGi_MultiLineEdit = {
 
 DefineClass.ChoGGi_Label = {
 	__parents = {"XLabel"},
-	TextFont = "Editor14Bold",
+	TextStyle = "ChoGGi_Label",
 	Translate = false,
-	TextColor = white,
 	VAlign = "center",
 }
 function ChoGGi_Label:SetTitle(win,title)
@@ -155,6 +151,8 @@ DefineClass.ChoGGi_Buttons = {
 	PressedBackground = medium_gray,
 	PressedTextColor = white,
 	RolloverZoom = 1100,
+--~ 	TextStyle = "ChoGGi_Label",
+
 }
 
 DefineClass.ChoGGi_Button = {

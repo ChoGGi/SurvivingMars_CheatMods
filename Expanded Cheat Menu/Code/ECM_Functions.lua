@@ -154,8 +154,9 @@ function OnMsg.ClassesGenerate()
 		local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 		local TableIClear = table.iclear
 
-		local buffer_table = {}
-		local buffer_cnt = 0
+		-- we always start off with a newline so the first line or so isn't merged
+		local buffer_table = {"\r\n"}
+		local buffer_cnt = 1
 		-- every 5s check buffer and print if anything
 		CreateRealTimeThread(function()
 			while true do
@@ -208,25 +209,23 @@ function OnMsg.ClassesGenerate()
 				AsyncStringToFile("AppData/logs/ConsoleLog.log"," ")
 
 				-- redirect functions
-				if ChoGGi.testing then
-					ReplaceFunc("dlc_print")
-					ReplaceFunc("assert")
-	--~				 ReplaceFunc("printf")
-	--~				 ReplaceFunc("DebugPrint")
-	--~				 ReplaceFunc("OutputDebugString")
-				end
+				ReplaceFunc("dlc_print")
+				ReplaceFunc("assert")
+				ReplaceFunc("printf")
+				-- causes an error and stops games from loading
+--~ 				ReplaceFunc("DebugPrint")
+				ReplaceFunc("DebugPrintNL")
+				ReplaceFunc("OutputDebugString")
 				ReplaceFunc("AddConsoleLog")
 				ReplaceFunc("print")
 			else
-				if ChoGGi.testing then
-					ResetFunc("dlc_print")
-					ResetFunc("assert")
-	--~				 ResetFunc("printf")
-	--~				 ResetFunc("DebugPrint")
-	--~				 ResetFunc("OutputDebugString")
-				end
+				ResetFunc("dlc_print")
+				ResetFunc("assert")
+				ResetFunc("printf")
+				ResetFunc("DebugPrintNL")
+				ResetFunc("OutputDebugString")
 				ResetFunc("AddConsoleLog")
-				ResetFunc("print","ConsoleLog")
+				ResetFunc("print")
 			end
 		end
 	end -- do

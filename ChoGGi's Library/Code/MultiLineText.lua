@@ -115,12 +115,3 @@ function ChoGGi_MultiLineTextDlg:Close(result,answer)
 	end
 	ChoGGi_Window.Close(self,result)
 end
-
-
---[[
-local dialog = ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,{})
-OpenGedApp("XWindowInspector", dialog)
-FontStyles.Consolas13 = "Consolas, 13, aa"
-FontStyles.Consolas15 = "Consolas, 15, aa"
-
---]]
