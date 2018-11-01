@@ -9,7 +9,7 @@ function OnMsg.ClassesBuilt()
 		id = "OhHaiMark",
 		type = "UI",
 		PlaceObj("Sample", {
-			"file", CurrentModPath .. "Sounds/OhHaiMark_stereo",
+			"file", CurrentModPath .. "Sounds/OhHaiMark",
 		}),
 	})
 
@@ -23,16 +23,16 @@ function OnMsg.ClassesBuilt()
 		volume = 110,
 		type = "ObjectLoopLimited-A",
 		PlaceObj("Sample", {
-			"file", CurrentModPath .. "Sounds/OhHaiMark_mono",
+			"file", CurrentModPath .. "Sounds/OhHaiMark",
 			"frequency", 50,
 		}),
---~ 		PlaceObj('Sample', {
---~ 			'file', "Sounds/Objects/GeneratorMoxie/generatorMoxie_work3",
---~ 			'frequency', 50,
+--~ 		PlaceObj("Sample", {
+--~ 			"file", "Sounds/Objects/GeneratorMoxie/generatorMoxie_work3",
+--~ 			"frequency", 50,
 --~ 		}),
---~ 		PlaceObj('Sample', {
---~ 			'file', "Sounds/Objects/GeneratorMoxie/generatorMoxie_work2",
---~ 			'frequency', 50,
+--~ 		PlaceObj("Sample", {
+--~ 			"file", "Sounds/Objects/GeneratorMoxie/generatorMoxie_work2",
+--~ 			"frequency", 50,
 --~ 		}),
 	})
 
@@ -45,10 +45,17 @@ function OnMsg.ClassesBuilt()
 		volume = 40,
 		type = "ObjectOneshotLimited-B",
 		PlaceObj("Sample", {
-			"file", CurrentModPath .. "Sounds/OhHaiMark_mono",
+			"file", CurrentModPath .. "Sounds/OhHaiMark",
 			"frequency", 10,
 		}),
 	})
+
+--~ PlaceObj('ActionFXSound', {
+--~ 	'Action', "SelectObj",
+--~ 	'Moment', "start",
+--~ 	'Actor', "RCTransport",
+--~ 	'Sound', "Object OhHaiMark Oneshot",
+--~ })
 
 	-- needed to rebuild lists
 	ReloadSoundBanks()
