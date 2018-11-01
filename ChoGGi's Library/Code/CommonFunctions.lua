@@ -110,46 +110,53 @@ end -- do
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
-	-- we use this table to display names of (some) tables
+	local ClassDescendantsList = ClassDescendantsList
+	local IsObjlist,type,tostring = IsObjlist,type,tostring
+	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
+
+	-- we use this table to display names of (some) tables for RetName
 	local lookup_table = {}
 
-	-- This will skip them showing up for the main menu, but makes it easier to override _G with ECM
 	local function AfterLoad()
 		local g = ChoGGi.Temp._G or _G
-		lookup_table = {
-			[g.ChoGGi] = "ChoGGi",
-			[g.ClassTemplates] = "ClassTemplates",
-			[g.const] = "const",
-			[g.Consts] = "Consts",
-			[g.DataInstances] = "DataInstances",
-			[g.Dialogs] = "Dialogs",
-			[g.EntityData] = "EntityData",
-			[g.Flags] = "Flags",
-			[g.FXRules] = "FXRules",
-			[g.g_ApplicantPool] = "g_ApplicantPool",
-			[g.g_Classes] = "g_Classes",
-			[g.g_Consts] = "g_Consts",
-			[g.Mods] = "Mods",
-			[g.ModsLoaded] = "ModsLoaded",
-			[g.Presets] = "Presets",
-			[g.s_SeqListPlayers] = "s_SeqListPlayers",
-			[g.TaskRequesters] = "TaskRequesters",
-			[g.terminal.desktop] = "terminal.desktop",
-			[g.ThreadsMessageToThreads] = "ThreadsMessageToThreads",
-			[g.ThreadsRegister] = "ThreadsRegister",
-			[g.ThreadsThreadToMessage] = "ThreadsThreadToMessage",
-			[g.UICity.labels] = "UICity.labels",
-			[g.UICity.tech_status] = "UICity.tech_status",
-			[g.UICity] = "UICity",
-			[g] = "_G",
-		}
+		-- i suppose i could ask a check, and only add ones not yet added, but i doubt there's much diff
+		lookup_table[g] = "_G"
+		lookup_table[g.ChoGGi] = "ChoGGi"
+		lookup_table[g.ClassTemplates] = "ClassTemplates"
+		lookup_table[g.const] = "const"
+		lookup_table[g.Consts] = "Consts"
+		lookup_table[g.DataInstances] = "DataInstances"
+		lookup_table[g.Dialogs] = "Dialogs"
+		lookup_table[g.EntityData] = "EntityData"
+		lookup_table[g.Flags] = "Flags"
+		lookup_table[g.FXRules] = "FXRules"
+		lookup_table[g.g_Classes] = "g_Classes"
+		lookup_table[g.Mods] = "Mods"
+		lookup_table[g.ModsLoaded] = "ModsLoaded"
+		lookup_table[g.Presets] = "Presets"
+		lookup_table[g.TaskRequesters] = "TaskRequesters"
+		lookup_table[g.terminal.desktop] = "terminal.desktop"
+		lookup_table[g.ThreadsMessageToThreads] = "ThreadsMessageToThreads"
+		lookup_table[g.ThreadsRegister] = "ThreadsRegister"
+		lookup_table[g.ThreadsThreadToMessage] = "ThreadsThreadToMessage"
+		if g.UICity then
+			lookup_table[g.g_ApplicantPool] = "g_ApplicantPool"
+			lookup_table[g.g_Consts] = "g_Consts"
+			lookup_table[g.s_SeqListPlayers] = "s_SeqListPlayers"
+			lookup_table[g.UICity] = "UICity"
+			lookup_table[g.UICity.labels] = "UICity.labels"
+			lookup_table[g.UICity.tech_status] = "UICity.tech_status"
+		end
 		-- and add any presets names
 		ClassDescendantsList("Preset", function(name, cls)
-			if cls.GlobalMap and cls.GlobalMap ~= "" then
+			if cls.GlobalMap then
 				lookup_table[g[cls.GlobalMap]] = cls.GlobalMap
 			end
 		end)
 	end
+	-- so they work in the main menu
+	AfterLoad()
+	-- needed for UICity and some others that aren't created till around then
 	function OnMsg.LoadGame()
 		AfterLoad()
 	end
@@ -157,8 +164,6 @@ do -- RetName
 		AfterLoad()
 	end
 
-	local IsObjlist,type,tostring = IsObjlist,type,tostring
-	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	-- try to return a decent name for the obj, failing that return a string
 	function ChoGGi.ComFuncs.RetName(obj)
 		if lookup_table[obj] then

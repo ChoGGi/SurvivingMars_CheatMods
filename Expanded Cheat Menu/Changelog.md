@@ -8,9 +8,11 @@
 - More Presets to the presets list in Console>Examine.
 
 ### Changed:
-- Added a modified prop button to examine dialogs
+- Added a modified prop button to examine dialogs.
+- Added some more funcs to Write Logs.
 - Returns names of (some) tables.
 - Shows function file/line number instead of "function: 0000000008D7C100".
+- Converted UI to Use TextStyle.
 
 ### Fixed:
 - Shuttle realtime pathing flight path has more splines.

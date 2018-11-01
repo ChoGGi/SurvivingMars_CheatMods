@@ -4,7 +4,12 @@ function OnMsg.LoadGame()
 	SuspendPassEdits("RemoveBlueYellowGridMarks")
 
 	-- blue/yellow markers
-	MapDelete("map", "GridTile","RangeHexRadius")
+	MapDelete("map", "GridTile","RangeHexRadius",function(o)
+		-- SkiRich's Toggle Hub Zone
+		if not o.ToggleWorkZone then
+			return true
+		end
+	end)
 
 	-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
 	MapDelete("map", "WireFramedPrettification",function(o)

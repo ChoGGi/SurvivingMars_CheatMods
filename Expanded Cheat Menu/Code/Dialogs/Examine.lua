@@ -192,7 +192,6 @@ function Examine:Init(parent, context)
 		Id = "idLinks",
 		Dock = "left",
 		VAlign = "top",
-		FontStyle = "Editor14",
 		Margins = box(4,0,0,0),
 		-- same colour as background of icons (so they blend)
 		Background = -9868951,

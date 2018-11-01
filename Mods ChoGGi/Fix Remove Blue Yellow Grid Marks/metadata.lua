@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Remove Blue Yellow Grid Marks v0.1",
-	"version", 1,
+	"title", "Fix: Remove Blue Yellow Grid Marks v0.2",
+	"version", 2,
 	"saved", 1540987200,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixRemoveBlueYellowGridMarks",
@@ -15,8 +15,6 @@ You can disable it afterwards.
 
 If you keep getting transport routes stuck then use this:
 https://steamcommunity.com/sharedfiles/filedetails/?id=1526896729
-
-This will also remove the markings from SkiRich's Toggle Hub Zone (just toggle them again).
 
 
 Part of ECM.]],

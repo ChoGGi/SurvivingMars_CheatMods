@@ -7,23 +7,13 @@ function OnMsg.ModsReloaded()
 		return
 	end
 	fire_once = true
-	local min_version = 28
 
-	local ModsLoaded = ModsLoaded
-	-- we need a version check to remind Nexus/GoG users
-	local not_found_or_wrong_version
+	-- version to version check with
+	local min_version = 29
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
-	if idx then
-		-- steam updates automatically
-		if not Platform.steam and min_version > ModsLoaded[idx].version then
-			not_found_or_wrong_version = true
-		end
-	else
-		not_found_or_wrong_version = true
-	end
-
-	if not_found_or_wrong_version then
+	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
+	if not idx or idx and not Platform.steam and min_version > ModsLoaded[idx].version then
 		CreateRealTimeThread(function()
 			if WaitMarsQuestion(nil,"Error",string.format([[Terraformer requires ChoGGi's Library (at least v%s).
 Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_version)) == "ok" then

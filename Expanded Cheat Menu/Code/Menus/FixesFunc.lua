@@ -489,7 +489,11 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 		SuspendPassEdits("RemoveBlueGridMarks")
-		MapDelete("map", "RangeHexRadius")
+		MapDelete("map", "RangeHexRadius",function(o)
+			if not o.ToggleWorkZone then
+				return true
+			end
+		end)
 		-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
 		MapDelete("map", "WireFramedPrettification",function(o)
 			if o.entity == "RoverTransport" then
