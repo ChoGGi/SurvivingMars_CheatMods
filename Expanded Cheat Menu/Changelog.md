@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v10.4 (Unreleased)
+## v10.5 (Unreleased)
+
+## v10.4 (01 Nov 2018)
 ### Added:
 - More Presets to the presets list in Console>Examine.
 
