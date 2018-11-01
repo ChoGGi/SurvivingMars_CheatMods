@@ -309,9 +309,9 @@ function OnMsg.ClassesGenerate()
 					objs = labels.Colonist
 				else
 					-- get all in dome or all without a dome
-					objs = object.dome and object.dome.labels.Colonist or MapGet("map", {"Colonist"}, function(o)
+					objs = object.dome and object.dome.labels.Colonist or MapGet("map", "Colonist", function(o)
 						if not o.dome then
-							return o
+							return true
 						end
 					end)
 				end

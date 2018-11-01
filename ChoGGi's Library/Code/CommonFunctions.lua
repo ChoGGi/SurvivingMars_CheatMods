@@ -7,7 +7,9 @@ local testing = ChoGGi.testing
 local AsyncRand = AsyncRand
 local IsValid = IsValid
 local GetTerrainCursor = GetTerrainCursor
-local FilterObjectsC = FilterObjectsC
+local MapFilter = MapFilter
+local MapGet = MapGet
+local FindNearestObject = FindNearestObject
 local StringFormat = string.format
 local TableRemove = table.remove
 local TableFind = table.find
@@ -1005,56 +1007,52 @@ function ChoGGi.ComFuncs.RemoveFromTable(list,cls,text)
 	return tempt
 end
 
--- ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Building or "",{ParSystem = true,ResourceStockpile = true},nil,"class")
--- ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Unit or "",nil,nil,"working")
+-- ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Building,{ParSystem = true,ResourceStockpile = true},nil,"class")
+-- ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Unit,nil,nil,"working")
 function ChoGGi.ComFuncs.FilterFromTable(list,exclude_list,include_list,name)
 	if type(list) ~= "table" then
 		return empty_table
 	end
-	return FilterObjectsC({
-		filter = function(o)
-			if exclude_list or include_list then
-				if exclude_list and include_list then
-					if not exclude_list[o[name]] then
-						return o
-					elseif include_list[o[name]] then
-						return o
-					end
-				elseif exclude_list then
-					if not exclude_list[o[name]] then
-						return o
-					end
-				elseif include_list then
-					if include_list[o[name]] then
-						return o
-					end
+	return MapFilter(list,function(o)
+		if exclude_list or include_list then
+			if exclude_list and include_list then
+				if not exclude_list[o[name]] then
+					return true
+				elseif include_list[o[name]] then
+					return true
 				end
-			else
-				if o[name] then
-					return o
+			elseif exclude_list then
+				if not exclude_list[o[name]] then
+					return true
+				end
+			elseif include_list then
+				if include_list[o[name]] then
+					return true
 				end
 			end
-		end,
-	},list)
+		else
+			if o[name] then
+				return true
+			end
+		end
+	end)
 end
 
 -- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Building,"IsKindOf","Residence")
--- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit or "","IsValid",nil,true)
+-- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit,"IsValid",nil,true)
 function ChoGGi.ComFuncs.FilterFromTableFunc(list,func,value,is_bool)
 	if type(list) ~= "table" then
 		return empty_table
 	end
-	return FilterObjectsC({
-		filter = function(o)
-			if is_bool then
-				if _G[func](o) then
-					return o
-				end
-			elseif o[func](o,value) then
-				return o
+	return MapFilter(list,function(o)
+		if is_bool then
+			if _G[func](o) then
+				return true
 			end
+		elseif o[func](o,value) then
+			return true
 		end
-	},list)
+	end)
 end
 
 function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(context)
@@ -1514,80 +1512,178 @@ function ChoGGi.ComFuncs.SelObject(radius)
 	return obj
 end
 
-function ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
-	local XShortcutsTarget = XShortcutsTarget
-
-	-- remove all built-in shortcuts (pretty much just a cutdown copy of ReloadShortcuts)
-	XShortcutsTarget.actions = {}
-	-- re-add certain ones
-	if Platform.ged and XTemplates.GedShortcuts then
-		XTemplateSpawn("GedShortcuts", XShortcutsTarget)
-	elseif XTemplates.GameShortcuts then
-		XTemplateSpawn("GameShortcuts", XShortcutsTarget)
-	end
-
-	-- remove stuff from GameShortcuts
-	for i = #XShortcutsTarget.actions, 1, -1 do
-		-- removes pretty much all the dev actions added, and leaves the game ones intact
-		local a = XShortcutsTarget.actions[i]
-		local g = a.ActionId:sub(1,2) == "G_"
-		if a.ActionId and (not a.ActionId:starts_with("action") and not g or a.ActionId == "G_CompleteConstructions") then
-			TableRemove(XShortcutsTarget.actions,i)
-		elseif g then
-			-- hide the orig cheats
-			a.ActionMenubar = nil
+do -- Rebuildshortcuts
+	-- we want to only remove certain actions from the actual game, not ones added by modders, so list building time...
+	local remove_lookup = {
+		ChangeMapEmpty = true,
+		ChangeMapPocMapAlt1 = true,
+		ChangeMapPocMapAlt2 = true,
+		ChangeMapPocMapAlt3 = true,
+		ChangeMapPocMapAlt4 = true,
+		Cheats = true,
+		["Cheats.Change Map"] = true,
+		["Cheats.Map Exploration"] = true,
+		["Cheats.Research"] = true,
+		["Cheats.Spawn Colonist"] = true,
+		["Cheats.Start Mystery"] = true,
+		["Cheats.Trigger Disaster"] = true,
+		["Cheats.Trigger Disaster Cold Wave"] = true,
+		["Cheats.Trigger Disaster Dust Devil"] = true,
+		["Cheats.Trigger Disaster Dust Devil Major"] = true,
+		["Cheats.Trigger Disaster Dust Storm"] = true,
+		["Cheats.Trigger Disaster Dust Storm Electrostatic"] = true,
+		["Cheats.Trigger Disaster Dust Storm Great"] = true,
+		["Cheats.Trigger Disaster Meteor"] = true,
+		["Cheats.Trigger Disaster Meteor Multi Spawn"] = true,
+		["Cheats.Trigger Disaster Meteor Storm"] = true,
+		["Cheats.Workplaces"] = true,
+		DE_ToggleScreenshotInterface = true,
+		-- we def don't want this
+		G_CompleteConstructions = true,
+		-- not cheats
+--~ 		G_ToggleInGameInterface = true,
+--~ 		G_ToggleOnScreenHints = true,
+--~ 		G_ToggleSigns = true,
+		G_AddFunding = true,
+		G_CheatClearForcedWorkplaces = true,
+		G_CheatUpdateAllWorkplaces = true,
+		G_CompleteWiresPipes = true,
+		G_ModsEditor = true,
+		-- maybe this is used somewhere, hard to call it a cheat...
+		G_OpenPregameMenu = true,
+		G_ResearchAll = true,
+		G_ResearchCurrent = true,
+		G_ResetOnScreenHints = true,
+		G_ToggleAllShifts = true,
+		G_ToggleInfopanelCheats = true,
+		G_UnlockAllBuildings = true,
+		["G_UnlockАllТech"] = true,
+		G_UnpinAll = true,
+		MapExplorationDeepScan = true,
+		MapExplorationScan = true,
+		SpawnColonist1 = true,
+		SpawnColonist10 = true,
+		SpawnColonist100 = true,
+		StartMysteryAIUprisingMystery = true,
+		StartMysteryBlackCubeMystery = true,
+		StartMysteryCrystalsMystery = true,
+		StartMysteryDiggersMystery = true,
+		StartMysteryDreamMystery = true,
+		StartMysteryLightsMystery = true,
+		StartMysteryMarsgateMystery = true,
+		StartMysteryMetatronMystery = true,
+		StartMysteryMirrorSphereMystery = true,
+		StartMysteryTheMarsBug = true,
+		StartMysteryUnitedEarthMystery = true,
+		StartMysteryWorldWar3 = true,
+		TriggerDisasterColdWave = true,
+		TriggerDisasterDustDevil = true,
+		TriggerDisasterDustDevilMajor = true,
+		TriggerDisasterDustStormElectrostatic = true,
+		TriggerDisasterDustStormGreat = true,
+		TriggerDisasterDustStormNormal = true,
+		TriggerDisasterMeteorsMultiSpawn = true,
+		TriggerDisasterMeteorsSingle = true,
+		TriggerDisasterMeteorsStorm = true,
+		TriggerDisasterStop = true,
+		UnlockAllBreakthroughs = true,
+		UpsampledScreenshot = true,
+	}
+	-- auto-add all the TriggerDisaster ones (ok some)
+	local DataInstances = DataInstances
+	local function AddItems(name,suffix)
+		local list = DataInstances[name]
+		for i = 1, #list do
+			remove_lookup[string.format("TriggerDisaster%s%s",list[i].name,suffix or "")] = true
 		end
 	end
-	if testing then
-		TableRemove(XShortcutsTarget.actions,table.find(XShortcutsTarget.actions,"ActionId","actionToggleFullscreen"))
-	end
+	AddItems("MapSettings_DustDevils")
+	AddItems("MapSettings_DustDevils","Major")
+	AddItems("MapSettings_DustStorm")
+	AddItems("MapSettings_DustStorm","Great")
+	AddItems("MapSettings_DustStorm","Electrostatic")
+	AddItems("MapSettings_ColdWave")
+	AddItems("MapSettings_Meteor")
+	AddItems("MapSettings_Meteor","MultiSpawn")
+	AddItems("MapSettings_Meteor","Storm")
 
-	-- and add mine
-	local XAction = XAction
-	local Actions = ChoGGi.Temp.Actions
+	function ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
+		local XShortcutsTarget = XShortcutsTarget
 
---~ Actions = {}
---~ Actions[#Actions+1] = {
---~	 ActionId = "ChoGGi_ShowConsoleTilde",
---~	 OnAction = function()
---~	 local dlgConsole = dlgConsole
---~	 if dlgConsole then
---~		 ShowConsole(not dlgConsole:GetVisible())
---~	 end
---~	 end,
---~	 ActionShortcut = "~",
---~ }
+		-- remove all built-in shortcuts (pretty much just a cutdown copy of ReloadShortcuts)
+		XShortcutsTarget.actions = {}
+		-- re-add certain ones
+		if Platform.ged and XTemplates.GedShortcuts then
+			XTemplateSpawn("GedShortcuts", XShortcutsTarget)
+		elseif XTemplates.GameShortcuts then
+			XTemplateSpawn("GameShortcuts", XShortcutsTarget)
+		end
 
-	local DisableECM = ChoGGi.UserSettings.DisableECM
-	for i = 1, #Actions do
-		local a = Actions[i]
-		-- added by ECM
-		if a.IsECM then
-			-- can we enable ECM actions?
-			if not DisableECM then
-				-- and add to the actual actions
+		-- remove stuff from GameShortcuts
+		for i = #XShortcutsTarget.actions, 1, -1 do
+			-- removes pretty much all the dev actions added, and leaves the game ones intact
+			local a = XShortcutsTarget.actions[i]
+			local g = a.ActionId:sub(1,2) == "G_"
+			if remove_lookup[a.ActionId] then
+				TableRemove(XShortcutsTarget.actions,i)
+			elseif g then
+				-- hide the orig cheats
+				a.ActionMenubar = nil
+--~ 			else
+--~ 				print(a.ActionId)
+			end
+		end
+		if testing then
+			TableRemove(XShortcutsTarget.actions,table.find(XShortcutsTarget.actions,"ActionId","actionToggleFullscreen"))
+		end
+
+		-- and add mine
+		local XAction = XAction
+		local Actions = ChoGGi.Temp.Actions
+
+--~ 		Actions = {}
+--~ 		Actions[#Actions+1] = {
+--~ 			ActionId = "ChoGGi_ShowConsoleTilde",
+--~ 			OnAction = function()
+--~ 				local dlgConsole = dlgConsole
+--~ 				if dlgConsole then
+--~ 					ShowConsole(not dlgConsole:GetVisible())
+--~ 				end
+--~ 			end,
+--~ 			ActionShortcut = "~",
+--~ 		}
+
+		local DisableECM = ChoGGi.UserSettings.DisableECM
+		for i = 1, #Actions do
+			local a = Actions[i]
+			-- added by ECM
+			if a.IsECM then
+				-- can we enable ECM actions?
+				if not DisableECM then
+					-- and add to the actual actions
+					XShortcutsTarget:AddAction(XAction:new(a))
+				end
+			else
 				XShortcutsTarget:AddAction(XAction:new(a))
 			end
-		else
-			XShortcutsTarget:AddAction(XAction:new(a))
+		end
+
+		-- add rightclick action to menuitems
+		XShortcutsTarget:UpdateToolbar()
+		-- got me
+		XShortcutsThread = false
+
+		-- if it's bool then ECM is active
+		if type(DisableECM) == "boolean" and not DisableECM then
+			-- i forget why i'm toggling this...
+			local dlgConsole = dlgConsole
+			if dlgConsole then
+				ShowConsole(not dlgConsole:GetVisible())
+				ShowConsole(not dlgConsole:GetVisible())
+			end
 		end
 	end
-
-	-- add rightclick action to menuitems
-	XShortcutsTarget:UpdateToolbar()
-	-- got me
-	XShortcutsThread = false
-
-	-- if it's bool then ECM is active
-	if type(DisableECM) == "boolean" and not DisableECM then
-		-- i forget why i'm toggling this...
-		local dlgConsole = dlgConsole
-		if dlgConsole then
-			ShowConsole(not dlgConsole:GetVisible())
-			ShowConsole(not dlgConsole:GetVisible())
-		end
-	end
-end
+end -- do
 
 do -- RetThreadInfo/FindThreadFunc
 	local GedInspectorFormatObject = GedInspectorFormatObject
@@ -2563,99 +2659,94 @@ function ChoGGi.ComFuncs.DeleteAllAttaches(obj)
 	end
 end
 
-do -- FindNearestResource
-	local MapGet = MapGet
-	local FindNearestObject = FindNearestObject
+function ChoGGi.ComFuncs.FindNearestResource(obj)
+	obj = obj or ChoGGi.ComFuncs.SelObject()
+	if not obj then
+		MsgPopup(
+			302535920000027--[[Nothing selected--]],
+			302535920000028--[[Find Resource--]]
+		)
+		return
+	end
 
-	function ChoGGi.ComFuncs.FindNearestResource(obj)
-		obj = obj or ChoGGi.ComFuncs.SelObject()
-		if not obj then
-			MsgPopup(
-				302535920000027--[[Nothing selected--]],
-				302535920000028--[[Find Resource--]]
-			)
-			return
-		end
-
-		-- build list of resources
-		local ItemList = {}
-		local ResourceDescription = ResourceDescription
-		local res = ChoGGi.Tables.Resources
-		local TagLookupTable = const.TagLookupTable
-		for i = 1, #res do
-			local item = ResourceDescription[TableFind(ResourceDescription, "name", res[i])]
-			ItemList[i] = {
-				text = Trans(item.display_name),
-				value = item.name,
-				icon = TagLookupTable[StringFormat("icon_%s",item.name)],
-			}
-		end
-
-		local function CallBackFunc(choice)
-			if #choice < 1 then
-				return
-			end
-			local value = choice[1].value
-			if type(value) == "string" then
-
-				-- get nearest stockpiles to object
-				local labels = UICity.labels
-
-				local stockpiles = {}
-				table.append(stockpiles,labels[StringFormat("MechanizedDepot%s",value)])
-				if value == "BlackCube" then
-					table.append(stockpiles,labels.BlackCubeDumpSite)
-				elseif value == "MysteryResource" then
-					table.append(stockpiles,labels.MysteryDepot)
-				elseif value == "WasteRock" then
-					table.append(stockpiles,labels.WasteRockDumpSite)
-				else
-					table.append(stockpiles,labels.UniversalStorageDepot)
-				end
-				-- filter out empty/diff res stockpiles
-				local GetStored = StringFormat("GetStored_%s",value)
-				stockpiles = FilterObjectsC({
-					filter = function(o)
-						if o[GetStored] and o[GetStored](o) > 999 then
-							return o
-						end
-					end,
-				},stockpiles)
-				-- attached stockpiles/stockpiles left from removed objects
-				table.append(stockpiles,
-					MapGet("map",{"ResourceStockpile","ResourceStockpileLR"}, function(o)
-						if o.resource == value and o:GetStoredAmount() > 999 then
-							return o
-						end
-					end)
-				)
-
-				local nearest = FindNearestObject(stockpiles,obj)
-				-- if there's no resource then there's no "nearest"
-				if nearest then
-					-- the power of god
-					ViewObjectMars(nearest)
-					ChoGGi.ComFuncs.AddBlinkyToObj(nearest)
-				else
-					MsgPopup(
-						S[302535920000029--[[Error: Cannot find any %s.--]]]:format(choice[1].text),
-						15--[[Resource--]]
-					)
-				end
-			end
-		end
-
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = StringFormat("%s %s",S[302535920000031--[[Find Nearest Resource--]]],RetName(obj)),
-			hint = 302535920000032--[[Select a resource to find--]],
-			skip_sort = true,
-			custom_type = 7,
-			custom_func = CallBackFunc,
+	-- build list of resources
+	local ItemList = {}
+	local ResourceDescription = ResourceDescription
+	local res = ChoGGi.Tables.Resources
+	local TagLookupTable = const.TagLookupTable
+	for i = 1, #res do
+		local item = ResourceDescription[TableFind(ResourceDescription, "name", res[i])]
+		ItemList[i] = {
+			text = Trans(item.display_name),
+			value = item.name,
+			icon = TagLookupTable[StringFormat("icon_%s",item.name)],
 		}
 	end
-end -- do
+
+	local function CallBackFunc(choice)
+		if #choice < 1 then
+			return
+		end
+		local value = choice[1].value
+		if type(value) == "string" then
+
+			-- get nearest stockpiles to object
+			local labels = UICity.labels
+
+			local stockpiles = {}
+			table.append(stockpiles,labels[StringFormat("MechanizedDepot%s",value)])
+			if value == "BlackCube" then
+				table.append(stockpiles,labels.BlackCubeDumpSite)
+			elseif value == "MysteryResource" then
+				table.append(stockpiles,labels.MysteryDepot)
+			elseif value == "WasteRock" then
+				table.append(stockpiles,labels.WasteRockDumpSite)
+			else
+				table.append(stockpiles,labels.UniversalStorageDepot)
+			end
+
+			-- filter out empty/diff res stockpiles
+			local GetStored = StringFormat("GetStored_%s",value)
+			stockpiles = MapFilter(stockpiles,function(o)
+				if o[GetStored] and o[GetStored](o) > 999 then
+					return true
+				end
+			end)
+
+			-- attached stockpiles/stockpiles left from removed objects
+			table.append(stockpiles,
+				MapGet("map",{"ResourceStockpile","ResourceStockpileLR"}, function(o)
+					if o.resource == value and o:GetStoredAmount() > 999 then
+						return true
+					end
+				end)
+			)
+
+			local nearest = FindNearestObject(stockpiles,obj)
+			-- if there's no resource then there's no "nearest"
+			if nearest then
+				-- the power of god
+				ViewObjectMars(nearest)
+				ChoGGi.ComFuncs.AddBlinkyToObj(nearest)
+			else
+				MsgPopup(
+					S[302535920000029--[[Error: Cannot find any %s.--]]]:format(choice[1].text),
+					15--[[Resource--]]
+				)
+			end
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = StringFormat("%s %s",S[302535920000031--[[Find Nearest Resource--]]],RetName(obj)),
+		hint = 302535920000032--[[Select a resource to find--]],
+		skip_sort = true,
+		custom_type = 7,
+		custom_func = CallBackFunc,
+	}
+end
 
 do -- DeleteObject
 	local IsValid = IsValid
