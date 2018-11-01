@@ -170,7 +170,7 @@ function OnMsg.ClassesGenerate()
 			local c = 0
 			-- dupe skipper
 			local names_list = {}
-			ClassDescendantsList("Preset", function(name, cls)
+			ClassDescendantsList("Preset", function(_, cls)
 				if cls.GlobalMap and cls.GlobalMap ~= "" and not names_list[cls.GlobalMap] then
 					names_list[cls.GlobalMap] = true
 					c = c + 1

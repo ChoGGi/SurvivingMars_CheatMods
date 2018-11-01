@@ -150,7 +150,7 @@ do -- RetName
 			lookup_table[g.UICity.tech_status] = "UICity.tech_status"
 		end
 		-- and add any presets names
-		ClassDescendantsList("Preset", function(name, cls)
+		ClassDescendantsList("Preset", function(_, cls)
 			if cls.GlobalMap then
 				lookup_table[g[cls.GlobalMap]] = cls.GlobalMap
 			end
@@ -496,7 +496,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 
 		local showme_func
 		if item.showme then
-			showme_func = function(self, pt, child)
+			showme_func = function()
 				ClearShowMe()
 				ShowMe(item.showme, nil, true, true)
 			end
@@ -504,7 +504,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 
 		local pos_func
 		if item.pos then
-			pos_func = function(self, pt, child)
+			pos_func = function()
 				ViewObjectMars(item.pos)
 			end
 		end
@@ -513,7 +513,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		local submenu_func
 		if item.submenu then
 			local name = StringFormat("ChoGGi_submenu_%s",item.name)
-			submenu_func = function(self, pt, child)
+			submenu_func = function(self)
 				if popup[name] then
 					popup[name]:Close()
 				end
@@ -554,7 +554,7 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 	local popup = rawget(terminal.desktop,popup_id)
 	if popup then
 		popup:Close()
-		local submenu = rawget(terminal.desktop,"ChoGGi_submenu_popup")
+		submenu = submenu or rawget(terminal.desktop,"ChoGGi_submenu_popup")
 		if submenu then
 			submenu:Close()
 		end
@@ -1607,7 +1607,7 @@ do -- Rebuildshortcuts
 	AddItems("MapSettings_Meteor","MultiSpawn")
 	AddItems("MapSettings_Meteor","Storm")
 
-	function ChoGGi.ComFuncs.Rebuildshortcuts(Actions)
+	function ChoGGi.ComFuncs.Rebuildshortcuts()
 		local XShortcutsTarget = XShortcutsTarget
 
 		-- remove all built-in shortcuts (pretty much just a cutdown copy of ReloadShortcuts)
@@ -2562,7 +2562,6 @@ do -- ChangeObjectColour
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
 
 			if #choice == 13 then
 				--needed to set attachment colours
@@ -3487,8 +3486,7 @@ do -- flightgrids
 		grid_thread = CreateMapRealTimeThread(function()
 			local Sleep = Sleep
 			local orig_size = size or 256 * guim
-			local pos_c
-			local pos_t
+			local pos_c,pos_t,pos
 			while true do
 				pos_t = GetTerrainCursor()
 				if pos_c ~= pos_t then

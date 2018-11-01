@@ -44,6 +44,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 			self:SetTranspMode(self.transp_mode)
 		end,
 	}, self.idButtonContainer)
+
 	self.idToggleTrans:AddInterpolation{
 		type = const.intAlpha,
 		startValue = 255,
@@ -97,6 +98,11 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 
 	-- text box with log in it
 	self:AddScrollText()
+
+	-- look at them sexy internals
+	self.transp_mode = ChoGGi.Temp.transp_mode
+	self:SetTranspMode(self.transp_mode)
+
 end
 
 function ChoGGi_ConsoleLogWin:SetTranspMode(toggle)
@@ -112,6 +118,8 @@ function ChoGGi_ConsoleLogWin:SetTranspMode(toggle)
 			flags = const.intfIgnoreParent
 		}
 	end
+	-- update global value (for new windows)
+	ChoGGi.Temp.transp_mode = toggle
 end
 dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false
 

@@ -5,15 +5,7 @@ local StringFormat = string.format
 -- see also Classes_UI.lua
 local white = -1
 local black = -16777216
-local dark_blue = -12235133
-local darker_blue = -16767678
-local dark_gray = -13158858
-local darker_gray = -13684945
---~ local less_dark_gray = -12500671
-local medium_gray = -10592674
 local light_gray = -2368549
-local rollover_blue = -14113793
-local invis = 0
 
 
 --[[ from TextStyle

@@ -27,7 +27,6 @@ if debug then
 	getinfo = debug.getinfo
 end
 
-transp_mode = rawget(_G, "transp_mode") or false
 local HLEnd = "</h></color>"
 
 local TableConcat
@@ -116,6 +115,8 @@ DefineClass.Examine = {
 	str_object = false,
 	-- used to store visibility of obj
 	orig_vis_flash = false,
+	-- if it's transparent or not
+	transp_mode = false,
 
 	dialog_width = 666.0,
 	dialog_height = 850.0,
@@ -324,7 +325,7 @@ Right-click to scroll to top."--]]],
 	self:AddScrollText()
 
 	-- look at them sexy internals
-	self.transp_mode = transp_mode
+	self.transp_mode = ChoGGi.Temp.transp_mode
 	self:SetTranspMode(self.transp_mode)
 
 	-- load up obj in text display
@@ -664,7 +665,7 @@ function Examine:SetTranspMode(toggle)
 		}
 	end
 	-- update global value (for new windows)
-	transp_mode = toggle
+	ChoGGi.Temp.transp_mode = toggle
 end
 --
 

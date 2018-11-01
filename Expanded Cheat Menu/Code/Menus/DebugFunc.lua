@@ -7,7 +7,7 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 
-	local pairs,pcall,print,type,tonumber,tostring,table = pairs,pcall,print,type,tonumber,tostring,table
+	local pairs,print,type,tonumber,tostring,table = pairs,print,type,tonumber,tostring,table
 	local StringFormat = string.format
 
 	--~ local TerrainTextures = TerrainTextures
@@ -340,7 +340,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.ReloadLua()
 		force_load_build = true
 		ReloadLua()
-		force_load_build = nil
+		force_load_build = false
 		MsgPopup(
 			302535920000453--[[Reload Lua--]],
 			1000113--[[Debug--]]
@@ -468,7 +468,7 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.MenuFuncs.debug_build_grid()
 			-- local all the globals we use more than once for some much needed speed
-			local IsSCell = terrain.IsSCell
+			--~ local IsSCell = terrain.IsSCell
 			local IsPassable = terrain.IsPassable
 			local IsTerrainFlatForPlacement = ConstructionController.IsTerrainFlatForPlacement
 			local IsValid = IsValid
