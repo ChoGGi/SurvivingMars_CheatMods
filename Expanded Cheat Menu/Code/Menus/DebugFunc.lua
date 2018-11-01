@@ -879,9 +879,9 @@ function OnMsg.ClassesGenerate()
 					end
 
 					if value == "All" then
-						local table1 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit or "","IsValid",nil,true)
-						local table2 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.CargoShuttle or "","IsValid",nil,true)
-						local table3 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Colonist or "","IsValid",nil,true)
+						local table1 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit,"IsValid",nil,true)
+						local table2 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.CargoShuttle,"IsValid",nil,true)
+						local table3 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Colonist,"IsValid",nil,true)
 						colourcount = colourcount + #table1
 						colourcount = colourcount + #table2
 						colourcount = colourcount + #table3

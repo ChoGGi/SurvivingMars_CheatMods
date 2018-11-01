@@ -114,13 +114,11 @@ function Solaria:ListBuildings(which,parent)
 
 Right click to view selected list item building.]]
 		-- remove any we already control
-		list = FilterObjectsC({
-			filter = function(o)
-				if not o.SolariaTelepresence_Remote_Controlled then
-					return o
-				end
+		list = MapFilter(list,function(o)
+			if not o.SolariaTelepresence_Remote_Controlled then
+				return true
 			end
-		},list)
+		end)
 
 		-- filter list to the types we want
 		list = FilterFromTable(
@@ -134,13 +132,11 @@ Right click to view selected list item building.]]
 		hint = [[Click to remove control of building.%s
 
 Right click to view selected list item building.]]
-		list = FilterObjectsC({
-			filter = function(o)
-				if o.SolariaTelepresence_Remote_Controlled then
-					return o
-				end
+		list = MapFilter(list,function(o)
+			if o.SolariaTelepresence_Remote_Controlled then
+				return true
 			end
-		},list)
+		end)
 
 	else
 		hint = [[
