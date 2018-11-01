@@ -23,10 +23,10 @@ local invis = 0
 --~ local invis_less = 268435456
 
 local text_style1 = "ChoGGi_Text12"
-local text_style2 = "ChoGGi_Text12"
+local text_style2 = "ChoGGi_TextList12"
 if ChoGGi.testing then
 	text_style1 = "ChoGGi_Text14"
-	text_style2 = "ChoGGi_Text14"
+	text_style2 = "ChoGGi_TextList14"
 end
 DefineClass.ChoGGi_Text = {
 	__parents = {"XText"},

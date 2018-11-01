@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v3.0 (Unreleased)
+## v3.1 (Unreleased)
+
+## v3.0 (01 Nov 2018)
 - Better compatibility with other mods that use custom shortcut keys.
 - Returns names of (some) tables.
 - Shows function file/line number instead of "function: 0000000008D7C100".
