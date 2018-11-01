@@ -124,13 +124,13 @@ function OnMsg.ClassesGenerate()
 	-- created when we create the controls controls the first time
 	local ExamineMenuToggle_list = {}
 	-- to add each item
-	local function BuildExamineItem(name)
+	local function BuildExamineItem(name,title)
 		if not name then
 			return
 		end
 		local obj = DotNameToObject(name)
 		local func = type(obj) == "function"
-		local disp = StringFormat("%s%s",name,func and "()" or "")
+		local disp = title or StringFormat("%s%s",name,func and "()" or "")
 		return {
 			name = disp,
 			hint = StringFormat("%s: %s",S[302535920000491--[[Examine Object--]]],disp),
@@ -138,7 +138,7 @@ function OnMsg.ClassesGenerate()
 				if func then
 					OpenInExamineDlg(obj())
 				else
-					OpenInExamineDlg(name,"str")
+					OpenInExamineDlg(name,"str",disp)
 				end
 			end,
 		}
@@ -165,27 +165,18 @@ function OnMsg.ClassesGenerate()
 			-- remove hint from "submenu" menu
 			ExamineMenuToggle_list[submenu].hint = nil
 
-			-- first we build an ass list then the actual list
-			local temp_list = {}
-			for _,value in pairs(PresetDefs) do
-				if value.DefGlobalMap ~= "" then
-					temp_list[value.DefGlobalMap] = true
-				end
-			end
-			ClassDescendantsList("Preset", function(name, cls)
-				if cls.GlobalMap then
-					temp_list[cls.GlobalMap] = true
-				end
-			end)
-			temp_list.BuildingTemplates = true
-
-			-- now we build the actual list
+			-- build a list of Descendants of Preset
 			local submenu_table = {}
 			local c = 0
-			for name in pairs(temp_list) do
-				c = c + 1
-				submenu_table[c] = BuildExamineItem(name)
-			end
+			-- dupe skipper
+			local names_list = {}
+			ClassDescendantsList("Preset", function(name, cls)
+				if cls.GlobalMap and cls.GlobalMap ~= "" and not names_list[cls.GlobalMap] then
+					names_list[cls.GlobalMap] = true
+					c = c + 1
+					submenu_table[c] = BuildExamineItem(cls.GlobalMap)
+				end
+			end)
 
 			table.sort(submenu_table,
 				function(a,b)
@@ -195,11 +186,36 @@ function OnMsg.ClassesGenerate()
 			)
 			-- add orig to the menu
 			table.insert(submenu_table,1,BuildExamineItem("Presets"))
-			-- poor guy is just getting crushed by the devs, and look at me not even giving it it's own menu
+			-- and done
+			ExamineMenuToggle_list[submenu].submenu = submenu_table
+		end
+
+		-- add some stuff to UICity
+		submenu = table.find(ExamineMenuToggle_list,"name","DataInstances")
+		if submenu then
+			ExamineMenuToggle_list[submenu].hint = nil
+			-- we need to build a list
+			local submenu_table = {}
+			local c = 0
+			-- same for DataInstances
+			for key in pairs(DataInstances) do
+				c = c + 1
+				submenu_table[c] = BuildExamineItem(StringFormat("DataInstances.%s",key),key)
+			end
+
+			table.sort(submenu_table,
+				function(a,b)
+					-- damn eunuchs
+					return CmpLower(a.name,b.name)
+				end
+			)
+
+			-- add orig to the menu
 			table.insert(submenu_table,1,BuildExamineItem("DataInstances"))
 			-- and done
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
+
 		-- add some stuff to UICity
 		submenu = table.find(ExamineMenuToggle_list,"name","UICity")
 		if submenu then
@@ -211,6 +227,7 @@ function OnMsg.ClassesGenerate()
 				BuildExamineItem("g_ApplicantPool"),
 			}
 		end
+
 		-- merged const Consts g_Consts
 		submenu = table.find(ExamineMenuToggle_list,"name","Consts")
 		if submenu then

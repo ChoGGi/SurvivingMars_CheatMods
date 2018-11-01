@@ -111,59 +111,50 @@ local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
 	-- we use this table to display names of (some) tables
-	local lookup_table = {
-		[ChoGGi] = "ChoGGi",
-		[ClassTemplates] = "ClassTemplates",
-		[const] = "const",
-		[Consts] = "Consts",
-		[DataInstances] = "DataInstances",
-		[Dialogs] = "Dialogs",
-		[EntityData] = "EntityData",
-		[Flags] = "Flags",
-		[FXRules] = "FXRules",
-		[g_Classes] = "g_Classes",
-		[Presets] = "Presets",
-		[s_SeqListPlayers] = "s_SeqListPlayers",
-		[TaskRequesters] = "TaskRequesters",
-		[terminal.desktop] = "terminal.desktop",
-		[ThreadsMessageToThreads] = "ThreadsMessageToThreads",
-		[ThreadsRegister] = "ThreadsRegister",
-		[ThreadsThreadToMessage] = "ThreadsThreadToMessage",
-		[XTemplates] = "XTemplates",
-	}
-	-- probably won't work since devs put different _G for each mod env...
-	local g = _G
-	for _,value in pairs(PresetDefs) do
-		if value.DefGlobalMap and value.DefGlobalMap ~= "" then
-			lookup_table[g[value.DefGlobalMap]] = value.DefGlobalMap
-		end
-	end
-	ClassDescendantsList("Preset", function(name, cls)
-		if cls.GlobalMap then
-			lookup_table[g[cls.GlobalMap]] = cls.GlobalMap
-		end
-	end)
+	local lookup_table = {}
 
-	-- have to wait for these to be created
+	-- This will skip them showing up for the main menu, but makes it easier to override _G with ECM
+	local function AfterLoad()
+		local g = ChoGGi.Temp._G or _G
+		lookup_table = {
+			[g.ChoGGi] = "ChoGGi",
+			[g.ClassTemplates] = "ClassTemplates",
+			[g.const] = "const",
+			[g.Consts] = "Consts",
+			[g.DataInstances] = "DataInstances",
+			[g.Dialogs] = "Dialogs",
+			[g.EntityData] = "EntityData",
+			[g.Flags] = "Flags",
+			[g.FXRules] = "FXRules",
+			[g.g_ApplicantPool] = "g_ApplicantPool",
+			[g.g_Classes] = "g_Classes",
+			[g.g_Consts] = "g_Consts",
+			[g.Mods] = "Mods",
+			[g.ModsLoaded] = "ModsLoaded",
+			[g.Presets] = "Presets",
+			[g.s_SeqListPlayers] = "s_SeqListPlayers",
+			[g.TaskRequesters] = "TaskRequesters",
+			[g.terminal.desktop] = "terminal.desktop",
+			[g.ThreadsMessageToThreads] = "ThreadsMessageToThreads",
+			[g.ThreadsRegister] = "ThreadsRegister",
+			[g.ThreadsThreadToMessage] = "ThreadsThreadToMessage",
+			[g.UICity.labels] = "UICity.labels",
+			[g.UICity.tech_status] = "UICity.tech_status",
+			[g.UICity] = "UICity",
+			[g] = "_G",
+		}
+		-- and add any presets names
+		ClassDescendantsList("Preset", function(name, cls)
+			if cls.GlobalMap and cls.GlobalMap ~= "" then
+				lookup_table[g[cls.GlobalMap]] = cls.GlobalMap
+			end
+		end)
+	end
 	function OnMsg.LoadGame()
-		local UICity = UICity
-		lookup_table[g_ApplicantPool] = "g_ApplicantPool"
-		lookup_table[g_Consts] = "g_Consts"
-		lookup_table[Mods] = "Mods"
-		lookup_table[ModsLoaded] = "ModsLoaded"
-		lookup_table[UICity] = "UICity"
-		lookup_table[UICity.labels] = "UICity.labels"
-		lookup_table[UICity.tech_status] = "UICity.tech_status"
+		AfterLoad()
 	end
 	function OnMsg.CityStart()
-		local UICity = UICity
-		lookup_table[g_ApplicantPool] = "g_ApplicantPool"
-		lookup_table[g_Consts] = "g_Consts"
-		lookup_table[Mods] = "Mods"
-		lookup_table[ModsLoaded] = "ModsLoaded"
-		lookup_table[UICity] = "UICity"
-		lookup_table[UICity.labels] = "UICity.labels"
-		lookup_table[UICity.tech_status] = "UICity.tech_status"
+		AfterLoad()
 	end
 
 	local IsObjlist,type,tostring = IsObjlist,type,tostring

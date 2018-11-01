@@ -63,6 +63,7 @@ function OnMsg.ClassesGenerate()
 			"ChoGGi",
 			"Consts",
 			"Dialogs",
+			"DataInstances",
 			"Flags",
 			"FXRules",
 			"g_Classes",
@@ -70,7 +71,6 @@ function OnMsg.ClassesGenerate()
 			"TaskRequesters",
 			"ThreadsRegister",
 			"UICity",
-			"XTemplates",
 		},
 		-- blinky blink
 		FlashExamineObject = true,

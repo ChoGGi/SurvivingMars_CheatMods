@@ -87,6 +87,9 @@ function OnMsg.ClassesGenerate()
 	ChoGGi.SettingsFile = ChoGGi.blacklist and nil or "AppData/CheatMenuModSettings.lua"
 
 	if not ChoGGi.blacklist then
+		-- used for getting names for RetName
+		ChoGGi.Temp._G = _G
+
 		local AsyncGetFileAttribute = AsyncGetFileAttribute
 		function ChoGGi.ComFuncs.FileExists(file)
 			-- folders don't have a size

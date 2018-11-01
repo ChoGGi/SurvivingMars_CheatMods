@@ -9,6 +9,25 @@ function OnMsg.ClassesGenerate()
 
 	if ChoGGi.testing then
 
+		do -- tell me if traits are different
+			local ChoGGi = ChoGGi
+			local const = const
+			local textstart = "<color 255 0 0>"
+			local textend = " is different length</color>"
+			if #const.SchoolTraits ~= 5 then
+				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sSchoolTraits%s",textstart,textend)
+			end
+			if #const.SanatoriumTraits ~= 7 then
+				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sSanatoriumTraits%s",textstart,textend)
+			end
+			local empty_table = empty_table
+			local nonerare,rare = GetCompatibleTraits(empty_table,empty_table,empty_table)
+--~ 			printC(#nonerare + #rare)
+			if #nonerare + #rare ~= 54 then
+				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sGetCompatibleTraits%s",textstart,textend)
+			end
+		end
+
 		-- for some fucking annoying reason my account settings are sometimes reset, so
 		if not ChoGGi.blacklist then
 			local as = AccountStorage
@@ -351,24 +370,6 @@ function OnMsg.ClassesGenerate()
 		--~	 ProjectSync()
 		end
 		--]]
-
-		do -- tell me if traits are different
-			local ChoGGi = ChoGGi
-			local const = const
-			local textstart = "<color 255 0 0>"
-			local textend = " is different length</color>"
-			if #const.SchoolTraits ~= 5 then
-				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sSchoolTraits%s",textstart,textend)
-			end
-			if #const.SanatoriumTraits ~= 7 then
-				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sSanatoriumTraits%s",textstart,textend)
-			end
-			local empty_table = empty_table
-			local nonerare,rare = GetCompatibleTraits(empty_table,empty_table,empty_table)
-			if #nonerare + #rare ~= 55 then
-				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sGetCompatibleTraits%s",textstart,textend)
-			end
-		end
 
 	---------
 		print("ChoGGi.testing")
