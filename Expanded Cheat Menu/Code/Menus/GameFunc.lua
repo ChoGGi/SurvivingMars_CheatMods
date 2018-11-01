@@ -766,7 +766,6 @@ function OnMsg.ClassesGenerate()
 		local sqrt = sqrt
 
 		local NoisePreset = DataInstances.NoisePreset
-		local r = ChoGGi.Consts.ResourceScale
 		local guim = ChoGGi.Consts.guim
 
 		local image = "<image %s 100>"

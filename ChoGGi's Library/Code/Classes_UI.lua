@@ -341,7 +341,8 @@ DefineClass.ChoGGi_Window = {
 	RolloverTemplate = "Rollover",
 }
 
-function ChoGGi_Window:AddElements(_,context)
+-- parent,context
+function ChoGGi_Window:AddElements()
 	local g_Classes = g_Classes
 
 	-- scale to UI

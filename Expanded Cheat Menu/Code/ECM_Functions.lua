@@ -202,7 +202,6 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 
-			local ChoGGi = ChoGGi
 			if which then
 				-- move old log to previous and add a blank log
 				AsyncCopyFile("AppData/logs/ConsoleLog.log","AppData/logs/ConsoleLog.previous.log","raw")

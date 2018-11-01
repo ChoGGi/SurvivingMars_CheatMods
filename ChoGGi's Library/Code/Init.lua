@@ -177,6 +177,8 @@ ChoGGi = {
 		StartupMsgs = {},
 		-- a list of menuitems and shortcut keys for Msg("ShortcutsReloaded")
 		Actions = {},
+		-- Transparency for some of my dialogs (ex and console log)
+		transp_mode = false,
 	},
 	-- settings that are saved to SettingsFile
 	UserSettings = {
