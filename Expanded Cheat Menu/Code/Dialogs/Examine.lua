@@ -990,7 +990,7 @@ function Examine:totextex(obj,obj_type)
 		if trans == "stripped" or trans:find("Missing locale string id") then
 			trans = tostring(obj)
 		else
-			trans = StringFormat("%s < %s",obj,trans)
+			trans = StringFormat("%s < %s</color></color>",obj,trans)
 		end
 		c = c + 1
 		totextex_res[c] = trans

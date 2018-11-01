@@ -197,7 +197,7 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
---~ 	-- Data\Sound.lua, and Lua\Config\__SoundTypes.lua
+--~ 	-- Data\SoundPreset.lua, and Lua\Config\__SoundTypes.lua
 --~ 	-- test sounds:
 --~ 	local function TestSound(snd)
 --~ 		StopSound(ChoGGi.Temp.Sound)
