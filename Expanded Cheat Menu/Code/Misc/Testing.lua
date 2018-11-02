@@ -9,6 +9,13 @@ function OnMsg.ClassesGenerate()
 
 	if ChoGGi.testing then
 
+--~ 		local orig_XImage_DrawContent = XImage.DrawContent
+--~ 		local RetName = ChoGGi.ComFuncs.RetName
+--~ 		function XImage:DrawContent(...)
+--~ 			print(RetName(self.parent),"DC")
+--~ 			return orig_XImage_DrawContent(self,...)
+--~ 		end
+
 		do -- tell me if traits are different
 			local ChoGGi = ChoGGi
 			local const = const

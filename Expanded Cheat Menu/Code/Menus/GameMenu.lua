@@ -314,7 +314,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = S[302535920001084--[[Reset--]]],
 		ActionMenubar = str_Game_Camera,
 		ActionId = ".Toggle Cursor",
-		ActionIcon = "CommonAssets/UI/Menu/default_menu.tga",
+		ActionIcon = "CommonAssets/UI/Menu/NewCamera.tga",
 		RolloverText = S[302535920001370--[[If something makes the camera view wonky you can use this to fix it.--]]],
 		OnAction = ChoGGi.MenuFuncs.ResetCamera,
 	}

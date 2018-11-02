@@ -4,6 +4,14 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v10.5 (Unreleased)
+### Added:
+- Now adds a "Disable ECM" key bindings if you used the Disable ECM option.
+
+### Changed:
+- Camera goes back to same position when toggling Free Camera/Follow Camera.
+
+### Fixed:
+- Free Camera would reset zoom settings.
 
 ## v10.4 (01 Nov 2018)
 ### Added:

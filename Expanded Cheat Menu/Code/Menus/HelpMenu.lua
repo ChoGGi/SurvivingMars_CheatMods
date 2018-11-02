@@ -230,7 +230,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_Help_ECM,
 		ActionId = ".Disable ECM",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
-		RolloverText = S[302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact (restart to toggle). You'll need to manually re-enable in CheatMenuModSettings.lua file."--]]],
+		RolloverText = S[302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in settings file, or check key bindings for Disable ECM."--]]],
 		OnAction = ChoGGi.MenuFuncs.DisableECM,
 		ActionSortKey = "6",
 	}
