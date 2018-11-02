@@ -5,10 +5,12 @@
 
 ## v10.5 (Unreleased)
 ### Added:
-- Now adds a "Disable ECM" key bindings if you used the Disable ECM option.
+- A "Disable ECM" key binding if you used the Disable ECM option.
+- Re-added Help>Interface>Toggle Signs: If CheatsEnabled() returned false then it didn't work (not sure why devs think it's a cheat).
 
 ### Changed:
 - Camera goes back to same position when toggling Free Camera/Follow Camera.
+- Unlock All Buildings now updates categories as well as items (assuming build menu is visible).
 
 ### Fixed:
 - Free Camera would reset zoom settings.

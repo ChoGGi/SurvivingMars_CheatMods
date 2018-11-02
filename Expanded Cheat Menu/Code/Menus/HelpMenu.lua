@@ -133,6 +133,17 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
+	Actions[c] = {ActionName = S[302535920001387--[[Toggle Signs--]]],
+		ActionMenubar = str_Help_Interface,
+		ActionId = ".Toggle Signs",
+		ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",
+		RolloverText = S[302535920001388--[["Concrete, metal deposits, not working, etc..."--]]],
+		OnAction = ToggleSigns,
+		ActionShortcut = "Ctrl-Alt-U",
+		ActionBindable = true,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = S[302535920000666--[[Toggle on-screen hints--]]],
 		ActionMenubar = str_Help_Interface,
 		ActionId = ".Toggle on-screen hints",
