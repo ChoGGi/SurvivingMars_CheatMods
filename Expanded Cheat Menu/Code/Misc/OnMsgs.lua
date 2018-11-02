@@ -186,6 +186,7 @@ end -- do
 
 function OnMsg.ModsReloaded()
 	local ChoGGi = ChoGGi
+	local UserSettings = ChoGGi.UserSettings
 
 	-- seems a decent place for this...
 	table.clear(Examine.examine_dialogs)
@@ -195,7 +196,6 @@ function OnMsg.ModsReloaded()
 	-- easy access to colonist data, cargo, mystery
 	ChoGGi.ComFuncs.UpdateDataTables()
 
-	local UserSettings = ChoGGi.UserSettings
 	-- added this here, as it's early enough to load during the New Game Menu
 	if not UserSettings.DisableECM then
 		local Actions = ChoGGi.Temp.Actions
@@ -1313,7 +1313,7 @@ do -- LoadGame/CityStart
 		if ChoGGi.UserSettings.FirstRun ~= false then
 			ChoGGi.ComFuncs.MsgWait(
 				StringFormat("%s\n%s",S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],S[302535920001309--[["Press Tilde or Enter and click the ""Settings"" button then uncheck ""Console Log"" to stop showing console log (instead of pressing F9 each time)."--]]]),
+If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],S[302535920001309--[["Stop showing these msgs: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(S[302535920001308--[[Settings--]]],S[302535920001112--[[Console Log--]]])),
 				StringFormat("%s %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000201--[[Active--]]]),
 				StringFormat("%sPreview.png",ChoGGi.ModPath)
 			)

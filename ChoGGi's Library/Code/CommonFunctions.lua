@@ -134,9 +134,7 @@ do -- RetName
 		lookup_table[g.FXRules] = "FXRules"
 		lookup_table[g.g_Classes] = "g_Classes"
 		lookup_table[g.Mods] = "Mods"
-		lookup_table[g.ModsLoaded] = "ModsLoaded"
 		lookup_table[g.Presets] = "Presets"
-		lookup_table[g.TaskRequesters] = "TaskRequesters"
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
 		lookup_table[g.ThreadsMessageToThreads] = "ThreadsMessageToThreads"
 		lookup_table[g.ThreadsRegister] = "ThreadsRegister"
@@ -145,6 +143,8 @@ do -- RetName
 			lookup_table[g.g_ApplicantPool] = "g_ApplicantPool"
 			lookup_table[g.g_Consts] = "g_Consts"
 			lookup_table[g.s_SeqListPlayers] = "s_SeqListPlayers"
+			lookup_table[g.ModsLoaded] = "ModsLoaded"
+			lookup_table[g.TaskRequesters] = "TaskRequesters"
 			lookup_table[g.UICity] = "UICity"
 			lookup_table[g.UICity.labels] = "UICity.labels"
 			lookup_table[g.UICity.tech_status] = "UICity.tech_status"
@@ -168,6 +168,10 @@ do -- RetName
 
 	-- try to return a decent name for the obj, failing that return a string
 	function ChoGGi.ComFuncs.RetName(obj)
+		if not obj then
+			return obj == false and "false" or "nil"
+		end
+
 		if lookup_table[obj] then
 			return lookup_table[obj]
 		end
@@ -175,6 +179,7 @@ do -- RetName
 		local obj_type = type(obj)
 
 		if obj_type == "table" then
+			-- we check in order of less generic "names"
 
 			local name_type = type(obj.name)
 			-- custom name from user (probably)
@@ -1538,6 +1543,8 @@ do -- Rebuildshortcuts
 		["Cheats.Trigger Disaster Meteor Storm"] = true,
 		["Cheats.Workplaces"] = true,
 		DE_ToggleScreenshotInterface = true,
+		-- i need to override so i can reset zoom and other settings.
+		FreeCamera = true,
 		-- we def don't want this
 		G_CompleteConstructions = true,
 		-- not cheats
@@ -1668,13 +1675,33 @@ do -- Rebuildshortcuts
 			end
 		end
 
+		-- add a key binding to options to re-enable ECM
+		if DisableECM then
+			local name = StringFormat("%s %s",S[302535920000142--[[Disable--]]],S[302535920000887--[[ECM--]]])
+			XShortcutsTarget:AddAction(XAction:new{
+				ActionName = name,
+				ActionId = name,
+				OnAction = function()
+					ChoGGi.UserSettings.DisableECM = not ChoGGi.UserSettings.DisableECM
+					ChoGGi.SettingFuncs.WriteSettings()
+					MsgPopup(
+						302535920001070--[[Restart to take effect.--]],
+						name
+					)
+				end,
+				ActionShortcut = "Ctrl-Shift-Alt-0",
+				ActionBindable = true,
+			})
+		end
+
 		-- add rightclick action to menuitems
 		XShortcutsTarget:UpdateToolbar()
 		-- got me
 		XShortcutsThread = false
 
-		-- if it's bool then ECM is active
-		if type(DisableECM) == "boolean" and not DisableECM then
+--~ 		-- if it's bool then ECM is active
+--~ 		if type(DisableECM) == "boolean" and not DisableECM then
+		if DisableECM == false then
 			-- i forget why i'm toggling this...
 			local dlgConsole = dlgConsole
 			if dlgConsole then

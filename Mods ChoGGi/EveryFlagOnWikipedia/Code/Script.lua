@@ -36,10 +36,16 @@ local TableFind = table.find
 local AsyncRand = AsyncRand
 local path = table.concat{CurrentModPath,"Flags/flag_%s.png"}
 
-local function AddExisting(name,flag,nations)
+local function AddExisting(name,flag_name,nations)
 	local idx = TableFind(nations,"value",name)
 	if idx then
-		nations[idx].flag = path:format(flag)
+		nations[idx].flag = path:format(flag_name)
+	else
+		nations[#nations+1] = {
+			value = name,
+			text = name,
+			flag = path:format(flag_name),
+		}
 	end
 end
 
@@ -374,6 +380,7 @@ function OnMsg.ModsReloaded()
 		return Nations[AsyncRand(#Nations - 1 + 1) + 1].value
 	end
 
+
 	-- make sure built-in ones use my bigger flags
 	AddExisting("English","the_united_kingdom",Nations)
 	AddExisting("American","the_united_states",Nations)
@@ -384,6 +391,9 @@ function OnMsg.ModsReloaded()
 	AddExisting("Bulgarian","bulgaria",Nations)
 	AddExisting("Indian","india",Nations)
 	AddExisting("Swedish","sweden",Nations)
+	-- Gagarin added names
+	AddExisting("Japanese","japan",Nations)
+	AddExisting("Brazilian","brazil",Nations)
 
 	-- instead of just replacing the orig table we add on to it (just in case more nations are added, maybe by another mod)
 	local c = #Nations
@@ -651,12 +661,6 @@ function OnMsg.ModsReloaded()
 		value = "bougainville",
 		text = "Bougainville",
 		flag = path:format("bougainville"),
-	}
-	c = c + 1
-	Nations[c] = {
-		value = "brazil",
-		text = "Brazil",
-		flag = path:format("brazil"),
 	}
 	c = c + 1
 	Nations[c] = {

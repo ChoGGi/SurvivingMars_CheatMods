@@ -25,7 +25,6 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.ResetCamera()
 		SetMouseDeltaMode(false)
-		ShowMouseCursor("InGameCursor")
 		cameraRTS.Activate(1)
 		engineShowMouseCursor()
 		ChoGGi.ComFuncs.SetCameraSettings()
@@ -1379,114 +1378,135 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	--CameraObj
 
 	--use hr.FarZ = 7000000 for viewing full map with 128K zoom
-	function ChoGGi.MenuFuncs.CameraFree_Toggle()
-		if cameraFly.IsActive() then
-			SetMouseDeltaMode(false)
-			ShowMouseCursor("InGameCursor")
-			cameraRTS.Activate(1)
-			engineShowMouseCursor()
-			MsgPopup(
-				302535920001059--[[RTS--]],
-				302535920001058--[[Camera--]]
-			)
-		else
-			cameraFly.Activate(1)
-			HideMouseCursor("InGameCursor")
-			SetMouseDeltaMode(true)
-			-- IsMouseCursorHidden works by checking whatever this sets, not what EnableMouseControl sets
-			engineHideMouseCursor()
-			MsgPopup(
-				302535920001060--[[Fly--]],
-				302535920001058--[[Camera--]]
-			)
-		end
-		-- resets zoom so...
-		ChoGGi.ComFuncs.SetCameraSettings()
-	end
-
-	function ChoGGi.MenuFuncs.CameraFollow_Toggle()
-		-- it was on the free camera so
-		if not mapdata.GameLogic then
-			return
-		end
-		local obj = ChoGGi.ComFuncs.SelObject()
-
-		-- turn it off?
-		if camera3p.IsActive() then
-			engineShowMouseCursor()
-			SetMouseDeltaMode(false)
-			ShowMouseCursor("InGameCursor")
-			cameraRTS.Activate(1)
-			-- reset camera fov settings
-			if ChoGGi.cameraFovX then
-				camera.SetFovX(ChoGGi.cameraFovX)
+	do -- CameraFree_Toggle
+		-- used to keep pos/lookat/zoom
+		local cur_pos, cur_la, zoom
+		function ChoGGi.MenuFuncs.CameraFree_Toggle()
+			if cameraFly.IsActive() then
+				SetMouseDeltaMode(false)
+				cameraRTS.Activate(1)
+				-- since we used engineHideMouseCursor, we need this as well
+				engineShowMouseCursor()
+				-- restore pos/zoom
+				if cur_pos and cur_la and zoom then
+					cameraRTS.SetCamera(cur_pos, cur_la)
+					cameraRTS.SetZoom(zoom)
+				end
+				-- make sure camera uses our settings after fly is done
+				ChoGGi.ComFuncs.SetCameraSettings()
+				MsgPopup(
+					302535920001059--[[RTS--]],
+					302535920001058--[[Camera--]]
+				)
+			else
+				cur_pos, cur_la = cameraRTS.GetPosLookAt()
+				zoom = cameraRTS.GetZoom()
+				cameraFly.Activate(1)
+				SetMouseDeltaMode(true)
+				-- IsMouseCursorHidden works by checking whatever this sets
+				engineHideMouseCursor()
+				MsgPopup(
+					302535920001060--[[Fly--]],
+					302535920001058--[[Camera--]]
+				)
 			end
-			-- show log again if it was hidden
-			if ChoGGi.UserSettings.ConsoleToggleHistory then
-				cls() --if it's going to spam the log, might as well clear it
-				ChoGGi.ComFuncs.ToggleConsoleLog()
-			end
-			-- reset camera zoom settings
+			-- resets zoom so...
 			ChoGGi.ComFuncs.SetCameraSettings()
-			return
-		-- crashes game if we attach to "false"
-		elseif not obj then
-			return
-		end
-		-- let user know the camera mode
-		MsgPopup(
-			302535920001061--[[Follow--]],
-			302535920001058--[[Camera--]]
-		)
-		-- we only want to follow one object
-		if ChoGGi.LastFollowedObject then
-			camera3p.DetachObject(ChoGGi.LastFollowedObject)
-		end
-		--save for DetachObject
-		ChoGGi.LastFollowedObject = obj
-		--save for fovX reset
-		ChoGGi.cameraFovX = camera.GetFovX()
-		--zoom further out unless it's a colonist
-		if not obj.base_death_age then
-			--up the horizontal fov so we're further away from object
-			camera.SetFovX(8400)
-		end
-		--consistent zoom level
-		cameraRTS.SetZoom(8000)
-		--Activate it
-		camera3p.Activate(1)
-		camera3p.AttachObject(obj)
-		camera3p.SetLookAtOffset(point(0,0,-1500))
-		camera3p.SetEyeOffset(point(0,0,-1000))
-		--moving mouse moves camera
-		camera3p.EnableMouseControl(true)
-		--IsMouseCursorHidden works by checking whatever this sets, not what EnableMouseControl sets
-		engineHideMouseCursor()
-
-		--toggle showing console history as console spams transparent something (and it'd be annoying to replace that function)
-		if ChoGGi.UserSettings.ConsoleToggleHistory then
-			ChoGGi.ComFuncs.ToggleConsoleLog()
 		end
 
-		--if it's a rover then stop the ctrl control mode from being active (from pressing ctrl-shift-f)
-		if type(obj.SetControlMode) == "function" then
-			obj:SetControlMode(false)
-		end
-	end
+		function ChoGGi.MenuFuncs.CameraFollow_Toggle()
+			-- it was on the free camera so
+			if not mapdata.GameLogic then
+				return
+			end
 
-	--LogCameraPos(print)
+			-- turn it off
+			if camera3p.IsActive() then
+				SetMouseDeltaMode(false)
+				cameraRTS.Activate(1)
+				engineShowMouseCursor()
+				-- reset camera fov settings
+				if ChoGGi.cameraFovX then
+					camera.SetFovX(ChoGGi.cameraFovX)
+				end
+				-- show log again if it was hidden
+				if ChoGGi.UserSettings.ConsoleToggleHistory then
+					cls() --if it's going to spam the log, might as well clear it
+					ChoGGi.ComFuncs.ToggleConsoleLog()
+				end
+				-- restore pos/zoom
+				if cur_pos and cur_la and zoom then
+					cameraRTS.SetCamera(cur_pos, cur_la)
+					cameraRTS.SetZoom(zoom)
+				end
+				-- reset camera zoom settings
+				ChoGGi.ComFuncs.SetCameraSettings()
+			else
+				-- crashes game if we attach to "false"
+				local obj = ChoGGi.ComFuncs.SelObject()
+				if not obj then
+					return
+				end
+
+				-- let user know the camera mode
+				MsgPopup(
+					302535920001061--[[Follow--]],
+					302535920001058--[[Camera--]]
+				)
+
+				-- save pos/zoom
+				cur_pos, cur_la = cameraRTS.GetPosLookAt()
+				zoom = cameraRTS.GetZoom()
+				-- we only want to follow one object
+				if ChoGGi.LastFollowedObject then
+					camera3p.DetachObject(ChoGGi.LastFollowedObject)
+				end
+				-- save for DetachObject
+				ChoGGi.LastFollowedObject = obj
+				-- save for fovX reset
+				ChoGGi.cameraFovX = camera.GetFovX()
+				-- zoom further out unless it's a colonist
+				if not obj.base_death_age then
+					--up the horizontal fov so we're further away from object
+					camera.SetFovX(8400)
+				end
+				-- consistent zoom level
+				cameraRTS.SetZoom(8000)
+				-- activate it
+				camera3p.Activate(1)
+				camera3p.AttachObject(obj)
+				camera3p.SetLookAtOffset(point(0,0,-1500))
+				camera3p.SetEyeOffset(point(0,0,-1000))
+				-- moving mouse moves camera
+				camera3p.EnableMouseControl(true)
+				-- IsMouseCursorHidden works by checking whatever this sets
+				engineHideMouseCursor()
+
+				-- toggle showing console history as console spams transparent something (and it'd be annoying to replace that function)
+				if ChoGGi.UserSettings.ConsoleToggleHistory then
+					ChoGGi.ComFuncs.ToggleConsoleLog()
+				end
+
+				-- if it's a rover then stop the ctrl control mode from being active (from pressing ctrl-shift-f)
+				if type(obj.SetControlMode) == "function" then
+					obj:SetControlMode(false)
+				end
+			end
+		end
+
+	end -- do
+
+	-- LogCameraPos(print)
 	function ChoGGi.MenuFuncs.CursorVisible_Toggle()
 		if IsMouseCursorHidden() then
-			engineShowMouseCursor()
 			SetMouseDeltaMode(false)
-			ShowMouseCursor("InGameCursor")
+			engineShowMouseCursor()
 		else
-			engineHideMouseCursor()
-			HideMouseCursor("InGameCursor")
 			SetMouseDeltaMode(true)
+			-- IsMouseCursorHidden works by checking whatever this sets
+			engineHideMouseCursor()
 		end
 	end
 
@@ -1543,6 +1563,8 @@ function OnMsg.ClassesGenerate()
 			{text = 20000,value = 20000},
 			{text = 24000,value = 24000, hint = 302535920001066--[[What used to be the default for this ECM setting--]]},
 			{text = 32000,value = 32000},
+			{text = 64000,value = 64000},
+			{text = 128000,value = 128000},
 		}
 
 		local hint = DefaultSetting

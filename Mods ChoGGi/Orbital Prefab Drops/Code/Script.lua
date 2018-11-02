@@ -1,28 +1,97 @@
 -- See LICENSE for terms
 
--- default options (only outside prefabs)
+-- default options
 OrbitalPrefabDrops = {
 	PrefabOnly = true,
 	Outside = true,
 	Inside = false,
 	DetachRockets = true,
 	DetachRocketsPassages = false,
+	RocketDamage = false,
 }
 
+local StringFormat = string.format
 local Sleep = Sleep
 local PlayFX = PlayFX
 local PlaySound = PlaySound
-local GetSoundDuration = GetSoundDuration
+local StopSound = StopSound
 local IsValid = IsValid
 local CreateGameTimeThread = CreateGameTimeThread
 local MovePointAway = MovePointAway
+local SetRollPitchYaw = SetRollPitchYaw
 local AsyncRand = AsyncRand
-local StringFormat = string.format
+local atan = atan
+local point = point
 
 local final_speed = 10*guim
+local pt500 = point(0,0,500)
 local pt1000 = point(0,0,1000)
+local pt1580 = point(0,0,1580)
+local pt1565 = point(0,0,1565)
 local guim20 = 20*guim
 local times9060 = 90*60
+local times36060 = 360*60
+
+local function RoverSink(rover,spawn_pos)
+	-- sinks in while prefab_top is rising
+	rover:SetPos(spawn_pos - pt1580,1000)
+	Sleep(1000)
+	-- bye bye rover
+	DoneObject(rover)
+end
+
+local function DecalRemoval(land_decal)
+	local delta = const.DayDuration / 20
+	for opacity = 100, 0, -5 do
+		Sleep(delta)
+		if not IsValid(land_decal) then
+			return
+		end
+		land_decal:SetOpacity(opacity, delta)
+	end
+	DoneObject(land_decal)
+end
+
+local function RocketDetach(self,missile,dir,cause_dmg)
+	local pos = missile:GetPos()
+	missile:Detach()
+	PlayFX("Move", "end", missile, nil, nil, dir)
+	local dest_pos = GetRandomPassableAround(pos, 30000)
+	if dest_pos then
+		dest_pos = dest_pos:SetZ(terrain.GetHeight(dest_pos))
+		-- slow them down a bit randomly (2K to 10K)
+		local travel_time = missile:GetTimeToImpact() + AsyncRand(8000) + 2000
+		-- some sort of parachute object would be nice (skip if explode happens)
+		missile:SetPos(dest_pos, travel_time)
+		local norm_dir = point(dir:y(), -dir:x(), 0)
+		missile:SetAxis(norm_dir)
+		missile:SetAngle(times9060 + atan(dir:z(), dir:Len2D()))
+		WaitMsg(missile, travel_time)
+		PlayFX("DomeExplosion", "start", missile)
+		local snd = PlaySound("Mystery Bombardment ExplodeAir", "ObjectOneshot", nil, 0, false, self)
+		if cause_dmg then
+			missile:Explode()
+		end
+		if IsValid(missile) then
+			StopSound(snd)
+			DoneObject(missile)
+		end
+		MapDelete(dest_pos, guim20, missile.explode_decal_name)
+		local explode_decal = PlaceObject(missile.explode_decal_name)
+		explode_decal:SetPos(dest_pos)
+		explode_decal:SetAngle(AsyncRand(times36060))
+		explode_decal:SetScale(15 + AsyncRand(20))
+		local fade_time = missile.explode_decal_fade
+		for opacity = 100, 0, -5 do
+			Sleep(fade_time / 20)
+			if not IsValid(explode_decal) then
+				return
+			end
+			explode_decal:SetOpacity(opacity)
+		end
+		DoneObject(explode_decal)
+	end
+end
 
 local orig_ConstructionSite_GameInit = ConstructionSite.GameInit
 
@@ -32,15 +101,17 @@ local function YamatoHasshin(self)
 	-- hide the actual site for now
 	self:SetVisible()
 
-	-- pretty much a copy n paste of AttackRover:Spawn()
+	-- pretty much a copy n paste of AttackRover:Spawn()... okay not anymore, but I swear it was
 	CreateGameTimeThread(function()
 		local ar = AttackRover
 		local city = self.city or UICity
-
+		-- where the prefab is
 		local spawn_pos = self:GetVisualPos()
+		-- let people know something is happening
 		local blinky = RotatyThing:new()
-		blinky:SetPos(spawn_pos+point(0,0,500))
+		blinky:SetPos(spawn_pos+pt500)
 
+		-- get dir and angle of container
 		local dir = point(city:Random(-4096, 4096), city:Random(-4096, 4096))
 		local angle = city:Random(ar.spawn_min_angle, ar.spawn_max_angle)
 		local s, c = sin(angle), cos(angle)
@@ -54,43 +125,55 @@ local function YamatoHasshin(self)
 		local pos = spawn_pos + dir
 		spawn_pos = terrain.GetIntersection(pos, spawn_pos)
 
-		local prefab = PlaceObject("StirlingGenerator")
+		local prefab_top = PlaceObject("Hex1_Placeholder")
+--~ prefab_top:SetScale(158)
+--~ prefab_top:SetPos(c())
+		local prefab_bot = PlaceObject("Hex1_Placeholder")
+--~ prefab_top.___TOP = true
+--~ prefab_bot.___BOT = true
 		-- just large enough to cover rover (shrinking the rover doesn't work out too well)
-		prefab:SetScale(158)
-		prefab:SetPos(pos)
-		prefab.rockets = {}
+		prefab_top:SetScale(158)
+		prefab_bot:SetScale(158)
+		prefab_top.rockets = {}
 
-		local id_start, id_end = prefab:GetAllSpots(0)
-		for i = id_start, id_end do
-			-- if even number (so we skip half of them)
-			if i % 2 == 0 and prefab:GetSpotName(i) == "Workrover" then
+		-- easy way to get some flame on
+		local rover = PlaceObject("FakeAttackRover")
+		rover:SetPos(pos)
+		-- stick the containers around the rover
+		rover:Attach(prefab_top)
+		rover:Attach(prefab_bot)
+		-- flip bottom around and move it up so they're merged into one (hex model has no bottom)
+		SetRollPitchYaw(prefab_bot, 0, 10800, 0)
+		-- just enough to cover the wheels
+		prefab_bot:SetAttachOffset(pt1565)
+
+		-- get list of spot positions for rockets
+--~ 		local id_start, id_end = prefab_top:GetAllSpots(0)
+--~ 		for i = id_start, id_end do
+		for i = 0, 13 do
+			-- only do even numbers (so we skip half of them)
+			if i % 2 == 0 and prefab_top:GetSpotName(i) == "Workrover" then
 				-- the spots are a bit uneven, but hopefully no one pays too close attention to detail
-				local offset = prefab:GetSpotPos(i)-MovePointAway(
+				local spot_posi = prefab_top:GetSpotPos(i)
+				local offset = spot_posi-MovePointAway(
 					pos,
-					prefab:GetSpotPos(i),
+					spot_posi,
 					-1925
 				)
 				local x = offset:x()
 				if x < 0 and x > -20 then
 					x = 0
 				end
-				local rocket = PlaceObject("BombardMissile",{start = pos, dest = spawn_pos})
+				local rocket = PlaceObject("BombardMissile")
 				rocket:SetScale(400)
-				prefab:Attach(rocket)
+				prefab_top:Attach(rocket)
 				rocket:SetAttachOffset(point(x,offset:y(),75))
-				prefab.rockets[#prefab.rockets+1] = rocket
+				prefab_top.rockets[#prefab_top.rockets+1] = rocket
 				PlayFX("Move", "start", rocket, nil, nil, dir)
-
 			end
 		end
 
-		local rover = PlaceObject("FakeAttackRover")
---~ 			rover:SetScale(63)
-		rover:SetPos(pos)
-		rover:Attach(prefab)
-
 		PlayFX("Meteor", "start", rover, nil, nil, dir)
-
 		flight_dist = spawn_pos:Dist(pos)
 		local flight_speed = ar.spawn_flight_speed - city:Random(2500,10000)
 		local total_time = MulDivRound(1000, flight_dist, flight_speed)
@@ -98,14 +181,6 @@ local function YamatoHasshin(self)
 		local pitch = -atan(dir:Len2D(), dir:z())
 		local yaw = 180*60 + atan(dir:y(), dir:x())
 		SetRollPitchYaw(rover, 0, pitch, yaw, 0)
-		-- remove sign from prefab
-		while not prefab.electricity do
-			Sleep(5)
-		end
-		prefab:AttachSign(false,"SignNoPowerProducer")
---~ 			for sign in pairs(prefab.signs) do
---~ 				prefab:AttachSign(false,sign)
---~ 			end
 
 		rover:SetPos(spawn_pos, total_time)
 		Sleep(total_time - land_time)
@@ -119,45 +194,8 @@ local function YamatoHasshin(self)
 		local opd = OrbitalPrefabDrops
 		local pass = self.building_class == "PassageGridElement"
 		if opd.DetachRockets and not pass or pass and opd.DetachRocketsPassages then
-			for i = #prefab.rockets, 1, -1 do
-				CreateGameTimeThread(function()
-					local missile = prefab.rockets[i]
-					local pos = missile:GetPos()
-					missile:Detach()
-					PlayFX("Move", "end", missile, nil, nil, dir)
-					local dest_pos = GetRandomPassableAround(pos, 30000)
-					if dest_pos then
-						dest_pos = dest_pos:SetZ(terrain.GetHeight(dest_pos))
-						-- slow them down a bit randomly (2K to 5K)
-						local travel_time = missile:GetTimeToImpact() + AsyncRand(10000 - 2000 + 1) + 2000
-						missile:SetPos(dest_pos, travel_time)
-						local norm_dir = point(dir:y(), -dir:x(), 0)
-						missile:SetAxis(norm_dir)
-						missile:SetAngle(times9060 + atan(dir:z(), dir:Len2D()))
-						WaitMsg(missile, travel_time)
-						PlayFX("DomeExplosion", "start", missile)
-						local snd = PlaySound("Mystery Bombardment ExplodeAir", "ObjectOneshot", nil, 0, false, self)
-						missile:Explode()
-						Sleep(GetSoundDuration(snd))
-						if IsValid(missile) then
-							DoneObject(missile)
-						end
-						MapDelete(dest_pos, guim20, missile.explode_decal_name)
-						local explode_decal = PlaceObject(missile.explode_decal_name)
-						explode_decal:SetPos(dest_pos)
-						explode_decal:SetAngle(AsyncRand(360*60))
-						explode_decal:SetScale(50 + AsyncRand(50))
-						local fade_time = missile.explode_decal_fade
-						for opacity = 100, 0, -5 do
-							Sleep(fade_time / 20)
-							if not IsValid(explode_decal) then
-								return
-							end
-							explode_decal:SetOpacity(opacity)
-						end
-						DoneObject(explode_decal)
-					end
-				end)
+			for i = #prefab_top.rockets, 1, -1 do
+				CreateGameTimeThread(RocketDetach,self,prefab_top.rockets[i],dir,opd.RocketDamage)
 			end
 		end
 
@@ -167,34 +205,21 @@ local function YamatoHasshin(self)
 		rover:SetPos(spawn_pos, land_time)
 		SetRollPitchYaw(rover, 0, 0, yaw, land_time)
 		Sleep(land_time)
-		local snd = PlaySound("Mystery Bombardment ExplodeTarget", "ObjectOneshot", nil, 0, false, self)
+		-- landed time go boom
+		PlaySound("Mystery Bombardment ExplodeTarget", "ObjectOneshot", nil, 0, false, self)
 		PlayFX("GroundExplosion", "start", rover)
-		PlayFX("Land", "end", rover)
-		PlayFX("GroundExplosion", "end", rover)
-
-		PlayFX("Meteor", "end", rover, nil, nil, dir)
-		Sleep(GetSoundDuration(snd))
-		DoneObject(rover)
 
 		local land_decal = PlaceObject(ar.land_decal_name)
 		land_decal:SetPos(spawn_pos)
-		land_decal:SetAngle(AsyncRand(360*60))
-		land_decal:SetScale(15)
-		CreateGameTimeThread(function()
-			local delta = const.DayDuration / 20
-			for opacity = 100, 0, -5 do
-				Sleep(delta)
-				if not IsValid(land_decal) then
-					return
-				end
-				land_decal:SetOpacity(opacity, delta)
-			end
-			DoneObject(land_decal)
-		end)
+		land_decal:SetAngle(AsyncRand(times36060))
+		land_decal:SetScale(40 + AsyncRand(50))
+		CreateGameTimeThread(DecalRemoval,land_decal)
 
-		-- let just a slight bit of smoke clear
-		Sleep(250)
+		PlayFX("Land", "end", rover)
+		PlayFX("GroundExplosion", "end", rover)
+		PlayFX("Meteor", "end", rover, nil, nil, dir)
 
+		CreateGameTimeThread(RoverSink,rover,spawn_pos)
 		-- stick the site underground by it's height then make it rise from the dead
 		local height_pt = point(0,0,ObjectHierarchyBBox(self):sizez())
 		if not height_pt:z() then
@@ -234,8 +259,8 @@ function ConstructionSite:GameInit()
 	-- cables/pipes don't work that well, passages are fine, but with the detaching rockets it gets pretty busy
 	local grid = self.building_class ~= "PassageGridElement" and self.building_class:find("GridElement") or self.building_class:find("Switch")
 
-	-- we always allow prefabs (that's the mod...), but check if inside/outside are allowed
 	local opd = OrbitalPrefabDrops
+	-- we always allow prefabs (that's the mod...), but check if inside/outside are allowed
 	if self.prefab and (outside and opd.Outside or inside and opd.Inside) then
 		YamatoHasshin(self)
 	-- same but if prefab only is disabled
@@ -245,15 +270,3 @@ function ConstructionSite:GameInit()
 		orig_ConstructionSite_GameInit(self)
 	end
 end
-
---~ local function StartupCode()
-
---~ end
-
---~ function OnMsg.CityStart()
---~ 	StartupCode()
---~ end
-
---~ function OnMsg.LoadGame()
---~ 	StartupCode()
---~ end

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Orbital Prefab Drops v0.2",
-	"version", 2,
-	"saved", 1540382400,
+	"title", "Orbital Prefab Drops v0.3",
+	"version", 3,
+	"saved", 1541073600,
 	"image", "Preview.png",
 	"id", "ChoGGi_OrbitalPrefabDrops",
 	"steam_id", "1545818603",
@@ -17,11 +17,12 @@ Something like this was removed from the beta builds? For shame ;)
 
 ModConfig options
 Inside/Outside buildings: If you don't want them being dropped off inside (or outside).
-Prefab Only: Only rocket drop prefabs (or all buildings dependant on above options).
-Detach Rockets: Rockets will detach and fall to the ground (the rockets are just visual, no damage will happen).
+Prefab Only: Only rocket drop prefabs (or all buildings dependant on above option).
+Detach Rockets: Rockets will detach and fall to the ground.
 Detach Rockets Passages: Blocks the rockets detaching for passages (gets quite busy).
+Rocket Damage: Rockets will cause damage when they hit the ground.
 
-Defaults are PrefabOnly = true,Outside = true,Inside = false,DetachRockets = true,DetachRocketsPassages = false
+Defaults are PrefabOnly = true,Outside = true,Inside = false,DetachRockets = true,DetachRocketsPassages = false,RocketDamage = false
 
 
 Known Issues:

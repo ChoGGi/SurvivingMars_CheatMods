@@ -24,14 +24,20 @@ function OnMsg.ModConfigReady()
 	})
 
 	ModConfig:RegisterOption("OrbitalPrefabDrops", "DetachRockets", {
-		name = "Rockets will detach and fall to the ground.",
+		name = "Rockets detach and fall to the ground.",
 		type = "boolean",
 		default = OrbitalPrefabDrops.DetachRockets,
 	})
 	ModConfig:RegisterOption("OrbitalPrefabDrops", "DetachRocketsPassages", {
-		name = "Rockets will detach and fall to the ground for passages (busy).",
+		name = "Rockets detach for passages (busy).",
 		type = "boolean",
 		default = OrbitalPrefabDrops.DetachRocketsPassages,
+	})
+
+	ModConfig:RegisterOption("OrbitalPrefabDrops", "RocketDamage", {
+		name = "Rockets cause damage when they hit the ground.",
+		type = "boolean",
+		default = OrbitalPrefabDrops.RocketDamage,
 	})
 
 	-- get saved options
@@ -40,6 +46,7 @@ function OnMsg.ModConfigReady()
 	OrbitalPrefabDrops.Inside = ModConfig:Get("OrbitalPrefabDrops", "Inside")
 	OrbitalPrefabDrops.DetachRockets = ModConfig:Get("OrbitalPrefabDrops", "DetachRockets")
 	OrbitalPrefabDrops.DetachRocketsPassages = ModConfig:Get("OrbitalPrefabDrops", "DetachRocketsPassages")
+	OrbitalPrefabDrops.RocketDamage = ModConfig:Get("OrbitalPrefabDrops", "RocketDamage")
 
 end
 
@@ -55,6 +62,8 @@ function OnMsg.ModConfigChanged(mod_id, option_id, value)
 			OrbitalPrefabDrops.DetachRockets = value
 		elseif option_id == "DetachRocketsPassages" then
 			OrbitalPrefabDrops.DetachRocketsPassages = value
+		elseif option_id == "RocketDamage" then
+			OrbitalPrefabDrops.RocketDamage = value
 		end
 	end
 end

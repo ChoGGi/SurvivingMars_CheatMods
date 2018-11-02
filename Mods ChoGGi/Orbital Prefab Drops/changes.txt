@@ -1,3 +1,10 @@
+v0.3
+Container slides down while prefab slides up.
+Added a bottom to the container.
+Changed size of ground damage decals (rockets now smaller vs container).
+Whoops seems the rockets do cause damage :), added ModConfig option (default off).
+Also stopped the containers from doing damage.
+
 v0.2
 Halved the amount of rockets attached to containers.
 

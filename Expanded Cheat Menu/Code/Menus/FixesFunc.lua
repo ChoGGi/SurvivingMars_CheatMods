@@ -346,11 +346,13 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
-		MapForEach("map","ParSystem",function(o)
+		SuspendPassEdits("ParticlesWithNullPolylines")
+		MapDelete("map", "ParSystem",function(o)
 			if type(o.polyline) == "string" and o.polyline:find("\0") then
-				o:delete()
+				return true
 			end
 		end)
+		ResumePassEdits("ParticlesWithNullPolylines")
 
 		MsgPopup(
 			302535920000593--[[Remove Particles With Null Polylines--]],
@@ -379,12 +381,15 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
-		MapForEach("map","ParSystem",function(o)
-			if o:GetProperty("ParticlesName") == "PowerDecoy_Captured" and
+		SuspendPassEdits("MirrorSphereStuck")
+		MapDelete("map", "ParSystem",function(o)
+--~ 			if o:GetProperty("ParticlesName") == "PowerDecoy_Captured" and
+			if o:GetParticlesName() == "PowerDecoy_Captured" and
 					type(o.polyline) == "string" and o.polyline:find("\0") then
-				o:delete()
+				return true
 			end
 		end)
+		ResumePassEdits("MirrorSphereStuck")
 
 		MsgPopup(
 			302535920000595--[[Mirror Sphere Stuck--]],

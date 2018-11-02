@@ -1,4 +1,5 @@
 ID,Text,Translation,Old Translation,Gender
+302535920000222,Oh look ECM hit the itty bitty limit of const.MaxModDataSize. Who'd a thunk it? Eh' Mortimer.,
 302535920001387,,
 302535920001388,,
 302535920001389,,
@@ -90,7 +91,6 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 302535920000793,History,
 302535920000881,"Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting).",
 302535920000888,Any .lua files in here will be part of a list that you can execute in-game from the console menu.,
-302535920000222,Oh look ECM hit the itty bitty limit of const.MaxModDataSize. Who'd a thunk it? Eh' Mortimer.,
 302535920000739,Black,
 302535920000740,Asian,
 302535920001283,Indian,
@@ -1415,7 +1415,7 @@ For any issues; please report them to my Github/Steam/NexusMods page, or email %
 302535920001242,Edit ECM Settings,
 302535920001243,Manually edit ECM settings.,
 302535920000875,Game Functions,
-302535920000465,"Disables menu, cheat panel, and hotkeys, but leaves settings intact (restart to toggle). You'll need to manually re-enable in CheatMenuModSettings.lua file.",
+302535920000465,"Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in settings file, or check key bindings for Disable ECM.",
 302535920001025,Help! I'm with stupid!,
 302535920001014,Hide Cheats Menu,
 302535920001019,This will hide the Cheats menu; Use F2 to see it again (Ctrl-F2 to toggle the Cheats selection panel).,
