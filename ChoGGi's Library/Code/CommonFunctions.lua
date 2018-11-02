@@ -1551,6 +1551,7 @@ do -- Rebuildshortcuts
 --~ 		G_ToggleInGameInterface = true,
 --~ 		G_ToggleOnScreenHints = true,
 --~ 		G_ToggleSigns = true,
+--~ 		G_UnpinAll = true,
 		G_AddFunding = true,
 		G_CheatClearForcedWorkplaces = true,
 		G_CheatUpdateAllWorkplaces = true,
@@ -1565,7 +1566,6 @@ do -- Rebuildshortcuts
 		G_ToggleInfopanelCheats = true,
 		G_UnlockAllBuildings = true,
 		["G_UnlockАllТech"] = true,
-		G_UnpinAll = true,
 		MapExplorationDeepScan = true,
 		MapExplorationScan = true,
 		SpawnColonist1 = true,
@@ -2776,7 +2776,12 @@ end
 
 do -- DeleteObject
 	local IsValid = IsValid
-	local function DeleteObject_ExecFunc(obj,funcname,param)
+	local DoneObject = DoneObject
+	local DeleteThread = DeleteThread
+	local DestroyBuildingImmediate = DestroyBuildingImmediate
+	local type = type
+
+	local function ExecFunc(obj,funcname,param)
 		if obj[funcname] then
 			obj[funcname](obj,param)
 		end
@@ -2809,28 +2814,34 @@ do -- DeleteObject
 		-- deleting domes will freeze game if they have anything in them.
 		if obj:IsKindOf("Dome") and #(obj.labels.Buildings or "") > 0 then
 			MsgPopup(
-				S[302535920001354--[["This dome (%s) has buildings, which = crash if removed..."--]]]:format(RetName(obj)),
+				S[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).--]]]:format(RetName(obj)),
 				302535920000489--[[Delete Object(s)--]]
 			)
 			return
 		end
 
+		-- actually delete the whole passage
 		if obj:IsKindOf("Passage") then
 			for i = #obj.elements_under_construction, 1, -1 do
 				ChoGGi.ComFuncs.DeleteObject(obj.elements_under_construction[i])
 			end
 		end
 
-		-- some stuff will leave holes in the world if they're still working
-		DeleteObject_ExecFunc(obj,"ToggleWorking")
+		-- figured it's quicker using a local function now
+		local waterspire = obj:IsKindOf("WaterReclamationSpire") and not IsValid(obj.parent_dome)
+		local rctransport = obj:IsKindOf("RCTransport")
+		local holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor")
 
-		obj.can_demolish = true
-		obj.indestructible = false
+		if not waterspire then
+			-- some stuff will leave holes in the world if they're still working
+			ExecFunc(obj,"SetWorking")
+		end
 
-		if obj.DoDemolish then
-			pcall(function()
-				DestroyBuildingImmediate(obj)
-			end)
+		-- stop any threads (reduce log spam)
+		for _,value in pairs(obj) do
+			if type(value) == "thread" then
+				DeleteThread(value)
+			end
 		end
 
 		if obj:IsKindOf("Deposit") and obj.group then
@@ -2840,24 +2851,33 @@ do -- DeleteObject
 			end
 		end
 
-		DeleteObject_ExecFunc(obj,"Destroy")
-		DeleteObject_ExecFunc(obj,"SetDome",false)
-		DeleteObject_ExecFunc(obj,"RemoveFromLabels")
-		-- causes log spam, transport still drops items carried so...
-		if not IsKindOf(obj,"RCTransport") then
-			DeleteObject_ExecFunc(obj,"Done")
+		-- demo to the rescue
+		obj.can_demolish = true
+		obj.indestructible = false
+		if obj.DoDemolish then
+			DestroyBuildingImmediate(obj)
 		end
-		DeleteObject_ExecFunc(obj,"Gossip","done")
-		DeleteObject_ExecFunc(obj,"SetHolder",false)
+
+		ExecFunc(obj,"Destroy")
+		ExecFunc(obj,"SetDome",false)
+		ExecFunc(obj,"RemoveFromLabels")
+
+		-- causes log spam, transport still drops items carried so...
+		if not waterspire and not rctransport then
+			ExecFunc(obj,"Done")
+		end
+
+		ExecFunc(obj,"Gossip","done")
+		ExecFunc(obj,"SetHolder",false)
 
 		-- only fire for stuff with holes in the ground (takes too long otherwise)
-		if IsKindOfClasses(obj,"MoholeMine","ShuttleHub","MetalsExtractor") then
-			DeleteObject_ExecFunc(obj,"DestroyAttaches")
+		if holy_stuff then
+			ExecFunc(obj,"DestroyAttaches")
 		end
 
 		-- I did ask nicely
 		if IsValid(obj) then
-			obj:delete()
+			DoneObject(obj)
 		end
 	end
 end -- do
