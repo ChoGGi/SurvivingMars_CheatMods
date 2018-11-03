@@ -25,7 +25,7 @@ function OnMsg.ClassesGenerate()
 	-- I did not hit her!
 	LocalStorage.dlgBugReport.handler = "ECM sez: Oh, hai Mark!"
 
-	local RetTrue = function()
+	local function RetTrue()
 		return true
 	end
 	function ChoGGi.MenuFuncs.CreateBugReportDlg()
@@ -313,8 +313,12 @@ function OnMsg.ClassesGenerate()
 							for i = 1, 5 do
 								local location1 = StringFormat("AppData/Mod Images/%s_%s.png",mod.id,i)
 								local location2 = StringFormat("AppData/Mod Images/%s_%s.jpg",mod.id,i)
-								local location3 = StringFormat("%s%s",path,mod[StringFormat("screenshot%s",i)])
---~ 								local location3 = mod[StringFormat("screenshot%s",i)]
+								local location3 = mod[StringFormat("screenshot%s",i)]
+								if location3 ~= "" then
+									location3 = StringFormat("%s%s",path,location3)
+								else
+									location3 = nil
+								end
 
 								if FileExists(location1) then
 									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.png",i))
@@ -322,11 +326,10 @@ function OnMsg.ClassesGenerate()
 								elseif FileExists(location2) then
 									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.jpg",i))
 									AsyncCopyFile(location2,StringFormat("AppData/ModUpload/screenshot%s.jpg",i),"raw")
-								elseif FileExists(location3) then
+								elseif location3 and location3 ~= path and FileExists(location3) then
 									screenshots[#screenshots+1] = ConvertToOSPath(location3)
 								end
 							end
-
 
 							local image = mod.image ~= "" and ConvertToOSPath(mod.image)
 							if not io.exists(image) then

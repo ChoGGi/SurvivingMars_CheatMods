@@ -1330,7 +1330,7 @@ function OnMsg.ClassesBuilt()
 		{
 			-- !!obj_with_attachments
 			"^!!(.*)",
-			"local o = (%s) local attaches = type(o) == 'table' and o:IsKindOf('ComponentAttach') and o:GetAttaches() if attaches and #attaches > 0 then ChoGGi.ComFuncs.OpenInExamineDlg(attaches,true) end"
+			"local o = (%s) local attaches = type(o) == 'table' and o.GetAttaches and o:GetAttaches() if attaches and #attaches > 0 then ChoGGi.ComFuncs.OpenInExamineDlg(attaches,true) end"
 		},
 
 		-- built-in

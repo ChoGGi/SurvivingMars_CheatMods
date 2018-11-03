@@ -1,22 +1,20 @@
+-- not that it matters if this file loads, nothing here will fire without Script.lua doing it's thing
 if not GetDate():find("Dec") then
 	return
 end
-
-local OnMsg = OnMsg
-local DelayedCall = DelayedCall
 
 local green = -16711936
 local red = -65536
 local white = -1
 
+local function AttachesColoured(a,class,colour)
+	if a.class == class then
+		a:SetColorModifier(colour)
+	end
+end
 -- oh it happens more than you'd think
 local function AttachColour(s,class,colour)
-	local attaches = s:GetAttaches() or ""
-	for i = 1, #attaches do
-		if attaches[i].class == class then
-			attaches[i]:SetColorModifier(colour)
-		end
-	end
+	s:ForEachAttach(AttachesColoured,class,colour)
 end
 
 local function RGRG(s)
@@ -33,39 +31,21 @@ local function GRGR(s)
 	s:SetColor4(red)
 end
 
-function OnMsg.ChristmasMars_SpawnedPlayground(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "DecPlaygroundBase" then
-				a:SetColorModifier(green)
-			elseif a.class == "DecorInt_04" then
-				a:SetColorModifier(red)
-			end
-		end
-	end)
+local function AttachesPassageRamp(a,colour)
+	if a.class == "LampInt_05" then
+		a:SetColorModifier(colour)
+	end
 end
-
-function OnMsg.ChristmasMars_SpawnedPassageRamp(s)
-	DelayedCall(1, function()
-		local colour
-		if Random(1,10) > 5 then
-			s:SetColorModifier(green)
-			colour = red
-		else
-			s:SetColorModifier(red)
-			colour = green
-		end
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "LampInt_05" then
-				a:SetColorModifier(colour)
-			end
-		end
-	end)
+local function SpawnedPassageRamp(s)
+	local colour
+	if Random(1,10) > 5 then
+		s:SetColorModifier(green)
+		colour = red
+	else
+		s:SetColorModifier(red)
+		colour = green
+	end
+	s:ForEachAttach(AttachesPassageRamp,colour)
 end
 
 local HangingGardensElements = {
@@ -79,681 +59,619 @@ local HangingGardensElements = {
 	HangingGardensFloorDoor_02 = true,
 	HangingGardensFloorDoor_03 = true,
 }
-function OnMsg.ChristmasMars_SpawnedHangingGardens(s)
-	DelayedCall(1, function()
-		s:SetColorModifier(green)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if HangingGardensElements[a.class] then
-				a:SetColorModifier(red)
-			end
-		end
-	end)
+local function AttachesHangingGardens(a)
+	if HangingGardensElements[a.class] then
+		a:SetColorModifier(red)
+	end
+end
+local function SpawnedHangingGardens(s)
+	s:SetColorModifier(green)
+	s:ForEachAttach(AttachesHangingGardens)
 end
 
-function OnMsg.ChristmasMars_SpawnedArcology(s)
-	DelayedCall(1, function()
-		s:SetColorModifier(white)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "DecorInt_02" then
-				a:SetColorModifier(red)
-			elseif a.class == "LampInt_02" then
-				a:SetColorModifier(red)
-			elseif a.class == "DecorInt_03" then
-				a:SetColorModifier(green)
-			elseif a.class == "LampWallInner_01" then
-				a:SetColorModifier(green)
-			end
-		end
-	end)
+local function AttachesArcology(a)
+	if a.class == "DecorInt_02" then
+		a:SetColorModifier(red)
+	elseif a.class == "LampInt_02" then
+		a:SetColorModifier(red)
+	elseif a.class == "DecorInt_03" then
+		a:SetColorModifier(green)
+	elseif a.class == "LampWallInner_01" then
+		a:SetColorModifier(green)
+	end
+end
+local function SpawnedArcology(s)
+	s:SetColorModifier(white)
+	s:ForEachAttach(AttachesArcology)
 end
 
-function OnMsg.ChristmasMars_SpawnedSanatorium(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "LampInt_02" then
-				a:SetColorModifier(red)
-			elseif a.class == "DecorInt_05" then
-				a:SetColorModifier(red)
-			elseif a.class:find("Door_0") then
-				a:SetColor1(red)
-				a:SetColor2(green)
-			end
-		end
-	end)
+local function AttachesSanatorium(a)
+	if a.class == "LampInt_02" then
+		a:SetColorModifier(red)
+	elseif a.class == "DecorInt_05" then
+		a:SetColorModifier(red)
+	elseif a.class:find("Door_0") then
+		a:SetColor1(red)
+		a:SetColor2(green)
+	end
+end
+local function SpawnedSanatorium(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesSanatorium)
 end
 
-function OnMsg.ChristmasMars_SpawnedMedicalCenter(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "LampInt_02" then
-				a:SetColorModifier(green)
-			elseif a.class == "DecorInt_04" then
-				a:SetColorModifier(red)
-			elseif a.class == "DecorInt_03" then
-				a:SetColorModifier(green)
-			elseif a.class == "DecorInt_02" then
-				a:SetColorModifier(green)
-			elseif a.class:find("MedicalCenterFloorDoor") or a.class:find("MedicalCenterDoor") then
-				a:SetColor3(green)
-			end
-		end
-	end)
+local function AttachesMedicalCenter(a)
+	if a.class == "LampInt_02" then
+		a:SetColorModifier(green)
+	elseif a.class == "DecorInt_04" then
+		a:SetColorModifier(red)
+	elseif a.class == "DecorInt_03" then
+		a:SetColorModifier(green)
+	elseif a.class == "DecorInt_02" then
+		a:SetColorModifier(green)
+	elseif a.class:find("MedicalCenterFloorDoor") or a.class:find("MedicalCenterDoor") then
+		a:SetColor3(green)
+	end
+end
+local function SpawnedMedicalCenter(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesMedicalCenter)
 end
 
-function OnMsg.ChristmasMars_SpawnedNetworkNode(s)
-	DelayedCall(1, function()
-		RGRG(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "LampInt_01" then
-				a:SetColorModifier(red)
-			elseif a.class == "LampInt_02" then
-				a:SetColorModifier(red)
-			elseif a.class == "NetworkNodeDoor_01" or a.class == "NetworkNodeDoor_02" then
-				a:SetColor2(red)
-			end
-		end
-	end)
+local function AttachesNetworkNode(a)
+	if a.class == "LampInt_01" then
+		a:SetColorModifier(red)
+	elseif a.class == "LampInt_02" then
+		a:SetColorModifier(red)
+	elseif a.class == "NetworkNodeDoor_01" or a.class == "NetworkNodeDoor_02" then
+		a:SetColor2(red)
+	end
+end
+local function SpawnedNetworkNode(s)
+	RGRG(s)
+	s:ForEachAttach(AttachesNetworkNode)
 end
 
-function OnMsg.ChristmasMars_SpawnedCloningVats(s)
-	DelayedCall(1, function()
-		RGRG(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class:find("CloningVatsDoor") then
-				a:SetColor2(green)
-			elseif a.class == "LampInt_02" then
-				a:SetColorModifier(red)
-			end
-		end
-	end)
+local function AttachesCloningVats(a)
+	if a.class:find("CloningVatsDoor") then
+		a:SetColor2(green)
+	elseif a.class == "LampInt_02" then
+		a:SetColorModifier(red)
+	end
+end
+local function SpawnedCloningVats(s)
+	RGRG(s)
+	s:ForEachAttach(AttachesCloningVats)
 end
 
-function OnMsg.ChristmasMars_SpawnedWaterReclamationSpire(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "LampInt_02" then
-				a:SetColorModifier(red)
-			end
-		end
-	end)
+local function AttachesWaterReclamationSpire(a)
+	if a.class == "LampInt_02" then
+		a:SetColorModifier(red)
+	end
+end
+local function SpawnedWaterReclamationSpire(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesWaterReclamationSpire)
 end
 
-function OnMsg.ChristmasMars_SpawnedFarmConventional(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "FarmSprinkler" then
-				a:SetColor2(green)
-			elseif a.class == "LampInt_04" then
-				a:SetColorModifier(green)
-			elseif a.class == "ResourceStockpile" then
-				if i % 2 == 0 then
-					a:SetColorModifier(green)
-				else
-					a:SetColorModifier(red)
-				end
-			end
+local function AttachesFarmConventional(a)
+	if a.class == "FarmSprinkler" then
+		a:SetColor2(green)
+	elseif a.class == "LampInt_04" then
+		a:SetColorModifier(green)
+	elseif a.class == "ResourceStockpile" then
+		if i % 2 == 0 then
+			a:SetColorModifier(green)
+		else
+			a:SetColorModifier(red)
 		end
-	end)
+	end
+end
+local function SpawnedFarmConventional(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesFarmConventional)
 end
 
-function OnMsg.ChristmasMars_SpawnedWaterTankLarge(s)
+local function SpawnedWaterTankLarge(s)
 	s:SetColorModifier(green)
 end
 
-function OnMsg.ChristmasMars_SpawnedFarmHydroponic(s)
-	DelayedCall(1, function()
-		RGRG(s)
-		local attaches = s:GetAttaches() or ""
-		local stockpile
-		local decal
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "HydroponicFarmDoor" or a.class == "HydroponicFarmFloorDoor" then
-				a:SetColor2(green)
-			elseif a.class == "LampInt_02" then
-				a:SetColorModifier(red)
-			elseif a.class == "LampWallInner_01" then
-				a:SetColorModifier(green)
-			elseif a.class == "DecSecurityCenterBase" then
-				if not decal then
-					decal = true
-					a:SetColorModifier(green)
-				else
-					a:SetColorModifier(red)
-				end
-			elseif a.class == "ResourceStockpile" then
-				if not stockpile then
-					stockpile = true
-					a:SetColorModifier(green)
-				else
-					a:SetColorModifier(red)
-				end
-			end
+local FarmHydroponic_stockpile
+local FarmHydroponic_decal
+local function AttachesFarmHydroponic(a)
+	if a.class == "HydroponicFarmDoor" or a.class == "HydroponicFarmFloorDoor" then
+		a:SetColor2(green)
+	elseif a.class == "LampInt_02" then
+		a:SetColorModifier(red)
+	elseif a.class == "LampWallInner_01" then
+		a:SetColorModifier(green)
+	elseif a.class == "DecSecurityCenterBase" then
+		if not FarmHydroponic_decal then
+			FarmHydroponic_decal = true
+			a:SetColorModifier(green)
+		else
+			a:SetColorModifier(red)
 		end
-	end)
-end
-
-function OnMsg.ChristmasMars_SpawnedTheExcavator(s)
-	DelayedCall(1, function()
-		RGRG(s)
-		s.arm:SetColor1(red)
-		s.arm:SetColor2(green)
-		s.arm:SetColor4(green)
-		s.belt:SetColorModifier(red)
-		s.tower:SetColor1(green)
-		s.tower:SetColor2(green)
-		s.tower:SetColor3(green)
-		s.tower:SetColor4(red)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "ExcavatorLights" then
-				a:SetColorModifier(red)
-			elseif a.class == "LampWallInner_01" then
-				a:SetColorModifier(red)
-			elseif a.class == "ResourceStockpile" then
-				a:SetColorModifier(red)
-			elseif a.class == "WasteRockStockpile" then
-				a:SetColorModifier(green)
-			end
+	elseif a.class == "ResourceStockpile" then
+		if not FarmHydroponic_stockpile then
+			FarmHydroponic_stockpile = true
+			a:SetColorModifier(green)
+		else
+			a:SetColorModifier(red)
 		end
-	end)
+	end
+end
+local function SpawnedFarmHydroponic(s)
+	FarmHydroponic_stockpile = nil
+	FarmHydroponic_decal = nil
+	RGRG(s)
+	s:ForEachAttach(AttachesFarmHydroponic)
 end
 
-function OnMsg.ChristmasMars_SpawnedProjectMorpheus(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "ProjectMorpheusLights" then
-				a:SetColorModifier(green)
-			elseif a.class == "LampInt_03" then
-				a:SetColorModifier(green)
-			elseif a.class == "ParSystem" then
-				a:SetColorModifier(green)
-			end
-		end
-	end)
+local function AttachesTheExcavator(a)
+	if a.class == "ExcavatorLights" then
+		a:SetColorModifier(red)
+	elseif a.class == "LampWallInner_01" then
+		a:SetColorModifier(red)
+	elseif a.class == "ResourceStockpile" then
+		a:SetColorModifier(red)
+	elseif a.class == "WasteRockStockpile" then
+		a:SetColorModifier(green)
+	end
+end
+local function SpawnedTheExcavator(s)
+	RGRG(s)
+	s.arm:SetColor1(red)
+	s.arm:SetColor2(green)
+	s.arm:SetColor4(green)
+	s.belt:SetColorModifier(red)
+	s.tower:SetColor1(green)
+	s.tower:SetColor2(green)
+	s.tower:SetColor3(green)
+	s.tower:SetColor4(red)
+	s:ForEachAttach(AttachesTheExcavator)
 end
 
-function OnMsg.ChristmasMars_SpawnedArtificialSun(s)
-	DelayedCall(1, function()
-		RGRG(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "ArtificialSunLights" then
-				a:SetColorModifier(green)
-			elseif a.class == "ParSystem" then
-				a:SetColorModifier(red)
-			end
-		end
-	end)
+local function AttachesProjectMorpheus(a)
+	if a.class == "ProjectMorpheusLights" then
+		a:SetColorModifier(green)
+	elseif a.class == "LampInt_03" then
+		a:SetColorModifier(green)
+	elseif a.class == "ParSystem" then
+		a:SetColorModifier(green)
+	end
+end
+local function SpawnedProjectMorpheus(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesProjectMorpheus)
 end
 
-function OnMsg.ChristmasMars_SpawnedOmegaTelescope(s)
-	DelayedCall(1, function()
-		RGRG(s)
-		s.antenna:SetColor1(red)
-		s.antenna:SetColor2(green)
-		s.antenna:SetColor3(green)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "RadioDishLights" then
-				a:SetColorModifier(green)
-			elseif a.class == "LampWallInner_01" then
-				a:SetColorModifier(red)
-			end
-		end
-	end)
+local function AttachesArtificialSun(a)
+	if a.class == "ArtificialSunLights" then
+		a:SetColorModifier(green)
+	elseif a.class == "ParSystem" then
+		a:SetColorModifier(red)
+	end
+end
+local function SpawnedArtificialSun(s)
+	RGRG(s)
+	s:ForEachAttach(AttachesArtificialSun)
 end
 
-function OnMsg.ChristmasMars_SpawnedMoholeMine(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "MoholeMineLights" then
-				a:SetColorModifier(green)
-			elseif a.class == "MoholeMineElevator" then
-				a:SetColor1(red)
-				a:SetColor2(green)
-				a:SetColor3(green)
-			elseif a.class == "ResourceStockpile" then
-				a:SetColorModifier(red)
-			elseif a.class == "WasteRockStockpile" then
-				a:SetColorModifier(green)
-			elseif a.class == "LampInt_03" then
-				a:SetColorModifier(red)
-			end
-		end
-	end)
+local function AttachesOmegaTelescope(a)
+	if a.class == "RadioDishLights" then
+		a:SetColorModifier(green)
+	elseif a.class == "LampWallInner_01" then
+		a:SetColorModifier(red)
+	end
+end
+local function SpawnedOmegaTelescope(s)
+	RGRG(s)
+	s.antenna:SetColor1(red)
+	s.antenna:SetColor2(green)
+	s.antenna:SetColor3(green)
+	s:ForEachAttach(AttachesOmegaTelescope)
 end
 
-function OnMsg.ChristmasMars_SpawnedSpaceElevator(s)
-	DelayedCall(1, function()
-		RGRG(s)
-		s.pod:SetColor1(green)
-		s.pod:SetColor2(red)
-		s.pod:SetColor4(green)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class:find("SpaceElevatorDoor") then
-				a:SetColor2(red)
-			elseif a.class == "LampWallInner_01" then
-				a:SetColorModifier(red)
-			elseif a.class == "SpaceElevatorLights" then
-				a:SetColorModifier(red)
-			end
-		end
-	end)
+local function AttachesMoholeMine(a)
+	if a.class == "MoholeMineLights" then
+		a:SetColorModifier(green)
+	elseif a.class == "MoholeMineElevator" then
+		a:SetColor1(red)
+		a:SetColor2(green)
+		a:SetColor3(green)
+	elseif a.class == "ResourceStockpile" then
+		a:SetColorModifier(red)
+	elseif a.class == "WasteRockStockpile" then
+		a:SetColorModifier(green)
+	elseif a.class == "LampInt_03" then
+		a:SetColorModifier(red)
+	end
+end
+local function SpawnedMoholeMine(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesMoholeMine)
 end
 
-function OnMsg.ChristmasMars_SpawnedElectronicsFactory(s)
-	DelayedCall(1, function()
-		-- don't set 4
-		s:SetColor1(green)
-		s:SetColor2(red)
-		s:SetColor3(green)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class:find("ElectronicsFactoryFloorDoor") then
-				a:SetColorModifier(red)
-			elseif a.class == "ResourceStockpile" or a.class == "ConsumptionResourceStockpile" then
-				a:SetColorModifier(red)
-			elseif a.class == "DecorInt_03" then
-				a:SetColorModifier(red)
-			elseif a.class == "DecorInt_02" then
-				a:SetColorModifier(red)
-			elseif a.class == "LampInt_02" then
-				a:SetColorModifier(red)
-			elseif a.class == "ElectronicsFactoryElevator_01" then
-				a:SetColor1(red)
-				a:SetColor3(green)
-			elseif a.class == "ElectronicsFactoryElevator_02" then
-				a:SetColor1(green)
-				a:SetColor3(red)
-			end
-		end
-	end)
+local function AttachesSpaceElevator(a)
+	if a.class:find("SpaceElevatorDoor") then
+		a:SetColor2(red)
+	elseif a.class == "LampWallInner_01" then
+		a:SetColorModifier(red)
+	elseif a.class == "SpaceElevatorLights" then
+		a:SetColorModifier(red)
+	end
+end
+local function SpawnedSpaceElevator(s)
+	RGRG(s)
+	s.pod:SetColor1(green)
+	s.pod:SetColor2(red)
+	s.pod:SetColor4(green)
+	s:ForEachAttach(AttachesSpaceElevator)
 end
 
-function OnMsg.ChristmasMars_SpawnedMachinePartsFactory(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class:find("DecMachinePartsFactoryBase") then
-				a:SetColorModifier(green)
-			elseif a.class == "ResourceStockpile" or a.class == "ConsumptionResourceStockpile" then
-				a:SetColorModifier(red)
-			elseif a.class == "LampInt_05" then
-				a:SetColorModifier(red)
-			elseif a.class == "MachinePartsFactoryDoor" then
-				a:SetColor1(red)
-				a:SetColor2(green)
-			end
-		end
-	end)
+local function AttachesElectronicsFactory(a)
+	if a.class:find("ElectronicsFactoryFloorDoor") then
+		a:SetColorModifier(red)
+	elseif a.class == "ResourceStockpile" or a.class == "ConsumptionResourceStockpile" then
+		a:SetColorModifier(red)
+	elseif a.class == "DecorInt_03" then
+		a:SetColorModifier(red)
+	elseif a.class == "DecorInt_02" then
+		a:SetColorModifier(red)
+	elseif a.class == "LampInt_02" then
+		a:SetColorModifier(red)
+	elseif a.class == "ElectronicsFactoryElevator_01" then
+		a:SetColor1(red)
+		a:SetColor3(green)
+	elseif a.class == "ElectronicsFactoryElevator_02" then
+		a:SetColor1(green)
+		a:SetColor3(red)
+	end
+end
+local function SpawnedElectronicsFactory(s)
+	-- don't set 4
+	s:SetColor1(green)
+	s:SetColor2(red)
+	s:SetColor3(green)
+	s:ForEachAttach(AttachesElectronicsFactory)
 end
 
-function OnMsg.ChristmasMars_SpawnedFuelFactory(s)
-	DelayedCall(1, function()
-		s:SetColor1(green)
-		s:SetColor2(red)
-		s:SetColor3(red)
-		s:SetColor4(red)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "ResourceStockpile" or a.class == "WasteRockStockpile" then
-				a:SetColorModifier(green)
-			elseif a.class == "LampWallInner_01" then
-				a:SetColorModifier(green)
-			end
-		end
-	end)
+local function AttachesMachinePartsFactory(a)
+	if a.class:find("DecMachinePartsFactoryBase") then
+		a:SetColorModifier(green)
+	elseif a.class == "ResourceStockpile" or a.class == "ConsumptionResourceStockpile" then
+		a:SetColorModifier(red)
+	elseif a.class == "LampInt_05" then
+		a:SetColorModifier(red)
+	elseif a.class == "MachinePartsFactoryDoor" then
+		a:SetColor1(red)
+		a:SetColor2(green)
+	end
+end
+local function SpawnedMachinePartsFactory(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesMachinePartsFactory)
 end
 
-function OnMsg.ChristmasMars_SpawnedDroneFactory(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "WorkshopDoor_01" then
-				a:SetColor1(green)
-				a:SetColor2(red)
-			elseif a.class == "WorkshopDoor_02" then
-				a:SetColor1(red)
-				a:SetColor2(green)
-			elseif a.class == "WorkshopDoor_03" then
-				a:SetColor3(red)
-			end
-		end
-	end)
+local function AttachesFuelFactory(a)
+	if a.class == "ResourceStockpile" or a.class == "WasteRockStockpile" then
+		a:SetColorModifier(green)
+	elseif a.class == "LampWallInner_01" then
+		a:SetColorModifier(green)
+	end
+end
+local function SpawnedFuelFactory(s)
+	s:SetColor1(green)
+	s:SetColor2(red)
+	s:SetColor3(red)
+	s:SetColor4(red)
+	s:ForEachAttach(AttachesFuelFactory)
 end
 
-function OnMsg.ChristmasMars_SpawnedRegolithExtractor(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		s.anim_obj.digger:SetColor1(white)
-		s.anim_obj.digger:SetColor2(green)
-		s.anim_obj.digger:SetColor4(red)
-
-		s.anim_obj.ring:SetColor2(red)
-		s.anim_obj.ring:SetColor4(green)
-		s.anim_obj.rope1:SetColorModifier(green)
-		s.anim_obj.rope2:SetColorModifier(green)
-
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "ResourceStockpile" then
-				a:SetColorModifier(red)
-			elseif a.class == "WasteRockStockpile" then
-				a:SetColorModifier(green)
-			elseif a.class == "LampWallOuter_01" then
-				a:SetColorModifier(red)
-			end
-		end
-	end)
+local function AttachesDroneFactory(a)
+	if a.class == "WorkshopDoor_01" then
+		a:SetColor1(green)
+		a:SetColor2(red)
+	elseif a.class == "WorkshopDoor_02" then
+		a:SetColor1(red)
+		a:SetColor2(green)
+	elseif a.class == "WorkshopDoor_03" then
+		a:SetColor3(red)
+	end
+end
+local function SpawnedDroneFactory(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesDroneFactory)
 end
 
-function OnMsg.ChristmasMars_SpawnedMetalsExtractor(s)
-	DelayedCall(1, function()
-		s:SetColor1(red)
-		s:SetColor2(green)
-		s:SetColor3(red)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "ResourceStockpile" or a.class == "WasteRockStockpile" then
-				a:SetColorModifier(green)
-			elseif a.class == "MetalsExtractorElevator" then
-				a:SetColor1(green)
-				a:SetColor2(green)
-				a:SetColor3(red)
-				a:SetColor4(red)
-			elseif a.class == "LampGroundOuter_01" then
-				a:SetColorModifier(red)
-			end
-		end
-	end)
+local function RegolithExtractor(a)
+	if a.class == "ResourceStockpile" then
+		a:SetColorModifier(red)
+	elseif a.class == "WasteRockStockpile" then
+		a:SetColorModifier(green)
+	elseif a.class == "LampWallOuter_01" then
+		a:SetColorModifier(red)
+	end
+end
+local function SpawnedRegolithExtractor(s)
+	GRGR(s)
+	s.anim_obj.digger:SetColor1(white)
+	s.anim_obj.digger:SetColor2(green)
+	s.anim_obj.digger:SetColor4(red)
+
+	s.anim_obj.ring:SetColor2(red)
+	s.anim_obj.ring:SetColor4(green)
+	s.anim_obj.rope1:SetColorModifier(green)
+	s.anim_obj.rope2:SetColorModifier(green)
+	s:ForEachAttach(RegolithExtractor)
 end
 
-function OnMsg.ChristmasMars_SpawnedPreciousMetalsExtractor(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "ResourceStockpile" or a.class == "WasteRockStockpile" then
-				a:SetColorModifier(green)
-			elseif a.class == "LampGroundOuter_01" then
-				a:SetColorModifier(red)
-			elseif a.class == "UniversalExtractorDoor" then
-				a:SetColor1(green)
-				a:SetColor2(red)
-				a:SetColor3(green)
-			elseif a.class == "UniversalExtractorHammer" then
-				a:SetColor1(green)
-				a:SetColor2(red)
-			end
-		end
-	end)
+local function AttachesMetalsExtractor(a)
+	if a.class == "ResourceStockpile" or a.class == "WasteRockStockpile" then
+		a:SetColorModifier(green)
+	elseif a.class == "MetalsExtractorElevator" then
+		a:SetColor1(green)
+		a:SetColor2(green)
+		a:SetColor3(red)
+		a:SetColor4(red)
+	elseif a.class == "LampGroundOuter_01" then
+		a:SetColorModifier(red)
+	end
+end
+local function SpawnedMetalsExtractor(s)
+	s:SetColor1(red)
+	s:SetColor2(green)
+	s:SetColor3(red)
+	s:ForEachAttach(AttachesMetalsExtractor)
 end
 
-function OnMsg.ChristmasMars_SpawnedPolymerPlant(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "ResourceStockpile" then
-				a:SetColorModifier(green)
-			elseif a.class == "PolymerPlantDoor" then
-				a:SetColor1(green)
-			end
-		end
-	end)
+local function AttachesPreciousMetalsExtractor(a)
+	if a.class == "ResourceStockpile" or a.class == "WasteRockStockpile" then
+		a:SetColorModifier(green)
+	elseif a.class == "LampGroundOuter_01" then
+		a:SetColorModifier(red)
+	elseif a.class == "UniversalExtractorDoor" then
+		a:SetColor1(green)
+		a:SetColor2(red)
+		a:SetColor3(green)
+	elseif a.class == "UniversalExtractorHammer" then
+		a:SetColor1(green)
+		a:SetColor2(red)
+	end
+end
+local function SpawnedPreciousMetalsExtractor(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesPreciousMetalsExtractor)
 end
 
-function OnMsg.ChristmasMars_SpawnedFungalFarm(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "ResourceStockpile" then
-				a:SetColorModifier(red)
-			elseif a.class == "FungalFarmFan" then
-				a:SetColor3(red)
-			elseif a.class == "FungalFarmDoor" or a.class == "FungalFarmFloorDoor" then
-				a:SetColor1(red)
-				a:SetColor2(green)
-				a:SetColor3(red)
-			end
-		end
-	end)
+local function AttachesPolymerPlant(a)
+	if a.class == "ResourceStockpile" then
+		a:SetColorModifier(green)
+	elseif a.class == "PolymerPlantDoor" then
+		a:SetColor1(green)
+	end
+end
+local function SpawnedPolymerPlant(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesPolymerPlant)
 end
 
-function OnMsg.ChristmasMars_SpawnedWaterTank(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		AttachColour(s,"WaterTankFloat",green)
-	end)
+local function AttachesFungalFarm(a)
+	if a.class == "ResourceStockpile" then
+		a:SetColorModifier(red)
+	elseif a.class == "FungalFarmFan" then
+		a:SetColor3(red)
+	elseif a.class == "FungalFarmDoor" or a.class == "FungalFarmFloorDoor" then
+		a:SetColor1(red)
+		a:SetColor2(green)
+		a:SetColor3(red)
+	end
+end
+local function SpawnedFungalFarm(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesFungalFarm)
 end
 
-function OnMsg.ChristmasMars_SpawnedWaterExtractor(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "LampGroundOuter_01" then
-				a:SetColorModifier(red)
-			elseif a.class == "WasteRockStockpile" then
-				a:SetColorModifier(green)
-			elseif a.class == "WaterExtractorPump" then
-				a:SetColor1(red)
-				a:SetColor2(green)
-				a:SetColor3(green)
-			end
-		end
-	end)
+local function SpawnedWaterTank(s)
+	GRGR(s)
+	AttachColour(s,"WaterTankFloat",green)
 end
 
-function OnMsg.ChristmasMars_SpawnedMoistureVaporator(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "MoistureVaporatorBalloon" then
-				a:SetColor1(red)
-			end
-		end
-	end)
+local function AttachesWaterExtractor(a)
+	if a.class == "LampGroundOuter_01" then
+		a:SetColorModifier(red)
+	elseif a.class == "WasteRockStockpile" then
+		a:SetColorModifier(green)
+	elseif a.class == "WaterExtractorPump" then
+		a:SetColor1(red)
+		a:SetColor2(green)
+		a:SetColor3(green)
+	end
+end
+local function SpawnedWaterExtractor(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesWaterExtractor)
 end
 
-function OnMsg.ChristmasMars_SpawnedOxygenTank(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		AttachColour(s,"AirTankArrow",red)
-	end)
+local function AttachesMoistureVaporator(a)
+	if a.class == "MoistureVaporatorBalloon" then
+		a:SetColor1(red)
+	end
+end
+local function SpawnedMoistureVaporator(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesMoistureVaporator)
 end
 
-function OnMsg.ChristmasMars_SpawnedMOXIE(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "MoxiePump" then
-				a:SetColor2(red)
-				a:SetColor3(green)
-			end
-		end
-	end)
+local function SpawnedOxygenTank(s)
+	GRGR(s)
+	AttachColour(s,"AirTankArrow",red)
 end
 
---~ function OnMsg.ChristmasMars_SpawnedElectricityGridElement(s)
---~ 	DelayedCall(1, function()
---~ 		s:SetColor3(green)
---~ 		local attaches = s:GetAttaches() or ""
---~ 		for i = 1, #attaches do
---~ 			attaches[i]:SetColor3(green)
---~ 		end
---~ 	end)
---~ end
-
---~ function OnMsg.ChristmasMars_SpawnedLifeSupportGridElement(s)
---~ 	DelayedCall(1, function()
---~ 	s:SetColor1(green)
---~ 	s:SetColor2(red)
---~ 	s:SetColor3(red)
---~ 	end)
---~ end
-
-function OnMsg.ChristmasMars_SpawnedFusionReactor(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class:find("FusionReactorDoor") then
-				a:SetColor2(red)
-			end
-		end
-	end)
+local function AttachesMOXIE(a)
+	if a.class == "MoxiePump" then
+		a:SetColor2(red)
+		a:SetColor3(green)
+	end
+end
+local function SpawnedMOXIE(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesMOXIE)
 end
 
-function OnMsg.ChristmasMars_SpawnedSolarPanel(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		s.panel_obj:SetColor1(green)
-		s.panel_obj:SetColor2(red)
-		s.panel_obj:SetColor3(green)
-	end)
+local function AttachesFusionReactor(a)
+	if a.class:find("FusionReactorDoor") then
+		a:SetColor2(red)
+	end
+end
+local function SpawnedFusionReactor(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesFusionReactor)
 end
 
-function OnMsg.ChristmasMars_SpawnedTriboelectricScrubber(s)
-	DelayedCall(1, function()
-		RGRG(s)
-		s.sphere:SetColor1(green)
-		s.sphere:SetColor2(red)
-		s.sphere:SetColor3(green)
-	end)
+local function SpawnedSolarPanel(s)
+	GRGR(s)
+	s.panel_obj:SetColor1(green)
+	s.panel_obj:SetColor2(red)
+	s.panel_obj:SetColor3(green)
 end
 
-function OnMsg.ChristmasMars_SpawnedShuttleHub(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		s.consumption_resource_stockpile:SetColorModifier(green)
-	end)
+local function SpawnedTriboelectricScrubber(s)
+	RGRG(s)
+	s.sphere:SetColor1(green)
+	s.sphere:SetColor2(red)
+	s.sphere:SetColor3(green)
 end
 
-function OnMsg.ChristmasMars_SpawnedDroneHub(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			local a = attaches[i]
-			if a.class == "CableHardLeft" then
-				a:SetColor3(green)
-			elseif a.class == "LampWallOuter_01" then
-				a:SetColorModifier(green)
-			elseif a.class == "DroneHubDoor" then
-				a:SetColor1(green)
-				a:SetColor2(red)
-			elseif a.class == "CablePlug_01" then
-				a:SetColorModifier(red)
-			elseif a.class == "DroneHubAntenna" then
-				a:SetColor1(green)
-				a:SetColor2(red)
-			elseif a.class == "RechargeStationPlatform" then
-				a:SetColor1(red)
-				a:SetColor2(green)
-				a:SetColor3(red)
-			end
-		end
-	end)
+local function SpawnedShuttleHub(s)
+	GRGR(s)
+	s.consumption_resource_stockpile:SetColorModifier(green)
 end
 
-function OnMsg.ChristmasMars_SpawnedRechargeStation(s)
-	DelayedCall(1, function()
-		s.platform:SetColor1(red)
-		s.platform:SetColor2(green)
-		s.platform:SetColor3(red)
-	end)
+local function AttachesDroneHub(a)
+	if a.class == "CableHardLeft" then
+		a:SetColor3(green)
+	elseif a.class == "LampWallOuter_01" then
+		a:SetColorModifier(green)
+	elseif a.class == "DroneHubDoor" then
+		a:SetColor1(green)
+		a:SetColor2(red)
+	elseif a.class == "CablePlug_01" then
+		a:SetColorModifier(red)
+	elseif a.class == "DroneHubAntenna" then
+		a:SetColor1(green)
+		a:SetColor2(red)
+	elseif a.class == "RechargeStationPlatform" then
+		a:SetColor1(red)
+		a:SetColor2(green)
+		a:SetColor3(red)
+	end
+end
+local function SpawnedDroneHub(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesDroneHub)
 end
 
-function OnMsg.ChristmasMars_SpawnedLandingPad(s)
+local function SpawnedRechargeStation(s)
+	s.platform:SetColor1(red)
+	s.platform:SetColor2(green)
+	s.platform:SetColor3(red)
+end
+
+local function SpawnedLandingPad(s)
 	AttachColour(s,"LampInt_04",green)
 	AttachColour(s,"LampInt_05",red)
 end
 
-function OnMsg.ChristmasMars_SpawnedTunnel(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		AttachColour(s,"TunnelEntranceDoor",green)
-	end)
+local function SpawnedTunnel(s)
+	GRGR(s)
+	AttachColour(s,"TunnelEntranceDoor",green)
 end
 
-function OnMsg.ChristmasMars_SpawnedSupplyRocket(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			if attaches[i].class == "LampWallInner_01" then
-				attaches[i]:SetColorModifier(green)
-			end
-		end
-	end)
+local function AttachesSupplyRocket(a)
+	if a.class == "LampWallInner_01" then
+		a:SetColorModifier(green)
+	end
+end
+local function SpawnedSupplyRocket(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesSupplyRocket)
 end
 
-function OnMsg.ChristmasMars_SpawnedMDSLaser(s)
-	DelayedCall(1, function()
-		s.tube:SetColor1(green)
-		s.tube:SetColor2(red)
-		s.tube:SetColor3(green)
-		s.platform:SetColor2(green)
-	end)
+local function SpawnedMDSLaser(s)
+	s.tube:SetColor1(green)
+	s.tube:SetColor2(red)
+	s.tube:SetColor3(green)
+	s.platform:SetColor2(green)
 end
 
-function OnMsg.ChristmasMars_SpawnedDefenceTower(s)
-	DelayedCall(1, function()
-		GRGR(s)
-		s.platform:SetColor2(green)
-		s.tube:SetColor1(green)
-		s.tube:SetColor2(red)
-		s.tube:SetColor3(red)
-	end)
+local function SpawnedDefenceTower(s)
+	GRGR(s)
+	s.platform:SetColor2(green)
+	s.tube:SetColor1(green)
+	s.tube:SetColor2(red)
+	s.tube:SetColor3(red)
+end
+
+local function AttachesPlayground(a)
+	if a.class == "DecPlaygroundBase" then
+		a:SetColorModifier(green)
+	elseif a.class == "DecorInt_04" then
+		a:SetColorModifier(red)
+	end
+end
+local function SpawnedPlayground(s)
+	GRGR(s)
+	s:ForEachAttach(AttachesPlayground)
+end
+
+-- list of functions to call
+local object_list = {
+	Arcology = SpawnedArcology,
+	ArtificialSun = SpawnedArtificialSun,
+	CloningVats = SpawnedCloningVats,
+	DefenceTower = SpawnedDefenceTower,
+	DroneFactory = SpawnedDroneFactory,
+	DroneHub = SpawnedDroneHub,
+	ElectronicsFactory = SpawnedElectronicsFactory,
+	FarmConventional = SpawnedFarmConventional,
+	FarmHydroponic = SpawnedFarmHydroponic,
+	FuelFactory = SpawnedFuelFactory,
+	FungalFarm = SpawnedFungalFarm,
+	FusionReactor = SpawnedFusionReactor,
+	HangingGardens = SpawnedHangingGardens,
+	LandingPad = SpawnedLandingPad,
+	MachinePartsFactory = SpawnedMachinePartsFactory,
+	MDSLaser = SpawnedMDSLaser,
+	MedicalCenter = SpawnedMedicalCenter,
+	MetalsExtractor = SpawnedMetalsExtractor,
+	MoholeMine = SpawnedMoholeMine,
+	MoistureVaporator = SpawnedMoistureVaporator,
+	MOXIE = SpawnedMOXIE,
+	NetworkNode = SpawnedNetworkNode,
+	OmegaTelescope = SpawnedOmegaTelescope,
+	OxygenTank = SpawnedOxygenTank,
+	PassageRamp = SpawnedPassageRamp,
+	Playground = SpawnedPlayground,
+	PolymerPlant = SpawnedPolymerPlant,
+	PreciousMetalsExtractor = SpawnedPreciousMetalsExtractor,
+	ProjectMorpheus = SpawnedProjectMorpheus,
+	RechargeStation = SpawnedRechargeStation,
+	RegolithExtractor = SpawnedRegolithExtractor,
+	Sanatorium = SpawnedSanatorium,
+	ShuttleHub = SpawnedShuttleHub,
+	SolarPanel = SpawnedSolarPanel,
+	SpaceElevator = SpawnedSpaceElevator,
+	SupplyRocket = SpawnedSupplyRocket,
+	TheExcavator = SpawnedTheExcavator,
+	TriboelectricScrubber = SpawnedTriboelectricScrubber,
+	Tunnel = SpawnedTunnel,
+	WaterExtractor = SpawnedWaterExtractor,
+	WaterReclamationSpire = SpawnedWaterReclamationSpire,
+	WaterTank = SpawnedWaterTank,
+	WaterTankLarge = SpawnedWaterTankLarge,
+}
+function OnMsg.ChristmasMars_SpawnedBuilding(s,cls)
+	object_list[cls](s)
 end

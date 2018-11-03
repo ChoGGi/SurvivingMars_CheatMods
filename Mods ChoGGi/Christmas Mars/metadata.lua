@@ -1,10 +1,10 @@
 return PlaceObj("ModDef", {
-	"title", "Christmas Mars v0.1",
-	"version", 1,
-	"saved", 1535371200,
+	"title", "Christmas Mars v0.2",
+	"version", 2,
+	"saved", 1541246400,
 	"image", "Preview.png",
 	"id", "ChoGGi_ChristmasMars",
---~ 	"steam_id", "1488362135",
+	"steam_id", "1497717990",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
 	"code", {

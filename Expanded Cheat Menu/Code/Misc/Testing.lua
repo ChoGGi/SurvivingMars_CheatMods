@@ -282,17 +282,18 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.ComFuncs.ReturnAllNearby(1000))
 		ChoGGi.CurObj:SetPos(GetTerrainCursor())
 
-		local Attaches = type(s) == "table" and o.ForEachAttach and s:GetAttaches("Colonist") or ""
-		for i = #Attaches, 1, -1 do
-				Attaches[i]:Detach()
-				Attaches[i]:SetState("idle")
-				Attaches[i].city:AddToLabel("Arrivals", Attaches[i])
-				Attaches[i].arriving = nil
-				Attaches[i]:OnArrival()
+		if type(s) == "table" and s.ForEachAttach then
+			s:ForEachAttach("Colonist",function(a)
+				a:Detach()
+				a:SetState("idle")
+				a.city:AddToLabel("Arrivals", a)
+				a.arriving = nil
+				a:OnArrival()
 
-				--Attaches[i]:Arrive()
-			--end
+				--a:Arrive()
+			end)
 		end
+
 
 
 		function ChoGGi.Temp.ReplaceDome(dome)

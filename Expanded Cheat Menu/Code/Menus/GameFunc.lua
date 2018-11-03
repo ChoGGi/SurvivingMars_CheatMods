@@ -801,37 +801,39 @@ function OnMsg.ClassesGenerate()
 				local deposits = UICity.labels.TerrainDeposit or ""
 				for i = 1, #deposits do
 					local d = deposits[i]
-
-					local pattern = NoisePreset.ConcreteForm:GetNoise(128, Random())
-					pattern:land_i(NoisePreset.ConcreteNoise:GetNoise(128, Random()))
-					-- any over 1000 get the more noticeable texture
-					if d.max_amount > 1000000 then
-						pattern:mul_i(texture_idx2, 1)
-					else
-						pattern:mul_i(texture_idx1, 1)
+					if IsValid(d) then
+						local pattern = NoisePreset.ConcreteForm:GetNoise(128, Random())
+						pattern:land_i(NoisePreset.ConcreteNoise:GetNoise(128, Random()))
+						-- any over 1000 get the more noticeable texture
+						if d.max_amount > 1000000 then
+							pattern:mul_i(texture_idx2, 1)
+						else
+							pattern:mul_i(texture_idx1, 1)
+						end
+						-- blend in with surrounding ground
+						pattern:sub_i(1, 1)
+						-- ?
+						pattern = GridOpFree(pattern, "repack", 8)
+						-- paint deposit
+						AsyncSetTypeGrid{
+							type_grid = pattern,
+							pos = d:GetPos(),
+							scale = sqrt(MulDivRound(10000, d.max_amount / guim, d.radius_max)),
+							centered = true,
+							invalid_type = -1,
+						}
 					end
-					-- blend in with surrounding ground
-					pattern:sub_i(1, 1)
-					-- ?
-					pattern = GridOpFree(pattern, "repack", 8)
-					-- paint deposit
-					AsyncSetTypeGrid{
-						type_grid = pattern,
-						pos = d:GetPos(),
-						scale = sqrt(MulDivRound(10000, d.max_amount / guim, d.radius_max)),
-						centered = true,
-						invalid_type = -1,
-					}
 				end
-			end
-		end
+
+			end -- if type(value) == "number" then
+		end -- CallBackFunc
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000973--[[Change Terrain Texture--]],
 			hint = S[302535920000974--[[Map default: %s--]]]:format(mapdata.BaseLayer),
-			custom_type = 8,
+			custom_type = 7,
 			custom_func = CallBackFunc,
 		}
 	end

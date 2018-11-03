@@ -14,6 +14,7 @@
 
 ### Fixed:
 - Free Camera would reset zoom settings.
+- Screenshots defined in metadata.lua didn't work with Mod Upload.
 
 ## v10.4 (01 Nov 2018)
 ### Added:

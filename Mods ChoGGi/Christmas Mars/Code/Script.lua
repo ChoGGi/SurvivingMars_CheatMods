@@ -1,6 +1,6 @@
 local that_time_of_the_year = GetDate():find("Dec")
 
--- we always add the logo
+-- add the logo
 pcall(function()
 	-- needs to happen before the decal object is placed
 	DelayedLoadEntity(Mods.ChoGGi_ChristmasMars, "ChristmasMars", string.format("%sEntities/ChristmasMars.ent",CurrentModPath))
@@ -10,13 +10,14 @@ pcall(function()
 		"entity_name", "ChristmasMars",
 	})
 end)
+
 function OnMsg.ClassesPostprocess()
 	PlaceObj("MissionLogoPreset", {
 		decal_entity = "ChristmasMars",
-		display_name = "Christmas Mars",
+		display_name = [[Christmas Mars]],
 		entity_name = "ChristmasMars",
 		id = "ChristmasMars",
-		image = string.format("%sUI/logo.png",CurrentModPath),
+		image = string.format("%sUI/ChristmasMars.png",CurrentModPath),
 	})
 	-- default logo during spending month
 	if that_time_of_the_year then
@@ -36,210 +37,252 @@ local red = -65536
 local white = -1
 
 -- we can't use CityStart since deposits aren't spawned yet and SetTerrainType fucks that up
-function OnMsg.DepositsSpawned()
---~ function OnMsg.LoadGame()
+function OnMsg.CityStart()
+	CreateRealTimeThread(function()
+		WaitMsg("DepositsSpawned")
 
-	UICity.ChristmasMars = true
+		UICity.ChristmasMars = true
 
-	-- less brown rocks
-	local function WhiteThoseRocks(cls)
-		MapForEach("map",cls,function(o)
+		-- less brown rocks
+		SuspendPassEdits("WhiteThoseRocks")
+		MapForEach("map",{"Deposition","WasteRockObstructorSmall","WasteRockObstructor","StoneSmall"},function(o)
 			if o.class:find("Dark") then
 				o:SetColorModifier(white)
-			-- skip delete StoneSmall since it takes too damned long
-			elseif not cls ~= "StoneSmall" then
+			else
 				-- these ones don't look good like this so buhbye
 				o:delete()
 			end
 		end)
-	end
-	WhiteThoseRocks("Deposition")
-	WhiteThoseRocks("WasteRockObstructorSmall")
-	WhiteThoseRocks("WasteRockObstructor")
-	WhiteThoseRocks("StoneSmall")
+		ResumePassEdits("WhiteThoseRocks")
 
-	-- starter rockets spawn with new map
-	local rockets = UICity.labels.AllRockets or ""
-	for i = 1, #rockets do
-		local s = rockets[i]
-		s:SetColor1(green)
-		s:SetColor2(red)
-		s:SetColor3(green)
+		-- starter rockets spawn with new map
+		local rockets = UICity.labels.AllRockets or ""
+		for i = 1, #rockets do
+			local s = rockets[i]
+			s:SetColor1(green)
+			s:SetColor2(red)
+			s:SetColor3(green)
 
-		local attaches = s:GetAttaches() or ""
-		for i = 1, #attaches do
-			if attaches[i].class == "LampWallInner_01" then
-				attaches[i]:SetColorModifier(green)
+			s:ForEachAttach(function(a)
+				if a.class == "LampWallInner_01" then
+					a:SetColorModifier(green)
+				end
+			end)
+		end
+
+		local TerrainTextures = TerrainTextures
+
+		-- polar map texture
+		local polar_idx = table.find(TerrainTextures, "name", "Polar_01")
+		terrain.SetTerrainType{type = polar_idx}
+
+		-- add back dome grass
+		local domes = UICity.labels.Dome or ""
+		for i = 1, #domes do
+			domes[i]:ChangeSkin(domes[i]:GetCurrentSkin())
+		end
+
+		-- re-paint concrete
+		local GridOpFree = GridOpFree
+		local AsyncSetTypeGrid = AsyncSetTypeGrid
+		local MulDivRound = MulDivRound
+		local sqrt = sqrt
+		local guim = guim
+
+		-- re-build concrete textures (if any are visible)
+		local texture_idx1 = table.find(TerrainTextures, "name", "Regolith") + 1
+		local texture_idx2 = table.find(TerrainTextures, "name", "Regolith_02") + 1
+		local deposits = UICity.labels.TerrainDeposit or ""
+		local NoisePreset = DataInstances.NoisePreset
+
+		for i = 1, #deposits do
+			local d = deposits[i]
+			local pattern = NoisePreset.ConcreteForm:GetNoise(128, AsyncRand())
+			pattern:land_i(NoisePreset.ConcreteNoise:GetNoise(128, AsyncRand()))
+			-- any over 1000 get the more noticeable texture
+			if d.max_amount > 1000000 then
+				pattern:mul_i(texture_idx2, 1)
+			else
+				pattern:mul_i(texture_idx1, 1)
 			end
+			-- blend in with surrounding ground
+			pattern:sub_i(1, 1)
+			-- ?
+			pattern = GridOpFree(pattern, "repack", 8)
+			-- paint deposit
+			AsyncSetTypeGrid{
+				type_grid = pattern,
+				pos = d:GetPos(),
+				scale = sqrt(MulDivRound(10000, d.max_amount / guim, d.radius_max)),
+				centered = true,
+				invalid_type = -1,
+			}
 		end
-	end
+	end)
 
-	-- polar map texture
-	terrain.SetTerrainType{type = 34}
-
-	-- re-paint concrete
-	local new_texture = 24
-	local SetTypeCircle = terrain.SetTypeCircle
-	local GetHeight = terrain.GetHeight
-	local TerrainDeposit_Decode = TerrainDeposit_Decode
-	local point = point
-	local grid_spacing = const.GridSpacing/2
-	local TerrainDepositsInfo = TerrainDepositsInfo
-	local guim = guim
-
-	local gpts = HexGridWorldValues(TerrainDepositGrid, true)
-	if #gpts == 0 then
-		return
-	end
-	local mx, my, data = gpts[1]:xyz()
-	local gtype, gvol = TerrainDeposit_Decode(data)
-	local gmin, gmax = gvol, gvol
-	for i = 2, #gpts do
-		mx, my, data = gpts[i]:xyz()
-		gtype, gvol = TerrainDeposit_Decode(data)
-		if gvol < gmin then gmin = gvol
-		elseif gvol > gmax then gmax = gvol
-		end
-	end
-	if gmax <= gmin then
-		return
-	end
-	for i = 1, #gpts do
-		mx, my, data = gpts[i]:xyz()
-		gtype, gvol = TerrainDeposit_Decode(data)
-		local info = TerrainDepositsInfo[gtype]
-		local dv = gvol - gmin
-		if dv > 0 and info then
-			SetTypeCircle(point(mx, my, GetHeight(mx, my) + guim), grid_spacing, new_texture)
-		end
-	end
-
-end -- OnMsg.DepositsSpawned()
-
--- backup orginal function for later use (checks if we already have a backup, or else problems)
-local Msg = Msg
-local select = select
-local OrigFuncs = {}
-local function AddMsgToFunc(ClassName,FuncName,sMsg)
-	local name = string.format("%s_%s",ClassName,FuncName)
-	if not OrigFuncs[name] then
-		-- save orig
-		OrigFuncs[name] = _G[ClassName][FuncName]
-		-- redefine it
-		_G[ClassName][FuncName] = function(...)
-			-- only change vehicle colour if it's a new game started in Dec
-			if UICity.ChristmasMars then
-				-- I just care about adding self to the msgs
-				Msg(sMsg,select(1,...))
-			end
-			return OrigFuncs[name](...)
-		end
-	end
-end
+end -- OnMsg
 
 local DelayedCall = DelayedCall
+local Msg = Msg
 
-AddMsgToFunc("CargoShuttle","GameInit","ChristmasMars_DefaultColourGRWG")
-AddMsgToFunc("RCTransport","GameInit","ChristmasMars_DefaultColourGRWG")
-AddMsgToFunc("RCRover","GameInit","ChristmasMars_DefaultColourGRWG")
-AddMsgToFunc("ExplorerRover","GameInit","ChristmasMars_DefaultColourGRWG")
-AddMsgToFunc("PowerDecoy","GameInit","ChristmasMars_DefaultColourGRWG")
-AddMsgToFunc("LightTrap","GameInit","ChristmasMars_DefaultColourGRWG")
-AddMsgToFunc("SubsurfaceHeater","GameInit","ChristmasMars_DefaultColourGRWG")
+-- backup orginal function for later use (checks if we already have a backup, or else problems)
+local OrigFuncs = {}
+
+local function SendMsg(msg_name,obj,cls_name)
+	Msg(msg_name,obj,cls_name)
+end
+local function AddMsgToFunc(cls_name,msg_name)
+	local name = string.format("%s_GameInit",cls_name)
+	if not OrigFuncs[name] then
+		-- save orig
+		OrigFuncs[name] = _G[cls_name].GameInit
+		-- redefine it
+		_G[cls_name].GameInit = function(obj,...)
+			-- only change colour if it's a game started in Dec
+			if UICity.ChristmasMars then
+				DelayedCall(1,SendMsg,msg_name,obj,cls_name)
+			end
+			return OrigFuncs[name](obj,...)
+		end
+	end
+end
+
+AddMsgToFunc("CargoShuttle","ChristmasMars_DefaultColourGRWG")
+AddMsgToFunc("RCTransport","ChristmasMars_DefaultColourGRWG")
+AddMsgToFunc("RCRover","ChristmasMars_DefaultColourGRWG")
+AddMsgToFunc("ExplorerRover","ChristmasMars_DefaultColourGRWG")
+AddMsgToFunc("PowerDecoy","ChristmasMars_DefaultColourGRWG")
+AddMsgToFunc("LightTrap","ChristmasMars_DefaultColourGRWG")
+AddMsgToFunc("SubsurfaceHeater","ChristmasMars_DefaultColourGRWG")
 
 function OnMsg.ChristmasMars_DefaultColourGRWG(s)
-	DelayedCall(1, function()
-		s:SetColor1(green)
-		s:SetColor2(red)
-		s:SetColor3(white)
-		if not s.class == "ExplorerRover" then
-			s:SetColor4(red)
-		end
-	end)
+	s:SetColor1(green)
+	s:SetColor2(red)
+	s:SetColor3(white)
+	if not s.class == "ExplorerRover" then
+		s:SetColor4(red)
+	end
 end
 
-AddMsgToFunc("StirlingGenerator","GameInit","ChristmasMars_DefaultColourGRGR")
-AddMsgToFunc("WindTurbine","GameInit","ChristmasMars_DefaultColourGRGR")
-AddMsgToFunc("SensorTower","GameInit","ChristmasMars_DefaultColourGRGR")
-AddMsgToFunc("ElectricityStorage","GameInit","ChristmasMars_DefaultColourGRGR")
+AddMsgToFunc("StirlingGenerator","ChristmasMars_DefaultColourGRGR")
+AddMsgToFunc("WindTurbine","ChristmasMars_DefaultColourGRGR")
+AddMsgToFunc("SensorTower","ChristmasMars_DefaultColourGRGR")
+AddMsgToFunc("ElectricityStorage","ChristmasMars_DefaultColourGRGR")
 
-AddMsgToFunc("Apartments","GameInit","ChristmasMars_DefaultColourGRGR")
-AddMsgToFunc("Spacebar","GameInit","ChristmasMars_DefaultColourGRGR")
-AddMsgToFunc("Diner","GameInit","ChristmasMars_DefaultColourGRGR")
-AddMsgToFunc("Infirmary","GameInit","ChristmasMars_DefaultColourGRGR")
-AddMsgToFunc("CasinoComplex","GameInit","ChristmasMars_DefaultColourGRGR")
-AddMsgToFunc("Grocery","GameInit","ChristmasMars_DefaultColourGRGR")
-AddMsgToFunc("SecurityStation","GameInit","ChristmasMars_DefaultColourGRGR")
+AddMsgToFunc("Apartments","ChristmasMars_DefaultColourGRGR")
+AddMsgToFunc("Spacebar","ChristmasMars_DefaultColourGRGR")
+AddMsgToFunc("Diner","ChristmasMars_DefaultColourGRGR")
+AddMsgToFunc("Infirmary","ChristmasMars_DefaultColourGRGR")
+AddMsgToFunc("CasinoComplex","ChristmasMars_DefaultColourGRGR")
+AddMsgToFunc("Grocery","ChristmasMars_DefaultColourGRGR")
+AddMsgToFunc("SecurityStation","ChristmasMars_DefaultColourGRGR")
 
 function OnMsg.ChristmasMars_DefaultColourGRGR(s)
-	DelayedCall(1, function()
-		s:SetColor1(green)
-		s:SetColor2(red)
-		s:SetColor3(green)
-		s:SetColor4(red)
-	end)
+	s:SetColor1(green)
+	s:SetColor2(red)
+	s:SetColor3(green)
+	s:SetColor4(red)
 end
 
-AddMsgToFunc("ServiceWorkplace","GameInit","ChristmasMars_DefaultColourRGRG")
-AddMsgToFunc("Nursery","GameInit","ChristmasMars_DefaultColourRGRG")
-AddMsgToFunc("ArtWorkshop","GameInit","ChristmasMars_DefaultColourRGRG")
-AddMsgToFunc("BioroboticsWorkshop","GameInit","ChristmasMars_DefaultColourRGRG")
-AddMsgToFunc("School","GameInit","ChristmasMars_DefaultColourRGRG")
-AddMsgToFunc("VRWorkshop","GameInit","ChristmasMars_DefaultColourRGRG")
-AddMsgToFunc("MartianUniversity","GameInit","ChristmasMars_DefaultColourRGRG")
-AddMsgToFunc("BaseResearchLab","GameInit","ChristmasMars_DefaultColourRGRG")
+AddMsgToFunc("ServiceWorkplace","ChristmasMars_DefaultColourRGRG")
+AddMsgToFunc("Nursery","ChristmasMars_DefaultColourRGRG")
+AddMsgToFunc("ArtWorkshop","ChristmasMars_DefaultColourRGRG")
+AddMsgToFunc("BioroboticsWorkshop","ChristmasMars_DefaultColourRGRG")
+AddMsgToFunc("School","ChristmasMars_DefaultColourRGRG")
+AddMsgToFunc("VRWorkshop","ChristmasMars_DefaultColourRGRG")
+AddMsgToFunc("MartianUniversity","ChristmasMars_DefaultColourRGRG")
+AddMsgToFunc("BaseResearchLab","ChristmasMars_DefaultColourRGRG")
 
 function OnMsg.ChristmasMars_DefaultColourRGRG(s)
-	DelayedCall(1, function()
-		s:SetColor1(red)
-		s:SetColor2(green)
-		s:SetColor3(red)
-		s:SetColor4(green)
-	end)
+	s:SetColor1(red)
+	s:SetColor2(green)
+	s:SetColor3(red)
+	s:SetColor4(green)
 end
 
-AddMsgToFunc("DefenceTower","GameInit","ChristmasMars_SpawnedDefenceTower")
-AddMsgToFunc("MDSLaser","GameInit","ChristmasMars_SpawnedMDSLaser")
-AddMsgToFunc("SupplyRocket","GameInit","ChristmasMars_SpawnedSupplyRocket")
-AddMsgToFunc("Tunnel","GameInit","ChristmasMars_SpawnedTunnel")
-AddMsgToFunc("LandingPad","GameInit","ChristmasMars_SpawnedLandingPad")
-AddMsgToFunc("RechargeStation","GameInit","ChristmasMars_SpawnedRechargeStation")
-AddMsgToFunc("DroneHub","GameInit","ChristmasMars_SpawnedDroneHub")
-AddMsgToFunc("ShuttleHub","GameInit","ChristmasMars_SpawnedShuttleHub")
-AddMsgToFunc("TriboelectricScrubber","GameInit","ChristmasMars_SpawnedTriboelectricScrubber")
-AddMsgToFunc("SolarPanel","GameInit","ChristmasMars_SpawnedSolarPanel")
-AddMsgToFunc("FusionReactor","GameInit","ChristmasMars_SpawnedFusionReactor")
---~ AddMsgToFunc("LifeSupportGridElement","GameInit","ChristmasMars_SpawnedLifeSupportGridElement")
---~ AddMsgToFunc("ElectricityGridElement","GameInit","ChristmasMars_SpawnedElectricityGridElement")
-AddMsgToFunc("MOXIE","GameInit","ChristmasMars_SpawnedMOXIE")
-AddMsgToFunc("OxygenTank","GameInit","ChristmasMars_SpawnedOxygenTank")
-AddMsgToFunc("MoistureVaporator","GameInit","ChristmasMars_SpawnedMoistureVaporator")
-AddMsgToFunc("WaterExtractor","GameInit","ChristmasMars_SpawnedWaterExtractor")
-AddMsgToFunc("WaterTank","GameInit","ChristmasMars_SpawnedWaterTank")
-AddMsgToFunc("FungalFarm","GameInit","ChristmasMars_SpawnedFungalFarm")
-AddMsgToFunc("PolymerPlant","GameInit","ChristmasMars_SpawnedPolymerPlant")
-AddMsgToFunc("PreciousMetalsExtractor","GameInit","ChristmasMars_SpawnedPreciousMetalsExtractor")
-AddMsgToFunc("MetalsExtractor","GameInit","ChristmasMars_SpawnedMetalsExtractor")
-AddMsgToFunc("RegolithExtractor","GameInit","ChristmasMars_SpawnedRegolithExtractor")
-AddMsgToFunc("DroneFactory","GameInit","ChristmasMars_SpawnedDroneFactory")
-AddMsgToFunc("FuelFactory","GameInit","ChristmasMars_SpawnedFuelFactory")
-AddMsgToFunc("MachinePartsFactory","GameInit","ChristmasMars_SpawnedMachinePartsFactory")
-AddMsgToFunc("ElectronicsFactory","GameInit","ChristmasMars_SpawnedElectronicsFactory")
-AddMsgToFunc("SpaceElevator","GameInit","ChristmasMars_SpawnedSpaceElevator")
-AddMsgToFunc("MoholeMine","GameInit","ChristmasMars_SpawnedMoholeMine")
-AddMsgToFunc("OmegaTelescope","GameInit","ChristmasMars_SpawnedOmegaTelescope")
-AddMsgToFunc("ArtificialSun","GameInit","ChristmasMars_SpawnedArtificialSun")
-AddMsgToFunc("ProjectMorpheus","GameInit","ChristmasMars_SpawnedProjectMorpheus")
-AddMsgToFunc("TheExcavator","GameInit","ChristmasMars_SpawnedTheExcavator")
-AddMsgToFunc("FarmHydroponic","GameInit","ChristmasMars_SpawnedFarmHydroponic")
-AddMsgToFunc("WaterTankLarge","GameInit","ChristmasMars_SpawnedWaterTankLarge")
-AddMsgToFunc("FarmConventional","GameInit","ChristmasMars_SpawnedFarmConventional")
-AddMsgToFunc("WaterReclamationSpire","GameInit","ChristmasMars_SpawnedWaterReclamationSpire")
-AddMsgToFunc("CloningVats","GameInit","ChristmasMars_SpawnedCloningVats")
-AddMsgToFunc("NetworkNode","GameInit","ChristmasMars_SpawnedNetworkNode")
-AddMsgToFunc("MedicalCenter","GameInit","ChristmasMars_SpawnedMedicalCenter")
-AddMsgToFunc("Sanatorium","GameInit","ChristmasMars_SpawnedSanatorium")
-AddMsgToFunc("Arcology","GameInit","ChristmasMars_SpawnedArcology")
-AddMsgToFunc("HangingGardens","GameInit","ChristmasMars_SpawnedHangingGardens")
-AddMsgToFunc("PassageRamp","GameInit","ChristmasMars_SpawnedPassageRamp")
-AddMsgToFunc("Playground","GameInit","ChristmasMars_SpawnedPlayground")
+--~ AddMsgToFunc("DefenceTower","ChristmasMars_SpawnedDefenceTower")
+--~ AddMsgToFunc("MDSLaser","ChristmasMars_SpawnedMDSLaser")
+--~ AddMsgToFunc("SupplyRocket","ChristmasMars_SpawnedSupplyRocket")
+--~ AddMsgToFunc("Tunnel","ChristmasMars_SpawnedTunnel")
+--~ AddMsgToFunc("LandingPad","ChristmasMars_SpawnedLandingPad")
+--~ AddMsgToFunc("RechargeStation","ChristmasMars_SpawnedRechargeStation")
+--~ AddMsgToFunc("DroneHub","ChristmasMars_SpawnedDroneHub")
+--~ AddMsgToFunc("ShuttleHub","ChristmasMars_SpawnedShuttleHub")
+--~ AddMsgToFunc("TriboelectricScrubber","ChristmasMars_SpawnedTriboelectricScrubber")
+--~ AddMsgToFunc("SolarPanel","ChristmasMars_SpawnedSolarPanel")
+--~ AddMsgToFunc("FusionReactor","ChristmasMars_SpawnedFusionReactor")
+--~ AddMsgToFunc("MOXIE","ChristmasMars_SpawnedMOXIE")
+--~ AddMsgToFunc("OxygenTank","ChristmasMars_SpawnedOxygenTank")
+--~ AddMsgToFunc("MoistureVaporator","ChristmasMars_SpawnedMoistureVaporator")
+--~ AddMsgToFunc("WaterExtractor","ChristmasMars_SpawnedWaterExtractor")
+--~ AddMsgToFunc("WaterTank","ChristmasMars_SpawnedWaterTank")
+--~ AddMsgToFunc("FungalFarm","ChristmasMars_SpawnedFungalFarm")
+--~ AddMsgToFunc("PolymerPlant","ChristmasMars_SpawnedPolymerPlant")
+--~ AddMsgToFunc("PreciousMetalsExtractor","ChristmasMars_SpawnedPreciousMetalsExtractor")
+--~ AddMsgToFunc("MetalsExtractor","ChristmasMars_SpawnedMetalsExtractor")
+--~ AddMsgToFunc("RegolithExtractor","ChristmasMars_SpawnedRegolithExtractor")
+--~ AddMsgToFunc("DroneFactory","ChristmasMars_SpawnedDroneFactory")
+--~ AddMsgToFunc("FuelFactory","ChristmasMars_SpawnedFuelFactory")
+--~ AddMsgToFunc("MachinePartsFactory","ChristmasMars_SpawnedMachinePartsFactory")
+--~ AddMsgToFunc("ElectronicsFactory","ChristmasMars_SpawnedElectronicsFactory")
+--~ AddMsgToFunc("SpaceElevator","ChristmasMars_SpawnedSpaceElevator")
+--~ AddMsgToFunc("MoholeMine","ChristmasMars_SpawnedMoholeMine")
+--~ AddMsgToFunc("OmegaTelescope","ChristmasMars_SpawnedOmegaTelescope")
+--~ AddMsgToFunc("ArtificialSun","ChristmasMars_SpawnedArtificialSun")
+--~ AddMsgToFunc("ProjectMorpheus","ChristmasMars_SpawnedProjectMorpheus")
+--~ AddMsgToFunc("TheExcavator","ChristmasMars_SpawnedTheExcavator")
+--~ AddMsgToFunc("FarmHydroponic","ChristmasMars_SpawnedFarmHydroponic")
+--~ AddMsgToFunc("WaterTankLarge","ChristmasMars_SpawnedWaterTankLarge")
+--~ AddMsgToFunc("FarmConventional","ChristmasMars_SpawnedFarmConventional")
+--~ AddMsgToFunc("WaterReclamationSpire","ChristmasMars_SpawnedWaterReclamationSpire")
+--~ AddMsgToFunc("CloningVats","ChristmasMars_SpawnedCloningVats")
+--~ AddMsgToFunc("NetworkNode","ChristmasMars_SpawnedNetworkNode")
+--~ AddMsgToFunc("MedicalCenter","ChristmasMars_SpawnedMedicalCenter")
+--~ AddMsgToFunc("Sanatorium","ChristmasMars_SpawnedSanatorium")
+--~ AddMsgToFunc("Arcology","ChristmasMars_SpawnedArcology")
+--~ AddMsgToFunc("HangingGardens","ChristmasMars_SpawnedHangingGardens")
+--~ AddMsgToFunc("PassageRamp","ChristmasMars_SpawnedPassageRamp")
+--~ AddMsgToFunc("Playground","ChristmasMars_SpawnedPlayground")
+AddMsgToFunc("DefenceTower","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("MDSLaser","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("SupplyRocket","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("Tunnel","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("LandingPad","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("RechargeStation","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("DroneHub","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("ShuttleHub","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("TriboelectricScrubber","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("SolarPanel","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("FusionReactor","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("MOXIE","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("OxygenTank","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("MoistureVaporator","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("WaterExtractor","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("WaterTank","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("FungalFarm","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("PolymerPlant","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("PreciousMetalsExtractor","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("MetalsExtractor","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("RegolithExtractor","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("DroneFactory","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("FuelFactory","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("MachinePartsFactory","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("ElectronicsFactory","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("SpaceElevator","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("MoholeMine","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("OmegaTelescope","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("ArtificialSun","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("ProjectMorpheus","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("TheExcavator","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("FarmHydroponic","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("WaterTankLarge","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("FarmConventional","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("WaterReclamationSpire","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("CloningVats","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("NetworkNode","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("MedicalCenter","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("Sanatorium","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("Arcology","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("HangingGardens","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("PassageRamp","ChristmasMars_SpawnedBuilding")
+AddMsgToFunc("Playground","ChristmasMars_SpawnedBuilding")
