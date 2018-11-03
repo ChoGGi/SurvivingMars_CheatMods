@@ -308,21 +308,22 @@ function OnMsg.ClassesGenerate()
 						end
 
 --~ 						if Platform.steam then
-
+							local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
 							local screenshots = {}
 							for i = 1, 5 do
-								local screenshot1 = StringFormat("AppData/Mod Images/%s_%s.png",mod.id,i)
-								local screenshot2 = StringFormat("AppData/Mod Images/%s_%s.jpg",mod.id,i)
-								local screenshot3 = ConvertToOSPath(mod[StringFormat("screenshot%s",i)])
+								local location1 = StringFormat("AppData/Mod Images/%s_%s.png",mod.id,i)
+								local location2 = StringFormat("AppData/Mod Images/%s_%s.jpg",mod.id,i)
+								local location3 = StringFormat("%s%s",path,mod[StringFormat("screenshot%s",i)])
+--~ 								local location3 = mod[StringFormat("screenshot%s",i)]
 
-								if FileExists(screenshot1) then
+								if FileExists(location1) then
 									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.png",i))
-									AsyncCopyFile(screenshot1,StringFormat("AppData/ModUpload/screenshot%s.png",i),"raw")
-								elseif FileExists(screenshot2) then
+									AsyncCopyFile(location1,StringFormat("AppData/ModUpload/screenshot%s.png",i),"raw")
+								elseif FileExists(location2) then
 									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.jpg",i))
-									AsyncCopyFile(screenshot2,StringFormat("AppData/ModUpload/screenshot%s.jpg",i),"raw")
-								elseif io.exists(screenshot3) then
-									screenshots[#screenshots+1] = screenshot3
+									AsyncCopyFile(location2,StringFormat("AppData/ModUpload/screenshot%s.jpg",i),"raw")
+								elseif FileExists(location3) then
+									screenshots[#screenshots+1] = ConvertToOSPath(location3)
 								end
 							end
 
@@ -421,7 +422,7 @@ function OnMsg.ClassesGenerate()
 					hint_str = "<image %s>\n%s"
 					-- i don't know how to find rtl, so we'll reverse and find it that way. that said what's up with appending the path, can't you just do it when you need to?
 					local slash = string.find(mod.image:reverse(),"/",1,true)
-					local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path
+					local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
 					image = StringFormat("%s%s",path,mod.image:sub((slash - 1) * -1))
 				end
 				c = c + 1
