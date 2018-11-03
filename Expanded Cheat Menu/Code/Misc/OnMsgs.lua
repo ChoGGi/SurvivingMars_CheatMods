@@ -45,6 +45,8 @@ function OnMsg.ClassesGenerate()
 	XMenuBar.TextColor = white
 	XPopupMenu.Background = dark_gray
 	XPopupMenu.TextColor = white
+	-- gagarin
+	TextStyles.DevMenuBar.TextColor = white
 end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)

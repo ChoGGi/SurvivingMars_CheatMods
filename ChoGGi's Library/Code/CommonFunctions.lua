@@ -819,9 +819,11 @@ function ChoGGi.ComFuncs.RemoveFromLabel(label,obj)
 		end
 	end
 end
+
 do -- bool
-	acmpd = false
-	acsac = false
+	local PersistableGlobals = PersistableGlobals
+	PersistableGlobals.acmpd = true
+	PersistableGlobals.acsac = true
 	local Sleep = Sleep
 	CreateRealTimeThread(function()
 		while not dlgConsole do
@@ -830,6 +832,8 @@ do -- bool
 		dlgConsole:Exec("ChoGGi.Temp.as=AccountStorage\nChoGGi.Temp.sas=SaveAccountStorage",true)
 		acmpd = ChoGGi.Temp.as.ModPersistentData
 		acsac = ChoGGi.Temp.sas
+		PersistableGlobals.acmpd = nil
+		PersistableGlobals.acsac = nil
 	end)
 end
 
