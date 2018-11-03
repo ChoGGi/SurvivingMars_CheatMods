@@ -35,6 +35,7 @@ function OnMsg.ClassesGenerate()
 		-- name has to be set to make the hint show up
 		action.ActionName = action.ActionId
 		action.RolloverText = hint
+		action.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
 	end
 
 	function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
@@ -80,6 +81,39 @@ function OnMsg.ClassesGenerate()
 				SetHint(action,doublec)
 			elseif action.ActionId == "ColonistCapDef" then
 				SetHint(action,resetc)
+
+			elseif action.ActionId == "PowerNeed" then
+				if obj.electricity_consumption then
+					SetHint(action,S[302535920001221--[[Change this %s so it needs a power source.--]]]:format(name))
+				else
+					action.ActionId = ""
+				end
+
+			elseif action.ActionId == "WaterFree" then
+				if obj.water_consumption then
+					SetHint(action,S[302535920000853--[[Change this %s so it doesn't need a water source.--]]]:format(name))
+				else
+					action.ActionId = ""
+				end
+			elseif action.ActionId == "WaterNeed" then
+				if obj.water_consumption then
+					SetHint(action,S[302535920001247--[[Change this %s so it needs a water source.--]]]:format(name))
+				else
+					action.ActionId = ""
+				end
+
+			elseif action.ActionId == "OxygenFree" then
+				if obj.air_consumption then
+					SetHint(action,S[302535920001248--[[Change this %s so it doesn't need a oxygen source.--]]]:format(name))
+				else
+					action.ActionId = ""
+				end
+			elseif action.ActionId == "OxygenNeed" then
+				if obj.air_consumption then
+					SetHint(action,S[302535920001249--[[Change this %s so it needs a oxygen source.--]]]:format(name))
+				else
+					action.ActionId = ""
+				end
 
 			elseif action.ActionId == "Upgrade1" then
 				local tempname = Trans(obj.upgrade1_display_name)
@@ -140,6 +174,8 @@ function OnMsg.ClassesGenerate()
 				SetHint(action,S[302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).--]]])
 
 	--Misc
+			elseif action.ActionId == "Scan" then
+				SetHint(action,S[979029137252--[[Scanned an Anomaly--]]])
 			elseif action.ActionId == "Examine" then
 				SetHint(action,S[302535920001277--[[Open %s in the Object Examiner.--]]]:format(name))
 			elseif action.ActionId == "Fuel" then
@@ -153,38 +189,6 @@ function OnMsg.ClassesGenerate()
 			elseif action.ActionId == "PowerFree" then
 				if obj.electricity_consumption then
 					SetHint(action,S[302535920001220--[[Change this %s so it doesn't need a power source.--]]]:format(name))
-				else
-					action.ActionId = ""
-				end
-			elseif action.ActionId == "PowerNeed" then
-				if obj.electricity_consumption then
-					SetHint(action,S[302535920001221--[[Change this %s so it needs a power source.--]]]:format(name))
-				else
-					action.ActionId = ""
-				end
-
-			elseif action.ActionId == "WaterFree" then
-				if obj.water_consumption then
-					SetHint(action,S[302535920000853--[[Change this %s so it doesn't need a water source.--]]]:format(name))
-				else
-					action.ActionId = ""
-				end
-			elseif action.ActionId == "WaterNeed" then
-				if obj.water_consumption then
-					SetHint(action,S[302535920001247--[[Change this %s so it needs a water source.--]]]:format(name))
-				else
-					action.ActionId = ""
-				end
-
-			elseif action.ActionId == "OxygenFree" then
-				if obj.air_consumption then
-					SetHint(action,S[302535920001248--[[Change this %s so it doesn't need a oxygen source.--]]]:format(name))
-				else
-					action.ActionId = ""
-				end
-			elseif action.ActionId == "OxygenNeed" then
-				if obj.air_consumption then
-					SetHint(action,S[302535920001249--[[Change this %s so it needs a oxygen source.--]]]:format(name))
 				else
 					action.ActionId = ""
 				end

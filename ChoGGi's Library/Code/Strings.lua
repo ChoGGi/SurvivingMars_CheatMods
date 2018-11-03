@@ -295,6 +295,7 @@ local Strings = {
 	[847439380056] = TranslationTable[847439380056], -- Disabled
 	[885971788025] = TranslationTable[885971788025], -- Outside Buildings
 	[889032422791] = TranslationTable[889032422791], -- OUTSOURCE
+	[979029137252] = TranslationTable[979029137252], -- Scanned an Anomaly
 	[987289847467] = TranslationTable[987289847467], -- Age Groups
 }
 
@@ -328,7 +329,8 @@ local function TransZero(pad,first,last)
 		end
 		local num = tonumber(TableConcat{30253592000,pad,i})
 		local str = _InternalTranslate(T{num})
-		if str ~= "stripped" then
+		-- comment out on new versions to check for missing strings (stripped from pre-gagarin, remove when updated)
+		if str ~= "stripped" and str ~= "Missing text" then
 			Strings[num] = str
 		end
 	end
