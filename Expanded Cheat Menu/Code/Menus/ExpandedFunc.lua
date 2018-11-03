@@ -207,16 +207,16 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
+		local function AttachCleanUp(a)
+			if a.ChoGGi_ViewObjInfo_t or a.ChoGGi_ViewObjInfo_o then
+				a:delete()
+			end
+		end
 		local function RemoveViewObjInfo(label)
 			-- clear out the text objects
 			local objs = UICity.labels[label] or ""
 			for i = 1, #objs do
-				local attaches = objs[i]:GetAttaches() or ""
-				for j = #attaches, 1, -1 do
-					if attaches[j].ChoGGi_ViewObjInfo_t or attaches[j].ChoGGi_ViewObjInfo_o then
-						attaches[j]:delete()
-					end
-				end
+				objs[i]:ForEachAttach(AttachCleanUp)
 			end
 		end
 
@@ -307,7 +307,7 @@ function OnMsg.ClassesGenerate()
 				items = ItemList,
 				title = 302535920000333--[[Building Info--]],
 				hint = 302535920001280--[[Double-click to toggle text (updates every second).--]],
-				custom_type = 1,
+				custom_type = 7,
 				custom_func = CallBackFunc,
 			}
 		end

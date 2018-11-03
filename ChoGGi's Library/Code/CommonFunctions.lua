@@ -28,36 +28,37 @@ function ChoGGi.ComFuncs.SaveOrigFunc(class_or_func,func_name)
 		end
 	end
 end
+local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
--- changes a function to also post a Msg for use with OnMsg
-function ChoGGi.ComFuncs.AddMsgToFunc(class_name,func_name,msg_str,...)
-	-- anything i want to pass onto the msg
-	local varargs = ...
-	-- save orig
-	ChoGGi.ComFuncs.SaveOrigFunc(class_name,func_name)
-	-- local stuff
-	local select = select
+do -- AddMsgToFunc
 	local Msg = Msg
-	-- we want to local this after SaveOrigFunc just in case
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-	-- redefine it
-	_G[class_name][func_name] = function(...)
-		-- I just care about adding self to the msgs
-		Msg(msg_str,select(1,...),varargs)
+	-- changes a function to also post a Msg for use with OnMsg
+	function ChoGGi.ComFuncs.AddMsgToFunc(class_name,func_name,msg_str,...)
+		-- anything i want to pass onto the msg
+		local varargs = ...
+		-- save orig
+		SaveOrigFunc(class_name,func_name)
+		-- we want to local this after SaveOrigFunc just in case
+		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+		-- redefine it
+		_G[class_name][func_name] = function(obj,...)
+			-- send obj along with any extra args i added
+			Msg(msg_str,obj,varargs)
 
---~ 		-- use to debug if getting an error
---~ 		local params = {...}
---~ 		-- pass on args to orig func
---~ 		if not pcall(function()
---~ 			return ChoGGi_OrigFuncs[StringFormat("%s_%s",class_name,func_name)](table.unpack(params))
---~ 		end) then
---~ 			print("Function Error: ",StringFormat("%s_%s",class_name,func_name))
---~ 			ChoGGi.ComFuncs.OpenInExamineDlg{params}
---~ 		end
+--~ 			-- use to debug if getting an error
+--~ 			local params = {...}
+--~ 			-- pass on args to orig func
+--~ 			if not pcall(function()
+--~ 				return ChoGGi_OrigFuncs[StringFormat("%s_%s",class_name,func_name)](table.unpack(params))
+--~ 			end) then
+--~ 				print("Function Error: ",StringFormat("%s_%s",class_name,func_name))
+--~ 				ChoGGi.ComFuncs.OpenInExamineDlg{params}
+--~ 			end
 
-		return ChoGGi_OrigFuncs[StringFormat("%s_%s",class_name,func_name)](...)
+			return ChoGGi_OrigFuncs[StringFormat("%s_%s",class_name,func_name)](obj,...)
+		end
 	end
-end
+end -- do
 
 do -- Translate
 	local T,_InternalTranslate = T,_InternalTranslate
@@ -384,8 +385,7 @@ do -- ShowMe
 		-- could be from a saved game so remove any objects on the map
 		else
 			SuspendPassEdits("ClearShowMe")
-			MapDelete("map", "ChoGGi_Vector")
-			MapDelete("map", "ChoGGi_Sphere")
+			MapDelete("map", "ChoGGi_Vector","ChoGGi_Sphere")
 			ResumePassEdits("ClearShowMe")
 		end
 	end
@@ -2389,9 +2389,7 @@ function ChoGGi.ComFuncs.ObjectColourDefault(obj)
 	end
 	-- regular attaches
 	if obj.ForEachAttach then
-		obj:ForEachAttach("ColorizableObject",function(a)
-			SetDefColour(a)
-		end)
+		obj:ForEachAttach("ColorizableObject",SetDefColour)
 	end
 	-- other attaches
 	local IsValid = IsValid
@@ -2613,19 +2611,19 @@ do -- ChangeObjectColour
 						return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
 					end
 				)
-				--All of type checkbox
+				-- All of type checkbox
 				if choice[1].check1 then
 					local tab = UICity.labels[label] or ""
 					for i = 1, #tab do
 						if parent then
-							local attaches = tab[i]:GetAttaches(obj.class) or ""
-							for j = 1, #attaches do
+							tab[i]:ForEachAttach(function(a)
 								if choice[1].check2 then
-									CheckGrid(fake_parent,SetOrigColours,attaches[j],tab[i],choice)
+									CheckGrid(fake_parent,SetOrigColours,a,tab[i],choice)
 								else
-									CheckGrid(fake_parent,SetColours,attaches[j],tab[i],choice)
+									CheckGrid(fake_parent,SetColours,a,tab[i],choice)
 								end
-							end
+							end)
+
 						else --not parent
 							if choice[1].check2 then
 								CheckGrid(fake_parent,SetOrigColours,tab[i],tab[i],choice)
@@ -4039,13 +4037,15 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 	end
 
 	local ItemList = {}
+	local c = 0
 
 	-- has no Attaches so just open as is
 	if obj:GetNumAttaches() == 0 then
 		ChoGGi.ComFuncs.ChangeObjectColour(obj)
 		return
 	else
-		ItemList[#ItemList+1] = {
+		c = c + 1
+		ItemList[c] = {
 			text = StringFormat(" %s",obj.class),
 			value = obj.class,
 			obj = obj,
@@ -4055,7 +4055,8 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 		if obj.ForEachAttach then
 			obj:ForEachAttach(function(a)
 				if a:IsKindOf("ColorizableObject") then
-					ItemList[#ItemList+1] = {
+					c = c + 1
+					ItemList[c] = {
 						text = a.class,
 						value = a.class,
 						parentobj = obj,
@@ -4065,11 +4066,12 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 				end
 			end)
 		end
-		-- any attaches not attached in the traditional sense (or that GetAttaches says fuck you to)
+		-- any attaches not attached in the traditional sense
 		local IsValid = IsValid
 		for _,attach in pairs(obj) do
 			if IsValid(attach) and attach:IsKindOf("ColorizableObject") then
-				ItemList[#ItemList+1] = {
+				c = c + 1
+				ItemList[c] = {
 					text = attach.class,
 					value = attach.class,
 					parentobj = obj,

@@ -309,6 +309,29 @@ function OnMsg.ClassesGenerate()
 			)
 		end
 
+		local function AttachedColonist(c,pos,rocket)
+			-- try to remove attached colonist from rocket, and get pos so we can create a new c at the same pos
+			if IsValid(c) then
+				c:Detach()
+				pos = c.GetPos and c:GetPos() or pos
+				SpawnColonist(c,rocket,pos)
+				c:delete()
+			else
+				SpawnColonist(nil,rocket,pos)
+			end
+--~ 			if not pcall(function()
+--~ 				c:Detach()
+--~ 				pos = c.GetPos and c:GetPos() or pos
+--~ 				SpawnColonist(c,rocket,pos)
+--~ 			end) then
+--~ 				SpawnColonist(nil,rocket,pos)
+--~ 				-- something messed up with so just spawn random colonist
+--~ 			end
+--~ 			if c.Done then
+--~ 				c:Done()
+--~ 			end
+--~ 			c:delete()
+		end
 		function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
 			local rockets = UICity.labels.AllRockets or ""
 			local pos
@@ -316,25 +339,7 @@ function OnMsg.ClassesGenerate()
 				-- AllRockets also returns rockets in space
 				if rockets[i]:IsValidPos() then
 					pos = rockets[i]:GetPos()
-					local attaches = rockets[i]:GetAttaches("Colonist") or ""
-					if #attaches > 0 then
-						for j = #attaches, 1, -1 do
-							local c = attaches[j]
-							-- try to remove attached colonist from rocket, and get pos so we can create a new c at the same pos
-							if not pcall(function()
-								c:Detach()
-								pos = type(c.GetPos) == "function" and c:GetPos() or pos
-								SpawnColonist(c,rockets[i],pos)
-							end) then
-								SpawnColonist(nil,rockets[i],pos)
-								--something messed up with so just spawn random colonist
-							end
-							if type(c.Done) == "function" then
-								c:Done()
-							end
-							c:delete()
-						end
-					end
+					rockets[i]:ForEachAttach("Colonist",AttachedColonist,pos,rockets[i])
 				end
 			end
 			MsgPopup(
