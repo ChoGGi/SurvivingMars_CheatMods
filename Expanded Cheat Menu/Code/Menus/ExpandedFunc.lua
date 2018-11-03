@@ -233,17 +233,16 @@ function OnMsg.ClassesGenerate()
 					-- update text
 					for i = 1, #objs do
 						mine = nil
-						local attaches = objs[i]:GetAttaches() or ""
-						for j = 1, #attaches do
-							if attaches[j].ChoGGi_ViewObjInfo_t then
+						objs[i]:ForEachAttach(function(a)
+							if a.ChoGGi_ViewObjInfo_t then
 								mine = {
 									pos = objs[i]:GetVisualPos(),
-									text = attaches[j],
+									text = a,
 								}
-								attaches[j]:SetText(GetInfo[label](objs[i]))
-								break
+								a:SetText(GetInfo[label](objs[i]))
+								return
 							end
-						end
+						end)
 
 						-- set opacity depending on dist
 						if mine then

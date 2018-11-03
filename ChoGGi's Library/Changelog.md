@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v3.1 (Unreleased)
+- Cleaned up my DeleteObject func to remove the (hopefully) last of the log spam.
 
 ## v3.0 (01 Nov 2018)
 - Better compatibility with other mods that use custom shortcut keys.

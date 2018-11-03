@@ -2125,85 +2125,79 @@ function ChoGGi.ComFuncs.ToggleConsoleLog()
 	end
 end
 
---[[
-	local tab = UICity.labels.BlackCubeStockpiles or ""
-	for i = 1, #tab do
-		ChoGGi.ComFuncs.FuckingDrones(tab[i])
-	end
---]]
---force drones to pickup from object even if they have a large carry cap
-function ChoGGi.ComFuncs.FuckingDrones(obj)
-	if not IsValid(obj) then
-		return
-	end
-
-	local ChoGGi = ChoGGi
-	local r = ChoGGi.Consts.ResourceScale
-	-- Come on, Bender. Grab a jack. I told these guys you were cool.
-	-- Well, if jacking on will make strangers think I'm cool, I'll do it.
-
-	local stored
-	local p
-	local request
-	local resource
-	-- mines/farms/factories
-	if obj:IsKindOf("SingleResourceProducer") then
-		p = obj.parent
-		stored = obj:GetAmountStored()
-		request = obj.stockpiles[obj:GetNextStockpileIndex()].supply_request
-		resource = obj.resource_produced
---~ 	elseif obj:IsKindOf("BlackCubeStockpile") then
-	else
-		p = obj
-		stored = obj:GetStoredAmount()
-		request = obj.supply_request
-		resource = obj.resource
-	end
-
-	-- only fire if more then one resource
-	if stored > 1000 then
-		local drone = ChoGGi.ComFuncs.GetNearestIdleDrone(p)
-		if not drone then
+do -- FuckingDrones
+	-- force drones to pickup from pile even if they have a carry cap larger then the amount stored
+	local ResourceScale = ChoGGi.Consts.ResourceScale
+	function ChoGGi.ComFuncs.FuckingDrones(obj)
+		if not IsValid(obj) then
 			return
 		end
 
-		local carry = g_Consts.DroneResourceCarryAmount * r
-		-- round to nearest 1000 (don't want uneven stacks)
-		stored = (stored - stored % 1000) / 1000 * 1000
-		-- if carry is smaller then stored then they may not pickup (depends on storage)
-		if carry < stored or
-			-- no picking up more then they can carry
-			stored > carry then
-				stored = carry
+		-- Come on, Bender. Grab a jack. I told these guys you were cool.
+		-- Well, if jacking on will make strangers think I'm cool, I'll do it.
+
+		local stored
+		local parent
+		local request
+		local resource
+		-- mines/farms/factories
+		if obj:IsKindOf("SingleResourceProducer") then
+			parent = obj.parent
+			stored = obj:GetAmountStored()
+			request = obj.stockpiles[obj:GetNextStockpileIndex()].supply_request
+			resource = obj.resource_produced
+	--~ 	elseif obj:IsKindOf("BlackCubeStockpile") then
+		else
+			parent = obj
+			stored = obj:GetStoredAmount()
+			request = obj.supply_request
+			resource = obj.resource
 		end
-		-- pretend it's the user doing it (for more priority?)
-		drone:SetCommandUserInteraction(
-			"PickUp",
-			request,
-			false,
-			resource,
-			stored
-		)
+
+		-- only fire if more then one resource
+		if stored > 1000 then
+			local drone = ChoGGi.ComFuncs.GetNearestIdleDrone(parent)
+			if not drone then
+				return
+			end
+
+			local carry = g_Consts.DroneResourceCarryAmount * ResourceScale
+			-- round to nearest 1000 (don't want uneven stacks)
+			stored = (stored - stored % 1000) / 1000 * 1000
+			-- if carry is smaller then stored then they may not pickup (depends on storage)
+			if carry < stored or
+				-- no picking up more then they can carry
+				stored > carry then
+					stored = carry
+			end
+			-- pretend it's the user doing it (for more priority?)
+			drone:SetCommandUserInteraction(
+				"PickUp",
+				request,
+				false,
+				resource,
+				stored
+			)
+		end
 	end
-end
+end -- do
 
 function ChoGGi.ComFuncs.GetNearestIdleDrone(bld)
-	local ChoGGi = ChoGGi
 	if not bld or (bld and not bld.command_centers) then
 		return
 	end
 
-	-- check if nearest cc has idle drones
 	local cc = FindNearestObject(bld.command_centers,bld)
+	-- check if nearest cc has idle drones
 	if cc and cc:GetIdleDronesCount() > 0 then
 		cc = cc.drones
 	else
-		-- sort command_centers by nearest dist
-		table.sort(bld.command_centers,
-			function(a,b)
-				return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",bld.command_centers)
+		-- sort command_centers by nearest, then loop through each of them till we find an idle drone
+		table.sort(bld.command_centers,function(a,b)
+			if IsValid(a) and IsValid(b) then
+				return bld:GetDist2D(a) < bld:GetDist2D(b)
 			end
-		)
+		end)
 		-- get command_center with idle drones
 		for i = 1, #bld.command_centers do
 			if bld.command_centers[i]:GetIdleDronesCount() > 0 then
@@ -2213,18 +2207,27 @@ function ChoGGi.ComFuncs.GetNearestIdleDrone(bld)
 		end
 	end
 
-	-- it happens...
+	-- it happens
 	if not cc then
 		return
 	end
 
-	-- get an idle drone (why have a GetIdleDronesCount func but not this? which does pretty much the same thing)
-	for i = 1, #cc do
-		local c = cc[i].command
-		if c == "Idle" or c == "WaitCommand" then
-			return cc[i]
-		end
+	-- get an idle drone
+	local idle_idx = TableFind(cc,"command","Idle")
+	if idle_idx then
+		return cc[idle_idx]
 	end
+	idle_idx = TableFind(cc,"command","WaitCommand")
+	if idle_idx then
+		return cc[idle_idx]
+	end
+
+--~ 	for i = 1, #cc do
+--~ 		local c = cc[i].command
+--~ 		if c == "Idle" or c == "WaitCommand" then
+--~ 			return cc[i]
+--~ 		end
+--~ 	end
 
 end
 
@@ -2326,18 +2329,18 @@ function ChoGGi.ComFuncs.ObjectColourRandom(obj)
 	attaches[c] = {obj = obj,c = {}}
 
 	-- add colours to each colour table attached to each obj
-	local cc = 0
-	local ac = 1
+	local obj_count = 0
+	local att_count = 1
 	for i = 1, #colours do
 		-- add 1 to colour count
-		cc = cc + 1
+		obj_count = obj_count + 1
 		-- add colour to attach colours
-		attaches[ac].c[cc] = colours[i]
+		attaches[att_count].c[obj_count] = colours[i]
 
-		if cc == 4 then
+		if obj_count == 4 then
 			-- when we get to four increment attach colours num, and reset colour count
-			cc = 0
-			ac = ac + 1
+			obj_count = 0
+			att_count = att_count + 1
 		end
 	end
 
@@ -2617,13 +2620,11 @@ do -- ChangeObjectColour
 						if parent then
 							local attaches = tab[i]:GetAttaches(obj.class) or ""
 							for j = 1, #attaches do
-								--if Attaches[j].class == obj.class then
-									if choice[1].check2 then
-										CheckGrid(fake_parent,SetOrigColours,attaches[j],tab[i],choice)
-									else
-										CheckGrid(fake_parent,SetColours,attaches[j],tab[i],choice)
-									end
-								--end
+								if choice[1].check2 then
+									CheckGrid(fake_parent,SetOrigColours,attaches[j],tab[i],choice)
+								else
+									CheckGrid(fake_parent,SetColours,attaches[j],tab[i],choice)
+								end
 							end
 						else --not parent
 							if choice[1].check2 then
@@ -2945,11 +2946,11 @@ do -- BuildingConsumption
 end -- do
 
 do -- DisplayMonitorList
-	local function AddGrid(UICity,name,info)
+	local function AddGrid(city,name,info)
 		local c = #info.tables
-		for i = 1, #UICity[name] do
+		for i = 1, #city[name] do
 			c = c + 1
-			info.tables[c] = UICity[name][i]
+			info.tables[c] = city[name][i]
 		end
 	end
 
@@ -3089,9 +3090,9 @@ end -- do
 function ChoGGi.ComFuncs.ResetHumanCentipedes()
 	local objs = UICity.labels.Colonist or ""
 	for i = 1, #objs do
-		--only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
+		-- only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
 		if objs[i]:IsValidPos() and not objs[i]:GetPath() then
-			--too close and they keep doing the human centipede
+			-- too close and they keep doing the human centipede
 			local x,y,_ = objs[i]:GetVisualPosXYZ()
 			objs[i]:SetCommand("Goto", GetPassablePointNearby(point(x+Random(-5000,5000),y+Random(-5000,5000))))
 		end
@@ -3309,6 +3310,7 @@ function ChoGGi.ComFuncs.SetCommanderBonuses(name)
 	local list = Presets.CommanderProfilePreset.Default[name] or ""
 	local c = #comm
 	for i = 1, #list do
+		-- i forgot why i had this in a thread...
 		CreateRealTimeThread(function()
 			c = c + 1
 			comm[c] = list[i]
@@ -3325,7 +3327,7 @@ function ChoGGi.ComFuncs.SetSponsorBonuses(name)
 	end
 
 	local bonus = Presets.MissionSponsorPreset.Default[name]
-	--bonuses multiple sponsors have (CompareAmounts returns equal or larger amount)
+	-- bonuses multiple sponsors have (CompareAmounts returns equal or larger amount)
 	if sponsor.cargo then
 		sponsor.cargo = ChoGGi.ComFuncs.CompareAmounts(sponsor.cargo,bonus.cargo)
 	end
