@@ -3,7 +3,10 @@
 -- most OnMsgs
 
 local StringFormat = string.format
+local TableSort = table.sort
+local TableRemove = table.remove
 local FlushLogFile = FlushLogFile
+local IsValid = IsValid
 local Msg = Msg
 local OnMsg = OnMsg
 
@@ -719,16 +722,14 @@ function OnMsg.NewDay() -- NewSol...
 		-- sorts cc list by dist to building
 		if ChoGGi.UserSettings.SortCommandCenterDist then
 			local objs = UICity.labels.Building or ""
-			local sort = table.sort
-			local CompareTableFuncs = ChoGGi.ComFuncs.CompareTableFuncs
 			for i = 1, #objs do
 				-- no sense in doing it with only one center
 				if #objs[i].command_centers > 1 then
-					sort(objs[i].command_centers,
-						function(a,b)
-							return CompareTableFuncs(a,b,"GetDist2D",objs[i])
+					TableSort(objs[i].command_centers,function(a,b)
+						if IsValid(a) and IsValid(b) then
+							return objs[i]:GetDist2D(a) < objs[i]:GetDist2D(b)
 						end
-					)
+					end)
 				end
 			end
 		end
@@ -740,11 +741,10 @@ function OnMsg.NewDay() -- NewSol...
 
 		-- loop through and remove any missing popups
 		local popups = ChoGGi.Temp.MsgPopups or ""
-		local remove = table.remove
 		for i = #popups, 1, -1 do
 			if not popups[i]:IsVisible() then
 				popups[i]:delete()
-				remove(popups,i)
+				TableRemove(popups,i)
 			end
 		end
 

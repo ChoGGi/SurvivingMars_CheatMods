@@ -279,10 +279,10 @@ function OnMsg.ClassesGenerate()
 					-- update mod, and copy files to ModUpload
 					if copy_files and not blank_mod and not err then
 						local files
-						-- I prefer to update this manually
-						if not ChoGGi.testing then
-							mod:SaveDef()
-						end
+--~ 						-- I prefer to update this manually
+--~ 						if not ChoGGi.testing then
+--~ 							mod:SaveDef()
+--~ 						end
 						mod:SaveItems()
 						AsyncDeletePath(dest)
 						AsyncCreatePath(dest)
@@ -313,7 +313,7 @@ function OnMsg.ClassesGenerate()
 							for i = 1, 5 do
 								local screenshot1 = StringFormat("AppData/Mod Images/%s_%s.png",mod.id,i)
 								local screenshot2 = StringFormat("AppData/Mod Images/%s_%s.jpg",mod.id,i)
-								local screenshot3 = mod[StringFormat("screenshot%s",i)]
+								local screenshot3 = ConvertToOSPath(mod[StringFormat("screenshot%s",i)])
 
 								if FileExists(screenshot1) then
 									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.png",i))
