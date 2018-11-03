@@ -7,6 +7,9 @@
 ### Added:
 - A "Disable ECM" key binding if you used the Disable ECM option.
 - Re-added Help>Interface>Toggle Signs: If CheatsEnabled() returned false then it didn't work (not sure why devs think it's a cheat).
+- Examine:
+- > Toolbar button: Get all properties: Queries obj:GetProperties() and lists the values.
+- > Checkbox: Show all values: Gets all the metatable names and shows the values of those for the object (global toggle).
 
 ### Changed:
 - Camera goes back to same position when toggling Free Camera/Follow Camera.
