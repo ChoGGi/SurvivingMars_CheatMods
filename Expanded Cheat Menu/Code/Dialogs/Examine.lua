@@ -95,9 +95,13 @@ function OnMsg.ClassesGenerate()
 			title = S[302535920000449--[[Attach Spots Toggle--]]],
 			text = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 		},
-		["CommonAssets/UI/Menu/AreaProperties.tga"] = {
+		["CommonAssets/UI/Menu/SelectByClass.tga"] = {
 			title = S[931--[[Modified property--]]],
-			text = S[302535920001384--[[Properties different from base object?--]]],
+			text = S[302535920001384--[[Get properties different from base/parent object?--]]],
+		},
+		["CommonAssets/UI/Menu/AreaProperties.tga"] = {
+			title = S[302535920001389--[[All Properties--]]],
+			text = S[302535920001390--[[Get all properties.--]]],
 		},
 	}
 end
@@ -234,6 +238,18 @@ function Examine:Init(parent, context)
 		RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
 		OnChange = function()
 			self:idAutoRefreshToggle()
+		end,
+	}, self.idLinkArea)
+
+	self.idShowAllValues = g_Classes.ChoGGi_CheckButton:new({
+		Id = "idShowAllValues",
+		Dock = "right",
+		MinWidth = 0,
+		Text = S[4493--[[All--]]],
+		RolloverText = S[302535920001391--[[Show all values (metatable).--]]],
+		OnChange = function()
+			ChoGGi.Temp.ExamineAllValues = not ChoGGi.Temp.ExamineAllValues
+			self:SetObj()
 		end,
 	}, self.idLinkArea)
 
@@ -853,9 +869,11 @@ end
 
 local totextex_res = {}
 local totextex_sort = {}
+local totextex_dupes = {}
 function Examine:totextex(obj,obj_type)
 	TableIClear(totextex_res)
 	TableClear(totextex_sort)
+	TableClear(totextex_dupes)
 	local obj_metatable = getmetatable(obj)
 	local c = 0
 
@@ -869,13 +887,32 @@ function Examine:totextex(obj,obj_type)
 	elseif obj_type == "table" then
 
 		for k, v in pairs(obj) do
+			-- gotta store all the names if we're doing all props (no dupes thanks)
+			totextex_dupes[k] = true
 			c = c + 1
 			totextex_res[c] = StringFormat("%s = %s<left>",
-				self:valuetotextex(k),
+				k,
 				self:valuetotextex(v)
 			)
 			if type(k) == "number" then
 				totextex_sort[totextex_res[c]] = k
+			end
+		end
+		-- keep looping through metatables till we run out
+		if obj_metatable and ChoGGi.Temp.ExamineAllValues then
+			local meta_temp = obj_metatable
+			while meta_temp do
+				for k in pairs(meta_temp) do
+					if not totextex_dupes[k] then
+						totextex_dupes[k] = true
+						c = c + 1
+						totextex_res[c] = StringFormat("%s = %s<left>",
+							k,
+							self:valuetotextex(obj[k])
+						)
+					end
+				end
+				meta_temp = getmetatable(meta_temp)
 			end
 		end
 
@@ -1192,6 +1229,14 @@ end
 local function ShowDiffProps_menu(_,_,_,self)
 	ChoGGi.ComFuncs.OpenInExamineDlg(GetModifiedProperties(self.obj),self,StringFormat("%s: %s",S[931--[[Modified property--]]],RetName(self.obj)))
 end
+local function ShowAllProps_menu(_,_,_,self)
+	local props_list = {}
+	local props = self.obj:GetProperties()
+	for i = 1, #props do
+		props_list[props[i].id] = self.obj:GetProperty(props[i].id)
+	end
+	ChoGGi.ComFuncs.OpenInExamineDlg(props_list,self,StringFormat("%s: %s",S[302535920001389--[[All Properties--]]],RetName(self.obj)))
+end
 local function ShowAnimDebug_menu(_,_,_,self)
 	ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj)
 end
@@ -1243,6 +1288,13 @@ function Examine:menu(obj)
 			-- show diff props
 			c = c + 1
 			res[c] = self:HyperLink(ShowDiffProps_menu)
+			c = c + 1
+			res[c] = " <image CommonAssets/UI/Menu/SelectByClass.tga 2000> "
+			c = c + 1
+			res[c] = HLEnd
+			-- show props
+			c = c + 1
+			res[c] = self:HyperLink(ShowAllProps_menu)
 			c = c + 1
 			res[c] = " <image CommonAssets/UI/Menu/AreaProperties.tga 2000> "
 			c = c + 1
@@ -1330,6 +1382,12 @@ function Examine:SetObj(startup)
 	self.idText:SetText(name,": ",S[67--[[Loading resources--]]])
 
 	if obj_type == "table" then
+		if getmetatable(self.obj) then
+			self.idShowAllValues:SetVisible(true)
+		else
+			self.idShowAllValues:SetVisible(false)
+		end
+
 		-- add object name to title
 		if type(obj.handle) == "number" then
 			name = StringFormat("%s (%s)",name,obj.handle)
