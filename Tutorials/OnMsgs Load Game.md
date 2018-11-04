@@ -1,4 +1,4 @@
-### "Load Game" (last updated Sagan)
+### "Load Game" (last updated Gagarin 237096)
 
 ##### Show a list of OnMsgs/WaitMsgs that are waiting for Msgs.
 ##### You need ECM for OpenExamine
@@ -11,78 +11,80 @@ OpenExamine(v)
 ```
 
 ###### Tabs denote repetition of Msg (not to say these aren't repeated later on)
-###### *snipped* means the msg has arguments (this list is just for the order)
+###### () on the end means the msg has arguments (this list is just for the order), use my OnMsg Print mod
 ###### Parts of the log are also included to get an idea of when the Msgs fire
 ```
-Changing map to ""
-*** Reloading assets from folder BinAssets/
-
-DTM started in 2048 mb
 Reloading lua files
 *Mod starts loading (Code/Script.lua)*
 Msg.BeforeClearEntityData
-Msg.ClassesGenerate *snipped*
-Msg.ClassesPreprocess *snipped*
+Msg.ClassesGenerate ()
+Msg.ClassesPreprocess ()
 Msg.ClassesPostprocess
-Msg.GetCustomFXInheritActorRules *snipped*
-Msg.RegisterTriggers *snipped*
+Msg.GetCustomFXInheritActorRules ()
+Msg.RegisterTriggers ()
 Msg.ClassesBuilt
 Msg.OptionsApply
 Msg.Autorun
 Reloading done
-[mod] Loading OnMsg Print v0.1(id ChoGGi_OnMsg Print, version 1) items from AppData/Mods/OnMsg Print/
+[mod] Loading OnMsg Print v0.2(id ChoGGi_OnMsg Print, version 2) items from AppData/Mods/OnMsg Print/
 Msg.ModsReloaded
+Msg.HexShapesRebuilt
 Msg.EntitiesLoaded
 	Msg.ShortcutsReloaded
 Msg.BinAssetsLoaded
 Msg.ChangeMapDone
 Msg.ResumeInviteChecks
-Map changed to "" in 2586 ms.
+Map changed to "" in 4186 ms.
 Msg.PreLoadGame
-Msg.PersistGatherPermanents *snipped*
+Msg.PersistGatherPermanents ()
 Msg.PersistPreLoad
-Msg.PersistLoad *snipped*
-Msg.PersistPostLoad *snipped*
+Msg.PersistLoad ()
+Msg.PersistPostLoad ()
 Game loaded on map
-	Msg.GameStateChanged *snipped*
-	Msg.GameStateChanged *snipped*
-	Msg.LightmodelNightChange *snipped*
-	Msg.LightmodelChange *snipped*
-	Msg.AfterLightmodelChange *snipped*
+	Msg.GameStateChanged ()
+	Msg.GameStateChanged ()
+	Msg.LightmodelNightChange ()
+	Msg.LightmodelChange ()
+	Msg.AfterLightmodelChange ()
 game_settings:
-    save_game_id: ziu5Oo5fctyXnoDr
+    save_game_id: oCeC1WxH0ab7yrKX
     sponsor: IMM
     profile: rocketscientist
     mystery: random
     mystery_random: DiggersMystery
-    coordinates: -1,129
+    coordinates: 10,11
     landing_spot:
     logo: MarsExpress
 map_conditions:
-    altitude: -1853
-    temperature: -10
-    cold_wave: 24
-    dust_devils: 55
-    dust_storm: 123
-    meteors: 108
+    altitude: 802
+    temperature: -15
+    cold_wave: 36
+    dust_devils: 78
+    dust_storm: 36
+    meteors: 219
 map_resources:
-    concrete: 109
-    metals: 146
-    precious_metals: 146
-    water: 146
-Msg.LoadGame *snipped*
+    concrete: 255
+    metals: 73
+    precious_metals: 73
+    water: 73
+Msg.LoadGame ()
 	Msg.ShortcutsReloaded
 	Msg.GameStateChangedNotify
-	Msg.GameStateChanged *snipped*
-	Msg.LightmodelNightChange *snipped*
-	Msg.LightmodelChange *snipped*
-	Msg.AfterLightmodelChange *snipped*
+	Msg.UIModeChange ()
+Msg.InGameInterfaceCreated ()
+	Msg.UIModeChange ()
+	Msg.GameStateChanged ()
+	Msg.LightmodelNightChange ()
+	Msg.LightmodelChange ()
+	Msg.AfterLightmodelChange ()
 	Msg.GameStateChangedNotify
-	Msg.GameStateChanged *snipped*
-	Msg.Resume *snipped*
+Msg.CameraTransitionEnd
+	Msg.GameStateChanged ()
+Msg.Resume ()
 Msg.LoadingScreenPreClose
 	Msg.GameStateChangedNotify
+	Msg.NewMinute ()
 Msg.SaveScreenShotEnd
 
-*Game loaded*
+*Game loaded and playable*
 ```

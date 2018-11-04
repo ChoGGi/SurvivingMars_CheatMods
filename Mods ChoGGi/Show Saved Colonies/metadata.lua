@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Show Saved Colonies v0.6",
-	"version", 6,
-	"saved", 1538481600,
+	"title", "Show Saved Colonies v0.7",
+	"version", 7,
+	"saved", 1541246400,
 	"image", "Preview.png",
 	"id", "ChoGGi_ShowLastColonies",
 	"steam_id", "1506312571",

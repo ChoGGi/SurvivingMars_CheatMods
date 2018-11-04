@@ -886,12 +886,14 @@ function Examine:totextex(obj,obj_type)
 
 	elseif obj_type == "table" then
 
+		local name
 		for k, v in pairs(obj) do
+			name = self:valuetotextex(k)
 			-- gotta store all the names if we're doing all props (no dupes thanks)
-			totextex_dupes[k] = true
+			totextex_dupes[name] = true
 			c = c + 1
 			totextex_res[c] = StringFormat("%s = %s<left>",
-				k,
+				name,
 				self:valuetotextex(v)
 			)
 			if type(k) == "number" then
@@ -903,11 +905,12 @@ function Examine:totextex(obj,obj_type)
 			local meta_temp = obj_metatable
 			while meta_temp do
 				for k in pairs(meta_temp) do
-					if not totextex_dupes[k] then
-						totextex_dupes[k] = true
+					name = self:valuetotextex(k)
+					if not totextex_dupes[name] then
+						totextex_dupes[name] = true
 						c = c + 1
 						totextex_res[c] = StringFormat("%s = %s<left>",
-							k,
+							name,
 							self:valuetotextex(obj[k])
 						)
 					end

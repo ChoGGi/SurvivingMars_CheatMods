@@ -170,7 +170,7 @@ function OnMsg.ClassesGenerate()
 			end
 		end)
 
-		local function ReplaceFunc(funcname)
+		local function ReplaceFunc(funcname,prefix)
 			SaveOrigFunc(funcname)
 			-- we want to local this after SaveOrigFunc just in case
 			local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
@@ -180,7 +180,7 @@ function OnMsg.ClassesGenerate()
 				local str = tostring(...)
 				if buffer_table[buffer_cnt] ~= str then
 					buffer_cnt = buffer_cnt + 1
-					buffer_table[buffer_cnt] = str
+					buffer_table[buffer_cnt] = prefix and StringFormat("%s:%s",funcname,str) or str
 				end
 
 				-- fire off orig func...
@@ -209,22 +209,25 @@ function OnMsg.ClassesGenerate()
 
 				-- redirect functions
 				ReplaceFunc("dlc_print")
-				ReplaceFunc("assert")
-				ReplaceFunc("printf")
-				-- causes an error and stops games from loading
---~ 				ReplaceFunc("DebugPrint")
 				ReplaceFunc("DebugPrintNL")
 				ReplaceFunc("OutputDebugString")
 				ReplaceFunc("AddConsoleLog")
 				ReplaceFunc("print")
+				-- prefix func name to these, so we know it's an error type
+				ReplaceFunc("assert",true)
+				ReplaceFunc("printf",true)
+				ReplaceFunc("error",true)
+				-- causes an error and stops games from loading
+				-- ReplaceFunc("DebugPrint")
 			else
 				ResetFunc("dlc_print")
-				ResetFunc("assert")
-				ResetFunc("printf")
 				ResetFunc("DebugPrintNL")
 				ResetFunc("OutputDebugString")
 				ResetFunc("AddConsoleLog")
 				ResetFunc("print")
+				ResetFunc("assert")
+				ResetFunc("printf")
+				ResetFunc("error")
 			end
 		end
 	end -- do

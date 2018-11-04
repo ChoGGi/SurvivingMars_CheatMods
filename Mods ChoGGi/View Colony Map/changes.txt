@@ -1,3 +1,6 @@
+v0.8
+Gagarin.
+
 v0.7
 The not detected my library msg didn't show up.
 

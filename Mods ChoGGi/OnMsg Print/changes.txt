@@ -1,0 +1,33 @@
+v0.2
+BuildPrintMsgFuncs.ahk grabs more Msgs.
+Gagarin added Msgs:
+AutosaveEnd
+AutosaveStart
+CommandCenterClosed
+ExpeditionReturned
+ExpeditionSent
+GoalComplete
+LandingEnabled
+LuaFileChanged
+MessageBoxClosed
+MessageBoxOpened
+MilestoneAnomalyAnalyzed
+MilestoneCompleted
+OrbisNPAvailabilityChecked
+OurColonyPlaced
+OverlaySupplyGridChanged
+PlanetaryAnomalyAnalyzed
+PlanetaryAnomalyEvent
+PlanetCameraSet
+PopsDownloadModPush
+PopsDownloadModScreenshotsPush
+PopsModInstalled
+PopsModsScreenshotsDownloaded
+PopsModsThumbnailDownloaded
+Repaired
+RivalMilestone
+RivalStartsAnomaly
+RocketLandAttempt
+RocketLaunchedEvent
+RocketMaintenanceDone
+RocketManualLaunch

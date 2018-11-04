@@ -9,11 +9,20 @@ end
 function OnMsg.AchievementUnlocked(...)
 	print("Msg.AchievementUnlocked",...)
 end
+function OnMsg.AddResearchRolloverTexts(...)
+	print("Msg.AddResearchRolloverTexts",...)
+end
 function OnMsg.AfterLightmodelChange(...)
 	print("Msg.AfterLightmodelChange",...)
 end
 function OnMsg.AllShardsReady(...)
 	print("Msg.AllShardsReady",...)
+end
+function OnMsg.AnomalyAnalyzed(...)
+	print("Msg.AnomalyAnalyzed",...)
+end
+function OnMsg.AnomalyRevealed(...)
+	print("Msg.AnomalyRevealed",...)
 end
 function OnMsg.ApplicationQuit(...)
 	print("Msg.ApplicationQuit",...)
@@ -27,11 +36,26 @@ end
 function OnMsg.AppStorePurchasesUpdated(...)
 	print("Msg.AppStorePurchasesUpdated",...)
 end
+function OnMsg.AssetsLoaded(...)
+	print("Msg.AssetsLoaded",...)
+end
 function OnMsg.AttackRoverDead(...)
 	print("Msg.AttackRoverDead",...)
 end
+function OnMsg.AttackRoverMalfunctioned(...)
+	print("Msg.AttackRoverMalfunctioned",...)
+end
+function OnMsg.AttackRoverRepaired(...)
+	print("Msg.AttackRoverRepaired",...)
+end
 function OnMsg.Autorun(...)
 	print("Msg.Autorun",...)
+end
+function OnMsg.AutosaveEnd(...)
+	print("Msg.AutosaveEnd",...)
+end
+function OnMsg.AutosaveStart(...)
+	print("Msg.AutosaveStart",...)
 end
 function OnMsg.BeforeClearEntityData(...)
 	print("Msg.BeforeClearEntityData",...)
@@ -42,14 +66,26 @@ end
 function OnMsg.BombardEnd(...)
 	print("Msg.BombardEnd",...)
 end
+function OnMsg.BombardMissileHit(...)
+	print("Msg.BombardMissileHit",...)
+end
 function OnMsg.BugReportResult(...)
 	print("Msg.BugReportResult",...)
 end
 function OnMsg.BugReportStart(...)
 	print("Msg.BugReportStart",...)
 end
+function OnMsg.BuildableGridReady(...)
+	print("Msg.BuildableGridReady",...)
+end
 function OnMsg.BuildingInit(...)
 	print("Msg.BuildingInit",...)
+end
+function OnMsg.BuildingPlaced(...)
+	print("Msg.BuildingPlaced",...)
+end
+function OnMsg.BuildingUpgraded(...)
+	print("Msg.BuildingUpgraded",...)
 end
 function OnMsg.CameraControlSceneStarted(...)
 	print("Msg.CameraControlSceneStarted",...)
@@ -69,6 +105,15 @@ end
 function OnMsg.CameraTransitionStart(...)
 	print("Msg.CameraTransitionStart",...)
 end
+function OnMsg.ChallengeCompleted(...)
+	print("Msg.ChallengeCompleted",...)
+end
+function OnMsg.ChallengeDefaultScreenshotSaved(...)
+	print("Msg.ChallengeDefaultScreenshotSaved",...)
+end
+function OnMsg.ChallengeScreenshotSaved(...)
+	print("Msg.ChallengeScreenshotSaved",...)
+end
 function OnMsg.ChallengeUpdate(...)
 	print("Msg.ChallengeUpdate",...)
 end
@@ -84,6 +129,9 @@ end
 function OnMsg.ChatRoomGuestsChange(...)
 	print("Msg.ChatRoomGuestsChange",...)
 end
+function OnMsg.CityStart(...)
+	print("Msg.CityStart",...)
+end
 function OnMsg.ClassesBuilt(...)
 	print("Msg.ClassesBuilt",...)
 end
@@ -96,17 +144,41 @@ end
 function OnMsg.ClassesPreprocess(...)
 	print("Msg.ClassesPreprocess",...)
 end
+function OnMsg.ColdWave(...)
+	print("Msg.ColdWave",...)
+end
+function OnMsg.ColdWaveCancel(...)
+	print("Msg.ColdWaveCancel",...)
+end
 function OnMsg.ColdWaveEnded(...)
 	print("Msg.ColdWaveEnded",...)
 end
 function OnMsg.CollectionDeleted(...)
 	print("Msg.CollectionDeleted",...)
 end
+function OnMsg.ColonistAddTrait(...)
+	print("Msg.ColonistAddTrait",...)
+end
 function OnMsg.ColonistArrived(...)
 	print("Msg.ColonistArrived",...)
 end
+function OnMsg.ColonistBecameYouth(...)
+	print("Msg.ColonistBecameYouth",...)
+end
 function OnMsg.ColonistBorn(...)
 	print("Msg.ColonistBorn",...)
+end
+function OnMsg.ColonistChangeWorkplace(...)
+	print("Msg.ColonistChangeWorkplace",...)
+end
+function OnMsg.ColonistCured(...)
+	print("Msg.ColonistCured",...)
+end
+function OnMsg.ColonistDie(...)
+	print("Msg.ColonistDie",...)
+end
+function OnMsg.ColonistDied(...)
+	print("Msg.ColonistDied",...)
 end
 function OnMsg.ColonistJoinsDome(...)
 	print("Msg.ColonistJoinsDome",...)
@@ -117,17 +189,32 @@ end
 function OnMsg.ColonistLeavingMars(...)
 	print("Msg.ColonistLeavingMars",...)
 end
+function OnMsg.ColonistRemoveTrait(...)
+	print("Msg.ColonistRemoveTrait",...)
+end
 function OnMsg.ColonistsLanded(...)
 	print("Msg.ColonistsLanded",...)
+end
+function OnMsg.ColonistStatusEffect(...)
+	print("Msg.ColonistStatusEffect",...)
 end
 function OnMsg.ColonyApprovalPassed(...)
 	print("Msg.ColonyApprovalPassed",...)
 end
+function OnMsg.CommandCenterClosed(...)
+	print("Msg.CommandCenterClosed",...)
+end
 function OnMsg.ConnectedStorageReady(...)
 	print("Msg.ConnectedStorageReady",...)
 end
+function OnMsg.ConstructionComplete(...)
+	print("Msg.ConstructionComplete",...)
+end
 function OnMsg.ConstructionPrefabPlaced(...)
 	print("Msg.ConstructionPrefabPlaced",...)
+end
+function OnMsg.ConstructionSitePlaced(...)
+	print("Msg.ConstructionSitePlaced",...)
 end
 function OnMsg.ConstValueChanged(...)
 	print("Msg.ConstValueChanged",...)
@@ -144,6 +231,9 @@ end
 function OnMsg.CrystalFlyAway(...)
 	print("Msg.CrystalFlyAway",...)
 end
+function OnMsg.CrystalForceFlyAway(...)
+	print("Msg.CrystalForceFlyAway",...)
+end
 function OnMsg.CrystallinePlaced(...)
 	print("Msg.CrystallinePlaced",...)
 end
@@ -159,11 +249,26 @@ end
 function OnMsg.DebuggerBreak(...)
 	print("Msg.DebuggerBreak",...)
 end
+function OnMsg.DeepDepositExtraction(...)
+	print("Msg.DeepDepositExtraction",...)
+end
 function OnMsg.DeleteSequence(...)
 	print("Msg.DeleteSequence",...)
 end
 function OnMsg.DeleteSequenceAction(...)
 	print("Msg.DeleteSequenceAction",...)
+end
+function OnMsg.Demolished(...)
+	print("Msg.Demolished",...)
+end
+function OnMsg.DepositDepleted(...)
+	print("Msg.DepositDepleted",...)
+end
+function OnMsg.DepositsSpawned(...)
+	print("Msg.DepositsSpawned",...)
+end
+function OnMsg.DesignerWindowMode(...)
+	print("Msg.DesignerWindowMode",...)
 end
 function OnMsg.DesktopCreated(...)
 	print("Msg.DesktopCreated",...)
@@ -183,8 +288,14 @@ end
 function OnMsg.DlcsLoaded(...)
 	print("Msg.DlcsLoaded",...)
 end
+function OnMsg.DomeHitByMeteor(...)
+	print("Msg.DomeHitByMeteor",...)
+end
 function OnMsg.DomeOperational(...)
 	print("Msg.DomeOperational",...)
+end
+function OnMsg.DomesConnected(...)
+	print("Msg.DomesConnected",...)
 end
 function OnMsg.DoneMap(...)
 	print("Msg.DoneMap",...)
@@ -194,6 +305,18 @@ function OnMsg.DurangoAppStateChanged(...)
 end
 function OnMsg.DurangoInviteAccepted(...)
 	print("Msg.DurangoInviteAccepted",...)
+end
+function OnMsg.DurangoNewDLCReady(...)
+	print("Msg.DurangoNewDLCReady",...)
+end
+function OnMsg.DustStorm(...)
+	print("Msg.DustStorm",...)
+end
+function OnMsg.DustStormEnded(...)
+	print("Msg.DustStormEnded",...)
+end
+function OnMsg.EditOpsChanged(...)
+	print("Msg.EditOpsChanged",...)
 end
 function OnMsg.EditorCallback(...)
 	print("Msg.EditorCallback",...)
@@ -210,6 +333,12 @@ end
 function OnMsg.ExitedSession(...)
 	print("Msg.ExitedSession",...)
 end
+function OnMsg.ExpeditionReturned(...)
+	print("Msg.ExpeditionReturned",...)
+end
+function OnMsg.ExpeditionSent(...)
+	print("Msg.ExpeditionSent",...)
+end
 function OnMsg.ExplorationBlockerSpawned(...)
 	print("Msg.ExplorationBlockerSpawned",...)
 end
@@ -225,6 +354,9 @@ end
 function OnMsg.FriendsChange(...)
 	print("Msg.FriendsChange",...)
 end
+function OnMsg.FundingChanged(...)
+	print("Msg.FundingChanged",...)
+end
 function OnMsg.GameEnterEditor(...)
 	print("Msg.GameEnterEditor",...)
 end
@@ -233,6 +365,9 @@ function OnMsg.GameExitEditor(...)
 end
 function OnMsg.GameInvite(...)
 	print("Msg.GameInvite",...)
+end
+function OnMsg.GameOptionsChanged(...)
+	print("Msg.GameOptionsChanged",...)
 end
 function OnMsg.GamepadUIStyleChanged(...)
 	print("Msg.GamepadUIStyleChanged",...)
@@ -258,6 +393,12 @@ end
 function OnMsg.GatherFXTargets(...)
 	print("Msg.GatherFXTargets",...)
 end
+function OnMsg.GatherLabels(...)
+	print("Msg.GatherLabels",...)
+end
+function OnMsg.GedClosed(...)
+	print("Msg.GedClosed",...)
+end
 function OnMsg.GedClosing(...)
 	print("Msg.GedClosing",...)
 end
@@ -276,14 +417,32 @@ end
 function OnMsg.GedUndo(...)
 	print("Msg.GedUndo",...)
 end
+function OnMsg.GenerateDocs(...)
+	print("Msg.GenerateDocs",...)
+end
 function OnMsg.GetCustomFXInheritActorRules(...)
 	print("Msg.GetCustomFXInheritActorRules",...)
+end
+function OnMsg.GoalComplete(...)
+	print("Msg.GoalComplete",...)
 end
 function OnMsg.GogAchievementsInited(...)
 	print("Msg.GogAchievementsInited",...)
 end
+function OnMsg.GogAuthorization(...)
+	print("Msg.GogAuthorization",...)
+end
 function OnMsg.GotoFinish(...)
 	print("Msg.GotoFinish",...)
+end
+function OnMsg.HexShapesRebuilt(...)
+	print("Msg.HexShapesRebuilt",...)
+end
+function OnMsg.IncomingMissile(...)
+	print("Msg.IncomingMissile",...)
+end
+function OnMsg.InGameInterfaceCreated(...)
+	print("Msg.InGameInterfaceCreated",...)
 end
 function OnMsg.IonStormBuildingDisable(...)
 	print("Msg.IonStormBuildingDisable",...)
@@ -293,6 +452,9 @@ function OnMsg.JoinChatRoom(...)
 end
 function OnMsg.JoinedSession(...)
 	print("Msg.JoinedSession",...)
+end
+function OnMsg.LandingEnabled(...)
+	print("Msg.LandingEnabled",...)
 end
 function OnMsg.LeaveChatRoom(...)
 	print("Msg.LeaveChatRoom",...)
@@ -315,17 +477,38 @@ end
 function OnMsg.LocalStorageChanged(...)
 	print("Msg.LocalStorageChanged",...)
 end
+function OnMsg.LuaFileChanged(...)
+	print("Msg.LuaFileChanged",...)
+end
 function OnMsg.LuaRevisionReady(...)
 	print("Msg.LuaRevisionReady",...)
 end
 function OnMsg.MapDataLoaded(...)
 	print("Msg.MapDataLoaded",...)
 end
+function OnMsg.MapSectorsReady(...)
+	print("Msg.MapSectorsReady",...)
+end
 function OnMsg.MarkersChanged(...)
 	print("Msg.MarkersChanged",...)
 end
 function OnMsg.MarkersRebuildStart(...)
 	print("Msg.MarkersRebuildStart",...)
+end
+function OnMsg.MarkPreciousMetalsExport(...)
+	print("Msg.MarkPreciousMetalsExport",...)
+end
+function OnMsg.MarsPause(...)
+	print("Msg.MarsPause",...)
+end
+function OnMsg.MarsResume(...)
+	print("Msg.MarsResume",...)
+end
+function OnMsg.MessageBoxClosed(...)
+	print("Msg.MessageBoxClosed",...)
+end
+function OnMsg.MessageBoxOpened(...)
+	print("Msg.MessageBoxOpened",...)
 end
 function OnMsg.MetatronAnomalyWaveStarted(...)
 	print("Msg.MetatronAnomalyWaveStarted",...)
@@ -360,6 +543,12 @@ end
 function OnMsg.MeteorStormEnded(...)
 	print("Msg.MeteorStormEnded",...)
 end
+function OnMsg.MilestoneAnomalyAnalyzed(...)
+	print("Msg.MilestoneAnomalyAnalyzed",...)
+end
+function OnMsg.MilestoneCompleted(...)
+	print("Msg.MilestoneCompleted",...)
+end
 function OnMsg.MinimapReady(...)
 	print("Msg.MinimapReady",...)
 end
@@ -378,6 +567,9 @@ end
 function OnMsg.ModsReloaded(...)
 	print("Msg.ModsReloaded",...)
 end
+function OnMsg.MoraleChanged(...)
+	print("Msg.MoraleChanged",...)
+end
 function OnMsg.MoveSequence(...)
 	print("Msg.MoveSequence",...)
 end
@@ -395,6 +587,15 @@ function OnMsg.Mystery8_BeginHealing(...)
 end
 function OnMsg.MysteryBegin(...)
 	print("Msg.MysteryBegin",...)
+end
+function OnMsg.MysteryChosen(...)
+	print("Msg.MysteryChosen",...)
+end
+function OnMsg.MysteryDream(...)
+	print("Msg.MysteryDream",...)
+end
+function OnMsg.MysteryDreamEnded(...)
+	print("Msg.MysteryDreamEnded",...)
 end
 function OnMsg.MysteryEnd(...)
 	print("Msg.MysteryEnd",...)
@@ -444,6 +645,9 @@ end
 function OnMsg.NewDay(...)
 	print("Msg.NewDay",...)
 end
+function OnMsg.NewHour(...)
+	print("Msg.NewHour",...)
+end
 function OnMsg.NewMap(...)
 	print("Msg.NewMap",...)
 end
@@ -459,6 +663,9 @@ end
 function OnMsg.NewSequenceAction(...)
 	print("Msg.NewSequenceAction",...)
 end
+function OnMsg.NewSpecialist(...)
+	print("Msg.NewSpecialist",...)
+end
 function OnMsg.NewWorkshift(...)
 	print("Msg.NewWorkshift",...)
 end
@@ -467,6 +674,9 @@ function OnMsg.OnControllerTypeChanged(...)
 end
 function OnMsg.OnScreenHintChanged(...)
 	print("Msg.OnScreenHintChanged",...)
+end
+function OnMsg.OnSetWorking(...)
+	print("Msg.OnSetWorking",...)
 end
 function OnMsg.OnXInputControllerConnected(...)
 	print("Msg.OnXInputControllerConnected",...)
@@ -477,8 +687,20 @@ end
 function OnMsg.OptionsApply(...)
 	print("Msg.OptionsApply",...)
 end
+function OnMsg.OrbisNPAvailabilityChecked(...)
+	print("Msg.OrbisNPAvailabilityChecked",...)
+end
+function OnMsg.OurColonyPlaced(...)
+	print("Msg.OurColonyPlaced",...)
+end
+function OnMsg.OverlaySupplyGridChanged(...)
+	print("Msg.OverlaySupplyGridChanged",...)
+end
 function OnMsg.ParadoxFeedLoaded(...)
 	print("Msg.ParadoxFeedLoaded",...)
+end
+function OnMsg.PassageConstructionPlaced(...)
+	print("Msg.PassageConstructionPlaced",...)
 end
 function OnMsg.PassengerRocketLaunched(...)
 	print("Msg.PassengerRocketLaunched",...)
@@ -504,8 +726,26 @@ end
 function OnMsg.PersistSave(...)
 	print("Msg.PersistSave",...)
 end
+function OnMsg.PFTunnelChanged(...)
+	print("Msg.PFTunnelChanged",...)
+end
+function OnMsg.PlanetaryAnomalyAnalyzed(...)
+	print("Msg.PlanetaryAnomalyAnalyzed",...)
+end
+function OnMsg.PlanetaryAnomalyEvent(...)
+	print("Msg.PlanetaryAnomalyEvent",...)
+end
+function OnMsg.PlanetCameraSet(...)
+	print("Msg.PlanetCameraSet",...)
+end
 function OnMsg.PopsAutoLoginFailed(...)
 	print("Msg.PopsAutoLoginFailed",...)
+end
+function OnMsg.PopsDownloadModPush(...)
+	print("Msg.PopsDownloadModPush",...)
+end
+function OnMsg.PopsDownloadModScreenshotsPush(...)
+	print("Msg.PopsDownloadModScreenshotsPush",...)
 end
 function OnMsg.PopsInitialized(...)
 	print("Msg.PopsInitialized",...)
@@ -516,6 +756,15 @@ end
 function OnMsg.PopsLogout(...)
 	print("Msg.PopsLogout",...)
 end
+function OnMsg.PopsModInstalled(...)
+	print("Msg.PopsModInstalled",...)
+end
+function OnMsg.PopsModsScreenshotsDownloaded(...)
+	print("Msg.PopsModsScreenshotsDownloaded",...)
+end
+function OnMsg.PopsModsThumbnailDownloaded(...)
+	print("Msg.PopsModsThumbnailDownloaded",...)
+end
 function OnMsg.PopsOwnedProductsChanged(...)
 	print("Msg.PopsOwnedProductsChanged",...)
 end
@@ -524,6 +773,15 @@ function OnMsg.PopsSyncPop(...)
 end
 function OnMsg.PopsSyncPush(...)
 	print("Msg.PopsSyncPush",...)
+end
+function OnMsg.PopulationHighWatermark(...)
+	print("Msg.PopulationHighWatermark",...)
+end
+function OnMsg.PopupNotification(...)
+	print("Msg.PopupNotification",...)
+end
+function OnMsg.PopupNotificationBegin(...)
+	print("Msg.PopupNotificationBegin",...)
 end
 function OnMsg.PostDoneMap(...)
 	print("Msg.PostDoneMap",...)
@@ -558,6 +816,9 @@ end
 function OnMsg.PropEditor_WindowClosed(...)
 	print("Msg.PropEditor_WindowClosed",...)
 end
+function OnMsg.RefugeeRocketTimeout(...)
+	print("Msg.RefugeeRocketTimeout",...)
+end
 function OnMsg.RegisterTriggers(...)
 	print("Msg.RegisterTriggers",...)
 end
@@ -567,8 +828,14 @@ end
 function OnMsg.ReloadLua(...)
 	print("Msg.ReloadLua",...)
 end
+function OnMsg.Repaired(...)
+	print("Msg.Repaired",...)
+end
 function OnMsg.ResearchQueueChange(...)
 	print("Msg.ResearchQueueChange",...)
+end
+function OnMsg.ResourceExtracted(...)
+	print("Msg.ResourceExtracted",...)
 end
 function OnMsg.Resume(...)
 	print("Msg.Resume",...)
@@ -576,11 +843,47 @@ end
 function OnMsg.ResumeInviteChecks(...)
 	print("Msg.ResumeInviteChecks",...)
 end
+function OnMsg.ResupplyRocketLaunched(...)
+	print("Msg.ResupplyRocketLaunched",...)
+end
+function OnMsg.RivalMilestone(...)
+	print("Msg.RivalMilestone",...)
+end
+function OnMsg.RivalStartsAnomaly(...)
+	print("Msg.RivalStartsAnomaly",...)
+end
+function OnMsg.RocketLandAttempt(...)
+	print("Msg.RocketLandAttempt",...)
+end
+function OnMsg.RocketLanded(...)
+	print("Msg.RocketLanded",...)
+end
+function OnMsg.RocketLaunched(...)
+	print("Msg.RocketLaunched",...)
+end
+function OnMsg.RocketLaunchedEvent(...)
+	print("Msg.RocketLaunchedEvent",...)
+end
+function OnMsg.RocketLaunchFromEarth(...)
+	print("Msg.RocketLaunchFromEarth",...)
+end
+function OnMsg.RocketMaintenanceDone(...)
+	print("Msg.RocketMaintenanceDone",...)
+end
+function OnMsg.RocketManualLaunch(...)
+	print("Msg.RocketManualLaunch",...)
+end
+function OnMsg.RocketReachedEarth(...)
+	print("Msg.RocketReachedEarth",...)
+end
 function OnMsg.RocketRefueled(...)
 	print("Msg.RocketRefueled",...)
 end
 function OnMsg.RocketRefueledInADay(...)
 	print("Msg.RocketRefueledInADay",...)
+end
+function OnMsg.RocketStatusUpdate(...)
+	print("Msg.RocketStatusUpdate",...)
 end
 function OnMsg.sa_event_(...)
 	print("Msg.sa_event_",...)
@@ -593,6 +896,9 @@ function OnMsg.SafeAreaMarginsChanged(...)
 end
 function OnMsg.SAMusicChange(...)
 	print("Msg.SAMusicChange",...)
+end
+function OnMsg.SanityBreakdown(...)
+	print("Msg.SanityBreakdown",...)
 end
 function OnMsg.SaveGame(...)
 	print("Msg.SaveGame",...)
@@ -681,6 +987,15 @@ end
 function OnMsg.SystemSize(...)
 	print("Msg.SystemSize",...)
 end
+function OnMsg.TechResearched(...)
+	print("Msg.TechResearched",...)
+end
+function OnMsg.TechResearchedTrigger(...)
+	print("Msg.TechResearchedTrigger",...)
+end
+function OnMsg.TrainingComplete(...)
+	print("Msg.TrainingComplete",...)
+end
 function OnMsg.TranslationChanged(...)
 	print("Msg.TranslationChanged",...)
 end
@@ -690,6 +1005,12 @@ end
 function OnMsg.TriggerDustStorm(...)
 	print("Msg.TriggerDustStorm",...)
 end
+function OnMsg.UIModeChange(...)
+	print("Msg.UIModeChange",...)
+end
+function OnMsg.UpgradeUnlocked(...)
+	print("Msg.UpgradeUnlocked",...)
+end
 function OnMsg.UserChanged(...)
 	print("Msg.UserChanged",...)
 end
@@ -698,6 +1019,9 @@ function OnMsg.WasteRockConversion(...)
 end
 function OnMsg.Whisper(...)
 	print("Msg.Whisper",...)
+end
+function OnMsg.XInputInited(...)
+	print("Msg.XInputInited",...)
 end
 function OnMsg.XInputInitialized(...)
 	print("Msg.XInputInitialized",...)
