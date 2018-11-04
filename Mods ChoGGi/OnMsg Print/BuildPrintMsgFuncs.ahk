@@ -7,7 +7,6 @@ ListLines Off
 AutoTrim Off
 Process Priority,,A
 
-; this script expects to be in a folder with these folders: CommonLua,Data,Lua
 SetWorkingDir %A_ScriptDir%
 
 ; we get a list of all Msg(" and add them to here with a print func
@@ -15,6 +14,7 @@ global msg_list := []
 
 ParseLuaFiles("CommonLua")
 ParseLuaFiles("Data")
+ParseLuaFiles("DLC")
 ParseLuaFiles("Lua")
 
 ; spammy
@@ -24,12 +24,28 @@ msg_list.Delete("UIPropertyChanged")
 msg_list.Delete("ConsoleLine")
 msg_list.Delete("PrefabCacheUnloaded")
 
+output_str := "print(""*Mod starts loading (Code/Script.lua)*"")`r`n`r`n"
 ; merge msgs into a string and output to file
 For key, value in msg_list
 	output_str .= value
 
 FileDelete PrintMsgFuncs.lua
 FileAppend %output_str%,PrintMsgFuncs.lua
+
+ExitApp
+
+AddNameToList(start_str,end_str)
+  {
+	; get msg name + length of start string
+	start_of_msg := InStr(A_LoopField,start_str,true) + StrLen(start_str)
+	; search from next char
+	end_of_msg := InStr(A_LoopField,end_str, false, start_of_msg)
+	; and we gotta name
+	name := SubStr(A_LoopField, start_of_msg , end_of_msg - start_of_msg)
+	; skip dupes
+	If !(msg_list[name])
+		msg_list[name] := "function OnMsg." name "(...)`r`n`tprint(""Msg." name """,...)`r`nend`r`n"
+	}
 
 ParseLuaFiles(folder)
   {
@@ -38,17 +54,14 @@ ParseLuaFiles(folder)
 		FileRead, temptext, %A_LoopFileLongPath%
 		Loop, parse, temptext, `n, `r
 			{
-			start_of_msg := InStr(A_LoopField, "Msg(""", true)
-			If start_of_msg & !InStr(A_LoopField,"WaitMsg(",true)
-				{
-				; get msg name
-				start_of_msg += 5 ; 5 is length of Msg("
-				end_of_msg := InStr(A_LoopField, """" , false, start_of_msg)
-				name := SubStr(A_LoopField, start_of_msg , end_of_msg - start_of_msg)
-				; skip dupes
-				If !msg_list[name]
-					msg_list[name] := "function OnMsg." name "(...)`r`n`tprint(""Msg." name """,...)`r`nend`r`n"
-				}
+			If InStr(A_LoopField,"WaitMsg(""",true)
+				AddNameToList("WaitMsg(""","""")
+			Else If InStr(A_LoopField, "function OnMsg.", true)
+				AddNameToList("function OnMsg.","(")
+			Else If InStr(A_LoopField,"""Msg(\""", true)
+				AddNameToList("""Msg(\""","\""")
+			Else If InStr(A_LoopField, "Msg(""", true)
+				AddNameToList("Msg(""","""")
 			}
 		}
 	}

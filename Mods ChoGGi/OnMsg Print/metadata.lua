@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"title", "OnMsg Print v0.1",
-	"version", 1,
+	"title", "OnMsg Print v0.2",
+	"version", 2,
 	"saved", 1540814400,
 	"id", "ChoGGi_OnMsg Print",
 --~ 	"image", "Preview.png",

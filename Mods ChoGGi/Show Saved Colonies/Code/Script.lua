@@ -6,6 +6,7 @@ local img = StringFormat("%sUI/pm_landed.png",CurrentModPath)
 local idmarker = "idMarker%s"
 local marker_name = "%s_%s"
 
+
 -- stores saved game spots
 local new_markers = {}
 
@@ -108,9 +109,12 @@ end
 local orig_LandingSiteObject_AttachPredefinedSpots = LandingSiteObject.AttachPredefinedSpots
 function LandingSiteObject:AttachPredefinedSpots(...)
 	orig_LandingSiteObject_AttachPredefinedSpots(self,...)
-	LandingSite_object = self
-	-- if I don't thread it I get an error from LandingSiteObject:DrawSpot
-	CreateRealTimeThread(BuildMySpots)
+	-- we only want this to happen when picking a landing spot
+	if not UICity then
+		LandingSite_object = self
+		-- if I don't thread it I get an error from LandingSiteObject:DrawSpot
+		CreateRealTimeThread(BuildMySpots)
+	end
 end
 
 -- are our icons vis?
@@ -118,25 +122,36 @@ local pairs = pairs
 local Min = Min
 local orig_LandingSiteObject_CalcMarkersVisibility = LandingSiteObject.CalcMarkersVisibility
 function LandingSiteObject:CalcMarkersVisibility()
-	local cur_phase = PlanetRotationObj:GetAnimPhase()
-	for name,obj in pairs(new_markers) do
-		local phase = self:CalcAnimPhaseUsingLongitude(obj.longitude * 60)
-		local dist = Min((cur_phase-phase)%self.anim_duration, (phase-cur_phase)%self.anim_duration)
-		self.dialog[obj.id]:SetVisible(dist <= 2400)
+	if not UICity then
+		local cur_phase = PlanetRotationObj:GetAnimPhase()
+		for name,obj in pairs(new_markers) do
+			local phase = self:CalcAnimPhaseUsingLongitude(obj.longitude * 60)
+			local dist = Min((cur_phase-phase)%self.anim_duration, (phase-cur_phase)%self.anim_duration)
+			self.dialog[obj.id]:SetVisible(dist <= 2400)
+		end
 	end
 
 	return orig_LandingSiteObject_CalcMarkersVisibility(self)
 end
 
+function OnMsg.ClassesPostprocess()
+	PlaceObj("TextStyle", {
+		TextColor = -1,
+		TextFont = T{986,"SchemeBk, 15, aa"},
+		id = "ChoGGi_PlanetUISavedGamesText"
+	})
+end
+
 local orig_LandingSiteObject_DisplayCoord = LandingSiteObject.DisplayCoord
 function LandingSiteObject:DisplayCoord(pt, lat, long, lat_org, long_org)
 	orig_LandingSiteObject_DisplayCoord(self, pt, lat, long, lat_org, long_org)
-
-	-- is it one of ours
-	local g_CurrentMapParams = g_CurrentMapParams
-	local marker = new_markers[marker_name:format(g_CurrentMapParams.latitude,g_CurrentMapParams.longitude)]
-	if marker then
-		local text = self.dialog.idtxtCoord.text
-		self.dialog.idtxtCoord:SetText(StringFormat("<font HelpHint>%s</font>\n%s",marker.text,text))
+	if not UICity then
+		-- is it one of ours
+		local g_CurrentMapParams = g_CurrentMapParams
+		local marker = new_markers[marker_name:format(g_CurrentMapParams.latitude,g_CurrentMapParams.longitude)]
+		if marker then
+			local text = self.dialog.idtxtCoord.text
+			self.dialog.idtxtCoord:SetText(StringFormat("<style ChoGGi_PlanetUISavedGamesText>%s</style>\n%s",marker.text,text))
+		end
 	end
 end

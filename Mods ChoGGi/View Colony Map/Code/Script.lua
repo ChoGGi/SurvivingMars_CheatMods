@@ -9,7 +9,7 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	-- version to version check with
-	local min_version = 29
+	local min_version = 31
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
@@ -29,8 +29,8 @@ local skip_showing_image
 
 -- override this func to create/update image when site changes
 local orig_FillRandomMapProps = FillRandomMapProps
-function FillRandomMapProps(gen, params)
-	local map = orig_FillRandomMapProps(gen, params)
+function FillRandomMapProps(gen, params, ...)
+	local map = orig_FillRandomMapProps(gen, params, ...)
 
 	-- if this doesn't work...
 	if not skip_showing_image then
@@ -55,7 +55,7 @@ function OnMsg.ChangeMapDone()
 	local term = terminal.desktop
 	for i = #term, 1, -1 do
 		if term[i]:IsKindOf("ChoGGi_ShowImageDlg") then
-			term[i]:delete()
+			term[i]:Close()
 		end
 	end
 end
@@ -94,25 +94,25 @@ function ChoGGi_ShowImageDlg:Init(parent, context)
 		Id = "idImage",
 	}, self.idDialog)
 
-	-- position dialog just off to the side of the colony site text on the right (or 25,25 if we can't)
-	local x,y = 25,25
-	local dlg
-	-- parent being XDesktop
-	local idx = table.find(self.parent,"XTemplate","PGMainMenu")
-	if idx then
-		-- wrapped in a pcall, so if we fail then it doesn't matter (other than an error in the log)
-		pcall(function()
-			dlg = self.parent[idx].idContent[1][2][1].idContent.box
-			x = dlg:minx() - dlg:sizex() - 100
-		end)
-	end
-	-- and do the same for y, using the diff chal text at the top
-	idx = table.find(self.parent,"XTemplate","TitleLayer")
-	if idx then
-		pcall(function()
-			dlg = self.parent[idx][1].box
-			y = dlg:miny() + dlg:sizey() + 25
-		end)
+	-- default dialog position if we can't find the ui stuff (new version or whatnot)
+	local x,y = 150,75
+	local PGMainMenu = Dialogs.PGMainMenu
+
+	if PGMainMenu then
+		-- Gagarin
+		if LuaRevision> 235636 then
+				-- wrapped in a pcall, so if we fail then it doesn't matter (other than an error in the log)
+				pcall(function()
+					local dlg = PGMainMenu.idContent.PGMission[1][1].idContent.box
+					x = dlg:sizex()
+				end)
+		else
+				-- wrapped in a pcall, so if we fail then it doesn't matter (other than an error in the log)
+				pcall(function()
+					local dlg = PGMainMenu.idContent[1][2][1].idContent.box
+					x = dlg:minx() - dlg:sizex() - 100
+				end)
+		end
 	end
 
 	self:SetInitPos(nil,point(x,y))
