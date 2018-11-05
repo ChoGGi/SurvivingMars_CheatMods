@@ -411,10 +411,9 @@ function OnMsg.ClassesBuilt()
 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Texture")
 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Circle")
 
-	-- we want to insert below status
+	-- replace status
 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
 	if status then
-		status = status
 		rover[status]:delete()
 		table.remove(rover,status)
 	else
@@ -459,7 +458,7 @@ function OnMsg.ClassesBuilt()
 					end
 					-- update vis
 					context:UpdateCircle()
-				end
+				end,
 			}),
 		})
 	)

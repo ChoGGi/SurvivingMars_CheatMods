@@ -44,7 +44,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.RocketCrashesGameOnLanding()
-		local rockets = UICity.labels.AllRockets or ""
+		local rockets = UICity.labels.SupplyRocket or ""
 		for i = 1, #rockets do
 			rockets[i]:ForEachAttach("ParSystem",function(a)
 				if type(a.polyline) == "string" and a.polyline:find("\0") then
@@ -294,7 +294,7 @@ function OnMsg.ClassesGenerate()
 			for i = 1, #objs do
 				local c = objs[i]
 				if IsValid(c) and c:GetStateText() == "movePlanet" then
-					local rocket = FindNearestObject(UICity.labels.AllRockets or {},c)
+					local rocket = FindNearestObject(UICity.labels.SupplyRocket or {},c)
 					SpawnColonist(c,rocket,c:GetVisualPos(),UICity)
 					if type(c.Done) == "function" then
 						c:Done()
@@ -333,10 +333,10 @@ function OnMsg.ClassesGenerate()
 --~ 			c:delete()
 		end
 		function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
-			local rockets = UICity.labels.AllRockets or ""
+			local rockets = UICity.labels.SupplyRocket or ""
 			local pos
 			for i = 1, #rockets do
-				-- AllRockets also returns rockets in space
+				-- SupplyRocket also returns rockets in space
 				if rockets[i]:IsValidPos() then
 					pos = rockets[i]:GetPos()
 					rockets[i]:ForEachAttach("Colonist",AttachedColonist,pos,rockets[i])

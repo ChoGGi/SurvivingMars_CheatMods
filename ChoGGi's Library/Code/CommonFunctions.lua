@@ -166,6 +166,7 @@ do -- RetName
 		for key in pairs(g) do
 			if type(g[key]) == "table" then
 				lookup_table[g[key]] = key
+
 				if g[key] ~= g then
 					for key2 in pairs(g[key]) do
 						if type(g[key][key2]) == "table" then
@@ -173,6 +174,7 @@ do -- RetName
 						end
 					end
 				end
+
 			end
 		end
 
@@ -182,6 +184,7 @@ do -- RetName
 	AfterLoad()
 	-- needed for UICity and some others that aren't created till around then
 	function OnMsg.LoadGame()
+--~ 	ex(lookup_table)
 		AfterLoad()
 	end
 	function OnMsg.CityStart()
@@ -615,6 +618,14 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 
 		ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 
+		-- hide popup when parent closes
+		CreateRealTimeThread(function()
+			while popup:IsVisible() and parent:IsVisible() do
+				Sleep(250)
+			end
+			popup:Close()
+		end)
+
 		popup:Open()
 	--~			 return popup
 	end
@@ -872,7 +883,7 @@ function toboolean(str)
 	elseif str == "false" then
 		return false
 	end
-	return 0/0
+--~ 	return 0/0
 end
 
 -- tries to convert "65" to 65, "boolean" to boolean, "nil" to nil, or just returns "str" as "str"
@@ -883,9 +894,9 @@ function ChoGGi.ComFuncs.RetProperType(value)
 		return num,"number"
 	end
 	-- stringy boolean
-	if value == "true" then
+	if value == "true" or value == true then
 		return true,"boolean"
-	elseif value == "false" then
+	elseif value == "false" or value == false then
 		return false,"boolean"
 	end
 	-- nadda
@@ -1145,7 +1156,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 	local list_table = type(list) == "table"
 	local items_table = type(list_table and list.items) == "table"
 	if not list_table or list_table and not items_table or items_table and #list.items < 1 then
-		print(S[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.--]]],"\n",list and ValueToLuaCode(list))
+		print(S[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.--]]],"\n",list,"\n",list and ValueToLuaCode(list))
 		return
 	end
 
@@ -1392,6 +1403,35 @@ do -- ShowConsoleLogWin
 	end
 end -- do
 
+function ChoGGi.ComFuncs.UpdateDataTablesCargo()
+	local Tables = ChoGGi.Tables
+
+	-- update cargo resupply
+	Tables.Cargo = {}
+	local ResupplyItemDefinitions = ResupplyItemDefinitions
+	for i = 1, #ResupplyItemDefinitions do
+		local def = ResupplyItemDefinitions[i]
+		Tables.Cargo[i] = def
+		Tables.Cargo[def.id] = def
+	end
+
+	for id,cargo in pairs(ChoGGi.UserSettings.CargoSettings or {}) do
+		if Tables.Cargo[id] then
+			if cargo.pack then
+				Tables.Cargo[id].pack = cargo.pack
+			end
+			if cargo.kg then
+				Tables.Cargo[id].kg = cargo.kg
+			end
+			if cargo.price then
+				Tables.Cargo[id].price = cargo.price
+			end
+			if type(cargo.locked) == "boolean" then
+				Tables.Cargo[id].locked = cargo.locked
+			end
+		end
+	end
+end
 do -- UpdateDataTables
 	-- I should look around for a way
 	local mystery_images = {
@@ -1559,6 +1599,10 @@ do -- Rebuildshortcuts
 		ChangeMapPocMapAlt3 = true,
 		ChangeMapPocMapAlt4 = true,
 		Cheats = true,
+
+		["Cheats.StoryBits"] = true,
+		CheatSpawnPlanetaryAnomalies = true,
+
 		["Cheats.Change Map"] = true,
 		["Cheats.Map Exploration"] = true,
 		["Cheats.Research"] = true,
@@ -3118,11 +3162,11 @@ end -- do
 function ChoGGi.ComFuncs.ResetHumanCentipedes()
 	local objs = UICity.labels.Colonist or ""
 	for i = 1, #objs do
+		local obj = objs[i]
 		-- only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
-		if objs[i]:IsValidPos() and not objs[i]:GetPath() then
+		if obj:IsValidPos() and not obj:GetPath() then
 			-- too close and they keep doing the human centipede
-			local x,y,_ = objs[i]:GetVisualPosXYZ()
-			objs[i]:SetCommand("Goto", GetPassablePointNearby(point(x+Random(-5000,5000),y+Random(-5000,5000))))
+			obj:SetCommand("Goto", GetPassablePointNearby(obj:GetVisualPos()+point(Random(-1000,1000),Random(-1000,1000))))
 		end
 	end
 end

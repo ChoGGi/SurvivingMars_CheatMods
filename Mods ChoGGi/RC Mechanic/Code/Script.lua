@@ -147,7 +147,7 @@ function OnMsg.ClassesPostprocess()
 			"encyclopedia_exclude",true,
 			"on_off_button",false,
 			"entity","CombatRover",
-			"palettes","AttackRoverBlue"
+			"palettes","AttackRoverBlue",
 		})
 	end
 end
@@ -162,10 +162,10 @@ function OnMsg.ClassesBuilt()
 		table.remove(rover,idx)
 	end
 
-	-- we want to insert below status
+	-- replace status
 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
 	if status then
-		status = status
+--~ 		status = status
 		rover[status]:delete()
 		table.remove(rover,status)
 	else

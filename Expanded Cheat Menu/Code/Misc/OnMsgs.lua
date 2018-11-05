@@ -931,33 +931,7 @@ function OnMsg.NewMapLoaded()
 	if not UICity then
 		return
 	end
-	local Tables = ChoGGi.Tables
-
-	-- update cargo resupply
-	Tables.Cargo = {}
-	local ResupplyItemDefinitions = ResupplyItemDefinitions
-	for i = 1, #ResupplyItemDefinitions do
-		local def = ResupplyItemDefinitions[i]
-		Tables.Cargo[i] = def
-		Tables.Cargo[def.id] = def
-	end
-
-	for id,cargo in pairs(ChoGGi.UserSettings.CargoSettings or {}) do
-		if Tables.Cargo[id] then
-			if cargo.pack then
-				Tables.Cargo[id].pack = cargo.pack
-			end
-			if cargo.kg then
-				Tables.Cargo[id].kg = cargo.kg
-			end
-			if cargo.price then
-				Tables.Cargo[id].price = cargo.price
-			end
-			if type(cargo.locked) == "boolean" then
-				Tables.Cargo[id].locked = cargo.locked
-			end
-		end
-	end
+	ChoGGi.ComFuncs.UpdateDataTablesCargo()
 end
 
 -- show how long loading takes
@@ -993,6 +967,8 @@ do -- LoadGame/CityStart
 		ResumePassEdits("DeleteOldChoGGiObjects")
 
 		ChoGGi.Temp.IsChoGGiMsgLoaded = false
+
+		ChoGGi.ComFuncs.UpdateDataTablesCargo()
 		Msg("ChoGGi_Loaded")
 	end
 	-- for new games

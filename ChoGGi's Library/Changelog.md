@@ -1,8 +1,11 @@
 ## Library Changelog
 
-## v3.1 (Unreleased)
+## v3.2 (Unreleased)
+
+## v3.1 (05 Nov 2018)
 - Cleaned up my DeleteObject func to remove the (hopefully) last of the log spam.
 - Returns names of (some more) tables.
+- Popup menus close when parent closes.
 
 ## v3.0 (01 Nov 2018)
 - Better compatibility with other mods that use custom shortcut keys.

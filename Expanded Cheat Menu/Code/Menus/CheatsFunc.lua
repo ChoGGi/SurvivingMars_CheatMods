@@ -11,6 +11,20 @@ function OnMsg.ClassesGenerate()
 	local pairs,type = pairs,type
 	local StringFormat = string.format
 
+	function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
+		MsgPopup(
+			302535920001394--[[Spawn Planetary Anomalies--]],
+			27--[[Cheats--]]
+		)
+
+		-- crashes if fired more than once per game (or twice?)
+		if UICity.ChoGGi.CheatSpawnPlanetaryAnomalies then
+			return
+		end
+		UICity.ChoGGi.CheatSpawnPlanetaryAnomalies = true
+		CheatSpawnPlanetaryAnomalies()
+	end
+
 	function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.OutsourceMaxOrderCount
@@ -113,9 +127,8 @@ function OnMsg.ClassesGenerate()
 			StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920000235--[[Save your game.
 	This will switch to a new map.--]]]),
 			CallBackFunc,
-			StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000236--[[Mod Editor--]]]),
-			302535920000237--[[Okay (change map)--]]
-		)
+			StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000236--[[Mod Editor--]]])
+			)
 	end
 
 	--~ UICity.tech_status[tech_id].researched = nil
@@ -141,7 +154,8 @@ function OnMsg.ClassesGenerate()
 			-- (pt, radius, count, delay_min, delay_max)
 			StartBombard(
 				ChoGGi.ComFuncs.SelObject() or GetTerrainCursor(),
-				1000,
+				-- somewhere between 1K and 2K is too small to target some buildings for whatever reason...
+				2000,
 				amount
 			)
 		else

@@ -40,6 +40,12 @@ function OnMsg.ModConfigReady()
 		default = OrbitalPrefabDrops.RocketDamage,
 	})
 
+	ModConfig:RegisterOption("OrbitalPrefabDrops", "DomeCrack", {
+		name = "Drops will damage dome.",
+		type = "boolean",
+		default = OrbitalPrefabDrops.DomeCrack,
+	})
+
 	-- get saved options
 	OrbitalPrefabDrops.PrefabOnly = ModConfig:Get("OrbitalPrefabDrops", "PrefabOnly")
 	OrbitalPrefabDrops.Outside = ModConfig:Get("OrbitalPrefabDrops", "Outside")
@@ -47,6 +53,7 @@ function OnMsg.ModConfigReady()
 	OrbitalPrefabDrops.DetachRockets = ModConfig:Get("OrbitalPrefabDrops", "DetachRockets")
 	OrbitalPrefabDrops.DetachRocketsPassages = ModConfig:Get("OrbitalPrefabDrops", "DetachRocketsPassages")
 	OrbitalPrefabDrops.RocketDamage = ModConfig:Get("OrbitalPrefabDrops", "RocketDamage")
+	OrbitalPrefabDrops.DomeCrack = ModConfig:Get("OrbitalPrefabDrops", "DomeCrack")
 
 end
 
@@ -64,6 +71,8 @@ function OnMsg.ModConfigChanged(mod_id, option_id, value)
 			OrbitalPrefabDrops.DetachRocketsPassages = value
 		elseif option_id == "RocketDamage" then
 			OrbitalPrefabDrops.RocketDamage = value
+		elseif option_id == "DomeCrack" then
+			OrbitalPrefabDrops.DomeCrack = value
 		end
 	end
 end

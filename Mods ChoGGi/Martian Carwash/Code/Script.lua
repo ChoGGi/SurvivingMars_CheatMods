@@ -39,10 +39,10 @@ DefineClass.Carwash = {
 
 }
 
+local DustMaterialExterior = const.DustMaterialExterior
 function Carwash:GameInit()
   FarmConventional.StartAnimThread(self)
 
-  local ext_const = const.DustMaterialExterior
   self.nearby_thread = CreateGameTimeThread(function()
     while IsValid(self) and not self.destroyed do
       if self.working then
@@ -60,10 +60,11 @@ function Carwash:GameInit()
                 break
               end
               value = value - 1
-              obj:SetDust(dust_amt * value, ext_const)
+              obj:SetDust(dust_amt * value, DustMaterialExterior)
               Sleep(100)
             end
           end
+--~ 					obj.dust = 0
         end
       end
       Sleep(1000)
