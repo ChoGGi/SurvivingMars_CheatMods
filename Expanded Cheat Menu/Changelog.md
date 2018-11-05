@@ -14,10 +14,16 @@
 ### Changed:
 - Camera goes back to same position when toggling Free Camera/Follow Camera.
 - Unlock All Buildings now updates categories as well as items (assuming build menu is visible).
+- Write Logs option now prefixes name of func.
+- Examine>Find Value:
+- > Added more names to returned list (parent/key name).
+- > Searches translated userdata.
 
 ### Fixed:
+- More Gagarin compatibility.
 - Free Camera would reset zoom settings.
 - Screenshots defined in metadata.lua didn't work with Mod Upload.
+- Using Examine ("_G.example","str") made stuff like Find Value not work.
 
 ## v10.4 (01 Nov 2018)
 ### Added:

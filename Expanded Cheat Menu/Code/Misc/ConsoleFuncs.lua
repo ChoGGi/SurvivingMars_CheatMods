@@ -159,7 +159,7 @@ function OnMsg.ClassesGenerate()
 			ExamineMenuToggle_list[i] = BuildExamineItem(list[i])
 		end
 
-		-- if Presets then add a submenu with each DefGlobalMap in PresetDefs (hopefully showing people the correct way to access them)
+		-- if Presets then add a submenu with each GlobalMap (hopefully showing people the correct way to access them)
 		local submenu = table.find(ExamineMenuToggle_list,"name","Presets")
 		if submenu then
 			-- remove hint from "submenu" menu
@@ -190,7 +190,7 @@ function OnMsg.ClassesGenerate()
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
 
-		-- add some stuff to UICity
+		-- DataInstances
 		submenu = table.find(ExamineMenuToggle_list,"name","DataInstances")
 		if submenu then
 			ExamineMenuToggle_list[submenu].hint = nil
@@ -216,7 +216,7 @@ function OnMsg.ClassesGenerate()
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
 
-		-- add some stuff to UICity
+		-- UICity
 		submenu = table.find(ExamineMenuToggle_list,"name","UICity")
 		if submenu then
 			ExamineMenuToggle_list[submenu].hint = nil
@@ -228,7 +228,7 @@ function OnMsg.ClassesGenerate()
 			}
 		end
 
-		-- merged const Consts g_Consts
+		-- Consts
 		submenu = table.find(ExamineMenuToggle_list,"name","Consts")
 		if submenu then
 			ExamineMenuToggle_list[submenu].hint = nil
@@ -239,7 +239,7 @@ function OnMsg.ClassesGenerate()
 			}
 		end
 
-		-- threads
+		-- ThreadsRegister
 		submenu = table.find(ExamineMenuToggle_list,"name","ThreadsRegister")
 		if submenu then
 			ExamineMenuToggle_list[submenu].hint = nil
@@ -270,6 +270,16 @@ function OnMsg.ClassesGenerate()
 				BuildExamineItem("g_Classes"),
 				BuildExamineItem("ClassTemplates"),
 				BuildExamineItem("EntityData"),
+			}
+		end
+
+		-- TranslationTable
+		submenu = table.find(ExamineMenuToggle_list,"name","TranslationTable")
+		if submenu then
+			ExamineMenuToggle_list[submenu].hint = nil
+			ExamineMenuToggle_list[submenu].submenu = {
+				BuildExamineItem("TranslationTable"),
+				BuildExamineItem("const.TagLookupTable"),
 			}
 		end
 

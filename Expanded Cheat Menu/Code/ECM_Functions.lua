@@ -170,17 +170,18 @@ function OnMsg.ClassesGenerate()
 			end
 		end)
 
-		local function ReplaceFunc(funcname,prefix)
+		local function ReplaceFunc(funcname)
 			SaveOrigFunc(funcname)
 			-- we want to local this after SaveOrigFunc just in case
 			local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+			local name = StringFormat("%s: %s",funcname,"%s")
 			_G[funcname] = function(...)
 
 				-- table.concat don't work with non-strings/numbers
 				local str = tostring(...)
 				if buffer_table[buffer_cnt] ~= str then
 					buffer_cnt = buffer_cnt + 1
-					buffer_table[buffer_cnt] = prefix and StringFormat("%s:%s",funcname,str) or str
+					buffer_table[buffer_cnt] = name:format(str)
 				end
 
 				-- fire off orig func...
@@ -213,10 +214,9 @@ function OnMsg.ClassesGenerate()
 				ReplaceFunc("OutputDebugString")
 				ReplaceFunc("AddConsoleLog")
 				ReplaceFunc("print")
-				-- prefix func name to these, so we know it's an error type
-				ReplaceFunc("assert",true)
-				ReplaceFunc("printf",true)
-				ReplaceFunc("error",true)
+				ReplaceFunc("assert")
+				ReplaceFunc("printf")
+				ReplaceFunc("error")
 				-- causes an error and stops games from loading
 				-- ReplaceFunc("DebugPrint")
 			else

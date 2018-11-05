@@ -67,9 +67,11 @@ function OnMsg.ClassesGenerate()
 			"Flags",
 			"FXRules",
 			"g_Classes",
+			"PersistableGlobals",
 			"Presets",
 			"TaskRequesters",
 			"ThreadsRegister",
+			"TranslationTable",
 			"UICity",
 		},
 		-- blinky blink
