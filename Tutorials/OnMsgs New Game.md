@@ -11,7 +11,7 @@ OpenExamine(v)
 ```
 
 ###### Tabs denote repetition of Msg (not to say these aren't repeated later on)
-###### () on the end means the msg has arguments (this list is just for the order), to see args use [OnMsg Print](Mods ChoGGi/OnMsg Print)
+###### () on the end means the msg has arguments (this list is just for the order), to see args use [OnMsg Print](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/OnMsg%20Print)
 ###### Parts of the log are also included to get an idea of when the Msgs fire
 ```
 Reloading lua files
