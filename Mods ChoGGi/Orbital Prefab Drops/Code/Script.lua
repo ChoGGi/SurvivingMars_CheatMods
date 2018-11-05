@@ -8,6 +8,7 @@ OrbitalPrefabDrops = {
 	DetachRockets = true,
 	DetachRocketsPassages = false,
 	RocketDamage = false,
+	DomeCrack = true,
 }
 
 local StringFormat = string.format
@@ -22,7 +23,10 @@ local SetRollPitchYaw = SetRollPitchYaw
 local AsyncRand = AsyncRand
 local atan = atan
 local point = point
+local GetDomeAtHex = GetDomeAtHex
+local WorldToHex = WorldToHex
 
+local BaseMeteor = BaseMeteor
 local final_speed = 10*guim
 local pt500 = point(0,0,500)
 local pt1000 = point(0,0,1000)
@@ -204,7 +208,19 @@ local function YamatoHasshin(self)
 		rover:SetAcceleration(accel)
 		rover:SetPos(spawn_pos, land_time)
 		SetRollPitchYaw(rover, 0, 0, yaw, land_time)
-		Sleep(land_time)
+
+		-- just for you ski
+		local quarter = land_time/4
+		Sleep(quarter*3)
+		if opd.DomeCrack then
+			local dome = GetDomeAtHex(WorldToHex(spawn_pos))
+			if dome then
+				local _, dome_pt, dome_normal = BaseMeteor.HitsDome(dome,spawn_pos)
+				BaseMeteor.CrackDome(dome, dome, dome_pt, dome_normal)
+			end
+		end
+		Sleep(quarter)
+
 		-- landed time go boom
 		PlaySound("Mystery Bombardment ExplodeTarget", "ObjectOneshot", nil, 0, false, self)
 		PlayFX("GroundExplosion", "start", rover)

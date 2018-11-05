@@ -171,7 +171,7 @@ function OnMsg.ClassesBuilt()
 				self:SetVisible(false)
 				self:SetMaxHeight(0)
 			end
-		end
+		end,
 	})
 
 	RemoveXTemplateSections(XTemplates.sectionWorkplace,"SOMETHINGUNIQUE5")

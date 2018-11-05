@@ -1,3 +1,6 @@
+v0.4
+Dropping into a dome will crack it (turn off with ModConfig).
+
 v0.3
 Container slides down while prefab slides up.
 Added a bottom to the container.

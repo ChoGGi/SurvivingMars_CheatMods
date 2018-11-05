@@ -14,7 +14,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = S[302535920000328--[[Scanning, deep scanning, core mines, and alien imprints.--]]],
 		OnAction = ChoGGi.MenuFuncs.ShowScanAndMapOptions,
-		ActionSortKey = "01Map Exploration",
 	}
 
 	c = c + 1
@@ -24,7 +23,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = S[302535920001286--[[Scan all or certain types of anomalies.--]]],
 		OnAction = ChoGGi.MenuFuncs.ShowScanAnomaliesOptions,
-		ActionSortKey = "01Anomaly Scanning",
 	}
 
 	c = c + 1
@@ -34,7 +32,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
 		RolloverText = S[302535920000330--[[Advance to next part, show what part you're on, or remove mysteries.--]]],
 		OnAction = ChoGGi.MenuFuncs.ShowStartedMysteryList,
-		ActionSortKey = "03Mystery Log",
 	}
 
 	c = c + 1
@@ -44,7 +41,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
 		RolloverText = S[302535920000332--[[Pick and start a mystery (with instant start option).--]]],
 		OnAction = ChoGGi.MenuFuncs.ShowMysteryList,
-		ActionSortKey = "04Start Mystery",
 	}
 
 	c = c + 1
@@ -54,7 +50,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
 		RolloverText = S[302535920000334--[[Show the disasters list and optionally start one.--]]],
 		OnAction = ChoGGi.MenuFuncs.DisastersTrigger,
-		ActionSortKey = "05Start Disasters",
 	}
 
 	c = c + 1
@@ -64,7 +59,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
 		RolloverText = S[302535920000336--[[Spawn certain amount of colonists.--]]],
 		OnAction = ChoGGi.MenuFuncs.SpawnColonists,
-		ActionSortKey = "07Spawn Colonists",
 	}
 
 	c = c + 1
@@ -74,7 +68,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/TerrainConfigEditor.tga",
 		RolloverText = S[302535920000338--[[Unlock all buildings for construction.--]]],
 		OnAction = ChoGGi.MenuFuncs.UnlockAllBuildings,
-		ActionSortKey = "08Unlock all buildings",
 	}
 
 	c = c + 1
@@ -84,7 +77,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
 		RolloverText = S[302535920000362--[[Removes all objects from the "Pin" menu.--]]],
 		OnAction = UnpinAll,
-		ActionSortKey = "09Unpin All Pinned Objects",
 	}
 
 	c = c + 1
@@ -94,7 +86,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = S[302535920000364--[[Complete all wires and pipes instantly.--]]],
 		OnAction = CheatCompleteAllWiresAndPipes,
-		ActionSortKey = "10Complete Wires & Pipes",
 	}
 
 	c = c + 1
@@ -104,7 +95,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/place_custom_object.tga",
 		RolloverText = S[302535920000366--[[Complete all constructions instantly.--]]],
 		OnAction = CheatCompleteAllConstructions,
-		ActionSortKey = "11Complete Constructions",
 		ActionShortcut = "Alt-B",
 		ActionBindable = true,
 	}
@@ -116,7 +106,27 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/Action.tga",
 		RolloverText = S[302535920000368--[[Switch to the mod editor.--]]],
 		OnAction = ChoGGi.MenuFuncs.OpenModEditor,
-		ActionSortKey = "12Mod Editor",
+	}
+
+	-- post-gagarin
+	if LuaRevision > 235636 then
+		c = c + 1
+		Actions[c] = {ActionName = S[302535920001393--[[StoryBits ClearCooldowns--]]],
+			ActionMenubar = "ECM.Cheats",
+			ActionId = ".StoryBits ClearCooldowns",
+			ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+			RolloverText = S[302535920001392--[[Clears story bit cooldowns... (got me).--]]],
+			OnAction = StoryBitCategoryState.ClearCooldowns,
+		}
+	end
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001394--[[Spawn Planetary Anomalies--]]],
+		ActionMenubar = "ECM.Cheats",
+		ActionId = ".Spawn Planetary Anomalies",
+		ActionIcon = "CommonAssets/UI/Menu/LowerTerrainToLevel.tga",
+		RolloverText = S[302535920001395--[[Adds Anomaly locations to Planetary View.--]]],
+		OnAction = ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies,
 	}
 
 	local str_Cheats_Workplaces = "ECM.Cheats.Workplaces"
@@ -126,7 +136,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Workplaces",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
-		ActionSortKey = "06Workplaces",
+		ActionSortKey = "1Workplaces",
 	}
 
 	c = c + 1
@@ -163,7 +173,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Research",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
-		ActionSortKey = "02Research",
+		ActionSortKey = "1Research",
 	}
 
 	c = c + 1
@@ -296,7 +306,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Menu",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
-		ActionSortKey = "99",
+		ActionSortKey = "1Menu",
 	}
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000232--[[Draggable Cheats Menu--]]],

@@ -1066,11 +1066,10 @@ function OnMsg.ClassesGenerate()
 			local ChoGGi = ChoGGi
 			if ChoGGi.Tables.CargoPresets[name][cargo_val] == value then
 				ChoGGi.UserSettings.CargoSettings[name][cargo_val] = nil
-				meta[cargo_val] = value
 			else
 				ChoGGi.UserSettings.CargoSettings[name][cargo_val] = value
-				meta[cargo_val] = value
 			end
+			meta[cargo_val] = value
 		end
 
 		local function ShowResupplyList(name,meta)
@@ -1124,7 +1123,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		function ChoGGi.MenuFuncs.ChangeResupplySettings()
-			local Cargo = ChoGGi.Tables.Cargo
+			local Cargo = ChoGGi.Tables.Cargo or ""
 
 			local ItemList = {}
 			for i = 1, #Cargo do
@@ -1139,6 +1138,21 @@ function OnMsg.ClassesGenerate()
 				if #choice < 1 then
 					return
 				end
+
+				if choice[1].check1 then
+					ChoGGi.UserSettings.CargoSettings = nil
+					local CargoPresets = ChoGGi.Tables.CargoPresets or ""
+
+					for cargo_id,cargo in pairs(Cargo) do
+						cargo.pack = CargoPresets[cargo_id].pack
+						cargo.kg = CargoPresets[cargo_id].kg
+						cargo.price = CargoPresets[cargo_id].price
+						cargo.locked = CargoPresets[cargo_id].locked
+					end
+
+					return
+				end
+
 				ShowResupplyList(choice[1].value,choice[1].meta)
 			end
 
@@ -1149,6 +1163,12 @@ function OnMsg.ClassesGenerate()
 				hint = 302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."--]],
 				custom_type = 7,
 				custom_func = CallBackFunc,
+				check = {
+					{
+						title = 302535920001084--[[Reset--]],
+						hint = 302535920000237--[[Check this to reset settings.--]],
+					},
+				},
 			}
 		end
 	end -- do
@@ -1339,7 +1359,7 @@ function OnMsg.ClassesGenerate()
 					ChoGGi.UserSettings.RocketMaxExportAmount = value
 				end
 
-				local rockets = UICity.labels.AllRockets
+				local rockets = UICity.labels.AllRockets or ""
 				for i = 1, #rockets do
 					if rockets[i].export_requests then
 						ChoGGi.ComFuncs.SetTaskReqAmount(rockets[i],value,"export_requests","max_export_storage")
@@ -1367,7 +1387,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	local function SetRocketFuelAmount(amount)
-		local rockets = UICity.labels.AllRockets
+		local rockets = UICity.labels.AllRockets or ""
 		for i = 1, #rockets do
 			if rockets[i].refuel_request then
 				ChoGGi.ComFuncs.SetTaskReqAmount(rockets[i],amount,"refuel_request","launch_fuel")

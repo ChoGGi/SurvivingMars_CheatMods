@@ -9,7 +9,7 @@
 - Re-added Help>Interface>Toggle Signs: If CheatsEnabled() returned false then it didn't work (not sure why devs think it's a cheat).
 - Examine:
 - > Toolbar button: Get all properties: Queries obj:GetProperties() and lists the values.
-- > Checkbox: Show all values: Gets all the metatable names and shows the values of those for the object (global toggle).
+- > Checkbox: Show all values: Gets all the metatable names and shows the values of those for the object.
 
 ### Changed:
 - Camera goes back to same position when toggling Free Camera/Follow Camera.
@@ -24,6 +24,7 @@
 - Free Camera would reset zoom settings.
 - Screenshots defined in metadata.lua didn't work with Mod Upload.
 - Using Examine ("_G.example","str") made stuff like Find Value not work.
+- Issue with Rocket>Change Resupply Settings (skipped boolean options), also added a reset checkbox.
 
 ## v10.4 (01 Nov 2018)
 ### Added:

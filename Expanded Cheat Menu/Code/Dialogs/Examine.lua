@@ -123,6 +123,8 @@ DefineClass.Examine = {
 	orig_vis_flash = false,
 	-- if it's transparent or not
 	transp_mode = false,
+	-- get list of all values from metatables
+	show_all_values = false,
 
 	dialog_width = 666.0,
 	dialog_height = 850.0,
@@ -250,7 +252,7 @@ function Examine:Init(parent, context)
 		Text = S[4493--[[All--]]],
 		RolloverText = S[302535920001391--[[Show all values (metatable).--]]],
 		OnChange = function()
-			ChoGGi.Temp.ExamineAllValues = not ChoGGi.Temp.ExamineAllValues
+			self.show_all_values = not self.show_all_values
 			self:SetObj()
 		end,
 	}, self.idLinkArea)
@@ -568,29 +570,6 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			end,
 		},
 		{
-			name = S[302535920001369--[[Ged Editor--]]],
-			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
-			clicked = function()
-				local obj = self.obj
-				if self.str_object then
-					obj = DotNameToObject(obj)
-				end
-				GedObjectEditor = false
-				OpenGedGameObjectEditor{obj}
-			end,
-		},
-		{
-			name = S[302535920000067--[[Ged Inspect--]]],
-			hint = S[302535920001075--[[Open this object in the Ged inspector.--]]],
-			clicked = function()
-				local obj = self.obj
-				if self.str_object then
-					obj = DotNameToObject(obj)
-				end
-				Inspect(obj)
-			end,
-		},
-		{
 			name = S[302535920001305--[[Find Within--]]],
 			hint = S[302535920001303--[[Search for text within %s.--]]]:format(RetName(self.obj)),
 			clicked = function()
@@ -611,6 +590,30 @@ Which you can then mess around with some more in the console."--]]],
 					obj = DotNameToObject(obj)
 				end
 				ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,self)
+			end,
+		},
+		{name = "	 ---- "},
+		{
+			name = S[302535920001369--[[Ged Editor--]]],
+			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
+			clicked = function()
+				local obj = self.obj
+				if self.str_object then
+					obj = DotNameToObject(obj)
+				end
+				GedObjectEditor = false
+				OpenGedGameObjectEditor{obj}
+			end,
+		},
+		{
+			name = S[302535920000067--[[Ged Inspect--]]],
+			hint = S[302535920001075--[[Open this object in the Ged inspector.--]]],
+			clicked = function()
+				local obj = self.obj
+				if self.str_object then
+					obj = DotNameToObject(obj)
+				end
+				Inspect(obj)
 			end,
 		},
 		{name = "	 ---- "},
@@ -941,7 +944,7 @@ function Examine:totextex(obj,obj_type)
 		end
 
 		-- keep looping through metatables till we run out
-		if obj_metatable and ChoGGi.Temp.ExamineAllValues then
+		if obj_metatable and self.show_all_values then
 			local meta_temp = obj_metatable
 			while meta_temp do
 				for k in pairs(meta_temp) do

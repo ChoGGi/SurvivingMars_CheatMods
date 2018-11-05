@@ -1,3 +1,2 @@
 add a mc option for dusty landings.
-option for cracked domes if inside building.
 metatron launch.

@@ -136,7 +136,7 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 				SettingOpacity(value)
-				--extra ones
+				-- extra ones
 				if value == "Building" then
 					SettingOpacity("AllRockets")
 				elseif value == "Anomaly" then

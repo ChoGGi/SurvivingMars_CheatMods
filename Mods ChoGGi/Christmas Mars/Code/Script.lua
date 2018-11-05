@@ -56,7 +56,7 @@ function OnMsg.CityStart()
 		ResumePassEdits("WhiteThoseRocks")
 
 		-- starter rockets spawn with new map
-		local rockets = UICity.labels.AllRockets or ""
+		local rockets = UICity.labels.SupplyRocket or ""
 		for i = 1, #rockets do
 			local s = rockets[i]
 			s:SetColor1(green)
