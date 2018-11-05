@@ -79,7 +79,7 @@ do -- Translate
 				return arg2
 			end
 			-- done fucked up (just in case b)
-			return StringFormat("%s < Missing locale string id",...)
+			return StringFormat("%s < Missing text string id",...)
 		end
 		-- and done
 		return str
@@ -103,7 +103,7 @@ do -- CheckText
 			ret = Trans(text)
 		end
 		-- Trans will always return a string
-		if ret:find("Missing locale string id") then
+		if ret:find("Missing text string id") then
 			ret = tostring(fallback or text)
 		end
 		-- have at it
@@ -114,7 +114,7 @@ local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
 	local ClassDescendantsList = ClassDescendantsList
-	local IsObjlist,type,tostring = IsObjlist,type,tostring
+	local IsObjlist,type,tostring,pairs = IsObjlist,type,tostring,pairs
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 
 	-- we use this table to display names of (some) tables for RetName
@@ -156,7 +156,28 @@ do -- RetName
 				lookup_table[g[cls.GlobalMap]] = cls.GlobalMap
 			end
 		end)
+		-- and persists
+		for key in pairs(PersistableGlobals) do
+			if type(g[key]) == "table" then
+				lookup_table[g[key]] = key
+			end
+		end
+		-- and anything in _G and the first level of _G
+		for key in pairs(g) do
+			if type(g[key]) == "table" then
+				lookup_table[g[key]] = key
+				if g[key] ~= g then
+					for key2 in pairs(g[key]) do
+						if type(g[key][key2]) == "table" then
+							lookup_table[g[key][key2]] = key2
+						end
+					end
+				end
+			end
+		end
+
 	end
+
 	-- so they work in the main menu
 	AfterLoad()
 	-- needed for UICity and some others that aren't created till around then
@@ -214,6 +235,14 @@ do -- RetName
 			elseif IsObjlist(obj) then
 				return "objlist"
 			end
+
+		elseif obj_type == "userdata" then
+			local trans = Trans(obj)
+			-- stripped = pre-gagarin
+			if trans == "stripped" or trans:find("Missing text") then
+				return tostring(obj)
+			end
+			return trans
 
 		elseif obj_type == "function" then
 			return DebugGetInfo(obj)
@@ -1754,9 +1783,6 @@ do -- RetThreadInfo/FindThreadFunc
 
 	-- find/return func if str in func name
 	function ChoGGi.ComFuncs.FindThreadFunc(thread,str)
---~ 		if not IsValidThread then
---~ 			return
---~ 		end
 		-- needs an empty table to work it's magic
 		GedInspectedObjects[thread] = {}
 		-- returns a table of the funcs in the thread

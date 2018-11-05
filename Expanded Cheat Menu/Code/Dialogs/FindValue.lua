@@ -5,6 +5,8 @@
 local S
 local RetName
 local FindThreadFunc
+local DotNameToObject
+local Trans
 
 local pairs,type,tostring = pairs,type,tostring
 local StringFormat = string.format
@@ -13,6 +15,8 @@ function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 	RetName = ChoGGi.ComFuncs.RetName
 	FindThreadFunc = ChoGGi.ComFuncs.FindThreadFunc
+	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
+	Trans = ChoGGi.ComFuncs.Translate
 end
 
 DefineClass.ChoGGi_FindValueDlg = {
@@ -23,6 +27,7 @@ DefineClass.ChoGGi_FindValueDlg = {
 	dialog_height = 110.0,
 
 	found_objs = false,
+	dupe_objs = {},
 }
 
 function ChoGGi_FindValueDlg:Init(parent, context)
@@ -107,14 +112,14 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	self:SetInitPos(context.parent)
 end
 
-function ChoGGi_FindValueDlg:RetStringCase(value,case)
-	local obj_type = type(value)
-	if obj_type == "string" then
-		return case and value or value:lower(), obj_type
-	else
-		return case and tostring(value) or tostring(value):lower(), obj_type
-	end
-end
+--~ function ChoGGi_FindValueDlg:RetStringCase(value,case)
+--~ 	local obj_type = type(value)
+--~ 	if obj_type == "string" then
+--~ 		return case and value or value:lower(), obj_type
+--~ 	else
+--~ 		return case and tostring(value) or tostring(value):lower(), obj_type
+--~ 	end
+--~ end
 
 function ChoGGi_FindValueDlg:FindText()
 	local str = self.idEdit:GetText()
@@ -123,22 +128,24 @@ function ChoGGi_FindValueDlg:FindText()
 		return
 	end
 
+	-- if not case all strings are made lower
 	local case = self.idCaseSen:GetCheck()
-	local threads = self.idThreads:GetCheck()
-
 	if not case then
 		str = str:lower()
 	end
 
-	-- always start off empty
+	-- always start off empty (we use a new table since examine will only examine one copy of any object)
 	self.found_objs = {}
+	-- we can clear this table since it isn't examined
+	table.clear(self.dupe_objs)
 
 	-- build our list of objs
 	self:RetObjects(
 		self.obj,
+		self.obj,
 		str,
 		case,
-		threads,
+		self.idThreads:GetCheck(),
 		tonumber(self.idLimit:GetText()) or 1
 	)
 
@@ -151,43 +158,49 @@ function ChoGGi_FindValueDlg:FindText()
 	end)
 end
 
-function ChoGGi_FindValueDlg:RetObjects(obj,str,case,threads,limit,level)
+function ChoGGi_FindValueDlg:RetObjects(obj,parent,str,case,threads,limit,level)
 	if not level then
 		level = 0
 	end
+
 	if level > limit then
 		return
 	end
 
 	if type(obj) == "table" then
-		local name1 = RetName(obj)
-		local name2 = tostring(obj)
-		local obj_string
-		if name1 == name2 then
-			obj_string = StringFormat("%s: %s",S[302535920001307--[[L%s--]]]:format(level),name1)
-		else
-			obj_string = StringFormat("%s: %s (%s)",S[302535920001307--[[L%s--]]]:format(level),name1,name2)
-		end
-		for key,value in pairs(obj) do
-			local key_str,key_type = self:RetStringCase(key,case)
-			local value_str,value_type = self:RetStringCase(value,case)
 
-			if (key_str:find(str,1,true) or value_str:find(str,1,true)) and not self.found_objs[obj_string] then
-				self.found_objs[obj_string] = obj
+		local location_str = S[302535920001307--[["L%s P: %s; %s, %s"--]]]:format(level,RetName(obj),"%s",RetName(parent))
+
+		for key,value in pairs(obj) do
+			local key_name,value_name = RetName(key),RetName(value)
+--~ 			local key_str,key_type = self:RetStringCase(key,case)
+--~ 			local value_str,value_type = self:RetStringCase(value,case)
+			local key_str,key_type = case and key_name or key_name:lower(), type(key)
+			local value_str,value_type = case and value_name or value_name:lower(), type(value)
+
+			local key_location = location_str:format(key_name)
+--~ 			local value_location = location_str:format(value_name)
+
+			if not self.dupe_objs[obj] and not self.found_objs[key_location] and (key_str:find(str,1,true) or value_str:find(str,1,true)) then
+				self.found_objs[key_location] = obj
+				self.dupe_objs[obj] = obj
 
 			elseif threads then
-				if key_type == "thread" and FindThreadFunc(key,str) and not self.found_objs[key_str] then
-					self.found_objs[StringFormat("%s, %s",obj_string,key_str)] = key
-				elseif value_type == "thread" and FindThreadFunc(value,str) and not self.found_objs[value_str] then
-					self.found_objs[StringFormat("%s, %s",obj_string,value_str)] = value
+				local value_location = location_str:format(value_name)
+				if key_type == "thread" and not self.dupe_objs[key] and not self.found_objs[key_location] and FindThreadFunc(key,str) then
+					self.found_objs[key_location] = key
+					self.dupe_objs[key] = key
+				elseif value_type == "thread" and not self.dupe_objs[value] and not self.found_objs[value_location] and FindThreadFunc(value,str) then
+					self.found_objs[value_location] = value
+					self.dupe_objs[value] = value
 				end
+			end
 
-			else
-				if key_type == "table" then
-					self:RetObjects(key,str,case,threads,limit,level+1)
-				elseif value_type == "table" then
-					self:RetObjects(value,str,case,threads,limit,level+1)
-				end
+			if key_type == "table" then
+				self:RetObjects(key,obj,str,case,threads,limit,level+1)
+			end
+			if value_type == "table" then
+				self:RetObjects(value,obj,str,case,threads,limit,level+1)
 			end
 
 		end

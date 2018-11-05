@@ -36,6 +36,7 @@ local ShowMe
 local DebugGetInfo
 local RetThreadInfo
 local DeleteObject
+local DotNameToObject
 local Trans
 local InvalidPos
 local S
@@ -51,6 +52,7 @@ function OnMsg.ClassesGenerate()
 	ShowMe = ChoGGi.ComFuncs.ShowMe
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	DeleteObject = ChoGGi.ComFuncs.DeleteObject
+	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 	RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
 	Trans = ChoGGi.ComFuncs.Translate
 	InvalidPos = ChoGGi.Consts.InvalidPos
@@ -467,7 +469,11 @@ function Examine:BuildToolsMenuPopup()
 
 This can take time on something like the "Building" metatable--]]]:format(ConvertToOSPath("AppData/")),
 			clicked = function()
-				local str = ValueToLuaCode(self.obj)
+				local obj = self.obj
+				if self.str_object then
+					obj = DotNameToObject(obj)
+				end
+				local str = ValueToLuaCode(obj)
 				ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),nil,"DumpedExamineObject","lua")
 			end,
 		},
@@ -499,7 +505,11 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]]:format(ConvertToOSPath("AppData/")),
 			clicked = function()
-				local str = ValueToLuaCode(self.obj)
+				local obj = self.obj
+				if self.str_object then
+					obj = DotNameToObject(obj)
+				end
+				local str = ValueToLuaCode(obj)
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 					parent = self,
 					checkbox = true,
@@ -550,29 +560,45 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			name = StringFormat("%s %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
 			hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
 			clicked = function()
-				ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj,self)
+				local obj = self.obj
+				if self.str_object then
+					obj = DotNameToObject(obj)
+				end
+				ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(obj,self)
 			end,
 		},
 		{
 			name = S[302535920001369--[[Ged Editor--]]],
 			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
 			clicked = function()
+				local obj = self.obj
+				if self.str_object then
+					obj = DotNameToObject(obj)
+				end
 				GedObjectEditor = false
-				OpenGedGameObjectEditor{self.obj}
+				OpenGedGameObjectEditor{obj}
 			end,
 		},
 		{
 			name = S[302535920000067--[[Ged Inspect--]]],
 			hint = S[302535920001075--[[Open this object in the Ged inspector.--]]],
 			clicked = function()
-				Inspect(self.obj)
+				local obj = self.obj
+				if self.str_object then
+					obj = DotNameToObject(obj)
+				end
+				Inspect(obj)
 			end,
 		},
 		{
 			name = S[302535920001305--[[Find Within--]]],
 			hint = S[302535920001303--[[Search for text within %s.--]]]:format(RetName(self.obj)),
 			clicked = function()
-				ChoGGi.ComFuncs.OpenInFindValueDlg(self.obj,self)
+				local obj = self.obj
+				if self.str_object then
+					obj = DotNameToObject(obj)
+				end
+				ChoGGi.ComFuncs.OpenInFindValueDlg(obj,self)
 			end,
 		},
 		{
@@ -580,7 +606,11 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			hint = S[302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.
 Which you can then mess around with some more in the console."--]]],
 			clicked = function()
-				ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj,self)
+				local obj = self.obj
+				if self.str_object then
+					obj = DotNameToObject(obj)
+				end
+				ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,self)
 			end,
 		},
 		{name = "	 ---- "},
@@ -685,13 +715,13 @@ function Examine:SetTranspMode(toggle)
 end
 --
 
-function Examine:valuetotextex(obj)
+function Examine:valuetotextex(obj,main_menu)
 	local obj_type = type(obj)
 
 	local function ShowMe_local()
 		ShowMe(obj)
 	end
-	local function Examine(_,_,button)
+	local function Examine_local(_,_,button)
 		if button == "L" then
 			ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
 		else
@@ -701,23 +731,26 @@ function Examine:valuetotextex(obj)
 
 	if obj_type == "function" then
 		return StringFormat("%s%s%s",
-			self:HyperLink(Examine),
+			self:HyperLink(Examine_local),
 			DebugGetInfo(obj),
 			HLEnd
 		)
+	end
 
-	elseif obj_type == "thread" then
+	if obj_type == "thread" then
 		return StringFormat("%s%s%s",
-			self:HyperLink(Examine),
+			self:HyperLink(Examine_local),
 			tostring(obj),
 			HLEnd
 		)
+	end
 
-	elseif obj_type == "string" then
+	if obj_type == "string" then
 		-- some translated stuff has <color in it, so we make sure they don't bother the rest
 		return StringFormat("'%s</color></color>'",obj)
+	end
 
-	elseif obj_type == "userdata" then
+	if obj_type == "userdata" then
 
 		if IsPoint(obj) then
 			-- InvalidPos()
@@ -728,31 +761,32 @@ function Examine:valuetotextex(obj)
 					self:HyperLink(ShowMe_local),
 					obj:x(),
 					obj:y(),
-					obj:z() or terrain.GetHeight(obj),
+					obj:z() or nil,
 					HLEnd
 				)
 			end
 		else
 			-- show translated text if possible and return a clickable link
 			local trans = Trans(obj)
-			-- stripped = pre-Gagarin, Missing text = post-Gagarin
-			if trans == "stripped" or trans == "Missing text" or trans:find("Missing locale string id") then
+			-- stripped = pre-gagarin
+			if trans == "stripped" or trans:find("Missing text") then
 				trans = tostring(obj)
 			end
 			-- the </color> is to make sure it doesn't bleed into other text
 			return StringFormat("%s</color></color>%s < %s%s",
 				trans,
-				self:HyperLink(Examine),
+				self:HyperLink(Examine_local),
 				getmetatable(obj).__name or tostring(obj),
 				HLEnd
 			)
 		end
+	end
 
-	elseif obj_type == "table" then
+	if obj_type == "table" then
 
 		if IsValid(obj) then
 			return StringFormat("%s%s%s@%s",
-				self:HyperLink(Examine),
+				self:HyperLink(Examine_local),
 				obj.class,
 				HLEnd,
 				self:valuetotextex(obj:GetPos())
@@ -765,7 +799,7 @@ function Examine:valuetotextex(obj)
 			-- if it's an objlist then we just return a list of the objects
 			if obj_metatable and IsObjlist(obj_metatable) then
 				local res = {
-					self:HyperLink(Examine),
+					self:HyperLink(Examine_local),
 					"objlist",
 					HLEnd,
 					"{",
@@ -815,7 +849,7 @@ function Examine:valuetotextex(obj)
 				end
 
 				return StringFormat("%s%s%s",
-					self:HyperLink(Examine),
+					self:HyperLink(Examine_local),
 					name,
 					HLEnd
 				)
@@ -823,7 +857,7 @@ function Examine:valuetotextex(obj)
 		end
 	end
 
-	return obj
+	return tostring(obj)
 end
 
 function Examine:HyperLink(f, custom_color)
@@ -879,41 +913,49 @@ function Examine:totextex(obj,obj_type)
 
 	if obj_type == "nil" then
 		return obj_type
-	elseif obj_type == "boolean" then
+	elseif obj_type == "boolean" or obj_type == "number" then
 		return tostring(obj)
 	elseif obj_type == "string" then
 		return obj
+	end
 
-	elseif obj_type == "table" then
+	if obj_type == "table" then
+
+		-- terrain.GetHeight does not like being called from the main menu
+		local main_menu = Dialogs.PGVideoBackground
 
 		local name
 		for k, v in pairs(obj) do
+
 			name = self:valuetotextex(k)
 			-- gotta store all the names if we're doing all props (no dupes thanks)
 			totextex_dupes[name] = true
 			c = c + 1
 			totextex_res[c] = StringFormat("%s = %s<left>",
 				name,
-				self:valuetotextex(v)
+				self:valuetotextex(v,main_menu)
 			)
 			if type(k) == "number" then
 				totextex_sort[totextex_res[c]] = k
 			end
 		end
+
 		-- keep looping through metatables till we run out
 		if obj_metatable and ChoGGi.Temp.ExamineAllValues then
 			local meta_temp = obj_metatable
 			while meta_temp do
 				for k in pairs(meta_temp) do
+
 					name = self:valuetotextex(k)
 					if not totextex_dupes[name] then
 						totextex_dupes[name] = true
 						c = c + 1
 						totextex_res[c] = StringFormat("%s = %s<left>",
 							name,
-							self:valuetotextex(obj[k])
+							self:valuetotextex(obj[k],main_menu)
 						)
 					end
+
 				end
 				meta_temp = getmetatable(meta_temp)
 			end
@@ -1027,7 +1069,8 @@ function Examine:totextex(obj,obj_type)
 	elseif obj_type == "userdata" then
 		local trans = Trans(obj)
 		-- might as well just return userdata instead of these
-		if trans == "stripped" or trans:find("Missing locale string id") then
+		-- stripped = pre-gagarin
+		if trans == "stripped" or trans:find("Missing text") then
 			trans = tostring(obj)
 		else
 			trans = StringFormat("%s < %s</color></color>",obj,trans)
@@ -1230,21 +1273,37 @@ local function SetTransp_menu(_,_,_,self)
 	self:SetTranspMode(self.transp_mode)
 end
 local function ShowDiffProps_menu(_,_,_,self)
-	ChoGGi.ComFuncs.OpenInExamineDlg(GetModifiedProperties(self.obj),self,StringFormat("%s: %s",S[931--[[Modified property--]]],RetName(self.obj)))
+	local obj = self.obj
+	if self.str_object then
+		obj = DotNameToObject(obj)
+	end
+	ChoGGi.ComFuncs.OpenInExamineDlg(GetModifiedProperties(obj),self,StringFormat("%s: %s",S[931--[[Modified property--]]],RetName(self.obj)))
 end
 local function ShowAllProps_menu(_,_,_,self)
+	local obj = self.obj
+	if self.str_object then
+		obj = DotNameToObject(obj)
+	end
 	local props_list = {}
-	local props = self.obj:GetProperties()
+	local props = obj:GetProperties()
 	for i = 1, #props do
-		props_list[props[i].id] = self.obj:GetProperty(props[i].id)
+		props_list[props[i].id] = obj:GetProperty(props[i].id)
 	end
 	ChoGGi.ComFuncs.OpenInExamineDlg(props_list,self,StringFormat("%s: %s",S[302535920001389--[[All Properties--]]],RetName(self.obj)))
 end
 local function ShowAnimDebug_menu(_,_,_,self)
-	ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj)
+	local obj = self.obj
+	if self.str_object then
+		obj = DotNameToObject(obj)
+	end
+	ChoGGi.ComFuncs.ShowAnimDebug_Toggle(obj)
 end
 local function ShowAttachSpots_menu(_,_,_,self)
-	ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj)
+	local obj = self.obj
+	if self.str_object then
+		obj = DotNameToObject(obj)
+	end
+	ChoGGi.ComFuncs.AttachSpots_Toggle(obj)
 end
 
 function Examine:menu(obj)
@@ -1370,7 +1429,7 @@ function Examine:SetObj(startup)
 
 	if self.str_object then
 		-- check if obj string is a ref to an actual object
-		local obj_ref = ChoGGi.ComFuncs.DotNameToObject(obj)
+		local obj_ref = DotNameToObject(obj)
 		-- if it is then we use that as the obj to examine
 		if obj_ref then
 			obj = obj_ref
@@ -1385,7 +1444,7 @@ function Examine:SetObj(startup)
 	self.idText:SetText(name,": ",S[67--[[Loading resources--]]])
 
 	if obj_type == "table" then
-		if getmetatable(self.obj) then
+		if getmetatable(obj) then
 			self.idShowAllValues:SetVisible(true)
 		else
 			self.idShowAllValues:SetVisible(false)

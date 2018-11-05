@@ -100,7 +100,7 @@ function ChoGGi_ShowImageDlg:Init(parent, context)
 
 	if PGMainMenu then
 		-- Gagarin
-		if LuaRevision> 235636 then
+		if LuaRevision > 235636 then
 				-- wrapped in a pcall, so if we fail then it doesn't matter (other than an error in the log)
 				pcall(function()
 					local dlg = PGMainMenu.idContent.PGMission[1][1].idContent.box
