@@ -40,6 +40,10 @@ local InvalidPos
 local text_disabled
 local text_idle
 local text_rovers
+local text_eject = [[Eject %s from garage]]
+local name = [[RC Garage]]
+local description = [[Stores rovers in a massive underground parking garage (where all the cool kids hang out).]]
+local display_icon = StringFormat("%sUI/garage.png",CurrentModPath)
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
@@ -62,10 +66,6 @@ GlobalVar("g_ChoGGi_RCGarages", {
 	power_per_garage = 1000,
 	last_pass = map_center,
 })
-
-local name = [[RC Garage]]
-local description = [[Stores rovers in a massive underground parking garage (where all the cool kids hang out).]]
-local display_icon = StringFormat("%sUI/garage.png",CurrentModPath)
 
 DefineClass.RCGarage = {
 	__parents = {
@@ -130,7 +130,7 @@ function RCGarage:GetStatusUpdate()
 	if self:CheckMainGarage() and self.garages.main.working and self.working then
 		local amount = #self.stored_rovers
 		if amount > 0 then
-			self.status_text = StringFormat(text_rovers,amount)
+			self.status_text = text_rovers:format(amount)
 		else
 			self.status_text = text_idle
 		end
@@ -480,7 +480,7 @@ function OnMsg.ClassesBuilt()
 								c = c + 1
 								ItemList[c] = {
 									name = name,
-									hint = StringFormat([[Eject %s from garage]],name),
+									hint = text_eject:format(name),
 									clicked = function()
 										context:RemoveFromGarage(obj)
 									end,

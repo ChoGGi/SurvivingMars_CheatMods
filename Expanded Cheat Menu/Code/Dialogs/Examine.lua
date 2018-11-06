@@ -718,7 +718,7 @@ function Examine:SetTranspMode(toggle)
 end
 --
 
-function Examine:valuetotextex(obj,main_menu)
+function Examine:valuetotextex(obj)
 	local obj_type = type(obj)
 
 	local function ShowMe_local()
@@ -760,11 +760,12 @@ function Examine:valuetotextex(obj,main_menu)
 			if obj == InvalidPos then
 				return S[302535920000066--[[<color 203 120 30>Off-Map Pos</color>--]]]
 			else
-				return StringFormat("%s(%s,%s,%s)%s",
+				return StringFormat("%s%s(%s,%s,%s)%s",
 					self:HyperLink(ShowMe_local),
+					S[302535920001396--[[point--]]],
 					obj:x(),
 					obj:y(),
-					obj:z() or nil,
+					obj:z() or 0,
 					HLEnd
 				)
 			end
@@ -924,9 +925,6 @@ function Examine:totextex(obj,obj_type)
 
 	if obj_type == "table" then
 
-		-- terrain.GetHeight does not like being called from the main menu
-		local main_menu = Dialogs.PGVideoBackground
-
 		local name
 		for k, v in pairs(obj) do
 
@@ -936,7 +934,7 @@ function Examine:totextex(obj,obj_type)
 			c = c + 1
 			totextex_res[c] = StringFormat("%s = %s<left>",
 				name,
-				self:valuetotextex(v,main_menu)
+				self:valuetotextex(v)
 			)
 			if type(k) == "number" then
 				totextex_sort[totextex_res[c]] = k
@@ -955,7 +953,7 @@ function Examine:totextex(obj,obj_type)
 						c = c + 1
 						totextex_res[c] = StringFormat("%s = %s<left>",
 							name,
-							self:valuetotextex(obj[k],main_menu)
+							self:valuetotextex(obj[k])
 						)
 					end
 
@@ -1287,7 +1285,13 @@ local function ShowAllProps_menu(_,_,_,self)
 	if self.str_object then
 		obj = DotNameToObject(obj)
 	end
-	local props_list = {}
+	-- give em some hints
+	local props_list = {
+		___readme = S[302535920001397--[["These can be used as obj:GetNAME() / obj:SetNAME().
+You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
+Check the actual object/g_Classes.object for the correct value to use (Entity > entity).
+--]]]
+	}
 	local props = obj:GetProperties()
 	for i = 1, #props do
 		props_list[props[i].id] = obj:GetProperty(props[i].id)

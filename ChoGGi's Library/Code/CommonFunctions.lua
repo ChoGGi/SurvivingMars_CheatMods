@@ -46,7 +46,7 @@ do -- AddMsgToFunc
 			Msg(msg_str,obj,varargs)
 
 --~ 			-- use to debug if getting an error
---~ 			local params = {...}
+--~ 			local params = pack_params(...)
 --~ 			-- pass on args to orig func
 --~ 			if not pcall(function()
 --~ 				return ChoGGi_OrigFuncs[StringFormat("%s_%s",class_name,func_name)](table.unpack(params))
@@ -61,17 +61,18 @@ do -- AddMsgToFunc
 end -- do
 
 do -- Translate
-	local T,_InternalTranslate = T,_InternalTranslate
+	local T,_InternalTranslate,pack_params = T,_InternalTranslate,pack_params
 	local type,select = type,select
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
 		local str
 		local stype = type(select(1,...))
 		if stype == "userdata" or stype == "number" then
-			str = _InternalTranslate(T{...})
+			str = _InternalTranslate(T(pack_params(...)))
 		else
 			str = _InternalTranslate(...)
 		end
+
 		-- just in case a
 		if type(str) ~= "string" then
 			local arg2 = select(2,...)
@@ -81,6 +82,7 @@ do -- Translate
 			-- done fucked up (just in case b)
 			return StringFormat("%s < Missing text string id",...)
 		end
+
 		-- and done
 		return str
 	end
@@ -156,25 +158,10 @@ do -- RetName
 				lookup_table[g[cls.GlobalMap]] = cls.GlobalMap
 			end
 		end)
-		-- and persists
-		for key in pairs(PersistableGlobals) do
-			if type(g[key]) == "table" then
-				lookup_table[g[key]] = key
-			end
-		end
-		-- and anything in _G and the first level of _G
+		-- and anything in _G
 		for key in pairs(g) do
 			if type(g[key]) == "table" then
 				lookup_table[g[key]] = key
-
-				if g[key] ~= g then
-					for key2 in pairs(g[key]) do
-						if type(g[key][key2]) == "table" then
-							lookup_table[g[key][key2]] = key2
-						end
-					end
-				end
-
 			end
 		end
 
@@ -4212,3 +4199,73 @@ end
 function ChoGGi.ComFuncs.OpenGedApp(name)
 	OpenGedApp(name, terminal.desktop)
 end
+
+do -- ChangeSurfaceSignsToMaterials
+	local function ChangeEntity(cls,entity,random)
+		SuspendPassEdits("ChangeSurfaceSignsToMaterials")
+		MapForEach("map",cls,function(o)
+			if random then
+				o:ChangeEntity(StringFormat("%s%s",entity,Random(1,random)))
+			else
+				o:ChangeEntity(entity)
+			end
+		end)
+		ResumePassEdits("ChangeSurfaceSignsToMaterials")
+	end
+	local function ResetEntity(cls)
+		SuspendPassEdits("ChangeSurfaceSignsToMaterials")
+		local entity = g_Classes[cls]:GetDefaultPropertyValue("entity")
+		MapForEach("map",cls,function(o)
+			o:ChangeEntity(entity)
+		end)
+		ResumePassEdits("ChangeSurfaceSignsToMaterials")
+	end
+
+	function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
+
+		local ItemList = {
+			{text = S[302535920001079--[[Enable--]]],value = true,hint = 302535920001081--[[Changes signs to materials.--]]},
+			{text = S[302535920000142--[[Disable--]]],value = false,hint = 302535920001082--[[Changes materials to signs.--]]},
+		}
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+			if choice[1].value then
+				ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
+				ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
+				ChangeEntity("SubsurfaceDepositPreciousMetals","DecSurfaceDepositConcrete_01")
+				ChangeEntity("TerrainDepositConcrete","DecDustDevils_0",5)
+				ChangeEntity("SubsurfaceAnomaly","DebrisConcrete")
+				ChangeEntity("SubsurfaceAnomaly_unlock","DebrisMetal")
+				ChangeEntity("SubsurfaceAnomaly_breakthrough","DebrisPolymer")
+			else
+--~ 				ResetEntity("SubsurfaceDepositWater","SignWaterDeposit")
+--~ 				ResetEntity("SubsurfaceDepositMetals","SignMetalsDeposit")
+--~ 				ResetEntity("SubsurfaceDepositPreciousMetals","SignPreciousMetalsDeposit")
+--~ 				ResetEntity("TerrainDepositConcrete","SignConcreteDeposit")
+--~ 				ResetEntity("SubsurfaceAnomaly","Anomaly_01")
+--~ 				ResetEntity("SubsurfaceAnomaly_unlock","Anomaly_04")
+--~ 				ResetEntity("SubsurfaceAnomaly_breakthrough","Anomaly_02")
+--~ 				ResetEntity("SubsurfaceAnomaly_aliens","Anomaly_03")
+--~ 				ResetEntity("SubsurfaceAnomaly_complete","Anomaly_05")
+				ResetEntity("SubsurfaceDepositWater")
+				ResetEntity("SubsurfaceDepositMetals")
+				ResetEntity("SubsurfaceDepositPreciousMetals")
+				ResetEntity("TerrainDepositConcrete")
+				ResetEntity("SubsurfaceAnomaly")
+				ResetEntity("SubsurfaceAnomaly_unlock")
+				ResetEntity("SubsurfaceAnomaly_breakthrough")
+				ResetEntity("SubsurfaceAnomaly_aliens")
+				ResetEntity("SubsurfaceAnomaly_complete")
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = 302535920001083--[[Change Surface Signs--]],
+		}
+	end
+end -- do

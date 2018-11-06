@@ -67,6 +67,7 @@ function OnMsg.ClassesGenerate()
 			"Flags",
 			"FXRules",
 			"g_Classes",
+			"HandleToObject",
 			"PersistableGlobals",
 			"Presets",
 			"TaskRequesters",

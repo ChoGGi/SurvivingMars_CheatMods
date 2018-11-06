@@ -1,6 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001396,,
-302535920001397,,
 302535920001398,,
 302535920001399,,
 302535920000887,ECM,
@@ -215,6 +213,11 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000870,Shows any errors from loading mods in console log.,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920001397,"These can be used as obj:GetNAME() / obj:SetNAME().
+You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
+Check the actual object/g_Classes.object for the correct value to use (Entity > entity).
+",
+302535920001396,point,
 302535920001389,All Properties,
 302535920001390,Get all properties.,
 302535920001391,Show all values (metatable).,

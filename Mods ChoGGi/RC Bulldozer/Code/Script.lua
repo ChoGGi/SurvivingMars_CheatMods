@@ -53,7 +53,8 @@ local name = [[RC Bulldozer]]
 local description = [[Crush, Kill, Destroy]] -- Sarcófago not lost in space...
 local display_icon = StringFormat("%sUI/rover_combat.png",CurrentModPath)
 local function Trans(...)
-	return _InternalTranslate(T{...})
+--~ 	return _InternalTranslate(T{...})
+	return _InternalTranslate(T(pack_params(...)))
 end
 
 local idle_text = StringFormat([[Radius: %s, %s: %s]],"%s",Trans(49--[[Status--]]),Trans(949--[[Idle--]]))

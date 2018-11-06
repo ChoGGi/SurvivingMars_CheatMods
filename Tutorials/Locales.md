@@ -38,13 +38,13 @@ start changing strings, and then send you the file.
 I like to use this function for ease of use (and to make sure I always get a string back):
 
 do -- Translate (I wrap it in a do, so the locals are kept local)
-	local T,_InternalTranslate = T,_InternalTranslate
+	local T,_InternalTranslate,pack_params = T,_InternalTranslate,pack_params
 	local type,select = type,select
 	-- translate func that always returns a string
 	function Translate(...)
 		local str
 		if type(select(1,...)) == "userdata" then
-			str = _InternalTranslate(T{...})
+			str = _InternalTranslate(T(pack_params(...)))
 		else
 			str = _InternalTranslate(...)
 		end

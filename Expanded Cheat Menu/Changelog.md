@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v10.5 (Unreleased)
+## v10.6 (Unreleased)
+
+## v10.5 (05 Nov 2018)
 ### Added:
 - A "Disable ECM" key binding if you used the Disable ECM option.
 - Re-added Help>Interface>Toggle Signs: If CheatsEnabled() returned false then it didn't work (not sure why devs think it's a cheat).

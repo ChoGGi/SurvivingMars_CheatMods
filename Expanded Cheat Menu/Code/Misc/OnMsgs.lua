@@ -93,6 +93,7 @@ function OnMsg.ClassesPreprocess()
 			UnpersistedMissingClass.SetIsNightLightPossible = empty_func
 			UnpersistedMissingClass.RefreshNightLightsState = empty_func
 			UnpersistedMissingClass.GetUIStatusOverrideForWorkCommand = empty_func
+			UnpersistedMissingClass.Unassign = empty_func
 		end
 	end
 
