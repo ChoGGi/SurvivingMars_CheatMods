@@ -153,6 +153,8 @@ function OnMsg.ClassesGenerate()
 		local TableConcat = ChoGGi.ComFuncs.TableConcat
 		local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 		local TableIClear = table.iclear
+		local pack_params = pack_params
+		local tostring = tostring
 
 		-- we always start off with a newline so the first line or so isn't merged
 		local buffer_table = {"\r\n"}
@@ -177,8 +179,13 @@ function OnMsg.ClassesGenerate()
 			local name = StringFormat("%s: %s",funcname,"%s")
 			_G[funcname] = function(...)
 
-				-- table.concat don't work with non-strings/numbers
-				local str = tostring(...)
+				-- table.concat don't work with non strings/numbers
+				local str = pack_params(...) or ""
+				for i = 1, #str do
+					str[i] = tostring(str[i])
+				end
+				str = TableConcat(str, " ")
+
 				if buffer_table[buffer_cnt] ~= str then
 					buffer_cnt = buffer_cnt + 1
 					buffer_table[buffer_cnt] = name:format(str)
@@ -213,7 +220,7 @@ function OnMsg.ClassesGenerate()
 				ReplaceFunc("DebugPrintNL")
 				ReplaceFunc("OutputDebugString")
 				ReplaceFunc("AddConsoleLog")
-				ReplaceFunc("print")
+--~ 				ReplaceFunc("print")
 				ReplaceFunc("assert")
 				ReplaceFunc("printf")
 				ReplaceFunc("error")
@@ -224,7 +231,7 @@ function OnMsg.ClassesGenerate()
 				ResetFunc("DebugPrintNL")
 				ResetFunc("OutputDebugString")
 				ResetFunc("AddConsoleLog")
-				ResetFunc("print")
+--~ 				ResetFunc("print")
 				ResetFunc("assert")
 				ResetFunc("printf")
 				ResetFunc("error")

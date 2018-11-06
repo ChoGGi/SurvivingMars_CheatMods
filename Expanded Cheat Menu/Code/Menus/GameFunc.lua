@@ -45,60 +45,6 @@ function OnMsg.ClassesGenerate()
 		ResumePassEdits("WhiterRocks")
 	end
 
-	do -- ChangeSurfaceSignsToMaterials
-		local function ChangeEntity(cls,entity,random)
-			SuspendPassEdits("ChangeSurfaceSignsToMaterials")
-			MapForEach("map",cls,function(o)
-				if random then
-					o:ChangeEntity(StringFormat("%s%s",entity,Random(1,random)))
-				else
-					o:ChangeEntity(entity)
-				end
-			end)
-			ResumePassEdits("ChangeSurfaceSignsToMaterials")
-		end
-
-		function ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials()
-
-			local ItemList = {
-				{text = S[302535920001079--[[Enable--]]],value = 1,hint = 302535920001081--[[Changes signs to materials.--]]},
-				{text = S[302535920000142--[[Disable--]]],value = 0,hint = 302535920001082--[[Changes materials to signs.--]]},
-			}
-
-			local function CallBackFunc(choice)
-				if #choice < 1 then
-					return
-				end
-				local value = choice[1].value
-				if value == 1 then
-					ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
-					ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
-					ChangeEntity("SubsurfaceDepositPreciousMetals","DecSurfaceDepositConcrete_01")
-					ChangeEntity("TerrainDepositConcrete","DecDustDevils_0",5)
-					ChangeEntity("SubsurfaceAnomaly","DebrisConcrete")
-					ChangeEntity("SubsurfaceAnomaly_unlock","DebrisMetal")
-					ChangeEntity("SubsurfaceAnomaly_breakthrough","DebrisPolymer")
-				else
-					ChangeEntity("SubsurfaceDepositWater","SignWaterDeposit")
-					ChangeEntity("SubsurfaceDepositMetals","SignMetalsDeposit")
-					ChangeEntity("SubsurfaceDepositPreciousMetals","SignPreciousMetalsDeposit")
-					ChangeEntity("TerrainDepositConcrete","SignConcreteDeposit")
-					ChangeEntity("SubsurfaceAnomaly","Anomaly_01")
-					ChangeEntity("SubsurfaceAnomaly_unlock","Anomaly_04")
-					ChangeEntity("SubsurfaceAnomaly_breakthrough","Anomaly_02")
-					ChangeEntity("SubsurfaceAnomaly_aliens","Anomaly_03")
-					ChangeEntity("SubsurfaceAnomaly_complete","Anomaly_05")
-				end
-			end
-
-			ChoGGi.ComFuncs.OpenInListChoice{
-				callback = CallBackFunc,
-				items = ItemList,
-				title = 302535920001083--[[Change Surface Signs--]],
-			}
-		end
-	end -- do
-
 	function ChoGGi.MenuFuncs.SetObjectOpacity()
 		local ChoGGi = ChoGGi
 		local sel = ChoGGi.ComFuncs.SelObject()

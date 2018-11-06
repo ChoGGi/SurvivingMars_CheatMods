@@ -217,7 +217,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Change Surface Signs To Materials",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = S[302535920000679--[[Changes all the ugly immersion breaking signs to materials (reversible).--]]],
-		OnAction = ChoGGi.MenuFuncs.ChangeSurfaceSignsToMaterials,
+		OnAction = ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials,
 	}
 
 	c = c + 1
