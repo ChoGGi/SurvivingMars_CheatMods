@@ -123,42 +123,14 @@ do -- RetName
 	local lookup_table = {}
 
 	local function AfterLoad()
+
 		local g = ChoGGi.Temp._G or _G
-		-- i suppose i could ask a check, and only add ones not yet added, but i doubt there's much diff
-		lookup_table[g] = "_G"
-		lookup_table[g.ChoGGi] = "ChoGGi"
-		lookup_table[g.ClassTemplates] = "ClassTemplates"
-		lookup_table[g.const] = "const"
-		lookup_table[g.Consts] = "Consts"
-		lookup_table[g.DataInstances] = "DataInstances"
-		lookup_table[g.Dialogs] = "Dialogs"
-		lookup_table[g.EntityData] = "EntityData"
-		lookup_table[g.Flags] = "Flags"
-		lookup_table[g.FXRules] = "FXRules"
-		lookup_table[g.g_Classes] = "g_Classes"
-		lookup_table[g.Mods] = "Mods"
-		lookup_table[g.Presets] = "Presets"
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
-		lookup_table[g.ThreadsMessageToThreads] = "ThreadsMessageToThreads"
-		lookup_table[g.ThreadsRegister] = "ThreadsRegister"
-		lookup_table[g.ThreadsThreadToMessage] = "ThreadsThreadToMessage"
 		if g.UICity then
-			lookup_table[g.g_ApplicantPool] = "g_ApplicantPool"
-			lookup_table[g.g_Consts] = "g_Consts"
-			lookup_table[g.s_SeqListPlayers] = "s_SeqListPlayers"
-			lookup_table[g.ModsLoaded] = "ModsLoaded"
-			lookup_table[g.TaskRequesters] = "TaskRequesters"
-			lookup_table[g.UICity] = "UICity"
 			lookup_table[g.UICity.labels] = "UICity.labels"
 			lookup_table[g.UICity.tech_status] = "UICity.tech_status"
 		end
-		-- and add any presets names
-		ClassDescendantsList("Preset", function(_, cls)
-			if cls.GlobalMap then
-				lookup_table[g[cls.GlobalMap]] = cls.GlobalMap
-			end
-		end)
-		-- and anything in _G
+		-- any tables in _G
 		for key in pairs(g) do
 			if type(g[key]) == "table" then
 				lookup_table[g[key]] = key
@@ -175,6 +147,11 @@ do -- RetName
 		AfterLoad()
 	end
 	function OnMsg.CityStart()
+		AfterLoad()
+	end
+
+	-- if i need to update it
+	function ChoGGi.ComFuncs.RetNameUpdate()
 		AfterLoad()
 	end
 
