@@ -194,6 +194,7 @@ do -- translate
 	if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
 		LoadTranslationTableFile(locale_path:format("English"))
 	end
+
 	Msg("TranslationChanged")
 end
 

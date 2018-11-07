@@ -100,15 +100,15 @@ function OnMsg.ClassesPostprocess()
 	})
 	-- ConsoleButton
 	PlaceObj("ChoGGi_TextStyle", {
-		TextFont = Editor16Bold,
 		RolloverTextColor = white,
+		TextFont = Editor16Bold,
 		id = "ChoGGi_ConsoleButton",
 	})
 	-- ButtonMenu
 	PlaceObj("ChoGGi_TextStyle", {
-		TextFont = Editor16Bold,
 		RolloverTextColor = white,
 		TextColor = black,
+		TextFont = Editor16Bold,
 		id = "ChoGGi_ButtonMenu",
 	})
 	-- ComboButton
@@ -124,9 +124,9 @@ function OnMsg.ClassesPostprocess()
 	})
 	-- CheckButtonMenu
 	PlaceObj("ChoGGi_TextStyle", {
-		TextFont = Editor16Bold,
 		TextColor = black,
 		RolloverTextColor = white,
+		TextFont = Editor16Bold,
 		id = "ChoGGi_CheckButtonMenu",
 	})
 	-- List
