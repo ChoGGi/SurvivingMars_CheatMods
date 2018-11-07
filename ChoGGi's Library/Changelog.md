@@ -1,6 +1,10 @@
 ## Library Changelog
 
-## v3.2 (Unreleased)
+## v3.3 (Unreleased)
+
+## v3.2 (06 Nov 2018)
+- Code cleanup.
+- Moved all my buildings/vehicles into their own category.
 
 ## v3.1 (05 Nov 2018)
 - Cleaned up my DeleteObject func to remove the (hopefully) last of the log spam.

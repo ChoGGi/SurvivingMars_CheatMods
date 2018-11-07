@@ -2890,7 +2890,7 @@ do -- DeleteObject
 		-- figured it's quicker using a local function now
 		local waterspire = obj:IsKindOf("WaterReclamationSpire") and not IsValid(obj.parent_dome)
 		local rctransport = obj:IsKindOf("RCTransport")
-		local holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor")
+		local holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor","JumperShuttleHub")
 
 		if not waterspire then
 			-- some stuff will leave holes in the world if they're still working
@@ -4267,5 +4267,29 @@ do -- ChangeSurfaceSignsToMaterials
 			items = ItemList,
 			title = 302535920001083--[[Change Surface Signs--]],
 		}
+	end
+end -- do
+
+do -- MovePointAwayXY
+	local CalcZForInterpolation = CalcZForInterpolation
+	local SetLen = SetLen
+	-- this is the same as MovePointAway, but uses Z from src
+	function ChoGGi.ComFuncs.MovePointAwayXY(src, dest, dist)
+		dest, src = CalcZForInterpolation(dest, src)
+
+		local v = dest - src
+		v = SetLen(v, dist)
+		v = src - v
+		return v:SetZ(src:z())
+	end
+	-- this is the same as MovePoint, but uses Z from src
+	function ChoGGi.ComFuncs.MovePointXY(src, dest, dist)
+		dest, src = CalcZForInterpolation(dest, src)
+		local v = dest - src
+		if dist < v:Len() then
+			v = SetLen(v, dist)
+		end
+		v = src + v
+		return v:SetZ(src:z())
 	end
 end -- do

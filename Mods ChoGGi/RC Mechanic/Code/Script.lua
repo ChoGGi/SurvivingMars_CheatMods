@@ -58,12 +58,13 @@ DefineClass.RCMechanicBuilding = {
 }
 
 function RCMechanic:GameInit()
+	BaseRover.GameInit(self)
 
 	-- colour #, Color, Roughness, Metallic
 	-- middle area
 	self:SetColorizationMaterial(1, -9175040, -128, 120)
 	-- body
-	self:SetColorizationMaterial(2, -9013642, 120, 20)
+	self:SetColorizationMaterial(2, -5987164, 120, 20)
 	-- color of bands
 	self:SetColorizationMaterial(3, -5694693, -128, 48)
 
@@ -87,16 +88,57 @@ end
 function RCMechanic:ProcAutomation()
 	local unreachable_objects = self:GetUnreachableObjectsTable()
 
-	local rover = MapFindNearest(self, "map", "BaseRover", "Drone",function(o)
-		-- only try for rovers without a cc that are malfunced and we can assign a unit (and figure out how to slow the repair down)
-		if o.command_centers and #o.command_centers == 0 and o:IsMalfunctioned() and o.repair_work_request:CanAssignUnit() then
+	local is_rover,is_drone
+
+	local rover = MapFindNearest(self, "map", "BaseRover", "Drone" ,function(o)
+		local go_fix_it
+		-- check for rovers without a cc or if all cc nearby have no working drones
+		if o.command == "Malfunction" then
+			-- can't hurt
+			if o:IsKindOf("BaseRover") then
+				is_rover = true
+				if not o.repair_work_request:CanAssignUnit() then
+					return
+				end
+			elseif o:IsKindOf("Drone") then
+				is_drone = true
+				if not table.find(g_BrokenDrones,"handle",o.handle) then
+					return
+				end
+			end
+
+			-- if has cc then check if they can fix, otherwise fix it
+			local cc = o.command_centers
+			if cc and #cc > 0 then
+				local cc_count = #cc
+				local not_working_count = 0
+				for i = 1, cc_count do
+					local drones_count = cc[i]:GetDronesCount()
+					-- check for cc with no drones or all drones are malf'd
+					if drones_count == 0 or drones_count == cc[i]:GetBrokenDronesCount()then
+						not_working_count = not_working_count + 1
+					end
+				end
+				-- if all cc nearby have no working drones
+				if not_working_count == cc_count then
+					go_fix_it = true
+				end
+			else
+				go_fix_it = true
+			end
+
+		end
+		if go_fix_it then
 			return not unreachable_objects[o]
 		end
+--~ 		if o.command_centers and #o.command_centers == 0 and o:IsMalfunctioned() and o.repair_work_request:CanAssignUnit() then
+--~ 			return not unreachable_objects[o]
+--~ 		end
 	end)
 
 	if rover then
 		local pos = GetPassablePointNearby(rover:GetPos())
-		if pf.HasPath(self:GetPos(), self.pfclass, pos) then
+		if self:HasPath(pos, "Workrover") then
 			self.status_text = string.format([[Was the dark of the moon on the sixth of June
 In a <color 199 124 45>%s</color> pullin' logs
 Cab-over Pete with a reefer on
@@ -106,8 +148,9 @@ We is headin' for bear on I-one-oh
 I says, "Pig Pen, this here's the Rubber Duck.
 "And I'm about to put the hammer down."]],rover.name ~= "" and rover.name or rover.class)
 			self:Goto(pos)
-			-- find a way to slow this down
-			rover:Repair()
+			-- find a way to slow this down?
+			rover:CheatCleanAndFix()
+
 			self.status_text = idle_text
 			return 5000
 		else
@@ -116,12 +159,13 @@ I says, "Pig Pen, this here's the Rubber Duck.
 	else
 		return 10000
 	end
+	return 1000
 end
 
 function RCMechanic:Idle()
 	self.status_text = idle_text
 	local sleep = self:ProcAutomation()
-	self:SetStateText("idle")
+	self:SetState("idle")
 
 	Sleep(sleep or 1000)
 	self:Gossip("Idle")
@@ -136,13 +180,17 @@ function OnMsg.ClassesPostprocess()
 			"construction_cost_Metals",40000,
 			"construction_cost_MachineParts",40000,
 			"construction_cost_Electronics",20000,
+			-- add a bit of pallor to the skeleton
+			"palette_color1", "pipes_metal",
+			"palette_color2", "mining_base",
+			"palette_color3", "outside_base",
 
 			"dome_forbidden",true,
 			"display_name",name,
 			"display_name_pl",name,
 			"description",description,
-			"build_category","Infrastructure",
-			"Group", "Infrastructure",
+			"build_category","ChoGGi",
+			"Group", "ChoGGi",
 			"display_icon", display_icon,
 			"encyclopedia_exclude",true,
 			"on_off_button",false,

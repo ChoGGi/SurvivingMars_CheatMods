@@ -343,7 +343,7 @@ Strings[584248706535] = Strings[584248706535]:gsub("<right><ResourceAmount>",": 
 local function TransZero(pad,first,last)
 	for i = first, last do
 		-- entries in the CSV file
-		if i > 1400 then
+		if i > 1450 then
 			break
 		end
 		local num = tonumber(TableConcat{30253592000,pad,i})

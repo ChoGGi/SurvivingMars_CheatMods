@@ -1,3 +1,6 @@
+v0.4
+Gagarin.
+
 v0.3
 Had a chance to hide the Cheats pane (if enabled).
 Fixed funky icon.

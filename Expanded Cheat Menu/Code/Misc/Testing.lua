@@ -9,17 +9,17 @@ function OnMsg.ClassesGenerate()
 
 	if ChoGGi.testing then
 
-		local orig_XImage_DrawContent = XImage.DrawContent
-		local RetName = ChoGGi.ComFuncs.RetName
-		local FileExists = ChoGGi.ComFuncs.FileExists
-		function XImage:DrawContent(...)
-			local image = self:GetImage()
-			-- unless it is bitching about memorysavegame :)
-			if image ~= "" and not image:find("memorysavegame") and not FileExists(image) then
-				print(RetName(self.parent),image,"DC")
-			end
-			return orig_XImage_DrawContent(self,...)
-		end
+--~ 		local orig_XImage_DrawContent = XImage.DrawContent
+--~ 		local RetName = ChoGGi.ComFuncs.RetName
+--~ 		local FileExists = ChoGGi.ComFuncs.FileExists
+--~ 		function XImage:DrawContent(...)
+--~ 			local image = self:GetImage()
+--~ 			-- unless it is bitching about memorysavegame :)
+--~ 			if image ~= "" and not image:find("memorysavegame") and not FileExists(image) then
+--~ 				print(RetName(self.parent),image,"DC")
+--~ 			end
+--~ 			return orig_XImage_DrawContent(self,...)
+--~ 		end
 
 		do -- tell me if traits are different
 			local ChoGGi = ChoGGi
