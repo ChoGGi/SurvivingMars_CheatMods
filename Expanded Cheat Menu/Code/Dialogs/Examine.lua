@@ -128,6 +128,9 @@ DefineClass.Examine = {
 	-- get list of all values from metatables
 	show_all_values = false,
 
+	-- chinese goes slow as shit for some reason, so i added this to at least stop the game from freezing till obj is examined
+	is_chinese = false,
+
 	dialog_width = 666.0,
 	dialog_height = 850.0,
 
@@ -349,6 +352,9 @@ Right-click to scroll to top."--]]],
 	-- look at them sexy internals
 	self.transp_mode = ChoGGi.Temp.transp_mode
 	self:SetTranspMode(self.transp_mode)
+
+	-- no need to have it fire one than once per dialog
+	self.is_chinese = GetLanguage():find("chinese")
 
 	-- do the magic
 	if self:SetObj(true) then
@@ -888,8 +894,14 @@ function Examine:totextex(obj,obj_type)
 
 	if obj_type == "table" then
 
+
 		local name
 		for k, v in pairs(obj) do
+
+			-- sorely needed delay for chinese
+			if self.is_chinese then
+				Sleep(1)
+			end
 
 			name = self:valuetotextex(k)
 			-- gotta store all the names if we're doing all props (no dupes thanks)

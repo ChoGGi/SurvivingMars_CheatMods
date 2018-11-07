@@ -8,6 +8,7 @@ local _InternalTranslate = _InternalTranslate
 local T = T
 local tonumber = tonumber
 local TableConcat = ChoGGi.ComFuncs.TableConcat
+
 local TranslationTable = TranslationTable
 
 -- devs didn't bother changing droid font to one that supports unicode, so we do this for not eng
