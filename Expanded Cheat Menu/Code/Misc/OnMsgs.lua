@@ -49,6 +49,21 @@ function OnMsg.ClassesGenerate()
 	if TextStyles.DevMenuBar then
 		TextStyles.DevMenuBar.TextColor = white
 	end
+
+	-- remove sponsor limits on buildings
+	if ChoGGi.UserSettings.SponsorBuildingLimits then
+		for _,bld in pairs(BuildingTemplates) do
+			-- set each status to false if it isn't
+			for i = 1, 3 do
+				local str = StringFormat("sponsor_status%s",i)
+				if bld[str] ~= false then
+					bld[StringFormat("sponsor_status%s_ChoGGi_orig",i)] = bld[str]
+					bld[str] = false
+				end
+			end
+		end
+	end
+
 end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
@@ -179,8 +194,9 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 	-- use this message to perform post-built actions on the final classes
 	function OnMsg.ClassesBuilt()
 		-- add HiddenX cat for Hidden items
-		if ChoGGi.UserSettings.Building_hide_from_build_menu then
-			BuildCategories[#BuildCategories+1] = {
+		local bc = BuildCategories
+		if ChoGGi.UserSettings.Building_hide_from_build_menu and not table.find(bc,"id","HiddenX") then
+			bc[#bc+1] = {
 				id = "HiddenX",
 				name = S[1000155--[[Hidden--]]],
 				img = "UI/Icons/bmc_placeholder.tga",

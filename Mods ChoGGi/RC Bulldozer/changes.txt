@@ -1,3 +1,7 @@
+v0.6
+Gagarin.
+Uses Harvester model if you have Gagarin.
+
 v0.5
 Sped up the method I used to make ground drivable, but now it'll block objects from being placed nearby when Dozer Toggle is enabled.
 Dozer body colour is changed while Dozer Toggle is enabled, so you know to turn if off when idle.

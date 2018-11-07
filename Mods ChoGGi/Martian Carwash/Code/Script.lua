@@ -122,8 +122,8 @@ function OnMsg.ClassesPostprocess()
 Working at the car wash, yeah
 Come on and sing it with me, car wash
 Sing it with the feeling now, car wash, yeah]],
-			"Group", "Wonders",
-			"build_category", "Wonders", -- oh it's wonderful, be even more wonderful if I could figure out how to add a pipe connection, and have it suck up water
+			"build_category","ChoGGi",
+			"Group", "ChoGGi",
 			"display_icon", string.format("%sUI/carwash.png",CurrentModPath),
 			"entity", "Farm",
 			"electricity_consumption", 2500,

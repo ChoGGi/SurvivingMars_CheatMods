@@ -614,6 +614,20 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		end,
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001398--[[Sponsor Building Limits--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionId = ".Sponsor Building Limits",
+		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.SponsorBuildingLimits,
+				302535920001399--[[Allow you to build all buildings no matter your sponsor.--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle,
+	}
+
 	local str_ExpandedCM_Buildings_SpaceElevator = "ECM.Expanded CM.Buildings.Space Elevator"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[1120--[[Space Elevator--]]]),

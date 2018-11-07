@@ -12,11 +12,18 @@ local rcc = RoverCommands
 rcc.ChoGGi_UseGarage = [[Storing in garage]]
 rcc.ChoGGi_InGarage = [[Stored in garage]]
 
-local orig_BaseRover_CanInteractWithObject = BaseRover.CanInteractWithObject
-function BaseRover:CanInteractWithObject(obj, interaction_mode, ...)
+local function CanInteractWithObject_local(self, obj, interaction_mode)
 	-- if it's garage otherwise return orig func
 	if (self.interaction_mode == false or self.interaction_mode == "default" or self.interaction_mode == "move") and IsKindOf(obj, "RCGarage") and obj:CheckMainGarage() and obj.garages.main.working then
 		return true, T{0, [[<UnitMoveControl('ButtonA',interaction_mode)>: Use Garage]],self}
+	end
+end
+
+local orig_BaseRover_CanInteractWithObject = BaseRover.CanInteractWithObject
+function BaseRover:CanInteractWithObject(obj, interaction_mode, ...)
+	local ret1,ret2 = CanInteractWithObject_local(self, obj, interaction_mode)
+	if ret1 then
+		return ret1,ret2
 	end
 
 	return orig_BaseRover_CanInteractWithObject(self, obj, interaction_mode, ...)
@@ -71,4 +78,31 @@ function BaseRover:ChoGGi_UseGarage(garage)
 
 	SetUnitControlInteraction(false, self)
 	garage:StickInGarage(self)
+end
+
+-- override for Patriot missile sys
+function OnMsg.ClassesBuilt()
+
+	if rawget(g_Classes,"PMSAttackRover") then
+		local orig_PMSAttackRover_CanInteractWithObject = PMSAttackRover.CanInteractWithObject
+		function PMSAttackRover:CanInteractWithObject(obj, interaction_mode, ...)
+			local ret1,ret2 = CanInteractWithObject_local(self, obj, interaction_mode)
+			if ret1 then
+				return ret1,ret2
+			end
+			return orig_PMSAttackRover_CanInteractWithObject(self, obj, interaction_mode, ...)
+		end
+	end
+
+	if rawget(g_Classes,"NASAAttackRover") then
+		local orig_NASAAttackRover_CanInteractWithObject = NASAAttackRover.CanInteractWithObject
+		function NASAAttackRover:CanInteractWithObject(obj, interaction_mode, ...)
+			local ret1,ret2 = CanInteractWithObject_local(self, obj, interaction_mode)
+			if ret1 then
+				return ret1,ret2
+			end
+			return orig_NASAAttackRover_CanInteractWithObject(self, obj, interaction_mode, ...)
+		end
+	end
+
 end

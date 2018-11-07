@@ -402,12 +402,11 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local ItemList = {}
-		local list = sel:GetStates() or {}
 
-		for Key,State in pairs(list) do
+		for id,state in pairs(sel:GetStates() or {}) do
 			ItemList[#ItemList+1] = {
-				text = StringFormat("%s: %s %s: %s",S[1000037--[[Name--]]],State,S[302535920000858--[[Idx--]]],Key),
-				value = State,
+				text = StringFormat("%s: %s %s: %s",S[1000037--[[Name--]]],state,S[302535920000858--[[Index--]]],id),
+				value = state,
 			}
 		end
 
@@ -429,6 +428,8 @@ function OnMsg.ClassesGenerate()
 			items = ItemList,
 			title = 302535920000860--[[Set Anim State--]],
 			hint = S[302535920000861--[[Current State: %s--]]]:format(sel:GetState()),
+			custom_type = 7,
+			custom_func = CallBackFunc,
 		}
 	end
 

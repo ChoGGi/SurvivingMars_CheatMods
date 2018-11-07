@@ -4,6 +4,11 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v10.6 (Unreleased)
+### Added:
+- Buildings>Toggles>Sponsor Building Limits: Gagarin added buildings limited to specific sponsors, use this to toggle limits.
+
+### Changed:
+- Write Logs skips print (AddConsoleLog shows the same and more).
 
 ## v10.5 (05 Nov 2018)
 ### Added:

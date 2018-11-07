@@ -1,0 +1,3 @@
+v0.2
+Support for rovers from Patriot Missile Defense System/Mission Sponsor - NASA.
+Added an Eject All button to main garage (just in case).

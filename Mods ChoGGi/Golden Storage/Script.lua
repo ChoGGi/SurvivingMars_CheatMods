@@ -77,14 +77,14 @@ function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.GoldenStorage then
 		PlaceObj("BuildingTemplate", {
 			"Id", "GoldenStorage",
-			"Group", "Storages",
 			"template_class", "GoldenStorage",
 			"instant_build", true,
 			"dome_forbidden", true,
 			"display_name", [[Golden Storage]],
 			"display_name_pl", [[Golden Storage]],
 			"description", [[Converts Metals to PreciousMetals.]],
-			"build_category", "Storages",
+			"build_category","ChoGGi",
+			"Group", "ChoGGi",
 			"display_icon", string.format("%suniversal_storage.tga",CurrentModPath),
 			"entity", "ResourcePlatform",
 			"on_off_button", false,

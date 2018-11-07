@@ -9,7 +9,7 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	-- version to version check with
-	local min_version = 29
+	local min_version = 32
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
@@ -45,13 +45,38 @@ local PlaceObject = PlaceObject
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 local ToggleCollisions
+local MovePointAwayXY
 function OnMsg.ClassesGenerate()
 	ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
+	MovePointAwayXY = ChoGGi.ComFuncs.MovePointAwayXY
 end
 
 local name = [[RC Bulldozer]]
 local description = [[Crush, Kill, Destroy]] -- Sarcófago not lost in space...
 local display_icon = StringFormat("%sUI/rover_combat.png",CurrentModPath)
+
+local entity1 = "CombatRover"
+local entity2 = "CombatRover"
+local palette = "AttackRoverBlue"
+local away_spot = "Particle1"
+local colour1 = -15005149
+local colour2 = -5000269
+local colour3 = -16244680
+local colour4
+local fx_actor_class
+
+if BuildingTemplates.RCHarvesterBuildingX then
+	entity1 = "RoverBlueSunHarvester"
+	entity2 = "RoverBlueSunHarvesterBuilding"
+	palette = "RCHarvester"
+	away_spot = "Particle"
+--~ 	colour1 = -15005149
+	colour2 = -3421237
+--~ 	colour3 = -16244680
+	colour4 = -9408400
+	fx_actor_class = "RCHarvester"
+end
+
 local function Trans(...)
 --~ 	return _InternalTranslate(T{...})
 	return _InternalTranslate(T(pack_params(...)))
@@ -70,8 +95,9 @@ DefineClass.RCBulldozer = {
 	description = description,
 	display_icon = display_icon,
 	display_name = name,
+	fx_actor_class = fx_actor_class,
 
-	entity = "CombatRover",
+	entity = entity1,
 	accumulate_dust = false,
 	status_text = idle_text:format(1000),
 	-- flatten area
@@ -90,6 +116,8 @@ DefineClass.RCBulldozer = {
 	pin_rollover = T{0,"<StatusUpdate>"},
 	-- change texture when dozing
 	texture_terrain = table.find(TerrainTextures, "name", "Dig"),
+	-- used to place the circle
+	away_spot = false,
 
 --~ 	-- likely useless...
 --~ 	orient_mode = "terrain",
@@ -103,14 +131,19 @@ DefineClass.RCBulldozerBuilding = {
 }
 
 function RCBulldozer:GameInit()
+	BaseRover.GameInit(self)
 
+	self.away_spot = self:GetSpotBeginIndex(away_spot)
 	-- colour #, Color, Roughness, Metallic
 	-- middle area
-	self:SetColorizationMaterial(1, -15005149, -128, 120)
+	self:SetColorizationMaterial(1, colour1, -128, 120)
 	-- body
-	self:SetColorizationMaterial(2, -11845311, 120, 20)
+	self:SetColorizationMaterial(2, colour2, 120, 20)
 	-- color of bands
-	self:SetColorizationMaterial(3, -16244680, -128, 48)
+	self:SetColorizationMaterial(3, colour3, -128, 48)
+	if colour4 then
+		self:SetColorizationMaterial(4, colour3, -128, 48)
+	end
 
 --~ 	-- have to wait for HexOutlineShapes to be built, this one is about as big as the largest we can make the hex
 --~ 	self.shape_obj = HexOutlineShapes.DomeMega
@@ -121,10 +154,10 @@ function RCBulldozer:GetStatusUpdate()
 end
 
 function RCBulldozer:ReturnDozeArea()
-	return MovePointAway(
+	return MovePointAwayXY(
 		self:GetVisualPos(),
-		self:GetSpotLoc(self:GetSpotBeginIndex("Droneentrance")),
-		self.radius + 500
+		self:GetSpotLoc(self.away_spot),
+		-(self.radius + 1000)
 	)
 end
 
@@ -181,9 +214,14 @@ function RCBulldozer:StopDozer()
 	-- boolean toggle
 	self.bulldozing = false
 	-- back to normal colour
-	self:SetColorizationMaterial(2, -11845311, 120, 20)
+	self:SetColorizationMaterial(2, colour2, 120, 20)
 	-- hide circle if visible
 	self:UpdateCircle()
+
+	if entity1 == "RoverBlueSunHarvester" then
+		PlayFX("Harvest", "end", self)
+		self:SetMoveAnim("moveWalk")
+	end
 
 	if IsValid(self.site) then
 		self.site:delete()
@@ -236,6 +274,11 @@ function RCBulldozer:StartDozer()
 	-- sigh
 	if not IsValid(self.site) then
 		self:AddDriveable()
+	end
+	-- set work anim
+	if entity1 == "RoverBlueSunHarvester" then
+		PlayFX("Harvest", "start", self)
+		self:SetMoveAnim("workIdle")
 	end
 
 	-- it shouldn't already be running, but fuck it
@@ -333,18 +376,25 @@ function OnMsg.ClassesPostprocess()
 			"construction_cost_Metals",40000,
 			"construction_cost_MachineParts",40000,
 			"construction_cost_Electronics",20000,
+			-- add a bit of pallor to the skeleton
+			"palette_color1", "pipes_metal",
+			"palette_color2", "mining_base",
+			"palette_color3", "outside_base",
 
 			"dome_forbidden",true,
 			"display_name",name,
 			"display_name_pl",name,
 			"description",description,
-			"build_category","Infrastructure",
-			"Group", "Infrastructure",
+			"build_category","ChoGGi",
+			"Group", "ChoGGi",
 			"display_icon", display_icon,
 			"encyclopedia_exclude",true,
 			"on_off_button",false,
-			"entity","CombatRover",
-			"palettes","AttackRoverBlue",
+			"count_as_building",false,
+			"prio_button",false,
+
+			"entity",entity2,
+			"palettes",palette,
 		})
 	end
 end

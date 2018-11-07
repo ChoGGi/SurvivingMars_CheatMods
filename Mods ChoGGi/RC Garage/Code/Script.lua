@@ -9,7 +9,7 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	-- version to version check with
-	local min_version = 31
+	local min_version = 32
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
@@ -40,10 +40,6 @@ local InvalidPos
 local text_disabled
 local text_idle
 local text_rovers
-local text_eject = [[Eject %s from garage]]
-local name = [[RC Garage]]
-local description = [[Stores rovers in a massive underground parking garage (where all the cool kids hang out).]]
-local display_icon = StringFormat("%sUI/garage.png",CurrentModPath)
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
@@ -66,6 +62,10 @@ GlobalVar("g_ChoGGi_RCGarages", {
 	power_per_garage = 1000,
 	last_pass = map_center,
 })
+
+local name = [[RC Garage]]
+local description = [[Stores rovers in a massive underground parking garage (where all the cool kids hang out).]]
+local display_icon = StringFormat("%sUI/garage.png",CurrentModPath)
 
 DefineClass.RCGarage = {
 	__parents = {
@@ -130,7 +130,7 @@ function RCGarage:GetStatusUpdate()
 	if self:CheckMainGarage() and self.garages.main.working and self.working then
 		local amount = #self.stored_rovers
 		if amount > 0 then
-			self.status_text = text_rovers:format(amount)
+			self.status_text = StringFormat(text_rovers,amount)
 		else
 			self.status_text = text_idle
 		end
@@ -183,8 +183,12 @@ function RCGarage:StickInGarage(unit)
 
 	-- stop holder from removing units when a garage is removed
 	TableClear(self.units)
+	unit.ChoGGi_RemHolderPos = unit.holder:GetVisualPos()
 	unit.holder = false
 end
+
+-- gagarin and pre-gagarin
+local IsValidPos = point20.IsValidPos or point20.IsValid
 
 function RCGarage:RemoveFromGarage(unit)
 	if not IsValid(unit) then
@@ -215,18 +219,18 @@ function RCGarage:RemoveFromGarage(unit)
 		if IsValid(self and self.door) then
 			self.door:Close()
 		end
-		-- try for rolled out pos, then last saved if that fails
-		local p = unit:GetPos()
+		-- try for rolled out pos, then saved pos from orig holder
+		local pt = unit:GetPos()
+		local rem = unit.ChoGGi_RemHolderPos ~= InvalidPos and unit.ChoGGi_RemHolderPos
 		-- get nearby pass area
-		unit:SetCommand("Goto",GetPassablePointNearby(p ~= InvalidPos and p or g_ChoGGi_RCGarages.last_pass))
+		unit:SetCommand("Goto",GetPassablePointNearby(pt ~= InvalidPos and pt or rem))
 		Sleep(2500)
 
 		-- last ditch effort (should only happen when you cheat delete building)
-		p = unit:GetPos()
-		if p == InvalidPos then
-			local g = g_ChoGGi_RCGarages
-			p = g.last_pass ~= InvalidPos and g.last_pass or point(0,0,terrain.GetHeight(map_center))
-			unit:SetPos(p)
+		if not IsValidPos(pt) then
+			local last = g_ChoGGi_RCGarages.last_pass
+			pt = rem or last ~= InvalidPos and last or point(0,0,terrain.GetHeight(map_center))
+			unit:SetPos(pt)
 			unit:SetCommand("Goto",GetPassablePointNearby(unit:GetPos()))
 		end
 
@@ -363,8 +367,8 @@ function OnMsg.ClassesPostprocess()
 			"display_name",name,
 			"display_name_pl",name,
 			"description",description,
-			"build_category","Infrastructure",
-			"Group", "Infrastructure",
+			"build_category","ChoGGi",
+			"Group", "ChoGGi",
 			"display_icon", display_icon,
 			"encyclopedia_exclude",true,
 			"entity","TunnelEntrance",
@@ -408,17 +412,19 @@ function OnMsg.ClassesBuilt()
 			"__template", "InfopanelSection",
 			"Icon", "UI/Icons/Sections/basic.tga",
 		}, {
+			-- show link to main garage on other garages
 			PlaceObj('XTemplateTemplate', {
 				"__template", "InfopanelActiveSection",
 				"Icon", "UI/Icons/ColonyControlCenter/outside_buildings_on.tga",
 				"RolloverText", [[View main garage]],
 				"OnContextUpdate", function(self, context)
+					---
+
 					-- hide if this is main garage
 					if context:CheckMainGarage() then
 						if context.garages.main == context then
 							self:SetVisible(false)
 							self:SetMaxHeight(0)
-							-- no sense in doing the status update below
 						else
 							self:SetVisible(true)
 							self:SetMaxHeight()
@@ -431,6 +437,7 @@ function OnMsg.ClassesBuilt()
 						self:SetTitle(T{0,"<StatusUpdate>"})
 					end
 
+					---
 				end,
 			}, {
 				PlaceObj("XTemplateFunc", {
@@ -447,14 +454,18 @@ function OnMsg.ClassesBuilt()
 					end,
 				}),
 			}),
+
+			-- list stored rovers
 			PlaceObj('XTemplateTemplate', {
 				"__template", "InfopanelActiveSection",
 				"Icon", "UI/Icons/Sections/accept_colonists_on.tga",
 				"RolloverText", [[Show list of stored rovers]],
 				"OnContextUpdate", function(self, context)
+					---
 					if context:CheckMainGarage() then
 						self:SetTitle(text_rovers:format(#context.stored_rovers))
 					end
+					---
 				end,
 			}, {
 				PlaceObj("XTemplateFunc", {
@@ -480,7 +491,7 @@ function OnMsg.ClassesBuilt()
 								c = c + 1
 								ItemList[c] = {
 									name = name,
-									hint = text_eject:format(name),
+									hint = StringFormat([[Eject %s from garage]],name),
 									clicked = function()
 										context:RemoveFromGarage(obj)
 									end,
@@ -495,8 +506,60 @@ function OnMsg.ClassesBuilt()
 						---
 					end,
 				}),
-			})
-		})
+			}),
+
+			-- add an eject all rovers to main garage
+			PlaceObj('XTemplateTemplate', {
+				"__template", "InfopanelActiveSection",
+				"Icon", "UI/Icons/ColonyControlCenter/homeless_off.tga",
+				"Title",[[Eject All]],
+				"RolloverText", [[Forces all rovers to main garage area]],
+				"OnContextUpdate", function(self, context)
+					-- hide if this isn't main garage
+					if context:CheckMainGarage() then
+						if context.garages.main == context then
+							self:SetVisible(true)
+							self:SetMaxHeight()
+						else
+							self:SetVisible(false)
+							self:SetMaxHeight(0)
+						end
+					end
+				end,
+			}, {
+				PlaceObj("XTemplateFunc", {
+					"name", "OnActivate(self, context)",
+					"parent", function(self)
+						return self.parent
+					end,
+					"func", function(self, context)
+						---
+
+						local function CallBackFunc(answer)
+							if answer then
+								local rovers = g_ChoGGi_RCGarageRovers
+								for i = #rovers, 1, -1 do
+									local unit = rovers[i]
+									unit.ChoGGi_InGarage = nil
+									unit.accumulate_dust = true
+									unit:SetPos(context:GetPos())
+									unit:SetCommand("Goto",GetPassablePointNearby(unit:GetPos()+point(Random(-5000,5000),Random(-5000,5000))))
+								end
+								TableClear(g_ChoGGi_RCGarageRovers)
+								context:UpdateGaragePower()
+							end
+						end
+						ChoGGi.ComFuncs.QuestionBox(
+							[[Are you sure you want to eject all rovers?]],
+							CallBackFunc,
+							[[Eject]]
+						)
+						---
+					end,
+				}),
+			}),
+
+		}) -- PlaceObj
 	)
 end
 

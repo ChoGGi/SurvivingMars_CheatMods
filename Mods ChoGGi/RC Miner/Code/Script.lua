@@ -142,12 +142,13 @@ DefineClass.PortableStockpile = {
 }
 
 function PortableMiner:GameInit()
+	BaseRover.GameInit(self)
 
 	-- colour #, Color, Roughness, Metallic
 	-- middle area
 	self:SetColorizationMaterial(1, -10592674, -128, 120)
 	-- body
-	self:SetColorizationMaterial(2, -9013642, 120, 20)
+	self:SetColorizationMaterial(2, -5987164, 120, 20)
 	-- color of bands
 	self:SetColorizationMaterial(3, -13031651, -128, 48)
 
@@ -206,8 +207,8 @@ function PortableMiner:ProcAutomation()
 	end)
 
 	if deposit then
-		local deposit_pos = deposit:GetPos()
-		if pf.HasPath(self:GetPos(), self.pfclass, deposit_pos) then
+		local deposit_pos = GetPassablePointNearby(deposit:GetPos())
+		if self:HasPath(deposit_pos, "Origin") then
 			-- if leaving an empty site then this sign should be turned off
 			self:ShowNotWorkingSign(false)
 			self:SetCommand("Goto",deposit_pos)
@@ -496,15 +497,21 @@ function OnMsg.ClassesPostprocess()
 			"construction_cost_Metals",40000,
 			"construction_cost_MachineParts",40000,
 			"construction_cost_Electronics",20000,
+			-- add a bit of pallor to the skeleton
+			"palette_color1", "pipes_metal",
+			"palette_color2", "mining_base",
+			"palette_color3", "outside_base",
 
 			"dome_forbidden",true,
 			"display_name",name,
 			"display_name_pl",name,
 			"description",description,
-			"build_category","Infrastructure",
-			"Group", "Infrastructure",
+			"build_category","ChoGGi",
+			"Group", "ChoGGi",
 			"display_icon", display_icon,
 			"encyclopedia_exclude",true,
+			"count_as_building",false,
+			"prio_button",false,
 			"on_off_button",false,
 			"entity","CombatRover",
 			"palettes","AttackRoverBlue"
@@ -537,7 +544,7 @@ function OnMsg.ClassesBuilt()
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_PortableMiner_Prod", true,
 			"__context_of_kind", "PortableMiner",
-			"__template", "InfopanelActiveSection",
+			"__template", "InfopanelSection",
 			"Title", T{80, "Production"},
 			"Icon", "UI/Icons/Sections/storage.tga",
 		}, {

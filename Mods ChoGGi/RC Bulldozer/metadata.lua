@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "RC Bulldozer v0.5",
-  "version", 5,
-  "saved", 1540209600,
+  "title", "RC Bulldozer v0.6",
+  "version", 6,
+  "saved", 1541505600,
 	"image", "Preview.png",
   "tags", "Buildings",
   "id", "ChoGGi_RCBulldozer",

@@ -12,9 +12,48 @@ function OnMsg.ClassesGenerate()
 
 	local StringFormat = string.format
 
+	function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
+		if ChoGGi.UserSettings.SponsorBuildingLimits then
+			-- used when starting/loading a game
+			ChoGGi.UserSettings.SponsorBuildingLimits = nil
+
+			for _,bld in pairs(BuildingTemplates) do
+				-- set each status to false if it isn't
+				for i = 1, 3 do
+					local str = StringFormat("sponsor_status%s_ChoGGi_orig",i)
+					if bld[str] then
+						bld[StringFormat("sponsor_status%s",i)] = bld[str]
+						bld[str] = nil
+					end
+				end
+			end
+
+		else
+			-- used when starting/loading a game
+			ChoGGi.UserSettings.SponsorBuildingLimits = true
+
+			for _,bld in pairs(BuildingTemplates) do
+				-- set each status to false if it isn't
+				for i = 1, 3 do
+					local str = StringFormat("sponsor_status%s",i)
+					if bld[str] ~= false then
+						bld[StringFormat("sponsor_status%s_ChoGGi_orig",i)] = bld[str]
+						bld[str] = false
+					end
+				end
+			end
+		end
+
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SponsorBuildingLimits,302535920001398--[[Sponsor Building Limits--]]),
+			302535920001398--[[Sponsor Building Limits--]]
+		)
+	end
+
 	function ChoGGi.MenuFuncs.BuildOnGeysers_Toggle()
---~ 		g_DontBuildHere:delete()
 		ChoGGi.UserSettings.BuildOnGeysers = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.BuildOnGeysers)
+		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.BuildOnGeysers,302535920000064--[[Build On Geysers--]]),
 			302535920000064--[[Build On Geysers--]]

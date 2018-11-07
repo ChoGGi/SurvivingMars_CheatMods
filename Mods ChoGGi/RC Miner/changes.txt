@@ -1,3 +1,6 @@
+v1.6
+Gagarin.
+
 v1.5
 Removed some console log spam.
 
