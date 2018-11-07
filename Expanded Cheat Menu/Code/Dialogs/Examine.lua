@@ -119,6 +119,8 @@ DefineClass.Examine = {
 	obj = false,
 	-- if we're examining a string we want to convert to an object
 	str_object = false,
+	-- we store the str_object > obj here
+	obj_ref = false,
 	-- used to store visibility of obj
 	orig_vis_flash = false,
 	-- if it's transparent or not
@@ -348,25 +350,14 @@ Right-click to scroll to top."--]]],
 	self.transp_mode = ChoGGi.Temp.transp_mode
 	self:SetTranspMode(self.transp_mode)
 
-	-- load up obj in text display
-	local is_obj = self:SetObj(true)
-
-	if is_obj then
-		self.parents_menu_popup = {}
-		self.pmenu_skip_dupes = {}
-		-- build menu list
-		self:BuildParents(self.obj.__parents,"parents",S[302535920000520--[[Parents--]]])
-		self:BuildParents(self.obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
-		-- if anything was added to the list then add to the menu
-		if #self.parents_menu_popup > 0 then
-			self.idParents:SetVisible(true)
+	-- do the magic
+	if self:SetObj(true) then
+		-- returns if it's a class object or not
+		if ChoGGi.UserSettings.FlashExamineObject and self.obj_ref:IsKindOf("XWindow") and self.obj_ref.class ~= "InGameInterface" then
+			self:FlashWindow()
 		end
 	end
 
-	-- needs a bit of a delay since we delay in SetObj
-	if ChoGGi.UserSettings.FlashExamineObject and IsKindOf(self.obj,"XWindow") and self.obj.class ~= "InGameInterface" then
-		self:FlashWindow()
-	end
 
 	self:SetInitPos(context.parent)
 
@@ -471,11 +462,7 @@ function Examine:BuildToolsMenuPopup()
 
 This can take time on something like the "Building" metatable--]]]:format(ConvertToOSPath("AppData/")),
 			clicked = function()
-				local obj = self.obj
-				if self.str_object then
-					obj = DotNameToObject(obj)
-				end
-				local str = ValueToLuaCode(obj)
+				local str = ValueToLuaCode(self.obj_ref)
 				ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),nil,"DumpedExamineObject","lua")
 			end,
 		},
@@ -507,11 +494,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]]:format(ConvertToOSPath("AppData/")),
 			clicked = function()
-				local obj = self.obj
-				if self.str_object then
-					obj = DotNameToObject(obj)
-				end
-				local str = ValueToLuaCode(obj)
+				local str = ValueToLuaCode(self.obj_ref)
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 					parent = self,
 					checkbox = true,
@@ -562,22 +545,14 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			name = StringFormat("%s %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
 			hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
 			clicked = function()
-				local obj = self.obj
-				if self.str_object then
-					obj = DotNameToObject(obj)
-				end
-				ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(obj,self)
+				ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj_ref,self)
 			end,
 		},
 		{
 			name = S[302535920001305--[[Find Within--]]],
 			hint = S[302535920001303--[[Search for text within %s.--]]]:format(RetName(self.obj)),
 			clicked = function()
-				local obj = self.obj
-				if self.str_object then
-					obj = DotNameToObject(obj)
-				end
-				ChoGGi.ComFuncs.OpenInFindValueDlg(obj,self)
+				ChoGGi.ComFuncs.OpenInFindValueDlg(self.obj_ref,self)
 			end,
 		},
 		{
@@ -585,11 +560,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			hint = S[302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.
 Which you can then mess around with some more in the console."--]]],
 			clicked = function()
-				local obj = self.obj
-				if self.str_object then
-					obj = DotNameToObject(obj)
-				end
-				ChoGGi.ComFuncs.OpenInExecCodeDlg(obj,self)
+				ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj_ref,self)
 			end,
 		},
 		{name = "	 ---- "},
@@ -597,23 +568,15 @@ Which you can then mess around with some more in the console."--]]],
 			name = S[302535920001369--[[Ged Editor--]]],
 			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
 			clicked = function()
-				local obj = self.obj
-				if self.str_object then
-					obj = DotNameToObject(obj)
-				end
 				GedObjectEditor = false
-				OpenGedGameObjectEditor{obj}
+				OpenGedGameObjectEditor{self.obj_ref}
 			end,
 		},
 		{
 			name = S[302535920000067--[[Ged Inspect--]]],
 			hint = S[302535920001075--[[Open this object in the Ged inspector.--]]],
 			clicked = function()
-				local obj = self.obj
-				if self.str_object then
-					obj = DotNameToObject(obj)
-				end
-				Inspect(obj)
+				Inspect(self.obj_ref)
 			end,
 		},
 		{name = "	 ---- "},
@@ -1274,17 +1237,9 @@ local function SetTransp_menu(_,_,_,self)
 	self:SetTranspMode(self.transp_mode)
 end
 local function ShowDiffProps_menu(_,_,_,self)
-	local obj = self.obj
-	if self.str_object then
-		obj = DotNameToObject(obj)
-	end
-	ChoGGi.ComFuncs.OpenInExamineDlg(GetModifiedProperties(obj),self,StringFormat("%s: %s",S[931--[[Modified property--]]],RetName(self.obj)))
+	ChoGGi.ComFuncs.OpenInExamineDlg(GetModifiedProperties(self.obj_ref),self,StringFormat("%s: %s",S[931--[[Modified property--]]],RetName(self.obj)))
 end
 local function ShowAllProps_menu(_,_,_,self)
-	local obj = self.obj
-	if self.str_object then
-		obj = DotNameToObject(obj)
-	end
 	-- give em some hints
 	local props_list = {
 		___readme = S[302535920001397--[["These can be used as obj:GetNAME() / obj:SetNAME().
@@ -1292,25 +1247,17 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 Check the actual object/g_Classes.object for the correct value to use (Entity > entity).
 --]]]
 	}
-	local props = obj:GetProperties()
+	local props = self.obj_ref:GetProperties()
 	for i = 1, #props do
-		props_list[props[i].id] = obj:GetProperty(props[i].id)
+		props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
 	end
 	ChoGGi.ComFuncs.OpenInExamineDlg(props_list,self,StringFormat("%s: %s",S[302535920001389--[[All Properties--]]],RetName(self.obj)))
 end
 local function ShowAnimDebug_menu(_,_,_,self)
-	local obj = self.obj
-	if self.str_object then
-		obj = DotNameToObject(obj)
-	end
-	ChoGGi.ComFuncs.ShowAnimDebug_Toggle(obj)
+	ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj_ref)
 end
 local function ShowAttachSpots_menu(_,_,_,self)
-	local obj = self.obj
-	if self.str_object then
-		obj = DotNameToObject(obj)
-	end
-	ChoGGi.ComFuncs.AttachSpots_Toggle(obj)
+	ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj_ref)
 end
 
 function Examine:menu(obj)
@@ -1442,15 +1389,19 @@ function Examine:SetObj(startup)
 			obj = obj_ref
 		end
 	end
+	-- so we can access the obj elsewhere
+	self.obj_ref = obj
 
 	local obj_type = type(obj)
+	local obj_class
 
 	self.idLinks:SetText(self:menu(obj))
 
 	local name = RetName(obj)
-	self.idText:SetText(name,": ",S[67--[[Loading resources--]]])
+	self.idText:SetText(StringFormat("%s: %s",name,S[67--[[Loading resources--]]]))
 
 	if obj_type == "table" then
+		obj_class = g_Classes[obj.class]
 		if getmetatable(obj) then
 			self.idShowAllValues:SetVisible(true)
 		else
@@ -1458,10 +1409,25 @@ function Examine:SetObj(startup)
 		end
 
 		-- add object name to title
-		if type(obj.handle) == "number" then
+		if obj_class and obj.handle and #obj > 0 then
+			name = StringFormat("%s: %s (%s)",name,obj.handle,#obj)
+		elseif obj_class and obj.handle then
 			name = StringFormat("%s (%s)",name,obj.handle)
 		elseif #obj > 0 then
 			name = StringFormat("%s (%s)",name,#obj)
+		end
+
+		-- build parents/ancestors menu
+		if obj_class then
+			self.parents_menu_popup = {}
+			self.pmenu_skip_dupes = {}
+			-- build menu list
+			self:BuildParents(obj.__parents,"parents",S[302535920000520--[[Parents--]]])
+			self:BuildParents(obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
+			-- if anything was added to the list then add to the menu
+			if #self.parents_menu_popup > 0 then
+				self.idParents:SetVisible(true)
+			end
 		end
 
 		-- attaches button/menu
@@ -1506,7 +1472,7 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 	-- limit caption length so we don't cover up close button
 	self.idCaption:SetTitle(self,self.title or utf8.sub(name,1,45))
 
-	-- we add a slight delay, so the rest of the dialog loads, and we can let user see the loading msg
+	-- we add a slight delay, so the rest of the dialog shows up; for bigger lists like _G or MapGet(true)
 	if startup then
 		CreateRealTimeThread(function()
 			Sleep(5)
@@ -1516,7 +1482,8 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 		self.idText:SetText(self:totextex(obj,obj_type))
 	end
 
-	return obj_type == "table" and obj.class
+	return obj_class
+
 end
 
 local function PopupClose(name)

@@ -38,8 +38,11 @@ In other words, the same as Curiosity and lower.
 %s]],mod.description)
 		end
 	end
+
+	-- just in case anything needs it
+	Msg("ChoGGi_Blacklist")
 end)
 
 -- return revision, or else you get a blank map on new game
 MountPack("ChoGGi_BinAssets", "Packs/BinAssets.hpk")
-return dofile("ChoGGi_BinAssets/AssetsRevision.lua") or 233360
+return dofile("ChoGGi_BinAssets/AssetsRevision.lua") or 235636

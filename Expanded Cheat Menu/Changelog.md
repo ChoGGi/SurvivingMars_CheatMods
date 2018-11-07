@@ -10,6 +10,9 @@
 ### Changed:
 - Write Logs skips print (AddConsoleLog shows the same and more).
 
+### Fixed:
+- Log spam when you examine "_G".
+
 ## v10.5 (05 Nov 2018)
 ### Added:
 - A "Disable ECM" key binding if you used the Disable ECM option.
