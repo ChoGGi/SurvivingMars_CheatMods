@@ -12,6 +12,7 @@
 
 ### Fixed:
 - Log spam when you examine "_G".
+- Using the Chinese font seems to slow text rendering down, added a delay to examine so if you ex a large list it won't freeze your game.
 
 ## v10.5 (05 Nov 2018)
 ### Added:

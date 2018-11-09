@@ -54,16 +54,24 @@ local function UpdateDeposit(d)
 		centered = true,
 		invalid_type = -1,
 	}
+
+	-- we only want it to fire once per deposit
+	d.ground_is_marked = true
 end
 
 local function HideSigns()
-	-- gotta SetOpacity as SetVisible is set when you zoom out
+	local groundismarked = MarkDepositGround_groundismarked
+
+	-- gotta use SetOpacity as SetVisible is set when you zoom out
 	local value = MarkDepositGround.HideSigns and 0 or 100
 
 	local deposits = UICity.labels.SubsurfaceDeposit or ""
 	for i = 1, #deposits do
-		deposits[i]:SetOpacity(value)
-		UpdateDeposit(deposits[i])
+		local d = deposits[i]
+		d:SetOpacity(value)
+		if not d.ground_is_marked then
+			UpdateDeposit(d)
+		end
 	end
 
 	local deposits = UICity.labels.TerrainDeposit or ""
@@ -82,7 +90,9 @@ end
 -- update as they become visible
 function OnMsg.SubsurfaceDepositRevealed(d)
 	d:SetOpacity(MarkDepositGround.HideSigns and 0 or 100)
-	UpdateDeposit(d)
+	if not d.ground_is_marked then
+		UpdateDeposit(d)
+	end
 end
 
 -- concrete deposits don't spawn till map sector scanned
@@ -97,15 +107,15 @@ end
 local orig_SubsurfaceAnomalyMarker_SpawnDeposit = SubsurfaceAnomalyMarker.SpawnDeposit
 function SubsurfaceAnomalyMarker:SpawnDeposit(...)
 	local a = orig_SubsurfaceAnomalyMarker_SpawnDeposit(self,...)
-	CreateRealTimeThread(function()
-		-- needs a delay for some reason
-		Sleep(50)
-		if MarkDepositGround.AlienAnomaly then
+	if MarkDepositGround.AlienAnomaly then
+		CreateRealTimeThread(function()
+			-- needs a delay for some reason
+			Sleep(50)
 			a.ChoGGi_alien = a.entity
 			a:ChangeEntity("GreenMan")
 			a:SetScale(500)
 			a:SetAngle(AsyncRand())
-		end
-	end)
+		end)
+	end
 	return a
 end

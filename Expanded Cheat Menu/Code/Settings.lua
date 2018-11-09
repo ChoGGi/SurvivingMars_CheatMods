@@ -96,8 +96,10 @@ function OnMsg.ClassesGenerate()
 		ConsoleHistoryMenuLength = 50,
 		-- shows how many ticks it takes between the start of ECM and when the game loads
 		ShowStartupTicks = false,
-		-- if a mod added certain buildings and user removed removed mod without removing buildings then inf loop
+		-- if a mod added certain buildings and user removed mod without removing buildings then inf loop
 		FixMissingModBuildings = false,
+		-- just for you ski (prints a msg for each building removed)
+		FixMissingModBuildingsLog = true,
 		-- Mod Editor shows the help page every single time you open it.
 		SkipModHelpPage = true,
 		-- stores custom settings for each building

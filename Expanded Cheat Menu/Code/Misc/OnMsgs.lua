@@ -98,7 +98,7 @@ function OnMsg.ClassesPreprocess()
 		c = c + 1
 		umc.__parents[c] = "PinnableObject"
 
-		-- removes some spam from logs
+		-- removes some spam from logs (might cause weirdness so just for me)
 		if ChoGGi.testing then
 			UnpersistedMissingClass.CanReserveResidence = empty_func
 			UnpersistedMissingClass.RemoveResident = empty_func
@@ -109,6 +109,9 @@ function OnMsg.ClassesPreprocess()
 			UnpersistedMissingClass.RefreshNightLightsState = empty_func
 			UnpersistedMissingClass.GetUIStatusOverrideForWorkCommand = empty_func
 			UnpersistedMissingClass.Unassign = empty_func
+			UnpersistedMissingClass.RemoveCommandCenter = empty_func
+			UnpersistedMissingClass.GetEntrance = empty_func
+			UnpersistedMissingClass.GetEntrancePoints = empty_func
 		end
 	end
 
@@ -344,12 +347,12 @@ end
 --~ end
 function OnMsg.PersistPostLoad()
 	if ChoGGi.UserSettings.FixMissingModBuildings then
-		--[LUA ERROR] Mars/Lua/Construction.lua:860: attempt to index a boolean value (global 'ControllerMarkers')
+		-- [LUA ERROR] Mars/Lua/Construction.lua:860: attempt to index a boolean value (global 'ControllerMarkers')
 		if type(ControllerMarkers) == "boolean" then
 			ControllerMarkers = {}
 		end
 
-		--[LUA ERROR] Mars/Lua/Heat.lua:65: attempt to call a nil value (method 'ApplyForm')
+		-- [LUA ERROR] Mars/Lua/Heat.lua:65: attempt to call a nil value (method 'ApplyForm')
 		local s_Heaters = s_Heaters or {}
 		for obj,_ in pairs(s_Heaters) do
 			if obj:IsKindOf("UnpersistedMissingClass") then
@@ -357,30 +360,24 @@ function OnMsg.PersistPostLoad()
 			end
 		end
 
-		--GetFreeSpace,GetFreeLivingSpace,GetFreeWorkplaces,GetFreeWorkplacesAround
+		local printit = ChoGGi.UserSettings.FixMissingModBuildingsLog
+
+		-- GetFreeSpace,GetFreeLivingSpace,GetFreeWorkplaces,GetFreeWorkplacesAround
 		local UICity = UICity
-		for _,label in pairs(UICity.labels or {}) do
+		for label_id,label in pairs(UICity.labels or {}) do
 			for i = #label, 1, -1 do
 				if IsKindOf(label[i],"UnpersistedMissingClass") then
-					label[i]:delete()
+					local obj = label[i]
+					if printit then
+						print(S[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"--]]]:format(label_id,RetName(obj),obj.entity,obj.handle))
+					end
+					obj:delete()
 					table.remove(label,i)
 				end
 			end
 		end
 
---~		 local domes = UICity.labels.Dome or ""
---~		 for i = 1, #domes do
---~			 for _,label in pairs(domes[i].labels or {}) do
---~				 for j = #label, 1, -1 do
---~					 if type(label[j].SetBase) ~= "function" then
---~						 label[j]:delete()
---~						 table.remove(label,j)
---~					 end
---~				 end
---~			 end
---~		 end
-
-	end
+	end -- if FixMissingModBuildings
 end
 
 -- for instant build

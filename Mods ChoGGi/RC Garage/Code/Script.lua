@@ -391,12 +391,14 @@ function OnMsg.ClassesBuilt()
 	local idx = TableFind(building, "ChoGGi_Template_RCGarage", true)
 	if idx then
 		building[idx]:delete()
+		-- we need to remove for insert
 		TableRemove(building,idx)
 	end
 
 	-- insert above consumption
 	if not idx then
 		idx = TableFind(building, "__template", "sectionConsumption")
+		-- or at the end
 		if not idx then
 			idx = #building
 		end
