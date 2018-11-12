@@ -13,6 +13,8 @@
 ### Fixed:
 - Log spam when you examine "_G".
 - Using the Chinese font seems to slow text rendering down, added a delay to examine so if you ex a large list it won't freeze your game.
+- the print buffer added in v10.3 was creating more than one thread (thanks SkiRich).
+- Examining thread functions wasn't working properly.
 
 ## v10.5 (05 Nov 2018)
 ### Added:

@@ -842,14 +842,11 @@ function Examine:HyperLink(f, custom_color)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
-local ExamineThreadLevel_data = {}
 local function ExamineThreadLevel_totextex(level,info,obj,self)
+	local ExamineThreadLevel_data = {}
 	if blacklist then
---~ 		TableClear(ExamineThreadLevel_data)
 		ExamineThreadLevel_data = RetThreadInfo(obj)
 	else
-
-		TableClear(ExamineThreadLevel_data)
 		local l = 1
 		local name, val
 		repeat

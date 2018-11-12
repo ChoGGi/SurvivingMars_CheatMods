@@ -1,6 +1,8 @@
 local StringFormat = string.format
 local S = ChoGGi.Strings
 
+local OnMsg = OnMsg
+
 --~ ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100 or 100
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
 -- used for resizing my dialogs to scale
@@ -38,4 +40,12 @@ function OnMsg.ClassesBuilt()
 			highlight_img = highlight,
 		}
 	end
+end
+
+-- needed for UICity and some others that aren't created till around then
+function OnMsg.LoadGame()
+	ChoGGi.ComFuncs.RetNameUpdate()
+end
+function OnMsg.CityStart()
+	ChoGGi.ComFuncs.RetNameUpdate()
 end

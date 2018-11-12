@@ -14,11 +14,13 @@ Enable with in-game mod manager
 
 ##### Info
 ```
+If you forget where a menu item is: Menu>Help>List All Menu Items (use "Filter Items" at the bottom).
+
 F2: Toggle the cheats menu (Ctrl-F2 to toggle cheats panel).
 F3: Set object opacity.
 F4: Open object examiner (Shift-F4 for area).
 F5: Open object manipulator (or use Tools>Edit obj in Examine).
-F6: Change building colour (Shift- or Ctrl- to apply random/default).
+F6: Change building colour (Shift-F6 or Ctrl-F6 to apply random/default).
 F7: Toggle using last building orientation.
 F9: Clear the console log.
 Enter or Tilde: Show the console.

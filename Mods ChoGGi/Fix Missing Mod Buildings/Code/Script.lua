@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local table,pairs,type = table,pairs,type
-
 function OnMsg.ClassesPreprocess()
   -- stops crashing with certain missing pinned objects
   local umc = UnpersistedMissingClass
@@ -23,29 +21,17 @@ function OnMsg.PersistPostLoad()
     end
   end
 
+	local str = "Removed missing mod building from %s: %s, entity: %s, handle: %s"
   -- GetFreeSpace,GetFreeLivingSpace,GetFreeWorkplaces,GetFreeWorkplacesAround
-  -- (what used to be missing workplaces/residences)
-  local UICity = UICity
-  for _,label in pairs(UICity.labels or empty_table) do
-    for i = #label, 1, -1 do
-      if IsKindOf(label[i],"UnpersistedMissingClass") then
-        label[i]:delete()
-        table.remove(label,i)
-      end
-    end
-  end
-
-  -- probably does more harm than good
---~   local domes = UICity.labels.Dome or empty_table
---~   for i = 1, #domes do
---~     for _,label in pairs(domes[i].labels or empty_table) do
---~       for j = #label, 1, -1 do
---~         if type(label[j].SetBase) ~= "function" then
---~           label[j]:delete()
---~           table.remove(label,j)
---~         end
---~       end
---~     end
---~   end
+	for label_id,label in pairs(UICity.labels or {}) do
+		for i = #label, 1, -1 do
+			local obj = label[i]
+			if obj:IsKindOf("UnpersistedMissingClass") then
+				ModLog(str:format(label_id,RetName(obj),obj.entity,obj.handle))
+				obj:delete()
+				table.remove(label,i)
+			end
+		end
+	end
 
 end
