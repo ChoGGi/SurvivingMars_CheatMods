@@ -92,11 +92,8 @@ function OnMsg.ClassesPreprocess()
 	-- stops crashing with certain missing pinned objects
 	if ChoGGi.UserSettings.FixMissingModBuildings then
 		local umc = UnpersistedMissingClass
-		local c = #umc.__parents
-		c = c + 1
-		umc.__parents[c] = "AutoAttachObject"
-		c = c + 1
-		umc.__parents[c] = "PinnableObject"
+		umc.__parents[#umc.__parents+1] = "AutoAttachObject"
+		umc.__parents[#umc.__parents+1] = "PinnableObject"
 
 		-- removes some spam from logs (might cause weirdness so just for me)
 		if ChoGGi.testing then
@@ -363,11 +360,10 @@ function OnMsg.PersistPostLoad()
 		local printit = ChoGGi.UserSettings.FixMissingModBuildingsLog
 
 		-- GetFreeSpace,GetFreeLivingSpace,GetFreeWorkplaces,GetFreeWorkplacesAround
-		local UICity = UICity
 		for label_id,label in pairs(UICity.labels or {}) do
 			for i = #label, 1, -1 do
-				if IsKindOf(label[i],"UnpersistedMissingClass") then
-					local obj = label[i]
+				local obj = label[i]
+				if obj:IsKindOf("UnpersistedMissingClass") then
 					if printit then
 						print(S[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"--]]]:format(label_id,RetName(obj),obj.entity,obj.handle))
 					end

@@ -332,32 +332,23 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 
-			local acmpd = acmpd
-			if acmpd then
-				if not acmpd then
-					acmpd = {}
-				end
-				acmpd.ChoGGi_CheatMenu = data
-				acsac(5000)
-			else
-				if #data > MaxModDataSize then
-					err, data = AsyncCompress(TableToLuaCode(settings), false, "zstd")
-					if err then
-						RetError(err)
-						return
-					end
-
-					if #data > MaxModDataSize then
-						RetError(S[302535920000222--[[Oh look ECM hit the itty bitty limit of const.MaxModDataSize. Who'd a thunk it? Eh' Mortimer.--]]])
-						return
-					end
-				end
-
-				local err = WriteModPersistentData(data)
+			if #data > MaxModDataSize then
+				err, data = AsyncCompress(TableToLuaCode(settings), false, "zstd")
 				if err then
 					RetError(err)
 					return
 				end
+
+				if #data > MaxModDataSize then
+					RetError(S[302535920000222--[[Oh look ECM hit the itty bitty limit of const.MaxModDataSize. Who'd a thunk it? Eh' Mortimer.--]]])
+					return
+				end
+			end
+
+			local err = WriteModPersistentData(data)
+			if err then
+				RetError(err)
+				return
 			end
 
 			return data

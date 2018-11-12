@@ -141,16 +141,8 @@ do -- RetName
 
 	-- so they work in the main menu
 	AfterLoad()
-	-- needed for UICity and some others that aren't created till around then
-	function OnMsg.LoadGame()
---~ 	ex(lookup_table)
-		AfterLoad()
-	end
-	function OnMsg.CityStart()
-		AfterLoad()
-	end
 
-	-- if i need to update it
+	-- called from onmsgs for citystart/loadgame
 	function ChoGGi.ComFuncs.RetNameUpdate()
 		AfterLoad()
 	end
@@ -822,23 +814,6 @@ function ChoGGi.ComFuncs.RemoveFromLabel(label,obj)
 			TableRemove(UICity.labels[label],i)
 		end
 	end
-end
-
-do -- bool
-	local PersistableGlobals = PersistableGlobals
-	PersistableGlobals.acmpd = true
-	PersistableGlobals.acsac = true
-	local Sleep = Sleep
-	CreateRealTimeThread(function()
-		while not dlgConsole do
-			Sleep(50)
-		end
-		dlgConsole:Exec("ChoGGi.Temp.as=AccountStorage\nChoGGi.Temp.sas=SaveAccountStorage",true)
-		acmpd = ChoGGi.Temp.as.ModPersistentData
-		acsac = ChoGGi.Temp.sas
-		PersistableGlobals.acmpd = nil
-		PersistableGlobals.acsac = nil
-	end)
 end
 
 function toboolean(str)

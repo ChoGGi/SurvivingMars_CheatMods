@@ -159,18 +159,21 @@ function OnMsg.ClassesGenerate()
 		-- we always start off with a newline so the first line or so isn't merged
 		local buffer_table = {"\r\n"}
 		local buffer_cnt = 1
-		-- every 5s check buffer and print if anything
-		CreateRealTimeThread(function()
-			while true do
-				Sleep(5000)
-				if #buffer_table > 1 then
-					Dump(TableConcat(buffer_table,"\r\n"),nil,"ConsoleLog","log",true)
-					TableIClear(buffer_table)
-					buffer_table[1] = "\r\n"
-					buffer_cnt = 1
+		-- don't want to start more than one inf loop
+		if not rawget(_G,"ChoGGi_print_buffer_thread") then
+			-- every 5s check buffer and print if anything
+			ChoGGi_print_buffer_thread = CreateRealTimeThread(function()
+				while true do
+					Sleep(5000)
+					if #buffer_table > 1 then
+						Dump(TableConcat(buffer_table,"\r\n"),nil,"ConsoleLog","log",true)
+						TableIClear(buffer_table)
+						buffer_table[1] = "\r\n"
+						buffer_cnt = 1
+					end
 				end
-			end
-		end)
+			end)
+		end
 
 		local function ReplaceFunc(funcname)
 			SaveOrigFunc(funcname)

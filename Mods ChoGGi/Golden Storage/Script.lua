@@ -7,19 +7,16 @@ DefineClass.GoldenStorage = {
 }
 
 function GoldenStorage:GameInit()
-  --fire off the usual GameInit
+  -- fire off the usual GameInit
   UniversalStorageDepot.GameInit(self)
-  --and start off with all resource demands blocked
+  -- and start off with all resource demands blocked
   for i = 1, #self.resource do
     if self.resource[i] ~= "Metals" then
       self:ToggleAcceptResource(self.resource[i],true)
     end
   end
 
-
-  --figure out why the info panel takes so long to update?
-
-  --make sure it isn't mistaken for a regular depot
+  -- make sure it isn't mistaken for a regular depot
   self:SetColorModifier(-6262526)
 
   self.metals_thread = CreateGameTimeThread(function()
@@ -57,7 +54,7 @@ function GoldenStorage:GameInit()
   end)
 end
 
---only allowed to toggle metals
+-- only allowed to toggle metals
 function GoldenStorage:ToggleAcceptResource(res,startup)
   if not startup and res ~= "Metals" then
     return
@@ -72,7 +69,7 @@ function GoldenStorage:Done()
   end
 end
 
---add building to building template list
+-- add building to building template list
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.GoldenStorage then
 		PlaceObj("BuildingTemplate", {
