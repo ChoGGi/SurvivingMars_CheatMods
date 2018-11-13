@@ -116,14 +116,13 @@ local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
 	local ClassDescendantsList = ClassDescendantsList
-	local IsObjlist,type,tostring,pairs = IsObjlist,type,tostring,pairs
+	local IsObjlist,type,tostring,pairs,rawget = IsObjlist,type,tostring,pairs,rawget
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 
 	-- we use this table to display names of (some) tables for RetName
 	local lookup_table = {}
 
 	local function AfterLoad()
-
 		local g = ChoGGi.Temp._G or _G
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
 		if g.UICity then
@@ -136,7 +135,6 @@ do -- RetName
 				lookup_table[g[key]] = key
 			end
 		end
-
 	end
 
 	-- so they work in the main menu
@@ -159,7 +157,7 @@ do -- RetName
 
 		local obj_type = type(obj)
 
-		if obj_type == "table" then
+		if obj_type == "table" and rawget(obj,"__index") then
 			-- we check in order of less generic "names"
 
 			local name_type = type(obj.name)
@@ -210,8 +208,6 @@ do -- RetName
 
 		-- falling back baby
 		return tostring(obj)
---~ 		-- limit length of string in case it's a large one?
---~ 		return tostring(obj):sub(1,150)
 	end
 end -- do
 local RetName = ChoGGi.ComFuncs.RetName
