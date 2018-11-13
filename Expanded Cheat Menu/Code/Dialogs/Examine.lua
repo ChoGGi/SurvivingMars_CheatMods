@@ -843,10 +843,11 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------
 local function ExamineThreadLevel_totextex(level,info,obj,self)
-	local ExamineThreadLevel_data = {}
+	local ExamineThreadLevel_data
 	if blacklist then
 		ExamineThreadLevel_data = RetThreadInfo(obj)
 	else
+		ExamineThreadLevel_data = {}
 		local l = 1
 		local name, val
 		repeat
@@ -862,12 +863,12 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 		for i = 1, info.nups do
 			local name, val = getupvalue(info.func, i)
 			if name ~= nil and val ~= nil then
-				ExamineThreadLevel_data[StringFormat("%s(up)",name)] = val
+				ExamineThreadLevel_data[StringFormat("%s (up)",name)] = val
 			end
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInExamineDlg(ExamineThreadLevel_data,self,StringFormat("%s: %s",S[302535920001353--[[Thread info--]]],RetName(self.obj))
+	ChoGGi.ComFuncs.OpenInExamineDlg(ExamineThreadLevel_data,self,StringFormat("%s: %s",S[302535920001353--[[Thread info--]]],RetName(obj))
 	)
 end
 

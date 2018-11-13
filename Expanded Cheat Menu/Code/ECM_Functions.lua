@@ -287,6 +287,7 @@ function OnMsg.ClassesGenerate()
 				title = title,
 			})
 		end
+
 		ChoGGi.ComFuncs.OpenInExamineDlg = OpenInExamineDlg
 		function OpenExamine(obj,parent,title)
 			OpenInExamineDlg(obj,parent,title)
