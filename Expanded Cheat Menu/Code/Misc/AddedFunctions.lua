@@ -82,3 +82,11 @@ function DiscoverTech_Old(tech_id)
 	UICity:SetTechDiscovered(tech_id)
 end
 
+-- seems like a useful func to have
+if not rawget(Colonist,"HasTrait") then
+	function Colonist:HasTrait(trait)
+		if self.traits[trait] then
+			return true
+		end
+	end
+end

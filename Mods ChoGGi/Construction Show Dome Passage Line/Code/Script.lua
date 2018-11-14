@@ -35,13 +35,13 @@ DefineClass.ChoGGi_HexSpot = {
 }
 
 -- I perfer to add a new object then editing existing ones (easier for mass delete as well)
-DefineClass.ChoGGi_Polyline = {
+DefineClass.ChoGGi_Polyline2 = {
   __parents = {"Polyline"},
 	max_vertices = 2,
 }
 -- stripped down version of Vector:Set (without the arrow)
 local line_table = {}
-function ChoGGi_Polyline:Set(a, b)
+function ChoGGi_Polyline2:Set(a, b)
 	self:SetPos(a)
 	-- faster to clear a table then make a new one
 	table.iclear(line_table)
@@ -54,7 +54,7 @@ end
 function OnMsg.SaveGame()
 	SuspendPassEdits("DeleteChoGGiDomeLines")
 	MapDelete("map", "ChoGGi_HexSpot")
-	MapDelete("map", "ChoGGi_Polyline")
+	MapDelete("map", "ChoGGi_Polyline2")
 	ResumePassEdits("DeleteChoGGiDomeLines")
 	dome_list = {}
 end
@@ -88,7 +88,7 @@ local function BuildMarkers(dome)
 	-- no need to re-add domes to the list
 	if not dome_list[dome] then
 		dome_list[dome] = {
-			line = ChoGGi_Polyline:new(),
+			line = ChoGGi_Polyline2:new(),
 			hex1 = ChoGGi_HexSpot:new(),
 			hex2 = ChoGGi_HexSpot:new(),
 		}
@@ -226,7 +226,7 @@ function ConstructionController:UpdateCursor(pos, force,...)
 	return orig_ConstructionController_UpdateCursor(self, pos, force,...)
 end
 
--- they should get remove when the cursor building is remove, but just in case
+-- they should get removed when the cursor building is removed, but just in case
 function OnMsg.Demolished(dome)
   -- remove demo'ed domes from the list
   if dome_list[dome] then

@@ -451,6 +451,10 @@ function OnMsg.ClassesGenerate()
 				end
 				for i = 1, #choice do
 					local value = choice[i].value
+					if type(value) ~= "string" then
+						print(value)
+						ex(choice[i])
+					end
 					if trigger_table[value] then
 						trigger_table[value]()
 					elseif value:find("Missle") then

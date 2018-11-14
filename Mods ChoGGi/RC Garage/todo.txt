@@ -1,0 +1,2 @@
+make commander unsiege once it leaves garage, if it was previously unsieged.
+have it remove selection from rover once it enters garage
