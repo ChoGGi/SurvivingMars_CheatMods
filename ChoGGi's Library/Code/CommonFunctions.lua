@@ -2029,7 +2029,9 @@ function ChoGGi.ComFuncs.ColonistUpdateAge(c,age)
 	end
 	-- remove all age traits
 	for i = 1, #ages do
-		c:RemoveTrait(ages[i])
+		if c.traits[ages[i]] then
+			c:RemoveTrait(ages[i])
+		end
 	end
 	-- add new age trait
 	c:AddTrait(age)

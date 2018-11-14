@@ -616,10 +616,9 @@ function OnMsg.ClassesGenerate()
 			end
 			local last_pos = points[#points]
 			--and spawn the line
-			local spawnline = Polyline:new{max_vertices = #waypoints}
+			local spawnline = ChoGGi_Polyline:new{max_vertices = #waypoints}
 			spawnline:SetMesh(points, colour)
 			spawnline:SetPos(last_pos)
-			spawnline.ChoGGi_WaypointPath = true
 
 			obj.ChoGGi_Stored_Waypoints[#obj.ChoGGi_Stored_Waypoints+1] = spawnline
 		end --end of ShowWaypoints
@@ -852,12 +851,8 @@ function OnMsg.ClassesGenerate()
 					ClearColourAndWP("Unit")
 					ClearColourAndWP("Colonist")
 
-					-- check for any extra lines
-					MapForEach("map","Polyline",function(o)
-						if o.ChoGGi_WaypointPath then
-							o:delete()
-						end
-					end)
+					-- remove any extra lines
+					MapDelete("map", "ChoGGi_Polyline")
 
 					-- reset stuff
 					flag_height = 50

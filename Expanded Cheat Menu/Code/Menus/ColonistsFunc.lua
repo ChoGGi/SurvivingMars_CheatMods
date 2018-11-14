@@ -831,11 +831,6 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		)
 	end
 
-	local function IsChild(value)
-		if value == "Child" then
-			return StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000805--[[Child will remove specialization.--]]])
-		end
-	end
 	function ChoGGi.MenuFuncs.SetColonistsAge(iType)
 		local ChoGGi = ChoGGi
 		local default_str = S[1000121--[[Default--]]]
@@ -860,7 +855,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			ItemList[#ItemList+1] = {
 				text = ChoGGi.Tables.ColonistAges[i],
 				value = ChoGGi.Tables.ColonistAges[i],
-				hint = IsChild(ChoGGi.Tables.ColonistAges[i]),
+				hint = ChoGGi.Tables.ColonistAges[i] == "Child" and StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000805--[[Child will remove specialization.--]]]),
 			}
 		end
 
