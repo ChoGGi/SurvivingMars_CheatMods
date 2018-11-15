@@ -425,7 +425,7 @@ function OnMsg.ClassesGenerate()
 		BuildExamineMenu()
 	end
 
-	local function BuildSciptButton(dlg,folder)
+	local function BuildSciptButton(console,folder)
 		g_Classes.ChoGGi_ConsoleButton:new({
 			RolloverText = folder.RolloverText,
 			Text = folder.Text,
@@ -440,7 +440,7 @@ function OnMsg.ClassesGenerate()
 							name = files[i].name,
 							hint = StringFormat("%s\n\n%s",S[302535920001138--[[Execute this command in the console.--]]],script),
 							clicked = function()
-								dlg:Exec(script)
+								console:Exec(script,true)
 							end,
 						}
 					end
@@ -449,7 +449,7 @@ function OnMsg.ClassesGenerate()
 					print(S[591853191640--[[Empty list--]]])
 				end
 			end,
-		}, dlg.idScripts)
+		}, console.idScripts)
 	end
 
 	-- only check for ECM Scripts once per load

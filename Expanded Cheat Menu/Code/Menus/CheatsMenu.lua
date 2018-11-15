@@ -57,7 +57,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Trigger fireworks",
 		ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
-		RolloverText = S[302535920001402--[[Add some party to your domes for 3 hours.--]]],
+		RolloverText = S[302535920001402--[[Add some party to your domes for 3 hours (10 domes max).--]]],
 		OnAction = TriggerFireworks,
 	}
 

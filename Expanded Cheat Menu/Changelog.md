@@ -9,6 +9,7 @@
 
 ### Changed:
 - Made some of my building cheats update build menu (instead of having to close than open it).
+- Console>ECM Scripts: doesn't display script code in console log when executed.
 
 ## v10.6 (15 Nov 2018)
 ### Added:
