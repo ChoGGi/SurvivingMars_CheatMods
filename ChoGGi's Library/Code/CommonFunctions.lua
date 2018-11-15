@@ -128,6 +128,10 @@ do -- RetName
 		if g.UICity then
 			lookup_table[g.UICity.labels] = "UICity.labels"
 			lookup_table[g.UICity.tech_status] = "UICity.tech_status"
+--~ 			local str = "labels.%s"
+--~ 			for key,label in pairs(g.UICity.labels) do
+--~ 				lookup_table[g.UICity.labels[key]] = str:format(key)
+--~ 			end
 		end
 		-- any tables in _G
 		for key in pairs(g) do
@@ -157,7 +161,7 @@ do -- RetName
 
 		local obj_type = type(obj)
 
-		if obj_type == "table" and rawget(obj,"__index") then
+		if obj_type == "table" and obj.__index then
 			-- we check in order of less generic "names"
 
 			local name_type = type(obj.name)
@@ -195,8 +199,7 @@ do -- RetName
 
 		elseif obj_type == "userdata" then
 			local trans = Trans(obj)
-			-- stripped = pre-gagarin
-			if trans == "stripped" or trans:find("Missing text") then
+			if trans:find("Missing text") then
 				return tostring(obj)
 			end
 			return trans
@@ -4243,3 +4246,27 @@ do -- MovePointAwayXY
 		return v:SetZ(src:z())
 	end
 end -- do
+
+-- updates buildmenu with un/locked buildings if it's opened
+function ChoGGi.ComFuncs.UpdateBuildMenu()
+	local dlg = GetDialog("XBuildMenu")
+	-- can't update what isn't there
+	if dlg then
+		-- only update categories if we need to
+		local cats = dlg:GetCategories()
+		local old_cats = dlg.idCategoryList.idCategoriesList
+		local old_cats_c = #old_cats
+		-- - 1 for the hidden cat
+		if (#cats - 1) ~= old_cats_c then
+			-- clear out old categories
+			for i = old_cats_c, 1, -1 do
+				old_cats[i]:delete()
+			end
+			-- add all new stuffs
+			dlg:CreateCategoryItems(cats)
+		end
+
+		-- update item list (RefreshXBuildMenu())
+		dlg:SelectCategory(dlg.category)
+	end
+end

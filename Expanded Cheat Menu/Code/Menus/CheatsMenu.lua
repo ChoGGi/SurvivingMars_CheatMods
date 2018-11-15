@@ -53,6 +53,15 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
+	Actions[c] = {ActionName = S[11412--[[Trigger fireworks--]]],
+		ActionMenubar = "ECM.Cheats",
+		ActionId = ".Trigger fireworks",
+		ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
+		RolloverText = S[302535920001402--[[Add some party to your domes for 3 hours.--]]],
+		OnAction = TriggerFireworks,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000266--[[Spawn--]]],S[547--[[Colonists--]]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Spawn Colonists",
@@ -108,17 +117,14 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.OpenModEditor,
 	}
 
-	-- post-gagarin
-	if LuaRevision > 235636 then
-		c = c + 1
-		Actions[c] = {ActionName = S[302535920001393--[[StoryBits ClearCooldowns--]]],
-			ActionMenubar = "ECM.Cheats",
-			ActionId = ".StoryBits ClearCooldowns",
-			ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-			RolloverText = S[302535920001392--[[Clears story bit cooldowns... (got me).--]]],
-			OnAction = StoryBitCategoryState.ClearCooldowns,
-		}
-	end
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001393--[[StoryBits ClearCooldowns--]]],
+		ActionMenubar = "ECM.Cheats",
+		ActionId = ".StoryBits ClearCooldowns",
+		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+		RolloverText = S[302535920001392--[[Clears story bit cooldowns... (got me).--]]],
+		OnAction = StoryBitCategoryState.ClearCooldowns,
+	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001394--[[Spawn Planetary Anomalies--]]],

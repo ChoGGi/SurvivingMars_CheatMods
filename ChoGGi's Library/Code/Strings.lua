@@ -17,53 +17,18 @@ if ChoGGi.lang ~= "English" then
 	local StringFormat = string.format
 	-- first get the unicode font name
 
-	local f
-	-- remove in gagarin
-	if LuaRevision == 235636 then
-		f = TranslationTable[984--[[*font*, 15, aa--]]]
-	else
-		f = TranslationTable[997--[[*font*, 15, aa--]]]
-	end
+	local f = TranslationTable[997--[[*font*, 15, aa--]]]
 	-- index of first , then crop out the rest
 	f = f:sub(1,f:find(",")-1)
 	ChoGGi.font = f
 
-	-- font changed to FontStyles in gagarin
-	if LuaRevision == 235636 then
-		-- replace any fonts using droid
-		local __game_font_styles = __game_font_styles
-		__game_font_styles[false] = StringFormat("%s, 12, aa",f)
-		__game_font_styles.Editor9 = StringFormat("%s, 9, aa",f)
-		__game_font_styles.Editor11Bold = StringFormat("%s, 11, bold, aa",f)
-		__game_font_styles.Editor11 = StringFormat("%s, 11, aa",f)
-		__game_font_styles.Editor12Bold = StringFormat("%s, 12, bold, aa",f)
-		__game_font_styles.Editor12 = StringFormat("%s, 12, aa",f)
-		__game_font_styles.Editor13 = StringFormat("%s, 13, aa",f)
-		__game_font_styles.Editor13Bold = StringFormat("%s, 13, bold, aa",f)
-		__game_font_styles.Editor14 = StringFormat("%s, 14, aa",f)
-		__game_font_styles.Editor14Bold = StringFormat("%s, 14, bold, aa",f)
-		__game_font_styles.Editor16 = StringFormat("%s, 16, aa",f)
-		__game_font_styles.Editor16Bold = StringFormat("%s, 16, bold, aa",f)
-		__game_font_styles.Editor17 = StringFormat("%s, 17, aa",f)
-		__game_font_styles.Editor17Bold = StringFormat("%s, 17, bold, aa",f)
-		__game_font_styles.Editor18 = StringFormat("%s, 18, aa",f)
-		__game_font_styles.Editor18Bold = StringFormat("%s, 18, bold, aa",f)
-		__game_font_styles.Editor21Bold = StringFormat("%s, 21, bold, aa",f)
-		__game_font_styles.Editor32Bold = StringFormat("%s, 32, bold",f)
-		__game_font_styles.Rollover = StringFormat("%s, 14, bold, aa",f)
-		__game_font_styles.Console = StringFormat("%s, 13, bold, aa",f)
-		__game_font_styles.EditorCaption = StringFormat("%s, 14, bold, aa",f)
-
-		-- normally called when translation is changed, but i try to keep Init.lua simple
-		InitGameFontStyles()
-	else
-		-- now we get to update the TextStyles instead
-		local TextStyles = TextStyles
-		TextStyles.Console.TextFont = StringFormat("%s, 18, bold, aa",f)
-		TextStyles.ConsoleLog.TextFont = StringFormat("%s, 13, bold, aa",f)
-		TextStyles.DevMenuBar.TextFont = StringFormat("%s, 18, aa",f)
-		TextStyles.GizmoText.TextFont = StringFormat("%s, 32, bold, aa",f)
-	end
+	-- these four don't get to use non-eng fonts, cause fuck you is why
+	-- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...
+	local TextStyles = TextStyles
+	TextStyles.Console.TextFont = StringFormat("%s, 18, bold, aa",f)
+	TextStyles.ConsoleLog.TextFont = StringFormat("%s, 13, bold, aa",f)
+	TextStyles.DevMenuBar.TextFont = StringFormat("%s, 18, aa",f)
+	TextStyles.GizmoText.TextFont = StringFormat("%s, 32, bold, aa",f)
 
 end
 
@@ -271,6 +236,7 @@ local Strings = {
 	[9009] = TranslationTable[9009], -- Mega Trigon Dome
 	[9012] = TranslationTable[9012], -- Diamond Dome
 	[9763] = TranslationTable[9763], -- No objects matching current filters.
+	[11412] = TranslationTable[11412], -- Trigger fireworks
 	[1000009] = TranslationTable[1000009], -- Confirmation
 	[1000011] = TranslationTable[1000011], -- There is an active Steam upload
 	[1000012] = _InternalTranslate(T{1000012}), -- Mod <ModLabel> will be uploaded to Steam
@@ -349,8 +315,7 @@ local function TransZero(pad,first,last)
 		end
 		local num = tonumber(TableConcat{30253592000,pad,i})
 		local str = _InternalTranslate(T{num})
-		-- comment out on new versions to check for missing strings (stripped from pre-gagarin, remove when updated)
-		if str ~= "stripped" and str ~= "Missing text" then
+		if str ~= "Missing text" then
 			Strings[num] = str
 		end
 	end

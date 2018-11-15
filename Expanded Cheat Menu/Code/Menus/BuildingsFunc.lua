@@ -45,6 +45,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		ChoGGi.SettingFuncs.WriteSettings()
+		ChoGGi.ComFuncs.UpdateBuildMenu()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SponsorBuildingLimits,302535920001398--[[Sponsor Building Limits--]]),
 			302535920001398--[[Sponsor Building Limits--]]
@@ -603,14 +604,12 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.UnlockLockedBuildings()
-		local ChoGGi = ChoGGi
-
 		local ItemList = {}
-		for _,bld in pairs(BuildingTemplates or {}) do
-			if not GetBuildingTechsStatus(bld.template_name) then
+		for id,bld in pairs(BuildingTemplates or {}) do
+			if not GetBuildingTechsStatus(id) then
 				ItemList[#ItemList+1] = {
 					text = Trans(bld.display_name),
-					value = bld.template_name
+					value = id,
 				}
 			end
 		end
@@ -622,7 +621,7 @@ function OnMsg.ClassesGenerate()
 			for i = 1, #choice do
 				UnlockBuilding(choice[i].value)
 			end
-			ChoGGi.ComFuncs.BuildMenu_Toggle()
+			ChoGGi.ComFuncs.UpdateBuildMenu()
 			MsgPopup(
 				S[302535920000116--[[%s: Buildings unlocked.--]]]:format(#choice),
 				8690--[[Protect--]],

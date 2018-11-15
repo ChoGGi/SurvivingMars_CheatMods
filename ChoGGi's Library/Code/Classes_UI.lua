@@ -183,9 +183,6 @@ DefineClass.ChoGGi_ConsoleButton = {
 	BorderColor = black,
 	RolloverBorderColor = black,
 	Margins = box(4,0,0,0),
-	-- remove gagarin
-	TextFont = "Editor16Bold",
-	RolloverTextColor = white,
 }
 
 DefineClass.ChoGGi_ButtonMenu = {
@@ -194,9 +191,6 @@ DefineClass.ChoGGi_ButtonMenu = {
 	LayoutMethod = "HList",
 	RolloverAnchor = "smart",
 	Margins = box(0,0,0,0),
-	-- remove gagarin
-	TextFont = "Editor16Bold",
-	RolloverTextColor = white,
 }
 DefineClass.ChoGGi_ComboButton = {
 	__parents = {"XComboButton"},
@@ -238,9 +232,6 @@ DefineClass.ChoGGi_CheckButtonMenu = {
 	TextHAlign = "left",
 	RolloverBackground = rollover_blue,
 	Margins = box(4,0,0,0),
-	-- remove gagarin
-	TextFont = "Editor16Bold",
-	RolloverTextColor = white,
 }
 
 DefineClass.ChoGGi_TextInput = {

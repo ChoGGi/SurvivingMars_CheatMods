@@ -40,15 +40,9 @@ function OnMsg.ClassesGenerate()
 	XShortcutsHost.ZOrder = 4
 	-- make cheats menu look like older one (more gray, less white)
 	local dark_gray = -9868951
-	local white = white
 	XMenuBar.Background = dark_gray
-	XMenuBar.TextColor = white
 	XPopupMenu.Background = dark_gray
-	XPopupMenu.TextColor = white
-	-- gagarin
-	if TextStyles.DevMenuBar then
-		TextStyles.DevMenuBar.TextColor = white
-	end
+	TextStyles.DevMenuBar.TextColor = white
 
 	-- remove sponsor limits on buildings
 	if ChoGGi.UserSettings.SponsorBuildingLimits then

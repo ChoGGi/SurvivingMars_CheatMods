@@ -35,7 +35,7 @@ function OnMsg.ClassesGenerate()
 			local empty_table = empty_table
 			local nonerare,rare = GetCompatibleTraits(empty_table,empty_table,empty_table)
 --~ 			printC(#nonerare + #rare)
-			if #nonerare + #rare ~= 54 then
+			if #nonerare + #rare ~= 55 then
 				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = string.format("%sGetCompatibleTraits%s",textstart,textend)
 			end
 		end

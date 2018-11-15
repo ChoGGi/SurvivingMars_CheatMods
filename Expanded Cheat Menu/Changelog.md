@@ -3,7 +3,14 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v10.6 (Unreleased)
+## v10.7 (Unreleased)
+### Added:
+- Cheats>Trigger fireworks: Add some party to your domes for 3 hours (10 domes).
+
+### Changed:
+- Made some of my building cheats update build menu (instead of having to close than open it).
+
+## v10.6 (15 Nov 2018)
 ### Added:
 - Buildings>Toggles>Sponsor Building Limits: Gagarin added buildings limited to specific sponsors, use this to toggle limits.
 

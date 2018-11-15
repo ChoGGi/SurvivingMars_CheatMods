@@ -741,8 +741,7 @@ function Examine:valuetotextex(obj)
 		else
 			-- show translated text if possible and return a clickable link
 			local trans = Trans(obj)
-			-- stripped = pre-gagarin
-			if trans == "stripped" or trans:find("Missing text") then
+			if trans:find("Missing text") then
 				trans = tostring(obj)
 			end
 			-- the </color> is to make sure it doesn't bleed into other text
@@ -1043,8 +1042,7 @@ function Examine:totextex(obj,obj_type)
 	elseif obj_type == "userdata" then
 		local trans = Trans(obj)
 		-- might as well just return userdata instead of these
-		-- stripped = pre-gagarin
-		if trans == "stripped" or trans:find("Missing text") then
+		if trans:find("Missing text") then
 			trans = tostring(obj)
 		else
 			trans = StringFormat("%s < %s</color></color>",obj,trans)

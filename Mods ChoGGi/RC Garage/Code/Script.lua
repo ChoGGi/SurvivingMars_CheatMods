@@ -9,7 +9,7 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	-- version to version check with
-	local min_version = 32
+	local min_version = 33
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
@@ -107,12 +107,6 @@ function RCGarage:GameInit(...)
 		self.door = a
 	end)
 
-	-- pre-gagarin
-	if LuaRevision == 235636 then
-		self:SetColorizationMaterial(1, -13434880, -100, 120)
-		self:SetColorizationMaterial(2, -13487566, 120, 20)
-		self:SetColorizationMaterial(3, -13434880, -128, 48)
-	end
 end
 
 function RCGarage:SetPalette()
