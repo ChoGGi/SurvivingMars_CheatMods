@@ -435,14 +435,20 @@ function OnMsg.ClassesGenerate()
 				local files = RetFilesInFolder(folder.script_path,".lua")
 				if files then
 					for i = 1, #files do
-						local _, script = AsyncFileToString(files[i].path)
-						items[i] = {
-							name = files[i].name,
-							hint = StringFormat("%s\n\n%s",S[302535920001138--[[Execute this command in the console.--]]],script),
-							clicked = function()
-								console:Exec(script,true)
-							end,
-						}
+						local err, script = AsyncFileToString(files[i].path)
+						if not err then
+							items[i] = {
+								name = files[i].name,
+								hint = StringFormat("%s\n\n%s",S[302535920001138--[[Execute this command in the console.--]]],script),
+								clicked = function()
+									if script:find("-- rem echo on") then
+										console:Exec(script)
+									else
+										console:Exec(script,true)
+									end
+								end,
+							}
+						end
 					end
 					PopupToggle(self,folder.id,items)
 				else
