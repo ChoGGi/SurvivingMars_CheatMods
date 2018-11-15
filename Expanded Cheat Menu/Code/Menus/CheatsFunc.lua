@@ -1044,28 +1044,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 
 	function ChoGGi.MenuFuncs.UnlockAllBuildings()
 		CheatUnlockAllBuildings()
-
-		local dlg = GetDialog("XBuildMenu")
-		-- can't update what isn't there
-		if dlg then
-			-- only update categories if we need to
-			local cats = dlg:GetCategories()
-			local old_cats = dlg.idCategoryList.idCategoriesList
-			local old_cats_c = #old_cats
-			-- - 1 for the hidden cat
-			if (#cats - 1) ~= old_cats_c then
-				-- clear out old categories
-				for i = old_cats_c, 1, -1 do
-					old_cats[i]:delete()
-				end
-				-- add all new stuffs
-				dlg:CreateCategoryItems(cats)
-			end
-
-			-- update item list (RefreshXBuildMenu())
-			dlg:SelectCategory(dlg.category)
-		end
-
+		ChoGGi.ComFuncs.UpdateBuildMenu()
 		MsgPopup(
 			302535920000293--[[Unlocked all buildings for construction.--]],
 			3980--[[Buildings--]],

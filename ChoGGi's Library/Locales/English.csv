@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001402,,
 302535920001403,,
 302535920001404,,
 302535920001405,,
@@ -534,6 +533,7 @@ Use with %s to fill up a dome with spires.",
 302535920000230,Remove Building Limits,
 302535920000231,"Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
 See also %s.",
+302535920001402,Add some party to your domes for 3 hours (10 domes).,
 302535920001392,Clears story bit cooldowns... (got me).,
 302535920001393,StoryBits ClearCooldowns,
 302535920001394,Spawn Planetary Anomalies,

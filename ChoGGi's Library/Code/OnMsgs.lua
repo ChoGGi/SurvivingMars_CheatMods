@@ -27,17 +27,11 @@ function OnMsg.ClassesBuilt()
 	-- add cat for my items
 	local bc = BuildCategories
 	if not table.find(bc,"id","ChoGGi") then
-		local image = StringFormat("%sUI/bmc_incal_resources.png",ChoGGi.LibraryPath)
-		local highlight = StringFormat("%sUI/bmc_incal_resources_shine.png",ChoGGi.LibraryPath)
-
 		bc[#bc+1] = {
 			id = "ChoGGi",
 			name = S[302535920001400--[[ChoGGi--]]],
-			image = image,
-			highlight = highlight,
-			-- pre-gagarin
-			img = image,
-			highlight_img = highlight,
+			image = StringFormat("%sUI/bmc_incal_resources.png",ChoGGi.LibraryPath),
+			highlight = StringFormat("%sUI/bmc_incal_resources_shine.png",ChoGGi.LibraryPath),
 		}
 	end
 end

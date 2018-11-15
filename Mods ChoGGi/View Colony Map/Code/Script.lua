@@ -9,7 +9,7 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	-- version to version check with
-	local min_version = 31
+	local min_version = 33
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
@@ -99,20 +99,11 @@ function ChoGGi_ShowImageDlg:Init(parent, context)
 	local PGMainMenu = Dialogs.PGMainMenu
 
 	if PGMainMenu then
-		-- Gagarin
-		if LuaRevision > 235636 then
-				-- wrapped in a pcall, so if we fail then it doesn't matter (other than an error in the log)
-				pcall(function()
-					local dlg = PGMainMenu.idContent.PGMission[1][1].idContent.box
-					x = dlg:sizex()
-				end)
-		else
-				-- wrapped in a pcall, so if we fail then it doesn't matter (other than an error in the log)
-				pcall(function()
-					local dlg = PGMainMenu.idContent[1][2][1].idContent.box
-					x = dlg:minx() - dlg:sizex() - 100
-				end)
-		end
+		-- wrapped in a pcall, so if we fail then it doesn't matter (other than an error in the log)
+		pcall(function()
+			local dlg = PGMainMenu.idContent.PGMission[1][1].idContent.box
+			x = dlg:sizex()
+		end)
 	end
 
 	self:SetInitPos(nil,point(x,y))

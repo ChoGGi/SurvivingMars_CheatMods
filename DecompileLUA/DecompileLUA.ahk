@@ -67,10 +67,6 @@ If (bCalledFromMain)
 			{
 			;need to close the file before we open it again below
 			File.Close()
-			;replace 08 with 04 at offset 14
-			BinWrite(A_LoopFileLongPath,"04",1,14)
-			;insert 08 twice at offset 15
-			InsertData(A_LoopFileLongPath,08,2,15)
 			;decompile lua
 			DeCompiledLUA := StdOutToVar("""" sJavaPath """" A_Space "-jar" A_Space """" sUnluacPath """" A_Space """" A_LoopFileLongPath """")
 			;delete original so we can append new
@@ -108,38 +104,6 @@ Else
 
 ;not needed just letting you know there's only functions below here
 ExitApp
-
-/*
-* filename to read
-* filename to write
-* data to insert
-* times to insert it
-* where to insert data
-*/
-InsertData(sFilename,Data,iAmount,iOffset)
-	{
-	File := FileOpen(sFilename,"r")
-	FileGetSize iFileSize,%sFileName%
-	iFileSize -= iOffset
-
-	File.RawRead(BeforeDataBuffer,iOffset)
-	File.Seek(iOffset)
-	File.RawRead(AfterDataBuffer,iFileSize)
-
-	FileOut := FileOpen(sFilename,"w")
-
-	FileOut.RawWrite(BeforeDataBuffer,iOffset)
-
-	VarSetCapacity(bufftemp,1,0)
-	NumPut(Data,bufftemp,0,"UChar")
-	Loop % iAmount
-		FileOut.RawWrite(bufftemp,1)
-
-	FileOut.RawWrite(AfterDataBuffer,iFileSize)
-
-	File.Close()
-	FileOut.Close()
-	}
 
 ;https://github.com/cocobelgica/AutoHotkey-Util/blob/master/StdOutToVar.ahk (3541fbe on 25 Aug 2014)
 StdOutToVar(sCmd,sBreakOnString := 0,sBreakOnStringAdd := 0,iBreakDelay := 0)
@@ -219,55 +183,4 @@ StdOutToVar(sCmd,sBreakOnString := 0,sBreakOnStringAdd := 0,iBreakDelay := 0)
 	DllCall("CloseHandle", sPtr, NumGet(PROCESS_INFORMATION, A_PtrSize)) ; hThread
 	DllCall("CloseHandle", sPtr, hReadPipe)
 	Return sOutput
-	}
-
-
-/*
-|	- Open binary file
-|	- (Over)Write n bytes (n = 0: all)
-|	- From offset (offset < 0: counted from end)
-|	- Close file
-|	data -> file[offset + 0..n-1], rest of file unchanged
-|	Return #bytes actually written
-https://autohotkey.com/board/topic/4299-simple-binary-file-readwrite-functions/
-*/
-BinWrite(file, data, n=0, offset=0)
-	{
-	Static FILE_BEGIN := 0, FILE_END := 2
-				,GENERIC_WRITE := 0x40000000 ;Open file for WRITE (0x40..)
-				,OPEN_ALWAYS := 4 ;creates only if it does not exists
-
-	h := DllCall("CreateFile","str",file,"Uint",GENERIC_WRITE,"Uint",0,"UInt",0,"UInt",OPEN_ALWAYS,"Uint",0,"UInt",0)
-	If !h
-		Return
-
-	m := FILE_BEGIN
-	if offset < 0
-		m := FILE_END
-	r := DllCall("SetFilePointerEx","Uint",h,"Int64",offset,"UInt *",p,"Int",m)
-	If r = 0
-		{
-		DllCall("CloseHandle", "Uint", h)
-		Return
-		}
-
-	TotalWritten = 0
-	m := Ceil(StrLen(data)/2)
-	If (n <= 0 || n > m)
-		n := m
-	Loop %n%
-		{
-		;StringLeft c, data, 2				 ; extract next byte
-		c := SubStr(data,0,2)
-		;StringTrimLeft data, data, 2	; remove	used byte
-		data := SubStr(data,0,2)
-
-		c = 0x%c%										 ; make it number
-		result := DllCall("WriteFile","UInt",h,"UChar *",c,"UInt",1,"UInt *",Written,"UInt",0)
-		TotalWritten += Written			 ; count written
-		If (!result || Written < 1 || ErrorLevel)
-			Break
-		}
-
-	DllCall("CloseHandle", "Uint", h)
 	}

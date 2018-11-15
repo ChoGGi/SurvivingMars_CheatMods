@@ -6,7 +6,6 @@ local img = StringFormat("%sUI/pm_landed.png",CurrentModPath)
 local idmarker = "idMarker%s"
 local marker_name = "%s_%s"
 
-
 -- stores saved game spots
 local new_markers = {}
 
