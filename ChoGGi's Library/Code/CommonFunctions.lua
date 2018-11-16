@@ -3245,8 +3245,8 @@ GetComputerName(): %s
 end
 
 -- check for and remove old object (XTemplates are created on new game/new dlc ?)
-function ChoGGi.ComFuncs.RemoveXTemplateSections(list,name)
-	local idx = TableFind(list, name, true)
+function ChoGGi.ComFuncs.RemoveXTemplateSections(list,name,value)
+	local idx = TableFind(list, name, value or true)
 	if idx then
 		list[idx]:delete()
 		table.remove(list,idx)

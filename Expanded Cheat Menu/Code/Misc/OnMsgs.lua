@@ -120,11 +120,13 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 
 		-- add cheats section to concrete
 		local list = XTemplates.ipTerrainDeposit[1]
-		local idx = table.find(list,"__template","sectionCheats")
-		if idx then
-			list[idx]:delete()
-			table.remove(list,idx)
-		end
+		ChoGGi.ComFuncs.RemoveXTemplateSections(list,"__template","sectionCheats")
+		list[#list+1] = PlaceObj("XTemplateTemplate", {
+			"__template", "sectionCheats",
+		})
+		-- and the new deposits added
+		list = XTemplates.ipEffectDeposit[1]
+		ChoGGi.ComFuncs.RemoveXTemplateSections(list,"__template","sectionCheats")
 		list[#list+1] = PlaceObj("XTemplateTemplate", {
 			"__template", "sectionCheats",
 		})
@@ -1194,7 +1196,7 @@ do -- LoadGame/CityStart
 			end
 		end)
 
-		--so we can change the max_amount for concrete
+		-- so we can change the max_amount for concrete
 		table_temp = g_Classes.TerrainDepositConcrete.properties or ""
 		for i = 1, #table_temp do
 			if table_temp[i].id == "max_amount" then
