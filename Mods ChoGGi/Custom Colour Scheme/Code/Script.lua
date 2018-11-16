@@ -1,14 +1,19 @@
 -- this is just a copy n paste of one of the in-game schemes
--- you can use my change object colour mod to paste these numbers and fiddle with
--- they will change to neg numbers, but that's just because they ignore the alpha value (which isn't used as far as I know)
+-- you can use RGB(0,255,0), or RGBA(0,255,0,75)
 
+-- not my speeling
+
+local RGB,RGBA = RGB,RGBA
 function OnMsg.ClassesPostprocess()
-	if not ColonyColorSchemes.ChoGGi_Custom_Scheme then
+	-- check for the id of the scheme so we don't add dupes
+	if not Presets.ColonyColorScheme.Default.ChoGGi_Custom_Scheme then
 		PlaceObj('ColonyColorScheme', {
 			display_name = "Custom Scheme",
 			id = "ChoGGi_Custom_Scheme",
 			group = "Default",
-			cables_base = 2993492511,
+
+			-- if using RGB is easier then off you go
+			cables_base = RGB(255,0,0),
 			dome_base = 2187894897,
 			electro_accent_1 = 2215054937,
 			electro_accent_2 = 2986060593,
@@ -32,6 +37,7 @@ function OnMsg.ClassesPostprocess()
 			life_base = 2194089715,
 			mining_accent_1 = 2596495343,
 			mining_base = 2228988721,
+			none = 3130007616,
 			outside_accent_1 = 2170773487,
 			outside_accent_2 = 2208102899,
 			outside_accent_factory = 3150487665,
