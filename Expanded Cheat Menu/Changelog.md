@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v10.7 (Unreleased)
+## v10.8 (Unreleased)
+
+## v10.7 (16 Nov 2018)
 ### Added:
 - Cheats>Trigger fireworks: Add some party to your domes for 3 hours (10 domes).
 - Cheats section to the Vistas/Research sites.
@@ -11,6 +13,7 @@
 ### Changed:
 - Made some of my building cheats update build menu (instead of having to close than open it).
 - Console>ECM Scripts: doesn't display script code in console log when executed (add "-- rem echo on" to each script have it act like it did).
+- Updated Export Colonist Data to CSV with missing traits.
 
 ## v10.6 (15 Nov 2018)
 ### Added:

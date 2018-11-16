@@ -257,6 +257,7 @@ function OnMsg.ClassesGenerate()
 		end
 		ColonistsCSVColumns = AddTraits(ChoGGi_Tables.NegativeTraits,ColonistsCSVColumns)
 		ColonistsCSVColumns = AddTraits(ChoGGi_Tables.PositiveTraits,ColonistsCSVColumns)
+		ColonistsCSVColumns = AddTraits(ChoGGi_Tables.OtherTraits,ColonistsCSVColumns)
 
 		function ChoGGi.MenuFuncs.ExportColonistDataToCSV()
 			local export_data = {}
@@ -310,6 +311,7 @@ function OnMsg.ClassesGenerate()
 			end
 			-- and now we can save it to disk
 			SaveCSV("AppData/Colonists.csv", export_data, table.map(ColonistsCSVColumns, 1), table.map(ColonistsCSVColumns, 2))
+			print(ConvertToOSPath("AppData/Colonists.csv"))
 		end
 	end
 

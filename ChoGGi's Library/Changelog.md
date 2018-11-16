@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v3.4 (Unreleased)
+## v3.5 (Unreleased)
+
+## v3.4 (16 Nov 2018)
 - Broke my get obj name function last update.
 
 ## v3.3 (15 Nov 2018)
