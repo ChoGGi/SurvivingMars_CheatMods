@@ -6,6 +6,7 @@
 ## v10.7 (Unreleased)
 ### Added:
 - Cheats>Trigger fireworks: Add some party to your domes for 3 hours (10 domes).
+- Cheats section to the Vistas/Research sites.
 
 ### Changed:
 - Made some of my building cheats update build menu (instead of having to close than open it).

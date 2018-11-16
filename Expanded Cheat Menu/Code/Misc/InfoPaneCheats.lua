@@ -565,14 +565,7 @@ Drone.CheatMoveSpeedDef = CheatMoveSpeedDef
 BaseRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
 BaseRover.CheatMoveSpeedDef = CheatMoveSpeedDef
 --CheatCleanAndFix
-local function CheatCleanAndFix(self)
-	self:CheatMalfunction()
-	CreateRealTimeThread(function()
-		Sleep(1)
-		self:Repair()
- end)
-end
-local function CheatCleanAndFixDrone(self)
+Drone.CheatCleanAndFix = function(self)
 	self:CheatMalfunction()
 	CreateRealTimeThread(function()
 		Sleep(1)
@@ -590,9 +583,13 @@ local function CheatCleanAndFixDrone(self)
 		RebuildInfopanel(self)
  end)
 end
-
-Drone.CheatCleanAndFix = CheatCleanAndFixDrone
-BaseRover.CheatCleanAndFix = CheatCleanAndFix
+BaseRover.CheatCleanAndFix = function(self)
+	self:CheatMalfunction()
+	CreateRealTimeThread(function()
+		Sleep(1)
+		self:Repair()
+ end)
+end
 --misc
 function SecurityStation:CheatReneagadeCapDbl()
 	self.negated_renegades = self.negated_renegades * 2
