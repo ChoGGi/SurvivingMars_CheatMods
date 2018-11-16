@@ -799,7 +799,7 @@ function Examine:valuetotextex(obj)
 			else
 				-- regular table
 				local table_data
-				local is_next = next(obj)
+				local is_next = type(next(obj)) ~= "nil"
 
 				-- not sure how to check if it's an index non-ass table
 				if len > 0 and is_next then

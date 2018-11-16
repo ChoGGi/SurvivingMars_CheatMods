@@ -4,6 +4,7 @@ function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local S = ChoGGi.Strings
 	local Trans = ChoGGi.ComFuncs.Translate
+	local RetName = ChoGGi.ComFuncs.RetName
 
 	local default_icon = "UI/Icons/IPButtons/drone.tga"
 	local default_icon2 = "UI/Icons/IPButtons/transport_route.tga"
@@ -329,7 +330,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
 		local ChoGGi = ChoGGi
 		local sel = ChoGGi.ComFuncs.SelObject()
-		if not sel or not sel:IsKindOf("DroneHub") then
+		if not sel or not sel:IsKindOf("DroneControl") then
 			return
 		end
 
@@ -354,7 +355,7 @@ function OnMsg.ClassesGenerate()
 
 				local change = S[302535920000746--[[added--]]]
 				if choice[1].check1 then
-					change = S[302535920000917--[[dismantled--]]]
+					change = S[302535920000917--[[packed--]]]
 					for _ = 1, value do
 						sel:ConvertDroneToPrefab()
 					end
@@ -379,8 +380,8 @@ function OnMsg.ClassesGenerate()
 			hint = StringFormat("%s: %s %s: %s",S[302535920000896--[[Drones in hub--]]],CurrentAmount,S[302535920000897--[[Drone prefabs--]]],": ",UICity.drone_prefabs),
 			check = {
 				{
-					title = 302535920000898--[[Dismantle--]],
-					hint = 302535920000899--[[Check this to dismantle drones in hub--]],
+					title = 302535920000898--[[Pack Drones--]],
+					hint = 302535920000899--[[Check this to pack drone(s) into prefabs (number can be higher than attached drones).--]],
 				},
 			},
 			skip_sort = true,

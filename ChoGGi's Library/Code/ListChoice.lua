@@ -11,6 +11,7 @@ local S = ChoGGi.Strings
 
 local type,tostring = type,tostring
 local StringFormat = string.format
+local RGBA = RGBA
 
 DefineClass.ChoGGi_ListChoiceDlg = {
 	__parents = {"ChoGGi_Window"},
@@ -209,7 +210,8 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 				self:idColorPickerOnColorChanged(colour)
 			end,
 			AdditionalComponent = "alpha"
-	--~		 AdditionalComponent = "intensity"
+--~ 		 AdditionalComponent = "intensity"
+--~ 		 AdditionalComponent = "none"
 		}, self.idColorPickerArea)
 		-- block it from closing on dbl click
 		self.idColorPicker.idColorSquare.OnColorChanged = function(_, colour)
@@ -253,7 +255,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		end
 
 		-- default alpha stripe to max, so the text is updated correctly (and maybe make it actually do something sometime)
-		self.idColorPicker:UpdateComponent("ALPHA", 1000)
+--~ 		self.idColorPicker:UpdateComponent("ALPHA", 1000)
 	end -- end of colour picker if
 
 	if self.list.multisel then
@@ -319,6 +321,7 @@ end
 function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	local text = self.idEditValue:GetText()
 	local value,value_type = RetProperType(text)
+--~ 	printC(text,value)
 	if self.custom_type > 0 then
 		if self.idList.focused_item then
 			self.idList[self.idList.focused_item].item.value = value
@@ -328,7 +331,7 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 				if value_type == "number" then
 					self.idColorPicker:SetColor(value)
 				end
-				self.idEditValue:SetCursor(1,#text)
+--~ 				self.idEditValue:SetCursor(1,#text)
 			end
 		end
 	else
@@ -460,10 +463,14 @@ function ChoGGi_ListChoiceDlg:UpdateColour()
 	-- update object colour
 	local items = self.idList
 	for i = 1, 4 do
-		local color = items[i].item.value
-		local metallic = items[i+4].item.value
-		local roughness = items[i+8].item.value
-		self.obj:SetColorizationMaterial(i,color,roughness,metallic)
+		self.obj:SetColorizationMaterial(i,
+			-- color
+			items[i].item.value,
+			-- roughness
+			items[i+4].item.value,
+			-- metallic
+			items[i+8].item.value
+		)
 	end
 	self.obj:SetColorModifier(self.idList[#self.idList].item.value)
 end
@@ -523,7 +530,7 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
 			-- move the colour picker circle
 			self:UpdateColourPicker(self.sel.text)
 			-- default alpha stripe to max, so the text is updated correctly (and maybe make it actually do something sometime)
-			self.idColorPicker:UpdateComponent("ALPHA", 1000)
+--~ 			self.idColorPicker:UpdateComponent("ALPHA", 1000)
 		-- don't show picker unless it's a colour setting (browsing lightmodel)
 		elseif self.custom_type == 5 then
 			if self.sel.editor == "color" then

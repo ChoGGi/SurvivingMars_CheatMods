@@ -42,7 +42,12 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_ExpandedCM_Mission,
 		ActionId = ".Change Logo",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
-		RolloverText = S[302535920000711--[[Change the logo for anything that uses the logo.--]]],
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				g_CurrentMissionParams.idMissionLogo,
+				302535920000711--[[Change the logo for anything that uses the logo.--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.ChangeGameLogo,
 	}
 
@@ -51,7 +56,12 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_ExpandedCM_Mission,
 		ActionId = ".Set Sponsor",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
-		RolloverText = S[302535920000713--[[Switch to a different sponsor.--]]],
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				g_CurrentMissionParams.idMissionSponsor,
+				302535920000713--[[Switch to a different sponsor.--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.ChangeSponsor,
 		ActionSortKey = "21",
 	}
@@ -74,7 +84,12 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_ExpandedCM_Mission,
 		ActionId = ".Set Commander",
 		ActionIcon = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
-		RolloverText = S[302535920000717--[[Switch to a different commander.--]]],
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				g_CurrentMissionParams.idCommanderProfile,
+				302535920000717--[[Switch to a different commander.--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.ChangeCommander,
 		ActionSortKey = "23",
 	}
@@ -99,6 +114,20 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/ListCollections.tga",
 		RolloverText = S[302535920000965--[["Change the ""Game Rules""."--]]],
 		OnAction = ChoGGi.MenuFuncs.ChangeRules,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001403--[[Drone Type--]]],
+		ActionMenubar = str_ExpandedCM_Mission,
+		ActionId = ".Drone Type",
+		ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				GetMissionSponsor().drone_class or "Drone",
+				302535920001404--[[Change what type of drones will spawn (doesn't effect existing).--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.SetDroneType,
 	}
 
 	local str_ExpandedCM_Mission_Disasters = "ECM.Expanded CM.Mission.Disasters"

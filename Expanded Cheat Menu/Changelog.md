@@ -4,6 +4,14 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v10.8 (Unreleased)
+### Added:
+- Mission>Drone Type: Change what type of drones will spawn (doesn't affect existing).
+
+### Changed:
+- Change Amount of Drones in Hub: Now works with any drone controller (also changed Dismantle to Pack Drones).
+
+### Fixed:
+- Examine was showing certain associative tables as 0 length.
 
 ## v10.7 (16 Nov 2018)
 ### Added:
