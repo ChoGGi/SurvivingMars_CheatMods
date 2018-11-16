@@ -1,6 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001407,,
-302535920001408,,
 302535920001409,,
 302535920001410,,
 302535920001411,,
@@ -360,6 +358,8 @@ Press Enter to refresh list (update names).
 Double click selected item to open in new manipulator.",
 302535920000102,Use to change values of selected list item.,
 302535920000103,Edit Value,
+302535920001407,Rotate During Placement,
+302535920001408,Allow you to rotate all buildings.,
 302535920001398,Sponsor Building Limits,
 302535920001399,Allow you to build all buildings no matter your sponsor.,
 302535920000064,Build On Geysers,

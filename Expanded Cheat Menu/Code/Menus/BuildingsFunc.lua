@@ -12,6 +12,37 @@ function OnMsg.ClassesGenerate()
 
 	local StringFormat = string.format
 
+	function ChoGGi.MenuFuncs.RotateDuringPlacement_Toggle()
+		if ChoGGi.UserSettings.RotateDuringPlacement then
+			-- used when starting/loading a game
+			ChoGGi.UserSettings.RotateDuringPlacement = nil
+
+			for _,bld in pairs(ClassTemplates.Building) do
+				if bld.can_rotate_during_placement_ChoGGi_orig then
+					bld.can_rotate_during_placement = false
+					bld.can_rotate_during_placement_ChoGGi_orig = nil
+				end
+			end
+
+		else
+			-- used when starting/loading a game
+			ChoGGi.UserSettings.RotateDuringPlacement = true
+
+			for _,bld in pairs(ClassTemplates.Building) do
+				if bld.can_rotate_during_placement == false then
+					bld.can_rotate_during_placement_ChoGGi_orig = true
+					bld.can_rotate_during_placement = true
+				end
+			end
+		end
+
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RotateDuringPlacement,302535920001407--[[Rotate During Placement--]]),
+			302535920001407--[[Rotate During Placement--]]
+		)
+	end
+
 	function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
 		if ChoGGi.UserSettings.SponsorBuildingLimits then
 			-- used when starting/loading a game

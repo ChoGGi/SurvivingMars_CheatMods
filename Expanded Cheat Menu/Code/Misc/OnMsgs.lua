@@ -44,20 +44,6 @@ function OnMsg.ClassesGenerate()
 	XPopupMenu.Background = dark_gray
 	TextStyles.DevMenuBar.TextColor = white
 
-	-- remove sponsor limits on buildings
-	if ChoGGi.UserSettings.SponsorBuildingLimits then
-		for _,bld in pairs(BuildingTemplates) do
-			-- set each status to false if it isn't
-			for i = 1, 3 do
-				local str = StringFormat("sponsor_status%s",i)
-				if bld[str] ~= false then
-					bld[StringFormat("sponsor_status%s_ChoGGi_orig",i)] = bld[str]
-					bld[str] = false
-				end
-			end
-		end
-	end
-
 end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
@@ -333,7 +319,31 @@ function OnMsg.ModsReloaded()
 		end
 
 	end -- DisableECM
-end
+
+	-- remove sponsor limits on buildings
+	if UserSettings.SponsorBuildingLimits then
+		for _,bld in pairs(BuildingTemplates) do
+			-- set each status to false if it isn't
+			for i = 1, 3 do
+				local str = StringFormat("sponsor_status%s",i)
+				if bld[str] ~= false then
+					bld[StringFormat("sponsor_status%s_ChoGGi_orig",i)] = bld[str]
+					bld[str] = false
+				end
+			end
+		end
+	end
+	-- unlock buildings that cannot rotate
+	if UserSettings.RotateDuringPlacement then
+		for _,bld in pairs(ClassTemplates.Building) do
+			if bld.can_rotate_during_placement == false then
+				bld.can_rotate_during_placement_ChoGGi_orig = true
+				bld.can_rotate_during_placement = true
+			end
+		end
+	end
+
+end -- ModsReloaded
 
 -- earliest on-ground objects are loaded?
 --~ function OnMsg.PersistLoad()
