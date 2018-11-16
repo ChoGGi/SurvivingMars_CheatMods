@@ -628,6 +628,20 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		OnAction = ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle,
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001407--[[Rotate During Placement--]]],
+		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionId = ".Rotate During Placement",
+		ActionIcon = "CommonAssets/UI/Menu/RotateObjectsTool.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.RotateDuringPlacement,
+				302535920001408--[[Allow you to rotate all buildings.--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.RotateDuringPlacement_Toggle,
+	}
+
 	local str_ExpandedCM_Buildings_SpaceElevator = "ECM.Expanded CM.Buildings.Space Elevator"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[1120--[[Space Elevator--]]]),

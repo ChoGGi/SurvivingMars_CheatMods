@@ -4,6 +4,7 @@ function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local FileExists = ChoGGi.ComFuncs.FileExists
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 
@@ -312,7 +313,7 @@ function OnMsg.ClassesGenerate()
 						}
 						mod.last_changes = mod.last_changes or tostring(mod.version) or ""
 						-- CommonLua\SteamWorkshop.lua
-						err = Steam_Upload(nil, mod, params)
+						_,err = Steam_Upload(nil, mod, params)
 
 --~ 						if Platform.steam then
 --~ 							local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
@@ -362,7 +363,7 @@ function OnMsg.ClassesGenerate()
 
 					local msg, title
 					if err and not blank_mod then
-						msg = S[1000013--[[Mod %s was not uploaded to Steam. Error: %s--]]]:format(mod.title,err)
+						msg = S[1000013--[[Mod %s was not uploaded to Steam. Error: %s--]]]:format(mod.title,Trans(err))
 						title = S[1000592--[[Error--]]]
 					else
 						msg = S[1000014--[[Mod %s was successfully uploaded to Steam!--]]]:format(mod.title)
