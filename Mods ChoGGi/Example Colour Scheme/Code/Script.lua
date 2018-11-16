@@ -1,9 +1,14 @@
 -- this is just a copy n paste of one of the in-game schemes
--- you can use RGB(0,255,0), or RGBA(0,255,0,75)
+-- convert the numbers with ColorizationMaterialDecode(2209066747), this will return three numbers:
+-- a value you can use with GetRGB(value), roughness value, metallic value
+-- to convert back into the proper number use ColorizationMaterialEncode(RGB(22,36,50), rough, met)
 
 -- not my speeling
 
-local RGB,RGBA = RGB,RGBA
+
+
+local ColorizationMaterialEncode = ColorizationMaterialEncode
+local RGB = RGB
 function OnMsg.ClassesPostprocess()
 	-- check for the id of the scheme so we don't add dupes
 	if not Presets.ColonyColorScheme.Default.ChoGGi_Custom_Scheme then
@@ -12,8 +17,7 @@ function OnMsg.ClassesPostprocess()
 			id = "ChoGGi_Custom_Scheme",
 			group = "Default",
 
-			-- if using RGB is easier then off you go
-			cables_base = RGB(255,0,0),
+			cables_base = ColorizationMaterialEncode(RGB(22,36,50), 0, 0),
 			dome_base = 2187894897,
 			electro_accent_1 = 2215054937,
 			electro_accent_2 = 2986060593,

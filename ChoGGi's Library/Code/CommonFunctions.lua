@@ -2576,14 +2576,14 @@ do -- ChangeObjectColour
 				value = pal[text],
 				hint = 302535920000017--[[Use the colour picker (dbl right-click for instant change).--]],
 			}
-			text = StringFormat("Metallic%s",i)
+			text = StringFormat("Roughness%s",i)
 			c = c + 1
 			ItemList[c] = {
 				text = text,
 				value = pal[text],
 				hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
 			}
-			text = StringFormat("Roughness%s",i)
+			text = StringFormat("Metallic%s",i)
 			c = c + 1
 			ItemList[c] = {
 				text = text,

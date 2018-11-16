@@ -259,22 +259,20 @@ function OnMsg.ClassesGenerate()
 
 					-- add new mod
 					local err,item_id,bShowLegalAgreement
---~ 					if Platform.steam then
-						if mod.steam_id ~= 0 then
-							local exists
-							local appId = SteamGetAppId()
-							local userId = SteamGetUserId64()
-							err, exists = AsyncSteamWorkshopUserOwnsItem(userId, appId, mod.steam_id)
-							if not err and not exists then
-								mod.steam_id = 0
-							end
+					if mod.steam_id ~= 0 then
+						local exists
+						local appId = SteamGetAppId()
+						local userId = SteamGetUserId64()
+						err, exists = AsyncSteamWorkshopUserOwnsItem(userId, appId, mod.steam_id)
+						if not err and not exists then
+							mod.steam_id = 0
 						end
+					end
 
-						if mod.steam_id == 0 then
-							err,item_id,bShowLegalAgreement = AsyncSteamWorkshopCreateItem()
-							mod.steam_id = item_id or nil
-						end
---~ 					end
+					if mod.steam_id == 0 then
+						err,item_id,bShowLegalAgreement = AsyncSteamWorkshopCreateItem()
+						mod.steam_id = item_id or nil
+					end
 
 					-- update mod, and copy files to ModUpload
 					if copy_files and not blank_mod and not err then
@@ -307,45 +305,56 @@ function OnMsg.ClassesGenerate()
 							os_dest = ConvertToOSPath(dest)
 						end
 
+						local params = {
+							os_pack_path = os_dest,
+							-- maybe we'll deal with these fuckers one of these days?
+							screenshots = {},
+						}
+						mod.last_changes = mod.last_changes or tostring(mod.version) or ""
+						-- CommonLua\SteamWorkshop.lua
+						err = Steam_Upload(nil, mod, params)
+
 --~ 						if Platform.steam then
-							local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
-							local screenshots = {}
-							for i = 1, 5 do
-								local location1 = StringFormat("AppData/Mod Images/%s_%s.png",mod.id,i)
-								local location2 = StringFormat("AppData/Mod Images/%s_%s.jpg",mod.id,i)
-								local location3 = mod[StringFormat("screenshot%s",i)]
-								if location3 ~= "" then
-									location3 = StringFormat("%s%s",path,location3)
-								else
-									location3 = nil
-								end
+--~ 							local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
+--~ 							local screenshots = {}
+--~ 							for i = 1, 5 do
+--~ 								local location1 = StringFormat("AppData/Mod Images/%s_%s.png",mod.id,i)
+--~ 								local location2 = StringFormat("AppData/Mod Images/%s_%s.jpg",mod.id,i)
+--~ 								local location3 = mod[StringFormat("screenshot%s",i)]
+--~ 								if location3 ~= "" then
+--~ 									location3 = StringFormat("%s%s",path,location3)
+--~ 								else
+--~ 									location3 = nil
+--~ 								end
 
-								if FileExists(location1) then
-									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.png",i))
-									AsyncCopyFile(location1,StringFormat("AppData/ModUpload/screenshot%s.png",i),"raw")
-								elseif FileExists(location2) then
-									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.jpg",i))
-									AsyncCopyFile(location2,StringFormat("AppData/ModUpload/screenshot%s.jpg",i),"raw")
-								elseif location3 and location3 ~= path and FileExists(location3) then
-									screenshots[#screenshots+1] = ConvertToOSPath(location3)
-								end
-							end
+--~ 								if FileExists(location1) then
+--~ 									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.png",i))
+--~ 									AsyncCopyFile(location1,StringFormat("AppData/ModUpload/screenshot%s.png",i),"raw")
+--~ 								elseif FileExists(location2) then
+--~ 									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.jpg",i))
+--~ 									AsyncCopyFile(location2,StringFormat("AppData/ModUpload/screenshot%s.jpg",i),"raw")
+--~ 								elseif location3 and location3 ~= path and FileExists(location3) then
+--~ 									screenshots[#screenshots+1] = ConvertToOSPath(location3)
+--~ 								end
+--~ 							end
 
-							local image = mod.image ~= "" and ConvertToOSPath(mod.image)
-							if not io.exists(image) then
-								image = ""
-							end
+--~ 							local image = mod.image ~= "" and ConvertToOSPath(mod.image)
+--~ 							if not io.exists(image) then
+--~ 								image = ""
+--~ 							end
 
-							err = AsyncSteamWorkshopUpdateItem{
-								item_id = mod.steam_id,
-								title = mod.title or "",
-								description = mod.description or "",
-								tags = mod:GetTags(),
-								content_os_folder = os_dest,
-								image_os_filename = image,
-								change_note = mod.last_changes or tostring(mod.version) or "",
-								screenshots = screenshots,
-							}
+--~ 							err = AsyncSteamWorkshopUpdateItem{
+--~ 								item_id = mod.steam_id,
+--~ 								title = mod.title or "",
+--~ 								description = mod.description or "",
+--~ 								tags = mod:GetTags(),
+--~ 								content_os_folder = os_dest,
+--~ 								image_os_filename = image,
+--~ 								change_note = mod.last_changes or tostring(mod.version) or "",
+--~ 								add_screenshots = add_screenshots,
+--~ 								remove_screenshots = remove_screenshots,
+--~ 								update_screenshots = update_screenshots
+--~ 							}
 --~ 						else
 --~ 							err = "no steam"
 --~ 						end
