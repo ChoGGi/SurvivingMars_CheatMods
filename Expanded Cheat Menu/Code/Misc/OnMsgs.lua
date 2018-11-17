@@ -116,6 +116,13 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		list[#list+1] = PlaceObj("XTemplateTemplate", {
 			"__template", "sectionCheats",
 		})
+		-- Sinkhole ftw
+		list = XTemplates.ipSinkhole[1]
+		ChoGGi.ComFuncs.RemoveXTemplateSections(list,"__template","sectionCheats")
+		list[#list+1] = PlaceObj("XTemplateTemplate", {
+			"__template", "sectionCheats",
+		})
+
 
 		XTemplates.sectionCheats[1].__condition = function(parent, context)
 			-- no sense in doing anything without cheats pane enabled, and there's not cheats for res overview
@@ -125,13 +132,12 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 			return context:CreateCheatActions(parent)
 		end
 
-
-		if not ChoGGi.UserSettings.ScrollSelection then
-			-- limit height of cheats pane and others in the selection panel
-			XTemplates.sectionCheats[1][1].Clip = true
-			XTemplates.sectionCheats[1][1].MaxHeight = 0
-			XTemplates.sectionResidence[1][1].MaxHeight = 256
-		end
+--~ 		if not ChoGGi.UserSettings.ScrollSelection then
+--~ 			-- limit height of cheats pane and others in the selection panel
+--~ 			XTemplates.sectionCheats[1][1].Clip = true
+--~ 			XTemplates.sectionCheats[1][1].MaxHeight = 0
+--~ 			XTemplates.sectionResidence[1][1].MaxHeight = 256
+--~ 		end
 		-- add rollovers to cheats toolbar
 		XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"
 
@@ -181,8 +187,8 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 			bc[#bc+1] = {
 				id = "HiddenX",
 				name = S[1000155--[[Hidden--]]],
-				img = "UI/Icons/bmc_placeholder.tga",
-				highlight_img = "UI/Icons/bmc_placeholder_shine.tga",
+				image = "UI/Icons/bmc_placeholder.tga",
+				highlight = "UI/Icons/bmc_placeholder_shine.tga",
 			}
 		end
 
@@ -320,9 +326,10 @@ function OnMsg.ModsReloaded()
 
 	end -- DisableECM
 
-	-- remove sponsor limits on buildings
-	if UserSettings.SponsorBuildingLimits then
-		for _,bld in pairs(BuildingTemplates) do
+	for _,bld in pairs(BuildingTemplates) do
+
+		-- remove sponsor limits on buildings
+		if UserSettings.SponsorBuildingLimits then
 			-- set each status to false if it isn't
 			for i = 1, 3 do
 				local str = StringFormat("sponsor_status%s",i)
@@ -332,7 +339,26 @@ function OnMsg.ModsReloaded()
 				end
 			end
 		end
+
+		-- make hidden buildings visible
+		if UserSettings.Building_hide_from_build_menu then
+			if bld.id ~= "LifesupportSwitch" and bld.id ~= "ElectricitySwitch" then
+				bld.hide_from_build_menu_ChoGGi = bld.hide_from_build_menu
+				bld.hide_from_build_menu = false
+			end
+			if bld.group == "Hidden" and bld.id ~= "RocketLandingSite" and bld.id ~= "ForeignTradeRocket" then
+				bld.build_category = "HiddenX"
+			end
+		end
+
+		-- wonder building limit
+		if UserSettings.Building_wonder then
+			bld.wonder_ChoGGi = bld.wonder
+			bld.wonder = nil
+		end
+
 	end
+
 	-- unlock buildings that cannot rotate
 	if UserSettings.RotateDuringPlacement then
 		for _,bld in pairs(ClassTemplates.Building) do
@@ -1067,6 +1093,17 @@ do -- LoadGame/CityStart
 
 
 
+		-- make hidden buildings visible
+		if UserSettings.Building_hide_from_build_menu then
+			for _,value in pairs(BuildMenuPrerequisiteOverrides) do
+				if value == "hide" then
+					value = true
+				end
+			end
+			BuildMenuPrerequisiteOverrides.StorageMysteryResource = true
+			BuildMenuPrerequisiteOverrides.MechanizedDepotMysteryResource = true
+		end
+
 		-- show all traits in trainable popup
 		if UserSettings.SanatoriumSchoolShowAllTraits then
 			g_SchoolTraits = ChoGGi.Tables.PositiveTraits
@@ -1214,31 +1251,10 @@ do -- LoadGame/CityStart
 			end
 		end
 
-		-- override building templates
-
-		for _,temp in pairs(BuildingTemplates or {}) do
-			--make hidden buildings visible
-			if UserSettings.Building_hide_from_build_menu then
-				BuildMenuPrerequisiteOverrides.StorageMysteryResource = true
-				BuildMenuPrerequisiteOverrides.MechanizedDepotMysteryResource = true
-				if temp.id ~= "LifesupportSwitch" and temp.id ~= "ElectricitySwitch" then
-					temp.hide_from_build_menu = nil
-				end
-				if temp.build_category == "Hidden" and temp.id ~= "RocketLandingSite" then
-					temp.build_category = "HiddenX"
-				end
-			end
-
-			--wonder building limit
-			if UserSettings.Building_wonder then
-				temp.wonder = nil
-			end
-		end
-
-		--set zoom/border scrolling
+		-- set zoom/border scrolling
 		ChoGGi.ComFuncs.SetCameraSettings()
 
-		--show all traits
+		-- show all traits
 		if UserSettings.SanatoriumSchoolShowAll then
 			g_Classes.Sanatorium.max_traits = #ChoGGi.Tables.NegativeTraits
 			g_Classes.School.max_traits = #ChoGGi.Tables.PositiveTraits

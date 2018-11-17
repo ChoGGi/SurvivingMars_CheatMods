@@ -18,14 +18,12 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000704--[[Instant Mission Goal--]]],
+	Actions[c] = {ActionName = S[302535920000704--[[Instant Mission Goals--]]],
 		ActionMenubar = str_ExpandedCM_Mission,
-		ActionId = ".Instant Mission Goal",
+		ActionId = ".Instant Mission Goals",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
-		RolloverText = S[302535920000705--[[Mission goals are finished instantly (pretty sure the only difference is preventing a msg).
-
-	Needs to change Sol to update.--]]],
-		OnAction = ChoGGi.MenuFuncs.InstantMissionGoal,
+		RolloverText = S[302535920000705--[[Shows list of mission goals and allows you to pass any of them.--]]],
+		OnAction = ChoGGi.MenuFuncs.InstantMissionGoals,
 	}
 
 	c = c + 1

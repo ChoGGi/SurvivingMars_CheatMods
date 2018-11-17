@@ -1,11 +1,9 @@
 -- this is just a copy n paste of one of the in-game schemes
--- convert the numbers with ColorizationMaterialDecode(2209066747), this will return three numbers:
+-- convert the numbers with ColorizationMaterialDecode(NUMBER), this will return three numbers:
 -- a value you can use with GetRGB(value), roughness value, metallic value
 -- to convert back into the proper number use ColorizationMaterialEncode(RGB(22,36,50), rough, met)
 
 -- not my speeling
-
-
 
 local ColorizationMaterialEncode = ColorizationMaterialEncode
 local RGB = RGB
@@ -17,7 +15,7 @@ function OnMsg.ClassesPostprocess()
 			id = "ChoGGi_Custom_Scheme",
 			group = "Default",
 
-			cables_base = ColorizationMaterialEncode(RGB(22,36,50), 0, 0),
+			cables_base = ColorizationMaterialEncode(RGB(22,36,50), 128, 0),
 			dome_base = 2187894897,
 			electro_accent_1 = 2215054937,
 			electro_accent_2 = 2986060593,

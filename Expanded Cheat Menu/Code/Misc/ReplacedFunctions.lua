@@ -582,8 +582,8 @@ function OnMsg.ClassesPreprocess()
 	function InfopanelObj:CreateCheatActions(win,...)
 		-- fire orig func to build cheats
 		if ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions(self,win,...) then
-			--then we can add some hints to the cheats
-			return ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
+			-- then we can add some hints to the cheats
+			return ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win),win)
 		end
 	end
 
@@ -628,11 +628,11 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("XWindow","OnMouseEnter")
 	SaveOrigFunc("XWindow","OnMouseLeft")
 	SaveOrigFunc("XWindow","SetId")
-	-- removed in Garagin
-	if LuaRevision == 235636 then
-		SaveOrigFunc("MG_Colonists","GetProgress")
-		SaveOrigFunc("MG_Martianborn","GetProgress")
-	end
+--~ 	-- removed in Garagin
+--~ 	if LuaRevision == 235636 then
+--~ 		SaveOrigFunc("MG_Colonists","GetProgress")
+--~ 		SaveOrigFunc("MG_Martianborn","GetProgress")
+--~ 	end
 
 	local UserSettings = ChoGGi.UserSettings
 
@@ -792,25 +792,25 @@ function OnMsg.ClassesBuilt()
 		end
 	end -- do
 
-	-- removed in Garagin
-	if LuaRevision == 235636 then
-		local GetMissionSponsor = GetMissionSponsor
-		--some mission goals check colonist amounts
-		function MG_Colonists:GetProgress()
-			if ChoGGi.Temp.InstantMissionGoal then
-				return GetMissionSponsor().goal_target + 1
-			else
-				return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
-			end
-		end
-		function MG_Martianborn:GetProgress()
-			if ChoGGi.Temp.InstantMissionGoal then
-				return GetMissionSponsor().goal_target + 1
-			else
-				return ChoGGi_OrigFuncs.MG_Martianborn_GetProgress(self)
-			end
-		end
-	end
+--~ 	-- removed in Garagin
+--~ 	if LuaRevision == 235636 then
+--~ 		local GetMissionSponsor = GetMissionSponsor
+--~ 		--some mission goals check colonist amounts
+--~ 		function MG_Colonists:GetProgress()
+--~ 			if ChoGGi.Temp.InstantMissionGoal then
+--~ 				return GetMissionSponsor().goal_target + 1
+--~ 			else
+--~ 				return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
+--~ 			end
+--~ 		end
+--~ 		function MG_Martianborn:GetProgress()
+--~ 			if ChoGGi.Temp.InstantMissionGoal then
+--~ 				return GetMissionSponsor().goal_target + 1
+--~ 			else
+--~ 				return ChoGGi_OrigFuncs.MG_Martianborn_GetProgress(self)
+--~ 			end
+--~ 		end
+--~ 	end
 
 	-- keep prod at saved values for grid producers (air/water/elec)
 	function SupplyGridElement:SetProduction(new_production, new_throttled_production, update, ...)
@@ -940,7 +940,6 @@ function OnMsg.ClassesBuilt()
 		local infopanel_list = {
 			ipBuilding = true,
 			ipColonist = true,
---~ 			ipConstruction = true,
 			ipDrone = true,
 			ipRover = true,
 		}
@@ -1016,17 +1015,17 @@ function OnMsg.ClassesBuilt()
 					elseif not UserSettings.ScrollSelection then
 						if title == 27--[[Cheats--]] then
 
-							local expandthread
-							section.OnMouseEnter = function()
-								DeleteThread(expandthread)
-								content:SetMaxHeight()
-							end
-							section.OnMouseLeft = function()
-								expandthread = CreateRealTimeThread(function()
-									Sleep(UserSettings.CheatsInfoPanelHideDelay or 1500)
-									content:SetMaxHeight(0)
-								end)
-							end
+--~ 							local expandthread
+--~ 							section.OnMouseEnter = function()
+--~ 								DeleteThread(expandthread)
+--~ 								content:SetMaxHeight()
+--~ 							end
+--~ 							section.OnMouseLeft = function()
+--~ 								expandthread = CreateRealTimeThread(function()
+--~ 									Sleep(UserSettings.CheatsInfoPanelHideDelay or 1500)
+--~ 									content:SetMaxHeight(0)
+--~ 								end)
+--~ 							end
 
 						elseif title == 235--[[Traits--]] or title == 702480492408--[[Residents--]] then
 

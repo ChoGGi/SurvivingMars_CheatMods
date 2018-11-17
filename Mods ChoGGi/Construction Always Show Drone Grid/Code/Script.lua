@@ -1,6 +1,7 @@
 
 -- local whatever globals we call
 local ShowHexRanges = ShowHexRanges
+local HideHexRanges = HideHexRanges
 local IsKindOf = IsKindOf
 local pairs = pairs
 local green = green

@@ -15,6 +15,11 @@ There is a ModItem version of this, but it isn't in the mod editor for some reas
 
 This is a copy n paste of an in-game scheme (it's for modders that want to make their own).
 
+Convert the numbers with ColorizationMaterialDecode(NUMBER), this will return three numbers:
+a value you can use with GetRGB(value), roughness value, metallic value
+to convert back into the proper number use ColorizationMaterialEncode(RGB(22,36,50), rough, met)
+You can use my Change Object Colour mod to test out the values.
+
 Direct download: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Example%20Colour%20Scheme
 Built-in ones: https://github.com/HaemimontGames/SurvivingMars/blob/master/Data/ColonyColorScheme.lua]],
 })

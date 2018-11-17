@@ -161,7 +161,8 @@ do -- RetName
 
 		local obj_type = type(obj)
 
-		if obj_type == "table" and obj.__index then
+--~ 		if obj_type == "table" and obj.__index then
+		if obj_type == "table" then
 			-- we check in order of less generic "names"
 
 			local name_type = type(obj.name)
