@@ -110,7 +110,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		list[#list+1] = PlaceObj("XTemplateTemplate", {
 			"__template", "sectionCheats",
 		})
-		-- and the new deposits added
+		-- new deposits added
 		list = XTemplates.ipEffectDeposit[1]
 		ChoGGi.ComFuncs.RemoveXTemplateSections(list,"__template","sectionCheats")
 		list[#list+1] = PlaceObj("XTemplateTemplate", {
@@ -123,21 +123,14 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 			"__template", "sectionCheats",
 		})
 
-
 		XTemplates.sectionCheats[1].__condition = function(parent, context)
-			-- no sense in doing anything without cheats pane enabled, and there's not cheats for res overview
+			-- no sense in doing anything without cheats pane enabled, and there's no cheats for res overview
 			if not config.BuildingInfopanelCheats or context:IsKindOf("ResourceOverview") then
 				return false
 			end
 			return context:CreateCheatActions(parent)
 		end
 
---~ 		if not ChoGGi.UserSettings.ScrollSelection then
---~ 			-- limit height of cheats pane and others in the selection panel
---~ 			XTemplates.sectionCheats[1][1].Clip = true
---~ 			XTemplates.sectionCheats[1][1].MaxHeight = 0
---~ 			XTemplates.sectionResidence[1][1].MaxHeight = 256
---~ 		end
 		-- add rollovers to cheats toolbar
 		XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"
 

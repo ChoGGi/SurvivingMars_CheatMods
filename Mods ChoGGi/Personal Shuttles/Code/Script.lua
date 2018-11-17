@@ -45,9 +45,9 @@ end
 
 PersonalShuttles = {
 	time_limit = const.Scale.sols * 4,
-	attacker_color1 = -9624026,
+	attacker_color1 = -2031616,
 	attacker_color2 = -16777216,
-	attacker_color3 = -13892861,
+	attacker_color3 = -9043968,
 	friend_colour1 = -16711941,
 	friend_colour2 = -16760065,
 	friend_colour3 = -1,
@@ -96,6 +96,11 @@ end
 
 -- meteor targeting
 function PersonalShuttle:GameInit()
+	CargoShuttle.GameInit(self)
+
+	-- gagarin likes it dark
+	self:SetColorModifier(-1)
+
 	local ps = PersonalShuttles
 
 	-- if it's an attack shuttle
@@ -113,7 +118,6 @@ function PersonalShuttle:GameInit()
 		end)
 	end
 
-	return CargoShuttle.GameInit(self)
 end
 
 -- gets rid of error in log

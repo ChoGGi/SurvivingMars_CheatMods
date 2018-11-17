@@ -1698,7 +1698,7 @@ do -- Rebuildshortcuts
 				ActionName = name,
 				ActionId = name,
 				OnAction = function()
-					ChoGGi.UserSettings.DisableECM = not ChoGGi.UserSettings.DisableECM
+					ChoGGi.UserSettings.DisableECM = false
 					ChoGGi.SettingFuncs.WriteSettings()
 					MsgPopup(
 						302535920001070--[[Restart to take effect.--]],
