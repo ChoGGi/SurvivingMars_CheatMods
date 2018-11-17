@@ -14,6 +14,6 @@ return PlaceObj("ModDef", {
 How they did the palettes means lots of sharing, so tradeoffs ensured.
 
 Make your own colour scheme:
-Example mod: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Custom%20Colour%20Scheme
+Example mod: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Example%20Colour%20Scheme
 Built-in ones: https://github.com/HaemimontGames/SurvivingMars/blob/master/Data/ColonyColorScheme.lua]],
 })
