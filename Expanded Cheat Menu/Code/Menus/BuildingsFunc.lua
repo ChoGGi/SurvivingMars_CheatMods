@@ -636,7 +636,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.UnlockLockedBuildings()
 		local ItemList = {}
-		for id,bld in pairs(BuildingTemplates or {}) do
+		for id,bld in pairs(BuildingTemplates) do
 			if not GetBuildingTechsStatus(id) then
 				ItemList[#ItemList+1] = {
 					text = Trans(bld.display_name),
@@ -1512,7 +1512,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	local function SetWonders(bool)
-		for _,bld in pairs(BuildingTemplates or {}) do
+		for _,bld in pairs(BuildingTemplates) do
 			if bld.group == "Wonders" then
 				bld.wonder = bool
 			end
@@ -1563,18 +1563,43 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
 		local ChoGGi = ChoGGi
+
+		local bc = BuildCategories
+		if not table.find(bc,"id","HiddenX") then
+			bc[#bc+1] = {
+				id = "HiddenX",
+				name = S[1000155--[[Hidden--]]],
+				image = "UI/Icons/bmc_placeholder.tga",
+				highlight = "UI/Icons/bmc_placeholder_shine.tga",
+			}
+		end
+
 		if ChoGGi.UserSettings.Building_hide_from_build_menu then
 			ChoGGi.UserSettings.Building_hide_from_build_menu = nil
-			for _,bld in pairs(BuildingTemplates or {}) do
+			for _,bld in pairs(BuildingTemplates) do
+				if type(bld.hide_from_build_menu_ChoGGi) ~= "nil" then
+					bld.hide_from_build_menu = bld.hide_from_build_menu_ChoGGi
+					bld.hide_from_build_menu_ChoGGi = nil
+				end
 				if bld.group == "Hidden" then
 					bld.build_category = "Hidden"
 				end
 			end
 		else
 			ChoGGi.UserSettings.Building_hide_from_build_menu = true
-			for _,bld in pairs(BuildingTemplates or {}) do
-				bld.hide_from_build_menu = false
-				if bld.group == "Hidden" then
+			for _,value in pairs(BuildMenuPrerequisiteOverrides) do
+				if value == "hide" then
+					value = true
+				end
+			end
+			BuildMenuPrerequisiteOverrides.StorageMysteryResource = true
+			BuildMenuPrerequisiteOverrides.MechanizedDepotMysteryResource = true
+			for _,bld in pairs(BuildingTemplates) do
+				if bld.id ~= "LifesupportSwitch" and bld.id ~= "ElectricitySwitch" then
+					bld.hide_from_build_menu_ChoGGi = bld.hide_from_build_menu
+					bld.hide_from_build_menu = false
+				end
+				if bld.group == "Hidden" and bld.id ~= "RocketLandingSite" and bld.id ~= "ForeignTradeRocket" then
 					bld.build_category = "HiddenX"
 				end
 			end
@@ -1582,12 +1607,15 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000162--[[%s: Hidden Buildings
-	(restart to set disabled)--]]]:format(ChoGGi.UserSettings.Building_hide_from_build_menu),
+			ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.Building_hide_from_build_menu,
+				302535920000224--[[Show Hidden Buildings--]]
+			),
 			3980--[[Buildings--]],
 			"UI/Icons/Sections/theory_1.tga"
 		)
 	end
+
 
 	function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
 		local ChoGGi = ChoGGi

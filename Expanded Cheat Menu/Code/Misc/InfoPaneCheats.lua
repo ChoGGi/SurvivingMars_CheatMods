@@ -3,6 +3,9 @@
 -- add items/hint to the cheats pane
 
 local StringFormat = string.format
+local TableFind = table.find
+local DeleteThread = DeleteThread
+local CreateRealTimeThread = CreateRealTimeThread
 
 local RetName
 local Random
@@ -37,8 +40,36 @@ function OnMsg.ClassesGenerate()
 		action.RolloverText = hint
 		action.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
 	end
+	local function SetIcon(action,name,icon)
+		-- we're changing the name so we'll set the hint title to the orig
+		action.RolloverTitle = action.ActionName
+		action.ActionName = name or "\0"
+		action.ActionIcon = icon
+	end
 
-	function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
+	-- sets the scale of the cheats icons
+	local cheats_rollover_data = T{331402867293, "<CheatsRollover>"}
+	local function ScaleIcons(section)
+		Sleep(1)
+		local idx = TableFind(section,"RolloverText",cheats_rollover_data)
+		if idx then
+			section = section[idx].idContent
+			section = section[TableFind(section,"class","XToolBar")]
+			for i = 1, #section do
+				section[i].idIcon:SetMaxHeight(30)
+				section[i].idIcon:SetMaxWidth(30)
+				section[i].idIcon:SetImageFit("largest")
+--~ 				section[i].idIcon:SetColumns(2)
+			end
+		end
+	end
+--~ 	SetIcon(action,nil,"UI/Icons/res_fuel.tga")
+
+	local cheats_thread
+	function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win,section)
+		DeleteThread(cheats_thread)
+		cheats_thread = CreateRealTimeThread(ScaleIcons,section)
+
 		local obj = win.context
 		local name = RetName(obj)
 		local id = obj.template_name
@@ -61,6 +92,7 @@ function OnMsg.ClassesGenerate()
 				SetHint(action,S[302535920001202--[[Fill all stat bars.--]]])
 			elseif action.ActionId == "SpawnColonist" then
 				SetHint(action,S[302535920000005--[[Drops a new colonist in selected dome.--]]])
+				SetIcon(action,nil,"UI/Icons/ColonyControlCenter/colonist_on.tga")
 			elseif action.ActionId == "PrefDbl" then
 				SetHint(action,S[302535920001203--[[Double %s's performance.--]]]:format(name))
 			elseif action.ActionId == "PrefDef" then
@@ -82,9 +114,17 @@ function OnMsg.ClassesGenerate()
 			elseif action.ActionId == "ColonistCapDef" then
 				SetHint(action,resetc)
 
+			elseif action.ActionId == "PowerFree" then
+				if obj.electricity_consumption then
+					SetHint(action,S[302535920001220--[[Change this %s so it doesn't need a power source.--]]]:format(name))
+					SetIcon(action,S[4325--[[Free--]]],"UI/Icons/res_electricity.tga")
+				else
+					action.ActionId = ""
+				end
 			elseif action.ActionId == "PowerNeed" then
 				if obj.electricity_consumption then
 					SetHint(action,S[302535920001221--[[Change this %s so it needs a power source.--]]]:format(name))
+					SetIcon(action,S[302535920000162--[[Need--]]],"UI/Icons/res_electricity.tga")
 				else
 					action.ActionId = ""
 				end
@@ -92,12 +132,14 @@ function OnMsg.ClassesGenerate()
 			elseif action.ActionId == "WaterFree" then
 				if obj.water_consumption then
 					SetHint(action,S[302535920000853--[[Change this %s so it doesn't need a water source.--]]]:format(name))
+					SetIcon(action,S[4325--[[Free--]]],"UI/Icons/res_water.tga")
 				else
 					action.ActionId = ""
 				end
 			elseif action.ActionId == "WaterNeed" then
 				if obj.water_consumption then
 					SetHint(action,S[302535920001247--[[Change this %s so it needs a water source.--]]]:format(name))
+					SetIcon(action,S[302535920000162--[[Need--]]],"UI/Icons/res_water.tga")
 				else
 					action.ActionId = ""
 				end
@@ -105,12 +147,14 @@ function OnMsg.ClassesGenerate()
 			elseif action.ActionId == "OxygenFree" then
 				if obj.air_consumption then
 					SetHint(action,S[302535920001248--[[Change this %s so it doesn't need a oxygen source.--]]]:format(name))
+					SetIcon(action,S[4325--[[Free--]]],"UI/Icons/res_oxygen.tga")
 				else
 					action.ActionId = ""
 				end
 			elseif action.ActionId == "OxygenNeed" then
 				if obj.air_consumption then
 					SetHint(action,S[302535920001249--[[Change this %s so it needs a oxygen source.--]]]:format(name))
+					SetIcon(action,S[302535920000162--[[Need--]]],"UI/Icons/res_oxygen.tga")
 				else
 					action.ActionId = ""
 				end
@@ -120,7 +164,8 @@ function OnMsg.ClassesGenerate()
 				if tempname ~= "" then
 					SetHint(action,S[302535920001207--[["Add: %s to this building.
 
-	%s."--]]]:format(tempname,Trans(obj.upgrade1_description)))
+	%s."--]]]:format(tempname,Trans(T{obj.upgrade1_description,obj})))
+					SetIcon(action,1,obj.upgrade1_icon)
 				else
 					action.ActionId = ""
 				end
@@ -129,7 +174,8 @@ function OnMsg.ClassesGenerate()
 				if tempname ~= "" then
 					SetHint(action,S[302535920001207--[["Add: %s to this building.
 
-	%s."--]]]:format(tempname,Trans(obj.upgrade2_description)))
+	%s."--]]]:format(tempname,Trans(T{obj.upgrade2_description,obj})))
+					SetIcon(action,2,obj.upgrade2_icon)
 				else
 					action.ActionId = ""
 				end
@@ -138,7 +184,8 @@ function OnMsg.ClassesGenerate()
 				if tempname ~= "" then
 					SetHint(action,S[302535920001207--[["Add: %s to this building.
 
-	%s."--]]]:format(tempname,Trans(obj.upgrade3_description)))
+	%s."--]]]:format(tempname,Trans(T{obj.upgrade3_description,obj})))
+					SetIcon(action,3,obj.upgrade2_icon)
 				else
 					action.ActionId = ""
 				end
@@ -172,25 +219,31 @@ function OnMsg.ClassesGenerate()
 				SetHint(action,S[302535920001217--[[Double the shuttles this ShuttleHub can control.--]]])
 			elseif action.ActionId == "FindResource" then
 				SetHint(action,S[302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).--]]])
+				SetIcon(action,nil,"CommonAssets/UI/Menu/EV_OpenFirst.tga")
 
 	--Misc
 			elseif action.ActionId == "Scan" then
 				SetHint(action,S[979029137252--[[Scanned an Anomaly--]]])
+				SetIcon(action,nil,"UI/Icons/pin_scan.tga")
+
 			elseif action.ActionId == "Examine" then
 				SetHint(action,S[302535920001277--[[Open %s in the Object Examiner.--]]]:format(name))
-			elseif action.ActionId == "Fuel" then
+				SetIcon(action,nil,StringFormat("%sUI/TheIncal.png",ChoGGi.LibraryPath))
+
+			elseif action.ActionId == "AddFuel" then
 				SetHint(action,S[302535920001053--[[Fill up %s with fuel.--]]]:format(name))
+				SetIcon(action,nil,"UI/Icons/res_fuel.tga")
 
 			elseif action.ActionId == "DeleteObject" then
 				SetHint(action,S[302535920000885--[[Permanently delete %s--]]]:format(name))
+				SetIcon(action,nil,"UI/Icons/Sections/warning.tga")
 
 			elseif action.ActionId == "Malfunction" then
-				SetHint(action,StringFormat("%s...\n%s?",S[8039--[[Trait: Idiot (can cause a malfunction)--]]],S[53--[[Malfunction--]]]))
-			elseif action.ActionId == "PowerFree" then
-				if obj.electricity_consumption then
-					SetHint(action,S[302535920001220--[[Change this %s so it doesn't need a power source.--]]]:format(name))
-				else
+				if obj.destroyed or obj.is_malfunctioned then
 					action.ActionId = ""
+				else
+					SetHint(action,StringFormat("%s...\n%s?",S[8039--[[Trait: Idiot (can cause a malfunction)--]]],S[53--[[Malfunction--]]]))
+					SetIcon(action,nil,"UI/Icons/Notifications/dust_storm_2.tga")
 				end
 
 			elseif action.ActionId == "HideSigns" then
@@ -217,6 +270,7 @@ function OnMsg.ClassesGenerate()
 					action.ActionId = ""
 				else
 					SetHint(action,S[302535920001225--[[Add visual dust and maintenance points.--]]])
+					SetIcon(action,nil,"UI/Icons/Notifications/dust_storm.tga")
 				end
 			elseif action.ActionId == "CleanAndFix" then
 				if obj:IsKindOfClasses("SupplyRocket","UniversalStorageDepot","WasteRockDumpSite") then
@@ -225,10 +279,11 @@ function OnMsg.ClassesGenerate()
 					SetHint(action,S[302535920001226--[[You may need to use AddDust before using this to change the building visually.--]]])
 				end
 			elseif action.ActionId == "Destroy" then
-				if obj:IsKindOf("SupplyRocket") then
+				if obj:IsKindOf("SupplyRocket") or obj.destroyed then
 					action.ActionId = ""
 				else
 					SetHint(action,S[302535920001227--[[Turns object into ruin.--]]])
+					SetIcon(action,nil,"UI/Icons/IPButtons/demolition.tga")
 				end
 			elseif action.ActionId == "Empty" then
 				if obj:IsKindOf("SubsurfaceAnomaly") then
@@ -252,6 +307,9 @@ function OnMsg.ClassesGenerate()
 				SetHint(action,S[302535920001232--[[Fill the storage of this building.--]]])
 			elseif action.ActionId == "Launch" then
 				SetHint(action,StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920001233--[[Launches rocket without asking.--]]]))
+				SetIcon(action,nil,"UI/Icons/ColonyControlCenter/rocket_r.tga")
+--~ 				SetIcon(action,nil,"UI/Achievements/YouCantTakeTheSkyFromMe.tga")
+
 			elseif action.ActionId == "DoubleMaxAmount" then
 				if obj:IsKindOf("SubsurfaceAnomaly") then
 					action.ActionId = nil
@@ -275,13 +333,33 @@ local Colonist = Colonist
 local Workplace = Workplace
 
 --~	 global objects
-function SupplyRocket:CheatFuel()
-	local total = self.refuel_request:GetTargetAmount()
-	self.accumulated_fuel = total
-	self.refuel_request:SetAmount(total)
-	Msg("RocketRefueled", self)
-	RebuildInfopanel(self)
+function Object:CheatDeleteObject()
+	local ChoGGi = ChoGGi
+	local name = RetName(self)
+	local function CallBackFunc(answer)
+		if answer then
+			ChoGGi.ComFuncs.DeleteObject(self)
+			SelectObj()
+		end
+	end
+	ChoGGi.ComFuncs.QuestionBox(
+		StringFormat("%s!\n%s?",S[6779--[[Warning--]]],S[302535920000885--[[Permanently delete %s?--]]]:format(name)),
+		CallBackFunc,
+		StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]]),
+		StringFormat("%s: %s",S[5451--[[DELETE--]]],name),
+		StringFormat("%s %s",S[6879--[[Cancel--]]],S[1000615--[[Delete--]]])
+	)
 end
+function Object:CheatHideSigns()
+	self:DestroyAttaches("BuildingSign")
+end
+function Object:CheatColourRandom()
+	ChoGGi.ComFuncs.ObjectColourRandom(self)
+end
+function Object:CheatColourDefault()
+	ChoGGi.ComFuncs.ObjectColourDefault(self)
+end
+
 function Building:CheatDestroy()
 	local ChoGGi = ChoGGi
 	local name = RetName(self)
@@ -317,29 +395,12 @@ function Building:CheatDestroy()
 		S[1176--[[Cancel Destroy--]]]
 	)
 end
-function Object:CheatDeleteObject()
-	local ChoGGi = ChoGGi
-	local name = RetName(self)
-	local function CallBackFunc(answer)
-		if answer then
-			ChoGGi.ComFuncs.DeleteObject(self)
-			SelectObj()
-		end
-	end
-	ChoGGi.ComFuncs.QuestionBox(
-		StringFormat("%s!\n%s?",S[6779--[[Warning--]]],S[302535920000885--[[Permanently delete %s?--]]]:format(name)),
-		CallBackFunc,
-		StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]]),
-		StringFormat("%s: %s",S[5451--[[DELETE--]]],name),
-		StringFormat("%s %s",S[6879--[[Cancel--]]],S[1000615--[[Delete--]]])
-	)
-end
-
 
 -- consumption
 function Building:CheatPowerFree()
 	ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
 end
+
 function Building:CheatPowerNeed()
 	ChoGGi.ComFuncs.AddBuildingElecConsump(self)
 end
@@ -357,17 +418,6 @@ end
 function Building:CheatOxygenNeed()
 	ChoGGi.ComFuncs.AddBuildingAirConsump(self)
 end
---~
-function Object:CheatHideSigns()
-	self:DestroyAttaches("BuildingSign")
-end
-function Object:CheatColourRandom()
-	ChoGGi.ComFuncs.ObjectColourRandom(self)
-end
-function Object:CheatColourDefault()
-	ChoGGi.ComFuncs.ObjectColourDefault(self)
-end
-
 --colonists
 function Colonist:CheatFillMorale()
 	self.stat_morale = 100 * ResourceScale
@@ -419,7 +469,7 @@ end
 function Colonist:CheatRandomAge()
 	ChoGGi.ComFuncs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[Random(1,#ChoGGi.Tables.ColonistAges)])
 end
---CheatAllShifts
+-- CheatAllShifts
 local function CheatAllShiftsOn(self)
 	self.closed_shifts[1] = false
 	self.closed_shifts[2] = false
@@ -510,7 +560,7 @@ function OxygenTank:CheatCapDef()
 	ChoGGi.ComFuncs.ToggleWorking(self)
 end
 --
---CheatCapDbl people
+-- CheatCapDbl people
 function Residence:CheatColonistCapDbl()
 	if self.capacity == 4096 then
 		return
@@ -521,7 +571,7 @@ function Residence:CheatColonistCapDef()
 	self.capacity = self.base_capacity
 end
 
---CheatVisitorsDbl
+-- CheatVisitorsDbl
 function Service:CheatVisitorsDbl()
 	if self.max_visitors == 4096 then
 		return
@@ -532,7 +582,7 @@ function Service:CheatVisitorsDef()
 	self.max_visitors = self.base_max_visitors
 end
 
---Double Shuttles
+-- Double Shuttles
 function ShuttleHub:CheatMaxShuttlesDbl()
 	self.max_shuttles = self.max_shuttles * 2
 end
@@ -553,7 +603,7 @@ function Drone:CheatBattRefill()
 	self.battery = self.battery_max
 end
 
---CheatMoveSpeedDbl
+-- CheatMoveSpeedDbl
 local function CheatMoveSpeedDbl(self)
 	self:SetMoveSpeed(self:GetMoveSpeed() * 2)
 end
@@ -564,7 +614,7 @@ Drone.CheatMoveSpeedDbl = CheatMoveSpeedDbl
 Drone.CheatMoveSpeedDef = CheatMoveSpeedDef
 BaseRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
 BaseRover.CheatMoveSpeedDef = CheatMoveSpeedDef
---CheatCleanAndFix
+-- CheatCleanAndFix
 Drone.CheatCleanAndFix = function(self)
 	self:CheatMalfunction()
 	CreateRealTimeThread(function()
@@ -590,7 +640,7 @@ BaseRover.CheatCleanAndFix = function(self)
 		self:Repair()
  end)
 end
---misc
+-- misc
 function SecurityStation:CheatReneagadeCapDbl()
 	self.negated_renegades = self.negated_renegades * 2
 end
@@ -607,3 +657,15 @@ end
 function SupplyRocket:CheatCapDef()
 	ChoGGi.ComFuncs.SetTaskReqAmount(self,self.base_max_export_storage,"export_requests","max_export_storage")
 end
+function SupplyRocket:CheatAddFuel()
+	local total = self.refuel_request:GetTargetAmount()
+	self.accumulated_fuel = total
+	self.refuel_request:SetAmount(total)
+	Msg("RocketRefueled", self)
+	RebuildInfopanel(self)
+end
+
+function Sinkhole:CheatSpawnFirefly()
+	self:TestSpawnFireflyAndGo()
+end
+

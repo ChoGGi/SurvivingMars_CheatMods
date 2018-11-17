@@ -10,9 +10,15 @@
 
 ### Changed:
 - Change Amount of Drones in Hub: Now works with any drone controller (also changed Dismantle to Pack Drones).
+- Prefab Buildings now lists almost all buildings.
+- Cheats panel:
+- > Added some icons to it (suggestions welcome).
+- > Stopped it from being hidden on mouseover (causes flicker and they resize the panel anyways).
 
 ### Fixed:
 - Examine was showing certain associative tables as 0 length instead of Data.
+- Instant Mission Goals now works with the list of goals (you can pick which you want to pass).
+- Hidden Buildings didn't work (messed up build menu).
 
 ## v10.7 (16 Nov 2018)
 ### Added:

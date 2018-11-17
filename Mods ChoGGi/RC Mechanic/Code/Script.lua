@@ -1,31 +1,27 @@
 -- See LICENSE for terms
 
-local LICENSE = [[Any code from https://github.com/HaemimontGames/SurvivingMars is copyright by their LICENSE
+-- tell people how to get my library mod (if needs be)
+local fire_once
+function OnMsg.ModsReloaded()
+	if fire_once then
+		return
+	end
+	fire_once = true
 
-All of my code is licensed under the MIT License as follows:
+	-- version to version check with
+	local min_version = 34
+	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
-MIT License
-
-Copyright (c) [2018] [ChoGGi]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.]]
-
+	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
+	if not idx or idx and not Platform.steam and min_version > ModsLoaded[idx].version then
+		CreateRealTimeThread(function()
+			if WaitMarsQuestion(nil,"Error",string.format([[RC Mechanic requires ChoGGi's Library (at least v%s).
+Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_version)) == "ok" then
+				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
+			end
+		end)
+	end
+end
 
 local name = [[RC Mechanic]]
 local description = [[Give me your tired, your poor,
@@ -200,20 +196,16 @@ function OnMsg.ClassesPostprocess()
 	end
 end
 
+-- add some prod info to selection panel
 function OnMsg.ClassesBuilt()
-	-- add some prod info to selection panel
 	local rover = XTemplates.ipRover[1]
-	-- check for and remove existing template
-	local idx = table.find(rover, "ChoGGi_Template_RCMechanic_Prod", true)
-	if idx then
-		rover[idx]:delete()
-		table.remove(rover,idx)
-	end
 
-	-- replace status
+	-- check for and remove existing template
+	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCMechanic_Prod",true)
+
+	-- we replace status
 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
 	if status then
---~ 		status = status
 		rover[status]:delete()
 		table.remove(rover,status)
 	else

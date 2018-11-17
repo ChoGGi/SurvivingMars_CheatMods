@@ -2,7 +2,7 @@
 
 function OnMsg.ClassesGenerate()
 
---~ 	local Trans = ChoGGi.ComFuncs.Translate
+	local Trans = ChoGGi.ComFuncs.Translate
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local S = ChoGGi.Strings
 
@@ -95,28 +95,34 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.AddPrefabs()
+		local UICity = UICity
+
+		local hint_str = "%s: %s"
+		local drone_str = Trans(Drone.display_name)
+
 		local ItemList = {
-			{text = "Drone",value = 10},
---~ 			{text = "DroneHub",value = 10},
---~ 			{text = "ElectronicsFactory",value = 10},
---~ 			{text = "FuelFactory",value = 10},
---~ 			{text = "MachinePartsFactory",value = 10},
---~ 			{text = "MoistureVaporator",value = 10},
---~ 			{text = "PolymerPlant",value = 10},
---~ 			{text = "StirlingGenerator",value = 10},
---~ 			{text = "WaterReclamationSystem",value = 10},
---~ 			{text = "Arcology",value = 10},
---~ 			{text = "Sanatorium",value = 10},
---~ 			{text = "NetworkNode",value = 10},
---~ 			{text = "MedicalCenter",value = 10},
---~ 			{text = "HangingGardens",value = 10},
---~ 			{text = "CloningVat",value = 10},
+			{
+				text = drone_str,
+				value = 10,
+				hint = hint_str:format(S[302535920000106--[[Current--]]],UICity.drone_prefabs),
+				icon = Drone.display_icon,
+			},
 		}
+
 		local c = #ItemList
-		for id,cargo in pairs(CargoPreset) do
-			if cargo.group == "Prefabs" then
+		local show_hidden = ChoGGi.UserSettings.Building_hide_from_build_menu
+
+		for id,cargo in pairs(BuildingTemplates) do
+			-- baclcube is instant, instant doesn't need prefabs, and hidden normally don't show up
+			if id ~= "BlackCubeDumpSite" and not cargo.instant_build and (cargo.group ~= "Hidden" or cargo.group == "Hidden" and show_hidden) then
 				c = c + 1
-				ItemList[c] = {text = id,value = 10}
+				ItemList[c] = {
+					text = Trans(cargo.display_name),
+					value = 10,
+					hint = hint_str:format(S[302535920000106--[[Current--]]],UICity:GetPrefabs(id)),
+					icon = cargo.display_icon,
+					id = id,
+				}
 			end
 		end
 
@@ -124,22 +130,25 @@ function OnMsg.ClassesGenerate()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
-			local text = choice[1].text
+			for i = 1, #choice do
+				local value = choice[i].value
+				local text = choice[i].text
 
-			if type(value) == "number" then
-				if text == "Drone" then
-					UICity.drone_prefabs = UICity.drone_prefabs + value
-				else
-					UICity:AddPrefabs(text,value)
+				if type(value) == "number" then
+					if text == drone_str then
+						UICity.drone_prefabs = UICity.drone_prefabs + value
+					else
+						UICity:AddPrefabs(choice[i].id,value,false)
+					end
 				end
-				RefreshXBuildMenu()
-				MsgPopup(
-					S[302535920001191--[[%s %s prefabs have been added.--]]]:format(value,text),
-					1110--[[Prefab Buildings--]],
-					default_icon
-				)
 			end
+			MsgPopup(
+				S[302535920001191--[[Added prefabs to %s buildings.--]]]:format(#choice),
+				1110--[[Prefab Buildings--]],
+				default_icon
+			)
+			-- if the build menu is opened and they add some prefabs it won't use them till it's toggled, so we do this instead
+			ChoGGi.ComFuncs.UpdateBuildMenu()
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
@@ -148,6 +157,7 @@ function OnMsg.ClassesGenerate()
 			title = 1110--[[Prefab Buildings--]],
 			hint = 302535920001194--[[Use edit box to enter amount of prefabs to add.--]],
 			custom_type = 3,
+			multisel = true,
 		}
 	end
 

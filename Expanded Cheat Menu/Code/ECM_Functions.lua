@@ -156,24 +156,26 @@ function OnMsg.ClassesGenerate()
 		local pack_params = pack_params
 		local tostring = tostring
 
+		-- every 5s check buffer and print if anything
+		local timer = ChoGGi.testing and 2500 or 5000
 		-- we always start off with a newline so the first line or so isn't merged
 		local buffer_table = {"\r\n"}
 		local buffer_cnt = 1
-		-- don't want to start more than one inf loop
-		if not rawget(_G,"ChoGGi_print_buffer_thread") then
-			-- every 5s check buffer and print if anything
-			ChoGGi_print_buffer_thread = CreateRealTimeThread(function()
-				while true do
-					Sleep(5000)
-					if #buffer_table > 1 then
-						Dump(TableConcat(buffer_table,"\r\n"),nil,"ConsoleLog","log",true)
-						TableIClear(buffer_table)
-						buffer_table[1] = "\r\n"
-						buffer_cnt = 1
-					end
-				end
-			end)
+
+		if rawget(_G,"ChoGGi_print_buffer_thread") then
+			DeleteThread(ChoGGi_print_buffer_thread)
 		end
+		ChoGGi_print_buffer_thread = CreateRealTimeThread(function()
+			while true do
+				Sleep(timer)
+				if buffer_cnt > 1 then
+					Dump(TableConcat(buffer_table,"\r\n"),nil,"Console","log",true)
+					TableIClear(buffer_table)
+					buffer_table[1] = "\r\n"
+					buffer_cnt = 1
+				end
+			end
+		end)
 
 		local function ReplaceFunc(funcname)
 			SaveOrigFunc(funcname)
@@ -215,18 +217,19 @@ function OnMsg.ClassesGenerate()
 
 			if which then
 				-- move old log to previous and add a blank log
-				AsyncCopyFile("AppData/logs/ConsoleLog.log","AppData/logs/ConsoleLog.previous.log","raw")
-				AsyncStringToFile("AppData/logs/ConsoleLog.log"," ")
+				AsyncCopyFile("AppData/logs/Console.log","AppData/logs/Console.previous.log","raw")
+				AsyncStringToFile("AppData/logs/Console.log"," ")
 
 				-- redirect functions
 				ReplaceFunc("dlc_print")
 				ReplaceFunc("DebugPrintNL")
 				ReplaceFunc("OutputDebugString")
 				ReplaceFunc("AddConsoleLog")
---~ 				ReplaceFunc("print")
 				ReplaceFunc("assert")
 				ReplaceFunc("printf")
 				ReplaceFunc("error")
+				-- AddConsoleLog also does print(), no need for two copies
+--~ 				ReplaceFunc("print")
 				-- causes an error and stops games from loading
 				-- ReplaceFunc("DebugPrint")
 			else
@@ -234,10 +237,10 @@ function OnMsg.ClassesGenerate()
 				ResetFunc("DebugPrintNL")
 				ResetFunc("OutputDebugString")
 				ResetFunc("AddConsoleLog")
---~ 				ResetFunc("print")
 				ResetFunc("assert")
 				ResetFunc("printf")
 				ResetFunc("error")
+--~ 				ResetFunc("print")
 			end
 		end
 	end -- do

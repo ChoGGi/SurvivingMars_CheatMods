@@ -412,7 +412,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.Building_hide_from_build_menu,
-				302535920000225--[[Show hidden buildings (restart game to toggle).--]]
+				302535920000225--[[Show hidden buildings in build menu.--]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle,

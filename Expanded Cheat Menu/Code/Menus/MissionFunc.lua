@@ -46,28 +46,79 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	function ChoGGi.MenuFuncs.InstantMissionGoal()
-		local UICity = UICity
+	function ChoGGi.MenuFuncs.InstantMissionGoals()
+		local T = T
+		local GetGoalDescription = GetGoalDescription
+		local SponsorGoalsMap = SponsorGoalsMap
+		local SponsorGoalProgress = SponsorGoalProgress
 
-		local goal = UICity.mission_goal
-		local target = GetMissionSponsor().goal_target + 1
-		-- different goals use different targets, we'll just set them all
-		goal.analyzed = target
-		goal.amount = target
-		goal.researched = target
-		goal.colony_approval_sol = UICity.day
-		ChoGGi.Temp.InstantMissionGoal = true
-		MsgPopup(
-			302535920001158--[[Mission goal--]],
-			1635--[[Mission--]],
-			default_icon
-		)
+		local ItemList = {}
+		local sponsor = GetMissionSponsor()
+		local text_str = "%s %s"
+		local goal_str = "sponsor_goal_%s"
+		local image_str = "goal_image_%s"
+		local reward_str = "reward_effect_%s"
+		local hint_str = "<image %s>\n\n%s: %s\n%s %s"
+
+		for i = 1, 5 do
+			-- no sense in showing done ones
+			if not SponsorGoalProgress[i].state then
+				local reward = sponsor[reward_str:format(i)]
+				ItemList[#ItemList+1] = {
+					text = text_str:format(i,sponsor[goal_str:format(i)]),
+					value = i,
+					hint = hint_str:format(
+						sponsor[image_str:format(i)],
+						S[302535920001409--[[Goal--]]],
+						Trans(GetGoalDescription(sponsor, i)),
+						S[128569337702--[[Reward:--]]],
+						Trans(T{reward.Description, reward})
+					),
+					reward = reward,
+					goal = SponsorGoalsMap[sponsor[goal_str:format(i)]],
+				}
+			end
+		end
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+			for i = 1, #choice do
+				local goalprog = SponsorGoalProgress[choice[i].value]
+				-- you weiner
+				goalprog.state = GameTime()
+				goalprog.progress = goalprog.target
+
+				local reward = choice[i].reward
+				local goal = choice[i].goal
+				-- stuff from City:SetGoals()
+				reward:Execute()
+				AddOnScreenNotification("GoalCompleted", OpenMissionProfileDlg, {reward_description = T{reward.Description, reward}, context = context, rollover_title = T{4773, "<em>Goal:</em> "}, rollover_text = goal.description})
+				Msg("GoalComplete", goal)
+				if AreAllSponsorGoalsCompleted() then
+					Msg("MissionEvaluationDone")
+				end
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = 302535920000704--[[Instant Mission Goals--]],
+			multisel = true,
+		}
 	end
 
 	function ChoGGi.MenuFuncs.InstantColonyApproval()
 		CreateRealTimeThread(WaitPopupNotification, "ColonyViabilityExit_Delay")
 		Msg("ColonyApprovalPassed")
 		g_ColonyNotViableUntil = -1
+
+		MsgPopup(
+			"true",
+			302535920000706--[[Instant Colony Approval--]]
+		)
 	end
 
 	function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
