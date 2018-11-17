@@ -944,6 +944,33 @@ function OnMsg.ClassesBuilt()
 			ipRover = true,
 		}
 
+		local function SetToolbar(section,cls)
+			local toolbar = table.find(section.idContent,"class",cls)
+			toolbar = section.idContent[toolbar]
+			toolbar.FoldWhenHidden = true
+			toolbar:SetVisible()
+			return toolbar
+		end
+
+		local function ToggleVisSection(section,toolbar,toggle)
+			section.OnMouseEnter = function()
+				section.idHighlight:SetVisible(true)
+			end
+			section.OnMouseLeft = function()
+				section.idHighlight:SetVisible()
+			end
+
+			section.OnMouseButtonDown = function()
+				if toggle then
+					toolbar:SetVisible()
+					toggle = false
+				else
+					toolbar:SetVisible(true)
+					toggle = true
+				end
+			end
+		end
+
 		local function InfopanelDlgOpen(self)
 			local UserSettings = ChoGGi.UserSettings
 
@@ -1015,40 +1042,24 @@ function OnMsg.ClassesBuilt()
 					elseif not UserSettings.ScrollSelection then
 						if title == 27--[[Cheats--]] then
 
---~ 							local expandthread
---~ 							section.OnMouseEnter = function()
---~ 								DeleteThread(expandthread)
---~ 								content:SetMaxHeight()
---~ 							end
---~ 							section.OnMouseLeft = function()
---~ 								expandthread = CreateRealTimeThread(function()
---~ 									Sleep(UserSettings.CheatsInfoPanelHideDelay or 1500)
---~ 									content:SetMaxHeight(0)
---~ 								end)
---~ 							end
+							section.idIcon.FXMouseIn = "ActionButtonHover"
+							section.HandleMouse = true
+							section.MouseCursor = "UI/Cursors/Rollover.tga"
+							section.RolloverText = S[302535920001410--[[Toggle Visibility--]]]
+							local toolbar = SetToolbar(section,"XToolBar")
 
-						elseif title == 235--[[Traits--]] or title == 702480492408--[[Residents--]] then
-
-							if title == 702480492408 then
-								-- in certain situations the UI will flash if you make Clip = true, so we'll only set it if the cap has been changed
-								if self.context.capacity ~= self.context.base_capacity then
-									content.Clip = true
-								end
-							else
-								content.Clip = true
+							local toggle
+							ToggleVisSection(section,toolbar,toggle)
+							-- sets the scale of the cheats icons
+							for i = 1, #toolbar do
+								toolbar[i].idIcon:SetMaxHeight(30)
+								toolbar[i].idIcon:SetMaxWidth(30)
+								toolbar[i].idIcon:SetImageFit("largest")
 							end
 
-							local expandthread
-							section.OnMouseEnter = function()
-								DeleteThread(expandthread)
-								content:SetMaxHeight()
-							end
-							section.OnMouseLeft = function()
-								expandthread = CreateRealTimeThread(function()
-									Sleep(500)
-									content:SetMaxHeight(256)
-								end)
-							end
+						elseif title == 235--[[Traits--]] or (title == 702480492408--[[Residents--]] and self.context.capacity ~= self.context.base_capacity) then
+							local toggle
+							ToggleVisSection(section,SetToolbar(section,"XContextControl"),toggle)
 
 						end
 					end -- UserSettings.ScrollSelection
@@ -1060,9 +1071,9 @@ function OnMsg.ClassesBuilt()
 		-- the actual function
 		function InfopanelDlg:Open(...)
 			CreateRealTimeThread(function()
-				while not self.visible do
+				repeat
 					Sleep(10)
-				end
+				until self.visible
 				InfopanelDlgOpen(self)
 			end)
 

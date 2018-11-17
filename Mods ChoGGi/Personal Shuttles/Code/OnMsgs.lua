@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+local StringFormat = string.format
+local MapCount = MapCount
+local IsKindOf = IsKindOf
+
 local function SomeCode()
   local UICity = UICity
   if not UICity then
@@ -116,7 +120,6 @@ function OnMsg.ClassesBuilt()
 
 	local AddXTemplate = ChoGGi.ComFuncs.AddXTemplate
 	local RetName = ChoGGi.ComFuncs.RetName
-	local StringFormat = string.format
 --~ 	local S = ChoGGi.Strings
 
 	-- pick/drop button for shuttle
@@ -207,6 +210,11 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 
 	-- add mark for pickup buttons to certain resource piles
 	local res_table = {
+		__condition = function()
+			if MapCount("map","PersonalShuttle") > 1 then
+				return true
+			end
+		end,
 		RolloverTitle = [[Mark For Pickup]],
 		RolloverText = [[Change this to Pickup, keep mouse pointer nearby, and wait for shuttle.]],
 		OnContextUpdate = function(self, context)
@@ -237,10 +245,11 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 
 	res_table.__context_of_kind = "UniversalStorageDepot"
 	res_table.__condition = function(_, context)
-		-- make sure we can only pickup actual depots, not rockets or elevators...
-		return IsKindOf(context, "UniversalStorageDepot") and not context:IsKindOf("SupplyRocket") and not IsKindOf(context, "SpaceElevator")
+		if MapCount("map","PersonalShuttle") > 1 then
+			-- make sure we can only pickup actual depots, not rockets or elevators...
+			return IsKindOf(context, "UniversalStorageDepot") and not context:IsKindOf("SupplyRocket") and not IsKindOf(context, "SpaceElevator")
+		end
 	end
 	AddXTemplate("PersonalShuttles_UniversalStorageDepot","ipBuilding",res_table)
-
 
 end -- OnMsg

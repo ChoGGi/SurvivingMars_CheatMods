@@ -47,28 +47,8 @@ function OnMsg.ClassesGenerate()
 		action.ActionIcon = icon
 	end
 
-	-- sets the scale of the cheats icons
-	local cheats_rollover_data = T{331402867293, "<CheatsRollover>"}
-	local function ScaleIcons(section)
-		Sleep(1)
-		local idx = TableFind(section,"RolloverText",cheats_rollover_data)
-		if idx then
-			section = section[idx].idContent
-			section = section[TableFind(section,"class","XToolBar")]
-			for i = 1, #section do
-				section[i].idIcon:SetMaxHeight(30)
-				section[i].idIcon:SetMaxWidth(30)
-				section[i].idIcon:SetImageFit("largest")
---~ 				section[i].idIcon:SetColumns(2)
-			end
-		end
-	end
---~ 	SetIcon(action,nil,"UI/Icons/res_fuel.tga")
-
 	local cheats_thread
 	function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win,section)
-		DeleteThread(cheats_thread)
-		cheats_thread = CreateRealTimeThread(ScaleIcons,section)
 
 		local obj = win.context
 		local name = RetName(obj)
@@ -228,7 +208,7 @@ function OnMsg.ClassesGenerate()
 
 			elseif action.ActionId == "Examine" then
 				SetHint(action,S[302535920001277--[[Open %s in the Object Examiner.--]]]:format(name))
-				SetIcon(action,nil,StringFormat("%sUI/TheIncal.png",ChoGGi.LibraryPath))
+--~ 				SetIcon(action,nil,StringFormat("%sUI/TheIncal.png",ChoGGi.LibraryPath))
 
 			elseif action.ActionId == "AddFuel" then
 				SetHint(action,S[302535920001053--[[Fill up %s with fuel.--]]]:format(name))
@@ -243,7 +223,7 @@ function OnMsg.ClassesGenerate()
 					action.ActionId = ""
 				else
 					SetHint(action,StringFormat("%s...\n%s?",S[8039--[[Trait: Idiot (can cause a malfunction)--]]],S[53--[[Malfunction--]]]))
-					SetIcon(action,nil,"UI/Icons/Notifications/dust_storm_2.tga")
+--~ 					SetIcon(action,nil,"UI/Icons/Notifications/dust_storm_2.tga")
 				end
 
 			elseif action.ActionId == "HideSigns" then
@@ -270,7 +250,7 @@ function OnMsg.ClassesGenerate()
 					action.ActionId = ""
 				else
 					SetHint(action,S[302535920001225--[[Add visual dust and maintenance points.--]]])
-					SetIcon(action,nil,"UI/Icons/Notifications/dust_storm.tga")
+--~ 					SetIcon(action,nil,"UI/Icons/Notifications/dust_storm.tga")
 				end
 			elseif action.ActionId == "CleanAndFix" then
 				if obj:IsKindOfClasses("SupplyRocket","UniversalStorageDepot","WasteRockDumpSite") then

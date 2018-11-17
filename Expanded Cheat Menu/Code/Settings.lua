@@ -90,8 +90,6 @@ function OnMsg.ClassesGenerate()
 		-- the build/passibility grid in debug menu
 		DebugGridSize = 25,
 		DebugGridOpacity = 15,
-		-- how long to wait before hiding the cheats pane in the selection panel
-		CheatsInfoPanelHideDelay = 1500,
 		-- how wide the text for the history menu in the Console is
 		ConsoleHistoryMenuLength = 50,
 		-- shows how many ticks it takes between the start of ECM and when the game loads

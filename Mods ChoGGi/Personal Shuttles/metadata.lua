@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Personal Shuttles v0.6",
-	"version", 6,
-	"saved", 1539950400,
+	"title", "Personal Shuttles v0.7",
+	"version", 7,
+	"saved", 1542456000,
 	"id", "ChoGGi_PersonalShuttles",
 	"steam_id", "1410892053",
 	"author", "ChoGGi",
@@ -17,8 +17,8 @@ Personal shuttles can pick up certain items (rovers, drones, and resource piles)
 
 They have a time limit of four Sols (I was going to do it by fuel, but they get magical fuel when they stop moving...).
 
-Attacker: Will attack nearby dustdevils.
-Friend: Same as attacker, but ignores dust devils.
+Attacker: Will attack nearby dust devils.
+Friend: Ignores dust devils.
 
 How to pickup items:
 Select the item you want to pick up and press "Ignore Item" so it changes to "Pickup Item",
@@ -34,5 +34,5 @@ If you have drones or resources in un-reachable spaces you can use this to move 
 
 Known Issues:
 Limited to 50 shuttles, too high and crash goes your game.
-Shuttles will jump up sometimes when flying.]],
+Shuttles will jump up sometimes when flying, just assume it's martian cocaine.]],
 })
