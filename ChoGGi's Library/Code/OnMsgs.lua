@@ -38,8 +38,8 @@ end
 
 -- needed for UICity and some others that aren't created till around then
 function OnMsg.LoadGame()
-	ChoGGi.ComFuncs.RetNameUpdate()
+	ChoGGi.ComFuncs.RetName_Update()
 end
 function OnMsg.CityStart()
-	ChoGGi.ComFuncs.RetNameUpdate()
+	ChoGGi.ComFuncs.RetName_Update()
 end

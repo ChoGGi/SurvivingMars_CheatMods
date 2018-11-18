@@ -4,9 +4,17 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v10.8 (Unreleased)
+- Settings have been migrated from AccountStorage to LocalStorage.
+- > If for some reason your settings are not migrated over, send me a msg.
+- > You can manually edit with: notepad "%AppData%\Surviving Mars\LocalStorage.lua"
+- > You can still edit the usual way (Help>ECM>Edit Settings).
+- > This does mean settings will not be accessible across different computers.
+- > Anyone using the HelperMod with ECM will not notice any difference.
+
 ### Added:
 - Mission>Drone Type: Change what type of drones will spawn (doesn't affect existing).
 - Buildings>Toggles>Rotate During Placement: Allow you to rotate all buildings (large wind turbines).
+- Help>ECM>Enable ToolTips: Disabling this will remove most of the tooltips (not cheats menu/pane).
 
 ### Changed:
 - Change Amount of Drones in Hub: Now works with any drone controller (also changed Dismantle to Pack Drones).
@@ -14,11 +22,13 @@
 - Cheats panel:
 - > Added some icons to it (suggestions?).
 - > Changed it to show on mouseclick (instead of mouseover).
+- More controls visible when in Editor Mode.
 
 ### Fixed:
 - Examine was showing certain associative tables as 0 length instead of Data.
 - Instant Mission Goals now works with the list of goals (you can pick which you want to pass).
 - Hidden Buildings didn't work (messed up build menu).
+- Build menu number keys didn't show the categories.
 
 ## v10.7 (16 Nov 2018)
 ### Added:

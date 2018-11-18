@@ -267,7 +267,8 @@ function OnMsg.ClassesGenerate()
 				local c = colonists[i]
 
 				export_data[i] = {
-					name = StringFormat("%s %s",Trans(c.name[1]),Trans(c.name[3])),
+--~ 					name = StringFormat("%s %s",Trans(c.name[1]),Trans(c.name[3])),
+					name = RetName(c),
 					age = c.age,
 					age_trait = c.age_trait,
 					birthplace = c.birthplace,
@@ -309,6 +310,7 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 			end
+
 			-- and now we can save it to disk
 			SaveCSV("AppData/Colonists.csv", export_data, table.map(ColonistsCSVColumns, 1), table.map(ColonistsCSVColumns, 2))
 			print(ConvertToOSPath("AppData/Colonists.csv"))

@@ -44,7 +44,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Help",
 		ActionId = ".Reload ECM Menu",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
-		RolloverText = S[302535920000474--[[Fiddling around in the editor mode can break the menu / shortcuts added by ECM (use this to fix).--]]],
+		RolloverText = S[302535920000474--[[Fiddling around in the editor mode can break the menu / shortcuts added by ECM (use this to fix or alt-tab).--]]],
 		OnAction = function()
 			Msg("ShortcutsReloaded")
 		end,
@@ -56,7 +56,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Help",
 		ActionId = ".Report Bug",
 		ActionIcon = "CommonAssets/UI/Menu/ReportBug.tga",
-		RolloverText = S[302535920001381--[[Opens the bug report dialog (this will fill AppData\BugReport folder with screenshots).--]]],
+		RolloverText = S[302535920001381--[[Opens the bug report dialog (this will add a screenshot to AppData\BugReport).--]]],
 		OnAction = ChoGGi.MenuFuncs.CreateBugReportDlg,
 		ActionSortKey = "99.Report Bug",
 		ActionShortcut = "Ctrl-F1",
@@ -222,6 +222,21 @@ function OnMsg.ClassesGenerate()
 			OpenUrl(str_url:format("Expanded Cheat Menu/Changelog.md#ecm-changelog"))
 		end,
 		ActionSortKey = "3",
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000321--[[Enable ToolTips--]]],
+		ActionMenubar = str_Help_ECM,
+		ActionId = ".Toggle ToolTips",
+		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.EnableToolTips,
+				302535920000322--[[Disabling this will remove most of the tooltips (leaves the cheat menu and cheats pane ones).--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.ToolTips_Toggle,
+		ActionSortKey = "4",
 	}
 
 	c = c + 1

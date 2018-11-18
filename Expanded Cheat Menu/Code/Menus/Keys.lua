@@ -11,14 +11,46 @@ function OnMsg.ClassesGenerate()
 
 	-- use number keys to activate/hide build menus
 	do -- NumberKeysBuildMenu
+		local function ShowBuildMenu(which)
+			local BuildCategories = BuildCategories
+
+			-- make sure we're not in the main menu
+			if not UICity then
+				return
+			end
+
+			local dlg = Dialogs.XBuildMenu
+			if dlg then
+				-- check if number corresponds and if so hide the menu
+				if dlg.category == BuildCategories[which].id then
+					ToggleXBuildMenu(true, "close")
+				else
+					dlg = Dialogs.XBuildMenu
+					dlg:SelectCategory(BuildCategories[which])
+					-- have to fire twice to highlight the icon
+					dlg:SelectCategory(BuildCategories[which])
+				end
+			else
+				ToggleXBuildMenu(true, "close")
+				CreateRealTimeThread(function()
+					Sleep(1)
+					dlg = Dialogs.XBuildMenu
+					dlg:SelectCategory(BuildCategories[which])
+					dlg:SelectCategory(BuildCategories[which])
+				end)
+			end
+		end
+
 		local function AddMenuKey(num,key)
 			c = c + 1
 			Actions[c] = {
-				ActionId = string.format("ChoGGi_AddMenuKey%s",num),
+				ActionId = StringFormat(".Keys.BuildMenu%s",num),
 				OnAction = function()
-					ChoGGi.ComFuncs.ShowBuildMenu(num)
+					ShowBuildMenu(num)
 				end,
 				ActionShortcut = key,
+				ChoGGi_ECM = true,
+				ActionBindable = true,
 			}
 		end
 		if ChoGGi.UserSettings.NumberKeysBuildMenu then
@@ -32,16 +64,16 @@ function OnMsg.ClassesGenerate()
 				elseif i == 10 then
 					AddMenuKey(i,"0")
 				else
-					--skip Hidden as it'll have the Rocket Landing Site (hard to remove).
+					-- skip Hidden
 					if BuildCategories[i].id == "Hidden" then
 						skipped = true
 					else
 						if skipped then
 							-- -1 more for skipping Hidden
-							AddMenuKey(i,string.format("Shift-%s",i - 11))
+							AddMenuKey(i,StringFormat("Shift-%s",i - 11))
 						else
 							-- -10 since we're doing Shift-*
-							AddMenuKey(i,string.format("Shift-%s",i - 10))
+							AddMenuKey(i,StringFormat("Shift-%s",i - 10))
 						end
 					end
 				end
@@ -51,15 +83,15 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000734--[[Clear Log--]]],
-		ActionId = "ECM.Keys.ClearConsoleLog",
+		ActionId = ".Keys.ClearConsoleLog",
 		OnAction = cls,
 		ActionShortcut = "F9",
 		ActionBindable = true,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920001346--[[Random Colour--]]]),
-		ActionId = "ECM.Keys.ObjectColourRandom",
+	Actions[c] = {ActionName = StringFormat("%s %s",S[298035641454--[[Object--]]],S[302535920001346--[[Random Colour--]]]),
+		ActionId = ".Keys.ObjectColourRandom",
 		OnAction = function()
 			ChoGGi.ComFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
 		end,
@@ -68,8 +100,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920000025--[[Default Colour--]]]),
-		ActionId = "ECM.Keys.ObjectColourDefault",
+	Actions[c] = {ActionName = StringFormat("%s %s",S[298035641454--[[Object--]]],S[302535920000025--[[Default Colour--]]]),
+		ActionId = ".Keys.ObjectColourDefault",
 		OnAction = function()
 			ChoGGi.ComFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())
 		end,
@@ -86,24 +118,16 @@ function OnMsg.ClassesGenerate()
 	end
 
 	c = c + 1
-	Actions[c] = {ActionName = string.format("%s %s",S[302535920001347--[[Show Console--]]],S[1000544--[[~--]]]),
-		ActionId = "ECM.Keys.ShowConsoleTilde",
-		OnAction = ToggleConsole,
-		ActionShortcut = "~",
-		ActionBindable = true,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = string.format("%s %s",S[302535920001347--[[Show Console--]]],S[1000447--[[Enter--]]]),
-		ActionId = "ECM.Keys.ShowConsoleEnter",
+	Actions[c] = {ActionName = S[302535920001347--[[Show Console--]]],
+		ActionId = ".Keys.ShowConsole",
 		OnAction = ToggleConsole,
 		ActionShortcut = "Enter",
+		ActionShortcut2 = "~",
 		ActionBindable = true,
 	}
-
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001348--[[Restart--]]],
-		ActionId = "ECM.Keys.ConsoleRestart",
+		ActionId = ".Keys.ConsoleRestart",
 		OnAction = function()
 			local dlgConsole = dlgConsole
 			if dlgConsole then
@@ -121,7 +145,7 @@ function OnMsg.ClassesGenerate()
 	-- goes to placement mode with last built object
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001349--[[Place Last Constructed Building--]]],
-		ActionId = "ECM.Keys.LastConstructedBuilding",
+		ActionId = ".Keys.LastConstructedBuilding",
 		OnAction = function()
 			local last = UICity.LastConstructedBuilding
 			if type(last) == "table" then
@@ -135,7 +159,7 @@ function OnMsg.ClassesGenerate()
 	-- goes to placement mode with SelectedObj
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001350--[[Place Last Selected Object--]]],
-		ActionId = "ECM.Keys.LastSelectedObject",
+		ActionId = ".Keys.LastSelectedObject",
 		OnAction = function()
 			local ChoGGi = ChoGGi
 			local sel = ChoGGi.ComFuncs.SelObject()
@@ -150,7 +174,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000069--[[Examine--]]],S[302535920001103--[[Objects--]]]),
-		ActionId = "ECM.Keys.Examine Objects",
+		ActionId = ".Keys.Examine Objects",
 		OnAction = function()
 			local obj = MapGet(GetTerrainCursor(),2500)
 			if #obj > 0 then
