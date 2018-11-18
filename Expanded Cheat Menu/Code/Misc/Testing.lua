@@ -165,14 +165,14 @@ function OnMsg.ClassesGenerate()
 			local list = MapGet(true)
 			TickStart("TestTableIterate1.Tick")
 			for _ = 1, 1000 do
-				for i = 1, #list do
+				for _ = 1, #list do
 				end
 			end
 			TickEnd("TestTableIterate1.Tick")
 
 			TickStart("TestTableIterate2.Tick")
 			for _ = 1, 1000 do
-				for key,value in ipairs(list) do
+				for _,_ in ipairs(list) do
 				end
 			end
 			TickEnd("TestTableIterate2.Tick")

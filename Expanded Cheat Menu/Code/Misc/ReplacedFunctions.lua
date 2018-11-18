@@ -583,7 +583,7 @@ function OnMsg.ClassesPreprocess()
 		-- fire orig func to build cheats
 		if ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions(self,win,...) then
 			-- then we can add some hints to the cheats
-			return ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win),win)
+			return ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
 		end
 	end
 
@@ -1051,10 +1051,10 @@ function OnMsg.ClassesBuilt()
 							local toggle
 							ToggleVisSection(section,toolbar,toggle)
 							-- sets the scale of the cheats icons
-							for i = 1, #toolbar do
-								toolbar[i].idIcon:SetMaxHeight(30)
-								toolbar[i].idIcon:SetMaxWidth(30)
-								toolbar[i].idIcon:SetImageFit("largest")
+							for j = 1, #toolbar do
+								toolbar[j].idIcon:SetMaxHeight(30)
+								toolbar[j].idIcon:SetMaxWidth(30)
+								toolbar[j].idIcon:SetImageFit("largest")
 							end
 
 						elseif title == 235--[[Traits--]] or (title == 702480492408--[[Residents--]] and self.context.capacity ~= self.context.base_capacity) then

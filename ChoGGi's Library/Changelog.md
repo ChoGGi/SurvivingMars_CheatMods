@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v3.5 (Unreleased)
+## v3.6 (Unreleased)
+
+## v3.5 (18 Nov 2018)
 - Other mods using XShortcutsTarget shortcuts won't be borked from this mod.
 - Cleaned up some strings.
 - I'll get names right one of these days.

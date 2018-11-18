@@ -44,6 +44,9 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
+		local spon_str = "sponsor_status%s"
+		local spon_str2 = "sponsor_status%s_ChoGGi_orig"
+
 		if ChoGGi.UserSettings.SponsorBuildingLimits then
 			-- used when starting/loading a game
 			ChoGGi.UserSettings.SponsorBuildingLimits = nil
@@ -51,9 +54,9 @@ function OnMsg.ClassesGenerate()
 			for _,bld in pairs(BuildingTemplates) do
 				-- set each status to false if it isn't
 				for i = 1, 3 do
-					local str = StringFormat("sponsor_status%s_ChoGGi_orig",i)
+					local str = spon_str2:format(i)
 					if bld[str] then
-						bld[StringFormat("sponsor_status%s",i)] = bld[str]
+						bld[spon_str:format(i)] = bld[str]
 						bld[str] = nil
 					end
 				end
@@ -66,9 +69,9 @@ function OnMsg.ClassesGenerate()
 			for _,bld in pairs(BuildingTemplates) do
 				-- set each status to false if it isn't
 				for i = 1, 3 do
-					local str = StringFormat("sponsor_status%s",i)
+					local str = spon_str:format(i)
 					if bld[str] ~= false then
-						bld[StringFormat("sponsor_status%s_ChoGGi_orig",i)] = bld[str]
+						bld[spon_str2:format(i)] = bld[str]
 						bld[str] = false
 					end
 				end

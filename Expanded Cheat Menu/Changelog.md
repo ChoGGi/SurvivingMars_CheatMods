@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v10.8 (Unreleased)
+## v10.9 (Unreleased)
+
+## v10.8 (18 Nov 2018)
 - Settings have been migrated from AccountStorage to LocalStorage.
 - > If for some reason your settings are not migrated over, send me a msg.
 - > You can manually edit with: notepad "%AppData%\Surviving Mars\LocalStorage.lua"

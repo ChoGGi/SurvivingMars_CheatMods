@@ -345,15 +345,17 @@ function OnMsg.ModsReloaded()
 
 	end -- DisableECM
 
+	local spon_str = "sponsor_status%s"
+	local spon_str2 = "sponsor_status%s_ChoGGi_orig"
 	for _,bld in pairs(BuildingTemplates) do
 
 		-- remove sponsor limits on buildings
 		if UserSettings.SponsorBuildingLimits then
 			-- set each status to false if it isn't
 			for i = 1, 3 do
-				local str = StringFormat("sponsor_status%s",i)
+				local str = spon_str:format(i)
 				if bld[str] ~= false then
-					bld[StringFormat("sponsor_status%s_ChoGGi_orig",i)] = bld[str]
+					bld[spon_str2:format(i)] = bld[str]
 					bld[str] = false
 				end
 			end
@@ -372,7 +374,6 @@ function OnMsg.ModsReloaded()
 
 		-- wonder building limit
 		if UserSettings.Building_wonder then
-			bld.wonder_ChoGGi = bld.wonder
 			bld.wonder = nil
 		end
 
