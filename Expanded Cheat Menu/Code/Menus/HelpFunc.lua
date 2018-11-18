@@ -13,38 +13,54 @@ function OnMsg.ClassesGenerate()
 	local print,tostring = print,tostring
 	local StringFormat = string.format
 
-	local function MissingMantis(name)
-		if not rawget(_G,name) then
-			_G[name] = empty_table
-		end
+	function ChoGGi.MenuFuncs.ToolTips_Toggle()
+		local ChoGGi = ChoGGi
+		ChoGGi.UserSettings.EnableToolTips = not ChoGGi.UserSettings.EnableToolTips
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.EnableToolTips,
+				302535920001070--[[Restart to take effect.--]]
+			),
+			302535920001014--[[Toggle ToolTips--]],
+			"UI/Icons/Sections/attention.tga"
+		)
 	end
-	MissingMantis("mantis_level_designers")
-	MissingMantis("mantis_coders")
-	MissingMantis("mantis_artists")
-	MissingMantis("mantis_designers")
-	MissingMantis("mantis_animators")
-	-- I did not hit her!
-	LocalStorage.dlgBugReport.handler = "ECM sez: Oh, hai Mark!"
 
-	local function RetTrue()
-		return true
-	end
-	function ChoGGi.MenuFuncs.CreateBugReportDlg()
-		CreateRealTimeThread(function()
-			-- muhahaha
-			Platform.developer = true
-			_ENV.insideHG = RetTrue
-
-			CreateBugReportDlg()
-			while GetDialog("BugReport") do
-				Sleep(5000)
+	do -- CreateBugReportDlg
+		local function MissingMantis(name)
+			if not rawget(_G,name) then
+				_G[name] = empty_table
 			end
+		end
+		MissingMantis("mantis_level_designers")
+		MissingMantis("mantis_coders")
+		MissingMantis("mantis_artists")
+		MissingMantis("mantis_designers")
+		MissingMantis("mantis_animators")
+		-- I did not hit her!
+		LocalStorage.dlgBugReport.handler = "ECM sez: Oh, hai Mark!"
 
-			-- back to norm
-			Platform.developer = false
-			_ENV.insideHG = empty_func
-		end)
-	end
+		local function RetTrue()
+			return true
+		end
+		function ChoGGi.MenuFuncs.CreateBugReportDlg()
+			CreateRealTimeThread(function()
+				-- muhahaha
+				Platform.developer = true
+				_ENV.insideHG = RetTrue
+
+				CreateBugReportDlg()
+				while GetDialog("BugReport") do
+					Sleep(5000)
+				end
+
+				-- back to norm
+				Platform.developer = false
+				_ENV.insideHG = empty_func
+			end)
+		end
+	end -- do
 
 	function ChoGGi.MenuFuncs.ExtractHPKs()
 		if blacklist then
@@ -474,13 +490,13 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.EditECMSettings()
 		local ChoGGi = ChoGGi
-		-- make sure any changed settings are current
-		if not ChoGGi.testing then
-			ChoGGi.SettingFuncs.WriteSettings()
-		end
+--~ 		-- make sure any changed settings are current
+--~ 		if not ChoGGi.testing then
+--~ 			ChoGGi.SettingFuncs.WriteSettings()
+--~ 		end
 		-- load up settings file in the editor
 		ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
-			text = ChoGGi.SettingFuncs.ReadSettings(),
+			text = TableToLuaCode(ChoGGi.UserSettings),
 			hint_ok = 302535920001244--[["Saves settings to file, and applies any changes."--]],
 			hint_cancel = 302535920001245--[[Abort without touching anything.--]],
 			custom_func = function(answer,_,obj)
@@ -488,10 +504,10 @@ function OnMsg.ClassesGenerate()
 					-- get text and update settings file
 					local err,settings = LuaCodeToTuple(obj.idEdit:GetText())
 					if not err then
-						ChoGGi.SettingFuncs.WriteSettings(settings)
-						-- then read new settings
-						ChoGGi.SettingFuncs.ReadSettings()
-						-- now I just need to have some stuff update when this happens
+						ChoGGi.UserSettings = ChoGGi.SettingFuncs.WriteSettings(settings)
+--~ 						-- then read new settings
+--~ 						ChoGGi.SettingFuncs.ReadSettings()
+						-- for now just updates console examine list
 						Msg("ChoGGi_SettingsUpdated")
 						MsgPopup(
 							S[4273--[[Saved on %s--]]]:format(StringFormat("%s:%s:%s",FormatElapsedTime(os.time(), "dhm"))),
@@ -515,7 +531,7 @@ function OnMsg.ClassesGenerate()
 		end
 		ChoGGi.ComFuncs.QuestionBox(
 			StringFormat("%s\n\n%s",S[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
-	CheatMenuModSettings.lua > DisableECM to re-enable them."--]]],S[302535920001070--[[Restart to take effect.--]]]),
+Change DisableECM to false in settings file to re-enable them."--]]],S[302535920001070--[[Restart to take effect.--]]]),
 			CallBackFunc,
 			302535920000142--[[Disable--]]
 		)

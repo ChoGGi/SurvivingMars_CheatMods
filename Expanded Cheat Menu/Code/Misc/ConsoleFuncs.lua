@@ -94,7 +94,7 @@ function OnMsg.ClassesGenerate()
 		},
 		{
 			name = 302535920000473--[[Reload ECM Menu--]],
-			hint = 302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix).--]],
+			hint = 302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix or alt-tab).--]],
 			clicked = function()
 				Msg("ShortcutsReloaded")
 			end,
@@ -329,14 +329,16 @@ function OnMsg.ClassesGenerate()
 			}
 		end
 
-		-- bonus addition at bottom
-		ExamineMenuToggle_list[#ExamineMenuToggle_list+1] = {
-			name = 302535920001378--[[XWindow Inspector--]],
-			hint = 302535920001379--[[Opens up the window inspector with terminal.desktop.--]],
-			clicked = function()
-				ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
-			end,
-		}
+		-- FXRules
+		submenu = table.find(ExamineMenuToggle_list,"name","FXRules")
+		if submenu then
+			ExamineMenuToggle_list[submenu].hint = nil
+			ExamineMenuToggle_list[submenu].submenu = {
+				BuildExamineItem("FXRules"),
+				BuildExamineItem("FXLists"),
+			}
+		end
+
 		-- bonus addition at the top
 		table.insert(ExamineMenuToggle_list,1,{
 			name = 302535920001376--[[Auto Update List--]],
@@ -348,6 +350,14 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 			end,
 		})
+		-- bonus addition at bottom
+		ExamineMenuToggle_list[#ExamineMenuToggle_list+1] = {
+			name = 302535920001378--[[XWindow Inspector--]],
+			hint = 302535920001379--[[Opens up the window inspector with terminal.desktop.--]],
+			clicked = function()
+				ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
+			end,
+		}
 	end
 
 	-- rebuild list of objects to examine when user changes settings

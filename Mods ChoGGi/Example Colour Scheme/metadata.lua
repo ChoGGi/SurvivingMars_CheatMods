@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1565748234",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
+	"TagCosmetics", true,
 	"code", {
 		"Code/Script.lua",
 	},
@@ -15,7 +16,10 @@ There is a ModItem version of this, but it isn't in the mod editor for some reas
 
 This is a copy n paste of an in-game scheme (it's for modders that want to make their own).
 
-Convert the numbers with ColorizationMaterialDecode(NUMBER), this will return three numbers:
+If you use ECM, you can use the built-in editor (Menu>Debug>Ged Presets Editor>ColonyColorScheme).
+It won't actually save anything to file, but you can access the edited scheme in the console with ~ColonyColorSchemes.
+
+Manually convert the numbers with ColorizationMaterialDecode(NUMBER), this will return three numbers:
 a value you can use with GetRGB(value), roughness value, metallic value
 to convert back into the proper number use ColorizationMaterialEncode(RGB(22,36,50), rough, met)
 You can use my Change Object Colour mod to test out the values.

@@ -96,13 +96,3 @@ function GedSocket:rpcApp(func, ...)
   end
   return app[func](app, ...)
 end
---~ if Platform.ged then
-  function OnMsg.ApplicationQuit()
-		local desktop = terminal.desktop
-		for i = #desktop, 1, -1 do
-      if desktop[i]:IsKindOf("GedApp") then
-        desktop[i]:Close()
-      end
-		end
-  end
---~ end

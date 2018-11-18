@@ -135,7 +135,7 @@ do -- RetName
 		end
 		-- any tables in _G
 		for key in pairs(g) do
-			if type(g[key]) == "table" then
+			if not lookup_table[g[key]] and type(g[key]) == "table" then
 				lookup_table[g[key]] = key
 			end
 		end
@@ -145,7 +145,7 @@ do -- RetName
 	AfterLoad()
 
 	-- called from onmsgs for citystart/loadgame
-	function ChoGGi.ComFuncs.RetNameUpdate()
+	function ChoGGi.ComFuncs.RetName_Update()
 		AfterLoad()
 	end
 
@@ -609,6 +609,8 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image)
 		title = CheckText(title,S[1000016--[[Title--]]]),
 		text = CheckText(text,text),
 		name = "ChoGGi_TempPopup",
+		-- why every button needs a cc button is beyond me
+		no_ccc_button = true,
 		-- so it appears on screen instead of in a little popup
 		start_minimized = false,
 	}
@@ -1611,6 +1613,20 @@ do -- Rebuildshortcuts
 		TriggerDisasterStop = true,
 		UnlockAllBreakthroughs = true,
 		UpsampledScreenshot = true,
+		-- EditorShortcuts.lua
+		EditOpsHistory = true,
+		E_FlagsEditor = true,
+		E_AttachEditor = true,
+		CheckGameRevision = true,
+		["Editors.Random Map"] = true,
+		DE_SaveDefaultMapEntityList = true,
+		E_TurnSelectionToTemplates = true,
+		Editors = true,
+		-- CommonShortcuts.lua
+		DE_Console = true,
+		DisableUIL = true,
+		DE_UpsampledScreenshot = true,
+		DE_Screenshot = true,
 	}
 	-- auto-add all the TriggerDisaster ones (ok some)
 	local DataInstances = DataInstances
@@ -1633,31 +1649,26 @@ do -- Rebuildshortcuts
 	function ChoGGi.ComFuncs.Rebuildshortcuts()
 		local XShortcutsTarget = XShortcutsTarget
 
-		-- remove all built-in shortcuts (pretty much just a cutdown copy of ReloadShortcuts)
-		XShortcutsTarget.actions = {}
-		-- re-add certain ones
-		if Platform.ged and XTemplates.GedShortcuts then
-			XTemplateSpawn("GedShortcuts", XShortcutsTarget)
-		elseif XTemplates.GameShortcuts then
-			XTemplateSpawn("GameShortcuts", XShortcutsTarget)
-		end
-
-		-- remove stuff from GameShortcuts
+		-- remove unwanted actions
 		for i = #XShortcutsTarget.actions, 1, -1 do
-			-- removes pretty much all the dev actions added, and leaves the game ones intact
 			local a = XShortcutsTarget.actions[i]
-			local g = a.ActionId:sub(1,2) == "G_"
-			if remove_lookup[a.ActionId] then
+			if a.ChoGGi_ECM or remove_lookup[a.ActionId] then
+				a:delete()
 				TableRemove(XShortcutsTarget.actions,i)
-			elseif g then
-				-- hide the orig cheats
-				a.ActionMenubar = nil
 --~ 			else
+--~ 				-- hide any menuitems added from devs
+--~ 				a.ActionMenubar = nil
 --~ 				print(a.ActionId)
 			end
 		end
+
+		-- goddamn annoying key
 		if testing then
-			TableRemove(XShortcutsTarget.actions,table.find(XShortcutsTarget.actions,"ActionId","actionToggleFullscreen"))
+			local idx = table.find(XShortcutsTarget.actions,"ActionId","actionToggleFullscreen")
+			if idx then
+				XShortcutsTarget.actions[idx]:delete()
+				TableRemove(XShortcutsTarget.actions,idx)
+			end
 		end
 
 		-- and add mine
@@ -1666,7 +1677,7 @@ do -- Rebuildshortcuts
 
 --~ 		Actions = {}
 --~ 		Actions[#Actions+1] = {
---~ 			ActionId = "ChoGGi_ShowConsoleTilde",
+--~ 			ActionId = "ChoGGi_ShowConsole",
 --~ 			OnAction = function()
 --~ 				local dlgConsole = dlgConsole
 --~ 				if dlgConsole then
@@ -1674,13 +1685,14 @@ do -- Rebuildshortcuts
 --~ 				end
 --~ 			end,
 --~ 			ActionShortcut = "~",
+--~ 			ActionShortcut2 = "Enter",
 --~ 		}
 
 		local DisableECM = ChoGGi.UserSettings.DisableECM
 		for i = 1, #Actions do
 			local a = Actions[i]
 			-- added by ECM
-			if a.IsECM then
+			if a.ChoGGi_ECM then
 				-- can we enable ECM actions?
 				if not DisableECM then
 					-- and add to the actual actions
@@ -1691,23 +1703,25 @@ do -- Rebuildshortcuts
 			end
 		end
 
-		-- add a key binding to options to re-enable ECM
 		if DisableECM then
-			local name = StringFormat("%s %s",S[302535920000142--[[Disable--]]],S[302535920000887--[[ECM--]]])
+		-- add a key binding to options to re-enable ECM
+			local name = StringFormat("%s %s",S[302535920001079--[[Enable--]]],S[302535920000887--[[ECM--]]])
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionName = name,
 				ActionId = name,
 				OnAction = function()
 					ChoGGi.UserSettings.DisableECM = false
 					ChoGGi.SettingFuncs.WriteSettings()
+					print(name,S[302535920001070--[[Restart to take effect.--]]])
 					MsgPopup(
 						302535920001070--[[Restart to take effect.--]],
 						name
 					)
 				end,
-				ActionShortcut = "Ctrl-Shift-Alt-0",
+				ActionShortcut = "Ctrl-Shift-0",
 				ActionBindable = true,
 			})
+			print(S[302535920001411--[[ECM has been disabled. Change DisableECM to false in settings file.--]]])
 		end
 
 		-- add rightclick action to menuitems
@@ -1715,8 +1729,6 @@ do -- Rebuildshortcuts
 		-- got me
 		XShortcutsThread = false
 
---~ 		-- if it's bool then ECM is active
---~ 		if type(DisableECM) == "boolean" and not DisableECM then
 		if DisableECM == false then
 			-- i forget why i'm toggling this...
 			local dlgConsole = dlgConsole
@@ -2002,29 +2014,6 @@ do -- SetCameraSettings
 		--SetProperties(1,{HeightInertia = 0})
 	end
 end -- do
-
-function ChoGGi.ComFuncs.ShowBuildMenu(which)
-	local BuildCategories = BuildCategories
-
-	--make sure we're not in the main menu (deactiving mods when going back to main menu would be nice, check for a msg to use?)
-	if not Dialogs.PinsDlg then
-		return
-	end
-
-	local dlg = Dialogs.XBuildMenu
-	if dlg then
-		--opened so check if number corresponds and if so hide the menu
-		if dlg.category == BuildCategories[which].id then
-			CloseDialog("XBuildMenu")
-		end
-	else
-		OpenXBuildMenu()
-	end
-	dlg = Dialogs.XBuildMenu
-	dlg:SelectCategory(BuildCategories[which])
-	--have to fire twice to highlight the icon
-	dlg:SelectCategory(BuildCategories[which])
-end
 
 function ChoGGi.ComFuncs.ColonistUpdateAge(c,age)
 	local ages = ChoGGi.Tables.ColonistAges

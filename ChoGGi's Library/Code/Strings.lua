@@ -264,7 +264,6 @@ local Strings = {
 	[1000220] = TranslationTable[1000220], -- Refresh
 	[1000232] = TranslationTable[1000232], -- Next
 	[1000447] = TranslationTable[1000447], -- Enter
-	[1000544] = TranslationTable[1000544], -- ~
 	[1000592] = TranslationTable[1000592], -- Error
 	[1000615] = TranslationTable[1000615], -- Delete
 	[1000760] = TranslationTable[1000760], -- Not Steam

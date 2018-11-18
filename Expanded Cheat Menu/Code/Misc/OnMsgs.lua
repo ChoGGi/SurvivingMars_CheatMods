@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 -- most OnMsgs
-
 local StringFormat = string.format
 local TableSort = table.sort
 local TableRemove = table.remove
@@ -43,6 +42,22 @@ function OnMsg.ClassesGenerate()
 	XMenuBar.Background = dark_gray
 	XPopupMenu.Background = dark_gray
 	TextStyles.DevMenuBar.TextColor = white
+
+	if not ChoGGi.UserSettings.EnableToolTips then
+		ChoGGi_Text.RolloverTemplate = ""
+		ChoGGi_TextList.RolloverTemplate = ""
+		ChoGGi_MultiLineEdit.RolloverTemplate = ""
+		ChoGGi_MoveControl.RolloverTemplate = ""
+		ChoGGi_Buttons.RolloverTemplate = ""
+		ChoGGi_ComboButton.RolloverTemplate = ""
+		ChoGGi_CheckButton.RolloverTemplate = ""
+		ChoGGi_TextInput.RolloverTemplate = ""
+		ChoGGi_List.RolloverTemplate = ""
+		ChoGGi_ListItem.RolloverTemplate = ""
+		ChoGGi_Dialog.RolloverTemplate = ""
+		ChoGGi_DialogSection.RolloverTemplate = ""
+		ChoGGi_Window.RolloverTemplate = ""
+	end
 
 end
 
@@ -166,7 +181,6 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		})
 	end
 
-
 	-- called when new DLC is added (or a new game)
 	function OnMsg.XTemplatesLoaded()
 		OnMsgXTemplates()
@@ -196,15 +210,24 @@ function OnMsg.ModsReloaded()
 
 	-- seems a decent place for this...
 	table.clear(Examine.examine_dialogs)
-	-- just in case we examine some numbers
-	table.iclear(Examine.examine_dialogs)
+--~ 	-- just in case we examine some numbers
+--~ 	table.iclear(Examine.examine_dialogs)
 
 	-- easy access to colonist data, cargo, mystery
 	ChoGGi.ComFuncs.UpdateDataTables()
 
 	-- added this here, as it's early enough to load during the New Game Menu
-	if not UserSettings.DisableECM then
-		local Actions = ChoGGi.Temp.Actions
+	local Actions = ChoGGi.Temp.Actions
+	if UserSettings.DisableECM then
+		-- remove all my actions from ecm
+		for i = #Actions, 1, -1 do
+			local a = Actions[i]
+			-- if it's a . than we haven't updated it yet
+			if a.ActionId:sub(1,1) == "." then
+				TableRemove(Actions,i)
+			end
+		end
+	else
 		local c = #Actions
 
 		c = c + 1
@@ -242,8 +265,9 @@ function OnMsg.ModsReloaded()
 			if a.ActionId:sub(1,1) == "." then
 				a.ActionTranslate = false
 				a.replace_matching_id = true
-				a.ActionId = StringFormat("%s%s",a.ActionMenubar,a.ActionId)
-				a.IsECM = true
+				a.ActionId = StringFormat("%s%s",a.ActionMenubar ~= "" and a.ActionMenubar or "ECM",a.ActionId)
+				a.ChoGGi_ECM = true
+--~ 				a.ActionMode = "Game"
 			end
 		end
 
@@ -292,9 +316,11 @@ function OnMsg.ModsReloaded()
 			end
 
 			-- add a hint about rightclicking
-			XShortcutsTarget:SetRolloverTemplate("Rollover")
-			XShortcutsTarget:SetRolloverTitle(S[126095410863--[[Info--]]])
-			XShortcutsTarget:SetRolloverText(S[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
+			if UserSettings.EnableToolTips then
+				XShortcutsTarget:SetRolloverTemplate("Rollover")
+				XShortcutsTarget:SetRolloverTitle(S[126095410863--[[Info--]]])
+				XShortcutsTarget:SetRolloverText(S[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
+			end
 
 			-- yeah... i don't need the menu taking up the whole width of my screen
 			XShortcutsTarget:SetHAlign("left")
@@ -888,7 +914,21 @@ function OnMsg.DevMenuVisible(visible)
 	end
 end
 
+local once_ApplicationQuit
 function OnMsg.ApplicationQuit()
+	if once_ApplicationQuit then
+		return
+	end
+	once_ApplicationQuit = true
+
+	-- from GedSocket.lua
+	local desktop = terminal.desktop
+	for i = #desktop, 1, -1 do
+		if desktop[i]:IsKindOf("GedApp") then
+			desktop[i]:Close()
+		end
+	end
+
 	local ChoGGi = ChoGGi
 
 	-- resetting settings?
@@ -908,8 +948,8 @@ function OnMsg.ApplicationQuit()
 		ChoGGi.UserSettings.KeepCheatsMenuPosition = XShortcutsTarget:GetPos()
 	end
 
-	-- blocklist something resets this log
-	if not blacklist then
+	-- blacklist something resets this log
+	if blacklist then
 		ChoGGi.UserSettings.history_log = LocalStorage.history_log
 	end
 
@@ -1316,14 +1356,14 @@ do -- LoadGame/CityStart
 		end
 
 		-- first time run info
-		if ChoGGi.UserSettings.FirstRun ~= false then
+		if UserSettings.FirstRun ~= false then
 			ChoGGi.ComFuncs.MsgWait(
 				StringFormat("%s\n%s",S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],S[302535920001309--[["Stop showing these msgs: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(S[302535920001308--[[Settings--]]],S[302535920001112--[[Console Log--]]])),
 				StringFormat("%s %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000201--[[Active--]]]),
 				StringFormat("%sPreview.png",ChoGGi.ModPath)
 			)
-			ChoGGi.UserSettings.FirstRun = false
+			UserSettings.FirstRun = false
 			ChoGGi.Temp.WriteSettings = true
 		end
 
@@ -1357,33 +1397,6 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 		-- used to check when game has started and it's safe to print() etc
 		ChoGGi.Temp.GameLoaded = true
-
-
---~ CreateRealTimeThread(function()
---~	 if not g_gedListener then
---~		 ListenForGed(true)
---~	 end
-
---~	 local id = AsyncRand()
---~	 local template = "GedInspector"
---~	 local context = {}
---~	 context.in_game = true
---~	 local ged = OpenGed(id, true)
---~	 if not ged then
---~		 return
---~	 end
---~	 ged:BindObj("root", s)
---~	 ged.app_template = template
---~	 ged.context = context
---~	 local err = ged:Rfc("rpcOpenApp", template, context)
---~	 if err then
---~		 print("OpenGedApp('%s') error: %s", tostring(template), tostring(err))
---~	 end
-
---~	 Msg("GedOpened", ged.ged_id)
---~	 ChoGGi.ged = ged
---~ end)
-
 
 	end --OnMsg
 end -- do

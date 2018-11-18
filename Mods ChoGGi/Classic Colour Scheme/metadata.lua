@@ -7,13 +7,14 @@ return PlaceObj("ModDef", {
 	"steam_id", "1567491505",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
+	"TagCosmetics", true,
 	"code", {
 		"Code/Script.lua",
 	},
 	"description", [[These are the older colours used before Gagarin update (mostly).
 How they did the palettes means lots of sharing, so tradeoffs ensured.
 
-Make your own colour scheme:
-Example mod: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Example%20Colour%20Scheme
-Built-in ones: https://github.com/HaemimontGames/SurvivingMars/blob/master/Data/ColonyColorScheme.lua]],
+To make your own: https://steamcommunity.com/sharedfiles/filedetails/?id=1565748234
+
+See also: https://steamcommunity.com/sharedfiles/filedetails/?id=1567753825]],
 })

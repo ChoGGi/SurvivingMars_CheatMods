@@ -1337,13 +1337,22 @@ function OnMsg.ClassesBuilt()
 	if blacklist then
 		dlgConsole:Exec("ChoGGi.Temp.ConsoleExec=ConsoleExec")
 		ConsoleExecute = ChoGGi.Temp.ConsoleExec
-		-- history gets blanked out by something?, so this is our saved copy of it
-		LocalStorage.history_log = ChoGGi.UserSettings.history_log
-		-- this loads it in
-		dlgConsole:ReadHistory()
+		table.iclear(dlgConsole.history_queue)
+		dlgConsole.history_queue_idx = 0
+		CreateRealTimeThread(function()
+			while not dlgConsoleLog do
+				Sleep(100)
+			end
+			cls()
+			-- history gets blanked out by something?, so this is our saved copy of it
+			LocalStorage.history_log = ChoGGi.UserSettings.history_log
+			-- this loads it in
+			dlgConsole:ReadHistory()
+		end)
 	else
 		ConsoleExecute = ConsoleExec
 	end
+
 	local ConsolePrint = ConsolePrint
 	function Console:Exec(text,skip)
 		if not skip then

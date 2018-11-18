@@ -10,6 +10,7 @@ local CreateRealTimeThread = CreateRealTimeThread
 local RetName
 local Random
 local Trans
+local MsgPopup
 local S
 local ResourceScale
 
@@ -17,6 +18,7 @@ function OnMsg.ClassesGenerate()
 	RetName = ChoGGi.ComFuncs.RetName
 	Random = ChoGGi.ComFuncs.Random
 	Trans = ChoGGi.ComFuncs.Translate
+	MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	S = ChoGGi.Strings
 	ResourceScale = ChoGGi.Consts.ResourceScale
 
@@ -249,14 +251,14 @@ function OnMsg.ClassesGenerate()
 				if obj:IsKindOfClasses("SupplyRocket","UniversalStorageDepot","WasteRockDumpSite") then
 					action.ActionId = ""
 				else
-					SetHint(action,S[302535920001225--[[Add visual dust and maintenance points.--]]])
+					SetHint(action,S[302535920001225--[[Adds dust and maintenance points.--]]])
 --~ 					SetIcon(action,nil,"UI/Icons/Notifications/dust_storm.tga")
 				end
 			elseif action.ActionId == "CleanAndFix" then
 				if obj:IsKindOfClasses("SupplyRocket","UniversalStorageDepot","WasteRockDumpSite") then
 					action.ActionId = ""
 				else
-					SetHint(action,S[302535920001226--[[You may need to use AddDust before using this to change the building visually.--]]])
+					SetHint(action,S[302535920001226--[[Cleans dust and removes maintenance points.--]]])
 				end
 			elseif action.ActionId == "Destroy" then
 				if obj:IsKindOf("SupplyRocket") or obj.destroyed then
@@ -365,6 +367,7 @@ function Building:CheatDestroy()
 			self.can_demolish = true
 			self.indestructible = false
 			DestroyBuildingImmediate(self)
+
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
@@ -596,8 +599,8 @@ BaseRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
 BaseRover.CheatMoveSpeedDef = CheatMoveSpeedDef
 -- CheatCleanAndFix
 Drone.CheatCleanAndFix = function(self)
-	self:CheatMalfunction()
 	CreateRealTimeThread(function()
+		self:CheatAddDust()
 		Sleep(1)
 		self.auto_connect = false
 		if self.malfunction_end_state then
@@ -614,11 +617,14 @@ Drone.CheatCleanAndFix = function(self)
  end)
 end
 BaseRover.CheatCleanAndFix = function(self)
-	self:CheatMalfunction()
 	CreateRealTimeThread(function()
+		self:CheatAddDust()
 		Sleep(1)
 		self:Repair()
  end)
+end
+function Drone:CheatAddDust()
+	self:AddDust(self.dust_max)
 end
 -- misc
 function SecurityStation:CheatReneagadeCapDbl()
