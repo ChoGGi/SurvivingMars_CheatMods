@@ -335,7 +335,6 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.SettingFuncs.ReadSettingsLocal(settings)
 		local ChoGGi = ChoGGi
-		local err
 
 		-- try to read settings
 		if not settings then

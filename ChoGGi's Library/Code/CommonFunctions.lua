@@ -62,16 +62,22 @@ end -- do
 
 do -- Translate
 	local T,_InternalTranslate,pack_params = T,_InternalTranslate,pack_params
-	local type,select = type,select
+	local type,select,pcall = type,select,pcall
+	-- some userdata refs UICity, which will fail if being used in main menu
+	local function SafeTrans(str)
+		return _InternalTranslate(str)
+	end
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
-		local str
+		local str,_
 		local stype = type(select(1,...))
 		if stype == "userdata" or stype == "number" then
-			str = _InternalTranslate(T(pack_params(...)))
+			str = T(pack_params(...))
 		else
-			str = _InternalTranslate(...)
+			str = ...
 		end
+		-- the first ret val from pcall is the status
+		_,str = pcall(SafeTrans,str)
 
 		-- just in case a
 		if type(str) ~= "string" then
@@ -115,8 +121,7 @@ end -- do
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
-	local ClassDescendantsList = ClassDescendantsList
-	local IsObjlist,type,tostring,pairs,rawget = IsObjlist,type,tostring,pairs,rawget
+	local IsObjlist,type,tostring,pairs = IsObjlist,type,tostring,pairs
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 
 	-- we use this table to display names of (some) tables for RetName
@@ -1627,6 +1632,9 @@ do -- Rebuildshortcuts
 		DisableUIL = true,
 		DE_UpsampledScreenshot = true,
 		DE_Screenshot = true,
+		DE_BugReport = true,
+		Tools = true,
+		["Tools.Extras"] = true,
 	}
 	-- auto-add all the TriggerDisaster ones (ok some)
 	local DataInstances = DataInstances

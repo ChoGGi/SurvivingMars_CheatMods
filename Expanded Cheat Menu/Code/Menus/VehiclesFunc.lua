@@ -4,7 +4,7 @@ function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local S = ChoGGi.Strings
 	local Trans = ChoGGi.ComFuncs.Translate
-	local RetName = ChoGGi.ComFuncs.RetName
+--~	local RetName = ChoGGi.ComFuncs.RetName
 
 	local default_icon = "UI/Icons/IPButtons/drone.tga"
 	local default_icon2 = "UI/Icons/IPButtons/transport_route.tga"

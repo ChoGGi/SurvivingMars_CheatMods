@@ -3,8 +3,6 @@
 -- add items/hint to the cheats pane
 
 local StringFormat = string.format
-local TableFind = table.find
-local DeleteThread = DeleteThread
 local CreateRealTimeThread = CreateRealTimeThread
 
 local RetName
@@ -49,8 +47,7 @@ function OnMsg.ClassesGenerate()
 		action.ActionIcon = icon
 	end
 
-	local cheats_thread
-	function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win,section)
+	function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 
 		local obj = win.context
 		local name = RetName(obj)

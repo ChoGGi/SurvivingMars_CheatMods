@@ -8,7 +8,7 @@ local FindThreadFunc
 local DotNameToObject
 local Trans
 
-local pairs,type,tostring = pairs,type,tostring
+local pairs,type = pairs,type
 local StringFormat = string.format
 
 function OnMsg.ClassesGenerate()
