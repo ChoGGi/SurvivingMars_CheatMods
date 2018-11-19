@@ -180,6 +180,21 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.NeverShowHints_Toggle,
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001412--[[GUI Dock Side--]]],
+		ActionMenubar = str_Help_Interface,
+		ActionId = ".GUI Dock Side",
+		ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.GUIDockSide and S[1000459--[[Right--]]] or S[1000457--[[Left--]]],
+				302535920001413--[[Change which side (most) GUI menus are on.--]]
+
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.GUIDockSide_Toggle,
+	}
+
 	local str_Help_ECM = "ECM.Help.Expanded Cheat Menu"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000000--[[Expanded Cheat Menu--]]]),

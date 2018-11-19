@@ -332,7 +332,7 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = S[302535920000325--[[Keep Cheats Menu Position--]]],
 		ActionMenubar = str_Cheats_Menu,
 		ActionId = ".Keep Cheats Menu Position",
-		ActionIcon = "CommonAssets/UI/Menu/CollectionsEditor.tga",
+		ActionIcon = "CommonAssets/UI/Menu/LockCollection.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.KeepCheatsMenuPosition,

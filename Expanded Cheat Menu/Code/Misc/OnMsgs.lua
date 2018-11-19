@@ -154,6 +154,14 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 			XTemplates.ipChoGGi_Entity:delete()
 		end
 
+		-- left? right? who cares? I do... *&^%$#@$ designers
+		if ChoGGi.UserSettings.GUIDockSide then
+			XTemplates.NewOverlayDlg[1].Dock = "right"
+			XTemplates.SaveLoadContentWindow[1].Dock = "right"
+			ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1],"Dock","left","Dock","right")
+			XTemplates.PhotoMode[1].Dock = "right"
+		end
+
 		PlaceObj("XTemplate", {
 			group = "Infopanel Sections",
 			id = "ipChoGGi_Entity",
@@ -1359,7 +1367,7 @@ do -- LoadGame/CityStart
 		-- first time run info
 		if UserSettings.FirstRun ~= false then
 			ChoGGi.ComFuncs.MsgWait(
-				StringFormat("%s\n%s",S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+				StringFormat("%s\n\n%s",S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],S[302535920001309--[["Stop showing these msgs: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(S[302535920001308--[[Settings--]]],S[302535920001112--[[Console Log--]]])),
 				StringFormat("%s %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000201--[[Active--]]]),
 				StringFormat("%sPreview.png",ChoGGi.ModPath)

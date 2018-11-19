@@ -13,6 +13,34 @@ function OnMsg.ClassesGenerate()
 	local print,tostring = print,tostring
 	local StringFormat = string.format
 
+	function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
+		local ChoGGi = ChoGGi
+		local XTemplates = XTemplates
+
+		if ChoGGi.UserSettings.GUIDockSide then
+			ChoGGi.UserSettings.GUIDockSide = false
+			-- command center and such
+			XTemplates.NewOverlayDlg[1].Dock = "left"
+			-- save/load screens
+			XTemplates.SaveLoadContentWindow[1].Dock = "left"
+			ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1],"Dock","right","Dock","left")
+			-- photomode
+			XTemplates.PhotoMode[1].Dock = "left"
+		else
+			ChoGGi.UserSettings.GUIDockSide = true
+			XTemplates.NewOverlayDlg[1].Dock = "right"
+			XTemplates.SaveLoadContentWindow[1].Dock = "right"
+			ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1],"Dock","left","Dock","right")
+			XTemplates.PhotoMode[1].Dock = "right"
+		end
+
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			ChoGGi.UserSettings.GUIDockSide and S[1000459--[[Right--]]] or S[1000457--[[Left--]]],
+			302535920001412--[[GUI Dock Side--]]
+		)
+	end
+
 	function ChoGGi.MenuFuncs.ToolTips_Toggle()
 		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.EnableToolTips = not ChoGGi.UserSettings.EnableToolTips
@@ -22,8 +50,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.UserSettings.EnableToolTips,
 				302535920001070--[[Restart to take effect.--]]
 			),
-			302535920001014--[[Toggle ToolTips--]],
-			"UI/Icons/Sections/attention.tga"
+			302535920001014--[[Toggle ToolTips--]]
 		)
 	end
 
@@ -490,10 +517,6 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.EditECMSettings()
 		local ChoGGi = ChoGGi
---~ 		-- make sure any changed settings are current
---~ 		if not ChoGGi.testing then
---~ 			ChoGGi.SettingFuncs.WriteSettings()
---~ 		end
 		-- load up settings file in the editor
 		ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 			text = TableToLuaCode(ChoGGi.UserSettings),
@@ -505,8 +528,6 @@ function OnMsg.ClassesGenerate()
 					local err,settings = LuaCodeToTuple(obj.idEdit:GetText())
 					if not err then
 						ChoGGi.UserSettings = ChoGGi.SettingFuncs.WriteSettings(settings)
---~ 						-- then read new settings
---~ 						ChoGGi.SettingFuncs.ReadSettings()
 						-- for now just updates console examine list
 						Msg("ChoGGi_SettingsUpdated")
 						MsgPopup(
@@ -552,19 +573,21 @@ Change DisableECM to false in settings file to re-enable them."--]]],S[302535920
 
 	function ChoGGi.MenuFuncs.TakeScreenshot(boolean)
 		local filename
-		if boolean == true then
-			CreateRealTimeThread(function()
-				WaitNextFrame(3)
-				LockCamera("Screenshot")
-				filename = GenerateScreenshotFilename("SSAA","AppData/")
-				MovieWriteScreenshot(filename, 0, 64, false)
-				UnlockCamera("Screenshot")
-			end)
-		else
-			filename = GenerateScreenshotFilename("SS","AppData/")
-			WriteScreenshot(filename)
-		end
-		print(ConvertToOSPath(filename))
+		CreateRealTimeThread(function()
+			if boolean == true then
+					WaitNextFrame(3)
+					LockCamera("Screenshot")
+					filename = GenerateScreenshotFilename("SSAA","AppData/")
+					MovieWriteScreenshot(filename, 0, 64, false)
+					UnlockCamera("Screenshot")
+			else
+				filename = GenerateScreenshotFilename("SS","AppData/")
+				WriteScreenshot(filename)
+			end
+			-- slight delay so it doesn't show up in the screenshot
+			Sleep(50)
+			print(ConvertToOSPath(filename))
+		end)
 	end
 
 	function ChoGGi.MenuFuncs.ResetECMSettings()

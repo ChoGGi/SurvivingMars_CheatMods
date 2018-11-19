@@ -277,20 +277,21 @@ function OnMsg.ClassesGenerate()
 			))
 			return false, DoneFuckedUp
 		end
+		return settings
 	end
 
 	-- read saved settings from file
-	function ChoGGi.SettingFuncs.ReadSettingsAdmin(settings_str)
+	function ChoGGi.SettingFuncs.ReadSettingsAdmin(settings)
 		local ChoGGi = ChoGGi
 		local err
 
 		-- try to read settings
-		if not settings_str then
-			err, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
+		if not settings then
+			err, settings = AsyncFileToString(ChoGGi.SettingsFile)
 			if err then
 				-- no settings file so make a new one and read it
 				ChoGGi.SettingFuncs.WriteSettingsOrig()
-				err, settings_str = AsyncFileToString(ChoGGi.SettingsFile)
+				err, settings = AsyncFileToString(ChoGGi.SettingsFile)
 				-- something is definitely wrong so just abort, and let user know
 				if err then
 					PrintError(err)
@@ -299,7 +300,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- and convert it to lua / update in-game settings
-		err, ChoGGi.UserSettings = LuaCodeToTuple(settings_str)
+		err, ChoGGi.UserSettings = LuaCodeToTuple(settings)
 		if err then
 			PrintError(err)
 		end
@@ -311,7 +312,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- all is well
-		return settings_str
+		return settings
 
 	end
 
