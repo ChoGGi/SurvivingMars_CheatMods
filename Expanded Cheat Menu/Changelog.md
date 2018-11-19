@@ -7,8 +7,12 @@
 ### Added:
 - Help>Interface>GUI Dock Side: Change which side (most) GUI menus are on.
 
+### Changed:
+- Cheats pane toggle is now a global setting (open it on one and it'll stay open on the next).
+
 ### Fixed:
 - Edit ECM Settings blanked out UserSettings when using HelperMod (just in-game, the actual settings are fine after restart).
+- Colonists cheats pane didn't work right (thanks Dawnmist).
 
 ## v10.8 (18 Nov 2018)
 - Settings have been migrated from AccountStorage to LocalStorage.

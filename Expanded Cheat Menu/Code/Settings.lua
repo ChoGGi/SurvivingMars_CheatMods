@@ -62,6 +62,8 @@ function OnMsg.ClassesGenerate()
 		FirstRun = true,
 		-- show Cheats pane in the selection panel
 		InfopanelCheats = true,
+		-- default to opened or closed (changed on click)
+		InfopanelCheatsVis = false,
 		-- removes some useless shit from the Cheats pane (unless you're doing the tutorial then not as useless it seems)
 		CleanupCheatsInfoPane = true,
 		-- maybe you don't want to see the interface in screenshots
