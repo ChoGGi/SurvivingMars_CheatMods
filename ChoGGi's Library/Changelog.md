@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v3.6 (Unreleased)
+- Changed my msg func to use an object that works in the main menu as well as in-game.
 
 ## v3.5 (18 Nov 2018)
 - Other mods using XShortcutsTarget shortcuts won't be borked from this mod.

@@ -605,29 +605,20 @@ function ChoGGi.ComFuncs.Circle(pos, radius, color, time)
 	end)
 end
 
--- centred msgbox with Ok, and optional image
-local WaitPopupNotification = WaitPopupNotification
-function ChoGGi.ComFuncs.MsgWait(text,title,image)
-	local PopupNotificationPresets = PopupNotificationPresets
-	-- add my fake preset popup
-	PopupNotificationPresets.ChoGGi_TempPopup = {
-		title = CheckText(title,S[1000016--[[Title--]]]),
-		text = CheckText(text,text),
-		name = "ChoGGi_TempPopup",
-		-- why every button needs a cc button is beyond me
-		no_ccc_button = true,
-		-- so it appears on screen instead of in a little popup
-		start_minimized = false,
-	}
-	if image then
-		PopupNotificationPresets.ChoGGi_TempPopup.image = image
-	end
-
-	-- we need a thread for the wait
+-- this is a question box without a question (WaitPopupNotification only works in-game, not main menu)
+function ChoGGi.ComFuncs.MsgWait(text,title,image,ok_text,context,parent)
 	CreateRealTimeThread(function()
-		WaitPopupNotification("ChoGGi_TempPopup")
-		-- and remove my preset after (if there's an image we don't want it added to the next msg)
-		PopupNotificationPresets.ChoGGi_TempPopup = nil
+		local dlg = CreateMarsQuestionBox(
+			CheckText(title,S[1000016--[[Title--]]]),
+			CheckText(text,S[3718--[[NONE--]]]),
+			CheckText(ok_text,S[6878--[[OK--]]]),
+			"",
+			parent,
+			image,
+			context
+		)
+		-- hide cancel button since we don't care about it, and we ignore them anyways...
+		dlg.idList[2]:delete()
 	end)
 end
 
@@ -4266,5 +4257,13 @@ function ChoGGi.ComFuncs.UpdateBuildMenu()
 
 		-- update item list (RefreshXBuildMenu())
 		dlg:SelectCategory(dlg.category)
+	end
+end
+
+function ChoGGi.ComFuncs.SetTableValue(tab,id,id_name,item,value)
+	local idx = TableFind(tab,id,id_name)
+	if idx then
+		tab[idx][item] = value
+		return tab[idx]
 	end
 end

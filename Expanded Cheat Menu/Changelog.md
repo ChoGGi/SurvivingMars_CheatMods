@@ -4,6 +4,11 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v10.9 (Unreleased)
+### Added:
+- Help>Interface>GUI Dock Side: Change which side (most) GUI menus are on.
+
+### Fixed:
+- Edit ECM Settings blanked out UserSettings when using HelperMod (just in-game, the actual settings are fine after restart).
 
 ## v10.8 (18 Nov 2018)
 - Settings have been migrated from AccountStorage to LocalStorage.
