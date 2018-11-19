@@ -944,15 +944,17 @@ function OnMsg.ClassesBuilt()
 			ipRover = true,
 		}
 
-		local function SetToolbar(section,cls)
+		local function SetToolbar(section,cls,toggle)
 			local toolbar = table.find(section.idContent,"class",cls)
-			toolbar = section.idContent[toolbar]
-			toolbar.FoldWhenHidden = true
-			toolbar:SetVisible()
-			return toolbar
+			if toolbar then
+				toolbar = section.idContent[toolbar]
+				toolbar.FoldWhenHidden = true
+				toolbar:SetVisible(toggle)
+				return toolbar
+			end
 		end
 
-		local function ToggleVisSection(section,toolbar,toggle)
+		local function ToggleVisSection(section,toolbar,toggle,cheats)
 			section.OnMouseEnter = function()
 				section.idHighlight:SetVisible(true)
 			end
@@ -968,6 +970,9 @@ function OnMsg.ClassesBuilt()
 					toolbar:SetVisible(true)
 					toggle = true
 				end
+				if cheats then
+					UserSettings.InfopanelCheatsVis = toggle
+				end
 			end
 		end
 
@@ -976,7 +981,7 @@ function OnMsg.ClassesBuilt()
 
 			-- give me the scroll. goddamn it blinky
 			if UserSettings.ScrollSelection and infopanel_list[self.XTemplate] then
-				self.idActionsFrame.parent:SetZOrder(2)
+				self.idActionButtons.parent:SetZOrder(2)
 				ChoGGi.ComFuncs.AddScrollDialogXTemplates(self)
 			end
 
@@ -1046,10 +1051,13 @@ function OnMsg.ClassesBuilt()
 							section.HandleMouse = true
 							section.MouseCursor = "UI/Cursors/Rollover.tga"
 							section.RolloverText = S[302535920001410--[[Toggle Visibility--]]]
-							local toolbar = SetToolbar(section,"XToolBar")
+							local toggle = false
+							if UserSettings.InfopanelCheatsVis then
+								toggle = true
+							end
+							local toolbar = SetToolbar(section,"XToolBar",toggle)
 
-							local toggle
-							ToggleVisSection(section,toolbar,toggle)
+ 							ToggleVisSection(section,toolbar,toggle,true)
 							-- sets the scale of the cheats icons
 							for j = 1, #toolbar do
 								toolbar[j].idIcon:SetMaxHeight(30)
@@ -1057,9 +1065,12 @@ function OnMsg.ClassesBuilt()
 								toolbar[j].idIcon:SetImageFit("largest")
 							end
 
-						elseif title == 235--[[Traits--]] or (title == 702480492408--[[Residents--]] and self.context.capacity ~= self.context.base_capacity) then
-							local toggle
-							ToggleVisSection(section,SetToolbar(section,"XContextControl"),toggle)
+--~ 						elseif title == 235--[[Traits--]] then
+--~ 							local toggle = false
+--~ 							ToggleVisSection(section,SetToolbar(section,"XWindow",toggle),toggle)
+						elseif title == 702480492408--[[Residents--]] and self.context.capacity ~= self.context.base_capacity then
+							local toggle = false
+							ToggleVisSection(section,SetToolbar(section,"XContextControl",toggle),toggle)
 
 						end
 					end -- UserSettings.ScrollSelection
