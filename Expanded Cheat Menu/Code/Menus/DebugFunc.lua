@@ -407,10 +407,11 @@ function OnMsg.ClassesGenerate()
 
 		local ItemList = {}
 
-		for id,state in pairs(sel:GetStates() or {}) do
-			ItemList[#ItemList+1] = {
-				text = StringFormat("%s: %s %s: %s",S[1000037--[[Name--]]],state,S[302535920000858--[[Index--]]],id),
-				value = state,
+		local states = sel:GetStates() or ""
+		for i = 1, #states do
+			ItemList[i] = {
+				text = StringFormat("%s: %s, %s: %s",S[302535920000858--[[Index--]]],i,S[1000037--[[Name--]]],states[i]),
+				value = states[i],
 			}
 		end
 
@@ -420,7 +421,7 @@ function OnMsg.ClassesGenerate()
 			end
 
 			local value = choice[1].value
-			sel:SetStateText(value)
+			sel:SetState(value)
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text,3722--[[State--]]),
 				302535920000859--[[Anim State--]]
@@ -580,7 +581,7 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	do --path markers
+	do -- path markers
 		local randcolours = {}
 		local colourcount = 0
 		local dupewppos = {}
@@ -840,6 +841,11 @@ function OnMsg.ClassesGenerate()
 				{text = S[5438--[[Rovers--]]],value = "BaseRover"},
 				{text = S[745--[[Shuttles--]]],value = "CargoShuttle",hint = 302535920000873--[[Doesn't work that well.--]]},
 			}
+			local aliens
+			if rawget(_G,"ChoGGi_Alien") then
+				aliens = true
+				ItemList[#ItemList+1] = {text = "Alien Visitors",value = "ChoGGi_Alien"}
+			end
 
 			local function CallBackFunc(choice)
 				if #choice < 1 then
@@ -854,6 +860,9 @@ function OnMsg.ClassesGenerate()
 					ClearColourAndWP("CargoShuttle")
 					ClearColourAndWP("Unit")
 					ClearColourAndWP("Colonist")
+					if aliens then
+						ClearColourAndWP("ChoGGi_Alien")
+					end
 
 					-- remove any extra lines
 					MapDelete("map", "ChoGGi_Polyline")

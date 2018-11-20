@@ -9,10 +9,14 @@
 
 ### Changed:
 - Cheats pane toggle is now a global setting (open it on one and it'll stay open on the next).
+- Examine now lists (hopefully) all attachments (some obj have a .anim_obj from Gagarin).
+- Cheats pane>CleanAndFix works better now.
 
 ### Fixed:
 - Edit ECM Settings blanked out UserSettings when using HelperMod (just in-game, the actual settings are fine after restart).
 - Colonists cheats pane didn't work right (thanks Dawnmist).
+- Sponsor Building Limits didn't unlock rovers properly (thanks Zend/Olaf).
+- Using the Object Spawner and setting certain anims and than changing the entity crashed the game (that one took a bit to figure out).
 
 ## v10.8 (18 Nov 2018)
 - Settings have been migrated from AccountStorage to LocalStorage.

@@ -229,6 +229,7 @@ DefineClass.ChoGGi_CheckButtonMenu = {
 	TextStyle = "ChoGGi_CheckButtonMenu",
 	RolloverAnchor = "smart",
 	Background = light_gray,
+	PressedBackground = medium_gray,
 	TextHAlign = "left",
 	RolloverBackground = rollover_blue,
 	Margins = box(4,0,0,0),
@@ -255,6 +256,7 @@ DefineClass.ChoGGi_List = {
 
 	Background = dark_gray,
 	FocusedBackground = darker_gray,
+	loaded = false,
 }
 function ChoGGi_List:CreateTextItem(text, props, context)
 	local g_Classes = g_Classes

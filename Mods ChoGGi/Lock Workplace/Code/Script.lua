@@ -9,7 +9,7 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	-- version to version check with
-	local min_version = 29
+	local min_version = 35
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
@@ -47,12 +47,8 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function OnMsg.ClassesBuilt()
-
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipColonist[1],"ChoGGi_LockworkplaceColonist")
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionWorkplace[1],"ChoGGi_LockworkplaceWorkplace")
-
 		-- add button to colonists
-		ChoGGi.ComFuncs.AddXTemplate("LockworkplaceColonist","ipColonist",{
+		ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipColonist[1],"LockworkplaceColonist",nil,{
 			__context_of_kind = "Colonist",
 			OnContextUpdate = function(self, context)
 				---
@@ -89,7 +85,7 @@ function OnMsg.ClassesGenerate()
 			end,
 		})
 
-		ChoGGi.ComFuncs.AddXTemplate("LockworkplaceWorkplace","sectionWorkplace",{
+		ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace,"LockworkplaceWorkplace",nil,{
 			__context_of_kind = "Workplace",
 			OnContextUpdate = function(self, context)
 				---

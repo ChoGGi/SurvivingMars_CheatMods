@@ -55,8 +55,13 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 
 	function self.idList.OnMouseButtonDown(obj,pt,button)
 		g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
-		self:idListOnMouseButtonDown(button)
+		self:idListOnSelect(button)
 	end
+	function self.idList.OnKbdKeyUp(...)
+		g_Classes.ChoGGi_List.OnKbdKeyUp(...)
+		self:idListOnSelect("L")
+	end
+
 	function self.idList.OnMouseButtonDoubleClick(_,_,button)
 		self:idListOnMouseButtonDoubleClick(button)
 	end
@@ -442,11 +447,12 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 	if not txt or txt == "" then
 		return
 	end
+	txt = txt:lower()
 	-- loop through all the list items and remove any we can't find
 	local count = #self.idList
 	for i = count, 1, -1 do
 		local li = self.idList[i]
-		if not (li.idText.text:find_lower(txt) or li.RolloverText:find_lower(txt) or i == count) then
+		if not (li.idText.text:find_lower(txt) or li.RolloverText:find_lower(txt) or li.RolloverTitle:find_lower(txt) or i == count) then
 			table.remove(self.idList,i)
 		end
 	end
@@ -503,7 +509,7 @@ function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged(colour)
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(button)
+function ChoGGi_ListChoiceDlg:idListOnSelect(button)
 	if not self.idList.focused_item then
 		return
 	end

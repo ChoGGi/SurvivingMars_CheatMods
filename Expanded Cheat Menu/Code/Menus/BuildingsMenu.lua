@@ -615,9 +615,9 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001398--[[Sponsor Building Limits--]]],
+	Actions[c] = {ActionName = S[302535920001398--[[Remove Sponsor Limits--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
-		ActionId = ".Sponsor Building Limits",
+		ActionId = ".Remove Sponsor Limits",
 		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(

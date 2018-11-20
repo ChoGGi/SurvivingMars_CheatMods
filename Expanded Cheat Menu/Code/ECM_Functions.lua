@@ -392,6 +392,7 @@ function OnMsg.ClassesGenerate()
 						"Pos",ChoGGi.ComFuncs.CursorNearestHex()
 					})
 				end
+				obj:SetState("idle")
 				obj:ChangeEntity(value)
 
 				MsgPopup(

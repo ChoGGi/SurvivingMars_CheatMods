@@ -264,6 +264,8 @@ function OnMsg.ClassesGenerate()
 				BuildExamineItem("UICity.labels"),
 				BuildExamineItem("UICity.tech_status"),
 				BuildExamineItem("g_ApplicantPool"),
+				BuildExamineItem("BuildMenuPrerequisiteOverrides"),
+				BuildExamineItem("BuildingTechRequirements"),
 			}
 		end
 

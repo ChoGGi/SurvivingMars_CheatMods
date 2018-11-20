@@ -1,0 +1,2 @@
+v0.2
+Didn't unlock rovers and maybe more (thanks Zend/Olaf).

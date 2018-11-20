@@ -106,8 +106,8 @@ function OnMsg.ClassesPostprocess()
 	})
 	-- ButtonMenu
 	PlaceObj("ChoGGi_TextStyle", {
-		RolloverTextColor = white,
 		TextColor = black,
+		RolloverTextColor = white,
 		TextFont = Editor16Bold,
 		id = "ChoGGi_ButtonMenu",
 	})

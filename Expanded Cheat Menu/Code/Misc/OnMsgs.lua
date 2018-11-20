@@ -149,11 +149,6 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		-- add rollovers to cheats toolbar
 		XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"
 
-		-- added to stuff spawned with object spawner
-		if XTemplates.ipChoGGi_Entity then
-			XTemplates.ipChoGGi_Entity:delete()
-		end
-
 		-- left? right? who cares? I do... *&^%$#@$ designers
 		if ChoGGi.UserSettings.GUIDockSide then
 			XTemplates.NewOverlayDlg[1].Dock = "right"
@@ -162,11 +157,17 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 			XTemplates.PhotoMode[1].Dock = "right"
 		end
 
+		-- added to stuff spawned with object spawner
+		if XTemplates.ipChoGGi_Entity then
+			XTemplates.ipChoGGi_Entity:delete()
+		end
+
 		PlaceObj("XTemplate", {
 			group = "Infopanel Sections",
 			id = "ipChoGGi_Entity",
 			PlaceObj("XTemplateTemplate", {
-				"__condition", function (_, context) return context.ChoGGi_Spawned end,
+--~ 				"__condition", function (_, context) return context.ChoGGi_Spawned end,
+				"__context_of_kind", "ChoGGi_BuildingEntityClass",
 				"__template", "Infopanel",
 			}, {
 
@@ -353,9 +354,10 @@ function OnMsg.ModsReloaded()
 
 	end -- DisableECM
 
+	local BuildingTechRequirements = BuildingTechRequirements
 	local spon_str = "sponsor_status%s"
 	local spon_str2 = "sponsor_status%s_ChoGGi_orig"
-	for _,bld in pairs(BuildingTemplates) do
+	for id,bld in pairs(BuildingTemplates) do
 
 		-- remove sponsor limits on buildings
 		if UserSettings.SponsorBuildingLimits then
@@ -366,6 +368,15 @@ function OnMsg.ModsReloaded()
 					bld[spon_str2:format(i)] = bld[str]
 					bld[str] = false
 				end
+			end
+
+			local name = id
+			if name:find("RC") and name:find("Building") then
+				name = name:gsub("Building","")
+			end
+			local idx = table.find(BuildingTechRequirements[id],"check_supply",name)
+			if idx then
+				table.remove(BuildingTechRequirements[id],idx)
 			end
 		end
 
