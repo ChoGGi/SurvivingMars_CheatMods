@@ -1446,40 +1446,40 @@ function Examine:SetObj(startup)
 		end
 
 		-- attaches button/menu
-		if IsValid(obj) and obj.ForEachAttach then
-			TableIClear(self.attaches_menu_popup)
-			local attach_amount = 0
+		TableIClear(self.attaches_menu_popup)
+		local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
+		local attach_amount = #attaches
 
-			obj:ForEachAttach(function(a)
-				attach_amount = attach_amount + 1
-				local pos = a.GetVisualPos and a:GetVisualPos()
+		for i = 1, attach_amount do
+			local a = attaches[i]
+			local pos = a.GetVisualPos and a:GetVisualPos()
 
-				self.attaches_menu_popup[attach_amount] = {
-					name = RetName(a),
-					hint = StringFormat("%s\n%s: %s\npos: %s",
-						a.class,
-						S[302535920000955--[[Handle--]]],
-						a.handle or S[6761--[[None--]]],
-						pos
-					),
-					showme = a,
-					clicked = function()
-						ChoGGi.ComFuncs.OpenInExamineDlg(a,self)
-					end,
-				}
+			self.attaches_menu_popup[i] = {
+				name = RetName(a),
+				hint = StringFormat("%s\n%s: %s\npos: %s",
+					a.class,
+					S[302535920000955--[[Handle--]]],
+					a.handle or S[6761--[[None--]]],
+					pos
+				),
+				showme = a,
+				clicked = function()
+					ChoGGi.ComFuncs.OpenInExamineDlg(a,self)
+				end,
+			}
+
+		end
+
+		if attach_amount > 0 then
+			TableSort(self.attaches_menu_popup, function(a, b)
+				return CmpLower(a.name, b.name)
 			end)
 
-			if attach_amount > 0 then
-				TableSort(self.attaches_menu_popup, function(a, b)
-					return CmpLower(a.name, b.name)
-				end)
-
-				self.idAttaches:SetVisible(true)
-				self.idAttaches.RolloverText = S[302535920000070--[["Shows list of attachments. This %s has %s.
+			self.idAttaches:SetVisible(true)
+			self.idAttaches.RolloverText = S[302535920000070--[["Shows list of attachments. This %s has %s.
 Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAssets/UI/Menu/NoblePreview.tga 2500>")
-			else
-				self.idAttaches:SetVisible()
-			end
+		else
+			self.idAttaches:SetVisible()
 		end
 
 	end -- istable

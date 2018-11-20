@@ -2,6 +2,9 @@
 
 ## v3.6 (Unreleased)
 - Changed my msg func to use an object that works in the main menu as well as in-game.
+- Gagarin changed how certain buildings work, so change object colour and examine weren't able to list all attachments.
+- List dialog filter items checks for more text.
+- Checkbox menu item background turns the same colour as other menu items.
 
 ## v3.5 (18 Nov 2018)
 - Other mods using XShortcutsTarget shortcuts won't be borked from this mod.

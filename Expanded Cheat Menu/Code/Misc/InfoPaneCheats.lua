@@ -244,15 +244,23 @@ function OnMsg.ClassesGenerate()
 				else
 					SetHint(action,S[302535920001246--[[Changes colour of %s back to default.--]]]:format(name))
 				end
+			-- when i added a "working" AddDust to rockets it showed up twice, so i'm lazy
+			elseif action.ActionId == "AddDust2" then
+				SetHint(action,S[302535920001225--[[Adds dust and maintenance points.--]]])
+				action.ActionName = "AddDust"
+
 			elseif action.ActionId == "AddDust" then
-				if obj:IsKindOfClasses("SupplyRocket","UniversalStorageDepot","WasteRockDumpSite") then
+				if obj:IsKindOfClasses("UniversalStorageDepot","WasteRockDumpSite") then
 					action.ActionId = ""
 				else
 					SetHint(action,S[302535920001225--[[Adds dust and maintenance points.--]]])
 --~ 					SetIcon(action,nil,"UI/Icons/Notifications/dust_storm.tga")
 				end
+			elseif action.ActionId == "CleanAndFix2" then
+				SetHint(action,S[302535920001226--[[Cleans dust and removes maintenance points.--]]])
+				action.ActionName = "CleanAndFix"
 			elseif action.ActionId == "CleanAndFix" then
-				if obj:IsKindOfClasses("SupplyRocket","UniversalStorageDepot","WasteRockDumpSite") then
+				if obj:IsKindOfClasses("UniversalStorageDepot","WasteRockDumpSite") then
 					action.ActionId = ""
 				else
 					SetHint(action,S[302535920001226--[[Cleans dust and removes maintenance points.--]]])
@@ -595,10 +603,17 @@ Drone.CheatMoveSpeedDef = CheatMoveSpeedDef
 BaseRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
 BaseRover.CheatMoveSpeedDef = CheatMoveSpeedDef
 -- CheatCleanAndFix
+local function CheatAddDust(self)
+	self.dust = self:GetDustMax()-1
+	self:SetDustVisuals()
+end
+Drone.CheatAddDust = CheatAddDust
+BaseRover.CheatAddDust = CheatAddDust
+
 Drone.CheatCleanAndFix = function(self)
 	CreateRealTimeThread(function()
 		self:CheatAddDust()
-		Sleep(1)
+		Sleep(10)
 		self.auto_connect = false
 		if self.malfunction_end_state then
 			self:PlayState(self.malfunction_end_state, 1)
@@ -607,7 +622,9 @@ Drone.CheatCleanAndFix = function(self)
 			end
 		end
 		self:SetState("idle")
-		self:AddDust(-self.dust_max)
+--~ 		self:AddDust(-self.dust_max-1)
+		self.dust = 0
+		self:SetDustVisuals()
 		self.command = ""
 		self:SetCommand("Idle")
 		RebuildInfopanel(self)
@@ -616,13 +633,18 @@ end
 BaseRover.CheatCleanAndFix = function(self)
 	CreateRealTimeThread(function()
 		self:CheatAddDust()
-		Sleep(1)
+		Sleep(10)
+		self.dust = 0
+		self:SetDustVisuals()
 		self:Repair()
  end)
 end
-function Drone:CheatAddDust()
-	self:AddDust(self.dust_max)
+local orig_Building_CheatCleanAndFix = Building.CheatCleanAndFix
+function Building:CheatCleanAndFix()
+	self:CheatAddDust()
+	orig_Building_CheatCleanAndFix(self)
 end
+
 -- misc
 function SecurityStation:CheatReneagadeCapDbl()
 	self.negated_renegades = self.negated_renegades * 2
@@ -646,6 +668,14 @@ function SupplyRocket:CheatAddFuel()
 	self.refuel_request:SetAmount(total)
 	Msg("RocketRefueled", self)
 	RebuildInfopanel(self)
+end
+function SupplyRocket:CheatAddDust2()
+	self:SetDust(600,0)
+	ApplyToObjAndAttaches(self, SetObjDust, 600)
+end
+function SupplyRocket:CheatCleanAndFix2()
+	self:SetDust(0,0)
+	ApplyToObjAndAttaches(self, SetObjDust, 0)
 end
 
 function Sinkhole:CheatSpawnFirefly()

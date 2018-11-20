@@ -2307,20 +2307,11 @@ function ChoGGi.ComFuncs.ObjectColourRandom(obj)
 	local attaches = {}
 	local c = 0
 
-	-- add regular attachments
-	if obj.ForEachAttach then
-		obj:ForEachAttach("ColorizableObject",function(a)
+	local a_list = ChoGGi.ComFuncs.GetAllAttaches(obj)
+	for i = 1, #a_list do
+		if a_list[i]:IsKindOf("ColorizableObject") then
 			c = c + 1
-			attaches[c] = {obj = a,c = {}}
-		end)
-	end
-
-	-- add any non-attached attaches
-	local IsValid = IsValid
-	for _,a in pairs(obj) do
-		if IsValid(a) and a:IsKindOf("ColorizableObject") then
-			c = c + 1
-			attaches[c] = {obj = a,c = {}}
+			attaches[c] = {obj = a_list[i],c = {}}
 		end
 	end
 
@@ -3242,63 +3233,55 @@ function ChoGGi.ComFuncs.RemoveXTemplateSections(list,name,value)
 	end
 end
 
-function ChoGGi.ComFuncs.AddXTemplate(name,template,list,toplevel)
-	if not name or not template or not list then
+local AddXTemplateNew = function(xt,name,pos,list)
+	if not xt or not name or not list then
 		local ValueToLuaCode = ValueToLuaCode
 		print(S[302535920001383--[[AddXTemplate borked template name: %s template: %s list: %s--]]]:format(name and ValueToLuaCode(name),template and ValueToLuaCode(template),list and ValueToLuaCode(list)))
 		return
 	end
 	local stored_name = StringFormat("ChoGGi_Template_%s",name)
-	local XTemplates = XTemplates
 
-	if toplevel then
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates[template],stored_name)
-		XTemplates[template][#XTemplates[template]+1] = PlaceObj("XTemplateTemplate", {
-			stored_name, true,
-			"__condition", list.__condition or function()
-				return true
-			end,
-			"__context_of_kind", list.__context_of_kind or "",
-			"__template", list.__template or "InfopanelActiveSection",
-			"Title", list.Title or S[1000016--[[Title--]]],
-			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
-			"RolloverTitle", list.RolloverTitle or S[126095410863--[[Info--]]],
-			"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
-			"RolloverHint", list.RolloverHint or "",
-			"OnContextUpdate", list.OnContextUpdate or empty_func,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(self)
-						return self.parent
-					end,
-				"func", list.func or empty_func,
-			})
+	ChoGGi.ComFuncs.RemoveXTemplateSections(xt,stored_name)
+
+	table.insert(xt,pos or #xt,PlaceObj("XTemplateTemplate", {
+		stored_name, true,
+		"__condition", list.__condition or function()
+			return true
+		end,
+		"__context_of_kind", list.__context_of_kind or "",
+		"__template", list.__template or "InfopanelActiveSection",
+		"Title", list.Title or S[1000016--[[Title--]]],
+		"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
+		"RolloverTitle", list.RolloverTitle or S[126095410863--[[Info--]]],
+		"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
+		"RolloverHint", list.RolloverHint or "",
+		"OnContextUpdate", list.OnContextUpdate or empty_func,
+	}, {
+		PlaceObj("XTemplateFunc", {
+			"name", "OnActivate(self, context)",
+			"parent", function(self)
+					return self.parent
+				end,
+			"func", list.func or empty_func,
 		})
+	}))
+end
+
+--~ AddXTemplateNew(XTemplates.ipColonist[1],"LockworkplaceColonist",nil,{
+--~ AddXTemplate("SolariaTelepresence_sectionWorkplace1","sectionWorkplace",{
+--~ function ChoGGi.ComFuncs.AddXTemplate(name,template,list,toplevel)
+
+function ChoGGi.ComFuncs.AddXTemplate(xt,name,pos,list)
+	-- old: name,template,list,toplevel
+	-- new  xt,		name,		pos,	list
+	if type(xt) == "string" then
+		if list then
+			AddXTemplateNew(XTemplates[name],xt,nil,pos)
+		else
+			AddXTemplateNew(XTemplates[name][1],xt,nil,pos)
+		end
 	else
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates[template][1],stored_name)
-		XTemplates[template][1][#XTemplates[template][1]+1] = PlaceObj("XTemplateTemplate", {
-			stored_name, true,
-			"__condition", list.__condition or function()
-				return true
-			end,
-			"__context_of_kind", list.__context_of_kind or "",
-			"__template", list.__template or "InfopanelActiveSection",
-			"Title", list.Title or S[1000016--[[Title--]]],
-			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
-			"RolloverTitle", list.RolloverTitle or S[126095410863--[[Info--]]],
-			"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
-			"RolloverHint", list.RolloverHint or "",
-			"OnContextUpdate", list.OnContextUpdate or empty_func,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(self)
-						return self.parent
-					end,
-				"func", list.func or empty_func,
-			})
-		})
+		AddXTemplateNew(xt,name,pos,list)
 	end
 end
 
@@ -4043,7 +4026,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 	local c = 0
 
 	-- has no Attaches so just open as is
-	if obj:GetNumAttaches() == 0 then
+	if obj.GetNumAttaches and obj:GetNumAttaches() == 0 then
 		ChoGGi.ComFuncs.ChangeObjectColour(obj)
 		return
 	else
@@ -4054,40 +4037,20 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 			obj = obj,
 			hint = 302535920001106--[[Change main object colours.--]],
 		}
-		-- check and add attachments
-		if obj.ForEachAttach then
-			obj:ForEachAttach(function(a)
-				if a:IsKindOf("ColorizableObject") then
-					c = c + 1
-					ItemList[c] = {
-						text = a.class,
-						value = a.class,
-						parentobj = obj,
-						obj = a,
-						hint = StringFormat("%s\n%s: %s",S[302535920001107--[[Change colours of an attached object.--]]],S[302535920000955--[[Handle--]]],a.handle),
-					}
-				end
-			end)
-		end
-		-- any attaches not attached in the traditional sense
-		local IsValid = IsValid
-		for _,attach in pairs(obj) do
-			if IsValid(attach) and attach:IsKindOf("ColorizableObject") then
+		local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
+		for i = 1, #attaches do
+			local a = attaches[i]
+			if a:IsKindOf("ColorizableObject") then
 				c = c + 1
 				ItemList[c] = {
-					text = attach.class,
-					value = attach.class,
+					text = a.class,
+					value = a.class,
 					parentobj = obj,
-					obj = attach,
-					hint = 302535920001107--[[Change colours of an attached object.--]],
+					obj = a,
+					hint = StringFormat("%s\n%s: %s",S[302535920001107--[[Change colours of an attached object.--]]],S[302535920000955--[[Handle--]]],a.handle),
 				}
 			end
 		end
-
-	end
-
-	local function FiredOnMenuClick(sel,dialog)
-		ChoGGi.ComFuncs.ChangeObjectColour(sel[1].obj,sel[1].parentobj,dialog)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
@@ -4095,7 +4058,9 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 		title = StringFormat("%s: %s",S[174--[[Color Modifier--]]],RetName(obj)),
 		hint = 302535920001108--[[Double click to open object/attachment to edit (select to flash object).--]],
 		custom_type = 1,
-		custom_func = FiredOnMenuClick,
+		custom_func = function(sel,dialog)
+			ChoGGi.ComFuncs.ChangeObjectColour(sel[1].obj,sel[1].parentobj,dialog)
+		end,
 		select_flash = true,
 	}
 end
@@ -4266,4 +4231,41 @@ function ChoGGi.ComFuncs.SetTableValue(tab,id,id_name,item,value)
 		tab[idx][item] = value
 		return tab[idx]
 	end
+end
+
+function ChoGGi.ComFuncs.GetAllAttaches(obj)
+	local IsValid = IsValid
+	local attaches = {}
+	if not IsValid(obj) then
+		return attaches
+	end
+	local c = 0
+
+	-- add regular attachments
+	if obj.ForEachAttach then
+		obj:ForEachAttach(function(a)
+			if IsValid(a) then
+				c = c + 1
+				attaches[c] = a
+			end
+		end)
+	end
+	-- add any non-attached attaches
+	for _,a in pairs(obj) do
+		if a ~= obj and IsValid(a) then
+			c = c + 1
+			attaches[c] = a
+		end
+	end
+	-- and the anim_obj added in gagarin
+	if IsValid(obj.anim_obj) then
+		for _,a in pairs(obj.anim_obj) do
+			if a ~= obj and IsValid(a) then
+				c = c + 1
+				attaches[c] = a
+			end
+		end
+	end
+
+	return attaches
 end
