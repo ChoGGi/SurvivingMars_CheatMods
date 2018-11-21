@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001248,Sort normally or backwards.,
 302535920001249,,
 302535920001415,,
 302535920001416,,
@@ -248,6 +247,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000870,Shows any errors from loading mods in console log.,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920001248,Sort normally or backwards.,
 302535920001397,"These can be used as obj:GetNAME() / obj:SetNAME().
 You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 Check the actual object/g_Classes.object for the correct value to use (Entity > entity).
@@ -282,7 +282,7 @@ This dialog will freeze till you click something.",
 302535920000520,Parents,
 302535920000525,Ancestors,
 302535920000553,Examine parent and ancestor objects.,
-302535920000414,Are you sure you wish to destroy it?,
+302535920000414,Are you sure you wish to delete it?,
 302535920000323,Exec Code,
 302535920000239,Tools,
 302535920000228,Assign to,
