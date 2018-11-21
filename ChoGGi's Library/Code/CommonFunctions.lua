@@ -130,14 +130,6 @@ do -- RetName
 	local function AfterLoad()
 		local g = ChoGGi.Temp._G or _G
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
-		if g.UICity then
-			lookup_table[g.UICity.labels] = "UICity.labels"
-			lookup_table[g.UICity.tech_status] = "UICity.tech_status"
---~ 			local str = "labels.%s"
---~ 			for key,label in pairs(g.UICity.labels) do
---~ 				lookup_table[g.UICity.labels[key]] = str:format(key)
---~ 			end
-		end
 		-- any tables in _G
 		for key in pairs(g) do
 			if not lookup_table[g[key]] and type(g[key]) == "table" then
@@ -354,80 +346,127 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 end
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
-do -- ShowMe
+do -- ShowObj
 	local IsPoint = IsPoint
+	local IsValid = IsValid
 	local green = green
 	local guic = guic
 	local IsPointInBounds = terrain.IsPointInBounds
 	local ViewObjectMars = ViewObjectMars
+	local InvalidPos = ChoGGi.Consts.InvalidPos
+	local xyz_str = "%s%s%s"
 
 	local markers = {}
-	function ChoGGi.ComFuncs.ClearShowMe()
-		-- some markers have been added
-		if next(markers) then
-			for k, v in pairs(markers) do
-				if IsValid(k) then
-					if v == "point" or v == "vector" then
-						k:delete()
-					else
-						k:SetColorModifier(v)
-					end
-					markers[k] = nil
-				end
+	function ChoGGi.ComFuncs.fghghfghffghgfh()
+		ex(markers)
+	end
+
+	local function ClearMarker(k,v)
+		v = v or markers[k]
+		if IsValid(k) then
+			if v == "vector" or k:IsKindOf("ChoGGi_Sphere") then
+				k:delete()
+			else
+				k:SetColorModifier(v)
 			end
+		end
+		if IsValid(v) and v:IsKindOf("ChoGGi_Sphere") then
+			v:delete()
+		end
+
+		markers[k] = nil
+		ChoGGi.ComFuncs.RestoreOldPalette(k)
+	end
+	function ChoGGi.ComFuncs.ClearShowObj(obj)
+		SuspendPassEdits("ClearShowObj")
+		-- try and clean up just asked for, and if not then all
+		if IsValid(obj) and markers[obj] then
+			ClearMarker(obj)
+			ClearMarker(xyz_str:format(obj:GetVisualPos():xyz()))
+		-- any markers in the list
+		elseif next(markers) then
+			for k, v in pairs(markers) do
+				ClearMarker(k,v)
+			end
+			table.clear(markers)
 		-- could be from a saved game so remove any objects on the map
 		else
-			SuspendPassEdits("ClearShowMe")
 			MapDelete("map", "ChoGGi_Vector","ChoGGi_Sphere")
-			ResumePassEdits("ClearShowMe")
+		end
+		ResumePassEdits("ClearShowObj")
+	end
+	local ClearShowObj = ChoGGi.ComFuncs.ClearShowObj
+
+	function ChoGGi.ComFuncs.ColourObj(obj, color)
+		if not IsValid(obj) then
+			return
+		end
+		if not obj:IsKindOf("ColorizableObject") then
+			return
+		end
+		color = color or green
+
+		ChoGGi.ComFuncs.SaveOldPalette(obj)
+		markers[obj] = markers[obj] or obj:GetColorModifier()
+		obj:SetColorModifier(color)
+	end
+
+	function ChoGGi.ComFuncs.ShowPoints(obj, color, time, both)
+		if type(obj) ~= "table" then
+			return
+		end
+--~ 		if IsPoint(obj[1]) and IsPoint(obj[2]) and IsPointInBounds(obj[1]) and IsPointInBounds(obj[2]) then
+		if IsPoint(obj[1]) and IsPoint(obj[2]) and InvalidPos ~= obj[1] and InvalidPos ~= obj[2] then
+			local vector = ChoGGi_Vector:new()
+			vector:Set(obj[1], obj[2], color)
+			markers[vector] = "vector"
 		end
 	end
 
-	local clear = ChoGGi.ComFuncs.ClearShowMe
-	function ChoGGi.ComFuncs.ShowMe(o, color, time, both)
-		if not o then
-			return clear()
+	function ChoGGi.ComFuncs.ShowObj(obj, color, skip_view, mark_both)
+		if markers[obj] then
+			return
 		end
-		local g_Classes = g_Classes
+		local is_valid = IsValid(obj)
+		local is_point = IsPoint(obj)
+		if not (is_valid or is_point) then
+			return ClearShowObj()
+		end
 		color = color or green
+		local vis_pos = is_valid and obj:GetVisualPos()
 
-		if type(o) == "table" and #o == 2 then
-			if IsPoint(o[1]) and IsPointInBounds(o[1]) and IsPoint(o[2]) and IsPointInBounds(o[2]) then
-				local m = g_Classes.ChoGGi_Vector:new()
-				m:Set(o[1], o[2], color)
-				markers[m] = "vector"
-				o = m
-			end
-		else
-			-- both is for objs i also want a sphere over
-			if IsPoint(o) or both then
-				local o2 = IsPoint(o) and o or IsValid(o) and o:GetVisualPos()
-				if o2 and IsPointInBounds(o2) then
-					local m = g_Classes.ChoGGi_Sphere:new()
-					m:SetPos(o2)
-					m:SetRadius(50 * guic)
-					m:SetColor(color)
-					markers[m] = "point"
-					if not time then
-						ViewObjectMars(o2)
-					end
---~ 					o2 = m
+		-- both is for objs i also want a sphere over
+		if is_point or mark_both then
+			local pt = is_point and obj or vis_pos
+			if pt and pt ~= InvalidPos and not markers[pt] then
+				local xyz = xyz_str:format(pt:xyz())
+				if not markers[xyz] then
+					local sphere = ChoGGi_Sphere:new()
+					sphere:SetPos(pt)
+					sphere:SetRadius(50 * guic)
+					sphere:SetColor(color)
+					markers[xyz] = sphere
+				end
+				if not skip_view then
+					ViewObjectMars(pt)
 				end
 			end
 
-			if IsValid(o) and both ~= "single" then
-				markers[o] = markers[o] or o:GetColorModifier()
-				o:SetColorModifier(color)
-				local pos = o:GetVisualPos()
-				if not time and IsPointInBounds(pos) then
-					ViewObjectMars(pos)
-				end
+		end
+
+		if is_valid and mark_both ~= "single" then
+			markers[obj] = markers[obj] or obj:GetColorModifier()
+			ChoGGi.ComFuncs.SaveOldPalette(obj)
+			obj:SetColorModifier(color)
+			if not skip_view and vis_pos ~= InvalidPos then
+				ViewObjectMars(vis_pos)
 			end
 		end
 	end
 end -- do
-local ShowMe = ChoGGi.ComFuncs.ShowMe
-local ClearShowMe = ChoGGi.ComFuncs.ClearShowMe
+local ShowObj = ChoGGi.ComFuncs.ShowObj
+local ColourObj = ChoGGi.ComFuncs.ColourObj
+local ClearShowObj = ChoGGi.ComFuncs.ClearShowObj
 
 function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 	local g_Classes = g_Classes
@@ -492,11 +531,20 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 			end
 		end
 
-		local showme_func
+		local showobj_func
+		-- don't change showme till i update pin expander (and examine)
 		if item.showme then
-			showme_func = function()
-				ClearShowMe()
-				ShowMe(item.showme, nil, true, true)
+			showobj_func = function()
+				ClearShowObj()
+				ShowObj(item.showme, nil, true, true)
+			end
+		end
+
+		local colourobj_func
+		if item.colourobj then
+			colourobj_func = function()
+				ClearShowObj()
+				ColourObj(item.colourobj)
 			end
 		end
 
@@ -531,14 +579,17 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		end
 
 		-- add our mouseenter funcs
-		if showme_func or pos_func or submenu_func then
-			function button:OnMouseEnter(pt, child)
-				cls.OnMouseEnter(self, pt, child)
-				if showme_func then
-					showme_func(self, pt, child)
+		if showobj_func or colourobj_func or pos_func or submenu_func then
+			function button:OnMouseEnter(pt, child,...)
+				cls.OnMouseEnter(self, pt, child,...)
+				if showobj_func then
+					showobj_func()
+				end
+				if colourobj_func then
+					colourobj_func()
 				end
 				if pos_func then
-					pos_func(self, pt, child)
+					pos_func()
 				end
 				if submenu_func then
 					submenu_func(self, pt, child)
@@ -724,11 +775,9 @@ end
 --]]
 
 --[[
-	table.sort(Items,
-		function(a,b)
-			return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
-		end
-	)
+	table.sort(Items,function(a,b)
+		return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
+	end)
 --]]
 function ChoGGi.ComFuncs.CompareTableValue(a,b,name)
 	if not a and not b then
@@ -742,11 +791,9 @@ function ChoGGi.ComFuncs.CompareTableValue(a,b,name)
 end
 
 --[[
-table.sort(s.command_centers,
-	function(a,b)
-		return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",s)
-	end
-)
+table.sort(s.command_centers, function(a,b)
+	return ChoGGi.ComFuncs.CompareTableFuncs(a,b,"GetDist2D",s)
+end)
 --]]
 function ChoGGi.ComFuncs.CompareTableFuncs(a,b,func,obj)
 	if not a and not b then
@@ -956,11 +1003,9 @@ function ChoGGi.ComFuncs.RetTableNoClassDupes(list)
 		return empty_table
 	end
 	local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
-	table.sort(list,
-		function(a,b)
-			return CompareTableValue(a,b,"class")
-		end
-	)
+	table.sort(list,function(a,b)
+		return CompareTableValue(a,b,"class")
+	end)
 	local tempt = {}
 	local dupe = {}
 	local c = 0
@@ -1208,18 +1253,14 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pt)
 
 	-- sort list custom
 	if sort then
-		table.sort(list,
-			function(a,b)
-				return a[sort] < b[sort]
-			end
-		)
+		table.sort(list,function(a,b)
+			return a[sort] < b[sort]
+		end)
 	else
 		-- sort nearest
-		table.sort(list,
-			function(a,b)
-				return a:GetDist2D(pt) < b:GetDist2D(pt)
-			end
-		)
+		table.sort(list,function(a,b)
+			return a:GetDist2D(pt) < b:GetDist2D(pt)
+		end)
 	end
 
 	return list
@@ -2235,18 +2276,21 @@ function ChoGGi.ComFuncs.GetNearestIdleDrone(bld)
 end
 
 function ChoGGi.ComFuncs.SaveOldPalette(obj)
-	if obj and not obj.ChoGGi_origcolors and obj:IsKindOf("ColorizableObject") then
+	if not obj.ChoGGi_origcolors and obj:IsKindOf("ColorizableObject") then
 		obj.ChoGGi_origcolors = {
 			{obj:GetColorizationMaterial(1)},
 			{obj:GetColorizationMaterial(2)},
 			{obj:GetColorizationMaterial(3)},
 			{obj:GetColorizationMaterial(4)},
 		}
+		obj.ChoGGi_origcolors[-1] = obj:GetColorModifier()
 	end
 end
+
 function ChoGGi.ComFuncs.RestoreOldPalette(obj)
-	if obj and obj.ChoGGi_origcolors then
+	if obj.ChoGGi_origcolors then
 		local c = obj.ChoGGi_origcolors
+		obj:SetColorModifier(c[-1])
 		obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
 		obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
 		obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
@@ -2342,14 +2386,13 @@ function ChoGGi.ComFuncs.ObjectColourRandom(obj)
 		obj = attaches[i].obj
 		local c = attaches[i].c
 
+		ChoGGi.ComFuncs.SaveOldPalette(obj)
+
 		-- likely can only change basecolour
 --~ 		if obj:GetColorizationMaterial(1) == 8421504 and obj:GetColorizationMaterial(2) == 8421504 and obj:GetColorizationMaterial(3) == 8421504 and obj:GetColorizationMaterial(4) == 8421504 then
 		if obj:GetMaxColorizationMaterials() == 0 then
 			obj:SetColorModifier(c[1])
 		else
-			if not obj.ChoGGi_origcolors then
-				ChoGGi.ComFuncs.SaveOldPalette(obj)
-			end
 			-- object,1,Color, Roughness, Metallic
 			obj:SetColorizationMaterial(1, c[1], Random(-255,255), Random(-255,255))
 			obj:SetColorizationMaterial(2, c[2], Random(-255,255), Random(-255,255))
@@ -2360,37 +2403,20 @@ function ChoGGi.ComFuncs.ObjectColourRandom(obj)
 
 end
 
-function ChoGGi.ComFuncs.SetDefColour(obj)
-	obj:SetColorModifier(6579300)
-	if obj.ChoGGi_origcolors then
-		local c = obj.ChoGGi_origcolors
-		obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
-		obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
-		obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
-		obj:SetColorizationMaterial(4, c[4][1], c[4][2], c[4][3])
-	end
-end
-
 function ChoGGi.ComFuncs.ObjectColourDefault(obj)
 	obj = obj or ChoGGi.ComFuncs.SelObject()
 	if not obj then
 		return
 	end
-	local SetDefColour = ChoGGi.ComFuncs.SetDefColour
+	local RestoreOldPalette = ChoGGi.ComFuncs.RestoreOldPalette
 
 	if IsValid(obj) and obj:IsKindOf("ColorizableObject") then
-		SetDefColour(obj)
+		RestoreOldPalette(obj)
 	end
-	-- regular attaches
-	if obj.ForEachAttach then
-		obj:ForEachAttach("ColorizableObject",SetDefColour)
-	end
-	-- other attaches
-	local IsValid = IsValid
-	for _,a in pairs(obj) do
-		if IsValid(a) and a:IsKindOf("ColorizableObject") then
-			SetDefColour(a)
-		end
+
+	local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
+	for i = 1, #attaches do
+		RestoreOldPalette(attaches[i])
 	end
 
 end
@@ -2600,23 +2626,23 @@ do -- ChangeObjectColour
 				end
 
 				--store table so it's the same as was displayed
-				table.sort(choice,
-					function(a,b)
-						return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
-					end
-				)
+				table.sort(choice,function(a,b)
+					return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
+				end)
 				-- All of type checkbox
 				if choice[1].check1 then
 					local tab = UICity.labels[label] or ""
 					for i = 1, #tab do
 						if parent then
-							tab[i]:ForEachAttach(function(a)
+
+							local attaches = ChoGGi.ComFuncs.GetAllAttaches(tab[i])
+							for i = 1, #attaches do
 								if choice[1].check2 then
-									CheckGrid(fake_parent,SetOrigColours,a,tab[i],choice)
+									CheckGrid(fake_parent,SetOrigColours,attaches[i],tab[i],choice)
 								else
-									CheckGrid(fake_parent,SetColours,a,tab[i],choice)
+									CheckGrid(fake_parent,SetColours,attaches[i],tab[i],choice)
 								end
-							end)
+							end
 
 						else --not parent
 							if choice[1].check2 then
@@ -4244,7 +4270,7 @@ function ChoGGi.ComFuncs.GetAllAttaches(obj)
 	-- add regular attachments
 	if obj.ForEachAttach then
 		obj:ForEachAttach(function(a)
-			if IsValid(a) then
+			if IsValid(a) and not a:IsKindOfClasses("BuildingSign","ExplorableObject","TerrainDeposit") then
 				c = c + 1
 				attaches[c] = a
 			end
@@ -4252,7 +4278,7 @@ function ChoGGi.ComFuncs.GetAllAttaches(obj)
 	end
 	-- add any non-attached attaches
 	for _,a in pairs(obj) do
-		if a ~= obj and IsValid(a) then
+		if a ~= obj and IsValid(a) and not a:IsKindOfClasses("BuildingSign","ExplorableObject","TerrainDeposit") then
 			c = c + 1
 			attaches[c] = a
 		end
@@ -4260,7 +4286,7 @@ function ChoGGi.ComFuncs.GetAllAttaches(obj)
 	-- and the anim_obj added in gagarin
 	if IsValid(obj.anim_obj) then
 		for _,a in pairs(obj.anim_obj) do
-			if a ~= obj and IsValid(a) then
+			if a ~= obj and IsValid(a) and not a:IsKindOfClasses("BuildingSign","ExplorableObject","TerrainDeposit") then
 				c = c + 1
 				attaches[c] = a
 			end
@@ -4269,3 +4295,17 @@ function ChoGGi.ComFuncs.GetAllAttaches(obj)
 
 	return attaches
 end
+
+do -- PadNumWithZeros
+	local str = "%s%s"
+	local tostring = tostring
+	-- 100,10000 = "00100"
+	function ChoGGi.ComFuncs.PadNumWithZeros(num,pad)
+		num = tostring(num)
+		pad = tostring(pad)
+		while #num < #pad do
+			num = str:format("0",num)
+		end
+		return num
+	end
+end -- do

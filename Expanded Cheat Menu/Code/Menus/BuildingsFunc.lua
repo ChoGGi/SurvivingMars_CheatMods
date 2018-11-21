@@ -660,12 +660,17 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
+--~ 		local BuildingTechRequirements = BuildingTechRequirements
 		local function CallBackFunc(choice)
 			if #choice < 1 then
 				return
 			end
 			for i = 1, #choice do
-				UnlockBuilding(choice[i].value)
+				local value = choice[i].value
+				UnlockBuilding(value)
+--~ 				if BuildingTechRequirements[value] then
+--~ 					BuildingTechRequirements[value] = nil
+--~ 				end
 			end
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 			MsgPopup(

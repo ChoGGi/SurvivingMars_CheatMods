@@ -4,15 +4,8 @@
 
 local StringFormat = string.format
 local TableSort = table.sort
-local TableClear = table.clear
 local Sleep = Sleep
 local CmpLower = CmpLower
-
-local getinfo
-local debug = rawget(_G,"debug")
-if debug then
-	getinfo = debug.getinfo
-end
 
 function OnMsg.ClassesGenerate()
 	local ChoGGi = ChoGGi
@@ -23,36 +16,6 @@ function OnMsg.ClassesGenerate()
 	local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
-
-	local MonitorThreads_thread
-	function ChoGGi.ConsoleFuncs.MonitorThreads()
-		if blacklist then
-			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("MonitorThreads"))
-			return
-		end
-
-		local thread_str = "%s(%s) %s"
-		local thread_table = {}
-		local ex = ChoGGi.ComFuncs.OpenInExamineDlg(thread_table)
-		ex.idAutoRefresh:SetCheck(true)
-		ex:idAutoRefreshToggle()
-		DeleteThread(MonitorThreads_thread)
-		MonitorThreads_thread = CreateRealTimeThread(function()
-			-- stop when dialog is closed
-			while ex.window_state ~= "destroying" do
-				TableClear(thread_table)
-				for thread in pairs(ThreadsRegister) do
-					local info = getinfo(thread, 1, "Slfun")
-					if info then
-						thread_table[thread_str:format(info.short_src,info.linedefined,thread)] = thread
-					end
-				end
-				TableSort(thread_table)
-				Sleep(1000)
-			end
-			print("sdfsdfsdfdsfdsfds")
-		end)
-	end
 
 	local ConsolePopupToggle_list = {
 		{
@@ -290,7 +253,7 @@ function OnMsg.ClassesGenerate()
 					name = "_MonitorThreads_",
 					hint = StringFormat("%s: %s",S[302535920000491--[[Examine Object--]]],"_MonitorThreads_"),
 					clicked = function()
-						ChoGGi.ConsoleFuncs.MonitorThreads()
+						ChoGGi.ComFuncs.MonitorThreads()
 					end,
 				},
 				BuildExamineItem("ThreadsMessageToThreads"),
