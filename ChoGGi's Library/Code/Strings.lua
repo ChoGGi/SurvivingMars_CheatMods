@@ -283,13 +283,14 @@ local Strings = {
 	[460479110814] = TranslationTable[460479110814], -- Enabled
 	[487939677892] = TranslationTable[487939677892], -- Help
 	[584248706535] = _InternalTranslate(T{584248706535}), -- Carrying<right><ResourceAmount>
-	[591853191640] = _InternalTranslate(T{591853191640}), -- Empty list
+	[591853191640] = TranslationTable[591853191640], -- Empty list
 	[619281504128] = TranslationTable[619281504128], -- Maintenance
 	[640016954592] = TranslationTable[640016954592], -- Remove this switch or valve.
 	[652319561018] = TranslationTable[652319561018], -- All Traits
 	[847439380056] = TranslationTable[847439380056], -- Disabled
 	[885971788025] = TranslationTable[885971788025], -- Outside Buildings
 	[889032422791] = TranslationTable[889032422791], -- OUTSOURCE
+	[948928900281] = TranslationTable[948928900281], -- Story Bits
 	[979029137252] = TranslationTable[979029137252], -- Scanned an Anomaly
 	[987289847467] = TranslationTable[987289847467], -- Age Groups
 }

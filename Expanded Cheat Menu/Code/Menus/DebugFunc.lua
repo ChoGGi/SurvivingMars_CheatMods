@@ -12,6 +12,60 @@ function OnMsg.ClassesGenerate()
 
 	--~ local TerrainTextures = TerrainTextures
 
+	function ChoGGi.MenuFuncs.ForceStoryBits()
+		local StoryBits = StoryBits
+
+		local ItemList = {}
+		local c = 0
+
+		local story_table = {}
+		local hint_str = "%s: %s\n\n%s\n\n<image %s>"
+		local title_str = "%s: %s"
+		for id,state in pairs(g_StoryBitStates) do
+			c = c + 1
+			local story = StoryBits[id]
+			table.clear(story_table)
+			for i = 1, #story do
+				if story[i].Name and story[i].Value then
+					story_table[story[i].Name] = story[i].Value
+				end
+			end
+			local title = story.Title and Trans(story.Title) or id
+			if not (title:find(": ") or title:find(" - ",1,true)) then
+				title = title_str:format(story.group,title)
+			end
+			ItemList[c] = {
+				text = title,
+				value = id,
+				voiced = story.VoicedText,
+				hint = hint_str:format(
+					S[302535920001358--[[Group--]]],
+					story.group,
+					Trans(T{story.Text,"",story_table}),
+					story.Image
+				),
+			}
+		end
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+
+			MsgPopup(
+				"I said they don't do jack shit...",
+				948928900281--[[Story Bits--]]
+			)
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = 948928900281--[[Story Bits--]],
+			hint = 302535920001359--[["Just lists them for now, I'll make it force them soonish."--]],
+		}
+	end
+
 	do -- PostProcGrids
 		local SetPostProcPredicate = SetPostProcPredicate
 		function ChoGGi.MenuFuncs.PostProcGrids(grid_type)

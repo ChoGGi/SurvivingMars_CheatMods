@@ -92,6 +92,7 @@ function OnMsg.ClassesGenerate()
 			"HandleToObject",
 			"PersistableGlobals",
 			"Presets",
+			"StoryBits",
 			"TaskRequesters",
 			"ThreadsRegister",
 			"TranslationTable",

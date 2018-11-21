@@ -128,6 +128,15 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SetDroneType,
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001247--[[Start Challenge--]]],
+		ActionMenubar = str_ExpandedCM_Mission,
+		ActionId = ".Start Challenge",
+		ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
+		RolloverText = S[302535920001249--[[Shows a list of challenges you can start (replaces current).--]]],
+		OnAction = ChoGGi.MenuFuncs.StartChallenge,
+	}
+
 	local str_ExpandedCM_Mission_Disasters = "ECM.Expanded CM.Mission.Disasters"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[3983--[[Disasters--]]]),

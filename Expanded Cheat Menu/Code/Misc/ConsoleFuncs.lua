@@ -17,6 +17,182 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 
+	-- created when we create the controls controls the first time
+	local ExamineMenuToggle_list = {}
+	-- to add each item
+	local function BuildExamineItem(name,title)
+		if not name then
+			return
+		end
+		local obj = DotNameToObject(name)
+		local func = type(obj) == "function"
+		local disp = title or StringFormat("%s%s",name,func and "()" or "")
+		return {
+			name = disp,
+			hint = StringFormat("%s: %s",S[302535920000491--[[Examine Object--]]],disp),
+			clicked = function()
+				if func then
+					OpenInExamineDlg(obj())
+				else
+					OpenInExamineDlg(name,"str",disp)
+				end
+			end,
+		}
+	end
+	--
+	local function AddSubmenu(name,list,title)
+		local submenu = table.find(ExamineMenuToggle_list,"name",name)
+		if submenu then
+			list = list or empty_table
+			ExamineMenuToggle_list[submenu].hint = nil
+			if title then
+				ExamineMenuToggle_list[submenu].name = title
+			end
+			ExamineMenuToggle_list[submenu].submenu = {BuildExamineItem(name)}
+			local c = 1
+			for i = 1, #list do
+				c = c + 1
+				ExamineMenuToggle_list[submenu].submenu[c] = BuildExamineItem(list[i])
+			end
+			return ExamineMenuToggle_list[submenu].submenu
+		end
+	end
+	local function AddMonitor(name,submenu,idx)
+		table.insert(submenu,idx or 2,{
+			name = StringFormat("%s: %s",S[302535920000853--[[Monitor--]]],name),
+			hint = StringFormat("ChoGGi.ComFuncs.MonitorTableLength(%s)",name),
+			clicked = function()
+				ChoGGi.ComFuncs.MonitorTableLength(DotNameToObject(name))
+			end,
+		})
+	end
+	-- build list of objects to examine
+	local function BuildExamineMenu()
+		table.iclear(ExamineMenuToggle_list)
+
+		local list = ChoGGi.UserSettings.ConsoleExamineList or ""
+		local submenu
+
+		TableSort(list,function(a,b)
+			-- damn eunuchs
+			return CmpLower(a,b)
+		end)
+
+		for i = 0, #list do
+			ExamineMenuToggle_list[i] = BuildExamineItem(list[i])
+		end
+
+		-- add submenus to certain items
+		submenu = table.find(ExamineMenuToggle_list,"name","Presets")
+		if submenu then
+			-- remove hint from "submenu" menu
+			ExamineMenuToggle_list[submenu].hint = nil
+
+			-- build a list of Descendants of Preset
+			local submenu_table = {}
+			local c = 0
+			-- dupe skipper
+			local names_list = {}
+			ClassDescendantsList("Preset", function(_, cls)
+				if cls.GlobalMap and cls.GlobalMap ~= "" and not names_list[cls.GlobalMap] then
+					names_list[cls.GlobalMap] = true
+					c = c + 1
+					submenu_table[c] = BuildExamineItem(cls.GlobalMap)
+				end
+			end)
+
+			TableSort(submenu_table,
+				function(a,b)
+					-- damn eunuchs
+					return CmpLower(a.name,b.name)
+				end
+			)
+			-- add orig to the menu (we want it at start so no sorting)
+			table.insert(submenu_table,1,BuildExamineItem("Presets"))
+			-- and done
+			ExamineMenuToggle_list[submenu].submenu = submenu_table
+		end
+		--
+		submenu = table.find(ExamineMenuToggle_list,"name","DataInstances")
+		if submenu then
+			ExamineMenuToggle_list[submenu].hint = nil
+			-- we need to build a list
+			local submenu_table = {}
+			local c = 0
+			-- same for DataInstances
+			for key in pairs(DataInstances) do
+				c = c + 1
+				submenu_table[c] = BuildExamineItem(StringFormat("DataInstances.%s",key),key)
+			end
+
+			TableSort(submenu_table,
+				function(a,b)
+					-- damn eunuchs
+					return CmpLower(a.name,b.name)
+				end
+			)
+
+			-- add orig to the menu (we want it at start so no sorting)
+			table.insert(submenu_table,1,BuildExamineItem("DataInstances"))
+			-- and done
+			ExamineMenuToggle_list[submenu].submenu = submenu_table
+		end
+		--
+		submenu = AddSubmenu("_G",{"PropertySetMethod"})
+		if submenu then
+			AddMonitor("__cobjectToCObject",submenu)
+			AddMonitor("HandleToObject",submenu)
+			AddMonitor("DeletedCObjects",submenu)
+			AddMonitor("Flight_MarkedObjs",submenu)
+			AddMonitor("_G",submenu)
+		end
+
+		submenu = AddSubmenu("ThreadsRegister",{"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers"})
+		if submenu then
+			table.insert(submenu,2,{
+				name = StringFormat("%s: %s",S[302535920000853--[[Monitor--]]],"ThreadsRegister"),
+				hint = "ChoGGi.ComFuncs.MonitorThreads()",
+				clicked = function()
+					ChoGGi.ComFuncs.MonitorThreads()
+				end,
+			})
+		end
+		--
+		AddSubmenu("Consts",{"g_Consts","const","ModifiablePropScale"})
+		AddSubmenu("UICity",{"UICity.labels","UICity.tech_status","g_ApplicantPool","BuildMenuPrerequisiteOverrides","BuildingTechRequirements"})
+		AddSubmenu("Dialogs",{"terminal.desktop","GetInGameInterface"})
+		AddSubmenu("g_Classes",{"ClassTemplates","EntityData"})
+		AddSubmenu("TranslationTable",{"const.TagLookupTable"})
+		AddSubmenu("FXRules",{"FXLists"})
+		AddSubmenu("StoryBits",{"StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},S[948928900281--[[Story Bits--]]])
+		--
+
+		-- bonus addition at the top
+		table.insert(ExamineMenuToggle_list,1,{
+			name = 302535920001376--[[Auto Update List--]],
+			hint = 302535920001377--[[Update this list when ECM updates it.--]],
+			class = "ChoGGi_CheckButtonMenu",
+			value = "ChoGGi.UserSettings.ConsoleExamineListUpdate",
+			clicked = function()
+				ChoGGi.UserSettings.ConsoleExamineListUpdate = not ChoGGi.UserSettings.ConsoleExamineListUpdate
+				ChoGGi.SettingFuncs.WriteSettings()
+			end,
+		})
+		-- bonus addition at bottom
+		ExamineMenuToggle_list[#ExamineMenuToggle_list+1] = {
+			name = 302535920001378--[[XWindow Inspector--]],
+			hint = 302535920001379--[[Opens up the window inspector with terminal.desktop.--]],
+			clicked = function()
+				ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
+			end,
+		}
+	end
+
+	-- rebuild list of objects to examine when user changes settings
+	function OnMsg.ChoGGi_SettingsUpdated()
+		BuildExamineMenu()
+	end
+
 	local ConsolePopupToggle_list = {
 		{
 			name = 302535920000040--[[Exec Code--]],
@@ -122,228 +298,6 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 		PopupToggle(self,"idHistoryMenuPopup",items)
-	end
-
-	-- created when we create the controls controls the first time
-	local ExamineMenuToggle_list = {}
-	-- to add each item
-	local function BuildExamineItem(name,title)
-		if not name then
-			return
-		end
-		local obj = DotNameToObject(name)
-		local func = type(obj) == "function"
-		local disp = title or StringFormat("%s%s",name,func and "()" or "")
-		return {
-			name = disp,
-			hint = StringFormat("%s: %s",S[302535920000491--[[Examine Object--]]],disp),
-			clicked = function()
-				if func then
-					OpenInExamineDlg(obj())
-				else
-					OpenInExamineDlg(name,"str",disp)
-				end
-			end,
-		}
-	end
-	-- build list of objects to examine
-	local function BuildExamineMenu()
-		table.iclear(ExamineMenuToggle_list)
-
-		local list = ChoGGi.UserSettings.ConsoleExamineList or ""
-
-		TableSort(list,function(a,b)
-			-- damn eunuchs
-			return CmpLower(a,b)
-		end)
-
-		for i = 0, #list do
-			ExamineMenuToggle_list[i] = BuildExamineItem(list[i])
-		end
-
-		-- if _G then add a submenu with some more shit
-		local submenu = table.find(ExamineMenuToggle_list,"name","_G")
-		if submenu then
-			ExamineMenuToggle_list[submenu].hint = nil
-			ExamineMenuToggle_list[submenu].submenu = {
-				BuildExamineItem("_G"),
-				{
-					name = S[302535920001247--[[Monitor _G Tables--]]],
-					hint = "ChoGGi.ComFuncs.MonitorTableLength(_G)",
-					clicked = function()
-						ChoGGi.ComFuncs.MonitorTableLength(_G)
-					end,
-				},
-			}
-		end
-
-		-- Presets
-		submenu = table.find(ExamineMenuToggle_list,"name","Presets")
-		if submenu then
-			-- remove hint from "submenu" menu
-			ExamineMenuToggle_list[submenu].hint = nil
-
-			-- build a list of Descendants of Preset
-			local submenu_table = {}
-			local c = 0
-			-- dupe skipper
-			local names_list = {}
-			ClassDescendantsList("Preset", function(_, cls)
-				if cls.GlobalMap and cls.GlobalMap ~= "" and not names_list[cls.GlobalMap] then
-					names_list[cls.GlobalMap] = true
-					c = c + 1
-					submenu_table[c] = BuildExamineItem(cls.GlobalMap)
-				end
-			end)
-
-			TableSort(submenu_table,
-				function(a,b)
-					-- damn eunuchs
-					return CmpLower(a.name,b.name)
-				end
-			)
-			-- add orig to the menu
-			table.insert(submenu_table,1,BuildExamineItem("Presets"))
-			-- and done
-			ExamineMenuToggle_list[submenu].submenu = submenu_table
-		end
-
-		-- DataInstances
-		submenu = table.find(ExamineMenuToggle_list,"name","DataInstances")
-		if submenu then
-			ExamineMenuToggle_list[submenu].hint = nil
-			-- we need to build a list
-			local submenu_table = {}
-			local c = 0
-			-- same for DataInstances
-			for key in pairs(DataInstances) do
-				c = c + 1
-				submenu_table[c] = BuildExamineItem(StringFormat("DataInstances.%s",key),key)
-			end
-
-			TableSort(submenu_table,
-				function(a,b)
-					-- damn eunuchs
-					return CmpLower(a.name,b.name)
-				end
-			)
-
-			-- add orig to the menu
-			table.insert(submenu_table,1,BuildExamineItem("DataInstances"))
-			-- and done
-			ExamineMenuToggle_list[submenu].submenu = submenu_table
-		end
-
-		-- UICity
-		submenu = table.find(ExamineMenuToggle_list,"name","UICity")
-		if submenu then
-			ExamineMenuToggle_list[submenu].hint = nil
-			ExamineMenuToggle_list[submenu].submenu = {
-				BuildExamineItem("UICity"),
-				BuildExamineItem("UICity.labels"),
-				BuildExamineItem("UICity.tech_status"),
-				BuildExamineItem("g_ApplicantPool"),
-				BuildExamineItem("BuildMenuPrerequisiteOverrides"),
-				BuildExamineItem("BuildingTechRequirements"),
-			}
-		end
-
-		-- Consts
-		submenu = table.find(ExamineMenuToggle_list,"name","Consts")
-		if submenu then
-			ExamineMenuToggle_list[submenu].hint = nil
-			ExamineMenuToggle_list[submenu].submenu = {
-				BuildExamineItem("Consts"),
-				BuildExamineItem("g_Consts"),
-				BuildExamineItem("const"),
-			}
-		end
-
-		-- ThreadsRegister
-		submenu = table.find(ExamineMenuToggle_list,"name","ThreadsRegister")
-		if submenu then
-			ExamineMenuToggle_list[submenu].hint = nil
-			ExamineMenuToggle_list[submenu].submenu = {
-				BuildExamineItem("ThreadsRegister"),
-				{
-					name = S[302535920000853--[[Monitor Threads--]]],
-					hint = "ChoGGi.ComFuncs.MonitorThreads()",
-					clicked = function()
-						ChoGGi.ComFuncs.MonitorThreads()
-					end,
-				},
-				BuildExamineItem("ThreadsMessageToThreads"),
-				BuildExamineItem("ThreadsThreadToMessage"),
-				BuildExamineItem("s_SeqListPlayers"),
-			}
-		end
-
-		-- Dialogs
-		submenu = table.find(ExamineMenuToggle_list,"name","Dialogs")
-		if submenu then
-			ExamineMenuToggle_list[submenu].hint = nil
-			ExamineMenuToggle_list[submenu].submenu = {
-				BuildExamineItem("Dialogs"),
-				BuildExamineItem("terminal.desktop"),
-				BuildExamineItem("GetInGameInterface"),
-			}
-		end
-
-		-- g_Classes
-		submenu = table.find(ExamineMenuToggle_list,"name","g_Classes")
-		if submenu then
-			ExamineMenuToggle_list[submenu].hint = nil
-			ExamineMenuToggle_list[submenu].submenu = {
-				BuildExamineItem("g_Classes"),
-				BuildExamineItem("ClassTemplates"),
-				BuildExamineItem("EntityData"),
-			}
-		end
-
-		-- TranslationTable
-		submenu = table.find(ExamineMenuToggle_list,"name","TranslationTable")
-		if submenu then
-			ExamineMenuToggle_list[submenu].hint = nil
-			ExamineMenuToggle_list[submenu].submenu = {
-				BuildExamineItem("TranslationTable"),
-				BuildExamineItem("const.TagLookupTable"),
-			}
-		end
-
-		-- FXRules
-		submenu = table.find(ExamineMenuToggle_list,"name","FXRules")
-		if submenu then
-			ExamineMenuToggle_list[submenu].hint = nil
-			ExamineMenuToggle_list[submenu].submenu = {
-				BuildExamineItem("FXRules"),
-				BuildExamineItem("FXLists"),
-			}
-		end
-
-		-- bonus addition at the top
-		table.insert(ExamineMenuToggle_list,1,{
-			name = 302535920001376--[[Auto Update List--]],
-			hint = 302535920001377--[[Update this list when ECM updates it.--]],
-			class = "ChoGGi_CheckButtonMenu",
-			value = "ChoGGi.UserSettings.ConsoleExamineListUpdate",
-			clicked = function()
-				ChoGGi.UserSettings.ConsoleExamineListUpdate = not ChoGGi.UserSettings.ConsoleExamineListUpdate
-				ChoGGi.SettingFuncs.WriteSettings()
-			end,
-		})
-		-- bonus addition at bottom
-		ExamineMenuToggle_list[#ExamineMenuToggle_list+1] = {
-			name = 302535920001378--[[XWindow Inspector--]],
-			hint = 302535920001379--[[Opens up the window inspector with terminal.desktop.--]],
-			clicked = function()
-				ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
-			end,
-		}
-	end
-
-	-- rebuild list of objects to examine when user changes settings
-	function OnMsg.ChoGGi_SettingsUpdated()
-		BuildExamineMenu()
 	end
 
 	function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)

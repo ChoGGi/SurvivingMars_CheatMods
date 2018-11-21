@@ -8,6 +8,15 @@ function OnMsg.ClassesGenerate()
 	local c = #Actions
 
 	c = c + 1
+	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920001416--[[Force--]]],S[948928900281--[[Story Bits--]]]),
+		ActionMenubar = "ECM.Debug",
+		ActionId = ".Force Story Bits",
+		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+		RolloverText = S[302535920001359--[["Just lists them for now, I'll make it force them soonish."--]]],
+		OnAction = ChoGGi.MenuFuncs.ForceStoryBits,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = S[302535920001314--[[Toggle Render--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Toggle Render",

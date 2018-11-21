@@ -1,2 +1,7 @@
+v0.3
+Broke in Gagarin (thanks Rentha).
+Changed default shortcut from O to [ (O is mission goals).
+Cleaning up code (ChoGGi's Library).
+
 v0.2
 Restored some missing funcs (mouseover info for resources).

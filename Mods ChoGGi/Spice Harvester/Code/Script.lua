@@ -219,7 +219,9 @@ function OnMsg.ClassesBuilt()
 	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1],"Melanger_Destroy")
 	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1],"SolariaTelepresence_Melanger_Section")
 
-	ChoGGi.ComFuncs.AddXTemplate("Melanger_Destroy","ipAttackRover",{
+	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipAttackRover[1],"Melanger_Destroy",nil,{
+
+--~ 	ChoGGi.ComFuncs.AddXTemplate("Melanger_Destroy","ipAttackRover",{
 		__context_of_kind = "Melanger",
 		Icon = "UI/Icons/Sections/resource_no_accept.tga",
 		Title = [[Destroy]],

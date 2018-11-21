@@ -692,6 +692,14 @@ Which you can then mess around with some more in the console."--]]],
 		},
 		{name = "	 ---- "},
 		{
+			name = S[174--[[Color Modifier--]]],
+			hint = S[302535920000693--[[Select/mouse over an object to change the colours
+Use Shift- or Ctrl- for random colours/reset colours.--]]],
+			clicked = function()
+				ChoGGi.ComFuncs.ChangeObjectColour(self.obj_ref)
+			end,
+		},
+		{
 			name = S[302535920001369--[[Ged Editor--]]],
 			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
 			clicked = function()
@@ -962,6 +970,8 @@ function Examine:HyperLink(f, custom_color)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
+local ExamineThreadLevel_str1 = "%s < debug.getlocal(%s,%s)"
+local ExamineThreadLevel_str2 = "debug.getupvalue(%s,%s)"
 local function ExamineThreadLevel_totextex(level,info,obj,self)
 	local ExamineThreadLevel_data
 	if blacklist then
@@ -973,7 +983,7 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 		repeat
 			name, val = getlocal(obj, level, l)
 			if name then
-				ExamineThreadLevel_data[name] = val
+				ExamineThreadLevel_data[ExamineThreadLevel_str1:format(name,level,l)] = val
 				l = l + 1
 			else
 				break
@@ -983,7 +993,7 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 		for i = 1, info.nups do
 			local name, val = getupvalue(info.func, i)
 			if name ~= nil and val ~= nil then
-				ExamineThreadLevel_data[StringFormat("%s (up)",name)] = val
+				ExamineThreadLevel_data[ExamineThreadLevel_str2:format(name or S[302535920000723--[[Lua--]]],i)] = val
 			end
 		end
 	end
@@ -1067,7 +1077,7 @@ function Examine:totextex(obj,obj_type)
 				if info then
 					local l_level, l_info = level, info
 					c = c + 1
-					totextex_res[c] = StringFormat("%s%s(%s) %s: %s%s",
+					totextex_res[c] = StringFormat([[%s%s(%s) %s: %s%s < debug.getinfo(%s,"Slfun")]],
 						self:HyperLink(function()
 							ExamineThreadLevel_totextex(l_level,l_info,obj,self)
 						end),
@@ -1075,7 +1085,8 @@ function Examine:totextex(obj,obj_type)
 						info.currentline,
 						S[1000110--[[Type--]]],
 						info.name ~= "" and info.name or info.name_what ~= "" and info.name_what or info.what ~= "" and info.what or S[302535920000723--[[Lua--]]],
-						HLEnd
+						HLEnd,
+						l_level
 					)
 				else
 					break
@@ -1099,10 +1110,9 @@ function Examine:totextex(obj,obj_type)
 				k, v = getupvalue(obj, level)
 				if k then
 					c = c + 1
-					totextex_res[c] = StringFormat("%s = %s < %s: %s",
+					totextex_res[c] = StringFormat("%s = %s < debug.getupvalue(%s)",
 						self:valuetotextex(k),
 						self:valuetotextex(v),
-						S[302535920001358--[[debug.upvalue() level--]]],
 						level
 					)
 				else
