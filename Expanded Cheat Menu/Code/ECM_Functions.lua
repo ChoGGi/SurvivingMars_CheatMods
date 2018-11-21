@@ -442,6 +442,8 @@ function OnMsg.ClassesGenerate()
 			end
 
 			local value = choice[1].value
+			-- if user wants to play it again we'll need to have it set to another state and everything has idle
+			sel:SetState("idle")
 			sel:SetState(value)
 			if value ~= "idle" then
 				MsgPopup(

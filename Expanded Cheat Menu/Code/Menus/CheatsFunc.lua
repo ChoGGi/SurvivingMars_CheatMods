@@ -839,7 +839,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 					for j = 1, #seq_list do
 						local scenarios = seq_list[j]
 						local state = s_SeqListPlayers[i].seq_states[scenarios.name]
-						--have we started this seq yet?
+						-- have we started this seq yet?
 						if state then
 	--~						local ip = state and (state.ip or state.end_ip or 10000)
 							for k = 1, #scenarios do

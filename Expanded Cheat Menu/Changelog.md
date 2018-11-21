@@ -4,6 +4,9 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v11.0 (Unreleased)
+### Added:
+- Mission>Start Challenge: Shows a list of challenges you can start (replaces current).
+- Debug>Force Story Bits: It just lists them for now...
 
 ## v10.9 (20 Nov 2018)
 ### Added:

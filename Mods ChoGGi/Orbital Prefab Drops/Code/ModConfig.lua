@@ -1,3 +1,11 @@
+-- use gag one if around
+local model = "SupplyPod"
+local max_models = 2
+if IsValidEntity("ArcPod") then
+	model = "ArcPod"
+	max_models = 3
+end
+
 function OnMsg.ModConfigReady()
 	local ModConfig = ModConfig
 	local OrbitalPrefabDrops = OrbitalPrefabDrops
@@ -23,37 +31,27 @@ function OnMsg.ModConfigReady()
 		default = OrbitalPrefabDrops.Inside,
 	})
 
-	ModConfig:RegisterOption("OrbitalPrefabDrops", "DetachRockets", {
-		name = "Rockets detach and fall to the ground.",
-		type = "boolean",
-		default = OrbitalPrefabDrops.DetachRockets,
-	})
-	ModConfig:RegisterOption("OrbitalPrefabDrops", "DetachRocketsPassages", {
-		name = "Rockets detach for passages (busy).",
-		type = "boolean",
-		default = OrbitalPrefabDrops.DetachRocketsPassages,
-	})
-
-	ModConfig:RegisterOption("OrbitalPrefabDrops", "RocketDamage", {
-		name = "Rockets cause damage when they hit the ground.",
-		type = "boolean",
-		default = OrbitalPrefabDrops.RocketDamage,
-	})
-
 	ModConfig:RegisterOption("OrbitalPrefabDrops", "DomeCrack", {
 		name = "Drops will damage dome.",
 		type = "boolean",
 		default = OrbitalPrefabDrops.DomeCrack,
 	})
 
+	ModConfig:RegisterOption("OrbitalPrefabDrops", "ModelType", {
+		name = "Which model to use.",
+		type = "number",
+		min = 1,
+		max = max_models,
+		step = 1,
+		default = OrbitalPrefabDrops.ModelType,
+	})
+
 	-- get saved options
 	OrbitalPrefabDrops.PrefabOnly = ModConfig:Get("OrbitalPrefabDrops", "PrefabOnly")
 	OrbitalPrefabDrops.Outside = ModConfig:Get("OrbitalPrefabDrops", "Outside")
 	OrbitalPrefabDrops.Inside = ModConfig:Get("OrbitalPrefabDrops", "Inside")
-	OrbitalPrefabDrops.DetachRockets = ModConfig:Get("OrbitalPrefabDrops", "DetachRockets")
-	OrbitalPrefabDrops.DetachRocketsPassages = ModConfig:Get("OrbitalPrefabDrops", "DetachRocketsPassages")
-	OrbitalPrefabDrops.RocketDamage = ModConfig:Get("OrbitalPrefabDrops", "RocketDamage")
 	OrbitalPrefabDrops.DomeCrack = ModConfig:Get("OrbitalPrefabDrops", "DomeCrack")
+	OrbitalPrefabDrops.ModelType = ModConfig:Get("OrbitalPrefabDrops", "ModelType")
 
 end
 
@@ -65,14 +63,10 @@ function OnMsg.ModConfigChanged(mod_id, option_id, value)
 			OrbitalPrefabDrops.Outside = value
 		elseif option_id == "Inside" then
 			OrbitalPrefabDrops.Inside = value
-		elseif option_id == "DetachRockets" then
-			OrbitalPrefabDrops.DetachRockets = value
-		elseif option_id == "DetachRocketsPassages" then
-			OrbitalPrefabDrops.DetachRocketsPassages = value
-		elseif option_id == "RocketDamage" then
-			OrbitalPrefabDrops.RocketDamage = value
 		elseif option_id == "DomeCrack" then
 			OrbitalPrefabDrops.DomeCrack = value
+		elseif option_id == "ModelType" then
+			OrbitalPrefabDrops.ModelType = value
 		end
 	end
 end

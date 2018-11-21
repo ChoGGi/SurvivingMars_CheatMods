@@ -1,1 +1,1 @@
-maybe add an object that has water connections, then hide just the object and keep the connection spots?
+find some water? particle to use

@@ -1,3 +1,10 @@
+v0.5
+Uses supply pod model now.
+It now takes back off after prefab is setup.
+No more falling rockets.
+It doesn't do passages anymore, since they're a bit off hex.
+Added  a ModConfig option for the model.
+
 v0.4
 Dropping into a dome will crack it (turn off with ModConfig).
 

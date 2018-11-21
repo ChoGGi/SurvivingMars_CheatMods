@@ -522,6 +522,11 @@ function ChoGGi_ListChoiceDlg:idListOnSelect(button)
 		self.idEditValue:SetText(tostring(self.sel.value))
 	end
 
+	if self.sel.voiced then
+		g_Voice:Play(self.sel.voiced)
+	end
+
+	-- blick world obj
 	if self.select_flash and self.sel.obj then
 		ChoGGi.ComFuncs.AddBlinkyToObj(self.sel.obj,8000)
 	end

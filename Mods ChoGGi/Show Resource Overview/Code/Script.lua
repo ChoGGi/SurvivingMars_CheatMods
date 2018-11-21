@@ -1,113 +1,94 @@
+-- See LICENSE for terms
+
+-- tell people how to get my library mod (if needs be)
+local fire_once
+function OnMsg.ModsReloaded()
+	if fire_once then
+		return
+	end
+	fire_once = true
+
+	-- version to version check with
+	local min_version = 36
+	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
+
+	-- if we can"t find mod or mod is less then min_version (we skip steam since it updates automatically)
+	if not idx or idx and not Platform.steam and min_version > ModsLoaded[idx].version then
+		CreateRealTimeThread(function()
+			if WaitMarsQuestion(nil,"Error",string.format([[Show Resource Overview requires ChoGGi"s Library (at least v%s).
+Press Ok to download it or check Mod Manager to make sure it"s enabled.]],min_version)) == "ok" then
+				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
+			end
+		end)
+	end
+end
+
 -- add action to GameShortcuts
 function OnMsg.ClassesPostprocess()
 
 	-- if action exists then replace it, otherwise add to the end
 	local GameShortcuts = XTemplates.GameShortcuts
 	local idx = table.find(GameShortcuts,"ActionId","actionColonyOverview")
-	-- add the actual shortcut
+	-- add the shortcut
 	GameShortcuts[idx or #GameShortcuts+1] = PlaceObj("XTemplateAction", {
 		"ActionId", "actionColonyOverview",
 		"ActionName", T{7849, "Colony Overview"},
-		"ActionShortcut", "O",
+		"ActionShortcut", "[",
 		"ActionMode", "Game",
 		"ActionBindable", true,
-		"OnAction", function()
-			local igi = GetInGameInterface()
-			local dlg = Dialogs and Dialogs.HUD
-			if igi and dlg and dlg.window_state ~= "destroying" and igi:GetVisible() then
-				dlg.idColonyOverview:Press()
-			end
-		end,
+		"OnAction", HUD.idColonyOverviewOnPress,
 		"IgnoreRepeated", true,
 		"replace_matching_id", true,
 	})
 end
 
--- this adds the actual button, and makes it work
-local function AddHUDButton()
-	-- wait for hud to be created so we can fiddle with it
-	local Dialogs = Dialogs
-	local Sleep = Sleep
-	while not Dialogs.HUD do
-		Sleep(500)
-	end
-	-- if it's already been added somehow
-	if Dialogs.HUD.idColonyOverview then
+function OnMsg.ModsReloaded()
+
+	local xt = XTemplates
+	local idx = table.find(xt.HUD[1],"Id","idBottom")
+	if not idx then
+		print("ChoGGi: Show Resource Overview missing HUD idBottom")
 		return
 	end
+	xt = xt.HUD[1][idx]
+	idx = table.find(xt,"Id","idRight")
+	if not idx then
+		print("ChoGGi: Show Resource Overview missing HUD idRight")
+		return
+	end
+	xt = xt[idx][1]
 
-	-- button object
-	local win = XWindow:new({}, Dialogs.HUD.idRightButtons)
-	local button = HUD.button_definitions.idColonyOverview
-	HUDButton:new({
-		Id = "idColonyOverview",
-		Image = button.image,
-		Rows = button.Rows or 1,
-		FXPress = button.FXPress,
-	}, win)
-	XImage:new({
-		HandleMouse = false,
-		Id = "idColonyOverviewHighlight",
-		Image = button.shine,
-	}, win)
-	-- only vis when mouseover/enabled?
-	Dialogs.HUD.idColonyOverviewHighlight:SetVisible(false)
+	ChoGGi.ComFuncs.RemoveXTemplateSections(xt,"ChoGGi_Template_ColonyOverview")
 
-	-- needed for the button to actally do anything
-	Dialogs.HUD:InitControls()
-	-- probably not needed
-	Dialogs.HUD:UpdateHUDButtons()
-end
-
-local function StartupStuff()
-	local HUD = HUD
-
-	RightHUDButtons = {"idColonyControlCenter", "idColonyOverview", "idMarkers", "idRadio", "idMenu"}
-
-	HUD.button_definitions.idColonyOverview = {
-		rollover = {
-			id = "Resource Overview",
-			title = T{7849, "Colony Overview"},
-			descr = T{7850, "Aggregated information for your Colony."},
-			hint = T{7851, "<em><ShortcutName('actionColonyOverview')></em> - toggle Colony Overview"},
-		},
-		selection = true,
-		callback = function(this)
-			local Dialogs = Dialogs
-			-- we check for it being visble for our toggle (devs just toggled ShowResourceOverview)
-			if Dialogs.Infopanel and Dialogs.Infopanel.XTemplate == "ipResourceOverview" then
-				ShowResourceOverview = false
-				CloseResourceOverviewInfopanel()
-			else
-				ShowResourceOverview = true
-				SelectObj()
-				OpenResourceOverviewInfopanel()
-			end
-			this:SetToggled(ShowResourceOverview)
+	table.insert(xt,#xt,PlaceObj("XTemplateTemplate", {
+		"ChoGGi_Template_ColonyOverview", true,
+		"__template", "HUDButtonTemplate",
+		"RolloverText", T{7850, "Aggregated information for your Colony."},
+		"RolloverTitle", T{7849, "Colony Overview"},
+		"Id", "idColonyOverview",
+		"Image", string.format("%sUI/statistics.png",CurrentModPath),
+		"ImageShine", "UI/HUD/statistics_shine.tga",
+		"FXPress", "MainMenuButtonClick",
+		"OnPress", function()
+			HUD.idColonyOverviewOnPress()
 		end,
-		image = "UI/HUD/statistics.tga",
-		shine = "UI/HUD/statistics_shine.tga",
-		Rows = 2,
-		FXPress = "ResourceOverviewButtonClick",
-	}
-	HUD.button_list = table.keys2(HUD.button_definitions, true)
-
-	AddHUDButton()
+	})
+	)
 end
 
-function OnMsg.CityStart()
-	-- CityStart is a little too early for this, so we'll wait a tad
-	CreateRealTimeThread(function()
-		WaitMsg("RocketLaunchFromEarth")
-		StartupStuff()
-	end)
-end
-
-function OnMsg.LoadGame()
-	-- thread could be needed by AddHUDButton
-	CreateRealTimeThread(function()
-		StartupStuff()
-	end)
+function HUD.idColonyOverviewOnPress()
+	local dlgs = Dialogs
+	-- we check for it being visible for our toggle (devs just toggled ShowResourceOverview)
+	if dlgs.Infopanel and dlgs.Infopanel.XTemplate == "ipResourceOverview" then
+		ShowResourceOverview = false
+		CloseResourceOverviewInfopanel()
+		dlgs.HUD.idColonyOverviewHighlight:SetVisible(false)
+	else
+		ShowResourceOverview = true
+		SelectObj()
+		OpenResourceOverviewInfopanel()
+		dlgs.HUD.idColonyOverviewHighlight:SetVisible(true)
+	end
 end
 
 -- this replaces the Sagan func with the DA one

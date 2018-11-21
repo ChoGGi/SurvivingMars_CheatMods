@@ -1648,6 +1648,7 @@ do -- Rebuildshortcuts
 		EditOpsHistory = true,
 		E_FlagsEditor = true,
 		E_AttachEditor = true,
+		E_ResetZRelative = true,
 		CheckGameRevision = true,
 		["Editors.Random Map"] = true,
 		DE_SaveDefaultMapEntityList = true,
@@ -1805,9 +1806,9 @@ do -- RetThreadInfo/FindThreadFunc
 		-- and last we merge it all into a string to return
 		local str = ""
 		for i = 1, #funcs do
-			str = StringFormat("%s\n%s %s: %s",str,funcs[i].func,S[302535920001359--[[debug.getinfo() level--]]],funcs[i].level)
+			str = StringFormat("%s\n%s < debug.getinfo(%s)",str,funcs[i].func,funcs[i].level)
 		end
-		return str
+		return str:sub(2)
 	end
 
 	-- find/return func if str in func name

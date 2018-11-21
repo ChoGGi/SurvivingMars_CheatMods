@@ -4,11 +4,62 @@ function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
+	local blacklist = ChoGGi.blacklist
 
 	local default_icon = "UI/Icons/Sections/spaceship.tga"
 
 	local type = type
 	local StringFormat = string.format
+
+	function ChoGGi.MenuFuncs.StartChallenge()
+		local ItemList = {}
+		local challenges = Presets.Challenge.Default
+		local DayDuration = const.DayDuration
+
+		local hint_str = "%s\n\n%s%s"
+		for i = 1, #challenges do
+			local c = challenges[i]
+			ItemList[i] = {
+				text = Trans(c.title),
+				value = c.id,
+				hint = hint_str:format(
+					Trans(c.description),
+					S[302535920001415--[[Sols to Complete: %s--]]]:format(c.time_completed / DayDuration),
+					Trans(T{10489--[[<newline>Perfect time: <countdown2>--]],countdown2 = c.time_perfected / DayDuration})
+				),
+			}
+		end
+
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+			g_CurrentMissionParams.challenge_id = choice[1].value
+			-- just in case
+			challenges[choice[1].value].TrackProgress = true
+
+			UICity:StartChallenge()
+
+			MsgPopup(
+				choice[1].text,
+				302535920001247--[[Start Challenge--]]
+			)
+		end
+
+		local hint
+		local thread = UICity.challenge_thread
+		if not blacklist and IsValidThread(thread) then
+			local _,c = debug.getlocal(thread,1,1)
+			hint = StringFormat("%s: %s, %s",S[302535920000106--[[Current--]]],Trans(c.title),c.id)
+		end
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = 302535920001247--[[Start Challenge--]],
+			hint = hint,
+		}
+	end
 
 	function ChoGGi.MenuFuncs.SetDroneType()
 		local ItemList = {
