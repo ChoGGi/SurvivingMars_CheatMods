@@ -43,9 +43,9 @@ local engineSuspendPassEdits = engineSuspendPassEdits
 local engineResumePassEdits = engineResumePassEdits
 local PlaceObject = PlaceObject
 
--- generate is late enough that my library is loaded, but early enough to replace anything i need to
 local ToggleCollisions
 local MovePointAwayXY
+-- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
 	ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
 	MovePointAwayXY = ChoGGi.ComFuncs.MovePointAwayXY

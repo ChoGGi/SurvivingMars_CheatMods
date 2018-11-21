@@ -1067,8 +1067,11 @@ function OnMsg.ClassesBuilt()
 --~ 						elseif title == 235--[[Traits--]] then
 --~ 							local toggle = false
 --~ 							ToggleVisSection(section,SetToolbar(section,"XWindow",toggle),toggle)
-						elseif title == 702480492408--[[Residents--]] and self.context.capacity ~= self.context.base_capacity then
-							local toggle = false
+						elseif title == 702480492408--[[Residents--]] then
+							local toggle = true
+							if self.context.capacity > 100 then
+								toggle = false
+							end
 							ToggleVisSection(section,SetToolbar(section,"XContextControl",toggle),toggle)
 
 						end

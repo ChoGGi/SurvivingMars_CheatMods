@@ -36,12 +36,12 @@ local TableFind = table.find
 local AsyncRand = AsyncRand
 local path = table.concat{CurrentModPath,"Flags/flag_%s.png"}
 
-local function AddExisting(name,flag_name,nations)
-	local idx = TableFind(nations,"value",name)
+local function AddExisting(name,flag_name,Nations)
+	local idx = TableFind(Nations,"value",name)
 	if idx then
-		nations[idx].flag = path:format(flag_name)
+		Nations[idx].flag = path:format(flag_name)
 	else
-		nations[#nations+1] = {
+		Nations[#Nations+1] = {
 			value = name,
 			text = name,
 			flag = path:format(flag_name),
@@ -54,6 +54,11 @@ function OnMsg.ModsReloaded()
 
 	local HumanNames = HumanNames
 	local Nations = Nations
+
+	-- replace the func that gets a nation (it gets a weighted nation depending on your sponsors instead of all of them)
+	function GetWeightedRandNation()
+		return Nations[AsyncRand(#Nations - 1 + 1) + 1].value
+	end
 
 	-- get all human names then merge into one table and apply to all nations
 	local name_table = {
@@ -359,27 +364,8 @@ function OnMsg.ModsReloaded()
 		end
 	end
 
-	-- add list of names from earlier for each nation
-	for i = 1, #Nations do
-		HumanNames[Nations[i].value] = name_table
---~		 -- skip the countries added by the game (unless it's Mars)
---~		 if Nations[i].value == "Mars" or type(Nations[i].text) == "string" then
---~			 HumanNames[Nations[i].value] = name_table
---~		 else
---~			 if HumanNames[Nations[i].value] then
---~				 HumanNames[Nations[i].value].Unique = name_table.Unique
---~			 end
---~		 end
-	end
-
 	-- I doubt any game will last 9999 sols
 	const.FullTransitionToMarsNames = 9999
-
-	-- replace the func that gets a nation (it gets a weighted nation depending on your sponsors instead of all of them)
-	function GetWeightedRandNation()
-		return Nations[AsyncRand(#Nations - 1 + 1) + 1].value
-	end
-
 
 	-- make sure built-in ones use my bigger flags
 	AddExisting("English","the_united_kingdom",Nations)
@@ -3147,4 +3133,16 @@ function OnMsg.ModsReloaded()
 		flag = path:format("zomi_re-unification_organisation"),
 	}
 
+	-- add list of names from earlier for each nation
+	for i = 1, #Nations do
+		HumanNames[Nations[i].value] = name_table
+--~		 -- skip the countries added by the game (unless it's Mars)
+--~		 if Nations[i].value == "Mars" or type(Nations[i].text) == "string" then
+--~			 HumanNames[Nations[i].value] = name_table
+--~		 else
+--~			 if HumanNames[Nations[i].value] then
+--~				 HumanNames[Nations[i].value].Unique = name_table.Unique
+--~			 end
+--~		 end
+	end
 end

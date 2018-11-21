@@ -120,12 +120,18 @@ function OnMsg.ClassesGenerate()
 				local hpk = StringFormat("%s/ModContent.hpk",mod:gsub("\\", "/"))
 				-- skip any mods that aren't packed (uploaded by ECM, or just old)
 				if mod_table[id] and FileExists(hpk) then
+					-- yeah lets make our image parsing use spaces... I'm sure nobody uses those in file paths.
+					local hint_str = "\n%s\n\n\n\n<image %s>"
+					if mod_table[id].image:find(" ") or mod_table[id].path:find(" ") then
+						mod_table[id].image = ""
+						hint_str = "\n%s%s"
+					end
 					c = c + 1
 					ItemList[c] = {
 						author = mod_table[id].author,
 						text = mod_table[id].title,
 						value = hpk,
-						hint = StringFormat("\n%s\n\n\n\n<image %s>",
+						hint = hint_str:format(
 							S[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.--]]]:format(mod_table[id].author),
 							mod_table[id].image
 						),
@@ -356,7 +362,8 @@ function OnMsg.ClassesGenerate()
 						}
 						mod.last_changes = mod.last_changes or tostring(mod.version) or ""
 						-- CommonLua\SteamWorkshop.lua
-						_,err = Steam_Upload(nil, mod, params)
+						local result
+						result,err = Steam_Upload(nil, mod, params)
 
 --~ 						if Platform.steam then
 --~ 							local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
@@ -472,13 +479,13 @@ function OnMsg.ClassesGenerate()
 			local c = 0
 			local Mods = Mods
 			for id,mod in pairs(Mods) do
-				local hint_str = "%s"
+				local hint_str = "%s%s"
 				local image = ""
-				if mod.image ~= "" then
+				local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
+				if mod.image ~= "" and not path:find(" ") then
 					hint_str = "<image %s>\n%s"
 					-- i don't know how to find rtl, so we'll reverse and find it that way. that said what's up with appending the path, can't you just do it when you need to?
-					local slash = string.find(mod.image:reverse(),"/",1,true)
-					local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
+					local slash = mod.image:reverse():find("/")
 					image = StringFormat("%s%s",path,mod.image:sub((slash - 1) * -1))
 				end
 				c = c + 1

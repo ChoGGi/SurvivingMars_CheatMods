@@ -1402,6 +1402,9 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 				end
 			end
 
+			-- if we unlocked any buildings and the buildmenu is open
+			ChoGGi.ComFuncs.UpdateBuildMenu()
+
 			MsgPopup(
 				S[302535920000315--[[%s: Unleash your inner Black Monolith Mystery.--]]]:format(text),
 				311--[[Research--]],
