@@ -238,6 +238,7 @@ local Strings = {
 	[9009] = TranslationTable[9009], -- Mega Trigon Dome
 	[9012] = TranslationTable[9012], -- Diamond Dome
 	[9763] = TranslationTable[9763], -- No objects matching current filters.
+	[10124] = TranslationTable[10124], -- Sort
 	[10278] = TranslationTable[10278], -- Wasp Drone
 	[11412] = TranslationTable[11412], -- Trigger fireworks
 	[11683] = TranslationTable[11683], -- Electricity

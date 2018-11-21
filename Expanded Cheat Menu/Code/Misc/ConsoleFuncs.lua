@@ -161,8 +161,24 @@ function OnMsg.ClassesGenerate()
 			ExamineMenuToggle_list[i] = BuildExamineItem(list[i])
 		end
 
-		-- if Presets then add a submenu with each GlobalMap (hopefully showing people the correct way to access them)
-		local submenu = table.find(ExamineMenuToggle_list,"name","Presets")
+		-- if _G then add a submenu with some more shit
+		local submenu = table.find(ExamineMenuToggle_list,"name","_G")
+		if submenu then
+			ExamineMenuToggle_list[submenu].hint = nil
+			ExamineMenuToggle_list[submenu].submenu = {
+				BuildExamineItem("_G"),
+				{
+					name = S[302535920001247--[[Monitor _G Tables--]]],
+					hint = "ChoGGi.ComFuncs.MonitorTableLength(_G)",
+					clicked = function()
+						ChoGGi.ComFuncs.MonitorTableLength(_G)
+					end,
+				},
+			}
+		end
+
+		-- Presets
+		submenu = table.find(ExamineMenuToggle_list,"name","Presets")
 		if submenu then
 			-- remove hint from "submenu" menu
 			ExamineMenuToggle_list[submenu].hint = nil
@@ -250,8 +266,8 @@ function OnMsg.ClassesGenerate()
 			ExamineMenuToggle_list[submenu].submenu = {
 				BuildExamineItem("ThreadsRegister"),
 				{
-					name = "_MonitorThreads_",
-					hint = StringFormat("%s: %s",S[302535920000491--[[Examine Object--]]],"_MonitorThreads_"),
+					name = S[302535920000853--[[Monitor Threads--]]],
+					hint = "ChoGGi.ComFuncs.MonitorThreads()",
 					clicked = function()
 						ChoGGi.ComFuncs.MonitorThreads()
 					end,
