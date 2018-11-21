@@ -13,5 +13,5 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[It'll spawn a few aliens that walk around. Maybe I'll add some sort of ship drop-off anim...
 
-There's a ModConfig option to set the max spawned amount, it'll only work on new games or games that don't have aliens.]],
+There's a ModConfig option to set the max spawned amount. It'll only work on new games or games that don't have aliens.]],
 })

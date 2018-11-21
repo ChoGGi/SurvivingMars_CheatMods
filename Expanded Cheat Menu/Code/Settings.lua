@@ -85,6 +85,7 @@ function OnMsg.ClassesGenerate()
 			"Consts",
 			"Dialogs",
 			"DataInstances",
+			"EntityData",
 			"Flags",
 			"FXRules",
 			"g_Classes",

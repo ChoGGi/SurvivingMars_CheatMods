@@ -392,6 +392,11 @@ function OnMsg.ClassesGenerate()
 		else
 			new = obj:Clone()
 		end
+		-- got me
+		if obj:IsKindOf("Banner") then
+			new:ChangeEntity(obj.entity)
+		end
+
 		new:SetPos(ChoGGi.ComFuncs.CursorNearestHex())
 		if type(new.CheatRefill) == "function" then
 			new:CheatRefill()

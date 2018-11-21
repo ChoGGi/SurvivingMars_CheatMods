@@ -1967,7 +1967,11 @@ end -- do
 
 -- if building requires a dome and that dome is borked then assign it to nearest dome
 function ChoGGi.ComFuncs.AttachToNearestDome(obj)
-	local workingdomes = ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Dome,nil,nil,"working")
+	local workingdomes = MapFilter(UICity.labels.Dome,function(o)
+		if not o.destroyed and o.air then
+			return true
+		end
+	end)
 
 	-- check for dome and ignore outdoor buildings *and* if there aren't any domes on map
 	if not obj.parent_dome and obj:GetDefaultPropertyValue("dome_required") and #workingdomes > 0 then

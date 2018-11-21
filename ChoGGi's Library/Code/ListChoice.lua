@@ -374,10 +374,10 @@ function ChoGGi_ListChoiceDlg:BuildList()
 				display_icon = true
 				text = item.text
 			end
-		elseif g_Classes[item.text] and g_Classes[item.text].display_icon ~= "" then
-			item.icon = g_Classes[item.text].display_icon
+		elseif bt[item.value] and bt[item.value].display_icon ~= "" then
+			item.icon = bt[item.value].display_icon
 			display_icon = true
-			text = item.text
+			text = item.value
 		elseif bt[item.text] and bt[item.text].display_icon ~= "" then
 			item.icon = bt[item.text].display_icon
 			display_icon = true
