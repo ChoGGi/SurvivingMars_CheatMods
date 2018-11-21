@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v3.6 (Unreleased)
+## v3.7 (Unreleased)
+
+## v3.6 (20 Nov 2018)
 - Changed my msg func to use an object that works in the main menu as well as in-game.
 - Gagarin changed how certain buildings work, so change object colour and examine weren't able to list all attachments.
 - List dialog filter items checks for more text.
