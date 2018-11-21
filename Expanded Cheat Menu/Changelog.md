@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v10.9 (Unreleased)
+## v11.0 (Unreleased)
+
+## v10.9 (20 Nov 2018)
 ### Added:
 - Help>Interface>GUI Dock Side: Change which side (most) GUI menus are on.
 
