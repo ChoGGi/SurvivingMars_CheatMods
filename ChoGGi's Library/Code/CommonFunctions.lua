@@ -364,10 +364,9 @@ do -- ShowObj
 	local function ClearMarker(k,v)
 		v = v or markers[k]
 		if IsValid(k) then
+			ChoGGi.ComFuncs.RestoreOldPalette(k)
 			if v == "vector" or k:IsKindOf("ChoGGi_Sphere") then
 				k:delete()
-			else
-				k:SetColorModifier(v)
 			end
 		end
 		if IsValid(v) and v:IsKindOf("ChoGGi_Sphere") then
@@ -375,7 +374,6 @@ do -- ShowObj
 		end
 
 		markers[k] = nil
-		ChoGGi.ComFuncs.RestoreOldPalette(k)
 	end
 	function ChoGGi.ComFuncs.ClearShowObj(obj)
 		SuspendPassEdits("ClearShowObj")
@@ -423,7 +421,7 @@ do -- ShowObj
 		end
 	end
 
-	function ChoGGi.ComFuncs.ShowObj(obj, color, skip_view, mark_both)
+	function ChoGGi.ComFuncs.ShowObj(obj, color, skip_view, skip_colour)
 		if markers[obj] then
 			return
 		end
@@ -436,31 +434,27 @@ do -- ShowObj
 		local vis_pos = is_valid and obj:GetVisualPos()
 
 		-- both is for objs i also want a sphere over
-		if is_point or mark_both then
-			local pt = is_point and obj or vis_pos
-			if pt and pt ~= InvalidPos and not markers[pt] then
-				local xyz = xyz_str:format(pt:xyz())
-				if not markers[xyz] then
-					local sphere = ChoGGi_Sphere:new()
-					sphere:SetPos(pt)
-					sphere:SetRadius(50 * guic)
-					sphere:SetColor(color)
-					markers[xyz] = sphere
-				end
-				if not skip_view then
-					ViewObjectMars(pt)
-				end
+		local pt = is_point and obj or vis_pos
+		if pt and pt ~= InvalidPos and not markers[pt] then
+			local xyz = xyz_str:format(pt:xyz())
+			if not markers[xyz] then
+				local sphere = ChoGGi_Sphere:new()
+				sphere:SetPos(pt)
+				sphere:SetRadius(50 * guic)
+				sphere:SetColor(color)
+				markers[xyz] = sphere
 			end
-
 		end
 
-		if is_valid and mark_both ~= "single" then
+		if is_valid and not skip_colour then
 			markers[obj] = markers[obj] or obj:GetColorModifier()
 			ChoGGi.ComFuncs.SaveOldPalette(obj)
 			obj:SetColorModifier(color)
-			if not skip_view and vis_pos ~= InvalidPos then
-				ViewObjectMars(vis_pos)
-			end
+		end
+
+		pt = pt or vis_pos
+		if not skip_view and pt ~= InvalidPos then
+			ViewObjectMars(pt)
 		end
 	end
 end -- do
@@ -536,7 +530,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		if item.showme then
 			showobj_func = function()
 				ClearShowObj()
-				ShowObj(item.showme, nil, true, true)
+				ShowObj(item.showme, nil, true)
 			end
 		end
 

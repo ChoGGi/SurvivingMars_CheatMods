@@ -145,6 +145,7 @@ DefineClass.ChoGGi_Buttons = {
 	__parents = {"XTextButton"},
 	TextStyle = "ChoGGi_Buttons",
 	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
 	RolloverTemplate = "Rollover",
 	RolloverBackground = rollover_blue,
 	Margins = box(4,4,4,4),
@@ -153,6 +154,18 @@ DefineClass.ChoGGi_Buttons = {
 	RolloverZoom = 1100,
 }
 
+DefineClass.ChoGGi_ToolbarButton = {
+	__parents = {"ChoGGi_Buttons"},
+	RolloverAnchor = "bottom",
+	RolloverZoom = 1600,
+	ImageScale = point(1100,1100),
+	MinWidth = 0,
+	Text = "",
+	Margins = box(1, 0, 0, 0),
+	FoldWhenHidden = true,
+	RolloverBackground = white,
+	PressedBackground = light_gray,
+}
 DefineClass.ChoGGi_Button = {
 	__parents = {"ChoGGi_Buttons"},
 	RolloverAnchor = "bottom",
