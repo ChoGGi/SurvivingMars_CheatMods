@@ -4,6 +4,7 @@
 
 function OnMsg.ClassesGenerate()
 
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -41,9 +42,10 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
-		local function AddMenuKey(num,key)
+		local function AddMenuKey(num,key,name)
 			c = c + 1
 			Actions[c] = {
+				ActionName = S[302535920001414--[[Build menu key: %s--]]]:format(Trans(name)),
 				ActionId = StringFormat(".Keys.BuildMenu%s",num),
 				OnAction = function()
 					ShowBuildMenu(num)
@@ -59,10 +61,10 @@ function OnMsg.ClassesGenerate()
 			local BuildCategories = BuildCategories
 			for i = 1, #BuildCategories do
 				if i < 10 then
-					--the key has to be a string
-					AddMenuKey(i,tostring(i))
+					-- the key has to be a string
+					AddMenuKey(i,tostring(i),BuildCategories[i].name)
 				elseif i == 10 then
-					AddMenuKey(i,"0")
+					AddMenuKey(i,"0",BuildCategories[i].name)
 				else
 					-- skip Hidden
 					if BuildCategories[i].id == "Hidden" then
@@ -70,10 +72,10 @@ function OnMsg.ClassesGenerate()
 					else
 						if skipped then
 							-- -1 more for skipping Hidden
-							AddMenuKey(i,StringFormat("Shift-%s",i - 11))
+							AddMenuKey(i,StringFormat("Shift-%s",i - 11),BuildCategories[i].name)
 						else
 							-- -10 since we're doing Shift-*
-							AddMenuKey(i,StringFormat("Shift-%s",i - 10))
+							AddMenuKey(i,StringFormat("Shift-%s",i - 10),BuildCategories[i].name)
 						end
 					end
 				end
@@ -173,8 +175,8 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000069--[[Examine--]]],S[302535920001103--[[Objects--]]]),
-		ActionId = ".Keys.Examine Objects",
+	Actions[c] = {ActionName = StringFormat("%s %s %s",S[302535920000069--[[Examine--]]],S[302535920001103--[[Objects--]]],S[1000448--[[Shift--]]]),
+		ActionId = ".Keys.Examine Objects Shift",
 		OnAction = function()
 			local obj = MapGet(GetTerrainCursor(),2500)
 			if #obj > 0 then
@@ -182,6 +184,19 @@ function OnMsg.ClassesGenerate()
 			end
 		end,
 		ActionShortcut = "Shift-F4",
+		ActionBindable = true,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = StringFormat("%s %s %s",S[302535920000069--[[Examine--]]],S[302535920001103--[[Objects--]]],S[1000449--[[Ctrl--]]]),
+		ActionId = ".Keys.Examine Objects Ctrl",
+		OnAction = function()
+			local obj = MapGet(GetTerrainCursor(),10000)
+			if #obj > 0 then
+				ChoGGi.ComFuncs.OpenInExamineDlg(obj)
+			end
+		end,
+		ActionShortcut = "Ctrl-F4",
 		ActionBindable = true,
 	}
 

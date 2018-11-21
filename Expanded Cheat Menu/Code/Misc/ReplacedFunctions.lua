@@ -57,8 +57,8 @@ function OnMsg.ClassesGenerate()
 	-- editor wants a table
 	GlobalVar("g_revision_map",{})
 	-- stops some log spam in editor (function doesn't exist in SM)
-	function UpdateMapRevision()end
-	function AsyncGetSourceInfo()end
+	UpdateMapRevision = empty_func
+	AsyncGetSourceInfo = empty_func
 
 	do -- funcs without a class
 --~ 		local function SaveOrigFunc(func_name)
@@ -79,11 +79,11 @@ function OnMsg.ClassesGenerate()
 		SaveOrigFunc("TDevModeGetEnglishText")
 
 		-- I guess, don't pass a string to it?
-		function TDevModeGetEnglishText(T, deep, no_assert,...)
+		function TDevModeGetEnglishText(T,...)
 			if type(T) == "string" then
 				return T
 			end
-			return ChoGGi_OrigFuncs.TDevModeGetEnglishText(T, deep, no_assert,...)
+			return ChoGGi_OrigFuncs.TDevModeGetEnglishText(T,...)
 		end
 
 		-- fix for sending nil id to it
@@ -112,13 +112,12 @@ function OnMsg.ClassesGenerate()
 
 		-- SkipMissingDLC and no mystery dlc installed means the buildmenu tries to add missing buildings, and call a func that doesn't exist
 		function UIGetBuildingPrerequisites(cat_id, template, bCreateItems,...)
-			local class = template and g_Classes[template.template_class]
-			if class and class:IsKindOf("Building") then
+			if BuildingTemplates[template.id] then
 				return ChoGGi_OrigFuncs.UIGetBuildingPrerequisites(cat_id, template, bCreateItems,...)
 			end
 		end
 
-		--stops confirmation dialog about missing mods (still lets you know they're missing)
+		-- stops confirmation dialog about missing mods (still lets you know they're missing)
 		function GetMissingMods(...)
 			if ChoGGi.UserSettings.SkipMissingMods then
 				return "", false
@@ -127,7 +126,7 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
-		--lets you load saved games that have dlc
+		-- lets you load saved games that have dlc
 		function IsDlcAvailable(...)
 			if ChoGGi.UserSettings.SkipMissingDLC then
 				return true
@@ -552,7 +551,7 @@ function OnMsg.ClassesGenerate()
 		end
 	end --do
 
-	--change dist we can charge from cables
+	-- change dist we can charge from cables
 	function BaseRover:GetCableNearby(rad,...)
 		local new_rad = ChoGGi.UserSettings.RCChargeDist
 		if new_rad then
@@ -1060,8 +1059,8 @@ function OnMsg.ClassesBuilt()
  							ToggleVisSection(section,toolbar,toggle,true)
 							-- sets the scale of the cheats icons
 							for j = 1, #toolbar do
-								toolbar[j].idIcon:SetMaxHeight(30)
-								toolbar[j].idIcon:SetMaxWidth(30)
+								toolbar[j].idIcon:SetMaxHeight(27)
+								toolbar[j].idIcon:SetMaxWidth(27)
 								toolbar[j].idIcon:SetImageFit("largest")
 							end
 

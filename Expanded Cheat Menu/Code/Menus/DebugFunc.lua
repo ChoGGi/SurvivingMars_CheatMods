@@ -398,46 +398,6 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	function ChoGGi.MenuFuncs.SetAnimState(sel)
-		local ChoGGi = ChoGGi
-		sel = sel or ChoGGi.ComFuncs.SelObject()
-		if not sel then
-			return
-		end
-
-		local ItemList = {}
-
-		local states = sel:GetStates() or ""
-		for i = 1, #states do
-			ItemList[i] = {
-				text = StringFormat("%s: %s, %s: %s",S[302535920000858--[[Index--]]],i,S[1000037--[[Name--]]],states[i]),
-				value = states[i],
-			}
-		end
-
-		local function CallBackFunc(choice)
-			if #choice < 1 then
-				return
-			end
-
-			local value = choice[1].value
-			sel:SetState(value)
-			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,3722--[[State--]]),
-				302535920000859--[[Anim State--]]
-			)
-		end
-
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = 302535920000860--[[Set Anim State--]],
-			hint = S[302535920000861--[[Current State: %s--]]]:format(sel:GetState()),
-			custom_type = 7,
-			custom_func = CallBackFunc,
-		}
-	end
-
 	do -- debug_build_grid
 		local grid_objs = {}
 		local grid_thread = false

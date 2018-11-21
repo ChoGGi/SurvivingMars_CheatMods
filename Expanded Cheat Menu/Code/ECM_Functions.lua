@@ -1,14 +1,22 @@
 -- See LICENSE for terms
 
+local StringFormat = string.format
+local TableFind = table.find
+local TableClear = table.clear
+local Sleep = Sleep
+
+local getinfo
+local debug = rawget(_G,"debug")
+if debug then
+	getinfo = debug.getinfo
+end
+
 function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Trans = ChoGGi.ComFuncs.Translate
-
-	local StringFormat = string.format
-	local TableFind = table.find
 
 	-- if ECM is running without the bl, then we use the _G from ECM instead of the Library mod (since it's limited to per mod)
 	if not blacklist then
@@ -408,6 +416,121 @@ function OnMsg.ClassesGenerate()
 			title = 302535920000862--[[Object Spawner (EntityData list)--]],
 			hint = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000863--[[Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).--]]]),
 		}
+	end
+
+	function ChoGGi.ComFuncs.SetAnimState(sel)
+		local ChoGGi = ChoGGi
+		sel = sel or ChoGGi.ComFuncs.SelObject()
+		if not sel then
+			return
+		end
+
+		local ItemList = {}
+
+		local states = sel:GetStates() or ""
+		for i = 1, #states do
+			ItemList[i] = {
+				text = StringFormat("%s: %s, %s: %s",S[302535920000858--[[Index--]]],i,S[1000037--[[Name--]]],states[i]),
+				value = states[i],
+			}
+		end
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+
+			local value = choice[1].value
+			sel:SetState(value)
+			if value ~= "idle" then
+				MsgPopup(
+					ChoGGi.ComFuncs.SettingState(choice[1].text,3722--[[State--]]),
+					302535920000859--[[Anim State--]]
+				)
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = 302535920000860--[[Set Anim State--]],
+			hint = S[302535920000861--[[Current State: %s--]]]:format(sel:GetState()),
+			custom_type = 7,
+			custom_func = CallBackFunc,
+		}
+	end
+
+	function ChoGGi.ComFuncs.MonitorThreads()
+		if blacklist then
+			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have ܢer access.--]]]:format("MonitorThreads"))
+			return
+		end
+
+		local table_list = {}
+		local ex = ChoGGi.ComFuncs.OpenInExamineDlg(table_list)
+		ex.idAutoRefresh:SetCheck(true)
+		ex:idAutoRefreshToggle()
+
+		CreateRealTimeThread(function()
+			local table_str = "%s(%s) %s"
+			local pairs = pairs
+			-- stop when dialog is closed
+			while ex and ex.window_state ~= "destroying" do
+				TableClear(table_list)
+				for thread in pairs(ThreadsRegister) do
+					local info = getinfo(thread, 1, "Slfun")
+					if info then
+						table_list[table_str:format(info.short_src,info.linedefined,thread)] = thread
+					end
+				end
+				Sleep(1000)
+			end
+		end)
+	end
+
+	-- sortby: nil = table length, 1 = alpha
+	-- skip_under: don't show any tables under this length
+	-- pad_to: needed for sorting in examine (prefixes zeros to length)
+--~ 	ChoGGi.ComFuncs.MonitorTableLength(_G)
+	function ChoGGi.ComFuncs.MonitorTableLength(obj,skip_under,pad_to,sortby)
+		skip_under = skip_under or 25
+		pad_to = pad_to or 10000
+		local table_list = {}
+		local ex = ChoGGi.ComFuncs.OpenInExamineDlg(table_list)
+		ex.idAutoRefresh:SetCheck(true)
+		ex:idAutoRefreshToggle()
+
+		CreateRealTimeThread(function()
+			local table_str = "%s %s"
+			local type,pairs,next = type,pairs,next
+			local PadNumWithZeros = ChoGGi.ComFuncs.PadNumWithZeros
+			-- stop when dialog is closed
+			while ex and ex.window_state ~= "destroying" do
+				TableClear(table_list)
+
+				for key,value in pairs(obj) do
+					if type(value) == "table" then
+						-- tables can be index or associative or a mix
+						local length = 0
+						for _ in pairs(value) do
+							length = length + 1
+						end
+						-- skip the tiny tables
+						if length > skip_under then
+							if not sortby then
+								table_list[table_str:format(PadNumWithZeros(length,pad_to),key)] = value
+							elseif sortby == 1 then
+								table_list[table_str:format(key,length)] = value
+							end
+						end
+
+					end
+				end
+
+				Sleep(1000)
+			end
+		end)
+
 	end
 
 end

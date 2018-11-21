@@ -115,7 +115,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/UnlockCamera.tga",
 		RolloverText = S[302535920000458--[[Make object dance on command.--]]],
 		OnAction = function()
-			ChoGGi.MenuFuncs.SetAnimState()
+			ChoGGi.ComFuncs.SetAnimState()
 		end,
 	}
 

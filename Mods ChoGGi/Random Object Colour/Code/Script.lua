@@ -29,14 +29,8 @@ function BaseBuilding:GameInit(...)
 
 	-- we need to wait a sec before we can edit attaches
 	CreateRealTimeThread(function()
+		Sleep(1)
 		ChoGGi.ComFuncs.ObjectColourRandom(self)
-		-- reset any signs to default colour
-		local SetDefColour = ChoGGi.ComFuncs.SetDefColour
-		if self.ForEachAttach then
-			self:ForEachAttach("BuildingSign",function(a)
-				SetDefColour(a)
-			end)
-		end
 	end)
 
 end

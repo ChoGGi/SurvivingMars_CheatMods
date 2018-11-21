@@ -12,17 +12,80 @@ function OnMsg.ClassesGenerate()
 	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
-		MsgPopup(
-			302535920001394--[[Spawn Planetary Anomalies--]],
-			27--[[Cheats--]]
-		)
 
-		-- crashes if fired more than once per game (or twice?)
-		if UICity.ChoGGi.CheatSpawnPlanetaryAnomalies then
-			return
+		-- GenerateMarsScreenPoI has an inf loop in it that happens when it runs out of spots to place POIs
+		local max = #PlanetaryAnomaly.anomaly_names
+
+		local spots = MarsScreenLandingSpots
+
+		local count = 0
+		for i = 1, #spots do
+			if spots[i]:IsKindOf("PlanetaryAnomaly") then
+				count = count + 1
+			end
 		end
-		UICity.ChoGGi.CheatSpawnPlanetaryAnomalies = true
-		CheatSpawnPlanetaryAnomalies()
+
+		local ItemList = {
+			{text = 1,value = 1},
+			{text = 5,value = 5},
+			{text = 10,value = 10},
+			{text = 15,value = 15},
+			{text = 25,value = 25},
+			{text = max,value = max},
+		}
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+			local value = choice[1].value
+			if type(value) == "number" then
+				local safe_count = 0
+				-- naughty naughty
+				if value > max then
+					value = max
+				end
+
+				-- just in case it's changed
+				count = 0
+				for i = 1, #spots do
+					if spots[i]:IsKindOf("PlanetaryAnomaly") then
+						count = count + 1
+					end
+				end
+
+				safe_count = value - count
+
+				if safe_count < 1 then
+					safe_count = 0
+				end
+
+				-- CheatSpawnPlanetaryAnomalies() but with a limit so GenerateMarsScreenPoI doesn't fuck us
+				for _ = 1, safe_count do
+					local lat, long = GenerateMarsScreenPoI("anomaly")
+					-- i assume they'll fix it so there isn't an inf loop
+					if lat and long then
+						local obj = PlaceObject("PlanetaryAnomaly", {
+							display_name = T{11234, "Planetary Anomaly"},
+							longitude = long,
+							latitude = lat,
+						})
+					end
+				end
+
+				MsgPopup(
+					StringFormat("%s: %s, %s: %s",S[302535920000014--[[Spawned--]]],safe_count,S[302535920000834--[[Max--]]],max),
+					S[302535920001394--[[Spawn Planetary Anomalies--]]]
+				)
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = S[302535920001394--[[Spawn Planetary Anomalies--]]],
+			hint = StringFormat("%s: %s, %s: %s",S[302535920000106--[[Current--]]],count,S[302535920000834--[[Max--]]],max),
+		}
 	end
 
 	function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()

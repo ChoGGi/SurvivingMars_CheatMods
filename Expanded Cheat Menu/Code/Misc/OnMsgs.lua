@@ -115,35 +115,37 @@ end
 --~ end
 
 do -- OnMsg ClassesBuilt/XTemplatesLoaded
+	local function AddCheatsPane(xt)
+		ChoGGi.ComFuncs.RemoveXTemplateSections(xt,"__template","sectionCheats")
+		xt[#xt+1] = PlaceObj("XTemplateTemplate", {
+			"__template", "sectionCheats",
+		})
+	end
 	local function OnMsgXTemplates()
 		local XTemplates = XTemplates
 		local PlaceObj = PlaceObj
 
-		-- add cheats section to concrete
-		local list = XTemplates.ipTerrainDeposit[1]
-		ChoGGi.ComFuncs.RemoveXTemplateSections(list,"__template","sectionCheats")
-		list[#list+1] = PlaceObj("XTemplateTemplate", {
-			"__template", "sectionCheats",
-		})
-		-- new deposits added
-		list = XTemplates.ipEffectDeposit[1]
-		ChoGGi.ComFuncs.RemoveXTemplateSections(list,"__template","sectionCheats")
-		list[#list+1] = PlaceObj("XTemplateTemplate", {
-			"__template", "sectionCheats",
-		})
-		-- Sinkhole ftw
-		list = XTemplates.ipSinkhole[1]
-		ChoGGi.ComFuncs.RemoveXTemplateSections(list,"__template","sectionCheats")
-		list[#list+1] = PlaceObj("XTemplateTemplate", {
-			"__template", "sectionCheats",
-		})
+		-- add cheats section to stuff without it
+		AddCheatsPane(XTemplates.ipAlienDigger[1])
+		AddCheatsPane(XTemplates.ipAttackRover[1])
+		AddCheatsPane(XTemplates.ipConstruction[1])
+		AddCheatsPane(XTemplates.ipEffectDeposit[1])
+		AddCheatsPane(XTemplates.ipFirefly[1])
+		AddCheatsPane(XTemplates.ipGridConstruction[1])
+		AddCheatsPane(XTemplates.ipLeak[1])
+		AddCheatsPane(XTemplates.ipPillaredPipe[1])
+		AddCheatsPane(XTemplates.ipResourcePile[1])
+		AddCheatsPane(XTemplates.ipRogue[1])
+		AddCheatsPane(XTemplates.ipShuttle[1])
+		AddCheatsPane(XTemplates.ipSinkhole[1])
+		AddCheatsPane(XTemplates.ipSwitch[1])
+		AddCheatsPane(XTemplates.ipTerrainDeposit[1])
+		-- and remove it from Resource Overview, though it is "removed" from the game now anyways...
+		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipResourceOverview[1],"__template","sectionCheats")
 
+		-- no sense in firing the func without cheats pane enabled
 		XTemplates.sectionCheats[1].__condition = function(parent, context)
-			-- no sense in doing anything without cheats pane enabled, and there's no cheats for res overview
-			if not config.BuildingInfopanelCheats or context:IsKindOf("ResourceOverview") then
-				return false
-			end
-			return context:CreateCheatActions(parent)
+			return config.BuildingInfopanelCheats and context:CreateCheatActions(parent)
 		end
 
 		-- add rollovers to cheats toolbar
@@ -166,7 +168,6 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 			group = "Infopanel Sections",
 			id = "ipChoGGi_Entity",
 			PlaceObj("XTemplateTemplate", {
---~ 				"__condition", function (_, context) return context.ChoGGi_Spawned end,
 				"__context_of_kind", "ChoGGi_BuildingEntityClass",
 				"__template", "Infopanel",
 			}, {

@@ -32,7 +32,8 @@ local HLEnd = "</h></color>"
 local TableConcat
 local PopupToggle
 local RetName
-local ShowMe
+local ShowObj
+local ColourObj
 local DebugGetInfo
 local RetThreadInfo
 local DeleteObject
@@ -49,7 +50,8 @@ function OnMsg.ClassesGenerate()
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	RetName = ChoGGi.ComFuncs.RetName
-	ShowMe = ChoGGi.ComFuncs.ShowMe
+	ShowObj = ChoGGi.ComFuncs.ShowObj
+	ColourObj = ChoGGi.ComFuncs.ColourObj
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	DeleteObject = ChoGGi.ComFuncs.DeleteObject
 	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
@@ -92,6 +94,10 @@ function OnMsg.ClassesGenerate()
 		["CommonAssets/UI/Menu/CameraEditor.tga"] = {
 			title = S[302535920000459--[[Anim Debug Toggle--]]],
 			text = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
+		},
+		["CommonAssets/UI/Menu/UnlockCamera.tga"] = {
+			title = S[302535920000457--[[Anim State Set--]]],
+			text = S[302535920000458--[[Make object dance on command.--]]],
 		},
 		["CommonAssets/UI/Menu/ShowAll.tga"] = {
 			title = S[302535920000449--[[Attach Spots Toggle--]]],
@@ -691,13 +697,13 @@ function Examine:valuetotextex(obj)
 	local obj_type = type(obj)
 
 	local function ShowMe_local()
-		ShowMe(obj)
+		ShowObj(obj)
 	end
 	local function Examine_local(_,_,button)
 		if button == "L" then
 			ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
 		else
-			ShowMe(obj)
+			ShowObj(obj)
 		end
 	end
 
@@ -1021,7 +1027,7 @@ function Examine:totextex(obj,obj_type)
 			TableInsert(totextex_res, 2, StringFormat("%s, step:%s%s%s",
 				GetStateName(obj:GetState()),
 				self:HyperLink(function()
-					ShowMe(pos)
+					ShowObj(pos)
 				end),
 				tostring(obj:GetStepVector(obj:GetState(),0)),
 				HLEnd
@@ -1199,11 +1205,13 @@ local function DeleteAll_menu(_,_,_,self)
 		S[302535920000059--[[Destroy all objects in objlist!--]]],
 		function(answer)
 			if answer then
+				SuspendPassEdits("DestroyAllInObjlist")
 				for _, v in pairs(self.obj) do
 					if IsValid(v) then
 						DeleteObject(v)
 					end
 				end
+				ResumePassEdits("DestroyAllInObjlist")
 				-- force a refresh on the list, so people can see something as well
 				self:SetObj()
 			end
@@ -1214,17 +1222,17 @@ end
 local function MarkAll_menu(_,_,_,self)
 	for _, v in pairs(self.obj) do
 		if IsPoint(v) or IsValid(v) then
-			ShowMe(v, nil, nil, "single")
+			ShowObj(v, nil, nil, "single")
 		end
 	end
 end
 local function MarkObject_menu(_,_,_,self)
 	if IsValid(self.obj) then
-		ShowMe(self.obj)
+		ShowObj(self.obj)
 	else
 		for k, v in pairs(self.obj) do
-			ShowMe(k)
-			ShowMe(v)
+			ShowObj(k)
+			ShowObj(v)
 		end
 	end
 end
@@ -1274,6 +1282,9 @@ end
 local function ShowAttachSpots_menu(_,_,_,self)
 	ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj_ref)
 end
+local function AnimStateSet_menu(_,_,_,self)
+	ChoGGi.ComFuncs.SetAnimState(self.obj_ref)
+end
 
 function Examine:menu(obj)
 	local obj_type = type(obj)
@@ -1284,7 +1295,7 @@ function Examine:menu(obj)
 		self:HyperLink(SetTransp_menu),
 		" <image CommonAssets/UI/Menu/CutSceneArea.tga 2000> ",
 		HLEnd,
-		self:HyperLink(ChoGGi.ComFuncs.ClearShowMe),
+		self:HyperLink(ChoGGi.ComFuncs.ClearShowObj),
 		" <image CommonAssets/UI/Menu/NoblePreview.tga 2000> ",
 		HLEnd,
 	}
@@ -1292,25 +1303,32 @@ function Examine:menu(obj)
 	if obj_type == "table" then
 		local c = #res
 		if IsValid(obj) then
-			-- show
+			-- MarkObject_menu
 			c = c + 1
 			res[c] = self:HyperLink(MarkObject_menu)
 			c = c + 1
 			res[c] = " <image CommonAssets/UI/Menu/DisableEyeSpec.tga 2000> "
 			c = c + 1
 			res[c] = HLEnd
-			-- show anim info
+			-- ShowAnimDebug_menu
 			c = c + 1
 			res[c] = self:HyperLink(ShowAnimDebug_menu)
 			c = c + 1
 			res[c] = " <image CommonAssets/UI/Menu/CameraEditor.tga 2000> "
 			c = c + 1
 			res[c] = HLEnd
-			-- attach spots
+			-- ShowAttachSpots_menu
 			c = c + 1
 			res[c] = self:HyperLink(ShowAttachSpots_menu)
 			c = c + 1
 			res[c] = " <image CommonAssets/UI/Menu/ShowAll.tga 2000> "
+			c = c + 1
+			res[c] = HLEnd
+			-- AnimStateSet_menu
+			c = c + 1
+			res[c] = self:HyperLink(AnimStateSet_menu)
+			c = c + 1
+			res[c] = " <image CommonAssets/UI/Menu/UnlockCamera.tga 2000> "
 			c = c + 1
 			res[c] = HLEnd
 		end
@@ -1464,6 +1482,7 @@ function Examine:SetObj(startup)
 				),
 				showme = a,
 				clicked = function()
+					ChoGGi.ComFuncs.ClearShowObj(a)
 					ChoGGi.ComFuncs.OpenInExamineDlg(a,self)
 				end,
 			}

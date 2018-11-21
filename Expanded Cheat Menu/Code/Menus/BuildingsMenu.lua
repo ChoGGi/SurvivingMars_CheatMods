@@ -91,6 +91,15 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle,
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000180--[[Unlock Locked Buildings--]]],
+		ActionMenubar = str_ExpandedCM_Buildings,
+		ActionId = ".Unlock Locked Buildings",
+		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
+		RolloverText = S[302535920000181--[["Gives you a list of buildings you can unlock in the build menu (doesn't apply to sponsor limited ones, see Toggles\%s)."--]]]:format(S[302535920001398--[[Remove Sponsor Limits--]]]),
+		OnAction = ChoGGi.MenuFuncs.UnlockLockedBuildings,
+	}
+
 	local str_ExpandedCM_Buildings_SanatoriumsSchools = "ECM.Expanded CM.Buildings.Sanatoriums & Schools"
 	local SandS = StringFormat("%s & %s",S[5245--[[Sanatoriums--]]],S[5248--[[Schools--]]])
 	c = c + 1
@@ -589,15 +598,6 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920000180--[[Unlock Locked Buildings--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
-		ActionId = ".Unlock Locked Buildings",
-		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
-		RolloverText = S[302535920000181--[[Gives you a list of buildings you can unlock in the build menu.--]]],
-		OnAction = ChoGGi.MenuFuncs.UnlockLockedBuildings,
 	}
 
 	c = c + 1
