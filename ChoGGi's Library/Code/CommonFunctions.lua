@@ -2830,6 +2830,10 @@ do -- DeleteObject
 		-- hopefully i can remove all log spam one of these days
 		printC("DeleteObject",RetName(obj),"DeleteObject")
 
+		if Flight_MarkedObjs[obj] then
+			Flight_MarkedObjs[obj] = nil
+		end
+
 		-- deleting domes will freeze game if they have anything in them.
 		if obj:IsKindOf("Dome") and #(obj.labels.Buildings or "") > 0 then
 			MsgPopup(
@@ -4299,10 +4303,14 @@ end
 do -- PadNumWithZeros
 	local str = "%s%s"
 	local tostring = tostring
-	-- 100,10000 = "00100"
+	-- 100,00000 = "00100"
 	function ChoGGi.ComFuncs.PadNumWithZeros(num,pad)
+		if pad then
+			pad = tostring(pad)
+		else
+			pad = "00000"
+		end
 		num = tostring(num)
-		pad = tostring(pad)
 		while #num < #pad do
 			num = str:format("0",num)
 		end

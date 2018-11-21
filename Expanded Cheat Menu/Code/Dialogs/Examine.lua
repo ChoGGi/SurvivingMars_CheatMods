@@ -133,6 +133,8 @@ DefineClass.Examine = {
 	transp_mode = false,
 	-- get list of all values from metatables
 	show_all_values = false,
+	-- going in through the backdoor
+	sort = false,
 
 	-- chinese goes slow as shit for some reason, so i added this to at least stop the game from freezing till obj is examined
 	is_chinese = false,
@@ -253,6 +255,17 @@ function Examine:Init(parent, context)
 		RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
 		OnChange = function()
 			self:idAutoRefreshToggle()
+		end,
+	}, self.idLinkArea)
+
+	self.idSortDir = g_Classes.ChoGGi_CheckButton:new({
+		Id = "idSortDir",
+		Dock = "right",
+		Text = S[10124--[[Sort--]]],
+		RolloverText = S[302535920001248--[[Sort normally or backwards.--]]],
+		OnChange = function()
+			self.sort = not self.sort
+			self:SetObj()
 		end,
 	}, self.idLinkArea)
 
@@ -1001,15 +1014,29 @@ function Examine:totextex(obj,obj_type)
 
 	end
 
-	TableSort(totextex_res, function(a, b)
-		if totextex_sort[a] and totextex_sort[b] then
-			return totextex_sort[a] < totextex_sort[b]
-		end
-		if totextex_sort[a] or totextex_sort[b] then
-			return totextex_sort[a] and true
-		end
-		return CmpLower(a, b)
-	end)
+	-- sort backwards
+	if self.sort then
+		TableSort(totextex_res, function(a, b)
+			if totextex_sort[a] and totextex_sort[b] then
+				return totextex_sort[a] > totextex_sort[b]
+			end
+			if totextex_sort[a] or totextex_sort[b] then
+				return totextex_sort[b] and true
+			end
+			return CmpLower(b, a)
+		end)
+	-- sort normally
+	else
+		TableSort(totextex_res, function(a, b)
+			if totextex_sort[a] and totextex_sort[b] then
+				return totextex_sort[a] < totextex_sort[b]
+			end
+			if totextex_sort[a] or totextex_sort[b] then
+				return totextex_sort[a] and true
+			end
+			return CmpLower(a, b)
+		end)
+	end
 
 	if IsValid(obj) and obj:IsKindOf("CObject") then
 

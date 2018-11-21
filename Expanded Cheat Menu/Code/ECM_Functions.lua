@@ -3,6 +3,7 @@
 local StringFormat = string.format
 local TableFind = table.find
 local TableClear = table.clear
+local TableSort = table.sort
 local Sleep = Sleep
 
 local getinfo
@@ -467,15 +468,15 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local table_list = {}
-		local ex = ChoGGi.ComFuncs.OpenInExamineDlg(table_list)
-		ex.idAutoRefresh:SetCheck(true)
-		ex:idAutoRefreshToggle()
+		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list)
+		dlg.idAutoRefresh:SetCheck(true)
+		dlg:idAutoRefreshToggle()
 
 		CreateRealTimeThread(function()
 			local table_str = "%s(%s) %s"
 			local pairs = pairs
 			-- stop when dialog is closed
-			while ex and ex.window_state ~= "destroying" do
+			while dlg and dlg.window_state ~= "destroying" do
 				TableClear(table_list)
 				for thread in pairs(ThreadsRegister) do
 					local info = getinfo(thread, 1, "Slfun")
@@ -488,24 +489,23 @@ function OnMsg.ClassesGenerate()
 		end)
 	end
 
-	-- sortby: nil = table length, 1 = alpha
+	-- sortby: nil = table length, 1 = table names
 	-- skip_under: don't show any tables under this length
 	-- pad_to: needed for sorting in examine (prefixes zeros to length)
 --~ 	ChoGGi.ComFuncs.MonitorTableLength(_G)
 	function ChoGGi.ComFuncs.MonitorTableLength(obj,skip_under,pad_to,sortby)
 		skip_under = skip_under or 25
-		pad_to = pad_to or 10000
 		local table_list = {}
-		local ex = ChoGGi.ComFuncs.OpenInExamineDlg(table_list)
-		ex.idAutoRefresh:SetCheck(true)
-		ex:idAutoRefreshToggle()
+		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list)
+		dlg.idAutoRefresh:SetCheck(true)
+		dlg:idAutoRefreshToggle()
+		local table_str = "%s %s"
+		local type,pairs,next = type,pairs,next
+		local PadNumWithZeros = ChoGGi.ComFuncs.PadNumWithZeros
 
 		CreateRealTimeThread(function()
-			local table_str = "%s %s"
-			local type,pairs,next = type,pairs,next
-			local PadNumWithZeros = ChoGGi.ComFuncs.PadNumWithZeros
 			-- stop when dialog is closed
-			while ex and ex.window_state ~= "destroying" do
+			while dlg and dlg.window_state ~= "destroying" do
 				TableClear(table_list)
 
 				for key,value in pairs(obj) do

@@ -12,6 +12,8 @@
 - Examine now lists (hopefully) all attachments (some obj have a .anim_obj from Gagarin).
 - Cheats pane>CleanAndFix works better now.
 - Spawn Planetary Anomalies is now a list (I limited the func to fire once before to skip an inf loop in GenerateMarsScreenPoI).
+- Added names to the number key build menu key bindings.
+- More functionaly added to cheats pane.
 
 ### Fixed:
 - Edit ECM Settings blanked out UserSettings when using HelperMod (just in-game, the actual settings are fine after restart).
