@@ -1037,7 +1037,12 @@ function OnMsg.SaveGame()
 			return true
 		end
 	end)
-	MapDelete(true, "ChoGGi_HexSpot", "ChoGGi_Vector", "ChoGGi_Sphere", "ChoGGi_PolyLine", "ChoGGi_PolyLine2")
+	local RemoveObjs = ChoGGi.ComFuncs.RemoveObjs
+	RemoveObjs("ChoGGi_HexSpot")
+	RemoveObjs("ChoGGi_Vector")
+	RemoveObjs("ChoGGi_Sphere")
+	RemoveObjs("ChoGGi_PolyLine")
+	RemoveObjs("ChoGGi_PolyLine2")
 	ResumePassEdits("DeleteChoGGiObjects")
 end
 
@@ -1068,7 +1073,12 @@ do -- LoadGame/CityStart
 				return true
 			end
 		end)
-		MapDelete(true, "ChoGGi_HexSpot", "ChoGGi_Vector", "ChoGGi_Sphere", "ChoGGi_PolyLine", "ChoGGi_PolyLine2")
+		local RemoveObjs = ChoGGi.ComFuncs.RemoveObjs
+		RemoveObjs("ChoGGi_HexSpot")
+		RemoveObjs("ChoGGi_Vector")
+		RemoveObjs("ChoGGi_Sphere")
+		RemoveObjs("ChoGGi_PolyLine")
+		RemoveObjs("ChoGGi_PolyLine2")
 		ResumePassEdits("DeleteOldChoGGiObjects")
 
 		ChoGGi.Temp.IsChoGGiMsgLoaded = false
