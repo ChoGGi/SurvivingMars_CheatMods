@@ -3137,7 +3137,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 	if not obj then
 		if not skip_msg then
 			MsgPopup(
-				302535920000967--[[Nothing selected.--]],
+				302535920000027--[[Nothing selected--]],
 				302535920000968--[[Collisions--]]
 			)
 		end
@@ -4339,6 +4339,7 @@ do -- UpdateFlightGrid
 
 	local type_tile = terrain.TypeTileSize()
 	local work_step = 16 * type_tile
+	local mark_step = 16 * type_tile
 	local function Flight_NewGrid(step, packing)
 		local mw, mh = GetMapSize()
 		local work_size = mw / (step or work_step)

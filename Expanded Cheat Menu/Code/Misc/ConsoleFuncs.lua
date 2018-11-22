@@ -158,13 +158,14 @@ function OnMsg.ClassesGenerate()
 			})
 		end
 		--
+		AddSubmenu("GlobalVars",{"GlobalVarValues","GlobalObjs","GlobalObjClasses","GlobalGameTimeThreads","GlobalGameTimeThreadFuncs","GlobalRealTimeThreads","GlobalRealTimeThreadFuncs"})
 		AddSubmenu("Consts",{"g_Consts","const","ModifiablePropScale"})
 		AddSubmenu("UICity",{"UICity.labels","UICity.tech_status","g_ApplicantPool","BuildMenuPrerequisiteOverrides","BuildingTechRequirements"})
 		AddSubmenu("Dialogs",{"terminal.desktop","GetInGameInterface"})
 		AddSubmenu("g_Classes",{"ClassTemplates","EntityData"})
 		AddSubmenu("TranslationTable",{"const.TagLookupTable"})
 		AddSubmenu("FXRules",{"FXLists"})
-		AddSubmenu("StoryBits",{"StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},S[948928900281--[[Story Bits--]]])
+		AddSubmenu("StoryBits",{"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},S[948928900281--[[Story Bits--]]])
 		--
 
 		-- bonus addition at the top

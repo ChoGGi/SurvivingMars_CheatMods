@@ -1,4 +1,10 @@
+v0.4
+Added a marker to the middle when you demo it, so you have something easy to select.
+It doesn't get dusty anymore.
+Changes sprinkler colour while cleaning.
+
 v0.3
 Da Vinci
+
 v0.2
 Smoother dust removal instead of instant poof.

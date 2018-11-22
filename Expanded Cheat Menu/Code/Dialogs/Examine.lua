@@ -14,6 +14,7 @@ local CmpLower = CmpLower
 local IsObjlist = IsObjlist
 local GetStateName = GetStateName
 local IsPoint = IsPoint
+local IsKindOf = IsKindOf
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
 
@@ -482,7 +483,7 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 	-- do the magic
 	if self:SetObj(true) then
 		-- returns if it's a class object or not
-		if ChoGGi.UserSettings.FlashExamineObject and self.obj_ref:IsKindOf("XWindow") and self.obj_ref.class ~= "InGameInterface" then
+		if ChoGGi.UserSettings.FlashExamineObject and IsKindOf(self.obj_ref,"XWindow") and self.obj_ref.class ~= "InGameInterface" then
 			self:FlashWindow()
 		end
 	end
@@ -1353,7 +1354,7 @@ function Examine:SetToolbarVis(obj)
 			self.idButAnimStateSet:SetVisible()
 		end
 
-		if obj.class and not self.name == "_G" then
+		if obj.class and obj.class ~= "" then
 			self.idButModProps:SetVisible(true)
 			self.idButAllProps:SetVisible(true)
 			self.idButDeleteObj:SetVisible(true)

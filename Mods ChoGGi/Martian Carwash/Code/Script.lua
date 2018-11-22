@@ -35,6 +35,7 @@ local Sleep = Sleep
 local Wakeup = Wakeup
 
 --~ function OnMsg.ClassesGenerate()
+local Farm = Farm
 DefineClass.Carwash = {
   __parents = {
     "Building",
@@ -54,32 +55,39 @@ DefineClass.Carwash = {
     { template = true, id = "water_consumption", name = T{656, "Water consumption"},  category = "Consumption", editor = "number", default = 0, scale = const.ResourceScale, read_only = true, modifiable = true },
     { template = true, id = "air_consumption",   name = T{657, "Oxygen Consumption"}, category = "Consumption", editor = "number", default = 0, scale = const.ResourceScale, read_only = true, modifiable = true },
   },
-  interior = {"HydroponicFarmElevator"},
-  spots = {"Terminal"},
-  anims = {{anim = "terminal",all = true}},
+  interior = Farm.interior,
+  spots = Farm.spots,
+  anims = Farm.anims,
   -- conventional farm
   anim_thread = false,
-  is_up = false,
+
   nearby_thread = false,
+	marker = false,
 
 }
+
+local function SprinklerColour(s,color)
+	s:SetColorModifier(color or 6579300)
+end
 
 local DustMaterialExterior = const.DustMaterialExterior
 function Carwash:GameInit()
   FarmConventional.StartAnimThread(self)
+	self.sprinkler = self:GetAttach("FarmSprinkler")
 
   self.nearby_thread = CreateGameTimeThread(function()
     while IsValid(self) and not self.destroyed do
       if self.working then
         local obj = nil
         -- check for anything on the "tarmac"
-        obj = NearestObject(self:GetVisualPos(),UICity.labels.Unit or empty_table,1000)
+        obj = NearestObject(self,UICity.labels.Unit or {},1000)
         -- if so clean them
         if obj then
           -- get dust amount, and convert to percentage
           local dust_amt = (obj:GetDust() + 0.0) / 100
           if dust_amt ~= 0.0 then
             local value = 100
+						self.sprinkler:ForEachAttach(SprinklerColour,8528128)
             while true do
               if value == 0 then
                 break
@@ -88,8 +96,8 @@ function Carwash:GameInit()
               obj:SetDust(dust_amt * value, DustMaterialExterior)
               Sleep(100)
             end
+						self.sprinkler:ForEachAttach(SprinklerColour)
           end
---~ 					obj.dust = 0
         end
       end
       Sleep(1000)
@@ -100,12 +108,12 @@ function Carwash:GameInit()
   self:SetColorModifier(0)
 
   -- remove the lights/etc
-  local att = self:GetAttaches() or empty_table
-  for i = 1, #att do
-    if att[i].class == "DecorInt_10" or att[i].class == "LampInt_04" then
-      DoneObject(att[i])
+	self:ForEachAttach(function(a)
+    if a.class == "DecorInt_10" or a.class == "LampInt_04" then
+      a:delete()
     end
-  end
+	end)
+
   -- remove collision so we can drive over it
   self:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
 end
@@ -116,10 +124,12 @@ function Carwash:OnSetWorking(working)
 
   if IsValidThread(self.anim_thread) then
     Wakeup(self.anim_thread)
+	else
+		FarmConventional.StartAnimThread(self)
   end
-  if IsValidThread(self.nearby_thread) then
-    Wakeup(self.nearby_thread)
-  end
+--~   if IsValidThread(self.nearby_thread) then
+--~     Wakeup(self.nearby_thread)
+--~   end
 end
 
 function Carwash:UpdateAttachedSigns()
@@ -127,11 +137,31 @@ function Carwash:UpdateAttachedSigns()
 end
 
 function Carwash:Done()
-  self:SetEnumFlags(const.efCollision + const.efApplyToGrids)
+--~   self:SetEnumFlags(const.efCollision + const.efApplyToGrids)
   FarmConventional.Done(self)
   if IsValidThread(self.nearby_thread) then
     DeleteThread(self.nearby_thread)
   end
+end
+
+-- we want main points, but no dust
+Carwash.SetDust = empty_func
+
+function Carwash:OnDestroyed()
+	-- delete the threads
+	self:Done()
+
+	-- make sure sprinkler is stopped
+	if self.sprinkler then
+		PlayFX("FarmWater", "end", self.sprinkler)
+		self.sprinkler:SetAnim(1, "workingEnd")
+	end
+
+	if not IsValid(self.marker) then
+		self.marker = PlaceObject("Hex1_Placeholder")
+		self.marker:SetScale(50)
+		self:Attach(self.marker)
+	end
 end
 
 -- add building to building template list
@@ -142,7 +172,7 @@ function OnMsg.ClassesPostprocess()
 			"template_class", "Carwash",
 			"dome_forbidden", true,
 			"display_name", [[Martian Carwash]],
-			"display_name_pl", [[Martian Carwashing]],
+			"display_name_pl", [[Martian Carwash]],
 			"description", [[Working at the car wash
 Working at the car wash, yeah
 Come on and sing it with me, car wash
