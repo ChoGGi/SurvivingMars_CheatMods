@@ -92,7 +92,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[298035641454--[[Object--]]],S[302535920001346--[[Random Colour--]]]),
+	Actions[c] = {ActionName = StringFormat("%s %s",S[174--[[Color Modifier--]]],S[302535920001346--[[Random Colour--]]]),
 		ActionId = ".Keys.ObjectColourRandom",
 		OnAction = function()
 			ChoGGi.ComFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
@@ -102,7 +102,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[298035641454--[[Object--]]],S[302535920000025--[[Default Colour--]]]),
+	Actions[c] = {ActionName = StringFormat("%s %s",S[174--[[Color Modifier--]]],S[302535920000025--[[Default Colour--]]]),
 		ActionId = ".Keys.ObjectColourDefault",
 		OnAction = function()
 			ChoGGi.ComFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())

@@ -11,7 +11,6 @@ local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local point = point
 local table = table
-local next = next
 local pairs = pairs
 
 local point20 = point20
@@ -53,8 +52,7 @@ end
 -- if these are here when a save is loaded without this mod then it'll spam the console
 function OnMsg.SaveGame()
 	SuspendPassEdits("DeleteChoGGiDomeLines")
-	MapDelete("map", "ChoGGi_HexSpot")
-	MapDelete("map", "ChoGGi_Polyline2")
+	MapDelete(true, "ChoGGi_HexSpot","ChoGGi_Polyline2")
 	ResumePassEdits("DeleteChoGGiDomeLines")
 	dome_list = {}
 end

@@ -8,6 +8,9 @@
 - Mission>Start Challenge: Shows a list of challenges you can start (replaces current).
 - Debug>Force Story Bits: It just lists them for now...
 
+### Changed:
+- Exposed settings for the Shift-F2 grid (debug>grids).
+
 ## v10.9 (20 Nov 2018)
 ### Added:
 - Help>Interface>GUI Dock Side: Change which side (most) GUI menus are on.

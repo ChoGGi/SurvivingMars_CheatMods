@@ -417,7 +417,7 @@ function OnMsg.ClassesGenerate()
 		local function CallBackFunc(answer)
 			if answer then
 				SuspendPassEdits("DeleteAllSelectedObjects")
-				MapDelete("map",obj.class)
+				MapDelete(true,obj.class)
 				ResumePassEdits("DeleteAllSelectedObjects")
 			end
 		end
@@ -458,16 +458,18 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- debug_build_grid
+		local IsValid = IsValid
 		local grid_objs = {}
 		local grid_thread = false
 		local function HideGrid()
+			local InvalidPos = ChoGGi.Consts.InvalidPos
 			-- kill off thread
 			DeleteThread(grid_thread)
 			-- just in case
 			grid_thread = false
-			-- we hide hexes instead of deleting them
+			-- store hexes off-map
 			for i = 1, #grid_objs do
-				grid_objs[i]:SetVisible()
+				grid_objs[i]:SetPos(InvalidPos)
 			end
 		end
 		-- if grid is left on when map changes it gets real laggy
@@ -475,16 +477,75 @@ function OnMsg.ClassesGenerate()
 			HideGrid()
 		end
 
+		function ChoGGi.MenuFuncs.debug_build_grid_settings(setting)
+			local ChoGGi = ChoGGi
+			local UserSettings = ChoGGi.UserSettings
+			local ItemList = {
+				{text = 10,value = 10},
+				{text = 15,value = 15},
+				{text = 25,value = 25},
+				{text = 50,value = 50},
+				{text = 75,value = 75},
+				{text = 100,value = 100},
+			}
+			local name
+			if setting == "DebugGridSize" then
+				table.insert(ItemList,1,{text = 1,value = 1})
+				ItemList[#ItemList+1] = {text = 125,value = 125}
+				name = S[302535920001417--[[Follow Mouse Grid Size--]]]
+			elseif setting == "DebugGridOpacity" then
+				table.insert(ItemList,1,{text = 0,value = 0})
+				name = S[302535920001419--[[Follow Mouse Grid Trans--]]]
+			end
+
+			local function CallBackFunc(choice)
+				if #choice < 1 then
+					return
+				end
+
+				local value = choice[1].value
+				if type(value) == "number" then
+					UserSettings[setting] = value
+
+					if setting == "DebugGridOpacity" then
+						for i = 1, #grid_objs do
+							if IsValid(grid_objs[i]) then
+								grid_objs[i]:SetOpacity(value)
+							end
+						end
+					end
+
+					-- update grid
+					if grid_thread then
+						ChoGGi.MenuFuncs.debug_build_grid()
+						ChoGGi.MenuFuncs.debug_build_grid()
+					end
+					ChoGGi.SettingFuncs.WriteSettings()
+					MsgPopup(
+						tostring(value),
+						name
+					)
+				end
+			end
+
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = ItemList,
+				title = name,
+			}
+		end
+
 		-- geysers mostly
 		local HexSize = const.HexSize
 		local MapGet = MapGet
+		local skippers = {"DoesNotObstructConstruction","SurfaceDeposit","StoneSmall"}
 		local function DontBuildHere(pt)
 			local g_DontBuildHere = g_DontBuildHere
 			return g_DontBuildHere and g_DontBuildHere:Check(pt)
 		end
 		local function IsRockOrDeposit(pt)
 			local objs = MapGet(pt,HexSize,function(o)
-				return o:IsKindOfClasses("DoesNotObstructConstruction","SurfaceDeposit","StoneSmall")
+				return o:IsKindOfClasses(skippers)
 			end)
 			if #objs > 0 then
 				return true
@@ -496,7 +557,6 @@ function OnMsg.ClassesGenerate()
 			--~ local IsSCell = terrain.IsSCell
 			local IsPassable = terrain.IsPassable
 			local IsTerrainFlatForPlacement = ConstructionController.IsTerrainFlatForPlacement
-			local IsValid = IsValid
 			local GetTerrainCursor = GetTerrainCursor
 			local HexGridGetObject = HexGridGetObject
 			local HexToWorld = HexToWorld
@@ -546,8 +606,6 @@ function OnMsg.ClassesGenerate()
 						grid_objs[i] = ChoGGi_HexSpot:new()
 						grid_objs[i]:SetOpacity(grid_opacity)
 					end
-					-- turning off the grid is just stopping thread and making hexes invis, so we restore vis here
-					grid_objs[i]:SetVisible(true)
 				end
 
 				-- fire up a new thread and off we go
@@ -884,7 +942,7 @@ function OnMsg.ClassesGenerate()
 					end
 
 					-- remove any extra lines
-					MapDelete("map", "ChoGGi_Polyline")
+					MapDelete(true, "ChoGGi_Polyline")
 
 					-- reset stuff
 					flag_height = 50
