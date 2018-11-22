@@ -57,15 +57,21 @@ function OnMsg.ClassesGenerate()
 			return ExamineMenuToggle_list[submenu].submenu
 		end
 	end
+
 	local function AddMonitor(name,submenu,idx)
 		table.insert(submenu,idx or 2,{
 			name = StringFormat("%s: %s",S[302535920000853--[[Monitor--]]],name),
 			hint = StringFormat("ChoGGi.ComFuncs.MonitorTableLength(%s)",name),
 			clicked = function()
-				ChoGGi.ComFuncs.MonitorTableLength(DotNameToObject(name))
+				if name == "_G" then
+					ChoGGi.ComFuncs.MonitorTableLength(DotNameToObject(name),nil,nil,nil,name)
+				else
+					ChoGGi.ComFuncs.MonitorTableLength(DotNameToObject(name),0,nil,nil,name)
+				end
 			end,
 		})
 	end
+
 	-- build list of objects to examine
 	local function BuildExamineMenu()
 		table.iclear(ExamineMenuToggle_list)
@@ -138,12 +144,8 @@ function OnMsg.ClassesGenerate()
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
 		--
-		submenu = AddSubmenu("_G",{"PropertySetMethod"})
+		submenu = AddSubmenu("_G",{"PropertySetMethod","__cobjectToCObject","HandleToObject","DeletedCObjects","Flight_MarkedObjs"})
 		if submenu then
-			AddMonitor("__cobjectToCObject",submenu)
-			AddMonitor("HandleToObject",submenu)
-			AddMonitor("DeletedCObjects",submenu)
-			AddMonitor("Flight_MarkedObjs",submenu)
 			AddMonitor("_G",submenu)
 		end
 

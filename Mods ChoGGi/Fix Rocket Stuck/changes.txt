@@ -1,3 +1,6 @@
+v0.4
+More stuck colonists, this time crew coming back from an expedition.
+
 v0.3
 Added fix for drones stuck in rockets (any stuck will be added back as prefabs).
 

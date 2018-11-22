@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v3.8 (Unreleased)
+- Moved my spawn colonist func here.
 
 ## v3.7 (21 Nov 2018)
 - Fixed shuttles not paying attention to newly added/removed hills/rocks.
