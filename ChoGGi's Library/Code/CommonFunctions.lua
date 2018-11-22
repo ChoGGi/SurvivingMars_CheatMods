@@ -355,9 +355,10 @@ do -- ShowObj
 	local ViewObjectMars = ViewObjectMars
 	local InvalidPos = ChoGGi.Consts.InvalidPos
 	local xyz_str = "%s%s%s"
+	local xy0_str = "%s%s0"
 
 	local markers = {}
-	function ChoGGi.ComFuncs.fghghfghffghgfh()
+	function ChoGGi.ComFuncs.ExamineMarkers()
 		ex(markers)
 	end
 
@@ -413,7 +414,6 @@ do -- ShowObj
 		if type(obj) ~= "table" then
 			return
 		end
---~ 		if IsPoint(obj[1]) and IsPoint(obj[2]) and IsPointInBounds(obj[1]) and IsPointInBounds(obj[2]) then
 		if IsPoint(obj[1]) and IsPoint(obj[2]) and InvalidPos ~= obj[1] and InvalidPos ~= obj[2] then
 			local vector = ChoGGi_Vector:new()
 			vector:Set(obj[1], obj[2], color)
@@ -436,6 +436,10 @@ do -- ShowObj
 		-- both is for objs i also want a sphere over
 		local pt = is_point and obj or vis_pos
 		if pt and pt ~= InvalidPos and not markers[pt] then
+			-- xy/xyz eh
+			if not pt:z() then
+				xyz_str = xy0_str
+			end
 			local xyz = xyz_str:format(pt:xyz())
 			if not markers[xyz] then
 				local sphere = ChoGGi_Sphere:new()

@@ -890,7 +890,7 @@ function Examine:valuetotextex(obj)
 				self:HyperLink(Examine_local),
 				obj.class,
 				HLEnd,
-				self:valuetotextex(obj:GetPos())
+				self:valuetotextex(obj:GetVisualPos())
 			)
 
 		else
@@ -1158,7 +1158,7 @@ function Examine:totextex(obj,obj_type)
 			end),
 			obj.class,
 			HLEnd,
-			self:valuetotextex(obj:GetPos())
+			self:valuetotextex(obj:GetVisualPos())
 		))
 
 		if obj:IsValidPos() and IsValidEntity(obj.entity) and 0 < obj:GetAnimDuration() then
