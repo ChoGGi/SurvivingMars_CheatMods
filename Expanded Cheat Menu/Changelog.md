@@ -7,6 +7,7 @@
 ### Added:
 - Mission>Start Challenge: Shows a list of challenges you can start (replaces current).
 - Debug>Force Story Bits: It just lists them for now...
+- Debug>Set Particles: Shows a list of particles you can use on the selected obj.
 
 ### Changed:
 - Exposed settings for the Shift-F2 grid (debug>grids).

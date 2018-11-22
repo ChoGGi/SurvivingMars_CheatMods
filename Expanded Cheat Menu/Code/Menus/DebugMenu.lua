@@ -17,6 +17,17 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
+	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]]),
+		ActionMenubar = "ECM.Debug",
+		ActionId = ".Set Particles",
+		ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
+		RolloverText = S[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
+		OnAction = function()
+			ChoGGi.MenuFuncs.SetParticles()
+		end,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = S[302535920001314--[[Toggle Render--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Toggle Render",

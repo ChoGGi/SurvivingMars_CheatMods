@@ -154,50 +154,6 @@ function OnMsg.ClassesGenerate()
 			icon = "UI/Icons/ColonyControlCenter/rocket_r.tga",
 		},
 
--- consumption
-		PowerFree = {
-			filter_name = "electricity_consumption",
-			des = S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]]:format("%s",S[11683--[[Electricity--]]]),
-			des_name = true,
-			icon = "UI/Icons/res_electricity.tga",
-			icon_name = S[4325--[[Free--]]],
-		},
-		PowerNeed = {
-			filter_name = "electricity_consumption",
-			des = S[302535920001221--[[Change this %s so it needs a %s source.--]]]:format("%s",S[11683--[[Electricity--]]]),
-			des_name = true,
-			icon = "UI/Icons/res_electricity.tga",
-			icon_name = S[302535920000162--[[Need--]]],
-		},
-		WaterFree = {
-			filter_name = "water_consumption",
-			des = S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]]:format("%s",S[681--[[Water--]]]),
-			des_name = true,
-			icon = "UI/Icons/res_water.tga",
-			icon_name = S[4325--[[Free--]]],
-		},
-		WaterNeed = {
-			filter_name = "water_consumption",
-			des = S[302535920001221--[[Change this %s so it needs a %s source.--]]]:format("%s",S[681--[[Water--]]]),
-			des_name = true,
-			icon = "UI/Icons/res_water.tga",
-			icon_name = S[302535920000162--[[Need--]]],
-		},
-		OxygenFree = {
-			filter_name = "air_consumption",
-			des = S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]]:format("%s",S[682--[[Oxygen--]]]),
-			des_name = true,
-			icon = "UI/Icons/res_oxygen.tga",
-			icon_name = S[4325--[[Free--]]],
-		},
-		OxygenNeed = {
-			filter_name = "air_consumption",
-			des = S[302535920001221--[[Change this %s so it needs a %s source.--]]]:format("%s",S[682--[[Oxygen--]]]),
-			des_name = true,
-			icon = "UI/Icons/res_oxygen.tga",
-			icon_name = S[302535920000162--[[Need--]]],
-		},
-
 -- Misc
 		FindResource = {
 			des = S[302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).--]]],
@@ -256,10 +212,11 @@ function OnMsg.ClassesGenerate()
 		local id = obj.template_name
 		for i = 1, #win.actions do
 			local action = win.actions[i]
+			local aid = action.ActionId
 
 			-- if it's stored in table than we'll use that other wise it's if time
-			if cheats_lookup[action.ActionId] then
-				local look = cheats_lookup[action.ActionId]
+			if cheats_lookup[aid] then
+				local look = cheats_lookup[aid]
 				-- filter power
 				if (not look.filter_name and look.filter_func and obj[look.filter_func] and obj[look.filter_func](obj))
 						or not (look.filter_func and look.filter_name and obj[look.filter_func] and obj[look.filter_func](obj,look.filter_name))
@@ -286,38 +243,39 @@ function OnMsg.ClassesGenerate()
 					action.ActionId = ""
 				end
 
-			elseif action.ActionId == "Upgrade1" then
+			elseif aid == "Upgrade1" then
 				SetUpgradeInfo(action,obj,1)
-			elseif action.ActionId == "Upgrade2" then
+			elseif aid == "Upgrade2" then
 				SetUpgradeInfo(action,obj,2)
-			elseif action.ActionId == "Upgrade3" then
+			elseif aid == "Upgrade3" then
 				SetUpgradeInfo(action,obj,3)
-			elseif action.ActionId == "WorkAuto" then
+			elseif aid == "WorkAuto" then
 				local bs = ChoGGi.UserSettings.BuildingSettings
 				SetHint(action,S[302535920001209--[[Make this %s not need workers (performance: %s).--]]]:format(name,bs and bs[id] and bs[id].performance or 150))
 
-			elseif action.ActionId == "CapDbl" then
+			elseif aid == "CapDbl" then
 				if obj:IsKindOf("SupplyRocket") then
 					SetHint(action,S[302535920001211--[[Double the export storage capacity of this %s.--]]]:format(name))
 				else
 					SetHint(action,S[302535920001212--[[Double the storage capacity of this %s.--]]]:format(name))
 				end
 
-			elseif action.ActionId == "Malfunction" then
+			elseif aid == "Malfunction" then
 				if obj.destroyed or obj.is_malfunctioned then
 					action.ActionId = ""
 				else
 					SetHint(action,StringFormat("%s...\n%s?",S[8039--[[Trait: Idiot (can cause a malfunction)--]]],S[53--[[Malfunction--]]]))
 				end
 
-			elseif action.ActionId == "Destroy" then
+			elseif aid == "Destroy" then
 				if obj:IsKindOf("SupplyRocket") or obj.destroyed then
 					action.ActionId = ""
 				else
 					SetHint(action,S[302535920001227--[[Turns object into ruin.--]]])
 					SetIcon(action,nil,"UI/Icons/IPButtons/demolition.tga")
 				end
-			elseif action.ActionId == "Empty" then
+
+			elseif aid == "Empty" then
 				if obj:IsKindOf("SubsurfaceAnomaly") then
 					action.ActionId = ""
 				else
@@ -330,9 +288,48 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 
-			end
+			elseif aid == "PowerFree" or aid == "PowerNeed" then
+				if obj.electricity_consumption and obj.electricity_consumption ~= 0 then
+					if aid == "PowerFree" then
+						SetHint(action,S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]]:format(name,S[11683--[[Electricity--]]]))
+						SetIcon(action,S[4325--[[Free--]]],"UI/Icons/res_electricity.tga")
+					else
+						SetHint(action,S[302535920001221--[[Change this %s so it needs a %s source.--]]]:format(name,S[11683--[[Electricity--]]]))
+						SetIcon(action,S[302535920000162--[[Need--]]],"UI/Icons/res_electricity.tga")
+					end
+				else
+					action.ActionId = ""
+				end
 
-		end --for
+			elseif aid == "WaterFree" or aid == "WaterNeed" then
+				if obj.water_consumption and obj.water_consumption ~= 0 then
+					if aid == "WaterFree" then
+						SetHint(action,S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]]:format(name,S[681--[[Water--]]]))
+						SetIcon(action,S[4325--[[Free--]]],"UI/Icons/res_water.tga")
+					else
+						SetHint(action,S[302535920001221--[[Change this %s so it needs a %s source.--]]]:format(name,S[681--[[Water--]]]))
+						SetIcon(action,S[302535920000162--[[Need--]]],"UI/Icons/res_water.tga")
+					end
+				else
+					action.ActionId = ""
+				end
+
+			elseif aid == "OxygenFree" or aid == "OxygenNeed" then
+				if obj.air_consumption and obj.air_consumption ~= 0 then
+					if aid == "OxygenFree" then
+						SetHint(action,S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]]:format(name,S[682--[[Oxygen--]]]))
+						SetIcon(action,S[4325--[[Free--]]],"UI/Icons/res_water.tga")
+					else
+						SetHint(action,S[302535920001221--[[Change this %s so it needs a %s source.--]]]:format(name,S[682--[[Oxygen--]]]))
+						SetIcon(action,S[302535920000162--[[Need--]]],"UI/Icons/res_water.tga")
+					end
+				else
+					action.ActionId = ""
+				end
+
+			end -- ifs
+
+		end -- for
 
 		return true
 	end
