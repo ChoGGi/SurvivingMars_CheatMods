@@ -61,42 +61,6 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	function ChoGGi.MenuFuncs.SetDroneType()
-		local ItemList = {
-			{
-				text = S[10278--[[Wasp Drone--]]],
-				value = "FlyingDrone",
-			},
-			{
-				text = S[1681--[[Drone--]]],
-				value = "Drone",
-			},
-		}
-		local sponsor = GetMissionSponsor()
-
-		local function CallBackFunc(choice)
-			if #choice < 1 then
-				return
-			end
-			sponsor.drone_class = choice[1].value
-			MsgPopup(
-				S[302535920001405--[[Drones will now spawn as: %s--]]]:format(choice[1].text),
-				302535920001403--[[Drone Type--]]
-			)
-		end
-
-		-- if nothing is set than it's regular drones
-		local name = g_Classes[sponsor.drone_class]
-		name = name and name.display_name or 1681--[[Drone--]]
-
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = 302535920001403--[[Drone Type--]],
-			hint = StringFormat("%s: %s\n%s",S[302535920000106--[[Current--]]],Trans(name),S[302535920001406--[["Hubs can only have one type of drone, so you'll need pack/unpack all drones for each hub you wish to change (or use Drones>%s)."--]]]:format(S[302535920000513--[[Change Amount of Drones in Hub--]]])),
-		}
-	end
-
 	function ChoGGi.MenuFuncs.InstantMissionGoals()
 		local T = T
 		local GetGoalDescription = GetGoalDescription

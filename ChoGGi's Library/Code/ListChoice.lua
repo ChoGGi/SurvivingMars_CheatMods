@@ -26,6 +26,8 @@ DefineClass.ChoGGi_ListChoiceDlg = {
 	-- if listitem has .obj and this is true we "flash" it
 	select_flash = false,
 
+	old_edit_value = false,
+
 	sel = false,
 	obj = false,
 }
@@ -140,8 +142,12 @@ Press Enter to show all items."--]]],
 
 Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]],
 			Hint = S[302535920000078--[[Add Custom Value--]]],
-			OnTextChanged = function()
-				self:idEditValueOnTextChanged()
+			OnTextChanged = function(edit)
+				local text = self.idEditValue:GetText()
+				if text ~= self.old_edit_value then
+					self.old_edit_value = text
+					self:idEditValueOnTextChanged()
+				end
 			end,
 		}, self.idEditArea)
 	end
@@ -328,15 +334,12 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	local value,value_type = RetProperType(text)
 --~ 	printC(text,value)
 	if self.custom_type > 0 then
-		if self.idList.focused_item then
+		if self.idList.focused_item and self.idColourContainer then
 			self.idList[self.idList.focused_item].item.value = value
-			if self.idColourContainer then
-				-- update obj colours
-				self:UpdateColour()
-				if value_type == "number" then
-					self.idColorPicker:SetColor(value)
-				end
---~ 				self.idEditValue:SetCursor(1,#text)
+			-- update obj colours
+			self:UpdateColour()
+			if value_type == "number" then
+				self.idColorPicker:SetColor(value)
 			end
 		end
 	else
@@ -535,23 +538,23 @@ function ChoGGi_ListChoiceDlg:idListOnSelect(button)
 		return
 	end
 
-	if self.custom_type > 0 then
-		-- 2 = showing the colour picker
-		if self.custom_type == 2 then
-			-- move the colour picker circle
-			self:UpdateColourPicker(self.sel.text)
-			-- default alpha stripe to max, so the text is updated correctly (and maybe make it actually do something sometime)
+--~ 	if self.custom_type > 0 then
+--~ 	end
+	-- 2 = showing the colour picker
+	if self.custom_type == 2 then
+		-- move the colour picker circle
+		self:UpdateColourPicker(self.sel.text)
+		-- default alpha stripe to max, so the text is updated correctly (and maybe make it actually do something sometime)
 --~ 			self.idColorPicker:UpdateComponent("ALPHA", 1000)
-		-- don't show picker unless it's a colour setting (browsing lightmodel)
-		elseif self.custom_type == 5 then
-			if self.sel.editor == "color" then
-				self:SetWidth(800)
-				self:UpdateColourPicker(self.sel.text)
-				self.idColourContainer:SetVisible(true)
-			else
-				self:SetWidth(self.dialog_width)
-				self.idColourContainer:SetVisible(false)
-			end
+	-- don't show picker unless it's a colour setting (browsing lightmodel)
+	elseif self.custom_type == 5 then
+		if self.sel.editor == "color" then
+			self:SetWidth(800)
+			self:UpdateColourPicker(self.sel.text)
+			self.idColourContainer:SetVisible(true)
+		else
+			self:SetWidth(self.dialog_width)
+			self.idColourContainer:SetVisible(false)
 		end
 	end
 end

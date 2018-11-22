@@ -1,5 +1,23 @@
 -- See LICENSE for terms
 
+local image_str
+
+do -- Map Images Pack (it doesn't need to be loaded just installed)
+	local min_version = 1
+	local mod = Mods.ChoGGi_MapImagesPack
+
+	if not mod or mod and not Platform.steam and min_version > mod.version then
+		CreateRealTimeThread(function()
+			if WaitMarsQuestion(nil,"Error",string.format([[View Colony Map requires Map Images Pack (at least v%s).
+Press Ok to download it.]],min_version)) == "ok" then
+				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1571465108")
+			end
+		end)
+	else
+		image_str = string.format("%sMaps/%s.png",Mods.ChoGGi_MapImagesPack.env.CurrentModPath,"%s")
+	end
+end -- do
+
 -- tell people how to get my library mod (if needs be)
 local fire_once
 function OnMsg.ModsReloaded()
@@ -23,7 +41,8 @@ Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_ve
 	end
 end
 
-local image_str = string.format("%sMaps/%s.png",CurrentModPath,"%s")
+local image_str = string.format("%sMaps/%s.png",Mods.ChoGGi_MapImagesPack.env.CurrentModPath,"%s")
+
 local showimage
 local skip_showing_image
 

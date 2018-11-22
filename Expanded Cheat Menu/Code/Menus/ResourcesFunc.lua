@@ -94,6 +94,23 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
+	local skip_prefabs = {
+		BlackCubeDumpSite = true,
+		ElectricitySwitch = true,
+		LifesupportSwitch = true,
+		StorageConcrete = true,
+		StorageElectronics = true,
+		StorageFood = true,
+		StorageFuel = true,
+		StorageMachineParts = true,
+		StorageMetals = true,
+		StorageMysteryResource = true,
+		StoragePolymers = true,
+		StorageRareMetals = true,
+		Passage = true,
+		PassageRamp = true,
+	}
+
 	function ChoGGi.MenuFuncs.AddPrefabs()
 		local UICity = UICity
 
@@ -114,7 +131,7 @@ function OnMsg.ClassesGenerate()
 
 		for id,cargo in pairs(BuildingTemplates) do
 			-- baclcube is instant, instant doesn't need prefabs, and hidden normally don't show up
-			if id ~= "BlackCubeDumpSite" and not cargo.instant_build and (cargo.group ~= "Hidden" or cargo.group == "Hidden" and show_hidden) then
+			if not skip_prefabs[id] and not cargo.instant_build and (cargo.group ~= "Hidden" or cargo.group == "Hidden" and show_hidden) then
 				c = c + 1
 				ItemList[c] = {
 					text = Trans(cargo.display_name),

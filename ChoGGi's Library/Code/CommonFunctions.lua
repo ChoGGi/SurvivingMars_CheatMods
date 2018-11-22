@@ -4398,3 +4398,44 @@ function ChoGGi.ComFuncs.RemoveObjs(cls)
 		MapDelete(true, cls)
 	end
 end
+
+do -- SpawnColonist
+	local pairs = pairs
+	local Msg = Msg
+	local GenerateColonistData = GenerateColonistData
+	local GetRandomPassablePoint = GetRandomPassablePoint
+
+	function ChoGGi.ComFuncs.SpawnColonist(old_c,building,pos,city)
+		city = city or UICity
+
+		local colonist
+		if old_c then
+	--~		 colonist = GenerateColonistData(city, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
+			colonist = GenerateColonistData(city, old_c.age_trait, false, {gender=old_c.gender,entity_gender=old_c.entity_gender,no_traits = "no_traits",no_specialization=true})
+			--we set all the set gen doesn't (it's more for random gen after all
+			colonist.birthplace = old_c.birthplace
+			colonist.death_age = old_c.death_age
+			colonist.name = old_c.name
+			colonist.race = old_c.race
+			colonist.specialist = old_c.specialist
+			for trait_id, _ in pairs(old_c.traits) do
+				if trait_id and trait_id ~= "" then
+					colonist.traits[trait_id] = true
+					--colonist:AddTrait(trait_id,true)
+				end
+			end
+		else
+			--GenerateColonistData(city, age_trait, martianborn, gender, entity_gender, no_traits)
+			colonist = GenerateColonistData(city)
+		end
+
+		Colonist:new(colonist)
+		Msg("ColonistBorn", colonist)
+
+		colonist:SetPos(pos or building and GetPassablePointNearby(building:GetPos()) or GetRandomPassablePoint())
+		--dome:UpdateUI()
+		--if spec is different then updates to new entity
+		colonist:ChooseEntity()
+		return colonist
+	end
+end -- do

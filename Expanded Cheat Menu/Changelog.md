@@ -11,6 +11,8 @@
 
 ### Changed:
 - Exposed settings for the Shift-F2 grid (debug>grids).
+- Moved Drone Type from Mission to Drones (not sure why I put it there).
+- Made Add Prefabs skip stuff that doesn't "prefab".
 
 ## v10.9 (20 Nov 2018)
 ### Added:

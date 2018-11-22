@@ -222,48 +222,10 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	do -- Colonist stuff
-		local pairs = pairs
-		local Msg = Msg
+		local SpawnColonist = ChoGGi.ComFuncs.SpawnColonist
+		local IsValid = IsValid
 		local FindNearestObject = FindNearestObject
-		local GenerateColonistData = GenerateColonistData
-
-		local function SpawnColonist(old_c,building,pos,city)
-			local dome = FindNearestObject(city.labels.Dome or {},old_c or building)
-			if not dome then
-				return
-			end
-
-			local colonist
-			if old_c then
-		--~		 colonist = GenerateColonistData(city, old_c.age_trait, false, old_c.gender, old_c.entity_gender, true)
-				colonist = GenerateColonistData(city, old_c.age_trait, false, {gender=old_c.gender,entity_gender=old_c.entity_gender,no_traits = "no_traits",no_specialization=true})
-				--we set all the set gen doesn't (it's more for random gen after all
-				colonist.birthplace = old_c.birthplace
-				colonist.death_age = old_c.death_age
-				colonist.name = old_c.name
-				colonist.race = old_c.race
-				colonist.specialist = old_c.specialist
-				for trait_id, _ in pairs(old_c.traits) do
-					if trait_id and trait_id ~= "" then
-						colonist.traits[trait_id] = true
-						--colonist:AddTrait(trait_id,true)
-					end
-				end
-			else
-				--GenerateColonistData(city, age_trait, martianborn, gender, entity_gender, no_traits)
-				colonist = GenerateColonistData(city)
-			end
-
-			colonist.dome = dome
-			colonist.current_dome = dome
-			Colonist:new(colonist)
-			Msg("ColonistBorn", colonist)
-			colonist:SetPos(pos or dome:PickColonistSpawnPt())
-			--dome:UpdateUI()
-			--if spec is different then updates to new entity
-			colonist:ChooseEntity()
-			return colonist
-		end
+		local GetPassablePointNearby = GetPassablePointNearby
 
 		function ChoGGi.MenuFuncs.ResetAllColonists()
 			local UICity = UICity
@@ -272,11 +234,11 @@ function OnMsg.ClassesGenerate()
 					local objs = UICity.labels.Colonist or ""
 					for i = 1, #objs do
 						local c = objs[i]
-						SpawnColonist(c,something,c:GetVisualPos(),UICity)
-						if type(c.Done) == "function" then
-							c:Done()
+						local is_valid = IsValid(c)
+						SpawnColonist(c,nil,is_valid and c:GetVisualPos(),UICity)
+						if is_valid then
+							c:delete()
 						end
-						c:delete()
 					end
 				end
 			end
@@ -291,14 +253,13 @@ function OnMsg.ClassesGenerate()
 		function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
 			local UICity = UICity
 			local objs = UICity.labels.Colonist or ""
+			local rockets = UICity.labels.SupplyRocket or {}
 			for i = 1, #objs do
 				local c = objs[i]
-				if IsValid(c) and c:GetStateText() == "movePlanet" then
-					local rocket = FindNearestObject(UICity.labels.SupplyRocket or {},c)
+				local is_valid = IsValid(c)
+				if is_valid and c:GetStateText() == "movePlanet" then
+					local rocket = FindNearestObject(rockets,c)
 					SpawnColonist(c,rocket,c:GetVisualPos(),UICity)
-					if type(c.Done) == "function" then
-						c:Done()
-					end
 					c:delete()
 				end
 			end
@@ -309,37 +270,25 @@ function OnMsg.ClassesGenerate()
 			)
 		end
 
-		local function AttachedColonist(c,pos,rocket)
+		local function AttachedColonist(c,pos,rocket,city)
 			-- try to remove attached colonist from rocket, and get pos so we can create a new c at the same pos
 			if IsValid(c) then
 				c:Detach()
-				pos = c.GetPos and c:GetPos() or pos
-				SpawnColonist(c,rocket,pos)
+				SpawnColonist(c,rocket,pos,city)
 				c:delete()
 			else
-				SpawnColonist(nil,rocket,pos)
+				SpawnColonist(nil,nil,rocket,pos,city)
 			end
---~ 			if not pcall(function()
---~ 				c:Detach()
---~ 				pos = c.GetPos and c:GetPos() or pos
---~ 				SpawnColonist(c,rocket,pos)
---~ 			end) then
---~ 				SpawnColonist(nil,rocket,pos)
---~ 				-- something messed up with so just spawn random colonist
---~ 			end
---~ 			if c.Done then
---~ 				c:Done()
---~ 			end
---~ 			c:delete()
 		end
 		function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
+			local InvalidPos = ChoGGi.Consts.InvalidPos
+			local UICity = UICity
 			local rockets = UICity.labels.SupplyRocket or ""
-			local pos
 			for i = 1, #rockets do
 				-- SupplyRocket also returns rockets in space
-				if rockets[i]:IsValidPos() then
-					pos = rockets[i]:GetPos()
-					rockets[i]:ForEachAttach("Colonist",AttachedColonist,pos,rockets[i])
+				if rockets[i]:GetPos() ~= InvalidPos then
+					local pos = GetPassablePointNearby(rockets[i]:GetPos())
+					rockets[i]:ForEachAttach("Colonist",AttachedColonist,pos,rockets[i],UICity)
 				end
 			end
 			MsgPopup(

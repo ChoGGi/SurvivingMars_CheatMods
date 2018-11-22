@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "View Colony Map v0.8",
-	"version", 8,
-	"saved", 1542283200,
+	"title", "View Colony Map v0.9",
+	"version", 9,
+	"saved", 1542888000,
 	"image", "Preview.png",
 	"id", "ChoGGi_ViewColonyMap",
 	"steam_id", "1491973763",
@@ -14,5 +14,5 @@ return PlaceObj("ModDef", {
 
 For those wondering: Purple = mountainous, other colours = buildable.
 
-Gallery of all maps: https://imgur.com/a/nZmidtO]],
+All maps: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Map%20Images%20Pack/Maps]],
 })

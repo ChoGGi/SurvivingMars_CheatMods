@@ -495,10 +495,11 @@ function OnMsg.ClassesGenerate()
 	-- skip_under: don't show any tables under this length
 	-- pad_to: needed for sorting in examine (prefixes zeros to length)
 --~ 	ChoGGi.ComFuncs.MonitorTableLength(_G)
-	function ChoGGi.ComFuncs.MonitorTableLength(obj,skip_under,pad_to,sortby)
+	function ChoGGi.ComFuncs.MonitorTableLength(obj,skip_under,pad_to,sortby,name)
+		name = name or RetName(obj)
 		skip_under = skip_under or 25
 		local table_list = {}
-		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list)
+		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list,nil,name)
 		dlg.idAutoRefresh:SetCheck(true)
 		dlg:idAutoRefreshToggle()
 		local table_str = "%s %s"

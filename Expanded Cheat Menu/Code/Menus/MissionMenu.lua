@@ -115,20 +115,6 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001403--[[Drone Type--]]],
-		ActionMenubar = str_ExpandedCM_Mission,
-		ActionId = ".Drone Type",
-		ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
-		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
-				GetMissionSponsor().drone_class or "Drone",
-				302535920001404--[[Change what type of drones will spawn (doesn't effect existing).--]]
-			)
-		end,
-		OnAction = ChoGGi.MenuFuncs.SetDroneType,
-	}
-
-	c = c + 1
 	Actions[c] = {ActionName = S[302535920001247--[[Start Challenge--]]],
 		ActionMenubar = str_ExpandedCM_Mission,
 		ActionId = ".Start Challenge",
