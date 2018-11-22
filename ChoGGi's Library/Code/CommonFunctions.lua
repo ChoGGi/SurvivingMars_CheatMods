@@ -389,7 +389,7 @@ do -- ShowObj
 			table.clear(markers)
 		-- could be from a saved game so remove any objects on the map
 		else
-			MapDelete("map", "ChoGGi_Vector","ChoGGi_Sphere")
+			MapDelete(true, "ChoGGi_Vector","ChoGGi_Sphere")
 		end
 		ResumePassEdits("ClearShowObj")
 	end
@@ -2517,7 +2517,9 @@ function ChoGGi.ComFuncs.EmptyMechDepot(oldobj)
 		newobj:CheatFill()
 		-- clean out old depot
 		oldobj:CheatEmpty()
---~ 		ChoGGi.ComFuncs.DeleteObject(oldobj)
+
+		Sleep(250)
+		ChoGGi.ComFuncs.DeleteObject(oldobj)
 	end)
 
 end
@@ -2798,6 +2800,7 @@ do -- DeleteObject
 	local DeleteThread = DeleteThread
 	local DestroyBuildingImmediate = DestroyBuildingImmediate
 	local type = type
+	local UpdateFlightGrid
 
 	local function ExecFunc(obj,funcname,param)
 		if obj[funcname] then
@@ -2807,6 +2810,9 @@ do -- DeleteObject
 
 	function ChoGGi.ComFuncs.DeleteObject(obj,editor_delete)
 		local ChoGGi = ChoGGi
+		if not UpdateFlightGrid then
+			UpdateFlightGrid = ChoGGi.ComFuncs.UpdateFlightGrid
+		end
 
 		if not editor_delete then
 			-- multiple selection from editor mode
@@ -2901,6 +2907,8 @@ do -- DeleteObject
 		if IsValid(obj) then
 			DoneObject(obj)
 		end
+
+		UpdateFlightGrid()
 	end
 end -- do
 
@@ -3676,6 +3684,8 @@ function ChoGGi.ComFuncs.TerrainEditor_Toggle()
 		if Dialogs.TerrainBrushesDlg then
 			Dialogs.TerrainBrushesDlg:delete()
 		end
+		-- update flight grid so shuttles don't fly into newly added mountains
+		ChoGGi.ComFuncs.UpdateFlightGrid()
 	end
 end
 
@@ -4013,7 +4023,7 @@ function ChoGGi.ComFuncs.DeleteLargeRocks()
 	local function CallBackFunc(answer)
 		if answer then
 			SuspendPassEdits("DeleteLargeRocks")
-			MapDelete("map", {"Deposition","WasteRockObstructorSmall","WasteRockObstructor"})
+			MapDelete(true, {"Deposition","WasteRockObstructorSmall","WasteRockObstructor"})
 			ResumePassEdits("DeleteLargeRocks")
 		end
 	end
@@ -4028,7 +4038,7 @@ function ChoGGi.ComFuncs.DeleteSmallRocks()
 	local function CallBackFunc(answer)
 		if answer then
 			SuspendPassEdits("DeleteSmallRocks")
-			MapDelete("map", "StoneSmall")
+			MapDelete(true, "StoneSmall")
 			ResumePassEdits("DeleteSmallRocks")
 		end
 	end
@@ -4314,5 +4324,66 @@ do -- PadNumWithZeros
 			num = str:format("0",num)
 		end
 		return num
+	end
+end -- do
+
+do -- UpdateFlightGrid
+	local GetMapSize = terrain.GetMapSize
+	local IsHeightChanged = terrain.IsHeightChanged
+	local GetHeightGrid = terrain.GetHeightGrid
+	local Flight_MarkPathSpline = Flight_MarkPathSpline
+
+	local type_tile = terrain.TypeTileSize()
+	local work_step = 16 * type_tile
+	local function Flight_NewGrid(step, packing)
+		local mw, mh = GetMapSize()
+		local work_size = mw / (step or work_step)
+		return grid(work_size, packing or 32)
+	end
+	local function TrajectMark(spline)
+		return spline and Flight_MarkPathSpline(Flight_Traject, spline, mark_step)
+	end
+
+	function ChoGGi.ComFuncs.UpdateFlightGrid()
+		Flight_Free()
+
+		Flight_OrigHeight = Flight_NewGrid()
+		GetHeightGrid(Flight_OrigHeight, work_step, IsHeightChanged())
+
+		if not Flight_OrigHeight then
+			Flight_OrigHeight = Flight_NewGrid()
+			GetHeightGrid(Flight_OrigHeight, work_step, IsHeightChanged())
+		end
+
+		Flight_Height = Flight_OrigHeight:clone()
+		if Flight_MarkedObjs then
+			for obj in pairs(Flight_MarkedObjs) do
+				if not Flight_ObjToUnmark[obj] then
+					Flight_ObjsToMark[obj] = true
+				end
+			end
+		else
+			Flight_ObjsToMark = {}
+			MapForEach("map", "attached", false, nil, mark_flags,function(obj)
+				Flight_ObjsToMark[obj] = true
+			end)
+		end
+		Flight_ObjToUnmark = {}
+		Flight_MarkedObjs = {}
+		MarkThreadProc()
+
+		Flight_Traject = Flight_NewGrid(mark_step, 16)
+		MapForEach("map", "FlyingObject", function(obj)
+			if obj.idle_mark_pos then
+				Flight_Traject:AddCircle(1, obj.idle_mark_pos, mark_step, obj.collision_radius)
+			end
+			TrajectMark(obj.current_spline)
+			TrajectMark(obj.next_spline)
+		end)
+
+		local objs = FlyingObjs or ""
+		for i = 1, #objs do
+			objs[i]:RegisterFlight()
+		end
 	end
 end -- do

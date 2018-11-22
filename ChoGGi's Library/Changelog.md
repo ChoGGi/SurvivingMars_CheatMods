@@ -1,7 +1,7 @@
 ## Library Changelog
 
 ## v3.7 (Unreleased)
-- Code cleanup.
+- Fixed shuttles not paying attention to newly added/removed hills/rocks.
 
 ## v3.6 (20 Nov 2018)
 - Changed my msg func to use an object that works in the main menu as well as in-game.

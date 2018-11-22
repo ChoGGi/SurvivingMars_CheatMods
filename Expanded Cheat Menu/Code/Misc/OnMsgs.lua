@@ -1030,6 +1030,17 @@ function OnMsg.NewMapLoaded()
 	ChoGGi.ComFuncs.UpdateDataTablesCargo()
 end
 
+function OnMsg.SaveGame()
+	SuspendPassEdits("DeleteChoGGiObjects")
+	MapDelete(true, "RotatyThing", function(o)
+		if o.ChoGGi_blinky then
+			return true
+		end
+	end)
+	MapDelete(true, "ChoGGi_HexSpot", "ChoGGi_Vector", "ChoGGi_Sphere", "ChoGGi_PolyLine", "ChoGGi_PolyLine2")
+	ResumePassEdits("DeleteChoGGiObjects")
+end
+
 -- show how long loading takes
 function OnMsg.ChangeMap()
 	local ChoGGi = ChoGGi
@@ -1052,14 +1063,12 @@ do -- LoadGame/CityStart
 	function OnMsg.LoadGame()
 		-- just in case any are stuck on the map
 		SuspendPassEdits("DeleteOldChoGGiObjects")
-		MapDelete("map", "RotatyThing", function(o)
+		MapDelete(true, "RotatyThing", function(o)
 			if o.ChoGGi_blinky then
 				return true
 			end
 		end)
-		MapDelete("map", "ChoGGi_HexSpot")
-		MapDelete("map", "ChoGGi_Vector")
-		MapDelete("map", "ChoGGi_Sphere")
+		MapDelete(true, "ChoGGi_HexSpot", "ChoGGi_Vector", "ChoGGi_Sphere", "ChoGGi_PolyLine", "ChoGGi_PolyLine2")
 		ResumePassEdits("DeleteOldChoGGiObjects")
 
 		ChoGGi.Temp.IsChoGGiMsgLoaded = false

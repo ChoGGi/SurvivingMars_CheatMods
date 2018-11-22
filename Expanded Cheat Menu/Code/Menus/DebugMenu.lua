@@ -243,18 +243,6 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000499--[[Toggle Grid Follow Mouse--]]],
-		ActionMenubar = str_Debug_Grids,
-		ActionId = ".Toggle Grid Follow Mouse",
-		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
-		RolloverText = S[302535920000500--[["Show a hex grid around mouse: Green = pass/build, Yellow = no pass/build, Blue = pass/no build, Red = no pass/no build.
-See Help>%s to increase size."--]]]:format(S[302535920001242--[[Edit ECM Settings--]]]),
-		OnAction = ChoGGi.MenuFuncs.debug_build_grid,
-		ActionShortcut = "Shift-F1",
-		ActionBindable = true,
-	}
-
-	c = c + 1
 	Actions[c] = {ActionName = S[302535920001297--[[Toggle Flight Grid--]]],
 		ActionMenubar = str_Debug_Grids,
 		ActionId = ".Toggle Flight Grid",
@@ -267,16 +255,17 @@ See Help>%s to increase size."--]]]:format(S[302535920001242--[[Edit ECM Setting
 		ActionBindable = true,
 	}
 
---~ 	c = c + 1
---~ 	Actions[c] = {ActionName = S[302535920000497--[[Toggle Terrain Deposit Grid--]]],
---~ 		ActionMenubar = str_Debug_Grids,
---~ 		ActionId = ".Toggle Terrain Deposit Grid",
---~ 		ActionIcon = "CommonAssets/UI/Menu/ToggleBlockPass.tga",
---~ 		RolloverText = S[302535920000498--[[Shows a grid around concrete.--]]],
---~ 		OnAction = ToggleTerrainDepositGrid,
---~ 		ActionShortcut = "Shift-F3",
---~ 		ActionBindable = true,
---~ 	}
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001328--[[Show Grid Disable--]]],
+		ActionMenubar = str_Debug_Grids,
+		ActionId = ".Show Grid Disable",
+		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
+		RolloverText = S[302535920001329--[[Hide the white ground grids.--]]],
+		OnAction = function()
+			ChoGGi.MenuFuncs.PostProcGrids()
+		end,
+		ActionSortKey = "-1Show Grid Disable",
+	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000724--[[Show Grid Square--]]],
@@ -287,6 +276,7 @@ See Help>%s to increase size."--]]]:format(S[302535920001242--[[Edit ECM Setting
 		OnAction = function()
 			ChoGGi.MenuFuncs.PostProcGrids("grid")
 		end,
+		ActionSortKey = "0Show Grid Square",
 	}
 
 	c = c + 1
@@ -298,6 +288,7 @@ See Help>%s to increase size."--]]]:format(S[302535920001242--[[Edit ECM Setting
 		OnAction = function()
 			ChoGGi.MenuFuncs.PostProcGrids("grid45")
 		end,
+		ActionSortKey = "0Show Grid 45 Square",
 	}
 
 	c = c + 1
@@ -309,18 +300,53 @@ See Help>%s to increase size."--]]]:format(S[302535920001242--[[Edit ECM Setting
 		OnAction = function()
 			ChoGGi.MenuFuncs.PostProcGrids("hexgrid")
 		end,
+		ActionSortKey = "0Show Grid Hex",
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001328--[[Show Grid Disable--]]],
+	Actions[c] = {ActionName = S[302535920000499--[[Toggle Grid Follow Mouse--]]],
 		ActionMenubar = str_Debug_Grids,
-		ActionId = ".Show Grid Disable",
-		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
-		RolloverText = S[302535920001329--[[Hide the white ground grids.--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.PostProcGrids()
+		ActionId = ".Toggle Grid Follow Mouse",
+		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
+		RolloverText = S[302535920000500--[["Show a hex grid around mouse: Green = pass/build, Yellow = no pass/build, Blue = pass/no build, Red = no pass/no build."--]]],
+		OnAction = ChoGGi.MenuFuncs.debug_build_grid,
+		ActionShortcut = "Shift-F1",
+		ActionBindable = true,
+		ActionSortKey = "8Toggle Grid Follow Mouse",
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001417--[[Follow Mouse Grid Size--]]],
+		ActionMenubar = str_Debug_Grids,
+		ActionId = ".Follow Mouse Grid Size",
+		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.DebugGridSize",
+				302535920001418--[[Sets the size of the grid...--]]
+			)
 		end,
-		ActionSortKey = "0.Show Grid Disable",
+		OnAction = function()
+			ChoGGi.MenuFuncs.debug_build_grid_settings("DebugGridSize")
+		end,
+		ActionSortKey = "9Follow Mouse Grid Size",
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001419--[[Follow Mouse Grid Trans--]]],
+		ActionMenubar = str_Debug_Grids,
+		ActionId = ".Follow Mouse Grid Trans",
+		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.DebugGridOpacity",
+				302535920001420--[[How transparent the grid is.--]]
+			)
+		end,
+		OnAction = function()
+			ChoGGi.MenuFuncs.debug_build_grid_settings("DebugGridOpacity")
+		end,
+		ActionSortKey = "9Follow Mouse Grid Trans",
 	}
 
 	local str_Debug_DebugFX = "ECM.Debug.Debug FX"

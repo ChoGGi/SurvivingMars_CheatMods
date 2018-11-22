@@ -352,7 +352,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 		SuspendPassEdits("ParticlesWithNullPolylines")
-		MapDelete("map", "ParSystem",function(o)
+		MapDelete(true, "ParSystem",function(o)
 			if type(o.polyline) == "string" and o.polyline:find("\0") then
 				return true
 			end
@@ -367,7 +367,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
 		SuspendPassEdits("RemoveMissingClassObjects")
-		MapDelete("map", "UnpersistedMissingClass")
+		MapDelete(true, "UnpersistedMissingClass")
 		ResumePassEdits("RemoveMissingClassObjects")
 		MsgPopup(
 			302535920000587--[[Remove Missing Class Objects (Warning)--]],
@@ -387,7 +387,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		SuspendPassEdits("MirrorSphereStuck")
-		MapDelete("map", "ParSystem",function(o)
+		MapDelete(true, "ParSystem",function(o)
 --~ 			if o:GetProperty("ParticlesName") == "PowerDecoy_Captured" and
 			if o:GetParticlesName() == "PowerDecoy_Captured" and
 					type(o.polyline) == "string" and o.polyline:find("\0") then
@@ -489,7 +489,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
 		SuspendPassEdits("RemoveYellowGridMarks")
-		MapDelete("map", "GridTile")
+		MapDelete(true, "GridTile")
 		ResumePassEdits("RemoveYellowGridMarks")
 		MsgPopup(
 			302535920000603--[[Remove Yellow Grid Marks--]],
@@ -499,13 +499,13 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 		SuspendPassEdits("RemoveBlueGridMarks")
-		MapDelete("map", "RangeHexRadius",function(o)
+		MapDelete(true, "RangeHexRadius",function(o)
 			if not o.ToggleWorkZone then
 				return true
 			end
 		end)
 		-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
-		MapDelete("map", "WireFramedPrettification",function(o)
+		MapDelete(true, "WireFramedPrettification",function(o)
 			if o.entity == "RoverTransport" then
 				return true
 			end
