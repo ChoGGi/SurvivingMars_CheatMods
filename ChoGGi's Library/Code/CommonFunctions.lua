@@ -4387,3 +4387,9 @@ do -- UpdateFlightGrid
 		end
 	end
 end -- do
+
+function ChoGGi.ComFuncs.RemoveObjs(cls)
+	if rawget(_G,cls) then
+		MapDelete(true, cls)
+	end
+end
