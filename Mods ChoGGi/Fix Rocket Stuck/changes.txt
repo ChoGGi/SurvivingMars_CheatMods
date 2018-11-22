@@ -1,2 +1,5 @@
+v0.3
+Added fix for drones stuck in rockets (any stuck will be added back as prefabs).
+
 v0.2
 Added fix for maintenance stuck rockets (thanks BlakeMW/Jerigord).
