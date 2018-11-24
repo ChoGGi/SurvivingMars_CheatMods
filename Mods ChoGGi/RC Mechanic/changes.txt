@@ -1,3 +1,6 @@
+v0.7
+Didn't repair some rovers.
+
 v0.6
 Sounds.
 

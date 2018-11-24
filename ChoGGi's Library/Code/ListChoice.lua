@@ -317,7 +317,7 @@ function ChoGGi_ListChoiceDlg:idListOnKbdKeyDown(vk)
 end
 
 function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(pt,button,...)
-	g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
+	g_Classes.ChoGGi_List.OnMouseButtonDown(self,pt,button)
 	GetRootDialog(self):idListOnSelect(button)
 end
 
@@ -437,7 +437,6 @@ function ChoGGi_ListChoiceDlg:BuildList()
 end
 
 function ChoGGi_ListChoiceDlg:idFilterOnKbdKeyDown(vk)
-	local obj = self
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
 		self:FilterText()
@@ -447,7 +446,7 @@ function ChoGGi_ListChoiceDlg:idFilterOnKbdKeyDown(vk)
 		self.idCloseX:Press()
 		return "break"
 	end
-	return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
+	return ChoGGi_TextInput.OnKbdKeyDown(self.idFilter, vk)
 end
 
 function ChoGGi_ListChoiceDlg:FilterText(txt)

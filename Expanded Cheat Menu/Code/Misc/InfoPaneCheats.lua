@@ -644,8 +644,6 @@ BaseRover.CheatAddDust = CheatAddDust
 
 Drone.CheatCleanAndFix = function(self)
 	CreateRealTimeThread(function()
-		self:CheatAddDust()
-		Sleep(10)
 		self.auto_connect = false
 		if self.malfunction_end_state then
 			self:PlayState(self.malfunction_end_state, 1)
@@ -653,12 +651,10 @@ Drone.CheatCleanAndFix = function(self)
 				return
 			end
 		end
-		self:SetState("idle")
---~ 		self:AddDust(-self.dust_max-1)
+		self:CheatAddDust()
+		Sleep(10)
 		self.dust = 0
 		self:SetDustVisuals()
-		self.command = ""
-		self:SetCommand("Idle")
 		RebuildInfopanel(self)
  end)
 end

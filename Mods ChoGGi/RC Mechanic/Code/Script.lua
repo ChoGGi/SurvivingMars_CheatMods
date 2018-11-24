@@ -81,7 +81,6 @@ function RCMechanic:GotoFromUser(...)
 	return BaseRover.GotoFromUser(self,...)
 end
 
-
 -- for auto mode
 function RCMechanic:ProcAutomation()
 	local unreachable_objects = self:GetUnreachableObjectsTable()
@@ -230,4 +229,39 @@ function OnMsg.ClassesBuilt()
 		})
 	)
 --~
+end
+
+
+-- CheatCleanAndFix
+local function CheatAddDust(self)
+	self.dust = self:GetDustMax()-1
+	self:SetDustVisuals()
+end
+Drone.CheatAddDust = CheatAddDust
+BaseRover.CheatAddDust = CheatAddDust
+
+Drone.CheatCleanAndFix = function(self)
+	CreateRealTimeThread(function()
+		self.auto_connect = false
+		if self.malfunction_end_state then
+			self:PlayState(self.malfunction_end_state, 1)
+			if not IsValid(self) then
+				return
+			end
+		end
+		self:CheatAddDust()
+		Sleep(10)
+		self.dust = 0
+		self:SetDustVisuals()
+		RebuildInfopanel(self)
+ end)
+end
+BaseRover.CheatCleanAndFix = function(self)
+	CreateRealTimeThread(function()
+		self:CheatAddDust()
+		Sleep(10)
+		self.dust = 0
+		self:SetDustVisuals()
+		self:Repair()
+ end)
 end

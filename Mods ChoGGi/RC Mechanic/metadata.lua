@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "RC Mechanic v0.6",
-  "version", 6,
-  "saved", 1542974400,
+  "title", "RC Mechanic v0.7",
+  "version", 7,
+  "saved", 1543060800,
 	"image", "Preview.png",
   "tags", "Buildings",
   "id", "ChoGGi_RCMechanic",
