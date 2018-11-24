@@ -304,6 +304,16 @@ DefineClass.ChoGGi_Dialog = {
 	BorderWidth = 2,
 	BorderColor = light_gray,
 }
+local ChoGGi_Dialog_action = {ActionName = "Close dialog",
+	ActionId = "ChoGGi_Dialog_action.Close dialog",
+	ActionShortcut = "Shift-Esc",
+	OnAction = function(dlg)
+		dlg.parent.idCloseX:Press()
+	end,
+	ActionBindable = true,
+	ActionTranslate = false,
+	replace_matching_id = true,
+}
 
 DefineClass.ChoGGi_DialogSection = {
 	__parents = {"XWindow"},
@@ -360,19 +370,23 @@ function ChoGGi_Window:AddElements()
 	-- add container dialog for everything to fit in
 	self.idDialog = g_Classes.ChoGGi_Dialog:new({
 	}, self)
+	-- shift-esc closes dialog
+	self.idDialog:AddAction(g_Classes.XAction:new(ChoGGi_Dialog_action))
 
 	-- x,y,w,h (start off with all dialogs at 100,100, default size, and we move later)
 	self.idDialog:SetBox(100, 100, self.dialog_width, self.dialog_height)
 
 	self.idSizeControl = g_Classes.XSizeControl:new({
+		Id = "idSizeControl",
 	}, self.idDialog)
 
 	self.idMoveControl = g_Classes.ChoGGi_MoveControl:new({
+		Id = "idMoveControl",
 		dialog = self,
 	}, self.idDialog)
 
 	local close = self.close_func or empty_func
-	self.idCloseX = ChoGGi_CloseButton:new({
+	self.idCloseX = g_Classes.ChoGGi_CloseButton:new({
 		OnPress = function(...)
 			close(...)
 			self:Close("cancel",false)
@@ -644,7 +658,7 @@ function ChoGGi_Window:AddScrollEdit()
 		Horizontal = true,
 	}, self.idScrollSection)
 
-	self.idEdit = ChoGGi_MultiLineEdit:new({
+	self.idEdit = g_Classes.ChoGGi_MultiLineEdit:new({
 		Id = "idEdit",
 		VScroll = "idScrollV",
 		HScroll = "idScrollH",

@@ -1,5 +1,6 @@
 local TableFind = table.find
 local TableRemove = table.remove
+local TableClear = table.clear
 local type = type
 local IsValid = IsValid
 local InvalidPos = InvalidPos()
@@ -50,6 +51,14 @@ local function SpawnColonist(old_c,building,pos,city)
 	return colonist
 end
 
+local function RemoveOldMainTasks(r)
+	for i = #r.task_requests, 1, -1 do
+		local task = r.task_requests[i]
+		if task:GetResource() == r.maintenance_requirements.resource then
+			TableRemove(r.task_requests,i)
+		end
+	end
+end
 function OnMsg.LoadGame()
 	-- if my lib mod is installed use my copy of this function
 	local SpawnColonist_lib
@@ -96,8 +105,15 @@ function OnMsg.LoadGame()
 
 			-- resends main com with whatever res is needed
 			elseif r.command == "WaitMaintenance" then
+				RemoveOldMainTasks(r)
 				r:SetCommand("WaitMaintenance",r.maintenance_requirements.resource, r.maintenance_request:GetTargetAmount())
 
+			-- any of the above WaitMaintenance rockets
+			elseif r.command == "Refuel" or r.command == "Unload" and r.maintenance_request then
+				RemoveOldMainTasks(r)
+				TableClear(r.maintenance_requirements)
+				r.maintenance_request = false
+				r:SetCommand(cmd)
 			end
 
 		end

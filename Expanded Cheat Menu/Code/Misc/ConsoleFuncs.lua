@@ -4,6 +4,9 @@
 
 local StringFormat = string.format
 local TableSort = table.sort
+local TableInsert = table.insert
+local TableRemove = table.remove
+local TableFind = table.find
 local Sleep = Sleep
 local CmpLower = CmpLower
 
@@ -41,7 +44,7 @@ function OnMsg.ClassesGenerate()
 	end
 	--
 	local function AddSubmenu(name,list,title)
-		local submenu = table.find(ExamineMenuToggle_list,"name",name)
+		local submenu = TableFind(ExamineMenuToggle_list,"name",name)
 		if submenu then
 			list = list or empty_table
 			ExamineMenuToggle_list[submenu].hint = nil
@@ -59,7 +62,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	local function AddMonitor(name,submenu,idx)
-		table.insert(submenu,idx or 2,{
+		TableInsert(submenu,idx or 2,{
 			name = StringFormat("%s: %s",S[302535920000853--[[Monitor--]]],name),
 			hint = StringFormat("ChoGGi.ComFuncs.MonitorTableLength(%s)",name),
 			clicked = function()
@@ -89,7 +92,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- add submenus to certain items
-		submenu = table.find(ExamineMenuToggle_list,"name","Presets")
+		submenu = TableFind(ExamineMenuToggle_list,"name","Presets")
 		if submenu then
 			-- remove hint from "submenu" menu
 			ExamineMenuToggle_list[submenu].hint = nil
@@ -114,12 +117,12 @@ function OnMsg.ClassesGenerate()
 				end
 			)
 			-- add orig to the menu (we want it at start so no sorting)
-			table.insert(submenu_table,1,BuildExamineItem("Presets"))
+			TableInsert(submenu_table,1,BuildExamineItem("Presets"))
 			-- and done
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
 		--
-		submenu = table.find(ExamineMenuToggle_list,"name","DataInstances")
+		submenu = TableFind(ExamineMenuToggle_list,"name","DataInstances")
 		if submenu then
 			ExamineMenuToggle_list[submenu].hint = nil
 			-- we need to build a list
@@ -139,19 +142,19 @@ function OnMsg.ClassesGenerate()
 			)
 
 			-- add orig to the menu (we want it at start so no sorting)
-			table.insert(submenu_table,1,BuildExamineItem("DataInstances"))
+			TableInsert(submenu_table,1,BuildExamineItem("DataInstances"))
 			-- and done
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
 		--
-		submenu = AddSubmenu("_G",{"PropertySetMethod","__cobjectToCObject","HandleToObject","DeletedCObjects","Flight_MarkedObjs"})
+		submenu = AddSubmenu("_G",{"__cobjectToCObject","Flags","HandleToObject","TranslationTable","const.TagLookupTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod"})
 		if submenu then
 			AddMonitor("_G",submenu)
 		end
 
 		submenu = AddSubmenu("ThreadsRegister",{"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers"})
 		if submenu then
-			table.insert(submenu,2,{
+			TableInsert(submenu,2,{
 				name = StringFormat("%s: %s",S[302535920000853--[[Monitor--]]],"ThreadsRegister"),
 				hint = "ChoGGi.ComFuncs.MonitorThreads()",
 				clicked = function()
@@ -160,18 +163,16 @@ function OnMsg.ClassesGenerate()
 			})
 		end
 		--
-		AddSubmenu("GlobalVars",{"GlobalVarValues","GlobalObjs","GlobalObjClasses","GlobalGameTimeThreads","GlobalGameTimeThreadFuncs","GlobalRealTimeThreads","GlobalRealTimeThreadFuncs"})
 		AddSubmenu("Consts",{"g_Consts","const","ModifiablePropScale"})
-		AddSubmenu("UICity",{"UICity.labels","UICity.tech_status","g_ApplicantPool","BuildMenuPrerequisiteOverrides","BuildingTechRequirements"})
 		AddSubmenu("Dialogs",{"terminal.desktop","GetInGameInterface"})
-		AddSubmenu("g_Classes",{"ClassTemplates","EntityData"})
-		AddSubmenu("TranslationTable",{"const.TagLookupTable"})
-		AddSubmenu("FXRules",{"FXLists"})
+		AddSubmenu("GlobalVars",{"GlobalVarValues","GlobalObjs","GlobalObjClasses","PersistableGlobals","GlobalGameTimeThreads","GlobalGameTimeThreadFuncs","GlobalRealTimeThreads","GlobalRealTimeThreadFuncs"})
+		AddSubmenu("g_Classes",{"ClassTemplates","EntityData","Attaches","FXRules","FXLists"})
+		AddSubmenu("g_CObjectFuncs",{"hr","pf","terrain","UIL","camera","camera3p","cameraMax","cameraRTS","string","table"})
 		AddSubmenu("StoryBits",{"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},S[948928900281--[[Story Bits--]]])
-		--
+		AddSubmenu("UICity",{"UICity.labels","UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters"})
 
 		-- bonus addition at the top
-		table.insert(ExamineMenuToggle_list,1,{
+		TableInsert(ExamineMenuToggle_list,1,{
 			name = 302535920001376--[[Auto Update List--]],
 			hint = 302535920001377--[[Update this list when ECM updates it.--]],
 			class = "ChoGGi_CheckButtonMenu",
@@ -431,7 +432,7 @@ function OnMsg.ClassesGenerate()
 		-- clear out old buttons first
 		for i = #dlg.idScripts, 1, -1 do
 			dlg.idScripts[i]:delete()
-			table.remove(dlg.idScripts,i)
+			TableRemove(dlg.idScripts,i)
 		end
 
 		-- build Scripts button

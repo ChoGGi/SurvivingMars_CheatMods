@@ -1,6 +1,12 @@
 ## Library Changelog
 
-## v3.8 (Unreleased)
+## v4.0 (Unreleased)
+
+## v3.9 (24 Nov 2018)
+- Shift-Esc will close an in-focus dialog.
+- Hopefully fixed an issue with Change Object Colour.
+
+## v3.8 (24 Nov 2018)
 - Moved my spawn colonist func here.
 - Made my random colour func work better.
 - Code cleanup.

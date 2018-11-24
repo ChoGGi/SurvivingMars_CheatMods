@@ -463,7 +463,7 @@ function OnMsg.ClassesGenerate()
 				local entity_name = logo.entity_name
 
 				local function ChangeLogo(label)
-					label = UICity.labels[label] or ""
+					label = ChoGGi.ComFuncs.RetAllOfClass(label)
 					for i = 1, #label do
 						label[i]:ForEachAttach("Logo",function(a)
 							a:ChangeEntity(entity_name)

@@ -512,7 +512,16 @@ function Examine:idAutoRefreshOnMouseButtonDown(pt,button,...)
 	g_Classes.ChoGGi_CheckButton.OnMouseButtonDown(self,pt,button,...)
 	if button == "R" then
 		self = GetRootDialog(self)
-		self.idAutoRefreshDelay:SetVisible(not self.idAutoRefreshDelay:GetVisible())
+		local visible = self.idAutoRefreshDelay:GetVisible()
+		self.idAutoRefreshDelay:SetVisible(not visible)
+		if visible then
+			self.idMoveControl:SetFocus()
+		end
+		local num = tonumber(self.idAutoRefreshDelay:GetText())
+		if num then
+			ChoGGi.UserSettings.ExamineRefreshTime = num
+			ChoGGi.SettingFuncs.WriteSettings()
+		end
 	end
 end
 
@@ -993,7 +1002,7 @@ function Examine:valuetotextex(obj)
 		if IsPoint(obj) then
 			-- InvalidPos()
 			if obj == InvalidPos then
-				return S[302535920000066--[[<color 203 120 30>Off-Map Pos</color>--]]]
+				return S[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
 			else
 				return StringFormat("%s%s(%s,%s,%s)%s",
 					self:HyperLink(ShowMe_local),
@@ -1368,11 +1377,11 @@ function Examine:totextex(obj,obj_type)
 				TableInsert(data_meta,1,StringFormat("GetLastServiced(): %s",self:valuetotextex(obj:GetLastServiced())))
 				TableInsert(data_meta,1,StringFormat("GetFreeUnitSlots(): %s",self:valuetotextex(obj:GetFreeUnitSlots())))
 				TableInsert(data_meta,1,StringFormat("GetFillIndex(): %s",self:valuetotextex(obj:GetFillIndex())))
-				TableInsert(data_meta,1,StringFormat("GetResource(): %s",self:valuetotextex(obj:GetResource())))
 				TableInsert(data_meta,1,StringFormat("GetTargetAmount(): %s",self:valuetotextex(obj:GetTargetAmount())))
 				TableInsert(data_meta,1,StringFormat("GetDesiredAmount(): %s",self:valuetotextex(obj:GetDesiredAmount())))
 				TableInsert(data_meta,1,StringFormat("GetActualAmount(): %s",self:valuetotextex(obj:GetActualAmount())))
 				TableInsert(data_meta,1,StringFormat("GetWorkingUnits(): %s",self:valuetotextex(obj:GetWorkingUnits())))
+				TableInsert(data_meta,1,StringFormat("GetResource(): %s",self:valuetotextex(obj:GetResource())))
 				TableInsert(data_meta,1,StringFormat("\nGetBuilding(): %s",self:valuetotextex(obj:GetBuilding())))
 			elseif name == "HGE.Grid" then
 				TableInsert(data_meta,1,"\ngetmetatable():")

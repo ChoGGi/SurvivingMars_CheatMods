@@ -33,13 +33,13 @@ function OnMsg.ClassesGenerate()
 		-- get pos of pins and stick it above
 		self.idDialog:SetBox(2880,540,self.dialog_width,self.dialog_height)
 
-		self.items = UICity.labels[self.obj.class]
+		self.items = ChoGGi.ComFuncs.RetAllOfClass(self.obj.class)
 		self:BuildList()
 	end
 
 	function PinExpander_PinsListDlg:UpdateList(obj)
 		self.obj = obj
-		self.items = UICity.labels[obj.class]
+		self.items = ChoGGi.ComFuncs.RetAllOfClass(obj.class)
 
 		self.title = getmetatable(obj).display_name
 		self.idCaption:SetTitle(self)

@@ -889,7 +889,7 @@ function OnMsg.ClassesGenerate()
 			--remove all thread refs so they stop
 			ChoGGi.Temp.UnitPathingHandles = {}
 			--and waypoints/colour
-			local objs = UICity.labels[cls] or ""
+			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
 			for i = 1, #objs do
 
 				if objs[i].ChoGGi_WaypointPathAdded then
@@ -997,7 +997,7 @@ function OnMsg.ClassesGenerate()
 
 					--remove any waypoints in the same pos
 					local function ClearAllDupeWP(cls)
-						local objs = UICity.labels[cls] or ""
+						local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
 						for i = 1, #objs do
 							if objs[i] and objs[i].ChoGGi_Stored_Waypoints then
 								RemoveWPDupePos("WayPoint",objs[i])

@@ -85,18 +85,12 @@ function OnMsg.ClassesGenerate()
 			"Consts",
 			"Dialogs",
 			"DataInstances",
-			"EntityData",
-			"Flags",
-			"FXRules",
 			"g_Classes",
+			"g_CObjectFuncs",
 			"GlobalVars",
-			"HandleToObject",
-			"PersistableGlobals",
 			"Presets",
 			"StoryBits",
-			"TaskRequesters",
 			"ThreadsRegister",
-			"TranslationTable",
 			"UICity",
 		},
 		-- disabling this will still leave them for the cheats menu and cheats pane
@@ -424,7 +418,10 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.Consts.RocketMaxExportAmount = 30 * r
 		ChoGGi.Consts.LaunchFuelPerRocket = 60 * r
 
-		ChoGGi.Consts.CameraZoomToggle = 8000
+		ChoGGi.Consts.CameraScrollBorder = const.DefaultCameraRTS.ScrollBorder
+		ChoGGi.Consts.CameraLookatDist = const.DefaultCameraRTS.LookatDist
+		ChoGGi.Consts.CameraMaxZoom = const.DefaultCameraRTS.MaxZoom
+		ChoGGi.Consts.CameraMinZoom = const.DefaultCameraRTS.MinZoom
 		ChoGGi.Consts.HigherRenderDist = 120 -- hr.LODDistanceModifier
 	end
 

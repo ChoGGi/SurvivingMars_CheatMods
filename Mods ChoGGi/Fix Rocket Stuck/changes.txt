@@ -1,3 +1,6 @@
+v0.7
+Cleaned up tasks for maintenance stuck rockets.
+
 v0.6
 Properly fixed expedition launched rocket hogging landing pad.
 

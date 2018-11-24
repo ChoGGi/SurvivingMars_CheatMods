@@ -406,7 +406,7 @@ function OnMsg.ClassesGenerate()
 						end
 					end
 					local function OtherDepot(label,res)
-						local tab = UICity.labels[label] or ""
+						local tab = ChoGGi.ComFuncs.RetAllOfClass(label)
 						for i = 1, #tab do
 							tab[i][res] = value
 						end

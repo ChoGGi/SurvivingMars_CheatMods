@@ -153,7 +153,7 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 
 			if type(value) == "number" then
-				local objs = UICity.labels[sel.class] or ""
+				local objs = ChoGGi.ComFuncs.RetAllOfClass(sel.class)
 
 				if value == DefaultSetting then
 					setting.evaluation_points = nil
@@ -260,7 +260,7 @@ function OnMsg.ClassesGenerate()
 				end
 
 				-- reset existing to defaults
-				local objs = UICity.labels[id] or ""
+				local objs = ChoGGi.ComFuncs.RetAllOfClass(id)
 				for i = 1, #objs do
 					local obj = objs[i]
 					obj.base_health_change = temp.health_change
@@ -295,9 +295,10 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 				-- update existing buildings
-				local objs = UICity.labels[id] or ""
+				local objs = ChoGGi.ComFuncs.RetAllOfClass(id)
+				local UpdateServiceComfortBld = ChoGGi.ComFuncs.UpdateServiceComfortBld
 				for i = 1, #objs do
-					ChoGGi.ComFuncs.UpdateServiceComfortBld(objs[i],bs_setting.service_stats)
+					UpdateServiceComfortBld(objs[i],bs_setting.service_stats)
 				end
 			end
 
@@ -506,7 +507,7 @@ function OnMsg.ClassesGenerate()
 				end
 
 				local function SetStor(cls)
-					local objs = UICity.labels[cls] or ""
+					local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
 					for i = 1, #objs do
 						objs[i].consumption_stored_resources = value
 						objs[i].consumption_max_storage = value
@@ -619,7 +620,7 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			if type(value) == "number" then
 
-				local tab = UICity.labels[id] or ""
+				local tab = ChoGGi.ComFuncs.RetAllOfClass(id)
 				for i = 1, #tab do
 					tab[i].protect_range = value
 					tab[i].shoot_range = value * guim
@@ -748,7 +749,7 @@ function OnMsg.ClassesGenerate()
 			which = func2
 		end
 
-		local blds = UICity.labels[id] or ""
+		local blds = ChoGGi.ComFuncs.RetAllOfClass(id)
 		for i = 1, #blds do
 			ChoGGi.ComFuncs[which](blds[i])
 		end
@@ -1079,8 +1080,8 @@ function OnMsg.ClassesGenerate()
 				end
 
 				-- all this just to update the displayed amount :)
-				local function SetProd(Label)
-					local tab = UICity.labels[Label] or ""
+				local function SetProd(label)
+					local tab = ChoGGi.ComFuncs.RetAllOfClass(label)
 					for i = 1, #tab do
 						if tab[i].template_name == id then
 							tab[i][ProdType]:SetProduction(amount)
@@ -1095,8 +1096,8 @@ function OnMsg.ClassesGenerate()
 					SetProd("Life-Support")
 				else -- other prod
 
-					local function SetProdOther(Label)
-						local tab = UICity.labels[Label] or ""
+					local function SetProdOther(label)
+						local tab = ChoGGi.ComFuncs.RetAllOfClass(label)
 						for i = 1, #tab do
 							if tab[i].template_name == id then
 								tab[i]:GetProducerObj().production_per_day = amount
@@ -1176,7 +1177,7 @@ function OnMsg.ClassesGenerate()
 					sel.auto_performance = sel.base_auto_performance
 					ChoGGi.ComFuncs.ToggleWorking(sel)
 				else
-					local blds = UICity.labels[sel.class] or ""
+					local blds = ChoGGi.ComFuncs.RetAllOfClass(sel.class)
 					for i = 1, #blds do
 						local bld = blds[i]
 						bld.max_workers = bld.base_max_workers
@@ -1192,7 +1193,7 @@ function OnMsg.ClassesGenerate()
 					sel.auto_performance = value
 					ChoGGi.ComFuncs.ToggleWorking(sel)
 				else
-					local blds = UICity.labels[sel.class] or ""
+					local blds = ChoGGi.ComFuncs.RetAllOfClass(sel.class)
 					for i = 1, #blds do
 						local bld = blds[i]
 						bld.max_workers = 0
@@ -1244,8 +1245,8 @@ function OnMsg.ClassesGenerate()
 
 	do --
 		-- used to add or remove traits from schools/sanitariums
-		local function BuildingsSetAll_Traits(Building,traits,bool)
-			local objs = UICity.labels[Building] or ""
+		local function BuildingsSetAll_Traits(cls,traits,bool)
+			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
 			for i = 1, #objs do
 				local obj = objs[i]
 				for j = 1,#traits do
@@ -1677,7 +1678,7 @@ function OnMsg.ClassesGenerate()
 				--find a better way to update radius...
 				local sel = SelectedObj
 				CreateRealTimeThread(function()
-					local objs = UICity.labels[id] or ""
+					local objs = ChoGGi.ComFuncs.RetAllOfClass(id)
 					for i = 1, #objs do
 						objs[i]:SetUIRange(value)
 						SelectObj(objs[i])

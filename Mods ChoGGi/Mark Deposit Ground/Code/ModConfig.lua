@@ -15,16 +15,16 @@ function OnMsg.ModConfigReady()
 		type = "boolean",
 		default = MarkDepositGround.AlienAnomaly,
 	})
-	ModConfig:RegisterOption("MarkDepositGround", "VistaAnomaly", {
-		name = "Vista/Research anomaly signs",
+	ModConfig:RegisterOption("MarkDepositGround", "ShowConstruct", {
+		name = "Show during construction",
 		type = "boolean",
-		default = MarkDepositGround.VistaAnomaly,
+		default = MarkDepositGround.ShowConstruct,
 	})
 
 	-- get saved options
 	MarkDepositGround.HideSigns = ModConfig:Get("MarkDepositGround", "HideSigns")
 	MarkDepositGround.AlienAnomaly = ModConfig:Get("MarkDepositGround", "AlienAnomaly")
-	MarkDepositGround.VistaAnomaly = ModConfig:Get("MarkDepositGround", "VistaAnomaly")
+	MarkDepositGround.ShowConstruct = ModConfig:Get("MarkDepositGround", "ShowConstruct")
 
 end
 
@@ -55,13 +55,6 @@ local function ChangeMarks(label,entity,value)
 	end
 end
 
-local function UpdateOpacity(label,value)
-	value = value and 0 or 100
-	local deposits = UICity.labels[label] or ""
-	for i = 1, #deposits do
-		deposits[i]:SetOpacity(value)
-	end
-end
 
 function OnMsg.ModConfigChanged(mod_id, option_id, value)
 	if mod_id == "MarkDepositGround" then
@@ -71,20 +64,19 @@ function OnMsg.ModConfigChanged(mod_id, option_id, value)
 			MarkDepositGround.AlienAnomaly = value
 			ChangeMarks("Anomaly","GreenMan",value)
 
-		elseif option_id == "VistaAnomaly" then
-			MarkDepositGround.VistaAnomaly = value
-			ChangeMarks("EffectDeposit","GreenMan",value)
-
 		elseif option_id == "HideSigns" then
 			MarkDepositGround.HideSigns = value
 			-- update signs
 			if UICity then
-				UpdateOpacity("SubsurfaceDeposit",value)
-				UpdateOpacity("EffectDeposit",value)
-				UpdateOpacity("TerrainDeposit",value)
+				MarkDepositGround.UpdateOpacity("SubsurfaceDeposit",value)
+				MarkDepositGround.UpdateOpacity("EffectDeposit",value)
+				MarkDepositGround.UpdateOpacity("TerrainDeposit",value)
 			end
+
+		elseif option_id == "ShowConstruct" then
+			MarkDepositGround.ShowConstruct = value
+
 		end
 
 	end -- if ME!@!$#*&^!@#
-
 end

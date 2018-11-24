@@ -264,7 +264,21 @@ function OnMsg.ClassesGenerate()
 				302535920000650--[[Further zoom distance.--]]
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.CameraZoom_Toggle,
+		OnAction = ChoGGi.MenuFuncs.SetCameraZoom,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001375--[[Bird's Eye--]]],
+		ActionMenubar = str_Game_Camera,
+		ActionId = ".Bird's Eye",
+		ActionIcon = "CommonAssets/UI/Menu/UnlockCamera.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.CameraLookatDist,
+				302535920001429--[[How far up the camera can move.--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.SetCameraLookatDist,
 	}
 
 	c = c + 1

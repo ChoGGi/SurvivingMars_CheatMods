@@ -1,8 +1,22 @@
+-- See LICENSE for terms
+
 MarkDepositGround = {
 	HideSigns = false,
 	AlienAnomaly = false,
-	VistaAnomaly = false,
+	ShowConstruct = false,
 }
+
+MarkDepositGround.UpdateOpacity = function(label,value)
+	value = value and 0 or 100
+	local deposits = UICity.labels[label] or ""
+	for i = 1, #deposits do
+		local d = deposits[i]
+		d:SetOpacity(value)
+		if not d.ground_is_marked then
+			MarkDepositGround.UpdateDeposit(d)
+		end
+	end
+end
 
 local AsyncRand = AsyncRand
 local GridOpFree = GridOpFree
@@ -18,7 +32,11 @@ local texture_metal = TableFind(TerrainTextures, "name", "RockDark") + 1
 local texture_mpres = TableFind(TerrainTextures, "name", "GravelDark") + 1
 local texture_water = TableFind(TerrainTextures, "name", "Spider") + 1
 
-local function UpdateDeposit(d)
+MarkDepositGround.UpdateDeposit = function(d)
+	if d:IsKindOf("EffectDeposit") then
+		return
+	end
+
 	local pattern = NoisePreset.ConcreteForm:GetNoise(128, AsyncRand())
 	pattern:land_i(NoisePreset.ConcreteNoise:GetNoise(128, AsyncRand()))
 
@@ -60,30 +78,27 @@ local function UpdateDeposit(d)
 	d.ground_is_marked = true
 end
 
-
-local function UpdateDepositMarkers(label)
-	local deposits = UICity.labels[label] or ""
-	for i = 1, #deposits do
-		local d = deposits[i]
-		d:SetOpacity(value)
-		if not d.ground_is_marked then
-			UpdateDeposit(d)
-		end
-	end
-end
-
 local function HideSigns()
---~ 	local groundismarked = MarkDepositGround_groundismarked
-
 	-- gotta use SetOpacity as SetVisible is set when you zoom out
 	local value = MarkDepositGround.HideSigns and 0 or 100
 
-	UpdateDepositMarkers("SubsurfaceDeposit")
-	UpdateDepositMarkers("EffectDeposit")
+	MarkDepositGround.UpdateOpacity("SubsurfaceDeposit",value)
+	MarkDepositGround.UpdateOpacity("EffectDeposit",value)
 
 	local deposits = UICity.labels.TerrainDeposit or ""
 	for i = 1, #deposits do
 		deposits[i]:SetOpacity(value)
+	end
+
+	deposits = UICity.labels.EffectDeposit or ""
+	for i = 1, #deposits do
+		local d = deposits[i]
+		if d.ChoGGi_alien then
+			d:ChangeEntity(d.ChoGGi_alien)
+			d:SetScale(100)
+			d:SetAngle(0)
+			d.ChoGGi_alien = nil
+		end
 	end
 end
 
@@ -98,7 +113,7 @@ end
 function OnMsg.SubsurfaceDepositRevealed(d)
 	d:SetOpacity(MarkDepositGround.HideSigns and 0 or 100)
 	if not d.ground_is_marked then
-		UpdateDeposit(d)
+		MarkDepositGround.UpdateDeposit(d)
 	end
 end
 
@@ -115,22 +130,6 @@ local orig_SubsurfaceAnomalyMarker_SpawnDeposit = SubsurfaceAnomalyMarker.SpawnD
 function SubsurfaceAnomalyMarker:SpawnDeposit(...)
 	local a = orig_SubsurfaceAnomalyMarker_SpawnDeposit(self,...)
 	if MarkDepositGround.AlienAnomaly then
-		CreateRealTimeThread(function()
-			-- needs a delay for some reason
-			Sleep(50)
-			a.ChoGGi_alien = a.entity
-			a:ChangeEntity("GreenMan")
-			a:SetScale(500)
-			a:SetAngle(AsyncRand())
-		end)
-	end
-	return a
-end
-
-local orig_EffectDepositMarker_SpawnDeposit = EffectDepositMarker.SpawnDeposit
-function EffectDepositMarker:SpawnDeposit(...)
-	local a = orig_EffectDepositMarker_SpawnDeposit(self,...)
-	if MarkDepositGround.VistaAnomaly then
 		CreateRealTimeThread(function()
 			-- needs a delay for some reason
 			Sleep(50)
