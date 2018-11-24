@@ -15,6 +15,7 @@ local StringFormat = string.format
 local TableSort = table.sort
 local TableRemove = table.remove
 local RGBA,RGB = RGBA,RGB
+local point = point
 
 local GetRootDialog = function(obj)
 	return GetParentOfKind(obj,"ChoGGi_ListChoiceDlg")
@@ -364,7 +365,6 @@ end
 function ChoGGi_ListChoiceDlg:BuildList()
 	local g_Classes = g_Classes
 	local bt = BuildingTemplates
-	local point = point
 
 	self.idList:Clear()
 	for i = 1, #self.items do
@@ -439,7 +439,7 @@ end
 function ChoGGi_ListChoiceDlg:idFilterOnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
-		self:FilterText()
+		self:FilterText("")
 		self.idFilter:SelectAll()
 		return "break"
 	elseif vk == const.vkEsc then
@@ -450,24 +450,21 @@ function ChoGGi_ListChoiceDlg:idFilterOnKbdKeyDown(vk)
 end
 
 function ChoGGi_ListChoiceDlg:FilterText(txt)
-
-	if self.class == "ChoGGi_TextInput" then
-		txt = self:GetText()
-		self = GetRootDialog(self)
-	end
-
+	self = GetRootDialog(self)
+	-- rebuild list
 	self:BuildList()
-	if not txt or txt == "" then
+	-- if enter was pressed
+	if txt == "" then
 		return
 	end
-	txt = txt:lower()
+	txt = self.idFilter:GetText():lower()
+
 	-- loop through all the list items and remove any we can't find
 	local count = #self.idList
 	for i = count, 1, -1 do
 		local li = self.idList[i]
 		if not (li.idText.text:find_lower(txt) or li.RolloverText:find_lower(txt) or li.RolloverTitle:find_lower(txt) or i == count) then
 			self.idList[i]:delete()
-			TableRemove(self.idList,i)
 		end
 	end
 	self.idList.focused_item = false
