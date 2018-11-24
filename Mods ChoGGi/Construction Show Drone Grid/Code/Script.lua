@@ -14,6 +14,9 @@ end
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()
+	if not ChoGGi_ConstructionShowDroneGrid.Option1 then
+		return orig_CursorBuilding_GameInit(self)
+	end
 	local UICity = UICity
 	ShowHexRanges(UICity, "SupplyRocket")
 	ShowHexRanges(UICity, "DroneHub")

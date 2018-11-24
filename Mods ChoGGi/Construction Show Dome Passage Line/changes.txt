@@ -1,3 +1,6 @@
+v0.8
+Added ModConfig option to disable it.
+
 v0.7
 Thought I got all the marker objects, guess not.
 

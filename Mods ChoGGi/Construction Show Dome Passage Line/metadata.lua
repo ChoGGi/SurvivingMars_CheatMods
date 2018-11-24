@@ -1,11 +1,12 @@
 return PlaceObj("ModDef", {
-  "title", "Construction: Show Dome Passage Line v0.7",
-  "version", 7,
-  "saved", 1542801600,
+  "title", "Construction: Show Dome Passage Line v0.8",
+  "version", 8,
+  "saved", 1543060800,
   "id", "ChoGGi_ConstructionShowDomePassageLine",
   "author", "ChoGGi",
 	"code", {
-		"Code/Script.lua"
+		"Code/ModConfig.lua",
+		"Code/Script.lua",
 	},
 	"image", "Preview.png",
   "steam_id", "1428027914",

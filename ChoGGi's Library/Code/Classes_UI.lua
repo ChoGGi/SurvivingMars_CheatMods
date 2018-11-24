@@ -371,7 +371,8 @@ function ChoGGi_Window:AddElements()
 	self.idDialog = g_Classes.ChoGGi_Dialog:new({
 	}, self)
 	-- shift-esc closes dialog
-	self.idDialog:AddAction(g_Classes.XAction:new(ChoGGi_Dialog_action))
+	GetActionsHost(self):AddAction(g_Classes.XAction:new(ChoGGi_Dialog_action))
+--~ 	self.idDialog:AddAction(g_Classes.XAction:new(ChoGGi_Dialog_action))
 
 	-- x,y,w,h (start off with all dialogs at 100,100, default size, and we move later)
 	self.idDialog:SetBox(100, 100, self.dialog_width, self.dialog_height)

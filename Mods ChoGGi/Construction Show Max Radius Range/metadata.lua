@@ -1,11 +1,12 @@
 return PlaceObj("ModDef", {
-  "title", "Construction: Show Max Radius Range v0.3",
-  "version", 3,
-  "saved", 1540209600,
+  "title", "Construction: Show Max Radius Range v0.4",
+  "version", 4,
+  "saved", 1543060800,
   "id", "ChoGGi_ShowMaxRadiusRange",
   "author", "ChoGGi",
 	"code", {
-		"Code/Script.lua"
+		"Code/ModConfig.lua",
+		"Code/Script.lua",
 	},
 	"image", "Preview.png",
   "steam_id", "1522200776",

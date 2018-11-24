@@ -40,6 +40,9 @@ end
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()
+	if not ChoGGi_ConstructionShowDustGrid.Option1 then
+		return orig_CursorBuilding_GameInit(self)
+	end
 --~ ex(dust_gens)
 	local labels = UICity.labels
 
