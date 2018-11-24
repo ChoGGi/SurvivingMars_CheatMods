@@ -1,3 +1,6 @@
+v0.4
+Added ModConfig option to disable it.
+
 v0.3
 Shows heat circles for Mohole Mine and Artificial Sun.
 

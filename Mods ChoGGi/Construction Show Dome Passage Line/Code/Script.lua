@@ -135,6 +135,9 @@ end
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
+	if not ChoGGi_ConstructionShowDomePassageLine.Option1 then
+		return orig_CursorBuilding_GameInit(self)
+	end
 --~ ex(dome_list)
 	if self.template:IsKindOf("Dome") then
 		-- loop through all domes and attach a line
@@ -212,6 +215,9 @@ end
 
 local orig_ConstructionController_Rotate = ConstructionController.Rotate
 function ConstructionController:Rotate(delta,...)
+	if not ChoGGi_ConstructionShowDomePassageLine.Option1 then
+		return orig_ConstructionController_Rotate(self, delta,...)
+	end
 	-- it needs to fire first so we can get updated angle
 	local ret = orig_ConstructionController_Rotate(self, delta,...)
 	UpdateMarkers(self)
@@ -220,6 +226,9 @@ end
 
 local orig_ConstructionController_UpdateCursor = ConstructionController.UpdateCursor
 function ConstructionController:UpdateCursor(pos, force,...)
+	if not ChoGGi_ConstructionShowDomePassageLine.Option1 then
+		return orig_ConstructionController_UpdateCursor(self, pos, force,...)
+	end
 	UpdateMarkers(self,pos)
 	return orig_ConstructionController_UpdateCursor(self, pos, force,...)
 end

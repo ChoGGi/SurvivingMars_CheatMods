@@ -1,5 +1,8 @@
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()
+	if not ChoGGi_ConstructionShowHexGrid.Option1 then
+		return orig_CursorBuilding_GameInit(self)
+	end
   SetPostProcPredicate("hexgrid", true)
   return orig_CursorBuilding_GameInit(self)
 end

@@ -5,6 +5,9 @@ local PlaceObject = PlaceObject
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()
+	if not ChoGGi_ConstructionShowMapSectors.Option1 then
+		return orig_CursorBuilding_GameInit(self)
+	end
 
 	for sector,_ in pairs(g_MapSectors) do
 		if type(sector) ~= "number" then

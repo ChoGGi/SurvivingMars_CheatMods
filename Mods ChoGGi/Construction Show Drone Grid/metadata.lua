@@ -1,11 +1,12 @@
 return PlaceObj("ModDef", {
-  "title", "Construction: Always Show Drone Grid v0.3",
-  "version", 3,
-  "saved", 1539777600,
-  "id", "ChoGGi_ConstructionAlwaysShowDroneGrid",
+  "title", "Construction: Show Drone Grid v0.4",
+  "version", 4,
+  "saved", 1543060800,
+  "id", "ChoGGi_ConstructionShowDroneGrid",
   "author", "ChoGGi",
 	"code", {
-		"Code/Script.lua"
+		"Code/ModConfig.lua",
+		"Code/Script.lua",
 	},
 	"image", "Preview.png",
   "steam_id", "1424918098",
