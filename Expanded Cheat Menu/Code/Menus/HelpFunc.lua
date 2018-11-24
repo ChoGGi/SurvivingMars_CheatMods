@@ -249,6 +249,26 @@ function OnMsg.ClassesGenerate()
 	do -- ModUpload
 		local mod_upload_thread
 		local ConvertToOSPath = ConvertToOSPath
+		local ChoGGi_copy_files = {
+			ChoGGi_CheatMenu = true,
+			ChoGGi_Library = true,
+		}
+		local ChoGGi_pack = {
+			ChoGGi_EveryFlagOnWikipedia = true,
+			ChoGGi_MapImagesPack = true,
+			ChoGGi_CommieMarxLogos = true,
+			ChoGGi_Logos_WinnipegJets = true,
+			ChoGGi_Logos_Amazon = true,
+			ChoGGi_Logos_BorgCollective = true,
+			ChoGGi_Logos_CaptainStar = true,
+			ChoGGi_CommieMarxLogos = true,
+			ChoGGi_Logos_MarsBar = true,
+			ChoGGi_Logos_PlanetHollywood = true,
+			ChoGGi_Logos_StarshipTroopers = true,
+			ChoGGi_Logos_TerranDominion = true,
+			ChoGGi_Logos_VeridianDynamics = true,
+			Something_Oh_So_Unique = true,
+		}
 
 		local function CallBackFunc(choice)
 			-- abort if upload already happening
@@ -264,13 +284,21 @@ function OnMsg.ClassesGenerate()
 			mod_upload_thread = CreateRealTimeThread(function()
 				local ChoGGi = ChoGGi
 				local mod = choice[1].mod
+				local mod_path = choice[1].path
 				local copy_files = choice[1].check1
 				local blank_mod = choice[1].check2
 				local clipboard = choice[1].check3
+				local pack_mod = choice[1].check4
+				local pack_path = "AppData/ModUpload/Pack/"
 				local dest = "AppData/ModUpload/"
 				local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
-				if mod.id == "ChoGGi_CheatMenu" or mod.id == "ChoGGi_Library" then
+				local ss_str = "%s%s"
+
+				if ChoGGi_copy_files[mod.id] then
 					copy_files = false
+				end
+				if ChoGGi_pack[mod.id] then
+					pack_mod = true
 				end
 
 				-- build / show confirmation dialog
@@ -278,8 +306,6 @@ function OnMsg.ClassesGenerate()
 					S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title),
 					"\n",
 					S[302535920000051--[[Mod will not be packed in an hpk file like the Mod Editor does for uploading (but you can pack it manually: ModFolder/Pack/ModContent.hpk).--]]],
-					"\n\n",
-					S[302535920001375--[[<color red>WARNING: Backup your first five workshop images.</color>--]]],
 					"\n\n",
 				}
 				if not copy_files then
@@ -327,26 +353,33 @@ function OnMsg.ClassesGenerate()
 					-- update mod, and copy files to ModUpload
 					if copy_files and not blank_mod and not err then
 						local files
---~ 						-- I prefer to update this manually
---~ 						if not ChoGGi.testing then
---~ 							mod:SaveDef()
---~ 						end
+--~ 						-- I prefer to update this manually, if this didn't mangle my text maybe it'd be more useful...
+--~ 						mod:SaveDef()
 						mod:SaveItems()
 						AsyncDeletePath(dest)
 						AsyncCreatePath(dest)
-						err, files = AsyncListFiles(mod.path, "*", "recursive,relative")
+						err, files = AsyncListFiles(mod_path, "*", "recursive,relative")
 						if not err then
 							for i = 1, #(files or "") do
-								local dest_file = StringFormat("%s%s",dest,files[i])
+								local dest_file = ss_str:format(dest,files[i])
 								local dir = SplitPath(dest_file)
 								AsyncCreatePath(dir)
-								err = AsyncCopyFile(StringFormat("%s%s",mod.path,files[i]), dest_file, "raw")
+								err = AsyncCopyFile(ss_str:format(mod_path,files[i]), dest_file, "raw")
 							end
+						end
+					end
+
+					if pack_mod then
+						AsyncCreatePath(pack_path)
+						err = AsyncPack(ss_str:format(pack_path,ModsPackFileName),mod_path)
+						if err then
+							err = T{1000753,"Failed creating content package file (<err>)",err = err}
 						end
 					end
 
 					-- update mod on workshop
 					if not err or blank_mod then
+
 						-- check if .hpk exists, and use it if so
 						local os_dest = StringFormat("%sPack/ModContent.hpk",dest)
 						if FileExists(os_dest) then
@@ -361,54 +394,11 @@ function OnMsg.ClassesGenerate()
 							screenshots = {},
 						}
 						mod.last_changes = mod.last_changes or tostring(mod.version) or ""
+
 						-- CommonLua\SteamWorkshop.lua
 						local result
 						result,err = Steam_Upload(nil, mod, params)
 
---~ 						if Platform.steam then
---~ 							local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
---~ 							local screenshots = {}
---~ 							for i = 1, 5 do
---~ 								local location1 = StringFormat("AppData/Mod Images/%s_%s.png",mod.id,i)
---~ 								local location2 = StringFormat("AppData/Mod Images/%s_%s.jpg",mod.id,i)
---~ 								local location3 = mod[StringFormat("screenshot%s",i)]
---~ 								if location3 ~= "" then
---~ 									location3 = StringFormat("%s%s",path,location3)
---~ 								else
---~ 									location3 = nil
---~ 								end
-
---~ 								if FileExists(location1) then
---~ 									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.png",i))
---~ 									AsyncCopyFile(location1,StringFormat("AppData/ModUpload/screenshot%s.png",i),"raw")
---~ 								elseif FileExists(location2) then
---~ 									screenshots[#screenshots+1] = ConvertToOSPath(StringFormat("AppData/ModUpload/screenshot%s.jpg",i))
---~ 									AsyncCopyFile(location2,StringFormat("AppData/ModUpload/screenshot%s.jpg",i),"raw")
---~ 								elseif location3 and location3 ~= path and FileExists(location3) then
---~ 									screenshots[#screenshots+1] = ConvertToOSPath(location3)
---~ 								end
---~ 							end
-
---~ 							local image = mod.image ~= "" and ConvertToOSPath(mod.image)
---~ 							if not io.exists(image) then
---~ 								image = ""
---~ 							end
-
---~ 							err = AsyncSteamWorkshopUpdateItem{
---~ 								item_id = mod.steam_id,
---~ 								title = mod.title or "",
---~ 								description = mod.description or "",
---~ 								tags = mod:GetTags(),
---~ 								content_os_folder = os_dest,
---~ 								image_os_filename = image,
---~ 								change_note = mod.last_changes or tostring(mod.version) or "",
---~ 								add_screenshots = add_screenshots,
---~ 								remove_screenshots = remove_screenshots,
---~ 								update_screenshots = update_screenshots
---~ 							}
---~ 						else
---~ 							err = "no steam"
---~ 						end
 					end
 
 					local msg, title
@@ -494,6 +484,7 @@ function OnMsg.ClassesGenerate()
 					value = id,
 					hint = hint_str:format(image,mod.description),
 					mod = mod,
+					path = path,
 				}
 			end
 
@@ -515,6 +506,10 @@ function OnMsg.ClassesGenerate()
 						title = 302535920000664--[[Clipboard--]],
 						hint = 302535920000665--[[If uploading a new mod this copies steam_id to clipboard.--]],
 						checked = true,
+					},
+					{
+						title = 302535920001427--[[Pack Mod--]],
+						hint = 302535920001428--[[Uploads as a packed mod (default for mod editor upload).--]],
 					},
 				},
 				height = 800.0,

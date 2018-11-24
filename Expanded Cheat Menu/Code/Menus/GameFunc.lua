@@ -76,7 +76,7 @@ function OnMsg.ClassesGenerate()
 				sel:SetOpacity(value)
 			elseif type(value) == "string" then
 				local function SettingOpacity(label)
-					local tab = UICity.labels[label] or ""
+					local tab = ChoGGi.ComFuncs.RetAllOfClass(label)
 					for i = 1, #tab do
 						tab[i]:SetOpacity(100)
 					end
@@ -258,7 +258,7 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 			else
-				local labels = UICity.labels[value] or ""
+				local labels = ChoGGi.ComFuncs.RetAllOfClass(value)
 				for i = 1, #labels do
 					local obj = labels[i]
 					if IsValid(obj) and not handles[obj.handle] then
@@ -1503,7 +1503,53 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	function ChoGGi.MenuFuncs.CameraZoom_Toggle()
+	function ChoGGi.MenuFuncs.SetCameraLookatDist()
+		local DefaultSetting = ChoGGi.Consts.CameraLookatDist
+		local ItemList = {
+			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = 10,value = 10},
+			{text = 20,value = 20},
+			{text = 30,value = 30},
+			{text = 50,value = 50},
+			{text = 60,value = 60},
+			{text = 70,value = 70},
+			{text = 80,value = 80},
+			{text = 90,value = 90},
+			{text = 100,value = 100},
+		}
+		local hint = DefaultSetting
+		if ChoGGi.UserSettings.CameraLookatDist then
+			hint = tostring(ChoGGi.UserSettings.CameraLookatDist)
+		end
+
+		local function CallBackFunc(choice)
+			local value = choice[1].value
+			if not value then
+				return
+			end
+			if type(value) == "number" then
+				ChoGGi.ComFuncs.SetSavedSetting("CameraLookatDist",value)
+				ChoGGi.ComFuncs.SetCameraSettings()
+
+				ChoGGi.SettingFuncs.WriteSettings()
+				MsgPopup(
+					StringFormat("%s: %s",choice[1].text,S[302535920001375--[[Bird's Eye--]]]),
+					302535920001058--[[Camera--]],
+					"UI/Icons/IPButtons/status_effects.tga"
+				)
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = S[302535920001375--[[Bird's Eye--]]],
+			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
+			skip_sort = true,
+		}
+	end
+
+	function ChoGGi.MenuFuncs.SetCameraZoom()
 		local DefaultSetting = ChoGGi.Consts.CameraZoomToggle
 		local ItemList = {
 			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},

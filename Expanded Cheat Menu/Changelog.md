@@ -3,7 +3,14 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v11.0 (Unreleased)
+## v11.1 (Unreleased)
+### Added:
+- Game>Camera>Bird's Eye: How far up the camera can move.
+
+### Fixed:
+- Colour Modifier: All of type didn't work on new markers.
+
+## v11.0 (24 Nov 2018)
 ### Added:
 - Mission>Start Challenge: Shows a list of challenges you can start (replaces current).
 - Debug>Force Story Bits: It just lists them for now...
@@ -17,6 +24,7 @@
 - > Attaches menu was clearing out colours from Colour Modifier.
 - > Reworked the go to text/next button: it's no longer find as you type, see tooltips for more info.
 - > Right-click Auto-Refresh to change update delay.
+- Added a pack mod option to mod upload.
 
 ## v10.9 (20 Nov 2018)
 ### Added:

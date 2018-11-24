@@ -140,7 +140,7 @@ function OnMsg.ClassesGenerate()
 			end
 
 			local function CullLabel(label)
-				local objs = UICity.labels[label] or ""
+				local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
 				for i = #objs, 1, -1 do
 					if dome then
 						if objs[i].dome and objs[i].dome.handle == dome.handle then

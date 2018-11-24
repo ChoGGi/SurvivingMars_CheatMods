@@ -854,9 +854,9 @@ end
 
 function ChoGGi.ComFuncs.RemoveFromLabel(label,obj)
 	local UICity = UICity
-	local tab = UICity.labels[label] or ""
-	for i = 1, #tab do
-		if tab[i] and tab[i].handle and tab[i] == obj.handle then
+	local list = UICity.labels[label] or ""
+	for i = 1, #list do
+		if list[i] and list[i].handle and list[i] == obj.handle then
 			TableRemove(UICity.labels[label],i)
 		end
 	end
@@ -2040,12 +2040,19 @@ do -- SetCameraSettings
 		local ChoGGi = ChoGGi
 		--cameraRTS.GetProperties(1)
 
-		--size of activation area for border scrolling
+		-- size of activation area for border scrolling
 		if ChoGGi.UserSettings.BorderScrollingArea then
 			SetProperties(1,{ScrollBorder = ChoGGi.UserSettings.BorderScrollingArea})
 		else
-			--default
-			SetProperties(1,{ScrollBorder = 5})
+			-- default
+			SetProperties(1,{ScrollBorder = ChoGGi.Consts.CameraScrollBorder})
+		end
+
+		if ChoGGi.UserSettings.CameraLookatDist then
+			SetProperties(1,{LookatDist = ChoGGi.UserSettings.CameraLookatDist})
+		else
+			-- default
+			SetProperties(1,{LookatDist = ChoGGi.Consts.CameraLookatDist})
 		end
 
 		--zoom
@@ -2064,8 +2071,8 @@ do -- SetCameraSettings
 				SetFovX(7745)
 			end
 		else
-			--default
-			SetZoomLimits(400,15000)
+			-- default
+			SetZoomLimits(ChoGGi.Consts.CameraMinZoom,ChoGGi.Consts.CameraMaxZoom)
 		end
 
 		--SetProperties(1,{HeightInertia = 0})
@@ -2292,152 +2299,6 @@ function ChoGGi.ComFuncs.GetNearestIdleDrone(bld)
 
 end
 
-function ChoGGi.ComFuncs.SaveOldPalette(obj)
-	if not obj.ChoGGi_origcolors and obj:IsKindOf("ColorizableObject") then
-		obj.ChoGGi_origcolors = {
-			{obj:GetColorizationMaterial(1)},
-			{obj:GetColorizationMaterial(2)},
-			{obj:GetColorizationMaterial(3)},
-			{obj:GetColorizationMaterial(4)},
-		}
-		obj.ChoGGi_origcolors[-1] = obj:GetColorModifier()
-	end
-end
-
-function ChoGGi.ComFuncs.RestoreOldPalette(obj)
-	if obj.ChoGGi_origcolors then
-		local c = obj.ChoGGi_origcolors
-		obj:SetColorModifier(c[-1])
-		obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
-		obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
-		obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
-		obj:SetColorizationMaterial(4, c[4][1], c[4][2], c[4][3])
-		obj.ChoGGi_origcolors = nil
-	end
-end
-
-function ChoGGi.ComFuncs.GetPalette(obj)
-	if not obj then
-		return
-	end
-	local pal = {}
-	pal.Color1, pal.Roughness1, pal.Metallic1 = obj:GetColorizationMaterial(1)
-	pal.Color2, pal.Roughness2, pal.Metallic2 = obj:GetColorizationMaterial(2)
-	pal.Color3, pal.Roughness3, pal.Metallic3 = obj:GetColorizationMaterial(3)
-	pal.Color4, pal.Roughness4, pal.Metallic4 = obj:GetColorizationMaterial(4)
-	return pal
-end
-
-function ChoGGi.ComFuncs.RandomColour(amount)
-	if amount and type(amount) == "number" then
-		-- somewhere to store the colours
-		local colour_list = {}
-		-- populate list with amount we want
-		for i = 1, amount do
-			-- 16777216: https://en.wikipedia.org/wiki/Color_depth#True_color_(24-bit)
-			colour_list[i] = AsyncRand(33554433) -16777216
-		end
-
-		-- now remove all dupes and add more till we hit amount
-		local c
-		-- we use repeat instead of while, as this checks at the end instead of beginning (ie: after we've removed dupes once)
-		repeat
-			c = #colour_list
-			-- loop missing amount
-			for _ = 1, amount - #colour_list do
-				c = c + 1
-				colour_list[c] = AsyncRand(33554433) -16777216
-			end
-			-- remove dupes (it's quicker to do this then check the table for each newly added colour)
-			colour_list = RetTableNoDupes(colour_list)
-		-- once we're at parity then off we go
-		until #colour_list == amount
-
-		return colour_list
-	end
-
-	-- return a single colour
-	return AsyncRand(33554433) -16777216
-end
-
-function ChoGGi.ComFuncs.ObjectColourRandom(obj)
-	if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-		return
-	end
-	local ChoGGi = ChoGGi
-	local attaches = {}
-	local c = 0
-
-	local a_list = ChoGGi.ComFuncs.GetAllAttaches(obj)
-	for i = 1, #a_list do
-		if a_list[i]:IsKindOf("ColorizableObject") then
-			c = c + 1
-			attaches[c] = {obj = a_list[i],c = {}}
-		end
-	end
-
-	-- random is random after all, so lets try for at least slightly different colours
-	-- you can do a max of 4 colours on each object
-	local colours = ChoGGi.ComFuncs.RandomColour((c * 4) + 4)
-	-- attach obj to list
-	c = c + 1
-	attaches[c] = {obj = obj,c = {}}
-
-	-- add colours to each colour table attached to each obj
-	local obj_count = 0
-	local att_count = 1
-	for i = 1, #colours do
-		-- add 1 to colour count
-		obj_count = obj_count + 1
-		-- add colour to attach colours
-		attaches[att_count].c[obj_count] = colours[i]
-
-		if obj_count == 4 then
-			-- when we get to four increment attach colours num, and reset colour count
-			obj_count = 0
-			att_count = att_count + 1
-		end
-	end
-
-	-- now we loop through all the objects and apply the colours
-	for i = 1, c do
-		obj = attaches[i].obj
-		local c = attaches[i].c
-
-		ChoGGi.ComFuncs.SaveOldPalette(obj)
-
-		-- can only change basecolour
-		if obj:GetMaxColorizationMaterials() == 0 then
-			obj:SetColorModifier(c[1])
-		else
-			-- object, 1-4 ,Color, Roughness, Metallic
-			obj:SetColorizationMaterial(1, c[1], Random(-128,127), Random(-128,127))
-			obj:SetColorizationMaterial(2, c[2], Random(-128,127), Random(-128,127))
-			obj:SetColorizationMaterial(3, c[3], Random(-128,127), Random(-128,127))
-			obj:SetColorizationMaterial(4, c[4], Random(-128,127), Random(-128,127))
-		end
-	end
-
-end
-
-function ChoGGi.ComFuncs.ObjectColourDefault(obj)
-	obj = obj or ChoGGi.ComFuncs.SelObject()
-	if not obj then
-		return
-	end
-	local RestoreOldPalette = ChoGGi.ComFuncs.RestoreOldPalette
-
-	if IsValid(obj) and obj:IsKindOf("ColorizableObject") then
-		RestoreOldPalette(obj)
-	end
-
-	local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
-	for i = 1, #attaches do
-		RestoreOldPalette(attaches[i])
-	end
-
-end
-
 function ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj,amount)
 	amount = amount or 10
 	local resource = obj.resource
@@ -2450,6 +2311,328 @@ function ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj,amount)
 	io_supply_req:SetAmount(amount)
 	io_demand_req:SetAmount(amount)
 end
+
+do -- COLOUR FUNCTIONS
+	function ChoGGi.ComFuncs.SaveOldPalette(obj)
+		if not IsValid(obj) then
+			return
+		end
+		if not obj.ChoGGi_origcolors and obj:IsKindOf("ColorizableObject") then
+			obj.ChoGGi_origcolors = {
+				{obj:GetColorizationMaterial(1)},
+				{obj:GetColorizationMaterial(2)},
+				{obj:GetColorizationMaterial(3)},
+				{obj:GetColorizationMaterial(4)},
+			}
+			obj.ChoGGi_origcolors[-1] = obj:GetColorModifier()
+		end
+	end
+	local SaveOldPalette = ChoGGi.ComFuncs.SaveOldPalette
+
+	function ChoGGi.ComFuncs.RestoreOldPalette(obj)
+		if not IsValid(obj) then
+			return
+		end
+		if obj.ChoGGi_origcolors then
+			local c = obj.ChoGGi_origcolors
+			obj:SetColorModifier(c[-1])
+			obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
+			obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
+			obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
+			obj:SetColorizationMaterial(4, c[4][1], c[4][2], c[4][3])
+			obj.ChoGGi_origcolors = nil
+		end
+	end
+	local RestoreOldPalette = ChoGGi.ComFuncs.RestoreOldPalette
+
+	function ChoGGi.ComFuncs.GetPalette(obj)
+		if not IsValid(obj) then
+			return
+		end
+		local pal = {}
+		pal.Color1, pal.Roughness1, pal.Metallic1 = obj:GetColorizationMaterial(1)
+		pal.Color2, pal.Roughness2, pal.Metallic2 = obj:GetColorizationMaterial(2)
+		pal.Color3, pal.Roughness3, pal.Metallic3 = obj:GetColorizationMaterial(3)
+		pal.Color4, pal.Roughness4, pal.Metallic4 = obj:GetColorizationMaterial(4)
+		return pal
+	end
+
+	function ChoGGi.ComFuncs.RandomColour(amount)
+		if amount and type(amount) == "number" then
+			-- somewhere to store the colours
+			local colour_list = {}
+			-- populate list with amount we want
+			for i = 1, amount do
+				-- 16777216: https://en.wikipedia.org/wiki/Color_depth#True_color_(24-bit)
+				colour_list[i] = AsyncRand(33554433) -16777216
+			end
+
+			-- now remove all dupes and add more till we hit amount
+			local c
+			-- we use repeat instead of while, as this checks at the end instead of beginning (ie: after we've removed dupes once)
+			repeat
+				c = #colour_list
+				-- loop missing amount
+				for _ = 1, amount - #colour_list do
+					c = c + 1
+					colour_list[c] = AsyncRand(33554433) -16777216
+				end
+				-- remove dupes (it's quicker to do this then check the table for each newly added colour)
+				colour_list = RetTableNoDupes(colour_list)
+			-- once we're at parity then off we go
+			until #colour_list == amount
+
+			return colour_list
+		end
+
+		-- return a single colour
+		return AsyncRand(33554433) -16777216
+	end
+	local RandomColour = ChoGGi.ComFuncs.RandomColour
+
+	function ChoGGi.ComFuncs.ObjectColourRandom(obj)
+		if not IsValid(obj) or obj and not obj:IsKindOf("ColorizableObject") then
+			return
+		end
+		local ChoGGi = ChoGGi
+		local attaches = {}
+		local c = 0
+
+		local a_list = ChoGGi.ComFuncs.GetAllAttaches(obj)
+		for i = 1, #a_list do
+			if a_list[i]:IsKindOf("ColorizableObject") then
+				c = c + 1
+				attaches[c] = {obj = a_list[i],c = {}}
+			end
+		end
+
+		-- random is random after all, so lets try for at least slightly different colours
+		-- you can do a max of 4 colours on each object
+		local colours = RandomColour((c * 4) + 4)
+		-- attach obj to list
+		c = c + 1
+		attaches[c] = {obj = obj,c = {}}
+
+		-- add colours to each colour table attached to each obj
+		local obj_count = 0
+		local att_count = 1
+		for i = 1, #colours do
+			-- add 1 to colour count
+			obj_count = obj_count + 1
+			-- add colour to attach colours
+			attaches[att_count].c[obj_count] = colours[i]
+
+			if obj_count == 4 then
+				-- when we get to four increment attach colours num, and reset colour count
+				obj_count = 0
+				att_count = att_count + 1
+			end
+		end
+
+		-- now we loop through all the objects and apply the colours
+		for i = 1, c do
+			obj = attaches[i].obj
+			local c = attaches[i].c
+
+			SaveOldPalette(obj)
+
+			-- can only change basecolour
+			if obj:GetMaxColorizationMaterials() == 0 then
+				obj:SetColorModifier(c[1])
+			else
+				-- object, 1-4 ,Color, Roughness, Metallic
+				obj:SetColorizationMaterial(1, c[1], Random(-128,127), Random(-128,127))
+				obj:SetColorizationMaterial(2, c[2], Random(-128,127), Random(-128,127))
+				obj:SetColorizationMaterial(3, c[3], Random(-128,127), Random(-128,127))
+				obj:SetColorizationMaterial(4, c[4], Random(-128,127), Random(-128,127))
+			end
+		end
+
+	end
+
+	function ChoGGi.ComFuncs.ObjectColourDefault(obj)
+		obj = obj or ChoGGi.ComFuncs.SelObject()
+		if not obj then
+			return
+		end
+
+		if IsValid(obj) and obj:IsKindOf("ColorizableObject") then
+			RestoreOldPalette(obj)
+		end
+
+		local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
+		for i = 1, #attaches do
+			RestoreOldPalette(attaches[i])
+		end
+
+	end
+
+	local colour_funcs = {
+		SetColours = function(obj,choice)
+			ChoGGi.ComFuncs.SaveOldPalette(obj)
+			for i = 1, 4 do
+				obj:SetColorizationMaterial(i,
+					choice[i].value,
+					choice[i+8].value,
+					choice[i+4].value
+				)
+			end
+			obj:SetColorModifier(choice[13].value)
+		end,
+		RestoreOldPalette = RestoreOldPalette,
+	}
+
+	-- make sure we're in the same grid
+	local function CheckGrid(fake_parent,func,obj,obj_bld,choice)
+		-- used to check for grid connections
+		local check_air = choice[1].checkair
+		local check_water = choice[1].checkwater
+		local check_elec = choice[1].checkelec
+
+		-- this is ugly, i should clean it up
+		if not check_air and not check_water and not check_elec then
+			colour_funcs[func](obj,choice)
+		else
+			if check_air and obj_bld.air and fake_parent.air and obj_bld.air.grid.elements[1].building == fake_parent.air.grid.elements[1].building then
+				colour_funcs[func](obj,choice)
+			end
+			if check_water and obj_bld.water and fake_parent.water and obj_bld.water.grid.elements[1].building == fake_parent.water.grid.elements[1].building then
+				colour_funcs[func](obj,choice)
+			end
+			if check_elec and obj_bld.electricity and fake_parent.electricity and obj_bld.electricity.grid.elements[1].building == fake_parent.electricity.grid.elements[1].building then
+				colour_funcs[func](obj,choice)
+			end
+		end
+	end
+
+	function ChoGGi.ComFuncs.ChangeObjectColour(obj,parent,dialog)
+		local ChoGGi = ChoGGi
+		local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
+		local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
+		if not obj or obj and not obj:IsKindOf("ColorizableObject") then
+			MsgPopup(
+				S[302535920000015--[[Can't colour %s.--]]]:format(RetName(obj)),
+				3595--[[Color--]]
+			)
+			return
+		end
+		local pal = ChoGGi.ComFuncs.GetPalette(obj)
+
+		local ItemList = {}
+		local c = 0
+		for i = 1, 4 do
+			local text = StringFormat("Color%s",i)
+			c = c + 1
+			ItemList[c] = {
+				text = text,
+				value = pal[text],
+				hint = 302535920000017--[[Use the colour picker (dbl right-click for instant change).--]],
+			}
+			text = StringFormat("Roughness%s",i)
+			c = c + 1
+			ItemList[c] = {
+				text = text,
+				value = pal[text],
+				hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
+			}
+			text = StringFormat("Metallic%s",i)
+			c = c + 1
+			ItemList[c] = {
+				text = text,
+				value = pal[text],
+				hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
+			}
+		end
+		c = c + 1
+		ItemList[c] = {
+			text = "X_BaseColor",
+			value = 6579300,
+			obj = obj,
+			hint = 302535920000019--[["Single colour for object (this colour will interact with the other colours).
+	If you want to change the colour of an object you can't with 1-4."--]],
+		}
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+
+			if #choice == 13 then
+
+				-- needed to set attachment colours
+				local label = obj.class
+				local fake_parent
+				if parent then
+					label = parent.class
+					fake_parent = parent
+				else
+					fake_parent = choice[1].parentobj
+				end
+				if not fake_parent then
+					fake_parent = obj
+				end
+
+				-- sort table so it's the same as was displayed
+				table.sort(choice,function(a,b)
+					return CompareTableValue(a,b,"text")
+				end)
+				local colour_func = "SetColours"
+				if choice[1].check2 then
+					colour_func = "RestoreOldPalette"
+				end
+
+				-- all of type checkbox
+				if choice[1].check1 then
+					local labels = ChoGGi.ComFuncs.RetAllOfClass(label)
+					for i = 1, #labels do
+						local lab_obj = labels[i]
+						if parent then
+							local attaches = GetAllAttaches(lab_obj)
+							for i = 1, #attaches do
+								CheckGrid(fake_parent,colour_func,attaches[i],lab_obj,choice)
+							end
+						else
+							CheckGrid(fake_parent,colour_func,lab_obj,lab_obj,choice)
+						end
+					end
+
+				-- single building change
+				else
+					CheckGrid(fake_parent,colour_func,obj,obj,choice)
+				end
+
+				MsgPopup(
+					S[302535920000020--[[Colour is set on %s--]]]:format(RetName(obj)),
+					3595--[[Color--]],
+					nil,
+					nil,
+					obj
+				)
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = StringFormat("%s: %s",S[174--[[Color Modifier--]]],RetName(obj)),
+			hint = 302535920000022--[["If number is 8421504 then you probably can't change that colour.
+
+You can copy and paste numbers if you want."--]],
+			parent = dialog,
+			custom_type = 2,
+			check = {
+				{
+					title = 302535920000023--[[All of type--]],
+					hint = 302535920000024--[[Change all objects of the same type.--]],
+				},
+				{
+					title = 302535920000025--[[Default Colour--]],
+					hint = 302535920000026--[[if they're there; resets to default colours.--]],
+				},
+			},
+		}
+	end
+end -- do
 
 function ChoGGi.ComFuncs.BuildMenu_Toggle()
 	local dlg = Dialogs.XBuildMenu
@@ -2541,176 +2724,6 @@ function ChoGGi.ComFuncs.EmptyMechDepot(oldobj)
 	end)
 
 end
-
-do -- ChangeObjectColour
-	--they get called a few times so
-	local function SetOrigColours(obj)
-		ChoGGi.ComFuncs.RestoreOldPalette(obj)
-		--6579300 = reset base color
-		obj:SetColorModifier(6579300)
-	end
-	local function SetColours(obj,choice)
-		ChoGGi.ComFuncs.SaveOldPalette(obj)
-		for i = 1, 4 do
-			local color = choice[i].value
-			local roughness = choice[i+8].value
-			local metallic = choice[i+4].value
-			obj:SetColorizationMaterial(i,color,roughness,metallic)
-		end
-		obj:SetColorModifier(choice[13].value)
-	end
-	--make sure we're in the same grid
-	local function CheckGrid(fake_parent,Func,obj,obj_bld,choice)
-		--used to check for grid connections
-		local check_air = choice[1].checkair
-		local check_water = choice[1].checkwater
-		local check_elec = choice[1].checkelec
-
-		if check_air and obj_bld.air and fake_parent.air and obj_bld.air.grid.elements[1].building == fake_parent.air.grid.elements[1].building then
-			Func(obj,choice)
-		end
-		if check_water and obj_bld.water and fake_parent.water and obj_bld.water.grid.elements[1].building == fake_parent.water.grid.elements[1].building then
-			Func(obj,choice)
-		end
-		if check_elec and obj_bld.electricity and fake_parent.electricity and obj_bld.electricity.grid.elements[1].building == fake_parent.electricity.grid.elements[1].building then
-			Func(obj,choice)
-		end
-		if not check_air and not check_water and not check_elec then
-			Func(obj,choice)
-		end
-	end
-
-	function ChoGGi.ComFuncs.ChangeObjectColour(obj,parent,dialog)
-		local ChoGGi = ChoGGi
-		if not obj or obj and not obj:IsKindOf("ColorizableObject") then
-			MsgPopup(
-				S[302535920000015--[[Can't colour %s.--]]]:format(RetName(obj)),
-				3595--[[Color--]]
-			)
-			return
-		end
-		local pal = ChoGGi.ComFuncs.GetPalette(obj)
-
-		local ItemList = {}
-		local c = 0
-		for i = 1, 4 do
-			local text = StringFormat("Color%s",i)
-			c = c + 1
-			ItemList[c] = {
-				text = text,
-				value = pal[text],
-				hint = 302535920000017--[[Use the colour picker (dbl right-click for instant change).--]],
-			}
-			text = StringFormat("Roughness%s",i)
-			c = c + 1
-			ItemList[c] = {
-				text = text,
-				value = pal[text],
-				hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
-			}
-			text = StringFormat("Metallic%s",i)
-			c = c + 1
-			ItemList[c] = {
-				text = text,
-				value = pal[text],
-				hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
-			}
-		end
-		c = c + 1
-		ItemList[c] = {
-			text = "X_BaseColor",
-			value = 6579300,
-			obj = obj,
-			hint = 302535920000019--[["Single colour for object (this colour will interact with the other colours).
-	If you want to change the colour of an object you can't with 1-4 (like drones)."--]],
-		}
-
-		local function CallBackFunc(choice)
-			if #choice < 1 then
-				return
-			end
-
-			if #choice == 13 then
-				--needed to set attachment colours
-				local label = obj.class
-				local fake_parent
-				if parent then
-					label = parent.class
-					fake_parent = parent
-				else
-					fake_parent = obj.parentobj
-				end
-				if not fake_parent then
-					fake_parent = obj
-				end
-
-				--store table so it's the same as was displayed
-				table.sort(choice,function(a,b)
-					return ChoGGi.ComFuncs.CompareTableValue(a,b,"text")
-				end)
-				-- All of type checkbox
-				if choice[1].check1 then
-					local tab = UICity.labels[label] or ""
-					for i = 1, #tab do
-						if parent then
-
-							local attaches = ChoGGi.ComFuncs.GetAllAttaches(tab[i])
-							for i = 1, #attaches do
-								if choice[1].check2 then
-									CheckGrid(fake_parent,SetOrigColours,attaches[i],tab[i],choice)
-								else
-									CheckGrid(fake_parent,SetColours,attaches[i],tab[i],choice)
-								end
-							end
-
-						else --not parent
-							if choice[1].check2 then
-								CheckGrid(fake_parent,SetOrigColours,tab[i],tab[i],choice)
-							else
-								CheckGrid(fake_parent,SetColours,tab[i],tab[i],choice)
-							end
-						end --parent
-					end
-				else --single building change
-					if choice[1].check2 then
-						CheckGrid(fake_parent,SetOrigColours,obj,obj,choice)
-					else
-						CheckGrid(fake_parent,SetColours,obj,obj,choice)
-					end
-				end
-
-				MsgPopup(
-					S[302535920000020--[[Colour is set on %s--]]]:format(RetName(obj)),
-					3595--[[Color--]],
-					nil,
-					nil,
-					obj
-				)
-			end
-		end
-
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = StringFormat("%s: %s",S[174--[[Color Modifier--]]],RetName(obj)),
-			hint = 302535920000022--[["If number is 8421504 then you probably can't change that colour.
-
-You can copy and paste numbers if you want."--]],
-			parent = dialog,
-			custom_type = 2,
-			check = {
-				{
-					title = 302535920000023--[[All of type--]],
-					hint = 302535920000024--[[Change all objects of the same type.--]],
-				},
-				{
-					title = 302535920000025--[[Default Colour--]],
-					hint = 302535920000026--[[if they're there; resets to default colours.--]],
-				},
-			},
-		}
-	end
-end -- do
 
 --returns the near hex grid for object placement
 function ChoGGi.ComFuncs.CursorNearestHex(pt)
@@ -3914,9 +3927,10 @@ function ChoGGi.ComFuncs.AttachSpots_Toggle(sel)
 end
 
 do -- ShowAnimDebug_Toggle
+	local RandomColour
 	local function AnimDebug_Show(obj,colour)
 		local text = PlaceObject("Text")
-		text:SetColor(colour or ChoGGi.ComFuncs.RandomColour())
+		text:SetColor(colour or RandomColour())
 		text:SetFontId(UIL.GetFontID(StringFormat("%s, 14, bold, aa",ChoGGi.font)))
 		text:SetCenter(true)
 		local orient = Orientation:new()
@@ -3945,20 +3959,21 @@ do -- ShowAnimDebug_Toggle
 	end
 
 	local function AnimDebug_ShowAll(cls)
-		local objs = UICity.labels[cls] or ""
+		local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
 		for i = 1, #objs do
 			AnimDebug_Show(objs[i])
 		end
 	end
 
 	local function AnimDebug_HideAll(cls)
-		local objs = UICity.labels[cls] or ""
+		local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
 		for i = 1, #objs do
 			AnimDebug_Hide(objs[i])
 		end
 	end
 
 	function ChoGGi.ComFuncs.ShowAnimDebug_Toggle(sel)
+		RandomColour = RandomColour or ChoGGi.ComFuncs.RandomColour
 		local sel = sel or SelectedObj
 		if sel then
 			if sel.ChoGGi_ShowAnimDebug then
@@ -4299,16 +4314,39 @@ end
 
 do --
 	local attaches = {}
-	local skip = {"BuildingSign","ExplorableObject","TerrainDeposit"}
-	local function AddAttaches(obj,attaches,attaches_idx,c)
+	local attaches_idx
+	local count = 0
+	local obj_cls
+	local skip = {"BuildingSign","ExplorableObject","TerrainDeposit","DroneBase","Dome"}
+
+	local function AddAttaches(obj)
 		for _,a in pairs(obj) do
-			if not attaches[a] and IsValid(a) and not a:IsKindOfClasses(skip) then
+			if not attaches[a] and IsValid(a) and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
 				attaches[a] = true
-				c = c + 1
-				attaches_idx[c] = a
+				count = count + 1
+				attaches_idx[count] = a
 			end
 		end
-		return c
+	end
+
+	local function ForEach(a)
+		if not attaches[a] and IsValid(a) and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
+			attaches[a] = true
+			count = count + 1
+			attaches_idx[count] = a
+			-- add level limit?
+			if a.ForEachAttach then
+				a:ForEachAttach(ForEach)
+			end
+			local state_attaches = a.auto_attach_state_attaches
+			if state_attaches then
+				for i = 1, #state_attaches do
+					for j = 1, #state_attaches[i] do
+						AddAttaches(state_attaches[i][j])
+					end
+				end
+			end
+		end
 	end
 
 	function ChoGGi.ComFuncs.GetAllAttaches(obj)
@@ -4317,27 +4355,23 @@ do --
 			return attaches
 		end
 		-- we don't clear as we want to return a new table each time
-		local attaches_idx = {}
-		local c = 0
+		attaches_idx = {}
+		count = 0
+		obj_cls = obj.class
 
 		-- add regular attachments
 		if obj.ForEachAttach then
-			obj:ForEachAttach(function(a)
-				if not attaches[a] and IsValid(a) and not a:IsKindOfClasses(skip) then
-					attaches[a] = true
-					c = c + 1
-					attaches_idx[c] = a
-				end
-			end)
+			obj:ForEachAttach(ForEach)
 		end
 
 		-- add any non-attached attaches
-		c = AddAttaches(obj,attaches,attaches_idx,c)
+		AddAttaches(obj)
 		-- and the anim_obj added in gagarin
 		if IsValid(obj.anim_obj) then
-			AddAttaches(obj.anim_obj,attaches,attaches_idx,c)
+			AddAttaches(obj.anim_obj)
 		end
 
+		-- remove obj if it's in the list
 		local idx = TableFind(attaches_idx,obj)
 		if idx then
 			TableRemove(attaches_idx,idx)
@@ -4498,3 +4532,14 @@ do -- IsControlPressed/IsShiftPressed/IsAltPressed
 		return IsKeyPressed(vkAlt)
 	end
 end -- do
+
+function ChoGGi.ComFuncs.RetAllOfClass(cls)
+	if not g_Classes[cls] then
+		return ""
+	end
+	local objects = UICity.labels[cls] or ""
+	if #objects == 0 then
+		objects = MapGet("map",cls)
+	end
+	return objects
+end

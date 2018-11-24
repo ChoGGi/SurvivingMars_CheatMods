@@ -178,7 +178,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		local function AddViewObjInfo(label)
-			local objs = UICity.labels[label] or ""
+			local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
 			for i = 1, #objs do
 				local obj = objs[i]
 				-- only check for valid pos if it isn't a colonist (inside building = invalid pos)
@@ -214,7 +214,7 @@ function OnMsg.ClassesGenerate()
 		end
 		local function RemoveViewObjInfo(label)
 			-- clear out the text objects
-			local objs = UICity.labels[label] or ""
+			local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
 			for i = 1, #objs do
 				objs[i]:ForEachAttach(AttachCleanUp)
 			end
@@ -228,7 +228,7 @@ function OnMsg.ClassesGenerate()
 					-- add a grid number we can reference
 					ChoGGi.ComFuncs.UpdateGridHandles()
 
-					local objs = UICity.labels[label] or ""
+					local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
 					local mine
 					-- update text
 					for i = 1, #objs do

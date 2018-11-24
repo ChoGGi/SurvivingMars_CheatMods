@@ -277,7 +277,6 @@ function OnMsg.ModsReloaded()
 				a.replace_matching_id = true
 				a.ActionId = StringFormat("%s%s",a.ActionMenubar ~= "" and a.ActionMenubar or "ECM",a.ActionId)
 				a.ChoGGi_ECM = true
---~ 				a.ActionMode = "Game"
 			end
 		end
 
