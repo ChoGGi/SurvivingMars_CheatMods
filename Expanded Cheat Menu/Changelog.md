@@ -13,6 +13,10 @@
 - Exposed settings for the Shift-F2 grid (debug>grids).
 - Moved Drone Type from Mission to Drones (not sure why I put it there).
 - Made Add Prefabs skip stuff that doesn't "prefab".
+- Examine:
+- > Attaches menu was clearing out colours from Colour Modifier.
+- > Reworked the go to text/next button: it's no longer find as you type, see tooltips for more info.
+- > Right-click Auto-Refresh to change update delay.
 
 ## v10.9 (20 Nov 2018)
 ### Added:

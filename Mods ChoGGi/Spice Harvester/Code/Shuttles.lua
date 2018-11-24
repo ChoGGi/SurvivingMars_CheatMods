@@ -59,9 +59,9 @@ function SpiceHarvester.SpawnShuttle(hub)
 		end)
 
 		-- shit stained bugs
-		shuttle:SetColorizationMaterial(1, sh.Color1 or -12247037, Random(-255,255), Random(-255,255))
-		shuttle:SetColorizationMaterial(2, sh.Color2 or -11196403, Random(-255,255), Random(-255,255))
-		shuttle:SetColorizationMaterial(3, sh.Color3 or -13297406, Random(-255,255), Random(-255,255))
+		shuttle:SetColorizationMaterial(1, sh.Color1 or -12247037, Random(-128,127), Random(-128,127))
+		shuttle:SetColorizationMaterial(2, sh.Color2 or -11196403, Random(-128,127), Random(-128,127))
+		shuttle:SetColorizationMaterial(3, sh.Color3 or -13297406, Random(-128,127), Random(-128,127))
 
 		-- follow that cursor little minion
 		shuttle:SetCommand("SpiceHarvester_FollowHarvester")

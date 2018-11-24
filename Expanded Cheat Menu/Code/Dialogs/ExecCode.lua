@@ -2,12 +2,23 @@
 
 -- shows a dialog with to execute code in
 
+local StringFormat = string.format
+
 local S
+local GetParentOfKind
+local IsControlPressed
+local IsShiftPressed
 
 function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
+	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+	IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
+	IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 end
 
+local GetRootDialog = function(obj)
+	return GetParentOfKind(obj,"ChoGGi_ExecCodeDlg")
+end
 DefineClass.ChoGGi_ExecCodeDlg = {
 	__parents = {"ChoGGi_Window"},
 	obj = false,
@@ -17,6 +28,7 @@ DefineClass.ChoGGi_ExecCodeDlg = {
 	dialog_height = 240.0,
 }
 
+local box10 = box(10,0,0,0)
 function ChoGGi_ExecCodeDlg:Init(parent, context)
 	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
@@ -25,7 +37,7 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
 	self.obj = context.obj
 	self.obj_name = self.obj and ChoGGi.ComFuncs.RetName(self.obj) or S[302535920001073--[[Console--]]]
 
-	self.title = string.format("%s: %s",S[302535920000040--[[Exec Code--]]],self.obj_name)
+	self.title = StringFormat("%s: %s",S[302535920000040--[[Exec Code--]]],self.obj_name)
 
 	if not self.obj then
 		self.dialog_width = 800.0
@@ -41,11 +53,9 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
 	self.idMoveControl.RolloverText = S[302535920000072--[["Paste or type code to be executed here, ChoGGi.CurObj is the examined object (ignored when opened from Console).
 Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 	-- start off with this as code
-	self.idEdit:SetText(GetFromClipboard() or (self.obj and "ChoGGi.CurObj" or ""))
+	self.idEdit:SetText(GetFromClipboard() or self.obj and "ChoGGi.CurObj" or "")
 	-- let us override enter/esc
-	self.idEdit.OnKbdKeyDown = function(obj, vk)
-		return self:idEditOnKbdKeyDown(obj, vk)
-	end
+	self.idEdit.OnKbdKeyDown = self.idEditOnKbdKeyDown
 
 	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
 		Id = "idButtonContainer",
@@ -58,15 +68,9 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 		Dock = "left",
 		Text = S[302535920000040--[[Exec Code--]]],
 		RolloverText = S[302535920000073--[[Execute code in text box (Ctrl-Enter or Shift-Enter will also work).--]]],
-		Margins = box(10, 0, 0, 0),
+		Margins = box10,
 		MinWidth = 100,
-		OnPress = function()
-			-- exec instead of also closing dialog
-			ChoGGi.CurObj = self.obj
-			-- use console to exec code so we can show results in it
-			ShowConsoleLog(true)
-			dlgConsole:Exec(self.idEdit:GetText())
-		end,
+		OnPress = self.idOKOnPress,
 	}, self.idButtonContainer)
 
 	if self.obj then
@@ -75,25 +79,20 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 			Dock = "left",
 			Text = S[302535920000075--[[Insert Obj--]]],
 			RolloverText = S[302535920000076--[[At caret position inserts: ChoGGi.CurObj--]]],
-			Margins = box(10, 0, 0, 0),
+			Margins = box10,
 			MinWidth = 100,
-			OnPress = function()
-				self.idEdit:EditOperation("ChoGGi.CurObj",true)
-				self.idEdit:SetFocus()
-			end,
+			OnPress = self.idInsertObjOnPress,
 		}, self.idButtonContainer)
 	end
 
-	g_Classes.ChoGGi_CheckButton:new({
+	self.idWrapLines = g_Classes.ChoGGi_CheckButton:new({
+		Id = "idWrapLines",
 		Dock = "left",
 		Text = S[302535920001288--[[Wrap Lines--]]],
 		RolloverText = S[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
-		Margins = box(10,0,0,0),
+		Margins = box10,
 		Check = ChoGGi.UserSettings.WordWrap,
-		OnChange = function(_,which)
-			ChoGGi.UserSettings.WordWrap = which
-			self.idEdit:SetWordWrap(which)
-		end
+		OnChange = self.idWrapLinesOnChange,
 	}, self.idButtonContainer)
 
 	self.idCancel = g_Classes.ChoGGi_Button:new({
@@ -109,19 +108,38 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 	self:SetInitPos(context.parent)
 end
 
-local IsKeyPressed = terminal.IsKeyPressed
-local shift_key = const.vkShift
-local ctrl_key = Platform.osx and const.vkLwin or const.vkControl
-function ChoGGi_ExecCodeDlg:idEditOnKbdKeyDown(obj,vk)
-	local const = const
-	if vk == const.vkEnter then
-		if IsKeyPressed(shift_key) or IsKeyPressed(ctrl_key) then
-			self.idOK:Press()
-		end
+function ChoGGi_ExecCodeDlg:idOKOnPress()
+	self = GetRootDialog(self)
+	-- exec instead of also closing dialog
+	ChoGGi.CurObj = self.obj
+--~ 	ShowConsoleLog(true)
+	-- use console to exec code so we can show results in it
+	dlgConsole:Exec(self.idEdit:GetText())
+end
+
+function ChoGGi_ExecCodeDlg:idInsertObjOnPress()
+	self = GetRootDialog(self)
+	self.idEdit:EditOperation("ChoGGi.CurObj",true)
+	self.idEdit:SetFocus()
+end
+
+function ChoGGi_ExecCodeDlg:idWrapLinesOnChange(which)
+	ChoGGi.UserSettings.WordWrap = which
+	GetRootDialog(self).idEdit:SetWordWrap(which)
+end
+
+local const = const
+function ChoGGi_ExecCodeDlg:idEditOnKbdKeyDown(vk)
+	self = GetRootDialog(self)
+	if vk == const.vkEnter and (IsShiftPressed() or IsControlPressed()) then
+		self.idOK:Press()
+--~ 		if IsShiftPressed() or IsControlPressed() then
+--~ 			self.idOK:Press()
+--~ 		end
 		return "break"
 	elseif vk == const.vkEsc and self.obj then
 		self.idCloseX:Press()
 		return "break"
 	end
-	return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
+	return ChoGGi_TextInput.OnKbdKeyDown(self.idEdit, vk)
 end

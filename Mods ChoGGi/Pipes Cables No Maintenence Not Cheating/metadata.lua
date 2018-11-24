@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 4,
   "saved", 1533297600,
 	"id", "ChoGGi_NotCheatingPipesCablesNoMaintenence",
-	"steam_id", "1534680000",
+	"steam_id", "1410829032",
 	"author", "ChoGGi",
 	"TagOther", true,
 	"code", {"Script.lua"},

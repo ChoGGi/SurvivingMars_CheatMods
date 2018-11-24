@@ -1,3 +1,6 @@
+v0.6
+Sounds.
+
 v0.5
 Cleaning up code (ChoGGi's Library).
 

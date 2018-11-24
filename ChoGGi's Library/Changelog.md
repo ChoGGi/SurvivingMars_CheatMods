@@ -2,6 +2,8 @@
 
 ## v3.8 (Unreleased)
 - Moved my spawn colonist func here.
+- Made my random colour func work better.
+- Code cleanup.
 
 ## v3.7 (21 Nov 2018)
 - Fixed shuttles not paying attention to newly added/removed hills/rocks.

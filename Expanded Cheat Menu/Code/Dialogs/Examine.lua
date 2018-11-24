@@ -2,7 +2,7 @@
 
 -- used to examine objects
 
-local pairs,type,tostring,rawget = pairs,type,tostring,rawget
+local pairs,type,tostring,tonumber,rawget = pairs,type,tostring,tonumber,rawget
 
 local StringFormat = string.format
 local TableSort = table.sort
@@ -40,6 +40,8 @@ local RetThreadInfo
 local DeleteObject
 local DotNameToObject
 local Trans
+local GetParentOfKind
+local IsControlPressed
 local Random
 local InvalidPos
 local S
@@ -58,12 +60,17 @@ function OnMsg.ClassesGenerate()
 	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 	RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
 	Trans = ChoGGi.ComFuncs.Translate
+	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+	IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 	Random = ChoGGi.ComFuncs.Random
 	InvalidPos = ChoGGi.Consts.InvalidPos
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 end
 
+local GetRootDialog = function(obj)
+	return GetParentOfKind(obj,"Examine")
+end
 DefineClass.Examine = {
 	__parents = {"ChoGGi_Window"},
 
@@ -101,6 +108,8 @@ DefineClass.Examine = {
 	-- tables
 	parents_menu_popup = false,
 	attaches_menu_popup = false,
+	tools_menu_popup = false,
+
 	pmenu_skip_dupes = false,
 	parents = false,
 	ancestors = false,
@@ -109,6 +118,7 @@ DefineClass.Examine = {
 	-- clickable purple text
 	onclick_handles = false,
 
+	idAutoRefresh_update_str = false,
 }
 
 function Examine:Init(parent, context)
@@ -181,12 +191,7 @@ function Examine:Init(parent, context)
 			Image = "CommonAssets/UI/Menu/reload.tga",
 			RolloverTitle = S[1000220--[[Refresh--]]],
 			RolloverText = S[302535920000092--[[Updates list with any changed values.--]]],
-			OnPress = function()
-				self:SetObj()
-				if IsKindOf(self.obj_ref,"XWindow") and self.obj_ref.class ~= "InGameInterface" then
-					self:FlashWindow()
-				end
-			end,
+			OnPress = self.idButRefreshOnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButSetTransp = g_Classes.ChoGGi_ToolbarButton:new({
@@ -194,10 +199,7 @@ function Examine:Init(parent, context)
 			Image = "CommonAssets/UI/Menu/CutSceneArea.tga",
 			RolloverTitle = S[302535920000865--[[Toggle Trans--]]],
 			RolloverText = S[302535920000629--[[UI Transparency--]]],
-			OnPress = function()
-				self.transp_mode = not self.transp_mode
-				self:SetTranspMode(self.transp_mode)
-			end,
+			OnPress = self.idButSetTranspOnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButClear = g_Classes.ChoGGi_ToolbarButton:new({
@@ -213,46 +215,7 @@ function Examine:Init(parent, context)
 			Image = "CommonAssets/UI/Menu/DisableEyeSpec.tga",
 			RolloverTitle = S[302535920000057--[[Mark Object--]]],
 			RolloverText = S[302535920000021--[[Mark object with green sphere and/or paint.--]]],
-			OnPress = function()
-				if IsValid(self.obj_ref) then
-					ShowObj(self.obj_ref)
-				else
-					for k, v in pairs(self.obj_ref) do
-						ShowObj(k)
-						ShowObj(v)
-					end
-				end
-			end,
-		}, self.idToolbarButtons)
-		--
-		self.idButAttachSpotsToggle = g_Classes.ChoGGi_ToolbarButton:new({
-			Id = "idButAttachSpotsToggle",
-			Image = "CommonAssets/UI/Menu/ShowAll.tga",
-			RolloverTitle = S[302535920000449--[[Attach Spots Toggle--]]],
-			RolloverText = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
-			OnPress = function()
-				ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj_ref)
-			end,
-		}, self.idToolbarButtons)
-		--
-		self.idButAnimDebugToggle = g_Classes.ChoGGi_ToolbarButton:new({
-			Id = "idButAnimDebugToggle",
-			Image = "CommonAssets/UI/Menu/CameraEditor.tga",
-			RolloverTitle = S[302535920000459--[[Anim Debug Toggle--]]],
-			RolloverText = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
-			OnPress = function()
-				ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj_ref)
-			end,
-		}, self.idToolbarButtons)
-		--
-		self.idButAnimStateSet = g_Classes.ChoGGi_ToolbarButton:new({
-			Id = "idButAnimStateSet",
-			Image = "CommonAssets/UI/Menu/UnlockCamera.tga",
-			RolloverTitle = S[302535920000457--[[Anim State Set--]]],
-			RolloverText = S[302535920000458--[[Make object dance on command.--]]],
-			OnPress = function()
-				ChoGGi.ComFuncs.SetAnimState(self.obj_ref)
-			end,
+			OnPress = self.idButMarkObjectOnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButModProps = g_Classes.ChoGGi_ToolbarButton:new({
@@ -260,13 +223,7 @@ function Examine:Init(parent, context)
 			Image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			RolloverTitle = S[931--[[Modified property--]]],
 			RolloverText = S[302535920001384--[[Get properties different from base/parent object?--]]],
-			OnPress = function()
-				ChoGGi.ComFuncs.OpenInExamineDlg(
-					GetModifiedProperties(self.obj_ref),
-					self,
-					StringFormat("%s: %s",S[931--[[Modified property--]]],self.name)
-				)
-			end,
+			OnPress = self.idButModPropsOnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButAllProps = g_Classes.ChoGGi_ToolbarButton:new({
@@ -274,20 +231,7 @@ function Examine:Init(parent, context)
 			Image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			RolloverTitle = S[302535920001389--[[All Properties--]]],
 			RolloverText = S[302535920001390--[[Get all properties.--]]],
-			OnPress = function()
-				-- give em some hints
-				local props_list = {
-					___readme = S[302535920001397--[["These can be used as obj:GetNAME() / obj:SetNAME().
-You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
-Check the actual object/g_Classes.object for the correct value to use (Entity > entity).
---]]]
-				}
-				local props = self.obj_ref:GetProperties()
-				for i = 1, #props do
-					props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
-				end
-				ChoGGi.ComFuncs.OpenInExamineDlg(props_list,self,StringFormat("%s: %s",S[302535920001389--[[All Properties--]]],self.name))
-			end,
+			OnPress = self.idButAllPropsOnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButDeleteObj = g_Classes.ChoGGi_ToolbarButton:new({
@@ -295,17 +239,7 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 			Image = "CommonAssets/UI/Menu/delete_objects.tga",
 			RolloverTitle = S[697--[[Destroy--]]],
 			RolloverText = S[302535920000414--[[Are you sure you wish to delete it?--]]],
-			OnPress = function()
-				ChoGGi.ComFuncs.QuestionBox(
-					S[302535920000414--[[Are you sure you wish to delete it?--]]],
-					function(answer)
-						if answer then
-							DeleteObject(self.obj_ref)
-						end
-					end,
-					S[697--[[Destroy--]]]
-				)
-			end,
+			OnPress = self.idButDeleteObjOnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButMarkAll = g_Classes.ChoGGi_ToolbarButton:new({
@@ -313,13 +247,7 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 			Image = "CommonAssets/UI/Menu/ExportImageSequence.tga",
 			RolloverTitle = S[302535920000058--[[Mark All Objects--]]],
 			RolloverText = S[302535920000056--[[Mark all items in objlist with green spheres.--]]],
-			OnPress = function(...)
-				for _, v in pairs(self.obj_ref) do
-					if IsPoint(v) or IsValid(v) then
-						ShowObj(v, nil, nil, true)
-					end
-				end
-			end,
+			OnPress = self.idButMarkAllOnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButDeleteAll = g_Classes.ChoGGi_ToolbarButton:new({
@@ -327,46 +255,39 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 			Image = "CommonAssets/UI/Menu/UnlockCollection.tga",
 			RolloverTitle = S[3768--[[Destroy all?--]]],
 			RolloverText = S[302535920000059--[[Destroy all objects in objlist!--]]],
-			OnPress = function()
-				ChoGGi.ComFuncs.QuestionBox(
-					S[302535920000059--[[Destroy all objects in objlist!--]]],
-					function(answer)
-						if answer then
-							SuspendPassEdits("DestroyAllInObjlist")
-							for _, v in pairs(self.obj_ref) do
-								if IsValid(v) then
-									DeleteObject(v)
-								end
-							end
-							ResumePassEdits("DestroyAllInObjlist")
-							-- force a refresh on the list, so people can see something as well
-							self:SetObj()
-						end
-					end,
-					S[697--[[Destroy--]]]
-				)
-			end,
+			OnPress = self.idButDeleteAllOnPress,
 		}, self.idToolbarButtons)
 		-- right side
+
+		self.idAutoRefresh_update_str = StringFormat("%s\n%s\n%s: %s",S[302535920001257--[[Auto-refresh list every second.--]]],S[302535920001422--[[Right-click to change refresh delay.--]]],S[302535920000106--[[Current--]]],"%s")
 		self.idAutoRefresh = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idAutoRefresh",
 			Dock = "right",
 			Text = S[302535920000084--[[Auto-Refresh--]]],
-			RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
-			OnChange = function()
-				self:idAutoRefreshToggle()
-			end,
+			RolloverText = self.idAutoRefresh_update_str:format(ChoGGi.UserSettings.ExamineRefreshTime),
+			RolloverHint = S[302535920001425--[["<left_click> Toggle, <right_click> Set Delay"--]]],
+			OnChange = self.idAutoRefreshToggle,
+			OnMouseButtonDown = self.idAutoRefreshOnMouseButtonDown,
 		}, self.idToolbarArea)
+		self.idAutoRefreshDelay = g_Classes.ChoGGi_TextInput:new({
+			Id = "idAutoRefreshDelay",
+			Dock = "right",
+			MinWidth = 50,
+			Margins = box(0,0,6,0),
+			FoldWhenHidden = true,
+			RolloverText = S[302535920000967--[[Delay in ms between updating text.--]]],
+			OnTextChanged = self.idAutoRefreshDelayOnTextChanged,
+		}, self.idToolbarArea)
+		-- vis is toggled when rightclicking autorefresh checkbox
+		self.idAutoRefreshDelay:SetVisible()
+		self.idAutoRefreshDelay:SetText(tostring(ChoGGi.UserSettings.ExamineRefreshTime))
 		--
 		self.idSortDir = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idSortDir",
 			Dock = "right",
 			Text = S[10124--[[Sort--]]],
 			RolloverText = S[302535920001248--[[Sort normally or backwards.--]]],
-			OnChange = function()
-				self.sort = not self.sort
-				self:SetObj()
-			end,
+			OnChange = self.idSortDirOnChange,
 		}, self.idToolbarArea)
 		--
 		self.idShowAllValues = g_Classes.ChoGGi_CheckButton:new({
@@ -375,10 +296,7 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 			MinWidth = 0,
 			Text = S[4493--[[All--]]],
 			RolloverText = S[302535920001391--[[Show all values (metatable).--]]],
-			OnChange = function()
-				self.show_all_values = not self.show_all_values
-				self:SetObj()
-			end,
+			OnChange = self.idShowAllValuesOnChange,
 		}, self.idToolbarArea)
 	end -- toolbar area
 
@@ -390,14 +308,10 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 
 		self.idGoto = g_Classes.ChoGGi_TextInput:new({
 			Id = "idGoto",
-			RolloverText = S[302535920000043--[["Scrolls to text entered (press Enter to scroll between found text, Up arrow to scroll to top)."--]]],
+			RolloverText = S[302535920000043--[["Press Enter to scroll to next found text, Ctrl-Enter to scroll back, Arrows to scroll to each end."--]]],
 			Hint = S[302535920000044--[[Go To Text--]]],
-			OnTextChanged = function()
-				self:FindNext(self.idGoto:GetText())
-			end,
-			OnKbdKeyDown = function(obj, vk)
-				return self:idGotoOnKbdKeyDown(obj, vk)
-			end,
+--~ 			OnTextChanged = self.idGotoOnTextChanged,
+			OnKbdKeyDown = self.idGotoOnKbdKeyDown,
 		}, self.idGotoArea)
 	end
 
@@ -407,19 +321,12 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 			Dock = "top",
 		}, self.idDialog)
 
-		local tools_menu_popup = self:BuildToolsMenuPopup()
+		self.tools_menu_popup = self:BuildToolsMenuPopup()
 		self.idTools = g_Classes.ChoGGi_ComboButton:new({
 			Id = "idTools",
 			Text = S[302535920000239--[[Tools--]]],
-			RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
-
-	Right-click to scroll to top."--]]],
-			OnMouseButtonDown = function(obj,pt,button,...)
-				g_Classes.ChoGGi_ComboButton.OnMouseButtonDown(obj,pt,button,...)
-				if button == "L" then
-					PopupToggle(obj,self.idToolsMenu,tools_menu_popup,"bottom")
-				end
-			end,
+			RolloverText = S[302535920001426--[[Various tools to use.--]]],
+			OnMouseButtonDown = self.idToolsOnMouseButtonDown,
 			Dock = "left",
 		}, self.idMenuArea)
 
@@ -427,12 +334,7 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 			Id = "idParents",
 			Text = S[302535920000520--[[Parents--]]],
 			RolloverText = S[302535920000553--[[Examine parent and ancestor objects.--]]],
-			OnMouseButtonDown = function(obj,pt,button,...)
-				g_Classes.ChoGGi_ComboButton.OnMouseButtonDown(obj,pt,button,...)
-				if button == "L" then
-					PopupToggle(obj,self.idParentsMenu,self.parents_menu_popup,"bottom")
-				end
-			end,
+			OnMouseButtonDown = self.idParentsOnMouseButtonDown,
 			Dock = "left",
 		}, self.idMenuArea)
 		self.idParents:SetVisible(false)
@@ -441,12 +343,7 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 			Id = "idAttaches",
 			Text = S[302535920000053--[[Attaches--]]],
 			RolloverText = S[302535920000054--[[Any objects attached to this object.--]]],
-			OnMouseButtonDown = function(obj,pt,button,...)
-				g_Classes.ChoGGi_ComboButton.OnMouseButtonDown(obj,pt,button,...)
-				if button == "L" then
-					PopupToggle(obj,self.idAttachesMenu,self.attaches_menu_popup,"bottom")
-				end
-			end,
+			OnMouseButtonDown = self.idAttachesOnMouseButtonDown,
 			Dock = "left",
 		}, self.idMenuArea)
 		self.idAttaches:SetVisible(false)
@@ -456,17 +353,10 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 			Text = S[1000232--[[Next--]]],
 			Dock = "right",
 			RolloverAnchor = "right",
+			RolloverHint = S[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
 			RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
-
-	Right-click to scroll to top."--]]],
-			OnMouseButtonDown = function(obj,pt,button,...)
-				g_Classes.ChoGGi_Button.OnMouseButtonDown(obj,pt,button,...)
-				if button == "L" then
-					self:FindNext(self.idGoto:GetText())
-				else
-					self.idScrollArea:ScrollTo(0,0)
-				end
-			end,
+Right-click to go up, middle-click to scroll to the top."--]]],
+			OnMouseButtonDown = self.idNextOnMouseButtonDown,
 		}, self.idMenuArea)
 	end -- tools area
 
@@ -491,7 +381,102 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 	self:SetInitPos(context.parent)
 end
 
+function Examine:idButRefreshOnPress()
+	self = GetRootDialog(self)
+	self:SetObj()
+	if IsKindOf(self.obj_ref,"XWindow") and self.obj_ref.class ~= "InGameInterface" then
+		self:FlashWindow()
+	end
+end
+
+function Examine:idButSetTranspOnPress()
+	self = GetRootDialog(self)
+	self.transp_mode = not self.transp_mode
+	self:SetTranspMode(self.transp_mode)
+end
+
+function Examine:idButMarkObjectOnPress()
+	self = GetRootDialog(self)
+	if IsValid(self.obj_ref) then
+		ShowObj(self.obj_ref)
+	else
+		for k, v in pairs(self.obj_ref) do
+			ShowObj(k)
+			ShowObj(v)
+		end
+	end
+end
+
+function Examine:idButModPropsOnPress()
+	self = GetRootDialog(self)
+	ChoGGi.ComFuncs.OpenInExamineDlg(
+		GetModifiedProperties(self.obj_ref),
+		self,
+		StringFormat("%s: %s",S[931--[[Modified property--]]],self.name)
+	)
+end
+
+function Examine:idButAllPropsOnPress()
+	self = GetRootDialog(self)
+	-- give em some hints
+	local props_list = {
+		___readme = S[302535920001397--[["These can be used as obj:GetNAME() / obj:SetNAME().
+You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
+Check the actual object/g_Classes.object for the correct value to use (Entity > entity).
+--]]]
+	}
+	local props = self.obj_ref:GetProperties()
+	for i = 1, #props do
+		props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
+	end
+	ChoGGi.ComFuncs.OpenInExamineDlg(props_list,self,StringFormat("%s: %s",S[302535920001389--[[All Properties--]]],self.name))
+end
+
+function Examine:idButDeleteObjOnPress()
+	self = GetRootDialog(self)
+	ChoGGi.ComFuncs.QuestionBox(
+		S[302535920000414--[[Are you sure you wish to delete it?--]]],
+		function(answer)
+			if answer then
+				DeleteObject(self.obj_ref)
+			end
+		end,
+		S[697--[[Destroy--]]]
+	)
+end
+
+function Examine:idButDeleteAllOnPress()
+	self = GetRootDialog(self)
+	ChoGGi.ComFuncs.QuestionBox(
+		S[302535920000059--[[Destroy all objects in objlist!--]]],
+		function(answer)
+			if answer then
+				SuspendPassEdits("DestroyAllInObjlist")
+				for _, v in pairs(self.obj_ref) do
+					if IsValid(v) then
+						DeleteObject(v)
+					end
+				end
+				ResumePassEdits("DestroyAllInObjlist")
+				-- force a refresh on the list, so people can see something as well
+				self:SetObj()
+			end
+		end,
+		S[697--[[Destroy--]]]
+	)
+end
+
+function Examine:idButMarkAllOnPress()
+	self = GetRootDialog(self)
+	for _, v in pairs(self.obj_ref) do
+		if IsPoint(v) or IsValid(v) then
+			ShowObj(v, nil, nil, true)
+		end
+	end
+end
+
 function Examine:idAutoRefreshToggle()
+	self = GetRootDialog(self)
 	-- if it's called directly we set the check if needed
 	local checked = self.idAutoRefresh:GetCheck()
 
@@ -510,35 +495,118 @@ function Examine:idAutoRefreshToggle()
 			self.idAutoRefresh:SetCheck(true)
 		end
 		local Sleep = Sleep
+		local UserSettings = ChoGGi.UserSettings
 		while true do
-			if self.obj then
+			if self.obj_ref then
 				self:SetObj()
 			else
 				DeleteThread(self.autorefresh_thread)
 				break
 			end
-			Sleep(1000)
+			Sleep(UserSettings.ExamineRefreshTime)
 		end
 	end)
-
 end
 
-function Examine:idGotoOnKbdKeyDown(obj,vk)
+function Examine:idAutoRefreshOnMouseButtonDown(pt,button,...)
+	g_Classes.ChoGGi_CheckButton.OnMouseButtonDown(self,pt,button,...)
+	if button == "R" then
+		self = GetRootDialog(self)
+		self.idAutoRefreshDelay:SetVisible(not self.idAutoRefreshDelay:GetVisible())
+	end
+end
+
+function Examine:idAutoRefreshDelayOnTextChanged()
+	local num = tonumber(self:GetText())
+	if num then
+		self = GetRootDialog(self)
+		if num < 1 then
+			num = 1
+		end
+		ChoGGi.UserSettings.ExamineRefreshTime = num
+		self.idAutoRefresh:SetRolloverText(self.idAutoRefresh_update_str:format(num))
+	end
+end
+
+function Examine:idSortDirOnChange()
+	self = GetRootDialog(self)
+	self.sort = not self.sort
+	self:SetObj()
+end
+
+function Examine:idShowAllValuesOnChange()
+	self = GetRootDialog(self)
+	self.show_all_values = not self.show_all_values
+	self:SetObj()
+end
+
+--~ function Examine:idGotoOnTextChanged()
+--~ 	GetRootDialog(self):FindNext()
+--~ end
+
+function Examine:idToolsOnMouseButtonDown(pt,button,...)
+	ChoGGi_ComboButton.OnMouseButtonDown(self,pt,button,...)
+	if button == "L" then
+		local dlg = GetRootDialog(self)
+		PopupToggle(self,dlg.idToolsMenu,dlg.tools_menu_popup,"bottom")
+	end
+end
+
+function Examine:idParentsOnMouseButtonDown(pt,button,...)
+	ChoGGi_ComboButton.OnMouseButtonDown(self,pt,button,...)
+	if button == "L" then
+		local dlg = GetRootDialog(self)
+		PopupToggle(self,dlg.idParentsMenu,dlg.parents_menu_popup,"bottom")
+	end
+end
+
+function Examine:idAttachesOnMouseButtonDown(pt,button,...)
+	ChoGGi_ComboButton.OnMouseButtonDown(self,pt,button,...)
+	if button == "L" then
+		local dlg = GetRootDialog(self)
+		PopupToggle(self,dlg.idAttachesMenu,dlg.attaches_menu_popup,"bottom")
+	end
+end
+
+function Examine:idNextOnMouseButtonDown(pt,button,...)
+	ChoGGi_Button.OnMouseButtonDown(self,pt,button,...)
+	self = GetRootDialog(self)
+	if button == "L" then
+		self:FindNext()
+	elseif button == "R" then
+		self:FindPrevious()
+	else
+		self.idScrollArea:ScrollTo(0,0)
+	end
+end
+
+function Examine:idGotoOnKbdKeyDown(vk,...)
+	self = GetRootDialog(self)
 	if vk == const.vkEnter then
-		self:FindNext(self.idGoto:GetText())
+		if IsControlPressed() then
+			self:FindPrevious()
+		else
+			self:FindNext()
+		end
 		return "break"
 	elseif vk == const.vkUp then
-		self.idScrollArea:ScrollTo(0,0)
+		self.idScrollArea:ScrollTo(nil,0)
 		return "break"
 	elseif vk == const.vkDown then
 		local v = self.idScrollV
-		self.idScrollArea:ScrollTo(0,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
+		self.idScrollArea:ScrollTo(nil,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
 		return "break"
+	elseif vk == const.vkRight then
+		local h = self.idScrollH
+		self.idScrollArea:ScrollTo(h.Max - (h.FullPageAtEnd and h.PageSize or 0))
+	elseif vk == const.vkLeft then
+		self.idScrollArea:ScrollTo(0)
 	elseif vk == const.vkEsc then
 		self.idCloseX:OnPress()
 		return "break"
+	else
+		return ChoGGi_TextInput.OnKbdKeyDown(self.idGoto,vk,...)
 	end
-	return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
 end
 
 -- adds class name then list of functions below
@@ -655,7 +723,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 						self:ProcessList(self.ancestors,StringFormat("%s: ",S[302535920000525--[[Ancestors--]]]))
 					end
 					-- add examiner object with some spaces so it's at the top
-					self:BuildFuncList(self.obj.class,"	")
+					self:BuildFuncList(self.obj_ref.class,"	")
 					-- if Object hasn't been added, then add CObject (O has a few more funcs than CO)
 					if not self.menu_added.Object and self.menu_added.CObject then
 						self:BuildFuncList("CObject",self.menu_added.CObject)
@@ -701,6 +769,48 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 			end,
 		},
 		{
+			name = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]]),
+			hint = S[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
+			image = "CommonAssets/UI/Menu/place_particles.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.SetParticles(self.obj_ref)
+			end,
+		},
+		{
+			name = S[302535920000449--[[Attach Spots Toggle--]]],
+			hint = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
+			image = "CommonAssets/UI/Menu/ShowAll.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj_ref)
+			end,
+		},
+		{
+			name = S[302535920000459--[[Anim Debug Toggle--]]],
+			hint = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
+			image = "CommonAssets/UI/Menu/CameraEditor.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj_ref)
+			end,
+		},
+		{
+			name = S[302535920000457--[[Anim State Set--]]],
+			hint = S[302535920000458--[[Make object dance on command.--]]],
+			image = "CommonAssets/UI/Menu/UnlockCamera.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.SetAnimState(self.obj_ref)
+			end,
+		},
+		{
+			name = S[302535920000682--[[Change Entity--]]],
+			hint = S[S[302535920001151--[[Set Entity For %s--]]]:format(self.name)],
+			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.ObjectSpawner(self.obj_ref,true,7)
+			end,
+		},
+		--
+		{name = "	 ---- "},
+		{
 			name = S[302535920001369--[[Ged Editor--]]],
 			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
 			clicked = function()
@@ -737,14 +847,39 @@ This dialog will freeze till you click something."--]]],
 	}
 end
 
-function Examine:FindNext(filter)
-	local drawBuffer = self.idText.draw_cache or {}
+function Examine:FindPrevious(text)
+	text = text or self.idGoto:GetText()
 	local current_y = self.idScrollArea.OffsetY
 	local min_match, closest_match = false, false
-	for y, list_draw_info in pairs(drawBuffer) do
+
+	for y, list_draw_info in pairs(self.idText.draw_cache or {}) do
 		for i = 1, #list_draw_info do
 			local draw_info = list_draw_info[i]
-			if draw_info.text and draw_info.text:find_lower(filter) then
+			if draw_info.text and draw_info.text:find_lower(text) or text == "" then
+				if not min_match or y < min_match then
+					min_match = y
+				end
+				if y < current_y and (not closest_match or y > closest_match) then
+					closest_match = y
+				end
+			end
+		end
+	end
+
+	if closest_match or min_match then
+		self.idScrollArea:ScrollTo(nil,closest_match or min_match)
+	end
+end
+
+function Examine:FindNext(text)
+	text = text or self.idGoto:GetText()
+	local current_y = self.idScrollArea.OffsetY
+	local min_match, closest_match = false, false
+
+	for y, list_draw_info in pairs(self.idText.draw_cache or {}) do
+		for i = 1, #list_draw_info do
+			local draw_info = list_draw_info[i]
+			if draw_info.text and draw_info.text:find_lower(text) or text == "" then
 				if not min_match or y < min_match then
 					min_match = y
 				end
@@ -754,8 +889,9 @@ function Examine:FindNext(filter)
 			end
 		end
 	end
+
 	if closest_match or min_match then
-		self.idScrollArea:ScrollTo(0, (closest_match or min_match))
+		self.idScrollArea:ScrollTo(nil,closest_match or min_match)
 	end
 end
 
@@ -767,13 +903,13 @@ do -- FlashWindow
 
 	function Examine:FlashWindow()
 		-- doesn't lead to good stuff
-		if not self.obj.desktop then
+		if not self.obj_ref.desktop then
 			return
 		end
 
 		-- don't want to end up with something invis when it shouldn't be
 		if not self.orig_vis_flash then
-			self.orig_vis_flash = self.obj:GetVisible()
+			self.orig_vis_flash = self.obj_ref:GetVisible()
 		end
 
 		-- always kill off old thread first
@@ -783,16 +919,16 @@ do -- FlashWindow
 
 			local vis
 			for _ = 1, 5 do
-				if self.obj.window_state == "destroying" then
+				if self.obj_ref.window_state == "destroying" then
 					break
 				end
-				self.obj:SetVisible(vis)
+				self.obj_ref:SetVisible(vis)
 				Sleep(100)
 				vis = not vis
 			end
 
-			if self.obj.window_state ~= "destroying" then
-				self.obj:SetVisible(self.orig_vis_flash)
+			if self.obj_ref.window_state ~= "destroying" then
+				self.obj_ref:SetVisible(self.orig_vis_flash)
 			end
 
 		end)
@@ -962,6 +1098,10 @@ function Examine:valuetotextex(obj)
 	return tostring(obj)
 end
 
+function Examine:idTextOnHyperLink(link, _, box, pos, button)
+	self = GetRootDialog(self)
+	self.onclick_handles[tonumber(link)](box, pos, button, self)
+end
 function Examine:HyperLink(f, custom_color)
 	self.onclick_handles[#self.onclick_handles+1] = f
 	return StringFormat("%s<h %s 230 195 50>",
@@ -1344,14 +1484,8 @@ function Examine:SetToolbarVis(obj)
 
 		if IsValid(obj) then
 			self.idButMarkObject:SetVisible(true)
-			self.idButAttachSpotsToggle:SetVisible(true)
-			self.idButAnimDebugToggle:SetVisible(true)
-			self.idButAnimStateSet:SetVisible(true)
 		else
 			self.idButMarkObject:SetVisible()
-			self.idButAttachSpotsToggle:SetVisible()
-			self.idButAnimDebugToggle:SetVisible()
-			self.idButAnimStateSet:SetVisible()
 		end
 
 		if obj.class and obj.class ~= "" then
@@ -1428,6 +1562,7 @@ function Examine:SetObj(startup)
 	self:SetToolbarVis(obj)
 
 	local name = RetName(obj)
+	self.name = name
 	self.idText:SetText(StringFormat("%s: %s",name,S[67--[[Loading resources--]]]))
 
 	if obj_type == "table" then
@@ -1465,13 +1600,19 @@ function Examine:SetObj(startup)
 		local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
 		local attach_amount = #attaches
 
+		local hint_str = "%s\n%s: %s\npos: %s"
+		local name_str = "%s: %s"
 		for i = 1, attach_amount do
 			local a = attaches[i]
 			local pos = a.GetVisualPos and a:GetVisualPos()
 
+			local name = RetName(a)
+			if name ~= a.class then
+				name = name_str:format(name,a.class)
+			end
 			self.attaches_menu_popup[i] = {
-				name = RetName(a),
-				hint = StringFormat("%s\n%s: %s\npos: %s",
+				name = name,
+				hint = hint_str:format(
 					a.class,
 					S[302535920000955--[[Handle--]]],
 					a.handle or S[6761--[[None--]]],
@@ -1530,5 +1671,6 @@ function Examine:Done(result)
 	PopupClose(self.idParentsMenu)
 	PopupClose(self.idToolsMenu)
 	Examine.examine_dialogs[self.obj] = nil
+	Examine.examine_dialogs[self.obj_ref] = nil
 	ChoGGi_Window.Done(self,result)
 end

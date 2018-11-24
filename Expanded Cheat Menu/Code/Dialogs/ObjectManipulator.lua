@@ -2,11 +2,13 @@
 
 -- used to do minimal editing of objects (or all of same type)
 
+local S
 local TableConcat
 local RetName
 local DebugGetInfo
 local Trans
-local S
+local GetParentOfKind
+local RetProperType
 
 local tostring,type,table = tostring,type,table
 local StringFormat = string.format
@@ -16,13 +18,18 @@ local Min = Min
 local CmpLower = CmpLower
 
 function OnMsg.ClassesGenerate()
+	S = ChoGGi.Strings
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	RetName = ChoGGi.ComFuncs.RetName
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	Trans = ChoGGi.ComFuncs.Translate
-	S = ChoGGi.Strings
+	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+	RetProperType = ChoGGi.ComFuncs.RetProperType
 end
 
+local GetRootDialog = function(obj)
+	return GetParentOfKind(obj,"ChoGGi_ObjectManipulatorDlg")
+end
 DefineClass.ChoGGi_ObjectManipulatorDlg = {
 	__parents = {"ChoGGi_Window"},
 	choices = {},
@@ -57,9 +64,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Dock = "left",
 		RolloverAnchor = "top",
 		Margins = box(4,0,0,0),
-		OnChange = function()
-			self.idAutoRefreshToggle(self)
-		end,
+		OnChange = self.idAutoRefreshToggle,
 	}, self.idCheckboxArea)
 
 	self.idButtonArea = g_Classes.ChoGGi_DialogSection:new({
@@ -71,24 +76,20 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Id = "idRefresh",
 		Text = S[1000220--[[Refresh--]]],
 		Dock = "left",
+		MinWidth = 80,
 		RolloverText = S[302535920000092--[[Updates list with any changed values.--]]],
 		RolloverAnchor = "top",
-		OnPress = function()
-			self:UpdateListContent()
-		end,
-		MinWidth = 80,
+		OnPress = self.UpdateListContent,
 	}, self.idButtonArea)
 
 	self.idGoto = g_Classes.ChoGGi_Button:new({
 		Id = "idGoto",
 		Text = S[302535920000093--[[Goto Obj--]]],
 		Dock = "left",
+		MinWidth = 90,
 		RolloverText = S[302535920000094--[[View/select object on map.--]]],
 		RolloverAnchor = "top",
-		OnPress = function()
-			ViewAndSelectObject(self.obj)
-		end,
-		MinWidth = 90,
+		OnPress = self.idGotoOnPress,
 	}, self.idButtonArea)
 
 	self.idAddNew = g_Classes.ChoGGi_Button:new({
@@ -97,34 +98,23 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Dock = "left",
 		RolloverText = S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(self.obj_name),
 		RolloverAnchor = "top",
-		OnPress = function()
-			self:idAddNewOnPress()
-		end,
+		OnPress = self.idAddNewOnPress,
 	}, self.idButtonArea)
 
 	self.idApplyAll = g_Classes.ChoGGi_Button:new({
 		Id = "idApplyAll",
 		Text = S[302535920000099--[[Apply To All--]]],
 		Dock = "left",
+		MinWidth = 100,
 		RolloverText = S[302535920000100--[[Apply selected value to all objects of the same type.--]]],
 		RolloverAnchor = "top",
-		OnPress = function()
-			self:idApplyOnPress()
-		end,
-		MinWidth = 100,
+		OnPress = self.idApplyAllOnPress,
 	}, self.idButtonArea)
 
 	self:AddScrollList()
 
-	function self.idList.OnMouseButtonDown(obj,pt,button)
-		g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
-		self:idListOnMouseButtonDown()
-	end
-	function self.idList.OnMouseButtonDoubleClick()
-		if self.idList.focused_item then
-			ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.sel.object,self)
-		end
-	end
+	self.idList.OnMouseButtonDown = self.idListOnMouseButtonDown
+	self.idList.OnMouseButtonDoubleClick = self.idListOnMouseButtonDoubleClick
 
 	self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
 		Id = "idEditArea",
@@ -135,9 +125,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 		Id = "idEditValue",
 		RolloverText = S[302535920000102--[[Use to change values of selected list item.--]]],
 		Hint = S[302535920000103--[[Edit Value--]]],
-		OnTextChanged = function()
-			self:idEditValueOnTextChanged()
-		end,
+		OnTextChanged = self.idEditValueOnTextChanged,
 		RolloverAnchor = "bottom",
 	}, self.idEditArea)
 
@@ -147,8 +135,30 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 	self:UpdateListContent()
 end
 
+function ChoGGi_ObjectManipulatorDlg:idGotoOnPress()
+	ViewAndSelectObject(GetRootDialog(self).obj)
+end
+
+function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDoubleClick()
+	self = GetRootDialog(self)
+	if self.idList.focused_item then
+		ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.sel.object,self)
+	end
+end
+
+function ChoGGi_ObjectManipulatorDlg:idApplyAllOnPress()
+	self = GetRootDialog(self)
+	if self.sel and self.sel.value then
+		MapForEach(true,self.obj.class,function(o)
+			o[self.sel.text] = RetProperType(self.sel.value)
+		end)
+	end
+end
+
 -- update edit text box with selected value
-function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDown()
+function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDown(pt,button,...)
+	g_Classes.ChoGGi_List.OnMouseButtonDown(self,pt,button)
+	self = GetRootDialog(self)
 	if not self.idList.focused_item then
 		return
 	end
@@ -159,6 +169,7 @@ function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDown()
 end
 
 function ChoGGi_ObjectManipulatorDlg:idAddNewOnPress()
+	self = GetRootDialog(self)
 	local sel_name
 	local sel_value
 	if self.sel then
@@ -180,7 +191,7 @@ function ChoGGi_ObjectManipulatorDlg:idAddNewOnPress()
 		local value = choice[1].value
 
 		-- add it to the actual object
-		self.obj[tostring(value)] = ChoGGi.ComFuncs.RetProperType(choice[2].value)
+		self.obj[tostring(value)] = RetProperType(choice[2].value)
 		-- refresh list
 		self:UpdateListContent()
 	end
@@ -193,22 +204,16 @@ function ChoGGi_ObjectManipulatorDlg:idAddNewOnPress()
 	}
 end
 
-function ChoGGi_ObjectManipulatorDlg:idApplyAllOnPress()
-	if self.sel and self.sel.value then
-		MapForEach("map",self.obj.class,function(o)
-			o[self.sel.text] = ChoGGi.ComFuncs.RetProperType(self.sel.value)
-		end)
-	end
-end
-
 function ChoGGi_ObjectManipulatorDlg:idEditValueOnTextChanged()
+	self = GetRootDialog(self)
+
 	if not self.idList.focused_item then
 		return
 	end
 	local sel_idx = self.idList.focused_item
 	--
 	local edit_text = self.idEditValue:GetText()
-	local edit_value,edit_type = ChoGGi.ComFuncs.RetProperType(edit_text)
+	local edit_value,edit_type = RetProperType(edit_text)
 	local obj_value = self.obj[self.idList[sel_idx].item.text]
 	local obj_type = type(obj_value)
 	-- only update strings/numbers/boolean/nil
@@ -238,6 +243,7 @@ function ChoGGi_ObjectManipulatorDlg:idEditValueOnTextChanged()
 end
 
 function ChoGGi_ObjectManipulatorDlg:idAutoRefreshToggle()
+	self = GetRootDialog(self)
 	-- if already running then stop and return
 	if IsValidThread(self.autorefresh_thread) then
 		DeleteThread(self.autorefresh_thread)
@@ -280,6 +286,7 @@ function ChoGGi_ObjectManipulatorDlg:BuildList()
 end
 
 function ChoGGi_ObjectManipulatorDlg:UpdateListContent()
+	self = GetRootDialog(self)
 	local obj = self.obj
 	-- get scroll pos
 	local scroll_x = self.idScrollArea.OffsetX

@@ -180,7 +180,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 						self:SetRolloverText(S[302535920001151--[[Set Entity For %s--]]]:format(RetName(self.context)))
 					end,
 					"OnPress", function(self)
-						ChoGGi.ComFuncs.ObjectSpawner(self.context)
+						ChoGGi.ComFuncs.ObjectSpawner(self.context,true,7)
 					end,
 					"Icon", "UI/Icons/IPButtons/tunnel.tga",
 				}),
@@ -878,6 +878,7 @@ end
 
 -- const.MinuteDuration is 500 ticks (GameTime)
 --~ function OnMsg.NewMinute()
+--~ 	FlushLogFile()
 --~ end
 
 function OnMsg.ResearchQueueChange(city, tech_id)

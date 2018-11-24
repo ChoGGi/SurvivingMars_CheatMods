@@ -1,3 +1,9 @@
+v0.6
+Properly fixed expedition launched rocket hogging landing pad.
+
+v0.5
+Expedition launched rocket still "occupies" landing pad.
+
 v0.4
 More stuck colonists, this time crew coming back from an expedition.
 

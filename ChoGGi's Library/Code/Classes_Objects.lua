@@ -30,7 +30,6 @@ DefineClass.ChoGGi_Polyline = {
 DefineClass.ChoGGi_BuildingEntityClass = {
 	__parents = {"BuildingEntityClass","InfopanelObj"},
 	ip_template = "ipChoGGi_Entity",
-	ChoGGi_Spawned = true,
 }
 -- add some info/functionality to spawned entity objects
 function ChoGGi_BuildingEntityClass:GetDisplayName()

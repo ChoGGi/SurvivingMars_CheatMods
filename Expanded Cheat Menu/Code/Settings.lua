@@ -101,6 +101,8 @@ function OnMsg.ClassesGenerate()
 		},
 		-- disabling this will still leave them for the cheats menu and cheats pane
 		EnableToolTips = true,
+		-- how often we update when auto-refresh is turned on
+		ExamineRefreshTime = 1000,
 		-- blinky blink
 		FlashExamineObject = true,
 		-- dumps the log to disk on startup, and every new Sol (good for some crashes)

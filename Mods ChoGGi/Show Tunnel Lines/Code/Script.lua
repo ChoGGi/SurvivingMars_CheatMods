@@ -5,8 +5,18 @@ local IsValid = IsValid
 local PlacePolyline = PlacePolyline
 local AveragePoint2D = AveragePoint2D
 local pairs = pairs
+local TableClear = table.clear
 
 local tunnel_lines = {}
+
+function OnMsg.SaveGame()
+	for _,table_item in pairs(tunnel_lines) do
+		if IsValid(table_item.line) then
+			table_item.line:delete()
+		end
+	end
+	TableClear(tunnel_lines)
+end
 
 -- adds a new line to the tunnel table
 local function AddLine(tunnel_lines,t1,t2)

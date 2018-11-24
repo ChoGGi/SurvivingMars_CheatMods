@@ -1,3 +1,7 @@
+v0.7
+Now it actually uses Harvester model if you have Space Race.
+Sounds.
+
 v0.6
 Gagarin.
 Uses Harvester model if you have Gagarin.

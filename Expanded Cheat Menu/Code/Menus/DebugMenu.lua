@@ -23,7 +23,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 		RolloverText = S[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
 		OnAction = function()
-			ChoGGi.MenuFuncs.SetParticles()
+			ChoGGi.ComFuncs.SetParticles()
 		end,
 	}
 

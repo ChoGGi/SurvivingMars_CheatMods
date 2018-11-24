@@ -7,12 +7,18 @@ local CheckText = ChoGGi.ComFuncs.CheckText
 local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
 local RetProperType = ChoGGi.ComFuncs.RetProperType
 local Trans = ChoGGi.ComFuncs.Translate
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local S = ChoGGi.Strings
 
 local type,tostring = type,tostring
 local StringFormat = string.format
-local RGBA = RGBA
+local TableSort = table.sort
+local TableRemove = table.remove
+local RGBA,RGB = RGBA,RGB
 
+local GetRootDialog = function(obj)
+	return GetParentOfKind(obj,"ChoGGi_ListChoiceDlg")
+end
 DefineClass.ChoGGi_ListChoiceDlg = {
 	__parents = {"ChoGGi_Window"},
 	choices = false,
@@ -55,18 +61,10 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 
 	self:AddScrollList()
 
-	function self.idList.OnMouseButtonDown(obj,pt,button)
-		g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
-		self:idListOnSelect(button)
-	end
-	function self.idList.OnKbdKeyUp(...)
-		g_Classes.ChoGGi_List.OnKbdKeyUp(...)
-		self:idListOnSelect("L")
-	end
-
-	function self.idList.OnMouseButtonDoubleClick(_,_,button)
-		self:idListOnMouseButtonDoubleClick(button)
-	end
+	self.idList.OnMouseButtonDown = self.idListOnMouseButtonDown
+	self.idList.OnKbdKeyUp = self.idListOnKbdKeyUp
+	self.idList.OnMouseButtonDoubleClick = self.idListOnMouseButtonDoubleClick
+	self.idList.OnKbdKeyDown = self.idListOnKbdKeyDown
 
 	self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
 		Id = "idFilterArea",
@@ -79,12 +77,8 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 
 Press Enter to show all items."--]]],
 		Hint = S[302535920000068--[[Filter Items--]]],
-		OnTextChanged = function()
-			self:FilterText(self.idFilter:GetText())
-		end,
-		OnKbdKeyDown = function(obj, vk)
-			return self:idFilterOnKbdKeyDown(obj, vk)
-		end,
+		OnTextChanged = self.FilterText,
+		OnKbdKeyDown = self.idFilterOnKbdKeyDown
 	}, self.idFilterArea)
 
 	-- setup checkboxes
@@ -142,13 +136,6 @@ Press Enter to show all items."--]]],
 
 Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]],
 			Hint = S[302535920000078--[[Add Custom Value--]]],
-			OnTextChanged = function(edit)
-				local text = self.idEditValue:GetText()
-				if text ~= self.old_edit_value then
-					self.old_edit_value = text
-					self:idEditValueOnTextChanged()
-				end
-			end,
 		}, self.idEditArea)
 	end
 
@@ -168,7 +155,6 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			self:GetAllItems()
 			-- send selection back
 			self.list.callback(self.choices)
---~			 self:delete()
 			self:Close("cancel")
 		end,
 	}, self.idButtonContainer)
@@ -187,11 +173,9 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	if not self.list.skip_sort then
 		-- sort table by display text
 		local sortby = self.list.sortby or "text"
-		table.sort(self.list.items,
-			function(a,b)
-				return CompareTableValue(a,b,sortby)
-			end
-		)
+		TableSort(self.list.items,function(a,b)
+			return CompareTableValue(a,b,sortby)
+		end)
 	end
 	-- append blank item for adding custom value
 	if self.custom_type == 0 then
@@ -217,17 +201,13 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		}, self.idColourContainer)
 
 		self.idColorPicker = g_Classes.XColorPicker:new({
-			OnColorChanged = function(_, colour)
-				self:idColorPickerOnColorChanged(colour)
-			end,
+			OnColorChanged = self.idColorPickerOnColorChanged,
 			AdditionalComponent = "alpha"
 --~ 		 AdditionalComponent = "intensity"
 --~ 		 AdditionalComponent = "none"
 		}, self.idColorPickerArea)
 		-- block it from closing on dbl click
-		self.idColorPicker.idColorSquare.OnColorChanged = function(_, colour)
-			self.idColorPicker:SetColorInternal(colour)
-		end
+		self.idColorPicker.idColorSquare.OnColorChanged = self.idColorSquareOnColorChanged
 
 		self.idColorCheckArea = g_Classes.ChoGGi_DialogSection:new({
 			Id = "idColorCheckArea",
@@ -255,6 +235,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
+		--
 
 		self.idList:SetSelection(1, true)
 		self.sel = self.idList[self.idList.focused_item].item
@@ -264,10 +245,12 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			self:SetWidth(800)
 			self.idColourContainer:SetVisible(true)
 		end
-
-		-- default alpha stripe to max, so the text is updated correctly (and maybe make it actually do something sometime)
---~ 		self.idColorPicker:UpdateComponent("ALPHA", 1000)
 	end -- end of colour picker if
+
+	-- we don't add this till now so if we're adding colours it won't update till user actually changes it
+	if self.custom_type ~= 7 then
+		self.idEditValue.OnTextChanged = self.idEditValueOnTextChanged
+	end
 
 	if self.list.multisel then
 		-- if it's a multiselect then add a hint
@@ -284,17 +267,6 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 				self.idList:SetSelection(i, true)
 			end
 		end
-	end
-
-	self.idList.OnKbdKeyDown = function(_, vk)
-		if vk == const.vkEnter then
-			self:idListOnMouseButtonDoubleClick("L")
-			return "break"
-		elseif vk == const.vkEsc then
-			self.idCloseX:Press()
-			return "break"
-		end
-		return "continue"
 	end
 
 	if self.custom_type == 7 then
@@ -315,7 +287,6 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	local hint = CheckText(self.list.hint,"")
 	if hint ~= "" then
 		self.idMoveControl.RolloverText = hint
---~ 		self.idList.RolloverText = hint
 		self.idOK.RolloverText = StringFormat("%s\n\n\n%s",self.idOK:GetRolloverText(),hint)
 	end
 
@@ -329,8 +300,40 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	self.skip_color_change = false
 end
 
+function ChoGGi_ListChoiceDlg:idColorSquareOnColorChanged(colour)
+	GetRootDialog(self).idColorPicker:SetColorInternal(colour)
+end
+
+function ChoGGi_ListChoiceDlg:idListOnKbdKeyDown(vk)
+	self = GetRootDialog(self)
+	if vk == const.vkEnter then
+		self:idListOnMouseButtonDoubleClick(nil,"L")
+		return "break"
+	elseif vk == const.vkEsc then
+		self.idCloseX:Press()
+		return "break"
+	end
+	return "continue"
+end
+
+function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(pt,button,...)
+	g_Classes.ChoGGi_List.OnMouseButtonDown(obj,pt,button)
+	GetRootDialog(self):idListOnSelect(button)
+end
+
+function ChoGGi_ListChoiceDlg:idListOnKbdKeyUp(...)
+	g_Classes.ChoGGi_List.OnKbdKeyUp(...)
+	GetRootDialog(self):idListOnSelect("L")
+end
+
 function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
-	local text = self.idEditValue:GetText()
+	local text = self:GetText()
+	self = GetRootDialog(self)
+	if text == self.old_edit_value then
+		return
+	end
+	self.old_edit_value = text
+
 	local value,value_type = RetProperType(text)
 --~ 	printC(text,value)
 	if self.custom_type > 0 then
@@ -433,7 +436,9 @@ function ChoGGi_ListChoiceDlg:BuildList()
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idFilterOnKbdKeyDown(obj,vk)
+function ChoGGi_ListChoiceDlg:idFilterOnKbdKeyDown(vk)
+	local obj = self
+	self = GetRootDialog(self)
 	if vk == const.vkEnter then
 		self:FilterText()
 		self.idFilter:SelectAll()
@@ -446,6 +451,12 @@ function ChoGGi_ListChoiceDlg:idFilterOnKbdKeyDown(obj,vk)
 end
 
 function ChoGGi_ListChoiceDlg:FilterText(txt)
+
+	if self.class == "ChoGGi_TextInput" then
+		txt = self:GetText()
+		self = GetRootDialog(self)
+	end
+
 	self:BuildList()
 	if not txt or txt == "" then
 		return
@@ -456,7 +467,8 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 	for i = count, 1, -1 do
 		local li = self.idList[i]
 		if not (li.idText.text:find_lower(txt) or li.RolloverText:find_lower(txt) or li.RolloverTitle:find_lower(txt) or i == count) then
-			table.remove(self.idList,i)
+			self.idList[i]:delete()
+			TableRemove(self.idList,i)
 		end
 	end
 	self.idList.focused_item = false
@@ -485,6 +497,7 @@ function ChoGGi_ListChoiceDlg:UpdateColour()
 end
 
 function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged(colour)
+	self = GetRootDialog(self)
 	local sel_idx = self.idList.focused_item
 	-- no list item selected, so just return
 	if not sel_idx then
@@ -544,8 +557,6 @@ function ChoGGi_ListChoiceDlg:idListOnSelect(button)
 	if self.custom_type == 2 then
 		-- move the colour picker circle
 		self:UpdateColourPicker(self.sel.text)
-		-- default alpha stripe to max, so the text is updated correctly (and maybe make it actually do something sometime)
---~ 			self.idColorPicker:UpdateComponent("ALPHA", 1000)
 	-- don't show picker unless it's a colour setting (browsing lightmodel)
 	elseif self.custom_type == 5 then
 		if self.sel.editor == "color" then
@@ -559,7 +570,11 @@ function ChoGGi_ListChoiceDlg:idListOnSelect(button)
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(button)
+function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(_,button)
+	if self.class == "ChoGGi_List" then
+		self = GetRootDialog(self)
+	end
+
 	if not self.sel then
 		return
 	end
@@ -660,21 +675,21 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 end
 
 -- copied from GedPropEditors.lua. it's normally only called when GED is loaded, but we need it for the colour picker
+local IconScale = point(500, 500)
+local IconColor = RGB(0, 0, 0)
+local RolloverBackground = RGB(204, 232, 255)
+local PressedBackground = RGB(121, 189, 241)
+local Background = RGBA(0, 0, 0, 0)
+local DisabledIconColor = RGBA(0, 0, 0, 128)
+local padding1 = box(1, 2, 1, 1)
+local padding2 = box(1, 1, 1, 2)
 function CreateNumberEditor(parent, id, up_pressed, down_pressed)
 	local g_Classes = g_Classes
-	local RGBA,RGB,box = RGBA,RGB,box
-	local IconScale = point(500, 500)
-	local IconColor = RGB(0, 0, 0)
-	local RolloverBackground = RGB(204, 232, 255)
-	local PressedBackground = RGB(121, 189, 241)
-	local Background = RGBA(0, 0, 0, 0)
-	local DisabledIconColor = RGBA(0, 0, 0, 128)
-
 	local button_panel = g_Classes.XWindow:new({Dock = "right"}, parent)
 	local top_btn = g_Classes.XTextButton:new({
 		Dock = "top",
 		OnPress = up_pressed,
-		Padding = box(1, 2, 1, 1),
+		Padding = padding1,
 		Icon = "CommonAssets/UI/arrowup-40.tga",
 		IconScale = IconScale,
 		IconColor = IconColor,
@@ -687,7 +702,7 @@ function CreateNumberEditor(parent, id, up_pressed, down_pressed)
 	local bottom_btn = g_Classes.XTextButton:new({
 		Dock = "bottom",
 		OnPress = down_pressed,
-		Padding = box(1, 1, 1, 2),
+		Padding = padding2,
 		Icon = "CommonAssets/UI/arrowdown-40.tga",
 		IconScale = IconScale,
 		IconColor = IconColor,
