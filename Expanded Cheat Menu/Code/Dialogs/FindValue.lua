@@ -2,11 +2,14 @@
 
 -- search through tables for values and display them in an examine dialog
 
+-- make it use the same examine dialog
+
 local S
 local RetName
 local FindThreadFunc
 local DotNameToObject
 local Trans
+local GetParentOfKind
 
 local pairs,type = pairs,type
 local StringFormat = string.format
@@ -17,8 +20,12 @@ function OnMsg.ClassesGenerate()
 	FindThreadFunc = ChoGGi.ComFuncs.FindThreadFunc
 	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 	Trans = ChoGGi.ComFuncs.Translate
+	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 end
 
+local GetRootDialog = function(obj)
+	return GetParentOfKind(obj,"ChoGGi_FindValueDlg")
+end
 DefineClass.ChoGGi_FindValueDlg = {
 	__parents = {"ChoGGi_Window"},
 	obj = false,
@@ -51,9 +58,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		MinWidth = 550,
 		RolloverText = S[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
 		Hint = S[302535920001306--[[Enter text to find--]]],
-		OnKbdKeyDown = function(obj, vk)
-			return self:idEditOnKbdKeyDown(obj, vk)
-		end,
+		OnKbdKeyDown = self.idEditOnKbdKeyDown,
 	}, self.idTextArea)
 
 	self.idLimit = g_Classes.ChoGGi_TextInput:new({
@@ -76,9 +81,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		Text = S[302535920001302--[[Find--]]],
 		RolloverText = S[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
 		Margins = box(10, 0, 0, 0),
-		OnPress = function()
-			self:FindText()
-		end,
+		OnPress = self.FindText,
 	}, self.idButtonContainer)
 
 	self.idCaseSen = g_Classes.ChoGGi_CheckButton:new({
@@ -122,6 +125,7 @@ end
 --~ end
 
 function ChoGGi_FindValueDlg:FindText()
+	self = GetRootDialog(self)
 	local str = self.idEdit:GetText()
 	-- no sense in finding nothing
 	if str == "" then
@@ -208,13 +212,16 @@ function ChoGGi_FindValueDlg:RetObjects(obj,parent,str,case,threads,limit,level)
 
 end --RetObjects
 
-function ChoGGi_FindValueDlg:idEditOnKbdKeyDown(obj,vk)
+local const = const
+function ChoGGi_FindValueDlg:idEditOnKbdKeyDown(vk)
+	self = GetRootDialog(self)
 	if vk == const.vkEnter then
 		self:FindText()
 		return "break"
 	elseif vk == const.vkEsc then
 		self.idCloseX:Press()
 		return "break"
+	else
+		return ChoGGi_TextInput.OnKbdKeyDown(self.idEdit, vk)
 	end
-	return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
 end

@@ -375,7 +375,7 @@ function OnMsg.ClassesGenerate()
 			RemoveOldDialogs("ChoGGi_FindValueDlg")
 		end
 	end
-	function ChoGGi.ComFuncs.ObjectSpawner(obj)
+	function ChoGGi.ComFuncs.ObjectSpawner(obj,skip_msg,list_type)
 		local ChoGGi = ChoGGi
 		local g_Classes = g_Classes
 		local EntityData = EntityData or {}
@@ -404,10 +404,12 @@ function OnMsg.ClassesGenerate()
 				obj:SetState("idle")
 				obj:ChangeEntity(value)
 
-				MsgPopup(
-					StringFormat("%s: %s %s",choice[1].text,S[302535920000014--[[Spawned--]]],S[298035641454--[[Object--]]]),
-					302535920000014--[[Spawned--]]
-				)
+				if not skip_msg then
+					MsgPopup(
+						StringFormat("%s: %s %s",choice[1].text,S[302535920000014--[[Spawned--]]],S[298035641454--[[Object--]]]),
+						302535920000014--[[Spawned--]]
+					)
+				end
 			end
 		end
 
@@ -416,6 +418,8 @@ function OnMsg.ClassesGenerate()
 			items = ObjectSpawner_ItemList,
 			title = 302535920000862--[[Object Spawner (EntityData list)--]],
 			hint = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000863--[[Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).--]]]),
+			custom_type = list_type or 0,
+			custom_func = CallBackFunc,
 		}
 	end
 
@@ -533,7 +537,83 @@ function OnMsg.ClassesGenerate()
 				Sleep(1000)
 			end
 		end)
-
 	end
+
+	do -- SetParticles
+		local PlayFX = PlayFX
+		local ItemList
+		function ChoGGi.ComFuncs.SetParticles(sel)
+			local name = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]])
+			sel = sel or ChoGGi.ComFuncs.SelObject()
+			if not sel or sel and not sel:IsKindOf("FXObject") then
+				MsgPopup(
+					StringFormat("%s: %s",S[302535920000027--[[Nothing selected--]]],"FXObject"),
+					name
+				)
+				return
+			end
+
+			-- make a list of spot names for the obj, so we skip particles that need that spot
+			local spots = {}
+			local start_id, end_id = sel:GetAllSpots(sel:GetState())
+			for i = start_id, end_id do
+				spots[sel:GetSpotName(i)] = true
+			end
+
+			local name_str = "%s, %s: %s"
+			local ItemList = {{text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]]}}
+			local c = 1
+			local particles = FXLists.ActionFXParticles
+			for i = 1, #particles do
+				local p = particles[i]
+				if spots[p.Spot] or p.Spot == "" then
+					c = c + 1
+					ItemList[c] = {
+						text = name_str:format(p.Actor,p.Action,p.Moment),
+						value = p.Actor,
+						action = p.Action,
+						moment = p.Moment,
+					}
+				end
+			end
+
+			local function CallBackFunc(choice)
+				if #choice < 1 then
+					return
+				end
+				local actor = choice[1].value
+				local action = choice[1].action
+				local moment = choice[1].moment
+
+				-- if there's one playing then stop it
+				if sel.ChoGGi_playing_fx then
+					PlayFX(sel.ChoGGi_playing_fx, "end", sel)
+				end
+				sel.ChoGGi_playing_fx = action
+
+				if type(sel.fx_actor_class_ChoGGi_Orig) == "nil" then
+					sel.fx_actor_class_ChoGGi_Orig = sel.fx_actor_class
+				end
+
+				sel.fx_actor_class = actor
+				PlayFX(action, moment, sel)
+
+				MsgPopup(
+					action,
+					name
+				)
+			end
+
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = ItemList,
+				title = name,
+				hint = 302535920001421--[[Shows list of particles to quickly test out on objects.--]],
+				custom_type = 7,
+				custom_func = CallBackFunc,
+			}
+		end
+	end -- do
+
 
 end

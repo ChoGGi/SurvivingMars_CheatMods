@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-  "title", "RC Mechanic v0.5",
-  "version", 5,
-  "saved", 1542456000,
+  "title", "RC Mechanic v0.6",
+  "version", 6,
+  "saved", 1542974400,
 	"image", "Preview.png",
   "tags", "Buildings",
   "id", "ChoGGi_RCMechanic",
@@ -13,7 +13,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision,
   "description", [[Autonomous repair of Drones/RCs that have broken down due to driving into a dust devil or something equally smart.
 
-Ignores any that are within distance of drone hubs/rockets.
+Ignores any that are within distance of working drone hubs/rockets.
 
 
 

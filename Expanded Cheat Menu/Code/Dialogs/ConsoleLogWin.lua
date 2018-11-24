@@ -4,14 +4,19 @@
 
 local S
 local blacklist
+local GetParentOfKind
 
 local StringFormat = string.format
 
 function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
+	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 end
 
+local GetRootDialog = function(obj)
+	return GetParentOfKind(obj,"ChoGGi_ConsoleLogWin")
+end
 DefineClass.ChoGGi_ConsoleLogWin = {
 	__parents = {"ChoGGi_Window"},
 	transp_mode = false,
@@ -39,10 +44,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Text = S[302535920000865--[[Toggle Trans--]]],
 		Dock = "left",
 		Margins = box(4,0,0,0),
-		OnChange = function()
-			self.transp_mode = not self.transp_mode
-			self:SetTranspMode(self.transp_mode)
-		end,
+		OnChange = self.idToggleTransOnChange,
 	}, self.idButtonContainer)
 
 	self.idToggleTrans:AddInterpolation{
@@ -56,14 +58,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Dock = "left",
 		Text = S[302535920001026--[[Show File Log--]]],
 		RolloverText = S[302535920001091--[[Flushes log to disk and displays in console log.--]]],
-		OnMouseButtonDown = function()
-			if blacklist then
-				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("Show File Log"))
-				return
-			end
-			FlushLogFile()
-			print(select(2,AsyncFileToString(GetLogFile())))
-		end,
+		OnMouseButtonDown = self.idShowFileLogOnMouseButtonDown,
 	}, self.idButtonContainer)
 
 	self.idShowModsLog = g_Classes.ChoGGi_Button:new({
@@ -71,9 +66,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Dock = "left",
 		Text = S[302535920000071--[[Mods Log--]]],
 		RolloverText = S[302535920000870--[[Shows any errors from loading mods in console log.--]]],
-		OnMouseButtonDown = function()
-			print(ModMessageLog)
-		end,
+		OnMouseButtonDown = self.idShowModsLogOnMouseButtonDown,
 	}, self.idButtonContainer)
 
 	self.idClearLog = g_Classes.ChoGGi_Button:new({
@@ -81,9 +74,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Dock = "left",
 		Text = S[302535920000734--[[Clear Log--]]],
 		RolloverText = S[302535920000477--[[Clear out the windowed console log.--]]],
-		OnMouseButtonDown = function()
-			self.idText:SetText("")
-		end,
+		OnMouseButtonDown = self.idClearLogOnMouseButtonDown,
 	}, self.idButtonContainer)
 
 	self.idCopyText = g_Classes.ChoGGi_Button:new({
@@ -91,9 +82,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Dock = "left",
 		Text = S[302535920000563--[[Copy Log Text--]]],
 		RolloverText = S[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
-		OnMouseButtonDown = function()
-			ChoGGi.ComFuncs.SelectConsoleLogText()
-		end,
+		OnMouseButtonDown = self.idCopyTextOnMouseButtonDown,
 	}, self.idButtonContainer)
 
 	-- text box with log in it
@@ -103,6 +92,29 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 	self.transp_mode = ChoGGi.Temp.transp_mode
 	self:SetTranspMode(self.transp_mode)
 
+end
+
+function ChoGGi_ConsoleLogWin:idToggleTransOnChange()
+	self = GetRootDialog(self)
+	self.transp_mode = not self.transp_mode
+	self:SetTranspMode(self.transp_mode)
+end
+function ChoGGi_ConsoleLogWin:idShowFileLogOnMouseButtonDown()
+	if blacklist then
+		print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("Show File Log"))
+		return
+	end
+	FlushLogFile()
+	print(select(2,AsyncFileToString(GetLogFile())))
+end
+function ChoGGi_ConsoleLogWin:idShowModsLogOnMouseButtonDown()
+	print(ModMessageLog)
+end
+function ChoGGi_ConsoleLogWin:idClearLogOnMouseButtonDown()
+	GetRootDialog(self).idText:SetText("")
+end
+function ChoGGi_ConsoleLogWin:idCopyTextOnMouseButtonDown()
+	ChoGGi.ComFuncs.SelectConsoleLogText()
 end
 
 function ChoGGi_ConsoleLogWin:SetTranspMode(toggle)

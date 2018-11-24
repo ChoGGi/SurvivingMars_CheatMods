@@ -70,6 +70,8 @@ local display_icon = StringFormat("%sUI/rover_combat.png",CurrentModPath)
 --~ custom_anim = "playTaiChi" -- takes quite awhile, may want to increase mined amount or set limit on time
 --~ custom_anim_idle = "layDying"
 
+--~ g_NotWorkingBuildings
+
 DefineClass.PortableMiner = {
 	__parents = {
 		"BaseRover",
@@ -140,6 +142,9 @@ DefineClass.PortableStockpile = {
 
 function PortableMiner:GameInit()
 	BaseRover.GameInit(self)
+
+	-- select sounds
+	self.fx_actor_class = "AttackRover"
 
 	-- colour #, Color, Roughness, Metallic
 	-- middle area
@@ -218,7 +223,8 @@ function PortableMiner:ProcAutomation()
 		for i = 1, #miners do
 			miners[i].auto_mode_on = false
 			miners[i]:ShowNotWorkingSign(true)
-			miners[i]:SetCommand("Idle",10000)
+--~ 			miners[i]:SetCommand("Idle",10000)
+			miners[i]:SetCommand("Idle")
 		end
 	end
 	Sleep(2500)
@@ -234,7 +240,7 @@ function PortableMiner:ToggleAutoMode(broadcast)
 	return BaseRover.ToggleAutoMode(self,broadcast)
 end
 
-function PortableMiner:Idle(delay)
+function PortableMiner:Idle()
 	local pms = PortableMinerSettings
 	-- if there's one near then mine that shit
   if self:DepositNearby() then
@@ -250,7 +256,7 @@ function PortableMiner:Idle(delay)
     self:ShowNotWorkingSign(false)
   end
 
-	Sleep(type(delay) == "number" or 2500)
+--~ 	Sleep(type(delay) == "number" or 2500)
 
 	self:Gossip("Idle")
 	self:SetState("idle")
@@ -286,12 +292,21 @@ function PortableMiner:ShowNotWorkingSign(bool)
   if bool then
     self.notworking_sign = true
     self:AttachSign(self.notworking_sign,"SignNotWorking")
-    self:UpdateWorking(false)
   else
     self.notworking_sign = false
     self:AttachSign(self.notworking_sign,"SignNotWorking")
-    self:UpdateWorking(true)
   end
+end
+
+-- get rid of it showing up in the buildings not working OnScreenNotificationPreset
+function PortableMiner:SetWorking()
+	work = not not work
+	local old_working = self.working
+	self.working = work
+	if self.working == old_working then
+		return
+	end
+	self:OnSetWorking(work)
 end
 
 -- called it Load so it uses the load resource icon in pins
@@ -495,9 +510,7 @@ function OnMsg.ClassesPostprocess()
 			"construction_cost_MachineParts",40000,
 			"construction_cost_Electronics",20000,
 			-- add a bit of pallor to the skeleton
-			"palette_color1", "pipes_metal",
-			"palette_color2", "mining_base",
-			"palette_color3", "outside_base",
+			"palette_color1", "rover_base",
 
 			"dome_forbidden",true,
 			"display_name",name,
@@ -511,7 +524,6 @@ function OnMsg.ClassesPostprocess()
 			"prio_button",false,
 			"on_off_button",false,
 			"entity","CombatRover",
-			"palettes","AttackRoverBlue"
 		})
 	end
 end

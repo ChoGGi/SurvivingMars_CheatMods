@@ -1,7 +1,10 @@
+-- See LICENSE for terms
+
 local Sleep = Sleep
 local SunToSolarPanelAngle = SunToSolarPanelAngle
 local GetSunPos = GetSunPos
 local CalcOrientation = CalcOrientation
+local rawget = rawget
 
 local function AddPanels(a,bld)
 	bld.ChoGGi_panels[#bld.ChoGGi_panels+1] = a
@@ -62,6 +65,9 @@ end
 GlobalGameTimeThread("SolarArrayOrientation", function()
 	local update_interval = 3*const.MinuteDuration
 	while true do
+		if not rawget(_G,"SolarArraysOrientToSun") then
+			break
+		end
 		Sleep(update_interval)
 		SolarArraysOrientToSun(update_interval)
 	end

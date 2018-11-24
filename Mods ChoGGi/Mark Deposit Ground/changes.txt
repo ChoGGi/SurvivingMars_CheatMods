@@ -1,2 +1,5 @@
+v0.3
+Added MC option for Vista/Research markers.
+
 v0.2
 It was re-marking the deposit ground each time you loaded the game.

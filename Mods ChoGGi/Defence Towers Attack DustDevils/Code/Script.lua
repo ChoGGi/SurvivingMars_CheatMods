@@ -1,15 +1,24 @@
 -- See LICENSE for terms
 
-function OnMsg.ClassesBuilt()
+-- unlock the tech at start
+function OnMsg.CityStart()
+	UnlockBuilding("DefenceTower")
+end
 
-	local next,pairs = next,pairs
-	local IsValid = IsValid
-	local IsValidThread = IsValidThread
-	local CreateRealTimeThread = CreateRealTimeThread
-	local PlayFX = PlayFX
-	local PlaySound = PlaySound
-	local GetSoundDuration = GetSoundDuration
-	local Sleep = Sleep
+function OnMsg.LoadGame()
+	UnlockBuilding("DefenceTower")
+end
+
+local next,pairs = next,pairs
+local IsValid = IsValid
+local IsValidThread = IsValidThread
+local CreateRealTimeThread = CreateRealTimeThread
+local PlayFX = PlayFX
+local PlaySound = PlaySound
+local GetSoundDuration = GetSoundDuration
+local Sleep = Sleep
+
+function OnMsg.ClassesBuilt()
 
 	-- list of devil handles we're attacking
 	local devils = {}

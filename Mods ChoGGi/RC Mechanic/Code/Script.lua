@@ -56,6 +56,8 @@ DefineClass.RCMechanicBuilding = {
 function RCMechanic:GameInit()
 	BaseRover.GameInit(self)
 
+	-- select sounds
+	self.fx_actor_class = "AttackRover"
 	-- colour #, Color, Roughness, Metallic
 	-- middle area
 	self:SetColorizationMaterial(1, -9175040, -128, 120)
@@ -177,9 +179,7 @@ function OnMsg.ClassesPostprocess()
 			"construction_cost_MachineParts",40000,
 			"construction_cost_Electronics",20000,
 			-- add a bit of pallor to the skeleton
-			"palette_color1", "pipes_metal",
-			"palette_color2", "mining_base",
-			"palette_color3", "outside_base",
+			"palette_color1", "rover_base",
 
 			"dome_forbidden",true,
 			"display_name",name,

@@ -4,8 +4,10 @@ local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
+local pairs = pairs
 local AsyncRand = AsyncRand
 local IsValid = IsValid
+local IsKindOf = IsKindOf
 local GetTerrainCursor = GetTerrainCursor
 local MapFilter = MapFilter
 local MapGet = MapGet
@@ -13,6 +15,7 @@ local FindNearestObject = FindNearestObject
 local StringFormat = string.format
 local TableRemove = table.remove
 local TableFind = table.find
+local TableClear = table.clear
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 function ChoGGi.ComFuncs.SaveOrigFunc(class_or_func,func_name)
@@ -365,8 +368,10 @@ do -- ShowObj
 	local function ClearMarker(k,v)
 		v = v or markers[k]
 		if IsValid(k) then
-			ChoGGi.ComFuncs.RestoreOldPalette(k)
-			if v == "vector" or k:IsKindOf("ChoGGi_Sphere") then
+			if k.ChoGGi_ShowObjColour then
+				k:SetColorModifier(k.ChoGGi_ShowObjColour)
+				k.ChoGGi_ShowObjColour = nil
+			elseif v == "vector" or k:IsKindOf("ChoGGi_Sphere") then
 				k:delete()
 			end
 		end
@@ -379,7 +384,7 @@ do -- ShowObj
 	function ChoGGi.ComFuncs.ClearShowObj(obj)
 		SuspendPassEdits("ClearShowObj")
 		-- try and clean up just asked for, and if not then all
-		if IsValid(obj) and markers[obj] then
+		if IsValid(obj) and (markers[obj] or obj.ChoGGi_ShowObjColour) then
 			ClearMarker(obj)
 			ClearMarker(xyz_str:format(obj:GetVisualPos():xyz()))
 		-- any markers in the list
@@ -387,7 +392,7 @@ do -- ShowObj
 			for k, v in pairs(markers) do
 				ClearMarker(k,v)
 			end
-			table.clear(markers)
+			TableClear(markers)
 		-- could be from a saved game so remove any objects on the map
 		else
 			MapDelete(true, "ChoGGi_Vector","ChoGGi_Sphere")
@@ -403,11 +408,10 @@ do -- ShowObj
 		if not obj:IsKindOf("ColorizableObject") then
 			return
 		end
-		color = color or green
 
-		ChoGGi.ComFuncs.SaveOldPalette(obj)
-		markers[obj] = markers[obj] or obj:GetColorModifier()
-		obj:SetColorModifier(color)
+		obj.ChoGGi_ShowObjColour = obj.ChoGGi_ShowObjColour or obj:GetColorModifier()
+		markers[obj] = obj.ChoGGi_ShowObjColour
+		obj:SetColorModifier(color or green)
 	end
 
 	function ChoGGi.ComFuncs.ShowPoints(obj, color, time, both)
@@ -433,7 +437,6 @@ do -- ShowObj
 		color = color or green
 		local vis_pos = is_valid and obj:GetVisualPos()
 
-		-- both is for objs i also want a sphere over
 		local pt = is_point and obj or vis_pos
 		if pt and pt ~= InvalidPos and not markers[pt] then
 			-- xy/xyz eh
@@ -451,8 +454,8 @@ do -- ShowObj
 		end
 
 		if is_valid and not skip_colour then
-			markers[obj] = markers[obj] or obj:GetColorModifier()
-			ChoGGi.ComFuncs.SaveOldPalette(obj)
+			obj.ChoGGi_ShowObjColour = obj.ChoGGi_ShowObjColour or obj:GetColorModifier()
+			markers[obj] = obj.ChoGGi_ShowObjColour
 			obj:SetColorModifier(color)
 		end
 
@@ -1650,13 +1653,10 @@ do -- Rebuildshortcuts
 		UpsampledScreenshot = true,
 		-- EditorShortcuts.lua
 		EditOpsHistory = true,
-		E_FlagsEditor = true,
-		E_AttachEditor = true,
-		E_ResetZRelative = true,
-		CheckGameRevision = true,
 		["Editors.Random Map"] = true,
 		DE_SaveDefaultMapEntityList = true,
 		E_TurnSelectionToTemplates = true,
+		DE_SaveDefaultMap = true,
 		Editors = true,
 		-- CommonShortcuts.lua
 		DE_Console = true,
@@ -1667,6 +1667,17 @@ do -- Rebuildshortcuts
 		Tools = true,
 		["Tools.Extras"] = true,
 	}
+	local removekey_lookup = {
+		E_FlagsEditor = true,
+		E_AttachEditor = true,
+		CheckGameRevision = true,
+		E_ResetZRelative = true,
+		E_SmoothBrush = true,
+		E_PlaceObjectsAdd = true,
+		E_DeleteObjects = true,
+		E_MoveGizmo = true,
+	}
+
 	-- auto-add all the TriggerDisaster ones (ok some)
 	local DataInstances = DataInstances
 	local function AddItems(name,suffix)
@@ -1698,6 +1709,9 @@ do -- Rebuildshortcuts
 --~ 				-- hide any menuitems added from devs
 --~ 				a.ActionMenubar = nil
 --~ 				print(a.ActionId)
+			elseif removekey_lookup[a.ActionId] then
+				a.ActionShortcut = nil
+				a.ActionShortcut2 = nil
 			end
 		end
 
@@ -2321,7 +2335,7 @@ function ChoGGi.ComFuncs.RandomColour(amount)
 		-- populate list with amount we want
 		for i = 1, amount do
 			-- 16777216: https://en.wikipedia.org/wiki/Color_depth#True_color_(24-bit)
-			colour_list[i] = AsyncRand(16777217) + -16777216
+			colour_list[i] = AsyncRand(33554433) -16777216
 		end
 
 		-- now remove all dupes and add more till we hit amount
@@ -2332,7 +2346,7 @@ function ChoGGi.ComFuncs.RandomColour(amount)
 			-- loop missing amount
 			for _ = 1, amount - #colour_list do
 				c = c + 1
-				colour_list[c] = AsyncRand(16777217) + -16777216
+				colour_list[c] = AsyncRand(33554433) -16777216
 			end
 			-- remove dupes (it's quicker to do this then check the table for each newly added colour)
 			colour_list = RetTableNoDupes(colour_list)
@@ -2343,7 +2357,7 @@ function ChoGGi.ComFuncs.RandomColour(amount)
 	end
 
 	-- return a single colour
-	return AsyncRand(16777217) + -16777216
+	return AsyncRand(33554433) -16777216
 end
 
 function ChoGGi.ComFuncs.ObjectColourRandom(obj)
@@ -2363,7 +2377,7 @@ function ChoGGi.ComFuncs.ObjectColourRandom(obj)
 	end
 
 	-- random is random after all, so lets try for at least slightly different colours
-	-- you can do 4 colours on each object
+	-- you can do a max of 4 colours on each object
 	local colours = ChoGGi.ComFuncs.RandomColour((c * 4) + 4)
 	-- attach obj to list
 	c = c + 1
@@ -2385,24 +2399,24 @@ function ChoGGi.ComFuncs.ObjectColourRandom(obj)
 		end
 	end
 
+	-- now we loop through all the objects and apply the colours
 	for i = 1, c do
 		obj = attaches[i].obj
 		local c = attaches[i].c
 
 		ChoGGi.ComFuncs.SaveOldPalette(obj)
 
-		-- likely can only change basecolour
---~ 		if obj:GetColorizationMaterial(1) == 8421504 and obj:GetColorizationMaterial(2) == 8421504 and obj:GetColorizationMaterial(3) == 8421504 and obj:GetColorizationMaterial(4) == 8421504 then
+		-- can only change basecolour
 		if obj:GetMaxColorizationMaterials() == 0 then
 			obj:SetColorModifier(c[1])
 		else
-			-- object,1,Color, Roughness, Metallic
-			obj:SetColorizationMaterial(1, c[1], Random(-255,255), Random(-255,255))
-			obj:SetColorizationMaterial(2, c[2], Random(-255,255), Random(-255,255))
-			obj:SetColorizationMaterial(3, c[3], Random(-255,255), Random(-255,255))
-			obj:SetColorizationMaterial(4, c[4], Random(-255,255), Random(-255,255))
+			-- object, 1-4 ,Color, Roughness, Metallic
+			obj:SetColorizationMaterial(1, c[1], Random(-128,127), Random(-128,127))
+			obj:SetColorizationMaterial(2, c[2], Random(-128,127), Random(-128,127))
+			obj:SetColorizationMaterial(3, c[3], Random(-128,127), Random(-128,127))
+			obj:SetColorizationMaterial(4, c[4], Random(-128,127), Random(-128,127))
 		end
-	end -- for
+	end
 
 end
 
@@ -3265,14 +3279,21 @@ GetComputerName(): %s
 	)
 end
 
--- check for and remove old object (XTemplates are created on new game/new dlc ?)
-function ChoGGi.ComFuncs.RemoveXTemplateSections(list,name,value)
-	local idx = TableFind(list, name, value or true)
-	if idx then
-		list[idx]:delete()
-		table.remove(list,idx)
+do --
+	local function RemoveTableItem(list,name,value)
+		local idx = TableFind(list, name, value)
+		if idx then
+			list[idx]:delete()
+			TableRemove(list,idx)
+		end
 	end
-end
+	ChoGGi.ComFuncs.RemoveTableItem = RemoveTableItem
+
+	-- check for and remove old object (XTemplates are created on new game/new dlc ?)
+	function ChoGGi.ComFuncs.RemoveXTemplateSections(list,name,value)
+		RemoveTableItem(list,name,value or true)
+	end
+end -- do
 
 local AddXTemplateNew = function(xt,name,pos,list)
 	if not xt or not name or not list then
@@ -4276,42 +4297,55 @@ function ChoGGi.ComFuncs.SetTableValue(tab,id,id_name,item,value)
 	end
 end
 
-function ChoGGi.ComFuncs.GetAllAttaches(obj)
-	local IsValid = IsValid
+do --
 	local attaches = {}
-	if not IsValid(obj) then
-		return attaches
-	end
-	local c = 0
-
-	-- add regular attachments
-	if obj.ForEachAttach then
-		obj:ForEachAttach(function(a)
-			if IsValid(a) and not a:IsKindOfClasses("BuildingSign","ExplorableObject","TerrainDeposit") then
+	local skip = {"BuildingSign","ExplorableObject","TerrainDeposit"}
+	local function AddAttaches(obj,attaches,attaches_idx,c)
+		for _,a in pairs(obj) do
+			if not attaches[a] and IsValid(a) and not a:IsKindOfClasses(skip) then
+				attaches[a] = true
 				c = c + 1
-				attaches[c] = a
-			end
-		end)
-	end
-	-- add any non-attached attaches
-	for _,a in pairs(obj) do
-		if a ~= obj and IsValid(a) and not a:IsKindOfClasses("BuildingSign","ExplorableObject","TerrainDeposit") then
-			c = c + 1
-			attaches[c] = a
-		end
-	end
-	-- and the anim_obj added in gagarin
-	if IsValid(obj.anim_obj) then
-		for _,a in pairs(obj.anim_obj) do
-			if a ~= obj and IsValid(a) and not a:IsKindOfClasses("BuildingSign","ExplorableObject","TerrainDeposit") then
-				c = c + 1
-				attaches[c] = a
+				attaches_idx[c] = a
 			end
 		end
+		return c
 	end
 
-	return attaches
-end
+	function ChoGGi.ComFuncs.GetAllAttaches(obj)
+		TableClear(attaches)
+		if not IsValid(obj) then
+			return attaches
+		end
+		-- we don't clear as we want to return a new table each time
+		local attaches_idx = {}
+		local c = 0
+
+		-- add regular attachments
+		if obj.ForEachAttach then
+			obj:ForEachAttach(function(a)
+				if not attaches[a] and IsValid(a) and not a:IsKindOfClasses(skip) then
+					attaches[a] = true
+					c = c + 1
+					attaches_idx[c] = a
+				end
+			end)
+		end
+
+		-- add any non-attached attaches
+		c = AddAttaches(obj,attaches,attaches_idx,c)
+		-- and the anim_obj added in gagarin
+		if IsValid(obj.anim_obj) then
+			AddAttaches(obj.anim_obj,attaches,attaches_idx,c)
+		end
+
+		local idx = TableFind(attaches_idx,obj)
+		if idx then
+			TableRemove(attaches_idx,idx)
+		end
+
+		return attaches_idx
+	end
+end -- do
 
 do -- PadNumWithZeros
 	local str = "%s%s"
@@ -4437,5 +4471,30 @@ do -- SpawnColonist
 		--if spec is different then updates to new entity
 		colonist:ChooseEntity()
 		return colonist
+	end
+end -- do
+
+function ChoGGi.ComFuncs.GetParentOfKind(win, cls)
+	while win and not win:IsKindOf(cls) do
+		win = win.parent
+	end
+	return win
+end
+
+do -- IsControlPressed/IsShiftPressed/IsAltPressed
+	local IsKeyPressed = terminal.IsKeyPressed
+	local vkControl = const.vkControl
+	local vkShift = const.vkShift
+	local vkAlt = const.vkAlt
+	local vkLwin = const.vkLwin
+	local osx = Platform.osx
+	function ChoGGi.ComFuncs.IsControlPressed()
+		return IsKeyPressed(vkControl) or osx and IsKeyPressed(vkLwin)
+	end
+	function ChoGGi.ComFuncs.IsShiftPressed()
+		return IsKeyPressed(vkShift)
+	end
+	function ChoGGi.ComFuncs.IsAltPressed()
+		return IsKeyPressed(vkAlt)
 	end
 end -- do

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Mark Deposit Ground v0.2",
-	"version", 2,
-	"saved", 1541592000,
+	"title", "Mark Deposit Ground v0.3",
+	"version", 3,
+	"saved", 1542974400,
 	"image", "Preview.png",
 	"id", "ChoGGi_MarkDepositGround",
 	"steam_id", "1555446081",
@@ -15,5 +15,5 @@ return PlaceObj("ModDef", {
 Marks are sized depending on max amount.
 
 Includes a ModConfig option to always hide the signs (you can still select the invisible sign and see the amount).
-And one to change all anomalies to aliens.]],
+And one to change all anomalies and or vista/research to the greenman model (suggestions for a different model?).]],
 })

@@ -30,8 +30,8 @@ DefineClass.ChoGGi_Alien = {
 	pin_progress_value = "",
 	pin_progress_max = "",
 	pin_on_start = false,
-	pin_icon = image_pin,
-	pin_specialization_icon = false,
+--~ 	pin_icon = image_pin,
+--~ 	pin_specialization_icon = false,
 
 	ip_template = "ipChoGGi_Alien",
 	-- how far around the next target will be

@@ -3,6 +3,11 @@
 -- displays text in an editable text box
 
 local S = ChoGGi.Strings
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+
+local GetRootDialog = function(obj)
+	return GetParentOfKind(obj,"ChoGGi_MultiLineTextDlg")
+end
 
 DefineClass.ChoGGi_MultiLineTextDlg = {
 	__parents = {"ChoGGi_Window"},
@@ -41,53 +46,41 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 		Dock = "bottom",
 	}, self.idDialog)
 
-	if context.checkbox then
-		g_Classes.ChoGGi_CheckButton:new({
-			Dock = "left",
-			Margins = box(4,0,0,0),
-			Text = S[302535920000721--[[Overwrite--]]],
-			RolloverText = S[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
-
-			OnChange = function()
-				if self.overwrite then
-					self.overwrite = false
-				else
-					self.overwrite = "w"
-				end
-			end
-		}, self.idButtonContainer)
-	end
-
 	self.idOkay = g_Classes.ChoGGi_Button:new({
 		Id = "idOkay",
 		Dock = "left",
 		Text = S[6878--[[OK--]]],
 		RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_ok,S[6878--[[OK--]]]),
-		OnPress = function()
-			self:Close("ok",true)
-		end,
+		OnPress = self.idOkayOnPress,
 	}, self.idButtonContainer)
 
-	g_Classes.ChoGGi_CheckButton:new({
+	if context.checkbox then
+		self.idChkOverwrite = g_Classes.ChoGGi_CheckButton:new({
+			Id = "idChkOverwrite",
+			Dock = "left",
+			Margins = box(4,0,0,0),
+			Text = S[302535920000721--[[Overwrite--]]],
+			RolloverText = S[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
+			OnChange = self.idChkOverwriteOnChange,
+		}, self.idButtonContainer)
+	end
+
+	self.idChkWraplines = g_Classes.ChoGGi_CheckButton:new({
+		Id = "idChkWraplines",
 		Dock = "left",
 		Text = S[302535920001288--[[Wrap Lines--]]],
 		RolloverText = S[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
 		Margins = box(10,0,0,0),
 		Check = ChoGGi.UserSettings.WordWrap,
-		OnChange = function(_,which)
-			ChoGGi.UserSettings.WordWrap = which
-			self.idEdit:SetWordWrap(which)
-		end
+		OnChange = self.idChkWraplinesOnChange,
 	}, self.idButtonContainer)
 
 	self.idCancel = g_Classes.ChoGGi_Button:new({
 		Id = "idCancel",
 		Dock = "right",
 		Text = S[6879--[[Cancel--]]],
-		RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_cancel,S[6879--[[Cancel--]]]),
-		OnPress = function()
-			self:Close("cancel",false)
-		end,
+		RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_cancel,S[302535920001423--[[Close without doing anything.--]]]),
+		OnPress = self.idCancelOnPress,
 	}, self.idButtonContainer)
 
 	self:SetInitPos(context.parent)
@@ -100,14 +93,24 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 
 end
 
---~ function ChoGGi_MultiLineTextDlg:OnShortcut(shortcut)
---~	 if shortcut == "Enter" then
---~		 self:Close("ok",true)
---~	 elseif shortcut == "Escape" and self.context.question then
---~		 self:Close("cancel",false)
---~	 end
---~	 return ChoGGi_Window.OnShortcut(self,shortcut)
---~ end
+function ChoGGi_MultiLineTextDlg:idChkOverwriteOnChange()
+	self = GetRootDialog(self)
+	if self.overwrite then
+		self.overwrite = false
+	else
+		self.overwrite = "w"
+	end
+end
+function ChoGGi_MultiLineTextDlg:idOkayOnPress()
+	GetRootDialog(self):Close("ok",true)
+end
+function ChoGGi_MultiLineTextDlg:idChkWraplinesOnChange(which)
+	ChoGGi.UserSettings.WordWrap = which
+	GetRootDialog(self).idEdit:SetWordWrap(which)
+end
+function ChoGGi_MultiLineTextDlg:idCancelOnPress()
+	GetRootDialog(self):Close("cancel",false)
+end
 
 function ChoGGi_MultiLineTextDlg:Close(result,answer)
 	if self.retfunc then

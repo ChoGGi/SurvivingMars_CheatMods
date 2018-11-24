@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Rocket Stuck v0.4",
-	"version", 4,
-	"saved", 1542888000,
+	"title", "Fix: Rocket Stuck v0.6",
+	"version", 6,
+	"saved", 1542974400,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixExpeditionRocketStuckUnloading",
 	"steam_id", "1567028510",
@@ -16,6 +16,7 @@ Unloading colonists.
 Unloading colonist crew from expedition.
 Maintenance */5.
 Drones stuck inside.
+Expedition launched rocket still "occupies" landing pad.
 
 If this doesn't fix it for you, then I'll need a copy of your saved game.]],
 })

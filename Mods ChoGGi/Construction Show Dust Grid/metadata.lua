@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"lua_revision", LuaRevision,
   "steam_id", "1566670588",
-  "description", [[Show Dust Grids during construction.
+  "description", [[Show dust grids for all dust generating buildings during construction of any building.
 
 Requested by still__alive.]],
 })

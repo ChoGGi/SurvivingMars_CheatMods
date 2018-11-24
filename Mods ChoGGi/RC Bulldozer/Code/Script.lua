@@ -57,18 +57,16 @@ local display_icon = StringFormat("%sUI/rover_combat.png",CurrentModPath)
 
 local entity1 = "CombatRover"
 local entity2 = "CombatRover"
-local palette = "AttackRoverBlue"
 local away_spot = "Particle1"
 local colour1 = -15005149
 local colour2 = -5000269
 local colour3 = -16244680
 local colour4
-local fx_actor_class
+local fx_actor_class = "AttackRover"
 
-if BuildingTemplates.RCHarvesterBuildingX then
+if BuildingTemplates.RCHarvesterBuilding then
 	entity1 = "RoverBlueSunHarvester"
 	entity2 = "RoverBlueSunHarvesterBuilding"
-	palette = "RCHarvester"
 	away_spot = "Particle"
 --~ 	colour1 = -15005149
 	colour2 = -3421237
@@ -377,9 +375,7 @@ function OnMsg.ClassesPostprocess()
 			"construction_cost_MachineParts",40000,
 			"construction_cost_Electronics",20000,
 			-- add a bit of pallor to the skeleton
-			"palette_color1", "pipes_metal",
-			"palette_color2", "mining_base",
-			"palette_color3", "outside_base",
+			"palette_color1", "rover_base",
 
 			"dome_forbidden",true,
 			"display_name",name,
@@ -394,7 +390,6 @@ function OnMsg.ClassesPostprocess()
 			"prio_button",false,
 
 			"entity",entity2,
-			"palettes",palette,
 		})
 	end
 end

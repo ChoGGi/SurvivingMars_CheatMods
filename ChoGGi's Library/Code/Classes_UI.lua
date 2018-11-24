@@ -106,9 +106,9 @@ DefineClass.ChoGGi_MoveControl = {
 	RolloverTitle = S[126095410863--[[Info--]]],
 	RolloverTemplate = "Rollover",
 }
-local IsKeyPressed = terminal.IsKeyPressed
+local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 function ChoGGi_MoveControl:OnKbdKeyDown(vk,...)
-	if vk == const.vkEsc and IsKeyPressed(const.vkShift) then
+	if vk == const.vkEsc and IsShiftPressed() then
 		self.dialog.idCloseX:Press()
 		return "break"
 	end
@@ -587,11 +587,15 @@ function ChoGGi_Window:AddScrollText()
 	self.idText = g_Classes.ChoGGi_Text:new({
 		Id = "idText",
 		-- this is what gets fired for any of my self:HyperLink(), also in Examine.lua
-		OnHyperLink = function(_, link, _, box, pos, button)
-			self.onclick_handles[tonumber(link)](box, pos, button, self)
-		end,
+		OnHyperLink = self.idTextOnHyperLink
 	}, self.idScrollArea)
 end
+
+--~ local tonumber = tonumber
+--~ function ChoGGi_Window:idTextOnHyperLink(link, _, box, pos, button)
+--~ 	self = self.parent.parent.parent.parent
+--~ 	self.onclick_handles[tonumber(link)](box, pos, button, self)
+--~ end
 
 function ChoGGi_Window:AddScrollList()
 	local g_Classes = g_Classes

@@ -71,7 +71,7 @@ function OnMsg.LoadGame()
 				if type(r.cargo) == "table" then
 					local pass = TableFind(r.cargo,"class","Passengers")
 					pass = r.cargo[pass]
-					if pass and type(pass) == "table" and pass.amount > 0 and #pass.applicants_data == 0 then
+					if type(pass) == "table" and pass.amount > 0 and #pass.applicants_data == 0 then
 						r:SetCommand("Unload")
 					end
 				end
@@ -97,8 +97,21 @@ function OnMsg.LoadGame()
 			-- resends main com with whatever res is needed
 			elseif r.command == "WaitMaintenance" then
 				r:SetCommand("WaitMaintenance",r.maintenance_requirements.resource, r.maintenance_request:GetTargetAmount())
-			end
-		end
 
+			end
+
+		end
 	end
+
+	-- expedition rocket never lands on pad
+	local pads = UICity.labels.LandingPad or ""
+	for i = 1, #pads do
+		local p = pads[i]
+		local has,rocket = p:HasRocket()
+		-- InvalidPos means it's not on mars
+		if has and rocket:GetPos() == InvalidPos and IsValid(rocket.landing_site) then
+			rocket:SetCommand("LandOnMars",rocket.landing_site)
+		end
+	end
+
 end
