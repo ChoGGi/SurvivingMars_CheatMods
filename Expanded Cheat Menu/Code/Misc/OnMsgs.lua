@@ -131,10 +131,10 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		local PlaceObj = PlaceObj
 
 		-- makes shit flicker when i do my scrollable selection panel
-		XTemplates.PinButton[1].RolloverBackground = red
-		XTemplates.PinButton[1].PressedBackground = red
-		XTemplates.PinButton[1].FocusedBackground = red
-		XTemplates.PinButton[1].Background = red
+--~ 		XTemplates.PinButton[1].RolloverBackground = red
+--~ 		XTemplates.PinButton[1].PressedBackground = red
+--~ 		XTemplates.PinButton[1].FocusedBackground = red
+--~ 		XTemplates.PinButton[1].Background = red
 --~ 'ColumnsUse' = 'abbba'
 		-- add some ids to make it easier to fuck with selection panel
 		local template_str = "idSection%s_ChoGGi"
