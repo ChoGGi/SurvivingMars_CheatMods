@@ -10,6 +10,7 @@ local ChoGGi_OrigFuncs
 local SaveOrigFunc
 
 local StringFormat = string.format
+local TableFindValue = table.find_value
 
 -- set UI transparency:
 local function SetTrans(obj)
@@ -246,6 +247,7 @@ function OnMsg.ClassesGenerate()
 	SaveOrigFunc("CursorBuilding","GameInit")
 	SaveOrigFunc("DustGridElement","AddDust")
 	SaveOrigFunc("GridObject","GetPipeConnections")
+	SaveOrigFunc("InfopanelDlg","RecalculateMargins")
 	SaveOrigFunc("SupplyRocket","HasEnoughFuelToLaunch")
 	SaveOrigFunc("SupplyRocket","FlyToEarth")
 	SaveOrigFunc("SupplyRocket","FlyToMars")
@@ -257,6 +259,26 @@ function OnMsg.ClassesGenerate()
 	SaveOrigFunc("XShortcutsHost","SetVisible")
 	SaveOrigFunc("DontBuildHere","Check")
 	SaveOrigFunc("ConstructionController","IsObstructed")
+	SaveOrigFunc("XSizeConstrainedWindow","UpdateMeasure")
+
+	-- that's what we call a small font
+	if ChoGGi.UserSettings.StopSelectionPanelResize then
+		XSizeConstrainedWindow.UpdateMeasure = XWindow.UpdateMeasure
+
+		-- I don't see the reason it needs to be 58 (the margin at the top)
+		function InfopanelDlg:RecalculateMargins()
+			local margins = GetSafeMargins()
+			local bottom_margin = 0
+			local pins = GetDialog("PinsDlg")
+			if pins then
+				local igi = GetInGameInterface()
+				bottom_margin = igi.box:maxy() - pins.box:miny() - margins:maxy()
+			end
+--~ 			margins = box(margins:minx(), margins:miny() + 58, margins:maxx(), margins:maxy() + bottom_margin)
+			margins = box(margins:minx(), margins:miny() + 32, margins:maxx(), margins:maxy() + bottom_margin)
+			self:SetMargins(margins)
+		end
+	end
 
 	-- allows you to build on geysers
 	function ConstructionController:IsObstructed(...)
@@ -986,11 +1008,16 @@ function OnMsg.ClassesBuilt()
 
 			local c = self.idContent
 			if not c then
+				c = self.idChoGGi_ScrollBox.idContent
+			end
+			if not c then
 				return
 			end
+--~ 			ex(c)
 
 			-- this limits height of traits you can choose to 3 till mouse over
-			if not UserSettings.ScrollSelection and UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses("Sanatorium","School") then
+--~ 			if not UserSettings.ScrollSelection and UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses("Sanatorium","School") then
+			if UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses("Sanatorium","School") then
 
 				local idx
 				if self.context:IsKindOf("School") then
@@ -1016,70 +1043,73 @@ function OnMsg.ClassesBuilt()
 				end
 
 			end
+			--
 
-			-- loop all the sections
-			for i = 1, #c do
-				local section = c[i]
-				if section:IsKindOf("XSection") then
-					local title = TGetID(section.idSectionTitle.Text)
-					local content = section.idContent[2]
+			local section = TableFindValue(c,"Id","idSectionCheats_ChoGGi")
+			if section then
+				section.idIcon.FXMouseIn = "ActionButtonHover"
+				section.HandleMouse = true
+				section.MouseCursor = "UI/Cursors/Rollover.tga"
+				section.RolloverText = S[302535920001410--[[Toggle Visibility--]]]
+				local toggle = false
+				if UserSettings.InfopanelCheatsVis then
+					toggle = true
+				end
+				local toolbar = SetToolbar(section,"XToolBar",toggle)
 
-					-- enlarge worker section if over the max amount visible
-					if section.idWorkers and #section.idWorkers > 14 then
-						-- set height to default height
-						content:SetMaxHeight(32)
-
-						local expandthread
-						section.OnMouseEnter = function()
-							DeleteThread(expandthread)
-							content:SetLayoutMethod("HWrap")
-							content:SetMaxHeight()
-						end
-						section.OnMouseLeft = function()
-							expandthread = CreateRealTimeThread(function()
-								Sleep(500)
-								content:SetLayoutMethod("HList")
-								content:SetMaxHeight(32)
-							end)
-						end
-
-					elseif not UserSettings.ScrollSelection then
-						if title == 27--[[Cheats--]] then
-
-							section.idIcon.FXMouseIn = "ActionButtonHover"
-							section.HandleMouse = true
-							section.MouseCursor = "UI/Cursors/Rollover.tga"
-							section.RolloverText = S[302535920001410--[[Toggle Visibility--]]]
-							local toggle = false
-							if UserSettings.InfopanelCheatsVis then
-								toggle = true
-							end
-							local toolbar = SetToolbar(section,"XToolBar",toggle)
-
- 							ToggleVisSection(section,toolbar,toggle,true)
-							-- sets the scale of the cheats icons
-							for j = 1, #toolbar do
-								toolbar[j].idIcon:SetMaxHeight(27)
-								toolbar[j].idIcon:SetMaxWidth(27)
-								toolbar[j].idIcon:SetImageFit("largest")
-							end
-
---~ 						elseif title == 235--[[Traits--]] then
---~ 							local toggle = false
---~ 							ToggleVisSection(section,SetToolbar(section,"XWindow",toggle),toggle)
-						elseif title == 702480492408--[[Residents--]] then
-							local toggle = true
-							if self.context.capacity > 100 then
-								toggle = false
-							end
-							ToggleVisSection(section,SetToolbar(section,"XContextControl",toggle),toggle)
-
-						end
-					end -- UserSettings.ScrollSelection
-
-				end -- if XSection
+				ToggleVisSection(section,toolbar,toggle,true)
+				-- sets the scale of the cheats icons
+				for j = 1, #toolbar do
+					toolbar[j].idIcon:SetMaxHeight(27)
+					toolbar[j].idIcon:SetMaxWidth(27)
+					toolbar[j].idIcon:SetImageFit("largest")
+				end
 			end
-		end
+
+			section = TableFindValue(c,"Id","idSectionResidence_ChoGGi")
+			if section then
+				local toggle = true
+				if self.context.capacity > 100 then
+					toggle = false
+				end
+				ToggleVisSection(section,SetToolbar(section,"XContextControl",toggle),toggle)
+			end
+
+			-- add limit to shifts sections
+			local worker_count = 0
+			for i = 1, #c do
+
+				-- three shifts max
+				if worker_count > 2 then
+					break
+				end
+
+				local section = c[i]
+				local content = section.idContent[2]
+
+				-- enlarge worker section if over the max amount visible
+				if section.idWorkers and #section.idWorkers > 14 then
+					worker_count = worker_count + 1
+					-- set height to default height
+					content:SetMaxHeight(32)
+
+					local expandthread
+					section.OnMouseEnter = function()
+						DeleteThread(expandthread)
+						content:SetLayoutMethod("HWrap")
+						content:SetMaxHeight()
+					end
+					section.OnMouseLeft = function()
+						expandthread = CreateRealTimeThread(function()
+							Sleep(500)
+							content:SetLayoutMethod("HList")
+							content:SetMaxHeight(32)
+						end)
+					end
+				end
+			end
+
+		end -- InfopanelDlgOpen
 
 		-- the actual function
 		function InfopanelDlg:Open(...)

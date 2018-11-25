@@ -88,6 +88,9 @@ function OnMsg.ClassesGenerate()
 			des = S[302535920001236--[[Double amount of reneagades this station can negate (currently: %s) < Reselect to update amount.--]]],
 			des_name = "negated_renegades",
 		},
+		Die = {
+			des = S[302535920001431--[[Kill this colonist!--]]],
+		},
 
 -- Building
 		VisitorsDbl = {des = doublec},
@@ -343,7 +346,6 @@ local Workplace = Workplace
 
 --~	 global objects
 function Object:CheatDeleteObject()
-	local ChoGGi = ChoGGi
 	local name = RetName(self)
 	local function CallBackFunc(answer)
 		if answer then
@@ -488,6 +490,18 @@ function Colonist:CheatRandomGender()
 end
 function Colonist:CheatRandomAge()
 	ChoGGi.ComFuncs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[Random(1,#ChoGGi.Tables.ColonistAges)])
+end
+function Colonist:CheatDie()
+	local name = RetName(self)
+	ChoGGi.ComFuncs.QuestionBox(
+		StringFormat("%s!\n%s?",S[6779--[[Warning--]]],S[302535920001430--[[Kill colonist-]]]),
+		function(answer)
+			if answer then
+				self:SetCommand("Die")
+			end
+		end,
+		StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
+	)
 end
 -- CheatAllShifts
 local function CheatAllShiftsOn(self)

@@ -51,7 +51,7 @@ function OnMsg.ClassesGenerate()
 		local UICity = UICity
 		local ChoGGi = ChoGGi
 
-		--don't drop BlackCube/MysteryResource
+		-- don't drop BlackCube/MysteryResource
 		local reslist = {}
 		local all = AllResourcesList
 		for i = 1, #all do
@@ -60,8 +60,8 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
-		local function MeatbagsToSoylent(MeatBag,res)
-			if MeatBag.dying then
+		local function MeatbagsToSoylent(meat_bag,res)
+			if meat_bag.dying then
 				return
 			end
 
@@ -70,25 +70,18 @@ function OnMsg.ClassesGenerate()
 			else
 				res = "Food"
 			end
-			PlaceResourcePile(MeatBag:GetVisualPos(), res, Random(1,5) * ChoGGi.Consts.ResourceScale)
-			MeatBag:SetCommand("Die","ChoGGi_Soylent")
---~ 			MeatBag.ChoGGi_Soylent = true
+			PlaceResourcePile(meat_bag:GetVisualPos(), res, Random(1,5) * ChoGGi.Consts.ResourceScale)
+			meat_bag:SetCommand("Die","ChoGGi_Soylent")
+			Msg("ColonistDied",meat_bag, "ChoGGi_Soylent")
 			-- gotta wait for a tad else log gets spammed with changepath and other stuff
 			CreateRealTimeThread(function()
 				Sleep(100)
-				MeatBag:Done()
-				DoneObject(MeatBag)
---~ 				local Table = UICity.labels.Colonist or ""
---~ 				for i = 1, #Table do
---~ 					if Table[i].ChoGGi_Soylent then
---~ 						Table[i]:Done()
---~ 						DoneObject(Table[i])
---~ 					end
---~ 				end
+				meat_bag:Done()
+				DoneObject(meat_bag)
 			end)
 		end
 
-		--one meatbag at a time
+		-- one meatbag at a time
 		local sel = ChoGGi.ComFuncs.SelObject()
 		if IsKindOf(sel,"Colonist") then
 			MeatbagsToSoylent(sel)
@@ -140,7 +133,7 @@ function OnMsg.ClassesGenerate()
 			end
 
 			local function CullLabel(label)
-				local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
+				local objs = UICity.labels[label] or ""
 				for i = #objs, 1, -1 do
 					if dome then
 						if objs[i].dome and objs[i].dome.handle == dome.handle then

@@ -9,7 +9,7 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	-- version to version check with
-	local min_version = 38
+	local min_version = 39
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
@@ -45,7 +45,7 @@ function RequiresMaintenance:RequestMaintenance(...)
 end
 
 local function ToggleMain(obj)
-	obj.maintenance_phase == false
+	obj.maintenance_phase = false
 	if obj.ChoGGi_DisableMaintenance then
 		-- re-enable main
 		obj.ChoGGi_DisableMaintenance = nil

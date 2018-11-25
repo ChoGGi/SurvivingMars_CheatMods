@@ -122,6 +122,8 @@ function OnMsg.ClassesGenerate()
 		FixMissingModBuildingsLog = true,
 		-- Mod Editor shows the help page every single time you open it.
 		SkipModHelpPage = true,
+		-- stops the selection panel from shrinking down
+		StopSelectionPanelResize = false,
 		-- stores custom settings for each building
 		BuildingSettings = {},
 		-- resupply settings
