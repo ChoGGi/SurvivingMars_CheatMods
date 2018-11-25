@@ -45,16 +45,21 @@ function RequiresMaintenance:RequestMaintenance(...)
 end
 
 local function ToggleMain(obj)
+	obj.maintenance_phase == false
 	if obj.ChoGGi_DisableMaintenance then
 		-- re-enable main
 		obj.ChoGGi_DisableMaintenance = nil
-
-		obj:ResetMaintenanceState()
-		obj:RequestMaintenance()
+		-- reset main requests (thanks mk-fg)
+		obj:AccumulateMaintenancePoints(0)
+		-- and check if building is malfunctioned then call a fix
+		if obj.accumulated_maintenance_points == obj.maintenance_threshold_current then
+			obj:RequestMaintenance()
+		end
 	else
 		-- disable it
 		obj.ChoGGi_DisableMaintenance = true
-		obj:ResetMaintenanceRequests() --zero up reqs and interrupt drones
+		-- reset main requests (thanks mk-fg)
+		obj:ResetMaintenanceRequests()
 	end
 end
 
