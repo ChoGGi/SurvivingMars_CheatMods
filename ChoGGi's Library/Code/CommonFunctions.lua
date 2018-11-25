@@ -473,8 +473,11 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 			TextColor = -16777216,
 			RolloverTitle = item.hint_title and CheckText(item.hint_title,item.obj and RetName(item.obj) or S[126095410863--[[Info--]]]),
 			RolloverText = CheckText(item.hint,""),
---~ 			RolloverText = item.hint,
+			RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
 			Text = CheckText(item.name),
+			Background = items.Background or cls.Background,
+			PressedBackground = items.PressedBackground or cls.PressedBackground,
+			TextStyle = items.TextStyle or cls.TextStyle,
 		}, popup.idContainer)
 
 		if item.image then
@@ -554,14 +557,11 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 				if popup[name] then
 					popup[name]:Close()
 				end
-				popup[name] = g_Classes.XPopupList:new({
+				popup[name] = g_Classes.ChoGGi_PopupList:new({
 					Opened = true,
 					Id = "ChoGGi_submenu_popup",
 					popup_parent = popup,
-					ZOrder = max_int - 1000,
-					LayoutMethod = "VList",
-					MaxItems = 8,
-					AnchorType = "right",
+					AnchorType = "smart",
 					Anchor = self.box,
 				}, terminal.desktop)
 				ChoGGi.ComFuncs.PopupBuildMenu(item.submenu,popup[name])
@@ -606,12 +606,9 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 
 	if not popup or reopen then
 
-		popup = XPopupList:new({
+		popup = ChoGGi_PopupList:new({
 			Opened = true,
 			Id = popup_id,
-			-- -1000 is for XRollovers which get max_int
-			ZOrder = max_int - 1000,
-			LayoutMethod = "VList",
 			-- "top" for the console, default "none"
 			AnchorType = anchor or "top",
 			-- "none","smart","left","right","top","center-top","bottom","mouse"
@@ -630,8 +627,11 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 		end)
 
 		popup:Open()
-	--~			 return popup
+
 	end
+
+	-- if we need to fiddle with it
+	return popup
 end
 
 -- show a circle for time and delete it
@@ -3777,6 +3777,9 @@ ChoGGi.UserSettings.ScrollSelection = not ChoGGi.UserSettings.ScrollSelection
 		local scale = ChoGGi.Temp.UIScale
 		if scale > 0.7 then
 			y = ((y * ChoGGi.Temp.UIScale) / 2) - 32
+		end
+		if scale == 0.65 and safe == 1080 then
+			y = y + 200
 		end
 
 		obj.idChoGGi_ScrollBox:SetMaxHeight(y)

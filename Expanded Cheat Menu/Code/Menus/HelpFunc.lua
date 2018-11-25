@@ -302,12 +302,13 @@ function OnMsg.ClassesGenerate()
 				end
 
 				-- build / show confirmation dialog
-				local upload_msg = {
-					S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title),
-					"\n",
-					S[302535920000051--[[Mod will not be packed in an hpk file like the Mod Editor does for uploading (but you can pack it manually: ModFolder/Pack/ModContent.hpk).--]]],
-					"\n\n",
-				}
+				local upload_msg = {S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title)}
+
+				if not pack_mod then
+					upload_msg[#upload_msg+1] = "\n\n"
+					upload_msg[#upload_msg+1] = S[302535920000051--[[Mod will not be packed in an hpk archive.--]]]
+				end
+
 				if not copy_files then
 					upload_msg[#upload_msg+1] = "\n\n<color 203 120 30>"
 					upload_msg[#upload_msg+1] = S[302535920001262--[[%sModUpload folder is empty and waiting for files.--]]]:format(ConvertToOSPath("AppData/"))
@@ -320,7 +321,7 @@ function OnMsg.ClassesGenerate()
 
 				if diff_author then
 					upload_msg[#upload_msg+1] = "\n\n"
-					upload_msg[#upload_msg+1] = S[302535920001263--[["Mod author name is different from your name, do you have permission to upload this mod?"--]]]
+					upload_msg[#upload_msg+1] = S[302535920001263--[["%s is different from your name, do you have permission to upload it?"--]]]:format(mod.author)
 				end
 
 				local function QuestionBoxCallBackFunc(answer)

@@ -29,10 +29,10 @@ function OnMsg.ModConfigChanged(mod_id, option_id, value)
 		if option_id == "BuildDist" then
 			DomeTeleporters.BuildDist = value
 			CityDomeTeleporterConstruction[UICity].max_hex_distance_to_allow_build = value
-			CityDomeTeleporterConstruction[UICity].max_range = value
+			CityDomeTeleporterConstruction[UICity].max_range = value < 100 and 100 or value
 			-- I don't think anymore will spawn once one has, but whatever
 			DomeTeleporterConstructionController.max_hex_distance_to_allow_build = value
-			DomeTeleporterConstructionController.max_range = value
+			DomeTeleporterConstructionController.max_range = value < 100 and 100 or value
 		end
 	end
 end

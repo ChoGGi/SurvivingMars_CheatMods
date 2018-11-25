@@ -1,6 +1,9 @@
 ## Library Changelog
 
+## v4.1 (Unreleased)
+
 ## v4.0 (Unreleased)
+- A setting that caused a few different issues...
 - Updated my large popup msgs to be smaller.
 
 ## v3.9 (24 Nov 2018)

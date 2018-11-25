@@ -228,6 +228,9 @@ If you increase a number high enough it'll go negative.
 
 Depot capacities have been limited, so adding too much won't crash and delete your game when you save.
   >Best I can tell is a height limit of 65536 for any objects.
+
+SM will freeze when you disable ECM
+	> ECM hooks into a lot of stuff, if you don't want the game to freeze when you disable it then restart SM so mods aren't loaded and then disable it.
 ```
 
 ##### Modder related (Misc Info)

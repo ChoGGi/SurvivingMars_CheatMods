@@ -1,1 +1,9 @@
+onmsg domes built
+self:RemovePFTunnel()
+	ConnectDomesWithPassage(d1, d2)
+	self.domes_connected = {d1, d2}
+	self:Notify("AddPFTunnel")
+
+
+
 lock behind breakthrough

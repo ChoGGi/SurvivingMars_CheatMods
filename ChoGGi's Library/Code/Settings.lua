@@ -39,3 +39,48 @@ ChoGGi.Tables = {
 }
 -- also called after mods are loaded, we call it now for any functions that use it before then
 ChoGGi.ComFuncs.UpdateDataTables()
+
+function OnMsg.ClassesBuilt()
+	local Consts = Consts
+	local const = const
+	local g_Classes = g_Classes
+	local r = ChoGGi.Consts.ResourceScale
+
+	-- get the default values for our Consts
+	for key,value in pairs(ChoGGi.Consts) do
+		if value == false then
+			local setting = Consts:GetDefaultPropertyValue(key)
+			if setting then
+				ChoGGi.Consts[key] = setting
+			end
+		end
+	end
+
+	-- get other defaults not stored in Consts
+	ChoGGi.Consts.DroneFactoryBuildSpeed = g_Classes.DroneFactory:GetDefaultPropertyValue("performance")
+	ChoGGi.Consts.StorageShuttle = g_Classes.CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
+	ChoGGi.Consts.SpeedShuttle = g_Classes.CargoShuttle:GetDefaultPropertyValue("move_speed")
+	ChoGGi.Consts.ShuttleHubShuttleCapacity = g_Classes.ShuttleHub:GetDefaultPropertyValue("max_shuttles")
+	ChoGGi.Consts.SpeedDrone = g_Classes.Drone:GetDefaultPropertyValue("move_speed")
+	ChoGGi.Consts.SpeedRC = g_Classes.RCRover:GetDefaultPropertyValue("move_speed")
+	ChoGGi.Consts.SpeedColonist = g_Classes.Colonist:GetDefaultPropertyValue("move_speed")
+	ChoGGi.Consts.RCTransportStorageCapacity = g_Classes.RCTransport:GetDefaultPropertyValue("max_shared_storage")
+	ChoGGi.Consts.StorageUniversalDepot = g_Classes.UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
+--~ 	ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
+	ChoGGi.Consts.StorageWasteDepot = 70 * r --^ that has 45000 as default...
+	ChoGGi.Consts.StorageOtherDepot = 180 * r
+	ChoGGi.Consts.StorageMechanizedDepot = 3950 * r -- the other 50 is stored on the "porch"
+	-- ^ they're all UniversalStorageDepot
+	ChoGGi.Consts.GravityColonist = 0
+	ChoGGi.Consts.GravityDrone = 0
+	ChoGGi.Consts.GravityRC = 0
+	-- not sure what the 100K is for with SupplyRocket, but ah well 30K it is
+	ChoGGi.Consts.RocketMaxExportAmount = 30 * r
+	ChoGGi.Consts.LaunchFuelPerRocket = 60 * r
+
+	ChoGGi.Consts.CameraScrollBorder = const.DefaultCameraRTS.ScrollBorder
+	ChoGGi.Consts.CameraLookatDist = const.DefaultCameraRTS.LookatDist
+	ChoGGi.Consts.CameraMaxZoom = const.DefaultCameraRTS.MaxZoom
+	ChoGGi.Consts.CameraMinZoom = const.DefaultCameraRTS.MinZoom
+	ChoGGi.Consts.HigherRenderDist = 120 -- hr.LODDistanceModifier
+end

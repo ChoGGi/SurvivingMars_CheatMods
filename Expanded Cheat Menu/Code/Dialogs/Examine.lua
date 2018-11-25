@@ -141,6 +141,7 @@ function Examine:Init(parent, context)
 	local g_Classes = g_Classes
 	local const = const
 
+	-- my popup func checks for ids and "refreshs" a popup with the same id, so random it is
 	self.idAttachesMenu = Random()
 	self.idParentsMenu = Random()
 	self.idToolsMenu = Random()
@@ -185,6 +186,7 @@ function Examine:Init(parent, context)
 			startValue = 255,
 			flags = const.intfIgnoreParent
 		}
+
 		-- add all the toolbar buttons than toggle vis when we set the menu
 		self.idButRefresh = g_Classes.ChoGGi_ToolbarButton:new({
 			Id = "idButRefresh",
@@ -268,7 +270,9 @@ function Examine:Init(parent, context)
 			RolloverHint = S[302535920001425--[["<left_click> Toggle, <right_click> Set Delay"--]]],
 			OnChange = self.idAutoRefreshToggle,
 			OnMouseButtonDown = self.idAutoRefreshOnMouseButtonDown,
+			Init = self.CheckButtonInit,
 		}, self.idToolbarArea)
+
 		self.idAutoRefreshDelay = g_Classes.ChoGGi_TextInput:new({
 			Id = "idAutoRefreshDelay",
 			Dock = "right",
@@ -288,6 +292,7 @@ function Examine:Init(parent, context)
 			Text = S[10124--[[Sort--]]],
 			RolloverText = S[302535920001248--[[Sort normally or backwards.--]]],
 			OnChange = self.idSortDirOnChange,
+			Init = self.CheckButtonInit,
 		}, self.idToolbarArea)
 		--
 		self.idShowAllValues = g_Classes.ChoGGi_CheckButton:new({
@@ -297,6 +302,7 @@ function Examine:Init(parent, context)
 			Text = S[4493--[[All--]]],
 			RolloverText = S[302535920001391--[[Show all values (metatable).--]]],
 			OnChange = self.idShowAllValuesOnChange,
+			Init = self.CheckButtonInit,
 		}, self.idToolbarArea)
 	end -- toolbar area
 
@@ -559,28 +565,28 @@ end
 --~ 	GetRootDialog(self):FindNext()
 --~ end
 
-function Examine:idToolsOnMouseButtonDown(pt,button,...)
+local function CallMenu(self,popup_id,items,pt,button,...)
 	ChoGGi_ComboButton.OnMouseButtonDown(self,pt,button,...)
 	if button == "L" then
 		local dlg = GetRootDialog(self)
-		PopupToggle(self,dlg.idToolsMenu,dlg.tools_menu_popup,"bottom")
+		-- same colour as bg of icons :)
+		dlg[items].Background = -9868951
+		dlg[items].PressedBackground = -12500671
+		dlg[items].TextStyle = "ChoGGi_CheckButtonMenuOpp"
+		PopupToggle(self,dlg[popup_id],dlg[items],"bottom")
 	end
+end
+
+function Examine:idToolsOnMouseButtonDown(pt,button,...)
+	CallMenu(self,"idToolsMenu","tools_menu_popup",pt,button,...)
 end
 
 function Examine:idParentsOnMouseButtonDown(pt,button,...)
-	ChoGGi_ComboButton.OnMouseButtonDown(self,pt,button,...)
-	if button == "L" then
-		local dlg = GetRootDialog(self)
-		PopupToggle(self,dlg.idParentsMenu,dlg.parents_menu_popup,"bottom")
-	end
+	CallMenu(self,"idParentsMenu","parents_menu_popup",pt,button,...)
 end
 
 function Examine:idAttachesOnMouseButtonDown(pt,button,...)
-	ChoGGi_ComboButton.OnMouseButtonDown(self,pt,button,...)
-	if button == "L" then
-		local dlg = GetRootDialog(self)
-		PopupToggle(self,dlg.idAttachesMenu,dlg.attaches_menu_popup,"bottom")
-	end
+	CallMenu(self,"idAttachesMenu","attaches_menu_popup",pt,button,...)
 end
 
 function Examine:idNextOnMouseButtonDown(pt,button,...)
@@ -660,6 +666,7 @@ function Examine:BuildToolsMenuPopup()
 		{
 			name = StringFormat("%s %s",S[302535920000004--[[Dump--]]],S[1000145--[[Text--]]]),
 			hint = S[302535920000046--[[dumps text to %sDumpedExamine.lua--]]]:format(ConvertToOSPath("AppData/")),
+			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
 				local str = self.idText:GetText()
 				-- remove html tags
@@ -672,6 +679,7 @@ function Examine:BuildToolsMenuPopup()
 			hint = S[302535920001027--[[dumps object to %sDumpedExamineObject.lua
 
 This can take time on something like the "Building" metatable--]]]:format(ConvertToOSPath("AppData/")),
+			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
 				local str = ValueToLuaCode(self.obj_ref)
 				ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),nil,"DumpedExamineObject","lua")
@@ -680,6 +688,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 		{
 			name = StringFormat("%s %s",S[302535920000048--[[View--]]],S[1000145--[[Text--]]]),
 			hint = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
+			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
 				local str = self.idText:GetText()
 				-- remove html tags
@@ -704,6 +713,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 			hint = S[302535920000049--[["View text, and optionally dumps object to %sDumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]]:format(ConvertToOSPath("AppData/")),
+			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
 				local str = ValueToLuaCode(self.obj_ref)
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
@@ -726,6 +736,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 		{
 			name = S[302535920001239--[[Functions--]]],
 			hint = S[302535920001240--[[Show all functions of this object and parents/ancestors.--]]],
+			image = "CommonAssets/UI/Menu/gear.tga",
 			clicked = function()
 				if #self.parents > 0 or #self.ancestors > 0 then
 					TableClear(self.menu_added)
@@ -755,6 +766,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 		{
 			name = StringFormat("%s %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
 			hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
+			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj_ref,self)
 			end,
@@ -762,6 +774,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 		{
 			name = S[302535920001305--[[Find Within--]]],
 			hint = S[302535920001303--[[Search for text within %s.--]]]:format(self.name),
+			image = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.OpenInFindValueDlg(self.obj_ref,self)
 			end,
@@ -770,6 +783,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			name = S[302535920000323--[[Exec Code--]]],
 			hint = S[302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.
 Which you can then mess around with some more in the console."--]]],
+			image = "CommonAssets/UI/Menu/AlignSel.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj_ref,self)
 			end,
@@ -779,6 +793,7 @@ Which you can then mess around with some more in the console."--]]],
 			name = S[174--[[Color Modifier--]]],
 			hint = S[302535920000693--[[Select/mouse over an object to change the colours
 Use Shift- or Ctrl- for random colours/reset colours.--]]],
+			image = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.ChangeObjectColour(self.obj_ref)
 			end,
@@ -828,6 +843,7 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 		{
 			name = S[302535920001369--[[Ged Editor--]]],
 			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
+			image = "CommonAssets/UI/Menu/UIDesigner.tga",
 			clicked = function()
 				GedObjectEditor = false
 				OpenGedGameObjectEditor{self.obj_ref}
@@ -836,6 +852,7 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 		{
 			name = S[302535920000067--[[Ged Inspect--]]],
 			hint = S[302535920001075--[[Open this object in the Ged inspector.--]]],
+			image = "CommonAssets/UI/Menu/ListCollections.tga",
 			clicked = function()
 				Inspect(self.obj_ref)
 			end,
@@ -844,7 +861,8 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 		{
 			name = S[302535920001321--[[UI Click To Select--]]],
 			hint = S[302535920001322--[["Examine UI controls by clicking them.
-This dialog will freeze till you click something."--]]],
+The screen dialog will ""pause"" till you click something."--]]],
+			image = "CommonAssets/UI/Menu/select_objects.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.TerminalRolloverMode(true,self)
 			end,
