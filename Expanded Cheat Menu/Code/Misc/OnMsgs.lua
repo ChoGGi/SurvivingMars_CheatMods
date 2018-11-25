@@ -41,6 +41,11 @@ function OnMsg.ClassesGenerate()
 	local dark_gray = -9868951
 	XMenuBar.Background = dark_gray
 	XPopupMenu.Background = dark_gray
+	-- it sometimes does a jarring white background
+	XPopupMenu.DisabledBackground = dark_gray
+	-- darker gray
+	XPopupMenu.FocusedBackground = -11711669
+
 	TextStyles.DevMenuBar.TextColor = white
 
 	if not ChoGGi.UserSettings.EnableToolTips then
@@ -1179,6 +1184,12 @@ do -- LoadGame/CityStart
 
 
 
+		if UserSettings.mediumGameSpeed then
+			const.mediumGameSpeed = UserSettings.mediumGameSpeed
+		end
+		if UserSettings.fastGameSpeed then
+			const.fastGameSpeed = UserSettings.fastGameSpeed
+		end
 
 		-- make hidden buildings visible
 		if UserSettings.Building_hide_from_build_menu then

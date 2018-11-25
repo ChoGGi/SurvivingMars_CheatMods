@@ -228,6 +228,12 @@ function OnMsg.ClassesGenerate()
 			local obj = ChoGGi.ComFuncs.SelObject()
 			if obj then
 				ChoGGi.ComFuncs.OpenInExamineDlg(obj)
+				return
+			end
+			-- if in main menu then open examine and console
+			if not Dialogs.HUD then
+				ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop)
+				ChoGGi.ComFuncs.ToggleConsole(true)
 			end
 		end,
 		ActionShortcut = "F4",

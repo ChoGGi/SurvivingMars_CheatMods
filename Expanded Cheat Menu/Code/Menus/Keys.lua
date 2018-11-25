@@ -111,18 +111,10 @@ function OnMsg.ClassesGenerate()
 		ActionBindable = true,
 	}
 
-	local function ToggleConsole()
-		local dlgConsole = dlgConsole
-		if dlgConsole then
-			ShowConsole(not dlgConsole:GetVisible())
-			dlgConsole.idEdit:SetFocus()
-		end
-	end
-
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001347--[[Show Console--]]],
 		ActionId = ".Keys.ShowConsole",
-		OnAction = ToggleConsole,
+		OnAction = ChoGGi.ComFuncs.ToggleConsole,
 		ActionShortcut = "Enter",
 		ActionShortcut2 = "~",
 		ActionBindable = true,

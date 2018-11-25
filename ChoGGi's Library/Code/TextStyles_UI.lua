@@ -129,6 +129,12 @@ function OnMsg.ClassesPostprocess()
 		TextFont = Editor16Bold,
 		id = "ChoGGi_CheckButtonMenu",
 	})
+	PlaceObj("ChoGGi_TextStyle", {
+		TextColor = white,
+		RolloverTextColor = black,
+		TextFont = Editor16Bold,
+		id = "ChoGGi_CheckButtonMenuOpp",
+	})
 	-- List
 	PlaceObj("ChoGGi_TextStyle", {
 		TextColor = white,

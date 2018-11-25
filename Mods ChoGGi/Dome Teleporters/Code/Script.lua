@@ -3,6 +3,8 @@
 local IsValid = IsValid
 local Sleep = Sleep
 local CalcOrientation = CalcOrientation
+local CreateDomeNetworks = CreateDomeNetworks
+local ConnectDomesWithPassage = ConnectDomesWithPassage
 local TableRemove = table.remove
 local TableFind = table.find
 
@@ -218,6 +220,7 @@ function DomeTeleporter:TryConnectDomes()
 	assert(d1 and d2)
 	ConnectDomesWithPassage(d1, d2)
 	self.domes_connected = {d1, d2}
+	CreateDomeNetworks(self.city or UICity)
 	self:Notify("AddPFTunnel")
 end
 
@@ -231,7 +234,7 @@ function DomeTeleporter:ToggleShift(shift,...)
 	end
 end
 
-local function AliceGaveUpTheCokehabit(unit)
+local function AliceGaveUpTheCokeHabit(unit)
 --~ The bigger the figure the better I like her
 --~ The better I like her the better I feed her
 --~ The better I feed her the bigger the figure
@@ -257,29 +260,28 @@ function DomeTeleporter:TraverseTunnel(unit, start_point, end_point, param)
 			if not IsValid(self) or not IsValid(linked_obj) then
 				return
 			end
-			local entrance, start_point = self:GetEntrance(self, "tunnel_entrance")
-			local exit, exit_point = linked_obj:GetEntrance(nil, "tunnel_entrance")
-			local tunnel_len = entrance[1]:Dist2D(exit[1])
-			-- halfies
-			local travel_time = (self.travel_time_per_hex * tunnel_len / const.GridSpacing) / 2
-
 			SetState(self.platform, "chargingStart")
 			SetState(self.platform, "chargingIdle")
 
-			local angle = CalcOrientation( self:GetPos(), unit:GetPos() )
-			self.platform:SetAngle( angle - self:GetAngle(), 600 )
-			unit:Face(self.platform, 200)
+			local angle = CalcOrientation(self:GetVisualPos(), unit:GetVisualPos())
+			self.platform:SetAngle(angle - self:GetAngle(), 100)
+			unit:Face(self.platform, 500)
 
+
+			local entrance, start_point = self:GetEntrance(self)
+			local exit, exit_point = linked_obj:GetEntrance()
+			local tunnel_len = entrance[1]:Dist2D(exit[1])
+			-- halfies ( / 2 )
+			local travel_time = (self.travel_time_per_hex * tunnel_len / const.GridSpacing) / 2
 			self:LeadIn(unit, entrance)
 
-			-- lose some fucking weight alice
+			-- have some coke alice
 			local num = 100
 			while num ~= 1 do
 				unit:SetScale(num)
 				num = num - 1
 				Sleep(10)
 			end
-
 
 			local unit_pos = unit:GetPos()
 			if not IsValid(unit) then
@@ -311,16 +313,18 @@ function DomeTeleporter:TraverseTunnel(unit, start_point, end_point, param)
 				if IsValid(unit) and IsValid(linked_obj) then
 					SetState(linked_obj.platform, "chargingIdle")
 					PlayFX("MysteryDream", "start", linked_obj)
+					unit:ExitBuilding(linked_obj)
 					unit:SetScale(100)
-					unit:ExitBuilding(linked_obj, nil, "tunnel_entrance")
+--~ 					AliceGaveUpTheCokeHabit(unit)
 					SetState(linked_obj.platform, "chargingEnd")
 					SetState(self.platform, "chargingEnd")
 				end
 			elseif IsValid(self) then
 				SetState(self.platform, "chargingIdle")
 				PlayFX("MysteryDream", "start", self)
+				unit:ExitBuilding(self)
 				unit:SetScale(100)
-				unit:ExitBuilding(self, nil, "tunnel_entrance")
+--~ 				AliceGaveUpTheCokeHabit(unit)
 				SetState(self.platform, "chargingEnd")
 			end
 

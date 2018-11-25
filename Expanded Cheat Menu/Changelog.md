@@ -10,6 +10,7 @@
 ### Fixed:
 - Colour Modifier: All of type didn't work on new markers.
 - Examine delete wasn't deleting XWindows.
+- SetCameraSettings issue (thanks Razunter).
 
 ## v11.0 (24 Nov 2018)
 ### Added:

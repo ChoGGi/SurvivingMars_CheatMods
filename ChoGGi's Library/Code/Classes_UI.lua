@@ -221,6 +221,21 @@ DefineClass.ChoGGi_ComboButton = {
 	BorderColor = black,
 	RolloverBorderColor = black,
 }
+--~ function ChoGGi_ComboButton:Init()
+--~ 	self:SetIcon("CommonAssets/UI/arrowright-40.tga")
+--~ end
+--~ function ChoGGi_ComboButton:OnMouseButtonDown()
+--~ 	self:SetIcon("CommonAssets/UI/arrowdown-40.tga")
+--~ 	DeleteThread(self.popup_opened)
+--~ 	self.popup_opened = CreateRealTimeThread(function()
+--~ 		while self.popup_opened do
+--~ 			Sleep
+--~ 		end
+--~ 	end)
+--~ end
+--~ function ChoGGi_ComboButton:OnMouseButtonUp()
+--~ 	self:SetIcon("CommonAssets/UI/arrowright-40.tga")
+--~ end
 
 DefineClass.ChoGGi_CheckButton = {
 	__parents = {"XCheckButton"},
@@ -233,9 +248,16 @@ DefineClass.ChoGGi_CheckButton = {
 	RolloverZoom = 1100,
 }
 function ChoGGi_CheckButton:Init()
---~	 XCheckButton.Init(self)
 	self.idIcon:SetBackground(light_gray)
 end
+
+DefineClass.ChoGGi_PopupList = {
+	__parents = {"XPopupList"},
+	-- -1000 is for XRollovers which get max_int
+	ZOrder = max_int - 1000,
+	LayoutMethod = "VList",
+	BorderWidth = 2,
+}
 
 DefineClass.ChoGGi_CheckButtonMenu = {
 	__parents = {"ChoGGi_CheckButton"},
@@ -245,7 +267,7 @@ DefineClass.ChoGGi_CheckButtonMenu = {
 	PressedBackground = medium_gray,
 	TextHAlign = "left",
 	RolloverBackground = rollover_blue,
-	Margins = box(4,0,0,0),
+	Padding = box(4,0,0,0),
 }
 
 DefineClass.ChoGGi_TextInput = {

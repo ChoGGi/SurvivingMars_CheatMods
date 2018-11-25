@@ -1,2 +1,5 @@
+v0.3
+Build dist was no good for values under 100.
+
 v0.2
 Build dist MC option wasn't working (thanks BGR).

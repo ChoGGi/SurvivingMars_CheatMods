@@ -615,5 +615,12 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
+	function ChoGGi.ComFuncs.ToggleConsole(show)
+		local dlgConsole = dlgConsole
+		if dlgConsole then
+			ShowConsole(show or not dlgConsole:GetVisible())
+			dlgConsole.idEdit:SetFocus()
+		end
+	end
 
 end
