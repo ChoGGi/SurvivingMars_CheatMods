@@ -1,3 +1,6 @@
+v1.0
+Fix for fix for fix (thanks Psevd0_TEHb).
+
 v0.9
 Fix for fix...
 

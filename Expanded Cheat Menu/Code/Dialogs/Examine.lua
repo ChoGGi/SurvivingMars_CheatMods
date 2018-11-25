@@ -438,7 +438,11 @@ function Examine:idButDeleteObjOnPress()
 		S[302535920000414--[[Are you sure you wish to delete it?--]]],
 		function(answer)
 			if answer then
-				DeleteObject(self.obj_ref)
+				if IsValid(self.obj_ref) then
+					DeleteObject(self.obj_ref)
+				elseif obj.delete then
+					self.obj_ref:delete()
+				end
 			end
 		end,
 		S[697--[[Destroy--]]]
@@ -452,9 +456,11 @@ function Examine:idButDeleteAllOnPress()
 		function(answer)
 			if answer then
 				SuspendPassEdits("DestroyAllInObjlist")
-				for _, v in pairs(self.obj_ref) do
-					if IsValid(v) then
-						DeleteObject(v)
+				for _,obj in pairs(self.obj_ref) do
+					if IsValid(obj) then
+						DeleteObject(obj)
+					elseif obj.delete then
+						obj:delete()
 					end
 				end
 				ResumePassEdits("DestroyAllInObjlist")

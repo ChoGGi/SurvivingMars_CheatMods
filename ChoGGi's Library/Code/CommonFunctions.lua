@@ -3732,14 +3732,18 @@ function ChoGGi.ComFuncs.PlaceObjects_Toggle()
 end
 
 do -- AddScrollDialogXTemplates
+--[[
+ChoGGi.UserSettings.ScrollSelection = not ChoGGi.UserSettings.ScrollSelection
+--]]
 	-- get around to finishing this (scrollable selection panel)
 	local GetSafeAreaBox = GetSafeAreaBox
 	function ChoGGi.ComFuncs.AddScrollDialogXTemplates(obj)
 		local g_Classes = g_Classes
 
+		-- attach our scroll area to the XSizeConstrainedWindow
 		obj.idChoGGi_ScrollArea = g_Classes.XWindow:new({
 			Id = "idChoGGi_ScrollArea",
-		}, obj)
+		}, obj[1])
 
 		obj.idChoGGi_ScrollV = g_Classes.ChoGGi_SleekScroll:new({
 			Id = "idChoGGi_ScrollV",
@@ -3747,17 +3751,37 @@ do -- AddScrollDialogXTemplates
 			Dock = "left",
 		}, obj.idChoGGi_ScrollArea)
 
-		local safe = GetSafeAreaBox():maxy()
 		obj.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
 			Id = "idChoGGi_ScrollBox",
 			VScroll = "idChoGGi_ScrollV",
 			LayoutMethod = "VList",
-			MaxHeight = ((safe * ChoGGi.Temp.UIScale) / 2) - 25,
 		}, obj.idChoGGi_ScrollArea)
 
 		-- move content list to scrollarea
+		local con_height = obj.idContent.box:sizey()
 		obj.idContent:SetParent(obj.idChoGGi_ScrollBox)
 
+		-- limit height (or what's the point of scrolling)
+		local safe = GetSafeAreaBox():maxy()
+		-- get height of button areas
+		local y = 0.0
+		for i = 1, #obj[1] do
+			y = y + obj[1][i].box:sizey()
+		end
+		y = y + con_height
+
+		while y > safe do
+			y = y - 5
+		end
+
+		local scale = ChoGGi.Temp.UIScale
+		if scale > 0.7 then
+			y = ((y * ChoGGi.Temp.UIScale) / 2) - 32
+		end
+
+		obj.idChoGGi_ScrollBox:SetMaxHeight(y)
+
+--~ ex(obj)
 	end
 end -- do
 
