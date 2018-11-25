@@ -278,15 +278,15 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 	if not ChoGGi.Temp.MsgPopups then
 		ChoGGi.Temp.MsgPopups = {}
 	end
-	local g_Classes = g_Classes
-	-- build our popup
+
+	-- how many ms it stays open for
 	local timeout = 10000
 	if size then
-		timeout = 30000
+		timeout = 25000
 	end
 	local params = {
 		expiration = timeout,
---~		 {expiration = max_int},
+--~ 		 {expiration = max_int},
 --~		 dismissable = false,
 	}
 	-- if there's no interface then we probably shouldn't open the popup
@@ -306,7 +306,7 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 		image = type(tostring(icon):find(".tga")) == "number" and icon or StringFormat("%sUI/TheIncal.png",ChoGGi.LibraryPath)
 	}
 	table.set_defaults(data, params)
-	table.set_defaults(data, g_Classes.OnScreenNotificationPreset)
+	table.set_defaults(data, OnScreenNotificationPreset)
 	if objects then
 		if type(objects) ~= "table" then
 			objects = {objects}
@@ -321,29 +321,19 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 
 	-- and show the popup
 	CreateRealTimeThread(function()
-		local popup = g_Classes.OnScreenNotification:new({}, dlg.idNotifications)
+		local popup = OnScreenNotification:new({}, dlg.idNotifications)
 		popup:FillData(data, nil, params, params.cycle_objs)
 		popup:Open()
 		dlg:ResolveRelativeFocusOrder()
 		ChoGGi.Temp.MsgPopups[#ChoGGi.Temp.MsgPopups+1] = popup
 
-		-- large amount of text option (four long lines o' text, or is it five?)
+		-- large amount of text option (four long lines o' text)
 		if size then
-			--larger text limit
-			popup.idText.Margins = box(0,0,0,-500)
-			--resize title, or move it?
-			popup.idTitle.Margins = box(0,-20,0,0)
-			--check if this is doing something
-			Sleep(0)
-			--size/pos of background image
-			popup[1].scale = point(2800,2600)
-			popup[1].Margins = box(-5,-30,0,-5)
-			--update dialog size
-			popup:InvalidateMeasure()
-			--i don't care for sounds
---~			 if type(params.fx_action) == "string" and params.fx_action ~= "" then
---~				 PlayFX(params.fx_action)
---~			 end
+			local frame = ChoGGi.ComFuncs.GetParentOfKind(popup.idText, "XFrame")
+			if frame then
+				frame:SetMaxWidth(1000)
+			end
+			popup.idText:SetMaxHeight(250)
 		end
 	end)
 end

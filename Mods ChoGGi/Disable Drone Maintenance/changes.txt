@@ -1,3 +1,6 @@
+v0.9
+Fix for fix...
+
 v0.8
 Issue with re-enabling main (thanks mk-fg).
 

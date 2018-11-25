@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v4.0 (Unreleased)
+- Updated my large popup msgs to be smaller.
 
 ## v3.9 (24 Nov 2018)
 - Shift-Esc will close an in-focus dialog.
