@@ -163,19 +163,19 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.testing.TestTableIterate()
 			local list = MapGet(true)
-			TickStart("TestTableIterate1.Tick")
+			TickStart("TestTableIterate.1.Tick")
 			for _ = 1, 1000 do
 				for _ = 1, #list do
 				end
 			end
-			TickEnd("TestTableIterate1.Tick")
+			TickEnd("TestTableIterate.1.Tick")
 
-			TickStart("TestTableIterate2.Tick")
+			TickStart("TestTableIterate.2.Tick")
 			for _ = 1, 1000 do
 				for _,_ in ipairs(list) do
 				end
 			end
-			TickEnd("TestTableIterate2.Tick")
+			TickEnd("TestTableIterate.2.Tick")
 		end
 
 		function ChoGGi.testing.TestTableInsert()
@@ -267,9 +267,9 @@ function OnMsg.ClassesGenerate()
 			print("\n\n")
 			TickStart("TestRandomColour2.Total")
 			for _ = 1, amount or 5 do
-				TickStart("TestRandomColour2.Tick")
+				TickStart("TestRandomColour.2.Tick")
 				RandomColour2(100000)
-				TickEnd("TestRandomColour2.Tick")
+				TickEnd("TestRandomColour.2.Tick")
 			end
 			TickEnd("TestRandomColour2.Total")
 		end
@@ -287,12 +287,12 @@ function OnMsg.ClassesGenerate()
 			TickEnd("TestRandom.Tick")
 			print("Random:\n",values)
 
-			TickStart("Random1.Tick")
+			TickStart("Random.1.Tick")
 				values = {}
 				for i = 1, amount or 10000 do
 					values[i] = Random1(0,10000)
 				end
-			TickEnd("Random1.Tick")
+			TickEnd("Random.1.Tick")
 			print("Random1:\n",values)
 
 			TickEnd("TestRandom.Total")

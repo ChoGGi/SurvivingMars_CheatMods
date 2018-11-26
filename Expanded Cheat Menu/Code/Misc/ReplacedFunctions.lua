@@ -1311,7 +1311,7 @@ function OnMsg.ClassesBuilt()
 			"print(debug.getinfo(%s))"
 		},
 		{
-			-- @@anything
+			-- @@type
 			"^@@(.*)",
 			"print(type(%s))"
 		},
@@ -1328,16 +1328,18 @@ function OnMsg.ClassesBuilt()
 			"ChoGGi.ComFuncs.OpenInExamineDlg(%s)"
 		},
 		{
+			-- ~!obj_with_attachments
+			"^~!(.*)",
+			[[local attaches = ChoGGi.ComFuncs.GetAllAttaches(%s)
+			if #attaches > 0 then
+				ChoGGi.ComFuncs.OpenInExamineDlg(attaches)
+			end]]
+		},
+		{
 			-- &handle
 			"^&(.*)",
 			"ChoGGi.ComFuncs.OpenInExamineDlg(HandleToObject[%s])"
 		},
-		{
-			-- !!obj_with_attachments
-			"^!!(.*)",
-			"local o = (%s) local attaches = type(o) == 'table' and o.GetAttaches and o:GetAttaches() if attaches and #attaches > 0 then ChoGGi.ComFuncs.OpenInExamineDlg(attaches,true) end"
-		},
-
 		-- built-in
 		{
 			-- r* some function/cmd that needs a realtime thread
@@ -1345,20 +1347,20 @@ function OnMsg.ClassesBuilt()
 			"CreateRealTimeThread(function() %s end) return"
 		},
 		{
-			-- g* or a gametime
+			-- g* gametime
 			"^*g%s*(.*)",
 			"CreateGameTimeThread(function() %s end) return"
 		},
 		{
-			-- m* or a maprealtime
-			"^*g%s*(.*)",
+			-- m* maprealtime
+			"^*m%s*(.*)",
 			"CreateMapRealTimeThread(function() %s end) return"
 		},
-		-- something screenshot
-		{
-		"^SSA?A?0%d+ (.*)",
-		"ViewShot([[%s]])"
-		},
+--~ 		-- something screenshot
+--~ 		{
+--~ 		"^SSA?A?0%d+ (.*)",
+--~ 		"ViewShot([[%s]])"
+--~ 		},
 
 		-- prints out cmds entered I assume?
 		{
