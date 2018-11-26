@@ -74,8 +74,8 @@ end
 DefineClass.Examine = {
 	__parents = {"ChoGGi_Window"},
 
-	-- stores all opened examine dialogs
-	examine_dialogs = {},
+	-- store opened examine dialogs
+	examine_dialogs = false,
 	-- prefix some string to the title
 	prefix = false,
 	-- what we're examining
@@ -122,6 +122,8 @@ DefineClass.Examine = {
 }
 
 function Examine:Init(parent, context)
+	local g_Classes = g_Classes
+
 	self.obj = context.obj
 
 	-- workaround for ex_dia to examine something nil
@@ -129,8 +131,11 @@ function Examine:Init(parent, context)
 		self.obj = "nil"
 	end
 
+	-- something
+	g_Classes.Examine.examine_dialogs = g_Classes.Examine.examine_dialogs or {}
+
 	-- already examining, so focus and return
-	local ex_dia = Examine.examine_dialogs
+	local ex_dia = g_Classes.Examine.examine_dialogs
 	if ex_dia[self.obj] then
 		ex_dia[self.obj].idMoveControl:SetFocus()
 		return
@@ -138,7 +143,6 @@ function Examine:Init(parent, context)
 	ex_dia[self.obj] = self
 
 	local ChoGGi = ChoGGi
-	local g_Classes = g_Classes
 	local const = const
 
 	-- my popup func checks for ids and "refreshs" a popup with the same id, so random it is

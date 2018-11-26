@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v11.1 (Unreleased)
+## v11.2 (Unreleased)
+
+## v11.1 (26 Nov 2018)
 ### Added:
 - Game>Camera>Bird's Eye: How far up the camera can move.
 

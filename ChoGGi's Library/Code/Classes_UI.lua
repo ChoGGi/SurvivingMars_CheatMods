@@ -451,8 +451,9 @@ function ChoGGi_Window:AddElements()
 	local close = self.close_func or empty_func
 	self.idCloseX = g_Classes.ChoGGi_CloseButton:new({
 		OnPress = function(...)
-			if g_ExternalTextEditorActiveCtrl and g_ExternalTextEditorActiveCtrl.delete then
-				g_ExternalTextEditorActiveCtrl:delete()
+			local ext = g_ExternalTextEditorActiveCtrl
+			if ext and ext.delete then
+				ext:delete()
 				g_ExternalTextEditorActiveCtrl = false
 			end
 			close(...)

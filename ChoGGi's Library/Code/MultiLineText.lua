@@ -102,19 +102,19 @@ function ChoGGi_MultiLineTextDlg:idChkOverwriteOnChange()
 	end
 end
 function ChoGGi_MultiLineTextDlg:idOkayOnPress()
-	GetRootDialog(self):Close("ok",true)
+	GetRootDialog(self):Done("ok",true)
 end
 function ChoGGi_MultiLineTextDlg:idChkWraplinesOnChange(which)
 	ChoGGi.UserSettings.WordWrap = which
 	GetRootDialog(self).idEdit:SetWordWrap(which)
 end
 function ChoGGi_MultiLineTextDlg:idCancelOnPress()
-	GetRootDialog(self):Close("cancel",false)
+	GetRootDialog(self):Done("cancel",false)
 end
 
-function ChoGGi_MultiLineTextDlg:Close(result,answer)
+function ChoGGi_MultiLineTextDlg:Done(result,answer)
 	if self.retfunc then
 		self.retfunc(answer,self.overwrite,self)
 	end
-	ChoGGi_Window.Close(self,result)
+	ChoGGi_Window.Done(self,result)
 end

@@ -268,7 +268,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi_MonitorInfoDlg:Done()
 		DeleteThread(self.refreshing_thread)
-		Window.Done(self)
+		FrameWindow.Done(self)
 	end
 
 end
