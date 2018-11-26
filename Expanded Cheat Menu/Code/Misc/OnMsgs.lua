@@ -316,7 +316,19 @@ function OnMsg.ModsReloaded()
 		end
 
 		-- build console buttons
+		local dlgConsole = dlgConsole
 		if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
+			dlgConsole.idEdit.RolloverTemplate = "Rollover"
+			dlgConsole.idEdit.RolloverTitle = StringFormat("%s %s",S[302535920001073--[[Console--]]],S[487939677892--[[Help--]]])
+			dlgConsole.idEdit.RolloverText = S[302535920001440--[["~obj opens object in examine dialog.
+~!obj opens an objlist of attachments for object in examine.
+&handle examines object with that handle.
+@GetMissionSponsor prints info about the function.
+@@EntityData prints type(EntityData).
+$123 or $EffectDeposit.display_name prints translated string.
+""*r Sleep(1000) print(""sleeping"")"" or *g to wrap commands in a thread.
+!UICity.labels.TerrainDeposit[1] to move camera and select obj."--]]]
+			dlgConsole.idEdit.Hint = S[302535920001439--[["~obj, @func,@@type,$id, *r/*g for threads"--]]]
 			dlgConsole.ChoGGi_MenuAdded = true
 			ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		end

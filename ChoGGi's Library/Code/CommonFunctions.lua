@@ -4193,15 +4193,18 @@ function ChoGGi.ComFuncs.ToggleCollisions(cls)
 	ResumePassEdits("ToggleCollisions")
 end
 
--- any png files in AppData/Logos folder will be added to mod as converted logo files
--- they have to be min of 8bit, and will be resized to power of 2.
--- this doesn't add anything to metadata/items, it only converts files.
--- ConvertImagesToLogoFiles(Mods.ExampleId,".tga")
---~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.ChoGGi_XXXXXXXXXX)
+-- Any png files in AppData/Logos folder will be added to mod as converted logo files.
+-- They have to be min of 8bit, and will be resized to power of 2.
+-- This doesn't add anything to metadata/items, it only converts files.
+--~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles("MOD_ID")
+--~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.MOD_ID,".tga")
 function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod,ext)
 	if blacklist then
 		print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ConvertImagesToLogoFiles"))
 		return
+	end
+	if type(mod) == "string" then
+		mod = Mods[mod]
 	end
 	local images = ChoGGi.ComFuncs.RetFilesInFolder("AppData/Logos",ext or ".png")
 	if images then
@@ -4350,6 +4353,7 @@ function ChoGGi.ComFuncs.SetTableValue(tab,id,id_name,item,value)
 end
 
 do --
+	local objlist = objlist
 	local attaches = {}
 	local attaches_idx
 	local count = 0
@@ -4391,8 +4395,9 @@ do --
 		if not IsValid(obj) then
 			return attaches
 		end
-		-- we don't clear as we want to return a new table each time
-		attaches_idx = {}
+
+		-- we use objlist instead of plain table for delete all in examine
+		attaches_idx = objlist:new()
 		count = 0
 		obj_cls = obj.class
 

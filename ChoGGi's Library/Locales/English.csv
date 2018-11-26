@@ -1,6 +1,13 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001439,,
-302535920001440,,
+302535920001439,"~obj, @func,@@type,$id, *r/*g for threads",
+302535920001440,"~obj opens object in examine dialog.
+~!obj opens an objlist of attachments for object in examine.
+&handle examines object with that handle.
+@GetMissionSponsor prints info about the function.
+@@EntityData prints type(EntityData).
+$123 or $EffectDeposit.display_name prints translated string.
+""*r Sleep(1000) print(""sleeping"")"" or *g or *m to wrap commands in a thread.
+!UICity.labels.TerrainDeposit[1] to move camera and select obj.",
 302535920001441,,
 302535920001442,,
 302535920001443,,
