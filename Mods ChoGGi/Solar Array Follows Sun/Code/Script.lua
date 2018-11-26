@@ -66,6 +66,8 @@ GlobalGameTimeThread("SolarArrayOrientation", function()
 	local update_interval = 3*const.MinuteDuration
 	while true do
 		if not rawget(_G,"SolarArraysOrientToSun") then
+			DeleteThread(SolarArrayOrientation,true)
+			_G.SolarArraysOrientToSun = nil
 			break
 		end
 		Sleep(update_interval)

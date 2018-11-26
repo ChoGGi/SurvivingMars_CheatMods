@@ -228,7 +228,7 @@ function ChoGGi_ExecCodeDlg:idEditOnKbdKeyDown(vk)
 	return ChoGGi_TextInput.OnKbdKeyDown(self.idEdit, vk)
 end
 
-function Examine:Done(result,...)
+function ChoGGi_ExecCodeDlg:Done(result,...)
 	-- kill off external editor stuff?
 	if self.idEdit == g_ExternalTextEditorActiveCtrl then
 		g_ExternalTextEditorActiveCtrl = false

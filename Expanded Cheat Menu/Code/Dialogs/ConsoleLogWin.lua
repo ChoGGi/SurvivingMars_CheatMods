@@ -135,18 +135,6 @@ function ChoGGi_ConsoleLogWin:SetTranspMode(toggle)
 end
 dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false
 
-function ChoGGi_ConsoleLogWin:Done(result)
-	local ChoGGi = ChoGGi
-	-- closing means user doesn't want to see it next time (probably)
-	ChoGGi.UserSettings.ConsoleHistoryWin = false
-	dlgChoGGi_ConsoleLogWin = false
-	ChoGGi.SettingFuncs.WriteSettings()
-	-- save the dimensions
-	ChoGGi.UserSettings.ConsoleLogWin_Pos = self:GetPos()
-	ChoGGi.UserSettings.ConsoleLogWin_Size = self:GetSize()
-	ChoGGi_Window.Done(self,result)
-end
-
 function OnMsg.ConsoleLine(text, bNewLine)
 	local dlg = dlgChoGGi_ConsoleLogWin
 	if dlg then
@@ -164,4 +152,16 @@ function OnMsg.ConsoleLine(text, bNewLine)
 		-- update thumb scroll length
 		dlg.idScrollV:SetScrollRange(0, #text)
 	end
+end
+
+function ChoGGi_ConsoleLogWin:Done(result)
+	local ChoGGi = ChoGGi
+	-- closing means user doesn't want to see it next time (probably)
+	ChoGGi.UserSettings.ConsoleHistoryWin = false
+	dlgChoGGi_ConsoleLogWin = false
+	ChoGGi.SettingFuncs.WriteSettings()
+	-- save the dimensions
+	ChoGGi.UserSettings.ConsoleLogWin_Pos = self:GetPos()
+	ChoGGi.UserSettings.ConsoleLogWin_Size = self:GetSize()
+	ChoGGi_Window.Done(self,result)
 end
