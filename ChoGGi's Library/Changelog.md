@@ -1,8 +1,10 @@
 ## Library Changelog
 
 ## v4.1 (Unreleased)
+- You can now paste RGB(0,0,0) or RGBA(0,0,0,0) into the colour modifier.
+- Pressing enter after entering text in the value textbox in the list dialogs will fire the ok button.
 
-## v4.0 (Unreleased)
+## v4.0 (24 Nov 2018)
 - A setting that caused a few different issues...
 - Updated my large popup msgs to be smaller.
 

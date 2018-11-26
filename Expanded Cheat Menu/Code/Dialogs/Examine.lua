@@ -681,7 +681,7 @@ function Examine:BuildToolsMenuPopup()
 This can take time on something like the "Building" metatable--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
-				local str = ValueToLuaCode(self.obj_ref)
+				local str = ObjPropertyListToLuaCode(self.obj_ref)
 				ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),nil,"DumpedExamineObject","lua")
 			end,
 		},
@@ -715,7 +715,8 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
-				local str = ValueToLuaCode(self.obj_ref)
+--~ 				local str = ValueToLuaCode(self.obj_ref)
+				local str = ObjPropertyListToLuaCode(self.obj_ref)
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 					parent = self,
 					checkbox = true,
@@ -769,6 +770,21 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj_ref,self)
+			end,
+		},
+		{
+			name = S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
+			hint = S[302535920001433--[[Fiddle with object angle/axis/pos and so forth.--]]],
+			image = "CommonAssets/UI/Menu/Axis.tga",
+			clicked = function()
+				if ChoGGi.testing then
+				ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(self.obj_ref,self)
+				else
+					MsgPopup(
+						"Ain't done yet...",
+						S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]])
+					)
+				end
 			end,
 		},
 		{
@@ -832,7 +848,7 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 		},
 		{
 			name = S[302535920000682--[[Change Entity--]]],
-			hint = S[S[302535920001151--[[Set Entity For %s--]]]:format(self.name)],
+			hint = S[302535920001151--[[Set Entity For %s--]]]:format(self.name),
 			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.ObjectSpawner(self.obj_ref,true,7)
@@ -1698,12 +1714,12 @@ local function PopupClose(name)
 	end
 end
 
-function Examine:Done(result)
+function Examine:Done(result,...)
 	DeleteThread(self.autorefresh_thread)
 	PopupClose(self.idAttachesMenu)
 	PopupClose(self.idParentsMenu)
 	PopupClose(self.idToolsMenu)
 	Examine.examine_dialogs[self.obj] = nil
 	Examine.examine_dialogs[self.obj_ref] = nil
-	ChoGGi_Window.Done(self,result)
+	ChoGGi_Window.Done(self,result,...)
 end

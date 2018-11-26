@@ -7,10 +7,18 @@
 ### Added:
 - Game>Camera>Bird's Eye: How far up the camera can move.
 
+### Changed:
+- The Incal is the new background image for the onscreen msgs.
+- Clicking the toolbar icon in examine will move the camera to the object.
+- Exec Code:
+- > Added code highlighter plugin.
+- > Added External Editor button (press to toggle updating).
+- > By default it uses notepad, you'll need to manually change UserSettings.ExternalEditorCmd for your editor.
+- > It should support any OS, since it calls os.execute(cmd).
+
 ### Fixed:
 - Colour Modifier: All of type didn't work on new markers.
 - Examine delete wasn't deleting XWindows.
-- SetCameraSettings issue (thanks Razunter).
 
 ## v11.0 (24 Nov 2018)
 ### Added:

@@ -46,7 +46,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 
 	self.obj_name = RetName(context.obj)
 	self.obj = context.obj
-	self.title = StringFormat("%s: %s",S[302535920000471--[[Object Manipulator--]]],self.obj_name)
+	self.title = StringFormat("%s %s: %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]],self.obj_name)
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)

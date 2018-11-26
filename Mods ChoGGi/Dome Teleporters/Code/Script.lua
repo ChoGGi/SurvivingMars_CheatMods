@@ -2,11 +2,16 @@
 
 local IsValid = IsValid
 local Sleep = Sleep
+local SetRollPitchYaw = SetRollPitchYaw
+local PlayFX = PlayFX
 local CalcOrientation = CalcOrientation
 local CreateDomeNetworks = CreateDomeNetworks
 local ConnectDomesWithPassage = ConnectDomesWithPassage
+local IsObjInDome = IsObjInDome
+local SetState = g_CObjectFuncs.SetState
 local TableRemove = table.remove
 local TableFind = table.find
+local TableClear = table.clear
 
 local function RemoveTableItem(list,name,value)
 	local idx = TableFind(list, name, value)
@@ -44,7 +49,7 @@ function OnMsg.ClassesPostprocess()
 			"on_off_button",true,
 			"prio_button", true,
 			"entity","RechargeStation",
-			"demolish_sinking", range(5, 10),
+			"demolish_sinking", range(0,0),
 
 			"construction_mode", "dome_teleporter_construction",
 			"ip_template", "ipBuilding",
@@ -83,11 +88,8 @@ DomeTeleporter.MergeGrids = empty_func
 DomeTeleporter.CleanTunnelMask = empty_func
 DomeTeleporter.CreateElectricityElement = ElectricityConsumer.CreateElectricityElement
 -- passage stuff
---~ DomeTeleporter.AddSupplyTunnel = Passage.AddSupplyTunnel
 DomeTeleporter.DisconnectDomes = Passage.DisconnectDomes
 DomeTeleporter.CleanHackedPotentials = Passage.CleanHackedPotentials
---~ DomeTeleporter.SupplyGridConnectElement = empty_func
---~ DomeTeleporter.UpdateElectricityAvailability = empty_func
 
 local function StartStopSpinner(obj,working)
 	DeleteThread(obj.spinner_toggle_thread)
@@ -123,11 +125,14 @@ function DomeTeleporter:GameInit()
 
 	-- passage stuff
 	self:Notify("TryConnectDomes")
+	self.traversing_colonists = empty_table
 
 	-- slightly smaller
 	self:SetScale(75)
 
-	self:MoveInside(self.parent_dome)
+	if IsValid(self.parent_dome) then
+		self:MoveInside(self.parent_dome)
+	end
 
 	--remove LampGroundOuter_01
 	DelayedCall(0,function()
@@ -145,15 +150,10 @@ function DomeTeleporter:GameInit()
 			self.rotating_thing:SetColorizationMaterial(2, -10986395, 120, 20)
 			self.rotating_thing:SetColorizationMaterial(3, -11436131, -128, 48)
 			StartStopSpinner(self,self.working)
-
---~ 			a:SetScale(100)
-
 --~ DefenceLaserBeam 10
 --~ DefenceTurretPlatform 50
 --~ DroneHubRobots 80
 --~ :SetAttachOffset(point(200,00,80))
-
-
 		end)
 	end)
 
@@ -175,17 +175,14 @@ function DomeTeleporter:Done()
 	end
 end
 
-function DomeTeleporter:OnDemolish()
-	StartStopSpinner(self,false)
-	-- needs to be empty for Passage
-	self.elements = empty_table
-	Passage.OnDemolish(self)
-	Building.OnDemolish(self)
+-- Tunnel
+function DomeTeleporter:OnDestroyed()
+	self:CleanTunnelMask()
+	ElectricityGridObject.OnDestroyed(self)
 end
 
 function DomeTeleporter:OnSetWorking(working,...)
-	Tunnel.OnSetWorking(self,working,...)
-	ElectricityConsumer.OnSetWorking(self, working)
+	BaseBuilding.OnSetWorking(self,working,...)
 	-- maybe make it look a little cleaner when somebody toggles it a bunch
 	StartStopSpinner(self,working)
 
@@ -196,7 +193,7 @@ end
 
 function DomeTeleporter:TryConnectDomes()
 	-- check if passage is constructed
-	if self.domes_connected then
+	if self.domes_connected or not IsValid(self.parent_dome) then
 		return
 	end
 
@@ -217,7 +214,7 @@ function DomeTeleporter:TryConnectDomes()
 	--first and last element should have the domes we need to connect
 	local d1 = self.elements[1] and self.elements[1].dome
 	local d2 = self.elements[#self.elements] and self.elements[#self.elements].dome
-	assert(d1 and d2)
+
 	ConnectDomesWithPassage(d1, d2)
 	self.domes_connected = {d1, d2}
 	CreateDomeNetworks(self.city or UICity)
@@ -239,6 +236,7 @@ local function AliceGaveUpTheCokeHabit(unit)
 --~ The better I like her the better I feed her
 --~ The better I feed her the bigger the figure
 --~ The bigger the figure the more I can love
+	Sleep(500)
 	local num = 1
 	while num ~= 100 do
 		unit:SetScale(num)
@@ -247,11 +245,25 @@ local function AliceGaveUpTheCokeHabit(unit)
 	end
 end
 
-local SetState = g_CObjectFuncs.SetState
+-- makes units step onto the porters
+local GetEntranceFallback = WaypointsObj.GetEntranceFallback
+function DomeTeleporter:GetEntranceFallback()
+	-- needs be false for func
+	self.entrance_fallback = false
+	GetEntranceFallback(self)
+	return {
+		self:GetPos(),
+		self.entrance_fallback[2],
+	}, self.entrance_fallback[2]
+end
+
+local times36060 = 360*60
 
 -- no go unless both work
-function DomeTeleporter:TraverseTunnel(unit, start_point, end_point, param)
+function DomeTeleporter:TraverseTunnel(unit, start_point, exit_point, param)
+
 	if self.working and self.linked_obj.working and IsValid(self) and IsValid(self.linked_obj) then
+		PlayFX("MysteryDream", "end", self)
 		PlayFX("MysteryDream", "start", self)
 
 	--~ 	Tunnel.TraverseTunnel()
@@ -263,13 +275,13 @@ function DomeTeleporter:TraverseTunnel(unit, start_point, end_point, param)
 			SetState(self.platform, "chargingStart")
 			SetState(self.platform, "chargingIdle")
 
-			local angle = CalcOrientation(self:GetVisualPos(), unit:GetVisualPos())
-			self.platform:SetAngle(angle - self:GetAngle(), 100)
-			unit:Face(self.platform, 500)
+			-- needs to happen before TraverseTunnel
+--~ 			local angle = CalcOrientation(self:GetVisualPos(), unit:GetVisualPos())
+--~ 			self.platform:SetAngle(angle - self:GetAngle(), 100)
+--~ 			unit:Face(self.platform, 500)
 
-
-			local entrance, start_point = self:GetEntrance(self)
-			local exit, exit_point = linked_obj:GetEntrance()
+			local entrance = self:GetEntranceFallback()
+			local exit = linked_obj:GetEntranceFallback()
 			local tunnel_len = entrance[1]:Dist2D(exit[1])
 			-- halfies ( / 2 )
 			local travel_time = (self.travel_time_per_hex * tunnel_len / const.GridSpacing) / 2
@@ -311,26 +323,31 @@ function DomeTeleporter:TraverseTunnel(unit, start_point, end_point, param)
 				end
 
 				if IsValid(unit) and IsValid(linked_obj) then
-					SetState(linked_obj.platform, "chargingIdle")
-					PlayFX("MysteryDream", "start", linked_obj)
-					unit:ExitBuilding(linked_obj)
-					unit:SetScale(100)
---~ 					AliceGaveUpTheCokeHabit(unit)
-					SetState(linked_obj.platform, "chargingEnd")
-					SetState(self.platform, "chargingEnd")
+					linked_obj:ExitTunnel(unit,self)
 				end
 			elseif IsValid(self) then
-				SetState(self.platform, "chargingIdle")
-				PlayFX("MysteryDream", "start", self)
-				unit:ExitBuilding(self)
-				unit:SetScale(100)
---~ 				AliceGaveUpTheCokeHabit(unit)
-				SetState(self.platform, "chargingEnd")
+				self:ExitTunnel(unit)
 			end
 
 		end)
 
 		unit:PopAndCallDestructor()
 		return true
+	end
+end
+
+function DomeTeleporter:ExitTunnel(unit,other)
+	PlayFX("MysteryDream", "end", self)
+	PlayFX("MysteryDream", "start", self)
+	Sleep(100)
+	SetState(self.platform, "chargingIdle")
+	SetRollPitchYaw(self,0,0,self:Random(times36060),600)
+	Sleep(650)
+--~ 	AliceGaveUpTheCokeHabit(unit)
+	unit:SetScale(100)
+	unit:ExitBuilding(self)
+	SetState(self.platform, "chargingEnd")
+	if other then
+		SetState(other.platform, "chargingEnd")
 	end
 end

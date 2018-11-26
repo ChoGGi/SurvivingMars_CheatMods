@@ -30,6 +30,7 @@ function OnMsg.LoadGame()
 	-- i probably need to do this since i load mods in the main menu and it's a GlobalGameTimeThread
 	RestartGlobalGameTimeThread("SolarArrayOrientation")
 end
+
 function OnMsg.CityStart()
 	CreateRealTimeThread(function()
 		WaitMsg("MarsResume")
@@ -40,18 +41,17 @@ end
 local MinuteDuration = const.MinuteDuration
 function SolarArraysOrientToSun(anim_time)
 	anim_time = anim_time or MinuteDuration
+	-- 18250 matches them up with the other panels (I assume they rotate on a diff angle or something)
 	local azi = SunToSolarPanelAngle(GetSunPos()) + 18250
 	local arrays = UICity.labels.SolarArray or ""
 	for i = 1, #arrays do
 		local array = arrays[i]
 		local art_sun = array.artificial_sun and array.artificial_sun:GetPos()
---~ 		local array_pos = array:GetPos()
 		for j = 1, #array.ChoGGi_panels do
 			local panel_obj = array.ChoGGi_panels[j]
 
 			if array:IsAffectedByArtificialSun() then
 				local angle = CalcOrientation(panel_obj:GetPos(), art_sun)
---~ 				local angle = CalcOrientation(array_pos, art_sun)
 				panel_obj:SetAngle(angle+90*60, anim_time)
 			else
 				panel_obj:SetAngle(azi, anim_time)

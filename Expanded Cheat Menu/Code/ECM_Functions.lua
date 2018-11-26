@@ -5,6 +5,7 @@ local TableFind = table.find
 local TableClear = table.clear
 local TableSort = table.sort
 local Sleep = Sleep
+local IsValid = IsValid
 
 local getinfo
 local debug = rawget(_G,"debug")
@@ -321,14 +322,24 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(obj,parent)
-		if not obj then
-			obj = ChoGGi.ComFuncs.SelObject()
-		end
+		obj = obj or ChoGGi.ComFuncs.SelObject()
 		if not obj then
 			return
 		end
 
 		return ChoGGi_ObjectManipulatorDlg:new({}, terminal.desktop,{
+			obj = obj,
+			parent = parent,
+		})
+	end
+
+	function ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(obj,parent)
+		obj = IsValid(obj) and obj or ChoGGi.ComFuncs.SelObject()
+		if not obj then
+			return
+		end
+
+		return ChoGGi_3DManipulatorDlg:new({}, terminal.desktop,{
 			obj = obj,
 			parent = parent,
 		})

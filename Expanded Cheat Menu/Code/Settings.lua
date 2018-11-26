@@ -97,6 +97,10 @@ function OnMsg.ClassesGenerate()
 		EnableToolTips = true,
 		-- how often we update when auto-refresh is turned on
 		ExamineRefreshTime = 1000,
+		-- what cmd/editor to use with os.execute(cmd) when doing external editing
+		ExternalEditorCmd = "notepad \"%s\"",
+		-- where to store temp file
+		ExternalEditorPath = "AppData/EditorPlugin/",
 		-- blinky blink
 		FlashExamineObject = true,
 		-- dumps the log to disk on startup, and every new Sol (good for some crashes)
@@ -153,6 +157,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.Defaults.SkipMissingDLC = true
 		--
 		ChoGGi.Defaults.StopSelectionPanelResize = true
+		ChoGGi.Defaults.ExternalEditorCmd = "scite \"%s\""
 	end
 
 	-- set game values to saved values

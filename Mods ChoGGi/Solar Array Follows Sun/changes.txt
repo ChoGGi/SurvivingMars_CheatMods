@@ -1,0 +1,2 @@
+v0.2
+Minor update to remove some spam in the log if you remove this mod and keep playing the save.
