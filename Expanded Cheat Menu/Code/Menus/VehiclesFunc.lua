@@ -1100,7 +1100,6 @@ function OnMsg.ClassesGenerate()
 
 	do -- ChangeResupplySettings
 		local function CheckResupplySetting(cargo_val,name,value,meta)
-			local ChoGGi = ChoGGi
 			if ChoGGi.Tables.CargoPresets[name][cargo_val] == value then
 				ChoGGi.UserSettings.CargoSettings[name][cargo_val] = nil
 			else
@@ -1161,6 +1160,7 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.MenuFuncs.ChangeResupplySettings()
 			local Cargo = ChoGGi.Tables.Cargo or ""
+			local CargoPresets = ChoGGi.Tables.CargoPresets or ""
 
 			local ItemList = {}
 			for i = 1, #Cargo do
@@ -1178,7 +1178,6 @@ function OnMsg.ClassesGenerate()
 
 				if choice[1].check1 then
 					ChoGGi.UserSettings.CargoSettings = nil
-					local CargoPresets = ChoGGi.Tables.CargoPresets or ""
 
 					for cargo_id,cargo in pairs(Cargo) do
 						cargo.pack = CargoPresets[cargo_id].pack

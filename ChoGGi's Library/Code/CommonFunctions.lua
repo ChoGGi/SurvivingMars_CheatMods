@@ -404,7 +404,36 @@ do -- ShowObj
 		obj:SetColorModifier(color or green)
 	end
 
-	function ChoGGi.ComFuncs.ShowPoints(obj, color, time, both)
+	local function AddSphere(pt,color)
+		if not pt:z() then
+			xyz_str = xy0_str
+		end
+		local xyz = xyz_str:format(pt:xyz())
+		if not markers[xyz] then
+			local sphere = ChoGGi_Sphere:new()
+			sphere:SetPos(pt)
+			sphere:SetRadius(50 * guic)
+			sphere:SetColor(color)
+			markers[xyz] = sphere
+		end
+	end
+
+	function ChoGGi.ComFuncs.ShowPoint(obj, color)
+		color = color or green
+		-- single pt
+		if IsPoint(obj) and InvalidPos ~= obj then
+			AddSphere(obj,color)
+			return
+		end
+		-- obj pt
+		if IsValid(obj) then
+			local pt = obj:GetVisualPos()
+			if IsValid(obj) and InvalidPos ~= pt then
+				AddSphere(pt,color)
+				return
+			end
+		end
+		-- two points
 		if type(obj) ~= "table" then
 			return
 		end
@@ -429,18 +458,7 @@ do -- ShowObj
 
 		local pt = is_point and obj or vis_pos
 		if pt and pt ~= InvalidPos and not markers[pt] then
-			-- xy/xyz eh
-			if not pt:z() then
-				xyz_str = xy0_str
-			end
-			local xyz = xyz_str:format(pt:xyz())
-			if not markers[xyz] then
-				local sphere = ChoGGi_Sphere:new()
-				sphere:SetPos(pt)
-				sphere:SetRadius(50 * guic)
-				sphere:SetColor(color)
-				markers[xyz] = sphere
-			end
+			AddSphere(pt,color)
 		end
 
 		if is_valid and not skip_colour then
@@ -674,7 +692,7 @@ function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,con
 			CheckText(text,S[3718--[[NONE--]]]),
 			CheckText(ok_msg,S[6878--[[OK--]]]),
 			CheckText(cancel_msg,S[6879--[[Cancel--]]]),
-			image,
+			image or StringFormat("%sUI/message_picture_01.png",ChoGGi.LibraryPath),
 			context
 		) == "ok" then
 			if func then
@@ -1088,13 +1106,15 @@ end
 --[[
 get around to merging some of these types into funcs?
 
-custom_type = 1 : updates selected item with custom value type, hides ok/cancel buttons, dblclick fires custom_func with {self.sel}, and sends back all items on ok
+> 1 = updates selected item with custom value type
+custom_type = 1 : hides ok/cancel buttons, dblclick fires custom_func with {self.sel}, and sends back all items on ok
 custom_type = 2 : colour selector
-custom_type = 3 : updates selected item with custom value type, and sends back selected item.
-custom_type = 4 : updates selected item with custom value type, and sends back all items
+custom_type = 3 : sends back selected item.
+custom_type = 4 : sends back all items
 custom_type = 5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
 custom_type = 6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
 custom_type = 7 : dblclick fires custom_func with {self.sel} (wrapped in a table, so we can use CallBackFunc for either)
+?
 custom_type = 8 : same as 7, but dbl rightclick fires custom_func, and dbl click fires ok as normally
 
 ChoGGi.ComFuncs.OpenInListChoice{
@@ -1129,7 +1149,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 	local list_table = type(list) == "table"
 	local items_table = type(list_table and list.items) == "table"
 	if not list_table or list_table and not items_table or items_table and #list.items < 1 then
-		print(S[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.--]]],"\n",list,"\n",list and ValueToLuaCode(list))
+		print(S[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.--]]],"\n",list,"\n",list and ObjPropertyListToLuaCode(list))
 		return
 	end
 
@@ -3300,8 +3320,8 @@ end -- do
 
 local AddXTemplateNew = function(xt,name,pos,list)
 	if not xt or not name or not list then
-		local ValueToLuaCode = ValueToLuaCode
-		print(S[302535920001383--[[AddXTemplate borked template name: %s template: %s list: %s--]]]:format(name and ValueToLuaCode(name),template and ValueToLuaCode(template),list and ValueToLuaCode(list)))
+		local f = ObjPropertyListToLuaCode
+		print(S[302535920001383--[[AddXTemplate borked template name: %s template: %s list: %s--]]]:format(name and f(name),template and f(template),list and f(list)))
 		return
 	end
 	local stored_name = StringFormat("ChoGGi_Template_%s",name)

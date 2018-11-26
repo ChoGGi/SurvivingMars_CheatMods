@@ -137,6 +137,7 @@ Press Enter to show all items."--]]],
 
 Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]],
 			Hint = S[302535920000078--[[Add Custom Value--]]],
+			OnKbdKeyDown = self.idEditValueOnKbdKeyDown
 		}, self.idEditArea)
 	end
 
@@ -323,8 +324,17 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(pt,button,...)
 end
 
 function ChoGGi_ListChoiceDlg:idListOnKbdKeyUp(...)
-	g_Classes.ChoGGi_List.OnKbdKeyUp(...)
+	ChoGGi_List.OnKbdKeyUp(...)
 	GetRootDialog(self):idListOnSelect("L")
+end
+
+function ChoGGi_ListChoiceDlg:idEditValueOnKbdKeyDown(vk,...)
+	self = GetRootDialog(self)
+	if vk == const.vkEnter then
+		self.idOK:Press()
+		return "break"
+	end
+	return ChoGGi_TextInput.OnKbdKeyDown(self.idEditValue,vk,...)
 end
 
 function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
@@ -335,11 +345,30 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	end
 	self.old_edit_value = text
 
-	local value,value_type = RetProperType(text)
+	local value,value_type
+	local temp_text = text
+	-- if user pastes an rgb or rgba func translate to colour
+	if text:sub(1,3) == "RGB" then
+		local g = ChoGGi.Temp._G or _G
+		local str = "ChoGGi.Temp.ListChoice_Colour = %s"
+		g.procall(g.load(str:format(temp_text),nil, nil, g))
+
+		value,value_type = RetProperType(ChoGGi.Temp.ListChoice_Colour)
+		if value_type == "number" then
+			temp_text = value
+		else
+			value,value_type = RetProperType(temp_text)
+		end
+	else
+		value,value_type = RetProperType(temp_text)
+	end
+
 --~ 	printC(text,value)
 	if self.custom_type > 0 then
+		-- update the item's value
+		self.idList[self.idList.focused_item].item.value = value
+		-- colour editor stuff
 		if self.idList.focused_item and self.idColourContainer then
-			self.idList[self.idList.focused_item].item.value = value
 			-- update obj colours
 			self:UpdateColour()
 			if value_type == "number" then
@@ -349,7 +378,7 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	else
 		-- last item is a blank item for custom value
 		self.items[#self.items] = {
-			text = text,
+			text = temp_text,
 			value = value,
 			hint = 302535920000079--[[< Use custom value--]],
 		}
@@ -362,9 +391,25 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	end
 end
 
+local item_icon_table = {"Resources","BuildingTemplates","g_Classes"}
+function ChoGGi_ListChoiceDlg:AddItemIcon(g,item)
+	for i = 1, 3 do
+		local list = g[item_icon_table[i]]
+		if list[item.value] and list[item.value].display_icon ~= "" then
+			item.icon = list[item.value].display_icon
+			return true,item.value
+		elseif list[item.text] and list[item.text].display_icon ~= "" then
+			item.icon = list[item.text].display_icon
+			return true,item.text
+		end
+	end
+end
+
 function ChoGGi_ListChoiceDlg:BuildList()
+	local g = _G
 	local g_Classes = g_Classes
 	local bt = BuildingTemplates
+	local res = Resources
 
 	self.idList:Clear()
 	for i = 1, #self.items do
@@ -380,17 +425,14 @@ function ChoGGi_ListChoiceDlg:BuildList()
 				display_icon = true
 				text = item.text
 			end
-		elseif bt[item.value] and bt[item.value].display_icon ~= "" then
-			item.icon = bt[item.value].display_icon
-			display_icon = true
-			text = item.value
-		elseif bt[item.text] and bt[item.text].display_icon ~= "" then
-			item.icon = bt[item.text].display_icon
-			display_icon = true
-			text = item.text
 		else
-			text = item.text
+			display_icon,text = self:AddItemIcon(g,item)
+
+			if not text then
+				text = item.text
+			end
 		end
+
 		--
 		local listitem = self.idList:CreateTextItem(text)
 

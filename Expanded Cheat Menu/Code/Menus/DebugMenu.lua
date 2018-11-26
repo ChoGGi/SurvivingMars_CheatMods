@@ -164,7 +164,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000471--[[Object Manipulator--]]],
+	Actions[c] = {ActionName = StringFormat("%s %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Manipulator",
 		ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",

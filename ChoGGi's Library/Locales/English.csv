@@ -1,11 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001432,,
-302535920001433,,
-302535920001434,,
-302535920001435,,
-302535920001436,,
-302535920001437,,
-302535920001438,,
 302535920001439,,
 302535920001440,,
 302535920001441,,
@@ -22,6 +15,10 @@ ID,Text,Translation,Old Translation,Gender
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
 302535920000104,Expanded CM,
+302535920001432,%s %s 3D,
+302535920001433,Fiddle with object angle/axis/pos and so forth.,
+302535920000093,Go to Obj,
+302535920000094,View/select object on map.,
 302535920000865,Toggle Trans,
 302535920001110,Spawned entity object,
 302535920001366,Delete Small Rocks,
@@ -81,7 +78,6 @@ ID,Text,Translation,Old Translation,Gender
 302535920000555,Monitor Info,
 302535920000033,Post a request on Nexus or Github or send an email to: %s,
 302535920001092,Pins,
-302535920000471,Object Manipulator,
 302535920000004,Dump,
 302535920000201,Active,
 302535920000001,"F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
@@ -293,6 +289,14 @@ Which you can then mess around with some more in the console.",
 302535920000070,"Shows list of attachments. This %s has %s.
 
 Press %s to hide green markers.",
+302535920001437,Reads file when you focus on the edit box (instead of pressing Read File).,
+302535920001438,Focus Update,
+302535920000471,External Editor,
+302535920001434,"Use an external editor (see settings for editor cmd).
+Updates external file when you type in editor (only updates text when you use Read File).
+Press again to toggle updating.",
+302535920001435,Read File,
+302535920001436,Update editor text with text from %stempedit.lua.,
 302535920000040,Exec Code,
 302535920000072,"Paste or type code to be executed here, ChoGGi.CurObj is the examined object (ignored when opened from Console).
 Press Ctrl-Enter or Shift-Enter to execute code.",
@@ -321,8 +325,6 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 302535920000089,Nothing left,
 302535920000091,Auto-refresh list every second (turn off to edit values).,
 302535920000092,Updates list with any changed values.,
-302535920000093,Go to Obj,
-302535920000094,View/select object on map.,
 302535920000095,New Entry,
 302535920000096,Enter the name of the new entry to be added.,
 302535920000097,New Value,

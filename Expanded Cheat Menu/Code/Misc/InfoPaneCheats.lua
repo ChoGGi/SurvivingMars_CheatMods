@@ -381,7 +381,7 @@ function Object:CheatAttachSpots()
 	ChoGGi.ComFuncs.AttachSpots_Toggle(self)
 end
 
-function Building:CheatDestroy()
+local function CheatDestroy(self)
 	local ChoGGi = ChoGGi
 	local name = RetName(self)
 	local obj_type
@@ -405,6 +405,10 @@ function Building:CheatDestroy()
 
 			self.can_demolish = true
 			self.indestructible = false
+			self.demolishing_countdown = 0
+			self.demolishing = true
+			self:DoDemolish()
+			-- probably not needed
 			DestroyBuildingImmediate(self)
 
 		end
@@ -417,6 +421,9 @@ function Building:CheatDestroy()
 		S[1176--[[Cancel Destroy--]]]
 	)
 end
+Building.CheatDestroy = CheatDestroy
+BaseRover.CheatDestroy = CheatDestroy
+Drone.CheatDestroy = CheatDestroy
 
 -- consumption
 function Building:CheatPowerFree()

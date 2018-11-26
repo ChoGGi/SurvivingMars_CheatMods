@@ -7,6 +7,8 @@ local RetName = ChoGGi.ComFuncs.RetName
 local S = ChoGGi.Strings
 
 local box,point = box,point
+local IsValid = IsValid
+local StringFormat = string.format
 
 -- see also TextStyles.lua
 local white = -1
@@ -77,7 +79,7 @@ DefineClass.ChoGGi_Label = {
 function ChoGGi_Label:SetTitle(win,title)
 	local new_title
 	if win.prefix then
-		new_title = string.format(
+		new_title = StringFormat(
 			"%s: %s",
 			CheckText(win.prefix,""),
 			CheckText(title or win.title,RetName(self))
@@ -96,6 +98,7 @@ DefineClass.ChoGGi_Image = {
 	HandleKeyboard = false,
 	ImageScale = point(250, 250),
 	Margins = box(4, 0, 0, 0),
+	RolloverTemplate = "Rollover",
 }
 DefineClass.ChoGGi_MoveControl = {
 	__parents = {"XMoveControl"},
@@ -282,6 +285,43 @@ DefineClass.ChoGGi_TextInput = {
 --~ function ChoGGi_TextInput:Init()
 --~	 self:SetText(self.display_text or "")
 --~ end
+DefineClass.ChoGGi_ExternalTextEditorPlugin = {
+	__parents = {"XExternalTextEditorPlugin"},
+}
+
+function ChoGGi_ExternalTextEditorPlugin:OpenEditor(edit)
+	local g = ChoGGi.Temp._G or _G
+  g_ExternalTextEditorActiveCtrl = edit
+	edit.external_file = StringFormat("%s/tempedit.lua",edit.external_path)
+
+  g.AsyncCreatePath(edit.external_path)
+
+  g.AsyncStringToFile(edit.external_file, edit:GetText())
+  local cmd = StringFormat(edit.external_cmd, ConvertToOSPath(edit.external_file))
+
+	local exec,result = g.os.execute(cmd)
+	if not exec then
+		print("ExternalTextEditorPlugin:",result)
+	end
+end
+function ChoGGi_ExternalTextEditorPlugin:OnTextChanged(edit)
+  if g_ExternalTextEditorActiveCtrl == edit then
+    ChoGGi.Temp._G.AsyncStringToFile(edit.external_file, edit:GetText())
+  end
+end
+function ChoGGi_ExternalTextEditorPlugin.ApplyEdit(file, change, edit)
+  if g_ExternalTextEditorActiveCtrl == edit and change == "Modified" then
+    local err, content = ChoGGi.Temp._G.AsyncFileToString(file or edit.external_file)
+    if not err and edit then
+      edit:SetText(content)
+    end
+	end
+end
+DefineClass.ChoGGi_CodeEditorPlugin = {
+	__parents = {"XCodeEditorPlugin"},
+  SelectionColor = -11364918,
+  KeywordColor = -7421793,
+}
 
 DefineClass.ChoGGi_List = {
 	__parents = {"XList"},
@@ -411,18 +451,27 @@ function ChoGGi_Window:AddElements()
 	local close = self.close_func or empty_func
 	self.idCloseX = g_Classes.ChoGGi_CloseButton:new({
 		OnPress = function(...)
+			if g_ExternalTextEditorActiveCtrl and g_ExternalTextEditorActiveCtrl.delete then
+				g_ExternalTextEditorActiveCtrl:delete()
+				g_ExternalTextEditorActiveCtrl = false
+			end
 			close(...)
 			self:Close("cancel",false)
 		end,
 	}, self.idMoveControl)
 
 	-- throws error if we try to get display_icon from _G
-	local image = self.title_image or type(self.obj) == "table" and g_Classes[self.obj.class] and self.obj.display_icon
+	local image = self.title_image or type(self.obj) == "table" and self.obj.display_icon ~= "" and self.obj.display_icon
 
 	if image then
 		self.idCaptionImage = g_Classes.ChoGGi_Image:new({
 			Id = "idCaptionImage",
 			Dock = "left",
+			RolloverTitle = S[302535920000093--[[Go to Obj--]]],
+			RolloverText = S[302535920000094--[[View/select object on map.--]]],
+			RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+			OnMouseButtonDown = self.idCaptionOnMouseButtonDown,
+			HandleMouse = true,
 		}, self.idMoveControl)
 		self.idCaptionImage:SetImage(image)
 	end
@@ -433,9 +482,9 @@ function ChoGGi_Window:AddElements()
 		Dock = "left",
 	}, self.idMoveControl)
 	if image then
-		self.idCaption:SetMargins(box(self.idCaptionImage.box:sizex(),0,0,0))
+		self.idCaption:SetPadding(box(self.idCaptionImage.box:sizex(),0,0,0))
 	else
-		self.idCaption:SetMargins(box(4,0,0,0))
+		self.idCaption:SetPadding(box(4,0,0,0))
 	end
 	self.idCaption:SetTitle(self)
 
@@ -445,6 +494,14 @@ function ChoGGi_Window:AddElements()
 	self.idMoveControl:SetPadding(box(0,1,0,1))
 	-- it's so blue
 	self.idMoveControl:SetFocus()
+end
+
+function ChoGGi_Window:idCaptionOnMouseButtonDown(pt,button,...)
+	ChoGGi_Image.OnMouseButtonDown(pt,button,...)
+	local dlg = self.parent.parent.parent
+	if IsValid(dlg.obj) then
+		ViewObjectMars(dlg.obj)
+	end
 end
 
 -- returns point(x,y)

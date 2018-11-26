@@ -54,6 +54,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi_MultiLineEdit.RolloverTemplate = ""
 		ChoGGi_MoveControl.RolloverTemplate = ""
 		ChoGGi_Buttons.RolloverTemplate = ""
+		ChoGGi_Image.RolloverTemplate = ""
 		ChoGGi_ComboButton.RolloverTemplate = ""
 		ChoGGi_CheckButton.RolloverTemplate = ""
 		ChoGGi_TextInput.RolloverTemplate = ""
@@ -131,6 +132,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		local PlaceObj = PlaceObj
 
 		-- makes shit flicker when i do my scrollable selection panel
+		-- ChoGGi.UserSettings.ScrollSelection = not ChoGGi.UserSettings.ScrollSelection
 --~ 		XTemplates.PinButton[1].RolloverBackground = red
 --~ 		XTemplates.PinButton[1].PressedBackground = red
 --~ 		XTemplates.PinButton[1].FocusedBackground = red

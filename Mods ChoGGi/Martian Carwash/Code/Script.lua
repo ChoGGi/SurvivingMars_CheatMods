@@ -157,11 +157,6 @@ function Carwash:OnDestroyed()
 		self.sprinkler:SetAnim(1, "workingEnd")
 	end
 
-	if not IsValid(self.marker) then
-		self.marker = PlaceObject("Hex1_Placeholder")
-		self.marker:SetScale(50)
-		self:Attach(self.marker)
-	end
 end
 
 -- add building to building template list
@@ -190,6 +185,7 @@ Sing it with the feeling now, car wash, yeah]],
 			"construction_cost_Polymers", 1000,
 			"maintenance_resource_type", "Metals",
 			"maintenance_resource_amount", 1000,
+			"demolish_sinking", range(1,2),
 		})
 	end
 end --ClassesPostprocess

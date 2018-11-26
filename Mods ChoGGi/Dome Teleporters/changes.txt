@@ -1,3 +1,10 @@
+v0.4
+Forgot to move a line up, so you had to wait for the unit to leave the port before they'd grow.
+Units now enter/leave from the platform instead of the entrance.
+Exiting porter picks a random angle to drop off unit.
+Also made it so the light anim doesn't play more than once at a time.
+Remove ruins button didn't show up.
+
 v0.3
 Build dist was no good for values under 100.
 

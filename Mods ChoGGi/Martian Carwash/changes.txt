@@ -1,3 +1,6 @@
+v0.5
+Removed marker as it isn't needed anymore.
+
 v0.4
 Added a marker to the middle when you demo it, so you have something easy to select.
 It doesn't get dusty anymore.
