@@ -167,7 +167,7 @@ function OnMsg.ClassesGenerate()
 		AddSubmenu("Dialogs",{"terminal.desktop","GetInGameInterface"})
 		AddSubmenu("GlobalVars",{"GlobalVarValues","GlobalObjs","GlobalObjClasses","PersistableGlobals","GlobalGameTimeThreads","GlobalGameTimeThreadFuncs","GlobalRealTimeThreads","GlobalRealTimeThreadFuncs"})
 		AddSubmenu("g_Classes",{"ClassTemplates","EntityData","Attaches","FXRules","FXLists"})
-		AddSubmenu("g_CObjectFuncs",{"hr","pf","terrain","UIL","camera","camera3p","cameraMax","cameraRTS","string","table"})
+		AddSubmenu("g_CObjectFuncs",{"hr","pf","terrain","UIL","DTM","camera","camera3p","cameraMax","cameraRTS","string","table"})
 		AddSubmenu("StoryBits",{"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},S[948928900281--[[Story Bits--]]])
 		AddSubmenu("UICity",{"UICity.labels","UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters"})
 
@@ -207,14 +207,9 @@ function OnMsg.ClassesGenerate()
 		},
 		{
 			name = 302535920001026--[[Show File Log--]],
-			hint = 302535920001091--[[Flushes log to disk and displays in console log.--]],
+			hint = 302535920001091--[[Flushes log to disk and displays in examine.--]],
 			clicked = function()
-				if blacklist then
-					print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ShowFileLog"))
-					return
-				end
-				FlushLogFile()
-				print(select(2,AsyncFileToString(GetLogFile())))
+				OpenInExamineDlg(select(2,ReadLog()))
 			end,
 		},
 		{

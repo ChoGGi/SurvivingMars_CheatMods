@@ -660,4 +660,85 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
+	function ChoGGi.ComFuncs.RetObjTextureInfo(obj)
+		if not IsValid(obj) then
+			return
+		end
+		local textures = obj:UsedTextures()
+		if not textures or #textures == 0 then
+			return
+		end
+		local info_list = {}
+		local format_str = "slot_idx: %s, slot_size: %s, priority: %s, need_size: %s, distance: %s /1000, tg(fov/2): %s /1000, radius: %s /1000"
+		local GetTextureDebugInfo = DTM.GetTextureDebugInfo
+
+		for i = 1, #textures do
+			local slot_idx, slot_size, priority, need_size, distance, tan, radius = DTM.GetTextureDebugInfo(textures[i])
+			print(slot_idx, slot_size, priority, need_size, distance, tan, radius)
+			info_list[textures[i]] = format_str:format(slot_idx,slot_size,priority,need_size,distance,tan,radius)
+		end
+		return info_list
+	end
+
+	function ChoGGi.ComFuncs.SelectConsoleLogText()
+		local dlgConsoleLog = dlgConsoleLog
+		if not dlgConsoleLog then
+			return
+		end
+		local text = dlgConsoleLog.idText:GetText()
+		if #text < 1 then
+			print(S[302535920000692--[[Log is blank (well not anymore).--]]])
+			return
+		end
+
+		ChoGGi.ComFuncs.OpenInMultiLineTextDlg{text = text}
+	end
+
+	do -- ShowConsoleLogWin
+		local AsyncFileToString
+		if not blacklist then
+			AsyncFileToString = AsyncFileToString
+		end
+
+		local GetLogFile = GetLogFile
+		function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
+			if visible and not dlgChoGGi_ConsoleLogWin then
+				dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop,{})
+
+				-- update it with console log text
+				local dlg = dlgConsoleLog
+				if dlg then
+					dlgChoGGi_ConsoleLogWin.idText:SetText(dlg.idText:GetText())
+				elseif not blacklist then
+					--if for some reason consolelog isn't around, then grab the log file
+					local err,str = AsyncFileToString(GetLogFile())
+					if not err then
+						dlgChoGGi_ConsoleLogWin.idText:SetText(str)
+					end
+				end
+
+			end
+
+			local dlg = dlgChoGGi_ConsoleLogWin
+			if dlg then
+				dlg:SetVisible(visible)
+
+				--size n position
+				local size = ChoGGi.UserSettings.ConsoleLogWin_Size
+				local pos = ChoGGi.UserSettings.ConsoleLogWin_Pos
+				--make sure dlg is within screensize
+				if size then
+					dlg:SetSize(size)
+				end
+				if pos then
+					dlg:SetPos(pos)
+				else
+					dlg:SetPos(point(100,100))
+				end
+
+			end
+		end
+	end -- do
+
+
 end

@@ -1085,10 +1085,10 @@ function OnMsg.ClassesBuilt()
 				end
 
 				local section = c[i]
-				local content = section.idContent[2]
+				local content = section.idContent and section.idContent[2]
 
 				-- enlarge worker section if over the max amount visible
-				if section.idWorkers and #section.idWorkers > 14 then
+				if content and section.idWorkers and #section.idWorkers > 14 then
 					worker_count = worker_count + 1
 					-- set height to default height
 					content:SetMaxHeight(32)
