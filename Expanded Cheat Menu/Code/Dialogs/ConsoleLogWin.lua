@@ -58,7 +58,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Dock = "left",
 		Text = S[302535920001026--[[Show File Log--]]],
 		RolloverText = S[302535920001091--[[Flushes log to disk and displays in console log.--]]],
-		OnMouseButtonDown = self.idShowFileLogOnMouseButtonDown,
+		OnPress = self.idShowFileLogOnPress,
 	}, self.idButtonContainer)
 
 	self.idShowModsLog = g_Classes.ChoGGi_Button:new({
@@ -66,7 +66,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Dock = "left",
 		Text = S[302535920000071--[[Mods Log--]]],
 		RolloverText = S[302535920000870--[[Shows any errors from loading mods in console log.--]]],
-		OnMouseButtonDown = self.idShowModsLogOnMouseButtonDown,
+		OnPress = self.idShowModsLogOnPress,
 	}, self.idButtonContainer)
 
 	self.idClearLog = g_Classes.ChoGGi_Button:new({
@@ -74,7 +74,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Dock = "left",
 		Text = S[302535920000734--[[Clear Log--]]],
 		RolloverText = S[302535920000477--[[Clear out the windowed console log.--]]],
-		OnMouseButtonDown = self.idClearLogOnMouseButtonDown,
+		OnPress = self.idClearLogOnPress,
 	}, self.idButtonContainer)
 
 	self.idCopyText = g_Classes.ChoGGi_Button:new({
@@ -82,7 +82,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Dock = "left",
 		Text = S[302535920000563--[[Copy Log Text--]]],
 		RolloverText = S[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
-		OnMouseButtonDown = self.idCopyTextOnMouseButtonDown,
+		OnPress = self.idCopyTextOnPress,
 	}, self.idButtonContainer)
 
 	-- text box with log in it
@@ -99,22 +99,18 @@ function ChoGGi_ConsoleLogWin:idToggleTransOnChange()
 	self.transp_mode = not self.transp_mode
 	self:SetTranspMode(self.transp_mode)
 end
-function ChoGGi_ConsoleLogWin:idShowFileLogOnMouseButtonDown()
-	if blacklist then
-		print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("Show File Log"))
-		return
-	end
-	FlushLogFile()
-	print(select(2,AsyncFileToString(GetLogFile())))
+function ChoGGi_ConsoleLogWin:idShowFileLogOnPress()
+	local _,text = ReadLog()
+	GetRootDialog(self):ScrollBottom(text)
 end
-function ChoGGi_ConsoleLogWin:idShowModsLogOnMouseButtonDown()
+function ChoGGi_ConsoleLogWin:idShowModsLogOnPress()
 	print(ModMessageLog)
 end
-function ChoGGi_ConsoleLogWin:idClearLogOnMouseButtonDown()
+function ChoGGi_ConsoleLogWin:idClearLogOnPress()
 	GetRootDialog(self).idText:SetText("")
 end
-function ChoGGi_ConsoleLogWin:idCopyTextOnMouseButtonDown()
-	ChoGGi.ComFuncs.SelectConsoleLogText()
+function ChoGGi_ConsoleLogWin:idCopyTextOnPress()
+	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{text = GetRootDialog(self).idText:GetText()}
 end
 
 function ChoGGi_ConsoleLogWin:SetTranspMode(toggle)
@@ -133,8 +129,23 @@ function ChoGGi_ConsoleLogWin:SetTranspMode(toggle)
 	-- update global value (for new windows)
 	ChoGGi.Temp.transp_mode = toggle
 end
-dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false
 
+function ChoGGi_ConsoleLogWin:ScrollBottom(text)
+	local length
+	if text then
+		self.idText:SetText(text)
+		length = #text
+	else
+		length = #self.idText:GetText()
+	end
+
+	self.idScrollV:SetScrollRange(0, length)
+--~ 	self.idScrollV:ScrollTo(length)
+
+	self.idScrollArea:ScrollTo(0, length)
+end
+
+dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false
 function OnMsg.ConsoleLine(text, bNewLine)
 	local dlg = dlgChoGGi_ConsoleLogWin
 	if dlg then
@@ -145,12 +156,8 @@ function OnMsg.ConsoleLine(text, bNewLine)
 		else
 			text = StringFormat("%s%s",old_text,text)
 		end
-		dlg.idText:SetText(text)
 
-		-- always scroll to end of text
-		dlg.idScrollArea:ScrollTo(0, #text)
-		-- update thumb scroll length
-		dlg.idScrollV:SetScrollRange(0, #text)
+		dlg:ScrollBottom(text)
 	end
 end
 

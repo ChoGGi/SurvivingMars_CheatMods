@@ -1336,66 +1336,6 @@ do -- Ticks
 	end
 end -- do
 
-function ChoGGi.ComFuncs.SelectConsoleLogText()
-	local dlgConsoleLog = dlgConsoleLog
-	if not dlgConsoleLog then
-		return
-	end
-	local text = dlgConsoleLog.idText:GetText()
-	if text:len() == 0 then
-		print(S[302535920000692--[[Log is blank (well not anymore).--]]])
-		return
-	end
-
-	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{text = text}
-end
-
-do -- ShowConsoleLogWin
-	local AsyncFileToString
-	if not blacklist then
-		AsyncFileToString = AsyncFileToString
-	end
-
-	local GetLogFile = GetLogFile
-	function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
-		if visible and not dlgChoGGi_ConsoleLogWin then
-			dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop,{})
-
-			-- update it with console log text
-			local dlg = dlgConsoleLog
-			if dlg then
-				dlgChoGGi_ConsoleLogWin.idText:SetText(dlg.idText:GetText())
-			elseif not blacklist then
-				--if for some reason consolelog isn't around, then grab the log file
-				local err,str = AsyncFileToString(GetLogFile())
-				if not err then
-					dlgChoGGi_ConsoleLogWin.idText:SetText(str)
-				end
-			end
-
-		end
-
-		local dlg = dlgChoGGi_ConsoleLogWin
-		if dlg then
-			dlg:SetVisible(visible)
-
-			--size n position
-			local size = ChoGGi.UserSettings.ConsoleLogWin_Size
-			local pos = ChoGGi.UserSettings.ConsoleLogWin_Pos
-			--make sure dlg is within screensize
-			if size then
-				dlg:SetSize(size)
-			end
-			if pos then
-				dlg:SetPos(pos)
-			else
-				dlg:SetPos(point(100,100))
-			end
-
-		end
-	end
-end -- do
-
 function ChoGGi.ComFuncs.UpdateDataTablesCargo()
 	local Tables = ChoGGi.Tables
 
@@ -4216,12 +4156,14 @@ function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod,ext)
 		local Import = ModItemDecalEntity.Import
 		local ConvertToOSPath = ConvertToOSPath
 		for i = 1, #images do
+			local filename = ConvertToOSPath(images[i].path)
 			Import(nil,ModItemDecalEntity:new{
 				entity_name = images[i].name,
 				name = images[i].name,
-				filename = ConvertToOSPath(images[i].path):gsub("\\","/"),
+				filename = filename:gsub("\\","/"),
 				mod = mod,
 			})
+			print(filename)
 		end
 	end
 end
