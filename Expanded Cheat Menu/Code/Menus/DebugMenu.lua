@@ -181,10 +181,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Spawner",
 		ActionIcon = "CommonAssets/UI/Menu/add_water.tga",
-		RolloverText = S[302535920000476--[["Shows list of objects, and spawns at mouse cursor.
-
-	Warning: Unable to mouse select items after spawn
-	hover mouse over and use Delete Selected Object"--]]],
+		RolloverText = S[302535920000476--[["Shows list of objects, and spawns at mouse cursor."--]]],
 		OnAction = function()
 			ChoGGi.ComFuncs.ObjectSpawner()
 		end,

@@ -514,7 +514,7 @@ end
 local GetMousePos = terminal.GetMousePos
 local GetSafeAreaBox = GetSafeAreaBox
 -- get size of box and offset header
-local function BoxSize(obj,self)
+function ChoGGi_Window:BoxSize(obj)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 	local obj_dlg = obj.idDialog or obj.idContainer
 	if not obj_dlg then
@@ -541,7 +541,7 @@ end
 -- takes either a point, or obj to set pos
 function ChoGGi_Window:SetPos(obj,dialog)
 	local dlg = self[dialog or "idDialog"]
-	local x,y,w,h = BoxSize(obj,self)
+	local x,y,w,h = self:BoxSize(obj)
 
 	if IsPoint(obj) then
 		local box = dlg.box
@@ -597,7 +597,7 @@ function ChoGGi_Window:SetInitPos(parent,pt)
 
 	-- if we're opened from another dialog then offset it, else open at mouse cursor
 	if parent then
-		x,y,w,h = BoxSize(parent,self)
+		x,y,w,h = self:BoxSize(parent)
 	end
 	-- if BoxSize failed or there isn't a parent we don't change the size, just re-pos
 	if not parent or not x then

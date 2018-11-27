@@ -189,6 +189,10 @@ do -- RetName
 			-- class template name
 			elseif obj.template_name and obj.template_name ~= "" then
 				return obj.template_name
+
+			elseif obj.entity and obj.entity ~= "" then
+				return obj.entity
+
 			-- class
 			elseif obj.class and obj.class ~= "" then
 				return obj.class

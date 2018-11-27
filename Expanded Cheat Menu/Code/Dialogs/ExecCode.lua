@@ -26,7 +26,7 @@ DefineClass.ChoGGi_ExecCodeDlg = {
 	obj = false,
 	obj_name = false,
 
-	dialog_width = 700.0,
+	dialog_width = 750.0,
 	dialog_height = 240.0,
 	plugin_names = false,
 	external_cmd = false,
@@ -82,62 +82,86 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 		Margins = box(0,0,0,4),
 	}, self.idDialog)
 
-	self.idOK = g_Classes.ChoGGi_Button:new({
-		Id = "idOK",
-		Dock = "left",
-		Text = S[302535920000040--[[Exec Code--]]],
-		RolloverText = S[302535920000073--[[Execute code in text box (Ctrl-Enter or Shift-Enter will also work).--]]],
-		Margins = box10,
-		OnPress = self.idOKOnPress,
+	do -- left buttons
+		self.idLeftButs = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idLeftButs",
+			Dock = "left",
+			Margins = box(0,0,0,4),
+		}, self.idButtonContainer)
+
+		self.idOK = g_Classes.ChoGGi_Button:new({
+			Id = "idOK",
+			Dock = "left",
+			Text = S[302535920000040--[[Exec Code--]]],
+			RolloverText = S[302535920000073--[[Execute code in text box (Ctrl-Enter or Shift-Enter will also work).--]]],
+			Margins = box10,
+			OnPress = self.idOKOnPress,
+		}, self.idLeftButs)
+
+		if self.obj then
+			self.idInsertObj = g_Classes.ChoGGi_Button:new({
+				Id = "idInsertObj",
+				Dock = "left",
+				Text = S[302535920000075--[[Insert Obj--]]],
+				RolloverText = S[302535920000076--[[At caret position inserts: ChoGGi.CurObj--]]],
+				Margins = box10,
+				OnPress = self.idInsertObjOnPress,
+			}, self.idLeftButs)
+		end
+
+		if not blacklist then
+			self.idEdit.external_cmd = ChoGGi.UserSettings.ExternalEditorCmd
+			self.idEdit.external_path = ChoGGi.UserSettings.ExternalEditorPath
+
+			self.idExterEdit = g_Classes.ChoGGi_Button:new({
+				Id = "idExterEdit",
+				Dock = "left",
+				Text = S[302535920000471--[[External Editor--]]],
+				RolloverText = S[302535920001434--[["Use an external editor (see settings for editor cmd).
+	Updates external file when you type in editor (only updates text when you use Read File).
+	Press again to toggle updating."--]]],
+				Margins = box(20,0,0,0),
+				OnPress = self.idExterEditOnPress,
+			}, self.idLeftButs)
+
+			self.idExterReadFile = g_Classes.ChoGGi_Button:new({
+				Id = "idExterReadFile",
+				Dock = "left",
+				Text = S[302535920001435--[[Read File--]]],
+				RolloverText = S[302535920001436--[[Update editor text with text from %stempedit.lua.--]]]:format(self.idEdit.external_path),
+				Margins = box10,
+				OnPress = self.idExterReadFileOnPress,
+				FoldWhenHidden = true,
+			}, self.idLeftButs)
+			self.idExterReadFile:SetVisible(false)
+
+			self.idExterFocusUpdate = g_Classes.ChoGGi_CheckButton:new({
+				Id = "idExterFocusUpdate",
+				Dock = "left",
+				Text = S[302535920001438--[[Focus Update--]]],
+				RolloverText = S[302535920001437--[[Reads file when you focus on the edit box (instead of pressing Read File).--]]],
+				Margins = box10,
+				OnChange = self.idExterFocusUpdateOnChange,
+			}, self.idLeftButs)
+			self.idExterFocusUpdate:SetVisible(false)
+		end
+	end -- left side
+
+	do -- right side
+	self.idRightButs = g_Classes.ChoGGi_DialogSection:new({
+		Id = "idRightButs",
+		Dock = "right",
 	}, self.idButtonContainer)
 
-	if self.obj then
-		self.idInsertObj = g_Classes.ChoGGi_Button:new({
-			Id = "idInsertObj",
-			Dock = "left",
-			Text = S[302535920000075--[[Insert Obj--]]],
-			RolloverText = S[302535920000076--[[At caret position inserts: ChoGGi.CurObj--]]],
-			Margins = box10,
-			OnPress = self.idInsertObjOnPress,
-		}, self.idButtonContainer)
-	end
-
-	if not blacklist then
-		self.idEdit.external_cmd = ChoGGi.UserSettings.ExternalEditorCmd
-		self.idEdit.external_path = ChoGGi.UserSettings.ExternalEditorPath
-
-		self.idExterEdit = g_Classes.ChoGGi_Button:new({
-			Id = "idExterEdit",
-			Dock = "left",
-			Text = S[302535920000471--[[External Editor--]]],
-			RolloverText = S[302535920001434--[["Use an external editor (see settings for editor cmd).
-Updates external file when you type in editor (only updates text when you use Read File).
-Press again to toggle updating."--]]],
-			Margins = box(20,0,0,0),
-			OnPress = self.idExterEditOnPress,
-		}, self.idButtonContainer)
-
-		self.idExterReadFile = g_Classes.ChoGGi_Button:new({
-			Id = "idExterReadFile",
-			Dock = "left",
-			Text = S[302535920001435--[[Read File--]]],
-			RolloverText = S[302535920001436--[[Update editor text with text from %stempedit.lua.--]]]:format(self.idEdit.external_path),
-			Margins = box10,
-			OnPress = self.idExterReadFileOnPress,
-			FoldWhenHidden = true,
-		}, self.idButtonContainer)
-		self.idExterReadFile:SetVisible(false)
-
-		self.idExterFocusUpdate = g_Classes.ChoGGi_CheckButton:new({
-			Id = "idExterFocusUpdate",
-			Dock = "left",
-			Text = S[302535920001438--[[Focus Update--]]],
-			RolloverText = S[302535920001437--[[Reads file when you focus on the edit box (instead of pressing Read File).--]]],
-			Margins = box10,
-			OnChange = self.idExterFocusUpdateOnChange,
-		}, self.idButtonContainer)
-		self.idExterFocusUpdate:SetVisible(false)
-	end
+	self.idWrapLines = g_Classes.ChoGGi_CheckButton:new({
+		Id = "idWrapLines",
+		Dock = "left",
+		Text = S[302535920001288--[[Wrap Lines--]]],
+		RolloverText = S[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
+		Margins = box10,
+		Check = ChoGGi.UserSettings.WordWrap,
+		OnChange = self.idWrapLinesOnChange,
+	}, self.idRightButs)
 
 	self.idCancel = g_Classes.ChoGGi_Button:new({
 		Id = "idCancel",
@@ -146,17 +170,8 @@ Press again to toggle updating."--]]],
 		RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
 		Margins = box(0, 0, 10, 0),
 		OnPress = self.idCloseX.OnPress,
-	}, self.idButtonContainer)
-
-	self.idWrapLines = g_Classes.ChoGGi_CheckButton:new({
-		Id = "idWrapLines",
-		Dock = "right",
-		Text = S[302535920001288--[[Wrap Lines--]]],
-		RolloverText = S[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
-		Margins = box10,
-		Check = ChoGGi.UserSettings.WordWrap,
-		OnChange = self.idWrapLinesOnChange,
-	}, self.idButtonContainer)
+	}, self.idRightButs)
+	end -- right side
 
 	self:SetInitPos(context.parent)
 end

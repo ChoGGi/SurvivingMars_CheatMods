@@ -1,13 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001439,"~obj, @func,@@type,$id, *r/*g for threads",
-302535920001440,"~obj opens object in examine dialog.
-~!obj opens an objlist of attachments for object in examine.
-&handle examines object with that handle.
-@GetMissionSponsor prints info about the function.
-@@EntityData prints type(EntityData).
-$123 or $EffectDeposit.display_name prints translated string.
-""*r Sleep(1000) print(""sleeping"")"" or *g or *m to wrap commands in a thread.
-!UICity.labels.TerrainDeposit[1] to move camera and select obj.",
 302535920001441,,
 302535920001442,,
 302535920001443,,
@@ -137,6 +128,15 @@ You can copy and paste numbers if you want.",
 302535920000028,Find Resource,
 302535920000029,Error: Cannot find any %s.,
 302535920000032,Select a resource to find,
+302535920001439,"~obj, @func,@@type,$id, *r/*g for threads",
+302535920001440,"~obj opens object in examine dialog.
+~!obj opens an objlist of attachments for object in examine.
+&handle examines object with that handle.
+@GetMissionSponsor prints info about the function.
+@@EntityData prints type(EntityData).
+$123 or $EffectDeposit.display_name prints translated string.
+""*r Sleep(1000) print(""sleeping"")"" or *g or *m to wrap commands in a thread.
+!UICity.labels.TerrainDeposit[1] to move camera and select obj.",
 302535920001401,"Removed missing mod building from %s: %s, entity: %s, handle: %s",
 302535920001074,Ged Presets Editor,
 302535920000503,Right-click an item/submenu to add/remove it from the quickbar.,
@@ -930,8 +930,6 @@ Sounds like a borked save; send me the file and I'll take a look",
 302535920000859,Anim State,
 302535920000860,Set Anim State,
 302535920000861,Current State: %s,
-302535920000862,Object Spawner (EntityData list),
-302535920000863,Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).,
 302535920000866,Set MissionParams NewMap,
 302535920000867,"Attention: You must press ""OK"" for these settings to take effect before choosing a map!
 
@@ -971,10 +969,7 @@ Use Shift + Arrow keys to change the height/radius.",
 302535920000470,"Close any dialogs opened by ECM (Examine, ObjectManipulator, Change Colours, etc...).",
 302535920000472,Manipulate objects (selected or under mouse cursor),
 302535920000475,Object Spawner,
-302535920000476,"Shows list of objects, and spawns at mouse cursor.
-
-Warning: Unable to mouse select items after spawn.
-hover mouse over and use Delete Selected Object.",
+302535920000476,"Shows list of objects, and spawns at mouse cursor.",
 302535920000478,Clears console history display.,
 302535920000479,Toggle Editor,
 302535920000480,"Select object(s) then hold ctrl/shift/alt and drag mouse.
@@ -1269,6 +1264,8 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs.",
 302535920000620,If any colonists are black cubes click this.,
 302535920000621,Align All Buildings To Hex Grid,
 302535920000622,If you have any buildings that aren't aligned to the hex grids use this.,
+302535920000862,Object Planner,
+302535920000863,Places fake construction site objects at mouse cursor (collision disabled).,
 302535920001375,Bird's Eye,
 302535920001429,How far up the camera can move.,
 302535920001385,Use these lists to find the correct ids.,

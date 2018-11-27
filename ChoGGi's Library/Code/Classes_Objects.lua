@@ -43,3 +43,7 @@ function ChoGGi_BuildingEntityClass:OnSelected()
 end
 -- prevent an error in log
 function ChoGGi_BuildingEntityClass:BuildWaypointChains() end
+-- round n round she goes
+function ChoGGi_BuildingEntityClass:Rotate(delta)
+	SetRollPitchYaw(self,0,0,self:GetAngle() + (delta or -1)*60*60)
+end

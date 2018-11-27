@@ -386,18 +386,32 @@ function OnMsg.ClassesGenerate()
 			RemoveOldDialogs("ChoGGi_FindValueDlg")
 		end
 	end
-	function ChoGGi.ComFuncs.ObjectSpawner(obj,skip_msg,list_type)
+
+	function ChoGGi.ComFuncs.ObjectSpawner(obj,skip_msg,list_type,planning)
 		local ChoGGi = ChoGGi
-		local g_Classes = g_Classes
-		local EntityData = EntityData or {}
-		local ObjectSpawner_ItemList = {}
+		local const = const
+
+		local title = planning and 302535920000862--[[Object Planner--]] or 302535920000475--[[Object Spawner--]]
+		local hint = planning and 302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]] or 302535920000476--[["Shows list of objects, and spawns at mouse cursor."--]]
+
+		local ItemList = {}
 		local c = 0
-		for Key,_ in pairs(EntityData) do
-			c = c + 1
-			ObjectSpawner_ItemList[c] = {
-				text = Key,
-				value = Key
-			}
+		if planning then
+			for key,obj in pairs(BuildingTemplates) do
+				c = c + 1
+				ItemList[c] = {
+					text = key,
+					value = obj.entity,
+				}
+			end
+		else
+			for key in pairs(EntityData) do
+				c = c + 1
+				ItemList[c] = {
+					text = key,
+					value = key,
+				}
+			end
 		end
 
 		local function CallBackFunc(choice)
@@ -405,30 +419,42 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 			local value = choice[1].value
-			if g_Classes[value] then
 
-				if not obj then
-					obj = PlaceObj("ChoGGi_BuildingEntityClass",{
-						"Pos",ChoGGi.ComFuncs.CursorNearestHex()
-					})
+			if not obj then
+				obj = PlaceObj("ChoGGi_BuildingEntityClass",{
+					"Pos",ChoGGi.ComFuncs.CursorNearestHex()
+				})
+				if planning then
+					obj.planning = true
+					obj:SetGameFlags(const.gofUnderConstruction)
 				end
-				obj:SetState("idle")
-				obj:ChangeEntity(value)
+			end
+			-- if it's playing certain anims on certains objs, then crash if we don't idle it
+			obj:SetState("idle")
 
-				if not skip_msg then
-					MsgPopup(
-						StringFormat("%s: %s %s",choice[1].text,S[302535920000014--[[Spawned--]]],S[298035641454--[[Object--]]]),
-						302535920000014--[[Spawned--]]
-					)
-				end
+			obj:ChangeEntity(value)
+
+			if SelectedObj == obj then
+				SelectionRemove(obj)
+				SelectObj(obj)
+			end
+
+			-- needs to fire whenever entity changes
+			obj:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
+
+			if not skip_msg then
+				MsgPopup(
+					StringFormat("%s: %s",choice[1].text,S[302535920000014--[[Spawned--]]]),
+					title
+				)
 			end
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ObjectSpawner_ItemList,
-			title = 302535920000862--[[Object Spawner (EntityData list)--]],
-			hint = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000863--[[Objects are unselectable with mouse cursor (hover mouse over and use Delete Object).--]]]),
+			items = ItemList,
+			title = title,
+			hint = hint,
 			custom_type = list_type or 0,
 			custom_func = CallBackFunc,
 		}

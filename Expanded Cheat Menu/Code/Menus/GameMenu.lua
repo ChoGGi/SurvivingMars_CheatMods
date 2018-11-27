@@ -229,6 +229,20 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.ComFuncs.PlaceObjects_Toggle,
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000862--[[Object Planner--]]],
+		ActionMenubar = "ECM.Game",
+		ActionId = ".Object Planner",
+		ActionIcon = "CommonAssets/UI/Menu/ShowOccluders.tga",
+		RolloverText = S[302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]]],
+		OnAction = function()
+			ChoGGi.ComFuncs.ObjectSpawner(nil,nil,nil,true)
+		end,
+		ActionShortcut = "Ctrl-Shift-A",
+		ActionBindable = true,
+	}
+
+
 	local str_Game_Camera = "ECM.Game.Camera"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920001058--[[Camera--]]]),

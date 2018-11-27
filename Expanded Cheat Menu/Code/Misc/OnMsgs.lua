@@ -195,16 +195,35 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
+					"RolloverTitle", S[1000077--[[Rotate--]]],
+					"RolloverText", S[312752058553--[[Rotate Building Left--]]],
+					"RolloverHint", S[302535920000083--[[<left_click> Activate--]]],
+					"OnPress", function(self)
+						self.context:Rotate()
+						SelectionRemove(self.context)
+						SelectObj(self.context)
+					end,
+					"Icon", "UI/Icons/IPButtons/harvest.tga",
+				}),
+
+				PlaceObj("XTemplateTemplate", {
+					"__template", "InfopanelButton",
 					"RolloverTitle", S[302535920000682--[[Change Entity--]]],
+					"RolloverHint", S[302535920000083--[[<left_click> Activate--]]],
 					"ContextUpdateOnOpen", false,
 					"OnContextUpdate", function(self)
 						self:SetRolloverText(S[302535920001151--[[Set Entity For %s--]]]:format(RetName(self.context)))
 					end,
 					"OnPress", function(self)
-						ChoGGi.ComFuncs.ObjectSpawner(self.context,true,7)
+						if self.context.planning then
+							ChoGGi.ComFuncs.ObjectSpawner(self.context,true,7,true)
+						else
+							ChoGGi.ComFuncs.ObjectSpawner(self.context,true,7)
+						end
 					end,
 					"Icon", "UI/Icons/IPButtons/tunnel.tga",
 				}),
+
 				PlaceObj("XTemplateTemplate", {
 					"__template", "sectionCheats",
 				}),
