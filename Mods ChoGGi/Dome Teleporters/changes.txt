@@ -1,3 +1,6 @@
+v0.5
+Forgot to add the msg about getting my Library mod.
+
 v0.4
 Forgot to move a line up, so you had to wait for the unit to leave the port before they'd grow.
 Units now enter/leave from the platform instead of the entrance.

@@ -5,6 +5,11 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411157810",
 	"id", "ChoGGi_CheatMenu",
 	"image", "Preview.png",
+	"TagGameplay", true,
+	"TagInterface", true,
+	"TagTools", true,
+	"TagOther", true,
+	"TagCheats", true,
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
 	"code", {
 		-- start 'er up
@@ -92,8 +97,10 @@ Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits
 Ctrl-Alt-Shift-D: Delete object (select multiple objects in editor and use this to delete them all).
 Shift-Q: Clone selected object to mouse position.
 Ctrl-Shift-T: Terrain Editor Mode (manipulate/paint ground).
+
 More shortcut keys are available; see cheat menu items.
 You can edit the shortcut keys; see in-game keybindings.
+If you want to be able to bind a menu item: msg me and I'll add it to keybindings.
 
 There's a cheats section in most selection panels on the right side of the screen.
 Menu>ECM>Misc>Infopanel Cheats (on by default)
@@ -108,22 +115,23 @@ Bleeding edge: https://github.com/ChoGGi/SurvivingMars_CheatMods
 
 
 
+##### Help it doesn't work!
+Logs are stored at C:\Users\USERNAME\AppData\Roaming\Surviving Mars\logs
+I can't help if I don't know what's wrong.
+The steps you take to recreate the issue would also be useful, and maybe a save game depending on the issue.
+
+
+
+##### Access to missing functionality
+Da Vinci update added a blacklist of functions, you can use this to bypass them (only really useful for modders).
+%sHelperMod
+
+
+
 ##### Thanks
 chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
 admbraden (for gifting me a Steam copy): https://steamcommunity.com/id/admbraden
 HPK archiver: https://github.com/nickelc/hpk
 unluac: https://sourceforge.net/projects/unluac/
-Everyone else giving suggestions/pointing out issues.
-
-
-
-##### Access to missing functionality
-Da Vinci update added a blacklist of functions, you can use this to bypass them.
-%sHelperMod]],ConvertToOSPath(CurrentModPath)),
-
-	"TagGameplay", true,
-	"TagInterface", true,
-	"TagTools", true,
-	"TagOther", true,
-	"TagCheats", true,
+Everyone else giving suggestions/pointing out issues.]],ConvertToOSPath(CurrentModPath)),
 })

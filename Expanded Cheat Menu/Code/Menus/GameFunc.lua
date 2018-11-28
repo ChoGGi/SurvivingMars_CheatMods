@@ -876,15 +876,15 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	function ChoGGi.MenuFuncs.ChangeLightmodel(Mode)
+	function ChoGGi.MenuFuncs.ChangeLightmodel(mode)
 		--if it gets opened by menu then has object so easy way to do this
-		local Browse
-		if Mode == true then
-			Browse = Mode
+		local browse
+		if mode == true then
+			browse = mode
 		end
 
 		local ItemList = {}
-		if not Browse then
+		if not browse then
 			ItemList[#ItemList+1] = {
 				text = StringFormat(" %s",S[1000121--[[Default--]]]),
 				value = "ChoGGi_Default",
@@ -910,7 +910,7 @@ function OnMsg.ClassesGenerate()
 			end
 			local value = choice[1].value
 			if type(value) == "string" then
-				if Browse or choice[1].check2 then
+				if browse or choice[1].check2 then
 					ChoGGi.MenuFuncs.ChangeLightmodelCustom(value)
 				else
 					if value == "ChoGGi_Default" then
@@ -938,7 +938,7 @@ function OnMsg.ClassesGenerate()
 		local hint = {}
 		local check
 		local title = 302535920000985--[[Select Lightmodel Preset--]]
-		if not Browse then
+		if not browse then
 			title = 302535920000986--[[Change Lightmodel--]]
 			hint[#hint+1] = S[302535920000987--[[If you used Permanent; you must choose default to remove the setting (or it'll set the lightmodel next time you start the game).--]]]
 			local lightmodel = ChoGGi.UserSettings.Lightmodel

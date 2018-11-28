@@ -39,7 +39,7 @@ function OnMsg.CityStart()
 end
 
 local MinuteDuration = const.MinuteDuration
-function SolarArraysOrientToSun(anim_time)
+local function SolarArraysOrientToSun(anim_time)
 	anim_time = anim_time or MinuteDuration
 	-- 18250 matches them up with the other panels (I assume they rotate on a diff angle or something)
 	local azi = SunToSolarPanelAngle(GetSunPos()) + 18250
@@ -65,11 +65,6 @@ end
 GlobalGameTimeThread("SolarArrayOrientation", function()
 	local update_interval = 3*const.MinuteDuration
 	while true do
-		if not rawget(_G,"SolarArraysOrientToSun") then
-			DeleteThread(SolarArrayOrientation,true)
-			_G.SolarArraysOrientToSun = nil
-			break
-		end
 		Sleep(update_interval)
 		SolarArraysOrientToSun(update_interval)
 	end

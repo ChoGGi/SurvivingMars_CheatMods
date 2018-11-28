@@ -1,3 +1,9 @@
+v0.9
+Fix for 0.7.
+
+v0.8
+Planetary anomaly drones stuck inside.
+
 v0.7
 Cleaned up tasks for maintenance stuck rockets.
 

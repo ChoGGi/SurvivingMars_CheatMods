@@ -407,9 +407,7 @@ end
 
 function ChoGGi_ListChoiceDlg:BuildList()
 	local g = _G
-	local g_Classes = g_Classes
-	local bt = BuildingTemplates
-	local res = Resources
+	local g_Classes = g.g_Classes
 
 	self.idList:Clear()
 	for i = 1, #self.items do

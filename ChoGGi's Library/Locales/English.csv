@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001441,,
 302535920001442,,
 302535920001443,,
 302535920001444,,
@@ -128,6 +127,7 @@ You can copy and paste numbers if you want.",
 302535920000028,Find Resource,
 302535920000029,Error: Cannot find any %s.,
 302535920000032,Select a resource to find,
+302535920001441,"<left_click> Activate, <right_click> Add/Remove Quickbar",
 302535920001439,"~obj, @func,@@type,$id, *r/*g for threads",
 302535920001440,"~obj opens object in examine dialog.
 ~!obj opens an objlist of attachments for object in examine.
@@ -217,7 +217,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920001308,Settings,
 302535920000734,Clear Log,
 302535920001026,Show File Log,
-302535920001091,Flushes log to disk and displays in console log.,
+302535920001091,Flushes log to disk and displays in examine.,
 302535920001152,Clear out the console log (F9 also works).,
 302535920001154,Displays the log text in a window you can copy sections from.,
 302535920000563,Copy Log Text,

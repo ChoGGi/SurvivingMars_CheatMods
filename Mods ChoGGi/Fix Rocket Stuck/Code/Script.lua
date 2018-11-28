@@ -51,14 +51,15 @@ local function SpawnColonist(old_c,building,pos,city)
 	return colonist
 end
 
-local function RemoveOldMainTasks(r)
+local function RemoveOldMainTasks(s)
 	for i = #r.task_requests, 1, -1 do
 		local task = r.task_requests[i]
-		if task:GetResource() == r.maintenance_requirements.resource then
+		if task:GetResource() == r.maintenance_requirements.resource and task:GetFillIndex() == 1000000 and task:GetFlags() == 1028 then
 			TableRemove(r.task_requests,i)
 		end
 	end
 end
+
 function OnMsg.LoadGame()
 	-- if my lib mod is installed use my copy of this function
 	local SpawnColonist_lib
@@ -85,13 +86,36 @@ function OnMsg.LoadGame()
 					end
 				end
 
-				-- more invalid colonists...
 				if type(r.expedition) == "table" then
+					-- more invalid colonists...
 					local crew = r.expedition.crew or ""
 					for i = #crew, 1, -1 do
-						if not IsValid(crew[i]) then
-							SpawnColonist_lib(crew[i],r,nil,UICity)
+						local c = crew[i]
+						if not IsValid(c) then
+							SpawnColonist_lib(c,r,nil,UICity)
 							TableRemove(crew,i)
+						end
+					end
+					-- valid but stuck inside rocket
+					local drones = r.expedition.drones or ""
+					for i = #drones, 1, -1 do
+						local d = drones[i]
+						if IsValid(d) then
+							if d:GetPos() == InvalidPos then
+								CreateGameTimeThread(function()
+									d:ExitBuilding(r)
+									Sleep(10000)
+									-- something fucks them up, so take the easy way out
+									if not d.command then
+										d:delete()
+										UICity.drone_prefabs = UICity.drone_prefabs + 1
+									end
+								end)
+								TableRemove(drones,i)
+							end
+						else
+							UICity.drone_prefabs = UICity.drone_prefabs + 1
+							TableRemove(drones,i)
 						end
 					end
 				end
@@ -103,13 +127,46 @@ function OnMsg.LoadGame()
 				invalid = RemoveInvalid(invalid,r.drones or "")
 				UICity.drone_prefabs = UICity.drone_prefabs + invalid
 
+				if r.maintenance_request then
+					local cmd = r.command
+					RemoveOldMainTasks(r)
+					TableClear(r.maintenance_requirements)
+					r.maintenance_request = false
+					r:SetCommand(cmd)
+				end
+
+				-- fix for my fuckup with the main reqs
+				if not r.expedition and #r.task_requests ~= 8 then
+					local count = 0
+					for i = 1, #r.task_requests do
+						if r.task_requests[i]:GetResource() == "MachineParts" then
+							count = count + 1
+						end
+					end
+					-- one for loading, one for the main req
+					if count ~= 2 then
+						-- remove old reqs
+						r.task_requests = {}
+						-- re-do other ones
+						r:CreateResourceRequests()
+						if not r.allow_export then
+							r:ToggleAllowExport()
+						end
+						local unit_count = r:GetRequestUnitCount(r.max_export_storage)
+						r.export_requests = { r:AddDemandRequest("PreciousMetals", r.max_export_storage, 0, unit_count) }
+						r:ToggleAllowExport()
+						r:ToggleAllowExport()
+					end
+				end
+
 			-- resends main com with whatever res is needed
 			elseif r.command == "WaitMaintenance" then
 				RemoveOldMainTasks(r)
 				r:SetCommand("WaitMaintenance",r.maintenance_requirements.resource, r.maintenance_request:GetTargetAmount())
 
 			-- any of the above WaitMaintenance rockets
-			elseif r.command == "Refuel" or r.command == "Unload" and r.maintenance_request then
+			elseif r.command == "Refuel" and r.maintenance_request then
+				local cmd = r.command
 				RemoveOldMainTasks(r)
 				TableClear(r.maintenance_requirements)
 				r.maintenance_request = false
