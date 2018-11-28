@@ -35,6 +35,7 @@ local GedDefault = StringFormat("%s, 15, aa",font)
 local Editor14Bold = StringFormat("%s, 14, bold, aa",font)
 local Editor12Bold = StringFormat("%s, 12, bold, aa",font)
 local Editor16Bold = StringFormat("%s, 16, bold, aa",font)
+local Editor32Bold = StringFormat("%s, 32, bold, aa",font)
 local Editor16 = StringFormat("%s, 16, aa",font)
 
 -- no sense in adding these to each item
@@ -98,6 +99,13 @@ function OnMsg.ClassesPostprocess()
 		RolloverTextColor = white,
 		id = "ChoGGi_Buttons",
 	})
+--~ 	-- Arrow_Button
+--~ 	PlaceObj("ChoGGi_TextStyle", {
+--~ 		TextColor = gray32_255,
+--~ 		RolloverTextColor = white,
+--~ 		TextFont = Editor32Bold,
+--~ 		id = "ChoGGi_Arrow_Button",
+--~ 	})
 	-- ConsoleButton
 	PlaceObj("ChoGGi_TextStyle", {
 		RolloverTextColor = white,
@@ -110,6 +118,13 @@ function OnMsg.ClassesPostprocess()
 		RolloverTextColor = white,
 		TextFont = Editor16Bold,
 		id = "ChoGGi_ButtonMenu",
+	})
+	-- ButtonMin
+	PlaceObj("ChoGGi_TextStyle", {
+		TextColor = black,
+		RolloverTextColor = white,
+		TextFont = Editor16Bold,
+		id = "ChoGGi_ButtonMin",
 	})
 	-- ComboButton
 	PlaceObj("ChoGGi_TextStyle", {

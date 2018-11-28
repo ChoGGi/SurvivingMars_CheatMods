@@ -1723,6 +1723,8 @@ function Examine:Done(result,...)
 	PopupClose(self.idAttachesMenu)
 	PopupClose(self.idParentsMenu)
 	PopupClose(self.idToolsMenu)
+	local Examine = Examine
+	Examine.examine_dialogs = Examine.examine_dialogs or {}
 	Examine.examine_dialogs[self.obj] = nil
 	Examine.examine_dialogs[self.obj_ref] = nil
 	ChoGGi_Window.Done(self,result,...)

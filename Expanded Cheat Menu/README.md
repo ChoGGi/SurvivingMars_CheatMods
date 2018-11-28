@@ -32,8 +32,10 @@ Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits
 Ctrl-Alt-Shift-D: Delete object (select multiple objects in editor and use this to delete them all).
 Shift-Q: Clone selected object to mouse position.
 Ctrl-Shift-T: Terrain Editor Mode (manipulate/paint ground).
+
 More shortcut keys are available; see cheat menu items.
 You can edit the shortcut keys; see in-game keybindings.
+If you want to be able to bind a menu item: msg me and I'll add it to keybindings.
 
 When I say object that means either the selected object or the object under the mouse cursor.
 
@@ -231,6 +233,9 @@ Depot capacities have been limited, so adding too much won't crash and delete yo
 
 SM will freeze when you disable ECM
 	> ECM hooks into a lot of stuff, if you don't want the game to freeze when you disable it then restart SM so mods aren't loaded and then disable it.
+
+Silva's Modular Apartments and the Cheats pane upgrade 1/2/3 == game freezing
+	> Do it manually; Select building, in console paste: s:ApplyUpgrade(1,true)
 ```
 
 ##### Modder related (Misc Info)
@@ -250,6 +255,18 @@ Translate what you can (I don't expect anyone to bother with 1000+ strings).
 Send me the file to include it.
 
 OpenExamine(AllLanguages) for a list of language names (use the "value" for the file name).
+```
+
+##### Help it doesn't work!
+```
+Logs are stored at C:\Users\USERNAME\AppData\Roaming\Surviving Mars\logs
+I can't help if I don't know what's wrong.
+The steps you take to recreate the issue would also be useful, and maybe a save game depending on the issue.
+```
+
+##### Access to missing functionality
+```
+Da Vinci update added a blacklist of functions, you can use The HelperMod included to bypass them (only really useful for modders).
 ```
 
 ##### Thank You

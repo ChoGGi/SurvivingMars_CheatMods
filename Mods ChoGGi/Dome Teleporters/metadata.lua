@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"title", "Dome Teleporters v0.4",
-	"version", 4,
+	"title", "Dome Teleporters v0.5",
+	"version", 5,
 	"saved", 1543233600,
 	"image", "Preview.png",
 	"id", "ChoGGi_DomeTeleporters",

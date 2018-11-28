@@ -100,6 +100,17 @@ DefineClass.ChoGGi_Image = {
 	Margins = box(4, 0, 0, 0),
 	RolloverTemplate = "Rollover",
 }
+--~ 		ScaleModifier = point(2500, 2500),
+
+DefineClass.ChoGGi_ImageRows = {
+	__parents = {"XImage"},
+	Rows = 2,
+	VAlign = "center",
+	HandleKeyboard = false,
+	ImageScale = point(250, 250),
+--~ 	Margins = box(4, 0, 0, 0),
+	RolloverTemplate = "Rollover",
+}
 DefineClass.ChoGGi_MoveControl = {
 	__parents = {"XMoveControl"},
 	Dock = "top",
@@ -118,25 +129,26 @@ function ChoGGi_MoveControl:OnKbdKeyDown(vk,...)
 	return XMoveControl.OnKbdKeyDown(self,vk,...)
 end
 
-local function ToggleRoll(win,bool)
+function ChoGGi_MoveControl:ToggleRollup(win,bool)
 	for i = 1, #win.idDialog do
 		if win.idDialog[i].class ~= "ChoGGi_MoveControl" then
 			win.idDialog[i]:SetVisible(bool)
 		end
 	end
 end
+
 function ChoGGi_MoveControl:OnMouseButtonDoubleClick(pt,button,...)
 	-- window object
 	local win = self.parent.parent
 	if win.idDialog then
 		if win.dialog_rolled_up then
 			-- already rolled up so unhide sections and get saved size
-			ToggleRoll(win,true)
+			self:ToggleRollup(win,true)
 			win:SetHeight(win.dialog_rolled_up)
-			win.dialog_rolled_up = nil
+			win.dialog_rolled_up = false
 		else
 			-- save size and hide sections
-			ToggleRoll(win,false)
+			self:ToggleRollup(win,false)
 			win.dialog_rolled_up = win:GetHeight()
 			win:SetHeight(win.header)
 		end
@@ -179,6 +191,12 @@ DefineClass.ChoGGi_Button = {
 function ChoGGi_Button:Init()
 	self.idLabel:SetDock("box")
 end
+DefineClass.ChoGGi_ButtonMin = {
+	__parents = {"ChoGGi_Button"},
+	MinWidth = 0,
+	Margins = box(0,0,0,0),
+	TextStyle = "ChoGGi_ButtonMin",
+}
 
 DefineClass.ChoGGi_CloseButton = {
 	__parents = {"ChoGGi_Buttons"},
@@ -215,6 +233,7 @@ DefineClass.ChoGGi_ComboButton = {
 	RolloverBackground = rollover_blue,
 	RolloverAnchor = "top",
 	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
 	RolloverTemplate = "Rollover",
 	PressedBackground = medium_gray,
 	PressedTextColor = white,
@@ -244,6 +263,7 @@ DefineClass.ChoGGi_CheckButton = {
 	__parents = {"XCheckButton"},
 	TextStyle = "ChoGGi_CheckButton",
 	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
 	RolloverTemplate = "Rollover",
 	RolloverAnchor = "right",
 	MinWidth = 60,
@@ -501,7 +521,8 @@ function ChoGGi_Window:idCaptionOnMouseButtonDown(pt,button,...)
 	ChoGGi_Image.OnMouseButtonDown(pt,button,...)
 	local dlg = self.parent.parent.parent
 	if IsValid(dlg.obj) then
-		ViewObjectMars(dlg.obj)
+--~ 		ViewObjectMars(dlg.obj)
+		ViewAndSelectObject(dlg.obj)
 	end
 end
 

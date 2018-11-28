@@ -25,7 +25,10 @@ function OnMsg.ClassesGenerate()
 
 	-- be too annoying to add templates to all of these manually
 	XMenuEntry.RolloverTemplate = "Rollover"
+	XMenuEntry.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
 	XListItem.RolloverTemplate = "Rollover"
+	XListItem.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
+
 	-- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I could remove this?)
 	XRolloverWindow.ZOrder = max_int
 
@@ -40,7 +43,9 @@ function OnMsg.ClassesGenerate()
 	-- make cheats menu look like older one (more gray, less white)
 	local dark_gray = -9868951
 	XMenuBar.Background = dark_gray
+	XMenuBar.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
 	XPopupMenu.Background = dark_gray
+	XPopupMenu.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
 	-- it sometimes does a jarring white background
 	XPopupMenu.DisabledBackground = dark_gray
 	-- darker gray
@@ -381,6 +386,7 @@ $123 or $EffectDeposit.display_name prints translated string.
 				XShortcutsTarget:SetRolloverTemplate("Rollover")
 				XShortcutsTarget:SetRolloverTitle(S[126095410863--[[Info--]]])
 				XShortcutsTarget:SetRolloverText(S[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
+				XShortcutsTarget:SetRolloverHint(S[302535920001441--[["<left_click> Activate, <right_click> Add/Remove"--]]])
 			end
 
 			-- yeah... i don't need the menu taking up the whole width of my screen
@@ -1217,6 +1223,7 @@ do -- LoadGame/CityStart
 
 
 
+
 		if UserSettings.mediumGameSpeed then
 			const.mediumGameSpeed = UserSettings.mediumGameSpeed
 		end
@@ -1382,9 +1389,6 @@ do -- LoadGame/CityStart
 			end
 		end
 
-		-- set zoom/border scrolling
-		ChoGGi.ComFuncs.SetCameraSettings()
-
 		-- show all traits
 		if UserSettings.SanatoriumSchoolShowAll then
 			g_Classes.Sanatorium.max_traits = #ChoGGi.Tables.NegativeTraits
@@ -1465,6 +1469,11 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			ChoGGi.Temp.WriteSettings = true
 		end
 
+		-- set zoom/border scrolling
+		SetMouseDeltaMode(false)
+		cameraRTS.Activate(1)
+		engineShowMouseCursor()
+		ChoGGi.ComFuncs.SetCameraSettings()
 
 
 		------------------------------- always fired last

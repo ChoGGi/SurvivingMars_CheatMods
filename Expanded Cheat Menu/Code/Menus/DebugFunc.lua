@@ -910,7 +910,7 @@ function OnMsg.ClassesGenerate()
 		function ChoGGi.MenuFuncs.SetPathMarkersVisible()
 			local ChoGGi = ChoGGi
 			local sel = SelectedObj
-			if sel then
+			if IsValid(sel) and sel:IsKindOfClasses("Movable", "CargoShuttle") then
 				randcolours = ChoGGi.ComFuncs.RandomColour(#randcolours + 1)
 				ChoGGi.MenuFuncs.SetWaypoint(sel)
 				return

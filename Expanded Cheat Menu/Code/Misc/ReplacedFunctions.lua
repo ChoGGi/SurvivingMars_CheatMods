@@ -1008,7 +1008,7 @@ function OnMsg.ClassesBuilt()
 
 			local c = self.idContent
 			if not c then
-				c = self.idChoGGi_ScrollBox.idContent
+				c = self.idChoGGi_ScrollBox and self.idChoGGi_ScrollBox.idContent
 			end
 			if not c then
 				return
