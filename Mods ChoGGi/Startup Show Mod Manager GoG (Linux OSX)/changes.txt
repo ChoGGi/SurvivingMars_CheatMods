@@ -1,14 +1,24 @@
+0.8
+Gagarin.
+Changed it from changing the xtemplate to just directly changing the UI.
+It should be more update friendly now.
+
 0.7
-Da Vinci Update.
+Da Vinci.
 More durable checking.
 Intergrated with my HelperMod for ECM (easier to have the two both installed).
+
 0.6
 Switched from checking Platform (.steam or .pc or .linux or .osx) to (.desktop).
+
 0.5
 This broke in the Curo update.
+
 0.4
 The tutorial button messed it up (won't happen again for new buttons).
+
 0.3
 Now retrieves the correct Assets Revision, so no more need for version bumping.
+
 0.2
 version bump for curo update.
