@@ -911,7 +911,7 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			if type(value) == "string" then
 				if browse or choice[1].check2 then
-					ChoGGi.MenuFuncs.ChangeLightmodelCustom(value)
+					ChoGGi.MenuFuncs.EditLightmodelCustom(value)
 				else
 					if value == "ChoGGi_Default" then
 						ChoGGi.UserSettings.Lightmodel = nil

@@ -370,7 +370,9 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 		-- colour editor stuff
 		if self.idList.focused_item and self.idColourContainer then
 			-- update obj colours
-			self:UpdateColour()
+			if self.custom_type == 2 then
+				self:UpdateColour()
+			end
 			if value_type == "number" then
 				self.idColorPicker:SetColor(value)
 			end

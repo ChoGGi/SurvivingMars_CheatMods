@@ -4137,37 +4137,6 @@ function ChoGGi.ComFuncs.ToggleCollisions(cls)
 	ResumePassEdits("ToggleCollisions")
 end
 
--- Any png files in AppData/Logos folder will be added to mod as converted logo files.
--- They have to be min of 8bit, and will be resized to power of 2.
--- This doesn't add anything to metadata/items, it only converts files.
---~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles("MOD_ID")
---~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.MOD_ID,".tga")
-function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod,ext)
-	if blacklist then
-		print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ConvertImagesToLogoFiles"))
-		return
-	end
-	if type(mod) == "string" then
-		mod = Mods[mod]
-	end
-	local images = ChoGGi.ComFuncs.RetFilesInFolder("AppData/Logos",ext or ".png")
-	if images then
-		local ModItemDecalEntity = ModItemDecalEntity
-		local Import = ModItemDecalEntity.Import
-		local ConvertToOSPath = ConvertToOSPath
-		for i = 1, #images do
-			local filename = ConvertToOSPath(images[i].path)
-			Import(nil,ModItemDecalEntity:new{
-				entity_name = images[i].name,
-				name = images[i].name,
-				filename = filename:gsub("\\","/"),
-				mod = mod,
-			})
-			print(filename)
-		end
-	end
-end
-
 function ChoGGi.ComFuncs.OpenGedApp(name)
 	OpenGedApp(name, terminal.desktop)
 end

@@ -740,5 +740,152 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
+	-- Any png files in AppData/Logos folder will be added to mod as converted logo files.
+	-- They have to be min of 8bit, and will be resized to power of 2.
+	-- This doesn't add anything to metadata/items, it only converts files.
+--~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles("MOD_ID")
+--~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.MOD_ID,".tga")
+	function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod,ext)
+		if blacklist then
+			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ConvertImagesToLogoFiles"))
+			return
+		end
+		if type(mod) == "string" then
+			mod = Mods[mod]
+		end
+		local images = ChoGGi.ComFuncs.RetFilesInFolder("AppData/Logos",ext or ".png")
+		if images then
+			local ModItemDecalEntity = ModItemDecalEntity
+			local Import = ModItemDecalEntity.Import
+			local ConvertToOSPath = ConvertToOSPath
+			for i = 1, #images do
+				local filename = ConvertToOSPath(images[i].path)
+				Import(nil,ModItemDecalEntity:new{
+					entity_name = images[i].name,
+					name = images[i].name,
+					filename = filename:gsub("\\","/"),
+					mod = mod,
+				})
+				print(filename)
+			end
+		end
+	end
+
+	do -- ConvertImagesToResEntities
+		local ConvertToOSPath = ConvertToOSPath
+		local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
+	--~ 	ModItemDecalEntity:Import
+		local function ModItemDecalEntityImport(name,filename,mod)
+			local ss = "%s%s"
+			local output_dir = ConvertToOSPath(mod.content_path)
+
+			local ent_dir = StringFormat("%sEntities/",output_dir)
+			local ent_file = StringFormat("%s.ent",name)
+			local ent_output = ss:format(ent_dir,ent_file)
+
+			local mtl_dir = StringFormat("%sEntities/Materials/",output_dir)
+			local mtl_file = StringFormat("%s_mesh.mtl",name)
+			local mtl_output = ss:format(mtl_dir,mtl_file)
+
+			local texture_dir = StringFormat("%sEntities/Textures/",output_dir)
+			local texture_name = StringFormat("mod_texture_%s.dds",name)
+			local texture_output = ss:format(texture_dir,texture_name)
+
+			local fallback_dir = StringFormat("%sFallbacks/",texture_dir)
+			local fallback_output = ss:format(fallback_dir,texture_name)
+
+			local err = AsyncCreatePath(ent_dir)
+			if err then
+				return
+			end
+			err = AsyncCreatePath(mtl_dir)
+			if err then
+				return
+			end
+			err = AsyncCreatePath(texture_dir)
+			if err then
+				return
+			end
+			err = AsyncCreatePath(fallback_dir)
+			if err then
+				return
+			end
+
+			err = AsyncStringToFile(ent_output, StringFormat([[<?xml version="1.0" encoding="UTF-8"?>
+<entity path="">
+	<state id="idle">
+		<mesh_ref ref="mesh"/>
+	</state>
+	<mesh_description id="mesh">
+		<src file=""/>
+		<mesh file="SignConcreteDeposit_mesh.hgm"/>
+		<material file="%s"/>
+		<bsphere value="0,0,50,1301"/>
+		<box min="-920,-920,50" max="920,920,50"/>
+	</mesh_description>
+</entity>
+]],mtl_file))
+			if err then
+				return
+			end
+
+			local compressed_filename = ""
+			local fallback_filename = ""
+			local cmdline = StringFormat("\"%s\" -dds10 -24 bc1 -32 bc3 -srgb \"%s\" \"%s\"", ConvertToOSPath(g_HgnvCompressPath), filename, texture_output)
+			local err, out = AsyncExec(cmdline, "", true, false)
+			if err then
+				return
+			end
+			cmdline = StringFormat("\"%s\" \"%s\" \"%s\" %d", ConvertToOSPath(g_DdsTruncPath), texture_output, fallback_output, const.FallbackSize)
+			err = AsyncExec(cmdline, "", true, false)
+			if err then
+				return
+			end
+			cmdline = StringFormat("\"%s\" \"%s\" \"%s\"", ConvertToOSPath(g_HgimgcvtPath), texture_output, ui_output)
+			err = AsyncExec(cmdline, "", true, false)
+			if err then
+				return
+			end
+
+			err = AsyncStringToFile(mtl_output,StringFormat([[<?xml version="1.0" encoding="UTF-8"?>
+<Materials>
+	<Material>
+		<BaseColorMap Name="%s" mc="0"/>
+		<Property Special="None"/>
+		<Property AlphaBlend="Blend"/>
+	</Material>
+</Materials>]],texture_name))
+
+			if err then
+				return
+			end
+		end
+
+--~ 	ChoGGi.ComFuncs.ConvertImagesToResEntities("ChoGGi_ExampleNewResIcon")
+--~ 	ChoGGi.ComFuncs.ConvertImagesToResEntities("MOD_ID")
+--~ 	ChoGGi.ComFuncs.ConvertImagesToResEntities(Mods.MOD_ID,".tga")
+		function ChoGGi.ComFuncs.ConvertImagesToResEntities(mod,ext)
+			if blacklist then
+				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ConvertImagesToResEntities"))
+				return
+			end
+			if type(mod) == "string" then
+				mod = Mods[mod]
+			end
+			local images = RetFilesInFolder("AppData/Logos",ext or ".png")
+			if images then
+				for i = 1, #images do
+					local filename = ConvertToOSPath(images[i].path)
+					ModItemDecalEntityImport(
+						images[i].name,
+						filename:gsub("\\","/"),
+						mod
+					)
+					print(filename)
+				end
+			end
+
+		end
+	end -- do
 
 end
