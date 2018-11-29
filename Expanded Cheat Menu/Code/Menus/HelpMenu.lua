@@ -296,19 +296,19 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "8",
 	}
 
-	local str_Help_Text = "ECM.Help.Text"
+	local str_Help_Tutorial = "ECM.Help.Tutorial"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[1000145--[[Text--]]]),
+	Actions[c] = {ActionName = StringFormat("%s ..",S[8982--[[Tutorial--]]]),
 		ActionMenubar = "ECM.Help",
-		ActionId = ".Text",
+		ActionId = ".Tutorial",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
-		ActionSortKey = "1Text",
+		ActionSortKey = "1Tutorial",
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("*%s*",S[126095410863--[[Info--]]]),
-		ActionMenubar = str_Help_Text,
+		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Info*",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
 		RolloverText = StringFormat("%s : %s",S[302535920001028--[[Have a Tutorial, or general info you'd like to add?--]]],ChoGGi.email),
@@ -317,7 +317,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("*%s & %s %s*",S[283142739680--[[Game--]]],S[302535920001355--[[Map--]]],S[126095410863--[[Info--]]]),
-		ActionMenubar = str_Help_Text,
+		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Game & Map Info*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 		RolloverText = S[302535920001282--[[Information about this saved game (mostly objects).--]]],
@@ -327,7 +327,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("*%s*",S[5568--[[Stats--]]]),
-		ActionMenubar = str_Help_Text,
+		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Stats*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 		RolloverText = S[302535920001281--[[Information about your computer (as seen by SM).--]]],
@@ -339,7 +339,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("*%s*",S[302535920000875--[[Game Functions--]]]),
-		ActionMenubar = str_Help_Text,
+		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Game Functions*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
@@ -349,205 +349,43 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "-2*Game Functions*",
 	}
 
-	c = c + 1
-	Actions[c] = {ActionName = [[OnMsgs Easy Start]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".OnMsgs Easy Start",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/OnMsgs Easy Start.md"))
-		end,
-		ActionSortKey = "-3OnMsgs Easy Start",
+	local tutorial_table = {
+		"Add New Trait",
+		"All Nearby Objects",
+		"Change Animation",
+		"DroneNoBatteryNeeded",
+		"Hidden Milestones",
+		"Locales",
+		"Misc",
+		"OnMsgs Load Game",
+		"OnMsgs New Game",
+		"point",
+		"Random Colours",
+		"Random number",
+		"Save Load Mod Settings",
+		"Show a list of choices",
+		"String To Object",
+		"TaskRequestFuncs",
+		"Threads",
 	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[OnMsgs Load Game]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".OnMsgs Load Game",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/OnMsgs Load Game.md"))
-		end,
-		ActionSortKey = "-3OnMsgs Load Game",
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[OnMsgs New Game]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".OnMsgs New Game",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/OnMsgs New Game.md"))
-		end,
-		ActionSortKey = "-3OnMsgs New Game",
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[Misc]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".Misc",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/Misc.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[Save Load Mod Settings]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".Save Load Mod Settings",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/Save Load Mod Settings.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[Add New Trait]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".Add New Trait",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/Add New Trait.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[Change Animation]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".Change Animation",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/Change Animation.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[DroneNoBatteryNeeded]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".DroneNoBatteryNeeded",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/DroneNoBatteryNeeded.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[Hidden Milestones]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".Hidden Milestones",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/Hidden Milestones.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[Locales]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".Locales",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/Locales.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[Random number]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".Random number",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/Random number.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[Return All Nearby Objects]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".Return All Nearby Objects",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/Return All Nearby Objects.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[Return Random Colours]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".Return Random Colours",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/Return Random Colours.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[Show A List of Choices]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".Show A List of Choices",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/Show A List of Choices.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[TaskRequestFuncs]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".TaskRequestFuncs",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/TaskRequestFuncs.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[String To Object]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".String To Object",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/String To Object.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[Threads]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".Threads",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/Threads.md"))
-		end,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = [[point]],
-		ActionMenubar = str_Help_Text,
-		ActionId = ".point",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/point.md"))
-		end,
-	}
-
+	for i = 1, #tutorial_table do
+		local name = tutorial_table[i]
+		c = c + 1
+		print(
+			name,"\n",
+			StringFormat(".%s",name),"\n",
+			str_url:format(StringFormat("Tutorials/%s.md",name)),"\n",
+			StringFormat("-3%s",name)
+		)
+		Actions[c] = {ActionName = name,
+			ActionMenubar = str_Help_Tutorial,
+			ActionId = StringFormat(".%s",name),
+			ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+			RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
+			OnAction = function()
+				OpenUrl(str_url:format(StringFormat("Tutorials/%s.md#readme",name)))
+			end,
+			ActionSortKey = StringFormat("-3%s",name),
+		}
+	end
 end

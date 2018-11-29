@@ -950,7 +950,6 @@ function OnMsg.ClassesBuilt()
 		local CreateRealTimeThread = CreateRealTimeThread
 		local DeleteThread = DeleteThread
 		local Sleep = Sleep
-		local TGetID = TGetID
 		local function ToggleVis(idx,content,v,h)
 			for i = 6, idx do
 				content[i]:SetVisible(v)
