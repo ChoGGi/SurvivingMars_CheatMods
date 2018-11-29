@@ -21,4 +21,10 @@ Platform.desktop
 - Start the game and you should see the Mod Manager.
 
 If you are using Finder, to open the Surviving Mars.app, right click on the application icon and select Show Package Contents.
+
+
+Or even easier: Open a new Finder window.
+Hit Command-Shift-G.
+Paste "/Applications/Surviving Mars.app/Contents/Resources" (without quotes) into the resulting dialog.
+Hit Return. Drag BinAssets from Downloads to the resulting folder.
 ```
