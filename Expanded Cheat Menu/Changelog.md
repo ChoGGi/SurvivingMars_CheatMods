@@ -4,6 +4,11 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v11.3 (Unreleased)
+### Changed:
+- Updated real time path marker to work for off-map colonists as well (ones in buildings).
+
+### Fixed:
+- Set Colonists ages/etc didn't check if the colonist was valid (thanks tmpyemail).
 
 ## v11.2 (29 Nov 2018)
 ### Added:

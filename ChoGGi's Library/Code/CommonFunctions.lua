@@ -148,6 +148,9 @@ do -- RetName
 	function ChoGGi.ComFuncs.RetName_Update()
 		AfterLoad()
 	end
+	function ChoGGi.ComFuncs.RetName_Examine()
+		ex(lookup_table)
+	end
 
 	-- try to return a decent name for the obj, failing that return a string
 	function ChoGGi.ComFuncs.RetName(obj)
@@ -1086,7 +1089,7 @@ end
 -- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit,"IsValid",nil,true)
 function ChoGGi.ComFuncs.FilterFromTableFunc(list,func,value,is_bool)
 	if type(list) ~= "table" then
-		return empty_table
+		return {}
 	end
 	return MapFilter(list,function(o)
 		if is_bool then
@@ -2034,6 +2037,11 @@ do -- SetCameraSettings
 end -- do
 
 function ChoGGi.ComFuncs.ColonistUpdateAge(c,age)
+	-- probably some mod that doesn't know how to clean up colonists they removed...
+	if not IsValid(c) then
+		return
+	end
+
 	local ages = ChoGGi.Tables.ColonistAges
 	if age == S[3490--[[Random--]]] then
 		age = ages[Random(1,6)]
@@ -2078,6 +2086,11 @@ function ChoGGi.ComFuncs.ColonistUpdateAge(c,age)
 end
 
 function ChoGGi.ComFuncs.ColonistUpdateGender(c,gender)
+	-- probably some mod that doesn't know how to clean up colonists they removed...
+	if not IsValid(c) then
+		return
+	end
+
 	local ChoGGi = ChoGGi
 	local genders = ChoGGi.Tables.ColonistGenders
 
@@ -2101,6 +2114,11 @@ function ChoGGi.ComFuncs.ColonistUpdateGender(c,gender)
 end
 
 function ChoGGi.ComFuncs.ColonistUpdateSpecialization(c,spec)
+	-- probably some mod that doesn't know how to clean up colonists they removed...
+	if not IsValid(c) then
+		return
+	end
+
 	-- children don't have spec models so they get black cubed
 	if c.age_trait ~= "Child" then
 		if spec == S[3490--[[Random--]]] then
@@ -2114,6 +2132,11 @@ function ChoGGi.ComFuncs.ColonistUpdateSpecialization(c,spec)
 end
 
 function ChoGGi.ComFuncs.ColonistUpdateTraits(c,bool,traits)
+	-- probably some mod that doesn't know how to clean up colonists they removed...
+	if not IsValid(c) then
+		return
+	end
+
 	local func
 	if bool == true then
 		func = "AddTrait"
@@ -2126,6 +2149,11 @@ function ChoGGi.ComFuncs.ColonistUpdateTraits(c,bool,traits)
 end
 
 function ChoGGi.ComFuncs.ColonistUpdateRace(c,race)
+	-- probably some mod that doesn't know how to clean up colonists they removed...
+	if not IsValid(c) then
+		return
+	end
+
 	if race == S[3490--[[Random--]]] then
 		race = Random(1,5)
 	end
@@ -2318,7 +2346,9 @@ do -- COLOUR FUNCTIONS
 			-- populate list with amount we want
 			for i = 1, amount do
 				-- 16777216: https://en.wikipedia.org/wiki/Color_depth#True_color_(24-bit)
-				colour_list[i] = AsyncRand(33554433) -16777216
+				-- kinda, we skip the alpha values
+--~ 				colour_list[i] = AsyncRand(33554433) -16777216
+				colour_list[i] = AsyncRand(16777217) + -16777216
 			end
 
 			-- now remove all dupes and add more till we hit amount
@@ -2329,7 +2359,7 @@ do -- COLOUR FUNCTIONS
 				-- loop missing amount
 				for _ = 1, amount - #colour_list do
 					c = c + 1
-					colour_list[c] = AsyncRand(33554433) -16777216
+					colour_list[c] = AsyncRand(16777217) + -16777216
 				end
 				-- remove dupes (it's quicker to do this then check the table for each newly added colour)
 				colour_list = RetTableNoDupes(colour_list)
@@ -2340,7 +2370,7 @@ do -- COLOUR FUNCTIONS
 		end
 
 		-- return a single colour
-		return AsyncRand(33554433) -16777216
+		return AsyncRand(16777217) + -16777216
 	end
 	local RandomColour = ChoGGi.ComFuncs.RandomColour
 
