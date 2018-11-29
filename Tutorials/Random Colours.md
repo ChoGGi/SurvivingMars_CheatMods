@@ -1,14 +1,14 @@
 ### Returns either a single colour, or specify an amount to return a table with that many colours (no dupes)
 ##### Around 400 ticks to generate 5 tables of 100K colours each, and around 1100 for 1 table of 1M colours
 
-```
+```lua
 -- returns single colour
 RandomColour()
 -- returns an index based table with a thousand colours
 RandomColour(1000)
 ```
 
-```
+```lua
 -- local instead of global lookup is slightly faster
 local TableFind = table.find
 local AsyncRand = AsyncRand
@@ -37,7 +37,7 @@ function RandomColour(amount)
 		-- populate list with amount we want
 		for i = 1, amount do
 			-- 16777216: https://en.wikipedia.org/wiki/Color_depth#True_color_(24-bit)
-			colour_list[i] = AsyncRand(16777217) + -16777216
+			colour_list[i] = AsyncRand(33554433) -16777216
 		end
 
 		-- now remove all dupes and add more till we hit amount
@@ -48,7 +48,7 @@ function RandomColour(amount)
 			-- loop missing amount
 			for _ = 1, amount - #colour_list do
 				c = c + 1
-				colour_list[c] = AsyncRand(16777217) + -16777216
+				colour_list[c] = AsyncRand(33554433) -16777216
 			end
 			-- remove dupes (it's quicker to do this then check the table for each newly added colour)
 			colour_list = RetTableNoDupes(colour_list)
@@ -59,6 +59,6 @@ function RandomColour(amount)
 	end
 
 	-- return a single colour
-	return AsyncRand(16777217) + -16777216
+	return AsyncRand(33554433) -16777216
 end
 ```

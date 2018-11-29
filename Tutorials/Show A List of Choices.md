@@ -1,6 +1,6 @@
 ### Shows a list of choices then does something based on the selected item
 
-```
+```lua
 CreateRealTimeThread(function()
 
 	local choice = WaitListChoice(

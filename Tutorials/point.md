@@ -1,6 +1,6 @@
 ### Get a random nearby passable point from a point
 
-```
+```lua
 local function RetRand(min,max)
 	return AsyncRand(max - min + 1) + min
 end

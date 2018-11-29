@@ -1,6 +1,6 @@
 ### Checks for a tech id: DroneNoBatteryNeeded, if it's researched then drones don't need batteries
 
-```
+```lua
 -- id of new tech
 local research_tech_id = "DroneNoBatteryNeeded"
 

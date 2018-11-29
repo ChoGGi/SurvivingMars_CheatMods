@@ -1,6 +1,6 @@
 ### Functions you can use with task requests (ex: building.maintenance_work_request)
 
-```
+```lua
 -- create a new work/supply/demand request (see Lua/_TaskRequest.lua)
 bld.resupply_request = Request_New(bld, "metals", 1000)
 
@@ -31,7 +31,7 @@ local stored = obj.requested_amount - req:GetActualAmount()
 
 #### Change the limit of a request without changing how many are stored
 
-```
+```lua
 -- sets task request to new amount (for some reason changing the "limit" will also boost the stored amount)
 -- this will reset it back to whatever it was after changing it.
 function SetTaskReqAmount(obj,value,task,setting)
