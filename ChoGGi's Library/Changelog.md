@@ -1,6 +1,11 @@
 ## Library Changelog
 
-## v4.2 (Unreleased)
+## v4.3 (Unreleased)
+
+## v4.2 (29 Nov 2018)
+- Cleaned up some of the UI code.
+- Some log spam from list dialog.
+- Filter items wasn't clearing when the filter was blank.
 
 ## v4.1 (26 Nov 2018)
 - You can now paste RGB(0,0,0) or RGBA(0,0,0,0) into the colour modifier.
