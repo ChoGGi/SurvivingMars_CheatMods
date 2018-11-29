@@ -1,6 +1,6 @@
 ### Adding new traits:
 
-```
+```lua
 function OnMsg.ClassesPostprocess()
 	PlaceObj("TraitPreset", {
 		id = "UniqueName_Fitter",
@@ -57,7 +57,7 @@ end
 ```
 
 Access trait with:
-```
+```lua
 local Fitter = TraitPresets.UniqueName_Fitter
 print(Fitter.display_name)
 ```

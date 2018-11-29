@@ -233,6 +233,7 @@ local Strings = {
 	[8690] = TranslationTable[8690], -- Protect
 	[8800] = TranslationTable[8800], -- Game Rules
 	[8830] = TranslationTable[8830], -- Food Storage
+	[8982] = TranslationTable[8982], -- Tutorial
 	[9000] = TranslationTable[9000], -- Micro Dome
 	[9003] = TranslationTable[9003], -- Trigon Dome
 	[9009] = TranslationTable[9009], -- Mega Trigon Dome

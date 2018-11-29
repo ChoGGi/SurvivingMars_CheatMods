@@ -494,10 +494,11 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 	-- rebuild list
 	self:BuildList()
 	-- if enter was pressed
+	txt = self.idFilter:GetText():lower()
+
 	if txt == "" then
 		return
 	end
-	txt = self.idFilter:GetText():lower()
 
 	-- loop through all the list items and remove any we can't find
 	local count = #self.idList

@@ -1541,13 +1541,16 @@ function Examine:SetToolbarVis(obj)
 			self.idButMarkObject:SetVisible()
 		end
 
-		if obj.class and obj.class ~= "" then
+		if obj.properties then
 			self.idButModProps:SetVisible(true)
 			self.idButAllProps:SetVisible(true)
-			self.idButDeleteObj:SetVisible(true)
 		else
 			self.idButModProps:SetVisible()
 			self.idButAllProps:SetVisible()
+		end
+		if obj.delete then
+			self.idButDeleteObj:SetVisible(true)
+		else
 			self.idButDeleteObj:SetVisible()
 		end
 
