@@ -371,12 +371,6 @@ function OnMsg.ClassesGenerate()
 	for i = 1, #tutorial_table do
 		local name = tutorial_table[i]
 		c = c + 1
-		print(
-			name,"\n",
-			StringFormat(".%s",name),"\n",
-			str_url:format(StringFormat("Tutorials/%s.md",name)),"\n",
-			StringFormat("-3%s",name)
-		)
 		Actions[c] = {ActionName = name,
 			ActionMenubar = str_Help_Tutorial,
 			ActionId = StringFormat(".%s",name),
