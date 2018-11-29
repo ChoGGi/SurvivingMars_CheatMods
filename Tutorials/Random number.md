@@ -7,7 +7,7 @@ Random() -- returns number between 0 and max_int
 Random(10) -- returns number between 0 - 10
 Random(-50,10) -- returns number between -50 - 10
 
-```
+```lua
 do
 	local AsyncRand = AsyncRand
 	function Random(m, n)
@@ -32,7 +32,7 @@ end
 ```
 
 #### If you're sure you won't send n-m < 0 then you can skip that
-```
+```lua
 do
 	local AsyncRand = AsyncRand
 	function Random(m, n)

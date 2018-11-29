@@ -1,5 +1,5 @@
 ### Add easy locale support to your mod (wtf is up with all this StringBase + 1 I see...)
-```
+```lua
 In your mod folder create a Locales folder, in that folder create English.csv (or whatever you use).
 
 Mod folder\Locales\English.csv
@@ -80,7 +80,7 @@ At the top of any new lua files. It'll work for both T() and T({})
 
 ##### Blind mouse = A badly formed csv will just leave the game "stuck" and no log that you can use.
 
-```
+```lua
 --Well I hope you know what this is
 local mod_id = "YOUR_MOD_ID"
 
@@ -165,7 +165,7 @@ print("\r\nEnd: LoadCSV()")
 
 ##### you can use this AutoHotkey script to clear out the log a bit for easier side-by-side comparisons
 
-```
+```ahk
 FileRead, temptext, MarsSteam.exe-20180616-15.12.24-5b0fe520.log
 Loop, parse, temptext, `n, `r
 	{

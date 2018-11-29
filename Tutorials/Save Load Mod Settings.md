@@ -2,7 +2,7 @@
 #### It expects a table with your settings inside of it
 
 ##### Example table
-```
+```lua
 settings = {
 	value1 = "text"
 	["value 2"] = 12345
@@ -15,8 +15,8 @@ settings = {
 
 ### MOD_SETTINGS_TABLE, and MOD_DEFAULT_SETTINGS are used for saved settings/default settings
 
-#### Write Mod Settings
-```
+#### Wrluaite Mod Settings
+```lua
 -- local some globals
 local TableToLuaCode = TableToLuaCode
 local AsyncCompress = AsyncCompress
@@ -60,7 +60,7 @@ end
 ```
 
 #### Read Mod Settings
-```
+```lua
 -- local some globals
 local ReadModPersistentData = ReadModPersistentData
 local AsyncDecompress = AsyncDecompress
@@ -98,7 +98,7 @@ end
 
 
 ##### Benching
-```
+```lua
 -- uncompressed TableToLuaCode(TranslationTable)
 -- #786351
 

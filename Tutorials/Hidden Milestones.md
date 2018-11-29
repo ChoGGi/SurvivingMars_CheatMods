@@ -1,6 +1,6 @@
 ### Adding hidden Milestones:
 
-```
+```lua
 -- Use this to when it gets completed (I'm using UICity to store as it's saved per-game)
 -- local is faster then global if you call it more then once
 local UICity = UICity
@@ -13,7 +13,7 @@ if not UICity.SomethingUnique_WubbaLubbaDubDub then
 end
 ```
 
-```
+```lua
 -- this will fire when you Msg("SomethingUnique_WubbaLubbaDubDub_OnMsg")
 function OnMsg.SomethingUnique_WubbaLubbaDubDub_OnMsg()
 	-- temp milestone that's used till restart/load
@@ -40,7 +40,7 @@ function OnMsg.SomethingUnique_WubbaLubbaDubDub_OnMsg()
 end
 ```
 
-```
+```lua
 -- this one is used after milestone is unlocked and the game loads
 function OnMsg.LoadGame()
 	if UICity.SomethingUnique_WubbaLubbaDubDub then
@@ -63,7 +63,7 @@ end
 ```
 
 #### To show user completed milestone
-```
+```lua
 -- if you do want a little notification popup then call it like this instead
 local Msg = Msg
 Msg("SomethingUnique_WubbaLubbaDubDub_OnMsg")

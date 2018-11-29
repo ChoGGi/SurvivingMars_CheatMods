@@ -14,7 +14,7 @@ GedInspectorFormatObject(object)
 ### If you know the file a thread is started from, but don't know which thread (or it's local):
 You need the blacklist disabled to be able to use debug.*
 This probably only works for Create*TimeThread threads.
-```
+```lua
 local lua_filename = "Example_file.lua"
 local threads = {}
 local level = 1 --[[could try 2 or more, but 1 is usually fine and dandy.--]]

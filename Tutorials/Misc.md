@@ -1,6 +1,6 @@
 ### Random info about random stuff.
 
-```
+```lua
 Be careful when using CreateGameTimeThread(), as they are persistent.
 If you have one with an inf loop the next time you load a game it'll still be there.
 Store a ref and check with IsValidThread() or DeleteThread()

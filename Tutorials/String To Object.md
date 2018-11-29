@@ -1,6 +1,6 @@
 ### Feed this "Table.Table.Object" and you'll get Object back
 
-```
+```lua
 -- DotNameToObject("some.some.some.etc") returns etc as object
 function DotNameToObject(str,root,create)
 	-- always start with _G
