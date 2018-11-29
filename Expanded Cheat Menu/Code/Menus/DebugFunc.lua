@@ -9,6 +9,9 @@ function OnMsg.ClassesGenerate()
 
 	local pairs,print,type,tonumber,tostring,table = pairs,print,type,tonumber,tostring,table
 	local StringFormat = string.format
+	local TableRemove = table.remove
+	local TableIClear = table.iclear
+	local TableClear = table.clear
 
 	--~ local TerrainTextures = TerrainTextures
 
@@ -29,7 +32,7 @@ function OnMsg.ClassesGenerate()
 		for id,state in pairs(g_StoryBitStates) do
 			c = c + 1
 			local story = StoryBits[id]
-			table.clear(story_table)
+			TableClear(story_table)
 			for i = 1, #story do
 				if story[i].Name and story[i].Value then
 					story_table[story[i].Name] = story[i].Value
@@ -235,7 +238,7 @@ function OnMsg.ClassesGenerate()
 			for i = #SavegamesList, 1, -1 do
 				if not ChoGGi.ComFuncs.FileExists(StringFormat("%s%s",save_folder,SavegamesList[i].savename)) then
 					SavegamesList[i] = nil
-					table.remove(SavegamesList,i)
+					TableRemove(SavegamesList,i)
 				end
 			end
 
@@ -667,13 +670,17 @@ function OnMsg.ClassesGenerate()
 		local randcolours = {}
 		local colourcount = 0
 		local dupewppos = {}
-		--default height of waypoints (maybe flag_height isn't the best name as no more flags)
+		-- default height of waypoints (maybe flag_height isn't the best name as no more flags)
 		local flag_height = 50
 		local terrain_HeightTileSize = terrain.HeightTileSize()
+		local function RetValid(o)
+			return IsValid(o)
+		end
 
+		local ShowWaypoints_points = {}
 		local function ShowWaypoints(waypoints, colour, obj, skipheight)
 			colour = tonumber(colour) or ChoGGi.ComFuncs.RandomColour()
-			--also used for line height
+			-- also used for line height
 			if not skipheight then
 				flag_height = flag_height + 4
 			end
@@ -685,14 +692,15 @@ function OnMsg.ClassesGenerate()
 			if obj:IsKindOf("CargoShuttle") then
 				shuttle = obj:GetPos():z()
 			end
-			--some objects don't have pos as waypoint
+			-- some objects don't have pos as waypoint
 			local cwp = #waypoints
 			if waypoints[cwp] ~= Objpos then
 				waypoints[cwp+1] = Objpos
 			end
 
-			--build a list of points that aren't high in the sky
-			local points = {}
+			-- build a list of points that aren't high in the sky
+			TableClear(ShowWaypoints_points)
+			local points = ShowWaypoints_points
 			local mapw, maph = terrain.GetMapSize()
 			for i = 1, #waypoints do
 				local x, y, z = waypoints[i]:xy()
@@ -702,21 +710,23 @@ function OnMsg.ClassesGenerate()
 				points[#points + 1] = point(x, y, z)
 			end
 			local last_pos = points[#points]
-			--and spawn the line
+			-- and spawn the line
 			local spawnline = ChoGGi_Polyline:new{max_vertices = #waypoints}
 			spawnline:SetMesh(points, colour)
 			spawnline:SetPos(last_pos)
 
 			obj.ChoGGi_Stored_Waypoints[#obj.ChoGGi_Stored_Waypoints+1] = spawnline
-		end --end of ShowWaypoints
+		end -- end of ShowWaypoints
 
+		local SetWaypoint_path = {}
 		function ChoGGi.MenuFuncs.SetWaypoint(obj,setcolour,skipheight)
-			local path
+			TableClear(SetWaypoint_path)
+			local path = SetWaypoint_path
 
 			--we need to build a path for shuttles (and figure out a way to get their dest properly...)
 			if obj:IsKindOf("CargoShuttle") then
 
-				path = {}
+--~ 				path = {}
 				-- going to pickup colonist
 				if obj.command == "GoHome" then
 					path[1] = obj.hub:GetPos()
@@ -772,8 +782,8 @@ function OnMsg.ClassesGenerate()
 					if #randcolours < 1 then
 						colour = randomcolour
 					else
-						--we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
-						colour = table.remove(randcolours)
+						-- we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
+						colour = TableRemove(randcolours)
 					end
 				end
 
@@ -782,12 +792,12 @@ function OnMsg.ClassesGenerate()
 				end
 
 				if not obj.ChoGGi_WaypointPathAdded then
-					--used to reset the colour later on
+					-- used to reset the colour later on
 					obj.ChoGGi_WaypointPathAdded = obj:GetColorModifier()
 				end
-				--colour it up
+				-- colour it up
 				obj:SetColorModifier(colour)
-				--send path off to make wp
+				-- send path off to make wp
 				ShowWaypoints(
 					path,
 					colour,
@@ -807,31 +817,20 @@ function OnMsg.ClassesGenerate()
 				end
 
 				if ChoGGi.Temp.UnitPathingHandles[obj.handle] then
-					--already exists so remove thread
+					-- already exists so remove thread
 					ChoGGi.Temp.UnitPathingHandles[obj.handle] = nil
-				elseif IsValid(obj) and (obj.GetPath or obj:IsKindOf("CargoShuttle")) then
+				elseif IsValid(obj) then
 
-					--continous loooop of object for pathing it
+					-- continous loooop of object for pathing it
 					ChoGGi.Temp.UnitPathingHandles[obj.handle] = CreateGameTimeThread(function()
 						local colour = ChoGGi.ComFuncs.RandomColour()
 						if type(obj.ChoGGi_Stored_Waypoints) ~= "table" then
 							obj.ChoGGi_Stored_Waypoints = {}
 						end
 
-						local sleepidx = 0
 						repeat
-							--shuttles don't have paths
-							if obj.class ~= "CargoShuttle" and not obj:GetPath() then
-								Sleep(500)
-								sleepidx = sleepidx + 1
-								if sleepidx == 250 then
-									DeleteThread(ChoGGi.Temp.UnitPathingHandles[obj.handle])
-								end
-							end
-							sleepidx = 0
-
 							ChoGGi.MenuFuncs.SetWaypoint(obj,colour,true)
-							Sleep(750)
+							Sleep(500)
 
 							-- remove old wps
 							if type(obj.ChoGGi_Stored_Waypoints) == "table" then
@@ -839,16 +838,18 @@ function OnMsg.ClassesGenerate()
 									obj.ChoGGi_Stored_Waypoints[i]:delete()
 								end
 							end
-							obj.ChoGGi_Stored_Waypoints = {}
+							TableIClear(obj.ChoGGi_Stored_Waypoints)
 
-							--break thread when obj isn't valid
-							if not IsValid(obj) or not obj:IsValidPos() then
+							-- break thread when obj isn't valid
+							if not IsValid(obj) then
 								ChoGGi.Temp.UnitPathingHandles[obj.handle] = nil
 							end
 						until not ChoGGi.Temp.UnitPathingHandles[obj.handle]
 					end)
 
 				end
+
+			-- if user used "Ctrl-Numpad ." on an obj that can't path
 			elseif single then
 				MsgPopup(
 					302535920000871--[[Doesn't seem to be an object that moves.--]],
@@ -875,10 +876,10 @@ function OnMsg.ClassesGenerate()
 						end
 					end
 				end
-				--remove removed
+				-- remove removed
 				for i = #obj.ChoGGi_Stored_Waypoints, 1, -1 do
 					if not IsValid(obj.ChoGGi_Stored_Waypoints[i]) then
-						table.remove(obj.ChoGGi_Stored_Waypoints,i)
+						TableRemove(obj.ChoGGi_Stored_Waypoints,i)
 					end
 				end
 			end
@@ -886,9 +887,10 @@ function OnMsg.ClassesGenerate()
 
 		local function ClearColourAndWP(cls)
 			local ChoGGi = ChoGGi
-			--remove all thread refs so they stop
-			ChoGGi.Temp.UnitPathingHandles = {}
-			--and waypoints/colour
+			-- remove all thread refs so they stop
+			TableClear(ChoGGi.Temp.UnitPathingHandles)
+--~ 			ChoGGi.Temp.UnitPathingHandles = {}
+			-- and waypoints/colour
 			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
 			for i = 1, #objs do
 
@@ -970,9 +972,9 @@ function OnMsg.ClassesGenerate()
 					end
 
 					if value == "All" then
-						local table1 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit,"IsValid",nil,true)
-						local table2 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.CargoShuttle,"IsValid",nil,true)
-						local table3 = ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Colonist,"IsValid",nil,true)
+						local table1 = MapFilter(UICity.labels.Unit or {},RetValid)
+						local table2 = MapFilter(UICity.labels.CargoShuttle or {},RetValid)
+						local table3 = MapFilter(UICity.labels.Colonist or {},RetValid)
 						colourcount = colourcount + #table1
 						colourcount = colourcount + #table2
 						colourcount = colourcount + #table3
@@ -981,21 +983,13 @@ function OnMsg.ClassesGenerate()
 						swp(table2)
 						swp(table3)
 					else
-						local table1 = GetObjects{
-							area = "map",
-							class = value,
-							filter = function(o)
-								if IsValid(o) then
-									return o
-								end
-							end,
-						}
+						local table1 = MapGet(true,value,RetValid)
 						colourcount = colourcount + #table1
 						randcolours = ChoGGi.ComFuncs.RandomColour(colourcount + 1)
 						swp(table1)
 					end
 
-					--remove any waypoints in the same pos
+					-- remove any waypoints in the same pos
 					local function ClearAllDupeWP(cls)
 						local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
 						for i = 1, #objs do

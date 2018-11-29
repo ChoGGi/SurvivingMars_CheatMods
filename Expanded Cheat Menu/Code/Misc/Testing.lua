@@ -9,6 +9,24 @@ function OnMsg.ClassesGenerate()
 
 	if ChoGGi.testing then
 
+--~ 		-- work on these persist errors
+--~ 		function PersistGame(folder)
+--~ 			collectgarbage("collect")
+--~ 			Msg("SaveGame")
+--~ 			rawset(_G, "__error_table__", {})
+--~ 			local err = EngineSaveGame(folder .. "persist")
+--~ 			for i = 1, #__error_table__ do
+--~ 				local err = __error_table__[i]
+--~ 				print("Persist error:", err.error or "unknown")
+--~ 				print("Persist stack:")
+--~ 				for j = 1, #err do
+--~ 					print("   ", tostring(err[j]))
+--~ 				end
+--~ 			end
+--~ 			ex(__error_table__)
+--~ 			return err
+--~ 		end
+
 --~ 		local orig_XImage_DrawContent = XImage.DrawContent
 --~ 		local RetName = ChoGGi.ComFuncs.RetName
 --~ 		local FileExists = ChoGGi.ComFuncs.FileExists
