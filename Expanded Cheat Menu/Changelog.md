@@ -3,7 +3,21 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v11.2 (Unreleased)
+## v11.3 (Unreleased)
+
+## v11.2 (29 Nov 2018)
+### Added:
+- Game>Object Planner: Places fake construction site objects at mouse cursor (collision disabled).
+
+### Changed:
+- Added Mouse buttons to tooltips.
+- Added a rotate option to Object Spawner/Planner buildings in the selection pane.
+- Basic console hints to a console tooltip.
+- Camera settings are now properly on games that didn't have it set.
+
+### Fixed:
+- Some log spam.
+- Console>Settings>Show File Log now works with blacklist.
 
 ## v11.1 (26 Nov 2018)
 ### Added:
