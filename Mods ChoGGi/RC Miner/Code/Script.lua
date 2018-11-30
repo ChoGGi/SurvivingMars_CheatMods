@@ -160,14 +160,14 @@ function PortableMiner:GameInit()
 
 	-- show the pin info
 	self.producers = {self}
-	self.pin_rollover = T{0,"<CargoManifest>"}
+	self.pin_rollover = T(0,"<CargoManifest>")
 end
 
 -- retrieves prod info
 local function BuildProdInfo(self,info,res_name)
 	if self.resource ~= res_name then
-		info[#info+1] = T{476, "Lifetime production<right><resource(LifetimeProduction,resource)>",
-			resource = res_name, LifetimeProduction = self.lifetime_table[res_name], self}
+		info[#info+1] = T(476, "Lifetime production<right><resource(LifetimeProduction,resource)>",
+			resource = res_name, LifetimeProduction = self.lifetime_table[res_name], self)
 	end
 end
 function PortableMiner:GetCargoManifest()
@@ -551,12 +551,12 @@ function OnMsg.ClassesBuilt()
 			"ChoGGi_Template_PortableMiner_Prod", true,
 			"__context_of_kind", "PortableMiner",
 			"__template", "InfopanelSection",
-			"Title", T{80, "Production"},
+			"Title", T(80, "Production"),
 			"Icon", "UI/Icons/Sections/storage.tga",
 		}, {
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelText",
-				"Text",  T{0,"<CargoManifest>"},
+				"Text",  T(0,"<CargoManifest>"),
 			}),
 		})
 	)

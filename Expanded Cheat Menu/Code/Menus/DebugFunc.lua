@@ -49,7 +49,7 @@ function OnMsg.ClassesGenerate()
 				hint = hint_str:format(
 					S[302535920001358--[[Group--]]],
 					story.group,
-					Trans(T{story.Text,"",story_table}),
+					Trans(T(story.Text,"",story_table)),
 					story.Image
 				),
 			}
@@ -187,12 +187,12 @@ function OnMsg.ClassesGenerate()
 			local data = SavegamesList[i]
 
 			-- build played time
-			local playtime = T{77, "Unknown"}
+			local playtime = T(77, "Unknown")
 			if data.playtime then
 				local h, m, _ = FormatElapsedTime(data.playtime, "hms")
 				local hours = StringFormat("%02d", h)
 				local minutes = StringFormat("%02d", m)
-				playtime = Trans(T{7549, "<hours>:<minutes>", hours = hours, minutes = minutes})
+				playtime = Trans(T(7549, "<hours>:<minutes>", hours = hours, minutes = minutes))
 			end
 			-- and last saved
 			local save_date = 0

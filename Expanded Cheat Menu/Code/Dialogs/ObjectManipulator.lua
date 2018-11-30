@@ -348,7 +348,7 @@ function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
 		end
 
 		if IsT(obj) then
-			return StringFormat([[T{"%s"}]],Trans(obj))
+			return StringFormat([[T("%s")]],Trans(obj))
 		else
 			-- regular table
 			local table_data

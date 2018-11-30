@@ -13,7 +13,7 @@ local function SetModNew(menu)
 		}, buttons)
 
 		XTextButton:new({
-			Text = T{1129, --[[XTemplate PGMenuNew ActionName]] "MOD MANAGER"},
+			Text = T(1129, --[[XTemplate PGMenuNew ActionName]] "MOD MANAGER"),
 			Background = 16777215,
 			DisabledBackground = 7895160,
 			FocusedBackground = 16777215,

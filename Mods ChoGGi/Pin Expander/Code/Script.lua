@@ -343,12 +343,12 @@ function OnMsg.ClassesGenerate()
 					hint = pinbutton.RolloverText
 					hint_title = pinbutton.RolloverTitle
 				else
-					hint_title = T{8108, "<Title>", obj}
+					hint_title = T(8108, "<Title>", obj)
 					local rollover = obj.pin_rollover
 					if rollover == "" then
-						hint = (obj.description ~= "" and T{obj.description, obj}) or obj:GetProperty("description") or ""
+						hint = (obj.description ~= "" and T(obj.description, obj)) or obj:GetProperty("description") or ""
 					elseif IsT(rollover) or type(rollover) == "string" then
-						hint = T{rollover, obj}
+						hint = T(rollover, obj)
 					end
 				end
 
@@ -369,7 +369,7 @@ function OnMsg.ClassesGenerate()
 						state_text = str_NotWorking
 						image = image or "UI/Icons/pin_not_working.tga"
 					elseif obj.fractures and #obj.fractures > 0 then
-						state_text = Trans(T{5626,"Fractures: <count>",count = #obj.fractures})
+						state_text = Trans(T(5626,"Fractures: <count>",count = #obj.fractures))
 						image = image or "UI/Icons/pin_attack.tga"
 					elseif obj.electricity and obj:IsKindOf("ElectricityConsumer") and obj.electricity.consumption > obj.electricity.current_consumption then
 						state_text = str_Power

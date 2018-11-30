@@ -26,7 +26,7 @@ DefineClass.ChoGGi_Alien = {
 	display_icon = image_pin,
 	display_name = "Alien",
 
-	pin_rollover = T{7780, "<PinDescription>"},
+	pin_rollover = T(7780, "<PinDescription>"),
 	pin_progress_value = "",
 	pin_progress_max = "",
 	pin_on_start = false,

@@ -25,7 +25,7 @@ function OnMsg.ClassesGenerate()
 				hint = hint_str:format(
 					Trans(c.description),
 					S[302535920001415--[[Sols to Complete: %s--]]]:format(c.time_completed / DayDuration),
-					Trans(T{10489--[[<newline>Perfect time: <countdown2>--]],countdown2 = c.time_perfected / DayDuration})
+					Trans(T(10489--[[<newline>Perfect time: <countdown2>--]],countdown2 = c.time_perfected / DayDuration))
 				),
 			}
 		end
@@ -87,7 +87,7 @@ function OnMsg.ClassesGenerate()
 						S[302535920001409--[[Goal--]]],
 						Trans(GetGoalDescription(sponsor, i)),
 						S[128569337702--[[Reward:--]]],
-						Trans(T{reward.Description, reward})
+						Trans(T(reward.Description, reward))
 					),
 					reward = reward,
 					goal = SponsorGoalsMap[sponsor[goal_str:format(i)]],
@@ -109,7 +109,7 @@ function OnMsg.ClassesGenerate()
 				local goal = choice[i].goal
 				-- stuff from City:SetGoals()
 				reward:Execute()
-				AddOnScreenNotification("GoalCompleted", OpenMissionProfileDlg, {reward_description = T{reward.Description, reward}, context = context, rollover_title = T{4773, "<em>Goal:</em> "}, rollover_text = goal.description})
+				AddOnScreenNotification("GoalCompleted", OpenMissionProfileDlg, {reward_description = T(reward.Description, reward), context = context, rollover_title = T(4773, "<em>Goal:</em> "), rollover_text = goal.description})
 				Msg("GoalComplete", goal)
 				if AreAllSponsorGoalsCompleted() then
 					Msg("MissionEvaluationDone")
@@ -175,7 +175,7 @@ function OnMsg.ClassesGenerate()
 				ItemList[c] = {
 					text = Trans(obj.display_name),
 					value = obj.id,
-					hint = Trans(T{obj.effect,stats[2]})
+					hint = Trans(T(obj.effect,stats[2]))
 				}
 			end
 		end
@@ -243,7 +243,7 @@ function OnMsg.ClassesGenerate()
 				ItemList[c] = {
 					text = Trans(obj.display_name),
 					value = obj.id,
-					hint = StringFormat("%s\n\n%s: %s",Trans(T{obj.effect,stats[2]}),S[302535920001165--[[Enabled Status--]]],ChoGGi.UserSettings[StringFormat("Sponsor%s",obj.id)])
+					hint = StringFormat("%s\n\n%s: %s",Trans(T(obj.effect,stats[2])),S[302535920001165--[[Enabled Status--]]],ChoGGi.UserSettings[StringFormat("Sponsor%s",obj.id)])
 				}
 			end
 		end

@@ -34,15 +34,15 @@ function OnMsg.ClassesBuilt()
       "__context_of_kind", "ElectricityGridElement",
       "__condition", function (parent, context) return context.is_hub or not context.is_switch end,
       "__template", "Infopanel",
-      "Description", T{313911890683, "<description>"},
+      "Description", T(313911890683, "<description>"),
     }, {
 
 			PlaceObj("XTemplateTemplate", {
 				"comment", "salvage",
 				"__template", "InfopanelButton",
-				"RolloverText", T{640016954592, "Remove this switch or valve."},
-				"RolloverTitle", T{3973, "Salvage"},
-				"RolloverHintGamepad", T{7657, "<ButtonY> Activate"},
+				"RolloverText", T(640016954592, "Remove this switch or valve."),
+				"RolloverTitle", T(3973, "Salvage"),
+				"RolloverHintGamepad", T(7657, "<ButtonY> Activate"),
 				"ContextUpdateOnOpen", false,
 				"OnPressParam", "Demolish",
 				"Icon", "UI/Icons/IPButtons/salvage_1.tga",

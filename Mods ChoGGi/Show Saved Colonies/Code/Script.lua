@@ -136,7 +136,7 @@ end
 function OnMsg.ClassesPostprocess()
 	PlaceObj("TextStyle", {
 		TextColor = -1,
-		TextFont = T{986,"SchemeBk, 15, aa"},
+		TextFont = T(986,"SchemeBk, 15, aa"),
 		id = "ChoGGi_PlanetUISavedGamesText"
 	})
 end

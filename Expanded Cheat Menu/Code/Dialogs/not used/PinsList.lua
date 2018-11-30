@@ -71,7 +71,7 @@ function OnMsg.ClassesGenerate()
 				listitem.RolloverHint = button.RolloverHint
 				listitem.RolloverHintGamepad = button.RolloverHintGamepad
 			else
-				listitem.RolloverTitle = T{8108, "<Title>", item}
+				listitem.RolloverTitle = T(8108, "<Title>", item)
 				listitem.RolloverText = self:GetPinObjText(item)
 				listitem.RolloverHint = self:GetPinObjRollover(item, "pin_rollover_hint")
 				listitem.RolloverHintGamepad = self:GetPinObjRollover(item, "pin_rollover_hint_xbox")
@@ -83,9 +83,9 @@ function OnMsg.ClassesGenerate()
 		local text = ""
 		local rollover = obj.pin_rollover
 		if rollover == "" then
-			text = (obj.description ~= "" and T{obj.description, obj}) or obj:GetProperty("description") or ""
+			text = (obj.description ~= "" and T(obj.description, obj)) or obj:GetProperty("description") or ""
 		elseif IsT(rollover) or type(rollover) == "string" then
-			text = T{rollover, obj}
+			text = T(rollover, obj)
 		end
 		return text
 	end
@@ -95,7 +95,7 @@ function OnMsg.ClassesGenerate()
 		if not hint then
 			return PinnableObject[hint_property]
 		elseif hint ~= "" then
-			return T{hint, obj}
+			return T(hint, obj)
 		else
 			return hint
 		end

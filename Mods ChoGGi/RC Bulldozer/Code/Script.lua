@@ -76,8 +76,7 @@ if BuildingTemplates.RCHarvesterBuilding then
 end
 
 local function Trans(...)
---~ 	return _InternalTranslate(T{...})
-	return _InternalTranslate(T(pack_params(...)))
+	return _InternalTranslate(T(...))
 end
 
 local idle_text = StringFormat([[Radius: %s, %s: %s]],"%s",Trans(49--[[Status--]]),Trans(949--[[Idle--]]))
@@ -111,7 +110,7 @@ DefineClass.RCBulldozer = {
 	-- store radius here, so we're not updating it all the time
 	visual_circle_size = false,
 	-- show the pin info
-	pin_rollover = T{0,"<StatusUpdate>"},
+	pin_rollover = T(0,"<StatusUpdate>"),
 	-- change texture when dozing
 	texture_terrain = table.find(TerrainTextures, "name", "Dig"),
 	-- used to place the circle
@@ -475,12 +474,12 @@ function OnMsg.ClassesBuilt()
 			"ChoGGi_Template_RCBulldozer_Status", true,
 			"__context_of_kind", "RCBulldozer",
 			"__template", "InfopanelSection",
-			"Title", T{49, "Status"},
+			"Title", T(49, "Status"),
 			"Icon", "UI/Icons/Sections/facility.tga",
 		}, {
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelText",
-				"Text", T{0,"<StatusUpdate>"},
+				"Text", T(0,"<StatusUpdate>"),
 			}),
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelSlider",
