@@ -576,10 +576,14 @@ function OnMsg.BuildingUpgraded(obj)
 	end
 end
 
--- :GameInit()
+-- :GameInit() (Msg.BuildingInit only does Building, not BaseBuilding)
 function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
+
+	if obj:IsKindOfClasses("ConstructionSite", "ConstructionSiteWithHeightSurfaces") then
+		return
+	end
 
 	-- not working code from when tried to have passages placed in entrances
 

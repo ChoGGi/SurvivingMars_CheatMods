@@ -289,15 +289,15 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 		end
+		return ChoGGi_OrigFuncs.ConstructionController_IsObstructed(self,...)
 	end
 
 	-- allows you to build on geysers
 	function DontBuildHere:Check(...)
 		if ChoGGi.UserSettings.BuildOnGeysers then
 			return false
-		else
-			return ChoGGi_OrigFuncs.DontBuildHere_Check(self,...)
 		end
+		return ChoGGi_OrigFuncs.DontBuildHere_Check(self,...)
 	end
 
 	-- allows you to build outside buildings inside and vice

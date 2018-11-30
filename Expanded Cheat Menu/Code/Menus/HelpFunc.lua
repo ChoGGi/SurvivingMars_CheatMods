@@ -470,8 +470,8 @@ function OnMsg.ClassesGenerate()
 						"UI/Common/mod_steam_workshop.tga"
 					)
 
---~ 					-- remove upload folder
---~ 					AsyncDeletePath(dest)
+					-- remove upload folder
+					AsyncDeletePath(dest)
 				end
 
 				ChoGGi.ComFuncs.QuestionBox(
