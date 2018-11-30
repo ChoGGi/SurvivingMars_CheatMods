@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v11.3 (Unreleased)
+## v11.4 (Unreleased)
+
+## v11.3 (30 Nov 2018)
 ### Changed:
 - Updated real time path marker to work for off-map colonists as well (ones in buildings).
 - EnumVars button to examine toolbar (only shows up when there's something to view).

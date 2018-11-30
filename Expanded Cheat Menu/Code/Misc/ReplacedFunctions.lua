@@ -289,7 +289,6 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 		end
-		return ChoGGi_OrigFuncs.ConstructionController_IsObstructed(self,...)
 	end
 
 	-- allows you to build on geysers

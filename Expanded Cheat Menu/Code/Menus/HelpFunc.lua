@@ -410,7 +410,7 @@ function OnMsg.ClassesGenerate()
 						end
 						err = AsyncPack(ss_str:format(pack_path,ModsPackFileName), mod_path, files_to_pack)
 						if err then
-							err = T(1000753,"Failed creating content package file (<err>)",err = err)
+							err = T{1000753,"Failed creating content package file (<err>)",err = err}
 						end
 					end
 

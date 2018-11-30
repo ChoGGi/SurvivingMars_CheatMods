@@ -166,8 +166,8 @@ end
 -- retrieves prod info
 local function BuildProdInfo(self,info,res_name)
 	if self.resource ~= res_name then
-		info[#info+1] = T(476, "Lifetime production<right><resource(LifetimeProduction,resource)>",
-			resource = res_name, LifetimeProduction = self.lifetime_table[res_name], self)
+		info[#info+1] = T{476, "Lifetime production<right><resource(LifetimeProduction,resource)>",
+			resource = res_name, LifetimeProduction = self.lifetime_table[res_name], self}
 	end
 end
 function PortableMiner:GetCargoManifest()

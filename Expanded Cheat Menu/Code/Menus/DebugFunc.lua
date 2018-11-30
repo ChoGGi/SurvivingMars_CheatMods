@@ -192,7 +192,7 @@ function OnMsg.ClassesGenerate()
 				local h, m, _ = FormatElapsedTime(data.playtime, "hms")
 				local hours = StringFormat("%02d", h)
 				local minutes = StringFormat("%02d", m)
-				playtime = Trans(T(7549, "<hours>:<minutes>", hours = hours, minutes = minutes))
+				playtime = Trans(T{7549, "<hours>:<minutes>", hours = hours, minutes = minutes})
 			end
 			-- and last saved
 			local save_date = 0

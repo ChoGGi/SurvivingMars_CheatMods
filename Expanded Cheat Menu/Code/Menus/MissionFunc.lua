@@ -25,7 +25,7 @@ function OnMsg.ClassesGenerate()
 				hint = hint_str:format(
 					Trans(c.description),
 					S[302535920001415--[[Sols to Complete: %s--]]]:format(c.time_completed / DayDuration),
-					Trans(T(10489--[[<newline>Perfect time: <countdown2>--]],countdown2 = c.time_perfected / DayDuration))
+					Trans(T{10489--[[<newline>Perfect time: <countdown2>--]],countdown2 = c.time_perfected / DayDuration})
 				),
 			}
 		end

@@ -1,6 +1,9 @@
 ## Library Changelog
 
-## v4.3 (Unreleased)
+## v4.4 (Unreleased)
+
+## v4.3 (30 Nov 2018)
+- Strings mostly, some code cleanup.
 
 ## v4.2 (29 Nov 2018)
 - Cleaned up some of the UI code.
