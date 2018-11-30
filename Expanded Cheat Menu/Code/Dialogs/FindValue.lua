@@ -43,6 +43,8 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	self.obj = context.obj
 	self.obj_name = RetName(self.obj)
 	self.title = StringFormat("%s: %s",S[302535920001305--[[Find Within--]]],self.obj_name)
+	self.title_image = "CommonAssets/UI/Menu/EV_OpenFirst.tga"
+	self.title_image_single = true
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -113,6 +115,8 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	}, self.idButtonContainer)
 
 	self:SetInitPos(context.parent)
+
+	self.idEdit:SetFocus()
 end
 
 --~ function ChoGGi_FindValueDlg:RetStringCase(value,case)

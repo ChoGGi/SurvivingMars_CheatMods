@@ -1,4 +1,5 @@
 ID,Text,Translation,Old Translation,Gender
+302535920000235,,
 302535920001445,,
 302535920001446,,
 302535920001447,,
@@ -572,11 +573,9 @@ See also %s.",
 302535920000364,Complete all wires and pipes instantly.,
 302535920000365,Complete Constructions,
 302535920000366,Complete all constructions instantly.,
-302535920000368,Switch to the mod editor.,
+302535920000368,Open the mod editor.,
 302535920000233,Cheats hover toggle,
 302535920000234,Cheats menu save position,
-302535920000235,"Save your game.
-This will switch to a new map.",
 302535920000238,"Are you sure you want to reset all research (includes breakthrough tech)?
 
 Buildings are still unlocked.",
