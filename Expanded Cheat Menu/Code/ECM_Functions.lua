@@ -831,17 +831,17 @@ function OnMsg.ClassesGenerate()
 
 			local compressed_filename = ""
 			local fallback_filename = ""
-			local cmdline = StringFormat("\"%s\" -dds10 -24 bc1 -32 bc3 -srgb \"%s\" \"%s\"", ConvertToOSPath(g_HgnvCompressPath), filename, texture_output)
+			local cmdline = StringFormat([["%s" -dds10 -24 bc1 -32 bc3 -srgb "%s" "%s"]], ConvertToOSPath(g_HgnvCompressPath), filename, texture_output)
 			local err, out = AsyncExec(cmdline, "", true, false)
 			if err then
 				return
 			end
-			cmdline = StringFormat("\"%s\" \"%s\" \"%s\" %d", ConvertToOSPath(g_DdsTruncPath), texture_output, fallback_output, const.FallbackSize)
+			cmdline = StringFormat([["%s" "%s" "%s" %d]], ConvertToOSPath(g_DdsTruncPath), texture_output, fallback_output, const.FallbackSize)
 			err = AsyncExec(cmdline, "", true, false)
 			if err then
 				return
 			end
-			cmdline = StringFormat("\"%s\" \"%s\" \"%s\"", ConvertToOSPath(g_HgimgcvtPath), texture_output, ui_output)
+			cmdline = StringFormat([["%s" "%s" "%s"]], ConvertToOSPath(g_HgimgcvtPath), texture_output, ui_output)
 			err = AsyncExec(cmdline, "", true, false)
 			if err then
 				return
