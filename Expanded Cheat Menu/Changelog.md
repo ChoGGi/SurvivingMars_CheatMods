@@ -4,6 +4,8 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v11.4 (Unreleased)
+### Changed:
+- Cheats>Mod Editor now shows a list of mods you can open without changing the map.
 
 ## v11.3 (30 Nov 2018)
 ### Changed:

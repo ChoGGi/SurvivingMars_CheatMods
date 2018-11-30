@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 
   "description", [[Adds every flag on Wikipedia (450+), and no more Martian only names.
 
-Since this game uses nations for names, this also takes all the in-game names and applies them to all the new nations.
+Since this game uses nations for names, this also takes all the in-game names and applies them to all the nations.
+
 This also sets const.FullTransitionToMarsNames to 9999 (Sols), and adds all the names to Mars (I think we've all seen enough of Cosmo Cosmos).
 
 If you use ModConfig you can disable the randomly choose a birthplace for newborns, instead of just using Mars.

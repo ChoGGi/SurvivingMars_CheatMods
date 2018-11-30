@@ -181,18 +181,42 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.OpenModEditor()
-		local function CallBackFunc(answer)
-			if answer then
-				ModEditorOpen()
+		local ItemList = {}
+		local c = 0
+		local title_str = "%s: %s"
+
+		for id,mod in pairs(Mods) do
+			c = c + 1
+			ItemList[c] = {
+				text = title_str:format(id,mod.title),
+				mod = {mod},
+				value = id,
+			}
+		end
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+
+			local context = {
+				mod_items = GedItemsMenu("ModItem"),
+				steam_login = IsSteamAvailable() and not not SteamGetUserId64(),
+			}
+			local editor = OpenGedApp("ModEditor", Container:new(choice[1].mod), context)
+			if editor then
+				editor:Rpc("rpcApp", "SetSelection", "root", {1})
 			end
 		end
-		ChoGGi.ComFuncs.QuestionBox(
-			StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920000235--[[Save your game.
-	This will switch to a new map.--]]]),
-			CallBackFunc,
-			StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000236--[[Mod Editor--]]])
-			)
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = 302535920000236--[[Mod Editor--]],
+		}
+
 	end
+
 
 	--~ UICity.tech_status[tech_id].researched = nil
 	--~ UICity.tech_status[tech_id].discovered= nil

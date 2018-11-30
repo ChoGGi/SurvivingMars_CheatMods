@@ -68,16 +68,16 @@ function OnMsg.ClassesGenerate()
 --~ 			end
 --~ 		end
 
+		SaveOrigFunc("GetMaxCargoShuttleCapacity")
+		SaveOrigFunc("GetMissingMods")
+		SaveOrigFunc("IsDlcAvailable")
+		SaveOrigFunc("LoadCustomOnScreenNotification")
 		SaveOrigFunc("OpenDialog")
 		SaveOrigFunc("ShowConsole")
 		SaveOrigFunc("ShowConsoleLog")
 		SaveOrigFunc("ShowPopupNotification")
-		SaveOrigFunc("GetMissingMods")
-		SaveOrigFunc("IsDlcAvailable")
-		SaveOrigFunc("UIGetBuildingPrerequisites")
-		SaveOrigFunc("GetMaxCargoShuttleCapacity")
-		SaveOrigFunc("LoadCustomOnScreenNotification")
 		SaveOrigFunc("TDevModeGetEnglishText")
+		SaveOrigFunc("UIGetBuildingPrerequisites")
 
 		-- I guess, don't pass a string to it?
 		function TDevModeGetEnglishText(T,...)

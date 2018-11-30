@@ -495,6 +495,12 @@ function ChoGGi_Window:AddElements()
 			HandleMouse = true,
 		}, self.idMoveControl)
 		self.idCaptionImage:SetImage(image)
+		-- remove column and such so it displays fine
+		if self.title_image_single then
+			self.idCaptionImage:SetColumns(1)
+			self.idCaptionImage:SetImageScale(point(1000,1000))
+			self.idCaptionImage:SetRolloverText("")
+		end
 	end
 
 	self.idCaption = g_Classes.ChoGGi_Label:new({
