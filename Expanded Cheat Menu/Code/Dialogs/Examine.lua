@@ -16,6 +16,7 @@ local GetStateName = GetStateName
 local IsPoint = IsPoint
 local IsKindOf = IsKindOf
 local IsValid = IsValid
+local EnumVars = EnumVars
 local IsValidEntity = IsValidEntity
 
 local getlocal
@@ -263,6 +264,14 @@ function Examine:Init(parent, context)
 			RolloverText = S[302535920000059--[[Destroy all objects in objlist!--]]],
 			OnPress = self.idButDeleteAllOnPress,
 		}, self.idToolbarButtons)
+		--
+		self.idButViewEnum = g_Classes.ChoGGi_ToolbarButton:new({
+			Id = "idButViewEnum",
+			Image = "CommonAssets/UI/Menu/PlayerInfo.tga",
+			RolloverTitle = S[302535920001442--[[EnumVars--]]],
+			RolloverText = S[302535920001443--[[View output from EnumVars(obj).--]]],
+			OnPress = self.idButViewEnumOnPress,
+		}, self.idToolbarButtons)
 		-- right side
 
 		self.idAutoRefresh_update_str = StringFormat("%s\n%s\n%s: %s",S[302535920001257--[[Auto-refresh list every second.--]]],S[302535920001422--[[Right-click to change refresh delay.--]]],S[302535920000106--[[Current--]]],"%s")
@@ -480,6 +489,10 @@ function Examine:idButDeleteAllOnPress()
 		end,
 		S[697--[[Destroy--]]]
 	)
+end
+function Examine:idButViewEnumOnPress()
+	self = GetRootDialog(self)
+	ChoGGi.ComFuncs.OpenInExamineDlg(EnumVars(self.name),self,StringFormat("%s: %s",S[302535920001442--[[EnumVars--]]],self.name))
 end
 
 function Examine:idButMarkAllOnPress()
@@ -1560,6 +1573,12 @@ function Examine:SetToolbarVis(obj)
 		else
 			self.idButMarkAll:SetVisible()
 			self.idButDeleteAll:SetVisible()
+		end
+
+		if next(EnumVars(RetName(obj))) then
+			self.idButViewEnum:SetVisible(true)
+		else
+			self.idButViewEnum:SetVisible()
 		end
 
 	end

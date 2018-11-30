@@ -851,6 +851,7 @@ function OnMsg.ClassesGenerate()
 <Materials>
 	<Material>
 		<BaseColorMap Name="%s" mc="0"/>
+		<SIMap Name="BackLight.dds" mc="0"/>
 		<Property Special="None"/>
 		<Property AlphaBlend="Blend"/>
 	</Material>

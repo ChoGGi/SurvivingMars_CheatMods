@@ -148,7 +148,7 @@ do -- RetName
 	function ChoGGi.ComFuncs.RetName_Update()
 		AfterLoad()
 	end
-	function ChoGGi.ComFuncs.RetName_Examine()
+	function ChoGGi.ComFuncs.RetName_ExamineNamesTable()
 		ex(lookup_table)
 	end
 
@@ -164,7 +164,6 @@ do -- RetName
 
 		local obj_type = type(obj)
 
---~ 		if obj_type == "table" and obj.__index then
 		if obj_type == "table" then
 			-- we check in order of less generic "names"
 
@@ -1110,47 +1109,6 @@ function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(context)
 	return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,context)
 end
 
---[[
-get around to merging some of these types into funcs?
-
-> 1 = updates selected item with custom value type
-custom_type = 1 : hides ok/cancel buttons, dblclick fires custom_func with {self.sel}, and sends back all items on ok
-custom_type = 2 : colour selector
-custom_type = 3 : sends back selected item.
-custom_type = 4 : sends back all items
-custom_type = 5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
-custom_type = 6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
-custom_type = 7 : dblclick fires custom_func with {self.sel} (wrapped in a table, so we can use CallBackFunc for either)
-?
-custom_type = 8 : same as 7, but dbl rightclick fires custom_func, and dbl click fires ok as normally
-
-ChoGGi.ComFuncs.OpenInListChoice{
-	callback = CallBackFunc,
-	items = ItemList,
-	title = "Title",
-	hint = StringFormat("Current: %s",hint),
-	multisel = true,
-	custom_type = custom_type,
-	custom_func = CustomFunc,
-	close_func = function() end,
-	check = {
-		{
-			title = "Check1",
-			hint = "Check1Hint",
-			checked = true,
---~ 			func = function() end,
-		},
-		{
-			title = "Check2",
-			hint = "Check2Hint",
-			checked = true,
-		},
-	},
-	skip_sort = true,
-	height = 800.0,
-	width = 100.0,
-}
---]]
 function ChoGGi.ComFuncs.OpenInListChoice(list)
 	-- if list isn't a table or it has zero items or it doesn't have items/callback func
 	local list_table = type(list) == "table"

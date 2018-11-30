@@ -2,6 +2,48 @@
 
 -- all purpose items list
 
+--[[
+get around to merging some of these types into funcs?
+
+> 1 = updates selected item with custom value type
+custom_type = 1 : hides ok/cancel buttons, dblclick fires custom_func with {self.sel}, and sends back all items on ok
+custom_type = 2 : colour selector
+custom_type = 3 : sends back selected item.
+custom_type = 4 : sends back all items
+custom_type = 5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
+custom_type = 6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
+custom_type = 7 : dblclick fires custom_func with {self.sel} (wrapped in a table, so we can use CallBackFunc for either)
+?
+custom_type = 8 : same as 7, but dbl rightclick fires custom_func, and dbl click fires ok as normally
+
+ChoGGi.ComFuncs.OpenInListChoice{
+	callback = CallBackFunc,
+	items = ItemList,
+	title = "Title",
+	hint = StringFormat("Current: %s",hint),
+	multisel = true,
+	custom_type = custom_type,
+	custom_func = CustomFunc,
+	close_func = function() end,
+	check = {
+		{
+			title = "Check1",
+			hint = "Check1Hint",
+			checked = true,
+--~ 			func = function() end,
+		},
+		{
+			title = "Check2",
+			hint = "Check2Hint",
+			checked = true,
+		},
+	},
+	skip_sort = true,
+	height = 800.0,
+	width = 100.0,
+}
+--]]
+
 --~ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local CheckText = ChoGGi.ComFuncs.CheckText
 local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
@@ -390,6 +432,9 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 		listitem.RolloverTitle = item.text
 		listitem.idText:SetText(item.text)
 		listitem.item = item
+		if self.custom_type > 4 then
+			listitem.RolloverHint = S[302535920001444--[["<left_click> Activate, <right_click> Alt Activate"--]]]
+		end
 	end
 end
 
@@ -438,6 +483,10 @@ function ChoGGi_ListChoiceDlg:BuildList()
 
 		if item.hint_bottom then
 			listitem.RolloverHint = item.hint_bottom
+		end
+
+		if self.custom_type > 4 then
+			listitem.RolloverHint = S[302535920001444--[["<left_click> Activate, <right_click> Alt Activate"--]]]
 		end
 
 		-- easier access

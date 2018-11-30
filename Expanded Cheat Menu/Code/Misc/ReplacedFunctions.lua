@@ -889,7 +889,7 @@ function OnMsg.ClassesBuilt()
 		end
 	end -- do
 
-	--toggle trans on mouseover
+	-- toggle trans on mouseover
 	function XWindow:OnMouseEnter(pt, child,...)
 		if ChoGGi.UserSettings.TransparencyToggle then
 			self:SetTransparency(0)
@@ -903,7 +903,7 @@ function OnMsg.ClassesBuilt()
 		return ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, pt, child,...)
 	end
 
-	--remove spire spot limit
+	-- remove spire spot limit
 	do -- ConstructionController:UpdateCursor
 		local IsValid = IsValid
 		local UnbuildableZ = buildUnbuildableZ()

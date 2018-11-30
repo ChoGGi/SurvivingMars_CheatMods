@@ -20,11 +20,13 @@ This also sets const.FullTransitionToMarsNames to 9999 (Sols), and adds all the 
 If you use ModConfig you can disable the randomly choose a birthplace for newborns, instead of just using Mars.
 
 I also added a few unique names associated with space.
-Suggestions welcome, for names already added see: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Mods%20ChoGGi/EveryFlagOnWikipedia/Code/1%20Flags.lua#L56
+Suggestions welcome, for names already added see: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Mods%20ChoGGi/EveryFlagOnWikipedia/Code/Script.lua#L64
 ^ New game needed to see uniques.
 
 If you have a list of names you'd like to add:
 Male given
 Female given
-Family (separate male/female family names are doable)]],
+Family (separate male/female family names are doable)
+
+Please format them like in Script.lua.]],
 })
