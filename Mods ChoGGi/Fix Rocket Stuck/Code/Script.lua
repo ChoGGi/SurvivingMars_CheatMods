@@ -59,6 +59,15 @@ end
 --~ 		end
 --~ 	end
 --~ end
+local function AddStockPile(res,amount,pos)
+	local stockpile = PlaceObj("ResourceStockpile", {
+		"Pos", pos,
+		"resource", res,
+		"destroy_when_empty", true,
+	})
+	stockpile:AddResourceAmount(amount)
+--~ 	return stockpile
+end
 
 function OnMsg.LoadGame()
 	-- if my lib mod is installed use my copy of this function
@@ -176,6 +185,25 @@ function OnMsg.LoadGame()
 
 			-- seems easiest to just ignore it
 			elseif r.command == "WaitMaintenance" then
+				-- drop res piles for any fuel/rare metals
+				local spawned = 0
+				local id_start, id_end = r:GetAllSpots(0)
+				for i = id_start, id_end do
+					if i % 2 == 0 and spawned ~= 2 and r:GetSpotName(i) == "Workrover" then
+						local amount = r:GetStoredExportResourceAmount()
+						if amount > 500 then
+							AddStockPile("PreciousMetals",amount,r:GetSpotPos(i))
+						end
+						spawned = spawned + 1
+					elseif i % 2 ~= 0 and spawned ~= 2 and r:GetSpotName(i) == "Workrover" then
+						local extra = r.unload_fuel_request and r.unload_fuel_request:GetActualAmount() or 0
+						local amount = r.launch_fuel - r.refuel_request:GetActualAmount() + extra
+						if amount > 500 then
+							AddStockPile("Fuel",amount,r:GetSpotPos(i))
+						end
+						spawned = spawned + 1
+					end
+				end
 				r:SetCommand("Unload")
 
 --~ 				RemoveOldMainTasks(r)

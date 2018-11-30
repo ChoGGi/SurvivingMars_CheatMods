@@ -249,6 +249,11 @@ function OnMsg.ClassesGenerate()
 	do -- ModUpload
 		local mod_upload_thread
 		local ConvertToOSPath = ConvertToOSPath
+		local MatchWildcard = MatchWildcard
+		local SplitPath = SplitPath
+		local AsyncCreatePath = AsyncCreatePath
+		local AsyncCopyFile = AsyncCopyFile
+
 		local ChoGGi_copy_files = {
 			ChoGGi_CheatMenu = true,
 			ChoGGi_Library = true,
@@ -359,20 +364,51 @@ function OnMsg.ClassesGenerate()
 						mod:SaveItems()
 						AsyncDeletePath(dest)
 						AsyncCreatePath(dest)
-						err, files = AsyncListFiles(mod_path, "*", "recursive,relative")
-						if not err then
-							for i = 1, #(files or "") do
-								local dest_file = ss_str:format(dest,files[i])
+
+						local files_to_pack = {}
+						local err, all_files = AsyncListFiles(mod_path, "*", "recursive,relative")
+						for i = 1, #all_files do
+							local file = all_files[i]
+							local ignore
+							for j = 1, #mod.ignore_files do
+								if MatchWildcard(file, mod.ignore_files[j]) then
+									ignore = true
+									break
+								end
+							end
+							if not ignore then
+								local dest_file = ss_str:format(dest,file)
 								local dir = SplitPath(dest_file)
 								AsyncCreatePath(dir)
-								err = AsyncCopyFile(ss_str:format(mod_path,files[i]), dest_file, "raw")
+								err = AsyncCopyFile(ss_str:format(mod_path,file), dest_file, "raw")
 							end
 						end
+
 					end
 
 					if pack_mod then
 						AsyncCreatePath(pack_path)
-						err = AsyncPack(ss_str:format(pack_path,ModsPackFileName),mod_path)
+
+						local files_to_pack = {}
+						local substring_begin = #mod_path + 1
+						local err, all_files = AsyncListFiles(mod_path, nil, "recursive")
+						for i = 1, #all_files do
+							local file = all_files[i]
+							local ignore
+							for j = 1, #mod.ignore_files do
+								if MatchWildcard(file, mod.ignore_files[j]) then
+									ignore = true
+									break
+								end
+							end
+							if not ignore then
+								table.insert(files_to_pack, {
+									src = file,
+									dst = file:sub(substring_begin),
+								})
+							end
+						end
+						err = AsyncPack(ss_str:format(pack_path,ModsPackFileName), mod_path, files_to_pack)
 						if err then
 							err = T{1000753,"Failed creating content package file (<err>)",err = err}
 						end
@@ -434,8 +470,8 @@ function OnMsg.ClassesGenerate()
 						"UI/Common/mod_steam_workshop.tga"
 					)
 
-					-- remove upload folder
-					AsyncDeletePath(dest)
+--~ 					-- remove upload folder
+--~ 					AsyncDeletePath(dest)
 				end
 
 				ChoGGi.ComFuncs.QuestionBox(
