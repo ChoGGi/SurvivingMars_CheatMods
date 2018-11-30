@@ -15,7 +15,7 @@ rcc.ChoGGi_InGarage = [[Stored in garage]]
 local function CanInteractWithObject_local(self, obj, interaction_mode)
 	-- if it's garage otherwise return orig func
 	if (self.interaction_mode == false or self.interaction_mode == "default" or self.interaction_mode == "move") and IsKindOf(obj, "RCGarage") and obj:CheckMainGarage() and obj.garages.main.working then
-		return true, T(0, [[<UnitMoveControl('ButtonA',interaction_mode)>: Use Garage]],self)
+		return true, T{0, [[<UnitMoveControl('ButtonA',interaction_mode)>: Use Garage]],self}
 	end
 end
 

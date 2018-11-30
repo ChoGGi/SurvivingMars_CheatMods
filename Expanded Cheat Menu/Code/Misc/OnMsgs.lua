@@ -297,20 +297,22 @@ function OnMsg.ModsReloaded()
 
 		-- add preset menu items
 		ClassDescendantsList("Preset", function(name, cls)
-			c = c + 1
-			Actions[c] = {
-				ActionMenubar = "ECM.Debug.Ged Presets Editor",
-				ActionName = name,
-				ActionId = StringFormat(".%s",name),
-				ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
-				RolloverText = S[302535920000733--[[Open a preset in the editor.--]]],
-				OnAction = function()
-					OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
-						PresetClass = name,
-						SingleFile = cls.SingleFile
-					})
-				end,
-			}
+			if not name:find("ChoGGi") then
+				c = c + 1
+				Actions[c] = {
+					ActionMenubar = "ECM.Debug.Ged Presets Editor",
+					ActionName = name,
+					ActionId = StringFormat(".%s",name),
+					ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
+					RolloverText = S[302535920000733--[[Open a preset in the editor.--]]],
+					OnAction = function()
+						OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
+							PresetClass = name,
+							SingleFile = cls.SingleFile
+						})
+					end,
+				}
+			end
 		end)
 
 		-- add the defaults we skipped to my actions

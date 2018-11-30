@@ -369,7 +369,7 @@ function OnMsg.ClassesGenerate()
 						state_text = str_NotWorking
 						image = image or "UI/Icons/pin_not_working.tga"
 					elseif obj.fractures and #obj.fractures > 0 then
-						state_text = Trans(T(5626,"Fractures: <count>",count = #obj.fractures))
+						state_text = Trans(T{5626,"Fractures: <count>",count = #obj.fractures})
 						image = image or "UI/Icons/pin_attack.tga"
 					elseif obj.electricity and obj:IsKindOf("ElectricityConsumer") and obj.electricity.consumption > obj.electricity.current_consumption then
 						state_text = str_Power
