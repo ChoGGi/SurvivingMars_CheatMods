@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Rocket Stuck v1.0",
-	"version", 10,
-	"saved", 1543492800,
+	"title", "Fix: Rocket Stuck v1.1",
+	"version", 11,
+	"saved", 1543579200,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixExpeditionRocketStuckUnloading",
 	"steam_id", "1567028510",
