@@ -901,6 +901,7 @@ function OnMsg.ClassesGenerate()
 				text = key,
 				value = key,
 				func = key,
+				hint = 302535920000986--[[Change Lightmodel--]],
 			}
 		end
 

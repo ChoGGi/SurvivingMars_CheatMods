@@ -51,14 +51,14 @@ local function SpawnColonist(old_c,building,pos,city)
 	return colonist
 end
 
-local function RemoveOldMainTasks(s)
-	for i = #r.task_requests, 1, -1 do
-		local task = r.task_requests[i]
-		if task:GetResource() == r.maintenance_requirements.resource and task:GetFillIndex() == 1000000 and task:GetFlags() == 1028 then
-			TableRemove(r.task_requests,i)
-		end
-	end
-end
+--~ local function RemoveOldMainTasks(s)
+--~ 	for i = #r.task_requests, 1, -1 do
+--~ 		local task = r.task_requests[i]
+--~ 		if task:GetResource() == r.maintenance_requirements.resource and task:GetFillIndex() == 1000000 and task:GetFlags() == 1028 then
+--~ 			TableRemove(r.task_requests,i)
+--~ 		end
+--~ 	end
+--~ end
 
 function OnMsg.LoadGame()
 	-- if my lib mod is installed use my copy of this function
@@ -87,15 +87,26 @@ function OnMsg.LoadGame()
 				end
 
 				if type(r.expedition) == "table" then
-					-- more invalid colonists...
+					local unload_it
 					local crew = r.expedition.crew or ""
 					for i = #crew, 1, -1 do
 						local c = crew[i]
-						if not IsValid(c) then
+						if IsValid(c) then
+							-- valid but stuck on WorkCycle cmd
+							unload_it = true
+							c:SetCommand("Idle")
+							TableRemove(crew,i)
+							-- if we don't add the thread it spams log with [LUA ERROR] attempt to yield across a C-call boundary
+							CreateGameTimeThread(function()
+								c:ExitBuilding(r)
+							end)
+						else
+							-- more invalid colonists...
 							SpawnColonist_lib(c,r,nil,UICity)
 							TableRemove(crew,i)
 						end
 					end
+
 					-- valid but stuck inside rocket
 					local drones = r.expedition.drones or ""
 					for i = #drones, 1, -1 do
@@ -118,6 +129,10 @@ function OnMsg.LoadGame()
 							TableRemove(drones,i)
 						end
 					end
+
+					if unload_it then
+						r:SetCommand("Unload")
+					end
 				end
 
 				-- invalid drones
@@ -127,13 +142,13 @@ function OnMsg.LoadGame()
 				invalid = RemoveInvalid(invalid,r.drones or "")
 				UICity.drone_prefabs = UICity.drone_prefabs + invalid
 
-				if r.maintenance_request then
-					local cmd = r.command
-					RemoveOldMainTasks(r)
-					TableClear(r.maintenance_requirements)
-					r.maintenance_request = false
-					r:SetCommand(cmd)
-				end
+--~ 				if r.maintenance_request then
+--~ 					local cmd = r.command
+--~ 					RemoveOldMainTasks(r)
+--~ 					TableClear(r.maintenance_requirements)
+--~ 					r.maintenance_request = false
+--~ 					r:SetCommand(cmd)
+--~ 				end
 
 				-- fix for my fuckup with the main reqs
 				if not r.expedition and #r.task_requests ~= 8 then
@@ -159,18 +174,20 @@ function OnMsg.LoadGame()
 					end
 				end
 
-			-- resends main com with whatever res is needed
+			-- seems easiest to just ignore it
 			elseif r.command == "WaitMaintenance" then
-				RemoveOldMainTasks(r)
-				r:SetCommand("WaitMaintenance",r.maintenance_requirements.resource, r.maintenance_request:GetTargetAmount())
+				r:SetCommand("Unload")
 
-			-- any of the above WaitMaintenance rockets
-			elseif r.command == "Refuel" and r.maintenance_request then
-				local cmd = r.command
-				RemoveOldMainTasks(r)
-				TableClear(r.maintenance_requirements)
-				r.maintenance_request = false
-				r:SetCommand(cmd)
+--~ 				RemoveOldMainTasks(r)
+--~ 				r:SetCommand("WaitMaintenance",r.maintenance_requirements.resource, r.maintenance_request:GetTargetAmount())
+
+--~ 			-- any of the above WaitMaintenance rockets
+--~ 			elseif r.command == "Refuel" and r.maintenance_request then
+--~ 				local cmd = r.command
+--~ 				RemoveOldMainTasks(r)
+--~ 				TableClear(r.maintenance_requirements)
+--~ 				r.maintenance_request = false
+--~ 				r:SetCommand(cmd)
 			end
 
 		end

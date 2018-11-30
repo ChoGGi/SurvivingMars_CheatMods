@@ -1,3 +1,7 @@
+v1.0
+Fix for officers returning from expedition.
+Better fix for maintenance stuck rockets.
+
 v0.9
 Fix for 0.7.
 
