@@ -50,7 +50,7 @@ end
 
 -- locale id to string
 local function t(str)
-  return _InternalTranslate(T{str})
+  return _InternalTranslate(T(str))
 end
 
 local str = {

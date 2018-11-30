@@ -17,7 +17,7 @@ function OnMsg.ClassesBuilt()
       CreateRealTimeThread(function()
         local res = WaitPopupNotification("LaunchIssue_Cargo", {
             choice1 = "Launch (your cargo isn't in any danger).",
-            choice2 = T{8014, "Abort the launch sequence."},
+            choice2 = T(8014, "Abort the launch sequence."),
           }, false, host)
         if res and res == 1 then
           self:SetCommand("Countdown")

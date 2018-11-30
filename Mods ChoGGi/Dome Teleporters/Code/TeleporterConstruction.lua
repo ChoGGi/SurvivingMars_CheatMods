@@ -138,8 +138,8 @@ DefineClass.DomeTeleporterConstructionController = {
 	__parents = { "ConstructionController" },
 
 	properties = {
-		{id = "construction_statuses_property", editor = "text", name = T{""}, translate = true, default = false},
-		{id = "DisplayName",                    editor = "text", name = T{""}, translate = true, default = false},
+		{id = "construction_statuses_property", editor = "text", name = "", translate = true, default = false},
+		{id = "DisplayName",                    editor = "text", name = "", translate = true, default = false},
 	},
 
 	cursor_obj = false,

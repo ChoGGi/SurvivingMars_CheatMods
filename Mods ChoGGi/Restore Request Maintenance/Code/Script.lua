@@ -36,13 +36,13 @@ function OnMsg.ClassesGenerate()
 		local status
 		if self.accumulated_maintenance_points > 0 then
 			if self.maintenance_phase == false then
-				status = _InternalTranslate(T{7329, "Maintenance needed"})
+				status = _InternalTranslate(T(7329, "Maintenance needed"))
 			else
-				status = _InternalTranslate(T{389, "Maintenance already requested"})
+				status = _InternalTranslate(T(389, "Maintenance already requested"))
 			end
 			return StringFormat("%s, Remaining: %s",status,self.maintenance_threshold_current - self.accumulated_maintenance_points)
 		end
-		return T{390, "No deterioration"}
+		return T(390, "No deterioration")
 	end
 	function RequiresMaintenance:UIRequestMaintenance()
 		RebuildInfopanel(self)
@@ -69,11 +69,11 @@ function OnMsg.ClassesBuilt()
 			return IsKindOf(context, "RequiresMaintenance") and context:DoesRequireMaintenance()
 		end,
 		"__template", "InfopanelButton",
-		"RolloverText", T{182273828429, "Request maintenance from nearby Drones. The required maintenance resource must be available in the area.<newline><newline>Status: <em><UIRequestMaintenanceStatus></em>"},
-		"RolloverDisabledText", T{513214256397, "Maintenance already requested."},
-		"RolloverTitle", T{425734571364, "Request Maintenance"},
-		"RolloverHint", T{238148642034, "<left_click> Activate <newline><em>Ctrl + <left_click></em> Activate for all <display_name_pl>"},
-		"RolloverHintGamepad", T{919224409562, "<ButtonA> Activate <newline><ButtonX> Activate for all <display_name_pl>"},
+		"RolloverText", T(182273828429, "Request maintenance from nearby Drones. The required maintenance resource must be available in the area.<newline><newline>Status: <em><UIRequestMaintenanceStatus></em>"),
+		"RolloverDisabledText", T(513214256397, "Maintenance already requested."),
+		"RolloverTitle", T(425734571364, "Request Maintenance"),
+		"RolloverHint", T(238148642034, "<left_click> Activate <newline><em>Ctrl + <left_click></em> Activate for all <display_name_pl>"),
+		"RolloverHintGamepad", T(919224409562, "<ButtonA> Activate <newline><ButtonX> Activate for all <display_name_pl>"),
 		"OnContextUpdate", function(self, context)
 			-- changed it so it only shows the button when main is needed/requested
 			self:SetVisible(context.accumulated_maintenance_points > 0)

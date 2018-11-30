@@ -370,10 +370,10 @@ Telepresence control may take up to a shift to propagate to controlled building.
 
 	PlaceObj("TechPreset", {
 		SortKey = 11,
-		description = T{0,[[New Building: <em>Solaria</em> (<buildinginfo('Solaria')>) - a building that allows colonists to remote control production buildings. Consumes Electronics.
+		description = T(0,[[New Building: <em>Solaria</em> (<buildinginfo('Solaria')>) - a building that allows colonists to remote control production buildings. Consumes Electronics.
 
 <grey>"How do you know it's Sci-Fi? VR is commercially viable."
-<right>Shams Jorjani</grey><left>]]},
+<right>Shams Jorjani</grey><left>]]),
 		display_name = [[Creative Realities Solaria]],
 		group = "Physics",
 		icon = "UI/Icons/Research/creative_realities.tga",

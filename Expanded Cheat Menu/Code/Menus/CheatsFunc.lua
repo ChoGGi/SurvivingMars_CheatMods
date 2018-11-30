@@ -66,7 +66,7 @@ function OnMsg.ClassesGenerate()
 					-- i assume they'll fix it so there isn't an inf loop
 					if lat and long then
 						local obj = PlaceObject("PlanetaryAnomaly", {
-							display_name = T{11234, "Planetary Anomaly"},
+							display_name = T(11234, "Planetary Anomaly"),
 							longitude = long,
 							latitude = lat,
 						})
@@ -1356,7 +1356,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 					text = text,
 					value = tech_id,
 					icon = icon:format(tech.icon),
-					hint = hint:format(Trans(T{tech.description,tech}),S[1000097--[[Category--]]],tech.group,tech.icon),
+					hint = hint:format(Trans(T(tech.description,tech)),S[1000097--[[Category--]]],tech.group,tech.icon),
 				}
 			end
 		end
