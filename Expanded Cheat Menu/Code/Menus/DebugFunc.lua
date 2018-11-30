@@ -480,6 +480,7 @@ function OnMsg.ClassesGenerate()
 				grid_objs[i]:SetPos(InvalidPos)
 			end
 		end
+
 		-- if grid is left on when map changes it gets real laggy
 		function OnMsg.ChangeMap()
 			HideGrid()
