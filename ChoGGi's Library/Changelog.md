@@ -1,6 +1,10 @@
 ## Library Changelog
 
-## v4.4 (Unreleased)
+## v4.5 (Unreleased)
+
+## v4.4 (01 Dec 2018)
+- More strings.
+- Support for more dialogs having icons in the title bar.
 
 ## v4.3 (30 Nov 2018)
 - Strings mostly, some code cleanup.
