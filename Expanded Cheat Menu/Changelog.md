@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v11.4 (Unreleased)
+## v11.5 (Unreleased)
+
+## v11.4 (01 Dec 2018)
 ### Changed:
 - Cheats>Mod Editor now shows a list of mods you can open without changing the map.
 - Moved Toggle Object Collision from Fixes to Debug.
