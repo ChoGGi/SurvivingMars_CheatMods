@@ -340,7 +340,7 @@ function OnMsg.ClassesGenerate()
 					)
 
 					-- add new mod
-					local err,item_id,bShowLegalAgreement
+					local err,item_id
 					if mod.steam_id ~= 0 then
 						local exists
 						local appId = SteamGetAppId()
@@ -352,7 +352,7 @@ function OnMsg.ClassesGenerate()
 					end
 
 					if mod.steam_id == 0 then
-						err,item_id,bShowLegalAgreement = AsyncSteamWorkshopCreateItem()
+						err,item_id = AsyncSteamWorkshopCreateItem()
 						mod.steam_id = item_id or nil
 					end
 
@@ -455,7 +455,7 @@ function OnMsg.ClassesGenerate()
 						print(ModMessageLog[i])
 					end
 
-					-- show id in console (figure out a decent way to add this to metadata.lua?)
+					-- show id in console/copy to clipb
 					if item_id then
 						if clipboard then
 							CopyToClipboard(item_id)

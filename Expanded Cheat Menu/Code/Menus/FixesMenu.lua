@@ -82,18 +82,6 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000581--[[Toggle Collisions On Selected Object--]]],
-		ActionMenubar = str_ExpandedCM_Fixes,
-		ActionId = ".Toggle Collisions On Selected Object",
-		ActionIcon = icon,
-		RolloverText = S[302535920000582--[[Just in case you get something stuck somewhere.--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.CollisionsObject_Toggle()
-		end,
-		ActionSortKey = "9Toggle Collisions On Selected Object",
-	}
-
-	c = c + 1
 	Actions[c] = {ActionName = S[302535920000583--[[Rebuild Walkable Points In Domes--]]],
 		ActionMenubar = str_ExpandedCM_Fixes,
 		ActionId = ".Rebuild Walkable Points In Domes",

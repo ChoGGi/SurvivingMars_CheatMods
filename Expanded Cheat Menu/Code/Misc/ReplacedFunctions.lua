@@ -282,11 +282,11 @@ function OnMsg.ClassesGenerate()
 
 	-- allows you to build on geysers
 	function ConstructionController:IsObstructed(...)
-		-- we need to make sure it's the only obstructor
 		if ChoGGi.UserSettings.BuildOnGeysers then
 			local o = self.construction_obstructors
+			-- we need to make sure it's the only obstructor
 			if o and #o == 1 and o[1] == g_DontBuildHere then
-				return
+				return false
 			end
 		end
 		return ChoGGi_OrigFuncs.ConstructionController_IsObstructed(self,...)
