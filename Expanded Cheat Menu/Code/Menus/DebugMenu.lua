@@ -246,6 +246,17 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.ParticlesReload,
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000581--[[Toggle Object Collision--]]],
+		ActionMenubar = "ECM.Debug",
+		ActionId = ".Toggle Object Collision",
+		ActionIcon = "CommonAssets/UI/Menu/road_type.tga",
+		RolloverText = S[302535920000582--[[Select an object and activate this to toggle collision (if you have a rover stuck in a dome).--]]],
+		OnAction = function()
+			ChoGGi.ComFuncs.CollisionsObject_Toggle()
+		end,
+	}
+
 	local str_Debug_Grids = "ECM.Debug.Grids"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000035--[[Grids--]]]),

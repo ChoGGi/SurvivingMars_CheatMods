@@ -6,6 +6,10 @@
 ## v11.4 (Unreleased)
 ### Changed:
 - Cheats>Mod Editor now shows a list of mods you can open without changing the map.
+- Moved Toggle Object Collision from Fixes to Debug.
+
+### Fixed:
+- v11.3 was allowing people to build anywhere (when it wasn't supposed to).
 
 ## v11.3 (30 Nov 2018)
 ### Changed:
