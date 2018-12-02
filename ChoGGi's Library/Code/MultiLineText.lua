@@ -5,8 +5,8 @@
 local S = ChoGGi.Strings
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
-local GetRootDialog = function(obj)
-	return GetParentOfKind(obj,"ChoGGi_MultiLineTextDlg")
+local function GetRootDialog(dlg)
+	return GetParentOfKind(dlg,"ChoGGi_MultiLineTextDlg")
 end
 
 DefineClass.ChoGGi_MultiLineTextDlg = {

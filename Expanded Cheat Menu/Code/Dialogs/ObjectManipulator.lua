@@ -27,8 +27,8 @@ function OnMsg.ClassesGenerate()
 	RetProperType = ChoGGi.ComFuncs.RetProperType
 end
 
-local GetRootDialog = function(obj)
-	return GetParentOfKind(obj,"ChoGGi_ObjectManipulatorDlg")
+local function GetRootDialog(dlg)
+	return GetParentOfKind(dlg,"ChoGGi_ObjectManipulatorDlg")
 end
 DefineClass.ChoGGi_ObjectManipulatorDlg = {
 	__parents = {"ChoGGi_Window"},

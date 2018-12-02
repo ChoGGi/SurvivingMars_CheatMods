@@ -4,12 +4,46 @@
 -- ~ ChoGGi.Strings[27]
 
 local ChoGGi = ChoGGi
-local _InternalTranslate = _InternalTranslate
-local T = T
 local tonumber = tonumber
+local StringFormat = string.format
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 
 local TranslationTable = TranslationTable
+
+do -- Translate
+	local T,_InternalTranslate,pack_params = T,_InternalTranslate,pack_params
+	local type,select,pcall = type,select,pcall
+	-- some userdata refs UICity, which will fail if being used in main menu
+	local function SafeTrans(str)
+		return _InternalTranslate(str)
+	end
+	-- translate func that always returns a string
+	function ChoGGi.ComFuncs.Translate(...)
+		local str,_
+		local stype = type(select(1,...))
+		if stype == "userdata" or stype == "number" then
+			str = T(pack_params(...))
+		else
+			str = ...
+		end
+		-- the first ret val from pcall is the status
+		_,str = pcall(SafeTrans,str)
+
+		-- just in case a
+		if type(str) ~= "string" then
+			local arg2 = select(2,...)
+			if type(arg2) == "string" then
+				return arg2
+			end
+			-- done fucked up (just in case b)
+			return StringFormat("%s < Missing text string id",...)
+		end
+
+		-- and done
+		return str
+	end
+end -- do
+local Trans = ChoGGi.ComFuncs.Translate
 
 -- devs didn't bother changing droid font to one that supports unicode, so we do this for not eng
 -- pretty sure anything using droid is just for dev work so...
@@ -53,10 +87,10 @@ local Strings = {
 	[7] = TranslationTable[7], -- Is Revealed
 	[8] = TranslationTable[8], -- Breakthrough Tech
 	[9] = TranslationTable[9], -- Anomaly
-	[11] = _InternalTranslate(T(11)), -- Our scientists believe that this Anomaly may lead to a <em>Breakthrough</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.
-	[12] = _InternalTranslate(T(12)), -- Scans have detected some interesting readings that might help us discover <em>new Technologies</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.
-	[13] = _InternalTranslate(T(13)), -- Sensors readings suggest that this Anomaly will help us with our current <em>Research</em> goals.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.
-	[14] = _InternalTranslate(T(14)), -- We have detected alien artifacts at this location that will <em>speed up</em> our Research efforts.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.
+	[11] = Trans(11), -- Our scientists believe that this Anomaly may lead to a <em>Breakthrough</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.
+	[12] = Trans(12), -- Scans have detected some interesting readings that might help us discover <em>new Technologies</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.
+	[13] = Trans(13), -- Sensors readings suggest that this Anomaly will help us with our current <em>Research</em> goals.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.
+	[14] = Trans(14), -- We have detected alien artifacts at this location that will <em>speed up</em> our Research efforts.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.
 	[15] = TranslationTable[15], -- Resource
 	[16] = TranslationTable[16], -- Grade
 	[25] = TranslationTable[25], -- Anomaly Scanning
@@ -75,11 +109,11 @@ local Strings = {
 	[217] = TranslationTable[217], -- Work Shifts
 	[235] = TranslationTable[235], -- Traits
 	[240] = TranslationTable[240], -- Specialization
-	[293] = _InternalTranslate(T(293)), -- Discharged<right><drone(DischargedDronesCount)>
-	[294] = _InternalTranslate(T(294)), -- Broken<right><drone(BrokenDronesCount)>
-	[295] = _InternalTranslate(T(295)), -- Idle<right><drone(IdleDronesCount)>
+	[293] = Trans(293), -- Discharged<right><drone(DischargedDronesCount)>
+	[294] = Trans(294), -- Broken<right><drone(BrokenDronesCount)>
+	[295] = Trans(295), -- Idle<right><drone(IdleDronesCount)>
 	[311] = TranslationTable[311], -- Research
-	[434] = _InternalTranslate(T(434)), -- Lifetime<right><lifetime>
+	[434] = Trans(434), -- Lifetime<right><lifetime>
 	[517] = TranslationTable[517], -- Drones
 	[519] = TranslationTable[519], -- Storage
 	[526] = TranslationTable[526], -- Visitors
@@ -153,8 +187,8 @@ local Strings = {
 	[4149] = TranslationTable[4149], -- Cold Wave
 	[4248] = TranslationTable[4248], -- Hints
 	[4250] = TranslationTable[4250], -- Dust Storm
-	[4273] = _InternalTranslate(T(4273)), -- Saved on <save_date>
-	[4274] = _InternalTranslate(T(4274)), -- Playtime <playtime>
+	[4273] = Trans(4273), -- Saved on <save_date>
+	[4274] = Trans(4274), -- Playtime <playtime>
 	[4283] = TranslationTable[4283], -- Worker performance
 	[4284] = TranslationTable[4284], -- Age of death
 	[4291] = TranslationTable[4291], -- Health
@@ -162,9 +196,9 @@ local Strings = {
 	[4295] = TranslationTable[4295], -- Comfort
 	[4297] = TranslationTable[4297], -- Morale
 	[4325] = TranslationTable[4325], -- Free
-	[4356] = _InternalTranslate(T(4356)), -- Sex<right><Gender>
-	[4357] = _InternalTranslate(T(4357)), -- Birthplace<right><UIBirthplace>
-	[4439] = _InternalTranslate(T(4439)), -- Going to<right><h SelectTarget InfopanelSelect><Target></h>
+	[4356] = Trans(4356), -- Sex<right><Gender>
+	[4357] = Trans(4357), -- Birthplace<right><UIBirthplace>
+	[4439] = Trans(4439), -- Going to<right><h SelectTarget InfopanelSelect><Target></h>
 	[4448] = TranslationTable[4448], -- Dust
 	[4493] = TranslationTable[4493], -- All
 	[4518] = TranslationTable[4518], -- Waste Rock
@@ -202,7 +236,7 @@ local Strings = {
 	[5620] = TranslationTable[5620], -- Meteor Storm
 	[5627] = TranslationTable[5627], -- Great Dust Storm
 	[5628] = TranslationTable[5628], -- Electrostatic Dust Storm
-	[5647] = _InternalTranslate(T(5647)), -- Dead Colonists: <count>
+	[5647] = Trans(5647), -- Dead Colonists: <count>
 	[5661] = TranslationTable[5661], -- Mystery Log
 	[6546] = TranslationTable[6546], -- Core Metals
 	[6548] = TranslationTable[6548], -- Core Water
@@ -213,7 +247,7 @@ local Strings = {
 	[6644] = TranslationTable[6644], -- Saint
 	[6647] = TranslationTable[6647], -- Guru
 	[6652] = TranslationTable[6652], -- Idiot
-	[6729] = _InternalTranslate(T(6729)), -- Daily Production <n>
+	[6729] = Trans(6729), -- Daily Production <n>
 	[6761] = TranslationTable[6761], -- None
 	[6779] = TranslationTable[6779], -- Warning
 	[6859] = TranslationTable[6859], -- Unemployed
@@ -222,7 +256,7 @@ local Strings = {
 	[7031] = TranslationTable[7031], -- Renegades
 	[7553] = TranslationTable[7553], -- Homeless
 	[7607] = TranslationTable[7607], -- Battery
-	[7657] = _InternalTranslate(T(7657)), -- <ButtonY> Activate
+	[7657] = Trans(7657), -- <ButtonY> Activate
 	[7790] = TranslationTable[7790], -- Research Current Tech
 	[7822] = TranslationTable[7822], -- Destroy this building.
 	[7824] = TranslationTable[7824], -- Destroy this Drone.
@@ -245,14 +279,14 @@ local Strings = {
 	[11683] = TranslationTable[11683], -- Electricity
 	[1000009] = TranslationTable[1000009], -- Confirmation
 	[1000011] = TranslationTable[1000011], -- There is an active Steam upload
-	[1000012] = _InternalTranslate(T(1000012)), -- Mod <ModLabel> will be uploaded to Steam
-	[1000013] = _InternalTranslate(T(1000013)), -- Mod <ModLabel> was not uploaded to Steam. Error: <err>
-	[1000014] = _InternalTranslate(T(1000014)), -- Mod <ModLabel> was successfully uploaded to Steam!
+	[1000012] = Trans(1000012), -- Mod <ModLabel> will be uploaded to Steam
+	[1000013] = Trans(1000013), -- Mod <ModLabel> was not uploaded to Steam. Error: <err>
+	[1000014] = Trans(1000014), -- Mod <ModLabel> was successfully uploaded to Steam!
 	[1000015] = TranslationTable[1000015], -- Success
 	[1000016] = TranslationTable[1000016], -- Title
 	[1000021] = TranslationTable[1000021], -- Steam ID
 	[1000037] = TranslationTable[1000037], -- Name
-	[1000058] = _InternalTranslate(T(1000058)), -- Missing file <u(src)> referenced in entity
+	[1000058] = Trans(1000058), -- Missing file <u(src)> referenced in entity
 	[1000077] = TranslationTable[1000077], -- Rotate
 	[1000081] = TranslationTable[1000081], -- Scale
 	[1000097] = TranslationTable[1000097], -- Category
@@ -281,11 +315,11 @@ local Strings = {
 	[283142739680] = TranslationTable[283142739680], -- Game
 	[298035641454] = TranslationTable[298035641454], -- Object
 	[312752058553] = TranslationTable[312752058553], -- Rotate Building Left
-	[313911890683] = _InternalTranslate(T(313911890683)), -- <description>
+	[313911890683] = Trans(313911890683), -- <description>
 	[327465361219] = TranslationTable[327465361219], -- Edit
 	[460479110814] = TranslationTable[460479110814], -- Enabled
 	[487939677892] = TranslationTable[487939677892], -- Help
-	[584248706535] = _InternalTranslate(T(584248706535)), -- Carrying<right><ResourceAmount>
+	[584248706535] = Trans(584248706535), -- Carrying<right><ResourceAmount>
 	[591853191640] = TranslationTable[591853191640], -- Empty list
 	[619281504128] = TranslationTable[619281504128], -- Maintenance
 	[640016954592] = TranslationTable[640016954592], -- Remove this switch or valve.
@@ -327,7 +361,7 @@ local function TransZero(pad,first,last)
 			break
 		end
 		local num = tonumber(TableConcat{30253592000,pad,i})
-		local str = _InternalTranslate(T(num))
+		local str = Trans(num)
 		if str ~= "Missing text" then
 			Strings[num] = str
 		end

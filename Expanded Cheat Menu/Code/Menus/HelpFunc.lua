@@ -611,21 +611,21 @@ Change DisableECM to false in settings file to re-enable them."--]]],S[302535920
 	end
 
 	function ChoGGi.MenuFuncs.TakeScreenshot(boolean)
-		local filename
 		CreateRealTimeThread(function()
+			local filename
 			if boolean == true then
 					WaitNextFrame(3)
 					LockCamera("Screenshot")
-					filename = GenerateScreenshotFilename("SSAA","AppData/")
+					filename = GenerateScreenshotFilename("SSAA","AppData/"):gsub(".png",".tga")
 					MovieWriteScreenshot(filename, 0, 64, false)
 					UnlockCamera("Screenshot")
 			else
-				filename = GenerateScreenshotFilename("SS","AppData/")
+				filename = GenerateScreenshotFilename("SS","AppData/"):gsub(".png",".tga")
 				WriteScreenshot(filename)
 			end
 			-- slight delay so it doesn't show up in the screenshot
 			Sleep(50)
-			print(ConvertToOSPath(filename))
+			print("TakeScreenshot:",ConvertToOSPath(filename))
 		end)
 	end
 

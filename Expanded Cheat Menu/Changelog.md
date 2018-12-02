@@ -4,6 +4,8 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v11.5 (Unreleased)
+### Changed:
+- Screenshots use .tga now (faster to save than .png).
 
 ## v11.4 (01 Dec 2018)
 ### Changed:

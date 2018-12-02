@@ -6,8 +6,6 @@ self:RemovePFTunnel()
 	self.domes_connected = {d1, d2}
 	self:Notify("AddPFTunnel")
 
-add a ui to manage the pf.tunnels so one can connect to multiple
-
 
 
 lock behind breakthrough

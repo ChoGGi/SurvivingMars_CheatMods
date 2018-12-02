@@ -69,8 +69,8 @@ function OnMsg.ClassesGenerate()
 	blacklist = ChoGGi.blacklist
 end
 
-local GetRootDialog = function(obj)
-	return GetParentOfKind(obj,"Examine")
+local function GetRootDialog(dlg)
+	return GetParentOfKind(dlg,"Examine")
 end
 DefineClass.Examine = {
 	__parents = {"ChoGGi_Window"},
