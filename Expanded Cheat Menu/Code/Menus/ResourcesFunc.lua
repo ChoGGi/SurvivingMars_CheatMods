@@ -30,8 +30,12 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			local UICity = UICity
 			if type(value) == "number" then
+				local cls = "OrbitalProbe"
+				if choice[1].check1 then
+					cls = "AdvancedOrbitalProbe"
+				end
 				for _ = 1, value do
-					PlaceObject("OrbitalProbe",{city = UICity})
+					PlaceObject(cls,{city = UICity})
 				end
 			end
 		end
@@ -41,6 +45,13 @@ function OnMsg.ClassesGenerate()
 			items = ItemList,
 			title = 302535920001187--[[Add Probes--]],
 			skip_sort = true,
+			check = {
+				{
+					title = 10087--[[Advanced Orbital Probe--]],
+					hint = StringFormat("%s %s",S[302535920000266--[[Spawn--]]],S[10087--[[Advanced Orbital Probe--]]]),
+					checked = GetMissionSponsor().id == "NASA"
+				},
+			},
 		}
 	end
 
