@@ -18,8 +18,8 @@ function OnMsg.ClassesGenerate()
 	IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 end
 
-local GetRootDialog = function(obj)
-	return GetParentOfKind(obj,"ChoGGi_ExecCodeDlg")
+local function GetRootDialog(dlg)
+	return GetParentOfKind(dlg,"ChoGGi_ExecCodeDlg")
 end
 DefineClass.ChoGGi_ExecCodeDlg = {
 	__parents = {"ChoGGi_Window"},

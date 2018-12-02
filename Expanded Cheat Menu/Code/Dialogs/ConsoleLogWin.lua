@@ -14,8 +14,8 @@ function OnMsg.ClassesGenerate()
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 end
 
-local GetRootDialog = function(obj)
-	return GetParentOfKind(obj,"ChoGGi_ConsoleLogWin")
+local function GetRootDialog(dlg)
+	return GetParentOfKind(dlg,"ChoGGi_ConsoleLogWin")
 end
 DefineClass.ChoGGi_ConsoleLogWin = {
 	__parents = {"ChoGGi_Window"},

@@ -442,6 +442,13 @@ DefineClass.ChoGGi_Window = {
 -- parent,context
 function ChoGGi_Window:AddElements()
 	local g_Classes = g_Classes
+	local ChoGGi = ChoGGi
+
+	if not ChoGGi.Temp.Dialogs then
+		ChoGGi.Temp.Dialogs = {}
+	end
+	ChoGGi.Temp.Dialogs[self] = true
+
 
 	-- scale to UI
 	local UIScale = ChoGGi.Temp.UIScale
@@ -521,6 +528,10 @@ function ChoGGi_Window:AddElements()
 	self.idMoveControl:SetPadding(box(0,1,0,1))
 	-- it's so blue
 	self.idMoveControl:SetFocus()
+end
+function ChoGGi_Window:Done(result,...)
+	ChoGGi.Temp.Dialogs[self] = nil
+	XWindow.Done(self,result,...)
 end
 
 function ChoGGi_Window:idCaptionOnMouseButtonDown(pt,button,...)

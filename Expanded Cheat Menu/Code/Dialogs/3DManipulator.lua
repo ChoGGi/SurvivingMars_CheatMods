@@ -17,8 +17,8 @@ function OnMsg.ClassesGenerate()
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 end
 
-local GetRootDialog = function(obj)
-	return GetParentOfKind(obj,"ChoGGi_3DManipulatorDlg")
+local function GetRootDialog(dlg)
+	return GetParentOfKind(dlg,"ChoGGi_3DManipulatorDlg")
 end
 DefineClass.ChoGGi_3DManipulatorDlg = {
 	__parents = {"ChoGGi_Window"},

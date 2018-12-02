@@ -59,8 +59,8 @@ local TableRemove = table.remove
 local RGBA,RGB = RGBA,RGB
 local point = point
 
-local GetRootDialog = function(obj)
-	return GetParentOfKind(obj,"ChoGGi_ListChoiceDlg")
+local function GetRootDialog(dlg)
+	return GetParentOfKind(dlg,"ChoGGi_ListChoiceDlg")
 end
 DefineClass.ChoGGi_ListChoiceDlg = {
 	__parents = {"ChoGGi_Window"},

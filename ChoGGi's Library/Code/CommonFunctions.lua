@@ -3,6 +3,8 @@
 local S = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
+-- Strings.lua
+local Trans = ChoGGi.ComFuncs.Translate
 
 local pairs = pairs
 local AsyncRand = AsyncRand
@@ -62,41 +64,6 @@ do -- AddMsgToFunc
 		end
 	end
 end -- do
-
-do -- Translate
-	local T,_InternalTranslate,pack_params = T,_InternalTranslate,pack_params
-	local type,select,pcall = type,select,pcall
-	-- some userdata refs UICity, which will fail if being used in main menu
-	local function SafeTrans(str)
-		return _InternalTranslate(str)
-	end
-	-- translate func that always returns a string
-	function ChoGGi.ComFuncs.Translate(...)
-		local str,_
-		local stype = type(select(1,...))
-		if stype == "userdata" or stype == "number" then
-			str = T(pack_params(...))
-		else
-			str = ...
-		end
-		-- the first ret val from pcall is the status
-		_,str = pcall(SafeTrans,str)
-
-		-- just in case a
-		if type(str) ~= "string" then
-			local arg2 = select(2,...)
-			if type(arg2) == "string" then
-				return arg2
-			end
-			-- done fucked up (just in case b)
-			return StringFormat("%s < Missing text string id",...)
-		end
-
-		-- and done
-		return str
-	end
-end -- do
-local Trans = ChoGGi.ComFuncs.Translate
 
 do -- CheckText
 	-- check if text is already translated or needs to be, and return the text

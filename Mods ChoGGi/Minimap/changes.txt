@@ -1,0 +1,4 @@
+v0.2
+Takes a screenshot of the map the first time you open it.
+Only works decently for 16:9, there's a ModConfig option to use the topo images like v0.1.
+Adds a toggle controls button, use it to set opacity/manually update image.
