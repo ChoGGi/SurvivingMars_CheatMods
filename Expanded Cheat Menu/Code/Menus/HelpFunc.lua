@@ -616,11 +616,11 @@ Change DisableECM to false in settings file to re-enable them."--]]],S[302535920
 			if boolean == true then
 					WaitNextFrame(3)
 					LockCamera("Screenshot")
-					filename = GenerateScreenshotFilename("SSAA","AppData/"):gsub(".png",".tga")
+					filename = GenerateScreenshotFilename("SSAA","AppData/")
 					MovieWriteScreenshot(filename, 0, 64, false)
 					UnlockCamera("Screenshot")
 			else
-				filename = GenerateScreenshotFilename("SS","AppData/"):gsub(".png",".tga")
+				filename = GenerateScreenshotFilename("SS","AppData/")
 				WriteScreenshot(filename)
 			end
 			-- slight delay so it doesn't show up in the screenshot

@@ -973,12 +973,14 @@ function OnMsg.ClassesBuilt()
 			end
 		end
 
-		local function ToggleVisSection(section,toolbar,toggle,cheats)
-			section.OnMouseEnter = function()
-				section.idHighlight:SetVisible(true)
-			end
-			section.OnMouseLeft = function()
-				section.idHighlight:SetVisible()
+		local function ToggleVisSection(section,toolbar,toggle,setting)
+			if setting ~= "InfopanelMainButVis" then
+				section.OnMouseEnter = function()
+					section.idHighlight:SetVisible(true)
+				end
+				section.OnMouseLeft = function()
+					section.idHighlight:SetVisible()
+				end
 			end
 
 			section.OnMouseButtonDown = function()
@@ -989,8 +991,8 @@ function OnMsg.ClassesBuilt()
 					toolbar:SetVisible(true)
 					toggle = true
 				end
-				if cheats then
-					UserSettings.InfopanelCheatsVis = toggle
+				if setting then
+					UserSettings[setting] = toggle
 				end
 			end
 		end
@@ -1004,6 +1006,25 @@ function OnMsg.ClassesBuilt()
 				ChoGGi.ComFuncs.AddScrollDialogXTemplates(self)
 			end
 
+			-- add toggle to main buttons area
+			local main_buts = self.idMainButtons.parent.parent
+			local title = main_buts[1]
+			title.FXMouseIn = "ActionButtonHover"
+			title.HandleMouse = true
+			title.RolloverTemplate = "Rollover"
+			title.RolloverTitle = S[302535920001367--[[Toggles--]]]
+			title.RolloverText = S[302535920001410--[[Toggle Visibility--]]]
+			title.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
+			local toggle = false
+			if UserSettings.InfopanelMainButVis then
+				toggle = true
+			end
+			local toolbar = main_buts[2]
+			toolbar.FoldWhenHidden = true
+			toolbar:SetVisible(toggle)
+
+			ToggleVisSection(title,toolbar,toggle,"InfopanelMainButVis")
+
 			local c = self.idContent
 			if not c then
 				c = self.idChoGGi_ScrollBox and self.idChoGGi_ScrollBox.idContent
@@ -1011,10 +1032,8 @@ function OnMsg.ClassesBuilt()
 			if not c then
 				return
 			end
---~ 			ex(c)
 
 			-- this limits height of traits you can choose to 3 till mouse over
---~ 			if not UserSettings.ScrollSelection and UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses("Sanatorium","School") then
 			if UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses("Sanatorium","School") then
 
 				local idx
@@ -1049,13 +1068,14 @@ function OnMsg.ClassesBuilt()
 				section.HandleMouse = true
 				section.MouseCursor = "UI/Cursors/Rollover.tga"
 				section.RolloverText = S[302535920001410--[[Toggle Visibility--]]]
+				section.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
 				local toggle = false
 				if UserSettings.InfopanelCheatsVis then
 					toggle = true
 				end
 				local toolbar = SetToolbar(section,"XToolBar",toggle)
 
-				ToggleVisSection(section,toolbar,toggle,true)
+				ToggleVisSection(section,toolbar,toggle,"InfopanelCheatsVis")
 				-- sets the scale of the cheats icons
 				for j = 1, #toolbar do
 					toolbar[j].idIcon:SetMaxHeight(27)

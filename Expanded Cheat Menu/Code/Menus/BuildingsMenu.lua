@@ -407,7 +407,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.Building_wonder,
-				302535920000223--[[Unlimited wonder build limit (restart game to toggle).--]]
+				302535920000223--[["Unlimited wonder build limit (blocks the ""build a wonder"" achievement)."--]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.Building_wonder_Toggle,

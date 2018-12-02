@@ -25,7 +25,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			if UICity then
 				return ChoGGi.ComFuncs.SettingState(
-					#(UICity.labels.OrbitalProbe or ""),
+					#(UICity.labels.OrbitalProbe or "") + #(UICity.labels.AdvancedOrbitalProbe or ""),
 					302535920000720--[[Add more probes.--]]
 				)
 			end

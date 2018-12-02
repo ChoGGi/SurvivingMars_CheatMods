@@ -60,9 +60,11 @@ function OnMsg.ClassesGenerate()
 		ConsoleToggleHistory = true,
 		-- shows a msg in the console log (maybe a popup would be better)
 		FirstRun = true,
+		-- default to opened (changed on click)
+		InfopanelMainButVis = true,
 		-- show Cheats pane in the selection panel
 		InfopanelCheats = true,
-		-- default to opened or closed (changed on click)
+		-- default to closed (changed on click)
 		InfopanelCheatsVis = false,
 		-- removes some useless shit from the Cheats pane (unless you're doing the tutorial then not as useless it seems)
 		CleanupCheatsInfoPane = true,

@@ -173,6 +173,8 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		XTemplates.sectionCheats[1].__condition = function(parent, context)
 			return config.BuildingInfopanelCheats and context:CreateCheatActions(parent)
 		end
+		-- remove all that spacing between buttons
+		XTemplates.sectionCheats[1][1].LayoutHSpacing = 10
 
 		-- add rollovers to cheats toolbar
 		XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"

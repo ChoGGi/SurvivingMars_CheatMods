@@ -5,7 +5,8 @@
 
 ## v11.5 (Unreleased)
 ### Changed:
-- Screenshots use .tga now (faster to save than .png).
+- Added checkbox for Advanced probes to Add Orbital Probes.
+- The main button area of the selection panel can now be toggled (to make room for the cheats pane).
 
 ## v11.4 (01 Dec 2018)
 ### Changed:
