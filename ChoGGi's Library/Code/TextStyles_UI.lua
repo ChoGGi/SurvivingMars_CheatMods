@@ -119,13 +119,6 @@ function OnMsg.ClassesPostprocess()
 		TextFont = Editor16Bold,
 		id = "ChoGGi_ButtonMenu",
 	})
-	-- ButtonMin
-	PlaceObj("ChoGGi_TextStyle", {
-		TextColor = black,
-		RolloverTextColor = white,
-		TextFont = Editor16Bold,
-		id = "ChoGGi_ButtonMin",
-	})
 	-- ComboButton
 	PlaceObj("ChoGGi_TextStyle", {
 		RolloverTextColor = white,

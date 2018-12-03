@@ -1,0 +1,18 @@
+Install ECM, and install the HelperMod included in it.
+Stick any images you want to convert in AppData/Logos.
+Use this command in SM, and it will place the converted images into your mod folder
+ChoGGi.ComFuncs.ConvertImagesToResEntities("MOD_ID")
+
+Important: you must copy the BackLight.dds into your Textures folder manually.
+If your images are dark in-game that's why.
+Thank Rusty for spending a day or two figuring that fun one out.
+
+
+
+
+
+Any png files in AppData/Logos folder will be added to mod as converted logo files.
+They have to be min of 8bit, and will be resized to power of 2.
+ChoGGi.ComFuncs.ConvertImagesToResEntities("ChoGGi_ExampleNewResIcon")
+to use .tga files, and the mod object instead of mod id
+ChoGGi.ComFuncs.ConvertImagesToResEntities(Mods.ChoGGi_ExampleNewResIcon,".tga")

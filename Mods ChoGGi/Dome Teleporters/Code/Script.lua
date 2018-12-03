@@ -156,7 +156,6 @@ function DomeTeleporter:GameInit()
 		self:MoveInside(self.parent_dome)
 	end
 
-	--remove LampGroundOuter_01
 	DelayedCall(0,function()
 		self:ForEachAttach("RechargeStationPlatform",function(a)
 			-- we don't want it looking too much like a drone thang
@@ -222,7 +221,7 @@ function DomeTeleporter:TryConnectDomes()
 	self:UpdateWorking()
 	if IsGameRuleActive("FreeConstruction") then
 		self.construction_cost_at_completion = {
-			Concrete = self.city:GetConstructionCost(self, "Concrete")
+			Concrete = self.city:GetConstructionCost(self, "Concrete"),
 		}
 	end
 

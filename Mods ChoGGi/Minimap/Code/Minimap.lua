@@ -35,8 +35,9 @@ local function GetRootDialog(dlg)
 end
 DefineClass.ChoGGi_MinimapDlg = {
 	__parents = {"ChoGGi_Window"},
-	dialog_width = 640.0,
-	dialog_height = 360.0,
+	dialog_width = 500.0,
+	dialog_height = 500.0,
+	dialog_original_pos = false,
 
 	opacity = 100,
 
@@ -100,12 +101,11 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 	self.idToggleArea = g_Classes.ChoGGi_DialogSection:new({
 		Id = "idToggleArea",
 		Dock = "bottom",
-		Padding = box(2,2,2,2),
 	}, self.idDialog)
 	self.idToggleArea:SetVisible(false)
 	self.idToggleArea:SetTransparency(-255)
 
-	self.idUpdateMap = g_Classes.ChoGGi_ButtonMin:new({
+	self.idUpdateMap = g_Classes.ChoGGi_Button:new({
 		Id = "idUpdateMap",
 		Dock = "left",
 		Text = [[Update]],
@@ -114,6 +114,28 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
 		RolloverAnchor = "top",
 		OnPress = self.idUpdateMapOnPress,
+	}, self.idToggleArea)
+
+	self.idToggleDblSize = g_Classes.ChoGGi_Button:new({
+		Id = "idToggleDblSize",
+		Dock = "left",
+		Text = [[Dbl Size]],
+		RolloverTitle = [[Double Size]],
+		RolloverText = [[Toggle between original size and double.]],
+		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+		RolloverAnchor = "top",
+		OnPress = self.idToggleDblSizeOnPress,
+	}, self.idToggleArea)
+
+	self.idResetDialog = g_Classes.ChoGGi_Button:new({
+		Id = "idResetDialog",
+		Dock = "left",
+		Text = [[Reset]],
+		RolloverTitle = [[Reset Dialog]],
+		RolloverText = [[Moves map back to original position and size.]],
+		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+		RolloverAnchor = "top",
+		OnPress = self.idResetDialogOnPress,
 	}, self.idToggleArea)
 
 	self.idOpacity = g_Classes.ChoGGi_TextInput:new({
@@ -141,9 +163,29 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 	-- restore old pos
 	x = context.x or x
 	y = context.y or y
+	local pt = point(x,y)
+	self.dialog_original_pos = pt
 
-	self:SetInitPos(nil,point(x,y))
+	self:SetInitPos(nil,pt)
+end
 
+function ChoGGi_MinimapDlg:idResetDialogOnPress()
+	self = GetRootDialog(self)
+	self:ResetSize()
+	self:SetInitPos(nil,self.dialog_original_pos)
+--~ 	self:SetPos(self.dialog_original_pos)
+end
+
+function ChoGGi_MinimapDlg:idToggleDblSizeOnPress()
+	self = GetRootDialog(self)
+	local size = self:GetSize()
+	if size:x() == self.dialog_width and size:y() == self.dialog_height then
+		self:SetSize(point(self.dialog_width*2,self.dialog_height*2))
+		-- we don't want it off screen
+		self:SetInitPos(nil,self:GetPos())
+	else
+		self:ResetSize()
+	end
 end
 
 function ChoGGi_MinimapDlg:idOpacityOnTextChanged()
@@ -238,17 +280,6 @@ function ChoGGi_MinimapDlg:CameraPos_Restore()
 	until not cameraRTS.IsMoving()
 end
 
-function ChoGGi_MinimapDlg:UpdateMapImage(image)
-	if image then
-		self.idMapImage:SetImage(image)
-	else
-		local str = ChoGGi_Minimap.image_str
-		if str then
-			self:UpdateMapImage(str:format(self.map_name))
-		end
-	end
-end
-
 function ChoGGi_MinimapDlg:idUpdateMapOnPress()
 	self = GetRootDialog(self)
 
@@ -266,6 +297,7 @@ function ChoGGi_MinimapDlg:idUpdateMapOnPress()
 	local is_overview = InGameInterfaceMode == "overview"
 
 	self.map_update_thread = CreateRealTimeThread(function()
+		-- we don't need to fiddle with camera if we're already in overview
 		if not is_overview then
 			self:CameraPos_Screenshot()
 		end
@@ -286,6 +318,17 @@ function ChoGGi_MinimapDlg:idUpdateMapOnPress()
 			self:CameraPos_Restore()
 		end
 	end)
+end
+
+function ChoGGi_MinimapDlg:UpdateMapImage(image)
+	if image then
+		self.idMapImage:SetImage(image)
+	else
+		local str = ChoGGi_Minimap.image_str
+		if str then
+			self:UpdateMapImage(str:format(self.map_name))
+		end
+	end
 end
 
 DefineClass.ChoGGi_MapControl = {
