@@ -1,2 +1,5 @@
+v0.3
+Hopefully fixed issue with arrays not moving.
+
 v0.2
 Minor update to remove some spam in the log if you remove this mod and keep playing the save.
