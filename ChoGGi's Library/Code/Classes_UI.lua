@@ -184,19 +184,13 @@ DefineClass.ChoGGi_ToolbarButton = {
 DefineClass.ChoGGi_Button = {
 	__parents = {"ChoGGi_Buttons"},
 	RolloverAnchor = "bottom",
-	MinWidth = 60,
+--~ 	MinWidth = 60,
 	Text = S[6878--[[OK--]]],
 	Background = light_gray,
 }
 function ChoGGi_Button:Init()
 	self.idLabel:SetDock("box")
 end
-DefineClass.ChoGGi_ButtonMin = {
-	__parents = {"ChoGGi_Button"},
-	MinWidth = 0,
-	Margins = box(0,0,0,0),
-	TextStyle = "ChoGGi_ButtonMin",
-}
 
 DefineClass.ChoGGi_CloseButton = {
 	__parents = {"ChoGGi_Buttons"},
@@ -529,6 +523,7 @@ function ChoGGi_Window:AddElements()
 	-- it's so blue
 	self.idMoveControl:SetFocus()
 end
+
 function ChoGGi_Window:Done(result,...)
 	ChoGGi.Temp.Dialogs[self] = nil
 	XWindow.Done(self,result,...)
@@ -608,8 +603,11 @@ function ChoGGi_Window:SetSize(size,dialog)
 	local w,h = size:x(),size:y()
 	dlg:SetBox(x,y,w,h)
 end
-function ChoGGi_Window:SetWidth(w,dialog)
-	self:SetSize(point(w,self[dialog or "idDialog"].box:sizey()))
+function ChoGGi_Window:ResetSize(dialog)
+	self:SetSize(point(self.dialog_width, self.dialog_height),dialog or "idDialog")
+end
+function ChoGGi_Window:SetWidth(w, dialog)
+	self:SetSize(point(w, self[dialog or "idDialog"].box:sizey()))
 end
 function ChoGGi_Window:SetHeight(h,dialog)
 	self:SetSize(point(self[dialog or "idDialog"].box:sizex(),h))
