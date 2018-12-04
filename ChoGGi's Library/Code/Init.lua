@@ -179,6 +179,8 @@ ChoGGi = {
 		Actions = {},
 		-- Transparency for some of my dialogs (ex and console log)
 		transp_mode = false,
+		-- stores a table of my dialogs
+		Dialogs = {},
 	},
 	-- settings that are saved to SettingsFile
 	UserSettings = {

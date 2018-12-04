@@ -1,7 +1,16 @@
 -- See LICENSE for terms
 
-function OnMsg.ClassesGenerate()
+local default_icon = "UI/Icons/Anomaly_Event.tga"
 
+local type,tostring = type,tostring
+local StringFormat = string.format
+local SuspendPassEdits = SuspendPassEdits
+local ResumePassEdits = ResumePassEdits
+
+local white = white
+local guic = guic
+
+function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local S = ChoGGi.Strings
@@ -9,16 +18,6 @@ function OnMsg.ClassesGenerate()
 	local RetIcon = ChoGGi.ComFuncs.RetIcon
 	local RetHint = ChoGGi.ComFuncs.RetHint
 	local Random = ChoGGi.ComFuncs.Random
-	local default_icon = "UI/Icons/Anomaly_Event.tga"
-
-	local type,tostring = type,tostring
-	local StringFormat = string.format
-	local SuspendPassEdits = SuspendPassEdits
-	local ResumePassEdits = ResumePassEdits
-
-	local white = white
-	local guic = guic
-
 	--~ function OnMsg.DataLoaded()
 	--~	 RebuildFXRules()
 	--~ end

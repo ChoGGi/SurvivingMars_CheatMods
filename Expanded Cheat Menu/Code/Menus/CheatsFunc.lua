@@ -1,15 +1,15 @@
 -- See LICENSE for terms
 
-function OnMsg.ClassesGenerate()
+local default_icon = "UI/Icons/Notifications/research.tga"
 
+local pairs,type = pairs,type
+local StringFormat = string.format
+
+function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local Trans = ChoGGi.ComFuncs.Translate
 	local Random = ChoGGi.ComFuncs.Random
 	local S = ChoGGi.Strings
-	local default_icon = "UI/Icons/Notifications/research.tga"
-
-	local pairs,type = pairs,type
-	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
 

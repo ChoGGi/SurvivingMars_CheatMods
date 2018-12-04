@@ -1,17 +1,17 @@
 -- See LICENSE for terms
 
+local tostring,type = tostring,type
+local StringFormat = string.format
+
+local default_icon = "UI/Icons/IPButtons/drone.tga"
+local default_icon2 = "UI/Icons/IPButtons/transport_route.tga"
+local default_icon3 = "UI/Icons/IPButtons/shuttle.tga"
+
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local S = ChoGGi.Strings
 	local Trans = ChoGGi.ComFuncs.Translate
 --~	local RetName = ChoGGi.ComFuncs.RetName
-
-	local default_icon = "UI/Icons/IPButtons/drone.tga"
-	local default_icon2 = "UI/Icons/IPButtons/transport_route.tga"
-	local default_icon3 = "UI/Icons/IPButtons/shuttle.tga"
-
-	local tostring,type = tostring,type
-	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.SetDroneType()
 		local ItemList = {

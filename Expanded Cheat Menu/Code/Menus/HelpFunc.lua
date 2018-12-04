@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+local default_icon = "UI/Icons/Sections/attention.tga"
+
+local print,tostring = print,tostring
+local StringFormat = string.format
+
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -7,11 +12,6 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
-
-	local default_icon = "UI/Icons/Sections/attention.tga"
-
-	local print,tostring = print,tostring
-	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
 		local ChoGGi = ChoGGi

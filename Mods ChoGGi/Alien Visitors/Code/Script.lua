@@ -284,7 +284,7 @@ function OnMsg.ClassesBuilt()
 					self:SetRolloverText("XXXXXXXXXX")
 				end,
 --~ 					"OnPress", function(self)
---~ 						ChoGGi.ComFuncs.ObjectSpawner(self.context)
+--~ 						ChoGGi.ComFuncs.EntitySpawner(self.context)
 --~ 					end,
 --~ 					"Icon", "UI/Icons/IPButtons/tunnel.tga",
 			}),

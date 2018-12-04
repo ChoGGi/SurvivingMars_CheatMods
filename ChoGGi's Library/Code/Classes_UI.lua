@@ -4,6 +4,7 @@
 
 local CheckText = ChoGGi.ComFuncs.CheckText
 local RetName = ChoGGi.ComFuncs.RetName
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local S = ChoGGi.Strings
 
 local box,point = box,point
@@ -139,7 +140,7 @@ end
 
 function ChoGGi_MoveControl:OnMouseButtonDoubleClick(pt,button,...)
 	-- window object
-	local win = self.parent.parent
+	local win = GetParentOfKind(self, "ChoGGi_Window")
 	if win.idDialog then
 		if win.dialog_rolled_up then
 			-- already rolled up so unhide sections and get saved size
@@ -384,7 +385,7 @@ local ChoGGi_Dialog_action = {ActionName = "Close dialog",
 	ActionId = "ChoGGi_Dialog_action.Close dialog",
 	ActionShortcut = "Shift-Esc",
 	OnAction = function(dlg)
-		dlg.parent.idCloseX:Press()
+		GetParentOfKind(dlg, "ChoGGi_Window").idCloseX:Press()
 	end,
 	ActionBindable = true,
 	ActionTranslate = false,
@@ -438,11 +439,7 @@ function ChoGGi_Window:AddElements()
 	local g_Classes = g_Classes
 	local ChoGGi = ChoGGi
 
-	if not ChoGGi.Temp.Dialogs then
-		ChoGGi.Temp.Dialogs = {}
-	end
 	ChoGGi.Temp.Dialogs[self] = true
-
 
 	-- scale to UI
 	local UIScale = ChoGGi.Temp.UIScale
@@ -531,9 +528,8 @@ end
 
 function ChoGGi_Window:idCaptionOnMouseButtonDown(pt,button,...)
 	ChoGGi_Image.OnMouseButtonDown(pt,button,...)
-	local dlg = self.parent.parent.parent
+	local dlg = GetParentOfKind(self, "ChoGGi_Window")
 	if IsValid(dlg.obj) then
---~ 		ViewObjectMars(dlg.obj)
 		ViewAndSelectObject(dlg.obj)
 	end
 end
@@ -717,16 +713,33 @@ function ChoGGi_Window:AddScrollText()
 
 	self.idText = g_Classes.ChoGGi_Text:new({
 		Id = "idText",
-		-- this is what gets fired for any of my self:HyperLink(), also in Examine.lua
+		-- this is what gets fired for any of my self:HyperLink()
 		OnHyperLink = self.idTextOnHyperLink
 	}, self.idScrollArea)
 end
 
---~ local tonumber = tonumber
---~ function ChoGGi_Window:idTextOnHyperLink(link, _, box, pos, button)
---~ 	self = self.parent.parent.parent.parent
---~ 	self.onclick_handles[tonumber(link)](box, pos, button, self)
---~ end
+function ChoGGi_Window:idTextOnHyperLink(link, _, box, pos, button)
+	self = GetParentOfKind(self, "ChoGGi_Window")
+
+	if button == "R" then
+		ChoGGi.ComFuncs.OpenInExamineDlg(self.onclick_objs[tonumber(link)],self)
+	else
+		self.onclick_handles[tonumber(link)](box, pos, button, self)
+	end
+
+end
+
+function ChoGGi_Window:HyperLink(obj, f, custom_color)
+	self.onclick_count = self.onclick_count + 1
+
+	self.onclick_handles[self.onclick_count] = f
+	self.onclick_objs[self.onclick_count] = obj
+
+	return StringFormat("%s<h %s 230 195 50>",
+		custom_color or "<color 150 170 250>",
+		self.onclick_count
+	)
+end
 
 function ChoGGi_Window:AddScrollList()
 	local g_Classes = g_Classes

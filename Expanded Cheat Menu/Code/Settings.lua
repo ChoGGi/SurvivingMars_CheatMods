@@ -87,6 +87,7 @@ function OnMsg.ClassesGenerate()
 			"Consts",
 			"Dialogs",
 			"DataInstances",
+			"EntityData",
 			"g_Classes",
 			"g_CObjectFuncs",
 			"GlobalVars",

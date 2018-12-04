@@ -4,9 +4,14 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v11.5 (Unreleased)
+### Added:
+- Debug>Attach Spots List: Shows list of attaches for use with .ent files.
+
 ### Changed:
 - Added checkbox for Advanced probes to Add Orbital Probes.
 - The main button area of the selection panel can now be toggled (to make room for the cheats pane).
+- Removed the "mod_texture_" prefix when converting textures to entity files (ConvertImagesToResEntities).
+- Renamed Object Spawner to Entity Spawner.
 
 ## v11.4 (01 Dec 2018)
 ### Changed:

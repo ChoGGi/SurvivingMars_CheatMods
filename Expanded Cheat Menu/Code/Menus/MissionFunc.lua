@@ -1,15 +1,15 @@
 -- See LICENSE for terms
 
+local default_icon = "UI/Icons/Sections/spaceship.tga"
+
+local type = type
+local StringFormat = string.format
+
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
-
-	local default_icon = "UI/Icons/Sections/spaceship.tga"
-
-	local type = type
-	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.StartChallenge()
 		local ItemList = {}

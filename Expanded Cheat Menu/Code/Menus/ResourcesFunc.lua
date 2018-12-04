@@ -1,16 +1,15 @@
 -- See LICENSE for terms
 
-function OnMsg.ClassesGenerate()
+local default_icon = "UI/Icons/Sections/storage.tga"
+local default_icon2 = "UI/Icons/IPButtons/rare_metals.tga"
 
+local type = type
+local StringFormat = string.format
+
+function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local S = ChoGGi.Strings
-
-	local default_icon = "UI/Icons/Sections/storage.tga"
-	local default_icon2 = "UI/Icons/IPButtons/rare_metals.tga"
-
-	local type = type
-	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.AddOrbitalProbes()
 		local ItemList = {
