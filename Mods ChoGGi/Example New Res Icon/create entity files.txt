@@ -3,7 +3,7 @@ Stick any images you want to convert in AppData/Logos.
 Use this command in SM, and it will place the converted images into your mod folder
 ChoGGi.ComFuncs.ConvertImagesToResEntities("MOD_ID")
 
-Important: you must copy the BackLight.dds into your Textures folder manually.
+Important: you must copy the BackLight.dds into your Textures folder manually (as well as the Fallbacks one).
 If your images are dark in-game that's why.
 Thank Rusty for spending a day or two figuring that fun one out.
 

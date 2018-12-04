@@ -1,15 +1,15 @@
 -- See LICENSE for terms
 
-function OnMsg.ClassesGenerate()
+local default_icon = "UI/Icons/Notifications/colonist.tga"
 
+local type,table = type,table
+local StringFormat = string.format
+
+function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local Random = ChoGGi.ComFuncs.Random
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
-	local default_icon = "UI/Icons/Notifications/colonist.tga"
-
-	local type,table = type,table
-	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
 		local ChoGGi = ChoGGi

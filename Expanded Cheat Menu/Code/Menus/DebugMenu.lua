@@ -91,6 +91,17 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
+	Actions[c] = {ActionName = S[302535920000235--[[Attach Spots List--]]],
+		ActionMenubar = "ECM.Debug",
+		ActionId = ".Attach Spots List",
+		ActionIcon = "CommonAssets/UI/Menu/ListCollections.tga",
+		RolloverText = S[302535920001445--[[Shows list of attaches for use with .ent files.--]]],
+		OnAction = function()
+			ChoGGi.ComFuncs.ExamineEntSpots()
+		end,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = S[302535920000451--[[Measure Tool--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Measure Tool",
@@ -177,13 +188,13 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000475--[[Object Spawner--]]],
+	Actions[c] = {ActionName = S[302535920000475--[[Entity Spawner--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Spawner",
 		ActionIcon = "CommonAssets/UI/Menu/add_water.tga",
 		RolloverText = S[302535920000476--[["Shows list of objects, and spawns at mouse cursor."--]]],
 		OnAction = function()
-			ChoGGi.ComFuncs.ObjectSpawner()
+			ChoGGi.ComFuncs.EntitySpawner()
 		end,
 		ActionShortcut = "Ctrl-Shift-S",
 		ActionBindable = true,

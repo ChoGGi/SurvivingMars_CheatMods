@@ -202,19 +202,6 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
-					"RolloverTitle", S[1000077--[[Rotate--]]],
-					"RolloverText", S[312752058553--[[Rotate Building Left--]]],
-					"RolloverHint", S[302535920000083--[[<left_click> Activate--]]],
-					"OnPress", function(self)
-						self.context:Rotate()
-						SelectionRemove(self.context)
-						SelectObj(self.context)
-					end,
-					"Icon", "UI/Icons/IPButtons/harvest.tga",
-				}),
-
-				PlaceObj("XTemplateTemplate", {
-					"__template", "InfopanelButton",
 					"RolloverTitle", S[302535920000682--[[Change Entity--]]],
 					"RolloverHint", S[302535920000083--[[<left_click> Activate--]]],
 					"ContextUpdateOnOpen", false,
@@ -223,12 +210,48 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 					end,
 					"OnPress", function(self)
 						if self.context.planning then
-							ChoGGi.ComFuncs.ObjectSpawner(self.context,true,7,true)
+							ChoGGi.ComFuncs.EntitySpawner(self.context,true,7,true)
 						else
-							ChoGGi.ComFuncs.ObjectSpawner(self.context,true,7)
+							ChoGGi.ComFuncs.EntitySpawner(self.context,true,7)
 						end
 					end,
-					"Icon", "UI/Icons/IPButtons/tunnel.tga",
+					"Icon", "UI/Icons/IPButtons/shuttle.tga",
+				}),
+
+				PlaceObj("XTemplateTemplate", {
+					"__template", "InfopanelButton",
+					"RolloverTitle", S[1000077--[[Rotate--]]],
+					"RolloverText", S[312752058553--[[Rotate Building Left--]]],
+					"RolloverHint", S[302535920000083--[[<left_click> Activate--]]],
+					"OnPress", function(self)
+						self.context:Rotate()
+						SelectionRemove(self.context)
+						SelectObj(self.context)
+					end,
+					"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
+				}),
+
+				PlaceObj("XTemplateTemplate", {
+					"__template", "InfopanelButton",
+					"RolloverTitle", S[302535920000457--[[Anim State Set--]]],
+					"RolloverHint", S[302535920000083--[[<left_click> Activate--]]],
+					"RolloverText", S[302535920000458--[[Make object dance on command.--]]],
+					"ContextUpdateOnOpen", false,
+					"OnPress", function(self)
+						ChoGGi.ComFuncs.SetAnimState(self.context)
+					end,
+					"Icon", "UI/Icons/IPButtons/expedition.tga",
+				}),
+
+				PlaceObj("XTemplateTemplate", {
+					"__template", "InfopanelButton",
+					"RolloverTitle", StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]]),
+					"RolloverHint", S[302535920000083--[[<left_click> Activate--]]],
+					"RolloverText", S[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
+					"OnPress", function(self)
+						ChoGGi.ComFuncs.SetParticles(self.context)
+					end,
+					"Icon", "UI/Icons/IPButtons/status_effects.tga",
 				}),
 
 				PlaceObj("XTemplateTemplate", {

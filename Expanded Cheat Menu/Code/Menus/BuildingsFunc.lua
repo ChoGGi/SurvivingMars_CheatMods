@@ -1,16 +1,15 @@
 -- See LICENSE for terms
 
+local default_icon = "UI/Icons/IPButtons/dome_buildings.tga"
+local default_icon2 = "UI/Icons/Sections/storage.tga"
+
+local StringFormat = string.format
+
 function OnMsg.ClassesGenerate()
-
-	local default_icon = "UI/Icons/IPButtons/dome_buildings.tga"
-	local default_icon2 = "UI/Icons/Sections/storage.tga"
-
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
-
-	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.RotateDuringPlacement_Toggle()
 		if ChoGGi.UserSettings.RotateDuringPlacement then

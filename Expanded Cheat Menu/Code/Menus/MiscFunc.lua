@@ -1,13 +1,13 @@
 -- See LICENSE for terms
 
+local next,type = next,type
+local StringFormat = string.format
+
 function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
 	local S = ChoGGi.Strings
-
-	local next,type = next,type
-	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 		local ChoGGi = ChoGGi

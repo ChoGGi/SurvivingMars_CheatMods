@@ -1,17 +1,16 @@
 -- See LICENSE for terms
 
-function OnMsg.ClassesGenerate()
+local default_icon = "UI/Icons/Sections/storage.tga"
+local default_icon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 
+local type,tostring = type,tostring
+local StringFormat = string.format
+
+function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
-	--~ local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
-
-	local default_icon = "UI/Icons/Sections/storage.tga"
-	local default_icon2 = "UI/Icons/Upgrades/home_collective_04.tga"
-
-	local type,tostring = type,tostring
-	local StringFormat = string.format
+	--~ local Trans = ChoGGi.ComFuncs.Translate
 
 	function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 		local ChoGGi = ChoGGi

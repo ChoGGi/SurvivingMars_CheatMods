@@ -1,12 +1,12 @@
 -- See LICENSE for terms
 
+local pairs,pcall,type = pairs,pcall,type
+local StringFormat = string.format
+
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 	local S = ChoGGi.Strings
-
-	local pairs,pcall,type = pairs,pcall,type
-	local StringFormat = string.format
 
 	function ChoGGi.MenuFuncs.FireMostFixes()
 		CreateRealTimeThread(function()

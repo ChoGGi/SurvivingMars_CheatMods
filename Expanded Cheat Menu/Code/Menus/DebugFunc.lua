@@ -1,19 +1,17 @@
 -- See LICENSE for terms
 
-function OnMsg.ClassesGenerate()
+local pairs,print,type,tonumber,tostring,table = pairs,print,type,tonumber,tostring,table
+local StringFormat = string.format
+local TableRemove = table.remove
+local TableIClear = table.iclear
+local TableClear = table.clear
+local IsValid = IsValid
 
+function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
-
-	local pairs,print,type,tonumber,tostring,table = pairs,print,type,tonumber,tostring,table
-	local StringFormat = string.format
-	local TableRemove = table.remove
-	local TableIClear = table.iclear
-	local TableClear = table.clear
-
-	--~ local TerrainTextures = TerrainTextures
 
 	function ChoGGi.MenuFuncs.ForceStoryBits()
 --~ If you do a ~g_StoryBitStates

@@ -9,6 +9,9 @@ local TableSort = table.sort
 local TableInsert = table.insert
 local TableClear = table.clear
 local TableIClear = table.iclear
+local Sleep = Sleep
+local DeleteThread = DeleteThread
+local CreateRealTimeThread = CreateRealTimeThread
 
 local CmpLower = CmpLower
 local IsObjlist = IsObjlist
@@ -89,6 +92,7 @@ DefineClass.Examine = {
 	obj_ref = false,
 	-- used to store visibility of obj
 	orig_vis_flash = false,
+	flashing_thread = false,
 	-- if it's transparent or not
 	transp_mode = false,
 	-- get list of all values from metatables
@@ -118,6 +122,8 @@ DefineClass.Examine = {
 	menu_list_items = false,
 	-- clickable purple text
 	onclick_handles = false,
+	onclick_objs = false,
+	onclick_count = false,
 
 	idAutoRefresh_update_str = false,
 }
@@ -157,6 +163,8 @@ function Examine:Init(parent, context)
 	self.menu_added = {}
 	self.menu_list_items = {}
 	self.onclick_handles = {}
+	self.onclick_objs = {}
+	self.onclick_count = 0
 
 	-- if we're examining a string we want to convert to an object
 	if type(self.obj) == "string" and type(context.parent) == "string" then
@@ -848,6 +856,14 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 			end,
 		},
 		{
+			name = S[302535920000235--[[Attach Spots List--]]],
+			hint = S[302535920001445--[[Shows list of attaches for use with .ent files.--]]],
+			image = "CommonAssets/UI/Menu/ListCollections.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.ExamineEntSpots(self.obj_ref,self)
+			end,
+		},
+		{
 			name = S[302535920000459--[[Anim Debug Toggle--]]],
 			hint = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
 			image = "CommonAssets/UI/Menu/CameraEditor.tga",
@@ -868,7 +884,7 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 			hint = S[302535920001151--[[Set Entity For %s--]]]:format(self.name),
 			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.ObjectSpawner(self.obj_ref,true,7)
+				ChoGGi.ComFuncs.EntitySpawner(self.obj_ref,true,7)
 			end,
 		},
 		--
@@ -885,7 +901,7 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 		{
 			name = S[302535920000067--[[Ged Inspect--]]],
 			hint = S[302535920001075--[[Open this object in the Ged inspector.--]]],
-			image = "CommonAssets/UI/Menu/ListCollections.tga",
+			image = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 			clicked = function()
 				Inspect(self.obj_ref)
 			end,
@@ -961,45 +977,40 @@ function Examine:FindNext(text)
 	end
 end
 
-do -- FlashWindow
-	local flashing_thread
-	local Sleep = Sleep
-	local DeleteThread = DeleteThread
-	local CreateRealTimeThread = CreateRealTimeThread
-
-	function Examine:FlashWindow()
-		-- doesn't lead to good stuff
-		if not self.obj_ref.desktop then
-			return
-		end
-
-		-- don't want to end up with something invis when it shouldn't be
-		if not self.orig_vis_flash then
-			self.orig_vis_flash = self.obj_ref:GetVisible()
-		end
-
-		-- always kill off old thread first
-		DeleteThread(flashing_thread)
-
-		flashing_thread = CreateRealTimeThread(function()
-
-			local vis
-			for _ = 1, 5 do
-				if self.obj_ref.window_state == "destroying" then
-					break
-				end
-				self.obj_ref:SetVisible(vis)
-				Sleep(100)
-				vis = not vis
-			end
-
-			if self.obj_ref.window_state ~= "destroying" then
-				self.obj_ref:SetVisible(self.orig_vis_flash)
-			end
-
-		end)
+function Examine:FlashWindow()
+	-- doesn't lead to good stuff
+	if not self.obj_ref.desktop then
+		return
 	end
-end -- do
+
+	-- always kill off old thread first
+	DeleteThread(self.flashing_thread)
+
+	-- don't want to end up with something invis when it shouldn't be
+	if self.orig_vis_flash then
+		self.obj_ref:SetVisible(self.orig_vis_flash)
+	else
+		self.orig_vis_flash = self.obj_ref:GetVisible()
+	end
+
+	self.flashing_thread = CreateRealTimeThread(function()
+
+		local vis
+		for _ = 1, 5 do
+			if self.obj_ref.window_state == "destroying" then
+				break
+			end
+			self.obj_ref:SetVisible(vis)
+			Sleep(100)
+			vis = not vis
+		end
+
+		if self.obj_ref.window_state ~= "destroying" then
+			self.obj_ref:SetVisible(self.orig_vis_flash)
+		end
+
+	end)
+end
 
 function Examine:SetTranspMode(toggle)
 	self:ClearModifiers()
@@ -1035,7 +1046,7 @@ function Examine:valuetotextex(obj)
 
 	if obj_type == "function" then
 		return StringFormat("%s%s%s",
-			self:HyperLink(Examine_local),
+			self:HyperLink(obj,Examine_local),
 			DebugGetInfo(obj),
 			HLEnd
 		)
@@ -1043,7 +1054,7 @@ function Examine:valuetotextex(obj)
 
 	if obj_type == "thread" then
 		return StringFormat("%s%s%s",
-			self:HyperLink(Examine_local),
+			self:HyperLink(obj,Examine_local),
 			tostring(obj),
 			HLEnd
 		)
@@ -1062,7 +1073,7 @@ function Examine:valuetotextex(obj)
 				return S[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
 			else
 				return StringFormat("%s%s(%s,%s,%s)%s",
-					self:HyperLink(ShowMe_local),
+					self:HyperLink(obj,ShowMe_local),
 					S[302535920001396--[[point--]]],
 					obj:x(),
 					obj:y(),
@@ -1079,7 +1090,7 @@ function Examine:valuetotextex(obj)
 			-- the </color> is to make sure it doesn't bleed into other text
 			return StringFormat("%s</color></color>%s < %s%s",
 				trans,
-				self:HyperLink(Examine_local),
+				self:HyperLink(obj,Examine_local),
 				getmetatable(obj).__name or tostring(obj),
 				HLEnd
 			)
@@ -1090,7 +1101,7 @@ function Examine:valuetotextex(obj)
 
 		if IsValid(obj) then
 			return StringFormat("%s%s%s@%s",
-				self:HyperLink(Examine_local),
+				self:HyperLink(obj,Examine_local),
 				obj.class,
 				HLEnd,
 				self:valuetotextex(obj:GetVisualPos())
@@ -1103,7 +1114,7 @@ function Examine:valuetotextex(obj)
 			-- if it's an objlist then we just return a list of the objects
 			if obj_metatable and IsObjlist(obj_metatable) then
 				local res = {
-					self:HyperLink(Examine_local),
+					self:HyperLink(obj,Examine_local),
 					"objlist",
 					HLEnd,
 					"{",
@@ -1153,7 +1164,7 @@ function Examine:valuetotextex(obj)
 				end
 
 				return StringFormat("%s%s%s",
-					self:HyperLink(Examine_local),
+					self:HyperLink(obj,Examine_local),
 					name,
 					HLEnd
 				)
@@ -1162,18 +1173,6 @@ function Examine:valuetotextex(obj)
 	end
 
 	return tostring(obj)
-end
-
-function Examine:idTextOnHyperLink(link, _, box, pos, button)
-	self = GetRootDialog(self)
-	self.onclick_handles[tonumber(link)](box, pos, button, self)
-end
-function Examine:HyperLink(f, custom_color)
-	self.onclick_handles[#self.onclick_handles+1] = f
-	return StringFormat("%s<h %s 230 195 50>",
-		custom_color or "<color 150 170 250>",
-		#self.onclick_handles
-	)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -1209,13 +1208,10 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 	)
 end
 
-local totextex_res = {}
-local totextex_sort = {}
-local totextex_dupes = {}
 function Examine:totextex(obj,obj_type)
-	TableIClear(totextex_res)
-	TableClear(totextex_sort)
-	TableClear(totextex_dupes)
+	local totextex_res = {}
+	local totextex_sort = {}
+	local totextex_dupes = {}
 	local obj_metatable = getmetatable(obj)
 	local c = 0
 
@@ -1285,7 +1281,7 @@ function Examine:totextex(obj,obj_type)
 					local l_level, l_info = level, info
 					c = c + 1
 					totextex_res[c] = StringFormat([[%s%s(%s) %s: %s%s < debug.getinfo(%s,"Slfun")]],
-						self:HyperLink(function()
+						self:HyperLink(obj,function()
 							ExamineThreadLevel_totextex(l_level,l_info,obj,self)
 						end),
 						info.short_src or info.source,
@@ -1360,7 +1356,7 @@ function Examine:totextex(obj,obj_type)
 	if IsValid(obj) and obj:IsKindOf("CObject") then
 
 		TableInsert(totextex_res,1,StringFormat(--[[<center>----]]"\t\t\t\t--%s%s%s@%s--"--[[--<vspace 6><left>--]],
-			self:HyperLink(function()
+			self:HyperLink(obj,function()
 				ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(obj),self)
 			end),
 			obj.class,
@@ -1372,7 +1368,7 @@ function Examine:totextex(obj,obj_type)
 			local pos = obj:GetVisualPos() + obj:GetStepVector() * obj:TimeToAnimEnd() / obj:GetAnimDuration()
 			TableInsert(totextex_res, 2, StringFormat("%s, step:%s%s%s",
 				GetStateName(obj:GetState()),
-				self:HyperLink(function()
+				self:HyperLink(obj,function()
 					ShowObj(pos)
 				end),
 				tostring(obj:GetStepVector(obj:GetState(),0)),
@@ -1422,7 +1418,7 @@ function Examine:totextex(obj,obj_type)
 			if name == "HGE.TaskRequest" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
 				TableInsert(data_meta,1,StringFormat("Unpack(): %s%s%s",
-					self:HyperLink(function()
+					self:HyperLink(obj,function()
 						ChoGGi.ComFuncs.OpenInExamineDlg({obj:Unpack()},self)
 					end),
 					"table",
@@ -1491,7 +1487,8 @@ function Examine:totextex(obj,obj_type)
 				TableInsert(data_meta,1,"\ngetmetatable():")
 				TableInsert(data_meta,1,StringFormat("Norm(): %s",self:valuetotextex(obj:Norm())))
 				TableInsert(data_meta,1,StringFormat("Inv(): %s",self:valuetotextex(obj:Inv())))
-				TableInsert(data_meta,1,StringFormat("GetRollPitchYaw(): %s",self:valuetotextex(obj:GetRollPitchYaw())))
+				local roll,pitch,yaw = obj:GetRollPitchYaw()
+				TableInsert(data_meta,1,StringFormat("GetRollPitchYaw(): %s %s %s",roll,pitch,yaw))
 				TableInsert(data_meta,1,StringFormat("\nGetAxisAngle(): %s",self:valuetotextex(obj:GetAxisAngle())))
 			elseif name == "LuaPStr" then
 				TableInsert(data_meta,1,"\ngetmetatable():")

@@ -3,6 +3,7 @@
 local StringFormat = string.format
 local TableFind = table.find
 local TableClear = table.clear
+local TableIClear = table.iclear
 local TableSort = table.sort
 local Sleep = Sleep
 local IsValid = IsValid
@@ -162,7 +163,6 @@ function OnMsg.ClassesGenerate()
 		local Dump = ChoGGi.ComFuncs.Dump
 		local TableConcat = ChoGGi.ComFuncs.TableConcat
 		local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
-		local TableIClear = table.iclear
 		local pack_params = pack_params
 		local tostring = tostring
 
@@ -387,11 +387,11 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	function ChoGGi.ComFuncs.ObjectSpawner(obj,skip_msg,list_type,planning)
+	function ChoGGi.ComFuncs.EntitySpawner(obj,skip_msg,list_type,planning)
 		local ChoGGi = ChoGGi
 		local const = const
 
-		local title = planning and 302535920000862--[[Object Planner--]] or 302535920000475--[[Object Spawner--]]
+		local title = planning and 302535920000862--[[Object Planner--]] or 302535920000475--[[Entity Spawner--]]
 		local hint = planning and 302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]] or 302535920000476--[["Shows list of objects, and spawns at mouse cursor."--]]
 
 		local ItemList = {}
@@ -405,7 +405,7 @@ function OnMsg.ClassesGenerate()
 				}
 			end
 		else
-			for key in pairs(EntityData) do
+			for key in pairs(GetAllEntities()) do
 				c = c + 1
 				ItemList[c] = {
 					text = key,
@@ -597,8 +597,11 @@ function OnMsg.ClassesGenerate()
 				spots[sel:GetSpotName(i)] = true
 			end
 
+			local default = S[1000121--[[Default--]]]
+
 			local name_str = "%s, %s: %s"
-			local ItemList = {{text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]]}}
+			local hint_str = "Actor: %s, Action: %s: Moment: %s"
+			local ItemList = {{text = StringFormat(" %s",default),value = default}}
 			local c = 1
 			local particles = FXLists.ActionFXParticles
 			for i = 1, #particles do
@@ -610,6 +613,7 @@ function OnMsg.ClassesGenerate()
 						value = p.Actor,
 						action = p.Action,
 						moment = p.Moment,
+						hint = hint_str:format(p.Actor,p.Action,p.Moment),
 					}
 				end
 			end
@@ -626,6 +630,7 @@ function OnMsg.ClassesGenerate()
 				if sel.ChoGGi_playing_fx then
 					PlayFX(sel.ChoGGi_playing_fx, "end", sel)
 				end
+				-- so we can stop it
 				sel.ChoGGi_playing_fx = action
 
 				if type(sel.fx_actor_class_ChoGGi_Orig) == "nil" then
@@ -633,7 +638,15 @@ function OnMsg.ClassesGenerate()
 				end
 
 				sel.fx_actor_class = actor
-				PlayFX(action, moment, sel)
+
+				if actor == default then
+					if sel.fx_actor_class_ChoGGi_Orig then
+						sel.fx_actor_class = sel.fx_actor_class_ChoGGi_Orig
+					end
+					sel.ChoGGi_playing_fx = nil
+				else
+					PlayFX(action, moment, sel)
+				end
 
 				MsgPopup(
 					action,
@@ -777,6 +790,7 @@ function OnMsg.ClassesGenerate()
 	--~ 	ModItemDecalEntity:Import
 		local function ModItemDecalEntityImport(name,filename,mod)
 			local ss = "%s%s"
+			local ssdds = "%s%s.dds"
 			local output_dir = ConvertToOSPath(mod.content_path)
 
 			local ent_dir = StringFormat("%sEntities/",output_dir)
@@ -788,11 +802,10 @@ function OnMsg.ClassesGenerate()
 			local mtl_output = ss:format(mtl_dir,mtl_file)
 
 			local texture_dir = StringFormat("%sEntities/Textures/",output_dir)
-			local texture_name = StringFormat("mod_texture_%s.dds",name)
-			local texture_output = ss:format(texture_dir,texture_name)
+			local texture_output = ssdds:format(texture_dir,name)
 
 			local fallback_dir = StringFormat("%sFallbacks/",texture_dir)
-			local fallback_output = ss:format(fallback_dir,texture_name)
+			local fallback_output = ssdds:format(fallback_dir,name)
 
 			local err = AsyncCreatePath(ent_dir)
 			if err then
@@ -850,12 +863,12 @@ function OnMsg.ClassesGenerate()
 			err = AsyncStringToFile(mtl_output,StringFormat([[<?xml version="1.0" encoding="UTF-8"?>
 <Materials>
 	<Material>
-		<BaseColorMap Name="%s" mc="0"/>
+		<BaseColorMap Name="%s.dds" mc="0"/>
 		<SIMap Name="BackLight.dds" mc="0"/>
 		<Property Special="None"/>
 		<Property AlphaBlend="Blend"/>
 	</Material>
-</Materials>]],texture_name))
+</Materials>]],name))
 
 			if err then
 				return
@@ -888,5 +901,111 @@ function OnMsg.ClassesGenerate()
 
 		end
 	end -- do
+
+	do -- ExamineEntSpots
+		local name_str = "%s%s"
+		local spots_str = [[<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s,%s,%s" spot_scale="%s" spot_rot="%s,%s,%s,%s"/>]]
+		local bsphere_str = [[<bsphere value="%s,%s,%s,%s"/>]]
+		local box_str = [[<box min="%s,%s,%s" max="%s,%s,%s"/>]]
+		local cavets_str = [[Readme:
+See bottom for box/bsphere.
+The func I use for spot_rot rounds to two decimal points...
+
+]]
+
+		function ChoGGi.ComFuncs.ExamineEntSpots(obj,parent)
+			obj = obj or ChoGGi.ComFuncs.SelObject()
+			if not IsValid(obj) then
+				return
+			end
+
+			local spots_table = {[-666] = cavets_str}
+
+			local origin = obj:GetSpotBeginIndex("Origin")
+			local origin_pos_x, origin_pos_y, origin_pos_z = obj:GetSpotLocPosXYZ(origin)
+
+			local start_id, end_id = obj:GetAllSpots(EntityStates.idle)
+			for i = start_id, end_id do
+				local name = obj:GetSpotName(i)
+
+				-- make a copy to edit
+				local spots_str_t = spots_str
+
+				-- we don't want to fill the list with stuff we don't use
+				local annot = obj:GetSpotAnnotation(i)
+				if not annot then
+					annot = ""
+					spots_str_t = spots_str_t:gsub([[ spot_note="%%s"]],"%%s")
+				end
+
+				local bone = obj:GetSpotBone(i)
+				if bone == "" then
+					spots_str_t = spots_str_t:gsub([[ bone="%%s"]],"%%s")
+				end
+
+				-- scale angle,axis (pos numbers are off-by-one for neg numbers)
+				local _,_,_,angle,axis_x,axis_y,axis_z,scale = obj:GetSpotLocXYZ(i)
+
+				-- 100 is default
+				if scale == 100 then
+					spots_str_t = spots_str_t:gsub([[ spot_scale="%%s"]],"%%s")
+					scale = ""
+				end
+
+				-- means nadda for spot_rot
+				if angle == 0 and axis_x == 0 and axis_y == 0 and axis_z == 4096 then
+					spots_str_t = spots_str_t:gsub([[ spot_rot="%%s,%%s,%%s,%%s"]],"%%s%%s%%s%%s")
+					angle,axis_x,axis_y,axis_z = "","","",""
+				else
+					axis_x = (axis_x + 0.0) / 100
+					axis_y = (axis_y + 0.0) / 100
+					axis_z = (axis_z + 0.0) / 100
+					angle = DivRound(angle, const.Scale.degrees) + 0.0
+				end
+
+				local pos_x,pos_y,pos_z = obj:GetSpotPosXYZ(i)
+
+				spots_table[i] = spots_str_t:format(
+					name,annot,bone,
+					pos_x - origin_pos_x,pos_y - origin_pos_y,pos_z - origin_pos_z,
+					scale,axis_x,axis_y,axis_z,angle
+				)
+			end
+
+			-- this is our bonus eh
+			local bbox = obj:GetEntityBBox()
+			local x1,y1,z1 = bbox:minxyz()
+			local x2,y2,z2 = bbox:maxxyz()
+			spots_table.box = box_str:format(x1,y1,z1,x2,y2,z2)
+
+			local pos_x, pos_y, pos_z, rad = obj:GetBSphere("idle", true)
+			spots_table.bsphere = bsphere_str:format(pos_x - origin_pos_x, pos_y - origin_pos_y, pos_z - origin_pos_z, rad)
+
+			ChoGGi.ComFuncs.OpenInExamineDlg(
+				spots_table,
+				parent,
+				StringFormat("%s: %s",S[302535920000235--[[Attach Spots List--]]],RetName(obj))
+			)
+		end
+	end -- do
+
+--~ 	ChoGGi.ComFuncs.ProcessHexSurfaces(s.entity)
+	function ChoGGi.ComFuncs.ProcessHexSurfaces(entity)
+		local hexes = {}
+		for name,surface_num in pairs(EntitySurfaces) do
+			if HasAnySurfaces(entity, surface_num) then
+				local all_states = GetStates(entity)
+				for _,state in ipairs(all_states) do
+					local state_idx = GetStateIdx(state)
+					local outline, interior, hash = GetSurfaceHexShapes(entity, state_idx, surface_num)
+--~ 					if #outline > 0 or #interior > 0 then
+						hexes[name] = {outline = outline, interior = interior, hash = hash}
+--~ 					end
+				end
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInExamineDlg(hexes)
+	end
 
 end

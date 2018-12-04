@@ -1,0 +1,2 @@
+v0.2
+Added fallback backlight so it isn't dark zoomed out (thanks LukeH).

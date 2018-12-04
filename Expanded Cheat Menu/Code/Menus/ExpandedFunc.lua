@@ -1,18 +1,13 @@
 -- See LICENSE for terms
 
-function OnMsg.ClassesGenerate()
+local type,string = type,string
+local StringFormat = string.format
 
-	--~ local Trans = ChoGGi.ComFuncs.Translate
+function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local RetName = ChoGGi.ComFuncs.RetName
 	local S = ChoGGi.Strings
-
-	--~ local default_icon = "UI/Icons/Sections/storage.tga"
-	--~ local default_icon2 = "UI/Icons/Upgrades/home_collective_04.tga"
-	--~ local default_icon3 = "UI/Icons/IPButtons/rare_metals.tga"
-
-	local type,string = type,string
-	local StringFormat = string.format
+	--~ local Trans = ChoGGi.ComFuncs.Translate
 
 	do -- ViewObjInfo_Toggle
 		local r = ChoGGi.Consts.ResearchPointsScale
