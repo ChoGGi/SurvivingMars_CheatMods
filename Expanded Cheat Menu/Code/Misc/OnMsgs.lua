@@ -136,14 +136,14 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		local XTemplates = XTemplates
 		local PlaceObj = PlaceObj
 
-		-- makes shit flicker when i do my scrollable selection panel
+		-- makes certain ui items flicker when i do my scrollable selection panel
 		-- ChoGGi.UserSettings.ScrollSelection = not ChoGGi.UserSettings.ScrollSelection
 --~ 		XTemplates.PinButton[1].RolloverBackground = red
 --~ 		XTemplates.PinButton[1].PressedBackground = red
 --~ 		XTemplates.PinButton[1].FocusedBackground = red
 --~ 		XTemplates.PinButton[1].Background = red
 --~ 'ColumnsUse' = 'abbba'
-		-- add some ids to make it easier to fuck with selection panel
+		-- add some ids to make it easier to fiddle with selection panel
 		local template_str = "idSection%s_ChoGGi"
 		for key,template in pairs(XTemplates) do
 			if key:sub(1,7) == "section" and not template[1].Id then
@@ -555,7 +555,7 @@ do -- ConstructionSitePlaced
 		end
 
 		if ChoGGi.UserSettings.Building_instant_build then
-			-- i do it this way instead of using .instant_build so domes don't fuck up
+			-- i do it this way instead of using .instant_build so domes don't screw up
 			CreateRealTimeThread(function()
 				Sleep(100)
 				local UICity = UICity
@@ -1452,14 +1452,14 @@ do -- LoadGame/CityStart
 				if table_temp[i].dome_required == false and table_temp[i].parent_dome then
 
 					bld_type = false
-					--remove it from the dome label
+					-- remove it from the dome label
 					if table_temp[i].closed_shifts then
 						bld_type = "Residence"
 					elseif table_temp[i].colonists then
 						bld_type = "Workplace"
 					end
 
-					if bld_type then --get a fucking continue lua
+					if bld_type then
 						if table_temp[i].parent_dome.labels and table_temp[i].parent_dome.labels[bld_type] then
 							local dome = table_temp[i].parent_dome.labels[bld_type]
 							for j = 1, #dome do

@@ -66,7 +66,7 @@ function OnMsg.ClassesGenerate()
 		InfopanelCheats = true,
 		-- default to closed (changed on click)
 		InfopanelCheatsVis = false,
-		-- removes some useless shit from the Cheats pane (unless you're doing the tutorial then not as useless it seems)
+		-- removes some useless crap from the Cheats pane (unless you're doing the tutorial then not as useless it seems)
 		CleanupCheatsInfoPane = true,
 		-- maybe you don't want to see the interface in screenshots
 		ShowInterfaceInScreenshots = true,
@@ -279,16 +279,16 @@ function OnMsg.ClassesGenerate()
 
 		ThreadLockKey(ChoGGi.SettingsFile)
 		table.sort(settings)
-		--and write it to disk
-		local DoneFuckedUp = AsyncStringToFile(ChoGGi.SettingsFile,TableToLuaCode(settings))
+		-- and write it to disk
+		local err = AsyncStringToFile(ChoGGi.SettingsFile,TableToLuaCode(settings))
 		ThreadUnlockKey(ChoGGi.SettingsFile)
 
-		if DoneFuckedUp then
+		if err then
 			print(S[302535920000006--[[Failed to save settings to %s : %s--]]]:format(
 				ChoGGi.SettingsFile and ConvertToOSPath(ChoGGi.SettingsFile) or ChoGGi.SettingsFile,
-				DoneFuckedUp
+				err
 			))
-			return false, DoneFuckedUp
+			return false, err
 		end
 		return settings
 	end

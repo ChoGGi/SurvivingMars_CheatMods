@@ -278,7 +278,7 @@ function RCBulldozer:StartDozer()
 		self:SetMoveAnim("workIdle")
 	end
 
-	-- it shouldn't already be running, but fuck it
+	-- it shouldn't already be running, but screw it
 	if not IsValidThread(self.flatten_thread) then
 		-- store this thread so we can stop it
 		self.flatten_thread = CreateRealTimeThread(function()
@@ -462,7 +462,7 @@ function OnMsg.ClassesBuilt()
 		rover[status]:delete()
 		table.remove(rover,status)
 	else
-		-- fuck it stick it at the end
+		-- screw it stick it at the end
 		status = #rover
 	end
 

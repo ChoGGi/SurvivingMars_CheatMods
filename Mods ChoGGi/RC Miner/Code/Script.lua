@@ -242,7 +242,7 @@ end
 
 function PortableMiner:Idle()
 	local pms = PortableMinerSettings
-	-- if there's one near then mine that shit
+	-- if there's one near then mine that bugger
   if self:DepositNearby() then
     self:ShowNotWorkingSign(false)
     --  get to work
@@ -352,7 +352,7 @@ function PortableMiner:Load()
       self:SetStateText(self.default_anim)
       Sleep(pms.mine_time_anim[self.resource] or self:TimeToAnimEnd())
 
-      -- mine some shit
+      -- mine some loot
       local mined = self:DigErUp(pms)
       if mined then
 				-- if it gets deleted by somebody mid mine :)
@@ -540,7 +540,7 @@ function OnMsg.ClassesBuilt()
 	if status then
 		status = status + 1
 	else
-		-- fuck it stick it at the end
+		-- screw it stick it at the end
 		status = #rover
 	end
 

@@ -78,18 +78,20 @@ DefineClass.ChoGGi_Label = {
 	VAlign = "center",
 }
 function ChoGGi_Label:SetTitle(win,title)
+	local name = CheckText(title or win.title,self.name or RetName(self))
 	local new_title
+
 	if win.prefix then
 		new_title = StringFormat(
 			"%s: %s",
 			CheckText(win.prefix,""),
-			CheckText(title or win.title,RetName(self))
+			name
 		)
 	else
-		new_title = CheckText(title or win.title,RetName(self))
+		new_title = name
 	end
-	-- limit title width
-	win.idCaption:SetText(utf8.sub(new_title,1,45))
+
+	win.idCaption:SetText(new_title)
 end
 DefineClass.ChoGGi_Image = {
 	__parents = {"XImage"},
@@ -452,7 +454,6 @@ function ChoGGi_Window:AddElements()
 	}, self)
 	-- shift-esc closes dialog
 	GetActionsHost(self):AddAction(g_Classes.XAction:new(ChoGGi_Dialog_action))
---~ 	self.idDialog:AddAction(g_Classes.XAction:new(ChoGGi_Dialog_action))
 
 	-- x,y,w,h (start off with all dialogs at 100,100, default size, and we move later)
 	self.idDialog:SetBox(100, 100, self.dialog_width, self.dialog_height)
@@ -464,11 +465,28 @@ function ChoGGi_Window:AddElements()
 	self.idMoveControl = g_Classes.ChoGGi_MoveControl:new({
 		Id = "idMoveControl",
 		dialog = self,
+			-- need a bit of space so the X fits in the header
+		Padding = box(0,1,0,1),
+		-- stop title from overflowing
 	}, self.idDialog)
+
+	self.idTitleLeftSection = g_Classes.ChoGGi_DialogSection:new({
+		Id = "idTitleLeftSection",
+		HAlign = "left",
+		Clip = "self",
+		Margins = box(0,0,32,0),
+	}, self.idMoveControl)
+
+	self.idTitleRightSection = g_Classes.ChoGGi_DialogSection:new({
+		Id = "idTitleRightSection",
+		HAlign = "right",
+	}, self.idMoveControl)
 
 	local close = self.close_func or empty_func
 	self.idCloseX = g_Classes.ChoGGi_CloseButton:new({
+		Id = "idCloseX",
 		OnPress = function(...)
+			-- kill off exter editor if active
 			local ext = g_ExternalTextEditorActiveCtrl
 			if ext and ext.delete then
 				ext:delete()
@@ -477,7 +495,7 @@ function ChoGGi_Window:AddElements()
 			close(...)
 			self:Close("cancel",false)
 		end,
-	}, self.idMoveControl)
+	}, self.idTitleRightSection)
 
 	-- throws error if we try to get display_icon from _G
 	local image = self.title_image or type(self.obj) == "table" and self.obj.display_icon ~= "" and self.obj.display_icon
@@ -491,7 +509,8 @@ function ChoGGi_Window:AddElements()
 			RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
 			OnMouseButtonDown = self.idCaptionOnMouseButtonDown,
 			HandleMouse = true,
-		}, self.idMoveControl)
+		}, self.idTitleLeftSection)
+
 		self.idCaptionImage:SetImage(image)
 		-- remove column and such so it displays fine
 		if self.title_image_single then
@@ -503,9 +522,13 @@ function ChoGGi_Window:AddElements()
 
 	self.idCaption = g_Classes.ChoGGi_Label:new({
 		Id = "idCaption",
-		MaxHeight = self.header,
-		Dock = "left",
-	}, self.idMoveControl)
+--~ 		MaxHeight = self.header,
+--~ 		Dock = "left",
+--~ 		Margins = box(0,0,50,0),
+		--~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
+
+	}, self.idTitleLeftSection)
+
 	if image then
 		self.idCaption:SetPadding(box(self.idCaptionImage.box:sizex(),0,0,0))
 	else
@@ -515,8 +538,6 @@ function ChoGGi_Window:AddElements()
 
 	-- needed for :Wait()
 	self.idDialog:Open()
-	-- need a bit of space on the bottom for so the X fits in the header
-	self.idMoveControl:SetPadding(box(0,1,0,1))
 	-- it's so blue
 	self.idMoveControl:SetFocus()
 end

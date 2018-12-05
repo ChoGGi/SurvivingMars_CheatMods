@@ -533,15 +533,15 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- CablesAndPipesRepair
-		local function RepairBorkedShit(borked_shit)
+		local function RepairBorkedObjects(borked)
 			local type = type
 			local IsValid = IsValid
 			local just_in_case = 0
-			while #borked_shit > 0 do
+			while #borked > 0 do
 
-				for i = #borked_shit, 1, -1 do
-					if IsValid(borked_shit[i]) and type(borked_shit[i].Repair) == "function" then
-						borked_shit[i]:Repair()
+				for i = #borked, 1, -1 do
+					if IsValid(borked[i]) and type(borked[i].Repair) == "function" then
+						borked[i]:Repair()
 					end
 				end
 
@@ -555,8 +555,8 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.MenuFuncs.CablesAndPipesRepair()
 			local g_BrokenSupplyGridElements = g_BrokenSupplyGridElements
-			RepairBorkedShit(g_BrokenSupplyGridElements.electricity)
-			RepairBorkedShit(g_BrokenSupplyGridElements.water)
+			RepairBorkedObjects(g_BrokenSupplyGridElements.electricity)
+			RepairBorkedObjects(g_BrokenSupplyGridElements.water)
 
 			MsgPopup(
 				S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000607--[[Instant Repair--]]],
@@ -567,7 +567,7 @@ function OnMsg.ClassesGenerate()
 
 	------------------------- toggles
 
-	-- fucking ai mods... (fix your shit or take it down kthxbai)
+	-- bloody ai mods... (fix your shit or take it down kthxbai)
 	function ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle()
 		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then

@@ -76,7 +76,7 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 
-				-- and this fucker screws me over on GetBuildingTechsStatus
+				-- and this bugger screws me over on GetBuildingTechsStatus
 				local name = id
 				if name:find("RC") and name:find("Building") then
 					name = name:gsub("Building","")

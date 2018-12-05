@@ -166,7 +166,7 @@ do -- RetName
 			elseif obj.class and obj.class ~= "" then
 				return obj.class
 
-			-- added this here as doing tostring lags the shit outta kansas if this is a large objlist (could also be from just having a large string for something?)
+			-- added this here as doing tostring lags the crap outta kansas if this is a large objlist (could also be from just having a large string for something?)
 			elseif IsObjlist(obj) then
 				return "objlist"
 			end
@@ -2100,7 +2100,7 @@ function ChoGGi.ComFuncs.ToggleConsoleLog()
 	end
 end
 
-do -- FuckingDrones
+do -- FuckingDrones (took quite a while to figure this fun one out)
 	-- force drones to pickup from pile even if they have a carry cap larger then the amount stored
 	local ResourceScale = ChoGGi.Consts.ResourceScale
 	function ChoGGi.ComFuncs.FuckingDrones(obj)
@@ -3725,7 +3725,7 @@ end -- do
 -- set task request to new amount (for some reason changing the "limit" will also boost the stored amount)
 -- this will reset it back to whatever it was after changing it.
 function ChoGGi.ComFuncs.SetTaskReqAmount(obj,value,task,setting)
-	-- if it's in a table, it's almost always [1], i'm sure i'll have lots of shit to fix on any update anyways, so fuck it
+	-- if it's in a table, it's almost always [1], i'm sure i'll have lots of crap to fix on any update anyways, so screw it
 	if type(obj[task]) == "userdata" then
 		task = obj[task]
 	else
@@ -3755,7 +3755,7 @@ function ChoGGi.ComFuncs.ReturnEditorType(list,key,value)
 	elseif value == "text" or value == "combo" then
 		return "string"
 	else
-		-- at least number is number, and i don't give a shit about the rest
+		-- at least number is number, and i don't give a crap about the rest
 		return value
 	end
 end

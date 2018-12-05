@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v4.5 (Unreleased)
+- Removed length limit of dialog titles.
 
 ## v4.4 (01 Dec 2018)
 - More strings.

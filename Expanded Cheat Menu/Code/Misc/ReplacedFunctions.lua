@@ -366,7 +366,7 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	-- yeah who gives a shit about mouseover hints on menu items
+	-- yeah who gives a rats ass about mouseover hints on menu items
 	function XPopupMenu:RebuildActions(host,...)
 --~ 		ChoGGi_OrigFuncs.XPopupMenu_RebuildActions(self,host,...)
 
@@ -1203,7 +1203,7 @@ function OnMsg.ClassesBuilt()
 		end
 	end
 
-	--make it so caret is at the end of the text when you use history (who the fuck wants it at the start...)
+	-- make it so caret is at the end of the text when you use history (who the heck wants it at the start...)
 	function Console:HistoryDown(...)
 		ChoGGi_OrigFuncs.Console_HistoryDown(self,...)
 		self.idEdit:SetCursor(1,#self.idEdit:GetText())

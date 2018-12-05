@@ -427,7 +427,7 @@ function OnMsg.ClassesGenerate()
 
 						local params = {
 							os_pack_path = os_dest,
-							-- maybe we'll deal with these fuckers one of these days?
+							-- maybe we'll deal with these buggers one of these days?
 							screenshots = {},
 						}
 						mod.last_changes = mod.last_changes or tostring(mod.version) or ""

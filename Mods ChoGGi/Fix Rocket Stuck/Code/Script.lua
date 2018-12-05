@@ -125,7 +125,7 @@ function OnMsg.LoadGame()
 								CreateGameTimeThread(function()
 									d:ExitBuilding(r)
 									Sleep(10000)
-									-- something fucks them up, so take the easy way out
+									-- something screws them up, so take the easy way out
 									if not d.command then
 										d:delete()
 										UICity.drone_prefabs = UICity.drone_prefabs + 1
@@ -159,7 +159,7 @@ function OnMsg.LoadGame()
 --~ 					r:SetCommand(cmd)
 --~ 				end
 
-				-- fix for my fuckup with the main reqs
+				-- fix for my screwup with the main reqs
 				if not r.expedition and #r.task_requests ~= 8 then
 					local count = 0
 					for i = 1, #r.task_requests do

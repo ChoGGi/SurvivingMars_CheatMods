@@ -60,7 +60,7 @@ function OnMsg.ClassesGenerate()
 					safe_count = 0
 				end
 
-				-- CheatSpawnPlanetaryAnomalies() but with a limit so GenerateMarsScreenPoI doesn't fuck us
+				-- CheatSpawnPlanetaryAnomalies() but with a limit so GenerateMarsScreenPoI doesn't screw us
 				for _ = 1, safe_count do
 					local lat, long = GenerateMarsScreenPoI("anomaly")
 					-- i assume they'll fix it so there isn't an inf loop

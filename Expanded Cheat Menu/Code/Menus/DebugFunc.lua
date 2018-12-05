@@ -59,7 +59,7 @@ function OnMsg.ClassesGenerate()
 			end
 
 			MsgPopup(
-				"I said they don't do jack shit...",
+				"I said they don't do jack...",
 				948928900281--[[Story Bits--]]
 			)
 		end
@@ -415,7 +415,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		obj = obj or ChoGGi.ComFuncs.SelObject()
 
-		-- domes with shit in them = crashy
+		-- domes with objs in them = crashy
 		if IsKindOf(obj,"Dome") then
 			return
 		end

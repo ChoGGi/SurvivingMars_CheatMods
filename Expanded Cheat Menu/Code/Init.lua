@@ -1,7 +1,7 @@
 -- I didn't get a harumph outta that guy!
 ModEnvBlacklist = {--[[Harumph!--]]}
 
--- yeah, I know it don't do jack shit your point?
+-- yeah, I know it don't do jack your point?
 
 
 

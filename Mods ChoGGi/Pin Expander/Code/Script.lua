@@ -450,7 +450,6 @@ function OnMsg.ClassesGenerate()
 				})
 			end
 
-			-- fucked if i know
 			PopupToggle(button_obj.idCondition,"idPinPopup",items,nil,true)
 		end
 

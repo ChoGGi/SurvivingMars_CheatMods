@@ -35,7 +35,7 @@ do -- Translate
 			if type(arg2) == "string" then
 				return arg2
 			end
-			-- done fucked up (just in case b)
+			-- done messed up (just in case b)
 			return StringFormat("%s < Missing text string id",...)
 		end
 
@@ -56,7 +56,7 @@ if ChoGGi.lang ~= "English" then
 	f = f:sub(1,f:find(",")-1)
 	ChoGGi.font = f
 
-	-- these four don't get to use non-eng fonts, cause fuck you is why
+	-- these four don't get to use non-eng fonts, cause screw you is why
 	-- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...
 	local TextStyles = TextStyles
 	TextStyles.Console.TextFont = StringFormat("%s, 18, bold, aa",f)
