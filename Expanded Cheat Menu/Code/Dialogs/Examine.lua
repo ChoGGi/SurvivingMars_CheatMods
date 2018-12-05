@@ -100,7 +100,7 @@ DefineClass.Examine = {
 	-- going in through the backdoor
 	sort = false,
 
-	-- chinese goes slow as shit for some reason, so i added this to at least stop the game from freezing till obj is examined
+	-- only chinese goes slow as shit for some reason, so i added this to at least stop the game from freezing till obj is examined
 	is_chinese = false,
 
 	dialog_width = 666.0,
@@ -1713,8 +1713,7 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 
 	end -- istable
 
-	-- limit caption length so we don't cover up close button
-	self.idCaption:SetTitle(self,self.title or utf8.sub(name,1,45))
+	self.idCaption:SetTitle(self,self.title or name)
 
 	-- we add a slight delay, so the rest of the dialog shows up; for bigger lists like _G or MapGet(true)
 	if startup then

@@ -458,7 +458,7 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			local logo = MissionLogoPresetMap[value]
 
-			-- check if user typed custom name and fucked up
+			-- check if user typed custom name and screwed up
 			if logo then
 				local entity_name = logo.entity_name
 

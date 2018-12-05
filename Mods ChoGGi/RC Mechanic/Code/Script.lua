@@ -208,7 +208,7 @@ function OnMsg.ClassesBuilt()
 		rover[status]:delete()
 		table.remove(rover,status)
 	else
-		-- fuck it stick it at the end
+		-- screw it stick it at the end
 		status = #rover
 	end
 

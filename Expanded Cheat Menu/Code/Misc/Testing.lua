@@ -58,7 +58,7 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
-		-- for some fucking annoying reason my account settings are sometimes reset, so
+		-- for some annoying reason my account settings are sometimes reset, so (probably something to do with some pop funcs I block)
 		if not ChoGGi.blacklist then
 			local as = AccountStorage
 			as.Options.AutoPinDomes = false

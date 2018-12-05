@@ -85,7 +85,7 @@ local function ResetFunc()
 		FillRandomMapProps = orig_FillRandomMapProps
 		orig_FillRandomMapProps = nil
 	end
-	-- alright fucker...
+	-- alright bugger...
 	skip_showing_image = true
 end
 

@@ -36,7 +36,7 @@ local green = -16711936
 local red = -65536
 local white = -1
 
--- we can't use CityStart since deposits aren't spawned yet and SetTerrainType fucks that up
+-- we can't use CityStart since deposits aren't spawned yet and SetTerrainType screws that up
 function OnMsg.CityStart()
 	CreateRealTimeThread(function()
 		WaitMsg("DepositsSpawned")

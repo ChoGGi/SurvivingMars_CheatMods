@@ -159,7 +159,7 @@ function OnMsg.ClassesGenerate()
 				end
 			end
 			local function Cull(trait,trait_type,race)
-				--only race is stored as number (maybe there's a cock^?^?^?^?CoC around)
+				--only race is stored as number (maybe there's a cock^?^?^?^?CoC around?)
 				trait = race or trait
 				local objs = UICity.labels.Colonist or ""
 				for i = #objs, 1, -1 do

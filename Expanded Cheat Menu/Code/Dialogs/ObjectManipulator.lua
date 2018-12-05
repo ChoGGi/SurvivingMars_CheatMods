@@ -51,7 +51,7 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
-	-- checkboxes (ok checkbox, maybe do some more shit here)
+	-- checkboxes (ok checkbox, maybe do some more stuff here)
 	self.idCheckboxArea = g_Classes.ChoGGi_DialogSection:new({
 		Id = "idCheckboxArea",
 		Dock = "top",

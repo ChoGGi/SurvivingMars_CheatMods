@@ -54,7 +54,7 @@ do -- Translate (I wrap it in a do, so the locals are kept local)
 			if type(arg2) == "string" then
 				return arg2
 			end
-			-- done fucked up (just in case b)
+			-- done messed up (just in case b)
 			return Concat(select(1,...)," < Missing text string id")
 		end
 		return str

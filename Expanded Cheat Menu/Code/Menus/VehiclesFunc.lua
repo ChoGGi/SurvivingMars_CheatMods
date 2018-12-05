@@ -623,7 +623,7 @@ function OnMsg.ClassesGenerate()
 			end
 			local value = choice[1].value
 			if type(value) == "number" then
-				--somewhere above 1000 fucks the save
+				-- somewhere above 1000 screws the save
 				if value > 1000 then
 					value = 1000
 				end
@@ -773,7 +773,7 @@ function OnMsg.ClassesGenerate()
 			if type(value) == "number" then
 				local default = value == DefaultSetting
 				local value = value * r
-				-- somewhere above 2000 fucks the save
+				-- somewhere above 2000 screws the save
 				if value > 2000000 then
 					value = 2000000
 				end

@@ -21,7 +21,7 @@ Length defaults to tunnel length, use ModConfig to change.
 
 Known Issues:
 If you turn it off, then the colonists will group up in front of it (I figured that was better then them quitting and so on).
-
+Suicidal colonists: Pathing wise it's best to only use teleporters with domes close by each other, or with a cliff or some other inaccessible land in the way, else they'll sometimes just go for The Long Walk. This might be a bug with base game...
 
 Requested by... Probably a bunch of people, inspired by veryinky though.
 ]],
