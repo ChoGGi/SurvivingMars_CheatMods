@@ -12,5 +12,5 @@ return PlaceObj("ModDef", {
 
 Requested by: LegendGamer
 
-Part of ECM.]],
+Part of Expanded Cheat Menu.]],
 })

@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v4.6 (Unreleased)
+- Midly broke list choice filter (for certain last items).
 
 ## v4.5 (06 Dec 2018)
 - Removed length limit of dialog titles.

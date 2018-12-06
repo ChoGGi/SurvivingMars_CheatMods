@@ -12,5 +12,6 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision,
   "description", [[Stops any running disasters (duststorms, coldwaves, and current meteors/dustdevil) when you load a save (you don't need to leave it enabled afterwards).
 
-Part of ECM.]],
+
+Part of Expanded Cheat Menu.]],
 })

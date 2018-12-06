@@ -488,9 +488,6 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 		listitem.RolloverTitle = item.text
 		listitem.idText:SetText(item.text)
 		listitem.item = item
-		if self.custom_type > 4 then
-			listitem.RolloverHint = S[302535920001444--[["<left_click> Activate, <right_click> Alt Activate"--]]]
-		end
 	end
 end
 
@@ -611,7 +608,7 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 	local count = #self.idList
 	for i = count, 1, -1 do
 		local li = self.idList[i]
-		if not (li.idText.text:find_lower(txt) or li.RolloverText:find_lower(txt) or li.RolloverTitle:find_lower(txt)) then
+		if not (li.idText.text:find_lower(txt) or li.RolloverText:find_lower(txt) or li.RolloverTitle:find_lower(txt) or self.custom_type == 0 and i == count) then
 			self.idList[i]:delete()
 		end
 	end

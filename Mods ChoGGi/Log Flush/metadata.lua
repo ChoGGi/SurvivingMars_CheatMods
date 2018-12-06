@@ -13,5 +13,6 @@ Now if SM crashes a certain way (that doesn't create the log), you still have a 
 
 Also included are commented out options to flush on NewHour/NewMinute.
 
-Part of ECM.]],
+
+Part of Expanded Cheat Menu.]],
 })
