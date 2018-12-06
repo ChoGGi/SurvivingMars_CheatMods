@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v4.5 (Unreleased)
+## v4.6 (Unreleased)
+
+## v4.5 (06 Dec 2018)
 - Removed length limit of dialog titles.
 - the bottom entry in list dialog was never filtered.
 
