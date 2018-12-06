@@ -18,6 +18,7 @@ function OnMsg.ClassesGenerate()
 
 		local spots = MarsScreenLandingSpots
 
+		-- for "current" hint
 		local count = 0
 		for i = 1, #spots do
 			if spots[i]:IsKindOf("PlanetaryAnomaly") then

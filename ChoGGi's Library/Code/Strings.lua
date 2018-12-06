@@ -284,6 +284,7 @@ local Strings = {
 	[10087] = TranslationTable[10087], -- Advanced Orbital Probe
 	[10124] = TranslationTable[10124], -- Sort
 	[10278] = TranslationTable[10278], -- Wasp Drone
+	[11034] = TranslationTable[11034], -- Rival Colonies
 	[11412] = TranslationTable[11412], -- Trigger fireworks
 	[11683] = TranslationTable[11683], -- Electricity
 	[1000009] = TranslationTable[1000009], -- Confirmation

@@ -18,6 +18,15 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
+	Actions[c] = {ActionName = S[11034--[[Rival Colonies--]]],
+		ActionMenubar = str_ExpandedCM_Mission,
+		ActionId = ".Rival Colonies",
+		ActionIcon = "CommonAssets/UI/Menu/add_water.tga",
+		RolloverText = S[302535920001460--[[Add/remove rival colonies.--]]],
+		OnAction = ChoGGi.MenuFuncs.ChangeRivalColonies,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = S[302535920000704--[[Instant Mission Goals--]]],
 		ActionMenubar = str_ExpandedCM_Mission,
 		ActionId = ".Instant Mission Goals",

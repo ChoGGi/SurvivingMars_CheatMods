@@ -26,6 +26,8 @@ ChoGGi.ComFuncs.OpenInListChoice{
 	custom_func = CustomFunc,
 	close_func = function() end,
 	check = {
+		only_one = true,
+		at_least_one = true,
 		{
 			title = "Check1",
 			hint = "Check1Hint",
@@ -131,28 +133,42 @@ Press Enter to show all items."--]]],
 			HAlign = "center",
 		}, self.idDialog)
 
-		for i = 1, #self.list.check do
-			local name1 = StringFormat("idCheckBox%s",i)
-			self[name1] = g_Classes.ChoGGi_CheckButton:new({
-				Id = name1,
-				Text = S[588--[[Empty--]]],
+		local checkname_str = "idCheckBox%s"
+		local checks = self.list.check
+		for i = 1, #checks do
+			local list_check = checks[i]
+			local name = checkname_str:format(i)
+			self[name] = g_Classes.ChoGGi_CheckButton:new({
+				Id = name,
 				Dock = "left",
+				Text = S[588--[[Empty--]]],
 			}, self.idCheckboxArea)
+			local check = self[name]
 
-			-- check table
-			local obj = self.list.check[i]
+			-- fiddle with checkboxes on toggled
+			if checks.only_one and checks.at_least_one then
+				check.OnChange = function(...)
+					self.idCheckBoxAtLeastOne(...)
+					self.idCheckBoxOnlyOne(...)
+				end
+			elseif checks.only_one then
+				check.OnChange = self.idCheckBoxOnlyOne
+			elseif checks.at_least_one then
+				check.OnChange = self.idCheckBoxAtLeastOne
+			end
+
 			-- anything to add to it?
-			if obj.title then
-				self[name1]:SetText(CheckText(obj.title))
+			if list_check.title then
+				check:SetText(CheckText(list_check.title))
 			end
-			if obj.hint then
-				self[name1].RolloverText = CheckText(obj.hint)
+			if list_check.hint then
+				check.RolloverText = CheckText(list_check.hint)
 			end
---~ 			if obj.func then
---~ 				self[name1].Press = obj.func
---~ 			end
-			if obj.checked then
-				self[name1]:SetCheck(true)
+			if list_check.func then
+				check.OnPress = list_check.func
+			end
+			if list_check.checked then
+				check:SetCheck(true)
 			end
 
 		end
@@ -341,6 +357,47 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	self:SetInitPos(self.list.parent)
 
 	self.skip_color_change = false
+end
+
+-- uncheck all the other checks
+function ChoGGi_ListChoiceDlg:idCheckBoxOnlyOne()
+	local checks = self.parent
+	if self:GetCheck() then
+		for i = 1, #checks do
+			local check = checks[i]
+			if check ~= self then
+				check:SetCheck(false)
+			end
+		end
+	end
+end
+-- make sure at least one is checked
+function ChoGGi_ListChoiceDlg:idCheckBoxAtLeastOne()
+	local checks = self.parent
+	if not self:GetCheck() then
+		local current_idx
+		local other_idx
+		local any_checked
+		for i = 1, #checks do
+			local check = checks[i]
+			if check == self then
+				current_idx = i
+			else
+				other_idx = i
+				if check:GetCheck() then
+					any_checked = true
+					break
+				end
+			end
+		end
+		if not any_checked then
+			if #checks > 1 then
+				checks[other_idx or 1]:SetCheck(true)
+			else
+				checks[1]:SetCheck(true)
+			end
+		end
+	end
 end
 
 function ChoGGi_ListChoiceDlg:idColorSquareOnColorChanged(colour)
@@ -749,8 +806,10 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 	self.choices[1] = self.choices[1] or {}
 	-- add checkbox statuses
 	if self.list.check and #self.list.check > 0 then
+		local check_str1 = "check%s"
+		local check_str2 = "idCheckBox%s"
 		for i = 1, #self.list.check do
-			self.choices[1][StringFormat("check%s",i)] = self[StringFormat("idCheckBox%s",i)]:GetCheck()
+			self.choices[1][check_str1:format(i)] = self[check_str2:format(i)]:GetCheck()
 		end
 	end
 	-- and if it's a colourpicker list send that back as well

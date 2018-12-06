@@ -4,32 +4,149 @@ local default_icon = "UI/Icons/Sections/spaceship.tga"
 
 local type = type
 local StringFormat = string.format
+local Sleep = Sleep
 
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local Trans = ChoGGi.ComFuncs.Translate
+	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
+
+	function ChoGGi.MenuFuncs.ChangeRivalColonies()
+--~ 		MarsScreenLandingSpots
+		local g_CurrentMissionParams = g_CurrentMissionParams
+		local rival_colonies = MissionParams.idRivalColonies.items
+		local g_RivalAIs = RivalAIs or empty_table
+
+		local skip = {
+			random = true,
+			none = true,
+			[g_CurrentMissionParams.idMissionSponsor] = true,
+		}
+
+		local ItemList = {}
+		local c = 0
+		for i = 1, #rival_colonies do
+			local rival = rival_colonies[i]
+			if not skip[rival.id] then
+				local existing = g_RivalAIs[rival.id]
+				local name = Trans(rival.display_name)
+				local initial_res = {}
+				for j = 1, #rival.initial_resources do
+					local res = rival.initial_resources[j]
+					if res.amount then
+						initial_res[#initial_res+1] = StringFormat("%s: %s\n",res.resource,res.amount)
+					end
+				end
+
+				c = c + 1
+				ItemList[c] = {
+					text = existing and StringFormat("%s *",name) or name,
+					value = rival.id,
+					rival = rival,
+					existing = existing,
+					hint = StringFormat("%s\n\n%s\n\n%s",
+						S[302535920001461--[[* means it's an active rival you can remove.--]]],
+						Trans(rival.description),
+						TableConcat(initial_res)
+					),
+				}
+			end
+		end
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+			local add = choice[1].check1
+			local remove = choice[1].check2
+
+			-- if it's an old save without rivals added
+			if not g_CurrentMissionParams.idRivalColonies then
+				local rivals_table = {}
+				if add then
+					for i = 1, #choice do
+						rivals_table[#rivals_table+1] = choice[i].value
+					end
+					local num = #rivals_table
+					if num < 3 then
+						for i = num, 3 - num do
+							rivals_table[#rivals_table+1] = "none"
+						end
+					end
+				elseif remove then
+					return
+				end
+				g_CurrentMissionParams.idRivalColonies = rivals_table
+				Msg("OurColonyPlaced")
+			end
+			local g_RivalAIs = RivalAIs
+
+			if add then
+				for i = 1, #choice do
+					local value = choice[i].value
+					-- if it's an actual rival, and not one already added
+					if not g_RivalAIs[value] then
+						SpawnRivalAI(choice[i].rival)
+					end
+				end
+			elseif remove then
+				for i = 1, #choice do
+					if choice[i].existing then
+						DeleteRivalAI(choice[i].existing)
+					end
+				end
+			end
+
+			MsgPopup(
+				tostring(#choice),
+				11034--[[Rival Colonies--]]
+			)
+
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = 11034--[[Rival Colonies--]],
+			hint = StringFormat("%s\n%s",S[302535920001460--[[Add/remove rival colonies.--]]],S[302535920001461--[[* means it's an active rival you can remove.--]]]),
+			multisel = true,
+			custom_type = 3,
+			check = {
+				only_one = true,
+				at_least_one = true,
+				{
+					title = 302535920001183--[[Add--]],
+					hint = S[302535920001462--[[%s rival colonies.--]]]:format(S[302535920001183--[[Add--]]]),
+					checked = true,
+				},
+				{
+					title = 302535920000281--[[Remove--]],
+					hint = S[302535920001462--[[%s rival colonies.--]]]:format(S[302535920000281--[[Remove--]]]),
+				},
+			},
+
+		}
+	end
 
 	function ChoGGi.MenuFuncs.StartChallenge()
 		local ItemList = {}
 		local challenges = Presets.Challenge.Default
 		local DayDuration = const.DayDuration
 
-		local hint_str = "%s\n\n%s%s"
 		for i = 1, #challenges do
 			local c = challenges[i]
 			ItemList[i] = {
 				text = Trans(c.title),
 				value = c.id,
-				hint = hint_str:format(
+				hint = StringFormat("%s\n\n%s",
 					Trans(c.description),
 					S[302535920001415--[[Sols to Complete: %s--]]]:format(c.time_completed / DayDuration),
 					Trans(T{10489--[[<newline>Perfect time: <countdown2>--]],countdown2 = c.time_perfected / DayDuration})
 				),
 			}
 		end
-
 
 		local function CallBackFunc(choice)
 			if #choice < 1 then
@@ -566,21 +683,6 @@ function OnMsg.ClassesGenerate()
 			end
 			local check1 = choice[1].check1
 			local check2 = choice[1].check2
-			if not check1 and not check2 then
-				MsgPopup(
-					302535920000038--[[Pick a checkbox next time...--]],
-					302535920001181--[[Rules--]],
-					default_icon
-				)
-				return
-			elseif check1 and check2 then
-				MsgPopup(
-					302535920000039--[[Don't pick both checkboxes next time...--]],
-					302535920001181--[[Rules--]],
-					default_icon
-				)
-				return
-			end
 
 			for i = 1, #ItemList do
 				-- check to make sure it isn't a fake name (no sense in saving it)
@@ -630,9 +732,11 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920001182--[[Set Game Rules--]],
-			hint = ChoGGi.ComFuncs.TableConcat(hint),
+			hint = TableConcat(hint),
 			multisel = true,
 			check = {
+				only_one = true,
+				at_least_one = true,
 				{
 					title = 302535920001183--[[Add--]],
 					hint = 302535920001185--[[Add selected rules--]],
