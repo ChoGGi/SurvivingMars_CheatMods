@@ -13,5 +13,5 @@ return PlaceObj("ModDef", {
 
 You can change the bounce amount if you have Mod Config installed.
 
-Part of ECM.]],
+Part of Expanded Cheat Menu.]],
 })

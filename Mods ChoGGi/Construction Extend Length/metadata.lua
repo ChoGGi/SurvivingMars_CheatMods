@@ -16,5 +16,5 @@ Can be changed with ModConfig.
 
 Requested by Adi.
 
-Part of ECM.]],
+Part of Expanded Cheat Menu.]],
 })

@@ -15,5 +15,5 @@ return PlaceObj("ModDef", {
 
 This mod forces them to pick up whenever there's at least 1 res cube.
 
-Part of ECM.]],
+Part of Expanded Cheat Menu.]],
 })

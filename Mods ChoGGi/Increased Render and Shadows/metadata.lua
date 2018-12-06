@@ -14,5 +14,6 @@ This is somewhat useless without increasing zoom in ECM.
 
 You won't see the increased shadow/render difference, but you will have sharper shadows.
 
-Part of ECM.]],
+
+Part of Expanded Cheat Menu.]],
 })
