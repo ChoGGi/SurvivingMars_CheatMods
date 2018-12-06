@@ -1,0 +1,3 @@
+v0.2
+Added rocket from Silva - International Fuel Corporation.
+Fixed palettes.
