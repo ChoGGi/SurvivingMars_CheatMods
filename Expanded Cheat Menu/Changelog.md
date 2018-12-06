@@ -3,7 +3,11 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v11.6 (Unreleased)
+## v11.7 (Unreleased)
+
+## v11.6 (06 Dec 2018)
+### Changed:
+- Bug report.
 
 ## v11.5 (06 Dec 2018)
 ### Added:

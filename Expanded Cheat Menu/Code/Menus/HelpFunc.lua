@@ -54,40 +54,9 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
-	do -- CreateBugReportDlg
-		local function MissingMantis(name)
-			if not rawget(_G,name) then
-				_G[name] = empty_table
-			end
-		end
-		MissingMantis("mantis_level_designers")
-		MissingMantis("mantis_coders")
-		MissingMantis("mantis_artists")
-		MissingMantis("mantis_designers")
-		MissingMantis("mantis_animators")
-		-- I did not hit her!
-		LocalStorage.dlgBugReport.handler = "ECM sez: Oh, hai Mark!"
-
-		local function RetTrue()
-			return true
-		end
-		function ChoGGi.MenuFuncs.CreateBugReportDlg()
-			CreateRealTimeThread(function()
-				-- muhahaha
-				Platform.developer = true
-				_ENV.insideHG = RetTrue
-
-				CreateBugReportDlg()
-				while GetDialog("BugReport") do
-					Sleep(5000)
-				end
-
-				-- back to norm
-				Platform.developer = false
-				_ENV.insideHG = empty_func
-			end)
-		end
-	end -- do
+	function ChoGGi.MenuFuncs.CreateBugReportDlg()
+		CreateRealTimeThread(CreateBugReportDlg)
+	end
 
 	function ChoGGi.MenuFuncs.ExtractHPKs()
 		if blacklist then
