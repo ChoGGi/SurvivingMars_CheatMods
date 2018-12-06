@@ -1978,7 +1978,7 @@ function ChoGGi.ComFuncs.ColonistUpdateAge(c,age)
 		end
 	end
 	-- add new age trait
-	c:AddTrait(age)
+	c:AddTrait(age,true)
 
 	-- needed for comparison
 	local orig_age = c.age_trait
@@ -2029,7 +2029,7 @@ function ChoGGi.ComFuncs.ColonistUpdateGender(c,gender)
 		c:RemoveTrait(genders[i])
 	end
 	-- add new gender trait
-	c:AddTrait(gender)
+	c:AddTrait(gender,true)
 	-- needed for updating entity
 	c.gender = gender
 	-- set entity gender
