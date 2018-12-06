@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v11.5 (Unreleased)
+## v11.6 (Unreleased)
+
+## v11.5 (06 Dec 2018)
 ### Added:
 - Debug>Attach Spots List: Shows list of attaches for use with .ent files.
 - Debug>Object Flags: Shows list of flags set for selected object (also added to Examine>Tools).
