@@ -61,10 +61,11 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			S[302535920000039--[[Spam in the console log doesn't necessarily mean a problem with SM (it could just a warning).--]]],
+			S[302535920000039--[["Spam in the console log doesn't necessarily mean a problem with SM (it could just a warning).
+This report will go to the %s developers not me."--]]]:format(S[1079--[[Surviving Mars--]]]),
 			CallBackFunc,
-			S[302535920001463--[[Bug Report--]]],
-			S[302535920001464--[[Yes, I know what I'm doing. this is a bug.--]]]
+			StringFormat("%s %s",S[1079--[[Surviving Mars--]]],S[302535920001463--[[Bug Report--]]]),
+			S[302535920001464--[[Yes, I know what I'm doing. This is a bug.--]]]
 		)
 	end
 
