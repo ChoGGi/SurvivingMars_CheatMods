@@ -1008,4 +1008,34 @@ The func I use for spot_rot rounds to two decimal points...
 		ChoGGi.ComFuncs.OpenInExamineDlg(hexes)
 	end
 
+	function ChoGGi.ComFuncs.ObjFlagsList(obj,parent)
+		local flags_table = {}
+		if not IsValid(obj) then
+			return flags_table
+		end
+
+		local const = const
+		local Flags = Flags
+		local IsFlagSet = IsFlagSet
+
+		local enum = obj:GetEnumFlags()
+		local class = obj:GetClassFlags()
+		local game = obj:GetGameFlags()
+
+		for i = 1, #Flags.Class do
+			local f = Flags.Class[i]
+			flags_table[f] = IsFlagSet(class, const[f])
+		end
+		for i = 1, #Flags.Enum do
+			local f = Flags.Enum[i]
+			flags_table[f] = IsFlagSet(enum, const[f])
+		end
+		for i = 1, #Flags.Game do
+			local f = Flags.Game[i]
+			flags_table[f] = IsFlagSet(game, const[f])
+		end
+
+		ChoGGi.ComFuncs.OpenInExamineDlg(flags_table,parent,RetName(obj))
+	end
+
 end

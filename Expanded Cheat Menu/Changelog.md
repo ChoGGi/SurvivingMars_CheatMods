@@ -6,6 +6,7 @@
 ## v11.5 (Unreleased)
 ### Added:
 - Debug>Attach Spots List: Shows list of attaches for use with .ent files.
+- Debug>Object Flags: Shows list of flags set for selected object (also added to Examine>Tools).
 
 ### Changed:
 - Added checkbox for Advanced probes to Add Orbital Probes.

@@ -268,6 +268,17 @@ function OnMsg.ClassesGenerate()
 		end,
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001446--[[Object Flags--]]],
+		ActionMenubar = "ECM.Debug",
+		ActionId = ".Object Flags",
+		ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
+		RolloverText = S[302535920001447--[[Shows list of flags set for selected object.--]]],
+		OnAction = function()
+			ChoGGi.ComFuncs.ObjFlagsList()
+		end,
+	}
+
 	local str_Debug_Grids = "ECM.Debug.Grids"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000035--[[Grids--]]]),

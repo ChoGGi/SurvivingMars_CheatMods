@@ -864,6 +864,14 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 			end,
 		},
 		{
+			name = S[302535920001446--[[Object Flags--]]],
+			hint = S[302535920001447--[[Shows list of flags set for selected object.--]]],
+			image = "CommonAssets/UI/Menu/JoinGame.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.ObjFlagsList(self.obj_ref,self)
+			end,
+		},
+		{
 			name = S[302535920000459--[[Anim Debug Toggle--]]],
 			hint = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
 			image = "CommonAssets/UI/Menu/CameraEditor.tga",
