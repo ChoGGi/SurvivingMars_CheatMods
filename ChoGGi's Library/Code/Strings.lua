@@ -95,6 +95,8 @@ local Strings = {
 	[16] = TranslationTable[16], -- Grade
 	[25] = TranslationTable[25], -- Anomaly Scanning
 	[27] = TranslationTable[27], -- Cheats
+	[32] = TranslationTable[32], -- Power Production
+	[33] = TranslationTable[33], -- Stored Water
 	[40] = TranslationTable[40], -- Recharge
 	[53] = TranslationTable[53], -- Malfunction
 	[63] = TranslationTable[63], -- Travelling
@@ -136,14 +138,18 @@ local Strings = {
 	[735] = TranslationTable[735], -- Usable by children
 	[736] = TranslationTable[736], -- Children Only
 	[745] = TranslationTable[745], -- Shuttles
+	[750] = TranslationTable[750], -- Water Consumption
 	[793] = TranslationTable[793], -- Deep Metals
 	[797] = TranslationTable[797], -- Deep Water
 	[801] = TranslationTable[801], -- Deep Rare Metals
 	[891] = TranslationTable[891], -- Air
 	[904] = TranslationTable[904], -- Terrain
+	[923] = TranslationTable[923], -- Oxygen Production
 	[931] = TranslationTable[931], -- Modified property
+	[945] = TranslationTable[945], -- Stored Power
 	[1011] = TranslationTable[1011], -- Close
 	[1022] = TranslationTable[1022], -- Food
+	[1074] = TranslationTable[1074], -- Stored Air
 	[1079] = TranslationTable[1079], -- Surviving Mars
 	[1110] = TranslationTable[1110], -- Prefab Buildings
 	[1111] = TranslationTable[1111], -- Prefabricated parts needed for the construction of certain buildings on Mars.
@@ -210,6 +216,7 @@ local Strings = {
 	[4764] = TranslationTable[4764], -- BlackCube
 	[4765] = TranslationTable[4765], -- Fuel
 	[4801] = TranslationTable[4801], -- Workplace
+	[4806] = TranslationTable[4806], -- Water Production
 	[4809] = TranslationTable[4809], -- Residence
 	[4810] = TranslationTable[4810], -- Service
 	[4915] = TranslationTable[4915], -- Good News, Everyone!
@@ -225,6 +232,7 @@ local Strings = {
 	[5245] = TranslationTable[5245], -- Sanatoriums
 	[5248] = TranslationTable[5248], -- Schools
 	[5422] = TranslationTable[5422], -- Exploration
+	[5426] = TranslationTable[5426], -- Building
 	[5433] = TranslationTable[5433], -- Drone Control
 	[5438] = TranslationTable[5438], -- Rovers
 	[5439] = TranslationTable[5439], -- Service Buildings
@@ -357,8 +365,8 @@ Strings[584248706535] = Strings[584248706535]:gsub("<right><ResourceAmount>",": 
 -- we need to pad some zeros
 local function TransZero(pad,first,last)
 	for i = first, last do
-		-- entries in the CSV file
-		if i > 1450 then
+		-- amount of entries in the CSV file
+		if i > 1500 then
 			break
 		end
 		local num = tonumber(TableConcat{30253592000,pad,i})
