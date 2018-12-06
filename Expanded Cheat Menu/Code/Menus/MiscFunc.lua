@@ -55,20 +55,6 @@ function OnMsg.ClassesGenerate()
 			end
 			local check1 = choice[1].check1
 			local check2 = choice[1].check2
-			--nothing checked so just return
-			if not check1 and not check2 then
-				MsgPopup(
-					302535920000038--[[Pick a checkbox next time...--]],
-					302535920001092--[[Pins--]]
-				)
-				return
-			elseif check1 and check2 then
-				MsgPopup(
-					302535920000039--[[Don't pick both checkboxes next time...--]],
-					302535920001092--[[Pins--]]
-				)
-				return
-			end
 
 			local pins = ChoGGi.UserSettings.UnpinObjects
 			for i = 1, #choice do
@@ -84,7 +70,7 @@ function OnMsg.ClassesGenerate()
 				end
 			end
 
-			--remove dupes
+			-- remove dupes
 			ChoGGi.UserSettings.UnpinObjects = ChoGGi.ComFuncs.RetTableNoDupes(ChoGGi.UserSettings.UnpinObjects)
 
 			local found = true
@@ -119,9 +105,12 @@ function OnMsg.ClassesGenerate()
 			hint = TableConcat(EnabledList),
 			multisel = true,
 			check = {
+				at_least_one = true,
+				only_one = true,
 				{
 					title = 302535920001098--[[Add to list--]],
 					hint = 302535920001099--[[Add these items to the unpin list.--]],
+					checked = true,
 				},
 				{
 					title = 302535920001100--[[Remove from list--]],
@@ -345,13 +334,6 @@ function OnMsg.ClassesGenerate()
 				local value = choice[1].value
 				local check1 = choice[1].check1
 				local check2 = choice[1].check2
-				if check1 and check2 then
-					MsgPopup(
-						302535920000039--[[Don't pick both checkboxes next time...--]],
-						entity_str
-					)
-					return
-				end
 
 				local dome
 				if sel.dome and check1 then
@@ -387,6 +369,7 @@ function OnMsg.ClassesGenerate()
 
 	Not permanent for colonists after they exit buildings (for now).--]]]),
 				check = {
+					only_one = true,
 					{
 						title = 302535920000750--[[Dome Only--]],
 						hint = 302535920001255--[[Will only apply to objects in the same dome as selected object.--]],
@@ -467,13 +450,6 @@ function OnMsg.ClassesGenerate()
 				local value = choice[1].value
 				local check1 = choice[1].check1
 				local check2 = choice[1].check2
-				if check1 and check2 then
-					MsgPopup(
-						302535920000039--[[Don't pick both checkboxes next time...--]],
-						1000081--[[Scale--]]
-					)
-					return
-				end
 
 				local dome
 				if sel.dome and check1 then
@@ -510,6 +486,7 @@ function OnMsg.ClassesGenerate()
 				title = S[302535920001155--[[Set Entity Scale For %s--]]]:format(RetName(sel)),
 				hint = StringFormat("%s: %s\n%s",S[302535920001156--[[Current object--]]],sel:GetScale(),S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]),
 				check = {
+					only_one = true,
 					{
 						title = 302535920000750--[[Dome Only--]],
 						hint = 302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]],

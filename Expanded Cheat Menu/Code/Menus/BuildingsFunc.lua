@@ -871,15 +871,6 @@ function OnMsg.ClassesGenerate()
 			local check1 = choice[1].check1
 			local check2 = choice[1].check2
 
-			if not check1 and not check2 then
-				MsgPopup(
-					302535920000038--[[Pick a checkbox next time...--]],
-					302535920000127--[[Rate--]],
-					default_icon2
-				)
-				return
-			end
-
 			if type(value) == "number" then
 				local numberC = value * r
 				local numberD = value * r
@@ -950,6 +941,7 @@ function OnMsg.ClassesGenerate()
 			title = StringFormat("%s %s %s",S[302535920000129--[[Set--]]],name,S[302535920000130--[[Dis/Charge Rates--]]]),
 			hint = StringFormat("%s: %s",S[302535920000131--[[Current rate--]]],hint),
 			check = {
+				at_least_one = true,
 				{
 					title = 302535920000124--[[Charge--]],
 					hint = 302535920000132--[[Change charge rate--]],

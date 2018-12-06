@@ -1332,14 +1332,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				return
 			end
 
-			local check1,check2 = choice[1].check1,choice[1].check2
-			if check1 and check2 then
-				MsgPopup(
-					302535920000039--[[Don't pick both checkboxes next time...--]],
-					547--[[Colonists--]]
-				)
-				return
-			end
+			local check1 = choice[1].check1
+			local check2 = choice[1].check2
 
 			local sel = SelectedObj
 			local dome
@@ -1486,6 +1480,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				hint = hint,
 				multisel = true,
 				check = {
+					only_one = true,
 					{
 						title = 302535920000750--[[Dome Only--]],
 						hint = 302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]],

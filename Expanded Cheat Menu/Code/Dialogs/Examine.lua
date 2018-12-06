@@ -276,7 +276,7 @@ function Examine:Init(parent, context)
 			Text = S[302535920000084--[[Auto-Refresh--]]],
 			RolloverText = self.idAutoRefresh_update_str:format(ChoGGi.UserSettings.ExamineRefreshTime),
 			RolloverHint = S[302535920001425--[["<left_click> Toggle, <right_click> Set Delay"--]]],
-			OnChange = self.idAutoRefreshToggle,
+			OnChange = self.idAutoRefreshOnChange,
 			OnMouseButtonDown = self.idAutoRefreshOnMouseButtonDown,
 			Init = self.CheckButtonInit,
 		}, self.idToolbarArea)
@@ -483,10 +483,11 @@ function Examine:idButMarkAllOnPress()
 	end
 end
 
-function Examine:idAutoRefreshToggle()
-	self = GetRootDialog(self)
+function Examine:idAutoRefreshOnChange()
 	-- if it's called directly we set the check if needed
-	local checked = self.idAutoRefresh:GetCheck()
+	local checked = self:GetCheck()
+
+	self = GetRootDialog(self)
 
 	-- if already running then stop and return
 	if IsValidThread(self.autorefresh_thread) then
@@ -614,13 +615,19 @@ function Examine:idGotoOnKbdKeyDown(vk,...)
 		return "break"
 	elseif vk == const.vkDown then
 		local v = self.idScrollV
-		self.idScrollArea:ScrollTo(nil,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
+		if v:IsVisible() then
+			self.idScrollArea:ScrollTo(nil,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
+		end
 		return "break"
 	elseif vk == const.vkRight then
 		local h = self.idScrollH
-		self.idScrollArea:ScrollTo(h.Max - (h.FullPageAtEnd and h.PageSize or 0))
+		if h:IsVisible() then
+			self.idScrollArea:ScrollTo(h.Max - (h.FullPageAtEnd and h.PageSize or 0))
+		end
+		-- break doesn't work for left/right
 	elseif vk == const.vkLeft then
 		self.idScrollArea:ScrollTo(0)
+		-- break doesn't work for left/right
 	elseif vk == const.vkEsc then
 		self.idCloseX:OnPress()
 		return "break"

@@ -280,7 +280,7 @@ DefineClass.ChoGGi_PopupList = {
 --~ 	LayoutMethod = "VList",
 }
 function ChoGGi_PopupList:Close(...)
-	if self.items.clear_objs then
+	if self.items and self.items.clear_objs then
 		ChoGGi.ComFuncs.ClearShowObj()
 	end
 	XPopupList.Close(self,...)

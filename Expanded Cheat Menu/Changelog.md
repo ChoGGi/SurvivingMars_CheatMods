@@ -8,6 +8,7 @@
 - Debug>Attach Spots List: Shows list of attaches for use with .ent files.
 - Debug>Object Flags: Shows list of flags set for selected object (also added to Examine>Tools).
 - Debug>Material Properties: Shows list of material settings/.dds files for use with .mtl files.
+- Mission>Rival Colonies: Add/remove rival colonies.
 
 ### Changed:
 - Added checkbox for Advanced probes to Add Orbital Probes.
