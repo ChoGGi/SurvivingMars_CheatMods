@@ -36,7 +36,7 @@ local orig_Service_GameInit = Service.GameInit
 function Service:GameInit()
 
   -- only remove stuff if we're outside of a dome
-  if not self.parent_dome and buildings_to_check[self.entity] then
+  if not self.parent_dome and buildings_to_check[self:GetEntity()] then
 		if obj.ForEachAttach then
 			obj:ForEachAttach(function(a)
 				if classes_to_remove[a.class] then

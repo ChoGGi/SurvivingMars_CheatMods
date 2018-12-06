@@ -133,7 +133,7 @@ function SubsurfaceAnomalyMarker:SpawnDeposit(...)
 		CreateRealTimeThread(function()
 			-- needs a delay for some reason
 			Sleep(50)
-			a.ChoGGi_alien = a.entity
+			a.ChoGGi_alien = a:GetEntity()
 			a:ChangeEntity("GreenMan")
 			a:SetScale(500)
 			a:SetAngle(AsyncRand())

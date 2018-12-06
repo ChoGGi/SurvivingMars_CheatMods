@@ -13,18 +13,6 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 
-	function ChoGGi.MenuFuncs.MaterialProperties(parent)
-		if not UICity then
-			return
-		end
-		local GetMaterialProperties = GetMaterialProperties
-		local materials = {}
-		for id in pairs(GetAllEntities()) do
-			materials[id] = GetMaterialProperties(id)
-		end
-		ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent,S[302535920001458--[[Material Properties--]]])
-	end
-
 	function ChoGGi.MenuFuncs.ForceStoryBits()
 --~ If you do a ~g_StoryBitStates
 --~ that'll show all the active story state thingss
@@ -39,6 +27,7 @@ function OnMsg.ClassesGenerate()
 		local story_table = {}
 		local hint_str = "%s: %s\n\n%s\n\n<image %s>"
 		local title_str = "%s: %s"
+		local g_StoryBitStates = g_StoryBitStates
 		for id,state in pairs(g_StoryBitStates) do
 			c = c + 1
 			local story = StoryBits[id]
@@ -354,7 +343,7 @@ function OnMsg.ClassesGenerate()
 		end
 		-- got me
 		if obj:IsKindOf("Banner") then
-			new:ChangeEntity(obj.entity)
+			new:ChangeEntity(obj:GetEntity())
 		end
 
 		new:SetPos(ChoGGi.ComFuncs.CursorNearestHex())

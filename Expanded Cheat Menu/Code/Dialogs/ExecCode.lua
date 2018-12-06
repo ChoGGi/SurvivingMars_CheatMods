@@ -37,7 +37,6 @@ local box10 = box(10,0,0,0)
 function ChoGGi_ExecCodeDlg:Init(parent, context)
 	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
-	local dlgConsole = dlgConsole
 
 	if blacklist then
 		self.plugin_names = {"ChoGGi_CodeEditorPlugin"}

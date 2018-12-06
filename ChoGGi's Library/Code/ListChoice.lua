@@ -55,7 +55,6 @@ local S = ChoGGi.Strings
 local type,tostring = type,tostring
 local StringFormat = string.format
 local TableSort = table.sort
-local TableRemove = table.remove
 local RGBA,RGB = RGBA,RGB
 local point = point
 
@@ -555,7 +554,7 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 	local count = #self.idList
 	for i = count, 1, -1 do
 		local li = self.idList[i]
-		if not (li.idText.text:find_lower(txt) or li.RolloverText:find_lower(txt) or li.RolloverTitle:find_lower(txt) or i == count) then
+		if not (li.idText.text:find_lower(txt) or li.RolloverText:find_lower(txt) or li.RolloverTitle:find_lower(txt)) then
 			self.idList[i]:delete()
 		end
 	end

@@ -110,10 +110,12 @@ DefineClass.Examine = {
 	idAttachesMenu = false,
 	idParentsMenu = false,
 	idToolsMenu = false,
+	idObjectsMenu = false,
 	-- tables
 	parents_menu_popup = false,
 	attaches_menu_popup = false,
 	tools_menu_popup = false,
+	objects_menu_popup = false,
 
 	pmenu_skip_dupes = false,
 	parents = false,
@@ -156,6 +158,7 @@ function Examine:Init(parent, context)
 	self.idAttachesMenu = Random()
 	self.idParentsMenu = Random()
 	self.idToolsMenu = Random()
+	self.idObjectsMenu = Random()
 
 	self.attaches_menu_popup = {}
 	self.parents = {}
@@ -231,22 +234,6 @@ function Examine:Init(parent, context)
 			RolloverTitle = S[302535920000057--[[Mark Object--]]],
 			RolloverText = S[302535920000021--[[Mark object with green sphere and/or paint.--]]],
 			OnPress = self.idButMarkObjectOnPress,
-		}, self.idToolbarButtons)
-		--
-		self.idButModProps = g_Classes.ChoGGi_ToolbarButton:new({
-			Id = "idButModProps",
-			Image = "CommonAssets/UI/Menu/SelectByClass.tga",
-			RolloverTitle = S[931--[[Modified property--]]],
-			RolloverText = S[302535920001384--[[Get properties different from base/parent object?--]]],
-			OnPress = self.idButModPropsOnPress,
-		}, self.idToolbarButtons)
-		--
-		self.idButAllProps = g_Classes.ChoGGi_ToolbarButton:new({
-			Id = "idButAllProps",
-			Image = "CommonAssets/UI/Menu/AreaProperties.tga",
-			RolloverTitle = S[302535920001389--[[All Properties--]]],
-			RolloverText = S[302535920001390--[[Get all properties.--]]],
-			OnPress = self.idButAllPropsOnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButDeleteObj = g_Classes.ChoGGi_ToolbarButton:new({
@@ -357,6 +344,15 @@ function Examine:Init(parent, context)
 			Dock = "left",
 		}, self.idMenuArea)
 
+		self.objects_menu_popup = self:BuildObjectMenuPopup()
+		self.idObjects = g_Classes.ChoGGi_ComboButton:new({
+			Id = "idObjects",
+			Text = S[298035641454--[[Object--]]],
+			RolloverText = S[302535920001426--[[Various tools to use.--]]],
+			OnMouseButtonDown = self.idObjectsOnMouseButtonDown,
+			Dock = "left",
+		}, self.idMenuArea)
+
 		self.idParents = g_Classes.ChoGGi_ComboButton:new({
 			Id = "idParents",
 			Text = S[302535920000520--[[Parents--]]],
@@ -432,31 +428,6 @@ function Examine:idButMarkObjectOnPress()
 			ShowObj(v)
 		end
 	end
-end
-
-function Examine:idButModPropsOnPress()
-	self = GetRootDialog(self)
-	ChoGGi.ComFuncs.OpenInExamineDlg(
-		GetModifiedProperties(self.obj_ref),
-		self,
-		StringFormat("%s: %s",S[931--[[Modified property--]]],self.name)
-	)
-end
-
-function Examine:idButAllPropsOnPress()
-	self = GetRootDialog(self)
-	-- give em some hints
-	local props_list = {
-		___readme = S[302535920001397--[["These can be used as obj:GetNAME() / obj:SetNAME().
-You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
-Check the actual object/g_Classes.object for the correct value to use (Entity > entity).
---]]]
-	}
-	local props = self.obj_ref:GetProperties()
-	for i = 1, #props do
-		props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
-	end
-	ChoGGi.ComFuncs.OpenInExamineDlg(props_list,self,StringFormat("%s: %s",S[302535920001389--[[All Properties--]]],self.name))
 end
 
 function Examine:idButDeleteObjOnPress()
@@ -605,6 +576,9 @@ end
 function Examine:idToolsOnMouseButtonDown(pt,button,...)
 	CallMenu(self,"idToolsMenu","tools_menu_popup",pt,button,...)
 end
+function Examine:idObjectsOnMouseButtonDown(pt,button,...)
+	CallMenu(self,"idObjectsMenu","objects_menu_popup",pt,button,...)
+end
 
 function Examine:idParentsOnMouseButtonDown(pt,button,...)
 	CallMenu(self,"idParentsMenu","parents_menu_popup",pt,button,...)
@@ -684,6 +658,134 @@ function Examine:ProcessList(list,prefix)
 			end
 		end
 	end
+end
+
+function Examine:BuildObjectMenuPopup()
+	return {
+		{
+			name = S[174--[[Color Modifier--]]],
+			hint = S[302535920000693--[[Select/mouse over an object to change the colours
+Use Shift- or Ctrl- for random colours/reset colours.--]]],
+			image = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.ChangeObjectColour(self.obj_ref)
+			end,
+		},
+		{
+			name = S[302535920000457--[[Anim State Set--]]],
+			hint = S[302535920000458--[[Make object dance on command.--]]],
+			image = "CommonAssets/UI/Menu/UnlockCamera.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.SetAnimState(self.obj_ref)
+			end,
+		},
+		{
+			name = S[302535920000682--[[Change Entity--]]],
+			hint = S[302535920001151--[[Set Entity For %s--]]]:format(self.name),
+			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.EntitySpawner(self.obj_ref,true,7)
+			end,
+		},
+		{
+			name = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]]),
+			hint = S[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
+			image = "CommonAssets/UI/Menu/place_particles.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.SetParticles(self.obj_ref)
+			end,
+		},
+		{name = "	 ---- "},
+		{
+			name = S[302535920000449--[[Attach Spots Toggle--]]],
+			hint = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
+			image = "CommonAssets/UI/Menu/ShowAll.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj_ref)
+			end,
+		},
+		{
+			name = S[302535920000235--[[Attach Spots List--]]],
+			hint = S[302535920001445--[[Shows list of attaches for use with .ent files.--]]],
+			image = "CommonAssets/UI/Menu/ListCollections.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.ExamineEntSpots(self.obj_ref,self)
+			end,
+		},
+		{
+			name = S[302535920001458--[[Material Properties--]]],
+			hint = S[302535920001459--[[Shows list of material settings/.dds files for use with .mtl files.--]]],
+			image = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.GetMaterialProperties(self.obj_ref:GetEntity(),self)
+			end,
+		},
+		{
+			name = S[302535920001446--[[Object Flags--]]],
+			hint = S[302535920001447--[[Shows list of flags set for selected object.--]]],
+			image = "CommonAssets/UI/Menu/JoinGame.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.ObjFlagsList(self.obj_ref,self)
+			end,
+		},
+		{
+			name = S[302535920000459--[[Anim Debug Toggle--]]],
+			hint = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
+			image = "CommonAssets/UI/Menu/CameraEditor.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj_ref)
+			end,
+		},
+		{
+			name = S[931--[[Modified property--]]],
+			hint = S[302535920001384--[[Get properties different from base/parent object?--]]],
+			image = "CommonAssets/UI/Menu/SelectByClass.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.OpenInExamineDlg(
+					GetModifiedProperties(self.obj_ref),
+					self,
+					StringFormat("%s: %s",S[931--[[Modified property--]]],self.name)
+				)
+			end,
+		},
+		{
+			name = S[302535920001389--[[All Properties--]]],
+			hint = S[302535920001390--[[Get all properties.--]]],
+			image = "CommonAssets/UI/Menu/AreaProperties.tga",
+			clicked = function()
+				-- give em some hints
+				local props_list = {
+					___readme = S[302535920001397--[["These can be used as obj:GetNAME() / obj:SetNAME().
+You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
+Check the actual object/g_Classes.object for the correct value to use (Entity > entity).
+--]]]
+				}
+				local props = self.obj_ref:GetProperties()
+				for i = 1, #props do
+					props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
+				end
+				ChoGGi.ComFuncs.OpenInExamineDlg(props_list,self,StringFormat("%s: %s",S[302535920001389--[[All Properties--]]],self.name))
+			end,
+		},
+		{name = "	 ---- "},
+		{
+			name = S[302535920001369--[[Ged Editor--]]],
+			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
+			image = "CommonAssets/UI/Menu/UIDesigner.tga",
+			clicked = function()
+				GedObjectEditor = false
+				OpenGedGameObjectEditor{self.obj_ref}
+			end,
+		},
+		{
+			name = S[302535920000067--[[Ged Inspect--]]],
+			hint = S[302535920001075--[[Open this object in the Ged inspector.--]]],
+			image = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
+			clicked = function()
+				Inspect(self.obj_ref)
+			end,
+		},
+	}
 end
 
 function Examine:BuildToolsMenuPopup()
@@ -831,91 +933,6 @@ Which you can then mess around with some more in the console."--]]],
 		},
 		{name = "	 ---- "},
 		{
-			name = S[174--[[Color Modifier--]]],
-			hint = S[302535920000693--[[Select/mouse over an object to change the colours
-Use Shift- or Ctrl- for random colours/reset colours.--]]],
-			image = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
-			clicked = function()
-				ChoGGi.ComFuncs.ChangeObjectColour(self.obj_ref)
-			end,
-		},
-		{
-			name = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]]),
-			hint = S[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
-			image = "CommonAssets/UI/Menu/place_particles.tga",
-			clicked = function()
-				ChoGGi.ComFuncs.SetParticles(self.obj_ref)
-			end,
-		},
-		{
-			name = S[302535920000449--[[Attach Spots Toggle--]]],
-			hint = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
-			image = "CommonAssets/UI/Menu/ShowAll.tga",
-			clicked = function()
-				ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj_ref)
-			end,
-		},
-		{
-			name = S[302535920000235--[[Attach Spots List--]]],
-			hint = S[302535920001445--[[Shows list of attaches for use with .ent files.--]]],
-			image = "CommonAssets/UI/Menu/ListCollections.tga",
-			clicked = function()
-				ChoGGi.ComFuncs.ExamineEntSpots(self.obj_ref,self)
-			end,
-		},
-		{
-			name = S[302535920001446--[[Object Flags--]]],
-			hint = S[302535920001447--[[Shows list of flags set for selected object.--]]],
-			image = "CommonAssets/UI/Menu/JoinGame.tga",
-			clicked = function()
-				ChoGGi.ComFuncs.ObjFlagsList(self.obj_ref,self)
-			end,
-		},
-		{
-			name = S[302535920000459--[[Anim Debug Toggle--]]],
-			hint = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
-			image = "CommonAssets/UI/Menu/CameraEditor.tga",
-			clicked = function()
-				ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj_ref)
-			end,
-		},
-		{
-			name = S[302535920000457--[[Anim State Set--]]],
-			hint = S[302535920000458--[[Make object dance on command.--]]],
-			image = "CommonAssets/UI/Menu/UnlockCamera.tga",
-			clicked = function()
-				ChoGGi.ComFuncs.SetAnimState(self.obj_ref)
-			end,
-		},
-		{
-			name = S[302535920000682--[[Change Entity--]]],
-			hint = S[302535920001151--[[Set Entity For %s--]]]:format(self.name),
-			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
-			clicked = function()
-				ChoGGi.ComFuncs.EntitySpawner(self.obj_ref,true,7)
-			end,
-		},
-		--
-		{name = "	 ---- "},
-		{
-			name = S[302535920001369--[[Ged Editor--]]],
-			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
-			image = "CommonAssets/UI/Menu/UIDesigner.tga",
-			clicked = function()
-				GedObjectEditor = false
-				OpenGedGameObjectEditor{self.obj_ref}
-			end,
-		},
-		{
-			name = S[302535920000067--[[Ged Inspect--]]],
-			hint = S[302535920001075--[[Open this object in the Ged inspector.--]]],
-			image = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
-			clicked = function()
-				Inspect(self.obj_ref)
-			end,
-		},
-		{name = "	 ---- "},
-		{
 			name = S[302535920001321--[[UI Click To Select--]]],
 			hint = S[302535920001322--[["Examine UI controls by clicking them.
 The screen dialog will ""pause"" till you click something."--]]],
@@ -942,7 +959,8 @@ function Examine:FindPrevious(text)
 	local current_y = self.idScrollArea.OffsetY
 	local min_match, closest_match = false, false
 
-	for y, list_draw_info in pairs(self.idText.draw_cache or {}) do
+	local cache = self.idText.draw_cache or {}
+	for y, list_draw_info in pairs(cache) do
 		for i = 1, #list_draw_info do
 			local draw_info = list_draw_info[i]
 			if draw_info.text and draw_info.text:find_lower(text) or text == "" then
@@ -966,7 +984,8 @@ function Examine:FindNext(text)
 	local current_y = self.idScrollArea.OffsetY
 	local min_match, closest_match = false, false
 
-	for y, list_draw_info in pairs(self.idText.draw_cache or {}) do
+	local cache = self.idText.draw_cache or {}
+	for y, list_draw_info in pairs(cache) do
 		for i = 1, #list_draw_info do
 			local draw_info = list_draw_info[i]
 			if draw_info.text and draw_info.text:find_lower(text) or text == "" then
@@ -1041,7 +1060,7 @@ end
 function Examine:valuetotextex(obj)
 	local obj_type = type(obj)
 
-	local function ShowMe_local()
+	local function ShowObj_local()
 		ShowObj(obj)
 	end
 	local function Examine_local(_,_,button)
@@ -1081,7 +1100,7 @@ function Examine:valuetotextex(obj)
 				return S[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
 			else
 				return StringFormat("%s%s(%s,%s,%s)%s",
-					self:HyperLink(obj,ShowMe_local),
+					self:HyperLink(obj,ShowObj_local),
 					S[302535920001396--[[point--]]],
 					obj:x(),
 					obj:y(),
@@ -1372,7 +1391,7 @@ function Examine:totextex(obj,obj_type)
 			self:valuetotextex(obj:GetVisualPos())
 		))
 
-		if obj:IsValidPos() and IsValidEntity(obj.entity) and 0 < obj:GetAnimDuration() then
+		if obj:IsValidPos() and IsValidEntity(obj:GetEntity()) and 0 < obj:GetAnimDuration() then
 			local pos = obj:GetVisualPos() + obj:GetStepVector() * obj:TimeToAnimEnd() / obj:GetAnimDuration()
 			TableInsert(totextex_res, 2, StringFormat("%s, step:%s%s%s",
 				GetStateName(obj:GetState()),
@@ -1520,7 +1539,8 @@ function Examine:totextex(obj,obj_type)
 			dbg_value = StringFormat("\ndebug.getinfo(): %s",DebugGetInfo(obj))
 		else
 			dbg_value = "\ndebug.getinfo(): "
-			for key,value in pairs(getinfo(obj) or {}) do
+			local info = getinfo(obj) or empty_table
+			for key,value in pairs(info) do
 				dbg_value = StringFormat("%s\n%s: %s",dbg_value,key,self:valuetotextex(value))
 			end
 		end
@@ -1559,13 +1579,6 @@ function Examine:SetToolbarVis(obj)
 			self.idButMarkObject:SetVisible()
 		end
 
-		if obj.properties then
-			self.idButModProps:SetVisible(true)
-			self.idButAllProps:SetVisible(true)
-		else
-			self.idButModProps:SetVisible()
-			self.idButAllProps:SetVisible()
-		end
 		if obj.delete then
 			self.idButDeleteObj:SetVisible(true)
 		else
@@ -1698,7 +1711,7 @@ function Examine:SetObj(startup)
 					a.handle or S[6761--[[None--]]],
 					pos
 				),
-				showme = a,
+				showobj = a,
 				clicked = function()
 					ChoGGi.ComFuncs.ClearShowObj(a)
 					ChoGGi.ComFuncs.OpenInExamineDlg(a,self)

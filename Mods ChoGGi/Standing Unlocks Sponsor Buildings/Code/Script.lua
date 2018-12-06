@@ -8,6 +8,7 @@ local buildings = {}
 function OnMsg.ModsReloaded()
 	local BuildingTechRequirements = BuildingTechRequirements
 
+	local BuildingTemplates = BuildingTemplates
 	for id,bld in pairs(BuildingTemplates) do
 		for i = 1, 3 do
 			local name = spon_name:format(i)
@@ -43,6 +44,7 @@ end
 function OnMsg.NewDay()
 --~ function OnMsg.NewHour()
 	local BuildingTemplates = BuildingTemplates
+	local RivalAIs = RivalAIs
 	for id,rival in pairs(RivalAIs) do
 		-- there's none locked to it, then nothing to do
 		if buildings[id] then

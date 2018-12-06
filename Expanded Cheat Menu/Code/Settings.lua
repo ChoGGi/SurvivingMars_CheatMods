@@ -380,40 +380,43 @@ function OnMsg.ClassesGenerate()
 
 	-- ClassesBuilt is the earliest we can call Consts funcs
 	function OnMsg.ClassesBuilt()
-		local ChoGGi = ChoGGi
+		local Defaults = ChoGGi.Defaults
+		local UserSettings = ChoGGi.UserSettings
+
 		-- if setting doesn't exist then add default
-		for key,value in pairs(ChoGGi.Defaults) do
-			if type(ChoGGi.UserSettings[key]) == "nil" then
-				ChoGGi.UserSettings[key] = value
+		for key,value in pairs(Defaults) do
+			if type(UserSettings[key]) == "nil" then
+				UserSettings[key] = value
 			end
 		end
 
-	--~ 	for key,value in pairs(ChoGGi.Defaults.XXXXXXX) do
-	--~ 		if type(ChoGGi.UserSettings.XXXXXXX[key]) == "nil" then
-	--~ 			ChoGGi.UserSettings.XXXXXXX[key] = value
+	--~ 	for key,value in pairs(Defaults.XXXXXXX) do
+	--~ 		if type(UserSettings.XXXXXXX[key]) == "nil" then
+	--~ 			UserSettings.XXXXXXX[key] = value
 	--~ 		end
 	--~ 	end
 	end
 
 	do -- AddOldSettings
 		-- used to add old lists to new combined list
-		local function AddOldSettings(ChoGGi,old_cat,new_name)
+		local function AddOldSettings(UserSettings,old_cat,new_name)
 			local BuildingTemplates = BuildingTemplates
 			-- then loop through it
-			for key,value in pairs(ChoGGi.UserSettings[old_cat] or {}) do
+			local old_cat = UserSettings[old_cat] or {}
+			for key,value in pairs(old_cat) do
 				--it likely doesn't exist, but check first and add a blank table
-				if not ChoGGi.UserSettings.BuildingSettings[key] then
-					ChoGGi.UserSettings.BuildingSettings[key] = {}
+				if not UserSettings.BuildingSettings[key] then
+					UserSettings.BuildingSettings[key] = {}
 				end
 				-- add it to vistors list?
 				if new_name == "capacity" and BuildingTemplates[key].max_visitors then
-					ChoGGi.UserSettings.BuildingSettings[key].visitors = value
+					UserSettings.BuildingSettings[key].visitors = value
 				else
-					ChoGGi.UserSettings.BuildingSettings[key][new_name] = value
+					UserSettings.BuildingSettings[key][new_name] = value
 				end
 			end
 			-- remove old settings
-			ChoGGi.UserSettings[old_cat] = nil
+			UserSettings[old_cat] = nil
 			return true
 		end
 
@@ -422,28 +425,30 @@ function OnMsg.ClassesGenerate()
 			local next = next
 
 			-- remove empty entries in BuildingSettings
-			if next(ChoGGi.UserSettings.BuildingSettings) then
+			local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
+			if next(BuildingSettings) then
 				-- remove any empty building tables
-				for key,_ in pairs(ChoGGi.UserSettings.BuildingSettings) do
-					if not next(ChoGGi.UserSettings.BuildingSettings[key]) then
-						ChoGGi.UserSettings.BuildingSettings[key] = nil
+				for key,_ in pairs(BuildingSettings) do
+					if not next(BuildingSettings[key]) then
+						BuildingSettings[key] = nil
 					end
 				end
 			-- if empty table then new settings file or old settings
 			else
 				-- then we check if this is an older version still using the old way of storing building settings and convert over to new
-				if not AddOldSettings(ChoGGi,"BuildingsCapacity","capacity") then
+				if not AddOldSettings(ChoGGi.UserSettings,"BuildingsCapacity","capacity") then
 					ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsCapacity")
 				end
-				if not AddOldSettings(ChoGGi,"BuildingsProduction","production") then
+				if not AddOldSettings(ChoGGi.UserSettings,"BuildingsProduction","production") then
 					ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsProduction")
 				end
 			end
 
 			-- remove empty entries in CargoSettings
-			for key,_ in pairs(ChoGGi.UserSettings.CargoSettings or {}) do
-				if not next(ChoGGi.UserSettings.CargoSettings[key]) then
-					ChoGGi.UserSettings.CargoSettings[key] = nil
+			local CargoSettings = ChoGGi.UserSettings.CargoSettings or {}
+			for key,_ in pairs(CargoSettings) do
+				if not next(CargoSettings[key]) then
+					CargoSettings[key] = nil
 				end
 			end
 		end

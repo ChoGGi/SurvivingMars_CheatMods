@@ -286,7 +286,7 @@ function OnMsg.ClassesGenerate()
 		local function SetEntity(obj,entity)
 			--backup orig
 			if not obj.ChoGGi_OrigEntity then
-				obj.ChoGGi_OrigEntity = obj.entity
+				obj.ChoGGi_OrigEntity = obj:GetEntity()
 			end
 			if entity == "Default" then
 				local orig = obj.ChoGGi_OrigEntity or obj:GetDefaultPropertyValue("entity")
@@ -326,6 +326,7 @@ function OnMsg.ClassesGenerate()
 					{text = StringFormat(" %s",S[302535920001150--[[PumpStation Demo--]]]),value = "PumpStationDemo",hint = hint_noanim},
 				}
 				local c = #entity_table
+				local EntityData = EntityData
 				for key,_ in pairs(EntityData) do
 					c = c + 1
 					entity_table[c] = {
@@ -382,7 +383,7 @@ function OnMsg.ClassesGenerate()
 				callback = CallBackFunc,
 				items = ItemList,
 				title = S[302535920001151--[[Set Entity For %s--]]]:format(RetName(sel)),
-				hint = StringFormat("%s: %s\n%s\n\n%s",S[302535920000106--[[Current--]]],sel.ChoGGi_OrigEntity or sel.entity,S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],S[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
+				hint = StringFormat("%s: %s\n%s\n\n%s",S[302535920000106--[[Current--]]],sel.ChoGGi_OrigEntity or sel:GetEntity(),S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],S[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
 
 	Not permanent for colonists after they exit buildings (for now).--]]]),
 				check = {

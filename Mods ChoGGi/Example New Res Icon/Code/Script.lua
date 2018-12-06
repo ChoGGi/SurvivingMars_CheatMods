@@ -47,7 +47,7 @@ end
 -- replace existing ones (that haven't been replaced yet)
 local function ChangeEntityLabel(label,cls,new)
 	for i = 1, #(label or "") do
-		if label[i].entity ~= new and label[i]:IsKindOf(cls) then
+		if label[i]:GetEntity() ~= new and label[i]:IsKindOf(cls) then
 			label[i]:ChangeEntity(new)
 		end
 	end

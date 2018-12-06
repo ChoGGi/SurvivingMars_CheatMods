@@ -275,9 +275,16 @@ DefineClass.ChoGGi_PopupList = {
 	__parents = {"XPopupList"},
 	-- -1000 is for XRollovers which get max_int
 	ZOrder = max_int - 1000,
-	LayoutMethod = "VList",
+	-- what? i like 3d
 	BorderWidth = 2,
+--~ 	LayoutMethod = "VList",
 }
+function ChoGGi_PopupList:Close(...)
+	if self.items.clear_objs then
+		ChoGGi.ComFuncs.ClearShowObj()
+	end
+	XPopupList.Close(self,...)
+end
 
 DefineClass.ChoGGi_CheckButtonMenu = {
 	__parents = {"ChoGGi_CheckButton"},
@@ -499,8 +506,10 @@ function ChoGGi_Window:AddElements()
 
 	-- throws error if we try to get display_icon from _G
 	local image = self.title_image or type(self.obj) == "table" and self.obj.display_icon ~= "" and self.obj.display_icon
+	local is_image = type(image) == "string"
 
-	if image then
+	-- DroneResourceUnits.ANYTHING will return 1000
+	if is_image then
 		self.idCaptionImage = g_Classes.ChoGGi_Image:new({
 			Id = "idCaptionImage",
 			Dock = "left",
@@ -529,7 +538,7 @@ function ChoGGi_Window:AddElements()
 
 	}, self.idTitleLeftSection)
 
-	if image then
+	if is_image then
 		self.idCaption:SetPadding(box(self.idCaptionImage.box:sizex(),0,0,0))
 	else
 		self.idCaption:SetPadding(box(4,0,0,0))

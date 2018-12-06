@@ -9,6 +9,7 @@ function CursorBuilding:GameInit()
 		return orig_CursorBuilding_GameInit(self)
 	end
 
+  local g_MapSectors = g_MapSectors
 	for sector,_ in pairs(g_MapSectors) do
 		if type(sector) ~= "number" then
 			sector.ChoGGi_decal = sector.decal
@@ -28,6 +29,7 @@ end
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done()
 
+  local g_MapSectors = g_MapSectors
 	for sector,_ in pairs(g_MapSectors) do
 		if type(sector) ~= "number" then
 			if not sector.ChoGGi_decal then

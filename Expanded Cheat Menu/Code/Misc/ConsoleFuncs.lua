@@ -7,7 +7,6 @@ local TableSort = table.sort
 local TableInsert = table.insert
 local TableRemove = table.remove
 local TableFind = table.find
-local Sleep = Sleep
 local CmpLower = CmpLower
 
 function OnMsg.ClassesGenerate()
@@ -129,6 +128,7 @@ function OnMsg.ClassesGenerate()
 			local submenu_table = {}
 			local c = 0
 			-- same for DataInstances
+			local DataInstances = DataInstances
 			for key in pairs(DataInstances) do
 				c = c + 1
 				submenu_table[c] = BuildExamineItem(StringFormat("DataInstances.%s",key),key)

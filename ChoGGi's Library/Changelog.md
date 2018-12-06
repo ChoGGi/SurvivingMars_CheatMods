@@ -2,6 +2,7 @@
 
 ## v4.5 (Unreleased)
 - Removed length limit of dialog titles.
+- the bottom entry in list dialog was never filtered.
 
 ## v4.4 (01 Dec 2018)
 - More strings.

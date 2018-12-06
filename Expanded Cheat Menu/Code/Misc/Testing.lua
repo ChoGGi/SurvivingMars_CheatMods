@@ -95,6 +95,7 @@ function OnMsg.ClassesGenerate()
 				-- hide signs (just in case any are in the currently exposed sector)
 				SetSignsVisible(false)
 				-- hide all the sector markers
+				local g_MapSectors = g_MapSectors
 				for sector,_ in pairs(g_MapSectors) do
 					if type(sector) ~= "number" and sector.decal then
 						sector.decal:SetVisible(false)
@@ -118,6 +119,7 @@ function OnMsg.ClassesGenerate()
 				if idx then
 					terminal.desktop[idx]:delete()
 				end
+				local Dialogs = Dialogs
 				for _,value in pairs(Dialogs) do
 					if type(value) ~= "string" then
 						value:delete()
@@ -392,6 +394,7 @@ function OnMsg.ClassesGenerate()
 			return ChoGGi.OrigFuncs.CargoShuttle_Idle(self)
 		end
 
+		local ThreadsMessageToThreads = ThreadsMessageToThreads
 		for message, _ in pairs(ThreadsMessageToThreads) do
 			--print(message)
 			--print(threads)
@@ -399,6 +402,7 @@ function OnMsg.ClassesGenerate()
 			print(message.ip)
 			end
 		end
+		local ThreadsRegister = ThreadsRegister
 		for thread in pairs(ThreadsRegister) do
 			print(thread)
 		end
@@ -763,10 +767,10 @@ function OnMsg.ClassesGenerate()
 	end
 
 	--~ HexPainter()
-	--~ HexPainter(GetEntityHexShapes(s.entity))
-	--~ HexPainter(GetEntityBuildShape(s.entity))
-	--~ HexPainter(GetEntityInverseBuildShape(s.entity))
-	--~ HexPainter(GetEntityCombinedShape(s.entity))
+	--~ HexPainter(GetEntityHexShapes(s:GetEntity()))
+	--~ HexPainter(GetEntityBuildShape(s:GetEntity()))
+	--~ HexPainter(GetEntityInverseBuildShape(s:GetEntity()))
+	--~ HexPainter(GetEntityCombinedShape(s:GetEntity()))
 
 	-- allows you to redefine hex shapes (right-click offsets the hex grid)
 	local HexPainter_toggle

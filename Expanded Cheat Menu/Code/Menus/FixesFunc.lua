@@ -455,7 +455,7 @@ function OnMsg.ClassesGenerate()
 		end)
 		-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
 		MapDelete(true, "WireFramedPrettification",function(o)
-			if o.entity == "RoverTransport" then
+			if o:GetEntity() == "RoverTransport" then
 				return true
 			end
 		end)
@@ -509,7 +509,7 @@ function OnMsg.ClassesGenerate()
 		local objs = UICity.labels.Colonist or ""
 		for i = 1, #objs do
 			local c = objs[i]
-			if c.entity:find("Child") and c.specialist ~= "none" then
+			if c:GetEntity():find("Child") and c.specialist ~= "none" then
 				c.specialist = "none"
 
 				c.traits.Youth = nil

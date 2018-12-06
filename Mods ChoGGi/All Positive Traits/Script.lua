@@ -8,6 +8,7 @@ function OnMsg.ModsReloaded()
   table.iclear(negative_traits)
 	local cn = 0
 
+	local TraitPresets = TraitPresets
 	for name,trait in pairs(TraitPresets) do
     if trait.category == "Positive" then
 			cp = cp + 1

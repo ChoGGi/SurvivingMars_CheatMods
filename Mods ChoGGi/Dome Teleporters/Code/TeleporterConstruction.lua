@@ -175,7 +175,7 @@ end
 
 function DomeTeleporterConstructionController:UpdateCursorObject(visible)
 	if visible then
-		local entity = self.template_obj.entity
+		local entity = self.template_obj:GetEntity()
 
 		if IsValid(self.cursor_obj) then
 			self.cursor_obj.entity = entity

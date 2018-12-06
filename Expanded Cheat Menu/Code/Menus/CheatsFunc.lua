@@ -65,7 +65,7 @@ function OnMsg.ClassesGenerate()
 					local lat, long = GenerateMarsScreenPoI("anomaly")
 					-- i assume they'll fix it so there isn't an inf loop
 					if lat and long then
-						local obj = PlaceObject("PlanetaryAnomaly", {
+						PlaceObject("PlanetaryAnomaly", {
 							display_name = T(11234, "Planetary Anomaly"),
 							longitude = long,
 							latitude = lat,
@@ -185,6 +185,7 @@ function OnMsg.ClassesGenerate()
 		local c = 0
 		local title_str = "%s: %s"
 
+		local Mods = Mods
 		for id,mod in pairs(Mods) do
 			c = c + 1
 			ItemList[c] = {
@@ -406,7 +407,7 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	function ChoGGi.MenuFuncs.DisastersStop()
-		local mis = g_IncomingMissiles or {}
+		local mis = g_IncomingMissiles or empty_table
 		for Key,_ in pairs(mis) do
 			Key:ExplodeInAir()
 		end
@@ -769,6 +770,7 @@ Otherwise you won't see anything."--]],
 
 			UICity.mystery_id = mystery_id
 
+			local TechDef = TechDef
 			for tech_id,tech in pairs(TechDef) do
 				if tech.mystery == mystery_id then
 					if not UICity.tech_status[tech_id] then
@@ -924,12 +926,13 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 			end
 			local value = choice[1].value
 			local mystery_idx = choice[1].mystery_idx
+			local ThreadsMessageToThreads = ThreadsMessageToThreads
+
 			if choice[1].check2 then
-				--remove all
+				-- remove all
 				for i = #s_SeqListPlayers, 1, -1 do
 					if i > 1 then
 						s_SeqListPlayers[i]:delete()
---~ 						table.remove(s_SeqListPlayers,i)
 					end
 				end
 				for t in pairs(ThreadsMessageToThreads) do
@@ -947,7 +950,6 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 				for i = #s_SeqListPlayers, 1, -1 do
 					if s_SeqListPlayers[i].mystery_idx == mystery_idx then
 						s_SeqListPlayers[i]:delete()
---~ 						table.remove(s_SeqListPlayers,i)
 						break
 					end
 				end
@@ -999,6 +1001,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		local warning = StringFormat("\n\n%s",S[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]])
 		local name = StringFormat("%s: %s",S[3486--[[Mystery--]]],ChoGGi.Tables.Mystery[mystery].name)
 
+		local ThreadsMessageToThreads = ThreadsMessageToThreads
 		for t in pairs(ThreadsMessageToThreads) do
 			if t.player and t.player.mystery_idx == mystery_idx then
 
@@ -1367,6 +1370,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		local icon = "<image %s 250>"
 		local hint = "%s\n\n%s: %s\n\n<image %s 1500>"
 		local IsTechResearched = IsTechResearched
+		local TechDef = TechDef
 		for tech_id,tech in pairs(TechDef) do
 			-- only show stuff not yet researched
 			if not IsTechResearched(tech_id) then
@@ -1459,6 +1463,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 
 	-- tech_func = DiscoverTech_Old/GrantTech
 	local function ListFields(tech_func,group)
+		local TechDef = TechDef
 		for tech_id,tech in pairs(TechDef) do
 			if tech.group == group then
 				_G[tech_func](tech_id)
@@ -1483,6 +1488,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 	}
 
 	function ChoGGi.MenuFuncs.SetTech_EveryTech(tech_func)
+		local TechDef = TechDef
 		for tech_id,tech in pairs(TechDef) do
 			if groups[tech.group] then
 				_G[tech_func](tech_id)

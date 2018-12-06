@@ -143,7 +143,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			local last = UICity.LastConstructedBuilding
 			if type(last) == "table" then
-				ChoGGi.ComFuncs.ConstructionModeSet(last.template_name ~= "" and last.template_name or last.entity)
+				ChoGGi.ComFuncs.ConstructionModeSet(last.template_name ~= "" and last.template_name or last:GetEntity())
 			end
 		end,
 		ActionShortcut = "Ctrl-Space",

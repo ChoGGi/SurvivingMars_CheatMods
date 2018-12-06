@@ -13,7 +13,9 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Material Properties",
 		ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
 		RolloverText = S[302535920001459--[[Shows list of material settings for use with .mtl files.--]]],
-		OnAction = ChoGGi.MenuFuncs.MaterialProperties,
+		OnAction = function()
+			ChoGGi.ComFuncs.GetMaterialProperties()
+		end,
 	}
 
 	c = c + 1

@@ -5,6 +5,7 @@ function OnMsg.ModsReloaded()
   table.iclear(traits_age)
 	local c = 0
 
+	local TraitPresets = TraitPresets
 	for name,trait in pairs(TraitPresets) do
     if trait.category == "Age Group" then
 			c = c + 1

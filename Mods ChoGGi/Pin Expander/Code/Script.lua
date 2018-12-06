@@ -408,7 +408,7 @@ function OnMsg.ClassesGenerate()
 				if obj.class ~= "SupplyRocket" or obj.class == "SupplyRocket" and obj.name ~= "" then
 					items[i] = {
 						name = RetName(obj),
-						showme = obj,
+						showobj = obj,
 						image = image,
 						hint = hint,
 						hint_title = hint_title,

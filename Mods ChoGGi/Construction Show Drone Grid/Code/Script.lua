@@ -23,6 +23,7 @@ function CursorBuilding:GameInit()
 	ShowHexRanges(UICity, "RCRover", nil, "GetSelectionRadiusScale_OverrideChoGGi")
 
 	-- change colours
+  local g_HexRanges = g_HexRanges
 	for range,obj in pairs(g_HexRanges) do
 		if IsKindOf(obj,"SupplyRocket") then
 			for i = 1, #range.decals do

@@ -435,7 +435,7 @@ function OnMsg.ClassesGenerate()
 				end
 
 				local gsn = self:GetGridSkinName()
-				local entity = self.entity
+				local entity = self:GetEntity()
 				local cache_key = self:GetEntityNameForPipeConnections(gsn)
 				local list = PipeConnectionsCache[cache_key]
 				if not list then

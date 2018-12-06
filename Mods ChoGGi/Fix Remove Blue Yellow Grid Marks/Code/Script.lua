@@ -13,7 +13,7 @@ function OnMsg.LoadGame()
 
 	-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
 	MapDelete(true, "WireFramedPrettification",function(o)
-		if o.entity == "RoverTransport" then
+		if o:GetEntity() == "RoverTransport" then
 			return true
 		end
 	end)

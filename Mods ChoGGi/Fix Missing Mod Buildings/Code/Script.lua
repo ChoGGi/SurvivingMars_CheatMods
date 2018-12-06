@@ -23,11 +23,13 @@ function OnMsg.PersistPostLoad()
 
 	local str = "Removed missing mod building from %s: %s, entity: %s, handle: %s"
   -- GetFreeSpace,GetFreeLivingSpace,GetFreeWorkplaces,GetFreeWorkplacesAround
-	for label_id,label in pairs(UICity.labels or {}) do
+	local labels = UICity.labels or empty_table
+	local ModLog = ModLog
+	for label_id,label in pairs(labels) do
 		for i = #label, 1, -1 do
 			local obj = label[i]
 			if obj:IsKindOf("UnpersistedMissingClass") then
-				ModLog(str:format(label_id,RetName(obj),obj.entity,obj.handle))
+				ModLog(str:format(label_id,RetName(obj),obj:GetEntity(),obj.handle))
 				obj:delete()
 				table.remove(label,i)
 			end
