@@ -6,7 +6,7 @@ local S = ChoGGi.Strings
 --~ 	AddSelectionParticlesToObj(s)
 --~ end
 --~ function FXObject:GetEntity()
---~ 	return self.entity or EntityData.PointLight
+--~ 	return self:GetEntity() or EntityData.PointLight
 --~ end
 
 -- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
@@ -33,7 +33,7 @@ DefineClass.ChoGGi_BuildingEntityClass = {
 }
 -- add some info/functionality to spawned entity objects
 function ChoGGi_BuildingEntityClass:GetDisplayName()
-	return self.entity or self.class
+	return self:GetEntity()
 end
 function ChoGGi_BuildingEntityClass:GetIPDescription()
 	return S[302535920001110--[[Spawned entity object--]]]

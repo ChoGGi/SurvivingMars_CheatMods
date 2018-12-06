@@ -7,7 +7,7 @@
 ### Added:
 - Debug>Attach Spots List: Shows list of attaches for use with .ent files.
 - Debug>Object Flags: Shows list of flags set for selected object (also added to Examine>Tools).
-- Debug>Material Properties: Shows list of material settings for use with .mtl files.
+- Debug>Material Properties: Shows list of material settings/.dds files for use with .mtl files.
 
 ### Changed:
 - Added checkbox for Advanced probes to Add Orbital Probes.
@@ -15,6 +15,12 @@
 - Removed the "mod_texture_" prefix when converting textures to entity files (ConvertImagesToResEntities).
 - Renamed Object Spawner to Entity Spawner.
 - Moved Export CSV from Debug to Game, and added a new export option for graph data.
+- Examine:
+- > Moved a bunch of the object funcs from the Tools to the Object menu.
+- > Move the props toolbar buttons to the Object Menu.
+
+### Fixed:
+- Trying to examine DroneResourceUnits failed miserably.
 
 ## v11.4 (01 Dec 2018)
 ### Changed:

@@ -48,7 +48,7 @@ DefineClass.ChoGGi_Alien = {
 }
 
 function ChoGGi_Alien:GetDisplayName()
-	return self.display_name or self.entity or self.class
+	return self.display_name or self:GetEntity()
 end
 function ChoGGi_Alien:PinDescription()
 	return [[Out for a stroll]]

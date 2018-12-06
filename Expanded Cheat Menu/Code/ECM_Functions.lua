@@ -4,9 +4,9 @@ local StringFormat = string.format
 local TableFind = table.find
 local TableClear = table.clear
 local TableIClear = table.iclear
-local TableSort = table.sort
 local Sleep = Sleep
 local IsValid = IsValid
+local IsValidEntity = IsValidEntity
 
 local getinfo
 local debug = rawget(_G,"debug")
@@ -394,9 +394,20 @@ function OnMsg.ClassesGenerate()
 		local title = planning and 302535920000862--[[Object Planner--]] or 302535920000475--[[Entity Spawner--]]
 		local hint = planning and 302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]] or 302535920000476--[["Shows list of objects, and spawns at mouse cursor."--]]
 
-		local ItemList = {}
-		local c = 0
+		local default
+		local ItemList,c
+
+		if IsValid(obj) and IsValidEntity(obj.ChoGGi_orig_entity) then
+			default = S[1000121--[[Default--]]]
+			ItemList = {{text = StringFormat(" %s",default),value = default}}
+			c = 1
+		else
+			ItemList = {}
+			c = 0
+		end
+
 		if planning then
+			local BuildingTemplates = BuildingTemplates
 			for key,obj in pairs(BuildingTemplates) do
 				c = c + 1
 				ItemList[c] = {
@@ -405,7 +416,8 @@ function OnMsg.ClassesGenerate()
 				}
 			end
 		else
-			for key in pairs(GetAllEntities()) do
+			local all_entities = GetAllEntities()
+			for key in pairs(all_entities) do
 				c = c + 1
 				ItemList[c] = {
 					text = key,
@@ -429,10 +441,20 @@ function OnMsg.ClassesGenerate()
 					obj:SetGameFlags(const.gofUnderConstruction)
 				end
 			end
+
+			-- backup orig entity
+			if not IsValidEntity(obj.ChoGGi_orig_entity) then
+				obj.ChoGGi_orig_entity = obj:GetEntity()
+			end
+
 			-- if it's playing certain anims on certains objs, then crash if we don't idle it
 			obj:SetState("idle")
 
-			obj:ChangeEntity(value)
+			if value == default and IsValidEntity(obj.ChoGGi_orig_entity) then
+				obj:ChangeEntity(obj.ChoGGi_orig_entity)
+			else
+				obj:ChangeEntity(value)
+			end
 
 			if SelectedObj == obj then
 				SelectionRemove(obj)
@@ -521,6 +543,7 @@ function OnMsg.ClassesGenerate()
 			-- stop when dialog is closed
 			while dlg and dlg.window_state ~= "destroying" do
 				TableClear(table_list)
+				local ThreadsRegister = ThreadsRegister
 				for thread in pairs(ThreadsRegister) do
 					local info = getinfo(thread, 1, "Slfun")
 					if info then
@@ -544,7 +567,7 @@ function OnMsg.ClassesGenerate()
 		dlg.idAutoRefresh:SetCheck(true)
 		dlg:idAutoRefreshToggle()
 		local table_str = "%s %s"
-		local type,pairs,next = type,pairs,next
+		local type,pairs = type,pairs
 		local PadNumWithZeros = ChoGGi.ComFuncs.PadNumWithZeros
 
 		CreateRealTimeThread(function()
@@ -576,94 +599,91 @@ function OnMsg.ClassesGenerate()
 		end)
 	end
 
-	do -- SetParticles
+	function ChoGGi.ComFuncs.SetParticles(sel)
+		local name = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]])
+		sel = sel or ChoGGi.ComFuncs.SelObject()
+		if not sel or sel and not sel:IsKindOf("FXObject") then
+			MsgPopup(
+				StringFormat("%s: %s",S[302535920000027--[[Nothing selected--]]],"FXObject"),
+				name
+			)
+			return
+		end
+
 		local PlayFX = PlayFX
-		local ItemList
-		function ChoGGi.ComFuncs.SetParticles(sel)
-			local name = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]])
-			sel = sel or ChoGGi.ComFuncs.SelObject()
-			if not sel or sel and not sel:IsKindOf("FXObject") then
-				MsgPopup(
-					StringFormat("%s: %s",S[302535920000027--[[Nothing selected--]]],"FXObject"),
-					name
-				)
+		-- make a list of spot names for the obj, so we skip particles that need that spot
+		local spots = {}
+		local start_id, end_id = sel:GetAllSpots(sel:GetState())
+		for i = start_id, end_id do
+			spots[sel:GetSpotName(i)] = true
+		end
+
+		local default = S[1000121--[[Default--]]]
+
+		local name_str = "%s, %s: %s"
+		local hint_str = "Actor: %s, Action: %s: Moment: %s"
+		local ItemList = {{text = StringFormat(" %s",default),value = default}}
+		local c = 1
+		local particles = FXLists.ActionFXParticles
+		for i = 1, #particles do
+			local p = particles[i]
+			if spots[p.Spot] or p.Spot == "" then
+				c = c + 1
+				ItemList[c] = {
+					text = name_str:format(p.Actor,p.Action,p.Moment),
+					value = p.Actor,
+					action = p.Action,
+					moment = p.Moment,
+					hint = hint_str:format(p.Actor,p.Action,p.Moment),
+				}
+			end
+		end
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
 				return
 			end
+			local actor = choice[1].value
+			local action = choice[1].action
+			local moment = choice[1].moment
 
-			-- make a list of spot names for the obj, so we skip particles that need that spot
-			local spots = {}
-			local start_id, end_id = sel:GetAllSpots(sel:GetState())
-			for i = start_id, end_id do
-				spots[sel:GetSpotName(i)] = true
+			-- if there's one playing then stop it
+			if sel.ChoGGi_playing_fx then
+				PlayFX(sel.ChoGGi_playing_fx, "end", sel)
+			end
+			-- so we can stop it
+			sel.ChoGGi_playing_fx = action
+
+			if type(sel.fx_actor_class_ChoGGi_Orig) == "nil" then
+				sel.fx_actor_class_ChoGGi_Orig = sel.fx_actor_class
 			end
 
-			local default = S[1000121--[[Default--]]]
+			sel.fx_actor_class = actor
 
-			local name_str = "%s, %s: %s"
-			local hint_str = "Actor: %s, Action: %s: Moment: %s"
-			local ItemList = {{text = StringFormat(" %s",default),value = default}}
-			local c = 1
-			local particles = FXLists.ActionFXParticles
-			for i = 1, #particles do
-				local p = particles[i]
-				if spots[p.Spot] or p.Spot == "" then
-					c = c + 1
-					ItemList[c] = {
-						text = name_str:format(p.Actor,p.Action,p.Moment),
-						value = p.Actor,
-						action = p.Action,
-						moment = p.Moment,
-						hint = hint_str:format(p.Actor,p.Action,p.Moment),
-					}
+			if actor == default then
+				if sel.fx_actor_class_ChoGGi_Orig then
+					sel.fx_actor_class = sel.fx_actor_class_ChoGGi_Orig
 				end
+				sel.ChoGGi_playing_fx = nil
+			else
+				PlayFX(action, moment, sel)
 			end
 
-			local function CallBackFunc(choice)
-				if #choice < 1 then
-					return
-				end
-				local actor = choice[1].value
-				local action = choice[1].action
-				local moment = choice[1].moment
-
-				-- if there's one playing then stop it
-				if sel.ChoGGi_playing_fx then
-					PlayFX(sel.ChoGGi_playing_fx, "end", sel)
-				end
-				-- so we can stop it
-				sel.ChoGGi_playing_fx = action
-
-				if type(sel.fx_actor_class_ChoGGi_Orig) == "nil" then
-					sel.fx_actor_class_ChoGGi_Orig = sel.fx_actor_class
-				end
-
-				sel.fx_actor_class = actor
-
-				if actor == default then
-					if sel.fx_actor_class_ChoGGi_Orig then
-						sel.fx_actor_class = sel.fx_actor_class_ChoGGi_Orig
-					end
-					sel.ChoGGi_playing_fx = nil
-				else
-					PlayFX(action, moment, sel)
-				end
-
-				MsgPopup(
-					action,
-					name
-				)
-			end
-
-			ChoGGi.ComFuncs.OpenInListChoice{
-				callback = CallBackFunc,
-				items = ItemList,
-				title = name,
-				hint = 302535920001421--[[Shows list of particles to quickly test out on objects.--]],
-				custom_type = 7,
-				custom_func = CallBackFunc,
-			}
+			MsgPopup(
+				action,
+				name
+			)
 		end
-	end -- do
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = name,
+			hint = 302535920001421--[[Shows list of particles to quickly test out on objects.--]],
+			custom_type = 7,
+			custom_func = CallBackFunc,
+		}
+	end
 
 	function ChoGGi.ComFuncs.ToggleConsole(show)
 		local dlgConsole = dlgConsole
@@ -686,7 +706,7 @@ function OnMsg.ClassesGenerate()
 		local GetTextureDebugInfo = DTM.GetTextureDebugInfo
 
 		for i = 1, #textures do
-			local slot_idx, slot_size, priority, need_size, distance, tan, radius = DTM.GetTextureDebugInfo(textures[i])
+			local slot_idx, slot_size, priority, need_size, distance, tan, radius = GetTextureDebugInfo(textures[i])
 			print(slot_idx, slot_size, priority, need_size, distance, tan, radius)
 			info_list[textures[i]] = format_str:format(slot_idx,slot_size,priority,need_size,distance,tan,radius)
 		end
@@ -809,19 +829,19 @@ function OnMsg.ClassesGenerate()
 
 			local err = AsyncCreatePath(ent_dir)
 			if err then
-				return
+				return err
 			end
 			err = AsyncCreatePath(mtl_dir)
 			if err then
-				return
+				return err
 			end
 			err = AsyncCreatePath(texture_dir)
 			if err then
-				return
+				return err
 			end
 			err = AsyncCreatePath(fallback_dir)
 			if err then
-				return
+				return err
 			end
 
 			err = AsyncStringToFile(ent_output, StringFormat([[<?xml version="1.0" encoding="UTF-8"?>
@@ -842,22 +862,20 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 
-			local compressed_filename = ""
-			local fallback_filename = ""
 			local cmdline = StringFormat([["%s" -dds10 -24 bc1 -32 bc3 -srgb "%s" "%s"]], ConvertToOSPath(g_HgnvCompressPath), filename, texture_output)
-			local err, out = AsyncExec(cmdline, "", true, false)
+			err = AsyncExec(cmdline, "", true, false)
 			if err then
-				return
+				return err
 			end
 			cmdline = StringFormat([["%s" "%s" "%s" %d]], ConvertToOSPath(g_DdsTruncPath), texture_output, fallback_output, const.FallbackSize)
 			err = AsyncExec(cmdline, "", true, false)
 			if err then
-				return
+				return err
 			end
 			cmdline = StringFormat([["%s" "%s" "%s"]], ConvertToOSPath(g_HgimgcvtPath), texture_output, ui_output)
 			err = AsyncExec(cmdline, "", true, false)
 			if err then
-				return
+				return err
 			end
 
 			err = AsyncStringToFile(mtl_output,StringFormat([[<?xml version="1.0" encoding="UTF-8"?>
@@ -871,7 +889,7 @@ function OnMsg.ClassesGenerate()
 </Materials>]],name))
 
 			if err then
-				return
+				return err
 			end
 		end
 
@@ -903,7 +921,6 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	do -- ExamineEntSpots
-		local name_str = "%s%s"
 		local spots_str = [[<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s,%s,%s" spot_scale="%s" spot_rot="%s,%s,%s,%s"/>]]
 		local bsphere_str = [[<bsphere value="%s,%s,%s,%s"/>]]
 		local box_str = [[<box min="%s,%s,%s" max="%s,%s,%s"/>]]
@@ -992,6 +1009,7 @@ The func I use for spot_rot rounds to two decimal points...
 --~ 	ChoGGi.ComFuncs.ProcessHexSurfaces(s.entity)
 	function ChoGGi.ComFuncs.ProcessHexSurfaces(entity)
 		local hexes = {}
+		local EntitySurfaces = EntitySurfaces
 		for name,surface_num in pairs(EntitySurfaces) do
 			if HasAnySurfaces(entity, surface_num) then
 				local all_states = GetStates(entity)
@@ -1037,5 +1055,50 @@ The func I use for spot_rot rounds to two decimal points...
 
 		ChoGGi.ComFuncs.OpenInExamineDlg(flags_table,parent,RetName(obj))
 	end
+
+	do -- GetMaterialProperties
+		local GetMaterialProperties = GetMaterialProperties
+		local GetStateNumMaterials = GetStateNumMaterials
+		local GetStateMaterial = GetStateMaterial
+		local GetStateIdx = GetStateIdx
+		local GetStateLODCount = GetStateLODCount
+		local GetStates = GetStates
+
+		local entity_str = "%s mat: %s lod: %s"
+		local function EntityMats(entity)
+			local mats = {}
+--~ 			if entity:sub(1,1) ~= "#" then
+				local states = GetStates(entity) or ""
+				for si = 1, #states do
+					local state = GetStateIdx(states[si])
+					local num_lods = GetStateLODCount(entity, state) or 0
+					for li = 1, num_lods do
+						local num_mats = GetStateNumMaterials(entity, state, li - 1) or 0
+						for mi = 1, num_mats do
+							mats[entity_str:format(entity,mi,li)] = GetMaterialProperties(GetStateMaterial(entity,state,mi - 1,li - 1))
+						end
+					end
+				end
+				return mats
+--~ 			end
+		end
+
+		function ChoGGi.ComFuncs.GetMaterialProperties(obj,parent)
+			if not UICity then
+				return
+			end
+
+			if IsValidEntity(obj) then
+				ChoGGi.ComFuncs.OpenInExamineDlg(EntityMats(obj),parent,S[302535920001458--[[Material Properties--]]])
+			else
+				local materials = {}
+				local all_entities = GetAllEntities()
+				for entity in pairs(all_entities) do
+					materials[entity] = EntityMats(entity)
+				end
+				ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent,S[302535920001458--[[Material Properties--]]])
+			end
+		end
+	end -- do
 
 end

@@ -63,7 +63,7 @@ local function BuildDomeSpots(dome)
 	local c = 0
 
 	-- interior shape of dome without roads (con sites need to use alternative_entity or it's the wrong entity)
-	local shape = GetEntityBuildShape(dome.alternative_entity or dome.entity)
+	local shape = GetEntityBuildShape(dome.alternative_entity or dome:GetEntity())
 	-- needed if dome isn't placed in default angle
 	local rotation = HexAngleToDirection(dome:GetAngle())
 	-- applies the offset of dome shape to the world hex location

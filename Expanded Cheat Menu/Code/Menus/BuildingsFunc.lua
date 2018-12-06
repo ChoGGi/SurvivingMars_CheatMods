@@ -12,11 +12,13 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.RotateDuringPlacement_Toggle()
+		local buildings = ClassTemplates.Building
+
 		if ChoGGi.UserSettings.RotateDuringPlacement then
 			-- used when starting/loading a game
 			ChoGGi.UserSettings.RotateDuringPlacement = nil
 
-			for _,bld in pairs(ClassTemplates.Building) do
+			for _,bld in pairs(buildings) do
 				if bld.can_rotate_during_placement_ChoGGi_orig then
 					bld.can_rotate_during_placement = false
 					bld.can_rotate_during_placement_ChoGGi_orig = nil
@@ -27,7 +29,7 @@ function OnMsg.ClassesGenerate()
 			-- used when starting/loading a game
 			ChoGGi.UserSettings.RotateDuringPlacement = true
 
-			for _,bld in pairs(ClassTemplates.Building) do
+			for _,bld in pairs(buildings) do
 				if bld.can_rotate_during_placement == false then
 					bld.can_rotate_during_placement_ChoGGi_orig = true
 					bld.can_rotate_during_placement = true
@@ -46,6 +48,7 @@ function OnMsg.ClassesGenerate()
 		local BuildingTechRequirements = BuildingTechRequirements
 		local spon_str = "sponsor_status%s"
 		local spon_str2 = "sponsor_status%s_ChoGGi_orig"
+		local BuildingTemplates = BuildingTemplates
 
 		if ChoGGi.UserSettings.SponsorBuildingLimits then
 			-- used when starting/loading a game
@@ -651,6 +654,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.UnlockLockedBuildings()
 		local ItemList = {}
+		local BuildingTemplates = BuildingTemplates
 		for id,bld in pairs(BuildingTemplates) do
 			if not GetBuildingTechsStatus(id) then
 				ItemList[#ItemList+1] = {
@@ -1532,6 +1536,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	local function SetWonders(bool)
+		local BuildingTemplates = BuildingTemplates
 		for _,bld in pairs(BuildingTemplates) do
 			if bld.group == "Wonders" then
 				bld.wonder = bool
@@ -1583,6 +1588,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
 		local ChoGGi = ChoGGi
+		local BuildingTemplates = BuildingTemplates
 
 		local bc = BuildCategories
 		if not table.find(bc,"id","HiddenX") then

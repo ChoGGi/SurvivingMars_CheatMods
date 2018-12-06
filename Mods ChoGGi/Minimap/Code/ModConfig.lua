@@ -21,6 +21,7 @@ function OnMsg.ModConfigChanged(mod_id, option_id, value)
 
 		-- find our map dlg
 		local map_dlg
+		local ChoGGi = ChoGGi
 		for dlg in pairs(ChoGGi.Temp.Dialogs) do
 			if dlg:IsKindOf("ChoGGi_MinimapDlg") then
 				map_dlg = dlg

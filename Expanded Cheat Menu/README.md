@@ -213,7 +213,8 @@ If you want to dump functions as well: dumptable(Presets.TechPreset,nil,true)
 If you want to save the console text: Console>Write Logs (very helpful for examining an object)
 
 you can paste chunks of code in the console to test out (no -- comments allowed, since DA update merges pasted lines):
-  for _,bld in pairs(BuildingTemplates or {}) do
+ local BuildingTemplates = BuildingTemplates
+ for _,bld in pairs(BuildingTemplates) do
     local building = bld
     print(bld.id)
   end

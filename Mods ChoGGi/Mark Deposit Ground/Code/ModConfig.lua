@@ -38,7 +38,7 @@ local function ChangeMarks(label,entity,value)
 		for i = 1, #anomalies do
 			local a = anomalies[i]
 			if not a.ChoGGi_alien then
-				a.ChoGGi_alien = a.entity
+				a.ChoGGi_alien = a:GetEntity()
 				a:ChangeEntity(entity)
 				a:SetScale(500)
 				a:SetAngle(AsyncRand())
@@ -47,7 +47,7 @@ local function ChangeMarks(label,entity,value)
 	else
 		for i = 1, #anomalies do
 			local a = anomalies[i]
-			a:ChangeEntity(a.ChoGGi_alien or g_Classes[a.class].entity)
+			a:ChangeEntity(a.ChoGGi_alien or g_Classes[a.class]:GetEntity())
 			a.ChoGGi_alien = nil
 			a:SetScale(100)
 			a:SetAngle(0)

@@ -482,7 +482,7 @@ function Colonist:CheatRandomRace()
 end
 function Colonist:CheatRandomSpec()
 	-- skip children, or they'll be a black cube
-	if not self.entity:find("Child") then
+	if not self:GetEntity():find("Child") then
 		self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[Random(1,#ChoGGi.Tables.ColonistSpecializations)],"init")
 	end
 end
@@ -499,7 +499,6 @@ function Colonist:CheatRandomAge()
 	ChoGGi.ComFuncs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[Random(1,#ChoGGi.Tables.ColonistAges)])
 end
 function Colonist:CheatDie()
-	local name = RetName(self)
 	ChoGGi.ComFuncs.QuestionBox(
 		StringFormat("%s!\n%s?",S[6779--[[Warning--]]],S[302535920001430--[[Kill colonist-]]]),
 		function(answer)

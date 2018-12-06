@@ -1,6 +1,7 @@
 function OnMsg.ModsReloaded()
 	local BuildingTechRequirements = BuildingTechRequirements
 	local spon_str = "sponsor_status%s"
+	local BuildingTemplates = BuildingTemplates
 	for id,bld in pairs(BuildingTemplates) do
 
 		-- set each status to false if it isn't

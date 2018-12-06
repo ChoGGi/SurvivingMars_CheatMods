@@ -145,6 +145,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 --~ 'ColumnsUse' = 'abbba'
 		-- add some ids to make it easier to fiddle with selection panel
 		local template_str = "idSection%s_ChoGGi"
+		local XTemplates = XTemplates
 		for key,template in pairs(XTemplates) do
 			if key:sub(1,7) == "section" and not template[1].Id then
 				template[1].Id = template_str:format(key:sub(8))
@@ -442,6 +443,7 @@ $123 or $EffectDeposit.display_name prints translated string.
 	local BuildingTechRequirements = BuildingTechRequirements
 	local spon_str = "sponsor_status%s"
 	local spon_str2 = "sponsor_status%s_ChoGGi_orig"
+	local BuildingTemplates = BuildingTemplates
 	for id,bld in pairs(BuildingTemplates) do
 
 		-- remove sponsor limits on buildings
@@ -485,7 +487,8 @@ $123 or $EffectDeposit.display_name prints translated string.
 
 	-- unlock buildings that cannot rotate
 	if UserSettings.RotateDuringPlacement then
-		for _,bld in pairs(ClassTemplates.Building) do
+		local buildings = ClassTemplates.Building
+		for _,bld in pairs(buildings) do
 			if bld.can_rotate_during_placement == false then
 				bld.can_rotate_during_placement_ChoGGi_orig = true
 				bld.can_rotate_during_placement = true
@@ -516,12 +519,13 @@ function OnMsg.PersistPostLoad()
 		local printit = ChoGGi.UserSettings.FixMissingModBuildingsLog
 
 		-- GetFreeSpace,GetFreeLivingSpace,GetFreeWorkplaces,GetFreeWorkplacesAround
-		for label_id,label in pairs(UICity.labels or {}) do
+		local labels = UICity.labels or empty_table
+		for label_id,label in pairs(labels) do
 			for i = #label, 1, -1 do
 				local obj = label[i]
 				if obj:IsKindOf("UnpersistedMissingClass") then
 					if printit then
-						print(S[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"--]]]:format(label_id,RetName(obj),obj.entity,obj.handle))
+						print(S[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"--]]]:format(label_id,RetName(obj),obj:GetEntity(),obj.handle))
 					end
 					obj:delete()
 					table.remove(label,i)
@@ -660,7 +664,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			obj.move_speed = UserSettings.SpeedShuttle
 		end
 
-	elseif UserSettings.StorageUniversalDepot and obj.entity == "StorageDepot" and obj:IsKindOf("UniversalStorageDepot") then
+	elseif UserSettings.StorageUniversalDepot and obj:GetEntity() == "StorageDepot" and obj:IsKindOf("UniversalStorageDepot") then
 		obj.max_storage_per_resource = UserSettings.StorageUniversalDepot
 
 	elseif UserSettings.StorageMechanizedDepot and obj:IsKindOf("MechanizedDepot") then
@@ -703,7 +707,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 	end
 
 	if UserSettings.StorageOtherDepot then
-		if (obj.entity ~= "StorageDepot" and obj:IsKindOf("UniversalStorageDepot")) or obj:IsKindOf("MysteryDepot") then
+		if (obj:GetEntity() ~= "StorageDepot" and obj:IsKindOf("UniversalStorageDepot")) or obj:IsKindOf("MysteryDepot") then
 			obj.max_storage_per_resource = UserSettings.StorageOtherDepot
 		elseif UserSettings.StorageOtherDepot and obj:IsKindOf("BlackCubeDumpSite") then
 			obj.max_amount_BlackCube = UserSettings.StorageOtherDepot
@@ -1264,6 +1268,7 @@ do -- LoadGame/CityStart
 
 		-- make hidden buildings visible
 		if UserSettings.Building_hide_from_build_menu then
+			local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
 			for _,value in pairs(BuildMenuPrerequisiteOverrides) do
 				if value == "hide" then
 					value = true
@@ -1434,7 +1439,7 @@ do -- LoadGame/CityStart
 		end
 
 		CreateRealTimeThread(function()
-			--clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
+			-- clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
 			local shown = g_ShownOnScreenNotifications or {}
 			for Key,_ in pairs(shown) do
 				if type(Key) == "number" or tostring(Key):find("ChoGGi_")then
@@ -1442,10 +1447,10 @@ do -- LoadGame/CityStart
 				end
 			end
 
-			--remove any dialogs we opened
+			-- remove any dialogs we opened
 			ChoGGi.ComFuncs.CloseDialogsECM()
 
-			--remove any outside buildings i accidentally attached to domes ;)
+			-- remove any outside buildings i accidentally attached to domes ;)
 			table_temp = UICity.labels.BuildingNoDomes or ""
 			local bld_type
 			for i = 1, #table_temp do

@@ -105,6 +105,7 @@ function OnMsg.ClassesGenerate()
 
 			-- loop through each mod and make a table of steam ids, so we don't have to loop for each mod below
 			local mod_table = {}
+			local Mods = Mods
 			for _,value in pairs(Mods) do
 				-- default id is 0 for non-steam mods (which we don't care about)
 				mod_table[value.steam_id] = value
@@ -358,14 +359,12 @@ function OnMsg.ClassesGenerate()
 
 					-- update mod, and copy files to ModUpload
 					if copy_files and not blank_mod and not err then
-						local files
 --~ 						-- I prefer to update this manually, if this didn't mangle my text maybe it'd be more useful...
 --~ 						mod:SaveDef()
 						mod:SaveItems()
 						AsyncDeletePath(dest)
 						AsyncCreatePath(dest)
 
-						local files_to_pack = {}
 						local err, all_files = AsyncListFiles(mod_path, "*", "recursive,relative")
 						for i = 1, #all_files do
 							local file = all_files[i]

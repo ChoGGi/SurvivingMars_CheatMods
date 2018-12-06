@@ -21,6 +21,7 @@ CreateRealTimeThread(function()
 	-- remove blacklist for any mods in "Mod Ids"
 	local StringFormat = string.format
 	local LuaRevision = LuaRevision
+	local Mods = Mods
 	for _,mod in pairs(Mods) do
 		if mod_ids[mod.steam_id] then
 			-- i don't set this in mod\metadata.lua so it gives an error

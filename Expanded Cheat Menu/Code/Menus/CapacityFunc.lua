@@ -400,7 +400,7 @@ function OnMsg.ClassesGenerate()
 					end
 					local tab = UICity.labels.UniversalStorageDepot or ""
 					for i = 1, #tab do
-						if tab[i].entity ~= "StorageDepot" then
+						if tab[i]:GetEntity() ~= "StorageDepot" then
 							tab[i].max_storage_per_resource = value
 						end
 					end
@@ -418,7 +418,7 @@ function OnMsg.ClassesGenerate()
 					end
 					local tab = UICity.labels.UniversalStorageDepot or ""
 					for i = 1, #tab do
-						if tab[i].entity == "StorageDepot" then
+						if tab[i]:GetEntity() == "StorageDepot" then
 							tab[i].max_storage_per_resource = value
 						end
 					end

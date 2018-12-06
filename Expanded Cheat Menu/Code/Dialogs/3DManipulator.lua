@@ -7,7 +7,7 @@ local RetName
 local Trans
 local GetParentOfKind
 
-local tostring,type,table = tostring,type,table
+--~ local tostring,type,table = tostring,type,table
 local StringFormat = string.format
 
 function OnMsg.ClassesGenerate()

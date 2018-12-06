@@ -139,6 +139,7 @@ function OnMsg.ClassesGenerate()
 		local c = #ItemList
 		local show_hidden = ChoGGi.UserSettings.Building_hide_from_build_menu
 
+		local BuildingTemplates = BuildingTemplates
 		for id,cargo in pairs(BuildingTemplates) do
 			-- baclcube is instant, instant doesn't need prefabs, and hidden normally don't show up
 			if not skip_prefabs[id] and not cargo.instant_build and (cargo.group ~= "Hidden" or cargo.group == "Hidden" and show_hidden) then

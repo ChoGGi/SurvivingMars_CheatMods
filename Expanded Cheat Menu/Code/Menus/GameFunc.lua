@@ -275,7 +275,7 @@ function OnMsg.ClassesGenerate()
 			end
 
 			local export_data = {}
-			local c = 0
+			c = 0
 
 			-- build csv lists
 			for label,list in pairs(loop_table_label) do
@@ -590,7 +590,8 @@ function OnMsg.ClassesGenerate()
 			local IsValid = IsValid
 			-- build our list of objects (we use an ass table, to make sure there's no dupes)
 			if value == S[302535920000306--[[Everything--]]] then
-				for id,labels in pairs(UICity.labels) do
+				local labels = UICity.labels or empty_table
+				for id,labels in pairs(labels) do
 					if id ~= "Consts" then
 						for i = 1, #labels do
 							local obj = labels[i]
@@ -653,7 +654,8 @@ function OnMsg.ClassesGenerate()
 		function ChoGGi.MenuFuncs.ListAllObjects()
 			local ItemList = {{text = StringFormat(" %s",S[302535920000306--[[Everything--]]]),value = S[302535920000306--[[Everything--]]],hint = 302535920001294--[[Laggy--]]}}
 			local c = 1
-			for label,list in pairs(UICity.labels) do
+			local labels = UICity.labels or empty_table
+			for label,list in pairs(labels) do
 				if label ~= "Consts" and #list > 0 then
 					local item = list[1]
 					local icon,icon_scale = RetIcon(item)
@@ -1239,6 +1241,7 @@ function OnMsg.ClassesGenerate()
 				hint = 302535920000983--[["Custom Lightmodel made with ""Change Light Model Custom""."--]],
 			}
 		end
+		local LightmodelPresets = LightmodelPresets
 		for key,_ in pairs(LightmodelPresets) do
 			ItemList[#ItemList+1] = {
 				text = key,

@@ -1,5 +1,6 @@
 function OnMsg.ModsReloaded()
-	for _,bld in pairs(ClassTemplates.Building) do
+	local buildings = ClassTemplates.Building
+	for _,bld in pairs(buildings) do
 		bld.can_rotate_during_placement = true
 	end
 end

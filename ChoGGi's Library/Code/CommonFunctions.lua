@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local S = ChoGGi.Strings
-local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 -- Strings.lua
 local Trans = ChoGGi.ComFuncs.Translate
@@ -154,19 +153,19 @@ do -- RetName
 				return obj.id
 			elseif obj.Id and obj.Id ~= "" then
 				return obj.Id
-
 			-- class template name
 			elseif obj.template_name and obj.template_name ~= "" then
 				return obj.template_name
-
-			elseif obj.entity and obj.entity ~= "" then
+			elseif obj.template_class and obj.template_class ~= "" then
+				return obj.template_class
+			-- entity
+			elseif obj.entity then
 				return obj.entity
-
 			-- class
 			elseif obj.class and obj.class ~= "" then
 				return obj.class
 
-			-- added this here as doing tostring lags the crap outta kansas if this is a large objlist (could also be from just having a large string for something?)
+			-- added this here as doing tostring lags the crap outta kansas if this is a large objlist
 			elseif IsObjlist(obj) then
 				return "objlist"
 			end
@@ -317,7 +316,6 @@ do -- ShowObj
 	local IsValid = IsValid
 	local green = green
 	local guic = guic
-	local IsPointInBounds = terrain.IsPointInBounds
 	local ViewObjectMars = ViewObjectMars
 	local InvalidPos = ChoGGi.Consts.InvalidPos
 	local xyz_str = "%s%s%s"
@@ -464,7 +462,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 			TextColor = -16777216,
 			RolloverTitle = item.hint_title and CheckText(item.hint_title,item.obj and RetName(item.obj) or S[126095410863--[[Info--]]]),
 			RolloverText = CheckText(item.hint,""),
-			RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+			RolloverHint = CheckText(item.hint_bottom,S[302535920000083--[[<left_click> Activate--]]]),
 			Text = CheckText(item.name),
 			Background = items.Background or cls.Background,
 			PressedBackground = items.PressedBackground or cls.PressedBackground,
@@ -487,6 +485,14 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		else
 			function button.OnPress(...)
 				cls.OnPress(...)
+				popup:Close()
+			end
+		end
+
+		if item.mousedown then
+			function button.OnMouseButtonDown(...)
+				cls.OnMouseButtonDown(...)
+				item.mousedown(...)
 				popup:Close()
 			end
 		end
@@ -517,11 +523,10 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		end
 
 		local showobj_func
-		-- don't change showme till i update pin expander (and examine)
-		if item.showme then
+		if item.showobj then
 			showobj_func = function()
 				ClearShowObj()
-				ShowObj(item.showme, nil, true)
+				ShowObj(item.showobj, nil, true)
 			end
 		end
 
@@ -606,13 +611,14 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 			Anchor = parent.box,
 
 		}, terminal.desktop)
+		popup.items = items
 
 		ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 
 		-- hide popup when parent closes
 		CreateRealTimeThread(function()
-			while popup:IsVisible() and parent:IsVisible() do
-				Sleep(250)
+			while popup.window_state ~= "destroying" and parent.window_state ~= "destroying" do
+				Sleep(500)
 			end
 			popup:Close()
 		end)
@@ -1233,15 +1239,16 @@ end -- do
 function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
 	local temp_table = {}
 	local c = 0
+	list = list or empty_table
 
 	-- add
 	if for_type then
-		for k,_ in pairs(list or empty_table) do
+		for k,_ in pairs(list) do
 			c = c + 1
 			temp_table[c] = k
 		end
 	else
-		for _,v in pairs(list or empty_table) do
+		for _,v in pairs(list) do
 			c = c + 1
 			temp_table[c] = v
 		end
@@ -1276,7 +1283,8 @@ function ChoGGi.ComFuncs.UpdateDataTablesCargo()
 		Tables.Cargo[def.id] = def
 	end
 
-	for id,cargo in pairs(ChoGGi.UserSettings.CargoSettings or {}) do
+	local settings = ChoGGi.UserSettings.CargoSettings or {}
+	for id,cargo in pairs(settings) do
 		if Tables.Cargo[id] then
 			if cargo.pack then
 				Tables.Cargo[id].pack = cargo.pack
@@ -1352,6 +1360,7 @@ do -- UpdateDataTables
 ----------- colonists
 		--add as index and associative tables for ease of filtering
 		local c1,c2,c3,c4,c5,c6 = 0,0,0,0,0,0
+		local TraitPresets = TraitPresets
 		for id,t in pairs(TraitPresets) do
 			if t.group == "Positive" then
 				c1 = c1 + 1
@@ -1400,6 +1409,7 @@ do -- UpdateDataTables
 		-- used to check defaults for cargo
 		Tables.CargoPresets = {}
 		c = 0
+		local CargoPreset = CargoPreset
 		for cargo_id,cargo in pairs(CargoPreset) do
 			c = c + 1
 			Tables.CargoPresets[c] = cargo
@@ -2497,8 +2507,8 @@ do -- COLOUR FUNCTIONS
 						local lab_obj = labels[i]
 						if parent then
 							local attaches = GetAllAttaches(lab_obj)
-							for i = 1, #attaches do
-								CheckGrid(fake_parent,colour_func,attaches[i],lab_obj,choice)
+							for j = 1, #attaches do
+								CheckGrid(fake_parent,colour_func,attaches[j],lab_obj,choice)
 							end
 						else
 							CheckGrid(fake_parent,colour_func,lab_obj,lab_obj,choice)
@@ -3136,14 +3146,16 @@ function ChoGGi.ComFuncs.RetHardwareInfo()
 	local mem = {}
 	local cm = 0
 
-	for key,value in pairs(GetMemoryInfo()) do
+	local memory_info = GetMemoryInfo()
+	for key,value in pairs(memory_info) do
 		cm = cm + 1
 		mem[cm] = StringFormat("%s: %s\n",key,value)
 	end
 
 	local hw = {}
 	local chw = 0
-	for key,value in pairs(GetHardwareInfo(0)) do
+	local hardware_info = GetHardwareInfo(0)
+	for key,value in pairs(hardware_info) do
 		if key == "gpu" then
 			chw = chw + 1
 			hw[chw] = StringFormat("%s: %s\n",key,GetGpuDescription())
@@ -4321,7 +4333,7 @@ do -- UpdateFlightGrid
 	local work_step = 16 * type_tile
 	local mark_step = 16 * type_tile
 	local function Flight_NewGrid(step, packing)
-		local mw, mh = GetMapSize()
+		local mw = GetMapSize()
 		local work_size = mw / (step or work_step)
 		return grid(work_size, packing or 32)
 	end
@@ -4341,6 +4353,7 @@ do -- UpdateFlightGrid
 		end
 
 		Flight_Height = Flight_OrigHeight:clone()
+		local Flight_MarkedObjs = Flight_MarkedObjs
 		if Flight_MarkedObjs then
 			for obj in pairs(Flight_MarkedObjs) do
 				if not Flight_ObjToUnmark[obj] then

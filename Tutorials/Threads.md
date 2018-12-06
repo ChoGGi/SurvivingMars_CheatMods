@@ -18,6 +18,7 @@ This probably only works for Create*TimeThread threads.
 local lua_filename = "Example_file.lua"
 local threads = {}
 local level = 1 --[[could try 2 or more, but 1 is usually fine and dandy.--]]
+local ThreadsRegister = ThreadsRegister
 for key in pairs(ThreadsRegister) do
 	local info = debug.getinfo(key, level)
 	if info and info.source:find(lua_filename,1,true) then
