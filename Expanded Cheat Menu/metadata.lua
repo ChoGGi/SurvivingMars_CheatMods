@@ -76,7 +76,7 @@ return PlaceObj("ModDef", {
 With thanks to chippydip, admbraden, SkiRich, BoehserOnkel, and Fling.
 Random internet users reporting bugs/requesting features.]],
 
-	"description", string.format([[Enables cheat menu, cheat info pane, console, examine object, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
+	"description", string.format([[and Modding Tools. Enables cheat menu, cheat info pane, console, examine object, adds a few hundred menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
 
 If you forget where a menu item is: Menu>Help>List All Menu Items (use "Filter Items" at the bottom).
 

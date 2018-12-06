@@ -1495,12 +1495,25 @@ do -- LoadGame/CityStart
 
 		-- first time run info
 		if UserSettings.FirstRun ~= false then
-			ChoGGi.ComFuncs.MsgWait(
+			local function CallBackFunc(answer)
+				if answer then
+					ShowConsoleLog(false)
+				else
+					UserSettings.ConsoleToggleHistory = true
+					ShowConsoleLog(true)
+					ChoGGi.SettingFuncs.WriteSettings()
+				end
+			end
+			ChoGGi.ComFuncs.QuestionBox(
 				StringFormat("%s\n\n%s",S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],S[302535920001309--[["Stop showing these msgs: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(S[302535920001308--[[Settings--]]],S[302535920001112--[[Console Log--]]])),
+If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],S[302535920001309--[["Stop showing console log: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(S[302535920001308--[[Settings--]]],S[302535920001112--[[Console Log--]]])),
+				CallBackFunc,
 				StringFormat("%s %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000201--[[Active--]]]),
+				S[302535920001465--[[Stop talking and start cheating!--]]],
+				S[302535920001466--[["I know what I'm doing, show me the console log."--]]],
 				StringFormat("%sPreview.png",ChoGGi.ModPath)
 			)
+			-- second place is isn't last place
 			UserSettings.FirstRun = false
 			ChoGGi.Temp.WriteSettings = true
 		end
@@ -1510,6 +1523,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 		cameraRTS.Activate(1)
 		engineShowMouseCursor()
 		ChoGGi.ComFuncs.SetCameraSettings()
+
 
 
 		------------------------------- always fired last

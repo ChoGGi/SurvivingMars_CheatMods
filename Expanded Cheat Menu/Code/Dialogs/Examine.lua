@@ -50,6 +50,7 @@ local Random
 local InvalidPos
 local S
 local blacklist
+local testing
 
 -- need to wait till Library mod is loaded
 function OnMsg.ClassesGenerate()
@@ -70,6 +71,7 @@ function OnMsg.ClassesGenerate()
 	InvalidPos = ChoGGi.Consts.InvalidPos
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
+	testing = ChoGGi.testing
 end
 
 local function GetRootDialog(dlg)
@@ -798,25 +800,49 @@ end
 function Examine:BuildToolsMenuPopup()
 	return {
 		{
+			name = S[302535920001467--[[Append Dump--]]],
+			hint = S[302535920001468--[["Append text to same file, or create a new file each time."--]]],
+			clicked = function()
+				ChoGGi.UserSettings.ExamineAppendDump = not ChoGGi.UserSettings.ExamineAppendDump
+				ChoGGi.SettingFuncs.WriteSettings()
+			end,
+			value = "ChoGGi.UserSettings.ExamineAppendDump",
+			class = "ChoGGi_CheckButtonMenu",
+		},
+		{
 			name = StringFormat("%s %s",S[302535920000004--[[Dump--]]],S[1000145--[[Text--]]]),
-			hint = S[302535920000046--[[dumps text to %sDumpedExamine.lua--]]]:format(ConvertToOSPath("AppData/")),
+			hint = S[302535920000046--[[dumps text to %slogs\DumpedExamine.lua--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
 				local str = self.idText:GetText()
 				-- remove html tags
 				str = str:gsub("<[/%s%a%d]*>","")
-				ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),nil,"DumpedExamine","lua")
+				-- i just compare, so append doesn't really work
+				if ChoGGi.UserSettings.ExamineAppendDump then
+					ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),nil,"DumpedExamine","lua")
+				else
+					ChoGGi.ComFuncs.Dump(str,"w","DumpedExamine","lua",nil,true)
+				end
 			end,
 		},
 		{
 			name = StringFormat("%s %s",S[302535920000004--[[Dump--]]],S[298035641454--[[Object--]]]),
-			hint = S[302535920001027--[[dumps object to %sDumpedExamineObject.lua
+			hint = S[302535920001027--[[dumps object to %slogs\DumpedExamineObject.lua
 
 This can take time on something like the "Building" metatable--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
-				local str = ObjPropertyListToLuaCode(self.obj_ref)
-				ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),nil,"DumpedExamineObject","lua")
+				local str
+				pcall(function()
+					str = ValueToLuaCode(self.obj_ref)
+				end)
+				if str then
+					if ChoGGi.UserSettings.ExamineAppendDump then
+						ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),nil,"DumpedExamineObject","lua")
+					else
+						ChoGGi.ComFuncs.Dump(str,"w","DumpedExamineObject","lua",nil,true)
+					end
+				end
 			end,
 		},
 		{
@@ -849,22 +875,26 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
---~ 				local str = ValueToLuaCode(self.obj_ref)
-				local str = ObjPropertyListToLuaCode(self.obj_ref)
-				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
-					parent = self,
-					checkbox = true,
-					text = str,
-					title = StringFormat("%s/%s %s",S[302535920000048--[[View--]]],S[302535920000004--[[Dump--]]],S[298035641454--[[Object--]]]),
-					hint_ok = 302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
+				local str
+				pcall(function()
+					str = ValueToLuaCode(self.obj_ref)
+				end)
+				if str then
+					ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+						parent = self,
+						checkbox = true,
+						text = str,
+						title = StringFormat("%s/%s %s",S[302535920000048--[[View--]]],S[302535920000004--[[Dump--]]],S[298035641454--[[Object--]]]),
+						hint_ok = 302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]],
-					custom_func = function(answer,overwrite)
-						if answer then
-							ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),overwrite,"DumpedExamineObject","lua")
-						end
-					end,
-				}
+						custom_func = function(answer,overwrite)
+							if answer then
+								ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),overwrite,"DumpedExamineObject","lua")
+							end
+						end,
+					}
+				end
 			end,
 		},
 		{name = "	 ---- "},
@@ -911,7 +941,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			hint = S[302535920001433--[[Fiddle with object angle/axis/pos and so forth.--]]],
 			image = "CommonAssets/UI/Menu/Axis.tga",
 			clicked = function()
-				if ChoGGi.testing then
+				if testing then
 				ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(self.obj_ref,self)
 				else
 					MsgPopup(
