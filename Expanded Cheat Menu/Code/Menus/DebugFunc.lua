@@ -13,6 +13,18 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 
+	function ChoGGi.MenuFuncs.MaterialProperties(parent)
+		if not UICity then
+			return
+		end
+		local GetMaterialProperties = GetMaterialProperties
+		local materials = {}
+		for id in pairs(GetAllEntities()) do
+			materials[id] = GetMaterialProperties(id)
+		end
+		ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent,S[302535920001458--[[Material Properties--]]])
+	end
+
 	function ChoGGi.MenuFuncs.ForceStoryBits()
 --~ If you do a ~g_StoryBitStates
 --~ that'll show all the active story state thingss
@@ -263,118 +275,6 @@ function OnMsg.ClassesGenerate()
 				},
 			},
 		}
-	end
-
-	do --export colonist data
-		local ChoGGi_Tables = ChoGGi.Tables
-		--build list of traits to skip (added as columns, we don't want dupes)
-		local skipped_traits = {}
-		local function AddSkipped(traits,list)
-			for i = 1, #traits do
-				list[traits[i]] = true
-			end
-			return list
-		end
-		skipped_traits = AddSkipped(ChoGGi_Tables.ColonistAges,skipped_traits)
-		skipped_traits = AddSkipped(ChoGGi_Tables.ColonistGenders,skipped_traits)
-		skipped_traits = AddSkipped(ChoGGi_Tables.ColonistSpecializations,skipped_traits)
-
-		local ColonistsCSVColumns = {
-			{"name",S[1000037--[[Name--]]]},
-			{"age",S[302535920001222--[[Age--]]]},
-			{"age_trait",StringFormat("%s %s",S[302535920001222--[[Age--]]],S[3720--[[Trait--]]])},
-			{"death_age",S[4284--[[Age of death--]]]},
-			{"birthplace",S[4357--[[Birthplace--]]]},
-			{"gender",S[4356--[[Sex--]]]},
-			{"race",S[302535920000741--[[Race--]]]},
-			{"specialist",S[240--[[Specialization--]]]},
-			{"performance",S[4283--[[Worker performance--]]]},
-			{"health",S[4291--[[Health--]]]},
-			{"comfort",S[4295--[[Comfort--]]]},
-			{"morale",S[4297--[[Morale--]]]},
-			{"sanity",S[4293--[[Sanity--]]]},
-			{"handle",S[302535920000955--[[Handle--]]]},
-			{"last_meal",S[302535920001229--[[Last Meal--]]]},
-			{"last_rest",S[302535920001235--[[Last Rest--]]]},
-			{"dome_name",StringFormat("%s %s",S[1234--[[Dome--]]],S[1000037--[[Name--]]])},
-			{"dome_pos",StringFormat("%s %s",S[1234--[[Dome--]]],S[302535920001237--[[Position--]]])},
-			{"dome_handle",StringFormat("%s %s",S[1234--[[Dome--]]],S[302535920000955--[[Handle--]]])},
-			{"residence_name",StringFormat("%s %s",S[4809--[[Residence--]]],S[1000037--[[Name--]]])},
-			{"residence_pos",StringFormat("%s %s",S[4809--[[Residence--]]],S[302535920001237--[[Position--]]])},
-			{"residence_dome",StringFormat("%s %s",S[4809--[[Residence--]]],S[1234--[[Dome--]]])},
-			{"workplace_name",StringFormat("%s %s",S[4801--[[Workplace--]]],S[1000037--[[Name--]]])},
-			{"workplace_pos",StringFormat("%s %s",S[4801--[[Workplace--]]],S[302535920001237--[[Position--]]])},
-			{"workplace_dome",StringFormat("%s %s",S[4801--[[Workplace--]]],S[1234--[[Dome--]]])},
-		}
-		local function AddTraits(traits,list)
-			for i = 1, #traits do
-				list[#list+1] = {
-					StringFormat("trait_%s",traits[i]),
-					StringFormat("Trait %s",traits[i]),
-				}
-			end
-			return list
-		end
-		ColonistsCSVColumns = AddTraits(ChoGGi_Tables.NegativeTraits,ColonistsCSVColumns)
-		ColonistsCSVColumns = AddTraits(ChoGGi_Tables.PositiveTraits,ColonistsCSVColumns)
-		ColonistsCSVColumns = AddTraits(ChoGGi_Tables.OtherTraits,ColonistsCSVColumns)
-
-		function ChoGGi.MenuFuncs.ExportColonistDataToCSV()
-			local export_data = {}
-			local colonists = UICity.labels.Colonist or ""
-
-			for i = 1, #colonists do
-				local c = colonists[i]
-
-				export_data[i] = {
---~ 					name = StringFormat("%s %s",Trans(c.name[1]),Trans(c.name[3])),
-					name = RetName(c),
-					age = c.age,
-					age_trait = c.age_trait,
-					birthplace = c.birthplace,
-					gender = c.gender,
-					death_age = c.death_age,
-					race = c.race,
-					health = c.stat_health,
-					comfort = c.stat_comfort,
-					morale = c.stat_morale,
-					sanity = c.stat_sanity,
-					performance = c.performance,
-					handle = c.handle,
-					specialist = c.specialist,
-					last_meal = c.last_meal,
-					last_rest = c.last_rest,
-				}
-				-- dome
-				if c.dome then
-					export_data[i].dome_name = RetName(c.dome)
-					export_data[i].dome_pos = c.dome:GetVisualPos()
-					export_data[i].dome_handle = c.dome.handle
-				end
-				-- residence
-				if c.residence then
-					export_data[i].residence_name = RetName(c.residence)
-					export_data[i].residence_pos = c.residence:GetVisualPos()
-					export_data[i].residence_dome = RetName(c.residence.parent_dome)
-				end
-				-- workplace
-				if c.workplace then
-					export_data[i].workplace_name = RetName(c.workplace)
-					export_data[i].workplace_pos = c.workplace:GetVisualPos()
-					export_data[i].workplace_dome = RetName(c.workplace.parent_dome)
-				end
-				-- traits
-				for trait_id, _ in pairs(c.traits) do
-					if trait_id and trait_id ~= "" and not skipped_traits[trait_id] then
-						export_data[i][StringFormat("trait_%s",trait_id)] = true
-					end
-				end
-			end
-
-			-- and now we can save it to disk
-			SaveCSV("AppData/Colonists.csv", export_data, table.map(ColonistsCSVColumns, 1), table.map(ColonistsCSVColumns, 2))
-			print(ConvertToOSPath("AppData/Colonists.csv"))
-		end
 	end
 
 	function ChoGGi.MenuFuncs.DebugFX_Toggle(name,trans_id)

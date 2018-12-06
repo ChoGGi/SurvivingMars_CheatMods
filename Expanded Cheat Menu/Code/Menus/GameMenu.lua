@@ -459,4 +459,32 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.HigherShadowDist_Toggle,
 	}
 
+	local str_Game_ExportCSV = "ECM.Game.Export CSV"
+	c = c + 1
+	Actions[c] = {ActionName = StringFormat("%s %s ..",S[302535920001449--[[Export--]]],S[302535920001448--[[CSV--]]]),
+		ActionMenubar = "ECM.Game",
+		ActionId = ".Export CSV",
+		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+		OnActionEffect = "popup",
+		ActionSortKey = "1Export CSV",
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001208--[[Colonist Data--]]],
+		ActionMenubar = str_Game_ExportCSV,
+		ActionId = ".Colonist Data",
+		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
+		RolloverText = S[302535920001219--[[Export colonist data to %sColonists.csv--]]]:format(ConvertToOSPath("AppData/")),
+		OnAction = ChoGGi.MenuFuncs.ExportColonistDataToCSV,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001450--[[Graphs Data--]]],
+		ActionMenubar = str_Game_ExportCSV,
+		ActionId = ".Graphs Data",
+		ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
+		RolloverText = S[302535920001452--[[Export data to %sGraphs.csv--]]]:format(ConvertToOSPath("AppData/")),
+		OnAction = ChoGGi.MenuFuncs.ExportGraphsToCSV,
+	}
+
 end

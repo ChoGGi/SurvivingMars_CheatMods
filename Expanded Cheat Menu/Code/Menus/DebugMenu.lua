@@ -8,6 +8,15 @@ function OnMsg.ClassesGenerate()
 	local c = #Actions
 
 	c = c + 1
+	Actions[c] = {ActionName = S[302535920001458--[[Material Properties--]]],
+		ActionMenubar = "ECM.Debug",
+		ActionId = ".Material Properties",
+		ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
+		RolloverText = S[302535920001459--[[Shows list of material settings for use with .mtl files.--]]],
+		OnAction = ChoGGi.MenuFuncs.MaterialProperties,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920001416--[[Force--]]],S[948928900281--[[Story Bits--]]]),
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Force Story Bits",
@@ -62,15 +71,6 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.FpsCounterLocation,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920001208--[[Export Colonist Data To CSV--]]],
-		ActionMenubar = "ECM.Debug",
-		ActionId = ".Export Colonist Data To CSV",
-		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
-		RolloverText = S[302535920001219--[[Exports data about colonists to %sColonists.csv--]]]:format(ConvertToOSPath("AppData/")),
-		OnAction = ChoGGi.MenuFuncs.ExportColonistDataToCSV,
 	}
 
 	c = c + 1
@@ -521,6 +521,7 @@ function OnMsg.ClassesGenerate()
 		OnActionEffect = "popup",
 		ActionSortKey = "99.Delete Object(s)",
 	}
+
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000489--[[Delete Object(s)--]]],
 		ActionMenubar = str_Debug_DeleteObjects,

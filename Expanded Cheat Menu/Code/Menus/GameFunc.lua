@@ -18,9 +18,353 @@ function OnMsg.ClassesGenerate()
 	local RetIcon = ChoGGi.ComFuncs.RetIcon
 	local RetHint = ChoGGi.ComFuncs.RetHint
 	local Random = ChoGGi.ComFuncs.Random
+	local Trans = ChoGGi.ComFuncs.Translate
 	--~ function OnMsg.DataLoaded()
 	--~	 RebuildFXRules()
 	--~ end
+
+	do -- ExportColonistDataToCSV
+		local ChoGGi_Tables = ChoGGi.Tables
+		-- build list of traits to skip (added as columns, we don't want dupes)
+		local skipped_traits = {}
+		local function AddSkipped(traits,list)
+			for i = 1, #traits do
+				list[traits[i]] = true
+			end
+			return list
+		end
+		skipped_traits = AddSkipped(ChoGGi_Tables.ColonistAges,skipped_traits)
+		skipped_traits = AddSkipped(ChoGGi_Tables.ColonistGenders,skipped_traits)
+		skipped_traits = AddSkipped(ChoGGi_Tables.ColonistSpecializations,skipped_traits)
+
+		local ColonistsCSVColumns = {
+			{"name",S[1000037--[[Name--]]]},
+			{"age",S[302535920001222--[[Age--]]]},
+			{"age_trait",StringFormat("%s %s",S[302535920001222--[[Age--]]],S[3720--[[Trait--]]])},
+			{"death_age",S[4284--[[Age of death--]]]},
+			{"birthplace",S[4357--[[Birthplace--]]]},
+			{"gender",S[4356--[[Sex--]]]},
+			{"race",S[302535920000741--[[Race--]]]},
+			{"specialist",S[240--[[Specialization--]]]},
+			{"performance",S[4283--[[Worker performance--]]]},
+			{"health",S[4291--[[Health--]]]},
+			{"comfort",S[4295--[[Comfort--]]]},
+			{"morale",S[4297--[[Morale--]]]},
+			{"sanity",S[4293--[[Sanity--]]]},
+			{"handle",S[302535920000955--[[Handle--]]]},
+			{"last_meal",S[302535920001229--[[Last Meal--]]]},
+			{"last_rest",S[302535920001235--[[Last Rest--]]]},
+			{"dome_name",StringFormat("%s %s",S[1234--[[Dome--]]],S[1000037--[[Name--]]])},
+			{"dome_pos",StringFormat("%s %s",S[1234--[[Dome--]]],S[302535920001237--[[Position--]]])},
+			{"dome_handle",StringFormat("%s %s",S[1234--[[Dome--]]],S[302535920000955--[[Handle--]]])},
+			{"residence_name",StringFormat("%s %s",S[4809--[[Residence--]]],S[1000037--[[Name--]]])},
+			{"residence_pos",StringFormat("%s %s",S[4809--[[Residence--]]],S[302535920001237--[[Position--]]])},
+			{"residence_dome",StringFormat("%s %s",S[4809--[[Residence--]]],S[1234--[[Dome--]]])},
+			{"workplace_name",StringFormat("%s %s",S[4801--[[Workplace--]]],S[1000037--[[Name--]]])},
+			{"workplace_pos",StringFormat("%s %s",S[4801--[[Workplace--]]],S[302535920001237--[[Position--]]])},
+			{"workplace_dome",StringFormat("%s %s",S[4801--[[Workplace--]]],S[1234--[[Dome--]]])},
+		}
+		local function AddTraits(traits,list)
+			for i = 1, #traits do
+				list[#list+1] = {
+					StringFormat("trait_%s",traits[i]),
+					StringFormat("Trait %s",traits[i]),
+				}
+			end
+			return list
+		end
+		ColonistsCSVColumns = AddTraits(ChoGGi_Tables.NegativeTraits,ColonistsCSVColumns)
+		ColonistsCSVColumns = AddTraits(ChoGGi_Tables.PositiveTraits,ColonistsCSVColumns)
+		ColonistsCSVColumns = AddTraits(ChoGGi_Tables.OtherTraits,ColonistsCSVColumns)
+
+		function ChoGGi.MenuFuncs.ExportColonistDataToCSV()
+			local export_data = {}
+			local colonists = UICity.labels.Colonist or ""
+
+			for i = 1, #colonists do
+				local c = colonists[i]
+
+				export_data[i] = {
+--~ 					name = StringFormat("%s %s",Trans(c.name[1]),Trans(c.name[3])),
+					name = RetName(c),
+					age = c.age,
+					age_trait = c.age_trait,
+					birthplace = c.birthplace,
+					gender = c.gender,
+					death_age = c.death_age,
+					race = c.race,
+					health = c.stat_health,
+					comfort = c.stat_comfort,
+					morale = c.stat_morale,
+					sanity = c.stat_sanity,
+					performance = c.performance,
+					handle = c.handle,
+					specialist = c.specialist,
+					last_meal = c.last_meal,
+					last_rest = c.last_rest,
+				}
+				-- dome
+				if c.dome then
+					export_data[i].dome_name = RetName(c.dome)
+					export_data[i].dome_pos = c.dome:GetVisualPos()
+					export_data[i].dome_handle = c.dome.handle
+				end
+				-- residence
+				if c.residence then
+					export_data[i].residence_name = RetName(c.residence)
+					export_data[i].residence_pos = c.residence:GetVisualPos()
+					export_data[i].residence_dome = RetName(c.residence.parent_dome)
+				end
+				-- workplace
+				if c.workplace then
+					export_data[i].workplace_name = RetName(c.workplace)
+					export_data[i].workplace_pos = c.workplace:GetVisualPos()
+					export_data[i].workplace_dome = RetName(c.workplace.parent_dome)
+				end
+				-- traits
+				for trait_id, _ in pairs(c.traits) do
+					if trait_id and trait_id ~= "" and not skipped_traits[trait_id] then
+						export_data[i][StringFormat("trait_%s",trait_id)] = true
+					end
+				end
+			end
+--~ ex(export_data)
+			-- and now we can save it to disk
+			SaveCSV("AppData/Colonists.csv", export_data, table.map(ColonistsCSVColumns, 1), table.map(ColonistsCSVColumns, 2))
+			print(ConvertToOSPath("AppData/Colonists.csv"))
+		end
+	end -- do
+
+	do -- ExportGraphsToCSV
+		local ss = "%s %s"
+		local sss = "%s %s %s"
+		local loop_table_label = {
+			Colonist = {
+				name = ss:format(S[547--[[Colonists--]]],S[1000100--[[Amount--]]]),
+				data = "ts_colonists",
+			},
+			Unemployed = {
+				name = ss:format(S[547--[[Colonists--]]],S[6859--[[Unemployed--]]]),
+				data = "ts_colonists_unemployed",
+			},
+			Homeless = {
+				name = ss:format(S[547--[[Colonists--]]],S[7553--[[Homeless--]]]),
+				data = "ts_colonists_homeless",
+			},
+			Drone = {
+				name = S[517--[[Drones--]]],
+				data = "ts_drones",
+			},
+		}
+		local loop_table_count1 = {
+			{
+				name = S[745--[[Shuttles--]]],
+				func = "CountShuttles",
+				data = "ts_shuttles",
+			},
+			{
+				name = S[3980--[[Buildings--]]],
+				func = "CountBuildings",
+				data = "ts_buildings",
+			},
+		}
+		local loop_table_count2 = {
+			{
+				name = sss:format(S[302535920000035--[[Grids--]]],S[79--[[Power--]]],S[302535920001457--[[Stored--]]]),
+				func = "GetTotalStoredPower",
+				data1 = "ts_resources_grid",
+				data2 = "electricity",
+				data3 = "stored",
+			},
+			{
+				name = ss:format(S[302535920000035--[[Grids--]]],S[32--[[Power Production--]]]),
+				func = "GetTotalProducedPower",
+				data1 = "ts_resources_grid",
+				data2 = "electricity",
+				data3 = "production",
+			},
+			{
+				name = ss:format(S[302535920000035--[[Grids--]]],S[683--[[Power Consumption--]]]),
+				func = "GetTotalRequiredPower",
+				data1 = "ts_resources_grid",
+				data2 = "electricity",
+				data3 = "consumption",
+			},
+			{
+				name = sss:format(S[302535920000035--[[Grids--]]],S[682--[[Oxygen--]]],S[302535920001457--[[Stored--]]]),
+				func = "GetTotalStoredAir",
+				data1 = "ts_resources_grid",
+				data2 = "air",
+				data3 = "stored",
+			},
+			{
+				name = ss:format(S[302535920000035--[[Grids--]]],S[923--[[Oxygen Production--]]]),
+				func = "GetTotalProducedAir",
+				data1 = "ts_resources_grid",
+				data2 = "air",
+				data3 = "production",
+			},
+			{
+				name = ss:format(S[302535920000035--[[Grids--]]],S[657--[[Oxygen Consumption--]]]),
+				func = "GetTotalRequiredAir",
+				data1 = "ts_resources_grid",
+				data2 = "air",
+				data3 = "consumption",
+			},
+			{
+				name = sss:format(S[302535920000035--[[Grids--]]],S[681--[[Water--]]],S[302535920001457--[[Stored--]]]),
+				func = "GetTotalStoredWater",
+				data1 = "ts_resources_grid",
+				data2 = "water",
+				data3 = "stored",
+			},
+			{
+				name = ss:format(S[302535920000035--[[Grids--]]],S[4806--[[Water Production--]]]),
+				func = "GetTotalProducedWater",
+				data1 = "ts_resources_grid",
+				data2 = "water",
+				data3 = "production",
+			},
+			{
+				name = ss:format(S[302535920000035--[[Grids--]]],S[750--[[Water Consumption--]]]),
+				func = "GetTotalRequiredWater",
+				data1 = "ts_resources_grid",
+				data2 = "water",
+				data3 = "consumption",
+			},
+		}
+
+		local function BuildTable(export_data,c,cat,current,list)
+			export_data[c] = {
+				category = cat,
+				current = current,
+			}
+			-- add all sol counts
+			for i = 1, #list.data do
+				-- last recorded sol
+				if i > list.next_index then
+					break
+				end
+				export_data[c][StringFormat("sol%s",i)] = list.data[i]
+			end
+			return export_data
+		end
+
+		function ChoGGi.MenuFuncs.ExportGraphsToCSV()
+			local UICity = UICity
+			local ResourceOverviewObj = ResourceOverviewObj
+			local StockpileResourceList = StockpileResourceList
+
+			local FormatResourceName = FormatResourceName
+			local CmpLower = CmpLower
+
+			-- the rest are sols
+			local csv_columns = {
+				{"category",S[1000097--[[Category--]]]},
+				{"current",S[302535920000106--[[Current--]]]},
+			}
+			local c = 2
+
+			-- add all the sols as columns
+			for i = 1, UICity.day-1 do
+				c = c + 1
+				csv_columns[c] = {
+					StringFormat("sol%s",i),
+					Trans(T{4031,"Sol <day>",day = i}),
+				}
+			end
+
+			local export_data = {}
+			local c = 0
+
+			-- build csv lists
+			for label,list in pairs(loop_table_label) do
+				c = c + 1
+				export_data = BuildTable(
+					export_data,
+					c,
+					list.name,
+					#(UICity.labels[label] or ""),
+					UICity[list.data]
+				)
+			end
+
+			for i = 1, #loop_table_count1 do
+				local list = loop_table_count1[i]
+				c = c + 1
+				export_data = BuildTable(
+					export_data,
+					c,
+					list.name,
+					UICity[list.func](UICity),
+					UICity[list.data]
+				)
+			end
+
+			for i = 1, #loop_table_count2 do
+				local list = loop_table_count2[i]
+				c = c + 1
+				export_data = BuildTable(
+					export_data,
+					c,
+					list.name,
+					ResourceOverviewObj[list.func](ResourceOverviewObj),
+					UICity[list.data1][list.data2][list.data3]
+				)
+			end
+			-- resources
+			for i = 1, #StockpileResourceList do
+				local id = StockpileResourceList[i]
+				local name = Trans(FormatResourceName(id))
+				local res = UICity.ts_resources[id]
+
+				c = c + 1
+				export_data = BuildTable(
+					export_data,
+					c,
+					sss:format(S[692--[[Resources--]]],name,S[302535920001454--[[Stockpiled--]]]),
+					ResourceOverviewObj[StringFormat("GetAvailable%s",id)](ResourceOverviewObj),
+					res.stockpile
+				)
+				c = c + 1
+				export_data = BuildTable(
+					export_data,
+					c,
+					sss:format(S[692--[[Resources--]]],name,S[302535920001455--[[Produced--]]]),
+					ResourceOverviewObj[StringFormat("Get%sProducedYesterday",id)](ResourceOverviewObj),
+					res.produced
+				)
+				c = c + 1
+				export_data = BuildTable(
+					export_data,
+					c,
+					sss:format(S[692--[[Resources--]]],name,S[302535920001456--[[Consumed--]]]),
+					ResourceOverviewObj[StringFormat("Get%sConsumedByConsumptionYesterday",id)](ResourceOverviewObj),
+					res.consumed
+				)
+			end
+
+			-- the one entry that needs to count two labels
+			c = c + 1
+			export_data = BuildTable(
+				export_data,
+				c,
+				sss:format(S[5426--[[Building--]]],S[302535920000971--[[Sites--]]],S[302535920001453--[[Completed--]]]),
+				#(UICity.labels.ConstructionSite or "") + #(UICity.labels.ConstructionSiteWithHeightSurfaces or ""),
+				UICity.ts_constructions_completed
+			)
+
+			table.sort(export_data, function(a, b)
+				return CmpLower(a.category, b.category)
+			end)
+
+--~ ex(export_data)
+--~ ex(csv_columns)
+			-- and now we can save it to disk
+			SaveCSV("AppData/Graphs.csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
+			print(ConvertToOSPath("AppData/Graphs.csv"))
+		end
+	end -- do
 
 	function ChoGGi.MenuFuncs.ResetCamera()
 		SetMouseDeltaMode(false)
