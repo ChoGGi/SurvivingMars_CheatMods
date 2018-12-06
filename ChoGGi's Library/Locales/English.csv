@@ -1,11 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000039,,
-302535920001463,,
-302535920001464,,
-302535920001465,,
-302535920001466,,
-302535920001467,,
-302535920001468,,
 302535920001469,,
 302535920001470,,
 302535920001471,,
@@ -164,8 +157,8 @@ You can copy and paste numbers if you want.",
 302535920000032,Select a resource to find,
 302535920001441,<left_click> Activate <right_click> Add/Remove Quickbar,
 302535920001439,"~obj, @func,@@type,$id, *r/*g/*m threads",
-302535920001440,"~obj opens object in examine dialog.
-~!obj opens an objlist of attachments for object in examine.
+302535920001440,"~obj opens object in examine dlg.
+~!obj opens an objlist of attachments for object in examine dlg.
 &handle examines object with that handle.
 @GetMissionSponsor prints info about the function.
 @@EntityData prints type(EntityData).
@@ -175,7 +168,9 @@ $123 or $EffectDeposit.display_name prints translated string.
 302535920001401,"Removed missing mod building from %s: %s, entity: %s, handle: %s",
 302535920001074,Ged Presets Editor,
 302535920000503,Right-click an item/submenu to add/remove it from the quickbar.,
-302535920001309,"Stop showing these msgs: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s"".",
+302535920001465,Stop talking and start cheating!,
+302535920001466,"I know what I'm doing, show me the console log.",
+302535920001309,"Stop showing console log: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s"".",
 302535920000247,Startup ticks,
 302535920000729,You've started a mystery!,
 302535920000730,You've chosen a mystery!,
@@ -252,7 +247,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920001308,Settings,
 302535920000734,Clear Log,
 302535920001026,Show File Log,
-302535920001091,Flushes log to disk and displays in examine.,
+302535920001091,Flushes log to disk and displays in examine dlg.,
 302535920001152,Clear out the console log (F9 also works).,
 302535920001154,Displays the log text in a window you can copy sections from.,
 302535920000563,Copy Log Text,
@@ -268,6 +263,8 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000870,Shows any errors from loading mods in console log.,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920001467,Append Dump,
+302535920001468,"Append text to same file, or create a new file each time.",
 302535920001442,EnumVars,
 302535920001443,View output from EnumVars(obj).,
 302535920001424,<left_click> Next <right_click> Previous <middle_click> Top,
@@ -316,13 +313,13 @@ The screen will ""pause"" till you click something.",
 302535920000044,Go To Text,
 302535920000045,"Scrolls down one line or scrolls between text in ""Go to text"".
 Right-click to go up, middle-click to scroll to the top.",
-302535920000046,dumps text to %sDumpedExamine.lua,
-302535920000047,"View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text).",
+302535920000046,dumps text to %slogs\DumpedExamine.lua,
+302535920000047,"View text, and optionally dumps text to %slogs\DumpedExamine.lua (don't use this option on large text).",
 302535920000048,View,
-302535920001027,"dumps object to %sDumpedExamineObject.lua
+302535920001027,"dumps object to %slogs\DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable.",
-302535920000049,"View text, and optionally dumps object to %sDumpedExamineObject.lua
+302535920000049,"View text, and optionally dumps object to %slogs\DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)",
 302535920000050,Opens object in Object Manipulator.,
@@ -1455,6 +1452,9 @@ Not noticeable unless using higher zoom.",
 302535920000654,Select (or mouse over) an object to follow.,
 302535920000655,Toggle Cursor,
 302535920000656,Toggle between moving camera and selecting objects.,
+302535920000039,Spam in the console log doesn't necessarily mean a problem with SM (it could just a warning).,
+302535920001463,Bug Report,
+302535920001464,Yes, I know what I'm doing. this is a bug.,
 302535920001427,Pack Mod,
 302535920001428,Uploads as a packed mod (default for mod editor upload).,
 302535920001412,GUI Dock Side,

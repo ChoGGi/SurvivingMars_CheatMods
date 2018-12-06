@@ -55,7 +55,17 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.CreateBugReportDlg()
-		CreateRealTimeThread(CreateBugReportDlg)
+		local function CallBackFunc(answer)
+			if answer then
+				CreateRealTimeThread(CreateBugReportDlg)
+			end
+		end
+		ChoGGi.ComFuncs.QuestionBox(
+			S[302535920000039--[[Spam in the console log doesn't necessarily mean a problem with SM (it could just a warning).--]]],
+			CallBackFunc,
+			S[302535920001463--[[Bug Report--]]],
+			S[302535920001464--[[Yes, I know what I'm doing. this is a bug.--]]]
+		)
 	end
 
 	function ChoGGi.MenuFuncs.ExtractHPKs()
@@ -584,11 +594,13 @@ Change DisableECM to false in settings file to re-enable them."--]]],S[302535920
 			if boolean == true then
 					WaitNextFrame(3)
 					LockCamera("Screenshot")
-					filename = GenerateScreenshotFilename("SSAA","AppData/")
+--~ 					filename = GenerateScreenshotFilename("SSAA","AppData/")
+					filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SSAA","AppData/","tga")
 					MovieWriteScreenshot(filename, 0, 64, false)
 					UnlockCamera("Screenshot")
 			else
-				filename = GenerateScreenshotFilename("SS","AppData/")
+--~ 				filename = GenerateScreenshotFilename("SS","AppData/")
+				filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SS","AppData/","tga")
 				WriteScreenshot(filename)
 			end
 			-- slight delay so it doesn't show up in the screenshot

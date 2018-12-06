@@ -50,18 +50,47 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg)
+	function ChoGGi.ComFuncs.GenerateScreenshotFilename(prefix, folder, ext, just_name)
+		local match = string.match
+		local Max = Max
+
+		prefix = prefix or ""
+		ext = ext or "png"
+		folder = folder or "AppData/"
+		if not match(folder, "/$") and #folder > 0 then
+			folder = StringFormat("%s/",folder)
+		end
+		local existing_files = io.listfiles(folder, StringFormat("%s*.%s",prefix,ext))
+		local index = 0
+		for i = 1, #existing_files do
+			index = Max(index, tonumber(match(existing_files[i], StringFormat("%s%s",prefix,"(%d+)")) or 0))
+		end
+		if just_name then
+			return StringFormat("%s%04d", prefix, index + 1)
+		end
+		return StringFormat("%s%s%04d.%s", folder, prefix, index + 1, ext)
+	end
+	local GenerateScreenshotFilename = ChoGGi.ComFuncs.GenerateScreenshotFilename
+
+	function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg,gen_name)
 		if blacklist then
 			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("Dump"))
 			return
 		end
 
-		if mode == "w" or mode == "w+" then
+--~ 		if mode == "w" or mode == "w+" then
+		if mode then
 			mode = nil
 		else
 			mode = "-1"
 		end
-		local filename = StringFormat("AppData/logs/%s.%s",file or "DumpedText",ext or "txt")
+
+		local filename
+		if gen_name then
+			filename = GenerateScreenshotFilename(file or "DumpedText","AppData/logs/",ext or "txt")
+		else
+			filename = StringFormat("AppData/logs/%s.%s",file or "DumpedText",ext or "txt")
+		end
 
 		ThreadLockKey(filename)
 		AsyncStringToFile(filename,obj,mode)
@@ -924,7 +953,7 @@ function OnMsg.ClassesGenerate()
 		local spots_str = [[<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s,%s,%s" spot_scale="%s" spot_rot="%s,%s,%s,%s"/>]]
 		local bsphere_str = [[<bsphere value="%s,%s,%s,%s"/>]]
 		local box_str = [[<box min="%s,%s,%s" max="%s,%s,%s"/>]]
-		local cavets_str = [[Readme:
+		local readme_str = [[Readme:
 See bottom for box/bsphere.
 The func I use for spot_rot rounds to two decimal points...
 
@@ -936,7 +965,7 @@ The func I use for spot_rot rounds to two decimal points...
 				return
 			end
 
-			local spots_table = {[-666] = cavets_str}
+			local spots_table = {[-1] = readme_str}
 
 			local origin = obj:GetSpotBeginIndex("Origin")
 			local origin_pos_x, origin_pos_y, origin_pos_z = obj:GetSpotLocPosXYZ(origin)
@@ -1063,24 +1092,48 @@ The func I use for spot_rot rounds to two decimal points...
 		local GetStateIdx = GetStateIdx
 		local GetStateLODCount = GetStateLODCount
 		local GetStates = GetStates
+		local TableIsEqual = ChoGGi.ComFuncs.TableIsEqual
 
 		local entity_str = "%s mat: %s lod: %s"
 		local function EntityMats(entity)
 			local mats = {}
---~ 			if entity:sub(1,1) ~= "#" then
-				local states = GetStates(entity) or ""
-				for si = 1, #states do
-					local state = GetStateIdx(states[si])
-					local num_lods = GetStateLODCount(entity, state) or 0
-					for li = 1, num_lods do
-						local num_mats = GetStateNumMaterials(entity, state, li - 1) or 0
-						for mi = 1, num_mats do
-							mats[entity_str:format(entity,mi,li)] = GetMaterialProperties(GetStateMaterial(entity,state,mi - 1,li - 1))
+			local c = 0
+			local states = GetStates(entity) or ""
+			for si = 1, #states do
+				local state = GetStateIdx(states[si])
+				local num_lods = GetStateLODCount(entity, state) or 0
+				for li = 1, num_lods do
+					local num_mats = GetStateNumMaterials(entity, state, li - 1) or 0
+					for mi = 1, num_mats do
+						local mat = GetMaterialProperties(GetStateMaterial(entity,state,mi - 1,li - 1))
+						local t1 = mats[c]
+						local t1_type = type(t1) == "table"
+						if not t1_type or t1_type and not TableIsEqual(t1,mat) then
+							c = c + 1
+							mats[c] = mat
 						end
 					end
 				end
-				return mats
---~ 			end
+			end
+			if #mats == 1 then
+				return mats[1]
+			end
+
+			for i = #mats, 1, -1 do
+				if i == 1 then
+					break
+				end
+				local t1,t2 = mats[i],mats[1]
+				if type(t1) == "table" and type(t2) == "table" and TableIsEqual(t1,t2) then
+					table.remove(mats,i)
+				end
+			end
+
+			if #mats == 1 then
+				return mats[1]
+			end
+
+			return mats
 		end
 
 		function ChoGGi.ComFuncs.GetMaterialProperties(obj,parent)
@@ -1095,6 +1148,9 @@ The func I use for spot_rot rounds to two decimal points...
 				local all_entities = GetAllEntities()
 				for entity in pairs(all_entities) do
 					materials[entity] = EntityMats(entity)
+--~ 					if entity:find("AlienDiggerBig") then
+--~ 						break
+--~ 					end
 				end
 				ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent,S[302535920001458--[[Material Properties--]]])
 			end

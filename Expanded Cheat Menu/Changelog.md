@@ -4,6 +4,13 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v11.7 (Unreleased)
+### Changed:
+- Examine:
+- > Tools>Append Dump: Append text to same file, or create a new file each time.
+- > Made Dump Object dump more info for xwindow objects.
+- Improved Material Properties (no more dupes, and if only one table displays directly).
+- Added a "Are you sure" to bug report.
+- Defaults to not showing the console log (more cheaters then modders use this), welcome msg asks if you want to show log.
 
 ## v11.6 (06 Dec 2018)
 ### Changed:

@@ -2,15 +2,17 @@
 
 -- in-game functions replaced with custom ones
 
---~ local Trans
+local type = type
+local StringFormat = string.format
+local TableFindValue = table.find_value
+
 local MsgPopup
+local DebugGetInfo
+local SaveOrigFunc
 local S
 local blacklist
 local ChoGGi_OrigFuncs
-local SaveOrigFunc
-
-local StringFormat = string.format
-local TableFindValue = table.find_value
+--~ local Trans
 
 -- set UI transparency:
 local function SetTrans(obj)
@@ -24,12 +26,11 @@ local function SetTrans(obj)
 end
 
 function OnMsg.ClassesGenerate()
-
-	--~ Trans = ChoGGi.ComFuncs.Translate
 	MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
-
+	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
+	--~ Trans = ChoGGi.ComFuncs.Translate
 
 	ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 	SaveOrigFunc = function(class_or_func,func_name)
@@ -54,7 +55,9 @@ function OnMsg.ClassesGenerate()
 	editor.LoadPlaceObjConfig()
 	Platform.developer = d_before
 	-- needed for HashLogToTable(), SM was planning to have multiple cities (or from a past game from this engine)?
-	GlobalVar("g_Cities",{})
+	if not rawget(_G,"g_Cities") then
+		GlobalVar("g_Cities",{})
+	end
 	-- editor wants a table
 	GlobalVar("g_revision_map",{})
 	-- stops some log spam in editor (function doesn't exist in SM)
@@ -68,6 +71,7 @@ function OnMsg.ClassesGenerate()
 --~ 			end
 --~ 		end
 
+		SaveOrigFunc("GetFuncSourceString")
 		SaveOrigFunc("GetMaxCargoShuttleCapacity")
 		SaveOrigFunc("GetMissingMods")
 		SaveOrigFunc("IsDlcAvailable")
@@ -77,7 +81,18 @@ function OnMsg.ClassesGenerate()
 		SaveOrigFunc("ShowConsoleLog")
 		SaveOrigFunc("ShowPopupNotification")
 		SaveOrigFunc("TDevModeGetEnglishText")
+		SaveOrigFunc("TGetID")
 		SaveOrigFunc("UIGetBuildingPrerequisites")
+
+		GetFuncSourceString = DebugGetInfo
+
+		-- if it ain't a table...
+		function TGetID(t,...)
+			if type(t) ~= "table" then
+				return ChoGGi_OrigFuncs.TGetID(T(t,...))
+			end
+			return ChoGGi_OrigFuncs.TGetID(t,...)
+		end
 
 		-- I guess, don't pass a string to it?
 		function TDevModeGetEnglishText(T,...)

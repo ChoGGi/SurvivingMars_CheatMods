@@ -2,10 +2,13 @@
 
 local S = ChoGGi.Strings
 local testing = ChoGGi.testing
+-- Init.lua
+local TableConcat = ChoGGi.ComFuncs.TableConcat
 -- Strings.lua
 local Trans = ChoGGi.ComFuncs.Translate
 
 local pairs = pairs
+local tonumber = tonumber
 local AsyncRand = AsyncRand
 local IsValid = IsValid
 local IsKindOf = IsKindOf
@@ -218,10 +221,15 @@ end
 
 -- "some.some.some.etc" = returns etc as object
 function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
+	-- lazy is best
+	if type(str) ~= "string" then
+		return str
+	end
 	-- there's always one
 	if str == "_G" then
-		return _G
+		return ChoGGi.Temp._G or _G
 	end
+
 	-- always start with _G
 	local obj = root or _G
 	-- https://www.lua.org/pil/14.1.html
@@ -4467,4 +4475,35 @@ function ChoGGi.ComFuncs.RetAllOfClass(cls)
 		objects = MapGet("map",cls)
 	end
 	return objects
+end
+
+-- associative tables only, otherwise table.is_iequal(t1,t1)
+function ChoGGi.ComFuncs.TableIsEqual(t1,t2)
+	-- see which one is longer, we use that as the looper
+	local c1,c2 = 0,0
+	for _ in pairs(t1) do
+		c1 = c1 + 1
+	end
+	for _ in pairs(t2) do
+		c1 = c1 + 1
+	end
+
+	local is_equal = true
+	if c1 >= c2 then
+		for key,value in pairs(t1) do
+			if value ~= t2[key] then
+				is_equal = false
+				break
+			end
+		end
+	else
+		for key,value in pairs(t2) do
+			if value ~= t1[key] then
+				is_equal = false
+				break
+			end
+		end
+	end
+
+	return is_equal
 end

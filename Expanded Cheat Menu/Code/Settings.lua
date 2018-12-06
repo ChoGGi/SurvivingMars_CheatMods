@@ -57,7 +57,7 @@ function OnMsg.ClassesGenerate()
 		-- dark background for the console log
 		ConsoleDim = true,
 		-- shows the console log on screen
-		ConsoleToggleHistory = true,
+		ConsoleToggleHistory = false,
 		-- shows a msg in the console log (maybe a popup would be better)
 		FirstRun = true,
 		-- default to opened (changed on click)
@@ -98,6 +98,8 @@ function OnMsg.ClassesGenerate()
 		},
 		-- disabling this will still leave them for the cheats menu and cheats pane
 		EnableToolTips = true,
+		-- append text or create new files
+		ExamineAppendDump = true,
 		-- how often we update when auto-refresh is turned on
 		ExamineRefreshTime = 1000,
 		-- what cmd/editor to use with os.execute(cmd) when doing external editing
