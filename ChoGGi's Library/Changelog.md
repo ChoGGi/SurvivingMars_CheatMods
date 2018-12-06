@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v4.6 (Unreleased)
+## v4.7 (Unreleased)
+
+## v4.6 (06 Dec 2018)
 - Midly broke list choice filter (for certain last items).
 
 ## v4.5 (06 Dec 2018)
