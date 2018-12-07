@@ -50,6 +50,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.TheSoylentOption()
 		local UICity = UICity
 		local ChoGGi = ChoGGi
+		local Tables = ChoGGi.Tables
 
 		-- don't drop BlackCube/MysteryResource
 		local reslist = {}
@@ -72,10 +73,21 @@ function OnMsg.ClassesGenerate()
 			end
 			PlaceResourcePile(meat_bag:GetVisualPos(), res, Random(1,5) * ChoGGi.Consts.ResourceScale)
 			meat_bag:SetCommand("Die","ChoGGi_Soylent")
-			Msg("ColonistDied",meat_bag, "ChoGGi_Soylent")
-			-- gotta wait for a tad else log gets spammed with changepath and other stuff
 			CreateRealTimeThread(function()
-				Sleep(100)
+				-- in a building
+				local holder = meat_bag.holder
+				if holder then
+					meat_bag:SetPos(holder:GetVisualPos())
+					meat_bag:SetHolder(false)
+					holder:OnExitUnit(meat_bag)
+				else
+					-- maybe walking
+					meat_bag:InterruptPath()
+				end
+
+				while meat_bag:GetPath() do
+					Sleep(100)
+				end
 				meat_bag:Done()
 				DoneObject(meat_bag)
 			end)
@@ -88,27 +100,28 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 
-		--culling the herd
+		-- culling the herd
 		local ItemList = {
 			{text = StringFormat(" %s",S[7553--[[Homeless--]]]),value = "Homeless"},
 			{text = StringFormat(" %s",S[6859--[[Unemployed--]]]),value = "Unemployed"},
 			{text = StringFormat(" %s",S[7031--[[Renegades--]]]),value = "Renegade"},
 			{text = StringFormat(" %s: %s",S[240--[[Specialization--]]],S[6761--[[None--]]]),value = "none"},
 		}
-		local function AddToList(c,text)
-			for i = 1, #c do
+		local function AddToList(list,text)
+			for i = 1, #list do
 				ItemList[#ItemList+1] = {
-					text = StringFormat("%s: %s",S[text],c[i]),
-					value = c[i],
+					text = StringFormat("%s: %s",S[text],list[i]),
+					value = list[i],
 					idx = i,
 				}
 			end
 		end
-		AddToList(ChoGGi.Tables.ColonistAges,987289847467--[[Age Groups--]])
-		AddToList(ChoGGi.Tables.ColonistGenders,4356--[[Sex--]])
-		AddToList(ChoGGi.Tables.ColonistRaces,302535920000741--[[Race--]])
-		AddToList(ChoGGi.Tables.ColonistSpecializations,240--[[Specialization--]])
-		local birth = ChoGGi.Tables.ColonistBirthplaces
+
+		AddToList(Tables.ColonistAges,987289847467--[[Age Groups--]])
+		AddToList(Tables.ColonistGenders,4356--[[Sex--]])
+		AddToList(Tables.ColonistRaces,302535920000741--[[Race--]])
+		AddToList(Tables.ColonistSpecializations,240--[[Specialization--]])
+		local birth = Tables.ColonistBirthplaces
 		local icon = "%s\n\n<image %s>"
 		for i = 1, #birth do
 			local name = Trans(birth[i].text)
@@ -124,7 +137,6 @@ function OnMsg.ClassesGenerate()
 			if #choice < 1 then
 				return
 			end
-			local value = choice[1].value
 			local check1 = choice[1].check1
 			local dome
 			sel = SelectedObj
@@ -159,7 +171,7 @@ function OnMsg.ClassesGenerate()
 				end
 			end
 			local function Cull(trait,trait_type,race)
-				--only race is stored as number (maybe there's a cock^?^?^?^?CoC around?)
+				-- only race is stored as number (maybe there's a cock^?^?^?^?CoC around?)
 				trait = race or trait
 				local objs = UICity.labels.Colonist or ""
 				for i = #objs, 1, -1 do
@@ -174,60 +186,71 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 			end
-			local text = choice[1].text
 
-			if value == "Homeless" or value == "Unemployed" then
-				CullLabel(value)
-			elseif value == "Renegade" then
-				CullTrait(value)
-			elseif text:find(S[240--[[Specialization--]]],1,true) and (ChoGGi.Tables.ColonistSpecializations[value] or value == "none") then
-				CullLabel(value)
-			elseif text:find(S[987289847467--[[Age Groups--]]],1,true) and ChoGGi.Tables.ColonistAges[value] then
-				CullTrait(value)
-			elseif text:find(S[4357--[[Birthplace--]]],1,true) and ChoGGi.Tables.ColonistBirthplaces[value] then
-				Cull(value,"birthplace")
-				-- bonus round
-				if not UICity.ChoGGi.DaddysLittleHitler then
-					Msg("ChoGGi_DaddysLittleHitler")
-					UICity.ChoGGi.DaddysLittleHitler = true
+			local show_popup = true
+			for i = 1, #choice do
+				local text = choice[i].text
+				local value = choice[i].value
+
+				if value == "Homeless" or value == "Unemployed" then
+					CullLabel(value)
+				elseif value == "Renegade" then
+					CullTrait(value)
+				elseif text:find(S[240--[[Specialization--]]],1,true) and (Tables.ColonistSpecializations[value] or value == "none") then
+					CullLabel(value)
+				elseif text:find(S[987289847467--[[Age Groups--]]],1,true) and Tables.ColonistAges[value] then
+					CullTrait(value)
+				elseif text:find(S[4357--[[Birthplace--]]],1,true) and Tables.ColonistBirthplaces[value] then
+					Cull(value,"birthplace")
+					-- bonus round
+					if not UICity.ChoGGi.DaddysLittleHitler then
+						Msg("ChoGGi_DaddysLittleHitler")
+						UICity.ChoGGi.DaddysLittleHitler = true
+					end
+				elseif text:find(S[4356--[[Sex--]]],1,true) and Tables.ColonistGenders[value] then
+					CullTrait(value)
+				elseif text:find(S[302535920000741--[[Race--]]],1,true) and Tables.ColonistRaces[value] then
+					Cull(value,"race",choice[1].idx)
+					-- bonus round
+					if not UICity.ChoGGi.DaddysLittleHitler then
+						Msg("ChoGGi_DaddysLittleHitler")
+						UICity.ChoGGi.DaddysLittleHitler = true
+					end
 				end
-			elseif text:find(S[4356--[[Sex--]]],1,true) and ChoGGi.Tables.ColonistGenders[value] then
-				CullTrait(value)
-			elseif text:find(S[302535920000741--[[Race--]]],1,true) and ChoGGi.Tables.ColonistRaces[value] then
-				Cull(value,"race",choice[1].idx)
-				-- bonus round
-				if not UICity.ChoGGi.DaddysLittleHitler then
-					Msg("ChoGGi_DaddysLittleHitler")
-					UICity.ChoGGi.DaddysLittleHitler = true
+
+				if value == "Child" then
+					show_popup = false
+					-- wonder why they never added this to fallout 3?
+					MsgPopup(
+						302535920000742--[[Congratulations: You've been awarded the Childkiller title.
+
+
+
+I think somebody has been playing too much Fallout...--]],
+						302535920000743--[[Childkiller--]],
+						"UI/Icons/Logos/logo_09.tga",
+						true
+					)
+					if not UICity.ChoGGi.Childkiller then
+						Msg("ChoGGi_Childkiller")
+						UICity.ChoGGi.Childkiller = true
+					end
 				end
 			end
 
-			if value == "Child" then
-				--wonder why they never added this to fallout 3?
+			if show_popup then
 				MsgPopup(
-					302535920000742--[[Congratulations: You've been awarded the Childkiller title.
-
-
-
-	I think somebody has been playing too much Fallout...--]],
-					302535920000743--[[Childkiller--]],
-					"UI/Icons/Logos/logo_09.tga",
-					true
-				)
-				if not UICity.ChoGGi.Childkiller then
-					Msg("ChoGGi_Childkiller")
-					UICity.ChoGGi.Childkiller = true
-				end
-			else
-				MsgPopup(
-					S[302535920000744--[[%s: Wholesale slaughter--]]]:format(choice[1].text),
+					S[302535920000744--[[%s: Wholesale slaughter--]]]:format(#choice),
 					302535920000745--[[Snacks--]],
 					"UI/Icons/Sections/Food_1.tga"
 				)
 			end
+
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
+			multisel = true,
+			custom_type = 3,
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000375--[[The Soylent Option--]],

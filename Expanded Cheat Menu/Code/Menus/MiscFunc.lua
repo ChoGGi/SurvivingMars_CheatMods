@@ -157,11 +157,11 @@ function OnMsg.ClassesGenerate()
 		local config = config
 		config.BuildingInfopanelCheats = not config.BuildingInfopanelCheats
 		ReopenSelectionXInfopanel()
-		ChoGGi.UserSettings.ToggleInfopanelCheats = config.BuildingInfopanelCheats
+		ChoGGi.UserSettings.InfopanelCheats = config.BuildingInfopanelCheats
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920001122--[[%s: HAXOR--]]]:format(ChoGGi.UserSettings.ToggleInfopanelCheats),
+			S[302535920001122--[[%s: HAXOR--]]]:format(ChoGGi.UserSettings.InfopanelCheats),
 			27--[[Cheats--]],
 			"UI/Icons/Anomaly_Tech.tga"
 		)
