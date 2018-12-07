@@ -12,6 +12,9 @@
 - Added a "Are you sure" to bug report.
 - Defaults to not showing the console log (more cheaters then modders use this), welcome msg asks if you want to show log.
 
+### Fixed:
+- Infopanel Cheats came back after restart instead of staying disabled (thanks Dawnmist).
+
 ## v11.6 (06 Dec 2018)
 ### Changed:
 - Bug report.
