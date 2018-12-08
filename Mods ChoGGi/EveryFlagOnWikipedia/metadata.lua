@@ -18,7 +18,7 @@ Since this game uses nations for names, this also takes all the in-game names an
 
 This also sets const.FullTransitionToMarsNames to 9999 (Sols), and adds all the names to Mars (I think we've all seen enough of Cosmo Cosmos).
 
-If you use ModConfig you can disable the randomly choose a birthplace for newborns, instead of just using Mars.
+If you use Mod Config Reborn you can disable the randomly choose a birthplace for newborns, instead of just using Mars.
 
 I also added a few unique names associated with space.
 Suggestions welcome, for names already added see: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Mods%20ChoGGi/EveryFlagOnWikipedia/Code/Script.lua#L64

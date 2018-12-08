@@ -705,7 +705,7 @@ function ChoGGi_ListChoiceDlg:idListOnSelect(button)
 			self:UpdateColourPicker(self.sel.text)
 			self.idColourContainer:SetVisible(true)
 		else
-			self:SetWidth(self.dialog_width)
+			self:SetWidth(self.dialog_width_scaled)
 			self.idColourContainer:SetVisible(false)
 		end
 	end

@@ -2,12 +2,21 @@ local StringFormat = string.format
 local S = ChoGGi.Strings
 
 local OnMsg = OnMsg
+local point = point
 
---~ ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100 or 100
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
--- used for resizing my dialogs to scale
 function OnMsg.SystemSize()
 	ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
+	local UIScale = ChoGGi.Temp.UIScale
+
+	-- update existing dialogs
+	local obj = ChoGGi.Temp.Dialogs
+	for dlg in pairs(obj) do
+		dlg.dialog_width_scaled = dlg.dialog_width * UIScale
+		dlg.dialog_height_scaled = dlg.dialog_height * UIScale
+		dlg.header_scaled = dlg.header * UIScale
+		dlg:SetSize(point(dlg.dialog_width_scaled, dlg.dialog_height_scaled))
+	end
 end
 
 -- we don't add shortcuts and ain't supposed to drink no booze

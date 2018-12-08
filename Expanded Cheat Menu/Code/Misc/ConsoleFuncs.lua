@@ -42,7 +42,7 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 	--
-	local function AddSubmenu(name,list,title)
+	function ChoGGi.ConsoleFuncs.AddSubmenu(name,list,title)
 		local submenu = TableFind(ExamineMenuToggle_list,"name",name)
 		if submenu then
 			list = list or empty_table
@@ -60,7 +60,7 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	local function AddMonitor(name,submenu,idx)
+	function ChoGGi.ConsoleFuncs.AddMonitor(name,submenu,idx)
 		TableInsert(submenu,idx or 2,{
 			name = StringFormat("%s: %s",S[302535920000853--[[Monitor--]]],name),
 			hint = StringFormat("ChoGGi.ComFuncs.MonitorTableLength(%s)",name),
@@ -75,9 +75,10 @@ function OnMsg.ClassesGenerate()
 	end
 
 	-- build list of objects to examine
-	local function BuildExamineMenu()
+	function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 		table.iclear(ExamineMenuToggle_list)
 
+		local AddSubmenu = ChoGGi.ConsoleFuncs.AddSubmenu
 		local list = ChoGGi.UserSettings.ConsoleExamineList or ""
 		local submenu
 
@@ -147,9 +148,9 @@ function OnMsg.ClassesGenerate()
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
 		--
-		submenu = AddSubmenu("_G",{"__cobjectToCObject","Flags","HandleToObject","TranslationTable","const.TagLookupTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod"})
+		submenu = AddSubmenu("_G",{"__cobjectToCObject","Flags","HandleToObject","TranslationTable","const.TagLookupTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod","debug.getregistry"})
 		if submenu then
-			AddMonitor("_G",submenu)
+			ChoGGi.ConsoleFuncs.AddMonitor("_G",submenu)
 		end
 
 		submenu = AddSubmenu("ThreadsRegister",{"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers"})
@@ -195,7 +196,7 @@ function OnMsg.ClassesGenerate()
 
 	-- rebuild list of objects to examine when user changes settings
 	function OnMsg.ChoGGi_SettingsUpdated()
-		BuildExamineMenu()
+		ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	end
 
 	local ConsolePopupToggle_list = {
@@ -279,7 +280,7 @@ function OnMsg.ClassesGenerate()
 		},
 	}
 
-	local function HistoryPopup(self)
+	function ChoGGi.ConsoleFuncs.HistoryPopup(self)
 		local dlgConsole = dlgConsole
 		local ConsoleHistoryMenuLength = ChoGGi.UserSettings.ConsoleHistoryMenuLength or 50
 		local items = {}
@@ -356,7 +357,7 @@ function OnMsg.ClassesGenerate()
 			Id = "idHistoryMenu",
 			RolloverText = S[302535920001080--[[Console history items (mouse-over to see code).--]]],
 			Text = S[302535920000793--[[History--]]],
-			OnPress = HistoryPopup,
+			OnPress = ChoGGi.ConsoleFuncs.HistoryPopup,
 		}, dlgConsole.idContainer)
 
 		if not blacklist then
@@ -367,7 +368,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- changed examine list to a saved one instead of one made of .lua files
-		BuildExamineMenu()
+		ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	end
 
 	local function BuildSciptButton(console,folder)

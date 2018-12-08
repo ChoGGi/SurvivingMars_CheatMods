@@ -8,12 +8,16 @@
 - Examine:
 - > Tools>Append Dump: Append text to same file, or create a new file each time.
 - > Made Dump Object dump more info for xwindow objects.
+- > No longer shows ,0 for point objects without a z.
+- > Cleaned up info for function objects.
 - Improved Material Properties (no more dupes, and if only one table displays directly).
 - Added a "Are you sure" to bug report.
 - Defaults to not showing the console log (more cheaters then modders use this), welcome msg asks if you want to show log.
 
 ### Fixed:
 - Infopanel Cheats came back after restart instead of staying disabled (thanks Dawnmist).
+- Some console spam from selection panel (thanks Dawnmist).
+- Examine: Some objects didn't list since last update.
 
 ## v11.6 (06 Dec 2018)
 ### Changed:

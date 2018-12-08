@@ -115,7 +115,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DisablePulsatingPinsMotion,
-				302535920000335--[[Pins will no longer do the pulsating motion (hover over to stop).--]]
+				302535920000335--[[When true pins will no longer do the pulsating motion (hover over to stop).--]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.PulsatingPins_Toggle,

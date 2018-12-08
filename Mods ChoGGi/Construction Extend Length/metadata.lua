@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[Extend length of pipes/cables/passages from 20 to 500.
-Can be changed with ModConfig.
+Can be changed with Mod Config Reborn.
 
 Requested by Adi.
 

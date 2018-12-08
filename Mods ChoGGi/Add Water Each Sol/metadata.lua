@@ -15,5 +15,5 @@ return PlaceObj("ModDef", {
 
 This will not increase the capacity, so if the deposit is full that's it.
 
-You can adjust the amount added with ModConfig.]],
+You can adjust the amount added with Mod Config Reborn.]],
 })
