@@ -1139,9 +1139,9 @@ function Examine:valuetotextex(obj)
 			if obj == InvalidPos then
 				return S[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
 			else
-				-- is 3 pointer or just 2d
-				local z = obj:z()
+				local x,y,z = obj:xyz()
 				local temp_str
+				-- don't show z if we don't have one
 				if z then
 					temp_str = point_str
 				else
@@ -1151,9 +1151,7 @@ function Examine:valuetotextex(obj)
 				return temp_str:format(
 					self:HyperLink(obj,ShowObj_local),
 					S[302535920001396--[[point--]]],
-					obj:x(),
-					obj:y(),
-					z or "",
+					x,y,z or "",
 					HLEnd
 				)
 			end
@@ -1280,9 +1278,9 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 	)
 end
 
-function Examine:RetDebugUpValue(obj,list,c)
+function Examine:RetDebugUpValue(obj,list,c,nups)
 	local debug_str = "%s = %s < debug.getupvalue(%s)"
-	for i = 1, getinfo(obj, "u").nups do
+	for i = 1, nups do
 		local name, value = getupvalue(obj, i)
 		if name then
 			c = c + 1
@@ -1606,7 +1604,10 @@ function Examine:totextex(obj,obj_type)
 		else
 			c = c + 1
 			totextex_res[c] = "\n"
-			totextex_res,c = self:RetDebugUpValue(obj,totextex_res,c)
+			local nups = getinfo(obj, "u").nups
+			if nups > 0 then
+				totextex_res,c = self:RetDebugUpValue(obj,totextex_res,c,nups)
+			end
 			dbg_value = self:RetDebugGetinfo(obj)
 		end
 		c = c + 1
