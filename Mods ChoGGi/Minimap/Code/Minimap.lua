@@ -156,7 +156,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		pcall(function()
 			x,y = HUD.idRight.box:minxyz()
 --~ 			x = x - 25
-			y = y - self.dialog_height
+			y = y - self.dialog_height_scaled
 		end)
 	end
 
@@ -179,8 +179,8 @@ end
 function ChoGGi_MinimapDlg:idToggleDblSizeOnPress()
 	self = GetRootDialog(self)
 	local size = self:GetSize()
-	if size:x() == self.dialog_width and size:y() == self.dialog_height then
-		self:SetSize(point(self.dialog_width*2,self.dialog_height*2))
+	if size:x() == self.dialog_width_scaled and size:y() == self.dialog_height_scaled then
+		self:SetSize(point(self.dialog_width_scaled*2,self.dialog_height_scaled*2))
 		-- we don't want it off screen
 		self:SetInitPos(nil,self:GetPos())
 	else

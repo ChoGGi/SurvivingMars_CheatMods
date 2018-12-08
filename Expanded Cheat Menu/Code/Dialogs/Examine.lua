@@ -25,11 +25,13 @@ local IsValidEntity = IsValidEntity
 local getlocal
 local getupvalue
 local getinfo
+local gethook
 local debug = rawget(_G,"debug")
 if debug then
 	getlocal = debug.getlocal
 	getupvalue = debug.getupvalue
 	getinfo = debug.getinfo
+	gethook = debug.gethook
 end
 
 local HLEnd = "</h></color>"
@@ -1094,6 +1096,7 @@ function Examine:SetTranspMode(toggle)
 end
 --
 
+local point_str = "%s%s(%s,%s,%s)%s"
 function Examine:valuetotextex(obj)
 	local obj_type = type(obj)
 
@@ -1136,12 +1139,21 @@ function Examine:valuetotextex(obj)
 			if obj == InvalidPos then
 				return S[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
 			else
-				return StringFormat("%s%s(%s,%s,%s)%s",
+				-- is 3 pointer or just 2d
+				local z = obj:z()
+				local temp_str
+				if z then
+					temp_str = point_str
+				else
+					temp_str = point_str:gsub(",%%s%)","%%s)")
+				end
+
+				return temp_str:format(
 					self:HyperLink(obj,ShowObj_local),
 					S[302535920001396--[[point--]]],
 					obj:x(),
 					obj:y(),
-					obj:z() or 0,
+					z or "",
 					HLEnd
 				)
 			end
@@ -1249,16 +1261,12 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 	else
 		ExamineThreadLevel_data = {}
 		local l = 1
-		local name, val
-		repeat
+		local name, val = true
+		while name do
 			name, val = getlocal(obj, level, l)
-			if name then
-				ExamineThreadLevel_data[ExamineThreadLevel_str1:format(name,level,l)] = val
-				l = l + 1
-			else
-				break
-			end
-		until not name
+			ExamineThreadLevel_data[ExamineThreadLevel_str1:format(name,level,l)] = val
+			l = l + 1
+		end
 
 		for i = 1, info.nups do
 			local name, val = getupvalue(info.func, i)
@@ -1270,6 +1278,35 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 
 	ChoGGi.ComFuncs.OpenInExamineDlg(ExamineThreadLevel_data,self,StringFormat("%s: %s",S[302535920001353--[[Thread info--]]],RetName(obj))
 	)
+end
+
+function Examine:RetDebugUpValue(obj,list,c)
+	local debug_str = "%s = %s < debug.getupvalue(%s)"
+	for i = 1, getinfo(obj, "u").nups do
+		local name, value = getupvalue(obj, i)
+		if name then
+			c = c + 1
+			list[c] = debug_str:format(
+				self:valuetotextex(name),
+				self:valuetotextex(value),
+				i
+			)
+		end
+	end
+	return list,c
+end
+
+local totextex_debug_table = {}
+function Examine:RetDebugGetinfo(obj)
+	TableIClear(totextex_debug_table)
+	totextex_debug_table[1] = "\ndebug.getinfo(\"SLlfunt\"): "
+	local c_debug = 1
+	local info = getinfo(obj,"SLlfunt") or empty_table
+	for key,value in pairs(info) do
+		c_debug = c_debug + 1
+		totextex_debug_table[c_debug] = StringFormat("%s: %s",key,self:valuetotextex(value))
+	end
+	return TableConcat(totextex_debug_table,"\n")
 end
 
 function Examine:totextex(obj,obj_type)
@@ -1338,13 +1375,20 @@ function Examine:totextex(obj,obj_type)
 			c = c + 1
 			totextex_res[c] = RetThreadInfo(obj)
 		else
+
+			local hook = gethook(obj)
+			if hook then
+				c = c + 1
+				totextex_res[c] = self:valuetotextex(gethook(obj))
+			end
+
 			local level, info = 0
 			repeat
-				info = getinfo(obj, level, "Slfun")
+				info = getinfo(obj, level, "SLlfunt")
 				if info then
 					local l_level, l_info = level, info
 					c = c + 1
-					totextex_res[c] = StringFormat([[%s%s(%s) %s: %s%s < debug.getinfo(%s,"Slfun")]],
+					totextex_res[c] = StringFormat([[%s%s(%s) %s: %s%s < debug.getinfo(%s,"SLlfunt")]],
 						self:HyperLink(obj,function()
 							ExamineThreadLevel_totextex(l_level,l_info,obj,self)
 						end),
@@ -1371,24 +1415,8 @@ function Examine:totextex(obj,obj_type)
 		else
 			c = c + 1
 			totextex_res[c] = self:valuetotextex(tostring(obj))
-			local level = 1
-			local k, v = true
-			while k do
-				k, v = getupvalue(obj, level)
-				if k then
-					c = c + 1
-					totextex_res[c] = StringFormat("%s = %s < debug.getupvalue(%s)",
-						self:valuetotextex(k),
-						self:valuetotextex(v),
-						level
-					)
-				else
-					c = c + 1
-					totextex_res[c] = self:valuetotextex(obj)
-					break
-				end
-				level = level + 1
-			end
+			c = c + 1
+			totextex_res[c] = self:valuetotextex(obj)
 		end
 
 	end
@@ -1572,14 +1600,14 @@ function Examine:totextex(obj,obj_type)
 	-- add some extra info for funcs
 	elseif obj_type == "function" then
 		local dbg_value
+
 		if blacklist then
 			dbg_value = StringFormat("\ndebug.getinfo(): %s",DebugGetInfo(obj))
 		else
-			dbg_value = "\ndebug.getinfo(): "
-			local info = getinfo(obj) or empty_table
-			for key,value in pairs(info) do
-				dbg_value = StringFormat("%s\n%s: %s",dbg_value,key,self:valuetotextex(value))
-			end
+			c = c + 1
+			totextex_res[c] = "\n"
+			totextex_res,c = self:RetDebugUpValue(obj,totextex_res,c)
+			dbg_value = self:RetDebugGetinfo(obj)
 		end
 		c = c + 1
 		totextex_res[c] = dbg_value
@@ -1630,7 +1658,8 @@ function Examine:SetToolbarVis(obj)
 			self.idButDeleteAll:SetVisible()
 		end
 
-		if next(EnumVars(RetName(obj))) then
+		local enum = EnumVars(self.name)
+		if enum and next(enum) then
 			self.idButViewEnum:SetVisible(true)
 		else
 			self.idButViewEnum:SetVisible()
@@ -1689,10 +1718,11 @@ function Examine:SetObj(startup)
 	local obj_type = type(obj)
 	local obj_class
 
-	self:SetToolbarVis(obj)
-
 	local name = RetName(obj)
 	self.name = name
+
+	self:SetToolbarVis(obj)
+
 	self.idText:SetText(StringFormat("%s: %s",name,S[67--[[Loading resources--]]]))
 
 	if obj_type == "table" then

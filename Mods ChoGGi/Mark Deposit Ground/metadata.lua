@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"description", [[Marks the ground around deposits so you can turn off the ugly signs and still see where they are.
 Marks are sized depending on max amount.
 
-Includes a ModConfig option to always hide the signs (you can still select the invisible sign and see the amount).
+Includes a Mod Config Reborn option to always hide the signs (you can still select the invisible sign and see the amount).
 An option to change all anomalies to the greenman model (suggestions for a different model?).
 And one more to show signs during construction mode.]],
 })

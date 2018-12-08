@@ -31,7 +31,7 @@ function OnMsg.ClassesGenerate()
 		self.idList:SetLayoutMethod("Grid")
 
 		-- get pos of pins and stick it above
-		self.idDialog:SetBox(2880,540,self.dialog_width,self.dialog_height)
+		self.idDialog:SetBox(2880,540,self.dialog_width_scaled,self.dialog_height_scaled)
 
 		self.items = ChoGGi.ComFuncs.RetAllOfClass(self.obj.class)
 		self:BuildList()

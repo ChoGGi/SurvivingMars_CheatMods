@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 This will allow you to have pure resident domes that connect to the work/leisure domes.
 You can set shifts that colonists are allowed to use the teleporter.
 
-Length defaults to tunnel length, use ModConfig to change.
+Length defaults to tunnel length, use Mod Config Reborn to change.
 
 Known Issues:
 If you turn it off, then the colonists will group up in front of it (I figured that was better then them quitting and so on).

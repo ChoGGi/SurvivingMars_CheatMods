@@ -153,7 +153,7 @@ function ChoGGi_MoveControl:OnMouseButtonDoubleClick(pt,button,...)
 			-- save size and hide sections
 			self:ToggleRollup(win,false)
 			win.dialog_rolled_up = win:GetHeight()
-			win:SetHeight(win.header)
+			win:SetHeight(win.header_scaled)
 		end
 	end
 	return XMoveControl.OnMouseButtonDoubleClick(self,pt,button,...)
@@ -435,10 +435,13 @@ DefineClass.ChoGGi_Window = {
 	__parents = {"XWindow"},
 	dialog_width = 500.0,
 	dialog_height = 500.0,
+	dialog_width_scaled = false,
+	dialog_height_scaled = false,
 	-- above console
 	ZOrder = 5,
 	-- how far down to y-offset new dialogs
 	header = 34.0,
+	header_scaled = false,
 
 	RolloverTemplate = "Rollover",
 }
@@ -450,11 +453,11 @@ function ChoGGi_Window:AddElements()
 
 	ChoGGi.Temp.Dialogs[self] = true
 
-	-- scale to UI
+	-- scale to UI (See OnMsgs.lua for UIScale)
 	local UIScale = ChoGGi.Temp.UIScale
-	self.dialog_width = self.dialog_width * UIScale
-	self.dialog_height = self.dialog_height * UIScale
-	self.header = self.header * UIScale
+	self.dialog_width_scaled = self.dialog_width * UIScale
+	self.dialog_height_scaled = self.dialog_height * UIScale
+	self.header_scaled = self.header * UIScale
 
 	-- add container dialog for everything to fit in
 	self.idDialog = g_Classes.ChoGGi_Dialog:new({
@@ -463,7 +466,7 @@ function ChoGGi_Window:AddElements()
 	GetActionsHost(self):AddAction(g_Classes.XAction:new(ChoGGi_Dialog_action))
 
 	-- x,y,w,h (start off with all dialogs at 100,100, default size, and we move later)
-	self.idDialog:SetBox(100, 100, self.dialog_width, self.dialog_height)
+	self.idDialog:SetBox(100, 100, self.dialog_width_scaled, self.dialog_height_scaled)
 
 	self.idSizeControl = g_Classes.XSizeControl:new({
 		Id = "idSizeControl",
@@ -531,19 +534,15 @@ function ChoGGi_Window:AddElements()
 
 	self.idCaption = g_Classes.ChoGGi_Label:new({
 		Id = "idCaption",
---~ 		MaxHeight = self.header,
---~ 		Dock = "left",
---~ 		Margins = box(0,0,50,0),
-		--~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
-
+		Padding = box(4,0,0,0),
 	}, self.idTitleLeftSection)
-
-	if is_image then
-		self.idCaption:SetPadding(box(self.idCaptionImage.box:sizex(),0,0,0))
-	else
-		self.idCaption:SetPadding(box(4,0,0,0))
-	end
 	self.idCaption:SetTitle(self)
+
+--~ 	if is_image then
+--~ 		self.idCaption:SetPadding(box(self.idCaptionImage.box:sizex(),0,0,0))
+--~ 	else
+--~ 		self.idCaption:SetPadding(box(4,0,0,0))
+--~ 	end
 
 	-- needed for :Wait()
 	self.idDialog:Open()
@@ -583,7 +582,7 @@ function ChoGGi_Window:BoxSize(obj)
 	local x,y,w,h
 	local box = obj_dlg.box
 	x = box:minx()
-	y = box:miny() + self.header
+	y = box:miny() + self.header_scaled
 	if self.class == "Examine" then
 		-- it's a copy of examine/find value wanting a new window offset, so we want the size of it
 		w = box:sizex()
@@ -630,7 +629,7 @@ function ChoGGi_Window:SetSize(size,dialog)
 	dlg:SetBox(x,y,w,h)
 end
 function ChoGGi_Window:ResetSize(dialog)
-	self:SetSize(point(self.dialog_width, self.dialog_height),dialog or "idDialog")
+	self:SetSize(point(self.dialog_width_scaled, self.dialog_height_scaled),dialog or "idDialog")
 end
 function ChoGGi_Window:SetWidth(w, dialog)
 	self:SetSize(point(w, self[dialog or "idDialog"].box:sizey()))
@@ -701,8 +700,8 @@ function ChoGGi_Window:SetInitPos(parent,pt)
 	if (y + h) > winh then
 		if IsKindOf(parent,"XWindow") then
 			-- shrink box by header
-			new_y = winh - h + self.header
-			h = h - self.header
+			new_y = winh - h + self.header_scaled
+			h = h - self.header_scaled
 		else
 			new_y = winh - h
 		end

@@ -229,14 +229,15 @@ function OnMsg.ClassesGenerate()
 	--~		 end
 			return ChoGGi_OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent,...)
 		end
-		--Msg("ColonistDied",UICity.labels.Colonist[1],"low health")
-		--local temp = PopupNotificationPresets.FirstColonistDeath
 
-	 -- UI transparency dialogs (buildmenu, pins, infopanel)
+		-- UI transparency dialogs (buildmenu, pins, infopanel)
+		local pack_params = pack_params
+		local TableUnpack = table.unpack
 		function OpenDialog(...)
-			local ret = {ChoGGi_OrigFuncs.OpenDialog(...)}
+--~ 			local ret = {ChoGGi_OrigFuncs.OpenDialog(...)}
+			local ret = pack_params(ChoGGi_OrigFuncs.OpenDialog(...))
 			SetTrans(ret)
-			return table.unpack(ret)
+			return TableUnpack(ret)
 		end
 
 		--console stuff
@@ -961,6 +962,7 @@ function OnMsg.ClassesBuilt()
 
 	-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
 	do -- InfopanelDlg:Open
+		local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 		local CreateRealTimeThread = CreateRealTimeThread
 		local DeleteThread = DeleteThread
 		local Sleep = Sleep
@@ -1022,23 +1024,26 @@ function OnMsg.ClassesBuilt()
 			end
 
 			-- add toggle to main buttons area
-			local main_buts = self.idMainButtons.parent.parent
-			local title = main_buts[1]
-			title.FXMouseIn = "ActionButtonHover"
-			title.HandleMouse = true
-			title.RolloverTemplate = "Rollover"
-			title.RolloverTitle = S[302535920001367--[[Toggles--]]]
-			title.RolloverText = S[302535920001410--[[Toggle Visibility--]]]
-			title.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
-			local toggle = false
-			if UserSettings.InfopanelMainButVis then
-				toggle = true
-			end
-			local toolbar = main_buts[2]
-			toolbar.FoldWhenHidden = true
-			toolbar:SetVisible(toggle)
+			local main_buts = GetParentOfKind(self.idMainButtons,"XFrame")
+			if main_buts then
+				local title = self.idTitle.parent
+				title.FXMouseIn = "ActionButtonHover"
+				title.HandleMouse = true
+				title.RolloverTemplate = "Rollover"
+				title.RolloverTitle = S[302535920001367--[[Toggles--]]]
+				title.RolloverText = S[302535920001410--[[Toggle Visibility--]]]
+				title.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
 
-			ToggleVisSection(title,toolbar,toggle,"InfopanelMainButVis")
+				local toggle = false
+				if UserSettings.InfopanelMainButVis then
+					toggle = true
+				end
+				local toolbar = main_buts[2]
+				toolbar.FoldWhenHidden = true
+				toolbar:SetVisible(toggle)
+
+				ToggleVisSection(title,toolbar,toggle,"InfopanelMainButVis")
+			end
 
 			local c = self.idContent
 			if not c then
@@ -1249,20 +1254,22 @@ function OnMsg.ClassesBuilt()
 
 	do -- ConstructionController:CreateCursorObj
 		local IsValid = IsValid
+		local pack_params = pack_params
+		local TableUnpack = table.unpack
 		-- set orientation to same as last object
 		function ConstructionController:CreateCursorObj(...)
 			local ChoGGi = ChoGGi
-			local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
+--~ 			local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
+			local ret = pack_params(ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...))
 
 			local last = ChoGGi.Temp.LastPlacedObject
-			if IsValid(last) and ChoGGi.UserSettings.UseLastOrientation then
---~ 				if type(ret[1].SetAngle) == "function" then
+			if self.template_obj and self.template_obj.can_rotate_during_placement and ChoGGi.UserSettings.UseLastOrientation and IsValid(last) then
 				if ret[1].SetAngle then
 					ret[1]:SetAngle(last:GetAngle() or 0)
 				end
 			end
 
-			return table.unpack(ret)
+			return TableUnpack(ret)
 		end
 	end -- do
 
