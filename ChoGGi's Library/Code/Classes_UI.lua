@@ -442,6 +442,8 @@ DefineClass.ChoGGi_Window = {
 	-- how far down to y-offset new dialogs
 	header = 34.0,
 	header_scaled = false,
+	-- prefix some string to the title
+	prefix = false,
 
 	RolloverTemplate = "Rollover",
 }
@@ -461,6 +463,8 @@ function ChoGGi_Window:AddElements()
 
 	-- add container dialog for everything to fit in
 	self.idDialog = g_Classes.ChoGGi_Dialog:new({
+		-- keep stuff from spilling outside the dialog
+		Clip = "self",
 	}, self)
 	-- shift-esc closes dialog
 	GetActionsHost(self):AddAction(g_Classes.XAction:new(ChoGGi_Dialog_action))

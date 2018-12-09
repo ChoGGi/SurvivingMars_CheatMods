@@ -27,6 +27,7 @@ return PlaceObj("ModDef", {
 --~ 		"Code/Dialogs/MonitorInfo.lua",
 		"Code/Dialogs/ObjectManipulator.lua",
 		"Code/Dialogs/3DManipulator.lua",
+		"Code/Dialogs/ImageViewer.lua",
 		"Code/Dialogs/TerminalRolloverMode.lua",
 
 		-- stuff that can come later

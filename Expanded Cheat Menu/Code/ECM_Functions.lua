@@ -4,6 +4,7 @@ local StringFormat = string.format
 local TableFind = table.find
 local TableClear = table.clear
 local TableIClear = table.iclear
+local type = type
 local Sleep = Sleep
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
@@ -20,35 +21,6 @@ function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Trans = ChoGGi.ComFuncs.Translate
-
-	-- if ECM is running without the bl, then we use the _G from ECM instead of the Library mod (since it's limited to per mod)
-	if not blacklist then
-		-- "some.some.some.etc" = returns etc as object
-		function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
-			-- there's always one
-			if str == "_G" then
-				return _G
-			end
-			-- always start with _G
-			local obj = root or _G
-			-- https://www.lua.org/pil/14.1.html
-			for name,match in str:gmatch("([%w_]+)(.?)") do
-				-- . means we're not at the end yet
-				if match == "." then
-					-- create is for adding new settings in non-existent tables
-					if not obj[name] and not create then
-						-- our treasure hunt is cut short, so return nadda
-						return
-					end
-					-- change the parent to the child (create table if absent, this'll only fire when create)
-					obj = obj[name] or {}
-				else
-					-- no more . so we return as conquering heroes with the obj
-					return obj[name]
-				end
-			end
-		end
-	end
 
 	function ChoGGi.ComFuncs.GenerateScreenshotFilename(prefix, folder, ext, just_name)
 		local match = string.match
@@ -263,12 +235,10 @@ function OnMsg.ClassesGenerate()
 				ReplaceFunc("dlc_print")
 				ReplaceFunc("DebugPrintNL")
 				ReplaceFunc("OutputDebugString")
-				ReplaceFunc("AddConsoleLog")
+				ReplaceFunc("AddConsoleLog") -- also does print()
 				ReplaceFunc("assert")
 				ReplaceFunc("printf")
 				ReplaceFunc("error")
-				-- AddConsoleLog also does print(), no need for two copies
---~ 				ReplaceFunc("print")
 				-- causes an error and stops games from loading
 				-- ReplaceFunc("DebugPrint")
 			else
@@ -279,7 +249,6 @@ function OnMsg.ClassesGenerate()
 				ResetFunc("assert")
 				ResetFunc("printf")
 				ResetFunc("error")
---~ 				ResetFunc("print")
 			end
 		end
 	end -- do
@@ -387,6 +356,17 @@ function OnMsg.ClassesGenerate()
 		end
 
 		return ChoGGi_FindValueDlg:new({}, terminal.desktop,{
+			obj = context,
+			parent = parent,
+		})
+	end
+
+	function ChoGGi.ComFuncs.OpenInImageViewerDlg(context,parent)
+		if not context then
+			return
+		end
+
+		return ChoGGi_ImageViewerDlg:new({}, terminal.desktop,{
 			obj = context,
 			parent = parent,
 		})
@@ -722,25 +702,25 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	function ChoGGi.ComFuncs.RetObjTextureInfo(obj)
-		if not IsValid(obj) then
-			return
-		end
-		local textures = obj:UsedTextures()
-		if not textures or #textures == 0 then
-			return
-		end
-		local info_list = {}
-		local format_str = "slot_idx: %s, slot_size: %s, priority: %s, need_size: %s, distance: %s /1000, tg(fov/2): %s /1000, radius: %s /1000"
-		local GetTextureDebugInfo = DTM.GetTextureDebugInfo
+--~ 	function ChoGGi.ComFuncs.RetObjTextureInfo(obj)
+--~ 		if not IsValid(obj) then
+--~ 			return
+--~ 		end
+--~ 		local textures = obj:UsedTextures()
+--~ 		if not textures or #textures == 0 then
+--~ 			return
+--~ 		end
+--~ 		local info_list = {}
+--~ 		local format_str = "slot_idx: %s, slot_size: %s, priority: %s, need_size: %s, distance: %s /1000, tg(fov/2): %s /1000, radius: %s /1000"
+--~ 		local GetTextureDebugInfo = DTM.GetTextureDebugInfo
 
-		for i = 1, #textures do
-			local slot_idx, slot_size, priority, need_size, distance, tan, radius = GetTextureDebugInfo(textures[i])
-			print(slot_idx, slot_size, priority, need_size, distance, tan, radius)
-			info_list[textures[i]] = format_str:format(slot_idx,slot_size,priority,need_size,distance,tan,radius)
-		end
-		return info_list
-	end
+--~ 		for i = 1, #textures do
+--~ 			local slot_idx, slot_size, priority, need_size, distance, tan, radius = GetTextureDebugInfo(textures[i])
+--~ 			print(slot_idx, slot_size, priority, need_size, distance, tan, radius)
+--~ 			info_list[textures[i]] = format_str:format(slot_idx,slot_size,priority,need_size,distance,tan,radius)
+--~ 		end
+--~ 		return info_list
+--~ 	end
 
 	function ChoGGi.ComFuncs.SelectConsoleLogText()
 		local dlgConsoleLog = dlgConsoleLog
@@ -1153,6 +1133,34 @@ The func I use for spot_rot rounds to two decimal points...
 --~ 					end
 				end
 				ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent,S[302535920001458--[[Material Properties--]]])
+			end
+		end
+	end -- do
+
+	do -- DisplayObjectImages
+		local ext_list = {
+			[".dds"] = true,
+			[".tga"] = true,
+			[".png"] = true,
+		}
+
+		function ChoGGi.ComFuncs.DisplayObjectImages(obj,parent)
+			local images = {}
+			if type(obj) ~= "table" then
+				return
+			end
+
+			-- grab any strings with the correct ext
+			for _,value in pairs(obj) do
+				if type(value) =="string" and ext_list[value:sub(-4)] then
+					images[#images+1] = value
+				end
+			end
+
+			if #images > 0 then
+				images = ChoGGi.ComFuncs.RetTableNoDupes(images)
+				table.sort(images)
+				ChoGGi.ComFuncs.OpenInImageViewerDlg(images,parent)
 			end
 		end
 	end -- do

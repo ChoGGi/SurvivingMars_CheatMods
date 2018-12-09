@@ -178,6 +178,7 @@ local Strings = {
 	[3722] = TranslationTable[3722], -- State
 	[3734] = TranslationTable[3734], -- Tech
 	[3768] = TranslationTable[3768], -- Destroy all?
+	[3794] = TranslationTable[3794], -- Image
 	[3862] = TranslationTable[3862], -- Medic
 	[3973] = TranslationTable[3973], -- Salvage
 	[3980] = TranslationTable[3980], -- Buildings

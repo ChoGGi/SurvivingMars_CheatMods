@@ -141,8 +141,8 @@ do -- RetName
 			if name_type == "string" and obj.name ~= "" then
 				return obj.name
 			-- colonist names
-			elseif name_type == "table" and #obj.name == 3 then
-				return StringFormat("%s %s",Trans(obj.name[1]),Trans(obj.name[3]))
+			elseif name_type == "table" then
+				return Trans(obj.name)
 
 			-- translated name
 			elseif obj.display_name and obj.display_name ~= "" then
@@ -231,7 +231,7 @@ function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
 	end
 
 	-- always start with _G
-	local obj = root or _G
+	local obj = root or ChoGGi.Temp._G or _G
 	-- https://www.lua.org/pil/14.1.html
 	for name,match in str:gmatch("([%w_]+)(.?)") do
 		-- . means we're not at the end yet
@@ -574,7 +574,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		end
 
 		-- add our mouseenter funcs
-		if showobj_func or colourobj_func or pos_func or submenu_func then
+		if item.mouseover or showobj_func or colourobj_func or pos_func or submenu_func then
 			function button:OnMouseEnter(pt, child,...)
 				cls.OnMouseEnter(self, pt, child,...)
 				if showobj_func then
@@ -586,8 +586,11 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 				if pos_func then
 					pos_func()
 				end
+				if item.mouseover then
+					item.mouseover(self, pt, child,...)
+				end
 				if submenu_func then
-					submenu_func(self, pt, child)
+					submenu_func(self, pt, child,...)
 				end
 			end
 		end

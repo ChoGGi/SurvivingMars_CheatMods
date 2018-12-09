@@ -84,8 +84,6 @@ DefineClass.Examine = {
 
 	-- store opened examine dialogs
 	examine_dialogs = false,
-	-- prefix some string to the title
-	prefix = false,
 	-- what we're examining
 	obj = false,
 	-- whatever RetName is
@@ -953,6 +951,16 @@ This can take time on something like the ""Building"" metatable (don't use this 
 				end
 			end,
 		},
+
+		{
+			name = S[302535920001469--[[Image Viewer--]]],
+			hint = S[302535920001470--[["Open a dialog with a list of any images listed here (.dds,.tga,.png)."--]]],
+			image = "CommonAssets/UI/Menu/light_model.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref,self)
+			end,
+		},
+
 		{
 			name = S[302535920001305--[[Find Within--]]],
 			hint = S[302535920001303--[[Search for text within %s.--]]]:format(self.name),
