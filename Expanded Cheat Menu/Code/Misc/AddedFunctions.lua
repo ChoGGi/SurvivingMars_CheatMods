@@ -44,8 +44,12 @@ function OnMsg.ClassesGenerate()
 	end
 end
 
-
 -- no need to have these in the do
+
+function ImageView(image)
+	ChoGGi.ComFuncs.OpenInImageViewerDlg(image)
+end
+
 function restart()
 	quit("restart")
 end

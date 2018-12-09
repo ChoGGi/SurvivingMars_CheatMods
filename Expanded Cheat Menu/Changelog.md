@@ -10,6 +10,7 @@
 - > Made Dump Object dump more info for xwindow objects.
 - > No longer shows ,0 for point objects without a z.
 - > Cleaned up info for function objects.
+- > Added an Image Viewer to the Tools menu, from console you can use ImageView(image).
 - Improved Material Properties (no more dupes, and if only one table displays directly).
 - Added a "Are you sure" to bug report.
 - Defaults to not showing the console log (more cheaters then modders use this), welcome msg asks if you want to show log.
