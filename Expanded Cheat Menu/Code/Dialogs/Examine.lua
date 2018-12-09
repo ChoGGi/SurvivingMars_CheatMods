@@ -954,7 +954,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 
 		{
 			name = S[302535920001469--[[Image Viewer--]]],
-			hint = S[302535920001470--[["Open a dialog with a list of any images listed here (.dds,.tga,.png)."--]]],
+			hint = S[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."--]]],
 			image = "CommonAssets/UI/Menu/light_model.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref,self)

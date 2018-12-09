@@ -13,8 +13,8 @@
 - > Added an Image Viewer to the Tools menu, useful in conjunction with Material Properties.
 - > > From console you can use ImageView(image).
 - Improved Material Properties (no more dupes, and if only one table displays directly).
-- Added a "Are you sure" to bug report.
-- Defaults to not showing the console log (more cheaters then modders use this), welcome msg asks if you want to show log.
+- Added an "Are you sure" to bug report.
+- Defaults to not showing the console log, welcome msg now asks if you want to show log.
 
 ### Fixed:
 - Infopanel Cheats came back after restart instead of staying disabled (thanks Dawnmist).
