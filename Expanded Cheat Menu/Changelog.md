@@ -11,7 +11,8 @@
 - > No longer shows ,0 for point objects without a z.
 - > Cleaned up info for function objects.
 - > Added an Image Viewer to the Tools menu, useful in conjunction with Material Properties.
-- > > From console you can use ImageView(image).
+- >>  For now it just does dds, tga, png. Any additions?
+- >> From console you can use ImageView(image).
 - Improved Material Properties (no more dupes, and if only one table displays directly).
 - Added an "Are you sure" to bug report.
 - Defaults to not showing the console log, welcome msg now asks if you want to show log.
