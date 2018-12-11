@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v11.7 (Unreleased)
+## v11.8 (Unreleased)
+
+## v11.7 (10 Dec 2018)
 ### Changed:
 - Examine:
 - > Tools>Append Dump: Append text to same file, or create a new file each time.
@@ -11,7 +13,7 @@
 - > No longer shows ,0 for point objects without a z.
 - > Cleaned up info for function objects.
 - > Added an Image Viewer to the Tools menu, useful in conjunction with Material Properties.
-- >>  For now it just does dds, tga, png. Any additions?
+- >> For now it just does dds, tga, png. Any additions?
 - >> From console you can use ImageView(image).
 - Improved Material Properties (no more dupes, and if only one table displays directly).
 - Added an "Are you sure" to bug report.

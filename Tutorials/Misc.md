@@ -13,7 +13,7 @@ OpenExamine(MapGet(true))
 Just domes:
 OpenExamine(MapGet(true,"Dome"))
 Just get objects on the map (colonists in a building are off the map)
-MapGet("map",{"ResourceStockpile","ResourceStockpileLR"})
+MapGet("map","ResourceStockpile","ResourceStockpileLR")
 Filter out which objects are returned
 MapGet("map", "Building", function(o)
 	return o.ui_working
@@ -71,5 +71,9 @@ Probably good for doing other stuff as well...
 
 Info from other people:
 
-	Crysm: 7200 units per revolution. So units = (degrees * 20)
+Crysm: 7200 units per revolution. So units = (degrees * 20)
+
+BullettMAGNETTs CustomAssetDocs
+https://docs.google.com/document/d/1LcZMS8UeRAQZZsPE-bsx75ZMGPUFGdbS-M9jDBMFEYs
+
 ```
