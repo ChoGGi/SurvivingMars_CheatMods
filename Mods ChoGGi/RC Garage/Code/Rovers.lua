@@ -12,16 +12,19 @@ local rcc = RoverCommands
 rcc.ChoGGi_UseGarage = [[Storing in garage]]
 rcc.ChoGGi_InGarage = [[Stored in garage]]
 
-local function CanInteractWithObject_local(self, obj, interaction_mode)
-	-- if it's garage otherwise return orig func
-	if (self.interaction_mode == false or self.interaction_mode == "default" or self.interaction_mode == "move") and IsKindOf(obj, "RCGarage") and obj:CheckMainGarage() and obj.garages.main.working then
-		return true, T{0, [[<UnitMoveControl('ButtonA',interaction_mode)>: Use Garage]],self}
+-- if it's garage otherwise return orig func
+local function CanInteractWithObject_local(interact, obj, interaction_mode)
+	local garage = g_ChoGGi_RCGarages
+	if (interact == false or interact == "default" or interact == "move")
+		and garage.main and garage.main.working
+		and IsKindOf(obj, "RCGarage") and obj:CheckMainGarage() then
+		return true, T(0, [[<UnitMoveControl('ButtonA',interaction_mode)>: Use Garage]])
 	end
 end
 
 local orig_BaseRover_CanInteractWithObject = BaseRover.CanInteractWithObject
 function BaseRover:CanInteractWithObject(obj, interaction_mode, ...)
-	local ret1,ret2 = CanInteractWithObject_local(self, obj, interaction_mode)
+	local ret1,ret2 = CanInteractWithObject_local(self.interaction_mode, obj, interaction_mode)
 	if ret1 then
 		return ret1,ret2
 	end
@@ -31,7 +34,11 @@ end
 
 local orig_BaseRover_InteractWithObject = BaseRover.InteractWithObject
 function BaseRover:InteractWithObject(obj, interaction_mode, ...)
-	if (self.interaction_mode == false or self.interaction_mode == "default" or self.interaction_mode == "move") and IsKindOf(obj, "RCGarage") and obj:CheckMainGarage() and obj.garages.main.working then
+	local garage = g_ChoGGi_RCGarages
+	if (self.interaction_mode == false or self.interaction_mode == "default" or self.interaction_mode == "move")
+		and garage.main and garage.main.working
+		and IsKindOf(obj, "RCGarage") and obj:CheckMainGarage() then
+
 		self:SetCommand("ChoGGi_UseGarage", obj)
 		SetUnitControlInteractionMode(self, false) --toggle button
 	end
@@ -52,7 +59,7 @@ end
 local orig_RCRover_Siege = RCRover.Siege
 function RCRover:Siege(...)
 	if self.ChoGGi_InGarage then
-		Sleep(1000)
+		Sleep(5000)
 	else
 		return orig_RCRover_Siege(self,...)
 	end
@@ -63,14 +70,13 @@ function BaseRover:ChoGGi_UseGarage(garage)
 	self:ExitHolder(garage)
 
 	-- pack away the drones
-	if self:IsKindOf("RCRover") then
+	if self:IsKindOf("RCRover") and self.sieged_state then
 		-- if drones already being sent in
-		if self.sieged_state then
-			self:Unsiege()
-			self.siege_state_name = "UnSiege"
-			self.sieged_state = false
-		end
+		self:Unsiege()
+		self.siege_state_name = "UnSiege"
+		self.sieged_state = false
 	end
+
 	local pos = select(2, garage:GetEntrance(self, "tunnel_entrance"))
 	if not pos or not self:Goto_NoDestlock(pos) or not IsValid(garage) then
 		return

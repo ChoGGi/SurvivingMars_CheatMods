@@ -167,6 +167,11 @@ function RCGarage:StickInGarage(unit)
 	Sleep(self.door:TimeToOpen())
 	unit:DetachFromMap()
 
+	-- remove selection
+	if SelectedObj == unit then
+		SelectionRemove(unit)
+	end
+
 	-- if user doesn't try to move it this keeps the status good (bother with adding an override to actual status?)
 	unit.command = "ChoGGi_InGarage"
 
@@ -226,6 +231,11 @@ function RCGarage:RemoveFromGarage(unit)
 			pt = rem or last ~= InvalidPos and last or point(0,0,terrain.GetHeight(map_center))
 			unit:SetPos(pt)
 			unit:SetCommand("Goto",GetPassablePointNearby(unit:GetPos()))
+		end
+
+		-- drop some drones
+		if unit:IsKindOf("RCRover") and not unit.sieged_state then
+			unit:ToggleSiegeMode()
 		end
 
 	end)
@@ -378,24 +388,23 @@ function OnMsg.ClassesPostprocess()
 end
 
 function OnMsg.ClassesBuilt()
--- add stats, how many stored, and so on
 	-- add some prod info to selection panel
 	local building = XTemplates.ipBuilding[1][1]
+
 	-- check for and remove existing template
 	local idx = TableFind(building, "ChoGGi_Template_RCGarage", true)
 	if idx then
 		building[idx]:delete()
 		-- we need to remove for insert
 		TableRemove(building,idx)
+	else
+		-- insert above consumption
+		idx = TableFind(building, "__template", "sectionConsumption")
 	end
 
-	-- insert above consumption
-	if not idx then
-		idx = TableFind(building, "__template", "sectionConsumption")
-		-- or at the end
-		if not idx then
-			idx = #building
-		end
+	-- hopefully this fixes the issue for people that don't have the buttons...
+	if type(idx) ~= "number" then
+		idx = #(building or "1")
 	end
 
 	table.insert(
@@ -408,6 +417,7 @@ function OnMsg.ClassesBuilt()
 			"__template", "InfopanelSection",
 			"Icon", "UI/Icons/Sections/basic.tga",
 		}, {
+
 			-- show link to main garage on other garages
 			PlaceObj('XTemplateTemplate', {
 				"__template", "InfopanelActiveSection",
@@ -446,6 +456,57 @@ function OnMsg.ClassesBuilt()
 						if context:CheckMainGarage() then
 							ViewObjectMars(context.garages.main)
 						end
+						---
+					end,
+				}),
+			}),
+
+			-- add an eject all rovers to main garage
+			PlaceObj('XTemplateTemplate', {
+				"__template", "InfopanelActiveSection",
+				"Icon", "UI/Icons/ColonyControlCenter/homeless_off.tga",
+				"Title",[[Eject All]],
+				"RolloverText", [[Forces out all rovers to main garage area]],
+				"OnContextUpdate", function(self, context)
+					-- hide if this isn't main garage
+					if context:CheckMainGarage() then
+						if context.garages.main == context then
+							self:SetVisible(true)
+							self:SetMaxHeight()
+						else
+							self:SetVisible(false)
+							self:SetMaxHeight(0)
+						end
+					end
+				end,
+			}, {
+				PlaceObj("XTemplateFunc", {
+					"name", "OnActivate(self, context)",
+					"parent", function(self)
+						return self.parent
+					end,
+					"func", function(self, context)
+						---
+
+						local function CallBackFunc(answer)
+							if answer then
+								local rovers = g_ChoGGi_RCGarageRovers
+								for i = #rovers, 1, -1 do
+									local unit = rovers[i]
+									unit.ChoGGi_InGarage = nil
+									unit.accumulate_dust = true
+									unit:SetPos(context:GetPos())
+									unit:SetCommand("Goto",GetPassablePointNearby(unit:GetPos()+point(Random(-5000,5000),Random(-5000,5000))))
+								end
+								TableClear(g_ChoGGi_RCGarageRovers)
+								context:UpdateGaragePower()
+							end
+						end
+						ChoGGi.ComFuncs.QuestionBox(
+							[[Are you sure you want to eject all rovers?]],
+							CallBackFunc,
+							[[Eject]]
+						)
 						---
 					end,
 				}),
@@ -499,57 +560,6 @@ function OnMsg.ClassesBuilt()
 						PopupToggle(self,"idRCGarageMenu",ItemList,"left")
 
 						ObjModified(context)
-						---
-					end,
-				}),
-			}),
-
-			-- add an eject all rovers to main garage
-			PlaceObj('XTemplateTemplate', {
-				"__template", "InfopanelActiveSection",
-				"Icon", "UI/Icons/ColonyControlCenter/homeless_off.tga",
-				"Title",[[Eject All]],
-				"RolloverText", [[Forces all rovers to main garage area]],
-				"OnContextUpdate", function(self, context)
-					-- hide if this isn't main garage
-					if context:CheckMainGarage() then
-						if context.garages.main == context then
-							self:SetVisible(true)
-							self:SetMaxHeight()
-						else
-							self:SetVisible(false)
-							self:SetMaxHeight(0)
-						end
-					end
-				end,
-			}, {
-				PlaceObj("XTemplateFunc", {
-					"name", "OnActivate(self, context)",
-					"parent", function(self)
-						return self.parent
-					end,
-					"func", function(self, context)
-						---
-
-						local function CallBackFunc(answer)
-							if answer then
-								local rovers = g_ChoGGi_RCGarageRovers
-								for i = #rovers, 1, -1 do
-									local unit = rovers[i]
-									unit.ChoGGi_InGarage = nil
-									unit.accumulate_dust = true
-									unit:SetPos(context:GetPos())
-									unit:SetCommand("Goto",GetPassablePointNearby(unit:GetPos()+point(Random(-5000,5000),Random(-5000,5000))))
-								end
-								TableClear(g_ChoGGi_RCGarageRovers)
-								context:UpdateGaragePower()
-							end
-						end
-						ChoGGi.ComFuncs.QuestionBox(
-							[[Are you sure you want to eject all rovers?]],
-							CallBackFunc,
-							[[Eject]]
-						)
 						---
 					end,
 				}),

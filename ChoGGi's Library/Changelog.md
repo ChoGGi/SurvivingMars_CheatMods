@@ -1,11 +1,13 @@
 ## Library Changelog
 
-## v4.7 (Unreleased)
+## v4.8 (Unreleased)
+
+## v4.7 (10 Dec 2018)
+- Updates scale of opened dialogs when user changes scale in Options.
+- Mushed dialogs no longer spew stuff outside of their boxes.
 
 ## v4.6 (06 Dec 2018)
 - Midly broke list choice filter (for certain last items).
-- Updates scale of opened dialogs when user changes scale in Options.
-- Mushed dialogs no longer spew stuff outside of their boxes.
 
 ## v4.5 (06 Dec 2018)
 - Removed length limit of dialog titles.
