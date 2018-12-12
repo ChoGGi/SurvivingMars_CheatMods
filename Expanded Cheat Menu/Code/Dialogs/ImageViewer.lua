@@ -2,7 +2,7 @@
 
 -- displays images
 
-local StringFormat = string.format
+--~ local StringFormat = string.format
 
 local S
 local GetParentOfKind
@@ -34,7 +34,6 @@ DefineClass.ChoGGi_ImageViewerDlg = {
 }
 
 function ChoGGi_ImageViewerDlg:Init(parent, context)
-	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 
 	self.images = context.obj
@@ -63,7 +62,7 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 		Dock = "left",
 	}, self.idButtonContainer)
 
-	self.idImage = XFrame:new({
+	self.idImage = g_Classes.XFrame:new({
 		Id = "idImage",
 	}, self.idDialog)
 
@@ -98,8 +97,7 @@ function ChoGGi_ImageViewerDlg:SetImageFile(image)
 	self.idCaption:SetTitle(self,image)
 end
 
-function ChoGGi_ImageViewerDlg:idImagesOnMouseButtonDown(pt,button,...)
---~ 	ChoGGi_ComboButton:OnMouseButtonDown(pt,button,...)
+function ChoGGi_ImageViewerDlg:idImagesOnMouseButtonDown()
 	local dlg = GetRootDialog(self)
 	PopupToggle(self,dlg.idImageMenu,dlg.image_menu_popup,"bottom")
 end

@@ -4,7 +4,6 @@ local default_icon = "UI/Icons/Sections/spaceship.tga"
 
 local type = type
 local StringFormat = string.format
-local Sleep = Sleep
 
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -71,7 +70,7 @@ function OnMsg.ClassesGenerate()
 					end
 					local num = #rivals_table
 					if num < 3 then
-						for i = num, 3 - num do
+						for _ = num, 3 - num do
 							rivals_table[#rivals_table+1] = "none"
 						end
 					end

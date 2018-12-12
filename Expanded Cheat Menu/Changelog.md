@@ -4,6 +4,13 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v11.8 (Unreleased)
+### Changed:
+- You can now paste code into the console and not worry about -- comments or spaces (devs broke it in DA update during XDialogs migration).
+- @funcname now works with the blacklist.
+- Examine>Tools>Image Viewer tells you if it didn't find any images.
+
+### Fixed:
+- Looks like I missed a reference and Examine>Delete Object didn't work on XWindows.
 
 ## v11.7 (10 Dec 2018)
 ### Changed:

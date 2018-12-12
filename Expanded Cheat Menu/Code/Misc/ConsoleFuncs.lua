@@ -169,7 +169,7 @@ function OnMsg.ClassesGenerate()
 		AddSubmenu("GlobalVars",{"GlobalVarValues","GlobalObjs","GlobalObjClasses","PersistableGlobals","GlobalGameTimeThreads","GlobalGameTimeThreadFuncs","GlobalRealTimeThreads","GlobalRealTimeThreadFuncs"})
 		AddSubmenu("EntityData",{"EntityStates","EntitySurfaces","GetAllEntities","HexOutlineShapes","HexInteriorShapes","HexOutlineByHash","HexBuildShapes","HexBuildShapesInversed","HexPeripheralShapes","HexCombinedShapes"})
 		AddSubmenu("g_Classes",{"ClassTemplates","Attaches","FXRules","FXLists"})
-		AddSubmenu("g_CObjectFuncs",{"hr","pf","terrain","UIL","DTM","camera","camera3p","cameraMax","cameraRTS","string","table"})
+		AddSubmenu("g_CObjectFuncs",{"hr","pf","terrain","UIL","lpeg","DTM","camera","camera3p","cameraMax","cameraRTS","string","table"})
 		AddSubmenu("StoryBits",{"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},S[948928900281--[[Story Bits--]]])
 		AddSubmenu("UICity",{"UICity.labels","UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters"})
 

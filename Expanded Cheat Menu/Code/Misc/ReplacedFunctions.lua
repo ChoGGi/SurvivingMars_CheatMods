@@ -1348,7 +1348,12 @@ function OnMsg.ClassesBuilt()
 		{
 			-- @function
 			"^@(.*)",
-			"print(debug.getinfo(%s))"
+			[[local str = %s
+if ChoGGi.blacklist then
+	print(ChoGGi.ComFuncs.DebugGetInfo(str))
+else
+	print(debug.getinfo(str))
+end]]
 		},
 		{
 			-- @@type
@@ -1371,9 +1376,9 @@ function OnMsg.ClassesBuilt()
 			-- ~!obj_with_attachments
 			"^~!(.*)",
 			[[local attaches = ChoGGi.ComFuncs.GetAllAttaches(%s)
-			if #attaches > 0 then
-				ChoGGi.ComFuncs.OpenInExamineDlg(attaches)
-			end]]
+if #attaches > 0 then
+	ChoGGi.ComFuncs.OpenInExamineDlg(attaches)
+end]]
 		},
 		{
 			-- &handle
@@ -1396,12 +1401,6 @@ function OnMsg.ClassesBuilt()
 			"^*m%s*(.*)",
 			"CreateMapRealTimeThread(function() %s end) return"
 		},
---~ 		-- something screenshot
---~ 		{
---~ 		"^SSA?A?0%d+ (.*)",
---~ 		"ViewShot([[%s]])"
---~ 		},
-
 		-- prints out cmds entered I assume?
 		{
 			"^(%a[%w.]*)$",

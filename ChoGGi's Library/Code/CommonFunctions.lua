@@ -4475,7 +4475,7 @@ function ChoGGi.ComFuncs.RetAllOfClass(cls)
 	end
 	local objects = UICity.labels[cls] or ""
 	if #objects == 0 then
-		objects = MapGet("map",cls)
+		objects = MapGet(true,cls)
 	end
 	return objects
 end

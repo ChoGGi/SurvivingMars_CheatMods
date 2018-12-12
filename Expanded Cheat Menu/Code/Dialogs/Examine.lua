@@ -433,14 +433,19 @@ function Examine:idButMarkObjectOnPress()
 end
 
 function Examine:idButDeleteObjOnPress()
-	self = GetRootDialog(self)
 	ChoGGi.ComFuncs.QuestionBox(
 		S[302535920000414--[[Are you sure you wish to delete it?--]]],
 		function(answer)
 			if answer then
+				self = GetRootDialog(self)
+				-- map objects
 				if IsValid(self.obj_ref) then
 					DeleteObject(self.obj_ref)
-				elseif obj.delete then
+				-- xwindows
+				elseif self.obj_ref.Close then
+					self.obj_ref:Close()
+				-- whatever
+				else
 					self.obj_ref:delete()
 				end
 			end
@@ -944,23 +949,26 @@ This can take time on something like the ""Building"" metatable (don't use this 
 				if testing then
 				ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(self.obj_ref,self)
 				else
-					MsgPopup(
+					ChoGGi.ComFuncs.MsgPopup(
 						"Ain't done yet...",
 						S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]])
 					)
 				end
 			end,
 		},
-
 		{
 			name = S[302535920001469--[[Image Viewer--]]],
 			hint = S[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."--]]],
 			image = "CommonAssets/UI/Menu/light_model.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref,self)
+				if not ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref,self) then
+					ChoGGi.ComFuncs.MsgPopup(
+						302535920001471--[[No images found.--]],
+						302535920001469--[[Image Viewer--]]
+					)
+				end
 			end,
 		},
-
 		{
 			name = S[302535920001305--[[Find Within--]]],
 			hint = S[302535920001303--[[Search for text within %s.--]]]:format(self.name),

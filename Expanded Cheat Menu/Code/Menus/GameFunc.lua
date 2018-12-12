@@ -588,13 +588,13 @@ function OnMsg.ClassesGenerate()
 			local handles = {}
 
 			local IsValid = IsValid
-			-- build our list of objects (we use an ass table, to make sure there's no dupes)
+			-- build our list of objects (we use an ass table of handles to skip dupes)
 			if value == S[302535920000306--[[Everything--]]] then
 				local labels = UICity.labels or empty_table
-				for id,labels in pairs(labels) do
+				for id,label in pairs(labels) do
 					if id ~= "Consts" then
-						for i = 1, #labels do
-							local obj = labels[i]
+						for i = 1, #label do
+							local obj = label[i]
 							if IsValid(obj) and not handles[obj.handle] then
 								handles[obj.handle] = obj
 							end
@@ -602,7 +602,8 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 			else
-				local labels = ChoGGi.ComFuncs.RetAllOfClass(value)
+				-- don't need to dupe skip these, but I'm lazy and it's quick enough
+				local labels = UICity.labels[value] or ""
 				for i = 1, #labels do
 					local obj = labels[i]
 					if IsValid(obj) and not handles[obj.handle] then
