@@ -17,18 +17,20 @@ function OnMsg.ReloadLua()
 	-- get rid of mod manager warnings (not the reboot one though)
 	ParadoxBuildsModManagerWarning = true
 
-	-- opens to load game menu
 	--[[
-		local idx
-		local desktop = terminal.desktop
-		local TableFind = table.find
-		local Sleep = Sleep
-		while not idx do
-			-- since there's just the one dialog opened, that's all we look for
-			idx = TableFind(desktop,"class","XDialog")
-			Sleep(50)
+		-- opens to load game menu
+		local Dialogs = Dialogs
+		while not Dialogs.PGMainMenu do
+			Sleep(100)
 		end
-		desktop[idx]:SetMode("Load")
+		Dialogs.PGMainMenu:SetMode("Load")
+
+		-- load mods in main menu
+		ModsReloadItems()
+
+		-- show cheat menu
+		Sleep(100)
+		XShortcutsTarget:SetVisible(true)
 	--]]
 
 end

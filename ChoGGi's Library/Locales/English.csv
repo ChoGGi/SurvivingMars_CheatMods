@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001471,,
 302535920001472,,
 302535920001473,,
 302535920001474,,
@@ -262,6 +261,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000870,Shows any errors from loading mods in console log.,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920001471,No images found.,
 302535920001470,"Open a dialog with a list of images from object (.dds, .tga, .png).",
 302535920001467,Append Dump,
 302535920001468,"Append text to same file, or create a new file each time.",

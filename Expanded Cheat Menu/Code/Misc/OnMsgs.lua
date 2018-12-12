@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 -- most OnMsgs
+local type = type
 local StringFormat = string.format
 local TableSort = table.sort
 local TableRemove = table.remove
@@ -145,7 +146,6 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 --~ 'ColumnsUse' = 'abbba'
 		-- add some ids to make it easier to fiddle with selection panel
 		local template_str = "idSection%s_ChoGGi"
-		local XTemplates = XTemplates
 		for key,template in pairs(XTemplates) do
 			if key:sub(1,7) == "section" and not template[1].Id then
 				template[1].Id = template_str:format(key:sub(8))
@@ -370,6 +370,18 @@ function OnMsg.ModsReloaded()
 		-- build console buttons
 		local dlgConsole = dlgConsole
 		if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
+			-- removes comments from code, and adds a space to each newline, so pasting multi line works
+			ChoGGi.ComFuncs.SaveOrigFunc("XEdit","EditOperation")
+			local XEditEditOperation = ChoGGi.OrigFuncs.XEdit_EditOperation
+			local StripComments = ChoGGi.ComFuncs.StripComments
+			function dlgConsole.idEdit:EditOperation(insert_text, is_undo_redo, cursor_to_text_start,...)
+				if type(insert_text) == "string" then
+					insert_text = StripComments(insert_text)
+					insert_text = insert_text:gsub("\n","\n ")
+				end
+				return XEditEditOperation(self,insert_text, is_undo_redo, cursor_to_text_start,...)
+			end
+			-- add tooltip
 			dlgConsole.idEdit.RolloverTemplate = "Rollover"
 			dlgConsole.idEdit.RolloverTitle = StringFormat("%s %s",S[302535920001073--[[Console--]]],S[487939677892--[[Help--]]])
 			dlgConsole.idEdit.RolloverText = S[302535920001440--[["~obj opens object in examine dialog.
@@ -382,6 +394,7 @@ $123 or $EffectDeposit.display_name prints translated string.
 !UICity.labels.TerrainDeposit[1] to move camera and select obj."--]]]
 			dlgConsole.idEdit.Hint = S[302535920001439--[["~obj, @func,@@type,$id, *r/*g for threads"--]]]
 			dlgConsole.ChoGGi_MenuAdded = true
+			-- and buttons
 			ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		end
 

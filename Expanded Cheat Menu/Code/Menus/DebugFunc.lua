@@ -28,7 +28,7 @@ function OnMsg.ClassesGenerate()
 		local hint_str = "%s: %s\n\n%s\n\n<image %s>"
 		local title_str = "%s: %s"
 		local g_StoryBitStates = g_StoryBitStates
-		for id,state in pairs(g_StoryBitStates) do
+		for id in pairs(g_StoryBitStates) do
 			c = c + 1
 			local story = StoryBits[id]
 			TableClear(story_table)
