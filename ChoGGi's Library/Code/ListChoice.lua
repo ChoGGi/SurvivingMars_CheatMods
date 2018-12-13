@@ -47,6 +47,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 --]]
 
 --~ local TableConcat = ChoGGi.ComFuncs.TableConcat
+local ChoGGi = ChoGGi
 local CheckText = ChoGGi.ComFuncs.CheckText
 local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
 local RetProperType = ChoGGi.ComFuncs.RetProperType
@@ -444,21 +445,41 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	self.old_edit_value = text
 
 	local value,value_type
-	local temp_text = text
+	local name_str = text
+
 	-- if user pastes an rgb or rgba func translate to colour
 	if text:sub(1,3) == "RGB" then
-		local g = ChoGGi.Temp._G or _G
-		local str = "ChoGGi.Temp.ListChoice_Colour = %s"
-		g.procall(g.load(str:format(temp_text),nil, nil, g))
-
-		value,value_type = RetProperType(ChoGGi.Temp.ListChoice_Colour)
-		if value_type == "number" then
-			temp_text = value
-		else
-			value,value_type = RetProperType(temp_text)
+		-- remove any spaces/newlines etc
+		text = text:gsub("[%s%c]","")
+		-- get us (0,0,0), and func name
+		text = text:sub(4)
+		local func = "RGB"
+		local count = 3
+		if text:sub(1,1) == "A" then
+			text = text:sub(2)
+			func = "RGBA"
+			count = 4
 		end
+		text = text:gsub("%(",""):gsub("%)","")
+		-- grab the values
+		local values = {}
+		local last = 0
+
+		-- loop through all the numbers
+		for d in text:gmatch("%d+") do
+			values[#values+1] = tonumber(d)
+		end
+
+		if #values == 3 then
+			value,value_type = RetProperType(_G[func](values[1],values[2],values[3]))
+		else
+			value,value_type = RetProperType(_G[func](values[1],values[2],values[3],values[4]))
+		end
+		name_str = value
+--~ RGB(233,123,32)
+
 	else
-		value,value_type = RetProperType(temp_text)
+		value,value_type = RetProperType(name_str)
 	end
 
 --~ 	printC(text,value)
@@ -478,7 +499,7 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	else
 		-- last item is a blank item for custom value
 		self.items[#self.items] = {
-			text = temp_text,
+			text = name_str,
 			value = value,
 			hint = 302535920000079--[[< Use custom value--]],
 		}

@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v4.8 (Unreleased)
+- Pasting RGB(0,0,0) into the colour modifier now works with the blacklist.
 
 ## v4.7 (10 Dec 2018)
 - Updates scale of opened dialogs when user changes scale in Options.

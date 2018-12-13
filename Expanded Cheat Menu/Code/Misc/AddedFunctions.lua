@@ -1,46 +1,27 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	-- add some shortened func names
-	do
-		local ChoGGi = ChoGGi
-		-- make some easy to type names
-		function dump(...)
-			ChoGGi.ComFuncs.Dump(...)
-		end
-		function dumplua(...)
-			ChoGGi.ComFuncs.DumpLua(...)
-		end
-		function dumptable(...)
-			ChoGGi.ComFuncs.DumpTable(...)
-		end
-		function dumpl(...)
-			ChoGGi.ComFuncs.DumpLua(...)
-		end
-		function dumpt(...)
-			ChoGGi.ComFuncs.DumpTable(...)
-		end
-		trans = ChoGGi.ComFuncs.Translate
-		function so()
-			return ChoGGi.ComFuncs.SelObject()
-		end
+	local ChoGGi = ChoGGi
 
-	--~	 local function RemoveLast(str)
-	--~		 --remove restart/quit as the last cmd so we don't hit it by accident
-	--~		 local dlgConsole = dlgConsole
-	--~		 if dlgConsole.history_queue[1] == str then
-	--~			 table.remove(dlgConsole.history_queue,1)
-	--~			 --and save it?
-	--~			 if rawget(_G, "dlgConsole") then
-	--~				 dlgConsole:StoreHistory()
-	--~			 end
-	--~		 end
-	--~	 end
-	--~	 local orig_quit = quit
-	--~	 function quit(...)
-	--~		 orig_quit(...)
-	--~		 RemoveLast("quit")
-	--~	 end
+	-- add some shortened func names
+	function dump(...)
+		ChoGGi.ComFuncs.Dump(...)
+	end
+	function dumplua(...)
+		ChoGGi.ComFuncs.DumpLua(...)
+	end
+	function dumptable(...)
+		ChoGGi.ComFuncs.DumpTable(...)
+	end
+	function dumpl(...)
+		ChoGGi.ComFuncs.DumpLua(...)
+	end
+	function dumpt(...)
+		ChoGGi.ComFuncs.DumpTable(...)
+	end
+	trans = ChoGGi.ComFuncs.Translate
+	function so()
+		return ChoGGi.ComFuncs.SelObject()
 	end
 end
 

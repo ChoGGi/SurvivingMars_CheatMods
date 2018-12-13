@@ -11,6 +11,8 @@ local ThreadLockKey = ThreadLockKey
 local ThreadUnlockKey = ThreadUnlockKey
 
 function OnMsg.ClassesGenerate()
+	local ChoGGi = ChoGGi
+
 	-- used for loading/saving settings
 	local function PrintError(err)
 		local err_str = StringFormat("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err))
