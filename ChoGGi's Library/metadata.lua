@@ -23,6 +23,8 @@ return PlaceObj("ModDef", {
 		"Code/Settings.lua",
 		-- for OnMsg functions
 		"Code/OnMsgs.lua",
+		-- LXSH: https://github.com/xolox/lua-lxsh
+		"Code/LXSH.lua",
 
 		"Code/Classes_Objects.lua",
 		-- custom dialogs

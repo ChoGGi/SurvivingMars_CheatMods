@@ -2,30 +2,29 @@
 
 -- in-game functions replaced with custom ones
 
+--~ local orig_XTemplateSpawn = XTemplateSpawn
+--~ function XTemplateSpawn(template_or_class, parent, context)
+--~ 	print(template_or_class)
+--~ 	return orig_XTemplateSpawn(template_or_class, parent, context)
+--~ end
+
 local type = type
 local StringFormat = string.format
 local TableFindValue = table.find_value
 
 local MsgPopup
 local DebugGetInfo
-local SaveOrigFunc
 local S
 local blacklist
 local ChoGGi_OrigFuncs
 --~ local Trans
 
--- set UI transparency:
-local function SetTrans(obj)
-	if not obj then
-		return
-	end
-	local trans = ChoGGi.UserSettings.Transparency
-	if obj.class and trans[obj.class] then
-		obj:SetTransparency(trans[obj.class])
-	end
-end
+local SaveOrigFunc
+local SetTrans
 
 function OnMsg.ClassesGenerate()
+	local ChoGGi = ChoGGi
+
 	MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
@@ -33,6 +32,18 @@ function OnMsg.ClassesGenerate()
 	--~ Trans = ChoGGi.ComFuncs.Translate
 
 	ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+	-- set UI transparency
+	SetTrans = function(obj)
+		if not obj then
+			return
+		end
+		local trans = ChoGGi.UserSettings.Transparency
+		if obj.class and trans[obj.class] then
+			obj:SetTransparency(trans[obj.class])
+		end
+	end
+
 	SaveOrigFunc = function(class_or_func,func_name)
 		if func_name then
 			local newname = StringFormat("%s_%s",class_or_func,func_name)
@@ -65,12 +76,6 @@ function OnMsg.ClassesGenerate()
 	AsyncGetSourceInfo = empty_func
 
 	do -- funcs without a class
---~ 		local function SaveOrigFunc(func_name)
---~ 			if not ChoGGi_OrigFuncs[func_name] then
---~ 				ChoGGi_OrigFuncs[func_name] = _G[func_name]
---~ 			end
---~ 		end
-
 		SaveOrigFunc("GetFuncSourceString")
 		SaveOrigFunc("GetMaxCargoShuttleCapacity")
 		SaveOrigFunc("GetMissingMods")
@@ -84,22 +89,23 @@ function OnMsg.ClassesGenerate()
 		SaveOrigFunc("TGetID")
 		SaveOrigFunc("UIGetBuildingPrerequisites")
 
+		-- used by a func in examine for functions?
 		GetFuncSourceString = DebugGetInfo
 
-		-- if it ain't a table...
 		function TGetID(t,...)
-			if type(t) ~= "table" then
+			local t_type = type(t)
+			if t_type ~= "table" and t_type ~= "userdata" then
 				return ChoGGi_OrigFuncs.TGetID(T(t,...))
 			end
 			return ChoGGi_OrigFuncs.TGetID(t,...)
 		end
 
 		-- I guess, don't pass a string to it?
-		function TDevModeGetEnglishText(T,...)
-			if type(T) == "string" then
-				return T
+		function TDevModeGetEnglishText(t,...)
+			if type(t) == "string" then
+				return t
 			end
-			return ChoGGi_OrigFuncs.TDevModeGetEnglishText(T,...)
+			return ChoGGi_OrigFuncs.TDevModeGetEnglishText(t,...)
 		end
 
 		-- fix for sending nil id to it
@@ -119,12 +125,6 @@ function OnMsg.ClassesGenerate()
 				return ChoGGi_OrigFuncs.GetMaxCargoShuttleCapacity(...)
 			end
 		end
-
-	--~	 -- if i need the names of xelements
-	--~	 function XTemplateSpawn(template_or_class, parent, context)
-	--~		 print(template_or_class)
-	--~		 return ChoGGi_OrigFuncs.XTemplateSpawn(template_or_class, parent, context)
-	--~	 end
 
 		-- SkipMissingDLC and no mystery dlc installed means the buildmenu tries to add missing buildings, and call a func that doesn't exist
 		function UIGetBuildingPrerequisites(cat_id, template, bCreateItems,...)
@@ -612,6 +612,7 @@ end --onmsg library
 
 -- ClassesPreprocess
 function OnMsg.ClassesPreprocess()
+	local ChoGGi = ChoGGi
 	SaveOrigFunc("InfopanelObj","CreateCheatActions")
 
 	local GetActionsHost = GetActionsHost
@@ -631,6 +632,9 @@ end -- ClassesPreprocess
 
 -- ClassesBuilt
 function OnMsg.ClassesBuilt()
+	local ChoGGi = ChoGGi
+	local UserSettings = ChoGGi.UserSettings
+
 	SaveOrigFunc("Colonist","ChangeComfort")
 	SaveOrigFunc("Console","AddHistory")
 	SaveOrigFunc("Console","Exec")
@@ -664,13 +668,6 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("XWindow","OnMouseEnter")
 	SaveOrigFunc("XWindow","OnMouseLeft")
 	SaveOrigFunc("XWindow","SetId")
---~ 	-- removed in Garagin
---~ 	if LuaRevision == 235636 then
---~ 		SaveOrigFunc("MG_Colonists","GetProgress")
---~ 		SaveOrigFunc("MG_Martianborn","GetProgress")
---~ 	end
-
-	local UserSettings = ChoGGi.UserSettings
 
 	function SpaceElevator:DroneUnloadResource(...)
 		local export_when = ChoGGi.ComFuncs.DotNameToObject("ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount")
@@ -717,13 +714,12 @@ function OnMsg.ClassesBuilt()
 
 	-- no more stuck focus on textboxes and so on
 	function XDesktop:MouseEvent(event, pt, button, time,...)
---~ 		if event == "OnMouseButtonDown" and self.keyboard_focus and self.keyboard_focus:IsKindOf("XTextEditor") then
 		if event == "OnMouseButtonDown" and self.keyboard_focus and self.keyboard_focus:IsKindOfClasses("XTextEditor","XList") then
 			local hud = Dialogs.HUD
 			if hud then
 				hud:SetFocus()
 			else
-				-- hud should always be visible, but just in case focus on desktop
+				-- hud should always be around, but just in case focus on desktop
 				self:SetFocus()
 			end
 		end
@@ -828,26 +824,6 @@ function OnMsg.ClassesBuilt()
 		end
 	end -- do
 
---~ 	-- removed in Garagin
---~ 	if LuaRevision == 235636 then
---~ 		local GetMissionSponsor = GetMissionSponsor
---~ 		--some mission goals check colonist amounts
---~ 		function MG_Colonists:GetProgress()
---~ 			if ChoGGi.Temp.InstantMissionGoal then
---~ 				return GetMissionSponsor().goal_target + 1
---~ 			else
---~ 				return ChoGGi_OrigFuncs.MG_Colonists_GetProgress(self)
---~ 			end
---~ 		end
---~ 		function MG_Martianborn:GetProgress()
---~ 			if ChoGGi.Temp.InstantMissionGoal then
---~ 				return GetMissionSponsor().goal_target + 1
---~ 			else
---~ 				return ChoGGi_OrigFuncs.MG_Martianborn_GetProgress(self)
---~ 			end
---~ 		end
---~ 	end
-
 	-- keep prod at saved values for grid producers (air/water/elec)
 	function SupplyGridElement:SetProduction(new_production, new_throttled_production, update, ...)
 		local amount = ChoGGi.UserSettings.BuildingSettings[self.building.template_name]
@@ -873,13 +849,13 @@ function OnMsg.ClassesBuilt()
 	function SingleResourceProducer:Produce(amount_to_produce,...)
 		local amount = ChoGGi.UserSettings.BuildingSettings[self.parent.template_name]
 		if amount and amount.production then
-			--set prod
+			-- set prod
 			amount_to_produce = amount.production / guim
-			--set displayed prod
+			-- set displayed prod
 			self.production_per_day = amount.production
 		end
 
-		--get them lazy drones working (bugfix for drones ignoring amounts less then their carry amount)
+		-- get them lazy drones working (bugfix for drones ignoring amounts less then their carry amount)
 		if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
 			ChoGGi.ComFuncs.FuckingDrones(self)
 		end

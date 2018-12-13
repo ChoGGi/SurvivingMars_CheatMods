@@ -5,12 +5,13 @@
 
 ## v11.8 (Unreleased)
 ### Changed:
-- You can now paste code into the console and not worry about -- comments or spaces (devs broke it in DA update during XDialogs migration).
-- @funcname now works with the blacklist.
+- You can now paste code into the console and not worry about --comments, --[[comments--]], spaces, etc (devs broke it in DA update during XDialogs migration).
+- @funcname now works when blacklist is enabled.
 - Examine>Tools>Image Viewer tells you if it didn't find any images.
 
 ### Fixed:
 - Looks like I missed a reference and Examine>Delete Object didn't work on XWindows.
+- Issue with loading the mod in certain situations (thanks Sargash).
 
 ## v11.7 (10 Dec 2018)
 ### Changed:
