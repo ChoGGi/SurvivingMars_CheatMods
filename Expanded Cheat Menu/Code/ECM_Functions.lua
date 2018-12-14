@@ -941,7 +941,10 @@ The func I use for spot_rot rounds to two decimal points...
 
 ]]
 
-		function ChoGGi.ComFuncs.ExamineEntSpots(obj,parent)
+--~ local list = ChoGGi.ComFuncs.ExamineEntSpots(s,true)
+--~ list = ChoGGi.ComFuncs.TableConcat(list,"\n")
+--~ ChoGGi.ComFuncs.Dump(list)
+		function ChoGGi.ComFuncs.ExamineEntSpots(obj,parent_or_ret)
 			obj = obj or ChoGGi.ComFuncs.SelObject()
 			if not IsValid(obj) then
 				return
@@ -971,7 +974,7 @@ The func I use for spot_rot rounds to two decimal points...
 					spots_str_t = spots_str_t:gsub([[ bone="%%s"]],"%%s")
 				end
 
-				-- scale angle,axis (pos numbers are off-by-one for neg numbers)
+				-- scale angle,axis (position numbers are off-by-one for negative numbers)
 				local _,_,_,angle,axis_x,axis_y,axis_z,scale = obj:GetSpotLocXYZ(i)
 
 				-- 100 is default
@@ -1009,17 +1012,21 @@ The func I use for spot_rot rounds to two decimal points...
 			local pos_x, pos_y, pos_z, rad = obj:GetBSphere("idle", true)
 			spots_table.bsphere = bsphere_str:format(pos_x - origin_pos_x, pos_y - origin_pos_y, pos_z - origin_pos_z, rad)
 
-			ChoGGi.ComFuncs.OpenInExamineDlg(
-				spots_table,
-				parent,
-				StringFormat("%s: %s",S[302535920000235--[[Attach Spots List--]]],RetName(obj))
-			)
+			if parent_or_ret == true then
+				return spots_table
+			else
+				ChoGGi.ComFuncs.OpenInExamineDlg(
+					spots_table,
+					parent_or_ret,
+					StringFormat("%s: %s",S[302535920000235--[[Attach Spots List--]]],RetName(obj))
+				)
+			end
 		end
 	end -- do
 
 --~ 	ChoGGi.ComFuncs.ProcessHexSurfaces(s.entity)
 	-- not in a working state as yet (trying to re-create .ent/mtl files)
-	function ChoGGi.ComFuncs.ProcessHexSurfaces(entity)
+	function ChoGGi.ComFuncs.ProcessHexSurfaces(entity,parent_or_ret)
 		local hexes = {}
 		local EntitySurfaces = EntitySurfaces
 		for name,surface_num in pairs(EntitySurfaces) do
@@ -1035,38 +1042,75 @@ The func I use for spot_rot rounds to two decimal points...
 			end
 		end
 
-		ChoGGi.ComFuncs.OpenInExamineDlg(hexes)
+		if parent_or_ret == true then
+			return hexes
+		else
+			ChoGGi.ComFuncs.OpenInExamineDlg(hexes)
+		end
 	end
 
-	function ChoGGi.ComFuncs.ObjFlagsList(obj,parent)
-		local flags_table = {}
-		if not IsValid(obj) then
-			return flags_table
+	do -- ObjFlagsList
+
+		-- get list of const.rf* flags
+		local rf_flags = {}
+		local const_temp = const
+		for flag,value in pairs(const_temp) do
+			if flag:sub(1,2) == "rf" and type(value) == "number" then
+				rf_flags[flag] = value
+			end
 		end
 
-		local const = const
-		local Flags = Flags
-		local IsFlagSet = IsFlagSet
-
-		local enum = obj:GetEnumFlags()
-		local class = obj:GetClassFlags()
-		local game = obj:GetGameFlags()
-
-		for i = 1, #Flags.Class do
-			local f = Flags.Class[i]
-			flags_table[f] = IsFlagSet(class, const[f])
-		end
-		for i = 1, #Flags.Enum do
-			local f = Flags.Enum[i]
-			flags_table[f] = IsFlagSet(enum, const[f])
-		end
-		for i = 1, #Flags.Game do
-			local f = Flags.Game[i]
-			flags_table[f] = IsFlagSet(game, const[f])
+		local flags_table
+		local function CheckFlags(flags,list)
+			local const = const
+			local IsFlagSet = IsFlagSet
+			for i = 1, #list do
+				local f = list[i]
+				flags_table[f] = IsFlagSet(flags, const[f])
+			end
 		end
 
-		ChoGGi.ComFuncs.OpenInExamineDlg(flags_table,parent,RetName(obj))
-	end
+		function ChoGGi.ComFuncs.ObjFlagsList_TR(obj,parent_or_ret)
+			if not obj or obj.__name ~= "HGE.TaskRequest" then
+				return
+			end
+			flags_table = {}
+
+			for flag,value in pairs(rf_flags) do
+				flags_table[flag] = obj:IsAnyFlagSet(value)
+			end
+
+			if parent_or_ret == true then
+				return flags_table
+			else
+				ChoGGi.ComFuncs.OpenInExamineDlg(flags_table,parent_or_ret,RetName(obj))
+			end
+		end
+
+		function ChoGGi.ComFuncs.ObjFlagsList(obj,parent_or_ret)
+			obj = obj or ChoGGi.ComFuncs.SelObject()
+			if not IsValid(obj) then
+				return
+			end
+
+			flags_table = {}
+
+			local class = obj:GetClassFlags()
+			local enum = obj:GetEnumFlags()
+			local game = obj:GetGameFlags()
+
+			local Flags = Flags
+			CheckFlags(class,Flags.Class)
+			CheckFlags(enum,Flags.Enum)
+			CheckFlags(game,Flags.Game)
+
+			if parent_or_ret == true then
+				return flags_table
+			else
+				ChoGGi.ComFuncs.OpenInExamineDlg(flags_table,parent_or_ret,RetName(obj))
+			end
+		end
+	end -- do
 
 	do -- GetMaterialProperties
 		local GetMaterialProperties = GetMaterialProperties
@@ -1076,6 +1120,7 @@ The func I use for spot_rot rounds to two decimal points...
 		local GetStateLODCount = GetStateLODCount
 		local GetStates = GetStates
 		local TableIsEqual = ChoGGi.ComFuncs.TableIsEqual
+		local mat_table_str = S[302535920001477--[["%s, Mat: %, LOD: %s, State: %s"--]]]
 
 		local function EntityMats(entity)
 			local mats = {}
@@ -1087,7 +1132,50 @@ The func I use for spot_rot rounds to two decimal points...
 				for li = 1, num_lods do
 					local num_mats = GetStateNumMaterials(entity, state, li - 1) or 0
 					for mi = 1, num_mats do
-						local mat = GetMaterialProperties(GetStateMaterial(entity,state,mi - 1,li - 1))
+						local mat_name = GetStateMaterial(entity,state,mi - 1,li - 1)
+						local mat = GetMaterialProperties(mat_name)
+						mat.__mtl = mat_name
+						mat.__lod = li
+						mat.__state = li
+						mats[mat_table_str:format(mat_name,mi,li,si)] = mat
+					end
+				end
+			end
+			if #mats == 1 then
+				return mats[1]
+			end
+
+--~ 			for i = #mats, 1, -1 do
+--~ 				if i == 1 then
+--~ 					break
+--~ 				end
+--~ 				local t1,t2 = mats[i],mats[1]
+--~ 				if type(t1) == "table" and type(t2) == "table" and TableIsEqual(t1,t2) then
+--~ 					table.remove(mats,i)
+--~ 				end
+--~ 			end
+
+--~ 			if #mats == 1 then
+--~ 				return mats[1]
+--~ 			end
+
+			return mats
+		end
+
+		local function EntityMatsORIG(entity)
+			local mats = {}
+			local c = 0
+			local states = GetStates(entity) or ""
+			for si = 1, #states do
+				local state = GetStateIdx(states[si])
+				local num_lods = GetStateLODCount(entity, state) or 0
+				for li = 1, num_lods do
+					local num_mats = GetStateNumMaterials(entity, state, li - 1) or 0
+					for mi = 1, num_mats do
+						local mat_name = GetStateMaterial(entity,state,mi - 1,li - 1)
+						local mat = GetMaterialProperties(mat_name)
+						mat.__mtl = mat_name
+						mat.__lod = li
 						local t1 = mats[c]
 						local t1_type = type(t1) == "table"
 						if not t1_type or t1_type and not TableIsEqual(t1,mat) then
@@ -1118,13 +1206,21 @@ The func I use for spot_rot rounds to two decimal points...
 			return mats
 		end
 
-		function ChoGGi.ComFuncs.GetMaterialProperties(obj,parent)
+		function ChoGGi.ComFuncs.GetMaterialProperties(obj,parent_or_ret)
 			if not UICity then
 				return
 			end
+			obj = obj or ChoGGi.ComFuncs.SelObject()
+			if IsValid(obj) then
+				obj = obj:GetEntity()
+			end
 
 			if IsValidEntity(obj) then
-				ChoGGi.ComFuncs.OpenInExamineDlg(EntityMats(obj),parent,S[302535920001458--[[Material Properties--]]])
+				if parent_or_ret == true then
+					return EntityMats(obj)
+				else
+					ChoGGi.ComFuncs.OpenInExamineDlg(EntityMats(obj),parent_or_ret,S[302535920001458--[[Material Properties--]]])
+				end
 			else
 				local materials = {}
 				local all_entities = GetAllEntities()
@@ -1256,6 +1352,11 @@ The func I use for spot_rot rounds to two decimal points...
 		end
 
 		function ChoGGi.ComFuncs.BBoxLines_Toggle(obj)
+			obj = obj or ChoGGi.ComFuncs.SelObject()
+			if not IsValid(obj) then
+				return
+			end
+
 			-- check if bbox showing
 			if obj.ChoGGi_bboxobj then
 				for i = 1, #obj.ChoGGi_bboxobj do

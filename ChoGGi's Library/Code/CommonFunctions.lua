@@ -4513,3 +4513,40 @@ function ChoGGi.ComFuncs.TableIsEqual(t1,t2)
 
 	return is_equal
 end
+
+do -- LoadEntity
+	-- no sense in making a new one for each entity
+	local entity_templates = {
+		decal = {
+			category_Decors = true,
+			entity = {
+				fade_category = "Never",
+				material_type = "Metal",
+			},
+		},
+		building = {
+			category_Buildings = true,
+			entity = {
+				class_parent = "BuildingEntityClass",
+				fade_category = "Never",
+				material_type = "Metal",
+			},
+		},
+	}
+
+	-- local instead of global is quicker
+	local EntityData = EntityData
+	local EntityLoadEntities = EntityLoadEntities
+	local SetEntityFadeDistances = SetEntityFadeDistances
+
+	function ChoGGi.ComFuncs.LoadEntity(name,path,mod,template)
+		EntityData[name] = entity_templates[template or "decal"]
+
+		EntityLoadEntities[#EntityLoadEntities + 1] = {
+			mod,
+			name,
+			path
+		}
+		SetEntityFadeDistances(name, -1, -1)
+	end
+end -- do

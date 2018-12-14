@@ -101,6 +101,8 @@ DefineClass.Examine = {
 	show_all_values = false,
 	-- going in through the backdoor
 	sort = false,
+	-- if TaskRequest then store flags here
+	obj_flags = false,
 
 	-- only chinese goes slow as shit for some reason, so i added this to at least stop the game from freezing till obj is examined
 	is_chinese = false,
@@ -743,11 +745,16 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 			end,
 		},
 		{
-			name = S[302535920001446--[[Object Flags--]]],
+			name = S[302535920001476--[[Flags--]]],
 			hint = S[302535920001447--[[Shows list of flags set for selected object.--]]],
 			image = "CommonAssets/UI/Menu/JoinGame.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.ObjFlagsList(self.obj_ref,self)
+				-- task requests have flags too, ones that aren't listed in the Flags table... (just const.rf*)
+				if self.obj_flags then
+					ChoGGi.ComFuncs.ObjFlagsList_TR(self.obj_ref,self)
+				else
+					ChoGGi.ComFuncs.ObjFlagsList(self.obj_ref,self)
+				end
 			end,
 		},
 		{
@@ -1190,7 +1197,7 @@ function Examine:valuetotextex(obj)
 				trans = tostring(obj)
 			end
 			-- the </color> is to make sure it doesn't bleed into other text
-			return StringFormat("%s</color></color>%s < %s%s",
+			return StringFormat("%s</color></color>%s *%s%s",
 				trans,
 				self:HyperLink(obj,Examine_local),
 				getmetatable(obj).__name or tostring(obj),
@@ -1278,7 +1285,7 @@ function Examine:valuetotextex(obj)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
-local ExamineThreadLevel_str1 = "%s < debug.getlocal(%s,%s)"
+local ExamineThreadLevel_str1 = "%s @ debug.getlocal(%s,%s)"
 local ExamineThreadLevel_str2 = "debug.getupvalue(%s,%s)"
 local function ExamineThreadLevel_totextex(level,info,obj,self)
 	local ExamineThreadLevel_data
@@ -1307,7 +1314,7 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 end
 
 function Examine:RetDebugUpValue(obj,list,c,nups)
-	local debug_str = "%s = %s < debug.getupvalue(%s)"
+	local debug_str = "%s = %s @ debug.getupvalue(%s)"
 	for i = 1, nups do
 		local name, value = getupvalue(obj, i)
 		if name then
@@ -1414,7 +1421,7 @@ function Examine:totextex(obj,obj_type)
 				if info then
 					local l_level, l_info = level, info
 					c = c + 1
-					totextex_res[c] = StringFormat([[%s%s(%s) %s: %s%s < debug.getinfo(%s,"SLlfunt")]],
+					totextex_res[c] = StringFormat([[%s%s(%s) %s: %s%s @ debug.getinfo(%s,"SLlfunt")]],
 						self:HyperLink(obj,function()
 							ExamineThreadLevel_totextex(l_level,l_info,obj,self)
 						end),
@@ -1511,7 +1518,7 @@ function Examine:totextex(obj,obj_type)
 		if trans:find("Missing text") then
 			trans = tostring(obj)
 		else
-			trans = StringFormat("%s < %s</color></color>",obj,trans)
+			trans = StringFormat("%s = %s</color></color>",obj,trans)
 		end
 		c = c + 1
 		totextex_res[c] = trans
@@ -1542,7 +1549,9 @@ function Examine:totextex(obj,obj_type)
 					"table",
 					HLEnd
 				))
-				TableInsert(data_meta,1,StringFormat("GetFlags(): %s",obj:GetFlags()))
+				-- we use this with Object>Flags
+				self.obj_flags = obj:GetFlags()
+				TableInsert(data_meta,1,StringFormat("GetFlags(): %s",self.obj_flags))
 				TableInsert(data_meta,1,StringFormat("GetReciprocalRequest(): %s",self:valuetotextex(obj:GetReciprocalRequest())))
 				TableInsert(data_meta,1,StringFormat("GetLastServiced(): %s",obj:GetLastServiced()))
 				TableInsert(data_meta,1,StringFormat("GetFreeUnitSlots(): %s",obj:GetFreeUnitSlots()))
@@ -1687,18 +1696,21 @@ end
 function Examine:SetToolbarVis(obj)
 	if type(obj) == "table" then
 
-		if IsValid(obj) then
-			self.idButMarkObject:SetVisible(true)
-		else
-			self.idButMarkObject:SetVisible()
-		end
-
+		-- pretty much any class object
 		if obj.delete then
 			self.idButDeleteObj:SetVisible(true)
 		else
 			self.idButDeleteObj:SetVisible()
 		end
 
+		-- can't mark if it isn't an object, and no sense in marking something off the map
+		if IsValid(obj) and obj:GetPos() ~= InvalidPos then
+			self.idButMarkObject:SetVisible(true)
+		else
+			self.idButMarkObject:SetVisible()
+		end
+
+		-- objlist objects let us do some easy for each
 		if IsObjlist(obj) then
 			self.idButMarkAll:SetVisible(true)
 			self.idButDeleteAll:SetVisible(true)
@@ -1707,6 +1719,7 @@ function Examine:SetToolbarVis(obj)
 			self.idButDeleteAll:SetVisible()
 		end
 
+		-- pretty rare occurrence
 		local enum = EnumVars(self.name)
 		if enum and next(enum) then
 			self.idButViewEnum:SetVisible(true)
@@ -1714,7 +1727,16 @@ function Examine:SetToolbarVis(obj)
 			self.idButViewEnum:SetVisible()
 		end
 
+	else
+
+		-- not a table so none of the above apply (maybeeee some userdata object will have a delete func, ah well)
+		self.idButMarkObject:SetVisible()
+		self.idButMarkAll:SetVisible()
+		self.idButDeleteAll:SetVisible()
+		self.idButViewEnum:SetVisible()
+		self.idButDeleteObj:SetVisible()
 	end
+
 end
 
 -- used to build parents/ancestors menu
