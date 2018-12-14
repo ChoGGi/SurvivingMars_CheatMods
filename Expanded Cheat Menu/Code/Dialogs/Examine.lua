@@ -1124,6 +1124,7 @@ function Examine:valuetotextex(obj)
 	local obj_type = type(obj)
 
 	local function ShowObj_local()
+		-- if no UICity then no sense in using ShowObj
 		if UICity and terrain.IsPointInBounds(obj) then
 			ShowObj(obj)
 		else

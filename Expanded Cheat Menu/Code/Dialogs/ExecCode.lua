@@ -152,15 +152,25 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 		Dock = "right",
 	}, self.idButtonContainer)
 
+	self.idToggleCode = g_Classes.ChoGGi_CheckButton:new({
+		Id = "idToggleCode",
+		Dock = "left",
+		Text = S[302535920001474--[[Code Highlight--]]],
+		RolloverText = S[302535920001475--[[Toggle lua code highlighting.--]]],
+		Margins = box(10,0,0,0),
+		OnChange = self.idToggleCodeOnChange,
+	}, self.idButtonContainer)
+	self.idToggleCode:SetIconRow(2)
+
 	self.idWrapLines = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idWrapLines",
 		Dock = "left",
 		Text = S[302535920001288--[[Wrap Lines--]]],
 		RolloverText = S[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
 		Margins = box10,
-		Check = ChoGGi.UserSettings.WordWrap,
 		OnChange = self.idWrapLinesOnChange,
 	}, self.idRightButs)
+	self.idWrapLines:SetIconRow(ChoGGi.UserSettings.WordWrap and 2 or 1)
 
 	self.idCancel = g_Classes.ChoGGi_Button:new({
 		Id = "idCancel",
@@ -170,9 +180,20 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 		Margins = box(0, 0, 10, 0),
 		OnPress = self.idCloseX.OnPress,
 	}, self.idRightButs)
+
 	end -- right side
 
 	self:SetInitPos(context.parent)
+end
+
+-- toggle code highlighting
+function ChoGGi_ExecCodeDlg:idToggleCodeOnChange(check)
+	self = GetRootDialog(self)
+	if check then
+		self.idEdit:SetPlugins(self.plugin_names)
+	else
+		self.idEdit:RemovePlugin("ChoGGi_CodeEditorPlugin")
+	end
 end
 
 function ChoGGi_ExecCodeDlg:idEditOnSetFocus(...)

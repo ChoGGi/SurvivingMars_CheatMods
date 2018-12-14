@@ -306,9 +306,7 @@ DefineClass.ChoGGi_TextInput = {
 	RolloverTemplate = "Rollover",
 	Background = light_gray,
 }
---~ function ChoGGi_TextInput:Init()
---~	 self:SetText(self.display_text or "")
---~ end
+
 DefineClass.ChoGGi_ExternalTextEditorPlugin = {
 	__parents = {"XExternalTextEditorPlugin"},
 }
@@ -820,4 +818,18 @@ function ChoGGi_Window:AddScrollEdit()
 		Margins = box(4,4,4,4),
 		WordWrap = ChoGGi.UserSettings.WordWrap or false,
 	}, self.idScrollSection)
+end
+
+-- not sure why this isn't added?
+if XTextEditor.RemovePlugin then
+	printC("XTextEditor:RemovePlugin() is finally added, replace mine")
+else
+	function XTextEditor:RemovePlugin(plugin)
+		local idx = table.find(self.plugins,"class",plugin)
+		if idx then
+			local plugin = self.plugins[idx]
+			plugin:delete()
+			table.remove(self.plugins,idx)
+		end
+	end
 end
