@@ -711,6 +711,14 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 		},
 		{name = "	 ---- "},
 		{
+			name = S[302535920001472--[[BBox Toggle--]]],
+			hint = S[302535920001473--[[Toggle showing object's bbox (changes depending on movement).--]]],
+			image = "CommonAssets/UI/Menu/SelectionEditor.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.BBoxLines_Toggle(self.obj_ref)
+			end,
+		},
+		{
 			name = S[302535920000449--[[Attach Spots Toggle--]]],
 			hint = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 			image = "CommonAssets/UI/Menu/ShowAll.tga",
@@ -988,9 +996,8 @@ Which you can then mess around with some more in the console."--]]],
 		},
 		{name = "	 ---- "},
 		{
-			name = S[302535920001321--[[UI Click To Select--]]],
-			hint = S[302535920001322--[["Examine UI controls by clicking them.
-The screen dialog will ""pause"" till you click something."--]]],
+			name = S[302535920001321--[[UI Click To Examine--]]],
+			hint = S[302535920001322--[[Examine UI controls by clicking them.--]]],
 			image = "CommonAssets/UI/Menu/select_objects.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.TerminalRolloverMode(true,self)
@@ -1117,7 +1124,11 @@ function Examine:valuetotextex(obj)
 	local obj_type = type(obj)
 
 	local function ShowObj_local()
-		ShowObj(obj)
+		if UICity and terrain.IsPointInBounds(obj) then
+			ShowObj(obj)
+		else
+			ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
+		end
 	end
 	local function Examine_local(_,_,button)
 		if button == "L" then
@@ -1530,65 +1541,81 @@ function Examine:totextex(obj,obj_type)
 					"table",
 					HLEnd
 				))
-				TableInsert(data_meta,1,StringFormat("IsAnyFlagSet(): %s",self:valuetotextex(obj:IsAnyFlagSet())))
-				TableInsert(data_meta,1,StringFormat("GetFlags(): %s",self:valuetotextex(obj:GetFlags())))
+				TableInsert(data_meta,1,StringFormat("GetFlags(): %s",obj:GetFlags()))
 				TableInsert(data_meta,1,StringFormat("GetReciprocalRequest(): %s",self:valuetotextex(obj:GetReciprocalRequest())))
-				TableInsert(data_meta,1,StringFormat("GetLastServiced(): %s",self:valuetotextex(obj:GetLastServiced())))
-				TableInsert(data_meta,1,StringFormat("GetFreeUnitSlots(): %s",self:valuetotextex(obj:GetFreeUnitSlots())))
-				TableInsert(data_meta,1,StringFormat("GetFillIndex(): %s",self:valuetotextex(obj:GetFillIndex())))
-				TableInsert(data_meta,1,StringFormat("GetTargetAmount(): %s",self:valuetotextex(obj:GetTargetAmount())))
-				TableInsert(data_meta,1,StringFormat("GetDesiredAmount(): %s",self:valuetotextex(obj:GetDesiredAmount())))
-				TableInsert(data_meta,1,StringFormat("GetActualAmount(): %s",self:valuetotextex(obj:GetActualAmount())))
-				TableInsert(data_meta,1,StringFormat("GetWorkingUnits(): %s",self:valuetotextex(obj:GetWorkingUnits())))
-				TableInsert(data_meta,1,StringFormat("GetResource(): %s",self:valuetotextex(obj:GetResource())))
+				TableInsert(data_meta,1,StringFormat("GetLastServiced(): %s",obj:GetLastServiced()))
+				TableInsert(data_meta,1,StringFormat("GetFreeUnitSlots(): %s",obj:GetFreeUnitSlots()))
+				TableInsert(data_meta,1,StringFormat("GetFillIndex(): %s",obj:GetFillIndex()))
+				TableInsert(data_meta,1,StringFormat("GetTargetAmount(): %s",obj:GetTargetAmount()))
+				TableInsert(data_meta,1,StringFormat("GetDesiredAmount(): %s",obj:GetDesiredAmount()))
+				TableInsert(data_meta,1,StringFormat("GetActualAmount(): %s",obj:GetActualAmount()))
+				TableInsert(data_meta,1,StringFormat("GetWorkingUnits(): %s",obj:GetWorkingUnits()))
+				TableInsert(data_meta,1,StringFormat("GetResource(): '%s'",obj:GetResource()))
 				TableInsert(data_meta,1,StringFormat("\nGetBuilding(): %s",self:valuetotextex(obj:GetBuilding())))
 			elseif name == "HGE.Grid" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,StringFormat("get_default(): %s",self:valuetotextex(obj:get_default())))
-				TableInsert(data_meta,1,StringFormat("max_value(): %s",self:valuetotextex(obj:max_value())))
-				TableInsert(data_meta,1,StringFormat("\nsize(): %s",self:valuetotextex(obj:size())))
+				TableInsert(data_meta,1,StringFormat("get_default(): %s",obj:get_default()))
+				TableInsert(data_meta,1,StringFormat("max_value(): %s",obj:max_value()))
+				local size = {obj:size()}
+				if size[1] then
+					TableInsert(data_meta,1,StringFormat("\nsize(): %s %s",size[1],size[2]))
+				end
 			elseif name == "HGE.XMGrid" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
 				local minmax = {obj:minmax()}
 				if minmax[1] then
 					TableInsert(data_meta,1,StringFormat("minmax(): %s %s",minmax[1],minmax[2]))
 				end
-				TableInsert(data_meta,1,StringFormat("levels(): %s",self:valuetotextex(obj:levels())))
-				TableInsert(data_meta,1,StringFormat("GetPositiveCells(): %s",self:valuetotextex(obj:GetPositiveCells())))
-				TableInsert(data_meta,1,StringFormat("GetBilinear(): %s",self:valuetotextex(obj:GetBilinear())))
+				TableInsert(data_meta,1,StringFormat("levels(): %s",obj:levels()))
+				TableInsert(data_meta,1,StringFormat("GetPositiveCells(): %s",obj:GetPositiveCells()))
+				TableInsert(data_meta,1,StringFormat("GetBilinear(): %s",obj:GetBilinear()))
 				TableInsert(data_meta,1,StringFormat("EnumZones(): %s",self:valuetotextex(obj:EnumZones())))
+				TableInsert(data_meta,1,StringFormat("size(): %s",obj:size()))
+				-- crashing tendencies
+--~ 				TableInsert(data_meta,1,StringFormat("histogram(): %s",self:valuetotextex({obj:histogram()})))
+				-- freeze screen with render error in log ex(Flight_Height:GetBinData())
 				TableInsert(data_meta,1,StringFormat("\nCenterOfMass(): %s",self:valuetotextex(obj:CenterOfMass())))
 			elseif name == "HGE.Box" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
+				local points2d = {obj:ToPoints2D()}
+				if points2d[1] then
+					TableInsert(data_meta,1,StringFormat("ToPoints2D(): %s %s\n%s %s",
+						self:valuetotextex(points2d[1]),
+						self:valuetotextex(points2d[2]),
+						self:valuetotextex(points2d[3]),
+						self:valuetotextex(points2d[4])
+					))
+				end
 				TableInsert(data_meta,1,StringFormat("min(): %s",self:valuetotextex(obj:min())))
 				TableInsert(data_meta,1,StringFormat("max(): %s",self:valuetotextex(obj:max())))
-				TableInsert(data_meta,1,StringFormat("GetBSphere(): %s",self:valuetotextex(obj:GetBSphere())))
+				local bsphere = {obj:GetBSphere()}
+				if bsphere[1] then
+					TableInsert(data_meta,1,StringFormat("GetBSphere(): %s %s",self:valuetotextex(bsphere[1]),bsphere[2]))
+				end
 				TableInsert(data_meta,1,StringFormat("Center(): %s",self:valuetotextex(obj:Center())))
-				TableInsert(data_meta,1,StringFormat("IsEmpty(): %s",self:valuetotextex(obj:IsEmpty())))
-				TableInsert(data_meta,1,StringFormat("ToPoints2D(): %s",self:valuetotextex(obj:ToPoints2D())))
-				local Radius = self:valuetotextex(obj:Radius())
-				local Radius2D = self:valuetotextex(obj:Radius2D())
+				TableInsert(data_meta,1,StringFormat("IsEmpty(): %s",obj:IsEmpty()))
+				local Radius = obj:Radius()
+				local Radius2D = obj:Radius2D()
 				TableInsert(data_meta,1,StringFormat("Radius(): %s",Radius))
 				if Radius ~= Radius2D then
 					TableInsert(data_meta,1,StringFormat("Radius2D(): %s",Radius2D))
 				end
 				TableInsert(data_meta,1,StringFormat("size(): %s",self:valuetotextex(obj:size())))
-				TableInsert(data_meta,1,StringFormat("IsValidZ(): %s",self:valuetotextex(obj:IsValidZ())))
-				TableInsert(data_meta,1,StringFormat("\nIsValid(): %s",self:valuetotextex(obj:IsValid())))
+				TableInsert(data_meta,1,StringFormat("IsValidZ(): %s",obj:IsValidZ()))
+				TableInsert(data_meta,1,StringFormat("\nIsValid(): %s",obj:IsValid()))
 			elseif name == "HGE.Point" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
 				TableInsert(data_meta,1,StringFormat("__unm(): %s",self:valuetotextex(obj:__unm())))
-				TableInsert(data_meta,1,StringFormat("z(): %s",self:valuetotextex(obj:z())))
-				TableInsert(data_meta,1,StringFormat("y(): %s",self:valuetotextex(obj:y())))
-				TableInsert(data_meta,1,StringFormat("x(): %s",self:valuetotextex(obj:x())))
-				TableInsert(data_meta,1,StringFormat("IsValidZ(): %s",self:valuetotextex(obj:IsValidZ())))
-				TableInsert(data_meta,1,StringFormat("\nIsValid(): %s",self:valuetotextex(obj:IsValid())))
+				local x,y,z = obj:xyz()
+				TableInsert(data_meta,1,StringFormat("x: %s, y: %s, z: %s",x,y,z))
+				TableInsert(data_meta,1,StringFormat("IsValidZ(): %s",obj:IsValidZ()))
+				TableInsert(data_meta,1,StringFormat("\nIsValid(): %s",obj:IsValid()))
 			elseif name == "HGE.RandState" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,StringFormat("Last(): %s",self:valuetotextex(obj:Last())))
-				TableInsert(data_meta,1,StringFormat("GetStable(): %s",self:valuetotextex(obj:GetStable())))
-				TableInsert(data_meta,1,StringFormat("Get(): %s",self:valuetotextex(obj:Get())))
-				TableInsert(data_meta,1,StringFormat("\nCount(): %s",self:valuetotextex(obj:Count())))
+				TableInsert(data_meta,1,StringFormat("Last(): %s",obj:Last()))
+				TableInsert(data_meta,1,StringFormat("GetStable(): %s",obj:GetStable()))
+				TableInsert(data_meta,1,StringFormat("Get(): %s",obj:Get()))
+				TableInsert(data_meta,1,StringFormat("\nCount(): %s",obj:Count()))
 			elseif name == "HGE.Quaternion" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
 				TableInsert(data_meta,1,StringFormat("Norm(): %s",self:valuetotextex(obj:Norm())))
@@ -1598,11 +1625,15 @@ function Examine:totextex(obj,obj_type)
 				TableInsert(data_meta,1,StringFormat("\nGetAxisAngle(): %s",self:valuetotextex(obj:GetAxisAngle())))
 			elseif name == "LuaPStr" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,StringFormat("hash(): %s",self:valuetotextex(obj:hash())))
-				TableInsert(data_meta,1,StringFormat("str(): %s",self:valuetotextex(obj:str())))
-				TableInsert(data_meta,1,StringFormat("parseTuples(): %s",self:valuetotextex(obj:parseTuples())))
-				TableInsert(data_meta,1,StringFormat("getInt(): %s",self:valuetotextex(obj:getInt())))
-				TableInsert(data_meta,1,StringFormat("\nsize(): %s",self:valuetotextex(obj:size())))
+				TableInsert(data_meta,1,StringFormat("hash(): %s",obj:hash()))
+				TableInsert(data_meta,1,StringFormat("str(): '%s'",obj:str()))
+				TableInsert(data_meta,1,StringFormat("parseTuples(): '%s'",obj:parseTuples()))
+				TableInsert(data_meta,1,StringFormat("getInt(): %s",obj:getInt()))
+				TableInsert(data_meta,1,StringFormat("\nsize(): %s",obj:size()))
+--~ 			elseif name == "HGE.File" then
+--~ 			elseif name == "HGE.ForEachReachable" then
+--~ 			elseif name == "RSAKey" then
+--~ 			elseif name == "lpeg-pattern" then
 			else
 				TableInsert(data_meta,1,"\ngetmetatable():")
 			end

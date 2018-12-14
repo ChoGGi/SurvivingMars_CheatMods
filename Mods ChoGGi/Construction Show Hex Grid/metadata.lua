@@ -11,5 +11,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"lua_revision", LuaRevision,
   "steam_id", "1479851929",
-  "description", [[Show Hex Grid during construction.]],
+  "description", [[Show Hex Grid during construction.
+
+Toggle in-game with Mod Config Reborn.]],
 })

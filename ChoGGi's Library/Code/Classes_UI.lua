@@ -390,16 +390,6 @@ DefineClass.ChoGGi_Dialog = {
 	BorderWidth = 2,
 	BorderColor = light_gray,
 }
-local ChoGGi_Dialog_action = {ActionName = "Close dialog",
-	ActionId = "ChoGGi_Dialog_action.Close dialog",
-	ActionShortcut = "Shift-Esc",
-	OnAction = function(dlg)
-		GetParentOfKind(dlg, "ChoGGi_Window").idCloseX:Press()
-	end,
-	ActionBindable = true,
-	ActionTranslate = false,
-	replace_matching_id = true,
-}
 
 DefineClass.ChoGGi_DialogSection = {
 	__parents = {"XWindow"},
@@ -446,6 +436,9 @@ DefineClass.ChoGGi_Window = {
 	prefix = false,
 
 	RolloverTemplate = "Rollover",
+
+	action_close = false,
+	action_host = false,
 }
 
 -- parent,context
@@ -466,8 +459,6 @@ function ChoGGi_Window:AddElements()
 		-- keep stuff from spilling outside the dialog
 		Clip = "self",
 	}, self)
-	-- shift-esc closes dialog
-	GetActionsHost(self):AddAction(g_Classes.XAction:new(ChoGGi_Dialog_action))
 
 	-- x,y,w,h (start off with all dialogs at 100,100, default size, and we move later)
 	self.idDialog:SetBox(100, 100, self.dialog_width_scaled, self.dialog_height_scaled)
@@ -555,6 +546,7 @@ function ChoGGi_Window:AddElements()
 end
 
 function ChoGGi_Window:Done(result,...)
+	-- remove from dialog list
 	ChoGGi.Temp.Dialogs[self] = nil
 	XWindow.Done(self,result,...)
 end

@@ -13,5 +13,7 @@ return PlaceObj("ModDef", {
   "steam_id", "1493819550",
   "description", [[Show map sectors during construction (green for scanned).
 
+Toggle in-game with Mod Config Reborn.
+
 Requested by John.]],
 })

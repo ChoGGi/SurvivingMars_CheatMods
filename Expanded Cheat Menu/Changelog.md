@@ -4,14 +4,22 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v11.8 (Unreleased)
+
 ### Changed:
 - You can now paste code into the console and not worry about --comments, --[[comments--]], spaces, etc (devs broke it in DA update during XDialogs migration).
 - @funcname now works when blacklist is enabled.
-- Examine>Tools>Image Viewer tells you if it didn't find any images.
+- Examine:
+- > Tools>Image Viewer tells you if it didn't find any images.
+- > Added Objects>BBox Toggle: Toggle showing object's bbox (changes depending on movement).
+- > Renamed UI Click To Select to Examine (that's what it does after all).
+- > UI Click To Examine no longer "freezes" UI so it should make selection easier.
+- > Clicking a point in the main menu will examine it instead of trying to move the camera to it.
+- > Changed what shows up for some of the userdata objects.
 
 ### Fixed:
 - Looks like I missed a reference and Examine>Delete Object didn't work on XWindows.
 - Issue with loading the mod in certain situations (thanks Sargash).
+- Report bug was sticking my msg in the screenshot (thanks SkiRich).
 
 ## v11.7 (10 Dec 2018)
 ### Changed:
