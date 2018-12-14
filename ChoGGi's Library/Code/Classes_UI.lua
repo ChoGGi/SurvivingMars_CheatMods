@@ -45,6 +45,10 @@ DefineClass.ChoGGi_Text = {
 	RolloverTemplate = "Rollover",
 	RolloverTitle = S[126095410863--[[Info--]]],
 }
+--~ function ChoGGi_Text:OnHyperLinkRollover()
+--~ print("Rollover")
+--~ end
+
 DefineClass.ChoGGi_TextList = {
 	__parents = {"XText"},
 	TextStyle = text_style2,

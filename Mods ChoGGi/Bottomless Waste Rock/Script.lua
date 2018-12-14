@@ -9,7 +9,7 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	-- version to version check with
-	local min_version = 37
+	local min_version = 47
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)

@@ -384,14 +384,23 @@ function OnMsg.ModsReloaded()
 			-- add tooltip
 			dlgConsole.idEdit.RolloverTemplate = "Rollover"
 			dlgConsole.idEdit.RolloverTitle = StringFormat("%s %s",S[302535920001073--[[Console--]]],S[487939677892--[[Help--]]])
-			dlgConsole.idEdit.RolloverText = S[302535920001440--[["~obj opens object in examine dialog.
-~!obj opens an objlist of attachments for object in examine.
+			dlgConsole.idEdit.RolloverText = S[302535920001440--[["~obj opens object in examine dlg.
+
+~!obj opens an objlist of attachments for object in examine dlg.
+
 &handle examines object with that handle.
+
 @GetMissionSponsor prints info about the function.
+
 @@EntityData prints type(EntityData).
+
 $123 or $EffectDeposit.display_name prints translated string.
-""*r Sleep(1000) print(""sleeping"")"" or *g to wrap commands in a thread.
-!UICity.labels.TerrainDeposit[1] to move camera and select obj."--]]]
+
+""*r Sleep(1000) print(""sleeping"")"" or *g or *m to wrap commands in a thread.
+
+!UICity.labels.TerrainDeposit[1] to move camera and select obj.
+
+s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			dlgConsole.idEdit.Hint = S[302535920001439--[["~obj, @func,@@type,$id, *r/*g for threads"--]]]
 			dlgConsole.ChoGGi_MenuAdded = true
 			-- and buttons
@@ -1420,7 +1429,7 @@ do -- LoadGame/CityStart
 
 		-- something messed up if storage is negative (usually setting an amount then lowering it)
 		table_temp = UICity.labels.Storages or ""
-		pcall(function()
+		procall(function()
 			for i = 1, #table_temp do
 				if table_temp[i]:GetStoredAmount() < 0 then
 					-- we have to empty it first (just filling doesn't fix the issue)

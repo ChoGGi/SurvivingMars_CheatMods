@@ -176,7 +176,7 @@ function OnMsg.ClassesGenerate()
 
 	--~		 if type(ChoGGi.testing) == "function" then
 	--~		 --if ChoGGi.UserSettings.ConvertPopups and type(preset) == "string" and not preset:find("LaunchIssue_") then
-	--~			 if not pcall(function()
+	--~			 if not procall(function()
 	--~				 local function ColourText(Text,Bool)
 	--~					 if Bool == true then
 	--~						 return StringFormat("<color 200 200 200>%s</color>",Text)

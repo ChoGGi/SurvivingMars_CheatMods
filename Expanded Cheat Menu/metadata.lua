@@ -35,6 +35,7 @@ return PlaceObj("ModDef", {
 		"Code/Misc/ConsoleFuncs.lua",
 		"Code/Misc/InfoPaneCheats.lua",
 		"Code/Misc/Testing.lua",
+		"Code/Misc/HexPainter.lua",
 		"Code/Misc/ReplacedFunctions.lua",
 		"Code/Misc/OnMsgs.lua",
 		"Code/Misc/GedSocket.lua",

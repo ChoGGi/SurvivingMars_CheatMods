@@ -4,7 +4,7 @@ local AsyncRand = AsyncRand
 
 local function MsgPopup(Msg,Title,Icon)
 	pcall(function()
-		--returns translated text corresponding to number if we don't do tostring for numbers
+		-- returns translated text corresponding to number if we don't do tostring for numbers
 		Msg = tostring(Msg)
 		Title = Title or [[Placeholder]]
 		Icon = Icon or "UI/Icons/Notifications/placeholder.tga"

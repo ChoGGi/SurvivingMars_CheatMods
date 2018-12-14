@@ -11,8 +11,8 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local TranslationTable = TranslationTable
 
 do -- Translate
-	local T,_InternalTranslate,pack_params = T,_InternalTranslate,pack_params
-	local type,select,pcall = type,select,pcall
+	local T,_InternalTranslate,pack_params,procall = T,_InternalTranslate,pack_params,procall
+	local type,select = type,select
 	-- some userdata refs UICity, which will fail if being used in main menu
 	local function SafeTrans(str)
 		return _InternalTranslate(str)
@@ -26,8 +26,8 @@ do -- Translate
 		else
 			str = ...
 		end
-		-- the first ret val from pcall is the status
-		_,str = pcall(SafeTrans,str)
+		-- the first ret val from procall is the status
+		_,str = procall(SafeTrans,str)
 
 		-- just in case a
 		if type(str) ~= "string" then

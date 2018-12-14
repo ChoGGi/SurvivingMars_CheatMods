@@ -6,101 +6,137 @@ local StringFormat = string.format
 local mod = Mods.ChoGGi_CommieMarxLogos
 local ent_path = StringFormat("%sEntities/%s.ent",mod.env.CurrentModPath,"%s")
 
-local function LoadDecal(name)
-	pcall(function()
-		-- needs to happen before the decal object is placed
-		DelayedLoadEntity(mod,name,ent_path:format(name))
+-- copy n paste from ChoGGi.ComFuncs.LoadEntity
+do -- LoadEntity
+	-- no sense in making a new one for each entity
+	local entity_templates = {
+		decal = {
+			category_Decors = true,
+			entity = {
+				fade_category = "Never",
+				material_type = "Metal",
+			},
+		},
+		building = {
+			category_Buildings = true,
+			entity = {
+				class_parent = "BuildingEntityClass",
+				fade_category = "Never",
+				material_type = "Metal",
+			},
+		},
+	}
 
-		PlaceObj("Decal", {
-			"name",name,
-			"entity_name",name,
-		})
-	end)
-end
-LoadDecal("A_flag_for_Space_Communists")
-LoadDecal("A_flag_for_Space_Communists2")
-LoadDecal("Anarcho-Communist_Symbol")
-LoadDecal("Chilean_Communist_Party")
-LoadDecal("China_Emblem_PLA")
-LoadDecal("Chinese_Communist_(1920s)")
-LoadDecal("Coat_of_Arms_Byelorussian_Soviet_Socialist_Republic")
-LoadDecal("Coat_of_Arms_of_East_Germany_(1953-1955)")
-LoadDecal("Coat_of_Arms_of_PCR")
-LoadDecal("Coat_of_Arms_of_the_Popular_Republic_of_Romania_1948")
-LoadDecal("Coat_of_Arms_of_the_Socialist_Republic_of_Bosnia_and_Herzegovina")
-LoadDecal("Coat_of_Arms_of_the_Socialist_Republic_of_Serbia")
-LoadDecal("Coat_of_Arms_of_the_Soviet_Union")
-LoadDecal("Coat_Soviet_Canuck")
-LoadDecal("Colombian_Communist_Party")
-LoadDecal("Communist_Brazil_coat_of_arms")
-LoadDecal("Communist_California")
-LoadDecal("Communist_Party_of_Argentina")
-LoadDecal("Communist_Party_of_Belarus")
-LoadDecal("Communist_Party_of_Brazil")
-LoadDecal("Communist_Party_of_Britain")
-LoadDecal("Communist_Party_of_Canada")
-LoadDecal("Communist_Party_of_Chile")
-LoadDecal("Communist_Party_of_China")
-LoadDecal("Communist_Party_of_Finland")
-LoadDecal("Communist_Party_of_Greece")
-LoadDecal("Communist_Party_of_Ireland")
-LoadDecal("Communist_Party_of_Pakistan")
-LoadDecal("Communist_Party_of_Spain")
-LoadDecal("Communist_Party_of_Sweden")
-LoadDecal("Communist_Party_of_the_Russian_Federation")
-LoadDecal("Communist_Party_of_Turkey")
-LoadDecal("Communist_Party_of_Venezuela")
-LoadDecal("Cosmonautica")
-LoadDecal("Cosmonautica_Orange")
-LoadDecal("Emblem_of_the_Armenian_SSR")
-LoadDecal("Emblem_of_the_Azerbaijan_SSR")
-LoadDecal("Emblem_of_the_Georgian_SSR")
-LoadDecal("Emblem_of_the_Karelo-Finnish_SSR")
-LoadDecal("Emblem_of_the_Kirghiz_SSR")
-LoadDecal("Emblem_of_the_Moldavian_SSR")
-LoadDecal("Emblem_of_the_People's_Republic_of_China")
-LoadDecal("Emblem_of_the_Tajik_SSR")
-LoadDecal("Emblem_of_the_Transcaucasian_SFSR_(1922-1923)")
-LoadDecal("Emblem_of_the_Transcaucasian_SFSR_(1930-1936)")
-LoadDecal("Emblem_of_the_Turkmen_SSR")
-LoadDecal("Emblem_of_the_Ukrainian_SSR")
-LoadDecal("Emblem_of_the_Uzbek_SSR")
-LoadDecal("Flag_of_the_Hungarian_Communist_Party")
-LoadDecal("Flag_of_Union_State_Space_Agency")
-LoadDecal("Hammer_and_Sickle_Red")
-LoadDecal("Interkosmos_Cuban_Stamp")
-LoadDecal("Interkosmos_Emblem")
-LoadDecal("Interkosmos_Emblem_1977")
-LoadDecal("Interkosmos_Emblem_1980")
-LoadDecal("Interkosmos_Emblem2")
-LoadDecal("Interkosmos_Emblem3")
-LoadDecal("Interkosmos_Patch_1980")
-LoadDecal("Interkosmos_Soyuz-31")
-LoadDecal("Jordanian_Communist_Party")
-LoadDecal("Lebanese_Communist_Party")
-LoadDecal("New_Communist_Party_of_Britain")
-LoadDecal("Orden_Pobeda_Marshal_Vasilevsky")
-LoadDecal("Party_of_Italian_Communists")
-LoadDecal("Party_of_Mexican_Communists")
-LoadDecal("Peoples_Party_of_Panama")
-LoadDecal("Pioneers_Pin")
-LoadDecal("Portuguese_Communist_Party")
-LoadDecal("Progressive_Party_of_Working_People_(Cyprus)")
-LoadDecal("Red_Pride_Galaxywide")
-LoadDecal("Redneck_Commies")
-LoadDecal("Russian_Soviet_Federative_Socialist_Republic")
-LoadDecal("South_African_Communist_Party")
-LoadDecal("Space_Race")
-LoadDecal("Star_Golden_Border")
-LoadDecal("Starry_Plough_flag_(1914)")
-LoadDecal("Swiss_Party_of_Labour")
-LoadDecal("Taiwan_Communist_Party")
-LoadDecal("The_Spectre_of_Communism")
-LoadDecal("United_Socialist_States_of_America")
-LoadDecal("USSR")
-LoadDecal("Workers_of_the_World_Unite")
-LoadDecal("Workers_Party_of_New_Zealand")
-LoadDecal("Zapatismo_Subcommandante_Marcos")
+	-- local instead of global is quicker
+	local EntityData = EntityData
+	local EntityLoadEntities = EntityLoadEntities
+	local SetEntityFadeDistances = SetEntityFadeDistances
+
+	local function LoadEntity(name,path,mod,template)
+		EntityData[name] = entity_templates[template or "decal"]
+
+		EntityLoadEntities[#EntityLoadEntities + 1] = {
+			mod,
+			name,
+			path
+		}
+		SetEntityFadeDistances(name, -1, -1)
+	end
+
+	local function LoadDecal(name)
+		LoadEntity(
+			name,
+			ent_path:format(name),
+			mod
+		)
+	end
+
+	LoadDecal("A_flag_for_Space_Communists")
+	LoadDecal("A_flag_for_Space_Communists2")
+	LoadDecal("Anarcho-Communist_Symbol")
+	LoadDecal("Chilean_Communist_Party")
+	LoadDecal("China_Emblem_PLA")
+	LoadDecal("Chinese_Communist_(1920s)")
+	LoadDecal("Coat_of_Arms_Byelorussian_Soviet_Socialist_Republic")
+	LoadDecal("Coat_of_Arms_of_East_Germany_(1953-1955)")
+	LoadDecal("Coat_of_Arms_of_PCR")
+	LoadDecal("Coat_of_Arms_of_the_Popular_Republic_of_Romania_1948")
+	LoadDecal("Coat_of_Arms_of_the_Socialist_Republic_of_Bosnia_and_Herzegovina")
+	LoadDecal("Coat_of_Arms_of_the_Socialist_Republic_of_Serbia")
+	LoadDecal("Coat_of_Arms_of_the_Soviet_Union")
+	LoadDecal("Coat_Soviet_Canuck")
+	LoadDecal("Colombian_Communist_Party")
+	LoadDecal("Communist_Brazil_coat_of_arms")
+	LoadDecal("Communist_California")
+	LoadDecal("Communist_Party_of_Argentina")
+	LoadDecal("Communist_Party_of_Belarus")
+	LoadDecal("Communist_Party_of_Brazil")
+	LoadDecal("Communist_Party_of_Britain")
+	LoadDecal("Communist_Party_of_Canada")
+	LoadDecal("Communist_Party_of_Chile")
+	LoadDecal("Communist_Party_of_China")
+	LoadDecal("Communist_Party_of_Finland")
+	LoadDecal("Communist_Party_of_Greece")
+	LoadDecal("Communist_Party_of_Ireland")
+	LoadDecal("Communist_Party_of_Pakistan")
+	LoadDecal("Communist_Party_of_Spain")
+	LoadDecal("Communist_Party_of_Sweden")
+	LoadDecal("Communist_Party_of_the_Russian_Federation")
+	LoadDecal("Communist_Party_of_Turkey")
+	LoadDecal("Communist_Party_of_Venezuela")
+	LoadDecal("Cosmonautica")
+	LoadDecal("Cosmonautica_Orange")
+	LoadDecal("Emblem_of_the_Armenian_SSR")
+	LoadDecal("Emblem_of_the_Azerbaijan_SSR")
+	LoadDecal("Emblem_of_the_Georgian_SSR")
+	LoadDecal("Emblem_of_the_Karelo-Finnish_SSR")
+	LoadDecal("Emblem_of_the_Kirghiz_SSR")
+	LoadDecal("Emblem_of_the_Moldavian_SSR")
+	LoadDecal("Emblem_of_the_People's_Republic_of_China")
+	LoadDecal("Emblem_of_the_Tajik_SSR")
+	LoadDecal("Emblem_of_the_Transcaucasian_SFSR_(1922-1923)")
+	LoadDecal("Emblem_of_the_Transcaucasian_SFSR_(1930-1936)")
+	LoadDecal("Emblem_of_the_Turkmen_SSR")
+	LoadDecal("Emblem_of_the_Ukrainian_SSR")
+	LoadDecal("Emblem_of_the_Uzbek_SSR")
+	LoadDecal("Flag_of_the_Hungarian_Communist_Party")
+	LoadDecal("Flag_of_Union_State_Space_Agency")
+	LoadDecal("Hammer_and_Sickle_Red")
+	LoadDecal("Interkosmos_Cuban_Stamp")
+	LoadDecal("Interkosmos_Emblem")
+	LoadDecal("Interkosmos_Emblem_1977")
+	LoadDecal("Interkosmos_Emblem_1980")
+	LoadDecal("Interkosmos_Emblem2")
+	LoadDecal("Interkosmos_Emblem3")
+	LoadDecal("Interkosmos_Patch_1980")
+	LoadDecal("Interkosmos_Soyuz-31")
+	LoadDecal("Jordanian_Communist_Party")
+	LoadDecal("Lebanese_Communist_Party")
+	LoadDecal("New_Communist_Party_of_Britain")
+	LoadDecal("Orden_Pobeda_Marshal_Vasilevsky")
+	LoadDecal("Party_of_Italian_Communists")
+	LoadDecal("Party_of_Mexican_Communists")
+	LoadDecal("Peoples_Party_of_Panama")
+	LoadDecal("Pioneers_Pin")
+	LoadDecal("Portuguese_Communist_Party")
+	LoadDecal("Progressive_Party_of_Working_People_(Cyprus)")
+	LoadDecal("Red_Pride_Galaxywide")
+	LoadDecal("Redneck_Commies")
+	LoadDecal("Russian_Soviet_Federative_Socialist_Republic")
+	LoadDecal("South_African_Communist_Party")
+	LoadDecal("Space_Race")
+	LoadDecal("Star_Golden_Border")
+	LoadDecal("Starry_Plough_flag_(1914)")
+	LoadDecal("Swiss_Party_of_Labour")
+	LoadDecal("Taiwan_Communist_Party")
+	LoadDecal("The_Spectre_of_Communism")
+	LoadDecal("United_Socialist_States_of_America")
+	LoadDecal("USSR")
+	LoadDecal("Workers_of_the_World_Unite")
+	LoadDecal("Workers_Party_of_New_Zealand")
+	LoadDecal("Zapatismo_Subcommandante_Marcos")
+
+end -- LoadEntity
 
 local logo_path = StringFormat("%sUI/%s.png",mod.env.CurrentModPath,"%s")
 local function LoadLogo(name,display)

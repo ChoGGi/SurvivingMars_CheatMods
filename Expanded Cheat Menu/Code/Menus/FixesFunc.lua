@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local pairs,pcall,type = pairs,pcall,type
+local pairs,type = pairs,type
 local StringFormat = string.format
 
 function OnMsg.ClassesGenerate()

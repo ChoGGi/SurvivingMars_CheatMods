@@ -271,7 +271,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001446--[[Object Flags--]]],
+	Actions[c] = {ActionName = StringFormat("%s %s",S[298035641454--[[Object--]]],S[302535920001476--[[Flags--]]]),
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Flags",
 		ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",

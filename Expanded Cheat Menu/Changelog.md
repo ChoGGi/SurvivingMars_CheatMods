@@ -9,18 +9,22 @@
 - You can now paste code into the console and not worry about --comments, --[[comments--]], spaces, etc (devs broke it in DA update during XDialogs migration).
 - @funcname now works when blacklist is enabled.
 - Added code highlight checkboxes to text editor/exec code.
+- Reworked Material Properties again.
 - Examine:
 - > Tools>Image Viewer tells you if it didn't find any images.
-- > Added Objects>BBox Toggle: Toggle showing object's bbox (changes depending on movement).
+- > Added Object>BBox Toggle: Toggle showing object's bbox (changes depending on movement).
 - > Renamed UI Click To Select to Examine (that's what it does after all).
 - > UI Click To Examine no longer "freezes" UI so it should make selection easier.
 - > Clicking a point in the main menu will examine it instead of trying to move the camera to it.
 - > Changed what shows up for some of the userdata objects.
+- > Object>Object Flags renamed to Flags, and now supports TaskRequest flags.
+- > Stopped showing some toolbar buttons when we don't need to.
 
 ### Fixed:
 - Looks like I missed a reference and Examine>Delete Object didn't work on XWindows.
 - Issue with loading the mod in certain situations (thanks Sargash).
 - Report bug was sticking my msg in the screenshot (thanks SkiRich).
+- Issue with Examine and XText with certain strings containing two < .
 
 ## v11.7 (10 Dec 2018)
 ### Changed:

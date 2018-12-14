@@ -1,6 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001476,,
-302535920001477,,
 302535920001478,,
 302535920001479,,
 302535920001480,,
@@ -31,7 +29,7 @@ ID,Text,Translation,Old Translation,Gender
 302535920000104,Expanded CM,
 302535920001469,Image Viewer,
 302535920000971,Sites,
-302535920001446,Object Flags,
+302535920001476,Flags,
 302535920001447,Shows list of flags set for selected object.,
 302535920000235,Attach Spots List,
 302535920001445,Shows list of attach spots for use with .ent files.,
@@ -125,6 +123,7 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 302535920000009,Missing Scenario Name,
 302535920000010,Missing Name,
 302535920000011,Missing Description,
+302535920001477,"%s, Mat: %, LOD: %s, State: %s",
 302535920001297,Toggle Flight Grid,
 302535920001298,Shows a square grid with terrain/objects shape.,
 302535920001267,%s at position: %s was stopped.,
@@ -152,13 +151,22 @@ You can copy and paste numbers if you want.",
 302535920001441,<left_click> Activate <right_click> Add/Remove Quickbar,
 302535920001439,"~obj, @func,@@type,$id, *r/*g/*m threads",
 302535920001440,"~obj opens object in examine dlg.
+
 ~!obj opens an objlist of attachments for object in examine dlg.
+
 &handle examines object with that handle.
+
 @GetMissionSponsor prints info about the function.
+
 @@EntityData prints type(EntityData).
+
 $123 or $EffectDeposit.display_name prints translated string.
+
 ""*r Sleep(1000) print(""sleeping"")"" or *g or *m to wrap commands in a thread.
-!UICity.labels.TerrainDeposit[1] to move camera and select obj.",
+
+!UICity.labels.TerrainDeposit[1] to move camera and select obj.
+
+s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")",
 302535920001401,"Removed missing mod building from %s: %s, entity: %s, handle: %s",
 302535920001074,Ged Presets Editor,
 302535920000503,Right-click an item/submenu to add/remove it from the quickbar.,
