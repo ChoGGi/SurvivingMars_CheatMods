@@ -510,6 +510,9 @@ end
 function OnMsg.MessageBoxOpened(...)
 	print("Msg.MessageBoxOpened",...)
 end
+function OnMsg.MessageBoxPreOpen(...)
+	print("Msg.MessageBoxPreOpen",...)
+end
 function OnMsg.MetatronAnomalyWaveStarted(...)
 	print("Msg.MetatronAnomalyWaveStarted",...)
 end
@@ -1016,6 +1019,9 @@ function OnMsg.UserChanged(...)
 end
 function OnMsg.WasteRockConversion(...)
 	print("Msg.WasteRockConversion",...)
+end
+function OnMsg.WaterDepositRevealed(...)
+	print("Msg.WaterDepositRevealed",...)
 end
 function OnMsg.Whisper(...)
 	print("Msg.Whisper",...)

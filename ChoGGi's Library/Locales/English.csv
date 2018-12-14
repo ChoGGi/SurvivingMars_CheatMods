@@ -333,7 +333,7 @@ Press %s to hide green markers.",
 302535920001438,Focus Update,
 302535920000471,External Editor,
 302535920001434,"Use an external editor (see settings for editor cmd).
-Updates external file when you type in editor (only updates text when you use Read File).
+Updates external file when you type in editor (only updates text when you press Read File).
 Press again to toggle updating.",
 302535920001435,Read File,
 302535920001436,Update editor text with text from %stempedit.lua.,

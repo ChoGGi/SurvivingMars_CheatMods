@@ -16,8 +16,8 @@ return PlaceObj("ModDef", {
 Something like this was removed from the beta builds? For shame ;)
 
 Mod Config Reborn options
-Inside/Outside buildings: If you don't want them being dropped off inside (or outside).
-Prefab Only: Only rocket drop prefabs (or all buildings dependant on above option).
+Inside/Outside Buildings: If you don't want them being dropped off inside (or outside).
+Prefab Only: Only rocket drop prefabs (or all buildings depending on above options).
 Dome Crack: If the drop is in a dome, it'll crack the glass.
 Model Type: 1 = supply pod, 2 = old black hex, 3 = arc pod (needs space race).
 

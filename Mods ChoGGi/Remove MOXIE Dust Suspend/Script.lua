@@ -8,7 +8,7 @@ local function RemoveMoxieFromSuspend()
   end
 end
 
---add the tech to research
+-- add the tech to research
 function OnMsg.ClassesPostprocess()
 
   PlaceObj("TechPreset", {
@@ -28,10 +28,9 @@ function OnMsg.ClassesPostprocess()
 
 end
 
---each time game loads check if tech is researched, if so remove MOXIE from dust suspend
+-- each time game loads check if tech is researched, if so remove MOXIE from dust suspend
 function OnMsg.LoadGame()
-  local UICity = UICity
-  if UICity and UICity:IsTechResearched("ChoGGi_DustyMOXIE") then
+  if UICity:IsTechResearched("ChoGGi_DustyMOXIE") then
     RemoveMoxieFromSuspend()
   end
 end

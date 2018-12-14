@@ -1,8 +1,8 @@
 -- use gag one if around
-local model = "SupplyPod"
+--~ local model = "SupplyPod"
 local max_models = 2
 if IsValidEntity("ArcPod") then
-	model = "ArcPod"
+--~ 	model = "ArcPod"
 	max_models = 3
 end
 
@@ -14,31 +14,36 @@ function OnMsg.ModConfigReady()
 	ModConfig:RegisterMod("OrbitalPrefabDrops", "Orbital Drops")
 
 	ModConfig:RegisterOption("OrbitalPrefabDrops", "PrefabOnly", {
-		name = "Only drop prefabs",
+		name = [[Prefab Only]],
+		desc = [[Only rocket drop prefabs (or all buildings depending on Inside/Outside Buildings).]],
 		type = "boolean",
 		default = OrbitalPrefabDrops.PrefabOnly,
 	})
 
 	ModConfig:RegisterOption("OrbitalPrefabDrops", "Outside", {
-		name = "Allow outside buildings to drop",
+		name = [[Outside buildings]],
+		desc = [[If you don't want them being dropped off outside domes.]],
 		type = "boolean",
 		default = OrbitalPrefabDrops.Outside,
 	})
 
 	ModConfig:RegisterOption("OrbitalPrefabDrops", "Inside", {
-		name = "Allow inside buildings to drop",
+		name = [[Inside buildings]],
+		desc = [[If you don't want them being dropped off inside domes.]],
 		type = "boolean",
 		default = OrbitalPrefabDrops.Inside,
 	})
 
 	ModConfig:RegisterOption("OrbitalPrefabDrops", "DomeCrack", {
-		name = "Drops will damage dome.",
+		name = [[Dome Crack]],
+		desc = [[If the site is in a dome, it'll crack the glass.]],
 		type = "boolean",
 		default = OrbitalPrefabDrops.DomeCrack,
 	})
 
 	ModConfig:RegisterOption("OrbitalPrefabDrops", "ModelType", {
-		name = "Which model to use.",
+		name = [[Model Type]],
+		desc = [[1 = supply pod, 2 = old black hex, 3 = arc pod (needs Space Race DLC).]],
 		type = "number",
 		min = 1,
 		max = max_models,
