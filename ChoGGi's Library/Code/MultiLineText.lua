@@ -16,6 +16,8 @@ DefineClass.ChoGGi_MultiLineTextDlg = {
 	context = false,
 	dialog_width = 800.0,
 	dialog_height = 600.0,
+
+	plugin_names = {"ChoGGi_CodeEditorPlugin"},
 }
 
 function ChoGGi_MultiLineTextDlg:Init(parent, context)
@@ -36,11 +38,6 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 	self:AddScrollEdit()
 	self.idEdit:SetText(context.text)
 
---~	 -- let us override enter/esc
---~	 self.idEdit.OnKbdKeyDown = function(obj, vk)
---~		 return ChoGGi_TextInput.OnKbdKeyDown(obj, vk)
---~	 end
-
 	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
 		Id = "idButtonContainer",
 		Dock = "bottom",
@@ -55,24 +52,33 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 	}, self.idButtonContainer)
 
 	if context.checkbox then
-		self.idChkOverwrite = g_Classes.ChoGGi_CheckButton:new({
-			Id = "idChkOverwrite",
+		self.idOverwrite = g_Classes.ChoGGi_CheckButton:new({
+			Id = "idOverwrite",
 			Dock = "left",
 			Margins = box(4,0,0,0),
 			Text = S[302535920000721--[[Overwrite--]]],
 			RolloverText = S[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
-			OnChange = self.idChkOverwriteOnChange,
+			OnChange = self.idOverwriteOnChange,
 		}, self.idButtonContainer)
 	end
 
-	self.idChkWraplines = g_Classes.ChoGGi_CheckButton:new({
-		Id = "idChkWraplines",
+	self.idWrapLines = g_Classes.ChoGGi_CheckButton:new({
+		Id = "idWrapLines",
 		Dock = "left",
 		Text = S[302535920001288--[[Wrap Lines--]]],
 		RolloverText = S[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
 		Margins = box(10,0,0,0),
-		Check = ChoGGi.UserSettings.WordWrap,
-		OnChange = self.idChkWraplinesOnChange,
+		OnChange = self.idWrapLinesOnChange,
+	}, self.idButtonContainer)
+	self.idWrapLines:SetIconRow(ChoGGi.UserSettings.WordWrap and 2 or 1)
+
+	self.idToggleCode = g_Classes.ChoGGi_CheckButton:new({
+		Id = "idToggleCode",
+		Dock = "left",
+		Text = S[302535920001474--[[Code Highlight--]]],
+		RolloverText = S[302535920001475--[[Toggle lua code highlighting.--]]],
+		Margins = box(10,0,0,0),
+		OnChange = self.idToggleCodeOnChange,
 	}, self.idButtonContainer)
 
 	self.idCancel = g_Classes.ChoGGi_Button:new({
@@ -93,7 +99,8 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 
 end
 
-function ChoGGi_MultiLineTextDlg:idChkOverwriteOnChange()
+-- this gets sent to Dump()
+function ChoGGi_MultiLineTextDlg:idOverwriteOnChange()
 	self = GetRootDialog(self)
 	if self.overwrite then
 		self.overwrite = false
@@ -101,18 +108,36 @@ function ChoGGi_MultiLineTextDlg:idChkOverwriteOnChange()
 		self.overwrite = "w"
 	end
 end
+
+-- maybe i should make this do something for the displayed text...
+function ChoGGi_MultiLineTextDlg:idWrapLinesOnChange(check)
+	ChoGGi.UserSettings.WordWrap = check
+	GetRootDialog(self).idEdit:SetWordWrap(check)
+end
+
+-- toggle code highlighting
+function ChoGGi_MultiLineTextDlg:idToggleCodeOnChange(check)
+	self = GetRootDialog(self)
+	if check then
+		self.idEdit:SetPlugins(self.plugin_names)
+	else
+		self.idEdit:RemovePlugin("ChoGGi_CodeEditorPlugin")
+	end
+end
+
+--
 function ChoGGi_MultiLineTextDlg:idOkayOnPress()
 	GetRootDialog(self):Done("ok",true)
 end
-function ChoGGi_MultiLineTextDlg:idChkWraplinesOnChange(which)
-	ChoGGi.UserSettings.WordWrap = which
-	GetRootDialog(self).idEdit:SetWordWrap(which)
-end
+
+--
 function ChoGGi_MultiLineTextDlg:idCancelOnPress()
 	GetRootDialog(self):Done("cancel",false)
 end
 
+-- goodbye everybody
 function ChoGGi_MultiLineTextDlg:Done(result,answer)
+	-- for dumping text from examine
 	if self.retfunc then
 		self.retfunc(answer,self.overwrite,self)
 	end

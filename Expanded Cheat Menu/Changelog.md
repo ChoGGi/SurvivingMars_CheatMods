@@ -8,6 +8,7 @@
 ### Changed:
 - You can now paste code into the console and not worry about --comments, --[[comments--]], spaces, etc (devs broke it in DA update during XDialogs migration).
 - @funcname now works when blacklist is enabled.
+- Added code highlight checkboxes to text editor/exec code.
 - Examine:
 - > Tools>Image Viewer tells you if it didn't find any images.
 - > Added Objects>BBox Toggle: Toggle showing object's bbox (changes depending on movement).
