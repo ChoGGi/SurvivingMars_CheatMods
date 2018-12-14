@@ -81,12 +81,62 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 		Margins = box(0,0,0,4),
 	}, self.idDialog)
 
-	do -- left buttons
+	-- top row
+	if not blacklist then
+		self.idTopButs = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idTopButs",
+			Dock = "top",
+			Margins = box(0,0,0,4),
+		}, self.idButtonContainer)
+
+		self.idEdit.external_cmd = ChoGGi.UserSettings.ExternalEditorCmd
+		self.idEdit.external_path = ChoGGi.UserSettings.ExternalEditorPath
+
+		self.idExterEdit = g_Classes.ChoGGi_Button:new({
+			Id = "idExterEdit",
+			Dock = "left",
+			Text = S[302535920000471--[[External Editor--]]],
+			RolloverText = S[302535920001434--[["Use an external editor (see settings for editor cmd).
+Updates external file when you type in editor (only updates text when you press Read File).
+Press again to toggle updating."--]]],
+			Margins = box10,
+			OnPress = self.idExterEditOnPress,
+		}, self.idTopButs)
+
+		self.idExterReadFile = g_Classes.ChoGGi_Button:new({
+			Id = "idExterReadFile",
+			Dock = "left",
+			Text = S[302535920001435--[[Read File--]]],
+			RolloverText = S[302535920001436--[[Update editor text with text from %stempedit.lua.--]]]:format(self.idEdit.external_path),
+			Margins = box10,
+			OnPress = self.idExterReadFileOnPress,
+			FoldWhenHidden = true,
+		}, self.idTopButs)
+		self.idExterReadFile:SetVisible(false)
+
+		self.idExterFocusUpdate = g_Classes.ChoGGi_CheckButton:new({
+			Id = "idExterFocusUpdate",
+			Dock = "left",
+			Text = S[302535920001438--[[Focus Update--]]],
+			RolloverText = S[302535920001437--[[Reads file when you focus on the edit box (instead of pressing Read File).--]]],
+			Margins = box10,
+			OnChange = self.idExterFocusUpdateOnChange,
+			FoldWhenHidden = true,
+		}, self.idTopButs)
+		self.idExterFocusUpdate:SetVisible(false)
+	end -- top row
+
+	self.idBottomButs = g_Classes.ChoGGi_DialogSection:new({
+		Id = "idBottomButs",
+		Dock = "bottom",
+	}, self.idButtonContainer)
+
+	do -- left side
+
 		self.idLeftButs = g_Classes.ChoGGi_DialogSection:new({
 			Id = "idLeftButs",
 			Dock = "left",
-			Margins = box(0,0,0,4),
-		}, self.idButtonContainer)
+		}, self.idBottomButs)
 
 		self.idOK = g_Classes.ChoGGi_Button:new({
 			Id = "idOK",
@@ -107,59 +157,21 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 				OnPress = self.idInsertObjOnPress,
 			}, self.idLeftButs)
 		end
-
-		if not blacklist then
-			self.idEdit.external_cmd = ChoGGi.UserSettings.ExternalEditorCmd
-			self.idEdit.external_path = ChoGGi.UserSettings.ExternalEditorPath
-
-			self.idExterEdit = g_Classes.ChoGGi_Button:new({
-				Id = "idExterEdit",
-				Dock = "left",
-				Text = S[302535920000471--[[External Editor--]]],
-				RolloverText = S[302535920001434--[["Use an external editor (see settings for editor cmd).
-	Updates external file when you type in editor (only updates text when you use Read File).
-	Press again to toggle updating."--]]],
-				Margins = box(20,0,0,0),
-				OnPress = self.idExterEditOnPress,
-			}, self.idLeftButs)
-
-			self.idExterReadFile = g_Classes.ChoGGi_Button:new({
-				Id = "idExterReadFile",
-				Dock = "left",
-				Text = S[302535920001435--[[Read File--]]],
-				RolloverText = S[302535920001436--[[Update editor text with text from %stempedit.lua.--]]]:format(self.idEdit.external_path),
-				Margins = box10,
-				OnPress = self.idExterReadFileOnPress,
-				FoldWhenHidden = true,
-			}, self.idLeftButs)
-			self.idExterReadFile:SetVisible(false)
-
-			self.idExterFocusUpdate = g_Classes.ChoGGi_CheckButton:new({
-				Id = "idExterFocusUpdate",
-				Dock = "left",
-				Text = S[302535920001438--[[Focus Update--]]],
-				RolloverText = S[302535920001437--[[Reads file when you focus on the edit box (instead of pressing Read File).--]]],
-				Margins = box10,
-				OnChange = self.idExterFocusUpdateOnChange,
-			}, self.idLeftButs)
-			self.idExterFocusUpdate:SetVisible(false)
-		end
 	end -- left side
 
 	do -- right side
 	self.idRightButs = g_Classes.ChoGGi_DialogSection:new({
 		Id = "idRightButs",
 		Dock = "right",
-	}, self.idButtonContainer)
+	}, self.idBottomButs)
 
 	self.idToggleCode = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idToggleCode",
 		Dock = "left",
 		Text = S[302535920001474--[[Code Highlight--]]],
 		RolloverText = S[302535920001475--[[Toggle lua code highlighting.--]]],
-		Margins = box(10,0,0,0),
 		OnChange = self.idToggleCodeOnChange,
-	}, self.idButtonContainer)
+	}, self.idRightButs)
 	self.idToggleCode:SetIconRow(2)
 
 	self.idWrapLines = g_Classes.ChoGGi_CheckButton:new({
