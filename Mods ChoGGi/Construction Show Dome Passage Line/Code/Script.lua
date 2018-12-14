@@ -1,23 +1,25 @@
 -- See LICENSE for terms
 
+local pairs = pairs
+local TableSort = table.sort
+
 local GetEntityBuildShape = GetEntityBuildShape
 local HexAngleToDirection = HexAngleToDirection
 local IsValid = IsValid
-local AsyncRand = AsyncRand
 local HexRotate = HexRotate
 local HexToWorld = HexToWorld
 local WorldToHex = WorldToHex
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local point = point
-local table = table
-local pairs = pairs
+local AveragePoint2D = AveragePoint2D
+local PolylineSetParabola = PolylineSetParabola
 
 local point20 = point20
 local green = green
-local white_str = EncodeNumbersToString({-1})
+local white_str = EncodeNumbersToString({white})
 -- keep my hexes above dome ones (30 is from UpdateShapeHexes(obj))
-local point31 = point(0,0,31)
+local point31z = point(0,0,31)
 -- how long passages can be
 local max_hex = GridConstructionController.max_hex_distance_to_allow_build - 3 -- removed 3 for the angles passages (may) need
 -- hex to hex
@@ -30,23 +32,16 @@ local dome_list = {}
 -- simple entity object for hexgrids
 DefineClass.ChoGGi_HexSpot = {
   __parents = {"CObject"},
-  entity = "GridTile"
+  entity = "GridTile",
 }
 
--- I perfer to add a new object then editing existing ones (easier for mass delete as well)
+-- I perfer to add a new object then editing existing ones (easier for mass delete)
 DefineClass.ChoGGi_Polyline2 = {
   __parents = {"Polyline"},
-	max_vertices = 2,
 }
--- stripped down version of Vector:Set (without the arrow)
-local line_table = {}
-function ChoGGi_Polyline2:Set(a, b)
-	self:SetPos(a)
-	-- faster to clear a table then make a new one
-	table.iclear(line_table)
-	line_table[1] = a
-	line_table[2] = b
-	self:SetPoints(line_table)
+function ChoGGi_Polyline2:SetParabola(a, b)
+	PolylineSetParabola(self, a, b)
+	self:SetPos(AveragePoint2D(self.vertices))
 end
 
 -- if these are here when a save is loaded without this mod then it'll spam the console
@@ -90,11 +85,16 @@ local function BuildMarkers(dome)
 			hex1 = ChoGGi_HexSpot:new(),
 			hex2 = ChoGGi_HexSpot:new(),
 		}
-		BuildDomeSpots(dome)
-		dome_list[dome].hex1:SetColorModifier(green)
-		dome_list[dome].hex2:SetColorModifier(green)
+		local item = dome_list[dome]
+
+		item.hex1:SetColorModifier(green)
+		item.hex2:SetColorModifier(green)
 		-- not my magic numbers
-		dome_list[dome].line:SetCustomDataString(1, 11, white_str)
+		item.line:SetCustomDataString(1, 11, white_str)
+		-- hide if vis blocked
+--~ 		item.line:SetDepthTest(true)
+
+		BuildDomeSpots(dome)
 	end
 end
 
@@ -126,7 +126,7 @@ local function RetNearestSpot(dome,pos)
 	end
 
 	-- sort by nearest
-	table.sort(pos_spots,function(a,b)
+	TableSort(pos_spots,function(a,b)
 		return a:Dist2D(pos) < b:Dist2D(pos)
 	end)
 	-- and done
@@ -189,9 +189,9 @@ local function UpdateMarkers(self,pos)
 				item.hex2:SetVisible()
 			else
 				-- get nearest hex from placed dome to cursor
-				local placed_dome_spot = RetNearestSpot(dome,pos) or point20
+				local placed_dome_spot = (RetNearestSpot(dome,pos) or point20) + point31z
 				-- get nearest hex from cursor dome to placed dome
-				local cursor_dome_spot = RetNearestSpot(self.cursor_obj,d_pos) or point20
+				local cursor_dome_spot = (RetNearestSpot(self.cursor_obj,d_pos) or point20) + point31z
 				-- show line if it's close enough
 				if placed_dome_spot:Dist2D(cursor_dome_spot) > max_dist then
 					-- hide it, or we'll have a line pointing at where the dome used to be (till it's too far away)
@@ -199,11 +199,11 @@ local function UpdateMarkers(self,pos)
 					item.hex1:SetVisible()
 					item.hex2:SetVisible()
 				else
-					item.line:Set(cursor_dome_spot,placed_dome_spot)
+					item.line:SetParabola(cursor_dome_spot,placed_dome_spot)
 					item.line:SetVisible(true)
-					item.hex1:SetPos(cursor_dome_spot + point31)
+					item.hex1:SetPos(cursor_dome_spot)
 					item.hex1:SetVisible(true)
-					item.hex2:SetPos(placed_dome_spot + point31)
+					item.hex2:SetPos(placed_dome_spot)
 					item.hex2:SetVisible(true)
 				end
 			end

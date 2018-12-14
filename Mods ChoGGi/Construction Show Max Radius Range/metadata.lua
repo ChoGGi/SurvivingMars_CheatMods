@@ -15,5 +15,7 @@ return PlaceObj("ModDef", {
 
 This also shows a circle for the heater, Mohole Mine, and Artificial Sun (since they heat a circle).
 
+Toggle in-game with Mod Config Reborn.
+
 Not exactly requested by MGoods.]],
 })

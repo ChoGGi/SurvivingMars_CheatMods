@@ -106,6 +106,7 @@ do -- RetName
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
 		-- any tables in _G
 		for key in pairs(g) do
+			-- no need to add tables already added, and we don't care about stuff that isn't a table
 			if not lookup_table[g[key]] and type(g[key]) == "table" then
 				lookup_table[g[key]] = key
 			end
@@ -119,8 +120,8 @@ do -- RetName
 	function ChoGGi.ComFuncs.RetName_Update()
 		AfterLoad()
 	end
-	function ChoGGi.ComFuncs.RetName_ExamineNamesTable()
-		ex(lookup_table)
+	function ChoGGi.ComFuncs.RetName_Table()
+		return lookup_table
 	end
 
 	-- try to return a decent name for the obj, failing that return a string

@@ -2,6 +2,7 @@
 
 ## v4.8 (Unreleased)
 - Pasting RGB(0,0,0) into the colour modifier now works with the blacklist.
+- My Shift-Esc to close my dialogs action wasn't getting removed from terminal actions.
 
 ## v4.7 (10 Dec 2018)
 - Updates scale of opened dialogs when user changes scale in Options.

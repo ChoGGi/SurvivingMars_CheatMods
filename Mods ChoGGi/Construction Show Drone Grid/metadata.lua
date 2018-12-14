@@ -13,5 +13,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision,
   "description", [[Shows grid radius around Drone Hubs, Rockets, and RC Commanders when you're in construction mode.
 
+Toggle in-game with Mod Config Reborn.
+
 Requested by mysticlife.]],
 })

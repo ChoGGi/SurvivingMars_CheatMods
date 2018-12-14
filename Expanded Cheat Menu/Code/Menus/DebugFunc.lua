@@ -578,7 +578,7 @@ function OnMsg.ClassesGenerate()
 			local Objheight = obj:GetObjectBBox():sizez() / 2
 			local shuttle
 			if obj:IsKindOf("CargoShuttle") then
-				shuttle = obj:GetPos():z()
+				shuttle = obj:GetZ()
 			end
 			-- some objects don't have pos as waypoint
 			local cwp = #waypoints

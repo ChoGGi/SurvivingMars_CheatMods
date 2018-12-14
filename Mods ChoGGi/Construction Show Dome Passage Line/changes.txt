@@ -1,3 +1,6 @@
+v0.9
+Parabola ftw.
+
 v0.8
 Added ModConfig option to disable it.
 

@@ -57,7 +57,10 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.CreateBugReportDlg()
 		local function CallBackFunc(answer)
 			if answer then
-				CreateRealTimeThread(CreateBugReportDlg)
+				CreateRealTimeThread(function()
+					Sleep(100)
+					CreateBugReportDlg()
+				end)
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(

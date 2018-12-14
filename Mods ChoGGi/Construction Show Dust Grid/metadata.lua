@@ -13,5 +13,7 @@ return PlaceObj("ModDef", {
   "steam_id", "1566670588",
   "description", [[Show dust grids for all dust generating buildings during construction of any building.
 
+Toggle in-game with Mod Config Reborn.
+
 Requested by still__alive.]],
 })

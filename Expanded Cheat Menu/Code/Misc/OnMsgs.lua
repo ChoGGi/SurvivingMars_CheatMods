@@ -372,13 +372,12 @@ function OnMsg.ModsReloaded()
 		local dlgConsole = dlgConsole
 		if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
 			-- removes comments from code, and adds a space to each newline, so pasting multi line works
-			ChoGGi.ComFuncs.SaveOrigFunc("XEdit","EditOperation")
-			local XEditEditOperation = ChoGGi.OrigFuncs.XEdit_EditOperation
+			local XEditEditOperation = XEdit.EditOperation
 			local StripComments = ChoGGi.ComFuncs.StripComments
 			function dlgConsole.idEdit:EditOperation(insert_text, is_undo_redo, cursor_to_text_start,...)
 				if type(insert_text) == "string" then
 					insert_text = StripComments(insert_text)
-					insert_text = insert_text:gsub("\n","\n ")
+					insert_text = insert_text:gsub("\n"," \n")
 				end
 				return XEditEditOperation(self,insert_text, is_undo_redo, cursor_to_text_start,...)
 			end
