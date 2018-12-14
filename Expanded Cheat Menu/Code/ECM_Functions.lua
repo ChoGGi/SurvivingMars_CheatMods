@@ -1018,6 +1018,7 @@ The func I use for spot_rot rounds to two decimal points...
 	end -- do
 
 --~ 	ChoGGi.ComFuncs.ProcessHexSurfaces(s.entity)
+	-- not in a working state as yet (trying to re-create .ent/mtl files)
 	function ChoGGi.ComFuncs.ProcessHexSurfaces(entity)
 		local hexes = {}
 		local EntitySurfaces = EntitySurfaces
@@ -1283,4 +1284,14 @@ The func I use for spot_rot rounds to two decimal points...
 		obj:SetPos(obj:GetPos():SetZ(t_height))
 
 	end
+
+	do -- UpdateConsoleLogMargins
+		local margin = box(10, 80, 10, 65)
+		function ChoGGi.ComFuncs.UpdateConsoleLogMargins()
+			if dlgConsoleLog then
+				-- move log text above the buttons i added and make sure log text stays below the cheat menu
+				dlgConsoleLog.idText:SetMargins(margin)
+			end
+		end
+	end -- do
 end

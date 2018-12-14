@@ -1,3 +1,8 @@
+v0.3
+Gagarin HF2 added Msgs:
+MessageBoxPreOpen
+WaterDepositRevealed
+
 v0.2
 BuildPrintMsgFuncs.ahk grabs more Msgs.
 Gagarin added Msgs:

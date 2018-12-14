@@ -23,7 +23,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Add Orbital Probes",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
 		RolloverText = function()
-			if UICity then
+			if GameState.gameplay then
 				return ChoGGi.ComFuncs.SettingState(
 					#(UICity.labels.OrbitalProbe or "") + #(UICity.labels.AdvancedOrbitalProbe or ""),
 					302535920000720--[[Add more probes.--]]
@@ -62,7 +62,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Funding",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 		RolloverText = function()
-			if UICity then
+			if GameState.gameplay then
 				return ChoGGi.ComFuncs.SettingState(
 					UICity.funding,
 					302535920000726--[[Add more funding (or reset back to 500 M).--]]

@@ -1,3 +1,5 @@
+; This script searches through the decompiled lua files and finds all the Msg,WaitMsg,OnMsg
+
 #NoEnv
 #KeyHistory 0
 #NoTrayIcon
@@ -9,7 +11,7 @@ Process Priority,,A
 
 SetWorkingDir %A_ScriptDir%
 
-; we get a list of all Msg(" and add them to here with a print func
+; we get a list of all Msg and add them to here with a print func
 global msg_list := []
 
 ParseLuaFiles("CommonLua")

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "OnMsg Print v0.2",
-	"version", 2,
-	"saved", 1540814400,
+	"title", "OnMsg Print v0.3",
+	"version", 3,
+	"saved", 1544788800,
 	"id", "ChoGGi_OnMsg Print",
 --~ 	"image", "Preview.png",
 --~ 	"steam_id", "000000000",
@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Sagan update
+	"description", [[Last updated: Gagarin HF2
 I've got an ahk script to get all msgs from the lua files. If anyone wants a whole bunch of msgs printed in their log use this mod...
 
 Excluded (spammy):

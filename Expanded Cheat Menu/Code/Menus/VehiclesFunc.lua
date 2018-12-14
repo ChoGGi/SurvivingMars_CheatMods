@@ -778,7 +778,7 @@ function OnMsg.ClassesGenerate()
 					value = 2000000
 				end
 				-- loop through and set all
-				if UICity then
+				if GameState.gameplay then
 					local list = UICity.labels.RCTransport or ""
 					for i = 1, #list do
 						list[i].max_shared_storage = value

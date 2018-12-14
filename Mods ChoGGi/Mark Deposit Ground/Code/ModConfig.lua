@@ -67,7 +67,7 @@ function OnMsg.ModConfigChanged(mod_id, option_id, value)
 		elseif option_id == "HideSigns" then
 			MarkDepositGround.HideSigns = value
 			-- update signs
-			if UICity then
+			if GameState.gameplay then
 				MarkDepositGround.UpdateOpacity("SubsurfaceDeposit",value)
 				MarkDepositGround.UpdateOpacity("EffectDeposit",value)
 				MarkDepositGround.UpdateOpacity("TerrainDeposit",value)

@@ -171,7 +171,7 @@ function OnMsg.ClassesGenerate()
 		AddSubmenu("g_Classes",{"ClassTemplates","Attaches","FXRules","FXLists"})
 		AddSubmenu("g_CObjectFuncs",{"hr","pf","terrain","UIL","DTM","lpeg","lfs","srp","camera","camera3p","cameraMax","cameraRTS","string","table","package"})
 		AddSubmenu("StoryBits",{"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},S[948928900281--[[Story Bits--]]])
-		AddSubmenu("UICity",{"UICity.labels","UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters"})
+		AddSubmenu("UICity",{"UICity.labels","UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters","LRManagerInstance"})
 
 		-- bonus addition at the top
 		TableInsert(ExamineMenuToggle_list,1,{
@@ -247,8 +247,14 @@ function OnMsg.ClassesGenerate()
 			value = "dlgConsoleLog",
 			clicked = function()
 				ChoGGi.UserSettings.ConsoleToggleHistory = not ChoGGi.UserSettings.ConsoleToggleHistory
-				ShowConsoleLog(ChoGGi.UserSettings.ConsoleToggleHistory)
 				ChoGGi.SettingFuncs.WriteSettings()
+				if ChoGGi.UserSettings.ConsoleToggleHistory then
+					ShowConsoleLog(true)
+					ChoGGi.ComFuncs.UpdateConsoleLogMargins()
+					print("ShowConsoleLog",true)
+				else
+					DestroyConsoleLog()
+				end
 			end,
 		},
 		{
@@ -306,10 +312,7 @@ function OnMsg.ClassesGenerate()
 
 		-- make some space for the close button
 		dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
-		if dlgConsoleLog then
-			-- move log text above the buttons i added and make sure log text stays below the cheat menu
-			dlgConsoleLog.idText:SetMargins(box(10, 80, 10, 65))
-		end
+		ChoGGi.ComFuncs.UpdateConsoleLogMargins()
 
 		-- add close button
 		g_Classes.ChoGGi_CloseButton:new({
@@ -413,7 +416,6 @@ function OnMsg.ClassesGenerate()
 		end
 
 		dlg = dlg or dlgConsole
-		local ChoGGi = ChoGGi
 
 		if not dlg.idScripts then
 			-- we're in the select new map stuff screen

@@ -1125,7 +1125,7 @@ function Examine:valuetotextex(obj)
 
 	local function ShowObj_local()
 		-- if no UICity then no sense in using ShowObj
-		if UICity and terrain.IsPointInBounds(obj) then
+		if GameState.gameplay and terrain.IsPointInBounds(obj) then
 			ShowObj(obj)
 		else
 			ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)

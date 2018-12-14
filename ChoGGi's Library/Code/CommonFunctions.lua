@@ -4248,7 +4248,7 @@ function ChoGGi.ComFuncs.SetTableValue(tab,id,id_name,item,value)
 	end
 end
 
-do --
+do -- GetAllAttaches
 	local objlist = objlist
 	local attaches = {}
 	local attaches_idx
