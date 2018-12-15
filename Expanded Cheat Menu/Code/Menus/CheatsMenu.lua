@@ -188,7 +188,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Research Tech",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = S[302535920000346--[[Pick what you want to unlock/research.--]]],
-		OnAction = ChoGGi.MenuFuncs.ShowResearchTechList,
+		OnAction = ChoGGi.MenuFuncs.ResearchTech,
 		ActionSortKey = "-1",
 	}
 
