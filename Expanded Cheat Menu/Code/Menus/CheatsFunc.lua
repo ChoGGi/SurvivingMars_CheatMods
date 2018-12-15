@@ -1344,161 +1344,181 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		}
 	end
 
-	function ChoGGi.MenuFuncs.ShowResearchTechList()
-		local ChoGGi = ChoGGi
-		local ItemList = {}
-		local c = 1
-		ItemList[c] = {
-			text = StringFormat(" %s",S[302535920000306--[[Everything--]]]),
-			value = "Everything",
-			hint = 302535920000307--[[All the tech/breakthroughs/mysteries--]],
-		}
-		c = c + 1
-		ItemList[c] = {
-			text = StringFormat(" %s",S[302535920000308--[[All Tech--]]]),
-			value = "AllTech",
-			hint = 302535920000309--[[All the regular tech--]],
-		}
-		c = c + 1
-		ItemList[c] = {
-			text = StringFormat(" %s",S[302535920000310--[[All Breakthroughs--]]]),
-			value = "AllBreakthroughs",
-			hint = 302535920000311--[[All the breakthroughs--]],
-		}
-		c = c + 1
-		ItemList[c] = {
-			text = StringFormat(" %s",S[302535920000312--[[All Mysteries--]]]),
-			value = "AllMysteries",
-			hint = 302535920000313--[[All the mysteries--]],
-		}
+	do -- ResearchTech
 
-		local icon = "<image %s 250>"
-		local hint = "%s\n\n%s: %s\n\n<image %s 1500>"
-		local IsTechResearched = IsTechResearched
-		local TechDef = TechDef
-		for tech_id,tech in pairs(TechDef) do
-			-- only show stuff not yet researched
-			if not IsTechResearched(tech_id) then
-				local text = Trans(tech.display_name)
-				-- remove " from that one tech...
-				if text:find("\"") then
-					text = text:gsub("\"","")
-				end
-				c = c + 1
-				ItemList[c] = {
-					text = text,
-					value = tech_id,
-					icon = icon:format(tech.icon),
-					hint = hint:format(Trans(T(tech.description,tech)),S[1000097--[[Category--]]],tech.group,tech.icon),
+		local mystery_cost = {
+			SolExploration = 5000,
+			AlienDiggersDestruction = 20000,
+			AlienDiggersDetection = 20000,
+			XenoExtraction = 20000,
+			["Anti-Sphere Shield"] = 5000,
+			["Purpose of the Spheres"] = 5000,
+			["Xeno-Terraforming"] = 20000,
+			NumberSixTracing = 20000,
+			WildfireCure = 90000,
+			CrystallineFrequencyJamming = 3000,
+			IonStormPrediction = 5000,
+		}
+		-- needed to be able to unlock/research some mystery tech
+		local function AllowMysteryTech(id,city)
+			-- add tech_status if it's a mystery tech from a different mystery
+			if not city.tech_status[id] then
+				city.tech_status[id] = {
+					field = "Mysteries",
+					points = 0,
 				}
+				-- instead of incrementing costs
+				if mystery_cost[id] then
+					city.tech_status[id].cost = mystery_cost[id]
+				end
+			end
+			if not table.find(city.tech_field.Mysteries,id) then
+				city.tech_field.Mysteries[#city.tech_field.Mysteries+1] = id
 			end
 		end
 
-		local function CallBackFunc(choice)
-			if #choice < 1 then
-				return
+		-- tech_func = DiscoverTech_Old/GrantTech
+		local function ResearchTechGroup(tech_func,group)
+			local TechDef = TechDef
+			local UICity = UICity
+			for tech_id,tech in pairs(TechDef) do
+				if tech.group == group then
+					if tech.group == "Mysteries" then
+						AllowMysteryTech(tech_id,UICity)
+					end
+					_G[tech_func](tech_id)
+				end
 			end
-			local check1 = choice[1].check1
-			local check2 = choice[1].check2
+		end
 
-			-- nothing checked so we discover
-			if not check1 and not check2 then
-				check1 = true
-			end
+		local function AllRegularTechs(tech_func)
+			ResearchTechGroup(tech_func,"Biotech")
+			ResearchTechGroup(tech_func,"Engineering")
+			ResearchTechGroup(tech_func,"Physics")
+			ResearchTechGroup(tech_func,"Robotics")
+			ResearchTechGroup(tech_func,"Social")
+		end
 
-			local func
-			local text
-			if check1 then
-				func = "DiscoverTech_Old"
-				text = S[2--[[Unlock Tech--]]]
-			end
-			-- override if both checked
-			if check2 then
-				func = "GrantTech"
-				text = S[3--[[Grant Research--]]]
-			end
+		function ChoGGi.MenuFuncs.ResearchTech()
+			local ItemList = {
+				{
+					text = StringFormat(" %s",S[302535920000306--[[Everything--]]]),
+					value = "Everything",
+					hint = 302535920000307--[[All the tech/breakthroughs/mysteries--]],
+				},
+				{
+					text = StringFormat(" %s",S[302535920000308--[[All Tech--]]]),
+					value = "AllTech",
+					hint = 302535920000309--[[All the regular tech--]],
+				},
+				{
+					text = StringFormat(" %s",S[302535920000310--[[All Breakthroughs--]]]),
+					value = "AllBreakthroughs",
+					hint = 302535920000311--[[All the breakthroughs--]],
+				},
+				{
+					text = StringFormat(" %s",S[302535920000312--[[All Mysteries--]]]),
+					value = "AllMysteries",
+					hint = 302535920000313--[[All the mysteries--]],
+				},
+			}
+			local c = #ItemList
 
-			for i = 1, #choice do
-				local value = choice[i].value
-				if value == "Everything" then
-					ChoGGi.MenuFuncs.SetTech_EveryMystery(func)
-					ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(func)
-					ChoGGi.MenuFuncs.SetTech_EveryTech(func)
-				elseif value == "AllTech" then
-					ChoGGi.MenuFuncs.SetTech_EveryTech(func)
-				elseif value == "AllBreakthroughs" then
-					ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(func)
-				elseif value == "AllMysteries" then
-					ChoGGi.MenuFuncs.SetTech_EveryMystery(func)
-				else
-					_G[func](value)
+			local icon = "<image %s 250>"
+			local hint = "%s\n\n%s: %s\n\n<image %s 1500>"
+			local IsTechResearched = IsTechResearched
+			local TechDef = TechDef
+			for tech_id,tech in pairs(TechDef) do
+				-- only show stuff not yet researched
+				if not IsTechResearched(tech_id) then
+					local text = Trans(tech.display_name)
+					-- remove " from that one tech...
+					if text:find("\"") then
+						text = text:gsub("\"","")
+					end
+					c = c + 1
+					ItemList[c] = {
+						text = text,
+						value = tech_id,
+						icon = icon:format(tech.icon),
+						hint = hint:format(Trans(T(tech.description,tech)),S[1000097--[[Category--]]],tech.group,tech.icon),
+					}
 				end
 			end
 
-			-- if we unlocked any buildings and the buildmenu is open
-			ChoGGi.ComFuncs.UpdateBuildMenu()
+			local function CallBackFunc(choice)
+				if #choice < 1 then
+					return
+				end
+				local check1 = choice[1].check1
+				local check2 = choice[1].check2
 
-			MsgPopup(
-				S[302535920000315--[[%s: Unleash your inner Black Monolith Mystery.--]]]:format(text),
-				311--[[Research--]],
-				default_icon
-			)
-		end
+				-- nothing checked so we discover
+				if not check1 and not check2 then
+					check1 = true
+				end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = StringFormat("%s %s",S[311--[[Research--]]],S[3734--[[Tech--]]]),
-			hint = 302535920000317--[[Select Unlock or Research then select the tech you want. Most mystery tech is locked to that mystery.--]],
-			multisel = true,
-			check = {
-				{
-					title = 2--[[Unlock Tech--]],
-					hint = 302535920000319--[[Just unlocks in the research tree.--]],
-					checked = true,
-				},
-				{
-					title = 311--[[Research--]],
-					hint = 302535920000320--[[Unlocks and researchs.--]],
-				},
-			},
-			height = 800,
-		}
-	end
+				local func
+				local text
+				if check1 then
+					func = "DiscoverTech_Old"
+					text = S[2--[[Unlock Tech--]]]
+				end
+				-- override if both checked
+				if check2 then
+					func = "GrantTech"
+					text = S[3--[[Grant Research--]]]
+				end
 
-	-- tech_func = DiscoverTech_Old/GrantTech
-	local function ListFields(tech_func,group)
-		local TechDef = TechDef
-		for tech_id,tech in pairs(TechDef) do
-			if tech.group == group then
-				_G[tech_func](tech_id)
+				for i = 1, #choice do
+					local value = choice[i].value
+					if value == "Everything" then
+						ResearchTechGroup(func,"Mysteries")
+						ResearchTechGroup(func,"Breakthroughs")
+						AllRegularTechs(func)
+					elseif value == "AllTech" then
+						AllRegularTechs(func)
+					elseif value == "AllBreakthroughs" then
+						ResearchTechGroup(func,"Breakthroughs")
+					elseif value == "AllMysteries" then
+						ResearchTechGroup(func,"Mysteries")
+					else
+						AllowMysteryTech(value,UICity)
+						_G[func](value)
+					end
+				end
+
+				-- if we unlocked any buildings and the buildmenu is open
+				ChoGGi.ComFuncs.UpdateBuildMenu()
+
+				MsgPopup(
+					S[302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.--]]]:format(text,#choice),
+					311--[[Research--]],
+					default_icon
+				)
 			end
+
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = ItemList,
+				title = StringFormat("%s %s",S[311--[[Research--]]],S[3734--[[Tech--]]]),
+				hint = 302535920000317--[[Select Unlock or Research then select the tech you want. Most mystery tech is locked to that mystery.--]],
+				multisel = true,
+				check = {
+					{
+						title = 2--[[Unlock Tech--]],
+						hint = 302535920000319--[[Just unlocks in the research tree.--]],
+						checked = true,
+					},
+					{
+						title = 311--[[Research--]],
+						hint = 302535920000320--[[Unlocks and researchs.--]],
+					},
+				},
+				height = 800,
+			}
 		end
-	end
 
-	function ChoGGi.MenuFuncs.SetTech_EveryMystery(tech_func)
-		ListFields(tech_func,"Mysteries")
-	end
-
-	function ChoGGi.MenuFuncs.SetTech_EveryBreakthrough(tech_func)
-		ListFields(tech_func,"Breakthroughs")
-	end
-
-	local groups = {
-		Biotech = true,
-		Engineering = true,
-		Physics = true,
-		Robotics = true,
-		Social = true,
-	}
-
-	function ChoGGi.MenuFuncs.SetTech_EveryTech(tech_func)
-		local TechDef = TechDef
-		for tech_id,tech in pairs(TechDef) do
-			if groups[tech.group] then
-				_G[tech_func](tech_id)
-			end
-		end
-	end
+	end -- do
 
 end
