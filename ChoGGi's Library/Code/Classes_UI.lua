@@ -353,8 +353,7 @@ DefineClass.ChoGGi_List = {
 	__parents = {"XList"},
 	TextStyle = "ChoGGi_List",
 	RolloverTemplate = "Rollover",
-	MinWidth = 50,
-
+	LayoutMethod = "VWrap",
 	Background = dark_gray,
 	FocusedBackground = darker_gray,
 	loaded = false,
@@ -708,6 +707,29 @@ function ChoGGi_Window:SetInitPos(parent,pt)
 	self.idDialog:SetBox(new_x or x,new_y or y,w,h)
 end
 
+function ChoGGi_Window:idTextOnHyperLink(link, _, box, pos, button)
+	self = GetParentOfKind(self, "ChoGGi_Window")
+
+	if button == "R" then
+		ChoGGi.ComFuncs.OpenInExamineDlg(self.onclick_objs[tonumber(link)],self)
+	else
+		self.onclick_handles[tonumber(link)](box, pos, button, self)
+	end
+
+end
+
+function ChoGGi_Window:HyperLink(obj, f, custom_color)
+	self.onclick_count = self.onclick_count + 1
+
+	self.onclick_handles[self.onclick_count] = f
+	self.onclick_objs[self.onclick_count] = obj
+
+	return StringFormat("%s<h %s 230 195 50>",
+		custom_color or "<color 150 170 250>",
+		self.onclick_count
+	)
+end
+
 -- scrollable textbox
 function ChoGGi_Window:AddScrollText()
 	local g_Classes = g_Classes
@@ -745,29 +767,6 @@ function ChoGGi_Window:AddScrollText()
 	}, self.idScrollArea)
 end
 
-function ChoGGi_Window:idTextOnHyperLink(link, _, box, pos, button)
-	self = GetParentOfKind(self, "ChoGGi_Window")
-
-	if button == "R" then
-		ChoGGi.ComFuncs.OpenInExamineDlg(self.onclick_objs[tonumber(link)],self)
-	else
-		self.onclick_handles[tonumber(link)](box, pos, button, self)
-	end
-
-end
-
-function ChoGGi_Window:HyperLink(obj, f, custom_color)
-	self.onclick_count = self.onclick_count + 1
-
-	self.onclick_handles[self.onclick_count] = f
-	self.onclick_objs[self.onclick_count] = obj
-
-	return StringFormat("%s<h %s 230 195 50>",
-		custom_color or "<color 150 170 250>",
-		self.onclick_count
-	)
-end
-
 function ChoGGi_Window:AddScrollList()
 	local g_Classes = g_Classes
 
@@ -776,21 +775,24 @@ function ChoGGi_Window:AddScrollList()
 		Margins = box(4,4,4,4),
 	}, self.idDialog)
 
-	self.idScrollArea = g_Classes.ChoGGi_ScrollArea:new({
-		Id = "idScrollArea",
-		VScroll = "idScrollV",
-	}, self.idScrollSection)
-
 	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
 		Id = "idScrollV",
-		Target = "idScrollArea",
+		Target = "idList",
 		Dock = "right",
+	}, self.idScrollSection)
+
+	self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
+		Id = "idScrollH",
+		Target = "idList",
+		Dock = "bottom",
+		Horizontal = true,
 	}, self.idScrollSection)
 
 	self.idList = g_Classes.ChoGGi_List:new({
 		Id = "idList",
 		VScroll = "idScrollV",
-	}, self.idScrollArea)
+		HScroll = "idScrollH",
+	}, self.idScrollSection)
 
 end
 
@@ -819,7 +821,6 @@ function ChoGGi_Window:AddScrollEdit()
 		Id = "idEdit",
 		VScroll = "idScrollV",
 		HScroll = "idScrollH",
-		Margins = box(4,4,4,4),
 		WordWrap = ChoGGi.UserSettings.WordWrap or false,
 	}, self.idScrollSection)
 end
