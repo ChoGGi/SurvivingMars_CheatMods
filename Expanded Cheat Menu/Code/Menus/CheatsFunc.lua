@@ -184,13 +184,13 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.OpenModEditor()
 		local ItemList = {}
 		local c = 0
-		local title_str = "%s: %s"
+		local title_str = "%s, %s, %s"
 
 		local Mods = Mods
 		for id,mod in pairs(Mods) do
 			c = c + 1
 			ItemList[c] = {
-				text = title_str:format(id,mod.title),
+				text = title_str:format(mod.title,id,mod.version),
 				mod = {mod},
 				value = id,
 			}
@@ -890,9 +890,13 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 	end
 
 	function ChoGGi.MenuFuncs.ShowStartedMysteryList()
+		local s_SeqListPlayers = s_SeqListPlayers
+		if not s_SeqListPlayers then
+			return
+		end
+
 		local ChoGGi = ChoGGi
 		local ItemList = {}
-		local s_SeqListPlayers = s_SeqListPlayers
 		local mysteries = ChoGGi.Tables.Mystery
 		for i = 1, #s_SeqListPlayers do
 			--1 is always there from map loading

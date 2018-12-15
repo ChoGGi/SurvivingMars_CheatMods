@@ -1,8 +1,11 @@
 ## Library Changelog
 
-## v4.8 (Unreleased)
+## v4.9 (Unreleased)
+
+## v4.8 (15 Dec 2018)
 - Pasting RGB(0,0,0) into the colour modifier now works with the blacklist.
 - My Shift-Esc to close my dialogs action wasn't getting removed from terminal actions.
+- List dialogs didn't have a horizontal scroll.
 
 ## v4.7 (10 Dec 2018)
 - Updates scale of opened dialogs when user changes scale in Options.
