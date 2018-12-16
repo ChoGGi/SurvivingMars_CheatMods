@@ -9,8 +9,8 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 -- Strings.lua
 local Trans = ChoGGi.ComFuncs.Translate
 
-local pairs = pairs
-local tonumber = tonumber
+local pairs,tonumber,type = pairs,tonumber,type
+local getmetatable,tostring = getmetatable,tostring
 local AsyncRand = AsyncRand
 local IsValid = IsValid
 local IsKindOf = IsKindOf
@@ -71,7 +71,6 @@ end -- do
 
 do -- CheckText
 	-- check if text is already translated or needs to be, and return the text
-	local type = type
 	function ChoGGi.ComFuncs.CheckText(text,fallback)
 		local ret
 		-- no sense in translating a string
@@ -95,15 +94,18 @@ end -- do
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
-	local IsObjlist,type,tostring,pairs = IsObjlist,type,tostring,pairs
+	local IsObjlist = IsObjlist
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 
 	-- we use this table to display names of (some) tables for RetName
 	local lookup_table = {}
 
 	local function AfterLoad()
+		-- _G and _ENV may cause log spam, so we make sure they're defined in the lookup (as best we can)
+
 		local g = ChoGGi.Temp._G or _G
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
+
 		-- any tables in _G
 		for key in pairs(g) do
 			-- no need to add tables already added, and we don't care about stuff that isn't a table
@@ -111,6 +113,17 @@ do -- RetName
 				lookup_table[g[key]] = key
 			end
 		end
+
+		-- mods (_ENV from mod blacklist)
+		local Mods = g.Mods
+		local mod_str = "_ENV: %s"
+		for id,mod in pairs(Mods) do
+			if mod.env then
+				-- mod.env
+				lookup_table[mod.env] = mod_str:format(mod.title ~= "" and mod.title or id)
+			end
+		end
+
 	end
 
 	-- so they work in the main menu
@@ -137,8 +150,8 @@ do -- RetName
 		local obj_type = type(obj)
 
 		if obj_type == "table" then
-			-- we check in order of less generic "names"
 
+			-- we check in order of less generic "names"
 			local name_type = type(obj.name)
 			-- custom name from user (probably)
 			if name_type == "string" and obj.name ~= "" then
@@ -1276,11 +1289,12 @@ end
 do -- Ticks
 	local times = {}
 	local GetPreciseTicks = GetPreciseTicks
+
 	function ChoGGi.ComFuncs.TickStart(id)
 		times[id] = GetPreciseTicks()
 	end
-	function ChoGGi.ComFuncs.TickEnd(id)
-		print(id,":",GetPreciseTicks() - times[id])
+	function ChoGGi.ComFuncs.TickEnd(id,name)
+		print(id,":",GetPreciseTicks() - times[id],name)
 		times[id] = nil
 	end
 end -- do
@@ -1702,7 +1716,6 @@ end -- do
 do -- RetThreadInfo/FindThreadFunc
 	local GedInspectorFormatObject = GedInspectorFormatObject
 	local IsValidThread = IsValidThread
-	local pairs = pairs
 	-- returns some info if blacklist enabled
 	function ChoGGi.ComFuncs.RetThreadInfo(thread)
 		if not IsValidThread then
@@ -2763,7 +2776,6 @@ do -- DeleteObject
 	local DoneObject = DoneObject
 	local DeleteThread = DeleteThread
 	local DestroyBuildingImmediate = DestroyBuildingImmediate
-	local type = type
 	local UpdateFlightGrid
 
 	local function ExecFunc(obj,funcname,param)
@@ -3791,7 +3803,6 @@ function ChoGGi.ComFuncs.UpdateServiceComfortBld(obj,service_stats)
 		return
 	end
 
-	local type = type
 	-- check for type as some are boolean
 	if type(service_stats.health_change) ~= "nil" then
 		obj.base_health_change = service_stats.health_change
@@ -4321,7 +4332,6 @@ end -- do
 
 do -- PadNumWithZeros
 	local str = "%s%s"
-	local tostring = tostring
 	-- 100,00000 = "00100"
 	function ChoGGi.ComFuncs.PadNumWithZeros(num,pad)
 		if pad then
@@ -4407,7 +4417,6 @@ function ChoGGi.ComFuncs.RemoveObjs(cls)
 end
 
 do -- SpawnColonist
-	local pairs = pairs
 	local Msg = Msg
 	local GenerateColonistData = GenerateColonistData
 	local GetRandomPassablePoint = GetRandomPassablePoint

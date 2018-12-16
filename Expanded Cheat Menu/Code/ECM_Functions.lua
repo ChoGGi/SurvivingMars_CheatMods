@@ -375,27 +375,21 @@ function OnMsg.ClassesGenerate()
 		})
 	end
 
-	function ChoGGi.ComFuncs.RemoveOldDialogs(dlg)
-		local desktop = terminal.desktop
-		while TableFind(desktop,"class",dlg) do
-			for i = #desktop, 1, -1 do
-				if desktop[i]:IsKindOf(dlg) then
-					desktop[i]:Done()
-				end
+	function ChoGGi.ComFuncs.CloseDialogs(dlg_class)
+		local dlgs = ChoGGi.Temp.Dialogs
+		for dlg,class in pairs(dlgs) do
+			if class == dlg_class then
+				dlg:Done()
 			end
 		end
 	end
 
-	function ChoGGi.ComFuncs.CloseDialogsECM(menu)
-		if menu or ChoGGi.UserSettings.CloseDialogsECM then
-			local RemoveOldDialogs = ChoGGi.ComFuncs.RemoveOldDialogs
-			RemoveOldDialogs("Examine")
-			RemoveOldDialogs("ChoGGi_ObjectManipulatorDlg")
-			RemoveOldDialogs("ChoGGi_ListChoiceDlg")
-			RemoveOldDialogs("ChoGGi_MonitorInfoDlg")
-			RemoveOldDialogs("ChoGGi_ExecCodeDlg")
-			RemoveOldDialogs("ChoGGi_MultiLineTextDlg")
-			RemoveOldDialogs("ChoGGi_FindValueDlg")
+	function ChoGGi.ComFuncs.CloseDialogsECM(bool)
+		if bool or ChoGGi.UserSettings.CloseDialogsECM then
+			local dlgs = ChoGGi.Temp.Dialogs
+			for dlg in pairs(dlgs) do
+				dlg:Done()
+			end
 		end
 	end
 
@@ -1120,7 +1114,7 @@ The func I use for spot_rot rounds to two decimal points...
 		local GetStateLODCount = GetStateLODCount
 		local GetStates = GetStates
 		local TableIsEqual = ChoGGi.ComFuncs.TableIsEqual
-		local mat_table_str = S[302535920001477--[["%s, Mat: %, LOD: %s, State: %s"--]]]
+		local mat_table_str = S[302535920001477--[["%s, Mat: %s, LOD: %s, State: %s"--]]]
 
 		local function EntityMats(entity)
 			local mats = {}

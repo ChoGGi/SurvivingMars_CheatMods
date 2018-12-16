@@ -17,10 +17,6 @@ ChoGGi.Tables = {
 
 	-- some names need to be fixed when doing construction placement
 	ConstructionNamesListFix = {
-		RCRover = "RCRoverBuilding",
-		RCDesireTransport = "RCDesireTransportBuilding",
-		RCTransport = "RCTransportBuilding",
-		ExplorerRover = "RCExplorerBuilding",
 		Rocket = "SupplyRocket",
 	},
 	Cargo = {},
@@ -40,7 +36,15 @@ ChoGGi.Tables = {
 -- also called after mods are loaded, we call it now for any functions that use it before then
 ChoGGi.ComFuncs.UpdateDataTables()
 
+
 function OnMsg.ClassesBuilt()
+	-- see ConstructionNamesListFix above
+	local ConstructionNamesListFix = ChoGGi.Tables.ConstructionNamesListFix
+	ClassDescendants("BaseRoverBuilding", function(class, building)
+		ConstructionNamesListFix[class] = building.rover_class
+		ConstructionNamesListFix[building.rover_class] = class
+	end)
+
 	local Consts = Consts
 	local const = const
 	local g_Classes = g_Classes
