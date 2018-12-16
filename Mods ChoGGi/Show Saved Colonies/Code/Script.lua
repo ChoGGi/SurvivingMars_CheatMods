@@ -10,7 +10,6 @@ local marker_name = "%s_%s"
 local new_markers = {}
 
 local LandingSite_object
-local PlanetRotation_object
 
 -- draws the saved game spot image (needed to slightly tweak LandingSiteObject:DrawSpot)
 local ScaleXY = ScaleXY
@@ -33,7 +32,7 @@ local PlaceObject = PlaceObject
 local RotateAxis = RotateAxis
 local function BuildMySpots()
 	local landing_dlg = LandingSite_object.dialog
-	PlanetRotation_object = PlanetRotationObj
+	local PlanetRotationObj = PlanetRotationObj
 
 	-- double maxwidth limit for text (some people have lots of saves)
 	landing_dlg.idtxtCoord:SetMaxWidth(800)
@@ -84,16 +83,16 @@ local function BuildMySpots()
 				idx = idx + 1
 				marker:SetId(marker_id)
 				marker.DrawContent = template.DrawContent
-				PlanetRotation_object:Attach(attach, PlanetRotation_object:GetSpotBeginIndex("Planet"))
+				PlanetRotationObj:Attach(attach, PlanetRotationObj:GetSpotBeginIndex("Planet"))
 				marker:AddDynamicPosModifier{id = "planet_pos", target = attach}
 
 				local lat, long = LandingSite_object:CalcPlanetCoordsFromScreenCoords(save.latitude * 60, save.longitude * 60)
 				local _, world_pt = LandingSite_object:CalcClickPosFromCoords(lat, long)
 
-				local offset = world_pt - PlanetRotation_object:GetPos()
+				local offset = world_pt - PlanetRotationObj:GetPos()
 				--compensate for the planet's rotation
-				local planet_angle = 360*60 - MulDivRound(PlanetRotation_object:GetAnimPhase(1), 360 * 60, LandingSite_object.anim_duration)
-				offset = RotateAxis(offset, PlanetRotation_object:GetAxis(), -planet_angle)
+				local planet_angle = 360*60 - MulDivRound(PlanetRotationObj:GetAnimPhase(1), 360 * 60, LandingSite_object.anim_duration)
+				offset = RotateAxis(offset, PlanetRotationObj:GetAxis(), -planet_angle)
 				attach:SetAttachOffset(offset)
 			end
 		end

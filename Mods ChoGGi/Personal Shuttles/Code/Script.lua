@@ -9,7 +9,7 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	-- version to version check with
-	local min_version = 47
+	local min_version = 48
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
@@ -98,6 +98,10 @@ end
 function PersonalShuttle:GameInit()
 	CargoShuttle.GameInit(self)
 
+	self.city = self.hub.city or UICity
+--~ 	self.city:RemoveFromLabel("CargoShuttle", self)
+  self.city:AddToLabel("PersonalShuttle", self)
+
 	-- gagarin likes it dark
 	self:SetColorModifier(-1)
 
@@ -108,16 +112,18 @@ function PersonalShuttle:GameInit()
 		self.defence_thread_DD = CreateGameTimeThread(function()
 			while IsValid(self) and not self.destroyed do
 				if self.working then
-					if not self:PersonalShuttles_DefenceTickD(ps) then
-						Sleep(1000)
-					end
-				else
-					Sleep(1000)
+					self:PersonalShuttles_DefenceTickD(ps)
 				end
+				Sleep(2500)
 			end
 		end)
 	end
 
+end
+
+function PersonalShuttle:Done()
+	local city = self.city or UICity
+  self.city:RemoveFromLabel("PersonalShuttle", self)
 end
 
 -- gets rid of error in log
@@ -230,16 +236,11 @@ function PersonalShuttle:GotoPos(PersonalShuttles,pos,dest)
 			-- we don't want to skim the ground (default is 3K, but this one likes living life on the edge)
 			self.hover_height = 1500
 
-			-- want to be kinda random (when there's lots of shuttles about)
-			local path
-			if #UICity.PersonalShuttles.shuttle_threads > 10 then
-				path = self:CalcPath(
-					pos,
-					point(dest:x()+Random(-2500,2500),dest:y()+Random(-2500,2500),self.hover_height)
-				)
-			else
-				path = self:CalcPath(pos, dest)
-			end
+			-- want to be kinda random
+			local path = self:CalcPath(
+				pos,
+				point(dest:x()+Random(-2500,2500),dest:y()+Random(-2500,2500),self.hover_height)
+			)
 
 			if self.is_landed then
 				self.is_landed = nil
@@ -272,6 +273,57 @@ function PersonalShuttle:GotoPos(PersonalShuttles,pos,dest)
 	self.old_dest = dest
 end
 
+function PersonalShuttle:DropCargo(sel,pos,dest)
+	local carried = self.carried_obj
+
+	-- if fired from recall
+	dest = dest or GetPassablePointNearby(self:GetPos())
+	pos = pos or self:GetPos()
+
+	-- drop it off nearby
+	self:WaitFollowPath(self:CalcPath(pos,dest))
+
+	self:PlayFX("ShuttleUnload", "start", carried)
+	carried:Detach()
+	-- doesn't work if we use this with CalcPath
+	dest = HexGetNearestCenter(dest)
+	-- don't want to be floating above the ground
+	carried:SetPos(dest:SetZ(GetSurfaceHeight(dest)),2500)
+
+	-- we don't want stuff looking weird (drones/rovers can move on their own)
+	if sel and sel:IsKindOf("ResourceStockpileBase") then
+		carried:SetAngle(0)
+	end
+
+	Sleep(2500)
+	self:PlayFX("ShuttleUnload", "end", carried)
+
+	-- so drones will empty resource piles
+	if carried.ConnectToCommandCenters then
+		carried:ConnectToCommandCenters()
+	end
+	Sleep(1)
+
+	if carried.ChoGGi_SetCommand then
+		carried.SetCommand = carried.ChoGGi_SetCommand
+		carried.ChoGGi_SetCommand = nil
+	end
+
+	if carried.Idle then
+		carried:SetCommand("Idle")
+	end
+
+	self.carried_obj = nil
+	-- make it able to pick up again without having to press the button
+	self.pickup_toggle = true
+
+	UICity.PersonalShuttles.shuttle_carried[carried.handle] = nil
+end
+
+local function IdleDroneInAir()
+	Sleep(1000)
+end
+
 -- pickup/dropoff/scan
 function PersonalShuttle:SelectedObject(sel,pos,dest)
 	-- Anomaly scanning
@@ -289,39 +341,7 @@ function PersonalShuttle:SelectedObject(sel,pos,dest)
 
 	-- are we carrying, and is pickup set to drop?
 	elseif IsValid(self.carried_obj) and self.pickup_toggle == false then
-
-		local carried = self.carried_obj
-
-		-- drop it off nearby
-		self:WaitFollowPath(self:CalcPath(pos,dest))
-
-		self:PlayFX("ShuttleUnload", "start", carried)
-		carried:Detach()
-		-- doesn't work if we use this with CalcPath
-		dest = HexGetNearestCenter(dest+point(Random(-2500,2500),Random(-2500,2500)))
-		-- don't want to be floating above the ground
-		carried:SetPos(dest:SetZ(GetSurfaceHeight(dest)),2500)
-		-- we don't want stuff looking weird (drones/rovers can move on their own)
-		if sel:IsKindOf("ResourceStockpileBase") then
-			carried:SetAngle(0)
-		end
-		Sleep(2500)
-		self:PlayFX("ShuttleUnload", "end", carried)
-
-		-- so drones will empty resource piles
-		if carried.ConnectToCommandCenters then
-			carried:ConnectToCommandCenters()
-		end
-		-- drones/rovers
-		if carried.Idle then
-			carried:SetCommand("Idle")
-		end
-
-		self.carried_obj = nil
-		-- make it able to pick up again without having to press the button
-		self.pickup_toggle = true
-
-		UICity.PersonalShuttles.shuttle_carried[carried.handle] = nil
+		self:DropCargo(sel,pos,dest)
 
 	-- if it's marked for pickup and shuttle is set to pickup and it isn't already carrying then grab it
 	elseif sel.PersonalShuttles_PickUpItem and self.pickup_toggle and not IsValid(self.carried_obj) then
@@ -329,10 +349,11 @@ function PersonalShuttle:SelectedObject(sel,pos,dest)
 		-- goto item
 		self:WaitFollowPath(self:CalcPath(pos,sel:GetVisualPos()))
 
-
 		if not UICity.PersonalShuttles.shuttle_carried[sel.handle] then
 			UICity.PersonalShuttles.shuttle_carried[sel.handle] = true
 
+			-- select shuttle instead of carried
+			SelectObj(self)
 			-- remove pickup mark from it
 			sel.PersonalShuttles_PickUpItem = nil
 			-- PlayFX of beaming, transport one i think
@@ -347,6 +368,8 @@ function PersonalShuttle:SelectedObject(sel,pos,dest)
 				sel:SetAttachOffset(point(0,0,400))
 			elseif sel:IsKindOf("Drone") then
 				sel:SetAttachOffset(point(0,0,325))
+				sel.ChoGGi_SetCommand = sel.SetCommand
+				sel.SetCommand = IdleDroneInAir
 			else
 				sel:SetAttachOffset(point(0,0,350))
 			end
@@ -358,9 +381,8 @@ function PersonalShuttle:SelectedObject(sel,pos,dest)
 
 			-- and remember not to pick up more than one
 			self.carried_obj = sel
-			-- select shuttle instead of carried
-			SelectObj(self)
 			self:PlayFX("ShuttleLoad", "end", sel)
+
 		end
 
 	end
@@ -433,7 +455,7 @@ end
 function PersonalShuttle:DefenceTick(already_fired)
 
 	if type(already_fired) ~= "table" then
-		print("Error: shuttle_rocket_DD isn't a table")
+		print("Personal Shuttles Error: shuttle_rocket_DD isn't a table")
 	end
 
 	-- list of dustdevils on map

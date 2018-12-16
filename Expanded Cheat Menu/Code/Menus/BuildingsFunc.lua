@@ -1545,6 +1545,9 @@ function OnMsg.ClassesGenerate()
 			SetWonders(false)
 		end
 
+		-- if the buildmenu is open
+		ChoGGi.ComFuncs.UpdateBuildMenu()
+
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			StringFormat("%s: %s",ChoGGi.UserSettings.Building_wonder,S[302535920000159--[[Unlimited Wonders--]]]),

@@ -1,3 +1,11 @@
+v0.8
+Pick up button wasn't showing on objects unless two shuttles were spawned.
+Added pick up option to waste rock.
+If a recalled shuttle is carrying an object it'll drop it off nearby.
+Restored old icons.
+Two shuttles won't land in same pos (instead of 10+).
+Drones no longer try to drive when getting a ride.
+
 v0.7
 Hides pickup item buttons if there's no shuttles out.
 Gagarin messed up attacker colour.

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Personal Shuttles v0.7",
-	"version", 7,
-	"saved", 1542456000,
+	"title", "Personal Shuttles v0.8",
+	"version", 8,
+	"saved", 1544961600,
 	"id", "ChoGGi_PersonalShuttles",
 	"steam_id", "1410892053",
 	"author", "ChoGGi",
@@ -13,11 +13,13 @@ return PlaceObj("ModDef", {
 	},
 	"lua_revision", LuaRevision,
 	"description", [[Adds buttons to Shuttle Hubs to spawn personal shuttles.
-Personal shuttles can pick up certain items (rovers, drones, and resource piles), scan nearby selected anomalies, and attack nearby dust devils.
+Personal shuttles can pick up certain items (rovers, drones, resource piles, and waste rock), scan nearby selected anomalies, and attack nearby dust devils.
+
+If you have an object in un-reachable spaces you can use this to move them.
 
 They have a time limit of four Sols (I was going to do it by fuel, but they get magical fuel when they stop moving...).
 
-Attacker: Will attack nearby dust devils.
+Attacker: Attacks nearby dust devils.
 Friend: Ignores dust devils.
 
 How to pickup items:
@@ -26,10 +28,9 @@ Leave it selected and keep the mouse nearby, a personal shuttle will come and pi
 On the shuttle click "Pickup Item" so it changes to "Drop Item" and select something nearby where you want it dropped.
 Wait.
 
-To scan anomalies:
-Select it, and wait for a shuttle to come by (takes the same time as an explorer).
+How to scan anomalies:
+Select it, and wait for a shuttle to come by (takes the same time as an explorer to scan).
 
-If you have drones or resources in un-reachable spaces you can use this to move them.
 
 
 Known Issues:

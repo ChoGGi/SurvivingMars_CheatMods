@@ -40,7 +40,6 @@ local TableConcat
 local PopupToggle
 local RetName
 local ShowObj
-local ColourObj
 local DebugGetInfo
 local RetThreadInfo
 local DeleteObject
@@ -61,7 +60,6 @@ function OnMsg.ClassesGenerate()
 	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	RetName = ChoGGi.ComFuncs.RetName
 	ShowObj = ChoGGi.ComFuncs.ShowObj
-	ColourObj = ChoGGi.ComFuncs.ColourObj
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	DeleteObject = ChoGGi.ComFuncs.DeleteObject
 	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
