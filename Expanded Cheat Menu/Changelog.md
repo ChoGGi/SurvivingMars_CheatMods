@@ -7,6 +7,9 @@
 ### Changed:
 - Research Tech will now unlock mystery tech for different mysteries (cost will be the same as mystery instead of incrementing).
 
+### Fixed:
+- Messed up a string in Material Properties, and borked it.
+
 ## v11.8 (15 Dec 2018)
 ### Changed:
 - You can now paste code into the console and not worry about --comments, --[[comments--]], spaces, etc (devs broke it in DA update during XDialogs migration).

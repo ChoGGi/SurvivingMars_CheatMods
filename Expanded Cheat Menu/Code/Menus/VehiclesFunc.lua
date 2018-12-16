@@ -14,14 +14,17 @@ function OnMsg.ClassesGenerate()
 --~	local RetName = ChoGGi.ComFuncs.RetName
 
 	function ChoGGi.MenuFuncs.SetDroneType()
+		local icons = Presets.EncyclopediaArticle.Vehicles
 		local ItemList = {
 			{
 				text = S[10278--[[Wasp Drone--]]],
 				value = "FlyingDrone",
+				hint = StringFormat("<image %s>\n\n%s",icons.FlyingDrone.image,S[10278--[[Wasp Drone--]]]),
 			},
 			{
 				text = S[1681--[[Drone--]]],
 				value = "Drone",
+				hint = StringFormat("<image %s>\n\n%s",icons.Drone.image,S[1681--[[Drone--]]]),
 			},
 		}
 		local sponsor = GetMissionSponsor()

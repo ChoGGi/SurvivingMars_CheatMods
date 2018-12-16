@@ -447,7 +447,7 @@ function ChoGGi_Window:AddElements()
 	local g_Classes = g_Classes
 	local ChoGGi = ChoGGi
 
-	ChoGGi.Temp.Dialogs[self] = true
+	ChoGGi.Temp.Dialogs[self] = self.class
 
 	-- scale to UI (See OnMsgs.lua for UIScale)
 	local UIScale = ChoGGi.Temp.UIScale

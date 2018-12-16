@@ -290,11 +290,6 @@ function OnMsg.ModsReloaded()
 	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 
-	-- seems a decent place for this...
-	table.clear(Examine.examine_dialogs)
---~ 	-- just in case we examine some numbers
---~ 	table.iclear(Examine.examine_dialogs)
-
 	-- easy access to colonist data, cargo, mystery
 	ChoGGi.ComFuncs.UpdateDataTables()
 
@@ -919,6 +914,14 @@ function OnMsg.NewDay() -- NewSol...
 	CreateRealTimeThread(function()
 		Sleep(1000)
 		local ChoGGi = ChoGGi
+
+		-- remove any closed examine dialogs from the list
+		local g_ExamineDlgs = g_ExamineDlgs or empty_table
+		for obj,dlg in pairs(g_ExamineDlgs) do
+			if dlg.window_state == "destroying" then
+				g_ExamineDlgs[obj] = nil
+			end
+		end
 
 		-- sorts cc list by dist to building
 		if ChoGGi.UserSettings.SortCommandCenterDist then

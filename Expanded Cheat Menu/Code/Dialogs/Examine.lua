@@ -2,31 +2,39 @@
 
 -- used to examine objects
 
-local pairs,type,tostring,tonumber,rawget = pairs,type,tostring,tonumber,rawget
+local g = _G
 
-local StringFormat = string.format
-local TableSort = table.sort
-local TableInsert = table.insert
-local TableClear = table.clear
-local TableIClear = table.iclear
-local Sleep = Sleep
-local DeleteThread = DeleteThread
-local CreateRealTimeThread = CreateRealTimeThread
+-- store opened examine dialogs
+if not rawget(g,"g_ExamineDlgs") then
+	g.g_ExamineDlgs = {}
+	g.setmetatable(g_ExamineDlgs, weak_keyvalues_meta)
+end
 
-local CmpLower = CmpLower
-local IsObjlist = IsObjlist
-local GetStateName = GetStateName
-local IsPoint = IsPoint
-local IsKindOf = IsKindOf
-local IsValid = IsValid
-local EnumVars = EnumVars
-local IsValidEntity = IsValidEntity
+local pairs,type,tostring,tonumber,rawget = g.pairs,g.type,g.tostring,g.tonumber,g.rawget
+
+local StringFormat = g.string.format
+local TableSort = g.table.sort
+local TableInsert = g.table.insert
+local TableClear = g.table.clear
+local TableIClear = g.table.iclear
+local Sleep = g.Sleep
+local DeleteThread = g.DeleteThread
+local CreateRealTimeThread = g.CreateRealTimeThread
+
+local CmpLower = g.CmpLower
+local IsObjlist = g.IsObjlist
+local GetStateName = g.GetStateName
+local IsPoint = g.IsPoint
+local IsKindOf = g.IsKindOf
+local IsValid = g.IsValid
+local EnumVars = g.EnumVars
+local IsValidEntity = g.IsValidEntity
 
 local getlocal
 local getupvalue
 local getinfo
 local gethook
-local debug = rawget(_G,"debug")
+local debug = rawget(g,"debug")
 if debug then
 	getlocal = debug.getlocal
 	getupvalue = debug.getupvalue
@@ -55,7 +63,7 @@ local testing
 
 -- need to wait till Library mod is loaded
 function OnMsg.ClassesGenerate()
-	local ChoGGi = ChoGGi
+	local ChoGGi = g.ChoGGi
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	RetName = ChoGGi.ComFuncs.RetName
@@ -80,8 +88,6 @@ end
 DefineClass.Examine = {
 	__parents = {"ChoGGi_Window"},
 
-	-- store opened examine dialogs
-	examine_dialogs = false,
 	-- what we're examining
 	obj = false,
 	-- whatever RetName is
@@ -137,21 +143,18 @@ function Examine:Init(parent, context)
 
 	self.obj = context.obj
 
-	-- workaround for ex_dia to examine something nil
+	-- workaround for g_ExamineDlgs to examine something nil
 	if type(context.obj) == "nil" then
 		self.obj = "nil"
 	end
 
-	-- something
-	g_Classes.Examine.examine_dialogs = g_Classes.Examine.examine_dialogs or {}
-
 	-- already examining, so focus and return
-	local ex_dia = g_Classes.Examine.examine_dialogs
-	if ex_dia[self.obj] then
-		ex_dia[self.obj].idMoveControl:SetFocus()
+	local g_ExamineDlgs = g_ExamineDlgs
+	if g_ExamineDlgs[self.obj] then
+		g_ExamineDlgs[self.obj].idMoveControl:SetFocus()
 		return
 	end
-	ex_dia[self.obj] = self
+	g_ExamineDlgs[self.obj] = self
 
 	local ChoGGi = ChoGGi
 	local const = const
@@ -1195,10 +1198,11 @@ function Examine:valuetotextex(obj)
 				trans = tostring(obj)
 			end
 			-- the </color> is to make sure it doesn't bleed into other text
+			local meta = getmetatable(obj)
 			return StringFormat("%s</color></color>%s *%s%s",
 				trans,
 				self:HyperLink(obj,Examine_local),
-				getmetatable(obj).__name or tostring(obj),
+				meta and meta.__name or tostring(obj),
 				HLEnd
 			)
 		end
@@ -1876,7 +1880,13 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 	if startup then
 		CreateRealTimeThread(function()
 			Sleep(5)
+--~ 			if testing then
+--~ 				ChoGGi.ComFuncs.TickStart("Examine")
+--~ 			end
 			self.idText:SetText(self:totextex(obj,obj_type))
+--~ 			if testing then
+--~ 				ChoGGi.ComFuncs.TickEnd("Examine",self.name)
+--~ 			end
 		end)
 	else
 		self.idText:SetText(self:totextex(obj,obj_type))
@@ -1898,9 +1908,9 @@ function Examine:Done(result,...)
 	PopupClose(self.idAttachesMenu)
 	PopupClose(self.idParentsMenu)
 	PopupClose(self.idToolsMenu)
-	local Examine = Examine
-	Examine.examine_dialogs = Examine.examine_dialogs or {}
-	Examine.examine_dialogs[self.obj] = nil
-	Examine.examine_dialogs[self.obj_ref] = nil
+	local g_ExamineDlgs = g_ExamineDlgs or empty_table
+
+	g_ExamineDlgs[self.obj] = nil
+	g_ExamineDlgs[self.obj_ref] = nil
 	ChoGGi_Window.Done(self,result,...)
 end
