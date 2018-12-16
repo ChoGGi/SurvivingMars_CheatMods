@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local StringFormat = string.format
-local MapCount = MapCount
 local IsKindOf = IsKindOf
 
 local function SomeCode()
@@ -64,7 +63,7 @@ local function SpawnShuttle(hub,attacker)
 	for i = 1, #hub.shuttle_infos do
 		local s_i = hub.shuttle_infos[i]
 		if s_i:CanLaunch() and s_i.hub.has_free_landing_slots then
-			if MapCount("map", "PersonalShuttle") >= (PersonalShuttles.max_shuttles or 50) then
+			if #(UICity.labels.PersonalShuttle or "") >= (PersonalShuttles.max_shuttles or 50) then
 				ChoGGi.ComFuncs.MsgPopup(
 					[[Max of 50 (somewhere above 50 and below 100 it crashes).]],
 					S[745--[[Shuttles--]]]
@@ -103,8 +102,6 @@ local function SpawnShuttle(hub,attacker)
 				shuttle:SetColor2(PersonalShuttles.friend_colour2 or -16760065)
 				shuttle:SetColor3(PersonalShuttles.friend_colour3 or -1)
 			end
-			-- easy way to get amount of shuttles about
-			UICity.PersonalShuttles.shuttle_threads[#UICity.PersonalShuttles.shuttle_threads+1] = true
 			-- follow that cursor little minion
 			shuttle:SetCommand("FollowMouse")
 			-- we only allow it to fly for a certain amount (about 4 sols)
@@ -114,6 +111,9 @@ local function SpawnShuttle(hub,attacker)
 		end
 	end
 end
+
+local icon_str = StringFormat("%sUI/shuttle_%s.png",CurrentModPath,"%s")
+local carried_str = "Carried: %s"
 
 -- add all our buttons to the selection panel
 function OnMsg.ClassesBuilt()
@@ -131,10 +131,10 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 		OnContextUpdate = function(self, context)
 			if context.pickup_toggle then
 				self:SetTitle([[Pickup Item]])
-				self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
+				self:SetIcon(icon_str:format(2))
 			else
 				self:SetTitle([[Drop Item]])
-				self:SetIcon("UI/Icons/Sections/shuttle_3.tga")
+				self:SetIcon(icon_str:format(3))
 			end
 		end,
 		func = function(self, context)
@@ -146,18 +146,39 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 	-- info showing carried item
 	AddXTemplate("PersonalShuttles_CarriedItem","ipShuttle",{
 		__context_of_kind = "PersonalShuttle",
-		RolloverTitle = [[Carried object]],
+		RolloverTitle = [[Carried Object]],
 		RolloverText = [[Shows name of carried object.]],
-		Icon = "UI/Icons/Sections/shuttle_4.tga",
+		Icon = icon_str:format(4),
 		OnContextUpdate = function(self, context)
 			local obj = context.carried_obj
 			if obj then
 				self:SetVisible(true)
 				self:SetMaxHeight()
-				self:SetTitle(StringFormat("Carried: %s",RetName(obj)))
+				self:SetTitle(carried_str:format(RetName(obj)))
 			else
 				self:SetVisible(false)
 				self:SetMaxHeight(0)
+			end
+		end,
+	})
+	AddXTemplate("PersonalShuttles_Recall","ipShuttle",{
+		__context_of_kind = "PersonalShuttle",
+		Title = [[Recall Shuttle]],
+		RolloverTitle = [[Recall Shuttle]],
+		RolloverText = [[Send shuttle back to hub.]],
+		Icon = icon_str:format(3),
+		func = function(_, context)
+			if type(UICity.PersonalShuttles.shuttle_threads[context.handle]) == "boolean" then
+				UICity.PersonalShuttles.shuttle_threads[context.handle] = nil
+			end
+			-- make sure to drop off any items before
+			if context.carried_obj then
+				CreateGameTimeThread(function()
+					context:DropCargo()
+					context.recall_shuttle = true
+				end)
+			else
+				context.recall_shuttle = true
 			end
 		end,
 	})
@@ -165,53 +186,66 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 	-- spawn shuttle buttons for hub and return shuttle button
 	AddXTemplate("PersonalShuttles_SpawnButtonA","customShuttleHub",{
 		__context_of_kind = "ShuttleHub",
-		Icon = "UI/Icons/Sections/shuttle_3.tga",
+		Icon = icon_str:format(3),
 		Title = [[Spawn Attacker]],
 		RolloverTitle = [[Spawn Attacker]],
-		RolloverText = [[Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up items (drones, rovers, and res piles) you've selected and marked for pickup.]],
+		RolloverText = [[Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up items (drones, rovers, res piles, and waste rock) you've selected and marked for pickup.]],
 		func = function(self, context)
 			SpawnShuttle(context,true)
-		end
+		end,
 	})
 
 	AddXTemplate("PersonalShuttles_SpawnButtonF","customShuttleHub",{
 		__context_of_kind = "ShuttleHub",
-		Icon = "UI/Icons/Sections/shuttle_2.tga",
+		Icon = icon_str:format(2),
 		Title = [[Spawn Friend]],
 		RolloverTitle = [[Spawn Friend]],
-		RolloverText = [[Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, and pick up items (drones, rovers, and res piles) you've selected and marked for pickup.]],
+		RolloverText = [[Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, and pick up items (drones, rovers, res piles, and waste rock) you've selected and marked for pickup.]],
 		func = function(self, context)
 			SpawnShuttle(context)
-		end
+		end,
 	})
 
 	AddXTemplate("PersonalShuttles_RecallButton","customShuttleHub",{
 		__context_of_kind = "ShuttleHub",
-		Icon = "UI/Icons/Sections/shuttle_4.tga",
+		__condition = function(_, context)
+			for i = 1, #context.shuttle_infos do
+				local shuttle = context.shuttle_infos[i].shuttle_obj
+				if shuttle and shuttle.class == "PersonalShuttle" then
+					return true
+				end
+			end
+		end,
+		Icon = icon_str:format(4),
 		Title = [[Recall Shuttles]],
 		RolloverTitle = [[Recall Shuttles]],
-		RolloverText = [[Recalls all personal shuttles you've spawned at this ShuttleHub.]],
-		func = function(self, context)
+		RolloverText = [[Recalls all personal shuttles you've spawned at this Shuttle Hub.]],
+		func = function(_, context)
 			local UICity = UICity
-			for _, s_i in pairs(context.shuttle_infos) do
-				local shuttle = s_i.shuttle_obj
-				if shuttle then
+			for i = 1, #context.shuttle_infos do
+				local shuttle = context.shuttle_infos[i].shuttle_obj
+				if shuttle and shuttle.class == "PersonalShuttle" then
 					if type(UICity.PersonalShuttles.shuttle_threads[shuttle.handle]) == "boolean" then
 						UICity.PersonalShuttles.shuttle_threads[shuttle.handle] = nil
 					end
 					-- make sure to drop off any items before
-					if self.carried_obj then
+					if shuttle.carried_obj then
+						CreateGameTimeThread(function()
+							shuttle:DropCargo()
+							shuttle.recall_shuttle = true
+						end)
+					else
+						shuttle.recall_shuttle = true
 					end
-					shuttle.recall_shuttle = true
 				end
 			end
-		end
+		end,
 	})
 
 	-- add mark for pickup buttons to certain resource piles
 	local res_table = {
 		__condition = function()
-			if MapCount("map","PersonalShuttle") > 1 then
+			if #(UICity.labels.PersonalShuttle or "") > 0 then
 				return true
 			end
 		end,
@@ -221,20 +255,23 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 			if context.PersonalShuttles_PickUpItem then
 				self:SetTitle([[Pickup Item]])
 				self:SetRolloverTitle([[Marked For Pickup]])
-				self:SetIcon("UI/Icons/Sections/shuttle_2.tga")
+				self:SetIcon(icon_str:format(2))
 			else
 				self:SetTitle([[Ignore Item]])
 				self:SetRolloverTitle([[Mark For Pickup]])
-				self:SetIcon("UI/Icons/Sections/shuttle_1.tga")
+				self:SetIcon(icon_str:format(1))
 			end
 		end,
 		func = function(self, context)
-			context.PersonalShuttles_PickUpItem = not context.PersonalShuttles_PickUpItem
+			if context.PersonalShuttles_PickUpItem then
+				context.PersonalShuttles_PickUpItem = nil
+			else
+				context.PersonalShuttles_PickUpItem = true
+			end
 			ObjModified(context)
-		end
+		end,
 	}
 
-	res_table.__context_of_kind = "ResourceStockpile"
 	AddXTemplate("PersonalShuttles_ResourceStockpile","ipResourcePile",res_table)
 
 	res_table.__context_of_kind = "Drone"
@@ -245,7 +282,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 
 	res_table.__context_of_kind = "UniversalStorageDepot"
 	res_table.__condition = function(_, context)
-		if MapCount("map","PersonalShuttle") > 1 then
+		if #(UICity.labels.PersonalShuttle or "") > 0 then
 			-- make sure we can only pickup actual depots, not rockets or elevators...
 			return IsKindOf(context, "UniversalStorageDepot") and not context:IsKindOf("SupplyRocket") and not IsKindOf(context, "SpaceElevator")
 		end
