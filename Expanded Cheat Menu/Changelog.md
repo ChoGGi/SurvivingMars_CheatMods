@@ -6,9 +6,11 @@
 ## v11.9 (Unreleased)
 ### Changed:
 - Research Tech will now unlock mystery tech for different mysteries (cost will be the same as mystery instead of incrementing).
+- Added images to a bunch of the Set Colonist lists.
 
 ### Fixed:
 - Messed up a string in Material Properties, and borked it.
+- Change Logo didn't change rocket logos (Gagarin I think?).
 
 ## v11.8 (15 Dec 2018)
 ### Changed:

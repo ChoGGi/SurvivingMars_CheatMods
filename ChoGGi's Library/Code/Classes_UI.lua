@@ -48,13 +48,6 @@ DefineClass.ChoGGi_Text = {
 --~ function ChoGGi_Text:OnHyperLinkRollover()
 --~ print("Rollover")
 --~ end
-
-DefineClass.ChoGGi_TextList = {
-	__parents = {"XText"},
-	TextStyle = text_style2,
-	RolloverTemplate = "Rollover",
-	RolloverTitle = S[126095410863--[[Info--]]],
-}
 --~ function XText:OnHyperLinkRollover(hyperlink, hyperlink_box, pos)
 --~ end
 
@@ -353,7 +346,7 @@ DefineClass.ChoGGi_List = {
 	__parents = {"XList"},
 	TextStyle = "ChoGGi_List",
 	RolloverTemplate = "Rollover",
-	LayoutMethod = "VWrap",
+--~ 	LayoutMethod = "VWrap",
 	Background = dark_gray,
 	FocusedBackground = darker_gray,
 	loaded = false,
@@ -362,14 +355,23 @@ function ChoGGi_List:CreateTextItem(text, props, context)
 	local g_Classes = g_Classes
 	props = props or {}
 	local item = g_Classes.ChoGGi_ListItem:new({
-		selectable = props.selectable
+		selectable = props.selectable,
+		MinWidth = GetParentOfKind(self, "ChoGGi_Window"):GetWidth(),
 	}, self)
+
 	props.selectable = nil
 	local text_control = g_Classes.ChoGGi_TextList:new(props, item, context)
 	item.idText = text_control
 	text_control:SetText(text)
 	return item
 end
+DefineClass.ChoGGi_TextList = {
+	__parents = {"XText"},
+	TextStyle = text_style2,
+	RolloverTemplate = "Rollover",
+	RolloverTitle = S[126095410863--[[Info--]]],
+	VAlign = "center",
+}
 
 DefineClass.ChoGGi_ListItem = {
 	__parents = {"XListItem"},
@@ -417,9 +419,7 @@ DefineClass.ChoGGi_SleekScroll = {
 -- convenience function
 function ChoGGi_SleekScroll:SetHorizontal()
 	self.MinHeight = 10
---~	 self.MaxHeight = 10
 	self.MinWidth = 10
---~	 self.MaxWidth = 10
 end
 
 DefineClass.ChoGGi_Window = {
@@ -775,6 +775,12 @@ function ChoGGi_Window:AddScrollList()
 		Margins = box(4,4,4,4),
 	}, self.idDialog)
 
+	self.idList = g_Classes.ChoGGi_List:new({
+		Id = "idList",
+		VScroll = "idScrollV",
+		HScroll = "idScrollH",
+	}, self.idScrollSection)
+
 	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
 		Id = "idScrollV",
 		Target = "idList",
@@ -788,11 +794,6 @@ function ChoGGi_Window:AddScrollList()
 		Horizontal = true,
 	}, self.idScrollSection)
 
-	self.idList = g_Classes.ChoGGi_List:new({
-		Id = "idList",
-		VScroll = "idScrollV",
-		HScroll = "idScrollH",
-	}, self.idScrollSection)
 
 end
 

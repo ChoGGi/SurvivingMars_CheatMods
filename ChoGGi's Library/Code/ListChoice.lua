@@ -591,6 +591,7 @@ function ChoGGi_ListChoiceDlg:BuildList()
 			listitem.idImage = g_Classes.ChoGGi_Image:new({
 				Id = "idImage",
 				Dock = "left",
+				VAlign = "center",
 			}, listitem)
 			listitem.idImage:SetImage(item.icon)
 			if item.icon_scale then
@@ -629,7 +630,7 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 	local count = #self.idList
 	for i = count, 1, -1 do
 		local li = self.idList[i]
-		if not (li.idText.text:find_lower(txt) or li.RolloverText:find_lower(txt) or li.RolloverTitle:find_lower(txt) or self.custom_type == 0 and i == count) then
+		if not (li.idText.text:find_lower(txt) or li.RolloverText:find_lower(txt) or tostring(li.RolloverTitle):find_lower(txt) or self.custom_type == 0 and i == count) then
 			self.idList[i]:delete()
 		end
 	end

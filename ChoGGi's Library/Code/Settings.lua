@@ -12,6 +12,53 @@ ChoGGi.Tables = {
 		S[302535920001283--[[Indian--]]],[S[302535920001283--[[Indian--]]]] = true,
 		S[302535920001284--[[Southeast Asian--]]],[S[302535920001284--[[Southeast Asian--]]]] = true,
 	},
+	ColonistRacesImages = {
+		--
+		[S[1859--[[White--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_01.tga",
+		-- African?
+		[S[302535920000739--[[Black--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Af_Adult_01.tga",
+		-- Asian?
+		[S[302535920000740--[[Asian--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_As_Adult_01.tga",
+		--
+		[S[302535920001283--[[Indian--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Ar_Adult_01.tga",
+		--
+		[S[302535920001284--[[Southeast Asian--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Hs_Adult_01.tga",
+		-- android
+		[S[3490--[[Random--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
+		[S[1000121--[[Default--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
+	},
+--~ 	ColonistRacesImagesFemale = {
+--~ 		[S[1859--[[White--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Ca_Adult_01.tga",
+--~ 		[S[302535920000739--[[Black--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Af_Adult_01.tga",
+--~ 		[S[302535920000740--[[Asian--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_As_Adult_01.tga",
+--~ 		[S[302535920001283--[[Indian--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Ar_Adult_01.tga",
+--~ 		[S[302535920001284--[[Southeast Asian--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Hs_Adult_01.tga",
+--~ 		[S[3490--[[Random--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
+--~ 		[S[1000121--[[Default--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
+--~ 	},
+	ColonistSpecImages = {
+		botanist = "UI/Icons/Colonists/Pin/Botanist_Male.tga",
+		engineer = "UI/Icons/Colonists/Pin/Engineer_Female.tga",
+		geologist = "UI/Icons/Colonists/Pin/Geologist_Female.tga",
+		medic = "UI/Icons/Colonists/Pin/Medic_Male.tga",
+		scientist = "UI/Icons/Colonists/Pin/Scientist_Male.tga",
+		security = "UI/Icons/Colonists/Pin/Security_Female.tga",
+		none = "UI/Icons/Colonists/Pin/Colonist_Male.tga",
+	},
+	ColonistAgeImages = {
+		Adult = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_02.tga",
+		Child = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Child_02.tga",
+		["Middle Aged"] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_03.tga",
+		Senior = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Retiree_01.tga",
+		Youth = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Child_01.tga",
+	},
+	ColonistGenderImages = {
+		Female = "UI/Icons/Colonists/Pin/Unit_Female_Ca_Adult_02.tga",
+		Male = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_02.tga",
+		OtherGender = "UI/Icons/Buildings/placeholder.tga",
+	},
+
+
 --~ s.race = 1
 --~ s:ChooseEntity()
 

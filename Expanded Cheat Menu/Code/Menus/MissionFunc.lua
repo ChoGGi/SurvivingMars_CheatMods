@@ -335,7 +335,6 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	--set just the bonus effects
 	function ChoGGi.MenuFuncs.SetSponsorBonus()
 		local ChoGGi = ChoGGi
 		local Presets = Presets
@@ -479,7 +478,6 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	--set just the bonus effects
 	function ChoGGi.MenuFuncs.SetCommanderBonus()
 		local Presets = Presets
 
@@ -554,9 +552,10 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	--pick a logo
 	function ChoGGi.MenuFuncs.ChangeGameLogo()
 		local MissionLogoPresetMap = MissionLogoPresetMap
+		local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
+		local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
 
 		local ItemList = {}
 		for id,def in pairs(MissionLogoPresetMap) do
@@ -579,18 +578,24 @@ function OnMsg.ClassesGenerate()
 				local entity_name = logo.entity_name
 
 				local function ChangeLogo(label)
-					label = ChoGGi.ComFuncs.RetAllOfClass(label)
+					label = RetAllOfClass(label)
 					for i = 1, #label do
-						label[i]:ForEachAttach("Logo",function(a)
-							a:ChangeEntity(entity_name)
-						end)
+						local a_list = GetAllAttaches(label[i])
+--~ ex(a_list)
+--~ break
+						for j = 1, #a_list do
+							local attach = a_list[j]
+							if attach:IsKindOf("Logo") then
+								attach:ChangeEntity(entity_name)
+							end
+						end
 					end
 				end
 
 				-- for any new objects
 				g_CurrentMissionParams.idMissionLogo = value
 				-- loop through rockets and change logo
-				ChangeLogo("AllRockets")
+				ChangeLogo("SupplyRocket")
 				-- same for any buildings that use the logo
 				ChangeLogo("Building")
 
