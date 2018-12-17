@@ -188,11 +188,19 @@ function OnMsg.ClassesGenerate()
 
 		local Mods = Mods
 		for id,mod in pairs(Mods) do
+			local hint
+			if mod.image:find(" ") or mod.path:find(" ") then
+				hint = mod.description
+			elseif mod.image ~= "" then
+				hint = StringFormat("<image %s>\n\n%s",mod.image,mod.description)
+			end
+
 			c = c + 1
 			ItemList[c] = {
 				text = title_str:format(mod.title,id,mod.version),
 				mod = {mod},
 				value = id,
+				hint = hint,
 			}
 		end
 

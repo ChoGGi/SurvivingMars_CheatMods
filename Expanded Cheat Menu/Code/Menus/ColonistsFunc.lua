@@ -853,6 +853,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local DefaultSetting = default_str
 		local sType
 		local sSetting = "NewColonistAge"
+		local TraitPresets = TraitPresets
 
 		if iType == 1 then
 			sType = StringFormat("%s ",S[302535920001356--[[New--]]])
@@ -862,16 +863,30 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			sSetting = nil
 		end
 
-		local ItemList = {}
-		ItemList[#ItemList+1] = {
-			text = StringFormat(" %s",DefaultSetting),
-			value = DefaultSetting,
+		local ItemList = {
+			{
+				text = StringFormat(" %s",DefaultSetting),
+				value = DefaultSetting,
+				hint = 302535920000808--[[How the game normally works--]],
+			},
 		}
+		local c = #ItemList
+
 		for i = 1, #ChoGGi.Tables.ColonistAges do
-			ItemList[#ItemList+1] = {
-				text = ChoGGi.Tables.ColonistAges[i],
-				value = ChoGGi.Tables.ColonistAges[i],
-				hint = ChoGGi.Tables.ColonistAges[i] == "Child" and StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000805--[[Child will remove specialization.--]]]),
+			local age = ChoGGi.Tables.ColonistAges[i]
+			local hint
+			if age == "Child" then
+				hint = StringFormat("%s\n\n%s: %s",Trans(TraitPresets[age].description),S[6779--[[Warning--]]],S[302535920000805--[[Child will remove specialization.--]]])
+			else
+				hint = Trans(TraitPresets[age].description)
+			end
+			c = c + 1
+			ItemList[c] = {
+				text = Trans(TraitPresets[age].display_name),
+				value = age,
+				hint = hint,
+				icon = ChoGGi.Tables.ColonistAgeImages[age],
+				icon_scale = 500,
 			}
 		end
 
@@ -956,6 +971,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local DefaultSetting = S[1000121--[[Default--]]]
 		local sType
 		local sSetting = "NewColonistGender"
+		local TraitPresets = TraitPresets
 
 		if iType == 1 then
 			sType = StringFormat("%s ",S[302535920001356--[[New--]]])
@@ -965,21 +981,28 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			sSetting = nil
 		end
 
-		local ItemList = {}
-		ItemList[#ItemList+1] = {
-			text = StringFormat(" %s",DefaultSetting),
-			value = DefaultSetting,
-			hint = 302535920000808--[[How the game normally works--]],
+		local ItemList = {
+			{
+				text = StringFormat(" %s",DefaultSetting),
+				value = DefaultSetting,
+				hint = 302535920000808--[[How the game normally works--]],
+			},
+			{
+				text = StringFormat(" %s",MaleOrFemale),
+				value = MaleOrFemale,
+				hint = 302535920000809--[[Only set as male or female--]],
+			},
 		}
-		ItemList[#ItemList+1] = {
-			text = StringFormat(" %s",MaleOrFemale),
-			value = MaleOrFemale,
-			hint = 302535920000809--[[Only set as male or female--]],
-		}
+		local c = #ItemList
+
 		for i = 1, #ChoGGi.Tables.ColonistGenders do
-			ItemList[#ItemList+1] = {
-				text = ChoGGi.Tables.ColonistGenders[i],
-				value = ChoGGi.Tables.ColonistGenders[i],
+			local gender = ChoGGi.Tables.ColonistGenders[i]
+			c = c + 1
+			ItemList[c] = {
+				text = Trans(TraitPresets[gender].display_name),
+				hint = Trans(TraitPresets[gender].description),
+				icon = ChoGGi.Tables.ColonistGenderImages[gender],
+				icon_scale = 500,
 			}
 		end
 
@@ -1062,6 +1085,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local DefaultSetting = S[1000121--[[Default--]]]
 		local sType
 		local sSetting = "NewColonistSpecialization"
+		local TraitPresets = TraitPresets
 
 		if iType == 1 then
 			sType = StringFormat("%s ",S[302535920001356--[[New--]]])
@@ -1071,28 +1095,41 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			sSetting = nil
 		end
 
-		local ItemList = {}
-		ItemList[#ItemList+1] = {
-			text = DefaultSetting,
-			value = DefaultSetting,
-			hint = 302535920000808--[[How the game normally works--]],
+		local ItemList = {
+			{
+				text = DefaultSetting,
+				text = StringFormat(" %s",DefaultSetting),
+				value = DefaultSetting,
+				hint = 302535920000808--[[How the game normally works--]],
+			},
+			{
+				text = "none",
+				value = "none",
+				hint = 302535920000812--[[Removes specializations--]],
+				icon = ChoGGi.Tables.ColonistSpecImages.none,
+				icon_scale = 500,
+			},
 		}
+		local c = #ItemList
+
 		if iType == 1 then
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			ItemList[c] = {
 				text = S[3490--[[Random--]]],
 				value = S[3490--[[Random--]]],
 				hint = 302535920000811--[[Everyone gets a spec--]],
 			}
 		end
-		ItemList[#ItemList+1] = {
-			text = "none",
-			value = "none",
-			hint = 302535920000812--[[Removes specializations--]],
-		}
+
 		for i = 1, #ChoGGi.Tables.ColonistSpecializations do
-			ItemList[#ItemList+1] = {
-				text = ChoGGi.Tables.ColonistSpecializations[i],
-				value = ChoGGi.Tables.ColonistSpecializations[i],
+			local spec = ChoGGi.Tables.ColonistSpecializations[i]
+			c = c + 1
+			ItemList[c] = {
+				text = Trans(TraitPresets[spec].display_name),
+				value = spec,
+				hint = Trans(TraitPresets[spec].description),
+				icon = ChoGGi.Tables.ColonistSpecImages[spec],
+				icon_scale = 500,
 			}
 		end
 
@@ -1189,13 +1226,20 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			text = StringFormat(" %s",DefaultSetting),
 			value = DefaultSetting,
 			race = DefaultSetting,
+			hint = 3490--[[Random--]],
+			icon = ChoGGi.Tables.ColonistRacesImages[DefaultSetting],
+			icon_scale = 500,
 		}
 		local race = {S[302535920000814--[[Herrenvolk--]]],S[302535920000815--[[Schwarzvolk--]]],S[302535920000816--[[Asiatischvolk--]]],S[302535920000817--[[Indischvolk--]]],S[302535920000818--[[Südost Asiatischvolk--]]]}
+
 		for i = 1, #ChoGGi.Tables.ColonistRaces do
+			local name = ChoGGi.Tables.ColonistRaces[i]
 			ItemList[#ItemList+1] = {
-				text = ChoGGi.Tables.ColonistRaces[i],
+				text = name,
 				value = i,
 				race = race[i],
+				icon = ChoGGi.Tables.ColonistRacesImages[name],
+				icon_scale = 500,
 			}
 		end
 
@@ -1321,34 +1365,20 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			ItemList[1].hint = 302535920000829--[[Random: Each colonist gets three positive and three negative traits (if it picks same traits then you won't get all six).--]]
 		end
 
-		for i = 1, #ChoGGi.Tables.NegativeTraits do
-			c = c + 1
-			ItemList[c] = {
-				text = ChoGGi.Tables.NegativeTraits[i],
-				value = ChoGGi.Tables.NegativeTraits[i],
-			}
-		end
-		for i = 1, #ChoGGi.Tables.PositiveTraits do
-			c = c + 1
-			ItemList[c] = {
-				text = ChoGGi.Tables.PositiveTraits[i],
-				value = ChoGGi.Tables.PositiveTraits[i],
-			}
-		end
-		for i = 1, #ChoGGi.Tables.OtherTraits do
-			c = c + 1
-			ItemList[c] = {
-				text = ChoGGi.Tables.OtherTraits[i],
-				value = ChoGGi.Tables.OtherTraits[i],
-			}
-		end
-		-- add hint descriptions
-		for i = 1, #ItemList do
-			local hinttemp = TraitPresets[ItemList[i].text]
-			if hinttemp then
-				ItemList[i].hint = StringFormat(": %s",Trans(hinttemp.description))
+		local function AddTraits(list)
+			for i = 1, #list do
+				local id = list[i]
+				c = c + 1
+				ItemList[c] = {
+					text = Trans(TraitPresets[id].display_name),
+					value = id,
+					hint = Trans(TraitPresets[id].description),
+				}
 			end
 		end
+		AddTraits(ChoGGi.Tables.NegativeTraits)
+		AddTraits(ChoGGi.Tables.PositiveTraits)
+		AddTraits(ChoGGi.Tables.OtherTraits)
 
 		local function CallBackFunc(choice)
 			if #choice < 1 then

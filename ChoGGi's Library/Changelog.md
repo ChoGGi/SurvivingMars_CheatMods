@@ -1,6 +1,9 @@
 ## Library Changelog
 
 ## v4.9 (Unreleased)
+- List dialog:
+- > Items shrunk to the size of the text.
+- > Filter Items didn't work too well on number lists.
 
 ## v4.8 (15 Dec 2018)
 - Pasting RGB(0,0,0) into the colour modifier now works with the blacklist.
