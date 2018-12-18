@@ -387,23 +387,24 @@ function OnMsg.ModsReloaded()
 			dlgConsole.idEdit.RolloverTemplate = "Rollover"
 			dlgConsole.idEdit.RolloverTitle = StringFormat("%s %s",S[302535920001073--[[Console--]]],S[487939677892--[[Help--]]])
 			dlgConsole.idEdit.RolloverText = S[302535920001440--[["~obj opens object in examine dlg.
-
-~!obj opens an objlist of attachments for object in examine dlg.
+~~obj opens object's attachments in examine dlg.
 
 &handle examines object with that handle.
 
-@GetMissionSponsor prints info about the function.
+@GetMissionSponsor prints file name and line number of function.
 
 @@EntityData prints type(EntityData).
 
+%""UI/Vignette.tga"" opens image in image viewer.
+
 $123 or $EffectDeposit.display_name prints translated string.
 
-""*r Sleep(1000) print(""sleeping"")"" or *g or *m to wrap commands in a thread.
+""*r Sleep(1000) print(""sleeping"")"" to wrap in a real time thread (or *g or *m).
 
-!UICity.labels.TerrainDeposit[1] to move camera and select obj.
+!UICity.labels.TerrainDeposit[1] move camera and select obj.
 
 s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
-			dlgConsole.idEdit.Hint = S[302535920001439--[["~obj, @func,@@type,$id, *r/*g for threads"--]]]
+			dlgConsole.idEdit.Hint = S[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."--]]]
 			dlgConsole.ChoGGi_MenuAdded = true
 			-- and buttons
 			ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)

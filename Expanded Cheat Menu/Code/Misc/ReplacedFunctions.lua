@@ -1344,6 +1344,11 @@ end]]
 			"ViewAndSelectObject(%s)"
 		},
 		{
+			-- %image string or table
+			"^%%(.*)",
+			"ChoGGi.ComFuncs.OpenInImageViewerDlg(%s)"
+		},
+		{
 			-- ~anything
 			"^~(.*)",
 			"ChoGGi.ComFuncs.OpenInExamineDlg(%s)"
@@ -1363,17 +1368,17 @@ end]]
 		},
 		-- built-in
 		{
-			-- r* some function/cmd that needs a realtime thread
+			-- *r some function/cmd that needs a realtime thread
 			"^*r%s*(.*)",
 			"CreateRealTimeThread(function() %s end) return"
 		},
 		{
-			-- g* gametime
+			-- *g gametime
 			"^*g%s*(.*)",
 			"CreateGameTimeThread(function() %s end) return"
 		},
 		{
-			-- m* maprealtime
+			-- *m maprealtime
 			"^*m%s*(.*)",
 			"CreateMapRealTimeThread(function() %s end) return"
 		},

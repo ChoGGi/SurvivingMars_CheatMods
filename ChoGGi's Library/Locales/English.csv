@@ -148,22 +148,23 @@ You can copy and paste numbers if you want.",
 302535920000029,Error: Cannot find any %s.,
 302535920000032,Select a resource to find,
 302535920001441,<left_click> Activate <right_click> Add/Remove Quickbar,
-302535920001439,"~obj, @func,@@type,$id, *r/*g/*m threads",
+302535920001439,"~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info.",
 302535920001440,"~obj opens object in examine dlg.
-
-~!obj opens an objlist of attachments for object in examine dlg.
+~~obj opens object's attachments in examine dlg.
 
 &handle examines object with that handle.
 
-@GetMissionSponsor prints info about the function.
+@GetMissionSponsor prints file name and line number of function.
 
 @@EntityData prints type(EntityData).
 
+%""UI/Vignette.tga"" opens image in image viewer.
+
 $123 or $EffectDeposit.display_name prints translated string.
 
-""*r Sleep(1000) print(""sleeping"")"" or *g or *m to wrap commands in a thread.
+""*r Sleep(1000) print(""sleeping"")"" to wrap in a real time thread (or *g or *m).
 
-!UICity.labels.TerrainDeposit[1] to move camera and select obj.
+!UICity.labels.TerrainDeposit[1] move camera and select obj.
 
 s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")",
 302535920001401,"Removed missing mod building from %s: %s, entity: %s, handle: %s",

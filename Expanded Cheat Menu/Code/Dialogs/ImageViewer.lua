@@ -3,6 +3,7 @@
 -- displays images
 
 --~ local StringFormat = string.format
+local MeasureImage = UIL.MeasureImage
 
 local S
 local GetParentOfKind
@@ -62,6 +63,12 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 		Dock = "left",
 	}, self.idButtonContainer)
 
+	self.idImageSize = g_Classes.ChoGGi_Text:new({
+		Id = "idImageSize",
+		Dock = "left",
+		VAlign = "center",
+	}, self.idButtonContainer)
+
 	self.idImage = g_Classes.XFrame:new({
 		Id = "idImage",
 	}, self.idDialog)
@@ -75,26 +82,35 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	self:SetInitPos(context.parent)
 end
 
+local image_str = "%sx%s"
 function ChoGGi_ImageViewerDlg:BuildImageMenuPopup()
 	local images = {}
 	local c = 0
 	for i = 1, #self.images do
-		local filename = self.images[i]
+		local image_name = self.images[i]
 		c = c + 1
+		local w,h = MeasureImage(image_name)
+		local width_height = image_str:format(w,h)
 		images[c] = {
-			name = filename,
+			name = image_name,
 			mouseover = function()
-				self:SetImageFile(filename)
+				self:SetImageFile(image_name,width_height)
 			end,
 		}
 	end
 	self.image_menu_popup = images
 end
 
-function ChoGGi_ImageViewerDlg:SetImageFile(image)
+function ChoGGi_ImageViewerDlg:SetImageFile(image,width_height)
 	self = GetRootDialog(self)
 	self.idImage:SetImage(image)
 	self.idCaption:SetTitle(self,image)
+
+	if not width_height then
+		local w,h = MeasureImage(image)
+		width_height = image_str:format(w,h)
+	end
+	self.idImageSize:SetText(width_height)
 end
 
 function ChoGGi_ImageViewerDlg:idImagesOnMouseButtonDown()
