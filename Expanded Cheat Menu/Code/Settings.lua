@@ -80,6 +80,8 @@ function OnMsg.ClassesGenerate()
 		ShowCheatsMenu = true,
 		-- close any opened dialogs when loading into a game.
 		CloseDialogsECM = false,
+		-- shows LUA ERRORs in console along with stack
+		ConsoleErrors = true,
 		-- update the list when ECM updates it
 		ConsoleExamineListUpdate = true,
 		-- stuff to show in Console>Examine list (tables/values/functions are fine)
