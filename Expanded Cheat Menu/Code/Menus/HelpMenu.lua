@@ -354,6 +354,7 @@ function OnMsg.ClassesGenerate()
 		"All Nearby Objects",
 		"Change Animation",
 		"DroneNoBatteryNeeded",
+		"Export Import CSV",
 		"Hidden Milestones",
 		"Locales",
 		"Misc",

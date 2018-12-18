@@ -11,6 +11,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[There's no notification, but any newly placed buildings will complain about a dust storm.
+You don't need to leave this enabled afterwards.
 
 https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-eternal-dust-storm.1139596/]],
 })
