@@ -829,9 +829,9 @@ function ChoGGi.ComFuncs.PrintIds(list)
 	local text = ""
 
 	for i = 1, #list do
-		text = StringFormat("%s----------------- %s: %s\r\n",text,list[i].id,i)
+		text = StringFormat("%s----------------- %s: %s%s",text,list[i].id,i,ChoGGi.newline)
 		for j = 1, #list[i] do
-			text = StringFormat("%s%s: %s\r\n",text,list[i][j].id,j)
+			text = StringFormat("%s%s: %s%s",text,list[i][j].id,j,ChoGGi.newline)
 		end
 	end
 

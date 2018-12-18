@@ -329,7 +329,7 @@ function OnMsg.ClassesGenerate()
 			-- defaults to 50000, which is fine for multiple ones i suppose.
 			descr.storm_radius = 1000
 		else
-			-- reset it back to 50000
+			-- reset it back to 50000 (maybe i should just copy the table?)
 			descr.storm_radius = descr:GetDefaultPropertyValue("storm_radius")
 		end
 		CreateGameTimeThread(function()

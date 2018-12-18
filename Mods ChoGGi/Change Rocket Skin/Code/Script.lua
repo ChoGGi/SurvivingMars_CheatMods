@@ -15,7 +15,7 @@ local palettes = {
 	AttackRover.palette,
 }
 
-local function GetSkins(self)
+local function GetSkins()
 	return rockets,palettes
 end
 

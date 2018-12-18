@@ -76,12 +76,15 @@ function OnMsg.ClassesGenerate()
 	AsyncGetSourceInfo = empty_func
 
 	do -- funcs without a class
+		SaveOrigFunc("__procall_errorhandler")
+		SaveOrigFunc("error")
 		SaveOrigFunc("GetFuncSourceString")
 		SaveOrigFunc("GetMaxCargoShuttleCapacity")
 		SaveOrigFunc("GetMissingMods")
 		SaveOrigFunc("IsDlcAvailable")
 		SaveOrigFunc("LoadCustomOnScreenNotification")
 		SaveOrigFunc("OpenDialog")
+		SaveOrigFunc("OutputDebugString")
 		SaveOrigFunc("ShowConsole")
 		SaveOrigFunc("ShowConsoleLog")
 		SaveOrigFunc("ShowPopupNotification")
@@ -89,7 +92,12 @@ function OnMsg.ClassesGenerate()
 		SaveOrigFunc("TGetID")
 		SaveOrigFunc("UIGetBuildingPrerequisites")
 
-		-- used by a func in examine for functions?
+		-- print logged errors to console
+		if ChoGGi.UserSettings.ConsoleErrors then
+			ChoGGi.ConsoleFuncs.ToggleLogErrors(true)
+		end
+
+		-- used by a func in examine for functions i think
 		GetFuncSourceString = DebugGetInfo
 
 		function TGetID(t,...)

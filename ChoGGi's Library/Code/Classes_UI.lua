@@ -10,6 +10,7 @@ local S = ChoGGi.Strings
 local box,point = box,point
 local IsValid = IsValid
 local StringFormat = string.format
+local IsImageReady = UIL.IsImageReady
 
 -- see also TextStyles.lua
 local white = -1
@@ -504,8 +505,11 @@ function ChoGGi_Window:AddElements()
 	}, self.idTitleRightSection)
 
 	-- throws error if we try to get display_icon from _G
-	local image = self.title_image or type(self.obj) == "table" and self.obj.display_icon ~= "" and self.obj.display_icon
-	local is_image = type(image) == "string"
+	local image = self.title_image or (type(self.obj) == "table" and self.name ~= "_G"
+		and (self.obj.display_icon ~= "" and self.obj.display_icon
+		or self.obj.pin_icon ~= "" and self.obj.pin_icon))
+
+	local is_image = type(image) == "string" and IsImageReady(image)
 
 	-- DroneResourceUnits.ANYTHING will return 1000
 	if is_image then

@@ -3,12 +3,12 @@
 -- go away... (mostly just benchmarking funcs, though there is the func i use for "Map Images Pack")
 
 function OnMsg.ClassesGenerate()
--- flatten sign to ground
+	local ChoGGi = ChoGGi
+--~ -- flatten sign to ground
 --~ local pos = s:GetPos()
 --~ s:SetPos(point(pos:x(),pos:y(),terrain.GetSurfaceHeight(pos)-45))
 
 	if ChoGGi.testing then
-
 		-- centred hud
 		local GetScreenSize = UIL.GetScreenSize
 		local margins = box(2560,0,2560,0)
@@ -726,4 +726,14 @@ function OnMsg.ClassesGenerate()
 
 	end -- ChoGGi.testing
 
+end
+
+function OnMsg.ModsReloaded()
+	if ChoGGi.testing then
+		local msgs = ChoGGi.Temp.StartupMsgs
+		for i = 1, #msgs do
+			print(msgs[i])
+		end
+		table.iclear(ChoGGi.Temp.StartupMsgs)
+	end
 end

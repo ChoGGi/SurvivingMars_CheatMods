@@ -44,7 +44,6 @@ return PlaceObj("ModDef", {
 		"Code/Misc/AddedFunctions.lua",
 		"Code/Misc/ConsoleFuncs.lua",
 		"Code/Misc/InfoPaneCheats.lua",
-		"Code/Misc/Testing.lua",
 		"Code/Misc/HexPainter.lua",
 		"Code/Misc/ReplacedFunctions.lua",
 		"Code/Misc/OnMsgs.lua",
@@ -78,6 +77,9 @@ return PlaceObj("ModDef", {
 		"Code/Menus/VehiclesFunc.lua",
 		"Code/Menus/VehiclesMenu.lua",
 		"Code/Menus/Keys.lua",
+
+		-- tortoise hares and all that
+		"Code/Misc/Testing.lua",
 
 		-- gee sure would be nice to load these like the devs do, but i suppose it's too much work to limit dofile env.
 	},

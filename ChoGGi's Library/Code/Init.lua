@@ -152,6 +152,8 @@ ChoGGi = {
 	Tables = false,
 	-- stuff that isn't ready for release, more print msgs, and some default settings
 	testing = false,
+	--
+	newline = Platform.pc and "\r\n" or "\n",
 
 	-- CommonFunctions.lua
 	ComFuncs = {

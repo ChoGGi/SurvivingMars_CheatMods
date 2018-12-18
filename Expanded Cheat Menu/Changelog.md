@@ -3,7 +3,10 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v11.9 [Unreleased]
+## v11.9 (Unreleased)
+### Added:
+- Console>Errors In Console: Shows [LUA ERROR] and stack in console log.
+
 ### Changed:
 - Research Tech will now unlock mystery tech for different mysteries (cost will be the same as mystery instead of incrementing).
 - Added images to a bunch of the Set Colonist lists.
@@ -14,10 +17,12 @@
 - Messed up a string in Material Properties, and borked it.
 - Change Logo didn't change rocket logos (Gagarin I think?).
 - Monitor Threads, and some other funcs that used Examine autorefresh kind of broke (manually checking autofresh still worked).
-- Examine>View Text will scroll to the proper line now (and highlight for a bonus).
 - Typing a space in console was being ignored.
+- Examine:
+- > View Text will scroll to the proper line now (and highlight for a bonus).
+- > View Text/Dump Text will now show <text>.
 
-## [v11.8] (15 Dec 2018)
+## v11.8 (15 Dec 2018)
 ### Changed:
 - You can now paste code into the console and not worry about --comments, --[[comments--]], spaces, etc (devs broke it in DA update during XDialogs migration).
 - @funcname now works when blacklist is enabled.
