@@ -85,7 +85,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.ComFuncs.DumpLua(obj)
-		ChoGGi.ComFuncs.Dump(StringFormat("\r\n%s",ValueToLuaCode(obj)),nil,"DumpedLua","lua")
+		ChoGGi.ComFuncs.Dump(StringFormat("%s%s",ChoGGi.newline,ValueToLuaCode(obj)),nil,"DumpedLua","lua")
 	end
 
 	do -- DumpTableFunc
@@ -95,7 +95,8 @@ function OnMsg.ClassesGenerate()
 			if obj_type == "userdata" then
 				return Trans(obj)
 			elseif funcs and obj_type == "function" then
-				return StringFormat("Func: \r\n\r\n%s\r\n\r\n",obj:dump())
+				local newline = ChoGGi.newline
+				return StringFormat("Func: %s%s%s%s%s",newline,newline,obj:dump(),newline,newline)
 			elseif obj_type == "table" then
 				return StringFormat("%s len: %s",tostring(obj),#obj)
 			else
@@ -169,11 +170,12 @@ function OnMsg.ClassesGenerate()
 		local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 		local pack_params = pack_params
 		local tostring = tostring
+		local newline = ChoGGi.newline
 
 		-- every 5s check buffer and print if anything
 		local timer = ChoGGi.testing and 2500 or 5000
 		-- we always start off with a newline so the first line or so isn't merged
-		local buffer_table = {"\r\n"}
+		local buffer_table = {newline}
 		local buffer_cnt = 1
 
 		if rawget(_G,"ChoGGi_print_buffer_thread") then
@@ -183,9 +185,9 @@ function OnMsg.ClassesGenerate()
 			while true do
 				Sleep(timer)
 				if buffer_cnt > 1 then
-					Dump(TableConcat(buffer_table,"\r\n"),nil,"Console","log",true)
+					Dump(TableConcat(buffer_table,newline),nil,"Console","log",true)
 					TableIClear(buffer_table)
-					buffer_table[1] = "\r\n"
+					buffer_table[1] = newline
 					buffer_cnt = 1
 				end
 			end
@@ -217,7 +219,6 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function ResetFunc(funcname)
-			local ChoGGi = ChoGGi
 			if ChoGGi.OrigFuncs[funcname] then
 				_G[funcname] = ChoGGi.OrigFuncs[funcname]
 			end

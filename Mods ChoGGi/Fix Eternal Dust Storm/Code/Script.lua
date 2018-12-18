@@ -1,12 +1,25 @@
 -- See LICENSE for terms
 
-function OnMsg.LoadGame()
+function OnMsg.InGameInterfaceCreated()
 	if not g_DustStorm then
 		return
 	end
 
 	-- ...
 	StopDustStorm()
+
+	-- skip working dust storms
+	local not_broked
+	local notes = g_ActiveOnScreenNotifications
+	for i = 1, #notes do
+		local id = notes[i][1]
+		if type(id) == "string" and id:find("DustStorm") then
+			not_broked = true
+		end
+	end
+	if not_broked then
+		return
+	end
 
 	-- what should be getting called with the above func, but the thread was stopped already without it happening.
 	if g_DustStorm.type == "electrostatic" then

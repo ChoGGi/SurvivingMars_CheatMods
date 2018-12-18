@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Eternal Dust Storm v0.1",
-	"version", 1,
-	"saved", 1545048000,
+	"title", "Fix: Eternal Dust Storm v0.2",
+	"version", 2,
+	"saved", 1545134400,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixEternalDustStorm",
 	"steam_id", "1594158818",

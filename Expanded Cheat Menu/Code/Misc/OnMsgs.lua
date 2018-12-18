@@ -521,6 +521,16 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 		end
 	end
 
+	-- print any mod error msgs in console
+	local log = ModMessageLog
+	local startup = ChoGGi.Temp.StartupMsgs
+	for i = 1, #log do
+		local msg = log[i]
+		if msg:find("Error loading") then
+			startup[#startup+1] = msg
+		end
+	end
+
 end -- ModsReloaded
 
 -- earliest on-ground objects are loaded?
@@ -1516,9 +1526,12 @@ do -- LoadGame/CityStart
 		end)
 
 		-- print startup msgs to console log
-		local msgs = ChoGGi.Temp.StartupMsgs
-		for i = 1, #msgs do
-			print(msgs[i])
+		if not ChoGGi.testing then
+			local msgs = ChoGGi.Temp.StartupMsgs
+			for i = 1, #msgs do
+				print(msgs[i])
+			end
+			table.iclear(ChoGGi.Temp.StartupMsgs)
 		end
 
 		-- everyone loves a new titlebar, unless they don't

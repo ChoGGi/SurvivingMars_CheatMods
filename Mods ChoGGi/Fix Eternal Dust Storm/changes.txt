@@ -1,0 +1,2 @@
+v0.2
+Updated it to not mess up build menu when you use it on a save with a working dust storm.

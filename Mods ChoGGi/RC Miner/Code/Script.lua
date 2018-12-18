@@ -560,5 +560,4 @@ function OnMsg.ClassesBuilt()
 			}),
 		})
 	)
---~
 end

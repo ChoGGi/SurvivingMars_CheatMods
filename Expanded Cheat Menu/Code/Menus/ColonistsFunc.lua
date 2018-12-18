@@ -45,8 +45,8 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
-	DeathReasons.ChoGGi_Soylent = S[302535920000738--[[Evil Overlord--]]]
-	NaturalDeathReasons.ChoGGi_Soylent = true
+--~ 	DeathReasons.ChoGGi_Soylent = S[302535920000738--[[Evil Overlord--]]]
+--~ 	NaturalDeathReasons.ChoGGi_Soylent = true
 	function ChoGGi.MenuFuncs.TheSoylentOption()
 		local UICity = UICity
 		local ChoGGi = ChoGGi
@@ -72,25 +72,7 @@ function OnMsg.ClassesGenerate()
 				res = "Food"
 			end
 			PlaceResourcePile(meat_bag:GetVisualPos(), res, Random(1,5) * ChoGGi.Consts.ResourceScale)
-			meat_bag:SetCommand("Die","ChoGGi_Soylent")
-			CreateRealTimeThread(function()
-				-- in a building
-				local holder = meat_bag.holder
-				if holder then
-					meat_bag:SetPos(holder:GetVisualPos())
-					meat_bag:SetHolder(false)
-					holder:OnExitUnit(meat_bag)
-				else
-					-- maybe walking
-					meat_bag:InterruptPath()
-				end
-
-				while meat_bag:GetPath() do
-					Sleep(100)
-				end
-				meat_bag:Done()
-				DoneObject(meat_bag)
-			end)
+			meat_bag:SetCommand("Erase")
 		end
 
 		-- one meatbag at a time

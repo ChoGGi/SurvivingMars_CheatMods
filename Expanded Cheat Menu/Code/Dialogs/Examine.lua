@@ -686,8 +686,7 @@ end
 
 function Examine:BuildObjectMenuPopup()
 	return {
-		{
-			name = S[174--[[Color Modifier--]]],
+		{name = S[174--[[Color Modifier--]]],
 			hint = S[302535920000693--[[Select/mouse over an object to change the colours
 Use Shift- or Ctrl- for random colours/reset colours.--]]],
 			image = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
@@ -695,24 +694,21 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 				ChoGGi.ComFuncs.ChangeObjectColour(self.obj_ref)
 			end,
 		},
-		{
-			name = S[302535920000457--[[Anim State Set--]]],
+		{name = S[302535920000457--[[Anim State Set--]]],
 			hint = S[302535920000458--[[Make object dance on command.--]]],
 			image = "CommonAssets/UI/Menu/UnlockCamera.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.SetAnimState(self.obj_ref)
 			end,
 		},
-		{
-			name = S[302535920000682--[[Change Entity--]]],
+		{name = S[302535920000682--[[Change Entity--]]],
 			hint = S[302535920001151--[[Set Entity For %s--]]]:format(self.name),
 			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.EntitySpawner(self.obj_ref,true,7)
 			end,
 		},
-		{
-			name = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]]),
+		{name = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]]),
 			hint = S[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
 			image = "CommonAssets/UI/Menu/place_particles.tga",
 			clicked = function()
@@ -720,40 +716,35 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 			end,
 		},
 		{name = "	 ---- "},
-		{
-			name = S[302535920001472--[[BBox Toggle--]]],
+		{name = S[302535920001472--[[BBox Toggle--]]],
 			hint = S[302535920001473--[[Toggle showing object's bbox (changes depending on movement).--]]],
 			image = "CommonAssets/UI/Menu/SelectionEditor.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.BBoxLines_Toggle(self.obj_ref)
 			end,
 		},
-		{
-			name = S[302535920000449--[[Attach Spots Toggle--]]],
+		{name = S[302535920000449--[[Attach Spots Toggle--]]],
 			hint = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 			image = "CommonAssets/UI/Menu/ShowAll.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj_ref)
 			end,
 		},
-		{
-			name = S[302535920000235--[[Attach Spots List--]]],
+		{name = S[302535920000235--[[Attach Spots List--]]],
 			hint = S[302535920001445--[[Shows list of attaches for use with .ent files.--]]],
 			image = "CommonAssets/UI/Menu/ListCollections.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.ExamineEntSpots(self.obj_ref,self)
 			end,
 		},
-		{
-			name = S[302535920001458--[[Material Properties--]]],
+		{name = S[302535920001458--[[Material Properties--]]],
 			hint = S[302535920001459--[[Shows list of material settings/.dds files for use with .mtl files.--]]],
 			image = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.GetMaterialProperties(self.obj_ref:GetEntity(),self)
 			end,
 		},
-		{
-			name = S[302535920001476--[[Flags--]]],
+		{name = S[302535920001476--[[Flags--]]],
 			hint = S[302535920001447--[[Shows list of flags set for selected object.--]]],
 			image = "CommonAssets/UI/Menu/JoinGame.tga",
 			clicked = function()
@@ -765,16 +756,14 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 				end
 			end,
 		},
-		{
-			name = S[302535920000459--[[Anim Debug Toggle--]]],
+		{name = S[302535920000459--[[Anim Debug Toggle--]]],
 			hint = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
 			image = "CommonAssets/UI/Menu/CameraEditor.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj_ref)
 			end,
 		},
-		{
-			name = S[931--[[Modified property--]]],
+		{name = S[931--[[Modified property--]]],
 			hint = S[302535920001384--[[Get properties different from base/parent object?--]]],
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
@@ -785,8 +774,7 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 				)
 			end,
 		},
-		{
-			name = S[302535920001389--[[All Properties--]]],
+		{name = S[302535920001389--[[All Properties--]]],
 			hint = S[302535920001390--[[Get all properties.--]]],
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
@@ -805,8 +793,7 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 			end,
 		},
 		{name = "	 ---- "},
-		{
-			name = S[302535920001369--[[Ged Editor--]]],
+		{name = S[302535920001369--[[Ged Editor--]]],
 			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
 			image = "CommonAssets/UI/Menu/UIDesigner.tga",
 			clicked = function()
@@ -814,8 +801,7 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 				OpenGedGameObjectEditor{self.obj_ref}
 			end,
 		},
-		{
-			name = S[302535920000067--[[Ged Inspect--]]],
+		{name = S[302535920000067--[[Ged Inspect--]]],
 			hint = S[302535920001075--[[Open this object in the Ged inspector.--]]],
 			image = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 			clicked = function()
@@ -827,8 +813,7 @@ end
 
 function Examine:BuildToolsMenuPopup()
 	return {
-		{
-			name = S[302535920001467--[[Append Dump--]]],
+		{name = S[302535920001467--[[Append Dump--]]],
 			hint = S[302535920001468--[["Append text to same file, or create a new file each time."--]]],
 			clicked = function()
 				ChoGGi.UserSettings.ExamineAppendDump = not ChoGGi.UserSettings.ExamineAppendDump
@@ -837,14 +822,14 @@ function Examine:BuildToolsMenuPopup()
 			value = "ChoGGi.UserSettings.ExamineAppendDump",
 			class = "ChoGGi_CheckButtonMenu",
 		},
-		{
-			name = StringFormat("%s %s",S[302535920000004--[[Dump--]]],S[1000145--[[Text--]]]),
+		{name = StringFormat("%s %s",S[302535920000004--[[Dump--]]],S[1000145--[[Text--]]]),
 			hint = S[302535920000046--[[dumps text to %slogs\DumpedExamine.lua--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
 				local str = self.idText:GetText()
 				-- remove html tags
-				str = str:gsub("<[/%s%a%d]*>","")
+--~ 				str = str:gsub("<[/%s%a%d]*>","")
+				str = str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>","")
 				-- i just compare, so append doesn't really work
 				if ChoGGi.UserSettings.ExamineAppendDump then
 					ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),nil,"DumpedExamine","lua")
@@ -853,8 +838,7 @@ function Examine:BuildToolsMenuPopup()
 				end
 			end,
 		},
-		{
-			name = StringFormat("%s %s",S[302535920000004--[[Dump--]]],S[298035641454--[[Object--]]]),
+		{name = StringFormat("%s %s",S[302535920000004--[[Dump--]]],S[298035641454--[[Object--]]]),
 			hint = S[302535920001027--[[dumps object to %slogs\DumpedExamineObject.lua
 
 This can take time on something like the "Building" metatable--]]]:format(ConvertToOSPath("AppData/")),
@@ -873,14 +857,14 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 				end
 			end,
 		},
-		{
-			name = StringFormat("%s %s",S[302535920000048--[[View--]]],S[1000145--[[Text--]]]),
+		{name = StringFormat("%s %s",S[302535920000048--[[View--]]],S[1000145--[[Text--]]]),
 			hint = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
 				local str = self.idText:GetText()
 				-- remove html tags
-				str = str:gsub("<[/%s%a%d]*>","")
+--~ 				str = str:gsub("<[/%s%a%d]*>","")
+				str = str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>","")
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 					parent = self,
 					checkbox = true,
@@ -896,8 +880,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 				}
 			end,
 		},
-		{
-			name = StringFormat("%s %s",S[302535920000048--[[View--]]],S[298035641454--[[Object--]]]),
+		{name = StringFormat("%s %s",S[302535920000048--[[View--]]],S[298035641454--[[Object--]]]),
 			hint = S[302535920000049--[["View text, and optionally dumps object to %sDumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]]:format(ConvertToOSPath("AppData/")),
@@ -926,8 +909,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			end,
 		},
 		{name = "	 ---- "},
-		{
-			name = S[302535920001239--[[Functions--]]],
+		{name = S[302535920001239--[[Functions--]]],
 			hint = S[302535920001240--[[Show all functions of this object and parents/ancestors.--]]],
 			image = "CommonAssets/UI/Menu/gear.tga",
 			clicked = function()
@@ -956,16 +938,14 @@ This can take time on something like the ""Building"" metatable (don't use this 
 				end
 			end,
 		},
-		{
-			name = StringFormat("%s %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
+		{name = StringFormat("%s %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
 			hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj_ref,self)
 			end,
 		},
-		{
-			name = S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
+		{name = S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
 			hint = S[302535920001433--[[Fiddle with object angle/axis/pos and so forth.--]]],
 			image = "CommonAssets/UI/Menu/Axis.tga",
 			clicked = function()
@@ -979,8 +959,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 				end
 			end,
 		},
-		{
-			name = S[302535920001469--[[Image Viewer--]]],
+		{name = S[302535920001469--[[Image Viewer--]]],
 			hint = S[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."--]]],
 			image = "CommonAssets/UI/Menu/light_model.tga",
 			clicked = function()
@@ -992,16 +971,14 @@ This can take time on something like the ""Building"" metatable (don't use this 
 				end
 			end,
 		},
-		{
-			name = S[302535920001305--[[Find Within--]]],
+		{name = S[302535920001305--[[Find Within--]]],
 			hint = S[302535920001303--[[Search for text within %s.--]]]:format(self.name),
 			image = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.OpenInFindValueDlg(self.obj_ref,self)
 			end,
 		},
-		{
-			name = S[302535920000323--[[Exec Code--]]],
+		{name = S[302535920000323--[[Exec Code--]]],
 			hint = S[302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.
 Which you can then mess around with some more in the console."--]]],
 			image = "CommonAssets/UI/Menu/AlignSel.tga",
@@ -1010,16 +987,14 @@ Which you can then mess around with some more in the console."--]]],
 			end,
 		},
 		{name = "	 ---- "},
-		{
-			name = S[302535920001321--[[UI Click To Examine--]]],
+		{name = S[302535920001321--[[UI Click To Examine--]]],
 			hint = S[302535920001322--[[Examine UI controls by clicking them.--]]],
 			image = "CommonAssets/UI/Menu/select_objects.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.TerminalRolloverMode(true,self)
 			end,
 		},
-		{
-			name = S[302535920000970--[[UI Flash--]]],
+		{name = S[302535920000970--[[UI Flash--]]],
 			hint = S[302535920000972--[[Flash visibility of the UI object being examined.--]]],
 			clicked = function()
 				ChoGGi.UserSettings.FlashExamineObject = not ChoGGi.UserSettings.FlashExamineObject
@@ -1712,7 +1687,7 @@ ThreadHasFlags(): %s</color>]],
 end
 ---------------------------------------------------------------------------------------------------------------------
 function Examine:SetToolbarVis(obj)
-	if type(obj) == "table" then
+	if type(obj) == "table" and self.name ~= "_G" then
 
 		-- pretty much any class object
 		if obj.delete then

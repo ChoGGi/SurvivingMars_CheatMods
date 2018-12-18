@@ -104,7 +104,7 @@ function OnMsg.ModsReloaded()
 		"RolloverTitle", [[Set Margin]],
 		"RolloverText", [[Allows you to Test/Save a custom margin.
 Don't forget to send me your res and margin, so I can add them to the list.]],
-		"RolloverHint", string.format("<image %s> Show Options <image %s> Test Margin",MouseButtonImages.MouseL,MouseButtonImages.MouseR),
+		"RolloverHint", T(0,[[<left_click> Show Options <right_click> Test Margin]])),
 		"Id", "idSetupMargins",
 		"Image", string.format("%sUI/hud_margin.png",CurrentModPath),
 		"FXPress", "MainMenuButtonClick",

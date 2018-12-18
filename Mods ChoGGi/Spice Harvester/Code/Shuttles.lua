@@ -16,7 +16,6 @@ local MapCount = MapCount
 local DoneObject = DoneObject
 local Sleep = Sleep
 local IsValid = IsValid
-local IsValidThread = IsValidThread
 local PlaySound = PlaySound
 local GetSoundDuration = GetSoundDuration
 local GetHeight = terrain.GetHeight
@@ -162,12 +161,7 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 			point(x+Random(-25000,25000), y+Random(-25000,25000))
 		)
 
-		local path_thread = CreateGameTimeThread(function()
-			self:FollowPathCmd(path)
-		end)
-		while IsValidThread(path_thread) do
-			Sleep(1000)
-		end
+		self:WaitFollowPath(path)
 		Sleep(Random(2500,10000))
 	end
 
