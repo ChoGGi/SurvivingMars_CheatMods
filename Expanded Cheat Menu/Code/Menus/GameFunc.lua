@@ -37,7 +37,7 @@ function OnMsg.ClassesGenerate()
 		skipped_traits = AddSkipped(ChoGGi_Tables.ColonistGenders,skipped_traits)
 		skipped_traits = AddSkipped(ChoGGi_Tables.ColonistSpecializations,skipped_traits)
 
-		local ColonistsCSVColumns = {
+		local csv_columns = {
 			{"name",S[1000037--[[Name--]]]},
 			{"age",S[302535920001222--[[Age--]]]},
 			{"age_trait",StringFormat("%s %s",S[302535920001222--[[Age--]]],S[3720--[[Trait--]]])},
@@ -68,14 +68,14 @@ function OnMsg.ClassesGenerate()
 			for i = 1, #traits do
 				list[#list+1] = {
 					StringFormat("trait_%s",traits[i]),
-					StringFormat("Trait %s",traits[i]),
+					StringFormat("%s %s",S[3720--[[Trait--]]],traits[i]),
 				}
 			end
 			return list
 		end
-		ColonistsCSVColumns = AddTraits(ChoGGi_Tables.NegativeTraits,ColonistsCSVColumns)
-		ColonistsCSVColumns = AddTraits(ChoGGi_Tables.PositiveTraits,ColonistsCSVColumns)
-		ColonistsCSVColumns = AddTraits(ChoGGi_Tables.OtherTraits,ColonistsCSVColumns)
+		csv_columns = AddTraits(ChoGGi_Tables.NegativeTraits,csv_columns)
+		csv_columns = AddTraits(ChoGGi_Tables.PositiveTraits,csv_columns)
+		csv_columns = AddTraits(ChoGGi_Tables.OtherTraits,csv_columns)
 
 		function ChoGGi.MenuFuncs.ExportColonistDataToCSV()
 			local export_data = {}
@@ -85,7 +85,6 @@ function OnMsg.ClassesGenerate()
 				local c = colonists[i]
 
 				export_data[i] = {
---~ 					name = StringFormat("%s %s",Trans(c.name[1]),Trans(c.name[3])),
 					name = RetName(c),
 					age = c.age,
 					age_trait = c.age_trait,
@@ -130,7 +129,7 @@ function OnMsg.ClassesGenerate()
 			end
 --~ ex(export_data)
 			-- and now we can save it to disk
-			SaveCSV("AppData/Colonists.csv", export_data, table.map(ColonistsCSVColumns, 1), table.map(ColonistsCSVColumns, 2))
+			SaveCSV("AppData/Colonists.csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
 			print(ConvertToOSPath("AppData/Colonists.csv"))
 		end
 	end -- do

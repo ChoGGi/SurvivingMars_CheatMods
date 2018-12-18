@@ -10,6 +10,7 @@ function OnMsg.ClassesGenerate()
 	if ChoGGi.testing then
 
 		-- centred hud
+		local GetScreenSize = UIL.GetScreenSize
 		local margins = box(2560,0,2560,0)
 		local orig_GetSafeMargins = GetSafeMargins
 		function GetSafeMargins(win_box)
@@ -17,7 +18,7 @@ function OnMsg.ClassesGenerate()
 				return orig_GetSafeMargins(win_box)
 			end
 			-- if lookup table doesn't have width we fire orginal func
-			return margins
+			return GetScreenSize():x() == 5760 and margins or orig_GetSafeMargins()
 		end
 
 --~ 		-- ParseText is picky about the text it'll parse
