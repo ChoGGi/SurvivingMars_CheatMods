@@ -72,6 +72,13 @@ function OnMsg.ClassesGenerate()
 		ChoGGi_Window.RolloverTemplate = ""
 	end
 
+	-- unforbid binding some keys (i left Enter and Menu, not sure what Menu is for? seems best to leave it)
+	local forbid = ForbiddenShortcutKeys
+	forbid.Lwin = nil
+	forbid.Rwin = nil
+	forbid.MouseL = nil
+	forbid.MouseR = nil
+	forbid.MouseM = nil
 end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)

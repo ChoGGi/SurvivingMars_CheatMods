@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Shift-Click To Move v0.1",
-	"version", 1,
-	"saved", 1544702400,
+	"title", "Click To Move v0.2",
+	"version", 2,
+	"saved", 1545134400,
 	"image", "Preview.png",
 	"id", "ChoGGi_ShiftClickToMove",
 	"steam_id", "1590473613",
@@ -14,8 +14,7 @@ return PlaceObj("ModDef", {
 	"description", [[Hold down Shift and click to move the view.
 Also includes Mod Config Reborn option to disable mouse edge scrolling.
 
-You can't bind left/right click in menu, so this is hard-coded as Shift-Mouse1.
-If anyone wants I can add an MCR option to toggle between ctrl or shift?
+You can change the shortcut in Options>Key Bindings.
 
 Kinda requested by Pops.]],
 })
