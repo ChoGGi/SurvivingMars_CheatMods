@@ -12,6 +12,7 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"TagCheats", true,
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/ChoGGi's%20Library/Changelog.md#library-changelog",
+	"lua_revision", LuaRevision,
 	"code", {
 		-- build the ChoGGi object
 		"Code/Init.lua",
@@ -35,9 +36,6 @@ return PlaceObj("ModDef", {
 		"Code/ListChoice.lua",
 		"Code/MultiLineText.lua",
 	},
-	-- yeah this is getting removed... come on devs allow users to override and deal with outdated mods if they want to (just print it in the log).
-	"lua_revision", LuaRevision,
-
 	"description", [[Contains stuff needed by most of my mods.
 The load order for my library in relation to my mods isn't an issue.
 

@@ -9,17 +9,29 @@ function OnMsg.ClassesGenerate()
 
 	if ChoGGi.testing then
 
-		local orig = XText.ParseText
-		function XText:ParseText(...)
-			local varargs = ...
-			local ret
-			if not procall(function()
-				ret = orig(self,varargs)
-			end) then
-				ChoGGi.ComFuncs.Dump(self.text,"w","ParseText","lua",nil,true)
+		-- centred hud
+		local margins = box(2560,0,2560,0)
+		local orig_GetSafeMargins = GetSafeMargins
+		function GetSafeMargins(win_box)
+			if win_box then
+				return orig_GetSafeMargins(win_box)
 			end
-			return ret
+			-- if lookup table doesn't have width we fire orginal func
+			return margins
 		end
+
+--~ 		-- ParseText is picky about the text it'll parse
+--~ 		local orig = XText.ParseText
+--~ 		function XText:ParseText(...)
+--~ 			local varargs = ...
+--~ 			local ret
+--~ 			if not procall(function()
+--~ 				ret = orig(self,varargs)
+--~ 			end) then
+--~ 				ChoGGi.ComFuncs.Dump(self.text,"w","ParseText","lua",nil,true)
+--~ 			end
+--~ 			return ret
+--~ 		end
 
 --~ 		-- work on these persist errors
 --~ 		function PersistGame(folder)

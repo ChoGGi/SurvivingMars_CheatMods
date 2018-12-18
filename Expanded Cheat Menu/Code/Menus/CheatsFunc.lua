@@ -182,12 +182,20 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.OpenModEditor()
-		local ItemList = {}
-		local c = 0
+		local ModsList = ModsList
 		local title_str = "%s, %s, %s"
 
-		local Mods = Mods
-		for id,mod in pairs(Mods) do
+		local ItemList = {
+			{
+				text = StringFormat(" %s",S[302535920000236--[[Mod Editor--]]]),
+				value = "ModEditor",
+				hint = 302535920001478--[[Open the Mod Editor and load the Mod map.--]],
+			},
+		}
+		local c = #ItemList
+
+		for i = 1, #ModsList do
+			local mod = ModsList[i]
 			local hint
 			if mod.image:find(" ") or mod.path:find(" ") then
 				hint = mod.description
@@ -197,9 +205,9 @@ function OnMsg.ClassesGenerate()
 
 			c = c + 1
 			ItemList[c] = {
-				text = title_str:format(mod.title,id,mod.version),
+				text = title_str:format(mod.title,mod.id,mod.version),
 				mod = {mod},
-				value = id,
+				value = mod.id,
 				hint = hint,
 			}
 		end
@@ -208,14 +216,20 @@ function OnMsg.ClassesGenerate()
 			if #choice < 1 then
 				return
 			end
+			choice = choice[1]
 
-			local context = {
-				mod_items = GedItemsMenu("ModItem"),
-				steam_login = IsSteamAvailable() and not not SteamGetUserId64(),
-			}
-			local editor = OpenGedApp("ModEditor", Container:new(choice[1].mod), context)
-			if editor then
-				editor:Rpc("rpcApp", "SetSelection", "root", {1})
+			if choice.value == "ModEditor" then
+				ModEditorOpen()
+			else
+				local context = {
+					mod_items = GedItemsMenu("ModItem"),
+--~ 					steam_login = IsSteamAvailable() and not not SteamGetUserId64(),
+					steam_login = true,
+				}
+				local editor = OpenGedApp("ModEditor", Container:new(choice.mod), context)
+				if editor then
+					editor:Rpc("rpcApp", "SetSelection", "root", {1})
+				end
 			end
 		end
 
@@ -416,9 +430,9 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	function ChoGGi.MenuFuncs.DisastersStop()
-		local mis = g_IncomingMissiles or empty_table
-		for Key,_ in pairs(mis) do
-			Key:ExplodeInAir()
+		local missles = g_IncomingMissiles or empty_table
+		for missle,_ in pairs(missles) do
+			missle:ExplodeInAir()
 		end
 
 		if g_DustStorm then
@@ -426,16 +440,15 @@ function OnMsg.ClassesGenerate()
 			-- stop doesn't always seem to work, so adding this as well
 			g_DustStormType = false
 		end
+
 		if g_ColdWave then
 			StopColdWave()
 			g_ColdWave = false
 		end
 
-		local objs = g_DustDevils
-		if objs then
-			for i = #objs, 1, -1 do
-				objs[i]:delete()
-			end
+		local objs = g_DustDevils or ""
+		for i = #objs, 1, -1 do
+			objs[i]:delete()
 		end
 
 		objs = g_MeteorsPredicted or ""
@@ -445,9 +458,10 @@ function OnMsg.ClassesGenerate()
 		end
 
 		objs = g_IonStorms or ""
+		local TableRemove = table.remove
 		for i = #objs, 1, -1 do
 			objs[i]:delete()
-			table.remove(g_IonStorms,i)
+			TableRemove(g_IonStorms,i)
 		end
 	end
 

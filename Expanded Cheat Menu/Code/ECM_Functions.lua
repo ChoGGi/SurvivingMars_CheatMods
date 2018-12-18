@@ -540,8 +540,7 @@ function OnMsg.ClassesGenerate()
 
 		local table_list = {}
 		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list)
-		dlg.idAutoRefresh:SetCheck(true)
-		dlg:idAutoRefreshToggle()
+		dlg:EnableAutoRefresh()
 
 		CreateRealTimeThread(function()
 			local table_str = "%s(%s) %s"
@@ -569,10 +568,8 @@ function OnMsg.ClassesGenerate()
 		skip_under = skip_under or 25
 		local table_list = {}
 		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list,nil,name)
-		dlg.idAutoRefresh:SetCheck(true)
-		dlg:idAutoRefreshToggle()
+		dlg:EnableAutoRefresh()
 		local table_str = "%s %s"
-		local type,pairs = type,pairs
 		local PadNumWithZeros = ChoGGi.ComFuncs.PadNumWithZeros
 
 		CreateRealTimeThread(function()
