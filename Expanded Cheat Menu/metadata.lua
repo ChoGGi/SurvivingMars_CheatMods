@@ -5,12 +5,22 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411157810",
 	"id", "ChoGGi_CheatMenu",
 	"image", "Preview.png",
+	"TagCommanderProfiles", true,
+	"TagMissionSponsors", true,
+	"TagColonyLogos", true,
 	"TagGameplay", true,
+	"TagBuildings", true,
+	"TagResearch", true,
+	"TagCrops", true,
+	"TagTraits", true,
+	"TagLightmodels", true,
+	"TagCosmetics", true,
 	"TagInterface", true,
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
+	"lua_revision", LuaRevision,
 	"code", {
 		-- start 'er up
 		"Code/Init.lua",
@@ -71,8 +81,6 @@ return PlaceObj("ModDef", {
 
 		-- gee sure would be nice to load these like the devs do, but i suppose it's too much work to limit dofile env.
 	},
-	-- yeah this is getting removed... come on devs allow users to override and deal with outdated mods if they want to (just print it in the log).
-	"lua_revision", LuaRevision,
 
 	"author", [[ChoGGi
 With thanks to chippydip, admbraden, SkiRich, BoehserOnkel, and Fling.

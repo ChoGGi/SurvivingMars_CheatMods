@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001478,,
 302535920001479,,
 302535920001480,,
 302535920001481,,
@@ -556,6 +555,7 @@ Use with %s to fill up a dome with spires.",
 302535920000230,Remove Building Limits,
 302535920000231,"Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
 See also %s.",
+302535920001478,Open the Mod Editor and load the Mod map.,
 302535920001402,Add some party to your domes for 3 hours (10 domes max).,
 302535920001392,Clears story bit cooldowns... (got me).,
 302535920001393,StoryBits ClearCooldowns,

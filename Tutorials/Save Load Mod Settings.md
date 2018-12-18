@@ -15,7 +15,7 @@ settings = {
 
 ### MOD_SETTINGS_TABLE, and MOD_DEFAULT_SETTINGS are used for saved settings/default settings
 
-#### Wrluaite Mod Settings
+#### Write Mod Settings
 ```lua
 -- local some globals
 local TableToLuaCode = TableToLuaCode
@@ -96,6 +96,14 @@ function ReadModSettings()
 end
 ```
 
+#### Clear Mod Settings
+```lua
+-- you can't nil the settings, so this is the best you can do for now
+
+function ClearModSettings()
+	WriteModPersistentData("")
+end
+```
 
 ##### Benching
 ```lua

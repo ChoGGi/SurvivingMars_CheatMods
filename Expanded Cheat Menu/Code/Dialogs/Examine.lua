@@ -202,6 +202,7 @@ function Examine:Init(parent, context)
 			LayoutMethod = "HList",
 			DrawOnTop = true,
 		}, self.idToolbarArea)
+
 		self.idToolbarButtons:AddInterpolation{
 			type = const.intAlpha,
 			startValue = 255,
@@ -320,18 +321,30 @@ function Examine:Init(parent, context)
 	end -- toolbar area
 
 	do -- go to text area
-		self.idGotoArea = g_Classes.ChoGGi_DialogSection:new({
-			Id = "idGotoArea",
+		self.idSearchArea = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idSearchArea",
 			Dock = "top",
 		}, self.idDialog)
 
-		self.idGoto = g_Classes.ChoGGi_TextInput:new({
-			Id = "idGoto",
+		self.idSearchText = g_Classes.ChoGGi_TextInput:new({
+			Id = "idSearchText",
 			RolloverText = S[302535920000043--[["Press Enter to scroll to next found text, Ctrl-Enter to scroll back, Arrows to scroll to each end."--]]],
 			Hint = S[302535920000044--[[Go To Text--]]],
---~ 			OnTextChanged = self.idGotoOnTextChanged,
-			OnKbdKeyDown = self.idGotoOnKbdKeyDown,
-		}, self.idGotoArea)
+--~ 			OnTextChanged = self.idSearchTextOnTextChanged,
+			OnKbdKeyDown = self.idSearchTextOnKbdKeyDown,
+		}, self.idSearchArea)
+
+		self.idSearch = g_Classes.ChoGGi_Button:new({
+			Id = "idSearch",
+			Text = S[10123--[[Search--]]],
+			Dock = "right",
+			RolloverAnchor = "right",
+			RolloverHint = S[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
+			RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
+Right-click to go up, middle-click to scroll to the top."--]]],
+			OnMouseButtonDown = self.idSearchOnMouseButtonDown,
+		}, self.idSearchArea)
+
 	end
 
 	do -- tools area
@@ -376,16 +389,6 @@ function Examine:Init(parent, context)
 		}, self.idMenuArea)
 		self.idAttaches:SetVisible(false)
 
-		self.idNext = g_Classes.ChoGGi_Button:new({
-			Id = "idNext",
-			Text = S[1000232--[[Next--]]],
-			Dock = "right",
-			RolloverAnchor = "right",
-			RolloverHint = S[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
-			RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
-Right-click to go up, middle-click to scroll to the top."--]]],
-			OnMouseButtonDown = self.idNextOnMouseButtonDown,
-		}, self.idMenuArea)
 	end -- tools area
 
 	-- text box with obj info in it
@@ -526,6 +529,10 @@ function Examine:idAutoRefreshOnChange()
 		end
 	end)
 end
+-- called external
+function Examine:EnableAutoRefresh()
+	self.idAutoRefreshOnChange(self.idAutoRefresh)
+end
 
 function Examine:idAutoRefreshOnMouseButtonDown(pt,button,...)
 	g_Classes.ChoGGi_CheckButton.OnMouseButtonDown(self,pt,button,...)
@@ -568,7 +575,7 @@ function Examine:idShowAllValuesOnChange()
 	self:SetObj()
 end
 
---~ function Examine:idGotoOnTextChanged()
+--~ function Examine:idSearchTextOnTextChanged()
 --~ 	GetRootDialog(self):FindNext()
 --~ end
 
@@ -599,23 +606,23 @@ function Examine:idAttachesOnMouseButtonDown(pt,button,...)
 	CallMenu(self,"idAttachesMenu","attaches_menu_popup",pt,button,...)
 end
 
-function Examine:idNextOnMouseButtonDown(pt,button,...)
+function Examine:idSearchOnMouseButtonDown(pt,button,...)
 	ChoGGi_Button.OnMouseButtonDown(self,pt,button,...)
 	self = GetRootDialog(self)
 	if button == "L" then
 		self:FindNext()
 	elseif button == "R" then
-		self:FindPrevious()
+		self:FindNext(nil,true)
 	else
 		self.idScrollArea:ScrollTo(0,0)
 	end
 end
 
-function Examine:idGotoOnKbdKeyDown(vk,...)
+function Examine:idSearchTextOnKbdKeyDown(vk,...)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
 		if IsControlPressed() then
-			self:FindPrevious()
+			self:FindNext(nil,true)
 		else
 			self:FindNext()
 		end
@@ -642,7 +649,7 @@ function Examine:idGotoOnKbdKeyDown(vk,...)
 		self.idCloseX:OnPress()
 		return "break"
 	else
-		return ChoGGi_TextInput.OnKbdKeyDown(self.idGoto,vk,...)
+		return ChoGGi_TextInput.OnKbdKeyDown(self.idSearchText,vk,...)
 	end
 end
 
@@ -878,7 +885,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 					parent = self,
 					checkbox = true,
 					text = str,
-					scrollto = self.idScrollArea.OffsetY,
+					scrollto = self:GetScrolledText(),
 					title = StringFormat("%s/%s %s",S[302535920000048--[[View--]]],S[302535920000004--[[Dump--]]],S[1000145--[[Text--]]]),
 					hint_ok = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 					custom_func = function(answer,overwrite)
@@ -1024,33 +1031,33 @@ Which you can then mess around with some more in the console."--]]],
 	}
 end
 
-function Examine:FindPrevious(text)
-	text = text or self.idGoto:GetText()
-	local current_y = self.idScrollArea.OffsetY
-	local min_match, closest_match = false, false
-
+function Examine:GetScrolledText()
+	-- all text is cached here
 	local cache = self.idText.draw_cache or {}
-	for y, list_draw_info in pairs(cache) do
+	local list_draw_info = cache[self.idScrollArea.PendingOffsetY]
+
+	-- we need to be at an exact line (draw_cache expects it)
+	if not list_draw_info then
+		self:FindNext()
+		list_draw_info = cache[self.idScrollArea.PendingOffsetY]
+	end
+
+	local text = {}
+	local c = 0
+	if list_draw_info then
 		for i = 1, #list_draw_info do
-			local draw_info = list_draw_info[i]
-			if draw_info.text and draw_info.text:find_lower(text) or text == "" then
-				if not min_match or y < min_match then
-					min_match = y
-				end
-				if y < current_y and (not closest_match or y > closest_match) then
-					closest_match = y
-				end
+			local temp = list_draw_info[i].text
+			if temp then
+				c = c + 1
+				text[c] = temp
 			end
 		end
 	end
-
-	if closest_match or min_match then
-		self.idScrollArea:ScrollTo(nil,closest_match or min_match)
-	end
+	return TableConcat(text)
 end
 
-function Examine:FindNext(text)
-	text = text or self.idGoto:GetText()
+function Examine:FindNext(text,previous)
+	text = text or self.idSearchText:GetText()
 	local current_y = self.idScrollArea.OffsetY
 	local min_match, closest_match = false, false
 
@@ -1062,9 +1069,17 @@ function Examine:FindNext(text)
 				if not min_match or y < min_match then
 					min_match = y
 				end
-				if y > current_y and (not closest_match or y < closest_match) then
-					closest_match = y
+
+				if previous then
+					if y < current_y and (not closest_match or y > closest_match) then
+						closest_match = y
+					end
+				else
+					if y > current_y and (not closest_match or y < closest_match) then
+						closest_match = y
+					end
 				end
+
 			end
 		end
 	end
@@ -1344,6 +1359,7 @@ function Examine:RetDebugGetinfo(obj)
 	return TableConcat(totextex_debug_table,"\n")
 end
 
+local string_str = "'%s'"
 function Examine:totextex(obj,obj_type)
 	local totextex_res = {}
 	local totextex_sort = {}
@@ -1356,7 +1372,7 @@ function Examine:totextex(obj,obj_type)
 	elseif obj_type == "boolean" or obj_type == "number" then
 		return tostring(obj)
 	elseif obj_type == "string" then
-		return obj
+		return string_str:format(obj)
 	end
 
 	if obj_type == "table" then

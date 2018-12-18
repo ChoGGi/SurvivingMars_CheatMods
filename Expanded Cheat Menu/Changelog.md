@@ -7,10 +7,15 @@
 ### Changed:
 - Research Tech will now unlock mystery tech for different mysteries (cost will be the same as mystery instead of incrementing).
 - Added images to a bunch of the Set Colonist lists.
+- Added the Mod Editor mode to Cheats>Mod Editor list.
+- Moved Examine>Next to the go to text area, and renamed it to Search.
 
 ### Fixed:
 - Messed up a string in Material Properties, and borked it.
 - Change Logo didn't change rocket logos (Gagarin I think?).
+- Monitor Threads, and some other funcs that used Examine autorefresh kind of broke (manually checking autofresh still worked).
+- Examine>View Text will scroll to the proper line now (and highlight for a bonus).
+- Typing a space in console was being ignored.
 
 ## v11.8 (15 Dec 2018)
 ### Changed:

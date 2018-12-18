@@ -283,6 +283,7 @@ local Strings = {
 	[9012] = TranslationTable[9012], -- Diamond Dome
 	[9763] = TranslationTable[9763], -- No objects matching current filters.
 	[10087] = TranslationTable[10087], -- Advanced Orbital Probe
+	[10123] = TranslationTable[10123], -- Search
 	[10124] = TranslationTable[10124], -- Sort
 	[10278] = TranslationTable[10278], -- Wasp Drone
 	[11034] = TranslationTable[11034], -- Rival Colonies

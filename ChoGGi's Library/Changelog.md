@@ -2,7 +2,7 @@
 
 ## v4.9 (Unreleased)
 - List dialog:
-- > Items shrunk to the size of the text.
+- > Items had shrunk to the size of the text.
 - > Filter Items didn't work too well on number lists.
 
 ## v4.8 (15 Dec 2018)

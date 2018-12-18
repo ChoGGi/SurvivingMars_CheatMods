@@ -2,9 +2,10 @@
 
 -- displays text in an editable text box
 
+local StringFormat = string.format
 local S = ChoGGi.Strings
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_MultiLineTextDlg")
 end
@@ -90,11 +91,34 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 	}, self.idButtonContainer)
 
 	self:SetInitPos(context.parent)
-
 	if context.scrollto then
-		DelayedCall(1,function()
-			self.idEdit:ScrollTo(0, context.scrollto)
-		end)
+		if type(context.scrollto) == "string" then
+			DelayedCall(1,function()
+				local edit = self.idEdit
+				-- loop through lines table till we find the one we want
+				local line_num
+				local lines = edit.lines
+				for i = 1, #edit.lines do
+					local line = edit.lines[i]
+					if line:find(context.scrollto,1,true) then
+						line_num = i
+						break
+					end
+				end
+
+				if line_num then
+					edit:SetCursor(line_num, 0, false)
+					edit:SetCursor(line_num,edit.line_widths[line_num], true)
+					-- ScrollCursorIntoView needs focus for whatever reason
+					edit:SetFocus()
+					edit:ScrollCursorIntoView()
+				end
+			end)
+		else
+			DelayedCall(1,function()
+				self.idEdit:ScrollTo(0, context.scrollto)
+			end)
+		end
 	end
 
 end
