@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Click To Move v0.2",
+	"title", "Click To Move Camera v0.2",
 	"version", 2,
 	"saved", 1545134400,
 	"image", "Preview.png",
@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[Hold down Shift and click to move the view.
-Also includes Mod Config Reborn option to disable mouse edge scrolling.
+Includes Mod Config Reborn option to disable mouse edge scrolling.
 
 You can change the shortcut in Options>Key Bindings.
 
