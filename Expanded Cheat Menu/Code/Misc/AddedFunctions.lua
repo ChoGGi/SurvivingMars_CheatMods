@@ -1,8 +1,6 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	local ChoGGi = ChoGGi
-
 	-- add some shortened func names
 	function dump(...)
 		ChoGGi.ComFuncs.Dump(...)

@@ -13,7 +13,6 @@ local S
 local ResourceScale
 
 function OnMsg.ClassesGenerate()
-	local ChoGGi = ChoGGi
 	RetName = ChoGGi.ComFuncs.RetName
 	Random = ChoGGi.ComFuncs.Random
 	Trans = ChoGGi.ComFuncs.Translate

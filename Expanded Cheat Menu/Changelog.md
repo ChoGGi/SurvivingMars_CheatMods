@@ -4,9 +4,6 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v11.9 (Unreleased)
-### Added:
-- Console>Errors In Console: Shows [LUA ERROR] and stack in console log.
-
 ### Changed:
 - Research Tech will now unlock mystery tech for different mysteries (cost will be the same as mystery instead of incrementing).
 - Added images to a bunch of the Set Colonist lists.

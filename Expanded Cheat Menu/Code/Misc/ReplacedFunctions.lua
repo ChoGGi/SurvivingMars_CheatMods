@@ -23,8 +23,6 @@ local SaveOrigFunc
 local SetTrans
 
 function OnMsg.ClassesGenerate()
-	local ChoGGi = ChoGGi
-
 	MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
@@ -640,7 +638,6 @@ end -- ClassesPreprocess
 
 -- ClassesBuilt
 function OnMsg.ClassesBuilt()
-	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 
 	SaveOrigFunc("Colonist","ChangeComfort")

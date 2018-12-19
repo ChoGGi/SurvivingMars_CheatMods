@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local ChoGGi = ChoGGi
-
 local S = ChoGGi.Strings
 local testing = ChoGGi.testing
 -- Init.lua

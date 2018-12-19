@@ -2,6 +2,7 @@
 
 local pairs,type = pairs,type
 local StringFormat = string.format
+local Sleep = Sleep
 
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -11,7 +12,6 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.FireMostFixes()
 		CreateRealTimeThread(function()
 			local ChoGGi = ChoGGi
-			local Sleep = Sleep
 
 			pcall(function()
 				ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()

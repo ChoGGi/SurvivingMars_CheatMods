@@ -72,7 +72,7 @@ function OnMsg.ClassesGenerate()
 				res = "Food"
 			end
 			PlaceResourcePile(meat_bag:GetVisualPos(), res, Random(1,5) * ChoGGi.Consts.ResourceScale)
-			meat_bag:SetCommand("Erase")
+			meat_bag:Erase()
 		end
 
 		-- one meatbag at a time

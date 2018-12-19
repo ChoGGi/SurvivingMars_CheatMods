@@ -17,8 +17,6 @@ if debug then
 end
 
 function OnMsg.ClassesGenerate()
-	local ChoGGi = ChoGGi
-
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup

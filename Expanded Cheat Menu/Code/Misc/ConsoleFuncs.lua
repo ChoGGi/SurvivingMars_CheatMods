@@ -11,8 +11,6 @@ local CmpLower = CmpLower
 local print = print
 
 function OnMsg.ClassesGenerate()
-	local ChoGGi = ChoGGi
-
 	local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 	local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
@@ -201,38 +199,39 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	end
 
-	local function UpdateLogErrors(name)
-		_G[name] = function(...)
-			if ... ~= "\n" and ... ~= "\r\n" then
-				print("func",name,":",...)
+	do -- ToggleLogErrors
+		local function UpdateLogErrors(name)
+			_G[name] = function(...)
+				if ... ~= "\n" and ... ~= "\r\n" then
+					print("func",name,":",...)
+				end
 			end
 		end
-	end
-
-	local funcs = {"error","OutputDebugString"}
-	function ChoGGi.ConsoleFuncs.ToggleLogErrors(which)
-		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-		local GetStack = GetStack
-		if which then
-			for i = 1, #funcs do
-				UpdateLogErrors(funcs[i])
+		local funcs = {"error","OutputDebugString"}
+		function ChoGGi.ConsoleFuncs.ToggleLogErrors(which)
+			local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+			local GetStack = GetStack
+			if which then
+				for i = 1, #funcs do
+					UpdateLogErrors(funcs[i])
+				end
+				--
+				__procall_errorhandler = function(...)
+					print(
+						"[LUA ERROR]",
+						ChoGGi_OrigFuncs.__procall_errorhandler(...),
+						GetStack(2, false, "\t")
+					)
+				end
+			else
+				for i = 1, #funcs do
+					local name = funcs[i]
+					_G[name] = ChoGGi_OrigFuncs[name]
+				end
+				__procall_errorhandler = ChoGGi_OrigFuncs.__procall_errorhandler
 			end
-			--
-			__procall_errorhandler = function(...)
-				print(
-					"[LUA ERROR]",
-					ChoGGi_OrigFuncs.__procall_errorhandler(...),
-					GetStack(2, false, "\t")
-				)
-			end
-		else
-			for i = 1, #funcs do
-				local name = funcs[i]
-				_G[name] = ChoGGi_OrigFuncs[name]
-			end
-			__procall_errorhandler = ChoGGi_OrigFuncs.__procall_errorhandler
 		end
-	end
+	end -- do
 
 	local ConsolePopupToggle_list = {
 		{name = 302535920000040--[[Exec Code--]],
@@ -275,8 +274,8 @@ function OnMsg.ClassesGenerate()
 			value = "ChoGGi.UserSettings.ConsoleErrors",
 			clicked = function()
 				ChoGGi.UserSettings.ConsoleErrors = not ChoGGi.UserSettings.ConsoleErrors
-				ChoGGi.ConsoleFuncs.ToggleLogErrors(ChoGGi.UserSettings.ConsoleErrors)
 				ChoGGi.SettingFuncs.WriteSettings()
+				ChoGGi.ConsoleFuncs.ToggleLogErrors(ChoGGi.UserSettings.ConsoleErrors)
 			end,
 		},
 		{name = 302535920001112--[[Console Log--]],
