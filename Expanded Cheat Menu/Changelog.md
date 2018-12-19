@@ -4,17 +4,28 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v11.9 (Unreleased)
+### Added:
+- Fixes>Toggles>Missing Mod Buildings: Removes any placed buildings that were from a mod.
+- Game>Reload Map: Reloads map as new game.
+- Help>ECM>Show Startup Ticks: Prints to console how many ticks it takes the map to load.
+
 ### Changed:
 - Research Tech will now unlock mystery tech for different mysteries (cost will be the same as mystery instead of incrementing).
 - Added images to a bunch of the Set Colonist lists.
 - Added the Mod Editor mode to Cheats>Mod Editor list.
-- Moved Examine>Next to the go to text area, and renamed it to Search.
+- Stuck Debug>DTM Slots in a dialog.
+- Moved Hide Cheats Menu to ECM>Misc (so it and panel toggle are next to each other).
+- Examine:
+- > Moved Next to the go to text area, and renamed it to Search.
+- > Moved Color Modifier from Object to Tools.
+- > Object>Image Viewer now lists all textures/images used by object.
 
 ### Fixed:
 - Messed up a string in Material Properties, and borked it.
 - Change Logo didn't change rocket logos (Gagarin I think?).
 - Monitor Threads, and some other funcs that used Examine autorefresh kind of broke (manually checking autofresh still worked).
 - Typing a space in console was being ignored.
+- I borked Object Editor last update.
 - Examine:
 - > View Text will scroll to the proper line now (and highlight for a bonus).
 - > View Text/Dump Text will now show <text>.

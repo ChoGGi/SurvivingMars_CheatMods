@@ -321,13 +321,13 @@ function OnMsg.ClassesGenerate()
 		})
 	end
 
-	function ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(obj,parent)
+	function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj,parent)
 		obj = obj or ChoGGi.ComFuncs.SelObject()
 		if not obj then
 			return
 		end
 
-		return ChoGGi_ObjectManipulatorDlg:new({}, terminal.desktop,{
+		return ChoGGi_ObjectEditorDlg:new({}, terminal.desktop,{
 			obj = obj,
 			parent = parent,
 		})
@@ -369,6 +369,12 @@ function OnMsg.ClassesGenerate()
 		end
 
 		return ChoGGi_ImageViewerDlg:new({}, terminal.desktop,{
+			obj = context,
+			parent = parent,
+		})
+	end
+	function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(context,parent)
+		return ChoGGi_DTMSlotsDlg:new({}, terminal.desktop,{
 			obj = context,
 			parent = parent,
 		})
@@ -694,25 +700,20 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
---~ 	function ChoGGi.ComFuncs.RetObjTextureInfo(obj)
---~ 		if not IsValid(obj) then
---~ 			return
---~ 		end
---~ 		local textures = obj:UsedTextures()
---~ 		if not textures or #textures == 0 then
---~ 			return
---~ 		end
---~ 		local info_list = {}
---~ 		local format_str = "slot_idx: %s, slot_size: %s, priority: %s, need_size: %s, distance: %s /1000, tg(fov/2): %s /1000, radius: %s /1000"
---~ 		local GetTextureDebugInfo = DTM.GetTextureDebugInfo
-
---~ 		for i = 1, #textures do
---~ 			local slot_idx, slot_size, priority, need_size, distance, tan, radius = GetTextureDebugInfo(textures[i])
---~ 			print(slot_idx, slot_size, priority, need_size, distance, tan, radius)
---~ 			info_list[textures[i]] = format_str:format(slot_idx,slot_size,priority,need_size,distance,tan,radius)
---~ 		end
---~ 		return info_list
---~ 	end
+	do -- UpdateConsoleLogMargins
+		local margin_vis = box(10, 80, 10, 65)
+		local margin_hidden = box(10, 80, 10, 10)
+		function ChoGGi.ComFuncs.UpdateConsoleLogMargins(which)
+			if dlgConsoleLog then
+				-- move log text above the buttons i added and make sure log text stays below the cheat menu
+				if which then
+					dlgConsoleLog.idText:SetMargins(margin_vis)
+				else
+					dlgConsoleLog.idText:SetMargins(margin_hidden)
+				end
+			end
+		end
+	end -- do
 
 	function ChoGGi.ComFuncs.SelectConsoleLogText()
 		local dlgConsoleLog = dlgConsoleLog
@@ -1232,17 +1233,30 @@ The func I use for spot_rot rounds to two decimal points...
 			[".png"] = true,
 		}
 
-		function ChoGGi.ComFuncs.DisplayObjectImages(obj,parent)
-			local images = {}
+		function ChoGGi.ComFuncs.DisplayObjectImages(obj,parent,images)
+			images = images or {}
 			if type(obj) ~= "table" then
 				return
 			end
+			local c = #images
 
 			-- grab any strings with the correct ext
 			for _,value in pairs(obj) do
 				if type(value) =="string" and ext_list[value:sub(-4)] then
-					images[#images+1] = value
+					c = c + 1
+					images[c] = value
 				end
+			end
+
+			local meta = getmetatable(obj)
+			while meta do
+				for _,value in pairs(meta) do
+					if type(value) =="string" and ext_list[value:sub(-4)] then
+						c = c + 1
+						images[c] = value
+					end
+				end
+				meta = getmetatable(meta)
 			end
 
 			if #images > 0 then
@@ -1376,13 +1390,4 @@ The func I use for spot_rot rounds to two decimal points...
 
 	end
 
-	do -- UpdateConsoleLogMargins
-		local margin = box(10, 80, 10, 65)
-		function ChoGGi.ComFuncs.UpdateConsoleLogMargins()
-			if dlgConsoleLog then
-				-- move log text above the buttons i added and make sure log text stays below the cheat menu
-				dlgConsoleLog.idText:SetMargins(margin)
-			end
-		end
-	end -- do
 end

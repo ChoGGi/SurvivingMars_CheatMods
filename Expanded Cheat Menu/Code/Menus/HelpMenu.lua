@@ -24,7 +24,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Help",
 		ActionId = ".Extract HPKs",
 		ActionIcon = "CommonAssets/UI/Menu/editmapdata.tga",
-		RolloverText = S[302535920001363--[["Shows list of Steam downloaded mod hpk files, so you can extract them."--]]],
+		RolloverText = S[302535920001363--[[Shows list of Steam downloaded mod hpk files for extraction (or use hpk.exe).--]]],
 		OnAction = ChoGGi.MenuFuncs.ExtractHPKs,
 		ActionSortKey = "99.Extract HPKs",
 	}
@@ -212,7 +212,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
 		RolloverText = StringFormat("%s %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000673--[[info dialog.--]]]),
 		OnAction = ChoGGi.MenuFuncs.AboutECM,
-		ActionSortKey = "1",
+		ActionSortKey = "001",
 	}
 
 	c = c + 1
@@ -224,7 +224,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			OpenUrl(str_url:format("Expanded Cheat Menu/README.md#no-warranty-implied-or-otherwise"))
 		end,
-		ActionSortKey = "2",
+		ActionSortKey = "002",
 	}
 
 	c = c + 1
@@ -236,7 +236,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			OpenUrl(str_url:format("Expanded Cheat Menu/Changelog.md#ecm-changelog"))
 		end,
-		ActionSortKey = "3",
+		ActionSortKey = "003",
 	}
 
 	c = c + 1
@@ -251,19 +251,20 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ToolTips_Toggle,
-		ActionSortKey = "4",
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001014--[[Hide Cheats Menu--]]],
+	Actions[c] = {ActionName = S[302535920001481--[[Show Startup Ticks--]]],
 		ActionMenubar = str_Help_ECM,
-		ActionId = ".Hide Cheats Menu",
-		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
-		RolloverText = S[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again (Ctrl-F2 to toggle the Cheats selection panel).--]]],
-		OnAction = ChoGGi.ComFuncs.CheatsMenu_Toggle,
-		ActionSortKey = "5",
-		ActionShortcut = "F2",
-		ActionBindable = true,
+		ActionId = ".Show Startup Ticks",
+		ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.ShowStartupTicks,
+				302535920001482--[[Prints to console how many ticks it takes the map to load.--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.StartupTicks_Toggle,
 	}
 
 	c = c + 1
@@ -273,7 +274,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 		RolloverText = S[302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in settings file, or check key bindings for Disable ECM."--]]],
 		OnAction = ChoGGi.MenuFuncs.DisableECM,
-		ActionSortKey = "6",
 	}
 
 	c = c + 1
@@ -283,7 +283,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 		RolloverText = S[302535920000677--[[Reset all ECM settings to default (restart to enable).--]]],
 		OnAction = ChoGGi.MenuFuncs.ResetECMSettings,
-		ActionSortKey = "7",
+		ActionSortKey = "98",
 	}
 
 	c = c + 1
@@ -293,7 +293,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/UIDesigner.tga",
 		RolloverText = S[302535920001243--[[Manually edit ECM settings.--]]],
 		OnAction = ChoGGi.MenuFuncs.EditECMSettings,
-		ActionSortKey = "8",
+		ActionSortKey = "99",
 	}
 
 	local str_Help_Tutorial = "ECM.Help.Tutorial"

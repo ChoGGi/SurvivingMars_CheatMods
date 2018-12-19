@@ -313,6 +313,21 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle,
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001483--[[Missing Mod Buildings--]]],
+		ActionMenubar = str_ExpandedCM_Fixes_Toggles,
+		ActionId = ".Missing Mod Buildings",
+		ActionIcon = "CommonAssets/UI/Menu/SelectRoute.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.FixMissingModBuildings,
+				302535920001484--[["Removes any placed buildings that were from a mod.
+This may break the save in other ways, best to just use it for testing."--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.FixMissingModBuildings_Toggle,
+	}
+
 	local str_ExpandedCM_Fixes_ECMFixes = "ECM.Expanded CM.Fixes.ECM Fixes"
 	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s %s ..",S[302535920000887--[[ECM--]]],S[302535920000922--[[Fixes--]]]),

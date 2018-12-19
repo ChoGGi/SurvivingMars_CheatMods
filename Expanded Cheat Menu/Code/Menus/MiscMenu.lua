@@ -78,6 +78,18 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
+	Actions[c] = {ActionName = S[302535920001014--[[Hide Cheats Menu--]]],
+		ActionMenubar = str_ExpandedCM_Misc,
+		ActionId = ".Hide Cheats Menu",
+		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
+		RolloverText = S[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again.--]]],
+		OnAction = ChoGGi.ComFuncs.CheatsMenu_Toggle,
+		ActionShortcut = "F2",
+		ActionBindable = true,
+		ActionSortKey = "-1Hide Cheats Menu",
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = S[302535920000696--[[Infopanel Cheats--]]],
 		ActionMenubar = str_ExpandedCM_Misc,
 		ActionId = ".Infopanel Cheats",

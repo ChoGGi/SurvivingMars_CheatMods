@@ -567,7 +567,16 @@ function OnMsg.ClassesGenerate()
 
 	------------------------- toggles
 
-	-- bloody ai mods... (fix your shit or take it down kthxbai)
+	function ChoGGi.MenuFuncs.FixMissingModBuildings_Toggle()
+		ChoGGi.UserSettings.FixMissingModBuildings = not ChoGGi.UserSettings.FixMissingModBuildings
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.FixMissingModBuildings),
+			302535920001483--[[Missing Mod Buildings--]]
+		)
+	end
+
+	-- broked ai mods... (fix your shit or take it down kthxbai)
 	function ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle()
 		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
@@ -579,8 +588,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings,302535920000248--[[Colonists Stuck Outside Service Buildings--]]),
-			547--[[Colonists--]],
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings),
+			S[302535920000248--[[Colonists Stuck Outside Service Buildings--]]],
 			"UI/Icons/IPButtons/colonist_section.tga"
 		)
 	end

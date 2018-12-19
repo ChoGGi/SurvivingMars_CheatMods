@@ -323,6 +323,7 @@ local Strings = {
 	[109035890389] = TranslationTable[109035890389], -- Capacity
 	[126095410863] = TranslationTable[126095410863], -- Info
 	[128569337702] = TranslationTable[128569337702], -- Reward:
+	[186760604064] = TranslationTable[186760604064], -- Test
 	[283142739680] = TranslationTable[283142739680], -- Game
 	[298035641454] = TranslationTable[298035641454], -- Object
 	[312752058553] = TranslationTable[312752058553], -- Rotate Building Left
