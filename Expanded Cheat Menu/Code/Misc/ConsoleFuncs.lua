@@ -189,7 +189,11 @@ function OnMsg.ClassesGenerate()
 			name = 302535920001378--[[XWindow Inspector--]],
 			hint = 302535920001379--[[Opens up the window inspector with terminal.desktop.--]],
 			clicked = function()
-				ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
+				local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos()) or terminal.desktop
+				local ged = ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
+				if ged then
+					GedXWindowInspectorSelectWindow(ged, target)
+				end
 			end,
 		}
 	end
@@ -287,7 +291,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				if ChoGGi.UserSettings.ConsoleToggleHistory then
 					ShowConsoleLog(true)
-					ChoGGi.ComFuncs.UpdateConsoleLogMargins()
+					ChoGGi.ComFuncs.UpdateConsoleLogMargins(true)
 					print("ShowConsoleLog",true)
 				else
 					DestroyConsoleLog()
@@ -347,7 +351,7 @@ function OnMsg.ClassesGenerate()
 
 		-- make some space for the close button
 		dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
-		ChoGGi.ComFuncs.UpdateConsoleLogMargins()
+		ChoGGi.ComFuncs.UpdateConsoleLogMargins(dlgConsole:GetVisible())
 
 		-- add close button
 		g_Classes.ChoGGi_CloseButton:new({

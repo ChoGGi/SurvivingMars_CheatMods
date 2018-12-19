@@ -56,28 +56,20 @@ function OnMsg.ClassesGenerate()
 		_VERSION = 0,
 		-- dark background for the console log
 		ConsoleDim = true,
-		-- shows the console log on screen
-		ConsoleToggleHistory = false,
 		-- shows a msg in the console log (maybe a popup would be better)
 		FirstRun = true,
 		-- default to opened (changed on click)
 		InfopanelMainButVis = true,
 		-- show Cheats pane in the selection panel
 		InfopanelCheats = true,
-		-- default to closed (changed on click)
-		InfopanelCheatsVis = false,
 		-- removes some useless crap from the Cheats pane (unless you're doing the tutorial then not as useless it seems)
 		CleanupCheatsInfoPane = true,
 		-- maybe you don't want to see the interface in screenshots
 		ShowInterfaceInScreenshots = true,
-		-- 1-0 + shift+ 1-0 shows the build menus
-		NumberKeysBuildMenu = true,
 		-- keep orientation of last placed building
 		UseLastOrientation = true,
 		-- show the cheats menu...
 		ShowCheatsMenu = true,
-		-- close any opened dialogs when loading into a game.
-		CloseDialogsECM = false,
 		-- shows LUA ERRORs in console along with stack
 		ConsoleErrors = true,
 		-- update the list when ECM updates it
@@ -125,15 +117,11 @@ function OnMsg.ClassesGenerate()
 		DebugGridOpacity = 15,
 		-- how wide the text for the history menu in the Console is
 		ConsoleHistoryMenuLength = 50,
-		-- shows how many ticks it takes between the start of ECM and when the game loads
-		ShowStartupTicks = false,
-		-- if a mod added certain buildings and user removed mod without removing buildings then inf loop
-		FixMissingModBuildings = false,
 		-- just for you ski (prints a msg for each building removed)
 		FixMissingModBuildingsLog = true,
 		-- Mod Editor shows the help page every single time you open it.
 		SkipModHelpPage = true,
-		-- don't change to the "mods" map
+		-- stops panel from shrinking
 		StopSelectionPanelResize = false,
 		-- stores custom settings for each building
 		BuildingSettings = {},
@@ -141,10 +129,6 @@ function OnMsg.ClassesGenerate()
 		CargoSettings = {},
 		-- transparent UI options stored here
 		Transparency = {},
-		-- wrap lines in text editors
-		WordWrap = false,
-		-- outputs text from print() and consoleline to logs\Consolelog.log when it happens instead of after quit
-		WriteLogs = false,
 	}
 	-- my defaults
 	if ChoGGi.testing then

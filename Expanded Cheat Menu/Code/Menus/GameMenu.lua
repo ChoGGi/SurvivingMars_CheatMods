@@ -102,9 +102,20 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/load_city.tga",
 		RolloverText = S[302535920000494--[[Change map (options to pick commander, sponsor, etc...
 
-	Attention: If you get yellow ground areas; just load it again.
-	The map disaster settings don't do jack (use ECM>Mission>Disasters).--]]],
+Attention: If you get yellow ground areas; just load it again or try %s.--]]]:format(S[302535920001487--[[Reload Map--]]]),
 		OnAction = ChoGGi.MenuFuncs.ChangeMap,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001487--[[Reload Map--]]],
+		ActionMenubar = "ECM.Game",
+		ActionId = ".ReloadMap",
+		ActionIcon = "CommonAssets/UI/Menu/load_city.tga",
+		RolloverText = S[302535920001488--[[Reloads map as new game.--]]],
+		ActionSortKey = "1Change Map ReloadMap",
+		OnAction = function()
+			ReloadMap()
+		end,
 	}
 
 	c = c + 1

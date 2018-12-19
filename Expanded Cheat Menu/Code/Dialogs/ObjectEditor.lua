@@ -28,9 +28,9 @@ function OnMsg.ClassesGenerate()
 end
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg,"ChoGGi_ObjectManipulatorDlg")
+	return GetParentOfKind(dlg,"ChoGGi_ObjectEditorDlg")
 end
-DefineClass.ChoGGi_ObjectManipulatorDlg = {
+DefineClass.ChoGGi_ObjectEditorDlg = {
 	__parents = {"ChoGGi_Window"},
 	choices = {},
 	obj = false,
@@ -41,7 +41,7 @@ DefineClass.ChoGGi_ObjectManipulatorDlg = {
 	dialog_height = 650.0,
 }
 
-function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
+function ChoGGi_ObjectEditorDlg:Init(parent, context)
 	local g_Classes = g_Classes
 
 	self.obj_name = RetName(context.obj)
@@ -135,18 +135,18 @@ function ChoGGi_ObjectManipulatorDlg:Init(parent, context)
 	self:UpdateListContent()
 end
 
-function ChoGGi_ObjectManipulatorDlg:idGotoOnPress()
+function ChoGGi_ObjectEditorDlg:idGotoOnPress()
 	ViewAndSelectObject(GetRootDialog(self).obj)
 end
 
-function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDoubleClick()
+function ChoGGi_ObjectEditorDlg:idListOnMouseButtonDoubleClick()
 	self = GetRootDialog(self)
 	if self.idList.focused_item then
-		ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.sel.object,self)
+		ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.sel.object,self)
 	end
 end
 
-function ChoGGi_ObjectManipulatorDlg:idApplyAllOnPress()
+function ChoGGi_ObjectEditorDlg:idApplyAllOnPress()
 	self = GetRootDialog(self)
 	if self.sel and self.sel.value then
 		MapForEach(true,self.obj.class,function(o)
@@ -156,7 +156,7 @@ function ChoGGi_ObjectManipulatorDlg:idApplyAllOnPress()
 end
 
 -- update edit text box with selected value
-function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDown(pt,button,...)
+function ChoGGi_ObjectEditorDlg:idListOnMouseButtonDown(pt,button,...)
 	g_Classes.ChoGGi_List.OnMouseButtonDown(self,pt,button)
 	self = GetRootDialog(self)
 	if not self.idList.focused_item then
@@ -168,7 +168,7 @@ function ChoGGi_ObjectManipulatorDlg:idListOnMouseButtonDown(pt,button,...)
 	self.idEditValue:SetFocus()
 end
 
-function ChoGGi_ObjectManipulatorDlg:idAddNewOnPress()
+function ChoGGi_ObjectEditorDlg:idAddNewOnPress()
 	self = GetRootDialog(self)
 	local sel_name
 	local sel_value
@@ -204,7 +204,7 @@ function ChoGGi_ObjectManipulatorDlg:idAddNewOnPress()
 	}
 end
 
-function ChoGGi_ObjectManipulatorDlg:idEditValueOnTextChanged()
+function ChoGGi_ObjectEditorDlg:idEditValueOnTextChanged()
 	self = GetRootDialog(self)
 
 	if not self.idList.focused_item then
@@ -242,7 +242,7 @@ function ChoGGi_ObjectManipulatorDlg:idEditValueOnTextChanged()
 	end
 end
 
-function ChoGGi_ObjectManipulatorDlg:idAutoRefreshToggle()
+function ChoGGi_ObjectEditorDlg:idAutoRefreshToggle()
 	self = GetRootDialog(self)
 	-- if already running then stop and return
 	if IsValidThread(self.autorefresh_thread) then
@@ -263,7 +263,7 @@ function ChoGGi_ObjectManipulatorDlg:idAutoRefreshToggle()
 	end)
 end
 
-function ChoGGi_ObjectManipulatorDlg:OnKbdKeyDown(_, vk)
+function ChoGGi_ObjectEditorDlg:OnKbdKeyDown(_, vk)
 	local const = const
 	if vk == const.vkEsc then
 		self.idCloseX:Press()
@@ -277,7 +277,7 @@ function ChoGGi_ObjectManipulatorDlg:OnKbdKeyDown(_, vk)
 	return "continue"
 end
 
-function ChoGGi_ObjectManipulatorDlg:BuildList()
+function ChoGGi_ObjectEditorDlg:BuildList()
 	self.idList:Clear()
 	for i = 1, #self.items do
 		local listitem = self.idList:CreateTextItem(StringFormat("%s = %s",self.items[i].text,self.items[i].value))
@@ -285,12 +285,13 @@ function ChoGGi_ObjectManipulatorDlg:BuildList()
 	end
 end
 
-function ChoGGi_ObjectManipulatorDlg:UpdateListContent()
+function ChoGGi_ObjectEditorDlg:UpdateListContent()
 	self = GetRootDialog(self)
 	local obj = self.obj
 	-- get scroll pos
-	local scroll_x = self.idScrollArea.OffsetX
-	local scroll_y = self.idScrollArea.OffsetY
+	local scroll_x = self.idList.PendingOffsetX
+	local scroll_y = self.idList.PendingOffsetY
+	local scroll_bar = self.idScrollV.Scroll
 
 	-- create prop list for list
 	self.items = self:CreatePropList(obj)
@@ -298,7 +299,8 @@ function ChoGGi_ObjectManipulatorDlg:UpdateListContent()
 		-- populate it
 		self:BuildList()
 		-- and scroll to old pos
-		self.idScrollArea:ScrollTo(scroll_x,scroll_y)
+		self.idList:ScrollTo(scroll_x,scroll_y)
+		self.idScrollV:SetScroll(scroll_bar)
 	else
 		-- let user know
 		self.idList:Clear()
@@ -308,7 +310,7 @@ function ChoGGi_ObjectManipulatorDlg:UpdateListContent()
 	end
 end
 
-function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
+function ChoGGi_ObjectEditorDlg:CreateProp(obj)
 	local objlist = objlist
 	local obj_type = type(obj)
 
@@ -380,7 +382,7 @@ function ChoGGi_ObjectManipulatorDlg:CreateProp(obj)
 	return tostring(obj)
 end
 
-function ChoGGi_ObjectManipulatorDlg:CreatePropList(obj)
+function ChoGGi_ObjectEditorDlg:CreatePropList(obj)
 	if type(obj) == "table" then
 		local res = {}
 		local sort = {}
@@ -426,7 +428,7 @@ function ChoGGi_ObjectManipulatorDlg:CreatePropList(obj)
 	end
 end
 
-function ChoGGi_ObjectManipulatorDlg:Done(result)
+function ChoGGi_ObjectEditorDlg:Done(result)
 	DeleteThread(self.autorefresh_thread)
 	ChoGGi_Window.Done(self,result)
 end

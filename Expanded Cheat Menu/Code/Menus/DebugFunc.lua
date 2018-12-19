@@ -157,14 +157,6 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	function ChoGGi.MenuFuncs.DTMSlotsDlg_Toggle()
-		if GetDialog("DTMSlotsDlg") then
-			CloseDialog("DTMSlotsDlg")
-		else
-			OpenDialog("DTMSlotsDlg")
-		end
-	end
-
 	function ChoGGi.MenuFuncs.FpsCounterLocation()
 		local pos = hr.FpsCounterPos or 0
 		pos = pos + 1

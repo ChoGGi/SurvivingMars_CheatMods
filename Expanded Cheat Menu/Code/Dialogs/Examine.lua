@@ -686,14 +686,6 @@ end
 
 function Examine:BuildObjectMenuPopup()
 	return {
-		{name = S[174--[[Color Modifier--]]],
-			hint = S[302535920000693--[[Select/mouse over an object to change the colours
-Use Shift- or Ctrl- for random colours/reset colours.--]]],
-			image = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
-			clicked = function()
-				ChoGGi.ComFuncs.ChangeObjectColour(self.obj_ref)
-			end,
-		},
 		{name = S[302535920000457--[[Anim State Set--]]],
 			hint = S[302535920000458--[[Make object dance on command.--]]],
 			image = "CommonAssets/UI/Menu/UnlockCamera.tga",
@@ -812,7 +804,7 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 end
 
 function Examine:BuildToolsMenuPopup()
-	return {
+	local list = {
 		{name = S[302535920001467--[[Append Dump--]]],
 			hint = S[302535920001468--[["Append text to same file, or create a new file each time."--]]],
 			clicked = function()
@@ -942,33 +934,35 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.OpenInObjectManipulatorDlg(self.obj_ref,self)
+				ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.obj_ref,self)
 			end,
 		},
-		{name = S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
-			hint = S[302535920001433--[[Fiddle with object angle/axis/pos and so forth.--]]],
-			image = "CommonAssets/UI/Menu/Axis.tga",
+		{name = S[174--[[Color Modifier--]]],
+			hint = S[302535920000693--[[Select/mouse over an object to change the colours
+Use Shift- or Ctrl- for random colours/reset colours.--]]],
+			image = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 			clicked = function()
-				if testing then
-				ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(self.obj_ref,self)
-				else
-					ChoGGi.ComFuncs.MsgPopup(
-						"Ain't done yet...",
-						S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]])
-					)
-				end
+				ChoGGi.ComFuncs.ChangeObjectColour(self.obj_ref)
 			end,
 		},
 		{name = S[302535920001469--[[Image Viewer--]]],
 			hint = S[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."--]]],
 			image = "CommonAssets/UI/Menu/light_model.tga",
 			clicked = function()
-				if not ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref,self) then
-					ChoGGi.ComFuncs.MsgPopup(
-						302535920001471--[[No images found.--]],
-						302535920001469--[[Image Viewer--]]
-					)
-				end
+					-- check for loaded entity textures
+					local textures = self.obj_ref.UsedTextures and self.obj_ref:UsedTextures() or ""
+					local images_table = {}
+					for i = 1, #textures do
+						images_table[i] = DTM.TexName(textures[i])
+					end
+					-- checks for image in obj and metatable
+					if not ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref,self,images_table) then
+						ChoGGi.ComFuncs.MsgPopup(
+							302535920001471--[[No images found.--]],
+							302535920001469--[[Image Viewer--]]
+						)
+					end
+
 			end,
 		},
 		{name = S[302535920001305--[[Find Within--]]],
@@ -1004,6 +998,23 @@ Which you can then mess around with some more in the console."--]]],
 			class = "ChoGGi_CheckButtonMenu",
 		},
 	}
+	if testing then
+		table.insert(list,9,{name = S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
+			hint = S[302535920001433--[[Fiddle with object angle/axis/pos and so forth.--]]],
+			image = "CommonAssets/UI/Menu/Axis.tga",
+			clicked = function()
+				if testing then
+				ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(self.obj_ref,self)
+				else
+					ChoGGi.ComFuncs.MsgPopup(
+						"Ain't done yet...",
+						S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]])
+					)
+				end
+			end,
+		})
+	end
+	return list
 end
 
 function Examine:GetScrolledText()

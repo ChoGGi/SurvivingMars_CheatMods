@@ -566,8 +566,7 @@ end
 
 -- returns point(x,y)
 function ChoGGi_Window:GetPos(dialog)
-	local b = self[dialog or "idDialog"].box
-	return point(b:minx(),b:miny())
+	return (self[dialog or "idDialog"].box):min()
 end
 
 local GetMousePos = terminal.GetMousePos
@@ -639,8 +638,7 @@ function ChoGGi_Window:SetHeight(h,dialog)
 	self:SetSize(point(self[dialog or "idDialog"].box:sizex(),h))
 end
 function ChoGGi_Window:GetSize(dialog)
-	local b = self[dialog or "idDialog"].box
-	return point(b:sizex(),b:sizey())
+	return (self[dialog or "idDialog"].box):size()
 end
 function ChoGGi_Window:GetHeight(dialog)
 	return (self[dialog or "idDialog"].box):sizey()
@@ -797,8 +795,6 @@ function ChoGGi_Window:AddScrollList()
 		Dock = "bottom",
 		Horizontal = true,
 	}, self.idScrollSection)
-
-
 end
 
 function ChoGGi_Window:AddScrollEdit()

@@ -1144,7 +1144,11 @@ function ChoGGi.ComFuncs.SettingState(setting,text)
 		setting = false
 	end
 
-	return StringFormat("%s: %s",setting,CheckText(S[text],text))
+	if text then
+		return StringFormat("%s: %s",setting,CheckText(S[text],text))
+	else
+		return tostring(setting)
+	end
 end
 
 -- Copyright L. H. de Figueiredo, W. Celes, R. Ierusalimschy: Lua Programming Gems
@@ -4128,7 +4132,7 @@ function ChoGGi.ComFuncs.ToggleCollisions(cls)
 end
 
 function ChoGGi.ComFuncs.OpenGedApp(name)
-	OpenGedApp(name, terminal.desktop)
+	return OpenGedApp(name, terminal.desktop)
 end
 
 do -- ChangeSurfaceSignsToMaterials

@@ -257,30 +257,31 @@ function OnMsg.ClassesGenerate()
 	local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
 	AddMsgToFunc("BaseBuilding","GameInit","ChoGGi_SpawnedBaseBuilding")
 	AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
-	AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducer","electricity_production")
+	AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
+
 	AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","air_production")
+	AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducer","electricity_production")
 	AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","water_production")
 	AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducer","production_per_day")
-	AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
 
 	SaveOrigFunc("BaseRover","GetCableNearby")
 	SaveOrigFunc("Building","ApplyUpgrade")
 	SaveOrigFunc("BuildingVisualDustComponent","SetDustVisuals")
+	SaveOrigFunc("ConstructionController","IsObstructed")
 	SaveOrigFunc("CursorBuilding","GameInit")
+	SaveOrigFunc("DontBuildHere","Check")
 	SaveOrigFunc("DustGridElement","AddDust")
 	SaveOrigFunc("GridObject","GetPipeConnections")
 	SaveOrigFunc("InfopanelDlg","RecalculateMargins")
-	SaveOrigFunc("SupplyRocket","HasEnoughFuelToLaunch")
 	SaveOrigFunc("SupplyRocket","FlyToEarth")
 	SaveOrigFunc("SupplyRocket","FlyToMars")
+	SaveOrigFunc("SupplyRocket","HasEnoughFuelToLaunch")
 	SaveOrigFunc("UIRangeBuilding","SetUIRange")
 	SaveOrigFunc("Workplace","AddWorker")
 	SaveOrigFunc("Workplace","GetWorkshiftPerformance")
 	SaveOrigFunc("XMenuEntry","SetShortcut")
 	SaveOrigFunc("XPopupMenu","RebuildActions")
 	SaveOrigFunc("XShortcutsHost","SetVisible")
-	SaveOrigFunc("DontBuildHere","Check")
-	SaveOrigFunc("ConstructionController","IsObstructed")
 	SaveOrigFunc("XSizeConstrainedWindow","UpdateMeasure")
 
 	-- that's what we call a small font
@@ -1163,18 +1164,14 @@ function OnMsg.ClassesBuilt()
 	function Console:Show(show,...)
 		ChoGGi_OrigFuncs.Console_Show(self, show,...)
 		if show then
---~ 			-- always on top
---~ 			self:SetModal()
---~ 			self.idEdit:SetFocus()
 
 			-- adding transparency for console stuff
 			SetTrans(self)
 			-- and rebuild my console buttons
 			ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(self)
---~ 		else
---~ 			-- always on top off
---~ 			self:SetModal(false)
 		end
+		-- move log up n down
+		ChoGGi.ComFuncs.UpdateConsoleLogMargins(show)
 	end
 
 	do -- skip quit from being added to console history to prevent annoyances

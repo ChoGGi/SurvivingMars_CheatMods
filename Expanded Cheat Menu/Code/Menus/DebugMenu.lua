@@ -55,10 +55,12 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				GetDialog("DTMSlotsDlg") and true,
-				302535920001311--[[Toggle DTM slots display--]]
+				302535920001311--[[Show DTM slots display--]]
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.DTMSlotsDlg_Toggle,
+		OnAction = function()
+			ChoGGi.ComFuncs.OpenInDTMSlotsDlg()
+		end,
 	}
 
 	c = c + 1
@@ -183,7 +185,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
 		RolloverText = S[302535920000472--[[Manipulate objects (selected or under mouse cursor)--]]],
 		OnAction = function()
-			ChoGGi.ComFuncs.OpenInObjectManipulatorDlg()
+			ChoGGi.ComFuncs.OpenInObjectEditorDlg()
 		end,
 		ActionShortcut = "F5",
 		ActionBindable = true,

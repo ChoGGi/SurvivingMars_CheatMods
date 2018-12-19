@@ -115,5 +115,5 @@ end
 
 function ChoGGi_ImageViewerDlg:idImagesOnMouseButtonDown()
 	local dlg = GetRootDialog(self)
-	PopupToggle(self,dlg.idImageMenu,dlg.image_menu_popup,"bottom")
+	PopupToggle(self,dlg.idImageMenu,dlg.image_menu_popup,"left")
 end

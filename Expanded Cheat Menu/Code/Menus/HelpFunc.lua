@@ -13,6 +13,15 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 
+	function ChoGGi.MenuFuncs.StartupTicks_Toggle()
+		ChoGGi.UserSettings.ShowStartupTicks = not ChoGGi.UserSettings.ShowStartupTicks
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ShowStartupTicks),
+			302535920001481--[[Show Startup Ticks--]]
+		)
+	end
+
 	function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
 		local ChoGGi = ChoGGi
 		local XTemplates = XTemplates
@@ -238,10 +247,12 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 		local AsyncCreatePath = AsyncCreatePath
 		local AsyncCopyFile = AsyncCopyFile
 
+		-- check the copy box for these
 		local ChoGGi_copy_files = {
 			ChoGGi_CheatMenu = true,
 			ChoGGi_Library = true,
 		}
+		-- and the pack box
 		local ChoGGi_pack = {
 			ChoGGi_EveryFlagOnWikipedia = true,
 			ChoGGi_MapImagesPack = true,
@@ -278,10 +289,12 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				local blank_mod = choice[1].check2
 				local clipboard = choice[1].check3
 				local pack_mod = choice[1].check4
+				local test = choice[1].check5
 				local pack_path = "AppData/ModUpload/Pack/"
 				local dest = "AppData/ModUpload/"
 				local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
 				local ss_str = "%s%s"
+				local result
 
 				if ChoGGi_copy_files[mod.id] then
 					copy_files = false
@@ -324,20 +337,23 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					)
 
 					-- add new mod
-					local err,item_id
-					if mod.steam_id ~= 0 then
-						local exists
-						local appId = SteamGetAppId()
-						local userId = SteamGetUserId64()
-						err, exists = AsyncSteamWorkshopUserOwnsItem(userId, appId, mod.steam_id)
-						if not err and not exists then
-							mod.steam_id = 0
+					local err
+					if not test then
+						local item_id
+						if mod.steam_id ~= 0 then
+							local exists
+							local appId = SteamGetAppId()
+							local userId = SteamGetUserId64()
+							err, exists = AsyncSteamWorkshopUserOwnsItem(userId, appId, mod.steam_id)
+							if not err and not exists then
+								mod.steam_id = 0
+							end
 						end
-					end
 
-					if mod.steam_id == 0 then
-						err,item_id = AsyncSteamWorkshopCreateItem()
-						mod.steam_id = item_id or nil
+						if mod.steam_id == 0 then
+							err,item_id = AsyncSteamWorkshopCreateItem()
+							mod.steam_id = item_id or nil
+						end
 					end
 
 					-- update mod, and copy files to ModUpload
@@ -415,8 +431,9 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 						mod.last_changes = mod.last_changes or tostring(mod.version) or ""
 
 						-- CommonLua\SteamWorkshop.lua
-						local result
-						result,err = Steam_Upload(nil, mod, params)
+						if not test then
+							result,err = Steam_Upload(nil, mod, params)
+						end
 
 					end
 
@@ -429,16 +446,18 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 						title = S[1000015--[[Success--]]]
 					end
 
-					-- update mod log and print it to console log
-					ModLog(StringFormat("\n%s: %s",msg,mod.title))
-					local ModMessageLog = ModMessageLog
-					print(S[302535920001265--[[ModMessageLog--]]],":")
-					for i = 1, #ModMessageLog do
-						print(ModMessageLog[i])
+					if not test then
+						-- update mod log and print it to console log
+						ModLog(StringFormat("\n%s: %s",msg,mod.title))
+						local ModMessageLog = ModMessageLog
+						print(S[302535920001265--[[ModMessageLog--]]],":")
+						for i = 1, #ModMessageLog do
+							print(ModMessageLog[i])
+						end
 					end
 
 					-- show id in console/copy to clipb
-					if item_id then
+					if not test and item_id then
 						if clipboard then
 							CopyToClipboard(item_id)
 						end
@@ -452,8 +471,10 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 						"UI/Common/mod_steam_workshop.tga"
 					)
 
-					-- remove upload folder
-					AsyncDeletePath(dest)
+					if not test then
+						-- remove upload folder
+						AsyncDeletePath(dest)
+					end
 				end
 
 				ChoGGi.ComFuncs.QuestionBox(
@@ -518,7 +539,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 						checked = true,
 					},
 					{
-						title = 302535920001260--[[Blank Mod--]],
+						title = 302535920001260--[[Blank--]],
 						hint = 302535920001261--[["Uploads a blank private mod to Steam Workshop, and prints Workshop id in log."--]],
 					},
 					{
@@ -527,11 +548,16 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 						checked = true,
 					},
 					{
-						title = 302535920001427--[[Pack Mod--]],
+						title = 302535920001427--[[Pack--]],
 						hint = 302535920001428--[[Uploads as a packed mod (default for mod editor upload).--]],
+					},
+					{
+						title = 186760604064--[[Test--]],
+						hint = 302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]],
 					},
 				},
 				height = 800.0,
+--~ 				width = 550.0,
 			}
 		end
 	end -- do
