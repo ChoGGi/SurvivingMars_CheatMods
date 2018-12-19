@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local ChoGGi = ChoGGi
-
 local StringFormat = string.format
 local S = ChoGGi.Strings
 

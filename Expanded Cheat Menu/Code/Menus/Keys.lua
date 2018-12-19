@@ -2,86 +2,12 @@
 
 -- shortcut keys without a menu item (maybe Menus isn't the best folder for this)
 
-function OnMsg.ClassesGenerate()
+local StringFormat = string.format
 
-	local Trans = ChoGGi.ComFuncs.Translate
+function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
-	local StringFormat = string.format
-
-	-- use number keys to activate/hide build menus
-	do -- NumberKeysBuildMenu
-		local function ShowBuildMenu(which)
-			local BuildCategories = BuildCategories
-
-			-- make sure we're not in the main menu
-			if not UICity then
-				return
-			end
-
-			local dlg = Dialogs.XBuildMenu
-			if dlg then
-				-- check if number corresponds and if so hide the menu
-				if dlg.category == BuildCategories[which].id then
-					ToggleXBuildMenu(true, "close")
-				else
-					dlg = Dialogs.XBuildMenu
-					dlg:SelectCategory(BuildCategories[which])
-					-- have to fire twice to highlight the icon
-					dlg:SelectCategory(BuildCategories[which])
-				end
-			else
-				ToggleXBuildMenu(true, "close")
-				CreateRealTimeThread(function()
-					Sleep(1)
-					dlg = Dialogs.XBuildMenu
-					dlg:SelectCategory(BuildCategories[which])
-					dlg:SelectCategory(BuildCategories[which])
-				end)
-			end
-		end
-
-		local function AddMenuKey(num,key,name)
-			c = c + 1
-			Actions[c] = {
-				ActionName = S[302535920001414--[[Build menu key: %s--]]]:format(Trans(name)),
-				ActionId = StringFormat(".Keys.BuildMenu%s",num),
-				OnAction = function()
-					ShowBuildMenu(num)
-				end,
-				ActionShortcut = key,
-				ChoGGi_ECM = true,
-				ActionBindable = true,
-			}
-		end
-		if ChoGGi.UserSettings.NumberKeysBuildMenu then
-			local tostring = tostring
-			local skipped
-			local BuildCategories = BuildCategories
-			for i = 1, #BuildCategories do
-				if i < 10 then
-					-- the key has to be a string
-					AddMenuKey(i,tostring(i),BuildCategories[i].name)
-				elseif i == 10 then
-					AddMenuKey(i,"0",BuildCategories[i].name)
-				else
-					-- skip Hidden
-					if BuildCategories[i].id == "Hidden" then
-						skipped = true
-					else
-						if skipped then
-							-- -1 more for skipping Hidden
-							AddMenuKey(i,StringFormat("Shift-%s",i - 11),BuildCategories[i].name)
-						else
-							-- -10 since we're doing Shift-*
-							AddMenuKey(i,StringFormat("Shift-%s",i - 10),BuildCategories[i].name)
-						end
-					end
-				end
-			end
-		end
-	end
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000734--[[Clear Log--]]],

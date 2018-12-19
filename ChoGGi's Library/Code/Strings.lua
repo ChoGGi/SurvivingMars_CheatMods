@@ -3,7 +3,6 @@
 -- translate all the strings at startup, so it's a table lookup instead of a func call
 -- ~ ChoGGi.Strings[27]
 
-local ChoGGi = ChoGGi
 local tonumber = tonumber
 local StringFormat = string.format
 local TableConcat = ChoGGi.ComFuncs.TableConcat

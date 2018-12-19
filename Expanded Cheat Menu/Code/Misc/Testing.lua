@@ -3,7 +3,6 @@
 -- go away... (mostly just benchmarking funcs, though there is the func i use for "Map Images Pack")
 
 function OnMsg.ClassesGenerate()
-	local ChoGGi = ChoGGi
 --~ -- flatten sign to ground
 --~ local pos = s:GetPos()
 --~ s:SetPos(point(pos:x(),pos:y(),terrain.GetSurfaceHeight(pos)-45))
