@@ -147,6 +147,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.Defaults.SkipMissingMods = true
 		ChoGGi.Defaults.SkipMissingDLC = true
 		--
+		ChoGGi.Defaults.MapEdgeLimit = true
 		ChoGGi.Defaults.StopSelectionPanelResize = true
 		ChoGGi.Defaults.ExternalEditorCmd = "scite \"%s\""
 	end
@@ -217,7 +218,6 @@ function OnMsg.ClassesGenerate()
 			"PreciousMetals_cost_modifier",
 			"PreciousMetals_dome_cost_modifier",
 			"ProjectMorphiousPositiveTraitChance",
-			"RCRoverDroneRechargeCost",
 			"RCRoverMaxDrones",
 			"RCRoverTransferResourceWorkTime",
 			"RCTransportGatherResourceWorkTime",

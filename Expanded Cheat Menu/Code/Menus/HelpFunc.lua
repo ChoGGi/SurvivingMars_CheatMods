@@ -337,9 +337,8 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					)
 
 					-- add new mod
-					local err
+					local err,item_id
 					if not test then
-						local item_id
 						if mod.steam_id ~= 0 then
 							local exists
 							local appId = SteamGetAppId()

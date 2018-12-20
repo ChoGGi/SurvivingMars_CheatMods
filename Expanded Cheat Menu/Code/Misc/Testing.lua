@@ -96,7 +96,12 @@ function OnMsg.ClassesGenerate()
 			CreateRealTimeThread(function()
 				-- don't fire the rest till map is good n loaded
 				WaitMsg("RocketLaunchFromEarth")
-				Sleep(350)
+				while not Dialogs.PopupNotification do
+					Sleep(500)
+				end
+				-- close welcome to mars msg
+				Dialogs.PopupNotification:Close()
+
 				-- hide signs (just in case any are in the currently exposed sector)
 				SetSignsVisible(false)
 				-- hide all the sector markers

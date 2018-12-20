@@ -161,7 +161,10 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 			point(x+Random(-25000,25000), y+Random(-25000,25000))
 		)
 
-		self:WaitFollowPath(path)
+		self:FollowPathCmd(path)
+		while self.next_spline do
+			Sleep(1000)
+		end
 		Sleep(Random(2500,10000))
 	end
 

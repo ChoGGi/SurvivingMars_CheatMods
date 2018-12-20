@@ -258,7 +258,10 @@ function PersonalShuttle:GotoPos(PersonalShuttles,pos,dest)
 			elseif not self.in_flight then
 				-- the actual flight
 				self.in_flight = true
-				self:WaitFollowPath(path)
+				self:FollowPathCmd(path)
+				while self.next_spline do
+					Sleep(1000)
+				end
 				self.in_flight = nil
 			end
 

@@ -6,6 +6,10 @@ function TerrainDepositConcrete:GameInit()
 	self:ChangeEntity("SignExampleConcreteDeposit")
 end
 
+-- some research tech may replace the objects, so this will make sure they use our entity
+SubsurfaceDepositMetals.entity = "SignExampleMetalDeposit"
+TerrainDepositConcrete.entity = "SignExampleConcreteDeposit"
+
 -- replace existing ones (that haven't been replaced yet)
 local function ChangeEntityLabel(label,cls,new)
 	for i = 1, #(label or "") do

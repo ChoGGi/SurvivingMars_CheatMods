@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Example New Res Icons v0.3",
-	"version", 3,
-	"saved", 1544529600,
+	"title", "Example New Res Icons v0.4",
+	"version", 4,
+	"saved", 1545220800,
 	"image", "Preview.png",
 	"id", "ChoGGi_ExampleNewResIcons",
 	"steam_id", "1581373413",

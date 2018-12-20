@@ -1,0 +1,2 @@
+RCConstructor.ShouldShowRouteButton = RCTransport.ShouldShowRouteButton
+RCConstructor.ToggleCreateRouteMode_Update = RCTransport.ToggleCreateRouteMode_Update

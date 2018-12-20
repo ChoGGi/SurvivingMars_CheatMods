@@ -1041,25 +1041,44 @@ The func I use for spot_rot rounds to two decimal points...
 	end
 
 	do -- ObjFlagsList
+		local IsFlagSet = IsFlagSet
+		local const = const
 
 		-- get list of const.rf* flags
 		local rf_flags = {}
-		local const_temp = const
-		for flag,value in pairs(const_temp) do
+		local int_flags = {}
+		for flag,value in pairs(const) do
 			if flag:sub(1,2) == "rf" and type(value) == "number" then
 				rf_flags[flag] = value
+			elseif flag:sub(1,3) == "int" and type(value) == "number" then
+				int_flags[flag] = value
 			end
 		end
 
 		local flags_table
 		local function CheckFlags(flags,list)
-			local const = const
-			local IsFlagSet = IsFlagSet
 			for i = 1, #list do
 				local f = list[i]
 				flags_table[f] = IsFlagSet(flags, const[f])
 			end
 		end
+
+--~ 		function ChoGGi.ComFuncs.ObjFlagsList_XWin(flags)
+--~ 			if not flags then
+--~ 				return
+--~ 			end
+--~ 			flags_table = {}
+
+--~ 			for flag,value in pairs(int_flags) do
+--~ 				flags_table[flag] = IsFlagSet(flags,value)
+--~ 			end
+
+--~ 			if parent_or_ret == true then
+--~ 				return flags_table
+--~ 			else
+--~ 				ChoGGi.ComFuncs.OpenInExamineDlg(flags_table,parent_or_ret)
+--~ 			end
+--~ 		end
 
 		function ChoGGi.ComFuncs.ObjFlagsList_TR(obj,parent_or_ret)
 			if not obj or obj.__name ~= "HGE.TaskRequest" then
@@ -1100,6 +1119,7 @@ The func I use for spot_rot rounds to two decimal points...
 			else
 				ChoGGi.ComFuncs.OpenInExamineDlg(flags_table,parent_or_ret,RetName(obj))
 			end
+
 		end
 	end -- do
 

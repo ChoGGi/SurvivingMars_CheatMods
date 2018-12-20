@@ -118,6 +118,9 @@ function OnMsg.ClassesBuilt()
 	ChoGGi.Consts.SpeedRC = g_Classes.RCRover:GetDefaultPropertyValue("move_speed")
 	ChoGGi.Consts.SpeedColonist = g_Classes.Colonist:GetDefaultPropertyValue("move_speed")
 	ChoGGi.Consts.RCTransportStorageCapacity = g_Classes.RCTransport:GetDefaultPropertyValue("max_shared_storage")
+	if rawget(g_Classes,"RCConstructor") then
+		ChoGGi.Consts.RCConstructorStorageCapacity = g_Classes.RCConstructor:GetDefaultPropertyValue("max_shared_storage")
+	end
 	ChoGGi.Consts.StorageUniversalDepot = g_Classes.UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
 --~ 	ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
 	ChoGGi.Consts.StorageWasteDepot = 70 * r --^ that has 45000 as default...

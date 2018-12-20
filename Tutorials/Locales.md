@@ -1,10 +1,17 @@
 ### Add easy locale support to your mod (wtf is up with all this StringBase + 1 I see...)
 ```lua
+If you're translating for XWindows, and you need to use a table value use:
+T{123,"string",table_value = something}
+Otherwise you can skip the table creation and just use:
+T(123,"string")
+```
+
+```lua
 In your mod folder create a Locales folder, in that folder create English.csv (or whatever you use).
 
 Mod folder\Locales\English.csv
 
-In English.csv add text like so (you only really need: ID,Text)
+In English.csv add text like so (you only really need: ID,Text though Translation isn't bad)
 ID,Text,Translation,Old Translation,Gender
 11111111110001001,Some text
 11111111110001002,and More text.
@@ -28,7 +35,7 @@ Msg("TranslationChanged")
 
 
 
-Now you can use _InternalTranslate(T({11111111110001029--[[optionally showing a string for your %s.--]]})):format("sanity")
+Now you can use _InternalTranslate(T(11111111110001029--[[optionally showing a string for your %s.--]])):format("sanity")
 All a translator needs to do is make a copy of English.csv, rename it to their lang: OpenExamine(AllLanguages),
 start changing strings, and then send you the file.
 
@@ -37,26 +44,37 @@ start changing strings, and then send you the file.
 
 I like to use this function for ease of use (and to make sure I always get a string back):
 
-do -- Translate (I wrap it in a do, so the locals are kept local)
-	local T,_InternalTranslate,pack_params = T,_InternalTranslate,pack_params
+do -- Translate
+	local T,_InternalTranslate,pack_params,procall = T,_InternalTranslate,pack_params,procall
 	local type,select = type,select
+	local StringFormat = string.format
+	-- some userdata refs UICity, which will fail if being used in main menu
+	local function SafeTrans(str)
+		return _InternalTranslate(str)
+	end
 	-- translate func that always returns a string
 	function Translate(...)
-		local str
-		if type(select(1,...)) == "userdata" then
-			str = _InternalTranslate(T(pack_params(...)))
+		local str,result
+		local stype = type(select(1,...))
+		if stype == "userdata" or stype == "number" then
+			str = T(pack_params(...))
 		else
-			str = _InternalTranslate(...)
+			str = ...
 		end
+		-- procall is pretty much pcall, but with logging
+		result,str = procall(SafeTrans,str)
+
 		-- just in case a
-		if type(str) ~= "string" then
+		if not result or type(str) ~= "string" then
 			local arg2 = select(2,...)
 			if type(arg2) == "string" then
 				return arg2
 			end
-			-- done messed up (just in case b)
-			return Concat(select(1,...)," < Missing text string id")
+			-- i'd rather know if something failed by having a string rather than a func fail
+			return StringFormat("%s < Missing text string id",...)
 		end
+
+		-- and done
 		return str
 	end
 end -- do

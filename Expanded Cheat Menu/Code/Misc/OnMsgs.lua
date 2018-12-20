@@ -674,7 +674,6 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 	elseif UserSettings.RocketMaxExportAmount and obj:IsKindOf("SupplyRocket") then
 		obj.max_export_storage = UserSettings.RocketMaxExportAmount
 
---~ 	elseif obj:IsKindOfClasses("RCTransport","RCRover","ExplorerRover") then
 	elseif obj:IsKindOf("BaseRover") then
 		if UserSettings.RCTransportStorageCapacity and obj:IsKindOf("RCTransport") then
 			obj.max_shared_storage = UserSettings.RCTransportStorageCapacity

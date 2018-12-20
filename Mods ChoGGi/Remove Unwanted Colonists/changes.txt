@@ -1,0 +1,5 @@
+v0.2
+The pod blinked out of existence instead of flying away.
+The rocket fx wasn't turned on.
+Widened the radius it'll use to hover around waiting.
+Fixed issue if pod arrived and victim was in a building.

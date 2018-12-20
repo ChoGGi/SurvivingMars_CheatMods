@@ -1875,12 +1875,14 @@ do -- GetResearchedTechValue
 			return ChoGGi.Consts.RCTransportGatherResourceWorkTime
 		end,
 		--
-		RCTransportStorageCapacity = function()
+		RCTransportStorageCapacity = function(cls)
+			local amount = cls == "RCConstructor" and ChoGGi.Consts.RCConstructorStorageCapacity or ChoGGi.Consts.RCTransportStorageCapacity
+
 			if UICity:IsTechResearched("TransportOptimization") then
 				local a = ChoGGi.ComFuncs.ReturnTechAmount("TransportOptimization","max_shared_storage")
-				return ChoGGi.Consts.RCTransportStorageCapacity + (a * ChoGGi.Consts.ResourceScale)
+				return amount + (a * ChoGGi.Consts.ResourceScale)
 			end
-			return ChoGGi.Consts.RCTransportStorageCapacity
+			return amount
 		end,
 		--
 		TravelTimeEarthMars = function()
@@ -1900,8 +1902,8 @@ do -- GetResearchedTechValue
 		end,
 	}
 
-	function ChoGGi.ComFuncs.GetResearchedTechValue(name)
-		return funcs_table[name]()
+	function ChoGGi.ComFuncs.GetResearchedTechValue(name,value)
+		return funcs_table[name](value)
 	end
 end -- do
 
@@ -1994,6 +1996,14 @@ do -- SetCameraSettings
 		else
 			-- default
 			SetZoomLimits(ChoGGi.Consts.CameraMinZoom,ChoGGi.Consts.CameraMaxZoom)
+		end
+
+		if ChoGGi.UserSettings.MapEdgeLimit then
+			hr.CameraRTSBorderAtMinZoom = 0
+			hr.CameraRTSBorderAtMaxZoom = 0
+		else
+			hr.CameraRTSBorderAtMinZoom = 1000
+			hr.CameraRTSBorderAtMaxZoom = 1000
 		end
 
 		--SetProperties(1,{HeightInertia = 0})
