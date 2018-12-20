@@ -1,3 +1,6 @@
+v0.4
+Researching certain deep tech changed icons back to default (thanks Rusty).
+
 v0.3
 Added selection panel paintbrush to switch between old and new.
 Cleaned up code a bit.

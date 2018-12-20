@@ -13,6 +13,119 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 
+	function ChoGGi.MenuFuncs.ViewAllEntities()
+		local function CallBackFunc(answer)
+			if not answer then
+				return
+			end
+			-- a mystery without anything visible added to the ground
+			g_CurrentMissionParams.idMystery = "BlackCubeMystery"
+			local gen = RandomMapGenerator:new()
+			gen.BlankMap = "POCMap_AllBuildings"
+			-- see PrefabMarker.lua for these
+			gen.AnomEventCount = 0
+			gen.AnomTechUnlockCount = 0
+			gen.AnomFreeTechCount = 0
+			gen.FeaturesRatio = 0
+			-- load the map
+			gen:Generate()
+			CreateRealTimeThread(function()
+				-- don't fire the rest till map is good n loaded
+				WaitMsg("RocketLaunchFromEarth")
+				while not Dialogs.PopupNotification do
+					Sleep(500)
+				end
+				-- close welcome to mars msg
+				Dialogs.PopupNotification:Close()
+				-- remove all notifications
+				local dlg = GetDialog("OnScreenNotificationsDlg")
+				if dlg then
+					local notes = g_ActiveOnScreenNotifications
+					for i = #notes, 1, -1 do
+						dlg:RemoveNotification(notes[i][1])
+					end
+				end
+				-- pause it
+				SetGameSpeedState("pause")
+				-- lightmodel
+				LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
+				SetLightmodelOverride(1,"TheMartian1_Night")
+
+				local texture = table.find(TerrainTextures,"name","Prefab_Violet")
+				terrain.SetTerrainType{type = texture or 1}
+
+				Sleep(1000)
+
+				-- make an index table of ents for placement
+				local entity_list = {}
+				local c = 0
+				local all_entities = GetAllEntities()
+				for key in pairs(all_entities) do
+					c = c + 1
+					entity_list[c] = key
+				end
+				table.sort(entity_list)
+				local entity_count = #entity_list
+				c = 0
+
+				local IsBuildableZoneQR = IsBuildableZoneQR
+				local WorldToHex = WorldToHex
+				local point = point
+				local PlaceObj = PlaceObj
+
+				local width,height = ConstructableArea:sizexyz()
+				width = width / 1000
+				height = height / 1000
+
+				for x = 100, width do
+					if c > entity_count then
+						break
+					end
+					for y = 10, height do
+						if c > entity_count then
+							break
+						end
+
+						local xx,yy = x * 1000, y * 1000
+						local q, r = WorldToHex(xx,yy)
+
+						local mod = 5
+						local plusone = entity_list[c+1]
+
+						-- domes are big
+						local sub8 = plusone:sub(1,8)
+						local sub5 = plusone:sub(1,5)
+						if plusone:find("Dome") and sub8 ~= "DomeRoad" and sub8 ~= "DomeDoor" and not plusone:find("Entrance") then
+							mod = 16
+						elseif sub5 == "Unit_" or sub5 == "Arrow" or plusone:find("Door") or plusone:find("DecLogo") then
+							mod = 1
+						elseif plusone:find("Cliff") then
+							mod = 8
+						end
+
+						if q % mod == 0 and r % mod == 0 and IsBuildableZoneQR(q,r) then
+							local obj = PlaceObj("ChoGGi_BuildingEntityClass",{
+								"Pos",point(xx,yy)
+							})
+
+							c = c + 1
+							obj:ChangeEntity(entity_list[c])
+						end
+
+					end
+				end
+
+			end)
+		end
+
+		ChoGGi.ComFuncs.QuestionBox(
+			StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920001493--[["This will change to a new map, anything unsaved will be lost!"--]]]),
+			CallBackFunc,
+			S[302535920001491--[[View All Entities--]]]
+		)
+
+	end
+
 	function ChoGGi.MenuFuncs.ForceStoryBits()
 --~ If you do a ~g_StoryBitStates
 --~ that'll show all the active story state thingss
@@ -302,11 +415,12 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(answer)
-			if answer then
-				SuspendPassEdits("DeleteAllSelectedObjects")
-				MapDelete(true,obj.class)
-				ResumePassEdits("DeleteAllSelectedObjects")
+			if not answer then
+				return
 			end
+			SuspendPassEdits("DeleteAllSelectedObjects")
+			MapDelete(true,obj.class)
+			ResumePassEdits("DeleteAllSelectedObjects")
 		end
 
 		local count = MapCount("map",obj.class)

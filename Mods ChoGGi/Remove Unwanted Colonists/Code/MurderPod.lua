@@ -3,7 +3,6 @@
 local Sleep = Sleep
 local IsValid = IsValid
 local IsValidThread = IsValidThread
-local PlayFX = PlayFX
 local GetRandomPassableAround = GetRandomPassableAround
 local GetHeight = terrain.GetHeight
 
@@ -30,7 +29,9 @@ DefineClass.MurderPod = {
 	-- victim
 	target = false,
   arrival_height = 1000 * guim,
+  leave_height = 1000 * guim,
   hover_height = 30 * guim,
+  hover_height_orig = 30 * guim,
   arrival_time = 10000,
 	min_pos_radius = 250 * guim,
 	max_pos_radius = 1500 * guim,
@@ -41,12 +42,20 @@ DefineClass.MurderPod = {
 	fx_actor_base_class = "FXRocket",
 	fx_actor_class = "SupplyPod",
 
+	display_icon = "UI/Icons/Buildings/supply_pod.tga",
+
 	panel_icon = "",
 	panel_text = [[Waiting for victim]],
 	ip_template = "ipShuttle",
+
+	thrust_max = 3000,
+	accel_dist = 30*guim,
+	decel_dist = 60*guim,
+	collision_radius = 50*guim,
 }
 if IsValidEntity("ArcPod") then
 	MurderPod.entity = "ArcPod"
+	MurderPod.display_icon = "UI/Icons/Buildings/ark_pod.tga"
 end
 
 function MurderPod:GameInit()
@@ -65,60 +74,69 @@ function MurderPod:GetDisplayName()
 	return self:GetEntity()
 end
 
-function MurderPod:Spawn(arrival_height, hover_height, time)
---~ 	self:SetScale(25)
-
+function MurderPod:Spawn(arrival_height)
   arrival_height = arrival_height or self.arrival_height
-  hover_height = hover_height or self.hover_height
-  time = time or self.arrival_time
 
-	local current_pos = self.target:GetPos()
-	local pos = GetRandomPassableAround(
+	local x,y = self:GetVictimPos()
+	local current_pos = point(x,y)
+
+	local goto_pos = GetRandomPassableAround(
 		current_pos,
 		self.max_pos_radius,
 		self.min_pos_radius
-	):SetStepZ(GetHeight(current_pos) + arrival_height)
+	)
+	Sleep(1000)
+	self:SetPos(goto_pos:SetStepZ(GetHeight(current_pos) + arrival_height))
 
-  PlayFX("MetatronPreArrive", "start", self, nil, pos)
-  Sleep(1000)
-  self:SetPos(pos)
-  PlayFX("MetatronArrive", "start", self)
-  pos = pos:SetStepZ(hover_height)
-  self:SetPos(pos, time)
-  Sleep(time)
-  PlayFX("MetatronArrive", "end", self)
 	Sleep(5000)
-
---~ 	PlayFX("RocketLand", "end", self)
 	self.fx_actor_class = "AttackRover"
 	self:PlayFX("Land","start")
+
 	self:SetCommand("StalkerTime")
 end
 
-function MurderPod:Leave(arrival_height, time)
-  time = time or self.arrival_time
-  arrival_height = arrival_height or self.arrival_height
+function MurderPod:Leave(leave_height)
+  leave_height = leave_height or self.leave_height
+
+	self.fx_actor_class = "SupplyRocket"
+	self:PlayFX("RocketEngine", "start")
 
   Sleep(5000)
-
-  PlayFX("MetatronLeave", "start", self)
-
 	local current_pos = self:GetPos()
-	local pos = GetRandomPassableAround(
+
+	local goto_pos = GetRandomPassableAround(
 		current_pos,
 		self.max_pos_radius,
 		self.min_pos_radius
-	):SetZ(GetHeight(current_pos) + arrival_height)
+	)
+	leave_height = (GetHeight(current_pos) + leave_height) * 2
+	self.hover_height = leave_height / 4
 
-  self:SetPos(pos, time)
-  Sleep(Max(0, time - self.pre_leave_offset))
-  PlayFX("MetatronLeave", "pre-leave", self)
-  Sleep(self.pre_leave_offset)
-  PlayFX("MetatronLeave", "end", self)
+	self.fx_actor_class = "SupplyRocket"
+	self:PlayFX("RocketEngine", "end")
+	self:PlayFX("RocketLaunch", "start")
+
+	self:FollowPathCmd(self:CalcPath(
+		current_pos,
+		goto_pos
+	))
+
+	local amount = 4
+	-- splines are the flight path being followed
+	while self.next_spline do
+		Sleep(500)
+		amount = amount - 1
+		if amount < 1 then
+			amount = 1
+		end
+		self.hover_height = leave_height / amount
+	end
+
   DoneObject(self)
 end
 
 function MurderPod:LaunchMeteor(entity)
+	--  1 to 4 sols
 	Sleep(Random(self.min_meteor_time,self.max_meteor_time))
 --~ 	Sleep(5000)
 	local data = DataInstances.MapSettings_Meteor.Meteor_VeryLow
@@ -132,11 +150,29 @@ function MurderPod:LaunchMeteor(entity)
 	else
 		descr.meteor:Fall(descr.start)
 		descr.meteor:ChangeEntity(entity)
+		-- frozen meat popsicle (dark blue)
 		descr.meteor:SetColorModifier(-16772609)
+		-- it looks reasonable
 		descr.meteor:SetState("sitSoftChairIdle")
+		-- i don't maybe they swelled up from the heat and moisture permeating in space
 		descr.meteor:SetScale(500)
 	end
 --~ 	ex(descr.meteor)
+end
+
+function MurderPod:GetVictimPos()
+	local victim = self.target
+	-- otherwise float around the victim walking around the dome/whatever building they're in, or if somethings borked then a rand pos
+	local x,y
+	if victim:IsValidPos() then
+		x,y = victim:GetVisualPosXYZ()
+	elseif victim.holder and victim.holder:IsValidPos() then
+		x,y = victim.holder:GetVisualPosXYZ()
+	else
+		local rand = GetRandomPassable()
+		x,y = rand:x(),rand:y()
+	end
+	return x,y
 end
 
 local point500 = point(0,0,500)
@@ -166,6 +202,8 @@ function MurderPod:Abduct()
 			Sleep(1000)
 		end
 	end)
+
+	-- change the not working sign to something more apropos
 	victim.status_effects = {
 		StatusEffect_StressedOut = 1
 	}
@@ -176,27 +214,30 @@ function MurderPod:Abduct()
 		victim:GetPos()
 	)
 	self:WaitFollowPath(path)
+--~ 	while self.next_spline do
+--~ 		Sleep(1000)
+--~ 	end
 
 	self.fx_actor_class = "Shuttle"
 	self:PlayFX("ShuttleLoad", "start", victim)
 	victim:SetPos(self:GetPos()+point500,2500)
 	Sleep(2500)
 	self:PlayFX("ShuttleLoad", "end", victim)
-	self.fx_actor_class = "SupplyPod"
 
-	-- no need to keep colonist around now
+	-- grab entity before we remove colonist (for our iceberg meteor)
 	local entity = victim.inner_entity
+	-- no need to keep colonist around now
 	victim:Erase()
 	-- change selection panel icon
 	self.panel_text = [[Victim going to "Earth"]]
 
-	-- human shaped meteors
+	-- human shaped meteors (bonus meteors, since murder is bad)
 	for i = 1, Random(1,3) do
 		CreateGameTimeThread(MurderPod.LaunchMeteor,self,entity)
 	end
 
 	-- What did Mission Control ever do for us? Without it, where would we be? Free! Free to roam the universe!
-	self:Leave()
+	self:SetCommand("Leave")
 end
 
 function MurderPod:StalkerTime()
@@ -204,43 +245,45 @@ function MurderPod:StalkerTime()
 	while IsValid(victim) do
 
 		local validpos = victim:IsValidPos()
+		-- check if they're not in a building and not in a dome (ie: outside)
 		if validpos and not victim:IsInDome() then
 			self:SetCommand("Abduct")
 			break
 		end
 
-		local x,y
-		if validpos then
-			x,y = victim:GetVisualPosXYZ()
-		elseif victim.holder and victim.holder:IsValidPos() then
-			x,y = victim.holder:GetVisualPosXYZ()
-		else
-			local rand = GetRandomPassable()
-			x,y = rand:x(),rand:y()
-		end
+		-- otherwise float around the victim walking around the dome/whatever building they're in, or if somethings borked then a rand pos
+		local x,y = self:GetVictimPos()
 
 		local path = self:CalcPath(
 			self:GetPos(),
-			point(x+Random(-1500,1500), y+Random(-1500,1500))
+			point(x+Random(-5000,5000), y+Random(-5000,5000))
 		)
 
-		self:WaitFollowPath(path)
-		Sleep(Random(2500,5000))
+		self:FollowPathCmd(path)
+		while self.next_spline do
+			Sleep(1000)
+		end
+
+		Sleep(Random(2500,10000))
 	end
 
 	-- soundless sleep
 	if IsValid(self) then
-		self:Leave()
+		self:SetCommand("Leave")
 	end
 
 end
 
 function MurderPod:Idle()
 	Sleep(2500)
-	self:SetCommand("StalkerTime")
+	if IsValid(self.target) then
+		self:SetCommand("StalkerTime")
+	else
+		self:SetCommand("Leave")
+	end
 end
 
--- switch skins if dlc
+-- add switch skins if dlc
 if g_AvailableDlc.gagarin then
 	local rockets = {"SupplyPod","ArcPod"}
 	local palettes = {SupplyPod.rocket_palette,ArkPod.rocket_palette}

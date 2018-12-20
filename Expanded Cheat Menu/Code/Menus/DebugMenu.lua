@@ -19,6 +19,17 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
+	Actions[c] = {ActionName = S[302535920001491--[[View All Entities--]]],
+		ActionMenubar = "ECM.Debug",
+		ActionId = ".View All Entities",
+		ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
+		RolloverText = S[302535920001492--[[Loads a blank map and places all entities in it.--]]],
+		OnAction = function()
+			ChoGGi.MenuFuncs.ViewAllEntities()
+		end,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920001416--[[Force--]]],S[948928900281--[[Story Bits--]]]),
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Force Story Bits",

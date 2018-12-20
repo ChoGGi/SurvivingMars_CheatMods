@@ -76,8 +76,12 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
 		RolloverText = function()
 			if GameState.gameplay then
+				local terrain = terrain.GetTerrainType(0,0)
+				if terrain < 1 then
+					terrain = 1
+				end
 				return ChoGGi.ComFuncs.SettingState(
-					GetTerrainNamesCombo()[terrain.GetTerrainType(0,0)].text,
+					GetTerrainNamesCombo()[terrain].text,
 					302535920000624--[[Green or Icy mars? Coming right up!
 	(don't forget a light model)--]]
 				)
@@ -343,7 +347,12 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionMenubar = str_Game_Camera,
 		ActionId = ".Toggle Cursor",
 		ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
-		RolloverText = S[302535920000656--[[Toggle between moving camera and selecting objects.--]]],
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				IsMouseCursorHidden(),
+				302535920000656--[[Toggle between moving camera and selecting objects.--]]
+			)
+		end,
 		OnAction = ChoGGi.MenuFuncs.CursorVisible_Toggle,
 		ActionShortcut = "Ctrl-Alt-F",
 		ActionBindable = true,
@@ -356,6 +365,20 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionIcon = "CommonAssets/UI/Menu/NewCamera.tga",
 		RolloverText = S[302535920001370--[[If something makes the camera view wonky you can use this to fix it.--]]],
 		OnAction = ChoGGi.MenuFuncs.ResetCamera,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001489--[[Toggle Map Edge Limit--]]],
+		ActionMenubar = str_Game_Camera,
+		ActionId = ".Toggle Cursor",
+		ActionIcon = "CommonAssets/UI/Menu/move_gizmo.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.MapEdgeLimit,
+				302535920001490--[[Removes pushback limit at the edge of the map.--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.MapEdgeLimit_Toggle,
 	}
 
 	local str_Game_Render = "ECM.Game.Render"

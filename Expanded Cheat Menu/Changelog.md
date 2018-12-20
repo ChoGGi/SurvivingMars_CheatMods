@@ -5,9 +5,11 @@
 
 ## v11.9 (Unreleased)
 ### Added:
+- Help>ECM>Show Startup Ticks: Prints to console how many ticks it takes the map to load.
 - Fixes>Toggles>Missing Mod Buildings: Removes any placed buildings that were from a mod.
 - Game>Reload Map: Reloads map as new game.
-- Help>ECM>Show Startup Ticks: Prints to console how many ticks it takes the map to load.
+- Game>Camera>Toggle Map Edge Limit: Removes pushback limit at the edge of the map.
+- Debug>View All Entities: Loads a blank map and places all entities in it.
 
 ### Changed:
 - Research Tech will now unlock mystery tech for different mysteries (cost will be the same as mystery instead of incrementing).
@@ -15,6 +17,7 @@
 - Added the Mod Editor mode to Cheats>Mod Editor list.
 - Stuck Debug>DTM Slots in a dialog.
 - Moved Hide Cheats Menu to ECM>Misc (so it and panel toggle are next to each other).
+- RC Transport Storage Capacity renamed to RC Storage Capacity (RC Constructors).
 - Examine:
 - > Moved Next to the go to text area, and renamed it to Search.
 - > Moved Color Modifier from Object to Tools.
@@ -29,6 +32,9 @@
 - Examine:
 - > View Text will scroll to the proper line now (and highlight for a bonus).
 - > View Text/Dump Text will now show <text>.
+
+### Removed:
+- RC Rover Drone Recharge Free: They don't use batteries anymore...
 
 ## v11.8 (15 Dec 2018)
 ### Changed:

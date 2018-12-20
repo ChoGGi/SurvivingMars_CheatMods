@@ -226,8 +226,9 @@ function OnMsg.ClassesGenerate()
 				const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * value
 				const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * value
 				-- so it changes the speed immediately
-				ChangeGameSpeedState(-1)
-				ChangeGameSpeedState(1)
+				TogglePause()
+--~ 				ChangeGameSpeedState(-1)
+--~ 				ChangeGameSpeedState(1)
 				-- update settings
 				ChoGGi.UserSettings.mediumGameSpeed = const.mediumGameSpeed
 				ChoGGi.UserSettings.fastGameSpeed = const.fastGameSpeed

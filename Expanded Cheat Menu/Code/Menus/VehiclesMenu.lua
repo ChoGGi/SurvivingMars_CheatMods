@@ -313,9 +313,9 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000541--[[Set Charging Distance--]]],
+	Actions[c] = {ActionName = S[302535920000541--[[RC Set Charging Distance--]]],
 		ActionMenubar = str_ExpandedCM_Rovers,
-		ActionId = ".Set Charging Distance",
+		ActionId = ".RC Set Charging Distance",
 		ActionIcon = iconRC,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
@@ -355,42 +355,28 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000547--[[RC Rover Drone Recharge Free--]]],
-		ActionMenubar = str_ExpandedCM_Rovers,
-		ActionId = ".RC Rover Drone Recharge Free",
-		ActionIcon = iconRC,
-		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.RCRoverDroneRechargeCost,
-				302535920000548--[[No more draining Rover Battery when recharging drones.--]]
-			)
-		end,
-		OnAction = ChoGGi.MenuFuncs.RCRoverDroneRechargeFree_Toggle,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920000549--[[RC Transport Instant Transfer--]]],
+	Actions[c] = {ActionName = S[302535920000549--[[RC Instant Resource Transfer--]]],
 		ActionMenubar = str_ExpandedCM_Rovers,
 		ActionId = ".RC Transport Instant Transfer",
 		ActionIcon = "CommonAssets/UI/Menu/Mirror.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RCRoverTransferResourceWorkTime,
-				302535920000550--[[RC Rover quick Transfer/Gather resources.--]]
+				302535920000550--[[Make it instantly gather/transfer resources.--]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000551--[[RC Transport Storage Capacity--]]],
+	Actions[c] = {ActionName = S[302535920000551--[[RC Storage Capacity--]]],
 		ActionMenubar = str_ExpandedCM_Rovers,
-		ActionId = ".RC Transport Storage Capacity",
+		ActionId = ".RC Storage Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RCTransportStorageCapacity,
-				302535920000552--[[Change amount of resources RC Transports can carry.--]]
+				302535920000552--[[Change amount of resources RC Transports/Constructors can carry.--]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetRCTransportStorageCapacity,

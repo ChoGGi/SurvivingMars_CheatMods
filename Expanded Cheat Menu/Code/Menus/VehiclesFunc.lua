@@ -530,19 +530,6 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
-	function ChoGGi.MenuFuncs.RCRoverDroneRechargeFree_Toggle()
-		local ChoGGi = ChoGGi
-		ChoGGi.ComFuncs.SetConstsG("RCRoverDroneRechargeCost",ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverDroneRechargeCost,0,ChoGGi.Consts.RCRoverDroneRechargeCost))
-		ChoGGi.ComFuncs.SetSavedSetting("RCRoverDroneRechargeCost",Consts.RCRoverDroneRechargeCost)
-
-		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(
-			S[302535920000904--[[%s: More where that came from--]]]:format(ChoGGi.UserSettings.RCRoverDroneRechargeCost),
-			5438--[[Rovers--]],
-			default_icon2
-		)
-	end
-
 	function ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle()
 		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("RCRoverTransferResourceWorkTime",ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverTransferResourceWorkTime,0,ChoGGi.Consts.RCRoverTransferResourceWorkTime))
@@ -775,16 +762,25 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			if type(value) == "number" then
 				local default = value == DefaultSetting
+
 				local value = value * r
 				-- somewhere above 2000 screws the save
 				if value > 2000000 then
 					value = 2000000
 				end
+				-- for any rc constructors
+				local rc_con_value = ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportStorageCapacity","RCConstructor")
+
 				-- loop through and set all
 				if GameState.gameplay then
-					local list = UICity.labels.RCTransport or ""
-					for i = 1, #list do
-						list[i].max_shared_storage = value
+					local label = UICity.labels.RCTransport or ""
+					for i = 1, #label do
+						local rc = label[i]
+						if default and rc:IsKindOf("RCConstructor") then
+							rc.max_shared_storage = rc_con_value
+						else
+							rc.max_shared_storage = value
+						end
 					end
 				end
 

@@ -105,7 +105,6 @@ OutsideWorkplacesRadius (how far people look for a job outside their dome, be ca
 PipesPillarSpacing (removes all those extra pillars when placing pipes)
 PositivePlaygroundChance (chance for playground to give child good trait)
 ProjectMorphiousPositiveTraitChance (gives a good trait while resting with Morphious enabled)
-RCRoverDroneRechargeCost (makes the little drones recharge fast)
 RCRoverFastResource (transfer/gather is faster, you may need to start new game)
 RCRoverMaxDrones (100 drones per rover, you may need to start new game)
 ```

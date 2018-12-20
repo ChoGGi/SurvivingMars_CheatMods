@@ -16,6 +16,10 @@ You can disable it afterwards.
 If you keep getting transport routes stuck then use this:
 https://steamcommunity.com/sharedfiles/filedetails/?id=1526896729
 
+By design this will not remove the grids added by SkiRich's Toggle Hub Zone mod, turn them off before you remove the mod.
+
+
+
 
 Part of Expanded Cheat Menu.]],
 })

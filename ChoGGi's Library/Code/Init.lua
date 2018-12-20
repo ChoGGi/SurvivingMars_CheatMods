@@ -124,7 +124,6 @@ ChoGGi = {
 		PreciousMetals_cost_modifier = false,
 		PreciousMetals_dome_cost_modifier = false,
 		ProjectMorphiousPositiveTraitChance = false,
-		RCRoverDroneRechargeCost = false,
 		RCRoverMaxDrones = false,
 		RCRoverTransferResourceWorkTime = false,
 		RCTransportGatherResourceWorkTime = false,

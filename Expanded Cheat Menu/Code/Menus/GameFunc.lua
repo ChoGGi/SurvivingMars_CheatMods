@@ -23,6 +23,27 @@ function OnMsg.ClassesGenerate()
 	--~	 RebuildFXRules()
 	--~ end
 
+	function ChoGGi.MenuFuncs.MapEdgeLimit_Toggle()
+		if ChoGGi.UserSettings.MapEdgeLimit then
+			ChoGGi.UserSettings.MapEdgeLimit = nil
+			hr.CameraRTSBorderAtMinZoom = 0
+			hr.CameraRTSBorderAtMaxZoom = 0
+		else
+			ChoGGi.UserSettings.MapEdgeLimit = true
+			hr.CameraRTSBorderAtMinZoom = 1000
+			hr.CameraRTSBorderAtMaxZoom = 1000
+		end
+
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.MapEdgeLimit,
+				302535920001489--[[Toggle Map Edge Limit--]]
+			),
+			302535920001058--[[Camera--]]
+		)
+	end
+
 	do -- ExportColonistDataToCSV
 		local ChoGGi_Tables = ChoGGi.Tables
 		-- build list of traits to skip (added as columns, we don't want dupes)

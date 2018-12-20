@@ -18,23 +18,23 @@ do -- Translate
 	end
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
-		local str,_
+		local str,result
 		local stype = type(select(1,...))
 		if stype == "userdata" or stype == "number" then
 			str = T(pack_params(...))
 		else
 			str = ...
 		end
-		-- the first ret val from procall is the status
-		_,str = procall(SafeTrans,str)
+		-- procall is pretty much pcall, but with logging
+		result,str = procall(SafeTrans,str)
 
 		-- just in case a
-		if type(str) ~= "string" then
+		if not result or type(str) ~= "string" then
 			local arg2 = select(2,...)
 			if type(arg2) == "string" then
 				return arg2
 			end
-			-- done messed up (just in case b)
+			-- i'd rather know if something failed by having a string rather than a func fail
 			return StringFormat("%s < Missing text string id",...)
 		end
 

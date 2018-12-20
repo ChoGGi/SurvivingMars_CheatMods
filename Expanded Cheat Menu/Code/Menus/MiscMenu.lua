@@ -73,7 +73,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_ExpandedCM_Misc,
 		ActionId = ".Fix All Objects",
 		ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
-		RolloverText = S[302535920000691--[[Fixes all broken objects.--]]],
+		RolloverText = S[302535920000691--[[Fixes all malfunctioned objects.--]]],
 		OnAction = ChoGGi.MenuFuncs.FixAllObjects,
 	}
 
