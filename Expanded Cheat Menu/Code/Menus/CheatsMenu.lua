@@ -39,7 +39,8 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Start Mystery",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
-		RolloverText = S[302535920000332--[[Pick and start a mystery (with instant start option).--]]],
+		RolloverText = S[302535920000332--[["Pick and start a mystery (with instant start option).
+Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance)."--]]],
 		OnAction = ChoGGi.MenuFuncs.ShowMysteryList,
 	}
 
@@ -66,17 +67,19 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Spawn Colonists",
 		ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
-		RolloverText = S[302535920000336--[[Spawn certain amount of colonists.--]]],
+		RolloverText = S[302535920000336--[[Spawn X amount of colonists.--]]],
 		OnAction = ChoGGi.MenuFuncs.SpawnColonists,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000337--[[Unlock all buildings--]]],
+	Actions[c] = {ActionName = S[302535920000337--[[Toggle Unlock All Buildings--]]],
 		ActionMenubar = "ECM.Cheats",
-		ActionId = ".Unlock all buildings",
+		ActionId = ".Toggle Unlock all buildings",
 		ActionIcon = "CommonAssets/UI/Menu/TerrainConfigEditor.tga",
-		RolloverText = S[302535920000338--[[Unlock all buildings for construction.--]]],
-		OnAction = ChoGGi.MenuFuncs.UnlockAllBuildings,
+		RolloverText = S[302535920000338--[["Unlocks all buildings in the build menu.
+This doesn't apply to sponsor limited ones; see ECM>Buildings>Toggles>%s.
+To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[302535920001398--[[Remove Sponsor Limits--]]],S[302535920000180--[[Unlock Locked Buildings--]]]),
+		OnAction = ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle,
 	}
 
 	c = c + 1
@@ -217,7 +220,7 @@ function OnMsg.ClassesGenerate()
 				302535920000348--[[Allow more items in queue.--]]
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.SetResearchQueueSize,
+		OnAction = ChoGGi.MenuFuncs.ResearchQueueSize_Set,
 	}
 
 	c = c + 1
@@ -272,7 +275,7 @@ function OnMsg.ClassesGenerate()
 				302535920001343--[[How many times you can outsource in a row.--]]
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount,
+		OnAction = ChoGGi.MenuFuncs.OutsourceMaxOrderCount_Set,
 	}
 
 	c = c + 1
@@ -286,7 +289,7 @@ function OnMsg.ClassesGenerate()
 				302535920000358--[[How many breakthroughs are allowed to be unlocked?--]]
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.SetBreakThroughsAllowed,
+		OnAction = ChoGGi.MenuFuncs.BreakThroughsAllowed_Set,
 		ActionSortKey = "2Set Amount Of Breakthroughs Allowed",
 	}
 
@@ -301,7 +304,7 @@ function OnMsg.ClassesGenerate()
 				302535920000360--[[How many breakthroughs the OmegaTelescope will unlock.--]]
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope,
+		OnAction = ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope,
 		ActionSortKey = "2Breakthroughs From OmegaTelescope",
 	}
 

@@ -5,9 +5,6 @@ local IsKindOf = IsKindOf
 
 local function SomeCode()
   local UICity = UICity
-  if not UICity then
-    return
-  end
 
   -- place to store per-game values
   if not UICity.PersonalShuttles then

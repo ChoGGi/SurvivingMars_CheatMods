@@ -545,13 +545,11 @@ end -- ClassesBuilt
 local function SomeCode()
 	-- store amount of controlled buildings for toggling visiblity of "All Attached Buildings" button
 	local UICity = UICity
-	if UICity then
-		if not UICity.SolariaTelepresence_RemoteControlledBuildings then
-			UICity.SolariaTelepresence_RemoteControlledBuildings = 0
-		end
-		if not IsTechResearched("CreativeRealitiesSolaria") then
-			LockBuilding("Solaria")
-		end
+	if not UICity.SolariaTelepresence_RemoteControlledBuildings then
+		UICity.SolariaTelepresence_RemoteControlledBuildings = 0
+	end
+	if not IsTechResearched("CreativeRealitiesSolaria") then
+		LockBuilding("Solaria")
 	end
 end
 

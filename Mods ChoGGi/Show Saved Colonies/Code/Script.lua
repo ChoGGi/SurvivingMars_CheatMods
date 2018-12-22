@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local StringFormat = string.format
+local Sleep = Sleep
 
 local img = StringFormat("%sUI/pm_landed.png",CurrentModPath)
 local idmarker = "idMarker%s"
@@ -31,6 +32,11 @@ local MulDivRound = MulDivRound
 local PlaceObject = PlaceObject
 local RotateAxis = RotateAxis
 local function BuildMySpots()
+	-- wait for it...
+	while not PlanetRotationObj do
+		Sleep(500)
+	end
+
 	local landing_dlg = LandingSite_object.dialog
 	local PlanetRotationObj = PlanetRotationObj
 
@@ -108,7 +114,7 @@ local orig_LandingSiteObject_AttachPredefinedSpots = LandingSiteObject.AttachPre
 function LandingSiteObject:AttachPredefinedSpots(...)
 	orig_LandingSiteObject_AttachPredefinedSpots(self,...)
 	-- we only want this to happen when picking a landing spot
-	if not UICity then
+	if not GameState.gameplay then
 		LandingSite_object = self
 		-- if I don't thread it I get an error from LandingSiteObject:DrawSpot
 		CreateRealTimeThread(BuildMySpots)
@@ -120,7 +126,7 @@ local pairs = pairs
 local Min = Min
 local orig_LandingSiteObject_CalcMarkersVisibility = LandingSiteObject.CalcMarkersVisibility
 function LandingSiteObject:CalcMarkersVisibility()
-	if not UICity then
+	if not GameState.gameplay then
 		local cur_phase = PlanetRotationObj:GetAnimPhase()
 		for name,obj in pairs(new_markers) do
 			local phase = self:CalcAnimPhaseUsingLongitude(obj.longitude * 60)
@@ -143,7 +149,7 @@ end
 local orig_LandingSiteObject_DisplayCoord = LandingSiteObject.DisplayCoord
 function LandingSiteObject:DisplayCoord(pt, lat, long, lat_org, long_org)
 	orig_LandingSiteObject_DisplayCoord(self, pt, lat, long, lat_org, long_org)
-	if not UICity then
+	if not GameState.gameplay then
 		-- is it one of ours
 		local g_CurrentMapParams = g_CurrentMapParams
 		local marker = new_markers[marker_name:format(g_CurrentMapParams.latitude,g_CurrentMapParams.longitude)]

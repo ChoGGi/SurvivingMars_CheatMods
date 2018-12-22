@@ -18,6 +18,7 @@
 - Stuck Debug>DTM Slots in a dialog.
 - Moved Hide Cheats Menu to ECM>Misc (so it and panel toggle are next to each other).
 - RC Transport Storage Capacity renamed to RC Storage Capacity (RC Constructors).
+- Unlock all buildings is now Toggle Unlock All Buildings.
 - Examine:
 - > Moved Next to the go to text area, and renamed it to Search.
 - > Moved Color Modifier from Object to Tools.
