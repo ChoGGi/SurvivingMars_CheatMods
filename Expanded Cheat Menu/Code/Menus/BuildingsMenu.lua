@@ -96,7 +96,8 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_ExpandedCM_Buildings,
 		ActionId = ".Unlock Locked Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
-		RolloverText = S[302535920000181--[["Gives you a list of buildings you can unlock in the build menu (doesn't apply to sponsor limited ones, see Toggles\%s)."--]]]:format(S[302535920001398--[[Remove Sponsor Limits--]]]),
+		RolloverText = S[302535920000181--[["Shows a list of buildings you can unlock.
+This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[302535920001398--[[Remove Sponsor Limits--]]]),
 		OnAction = ChoGGi.MenuFuncs.UnlockLockedBuildings,
 	}
 

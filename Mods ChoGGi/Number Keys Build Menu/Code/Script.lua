@@ -34,7 +34,7 @@ Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_ve
 		local BuildCategories = BuildCategories
 
 		-- make sure we're not in the main menu
-		if not UICity then
+		if not GameState.gameplay then
 			return
 		end
 

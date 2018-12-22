@@ -84,10 +84,7 @@ function OnMsg.ClassesGenerate()
 				if name:find("RC") and name:find("Building") then
 					name = name:gsub("Building","")
 				end
-				local idx = table.find(BuildingTechRequirements[id],"check_supply",name)
-				if idx then
-					table.remove(BuildingTechRequirements[id],idx)
-				end
+				table.remove_entry(BuildingTechRequirements[id],"check_supply",name)
 
 			end
 		end
@@ -653,28 +650,39 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.UnlockLockedBuildings()
-		local ItemList = {}
+		local everything = S[302535920000306--[[Everything--]]]
+		local ItemList = {
+			{
+			text = StringFormat(" %s",everything),
+			value = everything,
+			},
+		}
+		local c = #ItemList
+
 		local BuildingTemplates = BuildingTemplates
+		local GetBuildingTechsStatus = GetBuildingTechsStatus
 		for id,bld in pairs(BuildingTemplates) do
 			if not GetBuildingTechsStatus(id) then
-				ItemList[#ItemList+1] = {
+				c = c + 1
+				ItemList[c] = {
 					text = Trans(bld.display_name),
 					value = id,
 				}
 			end
 		end
 
---~ 		local BuildingTechRequirements = BuildingTechRequirements
 		local function CallBackFunc(choice)
 			if #choice < 1 then
 				return
 			end
+			local UnlockBuilding = UnlockBuilding
+			-- if everything then ignore the choices and just use the itemlist
+			if table.find(choice,"value",everything) then
+				choice = ItemList
+			end
+
 			for i = 1, #choice do
-				local value = choice[i].value
-				UnlockBuilding(value)
---~ 				if BuildingTechRequirements[value] then
---~ 					BuildingTechRequirements[value] = nil
---~ 				end
+				UnlockBuilding(choice[i].value)
 			end
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 			MsgPopup(

@@ -2,6 +2,7 @@ function OnMsg.ModsReloaded()
 	local BuildingTechRequirements = BuildingTechRequirements
 	local spon_str = "sponsor_status%s"
 	local BuildingTemplates = BuildingTemplates
+
 	for id,bld in pairs(BuildingTemplates) do
 
 		-- set each status to false if it isn't
@@ -12,14 +13,13 @@ function OnMsg.ModsReloaded()
 			end
 		end
 
+		-- and this bugger screws me over on GetBuildingTechsStatus
 		local name = id
 		if name:find("RC") and name:find("Building") then
 			name = name:gsub("Building","")
 		end
-		local idx = table.find(BuildingTechRequirements[id],"check_supply",name)
-		if idx then
-			table.remove(BuildingTechRequirements[id],idx)
-		end
+
+		table.remove_entry(BuildingTechRequirements[id],"check_supply",name)
 
 	end
 end

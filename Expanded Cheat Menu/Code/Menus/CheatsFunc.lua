@@ -89,7 +89,7 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()
+	function ChoGGi.MenuFuncs.OutsourceMaxOrderCount_Set()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.OutsourceMaxOrderCount
 		local ItemList = {
@@ -1159,14 +1159,43 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 
 	end
 
-	function ChoGGi.MenuFuncs.UnlockAllBuildings()
-		CheatUnlockAllBuildings()
-		ChoGGi.ComFuncs.UpdateBuildMenu()
-		MsgPopup(
-			302535920000293--[[Unlocked all buildings for construction.--]],
-			3980--[[Buildings--]],
-			"UI/Icons/Upgrades/build_2.tga"
-		)
+	function ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle()
+		local ItemList = {
+			{text = S[302535920000547--[[Lock--]]],value = "Lock"},
+			{text = S[302535920000318--[[Unlock--]]],value = "Unlock"},
+		}
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+
+			if choice[1].value == "Lock" then
+				-- reverse what the unlock cheat does
+				local bmpv = BuildMenuPrerequisiteOverrides
+				for id in pairs(bmpv) do
+					if bmpv[id] == true then
+						bmpv[id] = nil
+					end
+				end
+			else
+				CheatUnlockAllBuildings()
+			end
+
+			ChoGGi.ComFuncs.UpdateBuildMenu()
+			MsgPopup(
+				S[302535920000293--[[%s: all buildings for construction.--]]]:format(choice[1].text),
+				3980--[[Buildings--]],
+				"UI/Icons/Upgrades/build_2.tga"
+			)
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = 302535920000337--[[Toggle Unlock All Buildings--]],
+			skip_sort = true,
+		}
 	end
 
 	function ChoGGi.MenuFuncs.AddResearchPoints()
@@ -1231,7 +1260,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 	end
 
 	local hint_maxa = S[302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).--]]]
-	function ChoGGi.MenuFuncs.SetBreakThroughsOmegaTelescope()
+	function ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
 		local MaxAmount = #UICity.tech_field.Breakthroughs
@@ -1275,7 +1304,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		}
 	end
 
-	function ChoGGi.MenuFuncs.SetBreakThroughsAllowed()
+	function ChoGGi.MenuFuncs.BreakThroughsAllowed_Set()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.BreakThroughTechsPerGame
 		local MaxAmount = #UICity.tech_field.Breakthroughs
@@ -1317,7 +1346,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		}
 	end
 
-	function ChoGGi.MenuFuncs.SetResearchQueueSize()
+	function ChoGGi.MenuFuncs.ResearchQueueSize_Set()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.ResearchQueueSize
 		local ItemList = {
