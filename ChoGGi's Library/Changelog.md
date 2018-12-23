@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v4.9 (Unreleased)
+## v5.0 (Unreleased)
+
+## v4.9 (23 Dec 2018)
 - List dialog:
 - > Items had shrunk to the size of the text.
 - > Filter Items didn't work too well on number lists.

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Expanded Cheat Menu v11.9 Test",
-	"version", 119,
-	"saved", 1544875200,
+	"title", "Expanded Cheat Menu v12.0 Test",
+	"version", 120,
+	"saved", 1545566400,
 	"steam_id", "1411157810",
 	"id", "ChoGGi_CheatMenu",
 	"image", "Preview.png",

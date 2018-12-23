@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v11.9 (Unreleased)
+## v12.0 (Unreleased)
+
+## v11.9 (23 Dec 2018)
 ### Added:
 - Help>ECM>Show Startup Ticks: Prints to console how many ticks it takes the map to load.
 - Fixes>Toggles>Missing Mod Buildings: Removes any placed buildings that were from a mod.
