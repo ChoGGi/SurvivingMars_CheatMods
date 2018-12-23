@@ -2,7 +2,7 @@ v0.9
 Made it wait till PlanetRotationObj is created.
 
 v0.8
-Gagarin HF2.
+Gagarin HF2 (failed attempt to fix issue fixed in 0.9).
 
 v0.7
 Gagarin.
