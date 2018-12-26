@@ -94,8 +94,6 @@ function OnMsg.ClassesGenerate()
 		EnableToolTips = true,
 		-- append text or create new files
 		ExamineAppendDump = true,
-		-- how often we update when auto-refresh is turned on
-		ExamineRefreshTime = 1000,
 		-- what cmd/editor to use with os.execute(cmd) when doing external editing
 		ExternalEditorCmd = "notepad \"%s\"",
 		-- where to store temp file

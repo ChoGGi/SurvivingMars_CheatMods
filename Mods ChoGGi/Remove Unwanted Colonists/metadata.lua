@@ -18,6 +18,6 @@ If you change your mind; you can toggle it before they get sucked up.
 Once they go outside it'll then suck them up and take them back to Earth (truthfully just outside the atmosphere before spacing them).
 
 
-Unfortunately frozen bodies don't have any propulsion systems. They'll come back as human shaped meteors (in a few Sols).
+Unfortunately frozen bodies don't have any propulsion systems. They'll come back as human shaped meteors (in a few Sols). You wouldn't want to experience the Kessler syndrome around your shiny new planet after all.
 On the bright side there won't be much left on impact, so other colonists won't be affected.]],
 })

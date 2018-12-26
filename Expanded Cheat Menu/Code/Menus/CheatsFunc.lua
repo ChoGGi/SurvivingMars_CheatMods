@@ -834,9 +834,10 @@ Otherwise you won't see anything."--]],
 			local ChoGGi = ChoGGi
 			local ItemList = {}
 			local mysteries = ChoGGi.Tables.Mystery
+			local name_str = "%s: %s"
 			for i = 1, #mysteries do
 				ItemList[i] = {
-					text = StringFormat("%s: %s",mysteries[i].number,mysteries[i].name),
+					text = name_str:format(mysteries[i].number,mysteries[i].name),
 					value = mysteries[i].class,
 					hint = StringFormat("%s\n\n\n\n<image %s>\n\n",mysteries[i].description,mysteries[i].image),
 				}

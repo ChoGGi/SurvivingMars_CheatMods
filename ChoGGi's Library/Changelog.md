@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v5.0 (Unreleased)
+- List dialog was sometimes showing the value instead of the text for the list.
 
 ## v4.9 (23 Dec 2018)
 - List dialog:

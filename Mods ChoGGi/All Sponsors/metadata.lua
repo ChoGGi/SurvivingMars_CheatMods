@@ -10,5 +10,8 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[If you have three sponsors; this will add all the other sponsors.]],
+	"description", [[If you have three sponsors; this will add all the other sponsors.
+
+
+Part of Expanded Cheat Menu.]],
 })

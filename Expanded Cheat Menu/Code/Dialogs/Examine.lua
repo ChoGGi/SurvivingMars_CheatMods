@@ -12,6 +12,7 @@ end
 
 local pairs,type,tostring,tonumber,rawget = g.pairs,g.type,g.tostring,g.tonumber,g.rawget
 
+-- local some global funcs
 local StringFormat = g.string.format
 local TableSort = g.table.sort
 local TableInsert = g.table.insert
@@ -107,6 +108,8 @@ DefineClass.Examine = {
 	sort = false,
 	-- if TaskRequest then store flags here
 	obj_flags = false,
+	-- delay between updating for autoref
+	autorefresh_delay = 1000,
 
 	-- only chinese goes slow as shit for some reason, so i added this to at least stop the game from freezing till obj is examined
 	is_chinese = false,
@@ -280,7 +283,7 @@ function Examine:Init(parent, context)
 			Id = "idAutoRefresh",
 			Dock = "right",
 			Text = S[302535920000084--[[Auto-Refresh--]]],
-			RolloverText = self.idAutoRefresh_update_str:format(ChoGGi.UserSettings.ExamineRefreshTime),
+			RolloverText = self.idAutoRefresh_update_str:format(self.autorefresh_delay),
 			RolloverHint = S[302535920001425--[["<left_click> Toggle, <right_click> Set Delay"--]]],
 			OnChange = self.idAutoRefreshOnChange,
 			OnMouseButtonDown = self.idAutoRefreshOnMouseButtonDown,
@@ -297,8 +300,8 @@ function Examine:Init(parent, context)
 			OnTextChanged = self.idAutoRefreshDelayOnTextChanged,
 		}, self.idToolbarArea)
 		-- vis is toggled when rightclicking autorefresh checkbox
-		self.idAutoRefreshDelay:SetVisible()
-		self.idAutoRefreshDelay:SetText(tostring(ChoGGi.UserSettings.ExamineRefreshTime))
+		self.idAutoRefreshDelay:SetVisible(false)
+		self.idAutoRefreshDelay:SetText(tostring(self.autorefresh_delay))
 		--
 		self.idSortDir = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idSortDir",
@@ -314,7 +317,7 @@ function Examine:Init(parent, context)
 			Dock = "right",
 			MinWidth = 0,
 			Text = S[4493--[[All--]]],
-			RolloverText = S[302535920001391--[[Show all values (metatable).--]]],
+			RolloverText = S[302535920001391--[[Show all values: getmetatable(obj).--]]],
 			OnChange = self.idShowAllValuesOnChange,
 			Init = self.CheckButtonInit,
 		}, self.idToolbarArea)
@@ -516,8 +519,6 @@ function Examine:idAutoRefreshOnChange()
 		if not checked then
 			self.idAutoRefresh:SetCheck(true)
 		end
-		local Sleep = Sleep
-		local UserSettings = ChoGGi.UserSettings
 		while true do
 			if self.obj_ref then
 				self:SetObj()
@@ -525,7 +526,7 @@ function Examine:idAutoRefreshOnChange()
 				DeleteThread(self.autorefresh_thread)
 				break
 			end
-			Sleep(UserSettings.ExamineRefreshTime)
+			Sleep(self.autorefresh_delay)
 		end
 	end)
 end
@@ -553,12 +554,14 @@ end
 
 function Examine:idAutoRefreshDelayOnTextChanged()
 	local num = tonumber(self:GetText())
+	-- someone always enters a non-number...
 	if num then
-		self = GetRootDialog(self)
-		if num < 1 then
-			num = 1
+		-- probably best to keep it above this (just in case it's a large table)
+		if num < 10 then
+			num = 10
 		end
-		ChoGGi.UserSettings.ExamineRefreshTime = num
+		self = GetRootDialog(self)
+		self.autorefresh_delay = num
 		self.idAutoRefresh:SetRolloverText(self.idAutoRefresh_update_str:format(num))
 	end
 end
@@ -819,8 +822,7 @@ function Examine:BuildToolsMenuPopup()
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
 				local str = self.idText:GetText()
-				-- remove html tags
---~ 				str = str:gsub("<[/%s%a%d]*>","")
+				-- remove html tags (any </*> closing tags, <left>, <color *>, <h *>)
 				str = str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>","")
 				-- i just compare, so append doesn't really work
 				if ChoGGi.UserSettings.ExamineAppendDump then
@@ -854,8 +856,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
 				local str = self.idText:GetText()
-				-- remove html tags
---~ 				str = str:gsub("<[/%s%a%d]*>","")
+				-- remove html tags (any </*> closing tags, <left>, <color *>, <h *>)
 				str = str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>","")
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 					parent = self,
@@ -1128,29 +1129,21 @@ function Examine:SetTranspMode(toggle)
 end
 --
 
+local function Examine_valuetotextex(_,_,button,self,obj)
+	-- no terrain = no sense in using ShowObj
+	if button == "L" and GameState.gameplay and terrain.IsPointInBounds(obj) then
+		ShowObj(obj)
+	else
+		ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
+	end
+end
 local point_str = "%s%s(%s,%s,%s)%s"
 function Examine:valuetotextex(obj)
 	local obj_type = type(obj)
 
-	local function ShowObj_local()
-		-- if no UICity then no sense in using ShowObj
-		if GameState.gameplay and terrain.IsPointInBounds(obj) then
-			ShowObj(obj)
-		else
-			ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
-		end
-	end
-	local function Examine_local(_,_,button)
-		if button == "L" then
-			ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
-		else
-			ShowObj(obj)
-		end
-	end
-
 	if obj_type == "function" then
 		return StringFormat("%s%s%s",
-			self:HyperLink(obj,Examine_local),
+			self:HyperLink(obj,Examine_valuetotextex),
 			DebugGetInfo(obj),
 			HLEnd
 		)
@@ -1158,7 +1151,7 @@ function Examine:valuetotextex(obj)
 
 	if obj_type == "thread" then
 		return StringFormat("%s%s%s",
-			self:HyperLink(obj,Examine_local),
+			self:HyperLink(obj,Examine_valuetotextex),
 			tostring(obj),
 			HLEnd
 		)
@@ -1186,7 +1179,7 @@ function Examine:valuetotextex(obj)
 				end
 
 				return temp_str:format(
-					self:HyperLink(obj,ShowObj_local),
+					self:HyperLink(obj,Examine_valuetotextex),
 					S[302535920001396--[[point--]]],
 					x,y,z or "",
 					HLEnd
@@ -1202,7 +1195,7 @@ function Examine:valuetotextex(obj)
 			local meta = getmetatable(obj)
 			return StringFormat("%s</color></color>%s *%s%s",
 				trans,
-				self:HyperLink(obj,Examine_local),
+				self:HyperLink(obj,Examine_valuetotextex),
 				meta and meta.__name or tostring(obj),
 				HLEnd
 			)
@@ -1213,7 +1206,7 @@ function Examine:valuetotextex(obj)
 
 		if IsValid(obj) then
 			return StringFormat("%s%s%s@%s",
-				self:HyperLink(obj,Examine_local),
+				self:HyperLink(obj,Examine_valuetotextex),
 				obj.class,
 				HLEnd,
 				self:valuetotextex(obj:GetVisualPos())
@@ -1226,7 +1219,7 @@ function Examine:valuetotextex(obj)
 			-- if it's an objlist then we just return a list of the objects
 			if obj_metatable and IsObjlist(obj_metatable) then
 				local res = {
-					self:HyperLink(obj,Examine_local),
+					self:HyperLink(obj,Examine_valuetotextex),
 					"objlist",
 					HLEnd,
 					"{",
@@ -1276,7 +1269,7 @@ function Examine:valuetotextex(obj)
 				end
 
 				return StringFormat("%s%s%s",
-					self:HyperLink(obj,Examine_local),
+					self:HyperLink(obj,Examine_valuetotextex),
 					name,
 					HLEnd
 				)
@@ -1312,7 +1305,10 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInExamineDlg(ExamineThreadLevel_data,self,StringFormat("%s: %s",S[302535920001353--[[Thread info--]]],RetName(obj))
+	ChoGGi.ComFuncs.OpenInExamineDlg(
+		ExamineThreadLevel_data,
+		self,
+		StringFormat("%s: %s",S[302535920001353--[[Thread info--]]],RetName(obj))
 	)
 end
 
@@ -1345,25 +1341,21 @@ function Examine:RetDebugGetinfo(obj)
 	return TableConcat(totextex_debug_table,"\n")
 end
 
-local string_str = "'%s'"
 function Examine:totextex(obj,obj_type)
 	local totextex_res = {}
 	local totextex_sort = {}
 	local totextex_dupes = {}
 	local obj_metatable = getmetatable(obj)
 	local c = 0
+	local is_valid_obj
 
 	if obj_type == "nil" then
 		return obj_type
 	elseif obj_type == "boolean" or obj_type == "number" then
 		return tostring(obj)
-	elseif obj_type == "string" then
-		return string_str:format(obj)
 	end
 
 	if obj_type == "table" then
-
-
 		local name
 		for k, v in pairs(obj) do
 
@@ -1483,8 +1475,9 @@ function Examine:totextex(obj,obj_type)
 	end
 
 	if IsValid(obj) and obj:IsKindOf("CObject") then
+		is_valid_obj = true
 
-		TableInsert(totextex_res,1,StringFormat(--[[<center>----]]"\t\t\t\t--%s%s%s@%s--"--[[--<vspace 6><left>--]],
+		TableInsert(totextex_res,1,StringFormat("\t--%s%s%s@%s--",
 			self:HyperLink(obj,function()
 				ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(obj),self)
 			end),
@@ -1504,17 +1497,15 @@ function Examine:totextex(obj,obj_type)
 				HLEnd
 			))
 		end
-
-	elseif obj_type == "table" and obj_metatable then
-			TableInsert(totextex_res, 1, StringFormat(--[[<center>----]]"\t\t\t\t--%s: metatable--"--[[: metatable--<vspace 6><left>--]],
-				self:valuetotextex(obj_metatable)
-			))
 	end
 
-		-- add strings/numbers to the body
-	if obj_type == "number" or obj_type == "string" or obj_type == "boolean" then
+	-- add strings/numbers to the body
+	if obj_type == "number" or obj_type == "boolean" then
 		c = c + 1
 		totextex_res[c] = tostring(obj)
+	elseif obj_type == "string" then
+		c = c + 1
+		totextex_res[c] = StringFormat("'%s'",obj)
 
 	elseif obj_type == "userdata" then
 		local trans = Trans(obj)
@@ -1691,7 +1682,12 @@ ThreadHasFlags(): %s</color>]],
 			IsRealTimeThread(obj),
 			ThreadHasFlags(obj)
 		)
+	end
 
+	if not (is_valid_obj or obj_type == "userdata") and obj_metatable then
+		TableInsert(totextex_res, 1, StringFormat("\t-- metatable: %s --",
+			self:valuetotextex(obj_metatable)
+		))
 	end
 
 	return TableConcat(totextex_res,"\n")
@@ -1776,7 +1772,6 @@ end
 function Examine:SetObj(startup)
 	local obj = self.obj
 
---~ 	self.onclick_handles = {}
 	TableClear(self.onclick_handles)
 
 	if self.str_object then
@@ -1882,13 +1877,9 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 	if startup then
 		CreateRealTimeThread(function()
 			Sleep(5)
---~ 			if testing then
---~ 				ChoGGi.ComFuncs.TickStart("Examine")
---~ 			end
+--~ ChoGGi.ComFuncs.TickStart("Examine")
 			self.idText:SetText(self:totextex(obj,obj_type))
---~ 			if testing then
---~ 				ChoGGi.ComFuncs.TickEnd("Examine",self.name)
---~ 			end
+--~ ChoGGi.ComFuncs.TickEnd("Examine",self.name)
 		end)
 	else
 		self.idText:SetText(self:totextex(obj,obj_type))

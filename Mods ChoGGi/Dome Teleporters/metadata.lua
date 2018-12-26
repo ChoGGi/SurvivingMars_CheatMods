@@ -21,7 +21,8 @@ Length defaults to tunnel length, use Mod Config Reborn to change.
 
 Known Issues:
 If you turn it off, then the colonists will group up in front of it (I figured that was better then them quitting and so on).
-Suicidal colonists: Pathing wise it's best to only use teleporters with domes close by each other, or with a cliff or some other inaccessible land in the way, else they'll sometimes just go for The Long Walk. This might be a bug with base game...
+Suicidal colonists: Pathing wise it's best to only use teleporters with domes close by each other, or with some inaccessible land in the way, else they'll sometimes just go for The Long Walk.
+This is a bug with base game, if you build domes in a half-circular pattern then colonists from the two ends will try walking outside and die.
 
 Requested by... Probably a bunch of people, inspired by veryinky though.
 ]],
