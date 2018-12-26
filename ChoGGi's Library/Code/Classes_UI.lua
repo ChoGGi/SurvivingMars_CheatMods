@@ -715,7 +715,10 @@ function ChoGGi_Window:idTextOnHyperLink(link, _, box, pos, button)
 	if button == "R" then
 		ChoGGi.ComFuncs.OpenInExamineDlg(self.onclick_objs[tonumber(link)],self)
 	else
-		self.onclick_handles[tonumber(link)](box, pos, button, self)
+		local handle = self.onclick_handles[tonumber(link)]
+		if handle then
+			handle(box, pos, button, self, self.onclick_objs[tonumber(link)])
+		end
 	end
 
 end

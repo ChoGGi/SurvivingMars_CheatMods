@@ -4,6 +4,10 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v12.0 (Unreleased)
+### Changed:
+- Examine:
+- > Auto-refresh delay isn't stored as a global setting anymore.
+- > Hyperlinks sometimes barfed on weird text, it now checks if there's an actual link.
 
 ## v11.9 (23 Dec 2018)
 ### Added:

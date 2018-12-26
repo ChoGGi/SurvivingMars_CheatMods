@@ -515,13 +515,20 @@ local item_icon_table = {"Resources","BuildingTemplates","g_Classes"}
 function ChoGGi_ListChoiceDlg:AddItemIcon(g,item)
 	for i = 1, 3 do
 		local list = g[item_icon_table[i]]
-		if list[item.value] and list[item.value].display_icon ~= "" then
-			item.icon = list[item.value].display_icon
-			return true,item.value
-		elseif list[item.text] and list[item.text].display_icon ~= "" then
-			item.icon = list[item.text].display_icon
-			return true,item.text
+
+		-- try .value first as it's more likely to work
+		local item_temp = list[item.value]
+		if item_temp and item_temp.display_icon ~= "" then
+			item.icon = item_temp.display_icon
+			return true
 		end
+
+		item_temp = list[item.text]
+		if item_temp and item_temp.display_icon ~= "" then
+			item.icon = item_temp.display_icon
+			return true
+		end
+
 	end
 end
 
@@ -544,7 +551,7 @@ function ChoGGi_ListChoiceDlg:BuildList()
 				text = item.text
 			end
 		else
-			display_icon,text = self:AddItemIcon(g,item)
+			display_icon = self:AddItemIcon(g,item)
 
 			if not text then
 				text = item.text

@@ -281,7 +281,7 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 302535920001396,point,
 302535920001389,All Properties,
 302535920001390,Get all properties.,
-302535920001391,Show all values (metatable).,
+302535920001391,Show all values: getmetatable(obj).,
 302535920001384,Get properties different from base/parent object?,
 302535920000067,Ged Inspect,
 302535920001075,Open this object in the Ged inspector.,
