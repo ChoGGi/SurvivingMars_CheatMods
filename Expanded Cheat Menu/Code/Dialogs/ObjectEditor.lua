@@ -289,8 +289,8 @@ function ChoGGi_ObjectEditorDlg:UpdateListContent()
 	self = GetRootDialog(self)
 	local obj = self.obj
 	-- get scroll pos
-	local scroll_x = self.idList.PendingOffsetX
-	local scroll_y = self.idList.PendingOffsetY
+	local scroll_x = self.idList.PendingOffsetX or 0
+	local scroll_y = self.idList.PendingOffsetY or 0
 	local scroll_bar = self.idScrollV.Scroll
 
 	-- create prop list for list

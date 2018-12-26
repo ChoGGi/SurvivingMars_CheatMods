@@ -101,7 +101,7 @@ function ChoGGi_ConsoleLogWin:idToggleTransOnChange()
 end
 function ChoGGi_ConsoleLogWin:idShowFileLogOnPress()
 	local _,text = ReadLog()
-	GetRootDialog(self):ScrollBottom(text)
+	GetRootDialog(self):UpdateText(text)
 end
 function ChoGGi_ConsoleLogWin:idShowModsLogOnPress()
 	print(ModMessageLog)
@@ -130,19 +130,14 @@ function ChoGGi_ConsoleLogWin:SetTranspMode(toggle)
 	ChoGGi.Temp.transp_mode = toggle
 end
 
-function ChoGGi_ConsoleLogWin:ScrollBottom(text)
-	local length
+function ChoGGi_ConsoleLogWin:UpdateText(text)
 	if text then
 		self.idText:SetText(text)
-		length = #text
-	else
-		length = #self.idText:GetText()
 	end
 
-	self.idScrollV:SetScrollRange(0, length)
---~ 	self.idScrollV:ScrollTo(length)
-
-	self.idScrollArea:ScrollTo(0, length)
+	local y = Max(0, self.idScrollArea.scroll_range_y - self.idScrollArea.content_box:sizey())
+	self.idScrollV:SetScroll(0, y)
+	self.idScrollArea:ScrollTo(0, y)
 end
 
 dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false
@@ -157,7 +152,7 @@ function OnMsg.ConsoleLine(text, bNewLine)
 			text = StringFormat("%s%s",old_text,text)
 		end
 
-		dlg:ScrollBottom(text)
+		dlg:UpdateText(text)
 	end
 end
 

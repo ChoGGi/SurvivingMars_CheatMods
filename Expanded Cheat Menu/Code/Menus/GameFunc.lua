@@ -592,6 +592,8 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	do -- ListAllObjects
+		local IsValid = IsValid
+		local CmpLower = CmpLower
 		local function ViewAndSelectObject(choice)
 			if #choice < 1 then
 				return
@@ -600,14 +602,9 @@ function OnMsg.ClassesGenerate()
 			SelectObj(choice[1].obj)
 		end
 
-		local function CallBackFunc_List(choice)
-			if #choice < 1 then
-				return
-			end
-			local value = choice[1].value
+		local function BuildItemList_Class(value)
 			local handles = {}
 
-			local IsValid = IsValid
 			-- build our list of objects (we use an ass table of handles to skip dupes)
 			if value == S[302535920000306--[[Everything--]]] then
 				local labels = UICity.labels or empty_table
@@ -652,28 +649,48 @@ function OnMsg.ClassesGenerate()
 					icon_scale = icon_scale,
 				}
 			end
+			return ItemList
+		end
+
+		local function CallBackFunc_List(choice)
+			if #choice < 1 then
+				return
+			end
+			local value = choice[1].value
+			local ItemList = BuildItemList_Class(value)
 
 			-- and display them
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = ViewAndSelectObject,
 				items = ItemList,
-				title = StringFormat("%s: %s (%s)",S[302535920001292--[[List All Objects--]]],choice[1].text,#ItemList),
+				title = StringFormat("%s: %s",S[302535920001292--[[List All Objects--]]],value),
 				custom_type = 1,
 				custom_func = ViewAndSelectObject,
-	--~ 			check = {
-	--~ 				{
-	--~ 					title = 302535920000084--[[Auto-Refresh--]]
-	--~ 					hint = 302535920001257--[[Auto-refresh list every second.--]]
-	--~ 					func = function()
-	--~
-	--~ 					end,
-	--~ 				},
-	--~ 			},
+				check = {
+					{
+						title = 1000220--[[Refresh--]],
+						hint = 302535920000548--[[List is updated each time you click this.--]],
+						func = function(dlg)
+							ItemList = BuildItemList_Class(value)
+							table.sort(ItemList,function(a,b)
+								return CmpLower(a.text, b.text)
+							end)
+
+							dlg.items = ItemList
+							dlg:BuildList(true)
+						end,
+					},
+				},
 			}
 		end
 
-		function ChoGGi.MenuFuncs.ListAllObjects()
-			local ItemList = {{text = StringFormat(" %s",S[302535920000306--[[Everything--]]]),value = S[302535920000306--[[Everything--]]],hint = 302535920001294--[[Laggy--]]}}
+		local function BuildItemList_All()
+			local ItemList = {
+				{
+				text = StringFormat(" %s",S[302535920000306--[[Everything--]]]),
+				value = S[302535920000306--[[Everything--]]],hint = 302535920001294--[[Laggy--]],
+				},
+			}
 			local c = 1
 			local labels = UICity.labels or empty_table
 			for label,list in pairs(labels) do
@@ -690,6 +707,11 @@ function OnMsg.ClassesGenerate()
 					}
 				end
 			end
+			return ItemList
+		end
+
+		function ChoGGi.MenuFuncs.ListAllObjects()
+			local ItemList = BuildItemList_All()
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc_List,
@@ -698,6 +720,21 @@ function OnMsg.ClassesGenerate()
 				custom_type = 1,
 				custom_func = CallBackFunc_List,
 				height = 800,
+				check = {
+					{
+						title = 1000220--[[Refresh--]],
+						hint = 302535920000548--[[List is updated each time you click this.--]],
+						func = function(dlg)
+							ItemList = BuildItemList_All()
+							table.sort(ItemList,function(a,b)
+								return CmpLower(a.text, b.text)
+							end)
+
+							dlg.items = ItemList
+							dlg:BuildList(true)
+						end,
+					},
+				},
 			}
 		end
 	end -- do

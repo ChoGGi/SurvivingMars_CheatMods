@@ -32,7 +32,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 			title = "Check1",
 			hint = "Check1Hint",
 			checked = true,
---~ 			func = function() end,
+			func = function(dlg) end,
 		},
 		{
 			title = "Check2",
@@ -48,7 +48,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 
 --~ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local CheckText = ChoGGi.ComFuncs.CheckText
-local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
+--~ local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
 local RetProperType = ChoGGi.ComFuncs.RetProperType
 local Trans = ChoGGi.ComFuncs.Translate
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
@@ -165,7 +165,12 @@ Press Enter to show all items."--]]],
 				check.RolloverText = CheckText(list_check.hint)
 			end
 			if list_check.func then
-				check.OnPress = list_check.func
+				check.OnPress = function()
+					-- update check so user sees something
+					check:SetCheck(not check:GetCheck())
+					-- send dlg back with func
+					list_check.func(self)
+				end
 			end
 			if list_check.checked then
 				check:SetCheck(true)
@@ -233,7 +238,8 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		-- sort table by display text
 		local sortby = self.list.sortby or "text"
 		TableSort(self.list.items,function(a,b)
-			return CompareTableValue(a,b,sortby)
+--~ 			return CompareTableValue(a,b,sortby)
+			return CmpLower(a[sortby], b[sortby])
 		end)
 	end
 	-- append blank item for adding custom value
@@ -532,10 +538,16 @@ function ChoGGi_ListChoiceDlg:AddItemIcon(g,item)
 	end
 end
 
-function ChoGGi_ListChoiceDlg:BuildList()
+function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 	local g = _G
 	local g_Classes = g.g_Classes
 
+	if save_pos then
+		save_pos = {
+			self.idList.PendingOffsetY or 0,
+			self.idScrollV:GetScroll(),
+		}
+	end
 	self.idList:Clear()
 	for i = 1, #self.items do
 		local item = self.items[i]
@@ -606,6 +618,12 @@ function ChoGGi_ListChoiceDlg:BuildList()
 		end
 
 	end
+
+	if save_pos then
+		self.idList:ScrollTo(nil,save_pos[1])
+		self.idScrollV:SetScroll(save_pos[2])
+	end
+
 end
 
 function ChoGGi_ListChoiceDlg:idFilterOnKbdKeyDown(vk)

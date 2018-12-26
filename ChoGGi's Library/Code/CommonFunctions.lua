@@ -796,11 +796,11 @@ function ChoGGi.ComFuncs.CompareTableValue(a,b,name)
 	if not a and not b then
 		return
 	end
-	if type(a[name]) == type(b[name]) then
-		return a[name] < b[name]
-	else
+--~ 	if type(a[name]) == type(b[name]) then
+--~ 		return a[name] < b[name]
+--~ 	else
 		return tostring(a[name]) < tostring(b[name])
-	end
+--~ 	end
 end
 
 --[[
