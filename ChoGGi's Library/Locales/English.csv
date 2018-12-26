@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000548,,
 302535920001494,,
 302535920001495,,
 302535920001496,,
@@ -344,6 +343,7 @@ Press Ctrl-Enter or Shift-Enter to execute code.",
 302535920000073,Execute code in text box (Ctrl-Enter or Shift-Enter will also work).,
 302535920000075,Insert Obj,
 302535920000076,At caret position inserts: ChoGGi.CurObj,
+302535920000548,List is updated each time you click this.,
 302535920001444,<left_click> Activate <right_click> Alt Activate,
 302535920001371,"Double-click to apply and close list, double right-click to apply without closing list.",
 302535920001341,Double-click to apply without closing list.,

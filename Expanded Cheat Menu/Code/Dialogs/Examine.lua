@@ -1021,12 +1021,12 @@ end
 function Examine:GetScrolledText()
 	-- all text is cached here
 	local cache = self.idText.draw_cache or {}
-	local list_draw_info = cache[self.idScrollArea.PendingOffsetY]
+	local list_draw_info = cache[self.idScrollArea.PendingOffsetY or 0]
 
 	-- we need to be at an exact line (draw_cache expects it)
 	if not list_draw_info then
 		self:FindNext()
-		list_draw_info = cache[self.idScrollArea.PendingOffsetY]
+		list_draw_info = cache[self.idScrollArea.PendingOffsetY or 0]
 	end
 
 	local text = {}
