@@ -9,7 +9,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Capacity = "ECM.Expanded CM.Capacity"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[109035890389--[[Capacity--]]]),
+	Actions[c] = {ActionName = S[109035890389--[[Capacity--]]],
 		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

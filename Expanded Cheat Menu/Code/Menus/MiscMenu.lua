@@ -9,7 +9,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Misc = "ECM.Expanded CM.Misc"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[1000207--[[Misc--]]]),
+	Actions[c] = {ActionName = S[1000207--[[Misc--]]],
 		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Misc",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

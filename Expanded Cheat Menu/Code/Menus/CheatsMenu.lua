@@ -140,7 +140,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 
 	local str_Cheats_Workplaces = "ECM.Cheats.Workplaces"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[5444--[[Workplaces--]]]),
+	Actions[c] = {ActionName = S[5444--[[Workplaces--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Workplaces",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -177,7 +177,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 
 	local str_Cheats_Research = "ECM.Cheats.Research"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[311--[[Research--]]]),
+	Actions[c] = {ActionName = S[311--[[Research--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Research",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -310,7 +310,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 
 	local str_Cheats_Menu = "ECM.Cheats.Menu"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[1000162--[[Menu--]]]),
+	Actions[c] = {ActionName = S[1000162--[[Menu--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Menu",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

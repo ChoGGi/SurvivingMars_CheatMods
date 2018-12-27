@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[The Long Winter event seems to be responsible.
 
-If you have broken down buildings the drones won't repair.
+If you have broken down buildings the drones won't repair. This will check for them on load game.
 
 Any buildings affected by this issue will need to be repaired with 000.1 resource after the fix happens.]],
 })

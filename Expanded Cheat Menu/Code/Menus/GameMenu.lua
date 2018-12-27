@@ -260,7 +260,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	local str_Game_Camera = "ECM.Game.Camera"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920001058--[[Camera--]]]),
+	Actions[c] = {ActionName = S[302535920001058--[[Camera--]]],
 		ActionMenubar = "ECM.Game",
 		ActionId = ".Camera",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -383,7 +383,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	local str_Game_Render = "ECM.Game.Render"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000845--[[Render--]]]),
+	Actions[c] = {ActionName = S[302535920000845--[[Render--]]],
 		ActionMenubar = "ECM.Game",
 		ActionId = ".Render",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -495,7 +495,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	local str_Game_ExportCSV = "ECM.Game.Export CSV"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s ..",S[302535920001449--[[Export--]]],S[302535920001448--[[CSV--]]]),
+	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920001449--[[Export--]]],S[302535920001448--[[CSV--]]]),
 		ActionMenubar = "ECM.Game",
 		ActionId = ".Export CSV",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

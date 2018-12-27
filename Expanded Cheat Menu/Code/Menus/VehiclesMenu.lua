@@ -11,7 +11,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Drones = "ECM.Expanded CM.Drones"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[517--[[Drones--]]]),
+	Actions[c] = {ActionName = S[517--[[Drones--]]],
 		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Drones",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -252,7 +252,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Shuttles = "ECM.Expanded CM.Shuttles"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[745--[[Shuttles--]]]),
+	Actions[c] = {ActionName = S[745--[[Shuttles--]]],
 		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Shuttles",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -304,7 +304,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Rovers = "ECM.Expanded CM.Rovers"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[5438--[[Rovers--]]]),
+	Actions[c] = {ActionName = S[5438--[[Rovers--]]],
 		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Rovers",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -384,7 +384,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Rockets = "ECM.Expanded CM.Rockets"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[5238--[[Rockets--]]]),
+	Actions[c] = {ActionName = S[5238--[[Rockets--]]],
 		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Rockets",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

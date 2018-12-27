@@ -65,7 +65,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_Help_Screenshot = "ECM.Help.Screenshot"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000892--[[Screenshot--]]]),
+	Actions[c] = {ActionName = S[302535920000892--[[Screenshot--]]],
 		ActionMenubar = "ECM.Help",
 		ActionId = ".Screenshot",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -113,7 +113,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_Help_Interface = "ECM.Help.Interface"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000893--[[Interface--]]]),
+	Actions[c] = {ActionName = S[302535920000893--[[Interface--]]],
 		ActionMenubar = "ECM.Help",
 		ActionId = ".Interface",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -197,7 +197,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_Help_ECM = "ECM.Help.Expanded Cheat Menu"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000000--[[Expanded Cheat Menu--]]]),
+	Actions[c] = {ActionName = S[302535920000000--[[Expanded Cheat Menu--]]],
 		ActionMenubar = "ECM.Help",
 		ActionId = ".Expanded Cheat Menu",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -298,7 +298,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_Help_Tutorial = "ECM.Help.Tutorial"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[8982--[[Tutorial--]]]),
+	Actions[c] = {ActionName = S[8982--[[Tutorial--]]],
 		ActionMenubar = "ECM.Help",
 		ActionId = ".Tutorial",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

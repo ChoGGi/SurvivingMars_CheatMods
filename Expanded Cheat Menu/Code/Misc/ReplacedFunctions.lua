@@ -377,71 +377,89 @@ function OnMsg.ClassesGenerate()
 	end
 
 	-- pretty much a copy n paste, just slight addition to change font colour (i use a darker menu, so the menu icons background blends)
-	function XMenuEntry:SetShortcut(shortcut_text)
-		local shortcut = rawget(self, "idShortcut") or shortcut_text ~= "" and XLabel:new({
-			Dock = "right",
-			VAlign = "center",
-			Margins = box(10, 0, 0, 0)
-		}, self)
-		if shortcut then
-			shortcut:SetFontProps(self)
-			shortcut:SetText(shortcut_text)
-		end
-	end
+	do -- XMenuEntry:SetShortcut
+		local margin = box(10, 0, 0, 0)
+		function XMenuEntry:SetShortcut(shortcut_text)
 
-	-- yeah who gives a rats ass about mouseover hints on menu items
-	function XPopupMenu:RebuildActions(host,...)
---~ 		ChoGGi_OrigFuncs.XPopupMenu_RebuildActions(self,host,...)
+			if self.Icon == "CommonAssets/UI/Menu/folder.tga" then
+				local label = XLabel:new({
+					Dock = "right",
+					VAlign = "center",
+					Margins = margin,
+				}, self)
+				label:SetFontProps(self)
+				label:SetText("...")
 
-		local menu = self.MenuEntries
-		local popup = self.ActionContextEntries
-		local context = host.context
-		local ShowIcons = self.ShowIcons
-		self.idContainer:DeleteChildren()
-		for i = 1, #host.actions do
-			local action = host.actions[i]
-			if #popup == 0 and #menu ~= 0 and action.ActionMenubar == menu and host:FilterAction(action) or #popup ~= 0 and host:FilterAction(action, popup) then
-				local entry = XTemplateSpawn(action.ActionToggle and self.ToggleButtonTemplate or self.ButtonTemplate, self.idContainer, context)
-				-- that was hard...
-				if type(action.RolloverText) == "function" then
-					entry.RolloverText = action.RolloverText()
-				else
-					entry.RolloverText = action.RolloverText
-				end
-				entry.RolloverTitle = S[126095410863--[[Info--]]]
+				-- folders don't have a shortcut so off we go
+				return
+			end
 
-				function entry.OnPress(this, _)
-					if action.OnActionEffect ~= "popup" then
-						self:ClosePopupMenus()
-					end
-					host:OnAction(action, this)
-					if action.ActionToggle and self.window_state ~= "destroying" then
-						self:RebuildActions(host)
-					end
-				end
-				function entry.OnAltPress(this, _)
-					self:ClosePopupMenus()
-					if action.OnAltAction then
-						action:OnAltAction(host, this)
-					end
-				end
-				entry:SetFontProps(self)
-				entry:SetTranslate(action.ActionTranslate)
-				entry:SetText(action.ActionName)
-				if action.ActionToggle then
-					entry:SetToggled(action:ActionToggled(host))
-				else
-					entry:SetIconReservedSpace(self.IconReservedSpace)
-				end
-				if ShowIcons then
-					entry:SetIcon(action:ActionToggled(host) and action.ActionToggledIcon ~= "" and action.ActionToggledIcon or action.ActionIcon)
-				end
-				entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
-				entry:Open()
+			local shortcut = rawget(self, "idShortcut") or shortcut_text ~= "" and XLabel:new({
+				Dock = "right",
+				VAlign = "center",
+				Margins = margin,
+			}, self)
+			if shortcut then
+				shortcut:SetFontProps(self)
+				shortcut:SetText(shortcut_text)
 			end
 		end
---~ 		ex(entries[1])
-	end
+	end -- do
+
+	do -- XPopupMenu:RebuildActions
+		local XTemplateSpawn = XTemplateSpawn
+		-- yeah who gives a rats ass about mouseover hints on menu items
+		function XPopupMenu:RebuildActions(host,...)
+			local menu = self.MenuEntries
+			local popup = self.ActionContextEntries
+			local context = host.context
+			local ShowIcons = self.ShowIcons
+			self.idContainer:DeleteChildren()
+			for i = 1, #host.actions do
+				local action = host.actions[i]
+				if #popup == 0 and #menu ~= 0 and action.ActionMenubar == menu and host:FilterAction(action) or #popup ~= 0 and host:FilterAction(action, popup) then
+					local entry = XTemplateSpawn(action.ActionToggle and self.ToggleButtonTemplate or self.ButtonTemplate, self.idContainer, context)
+					-- that was hard...
+					if type(action.RolloverText) == "function" then
+						entry.RolloverText = action.RolloverText()
+					else
+						entry.RolloverText = action.RolloverText
+					end
+					entry.RolloverTitle = S[126095410863--[[Info--]]]
+
+					function entry.OnPress(this, _)
+						if action.OnActionEffect ~= "popup" then
+							self:ClosePopupMenus()
+						end
+						host:OnAction(action, this)
+						if action.ActionToggle and self.window_state ~= "destroying" then
+							self:RebuildActions(host)
+						end
+					end
+					function entry.OnAltPress(this, _)
+						self:ClosePopupMenus()
+						if action.OnAltAction then
+							action:OnAltAction(host, this)
+						end
+					end
+					entry:SetFontProps(self)
+					entry:SetTranslate(action.ActionTranslate)
+					entry:SetText(action.ActionName)
+					if action.ActionToggle then
+						entry:SetToggled(action:ActionToggled(host))
+					else
+						entry:SetIconReservedSpace(self.IconReservedSpace)
+					end
+					if ShowIcons then
+						entry:SetIcon(action:ActionToggled(host) and action.ActionToggledIcon ~= "" and action.ActionToggledIcon or action.ActionIcon)
+					end
+					entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
+
+					entry:Open()
+				end
+			end
+		end
+	end -- do
 
 	do -- Large Water Tank + Pipes + Chrome skin = borked looking pipes
 		local spots = {"Tube", "Tubeleft", "Tuberight", "Tubestraight" }

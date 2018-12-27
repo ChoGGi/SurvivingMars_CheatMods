@@ -45,7 +45,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.ConsoleFuncs.AddSubmenu(name,list,title)
 		local submenu = TableFind(ExamineMenuToggle_list,"name",name)
 		if submenu then
-			list = list or empty_table
+			list = list or ""
 			ExamineMenuToggle_list[submenu].hint = nil
 			if title then
 				ExamineMenuToggle_list[submenu].name = title
