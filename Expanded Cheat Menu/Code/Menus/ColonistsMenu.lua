@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Colonists = "ECM.Expanded CM.Colonists"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[547--[[Colonists--]]]),
+	Actions[c] = {ActionName = S[547--[[Colonists--]]],
 		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Colonists",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -311,7 +311,7 @@ Works after colonist idle."--]]
 
 	local str_ExpandedCM_Colonists_Work = "ECM.Expanded CM.Colonists.Work"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000212--[[Work--]]]),
+	Actions[c] = {ActionName = S[302535920000212--[[Work--]]],
 		ActionMenubar = "ECM.Expanded CM.Colonists",
 		ActionId = ".Work",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -392,7 +392,7 @@ Works after colonist idle."--]]
 
 	local str_ExpandedCM_Colonists_Stats = "ECM.Expanded CM.Colonists.Stats"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[5568--[[Stats--]]]),
+	Actions[c] = {ActionName = S[5568--[[Stats--]]],
 		ActionMenubar = "ECM.Expanded CM.Colonists",
 		ActionId = ".Stats",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -529,7 +529,7 @@ Works after colonist idle."--]]
 
 	local str_ExpandedCM_Colonists_Traits = "ECM.Expanded CM.Colonists.Traits"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[235--[[Traits--]]]),
+	Actions[c] = {ActionName = S[235--[[Traits--]]],
 		ActionMenubar = "ECM.Expanded CM.Colonists",
 		ActionId = ".Traits",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

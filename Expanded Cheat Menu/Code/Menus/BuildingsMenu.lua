@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Buildings = "ECM.Expanded CM.Buildings"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[3980--[[Buildings--]]]),
+	Actions[c] = {ActionName = S[3980--[[Buildings--]]],
 		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -104,7 +104,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	local str_ExpandedCM_Buildings_SanatoriumsSchools = "ECM.Expanded CM.Buildings.Sanatoriums & Schools"
 	local SandS = StringFormat("%s & %s",S[5245--[[Sanatoriums--]]],S[5248--[[Schools--]]])
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",SandS),
+	Actions[c] = {ActionName = SandS,
 		ActionMenubar = "ECM.Expanded CM.Buildings",
 		ActionId = ".Sanatoriums & Schools",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -170,7 +170,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	local str_ExpandedCM_Buildings_Farms = "ECM.Expanded CM.Buildings.Farms"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[5068--[[Farms--]]]),
+	Actions[c] = {ActionName = S[5068--[[Farms--]]],
 		ActionMenubar = "ECM.Expanded CM.Buildings",
 		ActionId = ".Farms",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -203,7 +203,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	local str_ExpandedCM_Buildings_CablesPipes = "ECM.Expanded CM.Buildings.Cables & Pipes"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000157--[[Cables & Pipes--]]]),
+	Actions[c] = {ActionName = S[302535920000157--[[Cables & Pipes--]]],
 		ActionMenubar = "ECM.Expanded CM.Buildings",
 		ActionId = ".Cables & Pipes",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -241,7 +241,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	local str_ExpandedCM_Buildings_Buildings = "ECM.Expanded CM.Buildings.Buildings"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[3980--[[Buildings--]]]),
+	Actions[c] = {ActionName = S[3980--[[Buildings--]]],
 		ActionMenubar = "ECM.Expanded CM.Buildings",
 		ActionId = ".Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -392,7 +392,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	local str_ExpandedCM_Buildings_Toggles = "ECM.Expanded CM.Buildings.Toggles"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920001367--[[Toggles--]]]),
+	Actions[c] = {ActionName = S[302535920001367--[[Toggles--]]],
 		ActionMenubar = "ECM.Expanded CM.Buildings",
 		ActionId = ".Toggles",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -645,7 +645,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	local str_ExpandedCM_Buildings_SpaceElevator = "ECM.Expanded CM.Buildings.Space Elevator"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[1120--[[Space Elevator--]]]),
+	Actions[c] = {ActionName = S[1120--[[Space Elevator--]]],
 		ActionMenubar = "ECM.Expanded CM.Buildings",
 		ActionId = ".Space Elevator",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

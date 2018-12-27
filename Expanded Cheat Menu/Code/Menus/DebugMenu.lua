@@ -296,7 +296,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_Debug_Grids = "ECM.Debug.Grids"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000035--[[Grids--]]]),
+	Actions[c] = {ActionName = S[302535920000035--[[Grids--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Grids",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -413,7 +413,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_Debug_DebugFX = "ECM.Debug.Debug FX"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920001175--[[Debug FX--]]]),
+	Actions[c] = {ActionName = S[302535920001175--[[Debug FX--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Debug FX",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -471,7 +471,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_Debug_PathMarkers = "ECM.Debug.Path Markers"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000467--[[Path Markers--]]]),
+	Actions[c] = {ActionName = S[302535920000467--[[Path Markers--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Path Markers",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -529,7 +529,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_Debug_DeleteObjects = "ECM.Debug.Delete Object(s)"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000489--[[Delete Object(s)--]]]),
+	Actions[c] = {ActionName = S[302535920000489--[[Delete Object(s)--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Delete Object(s)",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

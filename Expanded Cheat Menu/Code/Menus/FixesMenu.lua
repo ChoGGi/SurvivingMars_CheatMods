@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Fixes = "ECM.Expanded CM.Fixes"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000922--[[Fixes--]]]),
+	Actions[c] = {ActionName = S[302535920000922--[[Fixes--]]],
 		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Fixes",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -126,7 +126,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Fixes_Most = "ECM.Expanded CM.Fixes.Most"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000935--[[Most--]]]),
+	Actions[c] = {ActionName = S[302535920000935--[[Most--]]],
 		ActionMenubar = "ECM.Expanded CM.Fixes",
 		ActionId = ".Most",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -240,7 +240,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Fixes_Toggles = "ECM.Expanded CM.Fixes.Toggles"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[302535920000938--[[Toggles--]]]),
+	Actions[c] = {ActionName = S[302535920000938--[[Toggles--]]],
 		ActionMenubar = "ECM.Expanded CM.Fixes",
 		ActionId = ".Toggles",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -330,7 +330,7 @@ This may break the save in other ways, best to just use it for testing."--]]
 
 	local str_ExpandedCM_Fixes_ECMFixes = "ECM.Expanded CM.Fixes.ECM Fixes"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s ..",S[302535920000887--[[ECM--]]],S[302535920000922--[[Fixes--]]]),
+	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000887--[[ECM--]]],S[302535920000922--[[Fixes--]]]),
 		ActionMenubar = "ECM.Expanded CM.Fixes",
 		ActionId = ".ECM Fixes",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

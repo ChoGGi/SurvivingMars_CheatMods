@@ -9,7 +9,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Mission = "ECM.Expanded CM.Mission"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[1635--[[Mission--]]]),
+	Actions[c] = {ActionName = S[1635--[[Mission--]]],
 		ActionMenubar = "ECM.Expanded CM",
 		ActionId = ".Mission",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -134,7 +134,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ExpandedCM_Mission_Disasters = "ECM.Expanded CM.Mission.Disasters"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s ..",S[3983--[[Disasters--]]]),
+	Actions[c] = {ActionName = S[3983--[[Disasters--]]],
 		ActionMenubar = "ECM.Expanded CM.Mission",
 		ActionId = ".Disasters",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
