@@ -133,8 +133,14 @@ end
 function ChoGGi_ConsoleLogWin:UpdateText(text)
 	if text then
 		self.idText:SetText(text)
+		CreateRealTimeThread(function()
+			Sleep(10)
+			self:ScrollToBottom()
+		end)
 	end
+end
 
+function ChoGGi_ConsoleLogWin:ScrollToBottom()
 	local y = Max(0, self.idScrollArea.scroll_range_y - self.idScrollArea.content_box:sizey())
 	self.idScrollV:SetScroll(0, y)
 	self.idScrollArea:ScrollTo(0, y)

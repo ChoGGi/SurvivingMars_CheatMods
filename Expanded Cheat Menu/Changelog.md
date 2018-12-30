@@ -11,6 +11,10 @@
 - Examine:
 - > Auto-refresh delay isn't stored as a global setting anymore.
 - > Hyperlinks sometimes barfed on weird text, it now checks if there's an actual link.
+- Console Log Window will now start scrolled to the bottom when opened.
+
+### Fixed:
+- Having Console Log Window showing with the helpermod caused issues on startup (thanks SkiRich).
 
 ## v11.9 (23 Dec 2018)
 ### Added:
