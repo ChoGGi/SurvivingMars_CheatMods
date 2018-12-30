@@ -1,6 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001494,Stop a tech from being researched.,
-302535920001495,This tries to reverse the changes made when the tech is researched (emphasis on tries).,
 302535920001496,,
 302535920001497,,
 302535920001498,,
@@ -308,7 +306,7 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 302535920000323,Exec Code,
 302535920000239,Tools,
 302535920000228,Assign to,
-302535920000043,"Press Enter to scroll to next found text, Ctrl-Enter to scroll back, Arrows to scroll to each end.",
+302535920000043,"Press Enter to scroll to next found text, Ctrl-Enter to scroll to previous found text, Arrows to scroll to each end.",
 302535920000044,Go To Text,
 302535920000045,"Scrolls down one line or scrolls between text in ""Go to text"".
 Right-click to go up, middle-click to scroll to the top.",
@@ -550,6 +548,8 @@ Use with %s to fill up a dome with spires.",
 302535920000230,Remove Building Limits,
 302535920000231,"Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
 See also %s.",
+302535920001494,Stop a tech from being researched.,
+302535920001495,This tries to reverse the changes made when the tech is researched (emphasis on tries).,
 302535920001478,Open the Mod Editor and load the Mod map.,
 302535920001402,Add some party to your domes for 3 hours (10 domes max).,
 302535920001392,Clears story bit cooldowns... (got me).,

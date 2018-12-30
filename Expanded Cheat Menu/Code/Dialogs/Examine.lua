@@ -323,7 +323,7 @@ function Examine:Init(parent, context)
 		}, self.idToolbarArea)
 	end -- toolbar area
 
-	do -- go to text area
+	do -- search area
 		self.idSearchArea = g_Classes.ChoGGi_DialogSection:new({
 			Id = "idSearchArea",
 			Dock = "top",
@@ -331,9 +331,8 @@ function Examine:Init(parent, context)
 
 		self.idSearchText = g_Classes.ChoGGi_TextInput:new({
 			Id = "idSearchText",
-			RolloverText = S[302535920000043--[["Press Enter to scroll to next found text, Ctrl-Enter to scroll back, Arrows to scroll to each end."--]]],
+			RolloverText = S[302535920000043--[["Press Enter to scroll to next found text, Ctrl-Enter to scroll to previous found text, Arrows to scroll to each end."--]]],
 			Hint = S[302535920000044--[[Go To Text--]]],
---~ 			OnTextChanged = self.idSearchTextOnTextChanged,
 			OnKbdKeyDown = self.idSearchTextOnKbdKeyDown,
 		}, self.idSearchArea)
 
@@ -621,39 +620,56 @@ function Examine:idSearchOnMouseButtonDown(pt,button,...)
 	end
 end
 
-function Examine:idSearchTextOnKbdKeyDown(vk,...)
-	self = GetRootDialog(self)
-	if vk == const.vkEnter then
+local idSearchTextOnKbdKeyDown_table = {
+	[const.vkEnter] = function(self)
 		if IsControlPressed() then
 			self:FindNext(nil,true)
 		else
 			self:FindNext()
 		end
 		return "break"
-	elseif vk == const.vkUp then
+	end,
+	[const.vkUp] = function(self)
 		self.idScrollArea:ScrollTo(nil,0)
 		return "break"
-	elseif vk == const.vkDown then
+	end,
+	[const.vkDown] = function(self)
 		local v = self.idScrollV
 		if v:IsVisible() then
 			self.idScrollArea:ScrollTo(nil,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
 		end
 		return "break"
-	elseif vk == const.vkRight then
+	end,
+	[const.vkRight] = function(self)
 		local h = self.idScrollH
 		if h:IsVisible() then
 			self.idScrollArea:ScrollTo(h.Max - (h.FullPageAtEnd and h.PageSize or 0))
 		end
 		-- break doesn't work for left/right
-	elseif vk == const.vkLeft then
+	end,
+	[const.vkLeft] = function(self)
 		self.idScrollArea:ScrollTo(0)
 		-- break doesn't work for left/right
-	elseif vk == const.vkEsc then
+	end,
+	[const.vkEsc] = function(self)
 		self.idCloseX:OnPress()
 		return "break"
-	else
-		return ChoGGi_TextInput.OnKbdKeyDown(self.idSearchText,vk,...)
+	end,
+	[const.vkV] = function(self)
+		if IsControlPressed() then
+			CreateRealTimeThread(function()
+				Sleep(10)
+				self:FindNext()
+			end)
+		end
+	end,
+}
+function Examine:idSearchTextOnKbdKeyDown(vk,...)
+	local func = idSearchTextOnKbdKeyDown_table[vk]
+	if func then
+		return func(GetRootDialog(self))
 	end
+	return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
 end
 
 -- adds class name then list of functions below
@@ -1158,6 +1174,10 @@ function Examine:valuetotextex(obj)
 	end
 
 	if obj_type == "string" then
+		-- so we don't dupe examine dialogs; i store all examined objects in an ass table, and nil is changed to "nil"
+		if obj == "nil" then
+			return "nil"
+		end
 		-- some translated stuff has <color in it, so we make sure they don't bother the rest
 		return StringFormat("'%s</color></color>'",obj)
 	end
@@ -1504,8 +1524,13 @@ function Examine:totextex(obj,obj_type)
 		c = c + 1
 		totextex_res[c] = tostring(obj)
 	elseif obj_type == "string" then
-		c = c + 1
-		totextex_res[c] = StringFormat("'%s'",obj)
+		if obj == "nil" then
+			c = c + 1
+			totextex_res[c] = StringFormat("%s",obj)
+		else
+			c = c + 1
+			totextex_res[c] = StringFormat("'%s'",obj)
+		end
 
 	elseif obj_type == "userdata" then
 		local trans = Trans(obj)
@@ -1684,7 +1709,7 @@ ThreadHasFlags(): %s</color>]],
 		)
 	end
 
-	if not (is_valid_obj or obj_type == "userdata") and obj_metatable then
+	if not (obj == "nil" or is_valid_obj or obj_type == "userdata") and obj_metatable then
 		TableInsert(totextex_res, 1, StringFormat("\t-- metatable: %s --",
 			self:valuetotextex(obj_metatable)
 		))
