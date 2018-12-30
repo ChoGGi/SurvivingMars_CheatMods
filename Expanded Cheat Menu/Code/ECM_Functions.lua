@@ -729,51 +729,32 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInMultiLineTextDlg{text = text}
 	end
 
-	do -- ShowConsoleLogWin
-		local AsyncFileToString
-		if not blacklist then
-			AsyncFileToString = AsyncFileToString
+	function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
+		if visible and not dlgChoGGi_ConsoleLogWin then
+			dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop,{})
+			local _,text = ReadLog()
+			dlgChoGGi_ConsoleLogWin:UpdateText(text)
 		end
 
-		local GetLogFile = GetLogFile
-		function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
-			if visible and not dlgChoGGi_ConsoleLogWin then
-				dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop,{})
+		local dlg = dlgChoGGi_ConsoleLogWin
+		if dlg then
+			dlg:SetVisible(visible)
 
-				-- update it with console log text
-				local dlg = dlgConsoleLog
-				if dlg then
-					dlgChoGGi_ConsoleLogWin.idText:SetText(dlg.idText:GetText())
-				elseif not blacklist then
-					--if for some reason consolelog isn't around, then grab the log file
-					local err,str = AsyncFileToString(GetLogFile())
-					if not err then
-						dlgChoGGi_ConsoleLogWin.idText:SetText(str)
-					end
-				end
-
+			--size n position
+			local size = ChoGGi.UserSettings.ConsoleLogWin_Size
+			local pos = ChoGGi.UserSettings.ConsoleLogWin_Pos
+			--make sure dlg is within screensize
+			if size then
+				dlg:SetSize(size)
+			end
+			if pos then
+				dlg:SetPos(pos)
+			else
+				dlg:SetPos(point(100,100))
 			end
 
-			local dlg = dlgChoGGi_ConsoleLogWin
-			if dlg then
-				dlg:SetVisible(visible)
-
-				--size n position
-				local size = ChoGGi.UserSettings.ConsoleLogWin_Size
-				local pos = ChoGGi.UserSettings.ConsoleLogWin_Pos
-				--make sure dlg is within screensize
-				if size then
-					dlg:SetSize(size)
-				end
-				if pos then
-					dlg:SetPos(pos)
-				else
-					dlg:SetPos(point(100,100))
-				end
-
-			end
 		end
-	end -- do
+	end
 
 	-- Any png files in AppData/Logos folder will be added to mod as converted logo files.
 	-- They have to be min of 8bit, and will be resized to power of 2.
