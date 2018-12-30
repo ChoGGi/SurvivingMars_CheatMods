@@ -1520,15 +1520,26 @@ do -- Rebuildshortcuts
 		["Cheats.Trigger Disaster Meteor Multi Spawn"] = true,
 		["Cheats.Trigger Disaster Meteor Storm"] = true,
 		["Cheats.Workplaces"] = true,
-		DE_ToggleScreenshotInterface = true,
+		-- debug stuff that doesn't work
+		DbgToggleBuildableGrid = true,
+		MapSettingsEditor = true,
+		DE_HexBuildGridToggle = true,
+		DE_ToggleTerrainDepositGrid = true,
+		actionPOCMapAlt0 = true,
+		actionPOCMapAlt1 = true,
+		actionPOCMapAlt2 = true,
+		actionPOCMapAlt3 = true,
+		actionPOCMapAlt4 = true,
+		actionPOCMapAlt5 = true,
 		-- i need to override so i can reset zoom and other settings.
 		FreeCamera = true,
 		-- we def don't want this
 		G_CompleteConstructions = true,
+		-- I got my own bindable version
+		G_ToggleInGameInterface = true,
+		G_ToggleSigns = true,
 		-- not cheats
---~ 		G_ToggleInGameInterface = true,
 --~ 		G_ToggleOnScreenHints = true,
---~ 		G_ToggleSigns = true,
 --~ 		G_UnpinAll = true,
 		G_AddFunding = true,
 		G_CheatClearForcedWorkplaces = true,
@@ -1573,6 +1584,7 @@ do -- Rebuildshortcuts
 		TriggerDisasterStop = true,
 		UnlockAllBreakthroughs = true,
 		UpsampledScreenshot = true,
+		DE_ToggleScreenshotInterface = true,
 		-- EditorShortcuts.lua
 		EditOpsHistory = true,
 		["Editors.Random Map"] = true,
@@ -2133,20 +2145,6 @@ function ChoGGi.ComFuncs.ColonistUpdateRace(c,race)
 	end
 	c.race = race
 	c:ChooseEntity()
-end
-
--- toggle visiblity of console log
-function ChoGGi.ComFuncs.ToggleConsoleLog()
-	local log = dlgConsoleLog
-	if log then
-		if log:GetVisible() then
-			log:SetVisible(false)
-		else
-			log:SetVisible(true)
-		end
-	else
-		dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
-	end
 end
 
 do -- FuckingDrones (took quite a while to figure this fun one out)
@@ -3624,6 +3622,13 @@ function ChoGGi.ComFuncs.CheatsMenu_Toggle()
 end
 
 function ChoGGi.ComFuncs.Editor_Toggle()
+	-- force editor to toggle once (makes status text work properly the "first" toggle instead of the second)
+	local idx = TableFind(terminal.desktop,"class","EditorInterface")
+	if not idx then
+		EditorState(1,1)
+		EditorDeactivate()
+	end
+
 	local Platform = Platform
 	-- copy n paste from... somewhere?
 	if IsEditorActive() then
@@ -3657,6 +3662,8 @@ function ChoGGi.ComFuncs.Editor_Toggle()
 		end)
 		EditorState(1,1)
 	end
+
+	ChoGGi.ComFuncs.UpdateConsoleMargins()
 
 	camera.Unlock(1)
 	ChoGGi.ComFuncs.SetCameraSettings()
