@@ -1178,21 +1178,20 @@ function OnMsg.ClassesBuilt()
 		end
 	end -- do
 
---~ 	-- make sure console is focused even when construction is opened
+	-- tweak console when it's "opened"
 	function Console:Show(show,...)
 		ChoGGi_OrigFuncs.Console_Show(self, show,...)
 		if show then
-
 			-- adding transparency for console stuff
 			SetTrans(self)
 			-- and rebuild my console buttons
 			ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(self)
 		end
 		-- move log up n down
-		ChoGGi.ComFuncs.UpdateConsoleLogMargins(show)
+		ChoGGi.ComFuncs.UpdateConsoleMargins(show)
 	end
 
-	do -- skip quit from being added to console history to prevent annoyances
+	do -- Console:AddHistory
 		local skip_cmds = {
 			quit = true,
 			["quit()"] = true,
@@ -1202,9 +1201,12 @@ function OnMsg.ClassesBuilt()
 			["reboot()"] = true,
 			restart = true,
 			["restart()"] = true,
+			["quit(\"restart\")"] = true,
+			["quit('restart')"] = true,
 		}
+		-- skip quit from being added to console history to prevent annoyances
 		function Console:AddHistory(text,...)
-			if skip_cmds[text] then
+			if skip_cmds[text] or text:sub(1,5) == "quit(" then
 				return
 			end
 			return ChoGGi_OrigFuncs.Console_AddHistory(self,text,...)

@@ -2,6 +2,7 @@
 
 ## v5.0 (Unreleased)
 - List dialog was sometimes showing the value instead of the text for the list.
+- Editor mode toggle wasn't showing selection text till the second time it's opened.
 
 ## v4.9 (23 Dec 2018)
 - List dialog:

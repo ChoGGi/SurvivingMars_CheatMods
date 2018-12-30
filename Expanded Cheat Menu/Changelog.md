@@ -11,7 +11,12 @@
 - Examine:
 - > Auto-refresh delay isn't stored as a global setting anymore.
 - > Hyperlinks sometimes barfed on weird text, it now checks if there's an actual link.
-- Console Log Window will now start scrolled to the bottom when opened.
+- Console Log Window starts scrolled to the bottom when opened.
+- Console/Console Log moved above the editor status/button area.
+- Toggle interface asks if you're sure and displays the shortcut to toggle it.
+- Cheat menu:
+- > Quickbar no longer takes up the length of the menu.
+- > Question box is now centred instead of stuck on the left side.
 
 ### Fixed:
 - Having Console Log Window showing with the helpermod caused issues on startup (thanks SkiRich).

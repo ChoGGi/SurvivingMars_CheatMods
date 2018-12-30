@@ -700,16 +700,53 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	do -- UpdateConsoleLogMargins
+	-- toggle visiblity of console log
+	function ChoGGi.ComFuncs.ToggleConsoleLog()
+		local log = dlgConsoleLog
+		if log then
+			if log:GetVisible() then
+				log:SetVisible(false)
+			else
+				log:SetVisible(true)
+			end
+		else
+			dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
+		end
+	end
+
+	do -- UpdateConsoleMargins
+		-- normally visible
 		local margin_vis = box(10, 80, 10, 65)
+		-- console hidden
 		local margin_hidden = box(10, 80, 10, 10)
-		function ChoGGi.ComFuncs.UpdateConsoleLogMargins(which)
+
+		local margin_vis_editor_log = box(10, 80, 10, 45)
+
+		local margin_vis_con_log = box(10, 80, 10, 115)
+		local IsEditorActive = IsEditorActive
+		local con_margin_editor = box(0, 0, 0, 50)
+		local con_margin_norm = box(0, 0, 0, 0)
+
+		function ChoGGi.ComFuncs.UpdateConsoleMargins(console_vis)
 			if dlgConsoleLog then
 				-- move log text above the buttons i added and make sure log text stays below the cheat menu
-				if which then
-					dlgConsoleLog.idText:SetMargins(margin_vis)
+				if console_vis then
+					-- editor mode adds a toolbar to the bottom, so we go above it
+					if IsEditorActive() then
+						dlgConsole:SetMargins(con_margin_editor)
+						dlgConsoleLog.idText:SetMargins(margin_vis_con_log)
+					else
+						dlgConsole:SetMargins(con_margin_norm)
+						dlgConsoleLog.idText:SetMargins(margin_vis)
+					end
 				else
-					dlgConsoleLog.idText:SetMargins(margin_hidden)
+					if IsEditorActive() then
+						dlgConsole:SetMargins(con_margin_editor)
+						dlgConsoleLog.idText:SetMargins(margin_vis_editor_log)
+					else
+						dlgConsole:SetMargins(con_margin_norm)
+						dlgConsoleLog.idText:SetMargins(margin_hidden)
+					end
 				end
 			end
 		end

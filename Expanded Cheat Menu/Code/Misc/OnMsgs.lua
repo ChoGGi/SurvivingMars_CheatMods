@@ -424,26 +424,28 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 		local XShortcutsTarget = XShortcutsTarget
 		if XShortcutsTarget then
 
-			-- add some ids for easier selection later on
 			for i = 1, #XShortcutsTarget do
-				if XShortcutsTarget[i]:IsKindOf("XMenuBar") then
-					XShortcutsTarget.idMenuBar = XShortcutsTarget[i]
-				elseif XShortcutsTarget[i]:IsKindOf("XWindow") then
-					XShortcutsTarget.idToolbar = XShortcutsTarget[i]
+				local item = XShortcutsTarget[i]
+				-- yeah... i don't need the menu taking up the whole width of my screen
+				item:SetHAlign("left")
+
+				-- add some ids for easier selection later on
+				if item:IsKindOf("XMenuBar") then
+					XShortcutsTarget.idMenuBar = item
+				elseif item:IsKindOf("XWindow") then
+					XShortcutsTarget.idToolbar = item
 					break
 				end
 			end
 
 			-- add a hint about rightclicking
 			if UserSettings.EnableToolTips then
-				XShortcutsTarget:SetRolloverTemplate("Rollover")
-				XShortcutsTarget:SetRolloverTitle(S[126095410863--[[Info--]]])
-				XShortcutsTarget:SetRolloverText(S[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
-				XShortcutsTarget:SetRolloverHint(S[302535920001441--[["<left_click> Activate, <right_click> Add/Remove"--]]])
+				local toolbar = XShortcutsTarget.idMenuBar
+				toolbar:SetRolloverTemplate("Rollover")
+				toolbar:SetRolloverTitle(S[126095410863--[[Info--]]])
+				toolbar:SetRolloverText(S[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
+				toolbar:SetRolloverHint(S[302535920001441--[["<left_click> Activate, <right_click> Add/Remove"--]]])
 			end
-
-			-- yeah... i don't need the menu taking up the whole width of my screen
-			XShortcutsTarget:SetHAlign("left")
 
 			-- always show menu on my computer
 			if UserSettings.ShowCheatsMenu or ChoGGi.testing then

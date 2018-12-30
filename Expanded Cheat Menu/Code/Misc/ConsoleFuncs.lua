@@ -291,7 +291,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				if ChoGGi.UserSettings.ConsoleToggleHistory then
 					ShowConsoleLog(true)
-					ChoGGi.ComFuncs.UpdateConsoleLogMargins(true)
+					ChoGGi.ComFuncs.UpdateConsoleMargins(true)
 					print("ShowConsoleLog",true)
 				else
 					DestroyConsoleLog()
@@ -351,7 +351,13 @@ function OnMsg.ClassesGenerate()
 
 		-- make some space for the close button
 		dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
-		ChoGGi.ComFuncs.UpdateConsoleLogMargins(dlgConsole:GetVisible())
+		ChoGGi.ComFuncs.UpdateConsoleMargins(dlgConsole:GetVisible())
+
+		-- idBottomContainer isn't added when i normally setup the console stuff (ModsReloaded)
+		local bottom = XShortcutsTarget.idBottomContainer
+		if bottom.HAlign ~= "left" then
+			bottom:SetHAlign("left")
+		end
 
 		-- add close button
 		g_Classes.ChoGGi_CloseButton:new({

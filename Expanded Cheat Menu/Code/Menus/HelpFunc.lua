@@ -224,13 +224,38 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 	end
 
 	function ChoGGi.MenuFuncs.Interface_Toggle()
-		rawset(_G, "OrgXRender", rawget(_G, "OrgXRender") or XRender)
-		if XRender == OrgXRender then
-			function XRender() end
+		if hr.RenderUIL == 1 then
+
+			-- ask first (and show shortcut key to toggle)
+			local function CallBackFunc(answer)
+				if answer then
+					hr.RenderUIL = 0
+				end
+			end
+
+			-- need to retriieve shortcut key to display below
+			local options = OptionsCreateAndLoad()
+			local key = options["ECM.Help.Interface.Toggle Interface"]
+			-- if we don't have a shortcut set then do nothing
+			if key then
+				key = key[1]
+				if not key then
+					return
+				end
+			else
+				return
+			end
+
+			ChoGGi.ComFuncs.QuestionBox(
+				StringFormat("%s\n\n%s",S[302535920000244--[[Warning! This will hide everything. Remember the shortcut or have fun restarting.--]]],key),
+				CallBackFunc,
+				302535920000663--[[Toggle Interface--]]
+			)
+
 		else
-			XRender = OrgXRender
+			hr.RenderUIL = 1
 		end
-		UIL.Invalidate()
+
 	end
 
 	function ChoGGi.MenuFuncs.RetMapInfo()
