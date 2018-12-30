@@ -4,6 +4,9 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v12.0 (Unreleased)
+### Added:
+- Cheats>Research>Research Remove: Stop a tech from being researched.
+
 ### Changed:
 - Examine:
 - > Auto-refresh delay isn't stored as a global setting anymore.

@@ -196,6 +196,16 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 	}
 
 	c = c + 1
+	Actions[c] = {ActionName = StringFormat("%s %s",S[311--[[Research--]]],S[302535920000281--[[Remove--]]]),
+		ActionMenubar = str_Cheats_Research,
+		ActionId = ".Research Remove",
+		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
+		RolloverText = S[302535920001494--[[Stop a tech from being researched.--]]],
+		OnAction = ChoGGi.MenuFuncs.ResearchRemove,
+		ActionSortKey = "-2",
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = S[302535920001278--[[Instant Research--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Instant Research",

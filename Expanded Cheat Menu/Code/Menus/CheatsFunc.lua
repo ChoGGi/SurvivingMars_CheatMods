@@ -1396,6 +1396,142 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		}
 	end
 
+	do -- ResearchRemove
+		local function UpdateColonistPref(city)
+			city:ForEachLabelObject("Colonist", "ChangeWorkplacePerformance")
+			city:ForEachLabelObject("Workplace", "UpdatePerformance")
+		end
+		-- reset whatever we can
+		local lookup_gvalue = {
+			-- global values
+			RoverCommandAI = "g_RoverAIResearched",
+			ConstructionNanites = "g_ConstructionNanitesResearched",
+			ExtractorAI = "g_ExtractorAIResearched",
+			EternalFusion = "g_EternalFusionResearched",
+			WirelessPower = "g_WirelessPower",
+			DustRepulsion = "g_DustRepulsion",
+			MartianbornStrength = "g_MartianbornStrength",
+			["Vocation-Oriented Society"] = "g_VocationOrientedSociety",
+			ForeverYoung = "g_SeniorsCanWork",
+			-- other
+			SustainedWorkload = function(city)
+				city:ForEachLabelObject("Workplace", "UpdatePerformance")
+			end,
+			InspiringArchitecture = function(city)
+				city:ForEachLabelObject("Colonist", Notify, "UpdateMorale")
+			end,
+			PrintedElectronics = function(city)
+				city:ForEachLabelObject("DroneFactory", "ChangeDroneConstructionResource", "Electronics")
+			end,
+			NanoRefinement = function(city)
+				local IsKindOf = IsKindOf
+				MapForEach("map", "DepositExploiter",function(obj)
+					if IsKindOf(obj, "BaseBuilding") then
+						obj:UpdateConsumption()
+						if obj:HasMember("DepositChanged") then
+							obj:DepositChanged()
+						end
+						obj:UpdateWorking()
+					end
+				end)
+			end,
+			MartianbornIngenuity = function(city)
+				-- the tech unlock uses param1 as a positive number (Lua\Units\Colonist.lua, line: 1074)
+				local amount = -TechDef[tech_id].param1
+
+				local display_text = T(7587, "<green>Martianborn Ingenuity <amount></color>")
+				local domes = city.labels.Dome or ""
+				for i = 1, #domes do
+					local colonists = domes[i].labels.Martianborn or ""
+					for j = 1, #colonists do
+						colonists[j]:SetModifier("performance", "MartianbornIngenuity", amount, 0, display_text)
+					end
+				end
+			end,
+
+			NocturnalAdaptation = function(city)
+				g_NocturnalAdaptation = false
+				UpdateColonistPref(city)
+			end,
+			GeneralTraining = UpdateColonistPref,
+			ProductivityTraining = UpdateColonistPref,
+			EmergencyTraining = UpdateColonistPref,
+			SystematicTraining = UpdateColonistPref,
+		}
+
+		function ChoGGi.MenuFuncs.ResearchRemove()
+			local ItemList = {}
+			local c = 0
+
+			local icon = "<image %s 250>"
+			local hint = "%s\n\n%s: %s\n\n<image %s 1500>"
+			local IsTechResearched = IsTechResearched
+			local TechDef = TechDef
+			for tech_id,tech in pairs(TechDef) do
+				-- only show stuff researched
+				if IsTechResearched(tech_id) then
+					local text = Trans(tech.display_name)
+					-- remove " from that one tech...
+					if text:find("\"") then
+						text = text:gsub("\"","")
+					end
+					c = c + 1
+					ItemList[c] = {
+						text = text,
+						value = tech_id,
+						icon = icon:format(tech.icon),
+						hint = hint:format(Trans(T(tech.description,tech)),S[1000097--[[Category--]]],tech.group,tech.icon),
+					}
+				end
+			end
+
+			local function CallBackFunc(choice)
+				if #choice < 1 then
+					return
+				end
+
+				local g = _G
+				local UICity = g.UICity
+				for i = 1, #choice do
+					local value = choice[i].value
+
+					-- some tech changes a global value, so we false what we can here
+					local global_value = lookup_gvalue[value]
+					if global_value then
+						if type(global_value) == "function" then
+							global_value(UICity)
+						else
+							g[global_value] = false
+						end
+					end
+					local tech_status = UICity.tech_status[value]
+					if tech_status then
+						tech_status.researched = nil
+						tech_status.new = nil
+					end
+				end
+
+				-- if we unlocked any buildings and the buildmenu is open
+				ChoGGi.ComFuncs.UpdateBuildMenu()
+
+				MsgPopup(
+					S[302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.--]]]:format("",#choice),
+					311--[[Research--]],
+					default_icon
+				)
+			end
+
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = ItemList,
+				title = StringFormat("%s %s",S[311--[[Research--]]],S[302535920000281--[[Remove--]]]),
+				hint = 302535920001495--[[This tries to reverse the changes made when the tech is researched (emphasis on tries).--]],
+				multisel = true,
+				height = 800,
+			}
+		end
+	end -- do
+
 	do -- ResearchTech
 
 		local mystery_cost = {
@@ -1522,6 +1658,8 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 					text = S[3--[[Grant Research--]]]
 				end
 
+				local g = _G
+				local UICity = g.UICity
 				for i = 1, #choice do
 					local value = choice[i].value
 					if value == "Everything" then
@@ -1534,9 +1672,10 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 						ResearchTechGroup(func,"Breakthroughs")
 					elseif value == "AllMysteries" then
 						ResearchTechGroup(func,"Mysteries")
-					else
+					-- make sure it's an actual tech
+					elseif TechDef[value] then
 						AllowMysteryTech(value,UICity)
-						_G[func](value)
+						g[func](value)
 					end
 				end
 
