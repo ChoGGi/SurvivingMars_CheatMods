@@ -15,7 +15,8 @@ return PlaceObj("ModDef", {
 A pod will come down and hover around the colonist till they make the mistake of going outside.
 If you change your mind; you can toggle it before they get sucked up.
 
-Once they go outside it'll then suck them up and take them back to Earth (truthfully just outside the atmosphere before spacing them).
+Once they go outside it'll suck them up and take them back to Earth (truthfully just outside the atmosphere before spacing them).
+
 
 
 Unfortunately frozen bodies don't have any propulsion systems. They'll come back as human shaped meteors (in a few Sols). You wouldn't want to experience the Kessler syndrome around your shiny new planet after all.
