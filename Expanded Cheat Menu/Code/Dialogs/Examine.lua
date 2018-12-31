@@ -1146,8 +1146,8 @@ end
 --
 
 local function Examine_valuetotextex(_,_,button,self,obj)
-	-- no terrain = no sense in using ShowObj
-	if button == "L" and GameState.gameplay and terrain.IsPointInBounds(obj) then
+	-- not ingame = no sense in using ShowObj
+	if button == "L" and GameState.gameplay then
 		ShowObj(obj)
 	else
 		ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)

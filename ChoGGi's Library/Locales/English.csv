@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001496,,
 302535920001497,,
 302535920001498,,
 302535920001499,,
@@ -548,6 +547,7 @@ Use with %s to fill up a dome with spires.",
 302535920000230,Remove Building Limits,
 302535920000231,"Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
 See also %s.",
+302535920001496,Show a list of achievements to unlock (permanent!).,
 302535920001494,Stop a tech from being researched.,
 302535920001495,This tries to reverse the changes made when the tech is researched (emphasis on tries).,
 302535920001478,Open the Mod Editor and load the Mod map.,
