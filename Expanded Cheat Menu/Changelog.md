@@ -6,6 +6,7 @@
 ## v12.0 (Unreleased)
 ### Added:
 - Cheats>Research>Research Remove: Stop a tech from being researched.
+- Cheats>Unlock Achievements: Show a list of achievements to unlock.
 
 ### Changed:
 - Examine:
@@ -20,6 +21,7 @@
 
 ### Fixed:
 - Having Console Log Window showing with the helpermod caused issues on startup (thanks SkiRich).
+- Rocket>Cheat panel>Fuel wasn't acting like it should.
 
 ## v11.9 (23 Dec 2018)
 ### Added:

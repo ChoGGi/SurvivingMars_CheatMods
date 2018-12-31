@@ -63,6 +63,15 @@ Certain mysteries need certain objects which get placed when the map is generate
 	}
 
 	c = c + 1
+	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000318--[[Unlock--]]],S[697482021580--[[Achievements--]]]),
+		ActionMenubar = "ECM.Cheats",
+		ActionId = ".Unlock Achievements",
+		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
+		RolloverText = S[302535920001496--[[Show a list of achievements to unlock (permanent!).--]]],
+		OnAction = ChoGGi.MenuFuncs.UnlockAchievements,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000266--[[Spawn--]]],S[547--[[Colonists--]]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Spawn Colonists",

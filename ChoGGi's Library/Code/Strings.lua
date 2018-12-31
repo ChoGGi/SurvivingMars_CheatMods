@@ -336,6 +336,7 @@ local Strings = {
 	[619281504128] = TranslationTable[619281504128], -- Maintenance
 	[640016954592] = TranslationTable[640016954592], -- Remove this switch or valve.
 	[652319561018] = TranslationTable[652319561018], -- All Traits
+	[697482021580] = TranslationTable[697482021580], -- Achievements
 	[847439380056] = TranslationTable[847439380056], -- Disabled
 	[885971788025] = TranslationTable[885971788025], -- Outside Buildings
 	[889032422791] = TranslationTable[889032422791], -- OUTSOURCE

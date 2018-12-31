@@ -11,6 +11,58 @@ function OnMsg.ClassesGenerate()
 	local Random = ChoGGi.ComFuncs.Random
 	local S = ChoGGi.Strings
 
+	function ChoGGi.MenuFuncs.UnlockAchievements()
+		local Msg = Msg
+		local AchievementUnlock = AchievementUnlock
+		local EngineCanUnlockAchievement = EngineCanUnlockAchievement
+
+		local XPlayerActive = XPlayerActive
+		local AchievementPresets = AchievementPresets
+
+		local ItemList = {}
+		local c = 0
+
+		local icon_str = "UI/Achievements/%s.tga"
+		local hint_str = "%s\n\n%s\n\n<image %s 2500>"
+		for id,item in pairs(AchievementPresets) do
+			if EngineCanUnlockAchievement(XPlayerActive, id) then
+				c = c + 1
+				ItemList[c] = {
+					text = Trans(item.display_name),
+					value = id,
+					hint = hint_str:format(Trans(item.how_to),Trans(item.description),icon_str:format(item.image))
+				}
+			end
+		end
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+
+			CreateRealTimeThread(function()
+				for i = 1, #choice do
+					AchievementUnlock(XPlayerActive, choice[i].value)
+					Sleep(100)
+				end
+
+				MsgPopup(
+					StringFormat("%s: %s",#choice,S[302535920000318--[[Unlock--]]],S[697482021580--[[Achievements--]]]),
+					302535920000745--[[Snacks--]],
+					"UI/Icons/Sections/Food_1.tga"
+				)
+			end)
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = StringFormat("%s %s",S[302535920000318--[[Unlock--]]],S[697482021580--[[Achievements--]]]),
+			hint = 302535920001496--[[Show a list of achievements to unlock (permanent!).--]],
+			multisel = true,
+		}
+	end
+
 	function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
 
 		-- GenerateMarsScreenPoI has an inf loop in it that happens when it runs out of spots to place POIs
@@ -1437,7 +1489,13 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 			end,
 			MartianbornIngenuity = function(city)
 				-- the tech unlock uses param1 as a positive number (Lua\Units\Colonist.lua, line: 1074)
-				local amount = -TechDef[tech_id].param1
+				local amount = TechDef.MartianbornIngenuity.param1
+				if type(amount) == "number" then
+					amount = -amount
+				else
+					-- just in case
+					amount = 0
+				end
 
 				local display_text = T(7587, "<green>Martianborn Ingenuity <amount></color>")
 				local domes = city.labels.Dome or ""

@@ -715,10 +715,19 @@ end
 function SupplyRocket:CheatCapDef()
 	ChoGGi.ComFuncs.SetTaskReqAmount(self,self.base_max_export_storage,"export_requests","max_export_storage")
 end
+
 function SupplyRocket:CheatAddFuel()
-	local total = self.refuel_request:GetTargetAmount()
-	self.accumulated_fuel = total
-	self.refuel_request:SetAmount(total)
+	-- skip if we're full/over full
+	local actual = self.refuel_request:GetActualAmount()
+	if actual < 1 then
+		return
+	end
+
+	local target = self.refuel_request:GetTargetAmount()
+	self.accumulated_fuel = self.accumulated_fuel + target
+	self.refuel_request:SetAmount(target)
+	-- make sure it always shows the correct amount
+	self.refuel_request:SetAmount(0)
 	Msg("RocketRefueled", self)
 	RebuildInfopanel(self)
 end
