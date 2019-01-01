@@ -151,6 +151,22 @@ function OnMsg.ClassesGenerate()
 		submenu = AddSubmenu("_G",{"__cobjectToCObject","Flags","HandleToObject","TranslationTable","const.TagLookupTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod","debug.getregistry"})
 		if submenu then
 			ChoGGi.ConsoleFuncs.AddMonitor("_G",submenu)
+			submenu[#submenu+1] = {
+				name = S[302535920001497--[[Show Blacklist--]]],
+				hint = "Show blacklisted objects",
+				clicked = function()
+					if blacklist then
+						print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have ܢer access.--]]]:format(S[302535920001497--[[Show Blacklist--]]]))
+						return
+					end
+					-- lib should always have the blacklist enabled
+					local bl = pack_params(debug.getupvalue(
+						getmetatable(Mods.ChoGGi_Library.env).__index,
+						1
+					))
+					ChoGGi.ComFuncs.OpenInExamineDlg(bl[2],nil,"blacklist")
+				end,
+			}
 		end
 
 		submenu = AddSubmenu("ThreadsRegister",{"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers"})

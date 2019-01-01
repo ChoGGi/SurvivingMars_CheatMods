@@ -92,6 +92,8 @@ end -- do
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
+	local rawget,tostring,error = rawget,tostring,error
+	local empty_func = empty_func
 	local IsObjlist = IsObjlist
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 
@@ -99,8 +101,6 @@ do -- RetName
 	local lookup_table = {}
 
 	local function AfterLoad()
-		-- _G and _ENV may cause log spam, so we make sure they're defined in the lookup (as best we can)
-
 		local g = ChoGGi.Temp._G or _G
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
 
@@ -109,16 +109,6 @@ do -- RetName
 			-- no need to add tables already added, and we don't care about stuff that isn't a table
 			if not lookup_table[g[key]] and type(g[key]) == "table" then
 				lookup_table[g[key]] = key
-			end
-		end
-
-		-- mods (_ENV from mod blacklist)
-		local Mods = g.Mods
-		local mod_str = "_ENV: %s"
-		for id,mod in pairs(Mods) do
-			if mod.env then
-				-- mod.env
-				lookup_table[mod.env] = mod_str:format(mod.title ~= "" and mod.title or id)
 			end
 		end
 
@@ -137,54 +127,67 @@ do -- RetName
 
 	-- try to return a decent name for the obj, failing that return a string
 	function ChoGGi.ComFuncs.RetName(obj)
+		-- bool and nils are easy enough
 		if not obj then
 			return obj == false and "false" or "nil"
+		elseif obj == true then
+			return "true"
+		end
+		-- any of the _G tables
+		local lookuped = lookup_table[obj]
+		if lookuped then
+			return lookuped
 		end
 
-		if lookup_table[obj] then
-			return lookup_table[obj]
-		end
+		-- devs log missing globals, and certain __indexs will make .example look like a global?
+		-- so we make the error func skip
+		local old_err,name
 
 		local obj_type = type(obj)
-
-		if obj_type == "table" then
+		if obj_type == "string" then
+			return obj
+		elseif obj_type == "number" then
+			return tostring(obj)
+		elseif obj_type == "table" then
+			old_err = error
+			error = empty_func
 
 			-- we check in order of less generic "names"
 			local name_type = type(obj.name)
 			-- custom name from user (probably)
 			if name_type == "string" and obj.name ~= "" then
-				return obj.name
+				name = obj.name
 			-- colonist names
 			elseif name_type == "table" then
-				return Trans(obj.name)
+				name = Trans(obj.name)
 
 			-- translated name
 			elseif obj.display_name and obj.display_name ~= "" then
-				return Trans(obj.display_name)
+				name = Trans(obj.display_name)
 
 			-- encyclopedia_id
 			elseif obj.encyclopedia_id and obj.encyclopedia_id ~= "" then
-				return obj.encyclopedia_id
+				name = obj.encyclopedia_id
 			-- plain old id
 			elseif obj.id and obj.id ~= "" then
-				return obj.id
+				name = obj.id
 			elseif obj.Id and obj.Id ~= "" then
-				return obj.Id
+				name = obj.Id
 			-- class template name
 			elseif obj.template_name and obj.template_name ~= "" then
-				return obj.template_name
+				name = obj.template_name
 			elseif obj.template_class and obj.template_class ~= "" then
-				return obj.template_class
+				name = obj.template_class
 			-- entity
 			elseif obj.entity then
-				return obj.entity
+				name = obj.entity
 			-- class
 			elseif obj.class and obj.class ~= "" then
-				return obj.class
+				name = obj.class
 
 			-- added this here as doing tostring lags the crap outta kansas if this is a large objlist
 			elseif IsObjlist(obj) then
-				return "objlist"
+				name = "objlist"
 			end
 
 		elseif obj_type == "userdata" then
@@ -199,8 +202,12 @@ do -- RetName
 
 		end
 
+		if old_err then
+			error = old_err
+		end
+
 		-- falling back baby
-		return tostring(obj)
+		return name or tostring(obj)
 	end
 end -- do
 local RetName = ChoGGi.ComFuncs.RetName
