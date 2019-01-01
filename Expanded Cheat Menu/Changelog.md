@@ -7,6 +7,7 @@
 ### Added:
 - Cheats>Research>Research Remove: Stop a tech from being researched.
 - Cheats>Unlock Achievements: Show a list of achievements to unlock.
+- Debug>Examine Persist Errors: Shows an examine dialog with any persist errors when saving (needs HelperMod).
 
 ### Changed:
 - Examine:

@@ -164,7 +164,7 @@ function OnMsg.ClassesGenerate()
 						getmetatable(Mods.ChoGGi_Library.env).__index,
 						1
 					))
-					ChoGGi.ComFuncs.OpenInExamineDlg(bl[2],nil,"blacklist")
+					OpenInExamineDlg(bl[2],nil,"blacklist")
 				end,
 			}
 		end

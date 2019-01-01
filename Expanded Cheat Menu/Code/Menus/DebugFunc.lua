@@ -13,6 +13,19 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 
+	function ChoGGi.MenuFuncs.ExaminePersistErrors_Toggle()
+		ChoGGi.UserSettings.DebugPersistSaves = not ChoGGi.UserSettings.DebugPersistSaves
+		ChoGGi.SettingFuncs.WriteSettings()
+
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.DebugPersistSaves,
+				302535920001499--[[Shows an examine dialog with any persist errors when saving.--]]
+			),
+			302535920001498--[[Examine Persist Errors--]]
+		)
+	end
+
 	function ChoGGi.MenuFuncs.ViewAllEntities()
 		local function CallBackFunc(answer)
 			if not answer then

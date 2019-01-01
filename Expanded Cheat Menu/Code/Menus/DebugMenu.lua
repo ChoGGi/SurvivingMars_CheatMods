@@ -8,6 +8,20 @@ function OnMsg.ClassesGenerate()
 	local c = #Actions
 
 	c = c + 1
+	Actions[c] = {ActionName = S[302535920001498--[[Examine Persist Errors--]]],
+		ActionMenubar = "ECM.Debug",
+		ActionId = ".Examine Persist Errors",
+		ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.DebugPersistSaves,
+				302535920001499--[[Shows an examine dialog with any persist errors when saving (needs ECM HelperMod).--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.ExaminePersistErrors_Toggle,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = S[302535920001458--[[Material Properties--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Material Properties",

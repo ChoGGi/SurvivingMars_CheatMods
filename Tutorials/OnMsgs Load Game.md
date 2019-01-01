@@ -9,7 +9,7 @@ ex(GetHandledMsg(true))
 ##### Show a list of functions in the order they will be called when an OnMsg is fired
 ```lua
 local _,v = debug.getupvalue(getmetatable(OnMsg).__newindex,1)
-OpenExamine(v)
+ex(v)
 ```
 
 ##### Tabs denote repetition of Msg (not to say these aren't repeated later on)
