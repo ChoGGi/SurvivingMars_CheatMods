@@ -1,6 +1,5 @@
 -- I didn't get a harumph outta that guy!
 ModEnvBlacklist = {--[[Harumph!--]]}
-
 -- yeah, I know it don't do jack your point?
 
 
@@ -62,22 +61,24 @@ end
 function OnMsg.ClassesGenerate()
 
 	local ChoGGi,Mods = ChoGGi,Mods
+	local mod = Mods[ChoGGi.id]
+	local blacklist = mod.env
 	ChoGGi._LICENSE = LICENSE
 
 	-- I should really split ChoGGi into funcs and settings... one of these days
 
-	ChoGGi._VERSION = Mods[ChoGGi.id].version
+	ChoGGi._VERSION = mod.version
 	-- is ECM shanghaied by the blacklist?
-	ChoGGi.blacklist = Mods[ChoGGi.id].env
+	ChoGGi.blacklist = blacklist
 	-- path to this mods' folder
-	ChoGGi.ModPath = ChoGGi.blacklist and CurrentModPath or Mods[ChoGGi.id].content_path or Mods[ChoGGi.id].path
+	ChoGGi.ModPath = blacklist and CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
 	-- Console>Scripts folder
 	ChoGGi.scripts = "AppData/ECM Scripts"
 	-- you can pry my settings FILE from my cold dead (and not modding SM anymore) hands.
-	ChoGGi.SettingsFile = ChoGGi.blacklist and nil or "AppData/CheatMenuModSettings.lua"
+	ChoGGi.SettingsFile = blacklist and nil or "AppData/CheatMenuModSettings.lua"
 
-	if not ChoGGi.blacklist then
-		-- used for getting names for RetName
+	if not blacklist then
+		-- used for certain funcs in lib comfuncs
 		ChoGGi.Temp._G = _G
 
 		local AsyncGetFileAttribute = AsyncGetFileAttribute

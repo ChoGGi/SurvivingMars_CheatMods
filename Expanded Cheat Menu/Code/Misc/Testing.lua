@@ -2,6 +2,17 @@
 
 -- go away... (mostly just benchmarking funcs, though there is the func i use for "Map Images Pack")
 
+function OnMsg.ClassesBuilt()
+--~ ex(_ENV)
+--~ print(1,getmetatable(_G))
+--~ print(2,getmetatable(_G).name)
+--~ print(3,getmetatable(getmetatable(_G)).name)
+--~ print(4,_G.name)
+
+--~ pcall(getmetatable,getmetatable(_G))
+
+end
+
 function OnMsg.ClassesGenerate()
 --~ -- flatten sign to ground
 --~ local pos = s:GetPos()

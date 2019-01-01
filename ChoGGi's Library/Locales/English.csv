@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001497,,
 302535920001498,,
 302535920001499,,
 302535920001500,,
@@ -227,6 +226,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920001301,Edit Text,
 302535920000721,Overwrite,
 302535920000827,Check this to overwrite file instead of appending to it.,
+302535920001497,Show Blacklist,
 302535920001479,Errors In Console,
 302535920001480,Toggle showing log errors in the console.,
 302535920000853,Monitor,

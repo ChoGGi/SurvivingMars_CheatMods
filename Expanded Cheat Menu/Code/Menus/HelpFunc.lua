@@ -226,14 +226,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 	function ChoGGi.MenuFuncs.Interface_Toggle()
 		if hr.RenderUIL == 1 then
 
-			-- ask first (and show shortcut key to toggle)
-			local function CallBackFunc(answer)
-				if answer then
-					hr.RenderUIL = 0
-				end
-			end
-
-			-- need to retriieve shortcut key to display below
+			-- retrieve shortcut key to display below
 			local options = OptionsCreateAndLoad()
 			local key = options["ECM.Help.Interface.Toggle Interface"]
 			-- if we don't have a shortcut set then do nothing
@@ -244,6 +237,12 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				end
 			else
 				return
+			end
+
+			local function CallBackFunc(answer)
+				if answer then
+					hr.RenderUIL = 0
+				end
 			end
 
 			ChoGGi.ComFuncs.QuestionBox(
