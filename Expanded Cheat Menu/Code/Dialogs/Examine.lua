@@ -1147,7 +1147,7 @@ end
 
 local function Examine_valuetotextex(_,_,button,self,obj)
 	-- not ingame = no sense in using ShowObj
-	if button == "L" and GameState.gameplay then
+	if button == "L" and GameState.gameplay and (IsValid(obj) or IsPoint(obj)) then
 		ShowObj(obj)
 	else
 		ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
