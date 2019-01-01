@@ -83,12 +83,35 @@ function OnMsg.ClassesGenerate()
 		SaveOrigFunc("LoadCustomOnScreenNotification")
 		SaveOrigFunc("OpenDialog")
 		SaveOrigFunc("OutputDebugString")
+		SaveOrigFunc("PersistGame")
 		SaveOrigFunc("ShowConsole")
 		SaveOrigFunc("ShowConsoleLog")
 		SaveOrigFunc("ShowPopupNotification")
 		SaveOrigFunc("TDevModeGetEnglishText")
 		SaveOrigFunc("TGetID")
 		SaveOrigFunc("UIGetBuildingPrerequisites")
+
+		-- work on these persist errors
+		function PersistGame(folder,...)
+			-- collectgarbage is blacklisted, and I'm not sure what issue it'd cause if it doesn't fire (saving weird shit maybe)...
+			if not blacklist and ChoGGi.UserSettings.DebugPersistSaves then
+				collectgarbage("collect")
+				Msg("SaveGame")
+				rawset(_G, "__error_table__", {})
+				local err = EngineSaveGame(StringFormat("%spersist",folder))
+				for i = 1, #__error_table__ do
+					local errors = __error_table__[i]
+					print("Persist error:", errors.error or "unknown")
+					print("Persist stack:")
+					for j = 1, #errors do
+						print("   ", tostring(errors[j]))
+					end
+				end
+				ChoGGi.ComFuncs.OpenInExamineDlg(__error_table__)
+				return err
+			end
+			return ChoGGi_OrigFuncs.PersistGame(folder,...)
+		end
 
 		-- print logged errors to console
 		if ChoGGi.UserSettings.ConsoleErrors then

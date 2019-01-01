@@ -14,5 +14,7 @@ return PlaceObj("ModDef", {
 I included a Game.csv that changes a few strings as an example (showing how to use , and "").
 See ModsTools\Game.csv for more.
 
-To use a different language you'll need to edit the first few lines of Code/Script.lua.]],
+To use a different language you'll need to edit the first few lines of Code/Script.lua.
+
+You can also get the mod from: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Example%20Translate%20Game]],
 })
