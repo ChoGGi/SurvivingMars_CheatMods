@@ -47,13 +47,15 @@ I like to use this function for ease of use (and to make sure I always get a str
 do -- Translate
 	local T,_InternalTranslate,pack_params,procall = T,_InternalTranslate,pack_params,procall
 	local type,select = type,select
-	local StringFormat = string.format
-	-- some userdata refs UICity, which will fail if being used in main menu
+
+	-- some userdata'll ref UICity, which will fail if being used in main menu
 	local function SafeTrans(str)
 		return _InternalTranslate(str)
 	end
+	local missing_str = "%s *bad string id?"
+
 	-- translate func that always returns a string
-	function Translate(...)
+	function ChoGGi.ComFuncs.Translate(...)
 		local str,result
 		local stype = type(select(1,...))
 		if stype == "userdata" or stype == "number" then
@@ -61,17 +63,22 @@ do -- Translate
 		else
 			str = ...
 		end
-		-- procall is pretty much pcall, but with logging
-		result,str = procall(SafeTrans,str)
 
-		-- just in case a
+		if UICity then
+			result,str = true,_InternalTranslate(str)
+		else
+			-- procall is pretty much pcall, but with logging
+			result,str = procall(SafeTrans,str)
+		end
+
+		-- just in case
 		if not result or type(str) ~= "string" then
 			local arg2 = select(2,...)
 			if type(arg2) == "string" then
 				return arg2
 			end
 			-- i'd rather know if something failed by having a string rather than a func fail
-			return StringFormat("%s < Missing text string id",...)
+			return missing_str:format(...)
 		end
 
 		-- and done

@@ -156,7 +156,7 @@ ChoGGi = {
 
 	-- CommonFunctions.lua
 	ComFuncs = {
-	-- thanks for replacing concat... what's wrong with using table.concat2?
+		-- thanks for replacing concat... what's wrong with using table.concat2?
 		TableConcat = rawget(_G, "oldTableConcat") or table.concat,
 		DebugGetInfo = format_value,
 	},
@@ -182,6 +182,8 @@ ChoGGi = {
 		transp_mode = false,
 		-- stores a table of my dialogs
 		Dialogs = {},
+		-- ECM will replace this with unblacklisted _G if HelperMod is enabled
+		_G = _G,
 	},
 	-- settings that are saved to SettingsFile
 	UserSettings = {

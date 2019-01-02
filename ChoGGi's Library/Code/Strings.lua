@@ -1,21 +1,26 @@
 -- See LICENSE for terms
 
--- translate all the strings at startup, so it's a table lookup instead of a func call
+-- i translate all the strings at startup, so it's a table lookup instead of a func call
 -- ~ ChoGGi.Strings[27]
 
 local tonumber = tonumber
 local StringFormat = string.format
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 
 local TranslationTable = TranslationTable
+
+-- amount of entries in the CSV file
+local string_limit = 1500
 
 do -- Translate
 	local T,_InternalTranslate,pack_params,procall = T,_InternalTranslate,pack_params,procall
 	local type,select = type,select
-	-- some userdata refs UICity, which will fail if being used in main menu
+
+	-- some userdata'll ref UICity, which will fail if being used in main menu
 	local function SafeTrans(str)
 		return _InternalTranslate(str)
 	end
+	local missing_str = "%s *bad string id?"
+
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
 		local str,result
@@ -25,17 +30,22 @@ do -- Translate
 		else
 			str = ...
 		end
-		-- procall is pretty much pcall, but with logging
-		result,str = procall(SafeTrans,str)
 
-		-- just in case a
+		if UICity then
+			result,str = true,_InternalTranslate(str)
+		else
+			-- procall is pretty much pcall, but with logging
+			result,str = procall(SafeTrans,str)
+		end
+
+		-- just in case
 		if not result or type(str) ~= "string" then
 			local arg2 = select(2,...)
 			if type(arg2) == "string" then
 				return arg2
 			end
 			-- i'd rather know if something failed by having a string rather than a func fail
-			return StringFormat("%s < Missing text string id",...)
+			return missing_str:format(...)
 		end
 
 		-- and done
@@ -47,7 +57,6 @@ local Trans = ChoGGi.ComFuncs.Translate
 -- devs didn't bother changing droid font to one that supports unicode, so we do this for not eng
 -- pretty sure anything using droid is just for dev work so...
 if ChoGGi.lang ~= "English" then
-	local StringFormat = string.format
 	-- first get the unicode font name
 
 	local f = TranslationTable[997--[[*font*, 15, aa--]]]
@@ -66,7 +75,7 @@ if ChoGGi.lang ~= "English" then
 end
 
 -- i stick all the strings from sm that I use in my table for ease of access
-local Strings = {
+local strings = {
 	-- 1222 -> 3264 (be careful using for generic these are names)
 	[1234] = TranslationTable[1234], -- Dome
 	[1608] = TranslationTable[1608], -- Transparency
@@ -345,45 +354,47 @@ local Strings = {
 	[987289847467] = TranslationTable[987289847467], -- Age Groups
 }
 
+strings[4356] = strings[4356]:gsub("<right><Gender>","")
+strings[4357] = strings[4357]:gsub("<right><UIBirthplace>","")
+
 -- for string.format ease of use
-Strings[4356] = Strings[4356]:gsub("<right><Gender>","")
-Strings[4357] = Strings[4357]:gsub("<right><UIBirthplace>","")
+strings[1000012] = strings[1000012]:gsub("<ModLabel>","%%s")
+strings[1000013] = strings[1000013]:gsub("<ModLabel>","%%s"):gsub("<err>","%%s")
+strings[1000014] = strings[1000014]:gsub("<ModLabel>","%%s")
 
-Strings[1000012] = Strings[1000012]:gsub("<ModLabel>","%%s")
-Strings[1000013] = Strings[1000013]:gsub("<ModLabel>","%%s"):gsub("<err>","%%s")
-Strings[1000014] = Strings[1000014]:gsub("<ModLabel>","%%s")
-
-Strings[293] = Strings[293]:gsub("<right>",": %%s")
-Strings[294] = Strings[294]:gsub("<right>",": %%s")
-Strings[295] = Strings[295]:gsub("<right>",": %%s")
-Strings[434] = Strings[434]:gsub("<right><lifetime>",": %%s")
-Strings[4273] = Strings[4273]:gsub("<save_date>",": %%s")
-Strings[4274] = Strings[4274]:gsub("<playtime>",": %%s")
-Strings[4439] = Strings[4439]:gsub("<right><h SelectTarget InfopanelSelect><Target></h>",": %%s")
-Strings[5647] = Strings[5647]:gsub("<count>","%%s")
-Strings[6729] = Strings[6729]:gsub("<n>",": %%s")
-Strings[584248706535] = Strings[584248706535]:gsub("<right><ResourceAmount>",": %%s")
+strings[293] = strings[293]:gsub("<right>",": %%s")
+strings[294] = strings[294]:gsub("<right>",": %%s")
+strings[295] = strings[295]:gsub("<right>",": %%s")
+strings[434] = strings[434]:gsub("<right><lifetime>",": %%s")
+strings[4273] = strings[4273]:gsub("<save_date>",": %%s")
+strings[4274] = strings[4274]:gsub("<playtime>",": %%s")
+strings[4439] = strings[4439]:gsub("<right><h SelectTarget InfopanelSelect><Target></h>",": %%s")
+strings[5647] = strings[5647]:gsub("<count>","%%s")
+strings[6729] = strings[6729]:gsub("<n>",": %%s")
+strings[584248706535] = strings[584248706535]:gsub("<right><ResourceAmount>",": %%s")
 
 -- add all of my strings (skipping any missing ones)
 
 -- we need to pad some zeros
+local pad_str = "30253592000%s%s"
 local function TransZero(pad,first,last)
 	for i = first, last do
-		-- amount of entries in the CSV file
-		if i > 1500 then
+		if i > string_limit then
 			break
 		end
-		local num = tonumber(TableConcat{30253592000,pad,i})
+		local num = tonumber(pad_str:format(pad,i))
 		local str = Trans(num)
+		-- Missing text is from TDevModeGetEnglishText
 		if str ~= "Missing text" then
-			Strings[num] = str
+			strings[num] = str
 		end
 	end
 end
 
+-- 00 ends up as 0 if we try to pass as a number (as well as 001 to 1)
 TransZero("000",0,9)
 TransZero("00",10,99)
 TransZero(0,100,999)
 TransZero("",1000,9999)
 
-ChoGGi.Strings = Strings
+ChoGGi.Strings = strings

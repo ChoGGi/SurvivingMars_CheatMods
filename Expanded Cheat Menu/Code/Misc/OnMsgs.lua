@@ -1492,7 +1492,9 @@ do -- LoadGame/CityStart
 			end
 
 			-- remove any dialogs we opened
-			ChoGGi.ComFuncs.CloseDialogsECM()
+			if UserSettings.CloseDialogsECM then
+				ChoGGi.ComFuncs.CloseDialogsECM()
+			end
 
 			-- remove any outside buildings i accidentally attached to domes ;)
 			table_temp = UICity.labels.BuildingNoDomes or ""

@@ -375,24 +375,16 @@ function OnMsg.ClassesGenerate()
 	end
 	function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(context,parent)
 		return ChoGGi_DTMSlotsDlg:new({}, terminal.desktop,{
-			obj = context,
+--~ 			obj = context,
 			parent = parent,
 		})
 	end
 
-	function ChoGGi.ComFuncs.CloseDialogs(dlg_class)
-		local dlgs = ChoGGi.Temp.Dialogs
-		for dlg,class in pairs(dlgs) do
-			if class == dlg_class then
-				dlg:Done()
-			end
-		end
-	end
-
-	function ChoGGi.ComFuncs.CloseDialogsECM(bool)
-		if bool or ChoGGi.UserSettings.CloseDialogsECM then
-			local dlgs = ChoGGi.Temp.Dialogs
-			for dlg in pairs(dlgs) do
+	function ChoGGi.ComFuncs.CloseDialogsECM()
+		local desktop = terminal.desktop
+		for i = #desktop, 1, -1 do
+			local dlg = desktop[i]
+			if dlg:IsKindOf("ChoGGi_Window") then
 				dlg:Done()
 			end
 		end

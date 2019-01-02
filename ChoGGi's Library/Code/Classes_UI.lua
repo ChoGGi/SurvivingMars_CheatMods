@@ -310,7 +310,7 @@ DefineClass.ChoGGi_ExternalTextEditorPlugin = {
 }
 
 function ChoGGi_ExternalTextEditorPlugin:OpenEditor(edit)
-	local g = ChoGGi.Temp._G or _G
+	local g = ChoGGi.Temp._G
   g_ExternalTextEditorActiveCtrl = edit
 	edit.external_file = StringFormat("%s/tempedit.lua",edit.external_path)
 

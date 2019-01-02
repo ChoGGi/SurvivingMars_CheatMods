@@ -257,23 +257,6 @@ function OnMsg.ClassesGenerate()
 
 		end
 
-		function ChoGGi.testing.TestExamine(amount)
-			local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
-			TickStart("TestExamine.Total")
-
-			local MapGet = MapGet
-			local CloseDialogs = ChoGGi.ComFuncs.CloseDialogs
-			for _ = 1, amount or 5 do
-				TickStart("TestExamine.Tick")
-				CloseDialogs("Examine")
-				OpenInExamineDlg(MapGet(true))
-				TickEnd("TestExamine.Tick")
-			end
-			CloseDialogs("Examine")
-
-			TickEnd("TestExamine.Total")
-		end
-
 		function ChoGGi.testing.TestRandomColour(amount)
 			local RandomColour = ChoGGi.ComFuncs.RandomColour
 			local RandomColour2 = ChoGGi.ComFuncs.RandomColour2

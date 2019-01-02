@@ -30,6 +30,7 @@ local IsKindOf = g.IsKindOf
 local IsValid = g.IsValid
 local EnumVars = g.EnumVars
 local IsValidEntity = g.IsValidEntity
+local IsT = g.IsT
 
 local getlocal
 local getupvalue
@@ -1208,7 +1209,7 @@ function Examine:valuetotextex(obj)
 		else
 			-- show translated text if possible and return a clickable link
 			local trans = Trans(obj)
-			if trans:find("Missing text") then
+			if trans:sub(-15) == "*bad string id?" then
 				trans = tostring(obj)
 			end
 			-- the </color> is to make sure it doesn't bleed into other text
@@ -1368,6 +1369,7 @@ function Examine:totextex(obj,obj_type)
 	local obj_metatable = getmetatable(obj)
 	local c = 0
 	local is_valid_obj
+	local str_not_translated
 
 	if obj_type == "nil" then
 		return obj_type
@@ -1533,15 +1535,17 @@ function Examine:totextex(obj,obj_type)
 		end
 
 	elseif obj_type == "userdata" then
-		local trans = Trans(obj)
+		local trans_str = Trans(obj)
 		-- might as well just return userdata instead of these
-		if trans:find("Missing text") then
-			trans = tostring(obj)
+		if trans_str:sub(-15) == "*bad string id?" then
+			trans_str = tostring(obj)
+			str_not_translated = true
 		else
-			trans = StringFormat("%s = %s</color></color>",obj,trans)
+			-- some strings have up to two <color> in them
+			trans_str = StringFormat("%s = %s</color></color>",obj,trans_str)
 		end
 		c = c + 1
-		totextex_res[c] = trans
+		totextex_res[c] = trans_str
 
 		-- add any functions from getmeta to the (scant) list
 		if obj_metatable then
@@ -1666,6 +1670,15 @@ function Examine:totextex(obj,obj_type)
 --~ 			elseif name == "lpeg-pattern" then
 			else
 				TableInsert(data_meta,1,"\ngetmetatable():")
+				local is_t = IsT(obj)
+				if is_t then
+					TableInsert(data_meta,1,StringFormat("THasArgs(): %s",THasArgs(obj)))
+					-- IsT returns the string id, but we'll just call it TGetID() to make it more obvious for people
+					TableInsert(data_meta,1,StringFormat("\nTGetID(): %s",is_t))
+					if str_not_translated and not UICity then
+						TableInsert(data_meta,1,S[302535920001500--[[userdata object probably needs UICity to translate.--]]])
+					end
+				end
 			end
 
 			c = c + 1
