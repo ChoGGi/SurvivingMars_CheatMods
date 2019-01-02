@@ -67,28 +67,27 @@ do -- AddMsgToFunc
 	end
 end -- do
 
-do -- CheckText
-	-- check if text is already translated or needs to be, and return the text
-	function ChoGGi.ComFuncs.CheckText(text,fallback)
-		local ret
-		-- no sense in translating a string
-		if type(text) == "string" then
-			return text
-		else
-			ret = S[text]
-		end
-		-- could be getting called from another mod, or it just isn't included in Strings
-		if not ret or type(ret) ~= "string" then
-			ret = Trans(text)
-		end
-		-- Trans will always return a string
-		if ret:find("Missing text string id") then
-			ret = tostring(fallback or text)
-		end
-		-- have at it
-		return ret
+-- check if text is already translated or needs to be, and return the text
+function ChoGGi.ComFuncs.CheckText(text,fallback)
+	local ret
+	-- no sense in translating a string
+	if type(text) == "string" then
+		return text
+	else
+		ret = S[text]
 	end
-end -- do
+	-- could be getting called from another mod, or it just isn't included in Strings
+	if not ret or type(ret) ~= "string" then
+		ret = Trans(text)
+	end
+
+	-- Trans will always return a string
+	if #ret > 15 and ret:sub(-15) == "*bad string id?" then
+		ret = tostring(fallback or text)
+	end
+	-- have at it
+	return ret
+end
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
@@ -101,7 +100,7 @@ do -- RetName
 	local lookup_table = {}
 
 	local function AfterLoad()
-		local g = ChoGGi.Temp._G or _G
+		local g = ChoGGi.Temp._G
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
 
 		-- any tables in _G
@@ -144,10 +143,12 @@ do -- RetName
 		local old_err,name
 
 		local obj_type = type(obj)
+
 		if obj_type == "string" then
 			return obj
 		elseif obj_type == "number" then
 			return tostring(obj)
+
 		elseif obj_type == "table" then
 			old_err = error
 			error = empty_func
@@ -192,7 +193,7 @@ do -- RetName
 
 		elseif obj_type == "userdata" then
 			local trans = Trans(obj)
-			if trans:find("Missing text") then
+			if trans:sub(-15) == "*bad string id?" then
 				return tostring(obj)
 			end
 			return trans
@@ -202,6 +203,7 @@ do -- RetName
 
 		end
 
+		-- restore error func if we replaced it
 		if old_err then
 			error = old_err
 		end
@@ -241,20 +243,29 @@ function ChoGGi.ComFuncs.RetHint(obj)
 end
 
 -- "some.some.some.etc" = returns etc as object
+-- use .number for index based tables ("terminal.desktop.1")
 function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
+
 	-- lazy is best
 	if type(str) ~= "string" then
 		return str
 	end
 	-- there's always one
 	if str == "_G" then
-		return ChoGGi.Temp._G or _G
+		return ChoGGi.Temp._G
 	end
 
-	-- always start with _G
-	local obj = root or ChoGGi.Temp._G or _G
+	-- obj always starts out as "root"
+	local obj = root or ChoGGi.Temp._G
+
 	-- https://www.lua.org/pil/14.1.html
+	-- %w is [A-Za-z0-9], [] () + ? . act pretty much like regexp
 	for name,match in str:gmatch("([%w_]+)(.?)") do
+		-- if str included .number we need to make it a number or [name] won't work
+		local num = tonumber(name)
+		if num then
+			name = num
+		end
 		-- . means we're not at the end yet
 		if match == "." then
 			-- create is for adding new settings in non-existent tables

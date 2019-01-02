@@ -77,7 +77,9 @@ function OnMsg.ClassesGenerate()
 	-- you can pry my settings FILE from my cold dead (and not modding SM anymore) hands.
 	ChoGGi.SettingsFile = blacklist and nil or "AppData/CheatMenuModSettings.lua"
 
-	if not blacklist then
+	if blacklist then
+		ChoGGi.ComFuncs.FileExists = empty_func
+	else
 		-- used for certain funcs in lib comfuncs
 		ChoGGi.Temp._G = _G
 

@@ -9,3 +9,12 @@ self:RemovePFTunnel()
 
 
 lock behind breakthrough
+
+Longer Tunnels Tech have 2 version. 1 for Mod Config (Cheat Mod: Long Tunnels), 2 for reaserch(Longer Tunnels Tech). 
+your mod need second version.
+like this 
+
+Dome Teleporters
+Researching these techs allows the player to build teleport at longer distances. the Engineering tree and another to the Breakthrough tree. 
+ENGINEERING: Improved Teleport (+50% distance)
+BREAKTHROUGH: Advanced Teleport (Unlimited Distance)
