@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v12.0 (Unreleased)
+## v12.1 (Unreleased)
+
+## v12.0 (03 Jan 2018)
 ### Added:
 - Cheats>Research>Research Remove: Stop a tech from being researched.
 - Cheats>Unlock Achievements: Show a list of achievements to unlock.

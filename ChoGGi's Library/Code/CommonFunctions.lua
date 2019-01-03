@@ -3639,6 +3639,44 @@ function ChoGGi.ComFuncs.CheatsMenu_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 end
 
+do -- UpdateConsoleMargins
+	-- normally visible
+	local margin_vis = box(10, 80, 10, 65)
+	-- console hidden
+	local margin_hidden = box(10, 80, 10, 10)
+
+	local margin_vis_editor_log = box(10, 80, 10, 45)
+
+	local margin_vis_con_log = box(10, 80, 10, 115)
+	local IsEditorActive = IsEditorActive
+	local con_margin_editor = box(0, 0, 0, 50)
+	local con_margin_norm = box(0, 0, 0, 0)
+
+	function ChoGGi.ComFuncs.UpdateConsoleMargins(console_vis)
+		if dlgConsoleLog then
+			-- move log text above the buttons i added and make sure log text stays below the cheat menu
+			if console_vis then
+				-- editor mode adds a toolbar to the bottom, so we go above it
+				if IsEditorActive() then
+					dlgConsole:SetMargins(con_margin_editor)
+					dlgConsoleLog.idText:SetMargins(margin_vis_con_log)
+				else
+					dlgConsole:SetMargins(con_margin_norm)
+					dlgConsoleLog.idText:SetMargins(margin_vis)
+				end
+			else
+				if IsEditorActive() then
+					dlgConsole:SetMargins(con_margin_editor)
+					dlgConsoleLog.idText:SetMargins(margin_vis_editor_log)
+				else
+					dlgConsole:SetMargins(con_margin_norm)
+					dlgConsoleLog.idText:SetMargins(margin_hidden)
+				end
+			end
+		end
+	end
+end -- do
+
 function ChoGGi.ComFuncs.Editor_Toggle()
 	-- force editor to toggle once (makes status text work properly the "first" toggle instead of the second)
 	local idx = TableFind(terminal.desktop,"class","EditorInterface")
@@ -3724,63 +3762,6 @@ function ChoGGi.ComFuncs.PlaceObjects_Toggle()
 		end
 	end
 end
-
-do -- AddScrollDialogXTemplates
---[[
-ChoGGi.UserSettings.ScrollSelection = not ChoGGi.UserSettings.ScrollSelection
---]]
-	-- get around to finishing this (scrollable selection panel)
-	local GetSafeAreaBox = GetSafeAreaBox
-	function ChoGGi.ComFuncs.AddScrollDialogXTemplates(obj)
-		local g_Classes = g_Classes
-
-		-- attach our scroll area to the XSizeConstrainedWindow
-		obj.idChoGGi_ScrollArea = g_Classes.XWindow:new({
-			Id = "idChoGGi_ScrollArea",
-		}, obj[1])
-
-		obj.idChoGGi_ScrollV = g_Classes.ChoGGi_SleekScroll:new({
-			Id = "idChoGGi_ScrollV",
-			Target = "idChoGGi_ScrollBox",
-			Dock = "left",
-		}, obj.idChoGGi_ScrollArea)
-
-		obj.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
-			Id = "idChoGGi_ScrollBox",
-			VScroll = "idChoGGi_ScrollV",
-			LayoutMethod = "VList",
-		}, obj.idChoGGi_ScrollArea)
-
-		-- move content list to scrollarea
-		local con_height = obj.idContent.box:sizey()
-		obj.idContent:SetParent(obj.idChoGGi_ScrollBox)
-
-		-- limit height (or what's the point of scrolling)
-		local safe = GetSafeAreaBox():maxy()
-		-- get height of button areas
-		local y = 0.0
-		for i = 1, #obj[1] do
-			y = y + obj[1][i].box:sizey()
-		end
-		y = y + con_height
-
-		while y > safe do
-			y = y - 5
-		end
-
-		local scale = ChoGGi.Temp.UIScale
-		if scale > 0.7 then
-			y = ((y * ChoGGi.Temp.UIScale) / 2) - 32
-		end
-		if scale == 0.65 and safe == 1080 then
-			y = y + 200
-		end
-
-		obj.idChoGGi_ScrollBox:SetMaxHeight(y)
-
---~ ex(obj)
-	end
-end -- do
 
 do -- AddGridHandles
 	local function AddHandles(name)

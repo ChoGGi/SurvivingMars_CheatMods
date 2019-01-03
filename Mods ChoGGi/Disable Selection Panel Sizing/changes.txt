@@ -1,0 +1,5 @@
+v0.3
+Added option to add scrollbars (buggy, has flickering).
+
+v0.2
+Added Mod Config Reborn option to re-enable sizing.

@@ -443,12 +443,18 @@ DefineClass.ChoGGi_Window = {
 	action_host = false,
 }
 
+-- store opened dialogs
+if not rawget(_G,"g_ChoGGiDlgs") then
+	g_ChoGGiDlgs = {}
+	setmetatable(g_ChoGGiDlgs, weak_keyvalues_meta)
+end
+
 -- parent,context
 function ChoGGi_Window:AddElements()
 	local g_Classes = g_Classes
 	local ChoGGi = ChoGGi
 
-	ChoGGi.Temp.Dialogs[self] = self.class
+	g_ChoGGiDlgs[self] = self.class
 
 	-- scale to UI (See OnMsgs.lua for UIScale)
 	local UIScale = ChoGGi.Temp.UIScale
@@ -552,7 +558,8 @@ end
 
 function ChoGGi_Window:Done(result,...)
 	-- remove from dialog list
-	ChoGGi.Temp.Dialogs[self] = nil
+	g_ChoGGiDlgs[self] = nil
+
 	XWindow.Done(self,result,...)
 end
 

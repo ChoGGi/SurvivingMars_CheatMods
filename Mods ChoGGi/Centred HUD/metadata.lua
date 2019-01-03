@@ -28,6 +28,7 @@ Currently included settings:
 
 
 Known Issues:
+This only works with the lowest UI Scale.
 This just fixes the in-game HUD, I didn't bother with anything else.
 Some stuff isn't centred: blue pause overlay, console, console log, and cheat menu.]],
 })
