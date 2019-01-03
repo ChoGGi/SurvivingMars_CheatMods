@@ -40,9 +40,6 @@ function OnMsg.CityStart()
 end
 
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
---~ function OnMsg.SystemSize()
---~ 	ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
---~ end
 
 -- I guess I need a replacefuncs for lib as well
 local point = point
@@ -53,13 +50,13 @@ function SetUserUIScale(val,...)
 
 	local UIScale = (val + 0.0) / 100
 	-- update existing dialogs
-	local obj = ChoGGi.Temp.Dialogs
-	for dlg in pairs(obj) do
+	local dlgs = g_ChoGGiDlgs
+	for dlg in pairs(dlgs) do
 		dlg.dialog_width_scaled = dlg.dialog_width * UIScale
 		dlg.dialog_height_scaled = dlg.dialog_height * UIScale
 		dlg.header_scaled = dlg.header * UIScale
 		dlg:SetSize(point(dlg.dialog_width_scaled, dlg.dialog_height_scaled))
 	end
-	-- might as well do it here
+	-- might as well update it here
 	ChoGGi.Temp.UIScale = UIScale
 end

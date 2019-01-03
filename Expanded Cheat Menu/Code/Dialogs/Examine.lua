@@ -1208,14 +1208,14 @@ function Examine:valuetotextex(obj)
 			end
 		else
 			-- show translated text if possible and return a clickable link
-			local trans = Trans(obj)
-			if trans:sub(-15) == "*bad string id?" then
-				trans = tostring(obj)
+			local trans_str = Trans(obj)
+			if trans_str == "Missing text" or trans_str:sub(-15) == "*bad string id?" then
+				trans_str = tostring(obj)
 			end
 			-- the </color> is to make sure it doesn't bleed into other text
 			local meta = getmetatable(obj)
 			return StringFormat("%s</color></color>%s *%s%s",
-				trans,
+				trans_str,
 				self:HyperLink(obj,Examine_valuetotextex),
 				meta and meta.__name or tostring(obj),
 				HLEnd
@@ -1537,7 +1537,7 @@ function Examine:totextex(obj,obj_type)
 	elseif obj_type == "userdata" then
 		local trans_str = Trans(obj)
 		-- might as well just return userdata instead of these
-		if trans_str:sub(-15) == "*bad string id?" then
+		if trans_str == "Missing text" or trans_str:sub(-15) == "*bad string id?" then
 			trans_str = tostring(obj)
 			str_not_translated = true
 		else

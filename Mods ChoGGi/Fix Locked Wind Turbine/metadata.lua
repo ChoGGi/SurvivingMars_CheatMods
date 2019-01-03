@@ -13,5 +13,8 @@ return PlaceObj("ModDef", {
 	"description", [[Wind turbine gets locked by a game event.
 This checks on load for the locked turbine and unlocks it.
 
-https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-wind-turbine-not-available.1129749/]],
+This was fixed in the hotfix... but only if it hasn't happened yet, so I've left it up for anyone that it already happened on.
+
+
+https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-wind-turbine-not-available.1129749/#post-24901116]],
 })

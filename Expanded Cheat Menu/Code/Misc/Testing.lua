@@ -19,6 +19,7 @@ function OnMsg.ClassesGenerate()
 --~ s:SetPos(point(pos:x(),pos:y(),terrain.GetSurfaceHeight(pos)-45))
 
 	if ChoGGi.testing then
+
 		-- centred hud
 		local GetScreenSize = UIL.GetScreenSize
 		local margins = box(2560,0,2560,0)

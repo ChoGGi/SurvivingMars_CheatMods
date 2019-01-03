@@ -99,7 +99,9 @@ function OnMsg.ClassesGenerate()
 				Msg("SaveGame")
 				rawset(_G, "__error_table__", {})
 				local err = EngineSaveGame(StringFormat("%spersist",folder))
-				for i = 1, #__error_table__ do
+				local error_amt = #__error_table__
+
+				for i = 1, error_amt do
 					local errors = __error_table__[i]
 					print("Persist error:", errors.error or "unknown")
 					print("Persist stack:")
@@ -107,7 +109,10 @@ function OnMsg.ClassesGenerate()
 						print("   ", tostring(errors[j]))
 					end
 				end
-				ChoGGi.ComFuncs.OpenInExamineDlg(__error_table__)
+
+				if error_amt > 0 then
+					ChoGGi.ComFuncs.OpenInExamineDlg(__error_table__)
+				end
 				return err
 			end
 			return ChoGGi_OrigFuncs.PersistGame(folder,...)
@@ -311,6 +316,10 @@ function OnMsg.ClassesGenerate()
 	if ChoGGi.UserSettings.StopSelectionPanelResize then
 		XSizeConstrainedWindow.UpdateMeasure = XWindow.UpdateMeasure
 
+		local GetSafeMargins = GetSafeMargins
+		local GetDialog = GetDialog
+		local GetInGameInterface = GetInGameInterface
+		local box = box
 		-- I don't see the reason it needs to be 58 (the margin at the top)
 		function InfopanelDlg:RecalculateMargins()
 			local margins = GetSafeMargins()
@@ -1039,12 +1048,6 @@ function OnMsg.ClassesBuilt()
 
 		local function InfopanelDlgOpen(self)
 			local UserSettings = ChoGGi.UserSettings
-
-			-- give me the scroll. goddamn it blinky
-			if UserSettings.ScrollSelection and infopanel_list[self.XTemplate] then
-				self.idActionButtons.parent:SetZOrder(2)
-				ChoGGi.ComFuncs.AddScrollDialogXTemplates(self)
-			end
 
 			-- add toggle to main buttons area
 			local main_buts = GetParentOfKind(self.idMainButtons,"XFrame")

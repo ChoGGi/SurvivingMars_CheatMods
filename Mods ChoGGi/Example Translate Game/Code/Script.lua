@@ -1,12 +1,13 @@
 -- You should only need to change these, the rest of translating is editing Game.csv
 local lang_value = "Italian"
 local locale = "it-IT"
-local locale_iso1 = "it"
-local locale_iso2 = "it"
+local iso_639_1 = "it"
+local pdx_locale = "it"
 -- see Game.csv for other translated lang names
+-- or if you use ECM put this in the console: ~AllLanguages
 local lang_name = T(1000696,"Italian")
 --  or just use a string:
--- local lang_name = "Example String"
+-- local lang_name = "Italian"
 
 
 
@@ -32,9 +33,9 @@ function OnMsg.ModsReloaded()
 	-- no need to add it if it's already added
 	if not table.find(langs,"value",lang_value) then
 		langs[#langs+1] = {
-			iso_639_1 = locale_iso1,
+			iso_639_1 = iso_639_1,
+			pdx_locale = pdx_locale,
 			locale = locale,
-			pdx_locale = locale_iso2,
 			text = lang_name,
 			value = lang_value,
 		}

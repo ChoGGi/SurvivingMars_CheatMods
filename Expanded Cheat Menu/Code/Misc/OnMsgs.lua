@@ -145,13 +145,6 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		local XTemplates = XTemplates
 		local PlaceObj = PlaceObj
 
-		-- makes certain ui items flicker when i do my scrollable selection panel
-		-- ChoGGi.UserSettings.ScrollSelection = not ChoGGi.UserSettings.ScrollSelection
---~ 		XTemplates.PinButton[1].RolloverBackground = red
---~ 		XTemplates.PinButton[1].PressedBackground = red
---~ 		XTemplates.PinButton[1].FocusedBackground = red
---~ 		XTemplates.PinButton[1].Background = red
---~ 'ColumnsUse' = 'abbba'
 		-- add some ids to make it easier to fiddle with selection panel
 		local template_str = "idSection%s_ChoGGi"
 		for key,template in pairs(XTemplates) do

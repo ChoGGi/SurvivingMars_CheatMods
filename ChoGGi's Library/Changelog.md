@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v5.0 (Unreleased)
+## v5.1 (Unreleased)
+
+## v5.0 (03 Jan 2018)
 - List dialog was sometimes showing the value instead of the text for the list.
 - Editor mode toggle wasn't showing selection text till the second time it's opened.
 
