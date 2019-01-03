@@ -1,3 +1,6 @@
+v0.4
+Library update.
+
 v0.3
 Added Double Size and Reset Dialog buttons for fiddling with dialog.
 

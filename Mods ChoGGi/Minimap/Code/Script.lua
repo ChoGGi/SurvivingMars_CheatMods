@@ -1,15 +1,10 @@
 -- See LICENSE for terms
 
 -- tell people how to get my library mod (if needs be)
-local fire_once
 function OnMsg.ModsReloaded()
-	if fire_once then
-		return
-	end
-	fire_once = true
 
 	-- version to version check with
-	local min_version = 47
+	local min_version = 50
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
