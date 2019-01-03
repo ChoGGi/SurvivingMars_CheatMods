@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Minimap v0.3",
-	"version", 3,
-	"saved", 1543752000,
+	"title", "Minimap v0.4",
+	"version", 4,
+	"saved", 1546516800,
 	"image", "Preview.png",
 	"id", "ChoGGi_Minimap",
 	"steam_id", "1571476937",
