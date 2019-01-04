@@ -9,7 +9,7 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	-- version to version check with
-	local min_version = 47
+	local min_version = 50
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
@@ -21,6 +21,17 @@ Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_ve
 			end
 		end)
 	end
+
+	-- stop menus from taking up the full width of the screen
+	local XShortcutsTarget = XShortcutsTarget
+	if XShortcutsTarget then
+
+		for i = 1, #XShortcutsTarget do
+			local item = XShortcutsTarget[i]
+			item:SetHAlign("left")
+		end
+	end
+
 end
 
 -- do some stuff

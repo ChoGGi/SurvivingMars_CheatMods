@@ -1,23 +1,25 @@
--- if we open something in ged we may get a create new global error from below if these aren't already globals
-PlayInitialMovies = nil
-ParadoxBuildsModManagerWarning = true
 
 function OnMsg.DesktopCreated()
-	-- skip the two logos
-	PlayInitialMovies = nil
-end
 
-local are_we_setup
-function OnMsg.ReloadLua()
-	if are_we_setup then
-		return
-	end
-	are_we_setup = true
+	-- if we open something in ged we may get a create new global error if these aren't set
+	-- see CommonLua\Core\autorun.lua for more info
+	local pg = PersistableGlobals
+	pg.PlayInitialMovies = true
+	pg.ParadoxBuildsModManagerWarning = true
+
+	-- stop intro videos
+	PlayInitialMovies = empty_func
 
 	-- get rid of mod manager warnings (not the reboot one though)
 	ParadoxBuildsModManagerWarning = true
 
+	-- we don't need these anymore, and we don't want them saved in the persist table
+	pg.PlayInitialMovies = nil
+	pg.ParadoxBuildsModManagerWarning = nil
+
+	-- bonus:
 	--[[
+  CreateRealTimeThread(function()
 		-- opens to load game menu
 		local Dialogs = Dialogs
 		while not Dialogs.PGMainMenu do
@@ -31,6 +33,7 @@ function OnMsg.ReloadLua()
 		-- show cheat menu
 		Sleep(100)
 		XShortcutsTarget:SetVisible(true)
+	end)
 	--]]
 
 end
