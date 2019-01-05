@@ -113,8 +113,11 @@ function OnMsg.ClassesGenerate()
 				if error_amt > 0 then
 					ChoGGi.ComFuncs.OpenInExamineDlg(__error_table__)
 				end
+				-- be useful for restarting threads, see if devs will add it
+				Msg("PostSaveGame")
 				return err
 			end
+			Msg("PostSaveGame")
 			return ChoGGi_OrigFuncs.PersistGame(folder,...)
 		end
 

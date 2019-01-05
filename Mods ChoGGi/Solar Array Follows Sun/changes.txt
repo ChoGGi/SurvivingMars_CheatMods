@@ -1,3 +1,6 @@
+v0.4
+Removed the persist error that showed up in the log.
+
 v0.3
 Hopefully fixed issue with arrays not moving.
 
