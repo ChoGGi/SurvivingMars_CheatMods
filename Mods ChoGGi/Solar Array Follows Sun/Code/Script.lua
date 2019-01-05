@@ -5,9 +5,10 @@ local SunToSolarPanelAngle = SunToSolarPanelAngle
 local GetSunPos = GetSunPos
 local CalcOrientation = CalcOrientation
 local rawget = rawget
+local MinuteDuration = const.MinuteDuration
 
-local function AddPanels(a,bld)
-	bld.ChoGGi_panels[#bld.ChoGGi_panels+1] = a
+local function AddPanels(array,bld)
+	bld.ChoGGi_panels[#bld.ChoGGi_panels+1] = array
 end
 function OnMsg.BuildingInit(bld)
 	-- add panels into table for ease of looping
@@ -21,10 +22,10 @@ function OnMsg.LoadGame()
 	-- do any existing
 	local arrays = UICity.labels.SolarArray or ""
 	for i = 1, #arrays do
-		local a = arrays[i]
-		if not a.ChoGGi_panels then
-			a.ChoGGi_panels = {}
-			a:ForEachAttach("SolarArrayPanel",AddPanels,a)
+		local bld = arrays[i]
+		if not bld.ChoGGi_panels then
+			bld.ChoGGi_panels = {}
+			bld:ForEachAttach("SolarArrayPanel",AddPanels,bld)
 		end
 	end
 	-- i probably need to do this since i load mods in the main menu and it's a GlobalGameTimeThread
@@ -38,7 +39,6 @@ function OnMsg.CityStart()
 	end)
 end
 
-local MinuteDuration = const.MinuteDuration
 local function SolarArraysOrientToSun(anim_time)
 	anim_time = anim_time or MinuteDuration
 	-- 18250 matches them up with the other panels (I assume they rotate on a diff angle or something)
@@ -63,9 +63,25 @@ local function SolarArraysOrientToSun(anim_time)
 end
 
 GlobalGameTimeThread("SolarArrayOrientation", function()
-	local update_interval = 3*const.MinuteDuration
+	local update_interval = 3*MinuteDuration
 	while true do
 		Sleep(update_interval)
 		SolarArraysOrientToSun(update_interval)
 	end
 end)
+
+-- the below is for removing the persist errors from the log
+local orig_PersistGame = PersistGame
+function PersistGame(...)
+	local ret = orig_PersistGame(...)
+	Msg("PostSaveGame")
+	return ret
+end
+
+function OnMsg.SaveGame()
+  DeleteThread(SolarArrayOrientation)
+	_G.SolarArrayOrientation = false
+end
+function OnMsg.PostSaveGame()
+  SolarArrayOrientation = CreateGameTimeThread(GlobalGameTimeThreadFuncs.SolarArrayOrientation)
+end
