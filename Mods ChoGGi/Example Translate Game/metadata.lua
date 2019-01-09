@@ -10,11 +10,16 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[This will add an option to use "Italian" to Options>Gameplay>Language.
-I included a Game.csv that changes a few strings as an example (showing how to use , and "").
-See ModsTools\Game.csv for more.
+	"description", [[This isn't a complete translation mod, it's an example with a few strings translated (I wouldn't bother subscribing).
 
-To use a different language you'll need to edit the first few lines of Code/Script.lua.
 
-You can also get the mod from: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Example%20Translate%20Game]],
+
+This mod will add an option to use "Italian" to Options>Gameplay>Language.
+Includes a Game.csv that changes a few strings as an example (showing how to use , and "").
+See SM folder\ModsTools\Game.csv for the full list of string ids.
+
+To add a language other than Italian: You'll need to edit the first few lines of Code/Script.lua.
+
+You can also get the mod from: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Example%20Translate%20Game
+]],
 })
