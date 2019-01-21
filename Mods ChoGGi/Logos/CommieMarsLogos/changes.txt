@@ -1,4 +1,15 @@
+v0.4
+New logos:
+Coat of arms of Bulgaria (1971-1990)
+Coat of Arms of South Vietnam (1954-1955)
+Communist Party of Mexico
+Emblem of North Korea
+Emblem of Vietnam
+Flag of North Korea
+Mexican Communist Party
+
 v0.3
-Two more logos (Interkosmos_Emblem3, Cosmonautica_Orange).
+Two more logos: Interkosmos Emblem3, Cosmonautica Orange.
+
 v0.2
 More logos.

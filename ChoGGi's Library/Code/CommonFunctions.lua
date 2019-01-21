@@ -4578,3 +4578,9 @@ do -- LoadEntity
 		SetEntityFadeDistances(name, -1, -1)
 	end
 end -- do
+
+function ChoGGi.ComFuncs.AddParentToClass(class_obj,parent_name)
+	if not TableFind(class_obj,parent_name) then
+		class_obj.__parents[#class_obj.__parents+1] = parent_name
+	end
+end

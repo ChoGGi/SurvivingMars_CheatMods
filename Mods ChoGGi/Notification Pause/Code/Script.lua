@@ -1,18 +1,21 @@
-local GetHUD = GetHUD
+-- See LICENSE for terms
+
+local SetGameSpeedState = SetGameSpeedState
+
+local function PauseGame()
+	if not GameState.gameplay then
+		return
+	end
+
+	SetGameSpeedState("pause")
+end
 
 function OnMsg.ClassesBuilt()
 
-  --does nothing instead of updating g_HeavyLoadDroneHubs
-  function DroneControl:UpdateHeavyLoadNotification() end
-
-  local function PauseGame()
-    local hud = GetHUD()
-    if hud then
-      UICity:SetGameSpeed(0)
-      GetHUD().prev_UISpeedState = UISpeedState
-      UISpeedState = "pause"
-    end
-  end
+  -- does nothing instead of updating g_HeavyLoadDroneHubs
+	DroneControl.UpdateHeavyLoadNotification = empty_func
+--~   function DroneControl:UpdateHeavyLoadNotification()
+--~ 	end
 
   --pause when new notif happens
   local orig_AddOnScreenNotification = AddOnScreenNotification
@@ -30,12 +33,11 @@ function OnMsg.ClassesBuilt()
 end
 
 local function SomeCode()
-  local table = table
-  --make sure there aren't any showing at the moment
+  -- make sure there aren't any showing at the moment
   g_HeavyLoadDroneHubs = {}
 
   local notif = g_ActiveOnScreenNotifications
-  for i = #notif, 1, -1 do
+	for i = 1, #notif do
     if notif[i][1] == "TransportationDroneOverload" then
       table.remove(notif,i)
       break

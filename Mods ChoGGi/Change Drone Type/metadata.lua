@@ -10,5 +10,5 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Adds a button to hubs and rovers that lets you change the type of drone spawned (shared setting).]],
+	"description", [[Adds a button to hubs and rovers that lets you switch between wasp (flying) and regular drones (global setting, not per building).]],
 })

@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 
 -- local whatever globals we call
 local HideHexRanges = HideHexRanges

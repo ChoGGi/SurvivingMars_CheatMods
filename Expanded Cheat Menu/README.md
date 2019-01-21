@@ -12,6 +12,8 @@ Other OS locations: https://pcgamingwiki.com/wiki/Surviving_Mars#Save_game_data_
 Enable with in-game mod manager
 ```
 
+
+
 ##### Info
 ```
 If you forget where a menu item is: Menu>Help>List All Menu Items (use "Filter Items" at the bottom).
@@ -152,34 +154,6 @@ Write Logs
 
 
 
-##### Fixes
-```
-Menu>ECM>Fixes>
-Drones Keep Trying Blocked Rocks:
-If you have a certain dronehub who's drones keep trying to get rock they can't reach, try this.
-
-Idle Drones Won't Build When Resources Available
-If you have drones that are idle while contruction sites need to be built and resources are available then you likely have some unreachable building sites.
-This removes any of those (resources won't be touched).
-
-Remove Yellow Grid Marks
-If you have any buildings with those yellow grid marks around them (or anywhere else), then this will remove them
-
-Drone Carry Amount
-Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.
-This forces them to pick up whenever there's more then one resource).
-If you have an insane production amount set then it'll take an (in-game) hour between calling drones.
-
-Project Morpheus Radar Fell Down
-Sometimes the blue radar thingy falls off.
-
-Cables & Pipes: Instant Repair
-Instantly repair all broken pipes and cables.
-
-
-A bunch more (certain crashes with colonists rovers, etc)
-```
-
 ##### Console and Commands
 ```
 Press Tilde (~), Enter, or Numpad Enter to show the console
@@ -191,7 +165,7 @@ OpenExamine(Consts) : or ex(SelectedObj)
 dump(12345) : dump puts files in AppData/logs
 dumplua(dlgConsole) : dump using ValueToLuaCode()
 dumptable(Consts) : or dumpt
-trans() : translate userdata: ********** or 6543256 to text
+trans() : translates "userdata: **********" or 6543256 to text
 SelectedObj : or s
 SelectionMouseObj() : or m(), object under mouse cursor
 GetPreciseCursorObj() : or mc(), like SelectionMouseObj but compact
@@ -208,18 +182,16 @@ $example to translate userdata/stringbase
 &handle to open object in examiner
 *r/*g/*m to wrap code in real/game/mapreal time threads
 
-If you want to overwrite instead of append text: dumplua(Presets.TechPreset,"w")
-If you want to dump functions as well: dumptable(Presets.TechPreset,nil,true)
-If you want to save the console text: Console>Write Logs (very helpful for examining an object)
-
 you can paste chunks of code in the console to test out (no -- comments allowed, since DA update merges pasted lines):
  local BuildingTemplates = BuildingTemplates
  for _,bld in pairs(BuildingTemplates) do
     local building = bld
     print(bld.id)
   end
-Or create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu (-- comments are fine).
+Or create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu.
 ```
+
+
 
 ##### Known issues
 ```
@@ -239,15 +211,19 @@ Silva's Modular Apartments and the Cheats pane upgrade 1/2/3 == game freezing
 	> Do it manually; Select building, in console paste: s:ApplyUpgrade(1,true)
 ```
 
+
+
 ##### Modder related (Misc Info)
 ```
 If you want to examine an object that could get replaced with a new obj (and have examine refresh on the new obj):
 OpenExamine("ChoGGi.UserSetting.ThisObjCanChange","str")
 To choose where to open the examine dialog
-OpenExamine(object,point(x,y))
+OpenExamine(obj,point(x,y))
 To have a custom title
-OpenExamine(object,nil,"Custom Title")
+OpenExamine(obj,nil,"Custom Title")
 ```
+
+
 
 ##### New locales
 ```
@@ -264,6 +240,8 @@ Logs are stored at C:\Users\USERNAME\AppData\Roaming\Surviving Mars\logs
 I can't help if I don't know what's wrong.
 The steps you take to recreate the issue would also be useful, and maybe a save game depending on the issue.
 ```
+
+
 
 ##### Access to missing functionality
 ```

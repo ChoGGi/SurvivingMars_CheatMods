@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Buildings Broken Down And No Repair v0.1",
+	"title", "Fix: Buildings Broken And No Repair v0.1",
 	"version", 1,
 	"saved", 1545566400,
 	"image", "Preview.png",
@@ -18,5 +18,6 @@ Any buildings affected by this issue will need to be repaired with 000.1 resourc
 
 
 
+There'll be a fix whenever the next update hits:
 https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-wind-turbines-are-no-longer-repaired-by-drones.1141272/#post-25040223]],
 })

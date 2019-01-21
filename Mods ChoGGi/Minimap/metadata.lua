@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"description", [[It's an image of the map you can click on to move the camera around (useful for setting transport routes).
 This is an image, so click target isn't perfect.
 
-For those of us using ultrawide the image doesn't work that well, 16:9 is best.
+For those of us using ultrawide the image doesn't work that well.
 There's a Mod Config Reborn option to use my topography images instead:
 https://steamcommunity.com/sharedfiles/filedetails/?id=1571465108
 

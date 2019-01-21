@@ -83,7 +83,7 @@ end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
---~	 local ChoGGi = ChoGGi
+	local ChoGGi = ChoGGi
 
 --~	 InfopanelItems.LayoutMethod = "VList"
 --~	 InfopanelItems.MaxWidth = 500
@@ -107,23 +107,24 @@ function OnMsg.ClassesPreprocess()
 	-- stops crashing with certain missing pinned objects
 	if ChoGGi.UserSettings.FixMissingModBuildings then
 		local umc = UnpersistedMissingClass
-		umc.__parents[#umc.__parents+1] = "AutoAttachObject"
-		umc.__parents[#umc.__parents+1] = "PinnableObject"
+		ChoGGi.ComFuncs.AddParentToClass(umc,"AutoAttachObject")
+		ChoGGi.ComFuncs.AddParentToClass(umc,"PinnableObject")
 
 		-- removes some spam from logs (might cause weirdness so just for me)
 		if ChoGGi.testing then
-			UnpersistedMissingClass.CanReserveResidence = empty_func
-			UnpersistedMissingClass.RemoveResident = empty_func
-			UnpersistedMissingClass.RemoveWorker = empty_func
-			UnpersistedMissingClass.HasFreeVisitSlots = empty_func
-			UnpersistedMissingClass.UpdateAttachedSigns = empty_func
-			UnpersistedMissingClass.SetIsNightLightPossible = empty_func
-			UnpersistedMissingClass.RefreshNightLightsState = empty_func
-			UnpersistedMissingClass.GetUIStatusOverrideForWorkCommand = empty_func
-			UnpersistedMissingClass.Unassign = empty_func
-			UnpersistedMissingClass.RemoveCommandCenter = empty_func
-			UnpersistedMissingClass.GetEntrance = empty_func
-			UnpersistedMissingClass.GetEntrancePoints = empty_func
+			local empty_func = empty_func
+			umc.CanReserveResidence = empty_func
+			umc.RemoveResident = empty_func
+			umc.RemoveWorker = empty_func
+			umc.HasFreeVisitSlots = empty_func
+			umc.UpdateAttachedSigns = empty_func
+			umc.SetIsNightLightPossible = empty_func
+			umc.RefreshNightLightsState = empty_func
+			umc.GetUIStatusOverrideForWorkCommand = empty_func
+			umc.Unassign = empty_func
+			umc.RemoveCommandCenter = empty_func
+			umc.GetEntrance = empty_func
+			umc.GetEntrancePoints = empty_func
 		end
 	end
 
@@ -907,9 +908,9 @@ do -- ColonistCreated
 end -- do
 
 function OnMsg.SelectionAdded(obj)
-	--update selection shortcut
+	-- update selection shortcut
 	s = obj
-	--update last placed (or selected)
+	-- update last placed (or selected)
 	if obj:IsKindOf("Building") then
 		ChoGGi.Temp.LastPlacedObject = obj
 	end
