@@ -752,6 +752,7 @@ function OnMsg.ClassesGenerate()
 	-- This doesn't add anything to metadata/items, it only converts files.
 --~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles("MOD_ID")
 --~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.MOD_ID,".tga")
+--~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.ChoGGi_XXXXXXXXXX)
 	function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod,ext)
 		if blacklist then
 			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ConvertImagesToLogoFiles"))
@@ -779,6 +780,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- ConvertImagesToResEntities
+		-- converts png images (512x512) to an entity you can use to replace deposit signs.
 		local ConvertToOSPath = ConvertToOSPath
 		local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
 	--~ 	ModItemDecalEntity:Import
@@ -1379,7 +1381,5 @@ The func I use for spot_rot rounds to two decimal points...
 	function ChoGGi.ComFuncs.MoveObjToGround(obj)
 		local t_height = terrain.GetHeight(obj:GetVisualPos())
 		obj:SetPos(obj:GetPos():SetZ(t_height))
-
 	end
-
 end

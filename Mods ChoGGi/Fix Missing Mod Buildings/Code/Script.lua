@@ -1,10 +1,14 @@
 -- See LICENSE for terms
 
+local function AddParentToClass(class_obj,parent_name)
+	if not table.find(class_obj,parent_name) then
+		class_obj.__parents[#class_obj.__parents+1] = parent_name
+	end
+end
 function OnMsg.ClassesPreprocess()
   -- stops crashing with certain missing pinned objects
-  local umc = UnpersistedMissingClass
-  umc.__parents[#umc.__parents+1] = "AutoAttachObject"
-  umc.__parents[#umc.__parents+1] = "PinnableObject"
+	AddParentToClass(UnpersistedMissingClass,"AutoAttachObject")
+	AddParentToClass(UnpersistedMissingClass,"PinnableObject")
 end
 
 function OnMsg.PersistPostLoad()

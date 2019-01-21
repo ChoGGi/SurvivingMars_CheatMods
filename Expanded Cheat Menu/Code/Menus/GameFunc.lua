@@ -44,6 +44,154 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
+	do -- ExportMapDataToCSV
+		local value_str = "%s %s"
+		local csv_columns = {
+			{"latitude_degree",value_str:format(S[6890--[[Latitude--]]],S[302535920001505--[[°--]]])},
+			{"latitude",S[6890--[[Latitude--]]]},
+			{"longitude_degree",value_str:format(S[6892--[[Longitude--]]],S[302535920001505--[[°--]]])},
+			{"longitude",S[6892--[[Longitude--]]]},
+			{"topography",S[284813068603--[[Topography--]]]},
+			{"altitude",S[4135--[[Altitude--]]]},
+			{"temperature",S[4141--[[Temperature--]]]},
+
+			{"metals",S[3514--[[Metals--]]]},
+			{"metals_rare",S[4139--[[Rare Metals--]]]},
+			{"concrete",S[3513--[[Concrete--]]]},
+			{"water",S[681--[[Water--]]]},
+
+			{"dust_devils",S[4142--[[Dust Devils--]]]},
+			{"dust_storms",S[4144--[[Dust Storms--]]]},
+			{"meteors",S[4146--[[Meteors--]]]},
+			{"cold_waves",S[4148--[[Cold Waves--]]]},
+
+			{"map_name",S[302535920001503--[[Map Name--]]]},
+			{"landing_spot",value_str:format(S[302535920001504--[[Named--]]],S[7396--[[Location--]]])},
+		}
+		-- exported data temp stored here
+		local export_data = {}
+		-- it's an index based table
+		local export_count = 0
+		-- stores temp landing spot
+		local landing
+		-- local some globals
+		local MarsLocales = MarsLocales
+		local GetOverlayValues = GetOverlayValues
+		local GetRandomMapGenerator = GetRandomMapGenerator
+		local FillRandomMapProps = FillRandomMapProps
+		local T = T
+
+		local function AddLandingSpot(lat,long)
+			-- updates map_params to location
+			GetOverlayValues(
+				lat * 60,
+				long * 60,
+				landing.overlay_grids,
+				landing.map_params
+			)
+			-- visible coord names in csv
+			local lat_name,long_name = S[6886--[[S--]]],S[6888--[[E--]]]
+			-- we store all numbers as pos in csv
+			if lat < 0 then
+				lat_name = S[6887--[[N--]]]
+				lat = lat - lat * 2
+			end
+			if long < 0 then
+				long_name = S[6889--[[W--]]]
+				long = long - long * 2
+			end
+			-- updates threat/res map info
+			landing:RecalcThreatResourceLevels()
+
+			local params = landing.map_params
+			local threat = landing.threat_resource_levels
+			-- needed to get map name
+			local gen = GetRandomMapGenerator()
+			-- create item in export list
+			export_count = export_count + 1
+			export_data[export_count] = {
+				latitude = lat_name,
+				latitude_degree = lat,
+				longitude = long_name,
+				longitude_degree = long,
+				topography = Trans(landing:GetMapDifficulty()),
+				altitude = Trans(T{612693411923, "<Altitude> m",Altitude = params.Altitude}),
+				temperature = params.Temperature,
+				metals = threat.Metals,
+				metals_rare = threat.PreciousMetals,
+				concrete = threat.Concrete,
+				water = threat.Water,
+				dust_devils = threat.DustDevils,
+				dust_storms = threat.DustStorm,
+				meteors = threat.Meteor,
+				cold_waves = threat.ColdWave,
+
+				map_name = FillRandomMapProps(gen),
+			}
+			-- named location spots
+			local spot_name = params.landing_spot or MarsLocales[params.Locales]
+			if spot_name then
+				export_data[export_count].landing_spot = Trans(spot_name)
+			end
+		end
+
+		function ChoGGi.MenuFuncs.ExportMapDataToCSV()
+			-- save current g_CurrentMapParams to restore later
+			local params = g_CurrentMapParams
+			local params_saved = table.copy(params)
+
+			-- make a fake landing spot
+			landing = LandingSiteObject:new()
+			-- add fake grid info
+			landing.overlay_grids = {}
+			landing:LoadOverlayGrids()
+
+			-- exported data temp stored here
+			table.clear(export_data)
+			export_count = 0
+
+			-- needed for RecalcThreatResourceLevels func
+			local orig_state = GameState.gameplay
+			GameState.gameplay = false
+			local orig_spotchall = g_SelectedSpotChallengeMods
+			g_SelectedSpotChallengeMods = {}
+
+			-- loop through all the spots, update landing spot and stick in export list
+			for lat = 0, 70 do
+				for long = 0, 180 do
+					-- SE
+					AddLandingSpot(lat,long)
+					-- SW
+					AddLandingSpot(lat,long * -1)
+					-- NE
+					AddLandingSpot(lat * -1,long)
+					-- NW
+					AddLandingSpot(lat * -1,long * -1)
+				end
+			end
+			-- not needed anymore so restore back to orig
+			GameState.gameplay = orig_state
+			g_SelectedSpotChallengeMods = orig_spotchall
+
+			-- remove landing spot obj (not needed anymore)
+			landing:delete()
+			-- and now we can save it to disk
+			SaveCSV("AppData/MapData.csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
+--~ ex(export_data)
+			-- restore saved map params (just in case anything uses the values)
+			for key,value in pairs(params_saved) do
+				params[key] = value
+			end
+			-- let user know where the csv is
+			local path = ConvertToOSPath("AppData/MapData.csv")
+			MsgPopup(
+				path,
+				StringFormat("%s %s",S[302535920001449--[[Export--]]],S[302535920001448--[[CSV--]]])
+			)
+			print(path)
+		end
+	end --do
+
 	do -- ExportColonistDataToCSV
 		local ChoGGi_Tables = ChoGGi.Tables
 		-- build list of traits to skip (added as columns, we don't want dupes)
@@ -151,7 +299,12 @@ function OnMsg.ClassesGenerate()
 --~ ex(export_data)
 			-- and now we can save it to disk
 			SaveCSV("AppData/Colonists.csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
-			print(ConvertToOSPath("AppData/Colonists.csv"))
+			local path = ConvertToOSPath("AppData/Colonists.csv")
+			MsgPopup(
+				path,
+				StringFormat("%s %s",S[302535920001449--[[Export--]]],S[302535920001448--[[CSV--]]])
+			)
+			print(path)
 		end
 	end -- do
 
@@ -382,7 +535,12 @@ function OnMsg.ClassesGenerate()
 --~ ex(csv_columns)
 			-- and now we can save it to disk
 			SaveCSV("AppData/Graphs.csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
-			print(ConvertToOSPath("AppData/Graphs.csv"))
+			local path = ConvertToOSPath("AppData/Graphs.csv")
+			MsgPopup(
+				path,
+				StringFormat("%s %s",S[302535920001449--[[Export--]]],S[302535920001448--[[CSV--]]])
+			)
+			print(path)
 		end
 	end -- do
 

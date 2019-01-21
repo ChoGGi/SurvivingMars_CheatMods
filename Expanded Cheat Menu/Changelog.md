@@ -4,6 +4,8 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v12.1 (Unreleased)
+### Added:
+- Game>Export CSV>Map Data: Export map location data to Profile/MapData.csv (will take awhile, see survivingmarsmaps.com for a filtered list).
 
 ## v12.0 (03 Jan 2018)
 ### Added:

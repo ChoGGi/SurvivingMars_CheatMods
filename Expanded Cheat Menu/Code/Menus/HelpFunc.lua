@@ -647,12 +647,10 @@ Change DisableECM to false in settings file to re-enable them."--]]],S[302535920
 			if boolean == true then
 					WaitNextFrame(3)
 					LockCamera("Screenshot")
---~ 					filename = GenerateScreenshotFilename("SSAA","AppData/")
 					filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SSAA","AppData/","tga")
 					MovieWriteScreenshot(filename, 0, 64, false)
 					UnlockCamera("Screenshot")
 			else
---~ 				filename = GenerateScreenshotFilename("SS","AppData/")
 				filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SS","AppData/","tga")
 				WriteScreenshot(filename)
 			end

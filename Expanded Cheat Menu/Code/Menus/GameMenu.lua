@@ -508,7 +508,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionMenubar = str_Game_ExportCSV,
 		ActionId = ".Colonist Data",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
-		RolloverText = S[302535920001219--[[Export colonist data to %sColonists.csv--]]]:format(ConvertToOSPath("AppData/")),
+		RolloverText = S[302535920001219--[[Export colonist data to %sColonists.csv.--]]]:format(ConvertToOSPath("AppData/")),
 		OnAction = ChoGGi.MenuFuncs.ExportColonistDataToCSV,
 	}
 
@@ -517,8 +517,17 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionMenubar = str_Game_ExportCSV,
 		ActionId = ".Graphs Data",
 		ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
-		RolloverText = S[302535920001452--[[Export data to %sGraphs.csv--]]]:format(ConvertToOSPath("AppData/")),
+		RolloverText = S[302535920001452--[[Export colonist cc graph data to %sGraphs.csv.--]]]:format(ConvertToOSPath("AppData/")),
 		OnAction = ChoGGi.MenuFuncs.ExportGraphsToCSV,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001501--[[Map Data--]]],
+		ActionMenubar = str_Game_ExportCSV,
+		ActionId = ".Map Data",
+		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
+		RolloverText = S[302535920001502--[["Export map location data to %sMapData.csv (will take awhile, see survivingmarsmaps.com for a filtered list)."--]]]:format(ConvertToOSPath("AppData/")),
+		OnAction = ChoGGi.MenuFuncs.ExportMapDataToCSV,
 	}
 
 end

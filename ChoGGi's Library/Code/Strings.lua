@@ -9,7 +9,7 @@ local StringFormat = string.format
 local TranslationTable = TranslationTable
 
 -- amount of entries in the CSV file
-local string_limit = 1500
+local string_limit = 1550
 
 do -- Translate
 	local T,_InternalTranslate,pack_params,procall = T,_InternalTranslate,pack_params,procall
@@ -194,7 +194,9 @@ local strings = {
 	[3983] = TranslationTable[3983], -- Disasters
 	[3984] = TranslationTable[3984], -- Anomalies
 	[4099] = TranslationTable[4099], -- Game Time
+	[4135] = TranslationTable[4135], -- Altitude
 	[4139] = TranslationTable[4139], -- Rare Metals
+	[4141] = TranslationTable[4141], -- Temperature
 	[4142] = TranslationTable[4142], -- Dust Devils
 	[4144] = TranslationTable[4144], -- Dust Storms
 	[4146] = TranslationTable[4146], -- Meteors
@@ -270,7 +272,14 @@ local strings = {
 	[6859] = TranslationTable[6859], -- Unemployed
 	[6878] = TranslationTable[6878], -- OK
 	[6879] = TranslationTable[6879], -- Cancel
+	[6886] = TranslationTable[6886], -- S
+	[6887] = TranslationTable[6887], -- N
+	[6888] = TranslationTable[6888], -- E
+	[6889] = TranslationTable[6889], -- W
+	[6890] = TranslationTable[6890], -- Latitude
+	[6892] = TranslationTable[6892], -- Longitude
 	[7031] = TranslationTable[7031], -- Renegades
+	[7396] = TranslationTable[7396], -- Location
 	[7553] = TranslationTable[7553], -- Homeless
 	[7607] = TranslationTable[7607], -- Battery
 	[7657] = Trans(7657), -- <ButtonY> Activate
@@ -333,6 +342,7 @@ local strings = {
 	[126095410863] = TranslationTable[126095410863], -- Info
 	[128569337702] = TranslationTable[128569337702], -- Reward:
 	[186760604064] = TranslationTable[186760604064], -- Test
+	[284813068603] = TranslationTable[284813068603], -- Topography
 	[283142739680] = TranslationTable[283142739680], -- Game
 	[298035641454] = TranslationTable[298035641454], -- Object
 	[312752058553] = TranslationTable[312752058553], -- Rotate Building Left

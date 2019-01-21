@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local CreateRealTimeThread = CreateRealTimeThread
 local AddCustomOnScreenNotification = AddCustomOnScreenNotification
 local AsyncRand = AsyncRand

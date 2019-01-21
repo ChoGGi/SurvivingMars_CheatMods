@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Commie Mars Logos v0.3",
-	"version", 3,
-	"saved", 1539777600,
+	"title", "Commie Mars Logos v0.4",
+	"version", 4,
+	"saved", 1547726400,
 	"image", "Preview.png",
 	"id", "ChoGGi_CommieMarxLogos",
 	"steam_id", "1502077662",

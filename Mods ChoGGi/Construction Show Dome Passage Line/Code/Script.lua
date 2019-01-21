@@ -11,6 +11,7 @@ local HexToWorld = HexToWorld
 local WorldToHex = WorldToHex
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
+local MapDelete = MapDelete
 local point = point
 local AveragePoint2D = AveragePoint2D
 local PolylineSetParabola = PolylineSetParabola
@@ -90,9 +91,7 @@ local function BuildMarkers(dome)
 		item.hex1:SetColorModifier(green)
 		item.hex2:SetColorModifier(green)
 		-- not my magic numbers
-		item.line:SetCustomDataString(1, 11, white_str)
-		-- hide if vis blocked
---~ 		item.line:SetDepthTest(true)
+--~ 		item.line:SetCustomDataString(1, 11, white_str)
 
 		BuildDomeSpots(dome)
 	end

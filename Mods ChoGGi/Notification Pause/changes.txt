@@ -1,6 +1,12 @@
+v0.5
+Code cleanup.
+Fixed issue between this and Career A.I.
+
 v0.4
 Da Vinci
+
 v0.3
 Added pause for AddCustomOnScreenNotification as well.
+
 v0.2
 Works for both new/saved games.
