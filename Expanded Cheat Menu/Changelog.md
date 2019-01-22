@@ -6,6 +6,7 @@
 ## v12.1 (Unreleased)
 ### Added:
 - Game>Export CSV>Map Data: Export map location data to Profile/MapData.csv (will take awhile, see survivingmarsmaps.com for a filtered list).
+- Colonists>Performance Penalty Connected Dome: Disable performance penalty for colonists working in another connected dome.
 
 ## v12.0 (03 Jan 2018)
 ### Added:
