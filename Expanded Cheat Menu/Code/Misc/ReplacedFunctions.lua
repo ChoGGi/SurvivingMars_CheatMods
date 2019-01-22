@@ -1485,24 +1485,27 @@ end]]
 			end
 		end
 
-		-- why have the mod blacklist for the console...
-		CreateRealTimeThread(function()
-			while not g_ConsoleFENV do
-				Sleep(250)
-			end
-
-			local run = rawget(g_ConsoleFENV,"__run")
-			g_ConsoleFENV = {__run = run}
-			setmetatable(g_ConsoleFENV, {
-				__index = function(_, key)
-					return rawget(_G, key)
-				end,
-				__newindex = function(_, key, value)
-					rawset(_G, key, value)
+		-- kuiper modding beta
+		if rawget(_G,"g_ConsoleFENV") then
+			-- why have the mod blacklist for the console...
+			CreateRealTimeThread(function()
+				while not g_ConsoleFENV do
+					Sleep(250)
 				end
-			})
 
-		end)
+				local run = rawget(g_ConsoleFENV,"__run")
+				g_ConsoleFENV = {__run = run}
+				setmetatable(g_ConsoleFENV, {
+					__index = function(_, key)
+						return rawget(_G, key)
+					end,
+					__newindex = function(_, key, value)
+						rawset(_G, key, value)
+					end
+				})
+
+			end)
+		end
 
 	end -- do
 end -- ClassesBuilt
