@@ -204,6 +204,7 @@ function OnMsg.ClassesGenerate()
 			"MinComfortBirth",
 			"MysteryDreamSanityDamage",
 			"NoHomeComfort",
+			"NonHomeDomePerformancePenalty",
 			"NonSpecialistPerformancePenalty",
 			"OutsourceMaxOrderCount",
 			"OutsourceResearch",

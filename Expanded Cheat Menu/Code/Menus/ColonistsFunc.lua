@@ -11,6 +11,20 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 
+	function ChoGGi.MenuFuncs.NonHomeDomePerformancePenalty_Toggle()
+		local ChoGGi = ChoGGi
+		ChoGGi.ComFuncs.SetConstsG("NonHomeDomePerformancePenalty",ChoGGi.ComFuncs.NumRetBool(Consts.NonHomeDomePerformancePenalty,0,ChoGGi.Consts.NonHomeDomePerformancePenalty))
+		ChoGGi.ComFuncs.SetSavedSetting("NonHomeDomePerformancePenalty",Consts.NonHomeDomePerformancePenalty)
+
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			S[302535920000788--[[%s: You never know what you're gonna get.--]]]:format(ChoGGi.UserSettings.NonHomeDomePerformancePenalty),
+			302535920000912--[[Penalty--]],
+			default_icon,
+			true
+		)
+	end
+
 	function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
 		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.NoMoreEarthsick then

@@ -112,6 +112,7 @@ ChoGGi = {
 		MinComfortBirth = false,
 		MysteryDreamSanityDamage = false,
 		NoHomeComfort = false,
+		NonHomeDomePerformancePenalty = false,
 		NonSpecialistPerformancePenalty = false,
 		OutsourceMaxOrderCount = false,
 		OutsourceResearch = false,

@@ -361,10 +361,25 @@ Works after colonist idle."--]]
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NonSpecialistPerformancePenalty,
 				302535920000390--[["Disable performance penalty for non-Specialists.
-	Activated when colonist changes job."--]]
+Activated when colonist changes job."--]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001446--[[Performance Penalty Connected Dome--]]],
+		ActionMenubar = str_ExpandedCM_Colonists_Work,
+		ActionId = ".Performance Penalty Connected Dome",
+		ActionIcon = StarkFistOfRemoval,
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.NonHomeDomePerformancePenalty,
+				302535920001451--[["Disable performance penalty for colonists working in another connected dome.
+Activated when colonist changes job."--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.NonHomeDomePerformancePenalty_Toggle,
 	}
 
 	c = c + 1
