@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 From Marx with love.
 
 
-You can use ECM to change the logo of an existing game.
+You can use Expanded Cheat Menu to change the logo of an existing game.
 
 
 

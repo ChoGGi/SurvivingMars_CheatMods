@@ -16,7 +16,7 @@ There is a ModItem version of this, but it isn't in the mod editor for some reas
 
 This is a copy n paste of an in-game scheme (it's for modders that want to make their own).
 
-If you use ECM, you can use the built-in editor (Menu>Debug>Ged Presets Editor>ColonyColorScheme).
+If you use Expanded Cheat Menu, you can use the built-in editor (Menu>Debug>Ged Presets Editor>ColonyColorScheme).
 It won't actually save anything to file, but you can access the edited scheme in the console with ~ColonyColorSchemes.
 
 Manually convert the numbers with ColorizationMaterialDecode(NUMBER), this will return three numbers:

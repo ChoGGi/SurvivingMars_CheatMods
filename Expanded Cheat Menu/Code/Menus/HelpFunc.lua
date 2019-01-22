@@ -309,11 +309,15 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				local ChoGGi = ChoGGi
 				local mod = choice[1].mod
 				local mod_path = choice[1].path
+
 				local copy_files = choice[1].check1
 				local blank_mod = choice[1].check2
 				local clipboard = choice[1].check3
 				local pack_mod = choice[1].check4
 				local test = choice[1].check5
+--~ 				local steam_upload = choice[1].check6
+				local steam_upload = true
+
 				local pack_path = "AppData/ModUpload/Pack/"
 				local dest = "AppData/ModUpload/"
 				local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
@@ -328,7 +332,13 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				end
 
 				-- build / show confirmation dialog
-				local upload_msg = {S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title)}
+				local upload_msg = {}
+
+				if steam_upload then
+					upload_msg[#upload_msg+1] = S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title)
+				else
+					upload_msg[#upload_msg+1] = S[1000771--[[Mod %s will be uploaded to Paradox--]]]:format(mod.title)
+				end
 
 				if not pack_mod then
 					upload_msg[#upload_msg+1] = "\n\n"
@@ -345,7 +355,8 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					AsyncCreatePath(dest)
 				end
 
-				if diff_author then
+				-- show diff author warning unless it's me
+				if diff_author and not ChoGGi.testing then
 					upload_msg[#upload_msg+1] = "\n\n"
 					upload_msg[#upload_msg+1] = S[302535920001263--[["%s is different from your name, do you have permission to upload it?"--]]]:format(mod.author)
 				end
@@ -363,20 +374,44 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					-- add new mod
 					local err,item_id
 					if not test then
-						if mod.steam_id ~= 0 then
-							local exists
-							local appId = SteamGetAppId()
-							local userId = SteamGetUserId64()
-							err, exists = AsyncSteamWorkshopUserOwnsItem(userId, appId, mod.steam_id)
-							if not err and not exists then
-								mod.steam_id = 0
+
+						if steam_upload then
+							if mod.steam_id ~= 0 then
+								local exists
+								local appId = SteamGetAppId()
+								local userId = SteamGetUserId64()
+								err, exists = AsyncSteamWorkshopUserOwnsItem(userId, appId, mod.steam_id)
+								if not err and not exists then
+									mod.steam_id = 0
+								end
 							end
+
+							if mod.steam_id == 0 then
+								err,item_id = AsyncSteamWorkshopCreateItem()
+								mod.steam_id = item_id or nil
+							end
+						else
+
+							local params = {
+								publish_os = "windows",
+								uuid_property = "pops_desktop_uuid"
+							}
+--~ 							if not params.uuid_property then
+--~ 								if params.publish_os == "xbox_one" then
+--~ 									params.uuid_property = "pops_any_uuid"
+--~ 								else
+--~ 									params.uuid_property = "pops_desktop_uuid"
+--~ 								end
+--~ 							end
+							-- get needed info for mod
+							PDX_PrepareForUpload(nil, mod, params)
+							ex(params)
+
+--~ 							UploadMod(socket, mod, params, PDX_PrepareForUpload, PDX_Upload)
+--~ 							err, _ = AsyncOpWait(PopsAsyncOpTimeout, nil, "AsyncPopsSocialProfileRetrieve")
+
 						end
 
-						if mod.steam_id == 0 then
-							err,item_id = AsyncSteamWorkshopCreateItem()
-							mod.steam_id = item_id or nil
-						end
 					end
 
 					-- update mod, and copy files to ModUpload
@@ -462,10 +497,10 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 
 					local msg, title
 					if err and not blank_mod then
-						msg = S[1000013--[[Mod %s was not uploaded to Steam. Error: %s--]]]:format(mod.title,Trans(err))
+						msg = S[1000013--[[Mod %s was not uploaded! Error: %s--]]]:format(mod.title,Trans(err))
 						title = S[1000592--[[Error--]]]
 					else
-						msg = S[1000014--[[Mod %s was successfully uploaded to Steam!--]]]:format(mod.title)
+						msg = S[1000014--[[Mod %s was successfully uploaded!--]]]:format(mod.title)
 						title = S[1000015--[[Success--]]]
 					end
 
@@ -578,6 +613,12 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 						title = 186760604064--[[Test--]],
 						hint = 302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]],
 					},
+					-- paradox uploading doesn't work yet
+--~ 					{
+--~ 						title = 302535920001506--[[Steam--]],
+--~ 						hint = 302535920001507--[[Uncheck to upload to Paradox mods (instead of Steam).--]],
+--~ 						checked = true,
+--~ 					},
 				},
 				height = 800.0,
 --~ 				width = 550.0,

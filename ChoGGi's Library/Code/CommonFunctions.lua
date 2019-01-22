@@ -1549,6 +1549,8 @@ do -- Rebuildshortcuts
 		actionPOCMapAlt3 = true,
 		actionPOCMapAlt4 = true,
 		actionPOCMapAlt5 = true,
+		-- added in kuiper modders beta (uses tilde to toggle menu instead of f2)
+		DE_Menu = true,
 		-- i need to override so i can reset zoom and other settings.
 		FreeCamera = true,
 		-- we def don't want this
