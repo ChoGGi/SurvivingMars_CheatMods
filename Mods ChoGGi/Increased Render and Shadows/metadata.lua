@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 	"code", {"Script.lua"},
 	"lua_revision", LuaRevision,
 	"description", [[Further shadow, and model rendering
-This is somewhat useless without increasing zoom in ECM.
+This is somewhat useless without increasing zoom in Expanded Cheat Menu.
 
 You won't see the increased shadow/render difference, but you will have sharper shadows.
 

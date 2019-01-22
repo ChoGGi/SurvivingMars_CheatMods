@@ -1,3 +1,7 @@
+; it seems Unluac is unhappy when more than one copy is running, so don't use this
+
+
+
 #NoEnv
 #KeyHistory 0
 #SingleInstance Off
@@ -11,13 +15,13 @@ SetWorkingDir, %A_ScriptDir%
 SplitPath A_ScriptName,,,,sProgName
 ;get settings filename
 sProgIni := A_ScriptDir "\" sProgName ".ini"
-;~ ;explictly false
-;~ bCalledFromMain := false
+;explictly false
+bCalledFromMain := false
 
 ;this script will be called for each folder it's in to decompile more than one folder at a time
 ; so we skip this if the first arg is an existing folder
-;~ If (!A_Args[1] || A_Args[1] && !FileExist(A_Args[1]))
-	;~ {
+If (!A_Args[1] || A_Args[1] && !FileExist(A_Args[1]))
+	{
 	IniRead bFirstRun,%sProgIni%,Settings,FirstRun,1
 	If (bFirstRun = 1)
 		{
@@ -32,11 +36,11 @@ sProgIni := A_ScriptDir "\" sProgName ".ini"
 		sConvert := "RF"
 	Else IfMsgBox Cancel
 		ExitApp
-	;~ }
-;~ Else
-	;~ {
-	;~ bCalledFromMain := A_Args[1]
-	;~ }
+	}
+Else
+	{
+	bCalledFromMain := A_Args[1]
+	}
 
 ;get needed paths...
 IniRead sJavaPath,%sProgIni%,Settings,JavaPath,%A_Space%
@@ -44,21 +48,19 @@ IniRead sUnluacPath,%sProgIni%,Settings,UnluacPath,%A_Space%
 
 ;if user is stupid enough to edit these while the script is running that isn't my problem
 ;(in other words skip two file accesses)
-;~ If (!bCalledFromMain)
-	;~ {
+If (!bCalledFromMain)
+	{
 	If (!FileExist(sJavaPath) || !FileExist(sUnluacPath))
 		{
 		MsgBox 4096,Error,You need to setup paths in %sProgIni%, or files are missing...
 		ExitApp
 		}
-	;~ }
+	}
 
-;~ ;first time we get a list of folders in folder, then start new copies of the script to loop through them
-;~ If (bCalledFromMain)
-	;~ {
-
-	;~ Loop Files,%bCalledFromMain%\*.lua,% A_Args[2]
-	Loop Files,*.lua,%sConvert%
+;first time we get a list of folders in folder, then start new copies of the script to loop through them
+If (bCalledFromMain)
+	{
+	Loop Files,%bCalledFromMain%\*.lua,% A_Args[2]
 		{
 		;check for correct header and skip if not
 		File := FileOpen(A_LoopFileLongPath,"r")
@@ -81,31 +83,28 @@ IniRead sUnluacPath,%sProgIni%,Settings,UnluacPath,%A_Space%
 			File.Close()
 			}
 		}
-	;~ }
-;~ Else
-	;~ {
-	;~ arr := []
+	}
+Else
+	{
+	arr := []
 
-	;~ ;loops all folders, and add pid to array
-	;~ Loop Files,*,D
-		;~ {
-		;~ Run %A_ScriptFullPath% `"%A_LoopFileLongPath%`" %sConvert%,,,PID
-		;~ arr.Push(PID)
-		;~ }
+	;loops all folders, and add pid to array
+	Loop Files,*,D
+		{
+		Run %A_ScriptFullPath% `"%A_LoopFileLongPath%`" %sConvert%,,,PID
+		arr.Push(PID)
+		}
 
-	;~ ;wait till all processes are closed
-	;~ Loop % arr.Length()
-		;~ {
-		;~ Process Wait,% arr[A_Index],5
-		;~ Process WaitClose,% arr[A_Index]
-		;~ }
+	;wait till all processes are closed
+	Loop % arr.Length()
+		{
+		Process Wait,% arr[A_Index],5
+		Process WaitClose,% arr[A_Index]
+		}
 
-	;~ ;all done
-	;~ MsgBox 4096,Done,Files Decompiled
-	;~ }
-
-;all done
-MsgBox 4096,Done,Files Decompiled
+	;all done
+	MsgBox 4096,Done,Files Decompiled
+	}
 
 ;not needed just letting you know there's only functions below here
 ExitApp

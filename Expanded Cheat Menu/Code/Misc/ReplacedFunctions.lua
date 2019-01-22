@@ -1300,7 +1300,7 @@ function OnMsg.ClassesBuilt()
 		end
 	end -- do
 
-	--so we can build without (as many) limits
+	-- so we can build without (as many) limits
 	function ConstructionController:UpdateConstructionStatuses(dont_finalize,...)
 		if ChoGGi.UserSettings.RemoveBuildingLimits then
 			-- send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
@@ -1353,7 +1353,7 @@ function OnMsg.ClassesBuilt()
 		end
 	end --ConstructionController:UpdateConstructionStatuses
 
-	--so we can do long spaced tunnels
+	-- so we can do long spaced tunnels
 	function TunnelConstructionController:UpdateConstructionStatuses(...)
 		if ChoGGi.UserSettings.RemoveBuildingLimits then
 			local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
@@ -1363,124 +1363,146 @@ function OnMsg.ClassesBuilt()
 		end
 	end
 
-	--add a bunch of rules to console input
-	local ConsoleRules = {
+	do -- Console
+		-- add a bunch of rules to console input
+		local console_rules = {
 
-		-- print info in console log
-		{
-			-- $userdata/string id
-			"^$(.*)",
-			"print(ChoGGi.ComFuncs.Translate(%s))"
-		},
-		{
-			-- @function
-			"^@(.*)",
-			[[local str = %s
+			-- print info in console log
+			{
+				-- $userdata/string id
+				"^$(.*)",
+				"print(ChoGGi.ComFuncs.Translate(%s))"
+			},
+			{
+				-- @function
+				"^@(.*)",
+				[[local str = %s
 if ChoGGi.blacklist then
 	print(ChoGGi.ComFuncs.DebugGetInfo(str))
 else
 	print(debug.getinfo(str))
 end]]
-		},
-		{
-			-- @@type
-			"^@@(.*)",
-			"print(type(%s))"
-		},
+			},
+			{
+				-- @@type
+				"^@@(.*)",
+				"print(type(%s))"
+			},
 
-		-- do stuff
-		{
-			-- !obj_on_map
-			"^!(.*)",
-			"ViewAndSelectObject(%s)"
-		},
-		{
-			-- %image string or table
-			"^%%(.*)",
-			"ChoGGi.ComFuncs.OpenInImageViewerDlg(%s)"
-		},
-		{
-			-- ~anything
-			"^~(.*)",
-			"ChoGGi.ComFuncs.OpenInExamineDlg(%s)"
-		},
-		{
-			-- ~!obj_with_attachments
-			"^~!(.*)",
-			[[local attaches = ChoGGi.ComFuncs.GetAllAttaches(%s)
+			-- do stuff
+			{
+				-- !obj_on_map
+				"^!(.*)",
+				"ViewAndSelectObject(%s)"
+			},
+			{
+				-- %image string or table
+				"^%%(.*)",
+				"ChoGGi.ComFuncs.OpenInImageViewerDlg(%s)"
+			},
+			{
+				-- ~anything
+				"^~(.*)",
+				"ChoGGi.ComFuncs.OpenInExamineDlg(%s)"
+			},
+			{
+				-- ~!obj_with_attachments
+				"^~!(.*)",
+				[[local attaches = ChoGGi.ComFuncs.GetAllAttaches(%s)
 if #attaches > 0 then
 	ChoGGi.ComFuncs.OpenInExamineDlg(attaches)
 end]]
-		},
-		{
-			-- &handle
-			"^&(.*)",
-			"ChoGGi.ComFuncs.OpenInExamineDlg(HandleToObject[%s])"
-		},
-		-- built-in
-		{
-			-- *r some function/cmd that needs a realtime thread
-			"^*r%s*(.*)",
-			"CreateRealTimeThread(function() %s end) return"
-		},
-		{
-			-- *g gametime
-			"^*g%s*(.*)",
-			"CreateGameTimeThread(function() %s end) return"
-		},
-		{
-			-- *m maprealtime
-			"^*m%s*(.*)",
-			"CreateMapRealTimeThread(function() %s end) return"
-		},
-		-- prints out cmds entered I assume?
-		{
-			"^(%a[%w.]*)$",
-			"ConsolePrint(print_format(__run(%s)))"
-		},
-		{
-			"(.*)",
-			"ConsolePrint(print_format(%s))"
-		},
-		{
-			"(.*)",
-			"%s"
-		},
-	}
+			},
+			{
+				-- &handle
+				"^&(.*)",
+				"ChoGGi.ComFuncs.OpenInExamineDlg(HandleToObject[%s])"
+			},
+			-- built-in
+			{
+				-- *r some function/cmd that needs a realtime thread
+				"^*[rR]%s*(.*)",
+				"CreateRealTimeThread(function() %s end) return"
+			},
+			{
+				-- *g gametime
+				"^*[gG]%s*(.*)",
+				"CreateGameTimeThread(function() %s end) return"
+			},
+			{
+				-- *m maprealtime
+				"^*[mM]%s*(.*)",
+				"CreateMapRealTimeThread(function() %s end) return"
+			},
+			-- prints out cmds entered I assume?
+			{
+				"^(%a[%w.]*)$",
+				"ConsolePrint(print_format(__run(%s)))"
+			},
+			{
+				"(.*)",
+				"ConsolePrint(print_format(%s))"
+			},
+			{
+				"(.*)",
+				"%s"
+			},
+		}
 
-	local AddConsoleLog = AddConsoleLog
-	local ConsoleExecute
-	if blacklist then
-		dlgConsole:Exec("ChoGGi.Temp.ConsoleExec=ConsoleExec")
-		ConsoleExecute = ChoGGi.Temp.ConsoleExec
-		table.iclear(dlgConsole.history_queue)
-		dlgConsole.history_queue_idx = 0
-		CreateRealTimeThread(function()
-			while not dlgConsoleLog do
-				Sleep(100)
+		local Sleep = Sleep
+		local AddConsoleLog = AddConsoleLog
+		local ConsoleExecute
+		if blacklist then
+			dlgConsole:Exec("ChoGGi.Temp.ConsoleExec=ConsoleExec")
+			ConsoleExecute = ChoGGi.Temp.ConsoleExec
+			table.iclear(dlgConsole.history_queue)
+			dlgConsole.history_queue_idx = 0
+			CreateRealTimeThread(function()
+				while not dlgConsoleLog do
+					Sleep(250)
+				end
+				cls()
+				-- history gets blanked out by Exec?, so this is our saved copy of it
+				LocalStorage.history_log = ChoGGi.UserSettings.history_log
+				-- this loads it in
+				dlgConsole:ReadHistory()
+			end)
+		else
+			ConsoleExecute = ConsoleExec
+		end
+
+		local ConsolePrint = ConsolePrint
+		function Console:Exec(text,skip)
+			if not skip then
+				self:AddHistory(text)
+				AddConsoleLog("> ", true)
+				AddConsoleLog(text, false)
 			end
-			cls()
-			-- history gets blanked out by something?, so this is our saved copy of it
-			LocalStorage.history_log = ChoGGi.UserSettings.history_log
-			-- this loads it in
-			dlgConsole:ReadHistory()
+			-- i like my rules kthxbai
+			local err = ConsoleExecute(text, console_rules)
+			if err then
+				ConsolePrint(err)
+			end
+		end
+
+		-- why have the mod blacklist for the console...
+		CreateRealTimeThread(function()
+			while not g_ConsoleFENV do
+				Sleep(250)
+			end
+
+			local run = rawget(g_ConsoleFENV,"__run")
+			g_ConsoleFENV = {__run = run}
+			setmetatable(g_ConsoleFENV, {
+				__index = function(_, key)
+					return rawget(_G, key)
+				end,
+				__newindex = function(_, key, value)
+					rawset(_G, key, value)
+				end
+			})
+
 		end)
-	else
-		ConsoleExecute = ConsoleExec
-	end
 
-	local ConsolePrint = ConsolePrint
-	function Console:Exec(text,skip)
-		if not skip then
-			self:AddHistory(text)
-			AddConsoleLog("> ", true)
-			AddConsoleLog(text, false)
-		end
-		-- i like my rules kthxbai
-		local err = ConsoleExecute(text, ConsoleRules)
-		if err then
-			ConsolePrint(err)
-		end
-	end
-
+	end -- do
 end -- ClassesBuilt

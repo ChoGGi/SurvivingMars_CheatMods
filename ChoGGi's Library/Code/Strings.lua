@@ -309,8 +309,9 @@ local strings = {
 	[1000009] = TranslationTable[1000009], -- Confirmation
 	[1000011] = TranslationTable[1000011], -- There is an active Steam upload
 	[1000012] = Trans(1000012), -- Mod <ModLabel> will be uploaded to Steam
-	[1000013] = Trans(1000013), -- Mod <ModLabel> was not uploaded to Steam. Error: <err>
-	[1000014] = Trans(1000014), -- Mod <ModLabel> was successfully uploaded to Steam!
+	[1000013] = Trans(1000013), -- Mod <ModLabel> was not uploaded! Error: <err>
+	[1000014] = Trans(1000014), -- Mod <ModLabel> was successfully uploaded!
+	[1000771] = Trans(1000771), -- Mod <ModLabel> will be uploaded to Paradox
 	[1000015] = TranslationTable[1000015], -- Success
 	[1000016] = TranslationTable[1000016], -- Title
 	[1000021] = TranslationTable[1000021], -- Steam ID
@@ -371,6 +372,7 @@ strings[4357] = strings[4357]:gsub("<right><UIBirthplace>","")
 strings[1000012] = strings[1000012]:gsub("<ModLabel>","%%s")
 strings[1000013] = strings[1000013]:gsub("<ModLabel>","%%s"):gsub("<err>","%%s")
 strings[1000014] = strings[1000014]:gsub("<ModLabel>","%%s")
+strings[1000771] = strings[1000771]:gsub("<ModLabel>","%%s")
 
 strings[293] = strings[293]:gsub("<right>",": %%s")
 strings[294] = strings[294]:gsub("<right>",": %%s")
@@ -385,6 +387,11 @@ strings[584248706535] = strings[584248706535]:gsub("<right><ResourceAmount>",": 
 
 -- add all of my strings (skipping any missing ones)
 
+--~ -- print any missing strings (no need to use unless it's a new update)
+--~ local testing = ChoGGi.testing
+--~ local missing_strings = ""
+--~ local missing_str = "%s, %s"
+
 -- we need to pad some zeros
 local pad_str = "30253592000%s%s"
 local function TransZero(pad,first,last)
@@ -397,6 +404,9 @@ local function TransZero(pad,first,last)
 		-- Missing text is from TDevModeGetEnglishText
 		if str ~= "Missing text" then
 			strings[num] = str
+--~ 		-- displays list of missing string ids
+--~ 		elseif testing then
+--~ 			missing_strings = missing_str:format(missing_strings,num)
 		end
 	end
 end
@@ -408,3 +418,7 @@ TransZero(0,100,999)
 TransZero("",1000,9999)
 
 ChoGGi.Strings = strings
+
+--~ if testing and missing_strings ~= "" then
+--~ 	print(missing_strings)
+--~ end
