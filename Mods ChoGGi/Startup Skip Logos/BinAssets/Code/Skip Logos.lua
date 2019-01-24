@@ -20,10 +20,12 @@ function OnMsg.DesktopCreated()
 	-- bonus:
 	--[[
   CreateRealTimeThread(function()
+		local Sleep = Sleep
 		-- opens to load game menu
 		local Dialogs = Dialogs
+		Sleep(100)
 		while not Dialogs.PGMainMenu do
-			Sleep(100)
+			Sleep(25)
 		end
 		Dialogs.PGMainMenu:SetMode("Load")
 

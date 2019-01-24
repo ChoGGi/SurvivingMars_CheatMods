@@ -4,13 +4,13 @@
 
 local g = _G
 
+local pairs,type,tostring,tonumber,rawget = g.pairs,g.type,g.tostring,g.tonumber,g.rawget
+
 -- store opened examine dialogs
 if not rawget(g,"g_ExamineDlgs") then
 	g.g_ExamineDlgs = {}
 	g.setmetatable(g_ExamineDlgs, weak_keyvalues_meta)
 end
-
-local pairs,type,tostring,tonumber,rawget = g.pairs,g.type,g.tostring,g.tonumber,g.rawget
 
 -- local some global funcs
 local StringFormat = g.string.format
@@ -1735,7 +1735,7 @@ function Examine:SetToolbarVis(obj)
 	if type(obj) == "table" and self.name ~= "_G" then
 
 		-- pretty much any class object
-		if obj.delete then
+		if rawget(obj,"delete") and obj.delete then
 			self.idButDeleteObj:SetVisible(true)
 		else
 			self.idButDeleteObj:SetVisible()

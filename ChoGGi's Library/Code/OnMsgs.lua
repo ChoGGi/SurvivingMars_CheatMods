@@ -25,8 +25,8 @@ function OnMsg.ClassesBuilt()
 		bc[#bc+1] = {
 			id = "ChoGGi",
 			name = S[302535920001400--[[ChoGGi--]]],
-			image = StringFormat("%sUI/bmc_incal_resources.png",ChoGGi.LibraryPath),
-			highlight = StringFormat("%sUI/bmc_incal_resources_shine.png",ChoGGi.LibraryPath),
+			image = StringFormat("%sUI/bmc_incal_resources.png",ChoGGi.library_path),
+			highlight = StringFormat("%sUI/bmc_incal_resources_shine.png",ChoGGi.library_path),
 		}
 	end
 end
@@ -41,9 +41,10 @@ end
 
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
 
--- I guess I need a replacefuncs for lib as well
+-- This updates my dlgs when the ui scale is changed
 local point = point
 local pairs = pairs
+-- I guess I need a replacefuncs for lib as well...
 local orig_SetUserUIScale = SetUserUIScale
 function SetUserUIScale(val,...)
 	orig_SetUserUIScale(val,...)

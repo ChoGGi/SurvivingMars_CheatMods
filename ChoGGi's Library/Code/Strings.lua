@@ -8,9 +8,6 @@ local StringFormat = string.format
 
 local TranslationTable = TranslationTable
 
--- amount of entries in the CSV file
-local string_limit = 1550
-
 do -- Translate
 	local T,_InternalTranslate,pack_params,procall = T,_InternalTranslate,pack_params,procall
 	local type,select = type,select
@@ -74,296 +71,29 @@ if ChoGGi.lang ~= "English" then
 
 end
 
--- i stick all the strings from sm that I use in my table for ease of access
-local strings = {
-	-- 1222 -> 3264 (be careful using for generic these are names)
-	[1234] = TranslationTable[1234], -- Dome
-	[1608] = TranslationTable[1608], -- Transparency
-	[1635] = TranslationTable[1635], -- Mission
-	[1681] = TranslationTable[1681], -- Drone
-	[1682] = TranslationTable[1682], -- RC Rover
-	[1683] = TranslationTable[1683], -- RC Transport
-	[1684] = TranslationTable[1684], -- RC Explorer
-	[1685] = TranslationTable[1685], -- Rocket
-	[1694] = TranslationTable[1694], -- Start
-	[1859] = TranslationTable[1859], -- White
-	[2993] = TranslationTable[2993], -- Tilde
+-- one big table of all in-game strings and mine (i make a copy since we edit some strings below, and i want to make sure tag icons show up)
+local strings = {}
 
-	[2] = TranslationTable[2], -- Unlock Tech
-	[3] = TranslationTable[3], -- Grant Research
-	[6] = TranslationTable[6], -- Depth Layer
-	[7] = TranslationTable[7], -- Is Revealed
-	[8] = TranslationTable[8], -- Breakthrough Tech
-	[9] = TranslationTable[9], -- Anomaly
-	[11] = Trans(11), -- Our scientists believe that this Anomaly may lead to a <em>Breakthrough</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.
-	[12] = Trans(12), -- Scans have detected some interesting readings that might help us discover <em>new Technologies</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.
-	[13] = Trans(13), -- Sensors readings suggest that this Anomaly will help us with our current <em>Research</em> goals.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.
-	[14] = Trans(14), -- We have detected alien artifacts at this location that will <em>speed up</em> our Research efforts.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.
-	[15] = TranslationTable[15], -- Resource
-	[16] = TranslationTable[16], -- Grade
-	[25] = TranslationTable[25], -- Anomaly Scanning
-	[27] = TranslationTable[27], -- Cheats
-	[32] = TranslationTable[32], -- Power Production
-	[33] = TranslationTable[33], -- Stored Water
-	[40] = TranslationTable[40], -- Recharge
-	[53] = TranslationTable[53], -- Malfunction
-	[63] = TranslationTable[63], -- Travelling
-	[67] = TranslationTable[67], -- Loading resourcesLoading resources
-	[79] = TranslationTable[79], -- Power
-	[80] = TranslationTable[80], -- Production
-	[81] = TranslationTable[81], -- Life Support
-	[83] = TranslationTable[83], -- Domes
-	[134] = TranslationTable[134], -- Instant Build
-	[155] = TranslationTable[155], -- Entity
-	[174] = TranslationTable[174], -- Color Modifier
-	[217] = TranslationTable[217], -- Work Shifts
-	[235] = TranslationTable[235], -- Traits
-	[240] = TranslationTable[240], -- Specialization
-	[293] = Trans(293), -- Discharged<right><drone(DischargedDronesCount)>
-	[294] = Trans(294), -- Broken<right><drone(BrokenDronesCount)>
-	[295] = Trans(295), -- Idle<right><drone(IdleDronesCount)>
-	[311] = TranslationTable[311], -- Research
-	[434] = Trans(434), -- Lifetime<right><lifetime>
-	[517] = TranslationTable[517], -- Drones
-	[519] = TranslationTable[519], -- Storage
-	[526] = TranslationTable[526], -- Visitors
-	[547] = TranslationTable[547], -- Colonists
-	[588] = TranslationTable[588], -- Empty
-	[594] = TranslationTable[594], -- Clear
-	[656] = TranslationTable[656], -- Water consumption
-	[657] = TranslationTable[657], -- Oxygen Consumption
-	[681] = TranslationTable[681], -- Water
-	[682] = TranslationTable[682], -- Oxygen
-	[683] = TranslationTable[683], -- Power Consumption
-	[692] = TranslationTable[692], -- Resources
-	[697] = TranslationTable[697], -- Destroy
-	[728] = TranslationTable[728], -- Health change on visit
-	[729] = TranslationTable[729], -- Sanity change on visit
-	[730] = TranslationTable[730], -- Service Comfort
-	[731] = TranslationTable[731], -- Comfort increase on visit
-	[732] = TranslationTable[732], -- Service interest
-	[734] = TranslationTable[734], -- Visit duration
-	[735] = TranslationTable[735], -- Usable by children
-	[736] = TranslationTable[736], -- Children Only
-	[745] = TranslationTable[745], -- Shuttles
-	[750] = TranslationTable[750], -- Water Consumption
-	[793] = TranslationTable[793], -- Deep Metals
-	[797] = TranslationTable[797], -- Deep Water
-	[801] = TranslationTable[801], -- Deep Rare Metals
-	[891] = TranslationTable[891], -- Air
-	[904] = TranslationTable[904], -- Terrain
-	[923] = TranslationTable[923], -- Oxygen Production
-	[931] = TranslationTable[931], -- Modified property
-	[945] = TranslationTable[945], -- Stored Power
-	[1011] = TranslationTable[1011], -- Close
-	[1022] = TranslationTable[1022], -- Food
-	[1074] = TranslationTable[1074], -- Stored Air
-	[1079] = TranslationTable[1079], -- Surviving Mars
-	[1110] = TranslationTable[1110], -- Prefab Buildings
-	[1111] = TranslationTable[1111], -- Prefabricated parts needed for the construction of certain buildings on Mars.
-	[1120] = TranslationTable[1120], -- Space Elevator
-	[1157] = TranslationTable[1157], -- Complete thread
-	[1176] = TranslationTable[1176], -- Cancel Destroy
-	[3474] = TranslationTable[3474], -- Mission Sponsor
-	[3478] = TranslationTable[3478], -- Commander Profile
-	[3482] = TranslationTable[3482], -- Colony Logo
-	[3486] = TranslationTable[3486], -- Mystery
-	[3490] = TranslationTable[3490], -- Random
-	[3491] = TranslationTable[3491], -- Challenge Mod (%)
-	[3513] = TranslationTable[3513], -- Concrete
-	[3514] = TranslationTable[3514], -- Metals
-	[3515] = TranslationTable[3515], -- Polymers
-	[3516] = TranslationTable[3516], -- MachineParts
-	[3517] = TranslationTable[3517], -- Electronics
-	[3518] = TranslationTable[3518], -- Drone Hub
-	[3540] = TranslationTable[3540], -- Sanatorium
-	[3581] = TranslationTable[3581], -- Sounds
-	[3591] = TranslationTable[3591], -- Autosave
-	[3595] = TranslationTable[3595], -- Color
-	[3613] = TranslationTable[3613], -- Funding
-	[3718] = TranslationTable[3718], -- NONE
-	[3720] = TranslationTable[3720], -- Trait
-	[3722] = TranslationTable[3722], -- State
-	[3734] = TranslationTable[3734], -- Tech
-	[3768] = TranslationTable[3768], -- Destroy all?
-	[3794] = TranslationTable[3794], -- Image
-	[3862] = TranslationTable[3862], -- Medic
-	[3973] = TranslationTable[3973], -- Salvage
-	[3980] = TranslationTable[3980], -- Buildings
-	[3982] = TranslationTable[3982], -- Deposits
-	[3983] = TranslationTable[3983], -- Disasters
-	[3984] = TranslationTable[3984], -- Anomalies
-	[4099] = TranslationTable[4099], -- Game Time
-	[4135] = TranslationTable[4135], -- Altitude
-	[4139] = TranslationTable[4139], -- Rare Metals
-	[4141] = TranslationTable[4141], -- Temperature
-	[4142] = TranslationTable[4142], -- Dust Devils
-	[4144] = TranslationTable[4144], -- Dust Storms
-	[4146] = TranslationTable[4146], -- Meteors
-	[4148] = TranslationTable[4148], -- Cold Waves
-	[4149] = TranslationTable[4149], -- Cold Wave
-	[4248] = TranslationTable[4248], -- Hints
-	[4250] = TranslationTable[4250], -- Dust Storm
-	[4273] = Trans(4273), -- Saved on <save_date>
-	[4274] = Trans(4274), -- Playtime <playtime>
-	[4283] = TranslationTable[4283], -- Worker performance
-	[4284] = TranslationTable[4284], -- Age of death
-	[4291] = TranslationTable[4291], -- Health
-	[4293] = TranslationTable[4293], -- Sanity
-	[4295] = TranslationTable[4295], -- Comfort
-	[4297] = TranslationTable[4297], -- Morale
-	[4325] = TranslationTable[4325], -- Free
-	[4356] = Trans(4356), -- Sex<right><Gender>
-	[4357] = Trans(4357), -- Birthplace<right><UIBirthplace>
-	[4439] = Trans(4439), -- Going to<right><h SelectTarget InfopanelSelect><Target></h>
-	[4448] = TranslationTable[4448], -- Dust
-	[4493] = TranslationTable[4493], -- All
-	[4518] = TranslationTable[4518], -- Waste Rock
-	[4576] = TranslationTable[4576], -- Chance Of Suicide
-	[4594] = TranslationTable[4594], -- Colonists Per Rocket
-	[4616] = TranslationTable[4616], -- Food Per Rocket Passenger
-	[4645] = TranslationTable[4645], -- Drone Recharge Time
-	[4711] = TranslationTable[4711], -- Crop Fail Threshold
-	[4764] = TranslationTable[4764], -- BlackCube
-	[4765] = TranslationTable[4765], -- Fuel
-	[4801] = TranslationTable[4801], -- Workplace
-	[4806] = TranslationTable[4806], -- Water Production
-	[4809] = TranslationTable[4809], -- Residence
-	[4810] = TranslationTable[4810], -- Service
-	[4915] = TranslationTable[4915], -- Good News, Everyone!
-	[5017] = TranslationTable[5017], -- Basic Dome
-	[5068] = TranslationTable[5068], -- Farms
-	[5093] = TranslationTable[5093], -- Geoscape Dome
-	[5146] = TranslationTable[5146], -- Medium Dome
-	[5152] = TranslationTable[5152], -- Mega Dome
-	[5182] = TranslationTable[5182], -- Omega Telescope
-	[5188] = TranslationTable[5188], -- Oval Dome
-	[5221] = TranslationTable[5221], -- RC Commanders
-	[5238] = TranslationTable[5238], -- Rockets
-	[5245] = TranslationTable[5245], -- Sanatoriums
-	[5248] = TranslationTable[5248], -- Schools
-	[5422] = TranslationTable[5422], -- Exploration
-	[5426] = TranslationTable[5426], -- Building
-	[5433] = TranslationTable[5433], -- Drone Control
-	[5438] = TranslationTable[5438], -- Rovers
-	[5439] = TranslationTable[5439], -- Service Buildings
-	[5443] = TranslationTable[5443], -- Training Buildings
-	[5444] = TranslationTable[5444], -- Workplaces
-	[5451] = TranslationTable[5451], -- DELETE
-	[5452] = TranslationTable[5452], -- START
-	[5568] = TranslationTable[5568], -- Stats
-	[5620] = TranslationTable[5620], -- Meteor Storm
-	[5627] = TranslationTable[5627], -- Great Dust Storm
-	[5628] = TranslationTable[5628], -- Electrostatic Dust Storm
-	[5647] = Trans(5647), -- Dead Colonists: <count>
-	[5661] = TranslationTable[5661], -- Mystery Log
-	[6546] = TranslationTable[6546], -- Core Metals
-	[6548] = TranslationTable[6548], -- Core Water
-	[6550] = TranslationTable[6550], -- Core Rare Metals
-	[6556] = TranslationTable[6556], -- Alien Imprints
-	[6640] = TranslationTable[6640], -- Genius
-	[6642] = TranslationTable[6642], -- Celebrity
-	[6644] = TranslationTable[6644], -- Saint
-	[6647] = TranslationTable[6647], -- Guru
-	[6652] = TranslationTable[6652], -- Idiot
-	[6729] = Trans(6729), -- Daily Production <n>
-	[6761] = TranslationTable[6761], -- None
-	[6779] = TranslationTable[6779], -- Warning
-	[6859] = TranslationTable[6859], -- Unemployed
-	[6878] = TranslationTable[6878], -- OK
-	[6879] = TranslationTable[6879], -- Cancel
-	[6886] = TranslationTable[6886], -- S
-	[6887] = TranslationTable[6887], -- N
-	[6888] = TranslationTable[6888], -- E
-	[6889] = TranslationTable[6889], -- W
-	[6890] = TranslationTable[6890], -- Latitude
-	[6892] = TranslationTable[6892], -- Longitude
-	[7031] = TranslationTable[7031], -- Renegades
-	[7396] = TranslationTable[7396], -- Location
-	[7553] = TranslationTable[7553], -- Homeless
-	[7607] = TranslationTable[7607], -- Battery
-	[7657] = Trans(7657), -- <ButtonY> Activate
-	[7790] = TranslationTable[7790], -- Research Current Tech
-	[7822] = TranslationTable[7822], -- Destroy this building.
-	[7824] = TranslationTable[7824], -- Destroy this Drone.
-	[7825] = TranslationTable[7825], -- Destroy this Rover.
-	[8039] = TranslationTable[8039], -- Trait: Idiot (can cause a malfunction)
-	[8064] = TranslationTable[8064], -- MysteryResource
-	[8490] = TranslationTable[8490], -- Loading complete
-	[8690] = TranslationTable[8690], -- Protect
-	[8800] = TranslationTable[8800], -- Game Rules
-	[8830] = TranslationTable[8830], -- Food Storage
-	[8982] = TranslationTable[8982], -- Tutorial
-	[9000] = TranslationTable[9000], -- Micro Dome
-	[9003] = TranslationTable[9003], -- Trigon Dome
-	[9009] = TranslationTable[9009], -- Mega Trigon Dome
-	[9012] = TranslationTable[9012], -- Diamond Dome
-	[9763] = TranslationTable[9763], -- No objects matching current filters.
-	[10087] = TranslationTable[10087], -- Advanced Orbital Probe
-	[10123] = TranslationTable[10123], -- Search
-	[10124] = TranslationTable[10124], -- Sort
-	[10278] = TranslationTable[10278], -- Wasp Drone
-	[11034] = TranslationTable[11034], -- Rival Colonies
-	[11412] = TranslationTable[11412], -- Trigger fireworks
-	[11683] = TranslationTable[11683], -- Electricity
-	[1000009] = TranslationTable[1000009], -- Confirmation
-	[1000011] = TranslationTable[1000011], -- There is an active Steam upload
-	[1000012] = Trans(1000012), -- Mod <ModLabel> will be uploaded to Steam
-	[1000013] = Trans(1000013), -- Mod <ModLabel> was not uploaded! Error: <err>
-	[1000014] = Trans(1000014), -- Mod <ModLabel> was successfully uploaded!
-	[1000771] = Trans(1000771), -- Mod <ModLabel> will be uploaded to Paradox
-	[1000015] = TranslationTable[1000015], -- Success
-	[1000016] = TranslationTable[1000016], -- Title
-	[1000021] = TranslationTable[1000021], -- Steam ID
-	[1000037] = TranslationTable[1000037], -- Name
-	[1000058] = Trans(1000058), -- Missing file <u(src)> referenced in entity
-	[1000077] = TranslationTable[1000077], -- Rotate
-	[1000081] = TranslationTable[1000081], -- Scale
-	[1000097] = TranslationTable[1000097], -- Category
-	[1000100] = TranslationTable[1000100], -- Amount
-	[1000107] = TranslationTable[1000107], -- Mod
-	[1000110] = TranslationTable[1000110], -- Type
-	[1000113] = TranslationTable[1000113], -- Debug
-	[1000121] = TranslationTable[1000121], -- Default
-	[1000145] = TranslationTable[1000145], -- Text
-	[1000155] = TranslationTable[1000155], -- Hidden
-	[1000162] = TranslationTable[1000162], -- Menu
-	[1000207] = TranslationTable[1000207], -- Misc
-	[1000220] = TranslationTable[1000220], -- Refresh
-	[1000232] = TranslationTable[1000232], -- Next
-	[1000447] = TranslationTable[1000447], -- Enter
-	[1000448] = TranslationTable[1000448], -- Shift
-	[1000449] = TranslationTable[1000449], -- Ctrl
-	[1000457] = TranslationTable[1000457], -- Left
-	[1000459] = TranslationTable[1000459], -- Right
-	[1000592] = TranslationTable[1000592], -- Error
-	[1000615] = TranslationTable[1000615], -- Delete
-	[1000760] = TranslationTable[1000760], -- Not Steam
-	[109035890389] = TranslationTable[109035890389], -- Capacity
-	[126095410863] = TranslationTable[126095410863], -- Info
-	[128569337702] = TranslationTable[128569337702], -- Reward:
-	[186760604064] = TranslationTable[186760604064], -- Test
-	[284813068603] = TranslationTable[284813068603], -- Topography
-	[283142739680] = TranslationTable[283142739680], -- Game
-	[298035641454] = TranslationTable[298035641454], -- Object
-	[312752058553] = TranslationTable[312752058553], -- Rotate Building Left
-	[313911890683] = Trans(313911890683), -- <description>
-	[327465361219] = TranslationTable[327465361219], -- Edit
-	[460479110814] = TranslationTable[460479110814], -- Enabled
-	[487939677892] = TranslationTable[487939677892], -- Help
-	[584248706535] = Trans(584248706535), -- Carrying<right><ResourceAmount>
-	[591853191640] = TranslationTable[591853191640], -- Empty list
-	[619281504128] = TranslationTable[619281504128], -- Maintenance
-	[640016954592] = TranslationTable[640016954592], -- Remove this switch or valve.
-	[652319561018] = TranslationTable[652319561018], -- All Traits
-	[697482021580] = TranslationTable[697482021580], -- Achievements
-	[847439380056] = TranslationTable[847439380056], -- Disabled
-	[885971788025] = TranslationTable[885971788025], -- Outside Buildings
-	[889032422791] = TranslationTable[889032422791], -- OUTSOURCE
-	[948928900281] = TranslationTable[948928900281], -- Story Bits
-	[979029137252] = TranslationTable[979029137252], -- Scanned an Anomaly
-	[987289847467] = TranslationTable[987289847467], -- Age Groups
-}
+-- build a list of tags with .tga
+local tags = {}
+local TagLookupTable = const.TagLookupTable
+for key,value in pairs(TagLookupTable) do
+	if type(value) == "string" and value:find(".tga") then
+		tags[key] = value
+	end
+end
+
+local TranslationTable = TranslationTable
+for key,value in pairs(TranslationTable) do
+	local tag_match = tags[value:match("<+([%a_]+)>+")]
+	-- translate strings with an image tag (<left_click> to <image UI/Infopanel/left_click.tga>)
+	if tag_match then
+		strings[key] = Trans(key)
+	-- the rest don't matter
+	else
+		strings[key] = value
+	end
+end
 
 strings[4356] = strings[4356]:gsub("<right><Gender>","")
 strings[4357] = strings[4357]:gsub("<right><UIBirthplace>","")
@@ -385,40 +115,5 @@ strings[5647] = strings[5647]:gsub("<count>","%%s")
 strings[6729] = strings[6729]:gsub("<n>",": %%s")
 strings[584248706535] = strings[584248706535]:gsub("<right><ResourceAmount>",": %%s")
 
--- add all of my strings (skipping any missing ones)
-
---~ -- print any missing strings (no need to use unless it's a new update)
---~ local testing = ChoGGi.testing
---~ local missing_strings = ""
---~ local missing_str = "%s, %s"
-
--- we need to pad some zeros
-local pad_str = "30253592000%s%s"
-local function TransZero(pad,first,last)
-	for i = first, last do
-		if i > string_limit then
-			break
-		end
-		local num = tonumber(pad_str:format(pad,i))
-		local str = Trans(num)
-		-- Missing text is from TDevModeGetEnglishText
-		if str ~= "Missing text" then
-			strings[num] = str
---~ 		-- displays list of missing string ids
---~ 		elseif testing then
---~ 			missing_strings = missing_str:format(missing_strings,num)
-		end
-	end
-end
-
--- 00 ends up as 0 if we try to pass as a number (as well as 001 to 1)
-TransZero("000",0,9)
-TransZero("00",10,99)
-TransZero(0,100,999)
-TransZero("",1000,9999)
-
+-- and update my global ref
 ChoGGi.Strings = strings
-
---~ if testing and missing_strings ~= "" then
---~ 	print(missing_strings)
---~ end

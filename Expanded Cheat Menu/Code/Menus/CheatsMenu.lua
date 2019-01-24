@@ -125,7 +125,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Mod Editor",
 		ActionIcon = "CommonAssets/UI/Menu/Action.tga",
-		RolloverText = S[302535920000368--[[Show a list of mods to load in the mod editor.--]]],
+		RolloverText = S[302535920000368--[[Open the mod editor.--]]],
 		OnAction = ChoGGi.MenuFuncs.OpenModEditor,
 	}
 

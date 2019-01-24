@@ -19,9 +19,6 @@ function OnMsg.ClassesGenerate()
 	local RetHint = ChoGGi.ComFuncs.RetHint
 	local Random = ChoGGi.ComFuncs.Random
 	local Trans = ChoGGi.ComFuncs.Translate
-	--~ function OnMsg.DataLoaded()
-	--~	 RebuildFXRules()
-	--~ end
 
 	function ChoGGi.MenuFuncs.MapEdgeLimit_Toggle()
 		if ChoGGi.UserSettings.MapEdgeLimit then
@@ -74,12 +71,12 @@ function OnMsg.ClassesGenerate()
 		local export_count = 0
 		-- stores temp landing spot
 		local landing
+
 		-- local some globals
 		local MarsLocales = MarsLocales
 		local GetOverlayValues = GetOverlayValues
-		local GetRandomMapGenerator = GetRandomMapGenerator
 		local FillRandomMapProps = FillRandomMapProps
-		local T = T
+		local TGetID = TGetID
 
 		local function AddLandingSpot(lat,long)
 			-- updates map_params to location
@@ -89,9 +86,11 @@ function OnMsg.ClassesGenerate()
 				landing.overlay_grids,
 				landing.map_params
 			)
-			-- visible coord names in csv
+			-- updates threat/res map info
+			landing:RecalcThreatResourceLevels()
+			-- coord names in csv
 			local lat_name,long_name = S[6886--[[S--]]],S[6888--[[E--]]]
-			-- we store all numbers as pos in csv
+			-- we store all lat/long numbers as pos in csv
 			if lat < 0 then
 				lat_name = S[6887--[[N--]]]
 				lat = lat - lat * 2
@@ -100,13 +99,9 @@ function OnMsg.ClassesGenerate()
 				long_name = S[6889--[[W--]]]
 				long = long - long * 2
 			end
-			-- updates threat/res map info
-			landing:RecalcThreatResourceLevels()
 
 			local params = landing.map_params
 			local threat = landing.threat_resource_levels
-			-- needed to get map name
-			local gen = GetRandomMapGenerator()
 			-- create item in export list
 			export_count = export_count + 1
 			export_data[export_count] = {
@@ -114,8 +109,8 @@ function OnMsg.ClassesGenerate()
 				latitude_degree = lat,
 				longitude = long_name,
 				longitude_degree = long,
-				topography = Trans(landing:GetMapDifficulty()),
-				altitude = Trans(T{612693411923, "<Altitude> m",Altitude = params.Altitude}),
+				topography = S[TGetID(landing:GetMapDifficulty())],
+				altitude = params.Altitude,
 				temperature = params.Temperature,
 				metals = threat.Metals,
 				metals_rare = threat.PreciousMetals,
@@ -125,13 +120,12 @@ function OnMsg.ClassesGenerate()
 				dust_storms = threat.DustStorm,
 				meteors = threat.Meteor,
 				cold_waves = threat.ColdWave,
-
-				map_name = FillRandomMapProps(gen),
+				map_name = FillRandomMapProps(nil,params),
 			}
 			-- named location spots
 			local spot_name = params.landing_spot or MarsLocales[params.Locales]
 			if spot_name then
-				export_data[export_count].landing_spot = Trans(spot_name)
+				export_data[export_count].landing_spot = S[TGetID(spot_name)]
 			end
 		end
 
@@ -149,6 +143,8 @@ function OnMsg.ClassesGenerate()
 			-- exported data temp stored here
 			table.clear(export_data)
 			export_count = 0
+
+--~ ChoGGi.ComFuncs.TickStart("ExportMapDataToCSV")
 
 			-- needed for RecalcThreatResourceLevels func
 			local orig_state = GameState.gameplay
@@ -172,6 +168,8 @@ function OnMsg.ClassesGenerate()
 			-- not needed anymore so restore back to orig
 			GameState.gameplay = orig_state
 			g_SelectedSpotChallengeMods = orig_spotchall
+
+--~ ChoGGi.ComFuncs.TickEnd("ExportMapDataToCSV")
 
 			-- remove landing spot obj (not needed anymore)
 			landing:delete()

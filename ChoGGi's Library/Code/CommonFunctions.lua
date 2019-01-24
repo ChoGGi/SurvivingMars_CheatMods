@@ -91,7 +91,7 @@ end
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
-	local rawget,tostring,error = rawget,tostring,error
+	local rawget,tostring = rawget,tostring
 	local empty_func = empty_func
 	local IsObjlist = IsObjlist
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
@@ -138,10 +138,7 @@ do -- RetName
 			return lookuped
 		end
 
-		-- devs log missing globals, and certain __indexs will make .example look like a global?
-		-- so we make the error func skip
-		local old_err,name
-
+		local name
 		local obj_type = type(obj)
 
 		if obj_type == "string" then
@@ -149,12 +146,11 @@ do -- RetName
 		elseif obj_type == "number" then
 			return tostring(obj)
 
+		-- we need to use rawget to check, as some stuff like mod.env has it's own __index and causes the game to log a warning
 		elseif obj_type == "table" then
-			old_err = error
-			error = empty_func
 
 			-- we check in order of less generic "names"
-			local name_type = type(obj.name)
+			local name_type = rawget(obj,"name") and type(obj.name)
 			-- custom name from user (probably)
 			if name_type == "string" and obj.name ~= "" then
 				name = obj.name
@@ -163,27 +159,26 @@ do -- RetName
 				name = Trans(obj.name)
 
 			-- translated name
-			elseif obj.display_name and obj.display_name ~= "" then
+			elseif rawget(obj,"display_name") and obj.display_name ~= "" then
 				name = Trans(obj.display_name)
-
 			-- encyclopedia_id
-			elseif obj.encyclopedia_id and obj.encyclopedia_id ~= "" then
+			elseif rawget(obj,"encyclopedia_id") and obj.encyclopedia_id ~= "" then
 				name = obj.encyclopedia_id
 			-- plain old id
-			elseif obj.id and obj.id ~= "" then
+			elseif rawget(obj,"id") and obj.id ~= "" then
 				name = obj.id
-			elseif obj.Id and obj.Id ~= "" then
+			elseif rawget(obj,"Id") and obj.Id ~= "" then
 				name = obj.Id
 			-- class template name
-			elseif obj.template_name and obj.template_name ~= "" then
+			elseif rawget(obj,"template_name") and obj.template_name ~= "" then
 				name = obj.template_name
-			elseif obj.template_class and obj.template_class ~= "" then
+			elseif rawget(obj,"template_class") and obj.template_class ~= "" then
 				name = obj.template_class
 			-- entity
-			elseif obj.entity then
+			elseif rawget(obj,"entity") then
 				name = obj.entity
 			-- class
-			elseif obj.class and obj.class ~= "" then
+			elseif rawget(obj,"class") and obj.class ~= "" then
 				name = obj.class
 
 			-- added this here as doing tostring lags the crap outta kansas if this is a large objlist
@@ -201,11 +196,6 @@ do -- RetName
 		elseif obj_type == "function" then
 			return DebugGetInfo(obj)
 
-		end
-
-		-- restore error func if we replaced it
-		if old_err then
-			error = old_err
 		end
 
 		-- falling back baby
@@ -315,7 +305,7 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 		id = AsyncRand(),
 		title = CheckText(title),
 		text = CheckText(text,S[3718--[[NONE--]]]),
-		image = type(tostring(icon):find(".tga")) == "number" and icon or StringFormat("%sUI/TheIncal.png",ChoGGi.LibraryPath)
+		image = type(tostring(icon):find(".tga")) == "number" and icon or StringFormat("%sUI/TheIncal.png",ChoGGi.library_path)
 	}
 	table.set_defaults(data, params)
 	table.set_defaults(data, OnScreenNotificationPreset)
@@ -714,7 +704,7 @@ function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,con
 			CheckText(text,S[3718--[[NONE--]]]),
 			CheckText(ok_msg,S[6878--[[OK--]]]),
 			CheckText(cancel_msg,S[6879--[[Cancel--]]]),
-			image or StringFormat("%sUI/message_picture_01.png",ChoGGi.LibraryPath),
+			image or StringFormat("%sUI/message_picture_01.png",ChoGGi.library_path),
 			context
 		) == "ok" then
 			if func then
@@ -2839,7 +2829,10 @@ do -- DeleteObject
 		end
 
 		-- hopefully i can remove all log spam one of these days
-		printC("DeleteObject",RetName(obj),"DeleteObject")
+		local name = RetName(obj)
+		if name then
+			printC("DeleteObject",name,"DeleteObject")
+		end
 
 		if Flight_MarkedObjs[obj] then
 			Flight_MarkedObjs[obj] = nil
@@ -3622,9 +3615,11 @@ function ChoGGi.ComFuncs.DraggableCheatsMenu(which)
 		-- remove my control and padding
 		XShortcutsTarget.idMoveControl:delete()
 		XShortcutsTarget.idMenuBar:SetPadding(box(0, 0, 0, 0))
-		-- restore to original pos by toggling menu
-		ChoGGi.ComFuncs.CheatsMenu_Toggle()
-		ChoGGi.ComFuncs.CheatsMenu_Toggle()
+		-- restore to original pos by toggling menu vis
+		if ChoGGi.UserSettings.ShowCheatsMenu then
+			ChoGGi.ComFuncs.CheatsMenu_Toggle()
+			ChoGGi.ComFuncs.CheatsMenu_Toggle()
+		end
 	end
 end
 
