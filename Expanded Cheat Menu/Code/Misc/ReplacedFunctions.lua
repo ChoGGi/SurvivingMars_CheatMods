@@ -1486,7 +1486,7 @@ end]]
 		end
 
 		-- kuiper modding beta
-		if rawget(_G,"g_ConsoleFENV") then
+		if rawget(_G,"g_ConsoleFENV") == false then
 			-- why have the mod blacklist for the console...
 			CreateRealTimeThread(function()
 				while not g_ConsoleFENV do

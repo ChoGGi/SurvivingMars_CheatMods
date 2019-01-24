@@ -270,6 +270,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 		local SplitPath = SplitPath
 		local AsyncCreatePath = AsyncCreatePath
 		local AsyncCopyFile = AsyncCopyFile
+		local mod_params
 
 		-- check the copy box for these
 		local ChoGGi_copy_files = {
@@ -298,7 +299,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 			-- abort if upload already happening
 			if IsValidThread(mod_upload_thread) then
 				ChoGGi.ComFuncs.MsgWait(
-					1000011--[[There is an active Steam upload--]],
+					1000011--[[There is an active mod upload--]],
 					1000592--[[Error--]],
 					"UI/Common/mod_steam_workshop.tga"
 				)
@@ -317,6 +318,14 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				local test = choice[1].check5
 --~ 				local steam_upload = choice[1].check6
 				local steam_upload = true
+
+				local upload_image = "UI/ParadoxLogo.tga"
+				if steam_upload then
+					upload_image = "UI/Common/mod_steam_workshop.tga"
+				else
+					-- mods have to be packed for paradox
+					pack_mod = true
+				end
 
 				local pack_path = "AppData/ModUpload/Pack/"
 				local dest = "AppData/ModUpload/"
@@ -371,11 +380,15 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 						302535920000367--[[Mod Upload--]]
 					)
 
+					-- always start with fresh table
+					mod_params = {}
+
 					-- add new mod
 					local err,item_id
 					if not test then
 
 						if steam_upload then
+							-- check for steam id and if user owns mod
 							if mod.steam_id ~= 0 then
 								local exists
 								local appId = SteamGetAppId()
@@ -385,30 +398,39 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 									mod.steam_id = 0
 								end
 							end
-
+							-- new mod
 							if mod.steam_id == 0 then
 								err,item_id = AsyncSteamWorkshopCreateItem()
 								mod.steam_id = item_id or nil
 							end
 						else
+							-- popup msg box with desktop or any option
 
-							local params = {
-								publish_os = "windows",
-								uuid_property = "pops_desktop_uuid"
-							}
---~ 							if not params.uuid_property then
---~ 								if params.publish_os == "xbox_one" then
---~ 									params.uuid_property = "pops_any_uuid"
---~ 								else
---~ 									params.uuid_property = "pops_desktop_uuid"
---~ 								end
---~ 							end
+							-- desktop
+							mod_params.publish_os = "windows"
+							mod_params.uuid_property = "pops_desktop_uuid"
+							-- desktop/console
+--~ 							mod_params.publish_os = "any"
+--~ 							mod_params.uuid_property = "pops_any_uuid"
+
 							-- get needed info for mod
-							PDX_PrepareForUpload(nil, mod, params)
-							ex(params)
+							local worked, results = PDX_PrepareForUpload(nil, mod, mod_params)
+							if not worked then
+								-- let user know if we're good or not
+								ChoGGi.ComFuncs.MsgWait(
+									S[1000013--[[Mod %s was not uploaded! Error: %s--]]]:format(mod.title,Trans(results)),
+									StringFormat("%s: %s",S[1000592--[[Error--]]],mod.title),
+									upload_image
+								)
+								return
+							end
 
---~ 							UploadMod(socket, mod, params, PDX_PrepareForUpload, PDX_Upload)
---~ 							err, _ = AsyncOpWait(PopsAsyncOpTimeout, nil, "AsyncPopsSocialProfileRetrieve")
+--~ 							ex(mod_params)
+
+							-- paradox mod id
+							item_id = mod_params.mod_id
+							print(mod_params.mod_id,"MODID")
+--~ 							return
 
 						end
 
@@ -416,8 +438,6 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 
 					-- update mod, and copy files to ModUpload
 					if copy_files and not blank_mod and not err then
---~ 						-- I prefer to update this manually, if this didn't mangle my text maybe it'd be more useful...
---~ 						mod:SaveDef()
 						mod:SaveItems()
 						AsyncDeletePath(dest)
 						AsyncCreatePath(dest)
@@ -481,16 +501,18 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 							os_dest = ConvertToOSPath(dest)
 						end
 
-						local params = {
-							os_pack_path = os_dest,
-							-- maybe we'll deal with these buggers one of these days?
-							screenshots = {},
-						}
-						mod.last_changes = mod.last_changes or tostring(mod.version) or ""
+						mod_params.os_pack_path = os_dest
+						-- maybe we'll deal with these buggers one of these days?
+						mod_params.screenshots = {}
+						mod.last_changes = mod.last_changes ~= "" and mod.last_changes or tostring(mod.version)
 
 						-- CommonLua\SteamWorkshop.lua
 						if not test then
-							result,err = Steam_Upload(nil, mod, params)
+							if steam_upload then
+								result,err = Steam_Upload(nil, mod, mod_params)
+							else
+								result,err = PDX_Upload(nil, mod, mod_params)
+							end
 						end
 
 					end
@@ -517,16 +539,25 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					-- show id in console/copy to clipb
 					if not test and item_id then
 						if clipboard then
-							CopyToClipboard(item_id)
+							if mod_params.uuid_property then
+								CopyToClipboard(StringFormat("%s: %s",mod_params.uuid_property,item_id))
+							else
+								CopyToClipboard(item_id)
+							end
 						end
-						print(mod.title,":",S[1000107--[[Mod--]]],S[1000021--[[Steam ID--]]],":",item_id)
+
+						local id_str = S[1000773--[[Paradox All UUID--]]]
+						if steam_upload then
+							id_str = S[1000021--[[Steam ID--]]]
+						end
+						print(mod.title,":",S[1000107--[[Mod--]]],id_str,":",item_id)
 					end
 
 					-- let user know if we're good or not
 					ChoGGi.ComFuncs.MsgWait(
 						msg,
 						StringFormat("%s: %s",title,mod.title),
-						"UI/Common/mod_steam_workshop.tga"
+						upload_image
 					)
 
 					if not test then
@@ -535,13 +566,14 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					end
 				end
 
+				-- add checkbox for paradox asking for desktop/any
 				ChoGGi.ComFuncs.QuestionBox(
 					TableConcat(upload_msg),
 					QuestionBoxCallBackFunc,
 					mod.title,
 					nil,
 					nil,
-					"UI/Common/mod_steam_workshop.tga"
+					upload_image
 				)
 			end) -- mod_upload_thread
 		end
@@ -551,9 +583,9 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ModUpload"))
 				return
 			end
-			if not Platform.steam then
+			if not (Platform.steam or Platform.pops) then
 				MsgPopup(
-					1000760--[[Not Steam--]],
+					StringFormat("%s || %s",S[1000760--[[Not Steam--]]],S[1000759--[[Not Paradox--]]]),
 					302535920000367--[[Mod Upload--]]
 				)
 				return
@@ -613,15 +645,14 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 						title = 186760604064--[[Test--]],
 						hint = 302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]],
 					},
-					-- paradox uploading doesn't work yet
 --~ 					{
 --~ 						title = 302535920001506--[[Steam--]],
---~ 						hint = 302535920001507--[[Uncheck to upload to Paradox mods (instead of Steam).--]],
+--~ 						hint = 302535920001507--[[Uncheck to upload to Paradox mods (instead of Steam, mod will always be packed in .hpk).--]],
 --~ 						checked = true,
 --~ 					},
 				},
 				height = 800.0,
---~ 				width = 550.0,
+				width = 550.0,
 			}
 		end
 	end -- do
@@ -684,26 +715,29 @@ Change DisableECM to false in settings file to re-enable them."--]]],S[302535920
 
 	function ChoGGi.MenuFuncs.TakeScreenshot(boolean)
 		CreateRealTimeThread(function()
-			local filename
+			local filename,created
 			if boolean == true then
 					WaitNextFrame(3)
 					LockCamera("Screenshot")
 					filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SSAA","AppData/","tga")
-					MovieWriteScreenshot(filename, 0, 64, false)
+					created = MovieWriteScreenshot(filename, 0, 64, false)
 					UnlockCamera("Screenshot")
 			else
 				filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SS","AppData/","tga")
-				WriteScreenshot(filename)
+				created = WriteScreenshot(filename)
 			end
-			-- slight delay so it doesn't show up in the screenshot
-			Sleep(50)
-			print("TakeScreenshot:",ConvertToOSPath(filename))
+
+			if created then
+				-- slight delay so it doesn't show up in the screenshot
+				Sleep(50)
+				print("TakeScreenshot:",ConvertToOSPath(filename))
+			end
 		end)
 	end
 
 	function ChoGGi.MenuFuncs.ResetECMSettings()
 
-		local file = ChoGGi.SettingsFile
+		local file = ChoGGi.settings_file
 		local old = StringFormat("%s.old",file)
 
 		local function CallBackFunc(answer)
@@ -716,7 +750,7 @@ Change DisableECM to false in settings file to re-enable them."--]]],S[302535920
 					ThreadUnlockKey(old)
 
 					ThreadLockKey(file)
-					AsyncFileDelete(ChoGGi.SettingsFile)
+					AsyncFileDelete(ChoGGi.settings_file)
 					ThreadUnlockKey(file)
 				end
 

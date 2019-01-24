@@ -300,7 +300,7 @@ DefineClass.ChoGGi_TextInput = {
 	WordWrap = false,
 	AllowTabs = false,
 	RolloverTitle = S[126095410863--[[Info--]]],
-	RolloverAnchor = "top",
+	RolloverAnchor = "bottom",
 	RolloverTemplate = "Rollover",
 	Background = light_gray,
 }
@@ -512,8 +512,10 @@ function ChoGGi_Window:AddElements()
 
 	-- throws error if we try to get display_icon from _G
 	local image = self.title_image or (type(self.obj) == "table" and self.name ~= "_G"
-		and (self.obj.display_icon ~= "" and self.obj.display_icon
-		or self.obj.pin_icon ~= "" and self.obj.pin_icon))
+--~ 		and (self.obj.display_icon ~= "" and self.obj.display_icon
+--~ 		or self.obj.pin_icon ~= "" and self.obj.pin_icon))
+		and (rawget(self.obj,"display_icon") and self.obj.display_icon ~= "" and self.obj.display_icon
+		or rawget(self.obj,"pin_icon") and self.obj.pin_icon ~= "" and self.obj.pin_icon))
 
 	local is_image = type(image) == "string" and IsImageReady(image)
 

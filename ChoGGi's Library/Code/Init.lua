@@ -28,7 +28,7 @@ SOFTWARE.
 
 -- I should really split this into funcs and settings... one of these days
 ChoGGi = {
-	-- see above
+	-- anyone examining ChoGGi will see this first
 	_LICENSE = LICENSE,
 	-- ECM
 	id = "ChoGGi_CheatMenu",
@@ -145,7 +145,7 @@ ChoGGi = {
 	-- Wha'choo talkin' 'bout, Willis?
 	lang = GetLanguage(),
 	-- path to this mods' folder
-	LibraryPath = CurrentModPath,
+	library_path = CurrentModPath,
 	-- i translate all my strings at startup (and a couple of the built-in ones)
 	Strings = false,
 	-- easier access to some data (traits,cargo,mysteries,colonist data)
@@ -186,7 +186,7 @@ ChoGGi = {
 		-- ECM will replace this with unblacklisted _G if HelperMod is enabled
 		_G = _G,
 	},
-	-- settings that are saved to SettingsFile
+	-- settings that are saved to settings_file
 	UserSettings = {
 		BuildingSettings = {},
 		Transparency = {},
@@ -195,7 +195,7 @@ ChoGGi = {
 local ChoGGi = ChoGGi
 
 do -- translate
-	local locale_path = string.format("%sLocales/%s.csv",ChoGGi.LibraryPath,"%s")
+	local locale_path = string.format("%sLocales/%s.csv",ChoGGi.library_path,"%s")
 	-- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
 	if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
 		LoadTranslationTableFile(locale_path:format("English"))

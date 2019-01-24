@@ -258,21 +258,21 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		settings = settings or ChoGGi.UserSettings
 
-		local bak = StringFormat("%s.bak",ChoGGi.SettingsFile)
+		local bak = StringFormat("%s.bak",ChoGGi.settings_file)
 		--locks the file while we write (i mean it says thread, ah well can't hurt)?
 		ThreadLockKey(bak)
-		AsyncCopyFile(ChoGGi.SettingsFile,bak)
+		AsyncCopyFile(ChoGGi.settings_file,bak)
 		ThreadUnlockKey(bak)
 
-		ThreadLockKey(ChoGGi.SettingsFile)
+		ThreadLockKey(ChoGGi.settings_file)
 		table.sort(settings)
 		-- and write it to disk
-		local err = AsyncStringToFile(ChoGGi.SettingsFile,TableToLuaCode(settings))
-		ThreadUnlockKey(ChoGGi.SettingsFile)
+		local err = AsyncStringToFile(ChoGGi.settings_file,TableToLuaCode(settings))
+		ThreadUnlockKey(ChoGGi.settings_file)
 
 		if err then
 			print(S[302535920000006--[[Failed to save settings to %s : %s--]]]:format(
-				ChoGGi.SettingsFile and ConvertToOSPath(ChoGGi.SettingsFile) or ChoGGi.SettingsFile,
+				ChoGGi.settings_file and ConvertToOSPath(ChoGGi.settings_file) or ChoGGi.settings_file,
 				err
 			))
 			return false, err
@@ -287,11 +287,11 @@ function OnMsg.ClassesGenerate()
 
 		-- try to read settings
 		if not settings then
-			err, settings = AsyncFileToString(ChoGGi.SettingsFile)
+			err, settings = AsyncFileToString(ChoGGi.settings_file)
 			if err then
 				-- no settings file so make a new one and read it
 				ChoGGi.SettingFuncs.WriteSettingsOrig()
-				err, settings = AsyncFileToString(ChoGGi.SettingsFile)
+				err, settings = AsyncFileToString(ChoGGi.settings_file)
 				-- something is definitely wrong so just abort, and let user know
 				if err then
 					PrintError(err)

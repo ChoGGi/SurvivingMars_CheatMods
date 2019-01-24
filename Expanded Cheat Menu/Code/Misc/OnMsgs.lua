@@ -1554,7 +1554,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 				StringFormat("%s %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000201--[[Active--]]]),
 				S[302535920001465--[[Stop talking and start cheating!--]]],
 				S[302535920001466--[["I know what I'm doing, show me the console log."--]]],
-				StringFormat("%sPreview.png",ChoGGi.ModPath)
+				StringFormat("%sPreview.png",ChoGGi.mod_path)
 			)
 			-- second place is isn't last place
 			UserSettings.FirstRun = false

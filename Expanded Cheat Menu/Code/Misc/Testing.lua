@@ -70,6 +70,40 @@ function OnMsg.ClassesGenerate()
 			as.Shortcuts["ECM.Debug.Delete Object(s).Delete Object(s)"] = {"Ctrl-Shift-D"}
 		end
 
+		function ChoGGi.testing.MissingStrings(string_limit)
+			-- amount of entries in the CSV file
+			string_limit = string_limit or 1550
+
+			local Trans = ChoGGi.ComFuncs.Translate
+			local missing_strs = {}
+			local c = 0
+			--~ -- we need to pad some zeros
+			local pad_str = "30253592000%s%s"
+			local function TransZero(pad,first,last)
+				for i = first, last do
+					if i > string_limit then
+						break
+					end
+					local num = tonumber(pad_str:format(pad,i))
+					local str = Trans(num)
+					-- Missing text is from TDevModeGetEnglishText
+					if str == "Missing text" then
+						c = c + 1
+						missing_strs[c] = num
+					end
+				end
+			end
+
+			-- 00 ends up as 0 if we try to pass as a number (as well as 001 to 1)
+			TransZero("000",0,9)
+			TransZero("00",10,99)
+			TransZero(0,100,999)
+			TransZero("",1000,9999)
+
+			if #missing_strs > 0 then
+				ex(missing_strs)
+			end
+		end
 --~ 		-- stop welcome to mars msg for LoadMapForScreenShot
 --~ 		ShowStartGamePopup = empty_func
 		-- this is just for Map Images Pack. it loads the map, positions camera to fixed pos, and takes named screenshot

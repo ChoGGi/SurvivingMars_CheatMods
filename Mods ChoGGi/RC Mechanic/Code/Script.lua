@@ -85,20 +85,16 @@ end
 function RCMechanic:ProcAutomation()
 	local unreachable_objects = self:GetUnreachableObjectsTable()
 
---~ 	local is_rover,is_drone
-
 	local rover = MapFindNearest(self, "map", "BaseRover", "Drone" ,function(o)
 		local go_fix_it
 		-- check for rovers without a cc or if all cc nearby have no working drones
 		if o.command == "Malfunction" then
 			-- can't hurt
 			if o:IsKindOf("BaseRover") then
---~ 				is_rover = true
 				if not o.repair_work_request:CanAssignUnit() then
 					return
 				end
 			elseif o:IsKindOf("Drone") then
---~ 				is_drone = true
 				if not table.find(g_BrokenDrones,"handle",o.handle) then
 					return
 				end

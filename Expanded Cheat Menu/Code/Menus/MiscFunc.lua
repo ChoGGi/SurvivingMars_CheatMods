@@ -162,8 +162,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920001122--[[%s: HAXOR--]]]:format(ChoGGi.UserSettings.InfopanelCheats),
-			27--[[Cheats--]],
-			"UI/Icons/Anomaly_Tech.tga"
+			302535920000696--[[Infopanel Cheats--]]
 		)
 	end
 
@@ -181,8 +180,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920001123--[[%s: Cleanup cheats infopane.--]]]:format(ChoGGi.UserSettings.CleanupCheatsInfoPane),
-			27--[[Cheats--]],
-			"UI/Icons/Anomaly_Tech.tga"
+			302535920000696--[[Infopanel Cheats--]]
 		)
 	end
 
