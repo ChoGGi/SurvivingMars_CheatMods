@@ -509,7 +509,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionId = ".Colonist Data",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = S[302535920001219--[[Export colonist data to %sColonists.csv.--]]]:format(ConvertToOSPath("AppData/")),
-		OnAction = ChoGGi.MenuFuncs.ExportColonistDataToCSV,
+		OnAction = ChoGGi.ComFuncs.ExportColonistDataToCSV,
 	}
 
 	c = c + 1
@@ -518,7 +518,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionId = ".Graphs Data",
 		ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
 		RolloverText = S[302535920001452--[[Export colonist cc graph data to %sGraphs.csv.--]]]:format(ConvertToOSPath("AppData/")),
-		OnAction = ChoGGi.MenuFuncs.ExportGraphsToCSV,
+		OnAction = ChoGGi.ComFuncs.ExportGraphsToCSV,
 	}
 
 	c = c + 1
@@ -526,8 +526,12 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionMenubar = str_Game_ExportCSV,
 		ActionId = ".Map Data",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
-		RolloverText = S[302535920001502--[["Export map location data to %sMapData.csv (will take awhile, see survivingmarsmaps.com for a filtered list)."--]]]:format(ConvertToOSPath("AppData/")),
-		OnAction = ChoGGi.MenuFuncs.ExportMapDataToCSV,
+		RolloverText = S[302535920001502--[["Export map location data to %sMapData.csv (will take awhile).
+
+See survivingmarsmaps.com for a filtered list.
+Don't use in start new game screens (rating/topo will be messed up).
+Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu)."--]]]:format(ConvertToOSPath("AppData/")),
+		OnAction = ChoGGi.ComFuncs.ExportMapDataToCSV,
 	}
 
 end

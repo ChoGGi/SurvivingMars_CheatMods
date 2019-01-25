@@ -276,6 +276,11 @@ local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 -- shows a popup msg with the rest of the notifications
 -- objects can be a single obj, or {obj1,obj2,etc}
 function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
+	-- notifications only show up in-game
+	if not GameState.gameplay then
+		return
+	end
+
 	local ChoGGi = ChoGGi
 	if not ChoGGi.Temp.MsgPopups then
 		ChoGGi.Temp.MsgPopups = {}
