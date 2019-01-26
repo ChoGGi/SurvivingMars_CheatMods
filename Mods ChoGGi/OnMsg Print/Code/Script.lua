@@ -27,6 +27,9 @@ end
 function OnMsg.ApplicationQuit(...)
 	print("Msg.ApplicationQuit",...)
 end
+function OnMsg.ApplyAccountOptions(...)
+	print("Msg.ApplyAccountOptions",...)
+end
 function OnMsg.AppStoreDownloadFailed(...)
 	print("Msg.AppStoreDownloadFailed",...)
 end
@@ -224,6 +227,9 @@ function OnMsg.ContentUpdate(...)
 end
 function OnMsg.ContentUpdateStart(...)
 	print("Msg.ContentUpdateStart",...)
+end
+function OnMsg.ControlSchemeChanged(...)
+	print("Msg.ControlSchemeChanged",...)
 end
 function OnMsg.CrystalComplete(...)
 	print("Msg.CrystalComplete",...)
@@ -453,6 +459,12 @@ end
 function OnMsg.JoinedSession(...)
 	print("Msg.JoinedSession",...)
 end
+function OnMsg.KeyboardConnected(...)
+	print("Msg.KeyboardConnected",...)
+end
+function OnMsg.KeyboardDisconnected(...)
+	print("Msg.KeyboardDisconnected",...)
+end
 function OnMsg.LandingEnabled(...)
 	print("Msg.LandingEnabled",...)
 end
@@ -572,6 +584,12 @@ function OnMsg.ModsReloaded(...)
 end
 function OnMsg.MoraleChanged(...)
 	print("Msg.MoraleChanged",...)
+end
+function OnMsg.MouseConnected(...)
+	print("Msg.MouseConnected",...)
+end
+function OnMsg.MouseDisconnected(...)
+	print("Msg.MouseDisconnected",...)
 end
 function OnMsg.MoveSequence(...)
 	print("Msg.MoveSequence",...)
@@ -776,6 +794,9 @@ function OnMsg.PopsSyncPop(...)
 end
 function OnMsg.PopsSyncPush(...)
 	print("Msg.PopsSyncPush",...)
+end
+function OnMsg.PopsTelemetrySetEnabled(...)
+	print("Msg.PopsTelemetrySetEnabled",...)
 end
 function OnMsg.PopulationHighWatermark(...)
 	print("Msg.PopulationHighWatermark",...)

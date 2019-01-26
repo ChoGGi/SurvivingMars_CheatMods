@@ -1,3 +1,13 @@
+v0.4
+Unnamed update added Msgs:
+ApplyAccountOptions
+ControlSchemeChanged
+KeyboardConnected
+KeyboardDisconnected
+MouseConnected
+MouseDisconnected
+PopsTelemetrySetEnabled
+
 v0.3
 Gagarin HF2 added Msgs:
 MessageBoxPreOpen

@@ -4,6 +4,7 @@ return PlaceObj("ModDef", {
 	"saved", 1544961600,
 	"id", "ChoGGi_PersonalShuttles",
 	"steam_id", "1410892053",
+	"pops_any_uuid", "b434660b-9a9a-4057-90d7-91bcb815402a",
 	"author", "ChoGGi",
 	"TagOther", true,
 	"image", "Preview.png",

@@ -10,6 +10,7 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
   "steam_id", "1522200776",
+	"pops_any_uuid", "f11ce232-278a-422e-b12d-476f9a148d1c",
 	"lua_revision", LuaRevision,
   "description", [[Shows maxed grid for ranged buildings (Triboelectric Scrubber and Subsurface Heater) when in construction mode.
 

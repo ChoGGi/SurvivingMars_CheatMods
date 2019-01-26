@@ -6,6 +6,7 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_MartianCarwash",
   "author", "ChoGGi",
   "steam_id", "1411110474",
+	"pops_any_uuid", "c146c971-70c2-41da-92ea-3cb7c3d9c6b7",
 	"code", {
 		"Code/Script.lua"
 	},

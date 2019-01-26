@@ -11,6 +11,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"lua_revision", LuaRevision,
   "steam_id", "1493819550",
+	"pops_any_uuid", "8b9f7119-c1ec-4aa2-afbf-77065611df3a",
   "description", [[Show map sectors during construction (green for scanned).
 
 Toggle in-game with Mod Config Reborn.
