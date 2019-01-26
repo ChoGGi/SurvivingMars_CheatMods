@@ -55,7 +55,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local add = choice[1].check1
@@ -148,7 +148,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			g_CurrentMissionParams.challenge_id = choice[1].value
@@ -212,7 +212,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			for i = 1, #choice do
@@ -297,7 +297,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -364,7 +364,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			if choice[1].check2 then
@@ -440,7 +440,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -495,7 +495,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			if choice[1].check2 then
@@ -567,7 +567,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -636,7 +636,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -682,7 +682,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local check1 = choice[1].check1

@@ -1,8 +1,12 @@
 ## Library Changelog
 
-## v5.1 (Unreleased)
+## v5.2 (Unreleased)
 
-## v5.0 (03 Jan 2018)
+## v5.1 (25 Jan 2019)
+- Support for "Next SM Update".
+- Added .visible to checks for List dialog (defaults to true).
+
+## v5.0 (03 Jan 2019)
 - List dialog was sometimes showing the value instead of the text for the list.
 - Editor mode toggle wasn't showing selection text till the second time it's opened.
 

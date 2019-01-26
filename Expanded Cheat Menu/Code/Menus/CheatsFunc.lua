@@ -36,7 +36,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 
@@ -88,7 +88,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -165,7 +165,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -562,7 +562,7 @@ function OnMsg.ClassesGenerate()
 			ItemList,c = AddTableToList(ItemList,c,DataInstances.MapSettings_Meteor,4146--[[Meteors--]],"Meteor",{"storm","multispawn"})
 
 			local function CallBackFunc(choice)
-				if #choice < 1 then
+				if choice.nothing_selected then
 					return
 				end
 				for i = 1, #choice do
@@ -612,7 +612,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 
@@ -673,7 +673,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local function ExploreDeep()
@@ -766,7 +766,7 @@ Otherwise you won't see anything."--]],
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -849,7 +849,7 @@ Otherwise you won't see anything."--]],
 			end
 
 			local function CallBackFunc(choice)
-				if #choice < 1 then
+				if choice.nothing_selected then
 					return
 				end
 				local value = choice[1].value
@@ -954,7 +954,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1172,7 +1172,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 
@@ -1223,7 +1223,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1284,7 +1284,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1326,7 +1326,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1374,7 +1374,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1497,7 +1497,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 			end
 
 			local function CallBackFunc(choice)
-				if #choice < 1 then
+				if choice.nothing_selected then
 					return
 				end
 
@@ -1646,7 +1646,7 @@ g_Voice:Play(ChoGGi.CurObj.speech)"--]]])}
 			end
 
 			local function CallBackFunc(choice)
-				if #choice < 1 then
+				if choice.nothing_selected then
 					return
 				end
 				local check1 = choice[1].check1

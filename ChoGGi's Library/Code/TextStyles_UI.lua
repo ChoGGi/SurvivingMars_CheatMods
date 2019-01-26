@@ -148,5 +148,4 @@ function OnMsg.ClassesPostprocess()
 		RolloverTextColor = light_gray,
 		id = "ChoGGi_List",
 	})
-
 end

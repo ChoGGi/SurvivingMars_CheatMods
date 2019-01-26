@@ -489,6 +489,10 @@ function OnMsg.ClassesGenerate()
 						entry:SetIcon(action:ActionToggled(host) and action.ActionToggledIcon ~= "" and action.ActionToggledIcon or action.ActionIcon)
 					end
 					entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
+					-- added in modders beta "rc1"
+					if action:ActionState(host) == "disabled" then
+						entry:SetEnabled(false)
+					end
 
 					entry:Open()
 				end
@@ -497,8 +501,8 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	do -- Large Water Tank + Pipes + Chrome skin = borked looking pipes
-		local spots = {"Tube", "Tubeleft", "Tuberight", "Tubestraight" }
-		local spot_attach = {"Tube", "TubeLeft", "TubeRight", "TubeStraight" }
+		local spots = {"Tube", "Tubeleft", "Tuberight", "Tubestraight"}
+		local spot_attach = {"Tube", "TubeLeft", "TubeRight", "TubeStraight"}
 		local decor_spot = "Tubedecor"
 		local IsValidEntity = IsValidEntity
 		local point = point

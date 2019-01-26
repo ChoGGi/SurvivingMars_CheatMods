@@ -1,10 +1,14 @@
 return PlaceObj("ModDef", {
-	"title", "Expanded Cheat Menu v12.1 Test",
+	"title", "Expanded Cheat Menu v12.1",
 	"version", 121,
-	"saved", 1546516800,
-	"steam_id", "1411157810",
-	"id", "ChoGGi_CheatMenu",
+	"saved", 1548417600,
 	"image", "Preview.png",
+	"id", "ChoGGi_CheatMenu",
+	"author", "ChoGGi",
+	"steam_id", "1411157810",
+	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
+	"lua_revision", LuaRevision,
+	"saved_with_revision", LuaRevision,
 	"TagCommanderProfiles", true,
 	"TagMissionSponsors", true,
 	"TagColonyLogos", true,
@@ -19,8 +23,6 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
-	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
-	"lua_revision", LuaRevision,
 	"code", {
 		-- start 'er up
 		"Code/Init.lua",
@@ -85,10 +87,6 @@ return PlaceObj("ModDef", {
 
 		-- gee sure would be nice to load these like the devs do, but i suppose it's too much work to limit dofile env.
 	},
-
-	"author", [[ChoGGi
-With thanks to chippydip, admbraden, SkiRich, BoehserOnkel, and Fling.
-Random internet users reporting bugs/requesting features.]],
 
 	"description", string.format([[and Modding Tools. Enables cheat menu, cheat info pane, console, examine object, adds a few hundred menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
 

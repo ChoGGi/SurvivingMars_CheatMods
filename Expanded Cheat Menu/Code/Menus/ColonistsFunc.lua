@@ -130,7 +130,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local check1 = choice[1].check1
@@ -289,7 +289,7 @@ I think somebody has been playing too much Fallout...--]],
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -356,7 +356,7 @@ I think somebody has been playing too much Fallout...--]],
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -408,7 +408,7 @@ I think somebody has been playing too much Fallout...--]],
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -473,7 +473,7 @@ I think somebody has been playing too much Fallout...--]],
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -719,7 +719,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -774,7 +774,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -896,7 +896,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1012,7 +1012,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1139,7 +1139,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1249,7 +1249,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1377,7 +1377,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		AddTraits(ChoGGi.Tables.OtherTraits)
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 
@@ -1564,7 +1564,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1674,7 +1674,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1758,7 +1758,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1876,7 +1876,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local check1 = choice[1].check1

@@ -146,7 +146,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -232,7 +232,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local set = S[302535920000129--[[Set--]]]
@@ -360,7 +360,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -419,7 +419,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -492,7 +492,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -613,7 +613,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -672,7 +672,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local UnlockBuilding = UnlockBuilding
@@ -872,7 +872,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1066,7 +1066,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1167,7 +1167,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1671,7 +1671,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
