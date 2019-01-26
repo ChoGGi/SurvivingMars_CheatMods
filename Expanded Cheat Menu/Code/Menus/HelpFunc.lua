@@ -560,11 +560,12 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 
 					-- show id in console/copy to clipb
 					if not test and item_id then
+
 						if clipboard then
 							if mod_params.uuid_property then
-								CopyToClipboard(StringFormat([["%s", "%s",]],mod_params.uuid_property,item_id))
+								CopyToClipboard(StringFormat([[	"%s", "%s",]],mod_params.uuid_property,item_id))
 							else
-								CopyToClipboard(StringFormat([["steam_id", "%s",]],item_id))
+								CopyToClipboard(StringFormat([[	"steam_id", "%s",]],item_id))
 							end
 						end
 

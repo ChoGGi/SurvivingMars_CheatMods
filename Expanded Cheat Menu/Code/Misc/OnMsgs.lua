@@ -394,10 +394,12 @@ function OnMsg.ModsReloaded()
 				end
 				return XEditEditOperation(self,insert_text, is_undo_redo, cursor_to_text_start,...)
 			end
-			-- add tooltip
-			dlgConsole.idEdit.RolloverTemplate = "Rollover"
-			dlgConsole.idEdit.RolloverTitle = StringFormat("%s %s",S[302535920001073--[[Console--]]],S[487939677892--[[Help--]]])
-			dlgConsole.idEdit.RolloverText = S[302535920001440--[["~obj opens object in examine dlg.
+
+			if not blacklist then
+				-- add tooltip
+				dlgConsole.idEdit.RolloverTemplate = "Rollover"
+				dlgConsole.idEdit.RolloverTitle = StringFormat("%s %s",S[302535920001073--[[Console--]]],S[487939677892--[[Help--]]])
+				dlgConsole.idEdit.RolloverText = S[302535920001440--[["~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.
 
 &handle examines object with that handle.
@@ -415,7 +417,9 @@ $123 or $EffectDeposit.display_name prints translated string.
 !UICity.labels.TerrainDeposit[1] move camera and select obj.
 
 s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
-			dlgConsole.idEdit.Hint = S[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."--]]]
+				dlgConsole.idEdit.Hint = S[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."--]]]
+			end
+
 			dlgConsole.ChoGGi_MenuAdded = true
 			-- and buttons
 			ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)

@@ -1,2 +1,5 @@
-Version 0.2
+v0.3
+AssetsRevision.lua updated (wasn't working on mod manager refresh).
+
+v0.2
 Intergrated with my HelperMod for ECM (easier to have the two both installed).

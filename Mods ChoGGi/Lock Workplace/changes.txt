@@ -1,3 +1,6 @@
+v1.0
+Included Mod Config Reborn option to force workers to never change workplace (may cause issues).
+
 v0.9
 Gagarin.
 

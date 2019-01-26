@@ -1,0 +1,2 @@
+v0.2
+AssetsRevision.lua updated (wasn't working on mod manager refresh).
