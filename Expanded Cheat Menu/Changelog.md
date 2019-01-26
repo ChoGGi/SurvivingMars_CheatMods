@@ -4,6 +4,8 @@
 ##### Dialogs: Change map, Monitor Info.
 
 ## v12.2 (Unreleased)
+### Changed:
+- Hides console info when blacklist is enabled (devs removed the workaround for custom console rules).
 
 ## v12.1 (25 Jan 2019)
 ### Added:
