@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_PortableMiner",
   "author", "ChoGGi",
   "steam_id", "1411113412",
+	"pops_any_uuid", "831c4ed8-d892-4815-bb77-3a028c3ea5b0",
   "code", {
 		"Code/Script.lua",
 		"Code/ModConfig.lua",

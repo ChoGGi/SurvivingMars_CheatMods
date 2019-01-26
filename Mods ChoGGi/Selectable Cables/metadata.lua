@@ -6,6 +6,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_SelectableCables",
 	"author", "ChoGGi",
 	"steam_id", "1411114741",
+	"pops_any_uuid", "98f9f60e-447d-4b3d-aeed-9aa0b5cbf637",
 	"code", {
 		"Code/Script.lua"
 	},

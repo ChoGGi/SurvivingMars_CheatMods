@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_SolariaTelepresence",
   "author", "ChoGGi",
   "steam_id", "1411115080",
+	"pops_any_uuid", "65797e25-1cb2-441e-9738-c00e353bad0e",
   "code", {
 		"Code/Script.lua",
 		"Code/WorkVRWorkshop.lua",

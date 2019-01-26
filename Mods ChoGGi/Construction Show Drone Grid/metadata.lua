@@ -10,6 +10,7 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
   "steam_id", "1424918098",
+	"pops_any_uuid", "8a21486a-8068-41a9-8790-f02074b283e3",
 	"lua_revision", LuaRevision,
   "description", [[Shows grid radius around Drone Hubs, Rockets, and RC Commanders when you're in construction mode.
 

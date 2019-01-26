@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+-- put this in script or change load order in metadata
+LockWorkplace = {
+	NeverChange = false,
+}
+
 -- tell people how to get my library mod (if needs be)
 local fire_once
 function OnMsg.ModsReloaded()
@@ -9,7 +14,7 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	-- version to version check with
-	local min_version = 47
+	local min_version = 51
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)

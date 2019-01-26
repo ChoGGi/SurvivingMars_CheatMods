@@ -1367,7 +1367,8 @@ function OnMsg.ClassesBuilt()
 		end
 	end
 
-	do -- Console
+	-- custom console rules
+	if not blacklist then
 		-- add a bunch of rules to console input
 		local console_rules = {
 
@@ -1453,29 +1454,11 @@ end]]
 			},
 		}
 
-		local Sleep = Sleep
 		local AddConsoleLog = AddConsoleLog
-		local ConsoleExecute
-		if blacklist then
-			dlgConsole:Exec("ChoGGi.Temp.ConsoleExec=ConsoleExec")
-			ConsoleExecute = ChoGGi.Temp.ConsoleExec
-			table.iclear(dlgConsole.history_queue)
-			dlgConsole.history_queue_idx = 0
-			CreateRealTimeThread(function()
-				while not dlgConsoleLog do
-					Sleep(250)
-				end
-				cls()
-				-- history gets blanked out by Exec?, so this is our saved copy of it
-				LocalStorage.history_log = ChoGGi.UserSettings.history_log
-				-- this loads it in
-				dlgConsole:ReadHistory()
-			end)
-		else
-			ConsoleExecute = ConsoleExec
-		end
-
 		local ConsolePrint = ConsolePrint
+		local ConsoleExec = ConsoleExec
+
+		-- skip is used for ECM Scripts
 		function Console:Exec(text,skip)
 			if not skip then
 				self:AddHistory(text)
@@ -1483,15 +1466,15 @@ end]]
 				AddConsoleLog(text, false)
 			end
 			-- i like my rules kthxbai
-			local err = ConsoleExecute(text, console_rules)
+			local err = ConsoleExec(text, console_rules)
 			if err then
 				ConsolePrint(err)
 			end
 		end
 
-		-- kuiper modding beta
+		-- and now the console has a blacklist :)
 		if rawget(_G,"g_ConsoleFENV") == false then
-			-- why have the mod blacklist for the console...
+			local Sleep = Sleep
 			CreateRealTimeThread(function()
 				while not g_ConsoleFENV do
 					Sleep(250)
@@ -1511,5 +1494,6 @@ end]]
 			end)
 		end
 
-	end -- do
+	end
+
 end -- ClassesBuilt

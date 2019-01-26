@@ -10,6 +10,7 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
   "steam_id", "1428027914",
+	"pops_any_uuid", "33973dda-42d6-49a0-ba55-3ec431602574",
 	"lua_revision", LuaRevision,
   "description", [[Shows lines between domes when they're close enough for passages to connect.
 

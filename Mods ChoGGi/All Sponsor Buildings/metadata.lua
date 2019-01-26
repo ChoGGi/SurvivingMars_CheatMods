@@ -5,6 +5,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_AllSponsorBuildings",
 	"steam_id", "1568521664",
+	"pops_any_uuid", "da41f738-8ed0-4574-8539-9c7430477b58",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
 	"code", {

@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"code", {"Script.lua"},
 	"image", "Preview.png",
   "steam_id", "1445727878",
+	"pops_any_uuid", "97826a63-934a-49db-9b4e-1d815a0e1aa0",
 	"lua_revision", LuaRevision,
   "description", [[If you've got a crappy wireless mouse that clicks too much, or you just want to be sure.
 

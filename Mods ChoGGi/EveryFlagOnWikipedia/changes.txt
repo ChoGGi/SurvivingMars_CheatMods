@@ -1,3 +1,6 @@
+v0.6
+Added MCR option to skip adding names list to existing nations.
+
 v0.5
 Fixed name issue.
 Added a bunch of Finnish names thanks to Jopo80.

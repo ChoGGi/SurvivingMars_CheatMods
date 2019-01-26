@@ -5,6 +5,7 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_StopCurrentDisasters",
   "author", "ChoGGi",
   "steam_id", "1411115645",
+	"pops_any_uuid", "a5c6f132-f1f9-4e98-b637-a180732cb923",
 	"code", {
 		"Code/Script.lua"
 	},
