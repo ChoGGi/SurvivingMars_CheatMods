@@ -264,6 +264,7 @@ DefineClass.ChoGGi_CheckButton = {
 	MinWidth = 60,
 	Text = S[6878--[[OK--]]],
 	RolloverZoom = 1100,
+	FoldWhenHidden = true,
 }
 function ChoGGi_CheckButton:Init()
 	self.idIcon:SetBackground(light_gray)

@@ -150,7 +150,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			for i = 1, #choice do
@@ -264,13 +264,20 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 	end
 
 	do -- ModUpload
+
+		-- this keeps the check saved per session (true = steam, false = paradox)
+		local upload_to_who = true
+		-- true = desktop, false = desktop/console
+		local upload_to_whichplatform = true
+
 		local mod_upload_thread
 		local ConvertToOSPath = ConvertToOSPath
 		local MatchWildcard = MatchWildcard
 		local SplitPath = SplitPath
 		local AsyncCreatePath = AsyncCreatePath
 		local AsyncCopyFile = AsyncCopyFile
-		local mod_params
+		local IsValidThread = IsValidThread
+		local mod_params = {}
 
 		-- check the copy box for these
 		local ChoGGi_copy_files = {
@@ -286,16 +293,28 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 			ChoGGi_Logos_Amazon = true,
 			ChoGGi_Logos_BorgCollective = true,
 			ChoGGi_Logos_CaptainStar = true,
-			ChoGGi_CommieMarxLogos = true,
 			ChoGGi_Logos_MarsBar = true,
 			ChoGGi_Logos_PlanetHollywood = true,
 			ChoGGi_Logos_StarshipTroopers = true,
 			ChoGGi_Logos_TerranDominion = true,
 			ChoGGi_Logos_VeridianDynamics = true,
-			Something_Oh_So_Unique = true,
 		}
+		local ChoGGi_platform_false = {
+			ChoGGi_Library = true,
+		}
+		local ChoGGi_platform_true = {
+			ChoGGi_CheatMenu = true,
+		}
+		local pack_path = "AppData/ModUpload/Pack/"
+		local dest_path = "AppData/ModUpload/"
+		local ss_str = "%s%s"
 
 		local function CallBackFunc(choice)
+			if choice.nothing_selected then
+				return
+			end
+			choice = choice[1]
+
 			-- abort if upload already happening
 			if IsValidThread(mod_upload_thread) then
 				ChoGGi.ComFuncs.MsgWait(
@@ -308,17 +327,18 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 
 			mod_upload_thread = CreateRealTimeThread(function()
 				local ChoGGi = ChoGGi
-				local mod = choice[1].mod
-				local mod_path = choice[1].path
+				local mod = choice.mod
+				local mod_path = choice.path
 
-				local copy_files = choice[1].check1
-				local blank_mod = choice[1].check2
-				local clipboard = choice[1].check3
-				local pack_mod = choice[1].check4
-				local test = choice[1].check5
---~ 				local steam_upload = choice[1].check6
-				local steam_upload = true
+				local copy_files = choice.check1
+				local blank_mod = choice.check2
+				local clipboard = choice.check3
+				local pack_mod = choice.check4
+				local test = choice.check5
+				local steam_upload = choice.check6
+				local para_platform = choice.check7
 
+				-- pick logo for upload msg boxes
 				local upload_image = "UI/ParadoxLogo.tga"
 				if steam_upload then
 					upload_image = "UI/Common/mod_steam_workshop.tga"
@@ -327,17 +347,32 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					pack_mod = true
 				end
 
-				local pack_path = "AppData/ModUpload/Pack/"
-				local dest = "AppData/ModUpload/"
-				local diff_author = choice[1].mod.author ~= SteamGetPersonaName()
-				local ss_str = "%s%s"
+				local diff_author = mod.author ~= SteamGetPersonaName()
 				local result
 
+				-- my mods override
+				if ChoGGi_platform_false[mod.id] then
+					para_platform = false
+				end
+				if ChoGGi_platform_true[mod.id] then
+					para_platform = true
+				end
 				if ChoGGi_copy_files[mod.id] then
 					copy_files = false
 				end
 				if ChoGGi_pack[mod.id] then
 					pack_mod = true
+				end
+
+				-- issue with current (rc1 modding beta) version of sm (this crashes as soon as it creates the archive).
+				pack_mod = false
+
+				-- will fail on paradox mods
+				if mod.lua_revision == 0 then
+					mod.lua_revision = LuaRevision
+				end
+				if mod.saved_with_revision == 0 then
+					mod.saved_with_revision = LuaRevision
 				end
 
 				-- build / show confirmation dialog
@@ -360,8 +395,8 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					upload_msg[#upload_msg+1] = "</color>"
 
 					-- clear out and create upload folder
-					AsyncDeletePath(dest)
-					AsyncCreatePath(dest)
+					AsyncDeletePath(dest_path)
+					AsyncCreatePath(dest_path)
 				end
 
 				-- show diff author warning unless it's me
@@ -381,66 +416,49 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					)
 
 					-- always start with fresh table
-					mod_params = {}
+					table.clear(mod_params)
 
 					-- add new mod
-					local err,item_id
+					local err,item_id,prepare_worked,prepare_results
 					if not test then
-
 						if steam_upload then
-							-- check for steam id and if user owns mod
-							if mod.steam_id ~= 0 then
-								local exists
-								local appId = SteamGetAppId()
-								local userId = SteamGetUserId64()
-								err, exists = AsyncSteamWorkshopUserOwnsItem(userId, appId, mod.steam_id)
-								if not err and not exists then
-									mod.steam_id = 0
-								end
-							end
-							-- new mod
-							if mod.steam_id == 0 then
-								err,item_id = AsyncSteamWorkshopCreateItem()
-								mod.steam_id = item_id or nil
-							end
-						else
-							-- popup msg box with desktop or any option
-
-							-- desktop
-							mod_params.publish_os = "windows"
-							mod_params.uuid_property = "pops_desktop_uuid"
-							-- desktop/console
---~ 							mod_params.publish_os = "any"
---~ 							mod_params.uuid_property = "pops_any_uuid"
-
 							-- get needed info for mod
-							local worked, results = PDX_PrepareForUpload(nil, mod, mod_params)
-							if not worked then
-								-- let user know if we're good or not
-								ChoGGi.ComFuncs.MsgWait(
-									S[1000013--[[Mod %s was not uploaded! Error: %s--]]]:format(mod.title,Trans(results)),
-									StringFormat("%s: %s",S[1000592--[[Error--]]],mod.title),
-									upload_image
-								)
-								return
+							prepare_worked, prepare_results = Steam_PrepareForUpload(nil, mod, mod_params)
+							-- mod id for clipboard
+							item_id = mod.steam_id
+						-- paradox mods
+						else
+							-- desktop
+							if para_platform then
+								mod_params.publish_os = "windows"
+								mod_params.uuid_property = "pops_desktop_uuid"
+							-- desktop/console
+							else
+								mod_params.publish_os = "any"
+								mod_params.uuid_property = "pops_any_uuid"
 							end
 
---~ 							ex(mod_params)
-
-							-- paradox mod id
-							item_id = mod_params.mod_id
-							print(mod_params.mod_id,"MODID")
---~ 							return
-
+							prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
+							item_id = mod[mod_params.uuid_property]
 						end
+					end
 
+					-- issue with mod platform (workshop/paradox mods)
+					if not prepare_worked then
+						-- let user know if we're good or not
+						ChoGGi.ComFuncs.MsgWait(
+							S[1000013--[[Mod %s was not uploaded! Error: %s--]]]:format(mod.title,Trans(prepare_results)),
+							StringFormat("%s: %s",S[1000592--[[Error--]]],mod.title),
+							upload_image
+						)
+						return
 					end
 
 					-- update mod, and copy files to ModUpload
 					if copy_files and not blank_mod and not err then
 						mod:SaveItems()
-						AsyncDeletePath(dest)
-						AsyncCreatePath(dest)
+						AsyncDeletePath(dest_path)
+						AsyncCreatePath(dest_path)
 
 						local err, all_files = AsyncListFiles(mod_path, "*", "recursive,relative")
 						for i = 1, #all_files do
@@ -453,7 +471,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 								end
 							end
 							if not ignore then
-								local dest_file = ss_str:format(dest,file)
+								local dest_file = ss_str:format(dest_path,file)
 								local dir = SplitPath(dest_file)
 								AsyncCreatePath(dir)
 								err = AsyncCopyFile(ss_str:format(mod_path,file), dest_file, "raw")
@@ -462,43 +480,48 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 
 					end
 
-					if pack_mod then
-						AsyncCreatePath(pack_path)
-
+					-- AsyncPack == crash :(
+					if pack_mod and not true then
 						local files_to_pack = {}
-						local substring_begin = #mod_path + 1
-						local err, all_files = AsyncListFiles(mod_path, nil, "recursive")
-						for i = 1, #all_files do
-							local file = all_files[i]
-							local ignore
-							for j = 1, #mod.ignore_files do
-								if MatchWildcard(file, mod.ignore_files[j]) then
-									ignore = true
-									break
-								end
-							end
-							if not ignore then
-								table.insert(files_to_pack, {
-									src = file,
-									dst = file:sub(substring_begin),
-								})
-							end
-						end
-						err = AsyncPack(ss_str:format(pack_path,ModsPackFileName), mod_path, files_to_pack)
+						local substring_begin = #dest_path + 1
+						local err, all_files = AsyncListFiles(dest_path, nil, "recursive")
 						if err then
 							err = T{1000753,"Failed creating content package file (<err>)",err = err}
+						else
+							-- do this after listfiles so it doesn't include it
+							AsyncCreatePath(pack_path)
+
+							for i = 1, #all_files do
+								local file = all_files[i]
+								local ignore
+								for j = 1, #mod.ignore_files do
+									if MatchWildcard(file, mod.ignore_files[j]) then
+										ignore = true
+										break
+									end
+								end
+								if not ignore then
+									table.insert(files_to_pack, {
+										src = file,
+										dst = file:sub(substring_begin),
+									})
+								end
+							end
+--~ 							err = AsyncPack(ss_str:format(pack_path,ModsPackFileName), dest_path, files_to_pack)
+							err = async.AsyncPack(false,ss_str:format(pack_path,ModsPackFileName), dest_path, files_to_pack)
 						end
+
 					end
 
 					-- update mod on workshop
 					if not err or blank_mod then
 
 						-- check if .hpk exists, and use it if so
-						local os_dest = StringFormat("%sPack/ModContent.hpk",dest)
+						local os_dest = StringFormat("%sPack/ModContent.hpk",dest_path)
 						if FileExists(os_dest) then
 							os_dest = ConvertToOSPath(os_dest)
 						else
-							os_dest = ConvertToOSPath(dest)
+							os_dest = ConvertToOSPath(dest_path)
 						end
 
 						mod_params.os_pack_path = os_dest
@@ -514,7 +537,6 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 								result,err = PDX_Upload(nil, mod, mod_params)
 							end
 						end
-
 					end
 
 					local msg, title
@@ -540,16 +562,21 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					if not test and item_id then
 						if clipboard then
 							if mod_params.uuid_property then
-								CopyToClipboard(StringFormat("%s: %s",mod_params.uuid_property,item_id))
+								CopyToClipboard(StringFormat([["%s", "%s",]],mod_params.uuid_property,item_id))
 							else
-								CopyToClipboard(item_id)
+								CopyToClipboard(StringFormat([["steam_id", "%s",]],item_id))
 							end
 						end
 
-						local id_str = S[1000773--[[Paradox All UUID--]]]
-						if steam_upload then
-							id_str = S[1000021--[[Steam ID--]]]
+						local id_str = S[1000021--[[Steam ID--]]]
+						if not steam_upload then
+							if para_platform then
+								id_str = S[1000772--[[Paradox Desktop UUID--]]]
+							else
+								id_str = S[1000773--[[Paradox All UUID--]]]
+							end
 						end
+
 						print(mod.title,":",S[1000107--[[Mod--]]],id_str,":",item_id)
 					end
 
@@ -562,7 +589,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 
 					if not test then
 						-- remove upload folder
-						AsyncDeletePath(dest)
+						AsyncDeletePath(dest_path)
 					end
 				end
 
@@ -601,12 +628,13 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 			for id,mod in pairs(Mods) do
 				local hint_str = "%s%s"
 				local image = ""
+				-- env_old is from my helpermod
 				local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
 				if mod.image ~= "" and not path:find(" ") then
 					hint_str = "<image %s>\n%s"
 					-- i don't know how to find rtl, so we'll reverse and find it that way. that said what's up with appending the path, can't you just do it when you need to?
 					local slash = mod.image:reverse():find("/")
-					image = StringFormat("%s%s",path,mod.image:sub((slash - 1) * -1))
+					image = ss_str:format(path,mod.image:sub((slash - 1) * -1))
 				end
 				c = c + 1
 				ItemList[c] = {
@@ -618,41 +646,83 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				}
 			end
 
+			-- need to disable paradox upload choice on kuiper
+			local check = {
+				{
+					title = 302535920001258--[[Copy Files--]],
+					hint = S[302535920001259--[["Copies all mod files to %sModUpload, uncheck to copy files manually."--]]]:format(ConvertToOSPath("AppData/")),
+					checked = true,
+				},
+				{
+					title = 302535920001260--[[Blank--]],
+					hint = 302535920001261--[["Uploads a blank mod, and prints id in log."--]],
+				},
+				{
+					title = 302535920000664--[[Clipboard--]],
+					hint = 302535920000665--[[If uploading a new mod this copies id/uuid to clipboard.--]],
+					checked = true,
+				},
+				{
+					title = 302535920001427--[[Pack--]],
+					hint = 302535920001428--[["Uploads as a packed mod (default for mod editor upload).
+This will always apply if uploading to paradox."--]],
+					visible = false,
+					checked = false,
+				},
+				{
+					title = 186760604064--[[Test--]],
+					hint = 302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]],
+				},
+				{
+					title = 302535920001506--[[Steam--]],
+					hint = 302535920001507--[["Uncheck to upload to Paradox mods (instead of Steam).
+Mod will always be packed in hpk archive."--]],
+					checked = upload_to_who,
+					func = function(dlg,check)
+						upload_to_who = check
+						-- steam
+						if check then
+							dlg.idCheckBox7:SetVisible()
+						-- paradox
+						else
+							dlg.idCheckBox7:SetVisible(true)
+--~ 								dlg.idCheckBox4:SetCheck(true)
+						end
+					end,
+				},
+				{
+					title = 302535920001509--[[Platform--]],
+					hint = 302535920001510--[[Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.--]],
+					checked = upload_to_whichplatform,
+					visible = false,
+					func = function(_,check)
+						upload_to_whichplatform = check
+					end,
+				},
+			}
+			-- adjust depending on if we can upload to paradox
+			local width = 600.0
+			if Platform.pops and not rawget(_G,"PDX_PrepareForUpload") then
+				check[6].visible = false
+				width = 450.0
+			end
+			-- it defaults to hidden, so if it's paradox then we change it to visible
+			if not upload_to_who then
+				check[7].visible = true
+			end
+
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
 				title = 302535920000367--[[Mod Upload--]],
-				check = {
-					{
-						title = 302535920001258--[[Copy Files--]],
-						hint = S[302535920001259--[["Copies all mod files to %sModUpload, uncheck to copy files manually."--]]]:format(ConvertToOSPath("AppData/")),
-						checked = true,
-					},
-					{
-						title = 302535920001260--[[Blank--]],
-						hint = 302535920001261--[["Uploads a blank private mod to Steam Workshop, and prints Workshop id in log."--]],
-					},
-					{
-						title = 302535920000664--[[Clipboard--]],
-						hint = 302535920000665--[[If uploading a new mod this copies steam_id to clipboard.--]],
-						checked = true,
-					},
-					{
-						title = 302535920001427--[[Pack--]],
-						hint = 302535920001428--[[Uploads as a packed mod (default for mod editor upload).--]],
-					},
-					{
-						title = 186760604064--[[Test--]],
-						hint = 302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]],
-					},
---~ 					{
---~ 						title = 302535920001506--[[Steam--]],
---~ 						hint = 302535920001507--[[Uncheck to upload to Paradox mods (instead of Steam, mod will always be packed in .hpk).--]],
---~ 						checked = true,
---~ 					},
-				},
+				hint = 302535920001511--[["AsyncPack crashes SM, so you'll need to use hpk to pack mod ahead of time.
+
+https://github.com/nickelc/hpk
+hpk create --cripple-lua-files ""Mod folder"" ModContent.hpk
+Move archive to Mod folder/Pack/ModContent.hpk"--]],
+				check = check,
 				height = 800.0,
-				width = 550.0,
+				width = width,
 			}
 		end
 	end -- do

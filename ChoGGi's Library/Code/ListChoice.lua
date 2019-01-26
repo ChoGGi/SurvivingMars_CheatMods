@@ -32,12 +32,14 @@ ChoGGi.ComFuncs.OpenInListChoice{
 			title = "Check1",
 			hint = "Check1Hint",
 			checked = true,
-			func = function(dlg) end,
+			func = function(dlg,check) end,
 		},
 		{
 			title = "Check2",
 			hint = "Check2Hint",
 			checked = true,
+			-- defaults to true
+			visible = false,
 		},
 	},
 	skip_sort = true,
@@ -167,13 +169,17 @@ Press Enter to show all items."--]]],
 			if list_check.func then
 				check.OnPress = function()
 					-- update check so user sees something
-					check:SetCheck(not check:GetCheck())
-					-- send dlg back with func
-					list_check.func(self)
+					local new_check = not check:GetCheck()
+					check:SetCheck(new_check)
+					-- send dlg,check back with func
+					list_check.func(self,new_check)
 				end
 			end
 			if list_check.checked then
 				check:SetCheck(true)
+			end
+			if list_check.visible == false then
+				check:SetVisible()
 			end
 
 		end
@@ -831,22 +837,28 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 			items[i] = self.idList[i].item
 		end
 	end
+
 	-- attach other stuff to first item
 
-	if #items > 0 then
-		local c = #self.choices
-		for i = 1, #items do
-			if i == 1 and self.idEditValue then
-				-- always return the custom value (and try to convert it to correct type)
-				items[i].editvalue = RetProperType(self.idEditValue:GetText())
-			end
-			c = c + 1
-			self.choices[c] = items[i]
-		end
+	local c = #self.choices
+	for i = 1, #items do
+		c = c + 1
+		self.choices[c] = items[i]
 	end
 
-	-- send back checkmarks no matter what
-	self.choices[1] = self.choices[1] or {}
+	-- nothing selected
+	if c < 1 then
+		-- fake entry we can check later on
+		self.choices.nothing_selected = true
+		-- we can send back checkmarks no matter what
+		self.choices[1] = {}
+	end
+
+	if self.idEditValue ~= nil then
+		-- always return the custom value (and try to convert it to correct type)
+		self.choices[1].editvalue = RetProperType(self.idEditValue:GetText())
+	end
+
 	-- add checkbox statuses
 	if self.list.check and #self.list.check > 0 then
 		local check_str1 = "check%s"

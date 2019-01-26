@@ -48,7 +48,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg,gen_name)
 		if blacklist then
-			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("Dump"))
+			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.ComFuncs.Dump"))
 			return
 		end
 
@@ -430,7 +430,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -503,7 +503,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 
@@ -639,7 +639,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local actor = choice[1].value
@@ -1382,4 +1382,5 @@ The func I use for spot_rot rounds to two decimal points...
 		local t_height = terrain.GetHeight(obj:GetVisualPos())
 		obj:SetPos(obj:GetPos():SetZ(t_height))
 	end
+
 end

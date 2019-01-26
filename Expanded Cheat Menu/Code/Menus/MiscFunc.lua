@@ -50,7 +50,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local check1 = choice[1].check1
@@ -214,7 +214,7 @@ function OnMsg.ClassesGenerate()
 			{text = S[302535920001132--[[Quattuorsexaguple--]]],value = 64},
 		}
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -328,7 +328,7 @@ function OnMsg.ClassesGenerate()
 			local ItemList = entity_table
 
 			local function CallBackFunc(choice)
-				if #choice < 1 then
+				if choice.nothing_selected then
 					return
 				end
 				local value = choice[1].value
@@ -444,7 +444,7 @@ function OnMsg.ClassesGenerate()
 			}
 
 			local function CallBackFunc(choice)
-				if #choice < 1 then
+				if choice.nothing_selected then
 					return
 				end
 				local value = choice[1].value

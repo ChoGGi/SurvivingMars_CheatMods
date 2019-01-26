@@ -121,6 +121,9 @@ function OnMsg.ClassesGenerate()
 		SkipModHelpPage = true,
 		-- stops panel from shrinking
 		StopSelectionPanelResize = false,
+		-- change rollovers from 450 to 600
+		WiderRollovers = 600,
+
 		-- stores custom settings for each building
 		BuildingSettings = {},
 		-- resupply settings

@@ -185,7 +185,7 @@ function ChoGGi_ObjectEditorDlg:idAddNewOnPress()
 	}
 
 	local function CallBackFunc(choice)
-		if #choice < 1 then
+		if choice.nothing_selected then
 			return
 		end
 		local value = choice[1].value

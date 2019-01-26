@@ -3,12 +3,18 @@
 ##### To do:
 ##### Dialogs: Change map, Monitor Info.
 
-## v12.1 (Unreleased)
+## v12.2 (Unreleased)
+
+## v12.1 (25 Jan 2019)
 ### Added:
 - Game>Export CSV>Map Data: Export map location data to Profile/MapData.csv (will take awhile, see survivingmarsmaps.com for a filtered list).
 - Colonists>Performance Penalty Connected Dome: Disable performance penalty for colonists working in another connected dome.
 
-## v12.0 (03 Jan 2018)
+### Changed:
+- Support for "Next SM Update".
+- Mod Editor is back to just opening the mod editor map (had issues with the list way).
+
+## v12.0 (03 Jan 2019)
 ### Added:
 - Cheats>Research>Research Remove: Remove a tech from researched list.
 - Cheats>Unlock Achievements: Show a list of achievements to unlock.

@@ -136,15 +136,18 @@ end
 --~ end
 
 do -- OnMsg ClassesBuilt/XTemplatesLoaded
-	local function AddCheatsPane(xt)
-		ChoGGi.ComFuncs.RemoveXTemplateSections(xt,"__template","sectionCheats")
+	local PlaceObj = PlaceObj
+	local function AddCheatsPane(xt,func)
+		func(xt,"__template","sectionCheats")
 		xt[#xt+1] = PlaceObj("XTemplateTemplate", {
 			"__template", "sectionCheats",
 		})
 	end
+
 	local function OnMsgXTemplates()
 		local XTemplates = XTemplates
-		local PlaceObj = PlaceObj
+		local ChoGGi = ChoGGi
+		local UserSettings = ChoGGi.UserSettings
 
 		-- add some ids to make it easier to fiddle with selection panel
 		local template_str = "idSection%s_ChoGGi"
@@ -155,20 +158,21 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		end
 
 		-- add cheats section to stuff without it
-		AddCheatsPane(XTemplates.ipAlienDigger[1])
-		AddCheatsPane(XTemplates.ipAttackRover[1])
-		AddCheatsPane(XTemplates.ipConstruction[1])
-		AddCheatsPane(XTemplates.ipEffectDeposit[1])
-		AddCheatsPane(XTemplates.ipFirefly[1])
-		AddCheatsPane(XTemplates.ipGridConstruction[1])
-		AddCheatsPane(XTemplates.ipLeak[1])
-		AddCheatsPane(XTemplates.ipPillaredPipe[1])
-		AddCheatsPane(XTemplates.ipResourcePile[1])
-		AddCheatsPane(XTemplates.ipRogue[1])
-		AddCheatsPane(XTemplates.ipShuttle[1])
-		AddCheatsPane(XTemplates.ipSinkhole[1])
-		AddCheatsPane(XTemplates.ipSwitch[1])
-		AddCheatsPane(XTemplates.ipTerrainDeposit[1])
+		local func = ChoGGi.ComFuncs.RemoveXTemplateSections
+		AddCheatsPane(XTemplates.ipAlienDigger[1],func)
+		AddCheatsPane(XTemplates.ipAttackRover[1],func)
+		AddCheatsPane(XTemplates.ipConstruction[1],func)
+		AddCheatsPane(XTemplates.ipEffectDeposit[1],func)
+		AddCheatsPane(XTemplates.ipFirefly[1],func)
+		AddCheatsPane(XTemplates.ipGridConstruction[1],func)
+		AddCheatsPane(XTemplates.ipLeak[1],func)
+		AddCheatsPane(XTemplates.ipPillaredPipe[1],func)
+		AddCheatsPane(XTemplates.ipResourcePile[1],func)
+		AddCheatsPane(XTemplates.ipRogue[1],func)
+		AddCheatsPane(XTemplates.ipShuttle[1],func)
+		AddCheatsPane(XTemplates.ipSinkhole[1],func)
+		AddCheatsPane(XTemplates.ipSwitch[1],func)
+		AddCheatsPane(XTemplates.ipTerrainDeposit[1],func)
 		-- and remove it from Resource Overview, though it is "removed" from the game now anyways...
 		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipResourceOverview[1],"__template","sectionCheats")
 
@@ -183,11 +187,24 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"
 
 		-- left? right? who cares? I do... *&^%$#@$ designers
-		if ChoGGi.UserSettings.GUIDockSide then
+		if UserSettings.GUIDockSide then
 			XTemplates.NewOverlayDlg[1].Dock = "right"
 			XTemplates.SaveLoadContentWindow[1].Dock = "right"
 			ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1],"Dock","left","Dock","right")
 			XTemplates.PhotoMode[1].Dock = "right"
+		end
+
+		-- change rollover max width
+		if UserSettings.WiderRollovers then
+			local roll = XTemplates.Rollover[1]
+			local idx = table.find(roll,"Id","idContent")
+			if idx then
+				roll = roll[idx]
+				idx = table.find(roll,"Id","idText")
+				if idx then
+					roll[idx].MaxWidth = UserSettings.WiderRollovers
+				end
+			end
 		end
 
 		-- added to stuff spawned with object spawner

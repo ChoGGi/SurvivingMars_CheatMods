@@ -2524,7 +2524,7 @@ do -- COLOUR FUNCTIONS
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 
@@ -2732,7 +2732,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 	end
 
 	local function CallBackFunc(choice)
-		if #choice < 1 then
+		if choice.nothing_selected then
 			return
 		end
 		local value = choice[1].value
@@ -4182,7 +4182,7 @@ do -- ChangeSurfaceSignsToMaterials
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			if choice[1].value then

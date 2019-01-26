@@ -86,7 +86,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -180,7 +180,7 @@ function OnMsg.ClassesGenerate()
 			}
 
 			local function CallBackFunc(choice,skip)
-				if #choice < 1 then
+				if choice.nothing_selected then
 					return
 				end
 				local value = choice[1].value
@@ -250,7 +250,7 @@ function OnMsg.ClassesGenerate()
 		local IsValid = IsValid
 		local CmpLower = CmpLower
 		local function ViewAndSelectObject(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			ViewObjectMars(choice[1].obj)
@@ -308,7 +308,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc_List(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -585,7 +585,7 @@ function OnMsg.ClassesGenerate()
 			}
 
 			local function CallBackFunc_MissionParams(choice)
-				if #choice < 1 then
+				if choice.nothing_selected then
 					return
 				end
 				for i = 1, #choice do
@@ -655,7 +655,7 @@ function OnMsg.ClassesGenerate()
 			end
 
 			local function CallBackFunc_LoadMapQuestion(choice)
-				if #choice < 1 then
+				if choice.nothing_selected then
 					return
 				end
 
@@ -786,7 +786,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -886,7 +886,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local model_table = {}
@@ -965,7 +965,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			local value = choice[1].value
@@ -1089,7 +1089,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		local function CallBackFunc(choice)
-			if #choice < 1 then
+			if choice.nothing_selected then
 				return
 			end
 			for i = 1, #choice do
