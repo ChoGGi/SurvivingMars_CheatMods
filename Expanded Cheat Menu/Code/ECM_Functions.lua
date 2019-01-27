@@ -6,12 +6,13 @@ local TableClear = table.clear
 local TableIClear = table.iclear
 local type = type
 local pairs = pairs
+local PropObjGetProperty = PropObjGetProperty
 local Sleep = Sleep
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
 
 local getinfo
-local debug = rawget(_G,"debug")
+local debug = PropObjGetProperty(_G,"debug")
 if debug then
 	getinfo = debug.getinfo
 end
@@ -176,7 +177,7 @@ function OnMsg.ClassesGenerate()
 		local buffer_table = {newline}
 		local buffer_cnt = 1
 
-		if rawget(_G,"ChoGGi_print_buffer_thread") then
+		if PropObjGetProperty(_G,"ChoGGi_print_buffer_thread") then
 			DeleteThread(ChoGGi_print_buffer_thread)
 		end
 		ChoGGi_print_buffer_thread = CreateRealTimeThread(function()

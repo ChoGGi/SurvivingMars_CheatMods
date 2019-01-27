@@ -9,6 +9,7 @@ local Trans = ChoGGi.ComFuncs.Translate
 
 local pairs,tonumber,type = pairs,tonumber,type
 local getmetatable,tostring = getmetatable,tostring
+local PropObjGetProperty = PropObjGetProperty
 local AsyncRand = AsyncRand
 local IsValid = IsValid
 local IsKindOf = IsKindOf
@@ -91,7 +92,7 @@ end
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
-	local rawget,tostring = rawget,tostring
+	local tostring = tostring
 	local empty_func = empty_func
 	local IsObjlist = IsObjlist
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
@@ -146,11 +147,11 @@ do -- RetName
 		elseif obj_type == "number" then
 			return tostring(obj)
 
-		-- we need to use rawget to check, as some stuff like mod.env has it's own __index and causes the game to log a warning
+		-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env has it's own __index and causes the game to log a warning
 		elseif obj_type == "table" then
 
 			-- we check in order of less generic "names"
-			local name_type = rawget(obj,"name") and type(obj.name)
+			local name_type = PropObjGetProperty(obj,"name") and type(obj.name)
 			-- custom name from user (probably)
 			if name_type == "string" and obj.name ~= "" then
 				name = obj.name
@@ -159,26 +160,26 @@ do -- RetName
 				name = Trans(obj.name)
 
 			-- translated name
-			elseif rawget(obj,"display_name") and obj.display_name ~= "" then
+			elseif PropObjGetProperty(obj,"display_name") and obj.display_name ~= "" then
 				name = Trans(obj.display_name)
 			-- encyclopedia_id
-			elseif rawget(obj,"encyclopedia_id") and obj.encyclopedia_id ~= "" then
+			elseif PropObjGetProperty(obj,"encyclopedia_id") and obj.encyclopedia_id ~= "" then
 				name = obj.encyclopedia_id
 			-- plain old id
-			elseif rawget(obj,"id") and obj.id ~= "" then
+			elseif PropObjGetProperty(obj,"id") and obj.id ~= "" then
 				name = obj.id
-			elseif rawget(obj,"Id") and obj.Id ~= "" then
+			elseif PropObjGetProperty(obj,"Id") and obj.Id ~= "" then
 				name = obj.Id
 			-- class template name
-			elseif rawget(obj,"template_name") and obj.template_name ~= "" then
+			elseif PropObjGetProperty(obj,"template_name") and obj.template_name ~= "" then
 				name = obj.template_name
-			elseif rawget(obj,"template_class") and obj.template_class ~= "" then
+			elseif PropObjGetProperty(obj,"template_class") and obj.template_class ~= "" then
 				name = obj.template_class
 			-- entity
-			elseif rawget(obj,"entity") then
+			elseif PropObjGetProperty(obj,"entity") then
 				name = obj.entity
 			-- class
-			elseif rawget(obj,"class") and obj.class ~= "" then
+			elseif PropObjGetProperty(obj,"class") and obj.class ~= "" then
 				name = obj.class
 
 			-- added this here as doing tostring lags the crap outta kansas if this is a large objlist
@@ -625,10 +626,10 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 end
 
 function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu)
-	local popup = rawget(terminal.desktop,popup_id)
+	local popup = PropObjGetProperty(terminal.desktop,popup_id)
 	if popup then
 		popup:Close()
-		submenu = submenu or rawget(terminal.desktop,"ChoGGi_submenu_popup")
+		submenu = submenu or PropObjGetProperty(terminal.desktop,"ChoGGi_submenu_popup")
 		if submenu then
 			submenu:Close()
 		end
@@ -4431,7 +4432,7 @@ do -- UpdateFlightGrid
 end -- do
 
 function ChoGGi.ComFuncs.RemoveObjs(cls)
-	if rawget(_G,cls) then
+	if PropObjGetProperty(_G,cls) then
 		MapDelete(true, cls)
 	end
 end

@@ -444,8 +444,9 @@ DefineClass.ChoGGi_Window = {
 	action_host = false,
 }
 
+local PropObjGetProperty = PropObjGetProperty
 -- store opened dialogs
-if not rawget(_G,"g_ChoGGiDlgs") then
+if not PropObjGetProperty(_G,"g_ChoGGiDlgs") then
 	g_ChoGGiDlgs = {}
 	setmetatable(g_ChoGGiDlgs, weak_keyvalues_meta)
 end
@@ -515,8 +516,8 @@ function ChoGGi_Window:AddElements()
 	local image = self.title_image or (type(self.obj) == "table" and self.name ~= "_G"
 --~ 		and (self.obj.display_icon ~= "" and self.obj.display_icon
 --~ 		or self.obj.pin_icon ~= "" and self.obj.pin_icon))
-		and (rawget(self.obj,"display_icon") and self.obj.display_icon ~= "" and self.obj.display_icon
-		or rawget(self.obj,"pin_icon") and self.obj.pin_icon ~= "" and self.obj.pin_icon))
+		and (PropObjGetProperty(self.obj,"display_icon") and self.obj.display_icon ~= "" and self.obj.display_icon
+		or PropObjGetProperty(self.obj,"pin_icon") and self.obj.pin_icon ~= "" and self.obj.pin_icon))
 
 	local is_image = type(image) == "string" and IsImageReady(image)
 

@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+ChangeDroneType = {
+	Aerodynamics = false,
+}
+
 -- tell people how to get my library mod (if needs be)
 local fire_once
 function OnMsg.ModsReloaded()
@@ -9,7 +13,7 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	-- version to version check with
-	local min_version = 50
+	local min_version = 51
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 
 	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
@@ -30,10 +34,10 @@ function City:CreateDrone()
 end
 
 -- devs made PickEntity always default to whatever has been spawned already, which we don't want
+local IsValidEntity = IsValidEntity
 local function PickEntity(self)
 	local new_entity = g_Classes[self.class].entity
-	if new_entity ~= self:GetEntity() then
-		assert(IsValidEntity(new_entity))
+	if new_entity ~= self:GetEntity() and IsValidEntity(new_entity) then
 		self:ChangeEntity(new_entity)
 	end
 end
@@ -68,6 +72,14 @@ function OnMsg.ClassesBuilt()
 		RolloverText = [[Spawn wasp drones or regular drones.]],
 		Title = [[Drone Type]],
 		Icon = "UI/Icons/Sections/drone.tga",
+
+		__condition = function()
+			if ChangeDroneType.Aerodynamics then
+				return UICity:IsTechResearched("MartianAerodynamics")
+			else
+				return true
+			end
+		end,
 
 		OnContextUpdate = function(self, context)
 			local city = context.city or UICity

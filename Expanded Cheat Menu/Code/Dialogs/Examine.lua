@@ -2,41 +2,41 @@
 
 -- used to examine objects
 
-local g = _G
-
-local pairs,type,tostring,tonumber,rawget = g.pairs,g.type,g.tostring,g.tonumber,g.rawget
+local pairs,type,tostring,tonumber = pairs,type,tostring,tonumber
+local PropObjGetProperty = PropObjGetProperty
 
 -- store opened examine dialogs
-if not rawget(g,"g_ExamineDlgs") then
-	g.g_ExamineDlgs = {}
-	g.setmetatable(g_ExamineDlgs, weak_keyvalues_meta)
+if not PropObjGetProperty(_G,"g_ExamineDlgs") then
+	g_ExamineDlgs = {}
+	setmetatable(g_ExamineDlgs, weak_keyvalues_meta)
 end
 
 -- local some global funcs
-local StringFormat = g.string.format
-local TableSort = g.table.sort
-local TableInsert = g.table.insert
-local TableClear = g.table.clear
-local TableIClear = g.table.iclear
-local Sleep = g.Sleep
-local DeleteThread = g.DeleteThread
-local CreateRealTimeThread = g.CreateRealTimeThread
+local StringFormat = string.format
+local TableSort = table.sort
+local TableInsert = table.insert
+local TableClear = table.clear
+local TableIClear = table.iclear
+local Sleep = Sleep
+local DeleteThread = DeleteThread
+local CreateRealTimeThread = CreateRealTimeThread
 
-local CmpLower = g.CmpLower
-local IsObjlist = g.IsObjlist
-local GetStateName = g.GetStateName
-local IsPoint = g.IsPoint
-local IsKindOf = g.IsKindOf
-local IsValid = g.IsValid
-local EnumVars = g.EnumVars
-local IsValidEntity = g.IsValidEntity
-local IsT = g.IsT
+local CmpLower = CmpLower
+local IsObjlist = IsObjlist
+local GetStateName = GetStateName
+local IsPoint = IsPoint
+local IsKindOf = IsKindOf
+local IsValid = IsValid
+local EnumVars = EnumVars
+local IsValidEntity = IsValidEntity
+local IsT = IsT
+local PropObjGetProperty = PropObjGetProperty
 
 local getlocal
 local getupvalue
 local getinfo
 local gethook
-local debug = rawget(g,"debug")
+local debug = PropObjGetProperty(_G,"debug")
 if debug then
 	getlocal = debug.getlocal
 	getupvalue = debug.getupvalue
@@ -65,7 +65,7 @@ local testing
 
 -- need to wait till Library mod is loaded
 function OnMsg.ClassesGenerate()
-	local ChoGGi = g.ChoGGi
+	local ChoGGi = ChoGGi
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	RetName = ChoGGi.ComFuncs.RetName
@@ -1735,7 +1735,7 @@ function Examine:SetToolbarVis(obj)
 	if type(obj) == "table" and self.name ~= "_G" then
 
 		-- pretty much any class object
-		if rawget(obj,"delete") and obj.delete then
+		if PropObjGetProperty(obj,"delete") and obj.delete then
 			self.idButDeleteObj:SetVisible(true)
 		else
 			self.idButDeleteObj:SetVisible()
@@ -1928,7 +1928,7 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 end
 
 local function PopupClose(name)
-	local popup = rawget(terminal.desktop,name)
+	local popup = PropObjGetProperty(terminal.desktop,name)
 	if popup then
 		popup:Close()
 	end
