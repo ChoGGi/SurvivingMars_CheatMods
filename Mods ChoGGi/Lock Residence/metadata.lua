@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-  "title", "Lock Residence v0.1",
-  "version", 1,
+  "title", "Lock Residence v0.2",
+  "version", 2,
   "saved", 1548504000,
 	"image", "Preview.png",
   "id", "ChoGGi_LockResidence",

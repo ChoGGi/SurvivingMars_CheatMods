@@ -52,7 +52,7 @@ function OnMsg.ClassesBuilt()
 
 	-- add button to colonists
 	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipColonist[1],"LockResidenceColonist",nil,{
---~ 		__context_of_kind = "Colonist",
+		__context_of_kind = "Colonist",
 		OnContextUpdate = function(self, context)
 			---
 			-- hide button if not working, and make sure to remove the lock (just in case)
@@ -89,7 +89,7 @@ function OnMsg.ClassesBuilt()
 	})
 
 	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionResidence,"LockResidenceResidence",nil,{
---~ 		__context_of_kind = "Residence",
+		__context_of_kind = "Residence",
 		OnContextUpdate = function(self, context)
 			---
 			if context.ChoGGi_LockResidence then
