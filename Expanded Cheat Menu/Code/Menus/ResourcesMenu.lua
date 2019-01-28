@@ -52,7 +52,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_ExpandedCM_Resources,
 		ActionId = ".Prefab Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/gear.tga",
-		RolloverText = S[1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]]],
+		RolloverText = StringFormat("%s\n%s",S[1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]]],S[302535920000897--[[Drone prefabs--]]]),
 		OnAction = ChoGGi.MenuFuncs.AddPrefabs,
 	}
 

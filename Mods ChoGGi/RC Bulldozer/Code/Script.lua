@@ -355,11 +355,12 @@ function OnMsg.SaveGame()
 	-- kill off the threads (spews c func persist errors in log)
 	local dozers = UICity.labels.RCBulldozer or ""
 	for i = 1, #dozers do
-		if dozers[i].bulldozing then
-			dozers[i]:StopDozer()
+		local dozer = dozers[i]
+		if dozer.bulldozing then
+			dozer:StopDozer()
 		end
-		if dozers[i].command ~= "Idle" then
-			dozers[i]:Idle()
+		if dozer.command ~= "Idle" then
+			dozer:SetCommand("Idle")
 		end
 	end
 end

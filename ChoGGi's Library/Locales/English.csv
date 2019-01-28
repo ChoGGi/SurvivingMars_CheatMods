@@ -130,6 +130,8 @@ You can copy and paste numbers if you want.",
 302535920000029,Error: Cannot find any %s.,
 302535920000032,Select a resource to find,
 302535920001441,<left_click> Activate <right_click> Add/Remove Quickbar,
+302535920001513,"ex(obj) = examine object, s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")",
+302535920001512,You need to have my HelperMod enabled to use these:,
 302535920001439,"~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info.",
 302535920001440,"~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.

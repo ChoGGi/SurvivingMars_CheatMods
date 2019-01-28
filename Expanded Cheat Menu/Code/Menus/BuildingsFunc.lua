@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+-- BuildingTemplates,ClassTemplates.Building
+
 local default_icon = "UI/Icons/IPButtons/dome_buildings.tga"
 local default_icon2 = "UI/Icons/Sections/storage.tga"
 

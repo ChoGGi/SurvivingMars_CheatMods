@@ -5,7 +5,12 @@
 
 ## v12.2 (Unreleased)
 ### Changed:
-- Hides console info when blacklist is enabled (devs removed the workaround for custom console rules).
+- Changes console info when blacklist is enabled (devs removed the workaround for custom console rules).
+
+### Fixed:
+- Examine:
+- > Delete object button didn't always show up when it should.
+- > Clicking some (valid) objects would move the camera instead of examining them.
 
 ## v12.1 (25 Jan 2019)
 ### Added:

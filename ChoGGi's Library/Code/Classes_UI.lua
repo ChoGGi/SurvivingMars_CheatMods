@@ -76,7 +76,7 @@ DefineClass.ChoGGi_Label = {
 	VAlign = "center",
 }
 function ChoGGi_Label:SetTitle(win,title)
-	local name = CheckText(title or win.title,self.name or RetName(self))
+	local name = CheckText(title or win.title,self.name)
 	local new_title
 
 	if win.prefix then
