@@ -1,9 +1,11 @@
 ## ECM Changelog
 
 ##### To do:
-##### Dialogs: Change map, Monitor Info.
+##### Dialogs: Monitor Info.
 
-## v12.2 (Unreleased)
+## v12.3 (Unreleased)
+
+## v12.2 (28 Jan 2019)
 ### Changed:
 - Changes console info when blacklist is enabled (devs removed the workaround for custom console rules).
 

@@ -12,6 +12,7 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
+	local testing = ChoGGi.testing
 
 	function ChoGGi.MenuFuncs.StartupTicks_Toggle()
 		ChoGGi.UserSettings.ShowStartupTicks = not ChoGGi.UserSettings.ShowStartupTicks
@@ -364,6 +365,13 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					pack_mod = true
 				end
 
+				-- remove blacklist warning from title (added in helpermod)
+				if testing then
+					mod.title = mod.title:gsub(" %(BL%)$","")
+				else
+					mod.title = mod.title:gsub(" %(Warning%)$","")
+				end
+
 				-- issue with current (rc1 modding beta) version of sm (this crashes as soon as it creates the archive).
 				pack_mod = false
 
@@ -400,7 +408,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				end
 
 				-- show diff author warning unless it's me
-				if diff_author and not ChoGGi.testing then
+				if diff_author and not testing then
 					upload_msg[#upload_msg+1] = "\n\n"
 					upload_msg[#upload_msg+1] = S[302535920001263--[["%s is different from your name, do you have permission to upload it?"--]]]:format(mod.author)
 				end
@@ -561,7 +569,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					-- show id in console/copy to clipb
 					if not test and item_id then
 
-						if clipboard then
+						if clipboard and not err then
 							if mod_params.uuid_property then
 								CopyToClipboard(StringFormat([[	"%s", "%s",]],mod_params.uuid_property,item_id))
 							else
@@ -588,7 +596,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 						upload_image
 					)
 
-					if not test then
+					if not test and not err then
 						-- remove upload folder
 						AsyncDeletePath(dest_path)
 					end
