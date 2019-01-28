@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v5.2 (Unreleased)
+## v5.3 (Unreleased)
+
+## v5.2 (28 Jan 2019)
 - Trying to fix some log spam made some names show up as table:XXXXXX/Missing text.
 
 ## v5.1 (25 Jan 2019)
