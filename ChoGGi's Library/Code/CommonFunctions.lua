@@ -188,11 +188,11 @@ do -- RetName
 			end
 
 		elseif obj_type == "userdata" then
-			local trans = Trans(obj)
-			if trans:sub(-15) == "*bad string id?" then
+			local trans_str = Trans(obj)
+			if trans_str == "Missing text" or trans_str:sub(-15) == "*bad string id?" then
 				return tostring(obj)
 			end
-			return trans
+			return trans_str
 
 		elseif obj_type == "function" then
 			return DebugGetInfo(obj)

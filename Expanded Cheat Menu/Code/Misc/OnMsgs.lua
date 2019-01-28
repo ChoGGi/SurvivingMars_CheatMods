@@ -395,10 +395,13 @@ function OnMsg.ModsReloaded()
 				return XEditEditOperation(self,insert_text, is_undo_redo, cursor_to_text_start,...)
 			end
 
-			if not blacklist then
+			dlgConsole.idEdit.RolloverTemplate = "Rollover"
+			dlgConsole.idEdit.RolloverTitle = StringFormat("%s %s",S[302535920001073--[[Console--]]],S[487939677892--[[Help--]]])
+			if blacklist then
+				dlgConsole.idEdit.RolloverText = StringFormat("%s\n\n\n%s",S[302535920001512--[[You need to have my HelperMod enabled to use these:--]]],S[302535920001440])
+				dlgConsole.idEdit.Hint = S[302535920001513--[["ex(obj) = examine object, s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
+			else
 				-- add tooltip
-				dlgConsole.idEdit.RolloverTemplate = "Rollover"
-				dlgConsole.idEdit.RolloverTitle = StringFormat("%s %s",S[302535920001073--[[Console--]]],S[487939677892--[[Help--]]])
 				dlgConsole.idEdit.RolloverText = S[302535920001440--[["~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.
 

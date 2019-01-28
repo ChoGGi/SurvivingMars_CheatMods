@@ -52,4 +52,4 @@ end)
 
 -- return revision, or else you get a blank map on new game
 MountPack("ChoGGi_BinAssets", "Packs/BinAssets.hpk")
-return dofile("ChoGGi_BinAssets/AssetsRevision.lua") or 240674
+return dofile("ChoGGi_BinAssets/AssetsRevision.lua") or 238808

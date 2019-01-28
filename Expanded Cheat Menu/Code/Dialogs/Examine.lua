@@ -1146,12 +1146,20 @@ function Examine:SetTranspMode(toggle)
 end
 --
 
-local function Examine_valuetotextex(_,_,button,self,obj)
+local function Show_valuetotextex(_,_,button,self,obj)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" and GameState.gameplay and (IsValid(obj) or IsPoint(obj)) then
 		ShowObj(obj)
 	else
 		ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
+	end
+end
+local function Examine_valuetotextex(_,_,button,self,obj)
+	-- not ingame = no sense in using ShowObj
+	if button == "L" then
+		ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
+	else
+		ShowObj(obj)
 	end
 end
 local point_str = "%s%s(%s,%s,%s)%s"
@@ -1200,7 +1208,7 @@ function Examine:valuetotextex(obj)
 				end
 
 				return temp_str:format(
-					self:HyperLink(obj,Examine_valuetotextex),
+					self:HyperLink(obj,Show_valuetotextex),
 					S[302535920001396--[[point--]]],
 					x,y,z or "",
 					HLEnd
@@ -1909,7 +1917,7 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 
 	end -- istable
 
-	self.idCaption:SetTitle(self,self.title or name)
+	self.idCaption:SetTitle(self,self.title or name or obj)
 
 	-- we add a slight delay, so the rest of the dialog shows up; for bigger lists like _G or MapGet(true)
 	if startup then

@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v5.2 (Unreleased)
+- Trying to fix some log spam made some names show up as table:XXXXXX/Missing text.
 
 ## v5.1 (25 Jan 2019)
 - Support for "Next SM Update".
