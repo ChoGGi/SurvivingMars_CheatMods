@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Show Transport Route Info v0.1",
-	"version", 1,
-	"saved", 1547812800,
+	"title", "Show Transport Route Info v0.2",
+	"version", 2,
+	"saved", 1548676800,
 	"image", "Preview.png",
 	"id", "ChoGGi_ShowTransportRouteInfo",
 	"steam_id", "1628726303",

@@ -44,26 +44,39 @@ function OnMsg.SelectionAdded(obj)
 
 	local route = obj.transport_route
 	-- just in case
-	if IsPoint(route.from) and IsPoint(route.to) then
-		line = PlaceObject("Polyline")
-		-- FixConstructPos sets z to ground height
-		PolylineSetParabola(line, FixConstructPos(route.from), FixConstructPos(route.to))
-		line:SetPos(AveragePoint2D(line.vertices))
-
-		-- add floating text if it isn't "All"
-		local res_type = obj.transport_resource
-		if type(res_type) =="string" then
-			text = PlaceText(
-				_InternalTranslate(Resources[res_type].display_name),
-				-- get centre(ish) point, AveragePoint2D doesn't work since it skips Z
-				line.vertices[#line.vertices/2]+pt_1500
-			)
-			-- nice n big
-			text:SetTextStyle("Autosave")
-			-- spins text to face camera
-			text:Attach(PlaceObject("Orientation"))
-		end
-
+	if not (IsPoint(route.from) and IsPoint(route.to)) then
+		return
 	end
+
+	line = PlaceObject("Polyline")
+	-- FixConstructPos sets z to ground height
+	PolylineSetParabola(line, FixConstructPos(route.from), FixConstructPos(route.to))
+	line:SetPos(AveragePoint2D(line.vertices))
+
+	-- add floating text
+	local res = obj.transport_resource
+	local res_type = type(res)
+	if res_type ~= "string" and res_type ~= "table" then
+		return
+	end
+
+	local is_res = Resources[res]
+	if is_res then
+		text = _InternalTranslate(is_res.display_name)
+	else
+		text = _InternalTranslate(T(4493,"All"))
+	end
+
+	text = PlaceText(
+		text,
+		-- get centre(ish) point, AveragePoint2D doesn't work since it skips Z
+		line.vertices[#line.vertices/2]+pt_1500
+	)
+
+	-- nice n big
+	text:SetTextStyle("Autosave")
+	-- spins text to face camera
+	text:Attach(PlaceObject("Orientation"))
+
 end
 
