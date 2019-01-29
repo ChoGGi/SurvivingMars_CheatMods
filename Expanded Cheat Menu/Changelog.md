@@ -4,6 +4,10 @@
 ##### Dialogs: Monitor Info.
 
 ## v12.3 (Unreleased)
+### Changed:
+- Examine:
+- > Slightly increased the delay when using flash ui.
+- > Added an exec code one liner text input, and a checkbox to toggle visibility of it.
 
 ## v12.2 (28 Jan 2019)
 ### Changed:
