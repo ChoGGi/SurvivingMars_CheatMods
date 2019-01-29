@@ -329,14 +329,14 @@ function Examine:Init(parent, context)
 			Id = "idSearchArea",
 			Dock = "top",
 		}, self.idDialog)
-
+		--
 		self.idSearchText = g_Classes.ChoGGi_TextInput:new({
 			Id = "idSearchText",
 			RolloverText = S[302535920000043--[["Press Enter to scroll to next found text, Ctrl-Enter to scroll to previous found text, Arrows to scroll to each end."--]]],
 			Hint = S[302535920000044--[[Go To Text--]]],
 			OnKbdKeyDown = self.idSearchTextOnKbdKeyDown,
 		}, self.idSearchArea)
-
+		--
 		self.idSearch = g_Classes.ChoGGi_Button:new({
 			Id = "idSearch",
 			Text = S[10123--[[Search--]]],
@@ -355,7 +355,7 @@ Right-click to go up, middle-click to scroll to the top."--]]],
 			Id = "idMenuArea",
 			Dock = "top",
 		}, self.idDialog)
-
+		--
 		self.tools_menu_popup = self:BuildToolsMenuPopup()
 		self.idTools = g_Classes.ChoGGi_ComboButton:new({
 			Id = "idTools",
@@ -364,7 +364,7 @@ Right-click to go up, middle-click to scroll to the top."--]]],
 			OnMouseButtonDown = self.idToolsOnMouseButtonDown,
 			Dock = "left",
 		}, self.idMenuArea)
-
+		--
 		self.objects_menu_popup = self:BuildObjectMenuPopup()
 		self.idObjects = g_Classes.ChoGGi_ComboButton:new({
 			Id = "idObjects",
@@ -373,7 +373,7 @@ Right-click to go up, middle-click to scroll to the top."--]]],
 			OnMouseButtonDown = self.idObjectsOnMouseButtonDown,
 			Dock = "left",
 		}, self.idMenuArea)
-
+		--
 		self.idParents = g_Classes.ChoGGi_ComboButton:new({
 			Id = "idParents",
 			Text = S[302535920000520--[[Parents--]]],
@@ -382,7 +382,7 @@ Right-click to go up, middle-click to scroll to the top."--]]],
 			Dock = "left",
 		}, self.idMenuArea)
 		self.idParents:SetVisible(false)
-
+		--
 		self.idAttaches = g_Classes.ChoGGi_ComboButton:new({
 			Id = "idAttaches",
 			Text = S[302535920000053--[[Attaches--]]],
@@ -391,8 +391,34 @@ Right-click to go up, middle-click to scroll to the top."--]]],
 			Dock = "left",
 		}, self.idMenuArea)
 		self.idAttaches:SetVisible(false)
-
+		--
+		self.idToggleExecCode = g_Classes.ChoGGi_CheckButton:new({
+			Id = "idToggleExecCode",
+			Dock = "right",
+			Text = S[302535920000323--[[Exec Code--]]],
+			RolloverText = StringFormat("%s\n%s",S[302535920001514--[[Toggle visibility of an input box for executing code.--]]],S[302535920001517--[["Use ""o"" as a reference to the examined object."--]]]),
+			OnChange = self.idToggleExecCodeOnChange,
+			Init = self.CheckButtonInit,
+		}, self.idMenuArea)
+		--
 	end -- tools area
+	do -- exec code area
+		self.idExecCodeArea = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idExecCodeArea",
+			Dock = "top",
+		}, self.idDialog)
+		self.idExecCodeArea:SetVisible(false)
+		--
+		self.idExecCode = g_Classes.ChoGGi_TextInput:new({
+			Id = "idExecCode",
+			RolloverText = StringFormat("%s\n%s",S[302535920001515--[[Press enter to execute code.--]]],S[302535920001517--[["Use ""o"" as a reference to the examined object."--]]]),
+			Hint = S[302535920001516--[[o = examined object--]]],
+			OnKbdKeyDown = self.idExecCodeOnKbdKeyDown,
+		}, self.idExecCodeArea)
+		-- could change the bg for this...
+		-- self.idExecCode:SetPlugins({"ChoGGi_CodeEditorPlugin"})
+		--
+	end -- exec code area
 
 	-- text box with obj info in it
 	self:AddScrollText()
@@ -413,6 +439,28 @@ Right-click to go up, middle-click to scroll to the top."--]]],
 	end
 
 	self:SetInitPos(context.parent)
+end
+
+function Examine:idExecCodeOnKbdKeyDown(vk,...)
+	if vk == const.vkEnter then
+		if dlgConsole then
+			o = GetRootDialog(self).obj_ref
+			dlgConsole:Exec(self:GetText())
+		end
+
+		return "break"
+	end
+
+	return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
+end
+
+function Examine:idToggleExecCodeOnChange()
+--~ 	-- if it's called directly we set the check if needed
+--~ 	local checked = self:GetCheck()
+
+	self = GetRootDialog(self)
+	local vis = self.idExecCodeArea:GetVisible()
+	self.idExecCodeArea:SetVisible(not vis)
 end
 
 function Examine:idButRefreshOnPress()
@@ -1117,7 +1165,7 @@ function Examine:FlashWindow()
 				break
 			end
 			self.obj_ref:SetVisible(vis)
-			Sleep(100)
+			Sleep(175)
 			vis = not vis
 		end
 
@@ -1145,7 +1193,6 @@ function Examine:SetTranspMode(toggle)
 	ChoGGi.Temp.transp_mode = toggle
 end
 --
-
 local function Show_valuetotextex(_,_,button,self,obj)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" and GameState.gameplay and (IsValid(obj) or IsPoint(obj)) then
@@ -1944,12 +1991,14 @@ end
 
 function Examine:Done(result,...)
 	DeleteThread(self.autorefresh_thread)
+	-- close any opened popup menus
 	PopupClose(self.idAttachesMenu)
 	PopupClose(self.idParentsMenu)
 	PopupClose(self.idToolsMenu)
+	-- remove this dialog from list of examine dialogs
 	local g_ExamineDlgs = g_ExamineDlgs or empty_table
-
 	g_ExamineDlgs[self.obj] = nil
 	g_ExamineDlgs[self.obj_ref] = nil
+
 	ChoGGi_Window.Done(self,result,...)
 end
