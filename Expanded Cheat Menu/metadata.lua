@@ -8,7 +8,6 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411157810",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
 	"lua_revision", LuaRevision,
-	"saved_with_revision", LuaRevision,
 	"TagCommanderProfiles", true,
 	"TagMissionSponsors", true,
 	"TagColonyLogos", true,

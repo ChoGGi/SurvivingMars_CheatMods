@@ -183,7 +183,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")",
 302535920001205,Randomly set %s's specialization.,
 302535920001207,"Add: %s to this building.
 
-%s.",
+%s",
 302535920001209,Make this %s not need workers (performance: %s).,
 302535920001210,Make this %s need workers.,
 302535920001211,Double the export storage capacity of this %s.,

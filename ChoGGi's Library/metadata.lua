@@ -9,7 +9,6 @@ return PlaceObj("ModDef", {
 	"pops_any_uuid", "d8b39692-93b4-4446-9149-2e1addd28ac4",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/ChoGGi's%20Library/Changelog.md#library-changelog",
 	"lua_revision", LuaRevision,
-	"saved_with_revision", LuaRevision,
 	"TagGameplay", true,
 	"TagInterface", true,
 	"TagTools", true,
