@@ -3,11 +3,11 @@ function OnMsg.ModConfigReady()
 	local LockResidence = LockResidence
 
 	-- setup menu options
-	ModConfig:RegisterMod("LockResidence", [[Lock Workplace]])
+	ModConfig:RegisterMod("LockResidence", [[Lock Residence]])
 
 	ModConfig:RegisterOption("LockResidence", "NeverChange", {
 		name = [[Never Change]],
-		desc = [[Workers will never change workplace (may cause issues).]],
+		desc = [[Residents will never change residence (may cause issues).]],
 		type = "boolean",
 		default = LockResidence.NeverChange,
 	})

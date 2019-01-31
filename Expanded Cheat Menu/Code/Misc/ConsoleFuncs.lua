@@ -220,17 +220,21 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- ToggleLogErrors
+		local GetStack = GetStack
 		local function UpdateLogErrors(name)
 			_G[name] = function(...)
 				if ... ~= "\n" and ... ~= "\r\n" then
-					print("func",name,":",...)
+					print(
+					"func",name,":",...,
+					GetStack(2, false, "\t")
+					)
 				end
 			end
 		end
 		local funcs = {"error","OutputDebugString"}
+
 		function ChoGGi.ConsoleFuncs.ToggleLogErrors(which)
 			local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-			local GetStack = GetStack
 			if which then
 				for i = 1, #funcs do
 					UpdateLogErrors(funcs[i])
@@ -238,7 +242,7 @@ function OnMsg.ClassesGenerate()
 				--
 				__procall_errorhandler = function(...)
 					print(
-						"[LUA ERROR]",
+						"[LUA ERROR ECM]",
 						ChoGGi_OrigFuncs.__procall_errorhandler(...),
 						GetStack(2, false, "\t")
 					)

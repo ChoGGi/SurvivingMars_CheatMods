@@ -14,5 +14,7 @@ return PlaceObj("ModDef", {
   "description", [[Adds a "Lock Workplace" button to the selection panel for colonists, and workplaces ("Lock Workers").
 They can still be fired (if you shutdown the building/shift), they just won't change to a new workplace if they're locked.
 
-Includes Mod Config Reborn option to force workers to never change workplace (may cause issues).]],
+Includes Mod Config Reborn option to force workers to never change workplace (may cause issues).
+
+Lock Residence: https://steamcommunity.com/sharedfiles/filedetails/?id=1635694550]],
 })
