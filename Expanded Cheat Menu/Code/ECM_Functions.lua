@@ -1265,55 +1265,58 @@ The func I use for spot_rot rounds to two decimal points...
 	end -- do
 
 	do -- BBoxLines_Toggle
-		local guim = guim
 		local MulDivRound = MulDivRound
 		local Max = Max
 		local point = point
 		local PlacePolyline = PlacePolyline
-		local GetHeight = terrain.GetHeight
+		local guim = guim
+		local objlist = objlist
+--~ 		local GetHeight = terrain.GetHeight
 
-		local function SpawnBoxLine(lines, bbox, list, color)
-			local line = PlacePolyline(list, color)
+		-- stores objlist of line objects
+		local lines
+
+		local function SpawnBoxLine(bbox, list, colour)
+			local line = PlacePolyline(list, colour)
 			line:SetPos(bbox:Center())
 			lines[#lines+1] = line
 		end
-		local pillar_lines = {}
-		local function SpawnPillarLine(pt, z, height, lines, color)
-			TableIClear(pillar_lines)
-			pillar_lines[1] = pt:SetZ(z)
-			pillar_lines[2] = pt:SetZ(height)
-			local line = PlacePolyline(pillar_lines, color)
+		local function SpawnPillarLine(pt, z, obj_height, colour)
+			local line = PlacePolyline({pt:SetZ(z),pt:SetZ(z + obj_height)}, colour)
 			line:SetPos(AveragePoint2D(line.vertices))
 			lines[#lines+1] = line
 		end
 
-		-- CommonLua\Classes\CodeRenderableObject.lua
-		local function GetBoxPoints(pt1, pt2, z, step, offset, obj_height, points_top, points_bot)
-			return points_top,points_bot
-		end
-
-		local edges = {}
-		local function PlaceTerrainBox(bbox, z, color, step, offset, obj_height)
+		local function PlaceTerrainBox(bbox, pos, colour, step, offset)
+			local obj_height = bbox:sizez() or 1500
+			local z = pos:z()
 			step = step or guim
 			offset = offset or 0
+			-- stores all line objs for deletion later
+			lines = objlist:new()
 
-			local a,b,c,d = bbox:ToPoints2D()
-			edges[1] = a
-			edges[2] = b
-			edges[3] = c
-			edges[4] = d
-			-- needed to complete the square
+			local edges = {bbox:ToPoints2D()}
+			-- needed to complete the square (else there's a short blank space of a chunk of a line)
 			edges[5] = edges[1]
 			edges[6] = edges[2]
 
+			-- we need a list of top/bottom box points
+			local points_top,points_bot = {},{}
+			for i = 1, #edges - 1 do
+				local edge = edges[i]
+				if i < 5 then
+					-- the four "pillars"
+					SpawnPillarLine(edge, z, obj_height, colour)
+				end
+				local x,y = edge:xy()
+				points_top[#points_top + 1] = point(x, y, z + obj_height)
+				points_bot[#points_bot + 1] = point(x, y, z)
+			end
+			SpawnBoxLine(bbox, points_top, colour)
+			SpawnBoxLine(bbox, points_bot, colour)
 
-			-- top of box
-			local points_top = {}
-			-- bottom
-			local points_bot = {}
-			-- stores all line objs for deletion later
-			local lines = {}
-
+			--[[
+			-- make bbox follow ground height
 			for i = 1, #edges - 1 do
 
 				local pt1 = edges[i]
@@ -1323,35 +1326,28 @@ The func I use for spot_rot rounds to two decimal points...
 
 				for j = 1, steps do
 					local pos = pt1 + MulDivRound(diff, j - 1, steps - 1)
-					local x, y = pos:xy()
-					local t_height = GetHeight(x, y)
-					z = z
-					if z < t_height then
-						z = t_height
-					end
+					local x,y = pos:xy()
+					local z = GetHeight(x, y)
 					z = z + offset
-
-					-- add the four "pillars"
-					if i < 5 then
-						SpawnPillarLine(edges[i], z, z + obj_height, lines, color)
-					end
 
 					points_top[#points_top + 1] = point(x, y, z + obj_height)
 					points_bot[#points_bot + 1] = point(x, y, z)
 				end
 
-
+				-- ... extra lines?
+				-- this is what i get for not commenting it the first time.
 				points_bot[#points_bot] = nil
 				points_top[#points_top] = nil
 			end
 
-			SpawnBoxLine(lines, bbox, points_top, color)
-			SpawnBoxLine(lines, bbox, points_bot, color)
+			SpawnBoxLine(lines, bbox, points_top, colour)
+			SpawnBoxLine(lines, bbox, points_bot, colour)
+			--]]
 
 			return lines
 		end
 
-		function ChoGGi.ComFuncs.BBoxLines_Toggle(obj)
+		function ChoGGi.ComFuncs.BBoxLines_Toggle(obj,colour,step,offset)
 			obj = obj or ChoGGi.ComFuncs.SelObject()
 			if not IsValid(obj) then
 				return
@@ -1359,21 +1355,16 @@ The func I use for spot_rot rounds to two decimal points...
 
 			-- check if bbox showing
 			if obj.ChoGGi_bboxobj then
-				for i = 1, #obj.ChoGGi_bboxobj do
-					local line = obj.ChoGGi_bboxobj[i]
-					if IsValid(line) then
-						line:delete()
-					end
-				end
+				obj.ChoGGi_bboxobj:Destroy()
 				obj.ChoGGi_bboxobj = nil
 			else
 				local bbox = obj.GetObjectBBox and obj:GetObjectBBox()
+--~ 				local bbox = ObjectHierarchyBBox(s)
 				if bbox then
 					obj.ChoGGi_bboxobj = PlaceTerrainBox(
 						bbox,
-						obj:GetZ(),
-						nil,nil,nil,
-						bbox:sizez() or 1500
+						obj:GetPos(),
+						colour,step,offset
 					)
 				end
 			end

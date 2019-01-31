@@ -54,7 +54,7 @@ function OnMsg.ClassesGenerate()
 		if tempname ~= "" then
 			SetHint(action,S[302535920001207--[["Add: %s to this building.
 
-%s."--]]]:format(tempname,Trans(T(obj[up_des:format(num)],obj))))
+%s"--]]]:format(tempname,Trans(T(obj[up_des:format(num)],obj))))
 			SetIcon(action,num,obj[up_icon:format(num)])
 		else
 			action.ActionId = ""

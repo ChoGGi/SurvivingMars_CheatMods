@@ -12,8 +12,6 @@ return PlaceObj("ModDef", {
 	"steam_id", "1455937967",
 	"pops_any_uuid", "72c38c74-3abc-4248-a29a-9209efbe94f3",
 	"lua_revision", LuaRevision,
-	"saved_with_revision", LuaRevision,
-
   "description", [[Adds every flag on Wikipedia (450+), and no more Martian only names.
 
 Since this game uses nations for names, this also takes all the in-game names and applies them to all the nations (see below to disable).
