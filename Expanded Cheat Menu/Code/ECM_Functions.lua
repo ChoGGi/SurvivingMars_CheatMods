@@ -196,7 +196,8 @@ function OnMsg.ClassesGenerate()
 			SaveOrigFunc(funcname)
 			-- we want to local this after SaveOrigFunc just in case
 			local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-			local name = StringFormat("%s: %s",funcname,"%s")
+			local name_str = StringFormat("%s: %s",funcname,"%s")
+
 			_G[funcname] = function(...)
 
 				-- table.concat don't work with non strings/numbers
@@ -208,7 +209,7 @@ function OnMsg.ClassesGenerate()
 
 				if buffer_table[buffer_cnt] ~= str then
 					buffer_cnt = buffer_cnt + 1
-					buffer_table[buffer_cnt] = name:format(str)
+					buffer_table[buffer_cnt] = name_str:format(str)
 				end
 
 				-- fire off orig func...

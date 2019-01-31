@@ -535,18 +535,18 @@ function OnMsg.ClassesBuilt()
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_PortableMiner_Prod",true)
 
-	-- we want to insert below status
-	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
-	if status then
-		status = status + 1
-	else
-		-- screw it stick it at the end
-		status = #rover
-	end
+--~ 	-- we want to insert below status
+--~ 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
+--~ 	if status then
+--~ 		status = status + 1
+--~ 	else
+--~ 		-- screw it stick it at the end
+--~ 		status = #rover
+--~ 	end
 
 	table.insert(
 		rover,
-		status,
+		#rover or 0,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_PortableMiner_Prod", true,
 			"__context_of_kind", "PortableMiner",

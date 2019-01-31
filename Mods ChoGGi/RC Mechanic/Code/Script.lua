@@ -198,19 +198,19 @@ function OnMsg.ClassesBuilt()
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCMechanic_Prod",true)
 
-	-- we replace status
-	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
-	if status then
-		rover[status]:delete()
-		table.remove(rover,status)
-	else
-		-- screw it stick it at the end
-		status = #rover
-	end
+--~ 	-- we replace status
+--~ 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
+--~ 	if status then
+--~ 		rover[status]:delete()
+--~ 		table.remove(rover,status)
+--~ 	else
+--~ 		-- screw it stick it at the end
+--~ 		status = #rover
+--~ 	end
 
 	table.insert(
 		rover,
-		status,
+		#rover or 0,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_RCMechanic_Prod", true,
 			"__context_of_kind", "RCMechanic",

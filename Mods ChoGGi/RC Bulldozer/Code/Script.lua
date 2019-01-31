@@ -457,20 +457,20 @@ function OnMsg.ClassesBuilt()
 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Texture")
 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Circle")
 
-	-- replace status
-	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
-	if status then
-		rover[status]:delete()
-		table.remove(rover,status)
-	else
-		-- screw it stick it at the end
-		status = #rover
-	end
+--~ 	-- replace status
+--~ 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
+--~ 	if status then
+--~ 		rover[status]:delete()
+--~ 		table.remove(rover,status)
+--~ 	else
+--~ 		-- screw it stick it at the end
+--~ 		status = #rover
+--~ 	end
 
 	-- status updates/radius slider
 	table.insert(
 		rover,
-		status,
+		#rover or 0,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_RCBulldozer_Status", true,
 			"__context_of_kind", "RCBulldozer",

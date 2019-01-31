@@ -1,2 +1,5 @@
+v0.3
+Changed Lock Workplace to Lock Residence in MCR.
+
 v0.2
 Fix for buttons being too visible.
