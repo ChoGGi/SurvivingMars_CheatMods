@@ -8,6 +8,11 @@
 - Examine:
 - > Slightly increased the delay when using flash ui.
 - > Added an exec code one liner text input, and a checkbox to toggle visibility of it.
+- Hid AnimState/AttachSpots from cheats panel (they're more of an examine thingy).
+
+### Fixed:
+- Cheats panel was using water instead of oxygen icons for oxygen need/free.
+- Debug>Reload Lua was giving an error in the log, still worked fine (thanks Dragon1358547).
 
 ## v12.2 (28 Jan 2019)
 ### Changed:

@@ -148,7 +148,7 @@ function OnMsg.ClassesGenerate()
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
 		--
-		submenu = AddSubmenu("_G",{"__cobjectToCObject","Flags","HandleToObject","TranslationTable","const.TagLookupTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod","debug.getregistry"})
+		submenu = AddSubmenu("_G",{"__cobjectToCObject","Flags","HandleToObject","TranslationTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod","debug.getregistry"})
 		if submenu then
 			ChoGGi.ConsoleFuncs.AddMonitor("_G",submenu)
 			submenu[#submenu+1] = {
@@ -180,7 +180,7 @@ function OnMsg.ClassesGenerate()
 			})
 		end
 		--
-		AddSubmenu("Consts",{"g_Consts","const","ModifiablePropScale"})
+		AddSubmenu("Consts",{"g_Consts","const","ModifiablePropScale","const.TagLookupTable"})
 		AddSubmenu("Dialogs",{"terminal.desktop","GetInGameInterface"})
 		AddSubmenu("GlobalVars",{"GlobalVarValues","GlobalObjs","GlobalObjClasses","PersistableGlobals","GlobalGameTimeThreads","GlobalGameTimeThreadFuncs","GlobalRealTimeThreads","GlobalRealTimeThreadFuncs"})
 		AddSubmenu("EntityData",{"EntityStates","EntitySurfaces","GetAllEntities","HexOutlineShapes","HexInteriorShapes","HexOutlineByHash","HexBuildShapes","HexBuildShapesInversed","HexPeripheralShapes","HexCombinedShapes"})
@@ -224,10 +224,9 @@ function OnMsg.ClassesGenerate()
 		local function UpdateLogErrors(name)
 			_G[name] = function(...)
 				if ... ~= "\n" and ... ~= "\r\n" then
-					print(
-					"func",name,":",...,
+					print("func",name,":",...)
 					GetStack(2, false, "\t")
-					)
+					OpenInExamineDlg{...}
 				end
 			end
 		end
@@ -241,11 +240,11 @@ function OnMsg.ClassesGenerate()
 				end
 				--
 				__procall_errorhandler = function(...)
-					print(
-						"[LUA ERROR ECM]",
-						ChoGGi_OrigFuncs.__procall_errorhandler(...),
-						GetStack(2, false, "\t")
+					print("[LUA ERROR ECM]",
+						ChoGGi_OrigFuncs.__procall_errorhandler(...)
 					)
+					GetStack(2, false, "\t")
+					OpenInExamineDlg{...}
 				end
 			else
 				for i = 1, #funcs do

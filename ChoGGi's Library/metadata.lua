@@ -7,6 +7,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"steam_id", "1504386374",
 	"pops_any_uuid", "d8b39692-93b4-4446-9149-2e1addd28ac4",
+	"pops_desktop_uuid", "90aa1a9b-71dd-472d-b32d-b611b5d512b6",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/ChoGGi's%20Library/Changelog.md#library-changelog",
 	"lua_revision", LuaRevision,
 	"TagGameplay", true,
@@ -45,5 +46,7 @@ I got tired of copying and pasting functions between different mods to update th
 
 
 
-Also available at https://www.nexusmods.com/survivingmars/mods/89]],
+Also available at:
+https://www.nexusmods.com/survivingmars/mods/89?tab=files
+https://steamcommunity.com/workshop/filedetails/?id=1504386374]],
 })

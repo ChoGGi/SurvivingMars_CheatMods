@@ -535,7 +535,8 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 						mod_params.os_pack_path = os_dest
 						-- maybe we'll deal with these buggers one of these days?
 						mod_params.screenshots = {}
-						mod.last_changes = mod.last_changes ~= "" and mod.last_changes or tostring(mod.version)
+						-- set last_changes to last_changes or version num
+						mod.last_changes = type(mod.last_changes) == "string" and mod.last_changes ~= "" and tostring(mod.last_changes) or tostring(mod.version)
 
 						-- CommonLua\SteamWorkshop.lua
 						if not test then
