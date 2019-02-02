@@ -18,6 +18,7 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
+	local testing = ChoGGi.testing
 
 	-- created when we create the controls controls the first time
 	local ExamineMenuToggle_list = {}
@@ -238,13 +239,15 @@ function OnMsg.ClassesGenerate()
 				for i = 1, #funcs do
 					UpdateLogErrors(funcs[i])
 				end
-				--
-				__procall_errorhandler = function(...)
-					print("[LUA ERROR ECM]",
-						ChoGGi_OrigFuncs.__procall_errorhandler(...)
-					)
-					GetStack(2, false, "\t")
-					OpenInExamineDlg{...}
+				-- i replace this in AssetsRevision
+				if not testing then
+					__procall_errorhandler = function(...)
+						print("[LUA ERROR ECM]",
+							ChoGGi_OrigFuncs.__procall_errorhandler(...)
+						)
+						GetStack(2, false, "\t")
+						OpenInExamineDlg{...}
+					end
 				end
 			else
 				for i = 1, #funcs do

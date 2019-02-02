@@ -2,8 +2,6 @@
 
 -- search through tables for values and display them in an examine dialog
 
--- make it use the same examine dialog
-
 local S
 local RetName
 local FindThreadFunc
@@ -114,6 +112,9 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		OnPress = self.idCloseX.OnPress,
 	}, self.idButtonContainer)
 
+	-- new table for each find dialog, so examine only opens once
+	self.found_objs = {}
+
 	self:SetInitPos(context.parent)
 
 	self.idEdit:SetFocus()
@@ -142,9 +143,8 @@ function ChoGGi_FindValueDlg:FindText()
 		str = str:lower()
 	end
 
-	-- always start off empty (we use a new table since examine will only examine one copy of any object)
-	self.found_objs = {}
-	-- we can clear this table since it isn't examined
+	-- always start off empty
+	table.clear(self.found_objs)
 	table.clear(self.dupe_objs)
 
 	-- build our list of objs
@@ -175,35 +175,41 @@ function ChoGGi_FindValueDlg:RetObjects(obj,parent,str,case,threads,limit,level)
 		return
 	end
 
+	-- should've commented this...
+
 	if type(obj) == "table" then
 
 		local location_str = S[302535920001307--[["L%s P: %s; %s, %s"--]]]:format(level,RetName(obj),"%s",RetName(parent))
 
 		for key,value in pairs(obj) do
 			local key_name,value_name = RetName(key),RetName(value)
---~ 			local key_str,key_type = self:RetStringCase(key,case)
---~ 			local value_str,value_type = self:RetStringCase(value,case)
 			local key_str,key_type = case and key_name or key_name:lower(), type(key)
 			local value_str,value_type = case and value_name or value_name:lower(), type(value)
 
 			local key_location = location_str:format(key_name)
---~ 			local value_location = location_str:format(value_name)
 
-			if not self.dupe_objs[obj] and not self.found_objs[key_location] and (key_str:find(str,1,true) or value_str:find(str,1,true)) then
+			-- :find(str,1,true) (1,true means don't use lua patterns, just plain text)
+			if not self.dupe_objs[obj] and not self.found_objs[key_location]
+					and (key_str:find(str,1,true) or value_str:find(str,1,true)) then
 				self.found_objs[key_location] = obj
 				self.dupe_objs[obj] = obj
 
 			elseif threads then
 				local value_location = location_str:format(value_name)
-				if key_type == "thread" and not self.dupe_objs[key] and not self.found_objs[key_location] and FindThreadFunc(key,str) then
+				if key_type == "thread" and not self.dupe_objs[key]
+						and not self.found_objs[key_location] and FindThreadFunc(key,str) then
 					self.found_objs[key_location] = key
 					self.dupe_objs[key] = key
-				elseif value_type == "thread" and not self.dupe_objs[value] and not self.found_objs[value_location] and FindThreadFunc(value,str) then
+
+				elseif value_type == "thread" and not self.dupe_objs[value]
+						and not self.found_objs[value_location] and FindThreadFunc(value,str) then
 					self.found_objs[value_location] = value
 					self.dupe_objs[value] = value
+
 				end
 			end
 
+			-- keep on searching
 			if key_type == "table" then
 				self:RetObjects(key,obj,str,case,threads,limit,level+1)
 			end
@@ -214,7 +220,7 @@ function ChoGGi_FindValueDlg:RetObjects(obj,parent,str,case,threads,limit,level)
 		end
 	end
 
-end --RetObjects
+end
 
 local const = const
 function ChoGGi_FindValueDlg:idEditOnKbdKeyDown(vk)

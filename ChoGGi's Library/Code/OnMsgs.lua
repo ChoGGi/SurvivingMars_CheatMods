@@ -10,7 +10,7 @@ function OnMsg.ShortcutsReloaded()
 	ChoGGi.ComFuncs.Rebuildshortcuts()
 end
 
--- so we at least have keys when it happens
+-- so we at least have keys when it happens (what is "it"?)
 function OnMsg.ReloadLua()
 	if type(XShortcutsTarget.UpdateToolbar) == "function" then
 		ChoGGi.ComFuncs.Rebuildshortcuts()
@@ -19,7 +19,7 @@ end
 
 -- use this message to perform post-built actions on the final classes
 function OnMsg.ClassesBuilt()
-	-- add cat for my items
+	-- add build cat for my items
 	local bc = BuildCategories
 	if not table.find(bc,"id","ChoGGi") then
 		bc[#bc+1] = {
@@ -51,13 +51,13 @@ function SetUserUIScale(val,...)
 
 	local UIScale = (val + 0.0) / 100
 	-- update existing dialogs
-	local dlgs = g_ChoGGiDlgs
-	for dlg in pairs(dlgs) do
+	local g_ChoGGiDlgs = g_ChoGGiDlgs
+	for dlg in pairs(g_ChoGGiDlgs) do
 		dlg.dialog_width_scaled = dlg.dialog_width * UIScale
 		dlg.dialog_height_scaled = dlg.dialog_height * UIScale
 		dlg.header_scaled = dlg.header * UIScale
 		dlg:SetSize(point(dlg.dialog_width_scaled, dlg.dialog_height_scaled))
 	end
-	-- might as well update it here
+	-- might as well update this now (used to be in an OnMsg)
 	ChoGGi.Temp.UIScale = UIScale
 end
