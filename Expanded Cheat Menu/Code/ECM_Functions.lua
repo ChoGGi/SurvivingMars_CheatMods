@@ -296,6 +296,21 @@ function OnMsg.ClassesGenerate()
 
 	do -- OpenInExamineDlg
 		local function OpenInExamineDlg(obj,parent,title)
+
+			-- workaround for g_ExamineDlgs
+			if type(obj) == "nil" then
+				obj = "nil"
+			end
+
+			-- already examining, so focus and return ( :new() doesn't return the opened dialog).
+			local opened = g_ExamineDlgs[obj]
+			if opened then
+				opened.idMoveControl:SetFocus()
+				-- also hit refresh, cause i'm that kinda guy
+				opened:RefreshExamine()
+				return opened
+			end
+
 			return Examine:new({}, terminal.desktop,{
 				obj = obj,
 				parent = parent,

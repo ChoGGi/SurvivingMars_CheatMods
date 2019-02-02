@@ -7,8 +7,7 @@ local PropObjGetProperty = PropObjGetProperty
 
 -- store opened examine dialogs
 if not PropObjGetProperty(_G,"g_ExamineDlgs") then
-	g_ExamineDlgs = {}
-	setmetatable(g_ExamineDlgs, weak_keyvalues_meta)
+	g_ExamineDlgs = objlist:new()
 end
 
 -- local some global funcs
@@ -147,17 +146,7 @@ function Examine:Init(parent, context)
 
 	self.obj = context.obj
 
-	-- workaround for g_ExamineDlgs to examine something nil
-	if type(context.obj) == "nil" then
-		self.obj = "nil"
-	end
-
-	-- already examining, so focus and return
-	local g_ExamineDlgs = g_ExamineDlgs
-	if g_ExamineDlgs[self.obj] then
-		g_ExamineDlgs[self.obj].idMoveControl:SetFocus()
-		return
-	end
+	-- already examining list
 	g_ExamineDlgs[self.obj] = self
 
 	local ChoGGi = ChoGGi
@@ -469,6 +458,9 @@ function Examine:idButRefreshOnPress()
 	if IsKindOf(self.obj_ref,"XWindow") and self.obj_ref.class ~= "InGameInterface" then
 		self:FlashWindow()
 	end
+end
+function Examine:RefreshExamine()
+	self:idButRefreshOnPress()
 end
 
 function Examine:idButSetTranspOnPress()

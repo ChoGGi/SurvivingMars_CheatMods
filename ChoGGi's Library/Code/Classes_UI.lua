@@ -447,8 +447,7 @@ DefineClass.ChoGGi_Window = {
 local PropObjGetProperty = PropObjGetProperty
 -- store opened dialogs
 if not PropObjGetProperty(_G,"g_ChoGGiDlgs") then
-	g_ChoGGiDlgs = {}
-	setmetatable(g_ChoGGiDlgs, weak_keyvalues_meta)
+	g_ChoGGiDlgs = objlist:new()
 end
 
 -- parent,context

@@ -73,36 +73,17 @@ function OnMsg.ClassesGenerate()
 	end
 
 	-- unforbid binding some keys (i left Enter and Menu, not sure what Menu is for? seems best to leave it)
-	local forbid = ForbiddenShortcutKeys
-	forbid.Lwin = nil
-	forbid.Rwin = nil
-	forbid.MouseL = nil
-	forbid.MouseR = nil
-	forbid.MouseM = nil
+	local f = ForbiddenShortcutKeys
+	f.Lwin = nil
+	f.Rwin = nil
+	f.MouseL = nil
+	f.MouseR = nil
+	f.MouseM = nil
 end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
 	local ChoGGi = ChoGGi
-
---~	 InfopanelItems.LayoutMethod = "VList"
---~	 InfopanelItems.MaxWidth = 500
---~	 InfopanelItems.Clip = true
---~	 InfopanelItems.LayoutVSpacing = 50
---~	 InfopanelItems.Margins = box(0,135,-30,0)
---~	 box(left,top, right, bottom)
-
-
---~	 "None",
---~	 "Box",
---~	 "HOverlappingList",
---~	 "VOverlappingList",
---~	 "HList",
---~	 "VList",
---~	 "HPanel",
---~	 "Grid",
---~	 "HWrap",
---~	 "VWrap"
 
 	-- stops crashing with certain missing pinned objects
 	if ChoGGi.UserSettings.FixMissingModBuildings then

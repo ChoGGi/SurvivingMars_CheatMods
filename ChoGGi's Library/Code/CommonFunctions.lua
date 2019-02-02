@@ -162,14 +162,20 @@ do -- RetName
 			-- translated name
 			elseif PropObjGetProperty(obj,"display_name") and obj.display_name ~= "" then
 				name = Trans(obj.display_name)
-			-- encyclopedia_id
+			-- ids
 			elseif PropObjGetProperty(obj,"encyclopedia_id") and obj.encyclopedia_id ~= "" then
 				name = obj.encyclopedia_id
-			-- plain old id
 			elseif PropObjGetProperty(obj,"id") and obj.id ~= "" then
 				name = obj.id
 			elseif PropObjGetProperty(obj,"Id") and obj.Id ~= "" then
 				name = obj.Id
+
+			-- actions
+			elseif PropObjGetProperty(obj,"ActionName") and obj.ActionName ~= "" then
+				name = Trans(obj.ActionName)
+			elseif PropObjGetProperty(obj,"ActionId") and obj.ActionId ~= "" then
+				name = obj.ActionId
+
 			-- class template name
 			elseif PropObjGetProperty(obj,"template_name") and obj.template_name ~= "" then
 				name = obj.template_name
@@ -1629,11 +1635,12 @@ do -- Rebuildshortcuts
 	}
 
 	-- auto-add all the TriggerDisaster ones (ok some)
+	local trigg_str = "TriggerDisaster%s%s"
 	local DataInstances = DataInstances
 	local function AddItems(name,suffix)
 		local list = DataInstances[name]
 		for i = 1, #list do
-			remove_lookup[string.format("TriggerDisaster%s%s",list[i].name,suffix or "")] = true
+			remove_lookup[trigg_str:format(list[i].name,suffix or "")] = true
 		end
 	end
 	AddItems("MapSettings_DustDevils")
@@ -1672,6 +1679,14 @@ do -- Rebuildshortcuts
 				XShortcutsTarget.actions[idx]:delete()
 				TableRemove(XShortcutsTarget.actions,idx)
 			end
+
+--~ 			-- f1
+--~ 			idx = table.find(XShortcutsTarget.actions,"ActionId","ShowHints")
+--~ 			if idx then
+--~ 				XShortcutsTarget.actions[idx]:delete()
+--~ 				TableRemove(XShortcutsTarget.actions,idx)
+--~ 			end
+
 		end
 
 		-- and add mine

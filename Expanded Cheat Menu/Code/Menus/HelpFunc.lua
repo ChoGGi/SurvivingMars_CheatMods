@@ -68,6 +68,7 @@ function OnMsg.ClassesGenerate()
 		local function CallBackFunc(answer)
 			if answer then
 				CreateRealTimeThread(function()
+					-- delay (automagical) screenshot till after question box is closed
 					Sleep(100)
 					CreateBugReportDlg()
 				end)
