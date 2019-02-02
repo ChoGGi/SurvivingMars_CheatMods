@@ -2,17 +2,21 @@
 
 -- tell people how to get my library mod (if needs be)
 function OnMsg.ModsReloaded()
-
 	-- version to version check with
-	local min_version = 50
+	local min_version = 53
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
+	local p = Platform
 
-	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
-	if not idx or idx and not Platform.steam and min_version > ModsLoaded[idx].version then
+	-- if we can't find mod or mod is less then min_version (we skip steam/pops since it updates automatically)
+	if not idx or idx and not (p.steam or p.pops) and min_version > ModsLoaded[idx].version then
 		CreateRealTimeThread(function()
 			if WaitMarsQuestion(nil,"Error",string.format([[Minimap requires ChoGGi's Library (at least v%s).
 Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_version)) == "ok" then
-				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
+				if p.pops then
+					OpenUrl("https://mods.paradoxplaza.com/mods/505/Any")
+				else
+					OpenUrl("https://www.nexusmods.com/survivingmars/mods/89?tab=files")
+				end
 			end
 		end)
 	end

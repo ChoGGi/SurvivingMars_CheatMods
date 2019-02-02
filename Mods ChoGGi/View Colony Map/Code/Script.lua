@@ -1,47 +1,46 @@
 -- See LICENSE for terms
 
-local image_str
-
 do -- Map Images Pack (it doesn't need to be loaded just installed)
 	local min_version = 1
 	local mod = Mods.ChoGGi_MapImagesPack
+	local p = Platform
 
-	if not mod or mod and not Platform.steam and min_version > mod.version then
+	if not mod or mod and not (p.steam or p.pops) and min_version > mod.version then
 		CreateRealTimeThread(function()
 			if WaitMarsQuestion(nil,"Error",string.format([[View Colony Map requires Map Images Pack (at least v%s).
 Press Ok to download it.]],min_version)) == "ok" then
-				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1571465108")
+				if p.pops then
+					OpenUrl("https://mods.paradoxplaza.com/mods/507/Any")
+				else
+					OpenUrl("https://www.nexusmods.com/survivingmars/mods/77?tab=files")
+				end
 			end
 		end)
-	else
-		image_str = string.format("%sMaps/%s.png",Mods.ChoGGi_MapImagesPack.env.CurrentModPath,"%s")
 	end
 end -- do
+local image_str = string.format("%sMaps/%s.png",Mods.ChoGGi_MapImagesPack.env.CurrentModPath,"%s")
 
 -- tell people how to get my library mod (if needs be)
-local fire_once
 function OnMsg.ModsReloaded()
-	if fire_once then
-		return
-	end
-	fire_once = true
-
 	-- version to version check with
-	local min_version = 47
+	local min_version = 53
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
+	local p = Platform
 
-	-- if we can't find mod or mod is less then min_version (we skip steam since it updates automatically)
-	if not idx or idx and not Platform.steam and min_version > ModsLoaded[idx].version then
+	-- if we can't find mod or mod is less then min_version (we skip steam/pops since it updates automatically)
+	if not idx or idx and not (p.steam or p.pops) and min_version > ModsLoaded[idx].version then
 		CreateRealTimeThread(function()
 			if WaitMarsQuestion(nil,"Error",string.format([[View Colony Map requires ChoGGi's Library (at least v%s).
 Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_version)) == "ok" then
-				OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
+				if p.pops then
+					OpenUrl("https://mods.paradoxplaza.com/mods/505/Any")
+				else
+					OpenUrl("https://www.nexusmods.com/survivingmars/mods/89?tab=files")
+				end
 			end
 		end)
 	end
 end
-
-local image_str = string.format("%sMaps/%s.png",Mods.ChoGGi_MapImagesPack.env.CurrentModPath,"%s")
 
 local showimage
 local skip_showing_image

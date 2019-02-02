@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Materials>
 	<Material>
-		<BaseColorMap Name="mod_texture_Emblem_of_the_People's_Republic_of_China.dds" mc="0"/>
+		<BaseColorMap Name="mod_texture_Emblem_of_the_Peoples_Republic_of_China.dds" mc="0"/>
 		<Property TwoSided="0"/>
 		<Property TwoSidedShading="0"/>
 		<Property SunFacingShading="0"/>
