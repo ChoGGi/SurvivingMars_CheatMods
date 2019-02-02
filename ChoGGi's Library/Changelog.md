@@ -1,7 +1,7 @@
 ## Library Changelog
 
 ## v5.3 (Unreleased)
-- Code cleanup.
+- List dialog will set width by width of list items.
 
 ## v5.2 (28 Jan 2019)
 - Trying to fix some log spam made some names show up as table:XXXXXX/Missing text.

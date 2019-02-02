@@ -625,11 +625,11 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 
 	end
 
+	-- restore scroll pos
 	if save_pos then
 		self.idList:ScrollTo(nil,save_pos[1])
 		self.idScrollV:SetScroll(save_pos[2])
 	end
-
 end
 
 function ChoGGi_ListChoiceDlg:idFilterOnKbdKeyDown(vk)

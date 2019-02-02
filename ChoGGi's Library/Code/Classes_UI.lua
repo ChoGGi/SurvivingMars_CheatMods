@@ -514,8 +514,6 @@ function ChoGGi_Window:AddElements()
 
 	-- throws error if we try to get display_icon from _G
 	local image = self.title_image or (type(self.obj) == "table" and self.name ~= "_G"
---~ 		and (self.obj.display_icon ~= "" and self.obj.display_icon
---~ 		or self.obj.pin_icon ~= "" and self.obj.pin_icon))
 		and (PropObjGetProperty(self.obj,"display_icon") and self.obj.display_icon ~= "" and self.obj.display_icon
 		or PropObjGetProperty(self.obj,"pin_icon") and self.obj.pin_icon ~= "" and self.obj.pin_icon))
 
@@ -658,6 +656,13 @@ function ChoGGi_Window:GetWidth(dialog)
 	return (self[dialog or "idDialog"].box):sizex()
 end
 
+local function UpdateListWidth(self)
+	WaitMsg("OnRender")
+	local width = self.idList[1].box:sizex()
+	if width > 0 then
+		self:SetWidth(width + 35)
+	end
+end
 function ChoGGi_Window:SetInitPos(parent,pt)
 	local x,y,w,h
 
@@ -718,6 +723,11 @@ function ChoGGi_Window:SetInitPos(parent,pt)
 	end
 
 	self.idDialog:SetBox(new_x or x,new_y or y,w,h)
+
+	-- resize width of dialog to match width of first list item
+	if self.idList then
+		CreateRealTimeThread(UpdateListWidth,self)
+	end
 end
 
 function ChoGGi_Window:idTextOnHyperLink(link, _, box, pos, button)
