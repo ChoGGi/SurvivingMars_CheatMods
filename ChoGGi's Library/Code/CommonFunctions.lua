@@ -3268,7 +3268,7 @@ GetComputerName(): %s
 	)
 end
 
-do --
+do -- RemoveXTemplateSections
 	local function RemoveTableItem(list,name,value)
 		local idx = TableFind(list, name, value)
 		if idx then
@@ -3283,58 +3283,59 @@ do --
 		RemoveTableItem(list,name,value or true)
 	end
 end -- do
-
-local AddXTemplateNew = function(xt,name,pos,list)
-	if not xt or not name or not list then
-		local f = ObjPropertyListToLuaCode
-		print(S[302535920001383--[[AddXTemplate borked template name: %s template: %s list: %s--]]]:format(name and f(name),template and f(template),list and f(list)))
-		return
-	end
-	local stored_name = StringFormat("ChoGGi_Template_%s",name)
-
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xt,stored_name)
-
-	table.insert(xt,pos or #xt,PlaceObj("XTemplateTemplate", {
-		stored_name, true,
-		"__condition", list.__condition or function()
-			return true
-		end,
-		"__context_of_kind", list.__context_of_kind or "",
-		"__template", list.__template or "InfopanelActiveSection",
-		"Title", list.Title or S[1000016--[[Title--]]],
-		"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
-		"RolloverTitle", list.RolloverTitle or S[126095410863--[[Info--]]],
-		"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
-		"RolloverHint", list.RolloverHint or "",
-		"OnContextUpdate", list.OnContextUpdate or empty_func,
-	}, {
-		PlaceObj("XTemplateFunc", {
-			"name", "OnActivate(self, context)",
-			"parent", function(self)
-					return self.parent
-				end,
-			"func", list.func or empty_func,
-		})
-	}))
-end
-
---~ AddXTemplateNew(XTemplates.ipColonist[1],"LockworkplaceColonist",nil,{
---~ AddXTemplate("SolariaTelepresence_sectionWorkplace1","sectionWorkplace",{
---~ function ChoGGi.ComFuncs.AddXTemplate(name,template,list,toplevel)
-
-function ChoGGi.ComFuncs.AddXTemplate(xt,name,pos,list)
-	-- old: name,template,list,toplevel
-	-- new  xt,		name,		pos,	list
-	if type(xt) == "string" then
-		if list then
-			AddXTemplateNew(XTemplates[name],xt,nil,pos)
-		else
-			AddXTemplateNew(XTemplates[name][1],xt,nil,pos)
+do -- AddXTemplate
+	local function AddXTemplateNew(xt,name,pos,list)
+		if not xt or not name or not list then
+			local f = ObjPropertyListToLuaCode
+			print(S[302535920001383--[[AddXTemplate borked template name: %s template: %s list: %s--]]]:format(name and f(name),template and f(template),list and f(list)))
+			return
 		end
-	else
-		AddXTemplateNew(xt,name,pos,list)
+		local stored_name = StringFormat("ChoGGi_Template_%s",name)
+
+		ChoGGi.ComFuncs.RemoveXTemplateSections(xt,stored_name)
+
+		table.insert(xt,pos or #xt,PlaceObj("XTemplateTemplate", {
+			stored_name, true,
+			"__condition", list.__condition or function()
+				return true
+			end,
+			"__context_of_kind", list.__context_of_kind or "",
+			"__template", list.__template or "InfopanelActiveSection",
+			"Title", list.Title or S[1000016--[[Title--]]],
+			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
+			"RolloverTitle", list.RolloverTitle or S[126095410863--[[Info--]]],
+			"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
+			"RolloverHint", list.RolloverHint or "",
+			"OnContextUpdate", list.OnContextUpdate or empty_func,
+		}, {
+			PlaceObj("XTemplateFunc", {
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+						return self.parent
+					end,
+				"func", list.func or empty_func,
+			})
+		}))
 	end
-end
+
+	--~ AddXTemplateNew(XTemplates.ipColonist[1],"LockworkplaceColonist",nil,{
+	--~ AddXTemplate("SolariaTelepresence_sectionWorkplace1","sectionWorkplace",{
+	--~ function ChoGGi.ComFuncs.AddXTemplate(name,template,list,toplevel)
+
+	function ChoGGi.ComFuncs.AddXTemplate(xt,name,pos,list)
+		-- old: name,template,list,toplevel
+		-- new  xt,		name,		pos,	list
+		if type(xt) == "string" then
+			if list then
+				AddXTemplateNew(XTemplates[name],xt,nil,pos)
+			else
+				AddXTemplateNew(XTemplates[name][1],xt,nil,pos)
+			end
+		else
+			AddXTemplateNew(xt,name,pos,list)
+		end
+	end
+end -- do
 
 function ChoGGi.ComFuncs.SetCommanderBonuses(name)
 	local comm = table.find_value(MissionParams.idCommanderProfile.items,"id",g_CurrentMissionParams.idCommanderProfile)

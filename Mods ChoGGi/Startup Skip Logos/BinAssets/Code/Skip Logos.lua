@@ -1,11 +1,9 @@
 
 function OnMsg.DesktopCreated()
 
-	-- if we open something in ged we may get a create new global error if these aren't set
-	-- see CommonLua\Core\autorun.lua for more info
-	local pg = PersistableGlobals
-	pg.PlayInitialMovies = true
-	pg.ParadoxBuildsModManagerWarning = true
+	-- stops "Attempt to create a new global", see CommonLua\Core\autorun.lua for more info
+	local orig_Loading = Loading
+	Loading = true
 
 	-- stop intro videos
 	PlayInitialMovies = empty_func
@@ -13,9 +11,7 @@ function OnMsg.DesktopCreated()
 	-- get rid of mod manager warnings (not the reboot one though)
 	ParadoxBuildsModManagerWarning = true
 
-	-- we don't need these anymore, and we don't want them saved in the persist table
-	pg.PlayInitialMovies = nil
-	pg.ParadoxBuildsModManagerWarning = nil
+	Loading = orig_Loading
 
 	-- bonus:
 	--[[

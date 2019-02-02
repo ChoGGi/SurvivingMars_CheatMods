@@ -46,11 +46,13 @@ function OnMsg.ClassesGenerate()
 		action.ActionName = name or "\0"
 		action.ActionIcon = icon
 	end
+
 	local up_name = "upgrade%s_display_name"
 	local up_des = "upgrade%s_description"
 	local up_icon = "upgrade%s_icon"
 	local function SetUpgradeInfo(action,obj,num)
 		local tempname = Trans(obj[up_name:format(num)])
+		-- if there's an upgrade then add hint text, otherwise blank the id to hide it
 		if tempname ~= "" then
 			SetHint(action,S[302535920001207--[["Add: %s to this building.
 
@@ -62,6 +64,60 @@ function OnMsg.ClassesGenerate()
 	end
 	local doublec = S[302535920001199--[[Double the amount of colonist slots for this building.--]]]
 	local resetc = S[302535920001200--[[Reset the capacity of colonist slots for this building.--]]]
+
+	local grid_lookup = {
+		OxygenFree = {
+			icon = "UI/Icons/res_oxygen.tga",
+			name = S[682--[[Oxygen--]]],
+			text1 = S[4325--[[Free--]]],
+			text2 = S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
+			con = "air_consumption",
+		},
+		OxygenNeed = {
+			icon = "UI/Icons/res_oxygen.tga",
+			name = S[682--[[Oxygen--]]],
+			text1 = S[302535920000162--[[Need--]]],
+			text2 = S[302535920001221--[[Change this %s so it needs a %s source.--]]],
+			con = "air_consumption",
+		},
+		WaterFree = {
+			icon = "UI/Icons/res_water.tga",
+			name = S[681--[[Water--]]],
+			text1 = S[4325--[[Free--]]],
+			text2 = S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
+			con = "water_consumption",
+		},
+		WaterNeed = {
+			icon = "UI/Icons/res_water.tga",
+			name = S[681--[[Water--]]],
+			text1 = S[302535920000162--[[Need--]]],
+			text2 = S[302535920001221--[[Change this %s so it needs a %s source.--]]],
+			con = "water_consumption",
+		},
+		PowerFree = {
+			icon = "UI/Icons/res_electricity.tga",
+			name = S[11683--[[Electricity--]]],
+			text1 = S[4325--[[Free--]]],
+			text2 = S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
+			con = "electricity_consumption",
+		},
+		PowerNeed = {
+			icon = "UI/Icons/res_electricity.tga",
+			name = S[11683--[[Electricity--]]],
+			text1 = S[302535920000162--[[Need--]]],
+			text2 = S[302535920001221--[[Change this %s so it needs a %s source.--]]],
+			con = "electricity_consumption",
+		},
+	}
+	local function SetGridInfo(action,obj,name,grid)
+		local consumption = obj[grid.con]
+		if consumption and consumption ~= 0 then
+			SetHint(action,grid.text2:format(name,grid.name))
+			SetIcon(action,grid.text1,grid.icon)
+		else
+			action.ActionId = ""
+		end
+	end
 
 	local cheats_lookup = {
 -- Colonist
@@ -184,13 +240,13 @@ function OnMsg.ClassesGenerate()
 			des = S[302535920001246--[[Changes colour of %s back to default.--]]],
 			des_name = true,
 		},
-		AnimState = {
-			des = S[302535920000458--[[Make object dance on command.--]]],
-			filter_func = "GetStates",
-		},
-		AttachSpots = {
-			des = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
-		},
+--~ 		AnimState = {
+--~ 			des = S[302535920000458--[[Make object dance on command.--]]],
+--~ 			filter_func = "GetStates",
+--~ 		},
+--~ 		AttachSpots = {
+--~ 			des = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
+--~ 		},
 		ToggleSigns = {
 			des = S[302535920001223--[[Toggle any signs above %s (until state is changed).--]]],
 			des_name = true,
@@ -217,10 +273,10 @@ function OnMsg.ClassesGenerate()
 			local action = win.actions[i]
 			local aid = action.ActionId
 
-			-- if it's stored in table than we'll use that other wise it's if time
-			if cheats_lookup[aid] then
-				local look = cheats_lookup[aid]
-				-- filter power
+			-- if it's stored in table than we'll use that otherwise it's if time
+			local look = cheats_lookup[aid]
+			if look then
+				-- filter power (yeah it's ugly)
 				if (not look.filter_name and look.filter_func and obj[look.filter_func] and obj[look.filter_func](obj))
 						or not (look.filter_func and look.filter_name and obj[look.filter_func] and obj[look.filter_func](obj,look.filter_name))
 						or (look.filter_name and obj[look.filter_name]) then
@@ -236,12 +292,14 @@ function OnMsg.ClassesGenerate()
 							SetHint(action,look.des)
 						end
 					end
+
 					if look.name then
 						action.ActionName = look.name
 					end
 					if look.icon then
 						SetIcon(action,look.icon_name,look.icon)
 					end
+
 				else
 					action.ActionId = ""
 				end
@@ -256,6 +314,8 @@ function OnMsg.ClassesGenerate()
 				local bs = ChoGGi.UserSettings.BuildingSettings
 				SetHint(action,S[302535920001209--[[Make this %s not need workers (performance: %s).--]]]:format(name,bs and bs[id] and bs[id].performance or 150))
 
+			elseif grid_lookup[aid] then
+				SetGridInfo(action,obj,name,grid_lookup[aid])
 			elseif aid == "CapDbl" then
 				if obj:IsKindOf("SupplyRocket") then
 					SetHint(action,S[302535920001211--[[Double the export storage capacity of this %s.--]]]:format(name))
@@ -289,45 +349,6 @@ function OnMsg.ClassesGenerate()
 
 	If this isn't a dumping site then waste rock will not be emptied.--]]])
 					end
-				end
-
-			elseif aid == "PowerFree" or aid == "PowerNeed" then
-				if obj.electricity_consumption and obj.electricity_consumption ~= 0 then
-					if aid == "PowerFree" then
-						SetHint(action,S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]]:format(name,S[11683--[[Electricity--]]]))
-						SetIcon(action,S[4325--[[Free--]]],"UI/Icons/res_electricity.tga")
-					else
-						SetHint(action,S[302535920001221--[[Change this %s so it needs a %s source.--]]]:format(name,S[11683--[[Electricity--]]]))
-						SetIcon(action,S[302535920000162--[[Need--]]],"UI/Icons/res_electricity.tga")
-					end
-				else
-					action.ActionId = ""
-				end
-
-			elseif aid == "WaterFree" or aid == "WaterNeed" then
-				if obj.water_consumption and obj.water_consumption ~= 0 then
-					if aid == "WaterFree" then
-						SetHint(action,S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]]:format(name,S[681--[[Water--]]]))
-						SetIcon(action,S[4325--[[Free--]]],"UI/Icons/res_water.tga")
-					else
-						SetHint(action,S[302535920001221--[[Change this %s so it needs a %s source.--]]]:format(name,S[681--[[Water--]]]))
-						SetIcon(action,S[302535920000162--[[Need--]]],"UI/Icons/res_water.tga")
-					end
-				else
-					action.ActionId = ""
-				end
-
-			elseif aid == "OxygenFree" or aid == "OxygenNeed" then
-				if obj.air_consumption and obj.air_consumption ~= 0 then
-					if aid == "OxygenFree" then
-						SetHint(action,S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]]:format(name,S[682--[[Oxygen--]]]))
-						SetIcon(action,S[4325--[[Free--]]],"UI/Icons/res_water.tga")
-					else
-						SetHint(action,S[302535920001221--[[Change this %s so it needs a %s source.--]]]:format(name,S[682--[[Oxygen--]]]))
-						SetIcon(action,S[302535920000162--[[Need--]]],"UI/Icons/res_water.tga")
-					end
-				else
-					action.ActionId = ""
 				end
 
 			end -- ifs
@@ -374,12 +395,12 @@ end
 function ColorizableObject:CheatColourDefault()
 	ChoGGi.ComFuncs.ObjectColourDefault(self)
 end
-function Object:CheatAnimState()
-	ChoGGi.ComFuncs.SetAnimState(self)
-end
-function Object:CheatAttachSpots()
-	ChoGGi.ComFuncs.AttachSpots_Toggle(self)
-end
+--~ function Object:CheatAnimState()
+--~ 	ChoGGi.ComFuncs.SetAnimState(self)
+--~ end
+--~ function Object:CheatAttachSpots()
+--~ 	ChoGGi.ComFuncs.AttachSpots_Toggle(self)
+--~ end
 
 local function CheatDestroy(self)
 	local ChoGGi = ChoGGi
