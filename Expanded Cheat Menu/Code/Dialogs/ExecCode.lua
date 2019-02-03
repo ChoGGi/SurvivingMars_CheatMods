@@ -195,7 +195,7 @@ Press again to toggle updating."--]]],
 
 	end -- right side
 
-	self:SetInitPos(context.parent)
+	self:PostInit(context.parent)
 end
 
 -- toggle code highlighting

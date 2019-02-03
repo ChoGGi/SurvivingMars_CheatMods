@@ -115,9 +115,9 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	-- new table for each find dialog, so examine only opens once
 	self.found_objs = {}
 
-	self:SetInitPos(context.parent)
-
 	self.idEdit:SetFocus()
+
+	self:PostInit(context.parent)
 end
 
 --~ function ChoGGi_FindValueDlg:RetStringCase(value,case)

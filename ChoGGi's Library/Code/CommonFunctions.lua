@@ -70,29 +70,31 @@ end -- do
 
 -- check if text is already translated or needs to be, and return the text
 function ChoGGi.ComFuncs.CheckText(text,fallback)
-	local ret
+	local ret_str
 	-- no sense in translating a string
 	if type(text) == "string" then
 		return text
 	else
-		ret = S[text]
+		-- see if the number is an id num, tostring(num) won't match index tables (works as a hacky bypass)
+		ret_str = S[text]
 	end
-	-- could be getting called from another mod, or it just isn't included in Strings
-	if not ret or type(ret) ~= "string" then
-		ret = Trans(text)
+	-- could be getting called from another mod, or it just isn't included in ChoGGi.Strings
+	if not ret_str or type(ret_str) ~= "string" then
+		ret_str = Trans(text)
 	end
 
-	-- Trans will always return a string
-	if #ret > 15 and ret:sub(-15) == "*bad string id?" then
-		ret = tostring(fallback or text)
+	-- make sure the string isn't just a missing text/id msg. if it's under 16 then it can't include " *bad string id?".
+	if ret_str == "Missing text" or #ret_str > 16 and ret_str:sub(-16) == " *bad string id?" then
+		-- not a proper string, so use fallback
+		ret_str = tostring(fallback or text)
 	end
+
 	-- have at it
-	return ret
+	return ret_str
 end
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
-	local tostring = tostring
 	local empty_func = empty_func
 	local IsObjlist = IsObjlist
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo

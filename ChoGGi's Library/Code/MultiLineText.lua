@@ -90,10 +90,10 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 		OnPress = self.idCancelOnPress,
 	}, self.idButtonContainer)
 
-	self:SetInitPos(context.parent)
 	if context.scrollto then
 		if type(context.scrollto) == "string" then
-			DelayedCall(1,function()
+			CreateRealTimeThread(function()
+				Sleep(1)
 				local edit = self.idEdit
 				-- loop through lines table till we find the one we want
 				local line_num
@@ -115,12 +115,14 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 				end
 			end)
 		else
-			DelayedCall(1,function()
+			CreateRealTimeThread(function()
+				Sleep(1)
 				self.idEdit:ScrollTo(0, context.scrollto)
 			end)
 		end
 	end
 
+	self:PostInit(context.parent)
 end
 
 -- this gets sent to Dump()

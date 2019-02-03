@@ -1386,9 +1386,17 @@ The func I use for spot_rot rounds to two decimal points...
 		end
 	end -- do
 
-	function ChoGGi.ComFuncs.MoveObjToGround(obj)
-		local t_height = terrain.GetHeight(obj:GetVisualPos())
-		obj:SetPos(obj:GetPos():SetZ(t_height))
+	do -- MoveObjToGround
+		local GetHeight = terrain.GetHeight
+		function ChoGGi.ComFuncs.MoveObjToGround(obj)
+			local t_height = GetHeight(obj:GetVisualPos())
+			obj:SetPos(obj:GetPos():SetZ(t_height))
+		end
+	end -- do
+
+	function ChoGGi.ComFuncs.GetDesktopWindow(class)
+		local desktop = terminal.desktop
+		return desktop[TableFind(desktop,"class",class)]
 	end
 
 end

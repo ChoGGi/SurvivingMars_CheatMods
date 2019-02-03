@@ -69,7 +69,7 @@ DefineClass.ChoGGi_ListChoiceDlg = {
 	__parents = {"ChoGGi_Window"},
 	choices = false,
 	colorpicker = false,
-	-- we don't want OnColorChanged to fire till after window is loaded
+	-- we don't want OnColorChanged to fire till after user does something in the dialog
 	skip_color_change = true,
 	-- do different stuff for different numbers
 	custom_type = 0,
@@ -355,8 +355,8 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	end
 
 	-- are we showing a hint?
-	local hint = CheckText(self.list.hint,"")
-	if hint ~= "" then
+	local hint = CheckText(self.list.hint)
+	if hint ~= "nil" then
 		self.idMoveControl.RolloverText = hint
 		self.idOK.RolloverText = StringFormat("%s\n\n\n%s",self.idOK:GetRolloverText(),hint)
 	end
@@ -366,9 +366,9 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		self.idButtonContainer:SetVisible(false)
 	end
 
-	self:SetInitPos(self.list.parent)
-
 	self.skip_color_change = false
+
+	self:PostInit(self.list.parent)
 end
 
 -- uncheck all the other checks

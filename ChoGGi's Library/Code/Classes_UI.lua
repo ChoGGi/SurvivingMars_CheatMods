@@ -9,6 +9,7 @@ local S = ChoGGi.Strings
 
 local box,point = box,point
 local IsValid = IsValid
+local PropObjGetProperty = PropObjGetProperty
 local StringFormat = string.format
 local IsImageReady = UIL.IsImageReady
 
@@ -444,7 +445,6 @@ DefineClass.ChoGGi_Window = {
 	action_host = false,
 }
 
-local PropObjGetProperty = PropObjGetProperty
 -- store opened dialogs
 if not PropObjGetProperty(_G,"g_ChoGGiDlgs") then
 	g_ChoGGiDlgs = objlist:new()
@@ -539,17 +539,12 @@ function ChoGGi_Window:AddElements()
 		end
 	end
 
+	-- title
 	self.idCaption = g_Classes.ChoGGi_Label:new({
 		Id = "idCaption",
 		Padding = box(4,0,0,0),
 	}, self.idTitleLeftSection)
 	self.idCaption:SetTitle(self)
-
---~ 	if is_image then
---~ 		self.idCaption:SetPadding(box(self.idCaptionImage.box:sizex(),0,0,0))
---~ 	else
---~ 		self.idCaption:SetPadding(box(4,0,0,0))
---~ 	end
 
 	-- needed for :Wait()
 	self.idDialog:Open()
@@ -662,7 +657,7 @@ local function UpdateListWidth(self)
 		self:SetWidth(width + 35)
 	end
 end
-function ChoGGi_Window:SetInitPos(parent,pt)
+function ChoGGi_Window:PostInit(parent,pt)
 	local x,y,w,h
 
 	-- some funcs opened in examine have more than one return value
@@ -727,7 +722,23 @@ function ChoGGi_Window:SetInitPos(parent,pt)
 	if self.idList then
 		CreateRealTimeThread(UpdateListWidth,self)
 	end
+
+	local move = self.idMoveControl
+	if move then
+		local str = S[302535920001518--[[Double-click <left_click> title to rollup into the title bar.--]]]
+		if move.RolloverText == "" then
+			move.RolloverText = str
+		else
+			move.RolloverText = StringFormat("%s\n\n%s",
+				self.idMoveControl:GetRolloverText(),
+				str
+			)
+		end
+	end
+
 end
+-- needed till we update minimap and view colony map (since they both use the func name)
+ChoGGi_Window.SetInitPos = ChoGGi_Window.PostInit
 
 function ChoGGi_Window:idTextOnHyperLink(link, _, box, pos, button)
 	self = GetParentOfKind(self, "ChoGGi_Window")
