@@ -113,16 +113,16 @@ function ChoGGi_ShowImageDlg:Init(parent, context)
 	}, self.idDialog)
 
 	-- default dialog position if we can't find the ui stuff (new version or whatnot)
-	local x,y = 150,75
+	local x = 150
 	local PGMainMenu = Dialogs.PGMainMenu
 
 	if PGMainMenu then
-		-- wrapped in a pcall, so if we fail then it doesn't matter (other than an error in the log)
+		-- wrapped in a pcall, so if we fail then it'll just use my default
 		pcall(function()
 			local dlg = PGMainMenu.idContent.PGMission[1][1].idContent.box
 			x = dlg:sizex()
 		end)
 	end
 
-	self:SetInitPos(nil,point(x,y))
+	self:PostInit(nil,point(x,75))
 end

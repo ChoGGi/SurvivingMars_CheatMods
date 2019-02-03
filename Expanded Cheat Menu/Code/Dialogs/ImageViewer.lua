@@ -79,7 +79,7 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	-- first up
 	self:SetImageFile(self.images[1])
 
-	self:SetInitPos(context.parent)
+	self:PostInit(context.parent)
 end
 
 local image_str = "%sx%s"

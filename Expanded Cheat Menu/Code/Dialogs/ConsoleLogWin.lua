@@ -41,7 +41,8 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 
 	self.idToggleTrans = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idToggleTrans",
-		Text = S[302535920000865--[[Toggle Trans--]]],
+		Text = S[302535920000865--[[Trans--]]],
+		RolloverText = StringFormat("%s %s",S[302535920001367--[[Toggles--]]],S[302535920000629--[[UI Transparency--]]]),
 		Dock = "left",
 		Margins = box(4,0,0,0),
 		OnChange = self.idToggleTransOnChange,
@@ -92,6 +93,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 	self.transp_mode = ChoGGi.Temp.transp_mode
 	self:SetTranspMode(self.transp_mode)
 
+	self:PostInit()
 end
 
 function ChoGGi_ConsoleLogWin:idToggleTransOnChange()

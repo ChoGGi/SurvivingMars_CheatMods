@@ -295,7 +295,7 @@ function OnMsg.ClassesGenerate()
 		},
 		{name = " - "},
 		{name = 302535920001479--[[Errors In Console--]],
-			hint = 302535920001480--[[Toggle showing log errors in the console (may block some from showing up in log).--]],
+			hint = S[302535920001480--[[Print lua errors in the console (needs %s enabled as well).--]]]:format(S[302535920001112--[[Console Log--]]]),
 			class = "ChoGGi_CheckButtonMenu",
 			value = "ChoGGi.UserSettings.ConsoleErrors",
 			clicked = function()
@@ -305,7 +305,7 @@ function OnMsg.ClassesGenerate()
 			end,
 		},
 		{name = 302535920001112--[[Console Log--]],
-			hint = 302535920001119--[[Toggle showing the console log on screen.--]],
+			hint = 302535920001119--[[Show console log text in-game (probably an annoyance to non-modders).--]],
 			class = "ChoGGi_CheckButtonMenu",
 			value = "dlgConsoleLog",
 			clicked = function()
@@ -321,7 +321,7 @@ function OnMsg.ClassesGenerate()
 			end,
 		},
 		{name = 302535920001120--[[Console Log Window--]],
-			hint = 302535920001133--[[Toggle showing the console log window on screen.--]],
+			hint = 302535920001133--[[Show the console log text in an independant window.--]],
 			class = "ChoGGi_CheckButtonMenu",
 			value = "dlgChoGGi_ConsoleLogWin",
 			clicked = function()

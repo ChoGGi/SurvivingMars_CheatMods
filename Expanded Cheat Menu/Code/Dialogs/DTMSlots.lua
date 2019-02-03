@@ -33,7 +33,7 @@ function ChoGGi_DTMSlotsDlg:Init(parent, context)
 	-- invis background
 	self.idDialog:SetBackground(0)
 
-	self:SetInitPos(context.parent)
+	self:PostInit(context.parent)
 end
 
 function ChoGGi_DTMSlotsDlg:DrawContent()

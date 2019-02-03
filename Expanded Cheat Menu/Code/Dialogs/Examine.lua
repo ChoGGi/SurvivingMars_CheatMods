@@ -214,8 +214,8 @@ function Examine:Init(parent, context)
 		self.idButSetTransp = g_Classes.ChoGGi_ToolbarButton:new({
 			Id = "idButSetTransp",
 			Image = "CommonAssets/UI/Menu/CutSceneArea.tga",
-			RolloverTitle = S[302535920000865--[[Toggle Trans--]]],
-			RolloverText = S[302535920000629--[[UI Transparency--]]],
+			RolloverTitle = S[302535920000865--[[Trans--]]],
+			RolloverText = StringFormat("%s %s",S[302535920001367--[[Toggles--]]],S[302535920000629--[[UI Transparency--]]]),
 			OnPress = self.idButSetTranspOnPress,
 		}, self.idToolbarButtons)
 		--
@@ -427,7 +427,7 @@ Right-click to go up, middle-click to scroll to the top."--]]],
 		end
 	end
 
-	self:SetInitPos(context.parent)
+	self:PostInit(context.parent)
 end
 
 function Examine:idExecCodeOnKbdKeyDown(vk,...)

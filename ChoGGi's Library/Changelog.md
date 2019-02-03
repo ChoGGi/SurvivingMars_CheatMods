@@ -2,6 +2,8 @@
 
 ## v5.3 (Unreleased)
 - List dialog will set width by width of list items.
+- Added action names/ids to RetName.
+- Added a tooltip to the toolbar of my dialogs letting people know about rolluping them up.
 
 ## v5.2 (28 Jan 2019)
 - Trying to fix some log spam made some names show up as table:XXXXXX/Missing text.

@@ -166,13 +166,13 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 	local pt = point(x,y)
 	self.dialog_original_pos = pt
 
-	self:SetInitPos(nil,pt)
+	self:PostInit(nil,pt)
 end
 
 function ChoGGi_MinimapDlg:idResetDialogOnPress()
 	self = GetRootDialog(self)
 	self:ResetSize()
-	self:SetInitPos(nil,self.dialog_original_pos)
+	self:PostInit(nil,self.dialog_original_pos)
 --~ 	self:SetPos(self.dialog_original_pos)
 end
 
@@ -182,7 +182,7 @@ function ChoGGi_MinimapDlg:idToggleDblSizeOnPress()
 	if size:x() == self.dialog_width_scaled and size:y() == self.dialog_height_scaled then
 		self:SetSize(point(self.dialog_width_scaled*2,self.dialog_height_scaled*2))
 		-- we don't want it off screen
-		self:SetInitPos(nil,self:GetPos())
+		self:PostInit(nil,self:GetPos())
 	else
 		self:ResetSize()
 	end

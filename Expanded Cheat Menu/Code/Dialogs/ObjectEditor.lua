@@ -129,10 +129,10 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		RolloverAnchor = "bottom",
 	}, self.idEditArea)
 
-	self:SetInitPos(context.parent)
-
 	-- update item list
 	self:UpdateListContent()
+
+	self:PostInit(context.parent)
 end
 
 function ChoGGi_ObjectEditorDlg:idGotoOnPress()

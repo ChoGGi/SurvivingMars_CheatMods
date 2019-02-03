@@ -117,6 +117,8 @@ function OnMsg.ClassesGenerate()
 				Msg("PostSaveGame")
 				return err
 			end
+
+			-- be useful for restarting threads, see if devs will add it
 			Msg("PostSaveGame")
 			return ChoGGi_OrigFuncs.PersistGame(folder,...)
 		end
@@ -312,6 +314,7 @@ function OnMsg.ClassesGenerate()
 	SaveOrigFunc("Workplace","GetWorkshiftPerformance")
 	SaveOrigFunc("XMenuEntry","SetShortcut")
 	SaveOrigFunc("XPopupMenu","RebuildActions")
+	SaveOrigFunc("XToolBar","RebuildActions")
 	SaveOrigFunc("XShortcutsHost","SetVisible")
 	SaveOrigFunc("XSizeConstrainedWindow","UpdateMeasure")
 
@@ -441,9 +444,30 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
+	-- this one is easier than XPopupMenu, since it keeps a ref to the action (devs were kind enough to add a single line of "button.action = action")
+	function XToolBar:RebuildActions(...)
+		ChoGGi_OrigFuncs.XToolBar_RebuildActions(self,...)
+		-- we only care for the cheats menu toolbar tooltips thanks
+		if self.Toolbar ~= "DevToolbar" then
+			return
+		end
+		-- if any of them are a func then change it to the text
+		for i = 1, #self do
+			local button = self[i]
+			if type(button:GetRolloverText()) == "function" then
+				function button.GetRolloverText()
+					return button.action.RolloverText()
+				end
+			end
+		end
+
+	end
+
 	do -- XPopupMenu:RebuildActions
 		local XTemplateSpawn = XTemplateSpawn
+		local type = type
 		-- yeah who gives a rats ass about mouseover hints on menu items
+		-- i probably should also do this for the toolbar items as well, since those are also missing the tooltips
 		function XPopupMenu:RebuildActions(host,...)
 			local menu = self.MenuEntries
 			local popup = self.ActionContextEntries
@@ -454,6 +478,7 @@ function OnMsg.ClassesGenerate()
 				local action = host.actions[i]
 				if #popup == 0 and #menu ~= 0 and action.ActionMenubar == menu and host:FilterAction(action) or #popup ~= 0 and host:FilterAction(action, popup) then
 					local entry = XTemplateSpawn(action.ActionToggle and self.ToggleButtonTemplate or self.ButtonTemplate, self.idContainer, context)
+
 					-- that was hard...
 					if type(action.RolloverText) == "function" then
 						entry.RolloverText = action.RolloverText()
@@ -461,6 +486,7 @@ function OnMsg.ClassesGenerate()
 						entry.RolloverText = action.RolloverText
 					end
 					entry.RolloverTitle = S[126095410863--[[Info--]]]
+					-- if this func added the id or something then i wouldn't need to do this copy n paste :(
 
 					function entry.OnPress(this, _)
 						if action.OnActionEffect ~= "popup" then
@@ -489,7 +515,6 @@ function OnMsg.ClassesGenerate()
 						entry:SetIcon(action:ActionToggled(host) and action.ActionToggledIcon ~= "" and action.ActionToggledIcon or action.ActionIcon)
 					end
 					entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
-					-- added in modders beta "rc1"
 					if action:ActionState(host) == "disabled" then
 						entry:SetEnabled(false)
 					end
@@ -497,6 +522,7 @@ function OnMsg.ClassesGenerate()
 					entry:Open()
 				end
 			end
+
 		end
 	end -- do
 

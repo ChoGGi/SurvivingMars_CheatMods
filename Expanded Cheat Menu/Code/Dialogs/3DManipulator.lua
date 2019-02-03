@@ -155,7 +155,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 		RolloverAnchor = "bottom",
 	}, self.idEditArea)
 
-	self:SetInitPos(context.parent)
+	self:PostInit(context.parent)
 
 end
 
