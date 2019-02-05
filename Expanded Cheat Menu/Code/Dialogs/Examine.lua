@@ -1376,7 +1376,7 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 		local name, val = true
 		while name do
 			name, val = getlocal(obj, level, l)
-			ExamineThreadLevel_data[name .. " @ debug.getlocal(" .. level .. "," .. l .. ")"] = val
+			ExamineThreadLevel_data[tostring(name) .. " @ debug.getlocal(" .. level .. "," .. l .. ")"] = val
 			l = l + 1
 		end
 
@@ -1490,21 +1490,18 @@ function Examine:totextex(obj,obj_type)
 				info = getinfo(obj, level, "SLlfunt")
 				if info then
 					local l_level, l_info = level, info
+					local func = info.func
 					c = c + 1
-					totextex_res[c] = self:HyperLink(obj,function()
-							ExamineThreadLevel_totextex(l_level,l_info,obj,self)
-						end)
+					totextex_res[c] = "debug.getinfo(" .. l_level .. "): "
+						.. HLEnd
+						.. self:HyperLink(obj,function()
+								ExamineThreadLevel_totextex(l_level,l_info,obj,self)
+							end)
 						.. (info.short_src or info.source)
-						.. "("
-						.. info.currentline
-						.. ") "
-						.. S[1000110--[[Type--]]]
-						.. ": "
+						.. "(" .. info.currentline .. ") "
+						.. S[1000110--[[Type--]]] .. ": "
 						.. (info.name ~= "" and info.name or info.name_what ~= "" and info.name_what or info.what ~= "" and info.what or S[302535920000723--[[Lua--]]])
 						.. HLEnd
-						.. " @ debug.getinfo("
-						.. l_level
-						.. ",\"SLlfunt\")"
 				else
 					break
 				end
@@ -1583,7 +1580,6 @@ function Examine:totextex(obj,obj_type)
 				.. tostring(obj:GetStepVector(obj:GetState(),0))
 				.. HLEnd
 			)
-
 		end
 	end
 
@@ -1770,6 +1766,12 @@ function Examine:totextex(obj,obj_type)
 		totextex_res[c] = dbg_value
 
 	elseif obj_type == "thread" then
+		-- grab the thread "function"
+		if not blacklist then
+			c = c + 1
+			totextex_res[c] = "debug.getinfo(1,f): " .. self:valuetotextex(getinfo(obj, 1,"f").func)
+		end
+
 		c = c + 1
 		totextex_res[c] = "\n\n<color 255 255 255>"
 			.. S[302535920001353--[[Thread info--]]]
