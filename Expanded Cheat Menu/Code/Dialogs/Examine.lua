@@ -1214,7 +1214,7 @@ local function Examine_valuetotextex(_,_,button,self,obj)
 	end
 end
 local point_str = "%s%s(%s,%s,%s)%s"
-function Examine:valuetotextex(obj)
+function Examine:valuetotextex(obj,left)
 	local obj_type = type(obj)
 
 	if obj_type == "function" then
@@ -1235,7 +1235,20 @@ function Examine:valuetotextex(obj)
 			return "nil"
 		end
 		-- some translated stuff has <color in it, so we make sure they don't colour the rest
-		return "'" .. obj .. "</color></color>'"
+		local _,colour_cnt = obj:gsub("<color ","")
+		for _ = 1, colour_cnt do
+			obj = obj .. "</color>"
+		end
+		return "'<color " .. ChoGGi.UserSettings.ExamineColourStr .. ">" .. obj .. "</color>'"
+	end
+
+	-- for some reason i don't want the indexed table numbers to be coloured.
+	if obj_type == "number" and not left then
+		return "<color " .. ChoGGi.UserSettings.ExamineColourNum .. ">" .. obj .. "</color>"
+	end
+
+	if obj_type == "boolean" then
+		return "<color " .. ChoGGi.UserSettings.ExamineColourBool .. ">" .. tostring(obj) .. "</color>"
 	end
 
 	if obj_type == "userdata" then
@@ -1264,13 +1277,19 @@ function Examine:valuetotextex(obj)
 		else
 			-- show translated text if possible and return a clickable link
 			local trans_str = Trans(obj)
-			if trans_str == "Missing text" or trans_str:sub(-15) == "*bad string id?" then
+			if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
 				trans_str = tostring(obj)
 			end
-			-- the </color> is to make sure it doesn't bleed into other text
 			local meta = getmetatable(obj)
 
-			return trans_str .. "</color></color>"
+			-- the </color> is to make sure it doesn't bleed into other text
+			local _,colour_cnt = trans_str:gsub("<color ","")
+			for _ = 1, colour_cnt do
+				trans_str = trans_str .. "</color>"
+			end
+
+--~ 			return trans_str .. "</color></color>"
+			return trans_str
 				.. self:HyperLink(obj,Examine_valuetotextex) .. " *"
 				.. (meta and meta.__name or tostring(obj)) .. HLEnd
 		end
@@ -1425,7 +1444,7 @@ function Examine:totextex(obj,obj_type)
 				Sleep(1)
 			end
 
-			name = self:valuetotextex(k)
+			name = self:valuetotextex(k,true)
 			-- gotta store all the names if we're doing all props (no dupes thanks)
 			totextex_dupes[name] = true
 			c = c + 1
@@ -1441,7 +1460,7 @@ function Examine:totextex(obj,obj_type)
 			while meta_temp do
 				for k in pairs(meta_temp) do
 
-					name = self:valuetotextex(k)
+					name = self:valuetotextex(k,true)
 					if not totextex_dupes[name] then
 						totextex_dupes[name] = true
 						c = c + 1
@@ -1545,6 +1564,13 @@ function Examine:totextex(obj,obj_type)
 			.. self:valuetotextex(obj:GetVisualPos())
 			.. "--"
 		)
+		-- add the particle name
+		if obj:IsKindOf("ParSystem") then
+			local par_name = obj:GetParticlesName()
+			if par_name ~= "" then
+				TableInsert(totextex_res,2,"obj:GetParticlesName(): '" .. par_name .. "'\n")
+			end
+		end
 
 		if obj:IsValidPos() and IsValidEntity(obj:GetEntity()) and 0 < obj:GetAnimDuration() then
 			local pos = obj:GetVisualPos() + obj:GetStepVector() * obj:TimeToAnimEnd() / obj:GetAnimDuration()
@@ -1577,12 +1603,16 @@ function Examine:totextex(obj,obj_type)
 	elseif obj_type == "userdata" then
 		local trans_str = Trans(obj)
 		-- might as well just return userdata instead of these
-		if trans_str == "Missing text" or trans_str:sub(-15) == "*bad string id?" then
+		if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
 			trans_str = tostring(obj)
 			str_not_translated = true
 		else
-			-- some strings have up to two <color> in them
-			trans_str = obj .. " = " .. trans_str .. "</color></color>"
+			-- the </color> is to make sure it doesn't bleed into other text
+			local _,colour_cnt = trans_str:gsub("<color ","")
+			for _ = 1, colour_cnt do
+				trans_str = trans_str .. "</color>"
+			end
+			trans_str = tostring(obj) .. " = '" .. trans_str .. "'"
 		end
 		c = c + 1
 		totextex_res[c] = trans_str

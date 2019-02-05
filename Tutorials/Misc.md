@@ -30,7 +30,7 @@ Use select(index,...) index being the argument you want to select, or run it thr
 for i = 1, select("#",...) do
 	local arg = select(i,...)
 end
-Or use: local vararg = pack_params(...)
+Or use: local vararg = {...}
 and you can access them like a regular table
 
 Countdown timer (use CreateGameTimeThread to have it follow the speed of the game):

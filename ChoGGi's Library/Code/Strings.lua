@@ -10,7 +10,6 @@ local TranslationTable = TranslationTable
 do -- Translate
 	local T,_InternalTranslate,procall = T,_InternalTranslate,procall
 	local type,select = type,select
-	local TableConcat = ChoGGi.ComFuncs.TableConcat
 
 	-- some userdata'll ref UICity, which will fail if being used in main menu
 	local function SafeTrans(str)
@@ -27,6 +26,7 @@ do -- Translate
 			str = ...
 		end
 
+		-- certain stuff will fail without this obj, so just pass it off to pcall and let it error out
 		if UICity then
 			result,str = true,_InternalTranslate(str)
 		else
@@ -40,7 +40,7 @@ do -- Translate
 			if type(arg2) == "string" then
 				return arg2
 			end
-			-- i'd rather know if something failed by having a string rather than a func fail
+			-- i'd rather know if something failed by having a bad string rather than a failed func
 			return tostring(...) .. " *bad string id?"
 		end
 

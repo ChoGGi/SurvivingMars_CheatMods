@@ -75,7 +75,7 @@ if BuildingTemplates.RCHarvesterBuilding then
 end
 
 local function Trans(...)
-	return _InternalTranslate(T(pack_params(...)))
+	return _InternalTranslate(T{...})
 end
 
 local idle_text = StringFormat([[Radius: %s, %s: %s]],"%s",Trans(49--[[Status--]]),Trans(949--[[Idle--]]))
@@ -469,7 +469,7 @@ function OnMsg.ClassesBuilt()
 	-- status updates/radius slider
 	table.insert(
 		rover,
-		#rover or 0,
+		#rover,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_RCBulldozer_Status", true,
 			"__context_of_kind", "RCBulldozer",
@@ -477,10 +477,10 @@ function OnMsg.ClassesBuilt()
 			"Title", T(49, "Status"),
 			"Icon", "UI/Icons/Sections/facility.tga",
 		}, {
-			PlaceObj("XTemplateTemplate", {
-				"__template", "InfopanelText",
-				"Text", T(0,"<StatusUpdate>"),
-			}),
+--~ 			PlaceObj("XTemplateTemplate", {
+--~ 				"__template", "InfopanelText",
+--~ 				"Text", T(0,"<StatusUpdate>"),
+--~ 			}),
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelSlider",
 				"BindTo", "radius",
@@ -511,7 +511,7 @@ function OnMsg.ClassesBuilt()
 	-- texture toggle
 	table.insert(
 		rover,
-		status+1,
+		#rover+1,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_RCBulldozer_Texture", true,
 			"__context_of_kind", "RCBulldozer",
@@ -549,7 +549,7 @@ function OnMsg.ClassesBuilt()
 	-- circle toggle
 	table.insert(
 		rover,
-		status+1,
+		#rover+1,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_RCBulldozer_Circle", true,
 			"__context_of_kind", "RCBulldozer",

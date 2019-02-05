@@ -1,5 +1,6 @@
 -- I didn't get a harumph outta that guy!
 ModEnvBlacklist = {--[[Harumph!--]]}
+
 -- yeah, I know it don't do jack your point?
 
 
@@ -13,7 +14,7 @@ All of my code is licensed under the MIT License as follows:
 
 MIT License
 
-Copyright (c) [2018] [ChoGGi]
+Copyright (c) [2019] [ChoGGi]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

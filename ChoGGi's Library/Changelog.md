@@ -3,6 +3,7 @@
 ## v5.3 (Unreleased)
 - List dialog will set width by width of list items.
 - Added action names/ids to RetName.
+- RetName didn't work with ParSystem objects.
 - Added a tooltip to the toolbar of my dialogs letting people know about rolluping them up.
 
 ## v5.2 (28 Jan 2019)

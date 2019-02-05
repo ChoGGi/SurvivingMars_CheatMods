@@ -1,12 +1,11 @@
 -- See LICENSE for terms
 
-local pack_params = pack_params
 local TableUnpack = table.unpack
 
 -- add marker to any prefab building
 local orig_ConstructionSite_Complete = ConstructionSite.Complete
 function ConstructionSite:Complete(...)
-	local ret = pack_params(orig_ConstructionSite_Complete(self,...))
+	local ret = {orig_ConstructionSite_Complete(self,...)}
 
 	if self.prefab then
 		ret[1].ChoGGi_PrefabSafety = true

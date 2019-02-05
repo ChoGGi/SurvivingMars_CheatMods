@@ -166,7 +166,6 @@ function OnMsg.ClassesGenerate()
 	do -- WriteLogs_Toggle
 		local Dump = ChoGGi.ComFuncs.Dump
 		local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
-		local pack_params = pack_params
 		local tostring = tostring
 		local newline = ChoGGi.newline
 
@@ -199,15 +198,18 @@ function OnMsg.ClassesGenerate()
 			_G[funcname] = function(...)
 
 				-- table.concat don't work with non strings/numbers
-				local str = pack_params(...) or ""
-				for i = 1, #str do
-					str[i] = tostring(str[i])
+				local args = {...}
+				for i = 1, #args do
+					local arg_type = type(args[i])
+					if arg_type ~= "string" and arg_type ~= "number" then
+						args[i] = tostring(args[i])
+					end
 				end
-				str = TableConcat(str, " ")
+				args = TableConcat(args," ")
 
-				if buffer_table[buffer_cnt] ~= str then
+				if buffer_table[buffer_cnt] ~= args then
 					buffer_cnt = buffer_cnt + 1
-					buffer_table[buffer_cnt] = funcname .. ": " .. str
+					buffer_table[buffer_cnt] = funcname .. ": " .. args
 				end
 
 				-- fire off orig func...

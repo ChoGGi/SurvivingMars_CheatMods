@@ -545,7 +545,7 @@ function OnMsg.ClassesBuilt()
 
 	table.insert(
 		rover,
-		#rover or 0,
+		#rover,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_PortableMiner_Prod", true,
 			"__context_of_kind", "PortableMiner",

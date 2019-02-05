@@ -45,25 +45,25 @@ start changing strings, and then send you the file.
 I like to use this function for ease of use (and to make sure I always get a string back):
 
 do -- Translate
-	local T,_InternalTranslate,pack_params,procall = T,_InternalTranslate,pack_params,procall
+	local T,_InternalTranslate,procall = T,_InternalTranslate,procall
 	local type,select = type,select
 
 	-- some userdata'll ref UICity, which will fail if being used in main menu
 	local function SafeTrans(str)
 		return _InternalTranslate(str)
 	end
-	local missing_str = "%s *bad string id?"
 
 	-- translate func that always returns a string
-	function ChoGGi.ComFuncs.Translate(...)
+	function Translate(...)
 		local str,result
 		local stype = type(select(1,...))
 		if stype == "userdata" or stype == "number" then
-			str = T(pack_params(...))
+			str = T{...}
 		else
 			str = ...
 		end
 
+		-- certain stuff will fail without this obj, so just pass it off to pcall and let it error out
 		if UICity then
 			result,str = true,_InternalTranslate(str)
 		else
@@ -77,8 +77,8 @@ do -- Translate
 			if type(arg2) == "string" then
 				return arg2
 			end
-			-- i'd rather know if something failed by having a string rather than a func fail
-			return missing_str:format(...)
+			-- i'd rather know if something failed by having a bad string rather than a failed func
+			return tostring(...) .. " *bad string id?"
 		end
 
 		-- and done

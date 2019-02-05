@@ -160,11 +160,8 @@ function OnMsg.ClassesGenerate()
 						return
 					end
 					-- lib should always have the blacklist enabled
-					local bl = pack_params(debug.getupvalue(
-						getmetatable(Mods.ChoGGi_Library.env).__index,
-						1
-					))
-					OpenInExamineDlg(bl[2],nil,"blacklist")
+					local _,bl = debug.getupvalue(getmetatable(Mods.ChoGGi_Library.env).__index,1)
+					OpenInExamineDlg(bl,nil,"blacklist")
 				end,
 			}
 		end
@@ -231,7 +228,6 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 		local funcs = {"error","OutputDebugString"}
-
 		function ChoGGi.ConsoleFuncs.ToggleLogErrors(which)
 			local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 			if which then
@@ -266,15 +262,15 @@ function OnMsg.ClassesGenerate()
 			end,
 		},
 		{name = 302535920001026--[[Show File Log--]],
-			hint = 302535920001091--[[Flushes log to disk and displays in examine.--]],
+			hint = 302535920001091--[[Flushes log to disk and displays in an examine dialog.--]],
 			clicked = function()
-				OpenInExamineDlg(select(2,ReadLog()))
+				OpenInExamineDlg(LoadLogfile())
 			end,
 		},
 		{name = 302535920000071--[[Mods Log--]],
-			hint = 302535920000870--[[Shows any errors from loading mods in console log.--]],
+			hint = 302535920000870--[[Shows mod log msgs in an examine dialog.--]],
 			clicked = function()
-				print(ModMessageLog)
+				OpenInExamineDlg(ModMessageLog)
 			end,
 		},
 		{name = " - "},
@@ -294,7 +290,7 @@ function OnMsg.ClassesGenerate()
 		},
 		{name = " - "},
 		{name = 302535920001479--[[Errors In Console--]],
-			hint = S[302535920001480--[[Print lua errors in the console (needs %s enabled as well).--]]]:format(S[302535920001112--[[Console Log--]]]),
+			hint = S[302535920001480--[[Print (some) lua errors in the console (needs %s enabled).--]]]:format(S[302535920001112--[[Console Log--]]]),
 			class = "ChoGGi_CheckButtonMenu",
 			value = "ChoGGi.UserSettings.ConsoleErrors",
 			clicked = function()

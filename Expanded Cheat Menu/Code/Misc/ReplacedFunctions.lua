@@ -10,6 +10,7 @@
 
 local type = type
 local TableFindValue = table.find_value
+local TableUnpack = table.unpack
 
 local MsgPopup
 local DebugGetInfo
@@ -123,11 +124,12 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- print logged errors to console
+		-- i assume i had a good reason to put this here instead of OnMsgs?
 		if ChoGGi.UserSettings.ConsoleErrors then
 			ChoGGi.ConsoleFuncs.ToggleLogErrors(true)
 		end
 
-		-- used by a func in examine for functions i think
+		-- used by a func in examine for examining functions (i think), i know something gives an error without this
 		GetFuncSourceString = DebugGetInfo
 
 		function TGetID(t,...)
@@ -147,10 +149,9 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- fix for sending nil id to it
-		local unpack_params = unpack_params
 		function LoadCustomOnScreenNotification(notification,...)
 			-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
-			if unpack_params(notification) then
+			if TableUnpack(notification) then
 				return ChoGGi_OrigFuncs.LoadCustomOnScreenNotification(notification,...)
 			end
 		end
@@ -269,11 +270,8 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- UI transparency dialogs (buildmenu, pins, infopanel)
-		local pack_params = pack_params
-		local TableUnpack = table.unpack
 		function OpenDialog(...)
---~ 			local ret = {ChoGGi_OrigFuncs.OpenDialog(...)}
-			local ret = pack_params(ChoGGi_OrigFuncs.OpenDialog(...))
+			local ret = {ChoGGi_OrigFuncs.OpenDialog(...)}
 			SetTrans(ret)
 			return TableUnpack(ret)
 		end
@@ -1310,13 +1308,10 @@ function OnMsg.ClassesBuilt()
 
 	do -- ConstructionController:CreateCursorObj
 		local IsValid = IsValid
-		local pack_params = pack_params
-		local TableUnpack = table.unpack
 		-- set orientation to same as last object
 		function ConstructionController:CreateCursorObj(...)
 			local ChoGGi = ChoGGi
---~ 			local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
-			local ret = pack_params(ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...))
+			local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
 
 			local last = ChoGGi.Temp.LastPlacedObject
 			if self.template_obj and self.template_obj.can_rotate_during_placement and ChoGGi.UserSettings.UseLastOrientation and IsValid(last) then
