@@ -274,7 +274,8 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920001422,Right-click to change refresh delay.,
 302535920000967,Delay in ms between updating text.,
 302535920001248,Sort normally or backwards.,
-302535920001397,"These can be used as obj:GetNAME() / obj:SetNAME().
+302535920001397,"Not the actual properties (see object.properties for those).
+These can be used as obj:GetNAME() / obj:SetNAME().
 You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 Check the actual object/g_Classes.object for the correct value to use (Entity > entity).
 ",
@@ -306,7 +307,6 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 302535920000525,Ancestors,
 302535920000553,Examine parent and ancestor objects.,
 302535920000414,Are you sure you wish to delete it?,
-302535920000323,Exec Code,
 302535920000239,Tools,
 302535920000228,Assign to,
 302535920000043,"Press Enter to scroll to next found text, Ctrl-Enter to scroll to previous found text, Arrows to scroll to each end.",
@@ -651,8 +651,8 @@ Otherwise you won't see anything.",
 See Cheats>%s to remove.",
 302535920000270,Instant Start,
 302535920000271,"May take up to one Sol to ""instantly"" activate mystery.",
-302535920000272,"To play back speech use ""Tools>Exec"" and type in
-g_Voice:Play(ChoGGi.CurObj.speech)",
+302535920000272,"To play back speech press the ""%s"" checkbox and type in
+g_Voice:Play(o.speech)",
 302535920000273,Speech,
 302535920000274,Message,
 302535920000275,Total parts,
@@ -1076,8 +1076,6 @@ Blue = pass/no build, Red = no pass/no build.",
 302535920000899,Check this to pack drone(s) into prefabs (number can be higher than attached drones).,
 302535920000900,Build Speed,
 302535920000901,Set Drone Factory Build Speed,
-302535920000902,%s: What happens when the drones get into your Jolt Cola supply...,
-302535920000903,and drink it...,
 302535920000904,%s: More where that came from,
 302535920000905,%s: Slight of hand,
 302535920000906,%s: I'm singing in the rain. Just singin' in the rain. What a glorious feeling.,

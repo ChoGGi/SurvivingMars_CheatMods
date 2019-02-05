@@ -4,10 +4,10 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-	local StringFormat = string.format
+
 	local c = #Actions
 
-	local str_url = "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/%s"
+	local str_url = "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/"
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000504--[[List All Menu Items--]]],
@@ -210,19 +210,19 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_Help_ECM,
 		ActionId = ".About ECM",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
-		RolloverText = StringFormat("%s %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000673--[[info dialog.--]]]),
+		RolloverText = S[302535920000000--[[Expanded Cheat Menu--]]] .. " " .. S[302535920000673--[[info dialog.--]]],
 		OnAction = ChoGGi.MenuFuncs.AboutECM,
 		ActionSortKey = "001",
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000887--[[ECM--]]],S[302535920001020--[[Read me--]]]),
+	Actions[c] = {ActionName = S[302535920000887--[[ECM--]]] .. " " .. S[302535920001020--[[Read me--]]],
 		ActionMenubar = str_Help_ECM,
 		ActionId = ".ECM Read me",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
 		RolloverText = S[302535920001025--[[Help! I'm with stupid!--]]],
 		OnAction = function()
-			OpenUrl(str_url:format("Expanded Cheat Menu/README.md#no-warranty-implied-or-otherwise"))
+			OpenUrl(str_url .. "Expanded Cheat Menu/README.md#no-warranty-implied-or-otherwise")
 		end,
 		ActionSortKey = "002",
 	}
@@ -234,7 +234,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
 		RolloverText = S[4915--[[Good News, Everyone!"--]]],
 		OnAction = function()
-			OpenUrl(str_url:format("Expanded Cheat Menu/Changelog.md#ecm-changelog"))
+			OpenUrl(str_url .. "Expanded Cheat Menu/Changelog.md#ecm-changelog")
 		end,
 		ActionSortKey = "003",
 	}
@@ -268,7 +268,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000142--[[Disable--]]],S[302535920000887--[[ECM--]]]),
+	Actions[c] = {ActionName = S[302535920000142--[[Disable--]]] .. " " .. S[302535920000887--[[ECM--]]],
 		ActionMenubar = str_Help_ECM,
 		ActionId = ".Disable ECM",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
@@ -307,16 +307,16 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("*%s*",S[126095410863--[[Info--]]]),
+	Actions[c] = {ActionName = "*" .. S[126095410863--[[Info--]]] .. "*",
 		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Info*",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
-		RolloverText = StringFormat("%s : %s",S[302535920001028--[[Have a Tutorial, or general info you'd like to add?--]]],ChoGGi.email),
+		RolloverText = S[302535920001028--[[Have a Tutorial, or general info you'd like to add?--]]] .. " : " .. ChoGGi.email,
 		ActionSortKey = "-0*Info*",
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("*%s & %s %s*",S[283142739680--[[Game--]]],S[302535920001355--[[Map--]]],S[126095410863--[[Info--]]]),
+	Actions[c] = {ActionName = "*" .. S[283142739680--[[Game--]]] .. " & " .. S[302535920001355--[[Map--]]] .. " " .. S[126095410863--[[Info--]]] .. "*",
 		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Game & Map Info*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
@@ -326,7 +326,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("*%s*",S[5568--[[Stats--]]]),
+	Actions[c] = {ActionName = "*" .. S[5568--[[Stats--]]] .. "*",
 		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Stats*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
@@ -338,13 +338,13 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("*%s*",S[302535920000875--[[Game Functions--]]]),
+	Actions[c] = {ActionName = "*" .. S[302535920000875--[[Game Functions--]]] .. "*",
 		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Game Functions*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
 		OnAction = function()
-			OpenUrl(str_url:format("Tutorials/GameFunctions.lua"))
+			OpenUrl(str_url .. "Tutorials/GameFunctions.lua")
 		end,
 		ActionSortKey = "-2*Game Functions*",
 	}
@@ -374,13 +374,13 @@ function OnMsg.ClassesGenerate()
 		c = c + 1
 		Actions[c] = {ActionName = name,
 			ActionMenubar = str_Help_Tutorial,
-			ActionId = StringFormat(".%s",name),
+			ActionId = "." .. name,
 			ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
 			RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
 			OnAction = function()
-				OpenUrl(str_url:format(StringFormat("Tutorials/%s.md#readme",name)))
+				OpenUrl(str_url .. "Tutorials/" .. name .. ".md#readme")
 			end,
-			ActionSortKey = StringFormat("-3%s",name),
+			ActionSortKey = "-3" .. name,
 		}
 	end
 end

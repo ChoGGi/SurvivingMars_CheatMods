@@ -10,7 +10,7 @@ local Trans
 local GetParentOfKind
 
 local pairs,type = pairs,type
-local StringFormat = string.format
+
 
 function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
@@ -40,7 +40,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 
 	self.obj = context.obj
 	self.obj_name = RetName(self.obj)
-	self.title = StringFormat("%s: %s",S[302535920001305--[[Find Within--]]],self.obj_name)
+	self.title = S[302535920001305--[[Find Within--]]] .. ": " .. self.obj_name
 	self.title_image = "CommonAssets/UI/Menu/EV_OpenFirst.tga"
 	self.title_image_single = true
 

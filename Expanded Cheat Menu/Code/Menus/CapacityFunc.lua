@@ -2,9 +2,7 @@
 
 local default_icon = "UI/Icons/Sections/storage.tga"
 local default_icon2 = "UI/Icons/Upgrades/home_collective_04.tga"
-
 local type,tostring = type,tostring
-local StringFormat = string.format
 
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -45,10 +43,10 @@ function OnMsg.ClassesGenerate()
 		end
 		local ChoGGi = ChoGGi
 		local DefaultSetting = sel.base_max_workers
-		local hint_toolarge = StringFormat("%s %s",S[6779--[[Warning--]]],S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]])
+		local hint_toolarge = S[6779--[[Warning--]]] .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -108,8 +106,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s %s",S[302535920000129--[[Set--]]],RetName(sel),S[302535920000567--[[Worker Capacity--]]]),
-			hint = StringFormat("%s: %s\n\n%s",S[302535920000914--[[Current capacity--]]],hint,hint_toolarge),
+			title = S[302535920000129--[[Set--]]] .. " " .. RetName(sel) .. " " .. S[302535920000567--[[Worker Capacity--]]],
+			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 			skip_sort = true,
 		}
 	end
@@ -126,7 +124,7 @@ function OnMsg.ClassesGenerate()
 		end
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local hint_toolarge = StringFormat("%s %s",S[6779--[[Warning--]]],S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]])
+		local hint_toolarge = S[6779--[[Warning--]]] .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
 		--get type of capacity
 		local CapType
@@ -145,7 +143,7 @@ function OnMsg.ClassesGenerate()
 		if CapType == "electricity" or CapType == "colonist" then
 			DefaultSetting = sel.base_capacity
 		else
-			DefaultSetting = sel[StringFormat("base_%s_capacity",CapType)]
+			DefaultSetting = sel["base_" .. CapType .. "_capacity"]
 		end
 
 		if CapType ~= "colonist" then
@@ -153,7 +151,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -237,7 +235,7 @@ function OnMsg.ClassesGenerate()
 					local tab = UICity.labels["Life-Support"] or ""
 					for i = 1, #tab do
 						if tab[i].template_name == sel.template_name then
-							tab[i][StringFormat("%s_capacity",CapType)] = amount
+							tab[i][CapType .. "_capacity"] = amount
 							tab[i][CapType].storage_capacity = amount
 							tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
 							ChoGGi.ComFuncs.ToggleWorking(tab[i])
@@ -264,8 +262,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s %s",S[302535920000129--[[Set--]]],RetName(sel),S[109035890389--[[Capacity--]]]),
-			hint = StringFormat("%s: %s\n\n%s",S[302535920000914--[[Current capacity--]]],hint,hint_toolarge),
+			title = S[302535920000129--[[Set--]]] .. " " .. RetName(sel) .. " " .. S[109035890389--[[Capacity--]]],
+			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 			skip_sort = true,
 		}
 	end
@@ -283,7 +281,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = sel.base_max_visitors
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -336,8 +334,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s %s",S[302535920000129--[[Set--]]],RetName(sel),S[302535920000961--[[Visitor Capacity--]]]),
-			hint = StringFormat("%s: %s",S[302535920000914--[[Current capacity--]]],hint),
+			title = S[302535920000129--[[Set--]]] .. " " .. RetName(sel) .. " " .. S[302535920000961--[[Visitor Capacity--]]],
+			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end
@@ -352,7 +350,7 @@ function OnMsg.ClassesGenerate()
 	Waste: 1,000,000
 	Mechanized: 1,000,000--]]]
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 50,value = 50},
 			{text = 100,value = 100},
 			{text = 250,value = 250},
@@ -436,7 +434,7 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					StringFormat("%s: %s",choice[1].text,sType),
+					choice[1].text .. ": " .. sType,
 					519--[[Storage--]],
 					"UI/Icons/Sections/basic.tga"
 				)
@@ -446,8 +444,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s: %s %s",S[302535920000129--[[Set--]]],sType,S[302535920000963--[[Size--]]]),
-			hint = StringFormat("%s: %s\n\n%s",S[302535920000914--[[Current capacity--]]],hint,hint_max),
+			title = S[302535920000129--[[Set--]]] .. ": " .. sType .. " " .. S[302535920000963--[[Size--]]],
+			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_max,
 			skip_sort = true,
 		}
 	end

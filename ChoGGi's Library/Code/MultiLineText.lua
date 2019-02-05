@@ -2,7 +2,6 @@
 
 -- displays text in an editable text box
 
-local StringFormat = string.format
 local S = ChoGGi.Strings
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind

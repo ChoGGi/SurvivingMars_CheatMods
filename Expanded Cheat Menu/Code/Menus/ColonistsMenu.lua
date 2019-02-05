@@ -4,7 +4,7 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-	local StringFormat = string.format
+
 	local StarkFistOfRemoval = "CommonAssets/UI/Menu/AlignSel.tga"
 	local c = #Actions
 
@@ -38,11 +38,12 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Traits: Restrict For Selected Building Type",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = function()
+			local text = 302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block will override).--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.restricttraits",sel and sel.template_name),
-				302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block will override).--]]
-			)
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".restricttraits",
+				text
+			) or S[text]
 		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetBuildingTraits("restricttraits")
@@ -55,11 +56,12 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Traits: Block For Selected Building Type",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = function()
+			local text = 302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.blocktraits",sel and sel.template_name),
-				302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]
-			)
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".blocktraits",
+				text
+			) or S[text]
 		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetBuildingTraits("blocktraits")

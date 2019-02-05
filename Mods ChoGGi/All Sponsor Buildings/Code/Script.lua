@@ -1,13 +1,12 @@
 function OnMsg.ModsReloaded()
 	local BuildingTechRequirements = BuildingTechRequirements
-	local spon_str = "sponsor_status%s"
 	local BuildingTemplates = BuildingTemplates
 
 	for id,bld in pairs(BuildingTemplates) do
 
 		-- set each status to false if it isn't
 		for i = 1, 3 do
-			local str = spon_str:format(i)
+			local str = "sponsor_status" .. i
 			if bld[str] ~= false then
 				bld[str] = false
 			end

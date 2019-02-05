@@ -2,7 +2,6 @@
 
 -- displays images
 
---~ local StringFormat = string.format
 local MeasureImage = UIL.MeasureImage
 
 local S
@@ -82,7 +81,6 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	self:PostInit(context.parent)
 end
 
-local image_str = "%sx%s"
 function ChoGGi_ImageViewerDlg:BuildImageMenuPopup()
 	local images = {}
 	local c = 0
@@ -90,11 +88,10 @@ function ChoGGi_ImageViewerDlg:BuildImageMenuPopup()
 		local image_name = self.images[i]
 		c = c + 1
 		local w,h = MeasureImage(image_name)
-		local width_height = image_str:format(w,h)
 		images[c] = {
 			name = image_name,
 			mouseover = function()
-				self:SetImageFile(image_name,width_height)
+				self:SetImageFile(image_name,w .. "x" .. h)
 			end,
 		}
 	end
@@ -108,7 +105,7 @@ function ChoGGi_ImageViewerDlg:SetImageFile(image,width_height)
 
 	if not width_height then
 		local w,h = MeasureImage(image)
-		width_height = image_str:format(w,h)
+		width_height = w .. "x" .. h
 	end
 	self.idImageSize:SetText(width_height)
 end

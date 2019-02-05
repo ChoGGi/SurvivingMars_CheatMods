@@ -2,8 +2,6 @@
 
 -- shows a dialog with to execute code in
 
-local StringFormat = string.format
-
 local S
 local blacklist
 local GetParentOfKind
@@ -50,7 +48,7 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
 	self.obj = context.obj
 	self.obj_name = self.obj and ChoGGi.ComFuncs.RetName(self.obj) or S[302535920001073--[[Console--]]]
 
-	self.title = StringFormat("%s: %s",S[302535920000040--[[Exec Code--]]],self.obj_name)
+	self.title = S[302535920000040--[[Exec Code--]]] .. ": " .. self.obj_name
 
 	if not self.obj then
 		self.dialog_width = 800.0

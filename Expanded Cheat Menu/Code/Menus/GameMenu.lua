@@ -4,7 +4,6 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-	local StringFormat = string.format
 	local c = #Actions
 
 	c = c + 1
@@ -157,9 +156,8 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 		RolloverText = function()
 			-- it can get large, so for this one and this one only we stick the description first.
-			return StringFormat("%s:\n%s",S[302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]],
-				ValueToLuaCode(ChoGGi.UserSettings.LightmodelCustom)
-			)
+			return S[302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]]
+				.. ":\n" .. ValueToLuaCode(ChoGGi.UserSettings.LightmodelCustom)
 		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.EditLightmodelCustom()
@@ -495,7 +493,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	local str_Game_ExportCSV = "ECM.Game.Export CSV"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920001449--[[Export--]]],S[302535920001448--[[CSV--]]]),
+	Actions[c] = {ActionName = S[302535920001449--[[Export--]]] .. " " .. S[302535920001448--[[CSV--]]],
 		ActionMenubar = "ECM.Game",
 		ActionId = ".Export CSV",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

@@ -1,12 +1,9 @@
 -- See LICENSE for terms
 
 local default_icon = "UI/Icons/Anomaly_Event.tga"
-
 local type,tostring = type,tostring
-local StringFormat = string.format
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
-
 local white = white
 local guic = guic
 
@@ -66,18 +63,16 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetObjectOpacity()
 		local ChoGGi = ChoGGi
 		local sel = ChoGGi.ComFuncs.SelObject()
-		if not sel then
-			return
-		end
 		local hint_loop = S[302535920001109--[[Loops though and makes all %s visible.--]]]
 
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[302535920001084--[[Reset--]]],S[3984--[[Anomalies--]]]),value = "Anomaly",hint = hint_loop:format(S[3984--[[Anomalies--]]])},
-			{text = StringFormat("%s: %s",S[302535920001084--[[Reset--]]],S[3980--[[Buildings--]]]),value = "Building",hint = hint_loop:format(S[3980--[[Buildings--]]])},
-			{text = StringFormat("%s: %s",S[302535920001084--[[Reset--]]],S[302535920000157--[[Cables & Pipes--]]]),value = "GridElements",hint = hint_loop:format(S[302535920000157--[[Cables & Pipes--]]])},
-			{text = StringFormat("%s: %s",S[302535920001084--[[Reset--]]],S[547--[[Colonists--]]]),value = "Colonists",hint = hint_loop:format(S[547--[[Colonists--]]])},
-			{text = StringFormat("%s: %s & %s",S[302535920001084--[[Reset--]]],S[5438--[[Rovers--]]],S[517--[[Drones--]]]),value = "Unit",hint = hint_loop:format(StringFormat("%s & %s",S[5438--[[Rovers--]]],S[517--[[Drones--]]]))},
-			{text = StringFormat("%s: %s",S[302535920001084--[[Reset--]]],S[3982--[[Deposits--]]]),value = "SurfaceDeposit",hint = hint_loop:format(S[3982--[[Deposits--]]])},
+			{
+			text = S[302535920001084--[[Reset--]]] .. ": " .. S[3984--[[Anomalies--]]],value = "Anomaly",hint = hint_loop:format(S[3984--[[Anomalies--]]])},
+			{text = S[302535920001084--[[Reset--]]] .. ": " .. S[3980--[[Buildings--]]],value = "Building",hint = hint_loop:format(S[3980--[[Buildings--]]])},
+			{text = S[302535920001084--[[Reset--]]] .. ": " .. S[302535920000157--[[Cables & Pipes--]]],value = "GridElements",hint = hint_loop:format(S[302535920000157--[[Cables & Pipes--]]])},
+			{text = S[302535920001084--[[Reset--]]] .. ": " .. S[547--[[Colonists--]]],value = "Colonists",hint = hint_loop:format(S[547--[[Colonists--]]])},
+			{text = S[302535920001084--[[Reset--]]] .. ": " .. S[5438--[[Rovers--]]] .. " & " .. S[517--[[Drones--]]],value = "Unit",hint = hint_loop:format(S[5438--[[Rovers--]]] .. " & " .. S[517--[[Drones--]]])},
+			{text = S[302535920001084--[[Reset--]]] .. ": " .. S[3982--[[Deposits--]]],value = "SurfaceDeposit",hint = hint_loop:format(S[3982--[[Deposits--]]])},
 			{text = 0,value = 0},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -118,13 +113,13 @@ function OnMsg.ClassesGenerate()
 		end
 		local hint = S[302535920001118--[[You can still select items after making them invisible (0), but it may take some effort :).--]]]
 		if sel then
-			hint = StringFormat("%s: %s\n\n%s",S[302535920000106--[[Current--]]],sel:GetOpacity(),hint)
+			hint = S[302535920000106--[[Current--]]] .. ": " .. sel:GetOpacity() .. "\n\n" .. hint
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s: %s",S[302535920000694--[[Set Opacity--]]],RetName(sel)),
+			title = S[302535920000694--[[Set Opacity--]]] .. ": " .. RetName(sel),
 			hint = hint,
 			skip_sort = true,
 		}
@@ -291,7 +286,7 @@ function OnMsg.ClassesGenerate()
 				local name = RetName(obj)
 				local class = obj.class
 				if name ~= class then
-					name = StringFormat("%s: %s",class,name)
+					name = class .. ": " .. name
 				end
 				local icon,icon_scale = RetIcon(obj)
 				c = c + 1
@@ -318,7 +313,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = ViewAndSelectObject,
 				items = ItemList,
-				title = StringFormat("%s: %s",S[302535920001292--[[List All Objects--]]],value),
+				title = S[302535920001292--[[List All Objects--]]] .. ": " .. value,
 				custom_type = 1,
 				custom_func = ViewAndSelectObject,
 				check = {
@@ -342,7 +337,7 @@ function OnMsg.ClassesGenerate()
 		local function BuildItemList_All()
 			local ItemList = {
 				{
-				text = StringFormat(" %s",S[302535920000306--[[Everything--]]]),
+				text = " " .. S[302535920000306--[[Everything--]]],
 				value = S[302535920000306--[[Everything--]]],hint = 302535920001294--[[Laggy--]],
 				},
 			}
@@ -354,7 +349,7 @@ function OnMsg.ClassesGenerate()
 					local icon,icon_scale = RetIcon(item)
 					c = c + 1
 					ItemList[c] = {
-						text = StringFormat("%s: %s",label,#list),
+						text = label .. ": " .. #list,
 						value = label,
 						hint = RetHint(item),
 						icon = icon,
@@ -613,9 +608,9 @@ function OnMsg.ClassesGenerate()
 				callback = CallBackFunc_MissionParams,
 				items = ItemList_MissionParams,
 				title = 302535920000866--[[Set MissionParams NewMap--]],
-				hint = StringFormat("%s\n\n%s",S[302535920000867--[["Attention: You must press ""OK"" for these settings to take effect before choosing a map!
+				hint = S[302535920000867--[["Attention: You must press ""OK"" for these settings to take effect before choosing a map!
 
-	See the examine list for ids."--]]],str_hint_rules),
+See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 				custom_type = 4,
 			}
 
@@ -724,7 +719,7 @@ function OnMsg.ClassesGenerate()
 				end
 
 				ChoGGi.ComFuncs.QuestionBox(
-					StringFormat("%s: %s?",S[302535920000868--[[Choose Map--]]],map),
+					S[302535920000868--[[Choose Map--]]] .. ": " .. map .. "?",
 					CallBackFunc,
 					302535920000868--[[Choose Map--]]
 				)
@@ -771,8 +766,6 @@ function OnMsg.ClassesGenerate()
 		local NoisePreset = DataInstances.NoisePreset
 		local guim = ChoGGi.Consts.guim
 
-		local image = "<image %s 100>"
-		local imageL = "<image %s>\n\n"
 		local ItemList = {}
 		local c = 0
 		for i = 1, #TerrainTextures do
@@ -780,8 +773,8 @@ function OnMsg.ClassesGenerate()
 			ItemList[c] = {
 				text = TerrainTextures[i].name,
 				value = i,
-				icon = image:format(TerrainTextures[i].texture),
-				hint = imageL:format(TerrainTextures[i].texture),
+				icon = "<image " .. TerrainTextures[i].texture .. " 100>",
+				hint = "<image " .. TerrainTextures[i].texture .. ">\n\n",
 			}
 		end
 
@@ -856,23 +849,27 @@ function OnMsg.ClassesGenerate()
 		for i = 1, #def do
 			if def[i].editor ~= "image" and def[i].editor ~= "dropdownlist" and def[i].editor ~= "combo" and type(def[i].value) ~= "userdata" then
 				ItemList[#ItemList+1] = {
-					text = StringFormat("%s%s%s",def[i].editor == "color" and "<color 100 100 255>" or "",def[i].id,"</color>" or def[i].id),
+					text = (def[i].editor == "color" and "<color 100 100 255>" or "") .. def[i].id .. "</color>",
 					sort = def[i].id,
 					value = def[i].default,
 					default = def[i].default,
 					editor = def[i].editor,
-					hint = StringFormat("%s\n%s: %s\n\n%s: %s %s: %s %s: %s %s: %s",
+					hint = string.format([[%s
+%s: %s
+
+%s: %s %s: %s %s: %s %s: %s]],
 						def[i].id or "",
 						help_str,
 						def[i].help or "",
 						default_str,
-						tostring(def[i].default) or "",
+						def[i].default or "",
 						min_str,
 						def[i].min or "",
 						max_str,
 						def[i].max or "",
 						scale_str,
-						def[i].scale or ""),
+						def[i].scale or ""
+					),
 				}
 			end
 		end
@@ -944,12 +941,12 @@ function OnMsg.ClassesGenerate()
 		local ItemList = {}
 		if not browse then
 			ItemList[#ItemList+1] = {
-				text = StringFormat(" %s",S[1000121--[[Default--]]]),
+				text = " " .. S[1000121--[[Default--]]],
 				value = "ChoGGi_Default",
 				hint = 302535920000981--[[Choose to this remove Permanent setting.--]],
 			}
 			ItemList[#ItemList+1] = {
-				text = StringFormat(" %s",S[302535920000982--[[Custom--]]]),
+				text = " " .. S[302535920000982--[[Custom--]]],
 				value = "ChoGGi_Custom",
 				hint = 302535920000983--[["Custom Lightmodel made with ""Change Light Model Custom""."--]],
 			}
@@ -1136,9 +1133,9 @@ function OnMsg.ClassesGenerate()
 			{text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = 302535920001003--[[restart to enable--]]},
 			{text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
 			{text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
-			{text = StringFormat("%s < %s",S[302535920001006--[[03 Low (90)--]]],S[302535920001065--[[Menu Option--]]]),value = 90},
-			{text = StringFormat("%s < %s",S[302535920001007--[[04 Medium (95)--]]],S[302535920001065--[[Menu Option--]]]),value = 95},
-			{text = StringFormat("%s < %s",S[302535920001008--[[05 High (100)--]]],S[302535920001065--[[Menu Option--]]]),value = 100},
+			{text = S[302535920001006--[[03 Low (90)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 90},
+			{text = S[302535920001007--[[04 Medium (95)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 95},
+			{text = S[302535920001008--[[05 High (100)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 100},
 			{text = S[302535920001009--[[06 Ultra (200)--]]],value = 200},
 			{text = S[302535920001010--[[07 Ultra-er (400)--]]],value = 400},
 			{text = S[302535920001011--[[08 Ultra-er (600)--]]],value = 600},
@@ -1173,7 +1170,8 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920001016--[[Set Lights Radius--]],
-			hint = StringFormat("%s: %s\n\n%s",S[302535920000106--[[Current--]]],hr.LightsRadiusModifier,S[302535920001017--[[Turns up the radius for light bleedout, doesn't seem to hurt FPS much.--]]]),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hr.LightsRadiusModifier
+				.. "\n\n" .. S[302535920001017--[[Turns up the radius for light bleedout, doesn't seem to hurt FPS much.--]]],
 			skip_sort = true,
 		}
 	end
@@ -1185,13 +1183,13 @@ function OnMsg.ClassesGenerate()
 			{text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = 302535920001003--[[restart to enable--]]},
 			{text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
 			{text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
-			{text = StringFormat("%s < %s",S[302535920001021--[[03 Low (100)--]]],S[302535920001065--[[Menu Option--]]]),value = 100},
-			{text = StringFormat("%s < %s",S[302535920001022--[[04 Medium (150)--]]],S[302535920001065--[[Menu Option--]]]),value = 150},
-			{text = StringFormat("%s < %s",S[302535920001008--[[05 High (100)--]]],S[302535920001065--[[Menu Option--]]]),value = 100},
-			{text = StringFormat("%s < %s",S[302535920001024--[[06 Ultra (200)--]]],S[302535920001065--[[Menu Option--]]]),value = 200},
+			{text = S[302535920001021--[[03 Low (100)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 100},
+			{text = S[302535920001022--[[04 Medium (150)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 150},
+			{text = S[302535920001008--[[05 High (100)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 100},
+			{text = S[302535920001024--[[06 Ultra (200)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 200},
 			{text = S[302535920001010--[[07 Ultra-er (400)--]]],value = 400},
 			{text = S[302535920001011--[[08 Ultra-er (600)--]]],value = 600},
-			{text = S[302535920001012--[[09 Ultraist (1000)--]]],value = 1000,hint = StringFormat("\n%s",S[302535920001018--[[Above 1000 will add a long delay to loading (and might crash).--]]])},
+			{text = S[302535920001012--[[09 Ultraist (1000)--]]],value = 1000,hint = "\n" .. S[302535920001018--[[Above 1000 will add a long delay to loading (and might crash).--]]]},
 		}
 
 		local function CallBackFunc(choice)
@@ -1220,10 +1218,10 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920000635--[[Terrain Detail--]]]),
-			hint = StringFormat("%s: %s\n%s",S[302535920000106--[[Current--]]],hr.TR_MaxChunks,S[302535920001030--[["Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 1000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.
+			title = S[302535920000129--[[Set--]]] .. " " .. S[302535920000635--[[Terrain Detail--]]],
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hr.TR_MaxChunks .. "\n" .. S[302535920001030--[["Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 1000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.
 
-	And yes Medium is using a higher setting than High..."--]]]),
+And yes Medium is using a higher setting than High..."--]]],
 			skip_sort = true,
 		}
 	end
@@ -1236,10 +1234,10 @@ function OnMsg.ClassesGenerate()
 			{text = S[302535920001031--[[1 Crap (32)--]]],value = 32},
 			{text = S[302535920001032--[[2 Crap (64)--]]],value = 64},
 			{text = S[302535920001033--[[3 Crap (128)--]]],value = 128},
-			{text = StringFormat("%s < %s",S[302535920001034--[[4 Low (256)--]]],S[302535920001065--[[Menu Option--]]]),value = 256},
-			{text = StringFormat("%s < %s",S[302535920001035--[[5 Medium (512)--]]],S[302535920001065--[[Menu Option--]]]),value = 512},
-			{text = StringFormat("%s < %s",S[302535920001036--[[6 High (1024)--]]],S[302535920001065--[[Menu Option--]]]),value = 1024},
-			{text = StringFormat("%s < %s",S[302535920001037--[[7 Ultra (2048)--]]],S[302535920001065--[[Menu Option--]]]),value = 2048},
+			{text = S[302535920001034--[[4 Low (256)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 256},
+			{text = S[302535920001035--[[5 Medium (512)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 512},
+			{text = S[302535920001036--[[6 High (1024)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 1024},
+			{text = S[302535920001037--[[7 Ultra (2048)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 2048},
 			{text = S[302535920001038--[[8 Ultra-er (4096)--]]],value = 4096},
 			{text = S[302535920001039--[[9 Ultra-er-er (8192)--]]],value = 8192},
 		}
@@ -1268,7 +1266,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920001041--[[Set Video Memory Use--]],
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hr.DTM_VideoMemory),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hr.DTM_VideoMemory,
 			skip_sort = true,
 		}
 	end
@@ -1276,14 +1274,14 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetShadowmapSize()
 		local ChoGGi = ChoGGi
 		local hr = hr
-		local hint_highest = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]])
+		local hint_highest = S[6779--[[Warning--]]] .. ": " .. S[302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]]
 		local ItemList = {
 			{text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = 302535920001003--[[restart to enable--]]},
 			{text = S[302535920001043--[[1 Crap (256)--]]],value = 256},
 			{text = S[302535920001044--[[2 Lower (512)--]]],value = 512},
-			{text = StringFormat("%s < %s",S[302535920001045--[[3 Low (1536)--]]],S[302535920001065--[[Menu Option--]]]),value = 1536},
-			{text = StringFormat("%s < %s",S[302535920001046--[[4 Medium (2048)--]]],S[302535920001065--[[Menu Option--]]]),value = 2048},
-			{text = StringFormat("%s < %s",S[302535920001047--[[5 High (4096)--]]],S[302535920001065--[[Menu Option--]]]),value = 4096},
+			{text = S[302535920001045--[[3 Low (1536)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 1536},
+			{text = S[302535920001046--[[4 Medium (2048)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 2048},
+			{text = S[302535920001047--[[5 High (4096)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 4096},
 			{text = S[302535920001048--[[6 Higher (8192)--]]],value = 8192},
 			{text = S[302535920001049--[[7 Highest (16384)--]]],value = 16384,hint = hint_highest},
 		}
@@ -1316,7 +1314,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920001051--[[Set Shadowmap Size--]],
-			hint = StringFormat("%s: %s\n\n%s\n\n%s",S[302535920000106--[[Current--]]],hr.ShadowmapSize,hint_highest,S[302535920001052--[[Max limited to 16384 (or crashing).--]]]),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hr.ShadowmapSize .. "\n\n" .. hint_highest .. "\n\n" .. S[302535920001052--[[Max limited to 16384 (or crashing).--]]],
 			skip_sort = true,
 		}
 	end
@@ -1341,7 +1339,7 @@ function OnMsg.ClassesGenerate()
 		local hint_small = S[302535920001055--[[Small FPS hit on large base--]]]
 		local hint_fps = S[302535920001056--[[FPS hit--]]]
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 240,value = 240,hint = hint_min},
 			{text = 360,value = 360,hint = hint_min},
 			{text = 480,value = 480,hint = hint_min},
@@ -1381,7 +1379,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000643--[[Higher Render Distance--]],
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end
@@ -1547,7 +1545,7 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					StringFormat("%s: %s %s",choice[1].value,S[302535920001064--[[Mouse--]]],S[302535920000647--[[Border Scrolling--]]]),
+					choice[1].value .. ": " .. S[302535920001064--[[Mouse--]]] .. " " .. S[302535920000647--[[Border Scrolling--]]],
 					302535920000647--[[Border Scrolling--]],
 					"UI/Icons/IPButtons/status_effects.tga"
 				)
@@ -1557,8 +1555,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920000647--[[Border Scrolling--]]]),
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
+			title = S[302535920000129--[[Set--]]] .. " " .. S[302535920000647--[[Border Scrolling--]]],
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end
@@ -1566,7 +1564,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetCameraLookatDist()
 		local DefaultSetting = ChoGGi.Consts.CameraLookatDist
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 20,value = 20},
 			{text = 30,value = 30},
@@ -1593,7 +1591,7 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					StringFormat("%s: %s",choice[1].text,S[302535920001375--[[Bird's Eye--]]]),
+					choice[1].text .. ": " .. S[302535920001375--[[Bird's Eye--]]],
 					302535920001058--[[Camera--]],
 					"UI/Icons/IPButtons/status_effects.tga"
 				)
@@ -1604,7 +1602,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = S[302535920001375--[[Bird's Eye--]]],
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end
@@ -1612,7 +1610,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetCameraZoom()
 		local DefaultSetting = ChoGGi.Consts.CameraZoomToggle
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 16000,value = 16000},
 			{text = 20000,value = 20000},
 			{text = 24000,value = 24000, hint = 302535920001066--[[What used to be the default for this ECM setting--]]},
@@ -1637,7 +1635,7 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					StringFormat("%s: %s %s",choice[1].text,S[302535920001058--[[Camera--]]],S[302535920001067--[[Zoom--]]]),
+					choice[1].text .. ": " .. S[302535920001058--[[Camera--]]] .. " " .. S[302535920001067--[[Zoom--]]],
 					302535920001058--[[Camera--]],
 					"UI/Icons/IPButtons/status_effects.tga"
 				)
@@ -1647,8 +1645,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s",S[302535920001058--[[Camera--]]],S[302535920001067--[[Zoom--]]]),
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
+			title = S[302535920001058--[[Camera--]]] .. " " .. S[302535920001067--[[Zoom--]]],
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end

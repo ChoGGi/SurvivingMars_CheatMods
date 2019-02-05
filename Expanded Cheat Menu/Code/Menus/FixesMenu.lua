@@ -4,7 +4,7 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-	local StringFormat = string.format
+
 	local icon = "CommonAssets/UI/Menu/ReportBug.tga"
 	local c = #Actions
 
@@ -60,7 +60,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920001084--[[Reset--]]],S[5221--[[RC Commanders--]]]),
+	Actions[c] = {ActionName = S[302535920001084--[[Reset--]]] .. " " .. S[5221--[[RC Commanders--]]],
 		ActionMenubar = str_ExpandedCM_Fixes,
 		ActionId = ".Reset RC Commanders",
 		ActionIcon = icon,
@@ -108,7 +108,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_ExpandedCM_Fixes,
 		ActionId = ".Remove Missing Class Objects (Warning)",
 		ActionIcon = icon,
-		RolloverText = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]]),
+		RolloverText = S[6779--[[Warning--]]] .. ": " .. S[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]],
 		OnAction = ChoGGi.MenuFuncs.RemoveMissingClassObjects,
 		ActionSortKey = "9Remove Missing Class Objects (Warning)",
 	}
@@ -221,7 +221,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s: %s",S[302535920000157--[[Cables & Pipes--]]],S[302535920000607--[[Instant Repair--]]]),
+	Actions[c] = {ActionName = S[302535920000157--[[Cables & Pipes--]]] .. ": " .. S[302535920000607--[[Instant Repair--]]],
 		ActionMenubar = str_ExpandedCM_Fixes_Most,
 		ActionId = ".Cables & Pipes: Instant Repair",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
@@ -330,7 +330,7 @@ This may break the save in other ways, best to just use it for testing."--]]
 
 	local str_ExpandedCM_Fixes_ECMFixes = "ECM.Expanded CM.Fixes.ECM Fixes"
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000887--[[ECM--]]],S[302535920000922--[[Fixes--]]]),
+	Actions[c] = {ActionName = S[302535920000887--[[ECM--]]] .. " " .. S[302535920000922--[[Fixes--]]],
 		ActionMenubar = "ECM.Expanded CM.Fixes",
 		ActionId = ".ECM Fixes",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

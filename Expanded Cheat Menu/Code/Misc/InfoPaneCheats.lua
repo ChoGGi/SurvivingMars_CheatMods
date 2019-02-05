@@ -2,7 +2,6 @@
 
 -- add items/hint to the cheats pane
 
-local StringFormat = string.format
 local CreateRealTimeThread = CreateRealTimeThread
 
 local RetName
@@ -47,17 +46,14 @@ function OnMsg.ClassesGenerate()
 		action.ActionIcon = icon
 	end
 
-	local up_name = "upgrade%s_display_name"
-	local up_des = "upgrade%s_description"
-	local up_icon = "upgrade%s_icon"
 	local function SetUpgradeInfo(action,obj,num)
-		local tempname = Trans(obj[up_name:format(num)])
+		local tempname = Trans(obj["upgrade" .. num .. "_display_name"])
 		-- if there's an upgrade then add hint text, otherwise blank the id to hide it
 		if tempname ~= "" then
 			SetHint(action,S[302535920001207--[["Add: %s to this building.
 
-%s"--]]]:format(tempname,Trans(T(obj[up_des:format(num)],obj))))
-			SetIcon(action,num,obj[up_icon:format(num)])
+%s"--]]]:format(tempname,Trans(T(obj["upgrade" .. num .. "_description"],obj))))
+			SetIcon(action,num,obj["upgrade" .. num .. "_icon"])
 		else
 			action.ActionId = ""
 		end
@@ -209,7 +205,7 @@ function OnMsg.ClassesGenerate()
 			name = "CleanAndFix",
 		},
 		Launch = {
-			des = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920001233--[[Launches rocket without asking.--]]]),
+			des = S[6779--[[Warning--]]] .. ": " .. S[302535920001233--[[Launches rocket without asking.--]]],
 			icon = "UI/Icons/ColonyControlCenter/rocket_r.tga",
 		},
 
@@ -327,7 +323,7 @@ function OnMsg.ClassesGenerate()
 				if obj.destroyed or obj.is_malfunctioned then
 					action.ActionId = ""
 				else
-					SetHint(action,StringFormat("%s...\n%s?",S[8039--[[Trait: Idiot (can cause a malfunction)--]]],S[53--[[Malfunction--]]]))
+					SetHint(action,S[8039--[[Trait: Idiot (can cause a malfunction)--]]] .. "...\n" .. S[53--[[Malfunction--]]] .. "?")
 				end
 
 			elseif aid == "Destroy" then
@@ -365,7 +361,7 @@ local Building = Building
 local Colonist = Colonist
 local Workplace = Workplace
 
---~	 global objects
+-- global objects
 function Object:CheatDeleteObject()
 	local name = RetName(self)
 	local function CallBackFunc(answer)
@@ -375,11 +371,11 @@ function Object:CheatDeleteObject()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		StringFormat("%s!\n%s?",S[6779--[[Warning--]]],S[302535920000885--[[Permanently delete %s?--]]]:format(name)),
+		S[6779--[[Warning--]]] .. "!\n" .. S[302535920000885--[[Permanently delete %s?--]]]:format(name) .. "?",
 		CallBackFunc,
-		StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]]),
-		StringFormat("%s: %s",S[5451--[[DELETE--]]],name),
-		StringFormat("%s %s",S[6879--[[Cancel--]]],S[1000615--[[Delete--]]])
+		S[6779--[[Warning--]]] .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
+		S[5451--[[DELETE--]]] .. ": " .. name,
+		S[6879--[[Cancel--]]] .. " " .. S[1000615--[[Delete--]]]
 	)
 end
 function Object:CheatToggleSigns()
@@ -435,10 +431,10 @@ local function CheatDestroy(self)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		StringFormat("%s!\n%s\n%s",S[6779--[[Warning--]]],obj_type,name),
+		S[6779--[[Warning--]]] .. "!\n" .. obj_type .. "\n" .. name,
 		CallBackFunc,
-		StringFormat("%s: %s",S[6779--[[Warning--]]],obj_type),
-		StringFormat("%s %s",obj_type,name),
+		S[6779--[[Warning--]]] .. ": " .. obj_type,
+		obj_type .. " " .. name,
 		S[1176--[[Cancel Destroy--]]]
 	)
 end
@@ -521,13 +517,13 @@ function Colonist:CheatRandomAge()
 end
 function Colonist:CheatDie()
 	ChoGGi.ComFuncs.QuestionBox(
-		StringFormat("%s!\n%s?",S[6779--[[Warning--]]],S[302535920001430--[[Kill colonist-]]]),
+		S[6779--[[Warning--]]] .. "!\n" .. S[302535920001430--[[Kill colonist-]]] .. "?",
 		function(answer)
 			if answer then
 				self:SetCommand("Die")
 			end
 		end,
-		StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
+		S[6779--[[Warning--]]] .. ": " .. S[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 -- CheatAllShifts

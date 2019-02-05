@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local StringFormat = string.format
-
 -- see also Classes_UI.lua
 local white = -1
 local black = -16777216
@@ -31,11 +29,11 @@ local gray32_128 = -2145378272
 local gray32_255 = -14671840
 
 local font = ChoGGi.font
-local GedDefault = StringFormat("%s, 15, aa",font)
-local Editor14Bold = StringFormat("%s, 14, bold, aa",font)
-local Editor12Bold = StringFormat("%s, 12, bold, aa",font)
-local Editor16Bold = StringFormat("%s, 16, bold, aa",font)
-local Editor16 = StringFormat("%s, 16, aa",font)
+local GedDefault = font .. ", 15, aa"
+local Editor14Bold = font .. ", 14, bold, aa"
+local Editor12Bold = font .. ", 12, bold, aa"
+local Editor16Bold = font .. ", 16, bold, aa"
+local Editor16 = font .. ", 16, aa"
 
 -- no sense in adding these to each item
 DefineClass.ChoGGi_TextStyle = {

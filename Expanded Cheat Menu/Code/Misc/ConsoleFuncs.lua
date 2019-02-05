@@ -2,7 +2,6 @@
 
 -- menus/buttons added to the Console
 
-local StringFormat = string.format
 local TableSort = table.sort
 local TableInsert = table.insert
 local TableRemove = table.remove
@@ -29,10 +28,10 @@ function OnMsg.ClassesGenerate()
 		end
 		local obj = DotNameToObject(name)
 		local func = type(obj) == "function"
-		local disp = title or StringFormat("%s%s",name,func and "()" or "")
+		local disp = title or name .. (func and "()" or "")
 		return {
 			name = disp,
-			hint = StringFormat("%s: %s",S[302535920000491--[[Examine Object--]]],disp),
+			hint = S[302535920000491--[[Examine Object--]]] .. ": " .. disp,
 			clicked = function()
 				if func then
 					OpenInExamineDlg(obj())
@@ -63,8 +62,8 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.ConsoleFuncs.AddMonitor(name,submenu,idx)
 		TableInsert(submenu,idx or 2,{
-			name = StringFormat("%s: %s",S[302535920000853--[[Monitor--]]],name),
-			hint = StringFormat("ChoGGi.ComFuncs.MonitorTableLength(%s)",name),
+			name = S[302535920000853--[[Monitor--]]] .. ": " .. name,
+			hint = "ChoGGi.ComFuncs.MonitorTableLength(" .. name .. ")",
 			clicked = function()
 				if name == "_G" then
 					ChoGGi.ComFuncs.MonitorTableLength(DotNameToObject(name),nil,nil,nil,name)
@@ -133,7 +132,7 @@ function OnMsg.ClassesGenerate()
 			local DataInstances = DataInstances
 			for key in pairs(DataInstances) do
 				c = c + 1
-				submenu_table[c] = BuildExamineItem(StringFormat("DataInstances.%s",key),key)
+				submenu_table[c] = BuildExamineItem("DataInstances." .. key,key)
 			end
 
 			TableSort(submenu_table,
@@ -173,7 +172,7 @@ function OnMsg.ClassesGenerate()
 		submenu = AddSubmenu("ThreadsRegister",{"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers"})
 		if submenu then
 			TableInsert(submenu,2,{
-				name = StringFormat("%s: %s",S[302535920000853--[[Monitor--]]],"ThreadsRegister"),
+				name = S[302535920000853--[[Monitor--]]] .. ": ThreadsRegister",
 				hint = "ChoGGi.ComFuncs.MonitorThreads()",
 				clicked = function()
 					ChoGGi.ComFuncs.MonitorThreads()
@@ -358,7 +357,7 @@ function OnMsg.ClassesGenerate()
 				items[i] = {
 					-- these can get long so keep 'em short
 					name = text:sub(1,ConsoleHistoryMenuLength),
-					hint = StringFormat("%s\n\n%s",S[302535920001138--[[Execute this command in the console.--]]],text),
+					hint = S[302535920001138--[[Execute this command in the console.--]]] .. "\n\n" .. text,
 					clicked = function()
 						dlgConsole:Exec(text)
 					end,
@@ -455,7 +454,7 @@ function OnMsg.ClassesGenerate()
 						if not err then
 							items[i] = {
 								name = files[i].name,
-								hint = StringFormat("%s\n\n%s",S[302535920001138--[[Execute this command in the console.--]]],script),
+								hint = S[302535920001138--[[Execute this command in the console.--]]] .. "\n\n" ..script,
 								clicked = function()
 									if script:find("-- rem echo on") then
 										console:Exec(script)
@@ -520,7 +519,7 @@ function OnMsg.ClassesGenerate()
 					BuildSciptButton(dlg,{
 						Text = folders[i].name,
 						RolloverText = hint_str:format(folders[i].path),
-						id = StringFormat("id%sMenuPopup",folders[i].name),
+						id = "id" .. folders[i].name .. "MenuPopup",
 						script_path = folders[i].path,
 					})
 				end
@@ -532,14 +531,14 @@ function OnMsg.ClassesGenerate()
 		local script_path = ChoGGi.scripts
 		-- create folder and some example scripts if folder doesn't exist
 		if not ChoGGi.ComFuncs.FileExists(script_path) then
-			AsyncCreatePath(StringFormat("%s/Functions",script_path))
+			AsyncCreatePath(script_path .. "/Functions")
 			-- print some info
 			print(S[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."--]]]:format(ConvertToOSPath(script_path)))
 			-- add some example files and a readme
-			AsyncStringToFile(StringFormat("%s/readme.txt",script_path),S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
-			AsyncStringToFile(StringFormat("%s/Read Me.lua",script_path),[[ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
-			AsyncStringToFile(StringFormat("%s/Functions/Amount of colonists.lua",script_path),[[#(UICity.labels.Colonist or "")]])
-			AsyncStringToFile(StringFormat("%s/Functions/Toggle Working SelectedObj.lua",script_path),[[SelectedObj:ToggleWorking()]])
+			AsyncStringToFile(script_path .. "/readme.txt",S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
+			AsyncStringToFile(script_path .. "/Read Me.lua",[[ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
+			AsyncStringToFile(script_path .. "/Functions/Amount of colonists.lua",[[#(UICity.labels.Colonist or "")]])
+			AsyncStringToFile(script_path .. "/Functions/Toggle Working SelectedObj.lua",[[SelectedObj:ToggleWorking()]])
 		end
 	end
 

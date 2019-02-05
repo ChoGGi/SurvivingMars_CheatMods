@@ -11,7 +11,6 @@ if not PropObjGetProperty(_G,"g_ExamineDlgs") then
 end
 
 -- local some global funcs
-local StringFormat = string.format
 local TableSort = table.sort
 local TableInsert = table.insert
 local TableClear = table.clear
@@ -215,7 +214,7 @@ function Examine:Init(parent, context)
 			Id = "idButSetTransp",
 			Image = "CommonAssets/UI/Menu/CutSceneArea.tga",
 			RolloverTitle = S[302535920000865--[[Trans--]]],
-			RolloverText = StringFormat("%s %s",S[302535920001367--[[Toggles--]]],S[302535920000629--[[UI Transparency--]]]),
+			RolloverText = S[302535920001367--[[Toggles--]]] .. " " .. S[302535920000629--[[UI Transparency--]]],
 			OnPress = self.idButSetTranspOnPress,
 		}, self.idToolbarButtons)
 		--
@@ -268,7 +267,9 @@ function Examine:Init(parent, context)
 		}, self.idToolbarButtons)
 		-- right side
 
-		self.idAutoRefresh_update_str = StringFormat("%s\n%s\n%s: %s",S[302535920001257--[[Auto-refresh list every second.--]]],S[302535920001422--[[Right-click to change refresh delay.--]]],S[302535920000106--[[Current--]]],"%s")
+		self.idAutoRefresh_update_str = S[302535920001257--[[Auto-refresh list every second.--]]]
+			.. "\n" .. S[302535920001422--[[Right-click to change refresh delay.--]]]
+			.. "\n" .. S[302535920000106--[[Current--]]] .. ": %s"
 		self.idAutoRefresh = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idAutoRefresh",
 			Dock = "right",
@@ -384,8 +385,9 @@ Right-click to go up, middle-click to scroll to the top."--]]],
 		self.idToggleExecCode = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idToggleExecCode",
 			Dock = "right",
-			Text = S[302535920000323--[[Exec Code--]]],
-			RolloverText = StringFormat("%s\n%s",S[302535920001514--[[Toggle visibility of an input box for executing code.--]]],S[302535920001517--[["Use ""o"" as a reference to the examined object."--]]]),
+			Text = S[302535920000040--[[Exec Code--]]],
+			RolloverText = S[302535920001514--[[Toggle visibility of an input box for executing code.--]]]
+				.. "\n" .. S[302535920001517--[["Use ""o"" as a reference to the examined object."--]]],
 			OnChange = self.idToggleExecCodeOnChange,
 			Init = self.CheckButtonInit,
 		}, self.idMenuArea)
@@ -400,7 +402,8 @@ Right-click to go up, middle-click to scroll to the top."--]]],
 		--
 		self.idExecCode = g_Classes.ChoGGi_TextInput:new({
 			Id = "idExecCode",
-			RolloverText = StringFormat("%s\n%s",S[302535920001515--[[Press enter to execute code.--]]],S[302535920001517--[["Use ""o"" as a reference to the examined object."--]]]),
+			RolloverText = S[302535920001515--[[Press enter to execute code.--]]]
+				.. "\n" .. S[302535920001517--[["Use ""o"" as a reference to the examined object."--]]],
 			Hint = S[302535920001516--[[o = examined object--]]],
 			OnKbdKeyDown = self.idExecCodeOnKbdKeyDown,
 		}, self.idExecCodeArea)
@@ -527,7 +530,10 @@ function Examine:idButDeleteAllOnPress()
 end
 function Examine:idButViewEnumOnPress()
 	self = GetRootDialog(self)
-	ChoGGi.ComFuncs.OpenInExamineDlg(EnumVars(self.name),self,StringFormat("%s: %s",S[302535920001442--[[EnumVars--]]],self.name))
+	ChoGGi.ComFuncs.OpenInExamineDlg(
+		EnumVars(self.name),
+		self,S[302535920001442--[[EnumVars--]]] .. ": " .. self.name
+	)
 end
 
 function Examine:idButMarkAllOnPress()
@@ -720,12 +726,12 @@ function Examine:BuildFuncList(obj_name,prefix)
 	local skip = true
 	for key,_ in pairs(class) do
 		if type(class[key]) == "function" then
-			self.menu_list_items[StringFormat("%s%s.%s: ",prefix,obj_name,key)] = class[key]
+			self.menu_list_items[prefix .. obj_name .. "." .. key .. ": "] = class[key]
 			skip = false
 		end
 	end
 	if not skip then
-		self.menu_list_items[StringFormat("%s%s",prefix,obj_name)] = "\n\n\n"
+		self.menu_list_items[prefix .. obj_name] = "\n\n\n"
 	end
 end
 
@@ -760,7 +766,7 @@ function Examine:BuildObjectMenuPopup()
 				ChoGGi.ComFuncs.EntitySpawner(self.obj_ref,true,7)
 			end,
 		},
-		{name = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]]),
+		{name = S[302535920000129--[[Set--]]] .. " " .. S[302535920001184--[[Particles--]]],
 			hint = S[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
 			image = "CommonAssets/UI/Menu/place_particles.tga",
 			clicked = function()
@@ -822,7 +828,7 @@ function Examine:BuildObjectMenuPopup()
 				ChoGGi.ComFuncs.OpenInExamineDlg(
 					GetModifiedProperties(self.obj_ref),
 					self,
-					StringFormat("%s: %s",S[931--[[Modified property--]]],self.name)
+					S[931--[[Modified property--]]] .. ": " .. self.name
 				)
 			end,
 		},
@@ -832,7 +838,8 @@ function Examine:BuildObjectMenuPopup()
 			clicked = function()
 				-- give em some hints
 				local props_list = {
-					___readme = S[302535920001397--[["These can be used as obj:GetNAME() / obj:SetNAME().
+					___readme = S[302535920001397--[["Not the actual properties (see object.properties for those).
+These can be used as obj:GetNAME() / obj:SetNAME().
 You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 Check the actual object/g_Classes.object for the correct value to use (Entity > entity).
 --]]]
@@ -841,7 +848,10 @@ Check the actual object/g_Classes.object for the correct value to use (Entity > 
 				for i = 1, #props do
 					props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
 				end
-				ChoGGi.ComFuncs.OpenInExamineDlg(props_list,self,StringFormat("%s: %s",S[302535920001389--[[All Properties--]]],self.name))
+				ChoGGi.ComFuncs.OpenInExamineDlg(
+					props_list,self,
+					S[302535920001389--[[All Properties--]]] .. ": " .. self.name
+				)
 			end,
 		},
 		{name = "	 ---- "},
@@ -874,7 +884,7 @@ function Examine:BuildToolsMenuPopup()
 			value = "ChoGGi.UserSettings.ExamineAppendDump",
 			class = "ChoGGi_CheckButtonMenu",
 		},
-		{name = StringFormat("%s %s",S[302535920000004--[[Dump--]]],S[1000145--[[Text--]]]),
+		{name = S[302535920000004--[[Dump--]]] .. " " .. S[1000145--[[Text--]]],
 			hint = S[302535920000046--[[dumps text to %slogs\DumpedExamine.lua--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
@@ -883,13 +893,13 @@ function Examine:BuildToolsMenuPopup()
 				str = str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>","")
 				-- i just compare, so append doesn't really work
 				if ChoGGi.UserSettings.ExamineAppendDump then
-					ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),nil,"DumpedExamine","lua")
+					ChoGGi.ComFuncs.Dump("\n" .. str,nil,"DumpedExamine","lua")
 				else
 					ChoGGi.ComFuncs.Dump(str,"w","DumpedExamine","lua",nil,true)
 				end
 			end,
 		},
-		{name = StringFormat("%s %s",S[302535920000004--[[Dump--]]],S[298035641454--[[Object--]]]),
+		{name = S[302535920000004--[[Dump--]]] .. " " .. S[298035641454--[[Object--]]],
 			hint = S[302535920001027--[[dumps object to %slogs\DumpedExamineObject.lua
 
 This can take time on something like the "Building" metatable--]]]:format(ConvertToOSPath("AppData/")),
@@ -901,14 +911,14 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 				end)
 				if str then
 					if ChoGGi.UserSettings.ExamineAppendDump then
-						ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),nil,"DumpedExamineObject","lua")
+						ChoGGi.ComFuncs.Dump("\n" .. str,nil,"DumpedExamineObject","lua")
 					else
 						ChoGGi.ComFuncs.Dump(str,"w","DumpedExamineObject","lua",nil,true)
 					end
 				end
 			end,
 		},
-		{name = StringFormat("%s %s",S[302535920000048--[[View--]]],S[1000145--[[Text--]]]),
+		{name = S[302535920000048--[[View--]]] .. " " .. S[1000145--[[Text--]]],
 			hint = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
@@ -920,17 +930,17 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 					checkbox = true,
 					text = str,
 					scrollto = self:GetScrolledText(),
-					title = StringFormat("%s/%s %s",S[302535920000048--[[View--]]],S[302535920000004--[[Dump--]]],S[1000145--[[Text--]]]),
+					title = S[302535920000048--[[View--]]] .. "/" .. S[302535920000004--[[Dump--]]] .. S[1000145--[[Text--]]],
 					hint_ok = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 					custom_func = function(answer,overwrite)
 						if answer then
-							ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),overwrite,"DumpedExamine","lua")
+							ChoGGi.ComFuncs.Dump("\n" .. str,overwrite,"DumpedExamine","lua")
 						end
 					end,
 				}
 			end,
 		},
-		{name = StringFormat("%s %s",S[302535920000048--[[View--]]],S[298035641454--[[Object--]]]),
+		{name = S[302535920000048--[[View--]]] .. " " .. S[298035641454--[[Object--]]],
 			hint = S[302535920000049--[["View text, and optionally dumps object to %sDumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]]:format(ConvertToOSPath("AppData/")),
@@ -945,13 +955,13 @@ This can take time on something like the ""Building"" metatable (don't use this 
 						parent = self,
 						checkbox = true,
 						text = str,
-						title = StringFormat("%s/%s %s",S[302535920000048--[[View--]]],S[302535920000004--[[Dump--]]],S[298035641454--[[Object--]]]),
+						title = S[302535920000048--[[View--]]] .. "/" .. S[302535920000004--[[Dump--]]] .. S[298035641454--[[Object--]]],
 						hint_ok = 302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]],
 						custom_func = function(answer,overwrite)
 							if answer then
-								ChoGGi.ComFuncs.Dump(StringFormat("\n%s",str),overwrite,"DumpedExamineObject","lua")
+								ChoGGi.ComFuncs.Dump("\n" .. str,overwrite,"DumpedExamineObject","lua")
 							end
 						end,
 					}
@@ -968,10 +978,10 @@ This can take time on something like the ""Building"" metatable (don't use this 
 					TableClear(self.menu_list_items)
 
 					if #self.parents > 0 then
-						self:ProcessList(self.parents,StringFormat(" %s: ",S[302535920000520--[[Parents--]]]))
+						self:ProcessList(self.parents," " .. S[302535920000520--[[Parents--]]] .. ": ")
 					end
 					if #self.ancestors > 0 then
-						self:ProcessList(self.ancestors,StringFormat("%s: ",S[302535920000525--[[Ancestors--]]]))
+						self:ProcessList(self.parents," " .. S[302535920000525--[[Ancestors--]]] .. ": ")
 					end
 					-- add examiner object with some spaces so it's at the top
 					self:BuildFuncList(self.obj_ref.class,"	")
@@ -980,7 +990,9 @@ This can take time on something like the ""Building"" metatable (don't use this 
 						self:BuildFuncList("CObject",self.menu_added.CObject)
 					end
 
-					ChoGGi.ComFuncs.OpenInExamineDlg(self.menu_list_items,self,StringFormat("%s: %s",S[302535920001239--[[Functions--]]],self.name)
+					ChoGGi.ComFuncs.OpenInExamineDlg(
+						self.menu_list_items,self,
+						S[302535920001239--[[Functions--]]] .. ": " .. self.name
 					)
 				else
 					-- close enough
@@ -988,7 +1000,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 				end
 			end,
 		},
-		{name = StringFormat("%s %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
+		{name = S[327465361219--[[Edit--]]] .. " " .. S[298035641454--[[Object--]]],
 			hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
@@ -1030,7 +1042,7 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 				ChoGGi.ComFuncs.OpenInFindValueDlg(self.obj_ref,self)
 			end,
 		},
-		{name = S[302535920000323--[[Exec Code--]]],
+		{name = S[302535920000040--[[Exec Code--]]],
 			hint = S[302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.
 Which you can then mess around with some more in the console."--]]],
 			image = "CommonAssets/UI/Menu/AlignSel.tga",
@@ -1206,19 +1218,15 @@ function Examine:valuetotextex(obj)
 	local obj_type = type(obj)
 
 	if obj_type == "function" then
-		return StringFormat("%s%s%s",
-			self:HyperLink(obj,Examine_valuetotextex),
-			DebugGetInfo(obj),
-			HLEnd
-		)
+		return self:HyperLink(obj,Examine_valuetotextex)
+			.. DebugGetInfo(obj)
+			.. HLEnd
 	end
 
 	if obj_type == "thread" then
-		return StringFormat("%s%s%s",
-			self:HyperLink(obj,Examine_valuetotextex),
-			tostring(obj),
-			HLEnd
-		)
+		return self:HyperLink(obj,Examine_valuetotextex)
+			.. tostring(obj)
+			.. HLEnd
 	end
 
 	if obj_type == "string" then
@@ -1226,8 +1234,8 @@ function Examine:valuetotextex(obj)
 		if obj == "nil" then
 			return "nil"
 		end
-		-- some translated stuff has <color in it, so we make sure they don't bother the rest
-		return StringFormat("'%s</color></color>'",obj)
+		-- some translated stuff has <color in it, so we make sure they don't colour the rest
+		return "'" .. obj .. "</color></color>'"
 	end
 
 	if obj_type == "userdata" then
@@ -1261,25 +1269,19 @@ function Examine:valuetotextex(obj)
 			end
 			-- the </color> is to make sure it doesn't bleed into other text
 			local meta = getmetatable(obj)
-			return StringFormat("%s</color></color>%s *%s%s",
-				trans_str,
-				self:HyperLink(obj,Examine_valuetotextex),
-				meta and meta.__name or tostring(obj),
-				HLEnd
-			)
+
+			return trans_str .. "</color></color>"
+				.. self:HyperLink(obj,Examine_valuetotextex) .. " *"
+				.. (meta and meta.__name or tostring(obj)) .. HLEnd
 		end
 	end
 
 	if obj_type == "table" then
 
 		if IsValid(obj) then
-			return StringFormat("%s%s%s@%s",
-				self:HyperLink(obj,Examine_valuetotextex),
-				obj.class,
-				HLEnd,
-				self:valuetotextex(obj:GetVisualPos())
-			)
-
+			return self:HyperLink(obj,Examine_valuetotextex)
+				.. obj.class .. HLEnd .. "@"
+				.. self:valuetotextex(obj:GetVisualPos())
 		else
 			local len = #obj
 			local obj_metatable = getmetatable(obj)
@@ -1320,7 +1322,7 @@ function Examine:valuetotextex(obj)
 				-- not sure how to check if it's an index non-ass table
 				if len > 0 and is_next then
 					-- next works for both
-					table_data = StringFormat("%s / %s",len,S[302535920001057--[[Data--]]])
+					table_data = len .. " / " .. S[302535920001057--[[Data--]]]
 				elseif is_next then
 					-- ass based
 					table_data = S[302535920001057--[[Data--]]]
@@ -1331,16 +1333,12 @@ function Examine:valuetotextex(obj)
 
 				local name = RetName(obj)
 				if obj.class and name ~= obj.class then
-					name = StringFormat("%s (len: %s, %s)",obj.class,table_data,name)
+					name = obj.class .. " (len: " .. table_data .. ", " .. name .. ")"
 				else
-					name = StringFormat("%s (len: %s)",name,table_data)
+					name = name .. " (len: " .. table_data .. ")"
 				end
 
-				return StringFormat("%s%s%s",
-					self:HyperLink(obj,Examine_valuetotextex),
-					name,
-					HLEnd
-				)
+				return self:HyperLink(obj,Examine_valuetotextex) .. name .. HLEnd
 			end
 		end
 	end
@@ -1349,8 +1347,6 @@ function Examine:valuetotextex(obj)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
-local ExamineThreadLevel_str1 = "%s @ debug.getlocal(%s,%s)"
-local ExamineThreadLevel_str2 = "debug.getupvalue(%s,%s)"
 local function ExamineThreadLevel_totextex(level,info,obj,self)
 	local ExamineThreadLevel_data
 	if blacklist then
@@ -1361,14 +1357,14 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 		local name, val = true
 		while name do
 			name, val = getlocal(obj, level, l)
-			ExamineThreadLevel_data[ExamineThreadLevel_str1:format(name,level,l)] = val
+			ExamineThreadLevel_data[name .. " @ debug.getlocal(" .. level .. "," .. l .. ")"] = val
 			l = l + 1
 		end
 
 		for i = 1, info.nups do
 			local name, val = getupvalue(info.func, i)
 			if name ~= nil and val ~= nil then
-				ExamineThreadLevel_data[ExamineThreadLevel_str2:format(name or S[302535920000723--[[Lua--]]],i)] = val
+				ExamineThreadLevel_data["debug.getupvalue(" .. (name or S[302535920000723--[[Lua--]]]) .. "," .. i .. ")"] = val
 			end
 		end
 	end
@@ -1376,21 +1372,17 @@ local function ExamineThreadLevel_totextex(level,info,obj,self)
 	ChoGGi.ComFuncs.OpenInExamineDlg(
 		ExamineThreadLevel_data,
 		self,
-		StringFormat("%s: %s",S[302535920001353--[[Thread info--]]],RetName(obj))
+		S[302535920001353--[[Thread info--]]] .. ": " .. RetName(obj)
 	)
 end
 
 function Examine:RetDebugUpValue(obj,list,c,nups)
-	local debug_str = "%s = %s @ debug.getupvalue(%s)"
 	for i = 1, nups do
 		local name, value = getupvalue(obj, i)
 		if name then
 			c = c + 1
-			list[c] = debug_str:format(
-				self:valuetotextex(name),
-				self:valuetotextex(value),
-				i
-			)
+			list[c] = self:valuetotextex(name) .. " = " .. self:valuetotextex(value)
+				.. " @ debug.getupvalue(" .. i .. ")"
 		end
 	end
 	return list,c
@@ -1404,7 +1396,7 @@ function Examine:RetDebugGetinfo(obj)
 	local info = getinfo(obj,"SLlfunt") or empty_table
 	for key,value in pairs(info) do
 		c_debug = c_debug + 1
-		totextex_debug_table[c_debug] = StringFormat("%s: %s",key,self:valuetotextex(value))
+		totextex_debug_table[c_debug] = key .. ": " .. self:valuetotextex(value)
 	end
 	return TableConcat(totextex_debug_table,"\n")
 end
@@ -1437,10 +1429,7 @@ function Examine:totextex(obj,obj_type)
 			-- gotta store all the names if we're doing all props (no dupes thanks)
 			totextex_dupes[name] = true
 			c = c + 1
-			totextex_res[c] = StringFormat("%s = %s<left>",
-				name,
-				self:valuetotextex(v)
-			)
+			totextex_res[c] = name .. " = " .. self:valuetotextex(v) .. "<left>"
 			if type(k) == "number" then
 				totextex_sort[totextex_res[c]] = k
 			end
@@ -1456,10 +1445,7 @@ function Examine:totextex(obj,obj_type)
 					if not totextex_dupes[name] then
 						totextex_dupes[name] = true
 						c = c + 1
-						totextex_res[c] = StringFormat("%s = %s<left>",
-							name,
-							self:valuetotextex(obj[k])
-						)
+						totextex_res[c] = name .. " = " .. self:valuetotextex(obj[k]) .. "<left>"
 					end
 
 				end
@@ -1486,17 +1472,20 @@ function Examine:totextex(obj,obj_type)
 				if info then
 					local l_level, l_info = level, info
 					c = c + 1
-					totextex_res[c] = StringFormat([[%s%s(%s) %s: %s%s @ debug.getinfo(%s,"SLlfunt")]],
-						self:HyperLink(obj,function()
+					totextex_res[c] = self:HyperLink(obj,function()
 							ExamineThreadLevel_totextex(l_level,l_info,obj,self)
-						end),
-						info.short_src or info.source,
-						info.currentline,
-						S[1000110--[[Type--]]],
-						info.name ~= "" and info.name or info.name_what ~= "" and info.name_what or info.what ~= "" and info.what or S[302535920000723--[[Lua--]]],
-						HLEnd,
-						l_level
-					)
+						end)
+						.. (info.short_src or info.source)
+						.. "("
+						.. info.currentline
+						.. ") "
+						.. S[1000110--[[Type--]]]
+						.. ": "
+						.. (info.name ~= "" and info.name or info.name_what ~= "" and info.name_what or info.what ~= "" and info.what or S[302535920000723--[[Lua--]]])
+						.. HLEnd
+						.. " @ debug.getinfo("
+						.. l_level
+						.. ",\"SLlfunt\")"
 				else
 					break
 				end
@@ -1546,25 +1535,29 @@ function Examine:totextex(obj,obj_type)
 	if IsValid(obj) and obj:IsKindOf("CObject") then
 		is_valid_obj = true
 
-		TableInsert(totextex_res,1,StringFormat("\t--%s%s%s@%s--",
-			self:HyperLink(obj,function()
+		TableInsert(totextex_res,1,"\t--"
+			.. self:HyperLink(obj,function()
 				ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(obj),self)
-			end),
-			obj.class,
-			HLEnd,
-			self:valuetotextex(obj:GetVisualPos())
-		))
+			end)
+			.. obj.class
+			.. HLEnd
+			.. "@"
+			.. self:valuetotextex(obj:GetVisualPos())
+			.. "--"
+		)
 
 		if obj:IsValidPos() and IsValidEntity(obj:GetEntity()) and 0 < obj:GetAnimDuration() then
 			local pos = obj:GetVisualPos() + obj:GetStepVector() * obj:TimeToAnimEnd() / obj:GetAnimDuration()
-			TableInsert(totextex_res, 2, StringFormat("%s, step:%s%s%s",
-				GetStateName(obj:GetState()),
-				self:HyperLink(obj,function()
+			TableInsert(totextex_res, 2,
+				GetStateName(obj:GetState())
+				.. ", step:"
+				.. self:HyperLink(obj,function()
 					ShowObj(pos)
-				end),
-				tostring(obj:GetStepVector(obj:GetState(),0)),
-				HLEnd
-			))
+				end)
+				.. tostring(obj:GetStepVector(obj:GetState(),0))
+				.. HLEnd
+			)
+
 		end
 	end
 
@@ -1575,10 +1568,10 @@ function Examine:totextex(obj,obj_type)
 	elseif obj_type == "string" then
 		if obj == "nil" then
 			c = c + 1
-			totextex_res[c] = StringFormat("%s",obj)
+			totextex_res[c] = tostring(obj)
 		else
 			c = c + 1
-			totextex_res[c] = StringFormat("'%s'",obj)
+			totextex_res[c] = "'" .. obj .. "'"
 		end
 
 	elseif obj_type == "userdata" then
@@ -1589,7 +1582,7 @@ function Examine:totextex(obj,obj_type)
 			str_not_translated = true
 		else
 			-- some strings have up to two <color> in them
-			trans_str = StringFormat("%s = %s</color></color>",obj,trans_str)
+			trans_str = obj .. " = " .. trans_str .. "</color></color>"
 		end
 		c = c + 1
 		totextex_res[c] = trans_str
@@ -1600,10 +1593,7 @@ function Examine:totextex(obj,obj_type)
 			local c2 = 0
 			for k, v in pairs(obj_metatable) do
 				c2 = c2 + 1
-				data_meta[c2] = StringFormat("%s = %s",
-					self:valuetotextex(k),
-					self:valuetotextex(v)
-				)
+				data_meta[c2] = self:valuetotextex(k) .. " = " .. self:valuetotextex(v)
 			end
 			TableSort(data_meta, function(a, b)
 				return CmpLower(a, b)
@@ -1613,104 +1603,103 @@ function Examine:totextex(obj,obj_type)
 			local name = obj_metatable.__name
 			if name == "HGE.TaskRequest" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,StringFormat("Unpack(): %s%s%s",
-					self:HyperLink(obj,function()
+				TableInsert(data_meta,1,"Unpack(): "
+					.. self:HyperLink(obj,function()
 						ChoGGi.ComFuncs.OpenInExamineDlg({obj:Unpack()},self)
-					end),
-					"table",
-					HLEnd
-				))
+					end)
+					.. "table" .. HLEnd
+				)
 				-- we use this with Object>Flags
 				self.obj_flags = obj:GetFlags()
-				TableInsert(data_meta,1,StringFormat("GetFlags(): %s",self.obj_flags))
-				TableInsert(data_meta,1,StringFormat("GetReciprocalRequest(): %s",self:valuetotextex(obj:GetReciprocalRequest())))
-				TableInsert(data_meta,1,StringFormat("GetLastServiced(): %s",obj:GetLastServiced()))
-				TableInsert(data_meta,1,StringFormat("GetFreeUnitSlots(): %s",obj:GetFreeUnitSlots()))
-				TableInsert(data_meta,1,StringFormat("GetFillIndex(): %s",obj:GetFillIndex()))
-				TableInsert(data_meta,1,StringFormat("GetTargetAmount(): %s",obj:GetTargetAmount()))
-				TableInsert(data_meta,1,StringFormat("GetDesiredAmount(): %s",obj:GetDesiredAmount()))
-				TableInsert(data_meta,1,StringFormat("GetActualAmount(): %s",obj:GetActualAmount()))
-				TableInsert(data_meta,1,StringFormat("GetWorkingUnits(): %s",obj:GetWorkingUnits()))
-				TableInsert(data_meta,1,StringFormat("GetResource(): '%s'",obj:GetResource()))
-				TableInsert(data_meta,1,StringFormat("\nGetBuilding(): %s",self:valuetotextex(obj:GetBuilding())))
+				TableInsert(data_meta,1,"GetFlags(): " .. self.obj_flags)
+				TableInsert(data_meta,1,"GetReciprocalRequest(): " .. self:valuetotextex(obj:GetReciprocalRequest()))
+				TableInsert(data_meta,1,"GetLastServiced(): " .. obj:GetLastServiced())
+				TableInsert(data_meta,1,"GetFreeUnitSlots(): " .. obj:GetFreeUnitSlots())
+				TableInsert(data_meta,1,"GetFillIndex(): " .. obj:GetFillIndex())
+				TableInsert(data_meta,1,"GetTargetAmount(): " .. obj:GetTargetAmount())
+				TableInsert(data_meta,1,"GetDesiredAmount(): " .. obj:GetDesiredAmount())
+				TableInsert(data_meta,1,"GetActualAmount(): " .. obj:GetActualAmount())
+				TableInsert(data_meta,1,"GetWorkingUnits(): " .. obj:GetWorkingUnits())
+				TableInsert(data_meta,1,"GetResource(): '" .. obj:GetResource() .. "'")
+				TableInsert(data_meta,1,"\nGetBuilding(): " .. self:valuetotextex(obj:GetBuilding()))
 			elseif name == "HGE.Grid" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,StringFormat("get_default(): %s",obj:get_default()))
-				TableInsert(data_meta,1,StringFormat("max_value(): %s",obj:max_value()))
+				TableInsert(data_meta,1,"get_default(): " .. obj:get_default())
+				TableInsert(data_meta,1,"max_value(): " .. obj:max_value())
 				local size = {obj:size()}
 				if size[1] then
-					TableInsert(data_meta,1,StringFormat("\nsize(): %s %s",size[1],size[2]))
+					TableInsert(data_meta,1,"\nsize(): " .. size[1] .. " " .. size[2])
 				end
 			elseif name == "HGE.XMGrid" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
 				local minmax = {obj:minmax()}
 				if minmax[1] then
-					TableInsert(data_meta,1,StringFormat("minmax(): %s %s",minmax[1],minmax[2]))
+					TableInsert(data_meta,1,"minmax(): " .. minmax[1] .. " " .. minmax[2])
 				end
-				TableInsert(data_meta,1,StringFormat("levels(): %s",obj:levels()))
-				TableInsert(data_meta,1,StringFormat("GetPositiveCells(): %s",obj:GetPositiveCells()))
-				TableInsert(data_meta,1,StringFormat("GetBilinear(): %s",obj:GetBilinear()))
-				TableInsert(data_meta,1,StringFormat("EnumZones(): %s",self:valuetotextex(obj:EnumZones())))
-				TableInsert(data_meta,1,StringFormat("size(): %s",obj:size()))
+				TableInsert(data_meta,1,"levels(): " .. obj:levels())
+				TableInsert(data_meta,1,"GetPositiveCells(): " .. tostring(obj:GetPositiveCells()))
+				TableInsert(data_meta,1,"GetBilinear(): " .. obj:GetBilinear())
+				TableInsert(data_meta,1,"EnumZones(): " .. self:valuetotextex(obj:EnumZones()))
+				TableInsert(data_meta,1,"size(): " .. obj:size())
 				-- crashing tendencies
---~ 				TableInsert(data_meta,1,StringFormat("histogram(): %s",self:valuetotextex({obj:histogram()})))
+--~ 				TableInsert(data_meta,1,"histogram(): " .. self:valuetotextex({obj:histogram()}))
 				-- freeze screen with render error in log ex(Flight_Height:GetBinData())
-				TableInsert(data_meta,1,StringFormat("\nCenterOfMass(): %s",self:valuetotextex(obj:CenterOfMass())))
+				TableInsert(data_meta,1,"\nCenterOfMass(): " .. self:valuetotextex(obj:CenterOfMass()))
 			elseif name == "HGE.Box" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
 				local points2d = {obj:ToPoints2D()}
 				if points2d[1] then
-					TableInsert(data_meta,1,StringFormat("ToPoints2D(): %s %s\n%s %s",
-						self:valuetotextex(points2d[1]),
-						self:valuetotextex(points2d[2]),
-						self:valuetotextex(points2d[3]),
-						self:valuetotextex(points2d[4])
-					))
+					TableInsert(data_meta,1,"ToPoints2D(): "
+						.. self:valuetotextex(points2d[1])
+						.. " " .. self:valuetotextex(points2d[2])
+						.. "\n" .. self:valuetotextex(points2d[3])
+						.. " " .. self:valuetotextex(points2d[4])
+					)
 				end
-				TableInsert(data_meta,1,StringFormat("min(): %s",self:valuetotextex(obj:min())))
-				TableInsert(data_meta,1,StringFormat("max(): %s",self:valuetotextex(obj:max())))
+				TableInsert(data_meta,1,"min(): " .. self:valuetotextex(obj:min()))
+				TableInsert(data_meta,1,"max(): " .. self:valuetotextex(obj:max()))
 				local bsphere = {obj:GetBSphere()}
 				if bsphere[1] then
-					TableInsert(data_meta,1,StringFormat("GetBSphere(): %s %s",self:valuetotextex(bsphere[1]),bsphere[2]))
+					TableInsert(data_meta,1,"GetBSphere(): " .. self:valuetotextex(bsphere[1]) .. " " .. bsphere[2])
 				end
-				TableInsert(data_meta,1,StringFormat("Center(): %s",self:valuetotextex(obj:Center())))
-				TableInsert(data_meta,1,StringFormat("IsEmpty(): %s",obj:IsEmpty()))
+				TableInsert(data_meta,1,"Center(): " .. self:valuetotextex(obj:Center()))
+				TableInsert(data_meta,1,"IsEmpty(): " .. tostring(obj:IsEmpty()))
 				local Radius = obj:Radius()
 				local Radius2D = obj:Radius2D()
-				TableInsert(data_meta,1,StringFormat("Radius(): %s",Radius))
+				TableInsert(data_meta,1,"Radius(): " .. Radius)
 				if Radius ~= Radius2D then
-					TableInsert(data_meta,1,StringFormat("Radius2D(): %s",Radius2D))
+					TableInsert(data_meta,1,"Radius2D(): " .. Radius2D)
 				end
-				TableInsert(data_meta,1,StringFormat("size(): %s",self:valuetotextex(obj:size())))
-				TableInsert(data_meta,1,StringFormat("IsValidZ(): %s",obj:IsValidZ()))
-				TableInsert(data_meta,1,StringFormat("\nIsValid(): %s",obj:IsValid()))
+				TableInsert(data_meta,1,"size(): " .. self:valuetotextex(obj:size()))
+				TableInsert(data_meta,1,"IsValidZ(): " .. tostring(obj:IsValidZ()))
+				TableInsert(data_meta,1,"\nIsValid(): " .. tostring(obj:IsValid()))
 			elseif name == "HGE.Point" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,StringFormat("__unm(): %s",self:valuetotextex(obj:__unm())))
+				TableInsert(data_meta,1,"__unm(): " .. self:valuetotextex(obj:__unm()))
 				local x,y,z = obj:xyz()
-				TableInsert(data_meta,1,StringFormat("x: %s, y: %s, z: %s",x,y,z))
-				TableInsert(data_meta,1,StringFormat("IsValidZ(): %s",obj:IsValidZ()))
-				TableInsert(data_meta,1,StringFormat("\nIsValid(): %s",obj:IsValid()))
+				TableInsert(data_meta,1,"x: " .. x .. ", y: " .. y .. ", z: " .. (z or ""))
+				TableInsert(data_meta,1,"IsValidZ(): " .. tostring(obj:IsValidZ()))
+				TableInsert(data_meta,1,"\nIsValid(): " .. tostring(obj:IsValid()))
 			elseif name == "HGE.RandState" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,StringFormat("Last(): %s",obj:Last()))
-				TableInsert(data_meta,1,StringFormat("GetStable(): %s",obj:GetStable()))
-				TableInsert(data_meta,1,StringFormat("Get(): %s",obj:Get()))
-				TableInsert(data_meta,1,StringFormat("\nCount(): %s",obj:Count()))
+				TableInsert(data_meta,1,"Last(): " .. obj:Last())
+				TableInsert(data_meta,1,"GetStable(): " .. obj:GetStable())
+				TableInsert(data_meta,1,"Get(): " .. obj:Get())
+				TableInsert(data_meta,1,"\nCount(): " .. obj:Count())
 			elseif name == "HGE.Quaternion" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,StringFormat("Norm(): %s",self:valuetotextex(obj:Norm())))
-				TableInsert(data_meta,1,StringFormat("Inv(): %s",self:valuetotextex(obj:Inv())))
+				TableInsert(data_meta,1,"Norm(): " .. self:valuetotextex(obj:Norm()))
+				TableInsert(data_meta,1,"Inv(): " .. self:valuetotextex(obj:Inv()))
 				local roll,pitch,yaw = obj:GetRollPitchYaw()
-				TableInsert(data_meta,1,StringFormat("GetRollPitchYaw(): %s %s %s",roll,pitch,yaw))
-				TableInsert(data_meta,1,StringFormat("\nGetAxisAngle(): %s",self:valuetotextex(obj:GetAxisAngle())))
+				TableInsert(data_meta,1,"GetRollPitchYaw(): " .. roll .. " " .. pitch .. " " .. yaw)
+				TableInsert(data_meta,1,"\nGetAxisAngle(): " .. self:valuetotextex(obj:GetAxisAngle()))
 			elseif name == "LuaPStr" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,StringFormat("hash(): %s",obj:hash()))
-				TableInsert(data_meta,1,StringFormat("str(): '%s'",obj:str()))
-				TableInsert(data_meta,1,StringFormat("parseTuples(): '%s'",obj:parseTuples()))
-				TableInsert(data_meta,1,StringFormat("getInt(): %s",obj:getInt()))
-				TableInsert(data_meta,1,StringFormat("\nsize(): %s",obj:size()))
+				TableInsert(data_meta,1,"hash(): " .. obj:hash())
+				TableInsert(data_meta,1,"str(): '" .. obj:str() .. "'")
+				TableInsert(data_meta,1,"parseTuples(): '" .. obj:parseTuples() .. "'")
+				TableInsert(data_meta,1,"getInt(): " .. obj:getInt())
+				TableInsert(data_meta,1,"\nsize(): " .. obj:size())
 --~ 			elseif name == "HGE.File" then
 --~ 			elseif name == "HGE.ForEachReachable" then
 --~ 			elseif name == "RSAKey" then
@@ -1719,9 +1708,9 @@ function Examine:totextex(obj,obj_type)
 				TableInsert(data_meta,1,"\ngetmetatable():")
 				local is_t = IsT(obj)
 				if is_t then
-					TableInsert(data_meta,1,StringFormat("THasArgs(): %s",THasArgs(obj)))
+					TableInsert(data_meta,1,"THasArgs(): " .. tostring(THasArgs(obj)))
 					-- IsT returns the string id, but we'll just call it TGetID() to make it more obvious for people
-					TableInsert(data_meta,1,StringFormat("\nTGetID(): %s",is_t))
+					TableInsert(data_meta,1,"\nTGetID(): " .. is_t)
 					if str_not_translated and not UICity then
 						TableInsert(data_meta,1,S[302535920001500--[[userdata object probably needs UICity to translate.--]]])
 					end
@@ -1737,7 +1726,7 @@ function Examine:totextex(obj,obj_type)
 		local dbg_value
 
 		if blacklist then
-			dbg_value = StringFormat("\ndebug.getinfo(): %s",DebugGetInfo(obj))
+			dbg_value = "\ndebug.getinfo(): " .. DebugGetInfo(obj)
 		else
 			c = c + 1
 			totextex_res[c] = "\n"
@@ -1752,27 +1741,22 @@ function Examine:totextex(obj,obj_type)
 
 	elseif obj_type == "thread" then
 		c = c + 1
-		totextex_res[c] = StringFormat([[
-
-<color 255 255 255>%s:
-IsValidThread(): %s
-GetThreadStatus(): %s
-IsGameTimeThread(): %s
-IsRealTimeThread(): %s
-ThreadHasFlags(): %s</color>]],
-			S[302535920001353--[[Thread info--]]],
-			IsValidThread(obj),
-			GetThreadStatus(obj),
-			IsGameTimeThread(obj),
-			IsRealTimeThread(obj),
-			ThreadHasFlags(obj)
-		)
+		totextex_res[c] = "\n\n<color 255 255 255>"
+			.. S[302535920001353--[[Thread info--]]]
+			.. ":\nIsValidThread(): "
+			.. tostring(IsValidThread(obj) or nil)
+			.. "\nGetThreadStatus(): "
+			.. (GetThreadStatus(obj) or "nil")
+			.. "\nIsGameTimeThread(): "
+			.. tostring(IsGameTimeThread(obj))
+			.. "\nIsRealTimeThread(): "
+			.. tostring(IsRealTimeThread(obj))
+			.. "\nThreadHasFlags(): "
+			.. tostring(ThreadHasFlags(obj))
 	end
 
 	if not (obj == "nil" or is_valid_obj or obj_type == "userdata") and obj_metatable then
-		TableInsert(totextex_res, 1, StringFormat("\t-- metatable: %s --",
-			self:valuetotextex(obj_metatable)
-		))
+		TableInsert(totextex_res, 1,"\t-- metatable: " .. self:valuetotextex(obj_metatable) .. " --")
 	end
 
 	return TableConcat(totextex_res,"\n")
@@ -1834,7 +1818,7 @@ function Examine:BuildParents(list,list_type,title,sort_type)
 		local c = #self.parents_menu_popup
 		c = c + 1
 		self.parents_menu_popup[c] = {
-			name = StringFormat("	 ---- %s",title),
+			name = "\t---- " .. title,
 			hint = title,
 		}
 		for i = 1, #list do
@@ -1878,7 +1862,7 @@ function Examine:SetObj(startup)
 
 	self:SetToolbarVis(obj)
 
-	self.idText:SetText(StringFormat("%s: %s",name,S[67--[[Loading resources--]]]))
+	self.idText:SetText(name .. ": " .. S[67--[[Loading resources--]]])
 
 	if obj_type == "table" then
 		obj_class = g_Classes[obj.class]
@@ -1890,11 +1874,11 @@ function Examine:SetObj(startup)
 
 		-- add object name to title
 		if obj_class and obj.handle and #obj > 0 then
-			name = StringFormat("%s: %s (%s)",name,obj.handle,#obj)
+			name = name .. ": " .. obj.handle .. " (" .. #obj .. ")"
 		elseif obj_class and obj.handle then
-			name = StringFormat("%s (%s)",name,obj.handle)
+			name = name .. " " .. " (" .. obj.handle .. ")"
 		elseif #obj > 0 then
-			name = StringFormat("%s (%s)",name,#obj)
+			name = name .. " " .. " (" .. #obj .. ")"
 		end
 
 		-- build parents/ancestors menu
@@ -1915,24 +1899,18 @@ function Examine:SetObj(startup)
 		local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
 		local attach_amount = #attaches
 
-		local hint_str = "%s\n%s: %s\npos: %s"
-		local name_str = "%s: %s"
 		for i = 1, attach_amount do
 			local a = attaches[i]
 			local pos = a.GetVisualPos and a:GetVisualPos()
 
 			local name = RetName(a)
 			if name ~= a.class then
-				name = name_str:format(name,a.class)
+				name = name .. ": " .. a.class
 			end
 			self.attaches_menu_popup[i] = {
 				name = name,
-				hint = hint_str:format(
-					a.class,
-					S[302535920000955--[[Handle--]]],
-					a.handle or S[6761--[[None--]]],
-					pos
-				),
+				hint = a.class .. "\n" .. S[302535920000955--[[Handle--]]] .. ": "
+					.. (a.handle or S[6761--[[None--]]]) .. "\npos: " .. tostring(pos),
 				showobj = a,
 				clicked = function()
 					ChoGGi.ComFuncs.ClearShowObj(a)

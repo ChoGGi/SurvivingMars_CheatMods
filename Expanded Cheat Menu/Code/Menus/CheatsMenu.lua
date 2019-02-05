@@ -4,11 +4,11 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-	local StringFormat = string.format
+
 	local c = #Actions
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920001355--[[Map--]]],S[5422--[[Exploration--]]]),
+	Actions[c] = {ActionName = S[302535920001355--[[Map--]]] .. " " .. S[5422--[[Exploration--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Map Exploration",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
@@ -63,7 +63,7 @@ Certain mysteries need certain objects which get placed when the map is generate
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000318--[[Unlock--]]],S[697482021580--[[Achievements--]]]),
+	Actions[c] = {ActionName = S[302535920000318--[[Unlock--]]] .. " " .. S[697482021580--[[Achievements--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Unlock Achievements",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
@@ -72,7 +72,7 @@ Certain mysteries need certain objects which get placed when the map is generate
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000266--[[Spawn--]]],S[547--[[Colonists--]]]),
+	Actions[c] = {ActionName = S[302535920000266--[[Spawn--]]] .. " " .. S[547--[[Colonists--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Spawn Colonists",
 		ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
@@ -195,7 +195,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[311--[[Research--]]],S[3734--[[Tech--]]]),
+	Actions[c] = {ActionName = S[311--[[Research--]]] .. " " .. S[3734--[[Tech--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Research Tech",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
@@ -205,7 +205,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[311--[[Research--]]],S[302535920000281--[[Remove--]]]),
+	Actions[c] = {ActionName = S[311--[[Research--]]] .. " " .. S[302535920000281--[[Remove--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Research Remove",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",

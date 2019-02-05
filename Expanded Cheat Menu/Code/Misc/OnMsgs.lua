@@ -3,7 +3,6 @@
 -- most OnMsgs
 
 local type = type
-local StringFormat = string.format
 local TableSort = table.sort
 local TableRemove = table.remove
 local FlushLogFile = FlushLogFile
@@ -131,10 +130,9 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		local UserSettings = ChoGGi.UserSettings
 
 		-- add some ids to make it easier to fiddle with selection panel
-		local template_str = "idSection%s_ChoGGi"
 		for key,template in pairs(XTemplates) do
 			if key:sub(1,7) == "section" and not template[1].Id then
-				template[1].Id = template_str:format(key:sub(8))
+				template[1].Id = "idSection" .. key:sub(8) .. "_ChoGGi"
 			end
 		end
 
@@ -246,7 +244,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
-					"RolloverTitle", StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]]),
+					"RolloverTitle", S[302535920000129--[[Set--]]] .. " " .. S[302535920001184--[[Particles--]]],
 					"RolloverHint", S[302535920000083--[[<left_click> Activate--]]],
 					"RolloverText", S[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
 					"OnPress", function(self)
@@ -309,7 +307,7 @@ function OnMsg.ModsReloaded()
 		c = c + 1
 		Actions[c] = {
 			ActionMenubar = "ECM.Debug",
-			ActionName = StringFormat("%s ..",S[302535920001074--[[Ged Presets Editor--]]]),
+			ActionName = S[302535920001074--[[Ged Presets Editor--]]],
 			ActionId = ".Ged Presets Editor",
 			ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 			OnActionEffect = "popup",
@@ -323,7 +321,7 @@ function OnMsg.ModsReloaded()
 				Actions[c] = {
 					ActionMenubar = "ECM.Debug.Ged Presets Editor",
 					ActionName = name,
-					ActionId = StringFormat(".%s",name),
+					ActionId = "." .. name,
 					ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
 					RolloverText = S[302535920000733--[[Open a preset in the editor.--]]],
 					OnAction = function()
@@ -343,7 +341,7 @@ function OnMsg.ModsReloaded()
 			if a.ActionId:sub(1,1) == "." then
 				a.ActionTranslate = false
 				a.replace_matching_id = true
-				a.ActionId = StringFormat("%s%s",a.ActionMenubar ~= "" and a.ActionMenubar or "ECM",a.ActionId)
+				a.ActionId = (a.ActionMenubar ~= "" and a.ActionMenubar or "ECM") .. a.ActionId
 				a.ChoGGi_ECM = true
 			end
 		end
@@ -377,9 +375,9 @@ function OnMsg.ModsReloaded()
 			end
 
 			dlgConsole.idEdit.RolloverTemplate = "Rollover"
-			dlgConsole.idEdit.RolloverTitle = StringFormat("%s %s",S[302535920001073--[[Console--]]],S[487939677892--[[Help--]]])
+			dlgConsole.idEdit.RolloverTitle = S[302535920001073--[[Console--]]] .. " " .. S[487939677892--[[Help--]]]
 			if blacklist then
-				dlgConsole.idEdit.RolloverText = StringFormat("%s\n\n\n%s",S[302535920001512--[[You need to have my HelperMod enabled to use these:--]]],S[302535920001440])
+				dlgConsole.idEdit.RolloverText = S[302535920001512--[[You need to have my HelperMod enabled to use these:--]]] .. "\n\n\n" .. S[302535920001440]
 				dlgConsole.idEdit.Hint = S[302535920001513--[["ex(obj) = examine object, s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			else
 				-- add tooltip
@@ -467,7 +465,6 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 	end -- DisableECM
 
 	local BuildingTechRequirements = BuildingTechRequirements
-	local spon_str = "sponsor_status%s"
 	local spon_str2 = "sponsor_status%s_ChoGGi_orig"
 	local BuildingTemplates = BuildingTemplates
 	for id,bld in pairs(BuildingTemplates) do
@@ -476,9 +473,9 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 		if UserSettings.SponsorBuildingLimits then
 			-- set each status to false if it isn't
 			for i = 1, 3 do
-				local str = spon_str:format(i)
+				local str = "sponsor_status" .. i
 				if bld[str] ~= false then
-					bld[spon_str2:format(i)] = bld[str]
+					bld["sponsor_status" .. i .. "_ChoGGi_orig"] = bld[str]
 					bld[str] = false
 				end
 			end
@@ -839,11 +836,11 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 				end
 				if bs.charge then
 					obj[prod_type].max_charge = bs.charge
-					obj[StringFormat("max_%s_charge",prod_type)] = bs.charge
+					obj["max_" .. prod_type .. "_charge"] = bs.charge
 				end
 				if bs.discharge then
 					obj[prod_type].max_discharge = bs.discharge
-					obj[StringFormat("max_%s_discharge",prod_type)] = bs.discharge
+					obj["max_" .. prod_type .. "_discharge"] = bs.discharge
 				end
 			end)
 
@@ -1194,7 +1191,7 @@ do -- LoadGame/CityStart
 	local function SetMissionBonuses(UserSettings,Presets,preset,which,Func)
 		local list = Presets[preset].Default or ""
 		for i = 1, #list do
-			if UserSettings[StringFormat("%s%s",which,list[i].id)] then
+			if UserSettings[which .. list[i].id] then
 				Func(list[i].id)
 			end
 		end
@@ -1329,9 +1326,9 @@ do -- LoadGame/CityStart
 
 		-- all yours XxUnkn0wnxX
 		if not blacklist then
-			local autoexec = StringFormat("%s/autoexec.lua",ChoGGi.scripts)
+			local autoexec = ChoGGi.scripts .. "/autoexec.lua"
 			if ChoGGi.ComFuncs.FileExists(autoexec) then
-				print("ECM executing: ",ConvertToOSPath(autoexec))
+				print("ECM auto-executing: ",ConvertToOSPath(autoexec))
 				dofile(autoexec)
 			end
 		end
@@ -1538,7 +1535,7 @@ do -- LoadGame/CityStart
 
 		-- everyone loves a new titlebar, unless they don't
 		if UserSettings.ChangeWindowTitle then
-			terminal.SetOSWindowTitle(StringFormat("%s: %s v%s",S[1079--[[Surviving Mars--]]],S[302535920000887--[[ECM--]]],ChoGGi._VERSION))
+			terminal.SetOSWindowTitle(S[1079--[[Surviving Mars--]]] .. ": " .. S[302535920000887--[[ECM--]]] .. " v" .. ChoGGi._VERSION)
 		end
 
 		-- first time run info
@@ -1553,13 +1550,14 @@ do -- LoadGame/CityStart
 				end
 			end
 			ChoGGi.ComFuncs.QuestionBox(
-				StringFormat("%s\n\n%s",S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]],S[302535920001309--[["Stop showing console log: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(S[302535920001308--[[Settings--]]],S[302535920001112--[[Console Log--]]])),
+				S[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]]
+					.. "\n\n" .. S[302535920001309--[["Stop showing console log: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(S[302535920001308--[[Settings--]]],S[302535920001112--[[Console Log--]]]),
 				CallBackFunc,
-				StringFormat("%s %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000201--[[Active--]]]),
+				S[302535920000000--[[Expanded Cheat Menu--]]] .. " " .. S[302535920000201--[[Active--]]],
 				S[302535920001465--[[Stop talking and start cheating!--]]],
 				S[302535920001466--[["I know what I'm doing, show me the console log."--]]],
-				StringFormat("%sPreview.png",ChoGGi.mod_path)
+				ChoGGi.mod_path .. "Preview.png"
 			)
 			-- second place is isn't last place
 			UserSettings.FirstRun = false

@@ -4,7 +4,6 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-	local StringFormat = string.format
 	local c = #Actions
 
 	local str_ExpandedCM_Misc = "ECM.Expanded CM.Misc"
