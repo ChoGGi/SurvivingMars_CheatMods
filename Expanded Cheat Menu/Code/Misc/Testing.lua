@@ -215,72 +215,9 @@ function OnMsg.ClassesGenerate()
 		local TickStart = ChoGGi.ComFuncs.TickStart
 		local TickEnd = ChoGGi.ComFuncs.TickEnd
 
-		function ChoGGi.testing.TestStringCant()
-			local format_str = "%s%s%s"
-
-			TickStart("TestStringCant.1.Tick")
-			for _ = 1, 100000 do
-				local temp = "1" .. "2" .. "3"
-			end
-			TickEnd("TestStringCant.1.Tick")
-
-			TickStart("TestStringCant.2.Tick")
-			for _ = 1, 100000 do
-				local temp = format_str:format("1","2","3")
-			end
-			TickEnd("TestStringCant.2.Tick")
-
-			TickStart("TestStringCant.3.Tick")
-			for _ = 1, 100000 do
-				local temp = 1 .. 2 .. 3
-			end
-			TickEnd("TestStringCant.3.Tick")
-
-			TickStart("TestStringCant.4.Tick")
-			for _ = 1, 100000 do
-				local temp = format_str:format(1,2,3)
-			end
-			TickEnd("TestStringCant.4.Tick")
-
-
-		end
-
-		function ChoGGi.testing.TestPackArgs()
-			local function f1(...)
-				local vararg = {...}
-				if vararg[2] then end
-			end
-			local pack_params = pack_params
-			local function f2(...)
-				local vararg = pack_params(...)
-				if vararg[2] then end
-			end
-			local tablepack = table.pack
-			local function f3(...)
-				local vararg = tablepack(...)
-				if vararg[2] then end
-			end
-			local a,b,c = 1,"2","three"
-
-			TickStart("TestPackArgs.1.Tick")
-			for _ = 1, 500000 do
-				f1(a,b,c)
-			end
-			TickEnd("TestPackArgs.1.Tick")
-			TickStart("TestPackArgs.2.Tick")
-			for _ = 1, 500000 do
-				f2(a,b,c)
-			end
-			TickEnd("TestPackArgs.2.Tick")
-			TickStart("TestPackArgs.3.Tick")
-			for _ = 1, 500000 do
-				f3(a,b,c)
-			end
-			TickEnd("TestPackArgs.3.Tick")
-		end
-
 		function ChoGGi.testing.TestTableIterate()
 			local list = MapGet(true)
+
 			TickStart("TestTableIterate.1.Tick")
 			for _ = 1, 1000 do
 				for _ = 1, #list do
@@ -288,12 +225,14 @@ function OnMsg.ClassesGenerate()
 			end
 			TickEnd("TestTableIterate.1.Tick")
 
+			local ipairs = ipairs
 			TickStart("TestTableIterate.2.Tick")
 			for _ = 1, 1000 do
-				for _,_ in ipairs(list) do
+				for _ in ipairs(list) do
 				end
 			end
 			TickEnd("TestTableIterate.2.Tick")
+
 		end
 
 		function ChoGGi.testing.TestTableInsert()

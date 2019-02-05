@@ -9,6 +9,8 @@
 - Examine:
 - > Slightly increased the delay when using flash ui.
 - > Added an exec code one liner text input, and a checkbox to toggle visibility of it.
+- > Coloured values (you can change them in the settings file, or change them back to white if that's your thing).
+- > Added particle name to ParSystem objects.
 - Hid AnimState/AttachSpots from cheats panel (they're more of an examine thingy).
 - Find Within uses the same dialog for results.
 

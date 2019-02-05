@@ -337,7 +337,6 @@ function OnMsg.ClassesGenerate()
 
 		SuspendPassEdits("MirrorSphereStuck")
 		MapDelete(true, "ParSystem",function(o)
---~ 			if o:GetProperty("ParticlesName") == "PowerDecoy_Captured" and
 			if o:GetParticlesName() == "PowerDecoy_Captured" and
 					type(o.polyline) == "string" and o.polyline:find("\0") then
 				return true

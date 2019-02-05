@@ -10,6 +10,8 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Add a percent build up to when children are spawned.
-Once it hits a hundred, it'll slowly tick down afterwards to around zero (then back up again).]],
+	"description", [[Shows a percent build up to when children are spawned.
+Once it hits a hundred, it'll slowly tick down afterwards to around zero (then back up again).
+
+This is just a visual mod to let you know what's going on birth rate wise.]],
 })

@@ -73,6 +73,10 @@ function OnMsg.ClassesGenerate()
 		EnableToolTips = true,
 		-- append text or create new files
 		ExamineAppendDump = true,
+		-- values in examine list
+		ExamineColourNum = "255 255 0",
+		ExamineColourBool = "0 255 0",
+		ExamineColourStr = "255 255 255",
 		-- what cmd/editor to use with os.execute(cmd) when doing external editing
 		ExternalEditorCmd = "notepad \"%s\"",
 		-- where to store temp file

@@ -70,7 +70,7 @@ GlobalGameTimeThread("SolarArrayOrientation", function()
 	end
 end)
 
--- the below is for removing the persist errors from the log
+-- the below is for removing the persist warnings from the log
 local orig_PersistGame = PersistGame
 function PersistGame(...)
 	local ret = orig_PersistGame(...)
@@ -83,5 +83,6 @@ function OnMsg.SaveGame()
 	_G.SolarArrayOrientation = false
 end
 function OnMsg.PostSaveGame()
-  SolarArrayOrientation = CreateGameTimeThread(GlobalGameTimeThreadFuncs.SolarArrayOrientation)
+	RestartGlobalGameTimeThread("SolarArrayOrientation")
+--~   SolarArrayOrientation = CreateGameTimeThread(GlobalGameTimeThreadFuncs.SolarArrayOrientation)
 end

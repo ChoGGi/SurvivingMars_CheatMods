@@ -53,7 +53,7 @@ do -- AddMsgToFunc
 			Msg(msg_str,obj,varargs)
 
 --~ 			-- use to debug if getting an error
---~ 			local params = pack_params(...)
+--~ 			local params = {...}
 --~ 			-- pass on args to orig func
 --~ 			if not pcall(function()
 --~ 				return ChoGGi_OrigFuncs[class_name .. func_name](table.unpack(params))
@@ -183,7 +183,7 @@ do -- RetName
 			elseif PropObjGetProperty(obj,"template_class") and obj.template_class ~= "" then
 				name = obj.template_class
 			-- entity
-			elseif PropObjGetProperty(obj,"entity") then
+			elseif PropObjGetProperty(obj,"entity") and obj.entity ~= ""  then
 				name = obj.entity
 			-- class
 			elseif PropObjGetProperty(obj,"class") and obj.class ~= "" then
@@ -196,7 +196,7 @@ do -- RetName
 
 		elseif obj_type == "userdata" then
 			local trans_str = Trans(obj)
-			if trans_str == "Missing text" or trans_str:sub(-15) == "*bad string id?" then
+			if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
 				return tostring(obj)
 			end
 			return trans_str

@@ -190,12 +190,12 @@ function OnMsg.ClassesPostprocess()
 	end
 end
 
--- add some prod info to selection panel
-function OnMsg.ClassesBuilt()
-	local rover = XTemplates.ipRover[1]
+--~ -- add some prod info to selection panel
+--~ function OnMsg.ClassesBuilt()
+--~ 	local rover = XTemplates.ipRover[1]
 
-	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCMechanic_Prod",true)
+--~ 	-- check for and remove existing template
+--~ 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCMechanic_Prod",true)
 
 --~ 	-- we replace status
 --~ 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
@@ -207,24 +207,23 @@ function OnMsg.ClassesBuilt()
 --~ 		status = #rover
 --~ 	end
 
-	table.insert(
-		rover,
-		#rover or 0,
-		PlaceObj('XTemplateTemplate', {
-			"ChoGGi_Template_RCMechanic_Prod", true,
-			"__context_of_kind", "RCMechanic",
-			"__template", "InfopanelActiveSection",
-			"Title", T(6924, "Repair"),
-			"Icon", "UI/Icons/Sections/construction.tga",
-		}, {
-			PlaceObj("XTemplateTemplate", {
-				"__template", "InfopanelText",
-				"Text",  T(0,"<StatusUpdate>"),
-			}),
-		})
-	)
---~
-end
+--~ 	table.insert(
+--~ 		rover,
+--~ 		#rover,
+--~ 		PlaceObj('XTemplateTemplate', {
+--~ 			"ChoGGi_Template_RCMechanic_Prod", true,
+--~ 			"__context_of_kind", "RCMechanic",
+--~ 			"__template", "InfopanelActiveSection",
+--~ 			"Title", T(6924, "Repair"),
+--~ 			"Icon", "UI/Icons/Sections/construction.tga",
+--~ 		}, {
+--~ 			PlaceObj("XTemplateTemplate", {
+--~ 				"__template", "InfopanelText",
+--~ 				"Text",  T(0,"<StatusUpdate>"),
+--~ 			}),
+--~ 		})
+--~ 	)
+--~ end
 
 
 -- CheatCleanAndFix
