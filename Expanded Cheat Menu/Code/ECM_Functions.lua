@@ -565,7 +565,7 @@ function OnMsg.ClassesGenerate()
 				for thread in pairs(ThreadsRegister) do
 					local info = getinfo(thread, 1, "Slfun")
 					if info then
-						table_list[info.short_src .. "(" .. info.linedefined .. ") " .. thread] = thread
+						table_list[info.short_src .. "(" .. info.linedefined .. ") " .. tostring(thread)] = thread
 					end
 				end
 				Sleep(1000)

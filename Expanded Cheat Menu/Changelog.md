@@ -6,13 +6,13 @@
 ## v12.3 (Unreleased)
 ### Changed:
 - Code cleanup, might cause some issues...
+- Hid AnimState/AttachSpots from cheats panel (they're more of an examine thingy).
+- Find Within uses one dialog for results (instead of a new one each time).
 - Examine:
 - > Slightly increased the delay when using flash ui.
 - > Added an exec code one liner text input, and a checkbox to toggle visibility of it.
 - > Coloured values (you can change them in the settings file, or change them back to white if that's your thing).
 - > Added particle name to ParSystem objects.
-- Hid AnimState/AttachSpots from cheats panel (they're more of an examine thingy).
-- Find Within uses the same dialog for results.
 
 ### Fixed:
 - Cheats panel was using water instead of oxygen icons for oxygen need/free.
