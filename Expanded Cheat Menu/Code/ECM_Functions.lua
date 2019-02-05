@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local StringFormat = string.format
 local TableFind = table.find
 local TableClear = table.clear
 local TableIClear = table.iclear
@@ -33,17 +32,17 @@ function OnMsg.ClassesGenerate()
 		ext = ext or "png"
 		folder = folder or "AppData/"
 		if not match(folder, "/$") and #folder > 0 then
-			folder = StringFormat("%s/",folder)
+			folder = folder .. "/"
 		end
-		local existing_files = io.listfiles(folder, StringFormat("%s*.%s",prefix,ext))
+		local existing_files = io.listfiles(folder, prefix .. "*." .. ext)
 		local index = 0
 		for i = 1, #existing_files do
-			index = Max(index, tonumber(match(existing_files[i], StringFormat("%s%s",prefix,"(%d+)")) or 0))
+			index = Max(index, tonumber(match(existing_files[i], prefix .. "(%d+)" or 0)))
 		end
 		if just_name then
-			return StringFormat("%s%04d", prefix, index + 1)
+			return string.format("%s%04d", prefix, index + 1)
 		end
-		return StringFormat("%s%s%04d.%s", folder, prefix, index + 1, ext)
+		return string.format("%s%s%04d.%s", folder, prefix, index + 1, ext)
 	end
 	local GenerateScreenshotFilename = ChoGGi.ComFuncs.GenerateScreenshotFilename
 
@@ -64,7 +63,7 @@ function OnMsg.ClassesGenerate()
 		if gen_name then
 			filename = GenerateScreenshotFilename(file or "DumpedText","AppData/logs/",ext or "txt")
 		else
-			filename = StringFormat("AppData/logs/%s.%s",file or "DumpedText",ext or "txt")
+			filename = "AppData/logs/" .. (file or "DumpedText") .. "." .. (ext or "txt")
 		end
 
 		ThreadLockKey(filename)
@@ -84,7 +83,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.ComFuncs.DumpLua(obj)
-		ChoGGi.ComFuncs.Dump(StringFormat("%s%s",ChoGGi.newline,ValueToLuaCode(obj)),nil,"DumpedLua","lua")
+		ChoGGi.ComFuncs.Dump(ChoGGi.newline .. ValueToLuaCode(obj),nil,"DumpedLua","lua")
 	end
 
 	do -- DumpTableFunc
@@ -94,10 +93,10 @@ function OnMsg.ClassesGenerate()
 			if obj_type == "userdata" then
 				return Trans(obj)
 			elseif funcs and obj_type == "function" then
-				local newline = ChoGGi.newline
-				return StringFormat("Func: %s%s%s%s%s",newline,newline,obj:dump(),newline,newline)
+				local n = ChoGGi.newline
+				return "Func: " .. n .. n .. obj:dump() .. n .. n
 			elseif obj_type == "table" then
-				return StringFormat("%s len: %s",tostring(obj),#obj)
+				return tostring(obj) .. " len: " .. #obj
 			else
 				return tostring(obj)
 			end
@@ -112,19 +111,19 @@ function OnMsg.ClassesGenerate()
 
 			if type(obj) == "table" then
 				if obj.id then
-					output_string = StringFormat("%s\n-----------------obj.id: %s :",output_string,obj.id)
+					output_string = output_string .. "\n-----------------obj.id: " .. obj.id .. " :"
 				end
 				for k,v in pairs(obj) do
 					if type(v) == "table" then
 						DumpTableFunc(v, hierarchyLevel+1)
 					else
 						if k ~= nil then
-							output_string = StringFormat("%s\n%s = ",output_string,k)
+							output_string = output_string .. "\n" .. k .. " = "
 						end
 						if v ~= nil then
-							output_string = StringFormat("%s%s",output_string,RetTextForDump(v,funcs))
+							output_string = output_string .. RetTextForDump(v,funcs)
 						end
-						output_string = StringFormat("%s\n",output_string)
+						output_string = output_string .. "\n"
 					end
 				end
 			end
@@ -137,7 +136,7 @@ function OnMsg.ClassesGenerate()
 		--]]
 		function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
 			if blacklist then
-				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("DumpTable"))
+				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.ComFuncs.DumpTable"))
 				return
 			end
 			if not obj then
@@ -148,7 +147,7 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 			mode = mode or "-1"
-			--make sure it's empty
+			-- make sure it's empty
 			output_string = ""
 			DumpTableFunc(obj,nil,funcs)
 			AsyncStringToFile("AppData/logs/DumpedTable.txt",output_string,mode)
@@ -196,7 +195,6 @@ function OnMsg.ClassesGenerate()
 			SaveOrigFunc(funcname)
 			-- we want to local this after SaveOrigFunc just in case
 			local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-			local name_str = StringFormat("%s: %s",funcname,"%s")
 
 			_G[funcname] = function(...)
 
@@ -209,7 +207,7 @@ function OnMsg.ClassesGenerate()
 
 				if buffer_table[buffer_cnt] ~= str then
 					buffer_cnt = buffer_cnt + 1
-					buffer_table[buffer_cnt] = name_str:format(str)
+					buffer_table[buffer_cnt] = funcname .. ": " .. str
 				end
 
 				-- fire off orig func...
@@ -226,7 +224,7 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.ComFuncs.WriteLogs_Toggle(which)
 			if blacklist then
-				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("WriteLogs_Toggle"))
+				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.ComFuncs.WriteLogs_Toggle"))
 				return
 			end
 
@@ -259,10 +257,10 @@ function OnMsg.ClassesGenerate()
 
 	-- returns table with list of files without path or ext and path, or exclude ext to return all files
 	function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
-		local err, files = AsyncListFiles(folder,ext and StringFormat("*%s",ext) or "*")
+		local err, files = AsyncListFiles(folder,ext and "*" .. ext or "*")
 		if not err and #files > 0 then
 			local table_path = {}
-			local path = StringFormat("%s/",folder)
+			local path = folder .. "/"
 			for i = 1, #files do
 				local name
 				if ext then
@@ -283,11 +281,11 @@ function OnMsg.ClassesGenerate()
 		local err, folders = AsyncListFiles(folder,"*","folders")
 		if not err and #folders > 0 then
 			local table_path = {}
-			local temp_path = StringFormat("%s/",folder)
+			local path = folder .. "/"
 			for i = 1, #folders do
 				table_path[i] = {
 					path = folders[i],
-					name = folders[i]:gsub(temp_path,""),
+					name = folders[i]:gsub(path,""),
 				}
 			end
 			return table_path
@@ -415,15 +413,16 @@ function OnMsg.ClassesGenerate()
 		local hint = planning and 302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]] or 302535920000476--[["Shows list of objects, and spawns at mouse cursor."--]]
 
 		local default
-		local ItemList,c
+		local ItemList = {}
+		local c = 0
 
 		if IsValid(obj) and IsValidEntity(obj.ChoGGi_orig_entity) then
 			default = S[1000121--[[Default--]]]
-			ItemList = {{text = StringFormat(" %s",default),value = default}}
+			ItemList[1] = {
+				text = " " .. default,
+				value = default,
+			}
 			c = 1
-		else
-			ItemList = {}
-			c = 0
 		end
 
 		if planning then
@@ -486,7 +485,7 @@ function OnMsg.ClassesGenerate()
 
 			if not skip_msg then
 				MsgPopup(
-					StringFormat("%s: %s",choice[1].text,S[302535920000014--[[Spawned--]]]),
+					choice[1].text .. ": " .. S[302535920000014--[[Spawned--]]],
 					title
 				)
 			end
@@ -514,7 +513,7 @@ function OnMsg.ClassesGenerate()
 		local states = sel:GetStates() or ""
 		for i = 1, #states do
 			ItemList[i] = {
-				text = StringFormat("%s: %s, %s: %s",S[302535920000858--[[Index--]]],i,S[1000037--[[Name--]]],states[i]),
+				text = S[302535920000858--[[Index--]]] .. ": " .. i .. ", " .. S[1000037--[[Name--]]] .. ": " .. states[i],
 				value = states[i],
 			}
 		end
@@ -548,7 +547,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.ComFuncs.MonitorThreads()
 		if blacklist then
-			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Ü¢er access.--]]]:format("MonitorThreads"))
+			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Ü¢er access.--]]]:format("ChoGGi.ComFuncs.MonitorThreads"))
 			return
 		end
 
@@ -557,7 +556,6 @@ function OnMsg.ClassesGenerate()
 		dlg:EnableAutoRefresh()
 
 		CreateRealTimeThread(function()
-			local table_str = "%s(%s) %s"
 			-- stop when dialog is closed
 			while dlg and dlg.window_state ~= "destroying" do
 				TableClear(table_list)
@@ -565,7 +563,7 @@ function OnMsg.ClassesGenerate()
 				for thread in pairs(ThreadsRegister) do
 					local info = getinfo(thread, 1, "Slfun")
 					if info then
-						table_list[table_str:format(info.short_src,info.linedefined,thread)] = thread
+						table_list[info.short_src .. "(" .. info.linedefined .. ") " .. thread] = thread
 					end
 				end
 				Sleep(1000)
@@ -601,9 +599,9 @@ function OnMsg.ClassesGenerate()
 						-- skip the tiny tables
 						if length > skip_under then
 							if not sortby then
-								table_list[table_str:format(PadNumWithZeros(length,pad_to),key)] = value
+								table_list[PadNumWithZeros(length,pad_to) .. " " .. key] = value
 							elseif sortby == 1 then
-								table_list[table_str:format(key,length)] = value
+								table_list[key .. " " .. length] = value
 							end
 						end
 
@@ -616,11 +614,11 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.ComFuncs.SetParticles(sel)
-		local name = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]])
+		local name = S[302535920000129--[[Set--]]] .. " " .. S[302535920001184--[[Particles--]]]
 		sel = sel or ChoGGi.ComFuncs.SelObject()
 		if not sel or sel and not sel:IsKindOf("FXObject") then
 			MsgPopup(
-				StringFormat("%s: %s",S[302535920000027--[[Nothing selected--]]],"FXObject"),
+				S[302535920000027--[[Nothing selected--]]] .. ": " .. "FXObject",
 				name
 			)
 			return
@@ -636,9 +634,7 @@ function OnMsg.ClassesGenerate()
 
 		local default = S[1000121--[[Default--]]]
 
-		local name_str = "%s, %s: %s"
-		local hint_str = "Actor: %s, Action: %s: Moment: %s"
-		local ItemList = {{text = StringFormat(" %s",default),value = default}}
+		local ItemList = {{text = " " .. default,value = default}}
 		local c = 1
 		local particles = FXLists.ActionFXParticles
 		for i = 1, #particles do
@@ -646,11 +642,11 @@ function OnMsg.ClassesGenerate()
 			if spots[p.Spot] or p.Spot == "" then
 				c = c + 1
 				ItemList[c] = {
-					text = name_str:format(p.Actor,p.Action,p.Moment),
+					text = p.Actor .. ", " .. p.Action .. ", " .. p.Moment,
 					value = p.Actor,
 					action = p.Action,
 					moment = p.Moment,
-					hint = hint_str:format(p.Actor,p.Action,p.Moment),
+					hint = "Actor: " .. p.Actor .. ", Action: " .. p.Action .. ", Moment: " .. p.Moment,
 				}
 			end
 		end
@@ -772,7 +768,7 @@ function OnMsg.ClassesGenerate()
 --~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.ChoGGi_XXXXXXXXXX)
 	function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod,ext)
 		if blacklist then
-			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Ãœber access.--]]]:format("ConvertImagesToLogoFiles"))
+			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Ãœber access.--]]]:format("ChoGGi.ComFuncs.ConvertImagesToLogoFiles"))
 			return
 		end
 		if type(mod) == "string" then
@@ -802,23 +798,21 @@ function OnMsg.ClassesGenerate()
 		local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
 	--~ 	ModItemDecalEntity:Import
 		local function ModItemDecalEntityImport(name,filename,mod)
-			local ss = "%s%s"
-			local ssdds = "%s%s.dds"
 			local output_dir = ConvertToOSPath(mod.content_path)
 
-			local ent_dir = StringFormat("%sEntities/",output_dir)
-			local ent_file = StringFormat("%s.ent",name)
-			local ent_output = ss:format(ent_dir,ent_file)
+			local ent_dir = output_dir .. "Entities/"
+			local ent_file = name .. ".ent"
+			local ent_output = ent_dir .. ent_file
 
-			local mtl_dir = StringFormat("%sEntities/Materials/",output_dir)
-			local mtl_file = StringFormat("%s_mesh.mtl",name)
-			local mtl_output = ss:format(mtl_dir,mtl_file)
+			local mtl_dir = output_dir .. "Entities/Materials/"
+			local mtl_file = name .. "_mesh.mtl"
+			local mtl_output = mtl_dir .. mtl_file
 
-			local texture_dir = StringFormat("%sEntities/Textures/",output_dir)
-			local texture_output = ssdds:format(texture_dir,name)
+			local texture_dir = output_dir .. "Entities/Textures/"
+			local texture_output = texture_dir .. name .. ".dds"
 
-			local fallback_dir = StringFormat("%sFallbacks/",texture_dir)
-			local fallback_output = ssdds:format(fallback_dir,name)
+			local fallback_dir = texture_dir .. "Fallbacks/"
+			local fallback_output = fallback_dir .. name .. ".dds"
 
 			local err = AsyncCreatePath(ent_dir)
 			if err then
@@ -837,7 +831,7 @@ function OnMsg.ClassesGenerate()
 				return err
 			end
 
-			err = AsyncStringToFile(ent_output, StringFormat([[<?xml version="1.0" encoding="UTF-8"?>
+			err = AsyncStringToFile(ent_output, [[<?xml version="1.0" encoding="UTF-8"?>
 <entity path="">
 	<state id="idle">
 		<mesh_ref ref="mesh"/>
@@ -845,41 +839,42 @@ function OnMsg.ClassesGenerate()
 	<mesh_description id="mesh">
 		<src file=""/>
 		<mesh file="SignConcreteDeposit_mesh.hgm"/>
-		<material file="%s"/>
+		<material file="]] .. mtl_file .. [["/>
 		<bsphere value="0,0,50,1301"/>
 		<box min="-920,-920,50" max="920,920,50"/>
 	</mesh_description>
 </entity>
-]],mtl_file))
+]])
+
 			if err then
 				return
 			end
 
-			local cmdline = StringFormat([["%s" -dds10 -24 bc1 -32 bc3 -srgb "%s" "%s"]], ConvertToOSPath(g_HgnvCompressPath), filename, texture_output)
+			local cmdline = [["]] .. ConvertToOSPath(g_HgnvCompressPath) .. [[" -dds10 -24 bc1 -32 bc3 -srgb "]] .. filename .. [[" "]] .. texture_output .. [["]]
 			err = AsyncExec(cmdline, "", true, false)
 			if err then
 				return err
 			end
-			cmdline = StringFormat([["%s" "%s" "%s" %d]], ConvertToOSPath(g_DdsTruncPath), texture_output, fallback_output, const.FallbackSize)
+			cmdline = [["]] .. ConvertToOSPath(g_DdsTruncPath) .. [[" "]] .. texture_output .. [[" "]] .. fallback_output .. [[" "]] .. const.FallbackSize .. [["]]
 			err = AsyncExec(cmdline, "", true, false)
 			if err then
 				return err
 			end
-			cmdline = StringFormat([["%s" "%s" "%s"]], ConvertToOSPath(g_HgimgcvtPath), texture_output, ui_output)
+			cmdline = [["]] .. ConvertToOSPath(g_HgimgcvtPath) .. [[" "]] .. texture_output .. [[" "]] .. ui_output .. [["]]
 			err = AsyncExec(cmdline, "", true, false)
 			if err then
 				return err
 			end
 
-			err = AsyncStringToFile(mtl_output,StringFormat([[<?xml version="1.0" encoding="UTF-8"?>
+			err = AsyncStringToFile(mtl_output,[[<?xml version="1.0" encoding="UTF-8"?>
 <Materials>
 	<Material>
-		<BaseColorMap Name="%s.dds" mc="0"/>
+		<BaseColorMap Name="]] .. name .. [[.dds" mc="0"/>
 		<SIMap Name="BackLight.dds" mc="0"/>
 		<Property Special="None"/>
 		<Property AlphaBlend="Blend"/>
 	</Material>
-</Materials>]],name))
+</Materials>]])
 
 			if err then
 				return err
@@ -891,7 +886,7 @@ function OnMsg.ClassesGenerate()
 --~ 	ChoGGi.ComFuncs.ConvertImagesToResEntities(Mods.MOD_ID,".tga")
 		function ChoGGi.ComFuncs.ConvertImagesToResEntities(mod,ext)
 			if blacklist then
-				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Ãœber access.--]]]:format("ConvertImagesToResEntities"))
+				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Ãœber access.--]]]:format("ChoGGi.ComFuncs.ConvertImagesToResEntities"))
 				return
 			end
 			if type(mod) == "string" then
@@ -1000,7 +995,7 @@ The func I use for spot_rot rounds to two decimal points...
 				ChoGGi.ComFuncs.OpenInExamineDlg(
 					spots_table,
 					parent_or_ret,
-					StringFormat("%s: %s",S[302535920000235--[[Attach Spots List--]]],RetName(obj))
+					string.format("%s: %s",S[302535920000235--[[Attach Spots List--]]],RetName(obj))
 				)
 			end
 		end

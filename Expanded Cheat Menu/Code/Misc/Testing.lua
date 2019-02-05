@@ -2,16 +2,16 @@
 
 -- go away... (mostly just benchmarking funcs, though there is the func i use for "Map Images Pack")
 
-function OnMsg.ClassesBuilt()
+--~ function OnMsg.ClassesBuilt()
+
 --~ ex(_ENV)
 --~ print(1,getmetatable(_G))
 --~ print(2,getmetatable(_G).name)
 --~ print(3,getmetatable(getmetatable(_G)).name)
 --~ print(4,_G.name)
-
 --~ pcall(getmetatable,getmetatable(_G))
 
-end
+--~ end
 
 function OnMsg.ClassesGenerate()
 --~ -- flatten sign to ground
@@ -77,14 +77,14 @@ function OnMsg.ClassesGenerate()
 			local Trans = ChoGGi.ComFuncs.Translate
 			local missing_strs = {}
 			local c = 0
-			--~ -- we need to pad some zeros
-			local pad_str = "30253592000%s%s"
+			-- we need to pad some zeros
+--~ 			local pad_str = "30253592000%s%s"
 			local function TransZero(pad,first,last)
 				for i = first, last do
 					if i > string_limit then
 						break
 					end
-					local num = tonumber(pad_str:format(pad,i))
+					local num = tonumber("30253592000" .. pad .. i)
 					local str = Trans(num)
 					-- Missing text is from TDevModeGetEnglishText
 					if str == "Missing text" then
@@ -94,7 +94,7 @@ function OnMsg.ClassesGenerate()
 				end
 			end
 
-			-- 00 ends up as 0 if we try to pass as a number (as well as 001 to 1)
+			-- 0000 = 0 if we try to pass as a number (as well as 001 to 1)
 			TransZero("000",0,9)
 			TransZero("00",10,99)
 			TransZero(0,100,999)
@@ -164,7 +164,7 @@ function OnMsg.ClassesGenerate()
 				-- and a bit more delay
 				Sleep(100)
 
-				WriteScreenshot(string.format("AppData/%s.png",map))
+				WriteScreenshot("AppData/" .. map .. ".png")
 			end)
 		end
 
@@ -173,15 +173,13 @@ function OnMsg.ClassesGenerate()
 		function ChoGGi.testing.ExportSave(name)
 			-- LoadWithBackup needs a thread
 			CreateRealTimeThread(function()
-				name = string.format("%s.savegame.sav",name)
+				name = name .. ".savegame.sav"
 
 				-- make sure the folder exists
 				AsyncDeletePath("AppData/ExportedSave")
 				AsyncCreatePath("AppData/ExportedSave")
 
-				local output_folder = "AppData/ExportedSave/%s"
-
-				local err = MountPack("exported", output_folder:format(name), "create, compress")
+				local err = MountPack("exported", "AppData/ExportedSave/" .. name, "create, compress")
 				if err then
 					return err
 				end
@@ -192,8 +190,8 @@ function OnMsg.ClassesGenerate()
 						return err
 					end
 					for i = 1, #files do
-						local filename = string.format("%s%s",folder,files[i])
-						AsyncCopyFile(filename, output_folder:format(files[i]), "raw")
+						local filename = folder .. files[i]
+						AsyncCopyFile(filename, "AppData/ExportedSave/" .. files[i], "raw")
 					end
 				end)
 
@@ -216,6 +214,70 @@ function OnMsg.ClassesGenerate()
 
 		local TickStart = ChoGGi.ComFuncs.TickStart
 		local TickEnd = ChoGGi.ComFuncs.TickEnd
+
+		function ChoGGi.testing.TestStringCant()
+			local format_str = "%s%s%s"
+
+			TickStart("TestStringCant.1.Tick")
+			for _ = 1, 100000 do
+				local temp = "1" .. "2" .. "3"
+			end
+			TickEnd("TestStringCant.1.Tick")
+
+			TickStart("TestStringCant.2.Tick")
+			for _ = 1, 100000 do
+				local temp = format_str:format("1","2","3")
+			end
+			TickEnd("TestStringCant.2.Tick")
+
+			TickStart("TestStringCant.3.Tick")
+			for _ = 1, 100000 do
+				local temp = 1 .. 2 .. 3
+			end
+			TickEnd("TestStringCant.3.Tick")
+
+			TickStart("TestStringCant.4.Tick")
+			for _ = 1, 100000 do
+				local temp = format_str:format(1,2,3)
+			end
+			TickEnd("TestStringCant.4.Tick")
+
+
+		end
+
+		function ChoGGi.testing.TestPackArgs()
+			local function f1(...)
+				local vararg = {...}
+				if vararg[2] then end
+			end
+			local pack_params = pack_params
+			local function f2(...)
+				local vararg = pack_params(...)
+				if vararg[2] then end
+			end
+			local tablepack = table.pack
+			local function f3(...)
+				local vararg = tablepack(...)
+				if vararg[2] then end
+			end
+			local a,b,c = 1,"2","three"
+
+			TickStart("TestPackArgs.1.Tick")
+			for _ = 1, 500000 do
+				f1(a,b,c)
+			end
+			TickEnd("TestPackArgs.1.Tick")
+			TickStart("TestPackArgs.2.Tick")
+			for _ = 1, 500000 do
+				f2(a,b,c)
+			end
+			TickEnd("TestPackArgs.2.Tick")
+			TickStart("TestPackArgs.3.Tick")
+			for _ = 1, 500000 do
+				f3(a,b,c)
+			end
+			TickEnd("TestPackArgs.3.Tick")
+		end
 
 		function ChoGGi.testing.TestTableIterate()
 			local list = MapGet(true)

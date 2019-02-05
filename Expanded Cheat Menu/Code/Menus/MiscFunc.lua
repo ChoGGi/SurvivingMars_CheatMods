@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local next,type = next,type
-local StringFormat = string.format
 
 function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -303,16 +302,16 @@ function OnMsg.ClassesGenerate()
 			local hint_noanim = S[302535920001140--[[No animation.--]]]
 			if #entity_table == 0 then
 				entity_table = {
-					{text = StringFormat(" %s",S[302535920001141--[[Default Entity--]]]),value = "Default"},
-					{text = StringFormat(" %s",S[302535920001142--[[Kosmonavt--]]]),value = "Kosmonavt"},
-					{text = StringFormat(" %s",S[302535920001143--[[Jama--]]]),value = "Lama"},
-					{text = StringFormat(" %s",S[302535920001144--[[Green Man--]]]),value = "GreenMan"},
-					{text = StringFormat(" %s",S[302535920001145--[[Planet Mars--]]]),value = "PlanetMars",hint = hint_noanim},
-					{text = StringFormat(" %s",S[302535920001146--[[Planet Earth--]]]),value = "PlanetEarth",hint = hint_noanim},
-					{text = StringFormat(" %s",S[302535920001147--[[Rocket Small--]]]),value = "RocketUI",hint = hint_noanim},
-					{text = StringFormat(" %s",S[302535920001148--[[Rocket Regular--]]]),value = "Rocket",hint = hint_noanim},
-					{text = StringFormat(" %s",S[302535920001149--[[Combat Rover--]]]),value = "CombatRover",hint = hint_noanim},
-					{text = StringFormat(" %s",S[302535920001150--[[PumpStation Demo--]]]),value = "PumpStationDemo",hint = hint_noanim},
+					{text = " " .. S[302535920001141--[[Default Entity--]]],value = "Default"},
+					{text = " " .. S[302535920001142--[[Kosmonavt--]]],value = "Kosmonavt"},
+					{text = " " .. S[302535920001143--[[Jama--]]],value = "Lama"},
+					{text = " " .. S[302535920001144--[[Green Man--]]],value = "GreenMan"},
+					{text = " " .. S[302535920001145--[[Planet Mars--]]],value = "PlanetMars",hint = hint_noanim},
+					{text = " " .. S[302535920001146--[[Planet Earth--]]],value = "PlanetEarth",hint = hint_noanim},
+					{text = " " .. S[302535920001147--[[Rocket Small--]]],value = "RocketUI",hint = hint_noanim},
+					{text = " " .. S[302535920001148--[[Rocket Regular--]]],value = "Rocket",hint = hint_noanim},
+					{text = " " .. S[302535920001149--[[Combat Rover--]]],value = "CombatRover",hint = hint_noanim},
+					{text = " " .. S[302535920001150--[[PumpStation Demo--]]],value = "PumpStationDemo",hint = hint_noanim},
 				}
 				local c = #entity_table
 				local EntityData = EntityData
@@ -355,7 +354,7 @@ function OnMsg.ClassesGenerate()
 						end)
 					end
 					MsgPopup(
-						StringFormat("%s: %s",choice[1].text,RetName(sel)),
+						choice[1].text .. ": " .. RetName(sel),
 						entity_str
 					)
 				end
@@ -365,10 +364,14 @@ function OnMsg.ClassesGenerate()
 				callback = CallBackFunc,
 				items = ItemList,
 				title = S[302535920001151--[[Set Entity For %s--]]]:format(RetName(sel)),
-				hint = StringFormat("%s: %s\n%s\n\n%s",S[302535920000106--[[Current--]]],sel.ChoGGi_OrigEntity or sel:GetEntity(),S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],S[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
+				hint = S[302535920000106--[[Current--]]] .. ": "
+					.. (sel.ChoGGi_OrigEntity or sel:GetEntity()) .. "\n"
+					.. S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]
+					.. "\n\n"
+					.. S[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
 
-	Not permanent for colonists after they exit buildings (for now).--]]]),
-				check = {
+Not permanent for colonists after they exit buildings (for now).--]]],
+					check = {
 					only_one = true,
 					{
 						title = 302535920000750--[[Dome Only--]],
@@ -471,7 +474,7 @@ function OnMsg.ClassesGenerate()
 						end)
 					end
 					MsgPopup(
-						StringFormat("%s: %s",choice[1].text,RetName(sel)),
+						choice[1].text .. ": " .. RetName(sel),
 						1000081--[[Scale--]],
 						nil,
 						nil,
@@ -484,7 +487,8 @@ function OnMsg.ClassesGenerate()
 				callback = CallBackFunc,
 				items = ItemList,
 				title = S[302535920001155--[[Set Entity Scale For %s--]]]:format(RetName(sel)),
-				hint = StringFormat("%s: %s\n%s",S[302535920001156--[[Current object--]]],sel:GetScale(),S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]),
+				hint = S[302535920001156--[[Current object--]]] .. ": " .. sel:GetScale()
+					.. "\n" .. S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],
 				check = {
 					only_one = true,
 					{

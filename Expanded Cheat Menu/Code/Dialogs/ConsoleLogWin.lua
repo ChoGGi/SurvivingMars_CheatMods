@@ -6,8 +6,6 @@ local S
 local blacklist
 local GetParentOfKind
 
-local StringFormat = string.format
-
 function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
@@ -42,7 +40,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 	self.idToggleTrans = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idToggleTrans",
 		Text = S[302535920000865--[[Trans--]]],
-		RolloverText = StringFormat("%s %s",S[302535920001367--[[Toggles--]]],S[302535920000629--[[UI Transparency--]]]),
+		RolloverText = S[302535920001367--[[Toggles--]]] .. " " .. S[302535920000629--[[UI Transparency--]]],
 		Dock = "left",
 		Margins = box(4,0,0,0),
 		OnChange = self.idToggleTransOnChange,
@@ -155,9 +153,9 @@ function OnMsg.ConsoleLine(text, bNewLine)
 		local old_text = dlg.idText:GetText()
 
 		if bNewLine then
-			text = StringFormat("%s\n%s",old_text,text)
+			text = old_text .. "\n" .. text
 		else
-			text = StringFormat("%s%s",old_text,text)
+			text = old_text .. text
 		end
 
 		dlg:UpdateText(text)

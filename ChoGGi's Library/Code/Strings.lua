@@ -4,26 +4,25 @@
 -- ~ ChoGGi.Strings[27]
 
 local tonumber = tonumber
-local StringFormat = string.format
 
 local TranslationTable = TranslationTable
 
 do -- Translate
-	local T,_InternalTranslate,pack_params,procall = T,_InternalTranslate,pack_params,procall
+	local T,_InternalTranslate,procall = T,_InternalTranslate,procall
 	local type,select = type,select
+	local TableConcat = ChoGGi.ComFuncs.TableConcat
 
 	-- some userdata'll ref UICity, which will fail if being used in main menu
 	local function SafeTrans(str)
 		return _InternalTranslate(str)
 	end
-	local missing_str = "%s *bad string id?"
 
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
 		local str,result
 		local stype = type(select(1,...))
 		if stype == "userdata" or stype == "number" then
-			str = T(pack_params(...))
+			str = T{...}
 		else
 			str = ...
 		end
@@ -42,7 +41,7 @@ do -- Translate
 				return arg2
 			end
 			-- i'd rather know if something failed by having a string rather than a func fail
-			return missing_str:format(...)
+			return tostring(...) .. " *bad string id?"
 		end
 
 		-- and done
@@ -64,10 +63,10 @@ if ChoGGi.lang ~= "English" then
 	-- these four don't get to use non-eng fonts, cause screw you is why
 	-- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...
 	local TextStyles = TextStyles
-	TextStyles.Console.TextFont = StringFormat("%s, 18, bold, aa",f)
-	TextStyles.ConsoleLog.TextFont = StringFormat("%s, 13, bold, aa",f)
-	TextStyles.DevMenuBar.TextFont = StringFormat("%s, 18, aa",f)
-	TextStyles.GizmoText.TextFont = StringFormat("%s, 32, bold, aa",f)
+	TextStyles.Console.TextFont = f .. ", 18, bold, aa"
+	TextStyles.ConsoleLog.TextFont = f .. ", 13, bold, aa"
+	TextStyles.DevMenuBar.TextFont = f .. ", 18, aa"
+	TextStyles.GizmoText.TextFont = f .. ", 32, bold, aa"
 
 end
 

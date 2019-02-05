@@ -31,11 +31,12 @@ local function token(id, patt)
 end
 
 -- Pattern for long strings and long comments.
-local input_find_str = "]%s]"
+--~ local input_find_str = "]%s]"
 local longstring = #(P"[" + (P"[" * P"="^0 * "[")) * P(function(input, index)
 	local level = input:match("^%[(=*)%[", index)
 	if level then
-		local _, last = input:find(input_find_str:format(level), index, true)
+--~ 		local _, last = input:find(input_find_str:format(level), index, true)
+		local _, last = input:find("]" .. level .. "]", index, true)
 		if last then
 			return last + 1
 		end

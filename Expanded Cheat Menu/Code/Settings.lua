@@ -3,7 +3,7 @@
 -- stores default values and some tables
 
 local next,pairs,type,table = next,pairs,type,table
-local StringFormat = string.format
+
 local LuaCodeToTuple = LuaCodeToTuple
 local TableToLuaCode = TableToLuaCode
 local SaveLocalStorage = SaveLocalStorage
@@ -13,7 +13,7 @@ local ThreadUnlockKey = ThreadUnlockKey
 function OnMsg.ClassesGenerate()
 	-- used for loading/saving settings
 	local function PrintError(err)
-		local err_str = StringFormat("%s: %s",S[302535920000000--[[Expanded Cheat Menu--]]],S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err))
+		local err_str = S[302535920000000--[[Expanded Cheat Menu--]]] .. ": " .. S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err)
 		if ChoGGi.Temp.GameLoaded then
 			print(err_str)
 		else
@@ -54,26 +54,66 @@ function OnMsg.ClassesGenerate()
 	ChoGGi.Defaults = {
 		-- oh we'll change it
 		_VERSION = 0,
+		-- okay, maybe some people don't want a mod to change the title of their game
+		ChangeWindowTitle = true,
+		-- removes some useless crap from the Cheats section (unless you're doing the tutorial then not as useless it seems)
+		CleanupCheatsInfoPane = true,
 		-- dark background for the console log
 		ConsoleDim = true,
-		-- shows a msg in the console log (maybe a popup would be better)
-		FirstRun = true,
-		-- default to opened (changed on click)
-		InfopanelMainButVis = true,
-		-- show Cheats pane in the selection panel
-		InfopanelCheats = true,
-		-- removes some useless crap from the Cheats pane (unless you're doing the tutorial then not as useless it seems)
-		CleanupCheatsInfoPane = true,
-		-- maybe you don't want to see the interface in screenshots
-		ShowInterfaceInScreenshots = true,
-		-- keep orientation of last placed building
-		UseLastOrientation = true,
-		-- show the cheats menu...
-		ShowCheatsMenu = true,
 		-- shows LUA ERRORs in console along with stack
 		ConsoleErrors = true,
 		-- update the list when ECM updates it
 		ConsoleExamineListUpdate = true,
+		-- how wide the text for the history menu in the Console is
+		ConsoleHistoryMenuLength = 50,
+		-- the build/passibility grid in debug menu
+		DebugGridOpacity = 15,
+		DebugGridSize = 25,
+		-- disabling this will still leave them for the cheats menu and cheats section
+		EnableToolTips = true,
+		-- append text or create new files
+		ExamineAppendDump = true,
+		-- what cmd/editor to use with os.execute(cmd) when doing external editing
+		ExternalEditorCmd = "notepad \"%s\"",
+		-- where to store temp file
+		ExternalEditorPath = "AppData/EditorPlugin/",
+		-- welcome msg
+		FirstRun = true,
+		-- just for you ski (prints a msg for each building removed)
+		FixMissingModBuildingsLog = true,
+		-- toggles vis of examined object a couple times on refresh/first examine
+		FlashExamineObject = true,
+		-- how wide the starting radius, how much to step per press
+		FlattenGround_Radius = 2500,
+		FlattenGround_HeightDiff = 100,
+		FlattenGround_RadiusDiff = 100,
+		-- dumps the log to disk on startup, and every new Sol (good for some crashes)
+		FlushLog = true,
+		-- dumps log to disk every in-game hour (30 000 ticks of GameTime)
+		FlushLogConstantly = false,
+		-- show Cheats section in the selection panel
+		InfopanelCheats = true,
+		-- toggle vis of the selection panel "main" buttons when you click the header (default to vis)
+		InfopanelMainButVis = true,
+		-- show the cheats menu...
+		ShowCheatsMenu = true,
+		-- maybe you don't want to see the interface in screenshots
+		ShowInterfaceInScreenshots = true,
+		-- Mod Editor shows the help page every single time you open it.
+		SkipModHelpPage = true,
+		-- stops panel from shrinking
+		StopSelectionPanelResize = false,
+		-- keep orientation of last placed building
+		UseLastOrientation = true,
+		-- change rollovers from 450 to 600
+		WiderRollovers = 600,
+
+		-- stores custom settings for each building
+		BuildingSettings = {},
+		-- resupply settings
+		CargoSettings = {},
+		-- transparent UI options stored here
+		Transparency = {},
 		-- stuff to show in Console>Examine list (tables/values/functions are fine)
 		ConsoleExamineList = {
 			"_G",
@@ -90,46 +130,6 @@ function OnMsg.ClassesGenerate()
 			"ThreadsRegister",
 			"UICity",
 		},
-		-- disabling this will still leave them for the cheats menu and cheats pane
-		EnableToolTips = true,
-		-- append text or create new files
-		ExamineAppendDump = true,
-		-- what cmd/editor to use with os.execute(cmd) when doing external editing
-		ExternalEditorCmd = "notepad \"%s\"",
-		-- where to store temp file
-		ExternalEditorPath = "AppData/EditorPlugin/",
-		-- blinky blink
-		FlashExamineObject = true,
-		-- dumps the log to disk on startup, and every new Sol (good for some crashes)
-		FlushLog = true,
-		-- dumps log to disk every in-game hour (30 000 ticks of GameTime)
-		FlushLogConstantly = false,
-		-- okay, maybe some people don't want a mod to change the title of their game
-		ChangeWindowTitle = true,
-		-- how wide the starting radius, how much to step per press
-		FlattenGround_Radius = 2500,
-		FlattenGround_HeightDiff = 100,
-		FlattenGround_RadiusDiff = 100,
-		-- the build/passibility grid in debug menu
-		DebugGridSize = 25,
-		DebugGridOpacity = 15,
-		-- how wide the text for the history menu in the Console is
-		ConsoleHistoryMenuLength = 50,
-		-- just for you ski (prints a msg for each building removed)
-		FixMissingModBuildingsLog = true,
-		-- Mod Editor shows the help page every single time you open it.
-		SkipModHelpPage = true,
-		-- stops panel from shrinking
-		StopSelectionPanelResize = false,
-		-- change rollovers from 450 to 600
-		WiderRollovers = 600,
-
-		-- stores custom settings for each building
-		BuildingSettings = {},
-		-- resupply settings
-		CargoSettings = {},
-		-- transparent UI options stored here
-		Transparency = {},
 	}
 	-- my defaults
 	if ChoGGi.testing then
@@ -261,7 +261,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		settings = settings or ChoGGi.UserSettings
 
-		local bak = StringFormat("%s.bak",ChoGGi.settings_file)
+		local bak = ChoGGi.settings_file .. ".bak"
 		--locks the file while we write (i mean it says thread, ah well can't hurt)?
 		ThreadLockKey(bak)
 		AsyncCopyFile(ChoGGi.settings_file,bak)

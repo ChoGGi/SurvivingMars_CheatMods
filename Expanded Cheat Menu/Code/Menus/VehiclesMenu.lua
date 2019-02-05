@@ -4,7 +4,6 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-	local StringFormat = string.format
 	local iconD = "CommonAssets/UI/Menu/ShowAll.tga"
 	local iconRC = "CommonAssets/UI/Menu/HostGame.tga"
 	local c = #Actions

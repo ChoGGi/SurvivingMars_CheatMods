@@ -1,12 +1,32 @@
 ### Feed this "Table.Table.Object" and you'll get Object back
 
 ```lua
--- DotNameToObject("some.some.some.etc") returns etc as object
+-- use .number for index based tables ("terminal.desktop.1")
 function DotNameToObject(str,root,create)
-	-- always start with _G
+
+	-- lazy is best
+	if type(str) ~= "string" then
+		return str
+	end
+	-- there's always one
+	if str == "_G" then
+		return _G
+	end
+	if str == "_ENV" then
+		return _ENV
+	end
+
+	-- obj always starts out as "root"
 	local obj = root or _G
+
 	-- https://www.lua.org/pil/14.1.html
+	-- %w is [A-Za-z0-9], [] () + ? . act pretty much like regexp
 	for name,match in str:gmatch("([%w_]+)(.?)") do
+		-- if str included .number we need to make it a number or [name] won't work
+		local num = tonumber(name)
+		if num then
+			name = num
+		end
 		-- . means we're not at the end yet
 		if match == "." then
 			-- create is for adding new settings in non-existent tables

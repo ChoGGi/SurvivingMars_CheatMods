@@ -314,14 +314,14 @@ function OnMsg.ClassesGenerate()
 		local ItemList = {
 			{text = S[302535920000936--[[Something you'd like to see added?--]]],value = "New"},
 			{text = "",value = "New"},
-			{text = StringFormat("%s: %s",S[302535920000035--[[Grids--]]],S[891--[[Air--]]]),value = "Air"},
-			{text = StringFormat("%s: %s",S[302535920000035--[[Grids--]]],S[79--[[Power--]]]),value = "Power"},
-			{text = StringFormat("%s: %s",S[302535920000035--[[Grids--]]],S[681--[[Water--]]]),value = "Water"},
-			{text = StringFormat("%s: %s/%s/%s",S[302535920000035--[[Grids--]]],S[891--[[Air--]]],S[79--[[Power--]]],S[681--[[Water--]]]),value = "Grids"},
+			{text = S[302535920000035--[[Grids--]]] .. ": " .. S[891--[[Air--]]],value = "Air"},
+			{text = S[302535920000035--[[Grids--]]] .. ": " .. S[79--[[Power--]]],value = "Power"},
+			{text = S[302535920000035--[[Grids--]]] .. ": " .. S[681--[[Water--]]],value = "Water"},
+			{text = S[302535920000035--[[Grids--]]] .. ": " .. S[891--[[Air--]]] .. "/" .. S[79--[[Power--]]] .. "/" .. S[681--[[Water--]]],value = "Grids"},
 			{text = S[302535920000042--[[City--]]],value = "City"},
 			{text = S[547--[[Colonists--]]],value = "Colonists",hint = 302535920000937--[[Laggy with lots of colonists.--]]},
 			{text = S[5238--[[Rockets--]]],value = "Rockets"},
-			--{text = "Research",value = "Research"}
+--~ 			{text = "Research",value = "Research"}
 		}
 		if ChoGGi.testing then
 			ItemList[#ItemList+1] = {text = S[311--[[Research--]]],value = "Research"}

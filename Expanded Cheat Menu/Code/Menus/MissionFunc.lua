@@ -1,9 +1,7 @@
 -- See LICENSE for terms
 
 local default_icon = "UI/Icons/Sections/spaceship.tga"
-
 local type = type
-local StringFormat = string.format
 
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -35,21 +33,21 @@ function OnMsg.ClassesGenerate()
 				for j = 1, #rival.initial_resources do
 					local res = rival.initial_resources[j]
 					if res.amount then
-						initial_res[#initial_res+1] = StringFormat("%s: %s\n",res.resource,res.amount)
+						initial_res[#initial_res+1] = res.resource .. " " .. res.amount .. "\n"
 					end
 				end
 
 				c = c + 1
 				ItemList[c] = {
-					text = existing and StringFormat("%s *",name) or name,
+					text = existing and (name .. "%s *") or name,
 					value = rival.id,
 					rival = rival,
 					existing = existing,
-					hint = StringFormat("%s\n\n%s\n\n%s",
-						S[302535920001461--[[* means it's an active rival you can remove.--]]],
-						Trans(rival.description),
-						TableConcat(initial_res)
-					),
+					hint = S[302535920001461--[[* means it's an active rival you can remove.--]]]
+						.. "\n\n"
+						.. Trans(rival.description)
+						.. "\n\n"
+						.. TableConcat(initial_res),
 				}
 			end
 		end
@@ -109,7 +107,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 11034--[[Rival Colonies--]],
-			hint = StringFormat("%s\n%s",S[302535920001460--[[Add/remove rival colonies.--]]],S[302535920001461--[[* means it's an active rival you can remove.--]]]),
+			hint = S[302535920001460--[[Add/remove rival colonies.--]]] .. "\n" .. S[302535920001461--[[* means it's an active rival you can remove.--]]],
 			multisel = true,
 			custom_type = 3,
 			check = {
@@ -139,11 +137,10 @@ function OnMsg.ClassesGenerate()
 			ItemList[i] = {
 				text = Trans(c.title),
 				value = c.id,
-				hint = StringFormat("%s\n\n%s",
-					Trans(c.description),
-					S[302535920001415--[[Sols to Complete: %s--]]]:format(c.time_completed / DayDuration),
-					Trans(T{10489--[[<newline>Perfect time: <countdown2>--]],countdown2 = c.time_perfected / DayDuration})
-				),
+				hint = Trans(c.description) .. "\n\n"
+					.. S[302535920001415--[[Sols to Complete: %s--]]]:format(c.time_completed / DayDuration)
+					.. "\n"
+					.. Trans(T{10489--[[<newline>Perfect time: <countdown2>--]],countdown2 = c.time_perfected / DayDuration}),
 			}
 		end
 
@@ -167,7 +164,7 @@ function OnMsg.ClassesGenerate()
 		local thread = UICity.challenge_thread
 		if not blacklist and IsValidThread(thread) then
 			local _,c = debug.getlocal(thread,1,1)
-			hint = StringFormat("%s: %s, %s",S[302535920000106--[[Current--]]],Trans(c.title),c.id)
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(c.title) .. ", " .. c.id
 		end
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
@@ -185,28 +182,22 @@ function OnMsg.ClassesGenerate()
 
 		local ItemList = {}
 		local sponsor = GetMissionSponsor()
-		local text_str = "%s %s"
-		local goal_str = "sponsor_goal_%s"
-		local image_str = "goal_image_%s"
-		local reward_str = "reward_effect_%s"
 		local hint_str = "<image %s>\n\n%s: %s\n%s %s"
 
 		for i = 1, 5 do
 			-- no sense in showing done ones
 			if not SponsorGoalProgress[i].state then
-				local reward = sponsor[reward_str:format(i)]
+				local reward = sponsor["reward_effect_" .. i]
 				ItemList[#ItemList+1] = {
-					text = text_str:format(i,sponsor[goal_str:format(i)]),
+					text = i .. " " .. sponsor["sponsor_goal_" .. i],
 					value = i,
-					hint = hint_str:format(
-						sponsor[image_str:format(i)],
-						S[302535920001409--[[Goal--]]],
-						Trans(GetGoalDescription(sponsor, i)),
-						S[128569337702--[[Reward:--]]],
-						Trans(T(reward.Description, reward))
-					),
+					hint = "<image " .. sponsor["goal_image_" .. i] .. ">\n\n"
+						.. S[302535920001409--[[Goal--]]] .. ": "
+						.. Trans(GetGoalDescription(sponsor, i)) .. "\n"
+						.. S[128569337702--[[Reward:--]]] .. " "
+						.. Trans(T(reward.Description, reward)),
 					reward = reward,
-					goal = SponsorGoalsMap[sponsor[goal_str:format(i)]],
+					goal = SponsorGoalsMap[sponsor["sponsor_goal_" .. i]],
 				}
 			end
 		end
@@ -314,7 +305,7 @@ function OnMsg.ClassesGenerate()
 					sponsor:game_apply(UICity)
 					sponsor:EffectsApply(UICity)
 					UICity:ApplyModificationsFromProperties()
-					--and bonuses
+					-- and bonuses
 					UICity:InitMissionBonuses()
 
 					MsgPopup(
@@ -331,7 +322,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000712--[[Set Sponsor--]],
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],Trans(GetMissionSponsor().display_name)),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetMissionSponsor().display_name),
 		}
 	end
 
@@ -358,7 +349,8 @@ function OnMsg.ClassesGenerate()
 				ItemList[c] = {
 					text = Trans(obj.display_name),
 					value = obj.id,
-					hint = StringFormat("%s\n\n%s: %s",Trans(T(obj.effect,stats[2])),S[302535920001165--[[Enabled Status--]]],ChoGGi.UserSettings[StringFormat("Sponsor%s",obj.id)])
+					hint = Trans(T(obj.effect,stats[2])) .. "\n\n" .. S[302535920001165--[[Enabled Status--]]]
+					.. ": " .. ChoGGi.UserSettings["Sponsor" .. obj.id]
 				}
 			end
 		end
@@ -371,7 +363,7 @@ function OnMsg.ClassesGenerate()
 				for i = 1, #ItemList do
 					local value = ItemList[i].value
 					if type(value) == "string" then
-						value = StringFormat("Sponsor%s",value)
+						value = "Sponsor" .. value
 						ChoGGi.UserSettings[value] = nil
 					end
 				end
@@ -381,7 +373,7 @@ function OnMsg.ClassesGenerate()
 						--check to make sure it isn't a fake name (no sense in saving it)
 						local value = choice[i].value
 						if ItemList[j].value == value and type(value) == "string" then
-							local name = StringFormat("Sponsor%s",value)
+							local name = "Sponsor" .. value
 							if choice[1].check1 then
 								ChoGGi.UserSettings[name] = nil
 							else
@@ -405,8 +397,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s",S[302535920001162--[[Sponsor--]]],S[302535920001166--[[Bonuses--]]]),
-			hint = StringFormat("%s: %s\n\n%s",S[302535920000106--[[Current--]]],Trans(GetMissionSponsor().display_name),S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]]),
+			title = S[302535920001162--[[Sponsor--]]] .. " " .. S[302535920001166--[[Bonuses--]]],
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetMissionSponsor().display_name) .. "\n\n" .. S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]],
 			multisel = true,
 			check = {
 				{
@@ -474,7 +466,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000716--[[Set Commander--]],
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],Trans(GetCommanderProfile().display_name)),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetCommanderProfile().display_name),
 		}
 	end
 
@@ -489,7 +481,7 @@ function OnMsg.ClassesGenerate()
 				ItemList[#ItemList+1] = {
 					text = Trans(obj.display_name),
 					value = obj.id,
-					hint = StringFormat("%s\n\n%s: %s",Trans(obj.effect),S[302535920001165--[[Enabled Status--]]],ChoGGi.UserSettings[StringFormat("Commander%s",obj.id)])
+					hint = Trans(obj.effect) .. "\n\n" .. S[302535920001165--[[Enabled Status--]]] .. ": " .. ChoGGi.UserSettings["Commander" .. obj.id],
 				}
 			end
 		end
@@ -502,7 +494,7 @@ function OnMsg.ClassesGenerate()
 				for i = 1, #ItemList do
 					local value = ItemList[i].value
 					if type(value) == "string" then
-						value = StringFormat("Commander%s",value)
+						value = "Commander" .. value
 						ChoGGi.UserSettings[value] = nil
 					end
 				end
@@ -512,7 +504,7 @@ function OnMsg.ClassesGenerate()
 						--check to make sure it isn't a fake name (no sense in saving it)
 						local value = choice[i].value
 						if ItemList[j].value == value and type(value) == "string" then
-							local name = StringFormat("Commander%s",value)
+							local name = "Commander" .. value
 							if choice[1].check1 then
 								ChoGGi.UserSettings[name] = nil
 							else
@@ -536,8 +528,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s",S[302535920001174--[[Commander--]]],S[302535920001166--[[Bonuses--]]]),
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],Trans(GetCommanderProfile().display_name)),
+			title = S[302535920001174--[[Commander--]]] .. " " .. S[302535920001166--[[Bonuses--]]],
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetCommanderProfile().display_name),
 			multisel = true,
 			check = {
 				{
@@ -562,7 +554,7 @@ function OnMsg.ClassesGenerate()
 			ItemList[#ItemList+1] = {
 				text = Trans(def.display_name),
 				value = id,
-				hint = StringFormat("<image %s>",def.image),
+				hint = "<image " .. def.image .. ">",
 			}
 		end
 
@@ -611,7 +603,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920001178--[[Set New Logo--]],
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],Trans(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name)),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name),
 			height = 800.0,
 			custom_type = 7,
 			custom_func = CallBackFunc,
@@ -622,10 +614,10 @@ function OnMsg.ClassesGenerate()
 		local mapdata = mapdata
 
 		local ItemList = {{
-			text = StringFormat(" %s",S[302535920000036--[[Disabled--]]]),
+			text = " " .. S[302535920000036--[[Disabled--]]],
 			value = "disabled"
 		}}
-		local set_name = StringFormat("MapSettings_%s",sType)
+		local set_name = "MapSettings_" .. sType
 		local data = DataInstances[set_name]
 
 		for i = 1, #data do
@@ -659,8 +651,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s %s",S[302535920000129--[[Set--]]],sType,S[302535920001180--[[Disaster Occurrences--]]]),
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],mapdata[set_name]),
+			title = S[302535920000129--[[Set--]]] .. " " .. sType .. " " .. S[302535920001180--[[Disaster Occurrences--]]],
+			hint = S[302535920000106--[[Current--]]] .. ": " .. mapdata[set_name],
 		}
 	end
 
@@ -669,17 +661,18 @@ function OnMsg.ClassesGenerate()
 		local g_CurrentMissionParams = g_CurrentMissionParams
 
 		local ItemList = {}
+		local c = 0
 		for id,def in pairs(GameRulesMap) do
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			ItemList[c] = {
 				text = Trans(def.display_name),
 				value = id,
-				hint = StringFormat([[%s
-	%s
-	%s: %s
-
-	%s: %s]],Trans(def.description),Trans(def.flavor),S[3491--[[Challenge Mod (%)--]]],def.challenge_mod,S[302535920001357--[[Exclusion List--]]],def.exclusionlist or "")
+				hint = Trans(def.description) .. "\n" .. Trans(def.flavor) .. "\n"
+					.. S[3491--[[Challenge Mod (%)--]]] .. ": " .. def.challenge_mod .. "\n\n"
+					.. S[302535920001357--[[Exclusion List--]]] .. ": " .. (def.exclusionlist or ""),
 			}
 		end
+
 
 		local function CallBackFunc(choice)
 			if choice.nothing_selected then
@@ -721,9 +714,10 @@ function OnMsg.ClassesGenerate()
 			)
 		end
 
-		local hint = {}
+		local hint
 		local rules = g_CurrentMissionParams.idGameRules
 		if type(rules) == "table" and next(rules) then
+			hint = {}
 			hint[#hint+1] = S[302535920000106--[[Current--]]]
 			hint[#hint+1] = ":"
 			for Key,_ in pairs(rules) do
@@ -731,12 +725,15 @@ function OnMsg.ClassesGenerate()
 				hint[#hint+1] = Trans(GameRulesMap[Key].display_name)
 			end
 		end
+		if hint then
+			hint = TableConcat(hint)
+		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920001182--[[Set Game Rules--]],
-			hint = TableConcat(hint),
+			hint = hint,
 			multisel = true,
 			check = {
 				only_one = true,

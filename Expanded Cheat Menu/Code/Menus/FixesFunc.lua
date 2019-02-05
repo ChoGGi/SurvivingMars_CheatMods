@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local pairs,type = pairs,type
-local StringFormat = string.format
 local Sleep = Sleep
 
 function OnMsg.ClassesGenerate()
@@ -244,9 +243,10 @@ function OnMsg.ClassesGenerate()
 			end
 
 			ChoGGi.ComFuncs.QuestionBox(
-				StringFormat("%s!\n%s\n%s",S[6779--[[Warning--]]],S[302535920000055--[[Reset All Colonists--]]],S[302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."--]]]),
+				S[6779--[[Warning--]]] .. "!\n" .. S[302535920000055--[[Reset All Colonists--]]]
+					.. "\n" .. S[302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."--]]],
 				CallBackFunc,
-				StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000055--[[Reset All Colonists--]]])
+				S[6779--[[Warning--]]] .. ": " .. S[302535920000055--[[Reset All Colonists--]]]
 			)
 		end
 

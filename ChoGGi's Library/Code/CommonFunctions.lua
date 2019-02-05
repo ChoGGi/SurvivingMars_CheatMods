@@ -17,7 +17,6 @@ local GetTerrainCursor = GetTerrainCursor
 local MapFilter = MapFilter
 local MapGet = MapGet
 local FindNearestObject = FindNearestObject
-local StringFormat = string.format
 local TableRemove = table.remove
 local TableFind = table.find
 local TableClear = table.clear
@@ -26,7 +25,7 @@ local TableClear = table.clear
 function ChoGGi.ComFuncs.SaveOrigFunc(class_or_func,func_name)
 	local ChoGGi = ChoGGi
 	if func_name then
-		local newname = StringFormat("%s_%s",class_or_func,func_name)
+		local newname = class_or_func .. func_name
 		if not ChoGGi.OrigFuncs[newname] then
 			ChoGGi.OrigFuncs[newname] = _G[class_or_func][func_name]
 		end
@@ -57,13 +56,13 @@ do -- AddMsgToFunc
 --~ 			local params = pack_params(...)
 --~ 			-- pass on args to orig func
 --~ 			if not pcall(function()
---~ 				return ChoGGi_OrigFuncs[StringFormat("%s_%s",class_name,func_name)](table.unpack(params))
+--~ 				return ChoGGi_OrigFuncs[class_name .. func_name](table.unpack(params))
 --~ 			end) then
---~ 				print("Function Error: ",StringFormat("%s_%s",class_name,func_name))
+--~ 				print("Function Error: ",class_name .. func_name)
 --~ 				ChoGGi.ComFuncs.OpenInExamineDlg{params}
 --~ 			end
 
-			return ChoGGi_OrigFuncs[StringFormat("%s_%s",class_name,func_name)](obj,...)
+			return ChoGGi_OrigFuncs[class_name .. func_name](obj,...)
 		end
 	end
 end -- do
@@ -253,6 +252,9 @@ function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
 	if str == "_G" then
 		return ChoGGi.Temp._G
 	end
+	if str == "_ENV" then
+		return _ENV
+	end
 
 	-- obj always starts out as "root"
 	local obj = root or ChoGGi.Temp._G
@@ -319,7 +321,7 @@ function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
 		id = AsyncRand(),
 		title = CheckText(title),
 		text = CheckText(text,S[3718--[[NONE--]]]),
-		image = type(tostring(icon):find(".tga")) == "number" and icon or StringFormat("%sUI/TheIncal.png",ChoGGi.library_path)
+		image = type(tostring(icon):find(".tga")) == "number" and icon or ChoGGi.library_path .. "UI/TheIncal.png"
 	}
 	table.set_defaults(data, params)
 	table.set_defaults(data, OnScreenNotificationPreset)
@@ -592,7 +594,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		-- my ugly submenu hack
 		local submenu_func
 		if item.submenu then
-			local name = StringFormat("ChoGGi_submenu_%s",item.name)
+			local name = "ChoGGi_submenu_" .. item.name
 			submenu_func = function(self)
 				if popup[name] then
 					popup[name]:Close()
@@ -718,7 +720,7 @@ function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,con
 			CheckText(text,S[3718--[[NONE--]]]),
 			CheckText(ok_msg,S[6878--[[OK--]]]),
 			CheckText(cancel_msg,S[6879--[[Cancel--]]]),
-			image or StringFormat("%sUI/message_picture_01.png",ChoGGi.library_path),
+			image or ChoGGi.library_path .. "UI/message_picture_01.png",
 			context
 		) == "ok" then
 			if func then
@@ -839,23 +841,6 @@ function ChoGGi.ComFuncs.CompareTableFuncs(a,b,func,obj)
 	else
 		return a[func](a,b) < b[func](b,a)
 	end
-end
-
--- ChoGGi.ComFuncs.PrintIds(Object)
-function ChoGGi.ComFuncs.PrintIds(list)
-	if type(list) ~= "table" then
-		return
-	end
-	local text = ""
-
-	for i = 1, #list do
-		text = StringFormat("%s----------------- %s: %s%s",text,list[i].id,i,ChoGGi.newline)
-		for j = 1, #list[i] do
-			text = StringFormat("%s%s: %s%s",text,list[i][j].id,j,ChoGGi.newline)
-		end
-	end
-
-	ChoGGi.ComFuncs.Dump(text)
 end
 
 -- check for and remove broken objects from UICity.labels
@@ -1167,7 +1152,7 @@ function ChoGGi.ComFuncs.SettingState(setting,text)
 	end
 
 	if text then
-		return StringFormat("%s: %s",setting,CheckText(S[text],text))
+		return tostring(setting) .. ": " .. CheckText(S[text],text)
 	else
 		return tostring(setting)
 	end
@@ -1187,7 +1172,7 @@ function ChoGGi.ComFuncs.VarDump(value, depth, key)
 	else
 		depth = depth + 1
 		for _ = 1, depth do
-			spaces = StringFormat("%s ",spaces)
+			spaces = spaces .. " "
 		end
 	end
 	if v_type == "table" then
@@ -1637,12 +1622,12 @@ do -- Rebuildshortcuts
 	}
 
 	-- auto-add all the TriggerDisaster ones (ok some)
-	local trigg_str = "TriggerDisaster%s%s"
+--~ 	local trigg_str = "TriggerDisaster%s%s"
 	local DataInstances = DataInstances
 	local function AddItems(name,suffix)
 		local list = DataInstances[name]
 		for i = 1, #list do
-			remove_lookup[trigg_str:format(list[i].name,suffix or "")] = true
+			remove_lookup["TriggerDisaster" .. list[i].name .. (suffix or "")] = true
 		end
 	end
 	AddItems("MapSettings_DustDevils")
@@ -1725,7 +1710,7 @@ do -- Rebuildshortcuts
 
 		if DisableECM then
 		-- add a key binding to options to re-enable ECM
-			local name = StringFormat("%s %s",S[302535920001079--[[Enable--]]],S[302535920000887--[[ECM--]]])
+			local name = S[302535920001079--[[Enable--]]] .. " " ..S[302535920000887--[[ECM--]]]
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionName = name,
 				ActionId = name,
@@ -1790,7 +1775,7 @@ do -- RetThreadInfo/FindThreadFunc
 		-- and last we merge it all into a string to return
 		local str = ""
 		for i = 1, #funcs do
-			str = StringFormat("%s\n%s < debug.getinfo(%s)",str,funcs[i].func,funcs[i].level)
+			str = str .. "\n" .. funcs[i].func .. " < debug.getinfo(" .. funcs[i].level .. ")"
 		end
 		return str:sub(2)
 	end
@@ -2082,7 +2067,7 @@ function ChoGGi.ComFuncs.ColonistUpdateAge(c,age)
 	if age == "Retiree" then
 		c.age = 65 -- why isn't there a base_MinAge_Retiree...
 	else
-		c.age = c[StringFormat("base_MinAge_%s",age)]
+		c.age = c["base_MinAge_" .. age]
 	end
 
 	if age == "Child" then
@@ -2510,21 +2495,21 @@ do -- COLOUR FUNCTIONS
 		local ItemList = {}
 		local c = 0
 		for i = 1, 4 do
-			local text = StringFormat("Color%s",i)
+			local text = "Color" .. i
 			c = c + 1
 			ItemList[c] = {
 				text = text,
 				value = pal[text],
 				hint = 302535920000017--[[Use the colour picker (dbl right-click for instant change).--]],
 			}
-			text = StringFormat("Roughness%s",i)
+			text = "Roughness" .. i
 			c = c + 1
 			ItemList[c] = {
 				text = text,
 				value = pal[text],
 				hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
 			}
-			text = StringFormat("Metallic%s",i)
+			text = "Metallic" .. i
 			c = c + 1
 			ItemList[c] = {
 				text = text,
@@ -2603,7 +2588,7 @@ do -- COLOUR FUNCTIONS
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s: %s",S[174--[[Color Modifier--]]],RetName(obj)),
+			title = S[174--[[Color Modifier--]]] .. ": " .. RetName(obj),
 			hint = 302535920000022--[["If number is 8421504 then you probably can't change that colour.
 
 You can copy and paste numbers if you want."--]],
@@ -2645,7 +2630,7 @@ function ChoGGi.ComFuncs.EmptyMechDepot(oldobj)
 	end
 
 	local res = oldobj.resource
-	local amount = oldobj[StringFormat("GetStored_%s",res)](oldobj)
+	local amount = oldobj["GetStored_" .. res](oldobj)
 	-- not good to be larger then this when game is saved (height limit of map objects seems to be 65536)
 	if amount > 20000000 then
 		amount = amount
@@ -2686,7 +2671,7 @@ function ChoGGi.ComFuncs.EmptyMechDepot(oldobj)
 
 	-- create new depot, and set max amount to stored amount of old depot
 	local newobj = PlaceObj("UniversalStorageDepot", {
-		"template_name", StringFormat("Storage%s",res2),
+		"template_name", "Storage" .. res2,
 		"storable_resources", {res},
 		"max_storage_per_resource", amount,
 		-- so it doesn't look weird make sure it's on a hex point
@@ -2745,7 +2730,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 		ItemList[i] = {
 			text = Trans(item.display_name),
 			value = item.name,
-			icon = TagLookupTable[StringFormat("icon_%s",item.name)],
+			icon = TagLookupTable["icon_" .. item.name],
 		}
 	end
 
@@ -2760,7 +2745,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 			local labels = UICity.labels
 
 			local stockpiles = {}
-			table.append(stockpiles,labels[StringFormat("MechanizedDepot%s",value)])
+			table.append(stockpiles,labels["MechanizedDepot" .. value])
 			if value == "BlackCube" then
 				table.append(stockpiles,labels.BlackCubeDumpSite)
 			elseif value == "MysteryResource" then
@@ -2772,7 +2757,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 			end
 
 			-- filter out empty/diff res stockpiles
-			local GetStored = StringFormat("GetStored_%s",value)
+			local GetStored = "GetStored_" .. value
 			stockpiles = MapFilter(stockpiles,function(o)
 				if o[GetStored] and o[GetStored](o) > 999 then
 					return true
@@ -2806,7 +2791,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
-		title = StringFormat("%s %s",S[302535920000031--[[Find Nearest Resource--]]],RetName(obj)),
+		title = S[302535920000031--[[Find Nearest Resource--]]] .. ": " .. RetName(obj),
 		hint = 302535920000032--[[Select a resource to find--]],
 		skip_sort = true,
 		custom_type = 7,
@@ -2936,7 +2921,7 @@ end -- do
 
 do -- BuildingConsumption
 	local function AddConsumption(obj,name)
-		local tempname = StringFormat("ChoGGi_mod_%s",name)
+		local tempname = "ChoGGi_mod_" .. name
 		-- if this is here we know it has what we need so no need to check for mod/consump
 		if obj[tempname] then
 			local mod = obj.modifications[name]
@@ -2962,7 +2947,7 @@ do -- BuildingConsumption
 			if mod[1] then
 				mod = mod[1]
 			end
-			local tempname = StringFormat("ChoGGi_mod_%s",name)
+			local tempname = "ChoGGi_mod_" .. name
 			if not obj[tempname] then
 				obj[tempname] = {
 					amount = mod.amount,
@@ -3221,7 +3206,7 @@ function ChoGGi.ComFuncs.RetHardwareInfo()
 	local memory_info = GetMemoryInfo()
 	for key,value in pairs(memory_info) do
 		cm = cm + 1
-		mem[cm] = StringFormat("%s: %s\n",key,value)
+		mem[cm] = key .. ": " .. value .. "\n"
 	end
 
 	local hw = {}
@@ -3230,17 +3215,17 @@ function ChoGGi.ComFuncs.RetHardwareInfo()
 	for key,value in pairs(hardware_info) do
 		if key == "gpu" then
 			chw = chw + 1
-			hw[chw] = StringFormat("%s: %s\n",key,GetGpuDescription())
+			hw[chw] = key .. ": " .. GetGpuDescription() .. "\n"
 		else
 			chw = chw + 1
-			hw[chw] = StringFormat("%s: %s\n",key,value)
+			hw[chw] = key .. ": " .. value .. "\n"
 		end
 	end
 	table.sort(hw)
 	chw = chw + 1
 	hw[chw] = "\n"
 
-	return StringFormat([[%s:
+	return string.format([[%s:
 GetHardwareInfo(0): %s
 
 GetMemoryInfo(): %s
@@ -3307,7 +3292,7 @@ do -- AddXTemplate
 			print(S[302535920001383--[[AddXTemplate borked template name: %s template: %s list: %s--]]]:format(name and f(name),template and f(template),list and f(list)))
 			return
 		end
-		local stored_name = StringFormat("ChoGGi_Template_%s",name)
+		local stored_name = "ChoGGi_Template_" .. name
 
 		ChoGGi.ComFuncs.RemoveXTemplateSections(xt,stored_name)
 
@@ -3872,7 +3857,7 @@ function ChoGGi.ComFuncs.UpdateServiceComfortBld(obj,service_stats)
 			obj.children_only = service_stats.children_only
 		end
 		for i = 1, 11 do
-			local name = StringFormat("interest%s",i)
+			local name = "interest" .. i
 			if service_stats[name] ~= "" and type(service_stats[name]) ~= "nil" then
 				obj[name] = service_stats[name]
 			end
@@ -3943,7 +3928,7 @@ do -- ShowAnimDebug_Toggle
 	local function AnimDebug_Show(obj,colour)
 		local text = PlaceObject("Text")
 		text:SetColor(colour or RandomColour())
-		text:SetFontId(UIL.GetFontID(StringFormat("%s, 14, bold, aa",ChoGGi.font)))
+		text:SetFontId(UIL.GetFontID(ChoGGi.font .. ", 14, bold, aa"))
 		text:SetCenter(true)
 		local orient = Orientation:new()
 
@@ -3954,8 +3939,8 @@ do -- ShowAnimDebug_Toggle
 		obj:Attach(orient, 0)
 		text:SetAttachOffset(point(0,0,obj:GetObjectBBox():sizez() + 100))
 		CreateGameTimeThread(function()
+			local str = "%d. %s\n"
 			while IsValid(text) do
-				local str = "%d. %s\n"
 				text:SetText(str:format(1,obj:GetAnimDebug(1)))
 				WaitNextFrame()
 			end
@@ -4080,9 +4065,9 @@ function ChoGGi.ComFuncs.DeleteLargeRocks()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes rocks for that smooth map feel.--]]]),
+		S[6779--[[Warning--]]] .. "!\n" .. S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
 		CallBackFunc,
-		StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
+		S[6779--[[Warning--]]] .. ": " ..S[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 
@@ -4095,9 +4080,9 @@ function ChoGGi.ComFuncs.DeleteSmallRocks()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		StringFormat("%s!\n%s",S[6779--[[Warning--]]],S[302535920001238--[[Removes rocks for that smooth map feel.--]]]),
+		S[6779--[[Warning--]]] .. "!\n" .. S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
 		CallBackFunc,
-		StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]])
+		S[6779--[[Warning--]]] .. ": " ..S[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 
@@ -4123,7 +4108,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 	else
 		c = c + 1
 		ItemList[c] = {
-			text = StringFormat(" %s",obj.class),
+			text = " " .. obj.class,
 			value = obj.class,
 			obj = obj,
 			hint = 302535920001106--[[Change main object colours.--]],
@@ -4138,7 +4123,8 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 					value = a.class,
 					parentobj = obj,
 					obj = a,
-					hint = StringFormat("%s\n%s: %s",S[302535920001107--[[Change colours of an attached object.--]]],S[302535920000955--[[Handle--]]],a.handle),
+					hint = S[302535920001107--[[Change colours of an attached object.--]]] .. "\n"
+						.. S[302535920000955--[[Handle--]]] .. ": " .. a.handle,
 				}
 			end
 		end
@@ -4146,7 +4132,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		items = ItemList,
-		title = StringFormat("%s: %s",S[174--[[Color Modifier--]]],RetName(obj)),
+		title = S[174--[[Color Modifier--]]] .. ": " .. RetName(obj),
 		hint = 302535920001108--[[Double click to open object/attachment to edit (select to flash object).--]],
 		custom_type = 1,
 		custom_func = function(sel,dialog)
@@ -4177,7 +4163,7 @@ do -- ChangeSurfaceSignsToMaterials
 		SuspendPassEdits("ChangeSurfaceSignsToMaterials")
 		MapForEach("map",cls,function(o)
 			if random then
-				o:ChangeEntity(StringFormat("%s%s",entity,Random(1,random)))
+				o:ChangeEntity(entity .. Random(1,random))
 			else
 				o:ChangeEntity(entity)
 			end
@@ -4369,22 +4355,19 @@ do -- GetAllAttaches
 	end
 end -- do
 
-do -- PadNumWithZeros
-	local str = "%s%s"
-	-- 100,00000 = "00100"
-	function ChoGGi.ComFuncs.PadNumWithZeros(num,pad)
-		if pad then
-			pad = tostring(pad)
-		else
-			pad = "00000"
-		end
-		num = tostring(num)
-		while #num < #pad do
-			num = str:format("0",num)
-		end
-		return num
+-- 100,00000 = "00100"
+function ChoGGi.ComFuncs.PadNumWithZeros(num,pad)
+	if pad then
+		pad = tostring(pad)
+	else
+		pad = "00000"
 	end
-end -- do
+	num = tostring(num)
+	while #num < #pad do
+		num = "0" .. num
+	end
+	return num
+end
 
 do -- UpdateFlightGrid
 	local GetMapSize = terrain.GetMapSize

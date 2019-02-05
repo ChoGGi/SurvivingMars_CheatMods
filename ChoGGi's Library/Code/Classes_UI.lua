@@ -10,7 +10,6 @@ local S = ChoGGi.Strings
 local box,point = box,point
 local IsValid = IsValid
 local PropObjGetProperty = PropObjGetProperty
-local StringFormat = string.format
 local IsImageReady = UIL.IsImageReady
 
 -- see also TextStyles.lua
@@ -77,21 +76,17 @@ DefineClass.ChoGGi_Label = {
 	VAlign = "center",
 }
 function ChoGGi_Label:SetTitle(win,title)
-	local name = CheckText(title or win.title,self.name)
-	local new_title
-
 	if win.prefix then
-		new_title = StringFormat(
-			"%s: %s",
-			CheckText(win.prefix,""),
-			name
+		win.idCaption:SetText(
+			CheckText(win.prefix,"") .. ": " .. CheckText(title or win.title,self.name)
 		)
 	else
-		new_title = name
+		win.idCaption:SetText(
+			CheckText(title or win.title,self.name)
+		)
 	end
-
-	win.idCaption:SetText(new_title)
 end
+
 DefineClass.ChoGGi_Image = {
 	__parents = {"XImage"},
 	Column = 1,
@@ -314,12 +309,12 @@ DefineClass.ChoGGi_ExternalTextEditorPlugin = {
 function ChoGGi_ExternalTextEditorPlugin:OpenEditor(edit)
 	local g = ChoGGi.Temp._G
   g_ExternalTextEditorActiveCtrl = edit
-	edit.external_file = StringFormat("%s/tempedit.lua",edit.external_path)
+	edit.external_file = edit.external_path .. "/tempedit.lua"
 
   g.AsyncCreatePath(edit.external_path)
 
   g.AsyncStringToFile(edit.external_file, edit:GetText())
-  local cmd = StringFormat(edit.external_cmd, ConvertToOSPath(edit.external_file))
+  local cmd = edit.external_cmd:format(ConvertToOSPath(edit.external_file))
 
 	local exec,result = g.os.execute(cmd)
 	if not exec then
@@ -729,10 +724,7 @@ function ChoGGi_Window:PostInit(parent,pt)
 		if move.RolloverText == "" then
 			move.RolloverText = str
 		else
-			move.RolloverText = StringFormat("%s\n\n%s",
-				self.idMoveControl:GetRolloverText(),
-				str
-			)
+			move.RolloverText = self.idMoveControl:GetRolloverText() .. "\n\n" .. str
 		end
 	end
 
@@ -760,10 +752,7 @@ function ChoGGi_Window:HyperLink(obj, f, custom_color)
 	self.onclick_handles[self.onclick_count] = f
 	self.onclick_objs[self.onclick_count] = obj
 
-	return StringFormat("%s<h %s 230 195 50>",
-		custom_color or "<color 150 170 250>",
-		self.onclick_count
-	)
+	return (custom_color or "<color 150 170 250>") .. "<h " .. self.onclick_count .. " 230 195 50>"
 end
 
 -- scrollable textbox

@@ -9,7 +9,6 @@
 --~ end
 
 local type = type
-local StringFormat = string.format
 local TableFindValue = table.find_value
 
 local MsgPopup
@@ -44,7 +43,7 @@ function OnMsg.ClassesGenerate()
 
 	SaveOrigFunc = function(class_or_func,func_name)
 		if func_name then
-			local newname = StringFormat("%s_%s",class_or_func,func_name)
+			local newname = class_or_func .. "_" .. func_name
 			if not ChoGGi_OrigFuncs[newname] then
 				ChoGGi_OrigFuncs[newname] = _G[class_or_func][func_name]
 			end
@@ -98,7 +97,7 @@ function OnMsg.ClassesGenerate()
 				collectgarbage("collect")
 				Msg("SaveGame")
 				rawset(_G, "__error_table__", {})
-				local err = EngineSaveGame(StringFormat("%spersist",folder))
+				local err = EngineSaveGame(folder .. "persist")
 				local error_amt = #__error_table__
 
 				for i = 1, error_amt do
@@ -218,13 +217,13 @@ function OnMsg.ClassesGenerate()
 	--~			 if not procall(function()
 	--~				 local function ColourText(Text,Bool)
 	--~					 if Bool == true then
-	--~						 return StringFormat("<color 200 200 200>%s</color>",Text)
+	--~						 return "<color 200 200 200>" .. Text .. "</color>"
 	--~					 else
-	--~						 return StringFormat("<color 75 255 75>%s</color>",Text)
+	--~						 return "<color 75 255 75>" .. Text .. "</color>"
 	--~					 end
 	--~				 end
 	--~				 local function ReplaceParam(Name,Text,SearchName)
-	--~					 SearchName = SearchName or StringFormat("<%s>",Name)
+	--~					 SearchName = SearchName or "<" .. Name .. ">"
 	--~					 if not Text:find(SearchName) then
 	--~						 return Text
 	--~					 end

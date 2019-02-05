@@ -31,7 +31,6 @@ SOFTWARE.
 -- local any funcs used below (more than once)
 local tonumber,tostring,pcall = tonumber,tostring,pcall
 local AsyncRand,_InternalTranslate,T = AsyncRand,_InternalTranslate,T
-local StringFormat = string.format
 
 -- just in case etc
 local floatfloor_tmp
@@ -40,7 +39,7 @@ pcall(function()
 end)
 
 do -- translate
-	local locale_path = StringFormat("%sLocales/%s.csv",CurrentModPath,"%s")
+	local locale_path = CurrentModPath .. "Locales/%s.csv"
 	-- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
 	if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
 		LoadTranslationTableFile(locale_path:format("English"))
@@ -67,7 +66,7 @@ local str = {
 
 -- whenever i get .cos etc added (needed for unit testing)
 --~ -- needed for tmp file when doing unit tests
---~ local tmpfile = StringFormat("%sUnitTest.txt",CurrentModPath)
+--~ local tmpfile = CurrentModPath .. "UnitTest.txt"
 
 local function CheckNum(x,name,arg)
   x = tonumber(x)
@@ -291,7 +290,7 @@ function math.random(m,n)
     return AsyncRand(m)
   else
     -- so it'll never return 1, close enough
-		return tonumber(StringFormat("0.%s",AsyncRand()))
+		return tonumber("0." .. AsyncRand())
   end
 
 end
@@ -487,7 +486,7 @@ function math.test()
 
   local getinfo = format_value
 --~   local  = debug.getinfo
-  local script_name = StringFormat("%sScript.lua",CurrentModPath)
+  local script_name = CurrentModPath .. "Script.lua"
 
   local function Test(line,func,n1,n2)
     if n1 == false then
@@ -540,7 +539,7 @@ function math.test()
 --~   AsyncStringToFile(tmpfile,"a = {","-1")
 --~   i = 1
 --~   repeat
---~     AsyncStringToFile(tmpfile,StringFormat("{%s, %s, %s},\n",math.sin(i), math.cos(i), i/3),"-1")
+--~     AsyncStringToFile(tmpfile,string.format("{%s, %s, %s},\n",math.sin(i), math.cos(i), i/3),"-1")
 --~     i=i+1
 --~   until i > 1000
 --~   AsyncStringToFile(tmpfile,"}","-1")

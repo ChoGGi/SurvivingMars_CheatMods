@@ -5,8 +5,6 @@
 local default_icon = "UI/Icons/IPButtons/dome_buildings.tga"
 local default_icon2 = "UI/Icons/Sections/storage.tga"
 
-local StringFormat = string.format
-
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
@@ -48,8 +46,6 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
 		local BuildingTechRequirements = BuildingTechRequirements
-		local spon_str = "sponsor_status%s"
-		local spon_str2 = "sponsor_status%s_ChoGGi_orig"
 		local BuildingTemplates = BuildingTemplates
 
 		if ChoGGi.UserSettings.SponsorBuildingLimits then
@@ -59,9 +55,9 @@ function OnMsg.ClassesGenerate()
 			for _,bld in pairs(BuildingTemplates) do
 				-- set each status to false if it isn't
 				for i = 1, 3 do
-					local str = spon_str2:format(i)
+					local str = "sponsor_status" .. i .. "_ChoGGi_orig"
 					if bld[str] then
-						bld[spon_str:format(i)] = bld[str]
+						bld["sponsor_status" .. i] = bld[str]
 						bld[str] = nil
 					end
 				end
@@ -74,9 +70,9 @@ function OnMsg.ClassesGenerate()
 			for id,bld in pairs(BuildingTemplates) do
 				-- set each status to false if it isn't
 				for i = 1, 3 do
-					local str = spon_str:format(i)
+					local str = "sponsor_status" .. i .. "_ChoGGi_orig"
 					if bld[str] ~= false then
-						bld[spon_str2:format(i)] = bld[str]
+						bld["sponsor_status" .. i .. "_ChoGGi_orig"] = bld[str]
 						bld[str] = false
 					end
 				end
@@ -180,8 +176,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s: %s",name,S[302535920001344--[[Points To Train--]]]),
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
+			title = name .. ": " .. S[302535920001344--[[Points To Train--]]],
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end
@@ -218,8 +214,13 @@ function OnMsg.ClassesGenerate()
 			ItemList[#ItemList+1] = {text = S[736--[[Children Only--]]],value = sel.base_children_only,setting = "children_only",hint = hint_type:format(ReturnEditorType(sel.properties,"id","children_only"))}
 
 			for i = 1, 11 do
-				local name = StringFormat("interest%s",i)
-				ItemList[#ItemList+1] = {text = StringFormat("%s %s",S[732--[[Service interest--]]],i),value = sel[name],setting = name,hint = StringFormat("%s\n\n%s",hint_type:format(ReturnEditorType(sel.properties,"id",name)),ServiceInterestsList)}
+				local name = "interest" .. i
+				ItemList[#ItemList+1] = {
+					text = S[732--[[Service interest--]]] .. " " .. i,
+					value = sel[name],
+					setting = name,
+					hint = hint_type:format(ReturnEditorType(sel.properties,"id",name)) .. "\n\n" .. ServiceInterestsList,
+				}
 			end
 		end
 
@@ -255,7 +256,7 @@ function OnMsg.ClassesGenerate()
 					temp.usable_by_children = sel:GetDefaultPropertyValue("usable_by_children")
 					temp.children_only = sel:GetDefaultPropertyValue("children_only")
 					for i = 1, 11 do
-						local name = StringFormat("interest%s",i)
+						local name = "interest" .. i
 						temp[name] = sel:GetDefaultPropertyValue(name)
 					end
 				end
@@ -273,7 +274,7 @@ function OnMsg.ClassesGenerate()
 						obj.base_usable_by_children = temp.usable_by_children
 						obj.base_children_only = temp.children_only
 						for j = 1, 11 do
-							local name = StringFormat("interest%s",j)
+							local name = "interest" .. j
 							obj[name] = temp[name]
 						end
 					end
@@ -318,9 +319,9 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s %s",S[302535920000129--[[Set--]]],name,S[302535920001114--[[Service Building Stats--]]]),
+			title = S[302535920000129--[[Set--]]] .. " " .. name .. " " .. S[302535920001114--[[Service Building Stats--]]],
 			hint = S[302535920001339--[[Are settings custom: %s--]]]:format(custom_settings),
-			hint = StringFormat("%s\n\n%s",S[302535920001340--[[Invalid settings will be skipped.--]]],S[302535920001339--[[Are settings custom: %s--]]]:format(custom_settings)),
+			hint = S[302535920001340--[[Invalid settings will be skipped.--]]] .. "\n\n" .. S[302535920001339--[[Are settings custom: %s--]]]:format(custom_settings),
 			custom_type = 4,
 			check = {
 				{
@@ -385,7 +386,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920001336--[[Export When This Amount--]],
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end
@@ -397,7 +398,7 @@ function OnMsg.ClassesGenerate()
 		local UserSettings = ChoGGi.UserSettings
 		local id = "SpaceElevator"
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -452,7 +453,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = title,
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end
@@ -475,7 +476,7 @@ function OnMsg.ClassesGenerate()
 		local UserSettings = ChoGGi.UserSettings
 		local r = ChoGGi.Consts.ResourceScale
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -530,7 +531,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000105--[[Set Food Storage--]],
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end
@@ -596,7 +597,7 @@ function OnMsg.ClassesGenerate()
 		local id = sel.template_name
 		local DefaultSetting = g_Classes[id]:GetDefaultPropertyValue("protect_range")
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 40,value = 40},
 			{text = 80,value = 80},
 			{text = 160,value = 160},
@@ -646,7 +647,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000114--[[Set Protection Radius--]],
-			hint = StringFormat("%s: %s\n\n%s",S[302535920000106--[[Current--]]],hint,S[302535920000115--[[Toggle selection to update visible hex grid.--]]]),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hint .. "\n\n" ..S[302535920000115--[[Toggle selection to update visible hex grid.--]]],
 			skip_sort = true,
 		}
 	end
@@ -655,7 +656,7 @@ function OnMsg.ClassesGenerate()
 		local everything = S[302535920000306--[[Everything--]]]
 		local ItemList = {
 			{
-			text = StringFormat(" %s",everything),
+			text = " " .. everything,
 			value = everything,
 			},
 		}
@@ -769,7 +770,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			StringFormat("%s %s",RetName(sel),S[str2]),
+			RetName(sel) .. " " .. S[str2],
 			3980--[[Buildings--]],
 			default_icon
 		)
@@ -839,11 +840,13 @@ function OnMsg.ClassesGenerate()
 
 		--get default amount
 		local template = BuildingTemplates[id]
-		local DefaultSettingC = template[StringFormat("max_%s_charge",CapType)] / r
-		local DefaultSettingD = template[StringFormat("max_%s_discharge",CapType)] / r
+		local DefaultSettingC = template["max_" .. CapType .. "_charge"] / r
+		local DefaultSettingD = template["max_" .. CapType .. "_discharge"] / r
 
 		local ItemList = {
-			{text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = StringFormat("%s: %s / %s: %s",S[302535920000124--[[Charge--]]],DefaultSettingC,S[302535920000125--[[Discharge--]]],DefaultSettingD)},
+			{text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = S[302535920000124--[[Charge--]]]
+				.. ": " .. DefaultSettingC .. " / " .. S[302535920000125--[[Discharge--]]]
+				.. ": " .. DefaultSettingD},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -861,11 +864,11 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.UserSettings.BuildingSettings[id] = {}
 		end
 
-		local hint = StringFormat("%s: %s / %s: %s",S[302535920000124--[[Charge--]]],DefaultSettingC,S[302535920000125--[[Discharge--]]],DefaultSettingD)
+		local hint = S[302535920000124--[[Charge--]]] .. ": " .. DefaultSettingC .. " / " .. S[302535920000125--[[Discharge--]]] .. ": " .. DefaultSettingD
 		local setting = ChoGGi.UserSettings.BuildingSettings[id]
 		if setting then
 			if setting.charge and setting.discharge then
-				hint = StringFormat("%s: %s / %s: %s",S[302535920000124--[[Charge--]]],setting.charge / r,S[302535920000125--[[Discharge--]]],setting.discharge / r)
+				hint = S[302535920000124--[[Charge--]]] .. ": " .. (setting.charge / r) .. " / " .. S[302535920000125--[[Discharge--]]] .. ": " .. (setting.discharge / r)
 			elseif setting.charge then
 				hint = setting.charge / r
 			elseif setting.discharge then
@@ -904,17 +907,18 @@ function OnMsg.ClassesGenerate()
 				end
 
 				-- updating time
+				local str1,str2 = "max_" .. CapType .. "_charge","max_" .. CapType .. "_discharge"
 				if CapType == "electricity" then
 					local tab = UICity.labels.Power or ""
 					for i = 1, #tab do
 						if tab[i].template_name == id then
 							if check1 then
 								tab[i][CapType].max_charge = numberC
-								tab[i][StringFormat("max_%s_charge",CapType)] = numberC
+								tab[i][str1] = numberC
 							end
 							if check2 then
 								tab[i][CapType].max_discharge = numberD
-								tab[i][StringFormat("max_%s_discharge",CapType)] = numberD
+								tab[i][str2] = numberD
 							end
 							ChoGGi.ComFuncs.ToggleWorking(tab[i])
 						end
@@ -925,11 +929,11 @@ function OnMsg.ClassesGenerate()
 						if tab[i].template_name == id then
 							if check1 then
 								tab[i][CapType].max_charge = numberC
-								tab[i][StringFormat("max_%s_charge",CapType)] = numberC
+								tab[i][str1] = numberC
 							end
 							if check2 then
 								tab[i][CapType].max_discharge = numberD
-								tab[i][StringFormat("max_%s_discharge",CapType)] = numberD
+								tab[i][str2] = numberD
 							end
 							ChoGGi.ComFuncs.ToggleWorking(tab[i])
 						end
@@ -948,8 +952,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s %s",S[302535920000129--[[Set--]]],name,S[302535920000130--[[Dis/Charge Rates--]]]),
-			hint = StringFormat("%s: %s",S[302535920000131--[[Current rate--]]],hint),
+			title = S[302535920000129--[[Set--]]] .. " " .. name .. " " .. S[302535920000130--[[Dis/Charge Rates--]]],
+			hint = S[302535920000131--[[Current rate--]]] .. ": " .. hint,
 			check = {
 				at_least_one = true,
 				{
@@ -1036,11 +1040,11 @@ function OnMsg.ClassesGenerate()
 		if ProdType == "other" then
 			DefaultSetting = sel.base_production_per_day1 / r
 		else
-			DefaultSetting = sel[StringFormat("base_%s_production",ProdType)] / r
+			DefaultSetting = sel["base_" .. ProdType .. "_production"] / r
 		end
 
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -1134,8 +1138,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s %s",S[302535920000129--[[Set--]]],name,S[302535920000139--[[Production Amount--]]]),
-			hint = StringFormat("%s: %s",S[302535920000140--[[Current production--]]],hint),
+			title = S[302535920000129--[[Set--]]] .. " " .. name .. " " .. S[302535920000139--[[Production Amount--]]],
+			hint = S[302535920000140--[[Current production--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end
@@ -1235,7 +1239,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s: %s",name,S[302535920000144--[[Automated Performance--]]]),
+			title = name .. ": " .. S[302535920000144--[[Automated Performance--]]],
 			hint = S[302535920000145--[["Sets performance of all automated buildings of this type
 	Current: %s"--]]]:format(hint),
 			check = {
@@ -1560,7 +1564,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			StringFormat("%s: %s",ChoGGi.UserSettings.Building_wonder,S[302535920000159--[[Unlimited Wonders--]]]),
+			ChoGGi.UserSettings.Building_wonder .. ": " .. S[302535920000159--[[Unlimited Wonders--]]],
 			3980--[[Buildings--]],
 			"UI/Icons/Sections/theory_1.tga"
 		)
@@ -1652,7 +1656,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = g_Classes[id]:GetDefaultPropertyValue("UIRange")
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 25,value = 25},
@@ -1699,7 +1703,7 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					StringFormat("%s:\n%s",choice[1].text,S[msgpopup]),
+					choice[1].text .. ":\n" .. S[msgpopup],
 					id,
 					"UI/Icons/Upgrades/polymer_blades_04.tga",
 					true
@@ -1710,8 +1714,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s %s %s",S[302535920000129--[[Set--]]],id,S[302535920000163--[[Radius--]]]),
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
+			title = S[302535920000129--[[Set--]]] .. " " .. id .. " " .. S[302535920000163--[[Radius--]]],
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end

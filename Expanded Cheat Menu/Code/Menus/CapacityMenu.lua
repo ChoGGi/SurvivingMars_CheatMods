@@ -4,7 +4,6 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-	local StringFormat = string.format
 	local c = #Actions
 
 	local str_ExpandedCM_Capacity = "ECM.Expanded CM.Capacity"
@@ -37,11 +36,12 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Worker Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
+			local text = 302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.workers",sel and sel.template_name),
-				302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]
-			)
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".workers",
+				text
+			) or S[text]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetWorkerCapacity,
 		ActionShortcut = "Ctrl-Shift-W",
@@ -54,11 +54,12 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Building Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
+			local text = 302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.capacity",sel and sel.template_name),
-				302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]
-			)
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".capacity",
+				text
+			) or S[text]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetBuildingCapacity,
 		ActionShortcut = "Ctrl-Shift-C",
@@ -71,11 +72,12 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Building Visitor Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
+			local text = 302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.visitors",sel and sel.template_name),
-				302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]
-			)
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".visitors",
+				text
+			) or S[text]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetVisitorCapacity,
 		ActionShortcut = "Ctrl-Shift-V",

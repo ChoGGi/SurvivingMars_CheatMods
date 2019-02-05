@@ -195,7 +195,7 @@ ChoGGi = {
 local ChoGGi = ChoGGi
 
 do -- translate
-	local locale_path = string.format("%sLocales/%s.csv",ChoGGi.library_path,"%s")
+	local locale_path = ChoGGi.library_path .. "Locales/%s.csv"
 	-- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
 	if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
 		LoadTranslationTableFile(locale_path:format("English"))

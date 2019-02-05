@@ -11,7 +11,7 @@ local GetParentOfKind
 local RetProperType
 
 local tostring,type,table = tostring,type,table
-local StringFormat = string.format
+
 
 local IsPoint = IsPoint
 local Min = Min
@@ -46,7 +46,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 
 	self.obj_name = RetName(context.obj)
 	self.obj = context.obj
-	self.title = StringFormat("%s %s: %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]],self.obj_name)
+	self.title = S[327465361219--[[Edit--]]] .. " " .. S[298035641454--[[Object--]]] .. ": " .. self.obj_name
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -231,7 +231,7 @@ function ChoGGi_ObjectEditorDlg:idEditValueOnTextChanged()
 			(obj_type ~= "number" and edit_type ~= "boolean") then
 		-- list item
 		self.idList[sel_idx].item.value = edit_text
-		self.idList[sel_idx][1]:SetText(StringFormat("%s = %s",self.idList[sel_idx].item.text,edit_text))
+		self.idList[sel_idx][1]:SetText(self.idList[sel_idx].item.text .. " = " .. edit_text)
 		-- stored obj
 		self.items[sel_idx].value = edit_text
 		-- actual object
@@ -280,7 +280,7 @@ end
 function ChoGGi_ObjectEditorDlg:BuildList()
 	self.idList:Clear()
 	for i = 1, #self.items do
-		local listitem = self.idList:CreateTextItem(StringFormat("%s = %s",self.items[i].text,self.items[i].value))
+		local listitem = self.idList:CreateTextItem(items[i].text .. " = " .. self.items[i].value)
 		listitem.item = self.items[i]
 	end
 end
@@ -320,11 +320,16 @@ function ChoGGi_ObjectEditorDlg:CreateProp(obj)
 
 	if IsValid(obj) then
 		local x,y,z = obj:GetVisualPosXYZ()
-		return StringFormat("%s @ (%s,%s,%s)",obj.class,x,y,z)
+		return obj.class .. " @ (" .. x .. "," .. y .. "," .. z .. ")"
 	end
 
 	if IsPoint(obj) then
-		return StringFormat("(%s,%s,%s)",obj:x(),obj:y(),obj:z())
+		local x,y,z = obj:xyz()
+		if z then
+			return "(" .. x .. "," .. y .. "," .. z .. ")"
+		else
+			return "(" .. x .. "," .. y .. ")"
+		end
 	end
 
 	if obj_type == "thread" then
@@ -346,11 +351,11 @@ function ChoGGi_ObjectEditorDlg:CreateProp(obj)
 			if #obj > 3 then
 				res[#res+1] = "..."
 			end
-			return StringFormat("objlist{%s}","",TableConcat(res,", "))
+			return "objlist{" .. TableConcat(res,", ") .. "}"
 		end
 
 		if IsT(obj) then
-			return StringFormat([[T("%s")]],Trans(obj))
+			return "T(\"" .. Trans(obj) .. "\")"
 		else
 			-- regular table
 			local table_data
@@ -359,7 +364,7 @@ function ChoGGi_ObjectEditorDlg:CreateProp(obj)
 
 			if len > 0 and is_next then
 				-- next works for both
-				table_data = StringFormat("%s / %s",len,S[302535920001057--[[Data--]]])
+				table_data = len .. " / " .. S[302535920001057--[[Data--]]]
 			elseif is_next then
 				-- ass based
 				table_data = S[302535920001057--[[Data--]]]
@@ -370,9 +375,9 @@ function ChoGGi_ObjectEditorDlg:CreateProp(obj)
 
 			local name = RetName(obj)
 			if obj.class and name ~= obj.class then
-				name = StringFormat("%s (len: %s, %s)",obj.class,table_data,name)
+				name = obj.class .. " (len: " .. table_data .. ", " .. name .. ")"
 			else
-				name = StringFormat("%s (len: %s)",name,table_data)
+				name = name .. " (len: " .. table_data .. ")"
 			end
 
 			return name
@@ -393,9 +398,9 @@ function ChoGGi_ObjectEditorDlg:CreatePropList(obj)
 			local text
 			local v_type = type(v)
 			if v_type == "table" then
-				text = StringFormat("<color 150 170 250>%s</color>",sort_prop)
+				text = "<color 150 170 250>" .. sort_prop .. "</color>"
 			elseif v_type == "function" then
-				text = StringFormat("<color 255 150 150>%s</color>",sort_prop)
+				text = "<color 255 150 150>" .. sort_prop .. "</color>"
 			else
 				text = sort_prop
 			end

@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local StringFormat = string.format
 local IsKindOf = IsKindOf
 
 local function SomeCode()
@@ -109,7 +108,7 @@ local function SpawnShuttle(hub,attacker)
 	end
 end
 
-local icon_str = StringFormat("%sUI/shuttle_%s.png",CurrentModPath,"%s")
+local icon_str = CurrentModPath .. "UI/shuttle_%s.png"
 local carried_str = "Carried: %s"
 
 -- add all our buttons to the selection panel

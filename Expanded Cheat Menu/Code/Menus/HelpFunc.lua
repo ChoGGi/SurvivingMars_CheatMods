@@ -1,9 +1,7 @@
 -- See LICENSE for terms
 
 local default_icon = "UI/Icons/Sections/attention.tga"
-
 local print,tostring = print,tostring
-local StringFormat = string.format
 
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -78,7 +76,7 @@ function OnMsg.ClassesGenerate()
 			S[302535920000039--[["Spam in the console log doesn't necessarily mean a problem with SM (it could just a warning).
 This report will go to the %s developers not me."--]]]:format(S[1079--[[Surviving Mars--]]]),
 			CallBackFunc,
-			StringFormat("%s %s",S[1079--[[Surviving Mars--]]],S[302535920001463--[[Bug Report--]]]),
+			S[1079--[[Surviving Mars--]]] .. " " .. S[302535920001463--[[Bug Report--]]],
 			S[302535920001464--[[Yes, I know what I'm doing. This is a bug.--]]]
 		)
 	end
@@ -112,7 +110,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				local slash = mod:reverse():find("\\")
 				-- we need a neg number for sub + 1 to remove the slash
 				local id = mod:sub((slash * -1) + 1)
-				local hpk = StringFormat("%s/ModContent.hpk",mod:gsub("\\", "/"))
+				local hpk = mod:gsub("\\", "/") .. "/ModContent.hpk"
 				-- skip any mods that aren't packed (uploaded by ECM, or just old)
 				if mod_table[id] and FileExists(hpk) then
 					-- yeah lets make our image parsing use spaces... I'm sure nobody uses those in file paths.
@@ -145,7 +143,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 		if #ItemList == 0 then
 			-- good enough msg, probably...
 			MsgPopup(
-				StringFormat("%s: %s",S[302535920000004--[[Dump--]]],#ItemList),
+				S[302535920000004--[[Dump--]]] .. ": " .. #ItemList,
 				302535920001362--[[Extract HPKs--]]
 			)
 			return
@@ -156,17 +154,17 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				return
 			end
 			for i = 1, #choice do
-				local path = StringFormat("AppData/Mods/%s",choice[i].id)
+				local path = "AppData/Mods/" .. choice[i].id
 				printC(choice[i].value,path)
 				AsyncUnpack(choice[i].value,path)
 				-- add a note telling people not to be assholes :)
 				AsyncStringToFile(
-					StringFormat("%s/This is not your mod.txt",path),
+					path .. "/This is not your mod.txt",
 					S[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.--]]]:format(choice[i].author)
 				)
 			end
 			MsgPopup(
-				StringFormat("%s: %s",S[302535920000004--[[Dump--]]],#choice),
+				S[302535920000004--[[Dump--]]] .. ": " .. #choice,
 				302535920001362--[[Extract HPKs--]]
 			)
 		end
@@ -186,8 +184,6 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 		local c = 0
 
 		local actions = ChoGGi.Temp.Actions
-		local hint = "%s\n\n<color 200 255 200>%s</color>"
-		local icon = "<image %s 2500>"
 		for i = 1, #actions do
 			local a = actions[i]
 			-- skip menus
@@ -196,14 +192,14 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				local hint_text = type(a.RolloverText) == "function" and a.RolloverText() or a.RolloverText
 				local icon_str
 				if a.ActionIcon and a.ActionIcon ~= "" then
-					icon_str = icon:format(a.ActionIcon)
+					icon_str = "<image " .. a.ActionIcon .. " 2500>"
 				end
 				ItemList[c] = {
 					text = a.ActionName,
 					value = a.ActionName,
 					icon = icon_str,
 					func = a.OnAction,
-					hint = hint:format(hint_text,a.ActionId),
+					hint = hint_text .. "\n\n<color 200 255 200>" .. a.ActionId .. "</color>",
 				}
 			end
 		end
@@ -248,7 +244,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 			end
 
 			ChoGGi.ComFuncs.QuestionBox(
-				StringFormat("%s\n\n%s",S[302535920000244--[[Warning! This will hide everything. Remember the shortcut or have fun restarting.--]]],key),
+				S[302535920000244--[[Warning! This will hide everything. Remember the shortcut or have fun restarting.--]]] .. "\n\n" .. key,
 				CallBackFunc,
 				302535920000663--[[Toggle Interface--]]
 			)
@@ -309,7 +305,6 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 		}
 		local pack_path = "AppData/ModUpload/Pack/"
 		local dest_path = "AppData/ModUpload/"
-		local ss_str = "%s%s"
 
 		local function CallBackFunc(choice)
 			if choice.nothing_selected then
@@ -457,7 +452,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 						-- let user know if we're good or not
 						ChoGGi.ComFuncs.MsgWait(
 							S[1000013--[[Mod %s was not uploaded! Error: %s--]]]:format(mod.title,Trans(prepare_results)),
-							StringFormat("%s: %s",S[1000592--[[Error--]]],mod.title),
+							S[1000592--[[Error--]]] .. ": " .. mod.title,
 							upload_image
 						)
 						return
@@ -480,10 +475,10 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 								end
 							end
 							if not ignore then
-								local dest_file = ss_str:format(dest_path,file)
+								local dest_file = dest_path .. file
 								local dir = SplitPath(dest_file)
 								AsyncCreatePath(dir)
-								err = AsyncCopyFile(ss_str:format(mod_path,file), dest_file, "raw")
+								err = AsyncCopyFile(mod_path .. file, dest_file, "raw")
 							end
 						end
 
@@ -516,8 +511,8 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 									})
 								end
 							end
---~ 							err = AsyncPack(ss_str:format(pack_path,ModsPackFileName), dest_path, files_to_pack)
-							err = async.AsyncPack(false,ss_str:format(pack_path,ModsPackFileName), dest_path, files_to_pack)
+--~ 							err = AsyncPack(pack_path .. ModsPackFileName, dest_path, files_to_pack)
+							err = async.AsyncPack(false,pack_path .. ModsPackFileName, dest_path, files_to_pack)
 						end
 
 					end
@@ -526,7 +521,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					if not err or blank_mod then
 
 						-- check if .hpk exists, and use it if so
-						local os_dest = StringFormat("%sPack/ModContent.hpk",dest_path)
+						local os_dest = dest_path .. "Pack/ModContent.hpk"
 						if FileExists(os_dest) then
 							os_dest = ConvertToOSPath(os_dest)
 						else
@@ -560,7 +555,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 
 					if not test then
 						-- update mod log and print it to console log
-						ModLog(StringFormat("\n%s: %s",msg,mod.title))
+						ModLog("\n" .. msg .. ": " .. mod.title)
 						local ModMessageLog = ModMessageLog
 						print(S[302535920001265--[[ModMessageLog--]]],":")
 						for i = 1, #ModMessageLog do
@@ -573,9 +568,9 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 
 						if clipboard and not err then
 							if mod_params.uuid_property then
-								CopyToClipboard(StringFormat([[	"%s", "%s",]],mod_params.uuid_property,item_id))
+								CopyToClipboard("	\"" .. mod_params.uuid_property .. "\", \"" .. item_id .. "\",")
 							else
-								CopyToClipboard(StringFormat([[	"steam_id", "%s",]],item_id))
+								CopyToClipboard("	\"steam_id\", \"" .. item_id .. "\",")
 							end
 						end
 
@@ -594,7 +589,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					-- let user know if we're good or not
 					ChoGGi.ComFuncs.MsgWait(
 						msg,
-						StringFormat("%s: %s",title,mod.title),
+						title .. ": " .. mod.title,
 						upload_image
 					)
 
@@ -618,12 +613,12 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 
 		function ChoGGi.MenuFuncs.ModUpload()
 			if blacklist then
-				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ModUpload"))
+				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.MenuFuncs.ModUpload"))
 				return
 			end
 			if not (Platform.steam or Platform.pops) then
 				MsgPopup(
-					StringFormat("%s || %s",S[1000760--[[Not Steam--]]],S[1000759--[[Not Paradox--]]]),
+					S[1000760--[[Not Steam--]]] .. " || " .. S[1000759--[[Not Paradox--]]],
 					302535920000367--[[Mod Upload--]]
 				)
 				return
@@ -645,7 +640,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					hint_str = "<image %s>\n%s"
 					-- i don't know how to find rtl, so we'll reverse and find it that way. that said what's up with appending the path, can't you just do it when you need to?
 					local slash = mod.image:reverse():find("/")
-					image = ss_str:format(path,mod.image:sub((slash - 1) * -1))
+					image = path .. "" .. mod.image:sub((slash - 1) * -1)
 				end
 				c = c + 1
 				ItemList[c] = {
@@ -753,8 +748,9 @@ Move archive to Mod folder/Pack/ModContent.hpk"--]],
 						ChoGGi.UserSettings = ChoGGi.SettingFuncs.WriteSettings(settings)
 						-- for now just updates console examine list
 						Msg("ChoGGi_SettingsUpdated")
+						local d,m,h = FormatElapsedTime(os.time(), "dhm")
 						MsgPopup(
-							S[4273--[[Saved on %s--]]]:format(StringFormat("%s:%s:%s",FormatElapsedTime(os.time(), "dhm"))),
+							S[4273--[[Saved on %s--]]]:format(d .. ":" .. m .. ":" .. h),
 							302535920001308--[[Settings--]]
 						)
 					end
@@ -774,8 +770,8 @@ Move archive to Mod folder/Pack/ModContent.hpk"--]],
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			StringFormat("%s\n\n%s",S[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
-Change DisableECM to false in settings file to re-enable them."--]]],S[302535920001070--[[Restart to take effect.--]]]),
+			S[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
+Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .. S[302535920001070--[[Restart to take effect.--]]],
 			CallBackFunc,
 			302535920000142--[[Disable--]]
 		)
@@ -819,7 +815,7 @@ Change DisableECM to false in settings file to re-enable them."--]]],S[302535920
 	function ChoGGi.MenuFuncs.ResetECMSettings()
 
 		local file = ChoGGi.settings_file
-		local old = StringFormat("%s.old",file)
+		local old = file .. ".old"
 
 		local function CallBackFunc(answer)
 			if answer then
@@ -847,10 +843,10 @@ Change DisableECM to false in settings file to re-enable them."--]]],S[302535920
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
-			StringFormat("%s\n\n%s",S[302535920001072--[[Are you sure you want to reset ECM settings?
-	Old settings are saved as %s (or not saved if you don't use the HelperMod)--]]]:format(old),S[302535920001070--[[Restart to take effect.--]]]),
+			S[302535920001072--[[Are you sure you want to reset ECM settings?
+	Old settings are saved as %s (or not saved if you don't use the HelperMod)--]]]:format(old) .. "\n\n" .. S[302535920001070--[[Restart to take effect.--]]],
 			CallBackFunc,
-			StringFormat("%s!",S[302535920001084--[[Reset--]]])
+			S[302535920001084--[[Reset--]]] .. "!"
 		)
 	end
 

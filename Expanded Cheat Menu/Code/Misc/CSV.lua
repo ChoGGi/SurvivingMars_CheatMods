@@ -2,19 +2,15 @@
 
 -- local some globals
 local type,tostring,table = type,tostring,table
---~ local StringFormat = string.format
 
 local CmpLower = CmpLower
-
-local ss = "%s %s"
-local sss = "%s %s %s"
 
 function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Trans = ChoGGi.ComFuncs.Translate
 
-	local done_msg = ss:format(S[302535920001449--[[Export--]]],S[302535920001448--[[CSV--]]])
+	local done_msg = S[302535920001449--[[Export--]]] .. " " .. S[302535920001448--[[CSV--]]]
 	local function ExportDoneMsg(path)
 		ChoGGi.ComFuncs.MsgPopup(path,done_msg)
 		print(path)
@@ -36,9 +32,9 @@ function OnMsg.ClassesGenerate()
 		local GetOverlayValues = GetOverlayValues
 		local FillRandomMapProps = FillRandomMapProps
 		local csv_columns = {
-			{"latitude_degree",ss:format(S[6890--[[Latitude--]]],S[302535920001505--[[Â°--]]])},
+			{"latitude_degree",S[6890--[[Latitude--]]] .. " " .. S[302535920001505--[[°--]]]},
 			{"latitude",S[6890--[[Latitude--]]]},
-			{"longitude_degree",ss:format(S[6892--[[Longitude--]]],S[302535920001505--[[Â°--]]])},
+			{"longitude_degree",S[6892--[[Longitude--]]] .. " " .. S[302535920001505--[[°--]]]},
 			{"longitude",S[6892--[[Longitude--]]]},
 			{"topography",S[284813068603--[[Topography--]]]},
 			{"diff_chall",S[774720837511--[[Difficulty Challenge --]]]},
@@ -56,7 +52,7 @@ function OnMsg.ClassesGenerate()
 			{"cold_waves",S[4148--[[Cold Waves--]]]},
 
 			{"map_name",S[302535920001503--[[Map Name--]]]},
-			{"landing_spot",ss:format(S[302535920001504--[[Named--]]],S[7396--[[Location--]]])},
+			{"landing_spot",S[302535920001504--[[Named--]]] .. " " .. S[7396--[[Location--]]]},
 		}
 		-- exported data temp stored here
 		local export_data = {}
@@ -210,11 +206,10 @@ function OnMsg.ClassesGenerate()
 			skipped_traits = AddSkipped(t.ColonistSpecializations,skipped_traits)
 		end
 
-		local trait_str = "trait_%s"
 		local csv_columns = {
 			{"name",S[1000037--[[Name--]]]},
 			{"age",S[302535920001222--[[Age--]]]},
-			{"age_trait",ss:format(S[302535920001222--[[Age--]]],S[3720--[[Trait--]]])},
+			{"age_trait",S[302535920001222--[[Age--]]] .. " " .. S[3720--[[Trait--]]]},
 			{"death_age",S[4284--[[Age of death--]]]},
 			{"birthplace",S[4357--[[Birthplace--]]]},
 			{"gender",S[4356--[[Sex--]]]},
@@ -228,21 +223,21 @@ function OnMsg.ClassesGenerate()
 			{"handle",S[302535920000955--[[Handle--]]]},
 			{"last_meal",S[302535920001229--[[Last Meal--]]]},
 			{"last_rest",S[302535920001235--[[Last Rest--]]]},
-			{"dome_name",ss:format(S[1234--[[Dome--]]],S[1000037--[[Name--]]])},
-			{"dome_pos",ss:format(S[1234--[[Dome--]]],S[302535920001237--[[Position--]]])},
-			{"dome_handle",ss:format(S[1234--[[Dome--]]],S[302535920000955--[[Handle--]]])},
-			{"residence_name",ss:format(S[4809--[[Residence--]]],S[1000037--[[Name--]]])},
-			{"residence_pos",ss:format(S[4809--[[Residence--]]],S[302535920001237--[[Position--]]])},
-			{"residence_dome",ss:format(S[4809--[[Residence--]]],S[1234--[[Dome--]]])},
-			{"workplace_name",ss:format(S[4801--[[Workplace--]]],S[1000037--[[Name--]]])},
-			{"workplace_pos",ss:format(S[4801--[[Workplace--]]],S[302535920001237--[[Position--]]])},
-			{"workplace_dome",ss:format(S[4801--[[Workplace--]]],S[1234--[[Dome--]]])},
+			{"dome_name",S[1234--[[Dome--]]] .. " " .. S[1000037--[[Name--]]]},
+			{"dome_pos",S[1234--[[Dome--]]] .. " " .. S[302535920001237--[[Position--]]]},
+			{"dome_handle",S[1234--[[Dome--]]] .. " " .. S[302535920000955--[[Handle--]]]},
+			{"residence_name",S[4809--[[Residence--]]] .. " " .. S[1000037--[[Name--]]]},
+			{"residence_pos",S[4809--[[Residence--]]] .. " " .. S[302535920001237--[[Position--]]]},
+			{"residence_dome",S[4809--[[Residence--]]] .. " " .. S[1234--[[Dome--]]]},
+			{"workplace_name",S[4801--[[Workplace--]]] .. " " .. S[1000037--[[Name--]]]},
+			{"workplace_pos",S[4801--[[Workplace--]]] .. " " .. S[302535920001237--[[Position--]]]},
+			{"workplace_dome",S[4801--[[Workplace--]]] .. " " .. S[1234--[[Dome--]]]},
 		}
 		local function AddTraits(traits,list)
 			for i = 1, #traits do
 				list[#list+1] = {
-					trait_str:format(traits[i]),
-					ss:format(S[3720--[[Trait--]]],traits[i]),
+					"trait_" .. traits[i],
+					S[3720--[[Trait--]]] .. " " .. traits[i],
 				}
 			end
 			return list
@@ -309,7 +304,7 @@ function OnMsg.ClassesGenerate()
 				-- traits
 				for trait_id, _ in pairs(c.traits) do
 					if trait_id and trait_id ~= "" and not skipped_traits[trait_id] then
-						export_data[i][trait_str:format(trait_id)] = true
+						export_data[i]["trait_" .. trait_id] = true
 					end
 				end
 			end
@@ -326,22 +321,17 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	do -- Graphs
-		local sol_str = "sol%s"
-		local ava_str = "GetAvailable%s"
-		local prod_str = "Get%sProducedYesterday"
-		local cons_str = "Get%sConsumedByConsumptionYesterday"
-
 		local loop_table_label = {
 			Colonist = {
-				name = ss:format(S[547--[[Colonists--]]],S[1000100--[[Amount--]]]),
+				name = S[547--[[Colonists--]]] .. " " .. S[1000100--[[Amount--]]],
 				data = "ts_colonists",
 			},
 			Unemployed = {
-				name = ss:format(S[547--[[Colonists--]]],S[6859--[[Unemployed--]]]),
+				name = S[547--[[Colonists--]]] .. " " .. S[6859--[[Unemployed--]]],
 				data = "ts_colonists_unemployed",
 			},
 			Homeless = {
-				name = ss:format(S[547--[[Colonists--]]],S[7553--[[Homeless--]]]),
+				name = S[547--[[Colonists--]]] .. " " .. S[7553--[[Homeless--]]],
 				data = "ts_colonists_homeless",
 			},
 			Drone = {
@@ -363,63 +353,63 @@ function OnMsg.ClassesGenerate()
 		}
 		local loop_table_count2 = {
 			{
-				name = sss:format(S[302535920000035--[[Grids--]]],S[79--[[Power--]]],S[302535920001457--[[Stored--]]]),
+				name = S[302535920000035--[[Grids--]]] .. " " .. S[79--[[Power--]]] .. " " .. S[302535920001457--[[Stored--]]],
 				func = "GetTotalStoredPower",
 				data1 = "ts_resources_grid",
 				data2 = "electricity",
 				data3 = "stored",
 			},
 			{
-				name = ss:format(S[302535920000035--[[Grids--]]],S[32--[[Power Production--]]]),
+				name = S[302535920000035--[[Grids--]]] .. " " .. S[32--[[Power Production--]]],
 				func = "GetTotalProducedPower",
 				data1 = "ts_resources_grid",
 				data2 = "electricity",
 				data3 = "production",
 			},
 			{
-				name = ss:format(S[302535920000035--[[Grids--]]],S[683--[[Power Consumption--]]]),
+				name = S[302535920000035--[[Grids--]]] .. " " .. S[683--[[Power Consumption--]]],
 				func = "GetTotalRequiredPower",
 				data1 = "ts_resources_grid",
 				data2 = "electricity",
 				data3 = "consumption",
 			},
 			{
-				name = sss:format(S[302535920000035--[[Grids--]]],S[682--[[Oxygen--]]],S[302535920001457--[[Stored--]]]),
+				name = S[302535920000035--[[Grids--]]] .. " " .. S[682--[[Oxygen--]]] .. " " .. S[302535920001457--[[Stored--]]],
 				func = "GetTotalStoredAir",
 				data1 = "ts_resources_grid",
 				data2 = "air",
 				data3 = "stored",
 			},
 			{
-				name = ss:format(S[302535920000035--[[Grids--]]],S[923--[[Oxygen Production--]]]),
+				name = S[302535920000035--[[Grids--]]] .. " " .. S[923--[[Oxygen Production--]]],
 				func = "GetTotalProducedAir",
 				data1 = "ts_resources_grid",
 				data2 = "air",
 				data3 = "production",
 			},
 			{
-				name = ss:format(S[302535920000035--[[Grids--]]],S[657--[[Oxygen Consumption--]]]),
+				name = S[302535920000035--[[Grids--]]] .. " " .. S[657--[[Oxygen Consumption--]]],
 				func = "GetTotalRequiredAir",
 				data1 = "ts_resources_grid",
 				data2 = "air",
 				data3 = "consumption",
 			},
 			{
-				name = sss:format(S[302535920000035--[[Grids--]]],S[681--[[Water--]]],S[302535920001457--[[Stored--]]]),
+				name = S[302535920000035--[[Grids--]]] .. " " .. S[681--[[Water--]]] .. " " .. S[302535920001457--[[Stored--]]],
 				func = "GetTotalStoredWater",
 				data1 = "ts_resources_grid",
 				data2 = "water",
 				data3 = "stored",
 			},
 			{
-				name = ss:format(S[302535920000035--[[Grids--]]],S[4806--[[Water Production--]]]),
+				name = S[302535920000035--[[Grids--]]] .. " " .. S[4806--[[Water Production--]]],
 				func = "GetTotalProducedWater",
 				data1 = "ts_resources_grid",
 				data2 = "water",
 				data3 = "production",
 			},
 			{
-				name = ss:format(S[302535920000035--[[Grids--]]],S[750--[[Water Consumption--]]]),
+				name = S[302535920000035--[[Grids--]]] .. " " .. S[750--[[Water Consumption--]]],
 				func = "GetTotalRequiredWater",
 				data1 = "ts_resources_grid",
 				data2 = "water",
@@ -449,7 +439,7 @@ function OnMsg.ClassesGenerate()
 				if i > list.next_index then
 					break
 				end
-				export_data[c][sol_str:format(i)] = list.data[i]
+				export_data[c]["sol" .. i] = list.data[i]
 			end
 			return export_data
 		end
@@ -470,7 +460,7 @@ function OnMsg.ClassesGenerate()
 			for i = 1, UICity.day-1 do
 				c = c + 1
 				csv_columns[c] = {
-					sol_str:format(i),
+					"sol" .. i,
 					S[4031--[[Sol %s--]]]:format(i)
 				}
 			end
@@ -524,24 +514,24 @@ function OnMsg.ClassesGenerate()
 				export_data = BuildTable(
 					export_data,
 					c,
-					sss:format(S[692--[[Resources--]]],name,S[302535920001454--[[Stockpiled--]]]),
-					ResourceOverviewObj[ava_str:format(id)](ResourceOverviewObj),
+					S[692--[[Resources--]]] .. " " .. name .. " " .. S[302535920001454--[[Stockpiled--]]],
+					ResourceOverviewObj["GetAvailable" .. id](ResourceOverviewObj),
 					res.stockpile
 				)
 				c = c + 1
 				export_data = BuildTable(
 					export_data,
 					c,
-					sss:format(S[692--[[Resources--]]],name,S[302535920001455--[[Produced--]]]),
-					ResourceOverviewObj[prod_str:format(id)](ResourceOverviewObj),
+					S[692--[[Resources--]]] .. " " .. name .. " " .. S[302535920001455--[[Produced--]]],
+					ResourceOverviewObj["Get" .. id .. "ProducedYesterday"](ResourceOverviewObj),
 					res.produced
 				)
 				c = c + 1
 				export_data = BuildTable(
 					export_data,
 					c,
-					sss:format(S[692--[[Resources--]]],name,S[302535920001456--[[Consumed--]]]),
-					ResourceOverviewObj[cons_str:format(id)](ResourceOverviewObj),
+					S[692--[[Resources--]]] .. " " .. name .. " " .. S[302535920001456--[[Consumed--]]],
+					ResourceOverviewObj["Get" .. id .. "ConsumedByConsumptionYesterday"](ResourceOverviewObj),
 					res.consumed
 				)
 			end
@@ -551,7 +541,7 @@ function OnMsg.ClassesGenerate()
 			export_data = BuildTable(
 				export_data,
 				c,
-				sss:format(S[5426--[[Building--]]],S[302535920000971--[[Sites--]]],S[302535920001453--[[Completed--]]]),
+				S[5426--[[Building--]]] .. " " .. S[302535920000971--[[Sites--]]] .. " " .. S[302535920001453--[[Completed--]]],
 				#(UICity.labels.ConstructionSite or "") + #(UICity.labels.ConstructionSiteWithHeightSurfaces or ""),
 				UICity.ts_constructions_completed
 			)

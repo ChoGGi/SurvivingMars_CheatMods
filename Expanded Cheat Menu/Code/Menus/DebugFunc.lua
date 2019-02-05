@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local pairs,print,type,tonumber,tostring,table = pairs,print,type,tonumber,tostring,table
-local StringFormat = string.format
 local TableRemove = table.remove
 local TableIClear = table.iclear
 local TableClear = table.clear
@@ -132,7 +131,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
-			StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920001493--[["This will change to a new map, anything unsaved will be lost!"--]]]),
+			S[6779--[[Warning--]]] .. ": " .. S[302535920001493--[["This will change to a new map, anything unsaved will be lost!"--]]],
 			CallBackFunc,
 			S[302535920001491--[[View All Entities--]]]
 		)
@@ -140,11 +139,13 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.ForceStoryBits()
---~ If you do a ~g_StoryBitStates
---~ that'll show all the active story state thingss
---~ then click for example BadPrefab, select a prefab and in tools>Execute code stick:
---~ ChoGGi.CurObj:ActivateStoryBit(s)
---~ that'll activate the BadPrefab on it
+	--[[
+if you do a ~g_StoryBitStates
+that'll show all the active story state thingss
+then click for example BadPrefab, select a prefab and in tools>Execute code stick:
+ChoGGi.CurObj:ActivateStoryBit(s)
+that'll activate the BadPrefab on it
+--]]
 		local StoryBits = StoryBits
 
 		local ItemList = {}
@@ -152,7 +153,6 @@ function OnMsg.ClassesGenerate()
 
 		local story_table = {}
 		local hint_str = "%s: %s\n\n%s\n\n<image %s>"
-		local title_str = "%s: %s"
 		local g_StoryBitStates = g_StoryBitStates
 		for id in pairs(g_StoryBitStates) do
 			c = c + 1
@@ -165,18 +165,15 @@ function OnMsg.ClassesGenerate()
 			end
 			local title = story.Title and Trans(story.Title) or id
 			if not (title:find(": ") or title:find(" - ",1,true)) then
-				title = title_str:format(story.group,title)
+				title = story.group .. ": " .. title
 			end
 			ItemList[c] = {
 				text = title,
 				value = id,
 				voiced = story.VoicedText,
-				hint = hint_str:format(
-					S[302535920001358--[[Group--]]],
-					story.group,
-					Trans(T(story.Text,"",story_table)),
-					story.Image
-				),
+				hint = S[302535920001358--[[Group--]]] .. ": " .. story.group .. "\n\n"
+					.. Trans(T(story.Text,story_table)) .. "\n\n<image " .. story.Image
+					.. ">",
 			}
 		end
 
@@ -295,7 +292,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.DeleteSavedGames()
 		if blacklist then
-			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("DeleteSavedGames"))
+			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.MenuFuncs.DeleteSavedGames"))
 			return
 		end
 		local SavegamesList = SavegamesList
@@ -307,9 +304,11 @@ function OnMsg.ClassesGenerate()
 			local playtime = T(77, "Unknown")
 			if data.playtime then
 				local h, m, _ = FormatElapsedTime(data.playtime, "hms")
-				local hours = StringFormat("%02d", h)
-				local minutes = StringFormat("%02d", m)
-				playtime = Trans(T{7549, "<hours>:<minutes>", hours = hours, minutes = minutes})
+				playtime = T{
+					7549, "<hours>:<minutes>",
+					hours = string.format("%02d", h),
+					minutes = string.format("%02d", m)
+				}
 			end
 			-- and last saved
 			local save_date = 0
@@ -320,11 +319,9 @@ function OnMsg.ClassesGenerate()
 			ItemList[i] = {
 				text = data.displayname,
 				value = data.savename,
-				hint = StringFormat("%s\n%s\n\n%s",
-					S[4274--[[Playtime : %s--]]]:format(playtime),
-					S[4273--[[Saved on : %s--]]]:format(save_date),
-					S[302535920001274--[[This is permanent!--]]]
-				),
+				hint = S[4274--[[Playtime : %s--]]]:format(Trans(playtime)) .. "\n"
+					.. S[4273--[[Saved on : %s--]]]:format(save_date) .. "\n\n"
+					.. S[302535920001274--[[This is permanent!--]]],
 			}
 		end
 
@@ -346,14 +343,15 @@ function OnMsg.ClassesGenerate()
 			for i = 1, #choice do
 				value = choice[i].value
 				if type(value) == "string" then
-					AsyncFileDelete(StringFormat("%s%s",save_folder,value))
+					AsyncFileDelete(save_folder .. value)
 				end
 			end
 
 			-- remove any saves we deleted
+			local FileExists = ChoGGi.ComFuncs.FileExists
 			local games_amt = #SavegamesList
 			for i = #SavegamesList, 1, -1 do
-				if not ChoGGi.ComFuncs.FileExists(StringFormat("%s%s",save_folder,SavegamesList[i].savename)) then
+				if not FileExists(save_folder .. SavegamesList[i].savename) then
 					SavegamesList[i] = nil
 					TableRemove(SavegamesList,i)
 				end
@@ -371,8 +369,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = StringFormat("%s: %s",S[302535920000146--[[Delete Saved Games--]]],#ItemList),
-			hint = StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920001274--[[This is permanent!--]]]),
+			title = S[302535920000146--[[Delete Saved Games--]]] .. ": " .. #ItemList,
+			hint = S[6779--[[Warning--]]] .. ": " .. S[302535920001274--[[This is permanent!--]]],
 			multisel = true,
 			skip_sort = true,
 			check = {
@@ -443,9 +441,11 @@ function OnMsg.ClassesGenerate()
 
 		local count = MapCount("map",obj.class)
 		ChoGGi.ComFuncs.QuestionBox(
-			StringFormat("%s!\n%s\n\n%s",S[6779--[[Warning--]]],S[302535920000852--[[This will delete all %s of %s--]]]:format(count,obj.class),S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]]),
+			S[6779--[[Warning--]]] .. "!\n"
+				.. S[302535920000852--[[This will delete all %s of %s--]]]:format(count,obj.class)
+				.. "\n\n" .. S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]],
 			CallBackFunc,
-			StringFormat("%s: %s",S[6779--[[Warning--]]],S[302535920000855--[[Last chance before deletion!--]]]),
+			S[6779--[[Warning--]]] .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
 			S[302535920000856--[[Yes, I want to delete all: %s--]]]:format(obj.class),
 			302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."--]]
 		)
@@ -781,7 +781,7 @@ function OnMsg.ClassesGenerate()
 					path = obj:GetPath()
 				else
 					ChoGGi.ComFuncs.OpenInExamineDlg(obj)
-					print(S[6779--[[Warning--]]],": ",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
+					print(S[6779--[[Warning--]]],":",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
 				end
 			end
 
@@ -1050,7 +1050,7 @@ function OnMsg.ClassesGenerate()
 					},
 					{
 						title = 302535920001382--[[Real time--]],
-						hint = StringFormat("%s.",S[302535920000462--[[Maps paths in real time--]]]),
+						hint = 302535920000462--[[Maps paths in real time--]],
 						checked = true,
 					},
 				},

@@ -4,7 +4,7 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-	local StringFormat = string.format
+
 	local c = #Actions
 
 	c = c + 1
@@ -44,7 +44,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920001416--[[Force--]]],S[948928900281--[[Story Bits--]]]),
+	Actions[c] = {ActionName = S[302535920001416--[[Force--]]] .. " " .. S[948928900281--[[Story Bits--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Force Story Bits",
 		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
@@ -53,7 +53,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000129--[[Set--]]],S[302535920001184--[[Particles--]]]),
+	Actions[c] = {ActionName = S[302535920000129--[[Set--]]] .. " " .. S[302535920001184--[[Particles--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Set Particles",
 		ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
@@ -204,7 +204,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
+	Actions[c] = {ActionName = S[327465361219--[[Edit--]]] .. " " .. S[298035641454--[[Object--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Manipulator",
 		ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
@@ -298,7 +298,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[298035641454--[[Object--]]],S[302535920001476--[[Flags--]]]),
+	Actions[c] = {ActionName = S[298035641454--[[Object--]]] .. " " .. S[302535920001476--[[Flags--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Flags",
 		ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
@@ -494,11 +494,11 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[302535920000467--[[Path Markers--]]],S[302535920001382--[[Real Time--]]]),
+	Actions[c] = {ActionName = S[302535920000467--[[Path Markers--]]] .. " " .. S[302535920001382--[[Real Time--]]],
 		ActionMenubar = str_Debug_PathMarkers,
 		ActionId = ".Game Time",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
-		RolloverText = StringFormat("%s %s",S[302535920000462--[[Maps paths in real time--]]],S[302535920000874--[[(see "Path Markers" to mark more than one at a time).--]]]),
+		RolloverText = S[302535920000462--[[Maps paths in real time--]]] .. " " .. S[302535920000874--[[(see "Path Markers" to mark more than one at a time).--]]],
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,true)
 		end,
@@ -524,7 +524,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Delete Saved Games",
 		ActionIcon = "CommonAssets/UI/Menu/DeleteArea.tga",
-		RolloverText = StringFormat("%s\n\n%s",S[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."--]]],S[302535920001274--[[This is permanent!--]]]),
+		RolloverText = S[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."--]]] .. "\n\n" .. S[302535920001274--[[This is permanent!--]]],
 		OnAction = ChoGGi.MenuFuncs.DeleteSavedGames,
 		ActionSortKey = "98.Delete Saved Games",
 	}

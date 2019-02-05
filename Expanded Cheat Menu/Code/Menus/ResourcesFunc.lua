@@ -4,7 +4,7 @@ local default_icon = "UI/Icons/Sections/storage.tga"
 local default_icon2 = "UI/Icons/IPButtons/rare_metals.tga"
 
 local type = type
-local StringFormat = string.format
+
 
 function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
@@ -47,7 +47,7 @@ function OnMsg.ClassesGenerate()
 			check = {
 				{
 					title = 10087--[[Advanced Orbital Probe--]],
-					hint = StringFormat("%s %s",S[302535920000266--[[Spawn--]]],S[10087--[[Advanced Orbital Probe--]]]),
+					hint = S[302535920000266--[[Spawn--]]] .. " " .. S[10087--[[Advanced Orbital Probe--]]],
 					checked = GetMissionSponsor().id == "NASA"
 				},
 			},
@@ -59,7 +59,7 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = ChoGGi.Consts.FoodPerRocketPassenger / r
 		local ItemList = {
-			{text = StringFormat("%s: %s",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -99,7 +99,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920001190--[[Set Food Per Rocket Passenger--]],
-			hint = StringFormat("%s: %s",S[302535920000106--[[Current--]]],hint),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end
@@ -124,14 +124,13 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.AddPrefabs()
 		local UICity = UICity
 
-		local hint_str = "%s: %s"
 		local drone_str = Trans(Drone.display_name)
 
 		local ItemList = {
 			{
 				text = drone_str,
 				value = 10,
-				hint = hint_str:format(S[302535920000106--[[Current--]]],UICity.drone_prefabs),
+				hint = S[302535920000106--[[Current--]]] .. ": " .. UICity.drone_prefabs,
 				icon = Drone.display_icon,
 			},
 		}
@@ -147,7 +146,7 @@ function OnMsg.ClassesGenerate()
 				ItemList[c] = {
 					text = Trans(cargo.display_name),
 					value = 10,
-					hint = hint_str:format(S[302535920000106--[[Current--]]],UICity:GetPrefabs(id)),
+					hint = S[302535920000106--[[Current--]]] .. ": " .. UICity:GetPrefabs(id),
 					icon = cargo.display_icon,
 					id = id,
 				}

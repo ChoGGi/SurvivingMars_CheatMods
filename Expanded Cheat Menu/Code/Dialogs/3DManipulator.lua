@@ -8,7 +8,7 @@ local Trans
 local GetParentOfKind
 
 --~ local tostring,type,table = tostring,type,table
-local StringFormat = string.format
+
 
 function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
@@ -34,7 +34,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 
 	self.obj_name = RetName(context.obj)
 	self.obj = context.obj
-	self.title = StringFormat("%s: %s",S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),self.obj_name)
+	self.title = S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]) .. ": " .. self.obj_name
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -84,7 +84,6 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 			Dock = "bottom",
 		}, self.idPos_Area)
 
-		local id_str = "isPos_%s"
 		local xyz_list = {
 			"XPlus","YPlus","ZPlus",
 			"XMinus","YMinus","ZMinus",
@@ -96,7 +95,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 		}, self.idPos_AreaBot)
 
 		for i = 1, 3 do
-			local id = id_str:format(xyz_list[i])
+			local id = "isPos_" .. xyz_list[i]
 			self[id] = g_Classes.ChoGGi_Button:new({
 				Id = id,
 				Text = id,
@@ -110,7 +109,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 		}, self.idPos_AreaBot)
 
 		for i = 4, 6 do
-			local id = id_str:format(xyz_list[i])
+			local id = "isPos_" .. xyz_list[i]
 			self[id] = g_Classes.ChoGGi_Button:new({
 				Id = id,
 				Text = id,

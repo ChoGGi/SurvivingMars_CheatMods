@@ -4,7 +4,6 @@ function OnMsg.ClassesGenerate()
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-	local StringFormat = string.format
 	local icon = "CommonAssets/UI/Menu/Cube.tga"
 	local c = #Actions
 
@@ -102,7 +101,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	local str_ExpandedCM_Buildings_SanatoriumsSchools = "ECM.Expanded CM.Buildings.Sanatoriums & Schools"
-	local SandS = StringFormat("%s & %s",S[5245--[[Sanatoriums--]]],S[5248--[[Schools--]]])
+	local SandS = S[5245--[[Sanatoriums--]]] .. " & " .. S[5248--[[Schools--]]]
 	c = c + 1
 	Actions[c] = {ActionName = SandS,
 		ActionMenubar = "ECM.Expanded CM.Buildings",
@@ -113,7 +112,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[5245--[[Sanatoriums--]]],S[302535920000198--[[Cure All--]]]),
+	Actions[c] = {ActionName = S[5245--[[Sanatoriums--]]] .. " " .. S[302535920000198--[[Cure All--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
 		ActionId = ".Sanatoriums Cure All",
 		ActionIcon = icon,
@@ -127,7 +126,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s %s",S[5248--[[Schools--]]],S[302535920000200--[[Train All--]]]),
+	Actions[c] = {ActionName = S[5248--[[Schools--]]] .. " " .. S[302535920000200--[[Train All--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
 		ActionId = ".Schools Train All",
 		ActionIcon = icon,
@@ -141,7 +140,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s: %s",SandS,S[302535920000202--[[Show All Traits--]]]),
+	Actions[c] = {ActionName = SandS .. ": " .. S[302535920000202--[[Show All Traits--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
 		ActionId = ".Sanatoriums & Schools: Show All Traits",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
@@ -155,7 +154,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = StringFormat("%s: %s",SandS,S[302535920000204--[[Show Full List--]]]),
+	Actions[c] = {ActionName = SandS .. ": " .. S[302535920000204--[[Show Full List--]]],
 		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
 		ActionId = ".Sanatoriums & Schools: Show Full List",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
@@ -219,7 +218,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.BreakChanceCablePipe,
-				StringFormat("%s: %s",S[302535920000157--[[Cables & Pipes--]]],S[302535920000219--[[will never break.--]]])
+				S[302535920000157--[[Cables & Pipes--]]] .. " " .. S[302535920000219--[[will never break.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle,
@@ -233,7 +232,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.InstantCables,
-				StringFormat("%s: %s",S[302535920000157--[[Cables & Pipes--]]],S[302535920000221--[[are built instantly.--]]])
+				S[302535920000157--[[Cables & Pipes--]]] .. " " .. S[302535920000221--[[are built instantly.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle,
@@ -256,12 +255,13 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Production Amount Set",
 		ActionIcon = icon,
 		RolloverText = function()
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.production",sel and sel.template_name),
-				302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
+			local text = 302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
 	Works on any building that produces."--]]
-			)
+			local sel = ChoGGi.ComFuncs.SelObject()
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".production",
+				text
+			) or S[text]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetProductionAmount,
 		ActionShortcut = "Ctrl-Shift-P",
@@ -274,11 +274,12 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Power-free Building",
 		ActionIcon = icon,
 		RolloverText = function()
+			local text = 302535920000187--[[Toggle electricity use for selected building type.--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.nopower",sel and sel.template_name),
-				302535920000187--[[Toggle electricity use for selected building type.--]]
-			)
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".nopower",
+				text
+			) or S[text]
 		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingPower_Toggle,
 		ActionSortKey = "2Power-free Building",
@@ -290,11 +291,12 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Water-free Building",
 		ActionIcon = icon,
 		RolloverText = function()
+			local text = 302535920001252--[[Toggle water use for selected building type.--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.nowater",sel and sel.template_name),
-				302535920001252--[[Toggle water use for selected building type.--]]
-			)
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".nowater",
+				text
+			) or S[text]
 		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingWater_Toggle,
 		ActionSortKey = "2Water-free Building",
@@ -306,11 +308,12 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Oxygen-free Building",
 		ActionIcon = icon,
 		RolloverText = function()
+			local text = 302535920001254--[[Toggle oxygen use for selected building type.--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.noair",sel and sel.template_name),
-				302535920001254--[[Toggle oxygen use for selected building type.--]]
-			)
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".noair",
+				text
+			) or S[text]
 		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingAir_Toggle,
 		ActionSortKey = "2Oxygen-free Building",
@@ -333,11 +336,12 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Protection Radius",
 		ActionIcon = icon,
 		RolloverText = function()
+			local text = 302535920000179--[[Change threat protection coverage distance.--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.protect_range",sel and sel.template_name),
-				302535920000179--[[Change threat protection coverage distance.--]]
-			)
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".protect_range",
+				text
+			) or S[text]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetProtectionRadius,
 	}
@@ -348,11 +352,12 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Fully Automated Building",
 		ActionIcon = icon,
 		RolloverText = function()
+			local text = 302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.auto_performance",sel and sel.template_name),
-				302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).--]]
-			)
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".auto_performance",
+				text
+			) or S[text]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetFullyAutomatedBuildings,
 	}
@@ -363,12 +368,13 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Service Building Stats",
 		ActionIcon = icon,
 		RolloverText = function()
+			local text = 302535920001115--[["Tweak settings for parks and such.
+Health change, Sanity change, Service Comfort, Comfort increase."--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.service_stats",sel and sel.template_name),
-				302535920001115--[["Tweak settings for parks and such.
-	Health change, Sanity change, Service Comfort, Comfort increase."--]]
-			)
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".service_stats",
+				text
+			) or S[text]
 		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetServiceBuildingStats()
@@ -381,11 +387,12 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Points To Train",
 		ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
 		RolloverText = function()
+			local text = 302535920001345--[[How many points are needed to finish training.--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
-			return ChoGGi.ComFuncs.SettingState(
-				StringFormat("ChoGGi.UserSettings.BuildingSettings.%s.evaluation_points",sel and sel.template_name),
-				302535920001345--[[How many points are needed to finish training.--]]
-			)
+			return sel and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".evaluation_points",
+				text
+			) or S[text]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetTrainingPoints,
 	}

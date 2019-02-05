@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local StringFormat = string.format
 local S = ChoGGi.Strings
 
 local OnMsg = OnMsg
@@ -25,8 +24,8 @@ function OnMsg.ClassesBuilt()
 		bc[#bc+1] = {
 			id = "ChoGGi",
 			name = S[302535920001400--[[ChoGGi--]]],
-			image = StringFormat("%sUI/bmc_incal_resources.png",ChoGGi.library_path),
-			highlight = StringFormat("%sUI/bmc_incal_resources_shine.png",ChoGGi.library_path),
+			image = ChoGGi.library_path .. "UI/bmc_incal_resources.png",
+			highlight = ChoGGi.library_path .. "UI/bmc_incal_resources_shine.png",
 		}
 	end
 end
