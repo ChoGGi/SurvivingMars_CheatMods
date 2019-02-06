@@ -74,8 +74,6 @@ function OnMsg.ClassesGenerate()
 	AsyncGetSourceInfo = empty_func
 
 	do -- funcs without a class
-		SaveOrigFunc("__procall_errorhandler")
-		SaveOrigFunc("error")
 		SaveOrigFunc("GetFuncSourceString")
 		SaveOrigFunc("GetMaxCargoShuttleCapacity")
 		SaveOrigFunc("GetMissingMods")
@@ -121,12 +119,6 @@ function OnMsg.ClassesGenerate()
 			-- be useful for restarting threads, see if devs will add it
 			Msg("PostSaveGame")
 			return ChoGGi_OrigFuncs.PersistGame(folder,...)
-		end
-
-		-- print logged errors to console
-		-- i assume i had a good reason to put this here instead of OnMsgs?
-		if ChoGGi.UserSettings.ConsoleErrors then
-			ChoGGi.ConsoleFuncs.ToggleLogErrors(true)
 		end
 
 		-- used by a func in examine for examining functions (i think), i know something gives an error without this

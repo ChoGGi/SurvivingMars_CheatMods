@@ -217,8 +217,12 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- ToggleLogErrors
+		-- the rest are saved at WriteLogs
+		ChoGGi.ComFuncs.SaveOrigFunc("__procall_errorhandler")
 		local GetStack = GetStack
 		local UserSettings = ChoGGi.UserSettings
+		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
 		local function UpdateLogErrors(name)
 			_G[name] = function(...)
 				if ... ~= "\n" and ... ~= "\r\n" then
@@ -232,7 +236,6 @@ function OnMsg.ClassesGenerate()
 		end
 		local funcs = {"error","OutputDebugString"}
 		function ChoGGi.ConsoleFuncs.ToggleLogErrors(which)
-			local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 			if which then
 				for i = 1, #funcs do
 					UpdateLogErrors(funcs[i])
@@ -256,6 +259,11 @@ function OnMsg.ClassesGenerate()
 				end
 				__procall_errorhandler = ChoGGi_OrigFuncs.__procall_errorhandler
 			end
+		end
+
+		-- print logged errors to console
+		if UserSettings.ConsoleErrors then
+			ChoGGi.ConsoleFuncs.ToggleLogErrors(true)
 		end
 	end -- do
 
