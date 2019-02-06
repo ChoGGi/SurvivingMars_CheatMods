@@ -218,12 +218,15 @@ function OnMsg.ClassesGenerate()
 
 	do -- ToggleLogErrors
 		local GetStack = GetStack
+		local UserSettings = ChoGGi.UserSettings
 		local function UpdateLogErrors(name)
 			_G[name] = function(...)
 				if ... ~= "\n" and ... ~= "\r\n" then
 					print("func",name,":",...)
 					GetStack(2, false, "\t")
-					OpenInExamineDlg{...}
+					if UserSettings.ExamineErrors then
+						OpenInExamineDlg{...}
+					end
 				end
 			end
 		end
@@ -241,7 +244,9 @@ function OnMsg.ClassesGenerate()
 							ChoGGi_OrigFuncs.__procall_errorhandler(...)
 						)
 						GetStack(2, false, "\t")
-						OpenInExamineDlg{...}
+						if UserSettings.ExamineErrors then
+							OpenInExamineDlg{...}
+						end
 					end
 				end
 			else

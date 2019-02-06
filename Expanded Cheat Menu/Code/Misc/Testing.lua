@@ -20,6 +20,12 @@ function OnMsg.ClassesGenerate()
 
 	if ChoGGi.testing then
 
+		local orig_GetStack = GetStack
+		function GetStack(...)
+			print("GetStack:",...)
+			return orig_GetStack(...)
+		end
+
 		-- centred hud
 		local GetScreenSize = UIL.GetScreenSize
 		local margins = box(2560,0,2560,0)

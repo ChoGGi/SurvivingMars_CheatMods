@@ -81,6 +81,8 @@ function OnMsg.ClassesGenerate()
 		ExternalEditorCmd = "notepad \"%s\"",
 		-- where to store temp file
 		ExternalEditorPath = "AppData/EditorPlugin/",
+		-- examine errors (useful when it contains a thread).
+		ExamineErrors = false,
 		-- welcome msg
 		FirstRun = true,
 		-- just for you ski (prints a msg for each building removed)
@@ -155,6 +157,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.Defaults.MapEdgeLimit = true
 		ChoGGi.Defaults.StopSelectionPanelResize = true
 		ChoGGi.Defaults.ExternalEditorCmd = "scite \"%s\""
+		ChoGGi.Defaults.ExamineErrors = true
 	end
 
 	-- set game values to saved values

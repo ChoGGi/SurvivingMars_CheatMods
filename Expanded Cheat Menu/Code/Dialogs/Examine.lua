@@ -1768,8 +1768,11 @@ function Examine:totextex(obj,obj_type)
 	elseif obj_type == "thread" then
 		-- grab the thread "function"
 		if not blacklist then
-			c = c + 1
-			totextex_res[c] = "debug.getinfo(1,f): " .. self:valuetotextex(getinfo(obj, 1,"f").func)
+			local info = getinfo(obj, 1,"f")
+			if info and info.func then
+				c = c + 1
+				totextex_res[c] = "debug.getinfo(1,f): " .. self:valuetotextex(info.func)
+			end
 		end
 
 		c = c + 1
