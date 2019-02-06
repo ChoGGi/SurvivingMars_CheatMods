@@ -165,9 +165,16 @@ function OnMsg.ClassesGenerate()
 	-- write logs funcs
 	do -- WriteLogs_Toggle
 		local Dump = ChoGGi.ComFuncs.Dump
-		local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 		local tostring = tostring
 		local newline = ChoGGi.newline
+		local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+		SaveOrigFunc("DebugPrintNL")
+		SaveOrigFunc("OutputDebugString")
+		SaveOrigFunc("AddConsoleLog") -- also does print()
+		SaveOrigFunc("assert")
+		SaveOrigFunc("printf")
+		SaveOrigFunc("error")
+		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
 		-- every 5s check buffer and print if anything
 		local timer = ChoGGi.testing and 2500 or 5000
@@ -191,10 +198,6 @@ function OnMsg.ClassesGenerate()
 		end)
 
 		local function ReplaceFunc(funcname)
-			SaveOrigFunc(funcname)
-			-- we want to local this after SaveOrigFunc just in case
-			local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-
 			_G[funcname] = function(...)
 
 				-- table.concat don't work with non strings/numbers
@@ -219,8 +222,8 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function ResetFunc(funcname)
-			if ChoGGi.OrigFuncs[funcname] then
-				_G[funcname] = ChoGGi.OrigFuncs[funcname]
+			if ChoGGi_OrigFuncs[funcname] then
+				_G[funcname] = ChoGGi_OrigFuncs[funcname]
 			end
 		end
 
@@ -236,7 +239,6 @@ function OnMsg.ClassesGenerate()
 				AsyncStringToFile("AppData/logs/Console.log"," ")
 
 				-- redirect functions
-				ReplaceFunc("dlc_print")
 				ReplaceFunc("DebugPrintNL")
 				ReplaceFunc("OutputDebugString")
 				ReplaceFunc("AddConsoleLog") -- also does print()
@@ -246,7 +248,6 @@ function OnMsg.ClassesGenerate()
 				-- causes an error and stops games from loading
 				-- ReplaceFunc("DebugPrint")
 			else
-				ResetFunc("dlc_print")
 				ResetFunc("DebugPrintNL")
 				ResetFunc("OutputDebugString")
 				ResetFunc("AddConsoleLog")
