@@ -94,9 +94,9 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = S[302535920000069--[[Examine--]]] .. " " .. S[302535920001103--[[Objects--]]] .. " " .. S[1000448--[[Shift--]]],
 		ActionId = ".Keys.Examine Objects Shift",
 		OnAction = function()
-			local obj = MapGet(GetTerrainCursor(),2500)
-			if #obj > 0 then
-				ChoGGi.ComFuncs.OpenInExamineDlg(obj)
+			local objs = MapGet(GetTerrainCursor(),2500)
+			if #objs > 0 then
+				ChoGGi.ComFuncs.OpenInExamineDlg(objs)
 			end
 		end,
 		ActionShortcut = "Shift-F4",
@@ -107,9 +107,9 @@ function OnMsg.ClassesGenerate()
 	Actions[c] = {ActionName = S[302535920000069--[[Examine--]]] .. " " .. S[302535920001103--[[Objects--]]] .. " " .. S[1000449--[[Ctrl--]]],
 		ActionId = ".Keys.Examine Objects Ctrl",
 		OnAction = function()
-			local obj = MapGet(GetTerrainCursor(),10000)
-			if #obj > 0 then
-				ChoGGi.ComFuncs.OpenInExamineDlg(obj)
+			local objs = MapGet(GetTerrainCursor(),10000)
+			if #objs > 0 then
+				ChoGGi.ComFuncs.OpenInExamineDlg(objs)
 			end
 		end,
 		ActionShortcut = "Ctrl-F4",

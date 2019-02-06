@@ -181,25 +181,40 @@ function OnMsg.ClassesGenerate()
 
 				local err = MountPack("exported", "AppData/ExportedSave/" .. name, "create, compress")
 				if err then
-					return err
+					print(err)
+					return
 				end
-
 				Savegame.LoadWithBackup(name, function(folder)
 					local err, files = AsyncListFiles(folder, "*", "relative")
 					if err then
-						return err
+						print(err)
+						return
 					end
 					for i = 1, #files do
-						local filename = folder .. files[i]
-						AsyncCopyFile(filename, "AppData/ExportedSave/" .. files[i], "raw")
+						local file = files[i]
+						AsyncCopyFile(folder .. file, "AppData/ExportedSave/" .. file, "raw")
 					end
 				end)
 
 				Unmount("exported")
 				print("Exported",name)
-				return err
 			end)
 		end
+--[[
+MountPack("exported", "AppData/ExportedSave/NAME.savegame.sav")
+CreateRealTimeThread(function()
+	Savegame.LoadWithBackup("NAME.savegame.sav", function(folder,...)
+		print(folder,...)
+		local err, files = io.listfiles(folder, "*", "relative")
+		if err then
+			print(err)
+		end
+		for i = 1, #files do
+			print(folder,files[i])
+		end
+	end)
+end)
+--]]
 --~ 	local size = io.getsize("D:/SteamGames/steamapps/common/Surviving Mars/!profile/ExportedSave/persist")
 --~ 	local str = select(2,
 --~ 	AsyncFileToString("D:/SteamGames/steamapps/common/Surviving Mars/!profile/ExportedSave/persist", size, 0, "string", "raw")
