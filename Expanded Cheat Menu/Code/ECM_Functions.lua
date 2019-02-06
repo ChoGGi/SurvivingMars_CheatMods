@@ -1402,6 +1402,7 @@ The func I use for spot_rot rounds to two decimal points...
 			return
 		end
 
+		-- photomode.lua (if we get a save with gallery)
 		local files = io.listfiles("memoryscreenshot")
 		for i = 1, #files do
 			local file = files[i]

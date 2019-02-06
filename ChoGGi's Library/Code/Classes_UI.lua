@@ -647,9 +647,11 @@ end
 
 local function UpdateListWidth(self)
 	WaitMsg("OnRender")
-	local width = self.idList[1].box:sizex()
-	if width > 0 then
-		self:SetWidth(width + 35)
+	if self.idList[1] then
+		local width = self.idList[1].box:sizex()
+		if width > 0 then
+			self:SetWidth(width + 35)
+		end
 	end
 end
 function ChoGGi_Window:PostInit(parent,pt)

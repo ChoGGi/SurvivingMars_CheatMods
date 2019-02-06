@@ -141,7 +141,7 @@ end
 
 function ChoGGi_ObjectEditorDlg:idListOnMouseButtonDoubleClick()
 	self = GetRootDialog(self)
-	if self.idList.focused_item then
+	if self.idList.focused_item and type(self.sel.object) == "table" then
 		ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.sel.object,self)
 	end
 end
@@ -280,8 +280,11 @@ end
 function ChoGGi_ObjectEditorDlg:BuildList()
 	self.idList:Clear()
 	for i = 1, #self.items do
-		local listitem = self.idList:CreateTextItem(items[i].text .. " = " .. self.items[i].value)
-		listitem.item = self.items[i]
+		local item = self.items[i]
+		if item then
+			local listitem = self.idList:CreateTextItem(item.text .. " = " .. item.value)
+			listitem.item = item
+		end
 	end
 end
 
