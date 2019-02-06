@@ -1396,4 +1396,18 @@ The func I use for spot_rot rounds to two decimal points...
 		return desktop[TableFind(desktop,"class",class)]
 	end
 
+	function ChoGGi.ComFuncs.SaveScreenshotsFromSaveGame()
+		if blacklist then
+			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.ComFuncs.SaveScreenshotsFromSaveGame"))
+			return
+		end
+
+		local files = io.listfiles("memoryscreenshot")
+		for i = 1, #files do
+			local file = files[i]
+			local _, name, ext = SplitPath(file)
+			AsyncCopyFile(file, "AppData/" .. name .. ext, "raw")
+		end
+	end
+
 end
