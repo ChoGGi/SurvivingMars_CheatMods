@@ -128,9 +128,14 @@ end
 
 function ChoGGi_MoveControl:ToggleRollup(win,bool)
 	for i = 1, #win.idDialog do
-		if win.idDialog[i].class ~= "ChoGGi_MoveControl" then
-			win.idDialog[i]:SetVisible(bool)
+		local section = win.idDialog[i]
+		if section.class ~= "ChoGGi_MoveControl" then
+			section:SetVisible(bool)
 		end
+	end
+
+	if bool and win.idList and win.custom_type == 1 then
+		win.idButtonContainer:SetVisible(false)
 	end
 end
 
@@ -184,6 +189,8 @@ DefineClass.ChoGGi_Button = {
 --~ 	MinWidth = 60,
 	Text = S[6878--[[OK--]]],
 	Background = light_gray,
+	bg_green = -8192126,
+	bg_red = -41121,
 }
 function ChoGGi_Button:Init()
 	self.idLabel:SetDock("box")
@@ -196,7 +203,8 @@ DefineClass.ChoGGi_CloseButton = {
 	HAlign = "right",
 	Margins = box(0, 0, 2, 0),
 	RolloverAnchor = "right",
-	RolloverText = S[1011--[[Close--]]],
+	RolloverTitle = S[1011--[[Close--]]],
+	RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
 }
 
 DefineClass.ChoGGi_ConsoleButton = {
@@ -715,18 +723,26 @@ function ChoGGi_Window:PostInit(parent,pt)
 
 	self.idDialog:SetBox(new_x or x,new_y or y,w,h)
 
+	local is_list = self.idList and not self.idColourContainer
+
 	-- resize width of dialog to match width of first list item
-	if self.idList then
+	if is_list then
 		CreateRealTimeThread(UpdateListWidth,self)
 	end
 
+	-- add some tooltipping
 	local move = self.idMoveControl
 	if move then
+		local ok = ""
+		-- 1 hides the ok/cancel buttons, and it just looks weird for the colour Modifier
+		if is_list and self.custom_type ~= 1 then
+			ok = S[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."--]]] .. "\n\n"
+		end
 		local str = S[302535920001518--[[Double-click <left_click> title to rollup into the title bar.--]]]
 		if move.RolloverText == "" then
-			move.RolloverText = str
+			move.RolloverText = ok .. str
 		else
-			move.RolloverText = self.idMoveControl:GetRolloverText() .. "\n\n" .. str
+			move.RolloverText = ok .. self.idMoveControl:GetRolloverText() .. "\n\n" .. str
 		end
 	end
 

@@ -665,21 +665,25 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				},
 				{
 					title = 302535920000664--[[Clipboard--]],
-					hint = 302535920000665--[[If uploading a new mod this copies id/uuid to clipboard.--]],
+					hint = 302535920000665--[[If uploading a mod this copies steam id or uuid to clipboard.--]],
 					checked = true,
 				},
 				{
+					-- AsyncPack is crashing sm for me
+					visible = false,
+
 					title = 302535920001427--[[Pack--]],
 					hint = 302535920001428--[["Uploads as a packed mod (default for mod editor upload).
 This will always apply if uploading to paradox."--]],
-					visible = false,
 					checked = false,
 				},
 				{
+					level = 2,
 					title = 186760604064--[[Test--]],
 					hint = 302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]],
 				},
 				{
+					level = 2,
 					title = 302535920001506--[[Steam--]],
 					hint = 302535920001507--[["Uncheck to upload to Paradox mods (instead of Steam).
 Mod will always be packed in hpk archive."--]],
@@ -697,6 +701,7 @@ Mod will always be packed in hpk archive."--]],
 					end,
 				},
 				{
+					level = 2,
 					title = 302535920001509--[[Platform--]],
 					hint = 302535920001510--[[Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.--]],
 					checked = upload_to_whichplatform,
@@ -707,10 +712,8 @@ Mod will always be packed in hpk archive."--]],
 				},
 			}
 			-- adjust depending on if we can upload to paradox
-			local width = 700.0
 			if Platform.pops and not rawget(_G,"PDX_PrepareForUpload") then
 				check[6].visible = false
-				width = 450.0
 			end
 			-- it defaults to hidden, so if it's paradox then we change it to visible
 			if not upload_to_who then
@@ -728,7 +731,7 @@ hpk create --cripple-lua-files ""Mod folder"" ModContent.hpk
 Move archive to Mod folder/Pack/ModContent.hpk"--]],
 				check = check,
 				height = 800.0,
-				width = width,
+				width = 450.0,
 			}
 		end
 	end -- do

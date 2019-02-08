@@ -94,6 +94,7 @@ function OnMsg.ClassesPostprocess()
 	PlaceObj("ChoGGi_TextStyle", {
 		TextColor = gray32_255,
 		RolloverTextColor = white,
+		TextFont = Editor14Bold,
 		id = "ChoGGi_Buttons",
 	})
 --~ 	-- Arrow_Button
@@ -125,6 +126,7 @@ function OnMsg.ClassesPostprocess()
 	PlaceObj("ChoGGi_TextStyle", {
 		TextColor = white,
 		RolloverTextColor = light_gray,
+		TextFont = Editor14Bold,
 		id = "ChoGGi_CheckButton",
 	})
 	-- CheckButtonMenu

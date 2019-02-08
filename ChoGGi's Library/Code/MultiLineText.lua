@@ -47,6 +47,7 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 		Id = "idOkay",
 		Dock = "left",
 		Text = S[6878--[[OK--]]],
+		Background = g_Classes.ChoGGi_Button.bg_green,
 		RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_ok,S[6878--[[OK--]]]),
 		OnPress = self.idOkayOnPress,
 	}, self.idButtonContainer)
@@ -85,6 +86,7 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 		Id = "idCancel",
 		Dock = "right",
 		Text = S[6879--[[Cancel--]]],
+		Background = g_Classes.ChoGGi_Button.bg_red,
 		RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_cancel,S[302535920001423--[[Close without doing anything.--]]]),
 		OnPress = self.idCancelOnPress,
 	}, self.idButtonContainer)

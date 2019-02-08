@@ -15,9 +15,13 @@ pt = GetPassablePointNearby(point(
 	pt:y()+Random(min,max)
 ))
 print(pt)
+-- there's also
+-- GetRandomPassable()
+-- GetRandomPassableAround(pt, 100 * guim)
 
 -- if you need a z then you'll need to do a
-local z_pt = point(pt:x(),pt:y(),terrain.GetSurfaceHeight(pt))
-print(z_pt)
+print(pt:SetZ(
+	terrain.GetSurfaceHeight(pt)
+))
 
 ```

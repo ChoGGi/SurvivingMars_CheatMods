@@ -80,14 +80,15 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Change Amount Of Drones In Hub",
 		ActionIcon = iconD,
 		RolloverText = function()
+			local text = S[302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			if IsValid(sel) and sel:IsKindOf("DroneHub") then
 				return ChoGGi.ComFuncs.SettingState(
 					sel:GetDronesCount(),
-					302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).--]]
+					text
 				)
 			else
-				return S[302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).--]]]
+				return text
 			end
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDroneAmountDroneHub,

@@ -318,13 +318,14 @@ end)
 			local RandomColour = ChoGGi.ComFuncs.RandomColour
 			local RandomColour2 = ChoGGi.ComFuncs.RandomColour2
 
-			TickStart("TestRandomColour.Total")
+			TickStart("TestRandomColour.1.Total")
 			for _ = 1, amount or 5 do
-				TickStart("TestRandomColour.Tick")
+				TickStart("TestRandomColour.1.Tick")
 				RandomColour(100000)
-				TickEnd("TestRandomColour.Tick")
+				TickEnd("TestRandomColour.1.Tick")
 			end
-			TickEnd("TestRandomColour.Total")
+			TickEnd("TestRandomColour.1.Total")
+
 			print("\n\n")
 			TickStart("TestRandomColour2.Total")
 			for _ = 1, amount or 5 do

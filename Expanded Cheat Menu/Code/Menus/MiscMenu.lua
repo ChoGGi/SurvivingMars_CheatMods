@@ -31,14 +31,15 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Change Entity Scale",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
+			local text = S[302535920000685--[[You want them big, you want them small; have at it.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			if IsValid(sel) then
 				return ChoGGi.ComFuncs.SettingState(
 					sel:GetScale(),
-					302535920000685--[[You want them big, you want them small; have at it.--]]
+					text
 				)
 			else
-				return S[302535920000685--[[You want them big, you want them small; have at it.--]]]
+				return text
 			end
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetEntityScale,
@@ -74,52 +75,6 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 		RolloverText = S[302535920000691--[[Fixes all malfunctioned objects.--]]],
 		OnAction = ChoGGi.MenuFuncs.FixAllObjects,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920001014--[[Hide Cheats Menu--]]],
-		ActionMenubar = str_ExpandedCM_Misc,
-		ActionId = ".Hide Cheats Menu",
-		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
-		RolloverText = S[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again.--]]],
-		OnAction = ChoGGi.ComFuncs.CheatsMenu_Toggle,
-		ActionShortcut = "F2",
-		ActionBindable = true,
-		ActionSortKey = "-1Hide Cheats Menu",
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920000696--[[Infopanel Cheats--]]],
-		ActionMenubar = str_ExpandedCM_Misc,
-		ActionId = ".Infopanel Cheats",
-		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
-		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.ToggleInfopanelCheats,
-				302535920000697--[[Shows the cheat pane in the info panel (selection panel).--]]
-			)
-		end,
-		OnAction = ChoGGi.MenuFuncs.InfopanelCheats_Toggle,
-		ActionShortcut = "Ctrl-F2",
-		ActionBindable = true,
-		ActionSortKey = "-1Infopanel Cheats",
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920000698--[[Infopanel Cheats Cleanup--]]],
-		ActionMenubar = str_ExpandedCM_Misc,
-		ActionId = ".Infopanel Cheats Cleanup",
-		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
-		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.CleanupCheatsInfoPane,
-				302535920000699--[[Remove some entries from the cheat pane (restart to re-enable).
-
-	AddMaintenancePnts, MakeSphereTarget, SpawnWorker, SpawnVisitor--]]
-			)
-		end,
-		OnAction = ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle,
-		ActionSortKey = "-1Infopanel Cheats Cleanup",
 	}
 
 	c = c + 1

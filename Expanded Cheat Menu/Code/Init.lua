@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 -- I didn't get a harumph outta that guy!
-ModEnvBlacklist = "Harumph!"
+ModEnvBlacklist = {--[[Harumph!--]]}
 -- yeah, I know it don't do jack your point?
 
 -- tell people how to get my library mod (if needs be)
