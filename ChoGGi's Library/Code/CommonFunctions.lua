@@ -284,77 +284,91 @@ function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
 end
 local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 
--- shows a popup msg with the rest of the notifications
--- objects can be a single obj, or {obj1,obj2,etc}
-function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
-	-- notifications only show up in-game
-	if not GameState.gameplay then
-		return
+function ChoGGi.ComFuncs.GetParentOfKind(win, cls)
+	while win and not win:IsKindOf(cls) do
+		win = win.parent
 	end
+	return win
+end
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
-	local ChoGGi = ChoGGi
-	if not ChoGGi.Temp.MsgPopups then
-		ChoGGi.Temp.MsgPopups = {}
-	end
-
-	-- how many ms it stays open for
-	local timeout = 10000
-	if size then
-		timeout = 25000
-	end
-	local params = {
-		expiration = timeout,
---~ 		 {expiration = max_int},
---~		 dismissable = false,
-	}
-	-- if there's no interface then we probably shouldn't open the popup
-	local dlg = Dialogs.OnScreenNotificationsDlg
-	if not dlg then
-		local igi = Dialogs.InGameInterface
-		if not igi then
+do --
+	local IsImageReady = UIL.IsImageReady
+	local TableSet_defaults = table.set_defaults
+	local OpenDialog = OpenDialog
+	-- shows a popup msg with the rest of the notifications
+	-- objects can be a single obj, or {obj1,obj2,etc}
+	function ChoGGi.ComFuncs.MsgPopup(text,title,icon,size,objects)
+		-- notifications only show up in-game
+		if not GameState.gameplay then
 			return
 		end
-		dlg = OpenDialog("OnScreenNotificationsDlg", igi)
-	end
-	-- build the popup
-	local data = {
-		id = AsyncRand(),
-		title = CheckText(title),
-		text = CheckText(text,S[3718--[[NONE--]]]),
-		image = type(tostring(icon):find(".tga")) == "number" and icon or ChoGGi.library_path .. "UI/TheIncal.png"
-	}
-	table.set_defaults(data, params)
-	table.set_defaults(data, OnScreenNotificationPreset)
-	if objects then
-		if type(objects) ~= "table" then
-			objects = {objects}
+
+		local ChoGGi = ChoGGi
+		if not ChoGGi.Temp.MsgPopups then
+			ChoGGi.Temp.MsgPopups = {}
 		end
-		params.cycle_objs = objects
-	end
 
-	-- needed in Sagan update
-	local aosn = g_ActiveOnScreenNotifications
-	local idx = table.find(aosn, 1, data.id) or #aosn + 1
-	aosn[idx] = {data.id}
-
-	-- and show the popup
-	CreateRealTimeThread(function()
-		local popup = OnScreenNotification:new({}, dlg.idNotifications)
-		popup:FillData(data, nil, params, params.cycle_objs)
-		popup:Open()
-		dlg:ResolveRelativeFocusOrder()
-		ChoGGi.Temp.MsgPopups[#ChoGGi.Temp.MsgPopups+1] = popup
-
-		-- large amount of text option (four long lines o' text)
+		-- how many ms it stays open for
+		local timeout = 10000
 		if size then
-			local frame = ChoGGi.ComFuncs.GetParentOfKind(popup.idText, "XFrame")
-			if frame then
-				frame:SetMaxWidth(1000)
-			end
-			popup.idText:SetMaxHeight(250)
+			timeout = 25000
 		end
-	end)
-end
+		local params = {
+			expiration = timeout,
+--~ 			{expiration = max_int},
+--~ 			dismissable = false,
+		}
+		-- if there's no interface then we probably shouldn't open the popup
+		local dlg = Dialogs.OnScreenNotificationsDlg
+		if not dlg then
+			local igi = Dialogs.InGameInterface
+			if not igi then
+				return
+			end
+			dlg = OpenDialog("OnScreenNotificationsDlg", igi)
+		end
+		-- build the popup
+		local data = {
+			id = AsyncRand(),
+			title = CheckText(title),
+			text = CheckText(text,S[3718--[[NONE--]]]),
+--~ 			image = type(tostring(icon):find(".tga")) == "number" and icon or ChoGGi.library_path .. "UI/TheIncal.png"
+			image = IsImageReady(icon) and icon or ChoGGi.library_path .. "UI/TheIncal.png"
+		}
+		TableSet_defaults(data, params)
+		TableSet_defaults(data, OnScreenNotificationPreset)
+		if objects then
+			if type(objects) ~= "table" then
+				objects = {objects}
+			end
+			params.cycle_objs = objects
+		end
+
+		-- needed in Sagan update
+		local aosn = g_ActiveOnScreenNotifications
+		local idx = TableFind(aosn, 1, data.id) or #aosn + 1
+		aosn[idx] = {data.id}
+
+		-- and show the popup
+		CreateRealTimeThread(function()
+			local popup = OnScreenNotification:new({}, dlg.idNotifications)
+			popup:FillData(data, nil, params, params.cycle_objs)
+			popup:Open()
+			dlg:ResolveRelativeFocusOrder()
+			ChoGGi.Temp.MsgPopups[#ChoGGi.Temp.MsgPopups+1] = popup
+
+			-- large amount of text option (four long lines o' text)
+			if size then
+				local frame = GetParentOfKind(popup.idText, "XFrame")
+				if frame then
+					frame:SetMaxWidth(1000)
+				end
+				popup.idText:SetMaxHeight(250)
+			end
+		end)
+	end
+end -- do
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 do -- ShowObj
@@ -4450,13 +4464,6 @@ do -- SpawnColonist
 		return colonist
 	end
 end -- do
-
-function ChoGGi.ComFuncs.GetParentOfKind(win, cls)
-	while win and not win:IsKindOf(cls) do
-		win = win.parent
-	end
-	return win
-end
 
 do -- IsControlPressed/IsShiftPressed/IsAltPressed
 	local IsKeyPressed = terminal.IsKeyPressed
