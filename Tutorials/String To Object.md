@@ -21,6 +21,7 @@ function DotNameToObject(str,root,create)
 
 	-- https://www.lua.org/pil/14.1.html
 	-- %w is [A-Za-z0-9], [] () + ? . act pretty much like regexp
+	local tonumber = tonumber
 	for name,match in str:gmatch("([%w_]+)(.?)") do
 		-- if str included .number we need to make it a number or [name] won't work
 		local num = tonumber(name)

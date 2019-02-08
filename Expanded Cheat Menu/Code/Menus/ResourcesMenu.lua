@@ -29,6 +29,7 @@ function OnMsg.ClassesGenerate()
 					302535920000720--[[Add more probes.--]]
 				)
 			end
+			return S[302535920000720]
 		end,
 		OnAction = ChoGGi.MenuFuncs.AddOrbitalProbes,
 	}
@@ -68,6 +69,7 @@ function OnMsg.ClassesGenerate()
 					302535920000726--[[Add more funding (or reset back to 500 M).--]]
 				)
 			end
+			return S[302535920000726]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetFunding,
 	}

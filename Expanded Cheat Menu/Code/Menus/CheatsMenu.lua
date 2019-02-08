@@ -195,11 +195,11 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[311--[[Research--]]] .. " " .. S[3734--[[Tech--]]],
+	Actions[c] = {ActionName = S[311--[[Research--]]] .. " / " .. S[302535920000318--[[Unlock--]]] .. " " .. S[3734--[[Tech--]]],
 		ActionMenubar = str_Cheats_Research,
-		ActionId = ".Research Tech",
+		ActionId = ".Research / Unlock Tech",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
-		RolloverText = S[302535920000346--[[Pick what you want to unlock/research.--]]],
+		RolloverText = S[302535920000346--[[Pick what you want to unlock/research (defaults to unlock).--]]],
 		OnAction = ChoGGi.MenuFuncs.ResearchTech,
 		ActionSortKey = "-1",
 	}
@@ -344,7 +344,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DraggableCheatsMenu,
-				302535920000324--[[Cheats menu can be moved (restart to toggle).--]]
+				302535920000324--[[Cheats menu can be moved.--]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle,
@@ -362,6 +362,52 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001014--[[Hide Cheats Menu--]]],
+		ActionMenubar = str_Cheats_Menu,
+		ActionId = ".Hide Cheats Menu",
+		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
+		RolloverText = S[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again.--]]],
+		OnAction = ChoGGi.ComFuncs.CheatsMenu_Toggle,
+		ActionShortcut = "F2",
+		ActionBindable = true,
+		ActionSortKey = "-1Hide Cheats Menu",
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000696--[[Infopanel Cheats--]]],
+		ActionMenubar = str_Cheats_Menu,
+		ActionId = ".Infopanel Cheats",
+		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.ToggleInfopanelCheats,
+				302535920000697--[[Shows the cheat pane in the info panel (selection panel).--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.InfopanelCheats_Toggle,
+		ActionShortcut = "Ctrl-F2",
+		ActionBindable = true,
+		ActionSortKey = "-1Infopanel Cheats",
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000698--[[Infopanel Cheats Cleanup--]]],
+		ActionMenubar = str_Cheats_Menu,
+		ActionId = ".Infopanel Cheats Cleanup",
+		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.CleanupCheatsInfoPane,
+				302535920000699--[[Remove some entries from the cheat pane (restart to re-enable).
+
+	AddMaintenancePnts, MakeSphereTarget, SpawnWorker, SpawnVisitor--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle,
+		ActionSortKey = "-1Infopanel Cheats Cleanup",
 	}
 
 end

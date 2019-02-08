@@ -194,7 +194,7 @@ function OnMsg.ClassesGenerate()
 			else
 				return ChoGGi.ComFuncs.SettingState(
 					ChoGGi.Temp.ShowAnimDebug,
-					302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]
+					302535920000460
 				)
 			end
 		end,

@@ -296,14 +296,14 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "99",
 	}
 
-	local str_Help_Tutorial = "ECM.Help.Tutorial"
+	local str_Help_Tutorial = "ECM.Help.Modding Tutorial"
 	c = c + 1
-	Actions[c] = {ActionName = S[8982--[[Tutorial--]]],
+	Actions[c] = {ActionName = S[302535920000323--[[Modding--]]] .. " " .. S[8982--[[Tutorial--]]],
 		ActionMenubar = "ECM.Help",
-		ActionId = ".Tutorial",
+		ActionId = ".Modding Tutorial",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
-		ActionSortKey = "1Tutorial",
+		ActionSortKey = "1Modding Tutorial",
 	}
 
 	c = c + 1

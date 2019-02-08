@@ -1018,24 +1018,29 @@ function ChoGGi.ComFuncs.SetSavedSetting(setting,value)
 	end
 end
 
-function ChoGGi.ComFuncs.RetTableNoDupes(list)
-	if type(list) ~= "table" then
-		return {}
-	end
-	local c = 0
-	local temp_t = {}
+do -- RetTableNoDupes
 	local dupe_t = {}
-
-	for i = 1, #list do
-		if not dupe_t[list[i]] then
-			c = c + 1
-			temp_t[c] = list[i]
-			dupe_t[list[i]] = true
+	function ChoGGi.ComFuncs.RetTableNoDupes(list)
+		local c = 0
+		local temp_t = {}
+		-- quicker to make a new list on large tables
+		if #list > 10000 then
+			dupe_t = {}
+		else
+			TableClear(dupe_t)
 		end
-	end
 
-	return temp_t
-end
+		for i = 1, #list do
+			if not dupe_t[list[i]] then
+				c = c + 1
+				temp_t[c] = list[i]
+				dupe_t[list[i]] = true
+			end
+		end
+
+		return temp_t
+	end
+end -- do
 local RetTableNoDupes = ChoGGi.ComFuncs.RetTableNoDupes
 
 function ChoGGi.ComFuncs.RetTableNoClassDupes(list)
@@ -2306,7 +2311,6 @@ do -- COLOUR FUNCTIONS
 			for i = 1, amount do
 				-- 16777216: https://en.wikipedia.org/wiki/Color_depth#True_color_(24-bit)
 				-- kinda, we skip the alpha values
---~ 				colour_list[i] = AsyncRand(33554433) -16777216
 				colour_list[i] = AsyncRand(16777217) + -16777216
 			end
 
@@ -4093,7 +4097,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 					parentobj = obj,
 					obj = a,
 					hint = S[302535920001107--[[Change colours of an attached object.--]]] .. "\n"
-						.. S[302535920000955--[[Handle--]]] .. ": " .. a.handle,
+						.. S[302535920000955--[[Handle--]]] .. ": " .. (a.handle or ""),
 				}
 			end
 		end

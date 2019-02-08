@@ -1,15 +1,21 @@
 ### All? the tables with threads in them
+```lua
 ThreadsRegister
 ThreadsMessageToThreads
 ThreadsThreadToMessage
+```
 
-Returns a list of OnMsgs that are waiting for Msgs.
+##### Returns a list of OnMsgs that are waiting for Msgs.
+```lua
 GetHandledMsg(true)
-If you use ECM with the HelperMod then you can examine OnMsg, and follow the metatable to get the list of each func waiting on that OnMsg.
+```
+##### If you use ECM with the HelperMod then you can examine OnMsg, and follow the metatable to get the list of each func waiting on that OnMsg.
 
-For a round about way to get some info about a thread (with blacklist intact)
+##### For a round about way to get some info about a thread (with blacklist intact)
+```lua
 GedInspectedObjects[object] = {}
 GedInspectorFormatObject(object)
+```
 
 ### If you know the file a thread is started from, but don't know which thread (or it's local):
 You need the blacklist disabled to be able to use debug.*

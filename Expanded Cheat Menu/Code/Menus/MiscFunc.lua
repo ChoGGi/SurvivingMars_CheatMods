@@ -151,38 +151,6 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
-	function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
-		local ChoGGi = ChoGGi
-		local config = config
-		config.BuildingInfopanelCheats = not config.BuildingInfopanelCheats
-		ReopenSelectionXInfopanel()
-		ChoGGi.UserSettings.InfopanelCheats = config.BuildingInfopanelCheats
-
-		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(
-			S[302535920001122--[[%s: HAXOR--]]]:format(ChoGGi.UserSettings.InfopanelCheats),
-			302535920000696--[[Infopanel Cheats--]]
-		)
-	end
-
-	function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
-		local ChoGGi = ChoGGi
-
-		if ChoGGi.UserSettings.CleanupCheatsInfoPane then
-			-- needs default?
-			ChoGGi.UserSettings.CleanupCheatsInfoPane = false
-		else
-			ChoGGi.UserSettings.CleanupCheatsInfoPane = true
-			ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
-		end
-
-		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(
-			S[302535920001123--[[%s: Cleanup cheats infopane.--]]]:format(ChoGGi.UserSettings.CleanupCheatsInfoPane),
-			302535920000696--[[Infopanel Cheats--]]
-		)
-	end
-
 	function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
 		local ChoGGi = ChoGGi
 		const.ExplorationQueueMaxSize = ChoGGi.ComFuncs.ValueRetOpp(const.ExplorationQueueMaxSize,100,ChoGGi.Consts.ExplorationQueueMaxSize)

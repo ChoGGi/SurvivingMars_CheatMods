@@ -8,13 +8,13 @@ Store a ref and check with IsValidThread() or DeleteThread()
 To get your mod path (if user renames your mod folder):
 CurrentModPath
 
-List all objects (zoom close into the ground for 200-400 ticks faster):
+List all objects:
 OpenExamine(MapGet(true))
 Just domes:
 OpenExamine(MapGet(true,"Dome"))
-Just get objects on the map (colonists in a building are off the map)
+Just get objects on the map (colonists in a building are off the map):
 MapGet("map","ResourceStockpile","ResourceStockpileLR")
-Filter out which objects are returned
+Filter out which objects are returned:
 MapGet("map", "Building", function(o)
 	return o.ui_working
 end)

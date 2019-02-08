@@ -4,6 +4,12 @@
 ##### Dialogs: Monitor Info.
 
 ## v12.4 (Unreleased)
+### Changed:
+- Moved Toggle cheats menu items from ECM>Misc to Cheats>Menu.
+
+### Fixed:
+- List All Menu Items wasn't working in the main menu.
+- Some issues with the code cleanup in v12.3.
 
 ## v12.3 (08 Feb 2019)
 ### Changed:

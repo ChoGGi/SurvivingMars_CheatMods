@@ -128,6 +128,12 @@ Press Enter to show all items."--]]],
 
 	-- setup checkboxes
 	if self.list.check and #self.list.check > 0 then
+		-- it'll be on the bottom
+		self.idCheckboxArea2 = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idCheckboxArea2",
+			Dock = "bottom",
+			HAlign = "center",
+		}, self.idDialog)
 		self.idCheckboxArea = g_Classes.ChoGGi_DialogSection:new({
 			Id = "idCheckboxArea",
 			Dock = "bottom",
@@ -138,11 +144,17 @@ Press Enter to show all items."--]]],
 		for i = 1, #checks do
 			local list_check = checks[i]
 			local name = "idCheckBox" .. i
+
+			local area_id = "idCheckboxArea"
+			if list_check.level then
+				area_id = area_id .. list_check.level
+			end
+
 			self[name] = g_Classes.ChoGGi_CheckButton:new({
 				Id = name,
 				Dock = "left",
 				Text = S[588--[[Empty--]]],
-			}, self.idCheckboxArea)
+			}, self[area_id])
 			local check = self[name]
 
 			-- fiddle with checkboxes on toggled
@@ -215,9 +227,11 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	self.idOK = g_Classes.ChoGGi_Button:new({
 		Id = "idOK",
 		Dock = "left",
+		MinWidth = 50,
 		RolloverAnchor = "smart",
 		Text = S[6878--[[OK--]]],
-		RolloverText = S[302535920000080--[[Apply and close dialog (Arrow keys and Enter/Esc can also be used).--]]],
+		Background = g_Classes.ChoGGi_Button.bg_green,
+		RolloverText = S[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."--]]],
 		OnPress = function()
 			-- build self.choices
 			self:GetAllItems()
@@ -230,9 +244,10 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	self.idCancel = g_Classes.ChoGGi_Button:new({
 		Id = "idCancel",
 		Dock = "right",
-		MinWidth = 80,
+		MinWidth = 70,
 		RolloverAnchor = "smart",
 		Text = S[6879--[[Cancel--]]],
+		Background = g_Classes.ChoGGi_Button.bg_red,
 		RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
 		OnPress = self.idCloseX.OnPress,
 	}, self.idButtonContainer)
@@ -259,6 +274,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		self.idColourContainer = g_Classes.ChoGGi_DialogSection:new({
 			Id = "idColourContainer",
 			MinWidth = 550,
+			Margins = box(0, 10, 10, 0),
 			Dock = "right",
 		}, self.idDialog)
 		self.idColourContainer:SetVisible(false)
@@ -509,11 +525,11 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 		self.items[#self.items] = {
 			text = name_str,
 			value = value,
-			hint = 302535920000079--[[< Use custom value--]],
+			hint = 302535920000079--[[* Use this custom value--]],
 		}
 		local item = self.items[#self.items]
 		local listitem = self.idList[#self.idList]
-		listitem.RolloverText = S[302535920000079--[[< Use custom value--]]]
+		listitem.RolloverText = S[302535920000079]
 		listitem.RolloverTitle = item.text
 		listitem.idText:SetText(item.text)
 		listitem.item = item
