@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v5.3 (Unreleased)
+## v5.4 (Unreleased)
+
+## v5.3 (08 Feb 2019)
 - List dialog will set width by width of list items.
 - Added action names/ids to RetName.
 - RetName didn't work with ParSystem objects.

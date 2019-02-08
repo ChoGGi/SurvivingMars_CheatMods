@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Monitor Info.
 
-## v12.3 (Unreleased)
+## v12.4 (Unreleased)
+
+## v12.3 (08 Feb 2019)
 ### Changed:
 - Code cleanup, might cause some issues...
 - Hid AnimState/AttachSpots from cheats panel (they're more of an examine thingy).
