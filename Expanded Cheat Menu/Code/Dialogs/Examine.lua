@@ -99,6 +99,10 @@ DefineClass.Examine = {
 	transp_mode = false,
 	-- get list of all values from metatables
 	show_all_values = false,
+	-- list values from EnumVars()
+	show_enum_values = false,
+	-- stores enummed list
+	enum_vars = false,
 	-- going in through the backdoor
 	sort = false,
 	-- if TaskRequest then store flags here
@@ -253,14 +257,6 @@ function Examine:Init(parent, context)
 			RolloverText = S[302535920000059--[[Destroy all objects in objlist!--]]],
 			OnPress = self.idButDeleteAllOnPress,
 		}, self.idToolbarButtons)
-		--
-		self.idButViewEnum = g_Classes.ChoGGi_ToolbarButton:new({
-			Id = "idButViewEnum",
-			Image = "CommonAssets/UI/Menu/PlayerInfo.tga",
-			RolloverTitle = S[302535920001442--[[EnumVars--]]],
-			RolloverText = S[302535920001443--[[View output from EnumVars(obj).--]]],
-			OnPress = self.idButViewEnumOnPress,
-		}, self.idToolbarButtons)
 		-- right side
 
 		self.idAutoRefresh_update_str = S[302535920001257--[[Auto-refresh list every second.--]]]
@@ -307,6 +303,15 @@ function Examine:Init(parent, context)
 			RolloverText = S[302535920001391--[[Show all values: getmetatable(obj).--]]],
 			OnChange = self.idShowAllValuesOnChange,
 			Init = self.CheckButtonInit,
+		}, self.idToolbarArea)
+		--
+		self.idViewEnum = g_Classes.ChoGGi_CheckButton:new({
+			Id = "idViewEnum",
+			Dock = "right",
+			MinWidth = 0,
+			Text = S[302535920001442--[[Enum--]]],
+			RolloverText = S[302535920001443--[[Show values from EnumVars(obj).--]]],
+			OnChange = self.idViewEnumOnChange,
 		}, self.idToolbarArea)
 	end -- toolbar area
 
@@ -524,12 +529,10 @@ function Examine:idButDeleteAllOnPress()
 		S[697--[[Destroy--]]]
 	)
 end
-function Examine:idButViewEnumOnPress()
+function Examine:idViewEnumOnChange()
 	self = GetRootDialog(self)
-	ChoGGi.ComFuncs.OpenInExamineDlg(
-		EnumVars(self.name),
-		self,S[302535920001442--[[EnumVars--]]] .. ": " .. self.name
-	)
+	self.show_enum_values = not self.show_enum_values
+	self:SetObj()
 end
 
 function Examine:idButMarkAllOnPress()
@@ -1428,15 +1431,14 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	end
 
 	if obj_type == "table" then
-		local name
-		for k, v in pairs(obj) do
 
-			-- sorely needed delay for chinese
+		for k,v in pairs(obj) do
+			-- sorely needed delay for chinese (or it "freezes" the game when loading something like _G)
 			if self.is_chinese then
 				Sleep(1)
 			end
 
-			name = self:ConvertValueToInfo(k,true)
+			local name = self:ConvertValueToInfo(k,true)
 			-- gotta store all the names if we're doing all props (no dupes thanks)
 			totextex_dupes[name] = true
 			c = c + 1
@@ -1446,17 +1448,30 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			end
 		end
 
+		-- pretty rare occurrence
+		if self.show_enum_values and self.enum_vars then
+			for k,v in pairs(self.enum_vars) do
+				-- remove the . at the start
+				local name = self:ConvertValueToInfo(k:sub(2),true)
+				if not totextex_dupes[name] then
+					totextex_dupes[name] = true
+					c = c + 1
+					totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(v) .. "<left>"
+				end
+			end
+		end
+
 		-- keep looping through metatables till we run out
 		if obj_metatable and self.show_all_values then
 			local meta_temp = obj_metatable
 			while meta_temp do
 				for k in pairs(meta_temp) do
 
-					name = self:ConvertValueToInfo(k,true)
+					local name = self:ConvertValueToInfo(k,true)
 					if not totextex_dupes[name] then
 						totextex_dupes[name] = true
 						c = c + 1
-						totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(obj[k]) .. "<left>"
+						totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(obj[k] or meta_temp[k]) .. "<left>"
 					end
 
 				end
@@ -1807,6 +1822,14 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 	if not (obj == "nil" or is_valid_obj or obj_type == "userdata") and obj_metatable then
 		TableInsert(totextex_res, 1,"\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
+		if self.enum_vars and next(self.enum_vars) then
+			totextex_res[1] = totextex_res[1] .. self:HyperLink(obj,function()
+				ChoGGi.ComFuncs.OpenInExamineDlg(self.enum_vars,self)
+			end)
+			.. " enum"
+			.. HLEnd
+		end
+
 	end
 
 	return TableConcat(totextex_res,"\n")
@@ -1839,11 +1862,11 @@ function Examine:SetToolbarVis(obj)
 		end
 
 		-- pretty rare occurrence
-		local enum = EnumVars(self.name)
-		if enum and next(enum) then
-			self.idButViewEnum:SetVisible(true)
+		self.enum_vars = EnumVars(self.name)
+		if self.enum_vars and next(self.enum_vars) then
+			self.idViewEnum:SetVisible(true)
 		else
-			self.idButViewEnum:SetVisible()
+			self.idViewEnum:SetVisible()
 		end
 
 	else
@@ -1852,7 +1875,7 @@ function Examine:SetToolbarVis(obj)
 		self.idButMarkObject:SetVisible()
 		self.idButMarkAll:SetVisible()
 		self.idButDeleteAll:SetVisible()
-		self.idButViewEnum:SetVisible()
+		self.idViewEnum:SetVisible()
 		self.idButDeleteObj:SetVisible()
 	end
 
