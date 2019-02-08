@@ -1396,9 +1396,10 @@ do -- UpdateDataTables
 		-- build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
 		local g_Classes = g_Classes
 		ClassDescendantsList("MysteryBase",function(class)
-			local scenario_name = g_Classes[class].scenario_name or S[302535920000009--[[Missing Scenario Name--]]]
-			local display_name = Trans(g_Classes[class].display_name) or S[302535920000010--[[Missing Name--]]]
-			local description = Trans(g_Classes[class].rollover_text) or S[302535920000011--[[Missing Description--]]]
+			local cls_obj = g_Classes[class]
+			local scenario_name = cls_obj.scenario_name or S[302535920000009--[[Missing Scenario Name--]]]
+			local display_name = Trans(cls_obj.display_name) or S[302535920000010--[[Missing Name--]]]
+			local description = Trans(cls_obj.rollover_text) or S[302535920000011--[[Missing Description--]]]
 
 			local temptable = {
 				class = class,

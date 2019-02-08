@@ -707,7 +707,7 @@ Mod will always be packed in hpk archive."--]],
 				},
 			}
 			-- adjust depending on if we can upload to paradox
-			local width = 600.0
+			local width = 700.0
 			if Platform.pops and not rawget(_G,"PDX_PrepareForUpload") then
 				check[6].visible = false
 				width = 450.0

@@ -7,7 +7,7 @@ All of my code is licensed under the MIT License as follows:
 
 MIT License
 
-Copyright (c) [2018] [ChoGGi]
+Copyright (c) [2019] [ChoGGi]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,17 +32,10 @@ SOFTWARE.
 local tonumber,tostring,pcall = tonumber,tostring,pcall
 local AsyncRand,_InternalTranslate,T = AsyncRand,_InternalTranslate,T
 
--- just in case etc
-local floatfloor_tmp
-pcall(function()
-  floatfloor_tmp = floatfloor
-end)
-
 do -- translate
-	local locale_path = CurrentModPath .. "Locales/%s.csv"
-	-- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
-	if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
-		LoadTranslationTableFile(locale_path:format("English"))
+	local locale_path = CurrentModPath .. "Locales/"
+	if not LoadTranslationTableFile(locale_path .. GetLanguage() .. ".csv") then
+		LoadTranslationTableFile(locale_path .. "English.csv")
 	end
 	Msg("TranslationChanged")
 end
@@ -124,7 +117,8 @@ function math.exp(x)
 end
 
 --~   Returns the largest integral value smaller than or equal to x.
-math.floor = floatfloor_tmp or function(x)
+local floatfloor = rawget(_G,"floatfloor")
+math.floor = floatfloor or function(x)
   x = CheckNum(x,"floor")
 
   return x - (x % 1)
