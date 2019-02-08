@@ -3,7 +3,9 @@
 ##### To do:
 ##### Dialogs: Monitor Info.
 
-## v12.4 (Unreleased)
+## v12.5 (Unreleased)
+
+## v12.4 (08 Feb 2019)
 ### Changed:
 - Moved Toggle cheats menu items from ECM>Misc to Cheats>Menu.
 

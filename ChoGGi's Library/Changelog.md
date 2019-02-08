@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v5.4 (Unreleased)
+## v5.5 (Unreleased)
+
+## v5.4 (08 Feb 2019)
 - Added a bit of colour to the dialogs.
 - I shrunk the Colour Modifier width an update or two ago.
 - Toggling titlebar rollup on a list with hidden ok/cancel buttons stays hidden.
