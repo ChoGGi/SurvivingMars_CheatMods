@@ -17,6 +17,7 @@
 - > Changed around how threads are displayed (upvalue/local in same examine).
 - > Shows obj type in titlebar.
 - > Refresh wasn't clearing out the hyperlink table (not good on something like `_G`).
+- > EnumVars now acts like the "All" checkbox (added a link to the older way next to metatable).
 
 ### Fixed:
 - Cheats panel was using water instead of oxygen icons for oxygen need/free.
