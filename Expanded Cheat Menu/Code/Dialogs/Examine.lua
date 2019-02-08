@@ -30,16 +30,12 @@ local IsValidEntity = IsValidEntity
 local IsT = IsT
 local PropObjGetProperty = PropObjGetProperty
 
-local getlocal
-local getupvalue
-local getinfo
-local gethook
+local getinfo,getupvalue,getlocal
 local debug = PropObjGetProperty(_G,"debug")
 if debug then
-	getlocal = debug.getlocal
 	getupvalue = debug.getupvalue
 	getinfo = debug.getinfo
-	gethook = debug.gethook
+	getlocal = debug.getlocal
 end
 
 local HLEnd = "</h></color>"
@@ -133,7 +129,7 @@ DefineClass.Examine = {
 	menu_added = false,
 	menu_list_items = false,
 	-- clickable purple text
-	onclick_handles = false,
+	onclick_funcs = false,
 	onclick_objs = false,
 	onclick_count = false,
 
@@ -162,7 +158,7 @@ function Examine:Init(parent, context)
 	self.ancestors = {}
 	self.menu_added = {}
 	self.menu_list_items = {}
-	self.onclick_handles = {}
+	self.onclick_funcs = {}
 	self.onclick_objs = {}
 	self.onclick_count = 0
 
@@ -1197,7 +1193,7 @@ function Examine:SetTranspMode(toggle)
 	ChoGGi.Temp.transp_mode = toggle
 end
 --
-local function Show_valuetotextex(_,_,button,self,obj)
+local function Show_ConvertValueToInfo(_,_,button,self,obj)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" and GameState.gameplay and (IsValid(obj) or IsPoint(obj)) then
 		ShowObj(obj)
@@ -1205,7 +1201,7 @@ local function Show_valuetotextex(_,_,button,self,obj)
 		ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
 	end
 end
-local function Examine_valuetotextex(_,_,button,self,obj)
+local function Examine_ConvertValueToInfo(_,_,button,self,obj)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" then
 		ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
@@ -1214,23 +1210,22 @@ local function Examine_valuetotextex(_,_,button,self,obj)
 	end
 end
 local point_str = "%s%s(%s,%s,%s)%s"
-function Examine:valuetotextex(obj,left)
+function Examine:ConvertValueToInfo(obj,left)
 	local obj_type = type(obj)
 
 	if obj_type == "function" then
-		return self:HyperLink(obj,Examine_valuetotextex)
-			.. DebugGetInfo(obj)
-			.. HLEnd
+		return self:HyperLink(obj,Examine_ConvertValueToInfo)
+			.. DebugGetInfo(obj) .. HLEnd
 	end
 
 	if obj_type == "thread" then
-		return self:HyperLink(obj,Examine_valuetotextex)
-			.. tostring(obj)
-			.. HLEnd
+		return self:HyperLink(obj,Examine_ConvertValueToInfo)
+			.. tostring(obj) .. HLEnd
 	end
 
 	if obj_type == "string" then
 		-- so we don't dupe examine dialogs; i store all examined objects in an ass table, and nil is changed to "nil"
+		-- not that this is called often
 		if obj == "nil" then
 			return "nil"
 		end
@@ -1251,56 +1246,12 @@ function Examine:valuetotextex(obj,left)
 		return "<color " .. ChoGGi.UserSettings.ExamineColourBool .. ">" .. tostring(obj) .. "</color>"
 	end
 
-	if obj_type == "userdata" then
-
-		if IsPoint(obj) then
-			-- InvalidPos()
-			if obj == InvalidPos then
-				return S[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
-			else
-				local x,y,z = obj:xyz()
-				local temp_str
-				-- don't show z if we don't have one
-				if z then
-					temp_str = point_str
-				else
-					temp_str = point_str:gsub(",%%s%)","%%s)")
-				end
-
-				return temp_str:format(
-					self:HyperLink(obj,Show_valuetotextex),
-					S[302535920001396--[[point--]]],
-					x,y,z or "",
-					HLEnd
-				)
-			end
-		else
-			-- show translated text if possible and return a clickable link
-			local trans_str = Trans(obj)
-			if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
-				trans_str = tostring(obj)
-			end
-			local meta = getmetatable(obj)
-
-			-- the </color> is to make sure it doesn't bleed into other text
-			local _,colour_cnt = trans_str:gsub("<color ","")
-			for _ = 1, colour_cnt do
-				trans_str = trans_str .. "</color>"
-			end
-
---~ 			return trans_str .. "</color></color>"
-			return trans_str
-				.. self:HyperLink(obj,Examine_valuetotextex) .. " *"
-				.. (meta and meta.__name or tostring(obj)) .. HLEnd
-		end
-	end
-
 	if obj_type == "table" then
 
 		if IsValid(obj) then
-			return self:HyperLink(obj,Examine_valuetotextex)
+			return self:HyperLink(obj,Examine_ConvertValueToInfo)
 				.. obj.class .. HLEnd .. "@"
-				.. self:valuetotextex(obj:GetVisualPos())
+				.. self:ConvertValueToInfo(obj:GetVisualPos())
 		else
 			local len = #obj
 			local obj_metatable = getmetatable(obj)
@@ -1308,7 +1259,7 @@ function Examine:valuetotextex(obj,left)
 			-- if it's an objlist then we just return a list of the objects
 			if obj_metatable and IsObjlist(obj_metatable) then
 				local res = {
-					self:HyperLink(obj,Examine_valuetotextex),
+					self:HyperLink(obj,Examine_ConvertValueToInfo),
 					"objlist",
 					HLEnd,
 					"{",
@@ -1320,7 +1271,7 @@ function Examine:valuetotextex(obj,left)
 					c = c + 1
 					res[c] = "="
 					c = c + 1
-					res[c] = self:valuetotextex(obj[i])
+					res[c] = self:ConvertValueToInfo(obj[i])
 					c = c + 1
 					res[c] = ","
 				end
@@ -1357,70 +1308,111 @@ function Examine:valuetotextex(obj,left)
 					name = name .. " (len: " .. table_data .. ")"
 				end
 
-				return self:HyperLink(obj,Examine_valuetotextex) .. name .. HLEnd
+				return self:HyperLink(obj,Examine_ConvertValueToInfo) .. name .. HLEnd
 			end
 		end
+	end
+
+	if obj_type == "userdata" then
+
+		if IsPoint(obj) then
+			-- InvalidPos()
+			if obj == InvalidPos then
+				return S[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
+			else
+				local x,y,z = obj:xyz()
+				local temp_str
+				-- don't show z if we don't have one
+				if z then
+					temp_str = point_str
+				else
+					temp_str = point_str:gsub(",%%s%)","%%s)")
+				end
+
+				return temp_str:format(
+					self:HyperLink(obj,Show_ConvertValueToInfo),
+					S[302535920001396--[[point--]]],
+					x,y,z or "",
+					HLEnd
+				)
+			end
+		else
+			-- show translated text if possible and return a clickable link
+			local trans_str = Trans(obj)
+			if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+				trans_str = tostring(obj)
+			end
+			local meta = getmetatable(obj)
+
+			-- the </color> is to make sure it doesn't bleed into other text
+			local _,colour_cnt = trans_str:gsub("<color ","")
+			for _ = 1, colour_cnt do
+				trans_str = trans_str .. "</color>"
+			end
+
+			return trans_str
+				.. self:HyperLink(obj,Examine_ConvertValueToInfo) .. " *"
+				.. (meta and meta.__name or tostring(obj)) .. HLEnd
+		end
+	end
+
+	if obj_type == "nil" then
+		return "<color " .. ChoGGi.UserSettings.ExamineColourNil .. ">nil</color>"
 	end
 
 	return tostring(obj)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
-local function ExamineThreadLevel_totextex(level,info,obj,self)
-	local ExamineThreadLevel_data
-	if blacklist then
-		ExamineThreadLevel_data = RetThreadInfo(obj)
-	else
-		ExamineThreadLevel_data = {}
-		local l = 1
-		local name, val = true
-		while name do
-			name, val = getlocal(obj, level, l)
-			ExamineThreadLevel_data[tostring(name) .. " @ debug.getlocal(" .. level .. "," .. l .. ")"] = val
-			l = l + 1
-		end
-
-		for i = 1, info.nups do
-			local name, val = getupvalue(info.func, i)
-			if name ~= nil and val ~= nil then
-				ExamineThreadLevel_data["debug.getupvalue(" .. (name or S[302535920000723--[[Lua--]]]) .. "," .. i .. ")"] = val
-			end
-		end
-	end
-
-	ChoGGi.ComFuncs.OpenInExamineDlg(
-		ExamineThreadLevel_data,
-		self,
-		S[302535920001353--[[Thread info--]]] .. ": " .. RetName(obj)
-	)
-end
 
 function Examine:RetDebugUpValue(obj,list,c,nups)
 	for i = 1, nups do
 		local name, value = getupvalue(obj, i)
 		if name then
 			c = c + 1
-			list[c] = self:valuetotextex(name) .. " = " .. self:valuetotextex(value)
-				.. " @ debug.getupvalue(" .. i .. ")"
+			name = name ~= "" and name or S[302535920000723--[[Lua--]]]
+
+			list[c] = "getupvalue(" .. i .. "): " .. name .. " = "
+				.. self:ConvertValueToInfo(value)
 		end
 	end
-	return list,c
+	return c
 end
 
-local totextex_debug_table = {}
-function Examine:RetDebugGetinfo(obj)
-	TableIClear(totextex_debug_table)
-	totextex_debug_table[1] = "\ndebug.getinfo(\"SLlfunt\"): "
-	local c_debug = 1
-	local info = getinfo(obj,"SLlfunt") or empty_table
+local ConvertObj_debug_table = {}
+function Examine:RetDebugGetInfo(obj)
+	TableIClear(ConvertObj_debug_table)
+	local c = 0
+	local info = getinfo(obj,"SLlfunt")
 	for key,value in pairs(info) do
-		c_debug = c_debug + 1
-		totextex_debug_table[c_debug] = key .. ": " .. self:valuetotextex(value)
+		c = c + 1
+		ConvertObj_debug_table[c] = key .. ": " .. self:ConvertValueToInfo(value)
+--~ 			.. (key == "nups" and " (upvalue amount)" or key == "nparams" and " (args amount)" or "")
 	end
-	return TableConcat(totextex_debug_table,"\n")
+	TableInsert(ConvertObj_debug_table,1,"\ngetinfo(): ")
+	return TableConcat(ConvertObj_debug_table,"\n")
+end
+function Examine:RetFuncVars(obj)
+	TableIClear(ConvertObj_debug_table)
+	local info = getinfo(obj,"u")
+	if info.nparams > 0 then
+		for i = 1, info.nparams do
+			ConvertObj_debug_table[i] = getlocal(obj, i)
+		end
+
+		TableInsert(ConvertObj_debug_table,1,"\nparams: ")
+		local args = TableConcat(ConvertObj_debug_table,", ")
+
+		local p_end = ")"
+		local isvararg = info.isvararg
+		if isvararg then
+			p_end = ", ...)"
+		end
+		return args:gsub(": , ",": (") .. p_end
+	end
 end
 
-function Examine:totextex(obj,obj_type)
+function Examine:ConvertObjToInfo(obj,obj_type)
 	local totextex_res = {}
 	local totextex_sort = {}
 	local totextex_dupes = {}
@@ -1444,11 +1436,11 @@ function Examine:totextex(obj,obj_type)
 				Sleep(1)
 			end
 
-			name = self:valuetotextex(k,true)
+			name = self:ConvertValueToInfo(k,true)
 			-- gotta store all the names if we're doing all props (no dupes thanks)
 			totextex_dupes[name] = true
 			c = c + 1
-			totextex_res[c] = name .. " = " .. self:valuetotextex(v) .. "<left>"
+			totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(v) .. "<left>"
 			if type(k) == "number" then
 				totextex_sort[totextex_res[c]] = k
 			end
@@ -1460,11 +1452,11 @@ function Examine:totextex(obj,obj_type)
 			while meta_temp do
 				for k in pairs(meta_temp) do
 
-					name = self:valuetotextex(k,true)
+					name = self:ConvertValueToInfo(k,true)
 					if not totextex_dupes[name] then
 						totextex_dupes[name] = true
 						c = c + 1
-						totextex_res[c] = name .. " = " .. self:valuetotextex(obj[k]) .. "<left>"
+						totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(obj[k]) .. "<left>"
 					end
 
 				end
@@ -1472,56 +1464,26 @@ function Examine:totextex(obj,obj_type)
 			end
 		end
 
-	elseif obj_type == "thread" then
-
-		if blacklist then
-			c = c + 1
-			totextex_res[c] = RetThreadInfo(obj)
-		else
-
-			local hook = gethook(obj)
-			if hook then
-				c = c + 1
-				totextex_res[c] = self:valuetotextex(gethook(obj))
+		-- the regular getmetatable will use __metatable if it exists, so we check this as well
+		if testing and not blacklist then
+			local dbg_metatable = debug.getmetatable(obj)
+			if obj_metatable ~= dbg_metatable then
+				print("DIFFERENT METATABLE",self.name)
 			end
-
-			local level, info = 0
-			repeat
-				info = getinfo(obj, level, "SLlfunt")
-				if info then
-					local l_level, l_info = level, info
-					local func = info.func
-					c = c + 1
-					totextex_res[c] = "debug.getinfo(" .. l_level .. "): "
-						.. HLEnd
-						.. self:HyperLink(obj,function()
-								ExamineThreadLevel_totextex(l_level,l_info,obj,self)
-							end)
-						.. (info.short_src or info.source)
-						.. "(" .. info.currentline .. ") "
-						.. S[1000110--[[Type--]]] .. ": "
-						.. (info.name ~= "" and info.name or info.name_what ~= "" and info.name_what or info.what ~= "" and info.what or S[302535920000723--[[Lua--]]])
-						.. HLEnd
-				else
-					break
-				end
-				level = level + 1
-			until not info
 		end
 
 	elseif obj_type == "function" then
-		if blacklist then
+--~ 		if blacklist then
+--~ 			c = c + 1
+--~ 			totextex_res[c] = self:ConvertValueToInfo(tostring(obj))
+--~ 			c = c + 1
+--~ 			totextex_res[c] = self:ConvertValueToInfo(DebugGetInfo(obj))
+--~ 		else
 			c = c + 1
-			totextex_res[c] = self:valuetotextex(tostring(obj))
+			totextex_res[c] = self:ConvertValueToInfo(tostring(obj))
 			c = c + 1
-			totextex_res[c] = self:valuetotextex(DebugGetInfo(obj))
-		else
-			c = c + 1
-			totextex_res[c] = self:valuetotextex(tostring(obj))
-			c = c + 1
-			totextex_res[c] = self:valuetotextex(obj)
-		end
-
+			totextex_res[c] = self:ConvertValueToInfo(obj)
+--~ 		end
 	end
 
 	-- sort backwards
@@ -1548,6 +1510,7 @@ function Examine:totextex(obj,obj_type)
 		end)
 	end
 
+	-- cobjects, not property objs? (IsKindOf)
 	if IsValid(obj) and obj:IsKindOf("CObject") then
 		is_valid_obj = true
 
@@ -1558,7 +1521,7 @@ function Examine:totextex(obj,obj_type)
 			.. obj.class
 			.. HLEnd
 			.. "@"
-			.. self:valuetotextex(obj:GetVisualPos())
+			.. self:ConvertValueToInfo(obj:GetVisualPos())
 			.. "--"
 		)
 		-- add the particle name
@@ -1619,7 +1582,7 @@ function Examine:totextex(obj,obj_type)
 			local c2 = 0
 			for k, v in pairs(obj_metatable) do
 				c2 = c2 + 1
-				data_meta[c2] = self:valuetotextex(k) .. " = " .. self:valuetotextex(v)
+				data_meta[c2] = self:ConvertValueToInfo(k) .. " = " .. self:ConvertValueToInfo(v)
 			end
 			TableSort(data_meta, function(a, b)
 				return CmpLower(a, b)
@@ -1637,95 +1600,107 @@ function Examine:totextex(obj,obj_type)
 				)
 				-- we use this with Object>Flags
 				self.obj_flags = obj:GetFlags()
-				TableInsert(data_meta,1,"GetFlags(): " .. self.obj_flags)
-				TableInsert(data_meta,1,"GetReciprocalRequest(): " .. self:valuetotextex(obj:GetReciprocalRequest()))
-				TableInsert(data_meta,1,"GetLastServiced(): " .. obj:GetLastServiced())
-				TableInsert(data_meta,1,"GetFreeUnitSlots(): " .. obj:GetFreeUnitSlots())
-				TableInsert(data_meta,1,"GetFillIndex(): " .. obj:GetFillIndex())
-				TableInsert(data_meta,1,"GetTargetAmount(): " .. obj:GetTargetAmount())
-				TableInsert(data_meta,1,"GetDesiredAmount(): " .. obj:GetDesiredAmount())
-				TableInsert(data_meta,1,"GetActualAmount(): " .. obj:GetActualAmount())
-				TableInsert(data_meta,1,"GetWorkingUnits(): " .. obj:GetWorkingUnits())
-				TableInsert(data_meta,1,"GetResource(): '" .. obj:GetResource() .. "'")
-				TableInsert(data_meta,1,"\nGetBuilding(): " .. self:valuetotextex(obj:GetBuilding()))
+				TableInsert(data_meta,1,"GetFlags(): " .. self:ConvertValueToInfo(self.obj_flags))
+				TableInsert(data_meta,1,"GetReciprocalRequest(): " .. self:ConvertValueToInfo(obj:GetReciprocalRequest()))
+				TableInsert(data_meta,1,"GetLastServiced(): " .. self:ConvertValueToInfo(obj:GetLastServiced()))
+				TableInsert(data_meta,1,"GetFreeUnitSlots(): " .. self:ConvertValueToInfo(obj:GetFreeUnitSlots()))
+				TableInsert(data_meta,1,"GetFillIndex(): " .. self:ConvertValueToInfo(obj:GetFillIndex()))
+				TableInsert(data_meta,1,"GetTargetAmount(): " .. self:ConvertValueToInfo(obj:GetTargetAmount()))
+				TableInsert(data_meta,1,"GetDesiredAmount(): " .. self:ConvertValueToInfo(obj:GetDesiredAmount()))
+				TableInsert(data_meta,1,"GetActualAmount(): " .. self:ConvertValueToInfo(obj:GetActualAmount()))
+				TableInsert(data_meta,1,"GetWorkingUnits(): " .. self:ConvertValueToInfo(obj:GetWorkingUnits()))
+				TableInsert(data_meta,1,"GetResource(): " .. self:ConvertValueToInfo(obj:GetResource()))
+				TableInsert(data_meta,1,"\nGetBuilding(): " .. self:ConvertValueToInfo(obj:GetBuilding()))
 			elseif name == "HGE.Grid" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,"get_default(): " .. obj:get_default())
-				TableInsert(data_meta,1,"max_value(): " .. obj:max_value())
+				TableInsert(data_meta,1,"get_default(): " .. self:ConvertValueToInfo(obj:get_default()))
+				TableInsert(data_meta,1,"max_value(): " .. self:ConvertValueToInfo(obj:max_value()))
 				local size = {obj:size()}
 				if size[1] then
-					TableInsert(data_meta,1,"\nsize(): " .. size[1] .. " " .. size[2])
+					TableInsert(data_meta,1,"\nsize(): " .. self:ConvertValueToInfo(size[1])
+						.. " " .. self:ConvertValueToInfo(size[2]))
 				end
 			elseif name == "HGE.XMGrid" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
 				local minmax = {obj:minmax()}
 				if minmax[1] then
-					TableInsert(data_meta,1,"minmax(): " .. minmax[1] .. " " .. minmax[2])
+					TableInsert(data_meta,1,"minmax(): " .. self:ConvertValueToInfo(minmax[1]) .. " "
+						.. self:ConvertValueToInfo(minmax[2]))
 				end
-				TableInsert(data_meta,1,"levels(): " .. obj:levels())
-				TableInsert(data_meta,1,"GetPositiveCells(): " .. tostring(obj:GetPositiveCells()))
-				TableInsert(data_meta,1,"GetBilinear(): " .. obj:GetBilinear())
-				TableInsert(data_meta,1,"EnumZones(): " .. self:valuetotextex(obj:EnumZones()))
-				TableInsert(data_meta,1,"size(): " .. obj:size())
+				TableInsert(data_meta,1,"levels(): " .. self:ConvertValueToInfo(obj:levels()))
+				TableInsert(data_meta,1,"GetPositiveCells(): " .. self:ConvertValueToInfo(obj:GetPositiveCells()))
+				TableInsert(data_meta,1,"GetBilinear(): " .. self:ConvertValueToInfo(obj:GetBilinear()))
+				TableInsert(data_meta,1,"EnumZones(): " .. self:ConvertValueToInfo(obj:EnumZones()))
+				TableInsert(data_meta,1,"size(): " .. self:ConvertValueToInfo(obj:size()))
+				TableInsert(data_meta,1,"packing(): " .. self:ConvertValueToInfo(obj:packing()))
 				-- crashing tendencies
---~ 				TableInsert(data_meta,1,"histogram(): " .. self:valuetotextex({obj:histogram()}))
+--~ 				TableInsert(data_meta,1,"histogram(): " .. self:ConvertValueToInfo({obj:histogram()}))
 				-- freeze screen with render error in log ex(Flight_Height:GetBinData())
-				TableInsert(data_meta,1,"\nCenterOfMass(): " .. self:valuetotextex(obj:CenterOfMass()))
+				TableInsert(data_meta,1,"\nCenterOfMass(): " .. self:ConvertValueToInfo(obj:CenterOfMass()))
 			elseif name == "HGE.Box" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
 				local points2d = {obj:ToPoints2D()}
 				if points2d[1] then
-					TableInsert(data_meta,1,"ToPoints2D(): "
-						.. self:valuetotextex(points2d[1])
-						.. " " .. self:valuetotextex(points2d[2])
-						.. "\n" .. self:valuetotextex(points2d[3])
-						.. " " .. self:valuetotextex(points2d[4])
+					TableInsert(data_meta,1,"ToPoints2D(): " .. self:ConvertValueToInfo(points2d[1])
+						.. " " .. self:ConvertValueToInfo(points2d[2])
+						.. "\n" .. self:ConvertValueToInfo(points2d[3])
+						.. " " .. self:ConvertValueToInfo(points2d[4])
 					)
 				end
-				TableInsert(data_meta,1,"min(): " .. self:valuetotextex(obj:min()))
-				TableInsert(data_meta,1,"max(): " .. self:valuetotextex(obj:max()))
+				TableInsert(data_meta,1,"min(): " .. self:ConvertValueToInfo(obj:min()))
+				TableInsert(data_meta,1,"max(): " .. self:ConvertValueToInfo(obj:max()))
 				local bsphere = {obj:GetBSphere()}
 				if bsphere[1] then
-					TableInsert(data_meta,1,"GetBSphere(): " .. self:valuetotextex(bsphere[1]) .. " " .. bsphere[2])
+					TableInsert(data_meta,1,"GetBSphere(): "
+						.. self:ConvertValueToInfo(bsphere[1]) .. " "
+						.. self:ConvertValueToInfo(bsphere[2]))
 				end
-				TableInsert(data_meta,1,"Center(): " .. self:valuetotextex(obj:Center()))
-				TableInsert(data_meta,1,"IsEmpty(): " .. tostring(obj:IsEmpty()))
+				TableInsert(data_meta,1,"Center(): " .. self:ConvertValueToInfo(obj:Center()))
+				TableInsert(data_meta,1,"IsEmpty(): " .. self:ConvertValueToInfo(obj:IsEmpty()))
 				local Radius = obj:Radius()
 				local Radius2D = obj:Radius2D()
-				TableInsert(data_meta,1,"Radius(): " .. Radius)
+				TableInsert(data_meta,1,"Radius(): " .. self:ConvertValueToInfo(Radius))
 				if Radius ~= Radius2D then
-					TableInsert(data_meta,1,"Radius2D(): " .. Radius2D)
+					TableInsert(data_meta,1,"Radius2D(): " .. self:ConvertValueToInfo(Radius2D))
 				end
-				TableInsert(data_meta,1,"size(): " .. self:valuetotextex(obj:size()))
-				TableInsert(data_meta,1,"IsValidZ(): " .. tostring(obj:IsValidZ()))
-				TableInsert(data_meta,1,"\nIsValid(): " .. tostring(obj:IsValid()))
+				TableInsert(data_meta,1,"size(): " .. self:ConvertValueToInfo(obj:size()))
+				TableInsert(data_meta,1,"IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
+				TableInsert(data_meta,1,"\nIsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
 			elseif name == "HGE.Point" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,"__unm(): " .. self:valuetotextex(obj:__unm()))
+				TableInsert(data_meta,1,"__unm(): " .. self:ConvertValueToInfo(obj:__unm()))
 				local x,y,z = obj:xyz()
-				TableInsert(data_meta,1,"x: " .. x .. ", y: " .. y .. ", z: " .. (z or ""))
-				TableInsert(data_meta,1,"IsValidZ(): " .. tostring(obj:IsValidZ()))
-				TableInsert(data_meta,1,"\nIsValid(): " .. tostring(obj:IsValid()))
+				local xyz = "x: " .. self:ConvertValueToInfo(x)
+					.. ", y: " .. self:ConvertValueToInfo(y)
+				if z then
+					xyz = xyz .. ", z: " .. self:ConvertValueToInfo(z)
+				end
+				TableInsert(data_meta,1,xyz)
+				TableInsert(data_meta,1,"IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
+				TableInsert(data_meta,1,"\nIsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
 			elseif name == "HGE.RandState" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,"Last(): " .. obj:Last())
-				TableInsert(data_meta,1,"GetStable(): " .. obj:GetStable())
-				TableInsert(data_meta,1,"Get(): " .. obj:Get())
-				TableInsert(data_meta,1,"\nCount(): " .. obj:Count())
+				TableInsert(data_meta,1,"Last(): " .. self:ConvertValueToInfo(obj:Last()))
+				TableInsert(data_meta,1,"GetStable(): " .. self:ConvertValueToInfo(obj:GetStable()))
+				TableInsert(data_meta,1,"Get(): " .. self:ConvertValueToInfo(obj:Get()))
+				TableInsert(data_meta,1,"\nCount(): " .. self:ConvertValueToInfo(obj:Count()))
 			elseif name == "HGE.Quaternion" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,"Norm(): " .. self:valuetotextex(obj:Norm()))
-				TableInsert(data_meta,1,"Inv(): " .. self:valuetotextex(obj:Inv()))
+				TableInsert(data_meta,1,"Norm(): " .. self:ConvertValueToInfo(obj:Norm()))
+				TableInsert(data_meta,1,"Inv(): " .. self:ConvertValueToInfo(obj:Inv()))
 				local roll,pitch,yaw = obj:GetRollPitchYaw()
-				TableInsert(data_meta,1,"GetRollPitchYaw(): " .. roll .. " " .. pitch .. " " .. yaw)
-				TableInsert(data_meta,1,"\nGetAxisAngle(): " .. self:valuetotextex(obj:GetAxisAngle()))
+				TableInsert(data_meta,1,"GetRollPitchYaw(): "
+					.. self:ConvertValueToInfo(roll)
+					.. " " .. self:ConvertValueToInfo(pitch)
+					.. " " .. self:ConvertValueToInfo(yaw))
+				TableInsert(data_meta,1,"\nGetAxisAngle(): " .. self:ConvertValueToInfo(obj:GetAxisAngle()))
 			elseif name == "LuaPStr" then
 				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,"hash(): " .. obj:hash())
-				TableInsert(data_meta,1,"str(): '" .. obj:str() .. "'")
-				TableInsert(data_meta,1,"parseTuples(): '" .. obj:parseTuples() .. "'")
-				TableInsert(data_meta,1,"getInt(): " .. obj:getInt())
-				TableInsert(data_meta,1,"\nsize(): " .. obj:size())
+				TableInsert(data_meta,1,"hash(): " .. self:ConvertValueToInfo(obj:hash()))
+				TableInsert(data_meta,1,"str(): " .. self:ConvertValueToInfo(obj:str()))
+				TableInsert(data_meta,1,"parseTuples(): " .. self:ConvertValueToInfo(obj:parseTuples()))
+				TableInsert(data_meta,1,"getInt(): " .. self:ConvertValueToInfo(obj:getInt()))
+				TableInsert(data_meta,1,"\nsize(): " .. self:ConvertValueToInfo(obj:size()))
 --~ 			elseif name == "HGE.File" then
 --~ 			elseif name == "HGE.ForEachReachable" then
 --~ 			elseif name == "RSAKey" then
@@ -1734,9 +1709,9 @@ function Examine:totextex(obj,obj_type)
 				TableInsert(data_meta,1,"\ngetmetatable():")
 				local is_t = IsT(obj)
 				if is_t then
-					TableInsert(data_meta,1,"THasArgs(): " .. tostring(THasArgs(obj)))
+					TableInsert(data_meta,1,"THasArgs(): " .. self:ConvertValueToInfo(THasArgs(obj)))
 					-- IsT returns the string id, but we'll just call it TGetID() to make it more obvious for people
-					TableInsert(data_meta,1,"\nTGetID(): " .. is_t)
+					TableInsert(data_meta,1,"\nTGetID(): " .. self:ConvertValueToInfo(is_t))
 					if str_not_translated and not UICity then
 						TableInsert(data_meta,1,S[302535920001500--[[userdata object probably needs UICity to translate.--]]])
 					end
@@ -1752,46 +1727,86 @@ function Examine:totextex(obj,obj_type)
 		local dbg_value
 
 		if blacklist then
-			dbg_value = "\ndebug.getinfo(): " .. DebugGetInfo(obj)
+			dbg_value = "\ngetinfo(): " .. DebugGetInfo(obj)
 		else
 			c = c + 1
 			totextex_res[c] = "\n"
 			local nups = getinfo(obj, "u").nups
 			if nups > 0 then
-				totextex_res,c = self:RetDebugUpValue(obj,totextex_res,c,nups)
+				c = self:RetDebugUpValue(obj,totextex_res,c,nups)
 			end
-			dbg_value = self:RetDebugGetinfo(obj)
+			dbg_value = self:RetDebugGetInfo(obj)
+			-- any args
+			local args = self:RetFuncVars(obj)
+			if args then
+				c = c + 1
+				totextex_res[c] = args
+			end
 		end
-		c = c + 1
-		totextex_res[c] = dbg_value
+		if dbg_value then
+			c = c + 1
+			totextex_res[c] = dbg_value
+		end
 
 	elseif obj_type == "thread" then
-		-- grab the thread "function"
-		if not blacklist then
-			local info = getinfo(obj, 1,"f")
-			if info and info.func then
-				c = c + 1
-				totextex_res[c] = "debug.getinfo(1,f): " .. self:valuetotextex(info.func)
-			end
-		end
 
 		c = c + 1
-		totextex_res[c] = "\n\n<color 255 255 255>"
+		totextex_res[c] = "<color 255 255 255>"
 			.. S[302535920001353--[[Thread info--]]]
 			.. ":\nIsValidThread(): "
-			.. tostring(IsValidThread(obj) or nil)
+			.. self:ConvertValueToInfo(IsValidThread(obj) or nil)
 			.. "\nGetThreadStatus(): "
-			.. (GetThreadStatus(obj) or "nil")
+			.. self:ConvertValueToInfo(GetThreadStatus(obj) or nil)
 			.. "\nIsGameTimeThread(): "
-			.. tostring(IsGameTimeThread(obj))
+			.. self:ConvertValueToInfo(IsGameTimeThread(obj))
 			.. "\nIsRealTimeThread(): "
-			.. tostring(IsRealTimeThread(obj))
-			.. "\nThreadHasFlags(): "
-			.. tostring(ThreadHasFlags(obj))
+			.. self:ConvertValueToInfo(IsRealTimeThread(obj))
+			.. "\nThreadHasFlags(), Persist: "
+			.. self:ConvertValueToInfo(ThreadHasFlags(obj,1048576) or false)
+			.. " OnMap: "
+			.. self:ConvertValueToInfo(ThreadHasFlags(obj,2097152) or false)
+			.. "\n"
+
+		local info_list = RetThreadInfo(obj)
+		-- needed for the table that's returned if blacklist is enabled (it starts at 1, getinfo starts at 0)
+		local starter = info_list[0] and 0 or 1
+
+		for i = starter, #info_list do
+			local info = info_list[i]
+			c = c + 1
+			totextex_res[c] = i .. ":"
+
+			c = c + 1
+			totextex_res[c] = "getinfo(" .. info.level .. "): "
+				.. info.name .. ", " .. self:ConvertValueToInfo(info.func)
+
+			if info.getlocal then
+				for i = 1, #info.getlocal do
+					local v = info.getlocal[i]
+					c = c + 1
+					totextex_res[c] = "getlocal(" .. v.level .. "," .. i .. "): " .. v.name .. ", "
+						.. self:ConvertValueToInfo(v.value)
+				end
+			end
+
+			if info.getupvalue then
+				for i = 1, #info.getupvalue do
+					local v = info.getupvalue[i]
+					c = c + 1
+					totextex_res[c] = "getupvalue(" .. i .. "): " .. v.name .. ", "
+						.. self:ConvertValueToInfo(v.value)
+				end
+			end
+		end
+		if info_list.gethook then
+			c = c + 1
+			totextex_res[c] = self:ConvertValueToInfo(info_list.gethook)
+		end
+
 	end
 
 	if not (obj == "nil" or is_valid_obj or obj_type == "userdata") and obj_metatable then
-		TableInsert(totextex_res, 1,"\t-- metatable: " .. self:valuetotextex(obj_metatable) .. " --")
+		TableInsert(totextex_res, 1,"\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
 	end
 
 	return TableConcat(totextex_res,"\n")
@@ -1876,7 +1891,10 @@ end
 function Examine:SetObj(startup)
 	local obj = self.obj
 
-	TableClear(self.onclick_handles)
+	-- reset the hyperlinks
+	TableClear(self.onclick_funcs)
+	TableClear(self.onclick_objs)
+	self.onclick_count = 0
 
 	if self.str_object then
 		-- check if obj string is a ref to an actual object
@@ -1969,18 +1987,24 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 
 	end -- istable
 
-	self.idCaption:SetTitle(self,self.title or name or obj)
+	if obj == "nil" then
+		self.idCaption:SetTitle(self,obj)
+	else
+		local name_type = obj_type .. ": "
+		local title = self.title or name or obj
+		self.idCaption:SetTitle(self,name_type .. title:gsub(name_type,""))
+	end
 
 	-- we add a slight delay, so the rest of the dialog shows up; for bigger lists like _G or MapGet(true)
 	if startup then
 		CreateRealTimeThread(function()
 			Sleep(5)
 --~ ChoGGi.ComFuncs.TickStart("Examine")
-			self.idText:SetText(self:totextex(obj,obj_type))
+			self.idText:SetText(self:ConvertObjToInfo(obj,obj_type))
 --~ ChoGGi.ComFuncs.TickEnd("Examine",self.name)
 		end)
 	else
-		self.idText:SetText(self:totextex(obj,obj_type))
+		self.idText:SetText(self:ConvertObjToInfo(obj,obj_type))
 	end
 
 	return obj_class

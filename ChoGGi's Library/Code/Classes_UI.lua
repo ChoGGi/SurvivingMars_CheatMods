@@ -737,24 +737,30 @@ ChoGGi_Window.SetInitPos = ChoGGi_Window.PostInit
 function ChoGGi_Window:idTextOnHyperLink(link, _, box, pos, button)
 	self = GetParentOfKind(self, "ChoGGi_Window")
 
+	link = tonumber(link)
+	local obj = self.onclick_objs[link]
+
+	-- we always examine on right-click
 	if button == "R" then
-		ChoGGi.ComFuncs.OpenInExamineDlg(self.onclick_objs[tonumber(link)],self)
+		ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
 	else
-		local handle = self.onclick_handles[tonumber(link)]
-		if handle then
-			handle(box, pos, button, self, self.onclick_objs[tonumber(link)])
+		local func = self.onclick_funcs[link]
+		if func then
+			func(box, pos, button, self, obj)
 		end
 	end
 
 end
 
-function ChoGGi_Window:HyperLink(obj, f, custom_color)
-	self.onclick_count = self.onclick_count + 1
+function ChoGGi_Window:HyperLink(obj, func)
+	local c = self.onclick_count
+	c = c + 1
 
-	self.onclick_handles[self.onclick_count] = f
-	self.onclick_objs[self.onclick_count] = obj
+	self.onclick_count = c
+	self.onclick_objs[c] = obj
+	self.onclick_funcs[c] = func
 
-	return (custom_color or "<color 150 170 250>") .. "<h " .. self.onclick_count .. " 230 195 50>"
+	return "<color 150 170 250><h " .. c .. " 230 195 50>"
 end
 
 -- scrollable textbox

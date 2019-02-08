@@ -1393,12 +1393,7 @@ function OnMsg.ClassesBuilt()
 			{
 				-- @function
 				"^@(.*)",
-				[[local str = %s
-if ChoGGi.blacklist then
-	print(ChoGGi.ComFuncs.DebugGetInfo(str))
-else
-	print(debug.getinfo(str))
-end]]
+				"print(ChoGGi.ComFuncs.DebugGetInfo(%s))",
 			},
 			{
 				-- @@type

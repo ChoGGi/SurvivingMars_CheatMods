@@ -9,6 +9,11 @@ local TableFind = table.find
 local CmpLower = CmpLower
 local print = print
 
+-- rebuild list of objects to examine when user changes settings
+function OnMsg.ChoGGi_SettingsUpdated()
+	ChoGGi.ConsoleFuncs.BuildExamineMenu()
+end
+
 function OnMsg.ClassesGenerate()
 	local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
@@ -211,53 +216,41 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	-- rebuild list of objects to examine when user changes settings
-	function OnMsg.ChoGGi_SettingsUpdated()
-		ChoGGi.ConsoleFuncs.BuildExamineMenu()
-	end
 
 	do -- ToggleLogErrors
-		-- the rest are saved at WriteLogs
-		ChoGGi.ComFuncs.SaveOrigFunc("__procall_errorhandler")
 		local GetStack = GetStack
 		local UserSettings = ChoGGi.UserSettings
 		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+		local traceback
+		if not blacklist then
+			traceback = debug.traceback
+		end
 
 		local function UpdateLogErrors(name)
 			_G[name] = function(...)
 				if ... ~= "\n" and ... ~= "\r\n" then
 					print("func",name,":",...)
-					GetStack(2, false, "\t")
+					if blacklist then
+						print(GetStack(2, false, "\t"))
+					else
+						print(traceback())
+					end
 					if UserSettings.ExamineErrors then
 						OpenInExamineDlg{...}
 					end
 				end
 			end
 		end
+
 		local funcs = {"error","OutputDebugString"}
-		function ChoGGi.ConsoleFuncs.ToggleLogErrors(which)
-			if which then
-				for i = 1, #funcs do
+		function ChoGGi.ConsoleFuncs.ToggleLogErrors(enable)
+			for i = 1, #funcs do
+				if enable then
 					UpdateLogErrors(funcs[i])
-				end
-				-- i replace this in AssetsRevision
-				if not testing then
-					__procall_errorhandler = function(...)
-						print("[LUA ERROR ECM]",
-							ChoGGi_OrigFuncs.__procall_errorhandler(...)
-						)
-						GetStack(2, false, "\t")
-						if UserSettings.ExamineErrors then
-							OpenInExamineDlg{...}
-						end
-					end
-				end
-			else
-				for i = 1, #funcs do
+				else
 					local name = funcs[i]
 					_G[name] = ChoGGi_OrigFuncs[name]
 				end
-				__procall_errorhandler = ChoGGi_OrigFuncs.__procall_errorhandler
 			end
 		end
 

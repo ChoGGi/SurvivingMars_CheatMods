@@ -1595,7 +1595,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 
 	do -- ResearchTech
 
-		local mystery_cost = {
+		local mystery_costs = {
 			SolExploration = 5000,
 			AlienDiggersDestruction = 20000,
 			AlienDiggersDetection = 20000,
@@ -1617,8 +1617,8 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 					points = 0,
 				}
 				-- instead of incrementing costs
-				if mystery_cost[id] then
-					city.tech_status[id].cost = mystery_cost[id]
+				if mystery_costs[id] then
+					city.tech_status[id].cost = mystery_costs[id]
 				end
 			end
 			if not table.find(city.tech_field.Mysteries,id) then
@@ -1719,6 +1719,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 
 				local g = _G
 				local UICity = g.UICity
+				local TechDef = g.TechDef
 				for i = 1, #choice do
 					local value = choice[i].value
 					if value == "Everything" then
@@ -1731,10 +1732,15 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 						ResearchTechGroup(func,"Breakthroughs")
 					elseif value == "AllMysteries" then
 						ResearchTechGroup(func,"Mysteries")
-					-- make sure it's an actual tech
-					elseif TechDef[value] then
-						AllowMysteryTech(value,UICity)
-						g[func](value)
+					else
+						-- make sure it's an actual tech
+						local tech = TechDef[value]
+						if tech then
+							if tech.group == "Mysteries" then
+								AllowMysteryTech(value,UICity)
+							end
+							g[func](value)
+						end
 					end
 				end
 
