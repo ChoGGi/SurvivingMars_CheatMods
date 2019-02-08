@@ -1,2 +1,5 @@
+v0.3
+Removed some log spam (thanks XxUnkn0wnxX).
+
 v0.2
 Code cleanup.

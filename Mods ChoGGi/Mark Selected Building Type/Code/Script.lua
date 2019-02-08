@@ -8,7 +8,7 @@ local MarkSelectedBuildingType = MarkSelectedBuildingType
 local IsValid = IsValid
 local TableIClear = table.iclear
 
-local beams = {}
+local beams = objlist:new()
 local green = green
 local InvalidPos = InvalidPos()
 
@@ -30,13 +30,8 @@ function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
 end
 
 function MarkSelectedBuildingType.ClearBeams()
-	for i = 1, #beams do
-		local beam = beams[i]
-		if IsValid(beam) then
-			beam:delete()
-		end
-	end
-	TableIClear(beams)
+	beams:Destroy()
+	beams:Clear()
 end
 
 local skips = {"Shuttle","Drone","Colonist","LifeSupportGridElement","ElectricityGridElement"}

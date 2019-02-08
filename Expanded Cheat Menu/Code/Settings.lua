@@ -77,6 +77,7 @@ function OnMsg.ClassesGenerate()
 		ExamineColourNum = "255 255 0",
 		ExamineColourBool = "0 255 0",
 		ExamineColourStr = "255 255 255",
+		ExamineColourNil = "175 175 175",
 		-- what cmd/editor to use with os.execute(cmd) when doing external editing
 		ExternalEditorCmd = "notepad \"%s\"",
 		-- where to store temp file
@@ -375,81 +376,27 @@ function OnMsg.ClassesGenerate()
 
 	end
 
-	-- ClassesBuilt is the earliest we can call Consts funcs
-	function OnMsg.ClassesBuilt()
-		local Defaults = ChoGGi.Defaults
-		local UserSettings = ChoGGi.UserSettings
-
-		-- if setting doesn't exist then add default
-		for key,value in pairs(Defaults) do
-			if type(UserSettings[key]) == "nil" then
-				UserSettings[key] = value
+	-- used to add old lists to new combined list
+	function ChoGGi.SettingFuncs.AddOldSettings(settings,old_cat,new_name)
+		local BuildingTemplates = BuildingTemplates
+		-- then loop through it
+		local old_cat = settings[old_cat] or empty_table
+		for key,value in pairs(old_cat) do
+			--it likely doesn't exist, but check first and add a blank table
+			if not settings.BuildingSettings[key] then
+				settings.BuildingSettings[key] = {}
 			end
-		end
-
-	--~ 	for key,value in pairs(Defaults.XXXXXXX) do
-	--~ 		if type(UserSettings.XXXXXXX[key]) == "nil" then
-	--~ 			UserSettings.XXXXXXX[key] = value
-	--~ 		end
-	--~ 	end
-	end
-
-	do -- AddOldSettings
-		-- used to add old lists to new combined list
-		local function AddOldSettings(UserSettings,old_cat,new_name)
-			local BuildingTemplates = BuildingTemplates
-			-- then loop through it
-			local old_cat = UserSettings[old_cat] or {}
-			for key,value in pairs(old_cat) do
-				--it likely doesn't exist, but check first and add a blank table
-				if not UserSettings.BuildingSettings[key] then
-					UserSettings.BuildingSettings[key] = {}
-				end
-				-- add it to vistors list?
-				if new_name == "capacity" and BuildingTemplates[key].max_visitors then
-					UserSettings.BuildingSettings[key].visitors = value
-				else
-					UserSettings.BuildingSettings[key][new_name] = value
-				end
-			end
-			-- remove old settings
-			UserSettings[old_cat] = nil
-			return true
-		end
-
-		function OnMsg.ModsReloaded()
-			local ChoGGi = ChoGGi
-			local next = next
-
-			-- remove empty entries in BuildingSettings
-			local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
-			if next(BuildingSettings) then
-				-- remove any empty building tables
-				for key,_ in pairs(BuildingSettings) do
-					if not next(BuildingSettings[key]) then
-						BuildingSettings[key] = nil
-					end
-				end
-			-- if empty table then new settings file or old settings
+			-- add it to vistors list?
+			if new_name == "capacity" and BuildingTemplates[key].max_visitors then
+				settings.BuildingSettings[key].visitors = value
 			else
-				-- then we check if this is an older version still using the old way of storing building settings and convert over to new
-				if not AddOldSettings(ChoGGi.UserSettings,"BuildingsCapacity","capacity") then
-					ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsCapacity")
-				end
-				if not AddOldSettings(ChoGGi.UserSettings,"BuildingsProduction","production") then
-					ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsProduction")
-				end
-			end
-
-			-- remove empty entries in CargoSettings
-			local CargoSettings = ChoGGi.UserSettings.CargoSettings or {}
-			for key,_ in pairs(CargoSettings) do
-				if not next(CargoSettings[key]) then
-					CargoSettings[key] = nil
-				end
+				settings.BuildingSettings[key][new_name] = value
 			end
 		end
-	end -- do
+		-- remove old settings
+		settings[old_cat] = nil
+		return true
+	end
 
 	-- we can local this now
 	local ChoGGi = ChoGGi
@@ -510,4 +457,59 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
 	end
 
+end
+
+-- ClassesBuilt is the earliest we can call Consts funcs (which i don't actually call in here anymore...)
+function OnMsg.ClassesBuilt()
+	local UserSettings = ChoGGi.UserSettings
+	-- if setting doesn't exist then add default
+	local Defaults = ChoGGi.Defaults
+	for key,value in pairs(Defaults) do
+		if type(UserSettings[key]) == "nil" then
+			UserSettings[key] = value
+		end
+	end
+
+--~ 	for key,value in pairs(Defaults.XXXXXXX) do
+--~ 		if type(UserSettings.XXXXXXX[key]) == "nil" then
+--~ 			UserSettings.XXXXXXX[key] = value
+--~ 		end
+--~ 	end
+end
+
+function OnMsg.ModsReloaded()
+	local ChoGGi = ChoGGi
+	local next = next
+
+	-- remove empty entries in BuildingSettings
+	local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
+	if next(BuildingSettings) then
+		-- remove any empty building tables
+		for key,_ in pairs(BuildingSettings) do
+			if not next(BuildingSettings[key]) then
+				BuildingSettings[key] = nil
+			end
+		end
+	-- if empty table then new settings file or old settings
+	else
+
+		-- i could probably stand to remove this now...
+
+		-- then we check if this is an older version still using the old way of storing building settings and convert over to new
+		if not ChoGGi.SettingFuncs.AddOldSettings(ChoGGi.UserSettings,"BuildingsCapacity","capacity") then
+			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsCapacity")
+		end
+		if not ChoGGi.SettingFuncs.AddOldSettings(ChoGGi.UserSettings,"BuildingsProduction","production") then
+			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsProduction")
+		end
+
+	end
+
+	-- remove empty entries in CargoSettings
+	local CargoSettings = ChoGGi.UserSettings.CargoSettings or {}
+	for key,_ in pairs(CargoSettings) do
+		if not next(CargoSettings[key]) then
+			CargoSettings[key] = nil
+		end
+	end
 end

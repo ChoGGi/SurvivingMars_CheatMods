@@ -10,7 +10,7 @@ local tunnel_lines = {}
 local two_pointer = {}
 local cls = "Tunnel"
 
-function OnMsg.SelectedObjChange(obj, prev)
+function OnMsg.SelectionAdded(obj)
 	if not obj:IsKindOf(cls) then
 		return
 	end

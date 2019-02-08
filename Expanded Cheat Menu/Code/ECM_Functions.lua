@@ -3,17 +3,19 @@
 local TableFind = table.find
 local TableClear = table.clear
 local TableIClear = table.iclear
-local type = type
-local pairs = pairs
+local type,pairs,next = type,pairs,next
 local PropObjGetProperty = PropObjGetProperty
 local Sleep = Sleep
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
 
-local getinfo
+local getinfo,getlocal,getupvalue,gethook
 local debug = PropObjGetProperty(_G,"debug")
 if debug then
 	getinfo = debug.getinfo
+	getlocal = debug.getlocal
+	getupvalue = debug.getupvalue
+	gethook = debug.gethook
 end
 
 function OnMsg.ClassesGenerate()
@@ -566,7 +568,7 @@ function OnMsg.ClassesGenerate()
 				for thread in pairs(ThreadsRegister) do
 					local info = getinfo(thread, 1, "Slfun")
 					if info then
-						table_list[info.short_src .. "(" .. info.linedefined .. ") " .. tostring(thread)] = thread
+						table_list[info.source .. "(" .. info.linedefined .. ") " .. tostring(thread)] = thread
 					end
 				end
 				Sleep(1000)
@@ -1397,19 +1399,142 @@ The func I use for spot_rot rounds to two decimal points...
 		return desktop[TableFind(desktop,"class",class)]
 	end
 
-	function ChoGGi.ComFuncs.SaveScreenshotsFromSaveGame()
-		if blacklist then
-			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.ComFuncs.SaveScreenshotsFromSaveGame"))
-			return
+	do -- RetThreadInfo/FindThreadFunc
+		local GedInspectorFormatObject = GedInspectorFormatObject
+		local IsValidThread = IsValidThread
+		local funcs
+
+		local function DbgGetlocal(thread,info,level)
+			local list = {}
+			local idx = 1
+			while true do
+				local name, value = getlocal(thread, level, idx)
+				if name == nil then
+					break
+				end
+				list[idx] = {
+					name = name ~= "" and name or S[302535920000723--[[Lua--]]],
+					value = value,
+					level = level,
+				}
+				idx = idx + 1
+			end
+			if next(list) then
+				return list
+			end
+		end
+		local function DbgGetupvalue(thread,info)
+			local list = {}
+			local idx = 1
+      while true do
+				local name, value = getupvalue(info.func, idx)
+				if name == nil then
+					break
+				end
+				list[idx] = {
+					name = name ~= "" and name or S[302535920000723--[[Lua--]]],
+					value = value,
+				}
+				idx = idx + 1
+			end
+			if next(list) then
+				return list
+			end
 		end
 
-		-- photomode.lua (if we get a save with gallery)
-		local files = io.listfiles("memoryscreenshot")
-		for i = 1, #files do
-			local file = files[i]
-			local _, name, ext = SplitPath(file)
-			AsyncCopyFile(file, "AppData/" .. name .. ext, "raw")
+		-- returns some info if blacklist enabled
+		function ChoGGi.ComFuncs.RetThreadInfo(thread)
+			if type(thread) ~= "thread" then
+				return empty_table
+			end
+			funcs = {}
+
+			if blacklist then
+				-- func expects an empty table
+				GedInspectedObjects[thread] = {}
+				-- returns a table of the funcs in the thread
+				local threads = GedInspectorFormatObject(thread).members
+				-- build a list of func name / level
+				for i = 1, #threads do
+					-- why'd i add the "= false"?
+					local temp = {level = false,func = false,name = false}
+
+					local t = threads[i]
+					for key,value in pairs(t) do
+						if key == "key" then
+							temp.level = value
+						elseif key == "value" then
+							-- split "func(line num) name" into two
+							local space = value:find(") ",1,true)
+							temp.func = value:sub(2,space - 1)
+							-- change unknown to Lua
+							local n = value:sub(space + 2,-2)
+							temp.name = n ~= "unknown name" and n or S[302535920000723--[[Lua--]]]
+						end
+					end
+
+					funcs[i] = temp
+				end
+
+			else
+				funcs.gethook = gethook(thread)
+
+				local info = getinfo(thread,0,"SLlfunt")
+				local nups = info.nups
+				if info and nups > 0 then
+					-- we start info at 0, nups starts at 1
+					nups = nups + 1
+
+					for i = 0, nups do
+						local info_got = getinfo(thread,i)
+						if info_got then
+							local name = info_got.name or info_got.what or S[302535920000723--[[Lua--]]]
+							funcs[i] = {
+								name = name,
+								func = info_got.func,
+								level = i,
+								getlocal = DbgGetlocal(thread,info_got,i),
+								getupvalue = DbgGetupvalue(thread,info_got),
+							}
+						end
+					end
+				end
+			end
+
+			return funcs
 		end
-	end
+
+		-- find/return func if str in func name
+		function ChoGGi.ComFuncs.FindThreadFunc(thread,str)
+			-- needs an empty table to work it's magic
+			GedInspectedObjects[thread] = {}
+			-- returns a table of the funcs in the thread
+			local threads = GedInspectorFormatObject(thread).members
+			for i = 1, #threads do
+				for key,value in pairs(threads[i]) do
+					if key == "value" and value:find_lower(str,1,true) then
+						return value
+					end
+				end
+			end
+		end
+
+	end -- do
+
+	do -- DebugGetInfo
+		local format_value = format_value
+
+		-- this replaces the func added in my library mod (which is just a straight format_value)
+		function ChoGGi.ComFuncs.DebugGetInfo(obj)
+			if blacklist then
+				return format_value(obj)
+			else
+				local info = getinfo(obj)
+				-- sub(2): removes @, Mars is ingame files, mods is mods...
+				return info.source:sub(2):gsub("Mars/",""):gsub("AppData/Mods/","")
+					.. "(" .. info.linedefined .. ")"
+			end
+		end
+	end -- do
 
 end

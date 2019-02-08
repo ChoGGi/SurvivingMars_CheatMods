@@ -8,16 +8,21 @@
 - Code cleanup, might cause some issues...
 - Hid AnimState/AttachSpots from cheats panel (they're more of an examine thingy).
 - Find Within uses one dialog for results (instead of a new one each time).
+- Errors In Console shows stacktrace along with error.
 - Examine:
 - > Slightly increased the delay when using flash ui.
 - > Added an exec code one liner text input, and a checkbox to toggle visibility of it.
 - > Coloured values (you can change them in the settings file, or change them back to white if that's your thing).
 - > Added particle name to ParSystem objects.
+- > Changed around how threads are displayed (upvalue/local in same examine).
+- > Shows obj type in titlebar.
+- > Refresh wasn't clearing out the hyperlink table (not good on something like `_G`).
 
 ### Fixed:
 - Cheats panel was using water instead of oxygen icons for oxygen need/free.
 - Debug>Reload Lua was giving an error in the log, still worked fine (thanks Dragon1358547).
 - Certain button tooltips in the Cheats menu toolbar were empty.
+- Using Research Tech for a single tech would cause it to show up in the Breakthroughs (thanks XxUnkn0wnxX).
 
 ## v12.2 (28 Jan 2019)
 ### Changed:

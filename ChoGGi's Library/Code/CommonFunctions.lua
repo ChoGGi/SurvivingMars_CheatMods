@@ -915,6 +915,11 @@ do -- RetType
 	-- used to check for some SM objects (Points/Boxes)
 	local IsBox = IsBox
 	local IsPoint = IsPoint
+	local IsQuaternion = IsQuaternion
+	local IsRandState = IsRandState
+	local IsGrid = IsGrid
+	local IsPStr = IsPStr
+
 	function ChoGGi.ComFuncs.RetType(obj)
 		if getmetatable(obj) then
 			if IsPoint(obj) then
@@ -923,7 +928,22 @@ do -- RetType
 			if IsBox(obj) then
 				return "Box"
 			end
+			if IsQuaternion(obj) then
+				return "Quaternion"
+			end
+			if IsRandState(obj) then
+				return "RandState"
+			end
+			if IsGrid(obj) then
+--~ 				return "Grid " .. obj:size() .. "x" .. obj:packing()
+				return "Grid"
+			end
+			if IsPStr(obj) then
+--~ 				return "pstr(len: " .. #obj .. ")"
+				return "PStr"
+			end
 		end
+		return type(obj)
 	end
 end -- do
 
@@ -1743,58 +1763,6 @@ do -- Rebuildshortcuts
 			end
 		end
 	end
-end -- do
-
-do -- RetThreadInfo/FindThreadFunc
-	local GedInspectorFormatObject = GedInspectorFormatObject
-	local IsValidThread = IsValidThread
-	-- returns some info if blacklist enabled
-	function ChoGGi.ComFuncs.RetThreadInfo(thread)
-		if not IsValidThread then
-			return
-		end
-		-- needs an empty table to work it's magic
-		GedInspectedObjects[thread] = {}
-		-- returns a table of the funcs in the thread
-		local threads = GedInspectorFormatObject(thread).members
-		-- build a list of func name / level
-		local funcs = {}
-		local c = 0
-		for i = 1, #threads do
-			c = c + 1
-			funcs[c] = {level = false,func = false}
-
-			for key,value in pairs(threads[i]) do
-				if key == "key" then
-					funcs[c].level = value
-				elseif key == "value" then
-					funcs[c].func = value
-				end
-			end
-		end
-		-- and last we merge it all into a string to return
-		local str = ""
-		for i = 1, #funcs do
-			str = str .. "\n" .. funcs[i].func .. " < debug.getinfo(" .. funcs[i].level .. ")"
-		end
-		return str:sub(2)
-	end
-
-	-- find/return func if str in func name
-	function ChoGGi.ComFuncs.FindThreadFunc(thread,str)
-		-- needs an empty table to work it's magic
-		GedInspectedObjects[thread] = {}
-		-- returns a table of the funcs in the thread
-		local threads = GedInspectorFormatObject(thread).members
-		for i = 1, #threads do
-			for key,value in pairs(threads[i]) do
-				if key == "value" and value:find_lower(str,1,true) then
-					return value
-				end
-			end
-		end
-	end
-
 end -- do
 
 do -- GetResearchedTechValue
