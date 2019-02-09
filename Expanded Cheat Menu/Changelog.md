@@ -7,6 +7,9 @@
 ### Changed:
 - Examine skips showing some thread info if it isn't a valid thread.
 
+### Fixed:
+- Delete Object didn't work with filled Mech Depots (thanks FirstGeekDanny).
+
 ## v12.4 (08 Feb 2019)
 ### Changed:
 - Moved Toggle cheats menu items from ECM>Misc to Cheats>Menu.

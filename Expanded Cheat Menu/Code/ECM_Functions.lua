@@ -26,6 +26,314 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 
+	do -- AddGridHandles
+		local function AddHandles(grid)
+			for i = 1, #grid do
+				grid[i].ChoGGi_GridHandle = i
+			end
+		end
+
+		function ChoGGi.ComFuncs.UpdateGridHandles()
+			local UICity = UICity
+			AddHandles(UICity.air)
+			AddHandles(UICity.electricity)
+			AddHandles(UICity.water)
+		end
+	end -- do
+
+	function ChoGGi.ComFuncs.DraggableCheatsMenu(which)
+		local XShortcutsTarget = XShortcutsTarget
+
+		if which then
+			-- add a bit of spacing above menu
+			XShortcutsTarget.idMenuBar:SetPadding(box(0, 6, 0, 0))
+
+			-- add move control to menu
+			XShortcutsTarget.idMoveControl = g_Classes.XMoveControl:new({
+				Id = "idMoveControl",
+				MinHeight = 6,
+				VAlign = "top",
+			}, XShortcutsTarget)
+
+			-- move the move control to the padding space we created above
+			DelayedCall(1, function()
+				-- needs a delay (cause we added the control?)
+				local height = XShortcutsTarget.idToolbar.box:maxy() * -1
+				XShortcutsTarget.idMoveControl:SetMargins(box(0,height,0,0))
+			end)
+		elseif XShortcutsTarget.idMoveControl then
+			-- remove my control and padding
+			XShortcutsTarget.idMoveControl:delete()
+			XShortcutsTarget.idMenuBar:SetPadding(box(0, 0, 0, 0))
+			-- restore to original pos by toggling menu vis
+			if ChoGGi.UserSettings.ShowCheatsMenu then
+				ChoGGi.ComFuncs.CheatsMenu_Toggle()
+				ChoGGi.ComFuncs.CheatsMenu_Toggle()
+			end
+		end
+	end
+
+	function ChoGGi.ComFuncs.SetCommanderBonuses(name)
+		local comm = table.find_value(MissionParams.idCommanderProfile.items,"id",g_CurrentMissionParams.idCommanderProfile)
+		if not comm then
+			return
+		end
+
+		local list = Presets.CommanderProfilePreset.Default[name] or ""
+		local c = #comm
+		for i = 1, #list do
+			-- i forgot why i had this in a thread...
+			CreateRealTimeThread(function()
+				c = c + 1
+				comm[c] = list[i]
+			end)
+		end
+	end
+
+	function ChoGGi.ComFuncs.SetSponsorBonuses(name)
+		local ChoGGi = ChoGGi
+
+		local sponsor = table.find_value(MissionParams.idMissionSponsor.items,"id",g_CurrentMissionParams.idMissionSponsor)
+		if not sponsor then
+			return
+		end
+
+		local bonus = Presets.MissionSponsorPreset.Default[name]
+		-- bonuses multiple sponsors have (CompareAmounts returns equal or larger amount)
+		if sponsor.cargo then
+			sponsor.cargo = ChoGGi.ComFuncs.CompareAmounts(sponsor.cargo,bonus.cargo)
+		end
+		if sponsor.additional_research_points then
+			sponsor.additional_research_points = ChoGGi.ComFuncs.CompareAmounts(sponsor.additional_research_points,bonus.additional_research_points)
+		end
+
+		local c = #sponsor
+		if name == "IMM" then
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","FoodPerRocketPassenger",
+				"Amount",9000
+			})
+		elseif name == "NASA" then
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","SponsorFundingPerInterval",
+				"Amount",500
+			})
+		elseif name == "BlueSun" then
+			sponsor.rocket_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.rocket_price,bonus.rocket_price)
+			sponsor.applicants_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_price,bonus.applicants_price)
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_GrantTech",{
+				"Field","Physics",
+				"Research","DeepMetalExtraction"
+			})
+		elseif name == "CNSA" then
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","ApplicantGenerationInterval",
+				"Percent",-50
+			})
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","MaxColonistsPerRocket",
+				"Amount",10
+			})
+		elseif name == "ISRO" then
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_GrantTech",{
+				"Field","Engineering",
+				"Research","LowGEngineering"
+			})
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","Concrete_cost_modifier",
+				"Percent",-20
+			})
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","Electronics_cost_modifier",
+				"Percent",-20
+			})
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","MachineParts_cost_modifier",
+				"Percent",-20
+			})
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","ApplicantsPoolStartingSize",
+				"Percent",50
+			})
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","Metals_cost_modifier",
+				"Percent",-20
+			})
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","Polymers_cost_modifier",
+				"Percent",-20
+			})
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","PreciousMetals_cost_modifier",
+				"Percent",-20
+			})
+		elseif name == "ESA" then
+			sponsor.funding_per_tech = ChoGGi.ComFuncs.CompareAmounts(sponsor.funding_per_tech,bonus.funding_per_tech)
+			sponsor.funding_per_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.funding_per_breakthrough,bonus.funding_per_breakthrough)
+		elseif name == "SpaceY" then
+			sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
+			sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
+			sponsor.modifier_name2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name2,bonus.bonusmodifier_name2)
+			sponsor.modifier_value2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value2,bonus.modifier_value2)
+			sponsor.modifier_name3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name3,bonus.modifier_name3)
+			sponsor.modifier_value3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value3,bonus.modifier_value3)
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","CommandCenterMaxDrones",
+				"Percent",20
+			})
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","starting_drones",
+				"Percent",4
+			})
+		elseif name == "NewArk" then
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
+				"Label","Consts",
+				"Prop","BirthThreshold",
+				"Percent",-50
+			})
+		elseif name == "Roscosmos" then
+			sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
+			sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
+			c = c + 1
+			sponsor[c] = PlaceObj("TechEffect_GrantTech",{
+				"Field","Robotics",
+				"Research","FueledExtractors"
+			})
+		elseif name == "Paradox" then
+			sponsor.applicants_per_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_per_breakthrough,bonus.applicants_per_breakthrough)
+			sponsor.anomaly_bonus_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.anomaly_bonus_breakthrough,bonus.anomaly_bonus_breakthrough)
+		end
+	end
+
+	do -- flightgrids
+		local Flight_DbgLines = {}
+		local Flight_DbgLines_c = 0
+		local type_tile = terrain.TypeTileSize()
+		local work_step = 16 * type_tile
+		local dbg_step = work_step / 4 -- 400
+		local PlacePolyline = PlacePolyline
+		local MulDivRound = MulDivRound
+		local InterpolateRGB = InterpolateRGB
+		local Clamp = Clamp
+		local AveragePoint2D = AveragePoint2D
+		local terrain_GetHeight = terrain.GetHeight
+
+		local function Flight_DbgRasterLine(pos1, pos0, zoffset)
+			pos1 = pos1 or GetTerrainCursor()
+			pos0 = pos0 or FindPassable(GetTerrainCursor())
+			zoffset = zoffset or 0
+			if not pos0 or not Flight_Height then
+				return
+			end
+			local diff = pos1 - pos0
+			local dist = diff:Len2D()
+			local steps = 1 + (dist + dbg_step - 1) / dbg_step
+			local points,colors,pointsc,colorsc = {},{},0,0
+			local max_diff = 10 * guim
+			for i = 1,steps do
+				local pos = pos0 + MulDivRound(pos1 - pos0, i - 1, steps - 1)
+				local height = Flight_Height:GetBilinear(pos, work_step, 0, 1) + zoffset
+				pointsc = pointsc + 1
+				colorsc = colorsc + 1
+				points[pointsc] = pos:SetZ(height)
+				colors[colorsc] = InterpolateRGB(
+					-1, -- white
+					-16711936, -- green
+					Clamp(height - zoffset - terrain_GetHeight(pos), 0, max_diff),
+					max_diff
+				)
+			end
+			local line = PlacePolyline(points, colors)
+			line:SetPos(AveragePoint2D(points))
+			Flight_DbgLines_c = Flight_DbgLines_c + 1
+			Flight_DbgLines[Flight_DbgLines_c] = line
+		end
+
+		local function Flight_DbgClear()
+			SuspendPassEdits("ChoGGi_Flight_DbgClear")
+			for i = 1, #Flight_DbgLines do
+				Flight_DbgLines[i]:delete()
+			end
+			ResumePassEdits("ChoGGi_Flight_DbgClear")
+			table.iclear(Flight_DbgLines)
+			Flight_DbgLines_c = 0
+		end
+
+		local grid_thread
+		function ChoGGi.ComFuncs.FlightGrid_Update(size,zoffset)
+			if grid_thread then
+				DeleteThread(grid_thread)
+				grid_thread = nil
+				Flight_DbgClear()
+			end
+			ChoGGi.ComFuncs.FlightGrid_Toggle(size,zoffset)
+		end
+		function ChoGGi.ComFuncs.FlightGrid_Toggle(size,zoffset)
+			if grid_thread then
+				DeleteThread(grid_thread)
+				grid_thread = nil
+				Flight_DbgClear()
+				return
+			end
+			grid_thread = CreateMapRealTimeThread(function()
+				local Sleep = Sleep
+				local orig_size = size or 256 * guim
+				local pos_c,pos_t,pos
+				while true do
+					pos_t = GetTerrainCursor()
+					if pos_c ~= pos_t then
+						pos_c = pos_t
+						pos = pos_t
+						Flight_DbgClear()
+						-- Flight_DbgRasterArea
+						size = orig_size
+						local steps = 1 + (size + dbg_step - 1) / dbg_step
+						size = steps * dbg_step
+						pos = pos - point(size, size) / 2
+						for y = 0,steps do
+							Flight_DbgRasterLine(pos + point(0, y*dbg_step), pos + point(size, y*dbg_step), zoffset)
+						end
+						for x = 0,steps do
+							Flight_DbgRasterLine(pos + point(x*dbg_step, 0), pos + point(x*dbg_step, size), zoffset)
+						end
+
+						Sleep(10)
+					end
+					Sleep(50)
+				end
+			end)
+		end
+	end -- do
+
 	function ChoGGi.ComFuncs.GenerateScreenshotFilename(prefix, folder, ext, just_name)
 		local match = string.match
 		local Max = Max
@@ -1387,10 +1695,11 @@ The func I use for spot_rot rounds to two decimal points...
 	end -- do
 
 	do -- MoveObjToGround
-		local GetHeight = terrain.GetHeight
+--~ 		local GetHeight = terrain.GetHeight
 		function ChoGGi.ComFuncs.MoveObjToGround(obj)
-			local t_height = GetHeight(obj:GetVisualPos())
-			obj:SetPos(obj:GetPos():SetZ(t_height))
+--~ 			local t_height = GetHeight(obj:GetVisualPos())
+--~ 			obj:SetPos(obj:GetPos():SetZ(t_height))
+			obj:SetPos(obj:GetPos():SetTerrainZ())
 		end
 	end -- do
 

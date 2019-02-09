@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v5.5 (Unreleased)
+- Removed some log spam from MsgPop added last update.
 
 ## v5.4 (08 Feb 2019)
 - Added a bit of colour to the dialogs.
