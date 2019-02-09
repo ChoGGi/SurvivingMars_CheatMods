@@ -237,7 +237,7 @@ local function StartupCode()
 			local alien = ChoGGi_Alien:new()
 		end
 --~ local pt = c()
---~ alien:SetPos(pt:SetZ(terrain.GetSurfaceHeight(pt)))
+--~ alien:SetPos(pt:SetTerrainZ())
 --~ ex(alien)
 	end
 end
