@@ -3,18 +3,10 @@
 -- i translate all the strings at startup, so it's a table lookup instead of a func call
 -- ~ ChoGGi.Strings[27]
 
-local tonumber = tonumber
-
-local TranslationTable = TranslationTable
-
 do -- Translate
-	local T,_InternalTranslate,procall = T,_InternalTranslate,procall
-	local type,select = type,select
-
-	-- some userdata'll ref UICity, which will fail if being used in main menu
-	local function SafeTrans(str)
-		return _InternalTranslate(str)
-	end
+	-- local some globals
+	local T,_InternalTranslate = T,_InternalTranslate
+	local type,select,pcall = type,select,pcall
 
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
@@ -30,8 +22,7 @@ do -- Translate
 		if UICity then
 			result,str = true,_InternalTranslate(str)
 		else
-			-- procall is pretty much pcall, but with logging
-			result,str = procall(SafeTrans,str)
+			result,str = pcall(_InternalTranslate,str)
 		end
 
 		-- just in case
@@ -48,31 +39,33 @@ do -- Translate
 		return str
 	end
 end -- do
-local Trans = ChoGGi.ComFuncs.Translate
-
--- devs didn't bother changing droid font to one that supports unicode, so we do this for not eng
--- pretty sure anything using droid is just for dev work so...
-if ChoGGi.lang ~= "English" then
-	-- first get the unicode font name
-
-	local f = TranslationTable[997--[[*font*, 15, aa--]]]
-	-- index of first , then crop out the rest
-	f = f:sub(1,f:find(",")-1)
-	ChoGGi.font = f
-
-	-- these four don't get to use non-eng fonts, cause screw you is why
-	-- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...
-	local TextStyles = TextStyles
-	TextStyles.Console.TextFont = f .. ", 18, bold, aa"
-	TextStyles.ConsoleLog.TextFont = f .. ", 13, bold, aa"
-	TextStyles.DevMenuBar.TextFont = f .. ", 18, aa"
-	TextStyles.GizmoText.TextFont = f .. ", 32, bold, aa"
-
-end
+local Translate = ChoGGi.ComFuncs.Translate
 
 function ChoGGi.ComFuncs.UpdateStringsList()
+	local ChoGGi = ChoGGi
+
+	ChoGGi.lang = GetLanguage()
+	-- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
+	if ChoGGi.lang ~= "English" then
+		-- first get the unicode font name
+
+		local f = TranslationTable[997--[[*font*, 15, aa--]]]
+		-- index of first , then crop out the rest
+		f = f:sub(1,f:find(",")-1)
+		ChoGGi.font = f
+
+		-- these four don't get to use non-eng fonts, cause screw you is why
+		-- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...
+		local TextStyles = TextStyles
+		TextStyles.Console.TextFont = f .. ", 18, bold, aa"
+		TextStyles.ConsoleLog.TextFont = f .. ", 13, bold, aa"
+		TextStyles.DevMenuBar.TextFont = f .. ", 18, aa"
+		TextStyles.GizmoText.TextFont = f .. ", 32, bold, aa"
+
+	end
+
 	-- one big table of all in-game strings and mine (i make a copy since we edit some strings below, and i want to make sure tag icons show up)
-	local strings = {}
+	local strings = ChoGGi.Strings or {}
 
 	-- build a list of tags with .tga
 	local tags = {}
@@ -82,13 +75,20 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 			tags[key] = value
 		end
 	end
+	-- any strings we want to manually translate, stuff with <em> and so on
+	local translate = {
+		[11] = true,
+		[12] = true,
+		[13] = true,
+		[14] = true,
+	}
 
 	local TranslationTable = TranslationTable
 	for key,value in pairs(TranslationTable) do
 		local tag_match = tags[value:match("<+([%a_]+)>+")]
 		-- translate strings with an image tag (<left_click> to <image UI/Infopanel/left_click.tga>)
-		if tag_match then
-			strings[key] = Trans(key)
+		if tag_match or translate[key] then
+			strings[key] = Translate(key)
 		-- the rest don't matter
 		else
 			strings[key] = value
@@ -121,4 +121,6 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 	ChoGGi.Strings = strings
 end
 -- always fire on startup
+--~ ChoGGi.ComFuncs.TickStart("TestTableIterate.1.Tick")
 ChoGGi.ComFuncs.UpdateStringsList()
+--~ ChoGGi.ComFuncs.TickEnd("TestTableIterate.1.Tick")

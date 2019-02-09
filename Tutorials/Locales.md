@@ -45,13 +45,9 @@ start changing strings, and then send you the file.
 I like to use this function for ease of use (and to make sure I always get a string back):
 
 do -- Translate
-	local T,_InternalTranslate,procall = T,_InternalTranslate,procall
-	local type,select = type,select
-
-	-- some userdata'll ref UICity, which will fail if being used in main menu
-	local function SafeTrans(str)
-		return _InternalTranslate(str)
-	end
+	-- local some globals
+	local T,_InternalTranslate = T,_InternalTranslate
+	local type,select,pcall = type,select,pcall
 
 	-- translate func that always returns a string
 	function Translate(...)
@@ -63,12 +59,11 @@ do -- Translate
 			str = ...
 		end
 
-		-- certain stuff will fail without this obj, so just pass it off to pcall and let it error out
+		-- certain stuff will fail without this obj, so best just pass it off to pcall and let it error out (if it's one of those)
 		if UICity then
 			result,str = true,_InternalTranslate(str)
 		else
-			-- procall is pretty much pcall, but with logging
-			result,str = procall(SafeTrans,str)
+			result,str = pcall(_InternalTranslate,str)
 		end
 
 		-- just in case
@@ -87,7 +82,7 @@ do -- Translate
 end -- do
 
 
-Translate(11111111110001029--[[The text from the csv, so I know what it means--]])
+Translate(11111111110001029--[[The text from the csv in a comment, so I know what it means--]])
 
 
 or use:

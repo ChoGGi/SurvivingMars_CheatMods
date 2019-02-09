@@ -37,24 +37,24 @@ function ChoGGi_DTMSlotsDlg:Init(parent, context)
 end
 
 function ChoGGi_DTMSlotsDlg:DrawContent()
-  local l_dbgDrawSlots = UIL.l_dbgDrawSlots
-  local levels = DTM.GetSlotLevels()
+	local l_dbgDrawSlots = UIL.l_dbgDrawSlots
+	local levels = DTM.GetSlotLevels()
 	local bbox = self.idInfo.content_box
-  self:Invalidate()
-  UIL.DrawSolidRect(bbox, 134217728)
-  local s = hr.DTM_MaxSlotSize
-  local i = 0
+	self:Invalidate()
+	UIL.DrawSolidRect(bbox, 134217728)
+	local s = hr.DTM_MaxSlotSize
+	local i = 0
 	local x,y = bbox:minxyz()
 	local w,h = bbox:sizexyz()
 	h = h / levels
-  while s >= hr.DTM_MinSlotSize do
-    local b = box(x,
+	while s >= hr.DTM_MinSlotSize do
+		local b = box(x,
 			y + i * h,
 			x + w,
 			y + (i + 1) * h
 		)
-    l_dbgDrawSlots(b, s)
-    s = s / 2
-    i = i + 1
-  end
+		l_dbgDrawSlots(b, s)
+		s = s / 2
+		i = i + 1
+	end
 end

@@ -1769,18 +1769,26 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		totextex_res[c] = "<color 255 255 255>"
 			.. S[302535920001353--[[Thread info--]]]
 			.. ":\nIsValidThread(): "
-			.. self:ConvertValueToInfo(IsValidThread(obj) or nil)
-			.. "\nGetThreadStatus(): "
-			.. self:ConvertValueToInfo(GetThreadStatus(obj) or nil)
-			.. "\nIsGameTimeThread(): "
-			.. self:ConvertValueToInfo(IsGameTimeThread(obj))
-			.. "\nIsRealTimeThread(): "
-			.. self:ConvertValueToInfo(IsRealTimeThread(obj))
-			.. "\nThreadHasFlags(), Persist: "
-			.. self:ConvertValueToInfo(ThreadHasFlags(obj,1048576) or false)
-			.. " OnMap: "
-			.. self:ConvertValueToInfo(ThreadHasFlags(obj,2097152) or false)
-			.. "\n"
+		local is_valid = IsValidThread(obj)
+		if is_valid then
+			totextex_res[c] = totextex_res[c]
+				.. self:ConvertValueToInfo(is_valid or nil)
+				.. "\nGetThreadStatus(): "
+				.. self:ConvertValueToInfo(GetThreadStatus(obj) or nil)
+				.. "\nIsGameTimeThread(): "
+				.. self:ConvertValueToInfo(IsGameTimeThread(obj))
+				.. "\nIsRealTimeThread(): "
+				.. self:ConvertValueToInfo(IsRealTimeThread(obj))
+				.. "\nThreadHasFlags(), Persist: "
+				.. self:ConvertValueToInfo(ThreadHasFlags(obj,1048576) or false)
+				.. " OnMap: "
+				.. self:ConvertValueToInfo(ThreadHasFlags(obj,2097152) or false)
+				.. "\n"
+		else
+			totextex_res[c] = totextex_res[c]
+				.. self:ConvertValueToInfo(is_valid or nil)
+				.. "\n"
+		end
 
 		local info_list = RetThreadInfo(obj)
 		-- needed for the table that's returned if blacklist is enabled (it starts at 1, getinfo starts at 0)

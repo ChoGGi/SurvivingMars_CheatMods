@@ -185,9 +185,9 @@ $example to translate userdata/stringbase
 you can paste chunks of code in the console to test out (no -- comments allowed, since DA update merges pasted lines):
  local BuildingTemplates = BuildingTemplates
  for _,bld in pairs(BuildingTemplates) do
-    local building = bld
-    print(bld.id)
-  end
+		local building = bld
+		print(bld.id)
+	end
 Or create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu.
 ```
 
@@ -196,13 +196,13 @@ Or create an "AppData/ECM Scripts" folder and any .lua files will show up in the
 ##### Known issues
 ```
 Going above 4096 capacity will make certain buildings laggy (houses/schools), and around 64K will crash.
-  >Don't go too high...
+	>Don't go too high...
 
 If you increase a number high enough it'll go negative.
-  >Don't go too high or you'll need to reset the value to default.
+	>Don't go too high or you'll need to reset the value to default.
 
 Depot capacities have been limited, so adding too much won't crash and delete your game when you save.
-  >Best I can tell is a height limit of 65536 for any objects.
+	>Best I can tell is a height limit of 65536 for any objects.
 
 SM will freeze when you disable ECM
 	> ECM hooks into a lot of stuff, if you don't want the game to freeze when you disable it then restart SM so mods aren't loaded and then disable it.

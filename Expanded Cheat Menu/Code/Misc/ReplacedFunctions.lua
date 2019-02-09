@@ -104,7 +104,7 @@ function OnMsg.ClassesGenerate()
 					print("Persist error:", errors.error or "unknown")
 					print("Persist stack:")
 					for j = 1, #errors do
-						print("   ", tostring(errors[j]))
+						print("	", tostring(errors[j]))
 					end
 				end
 

@@ -4,6 +4,8 @@
 ##### Dialogs: Monitor Info.
 
 ## v12.5 (Unreleased)
+### Changed:
+- Examine skips showing some thread info if it isn't a valid thread.
 
 ## v12.4 (08 Feb 2019)
 ### Changed:

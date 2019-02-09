@@ -607,10 +607,11 @@ This will switch to a new map.--]]],
 			return t,c
 		end
 
-		local missile_hint = S[302535920001372--[[Change the number on the end to fire that amount (ex: %s25).--]]]:format(S[302535920000246--[[Missle--]]])
-		local strike_hint = S[302535920001372--[[Change the number on the end to fire that amount (ex: %s25).--]]]:format(S[302535920001374--[[LightningStrike--]]])
-		local default_mapdata_type = S[302535920000250--[[Default mapdata type--]]]
 		function ChoGGi.MenuFuncs.DisastersTrigger()
+			local missile_hint = S[302535920001372--[[Change the number on the end to fire that amount (ex: %s25).--]]]:format(S[302535920000246--[[Missle--]]])
+			local strike_hint = S[302535920001372--[[Change the number on the end to fire that amount (ex: %s25).--]]]:format(S[302535920001374--[[LightningStrike--]]])
+			local default_mapdata_type = S[302535920000250--[[Default mapdata type--]]]
+
 			local ChoGGi = ChoGGi
 			local ItemList = {
 				{text = " " .. S[302535920000240--[[Stop--]]] .. " " .. S[3983--[[Disasters--]]],value = "Stop",hint = S[302535920000123--[[Stops most disasters--]]]},
@@ -729,7 +730,6 @@ This will switch to a new map.--]]],
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 25--[[Anomaly Scanning--]],
-			hint = 302535920000264--[[You can select multiple items.--]],
 			multisel = true,
 			skip_sort = true,
 		}
@@ -829,7 +829,8 @@ Otherwise you won't see anything."--]],
 			callback = CallBackFunc,
 			items = ItemList,
 			title = 302535920000263--[[Scan Map--]],
-			hint = 302535920000264--[[You can select multiple items.--]],
+			hint = 302535920000902--[["Anything with Repeatable in the tooltip will spawn more items on the map.
+Deep items will unlock the ability to exploit those resources."--]],
 			multisel = true,
 			skip_sort = true,
 		}
