@@ -1177,7 +1177,7 @@ function ChoGGi.ComFuncs.SettingState(setting,text)
 
 	if type(setting) == "string" and setting:find("%.") then
 		-- some of the menu items passed are "table.table.exists?.setting"
-		local obj = ChoGGi.ComFuncs.DotNameToObject(setting)
+		local obj = DotNameToObject(setting)
 		if obj then
 			setting = obj
 		else
@@ -1191,7 +1191,7 @@ function ChoGGi.ComFuncs.SettingState(setting,text)
 	end
 
 	if text then
-		return tostring(setting) .. ": " .. CheckText(S[text],text)
+		return "<color 0 255 0>" .. tostring(setting) .. "</color>: " .. CheckText(S[text],text)
 	else
 		return tostring(setting)
 	end
@@ -1351,7 +1351,7 @@ function ChoGGi.ComFuncs.UpdateDataTablesCargo()
 	local Tables = ChoGGi.Tables
 
 	-- update cargo resupply
-	Tables.Cargo = {}
+	TableClear(Tables.Cargo)
 	local ResupplyItemDefinitions = ResupplyItemDefinitions
 	for i = 1, #ResupplyItemDefinitions do
 		local def = ResupplyItemDefinitions[i]
@@ -1395,18 +1395,19 @@ do -- UpdateDataTables
 	}
 
 	function ChoGGi.ComFuncs.UpdateDataTables()
-		local Tables = ChoGGi.Tables
-		local c = 0
+		local c
 
-		Tables.Mystery = {}
-		Tables.NegativeTraits = {}
-		Tables.PositiveTraits = {}
-		Tables.OtherTraits = {}
-		Tables.ColonistAges = {}
-		Tables.ColonistGenders = {}
-		Tables.ColonistSpecializations = {}
-		Tables.ColonistBirthplaces = {}
-		Tables.Resources = {}
+		local Tables = ChoGGi.Tables
+		TableClear(Tables.CargoPresets)
+		TableClear(Tables.ColonistAges)
+		TableClear(Tables.ColonistBirthplaces)
+		TableClear(Tables.ColonistGenders)
+		TableClear(Tables.ColonistSpecializations)
+		TableClear(Tables.Mystery)
+		TableClear(Tables.NegativeTraits)
+		TableClear(Tables.OtherTraits)
+		TableClear(Tables.PositiveTraits)
+		TableClear(Tables.Resources)
 		Tables.SchoolTraits = const.SchoolTraits
 		Tables.SanatoriumTraits = const.SanatoriumTraits
 
@@ -1484,7 +1485,6 @@ do -- UpdateDataTables
 ------------- cargo
 
 		-- used to check defaults for cargo
-		Tables.CargoPresets = {}
 		c = 0
 		local CargoPreset = CargoPreset
 		for cargo_id,cargo in pairs(CargoPreset) do
@@ -1518,7 +1518,7 @@ local Random = ChoGGi.ComFuncs.Random
 --~ end
 
 function ChoGGi.ComFuncs.CreateSetting(str,setting_type)
-	local setting = ChoGGi.ComFuncs.DotNameToObject(str,nil,true)
+	local setting = DotNameToObject(str,nil,true)
 	if type(setting) == setting_type then
 		return true
 	end

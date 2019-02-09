@@ -22,37 +22,59 @@ Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_ve
 	end
 end
 
+function TerrainDeposit:CheatRefill()
+  self.amount = self.max_amount
+end
+
+local MapGet = MapGet
+local max_int = max_int
+local function BumpAmount(self)
+--~ 	local objs = UICity.labels[self.context.class] or ""
+	local objs = MapGet("map",self.context.class)
+	for i = 1, #objs do
+		-- bump the amounts
+		local new_amount = objs[i].max_amount * 5
+		if new_amount >= max_int then
+			objs[i].max_amount = max_int
+		else
+			objs[i].max_amount = new_amount
+		end
+		-- and fill them up
+		objs[i]:CheatRefill()
+		-- just for you XxUnkn0wnxX
+		objs[i].grade = "Very High"
+	end
+end
+
 function OnMsg.ClassesBuilt()
 	local XTemplates = XTemplates
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipSubsurfaceDeposit[1],"ChoGGi_MultipleAmount")
+	local d = XTemplates.ipSubsurfaceDeposit[1]
+	ChoGGi.ComFuncs.RemoveXTemplateSections(d,"ChoGGi_MultipleAmount")
 	-- check if the buttons were already added (you can have one for each, but meh)
-	XTemplates.ipSubsurfaceDeposit[1][#XTemplates.ipSubsurfaceDeposit[1]+1] = PlaceObj("XTemplateTemplate", {
+	d[#d+1] = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_MultipleAmount", true,
 		"__template", "InfopanelButton",
 		"Icon", "UI/Icons/Sections/Metals_2.tga",
-		"Title", [[5 Times the amount]],
-		"RolloverText", [[Clicking this once will add 5 times the amount of stored resources.]],
-		"RolloverTitle", "",
-		"RolloverHint",	"",
-		"OnPress", function()
-			---
-			local objs = UICity.labels.SubsurfaceDeposit or ""
-			for i = 1, #objs do
-				-- bump the amounts
-				local new_amount = objs[i].max_amount * 5
-				if new_amount >= max_int then
-					objs[i].max_amount = max_int
-				else
-					objs[i].max_amount = new_amount
-				end
-				-- and fill them up
-				objs[i]:CheatRefill()
-				-- just for you XxUnkn0wnxX
-				objs[i].grade = "Very High"
-			end
-			---
-		end,
+		"Title", [[5 Times the amount1]],
+		"RolloverText", [[Clicking this once will add 5 times the amount of stored resources to all deposits of the same type.]],
+		"RolloverTitle", "Info",
+		"RolloverHint",	T(0,"Activate <left_click>"),
+		"OnPress", BumpAmount,
+	})
+
+	d = XTemplates.ipTerrainDeposit[1]
+	ChoGGi.ComFuncs.RemoveXTemplateSections(d,"ChoGGi_MultipleAmount2")
+	-- check if the buttons were already added (you can have one for each, but meh)
+	d[1][#d+1] = PlaceObj("XTemplateTemplate", {
+		"ChoGGi_MultipleAmount2", true,
+		"__template", "InfopanelButton",
+		"Icon", "UI/Icons/Sections/Metals_2.tga",
+		"Title", [[5 Times the amount2]],
+		"RolloverText", [[Clicking this once will add 5 times the amount of stored resources to all deposits of the same type.]],
+		"RolloverTitle", "Info",
+		"RolloverHint",	T(0,"Activate <left_click>"),
+		"OnPress", BumpAmount,
 	})
 
 end

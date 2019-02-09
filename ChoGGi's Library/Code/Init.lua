@@ -150,8 +150,20 @@ ChoGGi = {
 	library_path = CurrentModPath,
 	-- stores my strings, and edited sm ones
 	Strings = false,
-	-- easier access to some data (traits,cargo,mysteries,colonist data)
-	Tables = false,
+	-- easier access to some data
+	Tables = {
+		Cargo = {},
+		CargoPresets = {},
+		ColonistAges = {},
+		ColonistBirthplaces = {},
+		ColonistGenders = {},
+		ColonistSpecializations = {},
+		Mystery = {},
+		NegativeTraits = {},
+		OtherTraits = {},
+		PositiveTraits = {},
+		Resources = {},
+	},
 	-- stuff that isn't ready for release, more print msgs, and some default settings
 	testing = false,
 	--
@@ -199,7 +211,7 @@ local ChoGGi = ChoGGi
 do -- translate
 	local locale_path = ChoGGi.library_path .. "Locales/"
 	-- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
-	if not LoadTranslationTableFile(locale_path .. GetLanguage() .. ".csv") then
+	if not LoadTranslationTableFile(locale_path .. ChoGGi.lang .. ".csv") then
 		LoadTranslationTableFile(locale_path .. "English.csv")
 	end
 

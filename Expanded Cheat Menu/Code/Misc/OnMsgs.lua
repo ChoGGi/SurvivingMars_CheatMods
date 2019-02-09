@@ -1160,10 +1160,9 @@ end
 
 -- this is when RocketPayload_Init is called (CityStart is too soon)
 function OnMsg.NewMapLoaded()
-	if not UICity then
-		return
+	if UICity then
+		ChoGGi.ComFuncs.UpdateDataTablesCargo()
 	end
-	ChoGGi.ComFuncs.UpdateDataTablesCargo()
 end
 
 function OnMsg.SaveGame()

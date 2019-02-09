@@ -1426,7 +1426,7 @@ The func I use for spot_rot rounds to two decimal points...
 		local function DbgGetupvalue(thread,info)
 			local list = {}
 			local idx = 1
-      while true do
+			while true do
 				local name, value = getupvalue(info.func, idx)
 				if name == nil then
 					break

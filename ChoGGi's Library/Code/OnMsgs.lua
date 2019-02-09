@@ -33,9 +33,19 @@ end
 -- needed for UICity and some others that aren't created till around then
 function OnMsg.LoadGame()
 	ChoGGi.ComFuncs.RetName_Update()
+	ChoGGi.ComFuncs.UpdateStringsList()
 end
 function OnMsg.CityStart()
 	ChoGGi.ComFuncs.RetName_Update()
+	ChoGGi.ComFuncs.UpdateStringsList()
+end
+-- now i should probably go around and change all my localed strings...
+function OnMsg.TranslationChanged()
+	ChoGGi.ComFuncs.UpdateStringsList()
+	ChoGGi.ComFuncs.UpdateDataTables()
+	if UICity then
+		ChoGGi.ComFuncs.UpdateDataTablesCargo()
+	end
 end
 
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100

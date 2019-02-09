@@ -70,7 +70,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 	-- update text on focus
 	self.idEdit.OnSetFocus = self.idEditOnSetFocus
 
-  self.idEdit:SetPlugins(self.plugin_names)
+	self.idEdit:SetPlugins(self.plugin_names)
 --~ 	self.idEdit.update_thread = self.idEdit:CreateThread("update_thread", self.idEdit.UpdateThread, self.idEdit)
 
 	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({

@@ -1,3 +1,7 @@
+v0.5
+Added concrete.
+The button now only works for that type of resource instead of all.
+
 v0.4
 Library update.
 
@@ -5,4 +9,4 @@ v0.3
 Cleaning up code (ChoGGi's Library).
 
 v0.2
-Da Vinci
+Da Vinci.
