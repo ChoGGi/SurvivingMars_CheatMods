@@ -8,6 +8,7 @@ local PropObjGetProperty = PropObjGetProperty
 local Sleep = Sleep
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
+local CreateRealTimeThread = CreateRealTimeThread
 
 local getinfo,getlocal,getupvalue,gethook
 local debug = PropObjGetProperty(_G,"debug")
@@ -606,6 +607,14 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- OpenInExamineDlg
+		local red = red
+		local function FlashTitlebar(title)
+			-- we don't need to worry about storing colour
+			local bg = title.Background
+			title:SetBackground(red)
+			Sleep(500)
+			title:SetBackground(bg)
+		end
 		local function OpenInExamineDlg(obj,parent,title)
 
 			-- workaround for g_ExamineDlgs
@@ -616,9 +625,10 @@ function OnMsg.ClassesGenerate()
 			-- already examining, so focus and return ( :new() doesn't return the opened dialog).
 			local opened = g_ExamineDlgs[obj]
 			if opened then
-				opened.idMoveControl:SetFocus()
-				-- also hit refresh, cause i'm that kinda guy
+				-- hit refresh, cause i'm that kinda guy
 				opened:RefreshExamine()
+				-- and flash the titlebar
+				CreateRealTimeThread(FlashTitlebar,opened.idMoveControl)
 				return opened
 			end
 
@@ -1089,17 +1099,31 @@ function OnMsg.ClassesGenerate()
 		end
 		local images = ChoGGi.ComFuncs.RetFilesInFolder("AppData/Logos",ext or ".png")
 		if images then
+			-- returns error msgs and prints in console
+			local TGetID = TGetID
+			local fake_ged_socket = {
+				ShowMessage = function(title,msg)
+					if TGetID(title) == 12061 then
+						print("ShowMessage",Trans(title),Trans(msg))
+					end
+				end,
+			}
+
 			local ModItemDecalEntity = ModItemDecalEntity
 			local Import = ModItemDecalEntity.Import
 			local ConvertToOSPath = ConvertToOSPath
 			for i = 1, #images do
 				local filename = ConvertToOSPath(images[i].path)
-				Import(nil,ModItemDecalEntity:new{
-					entity_name = images[i].name,
-					name = images[i].name,
-					filename = filename:gsub("\\","/"),
-					mod = mod,
-				})
+				Import(nil,
+					ModItemDecalEntity:new{
+						entity_name = images[i].name,
+						name = images[i].name,
+						filename = filename:gsub("\\","/"),
+						mod = mod,
+					},
+					nil,
+					fake_ged_socket
+				)
 				print(filename)
 			end
 		end
@@ -1670,7 +1694,7 @@ The func I use for spot_rot rounds to two decimal points...
 			return lines
 		end
 
-		function ChoGGi.ComFuncs.BBoxLines_Toggle(obj,colour,step,offset)
+		function ChoGGi.ComFuncs.BBoxLines_Toggle(obj,func,args,colour,step,offset)
 			obj = obj or ChoGGi.ComFuncs.SelObject()
 			if not IsValid(obj) then
 				return
@@ -1681,8 +1705,18 @@ The func I use for spot_rot rounds to two decimal points...
 				obj.ChoGGi_bboxobj:Destroy()
 				obj.ChoGGi_bboxobj = nil
 			else
-				local bbox = obj.GetObjectBBox and obj:GetObjectBBox()
---~ 				local bbox = ObjectHierarchyBBox(s)
+				local bbox
+				if func then
+					local g = _G[func]
+					if g then
+						bbox = g(obj,args)
+					else
+						bbox = obj[func] and obj[func](obj,args)
+					end
+				end
+				if not bbox then
+					bbox = obj.GetObjectBBox and obj:GetObjectBBox(args)
+				end
 				if bbox then
 					obj.ChoGGi_bboxobj = PlaceTerrainBox(
 						bbox,

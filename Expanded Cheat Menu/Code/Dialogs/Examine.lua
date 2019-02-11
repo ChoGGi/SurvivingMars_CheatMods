@@ -708,12 +708,17 @@ local idSearchTextOnKbdKeyDown_table = {
 				self:FindNext()
 			end)
 		end
+		return true
 	end,
 }
 function Examine:idSearchTextOnKbdKeyDown(vk,...)
 	local func = idSearchTextOnKbdKeyDown_table[vk]
 	if func then
-		return func(GetRootDialog(self))
+		local ret = func(GetRootDialog(self))
+		if ret == true then
+			return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
+		end
+		return ret
 	end
 	return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
 end
@@ -777,7 +782,7 @@ function Examine:BuildObjectMenuPopup()
 			hint = S[302535920001473--[[Toggle showing object's bbox (changes depending on movement).--]]],
 			image = "CommonAssets/UI/Menu/SelectionEditor.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.BBoxLines_Toggle(self.obj_ref)
+				self:ShowBBoxList()
 			end,
 		},
 		{name = S[302535920000449--[[Attach Spots Toggle--]]],
@@ -1068,18 +1073,12 @@ Which you can then mess around with some more in the console."--]]],
 		},
 	}
 	if testing then
-		table.insert(list,9,{name = S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]]),
+		local name = S[327465361219--[[Edit--]]] .. " " .. S[298035641454--[[Object--]]] .. " " .. S[302535920001432--[[3D--]]]
+		table.insert(list,9,{name = name,
 			hint = S[302535920001433--[[Fiddle with object angle/axis/pos and so forth.--]]],
 			image = "CommonAssets/UI/Menu/Axis.tga",
 			clicked = function()
-				if testing then
 				ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(self.obj_ref,self)
-				else
-					ChoGGi.ComFuncs.MsgPopup(
-						"Ain't done yet...",
-						S[302535920001432--[[%s %s 3D--]]]:format(S[327465361219--[[Edit--]]],S[298035641454--[[Object--]]])
-					)
-				end
 			end,
 		})
 	end
@@ -1177,6 +1176,42 @@ function Examine:FlashWindow()
 		end
 
 	end)
+end
+
+function Examine:ShowBBoxList()
+	if self.obj_ref.ChoGGi_bboxobj then
+		self.obj_ref.ChoGGi_bboxobj:Destroy()
+		self.obj_ref.ChoGGi_bboxobj = nil
+	end
+
+	local ItemList = {
+		{text = "GetObjectBBox",value = "GetObjectBBox"},
+		{text = "ObjectHierarchyBBox",value = "ObjectHierarchyBBox"},
+		{text = "ObjectHierarchyBBox + efCollision",value = "ObjectHierarchyBBox",args = const.efCollision},
+		{text = "GetSurfacesBBox",value = "GetSurfacesBBox"},
+		-- 0,0,0,0,0,0,0,0
+--~ 		{text = "GetObjectsBBox",value = "GetObjectsBBox"},
+--~ 		{text = "GetEntityBoundingBox",value = "GetEntityBoundingBox"},
+		-- relative nums
+--~ 		{text = "GetEntitySurfacesBBox",value = "GetEntitySurfacesBBox"},
+--~ 		{text = "GetEntityBBox",value = "GetEntityBBox"},
+	}
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		choice = choice[1]
+		ChoGGi.ComFuncs.BBoxLines_Toggle(self.obj_ref,choice.value,choice.args)
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = S[302535920001472--[[BBox Toggle--]]] .. ": " .. RetName(self.obj_ref),
+		hint = 302535920000264--[[Defaults to :GetObjectBBox() if it can't find a func.--]],
+		skip_sort = true,
+	}
 end
 
 function Examine:SetTranspMode(toggle)
@@ -1483,22 +1518,15 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		if testing and not blacklist then
 			local dbg_metatable = debug.getmetatable(obj)
 			if obj_metatable ~= dbg_metatable then
-				print("DIFFERENT METATABLE",self.name)
+				print("ECM Sezs DIFFERENT METATABLE",self.name)
 			end
 		end
 
 	elseif obj_type == "function" then
---~ 		if blacklist then
---~ 			c = c + 1
---~ 			totextex_res[c] = self:ConvertValueToInfo(tostring(obj))
---~ 			c = c + 1
---~ 			totextex_res[c] = self:ConvertValueToInfo(DebugGetInfo(obj))
---~ 		else
-			c = c + 1
-			totextex_res[c] = self:ConvertValueToInfo(tostring(obj))
-			c = c + 1
-			totextex_res[c] = self:ConvertValueToInfo(obj)
---~ 		end
+		c = c + 1
+		totextex_res[c] = self:ConvertValueToInfo(tostring(obj))
+		c = c + 1
+		totextex_res[c] = self:ConvertValueToInfo(obj)
 	end
 
 	-- sort backwards
@@ -1551,11 +1579,11 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			local pos = obj:GetVisualPos() + obj:GetStepVector() * obj:TimeToAnimEnd() / obj:GetAnimDuration()
 			TableInsert(totextex_res, 2,
 				GetStateName(obj:GetState())
-				.. ", step:"
+				.. ", step: "
 				.. self:HyperLink(obj,function()
 					ShowObj(pos)
 				end)
-				.. tostring(obj:GetStepVector(obj:GetState(),0))
+				.. self:ConvertValueToInfo(obj:GetStepVector(obj:GetState(),0))
 				.. HLEnd
 			)
 		end
@@ -1568,7 +1596,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	elseif obj_type == "string" then
 		if obj == "nil" then
 			c = c + 1
-			totextex_res[c] = tostring(obj)
+			totextex_res[c] = obj
 		else
 			c = c + 1
 			totextex_res[c] = "'" .. obj .. "'"
@@ -1578,7 +1606,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		local trans_str = Trans(obj)
 		-- might as well just return userdata instead of these
 		if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
-			trans_str = tostring(obj)
+			trans_str = self:ConvertValueToInfo(obj)
 			str_not_translated = true
 		else
 			-- the </color> is to make sure it doesn't bleed into other text
@@ -1586,7 +1614,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			for _ = 1, colour_cnt do
 				trans_str = trans_str .. "</color>"
 			end
-			trans_str = tostring(obj) .. " = '" .. trans_str .. "'"
+			trans_str = self:ConvertValueToInfo(obj) .. " = '" .. trans_str .. "'"
 		end
 		c = c + 1
 		totextex_res[c] = trans_str

@@ -326,6 +326,14 @@ function OnMsg.ClassesGenerate()
 					SetHint(action,S[8039--[[Trait: Idiot (can cause a malfunction)--]]] .. "...\n" .. S[53--[[Malfunction--]]] .. "?")
 				end
 
+			elseif aid == "Unfreeze" then
+				if obj:IsKindOf("DroneHub") or obj.destroyed then
+					action.ActionId = ""
+				else
+					SetHint(action,S[302535920000903--[[Unfreeze frozen object.--]]])
+				end
+
+
 			elseif aid == "Destroy" then
 				if obj:IsKindOf("SupplyRocket") or obj.destroyed then
 					action.ActionId = ""

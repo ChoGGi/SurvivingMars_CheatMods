@@ -109,7 +109,7 @@ DefineClass.RCBulldozer = {
 	-- store radius here, so we're not updating it all the time
 	visual_circle_size = false,
 	-- show the pin info
-	pin_rollover = T(0,"<StatusUpdate>"),
+	pin_rollover = T(0,"<ui_command>"),
 	-- change texture when dozing
 	texture_terrain = table.find(TerrainTextures, "name", "Dig"),
 	-- used to place the circle
@@ -145,7 +145,8 @@ function RCBulldozer:GameInit()
 --~ 	self.shape_obj = HexOutlineShapes.DomeMega
 end
 
-function RCBulldozer:GetStatusUpdate()
+--~ function RCBulldozer:GetStatusUpdate()
+function RCBulldozer:Getui_command()
 	return TableConcat({self.status_text}, "<newline><left>")
 end
 

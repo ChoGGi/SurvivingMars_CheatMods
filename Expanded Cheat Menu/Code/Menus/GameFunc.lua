@@ -66,8 +66,7 @@ function OnMsg.ClassesGenerate()
 		local hint_loop = S[302535920001109--[[Loops though and makes all %s visible.--]]]
 
 		local ItemList = {
-			{
-			text = S[302535920001084--[[Reset--]]] .. ": " .. S[3984--[[Anomalies--]]],value = "Anomaly",hint = hint_loop:format(S[3984--[[Anomalies--]]])},
+			{text = S[302535920001084--[[Reset--]]] .. ": " .. S[3984--[[Anomalies--]]],value = "Anomaly",hint = hint_loop:format(S[3984--[[Anomalies--]]])},
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. S[3980--[[Buildings--]]],value = "Building",hint = hint_loop:format(S[3980--[[Buildings--]]])},
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. S[302535920000157--[[Cables & Pipes--]]],value = "GridElements",hint = hint_loop:format(S[302535920000157--[[Cables & Pipes--]]])},
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. S[547--[[Colonists--]]],value = "Colonists",hint = hint_loop:format(S[547--[[Colonists--]]])},

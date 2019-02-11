@@ -5,7 +5,10 @@
 
 ## v12.5 (Unreleased)
 ### Changed:
-- Examine skips showing some thread info if it isn't a valid thread.
+- Examine:
+- > Skips showing some thread info if it isn't a valid thread.
+- > Added some more options to BBox Toggle.
+- > Instead of changing focus to an already opened examine dialog, it'll now flash the titlebar red.
 
 ### Fixed:
 - Delete Object didn't work with filled Mech Depots (thanks FirstGeekDanny).

@@ -59,7 +59,7 @@ local GetUIRollover = ResourceProducer.GetUISectionResourceProducerRollover
 
 local name = [[RC Miner]]
 local description = [[Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile.]]
-local display_icon = StringFormat("%sUI/rover_combat.png",CurrentModPath)
+local display_icon = CurrentModPath .. "UI/rover_combat.png"
 
 -- if you want to change the entity, scale, animation
 --~ entity = "Lama"
@@ -159,7 +159,7 @@ function PortableMiner:GameInit()
 
 	-- show the pin info
 	self.producers = {self}
-	self.pin_rollover = T(0,"<CargoManifest>")
+	self.pin_rollover = T(0,"<ui_command>")
 end
 
 -- retrieves prod info
@@ -169,7 +169,8 @@ local function BuildProdInfo(self,info,res_name)
 			resource = res_name, LifetimeProduction = self.lifetime_table[res_name], self}
 	end
 end
-function PortableMiner:GetCargoManifest()
+--~ function PortableMiner:GetCargoManifest()
+function PortableMiner:Getui_command()
 	local info = {}
 	-- add life time info from the not selected reses
 	BuildProdInfo(self,info,"Metals")
@@ -527,36 +528,27 @@ function OnMsg.ClassesPostprocess()
 	end
 end
 
--- add some prod info to selection panel
-function OnMsg.ClassesBuilt()
-	local rover = XTemplates.ipRover[1]
+--~ -- add some prod info to selection panel
+--~ function OnMsg.ClassesBuilt()
+--~ 	local rover = XTemplates.ipRover[1]
 
-	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_PortableMiner_Prod",true)
+--~ 	-- check for and remove existing template
+--~ 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_PortableMiner_Prod",true)
 
---~ 	-- we want to insert below status
---~ 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
---~ 	if status then
---~ 		status = status + 1
---~ 	else
---~ 		-- screw it stick it at the end
---~ 		status = #rover
---~ 	end
-
-	table.insert(
-		rover,
-		#rover,
-		PlaceObj('XTemplateTemplate', {
-			"ChoGGi_Template_PortableMiner_Prod", true,
-			"__context_of_kind", "PortableMiner",
-			"__template", "InfopanelSection",
-			"Title", T(80, "Production"),
-			"Icon", "UI/Icons/Sections/storage.tga",
-		}, {
-			PlaceObj("XTemplateTemplate", {
-				"__template", "InfopanelText",
-				"Text",  T(0,"<CargoManifest>"),
-			}),
-		})
-	)
-end
+--~ 	table.insert(
+--~ 		rover,
+--~ 		#rover,
+--~ 		PlaceObj('XTemplateTemplate', {
+--~ 			"ChoGGi_Template_PortableMiner_Prod", true,
+--~ 			"__context_of_kind", "PortableMiner",
+--~ 			"__template", "InfopanelSection",
+--~ 			"Title", T(80, "Production"),
+--~ 			"Icon", "UI/Icons/Sections/storage.tga",
+--~ 		}, {
+--~ 			PlaceObj("XTemplateTemplate", {
+--~ 				"__template", "InfopanelText",
+--~ 				"Text",  T(0,"<CargoManifest>"),
+--~ 			}),
+--~ 		})
+--~ 	)
+--~ end
