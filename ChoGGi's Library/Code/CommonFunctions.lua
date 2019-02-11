@@ -145,7 +145,7 @@ do -- RetName
 
 		if obj_type == "string" then
 			return obj
-		elseif obj_type == "number" then
+		elseif obj_type == "number" or obj_type == "boolean" then
 			return tostring(obj)
 
 		-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env has it's own __index and causes the game to log a warning
@@ -183,7 +183,7 @@ do -- RetName
 			elseif PropObjGetProperty(obj,"template_class") and obj.template_class ~= "" then
 				name = obj.template_class
 			-- entity
-			elseif PropObjGetProperty(obj,"entity") and obj.entity ~= ""  then
+			elseif PropObjGetProperty(obj,"entity") and obj.entity ~= "" and type(obj.entity) =="string" then
 				name = obj.entity
 			-- class
 			elseif PropObjGetProperty(obj,"class") and obj.class ~= "" then
@@ -192,6 +192,9 @@ do -- RetName
 			-- added this here as doing tostring lags the crap outta kansas if this is a large objlist
 			elseif IsObjlist(obj) then
 				name = "objlist"
+
+			else
+				name = tostring(obj)
 			end
 
 		elseif obj_type == "userdata" then
@@ -206,8 +209,8 @@ do -- RetName
 
 		end
 
-		-- falling back baby
-		return name or tostring(obj)
+		-- falling back baby (tostr(name) just in case a table. isn't a string)
+		return tostring(name or obj)
 	end
 end -- do
 local RetName = ChoGGi.ComFuncs.RetName

@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000264,Defaults to :GetObjectBBox() if it can't find a func.,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
@@ -257,6 +256,15 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000870,Shows mod log msgs in an examine dialog.,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920001521,Lua source file not found.,
+302535920001519,View Source,
+302535920001520,"Opens source code in text viewer (if it exists):
+Mods work fine, as well as HG github code. HG code needs to be placed at: ""%sSource""
+Example: ""Source/Lua/_const.lua""
+
+Decompiled code won't scroll correctly as the line numbers are different.
+Needs HelperMod enabled.",
+302535920000264,Defaults to :GetObjectBBox() if it can't find a func.,
 302535920001514,Toggle visibility of an input box for executing code.,
 302535920001515,Press enter to execute code.,
 302535920001516,o = examined object,

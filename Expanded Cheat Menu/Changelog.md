@@ -6,12 +6,15 @@
 ## v12.5 (Unreleased)
 ### Changed:
 - Examine:
+- > Added a View Source toolbar button for Lua functions (only works decently on source from mods/HG github code).
+- > Stick the HG code in AppData/Source (see button tooltip for more info).
 - > Skips showing some thread info if it isn't a valid thread.
 - > Added some more options to BBox Toggle.
 - > Instead of changing focus to an already opened examine dialog, it'll now flash the titlebar red.
 
 ### Fixed:
 - Delete Object didn't work with filled Mech Depots (thanks FirstGeekDanny).
+- Error examining EntityData (and probably some other tables), another issue from the code cleanup.
 
 ## v12.4 (08 Feb 2019)
 ### Changed:
