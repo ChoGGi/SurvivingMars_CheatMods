@@ -66,10 +66,11 @@ function RCMechanic:GameInit()
 	self:SetColorizationMaterial(3, -5694693, -128, 48)
 
 	-- show the pin info
-	self.pin_rollover = T(0,"<StatusUpdate>")
+	self.pin_rollover = T(0,"<ui_command>")
 end
 
-function RCMechanic:GetStatusUpdate()
+--~ function RCMechanic:GetStatusUpdate()
+function RCMechanic:Getui_command()
 --~ 	local info =
 --~ 	info[1] = "show what it's doing..."
 	return table.concat({self.status_text}, "<newline><left>")
@@ -219,7 +220,7 @@ end
 --~ 		}, {
 --~ 			PlaceObj("XTemplateTemplate", {
 --~ 				"__template", "InfopanelText",
---~ 				"Text",  T(0,"<StatusUpdate>"),
+--~ 				"Text",  T(0,"<ui_command>"),
 --~ 			}),
 --~ 		})
 --~ 	)

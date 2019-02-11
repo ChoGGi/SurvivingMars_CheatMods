@@ -55,23 +55,24 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	-- do some stuff
-	local Platform = Platform
-	Platform.editor = true
-	-- fixes UpdateInterface nil value in editor mode
-	local d_before = Platform.developer
-	Platform.developer = true
-	editor.LoadPlaceObjConfig()
-	Platform.developer = d_before
-	-- needed for HashLogToTable(), SM was planning to have multiple cities (or from a past game from this engine)?
-	if not rawget(_G,"g_Cities") then
-		GlobalVar("g_Cities",{})
-	end
-	-- editor wants a table
-	GlobalVar("g_revision_map",{})
-	-- stops some log spam in editor (function doesn't exist in SM)
-	UpdateMapRevision = empty_func
-	AsyncGetSourceInfo = empty_func
+	do -- do some stuff
+		local Platform = Platform
+		Platform.editor = true
+		-- fixes UpdateInterface nil value in editor mode
+		local d_before = Platform.developer
+		Platform.developer = true
+		editor.LoadPlaceObjConfig()
+		Platform.developer = d_before
+		-- needed for HashLogToTable(), SM was planning to have multiple cities (or from a past game from this engine)?
+		if not rawget(_G,"g_Cities") then
+			GlobalVar("g_Cities",{})
+		end
+		-- editor wants a table
+		GlobalVar("g_revision_map",{})
+		-- stops some log spam in editor (function doesn't exist in SM)
+		UpdateMapRevision = empty_func
+		AsyncGetSourceInfo = empty_func
+	end -- do
 
 	do -- funcs without a class
 		SaveOrigFunc("GetFuncSourceString")

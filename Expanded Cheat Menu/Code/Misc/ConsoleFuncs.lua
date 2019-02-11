@@ -218,7 +218,9 @@ function OnMsg.ClassesGenerate()
 
 
 	do -- ToggleLogErrors
+		local select,type = select,type
 		local GetStack = GetStack
+		local CurrentThread = CurrentThread
 		local UserSettings = ChoGGi.UserSettings
 		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 		local traceback
@@ -233,10 +235,19 @@ function OnMsg.ClassesGenerate()
 					if blacklist then
 						print(GetStack(2, false, "\t"))
 					else
+--~ 						print(traceback(CurrentThread(),nil,2))
 						print(traceback())
 					end
 					if UserSettings.ExamineErrors then
-						OpenInExamineDlg{...}
+						if testing then
+							local err_type = type(select(1,...))
+							-- not sure if it can ever be a func...?
+							if err_type == "thread" or err_type == "function" then
+								OpenInExamineDlg{...,"\n\n\n\n",err_type}
+							end
+						else
+							OpenInExamineDlg{...}
+						end
 					end
 				end
 			end

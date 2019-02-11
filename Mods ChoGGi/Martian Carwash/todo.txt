@@ -1,1 +1,2 @@
+add warning to selection panel during dust storm
 find some water? particle to use
