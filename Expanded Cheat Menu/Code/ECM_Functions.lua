@@ -1618,6 +1618,7 @@ The func I use for spot_rot rounds to two decimal points...
 		local PlacePolyline = PlacePolyline
 		local guim = guim
 		local objlist = objlist
+		local IsBox = IsBox
 --~ 		local GetHeight = terrain.GetHeight
 
 		-- stores objlist of line objects
@@ -1696,31 +1697,37 @@ The func I use for spot_rot rounds to two decimal points...
 
 		function ChoGGi.ComFuncs.BBoxLines_Toggle(obj,func,args,colour,step,offset)
 			obj = obj or ChoGGi.ComFuncs.SelObject()
-			if not IsValid(obj) then
+			local is_box = IsBox(obj)
+			if not (IsValid(obj) or is_box) then
 				return
 			end
 
 			-- check if bbox showing
-			if obj.ChoGGi_bboxobj then
+			if not is_box and obj.ChoGGi_bboxobj then
 				obj.ChoGGi_bboxobj:Destroy()
 				obj.ChoGGi_bboxobj = nil
 			else
 				local bbox
-				if func then
-					local g = _G[func]
-					if g then
-						bbox = g(obj,args)
-					else
-						bbox = obj[func] and obj[func](obj,args)
+				if is_box then
+					bbox = obj
+				else
+					if func then
+						local g = _G[func]
+						if g then
+							bbox = g(obj,args)
+						else
+							bbox = obj[func] and obj[func](obj,args)
+						end
 					end
-				end
-				if not bbox then
-					bbox = obj.GetObjectBBox and obj:GetObjectBBox(args)
+					if not bbox then
+						bbox = obj.GetObjectBBox and obj:GetObjectBBox(args)
+					end
 				end
 				if bbox then
 					obj.ChoGGi_bboxobj = PlaceTerrainBox(
 						bbox,
-						obj:GetPos(),
+--~ 						obj:GetPos(),
+						bbox:Center():SetTerrainZ(),
 						colour,step,offset
 					)
 				end
@@ -1877,6 +1884,40 @@ The func I use for spot_rot rounds to two decimal points...
 				return info.source:sub(2):gsub("Mars/",""):gsub("AppData/Mods/","")
 					.. "(" .. info.linedefined .. ")"
 			end
+		end
+	end -- do
+
+	do -- RetSourceFile
+		local FileExists = ChoGGi.ComFuncs.FileExists
+		local AsyncFileToString = AsyncFileToString
+		local source_path = "AppData/Source/"
+
+		function ChoGGi.ComFuncs.RetSourceFile(path)
+			if blacklist then
+				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.ComFuncs.RetSourceFile"))
+				return
+			end
+
+--~ source: '@CommonLua/PropertyObject.lua'
+--~ ~PropertyObject.Clone
+--~ source: '@Mars/Lua/LifeSupportGrid.lua'
+--~ ~WaterGrid.RemoveElement
+--~ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
+--~ ~RCConstructor.CanInteractWithObject
+
+			-- mods
+			if FileExists(path) then
+				return select(2,AsyncFileToString(path)),path
+			end
+			-- might as well return bugged commonlua/dlc files...
+			if path:find("@Mars/") then
+				path = source_path .. path:sub(6)
+				return select(2,AsyncFileToString(path)),path
+			elseif path:find("@CommonLua/") then
+				path = source_path .. path:sub(2)
+				return select(2,AsyncFileToString(path)),path
+			end
+
 		end
 	end -- do
 

@@ -92,12 +92,12 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 	}, self.idButtonContainer)
 
 	if context.scrollto then
-		if type(context.scrollto) == "string" then
-			CreateRealTimeThread(function()
-				Sleep(1)
-				local edit = self.idEdit
+		CreateRealTimeThread(function()
+			Sleep(1)
+			local edit = self.idEdit
+			local line_num
+			if type(context.scrollto) == "string" then
 				-- loop through lines table till we find the one we want
-				local line_num
 				local lines = edit.lines
 				for i = 1, #edit.lines do
 					local line = edit.lines[i]
@@ -106,21 +106,23 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 						break
 					end
 				end
+			else
+				line_num = context.scrollto
+			end
 
-				if line_num then
-					edit:SetCursor(line_num, 0, false)
-					edit:SetCursor(line_num,edit.line_widths[line_num], true)
-					-- ScrollCursorIntoView needs focus for whatever reason
-					edit:SetFocus()
-					edit:ScrollCursorIntoView()
-				end
-			end)
-		else
-			CreateRealTimeThread(function()
-				Sleep(1)
-				self.idEdit:ScrollTo(0, context.scrollto)
-			end)
-		end
+			if line_num then
+				edit:SetCursor(line_num, 0, false)
+				edit:SetCursor(line_num,edit.line_widths[line_num], true)
+				-- ScrollCursorIntoView needs focus for whatever reason
+				edit:SetFocus()
+				edit:ScrollCursorIntoView()
+			end
+
+		end)
+	end
+
+	if context.code then
+		self:ShowCodeHighlights()
 	end
 
 	self:PostInit(context.parent)
@@ -150,6 +152,11 @@ function ChoGGi_MultiLineTextDlg:idToggleCodeOnChange(check)
 	else
 		self.idEdit:RemovePlugin("ChoGGi_CodeEditorPlugin")
 	end
+end
+function ChoGGi_MultiLineTextDlg:ShowCodeHighlights()
+	self = GetRootDialog(self)
+	self.idEdit:SetPlugins(self.plugin_names)
+	self.idToggleCode:SetCheck(true)
 end
 
 --

@@ -257,6 +257,19 @@ function Examine:Init(parent, context)
 			RolloverText = S[302535920000059--[[Destroy all objects in objlist!--]]],
 			OnPress = self.idButDeleteAllOnPress,
 		}, self.idToolbarButtons)
+		--
+		self.idButViewSource = g_Classes.ChoGGi_ToolbarButton:new({
+			Id = "idButViewSource",
+			Image = "CommonAssets/UI/Menu/PlayerInfo.tga",
+			RolloverTitle = S[302535920001519--[[View Source--]]],
+			RolloverText = S[302535920001520--[["Opens source code (if it exists):
+Mod source works fine, as well as HG github code. HG code needs to be placed at ""%sSource""
+Example: ""Source/Lua/_const.lua""
+
+Decompiled code won't scroll correctly as the line numbers are different.
+Needs HelperMod enabled."--]]]:format(ConvertToOSPath("AppData/")),
+			OnPress = self.idButViewSourceOnPress,
+		}, self.idToolbarButtons)
 		-- right side
 
 		self.idAutoRefresh_update_str = S[302535920001257--[[Auto-refresh list every second.--]]]
@@ -505,6 +518,34 @@ function Examine:idButDeleteObjOnPress()
 		end,
 		S[697--[[Destroy--]]]
 	)
+end
+
+function Examine:idButViewSourceOnPress()
+	self = GetRootDialog(self)
+	-- add link to view lua source
+	local info = getinfo(self.obj_ref,"S")
+	-- =[C] is 4 chars
+	local str,path = ChoGGi.ComFuncs.RetSourceFile(info.source)
+	if not str then
+		ChoGGi.ComFuncs.MsgPopup(
+			302535920001521--[[Lua source file not found.--]] .. ": " .. ConvertToOSPath(path),
+			302535920001519--[[View Source--]]
+		)
+	end
+	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+		parent = self,
+		checkbox = true,
+		text = str,
+		code = true,
+		scrollto = info.linedefined,
+		title = S[302535920001519--[[View Source--]]] .. ": " .. info.source,
+		hint_ok = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
+		custom_func = function(answer,overwrite)
+			if answer then
+				ChoGGi.ComFuncs.Dump("\n" .. str,overwrite,"DumpedSource","lua")
+			end
+		end,
+	}
 end
 
 function Examine:idButDeleteAllOnPress()
@@ -1179,6 +1220,11 @@ function Examine:FlashWindow()
 end
 
 function Examine:ShowBBoxList()
+--~ ToBBox(pos, prefab.size, angle)
+-- might be useful?
+
+--~ CollideGetPassLines
+
 	if self.obj_ref.ChoGGi_bboxobj then
 		self.obj_ref.ChoGGi_bboxobj:Destroy()
 		self.obj_ref.ChoGGi_bboxobj = nil
@@ -1340,6 +1386,7 @@ function Examine:ConvertValueToInfo(obj,left)
 				end
 
 				local name = RetName(obj)
+
 				if obj.class and name ~= obj.class then
 					name = obj.class .. " (len: " .. table_data .. ", " .. name .. ")"
 				else
@@ -1427,6 +1474,7 @@ function Examine:RetDebugGetInfo(obj)
 		ConvertObj_debug_table[c] = key .. ": " .. self:ConvertValueToInfo(value)
 --~ 			.. (key == "nups" and " (upvalue amount)" or key == "nparams" and " (args amount)" or "")
 	end
+	TableSort(ConvertObj_debug_table)
 	TableInsert(ConvertObj_debug_table,1,"\ngetinfo(): ")
 	return TableConcat(ConvertObj_debug_table,"\n")
 end
@@ -1439,6 +1487,7 @@ function Examine:RetFuncVars(obj)
 		end
 
 		TableInsert(ConvertObj_debug_table,1,"\nparams: ")
+		TableSort(ConvertObj_debug_table)
 		local args = TableConcat(ConvertObj_debug_table,", ")
 
 		local p_end = ")"
@@ -1872,48 +1921,49 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function Examine:SetToolbarVis(obj)
-	if type(obj) == "table" and self.name ~= "_G" then
+	-- always hide all
+	self.idButMarkObject:SetVisible()
+	self.idButMarkAll:SetVisible()
+	self.idButDeleteAll:SetVisible()
+	self.idViewEnum:SetVisible()
+	self.idButDeleteObj:SetVisible()
+	self.idButViewSource:SetVisible()
 
-		-- pretty much any class object
-		if PropObjGetProperty(obj,"delete") and obj.delete then
-			self.idButDeleteObj:SetVisible(true)
-		else
-			self.idButDeleteObj:SetVisible()
+	local obj_type = type(obj)
+	if obj_type == "table" then
+		-- none of it works on _G, and i'll take any bit of speed for _G
+		if self.name ~= "_G" then
+
+			-- pretty much any class object
+			if PropObjGetProperty(obj,"delete") and obj.delete then
+				self.idButDeleteObj:SetVisible(true)
+			end
+
+			-- can't mark if it isn't an object, and no sense in marking something off the map
+			if IsValid(obj) and obj:GetPos() ~= InvalidPos then
+				self.idButMarkObject:SetVisible(true)
+			end
+
+			-- objlist objects let us do some easy for each
+			if IsObjlist(obj) then
+				self.idButMarkAll:SetVisible(true)
+				self.idButDeleteAll:SetVisible(true)
+			end
+
+			-- pretty rare occurrence
+			self.enum_vars = EnumVars(self.name)
+			if self.enum_vars and next(self.enum_vars) then
+				self.idViewEnum:SetVisible(true)
+			end
 		end
 
-		-- can't mark if it isn't an object, and no sense in marking something off the map
-		if IsValid(obj) and obj:GetPos() ~= InvalidPos then
-			self.idButMarkObject:SetVisible(true)
-		else
-			self.idButMarkObject:SetVisible()
+	elseif obj_type == "function" then
+		if getinfo(obj,"S").what == "Lua" then
+			self.idButViewSource:SetVisible(true)
 		end
 
-		-- objlist objects let us do some easy for each
-		if IsObjlist(obj) then
-			self.idButMarkAll:SetVisible(true)
-			self.idButDeleteAll:SetVisible(true)
-		else
-			self.idButMarkAll:SetVisible()
-			self.idButDeleteAll:SetVisible()
-		end
-
-		-- pretty rare occurrence
-		self.enum_vars = EnumVars(self.name)
-		if self.enum_vars and next(self.enum_vars) then
-			self.idViewEnum:SetVisible(true)
-		else
-			self.idViewEnum:SetVisible()
-		end
-
-	else
-
-		-- not a table so none of the above apply (maybeeee some userdata object will have a delete func, ah well)
-		self.idButMarkObject:SetVisible()
-		self.idButMarkAll:SetVisible()
-		self.idButDeleteAll:SetVisible()
-		self.idViewEnum:SetVisible()
-		self.idButDeleteObj:SetVisible()
 	end
+
 
 end
 
