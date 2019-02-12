@@ -707,61 +707,48 @@ function Examine:idSearchOnMouseButtonDown(pt,button,...)
 	end
 end
 
-local idSearchTextOnKbdKeyDown_table = {
-	[const.vkEnter] = function(self)
+function Examine:idSearchTextOnKbdKeyDown(vk,...)
+	self = GetRootDialog(self)
+
+	local c = const
+	if vk == c.vkEnter then
 		if IsControlPressed() then
 			self:FindNext(nil,true)
 		else
 			self:FindNext()
 		end
 		return "break"
-	end,
-	[const.vkUp] = function(self)
+	elseif vk == c.vkUp then
 		self.idScrollArea:ScrollTo(nil,0)
 		return "break"
-	end,
-	[const.vkDown] = function(self)
+	elseif vk == c.vkDown then
 		local v = self.idScrollV
 		if v:IsVisible() then
 			self.idScrollArea:ScrollTo(nil,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
 		end
 		return "break"
-	end,
-	[const.vkRight] = function(self)
+	elseif vk == c.vkRight then
 		local h = self.idScrollH
 		if h:IsVisible() then
 			self.idScrollArea:ScrollTo(h.Max - (h.FullPageAtEnd and h.PageSize or 0))
 		end
 		-- break doesn't work for left/right
-	end,
-	[const.vkLeft] = function(self)
+	elseif vk == c.vkLeft then
 		self.idScrollArea:ScrollTo(0)
 		-- break doesn't work for left/right
-	end,
-	[const.vkEsc] = function(self)
+	elseif vk == c.vkEsc then
 		self.idCloseX:OnPress()
 		return "break"
-	end,
-	[const.vkV] = function(self)
+	elseif vk == c.vkV then
 		if IsControlPressed() then
 			CreateRealTimeThread(function()
 				Sleep(10)
 				self:FindNext()
 			end)
 		end
-		return true
-	end,
-}
-function Examine:idSearchTextOnKbdKeyDown(vk,...)
-	local func = idSearchTextOnKbdKeyDown_table[vk]
-	if func then
-		local ret = func(GetRootDialog(self))
-		if ret == true then
-			return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
-		end
-		return ret
 	end
-	return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
+
+	return ChoGGi_TextInput.OnKbdKeyDown(self.idSearchText,vk,...)
 end
 
 -- adds class name then list of functions below
@@ -1528,6 +1515,7 @@ function Examine:RetDebugGetInfo(obj)
 		ConvertObj_debug_table[c] = key .. ": " .. self:ConvertValueToInfo(value)
 --~ 			.. (key == "nups" and " (upvalue amount)" or key == "nparams" and " (args amount)" or "")
 	end
+	-- since pairs doesn't have an order we need a sort
 	TableSort(ConvertObj_debug_table)
 	TableInsert(ConvertObj_debug_table,1,"\ngetinfo(): ")
 	return TableConcat(ConvertObj_debug_table,"\n")
@@ -1541,7 +1529,6 @@ function Examine:RetFuncVars(obj)
 		end
 
 		TableInsert(ConvertObj_debug_table,1,"\nparams: ")
-		TableSort(ConvertObj_debug_table)
 		local args = TableConcat(ConvertObj_debug_table,", ")
 
 		local p_end = ")"
