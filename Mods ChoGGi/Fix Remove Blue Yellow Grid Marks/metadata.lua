@@ -17,6 +17,5 @@ By design this will not remove the grids added by SkiRich's Toggle Hub Zone mod.
 
 
 
-
-Part of Expanded Cheat Menu.]],
+Included in Expanded Cheat Menu.]],
 })

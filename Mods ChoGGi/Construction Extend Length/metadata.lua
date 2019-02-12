@@ -16,5 +16,7 @@ Can be changed with Mod Config Reborn.
 
 Requested by Adi.
 
-Part of Expanded Cheat Menu.]],
+
+
+Included in Expanded Cheat Menu.]],
 })

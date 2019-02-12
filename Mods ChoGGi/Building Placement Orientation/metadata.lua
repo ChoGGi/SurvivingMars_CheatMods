@@ -16,5 +16,7 @@ return PlaceObj("ModDef", {
 Ctrl-Space to activate placement mode with the last placed object.
 Ctrl-Shift-Space to activate placement mode with the selected object (or object under mouse).
 
-Part of Expanded Cheat Menu.]],
+
+
+Included in Expanded Cheat Menu.]],
 })

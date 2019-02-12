@@ -10,7 +10,9 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision,
 	"description", [[Always a green morning.
 
-Part of Expanded Cheat Menu.
+Requested by BLAde.
 
-Requested by BLAde.]],
+
+
+Included in Expanded Cheat Menu.]],
 })
