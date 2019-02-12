@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Drones Carry Amount v0.8",
-	"version", 8,
-	"saved", 1539950400,
+	"title", "Fix: Drones Carry Amount v0.9",
+	"version", 9,
+	"saved", 1549886400,
 	"image", "Preview.png",
 	"tags", "Building",
 	"id", "ChoGGi_DronesCarryAmountFix",

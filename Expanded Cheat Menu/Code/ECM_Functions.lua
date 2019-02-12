@@ -1270,6 +1270,9 @@ The func I use for spot_rot rounds to two decimal points...
 			local origin_pos_x, origin_pos_y, origin_pos_z = obj:GetSpotLocPosXYZ(origin)
 
 			local id_start, id_end = obj:GetAllSpots(EntityStates.idle)
+			if not id_end then
+				return
+			end
 			for i = id_start, id_end do
 				local name = obj:GetSpotName(i)
 
@@ -1706,31 +1709,33 @@ The func I use for spot_rot rounds to two decimal points...
 			if not is_box and obj.ChoGGi_bboxobj then
 				obj.ChoGGi_bboxobj:Destroy()
 				obj.ChoGGi_bboxobj = nil
+				return
+			end
+
+			-- go forth
+			local bbox
+			if is_box then
+				bbox = obj
 			else
-				local bbox
-				if is_box then
-					bbox = obj
-				else
-					if func then
-						local g = _G[func]
-						if g then
-							bbox = g(obj,args)
-						else
-							bbox = obj[func] and obj[func](obj,args)
-						end
-					end
-					if not bbox then
-						bbox = obj.GetObjectBBox and obj:GetObjectBBox(args)
+				if func then
+					local g = _G[func]
+					if g then
+						bbox = g(obj,args)
+					else
+						bbox = obj[func] and obj[func](obj,args)
 					end
 				end
-				if bbox then
-					obj.ChoGGi_bboxobj = PlaceTerrainBox(
-						bbox,
+				if not bbox then
+					bbox = obj.GetObjectBBox and obj:GetObjectBBox(args)
+				end
+			end
+			if bbox then
+				obj.ChoGGi_bboxobj = PlaceTerrainBox(
+					bbox,
 --~ 						obj:GetPos(),
-						bbox:Center():SetTerrainZ(),
-						colour,step,offset
-					)
-				end
+					bbox:Center():SetTerrainZ(),
+					colour,step,offset
+				)
 			end
 		end
 	end -- do
@@ -1917,6 +1922,75 @@ The func I use for spot_rot rounds to two decimal points...
 				path = source_path .. path:sub(2)
 				return select(2,AsyncFileToString(path)),path
 			end
+
+		end
+	end -- do
+
+	do -- ObjShape_Toggle
+		local HexRotate = HexRotate
+		local RotateRadius = RotateRadius
+		local HexToWorld = HexToWorld
+		local point = point
+		local PlacePolyline = PlacePolyline
+
+		local FallbackOutline = FallbackOutline
+		local line_points = objlist:new()
+		local radius = const.HexSize / 2
+
+		-- function Dome:GenerateWalkablePoints() (mostly)
+		local function BuildShape(obj,shape,colour,offset)
+			local dir = HexAngleToDirection(obj:GetAngle())
+			local cq, cr = WorldToHex(obj)
+			local z = obj:GetPos():z()
+
+			if offset then
+				offset = point(0,0,offset)
+			end
+
+			local line_list = objlist:new()
+			for i = 1, #shape do
+				local hex = shape[i]
+				local sq, sr = hex:xy()
+				local q, r = HexRotate(sq, sr, dir)
+				local center = point(HexToWorld(cq + q, cr + r)):SetZ(z)
+
+				line_points:Destroy()
+				for j=1,6 do
+					local x, y = RotateRadius(radius, j * 60 * 60, center, true)
+					line_points[j] = point(x, y, z)
+				end
+				-- complete the hex
+				line_points[7] = line_points[1]
+				local line = PlacePolyline(line_points, colour)
+				if offset then
+					line:SetPos(center + offset)
+				else
+					line:SetPos(center)
+				end
+
+				line_list[i] = line
+			end
+
+			return line_list
+		end
+
+		function ChoGGi.ComFuncs.ObjHexShape_Toggle(obj,shape,colour,offset)
+			-- fallback is just a point(0,0), so nothing to do here
+			if not IsValid(obj) or shape == FallbackOutline or #shape < 2 then
+				return
+			end
+
+			if obj.ChoGGi_shape_obj then
+				obj.ChoGGi_shape_obj:Destroy()
+				obj.ChoGGi_shape_obj = nil
+				return
+			end
+
+			obj.ChoGGi_shape_obj = BuildShape(
+				obj,
+				shape,
+				colour,offset
+			)
 
 		end
 	end -- do

@@ -23,25 +23,19 @@ Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_ve
 end
 
 local FuckingDrones
-local CompareTableFuncs
-local GetNearestIdleDrone
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
 	FuckingDrones = ChoGGi.ComFuncs.FuckingDrones
-	CompareTableFuncs = ChoGGi.ComFuncs.CompareTableFuncs
-	GetNearestIdleDrone = ChoGGi.ComFuncs.GetNearestIdleDrone
 end
 
 function OnMsg.ClassesBuilt()
-	ChoGGi.ComFuncs.SaveOrigFunc("SingleResourceProducer","Produce")
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-
-	function g_Classes.SingleResourceProducer:Produce(...)
+	local orig_SingleResourceProducer_Produce = SingleResourceProducer.Produce
+	function SingleResourceProducer:Produce(...)
 		-- get them lazy drones working (bugfix for drones ignoring amounts less then their carry amount)
 		FuckingDrones(self)
 		-- be on your way
-		return ChoGGi_OrigFuncs.SingleResourceProducer_Produce(self,...)
+		return orig_SingleResourceProducer_Produce(self,...)
 	end
 
 end

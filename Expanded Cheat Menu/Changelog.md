@@ -9,6 +9,7 @@
 - > Added a View Source toolbar button for Lua functions (only works decently on source from mods/HG github code).
 - > Stick the HG code in AppData/Source (see button tooltip for more info).
 - > Skips showing some thread info if it isn't a valid thread.
+- > Added Object>Hex Shape Toggle: Like bbox, but it shows hex spot markers (use with Attach Spots Toggle).
 - > Added some more options to BBox Toggle.
 - > Instead of changing focus to an already opened examine dialog, it'll now flash the titlebar red.
 

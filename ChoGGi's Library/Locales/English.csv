@@ -256,6 +256,8 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000870,Shows mod log msgs in an examine dialog.,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920001522,Hex Shape Toggle,
+302535920001523,Toggle showing shapes for the object.,
 302535920001521,Lua source file not found.,
 302535920001519,View Source,
 302535920001520,"Opens source code in text viewer (if it exists):

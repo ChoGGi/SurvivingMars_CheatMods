@@ -260,7 +260,7 @@ function Examine:Init(parent, context)
 		--
 		self.idButViewSource = g_Classes.ChoGGi_ToolbarButton:new({
 			Id = "idButViewSource",
-			Image = "CommonAssets/UI/Menu/PlayerInfo.tga",
+			Image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			RolloverTitle = S[302535920001519--[[View Source--]]],
 			RolloverText = S[302535920001520--[["Opens source code (if it exists):
 Mod source works fine, as well as HG github code. HG code needs to be placed at ""%sSource""
@@ -826,6 +826,13 @@ function Examine:BuildObjectMenuPopup()
 				self:ShowBBoxList()
 			end,
 		},
+		{name = S[302535920001522--[[Hex Shape Toggle--]]],
+			hint = S[302535920001523--[[Toggle showing shapes for the object.--]]],
+			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
+			clicked = function()
+				self:ShowHexShapeList()
+			end,
+		},
 		{name = S[302535920000449--[[Attach Spots Toggle--]]],
 			hint = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 			image = "CommonAssets/UI/Menu/ShowAll.tga",
@@ -1217,6 +1224,53 @@ function Examine:FlashWindow()
 		end
 
 	end)
+end
+
+local hex_shape_funcs = {
+	"GetEntityOutlineShape",
+	"GetEntityInteriorShape",
+	"GetEntityBuildShape",
+	"GetEntityInverseBuildShape",
+	"GetEntityCombinedShape",
+	"GetEntityPeripheralHexShape",
+}
+function Examine:ShowHexShapeList()
+	if self.obj_ref.ChoGGi_shape_obj then
+		self.obj_ref.ChoGGi_shape_obj:Destroy()
+		self.obj_ref.ChoGGi_shape_obj = nil
+	end
+
+	local ItemList = {}
+	local c = 0
+
+	local fall = FallbackOutline
+	local g = _G
+	for i = 1, #hex_shape_funcs do
+		local func = hex_shape_funcs[i]
+		local shape = g[func](self.obj_ref:GetEntity())
+		if shape ~= fall and #shape > 2 then
+			c = c + 1
+			ItemList[c] = {
+				text = func:sub(10),
+				value = func,
+				shape = shape,
+			}
+		end
+	end
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		choice = choice[1]
+		ChoGGi.ComFuncs.ObjHexShape_Toggle(self.obj_ref,choice.shape)
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = S[302535920001522--[[Hex Shape Toggle--]]] .. ": " .. RetName(self.obj_ref),
+	}
 end
 
 function Examine:ShowBBoxList()
