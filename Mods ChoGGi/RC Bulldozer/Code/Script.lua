@@ -78,7 +78,7 @@ local function Trans(...)
 	return _InternalTranslate(T{...})
 end
 
-local idle_text = StringFormat([[Radius: %s, %s: %s]],"%s",Trans(49--[[Status--]]),Trans(949--[[Idle--]]))
+local idle_text = StringFormat([[Radius: %s, %s: %s]],"%s",Trans(49--[[Status--]]),Trans(6722--[[Idle--]]))
 local travel_text = StringFormat([[Radius: %s, %s: %s]],"%s",Trans(49--[[Status--]]),Trans(63--[[Travelling--]]))
 local flatten_text = StringFormat([[Radius: %s, %s: %s]],"%s",Trans(49--[[Status--]]),Trans(76--[[Performing maintenance--]]))
 

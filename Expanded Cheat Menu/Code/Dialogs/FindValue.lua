@@ -88,7 +88,6 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	self.idCaseSen = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idCaseSen",
 		Dock = "left",
-		RolloverAnchor = "bottom",
 		Margins = box(15, 0, 0, 0),
 		Text = S[302535920000501--[[Case-sensitive--]]],
 		RolloverText = S[302535920000502--[[Treat uppercase and lowercase as distinct.--]]],
@@ -97,7 +96,6 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	self.idThreads = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idThreads",
 		Dock = "left",
-		RolloverAnchor = "bottom",
 		Margins = box(4, 0, 0, 0),
 		Text = S[302535920001360--[[Threads--]]],
 		RolloverText = S[302535920001361--[[Will also search thread func names for value (case is ignored for this).--]]],

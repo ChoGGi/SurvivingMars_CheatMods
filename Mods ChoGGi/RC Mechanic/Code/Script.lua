@@ -27,7 +27,7 @@ local description = [[Give me your tired, your poor,
 Your huddled masses yearning to breathe free,
 The wretched refuse of your teeming shore.]]
 local display_icon = string.format("%sUI/rover_combat.png",CurrentModPath)
-local idle_text = _InternalTranslate(T(295--[[Idle--]]))
+local idle_text = _InternalTranslate(T(6722--[[Idle--]]))
 local travel_text = _InternalTranslate(T(63--[[Travelling--]]))
 
 DefineClass.RCMechanic = {

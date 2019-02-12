@@ -345,7 +345,6 @@ Needs HelperMod enabled."--]]]:format(ConvertToOSPath("AppData/")),
 			Id = "idSearch",
 			Text = S[10123--[[Search--]]],
 			Dock = "right",
-			RolloverAnchor = "right",
 			RolloverHint = S[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
 			RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
 Right-click to go up, middle-click to scroll to the top."--]]],
@@ -878,11 +877,12 @@ function Examine:BuildObjectMenuPopup()
 				-- give em some hints
 				local props_list = {
 					___readme = S[302535920001397--[["Not the actual properties (see object.properties for those).
-These can be used as obj:GetNAME() / obj:SetNAME().
+
+Use obj:GetProperty(""NAME"") and obj:SetProperty(""NAME"",value)
 You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
-Check the actual object/g_Classes.object for the correct value to use (Entity > entity).
---]]]
+"--]]]
 				}
+				~s.SetProperty
 				local props = self.obj_ref:GetProperties()
 				for i = 1, #props do
 					props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)

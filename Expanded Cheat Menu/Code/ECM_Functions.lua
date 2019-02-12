@@ -1718,9 +1718,15 @@ The func I use for spot_rot rounds to two decimal points...
 				bbox = obj
 			else
 				if func then
-					local g = _G[func]
-					if g then
-						bbox = g(obj,args)
+					local func_obj
+					if PropObjGetProperty(_G,func) then
+						func_obj = _G[func]
+					elseif PropObjGetProperty(g_CObjectFuncs,func) then
+						func_obj = g_CObjectFuncs[func]
+					end
+
+					if func_obj then
+						bbox = func_obj(obj,args)
 					else
 						bbox = obj[func] and obj[func](obj,args)
 					end

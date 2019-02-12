@@ -4291,3 +4291,25 @@ function ChoGGi.ComFuncs.AddParentToClass(class_obj,parent_name)
 		class_obj.__parents[#class_obj.__parents+1] = parent_name
 	end
 end
+
+function ChoGGi.ComFuncs.RetSpotPos(obj,building,spot)
+	local nearest = building:GetNearestSpot("idle", spot or "Origin", obj)
+	return building:GetSpotPos(nearest)
+end
+
+function ChoGGi.ComFuncs.RetSpotNames(obj)
+  if not obj:HasEntity() then
+    return
+  end
+	local names = {}
+  local id_start, id_end = obj:GetAllSpots(obj:GetState())
+  for i = id_start, id_end do
+		local spot_annotation = obj:GetSpotAnnotation(i)
+		local text_str = obj:GetSpotName(i) or "MISSING SPOT NAME"
+		if spot_annotation then
+			text_str = text_str .. ";" .. spot_annotation
+		end
+		names[i] = text_str
+  end
+	return names
+end
