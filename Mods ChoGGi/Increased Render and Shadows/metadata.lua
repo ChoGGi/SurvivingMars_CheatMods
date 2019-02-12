@@ -15,5 +15,6 @@ This is somewhat useless without increasing zoom in Expanded Cheat Menu.
 You won't see the increased shadow/render difference, but you will have sharper shadows.
 
 
-Part of Expanded Cheat Menu.]],
+
+Included in Expanded Cheat Menu.]],
 })

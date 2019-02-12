@@ -14,5 +14,7 @@ return PlaceObj("ModDef", {
 	"description", [[Removes sponsor limit placed on certain buildings/vehicles.
 Works on new or saved games, and can be removed anytime.
 
-Part of Expanded Cheat Menu.]],
+
+
+Included in Expanded Cheat Menu.]],
 })

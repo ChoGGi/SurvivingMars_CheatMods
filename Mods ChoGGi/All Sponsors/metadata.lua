@@ -14,5 +14,6 @@ return PlaceObj("ModDef", {
 	"description", [[If you have three sponsors; this will add all the other sponsors.
 
 
-Part of Expanded Cheat Menu.]],
+
+Included in Expanded Cheat Menu.]],
 })

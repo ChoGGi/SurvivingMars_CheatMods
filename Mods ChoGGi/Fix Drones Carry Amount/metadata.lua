@@ -18,5 +18,6 @@ This mod forces them to pick up whenever there's at least 1 res cube.
 This mod is useless unless you have a mod/cheat that increases how much they can carry.
 
 
-Part of Expanded Cheat Menu.]],
+
+Included in Expanded Cheat Menu.]],
 })

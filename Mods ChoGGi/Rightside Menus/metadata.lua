@@ -14,5 +14,6 @@ return PlaceObj("ModDef", {
 I'd like to know the reasoning behind moving the menus from the right side to the left side...
 
 
-Part of Expanded Cheat Menu.]],
+
+Included in Expanded Cheat Menu.]],
 })

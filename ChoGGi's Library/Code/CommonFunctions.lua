@@ -150,9 +150,9 @@ do -- RetName
 
 		-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env has it's own __index and causes the game to log a warning
 		elseif obj_type == "table" then
-
 			-- we check in order of less generic "names"
 			local name_type = PropObjGetProperty(obj,"name") and type(obj.name)
+
 			-- custom name from user (probably)
 			if name_type == "string" and obj.name ~= "" then
 				name = obj.name
@@ -160,7 +160,7 @@ do -- RetName
 			elseif name_type == "table" then
 				name = Trans(obj.name)
 
-			-- translated name
+			-- display
 			elseif PropObjGetProperty(obj,"display_name") and obj.display_name ~= "" then
 				name = Trans(obj.display_name)
 			-- ids
@@ -177,7 +177,7 @@ do -- RetName
 			elseif PropObjGetProperty(obj,"ActionId") and obj.ActionId ~= "" then
 				name = obj.ActionId
 
-			-- class template name
+			-- class template
 			elseif PropObjGetProperty(obj,"template_name") and obj.template_name ~= "" then
 				name = obj.template_name
 			elseif PropObjGetProperty(obj,"template_class") and obj.template_class ~= "" then
@@ -191,11 +191,9 @@ do -- RetName
 
 			-- added this here as doing tostring lags the crap outta kansas if this is a large objlist
 			elseif IsObjlist(obj) then
-				name = "objlist"
+				return "objlist"
 
-			else
-				name = tostring(obj)
-			end
+			end -- if table
 
 		elseif obj_type == "userdata" then
 			local trans_str = Trans(obj)
@@ -209,8 +207,12 @@ do -- RetName
 
 		end
 
-		-- falling back baby (tostr(name) just in case a table. isn't a string)
-		return tostring(name or obj)
+		-- just in case...
+		if type(name) ~= "string" then
+			name = tostring(name or obj)
+		end
+
+		return name
 	end
 end -- do
 local RetName = ChoGGi.ComFuncs.RetName
