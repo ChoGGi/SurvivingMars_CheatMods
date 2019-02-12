@@ -345,6 +345,7 @@ Needs HelperMod enabled."--]]]:format(ConvertToOSPath("AppData/")),
 			Id = "idSearch",
 			Text = S[10123--[[Search--]]],
 			Dock = "right",
+			RolloverAnchor = "right",
 			RolloverHint = S[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
 			RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
 Right-click to go up, middle-click to scroll to the top."--]]],

@@ -41,7 +41,7 @@ function OnMsg.ClassesGenerate()
 			local text = 302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block will override).--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".restricttraits",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".restricttraits",
 				text
 			) or S[text]
 		end,
@@ -59,7 +59,7 @@ function OnMsg.ClassesGenerate()
 			local text = 302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. sel.template_name .. ".blocktraits",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".blocktraits",
 				text
 			) or S[text]
 		end,
