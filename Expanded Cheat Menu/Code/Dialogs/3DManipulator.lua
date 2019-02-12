@@ -151,7 +151,6 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 		RolloverText = S[302535920000102--[[Use to change values of selected list item.--]]],
 		Hint = S[302535920000103--[[Edit Value--]]],
 		OnTextChanged = self.idEditValueOnTextChanged,
-		RolloverAnchor = "bottom",
 	}, self.idEditArea)
 
 	self:PostInit(context.parent)

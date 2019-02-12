@@ -396,7 +396,6 @@ function OnMsg.ClassesGenerate()
 		-- add close button
 		g_Classes.ChoGGi_CloseButton:new({
 			Id = "idClose",
-			RolloverAnchor = "smart",
 			OnPress = function()
 				dlgConsole:Show()
 			end,

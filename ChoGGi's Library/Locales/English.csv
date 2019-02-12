@@ -287,9 +287,9 @@ Needs HelperMod enabled.",
 302535920000967,Delay in ms between updating text.,
 302535920001248,Sort normally or backwards.,
 302535920001397,"Not the actual properties (see object.properties for those).
-These can be used as obj:GetNAME() / obj:SetNAME().
+
+Use obj:GetProperty(""NAME"") and obj:SetProperty(""NAME"",value)
 You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
-Check the actual object/g_Classes.object for the correct value to use (Entity > entity).
 ",
 302535920001396,point,
 302535920001389,All Properties,

@@ -62,7 +62,6 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		Text = S[302535920000084--[[Auto-Refresh--]]],
 		RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
 		Dock = "left",
-		RolloverAnchor = "top",
 		Margins = box(4,0,0,0),
 		OnChange = self.idAutoRefreshToggle,
 	}, self.idCheckboxArea)
@@ -78,7 +77,6 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		Dock = "left",
 		MinWidth = 80,
 		RolloverText = S[302535920000092--[[Updates list with any changed values.--]]],
-		RolloverAnchor = "top",
 		OnPress = self.UpdateListContent,
 	}, self.idButtonArea)
 
@@ -88,7 +86,6 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		Dock = "left",
 		MinWidth = 90,
 		RolloverText = S[302535920000094--[[View/select object on map.--]]],
-		RolloverAnchor = "top",
 		OnPress = self.idGotoOnPress,
 	}, self.idButtonArea)
 
@@ -97,7 +94,6 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		Text = S[302535920001356--[[New--]]],
 		Dock = "left",
 		RolloverText = S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(self.obj_name),
-		RolloverAnchor = "top",
 		OnPress = self.idAddNewOnPress,
 	}, self.idButtonArea)
 
@@ -107,7 +103,6 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		Dock = "left",
 		MinWidth = 100,
 		RolloverText = S[302535920000100--[[Apply selected value to all objects of the same type.--]]],
-		RolloverAnchor = "top",
 		OnPress = self.idApplyAllOnPress,
 	}, self.idButtonArea)
 
@@ -126,7 +121,6 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		RolloverText = S[302535920000102--[[Use to change values of selected list item.--]]],
 		Hint = S[302535920000103--[[Edit Value--]]],
 		OnTextChanged = self.idEditValueOnTextChanged,
-		RolloverAnchor = "bottom",
 	}, self.idEditArea)
 
 	-- update item list
