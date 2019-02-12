@@ -16,6 +16,7 @@
 ### Fixed:
 - Delete Object didn't work with filled Mech Depots (thanks FirstGeekDanny).
 - Error examining EntityData (and probably some other tables), another issue from the code cleanup.
+- Having certain objs selected and opening certain menus would throw an error till unselecting the obj.
 
 ## v12.4 (08 Feb 2019)
 ### Changed:
