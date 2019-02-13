@@ -408,14 +408,16 @@ function OnMsg.ClassesGenerate()
 
 	do -- RemoveUnreachableConstructionSites
 		local type,pairs = type,pairs
+		local clear = table.clear
 		local function RemoveUnreachable(cls_name)
 			MapForEach("map",cls_name,function(o)
-				for bld,_ in pairs(o.unreachable_buildings or {}) do
+				local unreach = o.unreachable_buildings or empty_table
+				for bld in pairs(unreach) do
 					if type(bld.IsKindOf) == "function" and bld:IsKindOf("ConstructionSite") then
 						bld:Cancel()
 					end
 				end
-				o.unreachable_buildings = {}
+				o.unreachable_buildings = false
 			end)
 		end
 

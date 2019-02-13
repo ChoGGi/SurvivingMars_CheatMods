@@ -283,7 +283,7 @@ function OnMsg.ClassesGenerate()
 				}
 				local c = #entity_table
 				local EntityData = EntityData
-				for key,_ in pairs(EntityData) do
+				for key in pairs(EntityData) do
 					c = c + 1
 					entity_table[c] = {
 						text = key,

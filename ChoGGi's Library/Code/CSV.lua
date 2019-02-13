@@ -287,7 +287,7 @@ do -- ColonistData
 				export_data[i].workplace_dome = RetName(c.workplace.parent_dome)
 			end
 			-- traits
-			for trait_id, _ in pairs(c.traits) do
+			for trait_id in pairs(c.traits) do
 				if trait_id and trait_id ~= "" and not skipped_traits[trait_id] then
 					export_data[i]["trait_" .. trait_id] = true
 				end

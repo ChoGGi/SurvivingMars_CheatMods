@@ -523,7 +523,7 @@ This will switch to a new map.--]]],
 
 	function ChoGGi.MenuFuncs.DisastersStop()
 		local missles = g_IncomingMissiles or empty_table
-		for missle,_ in pairs(missles) do
+		for missle in pairs(missles) do
 			missle:ExplodeInAir()
 		end
 
@@ -1265,8 +1265,8 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 			if choice[1].value == "Lock" then
 				-- reverse what the unlock cheat does
 				local bmpv = BuildMenuPrerequisiteOverrides
-				for id in pairs(bmpv) do
-					if bmpv[id] == true then
+				for id,value in pairs(bmpv) do
+					if value == true then
 						bmpv[id] = nil
 					end
 				end

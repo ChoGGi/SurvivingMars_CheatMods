@@ -22,7 +22,7 @@ DefineClass.ChoGGi_ConsoleLogWin = {
 
 	dialog_width = 700.0,
 	dialog_height = 500.0,
-	title = 302535920001120--[[Console Log Window--]],
+	title = 302535920001120--[[Console Window--]],
 }
 
 function ChoGGi_ConsoleLogWin:Init(parent, context)
@@ -87,11 +87,89 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 	-- text box with log in it
 	self:AddScrollText()
 
+	self.idTextInputArea = g_Classes.ChoGGi_DialogSection:new({
+		Id = "idTextInputArea",
+		Dock = "bottom",
+	}, self.idDialog)
+
+	self.idTextInput = g_Classes.ChoGGi_TextInput:new({
+		Id = "idTextInput",
+		OnKbdKeyDown = self.idTextInputOnKbdKeyDown,
+		RolloverTemplate = "Rollover",
+		RolloverTitle = S[302535920001073--[[Console--]]] .. " " .. S[487939677892--[[Help--]]],
+	}, self.idTextInputArea)
+
+	if blacklist then
+		self.idTextInput.RolloverText = S[302535920001512--[[You need to have my HelperMod enabled to use these:--]]] .. "\n\n\n" .. S[302535920001440]
+		self.idTextInput.Hint = S[302535920001513--[["ex(obj) = examine object, s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
+	else
+		-- add tooltip
+		self.idTextInput.RolloverText = S[302535920001440--[["~obj opens object in examine dlg.
+~~obj opens object's attachments in examine dlg.
+
+&handle examines object with that handle.
+
+@GetMissionSponsor prints file name and line number of function.
+
+@@EntityData prints type(EntityData).
+
+%""UI/Vignette.tga"" opens image in image viewer.
+
+$123 or $EffectDeposit.display_name prints translated string.
+
+""*r Sleep(1000) print(""sleeping"")"" to wrap in a real time thread (or *g or *m).
+
+!UICity.labels.TerrainDeposit[1] move camera and select obj.
+
+s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
+		self.idTextInput.Hint = S[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."--]]]
+	end
+
 	-- look at them sexy internals
 	self.transp_mode = ChoGGi.Temp.transp_mode
 	self:SetTranspMode(self.transp_mode)
 
 	self:PostInit()
+end
+
+function ChoGGi_ConsoleLogWin:idTextInputOnKbdKeyDown(vk,...)
+	local dlgConsole = dlgConsole
+	if not dlgConsole then
+		return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
+	end
+	local input = GetRootDialog(self).idTextInput
+
+	if vk == const.vkEnter then
+		local text = input:GetText()
+		if text ~= "" then
+			dlgConsole:Exec(text)
+		end
+--~ 		-- clear text
+--~ 		text:SetText("")
+		return "break"
+	elseif vk == const.vkUp then
+		if dlgConsole.history_queue_idx + 1 <= #dlgConsole.history_queue then
+			dlgConsole.history_queue_idx = dlgConsole.history_queue_idx + 1
+		else
+			dlgConsole.history_queue_idx = 1
+		end
+		local text = dlgConsole.history_queue[dlgConsole.history_queue_idx] or ""
+		input:SetText(text)
+		input:SetCursor(1,#text)
+		return "break"
+	elseif vk == const.vkDown then
+		if dlgConsole.history_queue_idx <= 1 then
+			dlgConsole.history_queue_idx = #dlgConsole.history_queue
+		else
+			dlgConsole.history_queue_idx = dlgConsole.history_queue_idx - 1
+		end
+		local text = dlgConsole.history_queue[dlgConsole.history_queue_idx] or ""
+		input:SetText(text)
+		input:SetCursor(1,#text)
+		return "break"
+	end
+
+	return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
 end
 
 function ChoGGi_ConsoleLogWin:idToggleTransOnChange()

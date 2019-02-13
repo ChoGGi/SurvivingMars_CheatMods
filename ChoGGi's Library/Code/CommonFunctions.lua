@@ -106,10 +106,10 @@ do -- RetName
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
 
 		-- any tables in _G
-		for key in pairs(g) do
+		for key,value in pairs(g) do
 			-- no need to add tables already added, and we don't care about stuff that isn't a table
-			if not lookup_table[g[key]] and type(g[key]) == "table" then
-				lookup_table[g[key]] = key
+			if not lookup_table[value] and type(value) == "table" then
+				lookup_table[value] = key
 			end
 		end
 
@@ -558,7 +558,16 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 			Background = items.Background or cls.Background,
 			PressedBackground = items.PressedBackground or cls.PressedBackground,
 			TextStyle = items.TextStyle or cls.TextStyle,
+			HAlign = item.centred and "center" or "stretch",
 		}, popup.idContainer)
+
+		if item.disable then
+			button.RolloverBackground = items.Background or cls.Background
+			button.PressedBackground = items.Background or cls.Background
+			button.RolloverZoom = g_Classes.XWindow.RolloverZoom
+			button.PressedTextColor = g_Classes.XWindow.PressedTextColor
+			button.MouseCursor = "UI/Cursors/cursor.tga"
+		end
 
 		if item.image then
 			button.idIcon:SetImage(item.image)
@@ -695,15 +704,17 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 	end
 
 	if not popup or reopen then
+		local cls = ChoGGi_PopupList
 
-		popup = ChoGGi_PopupList:new({
+		popup = cls:new({
 			Opened = true,
 			Id = popup_id,
 			-- "top" for the console, default "none"
 			AnchorType = anchor or "top",
 			-- "none","smart","left","right","top","center-top","bottom","mouse"
 			Anchor = parent.box,
-
+			Background = items.Background or cls.Background,
+			PressedBackground = items.PressedBackground or cls.PressedBackground,
 		}, terminal.desktop)
 		popup.items = items
 
@@ -1228,46 +1239,6 @@ function ChoGGi.ComFuncs.SettingState(setting,text)
 	end
 end
 
--- Copyright L. H. de Figueiredo, W. Celes, R. Ierusalimschy: Lua Programming Gems
-function ChoGGi.ComFuncs.VarDump(value, depth, key)
-	local ChoGGi = ChoGGi
-	local linePrefix = ""
-	local spaces = ""
-	local v_type = type(value)
-	if key ~= nil then
-		linePrefix = "["..key.."] = "
-	end
-	if depth == nil then
-		depth = 0
-	else
-		depth = depth + 1
-		for _ = 1, depth do
-			spaces = spaces .. " "
-		end
-	end
-	if v_type == "table" then
-		local mTable = getmetatable(value)
-		if mTable == nil then
-			print(spaces,linePrefix,"(table) ")
-		else
-			print(spaces,"(metatable) ")
-			value = mTable
-		end
-		for tableKey, tableValue in pairs(value) do
-			ChoGGi.ComFuncs.VarDump(tableValue, depth, tableKey)
-		end
-	elseif v_type == "function"
-		or v_type == "thread"
-		or v_type == "userdata"
-		or value == nil
-		then
-			print(spaces,tostring(value))
-	else
-		print(spaces,linePrefix,"(",v_type,") ",tostring(value))
-	end
-end
-
-
 function ChoGGi.ComFuncs.RetBuildingPermissions(traits,settings)
 	settings.restricttraits = settings.restricttraits or {}
 	settings.blocktraits = settings.blocktraits or {}
@@ -1275,12 +1246,12 @@ function ChoGGi.ComFuncs.RetBuildingPermissions(traits,settings)
 	local block,restrict
 
 	local rtotal = 0
-	for _,_ in pairs(settings.restricttraits) do
+	for _ in pairs(settings.restricttraits) do
 		rtotal = rtotal + 1
 	end
 
 	local rcount = 0
-	for trait,_ in pairs(traits) do
+	for trait in pairs(traits) do
 		if settings.restricttraits[trait] then
 			rcount = rcount + 1
 		end
@@ -1349,7 +1320,7 @@ function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
 
 	-- add
 	if for_type then
-		for k,_ in pairs(list) do
+		for k in pairs(list) do
 			c = c + 1
 			temp_table[c] = k
 		end
@@ -1390,20 +1361,21 @@ function ChoGGi.ComFuncs.UpdateDataTablesCargo()
 		Tables.Cargo[def.id] = def
 	end
 
-	local settings = ChoGGi.UserSettings.CargoSettings or {}
+	local settings = ChoGGi.UserSettings.CargoSettings or empty_table
 	for id,cargo in pairs(settings) do
-		if Tables.Cargo[id] then
+		local cargo_table = Tables.Cargo[id]
+		if cargo_table then
 			if cargo.pack then
-				Tables.Cargo[id].pack = cargo.pack
+				cargo_table.pack = cargo.pack
 			end
 			if cargo.kg then
-				Tables.Cargo[id].kg = cargo.kg
+				cargo_table.kg = cargo.kg
 			end
 			if cargo.price then
-				Tables.Cargo[id].price = cargo.price
+				cargo_table.price = cargo.price
 			end
 			if type(cargo.locked) == "boolean" then
-				Tables.Cargo[id].locked = cargo.locked
+				cargo_table.locked = cargo.locked
 			end
 		end
 	end
@@ -4168,10 +4140,9 @@ do -- SpawnColonist
 			colonist.name = old_c.name
 			colonist.race = old_c.race
 			colonist.specialist = old_c.specialist
-			for trait_id, _ in pairs(old_c.traits) do
+			for trait_id in pairs(old_c.traits) do
 				if trait_id and trait_id ~= "" then
 					colonist.traits[trait_id] = true
-					--colonist:AddTrait(trait_id,true)
 				end
 			end
 		else

@@ -218,7 +218,7 @@ function OnMsg.ClassesGenerate()
 				SetSignsVisible(false)
 				-- hide all the sector markers
 				local g_MapSectors = g_MapSectors
-				for sector,_ in pairs(g_MapSectors) do
+				for sector in pairs(g_MapSectors) do
 					if type(sector) ~= "number" and sector.decal then
 						sector.decal:SetVisible(false)
 					end
@@ -461,8 +461,8 @@ end)
 		function ChoGGi.Temp.ReplaceDome(dome)
 			dome = dome or {}
 			local olddome = {}
-			for Key,Value in pairs(dome) do
-				olddome[Key] = Value
+			for key,value in pairs(dome) do
+				olddome[key] = value
 			end
 			local pos = dome:GetPos()
 			dome:delete()
@@ -471,9 +471,9 @@ end)
 				'template_name', "GeoscapeDome",
 				'Pos', pos,
 			})
-			for Key,Value in pairs(olddome) do
-				if Key ~= "entity" and Key ~= "dome_enterances" and Key ~= "id" and Key ~= "my_interior" and Key ~= "waypoint_chains" and Key ~= "handle" then
-					newdome[Key] = Value
+			for key,value in pairs(olddome) do
+				if key ~= "entity" and key ~= "dome_enterances" and key ~= "id" and key ~= "my_interior" and key ~= "waypoint_chains" and key ~= "handle" then
+					newdome[key] = value
 				end
 			end
 			newdome:Init()
@@ -515,9 +515,8 @@ end)
 		end
 
 		local ThreadsMessageToThreads = ThreadsMessageToThreads
-		for message, _ in pairs(ThreadsMessageToThreads) do
+		for message_ in pairs(ThreadsMessageToThreads) do
 			--print(message)
-			--print(threads)
 			if message.action and message.action.class == "SA_WaitMsg" then
 			print(message.ip)
 			end

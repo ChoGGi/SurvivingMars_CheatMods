@@ -51,7 +51,7 @@ function GedSocket:UnbindObj(name, to_prefix)
 	if to_prefix then
 		local pref = name .. to_prefix
 		for obj_name in pairs(self.bound_objects) do
-			if string.starts_with(obj_name, pref) then
+			if obj_name:starts_with(pref) then
 				self.bound_objects[obj_name] = nil
 			end
 		end

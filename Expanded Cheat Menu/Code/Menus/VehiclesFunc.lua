@@ -1186,10 +1186,11 @@ function OnMsg.ClassesGenerate()
 					ChoGGi.UserSettings.CargoSettings = nil
 
 					for cargo_id,cargo in pairs(Cargo) do
-						cargo.pack = CargoPresets[cargo_id].pack
-						cargo.kg = CargoPresets[cargo_id].kg
-						cargo.price = CargoPresets[cargo_id].price
-						cargo.locked = CargoPresets[cargo_id].locked
+						local preset = CargoPresets[cargo_id]
+						cargo.pack = preset.pack
+						cargo.kg = preset.kg
+						cargo.price = preset.price
+						cargo.locked = preset.locked
 					end
 
 					return

@@ -1,6 +1,7 @@
-### Shows a list of choices then does something based on the selected item
+### Shows a list of choices which then does something based on the selected item
 
 ```lua
+-- it's a wait func so it needs a thread
 CreateRealTimeThread(function()
 
 	local choice = WaitListChoice(
@@ -18,9 +19,9 @@ CreateRealTimeThread(function()
 	)
 
 	if choice == 1 then
-		print(choice.text)
+		print(1,choice.text)
 	elseif choice == 2 then
-		print(choice.text)
+		print(2,choice.text)
 	elseif choice == 3 then
 		choice.func("function choice")
 	end
