@@ -8,10 +8,10 @@ function OnMsg.ClassesGenerate()
 	local iconRC = "CommonAssets/UI/Menu/HostGame.tga"
 	local c = #Actions
 
-	local str_ExpandedCM_Drones = "ECM.Expanded CM.Drones"
+	local str_ECM_Drones = "ECM.ECM.Drones"
 	c = c + 1
 	Actions[c] = {ActionName = S[517--[[Drones--]]],
-		ActionMenubar = "ECM.Expanded CM",
+		ActionMenubar = "ECM.ECM",
 		ActionId = ".Drones",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -20,7 +20,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000505--[[Work Radius RC Rover--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Work Radius RC Rover",
 		ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
 		RolloverText = function()
@@ -34,7 +34,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000507--[[Work Radius DroneHub--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Work Radius DroneHub",
 		ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
 		RolloverText = function()
@@ -48,7 +48,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000509--[[Drone Rock To Concrete Speed--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Rock To Concrete Speed",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -62,7 +62,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000511--[[Drone Move Speed--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Move Speed",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -76,7 +76,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000513--[[Change Amount Of Drones In Hub--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Change Amount Of Drones In Hub",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -98,7 +98,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000515--[[DroneFactory Build Speed--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".DroneFactory Build Speed",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -112,7 +112,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000517--[[Drone Gravity--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Gravity",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -126,7 +126,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000519--[[Drone Battery Infinite--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Battery Infinite",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -140,7 +140,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000521--[[Drone Build Speed--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Build Speed",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -154,7 +154,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000523--[[Drone Meteor Malfunction--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Meteor Malfunction",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -168,7 +168,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[4645--[[Drone Recharge Time--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Recharge Time",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -182,7 +182,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000527--[[Drone Repair Supply Leak Speed--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Repair Supply Leak Speed",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -196,7 +196,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000529--[[Drone Carry Amount--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Carry Amount",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -210,7 +210,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000531--[[Drones Per Drone Hub--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drones Per Drone Hub",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -224,7 +224,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000533--[[Drones Per RC Rover--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drones Per RC Rover",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -238,7 +238,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001403--[[Drone Type--]]],
-		ActionMenubar = str_ExpandedCM_Drones,
+		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Type",
 		ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
 		RolloverText = function()
@@ -250,10 +250,10 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SetDroneType,
 	}
 
-	local str_ExpandedCM_Shuttles = "ECM.Expanded CM.Shuttles"
+	local str_ECM_Shuttles = "ECM.ECM.Shuttles"
 	c = c + 1
 	Actions[c] = {ActionName = S[745--[[Shuttles--]]],
-		ActionMenubar = "ECM.Expanded CM",
+		ActionMenubar = "ECM.ECM",
 		ActionId = ".Shuttles",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -262,7 +262,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000535--[[Set ShuttleHub Shuttle Capacity--]]],
-		ActionMenubar = str_ExpandedCM_Shuttles,
+		ActionMenubar = str_ECM_Shuttles,
 		ActionId = ".Set ShuttleHub Shuttle Capacity",
 		ActionIcon = iconD,
 		RolloverText = function()
@@ -276,7 +276,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000537--[[Set Capacity--]]],
-		ActionMenubar = str_ExpandedCM_Shuttles,
+		ActionMenubar = str_ECM_Shuttles,
 		ActionId = ".Set Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
@@ -290,7 +290,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000539--[[Set Speed--]]],
-		ActionMenubar = str_ExpandedCM_Shuttles,
+		ActionMenubar = str_ECM_Shuttles,
 		ActionId = ".Set Speed",
 		ActionIcon = "CommonAssets/UI/Menu/move_gizmo.tga",
 		RolloverText = function()
@@ -302,10 +302,10 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SetShuttleSpeed,
 	}
 
-	local str_ExpandedCM_Rovers = "ECM.Expanded CM.Rovers"
+	local str_ECM_Rovers = "ECM.ECM.Rovers"
 	c = c + 1
 	Actions[c] = {ActionName = S[5438--[[Rovers--]]],
-		ActionMenubar = "ECM.Expanded CM",
+		ActionMenubar = "ECM.ECM",
 		ActionId = ".Rovers",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -314,7 +314,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000541--[[RC Set Charging Distance--]]],
-		ActionMenubar = str_ExpandedCM_Rovers,
+		ActionMenubar = str_ECM_Rovers,
 		ActionId = ".RC Set Charging Distance",
 		ActionIcon = iconRC,
 		RolloverText = function()
@@ -328,7 +328,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000543--[[RC Move Speed--]]],
-		ActionMenubar = str_ExpandedCM_Rovers,
+		ActionMenubar = str_ECM_Rovers,
 		ActionId = ".RC Move Speed",
 		ActionIcon = "CommonAssets/UI/Menu/move_gizmo.tga",
 		RolloverText = function()
@@ -342,7 +342,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000545--[[RC Gravity--]]],
-		ActionMenubar = str_ExpandedCM_Rovers,
+		ActionMenubar = str_ECM_Rovers,
 		ActionId = ".RC Gravity",
 		ActionIcon = iconRC,
 		RolloverText = function()
@@ -356,7 +356,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000549--[[RC Instant Resource Transfer--]]],
-		ActionMenubar = str_ExpandedCM_Rovers,
+		ActionMenubar = str_ECM_Rovers,
 		ActionId = ".RC Transport Instant Transfer",
 		ActionIcon = "CommonAssets/UI/Menu/Mirror.tga",
 		RolloverText = function()
@@ -370,7 +370,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000551--[[RC Storage Capacity--]]],
-		ActionMenubar = str_ExpandedCM_Rovers,
+		ActionMenubar = str_ECM_Rovers,
 		ActionId = ".RC Storage Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
@@ -382,10 +382,10 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.SetRCTransportStorageCapacity,
 	}
 
-	local str_ExpandedCM_Rockets = "ECM.Expanded CM.Rockets"
+	local str_ECM_Rockets = "ECM.ECM.Rockets"
 	c = c + 1
 	Actions[c] = {ActionName = S[5238--[[Rockets--]]],
-		ActionMenubar = "ECM.Expanded CM",
+		ActionMenubar = "ECM.ECM",
 		ActionId = ".Rockets",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -394,7 +394,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001291--[[Max Export Amount--]]],
-		ActionMenubar = str_ExpandedCM_Rockets,
+		ActionMenubar = str_ECM_Rockets,
 		ActionId = ".Max Export Amount",
 		ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 		RolloverText = function()
@@ -408,7 +408,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001317--[[Launch Fuel Per Rocket--]]],
-		ActionMenubar = str_ExpandedCM_Rockets,
+		ActionMenubar = str_ECM_Rockets,
 		ActionId = ".Launch Fuel Per Rocket",
 		ActionIcon = "CommonAssets/UI/Menu/DisableNormalMaps.tga",
 		RolloverText = function()
@@ -422,7 +422,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001319--[[Rockets Ignore Fuel--]]],
-		ActionMenubar = str_ExpandedCM_Rockets,
+		ActionMenubar = str_ECM_Rockets,
 		ActionId = ".Launch Fuel Per Rocket",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = function()
@@ -436,7 +436,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000850--[[Change Resupply Settings--]]],
-		ActionMenubar = str_ExpandedCM_Rockets,
+		ActionMenubar = str_ECM_Rockets,
 		ActionId = ".Change Resupply Settings",
 		ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
 		RolloverText = S[302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."--]]],
@@ -445,7 +445,7 @@ function OnMsg.ClassesGenerate()
 
 --~ 	c = c + 1
 --~ 	Actions[c] = {ActionName = S[302535920000557--[[Launch Empty Rocket--]]],
---~ 		ActionMenubar = str_ExpandedCM_Rockets,
+--~ 		ActionMenubar = str_ECM_Rockets,
 --~ 		ActionId = ".Launch Empty Rocket",
 --~ 		ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
 --~ 		RolloverText = S[302535920000558--[[Launches an empty rocket to Mars.--]]],
@@ -454,7 +454,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000559--[[Cargo Capacity--]]],
-		ActionMenubar = str_ExpandedCM_Rockets,
+		ActionMenubar = str_ECM_Rockets,
 		ActionId = ".Cargo Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
@@ -468,7 +468,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000561--[[Travel Time--]]],
-		ActionMenubar = str_ExpandedCM_Rockets,
+		ActionMenubar = str_ECM_Rockets,
 		ActionId = ".Travel Time",
 		ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 		RolloverText = function()
@@ -482,7 +482,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[4594--[[Colonists Per Rocket--]]],
-		ActionMenubar = str_ExpandedCM_Rockets,
+		ActionMenubar = str_ECM_Rockets,
 		ActionId = ".Colonists Per Rocket",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",
 		RolloverText = function()

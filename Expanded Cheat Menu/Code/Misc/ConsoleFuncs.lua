@@ -7,7 +7,7 @@ local TableInsert = table.insert
 local TableRemove = table.remove
 local TableFind = table.find
 local CmpLower = CmpLower
-local print = print
+local print,type = print,type
 
 -- rebuild list of objects to examine when user changes settings
 function OnMsg.ChoGGi_SettingsUpdated()
@@ -218,11 +218,12 @@ function OnMsg.ClassesGenerate()
 
 
 	do -- ToggleLogErrors
-		local select,type = select,type
+		local select = select
 		local GetStack = GetStack
 		local CurrentThread = CurrentThread
 		local UserSettings = ChoGGi.UserSettings
 		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+		local newline = ChoGGi.newline
 		local traceback
 		if not blacklist then
 			traceback = debug.traceback
@@ -230,30 +231,27 @@ function OnMsg.ClassesGenerate()
 
 		local function UpdateLogErrors(name)
 			_G[name] = function(...)
-				if ... ~= "\n" and ... ~= "\r\n" then
-					print("func",name,":",...)
-					if blacklist then
-						print(GetStack(2, false, "\t"))
-					else
---~ 						print(traceback(CurrentThread(),nil,2))
-						print(traceback())
-					end
-					if UserSettings.ExamineErrors then
-						if testing then
-							local err_type = type(select(1,...))
-							-- not sure if it can ever be a func...?
-							if err_type == "thread" or err_type == "function" then
-								OpenInExamineDlg{...,"\n\n\n\n",err_type}
-							end
-						else
-							OpenInExamineDlg{...}
+				print("func",name,":",...)
+				if blacklist then
+					print(GetStack(2, false, "\t"))
+				else
+					print(traceback())
+				end
+				if UserSettings.ExamineErrors then
+					if testing then
+						local err_type = type(select(1,...))
+						-- not sure if it can ever be a func...?
+						if err_type == "thread" or err_type == "function" then
+							OpenInExamineDlg{...,"\n\n\n\n",err_type}
 						end
+					else
+						OpenInExamineDlg{...}
 					end
 				end
 			end
 		end
 
-		local funcs = {"error","OutputDebugString"}
+		local funcs = {"error","OutputDebugString","ThreadErrorHandler","DlcErrorHandler","syntax_error","RecordError"}
 		function ChoGGi.ConsoleFuncs.ToggleLogErrors(enable)
 			for i = 1, #funcs do
 				if enable then

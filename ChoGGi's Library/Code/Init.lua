@@ -76,7 +76,6 @@ ChoGGi = {
 		CrimeEventDestroyedBuildingsCount = false,
 		CrimeEventSabotageBuildingsCount = false,
 		CropFailThreshold = false,
-		DeepScanAvailable = false,
 		DefaultOutsideWorkplacesRadius = false,
 		DroneBuildingRepairAmount = false,
 		DroneBuildingRepairBatteryUse = false,

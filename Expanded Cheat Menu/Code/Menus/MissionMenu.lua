@@ -6,10 +6,10 @@ function OnMsg.ClassesGenerate()
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
-	local str_ExpandedCM_Mission = "ECM.Expanded CM.Mission"
+	local str_ECM_Mission = "ECM.ECM.Mission"
 	c = c + 1
 	Actions[c] = {ActionName = S[1635--[[Mission--]]],
-		ActionMenubar = "ECM.Expanded CM",
+		ActionMenubar = "ECM.ECM",
 		ActionId = ".Mission",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -18,7 +18,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[11034--[[Rival Colonies--]]],
-		ActionMenubar = str_ExpandedCM_Mission,
+		ActionMenubar = str_ECM_Mission,
 		ActionId = ".Rival Colonies",
 		ActionIcon = "CommonAssets/UI/Menu/add_water.tga",
 		RolloverText = S[302535920001460--[[Add/remove rival colonies.--]]],
@@ -27,7 +27,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000704--[[Instant Mission Goals--]]],
-		ActionMenubar = str_ExpandedCM_Mission,
+		ActionMenubar = str_ECM_Mission,
 		ActionId = ".Instant Mission Goals",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = S[302535920000705--[[Shows list of mission goals and allows you to pass any of them.--]]],
@@ -36,7 +36,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000706--[[Instant Colony Approval--]]],
-		ActionMenubar = str_ExpandedCM_Mission,
+		ActionMenubar = str_ECM_Mission,
 		ActionId = ".Instant Colony Approval",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = S[302535920000707--[[Make your colony instantly approved (can be called before you summon your first victims).--]]],
@@ -45,7 +45,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000710--[[Change Logo--]]],
-		ActionMenubar = str_ExpandedCM_Mission,
+		ActionMenubar = str_ECM_Mission,
 		ActionId = ".Change Logo",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = function()
@@ -59,7 +59,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000712--[[Set Sponsor--]]],
-		ActionMenubar = str_ExpandedCM_Mission,
+		ActionMenubar = str_ECM_Mission,
 		ActionId = ".Set Sponsor",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = function()
@@ -74,7 +74,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000714--[[Set Bonuses Sponsor--]]],
-		ActionMenubar = str_ExpandedCM_Mission,
+		ActionMenubar = str_ECM_Mission,
 		ActionId = ".Set Bonuses Sponsor",
 		ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 		RolloverText = S[302535920000715--[[Applies the good effects only (no drawbacks).
@@ -87,7 +87,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000716--[[Set Commander--]]],
-		ActionMenubar = str_ExpandedCM_Mission,
+		ActionMenubar = str_ECM_Mission,
 		ActionId = ".Set Commander",
 		ActionIcon = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 		RolloverText = function()
@@ -102,7 +102,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000718--[[Set Bonuses Commander--]]],
-		ActionMenubar = str_ExpandedCM_Mission,
+		ActionMenubar = str_ECM_Mission,
 		ActionId = ".Set Bonuses Commander",
 		ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 		RolloverText = S[302535920000715--[[Applies the good effects only (no drawbacks).
@@ -115,7 +115,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[8800--[[Game Rules--]]],
-		ActionMenubar = str_ExpandedCM_Mission,
+		ActionMenubar = str_ECM_Mission,
 		ActionId = ".Game Rules",
 		ActionIcon = "CommonAssets/UI/Menu/ListCollections.tga",
 		RolloverText = S[302535920000965--[["Change the ""Game Rules""."--]]],
@@ -124,17 +124,17 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001247--[[Start Challenge--]]],
-		ActionMenubar = str_ExpandedCM_Mission,
+		ActionMenubar = str_ECM_Mission,
 		ActionId = ".Start Challenge",
 		ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
 		RolloverText = S[302535920001249--[[Shows a list of challenges you can start (replaces current).--]]],
 		OnAction = ChoGGi.MenuFuncs.StartChallenge,
 	}
 
-	local str_ExpandedCM_Mission_Disasters = "ECM.Expanded CM.Mission.Disasters"
+	local str_ECM_Mission_Disasters = "ECM.ECM.Mission.Disasters"
 	c = c + 1
 	Actions[c] = {ActionName = S[3983--[[Disasters--]]],
-		ActionMenubar = "ECM.Expanded CM.Mission",
+		ActionMenubar = "ECM.ECM.Mission",
 		ActionId = ".Disasters",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -143,7 +143,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000708--[[Meteor Damage--]]],
-		ActionMenubar = str_ExpandedCM_Mission_Disasters,
+		ActionMenubar = str_ECM_Mission_Disasters,
 		ActionId = ".Meteor Damage",
 		ActionIcon = "CommonAssets/UI/Menu/remove_water.tga",
 		RolloverText = function()
@@ -157,7 +157,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[4142--[[Dust Devils--]]],
-		ActionMenubar = str_ExpandedCM_Mission_Disasters,
+		ActionMenubar = str_ECM_Mission_Disasters,
 		ActionId = ".Dust Devils",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = function()
@@ -171,7 +171,7 @@ Current: %s"--]]]:format(S[4142--[[Dust Devils--]]],mapdata.MapSettings_DustDevi
 
 	c = c + 1
 	Actions[c] = {ActionName = S[4148--[[Cold Waves--]]],
-		ActionMenubar = str_ExpandedCM_Mission_Disasters,
+		ActionMenubar = str_ECM_Mission_Disasters,
 		ActionId = ".Cold Waves",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = function()
@@ -185,7 +185,7 @@ Current: %s"--]]]:format(S[4142--[[Dust Devils--]]],mapdata.MapSettings_DustDevi
 
 	c = c + 1
 	Actions[c] = {ActionName = S[4144--[[Dust Storms--]]],
-		ActionMenubar = str_ExpandedCM_Mission_Disasters,
+		ActionMenubar = str_ECM_Mission_Disasters,
 		ActionId = ".Dust Storms",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = function()
@@ -199,7 +199,7 @@ Current: %s"--]]]:format(S[4142--[[Dust Devils--]]],mapdata.MapSettings_DustDevi
 
 	c = c + 1
 	Actions[c] = {ActionName = S[4146--[[Meteors--]]],
-		ActionMenubar = str_ExpandedCM_Mission_Disasters,
+		ActionMenubar = str_ECM_Mission_Disasters,
 		ActionId = ".Meteors",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = function()

@@ -1840,23 +1840,25 @@ The func I use for spot_rot rounds to two decimal points...
 			else
 				funcs.gethook = gethook(thread)
 
-				local info = getinfo(thread,0,"SLlfunt")
-				local nups = info.nups
-				if info and nups > 0 then
-					-- we start info at 0, nups starts at 1
-					nups = nups + 1
+				local info = getinfo(thread,0,"Slfunt")
+				if info then
+					local nups = info.nups
+					if nups > 0 then
+						-- we start info at 0, nups starts at 1
+						nups = nups + 1
 
-					for i = 0, nups do
-						local info_got = getinfo(thread,i)
-						if info_got then
-							local name = info_got.name or info_got.what or S[302535920000723--[[Lua--]]]
-							funcs[i] = {
-								name = name,
-								func = info_got.func,
-								level = i,
-								getlocal = DbgGetlocal(thread,info_got,i),
-								getupvalue = DbgGetupvalue(thread,info_got),
-							}
+						for i = 0, nups do
+							local info_got = getinfo(thread,i)
+							if info_got then
+								local name = info_got.name or info_got.what or S[302535920000723--[[Lua--]]]
+								funcs[i] = {
+									name = name,
+									func = info_got.func,
+									level = i,
+									getlocal = DbgGetlocal(thread,info_got,i),
+									getupvalue = DbgGetupvalue(thread,info_got),
+								}
+							end
 						end
 					end
 				end
@@ -1908,26 +1910,38 @@ The func I use for spot_rot rounds to two decimal points...
 				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.ComFuncs.RetSourceFile"))
 				return
 			end
+--[[
+source: '@CommonLua/PropertyObject.lua'
+~PropertyObject.Clone
+source: '@Mars/Lua/LifeSupportGrid.lua'
+~WaterGrid.RemoveElement
+source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
+~RCConstructor.CanInteractWithObject
 
---~ source: '@CommonLua/PropertyObject.lua'
---~ ~PropertyObject.Clone
---~ source: '@Mars/Lua/LifeSupportGrid.lua'
---~ ~WaterGrid.RemoveElement
---~ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
---~ ~RCConstructor.CanInteractWithObject
+~ChoGGi.ComFuncs.RetSourceFile
+~ModConfig.Set
+--]]
+			-- remove @
+			local at = path:sub(1,1)
+			if at == "@" then
+				path = path:sub(2)
+			end
 
-			-- mods
-			if FileExists(path) then
+			-- mods (we need to skip CommonLua else it'll open the luac file)
+			local comlua = path:sub(1,10)
+			if comlua ~= "CommonLua/" and FileExists(path) then
 				return select(2,AsyncFileToString(path)),path
 			end
 			-- might as well return bugged commonlua/dlc files...
-			if path:find("@Mars/") then
+			if path:sub(1,5) == "Mars/" then
 				path = source_path .. path:sub(6)
 				return select(2,AsyncFileToString(path)),path
-			elseif path:find("@CommonLua/") then
-				path = source_path .. path:sub(2)
+			elseif comlua == "CommonLua/" then
+				path = source_path .. path
 				return select(2,AsyncFileToString(path)),path
 			end
+
+			return "RetSourceFile ERROR: Bad Path?",path
 
 		end
 	end -- do

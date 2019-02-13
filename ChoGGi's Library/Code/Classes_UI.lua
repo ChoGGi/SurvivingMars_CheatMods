@@ -375,6 +375,7 @@ DefineClass.ChoGGi_ListItem = {
 	RolloverZoom = 1100,
 --~ 	Background = dark_gray,
 	SelectionBackground = darker_blue,
+--~ 	FocusedBorderColor = rollover_blue,
 }
 
 DefineClass.ChoGGi_Dialog = {
@@ -389,6 +390,7 @@ DefineClass.ChoGGi_Dialog = {
 	Background = dark_gray,
 	BorderWidth = 2,
 	BorderColor = light_gray,
+	Clip = "self",
 }
 
 DefineClass.ChoGGi_DialogSection = {
@@ -397,6 +399,7 @@ DefineClass.ChoGGi_DialogSection = {
 	FoldWhenHidden = true,
 	RolloverTemplate = "Rollover",
 	RolloverTitle = S[126095410863--[[Info--]]],
+	Clip = "self",
 }
 
 DefineClass.ChoGGi_ScrollArea = {
@@ -481,7 +484,6 @@ function ChoGGi_Window:AddElements()
 	self.idTitleLeftSection = g_Classes.ChoGGi_DialogSection:new({
 		Id = "idTitleLeftSection",
 		HAlign = "left",
-		Clip = "self",
 		Margins = box(0,0,32,0),
 	}, self.idMoveControl)
 

@@ -1158,7 +1158,7 @@ function OnMsg.ClassesGenerate()
 		local id = sel.template_name
 
 		local ItemList = {
-			{text = S[302535920000142--[[Disable--]]],value = "Disable"},
+			{text = S[251103844022--[[Disable--]]],value = "Disable"},
 			{text = 100,value = 100},
 			{text = 150,value = 150},
 			{text = 250,value = 250},

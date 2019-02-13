@@ -7,10 +7,10 @@ function OnMsg.ClassesGenerate()
 	local icon = "CommonAssets/UI/Menu/Cube.tga"
 	local c = #Actions
 
-	local str_ExpandedCM_Buildings = "ECM.Expanded CM.Buildings"
+	local str_ECM_Buildings = "ECM.ECM.Buildings"
 	c = c + 1
 	Actions[c] = {ActionName = S[3980--[[Buildings--]]],
-		ActionMenubar = "ECM.Expanded CM",
+		ActionMenubar = "ECM.ECM",
 		ActionId = ".Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -19,7 +19,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000164--[[Storage Amount Of Diner & Grocery--]]],
-		ActionMenubar = str_ExpandedCM_Buildings,
+		ActionMenubar = str_ECM_Buildings,
 		ActionId = ".Storage Amount Of Diner & Grocery",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -33,7 +33,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000168--[[Triboelectric Scrubber Radius--]]],
-		ActionMenubar = str_ExpandedCM_Buildings,
+		ActionMenubar = str_ECM_Buildings,
 		ActionId = ".Triboelectric Scrubber Radius",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -51,7 +51,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000171--[[SubsurfaceHeater Radius--]]],
-		ActionMenubar = str_ExpandedCM_Buildings,
+		ActionMenubar = str_ECM_Buildings,
 		ActionId = ".SubsurfaceHeater Radius",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -67,7 +67,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000176--[[Empty Mech Depot--]]],
-		ActionMenubar = str_ExpandedCM_Buildings,
+		ActionMenubar = str_ECM_Buildings,
 		ActionId = ".Empty Mech Depot",
 		ActionIcon = icon,
 		RolloverText = S[302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.--]]],
@@ -78,7 +78,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000210--[[Moisture Vaporator Penalty--]]],
-		ActionMenubar = str_ExpandedCM_Buildings,
+		ActionMenubar = str_ECM_Buildings,
 		ActionId = ".Moisture Vaporator Penalty",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -92,7 +92,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000180--[[Unlock Locked Buildings--]]],
-		ActionMenubar = str_ExpandedCM_Buildings,
+		ActionMenubar = str_ECM_Buildings,
 		ActionId = ".Unlock Locked Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = S[302535920000181--[["Shows a list of buildings you can unlock.
@@ -100,11 +100,11 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		OnAction = ChoGGi.MenuFuncs.UnlockLockedBuildings,
 	}
 
-	local str_ExpandedCM_Buildings_SanatoriumsSchools = "ECM.Expanded CM.Buildings.Sanatoriums & Schools"
+	local str_ECM_Buildings_SanatoriumsSchools = "ECM.ECM.Buildings.Sanatoriums & Schools"
 	local SandS = S[5245--[[Sanatoriums--]]] .. " & " .. S[5248--[[Schools--]]]
 	c = c + 1
 	Actions[c] = {ActionName = SandS,
-		ActionMenubar = "ECM.Expanded CM.Buildings",
+		ActionMenubar = "ECM.ECM.Buildings",
 		ActionId = ".Sanatoriums & Schools",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -113,7 +113,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[5245--[[Sanatoriums--]]] .. " " .. S[302535920000198--[[Cure All--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
+		ActionMenubar = str_ECM_Buildings_SanatoriumsSchools,
 		ActionId = ".Sanatoriums Cure All",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -127,7 +127,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[5248--[[Schools--]]] .. " " .. S[302535920000200--[[Train All--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
+		ActionMenubar = str_ECM_Buildings_SanatoriumsSchools,
 		ActionId = ".Schools Train All",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -141,7 +141,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = SandS .. ": " .. S[302535920000202--[[Show All Traits--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
+		ActionMenubar = str_ECM_Buildings_SanatoriumsSchools,
 		ActionId = ".Sanatoriums & Schools: Show All Traits",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = function()
@@ -155,7 +155,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = SandS .. ": " .. S[302535920000204--[[Show Full List--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_SanatoriumsSchools,
+		ActionMenubar = str_ECM_Buildings_SanatoriumsSchools,
 		ActionId = ".Sanatoriums & Schools: Show Full List",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = function()
@@ -167,10 +167,10 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		OnAction = ChoGGi.MenuFuncs.SanatoriumSchoolShowAll,
 	}
 
-	local str_ExpandedCM_Buildings_Farms = "ECM.Expanded CM.Buildings.Farms"
+	local str_ECM_Buildings_Farms = "ECM.ECM.Buildings.Farms"
 	c = c + 1
 	Actions[c] = {ActionName = S[5068--[[Farms--]]],
-		ActionMenubar = "ECM.Expanded CM.Buildings",
+		ActionMenubar = "ECM.ECM.Buildings",
 		ActionId = ".Farms",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -179,7 +179,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000192--[[Farm Shifts All On--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Farms,
+		ActionMenubar = str_ECM_Buildings_Farms,
 		ActionId = ".Farm Shifts All On",
 		ActionIcon = icon,
 		RolloverText = S[302535920000193--[[Turns on all the farm shifts.--]]],
@@ -188,7 +188,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[4711--[[Crop Fail Threshold--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Farms,
+		ActionMenubar = str_ECM_Buildings_Farms,
 		ActionId = ".Crop Fail Threshold",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -200,10 +200,10 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		OnAction = ChoGGi.MenuFuncs.CropFailThreshold_Toggle,
 	}
 
-	local str_ExpandedCM_Buildings_CablesPipes = "ECM.Expanded CM.Buildings.Cables & Pipes"
+	local str_ECM_Buildings_CablesPipes = "ECM.ECM.Buildings.Cables & Pipes"
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000157--[[Cables & Pipes--]]],
-		ActionMenubar = "ECM.Expanded CM.Buildings",
+		ActionMenubar = "ECM.ECM.Buildings",
 		ActionId = ".Cables & Pipes",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -212,7 +212,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000218--[[No Chance Of Break--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_CablesPipes,
+		ActionMenubar = str_ECM_Buildings_CablesPipes,
 		ActionId = ".Cables & Pipes: No Chance Of Break",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = function()
@@ -226,7 +226,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[134--[[Instant Build--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_CablesPipes,
+		ActionMenubar = str_ECM_Buildings_CablesPipes,
 		ActionId = ".Cables & Pipes: Instant Build",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = function()
@@ -238,10 +238,10 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		OnAction = ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle,
 	}
 
-	local str_ExpandedCM_Buildings_Buildings = "ECM.Expanded CM.Buildings.Buildings"
+	local str_ECM_Buildings_Buildings = "ECM.ECM.Buildings.Buildings"
 	c = c + 1
 	Actions[c] = {ActionName = S[3980--[[Buildings--]]],
-		ActionMenubar = "ECM.Expanded CM.Buildings",
+		ActionMenubar = "ECM.ECM.Buildings",
 		ActionId = ".Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -251,7 +251,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000194--[[Production Amount Set--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
+		ActionMenubar = str_ECM_Buildings_Buildings,
 		ActionId = ".Production Amount Set",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -270,7 +270,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000186--[[Power-free Building--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
+		ActionMenubar = str_ECM_Buildings_Buildings,
 		ActionId = ".Power-free Building",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -287,7 +287,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001251--[[Water-free Building--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
+		ActionMenubar = str_ECM_Buildings_Buildings,
 		ActionId = ".Water-free Building",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -304,7 +304,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001253--[[Oxygen-free Building--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
+		ActionMenubar = str_ECM_Buildings_Buildings,
 		ActionId = ".Oxygen-free Building",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -321,7 +321,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000188--[[Set Charge & Discharge Rates--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
+		ActionMenubar = str_ECM_Buildings_Buildings,
 		ActionId = ".Set Charge & Discharge Rates",
 		ActionIcon = icon,
 		RolloverText = S[302535920000189--[[Change how fast Air/Water/Battery storage capacity changes.--]]],
@@ -332,7 +332,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000178--[[Protection Radius--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
+		ActionMenubar = str_ECM_Buildings_Buildings,
 		ActionId = ".Protection Radius",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -348,7 +348,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000196--[[Fully Automated Building--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
+		ActionMenubar = str_ECM_Buildings_Buildings,
 		ActionId = ".Fully Automated Building",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -364,7 +364,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001114--[[Service Building Stats--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
+		ActionMenubar = str_ECM_Buildings_Buildings,
 		ActionId = ".Service Building Stats",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -383,7 +383,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001344--[[Points To Train--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Buildings,
+		ActionMenubar = str_ECM_Buildings_Buildings,
 		ActionId = ".Points To Train",
 		ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
 		RolloverText = function()
@@ -397,10 +397,10 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 		OnAction = ChoGGi.MenuFuncs.SetTrainingPoints,
 	}
 
-	local str_ExpandedCM_Buildings_Toggles = "ECM.Expanded CM.Buildings.Toggles"
+	local str_ECM_Buildings_Toggles = "ECM.ECM.Buildings.Toggles"
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001367--[[Toggles--]]],
-		ActionMenubar = "ECM.Expanded CM.Buildings",
+		ActionMenubar = "ECM.ECM.Buildings",
 		ActionId = ".Toggles",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -409,7 +409,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000159--[[Unlimited Wonders--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Unlimited Wonders",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = function()
@@ -423,7 +423,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000224--[[Show Hidden Buildings--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Show Hidden Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = function()
@@ -437,7 +437,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001241--[[Instant Build--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Instant Build",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = function()
@@ -451,7 +451,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000226--[[Remove Spire Point Limit--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Remove Spire Point Limit",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = function()
@@ -466,7 +466,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000230--[[Remove Building Limits--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Remove Building Limits",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = function()
@@ -481,7 +481,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000214--[[Cheap Construction--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Cheap Construction",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -495,7 +495,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000216--[[Building Damage Crime--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Building Damage Crime",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -509,7 +509,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000206--[[Maintenance Free Inside--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Maintenance Free Inside",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -523,7 +523,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000208--[[Maintenance Free--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Maintenance Free",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -537,7 +537,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000191--[[Use Last Orientation--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Use Last Orientation",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleMapAreaEditor.tga",
 		RolloverText = function()
@@ -553,7 +553,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000174--[[Always Dusty--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Always Dusty",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -568,7 +568,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000037--[[Always Clean--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Always Clean",
 		ActionIcon = icon,
 		RolloverText = function()
@@ -582,7 +582,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000182--[[Pipes Pillars Spacing--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Pipes Pillars Spacing",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = function()
@@ -596,7 +596,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000184--[[Unlimited Connection Length--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Unlimited Connection Length",
 		ActionIcon = "CommonAssets/UI/Menu/road_type.tga",
 		RolloverText = function()
@@ -610,7 +610,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000064--[[Build On Geysers--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Build On Geysers",
 		ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
 		OnAction = ChoGGi.MenuFuncs.BuildOnGeysers_Toggle,
@@ -624,7 +624,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001398--[[Remove Sponsor Limits--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Remove Sponsor Limits",
 		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
 		RolloverText = function()
@@ -638,7 +638,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001407--[[Rotate During Placement--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_Toggles,
+		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Rotate During Placement",
 		ActionIcon = "CommonAssets/UI/Menu/RotateObjectsTool.tga",
 		RolloverText = function()
@@ -650,10 +650,10 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		OnAction = ChoGGi.MenuFuncs.RotateDuringPlacement_Toggle,
 	}
 
-	local str_ExpandedCM_Buildings_SpaceElevator = "ECM.Expanded CM.Buildings.Space Elevator"
+	local str_ECM_Buildings_SpaceElevator = "ECM.ECM.Buildings.Space Elevator"
 	c = c + 1
 	Actions[c] = {ActionName = S[1120--[[Space Elevator--]]],
-		ActionMenubar = "ECM.Expanded CM.Buildings",
+		ActionMenubar = "ECM.ECM.Buildings",
 		ActionId = ".Space Elevator",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -662,7 +662,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001330--[[Instant Export On Toggle--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_SpaceElevator,
+		ActionMenubar = str_ECM_Buildings_SpaceElevator,
 		ActionId = ".Instant Export On Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 		RolloverText = function()
@@ -676,7 +676,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001336--[[Export When This Amount--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_SpaceElevator,
+		ActionMenubar = str_ECM_Buildings_SpaceElevator,
 		ActionId = ".Export When This Amount",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
@@ -690,7 +690,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001332--[[Export Amount Per Trip--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_SpaceElevator,
+		ActionMenubar = str_ECM_Buildings_SpaceElevator,
 		ActionId = ".Export Amount Per Trip",
 		ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
 		RolloverText = function()
@@ -706,7 +706,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001334--[[Import Amount Per Trip--]]],
-		ActionMenubar = str_ExpandedCM_Buildings_SpaceElevator,
+		ActionMenubar = str_ECM_Buildings_SpaceElevator,
 		ActionId = ".Import Amount Per Trip",
 		ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
 		RolloverText = function()

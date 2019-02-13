@@ -1781,7 +1781,7 @@ do -- Rebuildshortcuts
 
 		if DisableECM then
 		-- add a key binding to options to re-enable ECM
-			local name = S[302535920001079--[[Enable--]]] .. " " ..S[302535920000887--[[ECM--]]]
+			local name = S[754117323318--[[Enable--]]] .. " " ..S[302535920000887--[[ECM--]]]
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionName = name,
 				ActionId = name,
@@ -3894,8 +3894,8 @@ do -- ChangeSurfaceSignsToMaterials
 	function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
 
 		local ItemList = {
-			{text = S[302535920001079--[[Enable--]]],value = true,hint = 302535920001081--[[Changes signs to materials.--]]},
-			{text = S[302535920000142--[[Disable--]]],value = false,hint = 302535920001082--[[Changes materials to signs.--]]},
+			{text = S[754117323318--[[Enable--]]],value = true,hint = 302535920001081--[[Changes signs to materials.--]]},
+			{text = S[251103844022--[[Disable--]]],value = false,hint = 302535920001082--[[Changes materials to signs.--]]},
 		}
 
 		local function CallBackFunc(choice)

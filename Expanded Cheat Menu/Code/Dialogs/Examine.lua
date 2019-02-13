@@ -40,18 +40,20 @@ end
 
 local HLEnd = "</h></color>"
 
-local TableConcat
-local PopupToggle
-local RetName
-local ShowObj
 local DebugGetInfo
-local RetThreadInfo
 local DeleteObject
 local DotNameToObject
-local Trans
 local GetParentOfKind
 local IsControlPressed
+local OpenInExamineDlg
+local PopupToggle
 local Random
+local RetName
+local RetThreadInfo
+local ShowObj
+local TableConcat
+local Trans
+
 local InvalidPos
 local S
 local blacklist
@@ -60,18 +62,20 @@ local testing
 -- need to wait till Library mod is loaded
 function OnMsg.ClassesGenerate()
 	local ChoGGi = ChoGGi
-	TableConcat = ChoGGi.ComFuncs.TableConcat
-	PopupToggle = ChoGGi.ComFuncs.PopupToggle
-	RetName = ChoGGi.ComFuncs.RetName
-	ShowObj = ChoGGi.ComFuncs.ShowObj
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	DeleteObject = ChoGGi.ComFuncs.DeleteObject
 	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
-	RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
-	Trans = ChoGGi.ComFuncs.Translate
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 	IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
+	OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	Random = ChoGGi.ComFuncs.Random
+	RetName = ChoGGi.ComFuncs.RetName
+	RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
+	ShowObj = ChoGGi.ComFuncs.ShowObj
+	TableConcat = ChoGGi.ComFuncs.TableConcat
+	Trans = ChoGGi.ComFuncs.Translate
+
 	InvalidPos = ChoGGi.Consts.InvalidPos
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
@@ -616,7 +620,7 @@ function Examine:idAutoRefreshOnChange()
 		end
 	end)
 end
--- called external
+-- for external use
 function Examine:EnableAutoRefresh()
 	self.idAutoRefreshOnChange(self.idAutoRefresh)
 end
@@ -864,7 +868,7 @@ function Examine:BuildObjectMenuPopup()
 			hint = S[302535920001384--[[Get properties different from base/parent object?--]]],
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.OpenInExamineDlg(
+				OpenInExamineDlg(
 					GetModifiedProperties(self.obj_ref),
 					self,
 					S[931--[[Modified property--]]] .. ": " .. self.name
@@ -888,7 +892,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 				for i = 1, #props do
 					props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
 				end
-				ChoGGi.ComFuncs.OpenInExamineDlg(
+				OpenInExamineDlg(
 					props_list,self,
 					S[302535920001389--[[All Properties--]]] .. ": " .. self.name
 				)
@@ -1030,7 +1034,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 						self:BuildFuncList("CObject",self.menu_added.CObject)
 					end
 
-					ChoGGi.ComFuncs.OpenInExamineDlg(
+					OpenInExamineDlg(
 						self.menu_list_items,self,
 						S[302535920001239--[[Functions--]]] .. ": " .. self.name
 					)
@@ -1214,15 +1218,16 @@ function Examine:FlashWindow()
 	end)
 end
 
-local hex_shape_funcs = {
-	"GetEntityOutlineShape",
-	"GetEntityInteriorShape",
-	"GetEntityBuildShape",
-	"GetEntityInverseBuildShape",
-	"GetEntityCombinedShape",
-	"GetEntityPeripheralHexShape",
-}
 function Examine:ShowHexShapeList()
+	self.hex_shape_funcs = self.hex_shape_funcs or {
+		"GetEntityOutlineShape",
+		"GetEntityInteriorShape",
+		"GetEntityBuildShape",
+		"GetEntityInverseBuildShape",
+		"GetEntityCombinedShape",
+		"GetEntityPeripheralHexShape",
+	}
+
 	if self.obj_ref.ChoGGi_shape_obj then
 		self.obj_ref.ChoGGi_shape_obj:Destroy()
 		self.obj_ref.ChoGGi_shape_obj = nil
@@ -1233,8 +1238,8 @@ function Examine:ShowHexShapeList()
 
 	local fall = FallbackOutline
 	local g = _G
-	for i = 1, #hex_shape_funcs do
-		local func = hex_shape_funcs[i]
+	for i = 1, #self.hex_shape_funcs do
+		local func = self.hex_shape_funcs[i]
 		local shape = g[func](self.obj_ref:GetEntity())
 		if shape ~= fall and #shape > 2 then
 			c = c + 1
@@ -1324,37 +1329,22 @@ local function Show_ConvertValueToInfo(_,_,button,self,obj)
 	if button == "L" and GameState.gameplay and (IsValid(obj) or IsPoint(obj)) then
 		ShowObj(obj)
 	else
-		ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
+		OpenInExamineDlg(obj,self)
 	end
 end
 local function Examine_ConvertValueToInfo(_,_,button,self,obj)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" then
-		ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
+		OpenInExamineDlg(obj,self)
 	else
 		ShowObj(obj)
 	end
 end
-local point_str = "%s%s(%s,%s,%s)%s"
+
 function Examine:ConvertValueToInfo(obj,left)
 	local obj_type = type(obj)
 
-	if obj_type == "function" then
-		return self:HyperLink(obj,Examine_ConvertValueToInfo)
-			.. DebugGetInfo(obj) .. HLEnd
-	end
-
-	if obj_type == "thread" then
-		return self:HyperLink(obj,Examine_ConvertValueToInfo)
-			.. tostring(obj) .. HLEnd
-	end
-
 	if obj_type == "string" then
-		-- so we don't dupe examine dialogs; i store all examined objects in an ass table, and nil is changed to "nil"
-		-- not that this is called often
-		if obj == "nil" then
-			return "nil"
-		end
 		-- some translated stuff has <color in it, so we make sure they don't colour the rest
 		local _,colour_cnt = obj:gsub("<color ","")
 		for _ = 1, colour_cnt do
@@ -1362,16 +1352,19 @@ function Examine:ConvertValueToInfo(obj,left)
 		end
 		return "'<color " .. ChoGGi.UserSettings.ExamineColourStr .. ">" .. obj .. "</color>'"
 	end
-
 	-- for some reason i don't want the indexed table numbers to be coloured.
-	if obj_type == "number" and not left then
-		return "<color " .. ChoGGi.UserSettings.ExamineColourNum .. ">" .. obj .. "</color>"
+	if obj_type == "number" then
+		if left then
+			return obj
+		else
+			return "<color " .. ChoGGi.UserSettings.ExamineColourNum .. ">" .. obj .. "</color>"
+		end
 	end
-
+	--
 	if obj_type == "boolean" then
 		return "<color " .. ChoGGi.UserSettings.ExamineColourBool .. ">" .. tostring(obj) .. "</color>"
 	end
-
+	--
 	if obj_type == "table" then
 
 		if IsValid(obj) then
@@ -1439,7 +1432,7 @@ function Examine:ConvertValueToInfo(obj,left)
 			end
 		end
 	end
-
+	--
 	if obj_type == "userdata" then
 
 		if IsPoint(obj) then
@@ -1448,20 +1441,10 @@ function Examine:ConvertValueToInfo(obj,left)
 				return S[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
 			else
 				local x,y,z = obj:xyz()
-				local temp_str
-				-- don't show z if we don't have one
-				if z then
-					temp_str = point_str
-				else
-					temp_str = point_str:gsub(",%%s%)","%%s)")
-				end
-
-				return temp_str:format(
-					self:HyperLink(obj,Show_ConvertValueToInfo),
-					S[302535920001396--[[point--]]],
-					x,y,z or "",
-					HLEnd
-				)
+				return self:HyperLink(obj,Show_ConvertValueToInfo)
+					.. S[302535920001396--[[point--]]]
+					.. "(" .. x .. "," .. y .. (z and "," .. z or "") .. ")"
+					.. HLEnd
 			end
 		else
 			-- show translated text if possible and return a clickable link
@@ -1482,11 +1465,21 @@ function Examine:ConvertValueToInfo(obj,left)
 				.. (meta and meta.__name or tostring(obj)) .. HLEnd
 		end
 	end
-
+	--
+	if obj_type == "function" then
+		return self:HyperLink(obj,Examine_ConvertValueToInfo)
+			.. DebugGetInfo(obj) .. HLEnd
+	end
+	--
+	if obj_type == "thread" then
+		return self:HyperLink(obj,Examine_ConvertValueToInfo)
+			.. tostring(obj) .. HLEnd
+	end
+	--
 	if obj_type == "nil" then
 		return "<color " .. ChoGGi.UserSettings.ExamineColourNil .. ">nil</color>"
 	end
-
+	-- just in case
 	return tostring(obj)
 end
 
@@ -1506,38 +1499,39 @@ function Examine:RetDebugUpValue(obj,list,c,nups)
 	return c
 end
 
-local ConvertObj_debug_table = {}
 function Examine:RetDebugGetInfo(obj)
-	TableIClear(ConvertObj_debug_table)
+	self.RetDebugInfo_table = self.RetDebugInfo_table or objlist:new()
+	local temp = self.RetDebugInfo_table
+	temp:Destroy()
+
 	local c = 0
-	local info = getinfo(obj,"SLlfunt")
+	local info = getinfo(obj,"Slfunt")
 	for key,value in pairs(info) do
 		c = c + 1
-		ConvertObj_debug_table[c] = key .. ": " .. self:ConvertValueToInfo(value)
---~ 			.. (key == "nups" and " (upvalue amount)" or key == "nparams" and " (args amount)" or "")
+		temp[c] = key .. ": " .. self:ConvertValueToInfo(value)
 	end
 	-- since pairs doesn't have an order we need a sort
-	TableSort(ConvertObj_debug_table)
-	TableInsert(ConvertObj_debug_table,1,"\ngetinfo(): ")
-	return TableConcat(ConvertObj_debug_table,"\n")
+	TableSort(temp)
+
+	TableInsert(temp,1,"\ngetinfo(): ")
+	return TableConcat(temp,"\n")
 end
-function Examine:RetFuncVars(obj)
-	TableIClear(ConvertObj_debug_table)
+function Examine:RetFuncParams(obj)
+	self.RetDebugInfo_table = self.RetDebugInfo_table or objlist:new()
+	local temp = self.RetDebugInfo_table
+	temp:Destroy()
+
 	local info = getinfo(obj,"u")
 	if info.nparams > 0 then
 		for i = 1, info.nparams do
-			ConvertObj_debug_table[i] = getlocal(obj, i)
+			temp[i] = getlocal(obj, i)
 		end
 
-		TableInsert(ConvertObj_debug_table,1,"\nparams: ")
-		local args = TableConcat(ConvertObj_debug_table,", ")
+		TableInsert(temp,1,"\nparams: ")
+		local args = TableConcat(temp,", ")
 
-		local p_end = ")"
-		local isvararg = info.isvararg
-		if isvararg then
-			p_end = ", ...)"
-		end
-		return args:gsub(": , ",": (") .. p_end
+		-- remove extra , from concat and add ... if it has a vararg
+		return args:gsub(": , ",": (") .. (info.isvararg and ", ...)" or ")")
 	end
 end
 
@@ -1650,7 +1644,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 		TableInsert(totextex_res,1,"\t--"
 			.. self:HyperLink(obj,function()
-				ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(obj),self)
+				OpenInExamineDlg(getmetatable(obj),self)
 			end)
 			.. obj.class
 			.. HLEnd
@@ -1728,7 +1722,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				TableInsert(data_meta,1,"\ngetmetatable():")
 				TableInsert(data_meta,1,"Unpack(): "
 					.. self:HyperLink(obj,function()
-						ChoGGi.ComFuncs.OpenInExamineDlg({obj:Unpack()},self)
+						OpenInExamineDlg({obj:Unpack()},self)
 					end)
 					.. "table" .. HLEnd
 				)
@@ -1871,7 +1865,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			end
 			dbg_value = self:RetDebugGetInfo(obj)
 			-- any args
-			local args = self:RetFuncVars(obj)
+			local args = self:RetFuncParams(obj)
 			if args then
 				c = c + 1
 				totextex_res[c] = args
@@ -1951,7 +1945,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		TableInsert(totextex_res, 1,"\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
 		if self.enum_vars and next(self.enum_vars) then
 			totextex_res[1] = totextex_res[1] .. self:HyperLink(obj,function()
-				ChoGGi.ComFuncs.OpenInExamineDlg(self.enum_vars,self)
+				OpenInExamineDlg(self.enum_vars,self)
 			end)
 			.. " enum"
 			.. HLEnd
@@ -2031,7 +2025,7 @@ function Examine:BuildParents(list,list_type,title,sort_type)
 					name = list[i],
 					hint = list[i],
 					clicked = function()
-						ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[list[i]],self)
+						OpenInExamineDlg(g_Classes[list[i]],self)
 					end,
 				}
 			end
@@ -2118,7 +2112,7 @@ function Examine:SetObj(startup)
 				showobj = a,
 				clicked = function()
 					ChoGGi.ComFuncs.ClearShowObj(a)
-					ChoGGi.ComFuncs.OpenInExamineDlg(a,self)
+					OpenInExamineDlg(a,self)
 				end,
 			}
 

@@ -44,7 +44,7 @@ function OnMsg.ClassesGenerate()
 			}
 		end
 		AddMenuitem("ECM.Cheats",27,"01")
-		AddMenuitem("ECM.Expanded CM",302535920000104,"02")
+		AddMenuitem("ECM.ECM",302535920000887,"02")
 		AddMenuitem("ECM.Game",283142739680,"03")
 		AddMenuitem("ECM.Debug",1000113,"04")
 		AddMenuitem("ECM.Help",487939677892,"05")
@@ -432,31 +432,34 @@ function OnMsg.ClassesGenerate()
 	-- and read our settings
 	ChoGGi.SettingFuncs.ReadSettings()
 
+	local UserSettings = ChoGGi.UserSettings
 	-- could've been from when i used encyclopedia_id for this?
-	if ChoGGi.UserSettings.BuildingSettings[""] then
-		ChoGGi.UserSettings.BuildingSettings[""] = nil
+	if UserSettings.BuildingSettings[""] then
+		UserSettings.BuildingSettings[""] = nil
 	end
 
-	if ChoGGi.UserSettings.ConsoleExamineListUpdate then
-		ChoGGi.UserSettings.ConsoleExamineList = ChoGGi.Defaults.ConsoleExamineList
+	if UserSettings.ConsoleExamineListUpdate then
+		UserSettings.ConsoleExamineList = ChoGGi.Defaults.ConsoleExamineList
 	end
 
-	if ChoGGi.testing or ChoGGi.UserSettings.ShowStartupTicks then
+	if ChoGGi.testing or UserSettings.ShowStartupTicks then
 		-- from here to the end of OnMsg.ChoGGi_Loaded()
 		ChoGGi.Temp.StartupTicks = GetPreciseTicks()
 	end
 
 	-- bloody hint popups
-	if ChoGGi.UserSettings.DisableHints then
+	if UserSettings.DisableHints then
 		mapdata.DisableHints = true
 		HintsEnabled = false
 	end
 
 	-- write logs to file (in-game instead of when quitting)
-	if not blacklist and ChoGGi.UserSettings.WriteLogs then
-		ChoGGi.ComFuncs.WriteLogs_Toggle(ChoGGi.UserSettings.WriteLogs)
+	if not blacklist and UserSettings.WriteLogs then
+		ChoGGi.ComFuncs.WriteLogs_Toggle(UserSettings.WriteLogs)
 	end
 
+	-- remove it once n fer all (brain fart from ShowScanAndMapOptions)
+	UserSettings.DeepScanAvailable = nil
 end
 
 -- ClassesBuilt is the earliest we can call Consts funcs (which i don't actually call in here anymore...)

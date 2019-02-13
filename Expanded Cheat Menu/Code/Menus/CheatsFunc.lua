@@ -808,12 +808,13 @@ This will switch to a new map.--]]],
 					CheatMapExplore("deep scanned")
 				end
 			end
-			ChoGGi.ComFuncs.SetSavedSetting("DeepScanAvailable",Consts.DeepScanAvailable)
-			ChoGGi.ComFuncs.SetSavedSetting("IsDeepWaterExploitable",Consts.IsDeepWaterExploitable)
-			ChoGGi.ComFuncs.SetSavedSetting("IsDeepMetalsExploitable",Consts.IsDeepMetalsExploitable)
-			ChoGGi.ComFuncs.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
+			-- i'm not sure why i saved this?
+--~ 			ChoGGi.ComFuncs.SetSavedSetting("DeepScanAvailable",Consts.DeepScanAvailable)
+--~ 			ChoGGi.ComFuncs.SetSavedSetting("IsDeepWaterExploitable",Consts.IsDeepWaterExploitable)
+--~ 			ChoGGi.ComFuncs.SetSavedSetting("IsDeepMetalsExploitable",Consts.IsDeepMetalsExploitable)
+--~ 			ChoGGi.ComFuncs.SetSavedSetting("IsDeepPreciousMetalsExploitable",Consts.IsDeepPreciousMetalsExploitable)
+--~ 			ChoGGi.SettingFuncs.WriteSettings()
 
-			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				302535920000262--[[Alice thought to herself. ""Now you will see a film made for children"".
 Perhaps.
