@@ -20,11 +20,89 @@ function OnMsg.ClassesGenerate()
 
 	if ChoGGi.testing then
 
-		local orig_GetStack = GetStack
-		function GetStack(...)
-			print("GetStack:",...)
-			return orig_GetStack(...)
-		end
+--~ 		local orig_GetStack = GetStack
+--~ 		function GetStack(...)
+--~ 			print("GetStack:",...)
+--~ 			return orig_GetStack(...)
+--~ 		end
+		do -- TraceCall/Trace (commented out in CommonLua\PropertyObject.lua)
+--~ g_traceMeta
+--~ g_traceEntryMeta
+			-- needs to be true for traces to be active (see CommonLua\Classes\StateObject.lua)
+			StateObject.so_debug_triggers = true
+			-- CommonLua\Movable.lua
+			function Movable:SetSpeed(speed)
+				pf.SetSpeed(self, speed)
+			end
+
+			local GetStack = GetStack
+			local GameTime = GameTime
+			local rawget,rawset = rawget,rawset
+			local setmetatable = setmetatable
+			local TableRemove = table.remove
+			local TableInsert = table.insert
+
+			function PropertyObject:TraceCall(member)
+				print("PropertyObject:TraceCall",self.class)
+				local orig_member_fn = self[member]
+				self[member] = function(self, ...)
+					self:Trace("[Call]", member, GetStack(2), ...)
+					return orig_member_fn(self, ...)
+				end
+			end
+			function PropertyObject:Trace(...)
+				print("PropertyObject:Trace",self.class)
+				local t = rawget(self, "trace_log")
+				if not t then
+					t = {}
+					setmetatable(t, g_traceMeta)
+					rawset(self, "trace_log", t)
+				end
+				local threshold = GameTime() - (3000)
+				while #t >= 50 and threshold > t[#t][1] do
+					TableRemove(t)
+				end
+				local data = {
+					GameTime(),
+					...
+				}
+				setmetatable(data, g_traceEntryMeta)
+				TableInsert(t, 1, data)
+			end
+
+			function SetCommandErrorChecks(self, command, ...)
+				print("SetCommandErrorChecks",self.class)
+				local destructors = self.command_destructors
+				if command == "->Idle" and destructors and destructors[1] > 0 then
+					print("Command", self.class .. "." .. tostring(self.command), "remaining destructors:")
+					for i = 1, destructors[1] do
+						local destructor = destructors[i + 1]
+						local info = debug.getinfo(destructor, "S") or empty_table
+						local source = info.source or "Unknown"
+						local line = info.linedefined or -1
+						printf("\t%d. %s(%d)", i, source, line)
+					end
+					error(string.format("Command %s.%s did not pop its destructors.", self.class, tostring(self.command)), 2)
+				end
+				if command and command ~= "->Idle" then
+					if type(command) ~= "function" and not self:HasMember(command) then
+						error(string.format("Invalid command %s:%s", self.class, tostring(command)), 3)
+					end
+					if IsBeingDestructed(self) then
+						error(string.format("%s:SetCommand('%s') called from Done() or delete()", self.class, tostring(command)), 3)
+					end
+				end
+				self.command_call_stack = GetStack(3)
+				if self.trace_setcmd then
+					if self.trace_setcmd == "log" then
+						self:Trace("SetCommand", tostring(command), self.command_call_stack, ...)
+					else
+						error(string.format("%s:SetCommand(%s) time %d, old command %s", self.class, concat_params(", ", tostring(command), ...), GameTime(), tostring(self.command)), 3)
+					end
+				end
+			end
+
+		end -- do
 
 		-- centred hud
 		local GetScreenSize = UIL.GetScreenSize

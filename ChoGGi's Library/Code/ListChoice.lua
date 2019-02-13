@@ -104,40 +104,18 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
-	self:AddScrollList()
-
-	self.idList.OnMouseButtonDown = self.idListOnMouseButtonDown
-	self.idList.OnKbdKeyUp = self.idListOnKbdKeyUp
-	self.idList.OnMouseButtonDoubleClick = self.idListOnMouseButtonDoubleClick
-	self.idList.OnKbdKeyDown = self.idListOnKbdKeyDown
-
-	self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
-		Id = "idFilterArea",
-		Dock = "bottom",
-	}, self.idDialog)
-
-	self.idFilter = g_Classes.ChoGGi_TextInput:new({
-		Id = "idFilter",
-		RolloverText = S[302535920000806--[["Only show items containing this text.
-
-Press Enter to show all items."--]]],
-		Hint = S[302535920000068--[[Filter Items--]]],
-		OnTextChanged = self.FilterText,
-		OnKbdKeyDown = self.idFilterOnKbdKeyDown
-	}, self.idFilterArea)
-
 	-- setup checkboxes
 	if self.list.check and #self.list.check > 0 then
-		-- it'll be on the bottom
-		self.idCheckboxArea2 = g_Classes.ChoGGi_DialogSection:new({
-			Id = "idCheckboxArea2",
-			Dock = "bottom",
-			HAlign = "center",
-		}, self.idDialog)
 		self.idCheckboxArea = g_Classes.ChoGGi_DialogSection:new({
 			Id = "idCheckboxArea",
-			Dock = "bottom",
-			HAlign = "center",
+			Dock = "top",
+			Margins = box(8,4,0,4),
+		}, self.idDialog)
+		self.idCheckboxArea2 = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idCheckboxArea2",
+			Dock = "top",
+			Margins = box(8,4,0,14),
+			FoldWhenHidden = true,
 		}, self.idDialog)
 
 		local checks = self.list.check
@@ -191,9 +169,35 @@ Press Enter to show all items."--]]],
 			if list_check.visible == false then
 				check:SetVisible()
 			end
+		end
 
+		-- no checkboxes so we hide it
+		if #self.idCheckboxArea2 == 0 then
+			self.idCheckboxArea2:SetVisible()
 		end
 	end
+
+	self:AddScrollList()
+
+	self.idList.OnMouseButtonDown = self.idListOnMouseButtonDown
+	self.idList.OnKbdKeyUp = self.idListOnKbdKeyUp
+	self.idList.OnMouseButtonDoubleClick = self.idListOnMouseButtonDoubleClick
+	self.idList.OnKbdKeyDown = self.idListOnKbdKeyDown
+
+	self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
+		Id = "idFilterArea",
+		Dock = "bottom",
+	}, self.idDialog)
+
+	self.idFilter = g_Classes.ChoGGi_TextInput:new({
+		Id = "idFilter",
+		RolloverText = S[302535920000806--[["Only show items containing this text.
+
+Press Enter to show all items."--]]],
+		Hint = S[302535920000068--[[Filter Items--]]],
+		OnTextChanged = self.FilterText,
+		OnKbdKeyDown = self.idFilterOnKbdKeyDown
+	}, self.idFilterArea)
 
 	-- make checkbox work like a button
 	if self.custom_type == 5 then
@@ -204,19 +208,33 @@ Press Enter to show all items."--]]],
 	end
 
 	if self.custom_type ~= 7 then
+
 		self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
 			Id = "idEditArea",
 			Dock = "bottom",
+			Margins = box(0,8,4,4),
 		}, self.idDialog)
 
 		self.idEditValue = g_Classes.ChoGGi_TextInput:new({
 			Id = "idEditValue",
-			RolloverText = S[302535920000077--[["You can enter a custom value to be applied. The item needs to be selected for this to take effect (see last entry).
+			RolloverText = S[302535920000077--[["Enter a custom value to be applied.
+The listitem <color 0 200 0>must</color> be selected for this to take effect (it's the last listitem).
+It won't be visible unless the ""%s"" checkbox is enabled.
 
-Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]],
-			Hint = S[302535920000078--[[Add Custom Value--]]],
+Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]]:format(S[302535920000104--[[Show--]]]),
+			Hint = S[302535920000078--[[Type Custom Value--]]],
 			OnKbdKeyDown = self.idEditValueOnKbdKeyDown
 		}, self.idEditArea)
+
+		self.idShowCustomVal = g_Classes.ChoGGi_CheckButton:new({
+			Id = "idShowCustomVal",
+			Dock = "left",
+			Margins = box(4,0,0,0),
+			Text = S[302535920000104--[[Show--]]],
+			RolloverText = S[302535920000077]:format(S[302535920000104]),
+			OnChange = self.idShowCustomValOnChange,
+		}, self.idEditArea)
+
 	end
 
 	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
@@ -382,6 +400,16 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	self:PostInit(self.list.parent)
 end
 
+function ChoGGi_ListChoiceDlg:idShowCustomValOnChange(check)
+	self = GetRootDialog(self)
+	local item = self.idList[#self.idList]
+	item:SetVisible(check)
+	if check then
+		item:SetSelected(true)
+		item:SetFocused(true)
+	end
+end
+
 -- uncheck all the other checks
 function ChoGGi_ListChoiceDlg:idCheckBoxOnlyOne()
 	local checks = self.parent
@@ -531,6 +559,13 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 		listitem.RolloverTitle = item.text
 		listitem.idText:SetText(item.text)
 		listitem.item = item
+		-- special little guy
+		listitem.FoldWhenHidden = true
+		listitem.FocusedBorderColor = -14113793 -- rollover_blue
+
+		if not self.idShowCustomVal:GetCheck() then
+			listitem:SetVisible(false)
+		end
 	end
 end
 
@@ -646,7 +681,7 @@ end
 function ChoGGi_ListChoiceDlg:idFilterOnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
-		self:FilterText("")
+		self:FilterText(true)
 		self.idFilter:SelectAll()
 		return "break"
 	elseif vk == const.vkEsc then
@@ -660,9 +695,15 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 	self = GetRootDialog(self)
 	-- rebuild list
 	self:BuildList()
-	-- if enter was pressed
-	txt = self.idFilter:GetText():lower()
 
+	-- enter was pressed
+	if txt == true then
+		return
+	end
+
+	-- otherwise get text from filter input
+	txt = self.idFilter:GetText():lower()
+	-- blank so no need to filter
 	if txt == "" then
 		return
 	end

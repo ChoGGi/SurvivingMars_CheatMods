@@ -2,6 +2,9 @@
 
 ## v5.5 (Unreleased)
 - Removed some log spam from MsgPop added last update.
+- Fiddled around with the List dialog a bit:
+- > Checkboxes are at the top, and some margins added.
+- > Added a checkbox to the custom value area, and hide the listitem by default.
 
 ## v5.4 (08 Feb 2019)
 - Added a bit of colour to the dialogs.

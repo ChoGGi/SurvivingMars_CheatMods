@@ -21,34 +21,6 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
-	function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
-		local ChoGGi = ChoGGi
-		local XTemplates = XTemplates
-
-		if ChoGGi.UserSettings.GUIDockSide then
-			ChoGGi.UserSettings.GUIDockSide = false
-			-- command center and such
-			XTemplates.NewOverlayDlg[1].Dock = "left"
-			-- save/load screens
-			XTemplates.SaveLoadContentWindow[1].Dock = "left"
-			ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1],"Dock","right","Dock","left")
-			-- photomode
-			XTemplates.PhotoMode[1].Dock = "left"
-		else
-			ChoGGi.UserSettings.GUIDockSide = true
-			XTemplates.NewOverlayDlg[1].Dock = "right"
-			XTemplates.SaveLoadContentWindow[1].Dock = "right"
-			ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1],"Dock","left","Dock","right")
-			XTemplates.PhotoMode[1].Dock = "right"
-		end
-
-		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(
-			ChoGGi.UserSettings.GUIDockSide and S[1000459--[[Right--]]] or S[1000457--[[Left--]]],
-			302535920001412--[[GUI Dock Side--]]
-		)
-	end
-
 	function ChoGGi.MenuFuncs.ToolTips_Toggle()
 		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.EnableToolTips = not ChoGGi.UserSettings.EnableToolTips
@@ -219,40 +191,6 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 			custom_func = CallBackFunc,
 			height = 800.0,
 		}
-	end
-
-	function ChoGGi.MenuFuncs.Interface_Toggle()
-		if hr.RenderUIL == 1 then
-
-			-- retrieve shortcut key to display below
-			local options = OptionsCreateAndLoad()
-			local key = options["ECM.Help.Interface.Toggle Interface"]
-			-- if we don't have a shortcut set then do nothing
-			if key then
-				key = key[1]
-				if not key then
-					return
-				end
-			else
-				return
-			end
-
-			local function CallBackFunc(answer)
-				if answer then
-					hr.RenderUIL = 0
-				end
-			end
-
-			ChoGGi.ComFuncs.QuestionBox(
-				S[302535920000244--[[Warning! This will hide everything. Remember the shortcut or have fun restarting.--]]] .. "\n\n" .. key,
-				CallBackFunc,
-				302535920000663--[[Toggle Interface--]]
-			)
-
-		else
-			hr.RenderUIL = 1
-		end
-
 	end
 
 	function ChoGGi.MenuFuncs.RetMapInfo()
@@ -731,7 +669,6 @@ hpk create --cripple-lua-files ""Mod folder"" ModContent.hpk
 Move archive to Mod folder/Pack/ModContent.hpk"--]],
 				check = check,
 				height = 800.0,
-				width = 450.0,
 			}
 		end
 	end -- do
@@ -776,43 +713,8 @@ Move archive to Mod folder/Pack/ModContent.hpk"--]],
 			S[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
 Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .. S[302535920001070--[[Restart to take effect.--]]],
 			CallBackFunc,
-			302535920000142--[[Disable--]]
+			251103844022--[[Disable--]]
 		)
-	end
-
-	function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
-		local ChoGGi = ChoGGi
-		hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1
-		-- needs default
-		ChoGGi.UserSettings.ShowInterfaceInScreenshots = not ChoGGi.UserSettings.ShowInterfaceInScreenshots
-
-		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(
-			S[302535920001068--[[%s: Interface in screenshots.--]]]:format(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
-			302535920001069--[[Interface--]]
-		)
-	end
-
-	function ChoGGi.MenuFuncs.TakeScreenshot(boolean)
-		CreateRealTimeThread(function()
-			local filename,created
-			if boolean == true then
-					WaitNextFrame(3)
-					LockCamera("Screenshot")
-					filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SSAA","AppData/","tga")
-					created = MovieWriteScreenshot(filename, 0, 64, false)
-					UnlockCamera("Screenshot")
-			else
-				filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SS","AppData/","tga")
-				created = WriteScreenshot(filename)
-			end
-
-			if created then
-				-- slight delay so it doesn't show up in the screenshot
-				Sleep(50)
-				print("TakeScreenshot:",ConvertToOSPath(filename))
-			end
-		end)
 	end
 
 	function ChoGGi.MenuFuncs.ResetECMSettings()
@@ -850,46 +752,6 @@ Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .
 	Old settings are saved as %s (or not saved if you don't use the HelperMod)--]]]:format(old) .. "\n\n" .. S[302535920001070--[[Restart to take effect.--]]],
 			CallBackFunc,
 			S[302535920001084--[[Reset--]]] .. "!"
-		)
-	end
-
-	function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
-		HintsEnabled = not HintsEnabled
-		SetHintNotificationsEnabled(HintsEnabled)
-		mapdata.DisableHints = not HintsEnabled
-		UpdateOnScreenHintDlg()
-		MsgPopup(
-			tostring(HintsEnabled),
-			4248--[[Hints--]]
-		)
-	end
-
-	function ChoGGi.MenuFuncs.OnScreenHints_Reset()
-		g_ShownOnScreenHints = {}
-		UpdateOnScreenHintDlg()
-		MsgPopup(
-			302535920001076--[[Hints Reset!--]],
-			4248--[[Hints--]]
-		)
-	end
-
-	function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
-		local ChoGGi = ChoGGi
-		if ChoGGi.UserSettings.DisableHints then
-			ChoGGi.UserSettings.DisableHints = nil
-			mapdata.DisableHints = false
-			HintsEnabled = true
-		else
-			ChoGGi.UserSettings.DisableHints = true
-			mapdata.DisableHints = true
-			HintsEnabled = false
-		end
-
-		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(
-			S[302535920001077--[[%s: Bye bye hints--]]]:format(ChoGGi.UserSettings.DisableHints),
-			4248--[[Hints--]],
-			"UI/Icons/Sections/attention.tga"
 		)
 	end
 

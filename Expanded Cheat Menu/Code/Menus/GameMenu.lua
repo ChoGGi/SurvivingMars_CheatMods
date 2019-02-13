@@ -264,7 +264,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionId = ".Camera",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
-		ActionSortKey = "2Camera",
+		ActionSortKey = "1Camera",
 	}
 
 	c = c + 1
@@ -387,7 +387,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionId = ".Render",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
-		ActionSortKey = "2Render",
+		ActionSortKey = "1Render",
 	}
 
 	c = c + 1
@@ -516,7 +516,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionMenubar = str_Game_ExportCSV,
 		ActionId = ".Graphs Data",
 		ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
-		RolloverText = S[302535920001452--[[Export colonist cc graph data to %sGraphs.csv.--]]]:format(ConvertToOSPath("AppData/")),
+		RolloverText = S[302535920001452--[[Export command centre graph data to %sGraphs.csv.--]]]:format(ConvertToOSPath("AppData/")),
 		OnAction = ChoGGi.ComFuncs.ExportGraphsToCSV,
 	}
 
@@ -531,6 +531,138 @@ See survivingmarsmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
 Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu)."--]]]:format(ConvertToOSPath("AppData/")),
 		OnAction = ChoGGi.ComFuncs.ExportMapDataToCSV,
+	}
+
+	local str_Game_Screenshot = "ECM.Game.Screenshot"
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000892--[[Screenshot--]]],
+		ActionMenubar = "ECM.Game",
+		ActionId = ".Screenshot",
+		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+		OnActionEffect = "popup",
+		ActionSortKey = "1Screenshot",
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000657--[[Screenshot--]]],
+		ActionMenubar = str_Game_Screenshot,
+		ActionId = ".Screenshot",
+		ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
+		RolloverText = S[302535920000658--[[Write screenshot--]]],
+		OnAction = ChoGGi.MenuFuncs.TakeScreenshot,
+		ActionShortcut = "-PrtScr",
+		ActionBindable = true,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000659--[[Screenshot Upsampled--]]],
+		ActionMenubar = str_Game_Screenshot,
+		ActionId = ".Screenshot Upsampled",
+		ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
+		RolloverText = S[302535920000660--[[Write screenshot upsampled--]]],
+		OnAction = function()
+			ChoGGi.MenuFuncs.TakeScreenshot(true)
+		end,
+		ActionShortcut = "-Ctrl-PrtScr",
+		ActionBindable = true,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000661--[[Show Interface in Screenshots--]]],
+		ActionMenubar = str_Game_Screenshot,
+		ActionId = ".Show Interface in Screenshots",
+		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.ShowInterfaceInScreenshots,
+				302535920000662--[[Do you want to see the interface in screenshots?--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle,
+	}
+
+	local str_Game_Interface = "ECM.Game.Interface"
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000893--[[Interface--]]],
+		ActionMenubar = "ECM.Game",
+		ActionId = ".Interface",
+		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+		OnActionEffect = "popup",
+		ActionSortKey = "1Interface",
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000663--[[Toggle Interface--]]],
+		ActionMenubar = str_Game_Interface,
+		ActionId = ".Toggle Interface",
+		ActionIcon = "CommonAssets/UI/Menu/ToggleSelectionOcclusion.tga",
+		RolloverText = S[302535920000244--[[Warning! This will hide everything. Remember the shortcut or have fun restarting.--]]],
+		OnAction = ChoGGi.MenuFuncs.Interface_Toggle,
+		ActionShortcut = "Ctrl-Alt-I",
+		ActionBindable = true,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001387--[[Toggle Signs--]]],
+		ActionMenubar = str_Game_Interface,
+		ActionId = ".Toggle Signs",
+		ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",
+		RolloverText = S[302535920001388--[["Concrete, metal deposits, not working, etc..."--]]],
+		OnAction = ToggleSigns,
+		ActionShortcut = "Ctrl-Alt-U",
+		ActionBindable = true,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000666--[[Toggle on-screen hints--]]],
+		ActionMenubar = str_Game_Interface,
+		ActionId = ".Toggle on-screen hints",
+		ActionIcon = "CommonAssets/UI/Menu/HideUnselected.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				HintsEnabled,
+				302535920000667--[[Don't show hints for this game.--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.OnScreenHints_Toggle,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000668--[[Reset on-screen hints--]]],
+		ActionMenubar = str_Game_Interface,
+		ActionId = ".Reset on-screen hints",
+		ActionIcon = "CommonAssets/UI/Menu/HideSelected.tga",
+		RolloverText = S[302535920000669--[[Just in case you wanted to see them again.--]]],
+		OnAction = ChoGGi.MenuFuncs.OnScreenHints_Reset,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000670--[[Never Show Hints--]]],
+		ActionMenubar = str_Game_Interface,
+		ActionId = ".Never Show Hints",
+		ActionIcon = "CommonAssets/UI/Menu/set_debug_texture.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.DisableHints,
+				302535920000671--[[No more hints ever.--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.NeverShowHints_Toggle,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001412--[[GUI Dock Side--]]],
+		ActionMenubar = str_Game_Interface,
+		ActionId = ".GUI Dock Side",
+		ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.UserSettings.GUIDockSide and S[1000459--[[Right--]]] or S[1000457--[[Left--]]],
+				302535920001413--[[Change which side (most) GUI menus are on.--]]
+
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.GUIDockSide_Toggle,
 	}
 
 end
