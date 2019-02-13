@@ -702,7 +702,6 @@ function OnMsg.ClassesGenerate()
 				{text = S[3486--[[Mystery--]]],value = "random",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(S[27--[[Cheats--]]],S[302535920000331--[[Start Mystery--]]],"")},
 				{text = S[3482--[[Colony Logo--]]],value = "MarsExpress",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(S[302535920000887--[[ECM--]]],S[1635--[[Mission--]]],S[302535920000710--[[Change Logo--]]])},
 				{text = S[8800--[[Game Rules--]]],value = "",hint = str_hint_rules},
-
 --~ 				{text = "ResPreset_Concrete",value = ""},
 --~ 				{text = "ResPreset_Metals",value = ""},
 --~ 				{text = "ResPreset_Polymers",value = ""},
@@ -751,7 +750,6 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			}
 
 			-- shows the mission params for people to look at
-	--~ 		local dlg_ex_params = ChoGGi.ComFuncs.OpenInExamineDlg({MissionParams,DataInstances.ResourcePreset})
 			local info_lists = {
 				[0] = S[302535920001385--[[Use these lists to find the correct ids.--]]],
 				table.icopy(MissionParams.idCommanderProfile.items),
@@ -759,14 +757,14 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 				table.icopy(MissionParams.idMissionLogo.items),
 				table.icopy(MissionParams.idGameRules.items),
 				table.icopy(MissionParams.idMystery.items),
-				table.icopy(DataInstances.ResourcePreset),
+--~ 				table.icopy(DataInstances.ResourcePreset),
 			}
 			info_lists[1].name = S[3478--[[Commander Profile--]]]
 			info_lists[2].name = S[3474--[[Mission Sponsor--]]]
 			info_lists[3].name = S[3482--[[Colony Logo--]]]
 			info_lists[4].name = S[8800--[[Game Rules--]]]
 			info_lists[5].name = S[3486--[[Mystery--]]]
-			info_lists[6].name = S[692--[[Resources--]]]
+--~ 			info_lists[6].name = S[692--[[Resources--]]]
 			local dlg_ex_params = ChoGGi.ComFuncs.OpenInExamineDlg(info_lists)
 
 			local dlg_list_maps
@@ -793,8 +791,6 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 				local map = choice[1].value
 				local function CallBackFunc(answer)
 					if answer then
---~ 						local g_CurrentMissionParams = g_CurrentMissionParams
-
 						-- close dialogs we opened
 						dlg_list_MissionParams:Done()
 						dlg_ex_params:Done()
@@ -825,10 +821,9 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 						gen.BlankMap = map
 						-- add any custom res values
 						for key,value in pairs(custom_params) do
-							if key:find("ResPreset_") or key:find("ResTag_") then
-								if value ~= "" then
-									gen[key] = value
-								end
+							if (key:sub(1,10) == "ResPreset_" or key:sub(1,7) == "ResTag_")
+									and value ~= "" then
+								gen[key] = value
 							end
 						end
 --~ ex(gen)
@@ -860,7 +855,6 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 					302535920000868--[[Choose Map--]]
 				)
 			end
-
 
 			dlg_list_maps = ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc_LoadMapQuestion,
@@ -1092,7 +1086,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			}
 		end
 		local LightmodelPresets = LightmodelPresets
-		for key,_ in pairs(LightmodelPresets) do
+		for key in pairs(LightmodelPresets) do
 			ItemList[#ItemList+1] = {
 				text = key,
 				value = key,

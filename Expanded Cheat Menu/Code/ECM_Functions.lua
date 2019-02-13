@@ -750,11 +750,11 @@ function OnMsg.ClassesGenerate()
 
 		if planning then
 			local BuildingTemplates = BuildingTemplates
-			for key,obj in pairs(BuildingTemplates) do
+			for key,value in pairs(BuildingTemplates) do
 				c = c + 1
 				ItemList[c] = {
 					text = key,
-					value = obj.entity,
+					value = value.entity,
 				}
 			end
 		else
@@ -880,13 +880,16 @@ function OnMsg.ClassesGenerate()
 
 		CreateRealTimeThread(function()
 			-- stop when dialog is closed
+			local ThreadsRegister = ThreadsRegister
 			while dlg and dlg.window_state ~= "destroying" do
 				TableClear(table_list)
-				local ThreadsRegister = ThreadsRegister
+				local c = 0
 				for thread in pairs(ThreadsRegister) do
-					local info = getinfo(thread, 1, "Slfun")
+					local info = getinfo(thread, 1, "S")
 					if info then
-						table_list[info.source .. "(" .. info.linedefined .. ") " .. tostring(thread)] = thread
+						-- we use <tags *num*> as a way to hide the num but still have it there for a unique string
+						c = c + 1
+						table_list[info.source .. "(" .. info.linedefined .. ")<tags " .. c .. ">"] = thread
 					end
 				end
 				Sleep(1000)
@@ -904,7 +907,6 @@ function OnMsg.ClassesGenerate()
 		local table_list = {}
 		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list,nil,name)
 		dlg:EnableAutoRefresh()
-		local table_str = "%s %s"
 		local PadNumWithZeros = ChoGGi.ComFuncs.PadNumWithZeros
 
 		CreateRealTimeThread(function()
@@ -1457,7 +1459,6 @@ The func I use for spot_rot rounds to two decimal points...
 		local GetStateLODCount = GetStateLODCount
 		local GetStates = GetStates
 		local TableIsEqual = ChoGGi.ComFuncs.TableIsEqual
-		local mat_table_str = S[302535920001477--[["%s, Mat: %s, LOD: %s, State: %s"--]]]
 
 		local function EntityMats(entity)
 			local mats = {}
@@ -1474,7 +1475,7 @@ The func I use for spot_rot rounds to two decimal points...
 						mat.__mtl = mat_name
 						mat.__lod = li
 						mat.__state = li
-						mats[mat_table_str:format(mat_name,mi,li,si)] = mat
+						mats[mat_name .. ", Mat: " .. mi .. ", LOD: " .. li .. ", State: " .. si] = mat
 					end
 				end
 			end
@@ -1580,15 +1581,15 @@ The func I use for spot_rot rounds to two decimal points...
 		}
 
 		function ChoGGi.ComFuncs.DisplayObjectImages(obj,parent,images)
-			images = images or {}
 			if type(obj) ~= "table" then
 				return
 			end
+			images = images or {}
 			local c = #images
 
 			-- grab any strings with the correct ext
 			for _,value in pairs(obj) do
-				if type(value) =="string" and ext_list[value:sub(-4)] then
+				if type(value) == "string" and ext_list[value:sub(-4)] then
 					c = c + 1
 					images[c] = value
 				end
@@ -1597,7 +1598,7 @@ The func I use for spot_rot rounds to two decimal points...
 			local meta = getmetatable(obj)
 			while meta do
 				for _,value in pairs(meta) do
-					if type(value) =="string" and ext_list[value:sub(-4)] then
+					if type(value) == "string" and ext_list[value:sub(-4)] then
 						c = c + 1
 						images[c] = value
 					end

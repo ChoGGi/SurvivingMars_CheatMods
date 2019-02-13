@@ -720,9 +720,9 @@ function OnMsg.ClassesGenerate()
 			hint = {}
 			hint[#hint+1] = S[302535920000106--[[Current--]]]
 			hint[#hint+1] = ":"
-			for Key,_ in pairs(rules) do
+			for key in pairs(rules) do
 				hint[#hint+1] = " "
-				hint[#hint+1] = Trans(GameRulesMap[Key].display_name)
+				hint[#hint+1] = Trans(GameRulesMap[key].display_name)
 			end
 		end
 		if hint then

@@ -92,33 +92,7 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 	}, self.idButtonContainer)
 
 	if context.scrollto then
-		CreateRealTimeThread(function()
-			Sleep(1)
-			local edit = self.idEdit
-			local line_num
-			if type(context.scrollto) == "string" then
-				-- loop through lines table till we find the one we want
-				local lines = edit.lines
-				for i = 1, #edit.lines do
-					local line = edit.lines[i]
-					if line:find(context.scrollto,1,true) then
-						line_num = i
-						break
-					end
-				end
-			else
-				line_num = context.scrollto
-			end
-
-			if line_num then
-				edit:SetCursor(line_num, 0, false)
-				edit:SetCursor(line_num,edit.line_widths[line_num], true)
-				-- ScrollCursorIntoView needs focus for whatever reason
-				edit:SetFocus()
-				edit:ScrollCursorIntoView()
-			end
-
-		end)
+		self:ScrollToText(context.scrollto)
 	end
 
 	if context.code then
@@ -126,6 +100,37 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 	end
 
 	self:PostInit(context.parent)
+end
+
+-- searches for text or goes to line number
+function ChoGGi_MultiLineTextDlg:ScrollToText(scrollto)
+	CreateRealTimeThread(function()
+		Sleep(1)
+		local edit = GetRootDialog(self).idEdit
+		local line_num
+		if type(scrollto) == "string" then
+			-- loop through lines table till we find the one we want
+			local lines = edit.lines
+			for i = 1, #edit.lines do
+				local line = edit.lines[i]
+				if line:find(scrollto,1,true) then
+					line_num = i
+					break
+				end
+			end
+		else
+			line_num = scrollto
+		end
+
+		if line_num then
+			edit:SetCursor(line_num, 0, false)
+			edit:SetCursor(line_num,edit.line_widths[line_num], true)
+			-- ScrollCursorIntoView needs focus for whatever reason
+			edit:SetFocus()
+			edit:ScrollCursorIntoView()
+		end
+
+	end)
 end
 
 -- this gets sent to Dump()

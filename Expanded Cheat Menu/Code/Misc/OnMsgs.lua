@@ -543,7 +543,7 @@ function OnMsg.PersistPostLoad()
 
 		-- [LUA ERROR] Mars/Lua/Heat.lua:65: attempt to call a nil value (method 'ApplyForm')
 		local s_Heaters = s_Heaters or {}
-		for obj,_ in pairs(s_Heaters) do
+		for obj in pairs(s_Heaters) do
 			if obj:IsKindOf("UnpersistedMissingClass") then
 				s_Heaters[obj] = nil
 			end
@@ -1093,7 +1093,7 @@ function OnMsg.ApplicationQuit()
 		return
 	end
 
-	-- console log window settings
+	-- console window settings
 	local dlg = dlgChoGGi_ConsoleLogWin
 	if dlg then
 		ChoGGi.UserSettings.ConsoleLogWin_Pos = dlg:GetPos()
@@ -1310,14 +1310,14 @@ do -- LoadGame/CityStart
 
 		-- make hidden buildings visible
 		if UserSettings.Building_hide_from_build_menu then
-			local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
-			for _,value in pairs(BuildMenuPrerequisiteOverrides) do
+			local bmpo = BuildMenuPrerequisiteOverrides
+			for key,value in pairs(bmpo) do
 				if value == "hide" then
-					value = true
+					bmpo[key] = true
 				end
 			end
-			BuildMenuPrerequisiteOverrides.StorageMysteryResource = true
-			BuildMenuPrerequisiteOverrides.MechanizedDepotMysteryResource = true
+			bmpo.StorageMysteryResource = true
+			bmpo.MechanizedDepotMysteryResource = true
 		end
 
 		-- show all traits in trainable popup
@@ -1482,10 +1482,10 @@ do -- LoadGame/CityStart
 
 		CreateRealTimeThread(function()
 			-- clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
-			local shown = g_ShownOnScreenNotifications or {}
-			for Key,_ in pairs(shown) do
-				if type(Key) == "number" or tostring(Key):find("ChoGGi_")then
-					shown[Key] = nil
+			local shown = g_ShownOnScreenNotifications or empty_table
+			for key in pairs(shown) do
+				if type(key) == "number" or tostring(key):find("ChoGGi_") then
+					shown[key] = nil
 				end
 			end
 

@@ -58,7 +58,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		MinWidth = 550,
 		RolloverText = S[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
 		Hint = S[302535920001306--[[Enter text to find--]]],
-		OnKbdKeyDown = self.idEditOnKbdKeyDown,
+		OnKbdKeyDown = self.Input_OnKbdKeyDown,
 	}, self.idTextArea)
 
 	self.idLimit = g_Classes.ChoGGi_TextInput:new({
@@ -66,6 +66,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		Dock = "right",
 		MinWidth = 50,
 		RolloverText = S[302535920001304--[[Set how many levels within this table we check into (careful making it too large).--]]],
+		OnKbdKeyDown = self.Input_OnKbdKeyDown,
 	}, self.idTextArea)
 	self.idLimit:SetText("1")
 
@@ -179,7 +180,7 @@ function ChoGGi_FindValueDlg:RetObjects(obj,parent,str,case,threads,limit,level)
 
 	if type(obj) == "table" then
 
-		local location_str = S[302535920001307--[["L%s P: %s; %s, %s"--]]]:format(level,RetName(obj),"%s",RetName(parent))
+		local location_str = "L" .. level .. " P: " .. RetName(obj) .. "; %s, " .. RetName(parent)
 
 		for key,value in pairs(obj) do
 			local key_name,value_name = RetName(key),RetName(value)
@@ -223,7 +224,7 @@ function ChoGGi_FindValueDlg:RetObjects(obj,parent,str,case,threads,limit,level)
 end
 
 local const = const
-function ChoGGi_FindValueDlg:idEditOnKbdKeyDown(vk)
+function ChoGGi_FindValueDlg:Input_OnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
 		self:FindText()

@@ -184,9 +184,8 @@ $example to translate userdata/stringbase
 
 you can paste chunks of code in the console to test out (no -- comments allowed, since DA update merges pasted lines):
  local BuildingTemplates = BuildingTemplates
- for _,bld in pairs(BuildingTemplates) do
-		local building = bld
-		print(bld.id)
+ for _,building in pairs(BuildingTemplates) do
+		print(building.id)
 	end
 Or create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu.
 ```

@@ -760,9 +760,9 @@ function Examine:BuildFuncList(obj_name,prefix)
 	prefix = prefix or ""
 	local class = _G[obj_name] or {}
 	local skip = true
-	for key,_ in pairs(class) do
-		if type(class[key]) == "function" then
-			self.menu_list_items[prefix .. obj_name .. "." .. key .. ": "] = class[key]
+	for key,value in pairs(class) do
+		if type(value) == "function" then
+			self.menu_list_items[prefix .. obj_name .. "." .. key .. ": "] = value
 			skip = false
 		end
 	end
@@ -809,7 +809,7 @@ function Examine:BuildObjectMenuPopup()
 				ChoGGi.ComFuncs.SetParticles(self.obj_ref)
 			end,
 		},
-		{name = "	 ---- "},
+		{name = "----",disable = true,centred = true},
 		{name = S[302535920001472--[[BBox Toggle--]]],
 			hint = S[302535920001473--[[Toggle showing object's bbox (changes depending on movement).--]]],
 			image = "CommonAssets/UI/Menu/SelectionEditor.tga",
@@ -887,7 +887,6 @@ Use obj:GetProperty(""NAME"") and obj:SetProperty(""NAME"",value)
 You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 "--]]]
 				}
-				~s.SetProperty
 				local props = self.obj_ref:GetProperties()
 				for i = 1, #props do
 					props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
@@ -898,7 +897,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 				)
 			end,
 		},
-		{name = "	 ---- "},
+		{name = "----",disable = true,centred = true},
 		{name = S[302535920001369--[[Ged Editor--]]],
 			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
 			image = "CommonAssets/UI/Menu/UIDesigner.tga",
@@ -1012,7 +1011,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 				end
 			end,
 		},
-		{name = "	 ---- "},
+		{name = "----",disable = true,centred = true},
 		{name = S[302535920001239--[[Functions--]]],
 			hint = S[302535920001240--[[Show all functions of this object and parents/ancestors.--]]],
 			image = "CommonAssets/UI/Menu/gear.tga",
@@ -1063,20 +1062,19 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 			hint = S[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."--]]],
 			image = "CommonAssets/UI/Menu/light_model.tga",
 			clicked = function()
-					-- check for loaded entity textures
-					local textures = self.obj_ref.UsedTextures and self.obj_ref:UsedTextures() or ""
-					local images_table = {}
-					for i = 1, #textures do
-						images_table[i] = DTM.TexName(textures[i])
-					end
-					-- checks for image in obj and metatable
-					if not ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref,self,images_table) then
-						ChoGGi.ComFuncs.MsgPopup(
-							302535920001471--[[No images found.--]],
-							302535920001469--[[Image Viewer--]]
-						)
-					end
-
+				-- check for loaded entity textures
+				local textures = self.obj_ref.UsedTextures and self.obj_ref:UsedTextures() or ""
+				local images_table = {}
+				for i = 1, #textures do
+					images_table[i] = DTM.TexName(textures[i])
+				end
+				-- checks for image in obj and metatable
+				if not ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref,self,images_table) then
+					ChoGGi.ComFuncs.MsgPopup(
+						302535920001471--[[No images found.--]],
+						302535920001469--[[Image Viewer--]]
+					)
+				end
 			end,
 		},
 		{name = S[302535920001305--[[Find Within--]]],
@@ -1094,7 +1092,7 @@ Which you can then mess around with some more in the console."--]]],
 				ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj_ref,self)
 			end,
 		},
-		{name = "	 ---- "},
+		{name = "----",disable = true,centred = true},
 		{name = S[302535920001321--[[UI Click To Examine--]]],
 			hint = S[302535920001322--[[Examine UI controls by clicking them.--]]],
 			image = "CommonAssets/UI/Menu/select_objects.tga",
@@ -1132,7 +1130,8 @@ function Examine:GetScrolledText()
 
 	-- we need to be at an exact line (draw_cache expects it)
 	if not list_draw_info then
-		self:FindNext()
+		-- send "" or it'll try to get the search text
+		self:FindNext("")
 		list_draw_info = cache[self.idScrollArea.PendingOffsetY or 0]
 	end
 
@@ -1585,13 +1584,12 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		if obj_metatable and self.show_all_values then
 			local meta_temp = obj_metatable
 			while meta_temp do
-				for k in pairs(meta_temp) do
-
+				for k,v in pairs(meta_temp) do
 					local name = self:ConvertValueToInfo(k,true)
 					if not totextex_dupes[name] then
 						totextex_dupes[name] = true
 						c = c + 1
-						totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(obj[k] or meta_temp[k]) .. "<left>"
+						totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(obj[k] or v) .. "<left>"
 					end
 
 				end
@@ -1965,6 +1963,13 @@ function Examine:SetToolbarVis(obj)
 	self.idButDeleteObj:SetVisible()
 	self.idButViewSource:SetVisible()
 
+	-- no sense in showing it in mainmenu/new game screens
+	if GameState.gameplay then
+		self.idButClear:SetVisible(true)
+	else
+		self.idButClear:SetVisible()
+	end
+
 	local obj_type = type(obj)
 	if obj_type == "table" then
 		-- none of it works on _G, and i'll take any bit of speed for _G
@@ -2013,8 +2018,10 @@ function Examine:BuildParents(list,list_type,title,sort_type)
 		local c = #self.parents_menu_popup
 		c = c + 1
 		self.parents_menu_popup[c] = {
-			name = "\t---- " .. title,
+			name = "-- " .. title .. " --",
 			hint = title,
+			disable = true,
+			centred = true,
 		}
 		for i = 1, #list do
 			-- no sense in having an item in parents and ancestors

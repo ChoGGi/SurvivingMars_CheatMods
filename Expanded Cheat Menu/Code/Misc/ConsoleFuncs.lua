@@ -288,7 +288,7 @@ function OnMsg.ClassesGenerate()
 				OpenInExamineDlg(ModMessageLog)
 			end,
 		},
-		{name = " - "},
+		{name = "\t--",disable = true},
 		{name = 302535920000734--[[Clear Log--]],
 			hint = 302535920001152--[[Clear out the console log (F9 also works).--]],
 			clicked = cls,
@@ -303,7 +303,7 @@ function OnMsg.ClassesGenerate()
 				Msg("ShortcutsReloaded")
 			end,
 		},
-		{name = " - "},
+		{name = "\t--",disable = true},
 		{name = 302535920001479--[[Errors In Console--]],
 			hint = S[302535920001480--[[Print (some) lua errors in the console (needs %s enabled).--]]]:format(S[302535920001112--[[Console Log--]]]),
 			class = "ChoGGi_CheckButtonMenu",
@@ -330,7 +330,7 @@ function OnMsg.ClassesGenerate()
 				end
 			end,
 		},
-		{name = 302535920001120--[[Console Log Window--]],
+		{name = 302535920001120--[[Console Window--]],
 			hint = 302535920001133--[[Show the console log text in an independant window.--]],
 			class = "ChoGGi_CheckButtonMenu",
 			value = "dlgChoGGi_ConsoleLogWin",

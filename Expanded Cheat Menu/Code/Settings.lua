@@ -376,27 +376,27 @@ function OnMsg.ClassesGenerate()
 
 	end
 
-	-- used to add old lists to new combined list
-	function ChoGGi.SettingFuncs.AddOldSettings(settings,old_cat,new_name)
-		local BuildingTemplates = BuildingTemplates
-		-- then loop through it
-		local old_cat = settings[old_cat] or empty_table
-		for key,value in pairs(old_cat) do
-			--it likely doesn't exist, but check first and add a blank table
-			if not settings.BuildingSettings[key] then
-				settings.BuildingSettings[key] = {}
-			end
-			-- add it to vistors list?
-			if new_name == "capacity" and BuildingTemplates[key].max_visitors then
-				settings.BuildingSettings[key].visitors = value
-			else
-				settings.BuildingSettings[key][new_name] = value
-			end
-		end
-		-- remove old settings
-		settings[old_cat] = nil
-		return true
-	end
+--~ 	-- used to add old lists to new combined list
+--~ 	function ChoGGi.SettingFuncs.AddOldSettings(settings,old_cat,new_name)
+--~ 		local BuildingTemplates = BuildingTemplates
+--~ 		-- then loop through it
+--~ 		local old_cat = settings[old_cat] or empty_table
+--~ 		for key,value in pairs(old_cat) do
+--~ 			-- it likely doesn't exist, but check first and add a blank table
+--~ 			if not settings.BuildingSettings[key] then
+--~ 				settings.BuildingSettings[key] = {}
+--~ 			end
+--~ 			-- add it to vistors list?
+--~ 			if new_name == "capacity" and BuildingTemplates[key].max_visitors then
+--~ 				settings.BuildingSettings[key].visitors = value
+--~ 			else
+--~ 				settings.BuildingSettings[key][new_name] = value
+--~ 			end
+--~ 		end
+--~ 		-- remove old settings
+--~ 		settings[old_cat] = nil
+--~ 		return true
+--~ 	end
 
 	-- we can local this now
 	local ChoGGi = ChoGGi
@@ -433,6 +433,7 @@ function OnMsg.ClassesGenerate()
 	ChoGGi.SettingFuncs.ReadSettings()
 
 	local UserSettings = ChoGGi.UserSettings
+
 	-- could've been from when i used encyclopedia_id for this?
 	if UserSettings.BuildingSettings[""] then
 		UserSettings.BuildingSettings[""] = nil
@@ -488,30 +489,30 @@ function OnMsg.ModsReloaded()
 	local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
 	if next(BuildingSettings) then
 		-- remove any empty building tables
-		for key,_ in pairs(BuildingSettings) do
-			if not next(BuildingSettings[key]) then
+		for key,value in pairs(BuildingSettings) do
+			if not next(value) then
 				BuildingSettings[key] = nil
 			end
 		end
-	-- if empty table then new settings file or old settings
-	else
+--~ 	-- if empty table then new settings file or old settings
+--~ 	else
 
-		-- i could probably stand to remove this now...
+--~ 		-- i could probably stand to remove this now...
 
-		-- then we check if this is an older version still using the old way of storing building settings and convert over to new
-		if not ChoGGi.SettingFuncs.AddOldSettings(ChoGGi.UserSettings,"BuildingsCapacity","capacity") then
-			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsCapacity")
-		end
-		if not ChoGGi.SettingFuncs.AddOldSettings(ChoGGi.UserSettings,"BuildingsProduction","production") then
-			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsProduction")
-		end
+--~ 		-- then we check if this is an older version still using the old way of storing building settings and convert over to new
+--~ 		if not ChoGGi.SettingFuncs.AddOldSettings(ChoGGi.UserSettings,"BuildingsCapacity","capacity") then
+--~ 			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsCapacity")
+--~ 		end
+--~ 		if not ChoGGi.SettingFuncs.AddOldSettings(ChoGGi.UserSettings,"BuildingsProduction","production") then
+--~ 			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsProduction")
+--~ 		end
 
 	end
 
 	-- remove empty entries in CargoSettings
 	local CargoSettings = ChoGGi.UserSettings.CargoSettings or {}
-	for key,_ in pairs(CargoSettings) do
-		if not next(CargoSettings[key]) then
+	for key,value in pairs(CargoSettings) do
+		if not next(value) then
 			CargoSettings[key] = nil
 		end
 	end
