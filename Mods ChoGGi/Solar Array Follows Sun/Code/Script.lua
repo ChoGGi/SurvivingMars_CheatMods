@@ -84,5 +84,4 @@ function OnMsg.SaveGame()
 end
 function OnMsg.PostSaveGame()
 	RestartGlobalGameTimeThread("SolarArrayOrientation")
---~   SolarArrayOrientation = CreateGameTimeThread(GlobalGameTimeThreadFuncs.SolarArrayOrientation)
 end
