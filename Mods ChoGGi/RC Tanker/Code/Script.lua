@@ -624,7 +624,7 @@ function OnMsg.SaveGame()
 			t.resume_goto = t.goto_target
 		end
 
-		-- kill the command thread so there's no persist bitching and moaning
+		-- there's a DeleteThread in my Idle cmd
 		t:SetCommand("Idle")
 	end
 end
