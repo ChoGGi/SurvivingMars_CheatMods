@@ -9,6 +9,7 @@
 - Moved Help> (Interface and Screenshot) to Game>.
 - Log Errors In Console should have a better stack trace for threads.
 - Added a console input box to Console Log Window (and renamed it to Console Window).
+- Image Viewer shows "names" now, and removes dupes.
 - Renamed Menu>Expanded CM to ECM:
 - > if you're missing some quickbar buttons, open up AppData\LocalStorage.lua and look for ToolbarItems.
 - Examine:

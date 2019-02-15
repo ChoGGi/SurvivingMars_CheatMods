@@ -10,7 +10,7 @@ local S = ChoGGi.Strings
 local box,point = box,point
 local IsValid = IsValid
 local PropObjGetProperty = PropObjGetProperty
-local IsImageReady = UIL.IsImageReady
+local MeasureImage = UIL.MeasureImage
 
 -- see also TextStyles.lua
 local white = -1
@@ -512,7 +512,8 @@ function ChoGGi_Window:AddElements()
 		and (PropObjGetProperty(self.obj,"display_icon") and self.obj.display_icon ~= "" and self.obj.display_icon
 		or PropObjGetProperty(self.obj,"pin_icon") and self.obj.pin_icon ~= "" and self.obj.pin_icon))
 
-	local is_image = type(image) == "string" and IsImageReady(image)
+	-- as long as x isn't 0 then it's probably an image
+	local is_image = type(image) == "string" and MeasureImage(image) ~= 0
 
 	-- DroneResourceUnits.ANYTHING will return 1000
 	if is_image then

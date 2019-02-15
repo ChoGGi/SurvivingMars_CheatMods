@@ -1064,9 +1064,15 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 			clicked = function()
 				-- check for loaded entity textures
 				local textures = self.obj_ref.UsedTextures and self.obj_ref:UsedTextures() or ""
-				local images_table = {}
+				local images_table = {
+					dupes = {},
+				}
 				for i = 1, #textures do
-					images_table[i] = DTM.TexName(textures[i])
+					images_table[i] = {
+						name = textures[i] .. " *obj:UsedTextures()",
+						path = DTM.TexName(textures[i]),
+					}
+					images_table.dupes[images_table[i].name .. images_table[i].path] = true
 				end
 				-- checks for image in obj and metatable
 				if not ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref,self,images_table) then

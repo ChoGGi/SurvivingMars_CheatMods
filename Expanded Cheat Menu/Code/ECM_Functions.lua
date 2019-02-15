@@ -1574,44 +1574,66 @@ The func I use for spot_rot rounds to two decimal points...
 	end -- do
 
 	do -- DisplayObjectImages
+		local CmpLower = CmpLower
+		local getmetatable = getmetatable
+
 		local ext_list = {
 			[".dds"] = true,
 			[".tga"] = true,
 			[".png"] = true,
 		}
+		local images_table
 
-		function ChoGGi.ComFuncs.DisplayObjectImages(obj,parent,images)
-			if type(obj) ~= "table" then
-				return
-			end
-			images = images or {}
-			local c = #images
+		-- grab any strings with the correct ext
+		local function AddToList(c,key,value)
+			if type(value) == "string" and ext_list[value:sub(-4)] then
+				local dupe_test = key .. value
 
-			-- grab any strings with the correct ext
-			for _,value in pairs(obj) do
-				if type(value) == "string" and ext_list[value:sub(-4)] then
+				if not images_table.dupes[dupe_test] then
 					c = c + 1
-					images[c] = value
+					images_table[c] = {
+						name = key,
+						path = value,
+					}
+					images_table.dupes[dupe_test] = true
 				end
 			end
+			return c
+		end
 
+		function ChoGGi.ComFuncs.DisplayObjectImages(obj,parent,images)
+			images_table = images or {
+				dupes = {},
+			}
+			if type(obj) ~= "table" then
+				return #images_table > 0
+			end
+			local c = #images_table
+
+			-- and images
+			for key,value in pairs(obj) do
+				c = AddToList(c,key,value)
+			end
+			-- any meta images
 			local meta = getmetatable(obj)
 			while meta do
-				for _,value in pairs(meta) do
-					if type(value) == "string" and ext_list[value:sub(-4)] then
-						c = c + 1
-						images[c] = value
-					end
+				for key,value in pairs(meta) do
+					c = AddToList(c,key,obj[key] or value)
 				end
 				meta = getmetatable(meta)
 			end
 
-			if #images > 0 then
-				images = ChoGGi.ComFuncs.RetTableNoDupes(images)
-				table.sort(images)
-				ChoGGi.ComFuncs.OpenInImageViewerDlg(images,parent)
+			-- and sort
+			if #images_table > 0 then
+				images_table = ChoGGi.ComFuncs.RetTableNoDupes(images_table)
+				table.sort(images_table, function(a, b)
+					return CmpLower(a.name, b.name)
+				end)
+				ChoGGi.ComFuncs.OpenInImageViewerDlg(images_table,parent)
 				return true
 			end
+			return false
+
 		end
 	end -- do
 

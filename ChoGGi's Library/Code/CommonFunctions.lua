@@ -1340,12 +1340,24 @@ do -- Ticks
 	local times = {}
 	local GetPreciseTicks = GetPreciseTicks
 
-	function ChoGGi.ComFuncs.TickStart(id)
+	local function TickStart(id)
 		times[id] = GetPreciseTicks()
 	end
-	function ChoGGi.ComFuncs.TickEnd(id,name)
+	local function TickEnd(id,name)
 		print(id,":",GetPreciseTicks() - times[id],name)
 		times[id] = nil
+	end
+	ChoGGi.ComFuncs.TickStart = TickStart
+	ChoGGi.ComFuncs.TickEnd = TickEnd
+
+	function ChoGGi.ComFuncs.PrintFuncTime(func,...)
+		local name = "PrintFuncTime " .. AsyncRand()
+		TickStart(name)
+		local varargs = ...
+		pcall(function()
+			func(varargs)
+		end)
+		TickEnd(name)
 	end
 end -- do
 
