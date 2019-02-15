@@ -37,8 +37,11 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	local g_Classes = g_Classes
 
 	self.images = context.obj
-	if type(self.images) == "string" then
-		self.images = {self.images}
+	if type(self.images) ~= "table" then
+		self.images = {{
+			name = self.images,
+			path = self.images,
+		}}
 	end
 
 	self.idImageMenu = Random()
@@ -83,31 +86,29 @@ end
 
 function ChoGGi_ImageViewerDlg:BuildImageMenuPopup()
 	local images = {}
-	local c = 0
 	for i = 1, #self.images do
-		local image_name = self.images[i]
-		c = c + 1
-		local w,h = MeasureImage(image_name)
-		images[c] = {
-			name = image_name,
+		local image = self.images[i]
+		images[i] = {
+			name = image.path,
 			mouseover = function()
-				self:SetImageFile(image_name,w .. "x" .. h)
+				self:SetImageFile(image)
 			end,
 		}
 	end
 	self.image_menu_popup = images
 end
 
-function ChoGGi_ImageViewerDlg:SetImageFile(image,width_height)
+function ChoGGi_ImageViewerDlg:SetImageFile(image)
 	self = GetRootDialog(self)
-	self.idImage:SetImage(image)
-	self.idCaption:SetTitle(self,image)
+	self.idImage:SetImage(image.path)
+	self.idCaption:SetTitle(self,image.path)
 
-	if not width_height then
-		local w,h = MeasureImage(image)
-		width_height = w .. "x" .. h
+	local w,h = MeasureImage(image.path)
+	if image.name and image.name ~= "" then
+		self.idImageSize:SetText(w .. "x" .. h .. " (" .. image.name .. ")")
+	else
+		self.idImageSize:SetText(w .. "x" .. h)
 	end
-	self.idImageSize:SetText(width_height)
 end
 
 function ChoGGi_ImageViewerDlg:idImagesOnMouseButtonDown()

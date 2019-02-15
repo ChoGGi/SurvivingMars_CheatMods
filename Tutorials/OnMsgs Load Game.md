@@ -1,5 +1,5 @@
 ### "Load Game"
-##### last updated Gagarin 237096
+##### last updated Gagarin 237096, for current see [OnMsg Print](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/OnMsg%20Print)
 
 ##### Show a list of OnMsgs/WaitMsgs that are waiting for Msgs (you need ECM for ex).
 ```lua
@@ -12,8 +12,8 @@ local _,v = debug.getupvalue(getmetatable(OnMsg).__newindex,1)
 ex(v)
 ```
 
-##### Tabs denote repetition of Msg (not to say these aren't repeated later on)
-##### () on the end means the msg has arguments (this list is just for the order), to see args use [OnMsg Print](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/OnMsg%20Print)
+##### Tabs denote repetition of Msg. They could also be repeated later on in the game, but this list is during loading.
+##### () on the end means the msg has arguments (this list is for the order), to see args use OnMsg Print
 ##### Parts of the log are also included to get an idea of when the Msgs fire
 ```lua
 Reloading lua files
