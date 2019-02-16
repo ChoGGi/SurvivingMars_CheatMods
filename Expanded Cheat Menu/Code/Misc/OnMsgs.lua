@@ -14,6 +14,7 @@ local MsgPopup
 local RetName
 local S
 local blacklist
+local testing
 
 -- use this message to mess with the classdefs (before classes are built)
 function OnMsg.ClassesGenerate()
@@ -23,6 +24,7 @@ function OnMsg.ClassesGenerate()
 	RetName = ChoGGi.ComFuncs.RetName
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
+	testing = ChoGGi.testing
 
 	-- be too annoying to add templates to all of these manually
 	XMenuEntry.RolloverTemplate = "Rollover"
@@ -91,7 +93,7 @@ function OnMsg.ClassesPreprocess()
 		ChoGGi.ComFuncs.AddParentToClass(umc,"PinnableObject")
 
 		-- removes some spam from logs (might cause weirdness so just for me)
-		if ChoGGi.testing then
+		if testing then
 			local empty_func = empty_func
 			umc.CanReserveResidence = empty_func
 			umc.RemoveResident = empty_func
@@ -445,7 +447,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			end
 
 			-- always show menu on my computer
-			if UserSettings.ShowCheatsMenu or ChoGGi.testing then
+			if UserSettings.ShowCheatsMenu or testing then
 				XShortcutsTarget:SetVisible(true)
 			end
 
@@ -474,8 +476,9 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			-- set each status to false if it isn't
 			for i = 1, 3 do
 				local str = "sponsor_status" .. i
-				if bld[str] ~= false then
-					bld["sponsor_status" .. i .. "_ChoGGi_orig"] = bld[str]
+				local status = bld[str]
+				if status ~= false then
+					bld["sponsor_status" .. i .. "_ChoGGi_orig"] = status
 					bld[str] = false
 				end
 			end
@@ -486,7 +489,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			end
 			local idx = table.find(BuildingTechRequirements[id],"check_supply",name)
 			if idx then
-				table.remove(BuildingTechRequirements[id],idx)
+				TableRemove(BuildingTechRequirements[id],idx)
 			end
 		end
 
@@ -554,14 +557,16 @@ function OnMsg.PersistPostLoad()
 		-- GetFreeSpace,GetFreeLivingSpace,GetFreeWorkplaces,GetFreeWorkplacesAround
 		local labels = UICity.labels or empty_table
 		for label_id,label in pairs(labels) do
-			for i = #label, 1, -1 do
-				local obj = label[i]
-				if obj:IsKindOf("UnpersistedMissingClass") then
-					if printit then
-						print(S[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"--]]]:format(label_id,RetName(obj),obj:GetEntity(),obj.handle))
+			if label_id ~= "Consts" then
+				for i = #label, 1, -1 do
+					local obj = label[i]
+					if obj:IsKindOf("UnpersistedMissingClass") then
+						if printit then
+							print(S[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"--]]]:format(label_id,RetName(obj),obj:GetEntity(),obj.handle))
+						end
+						obj:delete()
+						TableRemove(label,i)
 					end
-					obj:delete()
-					table.remove(label,i)
 				end
 			end
 		end
@@ -579,11 +584,13 @@ end --OnMsg
 do -- ConstructionSitePlaced
 	local function QuickBuild(sites)
 		for i = 1, #sites do
-			if not sites[i].construction_group or sites[i].construction_group[1] == sites[i] then
-				sites[i]:Complete("quick_build")
+			local site = sites[i]
+			if not site.construction_group or site.construction_group[1] == site then
+				site:Complete("quick_build")
 			end
 		end
 	end
+
 	-- regular build
 	function OnMsg.ConstructionSitePlaced(obj)
 		local ChoGGi = ChoGGi
@@ -595,12 +602,13 @@ do -- ConstructionSitePlaced
 			-- i do it this way instead of using .instant_build so domes don't screw up
 			CreateRealTimeThread(function()
 				Sleep(100)
-				local UICity = UICity
-				QuickBuild(UICity.labels.ConstructionSite or "")
-				QuickBuild(UICity.labels.ConstructionSiteWithHeightSurfaces or "")
+				local labels = UICity.labels
+				QuickBuild(labels.ConstructionSite or "")
+				QuickBuild(labels.ConstructionSiteWithHeightSurfaces or "")
 			end)
 		end
 	end --OnMsg
+
 end -- do
 
 -- make sure they use with our new values
@@ -854,16 +862,17 @@ end --OnMsg
 
 function OnMsg.Demolished(obj)
 	local UICity = UICity
-	--update our list of working domes for AttachToNearestDome (though I wonder why this isn't already a label)
+	-- update our list of working domes for AttachToNearestDome (though I wonder why this isn't already a label)
 	if obj.achievement == "FirstDome" then
 		local UICity = obj.city or UICity
 		UICity.labels.Domes_Working = nil
 		UICity:InitEmptyLabel("Domes_Working")
-		local table_temp = UICity.labels.Dome or ""
+
+		local domes = UICity.labels.Dome or ""
 		local c = #UICity.labels.Domes_Working
-		for i = 1, #table_temp do
+		for i = 1, #domes do
 			c = c + 1
-			UICity.labels.Domes_Working[c] = table_temp[i]
+			UICity.labels.Domes_Working[c] = domes[i]
 		end
 	end
 end --OnMsg
@@ -986,15 +995,18 @@ function OnMsg.NewHour()
 			-- Hey. Do I preach at you when you're lying stoned in the gutter? No!
 			local prods = labels.ResourceProducer or ""
 			for i = 1, #prods do
-				ChoGGi.ComFuncs.FuckingDrones(prods[i]:GetProducerObj())
-				if prods[i].wasterock_producer then
-					ChoGGi.ComFuncs.FuckingDrones(prods[i].wasterock_producer)
+				local prod = prods[i]
+				ChoGGi.ComFuncs.FuckingDrones(prod:GetProducerObj())
+				if prod.wasterock_producer then
+					ChoGGi.ComFuncs.FuckingDrones(prod.wasterock_producer)
 				end
 			end
+
 			prods = labels.BlackCubeStockpiles or ""
 			for i = 1, #prods do
 				ChoGGi.ComFuncs.FuckingDrones(prods[i])
 			end
+
 		end
 
 		-- pathing? pathing in domes works great... watch out for that invisible wall!
@@ -1082,15 +1094,16 @@ function OnMsg.ApplicationQuit()
 	-- from GedSocket.lua
 	local desktop = terminal.desktop
 	for i = #desktop, 1, -1 do
-		if desktop[i]:IsKindOf("GedApp") then
-			desktop[i]:Close()
+		local d = desktop[i]
+		if d:IsKindOf("GedApp") then
+			d:Close()
 		end
 	end
 
 	local ChoGGi = ChoGGi
 
 	-- resetting settings?
-	if ChoGGi.Temp.ResetECMSettings or ChoGGi.testing then
+	if ChoGGi.Temp.ResetECMSettings or testing then
 		return
 	end
 
@@ -1118,9 +1131,8 @@ end
 function OnMsg.ChoGGi_TogglePinnableObject(obj)
 	local UnpinObjects = ChoGGi.UserSettings.UnpinObjects
 	if type(UnpinObjects) == "table" and next(UnpinObjects) then
-		local table_temp = UnpinObjects or ""
-		for i = 1, #table_temp do
-			if obj:IsKindOf(table_temp[i]) and obj:IsPinned() then
+		for i = 1, #UnpinObjects do
+			if obj:IsKindOf(UnpinObjects[i]) and obj:IsPinned() then
 				obj:TogglePin()
 				break
 			end
@@ -1185,7 +1197,7 @@ end
 -- show how long loading takes
 function OnMsg.ChangeMap()
 	local ChoGGi = ChoGGi
-	if ChoGGi.testing or ChoGGi.UserSettings.ShowStartupTicks then
+	if testing or ChoGGi.UserSettings.ShowStartupTicks then
 		ChoGGi.Temp.StartupTicks = GetPreciseTicks()
 	end
 end
@@ -1194,8 +1206,9 @@ do -- LoadGame/CityStart
 	local function SetMissionBonuses(UserSettings,Presets,preset,which,Func)
 		local list = Presets[preset].Default or ""
 		for i = 1, #list do
-			if UserSettings[which .. list[i].id] then
-				Func(list[i].id)
+			local item = list[i]
+			if UserSettings[which .. item.id] then
+				Func(item.id)
 			end
 		end
 	end
@@ -1258,9 +1271,6 @@ do -- LoadGame/CityStart
 		local Presets = Presets
 		local hr = hr
 
-		-- gets used a few times
-		local table_temp
-
 		-- late enough that I can set g_Consts.
 		ChoGGi.SettingFuncs.SetConstsToSaved()
 
@@ -1277,19 +1287,19 @@ do -- LoadGame/CityStart
 		-- re-binding is now an in-game thing, so keys are just defaults
 		UserSettings.KeyBindings = nil
 
-		-- fix an issue I added...
-		for _,settings in pairs(UserSettings.BuildingSettings) do
-			if settings.performance and settings.auto_performance then
-				settings.performance = nil
-				ChoGGi.Temp.WriteSettings = true
-			end
-			for key,value in pairs(settings) do
-				if key == "performance" and value == "disable" then
-					settings.performance = nil
-					ChoGGi.Temp.WriteSettings = true
-				end
-			end
-		end
+--~ 		-- fix an issue I added...
+--~ 		for _,settings in pairs(UserSettings.BuildingSettings) do
+--~ 			if settings.performance and settings.auto_performance then
+--~ 				settings.performance = nil
+--~ 				ChoGGi.Temp.WriteSettings = true
+--~ 			end
+--~ 			for key,value in pairs(settings) do
+--~ 				if key == "performance" and value == "disable" then
+--~ 					settings.performance = nil
+--~ 					ChoGGi.Temp.WriteSettings = true
+--~ 				end
+--~ 			end
+--~ 		end
 
 		SetMissionBonuses(UserSettings,Presets,"MissionSponsorPreset","Sponsor",ChoGGi.ComFuncs.SetSponsorBonuses)
 		SetMissionBonuses(UserSettings,Presets,"CommanderProfilePreset","Commander",ChoGGi.ComFuncs.SetCommanderBonuses)
@@ -1441,30 +1451,33 @@ do -- LoadGame/CityStart
 		end
 
 		-- not sure why this would be false on a dome
-		table_temp = UICity.labels.Dome or ""
-		for i = 1, #table_temp do
-			if table_temp[i].achievement == "FirstDome" and type(table_temp[i].connected_domes) ~= "table" then
-				table_temp[i].connected_domes = {}
+		local domes = UICity.labels.Dome or ""
+		for i = 1, #domes do
+			local dome = domes[i]
+			if dome.achievement == "FirstDome" and type(dome.connected_domes) ~= "table" then
+				dome.connected_domes = {}
 			end
 		end
 
 		-- something messed up if storage is negative (usually setting an amount then lowering it)
-		table_temp = UICity.labels.Storages or ""
+		local storages = UICity.labels.Storages or ""
 		procall(function()
-			for i = 1, #table_temp do
-				if table_temp[i]:GetStoredAmount() < 0 then
+			for i = 1, #storages do
+				local storage = storages[i]
+				if storage:GetStoredAmount() < 0 then
 					-- we have to empty it first (just filling doesn't fix the issue)
-					table_temp[i]:CheatEmpty()
-					table_temp[i]:CheatFill()
+					storage:CheatEmpty()
+					storage:CheatFill()
 				end
 			end
 		end)
 
 		-- so we can change the max_amount for concrete
-		table_temp = g_Classes.TerrainDepositConcrete.properties or ""
-		for i = 1, #table_temp do
-			if table_temp[i].id == "max_amount" then
-				table_temp[i].read_only = nil
+		local terr_props = g_Classes.TerrainDepositConcrete.properties or ""
+		for i = 1, #terr_props do
+			local prop = terr_props[i]
+			if prop.id == "max_amount" then
+				prop.read_only = nil
 			end
 		end
 
@@ -1495,40 +1508,40 @@ do -- LoadGame/CityStart
 				ChoGGi.ComFuncs.CloseDialogsECM()
 			end
 
-			-- remove any outside buildings i accidentally attached to domes ;)
-			table_temp = UICity.labels.BuildingNoDomes or ""
-			local bld_type
-			for i = 1, #table_temp do
-				if table_temp[i].dome_required == false and table_temp[i].parent_dome then
+--~ 			-- remove any outside buildings i accidentally attached to domes ;)
+--~ 			local nodomes = UICity.labels.BuildingNoDomes or ""
+--~ 			for i = 1, #nodomes do
+--~ 				local nodome = nodomes[i]
+--~ 				if nodome.dome_required == false and nodome.parent_dome then
 
-					bld_type = false
-					-- remove it from the dome label
-					if table_temp[i].closed_shifts then
-						bld_type = "Residence"
-					elseif table_temp[i].colonists then
-						bld_type = "Workplace"
-					end
+--~ 					local bld_type
+--~ 					-- remove it from the dome label
+--~ 					if nodome.closed_shifts then
+--~ 						bld_type = "Residence"
+--~ 					elseif nodome.colonists then
+--~ 						bld_type = "Workplace"
+--~ 					end
 
-					if bld_type then
-						if table_temp[i].parent_dome.labels and table_temp[i].parent_dome.labels[bld_type] then
-							local dome = table_temp[i].parent_dome.labels[bld_type]
-							for j = 1, #dome do
-								if dome[j].class == table_temp[i].class then
-									dome[j] = nil
-								end
-							end
-						end
-						--remove parent_dome
-						table_temp[i].parent_dome = nil
-					end
+--~ 					if bld_type then
+--~ 						if nodome.parent_dome.labels and nodome.parent_dome.labels[bld_type] then
+--~ 							local dome = nodome.parent_dome.labels[bld_type]
+--~ 							for j = 1, #dome do
+--~ 								if dome[j].class == nodome.class then
+--~ 									dome[j] = nil
+--~ 								end
+--~ 							end
+--~ 						end
+--~ 						-- remove parent_dome
+--~ 						nodome.parent_dome = nil
+--~ 					end
 
-				end
-			end
+--~ 				end
+--~ 			end
 
 		end)
 
 		-- print startup msgs to console log
-		if not ChoGGi.testing then
+		if not testing then
 			local msgs = ChoGGi.Temp.StartupMsgs
 			for i = 1, #msgs do
 				print(msgs[i])
@@ -1589,14 +1602,14 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			FlushLogFile()
 		end
 
-		printC("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>: <color 128 255 128>Testing Enabled</color>")
+		printC("<color 200 200 200>ECM</color>: <color 128 255 128>Testing Enabled</color>")
 
 		-- how long startup takes
-		if ChoGGi.testing or UserSettings.ShowStartupTicks then
+		if testing or UserSettings.ShowStartupTicks then
 			print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920000247--[[Startup ticks--]]],":",GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
 		end
 
-		if not ChoGGi.testing then
+		if not testing then
 			-- getting tired of people asking how to disable console log
 			print("<color 200 200 200>",S[302535920000887--[[ECM--]]],"</color>:",S[302535920001309--[["Stop showing these msgs: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(S[302535920001308--[[Settings--]]],S[302535920001112--[[Console Log--]]]))
 		end

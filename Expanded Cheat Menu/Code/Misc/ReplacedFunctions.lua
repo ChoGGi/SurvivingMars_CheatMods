@@ -1023,8 +1023,9 @@ function OnMsg.ClassesBuilt()
 		local Sleep = Sleep
 		local function ToggleVis(idx,content,v,h)
 			for i = 6, idx do
-				content[i]:SetVisible(v)
-				content[i]:SetMaxHeight(h)
+				local con = content[i]
+				con:SetVisible(v)
+				con:SetMaxHeight(h)
 			end
 		end
 
@@ -1147,9 +1148,10 @@ function OnMsg.ClassesBuilt()
 				ToggleVisSection(section,toolbar,toggle,"InfopanelCheatsVis")
 				-- sets the scale of the cheats icons
 				for j = 1, #toolbar do
-					toolbar[j].idIcon:SetMaxHeight(27)
-					toolbar[j].idIcon:SetMaxWidth(27)
-					toolbar[j].idIcon:SetImageFit("largest")
+					local icon = toolbar[j].idIcon
+					icon:SetMaxHeight(27)
+					icon:SetMaxWidth(27)
+					icon:SetImageFit("largest")
 				end
 			end
 
@@ -1201,9 +1203,10 @@ function OnMsg.ClassesBuilt()
 		-- the actual function
 		function InfopanelDlg:Open(...)
 			CreateRealTimeThread(function()
-				repeat
-					Sleep(10)
-				until self.visible
+--~ 				repeat
+--~ 					Sleep(10)
+--~ 				until self.visible
+				WaitMsg("OnRender")
 				InfopanelDlgOpen(self)
 			end)
 
@@ -1323,7 +1326,7 @@ function OnMsg.ClassesBuilt()
 			-- send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
 			ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,"dont_finalize",...)
 
-			local status = self.construction_statuses
+			local statuses = self.construction_statuses
 
 			if self.is_template then
 				local cobj = rawget(self.cursor_obj, true)
@@ -1336,34 +1339,43 @@ function OnMsg.ClassesBuilt()
 				tobj:GatherConstructionStatuses(self.construction_statuses)
 			end
 
-			-- just leave warnings and UnevenTerrain error
-			local statusNew = {}
+			-- we copy it so the statuses table remains the same
+			local statuses_copy = table.copy(self.construction_statuses)
+			table.clear(self.construction_statuses)
 			local c = 0
+
 			local UnevenTerrain = ConstructionStatus.UnevenTerrain
-			if type(status) == "table" and #status > 0 then
-				for i = 1, #status do
-					if status[i].type == "warning" then
-						c = c + 1
-						statusNew[c] = status[i]
-					-- UnevenTerrain < causes issues when placing buildings (martian ground viagra)
-					elseif status[i] == UnevenTerrain then
-						c = c + 1
-						statusNew[c] = status[i]
-					end
+			local BlockingObjects = ConstructionStatus.BlockingObjects
+			local warning = "Placeable"
+
+			for i = 1, #statuses_copy do
+				local status = statuses_copy[i]
+				-- UnevenTerrain: causes issues when placing buildings (martian ground viagra)
+				if status == UnevenTerrain then
+					c = c + 1
+					self.construction_statuses[c] = status
+					warning = "Blocked"
+				elseif status == BlockingObjects then
+					warning = "Obstructing"
+				-- might as well add all the non-errors since they don't block from building
+				elseif status.type ~= "error" then
+					c = c + 1
+					self.construction_statuses[c] = status
 				end
 			end
+
 			-- make sure we don't get errors down the line
-			if type(statusNew) == "boolean" then
-				statusNew = {}
+			if type(self.construction_statuses) ~= "table" then
+				self.construction_statuses = {}
 			end
 
-			self.construction_statuses = statusNew
-			status = self.construction_statuses
+			-- update cursor obj colour
+			self.cursor_obj:SetColorModifier(g_PlacementStateToColor[warning])
 
 			if not dont_finalize then
-				self:FinalizeStatusGathering(status)
+				self:FinalizeStatusGathering(self.construction_statuses)
 			else
-				return status
+				return self.construction_statuses
 			end
 		else
 			return ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,dont_finalize,...)
@@ -1480,14 +1492,18 @@ end]]
 			end
 		end
 
-		-- and now the console has a blacklist :)
-		if rawget(_G,"g_ConsoleFENV") == false then
+		-- and now the console has a blacklist :), though i am a little suprised they left it unfettered this long, been using it as a workaround for months
+		if not blacklist and rawget(_G,"g_ConsoleFENV") == false then
 			local Sleep = Sleep
 			CreateRealTimeThread(function()
+				if not g_ConsoleFENV then
+					WaitMsg("Autorun")
+				end
 				while not g_ConsoleFENV do
 					Sleep(250)
 				end
 
+				local rawget,rawset = rawget,rawset
 				local run = rawget(g_ConsoleFENV,"__run")
 				g_ConsoleFENV = {__run = run}
 				setmetatable(g_ConsoleFENV, {
