@@ -16,5 +16,5 @@ return PlaceObj("ModDef", {
 
 By default it can hold an unlimited amount, includes a Mod Config Reborn setting to limit it to X units (if you feel it's too cheap).
 
-Depending on DLC installed rc/tanker will use different models.]],
+Depending on DLC installed RC and tank will use different models.]],
 })

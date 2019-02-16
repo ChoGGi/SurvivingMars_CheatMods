@@ -10,6 +10,5 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Cycle through the three wasp drone skins with the change skin button.
-Am I blind or is there no way to access these skins normally?]],
+	"description", [[Cycle through the three wasp drone skins with the change skin button.]],
 })
