@@ -188,14 +188,14 @@ do -- RetName
 
 			else
 				for i = 1, #values_lookup do
-					local name = values_lookup[i]
+					local value_name = values_lookup[i]
 					if index then
-						if PropObjGetProperty(obj,name) and obj[name] ~= "" then
-							name = obj[name]
+						if PropObjGetProperty(obj,value_name) and obj[value_name] ~= "" then
+							name = obj[value_name]
 							break
 						end
 					else
-						local value = obj[name]
+						local value = obj[value_name]
 						if value and value ~= "" then
 							name = value
 							break
