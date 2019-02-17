@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001531,Make the building model look like a construction site.,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
@@ -163,6 +162,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")",
 302535920000733,Open a preset in the editor.,
 302535920001410,Toggle Visibility,
 302535920000735,Timer delay skipped,
+302535920001531,Make the building model look like a construction site (toggle).,
 302535920000903,Unfreeze frozen object.,
 302535920001431,Kill this colonist!,
 302535920001430,Kill colonist,

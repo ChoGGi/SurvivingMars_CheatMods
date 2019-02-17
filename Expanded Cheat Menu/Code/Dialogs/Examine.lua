@@ -1379,18 +1379,17 @@ function Examine:ShowHexShapeList()
 		"GetEntityPeripheralHexShape",
 	}
 
-	if self.obj_ref.ChoGGi_shape_obj then
-		self.obj_ref.ChoGGi_shape_obj:Destroy()
-		self.obj_ref.ChoGGi_shape_obj = nil
-	end
+	ChoGGi.ComFuncs.ObjHexShape_Clear(self.obj_ref)
 
-	local ItemList = {}
-	local c = 0
+	local ItemList = {{
+		text = S[594--[[Clear--]]],
+		value = "Clear",
+	}}
+	local c = 1
 
 	local g = _G
 	local fall = g.FallbackOutline
 	local entity = self.obj_ref:GetEntity()
-	local state_idx = g.GetStateIdx("idle")
 
 	for i = 1, #self.hex_shape_funcs do
 		local func = self.hex_shape_funcs[i]
@@ -1399,21 +1398,26 @@ function Examine:ShowHexShapeList()
 			c = c + 1
 			ItemList[c] = {
 				text = func:sub(10),
-				value = func,
 				shape = shape,
 			}
 		end
 	end
-	local EntitySurfaces = g.EntitySurfaces
-	for key,value in pairs(EntitySurfaces) do
-		local shape = g.GetSurfaceHexShapes(entity, state_idx, value) or ""
-		if #shape > 0 then
-			c = c + 1
-			ItemList[c] = {
-				text = "GetSurfaceHexShapes(), mask: " .. key,
-				value = "GetSurfaceHexShapes",
-				shape = shape,
-			}
+
+	local all_states = g.GetStates(entity)
+	for i = 1, #all_states do
+		local state_idx = g.GetStateIdx(all_states[i])
+
+		local EntitySurfaces = g.EntitySurfaces
+		for key,value in pairs(EntitySurfaces) do
+			local shape = g.GetSurfaceHexShapes(entity, state_idx, value) or ""
+			if shape ~= fall and #shape > 2 then
+				c = c + 1
+				ItemList[c] = {
+					text = "GetSurfaceHexShapes(), mask: " .. key .. " state_idx:" .. state_idx,
+					value = "GetSurfaceHexShapes",
+					shape = shape,
+				}
+			end
 		end
 	end
 
@@ -1422,11 +1426,15 @@ function Examine:ShowHexShapeList()
 			return
 		end
 		choice = choice[1]
-		ChoGGi.ComFuncs.ObjHexShape_Toggle(self.obj_ref,{
-			shape = choice.shape,
-			func = choice.func,
-			skip_return = true,
-		})
+		if choice.value == "Clear" then
+			ChoGGi.ComFuncs.ObjHexShape_Clear(self.obj_ref)
+		else
+			ChoGGi.ComFuncs.ObjHexShape_Toggle(self.obj_ref,{
+				shape = choice.shape,
+				func = choice.func,
+				skip_return = true,
+			})
+		end
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
@@ -1442,12 +1450,10 @@ function Examine:ShowBBoxList()
 -- might be useful?
 --~ ToBBox(pos, prefab.size, angle)
 
-	if self.obj_ref.ChoGGi_bboxobj then
-		self.obj_ref.ChoGGi_bboxobj:Destroy()
-		self.obj_ref.ChoGGi_bboxobj = nil
-	end
+	ChoGGi.ComFuncs.BBoxLines_Clear(self.obj_ref)
 
 	local ItemList = {
+		{text = S[594--[[Clear--]]],value = "Clear"},
 		{text = "GetObjectBBox",value = "GetObjectBBox"},
 		{text = "GetEntityBBox",value = "GetEntityBBox"},
 		{text = "ObjectHierarchyBBox",value = "ObjectHierarchyBBox"},
@@ -1464,11 +1470,15 @@ function Examine:ShowBBoxList()
 			return
 		end
 		choice = choice[1]
-		ChoGGi.ComFuncs.BBoxLines_Toggle(self.obj_ref,{
-			func = choice.value,
-			args = choice.args,
-			skip_return = true,
-		})
+		if choice.value == "Clear" then
+			ChoGGi.ComFuncs.BBoxLines_Clear(self.obj_ref)
+		else
+			ChoGGi.ComFuncs.BBoxLines_Toggle(self.obj_ref,{
+				func = choice.value,
+				args = choice.args,
+				skip_return = true,
+			})
+		end
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{

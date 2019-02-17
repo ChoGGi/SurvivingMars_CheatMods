@@ -1658,22 +1658,22 @@ The func I use for spot_rot rounds to two decimal points...
 
 			return lines
 		end
-
-		function ChoGGi.ComFuncs.BBoxLines_Toggle(obj,params)
-			obj = obj or ChoGGi.ComFuncs.SelObject()
-			local is_box = IsBox(obj)
-			if not (IsValid(obj) or is_box) then
-				return
-			end
-			params = params or {}
-
-			-- check if bbox showing
+		local function BBoxLines_Clear(obj,is_box)
 			if not is_box and obj.ChoGGi_bboxobj then
 				obj.ChoGGi_bboxobj:Destroy()
 				obj.ChoGGi_bboxobj = nil
-				if not params.skip_return then
-					return
-				end
+				return true
+			end
+		end
+		ChoGGi.ComFuncs.BBoxLines_Clear = BBoxLines_Clear
+
+		function ChoGGi.ComFuncs.BBoxLines_Toggle(obj,params)
+			params = params or {}
+			obj = obj or ChoGGi.ComFuncs.SelObject()
+			local is_box = IsBox(obj)
+
+			if not (IsValid(obj) or is_box) or (BBoxLines_Clear(obj,is_box) and not params.skip_return) then
+				return
 			end
 
 			-- go forth
@@ -1955,21 +1955,23 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 			return line_list
 		end
+		local function ObjHexShape_Clear(obj)
+			if obj.ChoGGi_shape_obj then
+				obj.ChoGGi_shape_obj:Destroy()
+				obj.ChoGGi_shape_obj = nil
+				return true
+			end
+		end
+		ChoGGi.ComFuncs.ObjHexShape_Clear = ObjHexShape_Clear
+
 
 		function ChoGGi.ComFuncs.ObjHexShape_Toggle(obj,params)
 			params = params or {shape = FallbackOutline}
 
 			-- fallback is just a point(0,0), so nothing to do here
-			if not IsValid(obj) or params.shape == FallbackOutline or #params.shape < 2 then
+			if not IsValid(obj) or params.shape == FallbackOutline or #params.shape < 2
+					or (ObjHexShape_Clear(obj) and not params.skip_return) then
 				return
-			end
-
-			if obj.ChoGGi_shape_obj then
-				obj.ChoGGi_shape_obj:Destroy()
-				obj.ChoGGi_shape_obj = nil
-				if not params.skip_return then
-					return
-				end
 			end
 
 			obj.ChoGGi_shape_obj = BuildShape(
@@ -1987,9 +1989,19 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		end
 
 		local list = {}
+		local entity = obj:GetEntity()
+		local GetEntityNumSurfaces = GetEntityNumSurfaces
+
 		local EntitySurfaces = EntitySurfaces
 		for key,value in pairs(EntitySurfaces) do
-			list[key .. " (" .. value .. ")"] = obj:HasAnySurfaces(value)
+			local surfs = GetEntityNumSurfaces(entity, value)
+			local surf_bool = obj:HasAnySurfaces(value)
+
+			if surfs > 0 then
+				list[key .. " (mask: " .. value .. ", surfaces count: " .. surfs .. ")"] = surf_bool
+			else
+				list[key .. " (mask: " .. value .. ")"] = surf_bool
+			end
 		end
 		return list
 	end
