@@ -232,7 +232,7 @@ function ChoGGi_FindValueDlg:Input_OnKbdKeyDown(vk)
 	elseif vk == const.vkEsc then
 		self.idCloseX:Press()
 		return "break"
-	else
-		return ChoGGi_TextInput.OnKbdKeyDown(self.idEdit, vk)
 	end
+
+	return ChoGGi_TextInput.OnKbdKeyDown(self.idEdit, vk)
 end

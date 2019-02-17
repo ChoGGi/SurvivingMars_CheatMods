@@ -858,7 +858,6 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 
 			dlg_list_maps = ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc_LoadMapQuestion,
-				custom_func = CallBackFunc_LoadMapQuestion,
 				close_func = function()
 					-- close dialogs we opened
 					dlg_list_MissionParams:Done()
@@ -961,7 +960,6 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			title = 302535920000973--[[Change Terrain Texture--]],
 			hint = S[302535920000974--[[Map default: %s--]]]:format(mapdata.BaseLayer),
 			custom_type = 7,
-			custom_func = CallBackFunc,
 		}
 	end
 

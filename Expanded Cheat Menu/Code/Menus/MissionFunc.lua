@@ -604,7 +604,6 @@ function OnMsg.ClassesGenerate()
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name),
 			height = 800.0,
 			custom_type = 7,
-			custom_func = CallBackFunc,
 		}
 	end
 

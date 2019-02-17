@@ -749,6 +749,7 @@ local function CallMenu(self,popup_id,items,pt,button,...)
 		local dlg = GetRootDialog(self)
 		-- same colour as bg of icons :)
 		dlg[items].Background = -9868951
+		dlg[items].FocusedBackground = -9868951
 		dlg[items].PressedBackground = -12500671
 		dlg[items].TextStyle = "ChoGGi_CheckButtonMenuOpp"
 		PopupToggle(self,dlg[popup_id],dlg[items],"bottom")
@@ -863,21 +864,33 @@ function Examine:BuildObjectMenuPopup()
 			hint = S[302535920000458--[[Make object dance on command.--]]],
 			image = "CommonAssets/UI/Menu/UnlockCamera.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.SetAnimState(self.obj_ref)
+				if IsValid(self.obj_ref) then
+					ChoGGi.ComFuncs.SetAnimState(self.obj_ref)
+				else
+					self:InvalidMsgPopup()
+				end
 			end,
 		},
 		{name = S[302535920000682--[[Change Entity--]]],
 			hint = S[302535920001151--[[Set Entity For %s--]]]:format(self.name),
 			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.EntitySpawner(self.obj_ref,true,7)
+				if IsValid(self.obj_ref) then
+					ChoGGi.ComFuncs.EntitySpawner(self.obj_ref,true,7)
+				else
+					self:InvalidMsgPopup()
+				end
 			end,
 		},
 		{name = S[302535920000129--[[Set--]]] .. " " .. S[302535920001184--[[Particles--]]],
 			hint = S[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
 			image = "CommonAssets/UI/Menu/place_particles.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.SetParticles(self.obj_ref)
+				if IsValid(self.obj_ref) then
+					ChoGGi.ComFuncs.SetParticles(self.obj_ref)
+				else
+					self:InvalidMsgPopup()
+				end
 			end,
 		},
 		{name = "----",disable = true,centred = true},
@@ -885,46 +898,84 @@ function Examine:BuildObjectMenuPopup()
 			hint = S[302535920001473--[[Toggle showing object's bbox (changes depending on movement).--]]],
 			image = "CommonAssets/UI/Menu/SelectionEditor.tga",
 			clicked = function()
-				self:ShowBBoxList()
+				if IsValid(self.obj_ref) then
+					self:ShowBBoxList()
+				else
+					self:InvalidMsgPopup()
+				end
 			end,
 		},
 		{name = S[302535920001522--[[Hex Shape Toggle--]]],
 			hint = S[302535920001523--[[Toggle showing shapes for the object.--]]],
 			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 			clicked = function()
-				self:ShowHexShapeList()
+				if IsValid(self.obj_ref) then
+					self:ShowHexShapeList()
+				else
+					self:InvalidMsgPopup()
+				end
 			end,
 		},
 		{name = S[302535920000449--[[Attach Spots Toggle--]]],
 			hint = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 			image = "CommonAssets/UI/Menu/ShowAll.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj_ref)
+				if IsValid(self.obj_ref) then
+					ChoGGi.ComFuncs.AttachSpots_Toggle(self.obj_ref)
+				else
+					self:InvalidMsgPopup()
+				end
 			end,
 		},
 		{name = S[302535920000235--[[Attach Spots List--]]],
 			hint = S[302535920001445--[[Shows list of attaches for use with .ent files.--]]],
 			image = "CommonAssets/UI/Menu/ListCollections.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.ExamineEntSpots(self.obj_ref,self)
+				if IsValid(self.obj_ref) then
+					ChoGGi.ComFuncs.ExamineEntSpots(self.obj_ref,self)
+				else
+					self:InvalidMsgPopup()
+				end
 			end,
 		},
 		{name = S[302535920001458--[[Material Properties--]]],
 			hint = S[302535920001459--[[Shows list of material settings/.dds files for use with .mtl files.--]]],
 			image = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.GetMaterialProperties(self.obj_ref:GetEntity(),self)
+				if IsValid(self.obj_ref) then
+					ChoGGi.ComFuncs.GetMaterialProperties(self.obj_ref:GetEntity(),self)
+				else
+					self:InvalidMsgPopup()
+				end
 			end,
 		},
 		{name = S[302535920001476--[[Flags--]]],
 			hint = S[302535920001447--[[Shows list of flags set for selected object.--]]],
 			image = "CommonAssets/UI/Menu/JoinGame.tga",
 			clicked = function()
-				-- task requests have flags too, ones that aren't listed in the Flags table... (just const.rf*)
-				if self.obj_flags then
-					ChoGGi.ComFuncs.ObjFlagsList_TR(self.obj_ref,self)
+				if IsValid(self.obj_ref) then
+					-- task requests have flags too, ones that aren't listed in the Flags table... (just const.rf*)
+					if self.obj_flags then
+						ChoGGi.ComFuncs.ObjFlagsList_TR(self.obj_ref,self)
+					else
+						ChoGGi.ComFuncs.ObjFlagsList(self.obj_ref,self)
+					end
 				else
-					ChoGGi.ComFuncs.ObjFlagsList(self.obj_ref,self)
+					self:InvalidMsgPopup()
+				end
+			end,
+		},
+		{name = S[302535920001524--[[Entity Surfaces--]]],
+			hint = S[302535920001525--[[Shows list of surfaces for the object entity.--]]],
+			image = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
+			clicked = function()
+				if IsValid(self.obj_ref) then
+					OpenInExamineDlg(
+						ChoGGi.ComFuncs.RetSurfaceMasks(self.obj_ref),self,
+						S[302535920001524--[[Entity Surfaces--]]] .. ": " .. self.name
+					)
+				else
+					self:InvalidMsgPopup()
 				end
 			end,
 		},
@@ -932,18 +983,26 @@ function Examine:BuildObjectMenuPopup()
 			hint = S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
 			image = "CommonAssets/UI/Menu/CameraEditor.tga",
 			clicked = function()
-				ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj_ref)
+				if IsValid(self.obj_ref) then
+					ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj_ref)
+				else
+					self:InvalidMsgPopup()
+				end
 			end,
 		},
 		{name = S[931--[[Modified property--]]],
 			hint = S[302535920001384--[[Get properties different from base/parent object?--]]],
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
-				OpenInExamineDlg(
-					GetModifiedProperties(self.obj_ref),
-					self,
-					S[931--[[Modified property--]]] .. ": " .. self.name
-				)
+				if self.obj_ref.IsKindOf and self.obj_ref:IsKindOf("PropertyObject") then
+					OpenInExamineDlg(
+						GetModifiedProperties(self.obj_ref),
+						self,
+						S[931--[[Modified property--]]] .. ": " .. self.name
+					)
+				else
+					self:InvalidMsgPopup()
+				end
 			end,
 		},
 		{name = S[302535920001389--[[All Properties--]]],
@@ -951,21 +1010,25 @@ function Examine:BuildObjectMenuPopup()
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
 				-- give em some hints
-				local props_list = {
-					___readme = S[302535920001397--[["Not the actual properties (see object.properties for those).
+				if self.obj_ref.IsKindOf and self.obj_ref:IsKindOf("PropertyObject") then
+					local props = self.obj_ref:GetProperties()
+					local props_list = {
+						___readme = S[302535920001397--[["Not the actual properties (see object.properties for those).
 
 Use obj:GetProperty(""NAME"") and obj:SetProperty(""NAME"",value)
 You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 "--]]]
-				}
-				local props = self.obj_ref:GetProperties()
-				for i = 1, #props do
-					props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
+					}
+					for i = 1, #props do
+						props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
+					end
+					OpenInExamineDlg(
+						props_list,self,
+						S[302535920001389--[[All Properties--]]] .. ": " .. self.name
+					)
+				else
+					self:InvalidMsgPopup()
 				end
-				OpenInExamineDlg(
-					props_list,self,
-					S[302535920001389--[[All Properties--]]] .. ": " .. self.name
-				)
 			end,
 		},
 		{name = "----",disable = true,centred = true},
@@ -973,8 +1036,12 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 			hint = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
 			image = "CommonAssets/UI/Menu/UIDesigner.tga",
 			clicked = function()
-				GedObjectEditor = false
-				OpenGedGameObjectEditor{self.obj_ref}
+				if IsValid(self.obj_ref) then
+					GedObjectEditor = false
+					OpenGedGameObjectEditor{self.obj_ref}
+				else
+					self:InvalidMsgPopup()
+				end
 			end,
 		},
 		{name = S[302535920000067--[[Ged Inspect--]]],
@@ -1200,6 +1267,13 @@ Which you can then mess around with some more in the console."--]]],
 	return list
 end
 
+function Examine:InvalidMsgPopup(msg,title)
+	ChoGGi.ComFuncs.MsgPopup(
+		msg or 302535920001526--[[Not a valid object--]],
+		title or 302535920000069--[[Examine--]]
+	)
+end
+
 function Examine:GetScrolledText()
 	-- all text is cached here
 	local cache = self.idText.draw_cache or {}
@@ -1296,11 +1370,11 @@ end
 
 function Examine:ShowHexShapeList()
 	self.hex_shape_funcs = self.hex_shape_funcs or {
-		"GetEntityOutlineShape",
-		"GetEntityInteriorShape",
 		"GetEntityBuildShape",
-		"GetEntityInverseBuildShape",
 		"GetEntityCombinedShape",
+		"GetEntityInteriorShape",
+		"GetEntityInverseBuildShape",
+		"GetEntityOutlineShape",
 		"GetEntityPeripheralHexShape",
 	}
 
@@ -1332,21 +1406,24 @@ function Examine:ShowHexShapeList()
 			return
 		end
 		choice = choice[1]
-		ChoGGi.ComFuncs.ObjHexShape_Toggle(self.obj_ref,choice.shape)
+		ChoGGi.ComFuncs.ObjHexShape_Toggle(self.obj_ref,{
+			shape = choice.shape,
+			skip_return = true,
+		})
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = ItemList,
 		title = S[302535920001522--[[Hex Shape Toggle--]]] .. ": " .. RetName(self.obj_ref),
+		skip_sort = true,
+		custom_type = 7,
 	}
 end
 
 function Examine:ShowBBoxList()
---~ ToBBox(pos, prefab.size, angle)
 -- might be useful?
-
---~ CollideGetPassLines
+--~ ToBBox(pos, prefab.size, angle)
 
 	if self.obj_ref.ChoGGi_bboxobj then
 		self.obj_ref.ChoGGi_bboxobj:Destroy()
@@ -1355,15 +1432,14 @@ function Examine:ShowBBoxList()
 
 	local ItemList = {
 		{text = "GetObjectBBox",value = "GetObjectBBox"},
+		{text = "GetEntityBBox",value = "GetEntityBBox"},
 		{text = "ObjectHierarchyBBox",value = "ObjectHierarchyBBox"},
 		{text = "ObjectHierarchyBBox + efCollision",value = "ObjectHierarchyBBox",args = const.efCollision},
 		{text = "GetSurfacesBBox",value = "GetSurfacesBBox"},
-		-- 0,0,0,0,0,0,0,0
---~ 		{text = "GetObjectsBBox",value = "GetObjectsBBox"},
---~ 		{text = "GetEntityBoundingBox",value = "GetEntityBoundingBox"},
 		-- relative nums
 --~ 		{text = "GetEntitySurfacesBBox",value = "GetEntitySurfacesBBox"},
---~ 		{text = "GetEntityBBox",value = "GetEntityBBox"},
+		-- needs entity string as 2 arg
+--~ 		{text = "GetEntityBoundingBox",value = "GetEntityBoundingBox",args = "use_entity"},
 	}
 
 	local function CallBackFunc(choice)
@@ -1371,7 +1447,11 @@ function Examine:ShowBBoxList()
 			return
 		end
 		choice = choice[1]
-		ChoGGi.ComFuncs.BBoxLines_Toggle(self.obj_ref,choice.value,choice.args)
+		ChoGGi.ComFuncs.BBoxLines_Toggle(self.obj_ref,{
+			func = choice.value,
+			args = choice.args,
+			skip_return = true,
+		})
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
@@ -1380,6 +1460,7 @@ function Examine:ShowBBoxList()
 		title = S[302535920001472--[[BBox Toggle--]]] .. ": " .. RetName(self.obj_ref),
 		hint = 302535920000264--[[Defaults to :GetObjectBBox() if it can't find a func.--]],
 		skip_sort = true,
+		custom_type = 7,
 	}
 end
 
@@ -2005,11 +2086,11 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		for i = starter, #info_list do
 			local info = info_list[i]
 			c = c + 1
-			totextex_res[c] = i .. ":"
+			totextex_res[c] = "\ngetinfo(level " .. info.level .. "): "
 
 			c = c + 1
-			totextex_res[c] = "getinfo(" .. info.level .. "): "
-				.. info.name .. ", " .. self:ConvertValueToInfo(info.func)
+			totextex_res[c] = "func: " .. info.name .. ", "
+				.. self:ConvertValueToInfo(info.func)
 
 			if info.getlocal then
 				for j = 1, #info.getlocal do
@@ -2067,8 +2148,7 @@ function Examine:SetToolbarVis(obj)
 		self.idButClear:SetVisible()
 	end
 
-	local obj_type = type(obj)
-	if obj_type == "table" then
+	if self.obj_type == "table" then
 		-- none of it works on _G, and i'll take any bit of speed for _G
 		if self.name ~= "_G" then
 
@@ -2095,7 +2175,7 @@ function Examine:SetToolbarVis(obj)
 			end
 		end
 
-	elseif obj_type == "function" then
+	elseif self.obj_type == "function" then
 		if getinfo(obj,"S").what == "Lua" then
 			self.idButViewSource:SetVisible(true)
 		end
@@ -2157,6 +2237,7 @@ function Examine:SetObj(startup)
 	self.obj_ref = obj
 
 	local obj_type = type(obj)
+	self.obj_type = obj_type
 	local obj_class
 
 	local name = RetName(obj)
@@ -2257,7 +2338,6 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 	end
 
 	return obj_class
-
 end
 
 local function PopupClose(name)
@@ -2268,15 +2348,36 @@ local function PopupClose(name)
 end
 
 function Examine:Done(result,...)
-	DeleteThread(self.autorefresh_thread)
+	local obj = self.obj_ref
+	-- stop refreshing
+	if IsValidThread(self.autorefresh_thread) then
+		DeleteThread(self.autorefresh_thread)
+	end
 	-- close any opened popup menus
 	PopupClose(self.idAttachesMenu)
 	PopupClose(self.idParentsMenu)
 	PopupClose(self.idToolsMenu)
+	-- hide bbox
+	if self.obj_type == "table" then
+		if obj.ChoGGi_bboxobj then
+			obj.ChoGGi_bboxobj:Destroy()
+			obj.ChoGGi_bboxobj = nil
+		end
+		-- attach spot names
+		if obj.ChoGGi_ShowAttachSpots then
+			obj:HideSpots()
+			obj.ChoGGi_ShowAttachSpots = nil
+		end
+		-- hex shape
+		if obj.ChoGGi_shape_obj then
+			obj.ChoGGi_shape_obj:Destroy()
+			obj.ChoGGi_shape_obj = nil
+		end
+	end
 	-- remove this dialog from list of examine dialogs
 	local g_ExamineDlgs = g_ExamineDlgs or empty_table
 	g_ExamineDlgs[self.obj] = nil
-	g_ExamineDlgs[self.obj_ref] = nil
+	g_ExamineDlgs[obj] = nil
 
 	ChoGGi_Window.Done(self,result,...)
 end

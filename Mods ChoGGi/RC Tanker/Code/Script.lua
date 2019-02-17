@@ -523,12 +523,16 @@ function OnMsg.ClassesBuilt()
 
 		if self.tank_direction then
 			self.tank_direction = false
-			button:SetRolloverText([[Fill tank resource from RC.]])
+			button:SetRolloverText([[Fill tank resource from RC.
+
+Press to toggle.]])
 			button:SetRolloverTitle([[Fill Tank]])
 			button:SetIcon("UI/Icons/IPButtons/load.tga")
 		else
 			self.tank_direction = true
-			button:SetRolloverText([[Drain resource from tank to RC.]])
+			button:SetRolloverText([[Drain resource from tank to RC.
+
+Press to toggle.]])
 			button:SetRolloverTitle([[Drain Tank]])
 			button:SetIcon("UI/Icons/IPButtons/unload.tga")
 		end
@@ -543,7 +547,9 @@ function OnMsg.ClassesBuilt()
 			"comment", "fill/drain toggle",
 			"__context_of_kind", "RCTanker",
 			"__template", "InfopanelButton",
-			"RolloverText", [[Drain resource from tank to RC.]],
+			"RolloverText", [[Drain resource from tank to RC.
+
+Press to toggle.]],
 			"RolloverTitle", [[Drain Tank]],
 			"Icon", "UI/Icons/IPButtons/unload.tga",
 			"OnPress", function (self, gamepad)
@@ -565,12 +571,12 @@ function OnMsg.ClassesBuilt()
 		end
 		if self.tank_type == "AirStorage" then
 			self.tank_type = "WaterStorage"
-			button:SetRolloverTitle(S[681--[[Water--]]])
+			button:SetRolloverTitle(S[681--[[Water--]]] .. "\n\nPress to toggle.")
 			button:SetIcon("UI/Icons/Sections/Water_1.tga")
 			self.tank_obj:SetColorizationMaterial(1, -12211457, -24, 0)
 		else
 			self.tank_type = "AirStorage"
-			button:SetRolloverTitle(S[682--[[Oxygen--]]])
+			button:SetRolloverTitle(S[682--[[Oxygen--]]] .. "\n\nPress to toggle.")
 			button:SetIcon("UI/Icons/Sections/Oxygen_1.tga")
 			self.tank_obj:SetColorizationMaterial(1, -4450778, -24, 0)
 		end
@@ -587,7 +593,7 @@ function OnMsg.ClassesBuilt()
 			"__context_of_kind", "RCTanker",
 			"__template", "InfopanelButton",
 			"Icon", "UI/Icons/Sections/Oxygen_1.tga",
-			"RolloverTitle", S[682--[[Oxygen--]]],
+			"RolloverTitle", S[682--[[Oxygen--]]] .. "\n\nPress to toggle.",
 			"RolloverText", T(0,[[Type of resource you can transfer with this RC.
 
 <image UI/Common/mission_no.tga 1600> Warning: Changing will empty RC tank!]]),

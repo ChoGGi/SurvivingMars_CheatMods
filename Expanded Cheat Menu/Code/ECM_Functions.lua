@@ -862,7 +862,6 @@ function OnMsg.ClassesGenerate()
 			title = 302535920000860--[[Set Anim State--]],
 			hint = S[302535920000861--[[Current State: %s--]]]:format(sel:GetState()),
 			custom_type = 7,
-			custom_func = CallBackFunc,
 		}
 	end
 
@@ -1016,7 +1015,6 @@ function OnMsg.ClassesGenerate()
 			title = name,
 			hint = 302535920001421--[[Shows list of particles to quickly test out on objects.--]],
 			custom_type = 7,
-			custom_func = CallBackFunc,
 		}
 	end
 
@@ -1385,26 +1383,10 @@ The func I use for spot_rot rounds to two decimal points...
 		local function CheckFlags(flags,list)
 			for i = 1, #list do
 				local f = list[i]
-				flags_table[f] = IsFlagSet(flags, const[f])
+				local mask = const[f]
+				flags_table[f .. " (" .. mask .. ")"] = IsFlagSet(flags, mask)
 			end
 		end
-
---~ 		function ChoGGi.ComFuncs.ObjFlagsList_XWin(flags)
---~ 			if not flags then
---~ 				return
---~ 			end
---~ 			flags_table = {}
-
---~ 			for flag,value in pairs(int_flags) do
---~ 				flags_table[flag] = IsFlagSet(flags,value)
---~ 			end
-
---~ 			if parent_or_ret == true then
---~ 				return flags_table
---~ 			else
---~ 				ChoGGi.ComFuncs.OpenInExamineDlg(flags_table,parent_or_ret)
---~ 			end
---~ 		end
 
 		function ChoGGi.ComFuncs.ObjFlagsList_TR(obj,parent_or_ret)
 			if not obj or obj.__name ~= "HGE.TaskRequest" then
@@ -1413,7 +1395,7 @@ The func I use for spot_rot rounds to two decimal points...
 			flags_table = {}
 
 			for flag,value in pairs(rf_flags) do
-				flags_table[flag] = obj:IsAnyFlagSet(value)
+				flags_table[flag .. " (" .. value .. ")"] = obj:IsAnyFlagSet(value)
 			end
 
 			if parent_or_ret == true then
@@ -1658,18 +1640,21 @@ The func I use for spot_rot rounds to two decimal points...
 			return lines
 		end
 
-		function ChoGGi.ComFuncs.BBoxLines_Toggle(obj,func,args,colour,step,offset)
+		function ChoGGi.ComFuncs.BBoxLines_Toggle(obj,params)
 			obj = obj or ChoGGi.ComFuncs.SelObject()
 			local is_box = IsBox(obj)
 			if not (IsValid(obj) or is_box) then
 				return
 			end
+			params = params or {}
 
 			-- check if bbox showing
 			if not is_box and obj.ChoGGi_bboxobj then
 				obj.ChoGGi_bboxobj:Destroy()
 				obj.ChoGGi_bboxobj = nil
-				return
+				if not params.skip_return then
+					return
+				end
 			end
 
 			-- go forth
@@ -1677,43 +1662,43 @@ The func I use for spot_rot rounds to two decimal points...
 			if is_box then
 				bbox = obj
 			else
+				local func = params.func
+				local args = params.args
 				if func then
+					-- check for func in _G or g_CObjectFuncs
 					local func_obj
 					if PropObjGetProperty(_G,func) then
 						func_obj = _G[func]
-					elseif PropObjGetProperty(g_CObjectFuncs,func) then
+					elseif g_CObjectFuncs[func] then
 						func_obj = g_CObjectFuncs[func]
 					end
-
+					-- if it didn't find a global func then we'll try a obj:func()
 					if func_obj then
 						bbox = func_obj(obj,args)
 					else
 						bbox = obj[func] and obj[func](obj,args)
 					end
 				end
+
+				-- fallback
 				if not bbox then
 					bbox = obj.GetObjectBBox and obj:GetObjectBBox(args)
 				end
 			end
+
 			if bbox then
 				obj.ChoGGi_bboxobj = PlaceTerrainBox(
 					bbox,
---~ 						obj:GetPos(),
 					bbox:Center():SetTerrainZ(),
-					colour,step,offset
+					params.colour,params.step,params.offset
 				)
 			end
 		end
 	end -- do
 
-	do -- MoveObjToGround
---~ 		local GetHeight = terrain.GetHeight
-		function ChoGGi.ComFuncs.MoveObjToGround(obj)
---~ 			local t_height = GetHeight(obj:GetVisualPos())
---~ 			obj:SetPos(obj:GetPos():SetZ(t_height))
-			obj:SetPos(obj:GetPos():SetTerrainZ())
-		end
-	end -- do
+	function ChoGGi.ComFuncs.MoveObjToGround(obj)
+		obj:SetZ(obj:GetVisualPos():SetTerrainZ())
+	end
 
 	function ChoGGi.ComFuncs.GetDesktopWindow(class)
 		local desktop = terminal.desktop
@@ -1919,7 +1904,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		local function BuildShape(obj,shape,colour,offset)
 			local dir = HexAngleToDirection(obj:GetAngle())
 			local cq, cr = WorldToHex(obj)
-			local z = obj:GetPos():z()
+			local z = obj:GetVisualPos():z()
 
 			if offset then
 				offset = point(0,0,offset)
@@ -1952,25 +1937,42 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			return line_list
 		end
 
-		function ChoGGi.ComFuncs.ObjHexShape_Toggle(obj,shape,colour,offset)
+		function ChoGGi.ComFuncs.ObjHexShape_Toggle(obj,params)
+			params = params or {shape = FallbackOutline}
+
 			-- fallback is just a point(0,0), so nothing to do here
-			if not IsValid(obj) or shape == FallbackOutline or #shape < 2 then
+			if not IsValid(obj) or params.shape == FallbackOutline or #params.shape < 2 then
 				return
 			end
 
 			if obj.ChoGGi_shape_obj then
 				obj.ChoGGi_shape_obj:Destroy()
 				obj.ChoGGi_shape_obj = nil
-				return
+				if not params.skip_return then
+					return
+				end
 			end
 
 			obj.ChoGGi_shape_obj = BuildShape(
 				obj,
-				shape,
-				colour,offset
+				params.shape,
+				params.colour,params.offset
 			)
 
 		end
 	end -- do
+
+	function ChoGGi.ComFuncs.RetSurfaceMasks(obj)
+		if not IsValid(obj) then
+			return
+		end
+
+		local list = {}
+		local EntitySurfaces = EntitySurfaces
+		for key,value in pairs(EntitySurfaces) do
+			list[key .. " (" .. value .. ")"] = obj:HasAnySurfaces(value)
+		end
+		return list
+	end
 
 end
