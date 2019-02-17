@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Passenger Rocket Tweaks v0.1",
-	"version", 1,
-	"saved", 1549022400,
+	"title", "Passenger Rocket Tweaks v0.2",
+	"version", 2,
+	"saved", 1550404800,
 	"image", "Preview.png",
 	"id", "ChoGGi_PassengerRocketTweaks",
 	"steam_id", "1641796120",
@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Adds a specialisation count (selected applicants / specialists already in colony).
+	"description", [[Adds a specialisation count section to the passenger rocket screen (selected applicants / specialists needed by workplaces / specialists already in colony).
 Adds an "Are you sure?" question box to the back button to stop you from losing your applicant list (just the button, pressing ESC still works as usual).
 ]],
 })

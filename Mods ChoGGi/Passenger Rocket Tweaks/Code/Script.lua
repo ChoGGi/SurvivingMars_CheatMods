@@ -22,17 +22,46 @@ Press Ok to download it or check Mod Manager to make sure it"s enabled.]],min_ve
 	end
 end
 
-local StringFormat = string.format
-
+local TableClear = table.clear
 local S
 -- generate is late enough that my library is loaded, but early enough to replace anything I need to
 function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 end
 
+local needed_specialist = {}
+local all_specialist = {}
+local function BuildSpecialistLists()
+	local labels = UICity.labels
+
+	TableClear(needed_specialist)
+	TableClear(all_specialist)
+
+	needed_specialist.none = 0
+	all_specialist.none = #(labels.none or "")
+	local ColonistSpecializationList = ColonistSpecializationList
+	for i = 1, #ColonistSpecializationList do
+		local spec = ColonistSpecializationList[i]
+		all_specialist[spec] = #(labels[spec] or "")
+		needed_specialist[spec] = 0
+	end
+
+	-- needed count
+	local workplaces = labels.Workplace or ""
+	for i = 1, #workplaces do
+		local bld = workplaces[i]
+		local spec = bld.specialist
+--~ 		if spec ~= "none" and not bld.destroyed and not bld.demolishing and not bld.bulldozed then
+		if not bld.destroyed and not bld.demolishing and not bld.bulldozed then
+			needed_specialist[spec] = needed_specialist[spec] + bld:GetFreeWorkSlots()
+		end
+	end
+
+end
+
 local filter_table = {}
-function TraitsObject:GetMatchingColonistsCount_ChoGGi(spec)
-	table.clear(filter_table)
+local function GetMatchingColonistsCount(self,spec)
+	TableClear(filter_table)
   filter_table[spec] = true
 
   local colonists = self.approved_applicants
@@ -48,23 +77,21 @@ function TraitsObject:GetMatchingColonistsCount_ChoGGi(spec)
   return count
 end
 
-function TraitsObject:SetUIResupplyParams_ChoGGi(win)
-	local labels = UICity.labels
-	local function GetSpecInfo(label)
-		local count = self:GetMatchingColonistsCount_ChoGGi(label)
-		local all = #(labels[label] or "")
-		local matching_win = win:ResolveId(StringFormat("idChoGGiPassInfo_%s",label))
-		if matching_win then
-			matching_win:SetText(T{11593,"<count>/<all>",count = count,all = all})
-		end
+local function GetSpecInfo(self,win,label)
+	local matching_win = win:ResolveId("idChoGGiPassInfo_" .. label)
+	if matching_win then
+		local count = GetMatchingColonistsCount(self,label)
+		local all = all_specialist[label]
+		local needed = needed_specialist[label]
+		matching_win:SetText(T{0,"<c>/<n>/<a>",c = count,n = needed,a = all})
 	end
-	GetSpecInfo("none")
-	GetSpecInfo("scientist")
-	GetSpecInfo("engineer")
-	GetSpecInfo("security")
-	GetSpecInfo("geologist")
-	GetSpecInfo("botanist")
-	GetSpecInfo("medic")
+end
+function SetUIResupplyParams(self,win)
+	GetSpecInfo(self,win,"none")
+	local ColonistSpecializationList = ColonistSpecializationList
+	for i = 1, #ColonistSpecializationList do
+		GetSpecInfo(self,win,ColonistSpecializationList[i])
+	end
 end
 
 -- add extra info to select colonists
@@ -84,7 +111,7 @@ function OnMsg.ClassesBuilt()
 			"Margins", box(55, 0, 0, 0),
 			"RolloverTemplate", "Rollover",
 			"RolloverTitle", T(11531, "Specialists"),
-			"RolloverText", [[Selected Applicants / Colony Specialist Amount]],
+			"RolloverText", [[Selected Applicants / Needed Specialists / Colony Amount]],
 		}, {
 			PlaceObj("XTemplateWindow", {
 				"__class", "XText",
@@ -104,7 +131,7 @@ function OnMsg.ClassesBuilt()
 				"LayoutMethod", "HList",
 				"ContextUpdateOnOpen", true,
 				"OnContextUpdate", function (self, context, ...)
-					context:SetUIResupplyParams_ChoGGi(self)
+					SetUIResupplyParams(context,self)
 				end,
 			}, {
 
@@ -280,7 +307,7 @@ local function AddUIStuff(content)
 		ChoGGi.ComFuncs.QuestionBox(
 			S[5761--[[Are you sure you want to cancel the Rocket's launch order?--]]],
 			CallBackFunc,
-			StringFormat("%s %s",S[3687--[[Cancel--]]],S[1116--[[Passenger Rocket--]]])
+			S[3687--[[Cancel--]]] .. " " .. S[1116--[[Passenger Rocket--]]]
 		)
 	end
 
@@ -289,6 +316,9 @@ end
 local pass_thread
 -- override hud button (Lua\X\HUD.lua)
 function HUD.idResupplyOnPress()
+	-- build list once per open (total count and needed count)
+	BuildSpecialistLists()
+
   if not IsValidThread(CameraTransitionThread) then
 		local dlg = OpenDialog("Resupply")
 		-- replace old func with our piggyback
