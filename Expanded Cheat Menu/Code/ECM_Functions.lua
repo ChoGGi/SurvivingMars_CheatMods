@@ -1365,7 +1365,7 @@ The func I use for spot_rot rounds to two decimal points...
 	end
 
 	do -- ObjFlagsList
-		local IsFlagSet = IsFlagSet
+--~ 		local IsFlagSet = IsFlagSet
 		local const = const
 
 		-- get list of const.rf* flags
@@ -1380,11 +1380,30 @@ The func I use for spot_rot rounds to two decimal points...
 		end
 
 		local flags_table
-		local function CheckFlags(flags,list)
-			for i = 1, #list do
-				local f = list[i]
+		local function CheckFlags(flags,obj,func_name)
+			for i = 1, #flags do
+				local f = flags[i]
 				local mask = const[f]
-				flags_table[f .. " (" .. mask .. ")"] = IsFlagSet(flags, mask)
+				local flagged = obj["Get" .. func_name](obj,mask) == mask
+				if func_name == "ClassFlags" then
+					flags_table[f .. " (" .. mask .. ")"] = flagged
+				else
+					flags_table[f .. " (" .. mask .. ")"] = {
+						ChoGGi_AddHyperLink = true,
+						name = tostring(flagged),
+						func = function(ex_dlg,_,list_obj)
+							-- if flag is true
+							if obj["Get" .. func_name](obj,mask) == mask then
+								obj["Clear" .. func_name](obj,mask)
+								list_obj.name = "false"
+							else
+								obj["Set" .. func_name](obj,mask)
+								list_obj.name = "true"
+							end
+							ex_dlg:RefreshExamine()
+						end,
+					}
+				end
 			end
 		end
 
@@ -1413,14 +1432,14 @@ The func I use for spot_rot rounds to two decimal points...
 
 			flags_table = {}
 
-			local class = obj:GetClassFlags()
-			local enum = obj:GetEnumFlags()
-			local game = obj:GetGameFlags()
+--~ 			local class = obj:GetClassFlags()
+--~ 			local enum = obj:GetEnumFlags()
+--~ 			local game = obj:GetGameFlags()
 
 			local Flags = Flags
-			CheckFlags(class,Flags.Class)
-			CheckFlags(enum,Flags.Enum)
-			CheckFlags(game,Flags.Game)
+			CheckFlags(Flags.Class,obj,"ClassFlags")
+			CheckFlags(Flags.Enum,obj,"EnumFlags")
+			CheckFlags(Flags.Game,obj,"GameFlags")
 
 			if parent_or_ret == true then
 				return flags_table

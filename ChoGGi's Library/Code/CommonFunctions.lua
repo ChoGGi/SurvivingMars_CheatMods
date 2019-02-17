@@ -3989,7 +3989,8 @@ do -- GetAllAttaches
 	local attach_dupes = {}
 	local attaches_list,attaches_count
 	local obj_cls
-	local skip = {"BuildingSign","ExplorableObject","TerrainDeposit","DroneBase","Dome"}
+--~ 	local skip = {"GridTile","GridTileWater","BuildingSign","ExplorableObject","TerrainDeposit","DroneBase","Dome"}
+	local skip = {"ExplorableObject","TerrainDeposit","DroneBase","Dome"}
 
 	local function AddAttaches(obj)
 		for _,a in pairs(obj) do

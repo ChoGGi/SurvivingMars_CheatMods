@@ -7,6 +7,7 @@
 ### Added:
 - ECM>Grid Info: List objects in grids (air, electricity, and water).
 - Debug>Building Path Markers: Show inside waypoints colonists take to move around.
+- Infopanel Cheats>ToggleConstruct: Make a building model look like a construction site (toggle).
 
 ### Changed:
 - Map Exploration will no longer save the DeepScanAvailable setting.
@@ -18,14 +19,15 @@
 - > if you're missing some quickbar buttons, open up AppData\LocalStorage.lua and look for ToolbarItems.
 - Examine:
 - > Added a View Source toolbar button for Lua functions (only works decently on source from mods/HG github code).
+- > Added Object>Hex Shape Toggle: Like bbox, but it shows hex spot markers (use with Attach Spots Toggle).
+- > Added Object>Entity Surfaces: Shows list of surfaces for the object entity.
+- > Added some more options to BBox Toggle.
+- > Added tooltips to "hyperlinks".
 - > Stick the HG code in AppData/Source (see button tooltip for more info).
 - > Skips showing some thread info if it isn't a valid thread.
-- > Added Object>Hex Shape Toggle: Like bbox, but it shows hex spot markers (use with Attach Spots Toggle).
-- > Added some more options to BBox Toggle.
 - > Instead of changing focus to an already opened examine dialog, it'll now flash the titlebar red.
-- > Added tooltips to "hyperlinks".
-- > Added Object>Entity Surfaces: Shows list of surfaces for the object entity.
 - > Removes any placed bbox, hex shapes, and spot names when the dialog is closed.
+- > Changed some of the "Flags" list to be toggleable.
 
 ### Fixed:
 - Delete Object didn't work with filled Mech Depots (thanks FirstGeekDanny).

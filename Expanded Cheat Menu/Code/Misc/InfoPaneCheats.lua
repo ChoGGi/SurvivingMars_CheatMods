@@ -2,6 +2,7 @@
 
 -- add items/hint to the cheats pane
 
+local IsValid = IsValid
 local CreateRealTimeThread = CreateRealTimeThread
 
 local RetName
@@ -142,6 +143,9 @@ function OnMsg.ClassesGenerate()
 		},
 		Die = {
 			des = S[302535920001431--[[Kill this colonist!--]]],
+		},
+		ToggleConstruct = {
+			des = S[302535920001531--[[Make the building model look like a construction site (toggle).--]]],
 		},
 
 -- Building
@@ -471,6 +475,23 @@ function Building:CheatOxygenFree()
 end
 function Building:CheatOxygenNeed()
 	ChoGGi.ComFuncs.AddBuildingAirConsump(self)
+end
+function BaseBuilding:CheatToggleConstruct()
+	local func
+	if self:GetGameFlags(65536) == 65536 then
+		func = "Clear"
+	else
+		func = "Set"
+	end
+
+	self[func .. "GameFlags"](self,65536)
+	if self.ForEachAttach then
+		self:ForEachAttach(function(a)
+			if IsValid(a) and a.class:sub(1,8) ~= "GridTile" and not a:IsKindOf("BuildingSign") then
+				a[func .. "GameFlags"](a,65536)
+			end
+		end)
+	end
 end
 --colonists
 function Colonist:CheatFillMorale()
