@@ -63,7 +63,7 @@ function OpenResearchDialog()
 			Id = "idFilterBar",
 			RolloverTemplate = "Rollover",
 			RolloverTitle = "Info",
-			RolloverText = [[Filter uses name, description, and id.
+			RolloverText = [[Filter checks name, description, and id.
 <color 0 200 0>Shift-Enter</color> to clear.]],
 			Hint = [[Tech Filter]],
 			TextStyle = "LogInTitle",

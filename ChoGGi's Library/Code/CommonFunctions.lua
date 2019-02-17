@@ -2338,7 +2338,7 @@ do -- COLOUR FUNCTIONS
 	end
 
 	function ChoGGi.ComFuncs.RandomColour(amount)
-		if amount and type(amount) == "number" then
+		if amount and type(amount) == "number" and amount > 1 then
 			-- somewhere to store the colours
 			local colour_list = {}
 			-- populate list with amount we want
