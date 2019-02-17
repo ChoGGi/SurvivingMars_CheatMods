@@ -520,6 +520,20 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
+	Actions[c] = {ActionName = S[302535920001527--[[Building Path Markers--]]],
+		ActionMenubar = str_Debug_PathMarkers,
+		ActionId = ".Building Markers",
+		ActionIcon = "CommonAssets/UI/Menu/ToggleCutSmoothTrans.tga",
+		RolloverText = function()
+			return ChoGGi.ComFuncs.SettingState(
+				ChoGGi.Temp.BuildingPathMarkers_Toggle,
+				302535920001528--[[Show inside waypoints colonists take to move around (not all buildings).--]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.BuildingPathMarkers_Toggle,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = S[302535920000146--[[Delete Saved Games--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Delete Saved Games",

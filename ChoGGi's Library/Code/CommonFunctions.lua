@@ -309,31 +309,31 @@ do -- ValidateImage
 	local default = ChoGGi.library_path .. "UI/TheIncal.png"
 
 	function ChoGGi.ComFuncs.ValidateImage(image,fallback)
-		if image then
-			-- if x is 0 then it probably isn't a valid image (measure sends back x,y)
-			if MeasureImage(image) == 0 then
-				image = ChoGGi.library_path .. fallback
-			end
-			-- maybe it's an actual path instead of my lib
-			if MeasureImage(image) == 0 then
-				image = fallback
-			end
-		else
-			image = default
+		image = image or ""
+		-- if x is 0 then it probably isn't a valid image (measure sends back x,y)
+		local m = MeasureImage(image)
+		if not m or m and m == 0 then
+			image = ChoGGi.library_path .. fallback
 		end
-
-		if MeasureImage(image) == 0 then
+		-- maybe it's an actual path instead of my lib
+		m = MeasureImage(image)
+		if not m or m and m == 0 then
+			image = fallback
+		end
+		-- falling way back
+		m = MeasureImage(image)
+		if not m or m and m == 0 then
 			image = default
 		end
 
 		return image
 	end
 end
+local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 
 do -- MsgPopup
 	local TableSet_defaults = table.set_defaults
 	local OpenDialog = OpenDialog
-	local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 
 	-- shows a popup msg with the rest of the notifications
 	-- objects can be a single obj, or {obj1,obj2,etc}
@@ -416,12 +416,10 @@ do -- ShowObj
 	local guic = guic
 	local ViewObjectMars = ViewObjectMars
 	local InvalidPos = ChoGGi.Consts.InvalidPos
-	local xyz_str = "%s%s%s"
-	local xy0_str = "%s%s0"
 
 	local markers = {}
-	function ChoGGi.ComFuncs.ExamineMarkers()
-		ex(markers)
+	function ChoGGi.ComFuncs.RetObjMarkers()
+		return markers
 	end
 
 	local function ClearMarker(k,v)
@@ -445,7 +443,8 @@ do -- ShowObj
 		-- try and clean up just asked for, and if not then all
 		if IsValid(obj) and (markers[obj] or obj.ChoGGi_ShowObjColour) then
 			ClearMarker(obj)
-			ClearMarker(xyz_str:format(obj:GetVisualPos():xyz()))
+			local x,y,z = obj:GetVisualPosXYZ()
+			ClearMarker(x .. y .. (z or 0))
 		-- any markers in the list
 		elseif next(markers) then
 			for k, v in pairs(markers) do
@@ -474,10 +473,8 @@ do -- ShowObj
 	end
 
 	local function AddSphere(pt,color)
-		if not pt:z() then
-			xyz_str = xy0_str
-		end
-		local xyz = xyz_str:format(pt:xyz())
+		local x,y,z = pt:xyz()
+		local xyz = x .. y .. (z or 0)
 		if not markers[xyz] then
 			local sphere = ChoGGi_Sphere:new()
 			sphere:SetPos(pt)
@@ -721,6 +718,7 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 			-- "none","smart","left","right","top","center-top","bottom","mouse"
 			Anchor = parent.box,
 			Background = items.Background or cls.Background,
+			FocusedBackground = items.FocusedBackground or cls.FocusedBackground,
 			PressedBackground = items.PressedBackground or cls.PressedBackground,
 		}, terminal.desktop)
 		popup.items = items
@@ -766,7 +764,7 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image,ok_text,context,parent)
 			CheckText(ok_text,S[6878--[[OK--]]]),
 			"",
 			parent,
-			ChoGGi.ComFuncs.ValidateImage(image,"UI/message_picture_01.png"),
+			ValidateImage(image,"UI/message_picture_01.png"),
 			context
 		)
 		-- hide cancel button since we don't care about it, and we ignore them anyways...
@@ -783,7 +781,7 @@ function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,con
 			CheckText(text,S[3718--[[NONE--]]]),
 			CheckText(ok_msg,S[6878--[[OK--]]]),
 			CheckText(cancel_msg,S[6879--[[Cancel--]]]),
-			ChoGGi.ComFuncs.ValidateImage(image,"UI/message_picture_01.png"),
+			ValidateImage(image,"UI/message_picture_01.png"),
 			context
 		) == "ok" then
 			if func then
@@ -2804,7 +2802,6 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 		hint = 302535920000032--[[Select a resource to find--]],
 		skip_sort = true,
 		custom_type = 7,
-		custom_func = CallBackFunc,
 	}
 end
 
@@ -3005,7 +3002,7 @@ do -- DisplayMonitorList
 			local ChoGGi = ChoGGi
 			ChoGGi.ComFuncs.MsgWait(
 				S[302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]]:format(ChoGGi.email),
-				S[302535920000034--[[Request--]]]
+				302535920000034--[[Request--]]
 			)
 			return
 		end
@@ -3614,7 +3611,7 @@ end -- do
 
 function ChoGGi.ComFuncs.AttachSpots_Toggle(sel)
 	sel = sel or ChoGGi.ComFuncs.SelObject()
-	if not sel then
+	if not IsValid(sel) then
 		return
 	end
 	if sel.ChoGGi_ShowAttachSpots then
@@ -3629,11 +3626,11 @@ end
 do -- ShowAnimDebug_Toggle
 	local RandomColour
 	local function AnimDebug_Show(obj,colour)
-		local text = PlaceObject("Text")
+		local text = PlaceObject("ChoGGi_Text")
 		text:SetColor(colour or RandomColour())
 		text:SetFontId(UIL.GetFontID(ChoGGi.font .. ", 14, bold, aa"))
 		text:SetCenter(true)
-		local orient = Orientation:new()
+		local orient = PlaceObject("ChoGGi_Orientation")
 
 		-- so we can delete them easy
 		orient.ChoGGi_AnimDebug = true
@@ -3989,27 +3986,26 @@ end
 
 do -- GetAllAttaches
 	local objlist = objlist
-	local attaches = {}
-	local attaches_idx
-	local count = 0
+	local attach_dupes = {}
+	local attaches_list,attaches_count
 	local obj_cls
 	local skip = {"BuildingSign","ExplorableObject","TerrainDeposit","DroneBase","Dome"}
 
 	local function AddAttaches(obj)
 		for _,a in pairs(obj) do
-			if not attaches[a] and IsValid(a) and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
-				attaches[a] = true
-				count = count + 1
-				attaches_idx[count] = a
+			if not attach_dupes[a] and IsValid(a) and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
+				attach_dupes[a] = true
+				attaches_count = attaches_count + 1
+				attaches_list[attaches_count] = a
 			end
 		end
 	end
 
 	local function ForEach(a)
-		if not attaches[a] and IsValid(a) and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
-			attaches[a] = true
-			count = count + 1
-			attaches_idx[count] = a
+		if not attach_dupes[a] and IsValid(a) and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
+			attach_dupes[a] = true
+			attaches_count = attaches_count + 1
+			attaches_list[attaches_count] = a
 			-- add level limit?
 			if a.ForEachAttach then
 				a:ForEachAttach(ForEach)
@@ -4026,14 +4022,15 @@ do -- GetAllAttaches
 	end
 
 	function ChoGGi.ComFuncs.GetAllAttaches(obj)
-		TableClear(attaches)
+		TableClear(attach_dupes)
 		if not IsValid(obj) then
-			return attaches
+			-- I always use #attach_list so "" is fine by me
+			return ""
 		end
 
-		-- we use objlist instead of plain table for delete all in examine
-		attaches_idx = objlist:new()
-		count = 0
+		-- we use objlist instead of {} for delete all button in examine
+		attaches_list = objlist:new()
+		attaches_count = 0
 		obj_cls = obj.class
 
 		-- add regular attachments
@@ -4041,20 +4038,20 @@ do -- GetAllAttaches
 			obj:ForEachAttach(ForEach)
 		end
 
-		-- add any non-attached attaches
+		-- add any non-attached attaches (stuff that's kinda attached, like the concrete arm thing)
 		AddAttaches(obj)
 		-- and the anim_obj added in gagarin
 		if IsValid(obj.anim_obj) then
 			AddAttaches(obj.anim_obj)
 		end
 
-		-- remove obj if it's in the list
-		local idx = TableFind(attaches_idx,obj)
+		-- remove original obj if it's in the list
+		local idx = TableFind(attaches_list,obj)
 		if idx then
-			TableRemove(attaches_idx,idx)
+			TableRemove(attaches_list,idx)
 		end
 
-		return attaches_idx
+		return attaches_list
 	end
 end -- do
 
@@ -4135,9 +4132,19 @@ do -- UpdateFlightGrid
 	end
 end -- do
 
-function ChoGGi.ComFuncs.RemoveObjs(cls)
-	if PropObjGetProperty(_G,cls) then
+function ChoGGi.ComFuncs.RemoveObjs(cls,reason)
+	-- if we don't send a reason then it'll skip suspend, if the reason is already sus then skip as well
+	local not_sus = reason and not s_SuspendPassEditsReasons[reason]
+	if not_sus then
+		-- suspending pass edits makes deleting much faster
+		SuspendPassEdits(reason)
+	end
+	-- if it isn't a valid class then Map* will return all objects :(
+	if g_Classes[cls] then
 		MapDelete(true, cls)
+	end
+	if not_sus then
+		ResumePassEdits(reason)
 	end
 end
 

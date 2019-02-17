@@ -25,6 +25,12 @@ DefineClass.ChoGGi_Sphere = {
 DefineClass.ChoGGi_Polyline = {
 	__parents = {"Polyline"},
 }
+DefineClass.ChoGGi_Text_O = {
+	__parents = {"Text"},
+}
+DefineClass.ChoGGi_Orientation = {
+	__parents = {"Orientation"},
+}
 
 -- so we can have a selection panel for spawned entity objects
 DefineClass.ChoGGi_BuildingEntityClass = {

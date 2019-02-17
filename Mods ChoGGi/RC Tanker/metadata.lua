@@ -12,7 +12,8 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 		"Code/ModConfig.lua",
 	},
-	"description", [[Allows you to empty out an oxygen or water tank, and move it to another tank.
+	"description", [[Allows you to drain an oxygen or water tank, and fill another tank.
+Adds two buttons to the selection panel: One to switch between draining and filling, and one to switch the resource type.
 
 By default it can hold an unlimited amount, includes a Mod Config Reborn setting to limit it to X units (if you feel it's too cheap).
 

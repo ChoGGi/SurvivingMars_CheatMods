@@ -71,6 +71,7 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	do -- ViewObjInfo_Toggle
+		local PlaceObject = PlaceObject
 		local r = ChoGGi.Consts.ResearchPointsScale
 		local update_info_thread = {}
 		local viewing_obj_info = {}
@@ -244,8 +245,8 @@ function OnMsg.ClassesGenerate()
 				end
 				-- skip any missing objects
 				if IsValid(obj) and pos then
-					local text_obj = Text:new()
-					local text_orient = Orientation:new()
+					local text_obj = PlaceObject("ChoGGi_Text")
+					local text_orient = PlaceObject("ChoGGi_Orientation")
 					text_orient.ChoGGi_ViewObjInfo_o = true
 					text_obj.ChoGGi_ViewObjInfo_t = true
 					text_obj:SetText(GetInfo[label](obj))
@@ -364,7 +365,6 @@ function OnMsg.ClassesGenerate()
 				title = 302535920000333--[[Building Info--]],
 				hint = 302535920001280--[[Double-click to toggle text (updates every second).--]],
 				custom_type = 7,
-				custom_func = CallBackFunc,
 			}
 		end
 

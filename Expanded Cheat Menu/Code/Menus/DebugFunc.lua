@@ -11,15 +11,84 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 
+	do -- BuildingPathMarkers_Toggle
+		-- mostly a copy n paste from Lua\Buildings\BuildingWayPoints.lua: ShowWaypoints()
+		local DoneObject = DoneObject
+		local PlaceObject = PlaceObject
+		local AveragePoint2D = AveragePoint2D
+
+		local objlist = objlist
+
+		local color_line = yellow
+		local color_door = red
+		local points, colors = objlist:new(),objlist:new()
+
+		local function ShowWaypoints(waypoints, open)
+			points:Clear()
+			colors:Clear()
+
+			local lines = objlist:new()
+			for i = 1, #waypoints do
+				local w = waypoints[i]
+				local c = i == open and color_door or color_line
+				points[i] = w
+				colors[i] = c
+				local t = PlaceObject("ChoGGi_Text_O")
+				t:SetPos(w:SetZ(w:z() or w:SetTerrainZ(10 * guic)))
+				t:SetColor(c)
+				t:SetText(i .. "")
+				lines[i] = t
+			end
+			local line = PlaceObject("ChoGGi_Polyline")
+			line:SetPos(AveragePoint2D(points))
+			line:SetMesh(points, colors)
+			lines.line = line
+			return lines
+		end
+		local function HideWaypoints(data)
+			if data then
+				if IsValid(data.line) then
+					DoneObject(data.line)
+				end
+				data.line = false
+				data:Destroy()
+				data:Clear()
+			end
+		end
+		ChoGGi.ComFuncs.SaveOrigFunc("FollowWaypointPath")
+		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+		function ChoGGi.MenuFuncs.BuildingPathMarkers_Toggle()
+			if ChoGGi.Temp.BuildingPathMarkers_Toggle then
+				ChoGGi.Temp.BuildingPathMarkers_Toggle = nil
+				FollowWaypointPath = ChoGGi_OrigFuncs.FollowWaypointPath
+			else
+				ChoGGi.Temp.BuildingPathMarkers_Toggle = true
+				function FollowWaypointPath(unit, path, first, last, ...)
+					if not path then return end
+
+					local open = path.door and (first <= last and path.openInside or path.openOutside)
+					local debug_line = ShowWaypoints(path, open)
+
+					ChoGGi_OrigFuncs.FollowWaypointPath(unit, path, first, last, ...)
+
+					HideWaypoints(debug_line)
+				end
+			end
+
+			MsgPopup(
+				ChoGGi.ComFuncs.SettingState(ChoGGi.Temp.BuildingPathMarkers_Toggle),
+				302535920001527--[[Building Path Markers--]]
+			)
+		end
+	end -- do
+
 	function ChoGGi.MenuFuncs.ExaminePersistErrors_Toggle()
 		ChoGGi.UserSettings.DebugPersistSaves = not ChoGGi.UserSettings.DebugPersistSaves
 		ChoGGi.SettingFuncs.WriteSettings()
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.DebugPersistSaves,
-				302535920001499--[[Shows an examine dialog with any persist errors when saving.--]]
-			),
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DebugPersistSaves),
 			302535920001498--[[Examine Persist Errors--]]
 		)
 	end
@@ -684,9 +753,6 @@ that'll activate the BadPrefab on it
 		-- default height of waypoints (maybe flag_height isn't the best name as no more flags)
 		local flag_height = 50
 		local terrain_HeightTileSize = terrain.HeightTileSize()
---~ 		local function RetValid(o)
---~ 			return IsValid(o)
---~ 		end
 
 		local ShowWaypoints_points = {}
 		local function ShowWaypoints(waypoints, colour, obj, skipheight)
@@ -737,7 +803,6 @@ that'll activate the BadPrefab on it
 			--we need to build a path for shuttles (and figure out a way to get their dest properly...)
 			if obj:IsKindOf("CargoShuttle") then
 
---~ 				path = {}
 				-- going to pickup colonist
 				if obj.command == "GoHome" then
 					path[1] = obj.hub:GetPos()
@@ -798,7 +863,6 @@ that'll activate the BadPrefab on it
 					end
 				end
 
---~ 				if type(obj.ChoGGi_Stored_Waypoints) ~= "table" then
 				if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
 					obj.ChoGGi_Stored_Waypoints = objlist:new()
 				end

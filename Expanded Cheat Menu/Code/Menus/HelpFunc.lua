@@ -188,7 +188,6 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 			items = ItemList,
 			title = 302535920000504--[[List All Menu Items--]],
 			custom_type = 7,
-			custom_func = CallBackFunc,
 			height = 800.0,
 		}
 	end

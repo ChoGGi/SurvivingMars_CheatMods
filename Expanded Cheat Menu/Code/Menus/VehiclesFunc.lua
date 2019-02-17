@@ -1205,7 +1205,6 @@ function OnMsg.ClassesGenerate()
 				title = 302535920000850--[[Change Resupply Settings--]],
 				hint = 302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."--]],
 				custom_type = 7,
-				custom_func = CallBackFunc,
 				check = {
 					{
 						title = 302535920001084--[[Reset--]],
