@@ -35,6 +35,7 @@ local IsPoint = IsPoint
 local IsT = IsT
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
+local IsValidThread = IsValidThread
 local Sleep = Sleep
 local XCreateRolloverWindow = XCreateRolloverWindow
 local XDestroyRolloverWindow = XDestroyRolloverWindow
@@ -579,8 +580,11 @@ function Examine:idButDeleteObjOnPress()
 		function(answer)
 			if answer then
 				self = GetRootDialog(self)
+
 				-- map objects
-				if IsValid(self.obj_ref) then
+				if IsValidThread(self.obj_ref) then
+					DeleteThread(self.obj_ref)
+				elseif IsValid(self.obj_ref) then
 					DeleteObject(self.obj_ref)
 				-- xwindows
 				elseif self.obj_ref.Close then
@@ -589,6 +593,7 @@ function Examine:idButDeleteObjOnPress()
 				else
 					self.obj_ref:delete()
 				end
+
 			end
 		end,
 		S[697--[[Destroy--]]]
@@ -2207,6 +2212,8 @@ function Examine:SetToolbarVis(obj)
 			self.idButViewSource:SetVisible(true)
 		end
 
+	elseif self.obj_type == "thread" then
+		self.idButDeleteObj:SetVisible(true)
 	end
 
 

@@ -11,8 +11,8 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Add a text box to filter tech in the research screen (filter uses name, description, and id).
+	"description", [[Add a text box to filter tech in the research screen (filter checks name, description, and id).
 Press Shift+Enter to clear filter (or Backspace a bunch).
 
-Requested by Rusty.]],
+Requested by RustyDios.]],
 })

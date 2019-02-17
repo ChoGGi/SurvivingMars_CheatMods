@@ -1,9 +1,8 @@
 ## ECM Changelog
 
-##### To do:
-##### Dialogs: Monitor Info.
+## v12.6 (Unreleased)
 
-## v12.5 (Unreleased)
+## v12.5 (17 Feb 2019)
 ### Added:
 - ECM>Grid Info: List objects in grids (air, electricity, and water).
 - Debug>Building Path Markers: Show inside waypoints colonists take to move around.

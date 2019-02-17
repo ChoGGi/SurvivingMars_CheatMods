@@ -277,7 +277,16 @@ function OnMsg.ClassesGenerate()
 		{name = 302535920001026--[[Show File Log--]],
 			hint = 302535920001091--[[Flushes log to disk and displays in an examine dialog.--]],
 			clicked = function()
-				OpenInExamineDlg(LoadLogfile())
+				local dlg = OpenInExamineDlg(LoadLogfile())
+				CreateRealTimeThread(function()
+					-- yeah, it needs two
+					WaitMsg("OnRender")
+					WaitMsg("OnRender")
+					local v = dlg.idScrollV
+					if v:IsVisible() then
+						dlg.idScrollArea:ScrollTo(nil,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
+					end
+				end)
 			end,
 		},
 		{name = 302535920000071--[[Mods Log--]],

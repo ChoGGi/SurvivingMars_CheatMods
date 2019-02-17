@@ -1245,13 +1245,13 @@ function OnMsg.ClassesGenerate()
 
 	do -- ExamineEntSpots
 		local spots_str = [[<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s,%s,%s" spot_scale="%s" spot_rot="%s,%s,%s,%s"/>]]
-		local bsphere_str = [[<bsphere value="%s,%s,%s,%s"/>]]
-		local box_str = [[<box min="%s,%s,%s" max="%s,%s,%s"/>]]
-		local readme_str = [[Readme:
-See bottom for box/bsphere.
-The func I use for spot_rot rounds to two decimal points...
+--~ 		local bsphere_str = [[<bsphere value="%s,%s,%s,%s"/>]]
+--~ 		local box_str = [[<box min="%s,%s,%s" max="%s,%s,%s"/>]]
+--~ 		local readme_str = [[Readme:
+--~ See bottom for box/bsphere.
+--~ The func I use for spot_rot rounds to two decimal points...
 
-]]
+--~ ]]
 
 --~ local list = ChoGGi.ComFuncs.ExamineEntSpots(s,true)
 --~ list = ChoGGi.ComFuncs.TableConcat(list,"\n")
@@ -1262,7 +1262,11 @@ The func I use for spot_rot rounds to two decimal points...
 				return
 			end
 
-			local spots_table = {[-1] = readme_str}
+			local spots_table = {[-1] = [[Readme:
+See bottom for box/bsphere.
+The func I use for spot_rot rounds to two decimal points...
+
+]]}
 
 			local origin = obj:GetSpotBeginIndex("Origin")
 			local origin_pos_x, origin_pos_y, origin_pos_z = obj:GetSpotLocPosXYZ(origin)
@@ -1322,10 +1326,14 @@ The func I use for spot_rot rounds to two decimal points...
 			local bbox = obj:GetEntityBBox()
 			local x1,y1,z1 = bbox:minxyz()
 			local x2,y2,z2 = bbox:maxxyz()
-			spots_table.box = box_str:format(x1,y1,z1,x2,y2,z2)
+--~ 			spots_table.box = box_str:format(x1,y1,z1,x2,y2,z2)
+			spots_table.box = "<box min=" .. x1 .. "," .. y1 .. "," .. z1 .. " max=" .. x2 .. "," .. y2 .. "," .. z2 .. "/>"
 
 			local pos_x, pos_y, pos_z, rad = obj:GetBSphere("idle", true)
-			spots_table.bsphere = bsphere_str:format(pos_x - origin_pos_x, pos_y - origin_pos_y, pos_z - origin_pos_z, rad)
+--~ 			spots_table.bsphere = bsphere_str:format(pos_x - origin_pos_x, pos_y - origin_pos_y, pos_z - origin_pos_z, rad)
+			spots_table.bsphere = "<bsphere value=" .. (pos_x - origin_pos_x) .. ","
+				.. (pos_y - origin_pos_y) .. "," .. (pos_z - origin_pos_z) .. ","
+				.. rad .. "/>"
 
 			if parent_or_ret == true then
 				return spots_table

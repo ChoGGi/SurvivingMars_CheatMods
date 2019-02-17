@@ -9,9 +9,11 @@ function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Trans = ChoGGi.ComFuncs.Translate
+	local RandomColour = ChoGGi.ComFuncs.RandomColour
 	local S = ChoGGi.Strings
 
 	do -- BuildingPathMarkers_Toggle
+--~ 		GetEntityWaypointChains(entity)
 		-- mostly a copy n paste from Lua\Buildings\BuildingWayPoints.lua: ShowWaypoints()
 		local DoneObject = DoneObject
 		local PlaceObject = PlaceObject
@@ -19,14 +21,14 @@ function OnMsg.ClassesGenerate()
 
 		local objlist = objlist
 
-		local color_line = yellow
-		local color_door = red
 		local points, colors = objlist:new(),objlist:new()
 
 		local function ShowWaypoints(waypoints, open)
 			points:Clear()
 			colors:Clear()
 
+			local color_line = RandomColour()
+			local color_door = RandomColour()
 			local lines = objlist:new()
 			for i = 1, #waypoints do
 				local w = waypoints[i]
@@ -65,13 +67,15 @@ function OnMsg.ClassesGenerate()
 			else
 				ChoGGi.Temp.BuildingPathMarkers_Toggle = true
 				function FollowWaypointPath(unit, path, first, last, ...)
-					if not path then return end
+					if not path then
+						return
+					end
 
-					local open = path.door and (first <= last and path.openInside or path.openOutside)
-					local debug_line = ShowWaypoints(path, open)
-
+					local debug_line = ShowWaypoints(
+						path,
+						path.door and (first <= last and path.openInside or path.openOutside)
+					)
 					ChoGGi_OrigFuncs.FollowWaypointPath(unit, path, first, last, ...)
-
 					HideWaypoints(debug_line)
 				end
 			end
@@ -747,48 +751,63 @@ that'll activate the BadPrefab on it
 
 	do -- path markers
 		local IsObjlist = IsObjlist
+		local Clamp = Clamp
+		local point = point
+		local PlaceObject = PlaceObject
+		local CreateGameTimeThread = CreateGameTimeThread
+		local terrain = terrain
+		local GetHeight = terrain.GetHeight
+		local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
+		local SelObject = ChoGGi.ComFuncs.SelObject
+
+		local moveable_classes = {"Movable", "CargoShuttle"}
 		local randcolours = {}
 		local colourcount = 0
 		local dupewppos = {}
 		-- default height of waypoints (maybe flag_height isn't the best name as no more flags)
 		local flag_height = 50
-		local terrain_HeightTileSize = terrain.HeightTileSize()
+		local mapw, maph
 
 		local ShowWaypoints_points = {}
 		local function ShowWaypoints(waypoints, colour, obj, skipheight)
-			colour = tonumber(colour) or ChoGGi.ComFuncs.RandomColour()
+			colour = tonumber(colour) or RandomColour()
 			-- also used for line height
 			if not skipheight then
 				flag_height = flag_height + 4
 			end
 			local height = flag_height
-			local Objpos = obj:GetVisualPos()
-			local Objterr = terrain.GetHeight(Objpos)
-			local Objheight = obj:GetObjectBBox():sizez() / 2
+			local obj_pos = obj:GetVisualPos()
+			local obj_terr = GetHeight(obj_pos)
+			local obj_height = obj:GetObjectBBox():sizez() / 2
 			local shuttle
 			if obj:IsKindOf("CargoShuttle") then
 				shuttle = obj:GetZ()
 			end
 			-- some objects don't have pos as waypoint
 			local cwp = #waypoints
-			if waypoints[cwp] ~= Objpos then
-				waypoints[cwp+1] = Objpos
+			if waypoints[cwp] ~= obj_pos then
+				waypoints[cwp+1] = obj_pos
 			end
 
 			-- build a list of points that aren't high in the sky
 			TableClear(ShowWaypoints_points)
 			local points = ShowWaypoints_points
-			local mapw, maph = terrain.GetMapSize()
 			for i = 1, #waypoints do
 				local x, y, z = waypoints[i]:xy()
-				x = Clamp(x, 0, mapw - terrain_HeightTileSize)
-				y = Clamp(y, 0, maph - terrain_HeightTileSize)
-				z = terrain.GetHeight(x, y) + (shuttle and shuttle - Objterr or Objheight) + height --shuttle z always puts it too high?
+				x = Clamp(x, 0, mapw)
+				y = Clamp(y, 0, maph)
+				-- shuttle z always puts it too high?
+				z = GetHeight(x, y) + (shuttle and shuttle - obj_terr or obj_height) + height
+				-- .holder being a building they're inside of
+				if not shuttle and obj.holder and obj_pos:z() > obj_terr then
+					z = obj_pos:z()
+				end
 				points[#points + 1] = point(x, y, z)
 			end
 			local last_pos = points[#points]
 			-- and spawn the line
-			local spawnline = ChoGGi_Polyline:new{max_vertices = #waypoints}
+--~ 			local spawnline = ChoGGi_Polyline:new{max_vertices = #waypoints}
+			local spawnline = PlaceObject("ChoGGi_Polyline")
 			spawnline:SetMesh(points, colour)
 			spawnline:SetPos(last_pos)
 
@@ -854,12 +873,12 @@ that'll activate the BadPrefab on it
 				if setcolour then
 					colour = setcolour
 				else
-					local randomcolour = ChoGGi.ComFuncs.RandomColour()
 					if #randcolours < 1 then
-						colour = randomcolour
+						colour = RandomColour()
 					else
 						-- we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
 						colour = TableRemove(randcolours)
+						-- table.remove(t) removes and returns the last value of the table
 					end
 				end
 
@@ -883,47 +902,45 @@ that'll activate the BadPrefab on it
 			end
 		end
 
-		function ChoGGi.MenuFuncs.SetPathMarkersGameTime(obj,single)
-			local ChoGGi = ChoGGi
-			obj = obj or ChoGGi.ComFuncs.SelObject()
+		local function SetPathMarkersGameTime_Thread(obj,UnitPathingHandles)
+			local colour = RandomColour()
+			if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
+				obj.ChoGGi_Stored_Waypoints = objlist:new()
+			end
 
-			if obj and obj:IsKindOfClasses("Movable", "CargoShuttle") then
-				if not ChoGGi.Temp.UnitPathingHandles then
-					ChoGGi.Temp.UnitPathingHandles = {}
+			repeat
+				ChoGGi.MenuFuncs.SetWaypoint(obj,colour,true)
+				Sleep(500)
+
+				-- remove old wps
+				local stored = obj.ChoGGi_Stored_Waypoints
+				if IsObjlist(stored) then
+					-- deletes all objs
+					stored:Destroy()
+					-- clears table list
+					stored:Clear()
 				end
 
-				if ChoGGi.Temp.UnitPathingHandles[obj.handle] then
+				-- break thread when obj isn't valid
+				if not IsValid(obj) then
+					UnitPathingHandles[obj.handle] = nil
+				end
+			until not UnitPathingHandles[obj.handle]
+		end
+
+		function ChoGGi.MenuFuncs.SetPathMarkersGameTime(obj,single)
+			local ChoGGi = ChoGGi
+			obj = obj or SelObject()
+
+			if obj and obj:IsKindOfClasses(moveable_classes) then
+				local UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles
+
+				if UnitPathingHandles[obj.handle] then
 					-- already exists so remove thread
-					ChoGGi.Temp.UnitPathingHandles[obj.handle] = nil
+					UnitPathingHandles[obj.handle] = nil
 				elseif IsValid(obj) then
-
 					-- continous loooop of object for pathing it
-					ChoGGi.Temp.UnitPathingHandles[obj.handle] = CreateGameTimeThread(function()
-						local colour = ChoGGi.ComFuncs.RandomColour()
-						if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
-							obj.ChoGGi_Stored_Waypoints = objlist:new()
-						end
-
-						repeat
-							ChoGGi.MenuFuncs.SetWaypoint(obj,colour,true)
-							Sleep(500)
-
-							-- remove old wps
-							local stored = obj.ChoGGi_Stored_Waypoints
-							if IsObjlist(stored) then
-								-- deletes all objs
-								stored:Destroy()
-								-- clears table list
-								stored:Clear()
-							end
-
-							-- break thread when obj isn't valid
-							if not IsValid(obj) then
-								ChoGGi.Temp.UnitPathingHandles[obj.handle] = nil
-							end
-						until not ChoGGi.Temp.UnitPathingHandles[obj.handle]
-					end)
-
+					UnitPathingHandles[obj.handle] = CreateGameTimeThread(SetPathMarkersGameTime_Thread,obj,UnitPathingHandles)
 				end
 
 			-- if user used "Ctrl-Numpad ." on an obj that can't path
@@ -943,7 +960,9 @@ that'll activate the BadPrefab on it
 			if IsObjlist(obj.ChoGGi_Stored_Waypoints) then
 				for i = 1, #obj.ChoGGi_Stored_Waypoints do
 					local wp = obj.ChoGGi_Stored_Waypoints[i]
-					if wp:IsKindOf(cls) then
+
+--~ 					if wp:IsKindOf(cls) then
+					if wp.class == cls then
 						local pos = tostring(wp:GetPos())
 						if dupewppos[pos] then
 							dupewppos[pos]:SetColorModifier(6579300)
@@ -963,7 +982,7 @@ that'll activate the BadPrefab on it
 			-- remove all thread refs so they stop
 			TableClear(ChoGGi.Temp.UnitPathingHandles)
 			-- and waypoints/colour
-			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+			local objs = RetAllOfClass(cls)
 			for i = 1, #objs do
 				local obj = objs[i]
 
@@ -985,9 +1004,17 @@ that'll activate the BadPrefab on it
 
 		function ChoGGi.MenuFuncs.SetPathMarkersVisible()
 			local ChoGGi = ChoGGi
+			ChoGGi.Temp.UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles or {}
+
+			if not mapw then
+				mapw, maph = terrain.GetMapSize()
+				mapw = mapw - terrain.HeightTileSize()
+				maph = maph - terrain.HeightTileSize()
+			end
+
 			local sel = SelectedObj
-			if IsValid(sel) and sel:IsKindOfClasses("Movable", "CargoShuttle") then
-				randcolours = ChoGGi.ComFuncs.RandomColour(#randcolours + 1)
+			if IsValid(sel) and sel:IsKindOfClasses(moveable_classes) then
+				randcolours = RandomColour(#randcolours + 1)
 				ChoGGi.MenuFuncs.SetWaypoint(sel)
 				return
 			end
@@ -1012,7 +1039,7 @@ that'll activate the BadPrefab on it
 					return
 				end
 				local value = choice.value
-				local UICity = UICity
+				local labels = UICity.labels
 				-- remove wp/lines and reset colours
 				if remove then
 
@@ -1048,20 +1075,20 @@ that'll activate the BadPrefab on it
 					end
 
 					if value == "All" then
-						local table1 = MapFilter(UICity.labels.Unit or {},IsValid)
-						local table2 = MapFilter(UICity.labels.CargoShuttle or {},IsValid)
-						local table3 = MapFilter(UICity.labels.Colonist or {},IsValid)
+						local table1 = MapFilter(labels.Unit or empty_table,IsValid)
+						local table2 = MapFilter(labels.CargoShuttle or empty_table,IsValid)
+						local table3 = MapFilter(labels.Colonist or empty_table,IsValid)
 						colourcount = colourcount + #table1
 						colourcount = colourcount + #table2
 						colourcount = colourcount + #table3
-						randcolours = ChoGGi.ComFuncs.RandomColour(colourcount + 1)
+						randcolours = RandomColour(colourcount + 1)
 						swp(table1)
 						swp(table2)
 						swp(table3)
 					else
 						local table1 = MapGet(true,value,IsValid)
 						colourcount = colourcount + #table1
-						randcolours = ChoGGi.ComFuncs.RandomColour(colourcount + 1)
+						randcolours = RandomColour(colourcount + 1)
 						swp(table1)
 					end
 

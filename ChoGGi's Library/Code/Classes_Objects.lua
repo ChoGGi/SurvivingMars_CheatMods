@@ -27,6 +27,7 @@ DefineClass.ChoGGi_Polyline = {
 }
 DefineClass.ChoGGi_Text_O = {
 	__parents = {"Text"},
+	text_style = "Action",
 }
 DefineClass.ChoGGi_Orientation = {
 	__parents = {"Orientation"},
