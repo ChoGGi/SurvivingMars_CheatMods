@@ -4,6 +4,10 @@
 
 local S = ChoGGi.Strings
 
+local CreateRealTimeThread = CreateRealTimeThread
+local Sleep = Sleep
+
+local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_MultiLineTextDlg")
@@ -37,6 +41,31 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 
 	self:AddScrollEdit()
 	self.idEdit:SetText(context.text)
+
+	do -- search area
+		self.idSearchArea = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idSearchArea",
+			Dock = "top",
+		}, self.idDialog)
+		--
+		self.idSearchText = g_Classes.ChoGGi_TextInput:new({
+			Id = "idSearchText",
+			RolloverText = S[302535920001529--[["Press <color 0 200 0>Enter</color> to select next found text, and <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text."--]]],
+			Hint = S[302535920000044--[[Go To Text--]]],
+			OnKbdKeyDown = self.idSearchTextOnKbdKeyDown,
+		}, self.idSearchArea)
+		--
+		self.idSearch = g_Classes.ChoGGi_Button:new({
+			Id = "idSearch",
+			Text = S[10123--[[Search--]]],
+			Dock = "right",
+			RolloverAnchor = "right",
+			RolloverHint = S[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
+			RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
+Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top."--]]],
+			OnMouseButtonDown = self.idSearchOnMouseButtonDown,
+		}, self.idSearchArea)
+	end
 
 	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
 		Id = "idButtonContainer",
@@ -100,6 +129,78 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 	end
 
 	self:PostInit(context.parent)
+end
+
+function ChoGGi_MultiLineTextDlg:idSearchOnMouseButtonDown(pt,button,...)
+	ChoGGi_Button.OnMouseButtonDown(self,pt,button,...)
+	self = GetRootDialog(self)
+	if button == "L" then
+		self:FindNext()
+	elseif button == "R" then
+		self:FindNext(nil,true)
+	else
+		self:ScrollToText(0)
+	end
+end
+
+function ChoGGi_MultiLineTextDlg:FindNext(text,previous)
+	text = text or self.idSearchText:GetText()
+	local edit = self.idEdit
+	local current_y = edit.cursor_line
+
+	local min_match, closest_match = false, false
+	for i = 1, #edit.lines do
+		local line = edit.lines[i]:lower()
+
+		if line:find_lower(text) or text == "" then
+			if not min_match or i < min_match then
+				min_match = i
+			end
+
+			if previous then
+				if i < current_y and (not closest_match or i > closest_match) then
+					closest_match = i
+				end
+			else
+				if i > current_y and (not closest_match or i < closest_match) then
+					closest_match = i
+				end
+			end
+
+		end
+
+	end
+
+	local match = closest_match or min_match
+	if match then
+		self:ScrollToText(match)
+	end
+end
+
+function ChoGGi_MultiLineTextDlg:idSearchTextOnKbdKeyDown(vk,...)
+	self = GetRootDialog(self)
+
+	local c = const
+	if vk == c.vkEnter then
+		if IsControlPressed() then
+			self:FindNext(nil,true)
+		else
+			self:FindNext()
+		end
+		return "break"
+	elseif vk == c.vkEsc then
+		self.idCloseX:OnPress()
+		return "break"
+	elseif vk == c.vkV then
+		if IsControlPressed() then
+			CreateRealTimeThread(function()
+				WaitMsg("OnRender")
+				self:FindNext()
+			end)
+		end
+	end
+
+	return ChoGGi_TextInput.OnKbdKeyDown(self.idSearchText,vk,...)
 end
 
 -- searches for text or goes to line number

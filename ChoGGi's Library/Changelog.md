@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v5.5 (Unreleased)
+- Added a text search area to the MultiLineText dialog.
 - Removed some log spam from MsgPop added last update.
 - Fiddled around with the List dialog a bit:
 - > Checkboxes are at the top, and some margins added.
