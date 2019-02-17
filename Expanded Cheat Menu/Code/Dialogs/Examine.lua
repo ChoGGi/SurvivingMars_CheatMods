@@ -351,7 +351,7 @@ Needs HelperMod enabled."--]]]:format(ConvertToOSPath("AppData/")),
 		--
 		self.idSearchText = g_Classes.ChoGGi_TextInput:new({
 			Id = "idSearchText",
-			RolloverText = S[302535920000043--[["Press Enter to scroll to next found text, Ctrl-Enter to scroll to previous found text, Arrows to scroll to each end."--]]],
+			RolloverText = S[302535920000043--[["Press <color 0 200 0>Enter</color> to scroll to next found text, <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text, <color 0 200 0>Arrow Keys</color> to scroll to each end."--]]],
 			Hint = S[302535920000044--[[Go To Text--]]],
 			OnKbdKeyDown = self.idSearchTextOnKbdKeyDown,
 		}, self.idSearchArea)
@@ -363,7 +363,7 @@ Needs HelperMod enabled."--]]]:format(ConvertToOSPath("AppData/")),
 			RolloverAnchor = "right",
 			RolloverHint = S[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
 			RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
-Right-click to go up, middle-click to scroll to the top."--]]],
+Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top."--]]],
 			OnMouseButtonDown = self.idSearchOnMouseButtonDown,
 		}, self.idSearchArea)
 
@@ -388,7 +388,7 @@ Right-click to go up, middle-click to scroll to the top."--]]],
 		self.idObjects = g_Classes.ChoGGi_ComboButton:new({
 			Id = "idObjects",
 			Text = S[298035641454--[[Object--]]],
-			RolloverText = S[302535920001426--[[Various tools to use.--]]],
+			RolloverText = S[302535920001530--[[Various object tools to use.--]]],
 			OnMouseButtonDown = self.idObjectsOnMouseButtonDown,
 			Dock = "left",
 		}, self.idMenuArea)
@@ -818,7 +818,7 @@ function Examine:idSearchTextOnKbdKeyDown(vk,...)
 	elseif vk == c.vkV then
 		if IsControlPressed() then
 			CreateRealTimeThread(function()
-				Sleep(10)
+				WaitMsg("OnRender")
 				self:FindNext()
 			end)
 		end
@@ -1301,7 +1301,7 @@ function Examine:GetScrolledText()
 end
 
 function Examine:FindNext(text,previous)
-	text = text or self.idSearchText:GetText()
+	text = text or self.idSearchText:GetText():lower()
 	local current_y = self.idScrollArea.OffsetY
 	local min_match, closest_match = false, false
 
@@ -1328,8 +1328,9 @@ function Examine:FindNext(text,previous)
 		end
 	end
 
-	if closest_match or min_match then
-		self.idScrollArea:ScrollTo(nil,closest_match or min_match)
+	local match = closest_match or min_match
+	if match then
+		self.idScrollArea:ScrollTo(nil,match)
 	end
 end
 
