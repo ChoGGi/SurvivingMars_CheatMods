@@ -15,7 +15,7 @@ function OnMsg.ClassesGenerate()
 	local RetIcon = ChoGGi.ComFuncs.RetIcon
 	local RetHint = ChoGGi.ComFuncs.RetHint
 	local Random = ChoGGi.ComFuncs.Random
-	local Trans = ChoGGi.ComFuncs.Translate
+--~ 	local Trans = ChoGGi.ComFuncs.Translate
 
 	function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
 		local ChoGGi = ChoGGi
@@ -1180,8 +1180,8 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 	function ChoGGi.MenuFuncs.SetTransparencyUI()
 		local desk = terminal.desktop
 		local igi = Dialogs.InGameInterface
-		--sets or gets transparency based on iWhich
-		local function trans(iType,sName,iWhich)
+
+		local function GetSetTrans(iType,sName,iWhich)
 			local name = ChoGGi.UserSettings.Transparency[sName]
 			if not iWhich and name then
 				return name
@@ -1209,14 +1209,14 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		end
 
 		local ItemList = {
-			{text = "ConsoleLog",value = trans(1,"ConsoleLog"),hint = 302535920000994--[[Console logging text--]]},
-			{text = "Console",value = trans(1,"Console"),hint = 302535920000996--[[Console text input--]]},
-			{text = "XShortcutsHost",value = trans(1,"XShortcutsHost"),hint = 302535920000998--[[Cheat Menu--]]},
+			{text = "ConsoleLog",value = GetSetTrans(1,"ConsoleLog"),hint = 302535920000994--[[Console logging text--]]},
+			{text = "Console",value = GetSetTrans(1,"Console"),hint = 302535920000996--[[Console text input--]]},
+			{text = "XShortcutsHost",value = GetSetTrans(1,"XShortcutsHost"),hint = 302535920000998--[[Cheat Menu--]]},
 
-			{text = "HUD",value = trans(2,"HUD"),hint = 302535920001000--[[Buttons at bottom--]]},
-			{text = "XBuildMenu",value = trans(2,"XBuildMenu"),hint = 302535920000993--[[Build menu--]]},
-			{text = "InfopanelDlg",value = trans(2,"InfopanelDlg"),hint = 302535920000995--[[Infopanel (selection)--]]},
-			{text = "PinsDlg",value = trans(2,"PinsDlg"),hint = 302535920000997--[[Pins menu--]]},
+			{text = "HUD",value = GetSetTrans(2,"HUD"),hint = 302535920001000--[[Buttons at bottom--]]},
+			{text = "XBuildMenu",value = GetSetTrans(2,"XBuildMenu"),hint = 302535920000993--[[Build menu--]]},
+			{text = "InfopanelDlg",value = GetSetTrans(2,"InfopanelDlg"),hint = 302535920000995--[[Infopanel (selection)--]]},
+			{text = "PinsDlg",value = GetSetTrans(2,"PinsDlg"),hint = 302535920000997--[[Pins menu--]]},
 		}
 
 		local function CallBackFunc(choice)
@@ -1230,9 +1230,9 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 				if type(value) == "number" then
 
 					if text == "XShortcutsHost" or text == "Console" or text == "ConsoleLog" then
-						trans(1,text,value)
+						GetSetTrans(1,text,value)
 					else
-						trans(2,text,value)
+						GetSetTrans(2,text,value)
 					end
 
 					if value == 0 then

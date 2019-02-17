@@ -164,12 +164,9 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
-	--SetTimeFactor(1000) = normal speed
+--~ 	SetTimeFactor(1000) = normal speed
 	-- use GetTimeFactor() to check time for changing it so it can be paused?
 	do -- SetGameSpeed
-		local ChoGGi = ChoGGi
-		local ChangeGameSpeedState = ChangeGameSpeedState
-
 		local ItemList = {
 			{text = S[1000121--[[Default--]]],value = 1},
 			{text = S[302535920001126--[[Double--]]],value = 2},
@@ -191,10 +188,14 @@ function OnMsg.ClassesGenerate()
 				const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * value
 				const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * value
 				-- so it changes the speed immediately
-				TogglePause()
-				TogglePause()
---~ 				ChangeGameSpeedState(-1)
---~ 				ChangeGameSpeedState(1)
+				if UISpeedState == "pause" then
+					ChangeGameSpeedState(1)
+					ChangeGameSpeedState(-1)
+				else
+					ChangeGameSpeedState(-1)
+					ChangeGameSpeedState(1)
+				end
+
 				-- update settings
 				ChoGGi.UserSettings.mediumGameSpeed = const.mediumGameSpeed
 				ChoGGi.UserSettings.fastGameSpeed = const.fastGameSpeed

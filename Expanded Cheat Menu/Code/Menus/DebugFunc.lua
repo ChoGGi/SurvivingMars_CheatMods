@@ -2,7 +2,6 @@
 
 local pairs,print,type,tonumber,tostring,table = pairs,print,type,tonumber,tostring,table
 local TableRemove = table.remove
-local TableIClear = table.iclear
 local TableClear = table.clear
 local IsValid = IsValid
 
@@ -152,7 +151,6 @@ that'll activate the BadPrefab on it
 		local c = 0
 
 		local story_table = {}
-		local hint_str = "%s: %s\n\n%s\n\n<image %s>"
 		local g_StoryBitStates = g_StoryBitStates
 		for id in pairs(g_StoryBitStates) do
 			c = c + 1
@@ -839,7 +837,6 @@ that'll activate the BadPrefab on it
 					ChoGGi.Temp.UnitPathingHandles[obj.handle] = CreateGameTimeThread(function()
 						local colour = ChoGGi.ComFuncs.RandomColour()
 						if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
---~ 						if type(obj.ChoGGi_Stored_Waypoints) ~= "table" then
 							obj.ChoGGi_Stored_Waypoints = objlist:new()
 						end
 
@@ -849,17 +846,12 @@ that'll activate the BadPrefab on it
 
 							-- remove old wps
 							local stored = obj.ChoGGi_Stored_Waypoints
---~ 							if type(stored) == "table" then
 							if IsObjlist(stored) then
 								-- deletes all objs
 								stored:Destroy()
 								-- clears table list
 								stored:Clear()
---~ 								for i = #obj.ChoGGi_Stored_Waypoints, 1, -1 do
---~ 									obj.ChoGGi_Stored_Waypoints[i]:delete()
---~ 								end
 							end
---~ 							TableIClear(obj.ChoGGi_Stored_Waypoints)
 
 							-- break thread when obj isn't valid
 							if not IsValid(obj) then
@@ -885,7 +877,6 @@ that'll activate the BadPrefab on it
 		local function RemoveWPDupePos(cls,obj)
 			-- remove dupe pos
 			if IsObjlist(obj.ChoGGi_Stored_Waypoints) then
---~ 			if type(obj.ChoGGi_Stored_Waypoints) == "table" then
 				for i = 1, #obj.ChoGGi_Stored_Waypoints do
 					local wp = obj.ChoGGi_Stored_Waypoints[i]
 					if wp:IsKindOf(cls) then
@@ -900,11 +891,6 @@ that'll activate the BadPrefab on it
 				end
 				-- remove removed
 				obj.ChoGGi_Stored_Waypoints:Validate()
---~ 				for i = #obj.ChoGGi_Stored_Waypoints, 1, -1 do
---~ 					if not IsValid(obj.ChoGGi_Stored_Waypoints[i]) then
---~ 						TableRemove(obj.ChoGGi_Stored_Waypoints,i)
---~ 					end
---~ 				end
 			end
 		end
 
@@ -912,7 +898,6 @@ that'll activate the BadPrefab on it
 			local ChoGGi = ChoGGi
 			-- remove all thread refs so they stop
 			TableClear(ChoGGi.Temp.UnitPathingHandles)
---~ 			ChoGGi.Temp.UnitPathingHandles = {}
 			-- and waypoints/colour
 			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
 			for i = 1, #objs do
@@ -924,16 +909,11 @@ that'll activate the BadPrefab on it
 				end
 
 				local stored = obj.ChoGGi_Stored_Waypoints
---~ 				if type(objs[i].ChoGGi_Stored_Waypoints) == "table" then
 				if IsObjlist(stored) then
 					-- deletes all objs
 					stored:Destroy()
 					-- clears table list
 					stored:Clear()
---~ 					for j = #objs[i].ChoGGi_Stored_Waypoints, 1, -1 do
---~ 						objs[i].ChoGGi_Stored_Waypoints[j]:delete()
---~ 					end
---~ 					objs[i].ChoGGi_Stored_Waypoints = nil
 				end
 
 			end

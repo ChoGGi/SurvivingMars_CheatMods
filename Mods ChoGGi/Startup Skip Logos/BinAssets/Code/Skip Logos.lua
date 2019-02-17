@@ -16,21 +16,29 @@ function OnMsg.DesktopCreated()
 	-- bonus:
 	--[[
   CreateRealTimeThread(function()
+		-- wait for it (otherwise stuff below won't work right)
 		local Sleep = Sleep
-		-- opens to load game menu
 		local Dialogs = Dialogs
+
 		Sleep(100)
 		while not Dialogs.PGMainMenu do
 			Sleep(25)
 		end
+
+		-- starts in load game menu
 		Dialogs.PGMainMenu:SetMode("Load")
 
-		-- load mods in main menu
+		-- load mods
 		ModsReloadItems()
+		WaitMsg("OnRender")
 
+		-- update cheat menu toolbar
+		XShortcutsTarget:UpdateToolbar()
 		-- show cheat menu
-		Sleep(100)
 		XShortcutsTarget:SetVisible(true)
+
+		-- stop the update news images
+		UIShowParadoxFeeds = empty_func
 	end)
 	--]]
 

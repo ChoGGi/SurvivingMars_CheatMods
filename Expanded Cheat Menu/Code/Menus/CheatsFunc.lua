@@ -42,7 +42,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.UnlockAchievements()
-		local Msg = Msg
 		local AchievementUnlock = AchievementUnlock
 		local EngineCanUnlockAchievement = EngineCanUnlockAchievement
 
@@ -1514,7 +1513,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 			PrintedElectronics = function(city)
 				city:ForEachLabelObject("DroneFactory", "ChangeDroneConstructionResource", "Electronics")
 			end,
-			NanoRefinement = function(city)
+			NanoRefinement = function()
 				local IsKindOf = IsKindOf
 				MapForEach("map", "DepositExploiter",function(obj)
 					if IsKindOf(obj, "BaseBuilding") then

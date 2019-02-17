@@ -1,8 +1,7 @@
 -- See LICENSE for terms
 
 -- local some globals
-local type,tostring,table = type,tostring,table
-
+local table = table
 local CmpLower = CmpLower
 
 local S = ChoGGi.Strings
@@ -431,7 +430,6 @@ do -- Graphs
 		}
 		local UICity = UICity
 		local ResourceOverviewObj = ResourceOverviewObj
-		local StockpileResourceList = StockpileResourceList
 
 		-- the rest are sols
 		local csv_columns = {

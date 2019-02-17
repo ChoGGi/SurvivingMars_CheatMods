@@ -182,8 +182,6 @@ function OnMsg.ClassesGenerate()
 
 		local ItemList = {}
 		local sponsor = GetMissionSponsor()
-		local hint_str = "<image %s>\n\n%s: %s\n%s %s"
-
 		for i = 1, 5 do
 			-- no sense in showing done ones
 			if not SponsorGoalProgress[i].state then

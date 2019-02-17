@@ -408,7 +408,6 @@ function OnMsg.ClassesGenerate()
 
 	do -- RemoveUnreachableConstructionSites
 		local type,pairs = type,pairs
-		local clear = table.clear
 		local function RemoveUnreachable(cls_name)
 			MapForEach("map",cls_name,function(o)
 				local unreach = o.unreachable_buildings or empty_table

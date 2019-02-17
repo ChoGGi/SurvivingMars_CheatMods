@@ -4,22 +4,19 @@
 
 -- https://gist.github.com/starwing/1572004
 
---~ local aaaa  = "aaaaa"
---~ if true then
+--~ local aaaa = "TEST"
+--~ if aaaa ~= "" then
+--~ 	--
+--~ 	print("aaaa") --COMMENT
+--~ 	--
+--~ 	--[[
+--~ 	print("bbbbb")
+--~ 	--]]
+--~ 	print("ccccc")
+--~ else
+--~ 	print("dddddd")
 --~ end
---~ -- fdsafdsf
---~ print(aaaa)
-
---~ local bbbbb  = 12345
---~ if true then
---~ end
---~ --[[ fdsafdsf
---~ fdsafdsf
---~ --]]
---~ print(bbbbb)
-
-local TableConcat = ChoGGi.ComFuncs.TableConcat
-local TableIClear = table.iclear
+--~ print("eeee")
 
 local lpeg = lpeg
 local P, S, C, Cc, Ct, match = lpeg.P, lpeg.S, lpeg.C, lpeg.Cc, lpeg.Ct, lpeg.match
@@ -89,9 +86,12 @@ local function lexer(input)
 end
 
 -- strip interface
-local line = {}
+local TableConcat = ChoGGi.ComFuncs.TableConcat
+local line_c = objlist:new()
 function ChoGGi.ComFuncs.StripComments(s)
-	TableIClear(line)
+	line_c:Destroy()
+	local c = 0
+
 	local tokens = lexer(s)
 	local line_head = true
 	local prev_space = false
@@ -99,18 +99,21 @@ function ChoGGi.ComFuncs.StripComments(s)
 		local v = tokens[i]
 		if v[1] == "comment" then
 			if v[2]:match("\n") then
-				line[#line+1] = v[2]:gsub(".-\n[^\n]*", "\n")
+				c = c + 1
+				line_c[c] = v[2]:gsub(".-\n[^\n]*", "\n")
 				line_head = true
 			end
 			prev_space = true
 		else
 			if prev_space and not line_head then
-				line[#line+1] = " "
+				c = c + 1
+				line_c[c] = " "
 			end
-			line[#line+1] = v[2]
+			c = c + 1
+			line_c[c] = v[2]
 			prev_space = false
 			line_head = false
 		end
 	end
-	return TableConcat(line)
+	return TableConcat(line_c)
 end

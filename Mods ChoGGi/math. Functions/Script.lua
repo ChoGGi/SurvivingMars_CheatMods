@@ -74,7 +74,7 @@ end
 -- global table holding all the functions
 math = {}
 
---~   Returns the absolute value of x. (integer/float)
+-- Returns the absolute value of x. (integer/float)
 math.sm_abs = abs
 function math.abs(x)
   x = CheckNum(x,"abs")
@@ -85,7 +85,7 @@ function math.abs(x)
   return x
 end
 
---~   Returns the smallest integral value larger than or equal to x.
+-- Returns the smallest integral value larger than or equal to x.
 function math.ceil(x)
   x = CheckNum(x,"ceil")
 
@@ -99,24 +99,24 @@ function math.ceil(x)
 
 end
 
---~   Converts the angle x from radians to degrees.
+-- Converts the angle x from radians to degrees.
 function math.deg(x)
   x = CheckNum(x,"deg")
 
   return x * 180.0 / math.pi
 end
 
---~   Napier's constant/Euler's number (to 104 digits)
+-- Napier's constant/Euler's number (to 104 digits)
 math.e = 2.71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642742746
 
---~   Returns the value e^x (where e is the base of natural logarithms).
+-- Returns the value e^x (where e is the base of natural logarithms).
 function math.exp(x)
   x = CheckNum(x,"exp")
 
   return math.e^x
 end
 
---~   Returns the largest integral value smaller than or equal to x.
+-- Returns the largest integral value smaller than or equal to x.
 local floatfloor = rawget(_G,"floatfloor")
 math.floor = floatfloor or function(x)
   x = CheckNum(x,"floor")
@@ -124,7 +124,7 @@ math.floor = floatfloor or function(x)
   return x - (x % 1)
 end
 
---~   Returns the remainder of the division of x by y that rounds the quotient towards zero. (integer/float)
+-- Returns the remainder of the division of x by y that rounds the quotient towards zero. (integer/float)
 function math.fmod(x, y)
   x = CheckNum(x,"fmod")
   y = CheckNum(y,"fmod",2)
@@ -152,10 +152,10 @@ function math.fmod(x, y)
 
 end
 
---~   The float value HUGE_VAL, a value larger than any other numeric value.
+-- The float value HUGE_VAL, a value larger than any other numeric value.
 math.huge = 10e500 + 10e500
 
---~   Returns the logarithm of x in the given base. The default for base is e (so that the function returns the natural logarithm of x).
+-- Returns the logarithm of x in the given base. The default for base is e (so that the function returns the natural logarithm of x).
 function math.log(x,base)
   x = CheckNum(x,"log")
   if x < 0 or tostring(x) == "0" then
@@ -187,7 +187,7 @@ function math.log(x,base)
   -- no base means use
   base = math.e
 
---~   http://foldit.wikia.com/wiki/Lua_Script_Library#math.log_.28Taylor_Series_Approximation_.29
+-- http://foldit.wikia.com/wiki/Lua_Script_Library#math.log_.28Taylor_Series_Approximation_.29
   local result = 0
   local residue = x / base
   while residue > 1 do
@@ -209,19 +209,19 @@ function math.log(x,base)
   return result
 end
 
---~   Returns the argument with the maximum value, according to the Lua operator <. (integer/float)
+-- Returns the argument with the maximum value, according to the Lua operator <. (integer/float)
 math.max = Max
 
---~   An integer with the maximum value for an integer.
+-- An integer with the maximum value for an integer.
 math.maxinteger = max_int
 
---~   Returns the argument with the minimum value, according to the Lua operator <. (integer/float)
+-- Returns the argument with the minimum value, according to the Lua operator <. (integer/float)
 math.min = Min
 
---~   An integer with the minimum value for an integer.
+-- An integer with the minimum value for an integer.
 math.mininteger = min_int
 
---~   Returns the integral part of x and the fractional part of x. Its second result is always a float.
+-- Returns the integral part of x and the fractional part of x. Its second result is always a float.
 function math.modf(x)
   x = CheckNum(x,"modf")
 
@@ -250,19 +250,19 @@ function math.modf(x)
 
 end
 
---~   pi is pi is pi (to 104 digits)
+-- pi is pi is pi (to 104 digits)
 math.pi = 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214
 
---~   Converts the angle x from degrees to radians.
+-- Converts the angle x from degrees to radians.
 function math.rad(x)
   x = CheckNum(x,"rad")
 
   return x * math.pi / 180.0
 end
 
---~   When called without arguments, returns a pseudo-random float with uniform distribution in the range [0,1).
---~   When called with two integers m and n, math.random returns a pseudo-random integer with uniform distribution in the range [m, n].
---~   (The value n-m cannot be negative and must fit in a Lua integer.) The call math.random(n) is equivalent to math.random(1,n).
+-- When called without arguments, returns a pseudo-random float with uniform distribution in the range [0,1).
+-- When called with two integers m and n, math.random returns a pseudo-random integer with uniform distribution in the range [m, n].
+-- (The value n-m cannot be negative and must fit in a Lua integer.) The call math.random(n) is equivalent to math.random(1,n).
 function math.random(m,n)
 
   if m and n then
@@ -289,11 +289,11 @@ function math.random(m,n)
 
 end
 
---~   Sets x as the "seed" for the pseudo-random generator: equal seeds produce equal sequences of numbers.
---~   The math.randomseed() function sets a seed for the pseudo-random generator: Equal seeds produce equal sequences of numbers.
+-- Sets x as the "seed" for the pseudo-random generator: equal seeds produce equal sequences of numbers.
+-- The math.randomseed() function sets a seed for the pseudo-random generator: Equal seeds produce equal sequences of numbers.
 math.randomseed = AsyncSetSeed
 
---~   Returns the square root of x.
+-- Returns the square root of x.
 function math.sqrt(x)
   x = CheckNum(x,"sqrt")
   if x < 0 then
@@ -304,14 +304,14 @@ function math.sqrt(x)
   return x^0.5
 end
 
---~   If the value x is convertible to an integer, returns that integer. Otherwise, returns nil.
+-- If the value x is convertible to an integer, returns that integer. Otherwise, returns nil.
 function math.tointeger(x)
   x = CheckNum(x,"tointeger")
 
   return math.floor(x)
 end
 
---~   Returns "integer" if x is an integer, "float" if it is a float, or nil if x is not a number.
+-- Returns "integer" if x is an integer, "float" if it is a float, or nil if x is not a number.
 function math.type(x)
   x = CheckNum(x,"type")
 
@@ -322,15 +322,15 @@ function math.type(x)
   return "float"
 end
 
---~   Returns a boolean, true if and only if integer m is below integer n when they are compared as unsigned integers.
+-- Returns a boolean, true if and only if integer m is below integer n when they are compared as unsigned integers.
 function math.ult(m, n)
   m = math.tointeger(m)
   n = math.tointeger(n)
 
---~     if m and n and m < n then
---~       return true
---~     end
---~     return false
+--~ 	if m and n and m < n then
+--~ 		return true
+--~ 	end
+--~ 	return false
   if m and n then
     if m < n then
       return true
@@ -342,7 +342,7 @@ end
 
 
 
---~   Returns the cosine of x (assumed to be in radians).
+-- Returns the cosine of x (assumed to be in radians).
 math.sm_cos = cos
 function math.cos(x)
   x = CheckNum(x,"cos")
@@ -350,7 +350,7 @@ function math.cos(x)
   return math.sin(x + math.pi/2)
 end
 
---~   Returns the sine of x (assumed to be in radians).
+-- Returns the sine of x (assumed to be in radians).
 math.sm_sin = sin
 function math.sin(x)
   x = CheckNum(x,"sin")
@@ -358,14 +358,14 @@ function math.sin(x)
   print(str.not_implemented:format("sin"))
 end
 
---~   Returns the tangent of x (assumed to be in radians).
+-- Returns the tangent of x (assumed to be in radians).
 function math.tan(x)
   x = CheckNum(x,"tan")
 
   print(str.not_implemented:format("tan"))
 end
 
---~   Returns the arc cosine of x (in radians).
+-- Returns the arc cosine of x (in radians).
 math.sm_acos = acos
 function math.acos(x)
   x = CheckNum(x,"acos")
@@ -373,7 +373,7 @@ function math.acos(x)
   print(str.not_implemented:format("acos"))
 end
 
---~   Returns the arc sine of x (in radians).
+-- Returns the arc sine of x (in radians).
 math.sm_asin = asin
 function math.asin(x)
   x = CheckNum(x,"asin")
@@ -381,8 +381,8 @@ function math.asin(x)
   print(str.not_implemented:format("asin"))
 end
 
---~   Returns the arc tangent of y/x (in radians), but uses the signs of both arguments to find the quadrant of the result. (It also handles correctly the case of x being zero.)
---~   The default value for x is 1, so that the call math.atan(y) returns the arc tangent of y.
+-- Returns the arc tangent of y/x (in radians), but uses the signs of both arguments to find the quadrant of the result. (It also handles correctly the case of x being zero.)
+-- The default value for x is 1, so that the call math.atan(y) returns the arc tangent of y.
 math.sm_atan = atan
 function math.atan(x)
   x = CheckNum(x,"atan")
@@ -479,7 +479,7 @@ function math.test()
   print(str.test_start)
 
   local getinfo = format_value
---~   local  = debug.getinfo
+--~ 	local  = debug.getinfo
   local script_name = CurrentModPath .. "Script.lua"
 
   local function Test(line,func,n1,n2)
@@ -501,18 +501,18 @@ function math.test()
   Test(getinfo(function()end),"pi",tostring(math.pi - math.pi % 1),"3.0")
   Test(getinfo(function()end),"pi",tostring(math.pi - math.pi % 0.001),"3.141")
 
---~     local function testbit(a, n)
---~       return a/2^n % 2 >= 1
---~     end
+--~ 	local function testbit(a, n)
+--~ 		return a/2^n % 2 >= 1
+--~ 	end
 
---~   Test(getinfo(function()end),"sin",eq(math.sin(-9.8)^2 + math.cos(-9.8)^2, 1))
---~   Test(getinfo(function()end),"tan",eq(math.tan(math.pi/4), 1))
---~   Test(getinfo(function()end),"sin",eq(math.sin(math.pi/2), 1) and eq(math.cos(math.pi/2), 0))
---~   Test(getinfo(function()end),"atan",eq(math.atan(1), math.pi/4) and eq(math.acos(0), math.pi/2) and
---~          eq(math.asin(1), math.pi/2))
+--~ 	Test(getinfo(function()end),"sin",eq(math.sin(-9.8)^2 + math.cos(-9.8)^2, 1))
+--~ 	Test(getinfo(function()end),"tan",eq(math.tan(math.pi/4), 1))
+--~ 	Test(getinfo(function()end),"sin",eq(math.sin(math.pi/2), 1) and eq(math.cos(math.pi/2), 0))
+--~ 	Test(getinfo(function()end),"atan",eq(math.atan(1), math.pi/4) and eq(math.acos(0), math.pi/2) and
+--~ 					eq(math.asin(1), math.pi/2))
   Test(getinfo(function()end),"deg",eq(math.deg(math.pi/2), 90) and eq(math.rad(90), math.pi/2))
   Test(getinfo(function()end),"abs",math.abs(-10),10)
---~   Test(getinfo(function()end),"atan2",eq(math.atan2(1,0), math.pi/2))
+--~ 	Test(getinfo(function()end),"atan2",eq(math.atan2(1,0), math.pi/2))
   Test(getinfo(function()end),"ceil",math.ceil(4.5),5)
   Test(getinfo(function()end),"floor",math.floor(4.5),4)
   Test(getinfo(function()end),"mod",math.mod(10,3),1)
@@ -520,56 +520,56 @@ function math.test()
   Test(getinfo(function()end),"log10",eq(math.log10(2), math.log(2)/math.log(10)))
   Test(getinfo(function()end),"exp",eq(math.exp(0), 1))
 
---~   Test(getinfo(function()end),"sin",eq(math.sin(10), math.sin(10%(2*math.pi))))
+--~ 	Test(getinfo(function()end),"sin",eq(math.sin(10), math.sin(10%(2*math.pi))))
   local v,e = math.frexp(math.pi)
   Test(getinfo(function()end),"ldexp",eq(math.ldexp(v,e), math.pi))
 
---~   Test(getinfo(function()end),"tanh",eq(math.tanh(3.5), math.sinh(3.5)/math.cosh(3.5)))
+--~ 	Test(getinfo(function()end),"tanh",eq(math.tanh(3.5), math.sinh(3.5)/math.cosh(3.5)))
 
---~   if rawget(_G, "_soft") then return end
+--~ 	if rawget(_G, "_soft") then return end
 
---~   local AsyncStringToFile = AsyncStringToFile
---~   ThreadLockKey(tmpfile)
---~   AsyncStringToFile(tmpfile,"a = {","-1")
---~   i = 1
---~   repeat
---~     AsyncStringToFile(tmpfile,string.format("{%s, %s, %s},\n",math.sin(i), math.cos(i), i/3),"-1")
---~     i=i+1
---~   until i > 1000
---~   AsyncStringToFile(tmpfile,"}","-1")
---~   f:seek("set", 0)
---~   Test(getinfo(function()end),"sin",loadstring(select(2,AsyncFileToString(tmpfile))))()
---~   ThreadUnlockKey(tmpfile)
+--~ 	local AsyncStringToFile = AsyncStringToFile
+--~ 	ThreadLockKey(tmpfile)
+--~ 	AsyncStringToFile(tmpfile,"a = {","-1")
+--~ 	i = 1
+--~ 	repeat
+--~ 		AsyncStringToFile(tmpfile,string.format("{%s, %s, %s},\n",math.sin(i), math.cos(i), i/3),"-1")
+--~ 		i=i+1
+--~ 	until i > 1000
+--~ 	AsyncStringToFile(tmpfile,"}","-1")
+--~ 	f:seek("set", 0)
+--~ 	Test(getinfo(function()end),"sin",loadstring(select(2,AsyncFileToString(tmpfile))))()
+--~ 	ThreadUnlockKey(tmpfile)
 
---~   Test(getinfo(function()end),"sin",eq(a[300][1], math.sin(300)))
---~   Test(getinfo(function()end),"sin",eq(a[600][1], math.sin(600)))
---~   Test(getinfo(function()end),"cos",eq(a[500][2], math.cos(500)))
---~   Test(getinfo(function()end),"cos",eq(a[800][2], math.cos(800)))
---~   Test(getinfo(function()end),"sin",eq(a[200][3], 200/3))
---~   Test(getinfo(function()end),"sin",eq(a[1000][3], 1000/3, 0.001))
+--~ 	Test(getinfo(function()end),"sin",eq(a[300][1], math.sin(300)))
+--~ 	Test(getinfo(function()end),"sin",eq(a[600][1], math.sin(600)))
+--~ 	Test(getinfo(function()end),"cos",eq(a[500][2], math.cos(500)))
+--~ 	Test(getinfo(function()end),"cos",eq(a[800][2], math.cos(800)))
+--~ 	Test(getinfo(function()end),"sin",eq(a[200][3], 200/3))
+--~ 	Test(getinfo(function()end),"sin",eq(a[1000][3], 1000/3, 0.001))
 
-  -- doesn't work in SM ("10e500 - 10e400" returns "-nan(ind)" instead of "nan")
---~   do   -- testing NaN
---~     local NaN = 10e500 - 10e400
---~     Test(getinfo(function()end),"nan",NaN ~= NaN)
---~     Test(getinfo(function()end),"nan",not (NaN < NaN))
---~     Test(getinfo(function()end),"nan",not (NaN <= NaN))
---~     Test(getinfo(function()end),"nan",not (NaN > NaN))
---~     Test(getinfo(function()end),"nan",not (NaN >= NaN))
---~     Test(getinfo(function()end),"nan",not (0 < NaN))
---~     Test(getinfo(function()end),"nan",not (NaN < 0))
---~     local a = {}
---~     Test(getinfo(function()end),"nan",not pcall(function () a[NaN] = 1 end))
---~     Test(getinfo(function()end),"nan",a[NaN],nil)
---~     a[1] = 1
---~     Test(getinfo(function()end),"nan",not pcall(function () a[NaN] = 1 end))
---~     Test(getinfo(function()end),"nan",a[NaN],nil)
---~   end
+--~ 	-- doesn't work in SM ("10e500 - 10e400" returns "-nan(ind)" instead of "nan")
+--~ 	do	 -- testing NaN
+--~ 		local NaN = 10e500 - 10e400
+--~ 		Test(getinfo(function()end),"nan",NaN ~= NaN)
+--~ 		Test(getinfo(function()end),"nan",not (NaN < NaN))
+--~ 		Test(getinfo(function()end),"nan",not (NaN <= NaN))
+--~ 		Test(getinfo(function()end),"nan",not (NaN > NaN))
+--~ 		Test(getinfo(function()end),"nan",not (NaN >= NaN))
+--~ 		Test(getinfo(function()end),"nan",not (0 < NaN))
+--~ 		Test(getinfo(function()end),"nan",not (NaN < 0))
+--~ 		local a = {}
+--~ 		Test(getinfo(function()end),"nan",not pcall(function () a[NaN] = 1 end))
+--~ 		Test(getinfo(function()end),"nan",a[NaN],nil)
+--~ 		a[1] = 1
+--~ 		Test(getinfo(function()end),"nan",not pcall(function () a[NaN] = 1 end))
+--~ 		Test(getinfo(function()end),"nan",a[NaN],nil)
+--~ 	end
 
---~   require "checktable"
---~   stat(a)
+--~ 	require "checktable"
+--~ 	stat(a)
 
---~   a = nil
+--~ 	a = nil
 
   math.randomseed(0)
 
@@ -616,7 +616,7 @@ function math.test()
   Test(getinfo(function()end),"modf",tostring(flt),"-0.5435464498587")
 
   -- check error msg
---~   Test(getinfo(function()end),"test",1,0)
+--~ 	Test(getinfo(function()end),"test",1,0)
 
   print(str.test_end)
 end

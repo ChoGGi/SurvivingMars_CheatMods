@@ -1028,13 +1028,12 @@ function OnMsg.ClassesBuilt()
 				con:SetMaxHeight(h)
 			end
 		end
-
-		local infopanel_list = {
-			ipBuilding = true,
-			ipColonist = true,
-			ipDrone = true,
-			ipRover = true,
-		}
+--~ 		local infopanel_list = {
+--~ 			ipBuilding = true,
+--~ 			ipColonist = true,
+--~ 			ipDrone = true,
+--~ 			ipRover = true,
+--~ 		}
 
 		local function SetToolbar(section,cls,toggle)
 			local toolbar = table.find(section.idContent,"class",cls)
@@ -1326,7 +1325,6 @@ function OnMsg.ClassesBuilt()
 			-- send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
 			ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,"dont_finalize",...)
 
-			local statuses = self.construction_statuses
 
 			if self.is_template then
 				local cobj = rawget(self.cursor_obj, true)
@@ -1339,9 +1337,11 @@ function OnMsg.ClassesBuilt()
 				tobj:GatherConstructionStatuses(self.construction_statuses)
 			end
 
+			local statuses = self.construction_statuses
+
 			-- we copy it so the statuses table remains the same
-			local statuses_copy = table.copy(self.construction_statuses)
-			table.clear(self.construction_statuses)
+			local statuses_copy = table.copy(statuses)
+			table.clear(statuses)
 			local c = 0
 
 			local UnevenTerrain = ConstructionStatus.UnevenTerrain
@@ -1353,30 +1353,32 @@ function OnMsg.ClassesBuilt()
 				-- UnevenTerrain: causes issues when placing buildings (martian ground viagra)
 				if status == UnevenTerrain then
 					c = c + 1
-					self.construction_statuses[c] = status
+					statuses[c] = status
 					warning = "Blocked"
 				elseif status == BlockingObjects then
 					warning = "Obstructing"
 				-- might as well add all the non-errors since they don't block from building
 				elseif status.type ~= "error" then
 					c = c + 1
-					self.construction_statuses[c] = status
+					statuses[c] = status
 				end
 			end
 
 			-- make sure we don't get errors down the line
-			if type(self.construction_statuses) ~= "table" then
-				self.construction_statuses = {}
+			if type(statuses) ~= "table" then
+				statuses = {}
 			end
 
 			-- update cursor obj colour
 			self.cursor_obj:SetColorModifier(g_PlacementStateToColor[warning])
 
+			self.construction_statuses = statuses
 			if not dont_finalize then
-				self:FinalizeStatusGathering(self.construction_statuses)
+				self:FinalizeStatusGathering(statuses)
 			else
-				return self.construction_statuses
+				return statuses
 			end
+
 		else
 			return ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,dont_finalize,...)
 		end

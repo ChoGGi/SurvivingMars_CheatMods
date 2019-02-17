@@ -314,6 +314,25 @@ end)
 		local TickStart = ChoGGi.ComFuncs.TickStart
 		local TickEnd = ChoGGi.ComFuncs.TickEnd
 
+		function ChoGGi.testing.TextExamine()
+			local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+			local WaitMsg = WaitMsg
+			local list = MapGet(true)
+
+			CreateRealTimeThread(function()
+				TickStart("TextExamine.Tick")
+				for _ = 1, 10 do
+					TickStart("TextExamine.1.Tick")
+					local dlg = OpenInExamineDlg(list)
+					WaitMsg("OnRender")
+					dlg:delete()
+					TickEnd("TextExamine.1.Tick")
+				end
+				TickEnd("TextExamine.Tick")
+			end)
+
+		end
+
 		function ChoGGi.testing.TestTableIterate()
 			local list = MapGet(true)
 

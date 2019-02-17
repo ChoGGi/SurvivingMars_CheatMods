@@ -609,7 +609,6 @@ function OnMsg.ClassesGenerate()
 	do -- OpenInExamineDlg
 		local red = red
 		local function FlashTitlebar(title)
-			-- we don't need to worry about storing colour
 			local bg = title.Background
 			title:SetBackground(red)
 			Sleep(500)
@@ -711,9 +710,8 @@ function OnMsg.ClassesGenerate()
 			parent = parent,
 		})
 	end
-	function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(context,parent)
+	function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(parent)
 		return ChoGGi_DTMSlotsDlg:new({}, terminal.desktop,{
---~ 			obj = context,
 			parent = parent,
 		})
 	end
@@ -1458,11 +1456,9 @@ The func I use for spot_rot rounds to two decimal points...
 		local GetStateIdx = GetStateIdx
 		local GetStateLODCount = GetStateLODCount
 		local GetStates = GetStates
-		local TableIsEqual = ChoGGi.ComFuncs.TableIsEqual
 
 		local function EntityMats(entity)
 			local mats = {}
-			local c = 0
 			local states = GetStates(entity) or ""
 			for si = 1, #states do
 				local state = GetStateIdx(states[si])
@@ -1482,65 +1478,6 @@ The func I use for spot_rot rounds to two decimal points...
 			if #mats == 1 then
 				return mats[1]
 			end
-
---~ 			for i = #mats, 1, -1 do
---~ 				if i == 1 then
---~ 					break
---~ 				end
---~ 				local t1,t2 = mats[i],mats[1]
---~ 				if type(t1) == "table" and type(t2) == "table" and TableIsEqual(t1,t2) then
---~ 					table.remove(mats,i)
---~ 				end
---~ 			end
-
---~ 			if #mats == 1 then
---~ 				return mats[1]
---~ 			end
-
-			return mats
-		end
-
-		local function EntityMatsORIG(entity)
-			local mats = {}
-			local c = 0
-			local states = GetStates(entity) or ""
-			for si = 1, #states do
-				local state = GetStateIdx(states[si])
-				local num_lods = GetStateLODCount(entity, state) or 0
-				for li = 1, num_lods do
-					local num_mats = GetStateNumMaterials(entity, state, li - 1) or 0
-					for mi = 1, num_mats do
-						local mat_name = GetStateMaterial(entity,state,mi - 1,li - 1)
-						local mat = GetMaterialProperties(mat_name)
-						mat.__mtl = mat_name
-						mat.__lod = li
-						local t1 = mats[c]
-						local t1_type = type(t1) == "table"
-						if not t1_type or t1_type and not TableIsEqual(t1,mat) then
-							c = c + 1
-							mats[c] = mat
-						end
-					end
-				end
-			end
-			if #mats == 1 then
-				return mats[1]
-			end
-
-			for i = #mats, 1, -1 do
-				if i == 1 then
-					break
-				end
-				local t1,t2 = mats[i],mats[1]
-				if type(t1) == "table" and type(t2) == "table" and TableIsEqual(t1,t2) then
-					table.remove(mats,i)
-				end
-			end
-
-			if #mats == 1 then
-				return mats[1]
-			end
-
 			return mats
 		end
 
@@ -1638,13 +1575,13 @@ The func I use for spot_rot rounds to two decimal points...
 	end -- do
 
 	do -- BBoxLines_Toggle
-		local MulDivRound = MulDivRound
-		local Max = Max
 		local point = point
 		local PlacePolyline = PlacePolyline
 		local guim = guim
 		local objlist = objlist
 		local IsBox = IsBox
+--~ 		local MulDivRound = MulDivRound
+--~ 		local Max = Max
 --~ 		local GetHeight = terrain.GetHeight
 
 		-- stores objlist of line objects
@@ -1785,10 +1722,7 @@ The func I use for spot_rot rounds to two decimal points...
 
 	do -- RetThreadInfo/FindThreadFunc
 		local GedInspectorFormatObject = GedInspectorFormatObject
-		local IsValidThread = IsValidThread
-		local funcs
-
-		local function DbgGetlocal(thread,info,level)
+		local function DbgGetlocal(thread,level)
 			local list = {}
 			local idx = 1
 			while true do
@@ -1807,7 +1741,7 @@ The func I use for spot_rot rounds to two decimal points...
 				return list
 			end
 		end
-		local function DbgGetupvalue(thread,info)
+		local function DbgGetupvalue(info)
 			local list = {}
 			local idx = 1
 			while true do
@@ -1831,7 +1765,7 @@ The func I use for spot_rot rounds to two decimal points...
 			if type(thread) ~= "thread" then
 				return empty_table
 			end
-			funcs = {}
+			local funcs = {}
 
 			if blacklist then
 				-- func expects an empty table
@@ -1878,8 +1812,8 @@ The func I use for spot_rot rounds to two decimal points...
 									name = name,
 									func = info_got.func,
 									level = i,
-									getlocal = DbgGetlocal(thread,info_got,i),
-									getupvalue = DbgGetupvalue(thread,info_got),
+									getlocal = DbgGetlocal(thread,i),
+									getupvalue = DbgGetupvalue(info_got),
 								}
 							end
 						end
@@ -1917,7 +1851,8 @@ The func I use for spot_rot rounds to two decimal points...
 			else
 				local info = getinfo(obj)
 				-- sub(2): removes @, Mars is ingame files, mods is mods...
-				return info.source:sub(2):gsub("Mars/",""):gsub("AppData/Mods/","")
+				local src = info.source ~= "" and info.source or info.short_src
+				return src:sub(2):gsub("Mars/",""):gsub("AppData/Mods/","")
 					.. "(" .. info.linedefined .. ")"
 			end
 		end

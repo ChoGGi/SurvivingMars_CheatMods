@@ -165,10 +165,9 @@ ChoGGi = {
 	},
 	-- stuff that isn't ready for release, more print msgs, and some default settings
 	testing = false,
-	--
+	-- for text dumping (yep .pc means windows desktop, i guess .linux/.osx aren't personal computers)
 	newline = Platform.pc and "\r\n" or "\n",
-
-	-- CommonFunctions.lua
+	-- CommonFunctions.lua/ECM_Functions.lua
 	ComFuncs = {
 		-- thanks for replacing concat... what's wrong with using table.concat2?
 		TableConcat = rawget(_G, "oldTableConcat") or table.concat,
@@ -178,8 +177,8 @@ ChoGGi = {
 	OrigFuncs = {},
 	-- /Menus/*
 	MenuFuncs = {},
-	-- OnMsgs.lua
-	MsgFuncs = {},
+--~ 	-- OnMsgs.lua
+--~ 	MsgFuncs = {},
 	-- InfoPaneCheats.lua
 	InfoFuncs = {},
 	-- Defaults.lua
@@ -196,7 +195,7 @@ ChoGGi = {
 		transp_mode = false,
 		-- stores a table of my dialogs
 		Dialogs = {},
-		-- ECM will replace this with unblacklisted _G if HelperMod is enabled
+		-- ECM will replace this with unblacklisted _G if ECM HelperMod is installed
 		_G = _G,
 	},
 	-- settings that are saved to settings_file
@@ -205,6 +204,14 @@ ChoGGi = {
 		Transparency = {},
 	},
 }
+
+-- it shouldn't matter if this uses the localed ChoGGi, but...
+function printC(...)
+	if ChoGGi.testing then
+		print(...)
+	end
+end
+
 local ChoGGi = ChoGGi
 
 do -- translate
@@ -219,10 +226,4 @@ end
 
 if Mods.ChoGGi_testing then
 	ChoGGi.testing = {}
-end
-
-function printC(...)
-	if ChoGGi.testing then
-		print(...)
-	end
 end
