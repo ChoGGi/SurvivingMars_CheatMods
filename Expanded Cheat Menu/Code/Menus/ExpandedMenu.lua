@@ -15,7 +15,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			ChoGGi.ComFuncs.FindNearestResource()
 		end,
-		ActionSortKey = "96",
+		ActionSortKey = "90",
 	}
 
 	c = c + 1
@@ -25,7 +25,17 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/ExportImageSequence.tga",
 		RolloverText = S[302535920000345--[[Shows info about building in text above it.--]]],
 		OnAction = ChoGGi.MenuFuncs.BuildingInfo_Toggle,
-		ActionSortKey = "97",
+		ActionSortKey = "91",
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001307--[[Grid Info--]]],
+		ActionMenubar = "ECM.ECM",
+		ActionId = ".Grid Info",
+		ActionIcon = "CommonAssets/UI/Menu/ExportImageSequence.tga",
+		RolloverText = S[302535920001477--[["List objects in grids (air, electricity, and water)."--]]],
+		OnAction = ChoGGi.MenuFuncs.BuildGridList,
+		ActionSortKey = "92",
 	}
 
 	--~ c = c + 1
@@ -35,7 +45,7 @@ function OnMsg.ClassesGenerate()
 	--~ 	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 	--~ 	RolloverText = S[302535920000556--[[Shows a list of updated information about your city.--]]],
 	--~ 	OnAction = ChoGGi.MenuFuncs.MonitorInfo,
-	--~ 	ActionSortKey = "98",
+	--~ 	ActionSortKey = "93",
 	--~ }
 
 	c = c + 1

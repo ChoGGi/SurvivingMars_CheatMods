@@ -3,7 +3,7 @@
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
 local CheckText = ChoGGi.ComFuncs.CheckText
-local RetName = ChoGGi.ComFuncs.RetName
+--~ local RetName = ChoGGi.ComFuncs.RetName
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local S = ChoGGi.Strings
 
@@ -744,35 +744,6 @@ end
 -- needed till we update minimap and view colony map (since they both use the func name)
 ChoGGi_Window.SetInitPos = ChoGGi_Window.PostInit
 
-function ChoGGi_Window:idTextOnHyperLink(link, _, box, pos, button)
-	self = GetParentOfKind(self, "ChoGGi_Window")
-
-	link = tonumber(link)
-	local obj = self.onclick_objs[link]
-
-	-- we always examine on right-click
-	if button == "R" then
-		ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
-	else
-		local func = self.onclick_funcs[link]
-		if func then
-			func(box, pos, button, self, obj)
-		end
-	end
-
-end
-
-function ChoGGi_Window:HyperLink(obj, func)
-	local c = self.onclick_count
-	c = c + 1
-
-	self.onclick_count = c
-	self.onclick_objs[c] = obj
-	self.onclick_funcs[c] = func
-
-	return "<color 150 170 250><h " .. c .. " 230 195 50>"
-end
-
 -- scrollable textbox
 function ChoGGi_Window:AddScrollText()
 	local g_Classes = g_Classes
@@ -805,8 +776,6 @@ function ChoGGi_Window:AddScrollText()
 
 	self.idText = g_Classes.ChoGGi_Text:new({
 		Id = "idText",
-		-- this is what gets fired for any of my self:HyperLink()
-		OnHyperLink = self.idTextOnHyperLink
 	}, self.idScrollArea)
 end
 

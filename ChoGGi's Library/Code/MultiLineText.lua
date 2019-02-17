@@ -111,8 +111,8 @@ function ChoGGi_MultiLineTextDlg:ScrollToText(scrollto)
 		if type(scrollto) == "string" then
 			-- loop through lines table till we find the one we want
 			local lines = edit.lines
-			for i = 1, #edit.lines do
-				local line = edit.lines[i]
+			for i = 1, #lines do
+				local line = lines[i]
 				if line:find(scrollto,1,true) then
 					line_num = i
 					break

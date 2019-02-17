@@ -497,7 +497,7 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	local value,value_type
 	local name_str = text
 
-	-- if user pastes an rgb or rgba func translate to colour
+	-- if user pastes an rgb or rgba func string translate to colour: RGBA(233,123,32,100)
 	if text:sub(1,3) == "RGB" then
 		-- remove any spaces/newlines etc
 		text = text:gsub("[%s%c]","")
@@ -513,11 +513,12 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 		text = text:gsub("%(",""):gsub("%)","")
 		-- grab the values
 		local values = {}
-		local last = 0
+		local c = 0
 
 		-- loop through all the numbers
 		for d in text:gmatch("%d+") do
-			values[#values+1] = tonumber(d)
+			c = c + 1
+			values[c] = tonumber(d)
 		end
 
 		if #values == 3 then
@@ -526,7 +527,6 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 			value,value_type = RetProperType(_G[func](values[1],values[2],values[3],values[4]))
 		end
 		name_str = value
---~ RGB(233,123,32)
 
 	else
 		value,value_type = RetProperType(name_str)

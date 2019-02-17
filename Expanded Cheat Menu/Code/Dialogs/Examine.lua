@@ -2,6 +2,15 @@
 
 -- used to examine objects
 
+-- to add a clickable link use:
+--[[
+XXXXX = {
+	ChoGGi_AddHyperLink = true,
+	name = "do something",
+	func = function(box, pos, button, ex_dlg, table_obj) end,
+}
+--]]
+
 local pairs,type,tostring,tonumber = pairs,type,tostring,tonumber
 local PropObjGetProperty = PropObjGetProperty
 
@@ -11,24 +20,24 @@ if not PropObjGetProperty(_G,"g_ExamineDlgs") then
 end
 
 -- local some global funcs
-local TableSort = table.sort
-local TableInsert = table.insert
 local TableClear = table.clear
 local TableIClear = table.iclear
-local Sleep = Sleep
-local DeleteThread = DeleteThread
-local CreateRealTimeThread = CreateRealTimeThread
-
+local TableInsert = table.insert
+local TableSort = table.sort
 local CmpLower = CmpLower
-local IsObjlist = IsObjlist
-local GetStateName = GetStateName
-local IsPoint = IsPoint
-local IsKindOf = IsKindOf
-local IsValid = IsValid
+local CreateRealTimeThread = CreateRealTimeThread
+local DeleteThread = DeleteThread
 local EnumVars = EnumVars
-local IsValidEntity = IsValidEntity
+local GetStateName = GetStateName
+local IsKindOf = IsKindOf
+local IsObjlist = IsObjlist
+local IsPoint = IsPoint
 local IsT = IsT
-local PropObjGetProperty = PropObjGetProperty
+local IsValid = IsValid
+local IsValidEntity = IsValidEntity
+local Sleep = Sleep
+local XCreateRolloverWindow = XCreateRolloverWindow
+local XDestroyRolloverWindow = XDestroyRolloverWindow
 
 local getinfo,getupvalue,getlocal
 local debug = PropObjGetProperty(_G,"debug")
@@ -162,6 +171,8 @@ function Examine:Init(parent, context)
 	self.idObjectsMenu = Random()
 
 	self.attaches_menu_popup = {}
+	self.parents_menu_popup = {}
+	self.pmenu_skip_dupes = {}
 	self.parents = {}
 	self.ancestors = {}
 	self.menu_added = {}
@@ -433,6 +444,9 @@ Right-click to go up, middle-click to scroll to the top."--]]],
 	-- text box with obj info in it
 	self:AddScrollText()
 
+	self.idText.OnHyperLink = self.idTextOnHyperLink
+	self.idText.OnHyperLinkRollover = self.idTextOnHyperLinkRollover
+
 	-- look at them sexy internals
 	self.transp_mode = ChoGGi.Temp.transp_mode
 	self:SetTranspMode(self.transp_mode)
@@ -449,6 +463,63 @@ Right-click to go up, middle-click to scroll to the top."--]]],
 	end
 
 	self:PostInit(context.parent)
+end
+
+--~ function Examine:idTextOnHyperLinkRollover(link, hyperlink_box, pos)
+function Examine:idTextOnHyperLinkRollover(link)
+	if not ChoGGi.UserSettings.EnableToolTips then
+		return
+	end
+	if not link then
+		-- close opened tooltip
+		if RolloverWin then
+			XDestroyRolloverWindow()
+		end
+		return
+	end
+	self = GetRootDialog(self)
+
+	link = tonumber(link)
+	local obj = self.onclick_objs[link]
+	if not obj then
+		return
+	end
+
+	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
+		RolloverTitle = S[302535920000069--[[Examine--]]],
+		RolloverText = RetName(obj),
+		RolloverHint = S[302535920001079--[[<left_click> Default Action <right_click> Examine--]]],
+	})
+end
+
+-- clicked
+function Examine:idTextOnHyperLink(link, argument, hyperlink_box, pos, button)
+	self = GetRootDialog(self)
+
+	link = tonumber(link)
+	local obj = self.onclick_objs[link]
+
+	-- we always examine on right-click
+	if button == "R" then
+		ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
+	else
+		local func = self.onclick_funcs[link]
+		if func then
+			func(self, button, obj, argument, hyperlink_box, pos)
+		end
+	end
+
+end
+-- created
+function Examine:HyperLink(obj, func)
+	local c = self.onclick_count
+	c = c + 1
+
+	self.onclick_count = c
+	self.onclick_objs[c] = obj
+	self.onclick_funcs[c] = func
+
+	return "<color 150 170 250><h " .. c .. " 230 195 50>"
 end
 
 function Examine:idExecCodeOnKbdKeyDown(vk,...)
@@ -1329,7 +1400,7 @@ function Examine:SetTranspMode(toggle)
 	ChoGGi.Temp.transp_mode = toggle
 end
 --
-local function Show_ConvertValueToInfo(_,_,button,self,obj)
+local function Show_ConvertValueToInfo(self,button,obj)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" and GameState.gameplay and (IsValid(obj) or IsPoint(obj)) then
 		ShowObj(obj)
@@ -1337,7 +1408,7 @@ local function Show_ConvertValueToInfo(_,_,button,self,obj)
 		OpenInExamineDlg(obj,self)
 	end
 end
-local function Examine_ConvertValueToInfo(_,_,button,self,obj)
+local function Examine_ConvertValueToInfo(self,button,obj)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" then
 		OpenInExamineDlg(obj,self)
@@ -1357,10 +1428,10 @@ function Examine:ConvertValueToInfo(obj,left)
 		end
 		return "'<color " .. ChoGGi.UserSettings.ExamineColourStr .. ">" .. obj .. "</color>'"
 	end
-	-- for some reason i don't want the indexed table numbers to be coloured.
 	if obj_type == "number" then
+		-- for some reason i don't want the indexed table numbers to be coloured.
 		if left then
-			return obj
+			return obj .. ""
 		else
 			return "<color " .. ChoGGi.UserSettings.ExamineColourNum .. ">" .. obj .. "</color>"
 		end
@@ -1407,6 +1478,9 @@ function Examine:ConvertValueToInfo(obj,left)
 				res[c] = "}"
 				-- remove last ,
 				return TableConcat(res):gsub(",}","}")
+
+			elseif PropObjGetProperty(obj,"ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
+				return self:HyperLink(obj,obj.func) .. obj.name .. HLEnd
 
 			else
 				-- regular table
@@ -1464,10 +1538,16 @@ function Examine:ConvertValueToInfo(obj,left)
 			for _ = 1, colour_cnt do
 				trans_str = trans_str .. "</color>"
 			end
+			local ret_str = trans_str .. self:HyperLink(obj,Examine_ConvertValueToInfo) .. " *"
 
-			return trans_str
-				.. self:HyperLink(obj,Examine_ConvertValueToInfo) .. " *"
-				.. (meta and meta.__name or tostring(obj)) .. HLEnd
+			-- if meta name then add it
+			if meta and meta.__name then
+				ret_str = ret_str .. "userdata (" .. meta.__name .. ")"
+			else
+				ret_str = ret_str .. tostring(obj)
+			end
+
+			return ret_str .. HLEnd
 		end
 	end
 	--
@@ -1541,9 +1621,17 @@ function Examine:RetFuncParams(obj)
 end
 
 function Examine:ConvertObjToInfo(obj,obj_type)
-	local totextex_res = {}
-	local totextex_sort = {}
-	local totextex_dupes = {}
+	-- i like reusing tables
+	self.ConvertObjToInfo_totextex_res = self.ConvertObjToInfo_totextex_res or {}
+	self.ConvertObjToInfo_totextex_sort = self.ConvertObjToInfo_totextex_sort or {}
+	self.ConvertObjToInfo_totextex_dupes = self.ConvertObjToInfo_totextex_dupes or {}
+	local totextex_res = self.ConvertObjToInfo_totextex_res
+	local totextex_sort = self.ConvertObjToInfo_totextex_sort
+	local totextex_dupes = self.ConvertObjToInfo_totextex_dupes
+	TableIClear(totextex_res)
+	TableClear(totextex_sort)
+	TableClear(totextex_dupes)
+
 	local obj_metatable = getmetatable(obj)
 	local c = 0
 	local is_valid_obj
@@ -1710,7 +1798,10 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 		-- add any functions from getmeta to the (scant) list
 		if obj_metatable then
-			local data_meta = {}
+			self.ConvertObjToInfo_data_meta = self.ConvertObjToInfo_data_meta or {}
+			local data_meta = self.ConvertObjToInfo_data_meta
+			TableIClear(data_meta)
+
 			local c2 = 0
 			for k, v in pairs(obj_metatable) do
 				c2 = c2 + 1
@@ -1921,19 +2012,19 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				.. info.name .. ", " .. self:ConvertValueToInfo(info.func)
 
 			if info.getlocal then
-				for i = 1, #info.getlocal do
-					local v = info.getlocal[i]
+				for j = 1, #info.getlocal do
+					local v = info.getlocal[j]
 					c = c + 1
-					totextex_res[c] = "getlocal(" .. v.level .. "," .. i .. "): " .. v.name .. ", "
+					totextex_res[c] = "getlocal(" .. v.level .. "," .. j .. "): " .. v.name .. ", "
 						.. self:ConvertValueToInfo(v.value)
 				end
 			end
 
 			if info.getupvalue then
-				for i = 1, #info.getupvalue do
-					local v = info.getupvalue[i]
+				for j = 1, #info.getupvalue do
+					local v = info.getupvalue[j]
 					c = c + 1
-					totextex_res[c] = "getupvalue(" .. i .. "): " .. v.name .. ", "
+					totextex_res[c] = "getupvalue(" .. j .. "): " .. v.name .. ", "
 						.. self:ConvertValueToInfo(v.value)
 				end
 			end
@@ -2050,8 +2141,8 @@ function Examine:SetObj(startup)
 	local obj = self.obj
 
 	-- reset the hyperlinks
-	TableClear(self.onclick_funcs)
-	TableClear(self.onclick_objs)
+	TableIClear(self.onclick_funcs)
+	TableIClear(self.onclick_objs)
 	self.onclick_count = 0
 
 	if self.str_object then
@@ -2073,7 +2164,7 @@ function Examine:SetObj(startup)
 
 	self:SetToolbarVis(obj)
 
-	self.idText:SetText(name .. ": " .. S[67--[[Loading resources--]]])
+	self.idText:SetText(S[67--[[Loading resources--]]])
 
 	if obj_type == "table" then
 		obj_class = g_Classes[obj.class]
@@ -2094,8 +2185,8 @@ function Examine:SetObj(startup)
 
 		-- build parents/ancestors menu
 		if obj_class then
-			self.parents_menu_popup = {}
-			self.pmenu_skip_dupes = {}
+			TableIClear(self.parents_menu_popup)
+			TableClear(self.pmenu_skip_dupes)
 			-- build menu list
 			self:BuildParents(obj.__parents,"parents",S[302535920000520--[[Parents--]]])
 			self:BuildParents(obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
@@ -2153,10 +2244,10 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 		self.idCaption:SetTitle(self,name_type .. title:gsub(name_type,""))
 	end
 
-	-- we add a slight delay, so the rest of the dialog shows up; for bigger lists like _G or MapGet(true)
+	-- for bigger lists like _G or MapGet(true): we add a slight delay, so the dialog shows up (progress is happening user)
 	if startup then
 		CreateRealTimeThread(function()
-			Sleep(5)
+			WaitMsg("OnRender")
 --~ ChoGGi.ComFuncs.TickStart("Examine")
 			self.idText:SetText(self:ConvertObjToInfo(obj,obj_type))
 --~ ChoGGi.ComFuncs.TickEnd("Examine",self.name)

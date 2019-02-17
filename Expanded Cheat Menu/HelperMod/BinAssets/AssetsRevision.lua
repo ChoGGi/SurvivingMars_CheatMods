@@ -22,7 +22,7 @@ CreateRealTimeThread(function()
 		end
 
 		-- remove blacklist for any mods in "Mod Ids"
-		for id,mod in pairs(Mods) do
+		for _,mod in pairs(Mods) do
 			if mod_ids[mod.steam_id] then
 				-- just a little overreaching with that blacklist (yeah yeah, safety first and all that)
 				mod.env_old = mod.env

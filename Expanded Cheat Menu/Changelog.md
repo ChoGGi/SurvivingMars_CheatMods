@@ -4,6 +4,9 @@
 ##### Dialogs: Monitor Info.
 
 ## v12.5 (Unreleased)
+### Added:
+- ECM>Grid Info: List objects in grids (air, electricity, and water).
+
 ### Changed:
 - Map Exploration will no longer save the DeepScanAvailable setting.
 - Moved Help> (Interface and Screenshot) to Game>.
@@ -19,6 +22,7 @@
 - > Added Object>Hex Shape Toggle: Like bbox, but it shows hex spot markers (use with Attach Spots Toggle).
 - > Added some more options to BBox Toggle.
 - > Instead of changing focus to an already opened examine dialog, it'll now flash the titlebar red.
+- > Added tooltips to "hyperlinks".
 
 ### Fixed:
 - Delete Object didn't work with filled Mech Depots (thanks FirstGeekDanny).

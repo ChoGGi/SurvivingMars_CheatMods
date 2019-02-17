@@ -19,7 +19,7 @@ function OnMsg.ClassesGenerate()
 	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 	local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 	local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
-	local Trans = ChoGGi.ComFuncs.Translate
+--~ 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
@@ -220,10 +220,8 @@ function OnMsg.ClassesGenerate()
 	do -- ToggleLogErrors
 		local select = select
 		local GetStack = GetStack
-		local CurrentThread = CurrentThread
 		local UserSettings = ChoGGi.UserSettings
 		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-		local newline = ChoGGi.newline
 		local traceback
 		if not blacklist then
 			traceback = debug.traceback
@@ -242,7 +240,7 @@ function OnMsg.ClassesGenerate()
 						local err_type = type(select(1,...))
 						-- not sure if it can ever be a func...?
 						if err_type == "thread" or err_type == "function" then
-							OpenInExamineDlg{...,"\n\n\n\n",err_type}
+							OpenInExamineDlg{...,err_type}
 						end
 					else
 						OpenInExamineDlg{...}

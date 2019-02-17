@@ -116,7 +116,6 @@ function OnMsg.ClassesGenerate()
 		AddToList(Tables.ColonistRaces,302535920000741--[[Race--]])
 		AddToList(Tables.ColonistSpecializations,240--[[Specialization--]])
 		local birth = Tables.ColonistBirthplaces
-		local icon = "%s\n\n<image %s>"
 		for i = 1, #birth do
 			local name = Trans(birth[i].text)
 			ItemList[#ItemList+1] = {

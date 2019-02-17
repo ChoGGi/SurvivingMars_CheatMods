@@ -7,7 +7,68 @@ function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local RetName = ChoGGi.ComFuncs.RetName
 	local S = ChoGGi.Strings
-	--~ local Trans = ChoGGi.ComFuncs.Translate
+	local Trans = ChoGGi.ComFuncs.Translate
+
+	do -- BuildGridList
+		local IsValid = IsValid
+		local function BuildGrid(grid,list)
+			for i = 1, #grid do
+				for j = 1, #grid[i].elements do
+					local bld = grid[i].elements[j].building
+					local name,display_name = RetName(bld),Trans(bld.display_name)
+
+					if name == display_name then
+						list[Trans(T{11629,"GRID <i>",i = i}) .. " - " .. name .. " h: " .. bld.handle] = bld
+					else
+						list[Trans(T{11629,"GRID <i>",i = i}) .. " - " .. display_name .. " " .. name .. " h: " .. bld.handle] = bld
+					end
+				end
+			end
+		end
+		local function FilterExamineList(ex_dlg,class)
+			-- loop through and remove any matching objects, as well as the hyperlink table
+			local obj_ref = ex_dlg.obj_ref
+			for key,value in pairs(obj_ref) do
+				if value.ChoGGi_AddHyperLink then
+					obj_ref[key] = nil
+				elseif IsValid(value) and value.class == class then
+					obj_ref[key] = nil
+				end
+			end
+			ex_dlg:RefreshExamine()
+		end
+
+		function ChoGGi.MenuFuncs.BuildGridList()
+			local UICity = UICity
+			local grid_list = {
+				air = objlist:new(),
+				water = objlist:new(),
+				electricity = objlist:new(),
+			}
+			grid_list.air.name = S[891--[[Air--]]]
+			grid_list.electricity.name = S[79--[[Power--]]]
+			grid_list.electricity.__HideCables = {
+				ChoGGi_AddHyperLink = true,
+				name = S[302535920000142--[[Hide--]]] .. " " .. S[881--[[Power Cables--]]],
+				func = function(ex_dlg)
+					FilterExamineList(ex_dlg,"ElectricityGridElement")
+				end,
+			}
+			grid_list.water.name = S[681--[[Water--]]]
+			grid_list.water.__HidePipes = {
+				ChoGGi_AddHyperLink = true,
+				name = S[302535920000142--[[Hide--]]] .. " " .. S[882--[[Pipes--]]],
+				func = function(ex_dlg)
+					FilterExamineList(ex_dlg,"LifeSupportGridElement")
+				end,
+			}
+
+			BuildGrid(UICity.air,grid_list.air)
+			BuildGrid(UICity.electricity,grid_list.electricity)
+			BuildGrid(UICity.water,grid_list.water)
+			ChoGGi.ComFuncs.OpenInExamineDlg(grid_list,nil,S[302535920001307--[[Grid Info--]]])
+		end
+	end -- do
 
 	do -- ViewObjInfo_Toggle
 		local r = ChoGGi.Consts.ResearchPointsScale

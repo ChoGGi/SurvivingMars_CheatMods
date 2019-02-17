@@ -23,15 +23,16 @@ local TableClear = table.clear
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 function ChoGGi.ComFuncs.SaveOrigFunc(class_or_func,func_name)
-	local ChoGGi = ChoGGi
+	local OrigFuncs = ChoGGi.OrigFuncs
+
 	if func_name then
-		local newname = class_or_func .. func_name
-		if not ChoGGi.OrigFuncs[newname] then
-			ChoGGi.OrigFuncs[newname] = _G[class_or_func][func_name]
+		local newname = class_or_func .. "_" .. func_name
+		if not OrigFuncs[newname] then
+			OrigFuncs[newname] = _G[class_or_func][func_name]
 		end
 	else
-		if not ChoGGi.OrigFuncs[class_or_func] then
-			ChoGGi.OrigFuncs[class_or_func] = _G[class_or_func]
+		if not OrigFuncs[class_or_func] then
+			OrigFuncs[class_or_func] = _G[class_or_func]
 		end
 	end
 end
@@ -48,6 +49,7 @@ do -- AddMsgToFunc
 		-- we want to local this after SaveOrigFunc just in case
 		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 		-- redefine it
+		local newname = class_name .. "_" .. func_name
 		_G[class_name][func_name] = function(obj,...)
 			-- send obj along with any extra args i added
 			Msg(msg_str,obj,varargs)
@@ -62,7 +64,7 @@ do -- AddMsgToFunc
 --~ 				ChoGGi.ComFuncs.OpenInExamineDlg{params}
 --~ 			end
 
-			return ChoGGi_OrigFuncs[class_name .. func_name](obj,...)
+			return ChoGGi_OrigFuncs[newname](obj,...)
 		end
 	end
 end -- do
@@ -94,7 +96,6 @@ end
 local CheckText = ChoGGi.ComFuncs.CheckText
 
 do -- RetName
-	local empty_func = empty_func
 	local IsObjlist = IsObjlist
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 
@@ -126,6 +127,18 @@ do -- RetName
 		return lookup_table
 	end
 
+	local values_lookup = {
+		"encyclopedia_id",
+		"id",
+		"Id",
+		"ActionName",
+		"ActionId",
+		"template_name",
+		"template_class",
+		"class",
+		"__mtl",
+	}
+
 	-- try to return a decent name for the obj, failing that return a string
 	function ChoGGi.ComFuncs.RetName(obj)
 		-- bool and nils are easy enough
@@ -148,8 +161,11 @@ do -- RetName
 		elseif obj_type == "number" or obj_type == "boolean" then
 			return tostring(obj)
 
-		-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env has it's own __index and causes the game to log a warning
 		elseif obj_type == "table" then
+			-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env has it's own __index and causes the game to log a warning
+			local index = getmetatable(obj)
+			index = index and index.__index
+
 			-- we check in order of less generic "names"
 			local name_type = PropObjGetProperty(obj,"name") and type(obj.name)
 
@@ -163,40 +179,35 @@ do -- RetName
 			-- display
 			elseif PropObjGetProperty(obj,"display_name") and obj.display_name ~= "" then
 				name = Trans(obj.display_name)
-			-- ids
-			elseif PropObjGetProperty(obj,"encyclopedia_id") and obj.encyclopedia_id ~= "" then
-				name = obj.encyclopedia_id
-			elseif PropObjGetProperty(obj,"id") and obj.id ~= "" then
-				name = obj.id
-			elseif PropObjGetProperty(obj,"Id") and obj.Id ~= "" then
-				name = obj.Id
-
-			-- actions
-			elseif PropObjGetProperty(obj,"ActionName") and obj.ActionName ~= "" then
-				name = Trans(obj.ActionName)
-			elseif PropObjGetProperty(obj,"ActionId") and obj.ActionId ~= "" then
-				name = obj.ActionId
-
-			-- class template
-			elseif PropObjGetProperty(obj,"template_name") and obj.template_name ~= "" then
-				name = obj.template_name
-			elseif PropObjGetProperty(obj,"template_class") and obj.template_class ~= "" then
-				name = obj.template_class
 			-- entity
-			elseif PropObjGetProperty(obj,"entity") and obj.entity ~= "" and type(obj.entity) =="string" then
+			elseif PropObjGetProperty(obj,"entity") and obj.entity ~= "" then
 				name = obj.entity
-			-- class
-			elseif PropObjGetProperty(obj,"class") and obj.class ~= "" then
-				name = obj.class
-
-			-- added this here as doing tostring lags the crap outta kansas if this is a large objlist
+			-- objlist
 			elseif IsObjlist(obj) then
 				return "objlist"
+
+			else
+				for i = 1, #values_lookup do
+					local name = values_lookup[i]
+					if index then
+						if PropObjGetProperty(obj,name) and obj[name] ~= "" then
+							name = obj[name]
+							break
+						end
+					else
+						local value = obj[name]
+						if value and value ~= "" then
+							name = value
+							break
+						end
+					end
+				end
 
 			end -- if table
 
 		elseif obj_type == "userdata" then
 			local trans_str = Trans(obj)
+			-- missing text is from internaltranslate, i check the str length before calling the func as it has to be at least 16 chars
 			if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
 				return tostring(obj)
 			end
@@ -208,11 +219,7 @@ do -- RetName
 		end
 
 		-- just in case...
-		if type(name) ~= "string" then
-			name = tostring(name or obj)
-		end
-
-		return name
+		return type(name) == "string" and name or tostring(name or obj)
 	end
 end -- do
 local RetName = ChoGGi.ComFuncs.RetName
@@ -948,23 +955,23 @@ end
 
 -- tries to convert "65" to 65, "boolean" to boolean, "nil" to nil, or just returns "str" as "str"
 function ChoGGi.ComFuncs.RetProperType(value)
-	-- number?
+	-- boolean
+	if value == "true" or value == true then
+		return true, "boolean"
+	elseif value == "false" or value == false then
+		return false, "boolean"
+	end
+	-- nil
+	if value == "nil" then
+		return nil, "nil"
+	end
+	-- number
 	local num = tonumber(value)
 	if num then
-		return num,"number"
-	end
-	-- stringy boolean
-	if value == "true" or value == true then
-		return true,"boolean"
-	elseif value == "false" or value == false then
-		return false,"boolean"
-	end
-	-- nadda
-	if value == "nil" then
-		return nil,"nil"
+		return num, "number"
 	end
 	-- then it's a string (probably)
-	return value,"string"
+	return value, "string"
 end
 
 do -- RetType

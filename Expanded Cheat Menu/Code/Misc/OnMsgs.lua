@@ -467,7 +467,6 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 	end -- DisableECM
 
 	local BuildingTechRequirements = BuildingTechRequirements
-	local spon_str2 = "sponsor_status%s_ChoGGi_orig"
 	local BuildingTemplates = BuildingTemplates
 	for id,bld in pairs(BuildingTemplates) do
 
@@ -1144,10 +1143,6 @@ end
 function OnMsg.ChoGGi_DaddysLittleHitler()
 	local MilestoneCompleted = MilestoneCompleted
 	PlaceObj("Milestone", {
---~		 Complete = function(self)
---~			 WaitMsg("ChoGGi_DaddysLittleHitler2")
---~			 return true
---~		 end,
 		base_score = 0,
 		display_name = S[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene--]]],
 		group = "Default",
