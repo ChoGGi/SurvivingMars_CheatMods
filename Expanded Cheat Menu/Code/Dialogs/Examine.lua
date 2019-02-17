@@ -7,7 +7,7 @@
 XXXXX = {
 	ChoGGi_AddHyperLink = true,
 	name = "do something",
-	func = function(box, pos, button, ex_dlg, table_obj) end,
+	func = function(self, button, obj, argument, hyperlink_box, pos) end,
 }
 --]]
 
@@ -1387,16 +1387,31 @@ function Examine:ShowHexShapeList()
 	local ItemList = {}
 	local c = 0
 
-	local fall = FallbackOutline
 	local g = _G
+	local fall = g.FallbackOutline
+	local entity = self.obj_ref:GetEntity()
+	local state_idx = g.GetStateIdx("idle")
+
 	for i = 1, #self.hex_shape_funcs do
 		local func = self.hex_shape_funcs[i]
-		local shape = g[func](self.obj_ref:GetEntity())
+		local shape = g[func](entity)
 		if shape ~= fall and #shape > 2 then
 			c = c + 1
 			ItemList[c] = {
 				text = func:sub(10),
 				value = func,
+				shape = shape,
+			}
+		end
+	end
+	local EntitySurfaces = g.EntitySurfaces
+	for key,value in pairs(EntitySurfaces) do
+		local shape = g.GetSurfaceHexShapes(entity, state_idx, value) or ""
+		if #shape > 0 then
+			c = c + 1
+			ItemList[c] = {
+				text = "GetSurfaceHexShapes(), mask: " .. key,
+				value = "GetSurfaceHexShapes",
 				shape = shape,
 			}
 		end
@@ -1409,6 +1424,7 @@ function Examine:ShowHexShapeList()
 		choice = choice[1]
 		ChoGGi.ComFuncs.ObjHexShape_Toggle(self.obj_ref,{
 			shape = choice.shape,
+			func = choice.func,
 			skip_return = true,
 		})
 	end
