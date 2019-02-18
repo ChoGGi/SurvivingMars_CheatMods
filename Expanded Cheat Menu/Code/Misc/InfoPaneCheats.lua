@@ -65,42 +65,42 @@ function OnMsg.ClassesGenerate()
 	local grid_lookup = {
 		OxygenFree = {
 			icon = "UI/Icons/res_oxygen.tga",
-			name = S[682--[[Oxygen--]]],
-			text1 = S[4325--[[Free--]]],
+			name = Trans(682--[[Oxygen--]]),
+			text1 = Trans(4325--[[Free--]]),
 			text2 = S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
 			con = "air_consumption",
 		},
 		OxygenNeed = {
 			icon = "UI/Icons/res_oxygen.tga",
-			name = S[682--[[Oxygen--]]],
+			name = Trans(682--[[Oxygen--]]),
 			text1 = S[302535920000162--[[Need--]]],
 			text2 = S[302535920001221--[[Change this %s so it needs a %s source.--]]],
 			con = "air_consumption",
 		},
 		WaterFree = {
 			icon = "UI/Icons/res_water.tga",
-			name = S[681--[[Water--]]],
-			text1 = S[4325--[[Free--]]],
+			name = Trans(681--[[Water--]]),
+			text1 = Trans(4325--[[Free--]]),
 			text2 = S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
 			con = "water_consumption",
 		},
 		WaterNeed = {
 			icon = "UI/Icons/res_water.tga",
-			name = S[681--[[Water--]]],
+			name = Trans(681--[[Water--]]),
 			text1 = S[302535920000162--[[Need--]]],
 			text2 = S[302535920001221--[[Change this %s so it needs a %s source.--]]],
 			con = "water_consumption",
 		},
 		PowerFree = {
 			icon = "UI/Icons/res_electricity.tga",
-			name = S[11683--[[Electricity--]]],
-			text1 = S[4325--[[Free--]]],
+			name = Trans(11683--[[Electricity--]]),
+			text1 = Trans(4325--[[Free--]]),
 			text2 = S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
 			con = "electricity_consumption",
 		},
 		PowerNeed = {
 			icon = "UI/Icons/res_electricity.tga",
-			name = S[11683--[[Electricity--]]],
+			name = Trans(11683--[[Electricity--]]),
 			text1 = S[302535920000162--[[Need--]]],
 			text2 = S[302535920001221--[[Change this %s so it needs a %s source.--]]],
 			con = "electricity_consumption",
@@ -195,7 +195,7 @@ function OnMsg.ClassesGenerate()
 			des = S[302535920001216--[[Double the battery capacity.--]]],
 		},
 		Scan = {
-			des = S[979029137252--[[Scanned an Anomaly--]]],
+			des = Trans(979029137252--[[Scanned an Anomaly--]]),
 			icon = "UI/Icons/pin_scan.tga",
 		},
 -- Rocket
@@ -209,7 +209,7 @@ function OnMsg.ClassesGenerate()
 			name = "CleanAndFix",
 		},
 		Launch = {
-			des = S[6779--[[Warning--]]] .. ": " .. S[302535920001233--[[Launches rocket without asking.--]]],
+			des = Trans(6779--[[Warning--]]) .. ": " .. S[302535920001233--[[Launches rocket without asking.--]]],
 			icon = "UI/Icons/ColonyControlCenter/rocket_r.tga",
 		},
 
@@ -327,7 +327,7 @@ function OnMsg.ClassesGenerate()
 				if obj.destroyed or obj.is_malfunctioned then
 					action.ActionId = ""
 				else
-					SetHint(action,S[8039--[[Trait: Idiot (can cause a malfunction)--]]] .. "...\n" .. S[53--[[Malfunction--]]] .. "?")
+					SetHint(action,Trans(8039--[[Trait: Idiot (can cause a malfunction)--]]) .. "...\n" .. Trans(53--[[Malfunction--]]) .. "?")
 				end
 
 			elseif aid == "Unfreeze" then
@@ -383,11 +383,11 @@ function Object:CheatDeleteObject()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		S[6779--[[Warning--]]] .. "!\n" .. S[302535920000885--[[Permanently delete %s?--]]]:format(name) .. "?",
+		Trans(6779--[[Warning--]]) .. "!\n" .. S[302535920000885--[[Permanently delete %s?--]]]:format(name) .. "?",
 		CallBackFunc,
-		S[6779--[[Warning--]]] .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
-		S[5451--[[DELETE--]]] .. ": " .. name,
-		S[6879--[[Cancel--]]] .. " " .. S[1000615--[[Delete--]]]
+		Trans(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
+		Trans(5451--[[DELETE--]]) .. ": " .. name,
+		Trans(6879--[[Cancel--]]) .. " " .. Trans(502364928914--[[Delete--]])
 	)
 end
 function Object:CheatToggleSigns()
@@ -415,11 +415,11 @@ local function CheatDestroy(self)
 	local name = RetName(self)
 	local obj_type
 	if self:IsKindOf("BaseRover") then
-		obj_type = S[7825--[[Destroy this Rover.--]]]
+		obj_type = Trans(7825--[[Destroy this Rover.--]])
 	elseif self:IsKindOf("Drone") then
-		obj_type = S[7824--[[Destroy this Drone.--]]]
+		obj_type = Trans(7824--[[Destroy this Drone.--]])
 	else
-		obj_type = S[7822--[[Destroy this building.--]]]
+		obj_type = Trans(7822--[[Destroy this building.--]])
 	end
 
 	local function CallBackFunc(answer)
@@ -443,11 +443,11 @@ local function CheatDestroy(self)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		S[6779--[[Warning--]]] .. "!\n" .. obj_type .. "\n" .. name,
+		Trans(6779--[[Warning--]]) .. "!\n" .. obj_type .. "\n" .. name,
 		CallBackFunc,
-		S[6779--[[Warning--]]] .. ": " .. obj_type,
+		Trans(6779--[[Warning--]]) .. ": " .. obj_type,
 		obj_type .. " " .. name,
-		S[1176--[[Cancel Destroy--]]]
+		Trans(1176--[[Cancel Destroy--]])
 	)
 end
 Building.CheatDestroy = CheatDestroy
@@ -546,13 +546,13 @@ function Colonist:CheatRandomAge()
 end
 function Colonist:CheatDie()
 	ChoGGi.ComFuncs.QuestionBox(
-		S[6779--[[Warning--]]] .. "!\n" .. S[302535920001430--[[Kill colonist-]]] .. "?",
+		Trans(6779--[[Warning--]]) .. "!\n" .. S[302535920001430--[[Kill colonist-]]] .. "?",
 		function(answer)
 			if answer then
 				self:SetCommand("Die")
 			end
 		end,
-		S[6779--[[Warning--]]] .. ": " .. S[302535920000855--[[Last chance before deletion!--]]]
+		Trans(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 -- CheatAllShifts
