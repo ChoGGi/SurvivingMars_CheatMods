@@ -1,0 +1,1 @@
+add the option to toggle the buttons section like in ECM

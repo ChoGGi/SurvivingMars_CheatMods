@@ -13,8 +13,10 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[In Gagarin update someone thought shrinking the selection panel was a good idea, and now the panel is too scared to use the bottom half of the screen.
 
-Wrapping a scrollbar around idContent is a no-go I guess? I did a mod to do that, works fine other than making the UI flicker when I mouseover the pinned icons :)
-https://steamcommunity.com/sharedfiles/filedetails/?id=1613335225
+Includes Mod Config Reborn option to re-enable sizing (mods add stuff and it can cause the panel to be too big).
 
-Includes Mod Config Reborn option to re-enable sizing.]],
+
+
+Wrapping a scrollbar around idContent is a no-go I guess? I did a mod to do that, works fine other than making the UI flicker when I mouseover the pinned icons :)
+https://steamcommunity.com/sharedfiles/filedetails/?id=1613335225]],
 })

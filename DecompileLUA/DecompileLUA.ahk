@@ -11,98 +11,55 @@ SetWorkingDir, %A_ScriptDir%
 SplitPath A_ScriptName,,,,sProgName
 ;get settings filename
 sProgIni := A_ScriptDir "\" sProgName ".ini"
-;~ ;explictly false
-;~ bCalledFromMain := false
 
-;this script will be called for each folder it's in to decompile more than one folder at a time
-; so we skip this if the first arg is an existing folder
-;~ If (!A_Args[1] || A_Args[1] && !FileExist(A_Args[1]))
-	;~ {
-	IniRead bFirstRun,%sProgIni%,Settings,FirstRun,1
-	If (bFirstRun = 1)
-		{
-		MsgBox 4096,,You need to edit %sProgName%.ini`n`nInclude a copy of unluac_2015_06_13.jar in current folder`n`nSet path to java exe
-		IniWrite 0,%sProgIni%,Settings,FirstRun
-		ExitApp
-		}
+IniRead bFirstRun,%sProgIni%,Settings,FirstRun,1
+If (bFirstRun = 1)
+	{
+	MsgBox 4096,,You need to edit %sProgName%.ini`n`nInclude a copy of unluac_2015_06_13.jar in current folder`n`nSet path to java exe
+	IniWrite 0,%sProgIni%,Settings,FirstRun
+	ExitApp
+	}
 
-	sConvert := "F"
-	MsgBox 4099,WARNING,WARNING`n`nDecompiles all *.lua in current folder (skips decompiled files)`nShows message when all files converted`n`n`nYes to recursively decompile all *.lua (goes through all child folders)`nNo to decompile all *.lua (just this folder)`n`nWARNING
-	IfMsgBox Yes
-		sConvert := "RF"
-	Else IfMsgBox Cancel
-		ExitApp
-	;~ }
-;~ Else
-	;~ {
-	;~ bCalledFromMain := A_Args[1]
-	;~ }
+sConvert := "F"
+MsgBox 4099,WARNING,WARNING`n`nDecompiles all *.lua in current folder (skips decompiled files)`nShows message when all files converted`n`n`nYes to recursively decompile all *.lua (goes through all child folders)`nNo to decompile all *.lua (just this folder)`n`nWARNING
+IfMsgBox Yes
+	sConvert := "RF"
+Else IfMsgBox Cancel
+	ExitApp
 
 ;get needed paths...
 IniRead sJavaPath,%sProgIni%,Settings,JavaPath,%A_Space%
 IniRead sUnluacPath,%sProgIni%,Settings,UnluacPath,%A_Space%
 
-;if user is stupid enough to edit these while the script is running that isn't my problem
-;(in other words skip two file accesses)
-;~ If (!bCalledFromMain)
-	;~ {
-	If (!FileExist(sJavaPath) || !FileExist(sUnluacPath))
+If (!FileExist(sJavaPath) || !FileExist(sUnluacPath))
+	{
+	MsgBox 4096,Error,You need to setup paths in %sProgIni%, or files are missing...
+	ExitApp
+	}
+
+Loop Files,*.lua,%sConvert%
+	{
+	;check for correct header and skip if not
+	File := FileOpen(A_LoopFileLongPath,"r")
+	;probably not needed
+	File.Seek(1)
+	;check if it's a compiled lua
+	If (File.Read(4) = "LuaS")
 		{
-		MsgBox 4096,Error,You need to setup paths in %sProgIni%, or files are missing...
-		ExitApp
+		;need to close the file before we open it again below
+		File.Close()
+		;decompile lua
+		DeCompiledLUA := StdOutToVar("""" sJavaPath """" A_Space "-jar" A_Space """" sUnluacPath """" A_Space """" A_LoopFileLongPath """")
+		;delete original so we can append new
+		FileDelete %A_LoopFileLongPath%
+		FileAppend %DeCompiledLUA%,%A_LoopFileLongPath%
 		}
-	;~ }
-
-;~ ;first time we get a list of folders in folder, then start new copies of the script to loop through them
-;~ If (bCalledFromMain)
-	;~ {
-
-	;~ Loop Files,%bCalledFromMain%\*.lua,% A_Args[2]
-	Loop Files,*.lua,%sConvert%
+	;already decompiled
+	Else
 		{
-		;check for correct header and skip if not
-		File := FileOpen(A_LoopFileLongPath,"r")
-		;probably not needed
-		File.Seek(1)
-		;check if it's a compiled lua
-		If (File.Read(4) = "LuaS")
-			{
-			;need to close the file before we open it again below
-			File.Close()
-			;decompile lua
-			DeCompiledLUA := StdOutToVar("""" sJavaPath """" A_Space "-jar" A_Space """" sUnluacPath """" A_Space """" A_LoopFileLongPath """")
-			;delete original so we can append new
-			FileDelete %A_LoopFileLongPath%
-			FileAppend %DeCompiledLUA%,%A_LoopFileLongPath%
-			}
-		;already decompiled
-		Else
-			{
-			File.Close()
-			}
+		File.Close()
 		}
-	;~ }
-;~ Else
-	;~ {
-	;~ arr := []
-
-	;~ ;loops all folders, and add pid to array
-	;~ Loop Files,*,D
-		;~ {
-		;~ Run %A_ScriptFullPath% `"%A_LoopFileLongPath%`" %sConvert%,,,PID
-		;~ arr.Push(PID)
-		;~ }
-
-	;~ ;wait till all processes are closed
-	;~ Loop % arr.Length()
-		;~ {
-		;~ Process Wait,% arr[A_Index],5
-		;~ Process WaitClose,% arr[A_Index]
-		;~ }
-
-	;~ ;all done
-	;~ MsgBox 4096,Done,Files Decompiled
-	;~ }
+	}
 
 ;all done
 MsgBox 4096,Done,Files Decompiled
