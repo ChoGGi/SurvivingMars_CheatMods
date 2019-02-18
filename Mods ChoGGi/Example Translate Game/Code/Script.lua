@@ -24,8 +24,7 @@ local RegistryRead = RegistryRead
 local LoadTranslationTableFile = LoadTranslationTableFile
 local Msg = Msg
 
-local modpath = CurrentModPath
-local csv_str = "%sLocale/Game.csv"
+local csv_path = CurrentModPath .. "Locale/Game.csv"
 
 function OnMsg.ModsReloaded()
 	-- make it show up in Options>Gameplay>Language
@@ -43,7 +42,7 @@ function OnMsg.ModsReloaded()
 
 	-- load lang if option is set to our lang
 	if RegistryRead("Language") == lang_value then
-		LoadTranslationTableFile(csv_str:format(modpath))
+		LoadTranslationTableFile(csv_path)
 		Msg("TranslationChanged",true)
 	end
 end
@@ -51,7 +50,7 @@ end
 -- fires when lang is changed in game
 function OnMsg.TranslationChanged(skip)
 	if not skip and RegistryRead("Language") == lang_value then
-		LoadTranslationTableFile(csv_str:format(modpath))
+		LoadTranslationTableFile(csv_path)
 		-- we want it to update any other OnMsg.TranslationChanged, but skip this is one (or inf loop)
 		Msg("TranslationChanged",true)
 	end

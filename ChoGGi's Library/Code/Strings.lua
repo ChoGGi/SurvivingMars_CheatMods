@@ -25,14 +25,16 @@ do -- Translate
 			result,str = pcall(_InternalTranslate,str)
 		end
 
+		if str == "Missing text" then
+			return TGetID(...) .. " *bad string id?"
 		-- just in case
-		if not result or type(str) ~= "string" then
+		elseif not result or type(str) ~= "string" then
 			local arg2 = select(2,...)
 			if type(arg2) == "string" then
 				return arg2
 			end
 			-- i'd rather know if something failed by having a bad string rather than a failed func
-			return tostring(...) .. " *bad string id?"
+			return TGetID(...) .. " *bad string id?"
 		end
 
 		-- and done
@@ -49,7 +51,7 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 	if ChoGGi.lang ~= "English" then
 		-- first get the unicode font name
 
-		local f = TranslationTable[997--[[*font*, 15, aa--]]]
+		local f = Translate(997--[[*font*, 15, aa--]])
 		-- index of first , then crop out the rest
 		f = f:sub(1,f:find(",")-1)
 		ChoGGi.font = f
