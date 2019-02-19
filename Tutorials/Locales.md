@@ -46,11 +46,11 @@ I like to use this function for ease of use (and to make sure I always get a str
 
 do -- Translate
 	-- local some globals
-	local T,_InternalTranslate = T,_InternalTranslate
-	local type,select,pcall = type,select,pcall
+	local T,_InternalTranslate,IsT,TGetID = T,_InternalTranslate,IsT,TGetID
+	local type,select,pcall,tostring = type,select,pcall,tostring
 
 	-- translate func that always returns a string
-	function Translate(...)
+	function ChoGGi.ComFuncs.Translate(...)
 		local str,result
 		local stype = type(select(1,...))
 		if stype == "userdata" or stype == "number" then
@@ -59,21 +59,24 @@ do -- Translate
 			str = ...
 		end
 
-		-- certain stuff will fail without this obj, so best just pass it off to pcall and let it error out (if it's one of those)
+		-- certain stuff will fail without this obj, so just pass it off to pcall and let it error out
 		if UICity then
 			result,str = true,_InternalTranslate(str)
 		else
 			result,str = pcall(_InternalTranslate,str)
 		end
 
+		-- Missing text means the string id wasn't found (generally)
+		if str == "Missing text" then
+			return (IsT(...) and TGetID(...) or tostring(...)) .. " *bad string id?"
 		-- just in case
-		if not result or type(str) ~= "string" then
-			local arg2 = select(2,...)
-			if type(arg2) == "string" then
-				return arg2
+		elseif not result or type(str) ~= "string" then
+			str = select(2,...)
+			if type(str) == "string" then
+				return str
 			end
 			-- i'd rather know if something failed by having a bad string rather than a failed func
-			return tostring(...) .. " *bad string id?"
+			return (IsT(...) and TGetID(...) or tostring(...)) .. " *bad string id?"
 		end
 
 		-- and done

@@ -5,9 +5,8 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_ExampleDelayMystery",
 --~ 	"steam_id", "000000000",
---~ 	"pops_any_uuid", GetUUID(),
---~ 	"pops_desktop_uuid", GetUUID(),
---~ CopyToClipboard(string.format([["pops_any_uuid", "%s",]],GetUUID()))
+--~ 	"pops_desktop_uuid", "uuid",
+--~ CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
 	"code", {

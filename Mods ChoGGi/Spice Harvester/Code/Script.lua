@@ -59,19 +59,6 @@ DefineClass.MelangerBuilding = {
 	rover_class = "Melanger",
 }
 
-do -- pausey stuff
-	if UISpeedState == "pause" then
-		SpiceHarvester.game_paused = true
-	else
-		SpiceHarvester.game_paused = false
---~ 			Msg("MarsResume")
-	end
-
-	function OnMsg.MarsPause()
-		SpiceHarvester.game_paused = true
-	end
-end -- do
-
 -- for painting the terrain
 local terrain_type_idx = table.find(TerrainTextures, "name", "Sand_01")
 local SetTypeCircle = terrain.SetTypeCircle
@@ -126,10 +113,10 @@ function Melanger:GameInit()
 		local snd
 		while IsValid(self) do
 			-- if I use gametime then it'll speed up the sounds and such, but realtime doesn't pause on pause
-			if SpiceHarvester.game_paused then
+			if UISpeedState == "pause" then
 				WaitMsg("MarsResume")
-				SpiceHarvester.game_paused = false
 			end
+
 			Sleep(50)
 			delay = delay + 1
 			if delay > 125 then
@@ -149,10 +136,10 @@ function Melanger:GameInit()
 	-- a slimy trail of sand
 	CreateRealTimeThread(function()
 		while IsValid(self) do
-			if SpiceHarvester.game_paused then
+			if UISpeedState == "pause" then
 				WaitMsg("MarsResume")
-				SpiceHarvester.game_paused = false
 			end
+
 			SetTypeCircle(self:GetVisualPos(), 900, terrain_type_idx)
 			Sleep(Random(2000,4000))
 		end

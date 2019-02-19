@@ -58,6 +58,7 @@ local IsControlPressed
 local OpenInExamineDlg
 local PopupToggle
 local Random
+local RandomColour
 local RetName
 local RetThreadInfo
 local ShowObj
@@ -80,6 +81,7 @@ function OnMsg.ClassesGenerate()
 	OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	Random = ChoGGi.ComFuncs.Random
+	RandomColour = ChoGGi.ComFuncs.RandomColour
 	RetName = ChoGGi.ComFuncs.RetName
 	RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
 	ShowObj = ChoGGi.ComFuncs.ShowObj
@@ -565,11 +567,12 @@ end
 function Examine:idButMarkObjectOnPress()
 	self = GetRootDialog(self)
 	if IsValid(self.obj_ref) then
-		ShowObj(self.obj_ref)
+		ShowObj(self.obj_ref,RandomColour())
 	else
 		for k, v in pairs(self.obj_ref) do
-			ShowObj(k)
-			ShowObj(v)
+			local c = RandomColour()
+			ShowObj(k,c)
+			ShowObj(v,c)
 		end
 	end
 end
@@ -660,7 +663,7 @@ function Examine:idButMarkAllOnPress()
 	self = GetRootDialog(self)
 	for _, v in pairs(self.obj_ref) do
 		if IsPoint(v) or IsValid(v) then
-			ShowObj(v, nil, nil, true)
+			ShowObj(v, RandomColour(), nil, true)
 		end
 	end
 end
@@ -1516,7 +1519,7 @@ end
 local function Show_ConvertValueToInfo(self,button,obj)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" and GameState.gameplay and (IsValid(obj) or IsPoint(obj)) then
-		ShowObj(obj)
+		ShowObj(obj,RandomColour())
 	else
 		OpenInExamineDlg(obj,self)
 	end
@@ -1526,7 +1529,7 @@ local function Examine_ConvertValueToInfo(self,button,obj)
 	if button == "L" then
 		OpenInExamineDlg(obj,self)
 	else
-		ShowObj(obj)
+		ShowObj(obj,RandomColour())
 	end
 end
 
@@ -1871,7 +1874,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				GetStateName(obj:GetState())
 				.. ", step: "
 				.. self:HyperLink(obj,function()
-					ShowObj(pos)
+					ShowObj(pos,RandomColour())
 				end)
 				.. self:ConvertValueToInfo(obj:GetStepVector(obj:GetState(),0))
 				.. HLEnd

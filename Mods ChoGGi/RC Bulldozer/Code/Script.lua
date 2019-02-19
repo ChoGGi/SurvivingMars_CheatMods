@@ -127,7 +127,7 @@ DefineClass.RCBulldozerBuilding = {
 }
 
 function RCBulldozer:GameInit()
-	BaseRover.GameInit(self)
+--~ 	BaseRover.GameInit(self)
 
 	self.away_spot = self:GetSpotBeginIndex(away_spot)
 	-- colour #, Color, Roughness, Metallic
@@ -229,17 +229,6 @@ function RCBulldozer:StopDozer()
 	self:UpdateBuildable()
 end
 
--- we're using a realtime loop, so we use this to pause the flatten thread
-local game_paused
-if UISpeedState == "pause" then
-	game_paused = true
-else
-	game_paused = false
-end
-function OnMsg.MarsPause()
-	game_paused = true
-end
-
 local efCollision = const.efCollision + const.efApplyToGrids
 local efSelectable = const.efSelectable
 -- a very ugly hack to update driveable area
@@ -285,9 +274,8 @@ function RCBulldozer:StartDozer()
 			-- thread gets deleted, but just in case
 			while self.bulldozing do
 				-- no sense in doing anything when the game is paused
-				if game_paused then
+				if UISpeedState == "pause" then
 					WaitMsg("MarsResume")
-					game_paused = false
 				end
 
 				-- if we're idle then we're not moving

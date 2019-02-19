@@ -95,7 +95,7 @@ end
 
 -- meteor targeting
 function PersonalShuttle:GameInit()
-	CargoShuttle.GameInit(self)
+--~ 	CargoShuttle.GameInit(self)
 
 	self.city = self.hub.city or UICity
 --~ 	self.city:RemoveFromLabel("CargoShuttle", self)
@@ -126,7 +126,8 @@ function PersonalShuttle:Done()
 end
 
 -- gets rid of error in log
-function PersonalShuttle:SetTransportTask()end
+--~ function PersonalShuttle:SetTransportTask()end
+PersonalShuttle.SetTransportTask = empty_func
 -- gives an error when we spawn shuttle since i'm using a fake task, so we just return true instead
 function PersonalShuttle:OnTaskAssigned()
 	return true

@@ -30,7 +30,7 @@ DefineClass.BottomlessStorage = {
 
 function BottomlessStorage:GameInit()
   --fire off the usual GameInit
-  UniversalStorageDepot.GameInit(self)
+--~   UniversalStorageDepot.GameInit(self)
   --and start off with all resource demands blocked
   for i = 1, #self.resource do
     self:ToggleAcceptResource(self.resource[i])

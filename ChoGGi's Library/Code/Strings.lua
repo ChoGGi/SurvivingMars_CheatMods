@@ -5,8 +5,8 @@
 
 do -- Translate
 	-- local some globals
-	local T,_InternalTranslate = T,_InternalTranslate
-	local type,select,pcall = type,select,pcall
+	local T,_InternalTranslate,IsT,TGetID = T,_InternalTranslate,IsT,TGetID
+	local type,select,pcall,tostring = type,select,pcall,tostring
 
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
@@ -25,16 +25,17 @@ do -- Translate
 			result,str = pcall(_InternalTranslate,str)
 		end
 
+		-- Missing text means the string id wasn't found (generally)
 		if str == "Missing text" then
-			return TGetID(...) .. " *bad string id?"
+			return (IsT(...) and TGetID(...) or tostring(...)) .. " *bad string id?"
 		-- just in case
 		elseif not result or type(str) ~= "string" then
-			local arg2 = select(2,...)
-			if type(arg2) == "string" then
-				return arg2
+			str = select(2,...)
+			if type(str) == "string" then
+				return str
 			end
 			-- i'd rather know if something failed by having a bad string rather than a failed func
-			return TGetID(...) .. " *bad string id?"
+			return (IsT(...) and TGetID(...) or tostring(...)) .. " *bad string id?"
 		end
 
 		-- and done

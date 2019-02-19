@@ -30,7 +30,7 @@ DefineClass.BottomlessWasteRock = {
 
 function BottomlessWasteRock:GameInit()
   --fire off the usual GameInit
-  WasteRockDumpSite.GameInit(self)
+--~   WasteRockDumpSite.GameInit(self)
 
   --make sure it isn't mistaken for a regular depot
   self:SetColorModifier(-11252937)
