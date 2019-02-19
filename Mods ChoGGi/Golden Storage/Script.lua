@@ -32,7 +32,7 @@ DefineClass.GoldenStorage = {
 
 function GoldenStorage:GameInit()
   -- fire off the usual GameInit
-  UniversalStorageDepot.GameInit(self)
+--~   UniversalStorageDepot.GameInit(self)
   -- and start off with all resource demands blocked
   for i = 1, #self.resource do
     if self.resource[i] ~= "Metals" then

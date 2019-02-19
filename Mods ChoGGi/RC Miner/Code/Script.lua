@@ -140,7 +140,7 @@ DefineClass.PortableStockpile = {
 }
 
 function PortableMiner:GameInit()
-	BaseRover.GameInit(self)
+--~ 	BaseRover.GameInit(self)
 
 	-- select sounds
 	self.fx_actor_class = "AttackRover"

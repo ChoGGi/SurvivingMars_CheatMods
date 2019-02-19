@@ -68,7 +68,8 @@ DefineClass.Solaria = {
 }
 
 function Solaria:GameInit()
-	Workplace.GameInit(self)
+--~ 	Workplace.GameInit(self)
+
 	-- always leave it turned off, so it doesn't use resources till user turns it on
 	self:ToggleWorking()
 	-- brown/yellow seems a good choice for a vr workplace

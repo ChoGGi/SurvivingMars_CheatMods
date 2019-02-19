@@ -183,7 +183,7 @@ function RCTanker:Init()
 end
 
 function RCTanker:GameInit()
-	BaseRover.GameInit(self)
+--~ 	BaseRover.GameInit(self)
 
 	-- select sound
 	self.fx_actor_class = "AttackRover"

@@ -122,9 +122,8 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 		-- we're done if the host harvester is gone
 		while IsValid(self.SpiceHarvester_Harvester) do
 			-- real time threads don't pause when the game is paused
-			if SpiceHarvester.game_paused then
+			if UISpeedState == "pause" then
 				WaitMsg("MarsResume")
-				SpiceHarvester.game_paused = false
 			end
 
 			-- check if our height is low enough for some dust kickup
@@ -135,7 +134,7 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 				-- break loop if game is paused or height is changed to above 1500, otherwise dust
 				while IsValid(self) do
 					pos = self:GetVisualPos()
-					if SpiceHarvester.game_paused or (pos:z() - GetHeight(pos)) > 1500 then
+					if UISpeedState == "pause" or (pos:z() - GetHeight(pos)) > 1500 then
 						break
 					end
 					Sleep(1000)
@@ -150,10 +149,10 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 
 	-- movement thread
 	while IsValid(self.SpiceHarvester_Harvester) do
-		if SpiceHarvester.game_paused then
+		if UISpeedState == "pause" then
 			WaitMsg("MarsResume")
-			SpiceHarvester.game_paused = false
 		end
+
 		self.hover_height = Random(800,20000)
 		local x,y = self.SpiceHarvester_Harvester:GetVisualPosXYZ()
 		local path = self:CalcPath(

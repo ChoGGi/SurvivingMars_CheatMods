@@ -85,9 +85,9 @@ DefineClass.RCGarage = {
 }
 
 function RCGarage:GameInit(...)
-	Building.GameInit(self,...)
-	-- from Holder class
-	WaypointsObj.GameInit(self,...)
+--~ 	Building.GameInit(self,...)
+--~ 	-- from Holder class
+--~ 	WaypointsObj.GameInit(self,...)
 
 	-- add a ref to global var for easy access
 	self.stored_rovers = g_ChoGGi_RCGarageRovers
