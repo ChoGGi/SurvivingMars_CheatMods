@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local icon = "CommonAssets/UI/Menu/Cube.tga"
@@ -9,7 +9,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Buildings = "ECM.ECM.Buildings"
 	c = c + 1
-	Actions[c] = {ActionName = S[3980--[[Buildings--]]],
+	Actions[c] = {ActionName = Trans(3980--[[Buildings--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -25,7 +25,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.ServiceWorkplaceFoodStorage,
-				302535920000167--[[Change how much food is stored in them (less chance of starving colonists when busy).--]]
+				S[302535920000167--[[Change how much food is stored in them (less chance of starving colonists when busy).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery,
@@ -39,13 +39,13 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.TriboelectricScrubberRadius,
-				302535920000170--[[Extend the range of the scrubber.--]]
+				S[302535920000170--[[Extend the range of the scrubber.--]]]
 			)
 		end,
 		OnAction = function()
-			ChoGGi.MenuFuncs.SetUIRangeBuildingRadius("TriboelectricScrubber",302535920000169--[["Ladies and gentlemen, this is your captain speaking. We have a small problem.
+			ChoGGi.MenuFuncs.SetUIRangeBuildingRadius("TriboelectricScrubber",S[302535920000169--[["Ladies and gentlemen, this is your captain speaking. We have a small problem.
 	All four engines have stopped. We are doing our damnedest to get them going again.
-	I trust you are not in too much distress."--]])
+	I trust you are not in too much distress."--]]])
 		end,
 	}
 
@@ -57,11 +57,11 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SubsurfaceHeaterRadius,
-				302535920000173--[[Extend the range of the heater.--]]
+				S[302535920000173--[[Extend the range of the heater.--]]]
 			)
 		end,
 		OnAction = function()
-			ChoGGi.MenuFuncs.SetUIRangeBuildingRadius("SubsurfaceHeater","\n",302535920000172--[[Some smart quip about heating?--]])
+			ChoGGi.MenuFuncs.SetUIRangeBuildingRadius("SubsurfaceHeater","\n",S[302535920000172--[[Some smart quip about heating?--]]])
 		end,
 	}
 
@@ -84,7 +84,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.MoistureVaporatorRange,
-				302535920000211--[[Disable penalty when Moisture Vaporators are close to each other.--]]
+				S[302535920000211--[[Disable penalty when Moisture Vaporators are close to each other.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle,
@@ -101,7 +101,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	local str_ECM_Buildings_SanatoriumsSchools = "ECM.ECM.Buildings.Sanatoriums & Schools"
-	local SandS = S[5245--[[Sanatoriums--]]] .. " & " .. S[5248--[[Schools--]]]
+	local SandS = Trans(5245--[[Sanatoriums--]]) .. " & " .. Trans(5248--[[Schools--]])
 	c = c + 1
 	Actions[c] = {ActionName = SandS,
 		ActionMenubar = "ECM.ECM.Buildings",
@@ -112,28 +112,28 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[5245--[[Sanatoriums--]]] .. " " .. S[302535920000198--[[Cure All--]]],
+	Actions[c] = {ActionName = Trans(5245--[[Sanatoriums--]]) .. " " .. S[302535920000198--[[Cure All--]]],
 		ActionMenubar = str_ECM_Buildings_SanatoriumsSchools,
 		ActionId = ".Sanatoriums Cure All",
 		ActionIcon = icon,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SanatoriumCureAll,
-				302535920000199--[[Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).--]]
+				S[302535920000199--[[Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[5248--[[Schools--]]] .. " " .. S[302535920000200--[[Train All--]]],
+	Actions[c] = {ActionName = Trans(5248--[[Schools--]]) .. " " .. S[302535920000200--[[Train All--]]],
 		ActionMenubar = str_ECM_Buildings_SanatoriumsSchools,
 		ActionId = ".Schools Train All",
 		ActionIcon = icon,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SchoolTrainAll,
-				302535920000199--[[Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).--]]
+				S[302535920000199--[[Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SchoolTrainAll_Toggle,
@@ -147,7 +147,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits,
-				302535920000203--[[Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.--]]
+				S[302535920000203--[[Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ShowAllTraits_Toggle,
@@ -161,7 +161,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SanatoriumSchoolShowAll,
-				302535920000205--[[Toggle showing full list of trait selectors in side pane.--]]
+				S[302535920000205--[[Toggle showing full list of trait selectors in side pane.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SanatoriumSchoolShowAll,
@@ -169,7 +169,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	local str_ECM_Buildings_Farms = "ECM.ECM.Buildings.Farms"
 	c = c + 1
-	Actions[c] = {ActionName = S[5068--[[Farms--]]],
+	Actions[c] = {ActionName = Trans(5068--[[Farms--]]),
 		ActionMenubar = "ECM.ECM.Buildings",
 		ActionId = ".Farms",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -187,14 +187,14 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[4711--[[Crop Fail Threshold--]]],
+	Actions[c] = {ActionName = Trans(4711--[[Crop Fail Threshold--]]),
 		ActionMenubar = str_ECM_Buildings_Farms,
 		ActionId = ".Crop Fail Threshold",
 		ActionIcon = icon,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.CropFailThreshold,
-				302535920000213--[[Remove Threshold for failing crops (crops won't fail).--]]
+				S[302535920000213--[[Remove Threshold for failing crops (crops won't fail).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.CropFailThreshold_Toggle,
@@ -225,7 +225,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[134--[[Instant Build--]]],
+	Actions[c] = {ActionName = Trans(134--[[Instant Build--]]),
 		ActionMenubar = str_ECM_Buildings_CablesPipes,
 		ActionId = ".Cables & Pipes: Instant Build",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
@@ -240,7 +240,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	local str_ECM_Buildings_Buildings = "ECM.ECM.Buildings.Buildings"
 	c = c + 1
-	Actions[c] = {ActionName = S[3980--[[Buildings--]]],
+	Actions[c] = {ActionName = Trans(3980--[[Buildings--]]),
 		ActionMenubar = "ECM.ECM.Buildings",
 		ActionId = ".Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -255,13 +255,13 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Production Amount Set",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = 302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
-	Works on any building that produces."--]]
+			local text = S[302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
+	Works on any building that produces."--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".production",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetProductionAmount,
 		ActionShortcut = "Ctrl-Shift-P",
@@ -274,12 +274,12 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Power-free Building",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = 302535920000187--[[Toggle electricity use for selected building type.--]]
+			local text = S[302535920000187--[[Toggle electricity use for selected building type.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".nopower",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingPower_Toggle,
 		ActionSortKey = "2Power-free Building",
@@ -291,12 +291,12 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Water-free Building",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = 302535920001252--[[Toggle water use for selected building type.--]]
+			local text = S[302535920001252--[[Toggle water use for selected building type.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".nowater",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingWater_Toggle,
 		ActionSortKey = "2Water-free Building",
@@ -308,12 +308,12 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Oxygen-free Building",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = 302535920001254--[[Toggle oxygen use for selected building type.--]]
+			local text = S[302535920001254--[[Toggle oxygen use for selected building type.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".noair",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingAir_Toggle,
 		ActionSortKey = "2Oxygen-free Building",
@@ -336,12 +336,12 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Protection Radius",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = 302535920000179--[[Change threat protection coverage distance.--]]
+			local text = S[302535920000179--[[Change threat protection coverage distance.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".protect_range",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetProtectionRadius,
 	}
@@ -352,12 +352,12 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Fully Automated Building",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = 302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).--]]
+			local text = S[302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".auto_performance",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetFullyAutomatedBuildings,
 	}
@@ -368,13 +368,13 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Service Building Stats",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = 302535920001115--[["Tweak settings for parks and such.
-Health change, Sanity change, Service Comfort, Comfort increase."--]]
+			local text = S[302535920001115--[["Tweak settings for parks and such.
+Health change, Sanity change, Service Comfort, Comfort increase."--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".service_stats",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetServiceBuildingStats()
@@ -387,12 +387,12 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 		ActionId = ".Points To Train",
 		ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
 		RolloverText = function()
-			local text = 302535920001345--[[How many points are needed to finish training.--]]
+			local text = S[302535920001345--[[How many points are needed to finish training.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".evaluation_points",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetTrainingPoints,
 	}
@@ -415,7 +415,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.Building_wonder,
-				302535920000223--[["Unlimited wonder build limit (blocks the ""build a wonder"" achievement)."--]]
+				S[302535920000223--[["Unlimited wonder build limit (blocks the ""build a wonder"" achievement)."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.Building_wonder_Toggle,
@@ -429,7 +429,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.Building_hide_from_build_menu,
-				302535920000225--[[Show hidden buildings in build menu.--]]
+				S[302535920000225--[[Show hidden buildings in build menu.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle,
@@ -443,7 +443,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.Building_instant_build,
-				302535920000229--[[Buildings are built instantly.--]]
+				S[302535920000229--[[Buildings are built instantly.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.Building_instant_build_Toggle,
@@ -487,7 +487,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.rebuild_cost_modifier,
-				302535920000215--[[Build with minimal resources.--]]
+				S[302535920000215--[[Build with minimal resources.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.CheapConstruction_Toggle,
@@ -501,7 +501,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount,
-				302535920000217--[[Disable damage from renegedes to buildings.--]]
+				S[302535920000217--[[Disable damage from renegedes to buildings.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle,
@@ -515,7 +515,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.InsideBuildingsNoMaintenance,
-				302535920000207--[[Buildings inside domes don't build maintenance points (takes away instead of adding).--]]
+				S[302535920000207--[[Buildings inside domes don't build maintenance points (takes away instead of adding).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.MaintenanceFreeBuildingsInside_Toggle,
@@ -529,7 +529,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RemoveMaintenanceBuildUp,
-				302535920000209--[[Building maintenance points reverse (takes away instead of adding).--]]
+				S[302535920000209--[[Building maintenance points reverse (takes away instead of adding).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.MaintenanceFreeBuildings_Toggle,
@@ -543,7 +543,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.UseLastOrientation,
-				302535920000190--[[Use last building placement orientation.--]]
+				S[302535920000190--[[Use last building placement orientation.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.UseLastOrientation_Toggle,
@@ -574,7 +574,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.AlwaysCleanBuildings,
-				302535920000316--[[Buildings will never get dusty.--]]
+				S[302535920000316--[[Buildings will never get dusty.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.AlwaysCleanBuildings_Toggle,
@@ -588,7 +588,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.PipesPillarSpacing,
-				302535920000183--[[Only place Pillars at start and end.--]]
+				S[302535920000183--[[Only place Pillars at start and end.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle,
@@ -602,7 +602,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.UnlimitedConnectionLength,
-				302535920000185--[[No more length limits to pipes, cables, and passages.--]]
+				S[302535920000185--[[No more length limits to pipes, cables, and passages.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle,
@@ -617,7 +617,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.BuildOnGeysers,
-				302535920000065--[[Allows you to build on geysers. Use Shift-F4 around the area to delete the geyser objects (about 10-20 depending on size).--]]
+				S[302535920000065--[[Allows you to build on geysers. Use Shift-F4 around the area to delete the geyser objects (about 10-20 depending on size).--]]]
 			)
 		end,
 	}
@@ -630,7 +630,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SponsorBuildingLimits,
-				302535920001399--[[Allow you to build all buildings no matter your sponsor.--]]
+				S[302535920001399--[[Allow you to build all buildings no matter your sponsor.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle,
@@ -644,7 +644,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RotateDuringPlacement,
-				302535920001408--[[Allow you to rotate all buildings.--]]
+				S[302535920001408--[[Allow you to rotate all buildings.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.RotateDuringPlacement_Toggle,
@@ -668,7 +668,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SpaceElevatorToggleInstantExport,
-				302535920001331--[[Toggle Forbid Exports to have it instantly export current stock.--]]
+				S[302535920001331--[[Toggle Forbid Exports to have it instantly export current stock.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SpaceElevatorExport_Toggle,
@@ -682,7 +682,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount",
-				302535920001337--[[When you have this many rares in storage launch right away.--]]
+				S[302535920001337--[[When you have this many rares in storage launch right away.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetExportWhenThisAmount,
@@ -696,11 +696,11 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings.SpaceElevator.max_export_storage",
-				302535920001333--[[How many rare metals you can export per trip.--]]
+				S[302535920001333--[[How many rare metals you can export per trip.--]]]
 			)
 		end,
 		OnAction = function()
-			ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount("max_export_storage",302535920001332)
+			ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount("max_export_storage",S[302535920001332])
 		end,
 	}
 
@@ -712,11 +712,11 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings.SpaceElevator.cargo_capacity",
-				302535920001335--[[How much storage for import you can use.--]]
+				S[302535920001335--[[How much storage for import you can use.--]]]
 			)
 		end,
 		OnAction = function()
-			ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount("cargo_capacity",302535920001334)
+			ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount("cargo_capacity",S[302535920001334])
 		end,
 	}
 

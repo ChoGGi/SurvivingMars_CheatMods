@@ -363,7 +363,6 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 
---~ 		if mode == "w" or mode == "w+" then
 		if mode then
 			mode = nil
 		else
@@ -738,7 +737,7 @@ function OnMsg.ClassesGenerate()
 		local c = 0
 
 		if IsValid(obj) and IsValidEntity(obj.ChoGGi_orig_entity) then
-			default = S[1000121--[[Default--]]]
+			default = Trans(1000121--[[Default--]])
 			ItemList[1] = {
 				text = " " .. default,
 				value = default,
@@ -834,7 +833,7 @@ function OnMsg.ClassesGenerate()
 		local states = sel:GetStates() or ""
 		for i = 1, #states do
 			ItemList[i] = {
-				text = S[302535920000858--[[Index--]]] .. ": " .. i .. ", " .. S[1000037--[[Name--]]] .. ": " .. states[i],
+				text = S[302535920000858--[[Index--]]] .. ": " .. i .. ", " .. Trans(1000037--[[Name--]]) .. ": " .. states[i],
 				value = states[i],
 			}
 		end
@@ -850,8 +849,8 @@ function OnMsg.ClassesGenerate()
 			sel:SetState(value)
 			if value ~= "idle" then
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,3722--[[State--]]),
-					302535920000859--[[Anim State--]]
+					ChoGGi.ComFuncs.SettingState(choice[1].text,Trans(3722--[[State--]])),
+					S[302535920000859--[[Anim State--]]]
 				)
 			end
 		end
@@ -859,7 +858,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000860--[[Set Anim State--]],
+			title = S[302535920000860--[[Set Anim State--]]],
 			hint = S[302535920000861--[[Current State: %s--]]]:format(sel:GetState()),
 			custom_type = 7,
 		}
@@ -954,7 +953,7 @@ function OnMsg.ClassesGenerate()
 			spots[sel:GetSpotName(i)] = true
 		end
 
-		local default = S[1000121--[[Default--]]]
+		local default = Trans(1000121--[[Default--]])
 
 		local ItemList = {{text = " " .. default,value = default}}
 		local c = 1
@@ -1195,11 +1194,11 @@ function OnMsg.ClassesGenerate()
 			if err then
 				return err
 			end
-			cmdline = [["]] .. ConvertToOSPath(g_HgimgcvtPath) .. [[" "]] .. texture_output .. [[" "]] .. ui_output .. [["]]
-			err = AsyncExec(cmdline, "", true, false)
-			if err then
-				return err
-			end
+--~ 			cmdline = [["]] .. ConvertToOSPath(g_HgimgcvtPath) .. [[" "]] .. texture_output .. [[" "]] .. ui_output .. [["]]
+--~ 			err = AsyncExec(cmdline, "", true, false)
+--~ 			if err then
+--~ 				return err
+--~ 			end
 
 			err = AsyncStringToFile(mtl_output,[[<?xml version="1.0" encoding="UTF-8"?>
 <Materials>
@@ -1245,13 +1244,6 @@ function OnMsg.ClassesGenerate()
 
 	do -- ExamineEntSpots
 		local spots_str = [[<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s,%s,%s" spot_scale="%s" spot_rot="%s,%s,%s,%s"/>]]
---~ 		local bsphere_str = [[<bsphere value="%s,%s,%s,%s"/>]]
---~ 		local box_str = [[<box min="%s,%s,%s" max="%s,%s,%s"/>]]
---~ 		local readme_str = [[Readme:
---~ See bottom for box/bsphere.
---~ The func I use for spot_rot rounds to two decimal points...
-
---~ ]]
 
 --~ local list = ChoGGi.ComFuncs.ExamineEntSpots(s,true)
 --~ list = ChoGGi.ComFuncs.TableConcat(list,"\n")
@@ -1326,14 +1318,12 @@ The func I use for spot_rot rounds to two decimal points...
 			local bbox = obj:GetEntityBBox()
 			local x1,y1,z1 = bbox:minxyz()
 			local x2,y2,z2 = bbox:maxxyz()
---~ 			spots_table.box = box_str:format(x1,y1,z1,x2,y2,z2)
-			spots_table.box = "<box min=" .. x1 .. "," .. y1 .. "," .. z1 .. " max=" .. x2 .. "," .. y2 .. "," .. z2 .. "/>"
+			spots_table.box = "<box min=\"" .. x1 .. "," .. y1 .. "," .. z1 .. "\" max=\"" .. x2 .. "," .. y2 .. "," .. z2 .. "\"/>"
 
 			local pos_x, pos_y, pos_z, rad = obj:GetBSphere("idle", true)
---~ 			spots_table.bsphere = bsphere_str:format(pos_x - origin_pos_x, pos_y - origin_pos_y, pos_z - origin_pos_z, rad)
-			spots_table.bsphere = "<bsphere value=" .. (pos_x - origin_pos_x) .. ","
+			spots_table.bsphere = "<bsphere value=\"" .. (pos_x - origin_pos_x) .. ","
 				.. (pos_y - origin_pos_y) .. "," .. (pos_z - origin_pos_z) .. ","
-				.. rad .. "/>"
+				.. rad .. "\"/>"
 
 			if parent_or_ret == true then
 				return spots_table
@@ -1341,7 +1331,7 @@ The func I use for spot_rot rounds to two decimal points...
 				ChoGGi.ComFuncs.OpenInExamineDlg(
 					spots_table,
 					parent_or_ret,
-					string.format("%s: %s",S[302535920000235--[[Attach Spots List--]]],RetName(obj))
+					S[302535920000235--[[Attach Spots List--]]] .. ": " .. RetName(obj)
 				)
 			end
 		end

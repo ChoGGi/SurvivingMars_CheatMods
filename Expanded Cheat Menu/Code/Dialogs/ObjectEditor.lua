@@ -46,7 +46,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 
 	self.obj_name = RetName(context.obj)
 	self.obj = context.obj
-	self.title = S[327465361219--[[Edit--]]] .. " " .. S[298035641454--[[Object--]]] .. ": " .. self.obj_name
+	self.title = Trans(327465361219--[[Edit--]]) .. " " .. Trans(298035641454--[[Object--]]) .. ": " .. self.obj_name
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -73,7 +73,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 
 	self.idRefresh = g_Classes.ChoGGi_Button:new({
 		Id = "idRefresh",
-		Text = S[1000220--[[Refresh--]]],
+		Text = Trans(1000220--[[Refresh--]]),
 		Dock = "left",
 		MinWidth = 80,
 		RolloverText = S[302535920000092--[[Updates list with any changed values.--]]],
@@ -170,12 +170,12 @@ function ChoGGi_ObjectEditorDlg:idAddNewOnPress()
 		sel_name = self.sel.text
 		sel_value = self.sel.value
 	else
-		sel_name = S[3718--[[NONE--]]]
+		sel_name = Trans(3718--[[NONE--]])
 		sel_value = false
 	end
 	local ItemList = {
-		{text = S[302535920000095--[[New Entry--]]],value = sel_name,hint = 302535920000096--[[Enter the name of the new entry to be added.--]]},
-		{text = S[302535920000097--[[New Value--]]],value = sel_value,hint = 302535920000098--[[Set the value of the new entry to be added.--]]},
+		{text = S[302535920000095--[[New Entry--]]],value = sel_name,hint = S[302535920000096--[[Enter the name of the new entry to be added.--]]]},
+		{text = S[302535920000097--[[New Value--]]],value = sel_value,hint = S[302535920000098--[[Set the value of the new entry to be added.--]]]},
 	}
 
 	local function CallBackFunc(choice)

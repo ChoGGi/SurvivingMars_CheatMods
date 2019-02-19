@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 
@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Colonists = "ECM.ECM.Colonists"
 	c = c + 1
-	Actions[c] = {ActionName = S[547--[[Colonists--]]],
+	Actions[c] = {ActionName = Trans(547--[[Colonists--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Colonists",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -26,7 +26,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NoMoreEarthsick,
-				302535920000370--[[Colonists will never become Earthsick (and removes any when you enable this).--]]
+				S[302535920000370--[[Colonists will never become Earthsick (and removes any when you enable this).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle,
@@ -38,12 +38,12 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Traits: Restrict For Selected Building Type",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = function()
-			local text = 302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block will override).--]]
+			local text = S[302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block will override).--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".restricttraits",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetBuildingTraits("restricttraits")
@@ -56,12 +56,12 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Traits: Block For Selected Building Type",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = function()
-			local text = 302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]
+			local text = S[302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".blocktraits",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetBuildingTraits("blocktraits")
@@ -87,7 +87,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SpeedColonist,
-				302535920000378--[[How fast colonists will move.--]]
+				S[302535920000378--[[How fast colonists will move.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetColonistMoveSpeed,
@@ -101,7 +101,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				#(g_ApplicantPool or ""),
-				302535920000380--[[Add random applicants to the passenger pool (has option to remove all).--]]
+				S[302535920000380--[[Add random applicants to the passenger pool (has option to remove all).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.AddApplicantsToPool,
@@ -115,7 +115,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.GravityColonist,
-				302535920000382--[[Change gravity of Colonists.--]]
+				S[302535920000382--[[Change gravity of Colonists.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetColonistsGravity,
@@ -129,8 +129,8 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.OxygenMaxOutsideTime,
-				302535920000417--[["Disable colonists suffocating with no oxygen.
-	Works after in-game hour."--]]
+				S[302535920000417--[["Disable colonists suffocating with no oxygen.
+	Works after in-game hour."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle,
@@ -144,8 +144,8 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.TimeBeforeStarving,
-				302535920000419--[["Disable colonists starving with no food.
-Works after colonist idle."--]]
+				S[302535920000419--[["Disable colonists starving with no food.
+Works after colonist idle."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ColonistsStarve_Toggle,
@@ -159,7 +159,7 @@ Works after colonist idle."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NewColonistAge,
-				302535920000425--[[This will make all newly arrived and born colonists a certain age.--]]
+				S[302535920000425--[[This will make all newly arrived and born colonists a certain age.--]]]
 			)
 		end,
 		OnAction = function()
@@ -186,7 +186,7 @@ Works after colonist idle."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NewColonistGender,
-				302535920000429--[[This will make all newly arrived and born colonists a certain gender.--]]
+				S[302535920000429--[[This will make all newly arrived and born colonists a certain gender.--]]]
 			)
 		end,
 		OnAction = function()
@@ -213,7 +213,7 @@ Works after colonist idle."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NewColonistSpecialization,
-				302535920000433--[[This will make all newly arrived colonists a certain specialization (children and spec = black cube).--]]
+				S[302535920000433--[[This will make all newly arrived colonists a certain specialization (children and spec = black cube).--]]]
 			)
 		end,
 		OnAction = function()
@@ -240,7 +240,7 @@ Works after colonist idle."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NewColonistRace,
-				302535920000437--[[This will make all newly arrived and born colonists a certain race.--]]
+				S[302535920000437--[[This will make all newly arrived and born colonists a certain race.--]]]
 			)
 		end,
 		OnAction = function()
@@ -267,7 +267,7 @@ Works after colonist idle."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NewColonistTraits,
-				302535920000441--[[This will make all newly arrived and born colonists have certain traits.--]]
+				S[302535920000441--[[This will make all newly arrived and born colonists have certain traits.--]]]
 			)
 		end,
 		OnAction = function()
@@ -305,7 +305,7 @@ Works after colonist idle."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DeathAgeColonist,
-				302535920000447--[[Change the age at which colonists die (applies to newly arrived and born colonists as well).--]]
+				S[302535920000447--[[Change the age at which colonists die (applies to newly arrived and born colonists as well).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDeathAge,
@@ -347,8 +347,8 @@ Works after colonist idle."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.AvoidWorkplaceSols,
-				302535920000388--[["After being fired, Colonists won't avoid that Workplace searching for a Workplace.
-	Works after colonist idle."--]]
+				S[302535920000388--[["After being fired, Colonists won't avoid that Workplace searching for a Workplace.
+	Works after colonist idle."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.AvoidWorkplace_Toggle,
@@ -362,8 +362,8 @@ Works after colonist idle."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NonSpecialistPerformancePenalty,
-				302535920000390--[["Disable performance penalty for non-Specialists.
-Activated when colonist changes job."--]]
+				S[302535920000390--[["Disable performance penalty for non-Specialists.
+Activated when colonist changes job."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle,
@@ -377,8 +377,8 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NonHomeDomePerformancePenalty,
-				302535920001451--[["Disable performance penalty for colonists working in another connected dome.
-Activated when colonist changes job."--]]
+				S[302535920001451--[["Disable performance penalty for colonists working in another connected dome.
+Activated when colonist changes job."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.NonHomeDomePerformancePenalty_Toggle,
@@ -392,7 +392,7 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 					ChoGGi.UserSettings.DefaultOutsideWorkplacesRadius,
-					302535920000391--[[Change how many hexes colonists search outside their dome when looking for a Workplace.--]]
+					S[302535920000391--[[Change how many hexes colonists search outside their dome when looking for a Workplace.--]]]
 				)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius,
@@ -409,7 +409,7 @@ Activated when colonist changes job."--]]
 
 	local str_ECM_Colonists_Stats = "ECM.ECM.Colonists.Stats"
 	c = c + 1
-	Actions[c] = {ActionName = S[5568--[[Stats--]]],
+	Actions[c] = {ActionName = Trans(5568--[[Stats--]]),
 		ActionMenubar = "ECM.ECM.Colonists",
 		ActionId = ".Stats",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -425,7 +425,7 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.MinComfortBirth,
-				302535920000396--[[Change the limit on birthing comfort (more/less babies).--]]
+				S[302535920000396--[[Change the limit on birthing comfort (more/less babies).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetMinComfortBirth,
@@ -439,7 +439,7 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.VisitFailPenalty,
-				302535920000398--[[Disable comfort penalty when failing to satisfy a need via a visit.--]]
+				S[302535920000398--[[Disable comfort penalty when failing to satisfy a need via a visit.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.VisitFailPenalty_Toggle,
@@ -453,8 +453,8 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RenegadeCreation,
-				302535920000400--[["Disable creation of renegades.
-	Works after daily update."--]]
+				S[302535920000400--[["Disable creation of renegades.
+	Works after daily update."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.RenegadeCreation_Toggle,
@@ -477,8 +477,8 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.HighStatLevel,
-				302535920000403--[["Colonists always max morale (will effect birthing rates).
-	Only works on colonists that have yet to spawn (maybe)."--]]
+				S[302535920000403--[["Colonists always max morale (will effect birthing rates).
+	Only works on colonists that have yet to spawn (maybe)."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle,
@@ -492,8 +492,8 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SeeDeadSanity,
-				302535920000405--[["Disable colonists taking sanity damage from seeing dead.
-	Works after in-game hour."--]]
+				S[302535920000405--[["Disable colonists taking sanity damage from seeing dead.
+	Works after in-game hour."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle,
@@ -507,8 +507,8 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NoHomeComfort,
-				302535920000407--[["Disable colonists taking comfort damage from not having a home.
-	Works after in-game hour."--]]
+				S[302535920000407--[["Disable colonists taking comfort damage from not having a home.
+	Works after in-game hour."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle,
@@ -522,23 +522,23 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DustStormSanityDamage,
-				302535920000409--[["Disable colonists taking sanity damage from certain events.
-	Works after in-game hour."--]]
+				S[302535920000409--[["Disable colonists taking sanity damage from certain events.
+	Works after in-game hour."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ChanceOfSanityDamage_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[4576--[[Chance Of Suicide--]]],
+	Actions[c] = {ActionName = Trans(4576--[[Chance Of Suicide--]]),
 		ActionMenubar = str_ECM_Colonists_Stats,
 		ActionId = ".Chance Of Suicide",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.LowSanitySuicideChance,
-				302535920000415--[["Disable chance of suicide when Sanity reaches zero.
-	Works after colonist idle."--]]
+				S[302535920000415--[["Disable chance of suicide when Sanity reaches zero.
+	Works after colonist idle."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle,
@@ -546,7 +546,7 @@ Activated when colonist changes job."--]]
 
 	local str_ECM_Colonists_Traits = "ECM.ECM.Colonists.Traits"
 	c = c + 1
-	Actions[c] = {ActionName = S[235--[[Traits--]]],
+	Actions[c] = {ActionName = Trans(235--[[Traits--]]),
 		ActionMenubar = "ECM.ECM.Colonists",
 		ActionId = ".Traits",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -562,7 +562,7 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait,
-				302535920000411--[[When colonist graduates this will remove idiot trait.--]]
+				Trans(302535920000411--[[When colonist graduates this will remove idiot trait.--]])
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.UniversityGradRemoveIdiotTrait_Toggle,
@@ -576,8 +576,8 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.LowSanityNegativeTraitChance,
-				302535920000413--[["isable chance of getting a negative trait when Sanity reaches zero.
-	Works after colonist idle."--]]
+				S[302535920000413--[["isable chance of getting a negative trait when Sanity reaches zero.
+	Works after colonist idle."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle,
@@ -591,7 +591,7 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.positive_playground_chance,
-				302535920000421--[[100% Chance to get a perk (when grown) if colonist has visited a playground as a child.--]]
+				S[302535920000421--[[100% Chance to get a perk (when grown) if colonist has visited a playground as a child.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.PositivePlayground_Toggle,
@@ -605,7 +605,7 @@ Activated when colonist changes job."--]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance,
-				302535920000423--[[100% Chance to get positive trait when Resting and ProjectMorpheus is active.--]]
+				S[302535920000423--[[100% Chance to get positive trait when Resting and ProjectMorpheus is active.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle,

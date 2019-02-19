@@ -5,6 +5,7 @@
 local MeasureImage = UIL.MeasureImage
 
 local S
+local Trans
 local GetParentOfKind
 local PopupToggle
 local Random
@@ -14,6 +15,7 @@ function OnMsg.ClassesGenerate()
 	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 	Random = ChoGGi.ComFuncs.Random
+	Trans = ChoGGi.ComFuncs.Translate
 end
 
 local function GetRootDialog(dlg)
@@ -24,7 +26,6 @@ DefineClass.ChoGGi_ImageViewerDlg = {
 
 	dialog_width = 700.0,
 	dialog_height = 700.0,
-	title = 302535920001469--[[Image Viewer--]],
 	-- index list of images
 	images = false,
 	-- index list of popup menu items
@@ -36,6 +37,7 @@ DefineClass.ChoGGi_ImageViewerDlg = {
 function ChoGGi_ImageViewerDlg:Init(parent, context)
 	local g_Classes = g_Classes
 
+
 	self.images = context.obj
 	if type(self.images) ~= "table" then
 		self.images = {{
@@ -45,6 +47,7 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	end
 
 	self.idImageMenu = Random()
+	self.title = S[302535920001469--[[Image Viewer--]]]
 	self.prefix = S[302535920001469--[[Image Viewer--]]]
 
 	-- By the Power of Grayskull!
@@ -60,7 +63,7 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	self:BuildImageMenuPopup()
 	self.idImages = g_Classes.ChoGGi_ComboButton:new({
 		Id = "idImages",
-		Text = S[3794--[[Image--]]],
+		Text = Trans(3794--[[Image--]]),
 		OnMouseButtonDown = self.idImagesOnMouseButtonDown,
 		Dock = "left",
 	}, self.idButtonContainer)

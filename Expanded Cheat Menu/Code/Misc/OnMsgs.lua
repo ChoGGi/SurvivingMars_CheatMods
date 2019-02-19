@@ -12,6 +12,7 @@ local OnMsg = OnMsg
 
 local MsgPopup
 local RetName
+local Trans
 local S
 local blacklist
 local testing
@@ -22,6 +23,7 @@ function OnMsg.ClassesGenerate()
 
 	MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	RetName = ChoGGi.ComFuncs.RetName
+	Trans = ChoGGi.ComFuncs.Translate
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 	testing = ChoGGi.testing
@@ -221,8 +223,8 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
-					"RolloverTitle", S[1000077--[[Rotate--]]],
-					"RolloverText", S[312752058553--[[Rotate Building Left--]]],
+					"RolloverTitle", Trans(1000077--[[Rotate--]]),
+					"RolloverText", Trans(312752058553--[[Rotate Building Left--]]),
 					"RolloverHint", S[302535920000083--[[<left_click> Activate--]]],
 					"OnPress", function(self)
 						self.context:Rotate()
@@ -274,7 +276,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		if ChoGGi.UserSettings.Building_hide_from_build_menu and not table.find(bc,"id","HiddenX") then
 			bc[#bc+1] = {
 				id = "HiddenX",
-				name = S[1000155--[[Hidden--]]],
+				name = Trans(1000155--[[Hidden--]]),
 				image = "UI/Icons/bmc_placeholder.tga",
 				highlight = "UI/Icons/bmc_placeholder_shine.tga",
 			}
@@ -377,7 +379,7 @@ function OnMsg.ModsReloaded()
 			end
 
 			dlgConsole.idEdit.RolloverTemplate = "Rollover"
-			dlgConsole.idEdit.RolloverTitle = S[302535920001073--[[Console--]]] .. " " .. S[487939677892--[[Help--]]]
+			dlgConsole.idEdit.RolloverTitle = S[302535920001073--[[Console--]]] .. " " .. Trans(487939677892--[[Help--]])
 			if blacklist then
 				dlgConsole.idEdit.RolloverText = S[302535920001512--[[You need to have my HelperMod enabled to use these:--]]] .. "\n\n\n" .. S[302535920001440]
 				dlgConsole.idEdit.Hint = S[302535920001513--[["ex(obj) = examine object, s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
@@ -441,7 +443,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			if UserSettings.EnableToolTips then
 				local toolbar = XShortcutsTarget.idMenuBar
 				toolbar:SetRolloverTemplate("Rollover")
-				toolbar:SetRolloverTitle(S[126095410863--[[Info--]]])
+				toolbar:SetRolloverTitle(Trans(126095410863--[[Info--]]))
 				toolbar:SetRolloverText(S[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
 				toolbar:SetRolloverHint(S[302535920001441--[["<left_click> Activate, <right_click> Add/Remove"--]]])
 			end
@@ -1044,7 +1046,7 @@ function OnMsg.MysteryBegin()
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
 				.. S[302535920000729--[[You've started a mystery!--]]],
-			3486--[[Mystery--]]
+			Trans(3486--[[Mystery--]])
 --~ 			"UI/Icons/Logos/logo_13.tga"
 --~ 			"UI/Icons/Notifications/New/mystery_log.tga"
 		)
@@ -1056,7 +1058,7 @@ function OnMsg.MysteryChosen()
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
 				.. S[302535920000730--[[You've chosen a mystery!--]]],
-			3486--[[Mystery--]]
+			Trans(3486--[[Mystery--]])
 		)
 	end
 end
@@ -1066,7 +1068,7 @@ function OnMsg.MysteryEnd(outcome)
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
 				.. tostring(outcome),
-			3486--[[Mystery--]]
+			Trans(3486--[[Mystery--]])
 		)
 	end
 end
@@ -1537,7 +1539,7 @@ do -- LoadGame/CityStart
 
 		-- everyone loves a new titlebar, unless they don't
 		if UserSettings.ChangeWindowTitle then
-			terminal.SetOSWindowTitle(S[1079--[[Surviving Mars--]]] .. ": " .. S[302535920000887--[[ECM--]]] .. " v" .. ChoGGi._VERSION)
+			terminal.SetOSWindowTitle(Trans(1079--[[Surviving Mars--]]) .. ": " .. S[302535920000887--[[ECM--]]] .. " v" .. ChoGGi._VERSION)
 		end
 
 		-- first time run info

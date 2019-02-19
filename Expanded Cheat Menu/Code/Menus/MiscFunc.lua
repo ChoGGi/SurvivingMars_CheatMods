@@ -3,6 +3,7 @@
 local next,type = next,type
 
 function OnMsg.ClassesGenerate()
+	local Trans = ChoGGi.ComFuncs.Translate
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
@@ -11,24 +12,24 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 		local ChoGGi = ChoGGi
 		local ItemList = {
-			{text = S[547--[[Colonists--]]],value = "Colonist"},
-			{text = S[1120--[[Space Elevator--]]],value = "SpaceElevator"},
-			{text = S[3518--[[Drone Hub--]]],value = "DroneHub"},
-			{text = S[1685--[[Rocket--]]],value = "SupplyRocket"},
+			{text = Trans(547--[[Colonists--]]),value = "Colonist"},
+			{text = Trans(1120--[[Space Elevator--]]),value = "SpaceElevator"},
+			{text = Trans(3518--[[Drone Hub--]]),value = "DroneHub"},
+			{text = Trans(1685--[[Rocket--]]),value = "SupplyRocket"},
 
-			{text = S[1682--[[RC Rover--]]],value = "RCRover"},
-			{text = S[1684--[[RC Explorer--]]],value = "RCExplorer"},
-			{text = S[1683--[[RC Transport--]]],value = "RCTransport"},
+			{text = Trans(1682--[[RC Rover--]]),value = "RCRover"},
+			{text = Trans(1684--[[RC Explorer--]]),value = "RCExplorer"},
+			{text = Trans(1683--[[RC Transport--]]),value = "RCTransport"},
 
-			{text = S[5017--[[Basic Dome--]]],value = "DomeBasic"},
-			{text = S[5146--[[Medium Dome--]]],value = "DomeMedium"},
-			{text = S[5152--[[Mega Dome--]]],value = "DomeMega"},
-			{text = S[5188--[[Oval Dome--]]],value = "DomeOval"},
-			{text = S[5093--[[Geoscape Dome--]]],value = "GeoscapeDome"},
-			{text = S[9000--[[Micro Dome--]]],value = "DomeMicro"},
-			{text = S[9003--[[Trigon Dome--]]],value = "DomeTrigon"},
-			{text = S[9009--[[Mega Trigon Dome--]]],value = "DomeMegaTrigon"},
-			{text = S[9012--[[Diamond Dome--]]],value = "DomeDiamond"},
+			{text = Trans(5017--[[Basic Dome--]]),value = "DomeBasic"},
+			{text = Trans(5146--[[Medium Dome--]]),value = "DomeMedium"},
+			{text = Trans(5152--[[Mega Dome--]]),value = "DomeMega"},
+			{text = Trans(5188--[[Oval Dome--]]),value = "DomeOval"},
+			{text = Trans(5093--[[Geoscape Dome--]]),value = "GeoscapeDome"},
+			{text = Trans(9000--[[Micro Dome--]]),value = "DomeMicro"},
+			{text = Trans(9003--[[Trigon Dome--]]),value = "DomeTrigon"},
+			{text = Trans(9009--[[Mega Trigon Dome--]]),value = "DomeMegaTrigon"},
+			{text = Trans(9012--[[Diamond Dome--]]),value = "DomeDiamond"},
 			{text = S[302535920000347--[[Star Dome--]]],value = "DomeStar"},
 			{text = S[302535920000351--[[Hexa Dome--]]],value = "DomeHexa"},
 		}
@@ -91,7 +92,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				S[302535920001093--[[Toggled: %s pinnable objects.--]]]:format(#choice),
-				302535920001092--[[Pins--]]
+				S[302535920001092--[[Pins--]]]
 			)
 		end
 
@@ -100,20 +101,20 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001095--[[Auto Remove Items From Pin List--]],
+			title = S[302535920001095--[[Auto Remove Items From Pin List--]]],
 			hint = TableConcat(EnabledList),
 			multisel = true,
 			check = {
 				at_least_one = true,
 				only_one = true,
 				{
-					title = 302535920001098--[[Add to list--]],
-					hint = 302535920001099--[[Add these items to the unpin list.--]],
+					title = S[302535920001098--[[Add to list--]]],
+					hint = S[302535920001099--[[Add these items to the unpin list.--]]],
 					checked = true,
 				},
 				{
-					title = 302535920001100--[[Remove from list--]],
-					hint = 302535920001101--[[Remove these items from the unpin list.--]],
+					title = S[302535920001100--[[Remove from list--]]],
+					hint = S[302535920001101--[[Remove these items from the unpin list.--]]],
 				},
 			},
 			skip_sort = true,
@@ -128,8 +129,8 @@ function OnMsg.ClassesGenerate()
 			end
 		end)
 		MsgPopup(
-			302535920001102--[[Cleaned all--]],
-			302535920001103--[[Objects--]]
+			S[302535920001102--[[Cleaned all--]]],
+			S[302535920001103--[[Objects--]]]
 		)
 	end
 
@@ -146,8 +147,8 @@ function OnMsg.ClassesGenerate()
 		end)
 
 		MsgPopup(
-			302535920001104--[[Fixed all--]],
-			302535920001103--[[Objects--]]
+			S[302535920001104--[[Fixed all--]]],
+			S[302535920001103--[[Objects--]]]
 		)
 	end
 
@@ -159,7 +160,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920001124--[[%s: scans at a time.--]]]:format(ChoGGi.UserSettings.ExplorationQueueMaxSize),
-			302535920001125--[[Scanner--]],
+			S[302535920001125--[[Scanner--]]],
 			"UI/Icons/Notifications/scan.tga"
 		)
 	end
@@ -168,7 +169,7 @@ function OnMsg.ClassesGenerate()
 	-- use GetTimeFactor() to check time for changing it so it can be paused?
 	do -- SetGameSpeed
 		local ItemList = {
-			{text = S[1000121--[[Default--]]],value = 1},
+			{text = Trans(1000121--[[Default--]]),value = 1},
 			{text = S[302535920001126--[[Double--]]],value = 2},
 			{text = S[302535920001127--[[Triple--]]],value = 3},
 			{text = S[302535920001128--[[Quadruple--]]],value = 4},
@@ -203,7 +204,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]]]:format(choice[1].text),
-					302535920001136--[[Speed--]],
+					S[302535920001136--[[Speed--]]],
 					"UI/Icons/Notifications/timer.tga",
 					true
 				)
@@ -211,7 +212,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local speeds = {
-			[3] = S[1000121--[[Default--]]],
+			[3] = Trans(1000121--[[Default--]]),
 			[6] = S[302535920001126--[[Double--]]],
 			[9] = S[302535920001127--[[Triple--]]],
 			[12] = S[302535920001128--[[Quadruple--]]],
@@ -231,7 +232,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = 302535920001137--[[Set Game Speed--]],
+				title = S[302535920001137--[[Set Game Speed--]]],
 				hint = S[302535920000933--[[Current speed: %s--]]]:format(current),
 				skip_sort = true,
 			}
@@ -259,10 +260,10 @@ function OnMsg.ClassesGenerate()
 		function ChoGGi.MenuFuncs.SetEntity()
 			local ChoGGi = ChoGGi
 			local sel = ChoGGi.ComFuncs.SelObject()
-			local entity_str = 155--[[Entity--]]
+			local entity_str = Trans(155--[[Entity--]])
 			if not sel then
 				MsgPopup(
-					302535920001139--[[You need to select an object.--]],
+					S[302535920001139--[[You need to select an object.--]]],
 					entity_str
 				)
 				return
@@ -343,12 +344,12 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 					check = {
 					only_one = true,
 					{
-						title = 302535920000750--[[Dome Only--]],
-						hint = 302535920001255--[[Will only apply to objects in the same dome as selected object.--]],
+						title = S[302535920000750--[[Dome Only--]]],
+						hint = S[302535920001255--[[Will only apply to objects in the same dome as selected object.--]]],
 					},
 					{
-						title = 302535920000752--[[Selected Only--]],
-						hint = 302535920001256--[[Will only apply to selected object.--]],
+						title = S[302535920000752--[[Selected Only--]]],
+						hint = S[302535920001256--[[Will only apply to selected object.--]]],
 					},
 				},
 			}
@@ -398,14 +399,14 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 			local sel = ChoGGi.ComFuncs.SelObject()
 			if not sel then
 				MsgPopup(
-					302535920001139--[[You need to select an object.--]],
-					1000081--[[Scale--]]
+					S[302535920001139--[[You need to select an object.--]]],
+					Trans(1000081--[[Scale--]])
 				)
 				return
 			end
 
 			local ItemList = {
-				{text = S[1000121--[[Default--]]],value = 100},
+				{text = Trans(1000121--[[Default--]]),value = 100},
 				{text = 25,value = 25},
 				{text = 50,value = 50},
 				{text = 100,value = 100},
@@ -444,7 +445,7 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 					end
 					MsgPopup(
 						choice[1].text .. ": " .. RetName(sel),
-						1000081--[[Scale--]],
+						Trans(1000081--[[Scale--]]),
 						nil,
 						nil,
 						sel
@@ -461,12 +462,12 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 				check = {
 					only_one = true,
 					{
-						title = 302535920000750--[[Dome Only--]],
-						hint = 302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]],
+						title = S[302535920000750--[[Dome Only--]]],
+						hint = S[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]],
 					},
 					{
-						title = 302535920000752--[[Selected Only--]],
-						hint = 302535920000753--[[Will only apply to selected colonist.--]],
+						title = S[302535920000752--[[Selected Only--]]],
+						hint = S[302535920000753--[[Will only apply to selected colonist.--]]],
 					},
 				},
 				skip_sort = true,

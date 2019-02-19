@@ -3,6 +3,7 @@
 -- shortcut keys without a menu item (maybe Menus isn't the best folder for this)
 
 function OnMsg.ClassesGenerate()
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -16,7 +17,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[174--[[Color Modifier--]]] .. " " .. S[302535920001346--[[Random Colour--]]],
+	Actions[c] = {ActionName = Trans(174--[[Color Modifier--]]) .. " " .. S[302535920001346--[[Random Colour--]]],
 		ActionId = ".Keys.ObjectColourRandom",
 		OnAction = function()
 			ChoGGi.ComFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
@@ -26,7 +27,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[174--[[Color Modifier--]]] .. " " .. S[302535920000025--[[Default Colour--]]],
+	Actions[c] = {ActionName = Trans(174--[[Color Modifier--]]) .. " " .. S[302535920000025--[[Default Colour--]]],
 		ActionId = ".Keys.ObjectColourDefault",
 		OnAction = function()
 			ChoGGi.ComFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())
@@ -91,7 +92,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000069--[[Examine--]]] .. " " .. S[302535920001103--[[Objects--]]] .. " " .. S[1000448--[[Shift--]]],
+	Actions[c] = {ActionName = S[302535920000069--[[Examine--]]] .. " " .. S[302535920001103--[[Objects--]]] .. " " .. Trans(1000448--[[Shift--]]),
 		ActionId = ".Keys.Examine Objects Shift",
 		OnAction = function()
 			local objs = MapGet(GetTerrainCursor(),2500)
@@ -104,7 +105,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000069--[[Examine--]]] .. " " .. S[302535920001103--[[Objects--]]] .. " " .. S[1000449--[[Ctrl--]]],
+	Actions[c] = {ActionName = S[302535920000069--[[Examine--]]] .. " " .. S[302535920001103--[[Objects--]]] .. " " .. Trans(1000449--[[Ctrl--]]),
 		ActionId = ".Keys.Examine Objects Ctrl",
 		OnAction = function()
 			local objs = MapGet(GetTerrainCursor(),10000)

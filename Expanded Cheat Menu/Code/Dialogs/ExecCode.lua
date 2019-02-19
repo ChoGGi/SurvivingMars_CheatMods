@@ -3,6 +3,7 @@
 -- shows a dialog with to execute code in
 
 local S
+local Trans
 local blacklist
 local GetParentOfKind
 local IsControlPressed
@@ -11,6 +12,7 @@ local IsShiftPressed
 function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
+	Trans = ChoGGi.ComFuncs.Translate
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 	IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 	IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
@@ -186,7 +188,7 @@ Press again to toggle updating."--]]],
 	self.idCancel = g_Classes.ChoGGi_Button:new({
 		Id = "idCancel",
 		Dock = "right",
-		Text = S[6879--[[Cancel--]]],
+		Text = Trans(6879--[[Cancel--]]),
 		Background = g_Classes.ChoGGi_Button.bg_red,
 		RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
 		Margins = box(0, 0, 10, 0),

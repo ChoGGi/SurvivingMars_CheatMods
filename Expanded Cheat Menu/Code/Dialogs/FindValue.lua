@@ -106,7 +106,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 80,
-		Text = S[6879--[[Cancel--]]],
+		Text = Trans(6879--[[Cancel--]]),
 		Background = g_Classes.ChoGGi_Button.bg_red,
 		RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
 		Margins = box(0, 0, 10, 0),

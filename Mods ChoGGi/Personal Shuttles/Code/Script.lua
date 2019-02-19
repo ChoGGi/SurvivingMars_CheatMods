@@ -366,7 +366,8 @@ function PersonalShuttle:SelectedObject(sel,pos,dest)
 			-- pick it up
 			self:Attach(sel,self:GetSpotBeginIndex("Origin"))
 			-- bottom or top?
-			sel:SetAttachOffset(point(0,0,400))
+--~ 			sel:SetAttachOffset(point(0,0,400))
+
 			if sel:IsKindOf("BaseRover") then
 				sel:SetAttachOffset(point(0,0,400))
 			elseif sel:IsKindOf("Drone") then

@@ -16,14 +16,14 @@ function OnMsg.ClassesGenerate()
 		local icons = Presets.EncyclopediaArticle.Vehicles
 		local ItemList = {
 			{
-				text = S[10278--[[Wasp Drone--]]],
+				text = Trans(10278--[[Wasp Drone--]]),
 				value = "FlyingDrone",
-				hint = "<image " .. icons.FlyingDrone.image .. ">\n\n" .. S[10278--[[Wasp Drone--]]],
+				hint = "<image " .. icons.FlyingDrone.image .. ">\n\n" .. Trans(10278--[[Wasp Drone--]]),
 			},
 			{
-				text = S[1681--[[Drone--]]],
+				text = Trans(1681--[[Drone--]]),
 				value = "Drone",
-				hint = "<image " .. icons.Drone.image .. ">\n\n" .. S[1681--[[Drone--]]],
+				hint = "<image " .. icons.Drone.image .. ">\n\n" .. Trans(1681--[[Drone--]]),
 			},
 		}
 		local sponsor = GetMissionSponsor()
@@ -35,7 +35,7 @@ function OnMsg.ClassesGenerate()
 			sponsor.drone_class = choice[1].value
 			MsgPopup(
 				S[302535920001405--[[Drones will now spawn as: %s--]]]:format(choice[1].text),
-				302535920001403--[[Drone Type--]]
+				S[302535920001403--[[Drone Type--]]]
 			)
 		end
 
@@ -46,7 +46,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001403--[[Drone Type--]],
+			title = S[302535920001403--[[Drone Type--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(name) .. "\n"
 				.. S[302535920001406--[["Hubs can only have one type of drone, so you'll need pack/unpack all drones for each hub you wish to change (or use Drones>%s)."--]]]:format(S[302535920000513--[[Change Amount of Drones in Hub--]]]),
 		}
@@ -56,7 +56,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = 0
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 1,value = 1},
 			{text = 2,value = 2},
 			{text = 3,value = 3},
@@ -91,8 +91,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
-					5438--[[Rovers--]],
+					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
+					Trans(5438--[[Rovers--]]),
 					default_icon2
 				)
 			end
@@ -101,7 +101,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000880--[[Set Rover Charge Radius--]],
+			title = S[302535920000880--[[Set Rover Charge Radius--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -111,12 +111,12 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.RCRoverMaxRadius
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 40,value = 40},
 			{text = 80,value = 80},
 			{text = 160,value = 160},
-			{text = 320,value = 320,hint = 302535920000111--[[Cover the entire map from the centre.--]]},
-			{text = 640,value = 640,hint = 302535920000112--[[Cover the entire map from a corner.--]]},
+			{text = 320,value = 320,hint = S[302535920000111--[[Cover the entire map from the centre.--]]]},
+			{text = 640,value = 640,hint = S[302535920000112--[[Cover the entire map from a corner.--]]]},
 		}
 
 		--other hint type
@@ -144,7 +144,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000883--[[%s: I can see for miles and miles.--]]]:format(ChoGGi.UserSettings.RCRoverMaxRadius),
-					5438--[[Rovers--]],
+					Trans(5438--[[Rovers--]]),
 					"UI/Icons/Upgrades/service_bots_04.tga"
 				)
 			end
@@ -153,7 +153,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000884--[[Set Rover Work Radius--]],
+			title = S[302535920000884--[[Set Rover Work Radius--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint .. "\n\n"
 				.. S[302535920000115--[[Toggle selection to update visible hex grid.--]]],
 			skip_sort = true,
@@ -164,12 +164,12 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.CommandCenterMaxRadius
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 40,value = 40},
 			{text = 80,value = 80},
 			{text = 160,value = 160},
-			{text = 320,value = 320,hint = 302535920000111--[[Cover the entire map from the centre.--]]},
-			{text = 640,value = 640,hint = 302535920000112--[[Cover the entire map from a corner.--]]},
+			{text = 320,value = 320,hint = S[302535920000111--[[Cover the entire map from the centre.--]]]},
+			{text = 640,value = 640,hint = S[302535920000112--[[Cover the entire map from a corner.--]]]},
 		}
 
 		--other hint type
@@ -197,7 +197,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000883--[[%s: I can see for miles and miles--]]]:format(ChoGGi.UserSettings.CommandCenterMaxRadius),
-					3518--[[Drone Hub--]],
+					Trans(3518--[[Drone Hub--]]),
 					"UI/Icons/Upgrades/service_bots_04.tga"
 				)
 			end
@@ -206,7 +206,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000886--[[Set DroneHub Work Radius--]],
+			title = S[302535920000886--[[Set DroneHub Work Radius--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint .. "\n\n"
 				.. S[302535920000115--[[Toggle selection to update visible hex grid.--]]],
 			skip_sort = true,
@@ -217,7 +217,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 0,value = 0},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -242,8 +242,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.ComFuncs.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileAmount",Consts.DroneTransformWasteRockObstructorToStockpileAmount)
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
-					517--[[Drones--]],
+					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
+					Trans(517--[[Drones--]]),
 					default_icon
 				)
 			end
@@ -252,7 +252,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000509--[[Drone Rock To Concrete Speed--]],
+			title = S[302535920000509--[[Drone Rock To Concrete Speed--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -264,7 +264,7 @@ function OnMsg.ClassesGenerate()
 		local DefaultSetting = ChoGGi.Consts.SpeedDrone
 		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone")
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. (DefaultSetting / r),value = DefaultSetting,hint = 302535920000889--[[base speed--]]},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. (DefaultSetting / r),value = DefaultSetting,hint = S[302535920000889--[[base speed--]]]},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
 			{text = 15,value = 15 * r},
@@ -275,7 +275,7 @@ function OnMsg.ClassesGenerate()
 			{text = 10000,value = 10000 * r},
 		}
 		if DefaultSetting ~= UpgradedSetting then
-			table.insert(ItemList,2,{text = S[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting,hint = 302535920000891--[[apply tech unlocks--]]})
+			table.insert(ItemList,2,{text = S[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting,hint = S[302535920000891--[[apply tech unlocks--]]]})
 		end
 
 		local hint = UpgradedSetting
@@ -297,8 +297,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
-					517--[[Drones--]],
+					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
+					Trans(517--[[Drones--]]),
 					default_icon
 				)
 			end
@@ -307,7 +307,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000511--[[Drone Move Speed--]],
+			title = S[302535920000511--[[Drone Move Speed--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -319,7 +319,7 @@ function OnMsg.ClassesGenerate()
 		local DefaultSetting = ChoGGi.Consts.SpeedRC
 		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedRC")
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. (DefaultSetting / r),value = DefaultSetting,hint = 302535920000889--[[base speed--]]},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. (DefaultSetting / r),value = DefaultSetting,hint = S[302535920000889--[[base speed--]]]},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
 			{text = 15,value = 15 * r},
@@ -330,7 +330,7 @@ function OnMsg.ClassesGenerate()
 			{text = 10000,value = 10000 * r},
 		}
 		if DefaultSetting ~= UpgradedSetting then
-			table.insert(ItemList,2,{text = S[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting,hint = 302535920000891--[[apply tech unlocks--]]})
+			table.insert(ItemList,2,{text = S[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting,hint = S[302535920000891--[[apply tech unlocks--]]]})
 		end
 
 		local hint = UpgradedSetting
@@ -352,8 +352,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
-					5438--[[Rovers--]],
+					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
+					Trans(5438--[[Rovers--]]),
 					default_icon2
 				)
 			end
@@ -362,7 +362,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000543--[[RC Move Speed--]],
+			title = S[302535920000543--[[RC Move Speed--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -407,8 +407,8 @@ function OnMsg.ClassesGenerate()
 				end
 
 				MsgPopup(
-					choice[1].text .. ": " .. S[517--[[Drones--]]] .. " " .. change,
-					517--[[Drones--]],
+					choice[1].text .. ": " .. Trans(517--[[Drones--]]) .. " " .. change,
+					Trans(517--[[Drones--]]),
 					default_icon
 				)
 			end
@@ -417,13 +417,13 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000895--[[Change Amount Of Drones--]],
+			title = S[302535920000895--[[Change Amount Of Drones--]]],
 			hint = S[302535920000896--[[Drones in hub--]]] .. ": " .. CurrentAmount .. " "
 				.. S[302535920000897--[[Drone prefabs--]]] .. ": " .. UICity.drone_prefabs,
 			check = {
 				{
-					title = 302535920000898--[[Pack Drones--]],
-					hint = 302535920000899--[[Check this to pack drone(s) into prefabs (number can be higher than attached drones).--]],
+					title = S[302535920000898--[[Pack Drones--]]],
+					hint = S[302535920000899--[[Check this to pack drone(s) into prefabs (number can be higher than attached drones).--]]],
 				},
 			},
 			skip_sort = true,
@@ -434,7 +434,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.DroneFactoryBuildSpeed
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -480,8 +480,8 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000900--[[Build Speed--]]),
-				517--[[Drones--]],
+				ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000900--[[Build Speed--]]]),
+				Trans(517--[[Drones--]]),
 				default_icon
 			)
 		end
@@ -489,7 +489,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000901--[[Set Drone Factory Build Speed--]],
+			title = S[302535920000901--[[Set Drone Factory Build Speed--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -513,9 +513,9 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DroneMoveBatteryUse,
-				302535920000519--[[Drone Battery Infinite--]]
+				S[302535920000519--[[Drone Battery Infinite--]]]
 			),
-			517--[[Drones--]],
+			Trans(517--[[Drones--]]),
 			default_icon
 		)
 	end
@@ -530,9 +530,9 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DroneConstructAmount,
-				302535920000521--[[Drone Build Speed--]]
+				S[302535920000521--[[Drone Build Speed--]]]
 			),
-			517--[[Drones--]],
+			Trans(517--[[Drones--]]),
 			default_icon
 		)
 	end
@@ -547,7 +547,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000905--[[%s: Slight of hand--]]]:format(ChoGGi.UserSettings.RCRoverTransferResourceWorkTime),
-			5438--[[Rovers--]],
+			Trans(5438--[[Rovers--]]),
 			"UI/Icons/IPButtons/resources_section.tga"
 		)
 	end
@@ -560,7 +560,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000906--[[%s: I'm singing in the rain. Just singin' in the rain. What a glorious feeling.--]]]:format(ChoGGi.UserSettings.DroneMeteorMalfunctionChance),
-			517--[[Drones--]],
+			Trans(517--[[Drones--]]),
 			"UI/Icons/Notifications/meteor_storm.tga"
 		)
 	end
@@ -573,7 +573,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000907--[[%s: Well, if jacking on'll make strangers think I'm cool, I'll do it!--]]]:format(ChoGGi.UserSettings.DroneRechargeTime),
-			517--[[Drones--]],
+			Trans(517--[[Drones--]]),
 			"UI/Icons/Notifications/low_battery.tga",
 			true
 		)
@@ -587,7 +587,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000908--[[%s: You know what they say about leaky pipes.--]]]:format(ChoGGi.UserSettings.DroneRepairSupplyLeak),
-			517--[[Drones--]],
+			Trans(517--[[Drones--]]),
 			default_icon
 		)
 	end
@@ -597,7 +597,7 @@ function OnMsg.ClassesGenerate()
 		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("DroneResourceCarryAmount")
 		local hinttoolarge = S[302535920000909--[["If you set this amount larger then a building's ""Storage"" amount then the drones will NOT pick up storage (See: Fixes>%s)."--]]]:format(S[302535920000613--[[Drone Carry Amount--]]])
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25,hint = hinttoolarge},
@@ -606,7 +606,7 @@ function OnMsg.ClassesGenerate()
 			{text = 100,value = 100,hint = hinttoolarge},
 			{text = 250,value = 250,hint = hinttoolarge},
 			{text = 500,value = 500,hint = hinttoolarge},
-			{text = 1000,value = 1000,hint = string.format("%s\n\n%s",hinttoolarge,S[302535920000910--[[Somewhere above 1000 will delete the save (when it's full)--]]])},
+			{text = 1000,value = 1000,hint = hinttoolarge .. "\n\n" .. S[302535920000910--[[Somewhere above 1000 will delete the save (when it's full)--]]]},
 		}
 
 		local hint = DefaultSetting
@@ -631,7 +631,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000911--[[Drones can carry %s items.--]]]:format(choice[1].text),
-					517--[[Drones--]],
+					Trans(517--[[Drones--]]),
 					default_icon
 				)
 			end
@@ -640,8 +640,10 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000913--[[Set Drone Carry Capacity--]],
-			hint = string.format("%s: %s\n\n%s\n\n%s: 1000.",S[302535920000914--[[Current capacity--]]],hint,hinttoolarge,S[302535920000834--[[Max--]]]),
+			title = S[302535920000913--[[Set Drone Carry Capacity--]]],
+			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint
+				.. "\n\n" .. hinttoolarge .. "\n\n" .. S[302535920000834--[[Max--]]]
+				.. ": 1000.",
 			skip_sort = true,
 		}
 	end
@@ -650,7 +652,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("CommandCenterMaxDrones")
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -679,7 +681,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000916--[[DroneHubs can control %s drones.--]]]:format(choice[1].text),
-					5438--[[Rovers--]],
+					Trans(5438--[[Rovers--]]),
 					default_icon
 				)
 			end
@@ -688,7 +690,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000918--[[Set DroneHub Drone Capacity--]],
+			title = S[302535920000918--[[Set DroneHub Drone Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -698,7 +700,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("RCRoverMaxDrones")
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -727,7 +729,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000921--[[RC Rovers can control %s drones.--]]]:format(choice[1].text),
-					5438--[[Rovers--]],
+					Trans(5438--[[Rovers--]]),
 					default_icon2
 				)
 			end
@@ -736,7 +738,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000924--[[Set RC Rover Drone Capacity--]],
+			title = S[302535920000924--[[Set RC Rover Drone Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -747,14 +749,14 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportStorageCapacity") / r
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
 			{text = 100,value = 100},
 			{text = 250,value = 250},
 			{text = 500,value = 500},
 			{text = 1000,value = 1000},
-			{text = 2000,value = 2000,hint = 302535920000925--[[somewhere above 2000 will delete the save (when it's full)--]]},
+			{text = 2000,value = 2000,hint = S[302535920000925--[[somewhere above 2000 will delete the save (when it's full)--]]]},
 		}
 
 		local hint = DefaultSetting
@@ -800,7 +802,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000926--[[RC Transport capacity is now %s.--]]]:format(choice[1].text),
-					5438--[[Rovers--]],
+					Trans(5438--[[Rovers--]]),
 					"UI/Icons/bmc_building_storages_shine.tga"
 				)
 			end
@@ -809,7 +811,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000927--[[Set RC Transport Capacity--]],
+			title = S[302535920000927--[[Set RC Transport Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -820,7 +822,7 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = ChoGGi.Consts.StorageShuttle / r
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -829,7 +831,7 @@ function OnMsg.ClassesGenerate()
 			{text = 100,value = 100},
 			{text = 250,value = 250},
 			{text = 500,value = 500},
-			{text = 1000,value = 1000,hint = 302535920000928--[[somewhere above 1000 may delete the save (when it's full)--]]},
+			{text = 1000,value = 1000,hint = S[302535920000928--[[somewhere above 1000 may delete the save (when it's full)--]]]},
 		}
 
 		local hint = DefaultSetting
@@ -859,7 +861,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000929--[[Shuttle storage is now %s.--]]]:format(choice[1].text),
-					745--[[Shuttles--]],
+					Trans(745--[[Shuttles--]]),
 					default_icon3
 				)
 			end
@@ -868,7 +870,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000930--[[Set Cargo Shuttle Capacity--]],
+			title = S[302535920000930--[[Set Cargo Shuttle Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -879,7 +881,7 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = ChoGGi.Consts.SpeedShuttle / r
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
 			{text = 100,value = 100},
@@ -915,7 +917,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000931--[[Shuttle speed is now %s.--]]]:format(choice[1].text),
-					745--[[Shuttles--]],
+					Trans(745--[[Shuttles--]]),
 					default_icon3
 				)
 			end
@@ -924,7 +926,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000932--[[Set Cargo Shuttle Speed--]],
+			title = S[302535920000932--[[Set Cargo Shuttle Speed--]]],
 			hint = S[302535920000933--[[Current speed: %s--]]]:format(hint),
 			skip_sort = true,
 		}
@@ -934,7 +936,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.ShuttleHubShuttleCapacity
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -976,7 +978,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				S[302535920000934--[[ShuttleHub shuttle capacity is now %s.--]]]:format(choice[1].text),
-				745--[[Shuttles--]],
+				Trans(745--[[Shuttles--]]),
 				default_icon3
 			)
 		end
@@ -984,7 +986,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000535--[[Set ShuttleHub Shuttle Capacity--]],
+			title = S[302535920000535--[[Set ShuttleHub Shuttle Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -995,7 +997,7 @@ function OnMsg.ClassesGenerate()
 		local DefaultSetting = ChoGGi.Consts.GravityRC
 		local r = ChoGGi.Consts.ResourceScale
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 1,value = 1},
 			{text = 2,value = 2},
 			{text = 3,value = 3},
@@ -1032,7 +1034,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000919--[[RC gravity is now %s.--]]]:format(choice[1].text),
-					5438--[[Rovers--]],
+					Trans(5438--[[Rovers--]]),
 					default_icon2
 				)
 			end
@@ -1041,7 +1043,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000920--[[Set RC Gravity--]],
+			title = S[302535920000920--[[Set RC Gravity--]]],
 			hint = S[302535920000841--[[Current gravity: %s--]]]:format(hint),
 			skip_sort = true,
 		}
@@ -1052,7 +1054,7 @@ function OnMsg.ClassesGenerate()
 		local DefaultSetting = ChoGGi.Consts.GravityDrone
 		local r = ChoGGi.Consts.ResourceScale
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 1,value = 1},
 			{text = 2,value = 2},
 			{text = 3,value = 3},
@@ -1089,7 +1091,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000919--[[RC gravity is now %s.--]]]:format(choice[1].text),
-					5438--[[Rovers--]],
+					Trans(5438--[[Rovers--]]),
 					default_icon2
 				)
 			end
@@ -1098,7 +1100,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000923--[[Set Drone Gravity--]],
+			title = S[302535920000923--[[Set Drone Gravity--]]],
 			hint = S[302535920000841--[[Current gravity: %s--]]]:format(hint),
 			skip_sort = true,
 		}
@@ -1118,10 +1120,10 @@ function OnMsg.ClassesGenerate()
 			local ChoGGi = ChoGGi
 
 			local ItemList = {
-				{text = "pack",value = meta.pack,hint = 302535920001269--[[Amount Per Click--]]},
-				{text = "kg",value = meta.kg,hint = 302535920001270--[[Weight Per Item--]]},
-				{text = "price",value = meta.price,hint = 302535920001271--[[Price Per Item--]]},
-				{text = "locked",value = meta.locked,hint = 302535920000126--[[Locked From Resupply View--]]},
+				{text = "pack",value = meta.pack,hint = S[302535920001269--[[Amount Per Click--]]]},
+				{text = "kg",value = meta.kg,hint = S[302535920001270--[[Weight Per Item--]]]},
+				{text = "price",value = meta.price,hint = S[302535920001271--[[Price Per Item--]]]},
+				{text = "locked",value = meta.locked,hint = S[302535920000126--[[Locked From Resupply View--]]]},
 			}
 
 			local function CallBackFunc(choice)
@@ -1149,8 +1151,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					302535920000850--[[Change Resupply Settings--]],
-					302535920001272--[[Updated--]],
+					S[302535920000850--[[Change Resupply Settings--]]],
+					S[302535920001272--[[Updated--]]],
 					"UI/Icons/Sections/spaceship.tga"
 				)
 			end
@@ -1159,7 +1161,7 @@ function OnMsg.ClassesGenerate()
 				callback = CallBackFunc,
 				items = ItemList,
 				title = S[302535920000850--[[Change Resupply Settings--]]] .. ": " .. name,
-				hint = 302535920001121--[[Edit value for each setting you wish to change then press OK to save.--]],
+				hint = S[302535920001121--[[Edit value for each setting you wish to change then press OK to save.--]]],
 				custom_type = 4,
 			}
 		end
@@ -1202,13 +1204,13 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = 302535920000850--[[Change Resupply Settings--]],
-				hint = 302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."--]],
+				title = S[302535920000850--[[Change Resupply Settings--]]],
+				hint = S[302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."--]]],
 				custom_type = 7,
 				check = {
 					{
-						title = 302535920001084--[[Reset--]],
-						hint = 302535920000237--[[Check this to reset settings.--]],
+						title = S[302535920001084--[[Reset--]]],
+						hint = S[302535920000237--[[Check this to reset settings.--]]],
 					},
 				},
 			}
@@ -1222,10 +1224,10 @@ function OnMsg.ClassesGenerate()
 --~ 			end
 --~ 		end
 --~ 		ChoGGi.ComFuncs.QuestionBox(
---~ 			302535920000942--[[Are you sure you want to launch an empty rocket?--]],
+--~ 			S[302535920000942--[[Are you sure you want to launch an empty rocket?--]]],
 --~ 			CallBackFunc,
---~ 			302535920000943--[[Launch rocket to Mars.--]],
---~ 			302535920000944--[[Yamato Hasshin!--]]
+--~ 			S[302535920000943--[[Launch rocket to Mars.--]]],
+--~ 			S[302535920000944--[[Yamato Hasshin!--]]]
 --~ 		)
 --~ 	end
 
@@ -1233,7 +1235,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("CargoCapacity")
 		local ItemList = {
-			{text = string.format("%s: %s kg",S[1000121--[[Default--]]],DefaultSetting),value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting .. " kg",value = DefaultSetting},
 			{text = "50 000 kg",value = 50000},
 			{text = "100 000 kg",value = 100000},
 			{text = "250 000 kg",value = 250000},
@@ -1256,7 +1258,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000945--[[%s: I can still see some space...--]]]:format(choice[1].text),
-					5238--[[Rockets--]],
+					Trans(5238--[[Rockets--]]),
 					"UI/Icons/Sections/spaceship.tga"
 				)
 			end
@@ -1265,7 +1267,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000946--[[Set Rocket Cargo Capacity--]],
+			title = S[302535920000946--[[Set Rocket Cargo Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. g_Consts.CargoCapacity,
 			skip_sort = true,
 		}
@@ -1277,7 +1279,7 @@ function OnMsg.ClassesGenerate()
 		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("TravelTimeEarthMars") / r
 		local ItemList = {
 			{text = S[302535920000947--[[Instant--]]],value = 0},
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = S[302535920000948--[[Original--]]] .. ": " .. 750,value = 750},
 			{text = S[302535920000949--[[Half of Original--]]] .. ": " .. 375,value = 375},
 			{text = 10,value = 10},
@@ -1312,7 +1314,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000950--[[%s: 88 MPH--]]]:format(choice[1].text),
-					5238--[[Rockets--]],
+					Trans(5238--[[Rockets--]]),
 					"UI/Upgrades/autoregulator_04/timer.tga"
 				)
 			end
@@ -1321,7 +1323,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000951--[[Rocket Travel Time--]],
+			title = S[302535920000951--[[Rocket Travel Time--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -1331,7 +1333,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("MaxColonistsPerRocket")
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -1354,7 +1356,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000952--[[%s: Long pig sardines--]]]:format(choice[1].text),
-					5238--[[Rockets--]],
+					Trans(5238--[[Rockets--]]),
 					"UI/Icons/Notifications/colonist.tga"
 				)
 			end
@@ -1363,7 +1365,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000953--[[Set Colonist Capacity--]],
+			title = S[302535920000953--[[Set Colonist Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. g_Consts.MaxColonistsPerRocket,
 			skip_sort = true,
 		}
@@ -1374,7 +1376,7 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = ChoGGi.Consts.RocketMaxExportAmount
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. (DefaultSetting / r),value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. (DefaultSetting / r),value = DefaultSetting},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
 			{text = 15,value = 15 * r},
@@ -1412,8 +1414,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
-					5238--[[Rockets--]],
+					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
+					Trans(5238--[[Rockets--]]),
 					"UI/Icons/Sections/PreciousMetals_2.tga"
 				)
 			end
@@ -1422,7 +1424,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001291--[[Max Export Amount--]],
+			title = S[302535920001291--[[Max Export Amount--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. ChoGGi.UserSettings.RocketMaxExportAmount,
 			skip_sort = true,
 		}
@@ -1451,8 +1453,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RocketsIgnoreFuel,302535920001319--[[Rockets Ignore Fuel--]]),
-			5238--[[Rockets--]],
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RocketsIgnoreFuel,S[302535920001319--[[Rockets Ignore Fuel--]]]),
+			Trans(5238--[[Rockets--]]),
 			"UI/Icons/Sections/Fuel_1.tga"
 		)
 	end
@@ -1463,7 +1465,7 @@ function OnMsg.ClassesGenerate()
 		local DefaultSetting = ChoGGi.Consts.LaunchFuelPerRocket
 		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("FuelRocket")
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. (DefaultSetting / r),value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. (DefaultSetting / r),value = DefaultSetting},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
 			{text = 15,value = 15 * r},
@@ -1496,8 +1498,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,302535920000769--[[Selected--]]),
-					5238--[[Rockets--]],
+					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
+					Trans(5238--[[Rockets--]]),
 					"UI/Icons/Sections/Fuel_1.tga"
 				)
 			end
@@ -1506,7 +1508,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001317--[[Launch Fuel Per Rocket--]],
+			title = S[302535920001317--[[Launch Fuel Per Rocket--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. ChoGGi.UserSettings.LaunchFuelPerRocket,
 			skip_sort = true,
 		}

@@ -337,7 +337,6 @@ function OnMsg.ClassesGenerate()
 					SetHint(action,S[302535920000903--[[Unfreeze frozen object.--]]])
 				end
 
-
 			elseif aid == "Destroy" then
 				if obj:IsKindOf("SupplyRocket") or obj.destroyed then
 					action.ActionId = ""
@@ -427,7 +426,7 @@ local function CheatDestroy(self)
 			if self:IsKindOf("Dome") and #(self.labels.Buildings or "") > 0 then
 				MsgPopup(
 					S[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).--]]]:format(RetName(self)),
-					302535920000489--[[Delete Object(s)--]]
+					S[302535920000489--[[Delete Object(s)--]]]
 				)
 				return
 			end

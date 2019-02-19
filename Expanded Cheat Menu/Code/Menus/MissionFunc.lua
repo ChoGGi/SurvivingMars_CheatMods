@@ -98,7 +98,7 @@ function OnMsg.ClassesGenerate()
 
 			MsgPopup(
 				tostring(#choice),
-				11034--[[Rival Colonies--]]
+				Trans(11034--[[Rival Colonies--]])
 			)
 
 		end
@@ -106,7 +106,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 11034--[[Rival Colonies--]],
+			title = Trans(11034--[[Rival Colonies--]]),
 			hint = S[302535920001460--[[Add/remove rival colonies.--]]] .. "\n" .. S[302535920001461--[[* means it's an active rival you can remove.--]]],
 			multisel = true,
 			custom_type = 3,
@@ -114,12 +114,12 @@ function OnMsg.ClassesGenerate()
 				only_one = true,
 				at_least_one = true,
 				{
-					title = 302535920001183--[[Add--]],
+					title = S[302535920001183--[[Add--]]],
 					hint = S[302535920001462--[[%s rival colonies.--]]]:format(S[302535920001183--[[Add--]]]),
 					checked = true,
 				},
 				{
-					title = 302535920000281--[[Remove--]],
+					title = S[302535920000281--[[Remove--]]],
 					hint = S[302535920001462--[[%s rival colonies.--]]]:format(S[302535920000281--[[Remove--]]]),
 				},
 			},
@@ -156,7 +156,7 @@ function OnMsg.ClassesGenerate()
 
 			MsgPopup(
 				choice[1].text,
-				302535920001247--[[Start Challenge--]]
+				S[302535920001247--[[Start Challenge--]]]
 			)
 		end
 
@@ -169,7 +169,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001247--[[Start Challenge--]],
+			title = S[302535920001247--[[Start Challenge--]]],
 			hint = hint,
 		}
 	end
@@ -225,7 +225,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000704--[[Instant Mission Goals--]],
+			title = S[302535920000704--[[Instant Mission Goals--]]],
 			multisel = true,
 		}
 	end
@@ -237,7 +237,7 @@ function OnMsg.ClassesGenerate()
 
 		MsgPopup(
 			"true",
-			302535920000706--[[Instant Colony Approval--]]
+			S[302535920000706--[[Instant Colony Approval--]]]
 		)
 	end
 
@@ -252,7 +252,7 @@ function OnMsg.ClassesGenerate()
 	Damage? Total, sir.
 	It's what we call a global killer.
 	The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."--]]]:format(ChoGGi.UserSettings.MeteorHealthDamage),
-			547--[[Colonists--]],
+			Trans(547--[[Colonists--]]),
 			"UI/Icons/Notifications/meteor_storm.tga",
 			true
 		)
@@ -308,7 +308,7 @@ function OnMsg.ClassesGenerate()
 
 					MsgPopup(
 						S[302535920001161--[[Sponsor for this save is now %s--]]]:format(choice[1].text),
-						302535920001162--[[Sponsor--]],
+						S[302535920001162--[[Sponsor--]]],
 						default_icon
 					)
 					break
@@ -319,7 +319,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000712--[[Set Sponsor--]],
+			title = S[302535920000712--[[Set Sponsor--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetMissionSponsor().display_name),
 		}
 	end
@@ -387,8 +387,8 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(#choice,302535920001166--[[Bonuses--]]),
-				302535920001162--[[Sponsor--]]
+				ChoGGi.ComFuncs.SettingState(#choice,S[302535920001166--[[Bonuses--]]]),
+				S[302535920001162--[[Sponsor--]]]
 			)
 		end
 
@@ -400,12 +400,12 @@ function OnMsg.ClassesGenerate()
 			multisel = true,
 			check = {
 				{
-					title = 302535920001169--[[Turn Off--]],
-					hint = 302535920001170--[[Turn off selected bonuses (defaults to turning on).--]],
+					title = S[302535920001169--[[Turn Off--]]],
+					hint = S[302535920001170--[[Turn off selected bonuses (defaults to turning on).--]]],
 				},
 				{
-					title = 302535920001171--[[Turn All Off--]],
-					hint = 302535920001172--[[Turns off all bonuses.--]],
+					title = S[302535920001171--[[Turn All Off--]]],
+					hint = S[302535920001172--[[Turns off all bonuses.--]]],
 				},
 			},
 		}
@@ -452,7 +452,7 @@ function OnMsg.ClassesGenerate()
 
 					MsgPopup(
 						S[302535920001173--[[Commander for this save is now %s.--]]]:format(choice[1].text),
-						302535920001174--[[Commander--]],
+						S[302535920001174--[[Commander--]]],
 						default_icon
 					)
 					break
@@ -463,7 +463,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000716--[[Set Commander--]],
+			title = S[302535920000716--[[Set Commander--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetCommanderProfile().display_name),
 		}
 	end
@@ -499,7 +499,7 @@ function OnMsg.ClassesGenerate()
 			else
 				for i = 1, #choice do
 					for j = 1, #ItemList do
-						--check to make sure it isn't a fake name (no sense in saving it)
+						-- check to make sure it isn't a fake name (no sense in saving it)
 						local value = choice[i].value
 						if ItemList[j].value == value and type(value) == "string" then
 							local name = "Commander" .. value
@@ -518,8 +518,8 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(#choice,302535920001166--[[Bonuses--]]),
-				302535920001174--[[Commander--]]
+				ChoGGi.ComFuncs.SettingState(#choice,S[302535920001166--[[Bonuses--]]]),
+				S[302535920001174--[[Commander--]]]
 			)
 		end
 
@@ -531,12 +531,12 @@ function OnMsg.ClassesGenerate()
 			multisel = true,
 			check = {
 				{
-					title = 302535920001169--[[Turn Off--]],
-					hint = 302535920001170--[[Turn off selected bonuses (defaults to turning on).--]],
+					title = S[302535920001169--[[Turn Off--]]],
+					hint = S[302535920001170--[[Turn off selected bonuses (defaults to turning on).--]]],
 				},
 				{
-					title = 302535920001171--[[Turn All Off--]],
-					hint = 302535920001172--[[Turns off all bonuses.--]],
+					title = S[302535920001171--[[Turn All Off--]]],
+					hint = S[302535920001172--[[Turns off all bonuses.--]]],
 				},
 			},
 		}
@@ -591,7 +591,7 @@ function OnMsg.ClassesGenerate()
 
 				MsgPopup(
 					choice[1].text,
-					302535920001177--[[Logo--]],
+					S[302535920001177--[[Logo--]]],
 					default_icon
 				)
 			end
@@ -600,7 +600,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001178--[[Set New Logo--]],
+			title = S[302535920001178--[[Set New Logo--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name),
 			height = 800.0,
 			custom_type = 7,
@@ -640,7 +640,7 @@ function OnMsg.ClassesGenerate()
 
 			MsgPopup(
 				S[302535920001179--[[%s occurrence is now: %s--]]]:format(sType,value),
-				3983--[[Disasters--]],
+				Trans(3983--[[Disasters--]]),
 				"UI/Icons/Sections/attention.tga"
 			)
 		end
@@ -665,7 +665,7 @@ function OnMsg.ClassesGenerate()
 				text = Trans(def.display_name),
 				value = id,
 				hint = Trans(def.description) .. "\n" .. Trans(def.flavor) .. "\n"
-					.. S[3491--[[Challenge Mod (%)--]]] .. ": " .. def.challenge_mod .. "\n\n"
+					.. Trans(3491--[[Challenge Mod (%)--]]) .. ": " .. def.challenge_mod .. "\n\n"
 					.. S[302535920001357--[[Exclusion List--]]] .. ": " .. (def.exclusionlist or ""),
 			}
 		end
@@ -705,8 +705,8 @@ function OnMsg.ClassesGenerate()
 			end
 
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(#choice,302535920000129--[[Set--]]),
-				302535920001181--[[Rules--]],
+				ChoGGi.ComFuncs.SettingState(#choice,S[302535920000129--[[Set--]]]),
+				S[302535920001181--[[Rules--]]],
 				"UI/Icons/Sections/workshifts.tga"
 			)
 		end
@@ -729,20 +729,20 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001182--[[Set Game Rules--]],
+			title = S[302535920001182--[[Set Game Rules--]]],
 			hint = hint,
 			multisel = true,
 			check = {
 				only_one = true,
 				at_least_one = true,
 				{
-					title = 302535920001183--[[Add--]],
-					hint = 302535920001185--[[Add selected rules--]],
+					title = S[302535920001183--[[Add--]]],
+					hint = S[302535920001185--[[Add selected rules--]]],
 					checked = true,
 				},
 				{
-					title = 302535920000281--[[Remove--]],
-					hint = 302535920001186--[[Remove selected rules--]],
+					title = S[302535920000281--[[Remove--]]],
+					hint = S[302535920001186--[[Remove selected rules--]]],
 				},
 			},
 		}
