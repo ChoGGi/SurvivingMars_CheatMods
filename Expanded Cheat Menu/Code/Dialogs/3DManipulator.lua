@@ -34,7 +34,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 
 	self.obj_name = RetName(context.obj)
 	self.obj = context.obj
-	self.title = S[327465361219--[[Edit--]]] .. " " .. S[298035641454--[[Object--]]] .. " " .. S[302535920001432--[[3D--]]] .. ": " .. self.obj_name
+	self.title = Trans(327465361219--[[Edit--]]) .. " " .. Trans(298035641454--[[Object--]]) .. " " .. S[302535920001432--[[3D--]]] .. ": " .. self.obj_name
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)

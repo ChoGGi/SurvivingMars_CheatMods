@@ -1,13 +1,12 @@
+-- See LICENSE for terms
+
 -- list of entities we're going to be adding
 local entity_list = {
-	"SignExampleMetalDeposit",
-	"SignExampleConcreteDeposit",
+	"SignTest",
 }
 -- getting called a bunch, so make them local
---~ local path_loc_str = string.format("%sEntities/%s.ent",,"%s")
---~ local path_loc_str = CurrentModPath .. "Entities/%s.ent"
 local path_loc_str = CurrentModPath .. "Entities/"
-local mod = Mods.ChoGGi_ExampleNewResIcon
+local mod = Mods.ChoGGi_ExampleReplaceSign
 
 -- no sense in making a new one for each entity
 local EntityDataTableTemplate = {
@@ -29,7 +28,6 @@ local function AddEntity(name)
 	EntityLoadEntities[#EntityLoadEntities + 1] = {
 		mod,
 		name,
---~ 		path_loc_str:format(name)
 		path_loc_str .. name .. ".ent"
 	}
 	SetEntityFadeDistances(name, -1, -1)
@@ -38,3 +36,8 @@ end
 for i = 1, #entity_list do
 	AddEntity(entity_list[i])
 end
+
+-- replace the homeless sign with our new one
+UnitSignHomeless.entity = "SignTest"
+-- for the selected signs you need this replaced with an entity
+--~ UnitArrowHomeless.entity = "ArrowTest"

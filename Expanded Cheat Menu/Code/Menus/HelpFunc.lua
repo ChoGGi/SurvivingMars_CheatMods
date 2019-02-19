@@ -17,7 +17,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ShowStartupTicks),
-			302535920001481--[[Show Startup Ticks--]]
+			S[302535920001481--[[Show Startup Ticks--]]]
 		)
 	end
 
@@ -28,9 +28,9 @@ function OnMsg.ClassesGenerate()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.EnableToolTips,
-				302535920001070--[[Restart to take effect.--]]
+				S[302535920001070--[[Restart to take effect.--]]]
 			),
-			302535920001014--[[Toggle ToolTips--]]
+			S[302535920001014--[[Toggle ToolTips--]]]
 		)
 	end
 
@@ -46,9 +46,9 @@ function OnMsg.ClassesGenerate()
 		end
 		ChoGGi.ComFuncs.QuestionBox(
 			S[302535920000039--[["Spam in the console log doesn't necessarily mean a problem with SM (it could just a warning).
-This report will go to the %s developers not me."--]]]:format(S[1079--[[Surviving Mars--]]]),
+This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surviving Mars--]])),
 			CallBackFunc,
-			S[1079--[[Surviving Mars--]]] .. " " .. S[302535920001463--[[Bug Report--]]],
+			Trans(1079--[[Surviving Mars--]]) .. " " .. S[302535920001463--[[Bug Report--]]],
 			S[302535920001464--[[Yes, I know what I'm doing. This is a bug.--]]]
 		)
 	end
@@ -106,8 +106,8 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 			end
 		else
 			MsgPopup(
-				1000760--[[Not Steam--]],
-				302535920001362--[[Extract HPKs--]]
+				Trans(1000760--[[Not Steam--]]),
+				S[302535920001362--[[Extract HPKs--]]]
 			)
 			return
 		end
@@ -116,7 +116,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 			-- good enough msg, probably...
 			MsgPopup(
 				S[302535920000004--[[Dump--]]] .. ": " .. #ItemList,
-				302535920001362--[[Extract HPKs--]]
+				S[302535920001362--[[Extract HPKs--]]]
 			)
 			return
 		end
@@ -129,7 +129,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				local path = "AppData/Mods/" .. choice[i].id
 				printC(choice[i].value,path)
 				AsyncUnpack(choice[i].value,path)
-				-- add a note telling people not to be assholes :)
+				-- add a note telling people not to be assholes
 				AsyncStringToFile(
 					path .. "/This is not your mod.txt",
 					S[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.--]]]:format(choice[i].author)
@@ -137,15 +137,15 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 			end
 			MsgPopup(
 				S[302535920000004--[[Dump--]]] .. ": " .. #choice,
-				302535920001362--[[Extract HPKs--]]
+				S[302535920001362--[[Extract HPKs--]]]
 			)
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001362--[[Extract HPKs--]],
-			hint = 302535920001365--[[HPK files will be unpacked into AppData/Mods/ModSteamId--]],
+			title = S[302535920001362--[[Extract HPKs--]]],
+			hint = S[302535920001365--[[HPK files will be unpacked into AppData/Mods/ModSteamId--]]],
 			multisel = true,
 		}
 	end
@@ -186,7 +186,7 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000504--[[List All Menu Items--]],
+			title = S[302535920000504--[[List All Menu Items--]]],
 			custom_type = 7,
 			height = 800.0,
 		}
@@ -252,8 +252,8 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 			-- abort if upload already happening
 			if IsValidThread(mod_upload_thread) then
 				ChoGGi.ComFuncs.MsgWait(
-					1000011--[[There is an active mod upload--]],
-					1000592--[[Error--]],
+					Trans(1000011--[[There is an active mod upload--]]),
+					Trans(1000592--[[Error--]]),
 					"UI/Common/mod_steam_workshop.tga"
 				)
 				return
@@ -320,9 +320,9 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 				local upload_msg = {}
 
 				if steam_upload then
-					upload_msg[#upload_msg+1] = S[1000012--[[Mod %s will be uploaded to Steam--]]]:format(mod.title)
+					upload_msg[#upload_msg+1] = Trans(T{1000012--[[Mod <ModLabel> will be uploaded to Steam--]],ModLabel = mod.title})
 				else
-					upload_msg[#upload_msg+1] = S[1000771--[[Mod %s will be uploaded to Paradox--]]]:format(mod.title)
+					upload_msg[#upload_msg+1] = Trans(T{1000771--[[Mod <ModLabel> will be uploaded to Paradox--]],ModLabel = mod.title})
 				end
 
 				if not pack_mod then
@@ -352,8 +352,8 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					end
 
 					MsgPopup(
-						5452--[[START--]],
-						302535920000367--[[Mod Upload--]]
+						Trans(5452--[[START--]]),
+						S[302535920000367--[[Mod Upload--]]]
 					)
 
 					-- always start with fresh table
@@ -388,8 +388,8 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 					if not prepare_worked then
 						-- let user know if we're good or not
 						ChoGGi.ComFuncs.MsgWait(
-							S[1000013--[[Mod %s was not uploaded! Error: %s--]]]:format(mod.title,Trans(prepare_results)),
-							S[1000592--[[Error--]]] .. ": " .. mod.title,
+							Trans(T{1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]],err = Trans(prepare_results),ModLabel = mod.title}),
+							Trans(1000592--[[Error--]]) .. ": " .. mod.title,
 							upload_image
 						)
 						return
@@ -483,11 +483,11 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 
 					local msg, title
 					if err and not blank_mod then
-						msg = S[1000013--[[Mod %s was not uploaded! Error: %s--]]]:format(mod.title,Trans(err))
-						title = S[1000592--[[Error--]]]
+						msg = Trans(T{1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]],err = Trans(err),ModLabel = mod.title})
+						title = Trans(1000592--[[Error--]])
 					else
-						msg = S[1000014--[[Mod %s was successfully uploaded!--]]]:format(mod.title)
-						title = S[1000015--[[Success--]]]
+						msg = Trans(T{1000014--[[Mod <ModLabel> was successfully uploaded!--]],ModLabel = mod.title})
+						title = Trans(1000015--[[Success--]])
 					end
 
 					if not test then
@@ -511,16 +511,16 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 							end
 						end
 
-						local id_str = S[1000021--[[Steam ID--]]]
+						local id_str = Trans(1000021--[[Steam ID--]])
 						if not steam_upload then
 							if para_platform then
-								id_str = S[1000772--[[Paradox Desktop UUID--]]]
+								id_str = Trans(1000772--[[Paradox Desktop UUID--]])
 							else
-								id_str = S[1000773--[[Paradox All UUID--]]]
+								id_str = Trans(1000773--[[Paradox All UUID--]])
 							end
 						end
 
-						print(mod.title,":",S[1000107--[[Mod--]]],id_str,":",item_id)
+						print(mod.title,":",Trans(1000107--[[Mod--]]),id_str,":",item_id)
 					end
 
 					-- let user know if we're good or not
@@ -555,8 +555,8 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 			end
 			if not (Platform.steam or Platform.pops) then
 				MsgPopup(
-					S[1000760--[[Not Steam--]]] .. " || " .. S[1000759--[[Not Paradox--]]],
-					302535920000367--[[Mod Upload--]]
+					Trans(1000760--[[Not Steam--]]) .. " || " .. Trans(1000759--[[Not Paradox--]]),
+					S[302535920000367--[[Mod Upload--]]]
 				)
 				return
 			end
@@ -592,38 +592,38 @@ This report will go to the %s developers not me."--]]]:format(S[1079--[[Survivin
 			-- need to disable paradox upload choice on kuiper
 			local check = {
 				{
-					title = 302535920001258--[[Copy Files--]],
+					title = S[302535920001258--[[Copy Files--]]],
 					hint = S[302535920001259--[["Copies all mod files to %sModUpload, uncheck to copy files manually."--]]]:format(ConvertToOSPath("AppData/")),
 					checked = true,
 				},
 				{
-					title = 302535920001260--[[Blank--]],
-					hint = 302535920001261--[["Uploads a blank mod, and prints id in log."--]],
+					title = S[302535920001260--[[Blank--]]],
+					hint = S[302535920001261--[["Uploads a blank mod, and prints id in log."--]]],
 				},
 				{
-					title = 302535920000664--[[Clipboard--]],
-					hint = 302535920000665--[[If uploading a mod this copies steam id or uuid to clipboard.--]],
+					title = S[302535920000664--[[Clipboard--]]],
+					hint = S[302535920000665--[[If uploading a mod this copies steam id or uuid to clipboard.--]]],
 					checked = true,
 				},
 				{
 					-- AsyncPack is crashing sm for me
 					visible = false,
 
-					title = 302535920001427--[[Pack--]],
-					hint = 302535920001428--[["Uploads as a packed mod (default for mod editor upload).
-This will always apply if uploading to paradox."--]],
+					title = S[302535920001427--[[Pack--]]],
+					hint = S[302535920001428--[["Uploads as a packed mod (default for mod editor upload).
+This will always apply if uploading to paradox."--]]],
 					checked = false,
 				},
 				{
 					level = 2,
-					title = 186760604064--[[Test--]],
-					hint = 302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]],
+					title = Trans(186760604064--[[Test--]]),
+					hint = S[302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]]],
 				},
 				{
 					level = 2,
-					title = 302535920001506--[[Steam--]],
-					hint = 302535920001507--[["Uncheck to upload to Paradox mods (instead of Steam).
-Mod will always be packed in hpk archive."--]],
+					title = S[302535920001506--[[Steam--]]],
+					hint = S[302535920001507--[["Uncheck to upload to Paradox mods (instead of Steam).
+Mod will always be packed in hpk archive."--]]],
 					checked = upload_to_who,
 					func = function(dlg,check)
 						upload_to_who = check
@@ -639,8 +639,8 @@ Mod will always be packed in hpk archive."--]],
 				},
 				{
 					level = 2,
-					title = 302535920001509--[[Platform--]],
-					hint = 302535920001510--[[Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.--]],
+					title = S[302535920001509--[[Platform--]]],
+					hint = S[302535920001510--[[Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.--]]],
 					checked = upload_to_whichplatform,
 					visible = false,
 					func = function(_,check)
@@ -660,12 +660,12 @@ Mod will always be packed in hpk archive."--]],
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = 302535920000367--[[Mod Upload--]],
-				hint = 302535920001511--[["AsyncPack crashes SM, so you'll need to use hpk to pack mod ahead of time.
+				title = S[302535920000367--[[Mod Upload--]]],
+				hint = S[302535920001511--[["AsyncPack crashes SM, so you'll need to use hpk to pack mod ahead of time.
 
 https://github.com/nickelc/hpk
 hpk create --cripple-lua-files ""Mod folder"" ModContent.hpk
-Move archive to Mod folder/Pack/ModContent.hpk"--]],
+Move archive to Mod folder/Pack/ModContent.hpk"--]]],
 				check = check,
 				height = 800.0,
 			}
@@ -677,8 +677,8 @@ Move archive to Mod folder/Pack/ModContent.hpk"--]],
 		-- load up settings file in the editor
 		ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 			text = TableToLuaCode(ChoGGi.UserSettings),
-			hint_ok = 302535920001244--[["Saves settings to file, and applies any changes."--]],
-			hint_cancel = 302535920001245--[[Abort without touching anything.--]],
+			hint_ok = S[302535920001244--[["Saves settings to file, and applies any changes."--]]],
+			hint_cancel = S[302535920001245--[[Abort without touching anything.--]]],
 			custom_func = function(answer,_,obj)
 				if answer then
 					-- get text and update settings file
@@ -689,8 +689,8 @@ Move archive to Mod folder/Pack/ModContent.hpk"--]],
 						Msg("ChoGGi_SettingsUpdated")
 						local d,m,h = FormatElapsedTime(os.time(), "dhm")
 						MsgPopup(
-							S[4273--[[Saved on %s--]]]:format(d .. ":" .. m .. ":" .. h),
-							302535920001308--[[Settings--]]
+							Trans(T{4273--[[Saved on <save_date>--]],save_date = ": " .. d .. ":" .. m .. ":" .. h}),
+							S[302535920001308--[[Settings--]]]
 						)
 					end
 				end
@@ -705,14 +705,14 @@ Move archive to Mod folder/Pack/ModContent.hpk"--]],
 				ChoGGi.UserSettings.DisableECM = not ChoGGi.UserSettings.DisableECM
 				ChoGGi.SettingFuncs.WriteSettings()
 
-				MsgPopup(302535920001070--[[Restart to take effect.--]])
+				MsgPopup(S[302535920001070--[[Restart to take effect.--]]])
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
 			S[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
 Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .. S[302535920001070--[[Restart to take effect.--]]],
 			CallBackFunc,
-			251103844022--[[Disable--]]
+			Trans(251103844022--[[Disable--]])
 		)
 	end
 
@@ -739,8 +739,8 @@ Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .
 				ChoGGi.SettingFuncs.WriteSettings()
 
 				MsgPopup(
-					302535920001070--[[Restart to take effect.--]],
-					302535920001084--[[Reset--]],
+					S[302535920001070--[[Restart to take effect.--]]],
+					S[302535920001084--[[Reset--]]],
 					default_icon
 				)
 			end
@@ -771,7 +771,7 @@ Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .
 	If there isn't a status then it's likely a list of options to choose from
 
 	For any issues; please report them to my Github/Steam/NexusMods page, or email %s"--]]]:format(ChoGGi.email),
-			487939677892--[[Help--]]
+			Trans(487939677892--[[Help--]])
 		)
 	end
 

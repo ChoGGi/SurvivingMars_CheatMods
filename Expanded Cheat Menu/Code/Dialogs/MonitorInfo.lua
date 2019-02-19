@@ -9,6 +9,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 
 	local pairs,type,tostring = pairs,type,tostring
@@ -101,7 +102,7 @@ function OnMsg.ClassesGenerate()
 
 		element_x = border * 2 + self.idAutoRefresh:GetPos():x() + self.idAutoRefresh:GetSize():x()
 
-		title = S[1000220--[[Refresh--]]]
+		title = Trans(1000220--[[Refresh--]])
 		self.idRefresh = g_Classes.Button:new(self)
 		self.idRefresh:SetPos(point(element_x, element_y))
 		self.idRefresh:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))

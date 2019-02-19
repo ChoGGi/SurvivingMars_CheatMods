@@ -13,11 +13,12 @@ DefineClass.ChoGGi_DTMSlotsDlg = {
 
 	dialog_width = false,
 	dialog_height = false,
-	title = 302535920001486--[[DTM Slots--]],
 }
 
 function ChoGGi_DTMSlotsDlg:Init(parent, context)
 	local g_Classes = g_Classes
+
+	self.title = S[302535920001486--[[DTM Slots--]]]
 
 	local screen = UIL.GetScreenSize()
 	self.dialog_width = screen:x() - 20 + 0.0

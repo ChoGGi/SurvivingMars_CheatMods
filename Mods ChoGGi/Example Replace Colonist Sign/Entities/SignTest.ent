@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity path="">
+	<state id="idle">
+		<mesh_ref ref="mesh"/>
+	</state>
+	<mesh_description id="mesh">
+		<src file=""/>
+		<mesh file="SignHomeless_mesh.hgm"/>
+		<material file="SignTest_mesh.mtl"/>
+		<bsphere value="0,0,417,123"/>
+		<box min="0,-87,330" max="0,87,504"/>
+	</mesh_description>
+</entity>

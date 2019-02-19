@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -81,8 +81,8 @@ function OnMsg.ClassesGenerate()
 				end
 				return ChoGGi.ComFuncs.SettingState(
 					GetTerrainNamesCombo()[terrain].text[1],
-					302535920000624--[[Green or Icy mars? Coming right up!
-(don't forget a light model)--]]
+					S[302535920000624--[[Green or Icy mars? Coming right up!
+(don't forget a light model)--]]]
 				)
 			end
 			return S[302535920000624]
@@ -130,7 +130,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DisablePulsatingPinsMotion,
-				302535920000335--[[When true pins will no longer do the pulsating motion (hover over to stop).--]]
+				S[302535920000335--[[When true pins will no longer do the pulsating motion (hover over to stop).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.PulsatingPins_Toggle,
@@ -144,7 +144,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.Lightmodel,
-				302535920000626--[[Changes the lighting mode (temporary or permanent).--]]
+				S[302535920000626--[[Changes the lighting mode (temporary or permanent).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ChangeLightmodel,
@@ -184,7 +184,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.TransparencyToggle,
-				302535920000632--[[Toggle removing transparency on mouseover.--]]
+				S[302535920000632--[[Toggle removing transparency on mouseover.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.TransparencyUI_Toggle,
@@ -200,10 +200,10 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 			if IsValid(sel) then
 				return ChoGGi.ComFuncs.SettingState(
 					sel:GetOpacity(),
-					302535920000695--[[Change the opacity of objects.--]]
+					S[302535920000695--[[Change the opacity of objects.--]]]
 				)
 			else
-				return S[302535920000695--[[Change the opacity of objects.--]]]
+				return S[302535920000695]
 			end
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetObjectOpacity,
@@ -212,7 +212,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[174--[[Color Modifier--]]],
+	Actions[c] = {ActionName = Trans(174--[[Color Modifier--]]),
 		ActionMenubar = "ECM.Game",
 		ActionId = ".Color Modifier",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
@@ -275,7 +275,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.BorderScrollingToggle,
-				302535920000648--[[Set size of activation for mouse border scrolling.--]]
+				S[302535920000648--[[Set size of activation for mouse border scrolling.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetBorderScrolling,
@@ -289,7 +289,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.CameraZoomToggle,
-				302535920000650--[[Further zoom distance.--]]
+				S[302535920000650--[[Further zoom distance.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetCameraZoom,
@@ -303,7 +303,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.CameraLookatDist,
-				302535920001429--[[How far up the camera can move.--]]
+				S[302535920001429--[[How far up the camera can move.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetCameraLookatDist,
@@ -317,7 +317,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				cameraFly.IsActive(),
-				302535920000652--[[I believe I can fly.--]]
+				S[302535920000652--[[I believe I can fly.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.CameraFree_Toggle,
@@ -333,7 +333,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				camera3p.IsActive(),
-				302535920000654--[[Select (or mouse over) an object to follow.--]]
+				S[302535920000654--[[Select (or mouse over) an object to follow.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.CameraFollow_Toggle,
@@ -349,7 +349,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				IsMouseCursorHidden(),
-				302535920000656--[[Toggle between moving camera and selecting objects.--]]
+				S[302535920000656--[[Toggle between moving camera and selecting objects.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.CursorVisible_Toggle,
@@ -374,7 +374,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.MapEdgeLimit,
-				302535920001490--[[Removes pushback limit at the edge of the map.--]]
+				S[302535920001490--[[Removes pushback limit at the edge of the map.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.MapEdgeLimit_Toggle,
@@ -398,8 +398,8 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.LightsRadius,
-				302535920000634--[[Sets light radius (Menu>Options>Video>Lights), menu options max out at 100.
-	Lets you see lights from further away/more bleedout?--]]
+				S[302535920000634--[[Sets light radius (Menu>Options>Video>Lights), menu options max out at 100.
+	Lets you see lights from further away/more bleedout?--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetLightsRadius,
@@ -413,8 +413,8 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.TerrainDetail,
-				302535920000636--[[Sets hr.TR_MaxChunks (Menu>Options>Video>Terrain), menu options max out at 200.
-	Makes the background terrain more detailed (make sure to also stick Terrain on Ultra in the options menu).--]]
+				S[302535920000636--[[Sets hr.TR_MaxChunks (Menu>Options>Video>Terrain), menu options max out at 200.
+	Makes the background terrain more detailed (make sure to also stick Terrain on Ultra in the options menu).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetTerrainDetail,
@@ -428,7 +428,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.VideoMemory,
-				302535920000638--[[Sets hr.DTM_VideoMemory (Menu>Options>Video>Textures), menu options max out at 2048.--]]
+				S[302535920000638--[[Sets hr.DTM_VideoMemory (Menu>Options>Video>Textures), menu options max out at 2048.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetVideoMemory,
@@ -442,7 +442,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.ShadowmapSize,
-				302535920000640--[[Sets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096.--]]
+				S[302535920000640--[[Sets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetShadowmapSize,
@@ -456,7 +456,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DisableTextureCompression,
-				302535920000642--[[Toggle texture compression (game defaults to on, seems to make a difference of 600MB vram).--]]
+				S[302535920000642--[[Toggle texture compression (game defaults to on, seems to make a difference of 600MB vram).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.DisableTextureCompression_Toggle,
@@ -470,8 +470,8 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.HigherRenderDist,
-				302535920000644--[[Renders model from further away.
-	Not noticeable unless using higher zoom.--]]
+				S[302535920000644--[[Renders model from further away.
+	Not noticeable unless using higher zoom.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.HigherRenderDist_Toggle,
@@ -485,8 +485,8 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.HigherShadowDist,
-				302535920000646--[[Renders shadows from further away.
-	Not noticeable unless using higher zoom.--]]
+				S[302535920000646--[[Renders shadows from further away.
+	Not noticeable unless using higher zoom.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.HigherShadowDist_Toggle,
@@ -575,7 +575,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.ShowInterfaceInScreenshots,
-				302535920000662--[[Do you want to see the interface in screenshots?--]]
+				S[302535920000662--[[Do you want to see the interface in screenshots?--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle,
@@ -621,7 +621,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				HintsEnabled,
-				302535920000667--[[Don't show hints for this game.--]]
+				S[302535920000667--[[Don't show hints for this game.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.OnScreenHints_Toggle,
@@ -644,7 +644,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DisableHints,
-				302535920000671--[[No more hints ever.--]]
+				S[302535920000671--[[No more hints ever.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.NeverShowHints_Toggle,
@@ -657,8 +657,8 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 		ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.GUIDockSide and S[1000459--[[Right--]]] or S[1000457--[[Left--]]],
-				302535920001413--[[Change which side (most) GUI menus are on.--]]
+				ChoGGi.UserSettings.GUIDockSide and Trans(1000459--[[Right--]]) or Trans(1000457--[[Left--]]),
+				S[302535920001413--[[Change which side (most) GUI menus are on.--]]]
 
 			)
 		end,

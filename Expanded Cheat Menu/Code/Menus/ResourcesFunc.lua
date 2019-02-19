@@ -5,7 +5,6 @@ local default_icon2 = "UI/Icons/IPButtons/rare_metals.tga"
 
 local type = type
 
-
 function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -42,11 +41,11 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001187--[[Add Probes--]],
+			title = S[302535920001187--[[Add Probes--]]],
 			skip_sort = true,
 			check = {
 				{
-					title = 10087--[[Advanced Orbital Probe--]],
+					title = Trans(10087--[[Advanced Orbital Probe--]]),
 					hint = S[302535920000266--[[Spawn--]]] .. " " .. S[10087--[[Advanced Orbital Probe--]]],
 					checked = GetMissionSponsor().id == "NASA"
 				},
@@ -59,7 +58,7 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = ChoGGi.Consts.FoodPerRocketPassenger / r
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -89,7 +88,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920001188--[[%s: om nom nom nom nom--]]]:format(choice[1].text),
-					302535920001189--[[Passengers--]],
+					S[302535920001189--[[Passengers--]]],
 					"UI/Icons/Sections/Food_4.tga"
 				)
 			end
@@ -98,7 +97,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001190--[[Set Food Per Rocket Passenger--]],
+			title = S[302535920001190--[[Set Food Per Rocket Passenger--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -171,7 +170,7 @@ function OnMsg.ClassesGenerate()
 			end
 			MsgPopup(
 				S[302535920001191--[[Added prefabs to %s buildings.--]]]:format(#choice),
-				1110--[[Prefab Buildings--]],
+				Trans(1110--[[Prefab Buildings--]]),
 				default_icon
 			)
 			-- if the build menu is opened and they add some prefabs it won't use them till it's toggled, so we do this instead
@@ -181,8 +180,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 1110--[[Prefab Buildings--]],
-			hint = 302535920001194--[[Use edit box to enter amount of prefabs to add.--]],
+			title = Trans(1110--[[Prefab Buildings--]]),
+			hint = S[302535920001194--[[Use edit box to enter amount of prefabs to add.--]]],
 			custom_type = 3,
 			multisel = true,
 		}
@@ -218,7 +217,7 @@ function OnMsg.ClassesGenerate()
 
 				MsgPopup(
 					choice[1].text,
-					3613--[[Funding--]],
+					Trans(3613--[[Funding--]]),
 					default_icon2
 				)
 			end
@@ -227,7 +226,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 3613--[[Funding--]],
+			title = Trans(3613--[[Funding--]]),
 			hint = hint,
 			skip_sort = true,
 		}
@@ -247,8 +246,8 @@ function OnMsg.ClassesGenerate()
 		end
 
 		MsgPopup(
-			302535920001198--[[Resource Filled--]],
-			15--[[Resource--]],
+			S[302535920001198--[[Resource Filled--]]],
+			Trans(15--[[Resource--]]),
 			default_icon2
 		)
 	end

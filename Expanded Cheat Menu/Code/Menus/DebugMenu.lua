@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 
@@ -15,7 +15,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DebugPersistSaves,
-				302535920001499--[[Shows an examine dialog with any persist errors when saving (needs ECM HelperMod).--]]
+				S[302535920001499--[[Shows an examine dialog with any persist errors when saving (needs ECM HelperMod).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ExaminePersistErrors_Toggle,
@@ -44,7 +44,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001416--[[Force--]]] .. " " .. S[948928900281--[[Story Bits--]]],
+	Actions[c] = {ActionName = S[302535920001416--[[Force--]]] .. " " .. Trans(948928900281--[[Story Bits--]]),
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Force Story Bits",
 		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
@@ -80,7 +80,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				GetDialog("DTMSlotsDlg") and true,
-				302535920001311--[[Show DTM slots display--]]
+				S[302535920001311--[[Show DTM slots display--]]]
 			)
 		end,
 		OnAction = function()
@@ -96,7 +96,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				hr.FpsCounterPos or 0,
-				302535920001313--[[One of the four corners of your screen.--]]
+				S[302535920001313--[[One of the four corners of your screen.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.FpsCounterLocation,
@@ -111,7 +111,7 @@ function OnMsg.ClassesGenerate()
 			local sel = SelectedObj
 			return ChoGGi.ComFuncs.SettingState(
 				sel and sel.ChoGGi_ShowAttachSpots,
-				302535920000450--[[Toggle showing attachment spots on selected object.--]]
+				S[302535920000450--[[Toggle showing attachment spots on selected object.--]]]
 			)
 		end,
 		OnAction = function()
@@ -138,7 +138,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				MeasureTool.enabled,
-				302535920000452--[[Measures stuff (Use Ctrl-Shift-M to remove the lines).--]]
+				S[302535920000452--[[Measures stuff (Use Ctrl-Shift-M to remove the lines).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.MeasureTool_Toggle,
@@ -189,12 +189,12 @@ function OnMsg.ClassesGenerate()
 			if sel then
 				return ChoGGi.ComFuncs.SettingState(
 					sel.ChoGGi_ShowAnimDebug,
-					302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]
+					S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]]
 				)
 			else
 				return ChoGGi.ComFuncs.SettingState(
 					ChoGGi.Temp.ShowAnimDebug,
-					302535920000460
+					S[302535920000460]
 				)
 			end
 		end,
@@ -204,7 +204,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[327465361219--[[Edit--]]] .. " " .. S[298035641454--[[Object--]]],
+	Actions[c] = {ActionName = Trans(327465361219--[[Edit--]]) .. " " .. Trans(298035641454--[[Object--]]),
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Manipulator",
 		ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
@@ -298,7 +298,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[298035641454--[[Object--]]] .. " " .. S[302535920001476--[[Flags--]]],
+	Actions[c] = {ActionName = Trans(298035641454--[[Object--]]) .. " " .. S[302535920001476--[[Flags--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Flags",
 		ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
@@ -399,7 +399,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.DebugGridSize",
-				302535920001418--[[Sets the size of the grid...--]]
+				S[302535920001418--[[Sets the size of the grid...--]]]
 			)
 		end,
 		OnAction = function()
@@ -416,7 +416,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.DebugGridOpacity",
-				302535920001420--[[How transparent the grid is.--]]
+				S[302535920001420--[[How transparent the grid is.--]]]
 			)
 		end,
 		OnAction = function()
@@ -443,11 +443,11 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				DebugFX,
-				302535920001176--[[Toggle showing FX debug info in console.--]]
+				S[302535920001176--[[Toggle showing FX debug info in console.--]]]
 			)
 		end,
 		OnAction = function()
-			ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFX",302535920001175)
+			ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFX",S[302535920001175])
 		end,
 	}
 
@@ -459,11 +459,11 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				DebugFXParticles,
-				302535920001176--[[Toggle showing FX debug info in console.--]]
+				S[302535920001176--[[Toggle showing FX debug info in console.--]]]
 			)
 		end,
 		OnAction = function()
-			ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXParticles",302535920001184)
+			ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXParticles",S[302535920001184])
 		end,
 	}
 
@@ -475,11 +475,11 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				DebugFXSound,
-				302535920001176--[[Toggle showing FX debug info in console.--]]
+				S[302535920001176--[[Toggle showing FX debug info in console.--]]]
 			)
 		end,
 		OnAction = function()
-			ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXSound",302535920001368)
+			ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXSound",S[302535920001368])
 		end,
 	}
 
@@ -527,7 +527,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.Temp.BuildingPathMarkers_Toggle,
-				302535920001528--[[Show inside waypoints colonists take to move around (not all buildings).--]]
+				S[302535920001528--[[Show inside waypoints colonists take to move around (not all buildings).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingPathMarkers_Toggle,

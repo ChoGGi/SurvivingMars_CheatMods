@@ -17,7 +17,7 @@ local DebugGetInfo
 local S
 local blacklist
 local ChoGGi_OrigFuncs
---~ local Trans
+local Trans
 
 local SaveOrigFunc
 local SetTrans
@@ -27,7 +27,7 @@ function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-	--~ Trans = ChoGGi.ComFuncs.Translate
+	Trans = ChoGGi.ComFuncs.Translate
 
 	ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
@@ -475,7 +475,7 @@ function OnMsg.ClassesGenerate()
 					else
 						entry.RolloverText = action.RolloverText
 					end
-					entry.RolloverTitle = S[126095410863--[[Info--]]]
+					entry.RolloverTitle = Trans(126095410863--[[Info--]])
 					-- if this func added the id or something then i wouldn't need to do this copy n paste :(
 
 					function entry.OnPress(this, _)

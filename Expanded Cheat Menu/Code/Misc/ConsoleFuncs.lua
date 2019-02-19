@@ -19,7 +19,7 @@ function OnMsg.ClassesGenerate()
 	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 	local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 	local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
---~ 	local Trans = ChoGGi.ComFuncs.Translate
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
@@ -188,13 +188,13 @@ function OnMsg.ClassesGenerate()
 		AddSubmenu("EntityData",{"EntityStates","EntitySurfaces","GetAllEntities","HexOutlineShapes","HexInteriorShapes","HexOutlineByHash","HexBuildShapes","HexBuildShapesInversed","HexPeripheralShapes","HexCombinedShapes"})
 		AddSubmenu("g_Classes",{"ClassTemplates","Attaches","FXRules","FXLists"})
 		AddSubmenu("g_CObjectFuncs",{"hr","pf","terrain","UIL","DTM","lpeg","lfs","srp","camera","camera3p","cameraMax","cameraRTS","string","table","package"})
-		AddSubmenu("StoryBits",{"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},S[948928900281--[[Story Bits--]]])
+		AddSubmenu("StoryBits",{"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},Trans(948928900281--[[Story Bits--]]))
 		AddSubmenu("UICity",{"UICity.labels","UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters","LRManagerInstance"})
 
 		-- bonus addition at the top
 		TableInsert(ExamineMenuToggle_list,1,{
-			name = 302535920001376--[[Auto Update List--]],
-			hint = 302535920001377--[[Update this list when ECM updates it.--]],
+			name = S[302535920001376--[[Auto Update List--]]],
+			hint = S[302535920001377--[[Update this list when ECM updates it.--]]],
 			class = "ChoGGi_CheckButtonMenu",
 			value = "ChoGGi.UserSettings.ConsoleExamineListUpdate",
 			clicked = function()
@@ -204,8 +204,8 @@ function OnMsg.ClassesGenerate()
 		})
 		-- bonus addition at bottom
 		ExamineMenuToggle_list[#ExamineMenuToggle_list+1] = {
-			name = 302535920001378--[[XWindow Inspector--]],
-			hint = 302535920001379--[[Opens up the window inspector with terminal.desktop.--]],
+			name = S[302535920001378--[[XWindow Inspector--]]],
+			hint = S[302535920001379--[[Opens up the window inspector with terminal.desktop.--]]],
 			clicked = function()
 				local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos()) or terminal.desktop
 				local ged = ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
@@ -268,14 +268,14 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	local ConsolePopupToggle_list = {
-		{name = 302535920000040--[[Exec Code--]],
-			hint = 302535920001287--[[Instead of a single line, you can enter/execute code in a textbox.--]],
+		{name = S[302535920000040--[[Exec Code--]]],
+			hint = S[302535920001287--[[Instead of a single line, you can enter/execute code in a textbox.--]]],
 			clicked = function()
 				ChoGGi.ComFuncs.OpenInExecCodeDlg()
 			end,
 		},
-		{name = 302535920001026--[[Show File Log--]],
-			hint = 302535920001091--[[Flushes log to disk and displays in an examine dialog.--]],
+		{name = S[302535920001026--[[Show File Log--]]],
+			hint = S[302535920001091--[[Flushes log to disk and displays in an examine dialog.--]]],
 			clicked = function()
 				local dlg = OpenInExamineDlg(LoadLogfile())
 				CreateRealTimeThread(function()
@@ -289,29 +289,29 @@ function OnMsg.ClassesGenerate()
 				end)
 			end,
 		},
-		{name = 302535920000071--[[Mods Log--]],
-			hint = 302535920000870--[[Shows mod log msgs in an examine dialog.--]],
+		{name = S[302535920000071--[[Mods Log--]]],
+			hint = S[302535920000870--[[Shows mod log msgs in an examine dialog.--]]],
 			clicked = function()
 				OpenInExamineDlg(ModMessageLog)
 			end,
 		},
 		{name = "\t--",disable = true},
-		{name = 302535920000734--[[Clear Log--]],
-			hint = 302535920001152--[[Clear out the console log (F9 also works).--]],
+		{name = S[302535920000734--[[Clear Log--]]],
+			hint = S[302535920001152--[[Clear out the console log (F9 also works).--]]],
 			clicked = cls,
 		},
-		{name = 302535920000563--[[Copy Log Text--]],
-			hint = 302535920001154--[[Displays the log text in a window you can copy sections from.--]],
+		{name = S[302535920000563--[[Copy Log Text--]]],
+			hint = S[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
 			clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
 		},
-		{name = 302535920000473--[[Reload ECM Menu--]],
-			hint = 302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix or alt-tab).--]],
+		{name = S[302535920000473--[[Reload ECM Menu--]]],
+			hint = S[302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix or alt-tab).--]]],
 			clicked = function()
 				Msg("ShortcutsReloaded")
 			end,
 		},
 		{name = "\t--",disable = true},
-		{name = 302535920001479--[[Errors In Console--]],
+		{name = S[302535920001479--[[Errors In Console--]]],
 			hint = S[302535920001480--[[Print (some) lua errors in the console (needs %s enabled).--]]]:format(S[302535920001112--[[Console Log--]]]),
 			class = "ChoGGi_CheckButtonMenu",
 			value = "ChoGGi.UserSettings.ConsoleErrors",
@@ -321,8 +321,8 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.ConsoleFuncs.ToggleLogErrors(ChoGGi.UserSettings.ConsoleErrors)
 			end,
 		},
-		{name = 302535920001112--[[Console Log--]],
-			hint = 302535920001119--[[Show console log text in-game (probably an annoyance to non-modders).--]],
+		{name = S[302535920001112--[[Console Log--]]],
+			hint = S[302535920001119--[[Show console log text in-game (probably an annoyance to non-modders).--]]],
 			class = "ChoGGi_CheckButtonMenu",
 			value = "dlgConsoleLog",
 			clicked = function()
@@ -337,8 +337,8 @@ function OnMsg.ClassesGenerate()
 				end
 			end,
 		},
-		{name = 302535920001120--[[Console Window--]],
-			hint = 302535920001133--[[Show the console log text in an independant window.--]],
+		{name = S[302535920001120--[[Console Window--]]],
+			hint = S[302535920001133--[[Show the console log text in an independant window.--]]],
 			class = "ChoGGi_CheckButtonMenu",
 			value = "dlgChoGGi_ConsoleLogWin",
 			clicked = function()
@@ -347,7 +347,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.ComFuncs.ShowConsoleLogWin(ChoGGi.UserSettings.ConsoleHistoryWin)
 			end,
 		},
-		{name = 302535920000483--[[Write Console Log--]],
+		{name = S[302535920000483--[[Write Console Log--]]],
 			hint = S[302535920000484--[[Write console log to %slogs/ConsoleLog.log (updated every 5 seconds).--]]]:format(ConvertToOSPath("AppData/")),
 			class = "ChoGGi_CheckButtonMenu",
 			value = "ChoGGi.UserSettings.WriteLogs",
@@ -484,7 +484,7 @@ function OnMsg.ClassesGenerate()
 					end
 					PopupToggle(self,folder.id,items)
 				else
-					print(S[591853191640--[[Empty list--]]])
+					print(Trans(591853191640--[[Empty list--]]))
 				end
 			end,
 		}, console.idScripts)

@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local iconD = "CommonAssets/UI/Menu/ShowAll.tga"
@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Drones = "ECM.ECM.Drones"
 	c = c + 1
-	Actions[c] = {ActionName = S[517--[[Drones--]]],
+	Actions[c] = {ActionName = Trans(517--[[Drones--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Drones",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -26,7 +26,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RCRoverMaxRadius,
-				302535920000506--[[Change RC Rover drone radius (this ignores slider).--]]
+				S[302535920000506--[[Change RC Rover drone radius (this ignores slider).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetRoverWorkRadius,
@@ -40,7 +40,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.CommandCenterMaxRadius,
-				302535920000508--[[Change DroneHub drone radius (this ignores slider).--]]
+				S[302535920000508--[[Change DroneHub drone radius (this ignores slider).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDroneHubWorkRadius,
@@ -54,7 +54,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DroneTransformWasteRockObstructorToStockpileAmount,
-				302535920000510--[[How long it takes drones to convert rock to concrete.--]]
+				S[302535920000510--[[How long it takes drones to convert rock to concrete.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed,
@@ -68,7 +68,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SpeedDrone,
-				302535920000512--[[How fast drones will move.--]]
+				S[302535920000512--[[How fast drones will move.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDroneMoveSpeed,
@@ -104,7 +104,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings.DroneFactory.performance_notauto",
-				302535920000516--[[Change how fast drone factories build drones.--]]
+				S[302535920000516--[[Change how fast drone factories build drones.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed,
@@ -118,7 +118,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.GravityDrone,
-				302535920000518--[[Change gravity of Drones.--]]
+				S[302535920000518--[[Change gravity of Drones.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetGravityDrones,
@@ -132,7 +132,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DroneMoveBatteryUse,
-				302535920000519--[[Drone Battery Infinite--]]
+				S[302535920000519--[[Drone Battery Infinite--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle,
@@ -146,7 +146,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DroneConstructAmount,
-				302535920000522--[[Instant build/repair when resources are ready.--]]
+				S[302535920000522--[[Instant build/repair when resources are ready.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle,
@@ -160,21 +160,21 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DroneMeteorMalfunctionChance,
-				302535920000524--[[Drones will not malfunction when close to a meteor impact site.--]]
+				S[302535920000524--[[Drones will not malfunction when close to a meteor impact site.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.DroneMeteorMalfunction_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[4645--[[Drone Recharge Time--]]],
+	Actions[c] = {ActionName = Trans(4645--[[Drone Recharge Time--]]),
 		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Recharge Time",
 		ActionIcon = iconD,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DroneRechargeTime,
-				302535920000526--[[Faster/Slower Drone Recharge.--]]
+				S[302535920000526--[[Faster/Slower Drone Recharge.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.DroneRechargeTime_Toggle,
@@ -188,7 +188,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DroneRepairSupplyLeak,
-				302535920000528--[[Faster Drone fix supply leak.--]]
+				S[302535920000528--[[Faster Drone fix supply leak.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.DroneRepairSupplyLeak_Toggle,
@@ -202,7 +202,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DroneResourceCarryAmount,
-				302535920000530--[[Change amount drones can carry.--]]
+				S[302535920000530--[[Change amount drones can carry.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDroneCarryAmount,
@@ -216,7 +216,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.CommandCenterMaxDrones,
-				302535920000532--[[Change amount of drones Drone Hubs will command.--]]
+				S[302535920000532--[[Change amount of drones Drone Hubs will command.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDronesPerDroneHub,
@@ -230,7 +230,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RCRoverMaxDrones,
-				302535920000534--[[Change amount of drones RC Rovers will command.--]]
+				S[302535920000534--[[Change amount of drones RC Rovers will command.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDronesPerRCRover,
@@ -244,7 +244,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				GetMissionSponsor().drone_class or "Drone",
-				302535920001404--[[Change what type of drones will spawn (doesn't effect existing).--]]
+				S[302535920001404--[[Change what type of drones will spawn (doesn't effect existing).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDroneType,
@@ -252,7 +252,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Shuttles = "ECM.ECM.Shuttles"
 	c = c + 1
-	Actions[c] = {ActionName = S[745--[[Shuttles--]]],
+	Actions[c] = {ActionName = Trans(745--[[Shuttles--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Shuttles",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -268,7 +268,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings.ShuttleHub.shuttles",
-				302535920000536--[[Change amount of shuttles per shuttlehub.--]]
+				S[302535920000536--[[Change amount of shuttles per shuttlehub.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity,
@@ -282,7 +282,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.StorageShuttle,
-				302535920000538--[[Change capacity of shuttles.--]]
+				S[302535920000538--[[Change capacity of shuttles.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetShuttleCapacity,
@@ -296,7 +296,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SpeedShuttle,
-				302535920000540--[[Change speed of shuttles.--]]
+				S[302535920000540--[[Change speed of shuttles.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetShuttleSpeed,
@@ -304,7 +304,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Rovers = "ECM.ECM.Rovers"
 	c = c + 1
-	Actions[c] = {ActionName = S[5438--[[Rovers--]]],
+	Actions[c] = {ActionName = Trans(5438--[[Rovers--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Rovers",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -320,7 +320,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RCChargeDist,
-				302535920000542--[[Distance from power lines that rovers can charge.--]]
+				S[302535920000542--[[Distance from power lines that rovers can charge.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetRoverChargeRadius,
@@ -334,7 +334,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SpeedRC,
-				302535920000544--[[How fast RCs will move.--]]
+				S[302535920000544--[[How fast RCs will move.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetRCMoveSpeed,
@@ -348,7 +348,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.GravityRC,
-				302535920000546--[[Change gravity of RCs.--]]
+				S[302535920000546--[[Change gravity of RCs.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetGravityRC,
@@ -362,7 +362,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RCRoverTransferResourceWorkTime,
-				302535920000550--[[Make it instantly gather/transfer resources.--]]
+				S[302535920000550--[[Make it instantly gather/transfer resources.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle,
@@ -376,7 +376,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RCTransportStorageCapacity,
-				302535920000552--[[Change amount of resources RC Transports/Constructors can carry.--]]
+				S[302535920000552--[[Change amount of resources RC Transports/Constructors can carry.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetRCTransportStorageCapacity,
@@ -384,7 +384,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Rockets = "ECM.ECM.Rockets"
 	c = c + 1
-	Actions[c] = {ActionName = S[5238--[[Rockets--]]],
+	Actions[c] = {ActionName = Trans(5238--[[Rockets--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Rockets",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -400,7 +400,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RocketMaxExportAmount,
-				302535920001290--[[Change how many rares per rocket you can export.--]]
+				S[302535920001290--[[Change how many rares per rocket you can export.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.RocketMaxExportAmount,
@@ -414,7 +414,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.LaunchFuelPerRocket,
-				302535920001318--[[Change how much fuel rockets need to launch.--]]
+				S[302535920001318--[[Change how much fuel rockets need to launch.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.LaunchFuelPerRocket,
@@ -428,7 +428,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RocketsIgnoreFuel,
-				302535920001320--[[Rockets don't need fuel to launch.--]]
+				S[302535920001320--[[Rockets don't need fuel to launch.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.RocketsIgnoreFuel_Toggle,
@@ -460,7 +460,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.CargoCapacity,
-				302535920000560--[[Change amount of storage space in rockets.--]]
+				S[302535920000560--[[Change amount of storage space in rockets.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetRocketCargoCapacity,
@@ -474,21 +474,21 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.TravelTimeEarthMars,
-				302535920000562--[[Change how long to take to travel between planets.--]]
+				S[302535920000562--[[Change how long to take to travel between planets.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetRocketTravelTime,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[4594--[[Colonists Per Rocket--]]],
+	Actions[c] = {ActionName = Trans(4594--[[Colonists Per Rocket--]]),
 		ActionMenubar = str_ECM_Rockets,
 		ActionId = ".Colonists Per Rocket",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				Consts.MaxColonistsPerRocket,
-				302535920000564--[[Change how many colonists can arrive on Mars in a single Rocket.--]]
+				S[302535920000564--[[Change how many colonists can arrive on Mars in a single Rocket.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetColonistsPerRocket,

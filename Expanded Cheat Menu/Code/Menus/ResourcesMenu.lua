@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 
@@ -9,7 +9,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Resources = "ECM.ECM.Resources"
 	c = c + 1
-	Actions[c] = {ActionName = S[692--[[Resources--]]],
+	Actions[c] = {ActionName = Trans(692--[[Resources--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Resources",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -26,7 +26,7 @@ function OnMsg.ClassesGenerate()
 			if GameState.gameplay then
 				return ChoGGi.ComFuncs.SettingState(
 					#(UICity.labels.OrbitalProbe or "") + #(UICity.labels.AdvancedOrbitalProbe or ""),
-					302535920000720--[[Add more probes.--]]
+					S[302535920000720--[[Add more probes.--]]]
 				)
 			end
 			return S[302535920000720]
@@ -35,30 +35,30 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[4616--[[Food Per Rocket Passenger--]]],
+	Actions[c] = {ActionName = Trans(4616--[[Food Per Rocket Passenger--]]),
 		ActionMenubar = str_ECM_Resources,
 		ActionId = ".Food Per Rocket Passenger",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.FoodPerRocketPassenger,
-				302535920000722--[[Change the amount of Food supplied with each Colonist arrival.--]]
+				S[302535920000722--[[Change the amount of Food supplied with each Colonist arrival.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetFoodPerRocketPassenger,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[1110--[[Prefab Buildings--]]],
+	Actions[c] = {ActionName = Trans(1110--[[Prefab Buildings--]]),
 		ActionMenubar = str_ECM_Resources,
 		ActionId = ".Prefab Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/gear.tga",
-		RolloverText = S[1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]]] .. "\n" .. S[302535920000897--[[Drone prefabs--]]],
+		RolloverText = Trans(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]]) .. "\n" .. S[302535920000897--[[Drone prefabs--]]],
 		OnAction = ChoGGi.MenuFuncs.AddPrefabs,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[3613--[[Funding--]]],
+	Actions[c] = {ActionName = Trans(3613--[[Funding--]]),
 		ActionMenubar = str_ECM_Resources,
 		ActionId = ".Funding",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
@@ -66,7 +66,7 @@ function OnMsg.ClassesGenerate()
 			if GameState.gameplay then
 				return ChoGGi.ComFuncs.SettingState(
 					UICity.funding,
-					302535920000726--[[Add more funding (or reset back to 500 M).--]]
+					S[302535920000726--[[Add more funding (or reset back to 500 M).--]]]
 				)
 			end
 			return S[302535920000726]

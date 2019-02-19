@@ -21,7 +21,7 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	--~ local Trans = ChoGGi.ComFuncs.Translate
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 
@@ -36,7 +36,7 @@ function OnMsg.ClassesGenerate()
 			c = c + 1
 			Actions[c] = {
 				ActionMenubar = "DevMenu",
-				ActionName = S[str_id],
+				ActionName = Trans(str_id),
 				ActionId = name,
 				ActionSortKey = sort,
 				OnActionEffect = "popup",

@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 
@@ -60,7 +60,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001084--[[Reset--]]] .. " " .. S[5221--[[RC Commanders--]]],
+	Actions[c] = {ActionName = S[302535920001084--[[Reset--]]] .. " " .. Trans(5221--[[RC Commanders--]]),
 		ActionMenubar = str_ECM_Fixes,
 		ActionId = ".Reset RC Commanders",
 		ActionIcon = icon,
@@ -108,7 +108,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_ECM_Fixes,
 		ActionId = ".Remove Missing Class Objects (Warning)",
 		ActionIcon = icon,
-		RolloverText = S[6779--[[Warning--]]] .. ": " .. S[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]],
+		RolloverText = Trans(6779--[[Warning--]]) .. ": " .. S[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]],
 		OnAction = ChoGGi.MenuFuncs.RemoveMissingClassObjects,
 		ActionSortKey = "9Remove Missing Class Objects (Warning)",
 	}
@@ -256,9 +256,9 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.CheckForBorkedTransportPath,
-				302535920001268--[["RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed).
+				S[302535920001268--[["RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed).
 
-	This'll check for and stop any borked ones (it'll show a popup msg when it stops one)."--]]
+	This'll check for and stop any borked ones (it'll show a popup msg when it stops one)."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle,
@@ -272,9 +272,9 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings,
-				302535920000249--[["Colonists will leave a diner/etc and stop outside of it and not move anymore (might be related to one of those smarter worker ai mods).
+				S[302535920000249--[["Colonists will leave a diner/etc and stop outside of it and not move anymore (might be related to one of those smarter worker ai mods).
 
-	Seems to fix it after a Sol or two, so you shouldn't need to leave this running."--]]
+	Seems to fix it after a Sol or two, so you shouldn't need to leave this running."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle,
@@ -288,10 +288,10 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DroneResourceCarryAmountFix,
-				302535920000614--[["Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.
+				S[302535920000614--[["Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.
 	This forces them to pick up whenever there's more then one resource).
 
-	If you have an insane production amount set then it'll take an (in-game) hour between calling drones."--]]
+	If you have an insane production amount set then it'll take an (in-game) hour between calling drones."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle,
@@ -305,9 +305,9 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SortCommandCenterDist,
-				302535920000616--[["Each Sol goes through all buildings and sorts their cc list by nearest.
+				S[302535920000616--[["Each Sol goes through all buildings and sorts their cc list by nearest.
 
-	Takes less then a second on a map with 3600+ buildings and 50+ drone hubs."--]]
+	Takes less then a second on a map with 3600+ buildings and 50+ drone hubs."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle,
@@ -321,8 +321,8 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.FixMissingModBuildings,
-				302535920001484--[["Removes any placed buildings that were from a mod.
-This may break the save in other ways, best to just use it for testing."--]]
+				S[302535920001484--[["Removes any placed buildings that were from a mod.
+This may break the save in other ways, best to just use it for testing."--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.FixMissingModBuildings_Toggle,

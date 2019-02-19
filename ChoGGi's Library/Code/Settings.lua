@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local Trans = ChoGGi.ComFuncs.Translate
 local S = ChoGGi.Strings
 
 -- easy access to colonist data, cargo, mystery
@@ -7,7 +8,7 @@ ChoGGi.Tables = {
 	-- display names only!
 	ColonistRaces = {
 		-- caucasian
-		S[1859--[[White--]]],[S[1859--[[White--]]]] = true,
+		Trans(1859--[[White--]]),[Trans(1859--[[White--]])] = true,
 		-- african
 		S[302535920000739--[[Black--]]],[S[302535920000739--[[Black--]]]] = true,
 		-- asian
@@ -18,23 +19,23 @@ ChoGGi.Tables = {
 		S[302535920001284--[[Hispanic--]]],[S[302535920001284--[[Hispanic--]]]] = true,
 	},
 	ColonistRacesImages = {
-		[S[1859--[[White--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_01.tga",
+		[Trans(1859--[[White--]])] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_01.tga",
 		[S[302535920000739--[[Black--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Af_Adult_01.tga",
 		[S[302535920000740--[[Asian--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_As_Adult_01.tga",
 		[S[302535920001283--[[Indian--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Ar_Adult_01.tga",
 		[S[302535920001284--[[Hispanic--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Hs_Adult_01.tga",
 		-- android
-		[S[3490--[[Random--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
-		[S[1000121--[[Default--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
+		[Trans(3490--[[Random--]])] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
+		[Trans(1000121--[[Default--]])] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
 	},
 --~ 	ColonistRacesImagesFemale = {
---~ 		[S[1859--[[White--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Ca_Adult_01.tga",
+--~ 		[Trans(1859--[[White--]])] = "UI/Icons/Colonists/Pin/Unit_Female_Ca_Adult_01.tga",
 --~ 		[S[302535920000739--[[Black--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Af_Adult_01.tga",
 --~ 		[S[302535920000740--[[Asian--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_As_Adult_01.tga",
 --~ 		[S[302535920001283--[[Indian--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Ar_Adult_01.tga",
 --~ 		[S[302535920001284--[[Hispanic--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Hs_Adult_01.tga",
---~ 		[S[3490--[[Random--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
---~ 		[S[1000121--[[Default--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
+--~ 		[Trans(3490--[[Random--]])] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
+--~ 		[Trans(1000121--[[Default--]])] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
 --~ 	},
 	ColonistSpecImages = {
 		botanist = "UI/Icons/Colonists/Pin/Botanist_Male.tga",

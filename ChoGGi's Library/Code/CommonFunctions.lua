@@ -71,9 +71,18 @@ end -- do
 
 -- check if text is already translated or needs to be, and return the text
 function ChoGGi.ComFuncs.CheckText(text,fallback)
+
+	local set_type = type(text)
+	if testing and set_type == "number" then
+		print("CheckText",text,Trans(text))
+		if type(fallback) == "number" then
+			print("CheckText",fallback,Trans(fallback))
+		end
+	end
+
 	local ret_str
 	-- no sense in translating a string
-	if type(text) == "string" then
+	if set_type == "string" then
 		return text
 	else
 		-- see if the number is an id num, tostring(num) won't match index tables (works as a hacky bypass)
@@ -248,7 +257,7 @@ function ChoGGi.ComFuncs.RetHint(obj)
 
 	else
 		-- eh
-		return S[3718--[[NONE--]]]
+		return Trans(3718--[[NONE--]])
 	end
 end
 
@@ -338,6 +347,14 @@ do -- MsgPopup
 	-- shows a popup msg with the rest of the notifications
 	-- objects can be a single obj, or {obj1,obj2,etc}
 	function ChoGGi.ComFuncs.MsgPopup(text,title,image,size,objects)
+
+		if testing and type(text) == "number" then
+			print("MsgPopup",text,Trans(text))
+			if type(title) == "number" then
+				print("MsgPopup",title,Trans(title))
+			end
+		end
+
 		-- notifications only show up in-game
 		if not GameState.gameplay then
 			return
@@ -371,7 +388,7 @@ do -- MsgPopup
 		local data = {
 			id = AsyncRand(),
 			title = CheckText(title),
-			text = CheckText(text,S[3718--[[NONE--]]]),
+			text = CheckText(text,Trans(3718--[[NONE--]])),
 			image = ValidateImage(image,"UI/TheIncal.png"),
 		}
 		TableSet_defaults(data, params)
@@ -555,7 +572,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 
 		local button = cls:new({
 			TextColor = -16777216,
-			RolloverTitle = item.hint_title and CheckText(item.hint_title,item.obj and RetName(item.obj) or S[126095410863--[[Info--]]]),
+			RolloverTitle = item.hint_title and CheckText(item.hint_title,item.obj and RetName(item.obj) or Trans(126095410863--[[Info--]])),
 			RolloverText = CheckText(item.hint,""),
 			RolloverHint = CheckText(item.hint_bottom,S[302535920000083--[[<left_click> Activate--]]]),
 			Text = CheckText(item.name),
@@ -759,9 +776,9 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image,ok_text,context,parent)
 	-- thread needed for WaitMarsQuestion
 	CreateRealTimeThread(function()
 		local dlg = CreateMarsQuestionBox(
-			CheckText(title,S[1000016--[[Title--]]]),
-			CheckText(text,S[3718--[[NONE--]]]),
-			CheckText(ok_text,S[6878--[[OK--]]]),
+			CheckText(title,Trans(1000016--[[Title--]])),
+			CheckText(text,Trans(3718--[[NONE--]])),
+			CheckText(ok_text,Trans(6878--[[OK--]])),
 			"",
 			parent,
 			ValidateImage(image,"UI/message_picture_01.png"),
@@ -777,10 +794,10 @@ function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,con
 	CreateRealTimeThread(function()
 		if WaitMarsQuestion(
 			parent,
-			CheckText(title,S[1000016--[[Title--]]]),
-			CheckText(text,S[3718--[[NONE--]]]),
-			CheckText(ok_msg,S[6878--[[OK--]]]),
-			CheckText(cancel_msg,S[6879--[[Cancel--]]]),
+			CheckText(title,Trans(1000016--[[Title--]])),
+			CheckText(text,Trans(3718--[[NONE--]])),
+			CheckText(ok_msg,Trans(6878--[[OK--]])),
+			CheckText(cancel_msg,Trans(6879--[[Cancel--]])),
 			ValidateImage(image,"UI/message_picture_01.png"),
 			context
 		) == "ok" then
@@ -1221,6 +1238,10 @@ end
 
 -- return a string setting/text for menus
 function ChoGGi.ComFuncs.SettingState(setting,text)
+
+	if testing and type(text) == "number" then
+		print("SettingState",text,Trans(text))
+	end
 
 	if type(setting) == "string" and setting:find("%.") then
 		-- some of the menu items passed are "table.table.exists?.setting"
@@ -1770,7 +1791,7 @@ do -- Rebuildshortcuts
 
 		if DisableECM then
 		-- add a key binding to options to re-enable ECM
-			local name = S[754117323318--[[Enable--]]] .. " " ..S[302535920000887--[[ECM--]]]
+			local name = Trans(754117323318--[[Enable--]]) .. " " ..S[302535920000887--[[ECM--]]]
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionName = name,
 				ActionId = name,
@@ -2055,7 +2076,7 @@ function ChoGGi.ComFuncs.ColonistUpdateAge(c,age)
 	end
 
 	local ages = ChoGGi.Tables.ColonistAges
-	if age == S[3490--[[Random--]]] then
+	if age == Trans(3490--[[Random--]]) then
 		age = ages[Random(1,6)]
 	end
 	-- remove all age traits
@@ -2106,7 +2127,7 @@ function ChoGGi.ComFuncs.ColonistUpdateGender(c,gender)
 	local ChoGGi = ChoGGi
 	local genders = ChoGGi.Tables.ColonistGenders
 
-	if gender == S[3490--[[Random--]]] then
+	if gender == Trans(3490--[[Random--]]) then
 		gender = genders[Random(1,3)]
 	elseif gender == S[302535920000800--[[MaleOrFemale--]]] then
 		gender = genders[Random(1,2)]
@@ -2133,7 +2154,7 @@ function ChoGGi.ComFuncs.ColonistUpdateSpecialization(c,spec)
 
 	-- children don't have spec models so they get black cubed
 	if c.age_trait ~= "Child" then
-		if spec == S[3490--[[Random--]]] then
+		if spec == Trans(3490--[[Random--]]) then
 			spec = ChoGGi.Tables.ColonistSpecializations[Random(1,6)]
 		end
 		c:SetSpecialization(spec)
@@ -2166,7 +2187,7 @@ function ChoGGi.ComFuncs.ColonistUpdateRace(c,race)
 		return
 	end
 
-	if race == S[3490--[[Random--]]] then
+	if race == Trans(3490--[[Random--]]) then
 		race = Random(1,5)
 	end
 	c.race = race
@@ -2493,7 +2514,7 @@ do -- COLOUR FUNCTIONS
 		if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 			MsgPopup(
 				S[302535920000015--[[Can't colour %s.--]]]:format(RetName(obj)),
-				3595--[[Color--]]
+				Trans(3595--[[Color--]])
 			)
 			return
 		end
@@ -2507,21 +2528,21 @@ do -- COLOUR FUNCTIONS
 			ItemList[c] = {
 				text = text,
 				value = pal[text],
-				hint = 302535920000017--[[Use the colour picker (dbl right-click for instant change).--]],
+				hint = S[302535920000017--[[Use the colour picker (dbl right-click for instant change).--]]],
 			}
 			text = "Roughness" .. i
 			c = c + 1
 			ItemList[c] = {
 				text = text,
 				value = pal[text],
-				hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
+				hint = S[302535920000018--[[Don't use the colour picker: Numbers range from -128 to 127.--]]],
 			}
 			text = "Metallic" .. i
 			c = c + 1
 			ItemList[c] = {
 				text = text,
 				value = pal[text],
-				hint = 302535920000018--[[Don't use the colour picker: Numbers range from -255 to 255.--]],
+				hint = S[302535920000018--[[Don't use the colour picker: Numbers range from -128 to 127.--]]],
 			}
 		end
 		c = c + 1
@@ -2529,8 +2550,8 @@ do -- COLOUR FUNCTIONS
 			text = "X_BaseColor",
 			value = 6579300,
 			obj = obj,
-			hint = 302535920000019--[["Single colour for object (this colour will interact with the other colours).
-	If you want to change the colour of an object you can't with 1-4."--]],
+			hint = S[302535920000019--[["Single colour for object (this colour will interact with the other colours).
+	If you want to change the colour of an object you can't with 1-4."--]]],
 		}
 
 		local function CallBackFunc(choice)
@@ -2584,7 +2605,7 @@ do -- COLOUR FUNCTIONS
 
 				MsgPopup(
 					S[302535920000020--[[Colour is set on %s--]]]:format(RetName(obj)),
-					3595--[[Color--]],
+					Trans(3595--[[Color--]]),
 					nil,
 					nil,
 					obj
@@ -2595,20 +2616,20 @@ do -- COLOUR FUNCTIONS
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = S[174--[[Color Modifier--]]] .. ": " .. RetName(obj),
-			hint = 302535920000022--[["If number is 8421504 then you probably can't change that colour.
+			title = Trans(174--[[Color Modifier--]]) .. ": " .. RetName(obj),
+			hint = S[302535920000022--[["If number is 8421504 then you probably can't change that colour.
 
-You can copy and paste numbers if you want."--]],
+You can copy and paste numbers if you want."--]]],
 			parent = dialog,
 			custom_type = 2,
 			check = {
 				{
-					title = 302535920000023--[[All of type--]],
-					hint = 302535920000024--[[Change all objects of the same type.--]],
+					title = S[302535920000023--[[All of type--]]],
+					hint = S[302535920000024--[[Change all objects of the same type.--]]],
 				},
 				{
-					title = 302535920000025--[[Default Colour--]],
-					hint = 302535920000026--[[if they're there; resets to default colours.--]],
+					title = S[302535920000025--[[Default Colour--]]],
+					hint = S[302535920000026--[[if they're there; resets to default colours.--]]],
 				},
 			},
 		}
@@ -2789,7 +2810,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 			else
 				MsgPopup(
 					S[302535920000029--[[Error: Cannot find any %s.--]]]:format(choice[1].text),
-					15--[[Resource--]]
+					Trans(15--[[Resource--]])
 				)
 			end
 		end
@@ -2799,7 +2820,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 		callback = CallBackFunc,
 		items = ItemList,
 		title = S[302535920000031--[[Find Nearest Resource--]]] .. ": " .. RetName(obj),
-		hint = 302535920000032--[[Select a resource to find--]],
+		hint = S[302535920000032--[[Select a resource to find--]]],
 		skip_sort = true,
 		custom_type = 7,
 	}
@@ -2856,7 +2877,7 @@ do -- DeleteObject
 		if obj:IsKindOf("Dome") and #(obj.labels.Buildings or "") > 0 then
 			MsgPopup(
 				S[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).--]]]:format(RetName(obj)),
-				302535920000489--[[Delete Object(s)--]]
+				S[302535920000489--[[Delete Object(s)--]]]
 			)
 			return
 		end
@@ -3002,7 +3023,7 @@ do -- DisplayMonitorList
 			local ChoGGi = ChoGGi
 			ChoGGi.ComFuncs.MsgWait(
 				S[302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]]:format(ChoGGi.email),
-				302535920000034--[[Request--]]
+				S[302535920000034--[[Request--]]]
 			)
 			return
 		end
@@ -3037,19 +3058,19 @@ do -- DisplayMonitorList
 			AddGrid(UICity,"water",info)
 		elseif value == "Air" then
 			info = info_grid
-			info_grid.title = S[891--[[Air--]]]
+			info_grid.title = Trans(891--[[Air--]])
 			AddGrid(UICity,"air",info)
 		elseif value == "Power" then
 			info = info_grid
-			info_grid.title = S[79--[[Power--]]]
+			info_grid.title = Trans(79--[[Power--]])
 			AddGrid(UICity,"electricity",info)
 		elseif value == "Water" then
 			info = info_grid
-			info_grid.title = S[681--[[Water--]]]
+			info_grid.title = Trans(681--[[Water--]])
 			AddGrid(UICity,"water",info)
 		elseif value == "Research" then
 			info = {
-				title = S[311--[[Research--]]],
+				title = Trans(311--[[Research--]]),
 				listtype = "all",
 				tables = {UICity.tech_status},
 				values = {
@@ -3058,7 +3079,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "Colonists" then
 			info = {
-				title = S[547--[[Colonists--]]],
+				title = Trans(547--[[Colonists--]]),
 				tables = UICity.labels.Colonist or "",
 				values = {
 					{name="handle",kind=0},
@@ -3084,7 +3105,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "Rockets" then
 			info = {
-				title = S[5238--[[Rockets--]]],
+				title = Trans(5238--[[Rockets--]]),
 				tables = UICity.labels.AllRockets,
 				values = {
 					{name="name",kind=0},
@@ -3147,8 +3168,8 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 	if not obj then
 		if not skip_msg then
 			MsgPopup(
-				302535920000027--[[Nothing selected--]],
-				302535920000968--[[Collisions--]]
+				S[302535920000027--[[Nothing selected--]]],
+				S[302535920000968--[[Collisions--]]]
 			)
 		end
 		return
@@ -3165,7 +3186,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = nil
-		which = S[460479110814--[[Enabled--]]]
+		which = Trans(460479110814--[[Enabled--]])
 	else
 		obj:ClearEnumFlags(coll)
 		if obj.ForEachAttach then
@@ -3174,13 +3195,13 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = true
-		which = S[847439380056--[[Disabled--]]]
+		which = Trans(847439380056--[[Disabled--]])
 	end
 
 	if not skip_msg then
 		MsgPopup(
 			S[302535920000969--[[Collisions %s on %s--]]]:format(which,RetName(obj)),
-			302535920000968--[[Collisions--]],
+			Trans(302535920000968--[[Collisions--]]),
 			nil,
 			nil,
 			obj
@@ -3197,7 +3218,7 @@ function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj)
 			obj:InterruptCommand()
 			MsgPopup(
 				S[302535920001267--[[%s at position: %s was stopped.--]]]:format(RetName(obj),obj:GetVisualPos()),
-				302535920001266--[[Borked Transport Pathing--]],
+				S[302535920001266--[[Borked Transport Pathing--]]],
 				"UI/Icons/IPButtons/transport_route.tga",
 				nil,
 				obj
@@ -3256,7 +3277,7 @@ GetComputerName(): %s
 
 
 ]],
-		S[5568--[[Stats--]]],
+		Trans(5568--[[Stats--]]),
 		TableConcat(hw),
 		TableConcat(mem),
 		TableConcat({GetAdapterMode(0)}," "),
@@ -3310,10 +3331,10 @@ do -- AddXTemplate
 			end,
 			"__context_of_kind", list.__context_of_kind or "",
 			"__template", list.__template or "InfopanelActiveSection",
-			"Title", list.Title or S[1000016--[[Title--]]],
+			"Title", list.Title or Trans(1000016--[[Title--]]),
 			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
-			"RolloverTitle", list.RolloverTitle or S[126095410863--[[Info--]]],
-			"RolloverText", list.RolloverText or S[126095410863--[[Info--]]],
+			"RolloverTitle", list.RolloverTitle or Trans(126095410863--[[Info--]]),
+			"RolloverText", list.RolloverText or Trans(126095410863--[[Info--]]),
 			"RolloverHint", list.RolloverHint or "",
 			"OnContextUpdate", list.OnContextUpdate or empty_func,
 		}, {
@@ -3765,9 +3786,9 @@ function ChoGGi.ComFuncs.DeleteLargeRocks()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		S[6779--[[Warning--]]] .. "!\n" .. S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
+		Trans(6779--[[Warning--]]) .. "!\n" .. S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
 		CallBackFunc,
-		S[6779--[[Warning--]]] .. ": " ..S[302535920000855--[[Last chance before deletion!--]]]
+		Trans(6779--[[Warning--]]) .. ": " ..S[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 
@@ -3780,9 +3801,9 @@ function ChoGGi.ComFuncs.DeleteSmallRocks()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		S[6779--[[Warning--]]] .. "!\n" .. S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
+		Trans(6779--[[Warning--]]) .. "!\n" .. S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
 		CallBackFunc,
-		S[6779--[[Warning--]]] .. ": " ..S[302535920000855--[[Last chance before deletion!--]]]
+		Trans(6779--[[Warning--]]) .. ": " ..S[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 
@@ -3792,8 +3813,8 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 	obj = obj or ChoGGi.ComFuncs.SelObject()
 	if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 		MsgPopup(
-			302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).--]],
-			3595--[[Color--]]
+			S[302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).--]]],
+			Trans(3595--[[Color--]])
 		)
 		return
 	end
@@ -3811,7 +3832,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 			text = " " .. obj.class,
 			value = obj.class,
 			obj = obj,
-			hint = 302535920001106--[[Change main object colours.--]],
+			hint = S[302535920001106--[[Change main object colours.--]]],
 		}
 		local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
 		for i = 1, #attaches do
@@ -3832,8 +3853,8 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		items = ItemList,
-		title = S[174--[[Color Modifier--]]] .. ": " .. RetName(obj),
-		hint = 302535920001108--[[Double click to open object/attachment to edit (select to flash object).--]],
+		title = Trans(174--[[Color Modifier--]]) .. ": " .. RetName(obj),
+		hint = S[302535920001108--[[Double click to open object/attachment to edit (select to flash object).--]]],
 		custom_type = 1,
 		custom_func = function(sel,dialog)
 			ChoGGi.ComFuncs.ChangeObjectColour(sel[1].obj,sel[1].parentobj,dialog)
@@ -3882,8 +3903,8 @@ do -- ChangeSurfaceSignsToMaterials
 	function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
 
 		local ItemList = {
-			{text = S[754117323318--[[Enable--]]],value = true,hint = 302535920001081--[[Changes signs to materials.--]]},
-			{text = S[251103844022--[[Disable--]]],value = false,hint = 302535920001082--[[Changes materials to signs.--]]},
+			{text = Trans(754117323318--[[Enable--]]),value = true,hint = 302535920001081--[[Changes signs to materials.--]]},
+			{text = Trans(251103844022--[[Disable--]]),value = false,hint = 302535920001082--[[Changes materials to signs.--]]},
 		}
 
 		local function CallBackFunc(choice)

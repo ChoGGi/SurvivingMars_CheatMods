@@ -1,0 +1,2 @@
+maybe it won't affect the spot pos?
+AttachToObject(unit, newSign, "Origin")

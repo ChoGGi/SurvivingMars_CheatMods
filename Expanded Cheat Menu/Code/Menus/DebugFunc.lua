@@ -82,7 +82,7 @@ function OnMsg.ClassesGenerate()
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(ChoGGi.Temp.BuildingPathMarkers_Toggle),
-				302535920001527--[[Building Path Markers--]]
+				S[302535920001527--[[Building Path Markers--]]]
 			)
 		end
 	end -- do
@@ -93,7 +93,7 @@ function OnMsg.ClassesGenerate()
 
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DebugPersistSaves),
-			302535920001498--[[Examine Persist Errors--]]
+			S[302535920001498--[[Examine Persist Errors--]]]
 		)
 	end
 
@@ -203,7 +203,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
-			S[6779--[[Warning--]]] .. ": " .. S[302535920001493--[["This will change to a new map, anything unsaved will be lost!"--]]],
+			Trans(6779--[[Warning--]]) .. ": " .. S[302535920001493--[["This will change to a new map, anything unsaved will be lost!"--]]],
 			CallBackFunc,
 			S[302535920001491--[[View All Entities--]]]
 		)
@@ -211,7 +211,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.ForceStoryBits()
-	--[[
+--[[
 if you do a ~g_StoryBitStates
 that'll show all the active story state thingss
 then click for example BadPrefab, select a prefab and in tools>Execute code stick:
@@ -255,15 +255,15 @@ that'll activate the BadPrefab on it
 
 			MsgPopup(
 				"I said they don't do jack...",
-				948928900281--[[Story Bits--]]
+				S[948928900281--[[Story Bits--]]]
 			)
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 948928900281--[[Story Bits--]],
-			hint = 302535920001359--[["Just lists them for now, I'll make it force them soonish."--]],
+			title = Trans(948928900281--[[Story Bits--]]),
+			hint = S[302535920001359--[["Just lists them for now, I'll make it force them soonish."--]]],
 		}
 	end
 
@@ -337,14 +337,14 @@ that'll activate the BadPrefab on it
 
 			MsgPopup(
 				S[302535920001316--[[Toggled: %s = %s--]]]:format(choice[1].text,new_value),
-				302535920001314--[[Toggle Render--]]
+				S[302535920001314--[[Toggle Render--]]]
 			)
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001314--[[Toggle Render--]],
+			title = S[302535920001314--[[Toggle Render--]]],
 			skip_sort = true,
 			custom_type = 1,
 			custom_func = CallBackFunc,
@@ -390,8 +390,9 @@ that'll activate the BadPrefab on it
 			ItemList[i] = {
 				text = data.displayname,
 				value = data.savename,
-				hint = S[4274--[[Playtime : %s--]]]:format(Trans(playtime)) .. "\n"
-					.. S[4273--[[Saved on : %s--]]]:format(save_date) .. "\n\n"
+
+				hint = Trans(T{4274--[[Playtime : <playtime>--]],playtime = Trans(playtime)}) .. "\n"
+					.. Trans(T{4273--[[Saved on : <save_date>--]],save_date = save_date}) .. "\n\n"
 					.. S[302535920001274--[[This is permanent!--]]],
 			}
 		end
@@ -404,8 +405,8 @@ that'll activate the BadPrefab on it
 
 			if not choice[1].check1 then
 				MsgPopup(
-					302535920000038--[[Pick a checkbox next time...--]],
-					302535920000146--[[Delete Saved Games--]]
+					S[302535920000038--[[Pick a checkbox next time...--]]],
+					S[302535920000146--[[Delete Saved Games--]]]
 				)
 				return
 			end
@@ -432,7 +433,7 @@ that'll activate the BadPrefab on it
 			if games_amt > 0 then
 				MsgPopup(
 					S[302535920001275--[[Deleted %s saved games.--]]]:format(games_amt),
-					302535920000146--[[Delete Saved Games--]]
+					S[302535920000146--[[Delete Saved Games--]]]
 				)
 			end
 		end
@@ -441,13 +442,13 @@ that'll activate the BadPrefab on it
 			callback = CallBackFunc,
 			items = ItemList,
 			title = S[302535920000146--[[Delete Saved Games--]]] .. ": " .. #ItemList,
-			hint = S[6779--[[Warning--]]] .. ": " .. S[302535920001274--[[This is permanent!--]]],
+			hint = Trans(6779--[[Warning--]]) .. ": " .. S[302535920001274--[[This is permanent!--]]],
 			multisel = true,
 			skip_sort = true,
 			check = {
 				{
-					title = 1000009--[[Confirmation--]],
-					hint = 302535920001276--[[Nothing is deleted unless you check this.--]],
+					title = Trans(1000009--[[Confirmation--]]),
+					hint = S[302535920001276--[[Nothing is deleted unless you check this.--]]],
 				},
 			},
 		}
@@ -458,7 +459,7 @@ that'll activate the BadPrefab on it
 
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(tostring(_G[name]),trans_id),
-			1000113--[[Debug--]]
+			Trans(1000113--[[Debug--]])
 		)
 	end
 
@@ -487,8 +488,8 @@ that'll activate the BadPrefab on it
 		ReloadLua()
 		force_load_build = false
 		MsgPopup(
-			302535920000453--[[Reload Lua--]],
-			1000113--[[Debug--]]
+			S[302535920000453--[[Reload Lua--]]],
+			Trans(1000113--[[Debug--]])
 		)
 	end
 
@@ -512,13 +513,13 @@ that'll activate the BadPrefab on it
 
 		local count = MapCount("map",obj.class)
 		ChoGGi.ComFuncs.QuestionBox(
-			S[6779--[[Warning--]]] .. "!\n"
+			Trans(6779--[[Warning--]]) .. "!\n"
 				.. S[302535920000852--[[This will delete all %s of %s--]]]:format(count,obj.class)
 				.. "\n\n" .. S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]],
 			CallBackFunc,
-			S[6779--[[Warning--]]] .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
+			Trans(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
 			S[302535920000856--[[Yes, I want to delete all: %s--]]]:format(obj.class),
-			302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."--]]
+			S[302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."--]]]
 		)
 	end
 

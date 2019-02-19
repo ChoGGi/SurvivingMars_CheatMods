@@ -1,14 +1,14 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
 	local str_ECM_Mission = "ECM.ECM.Mission"
 	c = c + 1
-	Actions[c] = {ActionName = S[1635--[[Mission--]]],
+	Actions[c] = {ActionName = Trans(1635--[[Mission--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Mission",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -17,7 +17,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[11034--[[Rival Colonies--]]],
+	Actions[c] = {ActionName = Trans(11034--[[Rival Colonies--]]),
 		ActionMenubar = str_ECM_Mission,
 		ActionId = ".Rival Colonies",
 		ActionIcon = "CommonAssets/UI/Menu/add_water.tga",
@@ -51,7 +51,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				g_CurrentMissionParams.idMissionLogo,
-				302535920000711--[[Change the logo for anything that uses the logo.--]]
+				S[302535920000711--[[Change the logo for anything that uses the logo.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ChangeGameLogo,
@@ -65,7 +65,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				g_CurrentMissionParams.idMissionSponsor,
-				302535920000713--[[Switch to a different sponsor.--]]
+				S[302535920000713--[[Switch to a different sponsor.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ChangeSponsor,
@@ -93,7 +93,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				g_CurrentMissionParams.idCommanderProfile,
-				302535920000717--[[Switch to a different commander.--]]
+				S[302535920000717--[[Switch to a different commander.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ChangeCommander,
@@ -114,7 +114,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[8800--[[Game Rules--]]],
+	Actions[c] = {ActionName = Trans(8800--[[Game Rules--]]),
 		ActionMenubar = str_ECM_Mission,
 		ActionId = ".Game Rules",
 		ActionIcon = "CommonAssets/UI/Menu/ListCollections.tga",
@@ -133,7 +133,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Mission_Disasters = "ECM.ECM.Mission.Disasters"
 	c = c + 1
-	Actions[c] = {ActionName = S[3983--[[Disasters--]]],
+	Actions[c] = {ActionName = Trans(3983--[[Disasters--]]),
 		ActionMenubar = "ECM.ECM.Mission",
 		ActionId = ".Disasters",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -149,20 +149,20 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.MeteorHealthDamage,
-				302535920000709--[[Disable Meteor damage (colonists?).--]]
+				S[302535920000709--[[Disable Meteor damage (colonists?).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[4142--[[Dust Devils--]]],
+	Actions[c] = {ActionName = Trans(4142--[[Dust Devils--]]),
 		ActionMenubar = str_ECM_Mission_Disasters,
 		ActionId = ".Dust Devils",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = function()
 			return S[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(S[4142--[[Dust Devils--]]],mapdata.MapSettings_DustDevils)
+Current: %s"--]]]:format(Trans(4142--[[Dust Devils--]]),mapdata.MapSettings_DustDevils)
 		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetDisasterOccurrence("DustDevils")
@@ -170,13 +170,13 @@ Current: %s"--]]]:format(S[4142--[[Dust Devils--]]],mapdata.MapSettings_DustDevi
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[4148--[[Cold Waves--]]],
+	Actions[c] = {ActionName = Trans(4148--[[Cold Waves--]]),
 		ActionMenubar = str_ECM_Mission_Disasters,
 		ActionId = ".Cold Waves",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = function()
 			return S[302535920000966--[["Set the occurrence level of %s disasters.
-	Current: %s"--]]]:format(S[4149--[[Cold Wave--]]],mapdata.MapSettings_ColdWave)
+	Current: %s"--]]]:format(Trans(4149--[[Cold Wave--]]),mapdata.MapSettings_ColdWave)
 		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetDisasterOccurrence("ColdWave")
@@ -184,13 +184,13 @@ Current: %s"--]]]:format(S[4142--[[Dust Devils--]]],mapdata.MapSettings_DustDevi
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[4144--[[Dust Storms--]]],
+	Actions[c] = {ActionName = Trans(4144--[[Dust Storms--]]),
 		ActionMenubar = str_ECM_Mission_Disasters,
 		ActionId = ".Dust Storms",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = function()
 			return S[302535920000966--[["Set the occurrence level of %s disasters.
-	Current: %s"--]]]:format(S[4250--[[Dust Storm--]]],mapdata.MapSettings_DustStorm)
+	Current: %s"--]]]:format(Trans(4250--[[Dust Storm--]]),mapdata.MapSettings_DustStorm)
 		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetDisasterOccurrence("DustStorm")
@@ -198,13 +198,13 @@ Current: %s"--]]]:format(S[4142--[[Dust Devils--]]],mapdata.MapSettings_DustDevi
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[4146--[[Meteors--]]],
+	Actions[c] = {ActionName = Trans(4146--[[Meteors--]]),
 		ActionMenubar = str_ECM_Mission_Disasters,
 		ActionId = ".Meteors",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = function()
 			return S[302535920000966--[["Set the occurrence level of %s disasters.
-	Current: %s"--]]]:format(S[4146--[[Meteors--]]],mapdata.MapSettings_Meteor)
+	Current: %s"--]]]:format(Trans(4146--[[Meteors--]]),mapdata.MapSettings_Meteor)
 		end,
 		OnAction = function()
 			ChoGGi.MenuFuncs.SetDisasterOccurrence("Meteor")

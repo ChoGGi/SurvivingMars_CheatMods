@@ -1,14 +1,14 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
 	local str_ECM_Misc = "ECM.ECM.Misc"
 	c = c + 1
-	Actions[c] = {ActionName = S[1000207--[[Misc--]]],
+	Actions[c] = {ActionName = Trans(1000207--[[Misc--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Misc",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -53,7 +53,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.UnpinObjects,
-				302535920000687--[[Will automagically stop any of these objects from being added to the pinned list.--]]
+				S[302535920000687--[[Will automagically stop any of these objects from being added to the pinned list.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ShowAutoUnpinObjectList,
@@ -85,7 +85,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.ExplorationQueueMaxSize,
-				302535920000701--[[Queue up to 100 squares.--]]
+				S[302535920000701--[[Queue up to 100 squares.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle,
@@ -99,7 +99,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.mediumGameSpeed,
-				302535920000703--[[Change the game speed (only for medium/fast, normal is normal).--]]
+				S[302535920000703--[[Change the game speed (only for medium/fast, normal is normal).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetGameSpeed,

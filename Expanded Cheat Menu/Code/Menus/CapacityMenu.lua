@@ -1,14 +1,14 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
 	local str_ECM_Capacity = "ECM.ECM.Capacity"
 	c = c + 1
-	Actions[c] = {ActionName = S[109035890389--[[Capacity--]]],
+	Actions[c] = {ActionName = Trans(109035890389--[[Capacity--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -24,7 +24,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.StorageMechanizedDepotsTemp,
-				302535920000566--[[Allow the temporary storage to hold 100 instead of 50 cubes.--]]
+				S[302535920000566--[[Allow the temporary storage to hold 100 instead of 50 cubes.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle,
@@ -36,12 +36,12 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Worker Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
-			local text = 302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]
+			local text = S[302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".workers",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetWorkerCapacity,
 		ActionShortcut = "Ctrl-Shift-W",
@@ -54,12 +54,12 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Building Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
-			local text = 302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]
+			local text = S[302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".capacity",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetBuildingCapacity,
 		ActionShortcut = "Ctrl-Shift-C",
@@ -72,12 +72,12 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Building Visitor Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
-			local text = 302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]
+			local text = S[302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".visitors",
 				text
-			) or S[text]
+			) or text
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetVisitorCapacity,
 		ActionShortcut = "Ctrl-Shift-V",
@@ -92,7 +92,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.StorageUniversalDepot,
-				302535920000574--[[Change universal storage depot capacity.--]]
+				S[302535920000574--[[Change universal storage depot capacity.--]]]
 			)
 		end,
 		OnAction = function()
@@ -108,7 +108,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.StorageOtherDepot,
-				302535920000576--[[Change other storage depot capacity.--]]
+				S[302535920000576--[[Change other storage depot capacity.--]]]
 			)
 		end,
 		OnAction = function()
@@ -124,7 +124,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.StorageWasteDepot,
-				302535920000578--[[Change waste storage depot capacity.--]]
+				S[302535920000578--[[Change waste storage depot capacity.--]]]
 			)
 		end,
 		OnAction = function()
@@ -140,7 +140,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.StorageMechanizedDepot,
-				302535920000580--[[Change mechanized depot storage capacity.--]]
+				S[302535920000580--[[Change mechanized depot storage capacity.--]]]
 			)
 		end,
 		OnAction = function()

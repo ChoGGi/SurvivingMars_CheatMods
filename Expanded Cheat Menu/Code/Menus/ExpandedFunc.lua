@@ -45,19 +45,19 @@ function OnMsg.ClassesGenerate()
 				water = objlist:new(),
 				electricity = objlist:new(),
 			}
-			grid_list.air.name = S[891--[[Air--]]]
-			grid_list.electricity.name = S[79--[[Power--]]]
+			grid_list.air.name = Trans(891--[[Air--]])
+			grid_list.electricity.name = Trans(79--[[Power--]])
 			grid_list.electricity.__HideCables = {
 				ChoGGi_AddHyperLink = true,
-				name = S[302535920000142--[[Hide--]]] .. " " .. S[881--[[Power Cables--]]],
+				name = S[302535920000142--[[Hide--]]] .. " " .. Trans(881--[[Power Cables--]]),
 				func = function(ex_dlg)
 					FilterExamineList(ex_dlg,"ElectricityGridElement")
 				end,
 			}
-			grid_list.water.name = S[681--[[Water--]]]
+			grid_list.water.name = Trans(681--[[Water--]])
 			grid_list.water.__HidePipes = {
 				ChoGGi_AddHyperLink = true,
-				name = S[302535920000142--[[Hide--]]] .. " " .. S[882--[[Pipes--]]],
+				name = S[302535920000142--[[Hide--]]] .. " " .. Trans(882--[[Pipes--]]),
 				func = function(ex_dlg)
 					FilterExamineList(ex_dlg,"LifeSupportGridElement")
 				end,
@@ -104,42 +104,41 @@ function OnMsg.ClassesGenerate()
 	--~ 		["Life-Support"] = function(obj)
 	--~ 		end,
 			OutsideBuildings = function(obj)
-				return StringFormat("- %s -\n%s: %s(%s) %s(%s) %s(%s)",
-					RetName(obj),
-					S[302535920000035--[[Grids--]]],
-					S[682--[[Oxygen--]]],obj.air and obj.air.grid.ChoGGi_GridHandle,
-					S[681--[[Water--]]],obj.water and obj.water.grid.ChoGGi_GridHandle,
-					S[79--[[Power--]]],obj.electricity and obj.electricity.grid.ChoGGi_GridHandle
-				)
+				return "- " .. RetName(obj) .. " -\n" .. S[302535920000035--[[Grids--]]]
+					.. ": " .. Trans(682--[[Oxygen--]])
+					.. "(" .. tostring(obj.air and obj.air.grid.ChoGGi_GridHandle) .. ") "
+					.. Trans(681--[[Water--]]) .. "("
+					.. tostring(obj.water and obj.water.grid.ChoGGi_GridHandle) .. ") "
+					.. Trans(79--[[Power--]]) .. "("
+					.. tostring(obj.electricity and obj.electricity.grid.ChoGGi_GridHandle) .. ")"
 			end,
 			SubsurfaceDeposit = function(obj)
-				return StringFormat("- %s -\n%s: %s, %s: %s\n%s: %s, %s: %s/%s",
-					RetName(obj),
-					S[6--[[Depth Layer--]]],obj.depth_layer,
-					S[7--[[Is Revealed--]]],obj.revealed,
-					S[16--[[Grade--]]],obj.grade,
-					S[1000100--[[Amount--]]],obj.amount / r,obj.max_amount / r
-				)
+				return "- " .. RetName(obj) .. " -\n" .. Trans(6--[[Depth Layer--]])
+					.. ": " .. obj.depth_layer .. ", " .. Trans(7--[[Is Revealed--]])
+					.. ": " .. obj.revealed .. "\n" .. Trans(16--[[Grade--]]) .. ": "
+					.. obj.grade .. ", " .. Trans(1000100--[[Amount--]]) .. ": "
+					.. (obj.amount / r) .. "/" .. (obj.max_amount / r)
 			end,
 			DroneControl = function(obj)
-				return StringFormat("- %s -\n%s: %s/%s\n%s, %s: %s, %s, %s",
-					RetName(obj),
-					S[517--[[Drones: %s--]]],#(obj.drones or ""),obj:GetMaxDronesCount(),
-					S[295--[[Idle: %s--]]]:format(obj:GetIdleDronesCount()),
-					S[302535920000081--[[Workers--]]],obj:GetMiningDronesCount(),
-					S[293--[[Broken: %s--]]]:format(obj:GetBrokenDronesCount()),
-					S[294--[[Discharged: %s--]]]:format(obj:GetDischargedDronesCount())
-				)
+				return "- " .. RetName(obj) .. " -\n" .. Trans(517--[[Drones--]])
+					.. ": " .. #(obj.drones or "") .. "/" .. obj:GetMaxDronesCount()
+					.. "\n"
+					.. Trans(T{295--[[Idle <right>--]],right = ": " .. obj:GetIdleDronesCount()})
+					.. ", " .. S[302535920000081--[[Workers--]]] .. ": "
+					.. obj:GetMiningDronesCount() .. ", "
+					.. Trans(T{293--[[Broken <right>--]],right = ": " .. obj:GetBrokenDronesCount()})
+					.. ", "
+					.. Trans(T{294--[[Discharged <right>--]],right = ": " .. obj:GetDischargedDronesCount()})
 			end,
 			Drone = function(obj)
-				return StringFormat("- %s -\n%s (%s), %s: %s, %s: %s\n%s: %s/%s, %s: %s/%s",
-					RetName(obj),
-					S[584248706535--[[Carrying: %s--]]]:format((obj.amount or 0) / r),obj.resource,
-					S[63--[[Travelling--]]],obj.moving,
-					S[40--[[Recharge--]]],obj.going_to_recharger,
-					S[4448--[[Dust--]]],obj.dust / r,obj.dust_max / r,
-					S[7607--[[Battery--]]],obj.battery / r,obj.battery_max / r
-				)
+				return "- " .. RetName(obj) .. " -\n"
+					.. Trans(T{584248706535--[[Carrying<right><ResourceAmount>--]],right=": ",ResourceAmount = (obj.amount or 0) / r})
+					.. " (" .. obj.resource .. "), " .. Trans(63--[[Travelling--]]) .. ": "
+					.. obj.moving .. ", " .. Trans(40--[[Recharge--]]) .. ": "
+					.. obj.going_to_recharger .. "\n" .. Trans(4448--[[Dust--]])
+					.. ": " .. (obj.dust / r) .. "/" .. (obj.dust_max / r)
+					.. ", " .. Trans(7607--[[Battery--]]) .. ": " .. (obj.battery / r)
+					.. "/" .. (obj.battery_max / r)
 			end,
 			Production = function(obj)
 				local prod = type(obj.GetProducerObj) == "function" and obj:GetProducerObj()
@@ -149,7 +148,7 @@ function OnMsg.ClassesGenerate()
 
 				local predprod
 				local prefix
-				local waste = obj.wasterock_producer or nil -- can't use booleans for table.concat, so make it nil
+				local waste = tostring(obj.wasterock_producer or "")
 				if waste then
 					predprod = tostring(waste:GetPredictedProduction())
 					prefix = "0."
@@ -157,13 +156,14 @@ function OnMsg.ClassesGenerate()
 						prefix = ""
 						predprod = predprod / r
 					end
-					waste = StringFormat("\n-%s-\n%s: %s%s, %s, %s\n%s: %s/%s",
-					S[4518--[[Waste Rock--]]],
-					S[80--[[Production--]]],prefix,predprod,
-					S[6729--[[Daily Production : %s--]]]:format(waste:GetPredictedDailyProduction() / r),
-					S[434--[[Lifetime: %s--]]]:format(waste.lifetime_production / r),
-					S[519--[[Storage--]]],waste:GetAmountStored() / r,waste.max_storage / r
-					)
+					waste = " -" .. Trans(4518--[[Waste Rock--]]) .. "\n-"
+					.. Trans(80--[[Production--]]) .. "-\n" .. prefix .. ": " .. predprod
+					.. ", "
+					.. Trans(T{6729--[[Daily Production <n>--]],n = ": " .. (waste:GetPredictedDailyProduction() / r)})
+					.. ", "
+					.. Trans(T{434--[[Lifetime<right><lifetime>--]],right=": ",lifetime = (waste.lifetime_production / r)})
+					.. "\n" .. Trans(519--[[Storage--]]) .. ": "
+					.. (waste:GetAmountStored() / r) .. "/" .. (waste.max_storage / r)
 				end
 				predprod = tostring(prod:GetPredictedProduction())
 				prefix = "0."
@@ -171,13 +171,14 @@ function OnMsg.ClassesGenerate()
 					prefix = ""
 					predprod = predprod / r
 				end
-				return TableConcat{StringFormat("- %s -\n%s: %s%s, %s, %s\n%s: %s/%s",
-					RetName(obj),
-					S[80--[[Production--]]],prefix,predprod,
-					S[6729--[[Daily Production : %s--]]]:format(prod:GetPredictedDailyProduction() / r),
-					S[434--[[Lifetime: %s--]]]:format(prod.lifetime_production / r),
-					S[519--[[Storage--]]],prod:GetAmountStored() / r,prod.max_storage / r
-				),waste}
+				return "- " .. RetName(obj) .. " -\n" .. Trans(80--[[Production--]])
+					.. ": " .. prefix .. predprod .. ", "
+					.. Trans(T{6729--[[Daily Production <n>--]],n = ": " .. (prod:GetPredictedDailyProduction() / r)})
+					.. ", "
+					.. Trans(T{434--[[Lifetime<right><lifetime>--]],right=": ",lifetime = (prod.lifetime_production / r)})
+					.. "\n" .. Trans(519--[[Storage--]]) .. ": "
+					.. (prod:GetAmountStored() / r) .. "/" .. (prod.max_storage / r)
+					.. waste
 			end,
 			Dome = function(obj)
 				if not obj.air then
@@ -197,40 +198,29 @@ function OnMsg.ClassesGenerate()
 						end
 					end
 				end
-				return StringFormat([[- %s -
-	%s: %s
-	%s: %s/%s, %s: %s/%s
-	%s: %s, %s\n%s: %s, %s: %s, %s: %s, %s: %s
-
-	%s: %s/%s, %s: %s/%s, %s: %s/%s
-	%s (%s): %s, %s: %s/%s
-	%s (%s): %s, %s: %s/%s
-
-	%s: %s(%s) %s(%s) %s(%s)]],
-					RetName(obj),
-					S[547--[[Colonists--]]],#(obj.labels.Colonist or ""),
-					S[6859--[[Unemployed--]]],#(obj.labels.Unemployed or ""),Dome_GetWorkingSpace(obj),
-					S[7553--[[Homeless--]]],#(obj.labels.Homeless or ""),obj:GetLivingSpace(),
-					S[7031--[[Renegades--]]],#(obj.labels.Renegade or ""),
-					S[5647--[[Dead Colonists: %s--]]]:format(#(obj.labels.DeadColonist or "")),
-					S[6647--[[Guru--]]],#(obj.labels.Guru or ""),
-					S[6640--[[Genius--]]],#(obj.labels.Genius or ""),
-					S[6642--[[Celebrity--]]],#(obj.labels.Celebrity or ""),
-					S[6644--[[Saint--]]],#(obj.labels.Saint or ""),
-					S[79--[[Power--]]],obj.electricity.current_consumption / r,obj.electricity.consumption / r,
-					S[682--[[Oxygen--]]],obj.air.current_consumption / r,obj.air.consumption / r,
-					S[681--[[Water--]]],obj.water.current_consumption / r,obj.water.consumption / r,
-					S[1022--[[Food--]]],#(obj.labels.needFood or ""),
-					S[4439--[[Going to: %s--]]]:format(food_need),
-					S[526--[[Visitors--]]],food_use,food_max,
-					S[3862--[[Medic--]]],#(obj.labels.needMedical or ""),
-					S[4439--[[Going to: %s--]]]:format(medic_need),
-					S[526--[[Visitors--]]],medic_use,medic_max,
-					S[302535920000035--[[Grids--]]],
-					S[682--[[Oxygen--]]],obj.air.grid.ChoGGi_GridHandle,
-					S[681--[[Water--]]],obj.water.grid.ChoGGi_GridHandle,
-					S[79--[[Power--]]],obj.electricity.grid.ChoGGi_GridHandle
-				)
+				return "- " .. RetName(obj) .. " -\n"
+					.. Trans(547--[[Colonists--]]) .. ": " .. #(obj.labels.Colonist or "")
+					.. "\n" .. Trans(6859--[[Unemployed--]]) .. ": " .. #(obj.labels.Unemployed or "") .. "/" .. Dome_GetWorkingSpace(obj)
+					.. ", " .. Trans(7553--[[Homeless--]]) .. ": " .. #(obj.labels.Homeless or "") .. "/" .. obj:GetLivingSpace()
+					.. "\n" .. Trans(7031--[[Renegades--]]) .. ": " .. #(obj.labels.Renegade or "")
+					.. ", " .. Trans(T{5647--[[Dead Colonists: <count>--]],count = #(obj.labels.DeadColonist or "")})
+					.. "\n" .. Trans(6647--[[Guru--]]) .. ": " .. #(obj.labels.Guru or "")
+					.. ", " .. Trans(6640--[[Genius--]]) .. ": " .. #(obj.labels.Genius or "")
+					.. ", " .. Trans(6642--[[Celebrity--]]) .. ": " .. #(obj.labels.Celebrity or "")
+					.. ", " .. Trans(6644--[[Saint--]]) .. ": " .. #(obj.labels.Saint or "")
+					.. "\n\n" .. Trans(79--[[Power--]]) .. ": " .. (obj.electricity.current_consumption / r) .. "/" .. (obj.electricity.consumption / r)
+					.. ", " .. Trans(682--[[Oxygen--]]) .. ": " .. (obj.air.current_consumption / r) .. "/" .. (obj.air.consumption / r)
+					.. ", " .. Trans(681--[[Water--]]) .. ": " .. (obj.water.current_consumption / r) .. "/" .. (obj.water.consumption / r)
+					.. "\n" .. Trans(1022--[[Food--]]) .. " (" .. #(obj.labels.needFood or "") .. "): "
+					.. Trans(4439--[[Going to--]]):gsub("<right><h SelectTarget InfopanelSelect><Target></h>",food_need)
+					.. ", " .. Trans(526--[[Visitors--]]) .. ": " .. food_use .. "/" .. food_max
+					.. "\n" .. Trans(3862--[[Medic--]]) .. " (" .. #(obj.labels.needMedical or "") .. "): "
+					.. Trans(4439--[[Going to--]]):gsub("<right><h SelectTarget InfopanelSelect><Target></h>",medic_need)
+					.. ", " .. Trans(526--[[Visitors--]]) .. ": " .. medic_use .. "/" .. medic_max
+					.. "\n\n" .. S[302535920000035--[[Grids--]]]
+					.. ": " .. Trans(682--[[Oxygen--]]) .. "(" .. obj.air.grid.ChoGGi_GridHandle .. ")"
+					.. Trans(681--[[Water--]]) .. "(" .. obj.water.grid.ChoGGi_GridHandle .. ") "
+					.. Trans(79--[[Power--]]) .. "(" .. obj.electricity.grid.ChoGGi_GridHandle .. ")"
 			end,
 		}
 
@@ -325,15 +315,15 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.MenuFuncs.BuildingInfo_Toggle()
 			local ItemList = {
-				{text = S[83--[[Domes--]]],value = "Dome"},
-				{text = S[3982--[[Deposits--]]],value = "SubsurfaceDeposit"},
-				{text = S[80--[[Production--]]],value = "Production"},
-				{text = S[517--[[Drones--]]],value = "Drone"},
-				{text = S[5433--[[Drone Control--]]],value = "DroneControl"},
-				{text = S[885971788025--[[Outside Buildings--]]],value = "OutsideBuildings"},
+				{text = Trans(83--[[Domes--]]),value = "Dome"},
+				{text = Trans(3982--[[Deposits--]]),value = "SubsurfaceDeposit"},
+				{text = Trans(80--[[Production--]]),value = "Production"},
+				{text = Trans(517--[[Drones--]]),value = "Drone"},
+				{text = Trans(5433--[[Drone Control--]]),value = "DroneControl"},
+				{text = Trans(885971788025--[[Outside Buildings--]]),value = "OutsideBuildings"},
 
-	--~ 			 {text = S[79--[[Power--]]],value = "Power"},
-	--~			 {text = S[81--[[Life Support--]]],value = "Life-Support"},
+	--~ 			 {text = Trans(79--[[Power--]]),value = "Power"},
+	--~			 {text = Trans(81--[[Life Support--]]),value = "Life-Support"},
 			}
 
 			local function CallBackFunc(choice)
@@ -362,8 +352,8 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = 302535920000333--[[Building Info--]],
-				hint = 302535920001280--[[Double-click to toggle text (updates every second).--]],
+				title = S[302535920000333--[[Building Info--]]],
+				hint = S[302535920001280--[[Double-click to toggle text (updates every second).--]]],
 				custom_type = 7,
 			}
 		end
@@ -375,17 +365,16 @@ function OnMsg.ClassesGenerate()
 		local ItemList = {
 			{text = S[302535920000936--[[Something you'd like to see added?--]]],value = "New"},
 			{text = "",value = "New"},
-			{text = S[302535920000035--[[Grids--]]] .. ": " .. S[891--[[Air--]]],value = "Air"},
-			{text = S[302535920000035--[[Grids--]]] .. ": " .. S[79--[[Power--]]],value = "Power"},
-			{text = S[302535920000035--[[Grids--]]] .. ": " .. S[681--[[Water--]]],value = "Water"},
-			{text = S[302535920000035--[[Grids--]]] .. ": " .. S[891--[[Air--]]] .. "/" .. S[79--[[Power--]]] .. "/" .. S[681--[[Water--]]],value = "Grids"},
+			{text = S[302535920000035--[[Grids--]]] .. ": " .. Trans(891--[[Air--]]),value = "Air"},
+			{text = S[302535920000035--[[Grids--]]] .. ": " .. Trans(79--[[Power--]]),value = "Power"},
+			{text = S[302535920000035--[[Grids--]]] .. ": " .. Trans(681--[[Water--]]),value = "Water"},
+			{text = S[302535920000035--[[Grids--]]] .. ": " .. Trans(891--[[Air--]]) .. "/" .. Trans(79--[[Power--]]) .. "/" .. Trans(681--[[Water--]]),value = "Grids"},
 			{text = S[302535920000042--[[City--]]],value = "City"},
-			{text = S[547--[[Colonists--]]],value = "Colonists",hint = 302535920000937--[[Laggy with lots of colonists.--]]},
-			{text = S[5238--[[Rockets--]]],value = "Rockets"},
---~ 			{text = "Research",value = "Research"}
+			{text = Trans(547--[[Colonists--]]),value = "Colonists",hint = S[302535920000937--[[Laggy with lots of colonists.--]]]},
+			{text = Trans(5238--[[Rockets--]]),value = "Rockets"},
 		}
 		if ChoGGi.testing then
-			ItemList[#ItemList+1] = {text = S[311--[[Research--]]],value = "Research"}
+			ItemList[#ItemList+1] = {text = Trans(311--[[Research--]]),value = "Research"}
 		end
 
 		local function CallBackFunc(choice)
@@ -396,7 +385,7 @@ function OnMsg.ClassesGenerate()
 			if value == "New" then
 				ChoGGi.ComFuncs.MsgWait(
 					S[302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]]:format(ChoGGi.email),
-					302535920000034--[[Request--]]
+					S[302535920000034--[[Request--]]]
 				)
 			else
 				ChoGGi.ComFuncs.DisplayMonitorList(value)
@@ -406,8 +395,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000555--[[Monitor Info--]],
-			hint = 302535920000940--[[Select something to monitor.--]],
+			title = S[302535920000555--[[Monitor Info--]]],
+			hint = S[302535920000940--[[Select something to monitor.--]]],
 			custom_type = 7,
 			custom_func = function(sel)
 				ChoGGi.ComFuncs.DisplayMonitorList(sel[1].value,sel[1].parentobj)

@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-
+	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 
@@ -100,7 +100,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_Help_ECM,
 		ActionId = ".Changelog",
 		ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
-		RolloverText = S[4915--[[Good News, Everyone!"--]]],
+		RolloverText = Trans(4915--[[Good News, Everyone!"--]]),
 		OnAction = function()
 			OpenUrl(str_url .. "Expanded Cheat Menu/Changelog.md#ecm-changelog")
 		end,
@@ -115,7 +115,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.EnableToolTips,
-				302535920000322--[[Disabling this will remove most of the tooltips (leaves the cheat menu and cheats pane ones).--]]
+				S[302535920000322--[[Disabling this will remove most of the tooltips (leaves the cheat menu and cheats pane ones).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ToolTips_Toggle,
@@ -129,14 +129,14 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.ShowStartupTicks,
-				302535920001482--[[Prints to console how many ticks it takes the map to load.--]]
+				S[302535920001482--[[Prints to console how many ticks it takes the map to load.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.StartupTicks_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[251103844022--[[Disable--]]] .. " " .. S[302535920000887--[[ECM--]]],
+	Actions[c] = {ActionName = Trans(251103844022--[[Disable--]]) .. " " .. S[302535920000887--[[ECM--]]],
 		ActionMenubar = str_Help_ECM,
 		ActionId = ".Disable ECM",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
@@ -166,7 +166,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_Help_Tutorial = "ECM.Help.Modding Tutorial"
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000323--[[Modding--]]] .. " " .. S[8982--[[Tutorial--]]],
+	Actions[c] = {ActionName = S[302535920000323--[[Modding--]]] .. " " .. Trans(8982--[[Tutorial--]]),
 		ActionMenubar = "ECM.Help",
 		ActionId = ".Modding Tutorial",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -175,7 +175,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = "*" .. S[126095410863--[[Info--]]] .. "*",
+	Actions[c] = {ActionName = "*" .. Trans(126095410863--[[Info--]]) .. "*",
 		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Info*",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
@@ -184,7 +184,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = "*" .. S[283142739680--[[Game--]]] .. " & " .. S[302535920001355--[[Map--]]] .. " " .. S[126095410863--[[Info--]]] .. "*",
+	Actions[c] = {ActionName = "*" .. Trans(283142739680--[[Game--]]) .. " & " .. S[302535920001355--[[Map--]]] .. " " .. Trans(126095410863--[[Info--]]) .. "*",
 		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Game & Map Info*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
@@ -194,7 +194,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = "*" .. S[5568--[[Stats--]]] .. "*",
+	Actions[c] = {ActionName = "*" .. Trans(5568--[[Stats--]]) .. "*",
 		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Stats*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",

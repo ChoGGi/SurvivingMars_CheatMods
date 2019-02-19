@@ -39,8 +39,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RotateDuringPlacement,302535920001407--[[Rotate During Placement--]]),
-			302535920001407--[[Rotate During Placement--]]
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RotateDuringPlacement,S[302535920001407--[[Rotate During Placement--]]]),
+			S[302535920001407--[[Rotate During Placement--]]]
 		)
 	end
 
@@ -90,8 +90,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		ChoGGi.ComFuncs.UpdateBuildMenu()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SponsorBuildingLimits,302535920001398--[[Remove Sponsor Limits--]]),
-			302535920001398--[[Remove Sponsor Limits--]]
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SponsorBuildingLimits,S[302535920001398--[[Remove Sponsor Limits--]]]),
+			S[302535920001398--[[Remove Sponsor Limits--]]]
 		)
 	end
 
@@ -99,8 +99,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.UserSettings.BuildOnGeysers = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.BuildOnGeysers)
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.BuildOnGeysers,302535920000064--[[Build On Geysers--]]),
-			302535920000064--[[Build On Geysers--]]
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.BuildOnGeysers,S[302535920000064--[[Build On Geysers--]]]),
+			S[302535920000064--[[Build On Geysers--]]]
 		)
 	end
 
@@ -109,8 +109,8 @@ function OnMsg.ClassesGenerate()
 		local sel = ChoGGi.ComFuncs.SelObject()
 		if not sel or not IsKindOf(sel,"TrainingBuilding") then
 			MsgPopup(
-				S[302535920001116--[[Select a %s.--]]]:format(S[5443--[[Training Buildings--]]]),
-				5443--[[Training Buildings--]]
+				S[302535920001116--[[Select a %s.--]]]:format(Trans(5443--[[Training Buildings--]])),
+				Trans(5443--[[Training Buildings--]])
 			)
 			return
 		end
@@ -120,7 +120,7 @@ function OnMsg.ClassesGenerate()
 		local UserSettings = ChoGGi.UserSettings
 
 		local ItemList = {
-			{text = S[1000121--[[Default--]]],value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]),value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -167,7 +167,7 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].value,302535920001344--[[Points To Train--]]),
+					ChoGGi.ComFuncs.SettingState(choice[1].value,S[302535920001344--[[Points To Train--]]]),
 					name
 				)
 			end
@@ -187,8 +187,8 @@ function OnMsg.ClassesGenerate()
 		local sel = ChoGGi.ComFuncs.SelObject()
 		if not sel or not IsKindOf(sel,"StatsChange") then
 			MsgPopup(
-				S[302535920001116--[[Select a %s.--]]]:format(S[5439--[[Service Buildings--]]]),
-				4810--[[Service--]],
+				S[302535920001116--[[Select a %s.--]]]:format(Trans(5439--[[Service Buildings--]])),
+				Trans(4810--[[Service--]]),
 				"UI/Icons/Sections/morale.tga"
 			)
 			return
@@ -202,21 +202,21 @@ function OnMsg.ClassesGenerate()
 		local ReturnEditorType = ChoGGi.ComFuncs.ReturnEditorType
 		local hint_type = S[302535920000138--[[Value needs to be a %s.--]]]
 		local ItemList = {
-			{text = S[728--[[Health change on visit--]]],value = sel.base_health_change / r,setting = "health_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","health_change"))},
-			{text = S[729--[[Sanity change on visit--]]],value = sel.base_sanity_change / r,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","sanity_change"))},
-			{text = S[730--[[Service Comfort--]]],value = sel.base_service_comfort / r,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(sel.properties,"id","service_comfort"))},
-			{text = S[731--[[Comfort increase on visit--]]],value = sel.base_comfort_increase / r,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(sel.properties,"id","comfort_increase"))},
+			{text = Trans(728--[[Health change on visit--]]),value = sel.base_health_change / r,setting = "health_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","health_change"))},
+			{text = Trans(729--[[Sanity change on visit--]]),value = sel.base_sanity_change / r,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","sanity_change"))},
+			{text = Trans(730--[[Service Comfort--]]),value = sel.base_service_comfort / r,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(sel.properties,"id","service_comfort"))},
+			{text = Trans(731--[[Comfort increase on visit--]]),value = sel.base_comfort_increase / r,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(sel.properties,"id","comfort_increase"))},
 		}
 		if is_service then
-			ItemList[#ItemList+1] = {text = S[734--[[Visit duration--]]],value = sel.base_visit_duration,setting = "visit_duration",hint = hint_type:format(ReturnEditorType(sel.properties,"id","visit_duration"))}
+			ItemList[#ItemList+1] = {text = Trans(734--[[Visit duration--]]),value = sel.base_visit_duration,setting = "visit_duration",hint = hint_type:format(ReturnEditorType(sel.properties,"id","visit_duration"))}
 			-- bool
-			ItemList[#ItemList+1] = {text = S[735--[[Usable by children--]]],value = sel.base_usable_by_children,setting = "usable_by_children",hint = hint_type:format(ReturnEditorType(sel.properties,"id","usable_by_children"))}
-			ItemList[#ItemList+1] = {text = S[736--[[Children Only--]]],value = sel.base_children_only,setting = "children_only",hint = hint_type:format(ReturnEditorType(sel.properties,"id","children_only"))}
+			ItemList[#ItemList+1] = {text = Trans(735--[[Usable by children--]]),value = sel.base_usable_by_children,setting = "usable_by_children",hint = hint_type:format(ReturnEditorType(sel.properties,"id","usable_by_children"))}
+			ItemList[#ItemList+1] = {text = Trans(736--[[Children Only--]]),value = sel.base_children_only,setting = "children_only",hint = hint_type:format(ReturnEditorType(sel.properties,"id","children_only"))}
 
 			for i = 1, 11 do
 				local name = "interest" .. i
 				ItemList[#ItemList+1] = {
-					text = S[732--[[Service interest--]]] .. " " .. i,
+					text = Trans(732--[[Service interest--]]) .. " " .. i,
 					value = sel[name],
 					setting = name,
 					hint = hint_type:format(ReturnEditorType(sel.properties,"id",name)) .. "\n\n" .. ServiceInterestsList,
@@ -241,7 +241,7 @@ function OnMsg.ClassesGenerate()
 			local set = S[302535920000129--[[Set--]]]
 
 			if choice[1].check1 then
-				set = S[1000121--[[Default--]]]
+				set = Trans(1000121--[[Default--]])
 
 				bs_setting.service_stats = nil
 				-- get defaults
@@ -306,8 +306,8 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(set,302535920001114--[[Service Building Stats--]]),
-				4810--[[Service--]],
+				ChoGGi.ComFuncs.SettingState(set,S[302535920001114--[[Service Building Stats--]]]),
+				Trans(4810--[[Service--]]),
 				"UI/Icons/Sections/morale.tga"
 			)
 		end
@@ -325,8 +325,8 @@ function OnMsg.ClassesGenerate()
 			custom_type = 4,
 			check = {
 				{
-					title = 1000121--[[Default--]],
-					hint = 302535920001338--[[Reset to default.--]],
+					title = Trans(1000121--[[Default--]]),
+					hint = S[302535920001338--[[Reset to default.--]]],
 				},
 			},
 			skip_sort = true,
@@ -335,7 +335,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetExportWhenThisAmount()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = S[1000121--[[Default--]]]
+		local DefaultSetting = Trans(1000121--[[Default--]])
 		local UserSettings = ChoGGi.UserSettings
 		local id = "SpaceElevator"
 		local ItemList = {
@@ -376,8 +376,8 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].value,302535920001336--[[Export When This Amount--]]),
-				1120--[[Space Elevator--]],
+				ChoGGi.ComFuncs.SettingState(choice[1].value,S[302535920001336--[[Export When This Amount--]]]),
+				Trans(1120--[[Space Elevator--]]),
 				"UI/Icons/Sections/basic_active.tga"
 			)
 		end
@@ -385,7 +385,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001336--[[Export When This Amount--]],
+			title = S[302535920001336--[[Export When This Amount--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -398,7 +398,7 @@ function OnMsg.ClassesGenerate()
 		local UserSettings = ChoGGi.UserSettings
 		local id = "SpaceElevator"
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -442,8 +442,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,title),
-					1120--[[Space Elevator--]],
+					ChoGGi.ComFuncs.SettingState(choice[1].text,S[title]),
+					Trans(1120--[[Space Elevator--]]),
 					"UI/Icons/Sections/basic_active.tga"
 				)
 			end
@@ -452,7 +452,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = title,
+			title = S[title],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -464,8 +464,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SpaceElevatorToggleInstantExport,302535920001330--[[Instant Export On Toggle--]]),
-			3980--[[Buildings--]]
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SpaceElevatorToggleInstantExport,S[302535920001330--[[Instant Export On Toggle--]]]),
+			Trans(3980--[[Buildings--]])
 		)
 	end
 
@@ -476,7 +476,7 @@ function OnMsg.ClassesGenerate()
 		local UserSettings = ChoGGi.UserSettings
 		local r = ChoGGi.Consts.ResourceScale
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -520,8 +520,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,8830--[[Food Storage--]]),
-					1022--[[Food--]],
+					ChoGGi.ComFuncs.SettingState(choice[1].text,Trans(8830--[[Food Storage--]])),
+					Trans(1022--[[Food--]]),
 					"UI/Icons/Sections/Food_1.tga"
 				)
 			end
@@ -530,7 +530,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000105--[[Set Food Storage--]],
+			title = S[302535920000105--[[Set Food Storage--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -578,8 +578,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.AlwaysCleanBuildings,302535920000037--[[Always Clean--]]),
-			3980--[[Buildings--]]
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.AlwaysCleanBuildings,S[302535920000037--[[Always Clean--]]]),
+			Trans(3980--[[Buildings--]])
 		)
 	end
 
@@ -588,8 +588,8 @@ function OnMsg.ClassesGenerate()
 		local sel = ChoGGi.ComFuncs.SelObject()
 		if not sel or not sel.protect_range then
 			MsgPopup(
-				302535920000108--[[Select something with a protect_range (MDSLaser/DefenceTower).--]],
-				302535920000109--[[Protect--]],
+				S[302535920000108--[[Select something with a protect_range (MDSLaser/DefenceTower).--]]],
+				S[302535920000109--[[Protect--]]],
 				"UI/Icons/Upgrades/behavioral_melding_02.tga"
 			)
 			return
@@ -597,12 +597,12 @@ function OnMsg.ClassesGenerate()
 		local id = sel.template_name
 		local DefaultSetting = g_Classes[id]:GetDefaultPropertyValue("protect_range")
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 40,value = 40},
 			{text = 80,value = 80},
 			{text = 160,value = 160},
-			{text = 320,value = 320,hint = 302535920000111--[[Cover the entire map from the centre.--]]},
-			{text = 640,value = 640,hint = 302535920000112--[[Cover the entire map from a corner.--]]},
+			{text = 320,value = 320,hint = S[302535920000111--[[Cover the entire map from the centre.--]]]},
+			{text = 640,value = 640,hint = S[302535920000112--[[Cover the entire map from a corner.--]]]},
 		}
 
 		if not ChoGGi.UserSettings.BuildingSettings[id] then
@@ -637,7 +637,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000113--[[%s range is now %s.--]]]:format(RetName(sel),choice[1].text),
-					302535920000109--[[Protect--]],
+					S[302535920000109--[[Protect--]]],
 					"UI/Icons/Upgrades/behavioral_melding_02.tga"
 				)
 			end
@@ -646,7 +646,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000114--[[Set Protection Radius--]],
+			title = S[302535920000114--[[Set Protection Radius--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint .. "\n\n" ..S[302535920000115--[[Toggle selection to update visible hex grid.--]]],
 			skip_sort = true,
 		}
@@ -690,7 +690,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 			MsgPopup(
 				S[302535920000116--[[%s: Buildings unlocked.--]]]:format(#choice),
-				8690--[[Protect--]],
+				Trans(8690--[[Protect--]]),
 				default_icon
 			)
 		end
@@ -698,8 +698,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920000117--[[Unlock Buildings--]],
-			hint = 302535920000118--[[Pick the buildings you want to unlock (use Ctrl/Shift for multiple).--]],
+			title = S[302535920000117--[[Unlock Buildings--]]],
+			hint = S[302535920000118--[[Pick the buildings you want to unlock (use Ctrl/Shift for multiple).--]]],
 			multisel = true,
 		}
 	end
@@ -712,7 +712,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000119--[[%s: Is that a rocket in your pocket?--]]]:format(ChoGGi.UserSettings.PipesPillarSpacing),
-			3980--[[Buildings--]]
+			Trans(3980--[[Buildings--]])
 		)
 	end
 
@@ -731,7 +731,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000119--[[%s: Is that a rocket in your pocket?--]]]:format(ChoGGi.UserSettings.UnlimitedConnectionLength),
-			3980--[[Buildings--]]
+			Trans(3980--[[Buildings--]])
 		)
 	end
 
@@ -741,7 +741,7 @@ function OnMsg.ClassesGenerate()
 		if not sel or not sel[type1] then
 			MsgPopup(
 				str1,
-				3980--[[Buildings--]],
+				Trans(3980--[[Buildings--]]),
 				default_icon
 			)
 			return
@@ -771,7 +771,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			RetName(sel) .. " " .. S[str2],
-			3980--[[Buildings--]],
+			Trans(3980--[[Buildings--]]),
 			default_icon
 		)
 	end
@@ -779,33 +779,33 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.BuildingPower_Toggle()
 		BuildingConsumption_Toggle(
 			"electricity_consumption",
-			302535920000120--[[You need to select a building that uses electricity.--]],
+			S[302535920000120--[[You need to select a building that uses electricity.--]]],
 			"nopower",
 			"AddBuildingElecConsump",
 			"RemoveBuildingElecConsump",
-			683--[[Power Consumption--]]
+			Trans(683--[[Power Consumption--]])
 		)
 	end
 
 	function ChoGGi.MenuFuncs.BuildingWater_Toggle()
 		BuildingConsumption_Toggle(
 			"water_consumption",
-			302535920000121--[[You need to select a building that uses water.--]],
+			S[302535920000121--[[You need to select a building that uses water.--]]],
 			"nowater",
 			"AddBuildingWaterConsump",
 			"RemoveBuildingWaterConsump",
-			656--[[Water consumption--]]
+			Trans(656--[[Water consumption--]])
 		)
 	end
 
 	function ChoGGi.MenuFuncs.BuildingAir_Toggle()
 		BuildingConsumption_Toggle(
 			"air_consumption",
-			302535920001250--[[You need to select a building that uses oxygen.--]],
+			S[302535920001250--[[You need to select a building that uses oxygen.--]]],
 			"noair",
 			"AddBuildingAirConsump",
 			"RemoveBuildingAirConsump",
-			657--[[Oxygen Consumption--]]
+			Trans(657--[[Oxygen Consumption--]])
 		)
 	end
 
@@ -814,8 +814,8 @@ function OnMsg.ClassesGenerate()
 		local sel = SelectedObj
 		if not sel or (not sel.base_air_capacity and not sel.base_water_capacity and not sel.base_capacity) then
 			MsgPopup(
-				302535920000122--[[You need to select something that has capacity (air/water/elec).--]],
-				3980--[[Buildings--]],
+				S[302535920000122--[[You need to select something that has capacity (air/water/elec).--]]],
+				Trans(3980--[[Buildings--]]),
 				default_icon
 			)
 			return
@@ -844,7 +844,7 @@ function OnMsg.ClassesGenerate()
 		local DefaultSettingD = template["max_" .. CapType .. "_discharge"] / r
 
 		local ItemList = {
-			{text = S[1000121--[[Default--]]],value = S[1000121--[[Default--]]],hint = S[302535920000124--[[Charge--]]]
+			{text = Trans(1000121--[[Default--]]),value = Trans(1000121--[[Default--]]),hint = S[302535920000124--[[Charge--]]]
 				.. ": " .. DefaultSettingC .. " / " .. S[302535920000125--[[Discharge--]]]
 				.. ": " .. DefaultSettingD},
 			{text = 25,value = 25},
@@ -888,7 +888,7 @@ function OnMsg.ClassesGenerate()
 				local numberC = value * r
 				local numberD = value * r
 
-				if value == S[1000121--[[Default--]]] then
+				if value == Trans(1000121--[[Default--]]) then
 					if check1 then
 						setting.charge = nil
 						numberC = DefaultSettingC * r
@@ -943,7 +943,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000128--[[%s rate is now: %s--]]]:format(RetName(sel),choice[1].text),
-					302535920000127--[[Rate--]],
+					S[302535920000127--[[Rate--]]],
 					default_icon2
 				)
 			end
@@ -957,13 +957,13 @@ function OnMsg.ClassesGenerate()
 			check = {
 				at_least_one = true,
 				{
-					title = 302535920000124--[[Charge--]],
-					hint = 302535920000132--[[Change charge rate--]],
+					title = S[302535920000124--[[Charge--]]],
+					hint = S[302535920000132--[[Change charge rate--]]],
 					checked = true,
 				},
 				{
-					title = 302535920000125--[[Discharge--]],
-					hint = 302535920000133--[[Change discharge rate--]],
+					title = S[302535920000125--[[Discharge--]]],
+					hint = S[302535920000133--[[Change discharge rate--]]],
 				},
 			},
 			skip_sort = true,
@@ -976,8 +976,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.UseLastOrientation,302535920000134--[[Building Orientation--]]),
-			3980--[[Buildings--]]
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.UseLastOrientation,S[302535920000134--[[Building Orientation--]]]),
+			Trans(3980--[[Buildings--]])
 		)
 	end
 
@@ -998,11 +998,11 @@ function OnMsg.ClassesGenerate()
 		end
 
 		MsgPopup(
-			302535920000135--[[Well, I been working in a coal mine
+			S[302535920000135--[[Well, I been working in a coal mine
 	Going down, down
 	Working in a coal mine
-	Whew, about to slip down--]],
-			5068--[[Farms--]],
+	Whew, about to slip down--]]],
+			Trans(5068--[[Farms--]]),
 			"UI/Icons/Sections/Food_2.tga",
 			true
 		)
@@ -1044,7 +1044,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -1130,7 +1130,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				S[302535920000137--[[%s production is now: %s--]]]:format(RetName(sel),choice[1].text),
-				3980--[[Buildings--]],
+				Trans(3980--[[Buildings--]]),
 				default_icon2
 			)
 		end
@@ -1149,8 +1149,8 @@ function OnMsg.ClassesGenerate()
 		local sel = SelectedObj
 		if not sel or not IsKindOf(sel,"Workplace") then
 			MsgPopup(
-				302535920000141--[[Select a building with workers.--]],
-				3980--[[Buildings--]],
+				S[302535920000141--[[Select a building with workers.--]]],
+				Trans(3980--[[Buildings--]]),
 				"UI/Icons/Upgrades/service_bots_02.tga"
 			)
 			return
@@ -1158,7 +1158,7 @@ function OnMsg.ClassesGenerate()
 		local id = sel.template_name
 
 		local ItemList = {
-			{text = S[251103844022--[[Disable--]]],value = "Disable"},
+			{text = Trans(251103844022--[[Disable--]]),value = "Disable"},
 			{text = 100,value = 100},
 			{text = 150,value = 150},
 			{text = 250,value = 250},
@@ -1218,7 +1218,7 @@ function OnMsg.ClassesGenerate()
 			MsgPopup(
 				S[302535920000143--[["%s
 	I presume the PM's in favour of the scheme because it'll reduce unemployment."--]]]:format(choice[1].text),
-				3980--[[Buildings--]],
+				Trans(3980--[[Buildings--]]),
 				"UI/Icons/Upgrades/service_bots_02.tga",
 				true
 			)
@@ -1244,7 +1244,7 @@ function OnMsg.ClassesGenerate()
 	Current: %s"--]]]:format(hint),
 			check = {
 				{
-					title = 302535920000769--[[Selected--]],
+					title = S[302535920000769--[[Selected--]]],
 					hint = S[302535920000147--[[Only apply to selected object instead of all %s.--]]]:format(name),
 				},
 			},
@@ -1283,7 +1283,7 @@ function OnMsg.ClassesGenerate()
 				S[302535920000148--[["%s:
 	You keep your work station so clean, Jerome.
 	It's next to godliness. Isn't that what they say?"--]]]:format(ChoGGi.UserSettings.SchoolTrainAll),
-				5247--[[School--]],
+				Trans(5247--[[School--]]),
 				"UI/Icons/Upgrades/home_collective_02.tga",
 				true
 			)
@@ -1303,7 +1303,7 @@ function OnMsg.ClassesGenerate()
 			MsgPopup(
 				S[302535920000149--[[%s:
 	There's more vodka in this piss than there is piss.--]]]:format(ChoGGi.UserSettings.SanatoriumCureAll),
-				3540--[[Sanatorium--]],
+				Trans(3540--[[Sanatorium--]]),
 				"UI/Icons/Upgrades/home_collective_02.tga",
 				true
 			)
@@ -1326,7 +1326,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000150--[[%s: Good for what ails you--]]]:format(ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits),
-			235--[[Traits--]],
+			Trans(235--[[Traits--]]),
 			"UI/Icons/Upgrades/factory_ai_04.tga"
 		)
 	end
@@ -1342,7 +1342,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000150--[[%s: Good for what ails you--]]]:format(ChoGGi.UserSettings.SanatoriumSchoolShowAll),
-			3980--[[Buildings--]],
+			Trans(3980--[[Buildings--]]),
 			"UI/Icons/Upgrades/factory_ai_04.tga"
 		)
 	end
@@ -1371,7 +1371,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000151--[[%s: The spice must flow!--]]]:format(ChoGGi.UserSettings.InsideBuildingsNoMaintenance),
-			3980--[[Buildings--]],
+			Trans(3980--[[Buildings--]]),
 			"UI/Icons/Sections/dust.tga"
 		)
 	end
@@ -1396,7 +1396,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000151--[[%s: The spice must flow!--]]]:format(ChoGGi.UserSettings.RemoveMaintenanceBuildUp),
-			3980--[[Buildings--]],
+			Trans(3980--[[Buildings--]]),
 			"UI/Icons/Sections/dust.tga"
 		)
 	end
@@ -1416,7 +1416,7 @@ function OnMsg.ClassesGenerate()
 	C'mon, you want pussy, come on in Pussy Lovers! If we don’t got it, you don't want it! Come on in Pussy lovers!Attention pussy shoppers!
 	Take advantage of our penny pussy sale! If you buy one piece of pussy at the regular price, you get another piece of pussy of equal or lesser value for only a penny!
 	Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!"--]]]:format(ChoGGi.UserSettings.MoistureVaporatorRange),
-			3980--[[Buildings--]],
+			Trans(3980--[[Buildings--]]),
 			"UI/Icons/Upgrades/zero_space_04.tga",
 			true
 		)
@@ -1433,7 +1433,7 @@ function OnMsg.ClassesGenerate()
 			S[302535920000153--[["%s:
 	So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
 	it is a friendship greeting from the children of our small but great planet of Potatoho."--]]]:format(ChoGGi.UserSettings.CropFailThreshold),
-			3980--[[Buildings--]],
+			Trans(3980--[[Buildings--]]),
 			"UI/Icons/Sections/Food_1.tga",
 			true
 		)
@@ -1474,7 +1474,7 @@ function OnMsg.ClassesGenerate()
 		MsgPopup(
 			S[302535920000154--[[%s:
 	Your home will not be a hut on some swampy outback planet your home will be the entire universe.--]]]:format(ChoGGi.UserSettings.Metals_cost_modifier),
-			3980--[[Buildings--]],
+			Trans(3980--[[Buildings--]]),
 			"UI/Icons/Upgrades/build_2.tga"
 		)
 	end
@@ -1492,7 +1492,7 @@ function OnMsg.ClassesGenerate()
 	We were all feeling a bit shagged and fagged and fashed,
 	it having been an evening of some small energy expenditure, O my brothers.
 	So we got rid of the auto and stopped off at the Korova for a nightcap.--]]]:format(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount),
-			3980--[[Buildings--]],
+			Trans(3980--[[Buildings--]]),
 			"UI/Icons/Notifications/fractured_dome.tga",
 			true
 		)
@@ -1509,7 +1509,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]]:format(ChoGGi.UserSettings.BreakChanceCablePipe),
-			302535920000157--[[Cables & Pipes--]],
+			S[302535920000157--[[Cables & Pipes--]]],
 			"UI/Icons/Notifications/timer.tga"
 		)
 	end
@@ -1524,7 +1524,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]]:format(ChoGGi.UserSettings.InstantCables),
-			302535920000157--[[Cables & Pipes--]],
+			S[302535920000157--[[Cables & Pipes--]]],
 			"UI/Icons/Notifications/timer.tga"
 		)
 	end
@@ -1536,7 +1536,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000158--[[%s: No no I said over there.--]]]:format(ChoGGi.UserSettings.RemoveBuildingLimits),
-			3980--[[Buildings--]],
+			Trans(3980--[[Buildings--]]),
 			"UI/Icons/Upgrades/zero_space_04.tga"
 		)
 	end
@@ -1565,7 +1565,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.UserSettings.Building_wonder .. ": " .. S[302535920000159--[[Unlimited Wonders--]]],
-			3980--[[Buildings--]],
+			Trans(3980--[[Buildings--]]),
 			"UI/Icons/Sections/theory_1.tga"
 		)
 	end
@@ -1578,7 +1578,7 @@ function OnMsg.ClassesGenerate()
 		MsgPopup(
 			S[302535920000160--[[%s: Freedom for spires!
 	(restart to set disabled)--]]]:format(ChoGGi.UserSettings.Building_dome_spot),
-			3980--[[Buildings--]],
+			Trans(3980--[[Buildings--]]),
 			"UI/Icons/Upgrades/plutonium_core_02.tga"
 		)
 	end
@@ -1590,7 +1590,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000161--[[%s: Buildings Instant Build--]]]:format(ChoGGi.UserSettings.Building_instant_build),
-			3980--[[Buildings--]],
+			Trans(3980--[[Buildings--]]),
 			"UI/Icons/Upgrades/autoregulator_02.tga"
 		)
 	end
@@ -1603,7 +1603,7 @@ function OnMsg.ClassesGenerate()
 		if not table.find(bc,"id","HiddenX") then
 			bc[#bc+1] = {
 				id = "HiddenX",
-				name = S[1000155--[[Hidden--]]],
+				name = Trans(1000155--[[Hidden--]]),
 				image = "UI/Icons/bmc_placeholder.tga",
 				highlight = "UI/Icons/bmc_placeholder_shine.tga",
 			}
@@ -1656,7 +1656,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = g_Classes[id]:GetDefaultPropertyValue("UIRange")
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 25,value = 25},

@@ -131,7 +131,7 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 			self[name] = g_Classes.ChoGGi_CheckButton:new({
 				Id = name,
 				Dock = "left",
-				Text = S[588--[[Empty--]]],
+				Text = Trans(588--[[Empty--]]),
 			}, self[area_id])
 			local check = self[name]
 
@@ -246,7 +246,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idOK",
 		Dock = "left",
 		MinWidth = 50,
-		Text = S[6878--[[OK--]]],
+		Text = Trans(6878--[[OK--]]),
 		Background = g_Classes.ChoGGi_Button.bg_green,
 		RolloverText = S[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."--]]],
 		OnPress = function()
@@ -262,7 +262,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 70,
-		Text = S[6879--[[Cancel--]]],
+		Text = Trans(6879--[[Cancel--]]),
 		Background = g_Classes.ChoGGi_Button.bg_red,
 		RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
 		OnPress = self.idCloseX.OnPress,
@@ -317,21 +317,21 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 		self.idColorCheckElec = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idColorCheckElec",
-			Text = S[79--[[Power--]]],
+			Text = Trans(79--[[Power--]]),
 			RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
 
 		self.idColorCheckAir = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idColorCheckAir",
-			Text = S[891--[[Air--]]],
+			Text = Trans(891--[[Air--]]),
 			RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
 
 		self.idColorCheckWater = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idColorCheckWater",
-			Text = S[681--[[Water--]]],
+			Text = Trans(681--[[Water--]]),
 			RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
 			Dock = "left",
 		}, self.idColorCheckArea)

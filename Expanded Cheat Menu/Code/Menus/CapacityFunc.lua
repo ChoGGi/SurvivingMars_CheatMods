@@ -8,7 +8,7 @@ function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
 	local S = ChoGGi.Strings
-	--~ local Trans = ChoGGi.ComFuncs.Translate
+	local Trans = ChoGGi.ComFuncs.Translate
 
 	function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 		local ChoGGi = ChoGGi
@@ -25,8 +25,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StorageMechanizedDepotsTemp,302535920000565--[[Storage Mechanized Depots Temp--]]),
-			519--[[Storage--]],
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StorageMechanizedDepotsTemp,S[302535920000565--[[Storage Mechanized Depots Temp--]]]),
+			Trans(519--[[Storage--]]),
 			default_icon
 		)
 	end
@@ -35,18 +35,18 @@ function OnMsg.ClassesGenerate()
 		local sel = SelectedObj
 		if not sel or not sel.base_max_workers then
 			MsgPopup(
-				302535920000954--[[You need to select a building that has workers.--]],
-				302535920000567--[[Worker Capacity--]],
+				S[302535920000954--[[You need to select a building that has workers.--]]],
+				S[302535920000567--[[Worker Capacity--]]],
 				default_icon
 			)
 			return
 		end
 		local ChoGGi = ChoGGi
 		local DefaultSetting = sel.base_max_workers
-		local hint_toolarge = S[6779--[[Warning--]]] .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
+		local hint_toolarge = Trans(6779--[[Warning--]]) .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -97,7 +97,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(sel),choice[1].text),
-					302535920000567--[[Worker Capacity--]],
+					S[302535920000567--[[Worker Capacity--]]],
 					default_icon
 				)
 			end
@@ -116,15 +116,15 @@ function OnMsg.ClassesGenerate()
 		local sel = SelectedObj
 		if not sel or (type(sel.GetStoredWater) == "nil" and type(sel.GetStoredAir) == "nil" and type(sel.GetStoredPower) == "nil" and type(sel.GetUIResidentsCount) == "nil") then
 			MsgPopup(
-				302535920000958--[[You need to select a building that has capacity.--]],
-				3980--[[Buildings--]],
+				S[302535920000958--[[You need to select a building that has capacity.--]]],
+				Trans(3980--[[Buildings--]]),
 				default_icon
 			)
 			return
 		end
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local hint_toolarge = S[6779--[[Warning--]]] .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
+		local hint_toolarge = Trans(6779--[[Warning--]]) .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
 		--get type of capacity
 		local CapType
@@ -151,7 +151,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -252,7 +252,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(sel),choice[1].text),
-					3980--[[Buildings--]],
+					Trans(3980--[[Buildings--]]),
 					default_icon
 				)
 			end
@@ -272,8 +272,8 @@ function OnMsg.ClassesGenerate()
 		local sel = SelectedObj
 		if not sel or (sel and not sel.base_max_visitors) then
 			MsgPopup(
-				302535920000959--[[You need to select something that has space for visitors.--]],
-				3980--[[Buildings--]],
+				S[302535920000959--[[You need to select something that has space for visitors.--]]],
+				Trans(3980--[[Buildings--]]),
 				default_icon2
 			)
 			return
@@ -281,7 +281,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local DefaultSetting = sel.base_max_visitors
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -325,7 +325,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000960--[[%s visitor capacity is now %s.--]]]:format(RetName(sel),choice[1].text),
-					3980--[[Buildings--]],
+					Trans(3980--[[Buildings--]]),
 					default_icon2
 				)
 			end
@@ -350,7 +350,7 @@ function OnMsg.ClassesGenerate()
 	Waste: 1,000,000
 	Mechanized: 1,000,000--]]]
 		local ItemList = {
-			{text = S[1000121--[[Default--]]] .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 50,value = 50},
 			{text = 100,value = 100},
 			{text = 250,value = 250},
@@ -435,7 +435,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					choice[1].text .. ": " .. sType,
-					519--[[Storage--]],
+					Trans(519--[[Storage--]]),
 					"UI/Icons/Sections/basic.tga"
 				)
 			end

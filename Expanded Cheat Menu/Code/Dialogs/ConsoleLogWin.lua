@@ -3,6 +3,7 @@
 -- displays the log in a dialog
 
 local S
+local Trans
 local blacklist
 local GetParentOfKind
 
@@ -10,6 +11,7 @@ function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+	Trans = ChoGGi.ComFuncs.Translate
 end
 
 local function GetRootDialog(dlg)
@@ -96,7 +98,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Id = "idTextInput",
 		OnKbdKeyDown = self.idTextInputOnKbdKeyDown,
 		RolloverTemplate = "Rollover",
-		RolloverTitle = S[302535920001073--[[Console--]]] .. " " .. S[487939677892--[[Help--]]],
+		RolloverTitle = S[302535920001073--[[Console--]]] .. " " .. Trans(487939677892--[[Help--]]),
 	}, self.idTextInputArea)
 
 	if blacklist then

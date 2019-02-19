@@ -2,6 +2,7 @@
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
+local Trans = ChoGGi.ComFuncs.Translate
 local CheckText = ChoGGi.ComFuncs.CheckText
 --~ local RetName = ChoGGi.ComFuncs.RetName
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
@@ -44,7 +45,7 @@ DefineClass.ChoGGi_Text = {
 	SelectionColor = black,
 
 	RolloverTemplate = "Rollover",
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Trans(126095410863--[[Info--]]),
 }
 --~ function ChoGGi_Text:OnHyperLinkRollover()
 --~ print("Rollover")
@@ -114,7 +115,7 @@ DefineClass.ChoGGi_MoveControl = {
 	Background = medium_gray,
 	FocusedBackground = dark_blue,
 	FocusedColor = light_gray,
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Trans(126095410863--[[Info--]]),
 	RolloverTemplate = "Rollover",
 }
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
@@ -161,7 +162,7 @@ end
 DefineClass.ChoGGi_Buttons = {
 	__parents = {"XTextButton"},
 	TextStyle = "ChoGGi_Buttons",
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Trans(126095410863--[[Info--]]),
 	RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
 	RolloverTemplate = "Rollover",
 	RolloverBackground = rollover_blue,
@@ -185,7 +186,7 @@ DefineClass.ChoGGi_ToolbarButton = {
 DefineClass.ChoGGi_Button = {
 	__parents = {"ChoGGi_Buttons"},
 --~ 	MinWidth = 60,
-	Text = S[6878--[[OK--]]],
+	Text = Trans(6878--[[OK--]]),
 	Background = light_gray,
 	bg_green = -8192126,
 	bg_red = -41121,
@@ -200,7 +201,7 @@ DefineClass.ChoGGi_CloseButton = {
 	VAlign = "center",
 	HAlign = "right",
 	Margins = box(0, 0, 2, 0),
-	RolloverTitle = S[1011--[[Close--]]],
+	RolloverTitle = Trans(1011--[[Close--]]),
 	RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
 }
 
@@ -225,7 +226,7 @@ DefineClass.ChoGGi_ComboButton = {
 	TextStyle = "ChoGGi_ComboButton",
 	Background = light_gray,
 	RolloverBackground = rollover_blue,
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Trans(126095410863--[[Info--]]),
 	RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
 	RolloverTemplate = "Rollover",
 	PressedBackground = medium_gray,
@@ -255,11 +256,11 @@ DefineClass.ChoGGi_ComboButton = {
 DefineClass.ChoGGi_CheckButton = {
 	__parents = {"XCheckButton"},
 	TextStyle = "ChoGGi_CheckButton",
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Trans(126095410863--[[Info--]]),
 	RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
 	RolloverTemplate = "Rollover",
 	MinWidth = 60,
-	Text = S[6878--[[OK--]]],
+	Text = Trans(6878--[[OK--]]),
 	RolloverZoom = 1100,
 	FoldWhenHidden = true,
 }
@@ -296,7 +297,7 @@ DefineClass.ChoGGi_TextInput = {
 	__parents = {"XEdit"},
 	WordWrap = false,
 	AllowTabs = false,
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Trans(126095410863--[[Info--]]),
 	RolloverTemplate = "Rollover",
 	Background = light_gray,
 }
@@ -366,7 +367,7 @@ DefineClass.ChoGGi_TextList = {
 	__parents = {"XText"},
 	TextStyle = text_style2,
 	RolloverTemplate = "Rollover",
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Trans(126095410863--[[Info--]]),
 	VAlign = "center",
 }
 
@@ -386,7 +387,7 @@ DefineClass.ChoGGi_Dialog = {
 	MinWidth = 150,
 	Dock = "ignore",
 	RolloverTemplate = "Rollover",
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Trans(126095410863--[[Info--]]),
 	Background = dark_gray,
 	BorderWidth = 2,
 	BorderColor = light_gray,
@@ -398,7 +399,7 @@ DefineClass.ChoGGi_DialogSection = {
 	HandleMouse = true,
 	FoldWhenHidden = true,
 	RolloverTemplate = "Rollover",
-	RolloverTitle = S[126095410863--[[Info--]]],
+	RolloverTitle = Trans(126095410863--[[Info--]]),
 	Clip = "self",
 }
 
