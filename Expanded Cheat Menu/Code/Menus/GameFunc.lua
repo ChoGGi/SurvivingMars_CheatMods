@@ -884,10 +884,10 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 	function ChoGGi.MenuFuncs.ChangeTerrainType()
 		local GridOpFree = GridOpFree
 		local AsyncSetTypeGrid = AsyncSetTypeGrid
-		local TerrainTextures = TerrainTextures
 		local MulDivRound = MulDivRound
 		local sqrt = sqrt
 
+		local TerrainTextures = TerrainTextures
 		local NoisePreset = DataInstances.NoisePreset
 		local guim = ChoGGi.Consts.guim
 
@@ -908,7 +908,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 				return
 			end
 			local value = choice[1].value
-			if type(value) == "number" then
+			if TerrainTextures[value] then
 				terrain.SetTerrainType{type = value}
 
 				-- add back dome grass
@@ -920,6 +920,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 				-- re-build concrete marker textures
 				local texture_idx1 = table.find(TerrainTextures, "name", "Regolith") + 1
 				local texture_idx2 = table.find(TerrainTextures, "name", "Regolith_02") + 1
+
 				local deposits = UICity.labels.TerrainDeposit or ""
 				for i = 1, #deposits do
 					local d = deposits[i]
