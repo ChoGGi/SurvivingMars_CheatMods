@@ -351,7 +351,7 @@ function ChoGGi_MapControl:OnMouseButtonDown(pt, button)
   if button == "L" then
 
 		if not IsValid(self.sphere) then
-			self.sphere = ChoGGi_Sphere:new()
+			self.sphere = ChoGGi_OSphere:new()
 			self.sphere:SetRadius(self.sphere_size)
 			self.sphere:SetColor(self.sphere_colour)
 		end

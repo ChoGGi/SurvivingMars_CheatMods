@@ -50,6 +50,7 @@ end
 
 local HLEnd = "</h></color>"
 
+local ClearShowObj
 local DebugGetInfo
 local DeleteObject
 local DotNameToObject
@@ -73,6 +74,7 @@ local testing
 -- need to wait till Library mod is loaded
 function OnMsg.ClassesGenerate()
 	local ChoGGi = ChoGGi
+	ClearShowObj = ChoGGi.ComFuncs.ClearShowObj
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	DeleteObject = ChoGGi.ComFuncs.DeleteObject
 	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
@@ -125,6 +127,8 @@ DefineClass.Examine = {
 	obj_flags = false,
 	-- delay between updating for autoref
 	autorefresh_delay = 1000,
+	-- any objs from this examine that were marked with a sphere/colour
+	marked_objects = false,
 
 	-- only chinese goes slow as shit for some reason, so i added this to at least stop the game from freezing till obj is examined
 	is_chinese = false,
@@ -183,6 +187,7 @@ function Examine:Init(parent, context)
 	self.onclick_funcs = {}
 	self.onclick_objs = {}
 	self.onclick_count = 0
+	self.marked_objects = objlist:new()
 
 	-- if we're examining a string we want to convert to an object
 	if type(self.obj) == "string" and type(context.parent) == "string" then
@@ -240,8 +245,9 @@ function Examine:Init(parent, context)
 			Id = "idButClear",
 			Image = "CommonAssets/UI/Menu/NoblePreview.tga",
 			RolloverTitle = Trans(594--[[Clear--]]),
-			RolloverText = S[302535920000016--[[Remove any green spheres/reset green coloured objects.--]]],
-			OnPress = ChoGGi.ComFuncs.ClearShowObj,
+			RolloverText = S[302535920000016--[["Remove any green spheres/reset green coloured objects
+Press once to clear this examine, again to clear all."--]]],
+			OnPress = self.idButClearOnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButMarkObject = g_Classes.ChoGGi_ToolbarButton:new({
@@ -564,15 +570,45 @@ function Examine:idButSetTranspOnPress()
 	self:SetTranspMode(self.transp_mode)
 end
 
+function Examine:idButClearOnPress()
+	self = GetRootDialog(self)
+	-- clear marked objs for this examine
+	local count = #self.marked_objects
+	if count > 0 then
+		for i = 1, count do
+			ClearShowObj(self.marked_objects[i])
+		end
+	else
+		-- clear all spheres
+		ClearShowObj(true)
+		-- if this has a custom colour
+		ClearShowObj(self.obj_ref)
+	end
+	self.marked_objects:Clear()
+end
+
 function Examine:idButMarkObjectOnPress()
 	self = GetRootDialog(self)
 	if IsValid(self.obj_ref) then
-		ShowObj(self.obj_ref,RandomColour())
+		-- i don't use AddSphere since that won't add the ColourObj
+		local c = #self.marked_objects
+		local sphere = ChoGGi.ComFuncs.ShowPoint(self.obj_ref,RandomColour())
+		if IsValid(sphere) then
+			c = c + 1
+			self.marked_objects[c] = sphere
+		end
+		local obj = ChoGGi.ComFuncs.ColourObj(self.obj_ref,RandomColour())
+		if IsValid(obj) then
+			c = c + 1
+			self.marked_objects[c] = obj
+		end
 	else
+		local c = #self.marked_objects
 		for k, v in pairs(self.obj_ref) do
-			local c = RandomColour()
-			ShowObj(k,c)
-			ShowObj(v,c)
+			local colour = RandomColour()
+			if IsPoint(v) or IsValid(v) then
+				c = self:AddSphere(v,c,colour)
+			end
 		end
 	end
 end
@@ -661,12 +697,23 @@ end
 
 function Examine:idButMarkAllOnPress()
 	self = GetRootDialog(self)
-	for _, v in pairs(self.obj_ref) do
-		if IsPoint(v) or IsValid(v) then
-			ShowObj(v, RandomColour(), nil, true)
+	local c = #self.marked_objects
+	for _,v in pairs(self.obj_ref) do
+		if IsValid(v) or IsPoint(v) then
+			c = self:AddSphere(v,c,nil,true,true)
 		end
 	end
 end
+
+function Examine:AddSphere(obj,c,colour,skip_view,skip_colour)
+	local sphere = ShowObj(obj, colour or RandomColour(),skip_view,skip_colour)
+	if IsValid(sphere) then
+		c = (c and c + 1) or (#self.marked_objects + 1)
+		self.marked_objects[c] = sphere
+	end
+	return c
+end
+
 
 function Examine:idAutoRefreshOnChange()
 	-- if it's called directly we set the check if needed
@@ -1519,7 +1566,7 @@ end
 local function Show_ConvertValueToInfo(self,button,obj)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" and GameState.gameplay and (IsValid(obj) or IsPoint(obj)) then
-		ShowObj(obj,RandomColour())
+		self:AddSphere(obj)
 	else
 		OpenInExamineDlg(obj,self)
 	end
@@ -1529,7 +1576,7 @@ local function Examine_ConvertValueToInfo(self,button,obj)
 	if button == "L" then
 		OpenInExamineDlg(obj,self)
 	else
-		ShowObj(obj,RandomColour())
+		self:AddSphere(obj)
 	end
 end
 
@@ -1874,7 +1921,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				GetStateName(obj:GetState())
 				.. ", step: "
 				.. self:HyperLink(obj,function()
-					ShowObj(pos,RandomColour())
+					self:AddSphere(obj)
 				end)
 				.. self:ConvertValueToInfo(obj:GetStepVector(obj:GetState(),0))
 				.. HLEnd
@@ -2333,7 +2380,7 @@ function Examine:SetObj(startup)
 					.. (a.handle or Trans(6761--[[None--]])) .. "\npos: " .. tostring(pos),
 				showobj = a,
 				clicked = function()
-					ChoGGi.ComFuncs.ClearShowObj(a)
+					ClearShowObj(a)
 					OpenInExamineDlg(a,self)
 				end,
 			}

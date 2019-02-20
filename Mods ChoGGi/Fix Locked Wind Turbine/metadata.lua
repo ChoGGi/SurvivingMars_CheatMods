@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Locked Wind Turbine v0.1",
-	"version", 1,
-	"saved", 1543406400,
+	"title", "Fix: Locked Wind Turbine v0.2",
+	"version", 2,
+	"saved", 1550664000,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixLockedWindTurbine",
 	"steam_id", "1576874324",

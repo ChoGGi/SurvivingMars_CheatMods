@@ -1,2 +1,5 @@
+v0.3
+The DiscoverTech func was removed from SM, so the towers weren't unlocked.
+
 v0.2
 Library update.

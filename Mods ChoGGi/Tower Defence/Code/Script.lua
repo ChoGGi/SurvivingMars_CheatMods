@@ -154,9 +154,10 @@ function OnMsg.ClassesGenerate()
 		CreateGameTimeThread(function()
 			-- let other stuff go first
 			Sleep(1000)
-			if sol > 24 then
-				DiscoverTech("DefenseTower")
+			if sol > 24 and not IsTechDiscovered("DefenseTower") then
+				UICity:SetTechDiscovered("DefenseTower")
 			end
+
 			if sol < 49 then
 				return
 			end

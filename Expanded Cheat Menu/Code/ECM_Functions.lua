@@ -611,7 +611,7 @@ function OnMsg.ClassesGenerate()
 			local bg = title.Background
 			title:SetBackground(red)
 			Sleep(500)
-			title:SetBackground(bg)
+			title:SetBackground(ChoGGi_MoveControl.Background)
 		end
 		local function OpenInExamineDlg(obj,parent,title)
 

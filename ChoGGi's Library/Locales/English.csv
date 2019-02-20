@@ -110,7 +110,7 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 302535920000012,Error borked building: %s,
 302535920000015,Can't colour %s.,
 302535920000017,Use the colour picker (dbl right-click for instant change).,
-302535920000018,"Don't use the colour picker: Numbers range from -128 to 120.
+302535920000018,"Don't use the colour picker: Numbers range from -128 to 127.
 If you want shiny metal: use 120 for Metallic and -128 for Roughness.",
 302535920000019,"Single colour for object (this colour will interact with the other colours).
 If you want to change the colour of an object you can't with 1-4.",
@@ -307,7 +307,8 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 302535920000056,Mark all items in objlist with green spheres.,
 302535920001369,Ged Editor,
 302535920001353,Thread info,
-302535920000016,Remove any green spheres/reset green coloured objects.,
+302535920000016,"Remove any green spheres/reset green coloured objects
+Press once to clear this examine, again to clear all.",
 302535920000021,Mark object with green sphere and/or paint.,
 302535920001321,UI Click To Examine,
 302535920001322,Examine UI controls by clicking them.,

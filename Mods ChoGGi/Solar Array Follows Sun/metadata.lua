@@ -13,5 +13,7 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[The panels do it, why not the array panels?
 
+This is a purely visual mod, it just makes the panels rotate to follow the sun.
+
 Requested by tresslessone.]],
 })

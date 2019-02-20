@@ -278,7 +278,7 @@ DefineClass.ChoGGi_PopupList = {
 }
 function ChoGGi_PopupList:Close(...)
 	if self.items and self.items.clear_objs then
-		ChoGGi.ComFuncs.ClearShowObj()
+		ChoGGi.ComFuncs.ClearShowObj(true)
 	end
 	XPopupList.Close(self,...)
 end
@@ -300,6 +300,7 @@ DefineClass.ChoGGi_TextInput = {
 	RolloverTitle = Trans(126095410863--[[Info--]]),
 	RolloverTemplate = "Rollover",
 	Background = light_gray,
+--~ 	MouseCursor = ChoGGi.library_path .. "UI/text_input.png",
 }
 
 DefineClass.ChoGGi_ExternalTextEditorPlugin = {

@@ -1,0 +1,2 @@
+v0.2
+Sets focus to the input box by default.

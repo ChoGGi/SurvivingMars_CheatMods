@@ -432,6 +432,7 @@ do -- ShowObj
 	local green = green
 	local guic = guic
 	local ViewObjectMars = ViewObjectMars
+	local PlaceObject = PlaceObject
 	local InvalidPos = ChoGGi.Consts.InvalidPos
 
 	local markers = {}
@@ -445,115 +446,144 @@ do -- ShowObj
 			if k.ChoGGi_ShowObjColour then
 				k:SetColorModifier(k.ChoGGi_ShowObjColour)
 				k.ChoGGi_ShowObjColour = nil
-			elseif v == "vector" or k:IsKindOf("ChoGGi_Sphere") then
+			elseif v == "vector" or k:IsKindOf("ChoGGi_OSphere") then
 				k:delete()
 			end
 		end
-		if IsValid(v) and v:IsKindOf("ChoGGi_Sphere") then
+
+		if IsValid(v) and v:IsKindOf("ChoGGi_OSphere") then
 			v:delete()
 		end
 
 		markers[k] = nil
 	end
-	function ChoGGi.ComFuncs.ClearShowObj(obj)
+
+	function ChoGGi.ComFuncs.ClearShowObj(obj_or_bool)
 		SuspendPassEdits("ClearShowObj")
-		-- try and clean up just asked for, and if not then all
-		if IsValid(obj) and (markers[obj] or obj.ChoGGi_ShowObjColour) then
-			ClearMarker(obj)
-			local x,y,z = obj:GetVisualPosXYZ()
-			ClearMarker(x .. y .. (z or 0))
+
 		-- any markers in the list
-		elseif next(markers) then
-			for k, v in pairs(markers) do
+		if obj_or_bool == true then
+			for k,v in pairs(markers) do
 				ClearMarker(k,v)
 			end
 			TableClear(markers)
-		-- could be from a saved game so remove any objects on the map
-		else
-			MapDelete(true, "ChoGGi_Vector","ChoGGi_Sphere")
+			ResumePassEdits("ClearShowObj")
+			return
 		end
+
+		-- try and clean up obj
+		local is_valid = IsValid(obj_or_bool)
+		local is_point = IsPoint(obj_or_bool)
+		if is_valid or is_point then
+
+			if is_valid then
+				-- could be stored as obj ref or stringed pos ref
+				local pos = is_valid and tostring(obj_or_bool:GetVisualPos())
+				if markers[pos] or markers[obj_or_bool] or obj_or_bool.ChoGGi_ShowObjColour then
+					ClearMarker(pos)
+					ClearMarker(obj_or_bool)
+				end
+			elseif is_point then
+				-- or just a point
+				local pt_obj = is_point and tostring(obj_or_bool)
+				if markers[pt_obj] then
+					ClearMarker(pt_obj)
+				end
+			end
+		end
+
+--~ 		printC("overkill")
+--~ 		-- overkill: could be from a saved game so remove any objects on the map (they shouldn't be left in a normal game)
+--~ 		MapDelete(true, {"ChoGGi_OVector","ChoGGi_OSphere"})
 		ResumePassEdits("ClearShowObj")
 	end
 	local ClearShowObj = ChoGGi.ComFuncs.ClearShowObj
 
-	function ChoGGi.ComFuncs.ColourObj(obj, color)
-		if not IsValid(obj) then
-			return
-		end
-		if not obj:IsKindOf("ColorizableObject") then
+	function ChoGGi.ComFuncs.ColourObj(obj, colour)
+		local is_valid = IsValid(obj)
+		if not is_valid or is_valid and not obj:IsKindOf("ColorizableObject") then
 			return
 		end
 
 		obj.ChoGGi_ShowObjColour = obj.ChoGGi_ShowObjColour or obj:GetColorModifier()
 		markers[obj] = obj.ChoGGi_ShowObjColour
-		obj:SetColorModifier(color or green)
+		obj:SetColorModifier(colour or green)
+		return obj
 	end
 
-	local function AddSphere(pt,color)
-		local x,y,z = pt:xyz()
-		local xyz = x .. y .. (z or 0)
-		if not markers[xyz] then
-			local sphere = ChoGGi_Sphere:new()
+	local function AddSphere(pt,colour)
+		local pos = tostring(pt)
+		if not IsValid(markers[pos]) then
+			markers[pos] = nil
+		end
+
+		if not markers[pos] then
+			local sphere = PlaceObject("ChoGGi_OSphere")
 			sphere:SetPos(pt)
 			sphere:SetRadius(50 * guic)
-			sphere:SetColor(color)
-			markers[xyz] = sphere
+			sphere:SetColor(colour)
+			markers[pos] = sphere
 		end
+		return markers[pos]
 	end
 
-	function ChoGGi.ComFuncs.ShowPoint(obj, color)
-		color = color or green
+	function ChoGGi.ComFuncs.ShowPoint(obj, colour)
+		colour = colour or green
 		-- single pt
 		if IsPoint(obj) and InvalidPos ~= obj then
-			AddSphere(obj,color)
-			return
+			return AddSphere(obj,colour)
 		end
-		-- obj pt
+		-- obj to pt
 		if IsValid(obj) then
 			local pt = obj:GetVisualPos()
 			if IsValid(obj) and InvalidPos ~= pt then
-				AddSphere(pt,color)
-				return
+				return AddSphere(pt,colour)
 			end
 		end
+
 		-- two points
 		if type(obj) ~= "table" then
 			return
 		end
 		if IsPoint(obj[1]) and IsPoint(obj[2]) and InvalidPos ~= obj[1] and InvalidPos ~= obj[2] then
-			local vector = ChoGGi_Vector:new()
-			vector:Set(obj[1], obj[2], color)
+			local vector = PlaceObject("ChoGGi_OVector")
+			vector:Set(obj[1], obj[2], colour)
 			markers[vector] = "vector"
+			return vector
 		end
 	end
 
-	function ChoGGi.ComFuncs.ShowObj(obj, color, skip_view, skip_colour)
+	-- marks pt of obj and optionally colours/moves camera
+	function ChoGGi.ComFuncs.ShowObj(obj, colour, skip_view, skip_colour)
 		if markers[obj] then
-			return
+			return markers[obj]
 		end
 		local is_valid = IsValid(obj)
 		local is_point = IsPoint(obj)
 		if not (is_valid or is_point) then
-			return ClearShowObj()
+			return
 		end
-		color = color or green
+		colour = colour or green
 		local vis_pos = is_valid and obj:GetVisualPos()
 
 		local pt = is_point and obj or vis_pos
+		local sphere_obj
 		if pt and pt ~= InvalidPos and not markers[pt] then
-			AddSphere(pt,color)
+			sphere_obj = AddSphere(pt,colour)
 		end
 
 		if is_valid and not skip_colour then
 			obj.ChoGGi_ShowObjColour = obj.ChoGGi_ShowObjColour or obj:GetColorModifier()
 			markers[obj] = obj.ChoGGi_ShowObjColour
-			obj:SetColorModifier(color)
+			obj:SetColorModifier(colour)
 		end
 
 		pt = pt or vis_pos
 		if not skip_view and pt ~= InvalidPos then
 			ViewObjectMars(pt)
 		end
+
+		return sphere_obj
 	end
 end -- do
 local ShowObj = ChoGGi.ComFuncs.ShowObj
@@ -646,7 +676,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		local showobj_func
 		if item.showobj then
 			showobj_func = function()
-				ClearShowObj()
+				ClearShowObj(true)
 				ShowObj(item.showobj, nil, true)
 			end
 		end
@@ -654,7 +684,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		local colourobj_func
 		if item.colourobj then
 			colourobj_func = function()
-				ClearShowObj()
+				ClearShowObj(true)
 				ColourObj(item.colourobj)
 			end
 		end
@@ -759,14 +789,15 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 end
 
 -- show a circle for time and delete it
-function ChoGGi.ComFuncs.Circle(pos, radius, color, time)
-	local c = Circle:new()
-	c:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetTerrainCursor())
-	c:SetRadius(radius or 1000)
-	c:SetColor(color or white)
+function ChoGGi.ComFuncs.Circle(pos, radius, colour, time)
+--~ 	local c = Circle:new()
+	local circle = PlaceObject("ChoGGi_OCircle")
+	circle:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetTerrainCursor())
+	circle:SetRadius(radius or 1000)
+	circle:SetColor(colour or white)
 	DelayedCall(time or 50000, function()
-		if IsValid(c) then
-			c:delete()
+		if IsValid(circle) then
+			circle:delete()
 		end
 	end)
 end
@@ -3632,14 +3663,52 @@ end -- do
 
 function ChoGGi.ComFuncs.AttachSpots_Toggle(sel)
 	sel = sel or ChoGGi.ComFuncs.SelObject()
-	if not IsValid(sel) then
+	local isvalid = IsValid(sel)
+	if not isvalid or isvalid and not sel:HasEntity() then
 		return
 	end
+
 	if sel.ChoGGi_ShowAttachSpots then
-		sel:HideSpots()
+		local DoneObject = DoneObject
+		sel:DestroyAttaches({"ChoGGi_OText","ChoGGi_OOrientation","ChoGGi_OSphere"},function(a)
+			if a.ChoGGi_ShowAttachSpots then
+				DoneObject(a)
+			end
+		end)
 		sel.ChoGGi_ShowAttachSpots = nil
 	else
-		sel:ShowSpots()
+		local guic10 = 10 * guic
+		local PlaceObject = PlaceObject
+		local GetSpotNameByType = GetSpotNameByType
+		local RandomColour = ChoGGi.ComFuncs.RandomColour
+
+		local start_id, end_id = sel:GetAllSpots(sel:GetState())
+		for i = start_id, end_id do
+			local spot_name = GetSpotNameByType(sel:GetSpotsType(i))
+			local spot_annotation = sel:GetSpotAnnotation(i)
+
+			local text_obj = PlaceObject("ChoGGi_OText")
+			text_obj.ChoGGi_ShowAttachSpots = true
+			local text_str = sel:GetSpotName(i)
+			text_str = i .. "." .. text_str
+			if spot_annotation then
+				text_str = text_str .. ";" .. spot_annotation
+			end
+			text_obj:SetText(text_str)
+
+			local orientation_obj = PlaceObject("ChoGGi_OOrientation")
+			orientation_obj.ChoGGi_ShowAttachSpots = true
+
+--~ 			local sphere_obj = PlaceObject("ChoGGi_OSphere")
+--~ 			sphere_obj.ChoGGi_ShowAttachSpots = true
+--~ 			sphere_obj:SetRadius(guic10)
+--~ 			sphere_obj:SetColor(RandomColour())
+
+			sel:Attach(text_obj, i)
+			sel:Attach(orientation_obj, i)
+--~ 			sel:Attach(sphere_obj, i)
+		end
+
 		sel.ChoGGi_ShowAttachSpots = true
 	end
 end
@@ -3647,11 +3716,11 @@ end
 do -- ShowAnimDebug_Toggle
 	local RandomColour
 	local function AnimDebug_Show(obj,colour)
-		local text = PlaceObject("ChoGGi_Text")
+		local text = PlaceObject("ChoGGi_OText")
 		text:SetColor(colour or RandomColour())
 		text:SetFontId(UIL.GetFontID(ChoGGi.font .. ", 14, bold, aa"))
 		text:SetCenter(true)
-		local orient = PlaceObject("ChoGGi_Orientation")
+		local orient = PlaceObject("ChoGGi_OOrientation")
 
 		-- so we can delete them easy
 		orient.ChoGGi_AnimDebug = true

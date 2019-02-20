@@ -1183,13 +1183,15 @@ local function RemoveChoGGiObjects()
 		end
 	end)
 	local RemoveObjs = ChoGGi.ComFuncs.RemoveObjs
-	RemoveObjs("ChoGGi_HexSpot")
-	RemoveObjs("ChoGGi_Vector")
-	RemoveObjs("ChoGGi_Sphere")
-	RemoveObjs("ChoGGi_PolyLine")
-	RemoveObjs("ChoGGi_PolyLine2")
-	RemoveObjs("ChoGGi_Text_O")
-	RemoveObjs("ChoGGi_Orientation")
+	RemoveObjs("ChoGGi_OHexSpot")
+	RemoveObjs("ChoGGi_OHexSpot2")
+	RemoveObjs("ChoGGi_OVector")
+	RemoveObjs("ChoGGi_OSphere")
+	RemoveObjs("ChoGGi_OPolyline")
+	RemoveObjs("ChoGGi_OPolyline2")
+	RemoveObjs("ChoGGi_OText")
+	RemoveObjs("ChoGGi_OCircle")
+	RemoveObjs("ChoGGi_OOrientation")
 	ResumePassEdits("RemoveChoGGiObjects")
 end
 OnMsg.SaveGame = RemoveChoGGiObjects
