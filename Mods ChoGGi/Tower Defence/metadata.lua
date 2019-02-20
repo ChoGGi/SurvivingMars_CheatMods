@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Tower Defence v0.2",
-	"version", 2,
-	"saved", 1539950400,
+	"title", "Tower Defence v0.3",
+	"version", 3,
+	"saved", 1550664000,
 	"image", "Preview.png",
 	"id", "ChoGGi_TowerDefense",
 	"steam_id", "1504640997",

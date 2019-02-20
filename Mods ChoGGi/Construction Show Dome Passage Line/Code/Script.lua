@@ -31,16 +31,16 @@ local too_far_away = 50000
 local dome_list = {}
 
 -- simple entity object for hexgrids
-DefineClass.ChoGGi_HexSpot = {
+DefineClass.ChoGGi_OHexSpot2 = {
   __parents = {"CObject"},
   entity = "GridTile",
 }
 
 -- I perfer to add a new object then editing existing ones (easier for mass delete)
-DefineClass.ChoGGi_Polyline2 = {
+DefineClass.ChoGGi_OPolyline2 = {
   __parents = {"Polyline"},
 }
-function ChoGGi_Polyline2:SetParabola(a, b)
+function ChoGGi_OPolyline2:SetParabola(a, b)
 	PolylineSetParabola(self, a, b)
 	self:SetPos(AveragePoint2D(self.vertices))
 end
@@ -48,7 +48,13 @@ end
 -- if these are here when a save is loaded without this mod then it'll spam the console
 function OnMsg.SaveGame()
 	SuspendPassEdits("DeleteChoGGiDomeLines")
-	MapDelete(true, "ChoGGi_HexSpot","ChoGGi_Polyline2")
+	-- if it isn't a valid class then Map* will return all objects :(
+	if g_Classes.ChoGGi_OHexSpot2 then
+		MapDelete(true, "ChoGGi_OHexSpot2")
+	end
+	if g_Classes.ChoGGi_OPolyline2 then
+		MapDelete(true, "ChoGGi_OPolyline2")
+	end
 	ResumePassEdits("DeleteChoGGiDomeLines")
 	dome_list = {}
 end
@@ -82,9 +88,9 @@ local function BuildMarkers(dome)
 	-- no need to re-add domes to the list
 	if not dome_list[dome] then
 		dome_list[dome] = {
-			line = ChoGGi_Polyline2:new(),
-			hex1 = ChoGGi_HexSpot:new(),
-			hex2 = ChoGGi_HexSpot:new(),
+			line = ChoGGi_OPolyline2:new(),
+			hex1 = ChoGGi_OHexSpot2:new(),
+			hex2 = ChoGGi_OHexSpot2:new(),
 		}
 		local item = dome_list[dome]
 

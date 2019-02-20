@@ -8,23 +8,22 @@
 --~ HexPainter(GetEntityInverseBuildShape(s:GetEntity()))
 --~ HexPainter(GetEntityCombinedShape(s:GetEntity()))
 
-GlobalVar("painted_hexes", false)
-GlobalVar("painted_hexes_thread", false)
+GlobalVar("g_painted_hexes", false)
+GlobalVar("g_painted_hexes_thread", false)
 function PaintHexArray(arr, mid_hex_pt) --paints zero based hex shapes (such as from GetEntityHexShapes)
-	if IsValidThread(painted_hexes_thread) then
-		DeleteThread(painted_hexes_thread)
+	if IsValidThread(g_painted_hexes_thread) then
+		DeleteThread(g_painted_hexes_thread)
 	end
 
-	if painted_hexes then
-		for i = 1, #painted_hexes do
-			painted_hexes[i]:delete()
-		end
-		painted_hexes = false
+	if g_painted_hexes then
+		g_painted_hexes:Destroy()
+		g_painted_hexes = false
 	end
+
 	if arr then
-		painted_hexes_thread = CreateRealTimeThread(function()
+		g_painted_hexes_thread = CreateRealTimeThread(function()
 			local last_q, last_r
-			painted_hexes = {}
+			g_painted_hexes = objlist:new()
 
 			while true do
 				local q, r
@@ -36,11 +35,11 @@ function PaintHexArray(arr, mid_hex_pt) --paints zero based hex shapes (such as 
 				if last_q ~= q or last_r ~= r then
 					for i = 1, #arr do
 						local q_i, r_i = q + arr[i]:x(), r + arr[i]:y()
-						local c = painted_hexes[i] or ChoGGi_HexSpot:new()
+						local c = g_painted_hexes[i] or PlaceObject("ChoGGi_OHexSpot")
 						c:SetPos(point(HexToWorld(q_i, r_i)))
 --~ 							c:SetRadius(const.GridSpacing/2)
 --~ 							c:SetColorModifier(RGBA(100, 255, 100, 0))
-						painted_hexes[i] = c
+						g_painted_hexes[i] = c
 					end
 					last_q = q
 					last_r = r
@@ -63,7 +62,7 @@ function HexPainter(arr)
 	end
 end
 
-GlobalVar("HexPainterResultArr", false)
+GlobalVar("g_HexPainterResultArr", false)
 
 DefineClass.HexPainterModeDialog = {
 	__parents = { "InterfaceModeDialog" },
@@ -88,7 +87,7 @@ end
 
 function HexPainterModeDialog:Close(...)
 	InterfaceModeDialog.Close(self, ...)
-	HexPainterResultArr = self.res_arr
+	g_HexPainterResultArr = self.res_arr
 	PaintHexArray()
 	if self.hex_mid_circle then
 		self.hex_mid_circle:delete()
@@ -141,7 +140,7 @@ function HexPainterModeDialog:PaintMid()
 		self.hex_mid_circle:delete()
 	end
 	if self.hex_mid_pt then
-		self.hex_mid_circle = ChoGGi_HexSpot:new()
+		self.hex_mid_circle = PlaceObject("ChoGGi_OHexSpot")
 		self.hex_mid_circle:SetPos(point(HexToWorld(self.hex_mid_pt:x(), self.hex_mid_pt:y())))
 			self.hex_mid_circle:SetColorModifier(RGB(100, 255, 100))
 --~ 			self.hex_mid_circle:SetRadius(const.GridSpacing/2)

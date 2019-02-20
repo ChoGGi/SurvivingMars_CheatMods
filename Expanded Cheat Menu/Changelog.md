@@ -1,6 +1,10 @@
 ## ECM Changelog
 
 ## v12.6 (Unreleased)
+### Fixed:
+- Examine titlebar sometimes got stuck as red.
+### Changed:
+- Examine>Clear button now first clears spheres from examined object, then clears all on the map.
 
 ## v12.5 (17 Feb 2019)
 ### Added:

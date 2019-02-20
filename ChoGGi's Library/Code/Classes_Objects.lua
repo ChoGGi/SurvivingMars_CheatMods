@@ -2,40 +2,40 @@
 
 local S = ChoGGi.Strings
 
---~ function FXObject:OnSelected()
---~ 	AddSelectionParticlesToObj(s)
---~ end
---~ function FXObject:GetEntity()
---~ 	return self:GetEntity() or EntityData.PointLight
---~ end
-
 -- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
-DefineClass.ChoGGi_HexSpot = {
+DefineClass.ChoGGi_OHexSpot = {
 	__parents = {"CObject"},
 	entity = "GridTile"
 }
 
 -- re-define objects for ease of deleting later on
-DefineClass.ChoGGi_Vector = {
+DefineClass.ChoGGi_OVector = {
 	__parents = {"Vector"},
 }
-DefineClass.ChoGGi_Sphere = {
+DefineClass.ChoGGi_OSphere = {
 	__parents = {"Sphere"},
 }
-DefineClass.ChoGGi_Polyline = {
+DefineClass.ChoGGi_OPolyline = {
 	__parents = {"Polyline"},
 }
-DefineClass.ChoGGi_Text_O = {
+DefineClass.ChoGGi_OText = {
 	__parents = {"Text"},
 	text_style = "Action",
 }
-DefineClass.ChoGGi_Orientation = {
+DefineClass.ChoGGi_OOrientation = {
 	__parents = {"Orientation"},
 }
+DefineClass.ChoGGi_OCircle = {
+	__parents = {"Circle"},
+}
 
--- so we can have a selection panel for spawned entity objects
 DefineClass.ChoGGi_BuildingEntityClass = {
-	__parents = {"BuildingEntityClass","InfopanelObj"},
+	__parents = {
+		"BuildingEntityClass",
+		-- so we can have a selection panel for spawned entity objects
+		"InfopanelObj",
+	},
+	-- defined in ECM OnMsgs
 	ip_template = "ipChoGGi_Entity",
 }
 -- add some info/functionality to spawned entity objects
@@ -48,8 +48,8 @@ end
 function ChoGGi_BuildingEntityClass:OnSelected()
 	AddSelectionParticlesToObj(self)
 end
--- prevent an error in log
-function ChoGGi_BuildingEntityClass:BuildWaypointChains() end
+-- prevent an error msg in log
+ChoGGi_BuildingEntityClass.BuildWaypointChains = empty_func
 -- round n round she goes
 function ChoGGi_BuildingEntityClass:Rotate(delta)
 	SetRollPitchYaw(self,0,0,self:GetAngle() + (delta or -1)*60*60)

@@ -35,13 +35,13 @@ function OnMsg.ClassesGenerate()
 				local c = i == open and color_door or color_line
 				points[i] = w
 				colors[i] = c
-				local t = PlaceObject("ChoGGi_Text_O")
+				local t = PlaceObject("ChoGGi_OText")
 				t:SetPos(w:SetZ(w:z() or w:SetTerrainZ(10 * guic)))
 				t:SetColor(c)
 				t:SetText(i .. "")
 				lines[i] = t
 			end
-			local line = PlaceObject("ChoGGi_Polyline")
+			local line = PlaceObject("ChoGGi_OPolyline")
 			line:SetPos(AveragePoint2D(points))
 			line:SetMesh(points, colors)
 			lines.line = line
@@ -225,8 +225,8 @@ that'll activate the BadPrefab on it
 
 		local story_table = {}
 		local g_StoryBitStates = g_StoryBitStates
-		for id in pairs(g_StoryBitStates) do
-			c = c + 1
+		for id,a_story in pairs(g_StoryBitStates) do
+
 			local story = StoryBits[id]
 			TableClear(story_table)
 			for i = 1, #story do
@@ -234,13 +234,16 @@ that'll activate the BadPrefab on it
 					story_table[story[i].Name] = story[i].Value
 				end
 			end
+
 			local title = story.Title and Trans(story.Title) or id
 			if not (title:find(": ") or title:find(" - ",1,true)) then
 				title = story.group .. ": " .. title
 			end
+			c = c + 1
 			ItemList[c] = {
 				text = title,
 				value = id,
+				story = a_story,
 				voiced = story.VoicedText,
 				hint = S[302535920001358--[[Group--]]] .. ": " .. story.group .. "\n\n"
 					.. Trans(T(story.Text,story_table)) .. "\n\n<image " .. story.Image
@@ -253,9 +256,12 @@ that'll activate the BadPrefab on it
 				return
 			end
 
+			-- have a way to enter a class to use a random? object from
+--~ 			choice[1].story:ActivateStoryBit()
+
 			MsgPopup(
 				"I said they don't do jack...",
-				S[948928900281--[[Story Bits--]]]
+				Trans(948928900281--[[Story Bits--]])
 			)
 		end
 
@@ -661,7 +667,7 @@ that'll activate the BadPrefab on it
 			local yellow = -256
 			local blue = -16776961
 			local pt20t = {point20}
-			local ChoGGi_HexSpot = ChoGGi_HexSpot
+			local PlaceObject = PlaceObject
 			local UserSettings = ChoGGi.UserSettings
 			local grid_range = type(UserSettings.DebugGridSize) == "number" and UserSettings.DebugGridSize or 10
 			local grid_opacity = type(UserSettings.DebugGridOpacity) == "number" and UserSettings.DebugGridOpacity or 15
@@ -695,7 +701,7 @@ that'll activate the BadPrefab on it
 				obj_count = obj_count >= grid_count and obj_count or grid_count >= obj_count and grid_count
 				for i = 1, obj_count do
 					if not IsValid(grid_objs[i]) then
-						grid_objs[i] = ChoGGi_HexSpot:new()
+						grid_objs[i] = PlaceObject("ChoGGi_OHexSpot")
 						grid_objs[i]:SetOpacity(grid_opacity)
 					end
 				end
@@ -807,8 +813,7 @@ that'll activate the BadPrefab on it
 			end
 			local last_pos = points[#points]
 			-- and spawn the line
---~ 			local spawnline = ChoGGi_Polyline:new{max_vertices = #waypoints}
-			local spawnline = PlaceObject("ChoGGi_Polyline")
+			local spawnline = PlaceObject("ChoGGi_OPolyline")
 			spawnline:SetMesh(points, colour)
 			spawnline:SetPos(last_pos)
 
@@ -1053,7 +1058,8 @@ that'll activate the BadPrefab on it
 					end
 
 					-- remove any extra lines
-					MapDelete(true, "ChoGGi_Polyline")
+--~ 					MapDelete(true, "ChoGGi_OPolyline")
+					ChoGGi.ComFuncs.RemoveObjs("ChoGGi_OPolyline")
 
 					-- reset stuff
 					flag_height = 50

@@ -71,6 +71,8 @@ function OpenResearchDialog()
 			OnKbdKeyDown = OnKbdKeyDown,
 		}, area)
 
+		input:SetFocus()
+
 		-- attach to dialog
 		area:SetParent(left_side)
 

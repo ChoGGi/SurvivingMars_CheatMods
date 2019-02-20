@@ -235,8 +235,8 @@ function OnMsg.ClassesGenerate()
 				end
 				-- skip any missing objects
 				if IsValid(obj) and pos then
-					local text_obj = PlaceObject("ChoGGi_Text")
-					local text_orient = PlaceObject("ChoGGi_Orientation")
+					local text_obj = PlaceObject("ChoGGi_OText")
+					local text_orient = PlaceObject("ChoGGi_OOrientation")
 					text_orient.ChoGGi_ViewObjInfo_o = true
 					text_obj.ChoGGi_ViewObjInfo_t = true
 					text_obj:SetText(GetInfo[label](obj))
