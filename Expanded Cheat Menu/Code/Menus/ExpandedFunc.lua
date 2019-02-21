@@ -103,42 +103,43 @@ function OnMsg.ClassesGenerate()
 	--~ 		end,
 	--~ 		["Life-Support"] = function(obj)
 	--~ 		end,
-			OutsideBuildings = function(obj)
-				return "- " .. RetName(obj) .. " -\n" .. S[302535920000035--[[Grids--]]]
-					.. ": " .. Trans(682--[[Oxygen--]])
-					.. "(" .. tostring(obj.air and obj.air.grid.ChoGGi_GridHandle) .. ") "
-					.. Trans(681--[[Water--]]) .. "("
-					.. tostring(obj.water and obj.water.grid.ChoGGi_GridHandle) .. ") "
-					.. Trans(79--[[Power--]]) .. "("
-					.. tostring(obj.electricity and obj.electricity.grid.ChoGGi_GridHandle) .. ")"
-			end,
-			SubsurfaceDeposit = function(obj)
+--~ 			OutsideBuildings = function(obj)
+--~ 				print("OutsideBuildings")
+--~ 				return "- " .. RetName(obj) .. " -\n" .. S[302535920000035--[[Grids--]]]
+--~ 					.. ": " .. Trans(682--[[Oxygen--]])
+--~ 					.. "(" .. tostring(obj.air and obj.air.grid.ChoGGi_GridHandle) .. ") "
+--~ 					.. Trans(681--[[Water--]]) .. "("
+--~ 					.. tostring(obj.water and obj.water.grid.ChoGGi_GridHandle) .. ") "
+--~ 					.. Trans(79--[[Power--]]) .. "("
+--~ 					.. tostring(obj.electricity and obj.electricity.grid.ChoGGi_GridHandle) .. ")"
+--~ 			end,
+			Deposit = function(obj)
+				if not obj:IsKindOfClasses("SubsurfaceDeposit","TerrainDeposit") then
+					return ""
+				end
 				return "- " .. RetName(obj) .. " -\n" .. Trans(6--[[Depth Layer--]])
 					.. ": " .. obj.depth_layer .. ", " .. Trans(7--[[Is Revealed--]])
-					.. ": " .. obj.revealed .. "\n" .. Trans(16--[[Grade--]]) .. ": "
+					.. ": " .. tostring(obj.revealed) .. "\n" .. Trans(16--[[Grade--]]) .. ": "
 					.. obj.grade .. ", " .. Trans(1000100--[[Amount--]]) .. ": "
-					.. (obj.amount / r) .. "/" .. (obj.max_amount / r)
+					.. ((obj.amount or obj.max_amount) / r) .. "/" .. (obj.max_amount / r)
 			end,
 			DroneControl = function(obj)
 				return "- " .. RetName(obj) .. " -\n" .. Trans(517--[[Drones--]])
 					.. ": " .. #(obj.drones or "") .. "/" .. obj:GetMaxDronesCount()
 					.. "\n"
 					.. Trans(T{295--[[Idle <right>--]],right = ": " .. obj:GetIdleDronesCount()})
-					.. ", " .. S[302535920000081--[[Workers--]]] .. ": "
-					.. obj:GetMiningDronesCount() .. ", "
-					.. Trans(T{293--[[Broken <right>--]],right = ": " .. obj:GetBrokenDronesCount()})
-					.. ", "
-					.. Trans(T{294--[[Discharged <right>--]],right = ": " .. obj:GetDischargedDronesCount()})
+					.. ", " .. S[302535920000081--[[Workers--]]] .. ": " .. obj:GetMiningDronesCount()
+					.. ", " .. Trans(T{293--[[Broken <right>--]],right = ": " .. obj:GetBrokenDronesCount()})
+					.. ", " .. Trans(T{294--[[Discharged <right>--]],right = ": " .. obj:GetDischargedDronesCount()})
 			end,
 			Drone = function(obj)
+				local amount = obj.amount and obj.amount / r or 0
 				return "- " .. RetName(obj) .. " -\n"
-					.. Trans(T{584248706535--[[Carrying<right><ResourceAmount>--]],right=": ",ResourceAmount = (obj.amount or 0) / r})
-					.. " (" .. obj.resource .. "), " .. Trans(63--[[Travelling--]]) .. ": "
-					.. obj.moving .. ", " .. Trans(40--[[Recharge--]]) .. ": "
-					.. obj.going_to_recharger .. "\n" .. Trans(4448--[[Dust--]])
-					.. ": " .. (obj.dust / r) .. "/" .. (obj.dust_max / r)
-					.. ", " .. Trans(7607--[[Battery--]]) .. ": " .. (obj.battery / r)
-					.. "/" .. (obj.battery_max / r)
+					.. Trans(T{584248706535--[[Carrying<right><ResourceAmount>--]],right=": ",ResourceAmount = amount}) .. " (" .. tostring(obj.resource) .. "), "
+					.. Trans(63--[[Travelling--]]) .. ": " .. tostring(obj.moving) .. ", "
+					.. Trans(4407--[[Recharging--]]) .. ": " .. tostring(obj.going_to_recharger)
+					.. "\n" .. Trans(4448--[[Dust--]]) .. ": " .. (obj.dust / r) .. "/" .. (obj.dust_max / r)
+					.. ", " .. S[302535920001532--[[Battery--]]] .. ": " .. (obj.battery / r) .. "/" .. (obj.battery_max / r)
 			end,
 			Production = function(obj)
 				local prod = type(obj.GetProducerObj) == "function" and obj:GetProducerObj()
@@ -148,17 +149,16 @@ function OnMsg.ClassesGenerate()
 
 				local predprod
 				local prefix
-				local waste = tostring(obj.wasterock_producer or "")
-				if waste then
+				local waste = obj.wasterock_producer or ""
+				if waste ~= "" then
 					predprod = tostring(waste:GetPredictedProduction())
 					prefix = "0."
-					if #predprod > 3 then
+					if #predprod > 3 or predprod == "0" then
 						prefix = ""
-						predprod = predprod / r
+						predprod = prod:GetPredictedProduction() / r
 					end
-					waste = " -" .. Trans(4518--[[Waste Rock--]]) .. "\n-"
-					.. Trans(80--[[Production--]]) .. "-\n" .. prefix .. ": " .. predprod
-					.. ", "
+					waste = "- " .. Trans(4518--[[Waste Rock--]]) .. " -\n"
+					.. Trans(80--[[Production--]]) .. ": " .. prefix .. " " .. predprod .. ", "
 					.. Trans(T{6729--[[Daily Production <n>--]],n = ": " .. (waste:GetPredictedDailyProduction() / r)})
 					.. ", "
 					.. Trans(T{434--[[Lifetime<right><lifetime>--]],right=": ",lifetime = (waste.lifetime_production / r)})
@@ -167,18 +167,19 @@ function OnMsg.ClassesGenerate()
 				end
 				predprod = tostring(prod:GetPredictedProduction())
 				prefix = "0."
-				if #predprod > 3 then
+				if #predprod > 3 or predprod == "0" then
 					prefix = ""
-					predprod = predprod / r
+					predprod = prod:GetPredictedProduction() / r
 				end
-				return "- " .. RetName(obj) .. " -\n" .. Trans(80--[[Production--]])
+
+				return TableConcat({"- " .. RetName(obj) .. " -\n" .. Trans(80--[[Production--]])
 					.. ": " .. prefix .. predprod .. ", "
 					.. Trans(T{6729--[[Daily Production <n>--]],n = ": " .. (prod:GetPredictedDailyProduction() / r)})
 					.. ", "
 					.. Trans(T{434--[[Lifetime<right><lifetime>--]],right=": ",lifetime = (prod.lifetime_production / r)})
 					.. "\n" .. Trans(519--[[Storage--]]) .. ": "
 					.. (prod:GetAmountStored() / r) .. "/" .. (prod.max_storage / r)
-					.. waste
+					,waste},"\n")
 			end,
 			Dome = function(obj)
 				if not obj.air then
@@ -212,18 +213,20 @@ function OnMsg.ClassesGenerate()
 					.. ", " .. Trans(682--[[Oxygen--]]) .. ": " .. (obj.air.current_consumption / r) .. "/" .. (obj.air.consumption / r)
 					.. ", " .. Trans(681--[[Water--]]) .. ": " .. (obj.water.current_consumption / r) .. "/" .. (obj.water.consumption / r)
 					.. "\n" .. Trans(1022--[[Food--]]) .. " (" .. #(obj.labels.needFood or "") .. "): "
-					.. Trans(4439--[[Going to--]]):gsub("<right><h SelectTarget InfopanelSelect><Target></h>",food_need)
+					.. Trans(4439--[[Going to--]]):gsub("<right><h SelectTarget InfopanelSelect><Target></h>",": " .. food_need)
 					.. ", " .. Trans(526--[[Visitors--]]) .. ": " .. food_use .. "/" .. food_max
 					.. "\n" .. Trans(3862--[[Medic--]]) .. " (" .. #(obj.labels.needMedical or "") .. "): "
-					.. Trans(4439--[[Going to--]]):gsub("<right><h SelectTarget InfopanelSelect><Target></h>",medic_need)
+					.. Trans(4439--[[Going to--]]):gsub("<right><h SelectTarget InfopanelSelect><Target></h>",": " .. medic_need)
 					.. ", " .. Trans(526--[[Visitors--]]) .. ": " .. medic_use .. "/" .. medic_max
 					.. "\n\n" .. S[302535920000035--[[Grids--]]]
-					.. ": " .. Trans(682--[[Oxygen--]]) .. "(" .. obj.air.grid.ChoGGi_GridHandle .. ")"
-					.. Trans(681--[[Water--]]) .. "(" .. obj.water.grid.ChoGGi_GridHandle .. ") "
-					.. Trans(79--[[Power--]]) .. "(" .. obj.electricity.grid.ChoGGi_GridHandle .. ")"
+					.. ": " .. Trans(682--[[Oxygen--]]) .. "(" .. tostring(obj.air.grid.ChoGGi_GridHandle) .. ") "
+					.. Trans(681--[[Water--]]) .. "(" .. tostring(obj.water.grid.ChoGGi_GridHandle) .. ") "
+					.. Trans(79--[[Power--]]) .. "(" .. tostring(obj.electricity.grid.ChoGGi_GridHandle) .. ")"
 			end,
 		}
 
+		local ptz8000 = point(0,0,8000)
+		local ptz2000 = point(0,0,2000)
 		local function AddViewObjInfo(label)
 			local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
 			for i = 1, #objs do
@@ -236,19 +239,21 @@ function OnMsg.ClassesGenerate()
 				-- skip any missing objects
 				if IsValid(obj) and pos then
 					local text_obj = PlaceObject("ChoGGi_OText")
-					local text_orient = PlaceObject("ChoGGi_OOrientation")
-					text_orient.ChoGGi_ViewObjInfo_o = true
+					local orient_obj = PlaceObject("ChoGGi_OOrientation")
+					orient_obj.ChoGGi_ViewObjInfo_o = true
 					text_obj.ChoGGi_ViewObjInfo_t = true
 					text_obj:SetText(GetInfo[label](obj))
 					text_obj:SetCenter(true)
 
-					local _, origin = obj:GetAllSpots(0)
-					obj:Attach(text_obj, origin)
-					obj:Attach(text_orient, origin)
+--~ 					local _, origin = obj:GetAllSpots(0)
+--~ 					obj:Attach(text_obj, origin)
+--~ 					obj:Attach(text_orient, origin)
+					obj:Attach(text_obj)
+					obj:Attach(orient_obj)
 					if label == "Dome" then
-						text_obj:SetAttachOffset(point(0,0,8000))
+						text_obj:SetAttachOffset(ptz8000)
 					elseif label ~= "Drone" then
-						text_obj:SetAttachOffset(point(0,0,2000))
+						text_obj:SetAttachOffset(ptz2000)
 					end
 				end
 			end
@@ -279,14 +284,15 @@ function OnMsg.ClassesGenerate()
 					local mine
 					-- update text
 					for i = 1, #objs do
+						local obj = objs[i]
 						mine = nil
-						objs[i]:ForEachAttach(function(a)
+						obj:ForEachAttach(function(a)
 							if a.ChoGGi_ViewObjInfo_t then
 								mine = {
-									pos = objs[i]:GetVisualPos(),
+									pos = obj:GetVisualPos(),
 									text = a,
 								}
-								a:SetText(GetInfo[label](objs[i]))
+								a:SetText(GetInfo[label](obj))
 								return
 							end
 						end)
@@ -316,11 +322,11 @@ function OnMsg.ClassesGenerate()
 		function ChoGGi.MenuFuncs.BuildingInfo_Toggle()
 			local ItemList = {
 				{text = Trans(83--[[Domes--]]),value = "Dome"},
-				{text = Trans(3982--[[Deposits--]]),value = "SubsurfaceDeposit"},
+				{text = Trans(3982--[[Deposits--]]),value = "Deposit"},
 				{text = Trans(80--[[Production--]]),value = "Production"},
 				{text = Trans(517--[[Drones--]]),value = "Drone"},
 				{text = Trans(5433--[[Drone Control--]]),value = "DroneControl"},
-				{text = Trans(885971788025--[[Outside Buildings--]]),value = "OutsideBuildings"},
+--~ 				{text = Trans(885971788025--[[Outside Buildings--]]),value = "OutsideBuildings"},
 
 	--~ 			 {text = Trans(79--[[Power--]]),value = "Power"},
 	--~			 {text = Trans(81--[[Life Support--]]),value = "Life-Support"},
@@ -337,6 +343,7 @@ function OnMsg.ClassesGenerate()
 					viewing_obj_info[value] = nil
 					RemoveViewObjInfo(value)
 					DeleteThread(update_info_thread[value])
+					ChoGGi.ComFuncs.RemoveGridHandles()
 				else
 					-- add signs
 					viewing_obj_info[value] = true

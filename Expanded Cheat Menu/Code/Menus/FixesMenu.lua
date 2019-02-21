@@ -238,6 +238,15 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome,
 	}
 
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920001533--[[Remove Invalid Label Objects--]]],
+		ActionMenubar = str_ECM_Fixes_Most,
+		ActionId = ".Remove Invalid Label Objects",
+		ActionIcon = icon,
+		RolloverText = S[302535920001534--[[Checks the city.labels for invalid objects and removes them from the label.--]]],
+		OnAction = ChoGGi.MenuFuncs.RemoveInvalidLabelObjects,
+	}
+
 	local str_ECM_Fixes_Toggles = "ECM.ECM.Fixes.Toggles"
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000938--[[Toggles--]]],
