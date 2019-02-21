@@ -28,9 +28,15 @@ function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 
 	do -- AddGridHandles
+
 		local function AddHandles(grid)
 			for i = 1, #grid do
 				grid[i].ChoGGi_GridHandle = i
+			end
+		end
+		local function RemoveHandles(grid)
+			for i = 1, #grid do
+				grid[i].ChoGGi_GridHandle = nil
 			end
 		end
 
@@ -40,6 +46,14 @@ function OnMsg.ClassesGenerate()
 			AddHandles(UICity.electricity)
 			AddHandles(UICity.water)
 		end
+
+		function ChoGGi.ComFuncs.RemoveGridHandles()
+			local UICity = UICity
+			RemoveHandles(UICity.air)
+			RemoveHandles(UICity.electricity)
+			RemoveHandles(UICity.water)
+		end
+
 	end -- do
 
 	function ChoGGi.ComFuncs.DraggableCheatsMenu(which)

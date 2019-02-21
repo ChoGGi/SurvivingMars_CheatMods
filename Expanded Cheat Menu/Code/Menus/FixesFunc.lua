@@ -9,36 +9,52 @@ function OnMsg.ClassesGenerate()
 	local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 	local S = ChoGGi.Strings
 
+	function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
+		local TableRemove = table.remove
+		local labels = UICity.labels
+		for id,label in pairs(labels) do
+			if id ~= "Consts" then
+				for i = #label, 1, -1 do
+					if not IsValid(label[i]) then
+						TableRemove(label,i)
+					end
+				end
+			end
+		end
+		MsgPopup(
+			S[302535920001533--[[Remove Invalid Label Objects--]]],
+			Trans(4493--[[All--]])
+		)
+	end
+
 	function ChoGGi.MenuFuncs.FireMostFixes()
 		CreateRealTimeThread(function()
 			local ChoGGi = ChoGGi
 
-			pcall(function()
-				ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
-				ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
-				ChoGGi.MenuFuncs.StutterWithHighFPS()
-
-				ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
-				ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
-				ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
-				ChoGGi.MenuFuncs.RemoveYellowGridMarks()
-				ChoGGi.MenuFuncs.RemoveBlueGridMarks()
-				ChoGGi.MenuFuncs.CablesAndPipesRepair()
-				ChoGGi.MenuFuncs.MirrorSphereStuck()
-				ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
-			end)
+			pcall(ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites)
+			pcall(ChoGGi.MenuFuncs.ParticlesWithNullPolylines)
+			pcall(ChoGGi.MenuFuncs.StutterWithHighFPS)
+			pcall(ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame)
+			pcall(ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome)
+			pcall(ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas)
+			pcall(ChoGGi.MenuFuncs.RemoveYellowGridMarks)
+			pcall(ChoGGi.MenuFuncs.RemoveBlueGridMarks)
+			pcall(ChoGGi.MenuFuncs.CablesAndPipesRepair)
+			pcall(ChoGGi.MenuFuncs.MirrorSphereStuck)
+			pcall(ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown)
+			pcall(ChoGGi.MenuFuncs.RemoveInvalidLabelObjects)
 
 			-- loop through and remove all my msgs from the onscreen popups
 			CreateRealTimeThread(function()
-				Sleep(1000)
+				Sleep(500)
 				while #ChoGGi.Temp.MsgPopups < 10 do
-					Sleep(500)
+					Sleep(100)
 				end
 				local popups = ChoGGi.Temp.MsgPopups or ""
 				for i = #popups, 1, -1 do
 					popups[i]:delete()
 				end
-				ChoGGi.Temp.MsgPopups = {}
+				table.iclear(ChoGGi.Temp.MsgPopups)
 			end)
 		end)
 	end

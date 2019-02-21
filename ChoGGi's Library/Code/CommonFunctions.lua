@@ -4297,12 +4297,12 @@ do -- IsControlPressed/IsShiftPressed/IsAltPressed
 end -- do
 
 function ChoGGi.ComFuncs.RetAllOfClass(cls)
-	-- if it isn't in g_Classes then MapGet will return everything
-	if not g_Classes[cls] then
-		return empty_table
-	end
-	local objects = UICity.labels[cls] or empty_table
+	local objects = UICity.labels[cls] or {}
 	if #objects == 0 then
+		-- if it isn't in g_Classes then MapGet will return everything
+		if not g_Classes[cls] then
+			return {}
+		end
 		return MapGet(true,cls)
 	end
 	return objects
