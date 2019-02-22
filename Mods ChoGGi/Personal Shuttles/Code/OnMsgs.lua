@@ -62,7 +62,7 @@ local function SpawnShuttle(hub,attacker)
 			if #(UICity.labels.PersonalShuttle or "") >= (PersonalShuttles.max_shuttles or 50) then
 				ChoGGi.ComFuncs.MsgPopup(
 					[[Max of 50 (somewhere above 50 and below 100 it crashes).]],
-					S[745--[[Shuttles--]]]
+					ChoGGi.ComFuncs.Translate(745--[[Shuttles--]])
 				)
 				return
 			end

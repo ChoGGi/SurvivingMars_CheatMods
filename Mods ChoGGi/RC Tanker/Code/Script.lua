@@ -25,11 +25,13 @@ end
 local TableConcat
 local Random
 local S
+local Trans
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	Random = ChoGGi.ComFuncs.Random
+	Trans = ChoGGi.ComFuncs.Translate
 end
 
 RCTankerMCR = {
@@ -211,23 +213,23 @@ local temp_status_table = {}
 function RCTanker:Getui_command()
 	temp_status_table[1] = self.status_text
 	if self.tank_type == "AirStorage" then
-		temp_status_table[2] = S[1074--[[Stored Air--]]] .. " <image UI/Icons/Sections/Oxygen_1.tga> : " .. self.storage_amount / ResourceScale
+		temp_status_table[2] = Trans(1074--[[Stored Air--]]) .. " <image UI/Icons/Sections/Oxygen_1.tga> : " .. self.storage_amount / ResourceScale
 	else
-		temp_status_table[2] = S[33--[[Stored Water--]]] .. " <image UI/Icons/Sections/Water_1.tga> : " .. self.storage_amount / ResourceScale
+		temp_status_table[2] = Trans(33--[[Stored Water--]]) .. " <image UI/Icons/Sections/Water_1.tga> : " .. self.storage_amount / ResourceScale
 	end
 
 	return TableConcat(temp_status_table, "<newline><left>")
 end
 
 function RCTanker:GotoFromUser(...)
-	self.status_text = S[63--[[Travelling--]]]
+	self.status_text = Trans(63--[[Travelling--]])
 	-- if user broke off TankInteract then clear this here
 	self:TankInteractCleanup(2)
 	return BaseRover.GotoFromUser(self,...)
 end
 
 function RCTanker:Idle()
-	self.status_text = S[6722--[[Idle--]]]
+	self.status_text = Trans(6722--[[Idle--]])
 
 	self:SetState("idle")
 	self:Gossip("Idle")
@@ -239,9 +241,9 @@ end
 function RCTanker:RetResIconText()
 	local res_type = ""
 	if self.tank_type == "AirStorage" then
-		res_type = "<image UI/Icons/Sections/Oxygen_1.tga> " .. S[682--[[Oxygen--]]]
+		res_type = "<image UI/Icons/Sections/Oxygen_1.tga> " .. Trans(682--[[Oxygen--]])
 	else
-		res_type = "<image UI/Icons/Sections/Water_1.tga> " .. S[681--[[Water--]]]
+		res_type = "<image UI/Icons/Sections/Water_1.tga> " .. Trans(681--[[Water--]])
 	end
 	return res_type
 end
@@ -256,9 +258,9 @@ function RCTanker:RetInteractInfo(obj)
 
 	local res_obj,text
 	if self.tank_type == "AirStorage" then
-		res_obj,text = obj.air,S[682--[[Oxygen--]]]
+		res_obj,text = obj.air,Trans(682--[[Oxygen--]])
 	else
-		res_obj,text = obj.water,S[681--[[Water--]]]
+		res_obj,text = obj.water,Trans(681--[[Water--]])
 	end
 
 	local interact = self.interaction_mode
@@ -366,11 +368,11 @@ function RCTanker:TankInteract()
 	local obj = self.tank_interact_obj
 	-- make sure we're "close" enough
 	if obj:GetPos():Dist2D(self:GetPos()) > self.min_dist_to_tank then
-		self.status_text = S[63--[[Travelling--]]]
+		self.status_text = Trans(63--[[Travelling--]])
 		local nearest = obj:GetNearestSpot("idle", "Workrover", self)
 		self:Goto(obj:GetSpotPos(nearest))
 		self:SetState("idle")
-		self.status_text = S[6722--[[Idle--]]]
+		self.status_text = Trans(6722--[[Idle--]])
 	end
 
 	-- if something went sideways between clicking and starting
@@ -420,7 +422,7 @@ function RCTanker:TankInteract()
 
 	-- drain tank to rc loop
 	if self.tank_direction then
-		self.status_text = S[11039--[[Loading cargo--]]]
+		self.status_text = Trans(11039--[[Loading cargo--]])
 		while self.tank_interact_obj and res_obj.current_storage > 0 do
 			Sleep(delay)
 
@@ -447,7 +449,7 @@ function RCTanker:TankInteract()
 		end
 	-- fill tank from rc
 	else
-		self.status_text = S[11409--[[Unloading cargo--]]]
+		self.status_text = Trans(11409--[[Unloading cargo--]])
 		local max_cap = res_obj.storage_capacity
 		while self.tank_interact_obj and self.storage_amount > 0 do
 			Sleep(delay)
@@ -571,12 +573,12 @@ Press to toggle.]],
 		end
 		if self.tank_type == "AirStorage" then
 			self.tank_type = "WaterStorage"
-			button:SetRolloverTitle(S[681--[[Water--]]] .. "\n\nPress to toggle.")
+			button:SetRolloverTitle(Trans(681--[[Water--]]) .. "\n\nPress to toggle.")
 			button:SetIcon("UI/Icons/Sections/Water_1.tga")
 			self.tank_obj:SetColorizationMaterial(1, -12211457, -24, 0)
 		else
 			self.tank_type = "AirStorage"
-			button:SetRolloverTitle(S[682--[[Oxygen--]]] .. "\n\nPress to toggle.")
+			button:SetRolloverTitle(Trans(682--[[Oxygen--]]) .. "\n\nPress to toggle.")
 			button:SetIcon("UI/Icons/Sections/Oxygen_1.tga")
 			self.tank_obj:SetColorizationMaterial(1, -4450778, -24, 0)
 		end
@@ -593,7 +595,7 @@ Press to toggle.]],
 			"__context_of_kind", "RCTanker",
 			"__template", "InfopanelButton",
 			"Icon", "UI/Icons/Sections/Oxygen_1.tga",
-			"RolloverTitle", S[682--[[Oxygen--]]] .. "\n\nPress to toggle.",
+			"RolloverTitle", Trans(682--[[Oxygen--]]) .. "\n\nPress to toggle.",
 			"RolloverText", T(0,[[Type of resource you can transfer with this RC.
 
 <image UI/Common/mission_no.tga 1600> Warning: Changing will empty RC tank!]]),

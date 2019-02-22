@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "RC Tanker v0.1",
-	"version", 1,
-	"saved", 1549972800,
+	"title", "RC Tanker v0.2",
+	"version", 2,
+	"saved", 1550750400,
 	"image", "Preview.png",
 	"id", "ChoGGi_RCTanker",
 	"steam_id", "1653353483",

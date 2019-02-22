@@ -262,7 +262,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = S[302535920000129--[[Set--]]] .. " " .. RetName(sel) .. " " .. S[109035890389--[[Capacity--]]],
+			title = S[302535920000129--[[Set--]]] .. " " .. RetName(sel) .. " " .. Trans(109035890389--[[Capacity--]]),
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 			skip_sort = true,
 		}

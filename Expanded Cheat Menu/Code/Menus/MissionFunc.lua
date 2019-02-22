@@ -192,7 +192,7 @@ function OnMsg.ClassesGenerate()
 					hint = "<image " .. sponsor["goal_image_" .. i] .. ">\n\n"
 						.. S[302535920001409--[[Goal--]]] .. ": "
 						.. Trans(GetGoalDescription(sponsor, i)) .. "\n"
-						.. S[128569337702--[[Reward:--]]] .. " "
+						.. Trans(128569337702--[[Reward:--]]) .. " "
 						.. Trans(T(reward.Description, reward)),
 					reward = reward,
 					goal = SponsorGoalsMap[sponsor["sponsor_goal_" .. i]],

@@ -1,10 +1,11 @@
 return PlaceObj("ModDef", {
-	"title", "Change Drone Type v0.2",
-	"version", 2,
-	"saved", 1548504000,
+	"title", "Change Drone Type v0.3",
+	"version", 3,
+	"saved", 1550750400,
 	"image", "Preview.png",
 	"id", "ChoGGi_ChangeDroneType",
 	"steam_id", "1592984375",
+	"pops_any_uuid", "0d35f043-f2eb-4f38-ac2c-12459370a41c",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
 	"code", {

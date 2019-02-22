@@ -1,0 +1,12 @@
+set hover ehight, plant green and trees like monkohime
+less x/y area
+use parabol func to make smooth turns
+
+maybe check out nearby buildings and rocks, some beeping noises or such?
+snuggles up to the camera and beeps at you?
+
+throws rocks around if camera stays in same place for awhile
+randomly picks up drones and "plays"? with them
+
+
+maybe add a selection panel saying if it's bored or not?

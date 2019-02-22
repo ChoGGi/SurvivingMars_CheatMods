@@ -24,9 +24,11 @@ end
 
 local TableClear = table.clear
 local S
+local Trans
 -- generate is late enough that my library is loaded, but early enough to replace anything I need to
 function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
+	Trans = ChoGGi.ComFuncs.Translate
 end
 
 local needed_specialist = {}
@@ -305,9 +307,9 @@ local function AddUIStuff(content)
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			S[5761--[[Are you sure you want to cancel the Rocket's launch order?--]]],
+			Trans(5761--[[Are you sure you want to cancel the Rocket's launch order?--]]),
 			CallBackFunc,
-			S[3687--[[Cancel--]]] .. " " .. S[1116--[[Passenger Rocket--]]]
+			Trans(3687--[[Cancel--]]) .. " " .. Trans(1116--[[Passenger Rocket--]])
 		)
 	end
 
