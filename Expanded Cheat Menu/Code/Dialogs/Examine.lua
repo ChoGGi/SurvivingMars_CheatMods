@@ -124,7 +124,7 @@ DefineClass.Examine = {
 	-- stores enummed list
 	enum_vars = false,
 	-- going in through the backdoor
-	sort = false,
+	sort_dir = false,
 	-- if TaskRequest then store flags here
 	obj_flags = false,
 	-- delay between updating for autoref
@@ -800,7 +800,7 @@ end
 
 function Examine:idSortDirOnChange()
 	self = GetRootDialog(self)
-	self.sort = not self.sort
+	self.sort_dir = not self.sort_dir
 	self:SetObj()
 end
 
@@ -1863,17 +1863,21 @@ end
 
 function Examine:ConvertObjToInfo(obj,obj_type)
 	-- i like reusing tables
-	self.ConvertObjToInfo_totextex_res = self.ConvertObjToInfo_totextex_res or {}
-	self.ConvertObjToInfo_totextex_sort = self.ConvertObjToInfo_totextex_sort or {}
-	self.ConvertObjToInfo_totextex_sort_str = self.ConvertObjToInfo_totextex_sort_str or {}
+	self.ConvertObjToInfo_list_obj_str = self.ConvertObjToInfo_list_obj_str or {}
+	self.ConvertObjToInfo_list_sort = self.ConvertObjToInfo_list_sort or {}
+	self.ConvertObjToInfo_list_sort_str = self.ConvertObjToInfo_list_sort_str or {}
 	self.ConvertObjToInfo_skip_dupes = self.ConvertObjToInfo_skip_dupes or {}
-	local totextex_res = self.ConvertObjToInfo_totextex_res
-	local totextex_sort_str = self.ConvertObjToInfo_totextex_sort_str
-	local totextex_sort = self.ConvertObjToInfo_totextex_sort
+	local list_obj_str = self.ConvertObjToInfo_list_obj_str
+	local list_sort_str = self.ConvertObjToInfo_list_sort_str
+	local list_sort = self.ConvertObjToInfo_list_sort
 	local skip_dupes = self.ConvertObjToInfo_skip_dupes
-	TableIClear(totextex_res)
-	TableClear(totextex_sort)
-	TableClear(totextex_sort_str)
+	-- the list we return with concat
+	TableIClear(list_obj_str)
+	-- list of strs to sort with
+	TableClear(list_sort)
+	-- list of nums to sort with
+	TableClear(list_sort_str)
+	-- dupe list for the "All" checkbox
 	TableClear(skip_dupes)
 
 	local obj_metatable = getmetatable(obj)
@@ -1889,9 +1893,11 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 	if obj_type == "table" then
 
+		local chinese = self.is_chinese
 		for k,v in pairs(obj) do
 			-- sorely needed delay for chinese (or it "freezes" the game when loading something like _G)
-			if self.is_chinese then
+			-- i assume text rendering is slower for the chars, 'cause examine is really slow with them.
+			if chinese then
 				Sleep(1)
 			end
 
@@ -1901,25 +1907,13 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				skip_dupes[name] = true
 			end
 			c = c + 1
-			totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(v) .. "<left>"
-			if type(k) == "number" then
-				totextex_sort[totextex_res[c]] = k
-			else
-				totextex_sort_str[totextex_res[c]] = sort
-			end
-		end
+			local str_tmp = name .. " = " .. self:ConvertValueToInfo(v) .. "<left>"
+			list_obj_str[c] = str_tmp
 
-		-- pretty rare occurrence
-		if self.show_enum_values and self.enum_vars then
-			for k,v in pairs(self.enum_vars) do
-				-- remove the . at the start
-				local name,sort = self:ConvertValueToInfo(k:sub(2),true)
-				if not skip_dupes[name] then
-					skip_dupes[name] = true
-					c = c + 1
-					totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(v) .. "<left>"
-					totextex_sort_str[totextex_res[c]] = sort
-				end
+			if type(k) == "number" then
+				list_sort[str_tmp] = k
+			else
+				list_sort_str[str_tmp] = sort
 			end
 		end
 
@@ -1932,12 +1926,28 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 					if not skip_dupes[name] then
 						skip_dupes[name] = true
 						c = c + 1
-						totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(obj[k] or v) .. "<left>"
-						totextex_sort_str[totextex_res[c]] = sort
+						local str_tmp = name .. " = " .. self:ConvertValueToInfo(obj[k] or v) .. "<left>"
+						list_obj_str[c] = str_tmp
+						list_sort_str[str_tmp] = sort
 					end
 
 				end
 				meta_temp = getmetatable(meta_temp)
+			end
+		end
+
+		-- pretty rare occurrence
+		if self.show_enum_values and self.enum_vars then
+			for k,v in pairs(self.enum_vars) do
+				-- remove the . at the start
+				local name,sort = self:ConvertValueToInfo(k:sub(2),true)
+				if not skip_dupes[name] then
+					skip_dupes[name] = true
+					c = c + 1
+					local str_tmp = name .. " = " .. self:ConvertValueToInfo(v) .. "<left>"
+					list_obj_str[c] = str_tmp
+					list_sort_str[str_tmp] = sort
+				end
 			end
 		end
 
@@ -1951,38 +1961,47 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 	elseif obj_type == "function" then
 		c = c + 1
-		totextex_res[c] = self:ConvertValueToInfo(tostring(obj))
+		list_obj_str[c] = self:ConvertValueToInfo(tostring(obj))
 		c = c + 1
-		totextex_res[c] = self:ConvertValueToInfo(obj)
+		list_obj_str[c] = self:ConvertValueToInfo(obj)
 	end
 
-	-- sort backwards
-	if self.sort then
-		TableSort(totextex_res, function(a, b)
-			if totextex_sort_str[a] and totextex_sort_str[b] then
-				return CmpLower(totextex_sort_str[b], totextex_sort_str[a])
+	if self.sort_dir then
+		-- sort backwards
+		TableSort(list_obj_str,function(a, b)
+			-- strings
+			local c,d = list_sort_str[a], list_sort_str[b]
+			if c and d then
+				return CmpLower(d, c)
 			end
-			if totextex_sort[a] and totextex_sort[b] then
-				return totextex_sort[a] > totextex_sort[b]
+			-- numbers
+			c,d = list_sort[a], list_sort[b]
+			if c and d then
+				return c > d
 			end
-			if totextex_sort[a] or totextex_sort[b] then
-				return totextex_sort[b] and true
+			if c or d then
+				return d and true
 			end
+			-- just in case
 			return CmpLower(b, a)
 		end)
-	-- sort normally
 	else
-		TableSort(totextex_res, function(a, b)
-			if totextex_sort_str[a] and totextex_sort_str[b] then
-				return CmpLower(totextex_sort_str[a], totextex_sort_str[b])
+		-- sort normally
+		TableSort(list_obj_str,function(a, b)
+			-- strings
+			local c,d = list_sort_str[a], list_sort_str[b]
+			if c and d then
+				return CmpLower(c, d)
 			end
-			if totextex_sort[a] and totextex_sort[b] then
-				return totextex_sort[a] < totextex_sort[b]
+			-- numbers
+			c,d = list_sort[a], list_sort[b]
+			if c and d then
+				return c < d
 			end
-			if totextex_sort[a] or totextex_sort[b] then
-				return totextex_sort[a] and true
+			if c or d then
+				return c and true
 			end
-			print("----",CmpLower(a, b),"\n",a,"\n",b)
+			-- just in case
 			return CmpLower(a, b)
 		end)
 	end
@@ -1991,7 +2010,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	if IsValid(obj) and obj:IsKindOf("CObject") then
 		is_valid_obj = true
 
-		TableInsert(totextex_res,1,"\t--"
+		TableInsert(list_obj_str,1,"\t--"
 			.. self:HyperLink(obj,function()
 				OpenInExamineDlg(getmetatable(obj),self)
 			end)
@@ -2005,13 +2024,13 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		if obj:IsKindOf("ParSystem") then
 			local par_name = obj:GetParticlesName()
 			if par_name ~= "" then
-				TableInsert(totextex_res,2,"obj:GetParticlesName(): '" .. par_name .. "'\n")
+				TableInsert(list_obj_str,2,"obj:GetParticlesName(): '" .. par_name .. "'\n")
 			end
 		end
 
 		if obj:IsValidPos() and IsValidEntity(obj:GetEntity()) and 0 < obj:GetAnimDuration() then
 			local pos = obj:GetVisualPos() + obj:GetStepVector() * obj:TimeToAnimEnd() / obj:GetAnimDuration()
-			TableInsert(totextex_res, 2,
+			TableInsert(list_obj_str, 2,
 				GetStateName(obj:GetState())
 				.. ", step: "
 				.. self:HyperLink(obj,function()
@@ -2026,14 +2045,14 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	-- add strings/numbers to the body
 	if obj_type == "number" or obj_type == "boolean" then
 		c = c + 1
-		totextex_res[c] = tostring(obj)
+		list_obj_str[c] = tostring(obj)
 	elseif obj_type == "string" then
 		if obj == "nil" then
 			c = c + 1
-			totextex_res[c] = obj
+			list_obj_str[c] = obj
 		else
 			c = c + 1
-			totextex_res[c] = "'" .. obj .. "'"
+			list_obj_str[c] = "'" .. obj .. "'"
 		end
 
 	elseif obj_type == "userdata" then
@@ -2051,7 +2070,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			trans_str = self:ConvertValueToInfo(obj) .. " = '" .. trans_str .. "'"
 		end
 		c = c + 1
-		totextex_res[c] = trans_str
+		list_obj_str[c] = trans_str
 
 		-- add any functions from getmeta to the (scant) list
 		if obj_metatable then
@@ -2199,7 +2218,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			end
 
 			c = c + 1
-			totextex_res[c] = TableConcat(data_meta,"\n")
+			list_obj_str[c] = TableConcat(data_meta,"\n")
 		end
 
 	-- add some extra info for funcs
@@ -2210,33 +2229,33 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			dbg_value = "\ngetinfo(): " .. DebugGetInfo(obj)
 		else
 			c = c + 1
-			totextex_res[c] = "\n"
+			list_obj_str[c] = "\n"
 			local nups = getinfo(obj, "u").nups
 			if nups > 0 then
-				c = self:RetDebugUpValue(obj,totextex_res,c,nups)
+				c = self:RetDebugUpValue(obj,list_obj_str,c,nups)
 			end
 			dbg_value = self:RetDebugGetInfo(obj)
 			-- any args
 			local args = self:RetFuncParams(obj)
 			if args then
 				c = c + 1
-				totextex_res[c] = args
+				list_obj_str[c] = args
 			end
 		end
 		if dbg_value then
 			c = c + 1
-			totextex_res[c] = dbg_value
+			list_obj_str[c] = dbg_value
 		end
 
 	elseif obj_type == "thread" then
 
 		c = c + 1
-		totextex_res[c] = "<color 255 255 255>"
+		list_obj_str[c] = "<color 255 255 255>"
 			.. S[302535920001353--[[Thread info--]]]
 			.. ":\nIsValidThread(): "
 		local is_valid = IsValidThread(obj)
 		if is_valid then
-			totextex_res[c] = totextex_res[c]
+			list_obj_str[c] = list_obj_str[c]
 				.. self:ConvertValueToInfo(is_valid or nil)
 				.. "\nGetThreadStatus(): "
 				.. self:ConvertValueToInfo(GetThreadStatus(obj) or nil)
@@ -2250,7 +2269,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				.. self:ConvertValueToInfo(ThreadHasFlags(obj,2097152) or false)
 				.. "\n"
 		else
-			totextex_res[c] = totextex_res[c]
+			list_obj_str[c] = list_obj_str[c]
 				.. self:ConvertValueToInfo(is_valid or nil)
 				.. "\n"
 		end
@@ -2262,17 +2281,17 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		for i = starter, #info_list do
 			local info = info_list[i]
 			c = c + 1
-			totextex_res[c] = "\ngetinfo(level " .. info.level .. "): "
+			list_obj_str[c] = "\ngetinfo(level " .. info.level .. "): "
 
 			c = c + 1
-			totextex_res[c] = "func: " .. info.name .. ", "
+			list_obj_str[c] = "func: " .. info.name .. ", "
 				.. self:ConvertValueToInfo(info.func)
 
 			if info.getlocal then
 				for j = 1, #info.getlocal do
 					local v = info.getlocal[j]
 					c = c + 1
-					totextex_res[c] = "getlocal(" .. v.level .. "," .. j .. "): " .. v.name .. ", "
+					list_obj_str[c] = "getlocal(" .. v.level .. "," .. j .. "): " .. v.name .. ", "
 						.. self:ConvertValueToInfo(v.value)
 				end
 			end
@@ -2281,22 +2300,22 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				for j = 1, #info.getupvalue do
 					local v = info.getupvalue[j]
 					c = c + 1
-					totextex_res[c] = "getupvalue(" .. j .. "): " .. v.name .. ", "
+					list_obj_str[c] = "getupvalue(" .. j .. "): " .. v.name .. ", "
 						.. self:ConvertValueToInfo(v.value)
 				end
 			end
 		end
 		if info_list.gethook then
 			c = c + 1
-			totextex_res[c] = self:ConvertValueToInfo(info_list.gethook)
+			list_obj_str[c] = self:ConvertValueToInfo(info_list.gethook)
 		end
 
 	end
 
 	if not (obj == "nil" or is_valid_obj or obj_type == "userdata") and obj_metatable then
-		TableInsert(totextex_res, 1,"\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
+		TableInsert(list_obj_str, 1,"\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
 		if self.enum_vars and next(self.enum_vars) then
-			totextex_res[1] = totextex_res[1] .. self:HyperLink(obj,function()
+			list_obj_str[1] = list_obj_str[1] .. self:HyperLink(obj,function()
 				OpenInExamineDlg(self.enum_vars,self)
 			end)
 			.. " enum"
@@ -2305,7 +2324,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 	end
 
-	return TableConcat(totextex_res,"\n")
+	return TableConcat(list_obj_str,"\n")
 end
 ---------------------------------------------------------------------------------------------------------------------
 function Examine:SetToolbarVis(obj)
@@ -2504,16 +2523,16 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 	end
 
 	-- for bigger lists like _G or MapGet(true): we add a slight delay, so the dialog shows up (progress is happening user)
-	if startup then
-		CreateRealTimeThread(function()
-			WaitMsg("OnRender")
+	CreateRealTimeThread(function()
+		if startup then
 --~ ChoGGi.ComFuncs.TickStart("Examine")
+			WaitMsg("OnRender")
 			self.idText:SetText(self:ConvertObjToInfo(obj,obj_type))
 --~ ChoGGi.ComFuncs.TickEnd("Examine",self.name)
-		end)
-	else
-		self.idText:SetText(self:ConvertObjToInfo(obj,obj_type))
-	end
+		else
+			self.idText:SetText(self:ConvertObjToInfo(obj,obj_type))
+		end
+	end)
 
 	return obj_class
 end

@@ -1399,25 +1399,26 @@ end
 do -- Ticks
 	local times = {}
 	local GetPreciseTicks = GetPreciseTicks
+	local max_int = max_int
 
 	local function TickStart(id)
 		times[id] = GetPreciseTicks()
 	end
 	local function TickEnd(id,name)
-		print(id,":",GetPreciseTicks() - times[id],name)
+		print(id,":",GetPreciseTicks() - (times[id] or max_int),name)
 		times[id] = nil
 	end
 	ChoGGi.ComFuncs.TickStart = TickStart
 	ChoGGi.ComFuncs.TickEnd = TickEnd
 
 	function ChoGGi.ComFuncs.PrintFuncTime(func,...)
-		local name = "PrintFuncTime " .. AsyncRand()
-		TickStart(name)
+		local id = "PrintFuncTime " .. AsyncRand()
 		local varargs = ...
 		pcall(function()
+			TickStart(id)
 			func(varargs)
+			TickEnd(id)
 		end)
-		TickEnd(name)
 	end
 end -- do
 
@@ -4131,6 +4132,7 @@ do -- GetAllAttaches
 		if obj.ForEachAttach then
 			obj:ForEachAttach(ForEach)
 		end
+--~ 		local attaches = obj:GetClassFlags(const.cfComponentAttach) ~= 0 and obj:GetAttaches() or ""
 
 		-- add any non-attached attaches (stuff that's kinda attached, like the concrete arm thing)
 		AddAttaches(obj)
