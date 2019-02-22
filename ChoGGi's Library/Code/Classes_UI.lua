@@ -601,7 +601,7 @@ end
 -- takes either a point, or obj to set pos
 function ChoGGi_Window:SetPos(obj,dialog)
 	local dlg = self[dialog or "idDialog"]
-	local x,y,w,h = self:BoxSize(obj)
+	local x,y,w,h = self.BoxSize and self:BoxSize(obj) or ChoGGi_Window.BoxSize(self,obj)
 
 	if IsPoint(obj) then
 		local box = dlg.box

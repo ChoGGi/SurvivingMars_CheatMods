@@ -1,10 +1,14 @@
 ## ECM Changelog
 
 ## v12.6 (Unreleased)
+### Changed:
+- Examine:
+- > Clear button now first clears spheres from examined object, then clears all on the map.
+- > Added context menu to table items.
+
 ### Fixed:
 - Examine titlebar sometimes got stuck as red.
-### Changed:
-- Examine>Clear button now first clears spheres from examined object, then clears all on the map.
+- Buildings>Sanatoriums & Schools>Show All Traits wasn't toggling back to the default list.
 
 ## v12.5 (17 Feb 2019)
 ### Added:
