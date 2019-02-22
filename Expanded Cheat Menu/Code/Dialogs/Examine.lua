@@ -1594,6 +1594,15 @@ local function Examine_ConvertValueToInfo(self,button,obj)
 	end
 end
 
+function Examine:ShowExecCodeWithCode(code)
+	-- open exec code and paste "o.obj_name = value"
+	self:idToggleExecCodeOnChange(true)
+	self.idExecCode:SetText(code)
+	-- set focus and cursor to end of text
+	self.idExecCode:SetFocus()
+	self.idExecCode:SetCursor(1,#self.idExecCode:GetText())
+end
+
 function Examine:OpenListMenu(_,obj_name,_,box)
 	self.list_menu_table = self.list_menu_table or {}
 	self.opened_list_menu = Random()
@@ -1619,23 +1628,17 @@ function Examine:OpenListMenu(_,obj_name,_,box)
 			image = "CommonAssets/UI/Menu/DeleteArea.tga",
 			clicked = function()
 				if obj_type == "string" then
-					self.obj_ref[obj_name] = nil
+					self:ShowExecCodeWithCode("o." .. obj_name .. " = nil")
 				else
-					table.remove(self.obj_ref,obj_name)
+					self:ShowExecCodeWithCode("table.remove(o" .. "," .. obj_name .. ")")
 				end
-				self:SetObj()
 			end,
 		},
 		{name = S[302535920001535--[[Set Value--]]],
 			hint = S[302535920001539--[[Change the value of %s.--]]]:format(obj_name),
 			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
 			clicked = function()
-				-- open exec code and paste "o.obj_name = value"
-				self:idToggleExecCodeOnChange(true)
-				self.idExecCode:SetText("o." .. obj_name .. " = " .. tostring(self.obj_ref[obj_name]))
-				-- set cursor
-				self.idExecCode:SetFocus()
-				self.idExecCode:SetCursor(1,#self.idExecCode:GetText())
+				self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. tostring(self.obj_ref[obj_name]))
 			end,
 		},
 	}
