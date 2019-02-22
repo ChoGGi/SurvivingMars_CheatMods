@@ -114,7 +114,7 @@ do -- RetName
 	-- funcs don't change, so we only need to go once
 	local g_CObjectFuncs = g_CObjectFuncs
 	for key,value in pairs(g_CObjectFuncs) do
-		lookup_table[value] = key
+		lookup_table[value] = key .. " *func"
 	end
 
 	local function AfterLoad()
@@ -126,8 +126,10 @@ do -- RetName
 			-- no need to add tables already added
 			if not lookup_table[value] then
 				local t = type(value)
-				if t == "table" or t == "function" then
+				if t == "table" then
 					lookup_table[value] = key
+				elseif t == "function" then
+					lookup_table[value] = key .. " *func"
 				end
 			end
 		end
