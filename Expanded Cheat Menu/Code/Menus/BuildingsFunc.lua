@@ -1315,8 +1315,8 @@ function OnMsg.ClassesGenerate()
 
 		if ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits then
 			ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits = nil
-			g_SchoolTraits = ChoGGi.Tables.SchoolTraits
-			g_SanatoriumTraits = ChoGGi.Tables.SanatoriumTraits
+			g_SchoolTraits = table.copy(const.SchoolTraits)
+			g_SanatoriumTraits = table.copy(const.SanatoriumTraits)
 		else
 			ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits = true
 			g_SchoolTraits = ChoGGi.Tables.PositiveTraits

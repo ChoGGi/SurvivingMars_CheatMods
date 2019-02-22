@@ -652,7 +652,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	local str_ECM_Buildings_SpaceElevator = "ECM.ECM.Buildings.Space Elevator"
 	c = c + 1
-	Actions[c] = {ActionName = S[1120--[[Space Elevator--]]],
+	Actions[c] = {ActionName = Trans(1120--[[Space Elevator--]]),
 		ActionMenubar = "ECM.ECM.Buildings",
 		ActionId = ".Space Elevator",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

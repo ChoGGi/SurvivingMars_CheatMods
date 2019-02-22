@@ -772,6 +772,9 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 
 		ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 
+		-- when i send parent as a table with self and box coords
+		parent = parent.ChoGGi_self or parent
+
 		-- hide popup when parent closes
 		CreateRealTimeThread(function()
 			while popup.window_state ~= "destroying" and parent.window_state ~= "destroying" do

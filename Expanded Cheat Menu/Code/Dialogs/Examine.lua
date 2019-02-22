@@ -61,6 +61,7 @@ local PopupToggle
 local Random
 local RandomColour
 local RetName
+local RetProperType
 local RetThreadInfo
 local ShowObj
 local TableConcat
@@ -85,6 +86,7 @@ function OnMsg.ClassesGenerate()
 	Random = ChoGGi.ComFuncs.Random
 	RandomColour = ChoGGi.ComFuncs.RandomColour
 	RetName = ChoGGi.ComFuncs.RetName
+	RetProperType = ChoGGi.ComFuncs.RetProperType
 	RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
 	ShowObj = ChoGGi.ComFuncs.ShowObj
 	TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -475,7 +477,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 end
 
 --~ function Examine:idTextOnHyperLinkRollover(link, hyperlink_box, pos)
-function Examine:idTextOnHyperLinkRollover(link)
+function Examine:idTextOnHyperLinkRollover(link, box)
 	if not ChoGGi.UserSettings.EnableToolTips then
 		return
 	end
@@ -484,9 +486,12 @@ function Examine:idTextOnHyperLinkRollover(link)
 		if RolloverWin then
 			XDestroyRolloverWindow()
 		end
+		SetUIMouseCursor(const.DefaultMouseCursor)
 		return
 	end
 	self = GetRootDialog(self)
+
+  SetUIMouseCursor("CommonAssets/UI/HandCursor.tga")
 
 	link = tonumber(link)
 	local obj = self.onclick_objs[link]
@@ -494,9 +499,17 @@ function Examine:idTextOnHyperLinkRollover(link)
 		return
 	end
 
-	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
-		RolloverTitle = S[302535920000069--[[Examine--]]],
-		RolloverText = RetName(obj),
+	local title = S[302535920000069--[[Examine--]]]
+	local name = RetName(obj)
+
+	if self.onclick_funcs[link] == self.OpenListMenu then
+		title = name .. " " .. Trans(1000162--[[Menu--]])
+		name = S[302535920001540--[[Show context menu for %s.--]]]:format(name)
+	end
+
+	XCreateRolloverWindow(self.idText, RolloverGamepad, true, {
+		RolloverTitle = title,
+		RolloverText = name,
 		RolloverHint = S[302535920001079--[[<left_click> Default Action <right_click> Examine--]]],
 	})
 end
@@ -544,13 +557,16 @@ function Examine:idExecCodeOnKbdKeyDown(vk,...)
 	return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
 end
 
-function Examine:idToggleExecCodeOnChange()
+function Examine:idToggleExecCodeOnChange(visible)
 --~ 	-- if it's called directly we set the check if needed
 --~ 	local checked = self:GetCheck()
 
 	self = GetRootDialog(self)
 	local vis = self.idExecCodeArea:GetVisible()
-	self.idExecCodeArea:SetVisible(not vis)
+	if vis ~= visible then
+		self.idExecCodeArea:SetVisible(not vis)
+		self.idToggleExecCode:SetCheck(not vis)
+	end
 end
 
 function Examine:idButRefreshOnPress()
@@ -794,12 +810,10 @@ function Examine:idShowAllValuesOnChange()
 	self:SetObj()
 end
 
---~ function Examine:idSearchTextOnTextChanged()
---~ 	GetRootDialog(self):FindNext()
---~ end
-
 local function CallMenu(self,popup_id,items,pt,button,...)
-	ChoGGi_ComboButton.OnMouseButtonDown(self,pt,button,...)
+	if pt then
+		ChoGGi_ComboButton.OnMouseButtonDown(self,pt,button,...)
+	end
 	if button == "L" then
 		local dlg = GetRootDialog(self)
 		-- same colour as bg of icons :)
@@ -1580,6 +1594,61 @@ local function Examine_ConvertValueToInfo(self,button,obj)
 	end
 end
 
+function Examine:OpenListMenu(_,obj_name,_,box)
+	self.list_menu_table = self.list_menu_table or {}
+	self.opened_list_menu = Random()
+
+	-- they're sent as strings, i need to know if it's a number or string
+	obj_name = RetProperType(obj_name)
+	local obj_type = type(obj_name)
+
+	local list = {
+		{name = obj_name,
+			hint = S[302535920001538--[[Close this menu.--]]],
+			image = "CommonAssets/UI/Menu/default.tga",
+			clicked = function()
+				local popup = PropObjGetProperty(terminal.desktop,self.opened_list_menu)
+				if popup then
+					popup:Close()
+				end
+			end,
+		},
+		{name = "----",disable = true,centred = true},
+		{name = Trans(833734167742--[[Delete Item--]]),
+			hint = S[302535920001536--[["Remove the ""%s"" key from %s."--]]]:format(obj_name,self.name),
+			image = "CommonAssets/UI/Menu/DeleteArea.tga",
+			clicked = function()
+				if obj_type == "string" then
+					self.obj_ref[obj_name] = nil
+				else
+					table.remove(self.obj_ref,obj_name)
+				end
+				self:SetObj()
+			end,
+		},
+		{name = S[302535920001535--[[Set Value--]]],
+			hint = S[302535920001539--[[Change the value of %s.--]]]:format(obj_name),
+			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
+			clicked = function()
+				-- open exec code and paste "o.obj_name = value"
+				self:idToggleExecCodeOnChange(true)
+				self.idExecCode:SetText("o." .. obj_name .. " = " .. tostring(self.obj_ref[obj_name]))
+				-- set cursor
+				self.idExecCode:SetFocus()
+				self.idExecCode:SetCursor(1,#self.idExecCode:GetText())
+			end,
+		},
+	}
+	list.Background = -9868951
+	list.FocusedBackground = -9868951
+	list.PressedBackground = -12500671
+	list.TextStyle = "ChoGGi_CheckButtonMenuOpp"
+
+	self.list_menu_table.ChoGGi_self = self
+	self.list_menu_table.box = box
+	PopupToggle(self.list_menu_table,self.opened_list_menu,list,"left")
+end
+
 function Examine:ConvertValueToInfo(obj,left)
 	local obj_type = type(obj)
 
@@ -1589,12 +1658,18 @@ function Examine:ConvertValueToInfo(obj,left)
 		for _ = 1, colour_cnt do
 			obj = obj .. "</color>"
 		end
-		return "'<color " .. ChoGGi.UserSettings.ExamineColourStr .. ">" .. obj .. "</color>'"
+		if left then
+			return self:HyperLink(obj,self.OpenListMenu) .. "* " .. HLEnd
+				.. "'<color " .. ChoGGi.UserSettings.ExamineColourStr .. ">" .. obj .. "</color>'",obj
+		else
+			return "'<color " .. ChoGGi.UserSettings.ExamineColourStr .. ">" .. obj .. "</color>'",obj
+		end
 	end
 	if obj_type == "number" then
 		-- for some reason i don't want the indexed table numbers to be coloured.
 		if left then
-			return obj .. ""
+			return self:HyperLink(obj,self.OpenListMenu) .. "* " .. HLEnd
+				.. obj
 		else
 			return "<color " .. ChoGGi.UserSettings.ExamineColourNum .. ">" .. obj .. "</color>"
 		end
@@ -1787,13 +1862,16 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	-- i like reusing tables
 	self.ConvertObjToInfo_totextex_res = self.ConvertObjToInfo_totextex_res or {}
 	self.ConvertObjToInfo_totextex_sort = self.ConvertObjToInfo_totextex_sort or {}
-	self.ConvertObjToInfo_totextex_dupes = self.ConvertObjToInfo_totextex_dupes or {}
+	self.ConvertObjToInfo_totextex_sort_str = self.ConvertObjToInfo_totextex_sort_str or {}
+	self.ConvertObjToInfo_skip_dupes = self.ConvertObjToInfo_skip_dupes or {}
 	local totextex_res = self.ConvertObjToInfo_totextex_res
+	local totextex_sort_str = self.ConvertObjToInfo_totextex_sort_str
 	local totextex_sort = self.ConvertObjToInfo_totextex_sort
-	local totextex_dupes = self.ConvertObjToInfo_totextex_dupes
+	local skip_dupes = self.ConvertObjToInfo_skip_dupes
 	TableIClear(totextex_res)
 	TableClear(totextex_sort)
-	TableClear(totextex_dupes)
+	TableClear(totextex_sort_str)
+	TableClear(skip_dupes)
 
 	local obj_metatable = getmetatable(obj)
 	local c = 0
@@ -1814,13 +1892,17 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				Sleep(1)
 			end
 
-			local name = self:ConvertValueToInfo(k,true)
-			-- gotta store all the names if we're doing all props (no dupes thanks)
-			totextex_dupes[name] = true
+			local name,sort = self:ConvertValueToInfo(k,true)
+			-- store the names if we're doing all props
+			if self.show_all_values then
+				skip_dupes[name] = true
+			end
 			c = c + 1
 			totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(v) .. "<left>"
 			if type(k) == "number" then
 				totextex_sort[totextex_res[c]] = k
+			else
+				totextex_sort_str[totextex_res[c]] = sort
 			end
 		end
 
@@ -1828,11 +1910,12 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		if self.show_enum_values and self.enum_vars then
 			for k,v in pairs(self.enum_vars) do
 				-- remove the . at the start
-				local name = self:ConvertValueToInfo(k:sub(2),true)
-				if not totextex_dupes[name] then
-					totextex_dupes[name] = true
+				local name,sort = self:ConvertValueToInfo(k:sub(2),true)
+				if not skip_dupes[name] then
+					skip_dupes[name] = true
 					c = c + 1
 					totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(v) .. "<left>"
+					totextex_sort_str[totextex_res[c]] = sort
 				end
 			end
 		end
@@ -1842,11 +1925,12 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			local meta_temp = obj_metatable
 			while meta_temp do
 				for k,v in pairs(meta_temp) do
-					local name = self:ConvertValueToInfo(k,true)
-					if not totextex_dupes[name] then
-						totextex_dupes[name] = true
+					local name,sort = self:ConvertValueToInfo(k,true)
+					if not skip_dupes[name] then
+						skip_dupes[name] = true
 						c = c + 1
 						totextex_res[c] = name .. " = " .. self:ConvertValueToInfo(obj[k] or v) .. "<left>"
+						totextex_sort_str[totextex_res[c]] = sort
 					end
 
 				end
@@ -1872,6 +1956,9 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	-- sort backwards
 	if self.sort then
 		TableSort(totextex_res, function(a, b)
+			if totextex_sort_str[a] and totextex_sort_str[b] then
+				return CmpLower(totextex_sort_str[b], totextex_sort_str[a])
+			end
 			if totextex_sort[a] and totextex_sort[b] then
 				return totextex_sort[a] > totextex_sort[b]
 			end
@@ -1883,12 +1970,16 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	-- sort normally
 	else
 		TableSort(totextex_res, function(a, b)
+			if totextex_sort_str[a] and totextex_sort_str[b] then
+				return CmpLower(totextex_sort_str[a], totextex_sort_str[b])
+			end
 			if totextex_sort[a] and totextex_sort[b] then
 				return totextex_sort[a] < totextex_sort[b]
 			end
 			if totextex_sort[a] or totextex_sort[b] then
 				return totextex_sort[a] and true
 			end
+			print("----",CmpLower(a, b),"\n",a,"\n",b)
 			return CmpLower(a, b)
 		end)
 	end
