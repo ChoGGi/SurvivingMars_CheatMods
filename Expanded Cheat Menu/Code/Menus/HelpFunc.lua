@@ -622,8 +622,7 @@ This will always apply if uploading to paradox."--]]],
 				{
 					level = 2,
 					title = S[302535920001506--[[Steam--]]],
-					hint = S[302535920001507--[["Uncheck to upload to Paradox mods (instead of Steam).
-Mod will always be packed in hpk archive."--]]],
+					hint = S[302535920001507--[[Uncheck to upload to Paradox mods (instead of Steam).--]]],
 					checked = upload_to_who,
 					func = function(dlg,check)
 						upload_to_who = check
