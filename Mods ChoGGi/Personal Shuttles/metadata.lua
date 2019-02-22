@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Personal Shuttles v0.8",
-	"version", 8,
-	"saved", 1544961600,
+	"title", "Personal Shuttles v0.9",
+	"version", 9,
+	"saved", 1550750400,
 	"id", "ChoGGi_PersonalShuttles",
 	"steam_id", "1410892053",
 	"pops_any_uuid", "b434660b-9a9a-4057-90d7-91bcb815402a",

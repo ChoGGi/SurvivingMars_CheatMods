@@ -70,7 +70,7 @@ function OnMsg.ClassesGenerate()
 		UpdateOnScreenHintDlg()
 		MsgPopup(
 			Trans(302535920001076--[[Hints Reset!--]]),
-			S[4248--[[Hints--]]]
+			Trans(4248--[[Hints--]])
 		)
 	end
 

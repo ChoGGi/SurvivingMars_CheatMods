@@ -1,2 +1,5 @@
+v0.3
+Update to my lib mod.
+
 v0.2
 Added needed specialist count.

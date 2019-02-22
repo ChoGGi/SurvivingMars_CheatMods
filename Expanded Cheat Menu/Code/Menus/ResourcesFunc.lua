@@ -46,7 +46,7 @@ function OnMsg.ClassesGenerate()
 			check = {
 				{
 					title = Trans(10087--[[Advanced Orbital Probe--]]),
-					hint = S[302535920000266--[[Spawn--]]] .. " " .. S[10087--[[Advanced Orbital Probe--]]],
+					hint = S[302535920000266--[[Spawn--]]] .. " " .. Trans(10087--[[Advanced Orbital Probe--]]),
 					checked = GetMissionSponsor().id == "NASA"
 				},
 			},

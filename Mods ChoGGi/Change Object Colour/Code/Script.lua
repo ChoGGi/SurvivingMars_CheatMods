@@ -28,9 +28,10 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
+	local Trans = ChoGGi.ComFuncs.Translate
 
 	c = c + 1
-	Actions[c] = {ActionName = S[174--[[Color Modifier--]]],
+	Actions[c] = {ActionName = Trans(174--[[Color Modifier--]]),
 		ActionId = "ChangeObjectColour.Color Modifier",
 		OnAction = function()
 			ChoGGi.ComFuncs.CreateObjectListAndAttaches()
@@ -41,7 +42,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920001346--[[Random Colour--]]]),
+	Actions[c] = {ActionName = string.format("%s %s",Trans(298035641454--[[Object--]]),Trans(302535920001346--[[Random Colour--]])),
 		ActionId = "ChangeObjectColour.ObjectColourRandom",
 		OnAction = function()
 			ChoGGi.ComFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
@@ -51,7 +52,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = string.format("%s %s",S[298035641454--[[Object--]]],S[302535920000025--[[Default Colour--]]]),
+	Actions[c] = {ActionName = string.format("%s %s",Trans(298035641454--[[Object--]]),Trans(302535920000025--[[Default Colour--]])),
 		ActionId = "ChangeObjectColour.ObjectColourDefault",
 		OnAction = function()
 			ChoGGi.ComFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())

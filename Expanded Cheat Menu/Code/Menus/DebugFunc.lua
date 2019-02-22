@@ -869,7 +869,7 @@ that'll activate the BadPrefab on it
 					path = obj:GetPath()
 				else
 					ChoGGi.ComFuncs.OpenInExamineDlg(obj)
-					print(S[6779--[[Warning--]]],":",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
+					print(Trans(6779--[[Warning--]]),":",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
 				end
 			end
 
@@ -1026,11 +1026,11 @@ that'll activate the BadPrefab on it
 			end
 
 			local ItemList = {
-				{text = S[4493--[[All--]]],value = "All"},
-				{text = S[547--[[Colonists--]]],value = "Colonist"},
-				{text = S[517--[[Drones--]]],value = "Drone"},
-				{text = S[5438--[[Rovers--]]],value = "BaseRover"},
-				{text = S[745--[[Shuttles--]]],value = "CargoShuttle",hint = 302535920000873--[[Doesn't work that well.--]]},
+				{text = Trans(4493--[[All--]]),value = "All"},
+				{text = Trans(547--[[Colonists--]]),value = "Colonist"},
+				{text = Trans(517--[[Drones--]]),value = "Drone"},
+				{text = Trans(5438--[[Rovers--]]),value = "BaseRover"},
+				{text = Trans(745--[[Shuttles--]]),value = "CargoShuttle",hint = S[302535920000873--[[Doesn't work that well.--]]]},
 			}
 			local aliens
 			if rawget(_G,"ChoGGi_Alien") then

@@ -1,3 +1,6 @@
+v0.9
+Update to my lib mod.
+
 v0.8
 Pick up button wasn't showing on objects unless two shuttles were spawned.
 Added pick up option to waste rock.

@@ -1,12 +1,13 @@
 return PlaceObj("ModDef", {
-	"title", "Change Object Colour v0.8",
-	"version", 8,
-  "saved", 1539950400,
+	"title", "Change Object Colour v1.0",
+	"version", 10,
+  "saved", 1550750400,
 	"image", "Preview.png",
 	"tags", "Objects",
 	"id", "ChoGGi_ChangeObjectColour",
 	"author", "ChoGGi",
   "steam_id", "1411106049",
+	"pops_any_uuid", "a0a607e4-0428-4f68-b507-d2785c727289",
 	"code", {
 		"Code/Script.lua"
 	},
