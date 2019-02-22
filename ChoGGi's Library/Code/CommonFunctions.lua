@@ -111,15 +111,24 @@ do -- RetName
 	-- we use this table to display names of (some) tables for RetName
 	local lookup_table = {}
 
+	-- funcs don't change, so we only need to go once
+	local g_CObjectFuncs = g_CObjectFuncs
+	for key,value in pairs(g_CObjectFuncs) do
+		lookup_table[value] = key
+	end
+
 	local function AfterLoad()
 		local g = ChoGGi.Temp._G
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
 
-		-- any tables in _G
+		-- any tables/funcs in _G
 		for key,value in pairs(g) do
-			-- no need to add tables already added, and we don't care about stuff that isn't a table
-			if not lookup_table[value] and type(value) == "table" then
-				lookup_table[value] = key
+			-- no need to add tables already added
+			if not lookup_table[value] then
+				local t = type(value)
+				if t == "table" or t == "function" then
+					lookup_table[value] = key
+				end
 			end
 		end
 
@@ -3686,8 +3695,8 @@ function ChoGGi.ComFuncs.AttachSpots_Toggle(sel)
 		local GetSpotNameByType = GetSpotNameByType
 		local RandomColour = ChoGGi.ComFuncs.RandomColour
 
-		local start_id, end_id = sel:GetAllSpots(sel:GetState())
-		for i = start_id, end_id do
+		local start_id, id_end = sel:GetAllSpots(sel:GetState())
+		for i = start_id, id_end do
 			local spot_name = GetSpotNameByType(sel:GetSpotsType(i))
 			local spot_annotation = sel:GetSpotAnnotation(i)
 

@@ -1628,9 +1628,9 @@ function Examine:OpenListMenu(_,obj_name,_,box)
 			image = "CommonAssets/UI/Menu/DeleteArea.tga",
 			clicked = function()
 				if obj_type == "string" then
-					self:ShowExecCodeWithCode("o." .. obj_name .. " = nil")
+					self:ShowExecCodeWithCode("o." .. tostring(obj_name) .. " = nil")
 				else
-					self:ShowExecCodeWithCode("table.remove(o" .. "," .. obj_name .. ")")
+					self:ShowExecCodeWithCode("table.remove(o" .. "," .. tostring(obj_name) .. ")")
 				end
 			end,
 		},
@@ -1638,7 +1638,7 @@ function Examine:OpenListMenu(_,obj_name,_,box)
 			hint = S[302535920001539--[[Change the value of %s.--]]]:format(obj_name),
 			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
 			clicked = function()
-				self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. tostring(self.obj_ref[obj_name]))
+				self:ShowExecCodeWithCode("o." .. tostring(obj_name) .. " = " .. tostring(self.obj_ref[obj_name]))
 			end,
 		},
 	}
@@ -1652,7 +1652,7 @@ function Examine:OpenListMenu(_,obj_name,_,box)
 	PopupToggle(self.list_menu_table,self.opened_list_menu,list,"left")
 end
 
-function Examine:ConvertValueToInfo(obj,left)
+function Examine:ConvertValueToInfo(obj)
 	local obj_type = type(obj)
 
 	if obj_type == "string" then
@@ -1661,21 +1661,11 @@ function Examine:ConvertValueToInfo(obj,left)
 		for _ = 1, colour_cnt do
 			obj = obj .. "</color>"
 		end
-		if left then
-			return self:HyperLink(obj,self.OpenListMenu) .. "* " .. HLEnd
-				.. "'<color " .. ChoGGi.UserSettings.ExamineColourStr .. ">" .. obj .. "</color>'",obj
-		else
-			return "'<color " .. ChoGGi.UserSettings.ExamineColourStr .. ">" .. obj .. "</color>'",obj
-		end
+		return "'<color " .. ChoGGi.UserSettings.ExamineColourStr .. ">" .. obj .. "</color>'"
 	end
+	--
 	if obj_type == "number" then
-		-- for some reason i don't want the indexed table numbers to be coloured.
-		if left then
-			return self:HyperLink(obj,self.OpenListMenu) .. "* " .. HLEnd
-				.. obj
-		else
-			return "<color " .. ChoGGi.UserSettings.ExamineColourNum .. ">" .. obj .. "</color>"
-		end
+		return "<color " .. ChoGGi.UserSettings.ExamineColourNum .. ">" .. obj .. "</color>"
 	end
 	--
 	if obj_type == "boolean" then
@@ -1779,22 +1769,23 @@ function Examine:ConvertValueToInfo(obj,left)
 			for _ = 1, colour_cnt do
 				trans_str = trans_str .. "</color>"
 			end
-			local ret_str = trans_str .. self:HyperLink(obj,Examine_ConvertValueToInfo) .. " *"
+
+			trans_str = trans_str .. self:HyperLink(obj,Examine_ConvertValueToInfo) .. " *"
 
 			-- if meta name then add it
 			if meta and meta.__name then
-				ret_str = ret_str .. "userdata (" .. meta.__name .. ")"
+				trans_str = trans_str .. "userdata (" .. meta.__name .. ")"
 			else
-				ret_str = ret_str .. tostring(obj)
+				trans_str = trans_str .. "userdata"
 			end
 
-			return ret_str .. HLEnd
+			return trans_str .. HLEnd
 		end
 	end
 	--
 	if obj_type == "function" then
 		return self:HyperLink(obj,Examine_ConvertValueToInfo)
-			.. DebugGetInfo(obj) .. HLEnd
+			.. RetName(obj) .. HLEnd
 	end
 	--
 	if obj_type == "thread" then
@@ -1805,6 +1796,7 @@ function Examine:ConvertValueToInfo(obj,left)
 	if obj_type == "nil" then
 		return "<color " .. ChoGGi.UserSettings.ExamineColourNil .. ">nil</color>"
 	end
+
 	-- just in case
 	return tostring(obj)
 end
@@ -1864,19 +1856,19 @@ end
 function Examine:ConvertObjToInfo(obj,obj_type)
 	-- i like reusing tables
 	self.ConvertObjToInfo_list_obj_str = self.ConvertObjToInfo_list_obj_str or {}
-	self.ConvertObjToInfo_list_sort = self.ConvertObjToInfo_list_sort or {}
-	self.ConvertObjToInfo_list_sort_str = self.ConvertObjToInfo_list_sort_str or {}
+	self.ConvertObjToInfo_list_sort_num = self.ConvertObjToInfo_list_sort_num or {}
+	self.ConvertObjToInfo_list_sort_obj = self.ConvertObjToInfo_list_sort_obj or {}
 	self.ConvertObjToInfo_skip_dupes = self.ConvertObjToInfo_skip_dupes or {}
 	local list_obj_str = self.ConvertObjToInfo_list_obj_str
-	local list_sort_str = self.ConvertObjToInfo_list_sort_str
-	local list_sort = self.ConvertObjToInfo_list_sort
+	local list_sort_obj = self.ConvertObjToInfo_list_sort_obj
+	local list_sort_num = self.ConvertObjToInfo_list_sort_num
 	local skip_dupes = self.ConvertObjToInfo_skip_dupes
 	-- the list we return with concat
 	TableIClear(list_obj_str)
 	-- list of strs to sort with
-	TableClear(list_sort)
+	TableClear(list_sort_num)
 	-- list of nums to sort with
-	TableClear(list_sort_str)
+	TableClear(list_sort_obj)
 	-- dupe list for the "All" checkbox
 	TableClear(skip_dupes)
 
@@ -1893,42 +1885,50 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 	if obj_type == "table" then
 
-		local chinese = self.is_chinese
+		local is_chinese = self.is_chinese
+		local show_all_values = self.show_all_values
 		for k,v in pairs(obj) do
 			-- sorely needed delay for chinese (or it "freezes" the game when loading something like _G)
 			-- i assume text rendering is slower for the chars, 'cause examine is really slow with them.
-			if chinese then
+			if is_chinese then
 				Sleep(1)
 			end
 
-			local name,sort = self:ConvertValueToInfo(k,true)
+			local name,sort = self:ConvertValueToInfo(k)
+			local sort = name
+			-- append context menu link
+			name = self:HyperLink(k,self.OpenListMenu) .. "* " .. HLEnd .. name
+
 			-- store the names if we're doing all props
-			if self.show_all_values then
-				skip_dupes[name] = true
+			if show_all_values then
+				skip_dupes[sort] = true
 			end
 			c = c + 1
 			local str_tmp = name .. " = " .. self:ConvertValueToInfo(v) .. "<left>"
 			list_obj_str[c] = str_tmp
 
 			if type(k) == "number" then
-				list_sort[str_tmp] = k
+				list_sort_num[str_tmp] = k
 			else
-				list_sort_str[str_tmp] = sort
+				list_sort_obj[str_tmp] = sort
 			end
 		end
 
 		-- keep looping through metatables till we run out
-		if obj_metatable and self.show_all_values then
+		if obj_metatable and show_all_values then
 			local meta_temp = obj_metatable
 			while meta_temp do
 				for k,v in pairs(meta_temp) do
-					local name,sort = self:ConvertValueToInfo(k,true)
-					if not skip_dupes[name] then
-						skip_dupes[name] = true
+					local name = self:ConvertValueToInfo(k)
+					local sort = name
+					name = self:HyperLink(k,self.OpenListMenu) .. "* " .. HLEnd .. name
+
+					if not skip_dupes[sort] then
+						skip_dupes[sort] = true
 						c = c + 1
 						local str_tmp = name .. " = " .. self:ConvertValueToInfo(obj[k] or v) .. "<left>"
 						list_obj_str[c] = str_tmp
-						list_sort_str[str_tmp] = sort
+						list_sort_obj[str_tmp] = sort
 					end
 
 				end
@@ -1940,13 +1940,17 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		if self.show_enum_values and self.enum_vars then
 			for k,v in pairs(self.enum_vars) do
 				-- remove the . at the start
-				local name,sort = self:ConvertValueToInfo(k:sub(2),true)
-				if not skip_dupes[name] then
-					skip_dupes[name] = true
+				k = k:sub(2)
+				local name = self:ConvertValueToInfo(k)
+				local sort = name
+				name = self:HyperLink(k,self.OpenListMenu) .. "* " .. HLEnd .. name
+
+				if not skip_dupes[sort] then
+					skip_dupes[sort] = true
 					c = c + 1
 					local str_tmp = name .. " = " .. self:ConvertValueToInfo(v) .. "<left>"
 					list_obj_str[c] = str_tmp
-					list_sort_str[str_tmp] = sort
+					list_sort_obj[str_tmp] = sort
 				end
 			end
 		end
@@ -1970,12 +1974,12 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		-- sort backwards
 		TableSort(list_obj_str,function(a, b)
 			-- strings
-			local c,d = list_sort_str[a], list_sort_str[b]
+			local c,d = list_sort_obj[a], list_sort_obj[b]
 			if c and d then
 				return CmpLower(d, c)
 			end
 			-- numbers
-			c,d = list_sort[a], list_sort[b]
+			c,d = list_sort_num[a], list_sort_num[b]
 			if c and d then
 				return c > d
 			end
@@ -1989,12 +1993,12 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		-- sort normally
 		TableSort(list_obj_str,function(a, b)
 			-- strings
-			local c,d = list_sort_str[a], list_sort_str[b]
+			local c,d = list_sort_obj[a], list_sort_obj[b]
 			if c and d then
 				return CmpLower(c, d)
 			end
 			-- numbers
-			c,d = list_sort[a], list_sort[b]
+			c,d = list_sort_num[a], list_sort_num[b]
 			if c and d then
 				return c < d
 			end

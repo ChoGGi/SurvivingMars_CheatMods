@@ -4,6 +4,7 @@
 - Changed my AttachSpots toggle func to only clear text objs from itself.
 - Changed my in-game objects to use an "O" prefix to keep them separate from my Xwin objects.
 - Changed my Show/Clear Obj funcs to support removing marked objs in Examine.
+- Added func names to RetName func.
 
 ## v5.5 (17 Feb 2019)
 - Added a text search area to the MultiLineText dialog.
