@@ -2,7 +2,7 @@
 
 local function AddPanels(bld)
 	bld.ChoGGi_panels = {}
-  local attaches = bld:GetAttaches() or ""
+  local attaches = bld:GetAttaches("SolarArrayPanel") or ""
   for i = 1, #attaches do
 		bld.ChoGGi_panels[i] = attaches[i]
   end
@@ -36,10 +36,10 @@ function OnMsg.CityStart()
 end
 
 GlobalGameTimeThread("SolarArrayOrientation", function()
-	local CalcOrientation = CalcOrientation
-	local GetSunPos = GetSunPos
-	local SunToSolarPanelAngle = SunToSolarPanelAngle
-	local Sleep = Sleep
+--~ 	local CalcOrientation = CalcOrientation
+--~ 	local GetSunPos = GetSunPos
+--~ 	local SunToSolarPanelAngle = SunToSolarPanelAngle
+--~ 	local Sleep = Sleep
 	local update_interval = 3*const.MinuteDuration
 	while true do
 		Sleep(update_interval)
