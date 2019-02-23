@@ -29,15 +29,12 @@ DefineClass.BottomlessStorage = {
 }
 
 function BottomlessStorage:GameInit()
-  --fire off the usual GameInit
---~   UniversalStorageDepot.GameInit(self)
-  --and start off with all resource demands blocked
+  -- start off with all resource demands blocked
   for i = 1, #self.resource do
     self:ToggleAcceptResource(self.resource[i])
   end
-  --figure out why the info panel takes so long to update?
 
-  --make sure it isn't mistaken for a regular depot
+  -- make sure it isn't mistaken for a regular depot
   self:SetColorModifier(0)
 end
 
@@ -62,7 +59,7 @@ function OnMsg.ClassesPostprocess()
 			"description", [[Warning: Anything added to this depot will disappear.]],
 			"build_category","ChoGGi",
 			"Group", "ChoGGi",
-			"display_icon", string.format("%suniversal_storage.tga",CurrentModPath),
+			"display_icon", CurrentModPath .. "UI/bottomless_storage.png",
 			"entity", "ResourcePlatform",
 			"on_off_button", false,
 			"prio_button", false,
