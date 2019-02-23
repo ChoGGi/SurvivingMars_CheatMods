@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Hide Cursor When Using Controller v0.1",
-	"version", 1,
-	"saved", 1548936000,
+	"title", "Hide Cursor When Using Controller v0.2",
+	"version", 2,
+	"saved", 1550923200,
 	"image", "Preview.png",
 	"id", "ChoGGi_HideCursorWhenUsingController",
 	"steam_id", "1640439684",
