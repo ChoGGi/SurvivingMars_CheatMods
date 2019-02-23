@@ -6,7 +6,9 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_BottomlessWasteRock",
 	"author", "ChoGGi",
 	"steam_id", "1465688997",
-	"code", {"Script.lua"},
+	"code", {
+		"Code/Script.lua",
+	},
 	"lua_revision", LuaRevision,
 	"description", [[Any rocks dumped at this depot will disappear (good for excess resources).
 

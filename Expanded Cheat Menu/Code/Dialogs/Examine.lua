@@ -1784,8 +1784,12 @@ function Examine:ConvertValueToInfo(obj)
 	end
 	--
 	if obj_type == "function" then
+		local name = DebugGetInfo(obj)
+		if name == "[C](-1)" then
+			name = RetName(obj)
+		end
 		return self:HyperLink(obj,Examine_ConvertValueToInfo)
-			.. RetName(obj) .. HLEnd
+			.. name .. HLEnd
 	end
 	--
 	if obj_type == "thread" then
@@ -2419,6 +2423,10 @@ function Examine:BuildParents(list,list_type,title,sort_type)
 end
 
 function Examine:SetObj(startup)
+	-- save and restore scroll pos after setobj
+	local scrollx,scrolly = self.idScrollArea.PendingOffsetx,self.idScrollArea.PendingOffsetY
+	local scrollv,scrollh = self.idScrollV.Scroll,self.idScrollH.Scroll
+
 	local obj = self.obj
 
 	-- reset the hyperlinks
@@ -2536,6 +2544,11 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 		else
 			self.idText:SetText(self:ConvertObjToInfo(obj,obj_type))
 		end
+
+		self.idScrollArea:ScrollTo(scrollx,scrolly)
+		WaitMsg("OnRender")
+		self.idScrollV:SetScroll(scrollv)
+		self.idScrollH:SetScroll(scrollh)
 	end)
 
 	return obj_class

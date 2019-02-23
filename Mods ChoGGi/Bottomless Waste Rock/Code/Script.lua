@@ -29,10 +29,7 @@ DefineClass.BottomlessWasteRock = {
 }
 
 function BottomlessWasteRock:GameInit()
-  --fire off the usual GameInit
---~   WasteRockDumpSite.GameInit(self)
-
-  --make sure it isn't mistaken for a regular depot
+  -- make sure it isn't mistaken for a regular depot
   self:SetColorModifier(-11252937)
 end
 
@@ -56,7 +53,7 @@ function OnMsg.ClassesPostprocess()
 			"description", [[Warning: Any waste rocks dumped at this depot will disappear.]],
 			"build_category","ChoGGi",
 			"Group", "ChoGGi",
-			"display_icon", string.format("%sres_waste_rock.tga",CurrentModPath),
+			"display_icon", CurrentModPath .. "UI/res_waste_rock.png",
 			"entity", "ResourcePlatform",
 			"on_off_button", false,
 			"prio_button", false,

@@ -42,7 +42,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = string.format("%s %s",Trans(298035641454--[[Object--]]),Trans(302535920001346--[[Random Colour--]])),
+	Actions[c] = {ActionName = Trans(298035641454--[[Object--]]) .. " " .. Trans(302535920001346--[[Random Colour--]]),
 		ActionId = "ChangeObjectColour.ObjectColourRandom",
 		OnAction = function()
 			ChoGGi.ComFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
@@ -52,7 +52,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = string.format("%s %s",Trans(298035641454--[[Object--]]),Trans(302535920000025--[[Default Colour--]])),
+	Actions[c] = {ActionName = Trans(298035641454--[[Object--]]) .. " " .. Trans(302535920000025--[[Default Colour--]]),
 		ActionId = "ChangeObjectColour.ObjectColourDefault",
 		OnAction = function()
 			ChoGGi.ComFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())

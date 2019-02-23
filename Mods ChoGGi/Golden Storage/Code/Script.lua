@@ -31,9 +31,7 @@ DefineClass.GoldenStorage = {
 }
 
 function GoldenStorage:GameInit()
-  -- fire off the usual GameInit
---~   UniversalStorageDepot.GameInit(self)
-  -- and start off with all resource demands blocked
+  -- start off with all resource demands blocked
   for i = 1, #self.resource do
     if self.resource[i] ~= "Metals" then
       self:ToggleAcceptResource(self.resource[i],true)
@@ -50,7 +48,7 @@ function GoldenStorage:GameInit()
       local maxM = self:GetMaxAmount_Metals()
       local storedP = self:GetStored_PreciousMetals()
       local maxP = self:GetMaxAmount_PreciousMetals()
-      --we need at least 10
+      -- we need at least 10
       if storedM >= 10000 and maxP - storedP > 1000 then
         local new_amount = (storedM - 10000)
 
@@ -93,6 +91,9 @@ function GoldenStorage:Done()
   end
 end
 
+-- don't allow drones/etc to pick stuff up
+GoldenStorage.DroneUnloadResource = Building.DroneUnloadResource
+
 -- add building to building template list
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.GoldenStorage then
@@ -106,7 +107,7 @@ function OnMsg.ClassesPostprocess()
 			"description", [[Converts Metals to PreciousMetals.]],
 			"build_category","ChoGGi",
 			"Group", "ChoGGi",
-			"display_icon", string.format("%suniversal_storage.tga",CurrentModPath),
+			"display_icon", CurrentModPath .. "UI/golden_storage.png",
 			"entity", "ResourcePlatform",
 			"on_off_button", false,
 			"prio_button", false,

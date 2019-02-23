@@ -114,7 +114,7 @@ do -- RetName
 	-- funcs don't change, so we only need to go once
 	local g_CObjectFuncs = g_CObjectFuncs
 	for key,value in pairs(g_CObjectFuncs) do
-		lookup_table[value] = key .. " *func"
+		lookup_table[value] = key .. " *C func"
 	end
 
 	local function AfterLoad()
@@ -129,7 +129,7 @@ do -- RetName
 				if t == "table" then
 					lookup_table[value] = key
 				elseif t == "function" then
-					lookup_table[value] = key .. " *func"
+					lookup_table[value] = key .. " *C func"
 				end
 			end
 		end

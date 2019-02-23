@@ -6,7 +6,9 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_BottomlessStorage",
 	"author", "ChoGGi",
 	"steam_id", "1411102605",
-	"code", {"Script.lua"},
+	"code", {
+		"Code/Script.lua",
+	},
 	"lua_revision", LuaRevision,
 	"description", [[Anything added to this storage depot will disappear (good for excess resources).
 
