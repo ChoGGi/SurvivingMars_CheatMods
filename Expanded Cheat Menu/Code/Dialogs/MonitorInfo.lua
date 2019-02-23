@@ -52,7 +52,7 @@ function OnMsg.ClassesGenerate()
 
 		local dialog_width = 400
 		local dialog_height = 600
-		self:SetSize(point(dialog_width, dialog_height))
+		self:SetSize(dialog_width, dialog_height)
 		self:SetMovable(true)
 
 		local border = 4
@@ -119,7 +119,7 @@ function OnMsg.ClassesGenerate()
 
 		self.idTimerAmount = g_Classes.SingleLineEdit:new(self)
 		self.idTimerAmount:SetPos(point(element_x, element_y))
-		self.idTimerAmount:SetSize(point(dialog_width - element_x, 24))
+		self.idTimerAmount:SetSize(dialog_width - element_x, 24)
 		self.idTimerAmount:SetHSizing("Resize")
 		self.idTimerAmount:SetVSizing("AnchorToTop")
 		self.idTimerAmount:SetFontStyle("Editor14Bold")
@@ -138,7 +138,7 @@ function OnMsg.ClassesGenerate()
 
 		self.idText = g_Classes.StaticText:new(self)
 		self.idText:SetPos(point(dialog_left, element_y))
-		self.idText:SetSize(point(dialog_width, dialog_height-element_y - border))
+		self.idText:SetSize(dialog_width, dialog_height-element_y - border)
 		self.idText:SetHSizing("Resize")
 		self.idText:SetVSizing("Resize")
 		self.idText:SetFontStyle("Editor12Bold")
@@ -154,7 +154,7 @@ function OnMsg.ClassesGenerate()
 		self:InitChildrenSizing()
 
 		self:SetPos(point(100, 100))
-		self:SetSize(point(400, 600))
+		self:SetSize(400, 600)
 	end
 
 	local texttable

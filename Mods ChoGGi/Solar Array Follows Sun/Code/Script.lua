@@ -36,10 +36,10 @@ function OnMsg.CityStart()
 end
 
 GlobalGameTimeThread("SolarArrayOrientation", function()
---~ 	local CalcOrientation = CalcOrientation
---~ 	local GetSunPos = GetSunPos
---~ 	local SunToSolarPanelAngle = SunToSolarPanelAngle
---~ 	local Sleep = Sleep
+	local CalcOrientation = CalcOrientation
+	local GetSunPos = GetSunPos
+	local SunToSolarPanelAngle = SunToSolarPanelAngle
+	local Sleep = Sleep
 	local update_interval = 3*const.MinuteDuration
 	while true do
 		Sleep(update_interval)
@@ -65,3 +65,19 @@ GlobalGameTimeThread("SolarArrayOrientation", function()
 
 	end
 end)
+
+-- the below is for removing the persist warnings from the log
+local orig_PersistGame = PersistGame
+function PersistGame(...)
+	local ret = orig_PersistGame(...)
+	Msg("PostSaveGame")
+	return ret
+end
+
+function OnMsg.SaveGame()
+  DeleteThread(SolarArrayOrientation)
+	_G.SolarArrayOrientation = false
+end
+function OnMsg.PostSaveGame()
+	RestartGlobalGameTimeThread("SolarArrayOrientation")
+end

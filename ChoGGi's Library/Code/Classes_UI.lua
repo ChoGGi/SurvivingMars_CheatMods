@@ -12,6 +12,8 @@ local box,point = box,point
 local IsValid = IsValid
 local PropObjGetProperty = PropObjGetProperty
 local MeasureImage = UIL.MeasureImage
+local GetMousePos = terminal.GetMousePos
+local GetSafeAreaBox = GetSafeAreaBox
 
 -- see also TextStyles.lua
 local white = -1
@@ -462,6 +464,15 @@ function ChoGGi_Window:AddElements()
 	self.dialog_height_scaled = self.dialog_height * UIScale
 	self.header_scaled = self.header * UIScale
 
+	-- make sure the size i use is below the res w/h
+	local _,_,x,y = GetSafeAreaBox():xyxy()
+	if self.dialog_width_scaled > x then
+		self.dialog_width_scaled = x - 50
+	end
+	if self.dialog_height_scaled > y then
+		self.dialog_height_scaled = y - 50
+	end
+
 	-- add container dialog for everything to fit in
 	self.idDialog = g_Classes.ChoGGi_Dialog:new({
 		-- keep stuff from spilling outside the dialog
@@ -571,8 +582,6 @@ function ChoGGi_Window:GetPos(dialog)
 	return (self[dialog or "idDialog"].box):min()
 end
 
-local GetMousePos = terminal.GetMousePos
-local GetSafeAreaBox = GetSafeAreaBox
 -- get size of box and offset header
 function ChoGGi_Window:BoxSize(obj)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
@@ -623,21 +632,24 @@ function ChoGGi_Window:SetPos(obj,dialog)
 	dlg:SetBox(x,y,w,h)
 end
 
-function ChoGGi_Window:SetSize(size,dialog)
+function ChoGGi_Window:SetSize(w,h,dialog)
 	local dlg = self[dialog or "idDialog"]
 	local box = dlg.box
 	local x,y = box:minx(),box:miny()
-	local w,h = size:x(),size:y()
-	dlg:SetBox(x,y,w,h)
+--~ 	local w,h = size:x(),size:y()
+	if IsPoint(w) then
+		w,h = w:xy()
+	end
+	dlg:SetBox(x,y,w or 100,h or 100)
 end
 function ChoGGi_Window:ResetSize(dialog)
-	self:SetSize(point(self.dialog_width_scaled, self.dialog_height_scaled),dialog or "idDialog")
+	self:SetSize(self.dialog_width_scaled, self.dialog_height_scaled,dialog or "idDialog")
 end
 function ChoGGi_Window:SetWidth(w, dialog)
-	self:SetSize(point(w, self[dialog or "idDialog"].box:sizey()))
+	self:SetSize(w, self[dialog or "idDialog"].box:sizey())
 end
 function ChoGGi_Window:SetHeight(h,dialog)
-	self:SetSize(point(self[dialog or "idDialog"].box:sizex(),h))
+	self:SetSize(self[dialog or "idDialog"].box:sizex(),h)
 end
 function ChoGGi_Window:GetSize(dialog)
 	return (self[dialog or "idDialog"].box):size()

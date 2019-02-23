@@ -5,6 +5,7 @@
 - Changed my in-game objects to use an "O" prefix to keep them separate from my Xwin objects.
 - Changed my Show/Clear Obj funcs to support removing marked objs in Examine.
 - Added func names to RetName func.
+- My dialogs shouldn't be larger then the resolution anymore (for those with a smaller res).
 
 ## v5.5 (17 Feb 2019)
 - Added a text search area to the MultiLineText dialog.
