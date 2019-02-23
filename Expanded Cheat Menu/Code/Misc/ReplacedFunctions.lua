@@ -9,7 +9,6 @@
 --~ end
 
 local type = type
-local TableFindValue = table.find_value
 local TableUnpack = table.unpack
 
 local MsgPopup
@@ -1017,6 +1016,7 @@ function OnMsg.ClassesBuilt()
 
 	-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
 	do -- InfopanelDlg:Open
+		local TableFindValue = table.find_value
 		local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 		local CreateRealTimeThread = CreateRealTimeThread
 		local DeleteThread = DeleteThread
@@ -1046,12 +1046,18 @@ function OnMsg.ClassesBuilt()
 		end
 
 		local function ToggleVisSection(section,toolbar,toggle,setting)
+			local title = section.idHighlight
+
+			if setting == "InfopanelCheatsVis" then
+				section = section.idSectionTitle
+			end
+
 			if setting ~= "InfopanelMainButVis" then
 				section.OnMouseEnter = function()
-					section.idHighlight:SetVisible(true)
+					title:SetVisible(true)
 				end
 				section.OnMouseLeft = function()
-					section.idHighlight:SetVisible()
+					title:SetVisible()
 				end
 			end
 
@@ -1083,10 +1089,7 @@ function OnMsg.ClassesBuilt()
 				title.RolloverText = S[302535920001410--[[Toggle Visibility--]]]
 				title.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
 
-				local toggle = false
-				if UserSettings.InfopanelMainButVis then
-					toggle = true
-				end
+				local toggle = UserSettings.InfopanelMainButVis
 				local toolbar = main_buts[2]
 				toolbar.FoldWhenHidden = true
 				toolbar:SetVisible(toggle)
@@ -1134,14 +1137,11 @@ function OnMsg.ClassesBuilt()
 			local section = TableFindValue(c,"Id","idSectionCheats_ChoGGi")
 			if section then
 				section.idIcon.FXMouseIn = "ActionButtonHover"
-				section.HandleMouse = true
-				section.MouseCursor = "UI/Cursors/Rollover.tga"
+				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
 				section.RolloverText = S[302535920001410--[[Toggle Visibility--]]]
 				section.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
-				local toggle = false
-				if UserSettings.InfopanelCheatsVis then
-					toggle = true
-				end
+
+				local toggle = UserSettings.InfopanelCheatsVis
 				local toolbar = SetToolbar(section,"XToolBar",toggle)
 
 				ToggleVisSection(section,toolbar,toggle,"InfopanelCheatsVis")
@@ -1202,9 +1202,6 @@ function OnMsg.ClassesBuilt()
 		-- the actual function
 		function InfopanelDlg:Open(...)
 			CreateRealTimeThread(function()
---~ 				repeat
---~ 					Sleep(10)
---~ 				until self.visible
 				WaitMsg("OnRender")
 				InfopanelDlgOpen(self)
 			end)
