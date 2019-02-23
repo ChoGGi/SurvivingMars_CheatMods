@@ -359,7 +359,6 @@ function OnMsg.ClassesGenerate()
 				end
 
 			end -- ifs
-
 		end -- for
 
 		return true
