@@ -1078,10 +1078,10 @@ function OnMsg.ClassesGenerate()
 		if dlg then
 			dlg:SetVisible(visible)
 
-			--size n position
+			-- size n position
 			local size = ChoGGi.UserSettings.ConsoleLogWin_Size
 			local pos = ChoGGi.UserSettings.ConsoleLogWin_Pos
-			--make sure dlg is within screensize
+			-- make sure dlg is within screensize
 			if size then
 				dlg:SetSize(size)
 			end

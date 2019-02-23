@@ -180,7 +180,7 @@ function ChoGGi_MinimapDlg:idToggleDblSizeOnPress()
 	self = GetRootDialog(self)
 	local size = self:GetSize()
 	if size:x() == self.dialog_width_scaled and size:y() == self.dialog_height_scaled then
-		self:SetSize(point(self.dialog_width_scaled*2,self.dialog_height_scaled*2))
+		self:SetSize(self.dialog_width_scaled*2,self.dialog_height_scaled*2)
 		-- we don't want it off screen
 		self:PostInit(nil,self:GetPos())
 	else
