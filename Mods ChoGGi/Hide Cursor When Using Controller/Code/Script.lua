@@ -5,27 +5,38 @@ local IsMouseCursorHidden = IsMouseCursorHidden
 local engineHideMouseCursor = engineHideMouseCursor
 local engineShowMouseCursor = engineShowMouseCursor
 
--- hide cursor on load if controller is active
-function OnMsg.LoadGame()
-	if XPlayerActive then
-		engineHideMouseCursor()
+
+local function Show()
+	g_MouseConnected = true
+	hr.EnablePreciseSelection = 1
+	if next(ForceHideMouseReasons) == nil and next(ShowMouseReasons) then
+		engineShowMouseCursor()
 	end
 end
 
--- toggle visiblity on connection
-function OnMsg.OnXInputControllerConnected()
+local function Hide()
+	g_MouseConnected = false
+	hr.EnablePreciseSelection = 0
 	engineHideMouseCursor()
-end
-function OnMsg.OnXInputControllerDisconnected()
-	engineShowMouseCursor()
+	terminal.desktop:ResetMousePosTarget()
 end
 
+-- toggle visiblity on connection
+OnMsg.OnXInputControllerConnected = Hide
+OnMsg.OnXInputControllerDisconnected = Show
+
+-- hide cursor on load if controller is active
+function OnMsg.LoadGame()
+	if XPlayerActive then
+		Hide()
+	end
+end
 -- update on alt-tab
 function OnMsg.SystemActivate()
 	-- always start off with showing it, so it doesn't show system cursor
 	engineShowMouseCursor()
 
 	if XPlayerActive then
-		engineHideMouseCursor()
+		Hide()
 	end
 end
