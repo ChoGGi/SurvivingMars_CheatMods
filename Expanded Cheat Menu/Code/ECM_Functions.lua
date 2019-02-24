@@ -465,8 +465,8 @@ function OnMsg.ClassesGenerate()
 			end
 			if not obj then
 				MsgPopup(
-					302535920000003--[[Can't dump nothing--]],
-					302535920000004--[[Dump--]]
+					S[302535920000003--[[Can't dump nothing--]]],
+					S[302535920000004--[[Dump--]]]
 				)
 				return
 			end
@@ -743,8 +743,8 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local const = const
 
-		local title = planning and 302535920000862--[[Object Planner--]] or 302535920000475--[[Entity Spawner--]]
-		local hint = planning and 302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]] or 302535920000476--[["Shows list of objects, and spawns at mouse cursor."--]]
+		local title = planning and S[302535920000862--[[Object Planner--]]] or S[302535920000475--[[Entity Spawner--]]]
+		local hint = planning and S[302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]]] or S[302535920000476--[["Shows list of objects, and spawns at mouse cursor."--]]]
 
 		local default
 		local ItemList = {}
@@ -1026,7 +1026,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = name,
-			hint = 302535920001421--[[Shows list of particles to quickly test out on objects.--]],
+			hint = S[302535920001421--[[Shows list of particles to quickly test out on objects.--]]],
 			custom_type = 7,
 		}
 	end

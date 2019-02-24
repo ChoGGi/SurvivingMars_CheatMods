@@ -69,8 +69,8 @@ function OnMsg.ClassesGenerate()
 			end)
 		end
 		MsgPopup(
-			4493--[[All--]],
-			302535920001351--[[Rocket Crashes Game On Landing--]]
+			Trans(4493--[[All--]]),
+			S[302535920001351--[[Rocket Crashes Game On Landing--]]]
 		)
 	end
 
@@ -82,8 +82,8 @@ function OnMsg.ClassesGenerate()
 		end)
 
 		MsgPopup(
-			4493--[[All--]],
-			302535920001299--[[Toggle Working On All Buildings--]]
+			Trans(4493--[[All--]]),
+			S[302535920001299--[[Toggle Working On All Buildings--]]]
 		)
 	end
 
@@ -94,8 +94,8 @@ function OnMsg.ClassesGenerate()
 			local MapGet = MapGet
 			local Sleep = Sleep
 			MsgPopup(
-				83--[[Domes--]],
-				302535920001295--[[Drones Not Repairing Domes--]]
+				Trans(83--[[Domes--]]),
+				S[302535920001295--[[Drones Not Repairing Domes--]]]
 			)
 			-- just in case someone decides to click it more than once...
 			if looping_thread then
@@ -133,8 +133,8 @@ function OnMsg.ClassesGenerate()
 					Sleep(1000)
 				end
 				MsgPopup(
-					1157--[[Complete thread--]],
-					302535920001295--[[Drones Not Repairing Domes--]]
+					Trans(1157--[[Complete thread--]]),
+					S[302535920001295--[[Drones Not Repairing Domes--]]]
 				)
 			end)
 		end
@@ -151,8 +151,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CheckForBorkedTransportPath,302535920001266--[[Borked Transport Pathing--]]),
-			1683--[[RC Transport--]],
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CheckForBorkedTransportPath),
+			S[302535920001266--[[Borked Transport Pathing--]]],
 			"UI/Icons/IPButtons/transport_route.tga"
 		)
 	end
@@ -173,8 +173,8 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.Temp.FixingPipes = nil
 		end)
 		MsgPopup(
-			4493--[[All--]],
-			302535920000461--[[All Pipe Skins To Default--]]
+			Trans(4493--[[All--]]),
+			S[302535920000461--[[All Pipe Skins To Default--]]]
 		)
 	end
 
@@ -220,8 +220,8 @@ function OnMsg.ClassesGenerate()
 				end)
 				-- let user know something is happening
 				MsgPopup(
-					302535920000464--[[Updating Rovers--]],
-					5438--[[Rovers--]]
+					S[302535920000464--[[Updating Rovers--]]],
+					Trans(5438--[[Rovers--]])
 				)
 				--wait awhile just to be sure
 				Sleep(5000)
@@ -617,8 +617,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneResourceCarryAmountFix,S[302535920000613--[[Drone Carry Amount--]]]),
-			Trans(517--[[Drones--]]),
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
+			S[302535920000613--[[Drone Carry Amount--]]],
 			"UI/Icons/IPButtons/drone.tga"
 		)
 	end
@@ -629,8 +629,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SortCommandCenterDist,S[302535920000615--[[Sort Command Center Dist--]]]),
-			Trans(3980--[[Buildings--]])
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SortCommandCenterDist),
+			S[302535920000615--[[Sort Command Center Dist--]]]
 		)
 	end
 

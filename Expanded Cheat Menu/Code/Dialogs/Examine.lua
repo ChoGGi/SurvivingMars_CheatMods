@@ -1284,8 +1284,8 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 				-- checks for image in obj and metatable
 				if not ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref,self,images_table) then
 					ChoGGi.ComFuncs.MsgPopup(
-						302535920001471--[[No images found.--]],
-						302535920001469--[[Image Viewer--]]
+						S[302535920001471--[[No images found.--]]],
+						S[302535920001469--[[Image Viewer--]]]
 					)
 				end
 			end,
@@ -1338,8 +1338,8 @@ end
 
 function Examine:InvalidMsgPopup(msg,title)
 	ChoGGi.ComFuncs.MsgPopup(
-		msg or 302535920001526--[[Not a valid object--]],
-		title or 302535920000069--[[Examine--]]
+		msg or S[302535920001526--[[Not a valid object--]]],
+		title or S[302535920000069--[[Examine--]]]
 	)
 end
 
@@ -2390,34 +2390,34 @@ function Examine:SetToolbarVis(obj)
 
 end
 
--- used to build parents/ancestors menu
-
 function Examine:BuildParents(list,list_type,title,sort_type)
-	local g_Classes = g_Classes
 	if list and next(list) then
 		list = ChoGGi.ComFuncs.RetSortTextAssTable(list,sort_type)
 		self[list_type] = list
 		local c = #self.parents_menu_popup
+
 		c = c + 1
 		self.parents_menu_popup[c] = {
 			name = "-- " .. title .. " --",
-			hint = title,
 			disable = true,
 			centred = true,
 		}
+
 		for i = 1, #list do
+			local item = list[i]
 			-- no sense in having an item in parents and ancestors
-			if not self.pmenu_skip_dupes[list[i]] then
-				self.pmenu_skip_dupes[list[i]] = true
+			if not self.pmenu_skip_dupes[item] then
+				self.pmenu_skip_dupes[item] = true
 				c = c + 1
 				self.parents_menu_popup[c] = {
-					name = list[i],
-					hint = list[i],
+					name = item,
+					hint = S[302535920000069--[[Examine--]]] .. " " .. Trans(3696--[[Class--]]) .. " " .. Trans(298035641454--[[Object--]]) .. ": " .. item,
 					clicked = function()
-						OpenInExamineDlg(g_Classes[list[i]],self)
+						OpenInExamineDlg(g_Classes[item],self)
 					end,
 				}
 			end
+
 		end
 	end
 end

@@ -167,11 +167,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.MapEdgeLimit,
-				S[302535920001489--[[Toggle Map Edge Limit--]]]
-			),
-			S[302535920001058--[[Camera--]]]
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MapEdgeLimit),
+			S[302535920001489--[[Toggle Map Edge Limit--]]]
 		)
 	end
 
@@ -532,8 +529,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableTextureCompression,S[302535920000641--[[Texture Compression--]]]),
-			S[302535920001015--[[Video--]]]
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableTextureCompression),
+			S[302535920000641--[[Texture Compression--]]]
 		)
 	end
 
@@ -876,8 +873,8 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisablePulsatingPinsMotion,S[302535920000265--[[Pulsating Pins--]]]),
-			S[302535920001092--[[Pins--]]]
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisablePulsatingPinsMotion),
+			S[302535920000265--[[Pulsating Pins--]]]
 		)
 	end
 
@@ -1167,8 +1164,8 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TransparencyToggle,S[302535920000629--[[UI Transparency--]]]),
-			Trans(1608--[[Transparency--]])
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TransparencyToggle),
+			S[302535920000629--[[UI Transparency--]]]
 		)
 	end
 
@@ -1289,8 +1286,8 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000633--[[Lights Radius--]]]),
-				S[302535920001015--[[Video--]]],
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				S[302535920000633--[[Lights Radius--]]],
 				default_icon
 			)
 		end
@@ -1338,8 +1335,8 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000635--[[Terrain Detail--]]]),
-				S[302535920001015--[[Video--]]],
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				S[302535920000635--[[Terrain Detail--]]],
 				default_icon
 			)
 		end
@@ -1385,8 +1382,8 @@ And yes Medium is using a higher setting than High..."--]]],
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000637--[[Video Memory--]]]),
-				S[302535920001015--[[Video--]]],
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				S[302535920000637--[[Video Memory--]]],
 				default_icon
 			)
 		end
@@ -1433,8 +1430,8 @@ And yes Medium is using a higher setting than High..."--]]],
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000639--[[Shadow Map--]]]),
-				S[302535920001015--[[Video--]]],
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				S[302535920000639--[[Shadow Map--]]],
 				default_icon
 			)
 		end
@@ -1456,8 +1453,8 @@ And yes Medium is using a higher setting than High..."--]]],
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherShadowDist,S[302535920000645--[[Higher Shadow Distance--]]]),
-			S[302535920001015--[[Video--]]],
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherShadowDist),
+			S[302535920000645--[[Higher Shadow Distance--]]],
 			default_icon
 		)
 	end

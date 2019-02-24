@@ -1918,7 +1918,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			ChoGGi.SettingFuncs.WriteSettings()
 
 			MsgPopup(
-				S[302535920000843--[[Toggled traits--]]] .. ": " .. #choice .. (check1 and " " or "") .. (check1 and S[302535920000844--[[Fired workers--]]] or ""),
+				S[302535920000843--[[Toggled traits--]]] .. ": " .. #choice .. (check1 and " " .. S[302535920000844--[[Fired workers--]]] or ""),
 				Trans(4801--[[Workplace--]]),
 				default_icon
 			)
