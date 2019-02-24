@@ -1240,8 +1240,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = name .. ": " .. S[302535920000144--[[Automated Performance--]]],
-			hint = S[302535920000145--[["Sets performance of all automated buildings of this type
-	Current: %s"--]]]:format(hint),
+			hint = S[302535920000145--[[Sets performance of all automated buildings of this type--]]] .. "\n" .. S[302535920000106--[[Current--]]] .. ": " .. hint,
 			check = {
 				{
 					title = S[302535920000769--[[Selected--]]],

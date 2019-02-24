@@ -1047,8 +1047,6 @@ function OnMsg.MysteryBegin()
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
 				.. S[302535920000729--[[You've started a mystery!--]]],
 			Trans(3486--[[Mystery--]])
---~ 			"UI/Icons/Logos/logo_13.tga"
---~ 			"UI/Icons/Notifications/New/mystery_log.tga"
 		)
 	end
 end

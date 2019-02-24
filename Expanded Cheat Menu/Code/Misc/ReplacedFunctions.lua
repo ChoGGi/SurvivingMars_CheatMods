@@ -872,8 +872,8 @@ function OnMsg.ClassesBuilt()
 					StopWait.skipmsg = nil
 				else
 					MsgPopup(
-						302535920000735--[[Timer delay skipped--]],
-						3486--[[Mystery--]]
+						S[302535920000735--[[Timer delay skipped--]]],
+						Trans(3486--[[Mystery--]])
 					)
 				end
 

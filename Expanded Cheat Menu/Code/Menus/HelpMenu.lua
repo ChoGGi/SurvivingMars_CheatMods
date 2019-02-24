@@ -219,6 +219,7 @@ function OnMsg.ClassesGenerate()
 
 	local tutorial_table = {
 		"Add New Trait",
+		"AirProdWaterConsump",
 		"All Nearby Objects",
 		"Change Animation",
 		"DroneNoBatteryNeeded",
@@ -248,7 +249,7 @@ function OnMsg.ClassesGenerate()
 			OnAction = function()
 				OpenUrl(str_url .. "Tutorials/" .. name .. ".md#readme")
 			end,
-			ActionSortKey = "-3" .. name,
+			ActionSortKey = name == "Misc" and "-3 Misc" or "-3" .. name,
 		}
 	end
 end

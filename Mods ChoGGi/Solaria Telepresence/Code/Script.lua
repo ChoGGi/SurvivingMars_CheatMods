@@ -220,7 +220,7 @@ function Solaria:AttachBuilding(obj)
 	obj:SetUIWorking(true)
 
 	MsgPopup(
-		string.format([[Viewing: %s Pos: %s]],RetName(obj),obj:GetVisualPos()),
+		"Viewing: " .. RetName(obj) .. " Pos: " .. obj:GetVisualPos()
 		[[Solaria]],
 		"UI/Icons/Upgrades/holographic_scanner_04.tga"
 	)
@@ -269,7 +269,7 @@ function Solaria:RemoveBuilding(obj)
 		UICity.SolariaTelepresence_RemoteControlledBuildings = UICity.SolariaTelepresence_RemoteControlledBuildings - 1
 
 		MsgPopup(
-			string.format([[Removed: %s Pos: %s]],RetName(obj),obj:GetVisualPos()),
+			"Removed: " .. RetName(obj) .. " Pos: " .. obj:GetVisualPos()
 			[[Solaria]],
 			"UI/Icons/Upgrades/holographic_scanner_03.tga"
 		)

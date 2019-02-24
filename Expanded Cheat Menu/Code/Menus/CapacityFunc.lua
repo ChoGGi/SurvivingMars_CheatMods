@@ -25,8 +25,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StorageMechanizedDepotsTemp,S[302535920000565--[[Storage Mechanized Depots Temp--]]]),
-			Trans(519--[[Storage--]]),
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
+			S[302535920000565--[[Storage Mechanized Depots Temp--]]],
 			default_icon
 		)
 	end

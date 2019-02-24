@@ -473,8 +473,7 @@ Whew, about to slip down.",
 302535920000143,"%s:
 I presume the PM's in favour of the scheme because it'll reduce unemployment.",
 302535920000144,Automated Performance,
-302535920000145,"Sets performance of all automated buildings of this type
-Current: %s",
+302535920000145,Sets performance of all automated buildings of this type,
 302535920000147,Only apply to selected object instead of all %s.,
 302535920000148,"%s:
 You keep your work station so clean, Jerome.

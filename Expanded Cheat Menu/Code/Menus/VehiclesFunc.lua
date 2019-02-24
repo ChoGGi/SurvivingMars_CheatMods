@@ -480,8 +480,8 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000900--[[Build Speed--]]]),
-				Trans(517--[[Drones--]]),
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				S[302535920000900--[[Build Speed--]]],
 				default_icon
 			)
 		end
@@ -511,11 +511,9 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileBatteryUse",Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse)
 
 		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.DroneMoveBatteryUse,
-				S[302535920000519--[[Drone Battery Infinite--]]]
-			),
-			Trans(517--[[Drones--]]),
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneMoveBatteryUse),
+			S[302535920000519--[[Drone Battery Infinite--]]],
 			default_icon
 		)
 	end
@@ -528,11 +526,9 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.SetSavedSetting("DroneBuildingRepairAmount",Consts.DroneBuildingRepairAmount)
 
 		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.DroneConstructAmount,
-				S[302535920000521--[[Drone Build Speed--]]]
-			),
-			Trans(517--[[Drones--]]),
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneConstructAmount),
+			S[302535920000521--[[Drone Build Speed--]]],
 			default_icon
 		)
 	end
@@ -1453,8 +1449,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RocketsIgnoreFuel,S[302535920001319--[[Rockets Ignore Fuel--]]]),
-			Trans(5238--[[Rockets--]]),
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RocketsIgnoreFuel),
+			S[302535920001319--[[Rockets Ignore Fuel--]]],
 			"UI/Icons/Sections/Fuel_1.tga"
 		)
 	end

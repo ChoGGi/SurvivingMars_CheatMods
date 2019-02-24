@@ -3,15 +3,15 @@
 ```lua
 Be careful when using CreateGameTimeThread(), as they are persistent.
 If you have one with an inf loop the next time you load a game it'll still be there.
-Store a ref and check with IsValidThread() or DeleteThread()
+Store a ref and check with IsValidThread(t) and DeleteThread(t)
 
 To get your mod path (if user renames your mod folder):
 CurrentModPath
 
 List all objects:
-OpenExamine(MapGet(true))
+~MapGet(true)
 Just domes:
-OpenExamine(MapGet(true,"Dome"))
+~MapGet(true,"Dome")
 Just get objects on the map (colonists in a building are off the map):
 MapGet("map","ResourceStockpile","ResourceStockpileLR")
 Filter out which objects are returned:

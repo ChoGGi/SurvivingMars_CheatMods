@@ -1846,7 +1846,7 @@ do -- Rebuildshortcuts
 					ChoGGi.SettingFuncs.WriteSettings()
 					print(name,S[302535920001070--[[Restart to take effect.--]]])
 					MsgPopup(
-						302535920001070--[[Restart to take effect.--]],
+						S[302535920001070--[[Restart to take effect.--]]],
 						name
 					)
 				end,
@@ -2784,8 +2784,8 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 	obj = obj or ChoGGi.ComFuncs.SelObject()
 	if not obj then
 		MsgPopup(
-			302535920000027--[[Nothing selected--]],
-			302535920000028--[[Find Resource--]]
+			S[302535920000027--[[Nothing selected--]]],
+			S[302535920000028--[[Find Resource--]]]
 		)
 		return
 	end
@@ -4024,7 +4024,7 @@ do -- ChangeSurfaceSignsToMaterials
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = 302535920001083--[[Change Surface Signs--]],
+			title = S[302535920001083--[[Change Surface Signs--]]],
 		}
 	end
 end -- do

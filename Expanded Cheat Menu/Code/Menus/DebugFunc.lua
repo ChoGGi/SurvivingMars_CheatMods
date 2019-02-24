@@ -952,8 +952,8 @@ that'll activate the BadPrefab on it
 			-- if user used "Ctrl-Numpad ." on an obj that can't path
 			elseif single then
 				MsgPopup(
-					302535920000871--[[Doesn't seem to be an object that moves.--]],
-					302535920000872--[[Pathing--]],
+					S[302535920000871--[[Doesn't seem to be an object that moves.--]]],
+					S[302535920000872--[[Pathing--]]],
 					nil,
 					nil,
 					obj
