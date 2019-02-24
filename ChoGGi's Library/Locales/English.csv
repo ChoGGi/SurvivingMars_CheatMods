@@ -74,6 +74,7 @@ ID,Text,Translation,Old Translation,Gender
 302535920000033,Post a request on Nexus or Github or send an email to: %s,
 302535920001092,Pins,
 302535920000004,Dump,
+302535920001543,Set collisions on %s. Collisions disabled: %s,
 302535920001541,Start a Crime Event,
 302535920001542,Renegades not required.,
 302535920001518,Double-click <left_click> title to rollup into the title bar.,
