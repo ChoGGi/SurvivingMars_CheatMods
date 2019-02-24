@@ -147,6 +147,9 @@ function OnMsg.ClassesGenerate()
 		ToggleConstruct = {
 			des = S[302535920001531--[[Make the building model look like a construction site (toggle).--]]],
 		},
+		CrimeEvent = {
+			des = S[302535920001541--[[Start a Crime Event--]]],
+		},
 
 -- Building
 		VisitorsDbl = {des = doublec},
@@ -370,6 +373,38 @@ local Object = Object
 local Building = Building
 local Colonist = Colonist
 local Workplace = Workplace
+
+function Dome:CheatCrimeEvent()
+	-- build a list
+	local ItemList = {}
+	local c = 0
+	local Dome = Dome
+	for key,value in pairs(Dome) do
+		if type(value) == "function" and key:sub(1,12) == "CrimeEvents_" then
+			c = c + 1
+			ItemList[c] = {
+				text = key:sub(13),
+				value = value,
+			}
+		end
+	end
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		-- fire off the crime func
+		choice[1].value(self)
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = S[302535920001541--[[Start a Crime Event--]]],
+		hint = S[302535920001542--[[Renegades not required.--]]],
+	}
+
+end
 
 -- global objects
 function Object:CheatDeleteObject()
