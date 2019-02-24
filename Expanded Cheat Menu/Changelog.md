@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v12.6 (Unreleased)
+### Added:
+- Any Dome:CrimeEvents_ functions to a list in the cheats section of the selection panel.
+
 ### Changed:
 - Examine:
 - > Clear button now first clears spheres from examined object, then clears all on the map.

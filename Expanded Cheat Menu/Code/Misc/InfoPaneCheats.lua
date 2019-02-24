@@ -376,8 +376,11 @@ local Workplace = Workplace
 
 function Dome:CheatCrimeEvent()
 	-- build a list
-	local ItemList = {}
-	local c = 0
+	local ItemList = {{
+		text = "CheckCrimeEvents",
+		value = Dome.CheckCrimeEvents,
+	}}
+	local c = 1
 	local Dome = Dome
 	for key,value in pairs(Dome) do
 		if type(value) == "function" and key:sub(1,12) == "CrimeEvents_" then
