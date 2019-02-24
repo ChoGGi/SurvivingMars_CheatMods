@@ -6,6 +6,8 @@
 - Changed my Show/Clear Obj funcs to support removing marked objs in Examine.
 - Added func names to RetName func.
 - My dialogs shouldn't be larger then the resolution anymore (for those with a smaller res).
+- Fixed DeleteObject and the geo-dome ground.
+- Sped up Toggle Object Collision (on stuff with lots of attachments).
 
 ## v5.5 (17 Feb 2019)
 - Added a text search area to the MultiLineText dialog.

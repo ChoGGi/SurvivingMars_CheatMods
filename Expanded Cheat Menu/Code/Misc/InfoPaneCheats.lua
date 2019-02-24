@@ -175,17 +175,6 @@ function OnMsg.ClassesGenerate()
 		AllShifts = {
 			des = S[302535920001215--[[Turn on all work shifts.--]]],
 		},
-		DoubleMaxAmount = {
-			des = S[302535920001234--[[Double the amount this %s can hold.--]]],
-			des_name = true,
-			filter_name = "SubsurfaceAnomaly",
-			filter_func = "IsKindOf",
-		},
-		Refill = {
-			des = S[302535920001231--[[Refill the deposit to full capacity.--]]],
-			filter_name = "SubsurfaceAnomaly",
-			filter_func = "IsKindOf",
-		},
 		Fill = {
 			des = S[302535920001232--[[Fill the storage of this building.--]]],
 		},
@@ -243,29 +232,6 @@ function OnMsg.ClassesGenerate()
 			des = S[302535920001246--[[Changes colour of %s back to default.--]]],
 			des_name = true,
 		},
---~ 		AnimState = {
---~ 			des = S[302535920000458--[[Make object dance on command.--]]],
---~ 			filter_func = "GetStates",
---~ 		},
---~ 		AttachSpots = {
---~ 			des = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
---~ 		},
-		ToggleSigns = {
-			des = S[302535920001223--[[Toggle any signs above %s (until state is changed).--]]],
-			des_name = true,
-			filter_name = {"SurfaceDeposit","SubsurfaceDeposit","WasteRockDumpSite","UniversalStorageDepot"},
-			filter_func = "IsKindOfClasses",
-		},
-		AddDust = {
-			des = S[302535920001225--[[Adds dust and maintenance points.--]]],
-			filter_name = {"UniversalStorageDepot","WasteRockDumpSite"},
-			filter_func = "IsKindOfClasses",
-		},
-		CleanAndFix = {
-			des = S[302535920001226--[[Cleans dust and removes maintenance points.--]]],
-			filter_name = {"UniversalStorageDepot","WasteRockDumpSite"},
-			filter_func = "IsKindOfClasses",
-		},
 	}
 
 	function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
@@ -276,33 +242,76 @@ function OnMsg.ClassesGenerate()
 			local action = win.actions[i]
 			local aid = action.ActionId
 
-			-- if it's stored in table than we'll use that otherwise it's if time
+			-- if it's stored in table than we'll use that otherwise it's elseif time
 			local look = cheats_lookup[aid]
 			if look then
-				-- filter power (yeah it's ugly)
-				if (not look.filter_name and look.filter_func and obj[look.filter_func] and obj[look.filter_func](obj))
-						or not (look.filter_func and look.filter_name and obj[look.filter_func] and obj[look.filter_func](obj,look.filter_name))
-						or (look.filter_name and obj[look.filter_name]) then
-
-					if look.des then
-						if look.des_name then
-							if type(look.des_name) == "string" then
-								SetHint(action,look.des:format(obj[look.des_name]))
-							else
-								SetHint(action,look.des:format(name))
-							end
+				if look.des then
+					if look.des_name then
+						if type(look.des_name) == "string" then
+							SetHint(action,look.des:format(obj[look.des_name]))
 						else
-							SetHint(action,look.des)
+							SetHint(action,look.des:format(name))
 						end
+					else
+						SetHint(action,look.des)
 					end
+				end
 
-					if look.name then
-						action.ActionName = look.name
-					end
-					if look.icon then
-						SetIcon(action,look.icon_name,look.icon)
-					end
+				if look.name then
+					action.ActionName = look.name
+				end
+				if look.icon then
+					SetIcon(action,look.icon_name,look.icon)
+				end
 
+			elseif grid_lookup[aid] then
+				SetGridInfo(action,obj,name,grid_lookup[aid])
+
+			-- the below is somewhat arranged in freq order
+
+			elseif aid == "ToggleCollision" then
+				SetHint(action,S[302535920001543--[[Set collisions on %s. Collisions disabled: %s--]]]:format(name,ChoGGi.ComFuncs.SettingState(obj.ChoGGi_CollisionsDisabled)))
+				SetIcon(action,nil,"CommonAssets/UI/Menu/ToggleOcclusion.tga")
+
+			elseif aid == "CleanAndFix" then
+				if obj:IsKindOfClasses("UniversalStorageDepot","WasteRockDumpSite") then
+					SetHint(action,S[302535920001226--[[Cleans dust and removes maintenance points.--]]])
+				else
+					action.ActionId = ""
+				end
+
+			elseif aid == "AddDust" then
+				if obj:IsKindOfClasses("UniversalStorageDepot","WasteRockDumpSite") then
+					SetHint(action,S[302535920001225--[[Adds dust and maintenance points.--]]])
+				else
+					action.ActionId = ""
+				end
+
+			elseif aid == "ToggleSigns" then
+				if obj:IsKindOfClasses("SurfaceDeposit","SubsurfaceDeposit","WasteRockDumpSite","UniversalStorageDepot") then
+					SetHint(action,S[302535920001223--[[Toggle any signs above %s (until state is changed).--]]]:format(name))
+				else
+					action.ActionId = ""
+				end
+
+			elseif aid == "Destroy" then
+				if obj:IsKindOf("SupplyRocket") or obj.destroyed then
+					action.ActionId = ""
+				else
+					SetHint(action,S[302535920001227--[[Turns object into ruin.--]]])
+					SetIcon(action,nil,"UI/Icons/IPButtons/demolition.tga")
+				end
+
+			elseif aid == "Refill" then
+				if obj:IsKindOf("SubsurfaceAnomaly") then
+					SetHint(action,S[302535920001231--[[Refill the deposit to full capacity.--]]])
+				else
+					action.ActionId = ""
+				end
+
+			elseif aid == "DoubleMaxAmount" then
+				if obj:IsKindOf("SubsurfaceAnomaly") then
+					SetHint(action,S[302535920001234--[[Double the amount this %s can hold.--]]]:format(name))
 				else
 					action.ActionId = ""
 				end
@@ -317,8 +326,6 @@ function OnMsg.ClassesGenerate()
 				local bs = ChoGGi.UserSettings.BuildingSettings
 				SetHint(action,S[302535920001209--[[Make this %s not need workers (performance: %s).--]]]:format(name,bs and bs[id] and bs[id].performance or 150))
 
-			elseif grid_lookup[aid] then
-				SetGridInfo(action,obj,name,grid_lookup[aid])
 			elseif aid == "CapDbl" then
 				if obj:IsKindOf("SupplyRocket") then
 					SetHint(action,S[302535920001211--[[Double the export storage capacity of this %s.--]]]:format(name))
@@ -340,14 +347,6 @@ function OnMsg.ClassesGenerate()
 					SetHint(action,S[302535920000903--[[Unfreeze frozen object.--]]])
 				end
 
-			elseif aid == "Destroy" then
-				if obj:IsKindOf("SupplyRocket") or obj.destroyed then
-					action.ActionId = ""
-				else
-					SetHint(action,S[302535920001227--[[Turns object into ruin.--]]])
-					SetIcon(action,nil,"UI/Icons/IPButtons/demolition.tga")
-				end
-
 			elseif aid == "Empty" then
 				if obj:IsKindOf("SubsurfaceAnomaly") then
 					action.ActionId = ""
@@ -357,8 +356,21 @@ function OnMsg.ClassesGenerate()
 					else
 						SetHint(action,S[302535920001230--[[Empties the storage of this building.
 
-	If this isn't a dumping site then waste rock will not be emptied.--]]])
+If this isn't a dumping site then waste rock will not be emptied.--]]])
 					end
+				end
+
+			elseif aid == "Break" then
+				if obj:IsKindOf("ElectricityGridElement") then
+					SetHint(action,Trans(3890--[[Cable Fault--]]))
+				else
+					SetHint(action,Trans(3891--[[Pipe Leak--]]))
+				end
+			elseif aid == "Repair" then
+				if obj:IsKindOf("ElectricityGridElement") then
+					SetHint(action,Trans(6924--[[Repair--]]) .. " " .. Trans(3890--[[Cable Fault--]]))
+				else
+					SetHint(action,Trans(6924--[[Repair--]]) .. " " .. Trans(3891--[[Pipe Leak--]]))
 				end
 
 			end -- ifs
@@ -368,48 +380,21 @@ function OnMsg.ClassesGenerate()
 	end
 end
 
+function OnMsg.ClassesBuilt()
+	ElectricityGridElement.CheatRepair = ElectricityGridElement.Repair
+	LifeSupportGridElement.CheatRepair = LifeSupportGridElement.Repair
+	ElectricityGridElement.CheatBreak = ElectricityGridElement.Break
+	LifeSupportGridElement.CheatBreak = LifeSupportGridElement.Break
+end
 
 local Object = Object
 local Building = Building
 local Colonist = Colonist
 local Workplace = Workplace
 
-function Dome:CheatCrimeEvent()
-	-- build a list
-	local ItemList = {{
-		text = "CheckCrimeEvents",
-		value = Dome.CheckCrimeEvents,
-	}}
-	local c = 1
-	local Dome = Dome
-	for key,value in pairs(Dome) do
-		if type(value) == "function" and key:sub(1,12) == "CrimeEvents_" then
-			c = c + 1
-			ItemList[c] = {
-				text = key:sub(13),
-				value = value,
-			}
-		end
-	end
-
-	local function CallBackFunc(choice)
-		if choice.nothing_selected then
-			return
-		end
-		-- fire off the crime func
-		choice[1].value(self)
-	end
-
-	ChoGGi.ComFuncs.OpenInListChoice{
-		callback = CallBackFunc,
-		items = ItemList,
-		title = S[302535920001541--[[Start a Crime Event--]]],
-		hint = S[302535920001542--[[Renegades not required.--]]],
-	}
-
-end
-
 -- global objects
+Object.CheatToggleCollision = ChoGGi.ComFuncs.CollisionsObject_Toggle
+
 function Object:CheatDeleteObject()
 	local name = RetName(self)
 	local function CallBackFunc(answer)
@@ -433,21 +418,11 @@ function Object:CheatToggleSigns()
 		self:UpdateSignsVisibility()
 	end
 end
-function ColorizableObject:CheatColourRandom()
-	ChoGGi.ComFuncs.ObjectColourRandom(self)
-end
-function ColorizableObject:CheatColourDefault()
-	ChoGGi.ComFuncs.ObjectColourDefault(self)
-end
---~ function Object:CheatAnimState()
---~ 	ChoGGi.ComFuncs.SetAnimState(self)
---~ end
---~ function Object:CheatAttachSpots()
---~ 	ChoGGi.ComFuncs.AttachSpots_Toggle(self)
---~ end
+
+ColorizableObject.CheatColourRandom = ChoGGi.ComFuncs.ObjectColourRandom
+ColorizableObject.CheatColourDefault = ChoGGi.ComFuncs.ObjectColourDefault
 
 local function CheatDestroy(self)
-	local ChoGGi = ChoGGi
 	local name = RetName(self)
 	local obj_type
 	if self:IsKindOf("BaseRover") then
@@ -462,7 +437,7 @@ local function CheatDestroy(self)
 		if answer then
 			if self:IsKindOf("Dome") and #(self.labels.Buildings or "") > 0 then
 				MsgPopup(
-					S[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).--]]]:format(RetName(self)),
+					S[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).--]]]:format(name),
 					S[302535920000489--[[Delete Object(s)--]]]
 				)
 				return
@@ -490,28 +465,15 @@ Building.CheatDestroy = CheatDestroy
 BaseRover.CheatDestroy = CheatDestroy
 Drone.CheatDestroy = CheatDestroy
 
--- consumption
-function Building:CheatPowerFree()
-	ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
-end
-
-function Building:CheatPowerNeed()
-	ChoGGi.ComFuncs.AddBuildingElecConsump(self)
-end
+-- need/free
+Building.CheatPowerFree = ChoGGi.ComFuncs.RemoveBuildingElecConsump
+Building.CheatPowerNeed = ChoGGi.ComFuncs.AddBuildingElecConsump
 --
-function Building:CheatWaterFree()
-	ChoGGi.ComFuncs.RemoveBuildingWaterConsump(self)
-end
-function Building:CheatWaterNeed()
-	ChoGGi.ComFuncs.AddBuildingWaterConsump(self)
-end
+Building.CheatWaterFree = ChoGGi.ComFuncs.RemoveBuildingWaterConsump
+Building.CheatWaterNeed = ChoGGi.ComFuncs.AddBuildingWaterConsump
 --
-function Building:CheatOxygenFree()
-	ChoGGi.ComFuncs.RemoveBuildingAirConsump(self)
-end
-function Building:CheatOxygenNeed()
-	ChoGGi.ComFuncs.AddBuildingAirConsump(self)
-end
+Building.CheatOxygenFree = ChoGGi.ComFuncs.RemoveBuildingAirConsump
+Building.CheatOxygenNeed = ChoGGi.ComFuncs.AddBuildingAirConsump
 function BaseBuilding:CheatToggleConstruct()
 	local func
 	if self:GetGameFlags(65536) == 65536 then
@@ -633,8 +595,13 @@ function Deposit:CheatDoubleMaxAmount()
 	self.max_amount = self.max_amount * 2
 end
 local function CheatEmpty(self)
-	-- it'll look empty, but it won't actually remove the object
-	self.amount = 1
+	if self.amount == 1 then
+		-- removes the object after the second click
+		self.amount = 0
+	else
+		-- it'll look empty, but it won't actually remove the object
+		self.amount = 1
+	end
 end
 SubsurfaceDeposit.CheatEmpty = CheatEmpty
 TerrainDeposit.CheatEmpty = CheatEmpty
@@ -738,7 +705,7 @@ BaseRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
 BaseRover.CheatMoveSpeedDef = CheatMoveSpeedDef
 -- CheatCleanAndFix
 local function CheatAddDust(self)
-	self.dust = self:GetDustMax()-1
+	self.dust = self:GetDustMax() - 1
 	self:SetDustVisuals()
 end
 Drone.CheatAddDust = CheatAddDust
@@ -774,12 +741,7 @@ function Building:CheatCleanAndFix()
 	self:CheatAddDust()
 	orig_Building_CheatCleanAndFix(self)
 end
-function ElectricityGridElement:CheatRepair()
-	self:Repair()
-end
-function LifeSupportGridElement:CheatRepair()
-	self:Repair()
-end
+
 -- misc
 function SecurityStation:CheatReneagadeCapDbl()
 	self.negated_renegades = self.negated_renegades * 2
@@ -787,9 +749,7 @@ end
 function SecurityStation:CheatReneagadeCapDef()
 	self.negated_renegades = self.max_negated_renegades
 end
-function MechanizedDepot:CheatEmptyDepot()
-	ChoGGi.ComFuncs.EmptyMechDepot(self)
-end
+MechanizedDepot.CheatEmptyDepot = ChoGGi.ComFuncs.EmptyMechDepot
 
 function SupplyRocket:CheatCapDbl()
 	ChoGGi.ComFuncs.SetTaskReqAmount(self,self.max_export_storage * 2,"export_requests","max_export_storage")
@@ -823,7 +783,41 @@ function SupplyRocket:CheatCleanAndFix2()
 end
 
 if rawget(_G,"Sinkhole") then
-	function Sinkhole:CheatSpawnFirefly()
-		self:TestSpawnFireflyAndGo()
-	end
+	Sinkhole.CheatSpawnFirefly = Sinkhole.TestSpawnFireflyAndGo
 end
+
+function Dome:CheatCrimeEvent()
+	-- build a list
+	local ItemList = {{
+		text = "CheckCrimeEvents",
+		value = Dome.CheckCrimeEvents,
+	}}
+	local c = 1
+	local Dome = Dome
+	for key,value in pairs(Dome) do
+		if type(value) == "function" and key:sub(1,12) == "CrimeEvents_" then
+			c = c + 1
+			ItemList[c] = {
+				text = key:sub(13),
+				value = value,
+			}
+		end
+	end
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		-- fire off the crime func
+		choice[1].value(self)
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = ItemList,
+		title = S[302535920001541--[[Start a Crime Event--]]],
+		hint = S[302535920001542--[[Renegades not required.--]]],
+	}
+
+end
+

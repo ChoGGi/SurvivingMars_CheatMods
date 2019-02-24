@@ -2872,11 +2872,17 @@ do -- DeleteObject
 	local IsValid = IsValid
 	local DoneObject = DoneObject
 	local DeleteThread = DeleteThread
+	local CreateRealTimeThread = CreateRealTimeThread
 	local DestroyBuildingImmediate = DestroyBuildingImmediate
+	local FlattenTerrainInBuildShape = FlattenTerrainInBuildShape
+	local HasAnySurfaces = HasAnySurfaces
+	local HasRestoreHeight = terrain.HasRestoreHeight
+
 	local UpdateFlightGrid
+	local holiles = {"MoholeMine","ShuttleHub","MetalsExtractor","JumperShuttleHub"}
 
 	local function ExecFunc(obj,funcname,param)
-		if obj[funcname] then
+		if type(obj[funcname]) == "function" then
 			obj[funcname](obj,param)
 		end
 	end
@@ -2891,11 +2897,13 @@ do -- DeleteObject
 			-- multiple selection from editor mode
 			local objs = editor:GetSel() or ""
 			if #objs > 0 then
+				SuspendPassEdits("DeleteObjects_ChoGGi")
 				for i = 1, #objs do
 					if objs[i].class ~= "MapSector" then
 						ChoGGi.ComFuncs.DeleteObject(objs[i],true)
 					end
 				end
+				ResumePassEdits("DeleteObjects_ChoGGi")
 			elseif not obj then
 				obj = ChoGGi.ComFuncs.SelObject()
 			end
@@ -2934,7 +2942,7 @@ do -- DeleteObject
 		-- figured it's quicker using a local function now
 		local waterspire = obj:IsKindOf("WaterReclamationSpire") and not IsValid(obj.parent_dome)
 		local rctransport = obj:IsKindOf("RCTransport")
-		local holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor","JumperShuttleHub")
+		local holy_stuff = obj:IsKindOfClasses(holiles)
 
 		if not waterspire then
 			-- some stuff will leave holes in the world if they're still working
@@ -2951,7 +2959,6 @@ do -- DeleteObject
 		if obj:IsKindOf("Deposit") and obj.group then
 			for i = #obj.group, 1, -1 do
 				obj.group[i]:delete()
-				obj.group[i] = nil
 			end
 		end
 
@@ -2960,10 +2967,16 @@ do -- DeleteObject
 		obj.indestructible = false
 		if obj.DoDemolish then
 			CreateRealTimeThread(DestroyBuildingImmediate,obj)
---~ 			DestroyBuildingImmediate(obj)
 		end
 
+		ExecFunc(obj,"RestoreTerrain")
 		ExecFunc(obj,"Destroy")
+
+		-- still gotta fix the geo dome
+		if HasAnySurfaces(obj, EntitySurfaces.Height, true) and not HasRestoreHeight() then
+			FlattenTerrainInBuildShape(obj:GetFlattenShape(), obj)
+		end
+
 		ExecFunc(obj,"SetDome",false)
 		ExecFunc(obj,"RemoveFromLabels")
 
@@ -2985,6 +2998,7 @@ do -- DeleteObject
 			DoneObject(obj)
 		end
 
+		-- can't have shuttles avoiding empty space
 		UpdateFlightGrid()
 	end
 end -- do
@@ -2998,12 +3012,14 @@ do -- BuildingConsumption
 			if mod[1] then
 				mod = mod[1]
 			end
-			local orig = obj[tempname]
-			if mod:IsKindOf("ObjectModifier") then
-				mod:Change(orig.amount,orig.percent)
-			else
-				mod.amount = orig.amount
-				mod.percent = orig.percent
+			if mod.IsKindOf then
+				local orig = obj[tempname]
+				if mod:IsKindOf("ObjectModifier") then
+					mod:Change(orig.amount,orig.percent)
+				else
+					mod.amount = orig.amount
+					mod.percent = orig.percent
+				end
 			end
 			obj[tempname] = nil
 		end
@@ -3024,7 +3040,7 @@ do -- BuildingConsumption
 					percent = mod.percent
 				}
 			end
-			if mod:IsKindOf("ObjectModifier") then
+			if mod.IsKindOf and mod:IsKindOf("ObjectModifier") then
 				mod:Change(0,0)
 			end
 		end
@@ -3219,9 +3235,13 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 	local coll = const.efCollision + const.efApplyToGrids
 
 	local which
+	-- hopefully give it a bit more speed
+	SuspendPassEdits("ToggleCollisions_ChoGGi")
 	-- re-enable col on obj and any attaches
 	if obj.ChoGGi_CollisionsDisabled then
+		-- coll on object
 		obj:SetEnumFlags(coll)
+		-- and any attaches
 		if obj.ForEachAttach then
 			obj:ForEachAttach(function(a)
 				a:SetEnumFlags(coll)
@@ -3239,6 +3259,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 		obj.ChoGGi_CollisionsDisabled = true
 		which = Trans(847439380056--[[Disabled--]])
 	end
+	ResumePassEdits("ToggleCollisions_ChoGGi")
 
 	if not skip_msg then
 		MsgPopup(
