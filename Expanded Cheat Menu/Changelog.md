@@ -6,6 +6,7 @@
 - Infopanel Cheats>ToggleCollision: It's a shortcut to Debug>Toggle Object Collision.
 
 ### Changed:
+- Image Viewer uses a checkered background instead of the invisible one.
 - Examine:
 - > Clear button now first clears spheres from examined object, then clears all on the map.
 - > Added context menu to table items.

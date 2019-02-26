@@ -54,8 +54,8 @@ function OnMsg.ModsReloaded()
 		"RolloverText", [[Click to go places (updates minimap first click).]],
 		"RolloverTitle", [[Minimap]],
 		"Id", "idMinimap",
-		"Image", StringFormat("%sUI/minimap.png",CurrentModPath),
-		"ImageShine", StringFormat("%sUI/minimap_shine.png",CurrentModPath),
+		"Image", CurrentModPath .. "UI/minimap.png",
+		"ImageShine", CurrentModPath .. "UI/minimap_shine.png",
 		"FXPress", "MainMenuButtonClick",
 		"OnPress", function()
 			HUD.idMinimapOnPress()

@@ -1,9 +1,9 @@
 -- See LICENSE for terms
 
-local StringFormat = string.format
 local Sleep = Sleep
 
-local img = StringFormat("%sUI/pm_landed.png",CurrentModPath)
+--~ local img = string.format("%sUI/pm_landed.png",CurrentModPath)
+local img = CurrentModPath .. "UI/pm_landed.png"
 local idmarker = "idMarker%s"
 local marker_name = "%s_%s"
 
@@ -71,7 +71,8 @@ local function BuildMySpots()
 			if new_markers[table_name] then
 				-- merge save names if dupe location
 				local marker = new_markers[table_name]
-				marker.text = StringFormat("%s, %s",marker.text,save.displayname)
+--~ 				marker.text = string.format("%s, %s",marker.text,save.displayname)
+				marker.text = marker.text .. ", " .. save.displayname
 			else
 				-- plunk down a new one (most of this code is copied from LandingSiteObject:AttachPredefinedSpots)
 				local attach = PlaceObject("Shapeshifter")
@@ -126,16 +127,17 @@ local pairs = pairs
 local Min = Min
 local orig_LandingSiteObject_CalcMarkersVisibility = LandingSiteObject.CalcMarkersVisibility
 function LandingSiteObject:CalcMarkersVisibility()
-	if not GameState.gameplay then
-		local cur_phase = PlanetRotationObj:GetAnimPhase()
-		for name,obj in pairs(new_markers) do
-			local phase = self:CalcAnimPhaseUsingLongitude(obj.longitude * 60)
-			local dist = Min((cur_phase-phase)%self.anim_duration, (phase-cur_phase)%self.anim_duration)
-			self.dialog[obj.id]:SetVisible(dist <= 2400)
-		end
+	if GameState.gameplay then
+		return orig_LandingSiteObject_CalcMarkersVisibility(self)
 	end
 
-	return orig_LandingSiteObject_CalcMarkersVisibility(self)
+	local cur_phase = PlanetRotationObj:GetAnimPhase()
+	for name,obj in pairs(new_markers) do
+		local phase = self:CalcAnimPhaseUsingLongitude(obj.longitude * 60)
+		local dist = Min((cur_phase-phase)%self.anim_duration, (phase-cur_phase)%self.anim_duration)
+		self.dialog[obj.id]:SetVisible(dist <= 2400)
+	end
+
 end
 
 function OnMsg.ClassesPostprocess()
@@ -155,7 +157,8 @@ function LandingSiteObject:DisplayCoord(pt, lat, long, lat_org, long_org)
 		local marker = new_markers[marker_name:format(g_CurrentMapParams.latitude,g_CurrentMapParams.longitude)]
 		if marker then
 			local text = self.dialog.idtxtCoord.text
-			self.dialog.idtxtCoord:SetText(StringFormat("<style ChoGGi_PlanetUISavedGamesText>%s</style>\n%s",marker.text,text))
+--~ 			self.dialog.idtxtCoord:SetText(string.format("<style ChoGGi_PlanetUISavedGamesText>%s</style>\n%s",marker.text,text))
+			self.dialog.idtxtCoord:SetText("<style ChoGGi_PlanetUISavedGamesText>" .. marker.text .. "</style>\n" .. text)
 		end
 	end
 end

@@ -18,7 +18,8 @@ Press Ok to download it.]],min_version)) == "ok" then
 		end)
 	end
 end -- do
-local image_str = string.format("%sMaps/%s.png",Mods.ChoGGi_MapImagesPack.env.CurrentModPath,"%s")
+--~ local image_str = Mods.ChoGGi_MapImagesPack.env.CurrentModPath .. "Maps/%s.png"
+local image_str = Mods.ChoGGi_MapImagesPack.env.CurrentModPath .. "Maps/"
 
 -- tell people how to get my library mod (if needs be)
 function OnMsg.ModsReloaded()
@@ -61,7 +62,8 @@ function FillRandomMapProps(gen, params, ...)
 			showimage = ChoGGi_ShowImageDlg:new({}, terminal.desktop,{})
 		end
 		-- pretty little image
-		showimage.idImage:SetImage(image_str:format(map))
+--~ 		showimage.idImage:SetImage(image_str:format(map))
+		showimage.idImage:SetImage(image_str .. map .. ".png")
 		showimage.idCaption:SetText(map)
 	end
 

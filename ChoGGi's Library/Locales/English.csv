@@ -1520,7 +1520,7 @@ https://github.com/nickelc/hpk
 hpk create ""Mod folder"" ModContent.hpk
 Move ModContent.hpk to Mod folder/Pack/ModContent.hpk",
 302535920001509,Platform,
-302535920001510,Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.,
+302535920001510,Paradox mods platform: Leave <color 0 200 0>checked</color> to upload to Desktop only or <color 0 200 0>uncheck</color> to upload to Desktop and Console.,
 302535920001506,Steam,
 302535920001507,Uncheck to upload to Paradox mods (instead of Steam).,
 302535920001485,Does everything other than uploading mod to workshop (see AppData/ModUpload).,

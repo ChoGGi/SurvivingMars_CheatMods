@@ -97,13 +97,6 @@ function OnMsg.ClassesPostprocess()
 		TextFont = Editor14Bold,
 		id = "ChoGGi_Buttons",
 	})
---~ 	-- Arrow_Button
---~ 	PlaceObj("ChoGGi_TextStyle", {
---~ 		TextColor = gray32_255,
---~ 		RolloverTextColor = white,
---~ 		TextFont = Editor32Bold,
---~ 		id = "ChoGGi_Arrow_Button",
---~ 	})
 	-- ConsoleButton
 	PlaceObj("ChoGGi_TextStyle", {
 		RolloverTextColor = white,

@@ -40,10 +40,12 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 
 	self.images = context.obj
 	if type(self.images) ~= "table" then
-		self.images = {{
+		self.images = {
+			{
 			name = self.images,
 			path = self.images,
-		}}
+			},
+		}
 	end
 
 	self.idImageMenu = Random()
@@ -74,12 +76,16 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 		VAlign = "center",
 	}, self.idButtonContainer)
 
-	self.idImage = g_Classes.XFrame:new({
-		Id = "idImage",
+	-- checkered bg
+	self.idImageFrame = g_Classes.XFrame:new({
+		Id = "idImageFrame",
+		TileFrame = true,
+		Image = "CommonAssets/UI/checker-pattern-40.tga",
 	}, self.idDialog)
 
-	-- invis background
-	self.idDialog:SetBackground(0)
+	self.idImage = g_Classes.XFrame:new({
+		Id = "idImage",
+	}, self.idImageFrame)
 
 	-- first up
 	self:SetImageFile(self.images[1])
