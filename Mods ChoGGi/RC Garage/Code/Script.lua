@@ -25,7 +25,7 @@ end
 local IsValid = IsValid
 local Sleep = Sleep
 local GetPassablePointNearby = GetPassablePointNearby
-local StringFormat = string.format
+
 local TableClear = table.clear
 local TableFind = table.find
 local TableRemove = table.remove
@@ -47,9 +47,9 @@ function OnMsg.ClassesGenerate()
 	Random = ChoGGi.ComFuncs.Random
 	ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
 	InvalidPos = ChoGGi.Consts.InvalidPos
-	text_disabled = StringFormat([[Main Garage: %s]],ChoGGi.ComFuncs.Translate(847439380056--[[Disabled--]]))
-	text_idle = StringFormat([[Main Garage: %s]],ChoGGi.ComFuncs.Translate(6939--[[Idle--]]))
-	text_rovers = StringFormat([[%s: %s]],ChoGGi.ComFuncs.Translate(5438--[[Rovers--]]),"%s")
+	text_disabled = "Main Garage: " .. ChoGGi.ComFuncs.Translate(847439380056--[[Disabled--]])
+	text_idle = "Main Garage: " .. ChoGGi.ComFuncs.Translate(6939--[[Idle--]])
+	text_rovers = ChoGGi.ComFuncs.Translate(5438--[[Rovers--]]) .. ": %s"
 end
 
 -- stores rovers
@@ -64,7 +64,7 @@ GlobalVar("g_ChoGGi_RCGarages", {
 
 local name = [[RC Garage]]
 local description = [[Stores rovers in a massive underground parking garage (where all the cool kids hang out).]]
-local display_icon = StringFormat("%sUI/garage.png",CurrentModPath)
+local display_icon = CurrentModPath .. "UI/garage.png"
 
 DefineClass.RCGarage = {
 	__parents = {
@@ -123,7 +123,7 @@ function RCGarage:GetStatusUpdate()
 	if self:CheckMainGarage() and self.garages.main.working and self.working then
 		local amount = #self.stored_rovers
 		if amount > 0 then
-			self.status_text = StringFormat(text_rovers,amount)
+			self.status_text = string.format(text_rovers,amount)
 		else
 			self.status_text = text_idle
 		end
@@ -547,7 +547,7 @@ function OnMsg.ClassesBuilt()
 								c = c + 1
 								ItemList[c] = {
 									name = name,
-									hint = StringFormat([[Eject %s from garage]],name),
+									hint = "Eject " .. name .. " from garage",
 									clicked = function()
 										context:RemoveFromGarage(obj)
 									end,

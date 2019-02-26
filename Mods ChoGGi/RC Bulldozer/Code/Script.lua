@@ -23,7 +23,7 @@ Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_ve
 end
 
 -- local funcs for that small bit o' speed
-local StringFormat = string.format
+
 local TableConcat = rawget(_G, "oldTableConcat") or table.concat
 local type = type
 
@@ -52,7 +52,7 @@ end
 
 local name = [[RC Bulldozer]]
 local description = [[Crush, Kill, Destroy]] -- Sarcófago not lost in space...
-local display_icon = StringFormat("%sUI/rover_combat.png",CurrentModPath)
+local display_icon = CurrentModPath .. "UI/rover_combat.png"
 
 local entity1 = "CombatRover"
 local entity2 = "CombatRover"
@@ -78,9 +78,9 @@ local function Trans(...)
 	return _InternalTranslate(T{...})
 end
 
-local idle_text = StringFormat([[Radius: %s, %s: %s]],"%s",Trans(49--[[Status--]]),Trans(6722--[[Idle--]]))
-local travel_text = StringFormat([[Radius: %s, %s: %s]],"%s",Trans(49--[[Status--]]),Trans(63--[[Travelling--]]))
-local flatten_text = StringFormat([[Radius: %s, %s: %s]],"%s",Trans(49--[[Status--]]),Trans(76--[[Performing maintenance--]]))
+local idle_text = "Radius: %s, " .. Trans(49--[[Status--]]) .. ": " .. Trans(6722--[[Idle--]])
+local travel_text = "Radius: %s, " .. Trans(49--[[Status--]]) .. ": " .. Trans(63--[[Travelling--]])
+local flatten_text = "Radius: %s, " .. Trans(49--[[Status--]]) .. ": " .. Trans(76--[[Performing maintenance--]])
 
 DefineClass.RCBulldozer = {
 	__parents = {
@@ -393,7 +393,7 @@ function OnMsg.InGameInterfaceCreated()
 	for i = 0, #TerrainTextures do
 		local hint
 		if TerrainTextures[i].name == "Dig" then
-			hint = string.format("Texture from original version\n%s",image:format(TerrainTextures[i].texture))
+			hint = "Texture from original version\n" .. TerrainTextures[i].texture
 		else
 			hint = image:format(TerrainTextures[i].texture)
 		end

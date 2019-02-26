@@ -26,7 +26,7 @@ local name = [[RC Mechanic]]
 local description = [[Give me your tired, your poor,
 Your huddled masses yearning to breathe free,
 The wretched refuse of your teeming shore.]]
-local display_icon = string.format("%sUI/rover_combat.png",CurrentModPath)
+local display_icon = CurrentModPath .. "UI/rover_combat.png"
 local idle_text = _InternalTranslate(T(6722--[[Idle--]]))
 local travel_text = _InternalTranslate(T(63--[[Travelling--]]))
 
@@ -132,14 +132,14 @@ function RCMechanic:ProcAutomation()
 	if rover then
 		local pos = GetPassablePointNearby(rover:GetPos())
 		if self:HasPath(pos, "Workrover") then
-			self.status_text = string.format([[Was the dark of the moon on the sixth of June
-In a <color 199 124 45>%s</color> pullin' logs
+			self.status_text = [[Was the dark of the moon on the sixth of June
+In a <color 199 124 45>]] .. (rover.name ~= "" and rover.name or rover.class) .. [[</color> pullin' logs
 Cab-over Pete with a reefer on
 And a Jimmy haulin' hogs
 We is headin' for bear on I-one-oh
 'Bout a mile outta Shaky Town
 I says, "Pig Pen, this here's the Rubber Duck.
-"And I'm about to put the hammer down."]],rover.name ~= "" and rover.name or rover.class)
+"And I'm about to put the hammer down."]]
 			self:Goto(pos)
 			-- find a way to slow this down?
 			rover:CheatCleanAndFix()

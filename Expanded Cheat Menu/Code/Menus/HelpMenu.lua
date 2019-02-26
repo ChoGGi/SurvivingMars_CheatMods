@@ -24,7 +24,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Help",
 		ActionId = ".Extract HPKs",
 		ActionIcon = "CommonAssets/UI/Menu/editmapdata.tga",
-		RolloverText = S[302535920001363--[[Shows list of Steam downloaded mod hpk files for extraction (or use hpk.exe).--]]],
+		RolloverText = S[302535920001363--[[Shows list of Steam/Paradox downloaded mod hpk files for extraction (or use hpk.exe).--]]],
 		OnAction = ChoGGi.MenuFuncs.ExtractHPKs,
 		ActionSortKey = "95.Extract HPKs",
 	}

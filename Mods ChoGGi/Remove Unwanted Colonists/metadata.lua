@@ -5,6 +5,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_RemoveUnwantedColonists",
 	"steam_id", "1594867237",
+	"pops_desktop_uuid", "9f2beb20-8ac6-4201-af9b-366308bd65fb",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
 	"code", {

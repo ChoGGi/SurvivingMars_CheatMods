@@ -4,8 +4,8 @@ ChoGGi_Alien_Settings = {
 	MaxSpawn = 10,
 }
 
-local StringFormat = string.format
-local image_pin = StringFormat("%sUI/Alien_Pin.png",CurrentModPath)
+
+local image_pin = string.format("%sUI/Alien_Pin.png",CurrentModPath)
 
 local GetDomeAtPoint = GetDomeAtPoint
 local DomeCollisionCheck = DomeCollisionCheck

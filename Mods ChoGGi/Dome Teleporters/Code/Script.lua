@@ -66,7 +66,7 @@ function OnMsg.ClassesPostprocess()
 			"description",[[It's a teleporter for your domes that acts like a passage.]],
 			"build_category","ChoGGi",
 			"Group", "ChoGGi",
-			"display_icon", string.format("%sUI/orbital_drop.png",CurrentModPath),
+			"display_icon", CurrentModPath .. "UI/orbital_drop.png",
 			"encyclopedia_exclude",true,
 			"on_off_button",true,
 			"prio_button", true,

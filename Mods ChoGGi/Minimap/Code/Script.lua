@@ -23,12 +23,12 @@ Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_ve
 end
 
 local IsValid = IsValid
-local StringFormat = string.format
+
 
 local image_mod = Mods.ChoGGi_MapImagesPack
 ChoGGi_Minimap = {
 	UseScreenshots = true,
-	image_str = image_mod and StringFormat("%sMaps/%s.png",image_mod.env.CurrentModPath,"%s"),
+	image_str = image_mod and string.format("%sMaps/%s.png",image_mod.env.CurrentModPath,"%s"),
 }
 
 function OnMsg.ModsReloaded()
@@ -127,7 +127,7 @@ function HUD.idMinimapOnPress()
 			local str = ChoGGi_Minimap.image_str
 			if not str then
 				local image_mod = Mods.ChoGGi_MapImagesPack
-				ChoGGi_Minimap.image_str = image_mod and StringFormat("%sMaps/%s.png",image_mod.env.CurrentModPath,"%s")
+				ChoGGi_Minimap.image_str = image_mod and string.format("%sMaps/%s.png",image_mod.env.CurrentModPath,"%s")
 				str = ChoGGi_Minimap.image_str
 			end
 			if str then

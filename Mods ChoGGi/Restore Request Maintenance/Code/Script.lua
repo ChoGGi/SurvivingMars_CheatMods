@@ -29,7 +29,7 @@ function OnMsg.ClassesGenerate()
 	local T = T
 	local _InternalTranslate = _InternalTranslate
 	local RebuildInfopanel = RebuildInfopanel
-	local StringFormat = string.format
+
 
 	function RequiresMaintenance:GetUIRequestMaintenanceStatus()
 		local status
@@ -39,7 +39,7 @@ function OnMsg.ClassesGenerate()
 			else
 				status = _InternalTranslate(T(389, "Maintenance already requested"))
 			end
-			return StringFormat("%s, Remaining: %s",status,self.maintenance_threshold_current - self.accumulated_maintenance_points)
+			return string.format("%s, Remaining: %s",status,self.maintenance_threshold_current - self.accumulated_maintenance_points)
 		end
 		return T(390, "No deterioration")
 	end

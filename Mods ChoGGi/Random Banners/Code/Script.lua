@@ -9,11 +9,11 @@ if g_AvailableDlc.gagarin then
 	end
 
 	local IsValidEntity = IsValidEntity
-	local StringFormat = string.format
+
 	function SponsorBannerBase:GetEntity()
-		local entity = StringFormat("%s%s",self.banner,table.rand(flag_spons))
+		local entity = string.format("%s%s",self.banner,table.rand(flag_spons))
 		if not IsValidEntity(entity) then
-			entity = StringFormat("%sIMM",self.banner)
+			entity = string.format("%sIMM",self.banner)
 		end
 		return entity
 

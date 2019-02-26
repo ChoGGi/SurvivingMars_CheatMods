@@ -2109,9 +2109,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				c2 = c2 + 1
 				data_meta[c2] = self:ConvertValueToInfo(k) .. " = " .. self:ConvertValueToInfo(v)
 			end
-			TableSort(data_meta, function(a, b)
-				return CmpLower(a, b)
-			end)
+			TableSort(data_meta,CmpLower)
 
 			-- add some info for HGE. stuff
 			local name = obj_metatable.__name

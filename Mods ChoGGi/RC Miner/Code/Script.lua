@@ -49,7 +49,7 @@ PortableMinerSettings = {
 
 -- local some repeat funcs
 local table = table
-local StringFormat = string.format
+
 local IsValid = IsValid
 local MovePointAway = MovePointAway
 local MapFindNearest = MapFindNearest

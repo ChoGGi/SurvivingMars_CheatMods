@@ -12,10 +12,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[Adds a "Profiles" button to the new game toolbar button area.
-
-Save Profile: Save current mission, cargo, and landing spot settings (will overwrite same name without asking).
-Load Profile:	Load saved mission profile.
-Delete Profile: Delete saved mission profile.
+Profile contains: Sponsor, Commander, Logo, Mystery, Rivals, Game Rules, Cargo, and Landing Spot.
 
 Known Issues: You have to change the "page" before settings are visually updated (probably figure it out next update).
 ]],

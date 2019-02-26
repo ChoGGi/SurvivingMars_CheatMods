@@ -59,7 +59,7 @@ local CmpLower = CmpLower
 local getmetatable = getmetatable
 local type = type
 local TableFind = table.find
-local StringFormat = string.format
+
 local IsKeyPressed = terminal.IsKeyPressed
 
 local pin_state_table = {
@@ -411,14 +411,18 @@ function PinsDlg:InitPinButton(button,...)
 
 			-- add dome text if any
 			if obj.dome or obj.parent_dome then
-				hint = StringFormat("<color 203 120 30>%s:</color> <color 255 200 200>%s</color>\n\n%s",str_dome,RetName(obj.dome or obj.parent_dome),hint)
+--~ 				hint = string.format("<color 203 120 30>%s:</color> <color 255 200 200>%s</color>\n\n%s",str_dome,RetName(obj.dome or obj.parent_dome),hint)
+				hint = "<color 203 120 30>" .. str_dome .. ":</color> <color 255 200 200>" .. RetName(obj.dome or obj.parent_dome) .. "</color>\n\n" .. hint
 			elseif obj.command_center then
-				hint = StringFormat("<color 203 120 30>%s:</color> <color 255 200 200>%s</color>\n\n%s",str_drones,RetName(obj.command_center),hint)
+--~ 				hint = string.format("<color 203 120 30>%s:</color> <color 255 200 200>%s</color>\n\n%s",str_drones,RetName(obj.command_center),hint)
+				hint = "<color 203 120 30>" .. str_drones .. ":</color> <color 255 200 200>" .. RetName(obj.command_center) .. "</color>\n\n" .. hint
 			else
-				hint = StringFormat("\n%s",hint)
+--~ 				hint = string.format("\n%s",hint)
+				hint = "\n" .. hint
 			end
 			-- then state text with two \n
-			hint = StringFormat("<color 203 120 30>%s:</color> <color 255 200 200>%s</color>\n%s",str_state,state_text,hint)
+--~ 			hint = string.format("<color 203 120 30>%s:</color> <color 255 200 200>%s</color>\n%s",str_state,state_text,hint)
+			hint = "<color 203 120 30>" .. str_state .. ":</color> <color 255 200 200>" .. state_text .. "</color>\n" .. hint
 
 			if obj.class ~= "SupplyRocket" or obj.class == "SupplyRocket" and obj.name ~= "" then
 				items[i] = {
@@ -452,11 +456,13 @@ function PinsDlg:InitPinButton(button,...)
 
 		-- sort by image then name
 		table.sort(items, function(a, b)
-			return CmpLower(StringFormat("%s%s",a.image,a.name), StringFormat("%s%s",b.image,b.name))
+--~ 			return CmpLower(string.format("%s%s",a.image,a.name), string.format("%s%s",b.image,b.name))
+			return CmpLower(a.image .. a.name, b.image .. b.name)
 		end)
 
 		-- personal touch
-		local count = StringFormat("%s #: %s",Trans(298035641454--[[Object--]]),#items)
+--~ 		local count = string.format("%s #: %s",Trans(298035641454--[[Object--]]),#items)
+		local count = Trans(298035641454--[[Object--]]) .. " #: " .. #items
 		if #items > 1 then
 			table.insert(items,1,{
 				name = count,
