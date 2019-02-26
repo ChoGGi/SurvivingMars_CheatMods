@@ -101,12 +101,5 @@ local function SomeCode()
 
 end
 
-function OnMsg.CityStart()
-  SomeCode()
-end
-
-function OnMsg.LoadGame()
-  SomeCode()
-end
-
-
+OnMsg.CityStart = SomeCode
+OnMsg.LoadGame = SomeCode

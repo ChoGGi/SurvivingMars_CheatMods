@@ -13,10 +13,5 @@ local function ChangeGender(c)
 	end
 end
 
-function OnMsg.ColonistArrived(c)
-	ChangeGender(c)
-end
-
-function OnMsg.ColonistBorn(c,event)
-	ChangeGender(c)
-end
+OnMsg.ColonistArrived = ChangeGender
+OnMsg.ColonistBorn = ChangeGender

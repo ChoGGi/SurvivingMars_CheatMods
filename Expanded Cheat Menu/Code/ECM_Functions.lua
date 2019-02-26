@@ -1258,6 +1258,7 @@ function OnMsg.ClassesGenerate()
 
 	do -- ExamineEntSpots
 		local spots_str = [[<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s,%s,%s" spot_scale="%s" spot_rot="%s,%s,%s,%s"/>]]
+		local DivRound = DivRound
 
 --~ local list = ChoGGi.ComFuncs.ExamineEntSpots(s,true)
 --~ list = ChoGGi.ComFuncs.TableConcat(list,"\n")
@@ -1354,17 +1355,20 @@ The func I use for spot_rot rounds to two decimal points...
 --~ 	ChoGGi.ComFuncs.ProcessHexSurfaces(s.entity)
 	-- not in a working state as yet (trying to re-create .ent/mtl files)
 	function ChoGGi.ComFuncs.ProcessHexSurfaces(entity,parent_or_ret)
+		local GetStates = GetStates
+		local GetStateIdx = GetStateIdx
+		local GetSurfaceHexShapes = GetSurfaceHexShapes
+		local HasAnySurfaces = HasAnySurfaces
+
 		local hexes = {}
 		local EntitySurfaces = EntitySurfaces
 		for name,surface_num in pairs(EntitySurfaces) do
 			if HasAnySurfaces(entity, surface_num) then
 				local all_states = GetStates(entity)
-				for _,state in ipairs(all_states) do
-					local state_idx = GetStateIdx(state)
+				for i = 1, #all_states do
+					local state_idx = GetStateIdx(all_states[i])
 					local outline, interior, hash = GetSurfaceHexShapes(entity, state_idx, surface_num)
---~ 					if #outline > 0 or #interior > 0 then
-						hexes[name] = {outline = outline, interior = interior, hash = hash}
---~ 					end
+					hexes[name] = {outline = outline, interior = interior, hash = hash}
 				end
 			end
 		end

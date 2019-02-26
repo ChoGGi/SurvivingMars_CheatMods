@@ -1770,6 +1770,10 @@ do -- Rebuildshortcuts
 	function ChoGGi.ComFuncs.Rebuildshortcuts()
 		local XShortcutsTarget = XShortcutsTarget
 
+		if type(XShortcutsTarget.UpdateToolbar) ~= "function" then
+			return
+		end
+
 		-- remove unwanted actions
 		for i = #XShortcutsTarget.actions, 1, -1 do
 			local a = XShortcutsTarget.actions[i]

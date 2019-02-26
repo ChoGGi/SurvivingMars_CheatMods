@@ -5,16 +5,9 @@ local S = ChoGGi.Strings
 local OnMsg = OnMsg
 
 -- we don't add shortcuts and ain't supposed to drink no booze
-function OnMsg.ShortcutsReloaded()
-	ChoGGi.ComFuncs.Rebuildshortcuts()
-end
-
+OnMsg.ShortcutsReloaded = ChoGGi.ComFuncs.Rebuildshortcuts
 -- so we at least have keys when it happens (what is "it"?)
-function OnMsg.ReloadLua()
-	if type(XShortcutsTarget.UpdateToolbar) == "function" then
-		ChoGGi.ComFuncs.Rebuildshortcuts()
-	end
-end
+OnMsg.ReloadLua = ChoGGi.ComFuncs.Rebuildshortcuts
 
 -- use this message to perform post-built actions on the final classes
 function OnMsg.ClassesBuilt()
@@ -31,18 +24,15 @@ function OnMsg.ClassesBuilt()
 end
 
 -- needed for UICity and some others that aren't created till around then
-function OnMsg.LoadGame()
-	ChoGGi.ComFuncs.RetName_Update()
-	ChoGGi.ComFuncs.UpdateStringsList()
-end
-function OnMsg.CityStart()
-	ChoGGi.ComFuncs.RetName_Update()
-	ChoGGi.ComFuncs.UpdateStringsList()
-end
+OnMsg.CityStart = ChoGGi.ComFuncs.RetName_Update
+OnMsg.CityStart = ChoGGi.ComFuncs.UpdateStringsList
+OnMsg.LoadGame = ChoGGi.ComFuncs.RetName_Update
+OnMsg.LoadGame = ChoGGi.ComFuncs.UpdateStringsList
+
 -- now i should probably go around and change all my localed strings...
+OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateStringsList
+OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateDataTables
 function OnMsg.TranslationChanged()
-	ChoGGi.ComFuncs.UpdateStringsList()
-	ChoGGi.ComFuncs.UpdateDataTables()
 	if UICity then
 		ChoGGi.ComFuncs.UpdateDataTablesCargo()
 	end

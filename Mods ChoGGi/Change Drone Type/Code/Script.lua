@@ -117,10 +117,5 @@ local function StartupCode()
 	city.drone_class = city.drone_class or GetMissionSponsor().drone_class or "Drone"
 end
 
-function OnMsg.CityStart()
-	StartupCode()
-end
-
-function OnMsg.LoadGame()
-	StartupCode()
-end
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode

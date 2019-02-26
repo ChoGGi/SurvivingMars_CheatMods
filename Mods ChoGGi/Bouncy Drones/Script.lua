@@ -1,26 +1,28 @@
 BouncyDrones = {}
 
-local function SomeCode()
-  --set options
-  for _,object in ipairs(UICity.labels.Drone or empty_table) do
-    object:SetGravity(BouncyDrones.Gravity or 2000)
-  end
-  for _,object in ipairs(UICity.labels.Rover or empty_table) do
-    object:SetGravity(BouncyDrones.GravityRC or 0)
-  end
-  for _,object in ipairs(UICity.labels.Colonist or empty_table) do
-    object:SetGravity(BouncyDrones.GravityColonist or 0)
-  end
+-- set options at start
+BouncyDrones.Update = function()
+	local labels = UICity.labels
 
+	local label = labels.Drone or ""
+	for i = 1, #label do
+    label[i]:SetGravity(BouncyDrones.Gravity or 2000)
+	end
+
+	label = labels.Rover or ""
+	for i = 1, #label do
+    label[i]:SetGravity(BouncyDrones.GravityRC or 0)
+	end
+
+	label = labels.Colonist or ""
+	for i = 1, #label do
+    label[i]:SetGravity(BouncyDrones.GravityColonist or 0)
+	end
 end
 
-function OnMsg.CityStart()
-  SomeCode()
-end
+OnMsg.CityStart = BouncyDrones.Update
+OnMsg.LoadGame = BouncyDrones.Update
 
-function OnMsg.LoadGame()
-  SomeCode()
-end
 
 function OnMsg.ModConfigReady()
   --get options
@@ -53,18 +55,6 @@ function OnMsg.ModConfigReady()
   })
 end
 
-function BouncyDrones:Update()
-  for _,object in ipairs(UICity.labels.Drone or empty_table) do
-    object:SetGravity(BouncyDrones.Gravity)
-  end
-  for _,object in ipairs(UICity.labels.Rover or empty_table) do
-    object:SetGravity(BouncyDrones.GravityRC)
-  end
-  for _,object in ipairs(UICity.labels.Colonist or empty_table) do
-    object:SetGravity(BouncyDrones.GravityColonist)
-  end
-end
-
 function OnMsg.ModConfigChanged(mod_id, option_id, value)
   if mod_id == "BouncyDrones" then
     if option_id == "Gravity" then
@@ -74,6 +64,6 @@ function OnMsg.ModConfigChanged(mod_id, option_id, value)
     elseif option_id == "GravityColonist" then
       BouncyDrones.GravityColonist = value
     end
-    BouncyDrones:Update()
+    BouncyDrones.Update()
   end
 end
