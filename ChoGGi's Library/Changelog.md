@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v5.6 (Unreleased)
+## v5.7 (Unreleased)
+
+## v5.6 (25 Feb 2019)
 - Changed my AttachSpots toggle func to only clear text objs from itself.
 - Changed my in-game objects to use an "O" prefix to keep them separate from my Xwin objects.
 - Changed my Show/Clear Obj funcs to support removing marked objs in Examine.
