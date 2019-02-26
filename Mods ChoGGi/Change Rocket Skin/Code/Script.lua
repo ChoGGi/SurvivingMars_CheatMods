@@ -19,15 +19,13 @@ local function GetSkins()
 	return rockets,palettes
 end
 
-local insert = table.insert
-
 if g_AvailableDlc.gagarin then
-	insert(rockets,3,"ArcPod")
-	insert(palettes,3,ArkPod.rocket_palette)
-	insert(rockets,3,"ZeusRocket")
-	insert(palettes,3,ZeusRocket.rocket_palette)
-	insert(rockets,3,"SpaceYDragonRocket")
-	insert(palettes,3,DragonRocket.rocket_palette)
+	rockets[#rockets+1] = "ArcPod"
+	palettes[#palettes+1] = ArkPod.rocket_palette
+	rockets[#rockets+1] = "ZeusRocket"
+	palettes[#palettes+1] = ZeusRocket.rocket_palette
+	rockets[#rockets+1] = "SpaceYDragonRocket"
+	palettes[#palettes+1] = DragonRocket.rocket_palette
 	ZeusRocket.GetSkins = GetSkins
 	DragonRocket.GetSkins = GetSkins
 end

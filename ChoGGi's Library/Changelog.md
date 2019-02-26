@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v5.7 (Unreleased)
+- RetName was returning some userdata: "id" instead of translated strings.
 
 ## v5.6 (25 Feb 2019)
 - Changed my AttachSpots toggle func to only clear text objs from itself.

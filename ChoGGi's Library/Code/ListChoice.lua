@@ -551,7 +551,7 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 		self.items[#self.items] = {
 			text = name_str,
 			value = value,
-			hint = 302535920000079--[[* Use this custom value--]],
+			hint = S[302535920000079--[[* Use this custom value--]]],
 		}
 		local item = self.items[#self.items]
 		local listitem = self.idList[#self.idList]
