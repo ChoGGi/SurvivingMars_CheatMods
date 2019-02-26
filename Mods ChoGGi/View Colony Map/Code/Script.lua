@@ -24,7 +24,7 @@ local image_str = Mods.ChoGGi_MapImagesPack.env.CurrentModPath .. "Maps/"
 -- tell people how to get my library mod (if needs be)
 function OnMsg.ModsReloaded()
 	-- version to version check with
-	local min_version = 55
+	local min_version = 56
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 	local p = Platform
 
