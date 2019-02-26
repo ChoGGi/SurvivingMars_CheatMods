@@ -1749,7 +1749,6 @@ function Examine:ConvertValueToInfo(obj)
 				end
 
 				local name = RetName(obj)
-
 				if obj.class and name ~= obj.class then
 					name = obj.class .. " (len: " .. table_data .. ", " .. name .. ")"
 				else
@@ -1794,7 +1793,7 @@ function Examine:ConvertValueToInfo(obj)
 			if meta and meta.__name then
 				trans_str = trans_str .. "userdata (" .. meta.__name .. ")"
 			else
-				trans_str = trans_str .. "userdata"
+				trans_str = trans_str .. tostring(obj)
 			end
 
 			return trans_str .. HLEnd
@@ -2439,10 +2438,6 @@ function Examine:BuildParents(list,list_type,title,sort_type)
 end
 
 function Examine:SetObj(startup)
-	-- save and restore scroll pos after setobj
-	local scrollx,scrolly = self.idScrollArea.PendingOffsetx,self.idScrollArea.PendingOffsetY
-	local scrollv,scrollh = self.idScrollV.Scroll,self.idScrollH.Scroll
-
 	local obj = self.obj
 
 	-- reset the hyperlinks
@@ -2551,22 +2546,19 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 	end
 
 	-- for bigger lists like _G or MapGet(true): we add a slight delay, so the dialog shows up (progress is happening user)
-	CreateRealTimeThread(function()
-		if startup then
+		if startup or self.is_chinese then
+			CreateRealTimeThread(function()
 --~ ChoGGi.ComFuncs.TickStart("Examine")
-			WaitMsg("OnRender")
-			self.idText:SetText(self:ConvertObjToInfo(obj,obj_type))
+				WaitMsg("OnRender")
+				self.idText:SetText(self:ConvertObjToInfo(obj,obj_type))
 --~ ChoGGi.ComFuncs.TickEnd("Examine",self.name)
+			end)
 		else
+			-- we normally don't want it in a thread with OnRender else it'll mess up my scroll pos (and stuff)
 			self.idText:SetText(self:ConvertObjToInfo(obj,obj_type))
 		end
 
-		self.idScrollArea:ScrollTo(scrollx,scrolly)
-		WaitMsg("OnRender")
-		self.idScrollV:SetScroll(scrollv)
-		self.idScrollH:SetScroll(scrollh)
-	end)
-
+	-- comments are good for stuff like this
 	return obj_class
 end
 

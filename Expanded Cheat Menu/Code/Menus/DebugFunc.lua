@@ -1120,15 +1120,15 @@ that'll activate the BadPrefab on it
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = 302535920000467--[[Path Markers--]],
+				title = S[302535920000467--[[Path Markers--]]],
 				check = {
 					{
-						title = 302535920000876--[[Remove Waypoints--]],
-						hint = 302535920000877--[[Remove waypoints from the map and reset colours (select any object type to remove them all).--]],
+						title = S[302535920000876--[[Remove Waypoints--]]],
+						hint = S[302535920000877--[[Remove waypoints from the map and reset colours (select any object type to remove them all).--]]],
 					},
 					{
-						title = 302535920001382--[[Real time--]],
-						hint = 302535920000462--[[Maps paths in real time--]],
+						title = S[302535920001382--[[Real time--]]],
+						hint = S[302535920000462--[[Maps paths in real time--]]],
 						checked = true,
 					},
 				},

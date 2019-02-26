@@ -107,6 +107,7 @@ local CheckText = ChoGGi.ComFuncs.CheckText
 do -- RetName
 	local IsObjlist = IsObjlist
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
+	local Trans = ChoGGi.ComFuncs.Translate
 
 	-- we use this table to display names of (some) tables for RetName
 	local lookup_table = {}
@@ -222,7 +223,10 @@ do -- RetName
 						end
 					end
 				end
-
+				--
+				if type(name) == "userdata" then
+					name = Trans(name)
+				end
 			end -- if table
 
 		elseif obj_type == "userdata" then
@@ -4008,8 +4012,8 @@ do -- ChangeSurfaceSignsToMaterials
 	function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
 
 		local ItemList = {
-			{text = Trans(754117323318--[[Enable--]]),value = true,hint = 302535920001081--[[Changes signs to materials.--]]},
-			{text = Trans(251103844022--[[Disable--]]),value = false,hint = 302535920001082--[[Changes materials to signs.--]]},
+			{text = Trans(754117323318--[[Enable--]]),value = true,hint = S[302535920001081--[[Changes signs to materials.--]]]},
+			{text = Trans(251103844022--[[Disable--]]),value = false,hint = S[302535920001082--[[Changes materials to signs.--]]]},
 		}
 
 		local function CallBackFunc(choice)

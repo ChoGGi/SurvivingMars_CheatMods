@@ -1039,18 +1039,18 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			callback = CallBackFunc,
 			items = ItemList,
 			sortby = "sort",
-			title = 302535920000975--[[Custom Lightmodel--]],
-			hint = 302535920000976--[[Use double right click to test without closing dialog
+			title = S[302535920000975--[[Custom Lightmodel--]]],
+			hint = S[302535920000976--[[Use double right click to test without closing dialog
 
-	Some settings can't be changed in the editor, but you can manually add them in the settings file (type OpenExamine(LightmodelPresets) and use dump obj).--]],
+	Some settings can't be changed in the editor, but you can manually add them in the settings file (type OpenExamine(LightmodelPresets) and use dump obj).--]]],
 			check = {
 				{
-					title = 302535920000977--[[Semi-Permanent--]],
-					hint = 302535920000978--[[Make it stay at selected light model till reboot (use Misc>Change Light Model for Permanent).--]],
+					title = S[302535920000977--[[Semi-Permanent--]]],
+					hint = S[302535920000978--[[Make it stay at selected light model till reboot (use Misc>Change Light Model for Permanent).--]]],
 				},
 				{
-					title = 302535920000979--[[Presets--]],
-					hint = 302535920000980--[[Opens up the list of premade styles so you can start with the settings from one.--]],
+					title = S[302535920000979--[[Presets--]]],
+					hint = S[302535920000980--[[Opens up the list of premade styles so you can start with the settings from one.--]]],
 				},
 			},
 			custom_type = 5,
