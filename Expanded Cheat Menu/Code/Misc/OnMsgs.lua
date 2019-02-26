@@ -910,13 +910,8 @@ do -- ColonistCreated
 
 	end
 
-	function OnMsg.ColonistArrived(obj)
-		ColonistCreated(obj)
-	end --OnMsg
-
-	function OnMsg.ColonistBorn(obj)
-		ColonistCreated(obj,true)
-	end --OnMsg
+	OnMsg.ColonistArrived = ColonistCreated
+	OnMsg.ColonistBorn = ColonistCreated
 end -- do
 
 function OnMsg.SelectionAdded(obj)
@@ -1024,6 +1019,7 @@ function OnMsg.NewHour()
 end
 
 -- const.MinuteDuration is 500 ticks (GameTime)
+--~ OnMsg.NewMinute = FlushLogFile
 --~ function OnMsg.NewMinute()
 --~ 	FlushLogFile()
 --~ end

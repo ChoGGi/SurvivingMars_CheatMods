@@ -456,6 +456,9 @@ function ChoGGi_Window:AddElements()
 	local g_Classes = g_Classes
 	local ChoGGi = ChoGGi
 
+	-- good as any place to call it (if i open a dialog with a different cursor this resets it)
+	SetUIMouseCursor(const.DefaultMouseCursor)
+
 	g_ChoGGiDlgs[self] = self.class
 
 	-- scale to UI (See OnMsgs.lua for UIScale)
@@ -518,6 +521,9 @@ function ChoGGi_Window:AddElements()
 			close(...)
 			self:Close("cancel",false)
 		end,
+--~ 		OnMouseEnter = function()
+--~ 			SetUIMouseCursor("UI/Cursors/Salvage_no.tga")
+--~ 		end,
 	}, self.idTitleRightSection)
 
 	-- throws error if we try to get display_icon from _G

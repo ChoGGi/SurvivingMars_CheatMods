@@ -43,7 +43,4 @@ function OnMsg.LoadGame()
   LargerDeposits()
   RefillAllDeposits()
 end
-
-function OnMsg.NewDay()
-  RefillAllDeposits()
-end
+OnMsg.NewDay = RefillAllDeposits

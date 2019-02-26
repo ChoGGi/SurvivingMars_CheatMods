@@ -4,7 +4,7 @@
 
 ## v12.6 (25 Feb 2019)
 ### Added:
-- Any Dome:CrimeEvents_ functions to a list in the cheats section of the selection panel.
+- Dome:CrimeEvents_ functions to a list in the cheats section of the selection panel.
 - Infopanel Cheats>ToggleCollision: It's a shortcut to Debug>Toggle Object Collision.
 
 ### Changed:

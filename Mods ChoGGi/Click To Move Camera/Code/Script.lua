@@ -78,10 +78,5 @@ local function StartupCode()
 	end
 end
 
-function OnMsg.CityStart()
-	StartupCode()
-end
-
-function OnMsg.LoadGame()
-	StartupCode()
-end
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode

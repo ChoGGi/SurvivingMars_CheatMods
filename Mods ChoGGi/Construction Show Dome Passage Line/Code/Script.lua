@@ -110,13 +110,9 @@ local function BuildExistingDomeSpots()
 		BuildMarkers(domes[i])
   end
 end
-function OnMsg.LoadGame()
-  BuildExistingDomeSpots()
-end
+OnMsg.LoadGame = BuildExistingDomeSpots
 -- I doubt any domes are on a new game (maybe a tutorial level?)
-function OnMsg.CityStart()
-  BuildExistingDomeSpots()
-end
+OnMsg.CityStart = BuildExistingDomeSpots
 
 -- sort the dome spots by the nearest to the "pos"
 local function RetNearestSpot(dome,pos)

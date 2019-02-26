@@ -249,9 +249,7 @@ function OnMsg.CityStart()
 	end)
 end
 
-function OnMsg.LoadGame()
-	StartupCode()
-end
+OnMsg.LoadGame = StartupCode
 
 -- kill off the threads (spews c func persist errors in log)
 function OnMsg.SaveGame()

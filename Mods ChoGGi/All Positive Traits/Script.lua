@@ -1,7 +1,7 @@
 local positive_traits = {}
 local negative_traits = {}
 
--- this will allow us to add/remove any custom traits
+-- this will allow us to add/remove any mod-added traits
 function OnMsg.ModsReloaded()
   table.iclear(positive_traits)
 	local cp = 0
@@ -33,14 +33,9 @@ local function UpdateTraits(c)
   SetTraits(c,negative_traits,"RemoveTrait")
 end
 
--- fires on colonist got off rocket
-function OnMsg.ColonistArrived(colonist)
-  UpdateTraits(colonist)
-end
--- fires on colonist born
-function OnMsg.ColonistBorn(colonist)
-  UpdateTraits(colonist)
-end
+OnMsg.ColonistArrived = UpdateTraits
+OnMsg.ColonistBorn = UpdateTraits
+
 -- fires when game is loaded
 function OnMsg.LoadGame()
   local colonists = UICity.labels.Colonist or ""
