@@ -173,7 +173,7 @@ Come on and sing it with me, car wash
 Sing it with the feeling now, car wash, yeah]],
 			"build_category","ChoGGi",
 			"Group", "ChoGGi",
-			"display_icon", string.format("%sUI/carwash.png",CurrentModPath),
+			"display_icon", CurrentModPath .. "UI/carwash.png",
 			"entity", "Farm",
 			"electricity_consumption", 2500,
 			"water_consumption", 0,

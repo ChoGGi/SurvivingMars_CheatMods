@@ -245,7 +245,7 @@ function OnMsg.ClassesBuilt()
 				[[Little-death]],
 				[[Destroy the poor defenseless harvester]],
 				[[Spareth ye sprynge]],
-				string.format("%sUI/Wormy.png",CurrentModPath)
+				CurrentModPath .. "UI/Wormy.png",
 			)
 			---
 		end,

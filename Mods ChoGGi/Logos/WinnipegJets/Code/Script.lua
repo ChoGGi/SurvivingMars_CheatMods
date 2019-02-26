@@ -1,6 +1,6 @@
 local DelayedLoadEntity = DelayedLoadEntity
 local PlaceObj = PlaceObj
-local StringFormat = string.format
+
 
 -- copy n paste from ChoGGi.ComFuncs.LoadEntity
 do -- LoadEntity
@@ -41,7 +41,7 @@ do -- LoadEntity
 
 	-- Mars Marx, eh close enough
 	local mod = Mods.ChoGGi_Logos_WinnipegJets
-	local ent_path = StringFormat("%sEntities/%s.ent",mod.env.CurrentModPath,"%s")
+	local ent_path = string.format("%sEntities/%s.ent",mod.env.CurrentModPath,"%s")
 
 	local function LoadDecal(name)
 		LoadEntity(
@@ -55,13 +55,13 @@ do -- LoadEntity
 	LoadDecal("WinnipegJets2018")
 end -- LoadEntity
 
-local logo_path = StringFormat("%sUI/%s.png",mod.env.CurrentModPath,"%s")
+local logo_path = string.format("%sUI/%s.png",mod.env.CurrentModPath,"%s")
 local function LoadLogo(name,display)
 	PlaceObj("MissionLogoPreset", {
 		display_name = display,
 		decal_entity = name,
 		entity_name = name,
-		id = StringFormat("ChoGGi.Logos.%s",name),
+		id = string.format("ChoGGi.Logos.%s",name),
 		image = logo_path:format(name),
 	})
 end

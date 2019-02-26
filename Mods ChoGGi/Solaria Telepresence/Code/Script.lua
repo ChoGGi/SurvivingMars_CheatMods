@@ -152,7 +152,7 @@ Right click to view selected list item building.]]
 			pos = pos,
 			name = RetName(obj),
 			-- provide a slight reference
-			hint = string.format("%s at pos: %s",hint,pos),
+			hint = hint .. " at pos: " .. pos,
 			clicked = function(_,_,button)
 				ClickObj(self,obj,button,which)
 			end,
@@ -355,7 +355,7 @@ Worker amount is dependent on controlled building.
 Telepresence control may take up to a shift to propagate to controlled building.]],
 			"build_category","ChoGGi",
 			"Group", "ChoGGi",
-			"display_icon", string.format("%sUI/TheIncal.png",CurrentModPath),
+			"display_icon", CurrentModPath .. "UI/TheIncal.png",
 			"build_pos", 12,
 			"label1", "InsideBuildings",
 			"label2", "Workshop",
@@ -421,7 +421,7 @@ Right click in list to view (closes menu).]])
 					end
 				end
 				ChoGGi.ComFuncs.QuestionBox(
-					string.format([[Are you sure you want to remove telepresence viewing from %s located at %s]],RetName(building),building:GetVisualPos()),
+					"Are you sure you want to remove telepresence viewing from " .. RetName(building) .. " located at " .. building:GetVisualPos(),
 					CallBackFunc,
 					[[Solaria Telepresence]]
 				)

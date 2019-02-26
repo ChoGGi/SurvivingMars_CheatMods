@@ -10,7 +10,7 @@ OrbitalPrefabDrops = {
 }
 local models = {"SupplyPod","Hex1_Placeholder","ArcPod"}
 
-local StringFormat = string.format
+
 local Sleep = Sleep
 local PlayFX = PlayFX
 local IsValid = IsValid
@@ -203,7 +203,7 @@ function ConstructionSite:GameInit()
 	-- is inner or outer building
 	local outside,inside
 	for i = 1, 3 do
-		local label = self.building_class_proto[StringFormat("label%s",i)]
+		local label = self.building_class_proto[string.format("label%s",i)]
 		if label == "OutsideBuildings" then
 		 outside = true
 		 break

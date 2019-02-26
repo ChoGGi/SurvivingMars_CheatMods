@@ -58,55 +58,66 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ExtractHPKs"))
 			return
 		end
-
 		local ItemList = {}
 		local c = 0
+
 		-- not much point without steam
-		if Platform.steam and IsSteamAvailable() then
+		if Platform.steam or Platform.pops then
+			local mod_folders = {}
+
 			-- if user installed mod while game is running
 			print("ECM ExtractHPKs ModsReloadDefs:")
 			ModsReloadDefs()
 
-			-- loop through each mod and make a table of steam ids, so we don't have to loop for each mod below
-			local mod_table = {}
-			local Mods = Mods
-			for _,value in pairs(Mods) do
-				-- default id is 0 for non-steam mods (which we don't care about)
-				mod_table[value.steam_id] = value
+			if Platform.steam and IsSteamAvailable() then
+				table.append(mod_folders, SteamWorkshopItems())
+			end
+			if Platform.pops then
+				table.append(mod_folders, io.listfiles(const.PopsModsDownloadPath, "*", "folders, non recursive"))
 			end
 
-			local steam_folders = SteamWorkshopItems()
-			for i = 1, #steam_folders do
-				local mod = steam_folders[i]
+			-- loop through each mod and make a table of ids, so we don't have to loop for each mod below
+			local mod_table = {}
+			local Mods = Mods
+			for _,mod in pairs(Mods) do
+				mod_table[mod.steam_id] = mod
+				mod_table[mod.pops_any_uuid] = mod
+				mod_table[mod.pops_desktop_uuid] = mod
+			end
+
+			for i = 1, #mod_folders do
+				local folder = mod_folders[i]
 				-- need to reverse string so it finds the last \, since find looks ltr
-				local slash = mod:reverse():find("\\")
+				local slash = folder:reverse():find("\\")
 				-- we need a neg number for sub + 1 to remove the slash
-				local id = mod:sub((slash * -1) + 1)
-				local hpk = mod:gsub("\\", "/") .. "/ModContent.hpk"
+				local id = folder:sub((slash * -1) + 1)
+
+				local hpk = folder:gsub("\\", "/") .. "/ModContent.hpk"
 				-- skip any mods that aren't packed (uploaded by ECM, or just old)
-				if mod_table[id] and FileExists(hpk) then
+				local mod = mod_table[id]
+				if mod and FileExists(hpk) then
 					-- yeah lets make our image parsing use spaces... I'm sure nobody uses those in file paths.
-					local hint_str = "\n%s\n\n\n\n<image %s>"
-					if mod_table[id].image:find(" ") or mod_table[id].path:find(" ") then
-						mod_table[id].image = ""
-						hint_str = "\n%s%s"
+					if mod.image:find(" ") or mod.path:find(" ") then
+						mod.image = ""
+					else
+						mod.image = "\n\n\n\n<image " .. mod.image .. ">"
 					end
 					c = c + 1
 					ItemList[c] = {
-						author = mod_table[id].author,
-						text = mod_table[id].title,
+						author = mod.author,
+						text = mod.title,
 						value = hpk,
-						hint = hint_str:format(
-							S[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.--]]]:format(mod_table[id].author),
-							mod_table[id].image
-						),
+						hint = "\n"
+							.. S[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.--]]]:format(mod.author)
+							.. mod.image,
 						id = id,
 					}
 				end
 			end
+
 		else
 			MsgPopup(
-				Trans(1000760--[[Not Steam--]]),
+				Trans(1000760--[[Not Steam--]]) .. "/" .. Trans(1000759--[[Not Paradox--]]),
 				S[302535920001362--[[Extract HPKs--]]]
 			)
 			return
@@ -369,12 +380,22 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 							item_id = mod.steam_id
 						-- paradox mods
 						else
-							-- desktop
-							if para_platform then
+							-- we override the Platform checkbox if a uuid is in metadata.lua
+							-- if both are "" then it's probably a new mod, otherwise check for a uuid and use that prop
+							if mod.pops_desktop_uuid == "" and mod.pops_any_uuid == "" then
+								-- desktop
+								if para_platform then
+									mod_params.publish_os = "windows"
+									mod_params.uuid_property = "pops_desktop_uuid"
+								-- desktop/console
+								else
+									mod_params.publish_os = "any"
+									mod_params.uuid_property = "pops_any_uuid"
+								end
+							elseif mod.pops_desktop_uuid ~= "" then
 								mod_params.publish_os = "windows"
 								mod_params.uuid_property = "pops_desktop_uuid"
-							-- desktop/console
-							else
+							elseif mod.pops_any_uuid ~= "" then
 								mod_params.publish_os = "any"
 								mod_params.uuid_property = "pops_any_uuid"
 							end
@@ -555,7 +576,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 			end
 			if not (Platform.steam or Platform.pops) then
 				MsgPopup(
-					Trans(1000760--[[Not Steam--]]) .. " || " .. Trans(1000759--[[Not Paradox--]]),
+					Trans(1000760--[[Not Steam--]]) .. "/" .. Trans(1000759--[[Not Paradox--]]),
 					S[302535920000367--[[Mod Upload--]]]
 				)
 				return
@@ -569,21 +590,19 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 			local c = 0
 			local Mods = Mods
 			for id,mod in pairs(Mods) do
-				local hint_str = "%s%s"
 				local image = ""
 				-- env_old is from my helpermod
 				local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
 				if mod.image ~= "" and not path:find(" ") then
-					hint_str = "<image %s>\n%s"
-					-- i don't know how to find rtl, so we'll reverse and find it that way. that said what's up with appending the path, can't you just do it when you need to?
+					-- i don't know how to find rtl, so we'll reverse and find it that way.
 					local slash = mod.image:reverse():find("/")
-					image = path .. "" .. mod.image:sub((slash - 1) * -1)
+					image = "<image " .. path .. "" .. mod.image:sub((slash - 1) * -1) .. ">\n\n"
 				end
 				c = c + 1
 				ItemList[c] = {
 					text = mod.title,
 					value = id,
-					hint = hint_str:format(image,mod.description),
+					hint = image .. mod.description,
 					mod = mod,
 					path = path,
 				}

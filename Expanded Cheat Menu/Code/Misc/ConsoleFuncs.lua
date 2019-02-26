@@ -87,10 +87,7 @@ function OnMsg.ClassesGenerate()
 		local list = ChoGGi.UserSettings.ConsoleExamineList or ""
 		local submenu
 
-		TableSort(list,function(a,b)
-			-- damn eunuchs
-			return CmpLower(a,b)
-		end)
+		TableSort(list,CmpLower)
 
 		for i = 0, #list do
 			ExamineMenuToggle_list[i] = BuildExamineItem(list[i])

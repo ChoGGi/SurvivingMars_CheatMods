@@ -1,6 +1,6 @@
 local CurrentModPath = CurrentModPath
 local PlaceObj = PlaceObj
-local StringFormat = string.format
+
 
 -- copy n paste from ChoGGi.ComFuncs.LoadEntity
 do -- LoadEntity
@@ -41,7 +41,7 @@ do -- LoadEntity
 
 	LoadEntity(
 		"StarshipTroopers",
-		StringFormat("%sEntities/StarshipTroopers.ent",CurrentModPath),
+		string.format("%sEntities/StarshipTroopers.ent",CurrentModPath),
 		Mods.ChoGGi_Logos_StarshipTroopers
 	)
 end -- LoadEntity
@@ -52,6 +52,6 @@ function OnMsg.ClassesPostprocess()
 		decal_entity = "StarshipTroopers",
 		entity_name = "StarshipTroopers",
 		id = "ChoGGi.Logos.StarshipTroopers",
-		image = StringFormat("%sUI/StarshipTroopers.png",CurrentModPath),
+		image = string.format("%sUI/StarshipTroopers.png",CurrentModPath),
 	})
 end

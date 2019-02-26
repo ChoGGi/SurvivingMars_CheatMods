@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local type,string = type,string
-local StringFormat = string.format
 
 function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
