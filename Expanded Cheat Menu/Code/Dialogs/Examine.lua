@@ -57,7 +57,6 @@ local DotNameToObject
 local GetParentOfKind
 local IsControlPressed
 local OpenInExamineDlg
-local PopupToggle
 local Random
 local RandomColour
 local RetName
@@ -82,7 +81,6 @@ function OnMsg.ClassesGenerate()
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 	IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 	OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
-	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	Random = ChoGGi.ComFuncs.Random
 	RandomColour = ChoGGi.ComFuncs.RandomColour
 	RetName = ChoGGi.ComFuncs.RetName
@@ -507,7 +505,7 @@ function Examine:idTextOnHyperLinkRollover(link, box)
 		name = S[302535920001540--[[Show context menu for %s.--]]]:format(name)
 	end
 
-	XCreateRolloverWindow(self.idText, RolloverGamepad, true, {
+	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
 		RolloverTitle = title,
 		RolloverText = name,
 		RolloverHint = S[302535920001079--[[<left_click> Default Action <right_click> Examine--]]],
@@ -821,7 +819,7 @@ local function CallMenu(self,popup_id,items,pt,button,...)
 		dlg[items].FocusedBackground = -9868951
 		dlg[items].PressedBackground = -12500671
 		dlg[items].TextStyle = "ChoGGi_CheckButtonMenuOpp"
-		PopupToggle(self,dlg[popup_id],dlg[items],"bottom")
+		ChoGGi.ComFuncs.PopupToggle(self,dlg[popup_id],dlg[items],"bottom")
 	end
 end
 
@@ -1603,13 +1601,22 @@ function Examine:ShowExecCodeWithCode(code)
 	self.idExecCode:SetCursor(1,#self.idExecCode:GetText())
 end
 
-function Examine:OpenListMenu(_,obj_name,_,box)
+function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 	self.list_menu_table = self.list_menu_table or {}
+	self.list_menu_exts = self.list_menu_exts or {
+		[".dds"] = true,
+		[".tga"] = true,
+		[".png"] = true,
+	}
+
 	self.opened_list_menu = Random()
 
-	-- they're sent as strings, i need to know if it's a number or string
-	obj_name = RetProperType(obj_name)
-	local obj_type = type(obj_name)
+	-- they're sent as strings
+	local obj_prop = RetProperType(obj_name)
+	-- but I need to know if it's a number or string and so on
+	local obj_type = type(obj_prop)
+
+	local obj_value_str = tostring(self.obj_ref[obj_prop])
 
 	local list = {
 		{name = obj_name,
@@ -1628,9 +1635,9 @@ function Examine:OpenListMenu(_,obj_name,_,box)
 			image = "CommonAssets/UI/Menu/DeleteArea.tga",
 			clicked = function()
 				if obj_type == "string" then
-					self:ShowExecCodeWithCode("o." .. tostring(obj_name) .. " = nil")
+					self:ShowExecCodeWithCode("o." .. obj_name .. " = nil")
 				else
-					self:ShowExecCodeWithCode("table.remove(o" .. "," .. tostring(obj_name) .. ")")
+					self:ShowExecCodeWithCode("table.remove(o" .. "," .. obj_name .. ")")
 				end
 			end,
 		},
@@ -1638,18 +1645,29 @@ function Examine:OpenListMenu(_,obj_name,_,box)
 			hint = S[302535920001539--[[Change the value of %s.--]]]:format(obj_name),
 			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
 			clicked = function()
-				self:ShowExecCodeWithCode("o." .. tostring(obj_name) .. " = " .. tostring(self.obj_ref[obj_name]))
+				self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. obj_value_str)
 			end,
 		},
 	}
+	-- if it's an image path then we add an image viewer
+	if self.list_menu_exts[obj_value_str:sub(-4)] then
+		list[#list+1] = {name = S[302535920001469--[[Image Viewer--]]],
+			hint = S[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."--]]],
+			image = "CommonAssets/UI/Menu/light_model.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.OpenInImageViewerDlg(obj_value_str,self)
+			end,
+		}
+	end
+	-- style it like the other examine menus
 	list.Background = -9868951
 	list.FocusedBackground = -9868951
 	list.PressedBackground = -12500671
 	list.TextStyle = "ChoGGi_CheckButtonMenuOpp"
-
+	-- make a fake anchor for PopupToggle to use (
 	self.list_menu_table.ChoGGi_self = self
-	self.list_menu_table.box = box
-	PopupToggle(self.list_menu_table,self.opened_list_menu,list,"left")
+	self.list_menu_table.box = hyperlink_box
+	ChoGGi.ComFuncs.PopupToggle(self.list_menu_table,self.opened_list_menu,list,"left")
 end
 
 function Examine:ConvertValueToInfo(obj)

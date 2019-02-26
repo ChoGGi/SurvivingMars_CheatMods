@@ -3889,7 +3889,7 @@ function ChoGGi.ComFuncs.DeleteLargeRocks()
 	ChoGGi.ComFuncs.QuestionBox(
 		Trans(6779--[[Warning--]]) .. "!\n" .. S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
 		CallBackFunc,
-		Trans(6779--[[Warning--]]) .. ": " ..S[302535920000855--[[Last chance before deletion!--]]]
+		Trans(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 

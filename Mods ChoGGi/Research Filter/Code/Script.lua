@@ -62,7 +62,7 @@ function OpenResearchDialog()
 		local input = XEdit:new({
 			Id = "idFilterBar",
 			RolloverTemplate = "Rollover",
-			RolloverTitle = "Info",
+			RolloverTitle = Trans(T(126095410863,"Info")),
 			RolloverText = [[Filter checks name, description, and id.
 <color 0 200 0>Shift-Enter</color> to clear.]],
 			Hint = [[Tech Filter]],

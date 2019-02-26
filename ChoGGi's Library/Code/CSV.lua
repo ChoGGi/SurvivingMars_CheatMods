@@ -29,7 +29,7 @@ do -- MapData
 	local GetOverlayValues = GetOverlayValues
 	local FillRandomMapProps = FillRandomMapProps
 	-- exported data temp stored here
-	local export_data = {}
+	local export_data = objlist:new()
 	-- it's an index based table
 	local export_count = 0
 	-- stores temp landing spot
@@ -112,7 +112,7 @@ do -- MapData
 		landing:LoadOverlayGrids()
 
 		-- exported data temp stored here
-		table.clear(export_data)
+		export_data:Clear()
 		export_count = 0
 
 --~ ChoGGi.ComFuncs.TickStart("ExportMapDataToCSV")

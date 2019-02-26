@@ -88,8 +88,8 @@ function ReadModSettings()
 	end
 
 	-- just in case
-	if MOD_SETTINGS_TABLE == empty_table or type(MOD_SETTINGS_TABLE) ~= "table" then
-		-- i have a defaults table i load up with my mod, if somethings wrong then at at the mod will have some settings to use
+	if type(MOD_SETTINGS_TABLE) ~= "table" then
+		-- i have a defaults table i load up with my mod, if somethings wrong then at least the mod will have some settings to use
 		MOD_SETTINGS_TABLE = MOD_DEFAULT_SETTINGS
 	end
 
