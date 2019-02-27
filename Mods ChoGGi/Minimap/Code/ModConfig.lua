@@ -41,11 +41,11 @@ function OnMsg.ModConfigChanged(mod_id, option_id, value)
 			local str = ChoGGi_Minimap.image_str
 			if not str then
 				local image_mod = Mods.ChoGGi_MapImagesPack
-				ChoGGi_Minimap.image_str = image_mod and string.format("%sMaps/%s.png",image_mod.env.CurrentModPath,"%s")
+				ChoGGi_Minimap.image_str = image_mod and image_mod.env.CurrentModPath .. "Maps/"
 				str = ChoGGi_Minimap.image_str
 			end
 			if str then
-				map_dlg:UpdateMapImage(str:format(map_dlg.map_name))
+				map_dlg:UpdateMapImage(str .. map_dlg.map_name .. ".png")
 			else
 				print([[ChoGGi Minimap needs: https://steamcommunity.com/sharedfiles/filedetails/?id=1571465108]])
 			end

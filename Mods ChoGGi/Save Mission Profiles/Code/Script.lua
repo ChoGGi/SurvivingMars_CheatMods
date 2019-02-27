@@ -10,9 +10,11 @@ function OnMsg.ModsReloaded()
 	-- if we can't find mod or mod is less then min_version (we skip steam/pops since it updates automatically)
 	if not idx or idx and not (p.steam or p.pops) and min_version > ModsLoaded[idx].version then
 		CreateRealTimeThread(function()
-			if WaitMarsQuestion(nil,"Error",string.format([[Save Mission Profiles requires ChoGGi's Library (at least v%s).
-Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_version)) == "ok" then
-				if p.pops then
+			if WaitMarsQuestion(nil,"Error","Save Mission Profiles requires ChoGGi's Library (at least v" .. min_version .. [[).
+Press OK to download it or check the Mod Manager to make sure it's enabled.]]) == "ok" then
+				if p.steam then
+					OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
+				elseif p.pops then
 					OpenUrl("https://mods.paradoxplaza.com/mods/505/Any")
 				else
 					OpenUrl("https://www.nexusmods.com/survivingmars/mods/89?tab=files")
@@ -44,8 +46,9 @@ end
 local function WriteModSettings(settings)
 	settings = settings or g_SaveMissionProfiles
 
+	local lua_code = TableToLuaCode(settings)
 	-- lz4 is quicker, but less compressy
-	local err, data = AsyncCompress(TableToLuaCode(settings), false, "lz4")
+	local err, data = AsyncCompress(lua_code, false, "lz4")
 	if err then
 		print(err)
 		return
@@ -54,7 +57,7 @@ local function WriteModSettings(settings)
 	-- too large
 	if #data > MaxModDataSize then
 		-- see if it'll fit now
-		err, data = AsyncCompress(TableToLuaCode(settings), false, "zstd")
+		err, data = AsyncCompress(lua_code, false, "zstd")
 		if err then
 			print(err)
 			return

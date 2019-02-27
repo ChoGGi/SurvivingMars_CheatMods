@@ -1,7 +1,11 @@
 -- See LICENSE for terms
 
-local IsValid = IsValid
 local TableSort = table.sort
+
+local obj_pos
+local function SortDist2D(a,b)
+	return a:GetDist2D(obj_pos) < b:GetDist2D(obj_pos)
+end
 
 local function SortCC()
 	-- sorts cc list by dist to building
@@ -10,14 +14,14 @@ local function SortCC()
 		local obj = objs[i]
 		-- no sense in doing it with only one center
 		if #obj.command_centers > 1 then
-			TableSort(obj.command_centers,function(a,b)
-				if IsValid(a) and IsValid(b) then
-					return obj:GetDist2D(a) < obj:GetDist2D(b)
-				end
-			end)
+			obj_pos = obj:GetPos()
+			TableSort(obj.command_centers,SortDist2D)
 		end
 	end
 end
+--~ ChoGGi.ComFuncs.TickStart("TickStart")
+--~ SortCC()
+--~ ChoGGi.ComFuncs.TickEnd("TickStart")
 
 OnMsg.NewDay = SortCC
 OnMsg.LoadGame = SortCC

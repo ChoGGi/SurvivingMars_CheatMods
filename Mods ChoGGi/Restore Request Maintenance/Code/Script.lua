@@ -10,9 +10,11 @@ function OnMsg.ModsReloaded()
 	-- if we can't find mod or mod is less then min_version (we skip steam/pops since it updates automatically)
 	if not idx or idx and not (p.steam or p.pops) and min_version > ModsLoaded[idx].version then
 		CreateRealTimeThread(function()
-			if WaitMarsQuestion(nil,"Error",string.format([[Restore Request Main requires ChoGGi's Library (at least v%s).
-Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_version)) == "ok" then
-				if p.pops then
+			if WaitMarsQuestion(nil,"Error","Restore Request Main requires ChoGGi's Library (at least v" .. min_version .. [[).
+Press OK to download it or check the Mod Manager to make sure it's enabled.]]) == "ok" then
+				if p.steam then
+					OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
+				elseif p.pops then
 					OpenUrl("https://mods.paradoxplaza.com/mods/505/Any")
 				else
 					OpenUrl("https://www.nexusmods.com/survivingmars/mods/89?tab=files")
@@ -22,24 +24,25 @@ Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_ve
 	end
 end
 
+local RebuildInfopanel = RebuildInfopanel
+local T = T
+local PlayFX = PlayFX
+local IsKindOf = IsKindOf
+
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
-
 	-- removed functions
-	local T = T
-	local _InternalTranslate = _InternalTranslate
-	local RebuildInfopanel = RebuildInfopanel
-
+	local Trans = ChoGGi.ComFuncs.Translate
 
 	function RequiresMaintenance:GetUIRequestMaintenanceStatus()
 		local status
 		if self.accumulated_maintenance_points > 0 then
 			if self.maintenance_phase == false then
-				status = _InternalTranslate(T(7329, "Maintenance needed"))
+				status = Trans(7329--[[Maintenance needed--]])
 			else
-				status = _InternalTranslate(T(389, "Maintenance already requested"))
+				status = Trans(389--[[Maintenance already requested--]])
 			end
-			return string.format("%s, Remaining: %s",status,self.maintenance_threshold_current - self.accumulated_maintenance_points)
+			return status .. ", Remaining: " .. (self.maintenance_threshold_current - self.accumulated_maintenance_points)
 		end
 		return T(390, "No deterioration")
 	end
@@ -51,9 +54,6 @@ function OnMsg.ClassesGenerate()
 end
 
 function OnMsg.ClassesBuilt()
-
-	local PlayFX = PlayFX
-	local IsKindOf = IsKindOf
 
 	-- old version cleanup
 	if XTemplates.ipBuilding.ChoGGi_RestoreMain then

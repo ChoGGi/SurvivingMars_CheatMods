@@ -9,8 +9,9 @@ local RetName = ChoGGi.ComFuncs.RetName
 local Trans = ChoGGi.ComFuncs.Translate
 
 local function ExportDoneMsg(path)
-	ChoGGi.ComFuncs.MsgPopup(path,S[302535920001449--[[Export--]]] .. " " .. S[302535920001448--[[CSV--]]])
-	print(path)
+	local msg = S[302535920001449--[[Export--]]] .. " " .. S[302535920001448--[[CSV--]]]
+	ChoGGi.ComFuncs.MsgPopup(path,msg)
+	print(msg,path)
 end
 
 do -- MapData
@@ -34,6 +35,7 @@ do -- MapData
 	local export_count = 0
 	-- stores temp landing spot
 	local landing
+	local north,east,south,west
 
 	local MapData = MapData
 	local MarsLocales = MarsLocales
@@ -48,14 +50,14 @@ do -- MapData
 		-- updates threat/res map info
 		landing:RecalcThreatResourceLevels()
 		-- coord names in csv
-		local lat_name,long_name = Trans(6886--[[S--]]),Trans(6888--[[E--]])
+		local lat_name,long_name = south,east
 		-- we store all lat/long numbers as pos in csv
 		if lat < 0 then
-			lat_name = Trans(6887--[[N--]])
+			lat_name = north
 			lat = lat - lat * 2
 		end
 		if long < 0 then
-			long_name = Trans(6889--[[W--]])
+			long_name = west
 			long = long - long * 2
 		end
 
@@ -72,7 +74,7 @@ do -- MapData
 			longitude = long_name,
 			longitude_degree = long,
 
-			topography = S[MapChallengeRatingToDifficulty(mapdata and mapdata.challenge_rating or 0)],
+			topography = Trans(MapChallengeRatingToDifficulty(mapdata and mapdata.challenge_rating or 0)),
 			diff_chall = g_TitleObj:GetDifficultyBonus(),
 			altitude = params.Altitude,
 			temperature = params.Temperature,
@@ -91,11 +93,14 @@ do -- MapData
 		-- named location spots
 		local spot_name = params.landing_spot or MarsLocales[params.Locales]
 		if spot_name then
-			export_data[export_count].landing_spot = S[TGetID(spot_name)]
+--~ 			export_data[export_count].landing_spot = Trans(TGetID(spot_name))
+			export_data[export_count].landing_spot = Trans(spot_name)
 		end
 	end
 
 	function ChoGGi.ComFuncs.ExportMapDataToCSV()
+		north,east,south,west = Trans(6887--[[N--]]),Trans(6888--[[E--]]),Trans(6886--[[S--]]),Trans(6889--[[W--]])
+
 		-- save current g_CurrentMapParams to restore later
 		local params = g_CurrentMapParams
 		local params_saved = table.copy(params)
@@ -160,7 +165,7 @@ do -- MapData
 			{"longitude_degree",Trans(6892--[[Longitude--]]) .. " " .. S[302535920001505--[[°--]]]},
 			{"longitude",Trans(6892--[[Longitude--]])},
 			{"topography",Trans(284813068603--[[Topography--]])},
-			{"diff_chall",Trans(774720837511--[[Difficulty Challenge --]]):gsub("<percent%(DifficultyBonus%)>","")},
+			{"diff_chall",Trans(774720837511--[[Difficulty Challenge --]]):gsub(" <percentage>%%","")},
 			{"altitude",Trans(4135--[[Altitude--]])},
 			{"temperature",Trans(4141--[[Temperature--]])},
 
@@ -177,11 +182,12 @@ do -- MapData
 			{"map_name",S[302535920001503--[[Map Name--]]]},
 			{"landing_spot",S[302535920001504--[[Named--]]] .. " " .. Trans(7396--[[Location--]])},
 		}
+
 --~ ex(export_data)
 		-- and now we can save it to disk
-		SaveCSV("AppData/MapData.csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
+		SaveCSV("AppData/MapData-" .. os.time() .. ".csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
 		-- let user know where the csv is
-		ExportDoneMsg(ConvertToOSPath("AppData/MapData.csv"))
+		ExportDoneMsg(ConvertToOSPath("AppData/MapData-" .. os.time() .. ".csv"))
 	end
 end --do
 
@@ -195,10 +201,14 @@ do -- ColonistData
 	end
 
 	local function AddTraits(traits,list)
+		local str = Trans(3720--[[Trait--]])
+		local c = #list
 		for i = 1, #traits do
-			list[#list+1] = {
-				"trait_" .. traits[i],
-				Trans(3720--[[Trait--]]) .. " " .. traits[i],
+			local trait = traits[i]
+			c = c + 1
+			list[c] = {
+				"trait_" .. trait,
+				str .. " " .. trait,
 			}
 		end
 		return list
@@ -241,7 +251,6 @@ do -- ColonistData
 		skipped_traits = AddSkipped(t.ColonistAges,skipped_traits)
 		skipped_traits = AddSkipped(t.ColonistGenders,skipped_traits)
 		skipped_traits = AddSkipped(t.ColonistSpecializations,skipped_traits)
-
 
 		local export_data = {}
 		local colonists = UICity.labels.Colonist or ""
@@ -299,8 +308,8 @@ do -- ColonistData
 
 --~ ex(export_data)
 		-- and now we can save it to disk
-		SaveCSV("AppData/Colonists.csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
-		ExportDoneMsg(ConvertToOSPath("AppData/Colonists.csv"))
+		SaveCSV("AppData/Colonists-" .. os.time() .. ".csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
+		ExportDoneMsg(ConvertToOSPath("AppData/Colonists-" .. os.time() .. ".csv"))
 	end
 end -- do
 
@@ -314,12 +323,13 @@ do -- Graphs
 			current = current,
 		}
 		-- add all sol counts
-		for i = 1, #list.data do
+		local data = list.data
+		for i = 1, #data do
 			-- last recorded sol
 			if i > list.next_index then
 				break
 			end
-			export_data[c]["sol" .. i] = list.data[i]
+			export_data[c]["sol" .. i] = data[i]
 		end
 		return export_data
 	end
@@ -429,12 +439,13 @@ do -- Graphs
 			},
 		}
 		local UICity = UICity
+		local labels = UICity.labels
 		local ResourceOverviewObj = ResourceOverviewObj
 
 		-- the rest are sols
 		local csv_columns = {
 			{"category",Trans(1000097--[[Category--]])},
-			{"current",S[302535920000106--[[Current--]]]},
+			{"current",S[302535920000106--[[Current--]]] .. " " .. Trans(4031--[[Sol <day>--]]):gsub(" <day>","")},
 		}
 		local c = 2
 
@@ -457,7 +468,7 @@ do -- Graphs
 				export_data,
 				c,
 				list.name,
-				#(UICity.labels[label] or ""),
+				#(labels[label] or ""),
 				UICity[list.data]
 			)
 		end
@@ -524,7 +535,7 @@ do -- Graphs
 			export_data,
 			c,
 			Trans(5426--[[Building--]]) .. " " .. S[302535920000971--[[Sites--]]] .. " " .. S[302535920001453--[[Completed--]]],
-			#(UICity.labels.ConstructionSite or "") + #(UICity.labels.ConstructionSiteWithHeightSurfaces or ""),
+			#(labels.ConstructionSite or "") + #(labels.ConstructionSiteWithHeightSurfaces or ""),
 			UICity.ts_constructions_completed
 		)
 
@@ -535,7 +546,7 @@ do -- Graphs
 --~ ex(export_data)
 --~ ex(csv_columns)
 		-- and now we can save it to disk
-		SaveCSV("AppData/Graphs.csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
-		ExportDoneMsg(ConvertToOSPath("AppData/Graphs.csv"))
+		SaveCSV("AppData/Graphs-" .. os.time() .. ".csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
+		ExportDoneMsg(ConvertToOSPath("AppData/Graphs-" .. os.time() .. ".csv"))
 	end
 end -- do

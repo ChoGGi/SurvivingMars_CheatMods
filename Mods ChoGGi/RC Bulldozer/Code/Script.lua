@@ -10,9 +10,11 @@ function OnMsg.ModsReloaded()
 	-- if we can't find mod or mod is less then min_version (we skip steam/pops since it updates automatically)
 	if not idx or idx and not (p.steam or p.pops) and min_version > ModsLoaded[idx].version then
 		CreateRealTimeThread(function()
-			if WaitMarsQuestion(nil,"Error",string.format([[RC Bulldozer requires ChoGGi's Library (at least v%s).
-Press Ok to download it or check Mod Manager to make sure it's enabled.]],min_version)) == "ok" then
-				if p.pops then
+			if WaitMarsQuestion(nil,"Error","RC Bulldozer requires ChoGGi's Library (at least v" .. min_version .. [[).
+Press OK to download it or check the Mod Manager to make sure it's enabled.]]) == "ok" then
+				if p.steam then
+					OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
+				elseif p.pops then
 					OpenUrl("https://mods.paradoxplaza.com/mods/505/Any")
 				else
 					OpenUrl("https://www.nexusmods.com/survivingmars/mods/89?tab=files")
@@ -24,7 +26,6 @@ end
 
 -- local funcs for that small bit o' speed
 
-local TableConcat = rawget(_G, "oldTableConcat") or table.concat
 local type = type
 
 local GetHeight = terrain.GetHeight
@@ -44,8 +45,10 @@ local PlaceObject = PlaceObject
 
 local ToggleCollisions
 local MovePointAwayXY
+--~ local TableConcat
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
+--~ 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
 	MovePointAwayXY = ChoGGi.ComFuncs.MovePointAwayXY
 end
@@ -147,7 +150,8 @@ end
 
 --~ function RCBulldozer:GetStatusUpdate()
 function RCBulldozer:Getui_command()
-	return TableConcat({self.status_text}, "<newline><left>")
+--~ 	return TableConcat({self.status_text}, "<newline><left>")
+	return self.status_text .. "<newline><left>"
 end
 
 function RCBulldozer:ReturnDozeArea()
