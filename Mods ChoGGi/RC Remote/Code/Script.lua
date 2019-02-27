@@ -36,16 +36,20 @@ local Min = Min
 local ValueLerp = ValueLerp
 local Sleep = Sleep
 local PlayFX = PlayFX
+local PlaySound = PlaySound
+local MovePointAway = MovePointAway
 local IsKeyPressed = terminal.IsKeyPressed
+local IsValid = IsValid
+local GetTerrainCursor = GetTerrainCursor
+local MapFindNearest = MapFindNearest
+--~ local axis_z = axis_z
 
 local TableConcat
 local Trans
-local MovePointAwayXY
 
 function OnMsg.ClassesGenerate()
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	Trans = ChoGGi.ComFuncs.Translate
-	MovePointAwayXY = ChoGGi.ComFuncs.MovePointAwayXY
 
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
@@ -76,7 +80,7 @@ function OnMsg.ClassesGenerate()
 			Sleep(150)
 
 			local old_pos = self:GetPos()
-			local pos = MovePointAwayXY(
+			local pos = MovePointAway(
 				old_pos,
 				self:GetSpotLoc(self:GetSpotBeginIndex(self.jump_move_spot)),
 				self.jump_move_dist
@@ -108,6 +112,21 @@ function OnMsg.ClassesGenerate()
 			self.jumping = false
 		end
 	end
+
+	c = c + 1
+	Actions[c] = {ActionName = "Remote: Fire Missile",
+		ActionId = "RCRemote.FireMissile",
+		OnAction = function()
+			local self = SelectedObj
+			if self and self:IsKindOf("RCRemote") then
+				self:FireRocket()
+			end
+		end,
+		ActionToggle = true,
+		ActionShortcut = "Q",
+		ActionBindable = true,
+		ActionMode = "RCRemote",
+	}
 
 	c = c + 1
 	Actions[c] = {ActionName = "Remote: Jump Forward",
@@ -197,7 +216,7 @@ DefineClass.RCRemote = {
 	-- 3 times as fast
 	move_speed = 3000,
 	-- how much to jump forward
-	jump_move_dist = 15000,
+	jump_move_dist = 10000,
 	jump_move_spot = "Droneentrance",
 	-- trying to move mid-air causes issues
 	jumping = false,
@@ -213,7 +232,9 @@ DefineClass.RCRemote = {
 		},
 		[2] = {
 			spot = "Droneentrance",
-			amount = -1000,
+--~ 			amount = -1000,
+			amount = -5
+			,
 		},
 		[3] = {
 			spot = "Dust2",
@@ -278,7 +299,7 @@ function RCRemote:RemoteMove(dir)
 	self.move_dir = dir
 
 	local dir_lookup = self.dir_lookup[dir]
-	local pos = MovePointAwayXY(
+	local pos = MovePointAway(
 		self:GetPos(),
 		self:GetSpotLoc(self:GetSpotBeginIndex(dir_lookup.spot)),
 		dir_lookup.amount
@@ -297,6 +318,46 @@ function RCRemote:RemoteMove(dir)
 		self.rc_moving = false
 		self.move_dir = 0
 		PlayFX("Moving", "end", self)
+	end
+end
+
+function RCRemote:FireRocket(target)
+	local pt = GetTerrainCursor()
+	target = target or MapFindNearest(pt,pt,1500)
+	if not IsValid(target) then
+		return
+	end
+
+	local pos, _, axis = self:GetSpotLoc(self:GetSpotBeginIndex("Drone"))
+
+	local rocket = PlaceObject("RocketProjectile", {
+		shooter = self,
+		target = target,
+	})
+
+  rocket:SetPos(pos)
+  rocket.move_dir = axis
+  rocket:StartMoving()
+
+	self.fx_actor_class = "DefenceTower"
+	PlayFX("MissileFired", "start", self, nil, pos, axis)
+	self.fx_actor_class = "ExplorerRover"
+
+	if target:IsKindOfClasses("Deposition","WasteRockObstructorSmall","WasteRockObstructor","StoneSmall") then
+		CreateGameTimeThread(self.ExplodeRock,self,target,rocket)
+	end
+
+end
+
+function RCRemote:ExplodeRock(target,rocket)
+	while rocket.move_thread do
+		Sleep(500)
+	end
+	-- maybe it was removed before we arrived?
+	if IsValid(target) then
+		local snd = PlaySound("Mystery Bombardment ExplodeAir", "ObjectOneshot", nil, 0, false, target)
+		PlayFX("GroundExplosion", "start", target, target, target:GetPos())
+		target:delete()
 	end
 end
 
@@ -385,7 +446,6 @@ function OnMsg.SelectionAdded(obj)
 		-- set camera to follow mode (needs a delay or it's a funky camera mode)
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
-			Sleep(100)
 			Camera3pFollow(obj)
 			SelectedObj = obj
 			-- enable kb controls, and gamepad
@@ -399,8 +459,8 @@ function OnMsg.SelectionAdded(obj)
 end
 function OnMsg.SelectionRemoved()
 	-- go back to normal controls
-  if shortcuts_mode and XShortcutsTarget and XShortcutsTarget:GetActionsMode() == "RCRemote" then
-		XShortcutsSetMode(shortcuts_mode or "Game")
+  if shortcuts_mode then
+		XShortcutsSetMode(shortcuts_mode)
 		shortcuts_mode = false
 	end
 end
@@ -409,11 +469,13 @@ end
 local entity = {
 	"DroneTruck",
 	"RoverTransport",
+	"CombatRover",
 }
 
 local palettes = {
 	RCRover.palette,
 	RCTransport.palette,
+	AttackRover.palette,
 }
 
 if g_AvailableDlc.gagarin then

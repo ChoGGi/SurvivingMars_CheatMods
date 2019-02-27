@@ -722,7 +722,7 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("Console","TextChanged")
 	SaveOrigFunc("ConsoleLog","SetVisible")
 	SaveOrigFunc("ConsoleLog","ShowBackground")
-	SaveOrigFunc("ConstructionController","CreateCursorObj")
+--~ 	SaveOrigFunc("ConstructionController","CreateCursorObj")
 	SaveOrigFunc("ConstructionController","UpdateConstructionStatuses")
 	SaveOrigFunc("ConstructionController","UpdateCursor")
 	SaveOrigFunc("DroneHub","SetWorkRadius")
@@ -1298,23 +1298,22 @@ function OnMsg.ClassesBuilt()
 		end
 	end -- do
 
-	do -- ConstructionController:CreateCursorObj
-		local IsValid = IsValid
-		-- set orientation to same as last object
-		function ConstructionController:CreateCursorObj(...)
-			local ChoGGi = ChoGGi
-			local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
+--~ 	do -- ConstructionController:CreateCursorObj
+--~ 		local IsValid = IsValid
+--~ 		local SetRollPitchYaw = SetRollPitchYaw
+--~ 		-- set orientation to same as last object
+--~ 		function ConstructionController:CreateCursorObj(...)
+--~ 			local ChoGGi = ChoGGi
+--~ 			local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
 
-			local last = ChoGGi.Temp.LastPlacedObject
-			if self.template_obj and self.template_obj.can_rotate_during_placement and ChoGGi.UserSettings.UseLastOrientation and IsValid(last) then
-				if ret[1].SetAngle then
-					ret[1]:SetAngle(last:GetAngle() or 0)
-				end
-			end
+--~ 			local last = ChoGGi.Temp.LastPlacedObject
+--~ 			if self.template_obj and self.template_obj.can_rotate_during_placement and ChoGGi.UserSettings.UseLastOrientation and IsValid(last) then
+--~ 				SetRollPitchYaw(ret[1],0,0,last:GetAngle() or 0)
+--~ 			end
 
-			return TableUnpack(ret)
-		end
-	end -- do
+--~ 			return TableUnpack(ret)
+--~ 		end
+--~ 	end -- do
 
 	-- so we can build without (as many) limits
 	function ConstructionController:UpdateConstructionStatuses(dont_finalize,...)

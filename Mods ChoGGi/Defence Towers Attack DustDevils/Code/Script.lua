@@ -61,7 +61,7 @@ function OnMsg.ClassesBuilt()
 					-- sleep till rocket explodes
 					CreateRealTimeThread(function()
 						while rocket.move_thread do
-							Sleep(250)
+							Sleep(500)
 						end
 						-- make it pretty
 						if IsValid(obj) then

@@ -110,8 +110,8 @@ function OnMsg.ClassesGenerate()
 		SkipModHelpPage = true,
 		-- stops panel from shrinking
 		StopSelectionPanelResize = false,
-		-- keep orientation of last placed building
-		UseLastOrientation = true,
+--~ 		-- keep orientation of last placed building
+--~ 		UseLastOrientation = true,
 		-- change rollovers from 450 to 600
 		WiderRollovers = 600,
 

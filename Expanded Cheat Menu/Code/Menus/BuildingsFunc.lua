@@ -970,17 +970,6 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	function ChoGGi.MenuFuncs.UseLastOrientation_Toggle()
-		local ChoGGi = ChoGGi
-		ChoGGi.UserSettings.UseLastOrientation = not ChoGGi.UserSettings.UseLastOrientation
-
-		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.UseLastOrientation,S[302535920000134--[[Building Orientation--]]]),
-			Trans(3980--[[Buildings--]])
-		)
-	end
-
 	function ChoGGi.MenuFuncs.FarmShiftsAllOn()
 		local UICity = UICity
 		local tab = UICity.labels.BaseFarm or ""
