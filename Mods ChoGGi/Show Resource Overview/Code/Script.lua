@@ -10,9 +10,11 @@ function OnMsg.ModsReloaded()
 	-- if we can't find mod or mod is less then min_version (we skip steam/pops since it updates automatically)
 	if not idx or idx and not (p.steam or p.pops) and min_version > ModsLoaded[idx].version then
 		CreateRealTimeThread(function()
-			if WaitMarsQuestion(nil,"Error",string.format([[Show Resource Overview requires ChoGGi"s Library (at least v%s).
-Press Ok to download it or check Mod Manager to make sure it"s enabled.]],min_version)) == "ok" then
-				if p.pops then
+			if WaitMarsQuestion(nil,"Error","Show Resource Overview requires ChoGGi's Library (at least v" .. min_version .. [[).
+Press OK to download it or check the Mod Manager to make sure it's enabled.]]) == "ok" then
+				if p.steam then
+					OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
+				elseif p.pops then
 					OpenUrl("https://mods.paradoxplaza.com/mods/505/Any")
 				else
 					OpenUrl("https://www.nexusmods.com/survivingmars/mods/89?tab=files")
@@ -21,6 +23,14 @@ Press Ok to download it or check Mod Manager to make sure it"s enabled.]],min_ve
 		end)
 	end
 end
+
+local TableConcat
+-- generate is late enough that my library is loaded, but early enough to replace anything i need to
+function OnMsg.ClassesGenerate()
+	TableConcat = ChoGGi.ComFuncs.TableConcat
+end
+
+local T = T
 
 -- add action to GameShortcuts
 function OnMsg.ClassesPostprocess()
@@ -59,20 +69,22 @@ function OnMsg.ModsReloaded()
 
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xt,"ChoGGi_Template_ColonyOverview")
 
-	table.insert(xt,#xt,PlaceObj("XTemplateTemplate", {
-		"ChoGGi_Template_ColonyOverview", true,
-		"__template", "HUDButtonTemplate",
-		"RolloverText", T(7850, "Aggregated information for your Colony."),
-		"RolloverTitle", T(7849, "Colony Overview"),
-		"Id", "idColonyOverview",
-		"Image", string.format("%sUI/statistics.png",CurrentModPath),
-		"ImageShine", "UI/HUD/statistics_shine.tga",
-		"FXPress", "MainMenuButtonClick",
-		"OnPress", function()
-			HUD.idColonyOverviewOnPress()
-		end,
-	})
+	table.insert(xt,#xt,
+		PlaceObj("XTemplateTemplate", {
+			"ChoGGi_Template_ColonyOverview", true,
+			"__template", "HUDButtonTemplate",
+			"RolloverText", T(7850, "Aggregated information for your Colony."),
+			"RolloverTitle", T(7849, "Colony Overview"),
+			"Id", "idColonyOverview",
+			"Image", CurrentModPath .. "UI/statistics.png",
+			"ImageShine", "UI/HUD/statistics_shine.tga",
+			"FXPress", "MainMenuButtonClick",
+			"OnPress", function()
+				HUD.idColonyOverviewOnPress()
+			end,
+		})
 	)
+
 end
 
 function HUD.idColonyOverviewOnPress()
@@ -142,7 +154,7 @@ function ResourceOverview:GetBasicResourcesRollover()
 			T(10528, "Upgrade construction<right><preciousmetals(PreciousMetalsUpgradeConstructionActual, PreciousMetalsUpgradeConstructionTotal)>", self),
 			T(3649, "<LastExportStr>", self),
 		}
-	return table.concat(ret, "<newline><left>")
+	return TableConcat(ret, "<newline><left>")
 end
 
 function ResourceOverview:GetAdvancedResourcesRollover()
@@ -174,5 +186,5 @@ function ResourceOverview:GetAdvancedResourcesRollover()
 			T(3668, "Refueling of Rockets<right><fuel(RocketRefuelFuelYesterday)>", self),
 			T(316, "<newline>"),
 		}
-	return table.concat(ret, "<newline><left>")
+	return TableConcat(ret, "<newline><left>")
 end
