@@ -536,22 +536,6 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000191--[[Use Last Orientation--]]],
-		ActionMenubar = str_ECM_Buildings_Toggles,
-		ActionId = ".Use Last Orientation",
-		ActionIcon = "CommonAssets/UI/Menu/ToggleMapAreaEditor.tga",
-		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.UseLastOrientation,
-				S[302535920000190--[[Use last building placement orientation.--]]]
-			)
-		end,
-		OnAction = ChoGGi.MenuFuncs.UseLastOrientation_Toggle,
-		ActionShortcut = "F7",
-		ActionBindable = true,
-	}
-
-	c = c + 1
 	Actions[c] = {ActionName = S[302535920000174--[[Always Dusty--]]],
 		ActionMenubar = str_ECM_Buildings_Toggles,
 		ActionId = ".Always Dusty",

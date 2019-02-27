@@ -1,1 +1,0 @@
-q to fire missile at mouse cursor.

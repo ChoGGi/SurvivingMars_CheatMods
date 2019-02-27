@@ -71,33 +71,30 @@ function OnMsg.ConstructionSitePlaced(obj)
 	end
 end --OnMsg
 function OnMsg.SelectionAdded(obj)
-	--update last placed (or selected)
+	-- update last placed (or selected)
 	if obj:IsKindOf("Building") then
 		ChoGGi.Temp.LastPlacedObject = obj
 	end
 end
 
 local function SomeCode()
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 	ChoGGi.ComFuncs.SaveOrigFunc("ConstructionController","CreateCursorObj")
+	local ConstructionController_CreateCursorObj = ChoGGi.OrigFuncs.ConstructionController_CreateCursorObj
 
-  -- for setting the orientation
-	do -- ConstructionController:CreateCursorObj
-		local IsValid = IsValid
-		-- set orientation to same as last object
-		function ConstructionController:CreateCursorObj(...)
-			local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
+	local IsValid = IsValid
+	local SetRollPitchYaw = SetRollPitchYaw
+	local TableUnpack = table.unpack
+	-- set orientation to same as last object
+	function ConstructionController:CreateCursorObj(...)
 
-			local last = ChoGGi.Temp.LastPlacedObject
-			if IsValid(last) then
-				if ret[1].SetAngle then
-					ret[1]:SetAngle(last:GetAngle() or 0)
-				end
-			end
-
-			return table.unpack(ret)
+		local ret = {ConstructionController_CreateCursorObj(self, ...)}
+		local last = ChoGGi.Temp.LastPlacedObject
+		if self.template_obj and self.template_obj.can_rotate_during_placement and ChoGGi.UserSettings.UseLastOrientation and IsValid(last) then
+			SetRollPitchYaw(ret[1],0,0,(last:GetAngle() or 0) + -1*60*60)
 		end
-	end -- do
+		return TableUnpack(ret)
+
+	end
 
 end
 

@@ -1,0 +1,4 @@
+v0.2
+Q fires a missile at the mouse cursor object (useful for removing rocks).
+Changed how backwards works (tap it once to face backwards).
+Reduced jump dist from 15k to 10k.

@@ -268,6 +268,16 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 	}
 
 	c = c + 1
+	Actions[c] = {ActionName = S[302535920001084--[[Reset--]]],
+		ActionMenubar = str_Game_Camera,
+		ActionId = ".Toggle Cursor",
+		ActionIcon = "CommonAssets/UI/Menu/NewCamera.tga",
+		RolloverText = S[302535920001370--[[If something makes the camera view wonky you can use this to fix it.--]]],
+		OnAction = ChoGGi.MenuFuncs.ResetCamera,
+		ActionSortKey = "-1",
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = S[302535920000647--[[Border Scrolling--]]],
 		ActionMenubar = str_Game_Camera,
 		ActionId = ".Border Scrolling",
@@ -355,15 +365,6 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		OnAction = ChoGGi.MenuFuncs.CursorVisible_Toggle,
 		ActionShortcut = "Ctrl-Alt-F",
 		ActionBindable = true,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920001084--[[Reset--]]],
-		ActionMenubar = str_Game_Camera,
-		ActionId = ".Toggle Cursor",
-		ActionIcon = "CommonAssets/UI/Menu/NewCamera.tga",
-		RolloverText = S[302535920001370--[[If something makes the camera view wonky you can use this to fix it.--]]],
-		OnAction = ChoGGi.MenuFuncs.ResetCamera,
 	}
 
 	c = c + 1

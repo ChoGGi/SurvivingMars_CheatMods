@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v12.7 (Unreleased)
+### Removed:
+- Use Last Orientation: It's not a cheat, and there's a mod that does the exact same.
 
 ## v12.6 (25 Feb 2019)
 ### Added:

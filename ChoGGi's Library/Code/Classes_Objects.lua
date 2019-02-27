@@ -39,18 +39,14 @@ DefineClass.ChoGGi_BuildingEntityClass = {
 	ip_template = "ipChoGGi_Entity",
 }
 -- add some info/functionality to spawned entity objects
-function ChoGGi_BuildingEntityClass:GetDisplayName()
-	return self:GetEntity()
-end
+ChoGGi_BuildingEntityClass.GetDisplayName = CObject.GetEntity
 function ChoGGi_BuildingEntityClass:GetIPDescription()
 	return S[302535920001110--[[Spawned entity object--]]]
 end
-function ChoGGi_BuildingEntityClass:OnSelected()
-	AddSelectionParticlesToObj(self)
-end
+ChoGGi_BuildingEntityClass.OnSelected = AddSelectionParticlesToObj
 -- prevent an error msg in log
 ChoGGi_BuildingEntityClass.BuildWaypointChains = empty_func
 -- round n round she goes
 function ChoGGi_BuildingEntityClass:Rotate(delta)
-	SetRollPitchYaw(self,0,0,self:GetAngle() + (delta or -1)*60*60)
+	SetRollPitchYaw(self,0,0,(self:GetAngle() or 0) + (delta or -1)*60*60)
 end
