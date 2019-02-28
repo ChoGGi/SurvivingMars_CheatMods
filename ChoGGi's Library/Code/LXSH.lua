@@ -32,7 +32,6 @@ end
 local longstring = #(P"[" + (P"[" * P"="^0 * "[")) * P(function(input, index)
 	local level = input:match("^%[(=*)%[", index)
 	if level then
---~ 		local _, last = input:find(input_find_str:format(level), index, true)
 		local _, last = input:find("]" .. level .. "]", index, true)
 		if last then
 			return last + 1

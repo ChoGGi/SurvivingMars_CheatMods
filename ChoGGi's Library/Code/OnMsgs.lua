@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local S = ChoGGi.Strings
-
 local OnMsg = OnMsg
 
 -- we don't add shortcuts and ain't supposed to drink no booze
@@ -16,7 +14,7 @@ function OnMsg.ClassesBuilt()
 	if not table.find(bc,"id","ChoGGi") then
 		bc[#bc+1] = {
 			id = "ChoGGi",
-			name = S[302535920001400--[[ChoGGi--]]],
+			name = ChoGGi.Strings[302535920001400--[[ChoGGi--]]],
 			image = ChoGGi.library_path .. "UI/bmc_incal_resources.png",
 			highlight = ChoGGi.library_path .. "UI/bmc_incal_resources_shine.png",
 		}

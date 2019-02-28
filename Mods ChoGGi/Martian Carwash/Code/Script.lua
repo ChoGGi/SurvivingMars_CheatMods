@@ -128,9 +128,6 @@ function Carwash:OnSetWorking(working)
 	else
 		FarmConventional.StartAnimThread(self)
   end
---~   if IsValidThread(self.nearby_thread) then
---~     Wakeup(self.nearby_thread)
---~   end
 end
 
 function Carwash:UpdateAttachedSigns()
@@ -138,7 +135,6 @@ function Carwash:UpdateAttachedSigns()
 end
 
 function Carwash:Done()
---~   self:SetEnumFlags(const.efCollision + const.efApplyToGrids)
   FarmConventional.Done(self)
   if IsValidThread(self.nearby_thread) then
     DeleteThread(self.nearby_thread)
@@ -168,7 +164,7 @@ function OnMsg.ClassesPostprocess()
 			"template_class", "Carwash",
 			"dome_forbidden", true,
 			"display_name", [[Martian Carwash]],
-			"display_name_pl", [[Martian Carwash]],
+			"display_name_pl", [[Martian Carwashes]],
 			"description", [[Working at the car wash
 Working at the car wash, yeah
 Come on and sing it with me, car wash
