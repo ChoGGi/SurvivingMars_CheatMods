@@ -1,3 +1,7 @@
+v0.3
+Added a buildable outside monument for "selected" victims
+Once a victim is "selected" they'll head straight for it.
+
 v0.2
 The pod blinked out of existence instead of flying away.
 The rocket fx wasn't turned on.

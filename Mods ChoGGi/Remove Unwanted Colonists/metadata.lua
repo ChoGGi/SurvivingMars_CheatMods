@@ -1,16 +1,18 @@
 return PlaceObj("ModDef", {
-	"title", "Remove Unwanted Colonists v0.2",
-	"version", 2,
-	"saved", 1545220800,
+	"title", "Remove Unwanted Colonists v0.3",
+	"version", 3,
+	"saved", 1551355200,
 	"image", "Preview.png",
 	"id", "ChoGGi_RemoveUnwantedColonists",
 	"steam_id", "1594867237",
 	"pops_desktop_uuid", "9f2beb20-8ac6-4201-af9b-366308bd65fb",
+	"pops_any_uuid", "fb8fc954-40d2-4818-b84f-157903c4ed36",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
 	"code", {
 		"Code/Script.lua",
 		"Code/MurderPod.lua",
+		"Code/IdiotMonument.lua",
 	},
 	"description", [[Adds a button to the colonist selection menu to send them back to Earth.
 A pod will come down and hover around the colonist till they make the mistake of going outside.

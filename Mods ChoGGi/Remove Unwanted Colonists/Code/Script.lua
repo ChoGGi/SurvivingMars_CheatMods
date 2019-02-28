@@ -29,14 +29,31 @@ local function RemovePod(victim)
 	victim.ChoGGi_MurderPod = nil
 end
 
+local function WaitForIt(victim)
+	while victim.command == "Goto" do
+		Sleep(500)
+	end
+	Sleep(10000)
+	if IsValid(victim) and IsValid(victim.ChoGGi_MurderPod) then
+		victim:SetCommand("Goto",g_IdiotMonument:GetPos())
+		WaitForIt(victim)
+	end
+end
+
 local function LaunchPod(victim)
 	-- launch a pod and set to stalk hunt colonist
 	local pod = PlaceObject("MurderPod")
 	pod.target = victim
-	pod.panel_icon = string.format("<image %s 2500>",victim.infopanel_icon)
+	pod.panel_icon = "<image " .. victim.infopanel_icon .. " 2500>"
 	pod:SetCommand("Spawn")
 	-- used to update selection panel and to remove pod if needed
 	victim.ChoGGi_MurderPod = pod
+
+	-- get the fuck outta here
+	if IsValid(g_IdiotMonument) then
+		victim:SetCommand("Goto",g_IdiotMonument:GetPos())
+		CreateGameTimeThread(WaitForIt,victim)
+	end
 end
 
 function OnMsg.ClassesBuilt()

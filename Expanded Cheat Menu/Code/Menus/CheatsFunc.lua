@@ -866,6 +866,7 @@ Deep items will unlock the ability to exploit those resources."--]]],
 			items = ItemList,
 			title = S[302535920000266--[[Spawn--]]] .. " " .. Trans(547--[[Colonists--]]),
 			hint = S[302535920000267--[[Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes.--]]],
+			skip_sort = true,
 		}
 	end
 
