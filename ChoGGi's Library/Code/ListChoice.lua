@@ -50,7 +50,6 @@ ChoGGi.ComFuncs.OpenInListChoice{
 
 --~ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local CheckText = ChoGGi.ComFuncs.CheckText
---~ local CompareTableValue = ChoGGi.ComFuncs.CompareTableValue
 local RetProperType = ChoGGi.ComFuncs.RetProperType
 local Trans = ChoGGi.ComFuncs.Translate
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind

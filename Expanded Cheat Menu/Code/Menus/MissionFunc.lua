@@ -610,17 +610,33 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
 		local mapdata = mapdata
 
-		local ItemList = {{
+		local ItemList = {
+			{
 			text = " " .. S[302535920000036--[[Disabled--]]],
-			value = "disabled"
-		}}
+			value = "disabled",
+			}
+		}
+		local c = #ItemList
+
 		local set_name = "MapSettings_" .. sType
 		local data = DataInstances[set_name]
 
 		for i = 1, #data do
-			ItemList[#ItemList+1] = {
-				text = data[i].name,
-				value = data[i].name
+			local rule = data[i]
+
+			local hint = {}
+			local hc = 0
+			for key,value in pairs(rule) do
+				if key ~= "name" then
+					hc = hc + 1
+					hint[hc] = key .. ": " .. tostring(value)
+				end
+			end
+			c = c + 1
+			ItemList[c] = {
+				text = rule.name,
+				value = rule.name,
+				hint = TableConcat(hint,"\n"),
 			}
 		end
 
@@ -649,7 +665,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = S[302535920000129--[[Set--]]] .. " " .. sType .. " " .. S[302535920001180--[[Disaster Occurrences--]]],
-			hint = S[302535920000106--[[Current--]]] .. ": " .. mapdata[set_name],
+			hint = S[302535920000106--[[Current--]]] .. ": " .. (mapdata[set_name] or ""),
 		}
 	end
 

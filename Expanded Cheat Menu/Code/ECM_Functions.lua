@@ -2022,4 +2022,443 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		return list
 	end
 
+	do -- ReturnTechAmount/GetResearchedTechValue
+		--[[
+		ReturnTechAmount(tech,prop)
+		returns number from Object (so you know how much it changes)
+		see: Data/Object.lua, or ex(Object)
+
+		ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
+		^returns 10
+		ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
+		^ returns 0.7
+
+		it returns percentages in decimal for ease of mathing (SM has no math. funcs)
+		ie: SupportiveCommunity is -70 this returns it as 0.7
+		it also returns negative amounts as positive (I prefer num - Amt, not num + NegAmt)
+		--]]
+		local function ReturnTechAmount(tech,prop)
+			local techdef = TechDef[tech]
+			local idx = table.find(techdef,"Prop",prop)
+			if idx then
+				tech = techdef[idx]
+				local number
+
+				-- With enemies you know where they stand but with Neutrals, who knows?
+				-- defaults for the objects have both percent/amount, so whoever isn't 0 means something
+				if tech.Percent == 0 then
+					if tech.Amount < 0 then
+						number = tech.Amount * -1 -- always gotta be positive
+					else
+						number = tech.Amount
+					end
+				-- probably just have an else here instead...
+				elseif tech.Amount == 0 then
+					if tech.Percent < 0 then
+						tech.Percent = tech.Percent * -1 -- -50 > 50
+					end
+					number = (tech.Percent + 0.0) / 100 -- (50 > 50.0) > 0.50
+				end
+
+				return number
+			end
+		end
+		ChoGGi.ComFuncs.ReturnTechAmount = ReturnTechAmount
+
+		function ChoGGi.ComFuncs.GetResearchedTechValue(name,cls)
+			local ChoGGi = ChoGGi
+			local UICity = UICity
+
+			if name == "SpeedDrone" then
+				local move_speed = ChoGGi.Consts.SpeedDrone
+
+				if UICity:IsTechResearched("LowGDrive") then
+					local p = ReturnTechAmount("LowGDrive","move_speed")
+					move_speed = move_speed + (move_speed * p)
+				end
+				if UICity:IsTechResearched("AdvancedDroneDrive") then
+					local p = ReturnTechAmount("AdvancedDroneDrive","move_speed")
+					move_speed = move_speed + (move_speed * p)
+				end
+				return move_speed
+			end
+			--
+			if name == "MaxColonistsPerRocket" then
+				local per_rocket = ChoGGi.Consts.MaxColonistsPerRocket
+				if UICity:IsTechResearched("CompactPassengerModule") then
+					local a = ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket")
+					per_rocket = per_rocket + a
+				end
+				if UICity:IsTechResearched("CryoSleep") then
+					local a = ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
+					per_rocket = per_rocket + a
+				end
+				return per_rocket
+			end
+			--
+			if name == "FuelRocket" then
+				if UICity:IsTechResearched("AdvancedMartianEngines") then
+					local a = ReturnTechAmount("AdvancedMartianEngines","launch_fuel")
+					return ChoGGi.Consts.LaunchFuelPerRocket - (a * ChoGGi.Consts.ResourceScale)
+				end
+				return ChoGGi.Consts.LaunchFuelPerRocket
+			end
+			--
+			if name == "SpeedRC" then
+				if UICity:IsTechResearched("LowGDrive") then
+					local p = ReturnTechAmount("LowGDrive","move_speed")
+					return ChoGGi.Consts.SpeedRC + ChoGGi.Consts.SpeedRC * p
+				end
+				return ChoGGi.Consts.SpeedRC
+			end
+			--
+			if name == "CargoCapacity" then
+				if UICity:IsTechResearched("FuelCompression") then
+					local a = ReturnTechAmount("FuelCompression","CargoCapacity")
+					return ChoGGi.Consts.CargoCapacity + a
+				end
+				return ChoGGi.Consts.CargoCapacity
+			end
+			--
+			if name == "CommandCenterMaxDrones" then
+				if UICity:IsTechResearched("DroneSwarm") then
+					local a = ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones")
+					return ChoGGi.Consts.CommandCenterMaxDrones + a
+				end
+				return ChoGGi.Consts.CommandCenterMaxDrones
+			end
+			--
+			if name == "DroneResourceCarryAmount" then
+				if UICity:IsTechResearched("ArtificialMuscles") then
+					local a = ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount")
+					return ChoGGi.Consts.DroneResourceCarryAmount + a
+				end
+				return ChoGGi.Consts.DroneResourceCarryAmount
+			end
+			--
+			if name == "LowSanityNegativeTraitChance" then
+				if UICity:IsTechResearched("SupportiveCommunity") then
+					local p = ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
+					--[[
+					LowSanityNegativeTraitChance = 30%
+					SupportiveCommunity = -70%
+					--]]
+					local LowSan = ChoGGi.Consts.LowSanityNegativeTraitChance + 0.0 --SM has no math.funcs so + 0.0
+					return p*LowSan/100*100
+				end
+				return ChoGGi.Consts.LowSanityNegativeTraitChance
+			end
+			--
+			if name == "NonSpecialistPerformancePenalty" then
+				if UICity:IsTechResearched("GeneralTraining") then
+					local a = ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
+					return ChoGGi.Consts.NonSpecialistPerformancePenalty - a
+				end
+				return ChoGGi.Consts.NonSpecialistPerformancePenalty
+			end
+			--
+			if name == "RCRoverMaxDrones" then
+				if UICity:IsTechResearched("RoverCommandAI") then
+					local a = ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones")
+					return ChoGGi.Consts.RCRoverMaxDrones + a
+				end
+				return ChoGGi.Consts.RCRoverMaxDrones
+			end
+			--
+			if name == "RCTransportGatherResourceWorkTime" then
+				if UICity:IsTechResearched("TransportOptimization") then
+					local p = ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime")
+					return ChoGGi.Consts.RCTransportGatherResourceWorkTime * p
+				end
+				return ChoGGi.Consts.RCTransportGatherResourceWorkTime
+			end
+			--
+			if name == "RCTransportStorageCapacity" then
+				local amount = cls == "RCConstructor" and ChoGGi.Consts.RCConstructorStorageCapacity or ChoGGi.Consts.RCTransportStorageCapacity
+
+				if UICity:IsTechResearched("TransportOptimization") then
+					local a = ReturnTechAmount("TransportOptimization","max_shared_storage")
+					return amount + (a * ChoGGi.Consts.ResourceScale)
+				end
+				return amount
+			end
+			--
+			if name == "TravelTimeEarthMars" then
+				if UICity:IsTechResearched("PlasmaRocket") then
+					local p = ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars")
+					return ChoGGi.Consts.TravelTimeEarthMars * p
+				end
+				return ChoGGi.Consts.TravelTimeEarthMars
+			end
+			--
+			if name == "TravelTimeMarsEarth" then
+				if UICity:IsTechResearched("PlasmaRocket") then
+					local p = ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth")
+					return ChoGGi.Consts.TravelTimeMarsEarth * p
+				end
+				return ChoGGi.Consts.TravelTimeMarsEarth
+			end
+
+		end
+	end -- do
+
+	function ChoGGi.ComFuncs.RetBuildingPermissions(traits,settings)
+		settings.restricttraits = settings.restricttraits or {}
+		settings.blocktraits = settings.blocktraits or {}
+		traits = traits or {}
+		local block,restrict
+
+		local rtotal = 0
+		for _ in pairs(settings.restricttraits) do
+			rtotal = rtotal + 1
+		end
+
+		local rcount = 0
+		for trait in pairs(traits) do
+			if settings.restricttraits[trait] then
+				rcount = rcount + 1
+			end
+			if settings.blocktraits[trait] then
+				block = true
+			end
+		end
+
+		-- restrict is empty so allow all or since we're restricting then they need to be the same
+		if not next(settings.restricttraits) or rcount == rtotal then
+			restrict = true
+		end
+
+		return block,restrict
+	end
+
+	function ChoGGi.ComFuncs.AttachSpots_Toggle(sel)
+		sel = sel or ChoGGi.ComFuncs.SelObject()
+		local isvalid = IsValid(sel)
+		if not isvalid or isvalid and not sel:HasEntity() then
+			return
+		end
+
+		if sel.ChoGGi_ShowAttachSpots then
+			local DoneObject = DoneObject
+			sel:DestroyAttaches({"ChoGGi_OText","ChoGGi_OOrientation","ChoGGi_OSphere"},function(a)
+				if a.ChoGGi_ShowAttachSpots then
+					DoneObject(a)
+				end
+			end)
+			sel.ChoGGi_ShowAttachSpots = nil
+		else
+			local guic10 = 10 * guic
+			local PlaceObject = PlaceObject
+			local GetSpotNameByType = GetSpotNameByType
+			local RandomColour = ChoGGi.ComFuncs.RandomColour
+
+			local start_id, id_end = sel:GetAllSpots(sel:GetState())
+			for i = start_id, id_end do
+				local spot_name = GetSpotNameByType(sel:GetSpotsType(i))
+				local spot_annotation = sel:GetSpotAnnotation(i)
+
+				local text_obj = PlaceObject("ChoGGi_OText")
+				text_obj.ChoGGi_ShowAttachSpots = true
+				local text_str = sel:GetSpotName(i)
+				text_str = i .. "." .. text_str
+				if spot_annotation then
+					text_str = text_str .. ";" .. spot_annotation
+				end
+				text_obj:SetText(text_str)
+
+				local orientation_obj = PlaceObject("ChoGGi_OOrientation")
+				orientation_obj.ChoGGi_ShowAttachSpots = true
+
+	--~ 			local sphere_obj = PlaceObject("ChoGGi_OSphere")
+	--~ 			sphere_obj.ChoGGi_ShowAttachSpots = true
+	--~ 			sphere_obj:SetRadius(guic10)
+	--~ 			sphere_obj:SetColor(RandomColour())
+
+				sel:Attach(text_obj, i)
+				sel:Attach(orientation_obj, i)
+	--~ 			sel:Attach(sphere_obj, i)
+			end
+
+			sel.ChoGGi_ShowAttachSpots = true
+		end
+	end
+
+	do -- ShowAnimDebug_Toggle
+		local RandomColour = ChoGGi.ComFuncs.RandomColour
+		local function AnimDebug_Show(obj,colour)
+			local text = PlaceObject("ChoGGi_OText")
+			text:SetColor(colour or RandomColour())
+			text:SetFontId(UIL.GetFontID(ChoGGi.font .. ", 14, bold, aa"))
+			text:SetCenter(true)
+			local orient = PlaceObject("ChoGGi_OOrientation")
+
+			-- so we can delete them easy
+			orient.ChoGGi_AnimDebug = true
+			text.ChoGGi_AnimDebug = true
+			obj:Attach(text, 0)
+			obj:Attach(orient, 0)
+			text:SetAttachOffset(point(0,0,obj:GetObjectBBox():sizez() + 100))
+			CreateGameTimeThread(function()
+				local str = "%d. %s\n"
+				while IsValid(text) do
+					text:SetText(str:format(1,obj:GetAnimDebug(1)))
+					WaitNextFrame()
+				end
+			end)
+		end
+
+		local function AnimDebug_Hide(obj)
+			obj:ForEachAttach(function(a)
+				if a.ChoGGi_AnimDebug then
+					a:delete()
+				end
+			end)
+		end
+
+		local function AnimDebug_ShowAll(cls)
+			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+			for i = 1, #objs do
+				AnimDebug_Show(objs[i])
+			end
+		end
+
+		local function AnimDebug_HideAll(cls)
+			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+			for i = 1, #objs do
+				AnimDebug_Hide(objs[i])
+			end
+		end
+
+		function ChoGGi.ComFuncs.ShowAnimDebug_Toggle(sel)
+--~ 			RandomColour = RandomColour or
+			local sel = sel or SelectedObj
+			if sel then
+				if sel.ChoGGi_ShowAnimDebug then
+					sel.ChoGGi_ShowAnimDebug = nil
+					AnimDebug_Hide(sel)
+				else
+					sel.ChoGGi_ShowAnimDebug = true
+					AnimDebug_Show(sel,white)
+				end
+			else
+				local ChoGGi = ChoGGi
+				ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
+				if ChoGGi.Temp.ShowAnimDebug then
+					AnimDebug_ShowAll("Building")
+					AnimDebug_ShowAll("Unit")
+					AnimDebug_ShowAll("CargoShuttle")
+				else
+					AnimDebug_HideAll("Building")
+					AnimDebug_HideAll("Unit")
+					AnimDebug_HideAll("CargoShuttle")
+				end
+			end
+		end
+	end -- do
+
+	do -- ChangeSurfaceSignsToMaterials
+		local function ChangeEntity(cls,entity,random)
+			SuspendPassEdits("ChangeSurfaceSignsToMaterials")
+			MapForEach("map",cls,function(o)
+				if random then
+					o:ChangeEntity(entity .. Random(1,random))
+				else
+					o:ChangeEntity(entity)
+				end
+			end)
+			ResumePassEdits("ChangeSurfaceSignsToMaterials")
+		end
+		local function ResetEntity(cls)
+			SuspendPassEdits("ChangeSurfaceSignsToMaterials")
+			local entity = g_Classes[cls]:GetDefaultPropertyValue("entity")
+			MapForEach("map",cls,function(o)
+				o:ChangeEntity(entity)
+			end)
+			ResumePassEdits("ChangeSurfaceSignsToMaterials")
+		end
+
+		function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
+
+			local ItemList = {
+				{text = Trans(754117323318--[[Enable--]]),value = true,hint = S[302535920001081--[[Changes signs to materials.--]]]},
+				{text = Trans(251103844022--[[Disable--]]),value = false,hint = S[302535920001082--[[Changes materials to signs.--]]]},
+			}
+
+			local function CallBackFunc(choice)
+				if choice.nothing_selected then
+					return
+				end
+				if choice[1].value then
+					ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
+					ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
+					ChangeEntity("SubsurfaceDepositPreciousMetals","DecSurfaceDepositConcrete_01")
+					ChangeEntity("TerrainDepositConcrete","DecDustDevils_0",5)
+					ChangeEntity("SubsurfaceAnomaly","DebrisConcrete")
+					ChangeEntity("SubsurfaceAnomaly_unlock","DebrisMetal")
+					ChangeEntity("SubsurfaceAnomaly_breakthrough","DebrisPolymer")
+				else
+					ResetEntity("SubsurfaceDepositWater")
+					ResetEntity("SubsurfaceDepositMetals")
+					ResetEntity("SubsurfaceDepositPreciousMetals")
+					ResetEntity("TerrainDepositConcrete")
+					ResetEntity("SubsurfaceAnomaly")
+					ResetEntity("SubsurfaceAnomaly_unlock")
+					ResetEntity("SubsurfaceAnomaly_breakthrough")
+					ResetEntity("SubsurfaceAnomaly_aliens")
+					ResetEntity("SubsurfaceAnomaly_complete")
+				end
+			end
+
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = ItemList,
+				title = S[302535920001083--[[Change Surface Signs--]]],
+			}
+		end
+	end -- do
+
+	function ChoGGi.ComFuncs.UpdateServiceComfortBld(obj,service_stats)
+		if not obj or not service_stats then
+			return
+		end
+
+		-- check for type as some are boolean
+		if type(service_stats.health_change) ~= "nil" then
+			obj.base_health_change = service_stats.health_change
+			obj.health_change = service_stats.health_change
+		end
+		if type(service_stats.sanity_change) ~= "nil" then
+			obj.base_sanity_change = service_stats.sanity_change
+			obj.sanity_change = service_stats.sanity_change
+		end
+		if type(service_stats.service_comfort) ~= "nil" then
+			obj.base_service_comfort = service_stats.service_comfort
+			obj.service_comfort = service_stats.service_comfort
+		end
+		if type(service_stats.comfort_increase) ~= "nil" then
+			obj.base_comfort_increase = service_stats.comfort_increase
+			obj.comfort_increase = service_stats.comfort_increase
+		end
+
+		if obj:IsKindOf("Service") then
+			if type(service_stats.visit_duration) ~= "nil" then
+				obj.base_visit_duration = service_stats.visit_duration
+				obj.visit_duration = service_stats.visit_duration
+			end
+			if type(service_stats.usable_by_children) ~= "nil" then
+				obj.usable_by_children = service_stats.usable_by_children
+			end
+			if type(service_stats.children_only) ~= "nil" then
+				obj.children_only = service_stats.children_only
+			end
+			for i = 1, 11 do
+				local name = "interest" .. i
+				if service_stats[name] ~= "" and type(service_stats[name]) ~= "nil" then
+					obj[name] = service_stats[name]
+				end
+			end
+		end
+
+	end
+
 end

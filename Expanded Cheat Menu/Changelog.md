@@ -4,6 +4,19 @@
 ### Removed:
 - Use Last Orientation: It's not a cheat, and there's a mod that does the exact same.
 
+### Changed:
+- Mission>Set Disaster Occurrence: Adds the setting values to the tooltip.
+- Examine:
+- > Attaches menu shows what object the attachment is attached to.
+- > Objects with paths now shows a bit more info and a link to the (cleaned up) paths.
+- > Made View Source button a clickable link
+- > Rearranged function info.
+- > Shows "params: ()" instead of zilch for funcs with no params.
+- > Now also hides any spheres added when closing (like with bbox/shapes).
+
+### Fixed:
+- Examining "_G" and closing the examine dlg would spam the log.
+
 ## v12.6 (25 Feb 2019)
 ### Added:
 - Dome:CrimeEvents_ functions to a list in the cheats section of the selection panel.
