@@ -6,6 +6,7 @@
 
 ### Changed:
 - Mission>Set Disaster Occurrence: Adds the setting values to the tooltip.
+- Cheats>Disasters: Adds the setting values to the tooltip.
 - Examine:
 - > Attaches menu shows what object the attachment is attached to.
 - > Objects with paths now shows a bit more info and a link to the (cleaned up) paths.
