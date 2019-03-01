@@ -53,7 +53,7 @@ function OnMsg.ClassesGenerate()
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	Trans = ChoGGi.ComFuncs.Translate
 
-	local S = ChoGGi.Strings
+--~ 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 

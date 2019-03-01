@@ -148,7 +148,7 @@ ChoGGi = {
 	-- path to this mods' folder
 	library_path = CurrentModPath,
 	-- stores my strings, and edited sm ones
-	Strings = false,
+	Strings = {},
 	-- easier access to some data
 	Tables = {
 		Cargo = {},

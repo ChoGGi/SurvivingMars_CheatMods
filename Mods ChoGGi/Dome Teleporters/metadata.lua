@@ -26,6 +26,12 @@ If you turn it off, then the colonists will group up in front of it (I figured t
 Suicidal colonists: Pathing wise it's best to only use teleporters with domes close by each other, or with some inaccessible land in the way, else they'll sometimes just go for The Long Walk.
 This is a bug with base game, if you build domes in a half-circular pattern then colonists from the two ends will try walking outside and die.
 
+Mods:
+Colonists Use Shuttles For Work:
+https://steamcommunity.com/sharedfiles/filedetails/?id=1669365353
+True Dome Network:
+https://mods.paradoxplaza.com/mods/630/Any
+
 
 
 Requested by... Probably a bunch of people, inspired by veryinky though.

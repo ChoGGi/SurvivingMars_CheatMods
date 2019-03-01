@@ -23,5 +23,9 @@ Once they go outside it'll suck them up and take them back to Earth (truthfully 
 
 
 Unfortunately frozen bodies don't have any propulsion systems. They'll come back as human shaped meteors (in a few Sols). You wouldn't want to experience the Kessler syndrome around your shiny new planet after all.
-On the bright side there won't be much left on impact, so other colonists won't be affected.]],
+On the bright side there won't be much left on impact, so other colonists won't be affected.
+
+
+
+This also adds a buildable monument to idiots, for those colonists less inclined to go outside.]],
 })

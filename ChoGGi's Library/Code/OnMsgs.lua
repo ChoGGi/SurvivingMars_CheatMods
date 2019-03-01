@@ -21,20 +21,21 @@ function OnMsg.ClassesBuilt()
 	end
 end
 
+-- this is when RocketPayload_Init is called (CityStart is too soon)
+OnMsg.NewMapLoaded = ChoGGi.ComFuncs.UpdateDataTablesCargo
 -- needed for UICity and some others that aren't created till around then
 OnMsg.CityStart = ChoGGi.ComFuncs.RetName_Update
 OnMsg.CityStart = ChoGGi.ComFuncs.UpdateStringsList
 OnMsg.LoadGame = ChoGGi.ComFuncs.RetName_Update
 OnMsg.LoadGame = ChoGGi.ComFuncs.UpdateStringsList
+OnMsg.LoadGame = ChoGGi.ComFuncs.UpdateDataTablesCargo
 
 -- now i should probably go around and change all my localed strings...
 OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateStringsList
+OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateDataTablesCargo
 OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateDataTables
-function OnMsg.TranslationChanged()
-	if UICity then
-		ChoGGi.ComFuncs.UpdateDataTablesCargo()
-	end
-end
+
+OnMsg.ModsReloaded = ChoGGi.ComFuncs.UpdateDataTables
 
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
 

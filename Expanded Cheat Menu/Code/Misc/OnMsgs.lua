@@ -291,9 +291,6 @@ function OnMsg.ModsReloaded()
 	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 
-	-- easy access to colonist data, cargo, mystery
-	ChoGGi.ComFuncs.UpdateDataTables()
-
 	-- added this here, as it's early enough to load during the New Game Menu
 	local Actions = ChoGGi.Temp.Actions
 	if UserSettings.DisableECM then
@@ -1162,13 +1159,6 @@ function OnMsg.ChoGGi_Childkiller()
 	end
 end
 
--- this is when RocketPayload_Init is called (CityStart is too soon)
-function OnMsg.NewMapLoaded()
-	if UICity then
-		ChoGGi.ComFuncs.UpdateDataTablesCargo()
-	end
-end
-
 local function RemoveChoGGiObjects()
 	SuspendPassEdits("RemoveChoGGiObjects")
 	MapDelete(true, "RotatyThing", function(o)
@@ -1216,7 +1206,6 @@ do -- LoadGame/CityStart
 
 		ChoGGi.Temp.IsChoGGiMsgLoaded = false
 
-		ChoGGi.ComFuncs.UpdateDataTablesCargo()
 		Msg("ChoGGi_Loaded")
 	end
 	-- for new games

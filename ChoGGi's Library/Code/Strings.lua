@@ -6,17 +6,21 @@
 -- amount of entries in the CSV file
 local string_limit = 1550
 
+local T,_InternalTranslate = T,_InternalTranslate
+
 do -- Translate
 	-- local some globals
-	local T,_InternalTranslate,IsT,TGetID = T,_InternalTranslate,IsT,TGetID
+	local IsT,TGetID,count_params = IsT,TGetID,count_params
 	local type,select,pcall,tostring = type,select,pcall,tostring
 
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
+		local count = count_params(...) == 1
 		local str,result
-		local stype = type(select(1,...))
+		local stype = type(count and ... or select(1,...))
+
 		if stype == "userdata" or stype == "number" then
-			str = T{...}
+			str = count and T(...) or T{...}
 		else
 			str = ...
 		end
@@ -33,7 +37,7 @@ do -- Translate
 			return (IsT(...) and TGetID(...) or tostring(...)) .. " *bad string id?"
 		-- just in case
 		elseif not result or type(str) ~= "string" then
-			str = select(2,...)
+			str = count and false or select(2,...)
 			if type(str) == "string" then
 				return str
 			end
@@ -45,25 +49,23 @@ do -- Translate
 		return str
 	end
 end -- do
-local Trans = ChoGGi.ComFuncs.Translate
 
---~ local missing_strs = {}
 -- we need to pad some zeros
 local tonumber = tonumber
+--~ local missing_strs = {}
 local function TransZero(pad,first,last,strings)
 	for i = first, last do
 		if i > string_limit then
 			break
 		end
 		local num = tonumber("30253592000" .. pad .. i)
-		local str = Trans(num)
-
-		if not (#str > 16 and str:sub(-16) == " *bad string id?") then
-			strings[num] = str
---~ 		else
+--~ 		local str = _InternalTranslate(T(num))
+--~ 		if #str > 16 and str:sub(-16) == " *bad string id?" then
 --~ 			c = c + 1
 --~ 			missing_strs[#missing_strs+1] = num
-		end
+--~ 		else
+			strings[num] = _InternalTranslate(T(num))
+--~ 		end
 	end
 end
 
@@ -91,7 +93,7 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 	end
 
 	-- one big table of all in-game strings and mine (i make a copy since we edit some strings below, and i want to make sure tag icons show up)
-	local strings = ChoGGi.Strings or {}
+	local strings = ChoGGi.Strings
 
 	-- 0000 = 0 if we try to pass as a number (as well as 001 to 1)
 	TransZero("000",0,9,strings)
@@ -128,6 +130,6 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 	ChoGGi.Strings = strings
 end
 -- always fire on startup
---~ ChoGGi.ComFuncs.TickStart("TestTableIterate.1.Tick")
+--~ ChoGGi.ComFuncs.TickStart("UpdateStringsList.1.Tick")
 ChoGGi.ComFuncs.UpdateStringsList()
---~ ChoGGi.ComFuncs.TickEnd("TestTableIterate.1.Tick")
+--~ ChoGGi.ComFuncs.TickEnd("UpdateStringsList.1.Tick")

@@ -54,6 +54,7 @@ local ClearShowObj
 local DebugGetInfo
 local DeleteObject
 local DotNameToObject
+local GetAllAttaches
 local GetParentOfKind
 local IsControlPressed
 local OpenInExamineDlg
@@ -61,6 +62,7 @@ local Random
 local RandomColour
 local RetName
 local RetProperType
+local RetSortTextAssTable
 local RetThreadInfo
 local ShowObj
 local TableConcat
@@ -78,6 +80,7 @@ function OnMsg.ClassesGenerate()
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	DeleteObject = ChoGGi.ComFuncs.DeleteObject
 	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
+	GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 	IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 	OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
@@ -86,6 +89,7 @@ function OnMsg.ClassesGenerate()
 	RetName = ChoGGi.ComFuncs.RetName
 	RetProperType = ChoGGi.ComFuncs.RetProperType
 	RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
+	RetSortTextAssTable = ChoGGi.ComFuncs.RetSortTextAssTable
 	ShowObj = ChoGGi.ComFuncs.ShowObj
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	Trans = ChoGGi.ComFuncs.Translate
@@ -154,6 +158,7 @@ DefineClass.Examine = {
 	menu_list_items = false,
 	-- clickable purple text
 	onclick_funcs = false,
+	onclick_text = false,
 	onclick_objs = false,
 	onclick_count = false,
 
@@ -185,6 +190,7 @@ function Examine:Init(parent, context)
 	self.menu_added = {}
 	self.menu_list_items = {}
 	self.onclick_funcs = {}
+	self.onclick_text = {}
 	self.onclick_objs = {}
 	self.onclick_count = 0
 	self.marked_objects = objlist:new()
@@ -280,19 +286,6 @@ Press once to clear this examine, again to clear all."--]]],
 			RolloverTitle = Trans(3768--[[Destroy all?--]]),
 			RolloverText = S[302535920000059--[[Destroy all objects in objlist!--]]],
 			OnPress = self.idButDeleteAllOnPress,
-		}, self.idToolbarButtons)
-		--
-		self.idButViewSource = g_Classes.ChoGGi_ToolbarButton:new({
-			Id = "idButViewSource",
-			Image = "CommonAssets/UI/Menu/SelectByClass.tga",
-			RolloverTitle = S[302535920001519--[[View Source--]]],
-			RolloverText = S[302535920001520--[["Opens source code (if it exists):
-Mod source works fine, as well as HG github code. HG code needs to be placed at ""%sSource""
-Example: ""Source/Lua/_const.lua""
-
-Decompiled code won't scroll correctly as the line numbers are different.
-Needs HelperMod enabled."--]]]:format(ConvertToOSPath("AppData/")),
-			OnPress = self.idButViewSourceOnPress,
 		}, self.idToolbarButtons)
 		-- right side
 
@@ -474,6 +467,36 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self:PostInit(context.parent)
 end
 
+function Examine:ViewSourceCode()
+	self = GetRootDialog(self)
+	-- add link to view lua source
+	local info = getinfo(self.obj_ref,"S")
+	-- =[C] is 4 chars
+	local str,path = ChoGGi.ComFuncs.RetSourceFile(info.source)
+	if not str then
+		local msg = S[302535920001521--[[Lua source file not found.--]]] .. ": " .. ConvertToOSPath(path)
+		ChoGGi.ComFuncs.MsgPopup(
+			msg,
+			S[302535920001519--[[View Source--]]]
+		)
+		print(msg)
+	end
+	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+		parent = self,
+		checkbox = true,
+		text = str,
+		code = true,
+		scrollto = info.linedefined,
+		title = S[302535920001519--[[View Source--]]] .. ": " .. info.source,
+		hint_ok = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
+		custom_func = function(answer,overwrite)
+			if answer then
+				ChoGGi.ComFuncs.Dump("\n" .. str,overwrite,"DumpedSource","lua")
+			end
+		end,
+	}
+end
+
 --~ function Examine:idTextOnHyperLinkRollover(link, hyperlink_box, pos)
 function Examine:idTextOnHyperLinkRollover(link, box)
 	if not ChoGGi.UserSettings.EnableToolTips then
@@ -507,7 +530,7 @@ function Examine:idTextOnHyperLinkRollover(link, box)
 
 	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
 		RolloverTitle = title,
-		RolloverText = name,
+		RolloverText = self.onclick_text[link] or name,
 		RolloverHint = S[302535920001079--[[<left_click> Default Action <right_click> Examine--]]],
 	})
 end
@@ -531,13 +554,16 @@ function Examine:idTextOnHyperLink(link, argument, hyperlink_box, pos, button)
 
 end
 -- created
-function Examine:HyperLink(obj, func)
+function Examine:HyperLink(obj, func, text)
 	local c = self.onclick_count
 	c = c + 1
 
 	self.onclick_count = c
 	self.onclick_objs[c] = obj
 	self.onclick_funcs[c] = func
+	if text then
+		self.onclick_text[c] = text
+	end
 
 	return "<color 150 170 250><h " .. c .. " 230 195 50>"
 end
@@ -653,34 +679,6 @@ function Examine:idButDeleteObjOnPress()
 	)
 end
 
-function Examine:idButViewSourceOnPress()
-	self = GetRootDialog(self)
-	-- add link to view lua source
-	local info = getinfo(self.obj_ref,"S")
-	-- =[C] is 4 chars
-	local str,path = ChoGGi.ComFuncs.RetSourceFile(info.source)
-	if not str then
-		ChoGGi.ComFuncs.MsgPopup(
-			S[302535920001521--[[Lua source file not found.--]]] .. ": " .. ConvertToOSPath(path),
-			S[302535920001519--[[View Source--]]]
-		)
-	end
-	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
-		parent = self,
-		checkbox = true,
-		text = str,
-		code = true,
-		scrollto = info.linedefined,
-		title = S[302535920001519--[[View Source--]]] .. ": " .. info.source,
-		hint_ok = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
-		custom_func = function(answer,overwrite)
-			if answer then
-				ChoGGi.ComFuncs.Dump("\n" .. str,overwrite,"DumpedSource","lua")
-			end
-		end,
-	}
-end
-
 function Examine:idButDeleteAllOnPress()
 	self = GetRootDialog(self)
 	ChoGGi.ComFuncs.QuestionBox(
@@ -727,7 +725,6 @@ function Examine:AddSphere(obj,c,colour,skip_view,skip_colour)
 	end
 	return c
 end
-
 
 function Examine:idAutoRefreshOnChange()
 	-- if it's called directly we set the check if needed
@@ -1855,7 +1852,7 @@ function Examine:RetDebugGetInfo(obj)
 	TableInsert(temp,1,"\ngetinfo(): ")
 	return TableConcat(temp,"\n")
 end
-function Examine:RetFuncParams(obj)
+function Examine:RetFuncArgs(obj)
 	self.RetDebugInfo_table = self.RetDebugInfo_table or objlist:new()
 	local temp = self.RetDebugInfo_table
 	temp:Destroy()
@@ -1866,11 +1863,13 @@ function Examine:RetFuncParams(obj)
 			temp[i] = getlocal(obj, i)
 		end
 
-		TableInsert(temp,1,"\nparams: ")
+		TableInsert(temp,1,"params: ")
 		local args = TableConcat(temp,", ")
 
 		-- remove extra , from concat and add ... if it has a vararg
 		return args:gsub(": , ",": (") .. (info.isvararg and ", ...)" or ")")
+	else
+		return "params: ()"
 	end
 end
 
@@ -2049,20 +2048,40 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		if obj:IsKindOf("ParSystem") then
 			local par_name = obj:GetParticlesName()
 			if par_name ~= "" then
-				TableInsert(list_obj_str,2,"obj:GetParticlesName(): '" .. par_name .. "'\n")
+				TableInsert(list_obj_str,2,"GetParticlesName(): '" .. par_name .. "'\n")
 			end
 		end
 
+		-- stuff that changes anim state?
 		if obj:IsValidPos() and IsValidEntity(obj:GetEntity()) and 0 < obj:GetAnimDuration() then
-			local pos = obj:GetVisualPos() + obj:GetStepVector() * obj:TimeToAnimEnd() / obj:GetAnimDuration()
+			-- add pathing table
+			local current_pos = obj:GetVisualPos()
+			local going_to = current_pos + obj:GetStepVector() * obj:TimeToAnimEnd() / obj:GetAnimDuration()
+			local path = obj.GetPath and obj:GetPath()
+			if path then
+				local path_c = #path
+				for i = 1, path_c do
+					path[i] = path[i]:SetTerrainZ()
+				end
+				path[path_c+1] = going_to
+			else
+				path = going_to
+			end
+
+			local state = obj:GetState()
 			TableInsert(list_obj_str, 2,
-				GetStateName(obj:GetState())
+
+				Trans(3722--[[State--]]) .. ": " .. GetStateName(state)
 				.. ", step: "
 				.. self:HyperLink(obj,function()
 					self:AddSphere(obj)
 				end)
-				.. self:ConvertValueToInfo(obj:GetStepVector(obj:GetState(),0))
-				.. HLEnd
+				.. self:ConvertValueToInfo(obj:GetStepVector(state,0))
+				.. HLEnd .. "\n"
+
+				.. (current_pos ~= going_to
+						and S[302535920001545--[[Going to %s--]]]:format(self:ConvertValueToInfo(path)) .. "\n"
+						or "")
 			)
 		end
 	end
@@ -2246,28 +2265,39 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 	-- add some extra info for funcs
 	elseif obj_type == "function" then
-		local dbg_value
-
 		if blacklist then
-			dbg_value = "\ngetinfo(): " .. DebugGetInfo(obj)
+			c = c + 1
+			list_obj_str[c] = "\ngetinfo(): " .. DebugGetInfo(obj)
 		else
 			c = c + 1
 			list_obj_str[c] = "\n"
-			local nups = getinfo(obj, "u").nups
-			if nups > 0 then
-				c = self:RetDebugUpValue(obj,list_obj_str,c,nups)
+
+			local info = getinfo(obj,"Su")
+
+			-- link to source code
+			if info.what == "Lua" then
+				c = c + 1
+				list_obj_str[c] = self:HyperLink(obj,self.ViewSourceCode,S[302535920001520--[["Opens source code (if it exists):
+Mod code works, as well as HG github code. HG code needs to be placed at ""%sSource""
+Example: ""Source/Lua/_const.lua""
+
+Decompiled code won't scroll correctly as the line numbers are different."--]]]:format(ConvertToOSPath("AppData/")))
+					.. S[302535920001519--[[View Source--]]] .. HLEnd
 			end
-			dbg_value = self:RetDebugGetInfo(obj)
-			-- any args
-			local args = self:RetFuncParams(obj)
+			-- list args
+			local args = self:RetFuncArgs(obj)
 			if args then
 				c = c + 1
 				list_obj_str[c] = args
 			end
-		end
-		if dbg_value then
+			-- and upvalues
+			local nups = info.nups
+			if nups > 0 then
+				c = self:RetDebugUpValue(obj,list_obj_str,c,nups)
+			end
+			-- lastly list anything from debug.getinfo()
 			c = c + 1
-			list_obj_str[c] = dbg_value
+			list_obj_str[c] = self:RetDebugGetInfo(obj)
 		end
 
 	elseif obj_type == "thread" then
@@ -2357,7 +2387,6 @@ function Examine:SetToolbarVis(obj)
 	self.idButDeleteAll:SetVisible()
 	self.idViewEnum:SetVisible()
 	self.idButDeleteObj:SetVisible()
-	self.idButViewSource:SetVisible()
 
 	-- no sense in showing it in mainmenu/new game screens
 	if GameState.gameplay then
@@ -2393,11 +2422,6 @@ function Examine:SetToolbarVis(obj)
 			end
 		end
 
-	elseif self.obj_type == "function" then
-		if getinfo(obj,"S").what == "Lua" then
-			self.idButViewSource:SetVisible(true)
-		end
-
 	elseif self.obj_type == "thread" then
 		self.idButDeleteObj:SetVisible(true)
 	end
@@ -2407,7 +2431,7 @@ end
 
 function Examine:BuildParents(list,list_type,title,sort_type)
 	if list and next(list) then
-		list = ChoGGi.ComFuncs.RetSortTextAssTable(list,sort_type)
+		list = RetSortTextAssTable(list,sort_type)
 		self[list_type] = list
 		local c = #self.parents_menu_popup
 
@@ -2499,7 +2523,7 @@ function Examine:SetObj(startup)
 
 		-- attaches button/menu
 		TableIClear(self.attaches_menu_popup)
-		local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
+		local attaches = GetAllAttaches(obj,true)
 		local attach_amount = #attaches
 
 		for i = 1, attach_amount do
@@ -2510,10 +2534,16 @@ function Examine:SetObj(startup)
 			if name ~= a.class then
 				name = name .. ": " .. a.class
 			end
+			-- attached to name
+			local a_to = a.ChoGGi_Marked_Attach or false
+			a.ChoGGi_Marked_Attach = nil
+
 			self.attaches_menu_popup[i] = {
 				name = name,
-				hint = a.class .. "\n" .. S[302535920000955--[[Handle--]]] .. ": "
-					.. (a.handle or Trans(6761--[[None--]])) .. "\npos: " .. tostring(pos),
+				hint = Trans(3746--[[Class name--]]) .. ": " .. a.class
+					.. (a_to and "\n" .. S[302535920001544--[[Attached to: %s--]]]:format(a_to) or "")
+					.. "\n".. S[302535920000955--[[Handle--]]] .. ": " .. (a.handle or Trans(6761--[[None--]]))
+					.. "\n" .. S[302535920001237--[[Position--]]] .. ": " .. tostring(pos),
 				showobj = a,
 				clicked = function()
 					ClearShowObj(a)
@@ -2579,27 +2609,31 @@ function Examine:Done(result,...)
 	PopupClose(self.idAttachesMenu)
 	PopupClose(self.idParentsMenu)
 	PopupClose(self.idToolsMenu)
-	-- hide bbox
 	if self.obj_type == "table" then
-		if obj.ChoGGi_bboxobj then
+		-- hide bbox
+
+		if PropObjGetProperty(obj,"ChoGGi_bboxobj") then
 			obj.ChoGGi_bboxobj:Destroy()
 			obj.ChoGGi_bboxobj = nil
 		end
 		-- attach spot names
-		if obj.ChoGGi_ShowAttachSpots then
+		if PropObjGetProperty(obj,"ChoGGi_ShowAttachSpots") then
 			obj:HideSpots()
 			obj.ChoGGi_ShowAttachSpots = nil
 		end
 		-- hex shape
-		if obj.ChoGGi_shape_obj then
+		if PropObjGetProperty(obj,"ChoGGi_shape_obj") then
 			obj.ChoGGi_shape_obj:Destroy()
 			obj.ChoGGi_shape_obj = nil
 		end
 	end
+	-- clear any marked objects
+	self:idButClearOnPress()
+
 	-- remove this dialog from list of examine dialogs
-	local g_ExamineDlgs = g_ExamineDlgs or empty_table
-	g_ExamineDlgs[self.obj] = nil
-	g_ExamineDlgs[obj] = nil
+	local dlgs = g_ExamineDlgs or empty_table
+	dlgs[self.obj] = nil
+	dlgs[obj] = nil
 
 	ChoGGi_Window.Done(self,result,...)
 end
