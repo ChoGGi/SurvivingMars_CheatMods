@@ -5,6 +5,7 @@
 - RetName was returning "*C func" for non-C funcs.
 - Fixed CSV exporting.
 - Code cleanup / Moved some ECM only funcs to ECM.
+- Some List items were having a fake icon added (appearing as a space in front of the name).
 
 ## v5.6 (25 Feb 2019)
 - Changed my AttachSpots toggle func to only clear text objs from itself.

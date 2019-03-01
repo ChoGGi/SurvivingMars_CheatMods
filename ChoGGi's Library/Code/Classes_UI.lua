@@ -100,7 +100,6 @@ DefineClass.ChoGGi_Image = {
 	Margins = box(4, 0, 0, 0),
 	RolloverTemplate = "Rollover",
 }
---~ 		ScaleModifier = point(2500, 2500),
 
 DefineClass.ChoGGi_ImageRows = {
 	__parents = {"XImage"},
@@ -108,7 +107,6 @@ DefineClass.ChoGGi_ImageRows = {
 	VAlign = "center",
 	HandleKeyboard = false,
 	ImageScale = point(250, 250),
---~ 	Margins = box(4, 0, 0, 0),
 	RolloverTemplate = "Rollover",
 }
 DefineClass.ChoGGi_MoveControl = {
@@ -526,16 +524,14 @@ function ChoGGi_Window:AddElements()
 --~ 		end,
 	}, self.idTitleRightSection)
 
-	-- throws error if we try to get display_icon from _G
-	local image = self.title_image or (type(self.obj) == "table" and self.name ~= "_G"
-		and (PropObjGetProperty(self.obj,"display_icon") and self.obj.display_icon ~= "" and self.obj.display_icon
-		or PropObjGetProperty(self.obj,"pin_icon") and self.obj.pin_icon ~= "" and self.obj.pin_icon))
+	-- we use PropObjGetProperty so it doesn't spam the log with errors on _G and mod _G
+	local o = self.obj
+	local image = self.title_image or (type(o) == "table" and self.name ~= "_G"
+		and (PropObjGetProperty(o,"display_icon") and o.display_icon ~= "" and o.display_icon
+		or PropObjGetProperty(o,"pin_icon") and o.pin_icon ~= "" and o.pin_icon))
 
-	-- as long as x isn't 0 then it's probably an image
-	local is_image = type(image) == "string" and MeasureImage(image) ~= 0
-
-	-- DroneResourceUnits.ANYTHING will return 1000
-	if is_image then
+	-- as long as x isn't 0 then it's an image
+	if type(image) == "string" and MeasureImage(image) ~= 0 then
 		self.idCaptionImage = g_Classes.ChoGGi_Image:new({
 			Id = "idCaptionImage",
 			Dock = "left",
@@ -547,8 +543,9 @@ function ChoGGi_Window:AddElements()
 		}, self.idTitleLeftSection)
 
 		self.idCaptionImage:SetImage(image)
-		-- remove column and such so it displays fine
+		-- single regular image instead of the usual double icons
 		if self.title_image_single then
+			-- remove column and such so it displays fine
 			self.idCaptionImage:SetColumns(1)
 			self.idCaptionImage:SetImageScale(point(1000,1000))
 			self.idCaptionImage:SetRolloverText("")

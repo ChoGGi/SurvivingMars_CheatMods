@@ -627,7 +627,7 @@ function OnMsg.ClassesGenerate()
 			local hint = {}
 			local hc = 0
 			for key,value in pairs(rule) do
-				if key ~= "name" then
+				if key ~= "name" and key ~= "use_in_gen" then
 					hc = hc + 1
 					hint[hc] = key .. ": " .. tostring(value)
 				end

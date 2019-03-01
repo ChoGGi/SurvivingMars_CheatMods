@@ -59,6 +59,7 @@ local type,tostring = type,tostring
 local TableSort = table.sort
 local RGBA,RGB = RGBA,RGB
 local point = point
+local MeasureImage = UIL.MeasureImage
 
 local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_ListChoiceDlg")
@@ -573,17 +574,18 @@ function ChoGGi_ListChoiceDlg:AddItemIcon(g,item)
 	for i = 1, 3 do
 		local list = g[item_icon_table[i]]
 
-		-- try .value first as it's more likely to work
+		-- try .value and .text
 		local item_temp = list[item.value]
-		if item_temp and item_temp.display_icon ~= "" then
-			item.icon = item_temp.display_icon
-			return true
+		if not item_temp then
+			item_temp = list[item.text]
 		end
 
-		item_temp = list[item.text]
-		if item_temp and item_temp.display_icon ~= "" then
-			item.icon = item_temp.display_icon
-			return true
+		if item_temp then
+			local x = MeasureImage(item_temp.display_icon or "")
+			if x > 0 then
+				item.icon = item_temp.display_icon
+				return true
+			end
 		end
 
 	end
@@ -607,11 +609,15 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 		local text
 		local display_icon
 		if item.icon then
-			if item.icon:find("<image ",1,true) then
-				text = item.icon .. " " .. item.text
-			else
-				display_icon = true
-				text = item.text
+			-- if x is 0 then it's not an actual image
+			local x = MeasureImage(item.icon)
+			if x > 0 then
+				if item.icon:find("<image ",1,true) then
+					text = item.icon .. " " .. item.text
+				else
+					display_icon = true
+					text = item.text
+				end
 			end
 		else
 			display_icon = self:AddItemIcon(g,item)

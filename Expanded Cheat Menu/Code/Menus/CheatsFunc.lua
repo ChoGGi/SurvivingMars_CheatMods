@@ -7,6 +7,7 @@ function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local Trans = ChoGGi.ComFuncs.Translate
 	local Random = ChoGGi.ComFuncs.Random
+	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local S = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
@@ -560,7 +561,11 @@ This will switch to a new map.--]]],
 		local trigger_table = {
 			Stop = ChoGGi.MenuFuncs.DisastersStop,
 			ColdWave = ChoGGi.MenuFuncs.DisasterTriggerColdWave,
+			DustStorm = ChoGGi.MenuFuncs.DisasterTriggerDustStorm,
+			Meteor = ChoGGi.MenuFuncs.DisasterTriggerMeteor,
+			MetatronIonStorm = ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm,
 			DustDevils = ChoGGi.MenuFuncs.DisasterTriggerDustDevils,
+
 			DustDevilsMajor = function()
 				ChoGGi.MenuFuncs.DisasterTriggerDustDevils(nil,"major")
 			end,
@@ -570,16 +575,14 @@ This will switch to a new map.--]]],
 			DustStormGreat = function()
 				ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil,"great")
 			end,
-			DustStorm = ChoGGi.MenuFuncs.DisasterTriggerDustStorm,
 			MeteorStorm = function()
 				ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil,"storm")
 			end,
 			MeteorMultiSpawn = function()
 				ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil,"multispawn")
 			end,
-			Meteor = ChoGGi.MenuFuncs.DisasterTriggerMeteor,
-			MetatronIonStorm = ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm,
 		}
+
 		local function AddTableToList(t,c,list,text,disaster,types)
 			local func_name = "DisasterTrigger" .. disaster
 			local remove_name = disaster .. "_"
@@ -587,28 +590,45 @@ This will switch to a new map.--]]],
 			types[#types+1] = false
 			-- go through the DataInstances
 			for i = 1, #list do
-				local severity = list[i].name
+				local rule = list[i]
+				local severity = rule.name
+
+				-- add rule settings to tooltip
+				local hint = {}
+				local hc = 0
+				for key,value in pairs(rule) do
+					if key ~= "name" and key ~= "use_in_gen" then
+						hc = hc + 1
+						hint[hc] = key .. ": " .. tostring(value)
+					end
+				end
+
 				-- add one for each type
 				for j = 1, #types do
 					local d_type = types[j]
-					local name = severity .. " " .. (d_type or "")
+					local name = severity .. (d_type and (" " .. d_type) or "")
 
+					-- add entry to the lookup table
 					trigger_table[name] = function()
 						ChoGGi.MenuFuncs[func_name](name,d_type)
 					end
+
 					c = c + 1
 					t[c] = {
 						text = text .. ": " .. name:gsub(remove_name,""),
 						value = name,
+						hint = TableConcat(hint,"\n"),
 					}
 				end
 			end
-			return t,c
+			return c
 		end
 
 		function ChoGGi.MenuFuncs.DisastersTrigger()
 			local missile_hint = S[302535920001372--[[Change the number on the end to fire that amount (ex: %s25).--]]]:format(S[302535920000246--[[Missle--]]])
+				.. "\n\n" .. S[302535920001546--[[Random delay added (to keep game from lagging on large amounts).--]]]
 			local strike_hint = S[302535920001372--[[Change the number on the end to fire that amount (ex: %s25).--]]]:format(S[302535920001374--[[LightningStrike--]]])
+				.. "\n\n" .. S[302535920001546]
 			local default_mapdata_type = S[302535920000250--[[Default mapdata type--]]]
 
 			local ChoGGi = ChoGGi
@@ -643,10 +663,10 @@ This will switch to a new map.--]]],
 			-- add map settings for disasters
 			local DataInstances = DataInstances
 			local c = #ItemList
-			ItemList,c = AddTableToList(ItemList,c,DataInstances.MapSettings_ColdWave,Trans(4149--[[Cold Wave--]]),"ColdWave",{})
-			ItemList,c = AddTableToList(ItemList,c,DataInstances.MapSettings_DustStorm,Trans(4250--[[Dust Storm--]]),"DustStorm",{"major"})
-			ItemList,c = AddTableToList(ItemList,c,DataInstances.MapSettings_DustDevils,Trans(4142--[[Dust Devils--]]),"DustDevils",{"electrostatic","great"})
-			ItemList,c = AddTableToList(ItemList,c,DataInstances.MapSettings_Meteor,Trans(4146--[[Meteors--]]),"Meteor",{"storm","multispawn"})
+			c = AddTableToList(ItemList,c,DataInstances.MapSettings_ColdWave,Trans(4149--[[Cold Wave--]]),"ColdWave",{})
+			c = AddTableToList(ItemList,c,DataInstances.MapSettings_DustStorm,Trans(4250--[[Dust Storm--]]),"DustStorm",{"major"})
+			c = AddTableToList(ItemList,c,DataInstances.MapSettings_DustDevils,Trans(4142--[[Dust Devils--]]),"DustDevils",{"electrostatic","great"})
+			c = AddTableToList(ItemList,c,DataInstances.MapSettings_Meteor,Trans(4146--[[Meteors--]]),"Meteor",{"storm","multispawn"})
 
 			local function CallBackFunc(choice)
 				if choice.nothing_selected then
@@ -654,10 +674,6 @@ This will switch to a new map.--]]],
 				end
 				for i = 1, #choice do
 					local value = choice[i].value
-					if type(value) ~= "string" then
-						print(value)
-						ex(choice[i])
-					end
 					if trigger_table[value] then
 						trigger_table[value]()
 					elseif value:find("Missle") then
@@ -683,7 +699,7 @@ This will switch to a new map.--]]],
 				callback = CallBackFunc,
 				items = ItemList,
 				title = Trans(1694--[[Start--]]) .. " " .. Trans(3983--[[Disasters--]]),
-				hint = S[302535920000252--[[Targeted to mouse cursor (use arrow keys to select and enter to start, Ctrl/Shift to multi-select).--]]],
+				hint = S[302535920000252--[[Targeted to mouse cursor (use arrow keys to select and enter to start).--]]],
 				multisel = true,
 			}
 		end
@@ -691,7 +707,7 @@ This will switch to a new map.--]]],
 
 	function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 		local ItemList = {
-			{text = Trans(4493--[[All--]]),value = "All",hint = S[302535920000329--[[Scan all anomalies.--]]]},
+			{text = " " .. Trans(4493--[[All--]]),value = "All",hint = S[302535920000329--[[Scan all anomalies.--]]]},
 			{text = Trans(9--[[Anomaly--]]),value = "SubsurfaceAnomaly",icon = "<image UI/Icons/Anomaly_Event.tga 750>",hint = Trans(14--[[We have detected alien artifacts at this location that will <em>speed up</em> our Research efforts.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
 			{text = Trans(8--[[Breakthrough Tech--]]),value = "SubsurfaceAnomaly_breakthrough",icon = "<image UI/Icons/Anomaly_Breakthrough.tga 750>",hint = Trans(11--[[Our scientists believe that this Anomaly may lead to a <em>Breakthrough</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
 			{text = Trans(3--[[Grant Research--]]),value = "SubsurfaceAnomaly_complete",icon = "<image UI/Icons/Anomaly_Research.tga 750>",hint = Trans(13--[[Sensors readings suggest that this Anomaly will help us with our current <em>Research</em> goals.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
@@ -717,8 +733,9 @@ This will switch to a new map.--]]],
 				else
 					local a = UICity.labels.Anomaly or ""
 					for j = #a, 1, -1 do
-						if a[j]:IsKindOf(value) then
-							a[j]:CheatScan()
+						local anomnom = a[j]
+						if anomnom:IsKindOf(value) then
+							anomnom:CheatScan()
 						end
 					end
 				end

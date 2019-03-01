@@ -578,6 +578,7 @@ Use with %s to fill up a dome with spires.",
 302535920000230,Remove Building Limits,
 302535920000231,"Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
 See also %s.",
+302535920001546,Random delay added (to keep game from lagging on large amounts).,
 302535920000902,"Anything with Repeatable in the tooltip will spawn more items on the map.
 Deep items will unlock the ability to exploit those resources.",
 302535920001508,"Save your game.
@@ -657,7 +658,7 @@ Buildings are still unlocked.",
 302535920000241,Major,
 302535920000245,Multi-Spawn,
 302535920000246,Missle,
-302535920000252,"Targeted to mouse cursor (use arrow keys to select and enter to start).",
+302535920000252,Targeted to mouse cursor (use arrow keys to select and enter to start).,
 302535920000253,"Core: Repeatable, exploit core resources.",
 302535920000254,"Deep: Toggleable, exploit deep resources.",
 302535920000255,Deep,

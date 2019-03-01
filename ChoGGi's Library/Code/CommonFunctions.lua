@@ -337,21 +337,26 @@ do -- ValidateImage
 	local default = ChoGGi.library_path .. "UI/TheIncal.png"
 
 	function ChoGGi.ComFuncs.ValidateImage(image,fallback)
-		image = image or ""
-		-- if x is 0 then it probably isn't a valid image (measure sends back x,y)
+		-- if measure isn't sent a string it'll spam the log
+		image = tostring(image)
+
+		-- first we try the image path as is
 		local m = MeasureImage(image)
-		if not m or m and m == 0 then
-			image = ChoGGi.library_path .. fallback
-		end
-		-- maybe it's an actual path instead of my lib
-		m = MeasureImage(image)
-		if not m or m and m == 0 then
-			image = fallback
-		end
-		-- falling way back
-		m = MeasureImage(image)
-		if not m or m and m == 0 then
-			image = default
+		-- if x is 0 then it probably isn't a valid image (measure sends back x,y)
+		if m == 0 then
+			-- try with my lib path
+			image = ChoGGi.library_path .. image
+			m = MeasureImage(image)
+			-- falling back
+			if fallback and m == 0 then
+				image = fallback
+				m = MeasureImage(image)
+				-- falling way back
+				if m == 0 then
+					-- should always exist
+					image = default
+				end
+			end
 		end
 
 		return image

@@ -1350,7 +1350,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			{text = " " .. S[302535920000823--[[All Positive Traits--]]],value = "PositiveTraits",hint = S[302535920000824--[[All the positive traits...--]]]},
 			{text = " " .. S[302535920000825--[[All Negative Traits--]]],value = "NegativeTraits",hint = S[302535920000826--[[All the negative traits...--]]]},
 			{text = " " .. S[302535920001040--[[All Other Traits--]]],value = "OtherTraits",hint = S[302535920001050--[[All the other traits...--]]]},
-			{text = " " .. T(652319561018--[[All Traits--]]),value = "AllTraits",hint = S[302535920000828--[[All the traits...--]]]},
+			{text = " " .. Trans(652319561018--[[All Traits--]]),value = "AllTraits",hint = S[302535920000828--[[All the traits...--]]]},
 		}
 		local c = #ItemList
 
@@ -1517,6 +1517,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				title = S[302535920000129--[[Set--]]] .. " " .. sType .. S[302535920000831--[[Colonist Traits--]]],
 				hint = hint,
 				multisel = true,
+				height = 800.0,
 			}
 		elseif iType == 2 then
 			ChoGGi.ComFuncs.OpenInListChoice{
