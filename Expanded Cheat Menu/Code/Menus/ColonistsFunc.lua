@@ -289,8 +289,10 @@ I think somebody has been playing too much Fallout...--]]],
 			if choice.nothing_selected then
 				return
 			end
-			local value = choice[1].value
-			if choice[1].check1 then
+			choice = choice[1]
+
+			local value = choice.value
+			if choice.check1 then
 				g_ApplicantPool = {}
 				MsgPopup(
 					S[302535920000754--[[Emptied applicants pool.--]]],
@@ -306,7 +308,7 @@ I think somebody has been playing too much Fallout...--]]],
 					end
 					g_LastGeneratedApplicantTime = now
 					MsgPopup(
-						S[302535920000756--[[%s: Added applicants.--]]]:format(choice[1].text),
+						S[302535920000756--[[%s: Added applicants.--]]]:format(choice.text),
 						S[302535920000755--[[Applicants--]]],
 						default_icon
 					)

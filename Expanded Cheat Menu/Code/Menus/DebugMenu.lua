@@ -8,6 +8,15 @@ function OnMsg.ClassesGenerate()
 	local c = #Actions
 
 	c = c + 1
+	Actions[c] = {ActionName = S[302535920001547--[[List Visible Objects--]]],
+		ActionMenubar = "ECM.Debug",
+		ActionId = ".List Visible Objects",
+		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
+		RolloverText = S[302535920001548--[[Shows list of objects rendered in the current frame.--]]],
+		OnAction = ChoGGi.MenuFuncs.ListVisibleObjects,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = S[302535920001498--[[Examine Persist Errors--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Examine Persist Errors",

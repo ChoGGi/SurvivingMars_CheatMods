@@ -1159,30 +1159,8 @@ function OnMsg.ChoGGi_Childkiller()
 	end
 end
 
-local function RemoveChoGGiObjects()
-	SuspendPassEdits("RemoveChoGGiObjects")
-	MapDelete(true, "RotatyThing", function(o)
-		if o.ChoGGi_blinky then
-			return true
-		end
-	end)
-	local RemoveObjs = ChoGGi.ComFuncs.RemoveObjs
-	RemoveObjs("ChoGGi_OHexSpot")
-	RemoveObjs("ChoGGi_OHexSpot2")
-	RemoveObjs("ChoGGi_OVector")
-	RemoveObjs("ChoGGi_OSphere")
-	RemoveObjs("ChoGGi_OPolyline")
-	RemoveObjs("ChoGGi_OPolyline2")
-	RemoveObjs("ChoGGi_OText")
-	RemoveObjs("ChoGGi_OCircle")
-	RemoveObjs("ChoGGi_OOrientation")
-	ResumePassEdits("RemoveChoGGiObjects")
-end
-OnMsg.SaveGame = RemoveChoGGiObjects
-
 -- show how long loading takes
 function OnMsg.ChangeMap()
-	local ChoGGi = ChoGGi
 	if testing or ChoGGi.UserSettings.ShowStartupTicks then
 		ChoGGi.Temp.StartupTicks = GetPreciseTicks()
 	end
@@ -1201,11 +1179,7 @@ do -- LoadGame/CityStart
 
 	-- saved game is loaded
 	function OnMsg.LoadGame()
-		-- just in case any are stuck on the map
-		RemoveChoGGiObjects()
-
 		ChoGGi.Temp.IsChoGGiMsgLoaded = false
-
 		Msg("ChoGGi_Loaded")
 	end
 	-- for new games

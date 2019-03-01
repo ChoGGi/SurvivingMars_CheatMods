@@ -4,7 +4,7 @@
 -- ~ ChoGGi.Strings[27]
 
 -- amount of entries in the CSV file
-local string_limit = 1550
+local string_limit = 1600
 
 local T,_InternalTranslate = T,_InternalTranslate
 

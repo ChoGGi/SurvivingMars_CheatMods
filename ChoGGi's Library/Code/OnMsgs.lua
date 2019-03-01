@@ -70,3 +70,25 @@ function SetUserUIScale(val,...)
 	-- might as well update this now (used to be in an OnMsg)
 	ChoGGi.Temp.UIScale = UIScale
 end
+
+local function RemoveChoGGiObjects()
+	SuspendPassEdits("RemoveChoGGiObjects")
+	MapDelete(true, "RotatyThing", function(o)
+		if o.ChoGGi_blinky then
+			return true
+		end
+	end)
+	local RemoveObjs = ChoGGi.ComFuncs.RemoveObjs
+	RemoveObjs("ChoGGi_OHexSpot")
+	RemoveObjs("ChoGGi_OHexSpot2")
+	RemoveObjs("ChoGGi_OVector")
+	RemoveObjs("ChoGGi_OSphere")
+	RemoveObjs("ChoGGi_OPolyline")
+	RemoveObjs("ChoGGi_OPolyline2")
+	RemoveObjs("ChoGGi_OText")
+	RemoveObjs("ChoGGi_OCircle")
+	RemoveObjs("ChoGGi_OOrientation")
+	ResumePassEdits("RemoveChoGGiObjects")
+end
+OnMsg.SaveGame = RemoveChoGGiObjects
+OnMsg.LoadGame = RemoveChoGGiObjects

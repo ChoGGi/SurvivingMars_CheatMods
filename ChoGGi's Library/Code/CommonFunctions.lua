@@ -351,10 +351,14 @@ do -- ValidateImage
 			if fallback and m == 0 then
 				image = fallback
 				m = MeasureImage(image)
-				-- falling way back
 				if m == 0 then
-					-- should always exist
-					image = default
+					image = ChoGGi.library_path .. fallback
+					m = MeasureImage(image)
+					-- falling way back
+					if m == 0 then
+						-- should always exist
+						image = default
+					end
 				end
 			end
 		end
@@ -2698,11 +2702,11 @@ do -- DeleteObject
 			return
 		end
 
-		-- hopefully i can remove all log spam one of these days
-		local name = RetName(obj)
-		if name then
-			printC("DeleteObject",name,"DeleteObject")
-		end
+--~ 		-- hopefully i can remove all log spam one of these days
+--~ 		local name = RetName(obj)
+--~ 		if name then
+--~ 			printC("DeleteObject",name,"DeleteObject")
+--~ 		end
 
 		if Flight_MarkedObjs[obj] then
 			Flight_MarkedObjs[obj] = nil
@@ -4001,3 +4005,15 @@ function ChoGGi.ComFuncs.RetSpotNames(obj)
   end
 	return names
 end
+
+do --
+	local ConstructableArea
+	function ChoGGi.ComFuncs.ConstructableArea()
+		if not ConstructableArea then
+			local sizex, sizey = terrain.GetMapSize()
+			local border = 1000 or const.ConstructBorder
+			ConstructableArea = box(border, border, (sizex or 0) - border, (sizey or 0) - border)
+		end
+		return ConstructableArea
+	end
+end -- do
