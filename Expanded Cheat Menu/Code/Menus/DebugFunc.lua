@@ -12,6 +12,14 @@ function OnMsg.ClassesGenerate()
 	local RandomColour = ChoGGi.ComFuncs.RandomColour
 	local S = ChoGGi.Strings
 
+	function ChoGGi.MenuFuncs.ListVisibleObjects()
+		local frame = (GetFrameMark() / 1024 - 1) * 1024
+		local visibleObjects = MapGet("map", "attached", false, function(obj)
+			return obj:GetFrameMark() - frame > 0
+		end)
+		ChoGGi.ComFuncs.OpenInExamineDlg(visibleObjects)
+	end
+
 	do -- BuildingPathMarkers_Toggle
 --~ 		GetEntityWaypointChains(entity)
 		-- mostly a copy n paste from Lua\Buildings\BuildingWayPoints.lua: ShowWaypoints()
@@ -1026,7 +1034,7 @@ that'll activate the BadPrefab on it
 			end
 
 			local ItemList = {
-				{text = Trans(4493--[[All--]]),value = "All"},
+				{text = " " .. Trans(4493--[[All--]]),value = "All"},
 				{text = Trans(547--[[Colonists--]]),value = "Colonist"},
 				{text = Trans(517--[[Drones--]]),value = "Drone"},
 				{text = Trans(5438--[[Rovers--]]),value = "BaseRover"},

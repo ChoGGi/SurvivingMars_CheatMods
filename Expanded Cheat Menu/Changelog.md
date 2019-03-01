@@ -1,22 +1,30 @@
 ## ECM Changelog
 
 ## v12.7 (Unreleased)
-### Removed:
-- Use Last Orientation: It's not a cheat, and there's a mod that does the exact same.
+### Added:
+- Debug>List Visible Objects: Shows list of objects rendered in the current frame.
 
 ### Changed:
 - Mission>Set Disaster Occurrence: Adds the setting values to the tooltip.
 - Cheats>Disasters: Adds the setting values to the tooltip.
 - Examine:
+- > Added Surfaces Toggle: Show a list of surfaces and draw lines over them (GetRelativeSurfaces).
 - > Attaches menu shows what object the attachment is attached to.
-- > Objects with paths now shows a bit more info and a link to the (cleaned up) paths.
+- > Valid objects now show a bit more info and a link to the (cleaned up) paths.
 - > Made View Source button a clickable link
 - > Rearranged function info.
 - > Shows "params: ()" instead of zilch for funcs with no params.
-- > Now also hides any spheres added when closing (like with bbox/shapes).
+- > Now also hides any spheres/surface lines/spots added when closing (like with bbox/shapes).
+- > Objects menu is hidden for non-valid objects (some menuitems moved to Tools).
+- > Object>"Toggle" items now have a depth test checkbox.
+- > Object>Toggle Attach Spots is now a list that can be filtered with spot names (also a line for chains).
+- > Box objects with a valid position (1000 pt from border) now have a View BBox toggle.
 
 ### Fixed:
 - Examining "_G" and closing the examine dlg would spam the log.
+
+### Removed:
+- Use Last Orientation: It's not a cheat, and there's a mod that does the exact same.
 
 ## v12.6 (25 Feb 2019)
 ### Added:

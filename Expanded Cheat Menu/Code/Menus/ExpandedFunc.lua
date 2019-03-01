@@ -238,8 +238,8 @@ function OnMsg.ClassesGenerate()
 				-- skip any missing objects
 				if IsValid(obj) and pos then
 					local text_obj = PlaceObject("ChoGGi_OText")
-					local orient_obj = PlaceObject("ChoGGi_OOrientation")
-					orient_obj.ChoGGi_ViewObjInfo_o = true
+--~ 					local orient_obj = PlaceObject("ChoGGi_OOrientation")
+--~ 					orient_obj.ChoGGi_ViewObjInfo_o = true
 					text_obj.ChoGGi_ViewObjInfo_t = true
 					text_obj:SetText(GetInfo[label](obj))
 					text_obj:SetCenter(true)
@@ -248,7 +248,7 @@ function OnMsg.ClassesGenerate()
 --~ 					obj:Attach(text_obj, origin)
 --~ 					obj:Attach(text_orient, origin)
 					obj:Attach(text_obj)
-					obj:Attach(orient_obj)
+--~ 					obj:Attach(orient_obj)
 					if label == "Dome" then
 						text_obj:SetAttachOffset(ptz8000)
 					elseif label ~= "Drone" then

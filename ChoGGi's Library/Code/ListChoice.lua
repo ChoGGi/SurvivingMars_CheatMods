@@ -31,7 +31,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 		{
 			title = "Check1",
 			hint = "Check1Hint",
-			checked = true,
+			checked = false,
 			func = function(dlg,check) end,
 		},
 		{
@@ -221,17 +221,18 @@ Press Enter to show all items."--]]],
 The listitem <color 0 200 0>must</color> be selected for this to take effect (it's the last listitem).
 It won't be visible unless the ""%s"" checkbox is enabled.
 
-Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]]:format(S[302535920000104--[[Show--]]]),
-			Hint = S[302535920000078--[[Type Custom Value--]]],
+Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]]:format(S[302535920000078--[[Custom Value--]]]),
+			Hint = S[302535920000078--[[Custom Value--]]],
 			OnKbdKeyDown = self.idEditValueOnKbdKeyDown
 		}, self.idEditArea)
+		self.idEditValue:SetVisible(false)
 
 		self.idShowCustomVal = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idShowCustomVal",
 			Dock = "left",
 			Margins = box(4,0,0,0),
-			Text = S[302535920000104--[[Show--]]],
-			RolloverText = S[302535920000077]:format(S[302535920000104]),
+			Text = S[302535920000078--[[Custom Value--]]],
+			RolloverText = S[302535920000077]:format(S[302535920000078]),
 			OnChange = self.idShowCustomValOnChange,
 		}, self.idEditArea)
 
@@ -407,6 +408,13 @@ function ChoGGi_ListChoiceDlg:idShowCustomValOnChange(check)
 	if check then
 		item:SetSelected(true)
 		item:SetFocused(true)
+
+		self.idList:ScrollIntoView(item)
+		self.idShowCustomVal:SetText(S[302535920000104--[[Show--]]])
+		self.idEditValue:SetVisible(true)
+	else
+		self.idShowCustomVal:SetText(S[302535920000078--[[Custom Value--]]])
+		self.idEditValue:SetVisible(false)
 	end
 end
 
@@ -610,18 +618,18 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 		local display_icon
 		if item.icon then
 			-- if x is 0 then it's not an actual image
-			local x = MeasureImage(item.icon)
-			if x > 0 then
-				if item.icon:find("<image ",1,true) then
+				if item.icon:find("<image ") then
+					display_icon = true
 					text = item.icon .. " " .. item.text
 				else
-					display_icon = true
-					text = item.text
+					local x = MeasureImage(item.icon)
+					if x > 0 then
+						display_icon = true
+						text = item.text
+					end
 				end
-			end
 		else
 			display_icon = self:AddItemIcon(g,item)
-
 			if not text then
 				text = item.text
 			end
@@ -831,7 +839,10 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(_,button)
 	if button == "L" then
 		-- fire custom_func with sel
 		if self.custom_func and (self.custom_type == 1 or self.custom_type == 7) then
-			self.custom_func({self.sel},self)
+			-- make sure we send back the checks with it
+			local choices = {self.sel}
+			self:UpdateReturnedItem(choices)
+			self.custom_func(choices,self)
 		elseif self.custom_type ~= 5 and self.custom_type ~= 2 or self.custom_type == 8 then
 			-- dblclick to close and ret item
 			self.idOK.OnPress()
@@ -843,7 +854,11 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(_,button)
 		elseif self.custom_type == 6 and self.custom_func then
 			self.custom_func(self.sel.func,self)
 		elseif self.custom_type == 8 and self.custom_func then
-			self.custom_func({self.sel},self)
+			-- make sure we send back the checks with it
+			local choices = {self.sel}
+			self:UpdateReturnedItem(choices)
+			self.custom_func(choices,self)
+--~ 			self.custom_func({self.sel},self)
 		elseif self.idEditValue then
 			self.idEditValue:SetText(self.sel.text)
 		end
@@ -878,9 +893,29 @@ function ChoGGi_ListChoiceDlg:UpdateColourPicker(text)
 	end
 end
 
+function ChoGGi_ListChoiceDlg:UpdateReturnedItem(choices)
+	choices = choices or {[1] = {}}
+	if self.idEditValue ~= nil then
+		-- always return the custom value (and try to convert it to correct type)
+		choices[1].editvalue = RetProperType(self.idEditValue:GetText())
+	end
+
+	-- add checkbox statuses
+	if self.list.check and #self.list.check > 0 then
+		for i = 1, #self.list.check do
+			choices[1]["check" .. i] = self["idCheckBox" .. i]:GetCheck()
+		end
+	end
+	-- and if it's a colourpicker list send that back as well
+	if self.idColourContainer then
+		choices[1].checkair = self.idColorCheckAir:GetCheck()
+		choices[1].checkwater = self.idColorCheckWater:GetCheck()
+		choices[1].checkelec = self.idColorCheckElec:GetCheck()
+	end
+	return choices
+end
+
 function ChoGGi_ListChoiceDlg:GetAllItems()
-	-- always start with blank choices
-	self.choices = {}
 	-- get sel item(s)
 	local items = {}
 	if self.custom_type == 0 or self.custom_type == 3 or self.custom_type == 6 then
@@ -895,8 +930,10 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 		end
 	end
 
-	-- attach other stuff to first item
+	-- always start with blank choices
+	self.choices = {}
 
+	-- attach other stuff to first item
 	local c = #self.choices
 	for i = 1, #items do
 		c = c + 1
@@ -904,30 +941,14 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 	end
 
 	-- nothing selected
-	if c < 1 then
+	if c == 0 then
 		-- fake entry we can check later on
 		self.choices.nothing_selected = true
-		-- we can send back checkmarks no matter what
+		-- we send back checkmarks no matter what
 		self.choices[1] = {}
 	end
 
-	if self.idEditValue ~= nil then
-		-- always return the custom value (and try to convert it to correct type)
-		self.choices[1].editvalue = RetProperType(self.idEditValue:GetText())
-	end
-
-	-- add checkbox statuses
-	if self.list.check and #self.list.check > 0 then
-		for i = 1, #self.list.check do
-			self.choices[1]["check" .. i] = self["idCheckBox" .. i]:GetCheck()
-		end
-	end
-	-- and if it's a colourpicker list send that back as well
-	if self.idColourContainer then
-		self.choices[1].checkair = self.idColorCheckAir:GetCheck()
-		self.choices[1].checkwater = self.idColorCheckWater:GetCheck()
-		self.choices[1].checkelec = self.idColorCheckElec:GetCheck()
-	end
+	self:UpdateReturnedItem(self.choices)
 end
 
 -- copied from GedPropEditors.lua. it's normally only called when GED is loaded, but we need it for the colour picker

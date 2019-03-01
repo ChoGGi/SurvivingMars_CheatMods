@@ -20,12 +20,22 @@ if debug then
 end
 
 function OnMsg.ClassesGenerate()
-	local S = ChoGGi.Strings
-	local blacklist = ChoGGi.blacklist
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Trans = ChoGGi.ComFuncs.Translate
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
+	local S = ChoGGi.Strings
+	local blacklist = ChoGGi.blacklist
+	local testing = ChoGGi.testing
+
+	local function PlacePolyline(points, colors)
+		local line = ChoGGi_OPolyline:new{
+			max_vertices = #points
+		}
+		line:SetMesh(points, colors)
+		return line
+	end
+	ChoGGi.ComFuncs.PlacePolyline = PlacePolyline
 
 	do -- AddGridHandles
 
@@ -255,7 +265,6 @@ function OnMsg.ClassesGenerate()
 		local type_tile = terrain.TypeTileSize()
 		local work_step = 16 * type_tile
 		local dbg_step = work_step / 4 -- 400
-		local PlacePolyline = PlacePolyline
 		local MulDivRound = MulDivRound
 		local InterpolateRGB = InterpolateRGB
 		local Clamp = Clamp
@@ -283,7 +292,7 @@ function OnMsg.ClassesGenerate()
 				colors[colorsc] = InterpolateRGB(
 					-1, -- white
 					-16711936, -- green
-					Clamp(height - zoffset - terrain_GetHeight(pos), 0, max_diff),
+					Clamp(height - zoffset - terrain_GetHeight(), 0, max_diff),
 					max_diff
 				)
 			end
@@ -501,7 +510,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
 		-- every 5s check buffer and print if anything
-		local timer = ChoGGi.testing and 2500 or 5000
+		local timer = testing and 2500 or 5000
 		-- we always start off with a newline so the first line or so isn't merged
 		local buffer_table = {newline}
 		local buffer_cnt = 1
@@ -651,10 +660,11 @@ function OnMsg.ClassesGenerate()
 			})
 		end
 
+		-- what i access with ECM/Lib
 		ChoGGi.ComFuncs.OpenInExamineDlg = OpenInExamineDlg
-		function OpenExamine(obj,parent,title)
-			OpenInExamineDlg(obj,parent,title)
-		end
+		-- legacy
+		OpenExamine = OpenInExamineDlg
+		-- short n sweet
 		ex = OpenExamine
 	end -- do
 
@@ -835,19 +845,23 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	function ChoGGi.ComFuncs.SetAnimState(sel)
+	function ChoGGi.ComFuncs.SetAnimState(obj)
 		local ChoGGi = ChoGGi
-		sel = sel or ChoGGi.ComFuncs.SelObject()
-		if not sel then
+		obj = obj or ChoGGi.ComFuncs.SelObject()
+		if not obj then
 			return
 		end
 
 		local ItemList = {}
+		local states = obj:GetStates() or ""
 
-		local states = sel:GetStates() or ""
+		if testing and #states ~= #EnumValidStates(obj) then
+			print("SetAnimState: Different state amounts")
+		end
+
 		for i = 1, #states do
 			ItemList[i] = {
-				text = S[302535920000858--[[Index--]]] .. ": " .. i .. ", " .. Trans(1000037--[[Name--]]) .. ": " .. states[i],
+				text = Trans(1000037--[[Name--]]) .. ": " .. states[i] .. ", " .. S[302535920000858--[[Index--]]] .. ": " .. i,
 				value = states[i],
 			}
 		end
@@ -859,11 +873,12 @@ function OnMsg.ClassesGenerate()
 
 			local value = choice[1].value
 			-- if user wants to play it again we'll need to have it set to another state and everything has idle
-			sel:SetState("idle")
-			sel:SetState(value)
+			obj:SetState("idle")
+
 			if value ~= "idle" then
+				obj:SetState(value)
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,Trans(3722--[[State--]])),
+					ChoGGi.ComFuncs.SettingState(choice[1].text),
 					S[302535920000859--[[Anim State--]]]
 				)
 			end
@@ -873,7 +888,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = S[302535920000860--[[Set Anim State--]]],
-			hint = S[302535920000861--[[Current State: %s--]]]:format(sel:GetState()),
+			hint = S[302535920000861--[[Current State: %s--]]]:format(obj:GetState()),
 			custom_type = 7,
 		}
 	end
@@ -948,10 +963,10 @@ function OnMsg.ClassesGenerate()
 		end)
 	end
 
-	function ChoGGi.ComFuncs.SetParticles(sel)
+	function ChoGGi.ComFuncs.SetParticles(obj)
 		local name = S[302535920000129--[[Set--]]] .. " " .. S[302535920001184--[[Particles--]]]
-		sel = sel or ChoGGi.ComFuncs.SelObject()
-		if not sel or sel and not sel:IsKindOf("FXObject") then
+		obj = obj or ChoGGi.ComFuncs.SelObject()
+		if not obj or obj and not obj:IsKindOf("FXObject") then
 			MsgPopup(
 				S[302535920000027--[[Nothing selected--]]] .. ": " .. "FXObject",
 				name
@@ -962,9 +977,9 @@ function OnMsg.ClassesGenerate()
 		local PlayFX = PlayFX
 		-- make a list of spot names for the obj, so we skip particles that need that spot
 		local spots = {}
-		local id_start, id_end = sel:GetAllSpots(sel:GetState())
+		local id_start, id_end = obj:GetAllSpots(obj:GetState())
 		for i = id_start, id_end do
-			spots[sel:GetSpotName(i)] = true
+			spots[obj:GetSpotName(i)] = true
 		end
 
 		local default = Trans(1000121--[[Default--]])
@@ -995,25 +1010,25 @@ function OnMsg.ClassesGenerate()
 			local moment = choice[1].moment
 
 			-- if there's one playing then stop it
-			if sel.ChoGGi_playing_fx then
-				PlayFX(sel.ChoGGi_playing_fx, "end", sel)
+			if obj.ChoGGi_playing_fx then
+				PlayFX(obj.ChoGGi_playing_fx, "end", obj)
 			end
 			-- so we can stop it
-			sel.ChoGGi_playing_fx = action
+			obj.ChoGGi_playing_fx = action
 
-			if type(sel.fx_actor_class_ChoGGi_Orig) == "nil" then
-				sel.fx_actor_class_ChoGGi_Orig = sel.fx_actor_class
+			if type(obj.fx_actor_class_ChoGGi_Orig) == "nil" then
+				obj.fx_actor_class_ChoGGi_Orig = obj.fx_actor_class
 			end
 
-			sel.fx_actor_class = actor
+			obj.fx_actor_class = actor
 
 			if actor == default then
-				if sel.fx_actor_class_ChoGGi_Orig then
-					sel.fx_actor_class = sel.fx_actor_class_ChoGGi_Orig
+				if obj.fx_actor_class_ChoGGi_Orig then
+					obj.fx_actor_class = obj.fx_actor_class_ChoGGi_Orig
 				end
-				sel.ChoGGi_playing_fx = nil
+				obj.ChoGGi_playing_fx = nil
 			else
-				PlayFX(action, moment, sel)
+				PlayFX(action, moment, obj)
 			end
 
 			MsgPopup(
@@ -1258,25 +1273,23 @@ function OnMsg.ClassesGenerate()
 
 	do -- ExamineEntSpots
 		local spots_str = [[<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s,%s,%s" spot_scale="%s" spot_rot="%s,%s,%s,%s"/>]]
-		local DivRound = DivRound
+		local spots_table = {[-1] = [[Readme:
+See bottom for box/bsphere/material/mesh.
+The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one)
+
+]]}
 
 --~ local list = ChoGGi.ComFuncs.ExamineEntSpots(s,true)
 --~ list = ChoGGi.ComFuncs.TableConcat(list,"\n")
---~ ChoGGi.ComFuncs.Dump(list)
+--~ ChoGGi.ComFuncs.Dump(list,nil,nil,"ent")
 		function ChoGGi.ComFuncs.ExamineEntSpots(obj,parent_or_ret)
 			obj = obj or ChoGGi.ComFuncs.SelObject()
 			if not IsValid(obj) then
 				return
 			end
 
-			local spots_table = {[-1] = [[Readme:
-See bottom for box/bsphere.
-The func I use for spot_rot rounds to two decimal points...
-
-]]}
-
 			local origin = obj:GetSpotBeginIndex("Origin")
-			local origin_pos_x, origin_pos_y, origin_pos_z = obj:GetSpotLocPosXYZ(origin)
+			local origin_pos_x, origin_pos_y, origin_pos_z = obj:GetSpotLocPosXYZ(0)
 
 			local id_start, id_end = obj:GetAllSpots(EntityStates.idle)
 			if not id_end then
@@ -1300,16 +1313,18 @@ The func I use for spot_rot rounds to two decimal points...
 					spots_str_t = spots_str_t:gsub([[ bone="%%s"]],"%%s")
 				end
 
-				-- scale angle,axis (position numbers are off-by-one for negative numbers)
-				local _,_,_,angle,axis_x,axis_y,axis_z,scale = obj:GetSpotLocXYZ(i)
+				-- axis,scale
+				local _,_,_,_,axis_x,axis_y,axis_z = obj:GetSpotLocXYZ(i)
 
 				-- 100 is default
+				local scale = obj:GetSpotVisualScale(i)
 				if scale == 100 then
 					spots_str_t = spots_str_t:gsub([[ spot_scale="%%s"]],"%%s")
 					scale = ""
 				end
 
 				-- means nadda for spot_rot
+				local angle = obj:GetSpotVisualRotation(i)
 				if angle == 0 and axis_x == 0 and axis_y == 0 and axis_z == 4096 then
 					spots_str_t = spots_str_t:gsub([[ spot_rot="%%s,%%s,%%s,%%s"]],"%%s%%s%%s%%s")
 					angle,axis_x,axis_y,axis_z = "","","",""
@@ -1317,7 +1332,7 @@ The func I use for spot_rot rounds to two decimal points...
 					axis_x = (axis_x + 0.0) / 100
 					axis_y = (axis_y + 0.0) / 100
 					axis_z = (axis_z + 0.0) / 100
-					angle = DivRound(angle, const.Scale.degrees) + 0.0
+					angle = (angle) / 60  .. ".0000"
 				end
 
 				local pos_x,pos_y,pos_z = obj:GetSpotPosXYZ(i)
@@ -1339,6 +1354,14 @@ The func I use for spot_rot rounds to two decimal points...
 			spots_table.bsphere = "<bsphere value=\"" .. (pos_x - origin_pos_x) .. ","
 				.. (pos_y - origin_pos_y) .. "," .. (pos_z - origin_pos_z) .. ","
 				.. rad .. "\"/>"
+
+			local entity = obj:GetEntity()
+			if IsValidEntity(entity) then
+				local mat = GetStateMaterial(entity,0,0)
+				spots_table.material = [[<material file="]] .. mat .. [["/>]]
+				-- eh, close enough
+				spots_table.mesh = [[<mesh file="]] .. mat:sub(1,-4) .. [[m.hgm"/>]]
+			end
 
 			if parent_or_ret == true then
 				return spots_table
@@ -1484,6 +1507,7 @@ The func I use for spot_rot rounds to two decimal points...
 					local num_mats = GetStateNumMaterials(entity, state, li - 1) or 0
 					for mi = 1, num_mats do
 						local mat_name = GetStateMaterial(entity,state,mi - 1,li - 1)
+						GetStateMaterial(s.entity,0,1,1)
 						local mat = GetMaterialProperties(mat_name)
 						mat.__mtl = mat_name
 						mat.__lod = li
@@ -1497,6 +1521,8 @@ The func I use for spot_rot rounds to two decimal points...
 			end
 			return mats
 		end
+		ChoGGi.ComFuncs.EntityMats = EntityMats
+
 
 		function ChoGGi.ComFuncs.GetMaterialProperties(obj,parent_or_ret)
 			if not UICity then
@@ -1593,29 +1619,37 @@ The func I use for spot_rot rounds to two decimal points...
 
 	do -- BBoxLines_Toggle
 		local point = point
-		local PlacePolyline = PlacePolyline
 		local guim = guim
 		local objlist = objlist
 		local IsBox = IsBox
 --~ 		local MulDivRound = MulDivRound
 --~ 		local Max = Max
---~ 		local GetHeight = terrain.GetHeight
 
 		-- stores objlist of line objects
 		local lines
 
-		local function SpawnBoxLine(bbox, list, colour)
+		local function SpawnBoxLine(bbox, list, depth_test, colour)
 			local line = PlacePolyline(list, colour)
+			if depth_test then
+				line:SetDepthTest(true)
+			end
 			line:SetPos(bbox:Center())
 			lines[#lines+1] = line
 		end
-		local function SpawnPillarLine(pt, z, obj_height, colour)
-			local line = PlacePolyline({pt:SetZ(z),pt:SetZ(z + obj_height)}, colour)
-			line:SetPos(AveragePoint2D(line.vertices))
+		local pillar_table = objlist:new()
+		local function SpawnPillarLine(pt, z, obj_height, depth_test, colour)
+			pillar_table:Destroy()
+			pillar_table[1] = pt:SetZ(z)
+			pillar_table[2] = pt:SetZ(z + obj_height)
+			local line = PlacePolyline(pillar_table, colour)
+			if depth_test then
+				line:SetDepthTest(true)
+			end
+			line:SetPos(AveragePoint2D(line.vertices):SetZ(z))
 			lines[#lines+1] = line
 		end
 
-		local function PlaceTerrainBox(bbox, pos, colour, step, offset)
+		local function PlaceTerrainBox(bbox, pos, depth_test, colour, step, offset)
 			local obj_height = bbox:sizez() or 1500
 			local z = pos:z()
 			step = step or guim
@@ -1634,14 +1668,14 @@ The func I use for spot_rot rounds to two decimal points...
 				local edge = edges[i]
 				if i < 5 then
 					-- the four "pillars"
-					SpawnPillarLine(edge, z, obj_height, colour)
+					SpawnPillarLine(edge, z, obj_height, depth_test, colour)
 				end
 				local x,y = edge:xy()
 				points_top[#points_top + 1] = point(x, y, z + obj_height)
 				points_bot[#points_bot + 1] = point(x, y, z)
 			end
-			SpawnBoxLine(bbox, points_top, colour)
-			SpawnBoxLine(bbox, points_bot, colour)
+			SpawnBoxLine(bbox, points_top, depth_test, colour)
+			SpawnBoxLine(bbox, points_bot, depth_test, colour)
 
 			--[[
 			-- make bbox follow ground height
@@ -1654,12 +1688,8 @@ The func I use for spot_rot rounds to two decimal points...
 
 				for j = 1, steps do
 					local pos = pt1 + MulDivRound(diff, j - 1, steps - 1)
-					local x,y = pos:xy()
-					local z = GetHeight(x, y)
-					z = z + offset
-
-					points_top[#points_top + 1] = point(x, y, z + obj_height)
-					points_bot[#points_bot + 1] = point(x, y, z)
+					points_top[#points_top + 1] = pos:SetTerrainZ(offset + obj_height)
+					points_bot[#points_bot + 1] = pos:SetTerrainZ(offset)
 				end
 
 				-- ... extra lines?
@@ -1722,12 +1752,109 @@ The func I use for spot_rot rounds to two decimal points...
 			end
 
 			if bbox then
-				obj.ChoGGi_bboxobj = PlaceTerrainBox(
+				local box = PlaceTerrainBox(
 					bbox,
 					bbox:Center():SetTerrainZ(),
-					params.colour,params.step,params.offset
+					params.depth_test,
+					params.colour or green,params.step,params.offset
 				)
+				if not is_box then
+					obj.ChoGGi_bboxobj = box
+				end
+				return box
 			end
+		end
+	end -- do
+
+	do -- SurfaceLines_Toggle
+		local GetRelativeSurfaces = GetRelativeSurfaces
+		local AveragePoint2D = AveragePoint2D
+		local green = green
+
+		-- stores objlist of line objects
+		local lines
+
+		local function BuildLines(points,z,depth_test,colour)
+			local line = PlacePolyline(points, colour)
+			if depth_test then
+				line:SetDepthTest(true)
+			end
+			line:SetPos(AveragePoint2D(line.vertices):SetZ(z))
+			lines[#lines+1] = line
+		end
+
+		local function SurfaceLines_Clear(obj)
+			if obj.ChoGGi_surfacelinesobj then
+				obj.ChoGGi_surfacelinesobj:Destroy()
+				obj.ChoGGi_surfacelinesobj = nil
+				return true
+			end
+		end
+		ChoGGi.ComFuncs.SurfaceLines_Clear = SurfaceLines_Clear
+
+		function ChoGGi.ComFuncs.SurfaceLines_Toggle(obj,params)
+			params = params or {}
+			if not IsValid(obj) or (SurfaceLines_Clear(obj) and not params.skip_return) then
+				return
+			end
+			lines = objlist:new()
+
+			local surfs = params.surfs or GetRelativeSurfaces(obj,params.surface_mask or 0)
+			local colour = params.colour or green
+
+			for i = 1, #surfs do
+				local group = surfs[i]
+				-- connect the lines
+				group[#group+1] = group[1]
+
+				BuildLines(group,group[1]:z(),params.depth_test,colour)
+			end
+
+			obj.ChoGGi_surfacelinesobj = lines
+			do return lines end
+
+			-- build a list of all the points, a new table for each different z value
+			local z_points = {}
+			local dupes = {}
+			for i = 1, #surfs do
+				local group = surfs[i]
+				for j = 1, #group do
+					local pt = group[j]
+					local z = pt:z()
+					-- diff z values means diff line table
+					if not z_points[z] then
+						z_points[z] = {}
+					end
+					-- skip dupe points
+					local pt_str = tostring(pt)
+					if not dupes[pt_str] then
+						dupes[pt_str] = true
+						z_points[z][#z_points[z]+1] = pt
+					end
+				end
+			end
+
+			for z,points in pairs(z_points) do
+--~ 				-- these two are always off it seems
+--~ 				local at1 = points[1]
+--~ 				local at2 = points[2]
+--~ 				points[1] = at2
+--~ 				points[2] = at1
+--~ 				-- connect the circle/box
+--~ 				table.insert(points,1,points[#points])
+--~ 				points[#points+1] = points[1]
+
+				-- sort the points so the lines line up
+				table.sort(points,function(a,b)
+					return tostring(a) > tostring(b)
+				end)
+
+				BuildLines(points,z,colour)
+			end
+
+			obj.ChoGGi_surfacelinesobj = lines
+			return lines
+
 		end
 	end -- do
 
@@ -1929,14 +2056,13 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		local RotateRadius = RotateRadius
 		local HexToWorld = HexToWorld
 		local point = point
-		local PlacePolyline = PlacePolyline
 
 		local FallbackOutline = FallbackOutline
 		local line_points = objlist:new()
 		local radius = const.HexSize / 2
 
 		-- function Dome:GenerateWalkablePoints() (mostly)
-		local function BuildShape(obj,shape,colour,offset)
+		local function BuildShape(obj,shape,depth_test,colour,offset)
 			local dir = HexAngleToDirection(obj:GetAngle())
 			local cq, cr = WorldToHex(obj)
 			local z = obj:GetVisualPos():z()
@@ -1960,6 +2086,9 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				-- complete the hex
 				line_points[7] = line_points[1]
 				local line = PlacePolyline(line_points, colour)
+				if depth_test then
+					line:SetDepthTest(true)
+				end
 				if offset then
 					line:SetPos(center + offset)
 				else
@@ -1993,19 +2122,26 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			obj.ChoGGi_shape_obj = BuildShape(
 				obj,
 				params.shape,
-				params.colour,params.offset
+				params.depth_test,
+				params.colour or green,params.offset
 			)
 
 		end
 	end -- do
 
 	function ChoGGi.ComFuncs.RetSurfaceMasks(obj)
+
 		if not IsValid(obj) then
 			return
 		end
 
 		local list = {}
+
 		local entity = obj:GetEntity()
+		if not IsValidEntity(entity) then
+			return list
+		end
+
 		local GetEntityNumSurfaces = GetEntityNumSurfaces
 
 		local EntitySurfaces = EntitySurfaces
@@ -2231,130 +2367,176 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		return block,restrict
 	end
 
-	function ChoGGi.ComFuncs.AttachSpots_Toggle(sel)
-		sel = sel or ChoGGi.ComFuncs.SelObject()
-		local isvalid = IsValid(sel)
-		if not isvalid or isvalid and not sel:HasEntity() then
-			return
+	do -- AttachSpots_Toggle
+		local function AttachSpots_Clear(obj)
+			-- just in case (old way of doing it)
+			if obj.ChoGGi_ShowAttachSpots == true then
+				local DoneObject = DoneObject
+				obj:DestroyAttaches({"ChoGGi_OText","ChoGGi_OOrientation"},function(a)
+					if a.ChoGGi_ShowAttachSpots then
+						DoneObject(a)
+					end
+				end)
+				obj.ChoGGi_ShowAttachSpots = nil
+				return true
+			elseif obj.ChoGGi_ShowAttachSpots then
+				obj.ChoGGi_ShowAttachSpots:Destroy()
+				obj.ChoGGi_ShowAttachSpots = nil
+				return true
+			end
 		end
+		ChoGGi.ComFuncs.AttachSpots_Clear = AttachSpots_Clear
 
-		if sel.ChoGGi_ShowAttachSpots then
-			local DoneObject = DoneObject
-			sel:DestroyAttaches({"ChoGGi_OText","ChoGGi_OOrientation","ChoGGi_OSphere"},function(a)
-				if a.ChoGGi_ShowAttachSpots then
-					DoneObject(a)
-				end
-			end)
-			sel.ChoGGi_ShowAttachSpots = nil
-		else
+		function ChoGGi.ComFuncs.AttachSpots_Toggle(obj,params)
+			obj = obj or ChoGGi.ComFuncs.SelObject()
+			local is_valid = IsValid(obj)
+			if not is_valid or is_valid and not IsValidEntity(obj:GetEntity())
+				or (AttachSpots_Clear(obj) and not params.skip_return) then
+				return
+			end
+
+			params = params or {}
+
+			obj.ChoGGi_ShowAttachSpots = objlist:new()
+			local c = 0
+
+			local green = green
 			local guic10 = 10 * guic
 			local PlaceObject = PlaceObject
 			local GetSpotNameByType = GetSpotNameByType
-			local RandomColour = ChoGGi.ComFuncs.RandomColour
+			local tonumber = tonumber
 
-			local start_id, id_end = sel:GetAllSpots(sel:GetState())
+			local start_id, id_end = obj:GetAllSpots(obj:GetState())
 			for i = start_id, id_end do
-				local spot_name = GetSpotNameByType(sel:GetSpotsType(i))
-				local spot_annotation = sel:GetSpotAnnotation(i)
+				local spot_name = GetSpotNameByType(obj:GetSpotsType(i)) or ""
+				if not params.spot_type or spot_name:find(params.spot_type,1,true) then
+					local spot_annot = obj:GetSpotAnnotation(i) or ""
+					if not params.annotation or spot_annot:find(params.annotation,1,true) then
 
-				local text_obj = PlaceObject("ChoGGi_OText")
-				text_obj.ChoGGi_ShowAttachSpots = true
-				local text_str = sel:GetSpotName(i)
-				text_str = i .. "." .. text_str
-				if spot_annotation then
-					text_str = text_str .. ";" .. spot_annotation
+						local text_str = obj:GetSpotName(i)
+						text_str = i .. "." .. text_str
+						if spot_annot ~= "" then
+							text_str = text_str .. ";" .. spot_annot
+						end
+
+						local text_obj = PlaceObject("ChoGGi_OText")
+						if params.depth_test then
+							text_obj:SetDepthTest(true)
+						end
+						text_obj:SetText(text_str)
+						obj:Attach(text_obj, i)
+						c = c + 1
+						obj.ChoGGi_ShowAttachSpots[c] = text_obj
+
+						-- append waypoint num for chains later on
+						-- need to reverse string so it finds the last =, since find looks ltr
+						local equal = spot_annot:reverse():find("=")
+						if equal then
+							-- we need a neg number for sub + 1 to remove the slash
+							text_obj.order = tonumber(spot_annot:sub((equal * -1) + 1))
+						end
+
+--~ 						local orientation_obj = PlaceObject("ChoGGi_OOrientation")
+--~ 						obj:Attach(orientation_obj, i)
+--~ 						c = c + 1
+--~ 						obj.ChoGGi_ShowAttachSpots[c] = orientation_obj
+					end
 				end
-				text_obj:SetText(text_str)
+			end -- for
 
-				local orientation_obj = PlaceObject("ChoGGi_OOrientation")
-				orientation_obj.ChoGGi_ShowAttachSpots = true
+			-- play connect the dots if there's chains
+			if c > 1 and params.annotation and params.annotation:sub(1,5) == "chain" then
+				local points = {}
+				for i = 1, c do
+					local text = obj.ChoGGi_ShowAttachSpots[i]
+					-- use order from above to sort by waypoint number
+					points[text.order] = text:GetPos()
+				end
 
-	--~ 			local sphere_obj = PlaceObject("ChoGGi_OSphere")
-	--~ 			sphere_obj.ChoGGi_ShowAttachSpots = true
-	--~ 			sphere_obj:SetRadius(guic10)
-	--~ 			sphere_obj:SetColor(RandomColour())
+				local line_obj = PlaceObject("ChoGGi_OPolyline")
+				if params.depth_test then
+					line_obj:SetDepthTest(true)
+				end
+				line_obj.max_vertices = #points
+				line_obj:SetMesh(points, green)
+				line_obj:SetPos(AveragePoint2D(points))
 
-				sel:Attach(text_obj, i)
-				sel:Attach(orientation_obj, i)
-	--~ 			sel:Attach(sphere_obj, i)
+				c = c + 1
+				obj.ChoGGi_ShowAttachSpots[c] = line_obj
+
 			end
 
-			sel.ChoGGi_ShowAttachSpots = true
+		end
+	end -- do
+
+	local function AnimDebug_Show(obj,colour)
+		local text = PlaceObject("ChoGGi_OText")
+		text:SetColor(colour or green)
+		text:SetFontId(UIL.GetFontID(ChoGGi.font .. ", 14, bold, aa"))
+		text:SetCenter(true)
+--~ 			local orient = PlaceObject("ChoGGi_OOrientation")
+
+		-- so we can delete them easy
+--~ 			orient.ChoGGi_AnimDebug = true
+		text.ChoGGi_AnimDebug = true
+		obj:Attach(text, 0)
+--~ 			obj:Attach(orient, 0)
+		text:SetAttachOffset(point(0,0,obj:GetObjectBBox():sizez() + 100))
+		CreateGameTimeThread(function()
+			local str = "%d. %s\n"
+			while IsValid(text) do
+				text:SetText(str:format(1,obj:GetAnimDebug(1)))
+				WaitNextFrame()
+			end
+		end)
+	end
+
+	local function AnimDebug_Hide(obj)
+		obj:ForEachAttach(function(a)
+			if a.ChoGGi_AnimDebug then
+				a:delete()
+			end
+		end)
+	end
+
+	local function AnimDebug_ShowAll(cls)
+		local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+		for i = 1, #objs do
+			AnimDebug_Show(objs[i])
 		end
 	end
 
-	do -- ShowAnimDebug_Toggle
-		local RandomColour = ChoGGi.ComFuncs.RandomColour
-		local function AnimDebug_Show(obj,colour)
-			local text = PlaceObject("ChoGGi_OText")
-			text:SetColor(colour or RandomColour())
-			text:SetFontId(UIL.GetFontID(ChoGGi.font .. ", 14, bold, aa"))
-			text:SetCenter(true)
-			local orient = PlaceObject("ChoGGi_OOrientation")
-
-			-- so we can delete them easy
-			orient.ChoGGi_AnimDebug = true
-			text.ChoGGi_AnimDebug = true
-			obj:Attach(text, 0)
-			obj:Attach(orient, 0)
-			text:SetAttachOffset(point(0,0,obj:GetObjectBBox():sizez() + 100))
-			CreateGameTimeThread(function()
-				local str = "%d. %s\n"
-				while IsValid(text) do
-					text:SetText(str:format(1,obj:GetAnimDebug(1)))
-					WaitNextFrame()
-				end
-			end)
+	local function AnimDebug_HideAll(cls)
+		local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+		for i = 1, #objs do
+			AnimDebug_Hide(objs[i])
 		end
+	end
 
-		local function AnimDebug_Hide(obj)
-			obj:ForEachAttach(function(a)
-				if a.ChoGGi_AnimDebug then
-					a:delete()
-				end
-			end)
-		end
-
-		local function AnimDebug_ShowAll(cls)
-			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
-			for i = 1, #objs do
-				AnimDebug_Show(objs[i])
-			end
-		end
-
-		local function AnimDebug_HideAll(cls)
-			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
-			for i = 1, #objs do
-				AnimDebug_Hide(objs[i])
-			end
-		end
-
-		function ChoGGi.ComFuncs.ShowAnimDebug_Toggle(sel)
---~ 			RandomColour = RandomColour or
-			local sel = sel or SelectedObj
-			if sel then
-				if sel.ChoGGi_ShowAnimDebug then
-					sel.ChoGGi_ShowAnimDebug = nil
-					AnimDebug_Hide(sel)
-				else
-					sel.ChoGGi_ShowAnimDebug = true
-					AnimDebug_Show(sel,white)
-				end
+	function ChoGGi.ComFuncs.ShowAnimDebug_Toggle(obj)
+		local obj = obj or SelectedObj
+		if obj then
+			if obj.ChoGGi_ShowAnimDebug then
+				obj.ChoGGi_ShowAnimDebug = nil
+				AnimDebug_Hide(obj)
 			else
-				local ChoGGi = ChoGGi
-				ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
-				if ChoGGi.Temp.ShowAnimDebug then
-					AnimDebug_ShowAll("Building")
-					AnimDebug_ShowAll("Unit")
-					AnimDebug_ShowAll("CargoShuttle")
-				else
-					AnimDebug_HideAll("Building")
-					AnimDebug_HideAll("Unit")
-					AnimDebug_HideAll("CargoShuttle")
-				end
+				obj.ChoGGi_ShowAnimDebug = true
+				AnimDebug_Show(obj,white)
+			end
+		else
+			local ChoGGi = ChoGGi
+			ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
+			if ChoGGi.Temp.ShowAnimDebug then
+				AnimDebug_ShowAll("Building")
+				AnimDebug_ShowAll("Unit")
+				AnimDebug_ShowAll("CargoShuttle")
+			else
+				AnimDebug_HideAll("Building")
+				AnimDebug_HideAll("Unit")
+				AnimDebug_HideAll("CargoShuttle")
 			end
 		end
-	end -- do
+	end
 
 	do -- ChangeSurfaceSignsToMaterials
 		local function ChangeEntity(cls,entity,random)

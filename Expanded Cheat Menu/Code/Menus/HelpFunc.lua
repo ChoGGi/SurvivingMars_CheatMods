@@ -177,12 +177,21 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 				if a.ActionIcon and a.ActionIcon ~= "" then
 					icon_str = "<image " .. a.ActionIcon .. " 2500>"
 				end
+
+			-- bonus for list all items
+			local icon_scale
+			if a.ActionId:sub(1,9) == "ECM.Keys." then
+				icon_str = ChoGGi.library_path .. "UI/bmc_incal_resources.png"
+				icon_scale = 650
+			end
+
 				ItemList[c] = {
 					text = a.ActionName,
 					value = a.ActionName,
 					icon = icon_str,
+					icon_scale = icon_scale,
 					func = a.OnAction,
-					hint = hint_text .. "\n\n<color 200 255 200>" .. a.ActionId .. "</color>",
+					hint = (hint_text ~= "" and hint_text .. "\n\n" or "") .. "<color 200 255 200>" .. a.ActionId .. "</color>",
 				}
 			end
 		end
