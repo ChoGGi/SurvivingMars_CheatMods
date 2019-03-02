@@ -1,2 +1,5 @@
+v0.3
+Removed some log spam.
+
 v0.2
 Added ModConfig option to disable it.

@@ -134,7 +134,7 @@ local function LoadMapSectorsStats()
 	end
 end
 
-OnMsg.CityStart = LoadMapSectorsStats
+OnMsg.MapSectorsReady = LoadMapSectorsStats
 OnMsg.LoadGame = LoadMapSectorsStats
 
 local function RemoveOldRovers(label,sol)
