@@ -70,16 +70,10 @@ end
 
 -- decom tech
 local function StartupCode()
-	local city = UICity
-	if not city:IsTechResearched("DecommissionProtocol") then
-		city:SetTechResearched("DecommissionProtocol")
+	if not IsTechResearched("DecommissionProtocol") then
+		GrantTech("DecommissionProtocol")
 	end
 end
 
-function OnMsg.CityStart()
-	StartupCode()
-end
-
-function OnMsg.LoadGame()
-	StartupCode()
-end
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode

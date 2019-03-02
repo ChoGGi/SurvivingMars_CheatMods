@@ -1,3 +1,6 @@
+v0.4
+Log spam on new game.
+
 v0.3
 The DiscoverTech func was removed from SM, so the towers weren't unlocked.
 

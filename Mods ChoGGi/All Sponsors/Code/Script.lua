@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local skip = {
+local skip_lookup = {
 	random = true,
 	none = true,
 	default = true,
@@ -13,12 +13,12 @@ local function StartupCode()
 	end
 
 	-- get current rival count
-	local g_RivalAIs = RivalAIs or empty_table
+	local RivalAIs = RivalAIs
 	local count = 0
-	for id in pairs(g_RivalAIs) do
+	for id in pairs(RivalAIs) do
 		count = count + 1
-		-- add 'em to the skip table for spawn loop below
-		skip[id] = true
+		-- add 'em to the skip_lookup table for spawn loop below
+		skip_lookup[id] = true
 	end
 
 	-- we only add more if there's three rivals already
@@ -27,15 +27,15 @@ local function StartupCode()
 	end
 
 	-- skip current sponsor
-	skip[g_CurrentMissionParams.idMissionSponsor] = true
+	skip_lookup[g_CurrentMissionParams.idMissionSponsor] = true
 
 	local SpawnRivalAI = SpawnRivalAI
-	local rival_colonies = MissionParams.idRivalColonies.items
 
 	-- spawn all the rest
+	local rival_colonies = MissionParams.idRivalColonies.items
 	for i = 1, #rival_colonies do
 		local rival = rival_colonies[i]
-		if not skip[rival.id] then
+		if not skip_lookup[rival.id] then
 			SpawnRivalAI(rival)
 		end
 	end

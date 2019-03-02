@@ -1,10 +1,11 @@
 return PlaceObj("ModDef", {
-	"title", "Prefab Safety v0.1",
-	"version", 1,
-	"saved", 1544961600,
+	"title", "Prefab Safety v0.2",
+	"version", 2,
+	"saved", 1551441600,
 	"image", "Preview.png",
 	"id", "ChoGGi_PrefabSafety",
 	"steam_id", "1593125913",
+	"pops_any_uuid", "7a951985-0bde-425d-a242-a907a566e039",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
 	"code", {

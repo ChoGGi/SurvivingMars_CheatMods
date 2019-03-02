@@ -11,7 +11,7 @@ function CursorBuilding:GameInit()
 
   local g_MapSectors = g_MapSectors
 	for sector,_ in pairs(g_MapSectors) do
-		if type(sector) ~= "number" then
+		if type(sector) == "table" then
 			sector.ChoGGi_decal = sector.decal
 			if not sector.decal then
 				sector.decal = PlaceObject("SectorUnexplored")
@@ -31,7 +31,7 @@ function CursorBuilding:Done()
 
   local g_MapSectors = g_MapSectors
 	for sector,_ in pairs(g_MapSectors) do
-		if type(sector) ~= "number" then
+		if type(sector) == "table" then
 			if not sector.ChoGGi_decal then
 				sector.decal:delete()
 			end
