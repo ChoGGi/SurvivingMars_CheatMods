@@ -442,7 +442,7 @@ that'll activate the BadPrefab on it
 	end
 
 	function ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
-		local obj or ChoGGi.ComFuncs.SelObject()
+		local obj = ChoGGi.ComFuncs.SelObject()
 		local is_valid = IsValid(obj)
 		-- domes with objs in them = crashy
 		if not is_valid or is_valid and obj:IsKindOf("Dome") then
@@ -458,10 +458,9 @@ that'll activate the BadPrefab on it
 			ResumePassEdits("DeleteAllSelectedObjects")
 		end
 
-		local count = MapCount("map",obj.class)
 		ChoGGi.ComFuncs.QuestionBox(
 			Trans(6779--[[Warning--]]) .. "!\n"
-				.. S[302535920000852--[[This will delete all %s of %s--]]]:format(count,obj.class)
+				.. S[302535920000852--[[This will delete all %s of %s--]]]:format(MapCount("map",obj.class),obj.class)
 				.. "\n\n" .. S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]],
 			CallBackFunc,
 			Trans(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
