@@ -1708,6 +1708,9 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 				-- fallback
 				if not bbox then
 					bbox = ObjectHierarchyBBox(obj,const.efCollision)
+					if not bbox:sizez() then
+						bbox = obj:GetObjectBBox()
+					end
 				end
 			end
 
@@ -2450,11 +2453,18 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			text.ChoGGi_AnimDebug = true
 			obj:Attach(text, 0)
 	--~ 			obj:Attach(orient, 0)
-			text:SetAttachOffset(point(0,0,ObjectHierarchyBBox(obj,const.efCollision):sizez() + 100))
+
+			local obj_bbox = ObjectHierarchyBBox(obj,const.efCollision)
+			if not obj_bbox:sizez() then
+				obj_bbox = obj:GetObjectBBox()
+			end
+
+			text:SetAttachOffset(point(0,0,obj_bbox:sizez() + 100))
 			CreateGameTimeThread(function()
-				local str = "%d. %s\n"
+--~ 				local str = "%d. %s\n"
 				while IsValid(text) do
-					text:SetText(str:format(1,obj:GetAnimDebug(1)))
+--~ 					text:SetText(str:format(1,obj:GetAnimDebug(1)))
+					text:SetText(obj:GetAnimDebug())
 					WaitNextFrame()
 				end
 			end)
@@ -2490,13 +2500,17 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				obj = obj or ChoGGi.ComFuncs.SelObject()
 			end
 
-			if obj then
+			if IsValid(obj) then
+				if not obj:GetAnimDebug() then
+					return
+				end
+
 				if obj.ChoGGi_ShowAnimDebug then
 					obj.ChoGGi_ShowAnimDebug = nil
 					AnimDebug_Hide(obj)
 				else
 					obj.ChoGGi_ShowAnimDebug = true
-					AnimDebug_Show(obj,white)
+					AnimDebug_Show(obj)
 				end
 			else
 				local ChoGGi = ChoGGi
