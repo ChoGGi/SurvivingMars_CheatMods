@@ -11,7 +11,6 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
-		local ChoGGi = ChoGGi
 		local config = config
 		config.BuildingInfopanelCheats = not config.BuildingInfopanelCheats
 		ReopenSelectionXInfopanel()
@@ -25,8 +24,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
-		local ChoGGi = ChoGGi
-
 		if ChoGGi.UserSettings.CleanupCheatsInfoPane then
 			-- needs default?
 			ChoGGi.UserSettings.CleanupCheatsInfoPane = false
@@ -37,12 +34,13 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920001123--[[%s: Cleanup cheats infopane.--]]]:format(ChoGGi.UserSettings.CleanupCheatsInfoPane),
-			S[302535920000696--[[Infopanel Cheats--]]]
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CleanupCheatsInfoPane),
+			S[302535920000698--[[Infopanel Cheats Cleanup--]]]
 		)
 	end
 
 	function ChoGGi.MenuFuncs.UnlockAchievements()
+		local title = S[302535920000318--[[Unlock--]]] .. " " .. Trans(697482021580--[[Achievements--]])
 		local AchievementUnlock = AchievementUnlock
 		local EngineCanUnlockAchievement = EngineCanUnlockAchievement
 
@@ -77,8 +75,7 @@ function OnMsg.ClassesGenerate()
 
 				MsgPopup(
 					#choice,S[302535920000318--[[Unlock--]]] .. ": " .. Trans(697482021580--[[Achievements--]]),
-					S[302535920000745--[[Snacks--]]],
-					"UI/Icons/Sections/Food_1.tga"
+					title
 				)
 			end)
 		end
@@ -87,13 +84,12 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = S[302535920000318--[[Unlock--]]] .. " " .. Trans(697482021580--[[Achievements--]]),
-			hint = S[302535920001496--[[Show a list of achievements to unlock (permanent!).--]]],
+			hint = title,
 			multisel = true,
 		}
 	end
 
 	function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
-
 		-- GenerateMarsScreenPoI has an inf loop in it that happens when it runs out of spots to place POIs
 		local max = #PlanetaryAnomaly.anomaly_names
 
@@ -169,11 +165,11 @@ function OnMsg.ClassesGenerate()
 			title = S[302535920001394--[[Spawn Planetary Anomalies--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. count .. ", "
 				.. S[302535920000834--[[Max--]]] .. ": " .. max,
+			skip_sort = true,
 		}
 	end
 
 	function ChoGGi.MenuFuncs.OutsourceMaxOrderCount_Set()
-		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.OutsourceMaxOrderCount
 		local ItemList = {
 			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
@@ -207,7 +203,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OutsourceMaxOrderCount,S[302535920001342--[[Change Outsource Limit--]]]),
-					Trans(889032422791--[[OUTSOURCE--]]),
+					S[302535920001342--[[Change Outsource Limit--]]],
 					default_icon
 				)
 			end
@@ -223,18 +219,16 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.InstantResearch_toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.InstantResearch = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.InstantResearch)
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.InstantResearch,S[302535920001278--[[Instant Research--]]]),
-			Trans(311--[[Research--]])
+			S[302535920001278--[[Instant Research--]]]
 		)
 	end
 
 	function ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.DraggableCheatsMenu = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DraggableCheatsMenu)
 
 		ChoGGi.ComFuncs.DraggableCheatsMenu(ChoGGi.UserSettings.DraggableCheatsMenu)
@@ -242,12 +236,11 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DraggableCheatsMenu,S[302535920000232--[[Draggable Cheats Menu--]]]),
-			Trans(1000162--[[Menu--]])
+			S[302535920000232--[[Draggable Cheats Menu--]]]
 		)
 	end
 
 	function ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle()
-		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.KeepCheatsMenuPosition then
 			ChoGGi.UserSettings.KeepCheatsMenuPosition = nil
 		else
@@ -259,8 +252,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.KeepCheatsMenuPosition,S[302535920000234--[[Cheats menu save position--]]]),
-			Trans(1000162--[[Menu--]])
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.KeepCheatsMenuPosition),
+			S[302535920000325--[[Keep Cheats Menu Position--]]]
 		)
 	end
 
@@ -751,24 +744,26 @@ This will switch to a new map.--]]],
 		}
 	end
 
-	function ChoGGi.MenuFuncs.ShowScanAndMapOptions()
+	function ChoGGi.MenuFuncs.MapExploration()
 		local ChoGGi = ChoGGi
 		local Consts = Consts
 		local UICity = UICity
+		local title = S[302535920001355--[[Map--]]] .. " " .. Trans(5422--[[Exploration--]])
 		local hint_core = S[302535920000253--[[Core: Repeatable, exploit core resources.--]]]
 		local hint_deep = S[302535920000254--[[Deep: Toggleable, exploit deep resources.--]]]
 		local ItemList = {
+			{text = S[302535920000258--[[Reveal Map--]]],value = 12,hint = S[302535920000259--[[Reveals the map squares--]]]},
+			{text = S[302535920000260--[[Reveal Map (Deep)--]]],value = 13,hint = S[302535920000261--[[Reveals the map and unlocks "Deep" resources--]]]},
+
 			{text = Trans(4493--[[All--]]),value = 1,hint = hint_core .. "\n" .. hint_deep},
 			{text = S[302535920000255--[[Deep--]]],value = 2,hint = hint_deep},
 			{text = S[302535920000256--[[Core--]]],value = 3,hint = hint_core},
-
-			{text = S[302535920000258--[[Reveal Map--]]],value = 12,hint = S[302535920000259--[[Reveals the map squares--]]]},
-			{text = S[302535920000260--[[Reveal Map (Deep)--]]],value = 13,hint = S[302535920000261--[[Reveals the map and unlocks "Deep" resources--]]]},
 
 			{text = S[302535920000257--[[Deep Scan--]]],value = 4,hint = hint_deep .. "\n" .. S[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.DeepScanAvailable},
 			{text = Trans(797--[[Deep Water--]]),value = 5,hint = hint_deep .. "\n" .. S[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepWaterExploitable},
 			{text = Trans(793--[[Deep Metals--]]),value = 6,hint = hint_deep .. "\n" .. S[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepMetalsExploitable},
 			{text = Trans(801--[[Deep Rare Metals--]]),value = 7,hint = hint_deep .. "\n" .. S[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepPreciousMetalsExploitable},
+
 			{text = Trans(6548--[[Core Water--]]),value = 8,hint = hint_core},
 			{text = Trans(6546--[[Core Metals--]]),value = 9,hint = hint_core},
 			{text = Trans(6550--[[Core Rare Metals--]]),value = 10,hint = hint_core},
@@ -829,7 +824,7 @@ This will switch to a new map.--]]],
 Perhaps.
 But I nearly forgot! You must close your eyes.
 Otherwise you won't see anything."--]]],
-				S[302535920001355--[[Map--]]],
+				title,
 				"UI/Achievements/TheRabbitHole.tga",
 				true
 			)
@@ -838,7 +833,7 @@ Otherwise you won't see anything."--]]],
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = S[302535920000263--[[Scan Map--]]],
+			title = title,
 			hint = S[302535920000902--[["Anything with Repeatable in the tooltip will spawn more items on the map.
 Deep items will unlock the ability to exploit those resources."--]]],
 			multisel = true,
@@ -847,7 +842,7 @@ Deep items will unlock the ability to exploit those resources."--]]],
 	end
 
 	function ChoGGi.MenuFuncs.SpawnColonists()
-		local ChoGGi = ChoGGi
+		local title = S[302535920000266--[[Spawn--]]] .. " " .. Trans(547--[[Colonists--]])
 		local ItemList = {
 			{text = 1,value = 1},
 			{text = 10,value = 10},
@@ -872,7 +867,7 @@ Deep items will unlock the ability to exploit those resources."--]]],
 				CheatSpawnNColonists(value)
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000014--[[Spawned--]]]),
-					Trans(547--[[Colonists--]]),
+					title,
 					"UI/Icons/Sections/colonist.tga"
 				)
 			end
@@ -881,7 +876,7 @@ Deep items will unlock the ability to exploit those resources."--]]],
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = S[302535920000266--[[Spawn--]]] .. " " .. Trans(547--[[Colonists--]]),
+			title = title,
 			hint = S[302535920000267--[[Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes.--]]],
 			skip_sort = true,
 		}
@@ -966,6 +961,7 @@ Deep items will unlock the ability to exploit those resources."--]]],
 				hint = Trans(6779--[[Warning--]]) .. ": " .. S[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
 
 	See Cheats>%s to remove."--]]]:format(Trans(5661--[[Mystery Log--]])),
+				skip_sort = true,
 				check = {
 					{
 						title = S[302535920000270--[[Instant Start--]]],
@@ -1017,7 +1013,7 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 		ChoGGi.ComFuncs.OpenInExamineDlg(msgs,nil,point(550,100))
 	end
 
-	function ChoGGi.MenuFuncs.ShowStartedMysteryList()
+	function ChoGGi.MenuFuncs.MysteryLog()
 		local s_SeqListPlayers = s_SeqListPlayers
 		if not s_SeqListPlayers then
 			return
@@ -1027,7 +1023,7 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 		local ItemList = {}
 		local mysteries = ChoGGi.Tables.Mystery
 		for i = 1, #s_SeqListPlayers do
-			--1 is always there from map loading
+			-- 1 is always there from map loading
 			if i > 1 then
 				local seq_list = s_SeqListPlayers[i].seq_list
 				local totalparts = #seq_list[1]
@@ -1040,11 +1036,11 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 					value = id,
 					func = id,
 					mystery_idx = i,
-					hint = mysteries[id].description .. "\n\n<color 255 75 75>"
+					hint = "<image " .. mysteries[id].image .. ">\n\n\n<color 255 75 75>"
 						.. S[302535920000275--[[Total parts--]]] .. "</color>: " .. totalparts
 						.. " <color 255 75 75>" .. S[302535920000289--[[Current part--]]]
 						.. "</color>: " .. (ip or S[302535920000276--[[done?--]]])
-						.. "\n\n\n\n<image " .. mysteries[id].image .. ">\n\n",
+						.. "\n\n" .. mysteries[id].description,
 				}
 			end
 		end
@@ -1072,7 +1068,7 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 				end
 				MsgPopup(
 					S[302535920000277--[[Removed all!--]]],
-					Trans(3486--[[Mystery--]])
+					Trans(5661--[[Mystery Log--]])
 				)
 			elseif choice[1].check1 then
 				-- remove mystery
@@ -1090,7 +1086,7 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 				end
 				MsgPopup(
 					choice[1].text .. ": " .. Trans(3486--[[Mystery--]]) .. " " .. S[302535920000278--[[Removed--]]] .. "!",
-					Trans(3486--[[Mystery--]])
+					Trans(5661--[[Mystery Log--]])
 				)
 			elseif value then
 				-- next step
@@ -1102,7 +1098,7 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = S[302535920000279--[[Manage--]]],
+			title = Trans(5661--[[Mystery Log--]]),
 			hint = S[302535920000280--[[Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).
 
 	Sequence part may have more then one check, you may have to skip twice or more.
@@ -1286,7 +1282,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 			MsgPopup(
 				S[302535920000293--[[%s: all buildings for construction.--]]]:format(choice[1].text),
-				Trans(3980--[[Buildings--]]),
+				S[302535920000337--[[Toggle Unlock All Buildings--]]],
 				"UI/Icons/Upgrades/build_2.tga"
 			)
 		end
@@ -1300,7 +1296,6 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 	end
 
 	function ChoGGi.MenuFuncs.AddResearchPoints()
-		local ChoGGi = ChoGGi
 		local ItemList = {
 			{text = S[302535920001084--[[Reset--]]],value = "Reset",hint = S[302535920000292--[[Resets sponsor points to default for that sponsor--]]]},
 			{text = 100,value = 100},
@@ -1331,7 +1326,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 			end
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000294--[[Added--]]]),
-				Trans(311--[[Research--]]),
+				S[302535920000295--[[Add Research Points--]]],
 				"UI/Icons/Upgrades/eternal_fusion_04.tga"
 			)
 		end
@@ -1346,23 +1341,20 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 	end
 
 	function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
-		local ChoGGi = ChoGGi
-		ChoGGi.ComFuncs.SetConstsG("OutsourceResearchCost",ChoGGi.ComFuncs.NumRetBool(Consts.OutsourceResearchCost) and 0 or ChoGGi.Consts.OutsourceResearchCost)
-
+		ChoGGi.ComFuncs.SetConstsG("OutsourceResearchCost",ChoGGi.ComFuncs.NumRetBool(Consts.OutsourceResearchCost,0,ChoGGi.Consts.OutsourceResearchCost))
 		ChoGGi.ComFuncs.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
+
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000297--[["%s
 	Best hope you picked India as your Mars sponsor..."--]]]:format(ChoGGi.UserSettings.OutsourceResearchCost),
-			Trans(311--[[Research--]]),
+			S[302535920000355--[[Outsourcing For Free--]]],
 			"UI/Icons/Sections/research_1.tga",
 			true
 		)
 	end
 
-	local hint_maxa = S[302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).--]]]
 	function ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set()
-		local ChoGGi = ChoGGi
 		local DefaultSetting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
 		local MaxAmount = #UICity.tech_field.Breakthroughs
 		local ItemList = {
@@ -1370,7 +1362,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 			{text = 6,value = 6},
 			{text = 12,value = 12},
 			{text = 24,value = 24},
-			{text = MaxAmount,value = MaxAmount,hint = hint_maxa},
+			{text = MaxAmount,value = MaxAmount,hint = S[302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).--]]]},
 		}
 
 		local hint = DefaultSetting
@@ -1390,7 +1382,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000299--[[%s: Research is what I'm doing when I don't know what I'm doing.--]]]:format(choice[1].text),
-					Trans(5182--[[Omega Telescope--]]),
+					S[302535920000359--[[Breakthroughs From OmegaTelescope--]]],
 					default_icon
 				)
 			end
@@ -1399,7 +1391,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = S[302535920000300--[[BreakThroughs From Omega--]]],
+			title = S[302535920000359--[[Breakthroughs From OmegaTelescope--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
@@ -1412,7 +1404,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 		local ItemList = {
 			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
 			{text = 26,value = 26,hint = S[302535920000301--[[Doubled the base amount.--]]]},
-			{text = MaxAmount,value = MaxAmount,hint = hint_maxa},
+			{text = MaxAmount,value = MaxAmount,hint = S[302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).--]]]},
 		}
 
 		local hint = DefaultSetting
@@ -1432,7 +1424,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000302--[[%s: S M R T--]]]:format(choice[1].text),
-					Trans(311--[[Research--]]),
+					S[302535920000357--[[Set Amount Of Breakthroughs Allowed--]]],
 					default_icon
 				)
 			end
@@ -1481,7 +1473,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000304--[[%s: Nerdgasm--]]]:format(ChoGGi.UserSettings.ResearchQueueSize),
-					Trans(311--[[Research--]]),
+					S[302535920000305--[[Research Queue Size--]]],
 					default_icon
 				)
 			end
@@ -1566,14 +1558,18 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 		}
 
 		function ChoGGi.MenuFuncs.ResearchRemove()
+			local title = Trans(311--[[Research--]]) .. " " .. S[302535920000281--[[Remove--]]]
 			local ItemList = {}
 			local c = 0
 
-			local IsTechResearched = IsTechResearched
-			local TechDef = TechDef
-			for tech_id,tech in pairs(TechDef) do
-				-- only show stuff researched
-				if IsTechResearched(tech_id) then
+			local g = _G
+			local UICity = g.UICity
+			local TechDef = g.TechDef
+
+			local tech_status = UICity.tech_status or ""
+			for id,status in pairs(tech_status) do
+				if status.researched then
+					local tech = TechDef[id]
 					local text = Trans(tech.display_name)
 					-- remove " from that one tech...
 					if text:find("\"") then
@@ -1582,20 +1578,38 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 					c = c + 1
 					ItemList[c] = {
 						text = text,
-						value = tech_id,
+						value = id,
 						icon = "<image " .. tech.icon .. " 250>",
 						hint = Trans(T(tech.description,tech)) .. "\n\n" .. Trans(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
 					}
 				end
 			end
 
+--~ 			local IsTechResearched = IsTechResearched
+--~ 			local TechDef = TechDef
+--~ 			for tech_id,tech in pairs(TechDef) do
+--~ 				-- only show stuff researched
+--~ 				if IsTechResearched(tech_id) then
+--~ 					local text = Trans(tech.display_name)
+--~ 					-- remove " from that one tech...
+--~ 					if text:find("\"") then
+--~ 						text = text:gsub("\"","")
+--~ 					end
+--~ 					c = c + 1
+--~ 					ItemList[c] = {
+--~ 						text = text,
+--~ 						value = tech_id,
+--~ 						icon = "<image " .. tech.icon .. " 250>",
+--~ 						hint = Trans(T(tech.description,tech)) .. "\n\n" .. Trans(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
+--~ 					}
+--~ 				end
+--~ 			end
+
 			local function CallBackFunc(choice)
 				if choice.nothing_selected then
 					return
 				end
 
-				local g = _G
-				local UICity = g.UICity
 				for i = 1, #choice do
 					local value = choice[i].value
 
@@ -1620,15 +1634,23 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 
 				MsgPopup(
 					S[302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.--]]]:format("",#choice),
-					Trans(311--[[Research--]]),
+					title,
 					default_icon
 				)
+			end
+			if #ItemList == 0 then
+				MsgPopup(
+					S[302535920000089--[[Nothing left--]]],
+					title,
+					default_icon
+				)
+				return
 			end
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = Trans(311--[[Research--]]) .. " " .. S[302535920000281--[[Remove--]]],
+				title = title,
 				hint = S[302535920001495--[[This tries to reverse the changes made when the tech is researched (emphasis on tries).--]]],
 				multisel = true,
 				height = 800,
@@ -1637,7 +1659,6 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 	end -- do
 
 	do -- ResearchTech
-
 		local mystery_costs = {
 			SolExploration = 5000,
 			AlienDiggersDestruction = 20000,
@@ -1692,6 +1713,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 		end
 
 		function ChoGGi.MenuFuncs.ResearchTech()
+			local title = Trans(311--[[Research--]]) .. " / " .. S[302535920000318--[[Unlock--]]] .. " " .. Trans(3734--[[Tech--]])
 			local ItemList = {
 				{
 					text = " " .. S[302535920000306--[[Everything--]]],
@@ -1792,7 +1814,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 
 				MsgPopup(
 					S[302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.--]]]:format(text,#choice),
-					Trans(311--[[Research--]]),
+					title,
 					default_icon
 				)
 			end
@@ -1800,7 +1822,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = Trans(311--[[Research--]]) .. " " .. Trans(3734--[[Tech--]]),
+				title = title,
 				hint = S[302535920000317--[[Select Unlock or Research then select the tech you want. Most mystery tech is locked to that mystery.--]]],
 				multisel = true,
 				check = {

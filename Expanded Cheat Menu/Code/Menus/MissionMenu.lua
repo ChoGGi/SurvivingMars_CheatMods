@@ -68,7 +68,7 @@ function OnMsg.ClassesGenerate()
 				S[302535920000713--[[Switch to a different sponsor.--]]]
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.ChangeSponsor,
+		OnAction = ChoGGi.MenuFuncs.SetSponsor,
 		ActionSortKey = "21",
 	}
 
@@ -96,7 +96,7 @@ function OnMsg.ClassesGenerate()
 				S[302535920000717--[[Switch to a different commander.--]]]
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.ChangeCommander,
+		OnAction = ChoGGi.MenuFuncs.SetCommander,
 		ActionSortKey = "23",
 	}
 

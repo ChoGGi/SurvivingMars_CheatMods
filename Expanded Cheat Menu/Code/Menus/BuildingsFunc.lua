@@ -306,8 +306,8 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(set,S[302535920001114--[[Service Building Stats--]]]),
-				Trans(4810--[[Service--]]),
+				ChoGGi.ComFuncs.SettingState(set),
+				S[302535920001114--[[Service Building Stats--]]],
 				"UI/Icons/Sections/morale.tga"
 			)
 		end
@@ -377,7 +377,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].value,S[302535920001336--[[Export When This Amount--]]]),
-				Trans(1120--[[Space Elevator--]]),
+				S[302535920001336--[[Export When This Amount--]]],
 				"UI/Icons/Sections/basic_active.tga"
 			)
 		end
@@ -443,7 +443,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(choice[1].text,S[title]),
-					Trans(1120--[[Space Elevator--]]),
+					S[302535920001332--[[Export Amount Per Trip--]]],
 					"UI/Icons/Sections/basic_active.tga"
 				)
 			end
@@ -465,13 +465,11 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SpaceElevatorToggleInstantExport,S[302535920001330--[[Instant Export On Toggle--]]]),
-			Trans(3980--[[Buildings--]])
+			S[302535920001330--[[Instant Export On Toggle--]]]
 		)
 	end
 
 	function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
-		--make a list
-		local ChoGGi = ChoGGi
 		local DefaultSetting = 5
 		local UserSettings = ChoGGi.UserSettings
 		local r = ChoGGi.Consts.ResourceScale
@@ -488,7 +486,7 @@ function OnMsg.ClassesGenerate()
 			{text = 500,value = 500},
 		}
 
-		--other hint type
+		-- other hint type
 		local hint = DefaultSetting
 		if UserSettings.ServiceWorkplaceFoodStorage then
 			hint = UserSettings.ServiceWorkplaceFoodStorage
@@ -521,7 +519,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(choice[1].text,Trans(8830--[[Food Storage--]])),
-					Trans(1022--[[Food--]]),
+					S[302535920000164--[[Storage Amount Of Diner & Grocery--]]],
 					"UI/Icons/Sections/Food_1.tga"
 				)
 			end
@@ -537,10 +535,9 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle()
-		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.AlwaysDustyBuildings then
 			ChoGGi.UserSettings.AlwaysDustyBuildings = nil
-			--dust clean up
+			-- dust clean up
 			local objs = UICity.labels.Building or ""
 			for i = 1, #objs do
 				objs[i].ChoGGi_AlwaysDust = nil
@@ -554,8 +551,8 @@ function OnMsg.ClassesGenerate()
 			S[302535920000107--[[%s: I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.
 	I will face my fear. I will permit it to pass over me and through me,
 	and when it has gone past I will turn the inner eye to see its path.
-	Where the fear has gone there will be nothing. Only I will remain.--]]]:format(ChoGGi.UserSettings.AlwaysDustyBuildings),
-			3980--[[Buildings--]],
+	Where the fear has gone there will be nothing. Only I will remain.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.AlwaysDustyBuildings)),
+			S[302535920000174--[[Always Dusty--]]],
 			nil,
 			true
 		)
@@ -567,29 +564,28 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 	function ChoGGi.MenuFuncs.AlwaysCleanBuildings_Toggle()
-		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.AlwaysCleanBuildings then
 			ChoGGi.UserSettings.AlwaysCleanBuildings = nil
 		else
 			ChoGGi.UserSettings.AlwaysCleanBuildings = true
-			DustCleanUp(UICity.labels.Building)
-			DustCleanUp(UICity.labels.GridElements)
+			local labels = UICity.labels
+			DustCleanUp(labels.Building or "")
+			DustCleanUp(labels.GridElements or "")
 		end
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.AlwaysCleanBuildings,S[302535920000037--[[Always Clean--]]]),
-			Trans(3980--[[Buildings--]])
+			S[302535920000037--[[Always Clean--]]]
 		)
 	end
 
 	function ChoGGi.MenuFuncs.SetProtectionRadius()
-		local ChoGGi = ChoGGi
 		local sel = ChoGGi.ComFuncs.SelObject()
 		if not sel or not sel.protect_range then
 			MsgPopup(
 				S[302535920000108--[[Select something with a protect_range (MDSLaser/DefenceTower).--]]],
-				S[302535920000109--[[Protect--]]],
+				S[302535920000178--[[Protection Radius--]]],
 				"UI/Icons/Upgrades/behavioral_melding_02.tga"
 			)
 			return
@@ -637,7 +633,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000113--[[%s range is now %s.--]]]:format(RetName(sel),choice[1].text),
-					S[302535920000109--[[Protect--]]],
+					S[302535920000178--[[Protection Radius--]]],
 					"UI/Icons/Upgrades/behavioral_melding_02.tga"
 				)
 			end
@@ -690,7 +686,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 			MsgPopup(
 				S[302535920000116--[[%s: Buildings unlocked.--]]]:format(#choice),
-				Trans(8690--[[Protect--]]),
+				S[302535920000180--[[Unlock Locked Buildings--]]],
 				default_icon
 			)
 		end
@@ -711,8 +707,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000119--[[%s: Is that a rocket in your pocket?--]]]:format(ChoGGi.UserSettings.PipesPillarSpacing),
-			Trans(3980--[[Buildings--]])
+			S[302535920000119--[[%s: Is that a rocket in your pocket?--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.PipesPillarSpacing)),
+			S[302535920000182--[[Pipes Pillars Spacing--]]]
 		)
 	end
 
@@ -730,8 +726,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000119--[[%s: Is that a rocket in your pocket?--]]]:format(ChoGGi.UserSettings.UnlimitedConnectionLength),
-			Trans(3980--[[Buildings--]])
+			S[302535920000119--[[%s: Is that a rocket in your pocket?--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.UnlimitedConnectionLength)),
+			S[302535920000184--[[Unlimited Connection Length--]]]
 		)
 	end
 
@@ -763,15 +759,16 @@ function OnMsg.ClassesGenerate()
 			which = func2
 		end
 
-		local blds = ChoGGi.ComFuncs.RetAllOfClass(id)
+		local ComFuncs = ChoGGi.ComFuncs
+		local blds = ComFuncs.RetAllOfClass(id)
 		for i = 1, #blds do
-			ChoGGi.ComFuncs[which](blds[i])
+			ComFuncs[which](blds[i])
 		end
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			RetName(sel) .. " " .. S[str2],
-			Trans(3980--[[Buildings--]]),
+			RetName(sel) .. " " .. str2,
+			which,
 			default_icon
 		)
 	end
@@ -815,7 +812,7 @@ function OnMsg.ClassesGenerate()
 		if not sel or (not sel.base_air_capacity and not sel.base_water_capacity and not sel.base_capacity) then
 			MsgPopup(
 				S[302535920000122--[[You need to select something that has capacity (air/water/elec).--]]],
-				Trans(3980--[[Buildings--]]),
+				S[302535920000188--[[Set Charge & Discharge Rates--]]],
 				default_icon
 			)
 			return
@@ -943,7 +940,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000128--[[%s rate is now: %s--]]]:format(RetName(sel),choice[1].text),
-					S[302535920000127--[[Rate--]]],
+					S[302535920000188--[[Set Charge & Discharge Rates--]]],
 					default_icon2
 				)
 			end
@@ -991,7 +988,7 @@ function OnMsg.ClassesGenerate()
 	Going down, down
 	Working in a coal mine
 	Whew, about to slip down--]]],
-			Trans(5068--[[Farms--]]),
+			S[302535920000192--[[Farm Shifts All On--]]],
 			"UI/Icons/Sections/Food_2.tga",
 			true
 		)
@@ -1002,8 +999,8 @@ function OnMsg.ClassesGenerate()
 		local sel = SelectedObj
 		if not sel or (not sel.base_air_production and not sel.base_water_production and not sel.base_electricity_production and not sel.producers) then
 			MsgPopup(
-				302535920000136--[[Select something that produces (air,water,electricity,other).--]],
-				3980--[[Buildings--]],
+				S[302535920000136--[[Select something that produces (air,water,electricity,other).--]]],
+				S[302535920000194--[[Production Amount Set--]]],
 				default_icon2
 			)
 			return
@@ -1119,7 +1116,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				S[302535920000137--[[%s production is now: %s--]]]:format(RetName(sel),choice[1].text),
-				Trans(3980--[[Buildings--]]),
+				S[302535920000194--[[Production Amount Set--]]],
 				default_icon2
 			)
 		end
@@ -1139,7 +1136,7 @@ function OnMsg.ClassesGenerate()
 		if not sel or not IsKindOf(sel,"Workplace") then
 			MsgPopup(
 				S[302535920000141--[[Select a building with workers.--]]],
-				Trans(3980--[[Buildings--]]),
+				S[302535920000196--[[Fully Automated Building--]]],
 				"UI/Icons/Upgrades/service_bots_02.tga"
 			)
 			return
@@ -1207,7 +1204,7 @@ function OnMsg.ClassesGenerate()
 			MsgPopup(
 				S[302535920000143--[["%s
 	I presume the PM's in favour of the scheme because it'll reduce unemployment."--]]]:format(choice[1].text),
-				Trans(3980--[[Buildings--]]),
+				S[302535920000196--[[Fully Automated Building--]]],
 				"UI/Icons/Upgrades/service_bots_02.tga",
 				true
 			)
@@ -1240,7 +1237,7 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	do --
+	do -- SchoolTrainAll_Toggle/SanatoriumCureAll_Toggle
 		-- used to add or remove traits from schools/sanitariums
 		local function BuildingsSetAll_Traits(cls,traits,bool)
 			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
@@ -1270,8 +1267,8 @@ function OnMsg.ClassesGenerate()
 			MsgPopup(
 				S[302535920000148--[["%s:
 	You keep your work station so clean, Jerome.
-	It's next to godliness. Isn't that what they say?"--]]]:format(ChoGGi.UserSettings.SchoolTrainAll),
-				Trans(5247--[[School--]]),
+	It's next to godliness. Isn't that what they say?"--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SchoolTrainAll)),
+				S[302535920000200--[[Train All--]]],
 				"UI/Icons/Upgrades/home_collective_02.tga",
 				true
 			)
@@ -1290,8 +1287,8 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				S[302535920000149--[[%s:
-	There's more vodka in this piss than there is piss.--]]]:format(ChoGGi.UserSettings.SanatoriumCureAll),
-				Trans(3540--[[Sanatorium--]]),
+	There's more vodka in this piss than there is piss.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SanatoriumCureAll)),
+				S[302535920000198--[[Cure All--]]],
 				"UI/Icons/Upgrades/home_collective_02.tga",
 				true
 			)
@@ -1313,8 +1310,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000150--[[%s: Good for what ails you--]]]:format(ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits),
-			Trans(235--[[Traits--]]),
+			S[302535920000150--[[%s: Good for what ails you--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits)),
+			S[302535920000202--[[Show All Traits--]]],
 			"UI/Icons/Upgrades/factory_ai_04.tga"
 		)
 	end
@@ -1329,8 +1326,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000150--[[%s: Good for what ails you--]]]:format(ChoGGi.UserSettings.SanatoriumSchoolShowAll),
-			Trans(3980--[[Buildings--]]),
+			S[302535920000150--[[%s: Good for what ails you--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SanatoriumSchoolShowAll)),
+			S[302535920000204--[[Show Full List--]]],
 			"UI/Icons/Upgrades/factory_ai_04.tga"
 		)
 	end
@@ -1358,8 +1355,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000151--[[%s: The spice must flow!--]]]:format(ChoGGi.UserSettings.InsideBuildingsNoMaintenance),
-			Trans(3980--[[Buildings--]]),
+			S[302535920000151--[[%s: The spice must flow!--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.InsideBuildingsNoMaintenance)),
+			S[302535920000206--[[Maintenance Free Inside--]]],
 			"UI/Icons/Sections/dust.tga"
 		)
 	end
@@ -1383,8 +1380,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000151--[[%s: The spice must flow!--]]]:format(ChoGGi.UserSettings.RemoveMaintenanceBuildUp),
-			Trans(3980--[[Buildings--]]),
+			S[302535920000151--[[%s: The spice must flow!--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RemoveMaintenanceBuildUp)),
+			S[302535920000208--[[Maintenance Free--]]],
 			"UI/Icons/Sections/dust.tga"
 		)
 	end
@@ -1403,8 +1400,8 @@ function OnMsg.ClassesGenerate()
 	Alright, we got white pussy, black pussy, spanish pussy, yellow pussy. We got hot pussy, cold pussy. We got wet pussy. We got smelly pussy. We got hairy pussy, bloody pussy. We got snapping pussy. We got silk pussy, velvet pussy, naugahyde pussy. We even got horse pussy, dog pussy, chicken pussy.
 	C'mon, you want pussy, come on in Pussy Lovers! If we don’t got it, you don't want it! Come on in Pussy lovers!Attention pussy shoppers!
 	Take advantage of our penny pussy sale! If you buy one piece of pussy at the regular price, you get another piece of pussy of equal or lesser value for only a penny!
-	Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!"--]]]:format(ChoGGi.UserSettings.MoistureVaporatorRange),
-			Trans(3980--[[Buildings--]]),
+	Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!"--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MoistureVaporatorRange)),
+			S[302535920000210--[[Moisture Vaporator Penalty--]]],
 			"UI/Icons/Upgrades/zero_space_04.tga",
 			true
 		)
@@ -1420,49 +1417,46 @@ function OnMsg.ClassesGenerate()
 		MsgPopup(
 			S[302535920000153--[["%s:
 	So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
-	it is a friendship greeting from the children of our small but great planet of Potatoho."--]]]:format(ChoGGi.UserSettings.CropFailThreshold),
-			Trans(3980--[[Buildings--]]),
+	it is a friendship greeting from the children of our small but great planet of Potatoho."--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CropFailThreshold)),
+			Trans(4711--[[Crop Fail Threshold--]]),
 			"UI/Icons/Sections/Food_1.tga",
 			true
 		)
 	end
 
 	function ChoGGi.MenuFuncs.CheapConstruction_Toggle()
-		local ChoGGi = ChoGGi
-		local Consts = Consts
-		ChoGGi.ComFuncs.SetConstsG("Metals_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.Metals_cost_modifier,-100,ChoGGi.Consts.Metals_cost_modifier))
-		ChoGGi.ComFuncs.SetConstsG("Metals_dome_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.Metals_dome_cost_modifier,-100,ChoGGi.Consts.Metals_dome_cost_modifier))
-		ChoGGi.ComFuncs.SetConstsG("PreciousMetals_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.PreciousMetals_cost_modifier,-100,ChoGGi.Consts.PreciousMetals_cost_modifier))
-		ChoGGi.ComFuncs.SetConstsG("PreciousMetals_dome_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.PreciousMetals_dome_cost_modifier,-100,ChoGGi.Consts.PreciousMetals_dome_cost_modifier))
-		ChoGGi.ComFuncs.SetConstsG("Concrete_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.Concrete_cost_modifier,-100,ChoGGi.Consts.Concrete_cost_modifier))
-		ChoGGi.ComFuncs.SetConstsG("Concrete_dome_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.Concrete_dome_cost_modifier,-100,ChoGGi.Consts.Concrete_dome_cost_modifier))
-		ChoGGi.ComFuncs.SetConstsG("Polymers_dome_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.Polymers_dome_cost_modifier,-100,ChoGGi.Consts.Polymers_dome_cost_modifier))
-		ChoGGi.ComFuncs.SetConstsG("Polymers_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.Polymers_cost_modifier,-100,ChoGGi.Consts.Polymers_cost_modifier))
-		ChoGGi.ComFuncs.SetConstsG("Electronics_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.Electronics_cost_modifier,-100,ChoGGi.Consts.Electronics_cost_modifier))
-		ChoGGi.ComFuncs.SetConstsG("Electronics_dome_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.Electronics_dome_cost_modifier,-100,ChoGGi.Consts.Electronics_dome_cost_modifier))
-		ChoGGi.ComFuncs.SetConstsG("MachineParts_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.MachineParts_cost_modifier,-100,ChoGGi.Consts.MachineParts_cost_modifier))
-		ChoGGi.ComFuncs.SetConstsG("MachineParts_dome_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.MachineParts_dome_cost_modifier,-100,ChoGGi.Consts.MachineParts_dome_cost_modifier))
-		ChoGGi.ComFuncs.SetConstsG("rebuild_cost_modifier",ChoGGi.ComFuncs.ValueRetOpp(Consts.rebuild_cost_modifier,-100,ChoGGi.Consts.rebuild_cost_modifier))
+		local list = {
+			"Metals_cost_modifier",
+			"Metals_dome_cost_modifier",
+			"PreciousMetals_cost_modifier",
+			"PreciousMetals_dome_cost_modifier",
+			"Concrete_cost_modifier",
+			"Concrete_dome_cost_modifier",
+			"Polymers_dome_cost_modifier",
+			"Polymers_cost_modifier",
+			"Electronics_cost_modifier",
+			"Electronics_dome_cost_modifier",
+			"MachineParts_cost_modifier",
+			"MachineParts_dome_cost_modifier",
+			"rebuild_cost_modifier",
+		}
 
-		ChoGGi.ComFuncs.SetSavedSetting("Metals_cost_modifier",Consts.Metals_cost_modifier)
-		ChoGGi.ComFuncs.SetSavedSetting("Metals_dome_cost_modifier",Consts.Metals_dome_cost_modifier)
-		ChoGGi.ComFuncs.SetSavedSetting("PreciousMetals_cost_modifier",Consts.PreciousMetals_cost_modifier)
-		ChoGGi.ComFuncs.SetSavedSetting("PreciousMetals_dome_cost_modifier",Consts.PreciousMetals_dome_cost_modifier)
-		ChoGGi.ComFuncs.SetSavedSetting("Concrete_cost_modifier",Consts.Concrete_cost_modifier)
-		ChoGGi.ComFuncs.SetSavedSetting("Concrete_dome_cost_modifier",Consts.Concrete_dome_cost_modifier)
-		ChoGGi.ComFuncs.SetSavedSetting("Polymers_cost_modifier",Consts.Polymers_cost_modifier)
-		ChoGGi.ComFuncs.SetSavedSetting("Polymers_dome_cost_modifier",Consts.Polymers_dome_cost_modifier)
-		ChoGGi.ComFuncs.SetSavedSetting("Electronics_cost_modifier",Consts.Electronics_cost_modifier)
-		ChoGGi.ComFuncs.SetSavedSetting("Electronics_dome_cost_modifier",Consts.Electronics_dome_cost_modifier)
-		ChoGGi.ComFuncs.SetSavedSetting("MachineParts_cost_modifier",Consts.MachineParts_cost_modifier)
-		ChoGGi.ComFuncs.SetSavedSetting("MachineParts_dome_cost_modifier",Consts.MachineParts_dome_cost_modifier)
-		ChoGGi.ComFuncs.SetSavedSetting("rebuild_cost_modifier",Consts.rebuild_cost_modifier)
+		local Consts = Consts
+		local cConsts = ChoGGi.Consts
+		local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+		local ValueRetOpp = ChoGGi.ComFuncs.ValueRetOpp
+		local SetSavedSetting = ChoGGi.ComFuncs.SetSavedSetting
+		for i = 1, #list do
+			local name = list[i]
+			SetConstsG(name,ValueRetOpp(Consts[name],-100,cConsts[name]))
+			SetSavedSetting(name,Consts[name])
+		end
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000154--[[%s:
-	Your home will not be a hut on some swampy outback planet your home will be the entire universe.--]]]:format(ChoGGi.UserSettings.Metals_cost_modifier),
-			Trans(3980--[[Buildings--]]),
+Your home will not be a hut on some swampy outback planet your home will be the entire universe.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.Metals_cost_modifier)),
+			S[302535920000214--[[Cheap Construction--]]],
 			"UI/Icons/Upgrades/build_2.tga"
 		)
 	end
@@ -1479,8 +1473,8 @@ function OnMsg.ClassesGenerate()
 			S[302535920000155--[[%s:
 	We were all feeling a bit shagged and fagged and fashed,
 	it having been an evening of some small energy expenditure, O my brothers.
-	So we got rid of the auto and stopped off at the Korova for a nightcap.--]]]:format(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount),
-			Trans(3980--[[Buildings--]]),
+	So we got rid of the auto and stopped off at the Korova for a nightcap.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount)),
+			S[302535920000216--[[Building Damage Crime--]]],
 			"UI/Icons/Notifications/fractured_dome.tga",
 			true
 		)
@@ -1496,8 +1490,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]]:format(ChoGGi.UserSettings.BreakChanceCablePipe),
-			S[302535920000157--[[Cables & Pipes--]]],
+			S[302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.BreakChanceCablePipe)),
+			S[302535920000218--[[No Chance Of Break--]]],
 			"UI/Icons/Notifications/timer.tga"
 		)
 	end
@@ -1511,8 +1505,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]]:format(ChoGGi.UserSettings.InstantCables),
-			S[302535920000157--[[Cables & Pipes--]]],
+			S[302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.InstantCables)),
+			Trans(134--[[Instant Build--]]),
 			"UI/Icons/Notifications/timer.tga"
 		)
 	end
@@ -1523,40 +1517,41 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000158--[[%s: No no I said over there.--]]]:format(ChoGGi.UserSettings.RemoveBuildingLimits),
-			Trans(3980--[[Buildings--]]),
-			"UI/Icons/Upgrades/zero_space_04.tga"
+			S[302535920000158--[[%s: No no I said over there.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RemoveBuildingLimits)),
+			S[302535920000230--[[Remove Building Limits--]]]
 		)
 	end
-
-	local function SetWonders(bool)
-		local BuildingTemplates = BuildingTemplates
-		for _,bld in pairs(BuildingTemplates) do
-			if bld.group == "Wonders" then
-				bld.wonder = bool
+	do -- Building_wonder_Toggle
+		local function SetWonders(bool)
+			local BuildingTemplates = BuildingTemplates
+			for _,bld in pairs(BuildingTemplates) do
+				if bld.group == "Wonders" then
+					bld.wonder = bool
+				end
 			end
 		end
-	end
-	function ChoGGi.MenuFuncs.Building_wonder_Toggle()
-		local ChoGGi = ChoGGi
-		if ChoGGi.UserSettings.Building_wonder then
-			ChoGGi.UserSettings.Building_wonder = nil
-			SetWonders(true)
-		else
-			ChoGGi.UserSettings.Building_wonder = true
-			SetWonders(false)
+
+		function ChoGGi.MenuFuncs.Building_wonder_Toggle()
+			local ChoGGi = ChoGGi
+			if ChoGGi.UserSettings.Building_wonder then
+				ChoGGi.UserSettings.Building_wonder = nil
+				SetWonders(true)
+			else
+				ChoGGi.UserSettings.Building_wonder = true
+				SetWonders(false)
+			end
+
+			-- if the buildmenu is open
+			ChoGGi.ComFuncs.UpdateBuildMenu()
+
+			ChoGGi.SettingFuncs.WriteSettings()
+			MsgPopup(
+				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.Building_wonder),
+				S[302535920000159--[[Unlimited Wonders--]]],
+				"UI/Icons/Sections/theory_1.tga"
+			)
 		end
-
-		-- if the buildmenu is open
-		ChoGGi.ComFuncs.UpdateBuildMenu()
-
-		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(
-			ChoGGi.UserSettings.Building_wonder .. ": " .. S[302535920000159--[[Unlimited Wonders--]]],
-			Trans(3980--[[Buildings--]]),
-			"UI/Icons/Sections/theory_1.tga"
-		)
-	end
+	end -- do
 
 	function ChoGGi.MenuFuncs.Building_dome_spot_Toggle()
 		local ChoGGi = ChoGGi
@@ -1565,8 +1560,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000160--[[%s: Freedom for spires!
-	(restart to set disabled)--]]]:format(ChoGGi.UserSettings.Building_dome_spot),
-			Trans(3980--[[Buildings--]]),
+	(restart to set disabled)--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.Building_dome_spot)),
+			S[302535920000226--[[Remove Spire Point Limit--]]],
 			"UI/Icons/Upgrades/plutonium_core_02.tga"
 		)
 	end
@@ -1577,8 +1572,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000161--[[%s: Buildings Instant Build--]]]:format(ChoGGi.UserSettings.Building_instant_build),
-			Trans(3980--[[Buildings--]]),
+			S[302535920000161--[[%s: Buildings Instant Build--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.Building_instant_build)),
+			S[302535920001241--[[Instant Build--]]],
 			"UI/Icons/Upgrades/autoregulator_02.tga"
 		)
 	end
@@ -1630,11 +1625,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.Building_hide_from_build_menu,
-				302535920000224--[[Show Hidden Buildings--]]
-			),
-			3980--[[Buildings--]],
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.Building_hide_from_build_menu),
+			S[302535920000224--[[Show Hidden Buildings--]]],
 			"UI/Icons/Sections/theory_1.tga"
 		)
 	end
@@ -1677,7 +1669,7 @@ function OnMsg.ClassesGenerate()
 					UserSettings.BuildingSettings[id].uirange = value
 				end
 
-				--find a better way to update radius...
+				-- find a better way to update radius...
 				local sel = SelectedObj
 				CreateRealTimeThread(function()
 					local objs = ChoGGi.ComFuncs.RetAllOfClass(id)

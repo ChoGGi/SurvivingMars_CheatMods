@@ -92,7 +92,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
-					Trans(5438--[[Rovers--]]),
+					S[302535920000541--[[RC Set Charging Distance--]]],
 					default_icon2
 				)
 			end
@@ -143,8 +143,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					S[302535920000883--[[%s: I can see for miles and miles.--]]]:format(ChoGGi.UserSettings.RCRoverMaxRadius),
-					Trans(5438--[[Rovers--]]),
+					S[302535920000883--[[%s: I can see for miles and miles.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverMaxRadius)),
+					S[302535920000505--[[Work Radius RC Rover--]]],
 					"UI/Icons/Upgrades/service_bots_04.tga"
 				)
 			end
@@ -196,8 +196,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					S[302535920000883--[[%s: I can see for miles and miles--]]]:format(ChoGGi.UserSettings.CommandCenterMaxRadius),
-					Trans(3518--[[Drone Hub--]]),
+					S[302535920000883--[[%s: I can see for miles and miles--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CommandCenterMaxRadius)),
+					S[302535920000507--[[Work Radius DroneHub--]]],
 					"UI/Icons/Upgrades/service_bots_04.tga"
 				)
 			end
@@ -243,7 +243,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.ComFuncs.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileAmount",Consts.DroneTransformWasteRockObstructorToStockpileAmount)
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
-					Trans(517--[[Drones--]]),
+					S[302535920000509--[[Drone Rock To Concrete Speed--]]],
 					default_icon
 				)
 			end
@@ -298,7 +298,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
-					Trans(517--[[Drones--]]),
+					S[302535920000511--[[Drone Move Speed--]]],
 					default_icon
 				)
 			end
@@ -353,7 +353,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
-					Trans(5438--[[Rovers--]]),
+					S[302535920000543--[[RC Move Speed--]]],
 					default_icon2
 				)
 			end
@@ -408,7 +408,7 @@ function OnMsg.ClassesGenerate()
 
 				MsgPopup(
 					choice[1].text .. ": " .. Trans(517--[[Drones--]]) .. " " .. change,
-					Trans(517--[[Drones--]]),
+					S[302535920000513--[[Change Amount Of Drones In Hub--]]],
 					default_icon
 				)
 			end
@@ -481,7 +481,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text),
-				S[302535920000900--[[Build Speed--]]],
+				S[302535920000515--[[DroneFactory Build Speed--]]],
 				default_icon
 			)
 		end
@@ -496,19 +496,25 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle()
-		local ChoGGi = ChoGGi
-		ChoGGi.ComFuncs.SetConstsG("DroneMoveBatteryUse",ChoGGi.ComFuncs.NumRetBool(Consts.DroneMoveBatteryUse,0,ChoGGi.Consts.DroneMoveBatteryUse))
-		ChoGGi.ComFuncs.SetConstsG("DroneCarryBatteryUse",ChoGGi.ComFuncs.NumRetBool(Consts.DroneCarryBatteryUse,0,ChoGGi.Consts.DroneCarryBatteryUse))
-		ChoGGi.ComFuncs.SetConstsG("DroneConstructBatteryUse",ChoGGi.ComFuncs.NumRetBool(Consts.DroneConstructBatteryUse,0,ChoGGi.Consts.DroneConstructBatteryUse))
-		ChoGGi.ComFuncs.SetConstsG("DroneBuildingRepairBatteryUse",ChoGGi.ComFuncs.NumRetBool(Consts.DroneBuildingRepairBatteryUse,0,ChoGGi.Consts.DroneBuildingRepairBatteryUse))
-		ChoGGi.ComFuncs.SetConstsG("DroneDeconstructBatteryUse",ChoGGi.ComFuncs.NumRetBool(Consts.DroneDeconstructBatteryUse,0,ChoGGi.Consts.DroneDeconstructBatteryUse))
-		ChoGGi.ComFuncs.SetConstsG("DroneTransformWasteRockObstructorToStockpileBatteryUse",ChoGGi.ComFuncs.NumRetBool(Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse,0,ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse))
-		ChoGGi.ComFuncs.SetSavedSetting("DroneMoveBatteryUse",Consts.DroneMoveBatteryUse)
-		ChoGGi.ComFuncs.SetSavedSetting("DroneCarryBatteryUse",Consts.DroneCarryBatteryUse)
-		ChoGGi.ComFuncs.SetSavedSetting("DroneConstructBatteryUse",Consts.DroneConstructBatteryUse)
-		ChoGGi.ComFuncs.SetSavedSetting("DroneBuildingRepairBatteryUse",Consts.DroneBuildingRepairBatteryUse)
-		ChoGGi.ComFuncs.SetSavedSetting("DroneDeconstructBatteryUse",Consts.DroneDeconstructBatteryUse)
-		ChoGGi.ComFuncs.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileBatteryUse",Consts.DroneTransformWasteRockObstructorToStockpileBatteryUse)
+		local list = {
+			"DroneMoveBatteryUse",
+			"DroneCarryBatteryUse",
+			"DroneConstructBatteryUse",
+			"DroneBuildingRepairBatteryUse",
+			"DroneDeconstructBatteryUse",
+			"DroneTransformWasteRockObstructorToStockpileBatteryUse",
+		}
+
+		local Consts = Consts
+		local cConsts = ChoGGi.Consts
+		local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+		local NumRetBool = ChoGGi.ComFuncs.NumRetBool
+		local SetSavedSetting = ChoGGi.ComFuncs.SetSavedSetting
+		for i = 1, #list do
+			local name = list[i]
+			SetConstsG(name,NumRetBool(Consts[name],0,cConsts[name]))
+			SetSavedSetting(name,Consts[name])
+		end
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
@@ -542,22 +548,9 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000905--[[%s: Slight of hand--]]]:format(ChoGGi.UserSettings.RCRoverTransferResourceWorkTime),
-			Trans(5438--[[Rovers--]]),
+			S[302535920000905--[[%s: Slight of hand--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverTransferResourceWorkTime)),
+			S[302535920000549--[[RC Instant Resource Transfer--]]],
 			"UI/Icons/IPButtons/resources_section.tga"
-		)
-	end
-
-	function ChoGGi.MenuFuncs.DroneMeteorMalfunction_Toggle()
-		local ChoGGi = ChoGGi
-		ChoGGi.ComFuncs.SetConstsG("DroneMeteorMalfunctionChance",ChoGGi.ComFuncs.NumRetBool(Consts.DroneMeteorMalfunctionChance,0,ChoGGi.Consts.DroneMeteorMalfunctionChance))
-		ChoGGi.ComFuncs.SetSavedSetting("DroneMeteorMalfunctionChance",Consts.DroneMeteorMalfunctionChance)
-
-		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(
-			S[302535920000906--[[%s: I'm singing in the rain. Just singin' in the rain. What a glorious feeling.--]]]:format(ChoGGi.UserSettings.DroneMeteorMalfunctionChance),
-			Trans(517--[[Drones--]]),
-			"UI/Icons/Notifications/meteor_storm.tga"
 		)
 	end
 
@@ -568,8 +561,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000907--[[%s: Well, if jacking on'll make strangers think I'm cool, I'll do it!--]]]:format(ChoGGi.UserSettings.DroneRechargeTime),
-			Trans(517--[[Drones--]]),
+			S[302535920000907--[[%s: Well, if jacking on'll make strangers think I'm cool, I'll do it!--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneRechargeTime)),
+			Trans(4645--[[Drone Recharge Time--]]),
 			"UI/Icons/Notifications/low_battery.tga",
 			true
 		)
@@ -582,8 +575,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000908--[[%s: You know what they say about leaky pipes.--]]]:format(ChoGGi.UserSettings.DroneRepairSupplyLeak),
-			Trans(517--[[Drones--]]),
+			S[302535920000908--[[%s: You know what they say about leaky pipes.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneRepairSupplyLeak)),
+			S[302535920000527--[[Drone Repair Supply Leak Speed--]]],
 			default_icon
 		)
 	end
@@ -627,7 +620,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000911--[[Drones can carry %s items.--]]]:format(choice[1].text),
-					Trans(517--[[Drones--]]),
+					S[302535920000529--[[Drone Carry Amount--]]],
 					default_icon
 				)
 			end
@@ -677,7 +670,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000916--[[DroneHubs can control %s drones.--]]]:format(choice[1].text),
-					Trans(5438--[[Rovers--]]),
+					S[302535920000531--[[Drones Per Drone Hub--]]],
 					default_icon
 				)
 			end
@@ -725,7 +718,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000921--[[RC Rovers can control %s drones.--]]]:format(choice[1].text),
-					Trans(5438--[[Rovers--]]),
+					S[302535920000533--[[Drones Per RC Rover--]]],
 					default_icon2
 				)
 			end
@@ -798,7 +791,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000926--[[RC Transport capacity is now %s.--]]]:format(choice[1].text),
-					Trans(5438--[[Rovers--]]),
+					S[302535920000551--[[RC Storage Capacity--]]],
 					"UI/Icons/bmc_building_storages_shine.tga"
 				)
 			end
@@ -857,7 +850,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000929--[[Shuttle storage is now %s.--]]]:format(choice[1].text),
-					Trans(745--[[Shuttles--]]),
+					S[302535920000537--[[Set Capacity--]]],
 					default_icon3
 				)
 			end
@@ -913,7 +906,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000931--[[Shuttle speed is now %s.--]]]:format(choice[1].text),
-					Trans(745--[[Shuttles--]]),
+					S[302535920000539--[[Set Speed--]]],
 					default_icon3
 				)
 			end
@@ -974,7 +967,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				S[302535920000934--[[ShuttleHub shuttle capacity is now %s.--]]]:format(choice[1].text),
-				Trans(745--[[Shuttles--]]),
+				S[302535920000535--[[Set ShuttleHub Shuttle Capacity--]]],
 				default_icon3
 			)
 		end
@@ -1030,7 +1023,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000919--[[RC gravity is now %s.--]]]:format(choice[1].text),
-					Trans(5438--[[Rovers--]]),
+					S[302535920000545--[[RC Gravity--]]],
 					default_icon2
 				)
 			end
@@ -1087,7 +1080,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000919--[[RC gravity is now %s.--]]]:format(choice[1].text),
-					Trans(5438--[[Rovers--]]),
+					S[302535920000517--[[Drone Gravity--]]],
 					default_icon2
 				)
 			end
@@ -1254,7 +1247,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000945--[[%s: I can still see some space...--]]]:format(choice[1].text),
-					Trans(5238--[[Rockets--]]),
+					S[302535920000559--[[Cargo Capacity--]]],
 					"UI/Icons/Sections/spaceship.tga"
 				)
 			end
@@ -1270,7 +1263,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetRocketTravelTime()
-		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("TravelTimeEarthMars") / r
 		local ItemList = {
@@ -1310,7 +1302,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000950--[[%s: 88 MPH--]]]:format(choice[1].text),
-					Trans(5238--[[Rockets--]]),
+					S[302535920000561--[[Travel Time--]]],
 					"UI/Upgrades/autoregulator_04/timer.tga"
 				)
 			end
@@ -1352,7 +1344,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000952--[[%s: Long pig sardines--]]]:format(choice[1].text),
-					Trans(5238--[[Rockets--]]),
+					Trans(4594--[[Colonists Per Rocket--]]),
 					"UI/Icons/Notifications/colonist.tga"
 				)
 			end
@@ -1411,7 +1403,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
-					Trans(5238--[[Rockets--]]),
+					S[302535920001291--[[Max Export Amount--]]],
 					"UI/Icons/Sections/PreciousMetals_2.tga"
 				)
 			end
@@ -1426,88 +1418,89 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	local function SetRocketFuelAmount(amount)
-		local rockets = UICity.labels.AllRockets or ""
-		for i = 1, #rockets do
-			if rockets[i].refuel_request then
-				ChoGGi.ComFuncs.SetTaskReqAmount(rockets[i],amount,"refuel_request","launch_fuel")
-			else
-				rockets[i].launch_fuel = amount
-			end
-		end
-	end
-
-	function ChoGGi.MenuFuncs.RocketsIgnoreFuel_Toggle()
-		local ChoGGi = ChoGGi
-		if ChoGGi.UserSettings.RocketsIgnoreFuel then
-			ChoGGi.UserSettings.RocketsIgnoreFuel = nil
-			SetRocketFuelAmount(ChoGGi.Consts.LaunchFuelPerRocket)
-		else
-			ChoGGi.UserSettings.RocketsIgnoreFuel = true
-			SetRocketFuelAmount(0)
-		end
-
-		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RocketsIgnoreFuel),
-			S[302535920001319--[[Rockets Ignore Fuel--]]],
-			"UI/Icons/Sections/Fuel_1.tga"
-		)
-	end
-
-	function ChoGGi.MenuFuncs.LaunchFuelPerRocket()
-		local ChoGGi = ChoGGi
-		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.Consts.LaunchFuelPerRocket
-		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("FuelRocket")
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. (DefaultSetting / r),value = DefaultSetting},
-			{text = 5,value = 5 * r},
-			{text = 10,value = 10 * r},
-			{text = 15,value = 15 * r},
-			{text = 25,value = 25 * r},
-			{text = 50,value = 50 * r},
-			{text = 100,value = 100 * r},
-			{text = 1000,value = 1000 * r},
-			{text = 10000,value = 10000 * r},
-		}
-		if DefaultSetting ~= UpgradedSetting then
-			table.insert(ItemList,2,{text = S[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting})
-		end
-
-		if not ChoGGi.UserSettings.LaunchFuelPerRocket then
-			ChoGGi.UserSettings.LaunchFuelPerRocket = DefaultSetting
-		end
-
-		local function CallBackFunc(choice)
-			if choice.nothing_selected then
-				return
-			end
-			local value = choice[1].value
-			if type(value) == "number" then
-				if value == DefaultSetting then
-					ChoGGi.UserSettings.LaunchFuelPerRocket = nil
+	do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
+		local function SetRocketFuelAmount(amount)
+			local rockets = UICity.labels.AllRockets or ""
+			for i = 1, #rockets do
+				if rockets[i].refuel_request then
+					ChoGGi.ComFuncs.SetTaskReqAmount(rockets[i],amount,"refuel_request","launch_fuel")
 				else
-					ChoGGi.UserSettings.LaunchFuelPerRocket = value
+					rockets[i].launch_fuel = amount
 				end
-				SetRocketFuelAmount(value)
-
-				ChoGGi.SettingFuncs.WriteSettings()
-				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
-					Trans(5238--[[Rockets--]]),
-					"UI/Icons/Sections/Fuel_1.tga"
-				)
 			end
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = S[302535920001317--[[Launch Fuel Per Rocket--]]],
-			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. ChoGGi.UserSettings.LaunchFuelPerRocket,
-			skip_sort = true,
-		}
-	end
+		function ChoGGi.MenuFuncs.RocketsIgnoreFuel_Toggle()
+			if ChoGGi.UserSettings.RocketsIgnoreFuel then
+				ChoGGi.UserSettings.RocketsIgnoreFuel = nil
+				SetRocketFuelAmount(ChoGGi.Consts.LaunchFuelPerRocket)
+			else
+				ChoGGi.UserSettings.RocketsIgnoreFuel = true
+				SetRocketFuelAmount(0)
+			end
+
+			ChoGGi.SettingFuncs.WriteSettings()
+			MsgPopup(
+				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RocketsIgnoreFuel),
+				S[302535920001319--[[Rockets Ignore Fuel--]]],
+				"UI/Icons/Sections/Fuel_1.tga"
+			)
+		end
+
+		function ChoGGi.MenuFuncs.LaunchFuelPerRocket()
+			local ChoGGi = ChoGGi
+			local r = ChoGGi.Consts.ResourceScale
+			local DefaultSetting = ChoGGi.Consts.LaunchFuelPerRocket
+			local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("FuelRocket")
+			local ItemList = {
+				{text = Trans(1000121--[[Default--]]) .. ": " .. (DefaultSetting / r),value = DefaultSetting},
+				{text = 5,value = 5 * r},
+				{text = 10,value = 10 * r},
+				{text = 15,value = 15 * r},
+				{text = 25,value = 25 * r},
+				{text = 50,value = 50 * r},
+				{text = 100,value = 100 * r},
+				{text = 1000,value = 1000 * r},
+				{text = 10000,value = 10000 * r},
+			}
+			if DefaultSetting ~= UpgradedSetting then
+				table.insert(ItemList,2,{text = S[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting})
+			end
+
+			if not ChoGGi.UserSettings.LaunchFuelPerRocket then
+				ChoGGi.UserSettings.LaunchFuelPerRocket = DefaultSetting
+			end
+
+			local function CallBackFunc(choice)
+				if choice.nothing_selected then
+					return
+				end
+				local value = choice[1].value
+				if type(value) == "number" then
+					if value == DefaultSetting then
+						ChoGGi.UserSettings.LaunchFuelPerRocket = nil
+					else
+						ChoGGi.UserSettings.LaunchFuelPerRocket = value
+					end
+					SetRocketFuelAmount(value)
+
+					ChoGGi.SettingFuncs.WriteSettings()
+					MsgPopup(
+						ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
+						S[302535920001317--[[Launch Fuel Per Rocket--]]],
+						"UI/Icons/Sections/Fuel_1.tga"
+					)
+				end
+			end
+
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = ItemList,
+				title = S[302535920001317--[[Launch Fuel Per Rocket--]]],
+				hint = S[302535920000914--[[Current capacity--]]] .. ": " .. ChoGGi.UserSettings.LaunchFuelPerRocket,
+				skip_sort = true,
+			}
+		end
+	end -- do
 
 end

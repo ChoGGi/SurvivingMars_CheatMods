@@ -39,7 +39,7 @@ function OnMsg.ClassesGenerate()
 			local text = S[302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".workers",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".workers",
 				text
 			) or text
 		end,
@@ -57,7 +57,7 @@ function OnMsg.ClassesGenerate()
 			local text = S[302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".capacity",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".capacity",
 				text
 			) or text
 		end,
@@ -75,7 +75,7 @@ function OnMsg.ClassesGenerate()
 			local text = S[302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".visitors",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".visitors",
 				text
 			) or text
 		end,

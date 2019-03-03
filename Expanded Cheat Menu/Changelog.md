@@ -7,6 +7,8 @@
 ### Changed:
 - Mission>Set Disaster Occurrence: Adds the setting values to the tooltip.
 - Cheats>Disasters: Adds the setting values to the tooltip.
+- Moved Cheats>Workplaces to ECM>Colonists>Workplaces.
+- Sped up Toggle Flight Grid so it's nice n smooth.
 - Examine:
 - > Added Surfaces Toggle: Show a list of surfaces and draw lines over them (GetRelativeSurfaces).
 - > Attaches menu shows what object the attachment is attached to.
@@ -22,6 +24,7 @@
 
 ### Fixed:
 - Examining "_G" and closing the examine dlg would spam the log.
+- Borken menuitems (if you find one that doesn't do anything let me know... log helps).
 
 ### Removed:
 - Use Last Orientation: It's not a cheat, and there's a mod that does the exact same.

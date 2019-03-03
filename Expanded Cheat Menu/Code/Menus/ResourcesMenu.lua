@@ -54,7 +54,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Prefab Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/gear.tga",
 		RolloverText = Trans(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]]) .. "\n" .. S[302535920000897--[[Drone prefabs--]]],
-		OnAction = ChoGGi.MenuFuncs.AddPrefabs,
+		OnAction = ChoGGi.MenuFuncs.AddPrefabBuildings,
 	}
 
 	c = c + 1
@@ -65,7 +65,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			if GameState.gameplay then
 				return ChoGGi.ComFuncs.SettingState(
-					UICity.funding,
+					LocaleInt(UICity.funding),
 					S[302535920000726--[[Add more funding (or reset back to 500 M).--]]]
 				)
 			end

@@ -13,7 +13,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Map Exploration",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = S[302535920000328--[[Scanning, deep scanning, core mines, and alien imprints.--]]],
-		OnAction = ChoGGi.MenuFuncs.ShowScanAndMapOptions,
+		OnAction = ChoGGi.MenuFuncs.MapExploration,
 	}
 
 	c = c + 1
@@ -31,7 +31,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Mystery Log",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
 		RolloverText = S[302535920000330--[[Advance to next part, show what part you're on, or remove mysteries.--]]],
-		OnAction = ChoGGi.MenuFuncs.ShowStartedMysteryList,
+		OnAction = ChoGGi.MenuFuncs.MysteryLog,
 	}
 
 	c = c + 1
@@ -145,43 +145,6 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 		ActionIcon = "CommonAssets/UI/Menu/LowerTerrainToLevel.tga",
 		RolloverText = S[302535920001395--[[Adds Anomaly locations to Planetary View.--]]],
 		OnAction = ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies,
-	}
-
-	local str_Cheats_Workplaces = "ECM.Cheats.Workplaces"
-	c = c + 1
-	Actions[c] = {ActionName = Trans(5444--[[Workplaces--]]),
-		ActionMenubar = "ECM.Cheats",
-		ActionId = ".Workplaces",
-		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
-		OnActionEffect = "popup",
-		ActionSortKey = "1Workplaces",
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920000339--[[Toggle All Shifts--]]],
-		ActionMenubar = str_Cheats_Workplaces,
-		ActionId = ".Toggle All Shifts",
-		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
-		RolloverText = S[302535920000340--[[Toggle all workshifts on or off (farms only get one on).--]]],
-		OnAction = CheatToggleAllShifts,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920000341--[[Update All Workplaces--]]],
-		ActionMenubar = str_Cheats_Workplaces,
-		ActionId = ".Update All Workplaces",
-		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
-		RolloverText = S[302535920000342--[[Updates all colonist's workplaces.--]]],
-		OnAction = CheatUpdateAllWorkplaces,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920000343--[[Clear Forced Workplaces--]]],
-		ActionMenubar = str_Cheats_Workplaces,
-		ActionId = ".Clear Forced Workplaces",
-		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
-		RolloverText = S[302535920000344--[["Removes ""user_forced_workplace"" from all colonists."--]]],
-		OnAction = CheatClearForcedWorkplaces,
 	}
 
 	local str_Cheats_Research = "ECM.Cheats.Research"
@@ -323,7 +286,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 				S[302535920000360--[[How many breakthroughs the OmegaTelescope will unlock.--]]]
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope,
+		OnAction = ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set,
 		ActionSortKey = "2Breakthroughs From OmegaTelescope",
 	}
 

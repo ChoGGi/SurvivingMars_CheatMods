@@ -1,13 +1,12 @@
 -- See LICENSE for terms
 
 local default_icon = "UI/Icons/Sections/storage.tga"
-local default_icon2 = "UI/Icons/IPButtons/rare_metals.tga"
-
 local type = type
 
 function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+	local RetName = ChoGGi.ComFuncs.RetName
 	local S = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.AddOrbitalProbes()
@@ -88,7 +87,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920001188--[[%s: om nom nom nom nom--]]]:format(choice[1].text),
-					S[302535920001189--[[Passengers--]]],
+					Trans(4616--[[Food Per Rocket Passenger--]]),
 					"UI/Icons/Sections/Food_4.tga"
 				)
 			end
@@ -103,89 +102,89 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	local skip_prefabs = {
-		BlackCubeDumpSite = true,
-		ElectricitySwitch = true,
-		LifesupportSwitch = true,
-		StorageConcrete = true,
-		StorageElectronics = true,
-		StorageFood = true,
-		StorageFuel = true,
-		StorageMachineParts = true,
-		StorageMetals = true,
-		StorageMysteryResource = true,
-		StoragePolymers = true,
-		StorageRareMetals = true,
-		Passage = true,
-		PassageRamp = true,
-	}
-
-	function ChoGGi.MenuFuncs.AddPrefabs()
-		local UICity = UICity
-
-		local drone_str = Trans(Drone.display_name)
-
-		local ItemList = {
-			{
-				text = drone_str,
-				value = 10,
-				hint = S[302535920000106--[[Current--]]] .. ": " .. UICity.drone_prefabs,
-				icon = Drone.display_icon,
-			},
+	do -- AddPrefabs
+		local skip_prefabs = {
+			BlackCubeDumpSite = true,
+			ElectricitySwitch = true,
+			LifesupportSwitch = true,
+			StorageConcrete = true,
+			StorageElectronics = true,
+			StorageFood = true,
+			StorageFuel = true,
+			StorageMachineParts = true,
+			StorageMetals = true,
+			StorageMysteryResource = true,
+			StoragePolymers = true,
+			StorageRareMetals = true,
+			Passage = true,
+			PassageRamp = true,
 		}
 
-		local c = #ItemList
-		local show_hidden = ChoGGi.UserSettings.Building_hide_from_build_menu
-
-		local BuildingTemplates = BuildingTemplates
-		for id,cargo in pairs(BuildingTemplates) do
-			-- baclcube is instant, instant doesn't need prefabs, and hidden normally don't show up
-			if not skip_prefabs[id] and not cargo.instant_build and (cargo.group ~= "Hidden" or cargo.group == "Hidden" and show_hidden) then
-				c = c + 1
-				ItemList[c] = {
-					text = Trans(cargo.display_name),
+		function ChoGGi.MenuFuncs.AddPrefabBuildings()
+			local UICity = UICity
+			local drone_str = Trans(Drone.display_name)
+			local ItemList = {
+				{
+					text = drone_str,
 					value = 10,
-					hint = S[302535920000106--[[Current--]]] .. ": " .. UICity:GetPrefabs(id),
-					icon = cargo.display_icon,
-					id = id,
-				}
-			end
-		end
+					hint = S[302535920000106--[[Current--]]] .. ": " .. UICity.drone_prefabs,
+					icon = Drone.display_icon,
+				},
+			}
+			local c = #ItemList
 
-		local function CallBackFunc(choice)
-			if choice.nothing_selected then
-				return
-			end
-			for i = 1, #choice do
-				local value = choice[i].value
-				local text = choice[i].text
+			local show_hidden = ChoGGi.UserSettings.Building_hide_from_build_menu
 
-				if type(value) == "number" then
-					if text == drone_str then
-						UICity.drone_prefabs = UICity.drone_prefabs + value
-					else
-						UICity:AddPrefabs(choice[i].id,value,false)
-					end
+			local BuildingTemplates = BuildingTemplates
+			for id,cargo in pairs(BuildingTemplates) do
+				-- baclcube is instant, instant doesn't need prefabs, and hidden normally don't show up
+				if not skip_prefabs[id] and not cargo.instant_build and (cargo.group ~= "Hidden" or cargo.group == "Hidden" and show_hidden) then
+					c = c + 1
+					ItemList[c] = {
+						text = Trans(cargo.display_name),
+						value = 10,
+						hint = S[302535920000106--[[Current--]]] .. ": " .. UICity:GetPrefabs(id),
+						icon = cargo.display_icon,
+						id = id,
+					}
 				end
 			end
-			MsgPopup(
-				S[302535920001191--[[Added prefabs to %s buildings.--]]]:format(#choice),
-				Trans(1110--[[Prefab Buildings--]]),
-				default_icon
-			)
-			-- if the build menu is opened and they add some prefabs it won't use them till it's toggled, so we do this instead
-			ChoGGi.ComFuncs.UpdateBuildMenu()
-		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = Trans(1110--[[Prefab Buildings--]]),
-			hint = S[302535920001194--[[Use edit box to enter amount of prefabs to add.--]]],
-			custom_type = 3,
-			multisel = true,
-		}
-	end
+			local function CallBackFunc(choice)
+				if choice.nothing_selected then
+					return
+				end
+				for i = 1, #choice do
+					local value = choice[i].value
+					local text = choice[i].text
+
+					if type(value) == "number" then
+						if text == drone_str then
+							UICity.drone_prefabs = UICity.drone_prefabs + value
+						else
+							UICity:AddPrefabs(choice[i].id,value,false)
+						end
+					end
+				end
+				MsgPopup(
+					S[302535920001191--[[Added prefabs to %s buildings.--]]]:format(#choice),
+					Trans(1110--[[Prefab Buildings--]]),
+					default_icon
+				)
+				-- if the build menu is opened and they add some prefabs it won't use them till it's toggled, so we do this instead
+				ChoGGi.ComFuncs.UpdateBuildMenu()
+			end
+
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = ItemList,
+				title = Trans(1110--[[Prefab Buildings--]]),
+				hint = S[302535920001194--[[Use edit box to enter amount of prefabs to add.--]]],
+				custom_type = 3,
+				multisel = true,
+			}
+		end
+	end -- do
 
 	function ChoGGi.MenuFuncs.SetFunding()
 		local DefaultSetting = S[302535920001195--[[Reset to 500 M--]]]
@@ -218,7 +217,7 @@ function OnMsg.ClassesGenerate()
 				MsgPopup(
 					choice[1].text,
 					Trans(3613--[[Funding--]]),
-					default_icon2
+					"UI/Icons/IPButtons/rare_metals.tga"
 				)
 			end
 		end
@@ -234,21 +233,24 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.FillResource()
 		local sel = ChoGGi.ComFuncs.SelObject()
-		if not sel then
+		if not IsValid(sel) then
+			MsgPopup(
+				S[302535920001526--[[Not a valid object--]]],
+				S[302535920000727--[[Fill Selected Resource--]]]
+			)
 			return
 		end
 
-		if type(sel.CheatFill) == "function" then
+		if sel.CheatFill then
 			sel:CheatFill()
 		end
-		if type(sel.CheatRefill) == "function" then
+		if sel.CheatRefill then
 			sel:CheatRefill()
 		end
 
 		MsgPopup(
-			S[302535920001198--[[Resource Filled--]]],
-			Trans(15--[[Resource--]]),
-			default_icon2
+			RetName(self),
+			S[302535920000727--[[Fill Selected Resource--]]]
 		)
 	end
 

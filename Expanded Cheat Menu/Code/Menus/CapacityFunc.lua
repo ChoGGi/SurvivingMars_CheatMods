@@ -117,7 +117,7 @@ function OnMsg.ClassesGenerate()
 		if not sel or (type(sel.GetStoredWater) == "nil" and type(sel.GetStoredAir) == "nil" and type(sel.GetStoredPower) == "nil" and type(sel.GetUIResidentsCount) == "nil") then
 			MsgPopup(
 				S[302535920000958--[[You need to select a building that has capacity.--]]],
-				Trans(3980--[[Buildings--]]),
+				S[302535920000569--[[Building Capacity--]]],
 				default_icon
 			)
 			return
@@ -252,7 +252,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(sel),choice[1].text),
-					Trans(3980--[[Buildings--]]),
+					S[302535920000569--[[Building Capacity--]]],
 					default_icon
 				)
 			end
@@ -273,7 +273,7 @@ function OnMsg.ClassesGenerate()
 		if not sel or (sel and not sel.base_max_visitors) then
 			MsgPopup(
 				S[302535920000959--[[You need to select something that has space for visitors.--]]],
-				Trans(3980--[[Buildings--]]),
+				S[302535920000571--[[Building Visitor Capacity--]]],
 				default_icon2
 			)
 			return
@@ -325,7 +325,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000960--[[%s visitor capacity is now %s.--]]]:format(RetName(sel),choice[1].text),
-					Trans(3980--[[Buildings--]]),
+					S[302535920000571--[[Building Visitor Capacity--]]],
 					default_icon2
 				)
 			end
@@ -435,7 +435,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					choice[1].text .. ": " .. sType,
-					Trans(519--[[Storage--]]),
+					S[302535920000573--[[Storage Universal Depot--]]],
 					"UI/Icons/Sections/basic.tga"
 				)
 			end

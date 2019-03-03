@@ -259,105 +259,6 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	do -- flightgrids
-		local Flight_DbgLines = {}
-		local Flight_DbgLines_c = 0
-		local type_tile = terrain.TypeTileSize()
-		local work_step = 16 * type_tile
-		local dbg_step = work_step / 4 -- 400
-		local MulDivRound = MulDivRound
-		local InterpolateRGB = InterpolateRGB
-		local Clamp = Clamp
-		local AveragePoint2D = AveragePoint2D
-		local terrain_GetHeight = terrain.GetHeight
-
-		local function Flight_DbgRasterLine(pos1, pos0, zoffset)
-			pos1 = pos1 or GetTerrainCursor()
-			pos0 = pos0 or FindPassable(GetTerrainCursor())
-			zoffset = zoffset or 0
-			if not pos0 or not Flight_Height then
-				return
-			end
-			local diff = pos1 - pos0
-			local dist = diff:Len2D()
-			local steps = 1 + (dist + dbg_step - 1) / dbg_step
-			local points,colors,pointsc,colorsc = {},{},0,0
-			local max_diff = 10 * guim
-			for i = 1,steps do
-				local pos = pos0 + MulDivRound(pos1 - pos0, i - 1, steps - 1)
-				local height = Flight_Height:GetBilinear(pos, work_step, 0, 1) + zoffset
-				pointsc = pointsc + 1
-				colorsc = colorsc + 1
-				points[pointsc] = pos:SetZ(height)
-				colors[colorsc] = InterpolateRGB(
-					-1, -- white
-					-16711936, -- green
-					Clamp(height - zoffset - terrain_GetHeight(), 0, max_diff),
-					max_diff
-				)
-			end
-			local line = PlacePolyline(points, colors)
-			line:SetPos(AveragePoint2D(points))
-			Flight_DbgLines_c = Flight_DbgLines_c + 1
-			Flight_DbgLines[Flight_DbgLines_c] = line
-		end
-
-		local function Flight_DbgClear()
-			SuspendPassEdits("ChoGGi_Flight_DbgClear")
-			for i = 1, #Flight_DbgLines do
-				Flight_DbgLines[i]:delete()
-			end
-			ResumePassEdits("ChoGGi_Flight_DbgClear")
-			table.iclear(Flight_DbgLines)
-			Flight_DbgLines_c = 0
-		end
-
-		local grid_thread
-		function ChoGGi.ComFuncs.FlightGrid_Update(size,zoffset)
-			if grid_thread then
-				DeleteThread(grid_thread)
-				grid_thread = nil
-				Flight_DbgClear()
-			end
-			ChoGGi.ComFuncs.FlightGrid_Toggle(size,zoffset)
-		end
-		function ChoGGi.ComFuncs.FlightGrid_Toggle(size,zoffset)
-			if grid_thread then
-				DeleteThread(grid_thread)
-				grid_thread = nil
-				Flight_DbgClear()
-				return
-			end
-			grid_thread = CreateMapRealTimeThread(function()
-				local Sleep = Sleep
-				local orig_size = size or 256 * guim
-				local pos_c,pos_t,pos
-				while true do
-					pos_t = GetTerrainCursor()
-					if pos_c ~= pos_t then
-						pos_c = pos_t
-						pos = pos_t
-						Flight_DbgClear()
-						-- Flight_DbgRasterArea
-						size = orig_size
-						local steps = 1 + (size + dbg_step - 1) / dbg_step
-						size = steps * dbg_step
-						pos = pos - point(size, size) / 2
-						for y = 0,steps do
-							Flight_DbgRasterLine(pos + point(0, y*dbg_step), pos + point(size, y*dbg_step), zoffset)
-						end
-						for x = 0,steps do
-							Flight_DbgRasterLine(pos + point(x*dbg_step, 0), pos + point(x*dbg_step, size), zoffset)
-						end
-
-						Sleep(10)
-					end
-					Sleep(50)
-				end
-			end)
-		end
-	end -- do
-
 	function ChoGGi.ComFuncs.GenerateScreenshotFilename(prefix, folder, ext, just_name)
 		local match = string.match
 		local Max = Max
@@ -382,7 +283,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg,gen_name)
 		if blacklist then
-			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.ComFuncs.Dump"))
+			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.Dump")
 			return
 		end
 
@@ -469,7 +370,7 @@ function OnMsg.ClassesGenerate()
 		--]]
 		function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
 			if blacklist then
-				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.ComFuncs.DumpTable"))
+				ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.DumpTable")
 				return
 			end
 			if not obj then
@@ -562,7 +463,7 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.ComFuncs.WriteLogs_Toggle(which)
 			if blacklist then
-				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.ComFuncs.WriteLogs_Toggle"))
+				ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.WriteLogs_Toggle")
 				return
 			end
 
@@ -895,7 +796,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.ComFuncs.MonitorThreads()
 		if blacklist then
-			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Ü¢er access.--]]]:format("ChoGGi.ComFuncs.MonitorThreads"))
+			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.MonitorThreads")
 			return
 		end
 
@@ -1043,6 +944,7 @@ function OnMsg.ClassesGenerate()
 			title = name,
 			hint = S[302535920001421--[[Shows list of particles to quickly test out on objects.--]]],
 			custom_type = 7,
+			skip_icons = true,
 		}
 	end
 
@@ -1117,7 +1019,7 @@ function OnMsg.ClassesGenerate()
 --~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.ChoGGi_XXXXXXXXXX)
 	function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod,ext)
 		if blacklist then
-			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Ãœber access.--]]]:format("ChoGGi.ComFuncs.ConvertImagesToLogoFiles"))
+			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ConvertImagesToLogoFiles")
 			return
 		end
 		if type(mod) == "string" then
@@ -1249,7 +1151,7 @@ function OnMsg.ClassesGenerate()
 --~ 	ChoGGi.ComFuncs.ConvertImagesToResEntities(Mods.MOD_ID,".tga")
 		function ChoGGi.ComFuncs.ConvertImagesToResEntities(mod,ext)
 			if blacklist then
-				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Ãœber access.--]]]:format("ChoGGi.ComFuncs.ConvertImagesToResEntities"))
+				ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ConvertImagesToResEntities")
 				return
 			end
 			if type(mod) == "string" then
@@ -1507,7 +1409,6 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 					local num_mats = GetStateNumMaterials(entity, state, li - 1) or 0
 					for mi = 1, num_mats do
 						local mat_name = GetStateMaterial(entity,state,mi - 1,li - 1)
-						GetStateMaterial(s.entity,0,1,1)
 						local mat = GetMaterialProperties(mat_name)
 						mat.__mtl = mat_name
 						mat.__lod = li
@@ -1523,17 +1424,20 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 		end
 		ChoGGi.ComFuncs.EntityMats = EntityMats
 
-
 		function ChoGGi.ComFuncs.GetMaterialProperties(obj,parent_or_ret)
 			if not UICity then
 				return
 			end
 			obj = obj or ChoGGi.ComFuncs.SelObject()
+
 			if IsValid(obj) then
 				obj = obj:GetEntity()
-			end
 
-			if IsValidEntity(obj) then
+				-- some of the ent funcs are crashy with bad inputs, so lets just make sure
+				if not IsValidEntity(obj) then
+					return
+				end
+
 				if parent_or_ret == true then
 					return EntityMats(obj)
 				else
@@ -1544,12 +1448,10 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 				local all_entities = GetAllEntities()
 				for entity in pairs(all_entities) do
 					materials[entity] = EntityMats(entity)
---~ 					if entity:find("AlienDiggerBig") then
---~ 						break
---~ 					end
 				end
 				ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent,S[302535920001458--[[Material Properties--]]])
 			end
+
 		end
 	end -- do
 
@@ -1747,7 +1649,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 
 				-- fallback
 				if not bbox then
-					bbox = obj.GetObjectBBox and obj:GetObjectBBox(args)
+					bbox = ObjectHierarchyBBox(obj,const.efCollision)
 				end
 			end
 
@@ -2012,7 +1914,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 
 		function ChoGGi.ComFuncs.RetSourceFile(path)
 			if blacklist then
-				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Ãœber access.--]]]:format("ChoGGi.ComFuncs.RetSourceFile"))
+				ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.RetSourceFile")
 				return
 			end
 --[[
@@ -2388,6 +2290,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		ChoGGi.ComFuncs.AttachSpots_Clear = AttachSpots_Clear
 
 		function ChoGGi.ComFuncs.AttachSpots_Toggle(obj,params)
+			params = params or {}
+
 			obj = obj or ChoGGi.ComFuncs.SelObject()
 			local is_valid = IsValid(obj)
 			if not is_valid or is_valid and not IsValidEntity(obj:GetEntity())
@@ -2395,7 +2299,6 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				return
 			end
 
-			params = params or {}
 
 			obj.ChoGGi_ShowAttachSpots = objlist:new()
 			local c = 0
@@ -2481,7 +2384,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		text.ChoGGi_AnimDebug = true
 		obj:Attach(text, 0)
 --~ 			obj:Attach(orient, 0)
-		text:SetAttachOffset(point(0,0,obj:GetObjectBBox():sizez() + 100))
+		text:SetAttachOffset(point(0,0,ObjectHierarchyBBox(obj,const.efCollision):sizez() + 100))
 		CreateGameTimeThread(function()
 			local str = "%d. %s\n"
 			while IsValid(text) do
@@ -2643,4 +2546,12 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 	end
 
+	function ChoGGi.ComFuncs.BlacklistMsg(msg)
+		msg = S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format(msg)
+		MsgPopup(
+			msg,
+			S[302535920000000--[[Expanded Cheat Menu--]]]
+		)
+		print(msg)
+	end
 end

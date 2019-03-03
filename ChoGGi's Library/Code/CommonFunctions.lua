@@ -1220,11 +1220,20 @@ function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(context)
 end
 
 function ChoGGi.ComFuncs.OpenInListChoice(list)
-	-- if list isn't a table or it has zero items or it doesn't have items/callback func
-	local list_table = type(list) == "table"
-	local items_table = type(list_table and list.items) == "table"
-	if not list_table or list_table and not items_table or items_table and #list.items < 1 then
-		print(S[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.--]]],"\n",list,"\n",list and ObjPropertyListToLuaCode(list))
+	-- blank list = no open
+	local is_t = type(list) == "table"
+	local items_t = type(is_t and list.items) == "table"
+
+	-- list isn't a table or no callback or no items in list
+	if not is_t or is_t and (not list.callback or (items_t and #list.items == 0)) then
+		local props
+		-- can fail so pcall it
+		if list and next(list) then
+			pcall(function()
+				props = ObjPropertyListToLuaCode(list)
+			end)
+		end
+		print(S[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.--]]],"\n",list,"\n",props)
 		return
 	end
 
@@ -1240,7 +1249,6 @@ end
 
 -- return a string setting/text for menus
 function ChoGGi.ComFuncs.SettingState(setting,text)
-
 	if testing and type(text) == "number" then
 		print("SettingState",text,Trans(text))
 	end
@@ -1262,9 +1270,9 @@ function ChoGGi.ComFuncs.SettingState(setting,text)
 
 	if text then
 		return "<color 0 255 0>" .. tostring(setting) .. "</color>: " .. CheckText(S[text],text)
-	else
-		return tostring(setting)
 	end
+
+	return tostring(setting)
 end
 
 -- get all objects, then filter for ones within *radius*, returned sorted by dist, or *sort* for name

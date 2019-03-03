@@ -41,7 +41,7 @@ function OnMsg.ClassesGenerate()
 			local text = S[302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block will override).--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".restricttraits",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".restricttraits",
 				text
 			) or text
 		end,
@@ -59,7 +59,7 @@ function OnMsg.ClassesGenerate()
 			local text = S[302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".blocktraits",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".blocktraits",
 				text
 			) or text
 		end,
@@ -311,19 +311,19 @@ Works after colonist idle."--]]]
 		OnAction = ChoGGi.MenuFuncs.SetDeathAge,
 	}
 
-	local str_ECM_Colonists_Work = "ECM.ECM.Colonists.Work"
+	local str_ECM_Colonists_Workplaces = "ECM.ECM.Colonists.Workplaces"
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000212--[[Work--]]],
+	Actions[c] = {ActionName = Trans(5444--[[Workplaces--]]),
 		ActionMenubar = "ECM.ECM.Colonists",
-		ActionId = ".Work",
+		ActionId = ".Workplaces",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
-		ActionSortKey = "1Work",
+		ActionSortKey = "1Workplaces",
 	}
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000383--[[Fire All Colonists!--]]],
-		ActionMenubar = str_ECM_Colonists_Work,
+		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Fire All Colonists!",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 		RolloverText = S[302535920000384--[[Fires everyone from every job.--]]],
@@ -332,7 +332,7 @@ Works after colonist idle."--]]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000385--[[Set All Work Shifts--]]],
-		ActionMenubar = str_ECM_Colonists_Work,
+		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Set All Work Shifts",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 		RolloverText = S[302535920000386--[[Set all shifts on or off (able to cancel).--]]],
@@ -341,7 +341,7 @@ Works after colonist idle."--]]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000387--[[Colonists Avoid Fired Workplace--]]],
-		ActionMenubar = str_ECM_Colonists_Work,
+		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Colonists Avoid Fired Workplace",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -356,7 +356,7 @@ Works after colonist idle."--]]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000389--[[Performance Penalty Non-Specialist--]]],
-		ActionMenubar = str_ECM_Colonists_Work,
+		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Performance Penalty Non-Specialist",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -371,7 +371,7 @@ Activated when colonist changes job."--]]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001446--[[Performance Penalty Connected Dome--]]],
-		ActionMenubar = str_ECM_Colonists_Work,
+		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Performance Penalty Connected Dome",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -386,7 +386,7 @@ Activated when colonist changes job."--]]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000392--[[Outside Workplace Radius--]]],
-		ActionMenubar = str_ECM_Colonists_Work,
+		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Outside Workplace Radius",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
@@ -400,11 +400,38 @@ Activated when colonist changes job."--]]]
 
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000393--[[Add Specialization To All--]]],
-		ActionMenubar = str_ECM_Colonists_Work,
+		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Add Specialization To All",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000394--[[If Colonist has no Specialization then add a random one--]]],
 		OnAction = ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000339--[[Toggle All Shifts--]]],
+		ActionMenubar = str_ECM_Colonists_Workplaces,
+		ActionId = ".Toggle All Shifts",
+		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
+		RolloverText = S[302535920000340--[[Toggle all workshifts on or off (farms only get one on).--]]],
+		OnAction = CheatToggleAllShifts,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000341--[[Update All Workplaces--]]],
+		ActionMenubar = str_ECM_Colonists_Workplaces,
+		ActionId = ".Update All Workplaces",
+		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
+		RolloverText = S[302535920000342--[[Updates all colonist's workplaces.--]]],
+		OnAction = CheatUpdateAllWorkplaces,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000343--[[Clear Forced Workplaces--]]],
+		ActionMenubar = str_ECM_Colonists_Workplaces,
+		ActionId = ".Clear Forced Workplaces",
+		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
+		RolloverText = S[302535920000344--[["Removes ""user_forced_workplace"" from all colonists."--]]],
+		OnAction = CheatClearForcedWorkplaces,
 	}
 
 	local str_ECM_Colonists_Stats = "ECM.ECM.Colonists.Stats"

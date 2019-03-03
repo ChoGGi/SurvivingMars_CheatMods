@@ -259,7 +259,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	Works on any building that produces."--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".production",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".production",
 				text
 			) or text
 		end,
@@ -277,7 +277,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 			local text = S[302535920000187--[[Toggle electricity use for selected building type.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".nopower",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".nopower",
 				text
 			) or text
 		end,
@@ -294,7 +294,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 			local text = S[302535920001252--[[Toggle water use for selected building type.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".nowater",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".nowater",
 				text
 			) or text
 		end,
@@ -311,7 +311,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 			local text = S[302535920001254--[[Toggle oxygen use for selected building type.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".noair",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".noair",
 				text
 			) or text
 		end,
@@ -339,7 +339,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 			local text = S[302535920000179--[[Change threat protection coverage distance.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".protect_range",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".protect_range",
 				text
 			) or text
 		end,
@@ -355,7 +355,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 			local text = S[302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".auto_performance",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".auto_performance",
 				text
 			) or text
 		end,
@@ -372,7 +372,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 Health change, Sanity change, Service Comfort, Comfort increase."--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".service_stats",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".service_stats",
 				text
 			) or text
 		end,
@@ -390,7 +390,7 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]]
 			local text = S[302535920001345--[[How many points are needed to finish training.--]]]
 			local sel = ChoGGi.ComFuncs.SelObject()
 			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or self.class) .. ".evaluation_points",
+				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".evaluation_points",
 				text
 			) or text
 		end,

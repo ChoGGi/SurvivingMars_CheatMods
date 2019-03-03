@@ -153,20 +153,6 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000523--[[Drone Meteor Malfunction--]]],
-		ActionMenubar = str_ECM_Drones,
-		ActionId = ".Drone Meteor Malfunction",
-		ActionIcon = iconD,
-		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.DroneMeteorMalfunctionChance,
-				S[302535920000524--[[Drones will not malfunction when close to a meteor impact site.--]]]
-			)
-		end,
-		OnAction = ChoGGi.MenuFuncs.DroneMeteorMalfunction_Toggle,
-	}
-
-	c = c + 1
 	Actions[c] = {ActionName = Trans(4645--[[Drone Recharge Time--]]),
 		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Recharge Time",

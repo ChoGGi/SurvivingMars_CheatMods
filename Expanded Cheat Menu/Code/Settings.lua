@@ -184,7 +184,6 @@ function OnMsg.ClassesGenerate()
 			"DroneConstructAmount",
 			"DroneConstructBatteryUse",
 			"DroneDeconstructBatteryUse",
---~ 			"DroneMeteorMalfunctionChance",
 			"DroneMoveBatteryUse",
 			"DroneRechargeTime",
 			"DroneRepairSupplyLeak",

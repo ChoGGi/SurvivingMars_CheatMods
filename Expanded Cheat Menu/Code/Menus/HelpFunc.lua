@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local default_icon = "UI/Icons/Sections/attention.tga"
 local print,tostring = print,tostring
 
 function OnMsg.ClassesGenerate()
@@ -11,6 +10,99 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
+
+	function ChoGGi.MenuFuncs.DeleteSavedGames()
+		if blacklist then
+			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.MenuFuncs.DeleteSavedGames")
+			return
+		end
+		local SavegamesList = SavegamesList
+		local ItemList = {}
+		for i = 1, #SavegamesList do
+			local data = SavegamesList[i]
+
+			-- build played time
+			local playtime = T(77, "Unknown")
+			if data.playtime then
+				local h, m, _ = FormatElapsedTime(data.playtime, "hms")
+				playtime = T{
+					7549, "<hours>:<minutes>",
+					hours = string.format("%02d", h),
+					minutes = string.format("%02d", m)
+				}
+			end
+			-- and last saved
+			local save_date = 0
+			if data.timestamp then
+				save_date = os.date("%H:%M - %d / %m / %Y", data.timestamp)
+			end
+
+			ItemList[i] = {
+				text = data.displayname,
+				value = data.savename,
+
+				hint = Trans(T{4274--[[Playtime : <playtime>--]],playtime = Trans(playtime)}) .. "\n"
+					.. Trans(T{4273--[[Saved on : <save_date>--]],save_date = save_date}) .. "\n\n"
+					.. S[302535920001274--[[This is permanent!--]]],
+			}
+		end
+
+		local function CallBackFunc(choice)
+			if choice.nothing_selected then
+				return
+			end
+			local value = choice[1].value
+
+			if not choice[1].check1 then
+				MsgPopup(
+					S[302535920000038--[[Pick a checkbox next time...--]]],
+					S[302535920000146--[[Delete Saved Games--]]]
+				)
+				return
+			end
+			local save_folder = GetPCSaveFolder()
+
+			for i = 1, #choice do
+				value = choice[i].value
+				if type(value) == "string" then
+					AsyncFileDelete(save_folder .. value)
+				end
+			end
+
+			-- remove any saves we deleted
+			local FileExists = ChoGGi.ComFuncs.FileExists
+			local games_amt = #SavegamesList
+			for i = #SavegamesList, 1, -1 do
+				if not FileExists(save_folder .. SavegamesList[i].savename) then
+					SavegamesList[i] = nil
+					TableRemove(SavegamesList,i)
+				end
+			end
+
+			games_amt = games_amt - #SavegamesList
+			if games_amt > 0 then
+				MsgPopup(
+					S[302535920001275--[[Deleted %s saved games.--]]]:format(games_amt),
+					S[302535920000146--[[Delete Saved Games--]]]
+				)
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = S[302535920000146--[[Delete Saved Games--]]] .. ": " .. #ItemList,
+			hint = Trans(6779--[[Warning--]]) .. ": " .. S[302535920001274--[[This is permanent!--]]],
+			multisel = true,
+			skip_sort = true,
+			check = {
+				{
+					title = Trans(1000009--[[Confirmation--]]),
+					hint = S[302535920001276--[[Nothing is deleted unless you check this.--]]],
+				},
+			},
+		}
+	end
 
 	function ChoGGi.MenuFuncs.StartupTicks_Toggle()
 		ChoGGi.UserSettings.ShowStartupTicks = not ChoGGi.UserSettings.ShowStartupTicks
@@ -55,7 +147,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 	function ChoGGi.MenuFuncs.ExtractHPKs()
 		if blacklist then
-			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ExtractHPKs"))
+			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.MenuFuncs.ExtractHPKs")
 			return
 		end
 		local ItemList = {}
@@ -178,12 +270,14 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 					icon_str = "<image " .. a.ActionIcon .. " 2500>"
 				end
 
-			-- bonus for list all items
-			local icon_scale
-			if a.ActionId:sub(1,9) == "ECM.Keys." then
-				icon_str = ChoGGi.library_path .. "UI/bmc_incal_resources.png"
-				icon_scale = 650
-			end
+				-- bonus for list all items
+				local icon_scale
+				if a.ActionId:sub(1,9) == "ECM.Keys." then
+					icon_str = ChoGGi.library_path .. "UI/bmc_incal_resources.png"
+					icon_scale = 650
+				end
+
+				local short = a.ActionShortcut
 
 				ItemList[c] = {
 					text = a.ActionName,
@@ -191,11 +285,13 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 					icon = icon_str,
 					icon_scale = icon_scale,
 					func = a.OnAction,
-					hint = (hint_text ~= "" and hint_text .. "\n\n" or "") .. "<color 200 255 200>" .. a.ActionId .. "</color>",
+					hint = (hint_text ~= "" and hint_text .. "\n\n" or "")
+						.. "<color 200 255 200>" .. a.ActionId .. "</color>"
+						.. (short ~= "" and "\n\nActionShortcut: " .. short or ""),
 				}
 			end
 		end
-	------------------------------LIGHTMODEL CUSTOM SETTING IS OFF
+
 		local function CallBackFunc(choice)
 			if #choice < 1 or not choice[1].func then
 				return
@@ -213,13 +309,15 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 	end
 
 	function ChoGGi.MenuFuncs.RetMapInfo()
+		if not GameState.gameplay then
+			return
+		end
 		local data = HashLogToTable()
 		data[1] = data[1]:gsub("\n\n","")
 		ChoGGi.ComFuncs.OpenInExamineDlg(TableConcat(data,"\n"))
 	end
 
 	do -- ModUpload
-
 		-- this keeps the check saved per session (true = steam, false = paradox)
 		local upload_to_who = true
 		-- true = desktop, false = desktop/console
@@ -582,7 +680,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 		function ChoGGi.MenuFuncs.ModUpload()
 			if blacklist then
-				print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.MenuFuncs.ModUpload"))
+				ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.MenuFuncs.ModUpload")
 				return
 			end
 			if not (Platform.steam or Platform.pops) then
@@ -702,7 +800,6 @@ Move archive to Mod folder/Pack/ModContent.hpk"--]]],
 	end -- do
 
 	function ChoGGi.MenuFuncs.EditECMSettings()
-		local ChoGGi = ChoGGi
 		-- load up settings file in the editor
 		ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 			text = TableToLuaCode(ChoGGi.UserSettings),
@@ -719,7 +816,7 @@ Move archive to Mod folder/Pack/ModContent.hpk"--]]],
 						local d,m,h = FormatElapsedTime(os.time(), "dhm")
 						MsgPopup(
 							Trans(T{4273--[[Saved on <save_date>--]],save_date = ": " .. d .. ":" .. m .. ":" .. h}),
-							S[302535920001308--[[Settings--]]]
+							S[302535920001242--[[Edit ECM Settings--]]]
 						)
 					end
 				end
@@ -728,25 +825,28 @@ Move archive to Mod folder/Pack/ModContent.hpk"--]]],
 	end
 
 	function ChoGGi.MenuFuncs.DisableECM()
+		local title = Trans(251103844022--[[Disable--]]) .. " " .. S[302535920000887--[[ECM--]]]
 		local function CallBackFunc(answer)
 			if answer then
 				local ChoGGi = ChoGGi
 				ChoGGi.UserSettings.DisableECM = not ChoGGi.UserSettings.DisableECM
 				ChoGGi.SettingFuncs.WriteSettings()
 
-				MsgPopup(S[302535920001070--[[Restart to take effect.--]]])
+				MsgPopup(
+					S[302535920001070--[[Restart to take effect.--]]],
+					title
+				)
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
 			S[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
 Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .. S[302535920001070--[[Restart to take effect.--]]],
 			CallBackFunc,
-			Trans(251103844022--[[Disable--]])
+			title
 		)
 	end
 
 	function ChoGGi.MenuFuncs.ResetECMSettings()
-
 		local file = ChoGGi.settings_file
 		local old = file .. ".old"
 
@@ -769,8 +869,7 @@ Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .
 
 				MsgPopup(
 					S[302535920001070--[[Restart to take effect.--]]],
-					S[302535920001084--[[Reset--]]],
-					default_icon
+					S[302535920000676--[[Reset ECM Settings--]]]
 				)
 			end
 		end
@@ -784,11 +883,12 @@ Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .
 	end
 
 	function ChoGGi.MenuFuncs.ReportBugDlg()
-		--was in orig func, i guess there's never any bugs when modding :)
+		-- was in orig func, i guess there's never any bugs when modding :)
 		if Platform.ged then
 			return
 		end
 		CreateRealTimeThread(function()
+			Sleep(50)
 			CreateBugReportDlg()
 		end)
 	end

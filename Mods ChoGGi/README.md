@@ -90,7 +90,6 @@ Remove penalty when Moisture Vaporators are close
 ```
 ApplicantGenerationInterval (more colonists, not sure if working)
 AvoidWorkplaceSols (fired people don't avoid same workplace for certain amount of time)
-DroneMeteorMalfunctionChance (drone don't malfunc around meteors)
 DroneRechargeTime (recharge takes 0 seconds)
 DroneRepairSupplyLeak (repairs take 0 seconds)
 FoodPerRocketPassenger (100 per person)
