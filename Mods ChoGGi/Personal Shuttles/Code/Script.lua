@@ -165,9 +165,9 @@ function PersonalShuttle:FollowMouse()
 
 		self:GotoPos(PersonalShuttles,pos,dest)
 
-		local sel = SelectedObj
-		if IsValid(sel) and sel ~= self then
-			self:SelectedObject(sel,pos,dest)
+		local obj = SelectedObj
+		if IsValid(obj) and obj ~= self then
+			self:SelectedObject(obj,pos,dest)
 		end
 
 		self.idle_time = self.idle_time + 10
@@ -278,7 +278,7 @@ function PersonalShuttle:GotoPos(PersonalShuttles,pos,dest)
 	self.old_dest = dest
 end
 
-function PersonalShuttle:DropCargo(sel,pos,dest)
+function PersonalShuttle:DropCargo(obj,pos,dest)
 	local carried = self.carried_obj
 
 	-- if fired from recall
@@ -296,7 +296,7 @@ function PersonalShuttle:DropCargo(sel,pos,dest)
 	carried:SetPos(dest:SetZ(GetSurfaceHeight(dest)),2500)
 
 	-- we don't want stuff looking weird (drones/rovers can move on their own)
-	if sel and sel:IsKindOf("ResourceStockpileBase") then
+	if obj and obj:IsKindOf("ResourceStockpileBase") then
 		carried:SetAngle(0)
 	end
 
@@ -330,13 +330,13 @@ local function IdleDroneInAir()
 end
 
 -- pickup/dropoff/scan
-function PersonalShuttle:SelectedObject(sel,pos,dest)
+function PersonalShuttle:SelectedObject(obj,pos,dest)
 	-- Anomaly scanning
-	if sel:IsKindOf("SubsurfaceAnomaly") then
+	if obj:IsKindOf("SubsurfaceAnomaly") then
 		-- scan nearby SubsurfaceAnomaly
 		local anomaly = NearestObject(pos,MapGet("map","SubsurfaceAnomaly"),2000)
 		-- make sure it's the right one, and not already being scanned by another
-		if anomaly and sel == anomaly and not UICity.PersonalShuttles.shuttle_scanning_anomaly[anomaly.handle] then
+		if anomaly and obj == anomaly and not UICity.PersonalShuttles.shuttle_scanning_anomaly[anomaly.handle] then
 			PlayFX("ArtificialSunCharge", "start", anomaly)
 			UICity.PersonalShuttles.shuttle_scanning_anomaly[anomaly.handle] = true
 			self:AnalyzeAnomaly(anomaly)
@@ -346,38 +346,38 @@ function PersonalShuttle:SelectedObject(sel,pos,dest)
 
 	-- are we carrying, and is pickup set to drop?
 	elseif IsValid(self.carried_obj) and self.pickup_toggle == false then
-		self:DropCargo(sel,pos,dest)
+		self:DropCargo(obj,pos,dest)
 
 	-- if it's marked for pickup and shuttle is set to pickup and it isn't already carrying then grab it
-	elseif sel.PersonalShuttles_PickUpItem and self.pickup_toggle and not IsValid(self.carried_obj) then
+	elseif obj.PersonalShuttles_PickUpItem and self.pickup_toggle and not IsValid(self.carried_obj) then
 
 		-- goto item
-		self:WaitFollowPath(self:CalcPath(pos,sel:GetVisualPos()))
+		self:WaitFollowPath(self:CalcPath(pos,obj:GetVisualPos()))
 
-		if not UICity.PersonalShuttles.shuttle_carried[sel.handle] then
-			UICity.PersonalShuttles.shuttle_carried[sel.handle] = true
+		if not UICity.PersonalShuttles.shuttle_carried[obj.handle] then
+			UICity.PersonalShuttles.shuttle_carried[obj.handle] = true
 
 			-- select shuttle instead of carried
 			SelectObj(self)
 			-- remove pickup mark from it
-			sel.PersonalShuttles_PickUpItem = nil
+			obj.PersonalShuttles_PickUpItem = nil
 			-- PlayFX of beaming, transport one i think
-			self:PlayFX("ShuttleLoad", "start", sel)
-			sel:SetPos(self:GetVisualPos(),2500)
+			self:PlayFX("ShuttleLoad", "start", obj)
+			obj:SetPos(self:GetVisualPos(),2500)
 			Sleep(2500)
 			-- pick it up
-			self:Attach(sel,self:GetSpotBeginIndex("Origin"))
+			self:Attach(obj,self:GetSpotBeginIndex("Origin"))
 			-- bottom or top?
---~ 			sel:SetAttachOffset(point(0,0,400))
+--~ 			obj:SetAttachOffset(point(0,0,400))
 
-			if sel:IsKindOf("BaseRover") then
-				sel:SetAttachOffset(point(0,0,400))
-			elseif sel:IsKindOf("Drone") then
-				sel:SetAttachOffset(point(0,0,325))
-				sel.ChoGGi_SetCommand = sel.SetCommand
-				sel.SetCommand = IdleDroneInAir
+			if obj:IsKindOf("BaseRover") then
+				obj:SetAttachOffset(point(0,0,400))
+			elseif obj:IsKindOf("Drone") then
+				obj:SetAttachOffset(point(0,0,325))
+				obj.ChoGGi_SetCommand = obj.SetCommand
+				obj.SetCommand = IdleDroneInAir
 			else
-				sel:SetAttachOffset(point(0,0,350))
+				obj:SetAttachOffset(point(0,0,350))
 			end
 
 			if PersonalShuttles.drop_toggle then
@@ -386,8 +386,8 @@ function PersonalShuttle:SelectedObject(sel,pos,dest)
 			end
 
 			-- and remember not to pick up more than one
-			self.carried_obj = sel
-			self:PlayFX("ShuttleLoad", "end", sel)
+			self.carried_obj = obj
+			self:PlayFX("ShuttleLoad", "end", obj)
 
 		end
 

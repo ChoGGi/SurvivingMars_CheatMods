@@ -37,20 +37,19 @@ DefineClass.ChoGGi_ImageViewerDlg = {
 function ChoGGi_ImageViewerDlg:Init(parent, context)
 	local g_Classes = g_Classes
 
-
 	self.images = context.obj
 	if type(self.images) ~= "table" then
 		self.images = {
 			{
-			name = self.images,
-			path = self.images,
+				name = self.images,
+				path = self.images,
 			},
 		}
 	end
 
 	self.idImageMenu = Random()
 	self.title = S[302535920001469--[[Image Viewer--]]]
-	self.prefix = S[302535920001469--[[Image Viewer--]]]
+	self.prefix = self.title
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -88,7 +87,17 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	}, self.idImageFrame)
 
 	-- first up
-	self:SetImageFile(self.images[1])
+	local wh = self:SetImageFile(self.images[1])
+
+	-- only one image and it's not a valid image so close
+	if wh == 0 and #self.images == 1 then
+		print(S[302535920000109--[[Invalid Image--]]])
+		MsgPopup(
+			S[302535920000109--[[Invalid Image--]]],
+			self.title
+		)
+		self:Close()
+	end
 
 	self:PostInit(context.parent)
 end
@@ -113,11 +122,13 @@ function ChoGGi_ImageViewerDlg:SetImageFile(image)
 	self.idCaption:SetTitle(self,image.path)
 
 	local w,h = MeasureImage(image.path)
+
 	if image.name and image.name ~= "" then
 		self.idImageSize:SetText(w .. "x" .. h .. " (" .. image.name .. ")")
 	else
 		self.idImageSize:SetText(w .. "x" .. h)
 	end
+	return w+h
 end
 
 function ChoGGi_ImageViewerDlg:idImagesOnMouseButtonDown()

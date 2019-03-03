@@ -2,10 +2,11 @@
 
 function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
+	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-	local icon = "CommonAssets/UI/Menu/Cube.tga"
 	local c = #Actions
+	local icon = "CommonAssets/UI/Menu/Cube.tga"
 
 	local str_ECM_Buildings = "ECM.ECM.Buildings"
 	c = c + 1
@@ -42,11 +43,11 @@ function OnMsg.ClassesGenerate()
 				S[302535920000170--[[Extend the range of the scrubber.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetUIRangeBuildingRadius("TriboelectricScrubber",S[302535920000169--[["Ladies and gentlemen, this is your captain speaking. We have a small problem.
-	All four engines have stopped. We are doing our damnedest to get them going again.
-	I trust you are not in too much distress."--]]])
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
+		bld_id = "TriboelectricScrubber",
+		bld_msg = S[302535920000169--[["Ladies and gentlemen, this is your captain speaking. We have a small problem.
+All four engines have stopped. We are doing our damnedest to get them going again.
+I trust you are not in too much distress."--]]],
 	}
 
 	c = c + 1
@@ -60,9 +61,9 @@ function OnMsg.ClassesGenerate()
 				S[302535920000173--[[Extend the range of the heater.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetUIRangeBuildingRadius("SubsurfaceHeater","\n",S[302535920000172--[[Some smart quip about heating?--]]])
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
+		bld_id = "SubsurfaceHeater",
+		bld_msg = S[302535920000172--[[Some smart quip about heating?--]]],
 	}
 
 	c = c + 1
@@ -71,9 +72,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Empty Mech Depot",
 		ActionIcon = icon,
 		RolloverText = S[302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.EmptyMechDepot()
-		end,
+		OnAction = ChoGGi.ComFuncs.EmptyMechDepot,
 	}
 
 	c = c + 1
@@ -255,13 +254,12 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Production Amount Set",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = S[302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".production",
+				S[302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
 	Works on any building that produces."--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".production",
-				text
-			) or text
+			) or S[302535920000195]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetProductionAmount,
 		ActionShortcut = "Ctrl-Shift-P",
@@ -274,12 +272,11 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Power-free Building",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = S[302535920000187--[[Toggle electricity use for selected building type.--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".nopower",
-				text
-			) or text
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".nopower",
+				S[302535920000187--[[Toggle electricity use for selected building type.--]]]
+			) or S[302535920000187]
 		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingPower_Toggle,
 		ActionSortKey = "2Power-free Building",
@@ -291,12 +288,11 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Water-free Building",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = S[302535920001252--[[Toggle water use for selected building type.--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".nowater",
-				text
-			) or text
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".nowater",
+				S[302535920001252--[[Toggle water use for selected building type.--]]]
+			) or S[302535920001252]
 		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingWater_Toggle,
 		ActionSortKey = "2Water-free Building",
@@ -308,12 +304,11 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Oxygen-free Building",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = S[302535920001254--[[Toggle oxygen use for selected building type.--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".noair",
-				text
-			) or text
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".noair",
+				S[302535920001254--[[Toggle oxygen use for selected building type.--]]]
+			) or S[302535920001254]
 		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingAir_Toggle,
 		ActionSortKey = "2Oxygen-free Building",
@@ -336,12 +331,11 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Protection Radius",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = S[302535920000179--[[Change threat protection coverage distance.--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".protect_range",
-				text
-			) or text
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".protect_range",
+				S[302535920000179--[[Change threat protection coverage distance.--]]]
+			) or S[302535920000179]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetProtectionRadius,
 	}
@@ -352,12 +346,11 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Fully Automated Building",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = S[302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".auto_performance",
-				text
-			) or text
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".auto_performance",
+				S[302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).--]]]
+			) or S[302535920000197]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetFullyAutomatedBuildings,
 	}
@@ -368,17 +361,14 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 		ActionId = ".Service Building Stats",
 		ActionIcon = icon,
 		RolloverText = function()
-			local text = S[302535920001115--[["Tweak settings for parks and such.
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".service_stats",
+				S[302535920001115--[["Tweak settings for parks and such.
 Health change, Sanity change, Service Comfort, Comfort increase."--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".service_stats",
-				text
-			) or text
+			) or S[302535920001115]
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetServiceBuildingStats()
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetServiceBuildingStats,
 	}
 
 	c = c + 1
@@ -387,12 +377,11 @@ Health change, Sanity change, Service Comfort, Comfort increase."--]]]
 		ActionId = ".Points To Train",
 		ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
 		RolloverText = function()
-			local text = S[302535920001345--[[How many points are needed to finish training.--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".evaluation_points",
-				text
-			) or text
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".evaluation_points",
+				S[302535920001345--[[How many points are needed to finish training.--]]]
+			) or S[302535920001345]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetTrainingPoints,
 	}
@@ -683,9 +672,9 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 				S[302535920001333--[[How many rare metals you can export per trip.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount("max_export_storage",S[302535920001332])
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount,
+		setting_name = "max_export_storage",
+		setting_msg = S[302535920001332],
 	}
 
 	c = c + 1
@@ -699,9 +688,9 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 				S[302535920001335--[[How much storage for import you can use.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount("cargo_capacity",S[302535920001334])
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount,
+		setting_name = "cargo_capacity",
+		setting_msg = S[302535920001334],
 	}
 
 end

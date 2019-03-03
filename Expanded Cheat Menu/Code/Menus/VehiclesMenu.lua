@@ -4,9 +4,9 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
+	local c = #Actions
 	local iconD = "CommonAssets/UI/Menu/ShowAll.tga"
 	local iconRC = "CommonAssets/UI/Menu/HostGame.tga"
-	local c = #Actions
 
 	local str_ECM_Drones = "ECM.ECM.Drones"
 	c = c + 1
@@ -80,16 +80,11 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Change Amount Of Drones In Hub",
 		ActionIcon = iconD,
 		RolloverText = function()
-			local text = S[302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			if IsValid(sel) and sel:IsKindOf("DroneHub") then
-				return ChoGGi.ComFuncs.SettingState(
-					sel:GetDronesCount(),
-					text
-				)
-			else
-				return text
-			end
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and obj:IsKindOf("DroneHub") and ChoGGi.ComFuncs.SettingState(
+				obj:GetDronesCount(),
+				S[302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).--]]]
+			) or S[302535920000514]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDroneAmountDroneHub,
 		ActionShortcut = "Shift-D",

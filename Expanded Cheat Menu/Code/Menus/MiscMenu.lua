@@ -31,16 +31,11 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Change Entity Scale",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
-			local text = S[302535920000685--[[You want them big, you want them small; have at it.--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			if IsValid(sel) then
-				return ChoGGi.ComFuncs.SettingState(
-					sel:GetScale(),
-					text
-				)
-			else
-				return text
-			end
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				obj:GetScale(),
+				S[302535920000685--[[You want them big, you want them small; have at it.--]]]
+			) or S[302535920000685]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetEntityScale,
 	}

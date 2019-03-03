@@ -2666,12 +2666,8 @@ function Examine:SetObj(startup)
 			self.idShowAllValues:SetVisible(false)
 		end
 
-		-- add object name to title
-		if obj_class and obj.handle and #obj > 0 then
-			name = name .. ": " .. obj.handle .. " (" .. #obj .. ")"
-		elseif obj_class and obj.handle then
-			name = name .. " " .. " (" .. obj.handle .. ")"
-		elseif #obj > 0 then
+		-- add table length to title
+		if #obj > 0 then
 			name = name .. " " .. " (" .. #obj .. ")"
 		end
 

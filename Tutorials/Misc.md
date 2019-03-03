@@ -8,6 +8,11 @@ Store a ref and check with IsValidThread(t) and DeleteThread(t)
 To get your mod path (if user renames your mod folder):
 CurrentModPath
 
+If working with a large amount of entity objects:
+SuspendPassEdits("SomeIdToUse")
+MapDelete("map", "Building")
+ResumePassEdits("SomeIdToUse")
+
 List all objects:
 ~MapGet(true)
 Just domes:
@@ -62,12 +67,6 @@ for i = #some_table, 1, -1 do
 	print(some_table[i])
 	table.remove(some_table,i)
 end
-
-If deleting a large amount of objects:
-SuspendPassEdits("Building")
-MapDelete("map", "Building")
-ResumePassEdits("Building")
-Probably good for doing other stuff as well...
 
 Info from other people:
 

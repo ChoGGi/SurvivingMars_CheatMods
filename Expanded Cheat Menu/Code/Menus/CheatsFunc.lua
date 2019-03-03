@@ -10,6 +10,12 @@ function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local S = ChoGGi.Strings
 
+	function ChoGGi.MenuFuncs.CompleteConstructions()
+		SuspendPassEdits("CompleteConstructions")
+		CheatCompleteAllConstructions()
+		ResumePassEdits("CompleteConstructions")
+	end
+
 	function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
 		local config = config
 		config.BuildingInfopanelCheats = not config.BuildingInfopanelCheats
@@ -1163,7 +1169,6 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 							wait.rand_duration = 1
 
 							t.finished = true
-							--t.action:EndWait(t)
 							-- may not be needed
 							Player:UpdateCurrentIP(seq_list)
 							-- let them know

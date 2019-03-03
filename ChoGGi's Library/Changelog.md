@@ -3,6 +3,7 @@
 ## v5.7 (Unreleased)
 - Fixed CSV exporting.
 - Code cleanup / Moved some ECM only funcs to ECM.
+- Fixed DeleteObject not deleting everything on funky modded buildings.
 - RetNam:
 - > It was returning some userdata: "id" instead of translated strings.
 - > It was returning "*C func" for non-C funcs.

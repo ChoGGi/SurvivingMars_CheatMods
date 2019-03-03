@@ -88,9 +88,9 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- one meatbag at a time
-		local sel = ChoGGi.ComFuncs.SelObject()
-		if IsKindOf(sel,"Colonist") then
-			MeatbagsToSoylent(sel)
+		local obj = ChoGGi.ComFuncs.SelObject()
+		if IsKindOf(obj,"Colonist") then
+			MeatbagsToSoylent(obj)
 			return
 		end
 
@@ -132,9 +132,9 @@ function OnMsg.ClassesGenerate()
 			end
 			local check1 = choice[1].check1
 			local dome
-			sel = SelectedObj
-			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check2 then
-				dome = sel.dome
+			obj = SelectedObj
+			if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check2 then
+				dome = obj.dome
 			end
 
 			local function CullLabel(label)
@@ -478,9 +478,9 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 			end
 			local value = choice[1].value
 			local dome
-			local sel = SelectedObj
-			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
-				dome = sel.dome
+			local obj = SelectedObj
+			if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+				dome = obj.dome
 			end
 			local Type
 			if value == "Make" then
@@ -848,8 +848,9 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		)
 	end
 
-	function ChoGGi.MenuFuncs.SetColonistsAge(iType)
-		local ChoGGi = ChoGGi
+	function ChoGGi.MenuFuncs.SetColonistsAge(action)
+		local iType = action.setting_mask
+
 		local default_str = Trans(1000121--[[Default--]])
 		local DefaultSetting = default_str
 		local sType
@@ -905,10 +906,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				return
 			end
 			local value = choice[1].value
-			local sel = SelectedObj
+			local obj = SelectedObj
 			local dome
-			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
-				dome = sel.dome
+			if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+				dome = obj.dome
 			end
 
 			-- new
@@ -923,8 +924,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			-- existing
 			elseif iType == 2 then
 				if choice[1].check2 then
-					if sel then
-						ChoGGi.ComFuncs.ColonistUpdateAge(sel,value)
+					if obj then
+						ChoGGi.ComFuncs.ColonistUpdateAge(obj,value)
 					end
 				else
 					local tab = UICity.labels.Colonist or ""
@@ -966,8 +967,9 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		}
 	end
 
-	function ChoGGi.MenuFuncs.SetColonistsGender(iType)
-		local ChoGGi = ChoGGi
+	function ChoGGi.MenuFuncs.SetColonistsGender(action)
+		local iType = action.setting_mask
+
 		local MaleOrFemale = S[302535920000800--[[MaleOrFemale--]]]
 		local DefaultSetting = Trans(1000121--[[Default--]])
 		local sType
@@ -1021,10 +1023,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				return
 			end
 			local value = choice[1].value
-			local sel = SelectedObj
+			local obj = SelectedObj
 			local dome
-			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
-				dome = sel.dome
+			if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+				dome = obj.dome
 			end
 
 			-- new
@@ -1039,8 +1041,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			-- existing
 			elseif iType == 2 then
 				if choice[1].check2 then
-					if sel then
-						ChoGGi.ComFuncs.ColonistUpdateGender(sel,value)
+					if obj then
+						ChoGGi.ComFuncs.ColonistUpdateGender(obj,value)
 					end
 				else
 					local tab = UICity.labels.Colonist or ""
@@ -1081,8 +1083,9 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		}
 	end
 
-	function ChoGGi.MenuFuncs.SetColonistsSpecialization(iType)
-		local ChoGGi = ChoGGi
+	function ChoGGi.MenuFuncs.SetColonistsSpecialization(action)
+		local iType = action.setting_mask
+
 		local DefaultSetting = Trans(1000121--[[Default--]])
 		local sType
 		local sSetting = "NewColonistSpecialization"
@@ -1147,10 +1150,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				return
 			end
 			local value = choice[1].value
-			local sel = SelectedObj
+			local obj = SelectedObj
 			local dome
-			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
-				dome = sel.dome
+			if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+				dome = obj.dome
 			end
 
 			-- new
@@ -1165,8 +1168,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			-- existing
 			elseif iType == 2 then
 				if choice[1].check2 then
-					if sel then
-						ChoGGi.ComFuncs.ColonistUpdateSpecialization(sel,value)
+					if obj then
+						ChoGGi.ComFuncs.ColonistUpdateSpecialization(obj,value)
 					end
 				else
 					local tab = UICity.labels.Colonist or ""
@@ -1208,8 +1211,9 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		}
 	end
 
-	function ChoGGi.MenuFuncs.SetColonistsRace(iType)
-		local ChoGGi = ChoGGi
+	function ChoGGi.MenuFuncs.SetColonistsRace(action)
+		local iType = action.setting_mask
+
 		local DefaultSetting = Trans(1000121--[[Default--]])
 		local sType
 		local sSetting = "NewColonistRace"
@@ -1258,10 +1262,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				return
 			end
 			local value = choice[1].value
-			local sel = SelectedObj
+			local obj = SelectedObj
 			local dome
-			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
-				dome = sel.dome
+			if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+				dome = obj.dome
 			end
 
 			-- new
@@ -1276,8 +1280,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			-- existing
 			elseif iType == 2 then
 				if choice[1].check2 then
-					if sel then
-						ChoGGi.ComFuncs.ColonistUpdateRace(sel,value)
+					if obj then
+						ChoGGi.ComFuncs.ColonistUpdateRace(obj,value)
 					end
 				else
 					local tab = UICity.labels.Colonist or ""
@@ -1328,8 +1332,9 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		}
 	end
 
-	function ChoGGi.MenuFuncs.SetColonistsTraits(iType)
-		local ChoGGi = ChoGGi
+	function ChoGGi.MenuFuncs.SetColonistsTraits(action)
+		local iType = action.setting_mask
+
 		local TraitPresets = TraitPresets
 		local DefaultSetting = Trans(1000121--[[Default--]])
 		local sSetting = "NewColonistTraits"
@@ -1389,10 +1394,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local check1 = choice[1].check1
 			local check2 = choice[1].check2
 
-			local sel = SelectedObj
+			local obj = SelectedObj
 			local dome
-			if IsKindOf(sel,"Colonist") and sel.dome and check1 then
-				dome = sel.dome
+			if IsKindOf(obj,"Colonist") and obj.dome and check1 then
+				dome = obj.dome
 			end
 
 			-- create list of traits
@@ -1465,8 +1470,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 						Notify(o,"UpdateMorale")
 					end
 					if check2 then
-						if sel then
-							RandomTraits(sel)
+						if obj then
+							RandomTraits(obj)
 						end
 					else
 						local c = UICity.labels.Colonist or ""
@@ -1487,9 +1492,9 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 						t_type = "RemoveTrait"
 					end
 					if check2 then
-						if sel then
+						if obj then
 							for i = 1, #traits_list do
-								sel[t_type](sel,traits_list[i],true)
+								obj[t_type](obj,traits_list[i],true)
 							end
 						end
 					else
@@ -1574,10 +1579,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				return
 			end
 			local value = choice[1].value
-			local sel = SelectedObj
+			local obj = SelectedObj
 			local dome
-			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
-				dome = sel.dome
+			if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+				dome = obj.dome
 			end
 
 			local max = 100000 * r
@@ -1684,16 +1689,16 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				return
 			end
 			local value = choice[1].value
-			local sel = SelectedObj
+			local obj = SelectedObj
 			local dome
-			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
-				dome = sel.dome
+			if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+				dome = obj.dome
 			end
 
 			if type(value) == "number" then
 				if choice[1].check2 then
-					if sel then
-						sel:SetMoveSpeed(value)
+					if obj then
+						obj:SetMoveSpeed(value)
 					end
 				else
 					local tab = UICity.labels.Colonist or ""
@@ -1768,17 +1773,17 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				return
 			end
 			local value = choice[1].value
-			local sel = SelectedObj
+			local obj = SelectedObj
 			local dome
-			if IsKindOf(sel,"Colonist") and sel.dome and choice[1].check1 then
-				dome = sel.dome
+			if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+				dome = obj.dome
 			end
 
 			if type(value) == "number" then
 				value = value * r
 				if choice[1].check2 then
-					if sel then
-						sel:SetGravity(value)
+					if obj then
+						obj:SetGravity(value)
 					end
 				else
 					local tab = UICity.labels.Colonist or ""
@@ -1823,12 +1828,13 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		}
 	end
 
-	function ChoGGi.MenuFuncs.SetBuildingTraits(toggle_type)
-		local ChoGGi = ChoGGi
+	function ChoGGi.MenuFuncs.SetBuildingTraits(action)
+		local toggle_type = action.toggle_type
+
 		local TraitPresets = TraitPresets
 
-		local sel = ChoGGi.ComFuncs.SelObject()
-		if not sel or sel and not sel:IsKindOfClasses("Workplace","TrainingBuilding") then
+		local obj = ChoGGi.ComFuncs.SelObject()
+		if not obj or obj and not obj:IsKindOfClasses("Workplace","TrainingBuilding") then
 			MsgPopup(
 				S[302535920000842--[[Select a workplace or training building.--]]],
 				S[302535920000992--[[Building Traits--]]],
@@ -1837,8 +1843,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			return
 		end
 
-		local id = sel.template_name
-		local name = Trans(sel.display_name)
+		local id = obj.template_name
+		local name = Trans(obj.display_name)
 		local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
 		if not BuildingSettings[id] or BuildingSettings[id] and not next(BuildingSettings[id]) then
 			BuildingSettings[id] = {
@@ -1897,7 +1903,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			end
 
 			if check1 then
-				MapForEach("map",sel.class,function(workplace)
+				MapForEach("map",obj.class,function(workplace)
 					-- all three shifts
 					for j = 1, #workplace.workers do
 						-- workers in shifts (go through table backwards for when someone gets fired)

@@ -4,9 +4,7 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-
 	local c = #Actions
-
 	local str_url = "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/"
 
 	c = c + 1
@@ -99,9 +97,8 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".ECM Read me",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
 		RolloverText = S[302535920001025--[[Help! I'm with stupid!--]]],
-		OnAction = function()
-			OpenUrl(str_url .. "Expanded Cheat Menu/README.md#no-warranty-implied-or-otherwise")
-		end,
+		OnAction = ChoGGi.MenuFuncs.OpenUrl,
+		setting_url = str_url .. "Expanded Cheat Menu/README.md#no-warranty-implied-or-otherwise",
 		ActionSortKey = "002",
 	}
 
@@ -111,9 +108,8 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Changelog",
 		ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
 		RolloverText = Trans(4915--[[Good News, Everyone!"--]]),
-		OnAction = function()
-			OpenUrl(str_url .. "Expanded Cheat Menu/Changelog.md#ecm-changelog")
-		end,
+		OnAction = ChoGGi.MenuFuncs.OpenUrl,
+		setting_url = str_url .. "Expanded Cheat Menu/Changelog.md#ecm-changelog",
 		ActionSortKey = "003",
 	}
 
@@ -222,9 +218,8 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".*Game Functions*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 		RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-		OnAction = function()
-			OpenUrl(str_url .. "Tutorials/GameFunctions.lua")
-		end,
+		OnAction = ChoGGi.MenuFuncs.OpenUrl,
+		setting_url = str_url .. "Tutorials/GameFunctions.lua",
 		ActionSortKey = "-2*Game Functions*",
 	}
 
@@ -257,9 +252,8 @@ function OnMsg.ClassesGenerate()
 			ActionId = "." .. name,
 			ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
 			RolloverText = S[302535920001285--[[Opens in webbrowser--]]],
-			OnAction = function()
-				OpenUrl(str_url .. "Tutorials/" .. name .. ".md#readme")
-			end,
+			OnAction = ChoGGi.MenuFuncs.OpenUrl,
+			setting_url = str_url .. "Tutorials/" .. name .. ".md#readme",
 			ActionSortKey = name == "Misc" and "-3 Misc" or "-3" .. name,
 		}
 	end

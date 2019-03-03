@@ -164,9 +164,8 @@ function OnMsg.ClassesGenerate()
 			return S[302535920000966--[["Set the occurrence level of %s disasters.
 Current: %s"--]]]:format(Trans(4142--[[Dust Devils--]]),mapdata.MapSettings_DustDevils)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetDisasterOccurrence("DustDevils")
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
+		setting_id = "DustDevils",
 	}
 
 	c = c + 1
@@ -178,9 +177,8 @@ Current: %s"--]]]:format(Trans(4142--[[Dust Devils--]]),mapdata.MapSettings_Dust
 			return S[302535920000966--[["Set the occurrence level of %s disasters.
 	Current: %s"--]]]:format(Trans(4149--[[Cold Wave--]]),mapdata.MapSettings_ColdWave)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetDisasterOccurrence("ColdWave")
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
+		setting_id = "ColdWave",
 	}
 
 	c = c + 1
@@ -192,9 +190,8 @@ Current: %s"--]]]:format(Trans(4142--[[Dust Devils--]]),mapdata.MapSettings_Dust
 			return S[302535920000966--[["Set the occurrence level of %s disasters.
 	Current: %s"--]]]:format(Trans(4250--[[Dust Storm--]]),mapdata.MapSettings_DustStorm)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetDisasterOccurrence("DustStorm")
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
+		setting_id = "DustStorm",
 	}
 
 	c = c + 1
@@ -206,9 +203,8 @@ Current: %s"--]]]:format(Trans(4142--[[Dust Devils--]]),mapdata.MapSettings_Dust
 			return S[302535920000966--[["Set the occurrence level of %s disasters.
 	Current: %s"--]]]:format(Trans(4146--[[Meteors--]]),mapdata.MapSettings_Meteor)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetDisasterOccurrence("Meteor")
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
+		setting_id = "Meteor",
 	}
 
 end

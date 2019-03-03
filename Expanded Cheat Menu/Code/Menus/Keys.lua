@@ -19,9 +19,7 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {ActionName = Trans(174--[[Color Modifier--]]) .. " " .. S[302535920001346--[[Random Colour--]]],
 		ActionId = ".Keys.ObjectColourRandom",
-		OnAction = function()
-			ChoGGi.ComFuncs.ObjectColourRandom(ChoGGi.ComFuncs.SelObject())
-		end,
+		OnAction = ChoGGi.ComFuncs.ObjectColourRandom,
 		ActionShortcut = "Shift-F6",
 		ActionBindable = true,
 	}
@@ -29,9 +27,7 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {ActionName = Trans(174--[[Color Modifier--]]) .. " " .. S[302535920000025--[[Default Colour--]]],
 		ActionId = ".Keys.ObjectColourDefault",
-		OnAction = function()
-			ChoGGi.ComFuncs.ObjectColourDefault(ChoGGi.ComFuncs.SelObject())
-		end,
+		OnAction = ChoGGi.ComFuncs.ObjectColourDefault,
 		ActionShortcut = "Ctrl-F6",
 		ActionBindable = true,
 	}
@@ -47,16 +43,7 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001348--[[Restart--]]],
 		ActionId = ".Keys.ConsoleRestart",
-		OnAction = function()
-			local dlgConsole = dlgConsole
-			if dlgConsole then
-				if not dlgConsole:GetVisible() then
-					ShowConsole(true)
-				end
-				dlgConsole.idEdit:SetFocus()
-				dlgConsole.idEdit:SetText("restart")
-			end
-		end,
+		OnAction = ChoGGi.MenuFuncs.ConsoleRestart,
 		ActionShortcut = "Ctrl-Alt-R",
 		ActionBindable = true,
 	}
@@ -65,12 +52,7 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001349--[[Place Last Constructed Building--]]],
 		ActionId = ".Keys.LastConstructedBuilding",
-		OnAction = function()
-			local last = UICity.LastConstructedBuilding
-			if type(last) == "table" then
-				ChoGGi.ComFuncs.ConstructionModeSet(last.template_name ~= "" and last.template_name or last:GetEntity())
-			end
-		end,
+		OnAction = ChoGGi.MenuFuncs.LastConstructedBuilding,
 		ActionShortcut = "Ctrl-Space",
 		ActionBindable = true,
 	}
@@ -79,14 +61,7 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920001350--[[Place Last Selected Object--]]],
 		ActionId = ".Keys.LastSelectedObject",
-		OnAction = function()
-			local ChoGGi = ChoGGi
-			local sel = ChoGGi.ComFuncs.SelObject()
-			if type(sel) == "table" then
-				ChoGGi.Temp.LastPlacedObject = sel
-				ChoGGi.ComFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
-			end
-		end,
+		OnAction = ChoGGi.MenuFuncs.LastSelectedObject,
 		ActionShortcut = "Ctrl-Shift-Space",
 		ActionBindable = true,
 	}
@@ -94,12 +69,8 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000069--[[Examine--]]] .. " " .. S[302535920001103--[[Objects--]]] .. " " .. Trans(1000448--[[Shift--]]),
 		ActionId = ".Keys.Examine Objects Shift",
-		OnAction = function()
-			local objs = MapGet(GetTerrainCursor(),2500)
-			if #objs > 0 then
-				ChoGGi.ComFuncs.OpenInExamineDlg(objs)
-			end
-		end,
+		OnAction = ChoGGi.MenuFuncs.ExamineObjectRadius,
+		radius_amount = 2500,
 		ActionShortcut = "Shift-F4",
 		ActionBindable = true,
 	}
@@ -107,12 +78,8 @@ function OnMsg.ClassesGenerate()
 	c = c + 1
 	Actions[c] = {ActionName = S[302535920000069--[[Examine--]]] .. " " .. S[302535920001103--[[Objects--]]] .. " " .. Trans(1000449--[[Ctrl--]]),
 		ActionId = ".Keys.Examine Objects Ctrl",
-		OnAction = function()
-			local objs = MapGet(GetTerrainCursor(),10000)
-			if #objs > 0 then
-				ChoGGi.ComFuncs.OpenInExamineDlg(objs)
-			end
-		end,
+		OnAction = ChoGGi.MenuFuncs.ExamineObjectRadius,
+		radius_amount = 10000,
 		ActionShortcut = "Ctrl-F4",
 		ActionBindable = true,
 	}

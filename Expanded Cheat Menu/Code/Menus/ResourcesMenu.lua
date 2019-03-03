@@ -4,7 +4,6 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-
 	local c = #Actions
 
 	local str_ECM_Resources = "ECM.ECM.Resources"

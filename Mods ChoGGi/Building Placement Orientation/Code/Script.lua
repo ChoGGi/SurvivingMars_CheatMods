@@ -51,10 +51,10 @@ function OnMsg.ClassesGenerate()
 		ActionId = "BuildingPlacementOrientation.LastSelectedObject",
 		OnAction = function()
 			local ChoGGi = ChoGGi
-			local sel = ChoGGi.ComFuncs.SelObject()
-			if type(sel) == "table" then
-				ChoGGi.Temp.LastPlacedObject = sel
-				ChoGGi.ComFuncs.ConstructionModeNameClean(ValueToLuaCode(sel))
+			local obj = ChoGGi.ComFuncs.SelObject()
+			if type(obj) == "table" then
+				ChoGGi.Temp.LastPlacedObject = obj
+				ChoGGi.ComFuncs.ConstructionModeNameClean(ValueToLuaCode(obj))
 			end
 		end,
 		ActionShortcut = "Ctrl-Shift-Space",

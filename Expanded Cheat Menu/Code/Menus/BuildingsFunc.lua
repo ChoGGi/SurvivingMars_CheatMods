@@ -106,17 +106,17 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetTrainingPoints()
 		local ChoGGi = ChoGGi
-		local sel = ChoGGi.ComFuncs.SelObject()
-		if not sel or not IsKindOf(sel,"TrainingBuilding") then
+		local obj = ChoGGi.ComFuncs.SelObject()
+		if not obj or not IsKindOf(obj,"TrainingBuilding") then
 			MsgPopup(
 				S[302535920001116--[[Select a %s.--]]]:format(Trans(5443--[[Training Buildings--]])),
 				Trans(5443--[[Training Buildings--]])
 			)
 			return
 		end
-		local id = sel.template_name
-		local name = RetName(sel)
-		local DefaultSetting = sel.base_evaluation_points
+		local id = obj.template_name
+		local name = RetName(obj)
+		local DefaultSetting = obj.base_evaluation_points
 		local UserSettings = ChoGGi.UserSettings
 
 		local ItemList = {
@@ -150,7 +150,7 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 
 			if type(value) == "number" then
-				local objs = ChoGGi.ComFuncs.RetAllOfClass(sel.class)
+				local objs = ChoGGi.ComFuncs.RetAllOfClass(obj.class)
 
 				if value == DefaultSetting then
 					setting.evaluation_points = nil
@@ -183,9 +183,9 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetServiceBuildingStats()
-		local ChoGGi = ChoGGi
-		local sel = ChoGGi.ComFuncs.SelObject()
-		if not sel or not IsKindOf(sel,"StatsChange") then
+
+		local obj = ChoGGi.ComFuncs.SelObject()
+		if not obj or not IsKindOf(obj,"StatsChange") then
 			MsgPopup(
 				S[302535920001116--[[Select a %s.--]]]:format(Trans(5439--[[Service Buildings--]])),
 				Trans(4810--[[Service--]]),
@@ -194,32 +194,32 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 		local r = ChoGGi.Consts.ResourceScale
-		local id = sel.template_name
+		local id = obj.template_name
 		local ServiceInterestsList = table.concat(ServiceInterestsList,", ")
-		local name = RetName(sel)
-		local is_service = sel:IsKindOf("Service")
+		local name = RetName(obj)
+		local is_service = obj:IsKindOf("Service")
 
 		local ReturnEditorType = ChoGGi.ComFuncs.ReturnEditorType
 		local hint_type = S[302535920000138--[[Value needs to be a %s.--]]]
 		local ItemList = {
-			{text = Trans(728--[[Health change on visit--]]),value = sel.base_health_change / r,setting = "health_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","health_change"))},
-			{text = Trans(729--[[Sanity change on visit--]]),value = sel.base_sanity_change / r,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(sel.properties,"id","sanity_change"))},
-			{text = Trans(730--[[Service Comfort--]]),value = sel.base_service_comfort / r,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(sel.properties,"id","service_comfort"))},
-			{text = Trans(731--[[Comfort increase on visit--]]),value = sel.base_comfort_increase / r,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(sel.properties,"id","comfort_increase"))},
+			{text = Trans(728--[[Health change on visit--]]),value = obj.base_health_change / r,setting = "health_change",hint = hint_type:format(ReturnEditorType(obj.properties,"id","health_change"))},
+			{text = Trans(729--[[Sanity change on visit--]]),value = obj.base_sanity_change / r,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(obj.properties,"id","sanity_change"))},
+			{text = Trans(730--[[Service Comfort--]]),value = obj.base_service_comfort / r,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(obj.properties,"id","service_comfort"))},
+			{text = Trans(731--[[Comfort increase on visit--]]),value = obj.base_comfort_increase / r,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(obj.properties,"id","comfort_increase"))},
 		}
 		if is_service then
-			ItemList[#ItemList+1] = {text = Trans(734--[[Visit duration--]]),value = sel.base_visit_duration,setting = "visit_duration",hint = hint_type:format(ReturnEditorType(sel.properties,"id","visit_duration"))}
+			ItemList[#ItemList+1] = {text = Trans(734--[[Visit duration--]]),value = obj.base_visit_duration,setting = "visit_duration",hint = hint_type:format(ReturnEditorType(obj.properties,"id","visit_duration"))}
 			-- bool
-			ItemList[#ItemList+1] = {text = Trans(735--[[Usable by children--]]),value = sel.base_usable_by_children,setting = "usable_by_children",hint = hint_type:format(ReturnEditorType(sel.properties,"id","usable_by_children"))}
-			ItemList[#ItemList+1] = {text = Trans(736--[[Children Only--]]),value = sel.base_children_only,setting = "children_only",hint = hint_type:format(ReturnEditorType(sel.properties,"id","children_only"))}
+			ItemList[#ItemList+1] = {text = Trans(735--[[Usable by children--]]),value = obj.base_usable_by_children,setting = "usable_by_children",hint = hint_type:format(ReturnEditorType(obj.properties,"id","usable_by_children"))}
+			ItemList[#ItemList+1] = {text = Trans(736--[[Children Only--]]),value = obj.base_children_only,setting = "children_only",hint = hint_type:format(ReturnEditorType(obj.properties,"id","children_only"))}
 
 			for i = 1, 11 do
 				local name = "interest" .. i
 				ItemList[#ItemList+1] = {
 					text = Trans(732--[[Service interest--]]) .. " " .. i,
-					value = sel[name],
+					value = obj[name],
 					setting = name,
-					hint = hint_type:format(ReturnEditorType(sel.properties,"id",name)) .. "\n\n" .. ServiceInterestsList,
+					hint = hint_type:format(ReturnEditorType(obj.properties,"id",name)) .. "\n\n" .. ServiceInterestsList,
 				}
 			end
 		end
@@ -246,18 +246,18 @@ function OnMsg.ClassesGenerate()
 				bs_setting.service_stats = nil
 				-- get defaults
 				local temp = {
-					health_change = sel:GetDefaultPropertyValue("health_change"),
-					sanity_change = sel:GetDefaultPropertyValue("sanity_change"),
-					service_comfort = sel:GetDefaultPropertyValue("service_comfort"),
-					comfort_increase = sel:GetDefaultPropertyValue("comfort_increase"),
+					health_change = obj:GetDefaultPropertyValue("health_change"),
+					sanity_change = obj:GetDefaultPropertyValue("sanity_change"),
+					service_comfort = obj:GetDefaultPropertyValue("service_comfort"),
+					comfort_increase = obj:GetDefaultPropertyValue("comfort_increase"),
 				}
 				if is_service then
-					temp.visit_duration = sel:GetDefaultPropertyValue("visit_duration")
-					temp.usable_by_children = sel:GetDefaultPropertyValue("usable_by_children")
-					temp.children_only = sel:GetDefaultPropertyValue("children_only")
+					temp.visit_duration = obj:GetDefaultPropertyValue("visit_duration")
+					temp.usable_by_children = obj:GetDefaultPropertyValue("usable_by_children")
+					temp.children_only = obj:GetDefaultPropertyValue("children_only")
 					for i = 1, 11 do
 						local name = "interest" .. i
-						temp[name] = sel:GetDefaultPropertyValue(name)
+						temp[name] = obj:GetDefaultPropertyValue(name)
 					end
 				end
 
@@ -285,7 +285,7 @@ function OnMsg.ClassesGenerate()
 					local setting = choice[i].setting
 					local value,value_type = ChoGGi.ComFuncs.RetProperType(choice[i].value)
 					-- check user added correct
-					local editor_type = ReturnEditorType(sel.properties,"id",setting)
+					local editor_type = ReturnEditorType(obj.properties,"id",setting)
 					if value_type == editor_type then
 						if editor_type == "number" then
 							bs_setting.service_stats[setting] = value * r
@@ -391,8 +391,10 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	function ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount(setting_name,title)
-		local ChoGGi = ChoGGi
+	function ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount(action)
+		local setting_name = action.setting_name
+		local title = action.setting_msg
+
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting = SpaceElevator[setting_name] / r
 		local UserSettings = ChoGGi.UserSettings
@@ -581,8 +583,8 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetProtectionRadius()
-		local sel = ChoGGi.ComFuncs.SelObject()
-		if not sel or not sel.protect_range then
+		local obj = ChoGGi.ComFuncs.SelObject()
+		if not obj or not obj.protect_range then
 			MsgPopup(
 				S[302535920000108--[[Select something with a protect_range (MDSLaser/DefenceTower).--]]],
 				S[302535920000178--[[Protection Radius--]]],
@@ -590,7 +592,7 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = sel.template_name
+		local id = obj.template_name
 		local DefaultSetting = g_Classes[id]:GetDefaultPropertyValue("protect_range")
 		local ItemList = {
 			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
@@ -632,7 +634,7 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					S[302535920000113--[[%s range is now %s.--]]]:format(RetName(sel),choice[1].text),
+					S[302535920000113--[[%s range is now %s.--]]]:format(RetName(obj),choice[1].text),
 					S[302535920000178--[[Protection Radius--]]],
 					"UI/Icons/Upgrades/behavioral_melding_02.tga"
 				)
@@ -733,8 +735,8 @@ function OnMsg.ClassesGenerate()
 
 	local function BuildingConsumption_Toggle(type1,str1,type2,func1,func2,str2)
 		local ChoGGi = ChoGGi
-		local sel = SelectedObj
-		if not sel or not sel[type1] then
+		local obj = SelectedObj
+		if not obj or not obj[type1] then
 			MsgPopup(
 				str1,
 				Trans(3980--[[Buildings--]]),
@@ -742,7 +744,7 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = sel.template_name
+		local id = obj.template_name
 		local UserSettings = ChoGGi.UserSettings
 
 		if not UserSettings.BuildingSettings[id] then
@@ -767,7 +769,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			RetName(sel) .. " " .. str2,
+			RetName(obj) .. " " .. str2,
 			which,
 			default_icon
 		)
@@ -808,8 +810,8 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 		local ChoGGi = ChoGGi
-		local sel = SelectedObj
-		if not sel or (not sel.base_air_capacity and not sel.base_water_capacity and not sel.base_capacity) then
+		local obj = SelectedObj
+		if not obj or (not obj.base_air_capacity and not obj.base_water_capacity and not obj.base_capacity) then
 			MsgPopup(
 				S[302535920000122--[[You need to select something that has capacity (air/water/elec).--]]],
 				S[302535920000188--[[Set Charge & Discharge Rates--]]],
@@ -817,17 +819,17 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = sel.template_name
-		local name = Trans(sel.display_name)
+		local id = obj.template_name
+		local name = Trans(obj.display_name)
 		local r = ChoGGi.Consts.ResourceScale
 
 		--get type of capacity
 		local CapType
-		if sel.base_air_capacity then
+		if obj.base_air_capacity then
 			CapType = "air"
-		elseif sel.base_water_capacity then
+		elseif obj.base_water_capacity then
 			CapType = "water"
-		elseif sel.electricity and sel.electricity.storage_capacity then
+		elseif obj.electricity and obj.electricity.storage_capacity then
 			CapType = "electricity"
 		end
 		--probably selected something with colonists
@@ -939,7 +941,7 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					S[302535920000128--[[%s rate is now: %s--]]]:format(RetName(sel),choice[1].text),
+					S[302535920000128--[[%s rate is now: %s--]]]:format(RetName(obj),choice[1].text),
 					S[302535920000188--[[Set Charge & Discharge Rates--]]],
 					default_icon2
 				)
@@ -996,8 +998,8 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetProductionAmount()
 		local ChoGGi = ChoGGi
-		local sel = SelectedObj
-		if not sel or (not sel.base_air_production and not sel.base_water_production and not sel.base_electricity_production and not sel.producers) then
+		local obj = SelectedObj
+		if not obj or (not obj.base_air_production and not obj.base_water_production and not obj.base_electricity_production and not obj.producers) then
 			MsgPopup(
 				S[302535920000136--[[Select something that produces (air,water,electricity,other).--]]],
 				S[302535920000194--[[Production Amount Set--]]],
@@ -1005,18 +1007,18 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = sel.template_name
-		local name = Trans(sel.display_name)
+		local id = obj.template_name
+		local name = Trans(obj.display_name)
 
 		--get type of producer
 		local ProdType
-		if sel.base_air_production then
+		if obj.base_air_production then
 			ProdType = "air"
-		elseif sel.base_water_production then
+		elseif obj.base_water_production then
 			ProdType = "water"
-		elseif sel.base_electricity_production then
+		elseif obj.base_electricity_production then
 			ProdType = "electricity"
-		elseif sel.producers then
+		elseif obj.producers then
 			ProdType = "other"
 		end
 
@@ -1024,9 +1026,9 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local DefaultSetting
 		if ProdType == "other" then
-			DefaultSetting = sel.base_production_per_day1 / r
+			DefaultSetting = obj.base_production_per_day1 / r
 		else
-			DefaultSetting = sel["base_" .. ProdType .. "_production"] / r
+			DefaultSetting = obj["base_" .. ProdType .. "_production"] / r
 		end
 
 		local ItemList = {
@@ -1115,7 +1117,7 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				S[302535920000137--[[%s production is now: %s--]]]:format(RetName(sel),choice[1].text),
+				S[302535920000137--[[%s production is now: %s--]]]:format(RetName(obj),choice[1].text),
 				S[302535920000194--[[Production Amount Set--]]],
 				default_icon2
 			)
@@ -1132,8 +1134,8 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 		local ChoGGi = ChoGGi
-		local sel = SelectedObj
-		if not sel or not IsKindOf(sel,"Workplace") then
+		local obj = SelectedObj
+		if not obj or not IsKindOf(obj,"Workplace") then
 			MsgPopup(
 				S[302535920000141--[[Select a building with workers.--]]],
 				S[302535920000196--[[Fully Automated Building--]]],
@@ -1141,7 +1143,7 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = sel.template_name
+		local id = obj.template_name
 
 		local ItemList = {
 			{text = Trans(251103844022--[[Disable--]]),value = "Disable"},
@@ -1167,12 +1169,12 @@ function OnMsg.ClassesGenerate()
 			if value == "Disable" then
 				value = nil
 				if choice[1].check then
-					sel.max_workers = sel.base_max_workers
-					sel.automation = sel.base_automation
-					sel.auto_performance = sel.base_auto_performance
-					ChoGGi.ComFuncs.ToggleWorking(sel)
+					obj.max_workers = obj.base_max_workers
+					obj.automation = obj.base_automation
+					obj.auto_performance = obj.base_auto_performance
+					ChoGGi.ComFuncs.ToggleWorking(obj)
 				else
-					local blds = ChoGGi.ComFuncs.RetAllOfClass(sel.class)
+					local blds = ChoGGi.ComFuncs.RetAllOfClass(obj.class)
 					for i = 1, #blds do
 						local bld = blds[i]
 						bld.max_workers = bld.base_max_workers
@@ -1183,12 +1185,12 @@ function OnMsg.ClassesGenerate()
 				end
 			elseif type(value) == "number" then
 				if choice[1].check then
-					sel.max_workers = 0
-					sel.automation = 1
-					sel.auto_performance = value
-					ChoGGi.ComFuncs.ToggleWorking(sel)
+					obj.max_workers = 0
+					obj.automation = 1
+					obj.auto_performance = value
+					ChoGGi.ComFuncs.ToggleWorking(obj)
 				else
-					local blds = ChoGGi.ComFuncs.RetAllOfClass(sel.class)
+					local blds = ChoGGi.ComFuncs.RetAllOfClass(obj.class)
 					for i = 1, #blds do
 						local bld = blds[i]
 						bld.max_workers = 0
@@ -1221,7 +1223,7 @@ function OnMsg.ClassesGenerate()
 			hint = tostring(setting.performance)
 		end
 
-		local name = RetName(sel)
+		local name = RetName(obj)
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
@@ -1632,8 +1634,10 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 	end
 
 
-	function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(id,msgpopup)
-		local ChoGGi = ChoGGi
+	function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(action)
+		local id = action.bld_id
+		local msgpopup = action.bld_msg
+
 		local DefaultSetting = g_Classes[id]:GetDefaultPropertyValue("UIRange")
 		local ItemList = {
 			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
@@ -1670,7 +1674,7 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 				end
 
 				-- find a better way to update radius...
-				local sel = SelectedObj
+				local obj = SelectedObj
 				CreateRealTimeThread(function()
 					local objs = ChoGGi.ComFuncs.RetAllOfClass(id)
 					for i = 1, #objs do
@@ -1678,7 +1682,7 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 						SelectObj(objs[i])
 						Sleep(1)
 					end
-					SelectObj(sel)
+					SelectObj(obj)
 				end)
 
 				ChoGGi.SettingFuncs.WriteSettings()

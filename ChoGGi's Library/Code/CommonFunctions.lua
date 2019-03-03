@@ -1551,7 +1551,7 @@ end
 -- returns whatever is selected > moused over > nearest object to cursor
 function ChoGGi.ComFuncs.SelObject(radius)
 	-- just in case it's called from main menu
-	if not UICity then
+	if not GameState.gameplay then
 		return
 	end
 	local obj = SelectedObj or SelectionMouseObj()
@@ -2233,10 +2233,16 @@ do -- COLOUR FUNCTIONS
 	local RandomColour = ChoGGi.ComFuncs.RandomColour
 
 	function ChoGGi.ComFuncs.ObjectColourRandom(obj)
+		-- if fired from action menu
+		if IsKindOf(obj,"XAction") then
+			obj = ChoGGi.ComFuncs.SelObject()
+		else
+			obj = obj or ChoGGi.ComFuncs.SelObject()
+		end
+
 		if not IsValid(obj) or obj and not obj:IsKindOf("ColorizableObject") then
 			return
 		end
-		local ChoGGi = ChoGGi
 		local attaches = {}
 		local c = 0
 
@@ -2293,7 +2299,13 @@ do -- COLOUR FUNCTIONS
 	end
 
 	function ChoGGi.ComFuncs.ObjectColourDefault(obj)
-		obj = obj or ChoGGi.ComFuncs.SelObject()
+		-- if fired from action menu
+		if IsKindOf(obj,"XAction") then
+			obj = ChoGGi.ComFuncs.SelObject()
+		else
+			obj = obj or ChoGGi.ComFuncs.SelObject()
+		end
+
 		if not obj then
 			return
 		end
@@ -2489,21 +2501,26 @@ function ChoGGi.ComFuncs.BuildMenu_Toggle()
 end
 
 -- sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
-function ChoGGi.ComFuncs.EmptyMechDepot(oldobj)
-	oldobj = IsKindOf(oldobj,"MechanizedDepot") and oldobj or ChoGGi.ComFuncs.SelObject()
+function ChoGGi.ComFuncs.EmptyMechDepot(obj)
+	-- if fired from action menu
+	if IsKindOf(obj,"XAction") then
+		obj = ChoGGi.ComFuncs.SelObject()
+	else
+		obj = IsKindOf(obj,"MechanizedDepot") and obj or ChoGGi.ComFuncs.SelObject()
+	end
 
-	if not oldobj or not IsKindOf(oldobj,"MechanizedDepot") then
+	if not obj or not IsKindOf(obj,"MechanizedDepot") then
 		return
 	end
 
-	local res = oldobj.resource
-	local amount = oldobj["GetStored_" .. res](oldobj)
+	local res = obj.resource
+	local amount = obj["GetStored_" .. res](obj)
 	-- not good to be larger then this when game is saved (height limit of map objects seems to be 65536)
 	if amount > 20000000 then
 		amount = amount
 	end
-	local stock = oldobj.stockpiles[oldobj:GetNextStockpileIndex()]
-	local angle = oldobj:GetAngle()
+	local stock = obj.stockpiles[obj:GetNextStockpileIndex()]
+	local angle = obj:GetAngle()
 	-- new pos based on angle of old depot (so it's in front not inside)
 	local newx = 0
 	local newy = 0
@@ -2558,10 +2575,10 @@ function ChoGGi.ComFuncs.EmptyMechDepot(oldobj)
 		-- since we set new depot max amount to old amount we can just CheatFill it
 		newobj:CheatFill()
 		-- clean out old depot
-		oldobj:CheatEmpty()
+		obj:CheatEmpty()
 
 		Sleep(250)
-		ChoGGi.ComFuncs.DeleteObject(oldobj)
+		ChoGGi.ComFuncs.DeleteObject(obj)
 	end)
 
 end
@@ -2578,8 +2595,14 @@ function ChoGGi.ComFuncs.DeleteAllAttaches(obj)
 end
 
 function ChoGGi.ComFuncs.FindNearestResource(obj)
-	obj = obj or ChoGGi.ComFuncs.SelObject()
-	if not obj then
+	-- if fired from action menu
+	if IsKindOf(obj,"XAction") then
+		obj = ChoGGi.ComFuncs.SelObject()
+	else
+		obj = obj or ChoGGi.ComFuncs.SelObject()
+	end
+
+	if not IsValid(obj) then
 		MsgPopup(
 			S[302535920000027--[[Nothing selected--]]],
 			S[302535920000028--[[Find Resource--]]]
@@ -2666,6 +2689,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 end
 
 do -- DeleteObject
+	local IsKindOf = IsKindOf
 	local IsValid = IsValid
 	local DoneObject = DoneObject
 	local DeleteThread = DeleteThread
@@ -2684,51 +2708,7 @@ do -- DeleteObject
 		end
 	end
 
-	function ChoGGi.ComFuncs.DeleteObject(obj,editor_delete)
-		local ChoGGi = ChoGGi
-		if not UpdateFlightGrid then
-			UpdateFlightGrid = ChoGGi.ComFuncs.UpdateFlightGrid
-		end
-
-		if not editor_delete then
-			-- multiple selection from editor mode
-			local objs = editor:GetSel() or ""
-			if #objs > 0 then
-				SuspendPassEdits("DeleteObjects_ChoGGi")
-				for i = 1, #objs do
-					if objs[i].class ~= "MapSector" then
-						ChoGGi.ComFuncs.DeleteObject(objs[i],true)
-					end
-				end
-				ResumePassEdits("DeleteObjects_ChoGGi")
-			elseif not obj then
-				obj = ChoGGi.ComFuncs.SelObject()
-			end
-		end
-
-		if not IsValid(obj) then
-			return
-		end
-
---~ 		-- hopefully i can remove all log spam one of these days
---~ 		local name = RetName(obj)
---~ 		if name then
---~ 			printC("DeleteObject",name,"DeleteObject")
---~ 		end
-
-		if Flight_MarkedObjs[obj] then
-			Flight_MarkedObjs[obj] = nil
-		end
-
-		-- deleting domes will freeze game if they have anything in them.
-		if obj:IsKindOf("Dome") and #(obj.labels.Buildings or "") > 0 then
-			MsgPopup(
-				S[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).--]]]:format(RetName(obj)),
-				S[302535920000489--[[Delete Object(s)--]]]
-			)
-			return
-		end
-
+	local function DeleteFunc(obj,skip_demo)
 		-- actually delete the whole passage
 		if obj:IsKindOf("Passage") then
 			for i = #obj.elements_under_construction, 1, -1 do
@@ -2762,8 +2742,8 @@ do -- DeleteObject
 		-- demo to the rescue
 		obj.can_demolish = true
 		obj.indestructible = false
-		if obj.DoDemolish then
-			CreateRealTimeThread(DestroyBuildingImmediate,obj)
+		if not skip_demo and obj.DoDemolish then
+			DestroyBuildingImmediate(obj)
 		end
 
 		ExecFunc(obj,"RestoreTerrain")
@@ -2797,6 +2777,63 @@ do -- DeleteObject
 
 		-- can't have shuttles avoiding empty space
 		UpdateFlightGrid()
+	end
+
+	local DeleteObject
+	function ChoGGi.ComFuncs.DeleteObject(obj,editor_delete,skip_demo)
+		-- if fired from action menu
+		if IsKindOf(obj,"XAction") then
+			obj = ChoGGi.ComFuncs.SelObject()
+			editor_delete = nil
+			skip_demo = nil
+		end
+
+		local ChoGGi = ChoGGi
+		if not UpdateFlightGrid then
+			UpdateFlightGrid = ChoGGi.ComFuncs.UpdateFlightGrid
+		end
+
+		if not editor_delete then
+			-- multiple selection from editor mode
+			local objs = editor:GetSel() or ""
+			if #objs > 0 then
+				SuspendPassEdits("DeleteObjects_ChoGGi")
+				DeleteObject = DeleteObject or ChoGGi.ComFuncs.DeleteObject
+				for i = 1, #objs do
+					if objs[i].class ~= "MapSector" then
+						DeleteObject(objs[i],true)
+					end
+				end
+				ResumePassEdits("DeleteObjects_ChoGGi")
+			elseif not obj then
+				obj = ChoGGi.ComFuncs.SelObject()
+			end
+		end
+
+		if not IsValid(obj) then
+			return
+		end
+
+		-- deleting domes will freeze game if they have anything in them.
+		if obj:IsKindOf("Dome") and #(obj.labels.Buildings or "") > 0 then
+			MsgPopup(
+				S[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).--]]]:format(RetName(obj)),
+				S[302535920000489--[[Delete Object(s)--]]]
+			)
+			return
+		end
+
+		if Flight_MarkedObjs[obj] then
+			Flight_MarkedObjs[obj] = nil
+		end
+
+--~ 		-- hopefully i can remove all log spam one of these days
+--~ 		local name = RetName(obj)
+--~ 		if name then
+--~ 			printC("DeleteObject",name,"DeleteObject")
+--~ 		end
+
+		CreateRealTimeThread(DeleteFunc,obj,skip_demo)
 	end
 end -- do
 
@@ -3019,8 +3056,15 @@ function ChoGGi.ComFuncs.ResetHumanCentipedes()
 end
 
 function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
-	obj = obj or ChoGGi.ComFuncs.SelObject()
-	if not obj then
+	-- if fired from action menu
+	if IsKindOf(obj,"XAction") then
+		obj = ChoGGi.ComFuncs.SelObject()
+		skip_msg = nil
+	else
+		obj = obj or ChoGGi.ComFuncs.SelObject()
+	end
+
+	if not IsValid(obj) then
 		if not skip_msg then
 			MsgPopup(
 				S[302535920000027--[[Nothing selected--]]],
@@ -3538,8 +3582,13 @@ end
 
 -- build and show a list of attachments for changing their colours
 function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
-	local ChoGGi = ChoGGi
-	obj = obj or ChoGGi.ComFuncs.SelObject()
+	-- if fired from action menu
+	if IsKindOf(obj,"XAction") then
+		obj = ChoGGi.ComFuncs.SelObject()
+	else
+		obj = obj or ChoGGi.ComFuncs.SelObject()
+	end
+
 	if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 		MsgPopup(
 			S[302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).--]]],
@@ -3776,16 +3825,28 @@ do -- UpdateFlightGrid
 	local GetHeightGrid = terrain.GetHeightGrid
 	local Flight_MarkPathSpline = Flight_MarkPathSpline
 
+	local mark_flags = const.efWalkable + const.efApplyToGrids + const.efCollision
 	local type_tile = terrain.TypeTileSize()
 	local work_step = 16 * type_tile
 	local mark_step = 16 * type_tile
+	local map_size
 	local function Flight_NewGrid(step, packing)
-		local mw = GetMapSize()
-		local work_size = mw / (step or work_step)
+		map_size = map_size or GetMapSize()
+		local work_size = map_size / (step or work_step)
 		return grid(work_size, packing or 32)
 	end
 	local function TrajectMark(spline)
 		return spline and Flight_MarkPathSpline(Flight_Traject, spline, mark_step)
+	end
+	local function UpdateAttached(obj)
+		Flight_ObjsToMark[obj] = true
+	end
+	local function UpdateTraject(obj)
+		if obj.idle_mark_pos then
+			Flight_Traject:AddCircle(1, obj.idle_mark_pos, mark_step, obj.collision_radius)
+		end
+		TrajectMark(obj.current_spline)
+		TrajectMark(obj.next_spline)
 	end
 
 	function ChoGGi.ComFuncs.UpdateFlightGrid()
@@ -3809,22 +3870,15 @@ do -- UpdateFlightGrid
 			end
 		else
 			Flight_ObjsToMark = {}
-			MapForEach("map", "attached", false, nil, mark_flags,function(obj)
-				Flight_ObjsToMark[obj] = true
-			end)
+			MapForEach("map", "attached", false, nil, mark_flags,UpdateAttached)
 		end
 		Flight_ObjToUnmark = {}
 		Flight_MarkedObjs = {}
 		MarkThreadProc()
 
 		Flight_Traject = Flight_NewGrid(mark_step, 16)
-		MapForEach("map", "FlyingObject", function(obj)
-			if obj.idle_mark_pos then
-				Flight_Traject:AddCircle(1, obj.idle_mark_pos, mark_step, obj.collision_radius)
-			end
-			TrajectMark(obj.current_spline)
-			TrajectMark(obj.next_spline)
-		end)
+
+		MapForEach("map", "FlyingObject", UpdateTraject)
 
 		local objs = FlyingObjs or ""
 		for i = 1, #objs do
@@ -4014,7 +4068,7 @@ function ChoGGi.ComFuncs.RetSpotNames(obj)
 	return names
 end
 
-do --
+do -- ConstructableArea
 	local ConstructableArea
 	function ChoGGi.ComFuncs.ConstructableArea()
 		if not ConstructableArea then
@@ -4025,3 +4079,7 @@ do --
 		return ConstructableArea
 	end
 end -- do
+
+function ChoGGi.ComFuncs.RetTemplateOrClass(obj)
+	return obj.template_name or obj.class
+end

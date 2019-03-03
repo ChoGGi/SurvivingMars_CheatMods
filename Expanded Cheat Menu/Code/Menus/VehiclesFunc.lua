@@ -370,12 +370,12 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
 		local ChoGGi = ChoGGi
-		local sel = ChoGGi.ComFuncs.SelObject()
-		if not sel or not sel:IsKindOf("DroneControl") then
+		local obj = ChoGGi.ComFuncs.SelObject()
+		if not obj or not obj:IsKindOf("DroneControl") then
 			return
 		end
 
-		local CurrentAmount = sel:GetDronesCount()
+		local CurrentAmount = obj:GetDronesCount()
 		local ItemList = {
 			{text = S[302535920000894--[[Current amount--]]] .. ": " .. CurrentAmount,value = CurrentAmount},
 			{text = 1,value = 1},
@@ -398,11 +398,11 @@ function OnMsg.ClassesGenerate()
 				if choice[1].check1 then
 					change = S[302535920000917--[[packed--]]]
 					for _ = 1, value do
-						sel:ConvertDroneToPrefab()
+						obj:ConvertDroneToPrefab()
 					end
 				else
 					for _ = 1, value do
-						sel:UseDronePrefab()
+						obj:UseDronePrefab()
 					end
 				end
 
