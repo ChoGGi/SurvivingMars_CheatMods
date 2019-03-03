@@ -2750,7 +2750,7 @@ do -- DeleteObject
 		ExecFunc(obj,"Destroy")
 
 		-- still gotta fix the geo dome
-		if HasAnySurfaces(obj, EntitySurfaces.Height, true) and not HasRestoreHeight() then
+		if obj.GetFlattenShape and HasAnySurfaces(obj, EntitySurfaces.Height, true) and not HasRestoreHeight() then
 			FlattenTerrainInBuildShape(obj:GetFlattenShape(), obj)
 		end
 
