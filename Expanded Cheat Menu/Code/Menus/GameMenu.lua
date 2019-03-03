@@ -12,9 +12,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Annoying Sounds",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleCutSmoothTrans.tga",
 		RolloverText = S[302535920000681--[[Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping).--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.AnnoyingSounds_Toggle()
-		end,
+		OnAction = ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
 	}
 
 	c = c + 1
@@ -158,9 +156,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 			return S[302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]]
 				.. ":\n" .. ValueToLuaCode(ChoGGi.UserSettings.LightmodelCustom)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.EditLightmodelCustom()
-		end,
+		OnAction = ChoGGi.MenuFuncs.EditLightmodelCustom,
 	}
 
 	c = c + 1
@@ -194,10 +190,10 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionId = ".Set Opacity",
 		ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
 		RolloverText = function()
-			local sel = ChoGGi.ComFuncs.SelObject()
-			if IsValid(sel) then
+			local obj = ChoGGi.ComFuncs.SelObject()
+			if IsValid(obj) then
 				return ChoGGi.ComFuncs.SettingState(
-					sel:GetOpacity(),
+					obj:GetOpacity(),
 					S[302535920000695--[[Change the opacity of objects.--]]]
 				)
 			else
@@ -216,9 +212,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 		RolloverText = S[302535920000693--[[Select/mouse over an object to change the colours
 	Use Shift- or Ctrl- for random colours/reset colours.--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.CreateObjectListAndAttaches()
-		end,
+		OnAction = ChoGGi.ComFuncs.CreateObjectListAndAttaches,
 		ActionShortcut = "F6",
 		ActionBindable = true,
 	}
@@ -247,9 +241,8 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionId = ".Object Planner",
 		ActionIcon = "CommonAssets/UI/Menu/ShowOccluders.tga",
 		RolloverText = S[302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.EntitySpawner(nil,nil,nil,true)
-		end,
+		OnAction = ChoGGi.ComFuncs.EntitySpawner,
+		setting_planning = true,
 		ActionShortcut = "Ctrl-Shift-A",
 		ActionBindable = true,
 	}
@@ -549,6 +542,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 		ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 		RolloverText = S[302535920000658--[[Write screenshot--]]],
 		OnAction = ChoGGi.MenuFuncs.TakeScreenshot,
+		setting_mask = 0,
 		ActionShortcut = "-PrtScr",
 		ActionBindable = true,
 	}
@@ -559,9 +553,8 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 		ActionId = ".Screenshot Upsampled",
 		ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 		RolloverText = S[302535920000660--[[Write screenshot upsampled--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.TakeScreenshot(true)
-		end,
+		OnAction = ChoGGi.MenuFuncs.TakeScreenshot,
+		setting_mask = 1,
 		ActionShortcut = "-Ctrl-PrtScr",
 		ActionBindable = true,
 	}

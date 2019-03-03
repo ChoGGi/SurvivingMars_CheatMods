@@ -3,6 +3,7 @@
 local pairs,print,type,tonumber,tostring,table = pairs,print,type,tonumber,tostring,table
 local TableRemove = table.remove
 local TableClear = table.clear
+local TableIClear = table.iclear
 local IsValid = IsValid
 
 function OnMsg.ClassesGenerate()
@@ -12,11 +13,24 @@ function OnMsg.ClassesGenerate()
 	local RandomColour = ChoGGi.ComFuncs.RandomColour
 	local S = ChoGGi.Strings
 
+	function ChoGGi.MenuFuncs.ExamineObject()
+		local obj = ChoGGi.ComFuncs.SelObject()
+		if obj then
+			ChoGGi.ComFuncs.OpenInExamineDlg(obj)
+			return
+		end
+		-- if in main menu then open examine and console
+		if not Dialogs.HUD then
+			ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop)
+			ChoGGi.ComFuncs.ToggleConsole(true)
+		end
+	end
+
 	function ChoGGi.MenuFuncs.OpenInGedObjectEditor()
-		local sel = ChoGGi.ComFuncs.SelObject()
-		if IsValid(sel) then
+		local obj = ChoGGi.ComFuncs.SelObject()
+		if IsValid(obj) then
 			GedObjectEditor = false
-			OpenGedGameObjectEditor{sel}
+			OpenGedGameObjectEditor{obj}
 		end
 	end
 
@@ -175,6 +189,7 @@ function OnMsg.ClassesGenerate()
 				width = width / 1000
 				height = height / 1000
 
+				SuspendPassEdits("ViewAllEntities")
 				for x = 100, width do
 					if c > entity_count then
 						break
@@ -189,29 +204,31 @@ function OnMsg.ClassesGenerate()
 
 						local mod = 5
 						local plusone = entity_list[c+1]
+						if plusone then
+							-- domes are big
+							local sub8 = plusone:sub(1,8)
+							local sub5 = plusone:sub(1,5)
+							if plusone:find("Dome") and sub8 ~= "DomeRoad" and sub8 ~= "DomeDoor" and not plusone:find("Entrance") then
+								mod = 16
+							elseif sub5 == "Unit_" or sub5 == "Arrow" or plusone:find("Door") or plusone:find("DecLogo") then
+								mod = 1
+							elseif plusone:find("Cliff") then
+								mod = 8
+							end
 
-						-- domes are big
-						local sub8 = plusone:sub(1,8)
-						local sub5 = plusone:sub(1,5)
-						if plusone:find("Dome") and sub8 ~= "DomeRoad" and sub8 ~= "DomeDoor" and not plusone:find("Entrance") then
-							mod = 16
-						elseif sub5 == "Unit_" or sub5 == "Arrow" or plusone:find("Door") or plusone:find("DecLogo") then
-							mod = 1
-						elseif plusone:find("Cliff") then
-							mod = 8
+							if q % mod == 0 and r % mod == 0 and IsBuildableZoneQR(q,r) then
+								local obj = PlaceObj("ChoGGi_BuildingEntityClass",{
+									"Pos",point(xx,yy),
+								})
+
+								c = c + 1
+								obj:ChangeEntity(entity_list[c])
+							end
 						end
 
-						if q % mod == 0 and r % mod == 0 and IsBuildableZoneQR(q,r) then
-							local obj = PlaceObj("ChoGGi_BuildingEntityClass",{
-								"Pos",point(xx,yy)
-							})
-
-							c = c + 1
-							obj:ChangeEntity(entity_list[c])
-						end
-
-					end
-				end
+					end -- for
+				end -- for
+				ResumePassEdits("ViewAllEntities")
 
 			end)
 		end
@@ -290,7 +307,9 @@ that'll activate the BadPrefab on it
 
 	do -- PostProcGrids
 		local SetPostProcPredicate = SetPostProcPredicate
-		function ChoGGi.MenuFuncs.PostProcGrids(grid_type)
+
+		function ChoGGi.MenuFuncs.PostProcGrids(action)
+			local grid_type = action.grid_mask
 			-- always disable other ones
 			SetPostProcPredicate("grid45", false)
 			SetPostProcPredicate("grid", false)
@@ -372,7 +391,10 @@ that'll activate the BadPrefab on it
 		}
 	end
 
-	function ChoGGi.MenuFuncs.DebugFX_Toggle(name,trans_str)
+	function ChoGGi.MenuFuncs.DebugFX_Toggle()
+		local name = action.setting_name
+		local trans_str = action.setting_msg
+
 		_G[name] = not _G[name]
 
 		MsgPopup(
@@ -419,12 +441,11 @@ that'll activate the BadPrefab on it
 		)
 	end
 
-	function ChoGGi.MenuFuncs.DeleteAllSelectedObjects(obj)
-		local ChoGGi = ChoGGi
-		obj = obj or ChoGGi.ComFuncs.SelObject()
-
+	function ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
+		local obj or ChoGGi.ComFuncs.SelObject()
+		local is_valid = IsValid(obj)
 		-- domes with objs in them = crashy
-		if IsKindOf(obj,"Dome") then
+		if not is_valid or is_valid and obj:IsKindOf("Dome") then
 			return
 		end
 
@@ -449,8 +470,9 @@ that'll activate the BadPrefab on it
 		)
 	end
 
-	function ChoGGi.MenuFuncs.ObjectCloner(obj)
-		obj = obj or ChoGGi.ComFuncs.SelObject()
+	function ChoGGi.MenuFuncs.ObjectCloner()
+		local obj = ChoGGi.ComFuncs.SelObject()
+
 		if not IsValid(obj) then
 			return
 		end
@@ -478,23 +500,34 @@ that'll activate the BadPrefab on it
 		local IsValid = IsValid
 		local grid_objs = {}
 		local grid_thread = false
-		local function HideGrid()
+		local function DeleteHexes()
 			local InvalidPos = ChoGGi.Consts.InvalidPos
 			-- kill off thread
-			DeleteThread(grid_thread)
+			if IsValidThread(grid_thread) then
+				DeleteThread(grid_thread)
+			end
 			-- just in case
 			grid_thread = false
-			-- store hexes off-map
-			for i = 1, #grid_objs do
-				grid_objs[i]:SetPos(InvalidPos)
+
+			if GameState.gameplay then
+				-- store hexes off-map
+				SuspendPassEdits("DeleteHexeSpots")
+				for i = 1, #grid_objs do
+					if IsValid(grid_objs[i]) then
+						grid_objs[i]:delete()
+					end
+				end
+				ResumePassEdits("DeleteHexeSpots")
+				TableIClear(grid_objs)
 			end
 		end
 
 		-- if grid is left on when map changes it gets real laggy
-		OnMsg.ChangeMap = HideGrid
+		OnMsg.ChangeMap = DeleteHexes
 
-		function ChoGGi.MenuFuncs.debug_build_grid_settings(setting)
-			local ChoGGi = ChoGGi
+		function ChoGGi.MenuFuncs.debug_build_grid_settings(action)
+			local setting = action.setting_mask
+
 			local UserSettings = ChoGGi.UserSettings
 			local ItemList = {
 				{text = 10,value = 10},
@@ -532,7 +565,8 @@ that'll activate the BadPrefab on it
 					end
 
 					-- update grid
-					if grid_thread then
+					if IsValidThread(grid_thread) then
+						-- twice to toggle
 						ChoGGi.MenuFuncs.debug_build_grid()
 						ChoGGi.MenuFuncs.debug_build_grid()
 					end
@@ -597,8 +631,8 @@ that'll activate the BadPrefab on it
 			end
 
 			-- already running
-			if grid_thread then
-				HideGrid()
+			if IsValidThread(grid_thread) then
+				DeleteHexes()
 			else
 				-- these two loop sections are just a way of building the table and applying the settings once instead of over n over in the while loop
 
@@ -606,24 +640,20 @@ that'll activate the BadPrefab on it
 				local grid_count = 0
 				local q,r = 1,1
 				local z = -q - r
+				SuspendPassEdits("HexSpotsCreation")
 				for q_i = q - grid_range, q + grid_range do
 					for r_i = r - grid_range, r + grid_range do
 						for z_i = z - grid_range, z + grid_range do
 							if q_i + r_i + z_i == 0 then
+								local hex = PlaceObject("ChoGGi_OHexSpot")
+								hex:SetOpacity(grid_opacity)
 								grid_count = grid_count + 1
+								grid_objs[grid_count] = hex
 							end
 						end
 					end
 				end
-				-- they can be deleted by ctrl-shift-d, so add any missing ones
-				local obj_count = #grid_objs
-				obj_count = obj_count >= grid_count and obj_count or grid_count >= obj_count and grid_count
-				for i = 1, obj_count do
-					if not IsValid(grid_objs[i]) then
-						grid_objs[i] = PlaceObject("ChoGGi_OHexSpot")
-						grid_objs[i]:SetOpacity(grid_opacity)
-					end
-				end
+				ResumePassEdits("HexSpotsCreation")
 
 				-- fire up a new thread and off we go
 				grid_thread = CreateRealTimeThread(function()
@@ -854,8 +884,13 @@ that'll activate the BadPrefab on it
 		end
 
 		function ChoGGi.MenuFuncs.SetPathMarkersGameTime(obj,single)
-			local ChoGGi = ChoGGi
-			obj = obj or SelObject()
+			-- if fired from action menu
+			if IsKindOf(obj,"XAction") then
+				obj = SelObject()
+				single = true
+			else
+				obj = obj or SelObject()
+			end
 
 			if obj and obj:IsKindOfClasses(moveable_classes) then
 				local UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles
@@ -937,10 +972,10 @@ that'll activate the BadPrefab on it
 				maph = maph - terrain.HeightTileSize()
 			end
 
-			local sel = SelectedObj
-			if IsValid(sel) and sel:IsKindOfClasses(moveable_classes) then
+			local obj = SelectedObj
+			if IsValid(obj) and obj:IsKindOfClasses(moveable_classes) then
 				randcolours = RandomColour(#randcolours + 1)
-				ChoGGi.MenuFuncs.SetWaypoint(sel)
+				ChoGGi.MenuFuncs.SetWaypoint(obj)
 				return
 			end
 
@@ -988,14 +1023,16 @@ that'll activate the BadPrefab on it
 
 				elseif value then -- add waypoints
 
+					local SetPathMarkersGameTime = ChoGGi.MenuFuncs.SetPathMarkersGameTime
+					local SetWaypoint = ChoGGi.MenuFuncs.SetWaypoint
 					local function swp(list)
 						if choice.check2 then
 							for i = 1, #list do
-								ChoGGi.MenuFuncs.SetPathMarkersGameTime(list[i])
+								SetPathMarkersGameTime(list[i])
 							end
 						else
 							for i = 1, #list do
-								ChoGGi.MenuFuncs.SetWaypoint(list[i])
+								SetWaypoint(list[i])
 							end
 						end
 					end
@@ -1075,7 +1112,6 @@ that'll activate the BadPrefab on it
 		local terrain_GetHeight = terrain.GetHeight
 		local PlaceObject = PlaceObject
 		local DoneObject = DoneObject
-		local TableIClear = table.iclear
 
 		local grid_thread = false
 		local Flight_Height_temp = false
@@ -1114,6 +1150,11 @@ that'll activate the BadPrefab on it
 				)
 			end
 			local line = flight_lines[line_num]
+			-- just in case it was deleted
+			if not IsValid(line) then
+				line = PlaceObject("ChoGGi_OPolyline")
+				flight_lines[line_num] = line
+			end
 			line:SetMesh(points, colors)
 			line:SetPos(AveragePoint2D(points))
 
@@ -1139,7 +1180,9 @@ that'll activate the BadPrefab on it
 			if IsValidThread(grid_thread) then
 				DeleteThread(grid_thread)
 			end
-			DeleteLines()
+			if GameState.gameplay then
+				DeleteLines()
+			end
 		end
 
 		local function GridFunc(size,zoffset)
@@ -1152,9 +1195,11 @@ that'll activate the BadPrefab on it
 			size = steps * dbg_step
 
 			-- we spawn lines once then re-use them
+			SuspendPassEdits("FlightGridLinesCreation")
 			for i = 0, (steps + steps) do
 				flight_lines[i] = PlaceObject("ChoGGi_OPolyline")
 			end
+			ResumePassEdits("FlightGridLinesCreation")
 
 			local pos_c,pos_t,pos
 			while true do
@@ -1180,6 +1225,12 @@ that'll activate the BadPrefab on it
 		end
 
 		function ChoGGi.MenuFuncs.FlightGrid_Toggle(size,zoffset)
+			-- if fired from action menu
+			if IsKindOf(size,"XAction") then
+				size = 256 * guim
+				zoffset = 0
+			end
+
 			if not Flight_Height then
 				return
 			end

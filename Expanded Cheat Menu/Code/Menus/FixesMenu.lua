@@ -4,9 +4,8 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-
-	local icon = "CommonAssets/UI/Menu/ReportBug.tga"
 	local c = #Actions
+	local icon = "CommonAssets/UI/Menu/ReportBug.tga"
 
 	local str_ECM_Fixes = "ECM.ECM.Fixes"
 	c = c + 1

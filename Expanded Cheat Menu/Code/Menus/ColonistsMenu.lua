@@ -2,11 +2,11 @@
 
 function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
+	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-
-	local StarkFistOfRemoval = "CommonAssets/UI/Menu/AlignSel.tga"
 	local c = #Actions
+	local StarkFistOfRemoval = "CommonAssets/UI/Menu/AlignSel.tga"
 
 	local str_ECM_Colonists = "ECM.ECM.Colonists"
 	c = c + 1
@@ -38,16 +38,14 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Traits: Restrict For Selected Building Type",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = function()
-			local text = S[302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block will override).--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".restricttraits",
-				text
-			) or text
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".restricttraits",
+				S[302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block will override).--]]]
+			) or S[302535920000372]
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetBuildingTraits("restricttraits")
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetBuildingTraits,
+		toggle_type = "restricttraits",
 	}
 
 	c = c + 1
@@ -56,16 +54,14 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Traits: Block For Selected Building Type",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = function()
-			local text = S[302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".blocktraits",
-				text
-			) or text
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".blocktraits",
+				S[302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]]
+			) or S[302535920000374]
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetBuildingTraits("blocktraits")
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetBuildingTraits,
+		toggle_type = "blocktraits",
 	}
 
 	c = c + 1
@@ -162,9 +158,8 @@ Works after colonist idle."--]]]
 				S[302535920000425--[[This will make all newly arrived and born colonists a certain age.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetColonistsAge(1)
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetColonistsAge,
+		setting_mask = 1,
 	}
 
 	c = c + 1
@@ -173,9 +168,8 @@ Works after colonist idle."--]]]
 		ActionId = ".Set Age",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000427--[[This will make all colonists a certain age.--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetColonistsAge(2)
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetColonistsAge,
+		setting_mask = 2,
 	}
 
 	c = c + 1
@@ -189,9 +183,8 @@ Works after colonist idle."--]]]
 				S[302535920000429--[[This will make all newly arrived and born colonists a certain gender.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetColonistsGender(1)
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetColonistsGender,
+		setting_mask = 1,
 	}
 
 	c = c + 1
@@ -200,9 +193,8 @@ Works after colonist idle."--]]]
 		ActionId = ".Set Gender",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000431--[[This will make all colonists a certain gender.--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetColonistsGender(2)
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetColonistsGender,
+		setting_mask = 2,
 	}
 
 	c = c + 1
@@ -216,9 +208,8 @@ Works after colonist idle."--]]]
 				S[302535920000433--[[This will make all newly arrived colonists a certain specialization (children and spec = black cube).--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetColonistsSpecialization(1)
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetColonistsSpecialization,
+		setting_mask = 1,
 	}
 
 	c = c + 1
@@ -227,9 +218,8 @@ Works after colonist idle."--]]]
 		ActionId = ".Set Specialization",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000435--[[This will make all colonists a certain specialization.--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetColonistsSpecialization(2)
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetColonistsSpecialization,
+		setting_mask = 2,
 	}
 
 	c = c + 1
@@ -243,9 +233,8 @@ Works after colonist idle."--]]]
 				S[302535920000437--[[This will make all newly arrived and born colonists a certain race.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetColonistsRace(1)
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetColonistsRace,
+		setting_mask = 1,
 	}
 
 	c = c + 1
@@ -254,9 +243,8 @@ Works after colonist idle."--]]]
 		ActionId = ".Set Race",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000439--[[This will make all colonists a certain race.--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetColonistsRace(2)
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetColonistsRace,
+		setting_mask = 2,
 	}
 
 	c = c + 1
@@ -270,9 +258,8 @@ Works after colonist idle."--]]]
 				S[302535920000441--[[This will make all newly arrived and born colonists have certain traits.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetColonistsTraits(1)
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetColonistsTraits,
+		setting_mask = 1,
 	}
 
 	c = c + 1
@@ -281,9 +268,8 @@ Works after colonist idle."--]]]
 		ActionId = ".Set Traits",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = S[302535920000443--[[Choose traits for all colonists.--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetColonistsTraits(2)
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetColonistsTraits,
+		setting_mask = 2,
 	}
 
 	c = c + 1

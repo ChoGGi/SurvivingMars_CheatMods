@@ -4,7 +4,6 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-
 	local c = #Actions
 
 	c = c + 1
@@ -115,7 +114,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 		ActionId = ".Complete Constructions",
 		ActionIcon = "CommonAssets/UI/Menu/place_custom_object.tga",
 		RolloverText = S[302535920000366--[[Complete all constructions instantly.--]]],
-		OnAction = CheatCompleteAllConstructions,
+		OnAction = ChoGGi.MenuFuncs.CompleteConstructions,
 		ActionShortcut = "Alt-B",
 		ActionBindable = true,
 	}

@@ -257,9 +257,8 @@ function OnMsg.ClassesGenerate()
 		end
 
 		function ChoGGi.MenuFuncs.ChangeEntity()
-			local ChoGGi = ChoGGi
-			local sel = ChoGGi.ComFuncs.SelObject()
-			if not sel then
+			local obj = ChoGGi.ComFuncs.SelObject()
+			if not obj then
 				MsgPopup(
 					S[302535920001139--[[You need to select an object.--]]],
 					S[302535920000682--[[Change Entity--]]]
@@ -303,15 +302,15 @@ function OnMsg.ClassesGenerate()
 				local check2 = choice[1].check2
 
 				local dome
-				if sel.dome and check1 then
-					dome = sel.dome
+				if obj.dome and check1 then
+					dome = obj.dome
 				end
 				if EntityData[value] or value == "Default" then
 
 					if check2 then
-						SetEntity(sel,value)
+						SetEntity(obj,value)
 					else
-						MapForEach("map",sel.class,function(o)
+						MapForEach("map",obj.class,function(o)
 							if dome then
 								if o.dome and o.dome.handle == dome.handle then
 									SetEntity(o,value)
@@ -322,7 +321,7 @@ function OnMsg.ClassesGenerate()
 						end)
 					end
 					MsgPopup(
-						choice[1].text .. ": " .. RetName(sel),
+						choice[1].text .. ": " .. RetName(obj),
 						S[302535920000682--[[Change Entity--]]]
 					)
 				end
@@ -331,9 +330,9 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = S[302535920000682--[[Change Entity--]]] .. ": " .. RetName(sel),
+				title = S[302535920000682--[[Change Entity--]]] .. ": " .. RetName(obj),
 				hint = S[302535920000106--[[Current--]]] .. ": "
-					.. (sel.ChoGGi_OrigEntity or sel:GetEntity()) .. "\n"
+					.. (obj.ChoGGi_OrigEntity or obj:GetEntity()) .. "\n"
 					.. S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]
 					.. "\n\n"
 					.. S[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
@@ -393,9 +392,8 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 		end
 
 		function ChoGGi.MenuFuncs.SetEntityScale()
-			local ChoGGi = ChoGGi
-			local sel = ChoGGi.ComFuncs.SelObject()
-			if not sel then
+			local obj = ChoGGi.ComFuncs.SelObject()
+			if not obj then
 				MsgPopup(
 					S[302535920001139--[[You need to select an object.--]]],
 					S[302535920000684--[[Change Entity Scale--]]]
@@ -423,15 +421,15 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 				local check2 = choice[1].check2
 
 				local dome
-				if sel.dome and check1 then
-					dome = sel.dome
+				if obj.dome and check1 then
+					dome = obj.dome
 				end
 				if type(value) == "number" then
 
 					if check2 then
-						SetScale(sel,value)
+						SetScale(obj,value)
 					else
-						MapForEach("map",sel.class,function(o)
+						MapForEach("map",obj.class,function(o)
 							if dome then
 								if o.dome and o.dome.handle == dome.handle then
 									SetScale(o,value)
@@ -442,11 +440,11 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 						end)
 					end
 					MsgPopup(
-						choice[1].text .. ": " .. RetName(sel),
+						choice[1].text .. ": " .. RetName(obj),
 						S[302535920000684--[[Change Entity Scale--]]],
 						nil,
 						nil,
-						sel
+						obj
 					)
 				end
 			end
@@ -454,8 +452,8 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = S[302535920000684--[[Change Entity Scale--]]] .. ": " .. RetName(sel),
-				hint = S[302535920001156--[[Current object--]]] .. ": " .. sel:GetScale()
+				title = S[302535920000684--[[Change Entity Scale--]]] .. ": " .. RetName(obj),
+				hint = S[302535920001156--[[Current object--]]] .. ": " .. obj:GetScale()
 					.. "\n" .. S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],
 				check = {
 					only_one = true,

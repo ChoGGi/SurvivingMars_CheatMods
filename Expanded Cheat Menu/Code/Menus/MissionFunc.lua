@@ -615,7 +615,9 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	function ChoGGi.MenuFuncs.SetDisasterOccurrence(sType)
+	function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
+		local sType = action.setting_id
+
 		local mapdata = mapdata
 
 		local ItemList = {

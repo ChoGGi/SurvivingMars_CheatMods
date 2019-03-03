@@ -79,6 +79,7 @@ return PlaceObj("ModDef", {
 		"Code/Menus/ResourcesMenu.lua",
 		"Code/Menus/VehiclesFunc.lua",
 		"Code/Menus/VehiclesMenu.lua",
+		"Code/Menus/KeysFunc.lua",
 		"Code/Menus/Keys.lua",
 
 		-- tortoise hares and all that

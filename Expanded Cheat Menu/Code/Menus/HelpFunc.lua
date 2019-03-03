@@ -11,6 +11,10 @@ function OnMsg.ClassesGenerate()
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
 
+	function ChoGGi.MenuFuncs.OpenUrl(action)
+		OpenUrl(action.setting_url)
+	end
+
 	function ChoGGi.MenuFuncs.DeleteSavedGames()
 		if blacklist then
 			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.MenuFuncs.DeleteSavedGames")

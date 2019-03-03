@@ -5,6 +5,7 @@ local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local white = white
 local guic = guic
+local IsKindOf = IsKindOf
 
 function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -142,10 +143,12 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
-	function ChoGGi.MenuFuncs.TakeScreenshot(boolean)
+	function ChoGGi.MenuFuncs.TakeScreenshot(action)
+		local which = action.setting_mask
+
 		CreateRealTimeThread(function()
 			local filename,created
-			if boolean == true then
+			if which == 1 then
 					WaitNextFrame(3)
 					LockCamera("Screenshot")
 					filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SSAA","AppData/","tga")
@@ -157,7 +160,7 @@ function OnMsg.ClassesGenerate()
 			end
 
 			-- MovieWriteScreenshot doesn't return jack, so
-			if created or boolean == true then
+			if created or which == 1 then
 				-- slight delay so it doesn't show up in the screenshot
 				Sleep(50)
 				local msg = ConvertToOSPath(filename)
@@ -215,7 +218,7 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 
-		local sel = ChoGGi.ComFuncs.SelObject()
+		local obj = ChoGGi.ComFuncs.SelObject()
 		local hint_loop = S[302535920001109--[[Loops though and makes all %s visible.--]]]
 
 		local ItemList = {
@@ -227,7 +230,7 @@ function OnMsg.ClassesGenerate()
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(3982--[[Deposits--]]),value = "SurfaceDeposit",hint = hint_loop:format(Trans(3982--[[Deposits--]]))},
 		}
 		local c = #ItemList
-		if sel then
+		if obj then
 			c = c + 1
 			ItemList[c] = {text = 0,value = 0}
 			c = c + 1
@@ -244,7 +247,7 @@ function OnMsg.ClassesGenerate()
 			end
 			local value = choice[1].value
 			if type(value) == "number" then
-				sel:SetOpacity(value)
+				obj:SetOpacity(value)
 			elseif type(value) == "string" then
 				local function SettingOpacity(label)
 					local tab = ChoGGi.ComFuncs.RetAllOfClass(label)
@@ -269,11 +272,11 @@ function OnMsg.ClassesGenerate()
 			)
 		end
 		local hint = S[302535920001118--[[You can still select items after making them invisible (0), but it may take some effort :).--]]]
-		if sel then
-			hint = S[302535920000106--[[Current--]]] .. ": " .. sel:GetOpacity() .. "\n\n" .. hint
+		if obj then
+			hint = S[302535920000106--[[Current--]]] .. ": " .. obj:GetOpacity() .. "\n\n" .. hint
 		end
 
-		local name = RetName(sel)
+		local name = RetName(obj)
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
@@ -323,6 +326,11 @@ function OnMsg.ClassesGenerate()
 --~ 	TestSound("Object MOXIE Loop")
 
 		function ChoGGi.MenuFuncs.AnnoyingSounds_Toggle(manual)
+			-- if fired from action menu
+			if IsKindOf(manual,"XAction") then
+				manual = nil
+			end
+
 			local ChoGGi = ChoGGi
 			--make a list
 			local ItemList = {
@@ -984,6 +992,11 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 	end
 
 	function ChoGGi.MenuFuncs.EditLightmodelCustom(name)
+		-- if fired from action menu
+		if IsKindOf(name,"XAction") then
+			name = nil
+		end
+
 		local ItemList = {}
 
 		-- always load defaults, then override with custom settings so list is always full

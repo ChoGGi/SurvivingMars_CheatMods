@@ -232,8 +232,8 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.FillResource()
-		local sel = ChoGGi.ComFuncs.SelObject()
-		if not IsValid(sel) then
+		local obj = ChoGGi.ComFuncs.SelObject()
+		if not IsValid(obj) then
 			MsgPopup(
 				S[302535920001526--[[Not a valid object--]]],
 				S[302535920000727--[[Fill Selected Resource--]]]
@@ -241,15 +241,15 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 
-		if sel.CheatFill then
-			sel:CheatFill()
+		if obj.CheatFill then
+			obj:CheatFill()
 		end
-		if sel.CheatRefill then
-			sel:CheatRefill()
+		if obj.CheatRefill then
+			obj:CheatRefill()
 		end
 
 		MsgPopup(
-			RetName(self),
+			RetName(obj),
 			S[302535920000727--[[Fill Selected Resource--]]]
 		)
 	end

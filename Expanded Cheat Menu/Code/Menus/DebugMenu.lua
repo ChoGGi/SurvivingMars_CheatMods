@@ -4,7 +4,6 @@ function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
-
 	local c = #Actions
 
 	c = c + 1
@@ -36,9 +35,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Material Properties",
 		ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
 		RolloverText = S[302535920001459--[[Shows list of material settings for use with .mtl files.--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.GetMaterialProperties()
-		end,
+		OnAction = ChoGGi.ComFuncs.GetMaterialProperties,
 	}
 
 	c = c + 1
@@ -47,9 +44,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".View All Entities",
 		ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
 		RolloverText = S[302535920001492--[[Loads a blank map and places all entities in it.--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.ViewAllEntities()
-		end,
+		OnAction = ChoGGi.MenuFuncs.ViewAllEntities,
 	}
 
 	c = c + 1
@@ -67,9 +62,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Set Particles",
 		ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 		RolloverText = S[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.SetParticles()
-		end,
+		OnAction = ChoGGi.ComFuncs.SetParticles,
 	}
 
 	c = c + 1
@@ -92,9 +85,7 @@ function OnMsg.ClassesGenerate()
 				S[302535920001311--[[Show DTM slots display--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.ComFuncs.OpenInDTMSlotsDlg()
-		end,
+		OnAction = ChoGGi.ComFuncs.OpenInDTMSlotsDlg,
 	}
 
 	c = c + 1
@@ -103,15 +94,13 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Attach Spots Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/ShowAll.tga",
 		RolloverText = function()
-			local sel = SelectedObj
+			local obj = SelectedObj
 			return ChoGGi.ComFuncs.SettingState(
-				sel and sel.ChoGGi_ShowAttachSpots,
+				obj and obj.ChoGGi_ShowAttachSpots,
 				S[302535920000450--[[Toggle showing attachment spots on selected object.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.ComFuncs.AttachSpots_Toggle()
-		end,
+		OnAction = ChoGGi.ComFuncs.AttachSpots_Toggle,
 	}
 
 	c = c + 1
@@ -120,9 +109,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Attach Spots List",
 		ActionIcon = "CommonAssets/UI/Menu/ListCollections.tga",
 		RolloverText = S[302535920001445--[[Shows list of attaches for use with .ent files.--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.ExamineEntSpots()
-		end,
+		OnAction = ChoGGi.ComFuncs.ExamineEntSpots,
 	}
 
 	c = c + 1
@@ -156,9 +143,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Object Cloner",
 		ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",
 		RolloverText = S[302535920000456--[[Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.ObjectCloner()
-		end,
+		OnAction = ChoGGi.MenuFuncs.ObjectCloner,
 		ActionShortcut = "Shift-Q",
 		ActionBindable = true,
 	}
@@ -169,9 +154,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Anim State Set",
 		ActionIcon = "CommonAssets/UI/Menu/UnlockCamera.tga",
 		RolloverText = S[302535920000458--[[Make object dance on command.--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.SetAnimState()
-		end,
+		OnAction = ChoGGi.ComFuncs.SetAnimState,
 	}
 
 	c = c + 1
@@ -180,22 +163,16 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Anim Debug Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/CameraEditor.tga",
 		RolloverText = function()
-			local sel = SelectedObj
-			if sel then
-				return ChoGGi.ComFuncs.SettingState(
-					sel.ChoGGi_ShowAnimDebug,
-					S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]]
-				)
-			else
-				return ChoGGi.ComFuncs.SettingState(
-					ChoGGi.Temp.ShowAnimDebug,
-					S[302535920000460]
-				)
-			end
+			local obj = SelectedObj
+			return obj and ChoGGi.ComFuncs.SettingState(
+				obj.ChoGGi_ShowAnimDebug,
+				S[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]]
+			) or ChoGGi.ComFuncs.SettingState(
+				ChoGGi.Temp.ShowAnimDebug,
+				S[302535920000460]
+			)
 		end,
-		OnAction = function()
-			ChoGGi.ComFuncs.ShowAnimDebug_Toggle()
-		end,
+		OnAction = ChoGGi.ComFuncs.ShowAnimDebug_Toggle,
 	}
 
 	c = c + 1
@@ -204,9 +181,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Object Manipulator",
 		ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
 		RolloverText = S[302535920000472--[[Manipulate objects (selected or under mouse cursor)--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.OpenInObjectEditorDlg()
-		end,
+		OnAction = ChoGGi.ComFuncs.OpenInObjectEditorDlg,
 		ActionShortcut = "F5",
 		ActionBindable = true,
 	}
@@ -217,9 +192,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Object Spawner",
 		ActionIcon = "CommonAssets/UI/Menu/add_water.tga",
 		RolloverText = S[302535920000476--[["Shows list of objects, and spawns at mouse cursor."--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.EntitySpawner()
-		end,
+		OnAction = ChoGGi.ComFuncs.EntitySpawner,
 		ActionShortcut = "Ctrl-Shift-S",
 		ActionBindable = true,
 	}
@@ -253,18 +226,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Examine Object",
 		ActionIcon = "CommonAssets/UI/Menu/PlayerInfo.tga",
 		RolloverText = S[302535920000492--[[Opens the object examiner for the selected or moused-over obj.--]]],
-		OnAction = function()
-			local obj = ChoGGi.ComFuncs.SelObject()
-			if obj then
-				ChoGGi.ComFuncs.OpenInExamineDlg(obj)
-				return
-			end
-			-- if in main menu then open examine and console
-			if not Dialogs.HUD then
-				ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop)
-				ChoGGi.ComFuncs.ToggleConsole(true)
-			end
-		end,
+		OnAction = ChoGGi.MenuFuncs.ExamineObject,
 		ActionShortcut = "F4",
 		ActionBindable = true,
 	}
@@ -284,9 +246,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Toggle Object Collision",
 		ActionIcon = "CommonAssets/UI/Menu/road_type.tga",
 		RolloverText = S[302535920000582--[[Select an object and activate this to toggle collision (if you have a rover stuck in a dome).--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.CollisionsObject_Toggle()
-		end,
+		OnAction = ChoGGi.ComFuncs.CollisionsObject_Toggle,
 	}
 
 	c = c + 1
@@ -295,9 +255,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Object Flags",
 		ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
 		RolloverText = S[302535920001447--[[Shows list of flags set for selected object.--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.ObjFlagsList()
-		end,
+		OnAction = ChoGGi.ComFuncs.ObjFlagsList,
 	}
 
 	local str_Debug_Grids = "ECM.Debug.Grids"
@@ -316,9 +274,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Toggle Flight Grid",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleCollisions.tga",
 		RolloverText = S[302535920001298--[[Shows a square grid with terrain/objects shape.--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.FlightGrid_Toggle()
-		end,
+		OnAction = ChoGGi.MenuFuncs.FlightGrid_Toggle,
 		ActionShortcut = "Shift-F2",
 		ActionBindable = true,
 	}
@@ -329,9 +285,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Show Grid Disable",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 		RolloverText = S[302535920001329--[[Hide the white ground grids.--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.PostProcGrids()
-		end,
+		OnAction = ChoGGi.MenuFuncs.PostProcGrids,
 		ActionSortKey = "-1Show Grid Disable",
 	}
 
@@ -341,9 +295,8 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Show Grid Square",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 		RolloverText = S[302535920000725--[[Square (use Disable to hide).--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.PostProcGrids("grid")
-		end,
+		OnAction = ChoGGi.MenuFuncs.PostProcGrids,
+		grid_mask = "grid",
 		ActionSortKey = "0Show Grid Square",
 	}
 
@@ -353,9 +306,8 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Show Grid 45 Square",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 		RolloverText = S[302535920001325--[[Square 45 (use Disable to hide).--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.PostProcGrids("grid45")
-		end,
+		OnAction = ChoGGi.MenuFuncs.PostProcGrids,
+		grid_mask = "grid45",
 		ActionSortKey = "0Show Grid 45 Square",
 	}
 
@@ -365,9 +317,8 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Show Grid Hex",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 		RolloverText = S[302535920001327--[[Hex (use Disable to hide).--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.PostProcGrids("hexgrid")
-		end,
+		OnAction = ChoGGi.MenuFuncs.PostProcGrids,
+		grid_mask = "hexgrid",
 		ActionSortKey = "0Show Grid Hex",
 	}
 
@@ -394,9 +345,8 @@ function OnMsg.ClassesGenerate()
 				S[302535920001418--[[Sets the size of the grid...--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.debug_build_grid_settings("DebugGridSize")
-		end,
+		OnAction = ChoGGi.MenuFuncs.debug_build_grid_settings,
+		setting_mask = "DebugGridSize",
 		ActionSortKey = "9Follow Mouse Grid Size",
 	}
 
@@ -411,9 +361,8 @@ function OnMsg.ClassesGenerate()
 				S[302535920001420--[[How transparent the grid is.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.debug_build_grid_settings("DebugGridOpacity")
-		end,
+		OnAction = ChoGGi.MenuFuncs.debug_build_grid_settings,
+		setting_mask = "DebugGridOpacity",
 		ActionSortKey = "9Follow Mouse Grid Trans",
 	}
 
@@ -438,9 +387,9 @@ function OnMsg.ClassesGenerate()
 				S[302535920001176--[[Toggle showing FX debug info in console.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFX",S[302535920001175])
-		end,
+		OnAction = ChoGGi.MenuFuncs.DebugFX_Toggle,
+		setting_name = "DebugFX",
+		setting_msg = S[302535920001175],
 	}
 
 	c = c + 1
@@ -454,9 +403,9 @@ function OnMsg.ClassesGenerate()
 				S[302535920001176--[[Toggle showing FX debug info in console.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXParticles",S[302535920001184])
-		end,
+		OnAction = ChoGGi.MenuFuncs.DebugFX_Toggle,
+		setting_name = "DebugFXParticles",
+		setting_msg = S[302535920001184],
 	}
 
 	c = c + 1
@@ -470,9 +419,9 @@ function OnMsg.ClassesGenerate()
 				S[302535920001176--[[Toggle showing FX debug info in console.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.DebugFX_Toggle("DebugFXSound",S[302535920001368])
-		end,
+		OnAction = ChoGGi.MenuFuncs.DebugFX_Toggle,
+		setting_name = "DebugFXSound",
+		setting_msg = S[302535920001368],
 	}
 
 	local str_Debug_PathMarkers = "ECM.Debug.Path Markers"
@@ -491,9 +440,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Game Time",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = S[302535920000462--[[Maps paths in real time--]]] .. " " .. S[302535920000874--[[(see "Path Markers" to mark more than one at a time).--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetPathMarkersGameTime(nil,true)
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetPathMarkersGameTime,
 		ActionShortcut = "Ctrl-Numpad .",
 		ActionBindable = true,
 	}
@@ -504,9 +451,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Path Markers",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = S[302535920000468--[[Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetPathMarkers()
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetPathMarkers,
 		ActionShortcut = "Ctrl-Numpad 0",
 		ActionBindable = true,
 	}
@@ -531,9 +476,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Delete All Of Selected Object",
 		ActionIcon = "CommonAssets/UI/Menu/delete_objects.tga",
 		RolloverText = S[302535920000488--[[Will ask for confirmation beforehand (will not delete domes).--]]],
-		OnAction = function()
-			ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
-		end,
+		OnAction = ChoGGi.MenuFuncs.DeleteAllSelectedObjects,
 		ActionSortKey = "99.Delete All Of Selected Object",
 	}
 
@@ -555,9 +498,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = S[302535920000490--[["Deletes selected object or object under mouse cursor (most objs, not all).
 
 Use Editor Mode and mouse drag to select multiple objects for deletion."--]]],
-		OnAction = function()
-			ChoGGi.ComFuncs.DeleteObject()
-		end,
+		OnAction = ChoGGi.ComFuncs.DeleteObject,
 		ActionShortcut = "Ctrl-Alt-Shift-D",
 		ActionBindable = true,
 		ActionSortKey = "99.Delete Object(s)",

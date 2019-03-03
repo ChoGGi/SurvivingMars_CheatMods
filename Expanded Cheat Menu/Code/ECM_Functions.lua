@@ -7,6 +7,7 @@ local type,pairs,next = type,pairs,next
 local PropObjGetProperty = PropObjGetProperty
 local Sleep = Sleep
 local IsValid = IsValid
+local IsKindOf = IsKindOf
 local IsValidEntity = IsValidEntity
 local CreateRealTimeThread = CreateRealTimeThread
 
@@ -583,7 +584,14 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj,parent)
-		obj = obj or ChoGGi.ComFuncs.SelObject()
+		-- if fired from action menu
+		if IsKindOf(obj,"XAction") then
+			obj = ChoGGi.ComFuncs.SelObject()
+			parent = nil
+		else
+			obj = obj or ChoGGi.ComFuncs.SelObject()
+		end
+
 		if not obj then
 			return
 		end
@@ -635,6 +643,11 @@ function OnMsg.ClassesGenerate()
 		})
 	end
 	function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(parent)
+		-- if fired from action menu
+		if IsKindOf(parent,"XAction") then
+			parent = nil
+		end
+
 		return ChoGGi_DTMSlotsDlg:new({}, terminal.desktop,{
 			parent = parent,
 		})
@@ -651,7 +664,18 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.ComFuncs.EntitySpawner(obj,skip_msg,list_type,planning)
-		local ChoGGi = ChoGGi
+		-- if fired from action menu
+		if IsKindOf(obj,"XAction") then
+			obj = nil
+			skip_msg = nil
+			list_type = nil
+			if obj.setting_planning then
+				planning = true
+			else
+				planning = nil
+			end
+		end
+
 		local const = const
 
 		local title = planning and S[302535920000862--[[Object Planner--]]] or S[302535920000475--[[Entity Spawner--]]]
@@ -747,9 +771,14 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.ComFuncs.SetAnimState(obj)
-		local ChoGGi = ChoGGi
-		obj = obj or ChoGGi.ComFuncs.SelObject()
-		if not obj then
+		-- if fired from action menu
+		if IsKindOf(obj,"XAction") then
+			obj = ChoGGi.ComFuncs.SelObject()
+		else
+			obj = obj or ChoGGi.ComFuncs.SelObject()
+		end
+
+		if not IsValid(obj) then
 			return
 		end
 
@@ -865,8 +894,14 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.ComFuncs.SetParticles(obj)
+		-- if fired from action menu
+		if IsKindOf(obj,"XAction") then
+			obj = ChoGGi.ComFuncs.SelObject()
+		else
+			obj = obj or ChoGGi.ComFuncs.SelObject()
+		end
+
 		local name = S[302535920000129--[[Set--]]] .. " " .. S[302535920001184--[[Particles--]]]
-		obj = obj or ChoGGi.ComFuncs.SelObject()
 		if not obj or obj and not obj:IsKindOf("FXObject") then
 			MsgPopup(
 				S[302535920000027--[[Nothing selected--]]] .. ": " .. "FXObject",
@@ -885,7 +920,9 @@ function OnMsg.ClassesGenerate()
 
 		local default = Trans(1000121--[[Default--]])
 
-		local ItemList = {{text = " " .. default,value = default}}
+		local ItemList = {
+			{text = " " .. default,value = default},
+		}
 		local c = 1
 		local particles = FXLists.ActionFXParticles
 		for i = 1, #particles do
@@ -1185,7 +1222,14 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 --~ list = ChoGGi.ComFuncs.TableConcat(list,"\n")
 --~ ChoGGi.ComFuncs.Dump(list,nil,nil,"ent")
 		function ChoGGi.ComFuncs.ExamineEntSpots(obj,parent_or_ret)
-			obj = obj or ChoGGi.ComFuncs.SelObject()
+			-- if fired from action menu
+			if IsKindOf(obj,"XAction") then
+				obj = ChoGGi.ComFuncs.SelObject()
+				parent_or_ret = nil
+			else
+				obj = obj or ChoGGi.ComFuncs.SelObject()
+			end
+
 			if not IsValid(obj) then
 				return
 			end
@@ -1366,7 +1410,14 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 		end
 
 		function ChoGGi.ComFuncs.ObjFlagsList(obj,parent_or_ret)
-			obj = obj or ChoGGi.ComFuncs.SelObject()
+			-- if fired from action menu
+			if IsKindOf(obj,"XAction") then
+				obj = ChoGGi.ComFuncs.SelObject()
+				parent_or_ret = nil
+			else
+				obj = obj or ChoGGi.ComFuncs.SelObject()
+			end
+
 			if not IsValid(obj) then
 				return
 			end
@@ -1428,7 +1479,14 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 			if not UICity then
 				return
 			end
-			obj = obj or ChoGGi.ComFuncs.SelObject()
+
+			-- if fired from action menu
+			if IsKindOf(obj,"XAction") then
+				obj = ChoGGi.ComFuncs.SelObject()
+				parent_or_ret = nil
+			else
+				obj = obj or ChoGGi.ComFuncs.SelObject()
+			end
 
 			if IsValid(obj) then
 				obj = obj:GetEntity()
@@ -2290,9 +2348,16 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		ChoGGi.ComFuncs.AttachSpots_Clear = AttachSpots_Clear
 
 		function ChoGGi.ComFuncs.AttachSpots_Toggle(obj,params)
+			-- if fired from action menu
+			if IsKindOf(obj,"XAction") then
+				obj = ChoGGi.ComFuncs.SelObject()
+				params = {}
+			else
+				obj = obj or ChoGGi.ComFuncs.SelObject()
+			end
+
 			params = params or {}
 
-			obj = obj or ChoGGi.ComFuncs.SelObject()
 			local is_valid = IsValid(obj)
 			if not is_valid or is_valid and not IsValidEntity(obj:GetEntity())
 				or (AttachSpots_Clear(obj) and not params.skip_return) then
@@ -2372,74 +2437,82 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		end
 	end -- do
 
-	local function AnimDebug_Show(obj,colour)
-		local text = PlaceObject("ChoGGi_OText")
-		text:SetColor(colour or green)
-		text:SetFontId(UIL.GetFontID(ChoGGi.font .. ", 14, bold, aa"))
-		text:SetCenter(true)
---~ 			local orient = PlaceObject("ChoGGi_OOrientation")
+	do -- ShowAnimDebug_Toggle
+		local function AnimDebug_Show(obj,colour)
+			local text = PlaceObject("ChoGGi_OText")
+			text:SetColor(colour or green)
+			text:SetFontId(UIL.GetFontID(ChoGGi.font .. ", 14, bold, aa"))
+			text:SetCenter(true)
+	--~ 			local orient = PlaceObject("ChoGGi_OOrientation")
 
-		-- so we can delete them easy
---~ 			orient.ChoGGi_AnimDebug = true
-		text.ChoGGi_AnimDebug = true
-		obj:Attach(text, 0)
---~ 			obj:Attach(orient, 0)
-		text:SetAttachOffset(point(0,0,ObjectHierarchyBBox(obj,const.efCollision):sizez() + 100))
-		CreateGameTimeThread(function()
-			local str = "%d. %s\n"
-			while IsValid(text) do
-				text:SetText(str:format(1,obj:GetAnimDebug(1)))
-				WaitNextFrame()
-			end
-		end)
-	end
-
-	local function AnimDebug_Hide(obj)
-		obj:ForEachAttach(function(a)
-			if a.ChoGGi_AnimDebug then
-				a:delete()
-			end
-		end)
-	end
-
-	local function AnimDebug_ShowAll(cls)
-		local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
-		for i = 1, #objs do
-			AnimDebug_Show(objs[i])
+			-- so we can delete them easy
+	--~ 			orient.ChoGGi_AnimDebug = true
+			text.ChoGGi_AnimDebug = true
+			obj:Attach(text, 0)
+	--~ 			obj:Attach(orient, 0)
+			text:SetAttachOffset(point(0,0,ObjectHierarchyBBox(obj,const.efCollision):sizez() + 100))
+			CreateGameTimeThread(function()
+				local str = "%d. %s\n"
+				while IsValid(text) do
+					text:SetText(str:format(1,obj:GetAnimDebug(1)))
+					WaitNextFrame()
+				end
+			end)
 		end
-	end
 
-	local function AnimDebug_HideAll(cls)
-		local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
-		for i = 1, #objs do
-			AnimDebug_Hide(objs[i])
+		local function AnimDebug_Hide(obj)
+			obj:ForEachAttach(function(a)
+				if a.ChoGGi_AnimDebug then
+					a:delete()
+				end
+			end)
 		end
-	end
 
-	function ChoGGi.ComFuncs.ShowAnimDebug_Toggle(obj)
-		local obj = obj or SelectedObj
-		if obj then
-			if obj.ChoGGi_ShowAnimDebug then
-				obj.ChoGGi_ShowAnimDebug = nil
-				AnimDebug_Hide(obj)
+		local function AnimDebug_ShowAll(cls)
+			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+			for i = 1, #objs do
+				AnimDebug_Show(objs[i])
+			end
+		end
+
+		local function AnimDebug_HideAll(cls)
+			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+			for i = 1, #objs do
+				AnimDebug_Hide(objs[i])
+			end
+		end
+
+		function ChoGGi.ComFuncs.ShowAnimDebug_Toggle(obj)
+			-- if fired from action menu
+			if IsKindOf(obj,"XAction") then
+				obj = ChoGGi.ComFuncs.SelObject()
 			else
-				obj.ChoGGi_ShowAnimDebug = true
-				AnimDebug_Show(obj,white)
+				obj = obj or ChoGGi.ComFuncs.SelObject()
 			end
-		else
-			local ChoGGi = ChoGGi
-			ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
-			if ChoGGi.Temp.ShowAnimDebug then
-				AnimDebug_ShowAll("Building")
-				AnimDebug_ShowAll("Unit")
-				AnimDebug_ShowAll("CargoShuttle")
+
+			if obj then
+				if obj.ChoGGi_ShowAnimDebug then
+					obj.ChoGGi_ShowAnimDebug = nil
+					AnimDebug_Hide(obj)
+				else
+					obj.ChoGGi_ShowAnimDebug = true
+					AnimDebug_Show(obj,white)
+				end
 			else
-				AnimDebug_HideAll("Building")
-				AnimDebug_HideAll("Unit")
-				AnimDebug_HideAll("CargoShuttle")
+				local ChoGGi = ChoGGi
+				ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
+				if ChoGGi.Temp.ShowAnimDebug then
+					AnimDebug_ShowAll("Building")
+					AnimDebug_ShowAll("Unit")
+					AnimDebug_ShowAll("CargoShuttle")
+				else
+					AnimDebug_HideAll("Building")
+					AnimDebug_HideAll("Unit")
+					AnimDebug_HideAll("CargoShuttle")
+				end
 			end
 		end
-	end
+	end -- do
 
 	do -- ChangeSurfaceSignsToMaterials
 		local function ChangeEntity(cls,entity,random)

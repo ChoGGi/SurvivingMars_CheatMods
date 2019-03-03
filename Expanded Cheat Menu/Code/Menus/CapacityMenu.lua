@@ -2,6 +2,7 @@
 
 function OnMsg.ClassesGenerate()
 	local Trans = ChoGGi.ComFuncs.Translate
+	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -36,12 +37,11 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Worker Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
-			local text = S[302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".workers",
-				text
-			) or text
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".workers",
+				S[302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]]
+			) or S[302535920000568]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetWorkerCapacity,
 		ActionShortcut = "Ctrl-Shift-W",
@@ -54,12 +54,11 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Building Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
-			local text = S[302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".capacity",
-				text
-			) or text
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".capacity",
+				S[302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]]
+			) or S[302535920000570]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetBuildingCapacity,
 		ActionShortcut = "Ctrl-Shift-C",
@@ -72,12 +71,11 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Building Visitor Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
-			local text = S[302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]]
-			local sel = ChoGGi.ComFuncs.SelObject()
-			return sel and ChoGGi.ComFuncs.SettingState(
-				"ChoGGi.UserSettings.BuildingSettings." .. (sel.template_name or sel.class) .. ".visitors",
-				text
-			) or text
+			local obj = ChoGGi.ComFuncs.SelObject()
+			return obj and ChoGGi.ComFuncs.SettingState(
+				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".visitors",
+				S[302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]]
+			) or S[302535920000572]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetVisitorCapacity,
 		ActionShortcut = "Ctrl-Shift-V",
@@ -95,9 +93,8 @@ function OnMsg.ClassesGenerate()
 				S[302535920000574--[[Change universal storage depot capacity.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetStorageDepotSize("StorageUniversalDepot")
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetStorageDepotSize,
+		bld_id = "StorageUniversalDepot",
 	}
 
 	c = c + 1
@@ -111,9 +108,8 @@ function OnMsg.ClassesGenerate()
 				S[302535920000576--[[Change other storage depot capacity.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetStorageDepotSize("StorageOtherDepot")
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetStorageDepotSize,
+		bld_id = "StorageOtherDepot",
 	}
 
 	c = c + 1
@@ -127,9 +123,8 @@ function OnMsg.ClassesGenerate()
 				S[302535920000578--[[Change waste storage depot capacity.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetStorageDepotSize("StorageWasteDepot")
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetStorageDepotSize,
+		bld_id = "StorageWasteDepot",
 	}
 
 	c = c + 1
@@ -143,9 +138,8 @@ function OnMsg.ClassesGenerate()
 				S[302535920000580--[[Change mechanized depot storage capacity.--]]]
 			)
 		end,
-		OnAction = function()
-			ChoGGi.MenuFuncs.SetStorageDepotSize("StorageMechanizedDepot")
-		end,
+		OnAction = ChoGGi.MenuFuncs.SetStorageDepotSize,
+		bld_id = "StorageMechanizedDepot",
 	}
 
 end
