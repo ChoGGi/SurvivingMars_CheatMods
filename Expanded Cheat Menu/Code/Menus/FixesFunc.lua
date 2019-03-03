@@ -576,7 +576,7 @@ function OnMsg.ClassesGenerate()
 			RepairBorkedObjects(g_BrokenSupplyGridElements.water)
 
 			MsgPopup(
-				S[302535920000157--[[Cables & Pipes--]]],": ",S[302535920000607--[[Instant Repair--]]],
+				S[302535920000157--[[Cables & Pipes--]]] .. ": " .. S[302535920000607--[[Instant Repair--]]],
 				Trans(4493--[[All--]])
 			)
 		end

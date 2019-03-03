@@ -22,7 +22,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Change Entity",
 		ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
 		RolloverText = S[302535920000683--[[Changes the entity of selected object, all of same type or all of same type in selected object's dome.--]]],
-		OnAction = ChoGGi.MenuFuncs.SetEntity,
+		OnAction = ChoGGi.MenuFuncs.ChangeEntity,
 	}
 
 	c = c + 1

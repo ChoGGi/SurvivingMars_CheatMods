@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local default_icon = "UI/Icons/Sections/spaceship.tga"
 local type = type
 
 function OnMsg.ClassesGenerate()
@@ -39,15 +38,12 @@ function OnMsg.ClassesGenerate()
 
 				c = c + 1
 				ItemList[c] = {
-					text = existing and (name .. "%s *") or name,
+					text = existing and (name .. " (" .. S[302535920000201--[[Active--]]] .. ")") or name,
 					value = rival.id,
 					rival = rival,
 					existing = existing,
-					hint = S[302535920001461--[[* means it's an active rival you can remove.--]]]
-						.. "\n\n"
-						.. Trans(rival.description)
-						.. "\n\n"
-						.. TableConcat(initial_res),
+					hint = name .. "\n\n"
+						.. Trans(rival.description) .. "\n\n" .. TableConcat(initial_res),
 				}
 			end
 		end
@@ -107,7 +103,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = ItemList,
 			title = Trans(11034--[[Rival Colonies--]]),
-			hint = S[302535920001460--[[Add/remove rival colonies.--]]] .. "\n" .. S[302535920001461--[[* means it's an active rival you can remove.--]]],
+			hint = S[302535920001460--[[Add/remove rival colonies.--]]],
 			multisel = true,
 			custom_type = 3,
 			check = {
@@ -134,13 +130,18 @@ function OnMsg.ClassesGenerate()
 
 		for i = 1, #challenges do
 			local c = challenges[i]
+			local current
+			if c.id == g_CurrentMissionParams.challenge_id then
+				current = true
+			end
 			ItemList[i] = {
 				text = Trans(c.title),
 				value = c.id,
 				hint = Trans(c.description) .. "\n\n"
 					.. S[302535920001415--[[Sols to Complete: %s--]]]:format(c.time_completed / DayDuration)
 					.. "\n"
-					.. Trans(T{10489--[[<newline>Perfect time: <countdown2>--]],countdown2 = c.time_perfected / DayDuration}),
+					.. Trans(T{10489--[[<newline>Perfect time: <countdown2>--]],countdown2 = c.time_perfected / DayDuration})
+					.. (current and "\n\n" .. S[302535920000106--[[Current--]]] or ""),
 			}
 		end
 
@@ -166,6 +167,7 @@ function OnMsg.ClassesGenerate()
 			local _,c = debug.getlocal(thread,1,1)
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(c.title) .. ", " .. c.id
 		end
+
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
@@ -186,6 +188,7 @@ function OnMsg.ClassesGenerate()
 			-- no sense in showing done ones
 			if not SponsorGoalProgress[i].state then
 				local reward = sponsor["reward_effect_" .. i]
+
 				ItemList[#ItemList+1] = {
 					text = i .. " " .. sponsor["sponsor_goal_" .. i],
 					value = i,
@@ -193,7 +196,7 @@ function OnMsg.ClassesGenerate()
 						.. S[302535920001409--[[Goal--]]] .. ": "
 						.. Trans(GetGoalDescription(sponsor, i)) .. "\n"
 						.. Trans(128569337702--[[Reward:--]]) .. " "
-						.. Trans(T(reward.Description, reward)),
+						.. Trans(T{reward.Description, reward}),
 					reward = reward,
 					goal = SponsorGoalsMap[sponsor["sponsor_goal_" .. i]],
 				}
@@ -251,23 +254,23 @@ function OnMsg.ClassesGenerate()
 		MsgPopup(S[302535920001160--[["%s
 	Damage? Total, sir.
 	It's what we call a global killer.
-	The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."--]]]:format(ChoGGi.UserSettings.MeteorHealthDamage),
-			Trans(547--[[Colonists--]]),
+	The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MeteorHealthDamage)),
+			S[302535920000708--[[Meteor Damage--]]],
 			"UI/Icons/Notifications/meteor_storm.tga",
 			true
 		)
 	end
 
-	function ChoGGi.MenuFuncs.ChangeSponsor()
+	function ChoGGi.MenuFuncs.SetSponsor()
 		local Presets = Presets
 
 		local ItemList = {}
 		local c = 0
 		local objs = Presets.MissionSponsorPreset.Default or ""
 		for i = 1, #objs do
-			local obj = objs[i]
-			if obj.id ~= "random" and obj.id ~= "None" then
-				local descr = GetSponsorDescr(obj, false, "include rockets", true, true)
+			local spon = objs[i]
+			if spon.id ~= "random" and spon.id ~= "None" then
+				local descr = GetSponsorDescr(spon, false, "include rockets", true, true)
 				local stats
 				-- the one we want is near the end, but there's also a blank item below it
 				for j = 1, #descr do
@@ -278,9 +281,10 @@ function OnMsg.ClassesGenerate()
 
 				c = c + 1
 				ItemList[c] = {
-					text = Trans(obj.display_name),
-					value = obj.id,
-					hint = Trans(T(obj.effect,stats[2]))
+					text = Trans(spon.display_name),
+					value = spon.id,
+					hint = Trans(T(spon.effect,stats[2]))
+						.. (spon.save_in ~= "" and "\n\nsave_in: " .. spon.save_in or ""),
 				}
 			end
 		end
@@ -308,8 +312,7 @@ function OnMsg.ClassesGenerate()
 
 					MsgPopup(
 						S[302535920001161--[[Sponsor for this save is now %s--]]]:format(choice[1].text),
-						S[302535920001162--[[Sponsor--]]],
-						default_icon
+						S[302535920000712--[[Set Sponsor--]]]
 					)
 					break
 				end
@@ -332,9 +335,9 @@ function OnMsg.ClassesGenerate()
 		local c = 0
 		local objs = Presets.MissionSponsorPreset.Default or ""
 		for i = 1, #objs do
-			local obj = objs[i]
-			if obj.id ~= "random" and obj.id ~= "None" then
-				local descr = GetSponsorDescr(obj, false, "include rockets", true, true)
+			local spon = objs[i]
+			if spon.id ~= "random" and spon.id ~= "None" then
+				local descr = GetSponsorDescr(spon, false, "include rockets", true, true)
 				local stats
 				-- the one we want is near the end, but there's also a blank item below it
 				for j = 1, #descr do
@@ -343,12 +346,14 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 
+				local user_set = ChoGGi.UserSettings["Sponsor" .. spon.id]
 				c = c + 1
 				ItemList[c] = {
-					text = Trans(obj.display_name),
-					value = obj.id,
-					hint = Trans(T(obj.effect,stats[2])) .. "\n\n" .. S[302535920001165--[[Enabled Status--]]]
-					.. ": " .. ChoGGi.UserSettings["Sponsor" .. obj.id]
+					text = Trans(spon.display_name),
+					value = spon.id,
+					hint = Trans(T(spon.effect,stats[2])) .. "\n\n" .. S[302535920001165--[[Enabled Status--]]]
+						.. (user_set and ": " .. user_set or " false")
+						.. (spon.save_in ~= "" and "\n\nsave_in: " .. spon.save_in or ""),
 				}
 			end
 		end
@@ -387,15 +392,15 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(#choice,S[302535920001166--[[Bonuses--]]]),
-				S[302535920001162--[[Sponsor--]]]
+				ChoGGi.ComFuncs.SettingState(#choice),
+				S[302535920000714--[[Set Bonuses Sponsor--]]]
 			)
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = S[302535920001162--[[Sponsor--]]] .. " " .. S[302535920001166--[[Bonuses--]]],
+			title = S[302535920000714--[[Set Bonuses Sponsor--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetMissionSponsor().display_name) .. "\n\n" .. S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]],
 			multisel = true,
 			check = {
@@ -411,20 +416,21 @@ function OnMsg.ClassesGenerate()
 		}
 	end
 
-	function ChoGGi.MenuFuncs.ChangeCommander()
+	function ChoGGi.MenuFuncs.SetCommander()
 		local Presets = Presets
 		local g_CurrentMissionParams = g_CurrentMissionParams
 		local UICity = UICity
 
 		local ItemList = {}
+
 		local objs = Presets.CommanderProfilePreset.Default or ""
 		for i = 1, #objs do
-			local obj = objs[i]
-			if obj.id ~= "random" and obj.id ~= "None" then
+			local comm = objs[i]
+			if comm.id ~= "random" and comm.id ~= "None" then
 				ItemList[#ItemList+1] = {
-					text = Trans(obj.display_name),
-					value = obj.id,
-					hint = Trans(obj.effect)
+					text = Trans(comm.display_name),
+					value = comm.id,
+					hint = Trans(comm.effect)
 				}
 			end
 		end
@@ -452,8 +458,7 @@ function OnMsg.ClassesGenerate()
 
 					MsgPopup(
 						S[302535920001173--[[Commander for this save is now %s.--]]]:format(choice[1].text),
-						S[302535920001174--[[Commander--]]],
-						default_icon
+						S[302535920000716--[[Set Commander--]]]
 					)
 					break
 				end
@@ -474,12 +479,16 @@ function OnMsg.ClassesGenerate()
 		local ItemList = {}
 		local objs = Presets.CommanderProfilePreset.Default or ""
 		for i = 1, #objs do
-			local obj = objs[i]
-			if obj.id ~= "random" and obj.id ~= "None" then
+			local comm = objs[i]
+			if comm.id ~= "random" and comm.id ~= "None" then
+
+				local user_set = ChoGGi.UserSettings["Commander" .. comm.id]
 				ItemList[#ItemList+1] = {
-					text = Trans(obj.display_name),
-					value = obj.id,
-					hint = Trans(obj.effect) .. "\n\n" .. S[302535920001165--[[Enabled Status--]]] .. ": " .. ChoGGi.UserSettings["Commander" .. obj.id],
+					text = Trans(comm.display_name),
+					value = comm.id,
+					hint = Trans(comm.effect) .. "\n\n"
+						.. S[302535920001165--[[Enabled Status--]]]
+						.. (user_set and ": " .. user_set or " false"),
 				}
 			end
 		end
@@ -518,15 +527,15 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(#choice,S[302535920001166--[[Bonuses--]]]),
-				S[302535920001174--[[Commander--]]]
+				ChoGGi.ComFuncs.SettingState(#choice),
+				S[302535920000718--[[Set Bonuses Commander--]]]
 			)
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = S[302535920001174--[[Commander--]]] .. " " .. S[302535920001166--[[Bonuses--]]],
+			title = S[302535920000718--[[Set Bonuses Commander--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetCommanderProfile().display_name),
 			multisel = true,
 			check = {
@@ -591,8 +600,7 @@ function OnMsg.ClassesGenerate()
 
 				MsgPopup(
 					choice[1].text,
-					S[302535920001177--[[Logo--]]],
-					default_icon
+					S[302535920000710--[[Change Logo--]]]
 				)
 			end
 		end
@@ -680,9 +688,10 @@ function OnMsg.ClassesGenerate()
 			ItemList[c] = {
 				text = Trans(def.display_name),
 				value = id,
-				hint = Trans(def.description) .. "\n" .. Trans(def.flavor) .. "\n"
+				hint = Trans(def.description) .. "\n"
 					.. Trans(3491--[[Challenge Mod (%)--]]) .. ": " .. def.challenge_mod .. "\n\n"
-					.. S[302535920001357--[[Exclusion List--]]] .. ": " .. (def.exclusionlist or ""),
+					.. (def.exclusionlist and S[302535920001357--[[Exclusion List--]]] .. ": " .. def.exclusionlist or "")
+					.. "\n".. Trans(def.flavor),
 			}
 		end
 
@@ -722,7 +731,7 @@ function OnMsg.ClassesGenerate()
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(#choice,S[302535920000129--[[Set--]]]),
-				S[302535920001181--[[Rules--]]],
+				Trans(8800--[[Game Rules--]]),
 				"UI/Icons/Sections/workshifts.tga"
 			)
 		end

@@ -92,7 +92,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				S[302535920001093--[[Toggled: %s pinnable objects.--]]]:format(#choice),
-				S[302535920001092--[[Pins--]]]
+				S[302535920000686--[[Auto Unpin Objects--]]]
 			)
 		end
 
@@ -129,8 +129,8 @@ function OnMsg.ClassesGenerate()
 			end
 		end)
 		MsgPopup(
-			S[302535920001102--[[Cleaned all--]]],
-			S[302535920001103--[[Objects--]]]
+			"true",
+			S[302535920000688--[[Clean All Objects--]]]
 		)
 	end
 
@@ -147,37 +147,38 @@ function OnMsg.ClassesGenerate()
 		end)
 
 		MsgPopup(
-			S[302535920001104--[[Fixed all--]]],
-			S[302535920001103--[[Objects--]]]
+			"true",
+			S[302535920000690--[[Fix All Objects--]]]
 		)
 	end
 
 	function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
-		local ChoGGi = ChoGGi
 		const.ExplorationQueueMaxSize = ChoGGi.ComFuncs.ValueRetOpp(const.ExplorationQueueMaxSize,100,ChoGGi.Consts.ExplorationQueueMaxSize)
 		ChoGGi.ComFuncs.SetSavedSetting("ExplorationQueueMaxSize",const.ExplorationQueueMaxSize)
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920001124--[[%s: scans at a time.--]]]:format(ChoGGi.UserSettings.ExplorationQueueMaxSize),
-			S[302535920001125--[[Scanner--]]],
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ExplorationQueueMaxSize),
+			S[302535920000700--[[Scanner Queue Larger--]]],
 			"UI/Icons/Notifications/scan.tga"
 		)
 	end
 
 --~ 	SetTimeFactor(1000) = normal speed
 	-- use GetTimeFactor() to check time for changing it so it can be paused?
-	do -- SetGameSpeed
+	function ChoGGi.MenuFuncs.SetGameSpeed()
+		local hint_str = S[302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>--]]]
 		local ItemList = {
-			{text = Trans(1000121--[[Default--]]),value = 1},
-			{text = S[302535920001126--[[Double--]]],value = 2},
-			{text = S[302535920001127--[[Triple--]]],value = 3},
-			{text = S[302535920001128--[[Quadruple--]]],value = 4},
-			{text = S[302535920001129--[[Octuple--]]],value = 8},
-			{text = S[302535920001130--[[Sexdecuple--]]],value = 16},
-			{text = S[302535920001131--[[Duotriguple--]]],value = 32},
-			{text = S[302535920001132--[[Quattuorsexaguple--]]],value = 64},
+			{text = Trans(1000121--[[Default--]]),value = 1,hint = hint_str:format(1)},
+			{text = S[302535920001126--[[Double--]]],value = 2,hint = hint_str:format(2)},
+			{text = S[302535920001127--[[Triple--]]],value = 3,hint = hint_str:format(3)},
+			{text = S[302535920001128--[[Quadruple--]]],value = 4,hint = hint_str:format(4)},
+			{text = S[302535920001129--[[Octuple--]]],value = 8,hint = hint_str:format(8)},
+			{text = S[302535920001130--[[Sexdecuple--]]],value = 16,hint = hint_str:format(16)},
+			{text = S[302535920001131--[[Duotriguple--]]],value = 32,hint = hint_str:format(32)},
+			{text = S[302535920001132--[[Quattuorsexaguple--]]],value = 64,hint = hint_str:format(64)},
 		}
+
 		local function CallBackFunc(choice)
 			if choice.nothing_selected then
 				return
@@ -204,7 +205,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]]]:format(choice[1].text),
-					S[302535920001136--[[Speed--]]],
+					S[302535920000702--[[Game Speed--]]],
 					"UI/Icons/Notifications/timer.tga",
 					true
 				)
@@ -222,22 +223,20 @@ function OnMsg.ClassesGenerate()
 			[192] = S[302535920001132--[[Quattuorsexaguple--]]],
 		}
 
-		function ChoGGi.MenuFuncs.SetGameSpeed()
-			local const = const
-			local current = speeds[const.mediumGameSpeed]
-			if not current then
-				current = S[302535920001134--[[Custom: %s < base number 3 multipled by custom amount.--]]]:format(const.mediumGameSpeed)
-			end
-
-			ChoGGi.ComFuncs.OpenInListChoice{
-				callback = CallBackFunc,
-				items = ItemList,
-				title = S[302535920001137--[[Set Game Speed--]]],
-				hint = S[302535920000933--[[Current speed: %s--]]]:format(current),
-				skip_sort = true,
-			}
+		local const = const
+		local current = speeds[const.mediumGameSpeed]
+		if not current then
+			current = S[302535920001134--[[Custom: %s < base number 3 multipled by custom amount.--]]]:format(const.mediumGameSpeed)
 		end
-	end -- do
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = ItemList,
+			title = S[302535920000702--[[Game Speed--]]],
+			hint = S[302535920000933--[[Current speed: %s--]]]:format(current),
+			skip_sort = true,
+		}
+	end
 
 	do -- SetEntity
 		local entity_table = {}
@@ -257,14 +256,13 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
-		function ChoGGi.MenuFuncs.SetEntity()
+		function ChoGGi.MenuFuncs.ChangeEntity()
 			local ChoGGi = ChoGGi
 			local sel = ChoGGi.ComFuncs.SelObject()
-			local entity_str = Trans(155--[[Entity--]])
 			if not sel then
 				MsgPopup(
 					S[302535920001139--[[You need to select an object.--]]],
-					entity_str
+					S[302535920000682--[[Change Entity--]]]
 				)
 				return
 			end
@@ -325,7 +323,7 @@ function OnMsg.ClassesGenerate()
 					end
 					MsgPopup(
 						choice[1].text .. ": " .. RetName(sel),
-						entity_str
+						S[302535920000682--[[Change Entity--]]]
 					)
 				end
 			end
@@ -333,7 +331,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = S[302535920001151--[[Set Entity For %s--]]]:format(RetName(sel)),
+				title = S[302535920000682--[[Change Entity--]]] .. ": " .. RetName(sel),
 				hint = S[302535920000106--[[Current--]]] .. ": "
 					.. (sel.ChoGGi_OrigEntity or sel:GetEntity()) .. "\n"
 					.. S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]
@@ -400,7 +398,7 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 			if not sel then
 				MsgPopup(
 					S[302535920001139--[[You need to select an object.--]]],
-					Trans(1000081--[[Scale--]])
+					S[302535920000684--[[Change Entity Scale--]]]
 				)
 				return
 			end
@@ -445,7 +443,7 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 					end
 					MsgPopup(
 						choice[1].text .. ": " .. RetName(sel),
-						Trans(1000081--[[Scale--]]),
+						S[302535920000684--[[Change Entity Scale--]]],
 						nil,
 						nil,
 						sel
@@ -456,7 +454,7 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = ItemList,
-				title = S[302535920001155--[[Set Entity Scale For %s--]]]:format(RetName(sel)),
+				title = S[302535920000684--[[Change Entity Scale--]]] .. ": " .. RetName(sel),
 				hint = S[302535920001156--[[Current object--]]] .. ": " .. sel:GetScale()
 					.. "\n" .. S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],
 				check = {

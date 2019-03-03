@@ -1536,7 +1536,7 @@ function Examine:ShowBBoxList()
 		callback = CallBackFunc,
 		items = ItemList,
 		title = S[302535920001472--[[BBox Toggle--]]] .. ": " .. self.name,
-		hint = S[302535920000264--[[Defaults to :GetObjectBBox() if it can't find a func.--]]],
+		hint = S[302535920000264--[["Defaults to ObjectHierarchyBBox(obj,const.efCollision) if it can't find a func."--]]],
 		skip_sort = true,
 		custom_type = 7,
 		check = {

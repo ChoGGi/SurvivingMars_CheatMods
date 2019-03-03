@@ -10,6 +10,7 @@
 - > Some List items were having a fake icon added (appearing as a space in front of the name).
 - > Show Custom Value is now hidden by default behind the checkbox (also scrolls to the "item").
 - > custom_type 7/8 now return the checkbox states.
+- > Added a skip_icons setting.
 
 ## v5.6 (25 Feb 2019)
 - Changed my AttachSpots toggle func to only clear text objs from itself.

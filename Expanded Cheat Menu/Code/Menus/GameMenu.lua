@@ -117,9 +117,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionIcon = "CommonAssets/UI/Menu/load_city.tga",
 		RolloverText = S[302535920001488--[[Reloads map as new game.--]]],
 		ActionSortKey = "1Change Map ReloadMap",
-		OnAction = function()
-			ReloadMap()
-		end,
+		OnAction = ChoGGi.MenuFuncs.ReloadMap,
 	}
 
 	c = c + 1

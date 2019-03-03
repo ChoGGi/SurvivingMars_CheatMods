@@ -353,6 +353,7 @@ This may break the save in other ways, best to just use it for testing."--]]]
 		ActionId = ".See tooltip",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
 		RolloverText = S[302535920000618--[[Fixes for stuff that I messed up, these should all be fine to fire even without the issues, but they shouldn't be needed.--]]],
+		OnAction = empty_func,
 		ActionSortKey = "-1",
 	}
 

@@ -158,7 +158,7 @@ function OnMsg.ClassesGenerate()
 				hint = "Show blacklisted objects",
 				clicked = function()
 					if blacklist then
-						print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have ܢer access.--]]]:format(S[302535920001497--[[Show Blacklist--]]]))
+						ChoGGi.ComFuncs.BlacklistMsg(S[302535920001497--[[Show Blacklist--]]])
 						return
 					end
 					-- lib should always have the blacklist enabled

@@ -98,20 +98,6 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001312--[[FPS Counter Location--]]],
-		ActionMenubar = "ECM.Debug",
-		ActionId = ".FPS Counter Location",
-		ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",
-		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
-				hr.FpsCounterPos or 0,
-				S[302535920001313--[[One of the four corners of your screen.--]]]
-			)
-		end,
-		OnAction = ChoGGi.MenuFuncs.FpsCounterLocation,
-	}
-
-	c = c + 1
 	Actions[c] = {ActionName = S[302535920000449--[[Attach Spots Toggle--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Attach Spots Toggle",
@@ -147,7 +133,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				MeasureTool.enabled,
-				S[302535920000452--[[Measures stuff (Use Ctrl-Shift-M to remove the lines).--]]]
+				S[302535920000452--[[Measures stuff (press again to remove the lines).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.MeasureTool_Toggle,
@@ -258,10 +244,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Open In Ged Object Editor",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionEditor.tga",
 		RolloverText = S[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."--]]],
-		OnAction = function()
-			GedObjectEditor = false
-			OpenGedGameObjectEditor{ChoGGi.ComFuncs.SelObject()}
-		end,
+		OnAction = ChoGGi.MenuFuncs.OpenInGedObjectEditor,
 	}
 
 	c = c + 1
@@ -334,7 +317,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/ToggleCollisions.tga",
 		RolloverText = S[302535920001298--[[Shows a square grid with terrain/objects shape.--]]],
 		OnAction = function()
-			ChoGGi.ComFuncs.FlightGrid_Toggle()
+			ChoGGi.MenuFuncs.FlightGrid_Toggle()
 		end,
 		ActionShortcut = "Shift-F2",
 		ActionBindable = true,
@@ -522,7 +505,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = S[302535920000468--[[Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.--]]],
 		OnAction = function()
-			ChoGGi.MenuFuncs.SetPathMarkersVisible()
+			ChoGGi.MenuFuncs.SetPathMarkers()
 		end,
 		ActionShortcut = "Ctrl-Numpad 0",
 		ActionBindable = true,
@@ -540,16 +523,6 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.BuildingPathMarkers_Toggle,
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = S[302535920000146--[[Delete Saved Games--]]],
-		ActionMenubar = "ECM.Debug",
-		ActionId = ".Delete Saved Games",
-		ActionIcon = "CommonAssets/UI/Menu/DeleteArea.tga",
-		RolloverText = S[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."--]]] .. "\n\n" .. S[302535920001274--[[This is permanent!--]]],
-		OnAction = ChoGGi.MenuFuncs.DeleteSavedGames,
-		ActionSortKey = "98.Delete Saved Games",
 	}
 
 	c = c + 1

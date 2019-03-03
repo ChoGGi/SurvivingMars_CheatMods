@@ -12,6 +12,14 @@ function OnMsg.ClassesGenerate()
 	local RandomColour = ChoGGi.ComFuncs.RandomColour
 	local S = ChoGGi.Strings
 
+	function ChoGGi.MenuFuncs.OpenInGedObjectEditor()
+		local sel = ChoGGi.ComFuncs.SelObject()
+		if IsValid(sel) then
+			GedObjectEditor = false
+			OpenGedGameObjectEditor{sel}
+		end
+	end
+
 	function ChoGGi.MenuFuncs.ListVisibleObjects()
 		local frame = (GetFrameMark() / 1024 - 1) * 1024
 		local visibleObjects = MapGet("map", "attached", false, function(obj)
@@ -28,9 +36,7 @@ function OnMsg.ClassesGenerate()
 		local AveragePoint2D = AveragePoint2D
 
 		local objlist = objlist
-
 		local points, colors = objlist:new(),objlist:new()
-
 		local function ShowWaypoints(waypoints, open)
 			points:Clear()
 			colors:Clear()
@@ -259,6 +265,7 @@ that'll activate the BadPrefab on it
 			}
 		end
 
+		local title = S[302535920001416--[[Force--]]] .. " " .. Trans(948928900281--[[Story Bits--]])
 		local function CallBackFunc(choice)
 			if choice.nothing_selected then
 				return
@@ -269,14 +276,14 @@ that'll activate the BadPrefab on it
 
 			MsgPopup(
 				"I said they don't do jack...",
-				Trans(948928900281--[[Story Bits--]])
+				title
 			)
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = Trans(948928900281--[[Story Bits--]]),
+			title = title,
 			hint = S[302535920001359--[["Just lists them for now, I'll make it force them soonish."--]]],
 		}
 	end
@@ -365,131 +372,36 @@ that'll activate the BadPrefab on it
 		}
 	end
 
-	function ChoGGi.MenuFuncs.FpsCounterLocation()
-		local pos = hr.FpsCounterPos or 0
-		pos = pos + 1
-		if pos < 4 then
-			hr.FpsCounterPos = pos
-		else
-			hr.FpsCounterPos = 0
-		end
-	end
-
-	function ChoGGi.MenuFuncs.DeleteSavedGames()
-		if blacklist then
-			print(S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format("ChoGGi.MenuFuncs.DeleteSavedGames"))
-			return
-		end
-		local SavegamesList = SavegamesList
-		local ItemList = {}
-		for i = 1, #SavegamesList do
-			local data = SavegamesList[i]
-
-			-- build played time
-			local playtime = T(77, "Unknown")
-			if data.playtime then
-				local h, m, _ = FormatElapsedTime(data.playtime, "hms")
-				playtime = T{
-					7549, "<hours>:<minutes>",
-					hours = string.format("%02d", h),
-					minutes = string.format("%02d", m)
-				}
-			end
-			-- and last saved
-			local save_date = 0
-			if data.timestamp then
-				save_date = os.date("%H:%M - %d / %m / %Y", data.timestamp)
-			end
-
-			ItemList[i] = {
-				text = data.displayname,
-				value = data.savename,
-
-				hint = Trans(T{4274--[[Playtime : <playtime>--]],playtime = Trans(playtime)}) .. "\n"
-					.. Trans(T{4273--[[Saved on : <save_date>--]],save_date = save_date}) .. "\n\n"
-					.. S[302535920001274--[[This is permanent!--]]],
-			}
-		end
-
-		local function CallBackFunc(choice)
-			if choice.nothing_selected then
-				return
-			end
-			local value = choice[1].value
-
-			if not choice[1].check1 then
-				MsgPopup(
-					S[302535920000038--[[Pick a checkbox next time...--]]],
-					S[302535920000146--[[Delete Saved Games--]]]
-				)
-				return
-			end
-			local save_folder = GetPCSaveFolder()
-
-			for i = 1, #choice do
-				value = choice[i].value
-				if type(value) == "string" then
-					AsyncFileDelete(save_folder .. value)
-				end
-			end
-
-			-- remove any saves we deleted
-			local FileExists = ChoGGi.ComFuncs.FileExists
-			local games_amt = #SavegamesList
-			for i = #SavegamesList, 1, -1 do
-				if not FileExists(save_folder .. SavegamesList[i].savename) then
-					SavegamesList[i] = nil
-					TableRemove(SavegamesList,i)
-				end
-			end
-
-			games_amt = games_amt - #SavegamesList
-			if games_amt > 0 then
-				MsgPopup(
-					S[302535920001275--[[Deleted %s saved games.--]]]:format(games_amt),
-					S[302535920000146--[[Delete Saved Games--]]]
-				)
-			end
-		end
-
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = S[302535920000146--[[Delete Saved Games--]]] .. ": " .. #ItemList,
-			hint = Trans(6779--[[Warning--]]) .. ": " .. S[302535920001274--[[This is permanent!--]]],
-			multisel = true,
-			skip_sort = true,
-			check = {
-				{
-					title = Trans(1000009--[[Confirmation--]]),
-					hint = S[302535920001276--[[Nothing is deleted unless you check this.--]]],
-				},
-			},
-		}
-	end
-
-	function ChoGGi.MenuFuncs.DebugFX_Toggle(name,trans_id)
+	function ChoGGi.MenuFuncs.DebugFX_Toggle(name,trans_str)
 		_G[name] = not _G[name]
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(tostring(_G[name]),trans_id),
-			Trans(1000113--[[Debug--]])
+			ChoGGi.ComFuncs.SettingState(_G[name]),
+			trans_str
 		)
 	end
 
 	function ChoGGi.MenuFuncs.ParticlesReload()
 		LoadStreamParticlesFromDir("Data/Particles")
 		ParticlesReload("", true)
+		MsgPopup(
+			"true",
+			S[302535920000495--[[Particles Reload--]]]
+		)
 	end
 
 	function ChoGGi.MenuFuncs.MeasureTool_Toggle()
 		local MeasureTool = MeasureTool
 		MeasureTool.Toggle()
 		if MeasureTool.enabled then
-			MeasureTool.OnMouseButtonDown(_,"L")
+			MeasureTool.OnMouseButtonDown(nil,"L")
 		else
-			MeasureTool.OnMouseButtonDown(_,"R")
+			MeasureTool.OnMouseButtonDown(nil,"R")
 		end
+		MsgPopup(
+			ChoGGi.ComFuncs.SettingState(MeasureTool.enabled),
+			S[302535920000451--[[Measure Tool--]]]
+		)
 	end
 
 	function ChoGGi.MenuFuncs.ReloadLua()
@@ -502,8 +414,8 @@ that'll activate the BadPrefab on it
 		ReloadLua()
 		force_load_build = false
 		MsgPopup(
-			S[302535920000453--[[Reload Lua--]]],
-			Trans(1000113--[[Debug--]])
+			"true",
+			S[302535920000453--[[Reload Lua--]]]
 		)
 	end
 
@@ -579,9 +491,7 @@ that'll activate the BadPrefab on it
 		end
 
 		-- if grid is left on when map changes it gets real laggy
-		function OnMsg.ChangeMap()
-			HideGrid()
-		end
+		OnMsg.ChangeMap = HideGrid
 
 		function ChoGGi.MenuFuncs.debug_build_grid_settings(setting)
 			local ChoGGi = ChoGGi
@@ -638,6 +548,7 @@ that'll activate the BadPrefab on it
 				callback = CallBackFunc,
 				items = ItemList,
 				title = name,
+				skip_sort = true,
 			}
 		end
 
@@ -1016,7 +927,7 @@ that'll activate the BadPrefab on it
 			end
 		end
 
-		function ChoGGi.MenuFuncs.SetPathMarkersVisible()
+		function ChoGGi.MenuFuncs.SetPathMarkers()
 			local ChoGGi = ChoGGi
 			ChoGGi.Temp.UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles or {}
 
@@ -1037,7 +948,7 @@ that'll activate the BadPrefab on it
 				{text = " " .. Trans(4493--[[All--]]),value = "All"},
 				{text = Trans(547--[[Colonists--]]),value = "Colonist"},
 				{text = Trans(517--[[Drones--]]),value = "Drone"},
-				{text = Trans(5438--[[Rovers--]]),value = "BaseRover"},
+				{text = Trans(5438--[[Rovers--]]),value = "BaseRover",icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
 				{text = Trans(745--[[Shuttles--]]),value = "CargoShuttle",hint = S[302535920000873--[[Doesn't work that well.--]]]},
 			}
 			local aliens
@@ -1153,5 +1064,134 @@ that'll activate the BadPrefab on it
 	--~		 Sleep(5)
 	--~	 end
 	--~ end)
+	do -- flightgrids
+		local MulDivRound = MulDivRound
+		local InterpolateRGB = InterpolateRGB
+		local Clamp = Clamp
+		local point = point
+		local AveragePoint2D = AveragePoint2D
+		local FindPassable = FindPassable
+		local GetTerrainCursor = GetTerrainCursor
+		local terrain_GetHeight = terrain.GetHeight
+		local PlaceObject = PlaceObject
+		local DoneObject = DoneObject
+		local TableIClear = table.iclear
+
+		local grid_thread = false
+		local Flight_Height_temp = false
+		local type_tile = terrain.TypeTileSize()
+		local work_step = 16 * type_tile
+		local dbg_step = work_step / 4 -- 400
+		local max_diff = 10 * guim
+		local white = white
+		local green = green
+		local flight_lines = {}
+		local points,colors = {},{}
+
+		local function RasterLine(pos1, pos0, zoffset, line_num)
+			pos1 = pos1 or GetTerrainCursor()
+			pos0 = pos0 or FindPassable(GetTerrainCursor())
+			if not pos0 then
+				return
+			end
+			local diff = pos1 - pos0
+			local dist = diff:Len2D()
+			local steps = 1 + (dist + dbg_step - 1) / dbg_step
+
+			TableIClear(points)
+			TableIClear(colors)
+
+			for i = 1, steps do
+				local pos = pos0 + MulDivRound(pos1 - pos0, i - 1, steps - 1)
+				local height = Flight_Height_temp:GetBilinear(pos, work_step, 0, 1) + zoffset
+
+				points[i] = pos:SetZ(height)
+				colors[i] = InterpolateRGB(
+					white,
+					green,
+					Clamp(height - zoffset - terrain_GetHeight(pos), 0, max_diff),
+					max_diff
+				)
+			end
+			local line = flight_lines[line_num]
+			line:SetMesh(points, colors)
+			line:SetPos(AveragePoint2D(points))
+
+--~ 			local line = PlacePolyline(points, colors)
+--~ 			flight_lines_c = flight_lines_c + 1
+--~ 			flight_lines[flight_lines_c] = line
+		end
+
+		local function DeleteLines()
+			SuspendPassEdits("ChoGGi_DeleteLines")
+			for i = 0, #flight_lines+1 do
+				local o = flight_lines[i]
+				if IsValid(o) then
+					DoneObject(o)
+				end
+			end
+			TableIClear(flight_lines)
+			flight_lines[0] = nil
+			ResumePassEdits("ChoGGi_DeleteLines")
+		end
+		-- if grid is left on when map changes it gets real laggy
+		function OnMsg.ChangeMap()
+			if IsValidThread(grid_thread) then
+				DeleteThread(grid_thread)
+			end
+			DeleteLines()
+		end
+
+		local function GridFunc(size,zoffset)
+			local Sleep = Sleep
+			zoffset = zoffset or 0
+			local orig_size = size or 256 * guim
+
+			size = orig_size
+			local steps = 1 + (size + dbg_step - 1) / dbg_step
+			size = steps * dbg_step
+
+			-- we spawn lines once then re-use them
+			for i = 0, (steps + steps) do
+				flight_lines[i] = PlaceObject("ChoGGi_OPolyline")
+			end
+
+			local pos_c,pos_t,pos
+			while true do
+
+				-- we only update when cursor moves
+				pos_t = GetTerrainCursor()
+				if pos_c ~= pos_t then
+					pos_c = pos_t
+					pos = pos_t - point(size, size) / 2
+
+					-- Flight_DbgRasterArea
+					for y = 0, steps do
+						RasterLine(pos + point(0, y*dbg_step), pos + point(size, y*dbg_step), zoffset, y)
+					end
+					for x = 0, steps do
+						RasterLine(pos + point(x*dbg_step, 0), pos + point(x*dbg_step, size), zoffset, steps+x)
+					end
+
+					Sleep(10)
+				end
+				Sleep(50)
+			end
+		end
+
+		function ChoGGi.MenuFuncs.FlightGrid_Toggle(size,zoffset)
+			if not Flight_Height then
+				return
+			end
+			Flight_Height_temp = Flight_Height
+
+			if IsValidThread(grid_thread) then
+				DeleteThread(grid_thread)
+				DeleteLines()
+				return
+			end
+			grid_thread = CreateRealTimeThread(GridFunc,size,zoffset)
+		end
+	end -- do
 
 end

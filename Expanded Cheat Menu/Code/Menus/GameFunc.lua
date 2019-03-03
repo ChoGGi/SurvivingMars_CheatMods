@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local default_icon = "UI/Icons/Anomaly_Event.tga"
 local type,tostring = type,tostring
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
@@ -16,6 +15,20 @@ function OnMsg.ClassesGenerate()
 	local RetHint = ChoGGi.ComFuncs.RetHint
 	local Random = ChoGGi.ComFuncs.Random
 	local Trans = ChoGGi.ComFuncs.Translate
+
+	function ChoGGi.MenuFuncs.ReloadMap()
+		local function CallBackFunc(answer)
+			if answer then
+				ReloadMap()
+			end
+		end
+
+		ChoGGi.ComFuncs.QuestionBox(
+			Trans(6779--[[Warning--]]) .. ": " .. S[302535920001488--[[Reloads map as new game.--]]],
+			CallBackFunc,
+			S[302535920001487--[[Reload Map--]]]
+		)
+	end
 
 	function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
 		local ChoGGi = ChoGGi
@@ -46,7 +59,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
-		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.DisableHints then
 			ChoGGi.UserSettings.DisableHints = nil
 			mapdata.DisableHints = false
@@ -59,9 +71,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920001077--[[%s: Bye bye hints--]]]:format(ChoGGi.UserSettings.DisableHints),
-			Trans(4248--[[Hints--]]),
-			"UI/Icons/Sections/attention.tga"
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableHints),
+			S[302535920000670--[[Never Show Hints--]]]
 		)
 	end
 
@@ -69,8 +80,8 @@ function OnMsg.ClassesGenerate()
 		g_ShownOnScreenHints = {}
 		UpdateOnScreenHintDlg()
 		MsgPopup(
-			Trans(302535920001076--[[Hints Reset!--]]),
-			Trans(4248--[[Hints--]])
+			"true",
+			S[302535920000668--[[Reset on-screen hints--]]]
 		)
 	end
 
@@ -81,7 +92,7 @@ function OnMsg.ClassesGenerate()
 		UpdateOnScreenHintDlg()
 		MsgPopup(
 			tostring(HintsEnabled),
-			Trans(4248--[[Hints--]])
+			S[302535920000666--[[Toggle on-screen hints--]]]
 		)
 	end
 
@@ -90,7 +101,7 @@ function OnMsg.ClassesGenerate()
 
 			-- retrieve shortcut key to display below
 			local options = OptionsCreateAndLoad()
-			local key = options["ECM.Help.Interface.Toggle Interface"]
+			local key = options["ECM.Game.Interface.Toggle Interface"]
 			-- if we don't have a shortcut set then do nothing
 			if key then
 				key = key[1]
@@ -120,15 +131,14 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
-		local ChoGGi = ChoGGi
 		hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1
 		-- needs default
 		ChoGGi.UserSettings.ShowInterfaceInScreenshots = not ChoGGi.UserSettings.ShowInterfaceInScreenshots
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920001068--[[%s: Interface in screenshots.--]]]:format(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
-			S[302535920001069--[[Interface--]]]
+			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
+			S[302535920000661--[[Show Interface in Screenshots--]]]
 		)
 	end
 
@@ -139,17 +149,23 @@ function OnMsg.ClassesGenerate()
 					WaitNextFrame(3)
 					LockCamera("Screenshot")
 					filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SSAA","AppData/","tga")
-					created = MovieWriteScreenshot(filename, 0, 64, false)
+					MovieWriteScreenshot(filename, 0, 64, false)
 					UnlockCamera("Screenshot")
 			else
 				filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SS","AppData/","tga")
 				created = WriteScreenshot(filename)
 			end
 
-			if created then
+			-- MovieWriteScreenshot doesn't return jack, so
+			if created or boolean == true then
 				-- slight delay so it doesn't show up in the screenshot
 				Sleep(50)
-				print("TakeScreenshot:",ConvertToOSPath(filename))
+				local msg = ConvertToOSPath(filename)
+				print("TakeScreenshot:",msg)
+				MsgPopup(
+					msg,
+					S[302535920000657--[[Screenshot--]]]
+				)
 			end
 		end)
 	end
@@ -195,7 +211,10 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetObjectOpacity()
-		local ChoGGi = ChoGGi
+		if not GameState.gameplay then
+			return
+		end
+
 		local sel = ChoGGi.ComFuncs.SelObject()
 		local hint_loop = S[302535920001109--[[Loops though and makes all %s visible.--]]]
 
@@ -206,12 +225,18 @@ function OnMsg.ClassesGenerate()
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(547--[[Colonists--]]),value = "Colonists",hint = hint_loop:format(Trans(547--[[Colonists--]]))},
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(5438--[[Rovers--]]) .. " & " .. Trans(517--[[Drones--]]),value = "Unit",hint = hint_loop:format(Trans(5438--[[Rovers--]]) .. " & " .. Trans(517--[[Drones--]]))},
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(3982--[[Deposits--]]),value = "SurfaceDeposit",hint = hint_loop:format(Trans(3982--[[Deposits--]]))},
-			{text = 0,value = 0},
-			{text = 25,value = 25},
-			{text = 50,value = 50},
-			{text = 75,value = 75},
-			{text = 100,value = 100},
 		}
+		local c = #ItemList
+		if sel then
+			c = c + 1
+			ItemList[c] = {text = 0,value = 0}
+			c = c + 1
+			ItemList[c] = {text = 50,value = 50}
+			c = c + 1
+			ItemList[c] = {text = 75,value = 75}
+			c = c + 1
+			ItemList[c] = {text = 100,value = 100}
+		end
 
 		local function CallBackFunc(choice)
 			if choice.nothing_selected then
@@ -240,8 +265,7 @@ function OnMsg.ClassesGenerate()
 			end
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
-				S[302535920001117--[[Opacity--]]],
-				"UI/Icons/Sections/attention.tga"
+				S[302535920000694--[[Set Opacity--]]]
 			)
 		end
 		local hint = S[302535920001118--[[You can still select items after making them invisible (0), but it may take some effort :).--]]]
@@ -249,12 +273,14 @@ function OnMsg.ClassesGenerate()
 			hint = S[302535920000106--[[Current--]]] .. ": " .. sel:GetOpacity() .. "\n\n" .. hint
 		end
 
+		local name = RetName(sel)
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = S[302535920000694--[[Set Opacity--]]] .. ": " .. RetName(sel),
+			title = S[302535920000694--[[Set Opacity--]]] .. (name ~= "nil" and ": " .. name or ""),
 			hint = hint,
 			skip_sort = true,
+			skip_icons = true,
 		}
 	end
 
@@ -354,7 +380,7 @@ function OnMsg.ClassesGenerate()
 				if not skip then
 					MsgPopup(
 						S[302535920001088--[[%s: Stop that bloody bouzouki!--]]]:format(choice[1].text),
-						Trans(3581--[[Sounds--]])
+						S[302535920000680--[[Annoying Sounds--]]]
 					)
 				end
 			end
@@ -530,11 +556,11 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableTextureCompression),
-			S[302535920000641--[[Texture Compression--]]]
+			S[302535920000641--[[Disable Texture Compression--]]]
 		)
 	end
 
-	do --FlattenGround
+	do -- FlattenGround
 		local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
 		local GetHeight = terrain.GetHeight
 		local SetHeightCircle = terrain.SetHeightCircle
@@ -617,7 +643,7 @@ function OnMsg.ClassesGenerate()
 
 				MsgPopup(
 					S[302535920001164--[[Flattening has been stopped, now updating buildable.--]]],
-					Trans(904--[[Terrain--]]),
+					S[302535920000485--[[Terrain Flatten Toggle--]]],
 					"UI/Icons/Sections/WasteRock_1.tga"
 				)
 				-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
@@ -636,7 +662,7 @@ function OnMsg.ClassesGenerate()
 				flatten_height = GetHeight(GetTerrainCursor())
 				MsgPopup(
 					S[302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.--]]]:format(flatten_height),
-					Trans(904--[[Terrain--]]),
+					S[302535920000485--[[Terrain Flatten Toggle--]]],
 					"UI/Icons/Sections/warning.tga"
 				)
 				visual_circle = Circle:new()
@@ -957,7 +983,6 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		}
 	end
 
-	--add button to import model
 	function ChoGGi.MenuFuncs.EditLightmodelCustom(name)
 		local ItemList = {}
 
@@ -976,22 +1001,12 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 					value = def[i].default,
 					default = def[i].default,
 					editor = def[i].editor,
-					hint = string.format([[%s
-%s: %s
-
-%s: %s %s: %s %s: %s %s: %s]],
-						def[i].id or "",
-						help_str,
-						def[i].help or "",
-						default_str,
-						def[i].default or "",
-						min_str,
-						def[i].min or "",
-						max_str,
-						def[i].max or "",
-						scale_str,
-						def[i].scale or ""
-					),
+					hint = (def[i].id or "") .. "\n"
+						.. help_str .. ": " .. (def[i].help or "") .. "\n\n"
+						.. default_str .. ": " .. (def[i].default or "") .. " "
+						.. min_str .. ": " .. (def[i].min or "") .. " "
+						.. max_str .. ": " .. (def[i].max or "") .. " "
+						.. scale_str .. ": " .. (def[i].scale or "")
 				}
 			end
 		end
@@ -1058,7 +1073,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 	end
 
 	function ChoGGi.MenuFuncs.ChangeLightmodel(mode)
-		--if it gets opened by menu then has object so easy way to do this
+		-- if it gets opened by menu then has object so easy way to do this
 		local browse
 		if mode == true then
 			browse = mode
@@ -1112,7 +1127,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 					ChoGGi.SettingFuncs.WriteSettings()
 					MsgPopup(
 						ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
-						S[302535920000984--[[Lighting--]]]
+						S[302535920000625--[[Change Light Model--]]]
 					)
 				end
 			end
@@ -1165,7 +1180,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TransparencyToggle),
-			S[302535920000629--[[UI Transparency--]]]
+			S[302535920000631--[[UI Transparency Mouseover--]]]
 		)
 	end
 
@@ -1239,7 +1254,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				S[302535920000999--[[Transparency has been updated.--]]],
-				Trans(1608--[[Transparency--]])
+				S[302535920000629--[[UI Transparency--]]]
 			)
 		end
 
@@ -1253,7 +1268,6 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 	end
 
 	function ChoGGi.MenuFuncs.SetLightsRadius()
-		local ChoGGi = ChoGGi
 		local hr = hr
 		local ItemList = {
 			{text = Trans(1000121--[[Default--]]),value = Trans(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
@@ -1287,8 +1301,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text),
-				S[302535920000633--[[Lights Radius--]]],
-				default_icon
+				S[302535920000633--[[Lights Radius--]]]
 			)
 		end
 
@@ -1336,8 +1349,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text),
-				S[302535920000635--[[Terrain Detail--]]],
-				default_icon
+				S[302535920000635--[[Terrain Detail--]]]
 			)
 		end
 
@@ -1383,8 +1395,7 @@ And yes Medium is using a higher setting than High..."--]]],
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text),
-				S[302535920000637--[[Video Memory--]]],
-				default_icon
+				S[302535920000637--[[Video Memory--]]]
 			)
 		end
 
@@ -1431,8 +1442,7 @@ And yes Medium is using a higher setting than High..."--]]],
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text),
-				S[302535920000639--[[Shadow Map--]]],
-				default_icon
+				S[302535920000639--[[Shadow Map--]]]
 			)
 		end
 
@@ -1454,8 +1464,7 @@ And yes Medium is using a higher setting than High..."--]]],
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherShadowDist),
-			S[302535920000645--[[Higher Shadow Distance--]]],
-			default_icon
+			S[302535920000645--[[Higher Shadow Distance--]]]
 		)
 	end
 
@@ -1495,8 +1504,7 @@ And yes Medium is using a higher setting than High..."--]]],
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherRenderDist,S[302535920000643--[[Higher Render Distance--]]]),
-					S[302535920001015--[[Video--]]],
-					default_icon
+					S[302535920000643--[[Higher Render Distance--]]]
 				)
 			end
 		end
@@ -1530,7 +1538,7 @@ And yes Medium is using a higher setting than High..."--]]],
 				ChoGGi.ComFuncs.SetCameraSettings()
 				MsgPopup(
 					S[302535920001059--[[RTS--]]],
-					S[302535920001058--[[Camera--]]]
+					S[302535920000651--[[Toggle Free Camera--]]]
 				)
 			else
 				cur_pos, cur_la = cameraRTS.GetPosLookAt()
@@ -1541,7 +1549,7 @@ And yes Medium is using a higher setting than High..."--]]],
 				engineHideMouseCursor()
 				MsgPopup(
 					S[302535920001060--[[Fly--]]],
-					S[302535920001058--[[Camera--]]]
+					S[302535920000651--[[Toggle Free Camera--]]]
 				)
 			end
 			-- resets zoom so...
@@ -1585,7 +1593,7 @@ And yes Medium is using a higher setting than High..."--]]],
 				-- let user know the camera mode
 				MsgPopup(
 					S[302535920001061--[[Follow--]]],
-					S[302535920001058--[[Camera--]]]
+					S[302535920000651--[[Toggle Free Camera--]]]
 				)
 
 				-- save pos/zoom
@@ -1718,7 +1726,7 @@ And yes Medium is using a higher setting than High..."--]]],
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					choice[1].text .. ": " .. S[302535920001375--[[Bird's Eye--]]],
-					S[302535920001058--[[Camera--]]],
+					S[302535920001375--[[Bird's Eye--]]],
 					"UI/Icons/IPButtons/status_effects.tga"
 				)
 			end
@@ -1761,8 +1769,8 @@ And yes Medium is using a higher setting than High..."--]]],
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					choice[1].text .. ": " .. S[302535920001058--[[Camera--]]] .. " " .. S[302535920001067--[[Zoom--]]],
-					S[302535920001058--[[Camera--]]],
+					choice[1].text,
+					S[302535920000649--[[Zoom Distance--]]],
 					"UI/Icons/IPButtons/status_effects.tga"
 				)
 			end
@@ -1771,7 +1779,7 @@ And yes Medium is using a higher setting than High..."--]]],
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = S[302535920001058--[[Camera--]]] .. " " .. S[302535920001067--[[Zoom--]]],
+			title = S[302535920000649--[[Zoom Distance--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}

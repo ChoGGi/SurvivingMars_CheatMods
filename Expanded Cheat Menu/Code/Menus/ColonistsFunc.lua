@@ -16,7 +16,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000788--[[%s: You never know what you're gonna get.--]]]:format(ChoGGi.UserSettings.NonHomeDomePerformancePenalty),
+			S[302535920000788--[[%s: You never know what you're gonna get.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.NonHomeDomePerformancePenalty)),
 			S[302535920000912--[[Penalty--]]],
 			default_icon,
 			true
@@ -39,8 +39,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000736--[[%s: Whoops somebody broke the rocket, guess you're stuck on mars.--]]]:format(ChoGGi.UserSettings.NoMoreEarthsick),
-			Trans(547--[[Colonists--]]),
+			S[302535920000736--[[%s: Whoops somebody broke the rocket, guess you're stuck on mars.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.NoMoreEarthsick)),
+			S[302535920000369--[[No More Earthsick--]]],
 			default_icon
 		)
 	end
@@ -51,8 +51,8 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000737--[[%s: Water? Like out of the toilet?--]]]:format(ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait),
-			Trans(6652--[[Idiot--]]),
+			S[302535920000737--[[%s: Water? Like out of the toilet?--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait)),
+			S[302535920000410--[[University Grad Remove Idiot--]]],
 			default_icon
 		)
 	end
@@ -234,7 +234,7 @@ I think somebody has been playing too much Fallout...--]]],
 			if show_popup then
 				MsgPopup(
 					S[302535920000744--[[%s: Wholesale slaughter--]]]:format(#choice),
-					S[302535920000745--[[Snacks--]]],
+					S[302535920000375--[[The Soylent Option--]]],
 					"UI/Icons/Sections/Food_1.tga"
 				)
 			end
@@ -321,6 +321,7 @@ I think somebody has been playing too much Fallout...--]]],
 			items = ItemList,
 			title = S[302535920000757--[[Add Applicants To Pool--]]],
 			hint = Trans(6779--[[Warning--]]) .. ": " .. S[302535920000758--[[Will take some time for 25K and up.--]]],
+			skip_sort = true,
 			check = {
 				{
 					title = S[302535920000759--[[Clear Applicant Pool--]]],
@@ -420,7 +421,7 @@ I think somebody has been playing too much Fallout...--]]],
 				MsgPopup(
 					S[302535920000769--[[Selected--]]] .. ": " .. choice[1].text .. S[302535920000770--[[
 Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.--]]],
-					Trans(547--[[Colonists--]]),
+					S[302535920000395--[[Min Comfort Birth--]]],
 					default_icon,
 					true
 				)
@@ -444,8 +445,8 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000772--[["%s:
-	The mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments."--]]]:format(ChoGGi.UserSettings.VisitFailPenalty),
-			Trans(547--[[Colonists--]]),
+	The mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments."--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.VisitFailPenalty)),
+			S[302535920000397--[[Visit Fail Penalty--]]],
 			default_icon,
 			true
 		)
@@ -459,8 +460,8 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 		ChoGGi.ComFuncs.SetSavedSetting("RenegadeCreation",Consts.RenegadeCreation)
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000773--[[%s: I just love findin' subversives.--]]]:format(ChoGGi.UserSettings.RenegadeCreation),
-			Trans(547--[[Colonists--]]),
+			S[302535920000773--[[%s: I just love findin' subversives.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RenegadeCreation)),
+			S[302535920000399--[[Renegade Creation Toggle--]]],
 			default_icon
 		)
 	end
@@ -503,7 +504,7 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 	Really? Have you seen a man eat his own head?
 	No.
 	So then, you haven't seen everything."--]]],
-				Trans(547--[[Colonists--]]),
+				S[302535920000401--[[Set Renegade Status--]]],
 				default_icon,
 				true
 			)
@@ -535,8 +536,8 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000778--[[%s: Happy as a pig in shit.--]]]:format(ChoGGi.UserSettings.HighStatMoraleEffect),
-			Trans(547--[[Colonists--]]),
+			S[302535920000778--[[%s: Happy as a pig in shit.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HighStatMoraleEffect)),
+			S[302535920000402--[[Morale Always Max--]]],
 			default_icon
 		)
 	end
@@ -554,8 +555,8 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000778--[[%s: Happy as a pig in shit.--]]]:format(ChoGGi.UserSettings.DustStormSanityDamage),
-			Trans(547--[[Colonists--]]),
+			S[302535920000778--[[%s: Happy as a pig in shit.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DustStormSanityDamage)),
+			S[302535920000408--[[Chance Of Sanity Damage--]]],
 			default_icon
 		)
 	end
@@ -567,8 +568,8 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000779--[[%s: I love me some corpses.--]]]:format(ChoGGi.UserSettings.SeeDeadSanity),
-			Trans(547--[[Colonists--]]),
+			S[302535920000779--[[%s: I love me some corpses.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SeeDeadSanity)),
+			S[302535920000404--[[See Dead Sanity Damage--]]],
 			default_icon
 		)
 	end
@@ -583,8 +584,8 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 			S[302535920000780--[["%s:
 	Oh, give me a home where the Buffalo roam.
 	Where the Deer and the Antelope play;
-	Where seldom is heard a discouraging word."--]]]:format(ChoGGi.UserSettings.NoHomeComfort),
-			Trans(547--[[Colonists--]]),
+	Where seldom is heard a discouraging word."--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.NoHomeComfort)),
+			S[302535920000406--[[No Home Comfort Damage--]]],
 			default_icon,
 			true
 		)
@@ -597,8 +598,8 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000781--[[%s: Stupid and happy--]]]:format(ChoGGi.UserSettings.LowSanityNegativeTraitChance),
-			Trans(547--[[Colonists--]]),
+			S[302535920000781--[[%s: Stupid and happy--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.LowSanityNegativeTraitChance)),
+			S[302535920000412--[[Chance Of Negative Trait--]]],
 			default_icon
 		)
 	end
@@ -610,8 +611,8 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000782--[[%s: Getting away ain't that easy--]]]:format(ChoGGi.UserSettings.LowSanitySuicideChance),
-			Trans(547--[[Colonists--]]),
+			S[302535920000782--[[%s: Getting away ain't that easy--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.LowSanitySuicideChance)),
+			Trans(4576--[[Chance Of Suicide--]]),
 			default_icon
 		)
 	end
@@ -623,8 +624,8 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000783--[[%s: Free Air--]]]:format(ChoGGi.UserSettings.OxygenMaxOutsideTime),
-			Trans(547--[[Colonists--]]),
+			S[302535920000783--[[%s: Free Air--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OxygenMaxOutsideTime)),
+			S[302535920000416--[[Colonists Suffocate--]]],
 			default_icon
 		)
 	end
@@ -638,8 +639,8 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 		MsgPopup(
 			S[302535920000784--[[%s: A stale piece of bread is better than nothing.
 And nothing is better than a big juicey steak.
-Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(ChoGGi.UserSettings.TimeBeforeStarving),
-			Trans(547--[[Colonists--]]),
+Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TimeBeforeStarving)),
+			S[302535920000418--[[Colonists Starve--]]],
 			"UI/Icons/Sections/Food_2.tga",
 			true
 		)
@@ -652,8 +653,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000785--[[%s: No Shame--]]]:format(ChoGGi.UserSettings.AvoidWorkplaceSols),
-			Trans(547--[[Colonists--]]),
+			S[302535920000785--[[%s: No Shame--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.AvoidWorkplaceSols)),
+			S[302535920000387--[[Colonists Avoid Fired Workplace--]]],
 			default_icon
 		)
 	end
@@ -665,8 +666,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000786--[[%s: We've all seen them, on the playground, at the store, walking on the streets.--]]]:format(ChoGGi.UserSettings.positive_playground_chance),
-			Trans(235--[[Traits--]]),
+			S[302535920000786--[[%s: We've all seen them, on the playground, at the store, walking on the streets.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.positive_playground_chance)),
+			S[302535920000420--[[Positive Playground--]]],
 			"UI/Icons/Upgrades/home_collective_02.tga"
 		)
 	end
@@ -678,8 +679,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000787--[["%s: Say, ""Small umbrella, small umbrella."""--]]]:format(ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance),
-			Trans(547--[[Colonists--]]),
+			S[302535920000787--[["%s: Say, ""Small umbrella, small umbrella."""--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance)),
+			S[302535920000422--[[Project Morpheus Positive Trait--]]],
 			"UI/Icons/Upgrades/rejuvenation_treatment_04.tga"
 		)
 	end
@@ -691,7 +692,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			S[302535920000788--[[%s: You never know what you're gonna get.--]]]:format(ChoGGi.UserSettings.NonSpecialistPerformancePenalty),
+			S[302535920000788--[[%s: You never know what you're gonna get.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.NonSpecialistPerformancePenalty)),
 			S[302535920000912--[[Penalty--]]],
 			default_icon,
 			true
@@ -732,7 +733,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	Down the road is where I'll always be
 	Maybe tomorrow, I'll find what I call home
 	Until tomorrow, you know I'm free to roam--]]]:format(choice[1].text),
-						Trans(547--[[Colonists--]]),
+						S[302535920000392--[[Outside Workplace Radius--]]],
 						"UI/Icons/Sections/dome.tga",
 						true
 					)
@@ -749,83 +750,87 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		}
 	end
 
-	function ChoGGi.MenuFuncs.SetDeathAge()
+	do -- SetDeathAge
+		-- function Colonist:GameInit()
+		-- self:SetBase("death_age", self.MinAge_Senior + 5 + self:Random(10) + self:Random(5) + self:Random(5))
 		local function RetDeathAge(c)
 			c = c or Colonist
-	--~		 return c.MinAge_Senior + 5 + c:Random(10) + c:Random(5) + c:Random(5)
 			return c.MinAge_Senior + 5 + Random(10) + Random(5) + Random(5)
 		end
-
-		local default_str = Trans(1000121--[[Default--]])
-		local ItemList = {
-			{text = default_str,value = default_str,hint = S[302535920000794--[[Uses same code as game to pick death ages.--]]]},
-			{text = 60,value = 60},
-			{text = 75,value = 75},
-			{text = 100,value = 100},
-			{text = 250,value = 250},
-			{text = 500,value = 500},
-			{text = 1000,value = 1000},
-			{text = 10000,value = 10000},
-			{text = S[302535920000795--[[Logan's Run (Novel)--]]],value = "LoganNovel"},
-			{text = S[302535920000796--[[Logan's Run (Movie)--]]],value = "LoganMovie"},
-			{text = S[302535920000797--[[TNG: Half a Life--]]],value = "TNG"},
-			{text = S[302535920000798--[[The Happy Place--]]],value = "TheHappyPlace"},
-			{text = S[302535920000799--[[In Time--]]],value = "InTime"},
+		local movie_lookup = {
+			LoganNovel = 21,
+			LoganMovie = 30,
+			TNG = 60,
+			TheHappyPlace = 60,
+			InTime = 26,
 		}
 
-		local function CallBackFunc(choice)
-			if choice.nothing_selected then
-				return
-			end
-			local value = choice[1].value
-			local amount
-			if value == "LoganNovel" then
-				amount = 21
-			elseif value == "LoganMovie" then
-				amount = 30
-			elseif value == "TNG" then
-				amount = 60
-			elseif value == "TheHappyPlace" then
-				amount = 60
-			elseif value == "InTime" then
-				amount = 26
-			elseif type(value) == "number" then
-				amount = value
-			end
+		function ChoGGi.MenuFuncs.SetDeathAge()
+			local default_str = Trans(1000121--[[Default--]])
+			local hint_str = Trans(9559--[[Well, we needed to know that for sure I guess.--]])
+			local ItemList = {
+				{text = default_str,value = default_str,hint = S[302535920000794--[[Uses same code as game to pick death ages.--]]]},
+				{text = 60,value = 60},
+				{text = 75,value = 75},
+				{text = 100,value = 100},
+				{text = 250,value = 250},
+				{text = 500,value = 500},
+				{text = 1000,value = 1000},
+				{text = 10000,value = 10000},
+				{text = S[302535920000795--[[Logan's Run (Novel)--]]],value = "LoganNovel",hint = hint_str},
+				{text = S[302535920000796--[[Logan's Run (Movie)--]]],value = "LoganMovie",hint = hint_str},
+				{text = S[302535920000797--[[TNG: Half a Life--]]],value = "TNG",hint = hint_str},
+				{text = S[302535920000798--[[The Happy Place--]]],value = "TheHappyPlace",hint = hint_str},
+				{text = S[302535920000799--[[In Time--]]],value = "InTime",hint = hint_str},
+			}
 
-			if value == default_str or type(amount) == "number" then
-				if value == default_str then
-					local tab = UICity.labels.Colonist or ""
-					for i = 1, #tab do
-						tab[i].death_age = RetDeathAge(tab[i])
-					end
-					ChoGGi.UserSettings.DeathAgeColonist = nil
-				elseif type(amount) == "number" then
-					local tab = UICity.labels.Colonist or ""
-					for i = 1, #tab do
-						tab[i].death_age = amount
-					end
-					ChoGGi.UserSettings.DeathAgeColonist = amount
+			local function CallBackFunc(choice)
+				if choice.nothing_selected then
+					return
+				end
+				local value = choice[1].value
+
+				local amount = movie_lookup[value]
+				if not amount and type(value) == "number" then
+					amount = value
 				end
 
-				ChoGGi.SettingFuncs.WriteSettings()
+				if value == default_str or type(amount) == "number" then
+					if value == default_str then
+						-- random age
+						local tab = UICity.labels.Colonist or ""
+						for i = 1, #tab do
+							tab[i].death_age = RetDeathAge(tab[i])
+						end
+						ChoGGi.UserSettings.DeathAgeColonist = nil
+					else
+						-- set age
+						local tab = UICity.labels.Colonist or ""
+						for i = 1, #tab do
+							tab[i].death_age = amount
+						end
+						ChoGGi.UserSettings.DeathAgeColonist = amount
+					end
 
-				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000446--[[Colonist Death Age--]]]),
-					Trans(547--[[Colonists--]]),
-					default_icon
-				)
+					ChoGGi.SettingFuncs.WriteSettings()
+
+					MsgPopup(
+						ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000446--[[Colonist Death Age--]]]),
+						S[302535920000446--[[Colonist Death Age--]]],
+						default_icon
+					)
+				end
 			end
-		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = S[302535920000801--[[Set Death Age--]]],
-			hint = S[302535920000802--[[Usual age is around %s. This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour).--]]]:format(RetDeathAge()),
-			skip_sort = true,
-		}
-	end
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = ItemList,
+				title = S[302535920000801--[[Set Death Age--]]],
+				hint = S[302535920000802--[[Usual age is around %s. This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour).--]]]:format(RetDeathAge()),
+				skip_sort = true,
+			}
+		end
+	end -- do
 
 	function ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll()
 		local ChoGGi = ChoGGi
@@ -838,7 +843,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		MsgPopup(
 			S[302535920000804--[[No lazy good fer nuthins round here--]]],
-			Trans(547--[[Colonists--]]),
+			S[302535920000393--[[Add Specialization To All--]]],
 			"UI/Icons/Upgrades/home_collective_04.tga"
 		)
 	end
@@ -1110,7 +1115,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		if iType == 1 then
 			c = c + 1
 			ItemList[c] = {
-				text = Trans(3490--[[Random--]]),
+				text = " " .. Trans(3490--[[Random--]]),
 				value = Trans(3490--[[Random--]]),
 				hint = S[302535920000811--[[Everyone gets a spec--]]],
 			}
@@ -1189,6 +1194,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			items = ItemList,
 			title = S[302535920000129--[[Set--]]] .. " " .. sType .. S[302535920000813--[[Colonist Specialization--]]],
 			hint = hint,
+			height = 750,
 			check = {
 				{
 					title = S[302535920000750--[[Dome Only--]]],

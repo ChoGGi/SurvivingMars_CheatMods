@@ -25,6 +25,10 @@ ChoGGi.ComFuncs.OpenInListChoice{
 	custom_type = custom_type,
 	custom_func = CustomFunc,
 	close_func = function() end,
+	height = 800.0,
+	width = 100.0,
+	skip_sort = true,
+	skip_icons = true,
 	check = {
 		only_one = true,
 		at_least_one = true,
@@ -42,9 +46,6 @@ ChoGGi.ComFuncs.OpenInListChoice{
 			visible = false,
 		},
 	},
-	skip_sort = true,
-	height = 800.0,
-	width = 100.0,
 }
 --]]
 
@@ -97,6 +98,7 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 	self.close_func = self.list.close_func
 	self.title = self.list.title
 	self.select_flash = self.list.select_flash
+	self.skip_icons = self.list.skip_icons
 
 	self.dialog_width = self.list.width or 500.0
 	self.dialog_height = self.list.height or 615.0
@@ -225,7 +227,9 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			Hint = S[302535920000078--[[Custom Value--]]],
 			OnKbdKeyDown = self.idEditValueOnKbdKeyDown
 		}, self.idEditArea)
-		self.idEditValue:SetVisible(false)
+		if self.custom_type == 0 then
+			self.idEditValue:SetVisible(false)
+		end
 
 		self.idShowCustomVal = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idShowCustomVal",
@@ -614,8 +618,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 		local item = self.items[i]
 
 		-- is there an icon to add
-		local text
-		local display_icon
+		local text,display_icon
 		if item.icon then
 			-- if x is 0 then it's not an actual image
 				if item.icon:find("<image ") then
@@ -629,7 +632,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 					end
 				end
 		else
-			display_icon = self:AddItemIcon(g,item)
+			display_icon = not self.skip_icons and self:AddItemIcon(g,item)
 			if not text then
 				text = item.text
 			end
@@ -670,7 +673,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 			end
 		end
 
-		if display_icon then
+		if display_icon and not self.skip_icons then
 			listitem.idImage = g_Classes.ChoGGi_Image:new({
 				Id = "idImage",
 				Dock = "left",

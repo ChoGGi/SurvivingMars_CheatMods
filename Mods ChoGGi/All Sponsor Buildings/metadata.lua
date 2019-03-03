@@ -14,6 +14,8 @@ return PlaceObj("ModDef", {
 	"description", [[Removes sponsor limit placed on certain buildings/vehicles.
 Works on new or saved games, and can be removed anytime.
 
+You need to research "Rover Printing" to build rovers.
+
 
 
 Included in Expanded Cheat Menu.]],

@@ -10,6 +10,16 @@ function OnMsg.ClassesGenerate()
 	local str_url = "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/"
 
 	c = c + 1
+	Actions[c] = {ActionName = S[302535920000146--[[Delete Saved Games--]]],
+		ActionMenubar = "ECM.Help",
+		ActionId = ".Delete Saved Games",
+		ActionIcon = "CommonAssets/UI/Menu/DeleteArea.tga",
+		RolloverText = S[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."--]]] .. "\n\n" .. S[302535920001274--[[This is permanent!--]]],
+		OnAction = ChoGGi.MenuFuncs.DeleteSavedGames,
+		ActionSortKey = "94.Extract HPKs",
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = S[302535920000504--[[List All Menu Items--]]],
 		ActionMenubar = "ECM.Help",
 		ActionId = ".List All Menu Items",
@@ -180,6 +190,7 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".*Info*",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
 		RolloverText = S[302535920001028--[[Have a Tutorial, or general info you'd like to add?--]]] .. " : " .. ChoGGi.email,
+		OnAction = empty_func,
 		ActionSortKey = "-0*Info*",
 	}
 
