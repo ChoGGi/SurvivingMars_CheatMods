@@ -4,7 +4,7 @@ local IsValid = IsValid
 local PlacePolyline = PlacePolyline
 local AveragePoint2D = AveragePoint2D
 local pairs = pairs
-local TableClear = table.clear
+local table_clear = table.clear
 
 local tunnel_lines = {}
 local two_pointer = {}
@@ -44,5 +44,5 @@ function OnMsg.SelectionRemoved()
 			table_item.line:delete()
 		end
 	end
-	TableClear(tunnel_lines)
+	table_clear(tunnel_lines)
 end

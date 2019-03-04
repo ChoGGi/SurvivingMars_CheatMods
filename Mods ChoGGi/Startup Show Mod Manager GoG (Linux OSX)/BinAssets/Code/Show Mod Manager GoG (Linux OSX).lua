@@ -1,9 +1,9 @@
 local Sleep = Sleep
-local TableFind = table.find
+local table_find = table.find
 
 local function SetModNew(menu)
 	local buttons = menu.idContent and menu.idContent.idBottomButtons
-	local idx = TableFind(buttons,"class","XWindow")
+	local idx = table_find(buttons,"class","XWindow")
 
 	if idx then
 		buttons = buttons[idx]

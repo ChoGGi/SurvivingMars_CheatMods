@@ -57,7 +57,7 @@ local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local S = ChoGGi.Strings
 
 local type,tostring = type,tostring
-local TableSort = table.sort
+local table_sort = table.sort
 local RGBA,RGB = RGBA,RGB
 local point = point
 local MeasureImage = UIL.MeasureImage
@@ -277,7 +277,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	if not self.list.skip_sort then
 		-- sort table by display text
 		local sortby = self.list.sortby or "text"
-		TableSort(self.list.items,function(a,b)
+		table_sort(self.list.items,function(a,b)
 			return CmpLower(a[sortby], b[sortby])
 		end)
 	end

@@ -9,7 +9,7 @@
 --~ end
 
 local type = type
-local TableUnpack = table.unpack
+local table_unpack = table.unpack
 
 local MsgPopup
 local DebugGetInfo
@@ -143,7 +143,7 @@ function OnMsg.ClassesGenerate()
 		-- fix for sending nil id to it
 		function LoadCustomOnScreenNotification(notification,...)
 			-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
-			if TableUnpack(notification) then
+			if table_unpack(notification) then
 				return ChoGGi_OrigFuncs.LoadCustomOnScreenNotification(notification,...)
 			end
 		end
@@ -265,7 +265,7 @@ function OnMsg.ClassesGenerate()
 		function OpenDialog(...)
 			local ret = {ChoGGi_OrigFuncs.OpenDialog(...)}
 			SetTrans(ret)
-			return TableUnpack(ret)
+			return table_unpack(ret)
 		end
 
 		--console stuff
@@ -1311,7 +1311,7 @@ function OnMsg.ClassesBuilt()
 --~ 				SetRollPitchYaw(ret[1],0,0,last:GetAngle() or 0)
 --~ 			end
 
---~ 			return TableUnpack(ret)
+--~ 			return table_unpack(ret)
 --~ 		end
 --~ 	end -- do
 

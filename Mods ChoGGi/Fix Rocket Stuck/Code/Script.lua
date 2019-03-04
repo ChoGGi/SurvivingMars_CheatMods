@@ -1,20 +1,20 @@
-local TableFind = table.find
-local TableRemove = table.remove
-local TableClear = table.clear
+local table_find = table.find
+local table_remove = table.remove
+local table_clear = table.clear
 local type = type
 local IsValid = IsValid
-local InvalidPos = InvalidPos()
 local pairs = pairs
 local Msg = Msg
 local GenerateColonistData = GenerateColonistData
 local GetRandomPassablePoint = GetRandomPassablePoint
 local GetPassablePointNearby = GetPassablePointNearby
+local InvalidPos = InvalidPos()
 
 local function RemoveInvalid(count,list)
 	for i = #list, 1, -1 do
 		if not IsValid(list[i]) then
 			count = count + 1
-			TableRemove(list,i)
+			table_remove(list,i)
 		end
 	end
 	return count
@@ -55,7 +55,7 @@ end
 --~ 	for i = #r.task_requests, 1, -1 do
 --~ 		local task = r.task_requests[i]
 --~ 		if task:GetResource() == r.maintenance_requirements.resource and task:GetFillIndex() == 1000000 and task:GetFlags() == 1028 then
---~ 			TableRemove(r.task_requests,i)
+--~ 			table_remove(r.task_requests,i)
 --~ 		end
 --~ 	end
 --~ end
@@ -88,7 +88,7 @@ function OnMsg.LoadGame()
 
 				-- has expectation of passengers, but none are on the rocket
 				if type(r.cargo) == "table" then
-					local pass = TableFind(r.cargo,"class","Passengers")
+					local pass = table_find(r.cargo,"class","Passengers")
 					pass = r.cargo[pass]
 					if type(pass) == "table" and pass.amount > 0 and #pass.applicants_data == 0 then
 						r:SetCommand("Unload")
@@ -104,7 +104,7 @@ function OnMsg.LoadGame()
 							-- valid but stuck on WorkCycle cmd
 							unload_it = true
 							c:SetCommand("Idle")
-							TableRemove(crew,i)
+							table_remove(crew,i)
 							-- if we don't add the thread it spams log with [LUA ERROR] attempt to yield across a C-call boundary
 							CreateGameTimeThread(function()
 								c:ExitBuilding(r)
@@ -112,7 +112,7 @@ function OnMsg.LoadGame()
 						else
 							-- more invalid colonists...
 							SpawnColonist_lib(c,r,nil,UICity)
-							TableRemove(crew,i)
+							table_remove(crew,i)
 						end
 					end
 
@@ -131,11 +131,11 @@ function OnMsg.LoadGame()
 										UICity.drone_prefabs = UICity.drone_prefabs + 1
 									end
 								end)
-								TableRemove(drones,i)
+								table_remove(drones,i)
 							end
 						else
 							UICity.drone_prefabs = UICity.drone_prefabs + 1
-							TableRemove(drones,i)
+							table_remove(drones,i)
 						end
 					end
 
@@ -154,7 +154,7 @@ function OnMsg.LoadGame()
 --~ 				if r.maintenance_request then
 --~ 					local cmd = r.command
 --~ 					RemoveOldMainTasks(r)
---~ 					TableClear(r.maintenance_requirements)
+--~ 					table_clear(r.maintenance_requirements)
 --~ 					r.maintenance_request = false
 --~ 					r:SetCommand(cmd)
 --~ 				end
@@ -213,7 +213,7 @@ function OnMsg.LoadGame()
 --~ 			elseif r.command == "Refuel" and r.maintenance_request then
 --~ 				local cmd = r.command
 --~ 				RemoveOldMainTasks(r)
---~ 				TableClear(r.maintenance_requirements)
+--~ 				table_clear(r.maintenance_requirements)
 --~ 				r.maintenance_request = false
 --~ 				r:SetCommand(cmd)
 			end

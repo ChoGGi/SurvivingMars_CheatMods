@@ -24,7 +24,8 @@ Press OK to download it or check the Mod Manager to make sure it's enabled.]]) =
 	end
 end
 
-local TableClear = table.clear
+local table_clear = table.clear
+
 local S
 local Trans
 -- generate is late enough that my library is loaded, but early enough to replace anything I need to
@@ -38,8 +39,8 @@ local all_specialist = {}
 local function BuildSpecialistLists()
 	local labels = UICity.labels
 
-	TableClear(needed_specialist)
-	TableClear(all_specialist)
+	table_clear(needed_specialist)
+	table_clear(all_specialist)
 
 	needed_specialist.none = 0
 	all_specialist.none = #(labels.none or "")
@@ -65,7 +66,7 @@ end
 
 local filter_table = {}
 local function GetMatchingColonistsCount(self,spec)
-	TableClear(filter_table)
+	table_clear(filter_table)
   filter_table[spec] = true
 
   local colonists = self.approved_applicants

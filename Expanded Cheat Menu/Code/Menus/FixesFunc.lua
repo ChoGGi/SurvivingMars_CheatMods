@@ -10,13 +10,13 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
-		local TableRemove = table.remove
+		local table_remove = table.remove
 		local labels = UICity.labels
 		for id,label in pairs(labels) do
 			if id ~= "Consts" then
 				for i = #label, 1, -1 do
 					if not IsValid(label[i]) then
-						TableRemove(label,i)
+						table_remove(label,i)
 					end
 				end
 			end

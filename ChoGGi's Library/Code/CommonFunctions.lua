@@ -17,9 +17,9 @@ local GetTerrainCursor = GetTerrainCursor
 local MapFilter = MapFilter
 local MapGet = MapGet
 local FindNearestObject = FindNearestObject
-local TableRemove = table.remove
-local TableFind = table.find
-local TableClear = table.clear
+local table_remove = table.remove
+local table_find = table.find
+local table_clear = table.clear
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 function ChoGGi.ComFuncs.SaveOrigFunc(class_or_func,func_name)
@@ -430,7 +430,7 @@ do -- MsgPopup
 
 		-- needed in Sagan update
 		local aosn = g_ActiveOnScreenNotifications
-		local idx = TableFind(aosn, 1, data.id) or #aosn + 1
+		local idx = table_find(aosn, 1, data.id) or #aosn + 1
 		aosn[idx] = {data.id}
 
 		-- and show the popup
@@ -494,7 +494,7 @@ do -- ShowObj
 			for k,v in pairs(markers) do
 				ClearMarker(k,v)
 			end
-			TableClear(markers)
+			table_clear(markers)
 			ResumePassEdits("ClearShowObj")
 			return
 		end
@@ -971,7 +971,7 @@ function ChoGGi.ComFuncs.RemoveMissingLabelObjects(label)
 	local list = UICity.labels[label] or ""
 	for i = #list, 1, -1 do
 		if not IsValid(list[i]) then
-			TableRemove(UICity.labels[label],i)
+			table_remove(UICity.labels[label],i)
 		end
 	end
 end
@@ -980,13 +980,13 @@ function ChoGGi.ComFuncs.RemoveMissingTableObjects(list,obj)
 	if obj then
 		for i = #list, 1, -1 do
 			if #list[i][list] == 0 then
-				TableRemove(list,i)
+				table_remove(list,i)
 			end
 		end
 	else
 		for i = #list, 1, -1 do
 			if not IsValid(list[i]) then
-				TableRemove(list,i)
+				table_remove(list,i)
 			end
 		end
 	end
@@ -998,7 +998,7 @@ function ChoGGi.ComFuncs.RemoveFromLabel(label,obj)
 	local list = UICity.labels[label] or ""
 	for i = 1, #list do
 		if list[i] and list[i].handle and list[i] == obj.handle then
-			TableRemove(UICity.labels[label],i)
+			table_remove(UICity.labels[label],i)
 		end
 	end
 end
@@ -1106,7 +1106,7 @@ do -- RetTableNoDupes
 		if #list > 10000 then
 			dupe_t = {}
 		else
-			TableClear(dupe_t)
+			table_clear(dupe_t)
 		end
 
 		for i = 1, #list do
@@ -1372,7 +1372,7 @@ function ChoGGi.ComFuncs.UpdateDataTablesCargo()
 	local Tables = ChoGGi.Tables
 
 	-- update cargo resupply
-	TableClear(Tables.Cargo)
+	table_clear(Tables.Cargo)
 	local ResupplyItemDefinitions = ResupplyItemDefinitions or ""
 	for i = 1, #ResupplyItemDefinitions do
 		local def = ResupplyItemDefinitions[i]
@@ -1421,16 +1421,16 @@ do -- UpdateDataTables
 		local c
 
 		local Tables = ChoGGi.Tables
-		TableClear(Tables.CargoPresets)
-		TableClear(Tables.ColonistAges)
-		TableClear(Tables.ColonistBirthplaces)
-		TableClear(Tables.ColonistGenders)
-		TableClear(Tables.ColonistSpecializations)
-		TableClear(Tables.Mystery)
-		TableClear(Tables.NegativeTraits)
-		TableClear(Tables.OtherTraits)
-		TableClear(Tables.PositiveTraits)
-		TableClear(Tables.Resources)
+		table_clear(Tables.CargoPresets)
+		table_clear(Tables.ColonistAges)
+		table_clear(Tables.ColonistBirthplaces)
+		table_clear(Tables.ColonistGenders)
+		table_clear(Tables.ColonistSpecializations)
+		table_clear(Tables.Mystery)
+		table_clear(Tables.NegativeTraits)
+		table_clear(Tables.OtherTraits)
+		table_clear(Tables.PositiveTraits)
+		table_clear(Tables.Resources)
 		Tables.SchoolTraits = const.SchoolTraits
 		Tables.SanatoriumTraits = const.SanatoriumTraits
 
@@ -1715,7 +1715,7 @@ do -- Rebuildshortcuts
 			local a = XShortcutsTarget.actions[i]
 			if a.ChoGGi_ECM or remove_lookup[a.ActionId] then
 				a:delete()
-				TableRemove(XShortcutsTarget.actions,i)
+				table_remove(XShortcutsTarget.actions,i)
 --~ 			else
 --~ 				-- hide any menuitems added from devs
 --~ 				a.ActionMenubar = nil
@@ -1731,14 +1731,14 @@ do -- Rebuildshortcuts
 			local idx = table.find(XShortcutsTarget.actions,"ActionId","actionToggleFullscreen")
 			if idx then
 				XShortcutsTarget.actions[idx]:delete()
-				TableRemove(XShortcutsTarget.actions,idx)
+				table_remove(XShortcutsTarget.actions,idx)
 			end
 
 --~ 			-- f1
 --~ 			idx = table.find(XShortcutsTarget.actions,"ActionId","ShowHints")
 --~ 			if idx then
 --~ 				XShortcutsTarget.actions[idx]:delete()
---~ 				TableRemove(XShortcutsTarget.actions,idx)
+--~ 				table_remove(XShortcutsTarget.actions,idx)
 --~ 			end
 
 		end
@@ -2128,11 +2128,11 @@ function ChoGGi.ComFuncs.GetNearestIdleDrone(bld)
 	end
 
 	-- get an idle drone
-	local idle_idx = TableFind(cc,"command","Idle")
+	local idle_idx = table_find(cc,"command","Idle")
 	if idle_idx then
 		return cc[idle_idx]
 	end
-	idle_idx = TableFind(cc,"command","WaitCommand")
+	idle_idx = table_find(cc,"command","WaitCommand")
 	if idle_idx then
 		return cc[idle_idx]
 	end
@@ -2615,7 +2615,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 	local res = ChoGGi.Tables.Resources
 	local TagLookupTable = const.TagLookupTable
 	for i = 1, #res do
-		local item = ResourceDescription[TableFind(ResourceDescription, "name", res[i])]
+		local item = ResourceDescription[table_find(ResourceDescription, "name", res[i])]
 		ItemList[i] = {
 			text = Trans(item.display_name),
 			value = item.name,
@@ -3203,10 +3203,10 @@ end
 
 do -- RemoveXTemplateSections
 	local function RemoveTableItem(list,name,value)
-		local idx = TableFind(list, name, value)
+		local idx = table_find(list, name, value)
 		if idx then
 			list[idx]:delete()
-			TableRemove(list,idx)
+			table_remove(list,idx)
 		end
 	end
 	ChoGGi.ComFuncs.RemoveTableItem = RemoveTableItem
@@ -3324,7 +3324,7 @@ end -- do
 
 function ChoGGi.ComFuncs.Editor_Toggle()
 	-- force editor to toggle once (makes status text work properly the "first" toggle instead of the second)
-	local idx = TableFind(terminal.desktop,"class","EditorInterface")
+	local idx = table_find(terminal.desktop,"class","EditorInterface")
 	if not idx then
 		EditorState(1,1)
 		EditorDeactivate()
@@ -3433,7 +3433,7 @@ function ChoGGi.ComFuncs.SetTaskReqAmount(obj,value,task,setting)
 end
 
 function ChoGGi.ComFuncs.ReturnEditorType(list,key,value)
-	local idx = TableFind(list, key, value)
+	local idx = table_find(list, key, value)
 	value = list[idx].editor
 	-- I use it to compare to type() so
 	if value == "bool" then
@@ -3705,7 +3705,7 @@ function ChoGGi.ComFuncs.UpdateBuildMenu()
 end
 
 function ChoGGi.ComFuncs.SetTableValue(tab,id,id_name,item,value)
-	local idx = TableFind(tab,id,id_name)
+	local idx = table_find(tab,id,id_name)
 	if idx then
 		tab[idx][item] = value
 		return tab[idx]
@@ -3757,7 +3757,7 @@ do -- GetAllAttaches
 	function ChoGGi.ComFuncs.GetAllAttaches(obj,mark_attaches)
 		mark = mark_attaches
 
-		TableClear(attach_dupes)
+		table_clear(attach_dupes)
 		if not IsValid(obj) then
 			-- I always use #attach_list so "" is fine by me
 			return ""
@@ -3782,9 +3782,9 @@ do -- GetAllAttaches
 		end
 
 		-- remove original obj if it's in the list
-		local idx = TableFind(attaches_list,obj)
+		local idx = table_find(attaches_list,obj)
 		if idx then
-			TableRemove(attaches_list,idx)
+			table_remove(attaches_list,idx)
 		end
 
 		return attaches_list
@@ -4040,7 +4040,7 @@ do -- LoadEntity
 end -- do
 
 function ChoGGi.ComFuncs.AddParentToClass(class_obj,parent_name)
-	if not TableFind(class_obj,parent_name) then
+	if not table_find(class_obj,parent_name) then
 		class_obj.__parents[#class_obj.__parents+1] = parent_name
 	end
 end

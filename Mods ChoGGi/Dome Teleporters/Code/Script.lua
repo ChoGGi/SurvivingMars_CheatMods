@@ -33,17 +33,17 @@ local CreateDomeNetworks = CreateDomeNetworks
 local ConnectDomesWithPassage = ConnectDomesWithPassage
 local IsObjInDome = IsObjInDome
 local SetState = g_CObjectFuncs.SetState
-local TableRemove = table.remove
-local TableFind = table.find
-local TableClear = table.clear
+local table_remove = table.remove
+local table_find = table.find
+local table_clear = table.clear
 
 local function RemoveTableItem(list,name,value)
-	local idx = TableFind(list, name, value)
+	local idx = table_find(list, name, value)
 	if idx then
 		if not type(list[idx]) == "function" then
 			list[idx]:delete()
 		end
-		TableRemove(list,idx)
+		table_remove(list,idx)
 	end
 end
 

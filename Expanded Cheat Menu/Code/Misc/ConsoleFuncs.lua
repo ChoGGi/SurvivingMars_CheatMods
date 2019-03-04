@@ -2,10 +2,10 @@
 
 -- menus/buttons added to the Console
 
-local TableSort = table.sort
-local TableInsert = table.insert
-local TableRemove = table.remove
-local TableFind = table.find
+local table_sort = table.sort
+local table_insert = table.insert
+local table_remove = table.remove
+local table_find = table.find
 local CmpLower = CmpLower
 local print,type = print,type
 
@@ -48,7 +48,7 @@ function OnMsg.ClassesGenerate()
 	end
 	--
 	function ChoGGi.ConsoleFuncs.AddSubmenu(name,list,title)
-		local submenu = TableFind(ExamineMenuToggle_list,"name",name)
+		local submenu = table_find(ExamineMenuToggle_list,"name",name)
 		if submenu then
 			list = list or ""
 			ExamineMenuToggle_list[submenu].hint = nil
@@ -66,7 +66,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.ConsoleFuncs.AddMonitor(name,submenu,idx)
-		TableInsert(submenu,idx or 2,{
+		table_insert(submenu,idx or 2,{
 			name = S[302535920000853--[[Monitor--]]] .. ": " .. name,
 			hint = "ChoGGi.ComFuncs.MonitorTableLength(" .. name .. ")",
 			clicked = function()
@@ -87,14 +87,14 @@ function OnMsg.ClassesGenerate()
 		local list = ChoGGi.UserSettings.ConsoleExamineList or ""
 		local submenu
 
-		TableSort(list,CmpLower)
+		table_sort(list,CmpLower)
 
 		for i = 0, #list do
 			ExamineMenuToggle_list[i] = BuildExamineItem(list[i])
 		end
 
 		-- add submenus to certain items
-		submenu = TableFind(ExamineMenuToggle_list,"name","Presets")
+		submenu = table_find(ExamineMenuToggle_list,"name","Presets")
 		if submenu then
 			-- remove hint from "submenu" menu
 			ExamineMenuToggle_list[submenu].hint = nil
@@ -112,19 +112,19 @@ function OnMsg.ClassesGenerate()
 				end
 			end)
 
-			TableSort(submenu_table,
+			table_sort(submenu_table,
 				function(a,b)
 					-- damn eunuchs
 					return CmpLower(a.name,b.name)
 				end
 			)
 			-- add orig to the menu (we want it at start so no sorting)
-			TableInsert(submenu_table,1,BuildExamineItem("Presets"))
+			table_insert(submenu_table,1,BuildExamineItem("Presets"))
 			-- and done
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
 		--
-		submenu = TableFind(ExamineMenuToggle_list,"name","DataInstances")
+		submenu = table_find(ExamineMenuToggle_list,"name","DataInstances")
 		if submenu then
 			ExamineMenuToggle_list[submenu].hint = nil
 			-- we need to build a list
@@ -137,7 +137,7 @@ function OnMsg.ClassesGenerate()
 				submenu_table[c] = BuildExamineItem("DataInstances." .. key,key)
 			end
 
-			TableSort(submenu_table,
+			table_sort(submenu_table,
 				function(a,b)
 					-- damn eunuchs
 					return CmpLower(a.name,b.name)
@@ -145,7 +145,7 @@ function OnMsg.ClassesGenerate()
 			)
 
 			-- add orig to the menu (we want it at start so no sorting)
-			TableInsert(submenu_table,1,BuildExamineItem("DataInstances"))
+			table_insert(submenu_table,1,BuildExamineItem("DataInstances"))
 			-- and done
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
@@ -170,7 +170,7 @@ function OnMsg.ClassesGenerate()
 
 		submenu = AddSubmenu("ThreadsRegister",{"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers"})
 		if submenu then
-			TableInsert(submenu,2,{
+			table_insert(submenu,2,{
 				name = S[302535920000853--[[Monitor--]]] .. ": ThreadsRegister",
 				hint = "ChoGGi.ComFuncs.MonitorThreads()",
 				clicked = function()
@@ -189,7 +189,7 @@ function OnMsg.ClassesGenerate()
 		AddSubmenu("UICity",{"UICity.labels","UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters","LRManagerInstance"})
 
 		-- bonus addition at the top
-		TableInsert(ExamineMenuToggle_list,1,{
+		table_insert(ExamineMenuToggle_list,1,{
 			name = S[302535920001376--[[Auto Update List--]]],
 			hint = S[302535920001377--[[Update this list when ECM updates it.--]]],
 			class = "ChoGGi_CheckButtonMenu",
@@ -511,7 +511,7 @@ function OnMsg.ClassesGenerate()
 		-- clear out old buttons first
 		for i = #dlg.idScripts, 1, -1 do
 			dlg.idScripts[i]:delete()
-			TableRemove(dlg.idScripts,i)
+			table_remove(dlg.idScripts,i)
 		end
 
 		-- build Scripts button

@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 local pairs = pairs
-local TableSort = table.sort
+local table_sort = table.sort
 
 local GetEntityBuildShape = GetEntityBuildShape
 local HexAngleToDirection = HexAngleToDirection
@@ -127,7 +127,7 @@ local function RetNearestSpot(dome,pos)
 	end
 
 	-- sort by nearest
-	TableSort(pos_spots,function(a,b)
+	table_sort(pos_spots,function(a,b)
 		return a:Dist2D(pos) < b:Dist2D(pos)
 	end)
 	-- and done

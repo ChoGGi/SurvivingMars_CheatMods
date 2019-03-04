@@ -45,7 +45,7 @@ local IsValid = IsValid
 local Sleep = Sleep
 local MulDivRound = MulDivRound
 local T = T
-local TableRemove = table.remove
+local table_remove = table.remove
 local ResourceScale = const.ResourceScale
 
 local name = [[RC Tanker]]

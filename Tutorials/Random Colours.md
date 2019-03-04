@@ -10,8 +10,8 @@ RandomColour(1000)
 
 ```lua
 -- local instead of global lookup is slightly faster
-local TableFind = table.find
-local TableClear = table.clear
+local table_find = table.find
+local table_clear = table.clear
 local AsyncRand = AsyncRand
 
 -- helper function
@@ -22,7 +22,7 @@ local function RetTableNoDupes(list)
 	if #list > 10000 then
 		dupe_t = {}
 	else
-		TableClear(dupe_t)
+		table_clear(dupe_t)
 	end
 
 	local c = 0

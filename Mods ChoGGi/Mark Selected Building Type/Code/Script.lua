@@ -6,7 +6,6 @@ MarkSelectedBuildingType = {
 local MarkSelectedBuildingType = MarkSelectedBuildingType
 
 local IsValid = IsValid
-local TableIClear = table.iclear
 
 local beams = objlist:new()
 local green = green

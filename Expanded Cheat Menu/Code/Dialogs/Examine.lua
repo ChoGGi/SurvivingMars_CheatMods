@@ -20,10 +20,10 @@ if not PropObjGetProperty(_G,"g_ExamineDlgs") then
 end
 
 -- local some global funcs
-local TableClear = table.clear
-local TableIClear = table.iclear
-local TableInsert = table.insert
-local TableSort = table.sort
+local table_clear = table.clear
+local table_iclear = table.iclear
+local table_insert = table.insert
+local table_sort = table.sort
 local CmpLower = CmpLower
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
@@ -40,12 +40,12 @@ local Sleep = Sleep
 local XCreateRolloverWindow = XCreateRolloverWindow
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 
-local getinfo,getupvalue,getlocal
+local debug_getinfo,debug_getupvalue,debug_getlocal
 local debug = PropObjGetProperty(_G,"debug")
 if debug then
-	getupvalue = debug.getupvalue
-	getinfo = debug.getinfo
-	getlocal = debug.getlocal
+	debug_getupvalue = debug.getupvalue
+	debug_getinfo = debug.getinfo
+	debug_getlocal = debug.getlocal
 end
 
 local HLEnd = "</h></color>"
@@ -474,7 +474,7 @@ end
 function Examine:ViewSourceCode()
 	self = GetRootDialog(self)
 	-- add link to view lua source
-	local info = getinfo(self.obj_ref,"S")
+	local info = debug_getinfo(self.obj_ref,"S")
 	-- =[C] is 4 chars
 	local str,path = ChoGGi.ComFuncs.RetSourceFile(info.source)
 	if not str then
@@ -525,7 +525,7 @@ function Examine:idTextOnHyperLinkRollover(link)
 	end
 
 	local title = S[302535920000069--[[Examine--]]]
-	local name = obj
+	local name = tostring(obj)
 
 	if self.onclick_funcs[link] == self.OpenListMenu then
 		title = name .. " " .. Trans(1000162--[[Menu--]])
@@ -533,7 +533,8 @@ function Examine:idTextOnHyperLinkRollover(link)
 
 		-- stick value in search box
 		obj = self.obj_ref[obj]
-		self.idSearchText:SetText(tostring(obj))
+
+		self.idSearchText:SetText(type(obj) == "userdata" and IsT(obj) and Trans(obj) or tostring(obj))
 	end
 
 	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
@@ -1130,8 +1131,8 @@ This can take time on something like the ""Building"" metatable (don't use this 
 			image = "CommonAssets/UI/Menu/gear.tga",
 			clicked = function()
 				if #self.parents > 0 or #self.ancestors > 0 then
-					TableClear(self.menu_added)
-					TableClear(self.menu_list_items)
+					table_clear(self.menu_added)
+					table_clear(self.menu_list_items)
 
 					if #self.parents > 0 then
 						self:ProcessList(self.parents," " .. S[302535920000520--[[Parents--]]] .. ": ")
@@ -1967,7 +1968,7 @@ end
 
 function Examine:RetDebugUpValue(obj,list,c,nups)
 	for i = 1, nups do
-		local name, value = getupvalue(obj, i)
+		local name, value = debug_getupvalue(obj, i)
 		if name then
 			c = c + 1
 			name = name ~= "" and name or S[302535920000723--[[Lua--]]]
@@ -1985,15 +1986,15 @@ function Examine:RetDebugGetInfo(obj)
 	temp:Destroy()
 
 	local c = 0
-	local info = getinfo(obj,"Slfunt")
+	local info = debug_getinfo(obj,"Slfunt")
 	for key,value in pairs(info) do
 		c = c + 1
 		temp[c] = key .. ": " .. self:ConvertValueToInfo(value)
 	end
 	-- since pairs doesn't have an order we need a sort
-	TableSort(temp)
+	table_sort(temp)
 
-	TableInsert(temp,1,"\ngetinfo(): ")
+	table_insert(temp,1,"\ngetinfo(): ")
 	return TableConcat(temp,"\n")
 end
 function Examine:RetFuncArgs(obj)
@@ -2001,13 +2002,13 @@ function Examine:RetFuncArgs(obj)
 	local temp = self.RetDebugInfo_table
 	temp:Destroy()
 
-	local info = getinfo(obj,"u")
+	local info = debug_getinfo(obj,"u")
 	if info.nparams > 0 then
 		for i = 1, info.nparams do
-			temp[i] = getlocal(obj, i)
+			temp[i] = debug_getlocal(obj, i)
 		end
 
-		TableInsert(temp,1,"params: ")
+		table_insert(temp,1,"params: ")
 		local args = TableConcat(temp,", ")
 
 		-- remove extra , from concat and add ... if it has a vararg
@@ -2039,13 +2040,13 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	local list_sort_num = self.ConvertObjToInfo_list_sort_num
 	local skip_dupes = self.ConvertObjToInfo_skip_dupes
 	-- the list we return with concat
-	TableIClear(list_obj_str)
+	table_iclear(list_obj_str)
 	-- list of strs to sort with
-	TableClear(list_sort_num)
+	table_clear(list_sort_num)
 	-- list of nums to sort with
-	TableClear(list_sort_obj)
+	table_clear(list_sort_obj)
 	-- dupe list for the "All" checkbox
-	TableClear(skip_dupes)
+	table_clear(skip_dupes)
 
 	local obj_metatable = getmetatable(obj)
 	local c = 0
@@ -2147,7 +2148,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 	if self.sort_dir then
 		-- sort backwards
-		TableSort(list_obj_str,function(a, b)
+		table_sort(list_obj_str,function(a, b)
 			-- strings
 			local c,d = list_sort_obj[a], list_sort_obj[b]
 			if c and d then
@@ -2166,7 +2167,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		end)
 	else
 		-- sort normally
-		TableSort(list_obj_str,function(a, b)
+		table_sort(list_obj_str,function(a, b)
 			-- strings
 			local c,d = list_sort_obj[a], list_sort_obj[b]
 			if c and d then
@@ -2190,7 +2191,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		is_valid_obj = true
 		local valid_ent = IsValidEntity(obj:GetEntity())
 
-		TableInsert(list_obj_str,1,"\t--"
+		table_insert(list_obj_str,1,"\t--"
 			.. self:HyperLink(obj,function()
 				OpenInExamineDlg(getmetatable(obj),self)
 			end)
@@ -2204,7 +2205,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		if obj:IsKindOf("ParSystem") then
 			local par_name = obj:GetParticlesName()
 			if par_name ~= "" then
-				TableInsert(list_obj_str,2,"GetParticlesName(): " .. self:ConvertValueToInfo(par_name) .. "\n")
+				table_insert(list_obj_str,2,"GetParticlesName(): " .. self:ConvertValueToInfo(par_name) .. "\n")
 			end
 		end
 
@@ -2227,7 +2228,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			end
 
 			local state = obj:GetState()
-			TableInsert(list_obj_str, 2, Trans(3722--[[State--]]) .. ": "
+			table_insert(list_obj_str, 2, Trans(3722--[[State--]]) .. ": "
 				.. GetStateName(state) .. ", step: "
 				.. self:HyperLink(obj,function()
 					self:AddSphere(obj)
@@ -2243,7 +2244,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 		if valid_ent then
 			-- some entity details as well
-			TableInsert(list_obj_str, 2, "GetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
+			table_insert(list_obj_str, 2, "GetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
 				.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices()) .. (state_added and "" or "\n"))
 		end
 	end
@@ -2282,20 +2283,20 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		if obj_metatable then
 			self.ConvertObjToInfo_data_meta = self.ConvertObjToInfo_data_meta or {}
 			local data_meta = self.ConvertObjToInfo_data_meta
-			TableIClear(data_meta)
+			table_iclear(data_meta)
 
 			local c2 = 0
 			for k, v in pairs(obj_metatable) do
 				c2 = c2 + 1
 				data_meta[c2] = self:ConvertValueToInfo(k) .. " = " .. self:ConvertValueToInfo(v)
 			end
-			TableSort(data_meta,CmpLower)
+			table_sort(data_meta,CmpLower)
 
 			-- add some info for HGE. stuff
 			local name = obj_metatable.__name
 			if name == "HGE.TaskRequest" then
-				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,"Unpack(): "
+				table_insert(data_meta,1,"\ngetmetatable():")
+				table_insert(data_meta,1,"Unpack(): "
 					.. self:HyperLink(obj,function()
 						OpenInExamineDlg({obj:Unpack()},self)
 					end)
@@ -2303,124 +2304,124 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				)
 				-- we use this with Object>Flags
 				self.obj_flags = obj:GetFlags()
-				TableInsert(data_meta,1,"GetFlags(): " .. self:ConvertValueToInfo(self.obj_flags))
-				TableInsert(data_meta,1,"GetReciprocalRequest(): " .. self:ConvertValueToInfo(obj:GetReciprocalRequest()))
-				TableInsert(data_meta,1,"GetLastServiced(): " .. self:ConvertValueToInfo(obj:GetLastServiced()))
-				TableInsert(data_meta,1,"GetFreeUnitSlots(): " .. self:ConvertValueToInfo(obj:GetFreeUnitSlots()))
-				TableInsert(data_meta,1,"GetFillIndex(): " .. self:ConvertValueToInfo(obj:GetFillIndex()))
-				TableInsert(data_meta,1,"GetTargetAmount(): " .. self:ConvertValueToInfo(obj:GetTargetAmount()))
-				TableInsert(data_meta,1,"GetDesiredAmount(): " .. self:ConvertValueToInfo(obj:GetDesiredAmount()))
-				TableInsert(data_meta,1,"GetActualAmount(): " .. self:ConvertValueToInfo(obj:GetActualAmount()))
-				TableInsert(data_meta,1,"GetWorkingUnits(): " .. self:ConvertValueToInfo(obj:GetWorkingUnits()))
-				TableInsert(data_meta,1,"GetResource(): " .. self:ConvertValueToInfo(obj:GetResource()))
-				TableInsert(data_meta,1,"\nGetBuilding(): " .. self:ConvertValueToInfo(obj:GetBuilding()))
+				table_insert(data_meta,1,"GetFlags(): " .. self:ConvertValueToInfo(self.obj_flags))
+				table_insert(data_meta,1,"GetReciprocalRequest(): " .. self:ConvertValueToInfo(obj:GetReciprocalRequest()))
+				table_insert(data_meta,1,"GetLastServiced(): " .. self:ConvertValueToInfo(obj:GetLastServiced()))
+				table_insert(data_meta,1,"GetFreeUnitSlots(): " .. self:ConvertValueToInfo(obj:GetFreeUnitSlots()))
+				table_insert(data_meta,1,"GetFillIndex(): " .. self:ConvertValueToInfo(obj:GetFillIndex()))
+				table_insert(data_meta,1,"GetTargetAmount(): " .. self:ConvertValueToInfo(obj:GetTargetAmount()))
+				table_insert(data_meta,1,"GetDesiredAmount(): " .. self:ConvertValueToInfo(obj:GetDesiredAmount()))
+				table_insert(data_meta,1,"GetActualAmount(): " .. self:ConvertValueToInfo(obj:GetActualAmount()))
+				table_insert(data_meta,1,"GetWorkingUnits(): " .. self:ConvertValueToInfo(obj:GetWorkingUnits()))
+				table_insert(data_meta,1,"GetResource(): " .. self:ConvertValueToInfo(obj:GetResource()))
+				table_insert(data_meta,1,"\nGetBuilding(): " .. self:ConvertValueToInfo(obj:GetBuilding()))
 			elseif name == "HGE.Grid" then
-				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,"get_default(): " .. self:ConvertValueToInfo(obj:get_default()))
-				TableInsert(data_meta,1,"max_value(): " .. self:ConvertValueToInfo(obj:max_value()))
+				table_insert(data_meta,1,"\ngetmetatable():")
+				table_insert(data_meta,1,"get_default(): " .. self:ConvertValueToInfo(obj:get_default()))
+				table_insert(data_meta,1,"max_value(): " .. self:ConvertValueToInfo(obj:max_value()))
 				local size = {obj:size()}
 				if size[1] then
-					TableInsert(data_meta,1,"\nsize(): " .. self:ConvertValueToInfo(size[1])
+					table_insert(data_meta,1,"\nsize(): " .. self:ConvertValueToInfo(size[1])
 						.. " " .. self:ConvertValueToInfo(size[2]))
 				end
 			elseif name == "HGE.XMGrid" then
-				TableInsert(data_meta,1,"\ngetmetatable():")
+				table_insert(data_meta,1,"\ngetmetatable():")
 				local minmax = {obj:minmax()}
 				if minmax[1] then
-					TableInsert(data_meta,1,"minmax(): " .. self:ConvertValueToInfo(minmax[1]) .. " "
+					table_insert(data_meta,1,"minmax(): " .. self:ConvertValueToInfo(minmax[1]) .. " "
 						.. self:ConvertValueToInfo(minmax[2]))
 				end
-				TableInsert(data_meta,1,"levels(): " .. self:ConvertValueToInfo(obj:levels()))
-				TableInsert(data_meta,1,"GetPositiveCells(): " .. self:ConvertValueToInfo(obj:GetPositiveCells()))
-				TableInsert(data_meta,1,"GetBilinear(): " .. self:ConvertValueToInfo(obj:GetBilinear()))
-				TableInsert(data_meta,1,"EnumZones(): " .. self:ConvertValueToInfo(obj:EnumZones()))
-				TableInsert(data_meta,1,"size(): " .. self:ConvertValueToInfo(obj:size()))
-				TableInsert(data_meta,1,"packing(): " .. self:ConvertValueToInfo(obj:packing()))
+				table_insert(data_meta,1,"levels(): " .. self:ConvertValueToInfo(obj:levels()))
+				table_insert(data_meta,1,"GetPositiveCells(): " .. self:ConvertValueToInfo(obj:GetPositiveCells()))
+				table_insert(data_meta,1,"GetBilinear(): " .. self:ConvertValueToInfo(obj:GetBilinear()))
+				table_insert(data_meta,1,"EnumZones(): " .. self:ConvertValueToInfo(obj:EnumZones()))
+				table_insert(data_meta,1,"size(): " .. self:ConvertValueToInfo(obj:size()))
+				table_insert(data_meta,1,"packing(): " .. self:ConvertValueToInfo(obj:packing()))
 				-- crashing tendencies
---~ 				TableInsert(data_meta,1,"histogram(): " .. self:ConvertValueToInfo({obj:histogram()}))
+--~ 				table_insert(data_meta,1,"histogram(): " .. self:ConvertValueToInfo({obj:histogram()}))
 				-- freeze screen with render error in log ex(Flight_Height:GetBinData())
-				TableInsert(data_meta,1,"\nCenterOfMass(): " .. self:ConvertValueToInfo(obj:CenterOfMass()))
+				table_insert(data_meta,1,"\nCenterOfMass(): " .. self:ConvertValueToInfo(obj:CenterOfMass()))
 			elseif name == "HGE.Box" then
-				TableInsert(data_meta,1,"\ngetmetatable():")
+				table_insert(data_meta,1,"\ngetmetatable():")
 				local points2d = {obj:ToPoints2D()}
 				if points2d[1] then
-					TableInsert(data_meta,1,"ToPoints2D(): " .. self:ConvertValueToInfo(points2d[1])
+					table_insert(data_meta,1,"ToPoints2D(): " .. self:ConvertValueToInfo(points2d[1])
 						.. " " .. self:ConvertValueToInfo(points2d[2])
 						.. "\n" .. self:ConvertValueToInfo(points2d[3])
 						.. " " .. self:ConvertValueToInfo(points2d[4])
 					)
 				end
-				TableInsert(data_meta,1,"min(): " .. self:ConvertValueToInfo(obj:min()))
-				TableInsert(data_meta,1,"max(): " .. self:ConvertValueToInfo(obj:max()))
+				table_insert(data_meta,1,"min(): " .. self:ConvertValueToInfo(obj:min()))
+				table_insert(data_meta,1,"max(): " .. self:ConvertValueToInfo(obj:max()))
 				local bsphere = {obj:GetBSphere()}
 				if bsphere[1] then
-					TableInsert(data_meta,1,"GetBSphere(): "
+					table_insert(data_meta,1,"GetBSphere(): "
 						.. self:ConvertValueToInfo(bsphere[1]) .. " "
 						.. self:ConvertValueToInfo(bsphere[2]))
 				end
 				local center = obj:Center()
-				TableInsert(data_meta,1,"Center(): " .. self:ConvertValueToInfo(center))
-				TableInsert(data_meta,1,"IsEmpty(): " .. self:ConvertValueToInfo(obj:IsEmpty()))
+				table_insert(data_meta,1,"Center(): " .. self:ConvertValueToInfo(center))
+				table_insert(data_meta,1,"IsEmpty(): " .. self:ConvertValueToInfo(obj:IsEmpty()))
 				local Radius = obj:Radius()
 				local Radius2D = obj:Radius2D()
-				TableInsert(data_meta,1,"Radius(): " .. self:ConvertValueToInfo(Radius))
+				table_insert(data_meta,1,"Radius(): " .. self:ConvertValueToInfo(Radius))
 				if Radius ~= Radius2D then
-					TableInsert(data_meta,1,"Radius2D(): " .. self:ConvertValueToInfo(Radius2D))
+					table_insert(data_meta,1,"Radius2D(): " .. self:ConvertValueToInfo(Radius2D))
 				end
-				TableInsert(data_meta,1,"size(): " .. self:ConvertValueToInfo(obj:size()))
-				TableInsert(data_meta,1,"IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
-				TableInsert(data_meta,1,"\nIsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
+				table_insert(data_meta,1,"size(): " .. self:ConvertValueToInfo(obj:size()))
+				table_insert(data_meta,1,"IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
+				table_insert(data_meta,1,"\nIsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
 				if center:InBox2D(ChoGGi.ComFuncs.ConstructableArea()) then
-					TableInsert(data_meta,1,self:HyperLink(obj,self.ToggleBBox,S[302535920001550--[[Toggle viewing BBox.--]]]) .. S[302535920001549--[[View BBox--]]] .. HLEnd)
+					table_insert(data_meta,1,self:HyperLink(obj,self.ToggleBBox,S[302535920001550--[[Toggle viewing BBox.--]]]) .. S[302535920001549--[[View BBox--]]] .. HLEnd)
 				end
 			elseif name == "HGE.Point" then
-				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,"__unm(): " .. self:ConvertValueToInfo(obj:__unm()))
+				table_insert(data_meta,1,"\ngetmetatable():")
+				table_insert(data_meta,1,"__unm(): " .. self:ConvertValueToInfo(obj:__unm()))
 				local x,y,z = obj:xyz()
 				local xyz = "x: " .. self:ConvertValueToInfo(x)
 					.. ", y: " .. self:ConvertValueToInfo(y)
 				if z then
 					xyz = xyz .. ", z: " .. self:ConvertValueToInfo(z)
 				end
-				TableInsert(data_meta,1,xyz)
-				TableInsert(data_meta,1,"IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
-				TableInsert(data_meta,1,"\nIsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
+				table_insert(data_meta,1,xyz)
+				table_insert(data_meta,1,"IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
+				table_insert(data_meta,1,"\nIsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
 			elseif name == "HGE.RandState" then
-				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,"Last(): " .. self:ConvertValueToInfo(obj:Last()))
-				TableInsert(data_meta,1,"GetStable(): " .. self:ConvertValueToInfo(obj:GetStable()))
-				TableInsert(data_meta,1,"Get(): " .. self:ConvertValueToInfo(obj:Get()))
-				TableInsert(data_meta,1,"\nCount(): " .. self:ConvertValueToInfo(obj:Count()))
+				table_insert(data_meta,1,"\ngetmetatable():")
+				table_insert(data_meta,1,"Last(): " .. self:ConvertValueToInfo(obj:Last()))
+				table_insert(data_meta,1,"GetStable(): " .. self:ConvertValueToInfo(obj:GetStable()))
+				table_insert(data_meta,1,"Get(): " .. self:ConvertValueToInfo(obj:Get()))
+				table_insert(data_meta,1,"\nCount(): " .. self:ConvertValueToInfo(obj:Count()))
 			elseif name == "HGE.Quaternion" then
-				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,"Norm(): " .. self:ConvertValueToInfo(obj:Norm()))
-				TableInsert(data_meta,1,"Inv(): " .. self:ConvertValueToInfo(obj:Inv()))
+				table_insert(data_meta,1,"\ngetmetatable():")
+				table_insert(data_meta,1,"Norm(): " .. self:ConvertValueToInfo(obj:Norm()))
+				table_insert(data_meta,1,"Inv(): " .. self:ConvertValueToInfo(obj:Inv()))
 				local roll,pitch,yaw = obj:GetRollPitchYaw()
-				TableInsert(data_meta,1,"GetRollPitchYaw(): "
+				table_insert(data_meta,1,"GetRollPitchYaw(): "
 					.. self:ConvertValueToInfo(roll)
 					.. " " .. self:ConvertValueToInfo(pitch)
 					.. " " .. self:ConvertValueToInfo(yaw))
-				TableInsert(data_meta,1,"\nGetAxisAngle(): " .. self:ConvertValueToInfo(obj:GetAxisAngle()))
+				table_insert(data_meta,1,"\nGetAxisAngle(): " .. self:ConvertValueToInfo(obj:GetAxisAngle()))
 			elseif name == "LuaPStr" then
-				TableInsert(data_meta,1,"\ngetmetatable():")
-				TableInsert(data_meta,1,"hash(): " .. self:ConvertValueToInfo(obj:hash()))
-				TableInsert(data_meta,1,"str(): " .. self:ConvertValueToInfo(obj:str()))
-				TableInsert(data_meta,1,"parseTuples(): " .. self:ConvertValueToInfo(obj:parseTuples()))
-				TableInsert(data_meta,1,"getInt(): " .. self:ConvertValueToInfo(obj:getInt()))
-				TableInsert(data_meta,1,"\nsize(): " .. self:ConvertValueToInfo(obj:size()))
+				table_insert(data_meta,1,"\ngetmetatable():")
+				table_insert(data_meta,1,"hash(): " .. self:ConvertValueToInfo(obj:hash()))
+				table_insert(data_meta,1,"str(): " .. self:ConvertValueToInfo(obj:str()))
+				table_insert(data_meta,1,"parseTuples(): " .. self:ConvertValueToInfo(obj:parseTuples()))
+				table_insert(data_meta,1,"getInt(): " .. self:ConvertValueToInfo(obj:getInt()))
+				table_insert(data_meta,1,"\nsize(): " .. self:ConvertValueToInfo(obj:size()))
 --~ 			elseif name == "HGE.File" then
 --~ 			elseif name == "HGE.ForEachReachable" then
 --~ 			elseif name == "RSAKey" then
 --~ 			elseif name == "lpeg-pattern" then
 			else
-				TableInsert(data_meta,1,"\ngetmetatable():")
+				table_insert(data_meta,1,"\ngetmetatable():")
 				local is_t = IsT(obj)
 				if is_t then
-					TableInsert(data_meta,1,"THasArgs(): " .. self:ConvertValueToInfo(THasArgs(obj)))
+					table_insert(data_meta,1,"THasArgs(): " .. self:ConvertValueToInfo(THasArgs(obj)))
 					-- IsT returns the string id, but we'll just call it TGetID() to make it more obvious for people
-					TableInsert(data_meta,1,"\nTGetID(): " .. self:ConvertValueToInfo(is_t))
+					table_insert(data_meta,1,"\nTGetID(): " .. self:ConvertValueToInfo(is_t))
 					if str_not_translated and not UICity then
-						TableInsert(data_meta,1,S[302535920001500--[[userdata object probably needs UICity to translate.--]]])
+						table_insert(data_meta,1,S[302535920001500--[[userdata object probably needs UICity to translate.--]]])
 					end
 				end
 			end
@@ -2438,7 +2439,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			c = c + 1
 			list_obj_str[c] = "\n"
 
-			local info = getinfo(obj,"Su")
+			local info = debug_getinfo(obj,"Su")
 
 			-- link to source code
 			if info.what == "Lua" then
@@ -2532,7 +2533,7 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 	end
 
 	if not (obj == "nil" or is_valid_obj or obj_type == "userdata") and obj_metatable then
-		TableInsert(list_obj_str, 1,"\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
+		table_insert(list_obj_str, 1,"\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
 		if self.enum_vars and next(self.enum_vars) then
 			list_obj_str[1] = list_obj_str[1] .. self:HyperLink(obj,function()
 				OpenInExamineDlg(self.enum_vars,self)
@@ -2636,8 +2637,8 @@ function Examine:SetObj(startup)
 	local obj = self.obj
 
 	-- reset the hyperlinks
-	TableIClear(self.onclick_funcs)
-	TableIClear(self.onclick_objs)
+	table_iclear(self.onclick_funcs)
+	table_iclear(self.onclick_objs)
 	self.onclick_count = 0
 
 	if self.str_object then
@@ -2677,8 +2678,8 @@ function Examine:SetObj(startup)
 
 		-- build parents/ancestors menu
 		if obj_class then
-			TableIClear(self.parents_menu_popup)
-			TableClear(self.pmenu_skip_dupes)
+			table_iclear(self.parents_menu_popup)
+			table_clear(self.pmenu_skip_dupes)
 			-- build menu list
 			self:BuildParents(obj.__parents,"parents",S[302535920000520--[[Parents--]]])
 			self:BuildParents(obj.__ancestors,"ancestors",S[302535920000525--[[Ancestors--]]],true)
@@ -2689,7 +2690,7 @@ function Examine:SetObj(startup)
 		end
 
 		-- attaches button/menu
-		TableIClear(self.attaches_menu_popup)
+		table_iclear(self.attaches_menu_popup)
 		local attaches = GetAllAttaches(obj,true)
 		local attach_amount = #attaches
 
@@ -2721,7 +2722,7 @@ function Examine:SetObj(startup)
 		end
 
 		if attach_amount > 0 then
-			TableSort(self.attaches_menu_popup, function(a, b)
+			table_sort(self.attaches_menu_popup, function(a, b)
 				return CmpLower(a.name, b.name)
 			end)
 
@@ -2758,9 +2759,10 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 	-- comments are good for stuff like this
 	return obj_class
 end
+-- for external use
+Examine.UpdateObj = Examine.SetObj
 
 local function PopupClose(name)
---~ 	local popup = PropObjGetProperty(terminal.desktop,name)
 	local popup = terminal.desktop[name]
 	if popup then
 		popup:Close()

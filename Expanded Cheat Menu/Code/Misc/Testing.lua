@@ -42,8 +42,8 @@ function OnMsg.ClassesGenerate()
 		local GameTime = GameTime
 		local rawget,rawset = rawget,rawset
 		local setmetatable = setmetatable
-		local TableRemove = table.remove
-		local TableInsert = table.insert
+		local table_remove = table.remove
+		local table_insert = table.insert
 
 		function PropertyObject:TraceCall(member)
 			print("PropertyObject:TraceCall",self.class)
@@ -63,14 +63,14 @@ function OnMsg.ClassesGenerate()
 			end
 			local threshold = GameTime() - (3000)
 			while #t >= 50 and threshold > t[#t][1] do
-				TableRemove(t)
+				table_remove(t)
 			end
 			local data = {
 				GameTime(),
 				...
 			}
 			setmetatable(data, g_traceEntryMeta)
-			TableInsert(t, 1, data)
+			table_insert(t, 1, data)
 		end
 
 		function SetCommandErrorChecks(self, command, ...)
@@ -488,23 +488,14 @@ end)
 		TickEnd("TestRandom.Total")
 	end
 
----------
 	print("ChoGGi.testing")
 
---~	 function OnMsg.ClassesGenerate()
+------------------------------------------------------------------------------------------
+--~ 	function OnMsg.ClassesGenerate()
 
---~		 local config = config
---~		 config.TraceEnable = true
---~		 Platform.editor = true
---~		 config.LuaDebugger = true
---~		 dofile("CommonLua/Core/luasocket.lua")
---~		 dofile("CommonLua/Core/luadebugger.lua")
---~		 dofile("CommonLua/Core/luaDebuggerOutput.lua")
---~		 dofile("CommonLua/Core/ProjectSync.lua")
-
---~	 end -- ClassesGenerate
-
---~	 function OnMsg.ClassesPreprocess()
+--~ 	 end -- ClassesGenerate
+------------------------------------------------------------------------------------------
+--~ 	function OnMsg.ClassesPreprocess()
 
 --~ 		-- fix the arcology dome spot
 --~ 		SaveOrigFunc("SpireBase","GameInit")
@@ -521,15 +512,15 @@ end)
 --~ 				self:Attach(frame, self:GetSpotBeginIndex("Origin"))
 --~ 			end
 --~ 		end
+------------------------------------------------------------------------------------------
+--~ 		end -- ClassesPreprocess
 
---~	 end -- ClassesPreprocess
+--~ 		-- where we add new BuildingTemplates
+--~ 		function OnMsg.ClassesPostprocess()
 
-	-- where we add new BuildingTemplates
---~ 	 function OnMsg.ClassesPostprocess()
-
---~	 end -- ClassesPostprocess
-
-	function OnMsg.ClassesBuilt()
+--~ 		end -- ClassesPostprocess
+------------------------------------------------------------------------------------------
+--~ 	function OnMsg.ClassesBuilt()
 
 --~ 		-- add an overlay for dead rover
 --~ 		SaveOrigFunc("PinsDlg","GetPinConditionImage")
@@ -543,6 +534,61 @@ end)
 --~ 			end
 --~ 		end
 
+--~ local list = {}
+--~ local c = 0
+--~ local dlg
+--~ local table_iclear = table.iclear
+--~ local function hookTick(...)
+--~ 	if not dlg then
+--~ 		dlg = ChoGGi.ComFuncs.OpenInExamineDlg(list)
+--~ 		dlg:EnableAutoRefresh()
+--~ 	end
+--~ 	c = c + 1
+--~ 	list[c] = ...
+--~ 	if c > 100 then
+--~ 		table_iclear(list)
+--~ 		c = 0
+--~ 	end
+--~ end
+
+--~ function SetThreadDebugHookX(hook)
+--~ 	local set_hook = hook or debug.sethook
+--~ 	for thread in pairs(ThreadsRegister) do
+--~ 		set_hook(thread,hookTick,"c",10)
+--~ 	end
+--~ 	ThreadsEnableDebugHook(hook)
+--~ 	ThreadDebugHook = hook or false
+--~ end
+--~ function DisableThreadDebugHookX(hook)
+--~ 	local set_hook = hook or debug.sethook
+--~ 	for thread in pairs(ThreadsRegister) do
+--~ 		set_hook(thread)
+--~ 	end
+--~ 	ThreadsEnableDebugHook(hook)
+--~ 	ThreadDebugHook = hook or false
+--~ end
+
+--~ if false then
+--~ 	SetThreadDebugHookX(DebuggerSetHook)
+--~ 	DebuggerSetHook()
+	--~ -- ThreadDebugHook
+--~ end
+
+	-- load needed debug files
+--~ 		local config = config
+--~ 		config.TraceEnable = true
+--~ 		config.LuaDebugger = true
+--~ 		FirstLoad = true
+--~ 		Loading = true
+--~ 		Platform.developer = true
+--~ 		dofile("CommonLua/Core/luasocket.lua")
+--~ 		dofile("CommonLua/Core/luadebugger.lua")
+--~ 		dofile("CommonLua/Core/luaDebuggerOutput.lua")
+--~ 		dofile("CommonLua/Core/ProjectSync.lua")
+--~ 		Platform.developer = false
+--~ 		FirstLoad = false
+--~ 		Loading = false
+--[[
 		-- don't expect much, unless you've got a copy of Haerald around
 		GlobalVar("outputSocket", false)
 		local function Mine_luadebugger_Start(self)
@@ -730,7 +776,7 @@ print(1,"stop")
 			end
 			SetThreadDebugHook(DebuggerSetHook)
 			DebuggerSetHook()
-
+--~ ThreadDebugHook
 --~ 			local coroutine_resume, coroutine_status = coroutine.resume, coroutine.status
 --~ 			local IsValidThread = IsValidThread
 --~ 			self.garbage_thread = CreateRealTimeThread(function(thread)
@@ -757,6 +803,10 @@ print(2,"stop")
 
 		end -- :Start()
 
+--~ 		function dfggfhgfhgfh()
+--~ 			return 0/0
+--~ 		end
+
 		local function AddHooks()
 			function hookBreakLuaDebugger()
 				if g_LuaDebugger then
@@ -766,28 +816,21 @@ print(2,"stop")
 			end
 			function hookTickLuaDebugger()
 				if g_LuaDebugger then
-					print("DebuggerTick")
+--~ 					print("DebuggerTick")
 					g_LuaDebugger:DebuggerTick()
 				end
 			end
 		end
 
+		local debug_enabled
 		function ChoGGi.testing.StartDebugger()
-			if config.LuaDebugger then
-				config.LuaDebugger = false
-				luadebugger.Start = luadebugger.Start_ORIG
+			if debug_enabled then
+				StopDebugger()
+				debug_enabled = false
 				return
 			end
+			debug_enabled = true
 
-			FirstLoad = true
-			Loading = true
-			config.LuaDebugger = true
-			dofile("CommonLua/Core/luasocket.lua")
-			dofile("CommonLua/Core/luadebugger.lua")
-			dofile("CommonLua/Core/luaDebuggerOutput.lua")
-			dofile("CommonLua/Core/ProjectSync.lua")
-			FirstLoad = false
-			Loading = false
 			AddHooks()
 
 			local ReadPacket = luadebugger.ReadPacket
@@ -807,14 +850,16 @@ print(2,"stop")
 				config.Haerald.RemoteRoot,
 				config.Haerald.ProjectFolder
 			)
-			luadebugger.Start_ORIG = luadebugger.Start
-			luadebugger.Start = Mine_luadebugger_Start
+			if not luadebugger.Start_ORIG then
+				luadebugger.Start_ORIG = luadebugger.Start
+				luadebugger.Start = Mine_luadebugger_Start
+			end
 			StartDebugger()
 		--~	 ProjectSync()
 		end
-
-	end -- ClassesBuilt
-
+--]]
+--~ 	end -- ClassesBuilt
+------------------------------------------------------------------------------------------
 end
 
 function OnMsg.ModsReloaded()

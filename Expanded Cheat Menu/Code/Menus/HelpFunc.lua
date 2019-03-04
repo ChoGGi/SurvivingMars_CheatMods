@@ -79,7 +79,7 @@ function OnMsg.ClassesGenerate()
 			for i = #SavegamesList, 1, -1 do
 				if not FileExists(save_folder .. SavegamesList[i].savename) then
 					SavegamesList[i] = nil
-					TableRemove(SavegamesList,i)
+					table_remove(SavegamesList,i)
 				end
 			end
 
