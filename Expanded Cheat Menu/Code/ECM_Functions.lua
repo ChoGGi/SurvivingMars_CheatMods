@@ -17,7 +17,7 @@ if debug then
 	debug_getinfo = debug.getinfo
 	debug_getlocal = debug.getlocal
 	debug_getupvalue = debug.getupvalue
-	debug_getupvalue = debug.gethook
+	debug_gethook = debug.gethook
 end
 
 function OnMsg.ClassesGenerate()
@@ -1934,7 +1934,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 				end
 
 			else
-				funcs.gethook = debug_getupvalue(thread)
+				funcs.gethook = debug_gethook(thread)
 
 				local info = debug_getinfo(thread,0,"Slfunt")
 				if info then
