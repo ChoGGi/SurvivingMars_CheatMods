@@ -412,7 +412,7 @@ function Object:CheatDeleteObject()
 	)
 end
 function Object:CheatToggleSigns()
-	if self:GetAttaches("BuildingSign") then
+	if self:CountAttaches("BuildingSign") > 0 then
 		self:DestroyAttaches("BuildingSign")
 	else
 		self:UpdateSignsVisibility()

@@ -38,35 +38,6 @@ function OnMsg.ClassesGenerate()
 	end
 	ChoGGi.ComFuncs.PlacePolyline = PlacePolyline
 
-	do -- AddGridHandles
-
-		local function AddHandles(grid)
-			for i = 1, #grid do
-				grid[i].ChoGGi_GridHandle = i
-			end
-		end
-		local function RemoveHandles(grid)
-			for i = 1, #grid do
-				grid[i].ChoGGi_GridHandle = nil
-			end
-		end
-
-		function ChoGGi.ComFuncs.UpdateGridHandles()
-			local UICity = UICity
-			AddHandles(UICity.air)
-			AddHandles(UICity.electricity)
-			AddHandles(UICity.water)
-		end
-
-		function ChoGGi.ComFuncs.RemoveGridHandles()
-			local UICity = UICity
-			RemoveHandles(UICity.air)
-			RemoveHandles(UICity.electricity)
-			RemoveHandles(UICity.water)
-		end
-
-	end -- do
-
 	function ChoGGi.ComFuncs.DraggableCheatsMenu(which)
 		local XShortcutsTarget = XShortcutsTarget
 
@@ -533,7 +504,6 @@ function OnMsg.ClassesGenerate()
 	do -- OpenInExamineDlg
 		local red = red
 		local function FlashTitlebar(title)
-			local bg = title.Background
 			title:SetBackground(red)
 			Sleep(500)
 			title:SetBackground(ChoGGi_MoveControl.Background)
@@ -1234,7 +1204,6 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 				return
 			end
 
-			local origin = obj:GetSpotBeginIndex("Origin")
 			local origin_pos_x, origin_pos_y, origin_pos_z = obj:GetSpotLocPosXYZ(0)
 
 			local id_start, id_end = obj:GetAllSpots(EntityStates.idle)
@@ -2372,7 +2341,6 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			local c = 0
 
 			local green = green
-			local guic10 = 10 * guic
 			local PlaceObject = PlaceObject
 			local GetSpotNameByType = GetSpotNameByType
 			local tonumber = tonumber

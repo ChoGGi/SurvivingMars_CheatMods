@@ -40,7 +40,6 @@ OnMsg.ModsReloaded = ChoGGi.ComFuncs.UpdateDataTables
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
 
 -- This updates my dlgs when the ui scale is changed
-local point = point
 local pairs = pairs
 local GetSafeAreaBox = GetSafeAreaBox
 -- I guess I need a replacefuncs for lib as well...

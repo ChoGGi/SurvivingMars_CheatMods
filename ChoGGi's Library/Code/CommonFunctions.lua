@@ -525,7 +525,6 @@ do -- ShowObj
 --~ 		MapDelete(true, {"ChoGGi_OVector","ChoGGi_OSphere"})
 		ResumePassEdits("ClearShowObj")
 	end
-	local ClearShowObj = ChoGGi.ComFuncs.ClearShowObj
 
 	function ChoGGi.ComFuncs.ColourObj(obj, colour)
 		local is_valid = IsValid(obj)
@@ -3773,7 +3772,7 @@ do -- GetAllAttaches
 		if obj.ForEachAttach then
 			obj:ForEachAttach(ForEach,obj.class)
 		end
---~ 		local attaches = obj:GetClassFlags(const.cfComponentAttach) ~= 0 and obj:GetAttaches() or ""
+--~ 		local attaches = obj:GetClassFlags(const.cfComponentAttach) ~= 0
 
 		-- add any non-attached attaches (stuff that's kinda attached, like the concrete arm thing)
 		AddAttaches(obj)
