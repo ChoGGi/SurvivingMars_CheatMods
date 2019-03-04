@@ -3,8 +3,8 @@
 -- most OnMsgs
 
 local type = type
-local TableSort = table.sort
-local TableRemove = table.remove
+local table_sort = table.sort
+local table_remove = table.remove
 local FlushLogFile = FlushLogFile
 local IsValid = IsValid
 local Msg = Msg
@@ -299,7 +299,7 @@ function OnMsg.ModsReloaded()
 			local a = Actions[i]
 			-- if it's a . than we haven't updated it yet
 			if a.ActionId:sub(1,1) == "." then
-				TableRemove(Actions,i)
+				table_remove(Actions,i)
 			end
 		end
 	else
@@ -487,7 +487,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			end
 			local idx = table.find(BuildingTechRequirements[id],"check_supply",name)
 			if idx then
-				TableRemove(BuildingTechRequirements[id],idx)
+				table_remove(BuildingTechRequirements[id],idx)
 			end
 		end
 
@@ -563,7 +563,7 @@ function OnMsg.PersistPostLoad()
 							print(S[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"--]]]:format(label_id,RetName(obj),obj:GetEntity(),obj.handle))
 						end
 						obj:delete()
-						TableRemove(label,i)
+						table_remove(label,i)
 					end
 				end
 			end
@@ -947,7 +947,7 @@ function OnMsg.NewDay() -- NewSol...
 				local obj = objs[i]
 				-- no sense in doing it with only one center
 				if #obj.command_centers > 1 then
-					TableSort(obj.command_centers,function(a,b)
+					table_sort(obj.command_centers,function(a,b)
 						if IsValid(a) and IsValid(b) then
 							return obj:GetDist2D(a) < obj:GetDist2D(b)
 						end
@@ -967,7 +967,7 @@ function OnMsg.NewDay() -- NewSol...
 			local popup = popups[i]
 			if not popup:IsVisible() then
 				popup:delete()
-				TableRemove(popups,i)
+				table_remove(popups,i)
 			end
 		end
 

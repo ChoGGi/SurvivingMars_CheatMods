@@ -74,7 +74,7 @@ function OnMsg.ClassesGenerate()
 		local PlaceObject = PlaceObject
 		local GetStateName = GetStateName
 		local IsValid = IsValid
-		local TableFind = table.find
+		local table_find = table.find
 		local r = ChoGGi.Consts.ResearchPointsScale
 		local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
 		local update_info_thread = {}
@@ -113,7 +113,7 @@ function OnMsg.ClassesGenerate()
 --~ 				print("OutsideBuildings")
 --~ 				return "- " .. RetName(obj) .. " -\n" .. S[302535920000035--[[Grids--]]]
 --~ 					.. ": " .. Trans(682--[[Oxygen--]])
---~ 					.. "(" .. (TableFind(UICity.air,obj.air.grid) or Trans(6774--[[Error--]])) .. ") "
+--~ 					.. "(" .. (table_find(UICity.air,obj.air.grid) or Trans(6774--[[Error--]])) .. ") "
 --~ 					.. Trans(681--[[Water--]]) .. "("
 --~ 					.. tostring(obj.water and obj.water.grid.ChoGGi_GridHandle) .. ") "
 --~ 					.. Trans(79--[[Power--]]) .. "("
@@ -214,9 +214,9 @@ function OnMsg.ClassesGenerate()
 				local ga = obj.air
 				local ge = obj.electricity
 				local gw = obj.water
-				local ga_id = TableFind(city.air,ga.grid) or Trans(6774--[[Error--]])
-				local ge_id = TableFind(city.electricity,ge.grid) or Trans(6774--[[Error--]])
-				local gw_id = TableFind(city.water,gw.grid) or Trans(6774--[[Error--]])
+				local ga_id = table_find(city.air,ga.grid) or Trans(6774--[[Error--]])
+				local ge_id = table_find(city.electricity,ge.grid) or Trans(6774--[[Error--]])
+				local gw_id = table_find(city.water,gw.grid) or Trans(6774--[[Error--]])
 				local l = obj.labels
 
 				return "- " .. RetName(obj) .. " -\n"

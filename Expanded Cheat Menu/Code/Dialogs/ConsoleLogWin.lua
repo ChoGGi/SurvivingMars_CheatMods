@@ -227,22 +227,6 @@ function ChoGGi_ConsoleLogWin:ScrollToBottom()
 	self.idScrollArea:ScrollTo(0, y)
 end
 
-dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false
-function OnMsg.ConsoleLine(text, bNewLine)
-	local dlg = dlgChoGGi_ConsoleLogWin
-	if dlg then
-		local old_text = dlg.idText:GetText()
-
-		if bNewLine then
-			text = old_text .. "\n" .. text
-		else
-			text = old_text .. text
-		end
-
-		dlg:UpdateText(text)
-	end
-end
-
 function ChoGGi_ConsoleLogWin:Done(result)
 	local ChoGGi = ChoGGi
 	-- closing means user doesn't want to see it next time (probably)
@@ -253,4 +237,22 @@ function ChoGGi_ConsoleLogWin:Done(result)
 	ChoGGi.UserSettings.ConsoleLogWin_Pos = self:GetPos()
 	ChoGGi.UserSettings.ConsoleLogWin_Size = self:GetSize()
 	ChoGGi_Window.Done(self,result)
+end
+
+dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false
+function OnMsg.ConsoleLine(text, bNewLine)
+	local dlg = dlgChoGGi_ConsoleLogWin
+	if not dlg then
+		return
+	end
+
+	local old_text = dlg.idText:GetText()
+
+	if bNewLine then
+		text = old_text .. "\n" .. text
+	else
+		text = old_text .. text
+	end
+
+	dlg:UpdateText(text)
 end

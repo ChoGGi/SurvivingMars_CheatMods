@@ -549,10 +549,10 @@ This will switch to a new map.--]]],
 		end
 
 		objs = g_IonStorms or ""
-		local TableRemove = table.remove
+		local table_remove = table.remove
 		for i = #objs, 1, -1 do
 			objs[i]:delete()
-			TableRemove(g_IonStorms,i)
+			table_remove(g_IonStorms,i)
 		end
 	end
 

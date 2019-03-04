@@ -1,9 +1,9 @@
 -- See LICENSE for terms
 
 local pairs,print,type,tonumber,tostring,table = pairs,print,type,tonumber,tostring,table
-local TableRemove = table.remove
-local TableClear = table.clear
-local TableIClear = table.iclear
+local table_remove = table.remove
+local table_clear = table.clear
+local table_iclear = table.iclear
 local IsValid = IsValid
 
 function OnMsg.ClassesGenerate()
@@ -259,7 +259,7 @@ that'll activate the BadPrefab on it
 		for id,a_story in pairs(g_StoryBitStates) do
 
 			local story = StoryBits[id]
-			TableClear(story_table)
+			table_clear(story_table)
 			for i = 1, #story do
 				if story[i].Name and story[i].Value then
 					story_table[story[i].Name] = story[i].Value
@@ -516,7 +516,7 @@ that'll activate the BadPrefab on it
 					end
 				end
 				ResumePassEdits("DeleteHexeSpots")
-				TableIClear(grid_objs)
+				table_iclear(grid_objs)
 			end
 		end
 
@@ -744,7 +744,7 @@ that'll activate the BadPrefab on it
 			end
 
 			-- build a list of points that aren't high in the sky
-			TableClear(ShowWaypoints_points)
+			table_clear(ShowWaypoints_points)
 			local points = ShowWaypoints_points
 			for i = 1, #waypoints do
 				local x, y, z = waypoints[i]:xy()
@@ -769,7 +769,7 @@ that'll activate the BadPrefab on it
 
 		local SetWaypoint_path = {}
 		function ChoGGi.MenuFuncs.SetWaypoint(obj,setcolour,skipheight)
-			TableClear(SetWaypoint_path)
+			table_clear(SetWaypoint_path)
 			local path = SetWaypoint_path
 
 			--we need to build a path for shuttles (and figure out a way to get their dest properly...)
@@ -830,7 +830,7 @@ that'll activate the BadPrefab on it
 						colour = RandomColour()
 					else
 						-- we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
-						colour = TableRemove(randcolours)
+						colour = table_remove(randcolours)
 						-- table.remove(t) removes and returns the last value of the table
 					end
 				end
@@ -938,7 +938,7 @@ that'll activate the BadPrefab on it
 		local function ClearColourAndWP(cls)
 			local ChoGGi = ChoGGi
 			-- remove all thread refs so they stop
-			TableClear(ChoGGi.Temp.UnitPathingHandles)
+			table_clear(ChoGGi.Temp.UnitPathingHandles)
 			-- and waypoints/colour
 			local objs = RetAllOfClass(cls)
 			for i = 1, #objs do
@@ -1132,8 +1132,8 @@ that'll activate the BadPrefab on it
 			local dist = diff:Len2D()
 			local steps = 1 + (dist + dbg_step - 1) / dbg_step
 
-			TableIClear(points)
-			TableIClear(colors)
+			table_iclear(points)
+			table_iclear(colors)
 
 			for i = 1, steps do
 				local pos = pos0 + MulDivRound(pos1 - pos0, i - 1, steps - 1)
@@ -1169,7 +1169,7 @@ that'll activate the BadPrefab on it
 					DoneObject(o)
 				end
 			end
-			TableIClear(flight_lines)
+			table_iclear(flight_lines)
 			flight_lines[0] = nil
 			ResumePassEdits("ChoGGi_DeleteLines")
 		end

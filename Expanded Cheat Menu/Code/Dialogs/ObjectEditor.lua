@@ -12,7 +12,6 @@ local RetProperType
 
 local tostring,type,table = tostring,type,table
 
-
 local IsPoint = IsPoint
 local Min = Min
 local CmpLower = CmpLower

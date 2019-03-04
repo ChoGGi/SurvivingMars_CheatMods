@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 local Sleep = Sleep
-local TableClear = table.clear
+local table_clear = table.clear
 local ResourceScale = const.ResourceScale
 local wait_amount = (PatientTransportRoute.Amount or 1) * ResourceScale
 
@@ -49,8 +49,8 @@ function RCTransport:TransportRouteLoad(...)
 			end
 
 			-- gotta clear these so they don't cause issues
-			TableClear(self.route_visited_dests)
-			TableClear(self.route_visited_sources)
+			table_clear(self.route_visited_dests)
+			table_clear(self.route_visited_sources)
 			local next_source = self:FindNextRouteSource()
 			-- check for nearby deposits
 			if next_source then

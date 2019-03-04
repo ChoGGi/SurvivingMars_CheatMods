@@ -27,10 +27,10 @@ local MulDivRound = MulDivRound
 local TerrainTextures = TerrainTextures
 local NoisePreset = DataInstances.NoisePreset
 
-local TableFind = table.find
-local texture_metal = TableFind(TerrainTextures, "name", "RockDark") + 1
-local texture_mpres = TableFind(TerrainTextures, "name", "GravelDark") + 1
-local texture_water = TableFind(TerrainTextures, "name", "Spider") + 1
+local table_find = table.find
+local texture_metal = table_find(TerrainTextures, "name", "RockDark") + 1
+local texture_mpres = table_find(TerrainTextures, "name", "GravelDark") + 1
+local texture_water = table_find(TerrainTextures, "name", "Spider") + 1
 
 MarkDepositGround.UpdateDeposit = function(d)
 	if d:IsKindOf("EffectDeposit") then

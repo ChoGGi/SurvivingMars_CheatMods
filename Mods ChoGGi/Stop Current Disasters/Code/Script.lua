@@ -1,11 +1,11 @@
 
 local Msg,pairs = Msg,pairs
 local empty_table = empty_table
-local TableRemove = table.remove
+local table_remove = table.remove
 
 function OnMsg.LoadGame()
 	local missles = g_IncomingMissiles or empty_table
-	for missle,_ in pairs(missles) do
+	for missle in pairs(missles) do
 		missle:ExplodeInAir()
 	end
 
@@ -34,6 +34,6 @@ function OnMsg.LoadGame()
 	objs = g_IonStorms or ""
 	for i = #objs, 1, -1 do
 		objs[i]:delete()
-		TableRemove(g_IonStorms,i)
+		table_remove(g_IonStorms,i)
 	end
 end

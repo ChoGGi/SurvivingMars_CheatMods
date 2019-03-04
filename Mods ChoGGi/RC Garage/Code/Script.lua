@@ -28,11 +28,11 @@ local IsValid = IsValid
 local Sleep = Sleep
 local GetPassablePointNearby = GetPassablePointNearby
 
-local TableClear = table.clear
-local TableFind = table.find
-local TableRemove = table.remove
-local TableConcat = table.concat
+local table_clear = table.clear
+local table_find = table.find
+local table_remove = table.remove
 
+local TableConcat
 local PopupToggle
 local RetName
 local Random
@@ -44,6 +44,7 @@ local text_rovers
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
+	TableConcat = ChoGGi.ComFuncs.TableConcat
 	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	RetName = ChoGGi.ComFuncs.RetName
 	Random = ChoGGi.ComFuncs.Random
@@ -141,7 +142,7 @@ end
 
 local DustMaterialExterior = const.DustMaterialExterior
 function RCGarage:StickInGarage(unit)
-	local unit_idx = TableFind(self.stored_rovers,"handle",unit.handle)
+	local unit_idx = table_find(self.stored_rovers,"handle",unit.handle)
 
   if not IsValid(self) or unit_idx then
     return
@@ -182,7 +183,7 @@ function RCGarage:StickInGarage(unit)
 	unit.accumulate_dust = false
 
 	-- stop holder from removing units when a garage is removed
-	TableClear(self.units)
+	table_clear(self.units)
 	unit.ChoGGi_RemHolderPos = unit.holder:GetVisualPos()
 	unit.holder = false
 end
@@ -199,9 +200,9 @@ function RCGarage:RemoveFromGarage(unit)
 	unit.ChoGGi_InGarage = nil
 	unit.accumulate_dust = true
 	-- update list
-	local unit_idx = TableFind(self.stored_rovers,"handle",unit.handle)
+	local unit_idx = table_find(self.stored_rovers,"handle",unit.handle)
 	if unit_idx then
-		TableRemove(self.stored_rovers,unit_idx)
+		table_remove(self.stored_rovers,unit_idx)
 	end
 
 	CreateGameTimeThread(function()
@@ -285,7 +286,7 @@ function RCGarage:CheckMainGarage(skip)
 			if obj ~= skip and IsValid(obj) and not obj.destroyed then
 				-- add as main and remove it's regular ref
 				main = obj
-				TableRemove(self.garages,i)
+				table_remove(self.garages,i)
 				break
 			end
 		end
@@ -308,7 +309,7 @@ local function CountPower(power,list,amount)
 			end
 		else
 			-- good as any place to clean out missing objs
-			TableRemove(list,i)
+			table_remove(list,i)
 		end
 	end
 	return power
@@ -393,14 +394,14 @@ function OnMsg.ClassesBuilt()
 	local building = XTemplates.ipBuilding[1][1]
 
 	-- check for and remove existing template
-	local idx = TableFind(building, "ChoGGi_Template_RCGarage", true)
+	local idx = table_find(building, "ChoGGi_Template_RCGarage", true)
 	if idx then
 		building[idx]:delete()
 		-- we need to remove for insert
-		TableRemove(building,idx)
+		table_remove(building,idx)
 	else
 		-- insert above consumption
-		idx = TableFind(building, "__template", "sectionConsumption")
+		idx = table_find(building, "__template", "sectionConsumption")
 	end
 
 	-- hopefully this fixes the issue for people that don't have the buttons...
@@ -499,7 +500,7 @@ function OnMsg.ClassesBuilt()
 									unit:SetPos(context:GetPos())
 									unit:SetCommand("Goto",GetPassablePointNearby(unit:GetPos()+point(Random(-5000,5000),Random(-5000,5000))))
 								end
-								TableClear(g_ChoGGi_RCGarageRovers)
+								table_clear(g_ChoGGi_RCGarageRovers)
 								context:UpdateGaragePower()
 							end
 						end

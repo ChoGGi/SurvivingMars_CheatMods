@@ -25,6 +25,11 @@ do -- Translate
 			str = ...
 		end
 
+		-- not a translatable obj
+		if not IsT(str) then
+			return "Missing text"
+		end
+
 		-- certain stuff will fail without this obj, so just pass it off to pcall and let it error out
 		if UICity then
 			result,str = true,_InternalTranslate(str)
@@ -34,7 +39,7 @@ do -- Translate
 
 		-- Missing text means the string id wasn't found (generally)
 		if str == "Missing text" then
-			return (IsT(...) and TGetID(...) or tostring(...)) .. " *bad string id?"
+			return (IsT(str) and TGetID(str) or tostring(...)) .. " *bad string id?"
 		-- just in case
 		elseif not result or type(str) ~= "string" then
 			str = count and false or select(2,...)
@@ -42,7 +47,7 @@ do -- Translate
 				return str
 			end
 			-- i'd rather know if something failed by having a bad string rather than a failed func
-			return (IsT(...) and TGetID(...) or tostring(...)) .. " *bad string id?"
+			return (IsT(str) and TGetID(str) or tostring(...)) .. " *bad string id?"
 		end
 
 		-- and done

@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local TableSort = table.sort
+local table_sort = table.sort
 
 local obj_pos
 local function SortDist2D(a,b)
@@ -15,7 +15,7 @@ local function SortCC()
 		-- no sense in doing it with only one center
 		if #obj.command_centers > 1 then
 			obj_pos = obj:GetPos()
-			TableSort(obj.command_centers,SortDist2D)
+			table_sort(obj.command_centers,SortDist2D)
 		end
 	end
 end

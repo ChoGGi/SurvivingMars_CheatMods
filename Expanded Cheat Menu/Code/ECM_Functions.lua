@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
-local TableFind = table.find
-local TableClear = table.clear
-local TableIClear = table.iclear
+local table_find = table.find
+local table_clear = table.clear
+local table_iclear = table.iclear
 local type,pairs,next = type,pairs,next
 local PropObjGetProperty = PropObjGetProperty
 local Sleep = Sleep
@@ -11,13 +11,13 @@ local IsKindOf = IsKindOf
 local IsValidEntity = IsValidEntity
 local CreateRealTimeThread = CreateRealTimeThread
 
-local getinfo,getlocal,getupvalue,gethook
+local debug_getinfo,debug_getlocal,debug_getupvalue,debug_gethook
 local debug = PropObjGetProperty(_G,"debug")
 if debug then
-	getinfo = debug.getinfo
-	getlocal = debug.getlocal
-	getupvalue = debug.getupvalue
-	gethook = debug.gethook
+	debug_getinfo = debug.getinfo
+	debug_getlocal = debug.getlocal
+	debug_getupvalue = debug.getupvalue
+	debug_getupvalue = debug.gethook
 end
 
 function OnMsg.ClassesGenerate()
@@ -28,6 +28,66 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
+
+	do -- end
+		-- counts funcs calls, and keeps a table of func|line num
+		local func_table = {}
+		local toggle = false
+		function ChoGGi.ComFuncs.ToggleThreadHook(path,line,mask,count)
+			if blacklist then
+				ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ToggleThreadHook")
+				return
+			end
+
+			if not toggle then
+				toggle = true
+				-- always start fresh
+				table_clear(func_table)
+				-- setup path
+				path = path or "@AppData/Mods/"
+				local str_len = #path
+
+				print("Hook Started",path,line,mask,count)
+				MsgPopup("Hook Started")
+
+				collectgarbage()
+				local function hook_func(event)
+
+					local i
+					if event == "call" then
+						i = debug_getinfo(2,"Sf")
+					else
+						i = debug_getinfo(2,"S")
+					end
+
+					if i.source:sub(1,str_len) == path and (not line or line and i.linedefined == line) then
+
+						local lua_obj
+						if event == "call" then
+							lua_obj = i.func
+						else
+							lua_obj = i.source .. "|" .. i.linedefined
+						end
+
+						local c = func_table[lua_obj]
+						func_table[lua_obj] = c and c + 1 or 1
+					end
+				end
+				-- start capture (c = func call, r = func ret, l = enters new line of code)
+				debug.sethook(hook_func,mask or "c", count)
+			else
+				print("Hook Stopped",path,line,mask,count)
+				MsgPopup("Hook Stopped")
+				toggle = false
+
+				-- stop capture
+				debug.sethook()
+				-- view the results
+				ChoGGi.ComFuncs.OpenInExamineDlg(func_table,nil,"Func call count (" .. #func_table .. ")")
+			end
+		end
+	end -- do
+
 
 	local function PlacePolyline(points, colors)
 		local line = ChoGGi_OPolyline:new{
@@ -396,7 +456,7 @@ function OnMsg.ClassesGenerate()
 				Sleep(timer)
 				if buffer_cnt > 1 then
 					Dump(TableConcat(buffer_table,newline),nil,"Console","log",true)
-					TableIClear(buffer_table)
+					table_iclear(buffer_table)
 					buffer_table[1] = newline
 					buffer_cnt = 1
 				end
@@ -807,10 +867,10 @@ function OnMsg.ClassesGenerate()
 			-- stop when dialog is closed
 			local ThreadsRegister = ThreadsRegister
 			while dlg and dlg.window_state ~= "destroying" do
-				TableClear(table_list)
+				table_clear(table_list)
 				local c = 0
 				for thread in pairs(ThreadsRegister) do
-					local info = getinfo(thread, 1, "S")
+					local info = debug_getinfo(thread, 1, "S")
 					if info then
 						-- we use <tags *num*> as a way to hide the num but still have it there for a unique string
 						c = c + 1
@@ -837,7 +897,7 @@ function OnMsg.ClassesGenerate()
 		CreateRealTimeThread(function()
 			-- stop when dialog is closed
 			while dlg and dlg.window_state ~= "destroying" do
-				TableClear(table_list)
+				table_clear(table_list)
 
 				for key,value in pairs(obj) do
 					if type(value) == "table" then
@@ -1796,7 +1856,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 
 	function ChoGGi.ComFuncs.GetDesktopWindow(class)
 		local desktop = terminal.desktop
-		return desktop[TableFind(desktop,"class",class)]
+		return desktop[table_find(desktop,"class",class)]
 	end
 
 	do -- RetThreadInfo/FindThreadFunc
@@ -1805,7 +1865,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 			local list = {}
 			local idx = 1
 			while true do
-				local name, value = getlocal(thread, level, idx)
+				local name, value = debug_getlocal(thread, level, idx)
 				if name == nil then
 					break
 				end
@@ -1824,7 +1884,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 			local list = {}
 			local idx = 1
 			while true do
-				local name, value = getupvalue(info.func, idx)
+				local name, value = debug_getupvalue(info.func, idx)
 				if name == nil then
 					break
 				end
@@ -1874,9 +1934,9 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 				end
 
 			else
-				funcs.gethook = gethook(thread)
+				funcs.gethook = debug_getupvalue(thread)
 
-				local info = getinfo(thread,0,"Slfunt")
+				local info = debug_getinfo(thread,0,"Slfunt")
 				if info then
 					local nups = info.nups
 					if nups > 0 then
@@ -1884,7 +1944,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 						nups = nups + 1
 
 						for i = 0, nups do
-							local info_got = getinfo(thread,i)
+							local info_got = debug_getinfo(thread,i)
 							if info_got then
 								local name = info_got.name or info_got.what or S[302535920000723--[[Lua--]]]
 								funcs[i] = {
@@ -1928,7 +1988,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 			if blacklist then
 				return format_value(obj)
 			else
-				local info = getinfo(obj)
+				local info = debug_getinfo(obj)
 				-- sub(2): removes @, Mars is ingame files, mods is mods...
 				local src = info.source ~= "" and info.source or info.short_src
 				return src:sub(2):gsub("Mars/",""):gsub("AppData/Mods/","")

@@ -4,7 +4,7 @@
 local HideHexRanges = HideHexRanges
 local CleanupHexRanges = CleanupHexRanges
 local PlaceObject = PlaceObject
-local TableInsert = table.insert
+local table_insert = table.insert
 
 local dust_gens = {}
 local c = 0
@@ -30,7 +30,7 @@ local function ShowBuildingHexes(bld)
 		local obj = PlaceObject("RangeHexMultiSelectRadius")
 		obj:SetPos(bld:GetPos():SetStepZ()) -- avoid attaching it in air in case of landing rockets
 		g_HexRanges[bld] = g_HexRanges[bld] or {}
-		TableInsert(g_HexRanges[bld], obj)
+		table_insert(g_HexRanges[bld], obj)
 		g_HexRanges[obj] = bld
 		obj.bind_to = "GetDustRadius"
 		obj:SetScale(bld:GetDustRadius())

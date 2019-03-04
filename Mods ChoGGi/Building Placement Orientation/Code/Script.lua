@@ -85,7 +85,7 @@ local function SomeCode()
 
 	local IsValid = IsValid
 	local SetRollPitchYaw = SetRollPitchYaw
-	local TableUnpack = table.unpack
+	local table_unpack = table.unpack
 	-- set orientation to same as last object
 	function ConstructionController:CreateCursorObj(...)
 
@@ -94,7 +94,7 @@ local function SomeCode()
 		if self.template_obj and self.template_obj.can_rotate_during_placement and ChoGGi.UserSettings.UseLastOrientation and IsValid(last) then
 			SetRollPitchYaw(ret[1],0,0,(last:GetAngle() or 0) + -1*60*60)
 		end
-		return TableUnpack(ret)
+		return table_unpack(ret)
 
 	end
 

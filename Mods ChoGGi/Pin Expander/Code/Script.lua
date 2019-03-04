@@ -60,7 +60,7 @@ local IsT = IsT
 local CmpLower = CmpLower
 local getmetatable = getmetatable
 local type = type
-local TableFind = table.find
+local table_find = table.find
 
 local IsKeyPressed = terminal.IsKeyPressed
 
@@ -351,7 +351,7 @@ function PinsDlg:InitPinButton(button,...)
 			local obj = objs[i]
 
 			-- add rollover text
-			local pinbutton = self[TableFind(self,"context",obj)]
+			local pinbutton = self[table_find(self,"context",obj)]
 			local hint
 			local hint_title = ""
 
@@ -413,17 +413,13 @@ function PinsDlg:InitPinButton(button,...)
 
 			-- add dome text if any
 			if obj.dome or obj.parent_dome then
---~ 				hint = string.format("<color 203 120 30>%s:</color> <color 255 200 200>%s</color>\n\n%s",str_dome,RetName(obj.dome or obj.parent_dome),hint)
 				hint = "<color 203 120 30>" .. str_dome .. ":</color> <color 255 200 200>" .. RetName(obj.dome or obj.parent_dome) .. "</color>\n\n" .. hint
 			elseif obj.command_center then
---~ 				hint = string.format("<color 203 120 30>%s:</color> <color 255 200 200>%s</color>\n\n%s",str_drones,RetName(obj.command_center),hint)
 				hint = "<color 203 120 30>" .. str_drones .. ":</color> <color 255 200 200>" .. RetName(obj.command_center) .. "</color>\n\n" .. hint
 			else
---~ 				hint = string.format("\n%s",hint)
 				hint = "\n" .. hint
 			end
 			-- then state text with two \n
---~ 			hint = string.format("<color 203 120 30>%s:</color> <color 255 200 200>%s</color>\n%s",str_state,state_text,hint)
 			hint = "<color 203 120 30>" .. str_state .. ":</color> <color 255 200 200>" .. state_text .. "</color>\n" .. hint
 
 			if obj.class ~= "SupplyRocket" or obj.class == "SupplyRocket" and obj.name ~= "" then
@@ -458,12 +454,10 @@ function PinsDlg:InitPinButton(button,...)
 
 		-- sort by image then name
 		table.sort(items, function(a, b)
---~ 			return CmpLower(string.format("%s%s",a.image,a.name), string.format("%s%s",b.image,b.name))
 			return CmpLower(a.image .. a.name, b.image .. b.name)
 		end)
 
 		-- personal touch
---~ 		local count = string.format("%s #: %s",Trans(298035641454--[[Object--]]),#items)
 		local count = Trans(298035641454--[[Object--]]) .. " #: " .. #items
 		if #items > 1 then
 			table.insert(items,1,{

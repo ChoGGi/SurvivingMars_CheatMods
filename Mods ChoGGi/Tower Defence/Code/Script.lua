@@ -28,7 +28,7 @@ local Sleep = Sleep
 local IsValid = IsValid
 local PlaceObject = PlaceObject
 local GetRandomPassableAround = GetRandomPassableAround
-local TableRemove = table.remove
+local table_remove = table.remove
 
 local Random
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
@@ -141,7 +141,7 @@ local function RemoveOldRovers(label,sol)
 	for i = #(label or ""), 1, -1 do
 		local r = label[i]
 		if not IsValid(r) then
-			TableRemove(label,i)
+			table_remove(label,i)
 		elseif r.class == "TowerDefense_Rover" and r.TowerDefense_spawned_sol ~= sol then
 			CreateGameTimeThread(SuicideByRocket,r)
 		end
