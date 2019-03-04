@@ -26,7 +26,6 @@ do -- MapData
 			return 4157 -- Mountainous
 		end
 	end
-	local TGetID = TGetID
 	local GetOverlayValues = GetOverlayValues
 	local FillRandomMapProps = FillRandomMapProps
 	-- exported data temp stored here
@@ -93,7 +92,6 @@ do -- MapData
 		-- named location spots
 		local spot_name = params.landing_spot or MarsLocales[params.Locales]
 		if spot_name then
---~ 			export_data[export_count].landing_spot = Trans(TGetID(spot_name))
 			export_data[export_count].landing_spot = Trans(spot_name)
 		end
 	end

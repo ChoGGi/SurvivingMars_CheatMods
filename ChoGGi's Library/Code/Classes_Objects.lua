@@ -22,6 +22,10 @@ DefineClass.ChoGGi_OText = {
 	__parents = {"Text"},
 	text_style = "Action",
 }
+function ChoGGi_OText:SetOpacityInterpolation(a,b)
+  a = a or 100
+  self:SetCustomData(6, EncodeBits(a, 7, b or a, 7, 0, 8, 0, 8))
+end
 DefineClass.ChoGGi_OOrientation = {
 	__parents = {"Orientation"},
 }

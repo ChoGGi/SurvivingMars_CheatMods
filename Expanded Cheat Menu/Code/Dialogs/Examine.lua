@@ -501,8 +501,8 @@ function Examine:ViewSourceCode()
 	}
 end
 
---~ function Examine:idTextOnHyperLinkRollover(link, hyperlink_box, pos)
-function Examine:idTextOnHyperLinkRollover(link, box)
+-- (link, hyperlink_box, pos)
+function Examine:idTextOnHyperLinkRollover(link)
 	if not ChoGGi.UserSettings.EnableToolTips then
 		return
 	end
@@ -525,11 +525,15 @@ function Examine:idTextOnHyperLinkRollover(link, box)
 	end
 
 	local title = S[302535920000069--[[Examine--]]]
-	local name = RetName(obj)
+	local name = obj
 
 	if self.onclick_funcs[link] == self.OpenListMenu then
 		title = name .. " " .. Trans(1000162--[[Menu--]])
 		name = S[302535920001540--[[Show context menu for %s.--]]]:format(name)
+
+		-- stick value in search box
+		obj = self.obj_ref[obj]
+		self.idSearchText:SetText(tostring(obj))
 	end
 
 	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
@@ -648,7 +652,7 @@ function Examine:idButMarkObjectOnPress()
 		end
 	else
 		local c = #self.marked_objects
-		for k, v in pairs(self.obj_ref) do
+		for _, v in pairs(self.obj_ref) do
 			local colour = RandomColour()
 			if IsPoint(v) or IsValid(v) then
 				c = self:AddSphere(v,c,colour)
@@ -2065,7 +2069,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				Sleep(1)
 			end
 
-			local name,sort = self:ConvertValueToInfo(k)
+			local name = self:ConvertValueToInfo(k)
 			local sort = name
 			-- append context menu link
 			name = self:HyperLink(k,self.OpenListMenu) .. "* " .. HLEnd .. name

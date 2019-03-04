@@ -500,7 +500,6 @@ that'll activate the BadPrefab on it
 		local grid_objs = {}
 		local grid_thread = false
 		local function DeleteHexes()
-			local InvalidPos = ChoGGi.Consts.InvalidPos
 			-- kill off thread
 			if IsValidThread(grid_thread) then
 				DeleteThread(grid_thread)

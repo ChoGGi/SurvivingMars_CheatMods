@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local type,string = type,string
+local type,tostring = type,tostring
 
 function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -11,15 +11,16 @@ function OnMsg.ClassesGenerate()
 	do -- BuildGridList
 		local IsValid = IsValid
 		local function BuildGrid(grid,list)
+			local g_str = Trans(11629--[[GRID <i>--]])
 			for i = 1, #grid do
 				for j = 1, #grid[i].elements do
 					local bld = grid[i].elements[j].building
 					local name,display_name = RetName(bld),Trans(bld.display_name)
 
 					if name == display_name then
-						list[Trans(T{11629,"GRID <i>",i = i}) .. " - " .. name .. " h: " .. bld.handle] = bld
+						list[g_str:gsub("<i>",i) .. " - " .. name .. " h: " .. bld.handle] = bld
 					else
-						list[Trans(T{11629,"GRID <i>",i = i}) .. " - " .. display_name .. " " .. name .. " h: " .. bld.handle] = bld
+						list[g_str:gsub("<i>",i) .. " - " .. display_name .. " " .. name .. " h: " .. bld.handle] = bld
 					end
 				end
 			end
@@ -71,7 +72,11 @@ function OnMsg.ClassesGenerate()
 
 	do -- ViewObjInfo_Toggle
 		local PlaceObject = PlaceObject
+		local GetStateName = GetStateName
+		local IsValid = IsValid
+		local TableFind = table.find
 		local r = ChoGGi.Consts.ResearchPointsScale
+		local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
 		local update_info_thread = {}
 		local viewing_obj_info = {}
 
@@ -98,6 +103,8 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local GetInfo = {
+	--~ 		Colonist = function(obj)
+	--~ 		end,
 	--~ 		Power = function(obj)
 	--~ 		end,
 	--~ 		["Life-Support"] = function(obj)
@@ -106,7 +113,7 @@ function OnMsg.ClassesGenerate()
 --~ 				print("OutsideBuildings")
 --~ 				return "- " .. RetName(obj) .. " -\n" .. S[302535920000035--[[Grids--]]]
 --~ 					.. ": " .. Trans(682--[[Oxygen--]])
---~ 					.. "(" .. tostring(obj.air and obj.air.grid.ChoGGi_GridHandle) .. ") "
+--~ 					.. "(" .. (TableFind(UICity.air,obj.air.grid) or Trans(6774--[[Error--]])) .. ") "
 --~ 					.. Trans(681--[[Water--]]) .. "("
 --~ 					.. tostring(obj.water and obj.water.grid.ChoGGi_GridHandle) .. ") "
 --~ 					.. Trans(79--[[Power--]]) .. "("
@@ -126,17 +133,17 @@ function OnMsg.ClassesGenerate()
 				return "- " .. RetName(obj) .. " -\n" .. Trans(517--[[Drones--]])
 					.. ": " .. #(obj.drones or "") .. "/" .. obj:GetMaxDronesCount()
 					.. "\n"
-					.. Trans(T{295--[[Idle <right>--]],right = ": " .. obj:GetIdleDronesCount()})
+					.. Trans(295--[[Idle <right>--]]):gsub("<right>",": " .. obj:GetIdleDronesCount())
 					.. ", " .. S[302535920000081--[[Workers--]]] .. ": " .. obj:GetMiningDronesCount()
-					.. ", " .. Trans(T{293--[[Broken <right>--]],right = ": " .. obj:GetBrokenDronesCount()})
-					.. ", " .. Trans(T{294--[[Discharged <right>--]],right = ": " .. obj:GetDischargedDronesCount()})
+					.. ", " .. Trans(293--[[Broken <right>--]]):gsub("<right>",": " .. obj:GetBrokenDronesCount())
+					.. ", " .. Trans(294--[[Discharged <right>--]]):gsub("<right>",": " .. obj:GetDischargedDronesCount())
 			end,
 			Drone = function(obj)
 				local amount = obj.amount and obj.amount / r or 0
+				local res = obj.resource
 				return "- " .. RetName(obj) .. " -\n"
-					.. Trans(T{584248706535--[[Carrying<right><ResourceAmount>--]],right=": ",ResourceAmount = amount}) .. " (" .. tostring(obj.resource) .. "), "
-					.. Trans(63--[[Travelling--]]) .. ": " .. tostring(obj.moving) .. ", "
-					.. Trans(4407--[[Recharging--]]) .. ": " .. tostring(obj.going_to_recharger)
+					.. Trans(584248706535--[[Carrying<right><ResourceAmount>--]]):gsub("<right><ResourceAmount>",": " .. amount) .. (res and " (" .. res .. "), " or ", ")
+					.. Trans(3722--[[State--]]) .. ": " .. GetStateName(obj:GetState()) .. ", "
 					.. "\n" .. Trans(4448--[[Dust--]]) .. ": " .. (obj.dust / r) .. "/" .. (obj.dust_max / r)
 					.. ", " .. S[302535920001532--[[Battery--]]] .. ": " .. (obj.battery / r) .. "/" .. (obj.battery_max / r)
 			end,
@@ -158,9 +165,9 @@ function OnMsg.ClassesGenerate()
 					end
 					waste = "- " .. Trans(4518--[[Waste Rock--]]) .. " -\n"
 					.. Trans(80--[[Production--]]) .. ": " .. prefix .. " " .. predprod .. ", "
-					.. Trans(T{6729--[[Daily Production <n>--]],n = ": " .. (waste:GetPredictedDailyProduction() / r)})
+					.. Trans(6729--[[Daily Production <n>--]]):gsub("<n>",": " .. (waste:GetPredictedDailyProduction() / r))
 					.. ", "
-					.. Trans(T{434--[[Lifetime<right><lifetime>--]],right=": ",lifetime = (waste.lifetime_production / r)})
+					.. Trans(434--[[Lifetime<right><lifetime>--]]):gsub("<right><lifetime>",": " .. (waste.lifetime_production / r))
 					.. "\n" .. Trans(519--[[Storage--]]) .. ": "
 					.. (waste:GetAmountStored() / r) .. "/" .. (waste.max_storage / r)
 				end
@@ -173,9 +180,9 @@ function OnMsg.ClassesGenerate()
 
 				return TableConcat({"- " .. RetName(obj) .. " -\n" .. Trans(80--[[Production--]])
 					.. ": " .. prefix .. predprod .. ", "
-					.. Trans(T{6729--[[Daily Production <n>--]],n = ": " .. (prod:GetPredictedDailyProduction() / r)})
+					.. Trans(6729--[[Daily Production <n>--]]):gsub("<n>",": " .. (prod:GetPredictedDailyProduction() / r))
 					.. ", "
-					.. Trans(T{434--[[Lifetime<right><lifetime>--]],right=": ",lifetime = (prod.lifetime_production / r)})
+					.. Trans(434--[[Lifetime<right><lifetime>--]]):gsub("<right><lifetime>",": " .. (prod.lifetime_production / r))
 					.. "\n" .. Trans(519--[[Storage--]]) .. ": "
 					.. (prod:GetAmountStored() / r) .. "/" .. (prod.max_storage / r)
 					,waste},"\n")
@@ -198,55 +205,66 @@ function OnMsg.ClassesGenerate()
 						end
 					end
 				end
+
+				-- the .. below is (too long/too many ..) for ZeroBrane compile (used to find some stuff to clean up), so this is to shorten it
+				local go_to = Trans(4439--[[Going to--]]):gsub("<right><h SelectTarget InfopanelSelect><Target></h>","%%s")
+				local a,e,w = Trans(682--[[Oxygen--]]),Trans(79--[[Power--]]),Trans(681--[[Water--]])
+				local city = obj.city or UICity
+
+				local ga = obj.air
+				local ge = obj.electricity
+				local gw = obj.water
+				local ga_id = TableFind(city.air,ga.grid) or Trans(6774--[[Error--]])
+				local ge_id = TableFind(city.electricity,ge.grid) or Trans(6774--[[Error--]])
+				local gw_id = TableFind(city.water,gw.grid) or Trans(6774--[[Error--]])
+				local l = obj.labels
+
 				return "- " .. RetName(obj) .. " -\n"
-					.. Trans(547--[[Colonists--]]) .. ": " .. #(obj.labels.Colonist or "")
-					.. "\n" .. Trans(6859--[[Unemployed--]]) .. ": " .. #(obj.labels.Unemployed or "") .. "/" .. Dome_GetWorkingSpace(obj)
-					.. ", " .. Trans(7553--[[Homeless--]]) .. ": " .. #(obj.labels.Homeless or "") .. "/" .. obj:GetLivingSpace()
-					.. "\n" .. Trans(7031--[[Renegades--]]) .. ": " .. #(obj.labels.Renegade or "")
-					.. ", " .. Trans(T{5647--[[Dead Colonists: <count>--]],count = #(obj.labels.DeadColonist or "")})
-					.. "\n" .. Trans(6647--[[Guru--]]) .. ": " .. #(obj.labels.Guru or "")
-					.. ", " .. Trans(6640--[[Genius--]]) .. ": " .. #(obj.labels.Genius or "")
-					.. ", " .. Trans(6642--[[Celebrity--]]) .. ": " .. #(obj.labels.Celebrity or "")
-					.. ", " .. Trans(6644--[[Saint--]]) .. ": " .. #(obj.labels.Saint or "")
-					.. "\n\n" .. Trans(79--[[Power--]]) .. ": " .. (obj.electricity.current_consumption / r) .. "/" .. (obj.electricity.consumption / r)
-					.. ", " .. Trans(682--[[Oxygen--]]) .. ": " .. (obj.air.current_consumption / r) .. "/" .. (obj.air.consumption / r)
-					.. ", " .. Trans(681--[[Water--]]) .. ": " .. (obj.water.current_consumption / r) .. "/" .. (obj.water.consumption / r)
-					.. "\n" .. Trans(1022--[[Food--]]) .. " (" .. #(obj.labels.needFood or "") .. "): "
-					.. Trans(4439--[[Going to--]]):gsub("<right><h SelectTarget InfopanelSelect><Target></h>",": " .. food_need)
+					.. Trans(547--[[Colonists--]]) .. ": " .. #(l.Colonist or "")
+					.. "\n" .. Trans(6859--[[Unemployed--]]) .. ": " .. #(l.Unemployed or "") .. "/" .. Dome_GetWorkingSpace(obj)
+					.. ", " .. Trans(7553--[[Homeless--]]) .. ": " .. #(l.Homeless or "") .. "/" .. obj:GetLivingSpace()
+					.. "\n" .. Trans(7031--[[Renegades--]]) .. ": " .. #(l.Renegade or "")
+					.. ", " .. Trans(5647--[[Dead Colonists: <count>--]]):gsub("<count>",#(l.DeadColonist or ""))
+					.. "\n" .. Trans(6647--[[Guru--]]) .. ": " .. #(l.Guru or "")
+					.. ", " .. Trans(6640--[[Genius--]]) .. ": " .. #(l.Genius or "")
+					.. ", " .. Trans(6642--[[Celebrity--]]) .. ": " .. #(l.Celebrity or "")
+					.. ", " .. Trans(6644--[[Saint--]]) .. ": " .. #(l.Saint or "")
+					.. "\n\n" .. e .. ": " .. (ge.current_consumption / r) .. "/" .. (ge.consumption / r)
+					.. ", " .. a .. ": " .. (ga.current_consumption / r) .. "/" .. (ga.consumption / r)
+					.. ", " .. w .. ": " .. (gw.current_consumption / r) .. "/" .. (gw.consumption / r)
+					.. "\n" .. Trans(1022--[[Food--]]) .. " (" .. #(l.needFood or "") .. "): "
+					.. go_to:format(": " .. food_need)
 					.. ", " .. Trans(526--[[Visitors--]]) .. ": " .. food_use .. "/" .. food_max
-					.. "\n" .. Trans(3862--[[Medic--]]) .. " (" .. #(obj.labels.needMedical or "") .. "): "
-					.. Trans(4439--[[Going to--]]):gsub("<right><h SelectTarget InfopanelSelect><Target></h>",": " .. medic_need)
+					.. "\n" .. Trans(3862--[[Medic--]]) .. " (" .. #(l.needMedical or "") .. "): "
+					.. go_to:format(": " .. medic_need)
 					.. ", " .. Trans(526--[[Visitors--]]) .. ": " .. medic_use .. "/" .. medic_max
-					.. "\n\n" .. S[302535920000035--[[Grids--]]]
-					.. ": " .. Trans(682--[[Oxygen--]]) .. "(" .. tostring(obj.air.grid.ChoGGi_GridHandle) .. ") "
-					.. Trans(681--[[Water--]]) .. "(" .. tostring(obj.water.grid.ChoGGi_GridHandle) .. ") "
-					.. Trans(79--[[Power--]]) .. "(" .. tostring(obj.electricity.grid.ChoGGi_GridHandle) .. ")"
+					.. "\n\n" .. S[302535920000035--[[Grids--]]] .. ": "
+					.. a .. "(" .. ga_id .. ") "
+					.. w .. "(" .. gw_id .. ") "
+					.. e .. "(" .. ge_id .. ")"
 			end,
 		}
 
 		local ptz8000 = point(0,0,8000)
 		local ptz2000 = point(0,0,2000)
 		local function AddViewObjInfo(label)
-			local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
+			local objs = RetAllOfClass(label)
 			for i = 1, #objs do
 				local obj = objs[i]
 				-- only check for valid pos if it isn't a colonist (inside building = invalid pos)
 				local pos = true
 				if label ~= "Colonist" then
-					pos = obj:IsValidPos()
+					pos = obj ~= InvalidPos
 				end
 				-- skip any missing objects
 				if IsValid(obj) and pos then
 					local text_obj = PlaceObject("ChoGGi_OText")
 --~ 					local orient_obj = PlaceObject("ChoGGi_OOrientation")
 --~ 					orient_obj.ChoGGi_ViewObjInfo_o = true
-					text_obj.ChoGGi_ViewObjInfo_t = true
 					text_obj:SetText(GetInfo[label](obj))
 					text_obj:SetCenter(true)
+					obj.ChoGGi_ViewObjInfo_text = text_obj
 
---~ 					local _, origin = obj:GetAllSpots(0)
---~ 					obj:Attach(text_obj, origin)
---~ 					obj:Attach(text_orient, origin)
 					obj:Attach(text_obj)
 --~ 					obj:Attach(orient_obj)
 					if label == "Dome" then
@@ -258,61 +276,46 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
-		local function AttachCleanUp(a)
-			if a.ChoGGi_ViewObjInfo_t or a.ChoGGi_ViewObjInfo_o then
-				a:delete()
-			end
-		end
-		local function RemoveViewObjInfo(label)
+		local function RemoveViewObjInfo(cls)
 			-- clear out the text objects
-			local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
+			local objs = RetAllOfClass(cls)
 			for i = 1, #objs do
-				objs[i]:ForEachAttach(AttachCleanUp)
+				local obj = objs[i]
+				if IsValid(obj.ChoGGi_ViewObjInfo_text) then
+					obj.ChoGGi_ViewObjInfo_text:delete()
+					obj.ChoGGi_ViewObjInfo_text = nil
+				end
 			end
 		end
 
-		local function UpdateViewObjInfo(label)
-			local cam_pos = camera.GetPos
+		local function UpdateViewObjInfo(cls)
 			-- fire an update every second
-			update_info_thread[label] = CreateRealTimeThread(function()
-				while update_info_thread[label] do
-					-- add a grid number we can reference
-					ChoGGi.ComFuncs.UpdateGridHandles()
+			update_info_thread[cls] = CreateGameTimeThread(function()
+				local cameraRTS_GetPos = cameraRTS.GetPos
+				local InvalidPos = ChoGGi.Consts.InvalidPos
 
-					local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
-					local mine
-					-- update text
+				local objs = RetAllOfClass(cls)
+				local thread = update_info_thread[cls]
+				while thread do
+					local cam_pos = cameraRTS_GetPos()
+
+					-- update text loop
 					for i = 1, #objs do
 						local obj = objs[i]
-						mine = nil
-						obj:ForEachAttach(function(a)
-							if a.ChoGGi_ViewObjInfo_t then
-								mine = {
-									pos = obj:GetVisualPos(),
-									text = a,
-								}
-								a:SetText(GetInfo[label](obj))
-								return
-							end
-						end)
+						if IsValid(obj) and IsValid(obj.ChoGGi_ViewObjInfo_text) then
+							local obj_pos = obj:GetVisualPos()
+							local too_far_from_cam = obj_pos ~= InvalidPos and obj_pos:Dist2D(cam_pos) > 100000
 
-						-- set opacity depending on dist
-						if mine then
-							if mine.pos:Dist2D(cam_pos()) > 100000 then
-								mine.text:SetOpacityInterpolation(0)
+							-- too far means hide the text and don't bother updating it
+							if too_far_from_cam then
+								obj.ChoGGi_ViewObjInfo_text:SetOpacityInterpolation(0)
 							else
-								mine.text:SetOpacityInterpolation(127)
+								obj.ChoGGi_ViewObjInfo_text:SetOpacityInterpolation(100)
+								obj.ChoGGi_ViewObjInfo_text:SetText(GetInfo[cls](obj))
 							end
-	--~ 						local dist = mine.pos:Dist2D(cam_pos())
-	--~ 						if dist < 50000 then
-	--~ 							mine.text:SetOpacityInterpolation(127)
-	--~ 						elseif dist < 100000 then
-	--~ 							mine.text:SetOpacityInterpolation(75)
-	--~ 						else
-	--~ 							mine.text:SetOpacityInterpolation(0)
-	--~ 						end
 						end
-					end
+
+					end -- for
 					Sleep(1000)
 				end
 			end)
@@ -325,6 +328,7 @@ function OnMsg.ClassesGenerate()
 				{text = Trans(80--[[Production--]]),value = "Production"},
 				{text = Trans(517--[[Drones--]]),value = "Drone"},
 				{text = Trans(5433--[[Drone Control--]]),value = "DroneControl"},
+--~ 				{text = Trans(4290--[[Colonist--]]),value = "Colonist"},
 --~ 				{text = Trans(885971788025--[[Outside Buildings--]]),value = "OutsideBuildings"},
 
 	--~ 			 {text = Trans(79--[[Power--]]),value = "Power"},
@@ -342,7 +346,7 @@ function OnMsg.ClassesGenerate()
 					viewing_obj_info[value] = nil
 					RemoveViewObjInfo(value)
 					DeleteThread(update_info_thread[value])
-					ChoGGi.ComFuncs.RemoveGridHandles()
+					update_info_thread[value] = nil
 				else
 					-- add signs
 					viewing_obj_info[value] = true

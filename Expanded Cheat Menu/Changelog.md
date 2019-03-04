@@ -9,8 +9,10 @@
 - Cheats>Disasters: Adds the setting values to the tooltip.
 - Moved Cheats>Workplaces to ECM>Colonists>Workplaces.
 - Sped up Toggle Flight Grid so it's nice n smooth.
+- Sped up Building Info text.
 - Examine:
 - > Added Surfaces Toggle: Show a list of surfaces and draw lines over them (GetRelativeSurfaces).
+- > Mousing over the context * will place the value in the search text box.
 - > Attaches menu shows what object the attachment is attached to.
 - > Valid objects now show a bit more info and a link to the (cleaned up) paths.
 - > Made View Source button a clickable link
