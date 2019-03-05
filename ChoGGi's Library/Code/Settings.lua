@@ -65,7 +65,10 @@ ChoGGi.Tables = {
 
 	-- some names need to be fixed when doing construction placement
 	ConstructionNamesListFix = {
-		Rocket = "SupplyRocket",
+		-- can't build em
+		Rocket = "",
+		-- added when a rocket lands
+		RocketLandingSite = "LandingPad",
 	},
 	Cargo = {},
 	CargoPresets = {},
@@ -86,12 +89,12 @@ ChoGGi.ComFuncs.UpdateDataTables()
 
 
 function OnMsg.ClassesBuilt()
-	-- see ConstructionNamesListFix above
-	local ConstructionNamesListFix = ChoGGi.Tables.ConstructionNamesListFix
-	ClassDescendants("BaseRoverBuilding", function(class, building)
-		ConstructionNamesListFix[class] = building.rover_class
-		ConstructionNamesListFix[building.rover_class] = class
-	end)
+--~ 	-- see ConstructionNamesListFix above
+--~ 	local ConstructionNamesListFix = ChoGGi.Tables.ConstructionNamesListFix
+--~ 	ClassDescendants("BaseRoverBuilding", function(class, building)
+--~ 		ConstructionNamesListFix[class] = building.rover_class
+--~ 		ConstructionNamesListFix[building.rover_class] = class
+--~ 	end)
 
 	local Consts = Consts
 	local const = const

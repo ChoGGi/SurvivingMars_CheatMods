@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v12.7 (Unreleased)
+## v12.8 (Unreleased)
+
+## v12.7 (3 Mar 2019)
 ### Added:
 - Debug>List Visible Objects: Shows list of objects rendered in the current frame.
 
@@ -38,6 +40,7 @@
 - Colonist>Set Gender wasn't working.
 - Mission>Instant Colony Approval didn't remove the founder msg.
 - Some of the infopanel cheats were hidden.
+- Ctrl-Shift wasn't placing the last placed building (for rovers).
 
 ### Removed:
 - Use Last Orientation: It's not a cheat, and there's a mod that does the exact same.
