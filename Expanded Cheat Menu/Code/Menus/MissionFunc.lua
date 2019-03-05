@@ -616,7 +616,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
-		local sType = action.setting_id
+		local setting_id = action.setting_id
 
 		local mapdata = mapdata
 
@@ -628,7 +628,7 @@ function OnMsg.ClassesGenerate()
 		}
 		local c = #ItemList
 
-		local set_name = "MapSettings_" .. sType
+		local set_name = "MapSettings_" .. setting_id
 		local data = DataInstances[set_name]
 
 		for i = 1, #data do
@@ -657,15 +657,15 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 
 			mapdata[set_name] = value
-			if sType == "Meteor" then
+			if setting_id == "Meteor" then
 				RestartGlobalGameTimeThread("Meteors")
 				RestartGlobalGameTimeThread("MeteorStorm")
 			else
-				RestartGlobalGameTimeThread(sType)
+				RestartGlobalGameTimeThread(setting_id)
 			end
 
 			MsgPopup(
-				S[302535920001179--[[%s occurrence is now: %s--]]]:format(sType,value),
+				S[302535920001179--[[%s occurrence is now: %s--]]]:format(setting_id,value),
 				Trans(3983--[[Disasters--]]),
 				"UI/Icons/Sections/attention.tga"
 			)
@@ -674,7 +674,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = S[302535920000129--[[Set--]]] .. " " .. sType .. " " .. S[302535920001180--[[Disaster Occurrences--]]],
+			title = S[302535920000129--[[Set--]]] .. " " .. setting_id .. " " .. S[302535920001180--[[Disaster Occurrences--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. (mapdata[set_name] or ""),
 		}
 	end

@@ -341,10 +341,10 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
-		local sType = action.bld_id
+		local bld_type = action.bld_type
 
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.Consts[sType] / r
+		local DefaultSetting = ChoGGi.Consts[bld_type] / r
 		local hint_max = S[302535920000962--[[Max capacity limited to:
 	Universal: 2,500
 	Other: 20,000
@@ -366,8 +366,8 @@ function OnMsg.ClassesGenerate()
 		}
 
 		local hint = DefaultSetting
-		if ChoGGi.UserSettings[sType] then
-			hint = ChoGGi.UserSettings[sType] / r
+		if ChoGGi.UserSettings[bld_type] then
+			hint = ChoGGi.UserSettings[bld_type] / r
 		end
 
 		local function CallBackFunc(choice)
@@ -378,7 +378,7 @@ function OnMsg.ClassesGenerate()
 			if type(value) == "number" then
 
 				local value = value * r
-				if sType == "StorageWasteDepot" then
+				if bld_type == "StorageWasteDepot" then
 					--limit amounts so saving with a full load doesn't delete your game
 					if value > 1000000000 then
 						value = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
@@ -393,7 +393,7 @@ function OnMsg.ClassesGenerate()
 							tab[i]:CheatFill()
 						end
 					end
-				elseif sType == "StorageOtherDepot" then
+				elseif bld_type == "StorageOtherDepot" then
 					if value > 20000000 then
 						value = 20000000
 					end
@@ -411,7 +411,7 @@ function OnMsg.ClassesGenerate()
 					end
 					OtherDepot("MysteryResource","max_storage_per_resource")
 					OtherDepot("BlackCubeDumpSite","max_amount_BlackCube")
-				elseif sType == "StorageUniversalDepot" then
+				elseif bld_type == "StorageUniversalDepot" then
 					if value > 2500000 then
 						value = 2500000 --can go to 2900, but I got a crash; which may have been something else, but it's only 400
 					end
@@ -421,7 +421,7 @@ function OnMsg.ClassesGenerate()
 							tab[i].max_storage_per_resource = value
 						end
 					end
-				elseif sType == "StorageMechanizedDepot" then
+				elseif bld_type == "StorageMechanizedDepot" then
 					if value > 1000000000 then
 						value = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
 					end
@@ -431,11 +431,11 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 				--for new buildings
-				ChoGGi.ComFuncs.SetSavedSetting(sType,value)
+				ChoGGi.ComFuncs.SetSavedSetting(bld_type,value)
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					choice[1].text .. ": " .. sType,
+					choice[1].text .. ": " .. bld_type,
 					S[302535920000573--[[Storage Universal Depot--]]],
 					"UI/Icons/Sections/basic.tga"
 				)
@@ -445,7 +445,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = ItemList,
-			title = S[302535920000129--[[Set--]]] .. ": " .. sType .. " " .. S[302535920000963--[[Size--]]],
+			title = S[302535920000129--[[Set--]]] .. ": " .. bld_type .. " " .. S[302535920000963--[[Size--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_max,
 			skip_sort = true,
 		}

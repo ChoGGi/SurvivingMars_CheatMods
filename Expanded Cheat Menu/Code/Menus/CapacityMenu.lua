@@ -94,7 +94,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetStorageDepotSize,
-		bld_id = "StorageUniversalDepot",
+		bld_type = "StorageUniversalDepot",
 	}
 
 	c = c + 1
@@ -109,7 +109,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetStorageDepotSize,
-		bld_id = "StorageOtherDepot",
+		bld_type = "StorageOtherDepot",
 	}
 
 	c = c + 1
@@ -124,7 +124,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetStorageDepotSize,
-		bld_id = "StorageWasteDepot",
+		bld_type = "StorageWasteDepot",
 	}
 
 	c = c + 1
@@ -139,7 +139,7 @@ function OnMsg.ClassesGenerate()
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetStorageDepotSize,
-		bld_id = "StorageMechanizedDepot",
+		bld_type = "StorageMechanizedDepot",
 	}
 
 end

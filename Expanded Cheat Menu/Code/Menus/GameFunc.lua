@@ -1197,18 +1197,15 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		)
 	end
 
-	function ChoGGi.MenuFuncs.SetTransparencyUI()
-		local desk = terminal.desktop
-		local igi = Dialogs.InGameInterface
-
-		local function GetSetTrans(iType,sName,iWhich)
-			local name = ChoGGi.UserSettings.Transparency[sName]
-			if not iWhich and name then
+	do -- SetTransparencyUI
+		local function GetSetTrans(mask,cls,desk,igi,which)
+			local name = ChoGGi.UserSettings.Transparency[cls]
+			if not which and name then
 				return name
 			end
 
 			local uilist
-			if iType == 1 then
+			if mask == 1 then
 				uilist = desk
 			else
 				if not igi or not igi:GetVisible() then
@@ -1216,11 +1213,12 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 				end
 				uilist = igi
 			end
+
 			for i = 1, #uilist do
 				local ui = uilist[i]
-				if ui:IsKindOf(sName) then
-					if iWhich then
-						ui:SetTransparency(iWhich)
+				if ui:IsKindOf(cls) then
+					if which then
+						ui:SetTransparency(which)
 					else
 						return ui:GetTransparency()
 					end
@@ -1228,57 +1226,62 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			end
 		end
 
-		local ItemList = {
-			{text = "ConsoleLog",value = GetSetTrans(1,"ConsoleLog"),hint = S[302535920000994--[[Console logging text--]]]},
-			{text = "Console",value = GetSetTrans(1,"Console"),hint = S[302535920000996--[[Console text input--]]]},
-			{text = "XShortcutsHost",value = GetSetTrans(1,"XShortcutsHost"),hint = S[302535920000998--[[Cheat Menu--]]]},
+		function ChoGGi.MenuFuncs.SetTransparencyUI()
+			local desk = terminal.desktop
+			local igi = Dialogs.InGameInterface
 
-			{text = "HUD",value = GetSetTrans(2,"HUD"),hint = S[302535920001000--[[Buttons at bottom--]]]},
-			{text = "XBuildMenu",value = GetSetTrans(2,"XBuildMenu"),hint = S[302535920000993--[[Build menu--]]]},
-			{text = "InfopanelDlg",value = GetSetTrans(2,"InfopanelDlg"),hint = S[302535920000995--[[Infopanel (selection)--]]]},
-			{text = "PinsDlg",value = GetSetTrans(2,"PinsDlg"),hint = S[302535920000997--[[Pins menu--]]]},
-		}
+			local ItemList = {
+				{text = "ConsoleLog",value = GetSetTrans(1,"ConsoleLog",desk,igi),hint = S[302535920000994--[[Console logging text--]]]},
+				{text = "Console",value = GetSetTrans(1,"Console",desk,igi),hint = S[302535920000996--[[Console text input--]]]},
+				{text = "XShortcutsHost",value = GetSetTrans(1,"XShortcutsHost",desk,igi),hint = S[302535920000998--[[Cheat Menu--]]]},
 
-		local function CallBackFunc(choice)
-			if choice.nothing_selected then
-				return
-			end
-			for i = 1, #choice do
-				local value = choice[i].value
-				local text = choice[i].text
+				{text = "HUD",value = GetSetTrans(2,"HUD",desk,igi),hint = S[302535920001000--[[Buttons at bottom--]]]},
+				{text = "XBuildMenu",value = GetSetTrans(2,"XBuildMenu",desk,igi),hint = S[302535920000993--[[Build menu--]]]},
+				{text = "InfopanelDlg",value = GetSetTrans(2,"InfopanelDlg",desk,igi),hint = S[302535920000995--[[Infopanel (selection)--]]]},
+				{text = "PinsDlg",value = GetSetTrans(2,"PinsDlg",desk,igi),hint = S[302535920000997--[[Pins menu--]]]},
+			}
 
-				if type(value) == "number" then
-
-					if text == "XShortcutsHost" or text == "Console" or text == "ConsoleLog" then
-						GetSetTrans(1,text,value)
-					else
-						GetSetTrans(2,text,value)
-					end
-
-					if value == 0 then
-						ChoGGi.UserSettings.Transparency[text] = nil
-					else
-						ChoGGi.UserSettings.Transparency[text] = value
-					end
-
+			local function CallBackFunc(choice)
+				if choice.nothing_selected then
+					return
 				end
+				for i = 1, #choice do
+					local value = choice[i].value
+					local text = choice[i].text
+
+					if type(value) == "number" then
+
+						if text == "XShortcutsHost" or text == "Console" or text == "ConsoleLog" then
+							GetSetTrans(1,text,desk,igi,value)
+						else
+							GetSetTrans(2,text,desk,igi,value)
+						end
+
+						if value == 0 then
+							ChoGGi.UserSettings.Transparency[text] = nil
+						else
+							ChoGGi.UserSettings.Transparency[text] = value
+						end
+
+					end
+				end
+
+				ChoGGi.SettingFuncs.WriteSettings()
+				MsgPopup(
+					S[302535920000999--[[Transparency has been updated.--]]],
+					S[302535920000629--[[UI Transparency--]]]
+				)
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
-			MsgPopup(
-				S[302535920000999--[[Transparency has been updated.--]]],
-				S[302535920000629--[[UI Transparency--]]]
-			)
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = ItemList,
+				title = S[302535920000629--[[Set UI Transparency--]]],
+				hint = S[302535920001002--[[For some reason they went opposite day with this one: 255 is invisible and 0 is visible.--]]],
+				custom_type = 4,
+			}
 		end
-
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = ItemList,
-			title = S[302535920000629--[[Set UI Transparency--]]],
-			hint = S[302535920001002--[[For some reason they went opposite day with this one: 255 is invisible and 0 is visible.--]]],
-			custom_type = 4,
-		}
-	end
+	end -- do
 
 	function ChoGGi.MenuFuncs.SetLightsRadius()
 		local hr = hr
