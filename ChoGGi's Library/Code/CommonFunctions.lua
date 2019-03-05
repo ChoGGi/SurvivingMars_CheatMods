@@ -1896,8 +1896,7 @@ do -- SetCameraSettings
 end -- do
 
 function ChoGGi.ComFuncs.ColonistUpdateAge(c,age)
-	-- probably some mod that doesn't know how to clean up colonists they removed...
-	if not IsValid(c) then
+	if not IsValid(c) or type(age) ~= "string" then
 		return
 	end
 
@@ -1945,12 +1944,10 @@ function ChoGGi.ComFuncs.ColonistUpdateAge(c,age)
 end
 
 function ChoGGi.ComFuncs.ColonistUpdateGender(c,gender)
-	-- probably some mod that doesn't know how to clean up colonists they removed...
-	if not IsValid(c) then
+	if not IsValid(c) or type(gender) ~= "string" then
 		return
 	end
 
-	local ChoGGi = ChoGGi
 	local genders = ChoGGi.Tables.ColonistGenders
 
 	if gender == Trans(3490--[[Random--]]) then
@@ -1973,8 +1970,7 @@ function ChoGGi.ComFuncs.ColonistUpdateGender(c,gender)
 end
 
 function ChoGGi.ComFuncs.ColonistUpdateSpecialization(c,spec)
-	-- probably some mod that doesn't know how to clean up colonists they removed...
-	if not IsValid(c) then
+	if not IsValid(c) or type(spec) ~= "string" then
 		return
 	end
 
@@ -1991,8 +1987,7 @@ function ChoGGi.ComFuncs.ColonistUpdateSpecialization(c,spec)
 end
 
 function ChoGGi.ComFuncs.ColonistUpdateTraits(c,bool,traits)
-	-- probably some mod that doesn't know how to clean up colonists they removed...
-	if not IsValid(c) then
+	if not IsValid(c) or type(traits) ~= "table" then
 		return
 	end
 
@@ -2008,8 +2003,7 @@ function ChoGGi.ComFuncs.ColonistUpdateTraits(c,bool,traits)
 end
 
 function ChoGGi.ComFuncs.ColonistUpdateRace(c,race)
-	-- probably some mod that doesn't know how to clean up colonists they removed...
-	if not IsValid(c) then
+	if not IsValid(c) or type(race) ~= "string" then
 		return
 	end
 

@@ -275,23 +275,23 @@ function OnMsg.ClassesGenerate()
 
 			elseif aid == "CleanAndFix" then
 				if obj:IsKindOfClasses("UniversalStorageDepot","WasteRockDumpSite") then
-					SetHint(action,S[302535920001226--[[Cleans dust and removes maintenance points.--]]])
-				else
 					action.ActionId = ""
+				else
+					SetHint(action,S[302535920001226--[[Cleans dust and removes maintenance points.--]]])
 				end
 
 			elseif aid == "AddDust" then
 				if obj:IsKindOfClasses("UniversalStorageDepot","WasteRockDumpSite") then
-					SetHint(action,S[302535920001225--[[Adds dust and maintenance points.--]]])
-				else
 					action.ActionId = ""
+				else
+					SetHint(action,S[302535920001225--[[Adds dust and maintenance points.--]]])
 				end
 
 			elseif aid == "ToggleSigns" then
 				if obj:IsKindOfClasses("SurfaceDeposit","SubsurfaceDeposit","WasteRockDumpSite","UniversalStorageDepot") then
-					SetHint(action,S[302535920001223--[[Toggle any signs above %s (until state is changed).--]]]:format(name))
-				else
 					action.ActionId = ""
+				else
+					SetHint(action,S[302535920001223--[[Toggle any signs above %s (until state is changed).--]]]:format(name))
 				end
 
 			elseif aid == "Destroy" then
@@ -304,16 +304,16 @@ function OnMsg.ClassesGenerate()
 
 			elseif aid == "Refill" then
 				if obj:IsKindOf("SubsurfaceAnomaly") then
-					SetHint(action,S[302535920001231--[[Refill the deposit to full capacity.--]]])
-				else
 					action.ActionId = ""
+				else
+					SetHint(action,S[302535920001231--[[Refill the deposit to full capacity.--]]])
 				end
 
 			elseif aid == "DoubleMaxAmount" then
 				if obj:IsKindOf("SubsurfaceAnomaly") then
-					SetHint(action,S[302535920001234--[[Double the amount this %s can hold.--]]]:format(name))
-				else
 					action.ActionId = ""
+				else
+					SetHint(action,S[302535920001234--[[Double the amount this %s can hold.--]]]:format(name))
 				end
 
 			elseif aid == "Upgrade1" then

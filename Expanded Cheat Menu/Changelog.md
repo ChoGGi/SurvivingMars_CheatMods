@@ -8,7 +8,7 @@
 - Mission>Set Disaster Occurrence: Adds the setting values to the tooltip.
 - Cheats>Disasters: Adds the setting values to the tooltip.
 - Moved Cheats>Workplaces to ECM>Colonists>Workplaces.
-- Sped up Toggle Flight Grid so it's nice n smooth.
+- Sped up Toggle Flight Grid so it's nice n smooth (it now also uses the follow grid size).
 - Sped up Building Info text.
 - Examine:
 - > Added Surfaces Toggle: Show a list of surfaces and draw lines over them (GetRelativeSurfaces).
@@ -26,6 +26,7 @@
 - > The sphere colour changes each "update" (when you click the point or use mark object).
 - > Context menu can add/remove a print to funcs (only for the single func, it's not a class thing).
 - > Added a checkbox to Hex Shape Toggle to show the hex point pos: (-1,2).
+- > Added some more info to attaches.
 - Console:
 - > Added a new menu "Tools".
 - > Moved some stuff from Settings and Examine to Tools.
@@ -34,6 +35,9 @@
 ### Fixed:
 - Examining "_G" and closing the examine dlg would spam the log.
 - Borken menuitems (if you find one that doesn't do anything let me know... log helps).
+- Colonist>Set Gender wasn't working.
+- Mission>Instant Colony Approval didn't remove the founder msg.
+- Some of the infopanel cheats were hidden.
 
 ### Removed:
 - Use Last Orientation: It's not a cheat, and there's a mod that does the exact same.

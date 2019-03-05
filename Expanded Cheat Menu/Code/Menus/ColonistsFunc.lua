@@ -1007,6 +1007,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				hint = Trans(TraitPresets[gender].description),
 				icon = ChoGGi.Tables.ColonistGenderImages[gender],
 				icon_scale = 500,
+				value = gender,
 			}
 		end
 
@@ -1023,6 +1024,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			if choice.nothing_selected then
 				return
 			end
+
 			local value = choice[1].value
 			local obj = SelectedObj
 			local dome
@@ -1046,19 +1048,20 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 						ChoGGi.ComFuncs.ColonistUpdateGender(obj,value)
 					end
 				else
+					local ColonistUpdateGender = ChoGGi.ComFuncs.ColonistUpdateGender
 					local tab = UICity.labels.Colonist or ""
 					for i = 1, #tab do
 						if dome then
 							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								ChoGGi.ComFuncs.ColonistUpdateGender(tab[i],value)
+								ColonistUpdateGender(tab[i],value)
 							end
 						else
-							ChoGGi.ComFuncs.ColonistUpdateGender(tab[i],value)
+							ColonistUpdateGender(tab[i],value)
 						end
 					end
 				end
-
 			end
+
 			MsgPopup(
 				choice[1].text .. ": " .. setting_type,Trans(547--[[Colonists--]]),
 				Trans(547--[[Colonists--]]),
