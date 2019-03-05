@@ -503,14 +503,14 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 									mod_params.publish_os = "any"
 									mod_params.uuid_property = "pops_any_uuid"
 								end
-							elseif mod.pops_desktop_uuid ~= "" then
-								mod_params.publish_os = "windows"
-								mod_params.uuid_property = "pops_desktop_uuid"
-								para_platform = true
 							elseif mod.pops_any_uuid ~= "" then
 								mod_params.publish_os = "any"
 								mod_params.uuid_property = "pops_any_uuid"
 								para_platform = false
+							elseif mod.pops_desktop_uuid ~= "" then
+								mod_params.publish_os = "windows"
+								mod_params.uuid_property = "pops_desktop_uuid"
+								para_platform = true
 							end
 
 							prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)

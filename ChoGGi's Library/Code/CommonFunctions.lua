@@ -3487,8 +3487,10 @@ function ChoGGi.ComFuncs.ConstructionModeNameClean(itemname)
 		local obj = PlaceObj(tempname, {
 			"Pos", ChoGGi.ComFuncs.CursorNearestHex(),
 			"revealed", true,
+			"grade", "Very High",
 		})
-		obj.max_amount = ChoGGi.ComFuncs.Random(1000 * ChoGGi.Consts.ResourceScale,100000 * ChoGGi.Consts.ResourceScale)
+		local r = ChoGGi.Consts.ResourceScale
+		obj.max_amount = ChoGGi.ComFuncs.Random(1000 * r,100000 * r)
 		obj:CheatRefill()
 		obj.amount = obj.max_amount
 	else
@@ -3526,13 +3528,14 @@ function ChoGGi.ComFuncs.ConstructionModeSet(itemname)
 			name = bld_template.id ~= "" and bld_template.id or bld_template.template_name,
 			construction_mode = bld_template.construction_mode
 		})
+	-- ?
 	else
 		igi:SetMode("construction",{
 			template = bld_template.template_name,
 			selected_dome = dlg and dlg.context.selected_dome
 		})
 	end
-	CloseXBuildMenu()
+	CloseDialog("XBuildMenu")
 end
 
 function ChoGGi.ComFuncs.DeleteLargeRocks()

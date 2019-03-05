@@ -1,7 +1,8 @@
 return PlaceObj("ModDef", {
-	"title", "Expanded Cheat Menu v12.7 Test",
-	"version", 127,
-	"saved", 1551096000,
+--~ 	"title", "Expanded Cheat Menu",
+	"title", "Expanded Cheat Menu v12.8 Test",
+	"version", 128,
+	"saved", 1551787200,
 	"image", "Preview.png",
 	"id", "ChoGGi_CheatMenu",
 	"author", "ChoGGi",
@@ -9,16 +10,7 @@ return PlaceObj("ModDef", {
 	"pops_any_uuid", "21d18780-d793-4fe4-89ca-6895cd45d639",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
 	"lua_revision", LuaRevision,
-	"TagCommanderProfiles", true,
-	"TagMissionSponsors", true,
-	"TagColonyLogos", true,
 	"TagGameplay", true,
-	"TagBuildings", true,
-	"TagResearch", true,
-	"TagCrops", true,
-	"TagTraits", true,
-	"TagLightmodels", true,
-	"TagCosmetics", true,
 	"TagInterface", true,
 	"TagTools", true,
 	"TagOther", true,
@@ -88,7 +80,7 @@ return PlaceObj("ModDef", {
 		-- gee sure would be nice to load these like the devs do, but i suppose it's too much work to limit dofile env.
 	},
 
-	"description", string.format([[and Modding Tools. Enables cheat menu, cheat info pane, console, examine object, adds a few hundred menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
+	"description", [[and Modding Tools. Enables cheat menu, cheat info pane, console, examine object, adds a few hundred menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
 
 If you forget where a menu item is: Menu>Help>List All Menu Items (use "Filter Items" at the bottom).
 
@@ -117,7 +109,7 @@ If you want to be able to bind a menu item: msg me and I'll add it to keybinding
 There's a cheats section in most selection panels on the right side of the screen.
 Menu>ECM>Misc>Infopanel Cheats (on by default)
 
-Settings are saved at %%APPDATA%%\Surviving Mars\CheatMenuModSettings.lua, or in-game when blacklist isn't disabled.
+Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua, or in-game when blacklist isn't disabled.
 There's also Help>Reset Settings, to manually edit see: Help>ECM>Edit Settings.
 
 
@@ -128,7 +120,7 @@ Bleeding edge: https://github.com/ChoGGi/SurvivingMars_CheatMods
 
 
 ##### Help it doesn't work!
-Logs are stored at C:\Users\USERNAME\AppData\Roaming\Surviving Mars\logs
+Logs are stored at %APPDATA%\Surviving Mars\logs or C:\Users\USERNAME\AppData\Roaming\Surviving Mars\logs
 I can't help if I don't know what's wrong.
 The steps you take to recreate the issue would also be useful, and maybe a save game depending on the issue.
 
@@ -136,7 +128,7 @@ The steps you take to recreate the issue would also be useful, and maybe a save 
 
 ##### Access to missing functionality
 Da Vinci update added a blacklist of functions, you can use this to bypass them (only really useful for modders).
-%sHelperMod
+]] .. ConvertToOSPath(CurrentModPath) .. [[HelperMod
 
 
 
@@ -145,5 +137,13 @@ chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedeta
 admbraden (for gifting me a Steam copy): https://steamcommunity.com/id/admbraden
 HPK archiver: https://github.com/nickelc/hpk
 unluac: https://sourceforge.net/projects/unluac/
-Everyone else giving suggestions/pointing out issues.]],ConvertToOSPath(CurrentModPath)),
+Everyone else giving suggestions/pointing out issues.
+
+
+
+##### Available From:
+https://steamcommunity.com/sharedfiles/filedetails/?id=1411157810
+https://www.nexusmods.com/survivingmars/mods/7
+https://mods.paradoxplaza.com/mods/645/Any
+https://github.com/ChoGGi/SurvivingMars_CheatMods]],
 })
