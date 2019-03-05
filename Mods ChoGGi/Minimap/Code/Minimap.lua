@@ -82,7 +82,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 	self.idCaptionToggle:SetRow(1)
 	self.idCaption:SetPadding(box(self.idCaptionToggle.box:sizex(),0,0,0))
 	-- disable rollup for minimap (add as option in bottom
-	self.idMoveControl.OnMouseButtonDoubleClick = empty_func
+--~ 	self.idMoveControl.OnMouseButtonDoubleClick = empty_func
 
 	self.idDialog:SetTransparency(self.opacity)
 
@@ -105,17 +105,6 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 	self.idToggleArea:SetVisible(false)
 	self.idToggleArea:SetTransparency(-255)
 
-	self.idUpdateMap = g_Classes.ChoGGi_Button:new({
-		Id = "idUpdateMap",
-		Dock = "left",
-		Text = [[Update]],
-		RolloverTitle = [[Update Image]],
-		RolloverText = [[This will update the map image (resets camera orientation).]],
-		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
-		RolloverAnchor = "top",
-		OnPress = self.idUpdateMapOnPress,
-	}, self.idToggleArea)
-
 	self.idToggleDblSize = g_Classes.ChoGGi_Button:new({
 		Id = "idToggleDblSize",
 		Dock = "left",
@@ -123,7 +112,6 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		RolloverTitle = [[Double Size]],
 		RolloverText = [[Toggle between original size and double.]],
 		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
-		RolloverAnchor = "top",
 		OnPress = self.idToggleDblSizeOnPress,
 	}, self.idToggleArea)
 
@@ -134,9 +122,35 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		RolloverTitle = [[Reset Dialog]],
 		RolloverText = [[Moves map back to original position and size.]],
 		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
-		RolloverAnchor = "top",
 		OnPress = self.idResetDialogOnPress,
 	}, self.idToggleArea)
+
+	self.idUseScreenShots = g_Classes.ChoGGi_CheckButton:new({
+		Id = "idUseScreenShots",
+		Dock = "left",
+		Text = [[Image]],
+		RolloverTitle = [[Use ScreenShots]],
+		RolloverText = [[Screenshots or topography images (needs my map images pack mod)..]],
+		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+		OnChange = self.idUseScreenShotsOnChange,
+	}, self.idToggleArea)
+
+	local UseScreenshots = ChoGGi_Minimap.UseScreenshots
+
+	self.idUseScreenShots:SetCheck(UseScreenshots)
+
+	self.idUpdateMap = g_Classes.ChoGGi_Button:new({
+		Id = "idUpdateMap",
+		Dock = "left",
+		Text = [[Update]],
+		RolloverTitle = [[Update Image]],
+		RolloverText = [[This will update the map image (resets camera orientation).]],
+		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+		OnPress = self.idUpdateMapOnPress,
+	}, self.idToggleArea)
+	if not UseScreenshots then
+		self.idUpdateMap:SetVisible(false)
+	end
 
 	self.idOpacity = g_Classes.ChoGGi_TextInput:new({
 		Id = "idOpacity",
@@ -169,11 +183,21 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 	self:PostInit(nil,pt)
 end
 
+function ChoGGi_MinimapDlg:idUseScreenShotsOnChange()
+	local check = self:GetCheck()
+	ChoGGi_Minimap.UpdateTopoImage(check)
+	GetRootDialog(self).idUpdateMap:SetVisible(check)
+
+	-- update mcr if it's enabled
+	if table.find(ModsLoaded,"id","bpy1eJQ") then
+		ModConfig:Set("ChoGGi_Minimap", "UseScreenshots", check)
+	end
+end
+
 function ChoGGi_MinimapDlg:idResetDialogOnPress()
 	self = GetRootDialog(self)
 	self:ResetSize()
-	self:PostInit(nil,self.dialog_original_pos)
---~ 	self:SetPos(self.dialog_original_pos)
+	self:PostInit(nil,self.dialog_original_pos,true)
 end
 
 function ChoGGi_MinimapDlg:idToggleDblSizeOnPress()
@@ -182,7 +206,7 @@ function ChoGGi_MinimapDlg:idToggleDblSizeOnPress()
 	if size:x() == self.dialog_width_scaled and size:y() == self.dialog_height_scaled then
 		self:SetSize(self.dialog_width_scaled*2,self.dialog_height_scaled*2)
 		-- we don't want it off screen
-		self:PostInit(nil,self:GetPos())
+		self:PostInit(nil,self:GetPos(),true)
 	else
 		self:ResetSize()
 	end
@@ -309,8 +333,10 @@ function ChoGGi_MinimapDlg:idUpdateMapOnPress()
 --~ 			src = box(point20, point(1920,1080)),
 			interface = false,
 		}) then
+			WaitMsg("OnRender")
 			-- needed to be able to update control
 			UnloadTexture(self.map_file)
+			WaitMsg("OnRender")
 			self:UpdateMapImage(self.map_file)
 		end
 

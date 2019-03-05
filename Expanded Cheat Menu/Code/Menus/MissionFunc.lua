@@ -234,14 +234,22 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.InstantColonyApproval()
-		CreateRealTimeThread(WaitPopupNotification, "ColonyViabilityExit_Delay")
+		-- remove founder stage msg
+		RemoveOnScreenNotification("FounderStageDuration")
+		-- add the passed msg
+		if IsGameRuleActive("TheLastArk") then
+			CreateRealTimeThread(WaitPopupNotification, "ColonyViabilityExit_Delay_LastArk")
+		else
+			CreateRealTimeThread(WaitPopupNotification, "ColonyViabilityExit_Delay")
+		end
+		-- actually pass it
 		Msg("ColonyApprovalPassed")
 		g_ColonyNotViableUntil = -1
 
-		MsgPopup(
-			"true",
-			S[302535920000706--[[Instant Colony Approval--]]]
-		)
+--~ 		MsgPopup(
+--~ 			"true",
+--~ 			S[302535920000706--[[Instant Colony Approval--]]]
+--~ 		)
 	end
 
 	function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()

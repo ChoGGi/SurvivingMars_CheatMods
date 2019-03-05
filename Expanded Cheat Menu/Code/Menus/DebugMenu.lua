@@ -269,17 +269,6 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001297--[[Toggle Flight Grid--]]],
-		ActionMenubar = str_Debug_Grids,
-		ActionId = ".Toggle Flight Grid",
-		ActionIcon = "CommonAssets/UI/Menu/ToggleCollisions.tga",
-		RolloverText = S[302535920001298--[[Shows a square grid with terrain/objects shape.--]]],
-		OnAction = ChoGGi.MenuFuncs.FlightGrid_Toggle,
-		ActionShortcut = "Shift-F2",
-		ActionBindable = true,
-	}
-
-	c = c + 1
 	Actions[c] = {ActionName = S[302535920001328--[[Show Grid Disable--]]],
 		ActionMenubar = str_Debug_Grids,
 		ActionId = ".Show Grid Disable",
@@ -323,9 +312,20 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000499--[[Toggle Grid Follow Mouse--]]],
+	Actions[c] = {ActionName = S[302535920001297--[[Toggle Flight Grid--]]],
 		ActionMenubar = str_Debug_Grids,
-		ActionId = ".Toggle Grid Follow Mouse",
+		ActionId = ".Toggle Flight Grid",
+		ActionIcon = "CommonAssets/UI/Menu/ToggleCollisions.tga",
+		RolloverText = S[302535920001298--[[Shows a square grid with terrain/objects shape.--]]],
+		OnAction = ChoGGi.MenuFuncs.FlightGrid_Toggle,
+		ActionShortcut = "Shift-F2",
+		ActionBindable = true,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = S[302535920000499--[[Toggle Building Grid--]]],
+		ActionMenubar = str_Debug_Grids,
+		ActionId = ".Toggle Building Grid",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 		RolloverText = S[302535920000500--[["Show a hex grid around mouse: Green = pass/build, Yellow = no pass/build, Blue = pass/no build, Red = no pass/no build."--]]],
 		OnAction = ChoGGi.MenuFuncs.debug_build_grid,
@@ -342,7 +342,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.DebugGridSize",
-				S[302535920001418--[[Sets the size of the grid...--]]]
+				S[302535920001418--[[Sets the size of the Building/Flight grid.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.debug_build_grid_settings,
@@ -358,7 +358,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.DebugGridOpacity",
-				S[302535920001420--[[How transparent the grid is.--]]]
+				S[302535920001420--[[How transparent the Building grid is.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.debug_build_grid_settings,

@@ -641,14 +641,14 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.ComFuncs.EntitySpawner(obj,skip_msg,list_type,planning)
 		-- if fired from action menu
 		if IsKindOf(obj,"XAction") then
-			obj = nil
-			skip_msg = nil
-			list_type = nil
 			if obj.setting_planning then
 				planning = true
 			else
 				planning = nil
 			end
+			obj = nil
+			skip_msg = nil
+			list_type = nil
 		end
 
 		local const = const

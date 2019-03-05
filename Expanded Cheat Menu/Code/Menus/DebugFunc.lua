@@ -497,6 +497,8 @@ that'll activate the BadPrefab on it
 	end
 
 	do -- debug_build_grid
+		-- this is somewhat from Lua\hex.lua: debug_build_grid()
+		-- sped up to work with being attached to the mouse pos
 		local IsValid = IsValid
 		local grid_objs = {}
 		local grid_thread = false
@@ -620,13 +622,13 @@ that'll activate the BadPrefab on it
 			local blue = -16776961
 			local pt20t = {point20}
 			local PlaceObject = PlaceObject
-			local UserSettings = ChoGGi.UserSettings
-			local grid_range = type(UserSettings.DebugGridSize) == "number" and UserSettings.DebugGridSize or 10
-			local grid_opacity = type(UserSettings.DebugGridOpacity) == "number" and UserSettings.DebugGridOpacity or 15
+			local u = ChoGGi.UserSettings
+			local grid_size = type(u.DebugGridSize) == "number" and u.DebugGridSize or 10
+			local grid_opacity = type(u.DebugGridOpacity) == "number" and u.DebugGridOpacity or 15
 
 			-- 125 = 47251 objects (had a crash at 250, and it's not like you need one that big)
-			if grid_range > 125 then
-				grid_range = 125
+			if grid_size > 125 then
+				grid_size = 125
 			end
 
 			-- already running
@@ -635,14 +637,14 @@ that'll activate the BadPrefab on it
 			else
 				-- these two loop sections are just a way of building the table and applying the settings once instead of over n over in the while loop
 
-				-- get the count of grid_range objects
+				-- get the count of grid_size objects
 				local grid_count = 0
 				local q,r = 1,1
 				local z = -q - r
 				SuspendPassEdits("ChoGGi.MenuFuncs.debug_build_grid")
-				for q_i = q - grid_range, q + grid_range do
-					for r_i = r - grid_range, r + grid_range do
-						for z_i = z - grid_range, z + grid_range do
+				for q_i = q - grid_size, q + grid_size do
+					for r_i = r - grid_size, r + grid_size do
+						for z_i = z - grid_size, z + grid_size do
 							if q_i + r_i + z_i == 0 then
 								local hex = PlaceObject("ChoGGi_OHexSpot")
 								hex:SetOpacity(grid_opacity)
@@ -663,9 +665,9 @@ that'll activate the BadPrefab on it
 						if last_q ~= q or last_r ~= r then
 							local z = -q - r
 							local idx = 0
-							for q_i = q - grid_range, q + grid_range do
-								for r_i = r - grid_range, r + grid_range do
-									for z_i = z - grid_range, z + grid_range do
+							for q_i = q - grid_size, q + grid_size do
+								for r_i = r - grid_size, r + grid_size do
+									for z_i = z - grid_size, z + grid_size do
 										if q_i + r_i + z_i == 0 then
 											idx = idx + 1
 											local c = grid_objs[idx]
@@ -1101,6 +1103,8 @@ that'll activate the BadPrefab on it
 	--~	 end
 	--~ end)
 	do -- FlightGrid_Toggle
+		-- this is also somewhat from Lua\Flight.lua: Flight_DbgRasterArea()
+		-- also sped up to work with being attached to the mouse pos
 		local MulDivRound = MulDivRound
 		local InterpolateRGB = InterpolateRGB
 		local Clamp = Clamp
@@ -1179,6 +1183,7 @@ that'll activate the BadPrefab on it
 			if IsValidThread(grid_thread) then
 				DeleteThread(grid_thread)
 			end
+			grid_thread = false
 			if GameState.gameplay then
 				DeleteLines()
 			end
@@ -1186,12 +1191,10 @@ that'll activate the BadPrefab on it
 
 		local function GridFunc(size,zoffset)
 			local Sleep = Sleep
-			zoffset = zoffset or 0
-			local orig_size = size or 256 * guim
 
-			size = orig_size
 			local steps = 1 + (size + dbg_step - 1) / dbg_step
 			size = steps * dbg_step
+			local size_pt = point(size, size) / 2
 
 			-- we spawn lines once then re-use them
 			SuspendPassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.GridFunc")
@@ -1200,34 +1203,40 @@ that'll activate the BadPrefab on it
 			end
 			ResumePassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.GridFunc")
 
-			local pos_c,pos_t,pos
-			while true do
-
+			local pos_old,pos_new,pos
+			while grid_thread do
 				-- we only update when cursor moves
-				pos_t = GetTerrainCursor()
-				if pos_c ~= pos_t then
-					pos_c = pos_t
-					pos = pos_t - point(size, size) / 2
+				pos_new = GetTerrainCursor()
+				if pos_old ~= pos_new then
+					pos_old = pos_new
 
+					pos = pos_new - size_pt
 					-- Flight_DbgRasterArea
 					for y = 0, steps do
 						RasterLine(pos + point(0, y*dbg_step), pos + point(size, y*dbg_step), zoffset, y)
 					end
+					local plus1 = steps+1
 					for x = 0, steps do
-						RasterLine(pos + point(x*dbg_step, 0), pos + point(x*dbg_step, size), zoffset, steps+x)
+						RasterLine(pos + point(x*dbg_step, 0), pos + point(x*dbg_step, size), zoffset, plus1+x)
 					end
 
-					Sleep(10)
+					Sleep(5)
 				end
-				Sleep(50)
+				Sleep(10)
 			end
 		end
 
 		function ChoGGi.MenuFuncs.FlightGrid_Toggle(size,zoffset)
+			local grid_size = ChoGGi.UserSettings.DebugGridSize
+			grid_size = type(grid_size) == "number" and grid_size * 10
+
 			-- if fired from action menu
 			if IsKindOf(size,"XAction") then
-				size = 256 * guim
+				size = (grid_size or 256) * guim
 				zoffset = 0
+			else
+				size = size or ((grid_size or 256) * guim)
+				zoffset = zoffset or 0
 			end
 
 			if not Flight_Height then
@@ -1237,6 +1246,7 @@ that'll activate the BadPrefab on it
 
 			if IsValidThread(grid_thread) then
 				DeleteThread(grid_thread)
+				grid_thread = false
 				DeleteLines()
 				return
 			end

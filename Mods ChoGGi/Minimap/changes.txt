@@ -1,3 +1,7 @@
+v0.5
+Added an Image checkbox (does the same as the MCR option).
+It'll work without MCR, but it won't save the setting.
+
 v0.4
 Library update.
 

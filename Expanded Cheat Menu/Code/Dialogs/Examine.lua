@@ -2294,11 +2294,25 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			)
 		end
 
+		-- parent object of attached obj
+		local parent = obj:GetParent()
+		if IsValid(parent) then
+			table_insert(list_obj_str, 2, "GetParent(): " .. self:ConvertValueToInfo(parent)
+				.. "\nGetAttachOffset(): " .. self:ConvertValueToInfo(obj:GetAttachOffset())
+				.. "\nGetAttachAxis(): " .. self:ConvertValueToInfo(obj:GetAttachAxis())
+				.. "\nGetAttachAngle(): " .. self:ConvertValueToInfo(obj:GetAttachAngle())
+				.. "\nGetAttachSpot(): " .. self:ConvertValueToInfo(obj:GetAttachSpot())
+				.. "\nAttachSpotName: " .. self:ConvertValueToInfo(parent:GetSpotName(obj:GetAttachSpot()))
+				.. (state_added and "" or "\n")
+			)
+		end
+
 		if valid_ent then
 			-- some entity details as well
 			table_insert(list_obj_str, 2, "GetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
-				.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices()) .. (state_added and "" or "\n"))
+				.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices()) .. ((parent or state_added) and "" or "\n"))
 		end
+
 	end
 
 	-- add strings/numbers to the body

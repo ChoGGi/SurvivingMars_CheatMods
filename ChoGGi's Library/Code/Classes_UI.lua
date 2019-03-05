@@ -166,6 +166,7 @@ DefineClass.ChoGGi_Buttons = {
 	PressedBackground = medium_gray,
 	PressedTextColor = white,
 	RolloverZoom = 1100,
+	FoldWhenHidden = true,
 }
 
 DefineClass.ChoGGi_ToolbarButton = {
@@ -175,7 +176,6 @@ DefineClass.ChoGGi_ToolbarButton = {
 	MinWidth = 0,
 	Text = "",
 	Margins = box(1, 0, 0, 0),
-	FoldWhenHidden = true,
 	RolloverBackground = white,
 	PressedBackground = light_gray,
 }
@@ -690,7 +690,7 @@ local function UpdateListWidth(self)
 		end
 	end
 end
-function ChoGGi_Window:PostInit(parent,pt)
+function ChoGGi_Window:PostInit(parent,pt,title_skip)
 	local x,y,w,h
 
 	-- some funcs opened in examine have more than one return value
@@ -760,7 +760,7 @@ function ChoGGi_Window:PostInit(parent,pt)
 
 	-- add some tooltipping
 	local move = self.idMoveControl
-	if move then
+	if move and not title_skip then
 		local ok = ""
 		-- 1 hides the ok/cancel buttons, and it just looks weird for the colour Modifier
 		if is_list and self.custom_type ~= 1 then
@@ -775,7 +775,7 @@ function ChoGGi_Window:PostInit(parent,pt)
 	end
 
 end
--- needed till we update minimap and view colony map (since they both use the func name)
+-- needed till i update view colony map
 ChoGGi_Window.SetInitPos = ChoGGi_Window.PostInit
 
 -- scrollable textbox
