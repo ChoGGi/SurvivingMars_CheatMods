@@ -460,6 +460,7 @@ do -- ShowObj
 	local function rand_c()
 		return rand_colours[AsyncRand(rand_colours_c)]
 	end
+	ChoGGi.ComFuncs.RandomColourLimited = rand_c
 
 	local markers = {}
 	function ChoGGi.ComFuncs.RetObjMarkers()
