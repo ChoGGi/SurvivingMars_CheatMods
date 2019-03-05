@@ -42,9 +42,9 @@ function OnMsg.ModsReloaded()
 	fire_once = true
 
 	if table.find(ModsLoaded,"id","o4zrnLN") then
-		insert(rockets,3,"sRocket_Orion")
+		table.insert(rockets,3,"sRocket_Orion")
 		-- rocket_palette = "OrionRocket", doesn't work with changing the colony colour scheme
-		insert(palettes,3,{
+		table.insert(palettes,3,{
 			"rocket_base",
 			"rocket_accent",
 			"outside_accent_1",

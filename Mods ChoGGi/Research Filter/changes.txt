@@ -1,2 +1,5 @@
+v0.3
+Compatibility with SkiRich's Outsourcing Booster.
+
 v0.2
 Sets focus to the input box by default.
