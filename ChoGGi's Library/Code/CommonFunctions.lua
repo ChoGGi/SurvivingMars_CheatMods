@@ -22,7 +22,7 @@ local table_find = table.find
 local table_clear = table.clear
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
-function ChoGGi.ComFuncs.SaveOrigFunc(class_or_func,func_name)
+local function SaveOrigFunc(class_or_func,func_name)
 	local OrigFuncs = ChoGGi.OrigFuncs
 
 	if func_name then
@@ -36,7 +36,7 @@ function ChoGGi.ComFuncs.SaveOrigFunc(class_or_func,func_name)
 		end
 	end
 end
-local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+ChoGGi.ComFuncs.SaveOrigFunc = SaveOrigFunc
 
 do -- AddMsgToFunc
 	local Msg = Msg
@@ -68,42 +68,6 @@ do -- AddMsgToFunc
 		end
 	end
 end -- do
-
--- check if text is already translated or needs to be, and return the text
-local function CheckText(text,fallback)
-
-	if testing and type(text) == "number" then
-		print("CheckText",text,Trans(text))
-		if type(fallback) == "number" then
-			print("CheckText",fallback,Trans(fallback))
-		end
-	end
-
-	return tostring(text or fallback or "")
-
---~ 	local ret_str
---~ 	-- no sense in translating a string
---~ 	if type(text) == "string" then
---~ 		return text
---~ 	else
---~ 		-- see if the number is an id num, tostring(num) won't match index tables (works as a hacky bypass)
---~ 		ret_str = S[text]
---~ 	end
---~ 	-- could be getting called from another mod, or it just isn't included in ChoGGi.Strings
---~ 	if not ret_str or type(ret_str) ~= "string" then
---~ 		ret_str = Trans(text)
---~ 	end
-
---~ 	-- make sure the string isn't just a missing text/id msg. if it's under 16 then it can't include " *bad string id?".
---~ 	if ret_str == "Missing text" or #ret_str > 16 and ret_str:sub(-16) == " *bad string id?" then
---~ 		-- not a proper string, so use fallback
---~ 		ret_str = tostring(fallback or text)
---~ 	end
-
---~ 	-- have at it
---~ 	return ret_str
-end
-ChoGGi.ComFuncs.CheckText = CheckText
 
 do -- RetName
 	local IsObjlist = IsObjlist
@@ -408,14 +372,6 @@ do -- MsgPopup
 	-- shows a popup msg with the rest of the notifications
 	-- objects can be a single obj, or {obj1,obj2,etc}
 	function ChoGGi.ComFuncs.MsgPopup(text,title,image,size,objects)
-
-		if testing and type(text) == "number" then
-			print("MsgPopup",text,Trans(text))
-			if type(title) == "number" then
-				print("MsgPopup",title,Trans(title))
-			end
-		end
-
 		-- notifications only show up in-game
 		if not GameState.gameplay then
 			return
@@ -448,8 +404,8 @@ do -- MsgPopup
 		-- build the popup
 		local data = {
 			id = AsyncRand(),
-			title = CheckText(title),
-			text = CheckText(text,Trans(3718--[[NONE--]])),
+			title = title or "",
+			text = text or Trans(3718--[[NONE--]]),
 			image = ValidateImage(image,"UI/TheIncal.png"),
 		}
 		TableSet_defaults(data, params)
@@ -907,9 +863,9 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image,ok_text,context,parent)
 	-- thread needed for WaitMarsQuestion
 	CreateRealTimeThread(function()
 		local dlg = CreateMarsQuestionBox(
-			CheckText(title,Trans(1000016--[[Title--]])),
-			CheckText(text,Trans(3718--[[NONE--]])),
-			CheckText(ok_text,Trans(6878--[[OK--]])),
+			title or Trans(1000016--[[Title--]]),
+			text or Trans(3718--[[NONE--]]),
+			ok_text or Trans(6878--[[OK--]]),
 			"",
 			parent,
 			ValidateImage(image,"UI/message_picture_01.png"),
@@ -925,10 +881,10 @@ function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,con
 	CreateRealTimeThread(function()
 		if WaitMarsQuestion(
 			parent,
-			CheckText(title,Trans(1000016--[[Title--]])),
-			CheckText(text,Trans(3718--[[NONE--]])),
-			CheckText(ok_msg,Trans(6878--[[OK--]])),
-			CheckText(cancel_msg,Trans(6879--[[Cancel--]])),
+			title or Trans(1000016--[[Title--]]),
+			text or Trans(3718--[[NONE--]]),
+			ok_msg or Trans(6878--[[OK--]]),
+			cancel_msg or Trans(6879--[[Cancel--]]),
 			ValidateImage(image,"UI/message_picture_01.png"),
 			context
 		) == "ok" then
@@ -1275,10 +1231,6 @@ end
 
 -- return a string setting/text for menus
 function ChoGGi.ComFuncs.SettingState(setting,text)
-	if testing and type(text) == "number" then
-		print("SettingState",text,Trans(text))
-	end
-
 	if type(setting) == "string" and setting:find("%.") then
 		-- some of the menu items passed are "table.table.exists?.setting"
 		local obj = DotNameToObject(setting)
@@ -1295,7 +1247,7 @@ function ChoGGi.ComFuncs.SettingState(setting,text)
 	end
 
 	if text then
-		return "<color 0 255 0>" .. tostring(setting) .. "</color>: " .. CheckText(S[text],text)
+		return "<color 0 255 0>" .. tostring(setting) .. "</color>: " .. text
 	end
 
 	return tostring(setting)

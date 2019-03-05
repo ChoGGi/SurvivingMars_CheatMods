@@ -3,7 +3,6 @@
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 
 local Trans = ChoGGi.ComFuncs.Translate
-local CheckText = ChoGGi.ComFuncs.CheckText
 --~ local RetName = ChoGGi.ComFuncs.RetName
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local S = ChoGGi.Strings
@@ -81,13 +80,9 @@ DefineClass.ChoGGi_Label = {
 }
 function ChoGGi_Label:SetTitle(win,title)
 	if win.prefix then
-		win.idCaption:SetText(
-			CheckText(win.prefix,"") .. ": " .. CheckText(title or win.title,self.name)
-		)
+		win.idCaption:SetText(win.prefix .. ": " .. (title or win.title or self.name or ""))
 	else
-		win.idCaption:SetText(
-			CheckText(title or win.title,self.name)
-		)
+		win.idCaption:SetText(title or win.title or self.name or "")
 	end
 end
 

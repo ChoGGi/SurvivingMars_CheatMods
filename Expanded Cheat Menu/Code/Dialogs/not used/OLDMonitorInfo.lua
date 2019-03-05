@@ -32,7 +32,7 @@ function ChoGGi_MonitorInfoDlg:Init()
 
 
 
-		dlg.idCaption:SetText(ChoGGi.ComFuncs.CheckText(list.title,""))
+		dlg.idCaption:SetText(list.title or "")
 		self.obj = context.obj
 		self.values = context.values
 		self.tables = context.tables
@@ -70,7 +70,7 @@ function ChoGGi_MonitorInfoDlg:Init()
 	local title = S[302535920000084--[[Auto-Refresh--]]]
 	self.idAutoRefresh = g_Classes.CheckButton:new(self)
 	self.idAutoRefresh:SetPos(point(dialog_left, element_y))
-	self.idAutoRefresh:SetSize(ChoGGi.ComFuncs.RetCheckTextSize(title))
+--~ 	self.idAutoRefresh:SetSize(title)
 	self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
 	self.idAutoRefresh:SetText(title)
 	self.idAutoRefresh:SetHint(S[302535920000085--[["Auto-refresh list every ""Amount""."--]]])

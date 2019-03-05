@@ -78,7 +78,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		Dock = "left",
 		Text = Trans(6878--[[OK--]]),
 		Background = g_Classes.ChoGGi_Button.bg_green,
-		RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_ok,Trans(6878--[[OK--]])),
+		RolloverText = context.hint_ok or Trans(6878--[[OK--]]),
 		OnPress = self.idOkayOnPress,
 	}, self.idButtonContainer)
 
@@ -117,7 +117,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		Dock = "right",
 		Text = Trans(6879--[[Cancel--]]),
 		Background = g_Classes.ChoGGi_Button.bg_red,
-		RolloverText = ChoGGi.ComFuncs.CheckText(context.hint_cancel,S[302535920001423--[[Close without doing anything.--]]]),
+		RolloverText = context.hint_cancel or S[302535920001423--[[Close without doing anything.--]]],
 		OnPress = self.idCancelOnPress,
 	}, self.idButtonContainer)
 
