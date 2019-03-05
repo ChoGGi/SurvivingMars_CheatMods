@@ -1,5 +1,5 @@
 v0.4
-Unnamed update added Msgs:
+Tereshkhova added Msgs:
 ApplyAccountOptions
 ControlSchemeChanged
 KeyboardConnected
@@ -9,7 +9,7 @@ MouseDisconnected
 PopsTelemetrySetEnabled
 
 v0.3
-Gagarin HF2 added Msgs:
+Kuiper added Msgs:
 MessageBoxPreOpen
 WaterDepositRevealed
 

@@ -4,14 +4,18 @@
 - Fixed CSV exporting.
 - Code cleanup / Moved some ECM only funcs to ECM.
 - Fixed DeleteObject not deleting everything on funky modded buildings.
+- DotNameToObject won't set off the "undefined global" msg anymore.
+- ShowObj/ShowPoint use a list of random colours instead of just green.
+- Added ... to popup menus with submenus.
 - RetNam:
 - > It was returning some userdata: "id" instead of translated strings.
 - > It was returning "*C func" for non-C funcs.
 - List Dialog:
 - > Some List items were having a fake icon added (appearing as a space in front of the name).
-- > Show Custom Value is now hidden by default behind the checkbox (also scrolls to the "item").
+- > Show Custom Value is now hidden by default behind the checkbox (it also scrolls to the "item").
 - > custom_type 7/8 now return the checkbox states.
 - > Added a skip_icons setting.
+- > Change Object Colour>BaseColor works on Text, Polyline, etc objects now.
 
 ## v5.6 (25 Feb 2019)
 - Changed my AttachSpots toggle func to only clear text objs from itself.

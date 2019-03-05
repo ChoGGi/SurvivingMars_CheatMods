@@ -12,6 +12,7 @@ If working with a large amount of entity objects:
 SuspendPassEdits("SomeIdToUse")
 MapDelete("map", "Building")
 ResumePassEdits("SomeIdToUse")
+Add ,true to suspend if you're changing the terrain
 
 List all objects:
 ~MapGet(true)
@@ -19,6 +20,8 @@ Just domes:
 ~MapGet(true,"Dome")
 Just get objects on the map (colonists in a building are off the map):
 MapGet("map","ResourceStockpile","ResourceStockpileLR")
+Skip attachments
+MapGet("map","attached", false)
 Filter out which objects are returned:
 MapGet("map", "Building", function(o)
 	return o.ui_working

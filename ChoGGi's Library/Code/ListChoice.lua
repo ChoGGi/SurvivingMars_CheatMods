@@ -50,10 +50,10 @@ ChoGGi.ComFuncs.OpenInListChoice{
 --]]
 
 --~ local TableConcat = ChoGGi.ComFuncs.TableConcat
-local CheckText = ChoGGi.ComFuncs.CheckText
 local RetProperType = ChoGGi.ComFuncs.RetProperType
 local Trans = ChoGGi.ComFuncs.Translate
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 local S = ChoGGi.Strings
 
 local type,tostring = type,tostring
@@ -151,10 +151,10 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 
 			-- anything to add to it?
 			if list_check.title then
-				check:SetText(CheckText(list_check.title))
+				check:SetText(list_check.title)
 			end
 			if list_check.hint then
-				check.RolloverText = CheckText(list_check.hint)
+				check.RolloverText = list_check.hint
 			end
 			if list_check.func then
 				check.OnPress = function()
@@ -227,9 +227,6 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			Hint = S[302535920000078--[[Custom Value--]]],
 			OnKbdKeyDown = self.idEditValueOnKbdKeyDown
 		}, self.idEditArea)
-		if self.custom_type == 0 then
-			self.idEditValue:SetVisible(false)
-		end
 
 		self.idShowCustomVal = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idShowCustomVal",
@@ -240,6 +237,12 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			OnChange = self.idShowCustomValOnChange,
 		}, self.idEditArea)
 
+		-- toggle vis and checkmark depending on which list
+		if self.custom_type == 0 then
+			self.idEditValue:SetVisible(false)
+		else
+			self.idShowCustomVal:SetCheck(true)
+		end
 	end
 
 	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
@@ -360,7 +363,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	if self.list.multisel then
 		-- if it's a multiselect then add a hint
 		if self.list.hint then
-			self.list.hint = CheckText(self.list.hint) .. "\n\n" .. S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]]
+			self.list.hint = self.list.hint .. "\n\n" .. S[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]]
 		else
 			self.list.hint = S[302535920001167]
 		end
@@ -376,20 +379,20 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 	if self.custom_type == 7 then
 		if self.list.hint then
-			self.list.hint = CheckText(self.list.hint) .. "\n\n" .. S[302535920001341--[[Double-click to apply without closing list.--]]]
+			self.list.hint = self.list.hint .. "\n\n" .. S[302535920001341--[[Double-click to apply without closing list.--]]]
 		else
 			self.list.hint = S[302535920001341]
 		end
 	elseif self.custom_type == 8 then
 		if self.list.hint then
-			self.list.hint = CheckText(self.list.hint) .. "\n\n" .. S[302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."--]]]
+			self.list.hint = self.list.hint .. "\n\n" .. S[302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."--]]]
 		else
 			self.list.hint = S[302535920001371]
 		end
 	end
 
 	-- are we showing a hint?
-	local hint = CheckText(self.list.hint)
+	local hint = self.list.hint
 	if hint ~= "nil" then
 		self.idMoveControl.RolloverText = hint
 		self.idOK.RolloverText = self.idOK:GetRolloverText() .. "\n\n\n" .. hint
@@ -541,42 +544,40 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 		name_str = value
 
 	else
-		value,value_type = RetProperType(name_str)
+		value = DotNameToObject(name_str)
+		if type(value) == "number" then
+			value_type = "number"
+		else
+			value,value_type = RetProperType(name_str)
+		end
 	end
 
---~ 	printC(text,value)
-	if self.custom_type > 0 then
+--~ 	printC(text,value,value_type)
+	if self.custom_type == 0 then
+		-- last item is a blank item for custom value
+		if self.idShowCustomVal:GetCheck() then
+			local item = self.items[#self.items]
+			item.text = name_str
+			item.value = value
+			item.hint = S[302535920000079--[[* Use this custom value--]]]
+			local listitem = self.idList[#self.idList]
+			listitem.RolloverText = S[302535920000079]
+			listitem.RolloverTitle = item.text
+			listitem.idText:SetText(item.text)
+			listitem.item = item
+			-- special little guy
+			listitem.FocusedBorderColor = -14113793 -- rollover_blue
+		end
+	else
 		-- update the item's value
 		self.idList[self.idList.focused_item].item.value = value
-		-- colour editor stuff
-		if self.idList.focused_item and self.idColourContainer then
+		-- if colour editor
+		if self.idList.focused_item and self.idColourContainer and value_type == "number" then
 			-- update obj colours
 			if self.custom_type == 2 then
 				self:UpdateColour()
 			end
-			if value_type == "number" then
-				self.idColorPicker:SetColor(value)
-			end
-		end
-	else
-		-- last item is a blank item for custom value
-		self.items[#self.items] = {
-			text = name_str,
-			value = value,
-			hint = S[302535920000079--[[* Use this custom value--]]],
-		}
-		local item = self.items[#self.items]
-		local listitem = self.idList[#self.idList]
-		listitem.RolloverText = S[302535920000079]
-		listitem.RolloverTitle = item.text
-		listitem.idText:SetText(item.text)
-		listitem.item = item
-		-- special little guy
-		listitem.FoldWhenHidden = true
-		listitem.FocusedBorderColor = -14113793 -- rollover_blue
-
-		if not self.idShowCustomVal:GetCheck() then
-			listitem:SetVisible(false)
+			self.idColorPicker:SetColor(value)
 		end
 	end
 end
@@ -614,7 +615,8 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 		}
 	end
 	self.idList:Clear()
-	for i = 1, #self.items do
+	local list_count = #self.items
+	for i = 1, list_count do
 		local item = self.items[i]
 
 		-- is there an icon to add
@@ -640,6 +642,11 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 
 		--
 		local listitem = self.idList:CreateTextItem(text)
+
+		-- make sure last item isn't taking up space if it's not visible
+		if list_count == i and self.custom_type == 0 and not self.idShowCustomVal:GetCheck() then
+			listitem:SetVisible(false)
+		end
 
 		if item.hint_bottom then
 			listitem.RolloverHint = item.hint_bottom
@@ -669,7 +676,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 			if type(item.hint) == "userdata" then
 				listitem.RolloverText = Trans(item.hint)
 			else
-				listitem.RolloverText = CheckText(item.hint)
+				listitem.RolloverText = item.hint
 			end
 		end
 
@@ -742,19 +749,26 @@ function ChoGGi_ListChoiceDlg:UpdateColour()
 	end
 	-- checks/backs up old colours
 	ChoGGi.ComFuncs.SaveOldPalette(self.obj)
-	-- update object colour
-	local items = self.idList
-	for i = 1, 4 do
-		self.obj:SetColorizationMaterial(i,
-			-- color
-			items[i].item.value,
-			-- roughness
-			items[i+4].item.value,
-			-- metallic
-			items[i+8].item.value
-		)
+
+	-- can only change basecolour
+	if self.obj:GetMaxColorizationMaterials() > 0 then
+		local items = self.idList
+		for i = 1, 4 do
+			self.obj:SetColorizationMaterial(i,
+				-- color
+				items[i].item.value,
+				-- roughness
+				items[i+4].item.value,
+				-- metallic
+				items[i+8].item.value
+			)
+		end
 	end
+
 	self.obj:SetColorModifier(self.idList[#self.idList].item.value)
+	if self.obj.SetColor then
+		self.obj:SetColor(self.idList[#self.idList].item.value)
+	end
 end
 
 function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged(colour)

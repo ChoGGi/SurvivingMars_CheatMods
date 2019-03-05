@@ -25,9 +25,7 @@ end
 OnMsg.NewMapLoaded = ChoGGi.ComFuncs.UpdateDataTablesCargo
 -- needed for UICity and some others that aren't created till around then
 OnMsg.CityStart = ChoGGi.ComFuncs.RetName_Update
-OnMsg.CityStart = ChoGGi.ComFuncs.UpdateStringsList
 OnMsg.LoadGame = ChoGGi.ComFuncs.RetName_Update
-OnMsg.LoadGame = ChoGGi.ComFuncs.UpdateStringsList
 OnMsg.LoadGame = ChoGGi.ComFuncs.UpdateDataTablesCargo
 
 -- now i should probably go around and change all my localed strings...
@@ -71,7 +69,7 @@ function SetUserUIScale(val,...)
 end
 
 local function RemoveChoGGiObjects()
-	SuspendPassEdits("RemoveChoGGiObjects")
+	SuspendPassEdits("SaveGame/LoadGame RemoveChoGGiObjects")
 	MapDelete(true, "RotatyThing", function(o)
 		if o.ChoGGi_blinky then
 			return true
@@ -87,7 +85,7 @@ local function RemoveChoGGiObjects()
 	RemoveObjs("ChoGGi_OText")
 	RemoveObjs("ChoGGi_OCircle")
 	RemoveObjs("ChoGGi_OOrientation")
-	ResumePassEdits("RemoveChoGGiObjects")
+	ResumePassEdits("SaveGame/LoadGame RemoveChoGGiObjects")
 end
 OnMsg.SaveGame = RemoveChoGGiObjects
 OnMsg.LoadGame = RemoveChoGGiObjects

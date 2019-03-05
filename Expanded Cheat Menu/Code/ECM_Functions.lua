@@ -4,6 +4,7 @@ local table_find = table.find
 local table_clear = table.clear
 local table_iclear = table.iclear
 local type,pairs,next = type,pairs,next
+local tostring,print,rawget = tostring,print,rawget
 local PropObjGetProperty = PropObjGetProperty
 local Sleep = Sleep
 local IsValid = IsValid
@@ -28,66 +29,6 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
-
-	do -- end
-		-- counts funcs calls, and keeps a table of func|line num
-		local func_table = {}
-		local toggle = false
-		function ChoGGi.ComFuncs.ToggleThreadHook(path,line,mask,count)
-			if blacklist then
-				ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ToggleThreadHook")
-				return
-			end
-
-			if not toggle then
-				toggle = true
-				-- always start fresh
-				table_clear(func_table)
-				-- setup path
-				path = path or "@AppData/Mods/"
-				local str_len = #path
-
-				print("Hook Started",path,line,mask,count)
-				MsgPopup("Hook Started")
-
-				collectgarbage()
-				local function hook_func(event)
-
-					local i
-					if event == "call" then
-						i = debug_getinfo(2,"Sf")
-					else
-						i = debug_getinfo(2,"S")
-					end
-
-					if i.source:sub(1,str_len) == path and (not line or line and i.linedefined == line) then
-
-						local lua_obj
-						if event == "call" then
-							lua_obj = i.func
-						else
-							lua_obj = i.source .. "|" .. i.linedefined
-						end
-
-						local c = func_table[lua_obj]
-						func_table[lua_obj] = c and c + 1 or 1
-					end
-				end
-				-- start capture (c = func call, r = func ret, l = enters new line of code)
-				debug.sethook(hook_func,mask or "c", count)
-			else
-				print("Hook Stopped",path,line,mask,count)
-				MsgPopup("Hook Stopped")
-				toggle = false
-
-				-- stop capture
-				debug.sethook()
-				-- view the results
-				ChoGGi.ComFuncs.OpenInExamineDlg(func_table,nil,"Func call count (" .. #func_table .. ")")
-			end
-		end
-	end -- do
-
 
 	local function PlacePolyline(points, colors)
 		local line = ChoGGi_OPolyline:new{
@@ -431,7 +372,6 @@ function OnMsg.ClassesGenerate()
 	-- write logs funcs
 	do -- WriteLogs_Toggle
 		local Dump = ChoGGi.ComFuncs.Dump
-		local tostring = tostring
 		local newline = ChoGGi.newline
 		local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 		SaveOrigFunc("DebugPrintNL")
@@ -463,7 +403,7 @@ function OnMsg.ClassesGenerate()
 			end
 		end)
 
-		local function ReplaceFunc(funcname)
+		local function ReplaceFunc(funcname,mask)
 			_G[funcname] = function(...)
 
 				-- table.concat don't work with non strings/numbers
@@ -481,6 +421,10 @@ function OnMsg.ClassesGenerate()
 					buffer_table[buffer_cnt] = funcname .. ": " .. args
 				end
 
+				-- i have no idea why the devs consider this an error?
+				if mask == 1 and ... == "Attempt to use an undefined global '" then
+					return
+				end
 				-- fire off orig func...
 				ChoGGi_OrigFuncs[funcname](...)
 			end
@@ -510,7 +454,7 @@ function OnMsg.ClassesGenerate()
 				ReplaceFunc("AddConsoleLog") -- also does print()
 				ReplaceFunc("assert")
 				ReplaceFunc("printf")
-				ReplaceFunc("error")
+				ReplaceFunc("error",1)
 				-- causes an error and stops games from loading
 				-- ReplaceFunc("DebugPrint")
 			else
@@ -1542,20 +1486,29 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 		end
 	end -- do
 
+	do -- ImageExts
+		-- easier to keep them in one place
+		local ext_list = {
+			dds = true,
+			tga = true,
+			png = true,
+			jpg = true,
+			jpeg = true,
+		}
+		function ChoGGi.ComFuncs.ImageExts()
+			return ext_list
+		end
+	end -- do
+	local ImageExts = ChoGGi.ComFuncs.ImageExts
+
 	do -- DisplayObjectImages
 		local CmpLower = CmpLower
 		local getmetatable = getmetatable
-
-		local ext_list = {
-			[".dds"] = true,
-			[".tga"] = true,
-			[".png"] = true,
-		}
 		local images_table
 
 		-- grab any strings with the correct ext
 		local function AddToList(c,key,value)
-			if type(value) == "string" and ext_list[value:sub(-4)] then
+			if type(value) == "string" and ImageExts()[value:sub(-3)] then
 				local dupe_test = key .. value
 
 				if not images_table.dupes[dupe_test] then
@@ -2558,7 +2511,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 	do -- ChangeSurfaceSignsToMaterials
 		local function ChangeEntity(cls,entity,random)
-			SuspendPassEdits("ChangeSurfaceSignsToMaterials")
+			SuspendPassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials.ChangeEntity")
 			MapForEach("map",cls,function(o)
 				if random then
 					o:ChangeEntity(entity .. Random(1,random))
@@ -2566,15 +2519,15 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					o:ChangeEntity(entity)
 				end
 			end)
-			ResumePassEdits("ChangeSurfaceSignsToMaterials")
+			ResumePassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials.ChangeEntity")
 		end
 		local function ResetEntity(cls)
-			SuspendPassEdits("ChangeSurfaceSignsToMaterials")
+			SuspendPassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials.ResetEntity")
 			local entity = g_Classes[cls]:GetDefaultPropertyValue("entity")
 			MapForEach("map",cls,function(o)
 				o:ChangeEntity(entity)
 			end)
-			ResumePassEdits("ChangeSurfaceSignsToMaterials")
+			ResumePassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials.ResetEntity")
 		end
 
 		function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
@@ -2669,4 +2622,141 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		)
 		print(msg)
 	end
+
+	do -- ToggleFuncHook
+		-- counts funcs calls, and keeps a table of func|line num
+		local func_table = {}
+		function ChoGGi.ComFuncs.ToggleFuncHook(path,line,mask,count)
+			if blacklist then
+				ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ToggleFuncHook")
+				return
+			end
+
+			if not ChoGGi.Temp.FunctionsHooked then
+				ChoGGi.Temp.FunctionsHooked = true
+				-- always start fresh
+				table_clear(func_table)
+				-- setup path
+				path = path or "@AppData/Mods/"
+				local str_len = #path
+
+				print("Hook Started",path,line,mask,count)
+				MsgPopup("Hook Started")
+
+				collectgarbage()
+				local function hook_func(event)
+
+					local i
+					if event == "call" then
+						i = debug_getinfo(2,"Sf")
+					else
+						i = debug_getinfo(2,"S")
+					end
+
+					if i.source:sub(1,str_len) == path and (not line or line and i.linedefined == line) then
+
+						local lua_obj
+						if event == "call" then
+							lua_obj = i.func
+						else
+							lua_obj = i.source .. "|" .. i.linedefined
+						end
+
+						local c = func_table[lua_obj] or 1
+						func_table[lua_obj] = c + 1
+					end
+				end
+				-- start capture (c = func call, r = func ret, l = enters new line of code)
+				debug.sethook(hook_func,mask or "c", count)
+			else
+				print("Hook Stopped",path,line,mask,count)
+				MsgPopup("Hook Stopped")
+				ChoGGi.Temp.FunctionsHooked = false
+
+				-- stop capture
+				debug.sethook()
+				-- view the results
+				ChoGGi.ComFuncs.OpenInExamineDlg(func_table,nil,"Func call count (" .. #func_table .. ")")
+			end
+		end
+	end -- do
+
+	do -- PrintToFunc_Add/PrintToFunc_Remove
+		local ValueToLuaCode = ValueToLuaCode
+		local rawset = rawset
+
+		function ChoGGi.ComFuncs.PrintToFunc_Remove(func,name,parent)
+			name = tostring(name)
+			local saved_name = name .. "_ChoGGi_savedfunc"
+
+			local saved = parent[saved_name]
+			if saved then
+				parent[name] = parent[saved_name]
+				parent[saved_name] = nil
+			end
+
+		end
+
+		function ChoGGi.ComFuncs.PrintToFunc_Add(func,name,parent,func_name,params)
+			name = tostring(name)
+			local saved_name = name .. "_ChoGGi_savedfunc"
+
+			-- move orig to saved name (if it hasn't already been)
+			local saved
+			if parent == ChoGGi.Temp._G then
+				-- SM error spams console if you have the affront to try _G.NonExistingKey... (thanks autorun.lua)
+				-- it works prefectly fine of course, but i like a clean log.
+				-- in other words a workaround for "Attempt to use an undefined global '"
+				saved = rawget(parent,saved_name)
+				if not saved then
+					rawset(parent,saved_name,func)
+					saved = func
+				end
+			else
+				saved = parent[saved_name]
+				if not saved then
+					parent[saved_name] = func
+					saved = func
+				end
+			end
+
+
+
+			-- add param names if we can
+			local param_names,count = GetParamNames(func)
+			local text_table = {}
+			-- probably a better way to test if it's a class obj
+			local cls_obj = type(parent.IsKindOf) == "function"
+
+			-- and replace the func reference
+			parent[name] = function(...)
+				if params then
+					table_iclear(text_table)
+					local c = 0
+
+					local varargs = {...}
+					for i = 1, #varargs do
+						c = c + 1
+						text_table[c] = "arg "
+						c = c + 1
+						text_table[c] = i
+						c = c + 1
+						text_table[c] = ": "
+						c = c + 1
+						text_table[c] = cls_obj and i ~= 1 and ValueToLuaCode(varargs[i]) or tostring(varargs[i])
+						c = c + 1
+						text_table[c] = "\n"
+					end
+					print(func_name,"\n",TableConcat(text_table))
+				else
+					-- no params
+					print(func_name)
+				end
+				return saved(...)
+			end
+
+		end
+
+	end -- do
+
 end

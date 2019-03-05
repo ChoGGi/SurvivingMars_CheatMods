@@ -178,7 +178,6 @@ function OnMsg.ClassesGenerate()
 				end
 				table.sort(entity_list)
 				local entity_count = #entity_list
-				c = 0
 
 				local IsBuildableZoneQR = IsBuildableZoneQR
 				local WorldToHex = WorldToHex
@@ -189,7 +188,9 @@ function OnMsg.ClassesGenerate()
 				width = width / 1000
 				height = height / 1000
 
-				SuspendPassEdits("ViewAllEntities")
+				SuspendPassEdits("ChoGGi.MenuFuncs.ViewAllEntities")
+				-- reset for a new count
+				c = 0
 				for x = 100, width do
 					if c > entity_count then
 						break
@@ -228,7 +229,7 @@ function OnMsg.ClassesGenerate()
 
 					end -- for
 				end -- for
-				ResumePassEdits("ViewAllEntities")
+				ResumePassEdits("ChoGGi.MenuFuncs.ViewAllEntities")
 
 			end)
 		end
@@ -453,9 +454,9 @@ that'll activate the BadPrefab on it
 			if not answer then
 				return
 			end
-			SuspendPassEdits("DeleteAllSelectedObjects")
+			SuspendPassEdits("ChoGGi.MenuFuncs.DeleteAllSelectedObjects")
 			MapDelete(true,obj.class)
-			ResumePassEdits("DeleteAllSelectedObjects")
+			ResumePassEdits("ChoGGi.MenuFuncs.DeleteAllSelectedObjects")
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
@@ -509,13 +510,13 @@ that'll activate the BadPrefab on it
 
 			if GameState.gameplay then
 				-- store hexes off-map
-				SuspendPassEdits("DeleteHexeSpots")
+				SuspendPassEdits("ChoGGi.MenuFuncs.debug_build_grid_settings")
 				for i = 1, #grid_objs do
 					if IsValid(grid_objs[i]) then
 						grid_objs[i]:delete()
 					end
 				end
-				ResumePassEdits("DeleteHexeSpots")
+				ResumePassEdits("ChoGGi.MenuFuncs.debug_build_grid_settings")
 				table_iclear(grid_objs)
 			end
 		end
@@ -638,7 +639,7 @@ that'll activate the BadPrefab on it
 				local grid_count = 0
 				local q,r = 1,1
 				local z = -q - r
-				SuspendPassEdits("HexSpotsCreation")
+				SuspendPassEdits("ChoGGi.MenuFuncs.debug_build_grid")
 				for q_i = q - grid_range, q + grid_range do
 					for r_i = r - grid_range, r + grid_range do
 						for z_i = z - grid_range, z + grid_range do
@@ -651,7 +652,7 @@ that'll activate the BadPrefab on it
 						end
 					end
 				end
-				ResumePassEdits("HexSpotsCreation")
+				ResumePassEdits("ChoGGi.MenuFuncs.debug_build_grid")
 
 				-- fire up a new thread and off we go
 				grid_thread = CreateRealTimeThread(function()
@@ -1099,7 +1100,7 @@ that'll activate the BadPrefab on it
 	--~		 Sleep(5)
 	--~	 end
 	--~ end)
-	do -- flightgrids
+	do -- FlightGrid_Toggle
 		local MulDivRound = MulDivRound
 		local InterpolateRGB = InterpolateRGB
 		local Clamp = Clamp
@@ -1162,7 +1163,7 @@ that'll activate the BadPrefab on it
 		end
 
 		local function DeleteLines()
-			SuspendPassEdits("ChoGGi_DeleteLines")
+			SuspendPassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.DeleteLines")
 			for i = 0, #flight_lines+1 do
 				local o = flight_lines[i]
 				if IsValid(o) then
@@ -1171,7 +1172,7 @@ that'll activate the BadPrefab on it
 			end
 			table_iclear(flight_lines)
 			flight_lines[0] = nil
-			ResumePassEdits("ChoGGi_DeleteLines")
+			ResumePassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.DeleteLines")
 		end
 		-- if grid is left on when map changes it gets real laggy
 		function OnMsg.ChangeMap()
@@ -1193,11 +1194,11 @@ that'll activate the BadPrefab on it
 			size = steps * dbg_step
 
 			-- we spawn lines once then re-use them
-			SuspendPassEdits("FlightGridLinesCreation")
+			SuspendPassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.GridFunc")
 			for i = 0, (steps + steps) do
 				flight_lines[i] = PlaceObject("ChoGGi_OPolyline")
 			end
-			ResumePassEdits("FlightGridLinesCreation")
+			ResumePassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.GridFunc")
 
 			local pos_c,pos_t,pos
 			while true do

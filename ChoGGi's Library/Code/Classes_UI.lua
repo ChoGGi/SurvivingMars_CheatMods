@@ -26,6 +26,7 @@ local darker_gray = -13684945
 local medium_gray = -10592674
 local light_gray = -2368549
 local rollover_blue = -14113793
+local rollover_blue_darker = -10195047
 local invis = 0
 --~ local invis_less = 268435456
 
@@ -375,9 +376,9 @@ DefineClass.ChoGGi_TextList = {
 DefineClass.ChoGGi_ListItem = {
 	__parents = {"XListItem"},
 	RolloverZoom = 1100,
---~ 	Background = dark_gray,
 	SelectionBackground = darker_blue,
---~ 	FocusedBorderColor = rollover_blue,
+
+	FoldWhenHidden = true,
 }
 
 DefineClass.ChoGGi_Dialog = {
@@ -417,7 +418,28 @@ DefineClass.ChoGGi_SleekScroll = {
 	MinThumbSize = 30,
 	AutoHide = true,
 	Background = invis,
+
+	RolloverBackground = rollover_blue_darker,
+  state = "mouse-out",
 }
+-- change bg on mouseover
+ChoGGi_SleekScroll.CalcBackground = XButton.CalcBackground
+function ChoGGi_SleekScroll:OnSetRollover(rollover)
+  XControl.OnSetRollover(self, rollover)
+  if rollover then
+    if self.state == "mouse-out" then
+      self.state = "mouse-in"
+--~     elseif self.state == "pressed-out" then
+--~       self.state = "pressed-in"
+    end
+  elseif self.state == "mouse-in" then
+    self.state = "mouse-out"
+--~   elseif self.state == "pressed-in" then
+--~     self.state = "pressed-out"
+  end
+  self:Invalidate()
+end
+
 -- convenience function
 function ChoGGi_SleekScroll:SetHorizontal()
 	self.MinHeight = 10

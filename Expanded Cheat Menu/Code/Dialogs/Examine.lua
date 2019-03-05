@@ -60,6 +60,7 @@ local IsControlPressed
 local OpenInExamineDlg
 local Random
 local RandomColour
+local ImageExts
 local RetName
 local RetProperType
 local RetSortTextAssTable
@@ -86,6 +87,7 @@ function OnMsg.ClassesGenerate()
 	OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 	Random = ChoGGi.ComFuncs.Random
 	RandomColour = ChoGGi.ComFuncs.RandomColour
+	ImageExts = ChoGGi.ComFuncs.ImageExts
 	RetName = ChoGGi.ComFuncs.RetName
 	RetProperType = ChoGGi.ComFuncs.RetProperType
 	RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
@@ -525,16 +527,15 @@ function Examine:idTextOnHyperLinkRollover(link)
 	end
 
 	local title = S[302535920000069--[[Examine--]]]
-	local name = tostring(obj)
+	local name = RetName(obj)
 
 	if self.onclick_funcs[link] == self.OpenListMenu then
 		title = name .. " " .. Trans(1000162--[[Menu--]])
 		name = S[302535920001540--[[Show context menu for %s.--]]]:format(name)
 
-		-- stick value in search box
-		obj = self.obj_ref[obj]
-
-		self.idSearchText:SetText(type(obj) == "userdata" and IsT(obj) and Trans(obj) or tostring(obj))
+--~ 		-- stick value in search box
+--~ 		obj = self.obj_ref[obj]
+--~ 		self.idSearchText:SetText(type(obj) == "userdata" and IsT(obj) and Trans(obj) or tostring(obj))
 	end
 
 	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
@@ -641,12 +642,12 @@ function Examine:idButMarkObjectOnPress()
 	if IsValid(self.obj_ref) then
 		-- i don't use AddSphere since that won't add the ColourObj
 		local c = #self.marked_objects
-		local sphere = ChoGGi.ComFuncs.ShowPoint(self.obj_ref,RandomColour())
+		local sphere = ChoGGi.ComFuncs.ShowPoint(self.obj_ref)
 		if IsValid(sphere) then
 			c = c + 1
 			self.marked_objects[c] = sphere
 		end
-		local obj = ChoGGi.ComFuncs.ColourObj(self.obj_ref,RandomColour())
+		local obj = ChoGGi.ComFuncs.ColourObj(self.obj_ref)
 		if IsValid(obj) then
 			c = c + 1
 			self.marked_objects[c] = obj
@@ -654,9 +655,8 @@ function Examine:idButMarkObjectOnPress()
 	else
 		local c = #self.marked_objects
 		for _, v in pairs(self.obj_ref) do
-			local colour = RandomColour()
 			if IsPoint(v) or IsValid(v) then
-				c = self:AddSphere(v,c,colour)
+				c = self:AddSphere(v,c)
 			end
 		end
 	end
@@ -694,7 +694,7 @@ function Examine:idButDeleteAllOnPress()
 		S[302535920000059--[[Destroy all objects in objlist!--]]],
 		function(answer)
 			if answer then
-				SuspendPassEdits("DestroyAllInObjlist")
+				SuspendPassEdits("Examine:idButDeleteAllOnPress")
 				for _,obj in pairs(self.obj_ref) do
 					if IsValid(obj) then
 						DeleteObject(obj)
@@ -702,7 +702,7 @@ function Examine:idButDeleteAllOnPress()
 						obj:delete()
 					end
 				end
-				ResumePassEdits("DestroyAllInObjlist")
+				ResumePassEdits("Examine:idButDeleteAllOnPress")
 				-- force a refresh on the list, so people can see something as well
 				self:SetObj()
 			end
@@ -719,15 +719,18 @@ end
 function Examine:idButMarkAllOnPress()
 	self = GetRootDialog(self)
 	local c = #self.marked_objects
+	-- suspending makes it faster to add objects
+	SuspendPassEdits("Examine:idButMarkAllOnPress")
 	for _,v in pairs(self.obj_ref) do
 		if IsValid(v) or IsPoint(v) then
 			c = self:AddSphere(v,c,nil,true,true)
 		end
 	end
+	ResumePassEdits("Examine:idButMarkAllOnPress")
 end
 
 function Examine:AddSphere(obj,c,colour,skip_view,skip_colour)
-	local sphere = ShowObj(obj, colour or RandomColour(),skip_view,skip_colour)
+	local sphere = ShowObj(obj, colour,skip_view,skip_colour)
 	if IsValid(sphere) then
 		c = (c and c + 1) or (#self.marked_objects + 1)
 		self.marked_objects[c] = sphere
@@ -961,7 +964,7 @@ function Examine:BuildObjectMenuPopup()
 				ChoGGi.ComFuncs.SetParticles(self.obj_ref)
 			end,
 		},
-		{name = "----",disable = true,centred = true},
+		{is_spacer = true},
 		{name = S[302535920001472--[[BBox Toggle--]]],
 			hint = S[302535920001473--[[Toggle showing object's bbox (changes depending on movement).--]]],
 			image = "CommonAssets/UI/Menu/SelectionEditor.tga",
@@ -1125,7 +1128,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 				end
 			end,
 		},
-		{name = "----",disable = true,centred = true},
+		{is_spacer = true},
 		{name = S[302535920001239--[[Functions--]]],
 			hint = S[302535920001240--[[Show all functions of this object and parents/ancestors.--]]],
 			image = "CommonAssets/UI/Menu/gear.tga",
@@ -1212,7 +1215,7 @@ Which you can then mess around with some more in the console."--]]],
 				ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj_ref,self)
 			end,
 		},
-		{name = "----",disable = true,centred = true},
+		{is_spacer = true},
 		{name = Trans(931--[[Modified property--]]),
 			hint = S[302535920001384--[[Get properties different from base/parent object?--]]],
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
@@ -1273,7 +1276,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 				Inspect(self.obj_ref)
 			end,
 		},
-		{name = "----",disable = true,centred = true},
+		{is_spacer = true},
 		{name = S[302535920001321--[[UI Click To Examine--]]],
 			hint = S[302535920001322--[[Examine UI controls by clicking them.--]]],
 			image = "CommonAssets/UI/Menu/select_objects.tga",
@@ -1745,20 +1748,14 @@ end
 
 function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 	self.list_menu_table = self.list_menu_table or {}
-	self.list_menu_exts = self.list_menu_exts or {
-		[".dds"] = true,
-		[".tga"] = true,
-		[".png"] = true,
-	}
-
+	-- id for PopupToggle
 	self.opened_list_menu = Random()
 
-	-- they're sent as strings
-	local obj_prop = RetProperType(obj_name)
-	-- but I need to know if it's a number or string and so on
-	local obj_type = type(obj_prop)
+	-- they're sent as strings, but I need to know if it's a number or string and so on
+	local obj_key,obj_type = RetProperType(obj_name)
 
-	local obj_value_str = tostring(self.obj_ref[obj_prop])
+	local obj_value = self.obj_ref[obj_key]
+	local obj_value_str = tostring(obj_value)
 
 	local list = {
 		{name = obj_name,
@@ -1771,7 +1768,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 				end
 			end,
 		},
-		{name = "----",disable = true,centred = true},
+		{is_spacer = true},
 		{name = Trans(833734167742--[[Delete Item--]]),
 			hint = S[302535920001536--[["Remove the ""%s"" key from %s."--]]]:format(obj_name,self.name),
 			image = "CommonAssets/UI/Menu/DeleteArea.tga",
@@ -1792,7 +1789,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 		},
 	}
 	-- if it's an image path then we add an image viewer
-	if self.list_menu_exts[obj_value_str:sub(-4)] then
+	if ImageExts()[obj_value_str:sub(-3)] then
 		list[#list+1] = {name = S[302535920001469--[[Image Viewer--]]],
 			hint = S[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."--]]],
 			image = "CommonAssets/UI/Menu/light_model.tga",
@@ -1801,6 +1798,43 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			end,
 		}
 	end
+
+	-- add print for funcs
+	if type(obj_value) == "function" then
+		local c = #list
+		c = c + 1
+		list[c] = {is_spacer = true}
+		c = c + 1
+		list[c] = {name = S[302535920000524--[[Print Func--]]],
+			hint = S[302535920000906--[[Print func name when this func is called.--]]],
+			image = "CommonAssets/UI/Menu/light_model.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.PrintToFunc_Add(
+					obj_value, -- func to print
+					obj_key, -- func name
+					self.obj_ref, -- parent
+					self.name .. "." .. obj_key -- printed name
+				)
+			end,
+		}
+		c = c + 1
+		list[c] = {name = S[302535920000745--[[Print Func Params--]]],
+			hint = S[302535920000906] .. "\n" .. S[302535920000984--[[Also prints params.--]]],
+			image = "CommonAssets/UI/Menu/light_model.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.PrintToFunc_Add(obj_value,obj_key,self.obj_ref,self.name .. "." .. obj_key,true)
+			end,
+		}
+		c = c + 1
+		list[c] = {name = S[302535920000900--[[Print Reset--]]],
+			hint = S[302535920001067--[[Remove print from func.--]]],
+			image = "CommonAssets/UI/Menu/light_model.tga",
+			clicked = function()
+				ChoGGi.ComFuncs.PrintToFunc_Remove(obj_value,obj_key,self.obj_ref)
+			end,
+		}
+	end
+
 	-- style it like the other examine menus
 	list.Background = -9868951
 	list.FocusedBackground = -9868951
@@ -1943,12 +1977,8 @@ function Examine:ConvertValueToInfo(obj)
 	end
 	--
 	if obj_type == "function" then
-		local name = DebugGetInfo(obj)
-		if name == "[C](-1)" then
-			name = RetName(obj)
-		end
 		return self:HyperLink(obj,Examine_ConvertValueToInfo)
-			.. name .. HLEnd
+			.. RetName(obj) .. HLEnd
 	end
 	--
 	if obj_type == "thread" then
@@ -2030,7 +2060,7 @@ function Examine:ToggleBBox(_,bbox)
 end
 
 function Examine:ConvertObjToInfo(obj,obj_type)
-	-- i like reusing tables
+	-- i like reusing tables... these are for sorting, and dupe skipping
 	self.ConvertObjToInfo_list_obj_str = self.ConvertObjToInfo_list_obj_str or {}
 	self.ConvertObjToInfo_list_sort_num = self.ConvertObjToInfo_list_sort_num or {}
 	self.ConvertObjToInfo_list_sort_obj = self.ConvertObjToInfo_list_sort_obj or {}
@@ -2142,8 +2172,15 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	elseif obj_type == "function" then
 		c = c + 1
 		list_obj_str[c] = self:ConvertValueToInfo(tostring(obj))
+
+		local name = DebugGetInfo(obj)
+		if name == "[C](-1)" then
+			name = RetName(obj)
+		end
 		c = c + 1
-		list_obj_str[c] = self:ConvertValueToInfo(obj)
+		list_obj_str[c] = self:HyperLink(obj,function()
+			OpenInExamineDlg(obj,self)
+		end) .. name .. HLEnd
 	end
 
 	if self.sort_dir then

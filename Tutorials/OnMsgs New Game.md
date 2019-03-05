@@ -1,5 +1,5 @@
 ### "New Game"
-##### last updated Gagarin 237096, for current see [OnMsg Print](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/OnMsg%20Print)
+##### last updated Tereshkhova (240905), for current use [OnMsg Print](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/OnMsg%20Print)
 
 ##### Show a list of OnMsgs/WaitMsgs that are waiting for Msgs (you need ECM for ex).
 ```lua
@@ -25,16 +25,20 @@ Reloading lua files
 	Msg.GetCustomFXInheritActorRules ()
 	Msg.RegisterTriggers ()
 	Msg.ClassesBuilt
+	Msg.ApplyAccountOptions
+	Msg.ControlSchemeChanged
 	Msg.OptionsApply
+	Msg.ControlSchemeChanged
 	Msg.Autorun
 Reloading done
-[mod] Loading OnMsg Print v0.2(id ChoGGi_OnMsg Print, version 2) items from AppData/Mods/OnMsg Print/
+[mod] Loading OnMsg Print v0.3(id ChoGGi_OnMsgPrint, version 3) items from AppData/Mods/OnMsg Print/
 	Msg.ModsReloaded
 	Msg.HexShapesRebuilt
 	Msg.EntitiesLoaded
 	Msg.ShortcutsReloaded
 	Msg.BinAssetsLoaded
 	Msg.ShortcutsReloaded
+Msg.ParadoxFeedLoaded
 	Msg.PreNewMap
 	Msg.LightmodelNightChange ()
 	Msg.LightmodelRainChange ()
@@ -47,17 +51,18 @@ Reloading done
 	Msg.GameTimeStart
 	Msg.ChangeMapDone ()
 	Msg.ResumeInviteChecks
-Map changed to "PreGame" in 7370 ms.
+Map changed to "PreGame" in 8962 ms.
+Msg.PopsLogin ()
+	Msg.LightmodelChange ()
+	Msg.AfterLightmodelChange ()
 	Msg.GameStateChanged ()
 	Msg.Resume ()
 	Msg.LoadingScreenPreClose
-	Msg.LightmodelChange ()
-	Msg.AfterLightmodelChange ()
 	Msg.GameStateChangedNotify
 	Msg.PlanetCameraSet
 *Select screen 1*
-Msg.PopsLogin ()
-[POPS]Failed to retrieve viewed documents timeout
+Msg.PopsTelemetrySetEnabled
+Msg.PopsOwnedProductsChanged
 	Msg.LightmodelChange ()
 	Msg.AfterLightmodelChange ()
 	Msg.LightmodelChange ()
@@ -74,15 +79,16 @@ Msg.PopsLogin ()
 	Msg.Pause ()
 	Msg.GameStateChanged ()
 	Msg.GameStateChangedNotify
-Changing map to "BlankBigTerraceCMix_18"
+Changing map to "BlankBigTerraceCMix_03"
 Msg.ChangeMap ()
 	Msg.LightmodelChange ()
 	Msg.AfterLightmodelChange ()
 Msg.DoneMap
 Msg.PostDoneMap
 	Msg.PlanetCameraSet
+
 Reloading lua files
-	Msg.ReloadLua
+Msg.ReloadLua
 *Mod starts loading (Code/Script.lua)*
 	Msg.BeforeClearEntityData
 	Msg.ClassesGenerate ()
@@ -91,11 +97,13 @@ Reloading lua files
 	Msg.GetCustomFXInheritActorRules ()
 	Msg.RegisterTriggers ()
 	Msg.ClassesBuilt
+	Msg.ApplyAccountOptions
+	Msg.ControlSchemeChanged
 	Msg.OptionsApply
+	Msg.ControlSchemeChanged
 	Msg.Autorun
-
 Reloading done
-[mod] Loading OnMsg Print v0.2(id ChoGGi_OnMsg Print, version 2) items from AppData/Mods/OnMsg Print/
+[mod] Loading OnMsg Print v0.3(id ChoGGi_OnMsgPrint, version 3) items from AppData/Mods/OnMsg Print/
 	Msg.ModsReloaded
 	Msg.HexShapesRebuilt
 	Msg.EntitiesLoaded
@@ -113,7 +121,6 @@ Msg.OurColonyPlaced
 	Msg.UIModeChange ()
 Msg.InGameInterfaceCreated ()
 Msg.CityStart
-<color 255 0 0>GetCompatibleTraits is different length</color>
 	Msg.NewMap
 	Msg.UIModeChange ()
 Msg.CameraTransitionEnd
@@ -128,37 +135,44 @@ Msg.NewDay ()
 Msg.SunChange
 Msg.NewWorkshift ()
 Msg.NewHour ()
-starting sector selected: I1
+	Msg.SubsurfaceDepositRevealed ()
+	Msg.WaterDepositRevealed ()
+starting sector selected: B1
 Msg.MapSectorsReady
 Msg.SequenceListPlayerStart ()
-Msg.SequenceStart ()
+	Msg.SequenceStart ()
+	Msg.SequenceStart ()
 game_settings:
-    save_game_id: RtuL5+3NZV4fvKGK
+    save_game_id: usDiJlxNNpGu699a
     sponsor: IMM
     profile: rocketscientist
-    mystery: MarsgateMystery
-    mystery_random:
-    coordinates: 3,-22
-    landing_spot: MagraritiferAlpha
+    mystery: random
+    mystery_random: AIUprisingMystery
+    coordinates: -12,37
+    landing_spot:
     logo: MarsExpress
 map_conditions:
-    altitude: -1737
+    altitude: -698
     temperature: -1
     cold_wave: 0
-    dust_devils: 56
-    dust_storm: 0
-    meteors: 109
+    dust_devils: 65
+    dust_storm: 36
+    meteors: 139
 map_resources:
-    concrete: 146
-    metals: 109
-    precious_metals: 109
-    water: 146
+    concrete: 109
+    metals: 73
+    precious_metals: 73
+    water: 73
 Msg.MysteryChosen
 	Msg.BuildingPlaced ()
 	Msg.BuildingPlaced ()
 	Msg.BuildingPlaced ()
 	Msg.BuildingPlaced ()
 	Msg.BuildingPlaced ()
+Msg.MilestoneCompleted ()
+	Msg.SubsurfaceDepositRevealed ()
+	Msg.WaterDepositRevealed ()
+Msg.SequenceStop ()
 	Msg.BuildingInit ()
 	Msg.BuildingInit ()
 	Msg.BuildingInit ()
@@ -184,7 +198,7 @@ Msg.DepositsSpawned
 	Msg.GameStateChanged ()
 	Msg.ChangeMapDone ()
 	Msg.ResumeInviteChecks
-Map changed to "BlankBigTerraceCMix_18" in 13737 ms.
+Map changed to "BlankBigTerraceCMix_03" in 11884 ms.
 	Msg.GameStateChangedNotify
 	Msg.GameStateChanged ()
 	Msg.GameStateChanged ()
@@ -196,6 +210,7 @@ Msg.RocketLaunchFromEarth ()
 	Msg.RocketStatusUpdate ()
 Msg.SectorScanned ()
 Msg.CommandCenterClosed
+Msg.MessageBoxPreOpen
 Msg.PopupNotificationBegin
 Msg.MessageBoxOpened
 	Msg.GameStateChanged ()
@@ -207,6 +222,7 @@ Msg.MessageBoxOpened
 Msg.MarsResume
 Msg.MessageBoxClosed
 	Msg.GameStateChangedNotify
+Msg.NewMinute ()
 
 *Start of gameplay*
 ```

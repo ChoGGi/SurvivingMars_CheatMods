@@ -1,5 +1,5 @@
 ### "Load Game"
-##### last updated Gagarin 237096, for current see [OnMsg Print](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/OnMsg%20Print)
+##### last updated Tereshkhova (240905), for current use [OnMsg Print](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/OnMsg%20Print)
 
 ##### Show a list of OnMsgs/WaitMsgs that are waiting for Msgs (you need ECM for ex).
 ```lua
@@ -18,6 +18,7 @@ ex(v)
 ```lua
 Reloading lua files
 *Mod starts loading (Code/Script.lua)*
+
 Msg.BeforeClearEntityData
 Msg.ClassesGenerate ()
 Msg.ClassesPreprocess ()
@@ -25,10 +26,13 @@ Msg.ClassesPostprocess
 Msg.GetCustomFXInheritActorRules ()
 Msg.RegisterTriggers ()
 Msg.ClassesBuilt
+Msg.ApplyAccountOptions
+	Msg.ControlSchemeChanged
 Msg.OptionsApply
+	Msg.ControlSchemeChanged
 Msg.Autorun
 Reloading done
-[mod] Loading OnMsg Print v0.2(id ChoGGi_OnMsg Print, version 2) items from AppData/Mods/OnMsg Print/
+[mod] Loading OnMsg Print v0.3(id ChoGGi_OnMsgPrint, version 3) items from AppData/Mods/OnMsg Print/
 Msg.ModsReloaded
 Msg.HexShapesRebuilt
 Msg.EntitiesLoaded
@@ -36,7 +40,7 @@ Msg.EntitiesLoaded
 Msg.BinAssetsLoaded
 Msg.ChangeMapDone
 Msg.ResumeInviteChecks
-Map changed to "" in 4186 ms.
+Map changed to "" in 9665 ms.
 Msg.PreLoadGame
 Msg.PersistGatherPermanents ()
 Msg.PersistPreLoad
@@ -49,29 +53,30 @@ Game loaded on map
 	Msg.LightmodelChange ()
 	Msg.AfterLightmodelChange ()
 game_settings:
-    save_game_id: oCeC1WxH0ab7yrKX
+    save_game_id: n5MX84tsRVWa5QL3
     sponsor: IMM
     profile: rocketscientist
     mystery: random
-    mystery_random: DiggersMystery
-    coordinates: 10,11
-    landing_spot:
+    mystery_random: CrystalsMystery
+    coordinates: -7,171
+    landing_spot: ElysiumAlpha
     logo: MarsExpress
 map_conditions:
-    altitude: 802
+    altitude: -2776
     temperature: -15
     cold_wave: 36
-    dust_devils: 78
-    dust_storm: 36
-    meteors: 219
+    dust_devils: 47
+    dust_storm: 0
+    meteors: 73
 map_resources:
-    concrete: 255
-    metals: 73
-    precious_metals: 73
-    water: 73
+    concrete: 220
+    metals: 98
+    precious_metals: 98
+    water: 110
 Msg.LoadGame ()
 	Msg.ShortcutsReloaded
 	Msg.GameStateChangedNotify
+Msg.PopsLogin ()
 	Msg.UIModeChange ()
 Msg.InGameInterfaceCreated ()
 	Msg.UIModeChange ()
@@ -85,8 +90,10 @@ Msg.CameraTransitionEnd
 Msg.Resume ()
 Msg.LoadingScreenPreClose
 	Msg.GameStateChangedNotify
-	Msg.NewMinute ()
 Msg.SaveScreenShotEnd
+Msg.PopsTelemetrySetEnabled
+Msg.NewMinute ()
+Msg.PopsOwnedProductsChanged
 
 *Game loaded and playable*
 ```
