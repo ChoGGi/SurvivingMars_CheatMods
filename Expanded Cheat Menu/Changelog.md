@@ -24,7 +24,8 @@
 - > Box objects with a valid position (1000 pt from border) now have a View BBox toggle.
 - > Spheres now have a limited number of colours to pick from (the pale/dark blended too much)
 - > The sphere colour changes each "update" (when you click the point or use mark object).
-- > Context menu can add/remove a print to func calls (only for the single func, it's not a class thing).
+- > Context menu can add/remove a print to funcs (only for the single func, it's not a class thing).
+- > Added a checkbox to Hex Shape Toggle to show the hex point pos: (-1,2).
 - Console:
 - > Added a new menu "Tools".
 - > Moved some stuff from Settings and Examine to Tools.

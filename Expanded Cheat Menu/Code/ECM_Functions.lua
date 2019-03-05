@@ -26,6 +26,7 @@ function OnMsg.ClassesGenerate()
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Trans = ChoGGi.ComFuncs.Translate
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
+	local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
@@ -1186,11 +1187,6 @@ function OnMsg.ClassesGenerate()
 
 	do -- ExamineEntSpots
 		local spots_str = [[<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s,%s,%s" spot_scale="%s" spot_rot="%s,%s,%s,%s"/>]]
-		local spots_table = {[-1] = [[Readme:
-See bottom for box/bsphere/material/mesh.
-The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one)
-
-]]}
 
 --~ local list = ChoGGi.ComFuncs.ExamineEntSpots(s,true)
 --~ list = ChoGGi.ComFuncs.TableConcat(list,"\n")
@@ -1214,6 +1210,13 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 			if not id_end then
 				return
 			end
+
+				local spots_table = {[-1] = S[302535920001068--[["Readme:
+See bottom for box/bsphere/material/mesh.
+The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one)
+
+"--]]]}
+
 			for i = id_start, id_end do
 				local name = obj:GetSpotName(i)
 
@@ -1267,12 +1270,13 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 			local bbox = obj:GetEntityBBox()
 			local x1,y1,z1 = bbox:minxyz()
 			local x2,y2,z2 = bbox:maxxyz()
-			spots_table.box = "<box min=\"" .. x1 .. "," .. y1 .. "," .. z1 .. "\" max=\"" .. x2 .. "," .. y2 .. "," .. z2 .. "\"/>"
+			spots_table.box = [[<box min="]] .. x1 .. "," .. y1 .. "," .. z1
+				.. [[" max="]] .. x2 .. "," .. y2 .. "," .. z2 .. [["/>]]
 
 			local pos_x, pos_y, pos_z, rad = obj:GetBSphere("idle", true)
-			spots_table.bsphere = "<bsphere value=\"" .. (pos_x - origin_pos_x) .. ","
+			spots_table.bsphere = [[<bsphere value="]] .. (pos_x - origin_pos_x) .. ","
 				.. (pos_y - origin_pos_y) .. "," .. (pos_z - origin_pos_z) .. ","
-				.. rad .. "\"/>"
+				.. rad .. [["/>]]
 
 			local entity = obj:GetEntity()
 			if IsValidEntity(entity) then
@@ -1295,7 +1299,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 	end -- do
 
 --~ 	ChoGGi.ComFuncs.ProcessHexSurfaces(s.entity)
-	-- not in a working state as yet (trying to re-create .ent/mtl files)
+	-- not in a working state as yet
 	function ChoGGi.ComFuncs.ProcessHexSurfaces(entity,parent_or_ret)
 		local GetStates = GetStates
 		local GetStateIdx = GetStateIdx
@@ -1304,12 +1308,12 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 
 		local hexes = {}
 		local EntitySurfaces = EntitySurfaces
-		for name,surface_num in pairs(EntitySurfaces) do
-			if HasAnySurfaces(entity, surface_num) then
+		for name,mask in pairs(EntitySurfaces) do
+			if HasAnySurfaces(entity, mask) then
 				local all_states = GetStates(entity)
 				for i = 1, #all_states do
 					local state_idx = GetStateIdx(all_states[i])
-					local outline, interior, hash = GetSurfaceHexShapes(entity, state_idx, surface_num)
+					local outline, interior, hash = GetSurfaceHexShapes(entity, state_idx, mask)
 					hexes[name] = {outline = outline, interior = interior, hash = hash}
 				end
 			end
@@ -1701,7 +1705,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 					bbox,
 					bbox:Center():SetTerrainZ(),
 					params.depth_test,
-					params.colour or green,params.step,params.offset
+					params.colour or RandomColourLimited(),params.step,params.offset
 				)
 				if not is_box then
 					obj.ChoGGi_bboxobj = box
@@ -1745,7 +1749,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 			lines = objlist:new()
 
 			local surfs = params.surfs or GetRelativeSurfaces(obj,params.surface_mask or 0)
-			local colour = params.colour or green
+			local colour = params.colour or RandomColourLimited()
 
 			for i = 1, #surfs do
 				local group = surfs[i]
@@ -1996,7 +2000,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		end
 	end -- do
 
-	do -- ObjShape_Toggle
+	do -- ObjHexShape_Toggle
 		local HexRotate = HexRotate
 		local RotateRadius = RotateRadius
 		local HexToWorld = HexToWorld
@@ -2007,7 +2011,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		local radius = const.HexSize / 2
 
 		-- function Dome:GenerateWalkablePoints() (mostly)
-		local function BuildShape(obj,shape,depth_test,colour,offset)
+		local function BuildShape(obj,shape,depth_test,hex_pos,colour,offset)
 			local dir = HexAngleToDirection(obj:GetAngle())
 			local cq, cr = WorldToHex(obj)
 			local z = obj:GetVisualPos():z()
@@ -2031,9 +2035,21 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				-- complete the hex
 				line_points[7] = line_points[1]
 				local line = PlacePolyline(line_points, colour)
+				-- wall hax off
 				if depth_test then
 					line:SetDepthTest(true)
 				end
+				-- pos text
+				if hex_pos then
+					local text_obj = PlaceObject("ChoGGi_OText")
+					if depth_test then
+						text_obj:SetDepthTest(true)
+					end
+					text_obj:SetText(sq .. "," .. sr)
+					text_obj:SetColor(RandomColourLimited())
+					line:Attach(text_obj)
+				end
+				-- eh
 				if offset then
 					line:SetPos(center + offset)
 				else
@@ -2054,7 +2070,6 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		end
 		ChoGGi.ComFuncs.ObjHexShape_Clear = ObjHexShape_Clear
 
-
 		function ChoGGi.ComFuncs.ObjHexShape_Toggle(obj,params)
 			params = params or {shape = FallbackOutline}
 
@@ -2068,7 +2083,9 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				obj,
 				params.shape,
 				params.depth_test,
-				params.colour or green,params.offset
+				params.hex_pos,
+				params.colour or RandomColourLimited(),
+				params.offset
 			)
 
 		end
@@ -2424,7 +2441,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 	do -- ShowAnimDebug_Toggle
 		local function AnimDebug_Show(obj,colour)
 			local text = PlaceObject("ChoGGi_OText")
-			text:SetColor(colour or green)
+			text:SetColor(colour or RandomColourLimited())
 			text:SetFontId(UIL.GetFontID(ChoGGi.font .. ", 14, bold, aa"))
 			text:SetCenter(true)
 	--~ 			local orient = PlaceObject("ChoGGi_OOrientation")

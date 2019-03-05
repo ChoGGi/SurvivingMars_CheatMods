@@ -1,10 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920000524,Print Func,
-302535920000745,Print Func Params,
-302535920000900,Print Reset,
-302535920000906,Print func name when this func is called.,
-302535920000984,Also prints params.,
-302535920001067,Remove print from func.,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
@@ -91,6 +85,11 @@ ID,Text,Translation,Old Translation,Gender
 302535920001518,Double-click <left_click> title to rollup into the title bar.,
 302535920000001,"F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""To import your old settings"".",
+302535920001068,"Readme:
+See bottom for box/bsphere/material/mesh.
+The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one)
+
+",
 302535920001411,ECM has been disabled. Change DisableECM to false in settings file.,
 302535920001383,AddXTemplate borked template name: %s template: %s list: %s,
 302535920000013,This shouldn't happen... Well dang something's bork bork bork.,
@@ -274,6 +273,14 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook",
 302535920000870,Shows mod log msgs in an examine dialog.,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920001069,Show Positions,
+302535920001076,Shows the hex position of the spot: (-1,5).,
+302535920000524,Print Func,
+302535920000745,Print Func Params,
+302535920000900,Print Reset,
+302535920000906,Print func name when this func is called.,
+302535920000984,Also prints params.,
+302535920001067,Remove print from func.,
 302535920001551,Surfaces Toggle,
 302535920001552,Show a list of surfaces and draw lines over them (GetRelativeSurfaces).,
 302535920001553,Depth Test,

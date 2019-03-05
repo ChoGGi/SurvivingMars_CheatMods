@@ -1453,15 +1453,24 @@ function Examine:ShowHexShapeList()
 
 		local EntitySurfaces = g.EntitySurfaces
 		for key,value in pairs(EntitySurfaces) do
-			local shape = g.GetSurfaceHexShapes(entity, state_idx, value) or ""
-			if shape ~= fall and #shape > 2 then
+			local outline, interior = g.GetSurfaceHexShapes(entity, state_idx, value) or "",""
+			if outline ~= fall and #outline > 2 then
 				c = c + 1
 				ItemList[c] = {
-					text = "GetSurfaceHexShapes(), mask: " .. key .. " state_idx:" .. state_idx,
-					value = "GetSurfaceHexShapes",
-					shape = shape,
+					text = "GetSurfaceHexShapes(), outline, mask: " .. key .. " state_idx:" .. state_idx,
+					value = "GetSurfaceHexShapes_out",
+					shape = outline,
 				}
 			end
+			if interior ~= fall and #interior > 2 then
+				c = c + 1
+				ItemList[c] = {
+					text = "GetSurfaceHexShapes(), interior, mask: " .. key .. " state_idx:" .. state_idx,
+					value = "GetSurfaceHexShapes_in",
+					shape = interior,
+				}
+			end
+
 		end
 	end
 
@@ -1472,12 +1481,13 @@ function Examine:ShowHexShapeList()
 		choice = choice[1]
 		if choice.value == "Clear" then
 			ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
-		else
+		elseif type(choice.shape) == "table" then
 			ChoGGi.ComFuncs.ObjHexShape_Toggle(obj,{
 				shape = choice.shape,
 				func = choice.func,
 				skip_return = true,
 				depth_test = choice.check1,
+				hex_pos = choice.check2,
 			})
 		end
 	end
@@ -1493,6 +1503,11 @@ function Examine:ShowHexShapeList()
 				title = S[302535920001553--[[Depth Test--]]],
 				hint = S[302535920001554--[[If enabled lines will hide behind occluding walls (not glass).--]]],
 				checked = false,
+			},
+			{
+				title = S[302535920001069--[[Show Positions--]]],
+				hint = S[302535920001076--[[Shows the hex position of the spot: (-1,5).--]]],
+				checked = true,
 			},
 		},
 	}
@@ -1608,7 +1623,6 @@ function Examine:ShowAttachSpotsList()
 		elseif choice.value == "Clear" then
 			ChoGGi.ComFuncs.AttachSpots_Clear(obj)
 		else
---~ 			ChoGGi.ComFuncs.AttachSpots_Toggle(obj,choice.name,choice.value,true)
 			ChoGGi.ComFuncs.AttachSpots_Toggle(obj,{
 				spot_type = choice.name,
 				annotation = choice.value,
@@ -1624,6 +1638,7 @@ function Examine:ShowAttachSpotsList()
 		title = S[302535920000449--[[Attach Spots Toggle--]]] .. ": " .. self.name,
 		hint = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 		custom_type = 7,
+		skip_icons = true,
 		check = {
 			{
 				title = S[302535920001553--[[Depth Test--]]],
