@@ -45,8 +45,8 @@ function OnMsg.ClassesGenerate()
 				text = data.displayname,
 				value = data.savename,
 
-				hint = Trans(T{4274--[[Playtime : <playtime>--]],playtime = Trans(playtime)}) .. "\n"
-					.. Trans(T{4273--[[Saved on : <save_date>--]],save_date = save_date}) .. "\n\n"
+				hint = Trans(4274--[[Playtime : <playtime>--]]):gsub("<playtime>",Trans(playtime)) .. "\n"
+					.. Trans(4273--[[Saved on : <save_date>--]]):gsub("<save_date>",save_date) .. "\n\n"
 					.. S[302535920001274--[[This is permanent!--]]],
 			}
 		end
@@ -442,9 +442,9 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 				local upload_msg = {}
 
 				if steam_upload then
-					upload_msg[#upload_msg+1] = Trans(T{1000012--[[Mod <ModLabel> will be uploaded to Steam--]],ModLabel = mod.title})
+					upload_msg[#upload_msg+1] = Trans(1000012--[[Mod <ModLabel> will be uploaded to Steam--]]):gsub("<ModLabel>",mod.title)
 				else
-					upload_msg[#upload_msg+1] = Trans(T{1000771--[[Mod <ModLabel> will be uploaded to Paradox--]],ModLabel = mod.title})
+					upload_msg[#upload_msg+1] = Trans(1000771--[[Mod <ModLabel> will be uploaded to Paradox--]]):gsub("<ModLabel>",mod.title)
 				end
 
 				if not pack_mod then
@@ -522,7 +522,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 					if not prepare_worked then
 						-- let user know if we're good or not
 						ChoGGi.ComFuncs.MsgWait(
-							Trans(T{1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]],err = Trans(prepare_results),ModLabel = mod.title}),
+							Trans(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>",mod.title):gsub("<err>",Trans(prepare_results)),
 							Trans(1000592--[[Error--]]) .. ": " .. mod.title,
 							upload_image
 						)
@@ -617,10 +617,10 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 					local msg, title
 					if err and not blank_mod then
-						msg = Trans(T{1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]],err = Trans(err),ModLabel = mod.title})
+						msg = Trans(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>",mod.title):gsub("<err>",Trans(err))
 						title = Trans(1000592--[[Error--]])
 					else
-						msg = Trans(T{1000014--[[Mod <ModLabel> was successfully uploaded!--]],ModLabel = mod.title})
+						msg = Trans(1000014--[[Mod <ModLabel> was successfully uploaded!--]]):gsub("<ModLabel>",mod.title)
 						title = Trans(1000015--[[Success--]])
 					end
 
@@ -819,7 +819,7 @@ Move archive to Mod folder/Pack/ModContent.hpk"--]]],
 						Msg("ChoGGi_SettingsUpdated")
 						local d,m,h = FormatElapsedTime(os.time(), "dhm")
 						MsgPopup(
-							Trans(T{4273--[[Saved on <save_date>--]],save_date = ": " .. d .. ":" .. m .. ":" .. h}),
+							Trans(4273--[[Saved on <save_date>--]]):gsub("<save_date>",": " .. d .. ":" .. m .. ":" .. h),
 							S[302535920001242--[[Edit ECM Settings--]]]
 						)
 					end

@@ -1286,8 +1286,8 @@ function OnMsg.ClassesBuilt()
 		local MulDivRound = MulDivRound
 		-- was giving a nil error in log, I assume devs'll fix it one day
 		function RequiresMaintenance:AddDust(amount,...)
-			-- this wasn't checking if it was a number/point/box so errors in log, now it checks
-			if type(amount) == "number" or IsPoint(amount) or IsBox(amount) then
+			-- this wasn't checking if it was a number so errors in log, now it checks
+			if type(amount) == "number" then
 				if self:IsKindOf("Building") then
 					amount = MulDivRound(amount, g_Consts.BuildingDustModifier, 100)
 				end
@@ -1295,6 +1295,15 @@ function OnMsg.ClassesBuilt()
 					self:AccumulateMaintenancePoints(amount)
 				end
 			end
+			-- orig func
+--~ 			if not self.accumulate_dust or not self.accumulate_maintenance_points then
+--~ 				return
+--~ 			end
+--~ 			if self:IsKindOf("Building") then
+--~ 				amount = MulDivRound(amount, g_Consts.BuildingDustModifier * g_Consts.BuildingMaintenancePointsModifier, 100 * 100)
+--~ 			end
+--~ 			self:AccumulateMaintenancePoints(amount)
+			-- orig func
 		end
 	end -- do
 

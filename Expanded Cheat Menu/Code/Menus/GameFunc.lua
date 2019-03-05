@@ -200,7 +200,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.WhiterRocks()
 		-- less brown rocks
-		SuspendPassEdits("WhiterRocks")
+		SuspendPassEdits("ChoGGi.MenuFuncs.WhiterRocks")
 		local white = white
 		MapForEach("map",{"Deposition","WasteRockObstructorSmall","WasteRockObstructor","StoneSmall"},function(o)
 			if o.class:find("Dark") then
@@ -210,7 +210,7 @@ function OnMsg.ClassesGenerate()
 --~ 				o:delete()
 			end
 		end)
-		ResumePassEdits("WhiterRocks")
+		ResumePassEdits("ChoGGi.MenuFuncs.WhiterRocks")
 	end
 
 	function ChoGGi.MenuFuncs.SetObjectOpacity()

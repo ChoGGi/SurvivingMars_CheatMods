@@ -7,7 +7,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 -- Strings.lua
 local Trans = ChoGGi.ComFuncs.Translate
 
-local pairs,tonumber,type = pairs,tonumber,type
+local pairs,tonumber,type,rawget = pairs,tonumber,type,rawget
 local getmetatable,tostring = getmetatable,tostring
 local PropObjGetProperty = PropObjGetProperty
 local AsyncRand = AsyncRand
@@ -72,35 +72,36 @@ end -- do
 -- check if text is already translated or needs to be, and return the text
 local function CheckText(text,fallback)
 
-	local set_type = type(text)
-	if testing and set_type == "number" then
+	if testing and type(text) == "number" then
 		print("CheckText",text,Trans(text))
 		if type(fallback) == "number" then
 			print("CheckText",fallback,Trans(fallback))
 		end
 	end
 
-	local ret_str
-	-- no sense in translating a string
-	if set_type == "string" then
-		return text
-	else
-		-- see if the number is an id num, tostring(num) won't match index tables (works as a hacky bypass)
-		ret_str = S[text]
-	end
-	-- could be getting called from another mod, or it just isn't included in ChoGGi.Strings
-	if not ret_str or type(ret_str) ~= "string" then
-		ret_str = Trans(text)
-	end
+	return tostring(text or fallback or "")
 
-	-- make sure the string isn't just a missing text/id msg. if it's under 16 then it can't include " *bad string id?".
-	if ret_str == "Missing text" or #ret_str > 16 and ret_str:sub(-16) == " *bad string id?" then
-		-- not a proper string, so use fallback
-		ret_str = tostring(fallback or text)
-	end
+--~ 	local ret_str
+--~ 	-- no sense in translating a string
+--~ 	if type(text) == "string" then
+--~ 		return text
+--~ 	else
+--~ 		-- see if the number is an id num, tostring(num) won't match index tables (works as a hacky bypass)
+--~ 		ret_str = S[text]
+--~ 	end
+--~ 	-- could be getting called from another mod, or it just isn't included in ChoGGi.Strings
+--~ 	if not ret_str or type(ret_str) ~= "string" then
+--~ 		ret_str = Trans(text)
+--~ 	end
 
-	-- have at it
-	return ret_str
+--~ 	-- make sure the string isn't just a missing text/id msg. if it's under 16 then it can't include " *bad string id?".
+--~ 	if ret_str == "Missing text" or #ret_str > 16 and ret_str:sub(-16) == " *bad string id?" then
+--~ 		-- not a proper string, so use fallback
+--~ 		ret_str = tostring(fallback or text)
+--~ 	end
+
+--~ 	-- have at it
+--~ 	return ret_str
 end
 ChoGGi.ComFuncs.CheckText = CheckText
 
@@ -117,9 +118,25 @@ do -- RetName
 	for key,value in pairs(funcs) do
 		lookup_table[value] = key .. " *C func"
 	end
+	local function AddFuncs(list,name)
+		for key,value in pairs(list) do
+			if not lookup_table[value] then
+				lookup_table[value] = "ChoGGi." .. name .. "." .. key
+			end
+		end
+	end
 
 	local function AfterLoad()
 		local g = ChoGGi.Temp._G
+
+		-- ECM func names
+		AddFuncs(g.ChoGGi.ComFuncs,"ComFuncs")
+		AddFuncs(g.ChoGGi.ConsoleFuncs,"ConsoleFuncs")
+		AddFuncs(g.ChoGGi.InfoFuncs,"InfoFuncs")
+		AddFuncs(g.ChoGGi.MenuFuncs,"MenuFuncs")
+		AddFuncs(g.ChoGGi.SettingFuncs,"SettingFuncs")
+		AddFuncs(g.ChoGGi.OrigFuncs,"OrigFuncs")
+
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
 
 		-- any tables/funcs in _G
@@ -280,46 +297,62 @@ function ChoGGi.ComFuncs.RetHint(obj)
 	end
 end
 
--- "some.some.some.etc" = returns etc as object
--- use .number for index based tables ("terminal.desktop.1")
+-- "table.table.table.etc" = returns etc as object
+-- use .number for index based tables ("terminal.desktop.1.box")
+-- root is where we start looking (defaults to _G).
+-- create is a boolean to add a table if the dotname is absent.
 local function DotNameToObject(str,root,create)
 
 	-- lazy is best
 	if type(str) ~= "string" then
 		return str
 	end
+
+	local g = ChoGGi.Temp._G
 	-- there's always one
 	if str == "_G" then
-		return ChoGGi.Temp._G
+		return g
 	end
 	if str == "_ENV" then
 		return _ENV
 	end
 
-	-- obj always starts out as "root"
-	local obj = root or ChoGGi.Temp._G
+	-- parent always starts out as "root"
+	local parent = root or g
 
 	-- https://www.lua.org/pil/14.1.html
-	-- %w is [A-Za-z0-9], [] () + ? . act pretty much like regexp
+	-- %w is [A-Za-z0-9], [] () + ? . act like regexp (lua patterns)
 	for name,match in str:gmatch("([%w_]+)(.?)") do
 		-- if str included .number we need to make it a number or [name] won't work
 		local num = tonumber(name)
 		if num then
 			name = num
 		end
+
+		local obj_child
+		if parent == g then
+			-- SM error spams console if you have the affront to try _G.NonExistingKey... (thanks autorun.lua)
+			-- it works prefectly fine of course, but i like a clean log.
+			-- in other words a workaround for "Attempt to use an undefined global '"
+			obj_child = rawget(parent,name)
+		else
+			obj_child = parent[name]
+		end
+
 		-- . means we're not at the end yet
 		if match == "." then
 			-- create is for adding new settings in non-existent tables
-			if not obj[name] and not create then
+			if not obj_child and not create then
 				-- our treasure hunt is cut short, so return nadda
 				return
 			end
 			-- change the parent to the child (create table if absent, this'll only fire when create)
-			obj = obj[name] or {}
+			parent = obj_child or {}
 		else
 			-- no more . so we return as conquering heroes with the obj
-			return obj[name]
+			return obj_child
 		end
+
 	end
 end
 ChoGGi.ComFuncs.DotNameToObject = DotNameToObject
@@ -457,11 +490,20 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 do -- ShowObj
 	local IsPoint = IsPoint
 	local IsValid = IsValid
-	local green = green
 	local guic = guic
 	local ViewObjectMars = ViewObjectMars
 	local PlaceObject = PlaceObject
 	local InvalidPos = ChoGGi.Consts.InvalidPos
+	-- we just use a few noticeable colours for rand
+	local rand_colours = {
+		green,yellow,cyan,white,red,
+		-4587265, -- purple
+		-39680, -- slightly darker orange (don't want it blending in to the ground as much as -23296)
+	}
+	local rand_colours_c = #rand_colours
+	local function rand_c()
+		return rand_colours[AsyncRand(rand_colours_c)]
+	end
 
 	local markers = {}
 	function ChoGGi.ComFuncs.RetObjMarkers()
@@ -487,7 +529,7 @@ do -- ShowObj
 	end
 
 	function ChoGGi.ComFuncs.ClearShowObj(obj_or_bool)
-		SuspendPassEdits("ClearShowObj")
+		SuspendPassEdits("ChoGGi.ComFuncs.ClearShowObj")
 
 		-- any markers in the list
 		if obj_or_bool == true then
@@ -523,7 +565,7 @@ do -- ShowObj
 --~ 		printC("overkill")
 --~ 		-- overkill: could be from a saved game so remove any objects on the map (they shouldn't be left in a normal game)
 --~ 		MapDelete(true, {"ChoGGi_OVector","ChoGGi_OSphere"})
-		ResumePassEdits("ClearShowObj")
+		ResumePassEdits("ChoGGi.ComFuncs.ClearShowObj")
 	end
 
 	function ChoGGi.ComFuncs.ColourObj(obj, colour)
@@ -534,7 +576,7 @@ do -- ShowObj
 
 		obj.ChoGGi_ShowObjColour = obj.ChoGGi_ShowObjColour or obj:GetColorModifier()
 		markers[obj] = obj.ChoGGi_ShowObjColour
-		obj:SetColorModifier(colour or green)
+		obj:SetColorModifier(colour or rand_c())
 		return obj
 	end
 
@@ -544,7 +586,10 @@ do -- ShowObj
 			markers[pos] = nil
 		end
 
-		if not markers[pos] then
+		if markers[pos] then
+			-- update with new colour
+			markers[pos]:SetColor(colour)
+		else
 			local sphere = PlaceObject("ChoGGi_OSphere")
 			sphere:SetPos(pt)
 			sphere:SetRadius(50 * guic)
@@ -555,7 +600,7 @@ do -- ShowObj
 	end
 
 	function ChoGGi.ComFuncs.ShowPoint(obj, colour)
-		colour = colour or green
+		colour = colour or rand_c()
 		-- single pt
 		if IsPoint(obj) and InvalidPos ~= obj then
 			return AddSphere(obj,colour)
@@ -574,7 +619,7 @@ do -- ShowObj
 		end
 		if IsPoint(obj[1]) and IsPoint(obj[2]) and InvalidPos ~= obj[1] and InvalidPos ~= obj[2] then
 			local vector = PlaceObject("ChoGGi_OVector")
-			vector:Set(obj[1], obj[2], colour)
+			vector:Set(obj[1], obj[2], colour or rand_c())
 			markers[vector] = "vector"
 			return vector
 		end
@@ -590,7 +635,7 @@ do -- ShowObj
 		if not (is_valid or is_point) then
 			return
 		end
-		colour = colour or green
+		colour = colour or rand_c()
 		local vis_pos = is_valid and obj:GetVisualPos()
 
 		local pt = is_point and obj or vis_pos
@@ -624,26 +669,32 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 
 	for i = 1, #items do
 		local item = items[i]
+
+		if item.is_spacer then
+			item.name = "~~~"
+			item.disable = true
+			item.centred = true
+		end
+
 		-- "ChoGGi_CheckButtonMenu"
 		local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
-
 		local button = cls:new({
-			TextColor = -16777216,
-			RolloverTitle = item.hint_title and CheckText(item.hint_title,item.obj and RetName(item.obj) or Trans(126095410863--[[Info--]])),
-			RolloverText = CheckText(item.hint,""),
-			RolloverHint = CheckText(item.hint_bottom,S[302535920000083--[[<left_click> Activate--]]]),
-			Text = CheckText(item.name),
-			Background = items.Background or cls.Background,
-			PressedBackground = items.PressedBackground or cls.PressedBackground,
+			RolloverTitle = item.hint_title and item.hint_title or item.obj and RetName(item.obj) or Trans(126095410863--[[Info--]]),
+			RolloverText = item.hint or "",
+			RolloverHint = item.hint_bottom or S[302535920000083--[[<left_click> Activate--]]],
+			Text = item.name,
+			Background = items.Background,
+			PressedBackground = items.PressedBackground,
+			FocusedBackground = items.FocusedBackground,
 			TextStyle = items.TextStyle or cls.TextStyle,
 			HAlign = item.centred and "center" or "stretch",
 		}, popup.idContainer)
 
 		if item.disable then
-			button.RolloverBackground = items.Background or cls.Background
-			button.PressedBackground = items.Background or cls.Background
+			button.idLabel.RolloverTextColor = button.idLabel.TextColor
+			button.RolloverBackground = items.Background
+			button.PressedBackground = items.Background
 			button.RolloverZoom = g_Classes.XWindow.RolloverZoom
-			button.PressedTextColor = g_Classes.XWindow.PressedTextColor
 			button.MouseCursor = "UI/Cursors/cursor.tga"
 		end
 
@@ -660,7 +711,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 				item.clicked(...)
 				popup:Close()
 			end
-		else
+		elseif not item.disable then
 			function button.OnPress(...)
 				cls.OnPress(...)
 				popup:Close()
@@ -726,20 +777,32 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		-- my ugly submenu hack
 		local submenu_func
 		if item.submenu then
+			-- add the ...
+			g_Classes.ChoGGi_Label:new({
+				Dock = "right",
+				text = "...",
+				TextStyle = items.TextStyle or cls.TextStyle,
+			}, button)
+
 			local name = "ChoGGi_submenu_" .. item.name
 			submenu_func = function(self)
-				if popup[name] then
-					popup[name]:Close()
+				-- close if another is opened
+				local submenu = popup[name]
+				if submenu then
+					submenu:Close()
 				end
-				popup[name] = g_Classes.ChoGGi_PopupList:new({
+				-- build the new one/open it
+				submenu = g_Classes.ChoGGi_PopupList:new({
 					Opened = true,
 					Id = "ChoGGi_submenu_popup",
 					popup_parent = popup,
 					AnchorType = "smart",
 					Anchor = self.box,
 				}, terminal.desktop)
-				ChoGGi.ComFuncs.PopupBuildMenu(item.submenu,popup[name])
-				popup[name]:Open()
+				ChoGGi.ComFuncs.PopupBuildMenu(item.submenu,submenu)
+				submenu:Open()
+				-- add it to the popup
+				popup[name] = submenu
 			end
 		end
 
@@ -763,6 +826,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 					submenu_func(self, pt, child,...)
 				end
 			end
+
 		end
 	end
 end
@@ -784,6 +848,10 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 	if not popup or reopen then
 		local cls = ChoGGi_PopupList
 
+		items.Background = items.Background or cls.Background
+		items.FocusedBackground = items.FocusedBackground or cls.FocusedBackground
+		items.PressedBackground = items.PressedBackground or cls.PressedBackground
+
 		popup = cls:new({
 			Opened = true,
 			Id = popup_id,
@@ -791,10 +859,11 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 			AnchorType = anchor or "top",
 			-- "none","smart","left","right","top","center-top","bottom","mouse"
 			Anchor = parent.box,
-			Background = items.Background or cls.Background,
-			FocusedBackground = items.FocusedBackground or cls.FocusedBackground,
-			PressedBackground = items.PressedBackground or cls.PressedBackground,
+			Background = items.Background,
+			FocusedBackground = items.FocusedBackground,
+			PressedBackground = items.PressedBackground,
 		}, terminal.desktop)
+
 		popup.items = items
 
 		ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
@@ -938,16 +1007,6 @@ function ChoGGi.ComFuncs.CompareAmounts(a,b)
 		return b
 	end
 end
-
---~ -- compares two values, if types are different then makes them both strings
---~ function ChoGGi.ComFuncs.CompareTableValue(a,b,key)
---~ 	a = a[key]
---~ 	b = b[key]
---~ 	if not a and not b then
---~ 		return false
---~ 	end
---~ 	return a < b
---~ end
 
 --[[
 table.sort(s.command_centers, function(a,b)
@@ -1123,27 +1182,6 @@ do -- RetTableNoDupes
 end -- do
 local RetTableNoDupes = ChoGGi.ComFuncs.RetTableNoDupes
 
---~ function ChoGGi.ComFuncs.RetTableNoClassDupes(list)
---~ 	if type(list) ~= "table" then
---~ 		return empty_table
---~ 	end
---~ 	table.sort(list,function(a,b)
---~ 		return a.class < b.class
---~ 	end)
---~ 	local tempt = {}
---~ 	local dupe = {}
---~ 	local c = 0
-
---~ 	for i = 1, #list do
---~ 		if not dupe[list[i].class] then
---~ 			c = c + 1
---~ 			tempt[c] = list[i]
---~ 			dupe[list[i].class] = true
---~ 		end
---~ 	end
---~ 	return tempt
---~ end
-
 -- ChoGGi.ComFuncs.RemoveFromTable(sometable,"class","SelectionArrow")
 function ChoGGi.ComFuncs.RemoveFromTable(list,cls,text)
 	if type(list) ~= "table" then
@@ -1219,20 +1257,14 @@ function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(context)
 end
 
 function ChoGGi.ComFuncs.OpenInListChoice(list)
-	-- blank list = no open
-	local is_t = type(list) == "table"
-	local items_t = type(is_t and list.items) == "table"
-
-	-- list isn't a table or no callback or no items in list
-	if not is_t or is_t and (not list.callback or (items_t and #list.items == 0)) then
-		local props
-		-- can fail so pcall it
-		if list and next(list) then
-			pcall(function()
-				props = ObjPropertyListToLuaCode(list)
-			end)
-		end
-		print(S[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.--]]],"\n",list,"\n",props)
+	-- if list isn't a table or it has zero items or it doesn't have items/callback func
+	local list_table = type(list) == "table"
+	local items_table = type(list_table and list.items) == "table"
+	if not list_table or list_table and not items_table or items_table and #list.items < 1 then
+		print(
+		S[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.--]]],"\n",list,"\n",
+			list and ValueToLuaCode(list)
+		)
 		return
 	end
 
@@ -1240,11 +1272,6 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 		list = list,
 	})
 end
-
---~ -- i keep forgetting this so, i'm adding it here
---~ function ChoGGi.ComFuncs.HandleToObject(h)
---~ 	return HandleToObject[h]
---~ end
 
 -- return a string setting/text for menus
 function ChoGGi.ComFuncs.SettingState(setting,text)
@@ -2152,7 +2179,7 @@ function ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj,amount)
 	io_demand_req:SetAmount(amount)
 end
 
-do -- COLOUR FUNCTIONS
+do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRandom/ObjectColourDefault/ChangeObjectColour
 	function ChoGGi.ComFuncs.SaveOldPalette(obj)
 		if not IsValid(obj) then
 			return
@@ -2796,14 +2823,14 @@ do -- DeleteObject
 			-- multiple selection from editor mode
 			local objs = editor:GetSel() or ""
 			if #objs > 0 then
-				SuspendPassEdits("DeleteObjects_ChoGGi")
+				SuspendPassEdits("ChoGGi.ComFuncs.DeleteObject")
 				DeleteObject = DeleteObject or ChoGGi.ComFuncs.DeleteObject
 				for i = 1, #objs do
 					if objs[i].class ~= "MapSector" then
 						DeleteObject(objs[i],true)
 					end
 				end
-				ResumePassEdits("DeleteObjects_ChoGGi")
+				ResumePassEdits("ChoGGi.ComFuncs.DeleteObject")
 			elseif not obj then
 				obj = ChoGGi.ComFuncs.SelObject()
 			end
@@ -3076,7 +3103,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 
 	local which
 	-- hopefully give it a bit more speed
-	SuspendPassEdits("ToggleCollisions_ChoGGi")
+	SuspendPassEdits("ChoGGi.ComFuncs.CollisionsObject_Toggle")
 	-- re-enable col on obj and any attaches
 	if obj.ChoGGi_CollisionsDisabled then
 		-- coll on object
@@ -3099,7 +3126,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 		obj.ChoGGi_CollisionsDisabled = true
 		which = Trans(847439380056--[[Disabled--]])
 	end
-	ResumePassEdits("ToggleCollisions_ChoGGi")
+	ResumePassEdits("ChoGGi.ComFuncs.CollisionsObject_Toggle")
 
 	if not skip_msg then
 		MsgPopup(
@@ -3110,6 +3137,18 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 			obj
 		)
 	end
+end
+
+function ChoGGi.ComFuncs.ToggleCollisions(cls)
+	-- pretty much the only thing I use it for, but just in case
+	cls = cls or "LifeSupportGridElement"
+	local CollisionsObject_Toggle = ChoGGi.ComFuncs.CollisionsObject_Toggle
+	-- hopefully give it a bit more speed
+	SuspendPassEdits("ChoGGi.ComFuncs.ToggleCollisions")
+	MapForEach("map",cls,function(o)
+		CollisionsObject_Toggle(o,true)
+	end)
+	ResumePassEdits("ChoGGi.ComFuncs.ToggleCollisions")
 end
 
 function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj)
@@ -3552,9 +3591,9 @@ end
 function ChoGGi.ComFuncs.DeleteLargeRocks()
 	local function CallBackFunc(answer)
 		if answer then
-			SuspendPassEdits("DeleteLargeRocks")
+			SuspendPassEdits("ChoGGi.ComFuncs.DeleteLargeRocks")
 			MapDelete(true, {"Deposition","WasteRockObstructorSmall","WasteRockObstructor"})
-			ResumePassEdits("DeleteLargeRocks")
+			ResumePassEdits("ChoGGi.ComFuncs.DeleteLargeRocks")
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
@@ -3567,9 +3606,9 @@ end
 function ChoGGi.ComFuncs.DeleteSmallRocks()
 	local function CallBackFunc(answer)
 		if answer then
-			SuspendPassEdits("DeleteSmallRocks")
+			SuspendPassEdits("ChoGGi.ComFuncs.DeleteSmallRocks")
 			MapDelete(true, "StoneSmall")
-			ResumePassEdits("DeleteSmallRocks")
+			ResumePassEdits("ChoGGi.ComFuncs.DeleteSmallRocks")
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
@@ -3600,7 +3639,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 	local c = 0
 
 	-- has no Attaches so just open as is
-	if obj.GetNumAttaches and obj:GetNumAttaches() == 0 then
+	if obj.CountAttaches and obj:CountAttaches() == 0 then
 		ChoGGi.ComFuncs.ChangeObjectColour(obj)
 		return
 	else
@@ -3638,18 +3677,6 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 		end,
 		select_flash = true,
 	}
-end
-
-function ChoGGi.ComFuncs.ToggleCollisions(cls)
-	-- pretty much the only thing I use it for, but just in case
-	cls = cls or "LifeSupportGridElement"
-	local CollisionsObject_Toggle = ChoGGi.ComFuncs.CollisionsObject_Toggle
-	-- hopefully give it a bit more speed
-	SuspendPassEdits("ToggleCollisions")
-	MapForEach("map",cls,function(o)
-		CollisionsObject_Toggle(o,true)
-	end)
-	ResumePassEdits("ToggleCollisions")
 end
 
 function ChoGGi.ComFuncs.OpenGedApp(name)

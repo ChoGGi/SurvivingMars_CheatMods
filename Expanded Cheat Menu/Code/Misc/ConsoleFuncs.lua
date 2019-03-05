@@ -24,6 +24,77 @@ function OnMsg.ClassesGenerate()
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
 
+	local ToolsMenuPopupToggle_list = {
+		{name = S[302535920000040--[[Exec Code--]]],
+			hint = S[302535920001287--[[Instead of a single line, you can enter/execute code in a textbox.--]]],
+			clicked = function()
+				ChoGGi.ComFuncs.OpenInExecCodeDlg()
+			end,
+		},
+		{name = S[302535920001026--[[Show File Log--]]],
+			hint = S[302535920001091--[[Flushes log to disk and displays in an examine dialog.--]]],
+			clicked = function()
+				local dlg = OpenInExamineDlg(LoadLogfile())
+				CreateRealTimeThread(function()
+					-- yeah, it needs two
+					WaitMsg("OnRender")
+					WaitMsg("OnRender")
+					local v = dlg.idScrollV
+					if v:IsVisible() then
+						dlg.idScrollArea:ScrollTo(nil,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
+					end
+				end)
+			end,
+		},
+		{name = S[302535920000071--[[Mods Log--]]],
+			hint = S[302535920000870--[[Shows mod log msgs in an examine dialog.--]]],
+			clicked = function()
+				OpenInExamineDlg(ModMessageLog)
+			end,
+		},
+		{is_spacer = true},
+		{name = S[302535920000734--[[Clear Log--]]],
+			hint = S[302535920001152--[[Clear out the console log (F9 also works).--]]],
+			clicked = cls,
+		},
+		{name = S[302535920000563--[[Copy Log Text--]]],
+			hint = S[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
+			clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
+		},
+		{name = S[302535920000473--[[Reload ECM Menu--]]],
+			hint = S[302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix or alt-tab).--]]],
+			clicked = function()
+				Msg("ShortcutsReloaded")
+			end,
+		},
+		{is_spacer = true},
+		{name = S[302535920000853--[[Monitor--]]] .. ": _G",
+			hint = "ChoGGi.ComFuncs.MonitorTableLength(_G)",
+			clicked = function()
+				ChoGGi.ComFuncs.MonitorTableLength(_G,nil,nil,nil,"_G")
+			end,
+		},
+		{name = S[302535920000853--[[Monitor--]]] .. ": ThreadsRegister",
+			hint = "ChoGGi.ComFuncs.MonitorThreads()",
+			clicked = function()
+				ChoGGi.ComFuncs.MonitorThreads()
+			end,
+		},
+		{name = S[302535920000234--[[Monitor Func Calls--]]],
+			hint = S[302535920000300--[["Collects a list of func calls from ""@AppData/Mods/""
+Usage: Call it once to start and again to stop, it'll then show a list of func calls.
+
+Call it manually with:
+ChoGGi.ComFuncs.ToggleFuncHook(path,line,mask,count)
+https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
+			class = "ChoGGi_CheckButtonMenu",
+			value = "ChoGGi.Temp.FunctionsHooked",
+			clicked = function()
+				ChoGGi.ComFuncs.ToggleFuncHook()
+			end,
+		},
+
+	}
 	-- created when we create the controls controls the first time
 	local ExamineMenuToggle_list = {}
 	-- to add each item
@@ -65,19 +136,19 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	function ChoGGi.ConsoleFuncs.AddMonitor(name,submenu,idx)
-		table_insert(submenu,idx or 2,{
-			name = S[302535920000853--[[Monitor--]]] .. ": " .. name,
-			hint = "ChoGGi.ComFuncs.MonitorTableLength(" .. name .. ")",
-			clicked = function()
-				if name == "_G" then
-					ChoGGi.ComFuncs.MonitorTableLength(DotNameToObject(name),nil,nil,nil,name)
-				else
-					ChoGGi.ComFuncs.MonitorTableLength(DotNameToObject(name),0,nil,nil,name)
-				end
-			end,
-		})
-	end
+--~ 	function ChoGGi.ConsoleFuncs.AddMonitor(name,submenu,idx)
+--~ 		table_insert(submenu,idx or 2,{
+--~ 			name = S[302535920000853--[[Monitor--]]] .. ": " .. name,
+--~ 			hint = "ChoGGi.ComFuncs.MonitorTableLength(" .. name .. ")",
+--~ 			clicked = function()
+--~ 				if name == "_G" then
+--~ 					ChoGGi.ComFuncs.MonitorTableLength(DotNameToObject(name),nil,nil,nil,name)
+--~ 				else
+--~ 					ChoGGi.ComFuncs.MonitorTableLength(DotNameToObject(name),0,nil,nil,name)
+--~ 				end
+--~ 			end,
+--~ 		})
+--~ 	end
 
 	-- build list of objects to examine
 	function ChoGGi.ConsoleFuncs.BuildExamineMenu()
@@ -152,7 +223,7 @@ function OnMsg.ClassesGenerate()
 		--
 		submenu = AddSubmenu("_G",{"__cobjectToCObject","Flags","HandleToObject","TranslationTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod","debug.getregistry"})
 		if submenu then
-			ChoGGi.ConsoleFuncs.AddMonitor("_G",submenu)
+--~ 			ChoGGi.ConsoleFuncs.AddMonitor("_G",submenu)
 			submenu[#submenu+1] = {
 				name = S[302535920001497--[[Show Blacklist--]]],
 				hint = "Show blacklisted objects",
@@ -169,15 +240,15 @@ function OnMsg.ClassesGenerate()
 		end
 
 		submenu = AddSubmenu("ThreadsRegister",{"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers"})
-		if submenu then
-			table_insert(submenu,2,{
-				name = S[302535920000853--[[Monitor--]]] .. ": ThreadsRegister",
-				hint = "ChoGGi.ComFuncs.MonitorThreads()",
-				clicked = function()
-					ChoGGi.ComFuncs.MonitorThreads()
-				end,
-			})
-		end
+--~ 		if submenu then
+--~ 			table_insert(submenu,2,{
+--~ 				name = S[302535920000853--[[Monitor--]]] .. ": ThreadsRegister",
+--~ 				hint = "ChoGGi.ComFuncs.MonitorThreads()",
+--~ 				clicked = function()
+--~ 					ChoGGi.ComFuncs.MonitorThreads()
+--~ 				end,
+--~ 			})
+--~ 		end
 		--
 		AddSubmenu("Consts",{"g_Consts","const","ModifiablePropScale","const.TagLookupTable"})
 		AddSubmenu("Dialogs",{"terminal.desktop","GetInGameInterface"})
@@ -264,50 +335,7 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
-	local ConsolePopupToggle_list = {
-		{name = S[302535920000040--[[Exec Code--]]],
-			hint = S[302535920001287--[[Instead of a single line, you can enter/execute code in a textbox.--]]],
-			clicked = function()
-				ChoGGi.ComFuncs.OpenInExecCodeDlg()
-			end,
-		},
-		{name = S[302535920001026--[[Show File Log--]]],
-			hint = S[302535920001091--[[Flushes log to disk and displays in an examine dialog.--]]],
-			clicked = function()
-				local dlg = OpenInExamineDlg(LoadLogfile())
-				CreateRealTimeThread(function()
-					-- yeah, it needs two
-					WaitMsg("OnRender")
-					WaitMsg("OnRender")
-					local v = dlg.idScrollV
-					if v:IsVisible() then
-						dlg.idScrollArea:ScrollTo(nil,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
-					end
-				end)
-			end,
-		},
-		{name = S[302535920000071--[[Mods Log--]]],
-			hint = S[302535920000870--[[Shows mod log msgs in an examine dialog.--]]],
-			clicked = function()
-				OpenInExamineDlg(ModMessageLog)
-			end,
-		},
-		{name = "\t--",disable = true},
-		{name = S[302535920000734--[[Clear Log--]]],
-			hint = S[302535920001152--[[Clear out the console log (F9 also works).--]]],
-			clicked = cls,
-		},
-		{name = S[302535920000563--[[Copy Log Text--]]],
-			hint = S[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
-			clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
-		},
-		{name = S[302535920000473--[[Reload ECM Menu--]]],
-			hint = S[302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix or alt-tab).--]]],
-			clicked = function()
-				Msg("ShortcutsReloaded")
-			end,
-		},
-		{name = "\t--",disable = true},
+	local ConsoleMenuPopupToggle_list = {
 		{name = S[302535920001479--[[Errors In Console--]]],
 			hint = S[302535920001480--[[Print (some) lua errors in the console (needs %s enabled).--]]]:format(S[302535920001112--[[Console Log--]]]),
 			class = "ChoGGi_CheckButtonMenu",
@@ -423,7 +451,16 @@ function OnMsg.ClassesGenerate()
 			RolloverText = S[302535920001089--[[Settings & Commands for the console.--]]],
 			Text = S[302535920001308--[[Settings--]]],
 			OnPress = function()
-				PopupToggle(dlgConsole.idConsoleMenu,"idConsoleMenuPopup",ConsolePopupToggle_list)
+				PopupToggle(dlgConsole.idConsoleMenu,"idConsoleMenuPopup",ConsoleMenuPopupToggle_list)
+			end,
+		}, dlgConsole.idContainer)
+
+		dlgConsole.idToolsMenu = g_Classes.ChoGGi_ConsoleButton:new({
+			Id = "idToolsMenu",
+			RolloverText = S[302535920000127--[[Various tools to use.--]]],
+			Text = S[302535920000239--[[Tools--]]],
+			OnPress = function()
+				PopupToggle(dlgConsole.idToolsMenu,"idToolsMenuPopup",ToolsMenuPopupToggle_list)
 			end,
 		}, dlgConsole.idContainer)
 

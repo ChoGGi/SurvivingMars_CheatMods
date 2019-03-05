@@ -317,13 +317,13 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
-		SuspendPassEdits("ParticlesWithNullPolylines")
+		SuspendPassEdits("ChoGGi.MenuFuncs.ParticlesWithNullPolylines")
 		MapDelete(true, "ParSystem",function(o)
 			if type(o.polyline) == "string" and o.polyline:find("\0") then
 				return true
 			end
 		end)
-		ResumePassEdits("ParticlesWithNullPolylines")
+		ResumePassEdits("ChoGGi.MenuFuncs.ParticlesWithNullPolylines")
 
 		MsgPopup(
 			S[302535920000593--[[Remove Particles With Null Polylines--]]],
@@ -332,9 +332,9 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
-		SuspendPassEdits("RemoveMissingClassObjects")
+		SuspendPassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
 		MapDelete(true, "UnpersistedMissingClass")
-		ResumePassEdits("RemoveMissingClassObjects")
+		ResumePassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
 		MsgPopup(
 			S[302535920000587--[[Remove Missing Class Objects (Warning)--]]],
 			Trans(4493--[[All--]])
@@ -352,14 +352,14 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
-		SuspendPassEdits("MirrorSphereStuck")
+		SuspendPassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
 		MapDelete(true, "ParSystem",function(o)
 			if o:GetParticlesName() == "PowerDecoy_Captured" and
 					type(o.polyline) == "string" and o.polyline:find("\0") then
 				return true
 			end
 		end)
-		ResumePassEdits("MirrorSphereStuck")
+		ResumePassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
 
 		MsgPopup(
 			S[302535920000595--[[Mirror Sphere Stuck--]]],
@@ -454,9 +454,9 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
-		SuspendPassEdits("RemoveYellowGridMarks")
+		SuspendPassEdits("ChoGGi.MenuFuncs.RemoveYellowGridMarks")
 		MapDelete(true, "GridTile")
-		ResumePassEdits("RemoveYellowGridMarks")
+		ResumePassEdits("ChoGGi.MenuFuncs.RemoveYellowGridMarks")
 		MsgPopup(
 			S[302535920000603--[[Remove Yellow Grid Marks--]]],
 			Trans(4493--[[All--]])
@@ -464,7 +464,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
-		SuspendPassEdits("RemoveBlueGridMarks")
+		SuspendPassEdits("ChoGGi.MenuFuncs.RemoveBlueGridMarks")
 		MapDelete(true, "RangeHexRadius",function(o)
 			if not o.ToggleWorkZone then
 				return true
@@ -476,7 +476,7 @@ function OnMsg.ClassesGenerate()
 				return true
 			end
 		end)
-		ResumePassEdits("RemoveBlueGridMarks")
+		ResumePassEdits("ChoGGi.MenuFuncs.RemoveBlueGridMarks")
 
 		MsgPopup(
 			S[302535920001193--[[Remove Blue Grid Marks--]]],

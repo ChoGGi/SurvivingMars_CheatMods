@@ -12,7 +12,6 @@
 - Sped up Building Info text.
 - Examine:
 - > Added Surfaces Toggle: Show a list of surfaces and draw lines over them (GetRelativeSurfaces).
-- > Mousing over the context * will place the value in the search text box.
 - > Attaches menu shows what object the attachment is attached to.
 - > Valid objects now show a bit more info and a link to the (cleaned up) paths.
 - > Made View Source button a clickable link
@@ -23,6 +22,13 @@
 - > Object>"Toggle" items now have a depth test checkbox.
 - > Object>Toggle Attach Spots is now a list that can be filtered with spot names (also a line for chains).
 - > Box objects with a valid position (1000 pt from border) now have a View BBox toggle.
+- > Spheres now have a limited number of colours to pick from (the pale/dark blended too much)
+- > The sphere colour changes each "update" (when you click the point or use mark object).
+- > Context menu can add/remove a print to func calls (only for the single func, it's not a class thing).
+- Console:
+- > Added a new menu "Tools".
+- > Moved some stuff from Settings and Examine to Tools.
+- > Added Tools>Monitor Func Calls: Collects a list of func calls from "@AppData/Mods/".
 
 ### Fixed:
 - Examining "_G" and closing the examine dlg would spam the log.
@@ -1394,7 +1400,7 @@ Please and thank you.
 
 ### Changed:
 - Change Colour now works with attachments (also moved the menu item to Misc, though you'll need to use F6 anyways for rocks/etc).
-- Added a base color modifier to Change Colour (you can change the colour of more items, like rocks/signs).
+- Added a base colour modifier to Change Colour (you can change the colour of more items, like rocks/signs).
 - Esc just removes focus from text boxes now (just for windows ECM opens), Use Shift/Ctrl + Esc to close).
 - Set Commander/Sponsor Bonus are lists with multiple selection.
 - Set Commander Bonus works for modded ones now (Sponsor only checks cargo space/research points for now).

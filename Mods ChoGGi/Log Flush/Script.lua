@@ -4,34 +4,20 @@ local FlushLogFile = FlushLogFile
 -- early as possible
 FlushLogFile()
 
-function OnMsg.ModsReloaded()
-  FlushLogFile()
-end
+OnMsg.ModsReloaded = FlushLogFile
 
 -- loaded a saved game
-function OnMsg.LoadGame()
-  FlushLogFile()
-end
+OnMsg.LoadGame = FlushLogFile
 
 -- started new game
-function OnMsg.CityStart()
-  FlushLogFile()
-end
+OnMsg.CityStart = FlushLogFile
 
 -- and for good measure.
-function OnMsg.ReloadLua()
-  FlushLogFile()
-end
+OnMsg.ReloadLua = FlushLogFile
 
--- daily flush is good for the sol.
-function OnMsg.NewDay()
-  FlushLogFile()
-end
+-- a daily flush is good for the sol.
+OnMsg.NewDay = FlushLogFile
 
---~ function OnMsg.NewHour()
---~   FlushLogFile()
---~ end
+--~ OnMsg.NewHour = FlushLogFile
 
---~ function OnMsg.NewMinute()
---~   FlushLogFile()
---~ end
+--~ OnMsg.NewMinute = FlushLogFile

@@ -1,7 +1,14 @@
 ID,Text,Translation,Old Translation,Gender
+302535920000524,Print Func,
+302535920000745,Print Func Params,
+302535920000900,Print Reset,
+302535920000906,Print func name when this func is called.,
+302535920000984,Also prints params.,
+302535920001067,Remove print from func.,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
+302535920000239,Tools,
 302535920000201,Active,
 302535920000089,Nothing left,
 302535920001526,Not a valid object,
@@ -229,6 +236,14 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920001301,Edit Text,
 302535920000721,Overwrite,
 302535920000827,Check this to overwrite file instead of appending to it.,
+302535920000234,Monitor Func Calls,
+302535920000300,"Collects a list of func calls from ""@AppData/Mods/""
+Usage: Call it once to start and again to stop, it'll then show a list of func calls.
+
+Call it manually with:
+ChoGGi.ComFuncs.ToggleFuncHook(path,line,mask,count)
+https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook",
+302535920000127,Various tools to use.,
 302535920001497,Show Blacklist,
 302535920001479,Errors In Console,
 302535920001480,Print (some) lua errors in the console (needs %s enabled).,
@@ -340,7 +355,6 @@ Press once to clear this examine, again to clear all.",
 302535920000525,Ancestors,
 302535920000553,Examine parent and ancestor objects.,
 302535920000414,Are you sure you wish to delete it?,
-302535920000239,Tools,
 302535920000228,Assign to,
 302535920000043,"Press <color 0 200 0>Enter</color> to scroll to next found text, <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text, <color 0 200 0>Arrow Keys</color> to scroll to each end.",
 302535920000044,Go To Text,

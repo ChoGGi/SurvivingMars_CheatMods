@@ -39,8 +39,8 @@ local IsValid = IsValid
 local RecalcBuildableGrid = RecalcBuildableGrid
 local MovePointAway = MovePointAway
 local MapDelete = MapDelete
-local engineSuspendPassEdits = engineSuspendPassEdits
-local engineResumePassEdits = engineResumePassEdits
+local SuspendPassEdits = SuspendPassEdits
+local ResumePassEdits = ResumePassEdits
 local PlaceObject = PlaceObject
 
 local ToggleCollisions
@@ -303,7 +303,7 @@ function RCBulldozer:StartDozer()
 					-- flatten func
 					SetHeightCircle(pos, self.radius, self.radius, GetHeight(self:GetVisualPos()))
 					-- speed and needed for my ugly hack
-					engineSuspendPassEdits()
+					SuspendPassEdits("RCBulldozer_flattening")
 					-- remove any pebbles in the way
 					MapDelete(pos, self.radius, efRemoveUnderConstruction)
 					-- add some dust
@@ -321,7 +321,7 @@ function RCBulldozer:StartDozer()
 					if type(self.texture_terrain) == "number" then
 						SetTypeCircle(pos, self.radius, self.texture_terrain)
 					end
-					engineResumePassEdits()
+					ResumePassEdits("RCBulldozer_flattening")
 					-- rest your weary soul
 					Sleep(25)
 				end

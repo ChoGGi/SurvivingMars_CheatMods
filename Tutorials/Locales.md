@@ -26,13 +26,23 @@ CHANGE 11111111 to some random arsed number, or use whatever you already use in 
 At the tippy top of your ModItemCode file add this (or something like it)
 
 
-local locale_path = Concat(CurrentModPath,"Locales/%s.csv")
+local locale_path = CurrentModPath .. "Locales/"
 -- this checks if there's a csv for the current lang, if not it loads the English one.
-if not LoadTranslationTableFile(locale_path:format(GetLanguage())) then
-	LoadTranslationTableFile(locale_path:format("English"))
+if not LoadTranslationTableFile(locale_path .. GetLanguage() .. ".csv") then
+	locale_path = locale_path .. "English.csv"
+	LoadTranslationTableFile(locale_path)
+else
+	locale_path = locale_path .. GetLanguage() .. ".csv"
 end
 Msg("TranslationChanged")
 
+-- if user changes lang reload strings
+function OnMsg.TranslationChanged(skip)
+	if skip ~= "skip_inf_loop" then
+		LoadTranslationTableFile(locale_path)
+		Msg("TranslationChanged","skip_inf_loop")
+	end
+end
 
 
 Now you can use _InternalTranslate(T(11111111110001029--[[optionally showing a string for your %s.--]])):format("sanity")

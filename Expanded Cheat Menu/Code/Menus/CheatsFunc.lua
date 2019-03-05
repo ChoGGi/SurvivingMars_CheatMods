@@ -11,9 +11,9 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.CompleteConstructions()
-		SuspendPassEdits("CompleteConstructions")
+		SuspendPassEdits("ChoGGi.MenuFuncs.CompleteConstructions")
 		CheatCompleteAllConstructions()
-		ResumePassEdits("CompleteConstructions")
+		ResumePassEdits("ChoGGi.MenuFuncs.CompleteConstructions")
 	end
 
 	function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()

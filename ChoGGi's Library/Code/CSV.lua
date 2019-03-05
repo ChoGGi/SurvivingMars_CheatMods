@@ -448,11 +448,12 @@ do -- Graphs
 		local c = 2
 
 		-- add all the sols as columns
+		local sol_str = Trans(4031--[[Sol <day>--]])
 		for i = 1, UICity.day-1 do
 			c = c + 1
 			csv_columns[c] = {
 				"sol" .. i,
-				Trans(T{4031--[[Sol <day>--]],day = i})
+				sol_str:gsub("<day>",i)
 			}
 		end
 
