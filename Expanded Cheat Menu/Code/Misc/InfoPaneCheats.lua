@@ -21,8 +21,22 @@ function OnMsg.ClassesGenerate()
 	ResourceScale = ChoGGi.Consts.ResourceScale
 
 	Object.CheatExamine = ChoGGi.ComFuncs.OpenInExamineDlg
+	Object.CheatToggleCollision = ChoGGi.ComFuncs.CollisionsObject_Toggle
 	Drone.CheatFindResource = ChoGGi.ComFuncs.FindNearestResource
 	RCTransport.CheatFindResource = ChoGGi.ComFuncs.FindNearestResource
+	ColorizableObject.CheatColourRandom = ChoGGi.ComFuncs.ObjectColourRandom
+	ColorizableObject.CheatColourDefault = ChoGGi.ComFuncs.ObjectColourDefault
+	-- need/free
+	local Building = Building
+	Building.CheatPowerFree = ChoGGi.ComFuncs.RemoveBuildingElecConsump
+	Building.CheatPowerNeed = ChoGGi.ComFuncs.AddBuildingElecConsump
+	--
+	Building.CheatWaterFree = ChoGGi.ComFuncs.RemoveBuildingWaterConsump
+	Building.CheatWaterNeed = ChoGGi.ComFuncs.AddBuildingWaterConsump
+	--
+	Building.CheatOxygenFree = ChoGGi.ComFuncs.RemoveBuildingAirConsump
+	Building.CheatOxygenNeed = ChoGGi.ComFuncs.AddBuildingAirConsump
+	MechanizedDepot.CheatEmptyDepot = ChoGGi.ComFuncs.EmptyMechDepot
 
 	function ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
 		local g_Classes = g_Classes
@@ -392,9 +406,6 @@ local Building = Building
 local Colonist = Colonist
 local Workplace = Workplace
 
--- global objects
-Object.CheatToggleCollision = ChoGGi.ComFuncs.CollisionsObject_Toggle
-
 function Object:CheatDeleteObject()
 	local name = RetName(self)
 	local function CallBackFunc(answer)
@@ -419,8 +430,6 @@ function Object:CheatToggleSigns()
 	end
 end
 
-ColorizableObject.CheatColourRandom = ChoGGi.ComFuncs.ObjectColourRandom
-ColorizableObject.CheatColourDefault = ChoGGi.ComFuncs.ObjectColourDefault
 
 local function CheatDestroy(self)
 	local name = RetName(self)
@@ -465,15 +474,6 @@ Building.CheatDestroy = CheatDestroy
 BaseRover.CheatDestroy = CheatDestroy
 Drone.CheatDestroy = CheatDestroy
 
--- need/free
-Building.CheatPowerFree = ChoGGi.ComFuncs.RemoveBuildingElecConsump
-Building.CheatPowerNeed = ChoGGi.ComFuncs.AddBuildingElecConsump
---
-Building.CheatWaterFree = ChoGGi.ComFuncs.RemoveBuildingWaterConsump
-Building.CheatWaterNeed = ChoGGi.ComFuncs.AddBuildingWaterConsump
---
-Building.CheatOxygenFree = ChoGGi.ComFuncs.RemoveBuildingAirConsump
-Building.CheatOxygenNeed = ChoGGi.ComFuncs.AddBuildingAirConsump
 function BaseBuilding:CheatToggleConstruct()
 	local func
 	if self:GetGameFlags(65536) == 65536 then
@@ -749,7 +749,6 @@ end
 function SecurityStation:CheatReneagadeCapDef()
 	self.negated_renegades = self.max_negated_renegades
 end
-MechanizedDepot.CheatEmptyDepot = ChoGGi.ComFuncs.EmptyMechDepot
 
 function SupplyRocket:CheatCapDbl()
 	ChoGGi.ComFuncs.SetTaskReqAmount(self,self.max_export_storage * 2,"export_requests","max_export_storage")
