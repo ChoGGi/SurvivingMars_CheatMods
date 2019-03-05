@@ -1233,7 +1233,7 @@ Which you can then mess around with some more in the console."--]]],
 		},
 		{name = S[302535920001389--[[All Properties--]]],
 			hint = S[302535920001390--[[Get all properties.--]]],
-			image = "CommonAssets/UI/Menu/AreaProperties.tga",
+			image = "CommonAssets/UI/Menu/CollectionsEditor.tga",
 			clicked = function()
 				-- give em some hints
 				if self.obj_ref.IsKindOf and self.obj_ref:IsKindOf("PropertyObject") then
@@ -1807,7 +1807,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 		c = c + 1
 		list[c] = {name = S[302535920000524--[[Print Func--]]],
 			hint = S[302535920000906--[[Print func name when this func is called.--]]],
-			image = "CommonAssets/UI/Menu/light_model.tga",
+			image = "CommonAssets/UI/Menu/Action.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.PrintToFunc_Add(
 					obj_value, -- func to print
@@ -1820,7 +1820,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 		c = c + 1
 		list[c] = {name = S[302535920000745--[[Print Func Params--]]],
 			hint = S[302535920000906] .. "\n" .. S[302535920000984--[[Also prints params.--]]],
-			image = "CommonAssets/UI/Menu/light_model.tga",
+			image = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.PrintToFunc_Add(obj_value,obj_key,self.obj_ref,self.name .. "." .. obj_key,true)
 			end,
@@ -1828,7 +1828,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 		c = c + 1
 		list[c] = {name = S[302535920000900--[[Print Reset--]]],
 			hint = S[302535920001067--[[Remove print from func.--]]],
-			image = "CommonAssets/UI/Menu/light_model.tga",
+			image = "CommonAssets/UI/Menu/reload.tga",
 			clicked = function()
 				ChoGGi.ComFuncs.PrintToFunc_Remove(obj_value,obj_key,self.obj_ref)
 			end,
