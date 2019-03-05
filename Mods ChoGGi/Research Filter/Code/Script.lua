@@ -48,8 +48,8 @@ local function OnKbdKeyUp(input,vk, ...)
 end
 
 local orig_OpenDialog = OpenDialog
-function OpenDialog(dlg_str)
-	local dlg = orig_OpenDialog("ResearchDlg")
+function OpenDialog(dlg_str,...)
+	local dlg = orig_OpenDialog(dlg_str,...)
 	if dlg_str == "ResearchDlg" then
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
