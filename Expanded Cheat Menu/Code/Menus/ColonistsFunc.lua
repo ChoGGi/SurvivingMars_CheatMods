@@ -7,6 +7,7 @@ function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local Random = ChoGGi.ComFuncs.Random
 	local Trans = ChoGGi.ComFuncs.Translate
+	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 	local S = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.NonHomeDomePerformancePenalty_Toggle()
@@ -66,10 +67,12 @@ function OnMsg.ClassesGenerate()
 
 		-- don't drop BlackCube/MysteryResource
 		local reslist = {}
+		local r_c = 0
 		local all = AllResourcesList
 		for i = 1, #all do
 			if all[i] ~= "BlackCube" and all[i] ~= "MysteryResource" then
-				reslist[#reslist+1] = all[i]
+				r_c = r_c + 1
+				reslist[r_c] = all[i]
 			end
 		end
 
@@ -95,18 +98,18 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- culling the herd
-		local ItemList = {
+		local item_list = {
 			{text = " " .. Trans(7553--[[Homeless--]]),value = "Homeless"},
 			{text = " " .. Trans(6859--[[Unemployed--]]),value = "Unemployed"},
 			{text = " " .. Trans(7031--[[Renegades--]]),value = "Renegade"},
 			{text = " " .. Trans(240--[[Specialization--]]) .. ": " .. Trans(6761--[[None--]]),value = "none"},
 		}
-		local c = #ItemList
+		local c = #item_list
 
 		local function AddToList(list,text)
 			for i = 1, #list do
 				c = c + 1
-				ItemList[c] = {
+				item_list[c] = {
 					text = text .. ": " .. list[i],
 					value = list[i],
 					idx = i,
@@ -123,7 +126,7 @@ function OnMsg.ClassesGenerate()
 		for i = 1, #birth do
 			local name = Trans(birth[i].text)
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = Trans(4357--[[Birthplace--]]):gsub("<right><UIBirthplace>","") .. ": " .. name,
 				value = birth[i].value,
 				idx = i,
@@ -146,8 +149,9 @@ function OnMsg.ClassesGenerate()
 				local objs = UICity.labels[label] or ""
 				for i = #objs, 1, -1 do
 					if dome then
-						if objs[i].dome and objs[i].dome.handle == dome.handle then
-							MeatbagsToSoylent(objs[i],check1)
+						local o = objs[i]
+						if o.dome and o.dome.handle == dome.handle then
+							MeatbagsToSoylent(o,check1)
 						end
 					else
 						MeatbagsToSoylent(objs[i],check1)
@@ -157,13 +161,14 @@ function OnMsg.ClassesGenerate()
 			local function CullTrait(trait)
 				local objs = UICity.labels.Colonist or ""
 				for i = #objs, 1, -1 do
-					if objs[i].traits[trait] then
+					local o = objs[i]
+					if o.traits[trait] then
 						if dome then
-							if objs[i].dome and objs[i].dome.handle == dome.handle then
-								MeatbagsToSoylent(objs[i],check1)
+							if o.dome and o.dome.handle == dome.handle then
+								MeatbagsToSoylent(o,check1)
 							end
 						else
-							MeatbagsToSoylent(objs[i],check1)
+							MeatbagsToSoylent(o,check1)
 						end
 					end
 				end
@@ -173,13 +178,14 @@ function OnMsg.ClassesGenerate()
 				trait = race or trait
 				local objs = UICity.labels.Colonist or ""
 				for i = #objs, 1, -1 do
-					if objs[i][trait_type] == trait then
+					local o = objs[i]
+					if o[trait_type] == trait then
 						if dome then
-							if objs[i].dome and objs[i].dome.handle == dome.handle then
-								MeatbagsToSoylent(objs[i],check1)
+							if o.dome and o.dome.handle == dome.handle then
+								MeatbagsToSoylent(o,check1)
 							end
 						else
-							MeatbagsToSoylent(objs[i],check1)
+							MeatbagsToSoylent(o,check1)
 						end
 					end
 				end
@@ -250,14 +256,14 @@ I think somebody has been playing too much Fallout...--]]],
 			multisel = true,
 			custom_type = 3,
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000375--[[The Soylent Option--]]],
 			hint = S[302535920000747--[[Convert useless meatbags into productive protein.
 
 	Certain colonists may take some time (traveling in shuttles).
 
 	This will not effect your applicants/game failure (genocide without reprisal ftw).--]]],
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920000748--[[Random resource--]]],
 					hint = S[302535920000749--[[Drops random resource instead of food.--]]],
@@ -272,7 +278,7 @@ I think somebody has been playing too much Fallout...--]]],
 
 	function ChoGGi.MenuFuncs.AddApplicantsToPool()
 		local ChoGGi = ChoGGi
-		local ItemList = {
+		local item_list = {
 			{text = 1,value = 1},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -323,11 +329,11 @@ I think somebody has been playing too much Fallout...--]]],
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000757--[[Add Applicants To Pool--]]],
 			hint = Trans(6779--[[Warning--]]) .. ": " .. S[302535920000758--[[Will take some time for 25K and up.--]]],
 			skip_sort = true,
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920000759--[[Clear Applicant Pool--]]],
 					hint = S[302535920000760--[["Remove all the applicants currently in the pool (checking this will ignore your list selection).
@@ -341,9 +347,9 @@ I think somebody has been playing too much Fallout...--]]],
 	function ChoGGi.MenuFuncs.FireAllColonists()
 		local function CallBackFunc(answer)
 			if answer then
-				local tab = UICity.labels.Colonist or ""
-				for i = 1, #tab do
-					tab[i]:GetFired()
+				local objs = UICity.labels.Colonist or ""
+				for i = 1, #objs do
+					objs[i]:GetFired()
 				end
 			end
 		end
@@ -355,7 +361,7 @@ I think somebody has been playing too much Fallout...--]]],
 	end
 
 	function ChoGGi.MenuFuncs.SetAllWorkShifts()
-		local ItemList = {
+		local item_list = {
 			{text = S[302535920000763--[[Turn On All Shifts--]]],value = 0},
 			{text = S[302535920000764--[[Turn Off All Shifts--]]],value = 3.1415926535},
 		}
@@ -372,10 +378,11 @@ I think somebody has been playing too much Fallout...--]]],
 				shift = {false,false,false}
 			end
 
-			local tab = UICity.labels.ShiftsBuilding or ""
-			for i = 1, #tab do
-				if tab[i].closed_shifts then
-					tab[i].closed_shifts = shift
+			local objs = UICity.labels.ShiftsBuilding or ""
+			for i = 1, #objs do
+				local o = objs[i]
+				if o.closed_shifts then
+					o.closed_shifts = shift
 				end
 			end
 
@@ -388,7 +395,7 @@ I think somebody has been playing too much Fallout...--]]],
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = Trans(217--[[Work Shifts--]]),
 			hint = S[302535920000766--[[This will change ALL shifts.--]]],
 		}
@@ -399,7 +406,7 @@ I think somebody has been playing too much Fallout...--]]],
 		local default_setting = ChoGGi.Consts.MinComfortBirth / r
 		local hint_low = S[302535920000767--[[Lower = more babies--]]]
 		local hint_high = S[302535920000768--[[Higher = less babies--]]]
-		local ItemList = {
+		local item_list = {
 			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 0,value = 0,hint = hint_low},
 			{text = 35,value = 35,hint = hint_low},
@@ -435,7 +442,7 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000771--[[Set the minimum comfort needed for birth--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -472,7 +479,7 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 	end
 
 	function ChoGGi.MenuFuncs.SetRenegadeStatus()
-		local ItemList = {
+		local item_list = {
 			{text = S[302535920000774--[[Make All Renegades--]]],value = "Make"},
 			{text = S[302535920000775--[[Remove All Renegades--]]],value = "Remove"},
 		}
@@ -494,14 +501,15 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 				Type = "RemoveTrait"
 			end
 
-			local tab = UICity.labels.Colonist or ""
-			for i = 1, #tab do
+			local objs = UICity.labels.Colonist or ""
+			for i = 1, #objs do
+				local o = objs[i]
 				if dome then
-					if tab[i].dome and tab[i].dome.handle == dome.handle then
-						tab[i][Type](tab[i],"Renegade")
+					if o.dome and o.dome.handle == dome.handle then
+						o[Type](o,"Renegade")
 					end
 				else
-					tab[i][Type](tab[i],"Renegade")
+					o[Type](o,"Renegade")
 				end
 			end
 			MsgPopup(
@@ -517,15 +525,15 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000777--[[Make Renegades--]]],
-			check = {
+			skip_sort = true,
+			checkboxes = {
 				{
 					title = S[302535920000750--[[Dome Only--]]],
 					hint = S[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]],
 				},
 			},
-			skip_sort = true,
 		}
 	end
 
@@ -707,7 +715,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.DefaultOutsideWorkplacesRadius
-		local ItemList = {
+		local item_list = {
 			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -747,7 +755,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000790--[[Set Outside Workplace Radius--]]],
 			hint = S[302535920000791--[[Current distance--]]] .. ": " .. hint .. "\n\n"
 				.. S[302535920000792--[[You may not want to make it too far away unless you turned off suffocation.--]]],
@@ -773,7 +781,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		function ChoGGi.MenuFuncs.SetDeathAge()
 			local default_str = Trans(1000121--[[Default--]])
 			local hint_str = Trans(9559--[[Well, we needed to know that for sure I guess.--]])
-			local ItemList = {
+			local item_list = {
 				{text = default_str,value = default_str,hint = S[302535920000794--[[Uses same code as game to pick death ages.--]]]},
 				{text = 60,value = 60},
 				{text = 75,value = 75},
@@ -803,16 +811,17 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				if value == default_str or type(amount) == "number" then
 					if value == default_str then
 						-- random age
-						local tab = UICity.labels.Colonist or ""
-						for i = 1, #tab do
-							tab[i].death_age = RetDeathAge(tab[i])
+						local objs = UICity.labels.Colonist or ""
+						for i = 1, #objs do
+							local o = objs[i]
+							o.death_age = RetDeathAge(o)
 						end
 						ChoGGi.UserSettings.DeathAgeColonist = nil
 					else
 						-- set age
-						local tab = UICity.labels.Colonist or ""
-						for i = 1, #tab do
-							tab[i].death_age = amount
+						local objs = UICity.labels.Colonist or ""
+						for i = 1, #objs do
+							objs[i].death_age = amount
 						end
 						ChoGGi.UserSettings.DeathAgeColonist = amount
 					end
@@ -829,7 +838,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920000801--[[Set Death Age--]]],
 				hint = S[302535920000802--[[Usual age is around %s. This doesn't stop colonists from becoming seniors; just death (research ForeverYoung for enternal labour).--]]]:format(RetDeathAge()),
 				skip_sort = true,
@@ -839,10 +848,11 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 	function ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll()
 		local ChoGGi = ChoGGi
-		local tab = UICity.labels.Colonist or ""
-		for i = 1, #tab do
-			if tab[i].specialist == "none" then
-				ChoGGi.ComFuncs.ColonistUpdateSpecialization(tab[i],Trans(3490--[[Random--]]))
+		local objs = UICity.labels.Colonist or ""
+		for i = 1, #objs do
+			local o = objs[i]
+			if o.specialist == "none" then
+				ChoGGi.ComFuncs.ColonistUpdateSpecialization(o,Trans(3490--[[Random--]]))
 			end
 		end
 
@@ -869,14 +879,14 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			default_setting = Trans(3490--[[Random--]])
 		end
 
-		local ItemList = {
+		local item_list = {
 			{
 				text = " " .. default_setting,
 				value = default_setting,
 				hint = S[302535920000808--[[How the game normally works--]]],
 			},
 		}
-		local c = #ItemList
+		local c = #item_list
 
 		for i = 1, #ChoGGi.Tables.ColonistAges do
 			local age = ChoGGi.Tables.ColonistAges[i]
@@ -887,7 +897,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				hint = Trans(TraitPresets[age].description)
 			end
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = Trans(TraitPresets[age].display_name),
 				value = age,
 				hint = hint,
@@ -932,14 +942,15 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 						ChoGGi.ComFuncs.ColonistUpdateAge(obj,value)
 					end
 				else
-					local tab = UICity.labels.Colonist or ""
-					for i = 1, #tab do
+					local objs = UICity.labels.Colonist or ""
+					for i = 1, #objs do
 						if dome then
-							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								ChoGGi.ComFuncs.ColonistUpdateAge(tab[i],value)
+							local o = objs[i]
+							if o.dome and o.dome.handle == dome.handle then
+								ChoGGi.ComFuncs.ColonistUpdateAge(o,value)
 							end
 						else
-							ChoGGi.ComFuncs.ColonistUpdateAge(tab[i],value)
+							ChoGGi.ComFuncs.ColonistUpdateAge(objs[i],value)
 						end
 					end
 				end
@@ -955,10 +966,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. setting_type .. S[302535920000807--[[Colonist Age--]]],
 			hint = hint,
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920000750--[[Dome Only--]]],
 					hint = S[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]],
@@ -985,7 +996,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			default_setting = Trans(3490--[[Random--]])
 		end
 
-		local ItemList = {
+		local item_list = {
 			{
 				text = " " .. default_setting,
 				value = default_setting,
@@ -997,12 +1008,12 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				hint = S[302535920000809--[[Only set as male or female--]]],
 			},
 		}
-		local c = #ItemList
+		local c = #item_list
 
 		for i = 1, #ChoGGi.Tables.ColonistGenders do
 			local gender = ChoGGi.Tables.ColonistGenders[i]
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = Trans(TraitPresets[gender].display_name),
 				hint = Trans(TraitPresets[gender].description),
 				icon = ChoGGi.Tables.ColonistGenderImages[gender],
@@ -1049,14 +1060,15 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 					end
 				else
 					local ColonistUpdateGender = ChoGGi.ComFuncs.ColonistUpdateGender
-					local tab = UICity.labels.Colonist or ""
-					for i = 1, #tab do
+					local objs = UICity.labels.Colonist or ""
+					for i = 1, #objs do
 						if dome then
-							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								ColonistUpdateGender(tab[i],value)
+							local o = objs[i]
+							if o.dome and o.dome.handle == dome.handle then
+								ColonistUpdateGender(o,value)
 							end
 						else
-							ColonistUpdateGender(tab[i],value)
+							ColonistUpdateGender(objs[i],value)
 						end
 					end
 				end
@@ -1071,10 +1083,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. setting_type .. S[302535920000810--[[Colonist Gender--]]],
 			hint = hint,
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920000750--[[Dome Only--]]],
 					hint = S[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]],
@@ -1101,7 +1113,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			default_setting = Trans(3490--[[Random--]])
 		end
 
-		local ItemList = {
+		local item_list = {
 			{
 				text = " " .. default_setting,
 				value = default_setting,
@@ -1115,11 +1127,11 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				icon_scale = 500,
 			},
 		}
-		local c = #ItemList
+		local c = #item_list
 
 		if setting_mask == 1 then
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = " " .. Trans(3490--[[Random--]]),
 				value = Trans(3490--[[Random--]]),
 				hint = S[302535920000811--[[Everyone gets a spec--]]],
@@ -1129,7 +1141,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		for i = 1, #ChoGGi.Tables.ColonistSpecializations do
 			local spec = ChoGGi.Tables.ColonistSpecializations[i]
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = Trans(TraitPresets[spec].display_name),
 				value = spec,
 				hint = Trans(TraitPresets[spec].description),
@@ -1174,14 +1186,15 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 						ChoGGi.ComFuncs.ColonistUpdateSpecialization(obj,value)
 					end
 				else
-					local tab = UICity.labels.Colonist or ""
-					for i = 1, #tab do
+					local objs = UICity.labels.Colonist or ""
+					for i = 1, #objs do
 						if dome then
-							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								ChoGGi.ComFuncs.ColonistUpdateSpecialization(tab[i],value)
+							local o = objs[i]
+							if o.dome and o.dome.handle == dome.handle then
+								ChoGGi.ComFuncs.ColonistUpdateSpecialization(o,value)
 							end
 						else
-							ChoGGi.ComFuncs.ColonistUpdateSpecialization(tab[i],value)
+							ChoGGi.ComFuncs.ColonistUpdateSpecialization(objs[i],value)
 						end
 					end
 				end
@@ -1196,11 +1209,11 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. setting_type .. S[302535920000813--[[Colonist Specialization--]]],
 			hint = hint,
 			height = 750,
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920000750--[[Dome Only--]]],
 					hint = S[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]],
@@ -1226,7 +1239,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			default_setting = Trans(3490--[[Random--]])
 		end
 
-		local ItemList = {
+		local item_list = {
 			{
 				text = " " .. default_setting,
 				value = default_setting,
@@ -1236,13 +1249,13 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				icon_scale = 500,
 			},
 		}
-		local c = #ItemList
+		local c = #item_list
 
 		local race = {S[302535920000814--[[Herrenvolk--]]],S[302535920000815--[[Schwarzvolk--]]],S[302535920000816--[[Asiatischvolk--]]],S[302535920000817--[[Indischvolk--]]],S[302535920000818--[[Südost Asiatischvolk--]]]}
 		for i = 1, #ChoGGi.Tables.ColonistRaces do
 			local name = ChoGGi.Tables.ColonistRaces[i]
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = name,
 				value = i,
 				race = race[i],
@@ -1287,14 +1300,15 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 						ChoGGi.ComFuncs.ColonistUpdateRace(obj,value)
 					end
 				else
-					local tab = UICity.labels.Colonist or ""
-					for i = 1, #tab do
+					local objs = UICity.labels.Colonist or ""
+					for i = 1, #objs do
 						if dome then
-							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								ChoGGi.ComFuncs.ColonistUpdateRace(tab[i],value)
+							local o = objs[i]
+							if o.dome and o.dome.handle == dome.handle then
+								ChoGGi.ComFuncs.ColonistUpdateRace(o,value)
 							end
 						else
-							ChoGGi.ComFuncs.ColonistUpdateRace(tab[i],value)
+							ChoGGi.ComFuncs.ColonistUpdateRace(objs[i],value)
 						end
 					end
 				end
@@ -1319,10 +1333,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. setting_type .. S[302535920000820--[[Colonist Race--]]],
 			hint = hint,
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920000750--[[Dome Only--]]],
 					hint = S[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]],
@@ -1360,24 +1374,24 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		hint = hint .. "\n\n" .. S[302535920000821--[[Defaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits.--]]]
 
-		local ItemList = {
+		local item_list = {
 			{text = " " .. default_setting,value = default_setting,hint = S[302535920000822--[[Use game defaults--]]]},
 			{text = " " .. S[302535920000823--[[All Positive Traits--]]],value = "PositiveTraits",hint = S[302535920000824--[[All the positive traits...--]]]},
 			{text = " " .. S[302535920000825--[[All Negative Traits--]]],value = "NegativeTraits",hint = S[302535920000826--[[All the negative traits...--]]]},
 			{text = " " .. S[302535920001040--[[All Other Traits--]]],value = "OtherTraits",hint = S[302535920001050--[[All the other traits...--]]]},
 			{text = " " .. Trans(652319561018--[[All Traits--]]),value = "AllTraits",hint = S[302535920000828--[[All the traits...--]]]},
 		}
-		local c = #ItemList
+		local c = #item_list
 
 		if setting_mask == 2 then
-			ItemList[1].hint = S[302535920000829--[[Random: Each colonist gets three positive and three negative traits (if it picks same traits then you won't get all six).--]]]
+			item_list[1].hint = S[302535920000829--[[Random: Each colonist gets three positive and three negative traits (if it picks same traits then you won't get all six).--]]]
 		end
 
 		local function AddTraits(list)
 			for i = 1, #list do
 				local id = list[i]
 				c = c + 1
-				ItemList[c] = {
+				item_list[c] = {
 					text = Trans(TraitPresets[id].display_name),
 					value = id,
 					hint = Trans(TraitPresets[id].description),
@@ -1528,7 +1542,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		if setting_mask == 1 then
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920000129--[[Set--]]] .. " " .. setting_type .. S[302535920000831--[[Colonist Traits--]]],
 				hint = hint,
 				multisel = true,
@@ -1537,11 +1551,12 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		elseif setting_mask == 2 then
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920000129--[[Set--]]] .. " " .. setting_type .. S[302535920000831--[[Colonist Traits--]]],
 				hint = hint,
 				multisel = true,
-				check = {
+				height = 800.0,
+				checkboxes = {
 					only_one = true,
 					{
 						title = S[302535920000750--[[Dome Only--]]],
@@ -1556,7 +1571,6 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 						hint = S[302535920000832--[[Check to remove traits--]]],
 					},
 				},
-				height = 800.0,
 			}
 		end
 	end
@@ -1564,7 +1578,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	function ChoGGi.MenuFuncs.SetColonistsStats()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local ItemList = {
+		local item_list = {
 			{text = S[302535920000833--[[All Stats--]]] .. " " .. S[302535920000834--[[Max--]]],value = 1},
 			{text = S[302535920000833--[[All Stats--]]] .. " " .. S[302535920000835--[[Fill--]]],value = 2},
 			{text = Trans(4291--[[Health--]]) .. " " .. S[302535920000834--[[Max--]]],value = 3},
@@ -1595,14 +1609,15 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				else
 					v = fill
 				end
-				local tab = UICity.labels.Colonist or ""
-				for i = 1, #tab do
+				local objs = UICity.labels.Colonist or ""
+				for i = 1, #objs do
 					if dome then
-						if tab[i].dome and tab[i].dome.handle == dome.handle then
-							tab[i][Stat] = v
+						local o = objs[i]
+						if o.dome and o.dome.handle == dome.handle then
+							o[Stat] = v
 						end
 					else
-						tab[i][Stat] = v
+						objs[i][Stat] = v
 					end
 				end
 			end
@@ -1614,20 +1629,21 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 					value = fill
 				end
 
-				local tab = UICity.labels.Colonist or ""
-				for i = 1, #tab do
+				local objs = UICity.labels.Colonist or ""
+				for i = 1, #objs do
+					local o = objs[i]
 					if dome then
-						if tab[i].dome and tab[i].dome.handle == dome.handle then
-							tab[i].stat_morale = value
-							tab[i].stat_sanity = value
-							tab[i].stat_comfort = value
-							tab[i].stat_health = value
+						if o.dome and o.dome.handle == dome.handle then
+							o.stat_morale = value
+							o.stat_sanity = value
+							o.stat_comfort = value
+							o.stat_health = value
 						end
 					else
-						tab[i].stat_morale = value
-						tab[i].stat_sanity = value
-						tab[i].stat_comfort = value
-						tab[i].stat_health = value
+						o.stat_morale = value
+						o.stat_sanity = value
+						o.stat_comfort = value
+						o.stat_health = value
 					end
 				end
 
@@ -1650,13 +1666,13 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000836--[[Set Stats Of All Colonists--]]],
 			hint = S[302535920000837--[[Fill: Stat bar filled to 100
 	Max: 100000 (choose fill to reset)
 
 	Warning: Disable births or else...--]]],
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920000750--[[Dome Only--]]],
 					hint = S[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]],
@@ -1669,7 +1685,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.SpeedColonist
-		local ItemList = {
+		local item_list = {
 			{text = Trans(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
@@ -1703,14 +1719,15 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 						obj:SetMoveSpeed(value)
 					end
 				else
-					local tab = UICity.labels.Colonist or ""
-					for i = 1, #tab do
+					local objs = UICity.labels.Colonist or ""
+					for i = 1, #objs do
 						if dome then
-							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								tab[i]:SetMoveSpeed(value)
+							local o = objs[i]
+							if o.dome and o.dome.handle == dome.handle then
+								o:SetMoveSpeed(value)
 							end
 						else
-							tab[i]:SetMoveSpeed(value)
+							objs[i]:SetMoveSpeed(value)
 						end
 					end
 				end
@@ -1727,10 +1744,11 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000838--[[Colonist Move Speed--]]],
 			hint = hint,
-			check = {
+			skip_sort = true,
+			checkboxes = {
 				{
 					title = S[302535920000750--[[Dome Only--]]],
 					hint = S[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]],
@@ -1740,7 +1758,6 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 					hint = S[302535920000753--[[Will only apply to selected colonist.--]]],
 				},
 			},
-			skip_sort = true,
 		}
 	end
 
@@ -1748,7 +1765,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.GravityColonist
 		local r = ChoGGi.Consts.ResourceScale
-		local ItemList = {
+		local item_list = {
 			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 1,value = 1},
 			{text = 2,value = 2},
@@ -1788,14 +1805,15 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 						obj:SetGravity(value)
 					end
 				else
-					local tab = UICity.labels.Colonist or ""
-					for i = 1, #tab do
+					local objs = UICity.labels.Colonist or ""
+					for i = 1, #objs do
 						if dome then
-							if tab[i].dome and tab[i].dome.handle == dome.handle then
-								tab[i]:SetGravity(value)
+							local o = objs[i]
+							if o.dome and o.dome.handle == dome.handle then
+								o:SetGravity(value)
 							end
 						else
-							tab[i]:SetGravity(value)
+							objs[i]:SetGravity(value)
 						end
 					end
 				end
@@ -1813,10 +1831,11 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000840--[[Set Colonist Gravity--]]],
 			hint = S[302535920000841--[[Current gravity: %s--]]]:format(hint),
-			check = {
+			skip_sort = true,
+			checkboxes = {
 				{
 					title = S[302535920000750--[[Dome Only--]]],
 					hint = S[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]],
@@ -1826,7 +1845,6 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 					hint = S[302535920000753--[[Will only apply to selected colonist.--]]],
 				},
 			},
-			skip_sort = true,
 		}
 	end
 
@@ -1845,7 +1863,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			return
 		end
 
-		local id = obj.template_name
+		local id = RetTemplateOrClass(obj)
 		local name = Trans(obj.display_name)
 		local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
 		if not BuildingSettings[id] or BuildingSettings[id] and not next(BuildingSettings[id]) then
@@ -1855,14 +1873,14 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			}
 		end
 
-		local ItemList = {}
+		local item_list = {}
 		local c = 0
 		local str_hint = S[302535920000106--[[Current--]]] .. ": "
 		for i = 1, #ChoGGi.Tables.NegativeTraits do
 			local trait = ChoGGi.Tables.NegativeTraits[i]
 			local status = type(BuildingSettings[id][toggle_type][trait]) == "boolean" and "true" or "false"
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = trait,
 				value = trait,
 				hint = str_hint .. status .. "\n" .. Trans(TraitPresets[trait].description),
@@ -1872,7 +1890,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local trait = ChoGGi.Tables.PositiveTraits[i]
 			local status = type(BuildingSettings[id][toggle_type][trait]) == "boolean" and "true" or "false"
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = trait,
 				value = trait,
 				hint = str_hint .. status .. "\n" .. Trans(TraitPresets[trait].description),
@@ -1882,7 +1900,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local trait = ChoGGi.Tables.OtherTraits[i]
 			local status = type(BuildingSettings[id][toggle_type][trait]) == "boolean" and "true" or "false"
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = trait,
 				value = trait,
 				hint = str_hint .. status .. "\n" .. Trans(TraitPresets[trait].description),
@@ -1941,23 +1959,23 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			)
 		end
 
-		local hint = {}
+		local hint
 		if BuildingSettings[id] and BuildingSettings[id][toggle_type] then
-			hint[#hint+1] = S[302535920000106--[[Current--]]]
-			hint[#hint+1] = ": "
-			hint[#hint+1] = BuildingSettings[id][toggle_type]
-			hint[#hint+1] = ","
+			hint = {
+				S[302535920000106--[[Current--]]],": ",BuildingSettings[id][toggle_type],",",
+			}
 		end
+		hint = hint or {}
 
 		hint[#hint+1] = "\n\n"
 		hint[#hint+1] = S[302535920000847--[[Select traits and click Ok to toggle status.--]]]
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. S[302535920000992--[[Building Traits--]]] .. " " .. S[302535920000846--[[For--]]] .. " " .. name,
 			hint = ChoGGi.ComFuncs.TableConcat(hint),
 			multisel = true,
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920000848--[[Fire Workers--]]],
 					hint = S[302535920000849--[[Will also fire workers with the traits from all %s.--]]]:format(name),

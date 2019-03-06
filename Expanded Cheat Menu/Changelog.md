@@ -1,8 +1,15 @@
 ## ECM Changelog
 
 ## v12.8 (Unreleased)
+### Fixed:
+- Examine:
+- > The search box will now search the entire line instead of chunks of it.
+- > Toggle Attach Spots didn't always add the polyline to chains.
 
-## v12.7 (3 Mar 2019)
+### Removed:
+Fixes>All Pipe Skins To Default: It wasn't the best code, and I'm pretty sure they fixed the bug with chrome pipes?
+
+## v12.7 (5 Mar 2019)
 ### Added:
 - Debug>List Visible Objects: Shows list of objects rendered in the current frame.
 
@@ -866,7 +873,7 @@ Please and thank you.
 
 ### Changed:
 - ECM won't create "ECM Scripts" folder until after you open the console.
-- ItemList dialogs hide empty space now.
+- List dialogs hide empty space now.
 - Mod Upload will show a popup msg when upload starts.
 
 ### Fixed:
@@ -880,7 +887,7 @@ Please and thank you.
 
 ### Changed:
 - Research Tech defaults to "Unlock", if both are checked then "Research" takes precedent.
-- ItemList dialogs now have a "Filter Text" box: Type text to have it only show those items, Enter to clear text.
+- List dialogs now have a "Filter Text" box: Type text to have it only show those items, Enter to clear text.
 - Moved Delete All Rocks to Game from Debug.
 #### Examine:
 - > table (len:0) now shows "Data" if it's an associative table.

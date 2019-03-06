@@ -221,7 +221,7 @@ function OnMsg.ClassesGenerate()
 		local obj = ChoGGi.ComFuncs.SelObject()
 		local hint_loop = S[302535920001109--[[Loops though and makes all %s visible.--]]]
 
-		local ItemList = {
+		local item_list = {
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(3984--[[Anomalies--]]),value = "Anomaly",hint = hint_loop:format(Trans(3984--[[Anomalies--]]))},
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(3980--[[Buildings--]]),value = "Building",hint = hint_loop:format(Trans(3980--[[Buildings--]]))},
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. S[302535920000157--[[Cables & Pipes--]]],value = "GridElements",hint = hint_loop:format(S[302535920000157--[[Cables & Pipes--]]])},
@@ -229,16 +229,16 @@ function OnMsg.ClassesGenerate()
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(5438--[[Rovers--]]) .. " & " .. Trans(517--[[Drones--]]),value = "Unit",hint = hint_loop:format(Trans(5438--[[Rovers--]]) .. " & " .. Trans(517--[[Drones--]]))},
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(3982--[[Deposits--]]),value = "SurfaceDeposit",hint = hint_loop:format(Trans(3982--[[Deposits--]]))},
 		}
-		local c = #ItemList
+		local c = #item_list
 		if obj then
 			c = c + 1
-			ItemList[c] = {text = 0,value = 0}
+			item_list[c] = {text = 0,value = 0}
 			c = c + 1
-			ItemList[c] = {text = 50,value = 50}
+			item_list[c] = {text = 50,value = 50}
 			c = c + 1
-			ItemList[c] = {text = 75,value = 75}
+			item_list[c] = {text = 75,value = 75}
 			c = c + 1
-			ItemList[c] = {text = 100,value = 100}
+			item_list[c] = {text = 100,value = 100}
 		end
 
 		local function CallBackFunc(choice)
@@ -250,9 +250,9 @@ function OnMsg.ClassesGenerate()
 				obj:SetOpacity(value)
 			elseif type(value) == "string" then
 				local function SettingOpacity(label)
-					local tab = ChoGGi.ComFuncs.RetAllOfClass(label)
-					for i = 1, #tab do
-						tab[i]:SetOpacity(100)
+					local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
+					for i = 1, #objs do
+						objs[i]:SetOpacity(100)
 					end
 				end
 				SettingOpacity(value)
@@ -279,7 +279,7 @@ function OnMsg.ClassesGenerate()
 		local name = RetName(obj)
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000694--[[Set Opacity--]]] .. (name ~= "nil" and ": " .. name or ""),
 			hint = hint,
 			skip_sort = true,
@@ -289,31 +289,34 @@ function OnMsg.ClassesGenerate()
 
 	do -- AnnoyingSounds_Toggle
 		local function MirrorSphere_Toggle()
-			local tab = UICity.labels.MirrorSpheres or ""
-			for i = 1, #tab do
-				PlayFX("Freeze", "end", tab[i])
-				PlayFX("Freeze", "start", tab[i])
+			local objs = UICity.labels.MirrorSpheres or ""
+			for i = 1, #objs do
+				local o = objs[i]
+				PlayFX("Freeze", "end", o)
+				PlayFX("Freeze", "start", o)
 			end
 		end
 		local function SensorTower_Toggle()
 			local ChoGGi = ChoGGi
-			local tab = UICity.labels.SensorTower or ""
-			for i = 1, #tab do
-				ChoGGi.ComFuncs.ToggleWorking(tab[i])
+			local objs = UICity.labels.SensorTower or ""
+			for i = 1, #objs do
+				ChoGGi.ComFuncs.ToggleWorking(objs[i])
 			end
 		end
 		local function RCRoverDeploy_Toggle()
-			local tab = UICity.labels.RCRover or ""
-			for i = 1, #tab do
-				PlayFX("RoverDeploy", "end", tab[i])
-				PlayFX("RoverDeploy", "start", tab[i])
+			local objs = UICity.labels.RCRover or ""
+			for i = 1, #objs do
+				local o = objs[i]
+				PlayFX("RoverDeploy", "end", o)
+				PlayFX("RoverDeploy", "start", o)
 			end
 		end
 		local function RCRoverEmergencyPower_Toggle()
-			local tab = UICity.labels.RCRover or ""
-			for i = 1, #tab do
-				PlayFX("EmergencyPower", "end", tab[i])
-				PlayFX("EmergencyPower", "start", tab[i])
+			local objs = UICity.labels.RCRover or ""
+			for i = 1, #objs do
+				local o = objs[i]
+				PlayFX("EmergencyPower", "end", o)
+				PlayFX("EmergencyPower", "start", o)
 			end
 		end
 
@@ -333,7 +336,7 @@ function OnMsg.ClassesGenerate()
 
 			local ChoGGi = ChoGGi
 			--make a list
-			local ItemList = {
+			local item_list = {
 				{text = S[302535920001084--[[Reset--]]],value = "Reset"},
 				{text = S[302535920001085--[[Sensor Tower Beeping--]]],value = "SensorTowerWorking"},
 				{text = S[302535920001086--[[RC Rover Drones Deployed--]]],value = "RCRoverAntenna"},
@@ -399,7 +402,7 @@ function OnMsg.ClassesGenerate()
 			else
 				ChoGGi.ComFuncs.OpenInListChoice{
 					callback = CallBackFunc,
-					items = ItemList,
+					items = item_list,
 					title = S[302535920000680--[[Annoying Sounds--]]],
 					hint = S[302535920001090--[[You can only reset all sounds at once.--]]],
 					skip_sort = true,
@@ -447,7 +450,7 @@ function OnMsg.ClassesGenerate()
 			end
 
 			-- and build the ass table into an idx one
-			local ItemList = {}
+			local item_list = {}
 			local c = 0
 			for _,obj in pairs(handles) do
 				local name = RetName(obj)
@@ -457,7 +460,7 @@ function OnMsg.ClassesGenerate()
 				end
 				local icon,icon_scale = RetIcon(obj)
 				c = c + 1
-				ItemList[c] = {
+				item_list[c] = {
 					text = name,
 					value = tostring(obj:GetVisualPos()),
 					obj = obj,
@@ -466,7 +469,7 @@ function OnMsg.ClassesGenerate()
 					icon_scale = icon_scale,
 				}
 			end
-			return ItemList
+			return item_list
 		end
 
 		local function CallBackFunc_List(choice)
@@ -474,26 +477,26 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 			local value = choice[1].value
-			local ItemList = BuildItemList_Class(value)
+			local item_list = BuildItemList_Class(value)
 
 			-- and display them
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = ViewAndSelectObject,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920001292--[[List All Objects--]]] .. ": " .. value,
 				custom_type = 1,
 				custom_func = ViewAndSelectObject,
-				check = {
+				checkboxes = {
 					{
 						title = Trans(1000220--[[Refresh--]]),
 						hint = S[302535920000548--[[List is updated each time you click this.--]]],
 						func = function(dlg)
-							ItemList = BuildItemList_Class(value)
-							table.sort(ItemList,function(a,b)
+							item_list = BuildItemList_Class(value)
+							table.sort(item_list,function(a,b)
 								return CmpLower(a.text, b.text)
 							end)
 
-							dlg.items = ItemList
+							dlg.items = item_list
 							dlg:BuildList(true)
 						end,
 					},
@@ -502,7 +505,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function BuildItemList_All()
-			local ItemList = {
+			local item_list = {
 				{
 				text = " " .. S[302535920000306--[[Everything--]]],
 				value = S[302535920000306--[[Everything--]]],hint = S[302535920001294--[[Laggy--]]],
@@ -515,7 +518,7 @@ function OnMsg.ClassesGenerate()
 					local item = list[1]
 					local icon,icon_scale = RetIcon(item)
 					c = c + 1
-					ItemList[c] = {
+					item_list[c] = {
 						text = label .. ": " .. #list,
 						value = label,
 						hint = RetHint(item),
@@ -524,30 +527,30 @@ function OnMsg.ClassesGenerate()
 					}
 				end
 			end
-			return ItemList
+			return item_list
 		end
 
 		function ChoGGi.MenuFuncs.ListAllObjects()
-			local ItemList = BuildItemList_All()
+			local item_list = BuildItemList_All()
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc_List,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920001292--[[List All Objects--]]],
 				custom_type = 1,
 				custom_func = CallBackFunc_List,
 				height = 800,
-				check = {
+				checkboxes = {
 					{
 						title = Trans(1000220--[[Refresh--]]),
 						hint = S[302535920000548--[[List is updated each time you click this.--]]],
 						func = function(dlg)
-							ItemList = BuildItemList_All()
-							table.sort(ItemList,function(a,b)
+							item_list = BuildItemList_All()
+							table.sort(item_list,function(a,b)
 								return CmpLower(a.text, b.text)
 							end)
 
-							dlg.items = ItemList
+							dlg.items = item_list
 							dlg:BuildList(true)
 						end,
 					},
@@ -922,11 +925,11 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		local NoisePreset = DataInstances.NoisePreset
 		local guim = ChoGGi.Consts.guim
 
-		local ItemList = {}
+		local item_list = {}
 		local c = 0
 		for i = 1, #TerrainTextures do
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = TerrainTextures[i].name,
 				value = i,
 				icon = "<image " .. TerrainTextures[i].texture .. " 100>",
@@ -984,7 +987,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000973--[[Change Terrain Texture--]]],
 			hint = S[302535920000974--[[Map default: %s--]]]:format(mapdata.BaseLayer),
 			custom_type = 7,
@@ -997,29 +1000,34 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			name = nil
 		end
 
-		local ItemList = {}
+		local item_list = {}
+		local c = 0
 
 		-- always load defaults, then override with custom settings so list is always full
-		local def = LightmodelPreset:GetProperties()
 		local help_str = Trans(487939677892--[[Help--]])
 		local default_str = Trans(1000121--[[Default--]])
 		local min_str = S[302535920000110--[[Min--]]]
 		local max_str = S[302535920000941--[[Max--]]]
 		local scale_str = Trans(1000081--[[Scale--]])
-		for i = 1, #def do
-			if def[i].editor ~= "image" and def[i].editor ~= "dropdownlist" and def[i].editor ~= "combo" and type(def[i].value) ~= "userdata" then
-				ItemList[#ItemList+1] = {
-					text = (def[i].editor == "color" and "<color 100 100 255>" or "") .. def[i].id .. "</color>",
-					sort = def[i].id,
-					value = def[i].default,
-					default = def[i].default,
-					editor = def[i].editor,
-					hint = (def[i].id or "") .. "\n"
-						.. help_str .. ": " .. (def[i].help or "") .. "\n\n"
-						.. default_str .. ": " .. (def[i].default or "") .. " "
-						.. min_str .. ": " .. (def[i].min or "") .. " "
-						.. max_str .. ": " .. (def[i].max or "") .. " "
-						.. scale_str .. ": " .. (def[i].scale or "")
+		local defs = LightmodelPreset:GetProperties()
+		for i = 1, #defs do
+			local def = defs[i]
+			if def.editor ~= "image" and def.editor ~= "dropdownlist"
+					and def.editor ~= "combo" and type(def.value) ~= "userdata" then
+				c = c + 1
+				item_list[c] = {
+					text = (def.editor == "color" and "<color 100 100 255>" or "")
+						.. def.id .. "</color>",
+					sort = def.id,
+					value = def.default,
+					default = def.default,
+					editor = def.editor,
+					hint = (def.id or "") .. "\n"
+						.. help_str .. ": " .. (def.help or "") .. "\n\n"
+						.. default_str .. ": " .. (def.default or "") .. " "
+						.. min_str .. ": " .. (def.min or "") .. " "
+						.. max_str .. ": " .. (def.max or "") .. " "
+						.. scale_str .. ": " .. (def.scale or "")
 				}
 			end
 		end
@@ -1030,9 +1038,9 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			return
 		end
 
-		for i = 1, #ItemList do
-			if name[ItemList[i].sort] then
-				ItemList[i].value = name[ItemList[i].sort]
+		for i = 1, #item_list do
+			if name[item_list[i].sort] then
+				item_list[i].value = name[item_list[i].sort]
 			end
 		end
 
@@ -1065,13 +1073,14 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			sortby = "sort",
+			custom_type = 5,
 			title = S[302535920000975--[[Custom Lightmodel--]]],
 			hint = S[302535920000976--[[Use double right click to test without closing dialog
 
 	Some settings can't be changed in the editor, but you can manually add them in the settings file (type OpenExamine(LightmodelPresets) and use dump obj).--]]],
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920000977--[[Semi-Permanent--]]],
 					hint = S[302535920000978--[[Make it stay at selected light model till reboot (use Misc>Change Light Model for Permanent).--]]],
@@ -1081,7 +1090,6 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 					hint = S[302535920000980--[[Opens up the list of premade styles so you can start with the settings from one.--]]],
 				},
 			},
-			custom_type = 5,
 		}
 	end
 
@@ -1092,14 +1100,17 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			browse = mode
 		end
 
-		local ItemList = {}
+		local item_list = {}
+		local c = 0
 		if not browse then
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			item_list[c] = {
 				text = " " .. Trans(1000121--[[Default--]]),
 				value = "ChoGGi_Default",
 				hint = S[302535920000981--[[Choose to this remove Permanent setting.--]]],
 			}
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			item_list[c] = {
 				text = " " .. S[302535920000982--[[Custom--]]],
 				value = "ChoGGi_Custom",
 				hint = S[302535920000983--[["Custom Lightmodel made with ""Change Light Model Custom""."--]]],
@@ -1107,7 +1118,8 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		end
 		local LightmodelPresets = LightmodelPresets
 		for key in pairs(LightmodelPresets) do
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			item_list[c] = {
 				text = key,
 				value = key,
 				func = key,
@@ -1147,19 +1159,25 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		end
 
 		local hint = {}
-		local check
+		local h_c = 0
+		local checkboxes
 		local title = S[302535920000985--[[Select Lightmodel Preset--]]]
 		if not browse then
 			title = S[302535920000986--[[Change Lightmodel--]]]
-			hint[#hint+1] = S[302535920000987--[[If you used Permanent; you must choose default to remove the setting (or it'll set the lightmodel next time you start the game).--]]]
+			h_c = h_c + 1
+			hint[h_c] = S[302535920000987--[[If you used Permanent; you must choose default to remove the setting (or it'll set the lightmodel next time you start the game).--]]]
 			local lightmodel = ChoGGi.UserSettings.Lightmodel
 			if lightmodel then
-				hint[#hint+1] = "\n\n"
-				hint[#hint+1] = S[302535920000988--[[Permanent--]]]
-				hint[#hint+1] = ": "
-				hint[#hint+1] = lightmodel
+				h_c = h_c + 1
+				hint[h_c] = "\n\n"
+				h_c = h_c + 1
+				hint[h_c] = S[302535920000988--[[Permanent--]]]
+				h_c = h_c + 1
+				hint[h_c] = ": "
+				h_c = h_c + 1
+				hint[h_c] = lightmodel
 			end
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920000988--[[Permanent--]]],
 					hint = S[302535920000989--[[Make it stay at selected light model all the time (including reboots).--]]],
@@ -1171,14 +1189,16 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			}
 		end
 
-		hint[#hint+1] = "\n\n"
-		hint[#hint+1] = S[302535920000991--[[Double right-click to preview lightmodel without closing dialog.--]]]
+		h_c = h_c + 1
+		hint[h_c] = "\n\n"
+		h_c = h_c + 1
+		hint[h_c] = S[302535920000991--[[Double right-click to preview lightmodel without closing dialog.--]]]
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = title,
 			hint = TableConcat(hint),
-			check = check,
+			checkboxes = checkboxes,
 			custom_type = 6,
 			custom_func = function(value)
 				SetLightmodel(1,value)
@@ -1230,7 +1250,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			local desk = terminal.desktop
 			local igi = Dialogs.InGameInterface
 
-			local ItemList = {
+			local item_list = {
 				{text = "ConsoleLog",value = GetSetTrans(1,"ConsoleLog",desk,igi),hint = S[302535920000994--[[Console logging text--]]]},
 				{text = "Console",value = GetSetTrans(1,"Console",desk,igi),hint = S[302535920000996--[[Console text input--]]]},
 				{text = "XShortcutsHost",value = GetSetTrans(1,"XShortcutsHost",desk,igi),hint = S[302535920000998--[[Cheat Menu--]]]},
@@ -1275,7 +1295,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920000629--[[Set UI Transparency--]]],
 				hint = S[302535920001002--[[For some reason they went opposite day with this one: 255 is invisible and 0 is visible.--]]],
 				custom_type = 4,
@@ -1285,7 +1305,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 
 	function ChoGGi.MenuFuncs.SetLightsRadius()
 		local hr = hr
-		local ItemList = {
+		local item_list = {
 			{text = Trans(1000121--[[Default--]]),value = Trans(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
 			{text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
 			{text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
@@ -1323,7 +1343,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001016--[[Set Lights Radius--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hr.LightsRadiusModifier
 				.. "\n\n" .. S[302535920001017--[[Turns up the radius for light bleedout, doesn't seem to hurt FPS much.--]]],
@@ -1334,7 +1354,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 	function ChoGGi.MenuFuncs.SetTerrainDetail()
 		local ChoGGi = ChoGGi
 		local hr = hr
-		local ItemList = {
+		local item_list = {
 			{text = Trans(1000121--[[Default--]]),value = Trans(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
 			{text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
 			{text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
@@ -1371,7 +1391,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. S[302535920000635--[[Terrain Detail--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hr.TR_MaxChunks .. "\n" .. S[302535920001030--[["Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 1000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.
 
@@ -1383,7 +1403,7 @@ And yes Medium is using a higher setting than High..."--]]],
 	function ChoGGi.MenuFuncs.SetVideoMemory()
 		local ChoGGi = ChoGGi
 		local hr = hr
-		local ItemList = {
+		local item_list = {
 			{text = Trans(1000121--[[Default--]]),value = Trans(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
 			{text = S[302535920001031--[[1 Crap (32)--]]],value = 32},
 			{text = S[302535920001032--[[2 Crap (64)--]]],value = 64},
@@ -1417,7 +1437,7 @@ And yes Medium is using a higher setting than High..."--]]],
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001041--[[Set Video Memory Use--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hr.DTM_VideoMemory,
 			skip_sort = true,
@@ -1428,7 +1448,7 @@ And yes Medium is using a higher setting than High..."--]]],
 		local ChoGGi = ChoGGi
 		local hr = hr
 		local hint_highest = Trans(6779--[[Warning--]]) .. ": " .. S[302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]]
-		local ItemList = {
+		local item_list = {
 			{text = Trans(1000121--[[Default--]]),value = Trans(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
 			{text = S[302535920001043--[[1 Crap (256)--]]],value = 256},
 			{text = S[302535920001044--[[2 Lower (512)--]]],value = 512},
@@ -1464,7 +1484,7 @@ And yes Medium is using a higher setting than High..."--]]],
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001051--[[Set Shadowmap Size--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hr.ShadowmapSize .. "\n\n" .. hint_highest .. "\n\n" .. S[302535920001052--[[Max limited to 16384 (or crashing).--]]],
 			skip_sort = true,
@@ -1485,12 +1505,12 @@ And yes Medium is using a higher setting than High..."--]]],
 	end
 
 	function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
-		local DefaultSetting = ChoGGi.Consts.HigherRenderDist
+		local default_setting = ChoGGi.Consts.HigherRenderDist
 		local hint_min = S[302535920001054--[[Minimal FPS hit on large base--]]]
 		local hint_small = S[302535920001055--[[Small FPS hit on large base--]]]
 		local hint_fps = S[302535920001056--[[FPS hit--]]]
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 240,value = 240,hint = hint_min},
 			{text = 360,value = 360,hint = hint_min},
 			{text = 480,value = 480,hint = hint_min},
@@ -1502,7 +1522,7 @@ And yes Medium is using a higher setting than High..."--]]],
 			{text = 1200,value = 1200,hint = hint_fps},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.HigherRenderDist then
 			hint = tostring(ChoGGi.UserSettings.HigherRenderDist)
 		end
@@ -1527,7 +1547,7 @@ And yes Medium is using a higher setting than High..."--]]],
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000643--[[Higher Render Distance--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -1624,8 +1644,8 @@ And yes Medium is using a higher setting than High..."--]]],
 				-- save for fovX reset
 				ChoGGi.cameraFovX = camera.GetFovX()
 				-- zoom further out unless it's a colonist
-				if not obj.base_death_age then
-					--up the horizontal fov so we're further away from object
+				if not obj:IsKindOf("Colonist") then
+					-- up the horizontal fov so we're further away from object
 					camera.SetFovX(8400)
 				end
 				-- consistent zoom level
@@ -1667,10 +1687,10 @@ And yes Medium is using a higher setting than High..."--]]],
 	end
 
 	function ChoGGi.MenuFuncs.SetBorderScrolling()
-		local DefaultSetting = 5
+		local default_setting = 5
 		local hint_down = S[302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).--]]]
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]),value = DefaultSetting},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]),value = default_setting},
 			{text = 0,value = 0,hint = S[302535920001063--[[disable mouse border scrolling, WASD still works fine.--]]]},
 			{text = 1,value = 1,hint = hint_down},
 			{text = 2,value = 2,hint = hint_down},
@@ -1679,7 +1699,7 @@ And yes Medium is using a higher setting than High..."--]]],
 			{text = 10,value = 10},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.BorderScrollingArea then
 			hint = tostring(ChoGGi.UserSettings.BorderScrollingArea)
 		end
@@ -1704,7 +1724,7 @@ And yes Medium is using a higher setting than High..."--]]],
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. S[302535920000647--[[Border Scrolling--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -1712,9 +1732,9 @@ And yes Medium is using a higher setting than High..."--]]],
 	end
 
 	function ChoGGi.MenuFuncs.SetCameraLookatDist()
-		local DefaultSetting = ChoGGi.Consts.CameraLookatDist
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.Consts.CameraLookatDist
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 20,value = 20},
 			{text = 30,value = 30},
@@ -1725,7 +1745,7 @@ And yes Medium is using a higher setting than High..."--]]],
 			{text = 90,value = 90},
 			{text = 100,value = 100},
 		}
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.CameraLookatDist then
 			hint = tostring(ChoGGi.UserSettings.CameraLookatDist)
 		end
@@ -1750,7 +1770,7 @@ And yes Medium is using a higher setting than High..."--]]],
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001375--[[Bird's Eye--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -1758,9 +1778,9 @@ And yes Medium is using a higher setting than High..."--]]],
 	end
 
 	function ChoGGi.MenuFuncs.SetCameraZoom()
-		local DefaultSetting = ChoGGi.Consts.CameraZoomToggle
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.Consts.CameraZoomToggle
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 16000,value = 16000},
 			{text = 20000,value = 20000},
 			{text = 24000,value = 24000, hint = S[302535920001066--[[What used to be the default for this ECM setting--]]]},
@@ -1769,7 +1789,7 @@ And yes Medium is using a higher setting than High..."--]]],
 			{text = 128000,value = 128000},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.CameraZoomToggle then
 			hint = tostring(ChoGGi.UserSettings.CameraZoomToggle)
 		end
@@ -1794,7 +1814,7 @@ And yes Medium is using a higher setting than High..."--]]],
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000649--[[Zoom Distance--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,

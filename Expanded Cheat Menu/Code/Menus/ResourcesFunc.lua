@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 	local S = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.AddOrbitalProbes()
-		local ItemList = {
+		local item_list = {
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -26,6 +26,7 @@ function OnMsg.ClassesGenerate()
 
 			local value = choice[1].value
 			local UICity = UICity
+			local PlaceObject = PlaceObject
 			if type(value) == "number" then
 				local cls = "OrbitalProbe"
 				if choice[1].check1 then
@@ -39,10 +40,10 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001187--[[Add Probes--]]],
 			skip_sort = true,
-			check = {
+			checkboxes = {
 				{
 					title = Trans(10087--[[Advanced Orbital Probe--]]),
 					hint = S[302535920000266--[[Spawn--]]] .. " " .. Trans(10087--[[Advanced Orbital Probe--]]),
@@ -55,9 +56,9 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.Consts.FoodPerRocketPassenger / r
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.Consts.FoodPerRocketPassenger / r
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -68,7 +69,7 @@ function OnMsg.ClassesGenerate()
 			{text = 10000,value = 10000},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		local FoodPerRocketPassenger = ChoGGi.UserSettings.FoodPerRocketPassenger
 		if FoodPerRocketPassenger then
 			hint = FoodPerRocketPassenger / r
@@ -95,7 +96,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001190--[[Set Food Per Rocket Passenger--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -122,8 +123,9 @@ function OnMsg.ClassesGenerate()
 
 		function ChoGGi.MenuFuncs.AddPrefabBuildings()
 			local UICity = UICity
+
 			local drone_str = Trans(Drone.display_name)
-			local ItemList = {
+			local item_list = {
 				{
 					text = drone_str,
 					value = 10,
@@ -131,16 +133,15 @@ function OnMsg.ClassesGenerate()
 					icon = Drone.display_icon,
 				},
 			}
-			local c = #ItemList
+			local c = #item_list
 
 			local show_hidden = ChoGGi.UserSettings.Building_hide_from_build_menu
-
 			local BuildingTemplates = BuildingTemplates
 			for id,cargo in pairs(BuildingTemplates) do
 				-- baclcube is instant, instant doesn't need prefabs, and hidden normally don't show up
 				if not skip_prefabs[id] and not cargo.instant_build and (cargo.group ~= "Hidden" or cargo.group == "Hidden" and show_hidden) then
 					c = c + 1
-					ItemList[c] = {
+					item_list[c] = {
 						text = Trans(cargo.display_name),
 						value = 10,
 						hint = S[302535920000106--[[Current--]]] .. ": " .. UICity:GetPrefabs(id),
@@ -177,7 +178,7 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = Trans(1110--[[Prefab Buildings--]]),
 				hint = S[302535920001194--[[Use edit box to enter amount of prefabs to add.--]]],
 				custom_type = 3,
@@ -187,12 +188,12 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	function ChoGGi.MenuFuncs.SetFunding()
-		local DefaultSetting = S[302535920001195--[[Reset to 500 M--]]]
+		local default_setting = S[302535920001195--[[Reset to 500 M--]]]
 		local hint = S[302535920001196--[[If your funds are a negative value, then you added too much.
 
-	Fix with: %s--]]]:format(DefaultSetting)
-		local ItemList = {
-			{text = DefaultSetting,value = 500},
+	Fix with: %s--]]]:format(default_setting)
+		local item_list = {
+			{text = default_setting,value = 500},
 			{text = "100 M",value = 100,hint = hint},
 			{text = "1 000 M",value = 1000,hint = hint},
 			{text = "10 000 M",value = 10000,hint = hint},
@@ -224,7 +225,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = Trans(3613--[[Funding--]]),
 			hint = hint,
 			skip_sort = true,
@@ -233,7 +234,8 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.FillResource()
 		local obj = ChoGGi.ComFuncs.SelObject()
-		if not IsValid(obj) then
+		local is_valid = IsValid(obj)
+		if not is_valid or is_valid and not obj.CheatFill and not obj.CheatRefill then
 			MsgPopup(
 				S[302535920001526--[[Not a valid object--]]],
 				S[302535920000727--[[Fill Selected Resource--]]]

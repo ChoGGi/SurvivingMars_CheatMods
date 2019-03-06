@@ -752,12 +752,12 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		end
 	end
 
-	if UserSettings.InsideBuildingsNoMaintenance and obj.dome_required then
+	if UserSettings.InsideBuildingsNoMaintenance and obj:IsKindOf("Constructable") then
 		obj.ChoGGi_InsideBuildingsNoMaintenance = true
 		obj.maintenance_build_up_per_hr = -10000
 	end
 
-	if UserSettings.RemoveMaintenanceBuildUp and obj.base_maintenance_build_up_per_hr then
+	if UserSettings.RemoveMaintenanceBuildUp and obj:IsKindOf("RequiresMaintenance") then
 		obj.ChoGGi_RemoveMaintenanceBuildUp = true
 		obj.maintenance_build_up_per_hr = -10000
 	end

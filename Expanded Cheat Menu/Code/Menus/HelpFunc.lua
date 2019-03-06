@@ -21,7 +21,7 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 		local SavegamesList = SavegamesList
-		local ItemList = {}
+		local item_list = {}
 		for i = 1, #SavegamesList do
 			local data = SavegamesList[i]
 
@@ -41,7 +41,7 @@ function OnMsg.ClassesGenerate()
 				save_date = os.date("%H:%M - %d / %m / %Y", data.timestamp)
 			end
 
-			ItemList[i] = {
+			item_list[i] = {
 				text = data.displayname,
 				value = data.savename,
 
@@ -94,12 +94,12 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
-			title = S[302535920000146--[[Delete Saved Games--]]] .. ": " .. #ItemList,
+			items = item_list,
+			title = S[302535920000146--[[Delete Saved Games--]]] .. ": " .. #item_list,
 			hint = Trans(6779--[[Warning--]]) .. ": " .. S[302535920001274--[[This is permanent!--]]],
 			multisel = true,
 			skip_sort = true,
-			check = {
+			checkboxes = {
 				{
 					title = Trans(1000009--[[Confirmation--]]),
 					hint = S[302535920001276--[[Nothing is deleted unless you check this.--]]],
@@ -154,7 +154,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.MenuFuncs.ExtractHPKs")
 			return
 		end
-		local ItemList = {}
+		local item_list = {}
 		local c = 0
 
 		-- not much point without steam
@@ -199,7 +199,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 						mod.image = "\n\n\n\n<image " .. mod.image .. ">"
 					end
 					c = c + 1
-					ItemList[c] = {
+					item_list[c] = {
 						author = mod.author,
 						text = mod.title,
 						value = hpk,
@@ -219,10 +219,10 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 			return
 		end
 
-		if #ItemList == 0 then
+		if #item_list == 0 then
 			-- good enough msg, probably...
 			MsgPopup(
-				S[302535920000004--[[Dump--]]] .. ": " .. #ItemList,
+				S[302535920000004--[[Dump--]]] .. ": " .. #item_list,
 				S[302535920001362--[[Extract HPKs--]]]
 			)
 			return
@@ -250,7 +250,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001362--[[Extract HPKs--]]],
 			hint = S[302535920001365--[[HPK files will be unpacked into AppData/Mods/ModSteamId--]]],
 			multisel = true,
@@ -259,7 +259,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 	function ChoGGi.MenuFuncs.ListAllMenuItems()
 		local ChoGGi = ChoGGi
-		local ItemList = {}
+		local item_list = {}
 		local c = 0
 
 		local actions = ChoGGi.Temp.Actions
@@ -283,7 +283,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 				local short = a.ActionShortcut
 
-				ItemList[c] = {
+				item_list[c] = {
 					text = a.ActionName,
 					value = a.ActionName,
 					icon = icon_str,
@@ -305,7 +305,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000504--[[List All Menu Items--]]],
 			custom_type = 7,
 			height = 800.0,
@@ -440,22 +440,29 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 				-- build / show confirmation dialog
 				local upload_msg = {}
+				local m_c = 0
 
+				m_c = m_c + 1
 				if steam_upload then
-					upload_msg[#upload_msg+1] = Trans(1000012--[[Mod <ModLabel> will be uploaded to Steam--]]):gsub("<ModLabel>",mod.title)
+					upload_msg[mc] = Trans(1000012--[[Mod <ModLabel> will be uploaded to Steam--]]):gsub("<ModLabel>",mod.title)
 				else
-					upload_msg[#upload_msg+1] = Trans(1000771--[[Mod <ModLabel> will be uploaded to Paradox--]]):gsub("<ModLabel>",mod.title)
+					upload_msg[mc] = Trans(1000771--[[Mod <ModLabel> will be uploaded to Paradox--]]):gsub("<ModLabel>",mod.title)
 				end
 
 				if not pack_mod then
-					upload_msg[#upload_msg+1] = "\n\n"
-					upload_msg[#upload_msg+1] = S[302535920000051--[[Mod will not be packed in an hpk archive.--]]]
+					m_c = m_c + 1
+					upload_msg[mc] = "\n\n"
+					m_c = m_c + 1
+					upload_msg[mc] = S[302535920000051--[[Mod will not be packed in an hpk archive.--]]]
 				end
 
 				if not copy_files then
-					upload_msg[#upload_msg+1] = "\n\n<color 203 120 30>"
-					upload_msg[#upload_msg+1] = S[302535920001262--[[%sModUpload folder is empty and waiting for files.--]]]:format(ConvertToOSPath("AppData/"))
-					upload_msg[#upload_msg+1] = "</color>"
+					m_c = m_c + 1
+					upload_msg[mc] = "\n\n<color 203 120 30>"
+					m_c = m_c + 1
+					upload_msg[mc] = S[302535920001262--[[%sModUpload folder is empty and waiting for files.--]]]:format(ConvertToOSPath("AppData/"))
+					m_c = m_c + 1
+					upload_msg[mc] = "</color>"
 
 					-- clear out and create upload folder
 					AsyncDeletePath(dest_path)
@@ -464,8 +471,10 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 				-- show diff author warning unless it's me
 				if diff_author and not testing then
-					upload_msg[#upload_msg+1] = "\n\n"
-					upload_msg[#upload_msg+1] = S[302535920001263--[["%s is different from your name, do you have permission to upload it?"--]]]:format(mod.author)
+					m_c = m_c + 1
+					upload_msg[mc] = "\n\n"
+					m_c = m_c + 1
+					upload_msg[mc] = S[302535920001263--[["%s is different from your name, do you have permission to upload it?"--]]]:format(mod.author)
 				end
 
 				local function QuestionBoxCallBackFunc(answer)
@@ -699,7 +708,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 			print("ECM ModUpload ModsReloadDefs:")
 			ModsReloadDefs()
 
-			local ItemList = {}
+			local item_list = {}
 			local c = 0
 			local Mods = Mods
 			for id,mod in pairs(Mods) do
@@ -712,7 +721,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 					image = "<image " .. path .. "" .. mod.image:sub((slash - 1) * -1) .. ">\n\n"
 				end
 				c = c + 1
-				ItemList[c] = {
+				item_list[c] = {
 					text = mod.title,
 					value = id,
 					hint = image .. mod.description,
@@ -721,39 +730,33 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 				}
 			end
 
-			-- need to disable paradox upload choice on kuiper
-			local check = {
-				{
-					title = S[302535920001258--[[Copy Files--]]],
+			-- hide paradox upload if not on plat.pops
+			local checkboxes = {
+				{title = S[302535920001258--[[Copy Files--]]],
 					hint = S[302535920001259--[["Copies all mod files to %sModUpload, uncheck to copy files manually."--]]]:format(ConvertToOSPath("AppData/")),
 					checked = true,
 				},
-				{
-					title = S[302535920001260--[[Blank--]]],
+				{title = S[302535920001260--[[Blank--]]],
 					hint = S[302535920001261--[["Uploads a blank mod, and prints id in log."--]]],
 				},
-				{
-					title = S[302535920000664--[[Clipboard--]]],
+				{title = S[302535920000664--[[Clipboard--]]],
 					hint = S[302535920000665--[[If uploading a mod this copies steam id or uuid to clipboard.--]]],
 					checked = true,
 				},
-				{
+				{title = S[302535920001427--[[Pack--]]],
 					-- AsyncPack is crashing sm for me
 					visible = false,
 
-					title = S[302535920001427--[[Pack--]]],
 					hint = S[302535920001428--[["Uploads as a packed mod (default for mod editor upload).
 This will always apply if uploading to paradox."--]]],
 					checked = false,
 				},
-				{
+				{title = Trans(186760604064--[[Test--]]),
 					level = 2,
-					title = Trans(186760604064--[[Test--]]),
 					hint = S[302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]]],
 				},
-				{
+				{title = S[302535920001506--[[Steam--]]],
 					level = 2,
-					title = S[302535920001506--[[Steam--]]],
 					hint = S[302535920001507--[[Uncheck to upload to Paradox mods (instead of Steam).--]]],
 					checked = upload_to_who,
 					func = function(dlg,check)
@@ -768,9 +771,8 @@ This will always apply if uploading to paradox."--]]],
 						end
 					end,
 				},
-				{
+				{title = S[302535920001509--[[Platform--]]],
 					level = 2,
-					title = S[302535920001509--[[Platform--]]],
 					hint = S[302535920001510--[[Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.--]]],
 					checked = upload_to_whichplatform,
 					visible = false,
@@ -780,24 +782,24 @@ This will always apply if uploading to paradox."--]]],
 				},
 			}
 			-- adjust depending on if we can upload to paradox
-			if Platform.pops and not rawget(_G,"PDX_PrepareForUpload") then
-				check[6].visible = false
+			if not Platform.pops then
+				checkboxes[6].visible = false
 			end
 			-- it defaults to hidden, so if it's paradox then we change it to visible
 			if not upload_to_who then
-				check[7].visible = true
+				checkboxes[7].visible = true
 			end
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920000367--[[Mod Upload--]]],
 				hint = S[302535920001511--[["AsyncPack crashes SM, so you'll need to use hpk to pack mod ahead of time.
 
 https://github.com/nickelc/hpk
-hpk create --cripple-lua-files ""Mod folder"" ModContent.hpk
+hpk create ""Mod folder"" ModContent.hpk
 Move archive to Mod folder/Pack/ModContent.hpk"--]]],
-				check = check,
+				checkboxes = checkboxes,
 				height = 800.0,
 			}
 		end

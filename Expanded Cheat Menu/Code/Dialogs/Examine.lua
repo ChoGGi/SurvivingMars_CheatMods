@@ -160,7 +160,7 @@ DefineClass.Examine = {
 	menu_list_items = false,
 	-- clickable purple text
 	onclick_funcs = false,
-	onclick_text = false,
+	onclick_name = false,
 	onclick_objs = false,
 	onclick_count = false,
 	hex_shape_tables = false,
@@ -193,7 +193,7 @@ function Examine:Init(parent, context)
 	self.menu_added = {}
 	self.menu_list_items = {}
 	self.onclick_funcs = {}
-	self.onclick_text = {}
+	self.onclick_name = {}
 	self.onclick_objs = {}
 	self.onclick_count = 0
 	self.marked_objects = objlist:new()
@@ -270,8 +270,8 @@ Press once to clear this examine, again to clear all."--]]],
 		self.idButDeleteObj = g_Classes.ChoGGi_ToolbarButton:new({
 			Id = "idButDeleteObj",
 			Image = "CommonAssets/UI/Menu/delete_objects.tga",
-			RolloverTitle = Trans(697--[[Destroy--]]),
-			RolloverText = S[302535920000414--[[Are you sure you wish to delete it?--]]],
+			RolloverTitle = Trans(502364928914--[[Delete--]]),
+			RolloverText = S[302535920000414--[[Are you sure you wish to delete it?--]]]:format(self.name),
 			OnPress = self.idButDeleteObjOnPress,
 		}, self.idToolbarButtons)
 		--
@@ -540,7 +540,7 @@ function Examine:idTextOnHyperLinkRollover(link)
 
 	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
 		RolloverTitle = title,
-		RolloverText = self.onclick_text[link] or name,
+		RolloverText = self.onclick_name[link] or name,
 		RolloverHint = S[302535920001079--[[<left_click> Default Action <right_click> Examine--]]],
 	})
 end
@@ -564,18 +564,18 @@ function Examine:idTextOnHyperLink(link, argument, hyperlink_box, pos, button)
 
 end
 -- created
-function Examine:HyperLink(obj, func, text)
+function Examine:HyperLink(obj, func, name)
 	local c = self.onclick_count
 	c = c + 1
 
 	self.onclick_count = c
 	self.onclick_objs[c] = obj
 	self.onclick_funcs[c] = func
-	if text then
-		self.onclick_text[c] = text
+	if name then
+		self.onclick_name[c] = name
 	end
 
-	return "<color 150 170 250><h " .. c .. " 230 195 50>"
+	return "<color 150 170 250><h " .. c .. " 230 195 50>",c
 end
 
 function Examine:idExecCodeOnKbdKeyDown(vk,...)
@@ -663,29 +663,7 @@ function Examine:idButMarkObjectOnPress()
 end
 
 function Examine:idButDeleteObjOnPress()
-	ChoGGi.ComFuncs.QuestionBox(
-		S[302535920000414--[[Are you sure you wish to delete it?--]]],
-		function(answer)
-			if answer then
-				self = GetRootDialog(self)
-
-				-- map objects
-				if IsValidThread(self.obj_ref) then
-					DeleteThread(self.obj_ref)
-				elseif IsValid(self.obj_ref) then
-					DeleteObject(self.obj_ref)
-				-- xwindows
-				elseif self.obj_ref.Close then
-					self.obj_ref:Close()
-				-- whatever
-				else
-					self.obj_ref:delete()
-				end
-
-			end
-		end,
-		Trans(697--[[Destroy--]])
-	)
+	ChoGGi.ComFuncs.DeleteObjectQuestion(GetRootDialog(self).obj_ref)
 end
 
 function Examine:idButDeleteAllOnPress()
@@ -699,7 +677,7 @@ function Examine:idButDeleteAllOnPress()
 					if IsValid(obj) then
 						DeleteObject(obj)
 					elseif obj.delete then
-						obj:delete()
+						DoneObject(obj)
 					end
 				end
 				ResumePassEdits("Examine:idButDeleteAllOnPress")
@@ -817,121 +795,9 @@ function Examine:idShowAllValuesOnChange()
 	self:SetObj()
 end
 
-local function CallMenu(self,popup_id,items,pt,button,...)
-	if pt then
-		ChoGGi_ComboButton.OnMouseButtonDown(self,pt,button,...)
-	end
-	if button == "L" then
-		local dlg = GetRootDialog(self)
-		-- same colour as bg of icons :)
-		dlg[items].Background = -9868951
-		dlg[items].FocusedBackground = -9868951
-		dlg[items].PressedBackground = -12500671
-		dlg[items].TextStyle = "ChoGGi_CheckButtonMenuOpp"
-		ChoGGi.ComFuncs.PopupToggle(self,dlg[popup_id],dlg[items],"bottom")
-	end
-end
-
-function Examine:idToolsOnMouseButtonDown(pt,button,...)
-	CallMenu(self,"idToolsMenu","tools_menu_popup",pt,button,...)
-end
-function Examine:idObjectsOnMouseButtonDown(pt,button,...)
-	CallMenu(self,"idObjectsMenu","objects_menu_popup",pt,button,...)
-end
-
-function Examine:idParentsOnMouseButtonDown(pt,button,...)
-	CallMenu(self,"idParentsMenu","parents_menu_popup",pt,button,...)
-end
-
-function Examine:idAttachesOnMouseButtonDown(pt,button,...)
-	CallMenu(self,"idAttachesMenu","attaches_menu_popup",pt,button,...)
-end
-
-function Examine:idSearchOnMouseButtonDown(pt,button,...)
-	ChoGGi_Button.OnMouseButtonDown(self,pt,button,...)
-	self = GetRootDialog(self)
-	if button == "L" then
-		self:FindNext()
-	elseif button == "R" then
-		self:FindNext(nil,true)
-	else
-		self.idScrollArea:ScrollTo(0,0)
-	end
-end
-
-function Examine:idSearchTextOnKbdKeyDown(vk,...)
-	self = GetRootDialog(self)
-
-	local c = const
-	if vk == c.vkEnter then
-		if IsControlPressed() then
-			self:FindNext(nil,true)
-		else
-			self:FindNext()
-		end
-		return "break"
-	elseif vk == c.vkUp then
-		self.idScrollArea:ScrollTo(nil,0)
-		return "break"
-	elseif vk == c.vkDown then
-		local v = self.idScrollV
-		if v:IsVisible() then
-			self.idScrollArea:ScrollTo(nil,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
-		end
-		return "break"
-	elseif vk == c.vkRight then
-		local h = self.idScrollH
-		if h:IsVisible() then
-			self.idScrollArea:ScrollTo(h.Max - (h.FullPageAtEnd and h.PageSize or 0))
-		end
-		-- break doesn't work for left/right
-	elseif vk == c.vkLeft then
-		self.idScrollArea:ScrollTo(0)
-		-- break doesn't work for left/right
-	elseif vk == c.vkEsc then
-		self.idCloseX:OnPress()
-		return "break"
-	elseif vk == c.vkV then
-		if IsControlPressed() then
-			CreateRealTimeThread(function()
-				WaitMsg("OnRender")
-				self:FindNext()
-			end)
-		end
-	end
-
-	return ChoGGi_TextInput.OnKbdKeyDown(self.idSearchText,vk,...)
-end
-
--- adds class name then list of functions below
-function Examine:BuildFuncList(obj_name,prefix)
-	prefix = prefix or ""
-	local class = _G[obj_name] or {}
-	local skip = true
-	for key,value in pairs(class) do
-		if type(value) == "function" then
-			self.menu_list_items[prefix .. obj_name .. "." .. key .. ": "] = value
-			skip = false
-		end
-	end
-	if not skip then
-		self.menu_list_items[prefix .. obj_name] = "\n\n\n"
-	end
-end
-
-function Examine:ProcessList(list,prefix)
-	for i = 1, #list do
-		if not self.menu_added[list[i]] then
-			-- CObject and Object are pretty much the same (Object has a couple more funcs)
-			if list[i] == "CObject" then
-				-- keep it for later (for the rare objects that use CObject, but not Object)
-				self.menu_added[list[i]] = prefix
-			else
-				self.menu_added[list[i]] = true
-				self:BuildFuncList(list[i],prefix)
-			end
-		end
-	end
+function Examine:CleanTextForView(str)
+	-- remove html tags (any </*> closing tags, <left>, <color *>, <h *>, and * added by the context menus)
+	return str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>",""):gsub("%* '","'")
 end
 
 function Examine:BuildObjectMenuPopup()
@@ -1049,8 +915,7 @@ function Examine:BuildToolsMenuPopup()
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
 				local str = self.idText:GetText()
-				-- remove html tags (any </*> closing tags, <left>, <color *>, <h *>)
-				str = str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>","")
+				str = self:CleanTextForView(str)
 				-- i just compare, so append doesn't really work
 				if ChoGGi.UserSettings.ExamineAppendDump then
 					ChoGGi.ComFuncs.Dump("\n" .. str,nil,"DumpedExamine","lua")
@@ -1083,8 +948,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
 				local str = self.idText:GetText()
-				-- remove html tags (any </*> closing tags, <left>, <color *>, <h *>)
-				str = str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>","")
+				str = self:CleanTextForView(str)
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 					parent = self,
 					checkbox = true,
@@ -1307,6 +1171,123 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 	return list
 end
 
+local function CallMenu(self,popup_id,items,pt,button,...)
+	if pt then
+		ChoGGi_ComboButton.OnMouseButtonDown(self,pt,button,...)
+	end
+	if button == "L" then
+		local dlg = GetRootDialog(self)
+		-- same colour as bg of icons :)
+		dlg[items].Background = -9868951
+		dlg[items].FocusedBackground = -9868951
+		dlg[items].PressedBackground = -12500671
+		dlg[items].TextStyle = "ChoGGi_CheckButtonMenuOpp"
+		ChoGGi.ComFuncs.PopupToggle(self,dlg[popup_id],dlg[items],"bottom")
+	end
+end
+
+function Examine:idToolsOnMouseButtonDown(pt,button,...)
+	CallMenu(self,"idToolsMenu","tools_menu_popup",pt,button,...)
+end
+function Examine:idObjectsOnMouseButtonDown(pt,button,...)
+	CallMenu(self,"idObjectsMenu","objects_menu_popup",pt,button,...)
+end
+
+function Examine:idParentsOnMouseButtonDown(pt,button,...)
+	CallMenu(self,"idParentsMenu","parents_menu_popup",pt,button,...)
+end
+
+function Examine:idAttachesOnMouseButtonDown(pt,button,...)
+	CallMenu(self,"idAttachesMenu","attaches_menu_popup",pt,button,...)
+end
+
+function Examine:idSearchOnMouseButtonDown(pt,button,...)
+	ChoGGi_Button.OnMouseButtonDown(self,pt,button,...)
+	self = GetRootDialog(self)
+	if button == "L" then
+		self:FindNext()
+	elseif button == "R" then
+		self:FindNext(nil,true)
+	else
+		self.idScrollArea:ScrollTo(0,0)
+	end
+end
+
+function Examine:idSearchTextOnKbdKeyDown(vk,...)
+	self = GetRootDialog(self)
+
+	local c = const
+	if vk == c.vkEnter then
+		if IsControlPressed() then
+			self:FindNext(nil,true)
+		else
+			self:FindNext()
+		end
+		return "break"
+	elseif vk == c.vkUp then
+		self.idScrollArea:ScrollTo(nil,0)
+		return "break"
+	elseif vk == c.vkDown then
+		local v = self.idScrollV
+		if v:IsVisible() then
+			self.idScrollArea:ScrollTo(nil,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
+		end
+		return "break"
+	elseif vk == c.vkRight then
+		local h = self.idScrollH
+		if h:IsVisible() then
+			self.idScrollArea:ScrollTo(h.Max - (h.FullPageAtEnd and h.PageSize or 0))
+		end
+		-- break doesn't work for left/right
+	elseif vk == c.vkLeft then
+		self.idScrollArea:ScrollTo(0)
+		-- break doesn't work for left/right
+	elseif vk == c.vkEsc then
+		self.idCloseX:OnPress()
+		return "break"
+	elseif vk == c.vkV then
+		if IsControlPressed() then
+			CreateRealTimeThread(function()
+				WaitMsg("OnRender")
+				self:FindNext()
+			end)
+		end
+	end
+
+	return ChoGGi_TextInput.OnKbdKeyDown(self.idSearchText,vk,...)
+end
+
+-- adds class name then list of functions below
+function Examine:BuildFuncList(obj_name,prefix)
+	prefix = prefix or ""
+	local class = _G[obj_name] or {}
+	local skip = true
+	for key,value in pairs(class) do
+		if type(value) == "function" then
+			self.menu_list_items[prefix .. obj_name .. "." .. key .. ": "] = value
+			skip = false
+		end
+	end
+	if not skip then
+		self.menu_list_items[prefix .. obj_name] = "\n\n\n"
+	end
+end
+
+function Examine:ProcessList(list,prefix)
+	for i = 1, #list do
+		if not self.menu_added[list[i]] then
+			-- CObject and Object are pretty much the same (Object has a couple more funcs)
+			if list[i] == "CObject" then
+				-- keep it for later (for the rare objects that use CObject, but not Object)
+				self.menu_added[list[i]] = prefix
+			else
+				self.menu_added[list[i]] = true
+				self:BuildFuncList(list[i],prefix)
+			end
+		end
+	end
+end
+
 function Examine:InvalidMsgPopup(msg,title)
 	ChoGGi.ComFuncs.MsgPopup(
 		msg or S[302535920001526--[[Not a valid object--]]],
@@ -1345,27 +1326,33 @@ function Examine:FindNext(text,previous)
 	local current_y = self.idScrollArea.OffsetY
 	local min_match, closest_match = false, false
 
+	local text_table = {}
 	local cache = self.idText.draw_cache or {}
+	-- see about getting previous working better
+--~ 	local prev_y = 0
 	for y, list_draw_info in pairs(cache) do
+		table_iclear(text_table)
 		for i = 1, #list_draw_info do
-			local draw_info = list_draw_info[i]
-			if draw_info.text and draw_info.text:find_lower(text) or text == "" then
-				if not min_match or y < min_match then
-					min_match = y
-				end
+			text_table[i] = list_draw_info[i].text or ""
+		end
 
-				if previous then
-					if y < current_y and (not closest_match or y > closest_match) then
-						closest_match = y
-					end
-				else
-					if y > current_y and (not closest_match or y < closest_match) then
-						closest_match = y
-					end
-				end
+		if TableConcat(text_table):find_lower(text) or text == "" then
+			if not min_match or y < min_match then
+				min_match = y
+			end
 
+			if previous then
+--~ 				print(prev_y,y,current_y)
+				if y < current_y and (not closest_match or y > closest_match) then
+					closest_match = y
+				end
+			else
+				if y > current_y and (not closest_match or y < closest_match) then
+					closest_match = y
+				end
 			end
 		end
+--~ 		prev_y = y
 	end
 
 	local match = closest_match or min_match
@@ -1419,15 +1406,15 @@ function Examine:ShowHexShapeList()
 	ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
 
 	self.hex_shape_tables = self.hex_shape_tables or {
-		"HexOutlineShapes",
-		"HexInteriorShapes",
 		"HexBuildShapes",
 		"HexBuildShapesInversed",
 		"HexCombinedShapes",
+		"HexInteriorShapes",
+		"HexOutlineShapes",
 		"HexPeripheralShapes",
 	}
 
-	local ItemList = {{
+	local item_list = {{
 		text = " " .. Trans(594--[[Clear--]]),
 		value = "Clear",
 	}}
@@ -1439,39 +1426,23 @@ function Examine:ShowHexShapeList()
 		local shape = g[shape_list][entity]
 		if shape then
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = shape_list,
 				shape = shape,
 			}
 		end
 	end
 
-	local fall = g.FallbackOutline
-	local all_states = g.GetStates(entity)
-	for i = 1, #all_states do
-		local state_idx = g.GetStateIdx(all_states[i])
-
-		local EntitySurfaces = g.EntitySurfaces
-		for key,value in pairs(EntitySurfaces) do
-			local outline, interior = g.GetSurfaceHexShapes(entity, state_idx, value) or "",""
-			if outline ~= fall and #outline > 2 then
-				c = c + 1
-				ItemList[c] = {
-					text = "GetSurfaceHexShapes(), outline, mask: " .. key .. " state_idx:" .. state_idx,
-					value = "GetSurfaceHexShapes_out",
-					shape = outline,
-				}
-			end
-			if interior ~= fall and #interior > 2 then
-				c = c + 1
-				ItemList[c] = {
-					text = "GetSurfaceHexShapes(), interior, mask: " .. key .. " state_idx:" .. state_idx,
-					value = "GetSurfaceHexShapes_in",
-					shape = interior,
-				}
-			end
-
-		end
+	local surfs = ChoGGi.ComFuncs.RetHexSurfaces(entity,true,true)
+	for i = 1, #surfs do
+		local s = surfs[i]
+		c = c + 1
+		item_list[c] = {
+			text = "GetSurfaceHexShapes(), " .. s.name .. ", mask: " .. s.id
+				.. " (" .. s.mask .. ") state:" .. s.state,
+			value = "GetSurfaceHexShapes_out",
+			shape = s.shape,
+		}
 	end
 
 	local function CallBackFunc(choice)
@@ -1494,11 +1465,11 @@ function Examine:ShowHexShapeList()
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
-		items = ItemList,
+		items = item_list,
 		title = S[302535920001522--[[Hex Shape Toggle--]]] .. ": " .. self.name,
 		skip_sort = true,
 		custom_type = 7,
-		check = {
+		checkboxes = {
 			{
 				title = S[302535920001553--[[Depth Test--]]],
 				hint = S[302535920001554--[[If enabled lines will hide behind occluding walls (not glass).--]]],
@@ -1524,7 +1495,7 @@ function Examine:ShowBBoxList()
 
 	ChoGGi.ComFuncs.BBoxLines_Clear(obj)
 
-	local ItemList = {
+	local item_list = {
 		{text = " " .. Trans(594--[[Clear--]]),value = "Clear"},
 		{text = "GetObjectBBox",value = "GetObjectBBox"},
 		{text = "GetEntityBBox",value = "GetEntityBBox"},
@@ -1557,12 +1528,12 @@ function Examine:ShowBBoxList()
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
-		items = ItemList,
+		items = item_list,
 		title = S[302535920001472--[[BBox Toggle--]]] .. ": " .. self.name,
 		hint = S[302535920000264--[["Defaults to ObjectHierarchyBBox(obj,const.efCollision) if it can't find a func."--]]],
 		skip_sort = true,
 		custom_type = 7,
-		check = {
+		checkboxes = {
 			{
 				title = S[302535920001553--[[Depth Test--]]],
 				hint = S[302535920001554--[[If enabled lines will hide behind occluding walls (not glass).--]]],
@@ -1581,11 +1552,11 @@ function Examine:ShowAttachSpotsList()
 		return self:InvalidMsgPopup(nil,Trans(155--[[Entity--]]))
 	end
 
-	local ItemList = {
+	local item_list = {
 		{text = " " .. Trans(4493--[[All--]]),value = "All"},
 		{text = " " .. Trans(594--[[Clear--]]),value = "Clear"},
 	}
-	local c = #ItemList
+	local c = #item_list
 
 	local dupes = {}
 	local id_start, id_end = obj:GetAllSpots(obj:GetState())
@@ -1603,7 +1574,7 @@ function Examine:ShowAttachSpotsList()
 		if not dupes[name] then
 			dupes[name] = true
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = name,
 				name = spot_name,
 				value = spot_annot_n,
@@ -1628,21 +1599,27 @@ function Examine:ShowAttachSpotsList()
 				annotation = choice.value,
 				skip_return = true,
 				depth_test = choice.check1,
+				pos = choice.check2,
 			})
 		end
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
-		items = ItemList,
+		items = item_list,
 		title = S[302535920000449--[[Attach Spots Toggle--]]] .. ": " .. self.name,
 		hint = S[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 		custom_type = 7,
 		skip_icons = true,
-		check = {
+		checkboxes = {
 			{
 				title = S[302535920001553--[[Depth Test--]]],
 				hint = S[302535920001554--[[If enabled lines will hide behind occluding walls (not glass).--]]],
+				checked = false,
+			},
+			{
+				title = S[302535920000461--[[Position--]]],
+				hint = S[302535920000463--[[Add spot pos to the name.--]]],
 				checked = false,
 			},
 		},
@@ -1659,7 +1636,7 @@ function Examine:ShowSurfacesList()
 		return self:InvalidMsgPopup(nil,Trans(155--[[Entity--]]))
 	end
 
-	local ItemList = {
+	local item_list = {
 		{text = " " .. Trans(594--[[Clear--]]),value = "Clear"},
 		{
 			text = "0",
@@ -1667,7 +1644,7 @@ function Examine:ShowSurfacesList()
 			hint = "Relative Surface index: 0",
 		},
 	}
-	local c = #ItemList
+	local c = #item_list
 
 	local GetRelativeSurfaces = GetRelativeSurfaces
 	-- yep, no idea what GetRelativeSurfaces uses, so 1024 it'll be (from what i've seen nothing above 10, but...)
@@ -1675,7 +1652,7 @@ function Examine:ShowSurfacesList()
 		local surfs = GetRelativeSurfaces(obj,i)
 		if #surfs > 0 then
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = i .. "",
 				value = i,
 				surfs = surfs,
@@ -1704,11 +1681,11 @@ function Examine:ShowSurfacesList()
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
-		items = ItemList,
+		items = item_list,
 		title = S[302535920001551--[[Surfaces Toggle--]]] .. ": " .. self.name,
 		hint = S[302535920001552--[[Show a list of surfaces and draw lines over them (GetRelativeSurfaces).--]]],
 		custom_type = 7,
-		check = {
+		checkboxes = {
 			{
 				title = S[302535920001553--[[Depth Test--]]],
 				hint = S[302535920001554--[[If enabled lines will hide behind occluding walls (not glass).--]]],
@@ -1803,9 +1780,11 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			end,
 		},
 	}
+
 	-- if it's an image path then we add an image viewer
 	if ImageExts()[obj_value_str:sub(-3)] then
-		list[#list+1] = {name = S[302535920001469--[[Image Viewer--]]],
+		c = c + 1
+		list[c] = {name = S[302535920001469--[[Image Viewer--]]],
 			hint = S[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."--]]],
 			image = "CommonAssets/UI/Menu/light_model.tga",
 			clicked = function()
@@ -2119,6 +2098,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			local sort = name
 			-- append context menu link
 			name = self:HyperLink(k,self.OpenListMenu) .. "* " .. HLEnd .. name
+--~ 			local hyper_c = self.onclick_count
 
 			-- store the names if we're doing all props
 			if show_all_values then
@@ -2127,6 +2107,8 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			c = c + 1
 			local str_tmp = name .. " = " .. self:ConvertValueToInfo(v) .. "<left>"
 			list_obj_str[c] = str_tmp
+--~ 			-- so we can copy the actual line of text
+--~ 			self.onclick_linetext[hyper_c] = str_tmp
 
 			if type(k) == "number" then
 				list_sort_num[str_tmp] = k

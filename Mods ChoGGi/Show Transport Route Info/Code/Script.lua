@@ -75,8 +75,8 @@ function OnMsg.SelectionAdded(obj)
 
 	-- nice n big
 	text:SetTextStyle("Autosave")
-	-- spins text to face camera
-	text:Attach(PlaceObject("Orientation"))
+--~ 	-- spins text to face camera
+--~ 	text:Attach(PlaceObject("Orientation"))
 
 end
 

@@ -157,27 +157,6 @@ function OnMsg.ClassesGenerate()
 		)
 	end
 
-	function ChoGGi.MenuFuncs.AllPipeSkinsToDefault()
-		local ChoGGi = ChoGGi
-		local Sleep = Sleep
-		CreateRealTimeThread(function()
-			-- so GetPipeConnections ignores the dupe connection error
-			ChoGGi.Temp.FixingPipes = true
-			local grids = UICity.water
-			for i = 1, #grids do
-				grids[i]:ChangeElementSkin("Chrome", true)
-				-- needs a slight delay between changing skins
-				Sleep(100)
-				grids[i]:ChangeElementSkin("Default", true)
-			end
-			ChoGGi.Temp.FixingPipes = nil
-		end)
-		MsgPopup(
-			Trans(4493--[[All--]]),
-			S[302535920000461--[[All Pipe Skins To Default--]]]
-		)
-	end
-
 	do --ResetCommanders
 		local function ResetRover(rc)
 			local drones

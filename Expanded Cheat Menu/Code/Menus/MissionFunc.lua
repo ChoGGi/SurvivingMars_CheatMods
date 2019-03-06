@@ -21,7 +21,7 @@ function OnMsg.ClassesGenerate()
 			[g_CurrentMissionParams.idMissionSponsor] = true,
 		}
 
-		local ItemList = {}
+		local item_list = {}
 		local c = 0
 		for i = 1, #rival_colonies do
 			local rival = rival_colonies[i]
@@ -29,15 +29,16 @@ function OnMsg.ClassesGenerate()
 				local existing = g_RivalAIs[rival.id]
 				local name = Trans(rival.display_name)
 				local initial_res = {}
+
 				for j = 1, #rival.initial_resources do
 					local res = rival.initial_resources[j]
 					if res.amount then
-						initial_res[#initial_res+1] = res.resource .. " " .. res.amount .. "\n"
+						initial_res[j] = res.resource .. " " .. res.amount .. "\n"
 					end
 				end
 
 				c = c + 1
-				ItemList[c] = {
+				item_list[c] = {
 					text = existing and (name .. " (" .. S[302535920000201--[[Active--]]] .. ")") or name,
 					value = rival.id,
 					rival = rival,
@@ -48,52 +49,57 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
-		local function CallBackFunc(choice)
-			if choice.nothing_selected then
+		local function CallBackFunc(choices)
+			if choices.nothing_selected then
 				return
 			end
-			local add = choice[1].check1
-			local remove = choice[1].check2
+			local add = choices[1].check1
+			local remove = choices[1].check2
 
 			-- if it's an old save without rivals added
 			if not g_CurrentMissionParams.idRivalColonies then
 				local rivals_table = {}
+				local c = 0
+
 				if add then
-					for i = 1, #choice do
-						rivals_table[#rivals_table+1] = choice[i].value
+					for i = 1, #choices do
+						rivals_table[i] = choices[i].value
 					end
-					local num = #rivals_table
-					if num < 3 then
-						for _ = num, 3 - num do
-							rivals_table[#rivals_table+1] = "none"
+					local c = #rivals_table
+					if c < 3 then
+						for _ = c, 3 - c do
+							c = c + 1
+							rivals_table[c] = "none"
 						end
 					end
 				elseif remove then
 					return
 				end
+
 				g_CurrentMissionParams.idRivalColonies = rivals_table
 				Msg("OurColonyPlaced")
 			end
 			local g_RivalAIs = RivalAIs
 
 			if add then
-				for i = 1, #choice do
-					local value = choice[i].value
+				for i = 1, #choices do
+					local choice = choices[i]
 					-- if it's an actual rival, and not one already added
-					if not g_RivalAIs[value] then
-						SpawnRivalAI(choice[i].rival)
+					if not g_RivalAIs[choice.value] then
+						SpawnRivalAI(choice.rival)
 					end
 				end
 			elseif remove then
-				for i = 1, #choice do
-					if choice[i].existing then
-						DeleteRivalAI(choice[i].existing)
+				for i = 1, #choices do
+					local choice = choices[i]
+					if choice.existing then
+						DeleteRivalAI(choice.existing)
 					end
 				end
 			end
 
 			MsgPopup(
-				tostring(#choice),
+				tostring(#choices),
 				Trans(11034--[[Rival Colonies--]])
 			)
 
@@ -101,12 +107,12 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = Trans(11034--[[Rival Colonies--]]),
 			hint = S[302535920001460--[[Add/remove rival colonies.--]]],
 			multisel = true,
 			custom_type = 3,
-			check = {
+			checkboxes = {
 				only_one = true,
 				at_least_one = true,
 				{
@@ -124,7 +130,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.StartChallenge()
-		local ItemList = {}
+		local item_list = {}
 		local challenges = Presets.Challenge.Default
 		local DayDuration = const.DayDuration
 
@@ -134,7 +140,7 @@ function OnMsg.ClassesGenerate()
 			if c.id == g_CurrentMissionParams.challenge_id then
 				current = true
 			end
-			ItemList[i] = {
+			item_list[i] = {
 				text = Trans(c.title),
 				value = c.id,
 				hint = Trans(c.description) .. "\n\n"
@@ -170,7 +176,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001247--[[Start Challenge--]]],
 			hint = hint,
 		}
@@ -182,14 +188,16 @@ function OnMsg.ClassesGenerate()
 		local SponsorGoalsMap = SponsorGoalsMap
 		local SponsorGoalProgress = SponsorGoalProgress
 
-		local ItemList = {}
+		local item_list = {}
+		local c = 0
 		local sponsor = GetMissionSponsor()
 		for i = 1, 5 do
 			-- no sense in showing done ones
 			if not SponsorGoalProgress[i].state then
 				local reward = sponsor["reward_effect_" .. i]
 
-				ItemList[#ItemList+1] = {
+				c = c + 1
+				item_list[c] = {
 					text = i .. " " .. sponsor["sponsor_goal_" .. i],
 					value = i,
 					hint = "<image " .. sponsor["goal_image_" .. i] .. ">\n\n"
@@ -227,7 +235,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000704--[[Instant Mission Goals--]]],
 			multisel = true,
 		}
@@ -245,11 +253,6 @@ function OnMsg.ClassesGenerate()
 		-- actually pass it
 		Msg("ColonyApprovalPassed")
 		g_ColonyNotViableUntil = -1
-
---~ 		MsgPopup(
---~ 			"true",
---~ 			S[302535920000706--[[Instant Colony Approval--]]]
---~ 		)
 	end
 
 	function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
@@ -271,9 +274,11 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetSponsor()
 		local Presets = Presets
+		local GetSponsorDescr = GetSponsorDescr
 
-		local ItemList = {}
+		local item_list = {}
 		local c = 0
+
 		local objs = Presets.MissionSponsorPreset.Default or ""
 		for i = 1, #objs do
 			local spon = objs[i]
@@ -282,13 +287,14 @@ function OnMsg.ClassesGenerate()
 				local stats
 				-- the one we want is near the end, but there's also a blank item below it
 				for j = 1, #descr do
-					if type(descr[j]) == "table" then
-						stats = descr[j]
+					local des = descr[j]
+					if type(des) == "table" then
+						stats = des
 					end
 				end
 
 				c = c + 1
-				ItemList[c] = {
+				item_list[c] = {
 					text = Trans(spon.display_name),
 					value = spon.id,
 					hint = Trans(T(spon.effect,stats[2]))
@@ -303,13 +309,14 @@ function OnMsg.ClassesGenerate()
 			end
 			local value = choice[1].value
 			local g_CurrentMissionParams = g_CurrentMissionParams
-			for i = 1, #ItemList do
+			local UICity = UICity
+			local GetMissionSponsor = GetMissionSponsor
+			for i = 1, #item_list do
 				-- check to make sure it isn't a fake name (no sense in saving it)
-				if ItemList[i].value == value then
+				if item_list[i].value == value then
 					-- new spons
 					g_CurrentMissionParams.idMissionSponsor = value
 					-- apply tech from new sponsor
-					local UICity = UICity
 					local sponsor = GetMissionSponsor()
 					UICity:GrantTechFromProperties(sponsor)
 					sponsor:game_apply(UICity)
@@ -329,7 +336,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000712--[[Set Sponsor--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetMissionSponsor().display_name),
 		}
@@ -337,9 +344,10 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetSponsorBonus()
 		local ChoGGi = ChoGGi
+		local UserSettings = ChoGGi.UserSettings
 		local Presets = Presets
 
-		local ItemList = {}
+		local item_list = {}
 		local c = 0
 		local objs = Presets.MissionSponsorPreset.Default or ""
 		for i = 1, #objs do
@@ -349,14 +357,15 @@ function OnMsg.ClassesGenerate()
 				local stats
 				-- the one we want is near the end, but there's also a blank item below it
 				for j = 1, #descr do
-					if type(descr[j]) == "table" then
-						stats = descr[j]
+					local des = descr[j]
+					if type(des) == "table" then
+						stats = des
 					end
 				end
 
-				local user_set = ChoGGi.UserSettings["Sponsor" .. spon.id]
+				local user_set = UserSettings["Sponsor" .. spon.id]
 				c = c + 1
-				ItemList[c] = {
+				item_list[c] = {
 					text = Trans(spon.display_name),
 					value = spon.id,
 					hint = Trans(T(spon.effect,stats[2])) .. "\n\n" .. S[302535920001165--[[Enabled Status--]]]
@@ -371,26 +380,26 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 			if choice[1].check2 then
-				for i = 1, #ItemList do
-					local value = ItemList[i].value
+				for i = 1, #item_list do
+					local value = item_list[i].value
 					if type(value) == "string" then
 						value = "Sponsor" .. value
-						ChoGGi.UserSettings[value] = nil
+						UserSettings[value] = nil
 					end
 				end
 			else
 				for i = 1, #choice do
-					for j = 1, #ItemList do
-						--check to make sure it isn't a fake name (no sense in saving it)
-						local value = choice[i].value
-						if ItemList[j].value == value and type(value) == "string" then
+					local value = choice[i].value
+					for j = 1, #item_list do
+						-- check to make sure it isn't a fake name (no sense in saving it)
+						if item_list[j].value == value and type(value) == "string" then
 							local name = "Sponsor" .. value
 							if choice[1].check1 then
-								ChoGGi.UserSettings[name] = nil
+								UserSettings[name] = nil
 							else
-								ChoGGi.UserSettings[name] = true
+								UserSettings[name] = true
 							end
-							if ChoGGi.UserSettings[name] then
+							if UserSettings[name] then
 								ChoGGi.ComFuncs.SetSponsorBonuses(value)
 							end
 						end
@@ -407,11 +416,11 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000714--[[Set Bonuses Sponsor--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetMissionSponsor().display_name) .. "\n\n" .. S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]],
 			multisel = true,
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920001169--[[Turn Off--]]],
 					hint = S[302535920001170--[[Turn off selected bonuses (defaults to turning on).--]]],
@@ -429,13 +438,15 @@ function OnMsg.ClassesGenerate()
 		local g_CurrentMissionParams = g_CurrentMissionParams
 		local UICity = UICity
 
-		local ItemList = {}
+		local item_list = {}
+		local c = 0
 
 		local objs = Presets.CommanderProfilePreset.Default or ""
 		for i = 1, #objs do
 			local comm = objs[i]
 			if comm.id ~= "random" and comm.id ~= "None" then
-				ItemList[#ItemList+1] = {
+				c = c + 1
+				item_list[c] = {
 					text = Trans(comm.display_name),
 					value = comm.id,
 					hint = Trans(comm.effect)
@@ -448,9 +459,9 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 			local value = choice[1].value
-			for i = 1, #ItemList do
-				--check to make sure it isn't a fake name (no sense in saving it)
-				if ItemList[i].value == value then
+			for i = 1, #item_list do
+				-- check to make sure it isn't a fake name (no sense in saving it)
+				if item_list[i].value == value then
 					-- new comm
 					g_CurrentMissionParams.idCommanderProfile = value
 					-- apply tech from new commmander
@@ -461,7 +472,7 @@ function OnMsg.ClassesGenerate()
 					comm:OnApplyEffect(UICity)
 					UICity:ApplyModificationsFromProperties()
 
-					--and bonuses
+					-- and bonuses
 					UICity:InitMissionBonuses()
 
 					MsgPopup(
@@ -475,7 +486,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000716--[[Set Commander--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetCommanderProfile().display_name),
 		}
@@ -483,15 +494,18 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetCommanderBonus()
 		local Presets = Presets
+		local UserSettings = ChoGGi.UserSettings
 
-		local ItemList = {}
+		local item_list = {}
+		local c = 0
 		local objs = Presets.CommanderProfilePreset.Default or ""
 		for i = 1, #objs do
 			local comm = objs[i]
 			if comm.id ~= "random" and comm.id ~= "None" then
+				local user_set = UserSettings["Commander" .. comm.id]
 
-				local user_set = ChoGGi.UserSettings["Commander" .. comm.id]
-				ItemList[#ItemList+1] = {
+				c = c + 1
+				item_list[c] = {
 					text = Trans(comm.display_name),
 					value = comm.id,
 					hint = Trans(comm.effect) .. "\n\n"
@@ -505,27 +519,28 @@ function OnMsg.ClassesGenerate()
 			if choice.nothing_selected then
 				return
 			end
+
 			if choice[1].check2 then
-				for i = 1, #ItemList do
-					local value = ItemList[i].value
+				for i = 1, #item_list do
+					local value = item_list[i].value
 					if type(value) == "string" then
 						value = "Commander" .. value
-						ChoGGi.UserSettings[value] = nil
+						UserSettings[value] = nil
 					end
 				end
 			else
 				for i = 1, #choice do
-					for j = 1, #ItemList do
+					for j = 1, #item_list do
 						-- check to make sure it isn't a fake name (no sense in saving it)
 						local value = choice[i].value
-						if ItemList[j].value == value and type(value) == "string" then
+						if item_list[j].value == value and type(value) == "string" then
 							local name = "Commander" .. value
 							if choice[1].check1 then
-								ChoGGi.UserSettings[name] = nil
+								UserSettings[name] = nil
 							else
-								ChoGGi.UserSettings[name] = true
+								UserSettings[name] = true
 							end
-							if ChoGGi.UserSettings[name] then
+							if UserSettings[name] then
 								ChoGGi.ComFuncs.SetCommanderBonuses(value)
 							end
 						end
@@ -542,11 +557,11 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000718--[[Set Bonuses Commander--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetCommanderProfile().display_name),
 			multisel = true,
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920001169--[[Turn Off--]]],
 					hint = S[302535920001170--[[Turn off selected bonuses (defaults to turning on).--]]],
@@ -564,9 +579,11 @@ function OnMsg.ClassesGenerate()
 		local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
 		local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
 
-		local ItemList = {}
+		local item_list = {}
+		local c = 0
 		for id,def in pairs(MissionLogoPresetMap) do
-			ItemList[#ItemList+1] = {
+			c = c + 1
+			item_list[c] = {
 				text = Trans(def.display_name),
 				value = id,
 				hint = "<image " .. def.image .. ">",
@@ -615,7 +632,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001178--[[Set New Logo--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name),
 			height = 800.0,
@@ -628,13 +645,13 @@ function OnMsg.ClassesGenerate()
 
 		local mapdata = mapdata
 
-		local ItemList = {
+		local item_list = {
 			{
 			text = " " .. S[302535920000036--[[Disabled--]]],
 			value = "disabled",
 			}
 		}
-		local c = #ItemList
+		local c = #item_list
 
 		local set_name = "MapSettings_" .. setting_id
 		local data = DataInstances[set_name]
@@ -651,7 +668,7 @@ function OnMsg.ClassesGenerate()
 				end
 			end
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = rule.name,
 				value = rule.name,
 				hint = TableConcat(hint,"\n"),
@@ -681,7 +698,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. setting_id .. " " .. S[302535920001180--[[Disaster Occurrences--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. (mapdata[set_name] or ""),
 		}
@@ -691,11 +708,11 @@ function OnMsg.ClassesGenerate()
 		local GameRulesMap = GameRulesMap
 		local g_CurrentMissionParams = g_CurrentMissionParams
 
-		local ItemList = {}
+		local item_list = {}
 		local c = 0
 		for id,def in pairs(GameRulesMap) do
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = Trans(def.display_name),
 				value = id,
 				hint = Trans(def.description) .. "\n"
@@ -713,12 +730,12 @@ function OnMsg.ClassesGenerate()
 			local check1 = choice[1].check1
 			local check2 = choice[1].check2
 
-			for i = 1, #ItemList do
+			for i = 1, #item_list do
 				-- check to make sure it isn't a fake name (no sense in saving it)
 				for j = 1, #choice do
 					local value = choice[j].value
-					if ItemList[i].value == value then
-						--new comm
+					if item_list[i].value == value then
+						-- new comm
 						if not g_CurrentMissionParams.idGameRules then
 							g_CurrentMissionParams.idGameRules = {}
 						end
@@ -735,8 +752,9 @@ function OnMsg.ClassesGenerate()
 			local rules = GetActiveGameRules()
 			local UICity = UICity
 			for i = 1, #rules do
-				GameRulesMap[rules[i]]:EffectsInit(UICity)
-				GameRulesMap[rules[i]]:EffectsApply(UICity)
+				local rule = rules[i]
+				GameRulesMap[rule]:EffectsInit(UICity)
+				GameRulesMap[rule]:EffectsApply(UICity)
 			end
 
 			MsgPopup(
@@ -750,11 +768,15 @@ function OnMsg.ClassesGenerate()
 		local rules = g_CurrentMissionParams.idGameRules
 		if type(rules) == "table" and next(rules) then
 			hint = {}
-			hint[#hint+1] = S[302535920000106--[[Current--]]]
-			hint[#hint+1] = ":"
+			local c = 1
+			hint[c] = S[302535920000106--[[Current--]]]
+			c = c + 1
+			hint[c] = ":"
 			for key in pairs(rules) do
-				hint[#hint+1] = " "
-				hint[#hint+1] = Trans(GameRulesMap[key].display_name)
+				c = c + 1
+				hint[c] = " "
+				c = c + 1
+				hint[c] = Trans(GameRulesMap[key].display_name)
 			end
 		end
 		if hint then
@@ -763,11 +785,11 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001182--[[Set Game Rules--]]],
 			hint = hint,
 			multisel = true,
-			check = {
+			checkboxes = {
 				only_one = true,
 				at_least_one = true,
 				{

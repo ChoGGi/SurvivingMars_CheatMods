@@ -55,7 +55,7 @@ function OnMsg.ClassesGenerate()
 	local function ListBuildings(parent,dome)
 		local domes = UICity.labels.Dome or ""
 
-		local ItemList = {}
+		local item_list = {}
 		local c = 0
 
 		--make it pretty
@@ -64,7 +64,7 @@ function OnMsg.ClassesGenerate()
 			if domes[i].air and domes[i].handle ~= dome.handle then
 				local pos = domes[i]:GetVisualPos()
 				c = c + 1
-				ItemList[c] = {
+				item_list[c] = {
 					pos = pos,
 					name = RetName(domes[i]),
 					hint = string.format([[Position: %s
@@ -83,12 +83,12 @@ Living Spaces: %s]],
 			end
 		end
 
-		if #ItemList == 0 then
+		if #item_list == 0 then
 			return
 		end
 
 		-- add controller for ease of movement
-		ItemList[#ItemList+1] = {
+		item_list[#item_list+1] = {
 			name = [[ Current Dome]],
 			pos = dome:GetVisualPos(),
 			hint = [[Currently selected dome]],
@@ -101,7 +101,7 @@ Living Spaces: %s]],
 		if popup then
 			popup:Close()
 		else
-			PopupToggle(parent,"idForceNewDomeMenu",ItemList)
+			PopupToggle(parent,"idForceNewDomeMenu",item_list)
 		end
 
 	end

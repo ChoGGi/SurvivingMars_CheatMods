@@ -541,14 +541,14 @@ function OnMsg.ClassesBuilt()
 						end
 
 						-- build a list of all rovers inside
-						local ItemList = {}
+						local item_list = {}
 						local c = 0
 						for i = 1, #context.stored_rovers do
 							local obj = context.stored_rovers[i]
 							if IsValid(obj) then
 								local name = RetName(obj)
 								c = c + 1
-								ItemList[c] = {
+								item_list[c] = {
 									name = name,
 									hint = "Eject " .. name .. " from garage",
 									clicked = function()
@@ -559,7 +559,7 @@ function OnMsg.ClassesBuilt()
 						end
 
 						-- and show it
-						PopupToggle(self,"idRCGarageMenu",ItemList,"left")
+						PopupToggle(self,"idRCGarageMenu",item_list,"left")
 
 						ObjModified(context)
 						---

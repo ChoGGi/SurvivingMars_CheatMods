@@ -32,6 +32,8 @@ local classes_to_remove = {
   DecorInt_04 = true,
 }
 
+local DoneObject = DoneObject
+
 local orig_Service_GameInit = Service.GameInit
 function Service:GameInit()
 
@@ -40,7 +42,7 @@ function Service:GameInit()
 		if obj.ForEachAttach then
 			obj:ForEachAttach(function(a)
 				if classes_to_remove[a.class] then
-					a:delete()
+					DoneObject(a)
 				end
 			end)
 		end

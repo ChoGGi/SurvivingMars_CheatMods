@@ -18,14 +18,11 @@ DefineClass.ChoGGi_OSphere = {
 DefineClass.ChoGGi_OPolyline = {
 	__parents = {"Polyline"},
 }
+--~ SetZOffsetInterpolation,SetOpacityInterpolation
 DefineClass.ChoGGi_OText = {
 	__parents = {"Text"},
 	text_style = "Action",
 }
-function ChoGGi_OText:SetOpacityInterpolation(a,b)
-  a = a or 100
-  self:SetCustomData(6, EncodeBits(a, 7, b or a, 7, 0, 8, 0, 8))
-end
 DefineClass.ChoGGi_OOrientation = {
 	__parents = {"Orientation"},
 }
@@ -35,6 +32,8 @@ DefineClass.ChoGGi_OCircle = {
 
 DefineClass.ChoGGi_BuildingEntityClass = {
 	__parents = {
+		"BaseBuilding",
+
 		"BuildingEntityClass",
 		-- so we can have a selection panel for spawned entity objects
 		"InfopanelObj",

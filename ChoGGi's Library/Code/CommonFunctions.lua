@@ -453,12 +453,12 @@ do -- ShowObj
 	-- we just use a few noticeable colours for rand
 	local rand_colours = {
 		green,yellow,cyan,white,red,
-		-4587265, -- purple
+		-65369, -- pink
 		-39680, -- slightly darker orange (don't want it blending in to the ground as much as -23296)
 	}
 	local rand_colours_c = #rand_colours
 	local function rand_c()
-		return rand_colours[AsyncRand(rand_colours_c)]
+		return rand_colours[AsyncRand(6)+1]
 	end
 	ChoGGi.ComFuncs.RandomColourLimited = rand_c
 
@@ -1919,9 +1919,9 @@ function ChoGGi.ComFuncs.ColonistUpdateAge(c,age)
 	c.age_trait = age
 
 	if age == "Retiree" then
-		c.age = 65 -- why isn't there a base_MinAge_Retiree...
+		c.age = 65 -- why isn't there a MinAge_Retiree...
 	else
-		c.age = c["base_MinAge_" .. age]
+		c.age = c:GetClassValue("MinAge_" .. age)
 	end
 
 	if age == "Child" then
@@ -2344,33 +2344,33 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		end
 		local pal = ChoGGi.ComFuncs.GetPalette(obj)
 
-		local ItemList = {}
+		local item_list = {}
 		local c = 0
 		for i = 1, 4 do
 			local text = "Color" .. i
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = text,
 				value = pal[text],
 				hint = S[302535920000017--[[Use the colour picker (dbl right-click for instant change).--]]],
 			}
 			text = "Roughness" .. i
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = text,
 				value = pal[text],
 				hint = S[302535920000018--[[Don't use the colour picker: Numbers range from -128 to 127.--]]],
 			}
 			text = "Metallic" .. i
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = text,
 				value = pal[text],
 				hint = S[302535920000018--[[Don't use the colour picker: Numbers range from -128 to 127.--]]],
 			}
 		end
 		c = c + 1
-		ItemList[c] = {
+		item_list[c] = {
 			text = "X_BaseColor",
 			value = 6579300,
 			obj = obj,
@@ -2439,14 +2439,14 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = Trans(174--[[Color Modifier--]]) .. ": " .. RetName(obj),
 			hint = S[302535920000022--[["If number is 8421504 then you probably can't change that colour.
 
 You can copy and paste numbers if you want."--]]],
 			parent = dialog,
 			custom_type = 2,
-			check = {
+			checkboxes = {
 				{
 					title = S[302535920000023--[[All of type--]]],
 					hint = S[302535920000024--[[Change all objects of the same type.--]]],
@@ -2471,194 +2471,6 @@ function ChoGGi.ComFuncs.BuildMenu_Toggle()
 		Sleep(250)
 		OpenXBuildMenu()
 	end)
-end
-
--- sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
-function ChoGGi.ComFuncs.EmptyMechDepot(obj)
-	-- if fired from action menu
-	if IsKindOf(obj,"XAction") then
-		obj = ChoGGi.ComFuncs.SelObject()
-	else
-		obj = IsKindOf(obj,"MechanizedDepot") and obj or ChoGGi.ComFuncs.SelObject()
-	end
-
-	if not obj or not IsKindOf(obj,"MechanizedDepot") then
-		return
-	end
-
-	local res = obj.resource
-	local amount = obj["GetStored_" .. res](obj)
-	-- not good to be larger then this when game is saved (height limit of map objects seems to be 65536)
-	if amount > 20000000 then
-		amount = amount
-	end
-	local stock = obj.stockpiles[obj:GetNextStockpileIndex()]
-	local angle = obj:GetAngle()
-	-- new pos based on angle of old depot (so it's in front not inside)
-	local newx = 0
-	local newy = 0
-	if angle == 0 then
-		newx = 500
-		newy = 0
-	elseif angle == 3600 then
-		newx = 500
-		newy = 500
-	elseif angle == 7200 then
-		newx = 0
-		newy = 500
-	elseif angle == 10800 then
-		newx = -600
-		newy = 0
-	elseif angle == 14400 then
-		newx = 0
-		newy = -500
-	elseif angle == 18000 then
-		newx = 500
-		newy = -500
-	end
-
-	-- yeah guys. lets have two names for a resource and use them interchangeably, it'll be fine...
-	local res2 = res
-	if res == "PreciousMetals" then
-		res2 = "RareMetals"
-	end
-
-	local x,y,z = stock:GetVisualPosXYZ()
-	-- so it doesn't look weird make sure it's on a hex point
-
-	-- create new depot, and set max amount to stored amount of old depot
-	local newobj = PlaceObj("UniversalStorageDepot", {
-		"template_name", "Storage" .. res2,
-		"storable_resources", {res},
-		"max_storage_per_resource", amount,
-		-- so it doesn't look weird make sure it's on a hex point
-		"Pos", HexGetNearestCenter(point(x + newx,y + newy,z)),
-	})
-
-	-- make it align with the depot
-	newobj:SetAngle(angle)
-	-- give it a bit before filling
-	local Sleep = Sleep
-	CreateRealTimeThread(function()
-		local time = 0
-		repeat
-			Sleep(250)
-			time = time + 25
-		until type(newobj.requester_id) == "number" or time > 5000
-		-- since we set new depot max amount to old amount we can just CheatFill it
-		newobj:CheatFill()
-		-- clean out old depot
-		obj:CheatEmpty()
-
-		Sleep(250)
-		ChoGGi.ComFuncs.DeleteObject(obj)
-	end)
-
-end
-
---returns the near hex grid for object placement
-function ChoGGi.ComFuncs.CursorNearestHex(pt)
-	return HexGetNearestCenter(pt or GetTerrainCursor())
-end
-
-function ChoGGi.ComFuncs.DeleteAllAttaches(obj)
-	if obj.DestroyAttaches then
-		obj:DestroyAttaches()
-	end
-end
-
-function ChoGGi.ComFuncs.FindNearestResource(obj)
-	-- if fired from action menu
-	if IsKindOf(obj,"XAction") then
-		obj = ChoGGi.ComFuncs.SelObject()
-	else
-		obj = obj or ChoGGi.ComFuncs.SelObject()
-	end
-
-	if not IsValid(obj) then
-		MsgPopup(
-			S[302535920000027--[[Nothing selected--]]],
-			S[302535920000028--[[Find Resource--]]]
-		)
-		return
-	end
-
-	-- build list of resources
-	local ItemList = {}
-	local ResourceDescription = ResourceDescription
-	local res = ChoGGi.Tables.Resources
-	local TagLookupTable = const.TagLookupTable
-	for i = 1, #res do
-		local item = ResourceDescription[table_find(ResourceDescription, "name", res[i])]
-		ItemList[i] = {
-			text = Trans(item.display_name),
-			value = item.name,
-			icon = TagLookupTable["icon_" .. item.name],
-		}
-	end
-
-	local function CallBackFunc(choice)
-		if choice.nothing_selected then
-			return
-		end
-		local value = choice[1].value
-		if type(value) == "string" then
-
-			-- get nearest stockpiles to object
-			local labels = UICity.labels
-
-			local stockpiles = {}
-			table.append(stockpiles,labels["MechanizedDepot" .. value])
-			if value == "BlackCube" then
-				table.append(stockpiles,labels.BlackCubeDumpSite)
-			elseif value == "MysteryResource" then
-				table.append(stockpiles,labels.MysteryDepot)
-			elseif value == "WasteRock" then
-				table.append(stockpiles,labels.WasteRockDumpSite)
-			else
-				table.append(stockpiles,labels.UniversalStorageDepot)
-			end
-
-			-- filter out empty/diff res stockpiles
-			local GetStored = "GetStored_" .. value
-			stockpiles = MapFilter(stockpiles,function(o)
-				if o[GetStored] and o[GetStored](o) > 999 then
-					return true
-				end
-			end)
-
-			-- attached stockpiles/stockpiles left from removed objects
-			table.append(stockpiles,
-				MapGet("map",{"ResourceStockpile","ResourceStockpileLR"}, function(o)
-					if o.resource == value and o:GetStoredAmount() > 999 then
-						return true
-					end
-				end)
-			)
-
-			local nearest = FindNearestObject(stockpiles,obj)
-			-- if there's no resource then there's no "nearest"
-			if nearest then
-				-- the power of god
-				ViewObjectMars(nearest)
-				ChoGGi.ComFuncs.AddBlinkyToObj(nearest)
-			else
-				MsgPopup(
-					S[302535920000029--[[Error: Cannot find any %s.--]]]:format(choice[1].text),
-					Trans(15--[[Resource--]])
-				)
-			end
-		end
-	end
-
-	ChoGGi.ComFuncs.OpenInListChoice{
-		callback = CallBackFunc,
-		items = ItemList,
-		title = S[302535920000031--[[Find Nearest Resource--]]] .. ": " .. RetName(obj),
-		hint = S[302535920000032--[[Select a resource to find--]]],
-		skip_sort = true,
-		custom_type = 7,
-	}
 end
 
 do -- DeleteObject
@@ -2773,8 +2585,9 @@ do -- DeleteObject
 				SuspendPassEdits("ChoGGi.ComFuncs.DeleteObject")
 				DeleteObject = DeleteObject or ChoGGi.ComFuncs.DeleteObject
 				for i = 1, #objs do
-					if objs[i].class ~= "MapSector" then
-						DeleteObject(objs[i],true)
+					local o = objs[i]
+					if o.class ~= "MapSector" then
+						DeleteObject(o,true)
 					end
 				end
 				ResumePassEdits("ChoGGi.ComFuncs.DeleteObject")
@@ -2809,9 +2622,201 @@ do -- DeleteObject
 		CreateRealTimeThread(DeleteFunc,obj,skip_demo)
 	end
 end -- do
+local DeleteObject = ChoGGi.ComFuncs.DeleteObject
+
+-- sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
+function ChoGGi.ComFuncs.EmptyMechDepot(obj)
+	-- if fired from action menu
+	if IsKindOf(obj,"XAction") then
+		obj = ChoGGi.ComFuncs.SelObject()
+	else
+		obj = IsKindOf(obj,"MechanizedDepot") and obj or ChoGGi.ComFuncs.SelObject()
+	end
+
+	if not obj or not IsKindOf(obj,"MechanizedDepot") then
+		return
+	end
+
+	local res = obj.resource
+	local amount = obj["GetStored_" .. res](obj)
+	-- not good to be larger then this when game is saved (height limit of map objects seems to be 65536)
+	if amount > 20000000 then
+		amount = amount
+	end
+	local stock = obj.stockpiles[obj:GetNextStockpileIndex()]
+	local angle = obj:GetAngle()
+	-- new pos based on angle of old depot (so it's in front not inside)
+	local newx = 0
+	local newy = 0
+	if angle == 0 then
+		newx = 500
+		newy = 0
+	elseif angle == 3600 then
+		newx = 500
+		newy = 500
+	elseif angle == 7200 then
+		newx = 0
+		newy = 500
+	elseif angle == 10800 then
+		newx = -600
+		newy = 0
+	elseif angle == 14400 then
+		newx = 0
+		newy = -500
+	elseif angle == 18000 then
+		newx = 500
+		newy = -500
+	end
+
+	-- yeah guys. lets have two names for a resource and use them interchangeably, it'll be fine...
+	local res2 = res
+	if res == "PreciousMetals" then
+		res2 = "RareMetals"
+	end
+
+	local x,y,z = stock:GetVisualPosXYZ()
+	-- so it doesn't look weird make sure it's on a hex point
+
+	-- create new depot, and set max amount to stored amount of old depot
+	local newobj = PlaceObj("UniversalStorageDepot", {
+		"template_name", "Storage" .. res2,
+		"storable_resources", {res},
+		"max_storage_per_resource", amount,
+		-- so it doesn't look weird make sure it's on a hex point
+		"Pos", HexGetNearestCenter(point(x + newx,y + newy,z)),
+	})
+
+	-- make it align with the depot
+	newobj:SetAngle(angle)
+	-- give it a bit before filling
+	local Sleep = Sleep
+	CreateRealTimeThread(function()
+		local time = 0
+		repeat
+			Sleep(250)
+			time = time + 25
+		until type(newobj.requester_id) == "number" or time > 5000
+		-- since we set new depot max amount to old amount we can just CheatFill it
+		newobj:CheatFill()
+		-- clean out old depot
+		obj:CheatEmpty()
+
+		Sleep(250)
+		DeleteObject(obj)
+	end)
+
+end
+
+--returns the near hex grid for object placement
+function ChoGGi.ComFuncs.CursorNearestHex(pt)
+	return HexGetNearestCenter(pt or GetTerrainCursor())
+end
+
+function ChoGGi.ComFuncs.DeleteAllAttaches(obj)
+	if obj.DestroyAttaches then
+		obj:DestroyAttaches()
+	end
+end
+
+function ChoGGi.ComFuncs.FindNearestResource(obj)
+	-- if fired from action menu
+	if IsKindOf(obj,"XAction") then
+		obj = ChoGGi.ComFuncs.SelObject()
+	else
+		obj = obj or ChoGGi.ComFuncs.SelObject()
+	end
+
+	if not IsValid(obj) then
+		MsgPopup(
+			S[302535920000027--[[Nothing selected--]]],
+			S[302535920000028--[[Find Resource--]]]
+		)
+		return
+	end
+
+	-- build list of resources
+	local item_list = {}
+	local ResourceDescription = ResourceDescription
+	local res = ChoGGi.Tables.Resources
+	local TagLookupTable = const.TagLookupTable
+	for i = 1, #res do
+		local item = ResourceDescription[table_find(ResourceDescription, "name", res[i])]
+		item_list[i] = {
+			text = Trans(item.display_name),
+			value = item.name,
+			icon = TagLookupTable["icon_" .. item.name],
+		}
+	end
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		local value = choice[1].value
+		if type(value) == "string" then
+
+			-- get nearest stockpiles to object
+			local labels = UICity.labels
+
+			local stockpiles = {}
+			table.append(stockpiles,labels["MechanizedDepot" .. value])
+			if value == "BlackCube" then
+				table.append(stockpiles,labels.BlackCubeDumpSite)
+			elseif value == "MysteryResource" then
+				table.append(stockpiles,labels.MysteryDepot)
+			elseif value == "WasteRock" then
+				table.append(stockpiles,labels.WasteRockDumpSite)
+			else
+				table.append(stockpiles,labels.UniversalStorageDepot)
+			end
+
+			-- filter out empty/diff res stockpiles
+			local GetStored = "GetStored_" .. value
+			stockpiles = MapFilter(stockpiles,function(o)
+				if o[GetStored] and o[GetStored](o) > 999 then
+					return true
+				end
+			end)
+
+			-- attached stockpiles/stockpiles left from removed objects
+			table.append(stockpiles,
+				MapGet("map",{"ResourceStockpile","ResourceStockpileLR"}, function(o)
+					if o.resource == value and o:GetStoredAmount() > 999 then
+						return true
+					end
+				end)
+			)
+
+			local nearest = FindNearestObject(stockpiles,obj)
+			-- if there's no resource then there's no "nearest"
+			if nearest then
+				-- the power of god
+				ViewObjectMars(nearest)
+				ChoGGi.ComFuncs.AddBlinkyToObj(nearest)
+			else
+				MsgPopup(
+					S[302535920000029--[[Error: Cannot find any %s.--]]]:format(choice[1].text),
+					Trans(15--[[Resource--]])
+				)
+			end
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = S[302535920000031--[[Find Nearest Resource--]]] .. ": " .. RetName(obj),
+		hint = S[302535920000032--[[Select a resource to find--]]],
+		skip_sort = true,
+		custom_type = 7,
+	}
+end
 
 do -- BuildingConsumption
-	local function AddConsumption(obj,name)
+	local function AddConsumption(obj,name,class)
+		if not obj:IsKindOf(class) then
+			return
+		end
 		local tempname = "ChoGGi_mod_" .. name
 		-- if this is here we know it has what we need so no need to check for mod/consump
 		if obj[tempname] then
@@ -2833,7 +2838,10 @@ do -- BuildingConsumption
 		local amount = BuildingTemplates[obj.template_name][name]
 		obj:SetBase(name, amount)
 	end
-	local function RemoveConsumption(obj,name)
+	local function RemoveConsumption(obj,name,class)
+		if not obj:IsKindOf(class) then
+			return
+		end
 		local mods = obj.modifications
 		if mods and mods[name] then
 			local mod = obj.modifications[name]
@@ -2855,22 +2863,22 @@ do -- BuildingConsumption
 	end
 
 	function ChoGGi.ComFuncs.RemoveBuildingWaterConsump(obj)
-		RemoveConsumption(obj,"water_consumption")
+		RemoveConsumption(obj,"water_consumption","LifeSupportConsumer")
 	end
 	function ChoGGi.ComFuncs.AddBuildingWaterConsump(obj)
-		AddConsumption(obj,"water_consumption")
+		AddConsumption(obj,"water_consumption","LifeSupportConsumer")
 	end
 	function ChoGGi.ComFuncs.RemoveBuildingElecConsump(obj)
-		RemoveConsumption(obj,"electricity_consumption")
+		RemoveConsumption(obj,"electricity_consumption","ElectricityConsumer")
 	end
 	function ChoGGi.ComFuncs.AddBuildingElecConsump(obj)
-		AddConsumption(obj,"electricity_consumption")
+		AddConsumption(obj,"electricity_consumption","ElectricityConsumer")
 	end
 	function ChoGGi.ComFuncs.RemoveBuildingAirConsump(obj)
-		RemoveConsumption(obj,"air_consumption")
+		RemoveConsumption(obj,"air_consumption","LifeSupportConsumer")
 	end
 	function ChoGGi.ComFuncs.AddBuildingAirConsump(obj)
-		AddConsumption(obj,"air_consumption")
+		AddConsumption(obj,"air_consumption","LifeSupportConsumer")
 	end
 end -- do
 
@@ -3585,7 +3593,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 		return
 	end
 
-	local ItemList = {}
+	local item_list = {}
 	local c = 0
 
 	-- has no Attaches so just open as is
@@ -3594,7 +3602,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 		return
 	else
 		c = c + 1
-		ItemList[c] = {
+		item_list[c] = {
 			text = " " .. obj.class,
 			value = obj.class,
 			obj = obj,
@@ -3605,7 +3613,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 			local a = attaches[i]
 			if a:IsKindOf("ColorizableObject") then
 				c = c + 1
-				ItemList[c] = {
+				item_list[c] = {
 					text = a.class,
 					value = a.class,
 					parentobj = obj,
@@ -3618,7 +3626,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
-		items = ItemList,
+		items = item_list,
 		title = Trans(174--[[Color Modifier--]]) .. ": " .. RetName(obj),
 		hint = S[302535920001108--[[Double click to open object/attachment to edit (select to flash object).--]]],
 		custom_type = 1,
@@ -3786,10 +3794,6 @@ do -- PadNumWithZeros
 			pads[i] = "0"
 		end
 		pads[diff+1] = num
---~ 		-- mash a bunch of "0" onto the start
---~ 		while #num < #pad do
---~ 			num = "0" .. num
---~ 		end
 
 		return TableConcat(pads)
 	end
@@ -4058,4 +4062,123 @@ end -- do
 
 function ChoGGi.ComFuncs.RetTemplateOrClass(obj)
 	return obj.template_name or obj.class
+end
+
+function ChoGGi.ComFuncs.ToggleConstructEntityView(obj)
+	local func
+	if obj:GetGameFlags(65536) == 65536 then
+		func = "ClearGameFlags"
+	else
+		func = "SetGameFlags"
+	end
+
+	obj[func](obj,65536)
+	if obj.ForEachAttach then
+		obj:ForEachAttach(function(a)
+			if IsValid(a) and a.class:sub(1,8) ~= "GridTile" and not a:IsKindOf("BuildingSign") then
+				a[func](a,65536)
+			end
+		end)
+	end
+end
+
+function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
+	local name = RetName(obj)
+	local function CallBackFunc(answer)
+		if answer then
+			-- remove select from it
+			if SelectedObj == obj then
+				SelectObj()
+			end
+
+			-- map objects
+			if IsValidThread(obj) then
+				DeleteThread(obj)
+			elseif IsValid(obj) then
+				DeleteObject(obj)
+			-- xwindows
+			elseif obj.Close then
+				obj:Close()
+			-- whatever
+			else
+				DoneObject(obj)
+			end
+
+		end
+	end
+	ChoGGi.ComFuncs.QuestionBox(
+		Trans(6779--[[Warning--]]) .. "!\n" .. S[302535920000414--[[Are you sure you wish to delete %s?--]]]:format(name) .. "?",
+		CallBackFunc,
+		Trans(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
+		Trans(5451--[[DELETE--]]) .. ": " .. name,
+		Trans(6879--[[Cancel--]]) .. " " .. Trans(502364928914--[[Delete--]])
+	)
+end
+
+function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
+	local name = RetName(obj)
+	local obj_type
+	if obj:IsKindOf("BaseRover") then
+		obj_type = Trans(7825--[[Destroy this Rover.--]])
+	elseif obj:IsKindOf("Drone") then
+		obj_type = Trans(7824--[[Destroy this Drone.--]])
+	else
+		obj_type = Trans(7822--[[Destroy this building.--]])
+	end
+
+	local function CallBackFunc(answer)
+		if answer then
+			if obj:IsKindOf("Dome") and #(obj.labels.Buildings or "") > 0 then
+				MsgPopup(
+					S[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).--]]]:format(name),
+					S[302535920000489--[[Delete Object(s)--]]]
+				)
+				return
+			end
+
+			obj.can_demolish = true
+			obj.indestructible = false
+			obj.demolishing_countdown = 0
+			obj.demolishing = true
+			obj:DoDemolish()
+			-- probably not needed
+			DestroyBuildingImmediate(obj)
+
+		end
+	end
+	ChoGGi.ComFuncs.QuestionBox(
+		Trans(6779--[[Warning--]]) .. "!\n" .. obj_type .. "\n" .. name,
+		CallBackFunc,
+		Trans(6779--[[Warning--]]) .. ": " .. obj_type,
+		obj_type .. " " .. name,
+		Trans(1176--[[Cancel Destroy--]])
+	)
+end
+
+-- mask is a combination of numbers IsFlagSet(15,num) will match 1 2 4 8
+function ChoGGi.ComFuncs.RetObjectCapAndGrid(obj,mask)
+	if not IsValid(obj) then
+		return
+	end
+
+	local IsFlagSet = IsFlagSet
+	if IsFlagSet(mask,1) and obj:IsKindOf("ElectricityStorage") then
+		return "electricity", obj:GetClassValue("capacity"), obj.electricity
+
+	elseif IsFlagSet(mask,2) and obj:IsKindOf("AirStorage") then
+		return "air", obj:GetClassValue("air_capacity"), obj.air
+
+	elseif IsFlagSet(mask,4) and obj:IsKindOf("WaterStorage") then
+		return "water", obj:GetClassValue("water_capacity"), obj.water
+
+	elseif IsFlagSet(mask,8) and obj:IsKindOf("Residence") then
+		return "colonist", obj:GetClassValue("capacity")
+
+	elseif IsFlagSet(mask,16) and obj:IsKindOf("Workplace") then
+		return "workplace", obj:GetClassValue("max_workers")
+
+	elseif IsFlagSet(mask,32) and obj:IsKindOfClasses("Service","TrainingBuilding") then
+		return "visitors", obj:GetClassValue("max_visitors")
+
+	end
 end

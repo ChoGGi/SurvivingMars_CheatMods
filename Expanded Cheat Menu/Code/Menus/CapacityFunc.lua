@@ -7,6 +7,8 @@ local type,tostring = type,tostring
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
+	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
+	local RetObjectCapAndGrid = ChoGGi.ComFuncs.RetObjectCapAndGrid
 	local S = ChoGGi.Strings
 	local Trans = ChoGGi.ComFuncs.Translate
 
@@ -18,9 +20,10 @@ function OnMsg.ClassesGenerate()
 		if not ChoGGi.UserSettings.StorageMechanizedDepotsTemp then
 			amount = 5
 		end
-		local tab = UICity.labels.MechanizedDepots or ""
-		for i = 1, #tab do
-			ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(tab[i],amount)
+		local SetMechanizedDepotTempAmount = ChoGGi.ComFuncs.SetMechanizedDepotTempAmount
+		local objs = UICity.labels.MechanizedDepots or ""
+		for i = 1, #objs do
+			SetMechanizedDepotTempAmount(objs[i],amount)
 		end
 
 		ChoGGi.SettingFuncs.WriteSettings()
@@ -33,7 +36,9 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetWorkerCapacity()
 		local obj = SelectedObj
-		if not obj or not obj.base_max_workers then
+		local _,capacity = RetObjectCapAndGrid(obj,16)
+
+		if not capacity then
 			MsgPopup(
 				S[302535920000954--[[You need to select a building that has workers.--]]],
 				S[302535920000567--[[Worker Capacity--]]],
@@ -41,12 +46,13 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
+
 		local ChoGGi = ChoGGi
-		local DefaultSetting = obj.base_max_workers
+		local default_setting = capacity
 		local hint_toolarge = Trans(6779--[[Warning--]]) .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -64,12 +70,13 @@ function OnMsg.ClassesGenerate()
 		}
 
 		-- check if there's an entry for building
-		if not ChoGGi.UserSettings.BuildingSettings[obj.template_name] then
-			ChoGGi.UserSettings.BuildingSettings[obj.template_name] = {}
+		local id = RetTemplateOrClass(obj)
+		if not ChoGGi.UserSettings.BuildingSettings[id] then
+			ChoGGi.UserSettings.BuildingSettings[id] = {}
 		end
 
-		local hint = DefaultSetting
-		local setting = ChoGGi.UserSettings.BuildingSettings[obj.template_name]
+		local hint = default_setting
+		local setting = ChoGGi.UserSettings.BuildingSettings[id]
 		if setting and setting.workers then
 			hint = tostring(setting.workers)
 		end
@@ -81,17 +88,18 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			if type(value) == "number" then
 
-				local tab = UICity.labels.Workplace or ""
-				for i = 1, #tab do
-					if tab[i].template_name == obj.template_name then
-						tab[i].max_workers = value
+				local objs = UICity.labels.Workplace or ""
+				for i = 1, #objs do
+					local o = objs[i]
+					if RetTemplateOrClass(o) == id then
+						o.max_workers = value
 					end
 				end
 
-				if value == DefaultSetting then
-					ChoGGi.UserSettings.BuildingSettings[obj.template_name].workers = nil
+				if value == default_setting then
+					ChoGGi.UserSettings.BuildingSettings[id].workers = nil
 				else
-					ChoGGi.UserSettings.BuildingSettings[obj.template_name].workers = value
+					ChoGGi.UserSettings.BuildingSettings[id].workers = value
 				end
 
 				ChoGGi.SettingFuncs.WriteSettings()
@@ -105,7 +113,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. S[302535920000567--[[Worker Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 			skip_sort = true,
@@ -114,9 +122,11 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetBuildingCapacity()
 		local obj = SelectedObj
-		if not obj or (type(obj.GetStoredWater) == "nil" and type(obj.GetStoredAir) == "nil" and type(obj.GetStoredPower) == "nil" and type(obj.GetUIResidentsCount) == "nil") then
+		local cap_type,capacity = RetObjectCapAndGrid(obj,15)
+
+		if not cap_type then
 			MsgPopup(
-				S[302535920000958--[[You need to select a building that has capacity.--]]],
+				S[302535920000958--[[You need to select a building that has capacity (colonists/air/water/elec).--]]],
 				S[302535920000569--[[Building Capacity--]]],
 				default_icon
 			)
@@ -126,32 +136,15 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local hint_toolarge = Trans(6779--[[Warning--]]) .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
-		--get type of capacity
-		local CapType
-		if type(obj.GetStoredAir) == "function" then
-			CapType = "air"
-		elseif type(obj.GetStoredWater) == "function" then
-			CapType = "water"
-		elseif type(obj.GetStoredPower) == "function" then
-			CapType = "electricity"
-		elseif type(obj.GetUIResidentsCount) == "function" then
-			CapType = "colonist"
+		local default_setting = capacity
+
+		-- colonist cap doesn't use res scale
+		if cap_type ~= "colonist" then
+			default_setting = default_setting / r
 		end
 
-		--get default amount
-		local DefaultSetting
-		if CapType == "electricity" or CapType == "colonist" then
-			DefaultSetting = obj.base_capacity
-		else
-			DefaultSetting = obj["base_" .. CapType .. "_capacity"]
-		end
-
-		if CapType ~= "colonist" then
-			DefaultSetting = DefaultSetting / r
-		end
-
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -170,15 +163,16 @@ function OnMsg.ClassesGenerate()
 			{text = 100000,value = 100000,hint = hint_toolarge},
 		}
 
-		--check if there's an entry for building
-		if not ChoGGi.UserSettings.BuildingSettings[obj.template_name] then
-			ChoGGi.UserSettings.BuildingSettings[obj.template_name] = {}
+		-- check if there's an entry for building
+		local id = RetTemplateOrClass(obj)
+		if not ChoGGi.UserSettings.BuildingSettings[id] then
+			ChoGGi.UserSettings.BuildingSettings[id] = {}
 		end
 
-		local hint = DefaultSetting
-		local setting = ChoGGi.UserSettings.BuildingSettings[obj.template_name]
+		local hint = default_setting
+		local setting = ChoGGi.UserSettings.BuildingSettings[id]
 		if setting and setting.capacity then
-			if CapType ~= "colonist" then
+			if cap_type ~= "colonist" then
 				hint = tostring(setting.capacity / r)
 			else
 				hint = tostring(setting.capacity)
@@ -192,18 +186,19 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			if type(value) == "number" then
 
-				--colonist cap doesn't use res scale
+				-- colonist cap doesn't use res scale
 				local amount
-				if CapType == "colonist" then
+				if cap_type == "colonist" then
 					amount = value
 				else
 					amount = value * r
 				end
 
 				local function StoredAmount(prod,current)
-					if prod:GetStoragePercent() == 0 then
+					local percent = prod:GetStoragePercent()
+					if percent == 0 then
 						return "empty"
-					elseif prod:GetStoragePercent() == 100 then
+					elseif percent == 100 then
 						return "full"
 					elseif current == "discharging" then
 						return "discharging"
@@ -211,39 +206,48 @@ function OnMsg.ClassesGenerate()
 						return "charging"
 					end
 				end
-				--updating time
-				if CapType == "electricity" then
-					local tab = UICity.labels.Power or ""
-					for i = 1, #tab do
-						if tab[i].template_name == obj.template_name then
-							tab[i].capacity = amount
-							tab[i][CapType].storage_capacity = amount
-							tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
-							ChoGGi.ComFuncs.ToggleWorking(tab[i])
+
+				-- updating time
+				if cap_type == "electricity" then
+					local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
+					local objs = UICity.labels.Power or ""
+					for i = 1, #objs do
+						local o = objs[i]
+						if RetTemplateOrClass(o) == id then
+							o.capacity = amount
+							local grid = o[cap_type]
+							grid.storage_capacity = amount
+							grid.storage_mode = StoredAmount(grid,grid.storage_mode)
+							ToggleWorking(o)
 						end
 					end
 
-				elseif CapType == "colonist" then
-					local tab = UICity.labels.Residence or ""
-					for i = 1, #tab do
-						if tab[i].template_name == obj.template_name then
-							tab[i].capacity = amount
+				elseif cap_type == "colonist" then
+					local objs = UICity.labels.Residence or ""
+					for i = 1, #objs do
+						local o = objs[i]
+						if RetTemplateOrClass(o) == id then
+							o.capacity = amount
 						end
 					end
 
-				else --water and air
-					local tab = UICity.labels["Life-Support"] or ""
-					for i = 1, #tab do
-						if tab[i].template_name == obj.template_name then
-							tab[i][CapType .. "_capacity"] = amount
-							tab[i][CapType].storage_capacity = amount
-							tab[i][CapType].storage_mode = StoredAmount(tab[i][CapType],tab[i][CapType].storage_mode)
-							ChoGGi.ComFuncs.ToggleWorking(tab[i])
+				else -- water and air
+					local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
+					local cap_name = cap_type .. "_capacity"
+					local objs = UICity.labels["Life-Support"] or ""
+					for i = 1, #objs do
+						local o = objs[i]
+						if RetTemplateOrClass(o) == id then
+							o[cap_name] = amount
+							local grid = o[cap_type]
+							grid.storage_capacity = amount
+							grid.storage_mode = StoredAmount(grid,grid.storage_mode)
+							ToggleWorking(o)
 						end
 					end
 				end
 
-				if value == DefaultSetting then
+				if value == default_setting then
 					setting.capacity = nil
 				else
 					setting.capacity = amount
@@ -261,7 +265,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. Trans(109035890389--[[Capacity--]]),
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 			skip_sort = true,
@@ -270,18 +274,20 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetVisitorCapacity()
 		local obj = SelectedObj
-		if not obj or (obj and not obj.base_max_visitors) then
+		local _,capacity = RetObjectCapAndGrid(obj,32)
+
+		if not capacity then
 			MsgPopup(
-				S[302535920000959--[[You need to select something that has space for visitors.--]]],
+				S[302535920000959--[[You need to select something that has space for visitors (services/trainingbuildings).--]]],
 				S[302535920000571--[[Building Visitor Capacity--]]],
 				default_icon2
 			)
 			return
 		end
 		local ChoGGi = ChoGGi
-		local DefaultSetting = obj.base_max_visitors
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = capacity
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -292,13 +298,14 @@ function OnMsg.ClassesGenerate()
 			{text = 1000,value = 1000},
 		}
 
-		--check if there's an entry for building
-		if not ChoGGi.UserSettings.BuildingSettings[obj.template_name] then
-			ChoGGi.UserSettings.BuildingSettings[obj.template_name] = {}
+		-- check if there's an entry for building
+		local id = RetTemplateOrClass(obj)
+		if not ChoGGi.UserSettings.BuildingSettings[id] then
+			ChoGGi.UserSettings.BuildingSettings[id] = {}
 		end
 
-		local hint = DefaultSetting
-		local setting = ChoGGi.UserSettings.BuildingSettings[obj.template_name]
+		local hint = default_setting
+		local setting = ChoGGi.UserSettings.BuildingSettings[id]
 		if setting and setting.visitors then
 			hint = tostring(setting.visitors)
 		end
@@ -309,17 +316,18 @@ function OnMsg.ClassesGenerate()
 			end
 			local value = choice[1].value
 			if type(value) == "number" then
-				local tab = UICity.labels.BuildingNoDomes or ""
-				for i = 1, #tab do
-					if tab[i].template_name == obj.template_name then
-						tab[i].max_visitors = value
+				local objs = UICity.labels.BuildingNoDomes or ""
+				for i = 1, #objs do
+					local o = objs[i]
+					if RetTemplateOrClass(o) == id then
+						o.max_visitors = value
 					end
 				end
 
-				if value == DefaultSetting then
-					ChoGGi.UserSettings.BuildingSettings[obj.template_name].visitors = nil
+				if value == default_setting then
+					ChoGGi.UserSettings.BuildingSettings[id].visitors = nil
 				else
-					ChoGGi.UserSettings.BuildingSettings[obj.template_name].visitors = value
+					ChoGGi.UserSettings.BuildingSettings[id].visitors = value
 				end
 
 				ChoGGi.SettingFuncs.WriteSettings()
@@ -333,7 +341,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. S[302535920000961--[[Visitor Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -344,14 +352,14 @@ function OnMsg.ClassesGenerate()
 		local bld_type = action.bld_type
 
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.Consts[bld_type] / r
+		local default_setting = ChoGGi.Consts[bld_type] / r
 		local hint_max = S[302535920000962--[[Max capacity limited to:
 	Universal: 2,500
 	Other: 20,000
 	Waste: 1,000,000
 	Mechanized: 1,000,000--]]]
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 50,value = 50},
 			{text = 100,value = 100},
 			{text = 250,value = 250},
@@ -365,7 +373,7 @@ function OnMsg.ClassesGenerate()
 			{text = 1000000,value = 1000000,hint = hint_max},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings[bld_type] then
 			hint = ChoGGi.UserSettings[bld_type] / r
 		end
@@ -379,58 +387,67 @@ function OnMsg.ClassesGenerate()
 
 				local value = value * r
 				if bld_type == "StorageWasteDepot" then
-					--limit amounts so saving with a full load doesn't delete your game
+					-- limit amounts so saving with a full load doesn't delete your game
 					if value > 1000000000 then
-						value = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
+						value = 1000000000 -- might be safe above a million, but I figured I'd stop somewhere
 					end
-					--loop through and change all existing
+					-- loop through and change all existing
 
-					local tab = UICity.labels.WasteRockDumpSite or ""
-					for i = 1, #tab do
-						tab[i].max_amount_WasteRock = value
-						if tab[i]:GetStoredAmount() < 0 then
-							tab[i]:CheatEmpty()
-							tab[i]:CheatFill()
+					local objs = UICity.labels.WasteRockDumpSite or ""
+					for i = 1, #objs do
+						local o = objs[i]
+						o.max_amount_WasteRock = value
+						if o:GetStoredAmount() < 0 then
+							o:CheatEmpty()
+							o:CheatFill()
 						end
 					end
+
 				elseif bld_type == "StorageOtherDepot" then
 					if value > 20000000 then
 						value = 20000000
 					end
-					local tab = UICity.labels.UniversalStorageDepot or ""
-					for i = 1, #tab do
-						if tab[i]:GetEntity() ~= "StorageDepot" then
-							tab[i].max_storage_per_resource = value
+					local objs = UICity.labels.UniversalStorageDepot or ""
+					for i = 1, #objs do
+						local o = objs[i]
+--~ 						if o:GetEntity() ~= "StorageDepot" then
+						if o.encyclopedia_id ~= "UniversalStorageDepot" then
+							o.max_storage_per_resource = value
 						end
 					end
 					local function OtherDepot(label,res)
-						local tab = ChoGGi.ComFuncs.RetAllOfClass(label)
-						for i = 1, #tab do
-							tab[i][res] = value
+						local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
+						for i = 1, #objs do
+							objs[i][res] = value
 						end
 					end
 					OtherDepot("MysteryResource","max_storage_per_resource")
 					OtherDepot("BlackCubeDumpSite","max_amount_BlackCube")
+
 				elseif bld_type == "StorageUniversalDepot" then
 					if value > 2500000 then
-						value = 2500000 --can go to 2900, but I got a crash; which may have been something else, but it's only 400
+						value = 2500000 -- can go to 2900, but I got a crash; which may have been something else, but it's only 400
 					end
-					local tab = UICity.labels.UniversalStorageDepot or ""
-					for i = 1, #tab do
-						if tab[i]:GetEntity() == "StorageDepot" then
-							tab[i].max_storage_per_resource = value
+					local objs = UICity.labels.UniversalStorageDepot or ""
+					for i = 1, #objs do
+						local o = objs[i]
+--~ 						if o:GetEntity() == "StorageDepot" then
+						if o.encyclopedia_id == "UniversalStorageDepot" then
+							o.max_storage_per_resource = value
 						end
 					end
+
 				elseif bld_type == "StorageMechanizedDepot" then
 					if value > 1000000000 then
-						value = 1000000000 --might be safe above a million, but I figured I'd stop somewhere
+						value = 1000000000 -- might be safe above a million, but I figured I'd stop somewhere
 					end
-					local tab = UICity.labels.MechanizedDepots or ""
-					for i = 1, #tab do
-						tab[i].max_storage_per_resource = value
+					local objs = UICity.labels.MechanizedDepots or ""
+					for i = 1, #objs do
+						objs[i].max_storage_per_resource = value
 					end
 				end
-				--for new buildings
+
+				-- for new buildings
 				ChoGGi.ComFuncs.SetSavedSetting(bld_type,value)
 
 				ChoGGi.SettingFuncs.WriteSettings()
@@ -444,7 +461,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. ": " .. bld_type .. " " .. S[302535920000963--[[Size--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_max,
 			skip_sort = true,

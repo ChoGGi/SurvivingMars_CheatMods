@@ -1,11 +1,12 @@
 return PlaceObj("ModDef", {
+--~ 	"title", "SArray Follows Sun",
 	"title", "Solar Array Follows Sun v0.4",
 	"version", 4,
 	"saved", 1546689600,
 	"image", "Preview.png",
 	"id", "ChoGGi_SolarArrayFollowsSun",
 	"steam_id", "1570918489",
-	"pops_any_uuid", "44c0aaf5-689b-41c7-b3fb-9de58645082e",
+	"pops_any_uuid", "105b752a-e526-4055-9009-c253bbe0e3fa",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision,
 	"code", {
