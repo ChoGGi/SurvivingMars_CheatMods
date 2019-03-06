@@ -61,7 +61,7 @@ DefineClass.Solaria = {
 	spots = {"Terminal"},
 	anims = {{anim = "terminal",all = true}},
 
-	-- production is workers * (prod.base_production_per_day / 4)
+	-- production is workers * (prod:GetClassValue("production_per_day") / 4)
 	-- how much performance does each worker add? this'll add bonus prod on top
 	perf_per_viewer = 12.5,
 
@@ -108,7 +108,7 @@ end
 function Solaria:ListBuildings(which,parent)
 	local list = UICity.labels.OutsideBuildings or ""
 	local hint
-	local ItemList = {}
+	local item_list = {}
 
 	-- show list to add controller
 	if which == "activate" then
@@ -150,7 +150,7 @@ Right click to view selected list item building.]]
 	for i = 1, #list do
 		local obj = list[i]
 		local pos = obj:GetPos()
-		ItemList[i] = {
+		item_list[i] = {
 			pos = pos,
 			name = RetName(obj),
 			-- provide a slight reference
@@ -162,7 +162,7 @@ Right click to view selected list item building.]]
 	end
 
 	-- if list is empty that means no controlled/able buildings so return
-	if #ItemList == 0 then
+	if #item_list == 0 then
 		MsgPopup(
 			[[Nothing to control.]],
 			[[Solaria]],
@@ -172,7 +172,7 @@ Right click to view selected list item building.]]
 	end
 
 	-- add controller for ease of movement
-	table.insert(ItemList,1,{
+	table.insert(item_list,1,{
 		name = [[ Solaria Controller]],
 		pos = self:GetVisualPos(),
 		hint = [[Solaria control building.
@@ -182,7 +182,7 @@ You can't remove... Only view (or maybe See would be a better term).]],
 		end,
 	})
 
-	PopupToggle(parent,"idSolariaTelepresenceMenu",ItemList,"left")
+	PopupToggle(parent,"idSolariaTelepresenceMenu",item_list,"left")
 end
 
 function Solaria:AttachBuilding(obj)
@@ -254,9 +254,9 @@ function Solaria:RemoveBuilding(obj)
 
 		if obj.GetProducerObj then
 			local prod = obj:GetProducerObj()
-			prod.production_per_day = prod.base_production_per_day
+			prod.production_per_day = prod:GetClassValue("production_per_day")
 		elseif obj.electricity.production then
-			obj.electricity.production = obj.base_electricity_production
+			obj.electricity.production = obj:GetClassValue("electricity_production")
 		end
 
 		obj.max_workers = nil
@@ -313,9 +313,9 @@ function Solaria:StartWorkCycle(unit)
 		-- update prod
 		if obj.GetProducerObj then
 			local prod = obj:GetProducerObj()
-			prod.production_per_day = workers * (prod.base_production_per_day / 4)
+			prod.production_per_day = workers * (prod:GetClassValue("production_per_day") / 4)
 		elseif obj.electricity.production then
-			obj.electricity.production = workers * (obj.base_electricity_production / 4)
+			obj.electricity.production = workers * (obj:GetClassValue("electricity_production") / 4)
 		end
 
 	-- turn off Solaria if it isn't controlling

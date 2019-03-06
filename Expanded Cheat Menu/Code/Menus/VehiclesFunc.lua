@@ -14,7 +14,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetDroneType()
 		local icons = Presets.EncyclopediaArticle.Vehicles
-		local ItemList = {
+		local item_list = {
 			{
 				text = Trans(10278--[[Wasp Drone--]]),
 				value = "FlyingDrone",
@@ -45,7 +45,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001403--[[Drone Type--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(name) .. "\n"
 				.. S[302535920001406--[["Hubs can only have one type of drone, so you'll need pack/unpack all drones for each hub you wish to change (or use Drones>%s)."--]]]:format(S[302535920000513--[[Change Amount of Drones in Hub--]]]),
@@ -54,9 +54,9 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = 0
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = 0
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 1,value = 1},
 			{text = 2,value = 2},
 			{text = 3,value = 3},
@@ -71,7 +71,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		--other hint type
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.RCChargeDist then
 			hint = ChoGGi.UserSettings.RCChargeDist
 		end
@@ -83,7 +83,7 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			if type(value) == "number" then
 
-				if value == DefaultSetting then
+				if value == default_setting then
 					ChoGGi.UserSettings.RCChargeDist = nil
 				else
 					ChoGGi.UserSettings.RCChargeDist = value
@@ -100,7 +100,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000880--[[Set Rover Charge Radius--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -109,9 +109,9 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.Consts.RCRoverMaxRadius
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.Consts.RCRoverMaxRadius
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 40,value = 40},
 			{text = 80,value = 80},
 			{text = 160,value = 160},
@@ -120,7 +120,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		--other hint type
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.RCRoverMaxRadius then
 			hint = ChoGGi.UserSettings.RCRoverMaxRadius
 		end
@@ -136,9 +136,9 @@ function OnMsg.ClassesGenerate()
 				--we need to set this so the hex grid during placement is enlarged
 				const.RCRoverMaxRadius = value
 
-				local tab = UICity.labels.RCRover or ""
-				for i = 1, #tab do
-					tab[i]:SetWorkRadius(value)
+				local objs = UICity.labels.RCRover or ""
+				for i = 1, #objs do
+					objs[i]:SetWorkRadius(value)
 				end
 
 				ChoGGi.SettingFuncs.WriteSettings()
@@ -152,7 +152,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000884--[[Set Rover Work Radius--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint .. "\n\n"
 				.. S[302535920000115--[[Toggle selection to update visible hex grid.--]]],
@@ -162,9 +162,9 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.Consts.CommandCenterMaxRadius
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.Consts.CommandCenterMaxRadius
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 40,value = 40},
 			{text = 80,value = 80},
 			{text = 160,value = 160},
@@ -173,7 +173,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		--other hint type
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.CommandCenterMaxRadius then
 			hint = ChoGGi.UserSettings.CommandCenterMaxRadius
 		end
@@ -189,9 +189,9 @@ function OnMsg.ClassesGenerate()
 				--we need to set this so the hex grid during placement is enlarged
 				const.CommandCenterMaxRadius = value
 
-				local tab = UICity.labels.DroneHub or ""
-				for i = 1, #tab do
-					tab[i]:SetWorkRadius(value)
+				local objs = UICity.labels.DroneHub or ""
+				for i = 1, #objs do
+					objs[i]:SetWorkRadius(value)
 				end
 
 				ChoGGi.SettingFuncs.WriteSettings()
@@ -205,7 +205,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000886--[[Set DroneHub Work Radius--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint .. "\n\n"
 				.. S[302535920000115--[[Toggle selection to update visible hex grid.--]]],
@@ -215,9 +215,9 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 0,value = 0},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -227,7 +227,7 @@ function OnMsg.ClassesGenerate()
 			{text = 500,value = 500},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.DroneTransformWasteRockObstructorToStockpileAmount then
 			hint = ChoGGi.UserSettings.DroneTransformWasteRockObstructorToStockpileAmount
 		end
@@ -251,7 +251,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000509--[[Drone Rock To Concrete Speed--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -261,10 +261,10 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.Consts.SpeedDrone
+		local default_setting = ChoGGi.Consts.SpeedDrone
 		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone")
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. (DefaultSetting / r),value = DefaultSetting,hint = S[302535920000889--[[base speed--]]]},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting,hint = S[302535920000889--[[base speed--]]]},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
 			{text = 15,value = 15 * r},
@@ -274,8 +274,8 @@ function OnMsg.ClassesGenerate()
 			{text = 1000,value = 1000 * r},
 			{text = 10000,value = 10000 * r},
 		}
-		if DefaultSetting ~= UpgradedSetting then
-			table.insert(ItemList,2,{text = S[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting,hint = S[302535920000891--[[apply tech unlocks--]]]})
+		if default_setting ~= UpgradedSetting then
+			table.insert(item_list,2,{text = S[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting,hint = S[302535920000891--[[apply tech unlocks--]]]})
 		end
 
 		local hint = UpgradedSetting
@@ -289,9 +289,9 @@ function OnMsg.ClassesGenerate()
 			end
 			local value = choice[1].value
 			if type(value) == "number" then
-				local tab = UICity.labels.Drone or ""
-				for i = 1, #tab do
-					tab[i]:SetMoveSpeed(value)
+				local objs = UICity.labels.Drone or ""
+				for i = 1, #objs do
+					objs[i]:SetMoveSpeed(value)
 				end
 				ChoGGi.ComFuncs.SetSavedSetting("SpeedDrone",value)
 
@@ -306,7 +306,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000511--[[Drone Move Speed--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -316,10 +316,10 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.Consts.SpeedRC
+		local default_setting = ChoGGi.Consts.SpeedRC
 		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedRC")
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. (DefaultSetting / r),value = DefaultSetting,hint = S[302535920000889--[[base speed--]]]},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting,hint = S[302535920000889--[[base speed--]]]},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
 			{text = 15,value = 15 * r},
@@ -329,8 +329,8 @@ function OnMsg.ClassesGenerate()
 			{text = 1000,value = 1000 * r},
 			{text = 10000,value = 10000 * r},
 		}
-		if DefaultSetting ~= UpgradedSetting then
-			table.insert(ItemList,2,{text = S[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting,hint = S[302535920000891--[[apply tech unlocks--]]]})
+		if default_setting ~= UpgradedSetting then
+			table.insert(item_list,2,{text = S[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting,hint = S[302535920000891--[[apply tech unlocks--]]]})
 		end
 
 		local hint = UpgradedSetting
@@ -345,9 +345,9 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			if type(value) == "number" then
 				ChoGGi.ComFuncs.SetSavedSetting("SpeedRC",value)
-				local tab = UICity.labels.Rover or ""
-				for i = 1, #tab do
-					tab[i]:SetMoveSpeed(value)
+				local objs = UICity.labels.Rover or ""
+				for i = 1, #objs do
+					objs[i]:SetMoveSpeed(value)
 				end
 
 				ChoGGi.SettingFuncs.WriteSettings()
@@ -361,7 +361,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000543--[[RC Move Speed--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -376,7 +376,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local CurrentAmount = obj:GetDronesCount()
-		local ItemList = {
+		local item_list = {
 			{text = S[302535920000894--[[Current amount--]]] .. ": " .. CurrentAmount,value = CurrentAmount},
 			{text = 1,value = 1},
 			{text = 5,value = 5},
@@ -416,25 +416,25 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000895--[[Change Amount Of Drones--]]],
 			hint = S[302535920000896--[[Drones in hub--]]] .. ": " .. CurrentAmount .. " "
 				.. S[302535920000897--[[Drone prefabs--]]] .. ": " .. UICity.drone_prefabs,
-			check = {
+			skip_sort = true,
+			checkboxes = {
 				{
 					title = S[302535920000898--[[Pack Drones--]]],
 					hint = S[302535920000899--[[Check this to pack drone(s) into prefabs (number can be higher than attached drones).--]]],
 				},
 			},
-			skip_sort = true,
 		}
 	end
 
 	function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.Consts.DroneFactoryBuildSpeed
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.Consts.DroneFactoryBuildSpeed
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -455,7 +455,7 @@ function OnMsg.ClassesGenerate()
 		end
 		local setting = ChoGGi.UserSettings.BuildingSettings.DroneFactory
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if setting.performance_notauto then
 			hint = tostring(setting.performance_notauto)
 		end
@@ -466,13 +466,13 @@ function OnMsg.ClassesGenerate()
 			end
 			local value = choice[1].value
 			if type(value) == "number" then
-				local tab = UICity.labels.DroneFactory or ""
-				for i = 1, #tab do
-					tab[i].performance = value
+				local objs = UICity.labels.DroneFactory or ""
+				for i = 1, #objs do
+					objs[i].performance = value
 				end
 			end
 
-			if value == DefaultSetting then
+			if value == default_setting then
 				setting.performance_notauto = nil
 			else
 				setting.performance_notauto = value
@@ -488,7 +488,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000901--[[Set Drone Factory Build Speed--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -583,10 +583,10 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("DroneResourceCarryAmount")
+		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("DroneResourceCarryAmount")
 		local hinttoolarge = S[302535920000909--[["If you set this amount larger then a building's ""Storage"" amount then the drones will NOT pick up storage (See: Fixes>%s)."--]]]:format(S[302535920000613--[[Drone Carry Amount--]]])
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25,hint = hinttoolarge},
@@ -598,7 +598,7 @@ function OnMsg.ClassesGenerate()
 			{text = 1000,value = 1000,hint = hinttoolarge .. "\n\n" .. S[302535920000910--[[Somewhere above 1000 will delete the save (when it's full)--]]]},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.DroneResourceCarryAmount then
 			hint = ChoGGi.UserSettings.DroneResourceCarryAmount
 		end
@@ -628,7 +628,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000913--[[Set Drone Carry Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint
 				.. "\n\n" .. hinttoolarge .. "\n\n" .. S[302535920000834--[[Max--]]]
@@ -639,9 +639,9 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("CommandCenterMaxDrones")
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("CommandCenterMaxDrones")
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -653,7 +653,7 @@ function OnMsg.ClassesGenerate()
 			{text = 1000,value = 1000},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.CommandCenterMaxDrones then
 			hint = ChoGGi.UserSettings.CommandCenterMaxDrones
 		end
@@ -678,7 +678,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000918--[[Set DroneHub Drone Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -687,9 +687,9 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("RCRoverMaxDrones")
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("RCRoverMaxDrones")
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -701,7 +701,7 @@ function OnMsg.ClassesGenerate()
 			{text = 1000,value = 1000},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.RCRoverMaxDrones then
 			hint = ChoGGi.UserSettings.RCRoverMaxDrones
 		end
@@ -726,7 +726,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000924--[[Set RC Rover Drone Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -736,9 +736,9 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportStorageCapacity") / r
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportStorageCapacity") / r
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
 			{text = 100,value = 100},
@@ -748,7 +748,7 @@ function OnMsg.ClassesGenerate()
 			{text = 2000,value = 2000,hint = S[302535920000925--[[somewhere above 2000 will delete the save (when it's full)--]]]},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.RCTransportStorageCapacity then
 			hint = ChoGGi.UserSettings.RCTransportStorageCapacity / r
 		end
@@ -759,7 +759,7 @@ function OnMsg.ClassesGenerate()
 			end
 			local value = choice[1].value
 			if type(value) == "number" then
-				local default = value == DefaultSetting
+				local default = value == default_setting
 
 				local value = value * r
 				-- somewhere above 2000 screws the save
@@ -799,7 +799,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000927--[[Set RC Transport Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -809,9 +809,9 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetShuttleCapacity()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.Consts.StorageShuttle / r
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.Consts.StorageShuttle / r
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -823,7 +823,7 @@ function OnMsg.ClassesGenerate()
 			{text = 1000,value = 1000,hint = S[302535920000928--[[somewhere above 1000 may delete the save (when it's full)--]]]},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.StorageShuttle then
 			hint = ChoGGi.UserSettings.StorageShuttle / r
 		end
@@ -841,9 +841,9 @@ function OnMsg.ClassesGenerate()
 				end
 
 				-- loop through and set all shuttles
-				local tab = UICity.labels.CargoShuttle or ""
-				for i = 1, #tab do
-					tab[i].max_shared_storage = value
+				local objs = UICity.labels.CargoShuttle or ""
+				for i = 1, #objs do
+					objs[i].max_shared_storage = value
 				end
 				ChoGGi.ComFuncs.SetSavedSetting("StorageShuttle",value)
 
@@ -858,7 +858,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000930--[[Set Cargo Shuttle Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -868,9 +868,9 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetShuttleSpeed()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.Consts.SpeedShuttle / r
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.Consts.SpeedShuttle / r
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
 			{text = 100,value = 100},
@@ -884,7 +884,7 @@ function OnMsg.ClassesGenerate()
 			{text = 100000,value = 100000},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.SpeedShuttle then
 			hint = ChoGGi.UserSettings.SpeedShuttle / r
 		end
@@ -897,9 +897,9 @@ function OnMsg.ClassesGenerate()
 			if type(value) == "number" then
 				local value = value * r
 				-- loop through and set all shuttles
-				local tab = UICity.labels.CargoShuttle or ""
-				for i = 1, #tab do
-					tab[i].move_speed = value
+				local objs = UICity.labels.CargoShuttle or ""
+				for i = 1, #objs do
+					objs[i].move_speed = value
 				end
 				ChoGGi.ComFuncs.SetSavedSetting("SpeedShuttle",value)
 
@@ -914,7 +914,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000932--[[Set Cargo Shuttle Speed--]]],
 			hint = S[302535920000933--[[Current speed: %s--]]]:format(hint),
 			skip_sort = true,
@@ -923,9 +923,9 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.Consts.ShuttleHubShuttleCapacity
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.Consts.ShuttleHubShuttleCapacity
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -940,7 +940,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.UserSettings.BuildingSettings.ShuttleHub = {}
 		end
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		local setting = ChoGGi.UserSettings.BuildingSettings.ShuttleHub
 		if setting and setting.shuttles then
 			hint = tostring(setting.shuttles)
@@ -952,12 +952,12 @@ function OnMsg.ClassesGenerate()
 			end
 			local value = choice[1].value
 			if type(value) == "number" then
-				--loop through and set all shuttles
-				local tab = UICity.labels.ShuttleHub or ""
-				for i = 1, #tab do
-					tab[i].max_shuttles = value
+				-- loop through and set all shuttles
+				local objs = UICity.labels.ShuttleHub or ""
+				for i = 1, #objs do
+					objs[i].max_shuttles = value
 				end
-				if value == DefaultSetting then
+				if value == default_setting then
 					ChoGGi.UserSettings.BuildingSettings.ShuttleHub.shuttles = nil
 				else
 					ChoGGi.UserSettings.BuildingSettings.ShuttleHub.shuttles = value
@@ -974,7 +974,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000535--[[Set ShuttleHub Shuttle Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -983,10 +983,10 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetGravityRC()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.Consts.GravityRC
+		local default_setting = ChoGGi.Consts.GravityRC
 		local r = ChoGGi.Consts.ResourceScale
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 1,value = 1},
 			{text = 2,value = 2},
 			{text = 3,value = 3},
@@ -1002,7 +1002,7 @@ function OnMsg.ClassesGenerate()
 			{text = 500,value = 500},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.GravityRC then
 			hint = ChoGGi.UserSettings.GravityRC / r
 		end
@@ -1014,9 +1014,9 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			if type(value) == "number" then
 				local value = value * r
-				local tab = UICity.labels.Rover or ""
-				for i = 1, #tab do
-					tab[i]:SetGravity(value)
+				local objs = UICity.labels.Rover or ""
+				for i = 1, #objs do
+					objs[i]:SetGravity(value)
 				end
 				ChoGGi.ComFuncs.SetSavedSetting("GravityRC",value)
 
@@ -1031,7 +1031,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000920--[[Set RC Gravity--]]],
 			hint = S[302535920000841--[[Current gravity: %s--]]]:format(hint),
 			skip_sort = true,
@@ -1040,10 +1040,10 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetGravityDrones()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.Consts.GravityDrone
+		local default_setting = ChoGGi.Consts.GravityDrone
 		local r = ChoGGi.Consts.ResourceScale
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 1,value = 1},
 			{text = 2,value = 2},
 			{text = 3,value = 3},
@@ -1059,7 +1059,7 @@ function OnMsg.ClassesGenerate()
 			{text = 500,value = 500},
 		}
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.GravityDrone then
 			hint = ChoGGi.UserSettings.GravityDrone / r
 		end
@@ -1071,9 +1071,9 @@ function OnMsg.ClassesGenerate()
 			if type(value) == "number" then
 				local value = value * r
 				--loop through and set all
-				local tab = UICity.labels.Drone or ""
-				for i = 1, #tab do
-					tab[i]:SetGravity(value)
+				local objs = UICity.labels.Drone or ""
+				for i = 1, #objs do
+					objs[i]:SetGravity(value)
 				end
 				ChoGGi.ComFuncs.SetSavedSetting("GravityDrone",value)
 
@@ -1088,7 +1088,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000923--[[Set Drone Gravity--]]],
 			hint = S[302535920000841--[[Current gravity: %s--]]]:format(hint),
 			skip_sort = true,
@@ -1108,7 +1108,7 @@ function OnMsg.ClassesGenerate()
 		local function ShowResupplyList(name,meta)
 			local ChoGGi = ChoGGi
 
-			local ItemList = {
+			local item_list = {
 				{text = "pack",value = meta.pack,hint = S[302535920001269--[[Amount Per Click--]]]},
 				{text = "kg",value = meta.kg,hint = S[302535920001270--[[Weight Per Item--]]]},
 				{text = "price",value = meta.price,hint = S[302535920001271--[[Price Per Item--]]]},
@@ -1148,7 +1148,7 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920000850--[[Change Resupply Settings--]]] .. ": " .. name,
 				hint = S[302535920001121--[[Edit value for each setting you wish to change then press OK to save.--]]],
 				custom_type = 4,
@@ -1159,9 +1159,9 @@ function OnMsg.ClassesGenerate()
 			local Cargo = ChoGGi.Tables.Cargo or ""
 			local CargoPresets = ChoGGi.Tables.CargoPresets or ""
 
-			local ItemList = {}
+			local item_list = {}
 			for i = 1, #Cargo do
-				ItemList[i] = {
+				item_list[i] = {
 					text = Trans(Cargo[i].name),
 					value = Cargo[i].id,
 					meta = Cargo[i],
@@ -1192,11 +1192,11 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920000850--[[Change Resupply Settings--]]],
 				hint = S[302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."--]]],
 				custom_type = 7,
-				check = {
+				checkboxes = {
 					{
 						title = S[302535920001084--[[Reset--]]],
 						hint = S[302535920000237--[[Check this to reset settings.--]]],
@@ -1222,9 +1222,9 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("CargoCapacity")
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting .. " kg",value = DefaultSetting},
+		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("CargoCapacity")
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting .. " kg",value = default_setting},
 			{text = "50 000 kg",value = 50000},
 			{text = "100 000 kg",value = 100000},
 			{text = "250 000 kg",value = 250000},
@@ -1255,7 +1255,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000946--[[Set Rocket Cargo Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. g_Consts.CargoCapacity,
 			skip_sort = true,
@@ -1264,10 +1264,10 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetRocketTravelTime()
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("TravelTimeEarthMars") / r
-		local ItemList = {
+		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("TravelTimeEarthMars") / r
+		local item_list = {
 			{text = S[302535920000947--[[Instant--]]],value = 0},
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = S[302535920000948--[[Original--]]] .. ": " .. 750,value = 750},
 			{text = S[302535920000949--[[Half of Original--]]] .. ": " .. 375,value = 375},
 			{text = 10,value = 10},
@@ -1282,7 +1282,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		--other hint type
-		local hint = DefaultSetting
+		local hint = default_setting
 		if ChoGGi.UserSettings.TravelTimeEarthMars then
 			hint = ChoGGi.UserSettings.TravelTimeEarthMars / r
 		end
@@ -1310,7 +1310,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000951--[[Rocket Travel Time--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -1319,9 +1319,9 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = ChoGGi.ComFuncs.GetResearchedTechValue("MaxColonistsPerRocket")
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("MaxColonistsPerRocket")
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -1352,7 +1352,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000953--[[Set Colonist Capacity--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. g_Consts.MaxColonistsPerRocket,
 			skip_sort = true,
@@ -1362,9 +1362,9 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.RocketMaxExportAmount()
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = ChoGGi.Consts.RocketMaxExportAmount
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. (DefaultSetting / r),value = DefaultSetting},
+		local default_setting = ChoGGi.Consts.RocketMaxExportAmount
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
 			{text = 15,value = 15 * r},
@@ -1376,7 +1376,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		if not ChoGGi.UserSettings.RocketMaxExportAmount then
-			ChoGGi.UserSettings.RocketMaxExportAmount = DefaultSetting
+			ChoGGi.UserSettings.RocketMaxExportAmount = default_setting
 		end
 
 		local function CallBackFunc(choice)
@@ -1385,7 +1385,7 @@ function OnMsg.ClassesGenerate()
 			end
 			local value = choice[1].value
 			if type(value) == "number" then
-				if value == DefaultSetting then
+				if value == default_setting then
 					ChoGGi.UserSettings.RocketMaxExportAmount = nil
 				else
 					ChoGGi.UserSettings.RocketMaxExportAmount = value
@@ -1411,7 +1411,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001291--[[Max Export Amount--]]],
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. ChoGGi.UserSettings.RocketMaxExportAmount,
 			skip_sort = true,
@@ -1450,10 +1450,10 @@ function OnMsg.ClassesGenerate()
 		function ChoGGi.MenuFuncs.LaunchFuelPerRocket()
 			local ChoGGi = ChoGGi
 			local r = ChoGGi.Consts.ResourceScale
-			local DefaultSetting = ChoGGi.Consts.LaunchFuelPerRocket
+			local default_setting = ChoGGi.Consts.LaunchFuelPerRocket
 			local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("FuelRocket")
-			local ItemList = {
-				{text = Trans(1000121--[[Default--]]) .. ": " .. (DefaultSetting / r),value = DefaultSetting},
+			local item_list = {
+				{text = Trans(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
 				{text = 5,value = 5 * r},
 				{text = 10,value = 10 * r},
 				{text = 15,value = 15 * r},
@@ -1463,12 +1463,12 @@ function OnMsg.ClassesGenerate()
 				{text = 1000,value = 1000 * r},
 				{text = 10000,value = 10000 * r},
 			}
-			if DefaultSetting ~= UpgradedSetting then
-				table.insert(ItemList,2,{text = S[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting})
+			if default_setting ~= UpgradedSetting then
+				table.insert(item_list,2,{text = S[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting})
 			end
 
 			if not ChoGGi.UserSettings.LaunchFuelPerRocket then
-				ChoGGi.UserSettings.LaunchFuelPerRocket = DefaultSetting
+				ChoGGi.UserSettings.LaunchFuelPerRocket = default_setting
 			end
 
 			local function CallBackFunc(choice)
@@ -1477,7 +1477,7 @@ function OnMsg.ClassesGenerate()
 				end
 				local value = choice[1].value
 				if type(value) == "number" then
-					if value == DefaultSetting then
+					if value == default_setting then
 						ChoGGi.UserSettings.LaunchFuelPerRocket = nil
 					else
 						ChoGGi.UserSettings.LaunchFuelPerRocket = value
@@ -1495,7 +1495,7 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920001317--[[Launch Fuel Per Rocket--]]],
 				hint = S[302535920000914--[[Current capacity--]]] .. ": " .. ChoGGi.UserSettings.LaunchFuelPerRocket,
 				skip_sort = true,

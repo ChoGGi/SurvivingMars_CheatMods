@@ -48,17 +48,6 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000461--[[All Pipe Skins To Default--]]],
-		ActionMenubar = str_ECM_Fixes,
-		ActionId = ".All Pipe Skins To Default",
-		ActionIcon = icon,
-		RolloverText = S[302535920000463--[[Large Water Tank + Pipes + Chrome skin = borked looking connections.
-	This resets all pipes to the default skin.--]]],
-		OnAction = ChoGGi.MenuFuncs.AllPipeSkinsToDefault,
-		ActionSortKey = "9All Pipe Skins To Default",
-	}
-
-	c = c + 1
 	Actions[c] = {ActionName = S[302535920001084--[[Reset--]]] .. " " .. Trans(5221--[[RC Commanders--]]),
 		ActionMenubar = str_ECM_Fixes,
 		ActionId = ".Reset RC Commanders",

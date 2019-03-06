@@ -172,7 +172,7 @@ function ChoGGi_ObjectEditorDlg:idAddNewOnPress()
 		sel_name = Trans(3718--[[NONE--]])
 		sel_value = false
 	end
-	local ItemList = {
+	local item_list = {
 		{text = S[302535920000095--[[New Entry--]]],value = sel_name,hint = S[302535920000096--[[Enter the name of the new entry to be added.--]]]},
 		{text = S[302535920000097--[[New Value--]]],value = sel_value,hint = S[302535920000098--[[Set the value of the new entry to be added.--]]]},
 	}
@@ -191,7 +191,7 @@ function ChoGGi_ObjectEditorDlg:idAddNewOnPress()
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
-		items = ItemList,
+		items = item_list,
 		title = S[302535920000095--[[New Entry--]]],
 		custom_type = 4,
 	}

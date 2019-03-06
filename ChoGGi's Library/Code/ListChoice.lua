@@ -18,7 +18,7 @@ custom_type = 8 : same as 7, but dbl rightclick fires custom_func, and dbl click
 
 ChoGGi.ComFuncs.OpenInListChoice{
 	callback = CallBackFunc,
-	items = ItemList,
+	items = item_list,
 	title = "Title",
 	hint = "Current: " .. hint,
 	multisel = true,
@@ -29,7 +29,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 	width = 100.0,
 	skip_sort = true,
 	skip_icons = true,
-	check = {
+	checkboxes = {
 		only_one = true,
 		at_least_one = true,
 		{
@@ -77,7 +77,7 @@ DefineClass.ChoGGi_ListChoiceDlg = {
 	custom_func = false,
 	-- if listitem has .obj and this is true we "flash" it
 	select_flash = false,
-
+	-- last value entered in idEditValue
 	old_edit_value = false,
 
 	sel = false,
@@ -107,7 +107,7 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 	self:AddElements(parent, context)
 
 	-- setup checkboxes
-	if self.list.check and #self.list.check > 0 then
+	if self.list.checkboxes and #self.list.checkboxes > 0 then
 		self.idCheckboxArea = g_Classes.ChoGGi_DialogSection:new({
 			Id = "idCheckboxArea",
 			Dock = "top",
@@ -120,9 +120,9 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 			FoldWhenHidden = true,
 		}, self.idDialog)
 
-		local checks = self.list.check
-		for i = 1, #checks do
-			local list_check = checks[i]
+		local checkboxes = self.list.checkboxes
+		for i = 1, #checkboxes do
+			local list_check = checkboxes[i]
 			local name = "idCheckBox" .. i
 
 			local area_id = "idCheckboxArea"
@@ -138,14 +138,14 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 			local check = self[name]
 
 			-- fiddle with checkboxes on toggled
-			if checks.only_one and checks.at_least_one then
+			if checkboxes.only_one and checkboxes.at_least_one then
 				check.OnChange = function(...)
 					self.idCheckBoxAtLeastOne(...)
 					self.idCheckBoxOnlyOne(...)
 				end
-			elseif checks.only_one then
+			elseif checkboxes.only_one then
 				check.OnChange = self.idCheckBoxOnlyOne
-			elseif checks.at_least_one then
+			elseif checkboxes.at_least_one then
 				check.OnChange = self.idCheckBoxAtLeastOne
 			end
 
@@ -918,8 +918,8 @@ function ChoGGi_ListChoiceDlg:UpdateReturnedItem(choices)
 	end
 
 	-- add checkbox statuses
-	if self.list.check and #self.list.check > 0 then
-		for i = 1, #self.list.check do
+	if self.list.checkboxes and #self.list.checkboxes > 0 then
+		for i = 1, #self.list.checkboxes do
 			choices[1]["check" .. i] = self["idCheckBox" .. i]:GetCheck()
 		end
 	end

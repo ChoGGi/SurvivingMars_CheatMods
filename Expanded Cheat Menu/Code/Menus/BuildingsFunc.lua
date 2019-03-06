@@ -9,6 +9,7 @@ function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Trans = ChoGGi.ComFuncs.Translate
+	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 	local S = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.RotateDuringPlacement_Toggle()
@@ -114,13 +115,13 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = obj.template_name
+		local id = RetTemplateOrClass(obj)
 		local name = RetName(obj)
-		local DefaultSetting = obj.base_evaluation_points
+		local default_setting = obj:GetClassValue("evaluation_points")
 		local UserSettings = ChoGGi.UserSettings
 
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]),value = DefaultSetting},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]),value = default_setting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -137,7 +138,7 @@ function OnMsg.ClassesGenerate()
 			UserSettings.BuildingSettings[id] = {}
 		end
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		local setting = UserSettings.BuildingSettings[id]
 		if setting and setting.evaluation_points then
 			hint = setting.evaluation_points
@@ -152,11 +153,10 @@ function OnMsg.ClassesGenerate()
 			if type(value) == "number" then
 				local objs = ChoGGi.ComFuncs.RetAllOfClass(obj.class)
 
-				if value == DefaultSetting then
+				if value == default_setting then
 					setting.evaluation_points = nil
-					-- remove setting so it uses base_ value
 					for i = 1, #objs do
-						objs[i].evaluation_points = nil
+						objs[i].evaluation_points = default_setting
 					end
 				else
 					setting.evaluation_points = value
@@ -175,7 +175,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = name .. ": " .. S[302535920001344--[[Points To Train--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -194,28 +194,33 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 		local r = ChoGGi.Consts.ResourceScale
-		local id = obj.template_name
+		local id = RetTemplateOrClass(obj)
 		local ServiceInterestsList = table.concat(ServiceInterestsList,", ")
 		local name = RetName(obj)
 		local is_service = obj:IsKindOf("Service")
 
 		local ReturnEditorType = ChoGGi.ComFuncs.ReturnEditorType
 		local hint_type = S[302535920000138--[[Value needs to be a %s.--]]]
-		local ItemList = {
-			{text = Trans(728--[[Health change on visit--]]),value = obj.base_health_change / r,setting = "health_change",hint = hint_type:format(ReturnEditorType(obj.properties,"id","health_change"))},
-			{text = Trans(729--[[Sanity change on visit--]]),value = obj.base_sanity_change / r,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(obj.properties,"id","sanity_change"))},
-			{text = Trans(730--[[Service Comfort--]]),value = obj.base_service_comfort / r,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(obj.properties,"id","service_comfort"))},
-			{text = Trans(731--[[Comfort increase on visit--]]),value = obj.base_comfort_increase / r,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(obj.properties,"id","comfort_increase"))},
+		local item_list = {
+			{text = Trans(728--[[Health change on visit--]]),value = obj:GetClassValue("health_change") / r,setting = "health_change",hint = hint_type:format(ReturnEditorType(obj.properties,"id","health_change"))},
+			{text = Trans(729--[[Sanity change on visit--]]),value = objobj:GetClassValue("sanity_change") / r,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(obj.properties,"id","sanity_change"))},
+			{text = Trans(730--[[Service Comfort--]]),value = obj:GetClassValue("service_comfort") / r,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(obj.properties,"id","service_comfort"))},
+			{text = Trans(731--[[Comfort increase on visit--]]),value = obj:GetClassValue("comfort_increase") / r,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(obj.properties,"id","comfort_increase"))},
 		}
+		local c = #item_list
 		if is_service then
-			ItemList[#ItemList+1] = {text = Trans(734--[[Visit duration--]]),value = obj.base_visit_duration,setting = "visit_duration",hint = hint_type:format(ReturnEditorType(obj.properties,"id","visit_duration"))}
+			c = c + 1
+			item_list[c] = {text = Trans(734--[[Visit duration--]]),value = obj:GetClassValue("visit_duration"),setting = "visit_duration",hint = hint_type:format(ReturnEditorType(obj.properties,"id","visit_duration"))}
 			-- bool
-			ItemList[#ItemList+1] = {text = Trans(735--[[Usable by children--]]),value = obj.base_usable_by_children,setting = "usable_by_children",hint = hint_type:format(ReturnEditorType(obj.properties,"id","usable_by_children"))}
-			ItemList[#ItemList+1] = {text = Trans(736--[[Children Only--]]),value = obj.base_children_only,setting = "children_only",hint = hint_type:format(ReturnEditorType(obj.properties,"id","children_only"))}
+			c = c + 1
+			item_list[c] = {text = Trans(735--[[Usable by children--]]),value = obj:GetClassValue("usable_by_children"),setting = "usable_by_children",hint = hint_type:format(ReturnEditorType(obj.properties,"id","usable_by_children"))}
+			c = c + 1
+			item_list[c] = {text = Trans(736--[[Children Only--]]),value = obj:GetClassValue("children_only"),setting = "children_only",hint = hint_type:format(ReturnEditorType(obj.properties,"id","children_only"))}
 
 			for i = 1, 11 do
 				local name = "interest" .. i
-				ItemList[#ItemList+1] = {
+				c = c + 1
+				item_list[c] = {
 					text = Trans(732--[[Service interest--]]) .. " " .. i,
 					value = obj[name],
 					setting = name,
@@ -246,18 +251,18 @@ function OnMsg.ClassesGenerate()
 				bs_setting.service_stats = nil
 				-- get defaults
 				local temp = {
-					health_change = obj:GetDefaultPropertyValue("health_change"),
-					sanity_change = obj:GetDefaultPropertyValue("sanity_change"),
-					service_comfort = obj:GetDefaultPropertyValue("service_comfort"),
-					comfort_increase = obj:GetDefaultPropertyValue("comfort_increase"),
+					health_change = obj:GetClassValue("health_change"),
+					sanity_change = obj:GetClassValue("sanity_change"),
+					service_comfort = obj:GetClassValue("service_comfort"),
+					comfort_increase = obj:GetClassValue("comfort_increase"),
 				}
 				if is_service then
-					temp.visit_duration = obj:GetDefaultPropertyValue("visit_duration")
-					temp.usable_by_children = obj:GetDefaultPropertyValue("usable_by_children")
-					temp.children_only = obj:GetDefaultPropertyValue("children_only")
+					temp.visit_duration = obj:GetClassValue("visit_duration")
+					temp.usable_by_children = obj:GetClassValue("usable_by_children")
+					temp.children_only = obj:GetClassValue("children_only")
 					for i = 1, 11 do
 						local name = "interest" .. i
-						temp[name] = obj:GetDefaultPropertyValue(name)
+						temp[name] = obj:GetClassValue(name)
 					end
 				end
 
@@ -265,17 +270,17 @@ function OnMsg.ClassesGenerate()
 				local objs = ChoGGi.ComFuncs.RetAllOfClass(id)
 				for i = 1, #objs do
 					local obj = objs[i]
-					obj.base_health_change = temp.health_change
-					obj.base_sanity_change = temp.sanity_change
-					obj.base_service_comfort = temp.service_comfort
-					obj.base_comfort_increase = temp.comfort_increase
+					obj:SetBase("health_change", temp.health_change)
+					obj:SetBase("sanity_change", temp.sanity_change)
+					obj:SetBase("service_comfort", temp.service_comfort)
+					obj:SetBase("comfort_increase", temp.comfort_increase)
 					if is_service then
-						obj.base_visit_duration = temp.visit_duration
-						obj.base_usable_by_children = temp.usable_by_children
-						obj.base_children_only = temp.children_only
+					obj:SetBase("visit_duration", temp.visit_duration)
+					obj:SetBase("usable_by_children", temp.usable_by_children)
+					obj:SetBase("children_only", temp.children_only)
 						for j = 1, 11 do
 							local name = "interest" .. j
-							obj[name] = temp[name]
+							obj:SetBase("name", temp[name])
 						end
 					end
 				end
@@ -318,28 +323,28 @@ function OnMsg.ClassesGenerate()
 		end
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. name .. " " .. S[302535920001114--[[Service Building Stats--]]],
 			hint = S[302535920001339--[[Are settings custom: %s--]]]:format(custom_settings),
 			hint = S[302535920001340--[[Invalid settings will be skipped.--]]] .. "\n\n" .. S[302535920001339--[[Are settings custom: %s--]]]:format(custom_settings),
 			custom_type = 4,
-			check = {
+			skip_sort = true,
+			checkboxes = {
 				{
 					title = Trans(1000121--[[Default--]]),
 					hint = S[302535920001338--[[Reset to default.--]]],
 				},
 			},
-			skip_sort = true,
 		}
 	end
 
 	function ChoGGi.MenuFuncs.SetExportWhenThisAmount()
 		local ChoGGi = ChoGGi
-		local DefaultSetting = Trans(1000121--[[Default--]])
+		local default_setting = Trans(1000121--[[Default--]])
 		local UserSettings = ChoGGi.UserSettings
 		local id = "SpaceElevator"
-		local ItemList = {
-			{text = DefaultSetting,value = DefaultSetting},
+		local item_list = {
+			{text = default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -356,7 +361,7 @@ function OnMsg.ClassesGenerate()
 			UserSettings.BuildingSettings[id] = {}
 		end
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		local setting = UserSettings.BuildingSettings[id]
 		if setting and setting.export_when_this_amount then
 			hint = setting.export_when_this_amount
@@ -368,7 +373,7 @@ function OnMsg.ClassesGenerate()
 			end
 			local value = choice[1].value
 
-			if value == DefaultSetting then
+			if value == default_setting then
 				setting.export_when_this_amount = nil
 			else
 				setting.export_when_this_amount = value * ChoGGi.Consts.ResourceScale
@@ -384,7 +389,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001336--[[Export When This Amount--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -396,11 +401,11 @@ function OnMsg.ClassesGenerate()
 		local title = action.setting_msg
 
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting = SpaceElevator[setting_name] / r
+		local default_setting = SpaceElevator[setting_name] / r
 		local UserSettings = ChoGGi.UserSettings
 		local id = "SpaceElevator"
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -417,7 +422,7 @@ function OnMsg.ClassesGenerate()
 			UserSettings.BuildingSettings[id] = {}
 		end
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		local setting = UserSettings.BuildingSettings[id]
 		if setting and setting[setting_name] then
 			hint = setting[setting_name]
@@ -431,7 +436,7 @@ function OnMsg.ClassesGenerate()
 			if type(value) == "number" then
 				value = value * r
 
-				if value == DefaultSetting * r then
+				if value == default_setting * r then
 					setting[setting_name] = nil
 				else
 					setting[setting_name] = value
@@ -453,7 +458,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[title],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -472,11 +477,11 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
-		local DefaultSetting = 5
+		local default_setting = 5
 		local UserSettings = ChoGGi.UserSettings
 		local r = ChoGGi.Consts.ResourceScale
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -489,7 +494,7 @@ function OnMsg.ClassesGenerate()
 		}
 
 		-- other hint type
-		local hint = DefaultSetting
+		local hint = default_setting
 		if UserSettings.ServiceWorkplaceFoodStorage then
 			hint = UserSettings.ServiceWorkplaceFoodStorage
 		end
@@ -502,7 +507,7 @@ function OnMsg.ClassesGenerate()
 			if type(value) == "number" then
 				value = value * r
 
-				if value == DefaultSetting * r then
+				if value == default_setting * r then
 					UserSettings.ServiceWorkplaceFoodStorage = nil
 				else
 					UserSettings.ServiceWorkplaceFoodStorage = value
@@ -511,8 +516,9 @@ function OnMsg.ClassesGenerate()
 				local function SetStor(cls)
 					local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
 					for i = 1, #objs do
-						objs[i].consumption_stored_resources = value
-						objs[i].consumption_max_storage = value
+						local o = objs[i]
+						o.consumption_stored_resources = value
+						o.consumption_max_storage = value
 					end
 				end
 				SetStor("Diner")
@@ -529,7 +535,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000105--[[Set Food Storage--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -592,10 +598,10 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = obj.template_name
-		local DefaultSetting = g_Classes[id]:GetDefaultPropertyValue("protect_range")
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local id = RetTemplateOrClass(obj)
+		local default_setting = g_Classes[id]:GetClassValue("protect_range")
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 40,value = 40},
 			{text = 80,value = 80},
 			{text = 160,value = 160},
@@ -607,7 +613,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.UserSettings.BuildingSettings[id] = {}
 		end
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		local setting = ChoGGi.UserSettings.BuildingSettings[id]
 		if setting and setting.protect_range then
 			hint = tostring(setting.protect_range)
@@ -620,13 +626,14 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			if type(value) == "number" then
 
-				local tab = ChoGGi.ComFuncs.RetAllOfClass(id)
-				for i = 1, #tab do
-					tab[i].protect_range = value
-					tab[i].shoot_range = value * guim
+				local objs = ChoGGi.ComFuncs.RetAllOfClass(id)
+				for i = 1, #objs do
+					local obj = objs[i]
+					obj.protect_range = value
+					obj.shoot_range = value * guim
 				end
 
-				if value == DefaultSetting then
+				if value == default_setting then
 					ChoGGi.UserSettings.BuildingSettings[id].protect_range = nil
 				else
 					ChoGGi.UserSettings.BuildingSettings[id].protect_range = value
@@ -643,7 +650,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000114--[[Set Protection Radius--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint .. "\n\n" ..S[302535920000115--[[Toggle selection to update visible hex grid.--]]],
 			skip_sort = true,
@@ -652,20 +659,20 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.UnlockLockedBuildings()
 		local everything = S[302535920000306--[[Everything--]]]
-		local ItemList = {
+		local item_list = {
 			{
 			text = " " .. everything,
 			value = everything,
 			},
 		}
-		local c = #ItemList
+		local c = #item_list
 
 		local BuildingTemplates = BuildingTemplates
 		local GetBuildingTechsStatus = GetBuildingTechsStatus
 		for id,bld in pairs(BuildingTemplates) do
 			if not GetBuildingTechsStatus(id) then
 				c = c + 1
-				ItemList[c] = {
+				item_list[c] = {
 					text = Trans(bld.display_name),
 					value = id,
 				}
@@ -679,7 +686,7 @@ function OnMsg.ClassesGenerate()
 			local UnlockBuilding = UnlockBuilding
 			-- if everything then ignore the choices and just use the itemlist
 			if table.find(choice,"value",everything) then
-				choice = ItemList
+				choice = item_list
 			end
 
 			for i = 1, #choice do
@@ -695,7 +702,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000117--[[Unlock Buildings--]]],
 			hint = S[302535920000118--[[Pick the buildings you want to unlock (use Ctrl/Shift for multiple).--]]],
 			multisel = true,
@@ -744,7 +751,7 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = obj.template_name
+		local id = RetTemplateOrClass(obj)
 		local UserSettings = ChoGGi.UserSettings
 
 		if not UserSettings.BuildingSettings[id] then
@@ -811,7 +818,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 		local ChoGGi = ChoGGi
 		local obj = SelectedObj
-		if not obj or (not obj.base_air_capacity and not obj.base_water_capacity and not obj.base_capacity) then
+		if not obj or obj and not obj:IsKindOfClasses("ElectricityStorage","AirStorage","WaterStorage") then
 			MsgPopup(
 				S[302535920000122--[[You need to select something that has capacity (air/water/elec).--]]],
 				S[302535920000188--[[Set Charge & Discharge Rates--]]],
@@ -819,33 +826,32 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = obj.template_name
+		local id = RetTemplateOrClass(obj)
 		local name = Trans(obj.display_name)
 		local r = ChoGGi.Consts.ResourceScale
 
-		--get type of capacity
-		local CapType
-		if obj.base_air_capacity then
-			CapType = "air"
-		elseif obj.base_water_capacity then
-			CapType = "water"
-		elseif obj.electricity and obj.electricity.storage_capacity then
-			CapType = "electricity"
+		-- get type of capacity
+		local cap_type,charge,discharge
+		if obj:IsKindOf("ElectricityStorage") then
+			cap_type,charge,discharge = "electricity","max_electricity_charge","max_electricity_discharge"
+		elseif obj:IsKindOf("AirStorage") then
+			cap_type,charge,discharge = "air","max_air_charge","max_air_discharge"
+		elseif obj:IsKindOf("WaterStorage") then
+			cap_type,charge,discharge = "water","max_water_charge","max_water_discharge"
 		end
-		--probably selected something with colonists
-		if not CapType then
+		if not cap_type then
 			return
 		end
 
-		--get default amount
+		-- get default amount
 		local template = BuildingTemplates[id]
-		local DefaultSettingC = template["max_" .. CapType .. "_charge"] / r
-		local DefaultSettingD = template["max_" .. CapType .. "_discharge"] / r
+		local default_settingC = template[charge] / r
+		local default_settingD = template[discharge] / r
 
-		local ItemList = {
+		local item_list = {
 			{text = Trans(1000121--[[Default--]]),value = Trans(1000121--[[Default--]]),hint = S[302535920000124--[[Charge--]]]
-				.. ": " .. DefaultSettingC .. " / " .. S[302535920000125--[[Discharge--]]]
-				.. ": " .. DefaultSettingD},
+				.. ": " .. default_settingC .. " / " .. S[302535920000125--[[Discharge--]]]
+				.. ": " .. default_settingD},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -863,7 +869,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.UserSettings.BuildingSettings[id] = {}
 		end
 
-		local hint = S[302535920000124--[[Charge--]]] .. ": " .. DefaultSettingC .. " / " .. S[302535920000125--[[Discharge--]]] .. ": " .. DefaultSettingD
+		local hint = S[302535920000124--[[Charge--]]] .. ": " .. default_settingC .. " / " .. S[302535920000125--[[Discharge--]]] .. ": " .. default_settingD
 		local setting = ChoGGi.UserSettings.BuildingSettings[id]
 		if setting then
 			if setting.charge and setting.discharge then
@@ -890,11 +896,11 @@ function OnMsg.ClassesGenerate()
 				if value == Trans(1000121--[[Default--]]) then
 					if check1 then
 						setting.charge = nil
-						numberC = DefaultSettingC * r
+						numberC = default_settingC * r
 					end
 					if check2 then
 						setting.discharge = nil
-						numberD = DefaultSettingD * r
+						numberD = default_settingD * r
 					end
 				else
 					if check1 then
@@ -906,35 +912,36 @@ function OnMsg.ClassesGenerate()
 				end
 
 				-- updating time
-				local str1,str2 = "max_" .. CapType .. "_charge","max_" .. CapType .. "_discharge"
-				if CapType == "electricity" then
-					local tab = UICity.labels.Power or ""
-					for i = 1, #tab do
-						if tab[i].template_name == id then
+				if cap_type == "electricity" then
+					local objs = UICity.labels.Power or ""
+					for i = 1, #objs do
+						local o = objs[i]
+						if RetTemplateOrClass(o) == id then
 							if check1 then
-								tab[i][CapType].max_charge = numberC
-								tab[i][str1] = numberC
+								o[cap_type].max_charge = numberC
+								o[charge] = numberC
 							end
 							if check2 then
-								tab[i][CapType].max_discharge = numberD
-								tab[i][str2] = numberD
+								o[cap_type].max_discharge = numberD
+								o[discharge] = numberD
 							end
-							ChoGGi.ComFuncs.ToggleWorking(tab[i])
+							ChoGGi.ComFuncs.ToggleWorking(o)
 						end
 					end
 				else -- water and air
-					local tab = UICity.labels["Life-Support"] or ""
-					for i = 1, #tab do
-						if tab[i].template_name == id then
+					local objs = UICity.labels["Life-Support"] or ""
+					for i = 1, #objs do
+						local o = objs[i]
+						if RetTemplateOrClass(o) == id then
 							if check1 then
-								tab[i][CapType].max_charge = numberC
-								tab[i][str1] = numberC
+								o[cap_type].max_charge = numberC
+								o[charge] = numberC
 							end
 							if check2 then
-								tab[i][CapType].max_discharge = numberD
-								tab[i][str2] = numberD
+								o[cap_type].max_discharge = numberD
+								o[discharge] = numberD
 							end
-							ChoGGi.ComFuncs.ToggleWorking(tab[i])
+							ChoGGi.ComFuncs.ToggleWorking(o)
 						end
 					end
 				end
@@ -950,10 +957,11 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. name .. " " .. S[302535920000130--[[Dis/Charge Rates--]]],
 			hint = S[302535920000131--[[Current rate--]]] .. ": " .. hint,
-			check = {
+			skip_sort = true,
+			checkboxes = {
 				at_least_one = true,
 				{
 					title = S[302535920000124--[[Charge--]]],
@@ -965,24 +973,25 @@ function OnMsg.ClassesGenerate()
 					hint = S[302535920000133--[[Change discharge rate--]]],
 				},
 			},
-			skip_sort = true,
 		}
 	end
 
 	function ChoGGi.MenuFuncs.FarmShiftsAllOn()
-		local UICity = UICity
-		local tab = UICity.labels.BaseFarm or ""
-		for i = 1, #tab do
-			tab[i].closed_shifts[1] = false
-			tab[i].closed_shifts[2] = false
-			tab[i].closed_shifts[3] = false
+		local labels = UICity.labels
+		local objs = labels.BaseFarm or ""
+		for i = 1, #objs do
+			local obj = objs[i]
+			obj.closed_shifts[1] = false
+			obj.closed_shifts[2] = false
+			obj.closed_shifts[3] = false
 		end
 		--BaseFarm doesn't include FungalFarm...
-		tab = UICity.labels.FungalFarm or ""
-		for i = 1, #tab do
-			tab[i].closed_shifts[1] = false
-			tab[i].closed_shifts[2] = false
-			tab[i].closed_shifts[3] = false
+		objs = labels.FungalFarm or ""
+		for i = 1, #objs do
+			local obj = objs[i]
+			obj.closed_shifts[1] = false
+			obj.closed_shifts[2] = false
+			obj.closed_shifts[3] = false
 		end
 
 		MsgPopup(
@@ -999,7 +1008,8 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetProductionAmount()
 		local ChoGGi = ChoGGi
 		local obj = SelectedObj
-		if not obj or (not obj.base_air_production and not obj.base_water_production and not obj.base_electricity_production and not obj.producers) then
+
+		if not obj or obj and not obj:IsKindOfClasses("WaterProducer","AirProducer","ElectricityProducer","ResourceProducer") then
 			MsgPopup(
 				S[302535920000136--[[Select something that produces (air,water,electricity,other).--]]],
 				S[302535920000194--[[Production Amount Set--]]],
@@ -1007,32 +1017,24 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = obj.template_name
+		local id = RetTemplateOrClass(obj)
 		local name = Trans(obj.display_name)
 
-		--get type of producer
-		local ProdType
-		if obj.base_air_production then
-			ProdType = "air"
-		elseif obj.base_water_production then
-			ProdType = "water"
-		elseif obj.base_electricity_production then
-			ProdType = "electricity"
-		elseif obj.producers then
-			ProdType = "other"
-		end
-
-		--get base amount
 		local r = ChoGGi.Consts.ResourceScale
-		local DefaultSetting
-		if ProdType == "other" then
-			DefaultSetting = obj.base_production_per_day1 / r
-		else
-			DefaultSetting = obj["base_" .. ProdType .. "_production"] / r
+		-- get type of producer/base amount
+		local prod_type,default_setting
+		if obj:IsKindOf("WaterProducer") then
+			prod_type,default_setting = "water",obj:GetClassValue("water_production") / r
+		elseif obj:IsKindOf("AirProducer") then
+			prod_type,default_setting = "air",obj:GetClassValue("air_production") / r
+		elseif obj:IsKindOf("ElectricityProducer") then
+			prod_type,default_setting = "electricity",obj:GetClassValue("electricity_production") / r
+		elseif obj:IsKindOf("ResourceProducer") then
+			prod_type,default_setting = "other",obj:GetClassValue("production_per_day1") / r
 		end
 
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -1053,7 +1055,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.UserSettings.BuildingSettings[id] = {}
 		end
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		local setting = ChoGGi.UserSettings.BuildingSettings[id]
 		if setting and setting.production then
 			hint = tostring(setting.production / r)
@@ -1068,7 +1070,7 @@ function OnMsg.ClassesGenerate()
 				local amount = value * r
 
 				-- setting we use to actually update prod
-				if value == DefaultSetting then
+				if value == default_setting then
 					-- remove setting as we reset building type to default (we don't want to call it when we place a new building if nothing is going to be changed)
 					ChoGGi.UserSettings.BuildingSettings[id].production = nil
 				else
@@ -1078,30 +1080,34 @@ function OnMsg.ClassesGenerate()
 
 				-- all this just to update the displayed amount :)
 				local function SetProd(label)
-					local tab = ChoGGi.ComFuncs.RetAllOfClass(label)
-					for i = 1, #tab do
-						if tab[i].template_name == id then
-							tab[i][ProdType]:SetProduction(amount)
+					local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
+					for i = 1, #objs do
+						local o = objs[i]
+						if RetTemplateOrClass(obj) == id then
+							o[prod_type]:SetProduction(amount)
 						end
 					end
 				end
-				if ProdType == "electricity" then
+
+				if prod_type == "electricity" then
 					-- electricity
 					SetProd("Power")
-				elseif ProdType == "water" or ProdType == "air" then
+				elseif prod_type == "water" or prod_type == "air" then
 					-- water/air
 					SetProd("Life-Support")
 				else -- other prod
 
 					local function SetProdOther(label)
-						local tab = ChoGGi.ComFuncs.RetAllOfClass(label)
-						for i = 1, #tab do
-							if tab[i].template_name == id then
-								tab[i]:GetProducerObj().production_per_day = amount
-								tab[i]:GetProducerObj():Produce(amount)
+						local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
+						for i = 1, #objs do
+							local o = objs[i]
+							if RetTemplateOrClass(obj) == id then
+								o:GetProducerObj().production_per_day = amount
+								o:GetProducerObj():Produce(amount)
 							end
 						end
 					end
+
 					-- extractors/factories
 					SetProdOther("Production")
 					-- moholemine/theexvacator
@@ -1125,7 +1131,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. name .. " " .. S[302535920000139--[[Production Amount--]]],
 			hint = S[302535920000140--[[Current production--]]] .. ": " .. hint,
 			skip_sort = true,
@@ -1143,9 +1149,9 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local id = obj.template_name
+		local id = RetTemplateOrClass(obj)
 
-		local ItemList = {
+		local item_list = {
 			{text = Trans(251103844022--[[Disable--]]),value = "Disable"},
 			{text = 100,value = 100},
 			{text = 150,value = 150},
@@ -1169,18 +1175,24 @@ function OnMsg.ClassesGenerate()
 			if value == "Disable" then
 				value = nil
 				if choice[1].check then
-					obj.max_workers = obj.base_max_workers
-					obj.automation = obj.base_automation
-					obj.auto_performance = obj.base_auto_performance
+					obj.max_workers = obj:GetClassValue("max_workers")
+					obj.automation = obj:GetClassValue("automation")
+					obj.auto_performance = obj:GetClassValue("auto_performance")
 					ChoGGi.ComFuncs.ToggleWorking(obj)
 				else
 					local blds = ChoGGi.ComFuncs.RetAllOfClass(obj.class)
-					for i = 1, #blds do
-						local bld = blds[i]
-						bld.max_workers = bld.base_max_workers
-						bld.automation = bld.base_automation
-						bld.auto_performance = bld.base_auto_performance
-						ChoGGi.ComFuncs.ToggleWorking(bld)
+					if #blds > 0 then
+						-- GetClassValue gets the metatable for the obj, so just grab the first one and use those values
+						local max_workers = blds[1]:GetClassValue("max_workers")
+						local automation = blds[1]:GetClassValue("automation")
+						local auto_performance = blds[1]:GetClassValue("auto_performance")
+						for i = 1, #blds do
+							local bld = blds[i]
+							bld.max_workers = max_workers
+							bld.automation = automation
+							bld.auto_performance = auto_performance
+							ChoGGi.ComFuncs.ToggleWorking(bld)
+						end
 					end
 				end
 			elseif type(value) == "number" then
@@ -1226,16 +1238,16 @@ function OnMsg.ClassesGenerate()
 		local name = RetName(obj)
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = name .. ": " .. S[302535920000144--[[Automated Performance--]]],
 			hint = S[302535920000145--[[Sets performance of all automated buildings of this type--]]] .. "\n" .. S[302535920000106--[[Current--]]] .. ": " .. hint,
-			check = {
+			skip_sort = true,
+			checkboxes = {
 				{
 					title = S[302535920000769--[[Selected--]]],
 					hint = S[302535920000147--[[Only apply to selected object instead of all %s.--]]]:format(name),
 				},
 			},
-			skip_sort = true,
 		}
 	end
 
@@ -1338,21 +1350,21 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.InsideBuildingsNoMaintenance = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.InsideBuildingsNoMaintenance)
 
-		local tab = UICity.labels.InsideBuildings or ""
-		for i = 1, #tab do
-			if tab[i].base_maintenance_build_up_per_hr then
-
+		local objs = UICity.labels.InsideBuildings or ""
+		for i = 1, #objs do
+			local obj = objs[i]
+			if obj:IsKindOf("RequiresMaintenance") then
 				if ChoGGi.UserSettings.InsideBuildingsNoMaintenance then
-					tab[i].ChoGGi_InsideBuildingsNoMaintenance = true
-					tab[i].maintenance_build_up_per_hr = -10000
+					obj.ChoGGi_InsideBuildingsNoMaintenance = true
+					obj.maintenance_build_up_per_hr = -10000
 				else
-					if not tab[i].ChoGGi_RemoveMaintenanceBuildUp then
-						tab[i].maintenance_build_up_per_hr = nil
+					if not obj.ChoGGi_RemoveMaintenanceBuildUp then
+						obj.maintenance_build_up_per_hr = nil
 					end
-					tab[i].ChoGGi_InsideBuildingsNoMaintenance = nil
+					obj.ChoGGi_InsideBuildingsNoMaintenance = nil
 				end
-
 			end
+
 		end
 
 		ChoGGi.SettingFuncs.WriteSettings()
@@ -1367,15 +1379,16 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.RemoveMaintenanceBuildUp = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.RemoveMaintenanceBuildUp)
 
-		local tab = UICity.labels.Building or ""
-		for i = 1, #tab do
-			if tab[i].base_maintenance_build_up_per_hr then
+		local objs = UICity.labels.Building or ""
+		for i = 1, #objs do
+			local obj = objs[i]
+			if obj:IsKindOf("RequiresMaintenance") then
 				if ChoGGi.UserSettings.RemoveMaintenanceBuildUp then
-					tab[i].ChoGGi_RemoveMaintenanceBuildUp = true
-					tab[i].maintenance_build_up_per_hr = -10000
-				elseif not tab[i].ChoGGi_InsideBuildingsNoMaintenance then
-					tab[i].ChoGGi_RemoveMaintenanceBuildUp = nil
-					tab[i].maintenance_build_up_per_hr = nil
+					obj.ChoGGi_RemoveMaintenanceBuildUp = true
+					obj.maintenance_build_up_per_hr = -10000
+				elseif not obj.ChoGGi_InsideBuildingsNoMaintenance then
+					obj.ChoGGi_RemoveMaintenanceBuildUp = nil
+					obj.maintenance_build_up_per_hr = nil
 				end
 			end
 		end
@@ -1638,9 +1651,9 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 		local id = action.bld_id
 		local msgpopup = action.bld_msg
 
-		local DefaultSetting = g_Classes[id]:GetDefaultPropertyValue("UIRange")
-		local ItemList = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. DefaultSetting,value = DefaultSetting},
+		local default_setting = g_Classes[id]:GetClassValue("UIRange")
+		local item_list = {
+			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 25,value = 25},
@@ -1655,7 +1668,7 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 			UserSettings.BuildingSettings[id] = {}
 		end
 
-		local hint = DefaultSetting
+		local hint = default_setting
 		if UserSettings.BuildingSettings[id].uirange then
 			hint = UserSettings.BuildingSettings[id].uirange
 		end
@@ -1667,7 +1680,7 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 			local value = choice[1].value
 			if type(value) == "number" then
 
-				if value == DefaultSetting then
+				if value == default_setting then
 					UserSettings.BuildingSettings[id].uirange = nil
 				else
 					UserSettings.BuildingSettings[id].uirange = value
@@ -1678,8 +1691,9 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 				CreateRealTimeThread(function()
 					local objs = ChoGGi.ComFuncs.RetAllOfClass(id)
 					for i = 1, #objs do
-						objs[i]:SetUIRange(value)
-						SelectObj(objs[i])
+						local o = objs[i]
+						o:SetUIRange(value)
+						SelectObj(o)
 						Sleep(1)
 					end
 					SelectObj(obj)
@@ -1697,7 +1711,7 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000129--[[Set--]]] .. " " .. id .. " " .. S[302535920000163--[[Radius--]]],
 			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,

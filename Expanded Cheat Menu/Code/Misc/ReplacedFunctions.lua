@@ -293,7 +293,6 @@ function OnMsg.ClassesGenerate()
 	SaveOrigFunc("CursorBuilding","GameInit")
 	SaveOrigFunc("DontBuildHere","Check")
 	SaveOrigFunc("DustGridElement","AddDust")
-	SaveOrigFunc("GridObject","GetPipeConnections")
 	SaveOrigFunc("InfopanelDlg","RecalculateMargins")
 	SaveOrigFunc("SupplyRocket","FlyToEarth")
 	SaveOrigFunc("SupplyRocket","FlyToMars")
@@ -514,94 +513,6 @@ function OnMsg.ClassesGenerate()
 
 		end
 	end -- do
-
-	do -- Large Water Tank + Pipes + Chrome skin = borked looking pipes
-		local spots = {"Tube", "Tubeleft", "Tuberight", "Tubestraight"}
-		local spot_attach = {"Tube", "TubeLeft", "TubeRight", "TubeStraight"}
-		local decor_spot = "Tubedecor"
-		local IsValidEntity = IsValidEntity
-		local point = point
-		local WorldToHex = WorldToHex
-		local IsKindOf = IsKindOf
-		function GridObject:GetPipeConnections(...)
-			if ChoGGi.Temp.FixingPipes then
-				if not IsKindOf(self, "LifeSupportGridObject") then
-					return
-				end
-
-				local gsn = self:GetGridSkinName()
-				local entity = self:GetEntity()
-				local cache_key = self:GetEntityNameForPipeConnections(gsn)
-				local list = PipeConnectionsCache[cache_key]
-				if not list then
-					local skin = TubeSkinsBuildingConnections[gsn]
-
-					list = {}
-					PipeConnectionsCache[cache_key] = list
-
-					--figure out if there is a "decor" spot.
-					local decor_spot_info_t = HasSpot(entity, "idle", decor_spot) and {entity, false} or false
-					if not decor_spot_info_t and self.configurable_attaches then
-						for i = #self.configurable_attaches, 1, -1 do
-							local attach = self.configurable_attaches[i]
-							local attach_entity, attach_spot = _G[attach[1]]:GetEntity(), attach[2]
-							if HasSpot(attach_entity, "idle", decor_spot) then
-								decor_spot_info_t = {attach_entity, attach_spot}
-								break
-							end
-						end
-					end
-
-					for s, spot in ipairs(spots) do
-						local first, last = GetSpotRange(entity, "idle", spot)
-						local pipe_entity, pt_end, angle_end
-						for i = first, last do
-							pipe_entity = pipe_entity or (cache_key .. spot_attach[s])
-							if not IsValidEntity(pipe_entity) then
-								--default connection tube.
-								pipe_entity = skin.default_tube
-							end
-							pt_end = pt_end or GetEntitySpotPos(pipe_entity, GetSpotBeginIndex(pipe_entity, "idle", "End"))
-							angle_end = angle_end or CalcOrientation(pt_end)
-							if pt_end:x() ~= 0 or pt_end:y() ~= 0 then
-								local spot_pos_pt = GetEntitySpotPos(entity, i)
-								local dir = HexAngleToDirection(angle_end + GetEntitySpotAngle(entity, i))
-								local pt = point(WorldToHex(spot_pos_pt + Rotate(point(guim, 0), angle_end + GetEntitySpotAngle(entity, i))))
-								-- this will allow us to ignore the error and change the skin
-	--~								 for _, entry in ipairs(list) do
-	--~									 if entry[1] == pt and entry[2] == dir then
-	--~										 printf("Duplicate pipe connection: entity %s, spot %s, pipe entity %s", entity, spot, pipe_entity)
-	--~										 pt = nil
-	--~									 end
-	--~								 end
-								if pt then
-									local decor_t = nil
-									if decor_spot_info_t then
-										decor_t = {skin.decor_entity}
-										if not decor_spot_info_t[2] then
-											--decor spot on main entity
-											decor_t[2] = {GetEntityNearestSpotIdx(entity, decor_spot, spot_pos_pt), entity}
-										else
-											--decor spot on auto attach
-											decor_t[2] = {GetEntityNearestSpotIdx(entity, decor_spot_info_t[2], spot_pos_pt), entity}
-											decor_t[3] = {GetEntityNearestSpotIdx(decor_spot_info_t[1], decor_spot, Rotate(spot_pos_pt - GetEntitySpotPos(entity, decor_t[2][1]), -GetEntitySpotAngle(entity, decor_t[2][1])) ), decor_spot_info_t[1]}
-										end
-									end
-
-									list[#list + 1] = { pt, dir, i, pipe_entity, decor_t }
-								end
-							else
-								printf("Pipe entity %s does not have a valid 'End' spot", pipe_entity)
-							end
-						end
-					end
-				end
-				return list
-			else
-				return ChoGGi_OrigFuncs.GridObject_GetPipeConnections(self,...)
-			end
-		end
-	end
 
 	-- larger trib/subsurfheater radius
 	function UIRangeBuilding:SetUIRange(radius,...)
@@ -1306,23 +1217,6 @@ function OnMsg.ClassesBuilt()
 			-- orig func
 		end
 	end -- do
-
---~ 	do -- ConstructionController:CreateCursorObj
---~ 		local IsValid = IsValid
---~ 		local SetRollPitchYaw = SetRollPitchYaw
---~ 		-- set orientation to same as last object
---~ 		function ConstructionController:CreateCursorObj(...)
---~ 			local ChoGGi = ChoGGi
---~ 			local ret = {ChoGGi_OrigFuncs.ConstructionController_CreateCursorObj(self, ...)}
-
---~ 			local last = ChoGGi.Temp.LastPlacedObject
---~ 			if self.template_obj and self.template_obj.can_rotate_during_placement and ChoGGi.UserSettings.UseLastOrientation and IsValid(last) then
---~ 				SetRollPitchYaw(ret[1],0,0,last:GetAngle() or 0)
---~ 			end
-
---~ 			return table_unpack(ret)
---~ 		end
---~ 	end -- do
 
 	-- so we can build without (as many) limits
 	function ConstructionController:UpdateConstructionStatuses(dont_finalize,...)

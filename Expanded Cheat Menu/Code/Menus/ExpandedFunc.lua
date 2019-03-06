@@ -77,6 +77,7 @@ function OnMsg.ClassesGenerate()
 		local table_find = table.find
 		local r = ChoGGi.Consts.ResearchPointsScale
 		local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
+		local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 		local update_info_thread = {}
 		local viewing_obj_info = {}
 
@@ -84,8 +85,9 @@ function OnMsg.ClassesGenerate()
 			local max_workers = 0
 			local objs = obj.labels.Workplaces or ""
 			for i = 1, #objs do
-				if not objs[i].destroyed then
-					max_workers = max_workers + objs[i].max_workers
+				local o = objs[i]
+				if not o.destroyed then
+					max_workers = max_workers + o.max_workers
 				end
 			end
 			return max_workers
@@ -249,6 +251,7 @@ function OnMsg.ClassesGenerate()
 		local ptz2000 = point(0,0,2000)
 		local function AddViewObjInfo(label)
 			local objs = RetAllOfClass(label)
+			SuspendPassEdits("ChoGGi.MenuFuncs.BuildingInfo_Toggle.AddViewObjInfo")
 			for i = 1, #objs do
 				local obj = objs[i]
 				-- only check for valid pos if it isn't a colonist (inside building = invalid pos)
@@ -259,14 +262,11 @@ function OnMsg.ClassesGenerate()
 				-- skip any missing objects
 				if IsValid(obj) and pos then
 					local text_obj = PlaceObject("ChoGGi_OText")
---~ 					local orient_obj = PlaceObject("ChoGGi_OOrientation")
---~ 					orient_obj.ChoGGi_ViewObjInfo_o = true
+					text_obj:SetColor1(RandomColourLimited())
 					text_obj:SetText(GetInfo[label](obj))
-					text_obj:SetCenter(true)
+					obj:Attach(text_obj)
 					obj.ChoGGi_ViewObjInfo_text = text_obj
 
-					obj:Attach(text_obj)
---~ 					obj:Attach(orient_obj)
 					if label == "Dome" then
 						text_obj:SetAttachOffset(ptz8000)
 					elseif label ~= "Drone" then
@@ -274,6 +274,7 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 			end
+			ResumePassEdits("ChoGGi.MenuFuncs.BuildingInfo_Toggle.AddViewObjInfo")
 		end
 
 		local function RemoveViewObjInfo(cls)
@@ -322,7 +323,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		function ChoGGi.MenuFuncs.BuildingInfo_Toggle()
-			local ItemList = {
+			local item_list = {
 				{text = Trans(83--[[Domes--]]),value = "Dome"},
 				{text = Trans(3982--[[Deposits--]]),value = "Deposit"},
 				{text = Trans(80--[[Production--]]),value = "Production"},
@@ -361,7 +362,7 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920000333--[[Building Info--]]],
 				hint = S[302535920001280--[[Double-click to toggle text (updates every second).--]]],
 				custom_type = 7,
@@ -372,7 +373,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.MonitorInfo()
 		local ChoGGi = ChoGGi
-		local ItemList = {
+		local item_list = {
 			{text = S[302535920000936--[[Something you'd like to see added?--]]],value = "New"},
 			{text = "",value = "New"},
 			{text = S[302535920000035--[[Grids--]]] .. ": " .. Trans(891--[[Air--]]),value = "Air"},
@@ -384,7 +385,7 @@ function OnMsg.ClassesGenerate()
 			{text = Trans(5238--[[Rockets--]]),value = "Rockets"},
 		}
 		if ChoGGi.testing then
-			ItemList[#ItemList+1] = {text = Trans(311--[[Research--]]),value = "Research"}
+			item_list[#item_list+1] = {text = Trans(311--[[Research--]]),value = "Research"}
 		end
 
 		local function CallBackFunc(choice)
@@ -404,7 +405,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000555--[[Monitor Info--]]],
 			hint = S[302535920000940--[[Select something to monitor.--]]],
 			custom_type = 7,

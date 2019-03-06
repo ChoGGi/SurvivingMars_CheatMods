@@ -65,7 +65,7 @@ function OnMsg.ClassesGenerate()
 				colors[i] = c
 				local t = PlaceObject("ChoGGi_OText")
 				t:SetPos(w:SetZ(w:z() or w:SetTerrainZ(10 * guic)))
-				t:SetColor(c)
+				t:SetColor1(c)
 				t:SetText(i .. "")
 				lines[i] = t
 			end
@@ -252,7 +252,7 @@ that'll activate the BadPrefab on it
 --]]
 		local StoryBits = StoryBits
 
-		local ItemList = {}
+		local item_list = {}
 		local c = 0
 
 		local story_table = {}
@@ -272,7 +272,7 @@ that'll activate the BadPrefab on it
 				title = story.group .. ": " .. title
 			end
 			c = c + 1
-			ItemList[c] = {
+			item_list[c] = {
 				text = title,
 				value = id,
 				story = a_story,
@@ -300,7 +300,7 @@ that'll activate the BadPrefab on it
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = title,
 			hint = S[302535920001359--[["Just lists them for now, I'll make it force them soonish."--]]],
 		}
@@ -322,7 +322,7 @@ that'll activate the BadPrefab on it
 	end -- do
 
 	function ChoGGi.MenuFuncs.Render_Toggle()
-		local ItemList = {
+		local item_list = {
 			{text = "RenderAlwaysRenderableObjects",value = "RenderAlwaysRenderableObjects"},
 			{text = "RenderBandOutsideMap",value = "RenderBandOutsideMap"},
 			{text = "RenderBandOutsidersMaxZ",value = "RenderBandOutsidersMaxZ"},
@@ -384,7 +384,7 @@ that'll activate the BadPrefab on it
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001314--[[Toggle Render--]]],
 			skip_sort = true,
 			custom_type = 1,
@@ -514,8 +514,9 @@ that'll activate the BadPrefab on it
 				-- store hexes off-map
 				SuspendPassEdits("ChoGGi.MenuFuncs.debug_build_grid_settings")
 				for i = 1, #grid_objs do
-					if IsValid(grid_objs[i]) then
-						grid_objs[i]:delete()
+					local o = grid_objs[i]
+					if IsValid(o) then
+						o:delete()
 					end
 				end
 				ResumePassEdits("ChoGGi.MenuFuncs.debug_build_grid_settings")
@@ -530,7 +531,7 @@ that'll activate the BadPrefab on it
 			local setting = action.setting_mask
 
 			local UserSettings = ChoGGi.UserSettings
-			local ItemList = {
+			local item_list = {
 				{text = 10,value = 10},
 				{text = 15,value = 15},
 				{text = 25,value = 25},
@@ -540,11 +541,11 @@ that'll activate the BadPrefab on it
 			}
 			local name
 			if setting == "DebugGridSize" then
-				table.insert(ItemList,1,{text = 1,value = 1})
-				ItemList[#ItemList+1] = {text = 125,value = 125}
+				table.insert(item_list,1,{text = 1,value = 1})
+				item_list[#item_list+1] = {text = 125,value = 125}
 				name = S[302535920001417--[[Follow Mouse Grid Size--]]]
 			elseif setting == "DebugGridOpacity" then
-				table.insert(ItemList,1,{text = 0,value = 0})
+				table.insert(item_list,1,{text = 0,value = 0})
 				name = S[302535920001419--[[Follow Mouse Grid Trans--]]]
 			end
 
@@ -559,8 +560,9 @@ that'll activate the BadPrefab on it
 
 					if setting == "DebugGridOpacity" then
 						for i = 1, #grid_objs do
-							if IsValid(grid_objs[i]) then
-								grid_objs[i]:SetOpacity(value)
+							local o = grid_objs[i]
+							if IsValid(o) then
+								o:SetOpacity(value)
 							end
 						end
 					end
@@ -581,7 +583,7 @@ that'll activate the BadPrefab on it
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = name,
 				skip_sort = true,
 			}
@@ -741,9 +743,9 @@ that'll activate the BadPrefab on it
 				shuttle = obj:GetZ()
 			end
 			-- some objects don't have pos as waypoint
-			local cwp = #waypoints
-			if waypoints[cwp] ~= obj_pos then
-				waypoints[cwp+1] = obj_pos
+			local wp_c = #waypoints
+			if waypoints[wp_c] ~= obj_pos then
+				waypoints[wp_c+1] = obj_pos
 			end
 
 			-- build a list of points that aren't high in the sky
@@ -980,7 +982,7 @@ that'll activate the BadPrefab on it
 				return
 			end
 
-			local ItemList = {
+			local item_list = {
 				{text = " " .. Trans(4493--[[All--]]),value = "All"},
 				{text = Trans(547--[[Colonists--]]),value = "Colonist"},
 				{text = Trans(517--[[Drones--]]),value = "Drone"},
@@ -990,7 +992,7 @@ that'll activate the BadPrefab on it
 			local aliens
 			if rawget(_G,"ChoGGi_Alien") then
 				aliens = true
-				ItemList[#ItemList+1] = {text = "Alien Visitors",value = "ChoGGi_Alien"}
+				item_list[#item_list+1] = {text = "Alien Visitors",value = "ChoGGi_Alien"}
 			end
 
 			local function CallBackFunc(choice)
@@ -1076,9 +1078,9 @@ that'll activate the BadPrefab on it
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920000467--[[Path Markers--]]],
-				check = {
+				checkboxes = {
 					{
 						title = S[302535920000876--[[Remove Waypoints--]]],
 						hint = S[302535920000877--[[Remove waypoints from the map and reset colours (select any object type to remove them all).--]]],

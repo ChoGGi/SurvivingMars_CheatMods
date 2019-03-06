@@ -127,16 +127,17 @@ function OnMsg.ClassesBuilt()
 	end
 	ChoGGi.Consts.StorageUniversalDepot = g_Classes.UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
 --~ 	ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
-	ChoGGi.Consts.StorageWasteDepot = 70 * r --^ that has 45000 as default...
-	ChoGGi.Consts.StorageOtherDepot = 180 * r
-	ChoGGi.Consts.StorageMechanizedDepot = 3950 * r -- the other 50 is stored on the "porch"
+	 --^ that has 45000 as default...
+	local bt = BuildingTemplates
+	ChoGGi.Consts.StorageWasteDepot = bt.WasteRockDumpBig.max_amount_WasteRock or (70 * r)
+	ChoGGi.Consts.StorageOtherDepot = bt.StorageConcrete.max_storage_per_resource or (180 * r)
+	ChoGGi.Consts.StorageMechanizedDepot = bt.MechanizedDepotConcrete.max_storage_per_resource or (3950 * r) -- the other 50 is stored on the "porch"
 	-- ^ they're all UniversalStorageDepot
 	ChoGGi.Consts.GravityColonist = 0
 	ChoGGi.Consts.GravityDrone = 0
 	ChoGGi.Consts.GravityRC = 0
-	-- not sure what the 100K is for with SupplyRocket, but ah well 30K it is
-	ChoGGi.Consts.RocketMaxExportAmount = 30 * r
-	ChoGGi.Consts.LaunchFuelPerRocket = 60 * r
+	ChoGGi.Consts.RocketMaxExportAmount = bt.SupplyRocket.max_export_storage or (30 * r)
+	ChoGGi.Consts.LaunchFuelPerRocket = bt.SupplyRocket.launch_fuel or (60 * r)
 
 	ChoGGi.Consts.CameraScrollBorder = const.DefaultCameraRTS.ScrollBorder
 	ChoGGi.Consts.CameraLookatDist = const.DefaultCameraRTS.LookatDist

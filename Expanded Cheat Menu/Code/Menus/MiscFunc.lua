@@ -11,7 +11,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 		local ChoGGi = ChoGGi
-		local ItemList = {
+		local item_list = {
 			{text = Trans(547--[[Colonists--]]),value = "Colonist"},
 			{text = Trans(1120--[[Space Elevator--]]),value = "SpaceElevator"},
 			{text = Trans(3518--[[Drone Hub--]]),value = "DroneHub"},
@@ -38,14 +38,17 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.UserSettings.UnpinObjects = {}
 		end
 
-		--other hint type
+		-- other hint type
 		local EnabledList = {S[302535920001096--[[Auto Unpinned--]]],":"}
+		local c = 0
 		local list = ChoGGi.UserSettings.UnpinObjects
 		if next(list) then
-			local tab = list or ""
-			for i = 1, #tab do
-				EnabledList[#EnabledList+1] = " "
-				EnabledList[#EnabledList+1] = tab[i]
+			local objs = list or ""
+			for i = 1, #objs do
+				c = c + 1
+				EnabledList[c] = " "
+				c = c + 1
+				EnabledList[c] = objs[i]
 			end
 		end
 
@@ -57,16 +60,19 @@ function OnMsg.ClassesGenerate()
 			local check2 = choice[1].check2
 
 			local pins = ChoGGi.UserSettings.UnpinObjects
+			local p_c = #pins
 			for i = 1, #choice do
 				local value = choice[i].value
 				if check2 then
 					for j = 1, #pins do
-						if pins[j] == value then
-							pins[j] = false
+						local pin = pins[j]
+						if pin == value then
+							pin = false
 						end
 					end
 				elseif check1 then
-					pins[#pins+1] = value
+					p_c = p_c + 1
+					pins[p_c] = value
 				end
 			end
 
@@ -96,15 +102,18 @@ function OnMsg.ClassesGenerate()
 			)
 		end
 
-		EnabledList[#EnabledList+1] = "\n"
-		EnabledList[#EnabledList+1] = S[302535920001097--[[Enter a class name (SelectedObj.class) to add a custom entry.--]]]
+		c = c + 1
+		EnabledList[c] = "\n"
+		c = c + 1
+		EnabledList[c] = S[302535920001097--[[Enter a class name (SelectedObj.class) to add a custom entry.--]]]
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920001095--[[Auto Remove Items From Pin List--]]],
 			hint = TableConcat(EnabledList),
 			multisel = true,
-			check = {
+			skip_sort = true,
+			checkboxes = {
 				at_least_one = true,
 				only_one = true,
 				{
@@ -117,7 +126,6 @@ function OnMsg.ClassesGenerate()
 					hint = S[302535920001101--[[Remove these items from the unpin list.--]]],
 				},
 			},
-			skip_sort = true,
 		}
 	end
 
@@ -168,7 +176,7 @@ function OnMsg.ClassesGenerate()
 	-- use GetTimeFactor() to check time for changing it so it can be paused?
 	function ChoGGi.MenuFuncs.SetGameSpeed()
 		local hint_str = S[302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>--]]]
-		local ItemList = {
+		local item_list = {
 			{text = Trans(1000121--[[Default--]]),value = 1,hint = hint_str:format(1)},
 			{text = S[302535920001126--[[Double--]]],value = 2,hint = hint_str:format(2)},
 			{text = S[302535920001127--[[Triple--]]],value = 3,hint = hint_str:format(3)},
@@ -231,7 +239,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
-			items = ItemList,
+			items = item_list,
 			title = S[302535920000702--[[Game Speed--]]],
 			hint = S[302535920000933--[[Current speed: %s--]]]:format(current),
 			skip_sort = true,
@@ -291,7 +299,7 @@ function OnMsg.ClassesGenerate()
 					}
 				end
 			end
-			local ItemList = entity_table
+			local item_list = entity_table
 
 			local function CallBackFunc(choice)
 				if choice.nothing_selected then
@@ -329,7 +337,7 @@ function OnMsg.ClassesGenerate()
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920000682--[[Change Entity--]]] .. ": " .. RetName(obj),
 				hint = S[302535920000106--[[Current--]]] .. ": "
 					.. (obj.ChoGGi_OrigEntity or obj:GetEntity()) .. "\n"
@@ -338,7 +346,7 @@ function OnMsg.ClassesGenerate()
 					.. S[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
 
 Not permanent for colonists after they exit buildings (for now).--]]],
-					check = {
+				checkboxes = {
 					only_one = true,
 					{
 						title = S[302535920000750--[[Dome Only--]]],
@@ -401,7 +409,7 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 				return
 			end
 
-			local ItemList = {
+			local item_list = {
 				{text = Trans(1000121--[[Default--]]),value = 100},
 				{text = 25,value = 25},
 				{text = 50,value = 50},
@@ -451,11 +459,12 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
-				items = ItemList,
+				items = item_list,
 				title = S[302535920000684--[[Change Entity Scale--]]] .. ": " .. RetName(obj),
 				hint = S[302535920001156--[[Current object--]]] .. ": " .. obj:GetScale()
 					.. "\n" .. S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],
-				check = {
+				skip_sort = true,
+				checkboxes = {
 					only_one = true,
 					{
 						title = S[302535920000750--[[Dome Only--]]],
@@ -466,7 +475,6 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 						hint = S[302535920000753--[[Will only apply to selected colonist.--]]],
 					},
 				},
-				skip_sort = true,
 			}
 		end
 	end -- do
