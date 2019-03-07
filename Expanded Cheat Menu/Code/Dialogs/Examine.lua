@@ -1449,11 +1449,17 @@ function Examine:ShowHexShapeList()
 		"HexPeripheralShapes",
 	}
 
-	local item_list = {{
-		text = " " .. Trans(594--[[Clear--]]),
-		value = "Clear",
-	}}
-	local c = 1
+	local item_list = {
+		{
+			text = " " .. Trans(594--[[Clear--]]),
+			value = "Clear",
+		},
+		{
+			text = "HexNeighbours",
+			value = HexNeighbours,
+		},
+	}
+	local c = #item_list
 
 	local g = _G
 	for i = 1, #self.hex_shape_tables do
@@ -1463,7 +1469,7 @@ function Examine:ShowHexShapeList()
 			c = c + 1
 			item_list[c] = {
 				text = shape_list,
-				shape = shape,
+				value = shape,
 			}
 		end
 	end
@@ -1475,8 +1481,7 @@ function Examine:ShowHexShapeList()
 		item_list[c] = {
 			text = "GetSurfaceHexShapes(), " .. s.name .. ", mask: " .. s.id
 				.. " (" .. s.mask .. ") state:" .. s.state,
-			value = "GetSurfaceHexShapes_out",
-			shape = s.shape,
+			value = s.shape,
 		}
 	end
 
@@ -1487,10 +1492,9 @@ function Examine:ShowHexShapeList()
 		choice = choice[1]
 		if choice.value == "Clear" then
 			ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
-		elseif type(choice.shape) == "table" then
+		elseif type(choice.value) == "table" then
 			ChoGGi.ComFuncs.ObjHexShape_Toggle(obj,{
-				shape = choice.shape,
-				func = choice.func,
+				shape = choice.value,
 				skip_return = true,
 				depth_test = choice.check1,
 				hex_pos = choice.check2,
@@ -1511,7 +1515,7 @@ function Examine:ShowHexShapeList()
 				checked = false,
 			},
 			{
-				title = S[302535920001069--[[Show Positions--]]],
+				title = S[302535920000461--[[Position--]]],
 				hint = S[302535920001076--[[Shows the hex position of the spot: (-1,5).--]]],
 				checked = true,
 			},
@@ -1634,7 +1638,7 @@ function Examine:ShowAttachSpotsList()
 				annotation = choice.value,
 				skip_return = true,
 				depth_test = choice.check1,
-				pos = choice.check2,
+				show_pos = choice.check2,
 			})
 		end
 	end
@@ -1654,7 +1658,7 @@ function Examine:ShowAttachSpotsList()
 			},
 			{
 				title = S[302535920000461--[[Position--]]],
-				hint = S[302535920000463--[[Add spot pos to the name.--]]],
+				hint = S[302535920000463--[[Add spot offset pos from Origin.--]]],
 				checked = false,
 			},
 		},
@@ -2326,8 +2330,11 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 		if valid_ent then
 			-- some entity details as well
-			table_insert(list_obj_str, 2, "GetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
-				.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices()) .. ((parent or state_added) and "" or "\n"))
+			table_insert(list_obj_str, 2,
+				"GetEntity(): " .. self:ConvertValueToInfo(obj:GetEntity())
+				.. ", GetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
+				.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices())
+				.. ((parent or state_added) and "" or "\n"))
 		end
 
 	end
@@ -2794,7 +2801,7 @@ function Examine:SetObj(startup)
 				hint = Trans(3746--[[Class name--]]) .. ": " .. a.class
 					.. (a_to and "\n" .. S[302535920001544--[[Attached to: %s--]]]:format(a_to) or "")
 					.. "\n".. S[302535920000955--[[Handle--]]] .. ": " .. (a.handle or Trans(6761--[[None--]]))
-					.. "\n" .. S[302535920001237--[[Position--]]] .. ": " .. tostring(pos),
+					.. "\n" .. S[302535920000461--[[Position--]]] .. ": " .. tostring(pos),
 				showobj = a,
 				clicked = function()
 					ClearShowObj(a)

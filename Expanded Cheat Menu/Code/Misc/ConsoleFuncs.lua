@@ -146,17 +146,18 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 		local submenu = table_find(ExamineMenuToggle_list,"name",name)
 		if submenu then
 			list = list or ""
-			ExamineMenuToggle_list[submenu].hint = nil
+			local temp_menu = ExamineMenuToggle_list[submenu]
+			temp_menu.hint = nil
 			if title then
-				ExamineMenuToggle_list[submenu].name = title
+				temp_menu.name = title
 			end
-			ExamineMenuToggle_list[submenu].submenu = {BuildExamineItem(name)}
-			local c = 1
+			temp_menu.submenu = {BuildExamineItem(name)}
+			local c = #temp_menu.submenu
 			for i = 1, #list do
 				c = c + 1
-				ExamineMenuToggle_list[submenu].submenu[c] = BuildExamineItem(list[i])
+				temp_menu.submenu[c] = BuildExamineItem(list[i])
 			end
-			return ExamineMenuToggle_list[submenu].submenu
+			return temp_menu.submenu
 		end
 	end
 

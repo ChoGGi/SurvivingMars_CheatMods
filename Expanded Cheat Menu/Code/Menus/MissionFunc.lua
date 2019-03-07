@@ -768,7 +768,7 @@ function OnMsg.ClassesGenerate()
 		local rules = g_CurrentMissionParams.idGameRules
 		if type(rules) == "table" and next(rules) then
 			hint = {}
-			local c = 1
+			local c = #hint
 			hint[c] = S[302535920000106--[[Current--]]]
 			c = c + 1
 			hint[c] = ":"

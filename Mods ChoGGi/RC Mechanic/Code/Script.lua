@@ -47,6 +47,9 @@ DefineClass.RCMechanic = {
 	status_text = idle_text,
 	-- refund res
 	on_demolish_resource_refund = { Metals = 20 * const.ResourceScale, MachineParts = 20 * const.ResourceScale , Electronics = 10 * const.ResourceScale },
+
+	-- show the pin info
+	pin_rollover = T(0,"<ui_command>"),
 }
 
 DefineClass.RCMechanicBuilding = {
@@ -67,8 +70,6 @@ function RCMechanic:GameInit()
 	-- color of bands
 	self:SetColorizationMaterial(3, -5694693, -128, 48)
 
-	-- show the pin info
-	self.pin_rollover = T(0,"<ui_command>")
 end
 
 --~ function RCMechanic:GetStatusUpdate()

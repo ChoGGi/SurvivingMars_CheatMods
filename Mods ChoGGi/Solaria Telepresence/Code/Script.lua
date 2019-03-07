@@ -80,8 +80,7 @@ function Solaria:GameInit()
 	self:SetColor3(-10263981)
 
 	-- it's a workplace after all (bland ftw)
-	self:DestroyAttaches("VRWorkshopHologram")
-	self:DestroyAttaches("DecorInt_02")
+	self:DestroyAttaches{"VRWorkshopHologram","DecorInt_02"}
 	self:ForEachAttach(function(a)
 		if a.class:find("Door") then
 			a:SetColorModifier(1)

@@ -84,7 +84,7 @@ DefineClass.RCGarage = {
 	-- keeps a modifier obj to change power use
 	power_modifier = false,
 	-- show the pin info
-	pin_rollover = T(0,"<StatusUpdate>"),
+	pin_rollover = T(0,"<ui_command>"),
 }
 
 function RCGarage:GameInit(...)
@@ -121,7 +121,7 @@ function RCGarage:SetPalette()
 	self:SetColorizationMaterial(3, -5694693, -128, 48)
 end
 
-function RCGarage:GetStatusUpdate()
+function RCGarage:Getui_command()
 
 	if self:CheckMainGarage() and self.garages.main.working and self.working then
 		local amount = #self.stored_rovers
@@ -442,7 +442,7 @@ function OnMsg.ClassesBuilt()
 					if text_rovers:format(#context.stored_rovers) == context.status_text then
 						self:SetTitle([[Main Garage]])
 					else
-						self:SetTitle(T(0,"<StatusUpdate>"))
+						self:SetTitle(T(0,"<ui_command>"))
 					end
 
 					---

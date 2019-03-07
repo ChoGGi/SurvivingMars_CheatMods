@@ -1,7 +1,8 @@
 return PlaceObj("ModDef", {
-  "title", "Martian Carwash v0.5",
-  "version", 5,
-  "saved", 1543233600,
+--~   "title", "Martian Carwash v0.5",
+  "title", "Martian Carwash v0.6",
+  "version", 6,
+  "saved", 1551960000,
 	"image", "Preview.png",
   "id", "ChoGGi_MartianCarwash",
   "author", "ChoGGi",

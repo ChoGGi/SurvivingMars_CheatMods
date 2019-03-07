@@ -510,7 +510,7 @@ function OnMsg.ClassesGenerate()
 				value = S[302535920000306--[[Everything--]]],hint = S[302535920001294--[[Laggy--]]],
 				},
 			}
-			local c = 1
+			local c = #item_list
 			local labels = UICity.labels or empty_table
 			for label,list in pairs(labels) do
 				if label ~= "Consts" and #list > 0 then

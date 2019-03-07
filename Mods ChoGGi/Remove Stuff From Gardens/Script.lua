@@ -23,13 +23,11 @@ local buildings_to_check = {
 
 local classes_to_remove = {
   -- roads
-  DomeRoadConnection_08 = true,
-  DecGardenRoad_05 = true,
+	"DomeRoadConnection_08","DecGardenRoad_05",
   -- lamps
-  LampInt_03 = true,
+	"LampInt_03",
   -- benches
-  DecorInt_03 = true,
-  DecorInt_04 = true,
+	"DecorInt_03","DecorInt_04",
 }
 
 local DoneObject = DoneObject
@@ -37,15 +35,10 @@ local DoneObject = DoneObject
 local orig_Service_GameInit = Service.GameInit
 function Service:GameInit()
 
+
   -- only remove stuff if we're outside of a dome
   if not self.parent_dome and buildings_to_check[self:GetEntity()] then
-		if obj.ForEachAttach then
-			obj:ForEachAttach(function(a)
-				if classes_to_remove[a.class] then
-					DoneObject(a)
-				end
-			end)
-		end
+		self:DestroyAttaches(classes_to_remove)
   end
 
   -- send the orig func on it's way
