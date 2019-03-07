@@ -9,12 +9,10 @@ local table_find = table.find
 local CmpLower = CmpLower
 local print,type = print,type
 
--- rebuild list of objects to examine when user changes settings
-function OnMsg.ChoGGi_SettingsUpdated()
-	ChoGGi.ConsoleFuncs.BuildExamineMenu()
-end
-
 function OnMsg.ClassesGenerate()
+	-- rebuild list of objects to examine when user changes settings
+	OnMsg.ChoGGi_SettingsUpdated = ChoGGi.ConsoleFuncs.BuildExamineMenu
+
 	local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 	local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
@@ -50,6 +48,18 @@ function OnMsg.ClassesGenerate()
 			hint = S[302535920000870--[[Shows mod log msgs in an examine dialog.--]]],
 			clicked = function()
 				OpenInExamineDlg(ModMessageLog)
+			end,
+		},
+		{name = S[302535920001497--[[Show Blacklist--]]],
+			hint = "Show blacklisted objects",
+			clicked = function()
+				if blacklist then
+					ChoGGi.ComFuncs.BlacklistMsg(S[302535920001497--[[Show Blacklist--]]])
+					return
+				end
+				-- lib should always have the blacklist enabled
+				local _,bl = debug.getupvalue(getmetatable(Mods.ChoGGi_Library.env).__index,1)
+				OpenInExamineDlg(bl,nil,"blacklist")
 			end,
 		},
 		{is_spacer = true},
@@ -93,7 +103,17 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 				ChoGGi.ComFuncs.ToggleFuncHook()
 			end,
 		},
-
+		{is_spacer = true},
+		{name = S[302535920001378--[[XWindow Inspector--]]],
+			hint = S[302535920001379--[[Opens up the window inspector with terminal.desktop.--]]],
+			clicked = function()
+				local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos()) or terminal.desktop
+				local ged = ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
+				if ged then
+					GedXWindowInspectorSelectWindow(ged, target)
+				end
+			end,
+		},
 	}
 	-- created when we create the controls controls the first time
 	local ExamineMenuToggle_list = {}
@@ -110,7 +130,11 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 			hint = S[302535920000491--[[Examine Object--]]] .. ": " .. disp,
 			clicked = function()
 				if func then
-					OpenInExamineDlg(obj())
+					if name == "GetLuaSaveGameData" then
+						OpenInExamineDlg{obj()}
+					else
+						OpenInExamineDlg(obj())
+					end
 				else
 					OpenInExamineDlg(name,"str",disp)
 				end
@@ -221,38 +245,11 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
 		--
-		submenu = AddSubmenu("_G",{"__cobjectToCObject","Flags","HandleToObject","TranslationTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod","debug.getregistry"})
-		if submenu then
---~ 			ChoGGi.ConsoleFuncs.AddMonitor("_G",submenu)
-			submenu[#submenu+1] = {
-				name = S[302535920001497--[[Show Blacklist--]]],
-				hint = "Show blacklisted objects",
-				clicked = function()
-					if blacklist then
-						ChoGGi.ComFuncs.BlacklistMsg(S[302535920001497--[[Show Blacklist--]]])
-						return
-					end
-					-- lib should always have the blacklist enabled
-					local _,bl = debug.getupvalue(getmetatable(Mods.ChoGGi_Library.env).__index,1)
-					OpenInExamineDlg(bl,nil,"blacklist")
-				end,
-			}
-		end
-
-		submenu = AddSubmenu("ThreadsRegister",{"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers"})
---~ 		if submenu then
---~ 			table_insert(submenu,2,{
---~ 				name = S[302535920000853--[[Monitor--]]] .. ": ThreadsRegister",
---~ 				hint = "ChoGGi.ComFuncs.MonitorThreads()",
---~ 				clicked = function()
---~ 					ChoGGi.ComFuncs.MonitorThreads()
---~ 				end,
---~ 			})
---~ 		end
-		--
+		AddSubmenu("_G",{"__cobjectToCObject","Flags","HandleToObject","TranslationTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod","debug.getregistry"})
+		AddSubmenu("ThreadsRegister",{"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers"})
 		AddSubmenu("Consts",{"g_Consts","const","ModifiablePropScale","const.TagLookupTable"})
 		AddSubmenu("Dialogs",{"terminal.desktop","GetInGameInterface"})
-		AddSubmenu("GlobalVars",{"GlobalVarValues","GlobalObjs","GlobalObjClasses","PersistableGlobals","GlobalGameTimeThreads","GlobalGameTimeThreadFuncs","GlobalRealTimeThreads","GlobalRealTimeThreadFuncs"})
+		AddSubmenu("GlobalVars",{"GlobalVarValues","PersistableGlobals","GetLuaSaveGameData","GetLuaLoadGamePermanents","GlobalObjs","GlobalObjClasses","GlobalGameTimeThreads","GlobalGameTimeThreadFuncs","GlobalRealTimeThreads","GlobalRealTimeThreadFuncs"})
 		AddSubmenu("EntityData",{"EntityStates","EntitySurfaces","GetAllEntities","HexOutlineShapes","HexInteriorShapes","HexOutlineByHash","HexBuildShapes","HexBuildShapesInversed","HexPeripheralShapes","HexCombinedShapes"})
 		AddSubmenu("g_Classes",{"ClassTemplates","Attaches","FXRules","FXLists"})
 		AddSubmenu("g_CObjectFuncs",{"hr","pf","terrain","UIL","DTM","lpeg","lfs","srp","camera","camera3p","cameraMax","cameraRTS","string","table","package"})
@@ -270,40 +267,29 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 				ChoGGi.SettingFuncs.WriteSettings()
 			end,
 		})
-		-- bonus addition at bottom
-		ExamineMenuToggle_list[#ExamineMenuToggle_list+1] = {
-			name = S[302535920001378--[[XWindow Inspector--]]],
-			hint = S[302535920001379--[[Opens up the window inspector with terminal.desktop.--]]],
-			clicked = function()
-				local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos()) or terminal.desktop
-				local ged = ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
-				if ged then
-					GedXWindowInspectorSelectWindow(ged, target)
-				end
-			end,
-		}
 	end
-
 
 	do -- ToggleLogErrors
 		local select = select
 		local GetStack = GetStack
 		local UserSettings = ChoGGi.UserSettings
 		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-		local traceback
+		local debug_traceback
 		if not blacklist then
-			traceback = debug.traceback
+			debug_traceback = debug.traceback
 		end
 
 		local function UpdateLogErrors(name)
+
 			_G[name] = function(...)
-				print("func",name,":",...)
+				print("function (" .. name .. "):",...)
 				if blacklist then
 					print(GetStack(2, false, "\t"))
 				else
-					print(traceback())
+					print(debug_traceback(nil,2))
 				end
 				if UserSettings.ExamineErrors then
+					-- i only care to see threads (i don't think funcs show up?)
 					if testing then
 						local err_type = type(select(1,...))
 						-- not sure if it can ever be a func...?
@@ -315,6 +301,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 					end
 				end
 			end
+
 		end
 
 		local funcs = {"error","OutputDebugString","ThreadErrorHandler","DlcErrorHandler","syntax_error","RecordError"}

@@ -9,25 +9,25 @@ local vkEnter = const.vkEnter
 local KbdShortcut = KbdShortcut
 local T,_InternalTranslate = T,_InternalTranslate
 
-local function Trans(id)
-	return _InternalTranslate(id)
+local function Trans(userdata)
+	return _InternalTranslate(userdata)
 end
 
 local function FilterTech(str)
 	-- loop through the five cats
 	for i = 1, count do
-		local el = tech_list[i]
-		if str == "" or el.str:find_lower(str) then
+		local item = tech_list[i]
+		if str == "" or item.str:find_lower(str) then
 			-- only toggle vis if we need to
-			if not el.vis then
-				el.tech:SetVisible(true)
+			if not item.vis then
+				item.tech:SetVisible(true)
 			end
-			el.vis = true
+			item.vis = true
 		else
-			if el.vis then
-				el.tech:SetVisible(false)
+			if item.vis then
+				item.tech:SetVisible(false)
 			end
-			el.vis = false
+			item.vis = false
 		end
 	end
 end
@@ -43,7 +43,7 @@ local function OnKbdKeyDown(input,vk, ...)
 end
 
 local function OnKbdKeyUp(input,vk, ...)
-	FilterTech(input:GetText():lower())
+	FilterTech(input:GetText())
 	return XEdit.OnKbdKeyUp(input, vk, ...)
 end
 
@@ -78,25 +78,26 @@ function OpenDialog(dlg_str,...)
 			-- attach to dialog
 			area:SetParent(left_side)
 
-			-- reset tech ui elements list
+			-- reset tech ui elements list (we need the newly created objs)
 			table.iclear(tech_list)
 			count = 0
 
-			-- build a list of tech ui hexes now, instead of when filtering
+			-- build a list of tech ui hexes which will be used for filtering (we just build it once per session, since new tech objs aren't added mid-game)
 			for i = 1, #dlg.idArea do
-				local xwin = dlg.idArea[i]
-				-- loop through tech list
-				if xwin.idFieldTech then
-					for j = 1, #xwin.idFieldTech do
-						local t = xwin.idFieldTech[j]
-						local c = t.context
+				local techfield = dlg.idArea[i].idFieldTech
+				-- there's some other ui elements without a idFieldTech we want to skip
+				if techfield then
+					-- loop through tech list
+					for j = 1, #techfield do
+						local tech = techfield[j]
+						local c = tech.context
 						count = count + 1
 						tech_list[count] = {
-							-- stick all the strings into one for quicker searching (i use a _ so it doesn't combine strings to search)
-							str = c.id:lower() .. "_" .. Trans(T(c.description,c)):lower() .. "_"
-								.. Trans(T(c.display_name)):lower(),
+							-- stick all the strings into one for quicker searching (i use a \0 (null char) so the strings are separate)
+							str = c.id .. "\t" .. Trans(T{c.description,c})
+								.. "\t" .. Trans(T(c.display_name)),
 							-- ui ref
-							tech = t,
+							tech = tech,
 							-- fast check if vis
 							vis = true,
 						}

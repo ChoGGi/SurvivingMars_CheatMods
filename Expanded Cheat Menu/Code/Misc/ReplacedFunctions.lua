@@ -1348,17 +1348,12 @@ end]]
 			{
 				-- *r some function/cmd that needs a realtime thread
 				"^*[rR]%s*(.*)",
-				"CreateRealTimeThread(function() %s end) return"
+				"CreateRealTimeThread(function() %s end)"
 			},
 			{
 				-- *g gametime
 				"^*[gG]%s*(.*)",
-				"CreateGameTimeThread(function() %s end) return"
-			},
-			{
-				-- *m maprealtime
-				"^*[mM]%s*(.*)",
-				"CreateMapRealTimeThread(function() %s end) return"
+				"CreateGameTimeThread(function() %s end)"
 			},
 			-- prints out cmds entered I assume?
 			{

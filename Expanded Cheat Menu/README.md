@@ -165,7 +165,6 @@ restart : or reboot
 OpenExamine(Consts) : or ex(SelectedObj)
 dump(12345) : dump puts files in AppData/logs
 dumplua(dlgConsole) : dump using ValueToLuaCode()
-dumptable(Consts) : or dumpt
 trans() : translates "userdata: **********" or 6543256 to text
 SelectedObj : or s
 SelectionMouseObj() : or m(), object under mouse cursor

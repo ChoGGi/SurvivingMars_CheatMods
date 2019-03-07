@@ -1,3 +1,6 @@
+v0.4
+Cleaning up the code a bit, probably be imperceptibly faster.
+
 v0.3
 Compatibility with SkiRich's Outsourcing Booster.
 

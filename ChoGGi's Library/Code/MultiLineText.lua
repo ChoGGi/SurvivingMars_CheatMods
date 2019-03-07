@@ -152,7 +152,7 @@ function ChoGGi_MultiLineTextDlg:FindNext(text,previous)
 	local min_match, closest_match = false, false
 	for i = 1, #edit.lines do
 
-		if edit.lines[i]:lower():find_lower(text) or text == "" then
+		if edit.lines[i]:find_lower(text) or text == "" then
 			if not min_match or i < min_match then
 				min_match = i
 			end

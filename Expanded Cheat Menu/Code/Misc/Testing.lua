@@ -1,6 +1,9 @@
 -- See LICENSE for terms
 
--- go away... (mostly just benchmarking funcs, though there is the func i use for "Map Images Pack")
+-- go away... (mostly just benchmarking funcs, though there is the func i use for "Map Images Pack" to make them)
+
+--~ ChoGGi.ComFuncs.TickStart("Tick.1")
+--~ ChoGGi.ComFuncs.TickEnd("Tick.1")
 
 --~ function OnMsg.ClassesBuilt()
 
