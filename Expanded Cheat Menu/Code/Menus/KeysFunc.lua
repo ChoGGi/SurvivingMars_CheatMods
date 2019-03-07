@@ -35,7 +35,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.ExamineObjectRadius(action)
 		local objs = MapGet(GetTerrainCursor(),action.radius_amount or 2500)
 		if #objs > 0 then
-			ChoGGi.ComFuncs.OpenInExamineDlg(objs)
+			ChoGGi.ComFuncs.OpenInExamineDlg(objs,nil,"ExamineObjectRadius")
 		end
 	end
 

@@ -1336,13 +1336,13 @@ function OnMsg.ClassesBuilt()
 				"^~!(.*)",
 				[[local attaches = ChoGGi.ComFuncs.GetAllAttaches(%s)
 if #attaches > 0 then
-	ChoGGi.ComFuncs.OpenInExamineDlg(attaches)
+	ChoGGi.ComFuncs.OpenInExamineDlg(attaches,nil,"GetAllAttaches")
 end]]
 			},
 			{
 				-- &handle
 				"^&(.*)",
-				"ChoGGi.ComFuncs.OpenInExamineDlg(HandleToObject[%s])"
+				[[ChoGGi.ComFuncs.OpenInExamineDlg(HandleToObject[%s],nil,"HandleToObject")]]
 			},
 			-- built-in
 			{

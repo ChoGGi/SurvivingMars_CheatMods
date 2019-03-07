@@ -318,7 +318,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 		end
 		local data = HashLogToTable()
 		data[1] = data[1]:gsub("\n\n","")
-		ChoGGi.ComFuncs.OpenInExamineDlg(TableConcat(data,"\n"))
+		ChoGGi.ComFuncs.OpenInExamineDlg(TableConcat(data,"\n"),nil,Trans(283142739680--[[Game--]]) .. " & " .. S[302535920001355--[[Map--]]] .. " " .. Trans(126095410863--[[Info--]]))
 	end
 
 	do -- ModUpload

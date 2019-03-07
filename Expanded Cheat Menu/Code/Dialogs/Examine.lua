@@ -795,10 +795,10 @@ function Examine:idShowAllValuesOnChange()
 	self:SetObj()
 end
 
-function Examine:CleanTextForView(str)
-	-- remove html tags (any </*> closing tags, <left>, <color *>, <h *>, and * added by the context menus)
-	return str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>",""):gsub("%* '","'")
-end
+--~ function Examine:CleanTextForView(str)
+--~ 	-- remove html tags (any </*> closing tags, <left>, <color *>, <h *>, and * added by the context menus)
+--~ 	return str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>",""):gsub("%* '","'")
+--~ end
 
 function Examine:BuildObjectMenuPopup()
 	return {
@@ -914,8 +914,7 @@ function Examine:BuildToolsMenuPopup()
 			hint = S[302535920000046--[[dumps text to %slogs\DumpedExamine.lua--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
-				local str = self.idText:GetText()
-				str = self:CleanTextForView(str)
+				local str = self:GetCleanText()
 				-- i just compare, so append doesn't really work
 				if ChoGGi.UserSettings.ExamineAppendDump then
 					ChoGGi.ComFuncs.Dump("\n" .. str,nil,"DumpedExamine","lua")
@@ -947,13 +946,13 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 			hint = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
-				local str = self.idText:GetText()
-				str = self:CleanTextForView(str)
+				local str,scrolled_text = self:GetCleanText(true)
+
 				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 					parent = self,
 					checkbox = true,
 					text = str,
-					scrollto = self:GetScrolledText(),
+					scrollto = scrolled_text,
 					title = S[302535920000048--[[View--]]] .. "/" .. S[302535920000004--[[Dump--]]] .. Trans(1000145--[[Text--]]),
 					hint_ok = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 					custom_func = function(answer,overwrite)
@@ -1295,30 +1294,66 @@ function Examine:InvalidMsgPopup(msg,title)
 	)
 end
 
-function Examine:GetScrolledText()
-	-- all text is cached here
-	local cache = self.idText.draw_cache or {}
-	local list_draw_info = cache[self.idScrollArea.PendingOffsetY or 0]
-
-	-- we need to be at an exact line (draw_cache expects it)
-	if not list_draw_info then
-		-- send "" or it'll try to get the search text
-		self:FindNext("")
-		list_draw_info = cache[self.idScrollArea.PendingOffsetY or 0]
+-- scrolled_text is modified from a boolean to the scrolled text and sent back
+-- skip_ast = i added an * to use for the context menu marker (defaults to true)
+function Examine:GetCleanText(scrolled_text,skip_ast)
+	if skip_ast ~= false then
+		skip_ast = true
 	end
+	local cache = self.idText.draw_cache or {}
 
-	local text = {}
-	local c = 0
-	if list_draw_info then
-		for i = 1, #list_draw_info do
-			local temp = list_draw_info[i].text
-			if temp then
-				c = c + 1
-				text[c] = temp
-			end
+	-- get the cache number of scrolled text
+	if scrolled_text then
+		-- PendingOffsetY == scrolled number in cached text table
+		if cache[self.idScrollArea.PendingOffsetY or 0] then
+			scrolled_text = self.idScrollArea.PendingOffsetY or 0
+		else
+			-- if it's nil we're between lines
+			-- we send "" or it'll try to use the search text
+			self:FindNext("")
+			-- no need to test if it's in the cache
+			scrolled_text = self.idScrollArea.PendingOffsetY or 0
 		end
 	end
-	return TableConcat(text)
+
+	-- first get a list of cached text (unordered) and merge the text chunks into one line
+	local cache_temp = {}
+	local c = 0
+
+	local text_temp = {}
+	for line,list in pairs(cache) do
+		-- we stick all the text chunks into a table to concat after
+		table_iclear(text_temp)
+		for i = 1, #list do
+			if i == 1 and skip_ast and list[i].text == "* " then
+				text_temp[i] = ""
+			else
+				text_temp[i] = list[i].text or ""
+			end
+		end
+
+		c = c + 1
+		cache_temp[c] = {
+			line = line,
+			text = TableConcat(text_temp),
+		}
+	end
+
+	-- sort by line group
+	table_sort(cache_temp,function(a,b)
+		return a.line < b.line
+	end)
+
+	-- change line/text to just line, and grab scroll text if it's around
+	for i = 1, #cache_temp do
+		local item = cache_temp[i]
+		if item.line == scrolled_text then
+			scrolled_text = item.text
+		end
+		cache_temp[i] = item.text
+	end
+
+	return TableConcat(cache_temp,"\n"),scrolled_text
 end
 
 function Examine:FindNext(text,previous)
@@ -2346,7 +2381,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				table_insert(data_meta,1,"\ngetmetatable():")
 				table_insert(data_meta,1,"Unpack(): "
 					.. self:HyperLink(obj,function()
-						OpenInExamineDlg({obj:Unpack()},self)
+						OpenInExamineDlg({obj:Unpack()},self,S[302535920000885--[[Unpacked--]]])
 					end)
 					.. "table" .. HLEnd
 				)
@@ -2584,7 +2619,7 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 		table_insert(list_obj_str, 1,"\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
 		if self.enum_vars and next(self.enum_vars) then
 			list_obj_str[1] = list_obj_str[1] .. self:HyperLink(obj,function()
-				OpenInExamineDlg(self.enum_vars,self)
+				OpenInExamineDlg(self.enum_vars,self,S[302535920001442--[[Enum--]]])
 			end)
 			.. " enum"
 			.. HLEnd

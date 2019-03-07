@@ -1019,7 +1019,7 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 			end
 		end
 		-- display to user
-		ChoGGi.ComFuncs.OpenInExamineDlg(msgs,nil,point(550,100))
+		ChoGGi.ComFuncs.OpenInExamineDlg(msgs,point(550,100))
 	end
 
 	function ChoGGi.MenuFuncs.MysteryLog()

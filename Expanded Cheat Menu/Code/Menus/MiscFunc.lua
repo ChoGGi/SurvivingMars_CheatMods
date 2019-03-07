@@ -242,7 +242,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- SetEntity
-		local entity_table = {}
 		local function SetEntity(obj,entity)
 			--backup orig
 			if not obj.ChoGGi_OrigEntity then
@@ -270,31 +269,28 @@ function OnMsg.ClassesGenerate()
 			end
 
 			local hint_noanim = S[302535920001140--[[No animation.--]]]
-			if #entity_table == 0 then
-				entity_table = {
-					{text = " " .. S[302535920001141--[[Default Entity--]]],value = "Default"},
-					{text = " " .. S[302535920001142--[[Kosmonavt--]]],value = "Kosmonavt"},
-					{text = " " .. S[302535920001143--[[Jama--]]],value = "Lama"},
-					{text = " " .. S[302535920001144--[[Green Man--]]],value = "GreenMan"},
-					{text = " " .. S[302535920001145--[[Planet Mars--]]],value = "PlanetMars",hint = hint_noanim},
-					{text = " " .. S[302535920001146--[[Planet Earth--]]],value = "PlanetEarth",hint = hint_noanim},
-					{text = " " .. S[302535920001147--[[Rocket Small--]]],value = "RocketUI",hint = hint_noanim},
-					{text = " " .. S[302535920001148--[[Rocket Regular--]]],value = "Rocket",hint = hint_noanim},
-					{text = " " .. S[302535920001149--[[Combat Rover--]]],value = "CombatRover",hint = hint_noanim},
-					{text = " " .. S[302535920001150--[[PumpStation Demo--]]],value = "PumpStationDemo",hint = hint_noanim},
+			local item_list = {
+				{text = " " .. S[302535920001141--[[Default Entity--]]],value = "Default"},
+				{text = " " .. S[302535920001142--[[Kosmonavt--]]],value = "Kosmonavt"},
+				{text = " " .. S[302535920001143--[[Jama--]]],value = "Lama"},
+				{text = " " .. S[302535920001144--[[Green Man--]]],value = "GreenMan"},
+				{text = " " .. S[302535920001145--[[Planet Mars--]]],value = "PlanetMars",hint = hint_noanim},
+				{text = " " .. S[302535920001146--[[Planet Earth--]]],value = "PlanetEarth",hint = hint_noanim},
+				{text = " " .. S[302535920001147--[[Rocket Small--]]],value = "RocketUI",hint = hint_noanim},
+				{text = " " .. S[302535920001148--[[Rocket Regular--]]],value = "Rocket",hint = hint_noanim},
+				{text = " " .. S[302535920001149--[[Combat Rover--]]],value = "CombatRover",hint = hint_noanim},
+				{text = " " .. S[302535920001150--[[PumpStation Demo--]]],value = "PumpStationDemo",hint = hint_noanim},
+			}
+			local c = #item_list
+			local EntityData = EntityData
+			for key in pairs(EntityData) do
+				c = c + 1
+				item_list[c] = {
+					text = key,
+					value = key,
+					hint = hint_noanim
 				}
-				local c = #entity_table
-				local EntityData = EntityData
-				for key in pairs(EntityData) do
-					c = c + 1
-					entity_table[c] = {
-						text = key,
-						value = key,
-						hint = hint_noanim
-					}
-				end
 			end
-			local item_list = entity_table
 
 			local function CallBackFunc(choice)
 				if choice.nothing_selected then
@@ -334,6 +330,7 @@ function OnMsg.ClassesGenerate()
 				callback = CallBackFunc,
 				items = item_list,
 				title = S[302535920000682--[[Change Entity--]]] .. ": " .. RetName(obj),
+				custom_type = 7,
 				hint = S[302535920000106--[[Current--]]] .. ": "
 					.. (obj.ChoGGi_OrigEntity or obj:GetEntity()) .. "\n"
 					.. S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]

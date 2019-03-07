@@ -93,22 +93,23 @@ function OnMsg.ClassesPreprocess()
 		local umc = UnpersistedMissingClass
 		ChoGGi.ComFuncs.AddParentToClass(umc,"AutoAttachObject")
 		ChoGGi.ComFuncs.AddParentToClass(umc,"PinnableObject")
+		umc.entity = "ErrorAnimatedMesh"
 
 		-- removes some spam from logs (might cause weirdness so just for me)
 		if testing then
 			local empty_func = empty_func
 			umc.CanReserveResidence = empty_func
-			umc.RemoveResident = empty_func
-			umc.RemoveWorker = empty_func
-			umc.HasFreeVisitSlots = empty_func
-			umc.UpdateAttachedSigns = empty_func
-			umc.SetIsNightLightPossible = empty_func
-			umc.RefreshNightLightsState = empty_func
-			umc.GetUIStatusOverrideForWorkCommand = empty_func
-			umc.Unassign = empty_func
-			umc.RemoveCommandCenter = empty_func
 			umc.GetEntrance = empty_func
 			umc.GetEntrancePoints = empty_func
+			umc.GetUIStatusOverrideForWorkCommand = empty_func
+			umc.HasFreeVisitSlots = empty_func
+			umc.RefreshNightLightsState = empty_func
+			umc.RemoveCommandCenter = empty_func
+			umc.RemoveResident = empty_func
+			umc.RemoveWorker = empty_func
+			umc.SetIsNightLightPossible = empty_func
+			umc.Unassign = empty_func
+			umc.UpdateAttachedSigns = empty_func
 		end
 	end
 

@@ -865,7 +865,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local table_list = {}
-		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list)
+		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list,nil,S[302535920000853--[[Monitor--]]] .. ": ThreadsRegister")
 		dlg:EnableAutoRefresh()
 
 		CreateRealTimeThread(function()
@@ -1396,7 +1396,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 			if parent_or_ret == true then
 				return list
 			else
-				ChoGGi.ComFuncs.OpenInExamineDlg(list)
+				ChoGGi.ComFuncs.OpenInExamineDlg(list,nil,"RetHexSurfaces")
 			end
 		end
 	end -- do
@@ -2845,5 +2845,136 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		end
 
 	end -- do
+
+--[[
+If you get this totally and completely useful error msg when your locale doesn't load:
+CommonLua/Core/localization.lua:559: table index is nil
+
+This will give you *some* idea of where to start looking (helps when you've got 1000+ strings).
+Search the log first for ERROR:, then if it's still happening you'll have to compare between your locale file and the log output
+As this flushes the log every loop it will take some time to load if you have a large locale file (still quicker than a blind mouse).
+
+Blind mouse = A badly formed csv will just leave the game "stuck" and no log that you can use.
+--]]
+	-- needs a path to your csv file "AppData/Mods/folder/locales/game.csv"
+--~ 	ChoGGi.ComFuncs.TestLocaleFile(Mods.ChoGGi_Library.env.CurrentModPath .. "Locales/English.csv")
+	function ChoGGi.ComFuncs.TestLocaleFile(filepath,column_limit,extra)
+		if blacklist then
+			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.TestLocaleFile")
+			return
+		end
+
+		column_limit = column_limit or 5
+
+		filepath = filepath or Mods.ChoGGi_ExampleTranslateGame.env.CurrentModPath .. "Locale/Game.csv"
+
+		-- this is the LoadCSV func from CommonLua/Core/ParseCSV.lua with some DebugPrint added
+		local fields_remap = {
+			"id",
+			"text",
+			"translated",
+			"translated_new",
+			"gender"
+		}
+		local omit_captions = "omit_captions"
+		local err, str = AsyncFileToString(filepath)
+		if err then
+			print("TestLocaleFile ERROR:",err,"FILEPATH:",filepath)
+			return
+		end
+
+		local rows, pos = {}, 1
+		local Q = lpeg.P("\"")
+		local quoted_value = Q * lpeg.Cs((1 - Q + Q * Q / "\"") ^ 0) * Q
+		local raw_value = lpeg.C((1 - lpeg.S(",\t\r\n\"")) ^ 0)
+		local field = (lpeg.P(" ") ^ 0 * quoted_value * lpeg.P(" ") ^ 0 + raw_value) * lpeg.Cp()
+		local space = string.byte(" ", 1)
+
+		local RemoveTrailingSpaces = RemoveTrailingSpaces
+		local FlushLogFile = FlushLogFile
+		local table_insert = table.insert
+
+		local debug_output = {}
+		local c = 0
+
+		-- start of function LoadCSV(filepath, rows, fields_remap, omit_captions)
+
+		-- remove any carr returns
+		str = str:gsub("\r\n","\n")
+
+		while pos < #str do
+			local previous = ""
+			local row, col = {}, 1
+			local lf = str:sub(pos, pos) == "\n"
+
+			while pos < #str and not lf do
+
+				local value, next = field:match(str, pos)
+				value = RemoveTrailingSpaces(value)
+				local f_remap_col = fields_remap[col]
+				if f_remap_col then
+					row[f_remap_col] = value
+				end
+				col = col + 1
+				lf = str:sub(next, next) == "\n"
+				pos = next + 1
+
+				-- only seems to happen on bad things
+				if col > column_limit then
+
+					c = c + 1
+					debug_output[c] = {
+						name = "ERROR row: " .. row.id,
+						value = value,
+						string_pos = pos,
+						column = col,
+						general_area = str:sub(pos-50,pos+50),
+						row_gender = row.gender,
+						row_text = row.text,
+						row_id = row.id,
+						row_translated = row.translated,
+						row_translated_new = row.translated_new,
+					}
+				end
+
+				if extra then
+					local nextt = field:match(str, pos)
+					if nextt ~= "" and previous ~= nextt then
+						c = c + 1
+						debug_output[c] = {
+							name = nextt,
+							value = value,
+							string_pos = pos,
+							column = col,
+							general_area = str:sub(pos-50,pos+50),
+							row_string_id = row.id,
+							row_gender = row.gender,
+							row_text = row.text,
+							row_translated = row.translated,
+							row_translated_new = row.translated_new,
+						}
+					end
+					previous = nextt
+				end
+
+			end -- while
+
+			if lf then
+				pos = pos + 1
+			end
+
+			if not omit_captions then
+				table_insert(rows, row)
+			end
+			omit_captions = false
+
+		end -- while
+
+		debug_output[-1] = [[You can usually ignore the first two errors.
+the ones with "ID,Text,Translation" and so on.
+
+]]
+		OpenExamine(debug_output,nil,"TestLocaleFile")
+	end
 
 end

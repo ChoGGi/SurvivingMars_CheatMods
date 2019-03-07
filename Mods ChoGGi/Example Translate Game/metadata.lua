@@ -21,5 +21,8 @@ See SM folder\ModsTools\Game.csv for the full list of string ids.
 To add a language other than Italian: You'll need to edit the first few lines of Code/Script.lua.
 
 You can also get the mod from: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Example%20Translate%20Game
+
+If you get this error "CommonLua/Core/localization.lua:559: table index is nil", see the bottom of:
+https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Locales.md
 ]],
 })

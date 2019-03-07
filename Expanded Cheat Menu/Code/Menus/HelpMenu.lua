@@ -207,7 +207,7 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 		RolloverText = S[302535920001281--[[Information about your computer (as seen by SM).--]]],
 		OnAction = function()
-			ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.ComFuncs.RetHardwareInfo())
+			ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.ComFuncs.RetHardwareInfo(),nil,Trans(5568--[[Stats--]]))
 		end,
 		ActionSortKey = "-2*Stats*",
 	}
