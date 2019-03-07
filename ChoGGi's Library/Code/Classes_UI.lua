@@ -296,7 +296,7 @@ DefineClass.ChoGGi_TextInput = {
 	RolloverTitle = Trans(126095410863--[[Info--]]),
 	RolloverTemplate = "Rollover",
 	Background = light_gray,
---~ 	MouseCursor = ChoGGi.library_path .. "UI/text_input.png",
+	MouseCursor = const.DefaultMouseCursor or "UI/Cursors/cursor.tga",
 }
 
 DefineClass.ChoGGi_ExternalTextEditorPlugin = {

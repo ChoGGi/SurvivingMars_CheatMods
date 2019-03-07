@@ -61,7 +61,7 @@ do -- AddMsgToFunc
 --~ 				return ChoGGi_OrigFuncs[class_name .. func_name](table.unpack(params))
 --~ 			end) then
 --~ 				print("Function Error: ",class_name .. func_name)
---~ 				ChoGGi.ComFuncs.OpenInExamineDlg{params}
+--~ 				ChoGGi.ComFuncs.OpenInExamineDlg({params},nil,"AddMsgToFunc")
 --~ 			end
 
 			return ChoGGi_OrigFuncs[newname](obj,...)

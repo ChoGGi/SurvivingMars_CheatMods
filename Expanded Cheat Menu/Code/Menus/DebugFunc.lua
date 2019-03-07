@@ -39,7 +39,7 @@ function OnMsg.ClassesGenerate()
 		local visibleObjects = MapGet("map", "attached", false, function(obj)
 			return obj:GetFrameMark() - frame > 0
 		end)
-		ChoGGi.ComFuncs.OpenInExamineDlg(visibleObjects)
+		ChoGGi.ComFuncs.OpenInExamineDlg(visibleObjects,nil,S[302535920001547--[[List Visible Objects--]]])
 	end
 
 	do -- BuildingPathMarkers_Toggle
@@ -468,9 +468,8 @@ that'll activate the BadPrefab on it
 		)
 	end
 
-	function ChoGGi.MenuFuncs.ObjectCloner()
+	function ChoGGi.MenuFuncs.ObjectCloner(flat)
 		local obj = ChoGGi.ComFuncs.SelObject()
-
 		if not IsValid(obj) then
 			return
 		end
@@ -483,15 +482,30 @@ that'll activate the BadPrefab on it
 		else
 			new = obj:Clone()
 		end
-		-- got me
+
+		-- got me banners are weird like that
 		if obj:IsKindOf("Banner") then
 			new:ChangeEntity(obj:GetEntity())
 		end
 
-		new:SetPos(ChoGGi.ComFuncs.CursorNearestHex())
-		if type(new.CheatRefill) == "function" then
+		local hex = ChoGGi.ComFuncs.CursorNearestHex()
+		if flat == true or flat.flatten_to_ground == true then
+			new:SetPos(point(
+				hex:x(),
+				hex:y(),
+				new:GetPos():z()
+			))
+		else
+			new:SetPos(hex)
+		end
+
+		if new.CheatRefill then
 			new:CheatRefill()
 		end
+		if new.CheatFill then
+			new:CheatFill()
+		end
+
 	end
 
 	do -- debug_build_grid
@@ -818,7 +832,7 @@ that'll activate the BadPrefab on it
 				if obj.GetPath then
 					path = obj:GetPath()
 				else
-					ChoGGi.ComFuncs.OpenInExamineDlg(obj)
+					ChoGGi.ComFuncs.OpenInExamineDlg(obj,nil,S[302535920000467--[[Path Markers--]]])
 					print(Trans(6779--[[Warning--]]),":",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
 				end
 			end

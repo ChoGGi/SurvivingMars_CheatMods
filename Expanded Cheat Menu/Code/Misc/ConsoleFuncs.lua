@@ -32,7 +32,7 @@ function OnMsg.ClassesGenerate()
 		{name = S[302535920001026--[[Show File Log--]]],
 			hint = S[302535920001091--[[Flushes log to disk and displays in an examine dialog.--]]],
 			clicked = function()
-				local dlg = OpenInExamineDlg(LoadLogfile())
+				local dlg = OpenInExamineDlg(LoadLogfile(),nil,S[302535920001026--[[Show File Log--]]])
 				CreateRealTimeThread(function()
 					-- yeah, it needs two
 					WaitMsg("OnRender")
@@ -47,7 +47,7 @@ function OnMsg.ClassesGenerate()
 		{name = S[302535920000071--[[Mods Log--]]],
 			hint = S[302535920000870--[[Shows mod log msgs in an examine dialog.--]]],
 			clicked = function()
-				OpenInExamineDlg(ModMessageLog)
+				OpenInExamineDlg(ModMessageLog,nil,S[302535920000071--[[Mods Log--]]])
 			end,
 		},
 		{name = S[302535920001497--[[Show Blacklist--]]],
@@ -59,7 +59,7 @@ function OnMsg.ClassesGenerate()
 				end
 				-- lib should always have the blacklist enabled
 				local _,bl = debug.getupvalue(getmetatable(Mods.ChoGGi_Library.env).__index,1)
-				OpenInExamineDlg(bl,nil,"blacklist")
+				OpenInExamineDlg(bl,nilS[302535920001497--[[Show Blacklist--]]])
 			end,
 		},
 		{is_spacer = true},
@@ -131,9 +131,9 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 			clicked = function()
 				if func then
 					if name == "GetLuaSaveGameData" then
-						OpenInExamineDlg{obj()}
+						OpenInExamineDlg({obj()},nil,disp)
 					else
-						OpenInExamineDlg(obj())
+						OpenInExamineDlg(obj(),nil,disp)
 					end
 				else
 					OpenInExamineDlg(name,"str",disp)
@@ -282,29 +282,40 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 		local function UpdateLogErrors(name)
 
 			_G[name] = function(...)
-				print("function (" .. name .. "):",...)
+				local func_name = S[302535920001077--[[Error from function--]]] .. [[ "]] .. name .. [[" = ]]
+				print(func_name,...)
+
+				local stack_trace
 				if blacklist then
-					print(GetStack(2, false, "\t"))
+					stack_trace = GetStack(2, false, "\t")
+					print(stack_trace)
 				else
-					print(debug_traceback(nil,2))
+					stack_trace = debug_traceback(nil,2)
+					print(stack_trace)
 				end
+
 				if UserSettings.ExamineErrors then
 					-- i only care to see threads (i don't think funcs show up?)
 					if testing then
 						local err_type = type(select(1,...))
 						-- not sure if it can ever be a func...?
-						if err_type == "thread" or err_type == "function" then
-							OpenInExamineDlg{...,err_type}
+						if err_type == "thread" or err_type == "function" or name == "__procall_errorhandler" then
+							OpenInExamineDlg({
+								(err_type == "function" and err_type.. " " or "") .. func_name
+								,...,
+								stack_trace,
+							},nil,S[302535920001479--[[Examine Errors--]]])
 						end
 					else
-						OpenInExamineDlg{...}
+						OpenInExamineDlg({func_name,...,stack_trace},nil,S[302535920001479--[[Examine Errors--]]])
 					end
 				end
+
 			end
 
 		end
 
-		local funcs = {"error","OutputDebugString","ThreadErrorHandler","DlcErrorHandler","syntax_error","RecordError"}
+		local funcs = {"error","OutputDebugString","ThreadErrorHandler","DlcErrorHandler","syntax_error","RecordError","__procall_errorhandler"}
 		function ChoGGi.ConsoleFuncs.ToggleLogErrors(enable)
 			for i = 1, #funcs do
 				if enable then
@@ -331,6 +342,15 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 				ChoGGi.UserSettings.ConsoleErrors = not ChoGGi.UserSettings.ConsoleErrors
 				ChoGGi.SettingFuncs.WriteSettings()
 				ChoGGi.ConsoleFuncs.ToggleLogErrors(ChoGGi.UserSettings.ConsoleErrors)
+			end,
+		},
+		{name = S[302535920001102--[[Examine Errors--]]],
+			hint = S[302535920001104--[[Open (some) errors in an examine dialog (shows stack trace and sometimes a thread).--]]],
+			class = "ChoGGi_CheckButtonMenu",
+			value = "ChoGGi.UserSettings.ExamineErrors",
+			clicked = function()
+				ChoGGi.UserSettings.ExamineErrors = not ChoGGi.UserSettings.ExamineErrors
+				ChoGGi.SettingFuncs.WriteSettings()
 			end,
 		},
 		{name = S[302535920001112--[[Console Log--]]],

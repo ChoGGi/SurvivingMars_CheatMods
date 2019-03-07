@@ -3,7 +3,8 @@ local lang_value = "Italian"
 local locale = "it-IT"
 local iso_639_1 = "it"
 local pdx_locale = "it"
--- see Game.csv for other translated lang names
+
+-- see ModTools\Game.csv for other translated lang names
 -- or if you use ECM put this in the console: ~AllLanguages
 local lang_name = T(1000696,"Italian")
 --  or just use a string:

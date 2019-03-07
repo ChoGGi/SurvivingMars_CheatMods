@@ -3,13 +3,21 @@
 ## v12.9 (Unreleased)
 
 ## v12.8 (06 Mar 2019)
+### Added:
+- Console>Tools>Examine Errors: Open (some) errors in an examine dialog (shows stack trace and sometimes a thread).
+- > Not really useful without my HelperMod, or if you want to use "Errors In Console" without the log showing.
+- ChoGGi.ComFuncs.TestLocaleFile(filepath): Needs my HelperMod to work.
+- > See the bottom of my Locales tutorial for more info.
+
 ### Changed:
 - "ChoGGi.CurObj" to "o" (used in Execute Code dialog).
+- Added the stack trace text to Examine Errors.
 
 ### Fixed:
 - Examine:
 - > The search box will now search the entire line instead of chunks of it.
 - > Toggle Attach Spots didn't always add the polyline to chains.
+- > View Text: Broke scrolling when I removed the * from the text.
 
 ### Removed:
 - Fixes>All Pipe Skins To Default: It wasn't the best code, and I'm pretty sure they fixed the bug with chrome pipes?

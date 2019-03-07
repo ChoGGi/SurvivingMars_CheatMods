@@ -794,7 +794,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		info_lists[4].name = Trans(8800--[[Game Rules--]])
 		info_lists[5].name = Trans(3486--[[Mystery--]])
 --~ 			info_lists[6].name = Trans(692--[[Resources--]])
-		local dlg_ex_params = ChoGGi.ComFuncs.OpenInExamineDlg(info_lists)
+		local dlg_ex_params = ChoGGi.ComFuncs.OpenInExamineDlg(info_lists,nil,"MissionParams")
 
 		local dlg_list_maps
 
