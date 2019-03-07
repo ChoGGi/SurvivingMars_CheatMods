@@ -1,9 +1,12 @@
 ## Library Changelog
 
 ## v5.8 (Unreleased)
+
+## v5.8 (06 Mar 2019)
+- Broke it for non-English langs.
 - Pretty large code cleanup, but that should be it for awhile.
 
-## v5.7 (5 Mar 2019)
+## v5.7 (05 Mar 2019)
 - Fixed CSV exporting.
 - Code cleanup / Moved some ECM only funcs to ECM.
 - Fixed DeleteObject not deleting everything on funky modded buildings.

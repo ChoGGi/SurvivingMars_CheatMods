@@ -1,15 +1,20 @@
 ## ECM Changelog
 
-## v12.8 (Unreleased)
+## v12.9 (Unreleased)
+
+## v12.8 (06 Mar 2019)
+### Changed:
+- "ChoGGi.CurObj" to "o" (used in Execute Code dialog).
+
 ### Fixed:
 - Examine:
 - > The search box will now search the entire line instead of chunks of it.
 - > Toggle Attach Spots didn't always add the polyline to chains.
 
 ### Removed:
-Fixes>All Pipe Skins To Default: It wasn't the best code, and I'm pretty sure they fixed the bug with chrome pipes?
+- Fixes>All Pipe Skins To Default: It wasn't the best code, and I'm pretty sure they fixed the bug with chrome pipes?
 
-## v12.7 (5 Mar 2019)
+## v12.7 (05 Mar 2019)
 ### Added:
 - Debug>List Visible Objects: Shows list of objects rendered in the current frame.
 
@@ -232,8 +237,8 @@ Fixes>All Pipe Skins To Default: It wasn't the best code, and I'm pretty sure th
 - > No longer shows ,0 for point objects without a z.
 - > Cleaned up info for function objects.
 - > Added an Image Viewer to the Tools menu, useful in conjunction with Material Properties.
-- >> For now it just does dds, tga, png. Any additions?
-- >> From console you can use ImageView(image).
+- >> For now it just checks for dds, tga, png, jpg.
+- >> From console you can use imageview(image).
 - Improved Material Properties (no more dupes, and if only one table displays directly).
 - Added an "Are you sure" to bug report.
 - Defaults to not showing the console log, welcome msg now asks if you want to show log.
@@ -809,7 +814,7 @@ Please and thank you.
 - > UI objects will now flash (like the ged window inspector, see Tools to disable).
 #### Exec Code:
 - > Multi line text support.
-- > Now checks clipboard content before adding ChoGGi.CurObj.
+- > Now checks clipboard content before adding o.
 #### List Dialog:
 - > Change Colour is now applied when you select a colour (default checkbox to reset).
 
@@ -1167,7 +1172,7 @@ Please and thank you.
 - Shuttle pathing is slightly better.
 - Toggle Infopanel Cheats with Ctrl-F2 (request from camk16).
 - Added an Attaches button to object examiner.
-- Added an Exec button to object examiner: ChoGGi.CurObj is whatever object you have opened in it (I'll get around to a multi-line text box one of these days).
+- Added an Exec button to object examiner: o is whatever object you have opened in it (I'll get around to a multi-line text box one of these days).
 - ^ It'll show results in the console log. With these two buttons; no more typing in object[1].table[3][2][4] anymore :)
 
 ### Fixed:

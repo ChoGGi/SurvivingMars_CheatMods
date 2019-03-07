@@ -1072,7 +1072,7 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 			end,
 		},
 		{name = S[302535920000040--[[Exec Code--]]],
-			hint = S[302535920000052--[["Execute code (using console for output). ChoGGi.CurObj is whatever object is opened in examiner.
+			hint = S[302535920000052--[["Execute code (using console for output). o is whatever object is opened in examiner.
 Which you can then mess around with some more in the console."--]]],
 			image = "CommonAssets/UI/Menu/AlignSel.tga",
 			clicked = function()
@@ -1322,7 +1322,7 @@ function Examine:GetScrolledText()
 end
 
 function Examine:FindNext(text,previous)
-	text = text or self.idSearchText:GetText():lower()
+	text = text or self.idSearchText:GetText()
 	local current_y = self.idScrollArea.OffsetY
 	local min_match, closest_match = false, false
 
@@ -1782,7 +1782,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 	}
 
 	-- if it's an image path then we add an image viewer
-	if ImageExts()[obj_value_str:sub(-3)] then
+	if ImageExts()[obj_value_str:sub(-3):lower()] then
 		c = c + 1
 		list[c] = {name = S[302535920001469--[[Image Viewer--]]],
 			hint = S[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."--]]],

@@ -4182,3 +4182,18 @@ function ChoGGi.ComFuncs.RetObjectCapAndGrid(obj,mask)
 
 	end
 end
+
+do -- ImageExts
+	-- easier to keep them in one place
+	local ext_list = {
+		dds = true,
+		tga = true,
+		png = true,
+		jpg = true,
+		jpeg = true,
+	}
+	-- ImageExts()[str:sub(-3):lower()]
+	function ChoGGi.ComFuncs.ImageExts()
+		return ext_list
+	end
+end -- do

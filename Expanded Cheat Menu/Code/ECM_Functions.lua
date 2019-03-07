@@ -296,78 +296,138 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- DumpTableFunc
-		local output_string
-		local function RetTextForDump(obj,funcs)
-			local obj_type = type(obj)
-			if obj_type == "userdata" then
-				return Trans(obj)
-			elseif funcs and obj_type == "function" then
-				local n = ChoGGi.newline
-				return "Func: " .. n .. n .. obj:dump() .. n .. n
-			elseif obj_type == "table" then
-				return tostring(obj) .. " len: " .. #obj
-			else
-				return tostring(obj)
+		local table_sort = table.sort
+		local CmpLower = CmpLower
+
+		local output_list = {}
+		local c
+		local level_limit
+
+		local function SortTableFunc(a,b)
+			if a.key and b.key then
+				return CmpLower(
+					RetName(a.key),
+					RetName(b.key)
+				)
 			end
+			return a.key and true or b.key and true
 		end
 
-		local function DumpTableFunc(obj,hierarchyLevel,funcs)
-			if (hierarchyLevel == nil) then
-				hierarchyLevel = 0
-			elseif (hierarchyLevel == 4) then
+		local function DumpTableFunc(obj,level, parent_name)
+			if level == level_limit then
 				return 0
 			end
 
 			if type(obj) == "table" then
-				if obj.id then
-					output_string = output_string .. "\n-----------------obj.id: " .. obj.id .. " :"
+
+				local obj_name = RetName(obj)
+
+				c = c + 1
+				output_list[c] = "\n\n------------------------- "
+				if parent_name then
+					c = c + 1
+					output_list[c] = parent_name
+					c = c + 1
+					output_list[c] = " "
 				end
-				for k,v in pairs(obj) do
-					if type(v) == "table" then
-						DumpTableFunc(v, hierarchyLevel+1)
-					else
-						if k ~= nil then
-							output_string = output_string .. "\n" .. k .. " = "
-						end
-						if v ~= nil then
-							output_string = output_string .. RetTextForDump(v,funcs)
-						end
-						output_string = output_string .. "\n"
+				c = c + 1
+				output_list[c] = obj_name
+				c = c + 1
+				output_list[c] = ":"
+				c = c + 1
+				output_list[c] = "\n"
+
+				-- get all the key/values then sort the table
+				local temp_list = {}
+				local t_c = 0
+
+				-- get all key/value pairs in the table
+				for key,value in pairs(obj) do
+					t_c = t_c + 1
+					temp_list[t_c] = {
+						key = key,
+						value = value,
+					}
+				end
+				table_sort(temp_list,SortTableFunc)
+
+				-- now we can return an ordered list
+				for i = 1, t_c do
+					local item = temp_list[i]
+					c = c + 1
+					output_list[c] = "\n"
+					c = c + 1
+					output_list[c] = RetName(item.key)
+					c = c + 1
+					output_list[c] = ": "
+					c = c + 1
+					output_list[c] = RetName(item.value)
+				end
+
+				c = c + 1
+				output_list[c] = "\n"
+
+				-- go through once and dump any tables in the table
+				for i = 1, t_c do
+					local item = temp_list[i]
+					if type(item.key) == "table" then
+						DumpTableFunc(item.key, level+1, RetName(item.value))
+					end
+					if type(item.value) == "table" then
+						DumpTableFunc(item.value, level+1, RetName(item.key))
 					end
 				end
+
 			end
 		end
 
 		--[[
-		Mode = -1 to append or nil to overwrite (default: -1)
-		Funcs = true to dump functions as well (default: false)
-		ChoGGi.ComFuncs.DumpTable(Object)
+		mode = -1 to append or nil to overwrite (default: append)
+		limit = how far down the rabbit hole (default 3)
 		--]]
-		function ChoGGi.ComFuncs.DumpTable(obj,mode,funcs)
+		function ChoGGi.ComFuncs.DumpTable(obj,mode,limit)
 			if blacklist then
 				ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.DumpTable")
 				return
 			end
-			if not obj then
+			if type(obj) ~= "table" then
 				MsgPopup(
 					S[302535920000003--[[Can't dump nothing--]]],
 					S[302535920000004--[[Dump--]]]
 				)
 				return
 			end
-			mode = mode or "-1"
-			-- make sure it's empty
-			output_string = ""
-			DumpTableFunc(obj,nil,funcs)
-			AsyncStringToFile("AppData/logs/DumpedTable.txt",output_string,mode)
+			local name = RetName(obj)
 
+			level_limit = limit or 3
+
+			-- make sure it's empty
+			table_iclear(output_list)
+			c = 0
+			DumpTableFunc(obj,0)
+
+			if #output_list > 0 then
+				AsyncStringToFile("AppData/logs/DumpedTable.txt",TableConcat(output_list),mode or "-1")
+
+				local msg = S[302535920000002--[[Dumped: %s--]]]:format(name)
+				print(msg)
+				MsgPopup(
+					msg,
+					"AppData/logs/DumpedText.txt",
+					nil,
+					nil,
+					obj
+				)
+				return
+			end
+
+			local msg = S[302535920000003--[[Can't dump nothing--]]] .. ": " .. name .. "\n" .. ValueToLuaCode(obj)
+			print(msg)
 			MsgPopup(
-				S[302535920000002--[[Dumped: %s--]]]:format(RetName(obj)),
-				"AppData/logs/DumpedText.txt",
-				nil,
-				nil,
-				obj
+				msg,
+				S[302535920000004--[[Dump--]]]
 			)
+
 		end
 	end --do
 
@@ -742,7 +802,6 @@ function OnMsg.ClassesGenerate()
 			title = title,
 			hint = hint,
 			custom_type = list_type or 0,
-			custom_func = CallBackFunc,
 		}
 	end
 
@@ -1506,29 +1565,15 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 		end
 	end -- do
 
-	do -- ImageExts
-		-- easier to keep them in one place
-		local ext_list = {
-			dds = true,
-			tga = true,
-			png = true,
-			jpg = true,
-			jpeg = true,
-		}
-		function ChoGGi.ComFuncs.ImageExts()
-			return ext_list
-		end
-	end -- do
-	local ImageExts = ChoGGi.ComFuncs.ImageExts
-
 	do -- DisplayObjectImages
 		local CmpLower = CmpLower
 		local getmetatable = getmetatable
 		local images_table
+		local ImageExts = ChoGGi.ComFuncs.ImageExts
 
 		-- grab any strings with the correct ext
 		local function AddToList(c,key,value)
-			if type(value) == "string" and ImageExts()[value:sub(-3)] then
+			if type(value) == "string" and ImageExts()[value:sub(-3):lower()] then
 				local dupe_test = key .. value
 
 				if not images_table.dupes[dupe_test] then
@@ -2682,8 +2727,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				path = path or "@AppData/Mods/"
 				local str_len = #path
 
-				print("Hook Started",path,line,mask,count)
-				MsgPopup("Hook Started")
+				print(S[302535920000497--[[Hook Started--]]],path,line,mask,count)
+				MsgPopup(S[302535920000497--[[Hook Started--]]],Trans(1000113--[[Debug--]]))
 
 				collectgarbage()
 				local function hook_func(event)
@@ -2711,8 +2756,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				-- start capture (c = func call, r = func ret, l = enters new line of code)
 				debug.sethook(hook_func,mask or "c", count)
 			else
-				print("Hook Stopped",path,line,mask,count)
-				MsgPopup("Hook Stopped")
+				print(S[302535920000498--[[Hook Stopped--]]],path,line,mask,count)
+				MsgPopup(S[302535920000498--[[Hook Stopped--]]],Trans(1000113--[[Debug--]]))
 				ChoGGi.Temp.FunctionsHooked = false
 
 				-- stop capture

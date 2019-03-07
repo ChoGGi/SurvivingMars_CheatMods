@@ -2,31 +2,12 @@
 
 function OnMsg.ClassesGenerate()
 	-- add some shortened func names
-	function dump(...)
-		ChoGGi.ComFuncs.Dump(...)
-	end
-	function dumplua(...)
-		ChoGGi.ComFuncs.DumpLua(...)
-	end
-	function dumptable(...)
-		ChoGGi.ComFuncs.DumpTable(...)
-	end
-	function dumpl(...)
-		ChoGGi.ComFuncs.DumpLua(...)
-	end
-	function dumpt(...)
-		ChoGGi.ComFuncs.DumpTable(...)
-	end
+	dump = ChoGGi.ComFuncs.Dump
+	dumplua = ChoGGi.ComFuncs.DumpLua
+	dumptable = ChoGGi.ComFuncs.DumpTable
 	trans = ChoGGi.ComFuncs.Translate
-	function so()
-		return ChoGGi.ComFuncs.SelObject()
-	end
-end
-
--- no need to have these in the do
-
-function ImageView(image)
-	ChoGGi.ComFuncs.OpenInImageViewerDlg(image)
+	imageview = ChoGGi.ComFuncs.OpenInImageViewerDlg
+	so = ChoGGi.ComFuncs.SelObject
 end
 
 function restart()
@@ -34,7 +15,7 @@ function restart()
 end
 reboot = restart
 exit = quit
-mh = GetTerrainCursorObjSel -- only returns selected obj under cursor
+mh = GetTerrainCursorObjSel -- returns selected obj under cursor
 mhc = GetTerrainCursorObj -- returns obj under cursor
 mc = GetPreciseCursorObj
 m = SelectionMouseObj

@@ -23,7 +23,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 	hint = "Current: " .. hint,
 	multisel = true,
 	custom_type = custom_type,
-	custom_func = CustomFunc,
+	custom_func = CustomFunc, -- falls back to CallBackFunc
 	close_func = function() end,
 	height = 800.0,
 	width = 100.0,
@@ -725,7 +725,7 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 	end
 
 	-- otherwise get text from filter input
-	txt = self.idFilter:GetText():lower()
+	txt = self.idFilter:GetText()
 	-- blank so no need to filter
 	if txt == "" then
 		return
@@ -733,9 +733,13 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 
 	-- loop through all the list items and remove any we can't find
 	local count = #self.idList
+	local custom_type = self.custom_type == 0
 	for i = count, 1, -1 do
 		local li = self.idList[i]
-		if not (li.idText.text:find_lower(txt) or li.RolloverText:find_lower(txt) or tostring(li.RolloverTitle):find_lower(txt) or self.custom_type == 0 and i == count) then
+		-- stick all the strings into one for quicker searching? (i use a \t (tab char) so the strings are separate)
+		local str = (li.idText.text or "") .. "\t" .. (li.RolloverText or "") .. "\t" .. (li.RolloverTitle or "")
+		-- never filter out the "custom value"
+		if not (str:find_lower(txt) or custom_type and i == count) then
 			self.idList[i]:delete()
 		end
 	end

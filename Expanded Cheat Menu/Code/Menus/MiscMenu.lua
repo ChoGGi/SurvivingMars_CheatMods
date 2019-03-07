@@ -46,10 +46,13 @@ function OnMsg.ClassesGenerate()
 		ActionId = ".Auto Unpin Objects",
 		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
 		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.UnpinObjects,
-				S[302535920000687--[[Will automagically stop any of these objects from being added to the pinned list.--]]]
-			)
+--~ 			return ChoGGi.ComFuncs.SettingState(
+--~ 				ChoGGi.UserSettings.UnpinObjects,
+--~ 				S[302535920000687--[[Will automagically stop any of these objects from being added to the pinned list.--]]]
+--~ 			)
+			-- it can get large, so for this one we stick the description first.
+			return S[302535920000687--[[Will automagically stop any of these objects from being added to the pinned list.--]]]
+				.. "\n<color 100 255 100>" .. ValueToLuaCode(ChoGGi.UserSettings.UnpinObjects) .. "</color>"
 		end,
 		OnAction = ChoGGi.MenuFuncs.ShowAutoUnpinObjectList,
 	}

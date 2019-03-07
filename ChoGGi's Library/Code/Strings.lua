@@ -81,10 +81,20 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 	local lang = GetLanguage()
 	ChoGGi.lang = lang
 
+	-- a table of translated strings (includes <> stuff unlike TranslationTable)
+	local strings = ChoGGi.Strings
+	-- 0000 = 0 if we try to pass as a number (as well as doing 001 to 1)
+	TransZero("000",0,9,strings)
+	TransZero("00",10,99,strings)
+	TransZero(0,100,999,strings)
+	TransZero("",1000,9999,strings)
+	-- and update my global ref
+	ChoGGi.Strings = strings
+
 	-- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
 	if lang ~= "English" then
 			-- first get the unicode font name
-		local f = Trans(997--[[*font*, 15, aa--]])
+		local f = ChoGGi.ComFuncs.Translate(997--[[*font*, 15, aa--]])
 		-- index of first , then crop out the rest
 		f = f:sub(1,f:find(",")-1)
 		ChoGGi.font = f
@@ -98,18 +108,6 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 		TextStyles.GizmoText.TextFont = f .. ", 32, bold, aa"
 
 	end
-
-	-- a table of translated strings (includes <> stuff unlike TranslationTable)
-	local strings = ChoGGi.Strings
-
-	-- 0000 = 0 if we try to pass as a number (as well as 001 to 1)
-	TransZero("000",0,9,strings)
-	TransZero("00",10,99,strings)
-	TransZero(0,100,999,strings)
-	TransZero("",1000,9999,strings)
-
-	-- and update my global ref
-	ChoGGi.Strings = strings
 end
 -- always fire on startup
 ChoGGi.ComFuncs.UpdateStringsList()

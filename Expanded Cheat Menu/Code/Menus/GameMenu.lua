@@ -112,7 +112,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 	Actions[c] = {ActionName = S[302535920001487--[[Reload Map--]]],
 		ActionMenubar = "ECM.Game",
 		ActionId = ".ReloadMap",
-		ActionIcon = "CommonAssets/UI/Menu/load_city.tga",
+		ActionIcon = "CommonAssets/UI/Menu/reload.tga",
 		RolloverText = S[302535920001488--[[Reloads map as new game.--]]],
 		ActionSortKey = "1Change Map ReloadMap",
 		OnAction = ChoGGi.MenuFuncs.ReloadMap,
@@ -152,9 +152,9 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionId = ".Change Light Model Custom",
 		ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 		RolloverText = function()
-			-- it can get large, so for this one and this one only we stick the description first.
+			-- it can get large, so for this one we stick the description first.
 			return S[302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]]
-				.. ":\n" .. ValueToLuaCode(ChoGGi.UserSettings.LightmodelCustom)
+				.. "\n<color 100 255 100>" .. ValueToLuaCode(ChoGGi.UserSettings.LightmodelCustom) .. "</color>"
 		end,
 		OnAction = ChoGGi.MenuFuncs.EditLightmodelCustom,
 	}

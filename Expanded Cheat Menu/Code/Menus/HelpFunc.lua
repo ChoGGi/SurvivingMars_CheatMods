@@ -444,25 +444,25 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 				m_c = m_c + 1
 				if steam_upload then
-					upload_msg[mc] = Trans(1000012--[[Mod <ModLabel> will be uploaded to Steam--]]):gsub("<ModLabel>",mod.title)
+					upload_msg[m_c] = Trans(1000012--[[Mod <ModLabel> will be uploaded to Steam--]]):gsub("<ModLabel>",mod.title)
 				else
-					upload_msg[mc] = Trans(1000771--[[Mod <ModLabel> will be uploaded to Paradox--]]):gsub("<ModLabel>",mod.title)
+					upload_msg[m_c] = Trans(1000771--[[Mod <ModLabel> will be uploaded to Paradox--]]):gsub("<ModLabel>",mod.title)
 				end
 
 				if not pack_mod then
 					m_c = m_c + 1
-					upload_msg[mc] = "\n\n"
+					upload_msg[m_c] = "\n\n"
 					m_c = m_c + 1
-					upload_msg[mc] = S[302535920000051--[[Mod will not be packed in an hpk archive.--]]]
+					upload_msg[m_c] = S[302535920000051--[[Mod will not be packed in an hpk archive.--]]]
 				end
 
 				if not copy_files then
 					m_c = m_c + 1
-					upload_msg[mc] = "\n\n<color 203 120 30>"
+					upload_msg[m_c] = "\n\n<color 203 120 30>"
 					m_c = m_c + 1
-					upload_msg[mc] = S[302535920001262--[[%sModUpload folder is empty and waiting for files.--]]]:format(ConvertToOSPath("AppData/"))
+					upload_msg[m_c] = S[302535920001262--[[%sModUpload folder is empty and waiting for files.--]]]:format(ConvertToOSPath("AppData/"))
 					m_c = m_c + 1
-					upload_msg[mc] = "</color>"
+					upload_msg[m_c] = "</color>"
 
 					-- clear out and create upload folder
 					AsyncDeletePath(dest_path)
@@ -472,9 +472,9 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 				-- show diff author warning unless it's me
 				if diff_author and not testing then
 					m_c = m_c + 1
-					upload_msg[mc] = "\n\n"
+					upload_msg[m_c] = "\n\n"
 					m_c = m_c + 1
-					upload_msg[mc] = S[302535920001263--[["%s is different from your name, do you have permission to upload it?"--]]]:format(mod.author)
+					upload_msg[m_c] = S[302535920001263--[["%s is different from your name, do you have permission to upload it?"--]]]:format(mod.author)
 				end
 
 				local function QuestionBoxCallBackFunc(answer)

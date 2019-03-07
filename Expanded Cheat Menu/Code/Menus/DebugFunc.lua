@@ -247,7 +247,7 @@ function OnMsg.ClassesGenerate()
 if you do a ~g_StoryBitStates
 that'll show all the active story state thingss
 then click for example BadPrefab, select a prefab and in tools>Execute code stick:
-ChoGGi.CurObj:ActivateStoryBit(s)
+o:ActivateStoryBit(s)
 that'll activate the BadPrefab on it
 --]]
 		local StoryBits = StoryBits
@@ -388,7 +388,6 @@ that'll activate the BadPrefab on it
 			title = S[302535920001314--[[Toggle Render--]]],
 			skip_sort = true,
 			custom_type = 1,
-			custom_func = CallBackFunc,
 		}
 	end
 
@@ -461,8 +460,7 @@ that'll activate the BadPrefab on it
 
 		ChoGGi.ComFuncs.QuestionBox(
 			Trans(6779--[[Warning--]]) .. "!\n"
-				.. S[302535920000852--[[This will delete all %s of %s--]]]:format(MapCount("map",obj.class),obj.class)
-				.. "\n\n" .. S[302535920000854--[[Takes about thirty seconds for 12 000 objects.--]]],
+				.. S[302535920000852--[[This will delete all %s of %s--]]]:format(MapCount("map",obj.class),obj.class),
 			CallBackFunc,
 			Trans(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
 			S[302535920000856--[[Yes, I want to delete all: %s--]]]:format(obj.class),

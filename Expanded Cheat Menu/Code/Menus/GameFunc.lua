@@ -485,7 +485,6 @@ function OnMsg.ClassesGenerate()
 				items = item_list,
 				title = S[302535920001292--[[List All Objects--]]] .. ": " .. value,
 				custom_type = 1,
-				custom_func = ViewAndSelectObject,
 				checkboxes = {
 					{
 						title = Trans(1000220--[[Refresh--]]),
@@ -538,7 +537,6 @@ function OnMsg.ClassesGenerate()
 				items = item_list,
 				title = S[302535920001292--[[List All Objects--]]],
 				custom_type = 1,
-				custom_func = CallBackFunc_List,
 				height = 800,
 				checkboxes = {
 					{
@@ -801,13 +799,13 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		local dlg_list_maps
 
 		-- map list dialog
-		local ItemList_MapList = {}
+		local item_list_MapList = {}
 		local c = 0
 		local maps = ListMaps()
 		for i = 1, #maps do
 			if not (maps[i]:find_lower("^prefab") and maps[i]:find("^_")) then
 				c = c + 1
-				ItemList_MapList[c] = {
+				item_list_MapList[c] = {
 					text = maps[i],
 					value = maps[i],
 				}
@@ -894,7 +892,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 				dlg_list_MissionParams:Done()
 				dlg_ex_params:Done()
 			end,
-			items = ItemList_MapList,
+			items = item_list_MapList,
 			title = S[302535920000868--[[Choose Map--]]],
 			custom_type = 7,
 		}

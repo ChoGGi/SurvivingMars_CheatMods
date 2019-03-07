@@ -63,10 +63,10 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
 	self:AddScrollEdit()
 
 	-- hinty hint
-	self.idMoveControl.RolloverText = S[302535920000072--[["Paste or type code to be executed here, ChoGGi.CurObj is the examined object (ignored when opened from Console).
+	self.idMoveControl.RolloverText = S[302535920000072--[["Paste or type code to be executed here, o is the examined object (ignored when opened from Console).
 Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 	-- start off with this as code
-	self.idEdit:SetText(GetFromClipboard() or self.obj and "ChoGGi.CurObj" or "")
+	self.idEdit:SetText(GetFromClipboard() or self.obj and "o" or "")
 	-- let us override enter/esc
 	self.idEdit.OnKbdKeyDown = self.idEditOnKbdKeyDown
 	-- update text on focus
@@ -153,7 +153,7 @@ Press again to toggle updating."--]]],
 				Id = "idInsertObj",
 				Dock = "left",
 				Text = S[302535920000075--[[Insert Obj--]]],
-				RolloverText = S[302535920000076--[[At caret position inserts: ChoGGi.CurObj--]]],
+				RolloverText = S[302535920000076--[[At caret position inserts: o--]]],
 				Margins = box10,
 				OnPress = self.idInsertObjOnPress,
 			}, self.idLeftButs)
@@ -247,7 +247,7 @@ end
 function ChoGGi_ExecCodeDlg:idOKOnPress()
 	self = GetRootDialog(self)
 	-- exec instead of also closing dialog
-	ChoGGi.CurObj = self.obj
+	o = self.obj
 --~ 	ShowConsoleLog(true)
 	-- use console to exec code so we can show results in it
 	dlgConsole:Exec(self.idEdit:GetText())
@@ -255,7 +255,7 @@ end
 
 function ChoGGi_ExecCodeDlg:idInsertObjOnPress()
 	self = GetRootDialog(self)
-	self.idEdit:EditOperation("ChoGGi.CurObj",true)
+	self.idEdit:EditOperation("o",true)
 	self.idEdit:SetFocus()
 end
 

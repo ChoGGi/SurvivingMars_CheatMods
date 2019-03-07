@@ -231,17 +231,12 @@ function OnMsg.ClassesGenerate()
 			[192] = S[302535920001132--[[Quattuorsexaguple--]]],
 		}
 
-		local const = const
-		local current = speeds[const.mediumGameSpeed]
-		if not current then
-			current = S[302535920001134--[[Custom: %s < base number 3 multipled by custom amount.--]]]:format(const.mediumGameSpeed)
-		end
-
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = S[302535920000702--[[Game Speed--]]],
-			hint = S[302535920000933--[[Current speed: %s--]]]:format(current),
+			hint = S[302535920000933--[[Current speed: %s--]]]:format(speeds[const.mediumGameSpeed])
+				.. "\n" .. S[302535920001134--[[%s = base number %s multipled by custom value amount.--]]]:format(S[302535920000078--[[Custom Value--]]],const.mediumGameSpeed),
 			skip_sort = true,
 		}
 	end
