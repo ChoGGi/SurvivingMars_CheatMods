@@ -12,6 +12,10 @@
 ### Changed:
 - "ChoGGi.CurObj" to "o" (used in Execute Code dialog).
 - Added the stack trace text to Examine Errors.
+- Examine:
+- > Added entity name to objects with one.
+- > Cleaned up Set Particles: No more dupes, and should hpoefully be better at turning them off
+- > Attach Spots Toggle now shows the pos offset from origin, instead of world pos.
 
 ### Fixed:
 - Examine:

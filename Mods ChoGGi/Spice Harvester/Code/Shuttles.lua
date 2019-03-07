@@ -27,7 +27,7 @@ end
 
 function SpiceHarvester.SpawnShuttle(hub)
 	local sh = SpiceHarvester
-	for _, s_i in pairs(hub.shuttle_infos) do
+	for _,s_i in pairs(hub.shuttle_infos) do
 		if MapCount("map", "CargoShuttle") >= (sh.Max_Shuttles or 50) then
 			return
 		end

@@ -445,7 +445,7 @@ do -- Graphs
 			{"category",Trans(1000097--[[Category--]])},
 			{"current",S[302535920000106--[[Current--]]] .. " " .. Trans(4031--[[Sol <day>--]]):gsub(" <day>","")},
 		}
-		local c = 2
+		local c = #csv_columns
 
 		-- add all the sols as columns
 		local sol_str = Trans(4031--[[Sol <day>--]])

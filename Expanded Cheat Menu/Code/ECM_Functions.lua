@@ -727,7 +727,7 @@ function OnMsg.ClassesGenerate()
 				text = " " .. default,
 				value = default,
 			}
-			c = 1
+			c = #item_list
 		end
 
 		if planning then
@@ -958,19 +958,28 @@ function OnMsg.ClassesGenerate()
 		local item_list = {
 			{text = " " .. default,value = default},
 		}
-		local c = 1
+		local c = #item_list
+
+		local dupes = {}
+
 		local particles = FXLists.ActionFXParticles
 		for i = 1, #particles do
 			local p = particles[i]
-			if spots[p.Spot] or p.Spot == "" then
-				c = c + 1
-				item_list[c] = {
-					text = p.Actor .. ", " .. p.Action .. ", " .. p.Moment,
-					value = p.Actor,
-					action = p.Action,
-					moment = p.Moment,
-					hint = "Actor: " .. p.Actor .. ", Action: " .. p.Action .. ", Moment: " .. p.Moment,
-				}
+			local name = p.Actor .. ", " .. p.Action .. ", " .. p.Moment
+			if not dupes[name] then
+				dupes[name] = true
+				if spots[p.Spot] or p.Spot == "" then
+					c = c + 1
+					item_list[c] = {
+						text = name,
+						value = p.Actor,
+						action = p.Action,
+						moment = p.Moment,
+						handle = p.handle,
+						index = i,
+						hint = "Actor: " .. p.Actor .. ", Action: " .. p.Action .. ", Moment: " .. p.Moment,
+					}
+				end
 			end
 		end
 
@@ -978,26 +987,34 @@ function OnMsg.ClassesGenerate()
 			if choice.nothing_selected then
 				return
 			end
-			local actor = choice[1].value
-			local action = choice[1].action
-			local moment = choice[1].moment
+			choice = choice[1]
+			local actor = choice.value
+			local action = choice.action
+			local moment = choice.moment
 
 			-- if there's one playing then stop it
 			if obj.ChoGGi_playing_fx then
 				PlayFX(obj.ChoGGi_playing_fx, "end", obj)
+				if obj.DestroyFX then
+					obj:DestroyFX(obj,obj.ChoGGi_playing_fx)
+				end
+				obj.ChoGGi_playing_fx = nil
 			end
-			-- so we can stop it
+			-- save fx id so we can stop it
 			obj.ChoGGi_playing_fx = action
 
-			if type(obj.fx_actor_class_ChoGGi_Orig) == "nil" then
+			if obj.fx_actor_class_ChoGGi_Orig == nil then
 				obj.fx_actor_class_ChoGGi_Orig = obj.fx_actor_class
 			end
 
 			obj.fx_actor_class = actor
 
+			particles[choice.index].Actor = "any"
+
 			if actor == default then
 				if obj.fx_actor_class_ChoGGi_Orig then
 					obj.fx_actor_class = obj.fx_actor_class_ChoGGi_Orig
+					obj.fx_actor_class_ChoGGi_Orig = nil
 				end
 				obj.ChoGGi_playing_fx = nil
 			else
@@ -2406,7 +2423,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		end
 		ChoGGi.ComFuncs.AttachSpots_Clear = AttachSpots_Clear
 
-		local function AttachSpots_Add(obj,c,spot_type,annot,depth_test,pos,colour)
+		local function AttachSpots_Add(obj,c,spot_type,annot,depth_test,show_pos,colour)
+			local obj_pos = obj:GetVisualPos()
 			local start_id, id_end = obj:GetAllSpots(obj:GetState())
 			for i = start_id, id_end do
 				local spot_name = GetSpotNameByType(obj:GetSpotsType(i)) or ""
@@ -2426,8 +2444,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 						if spot_annot ~= "" then
 							text_str = text_str .. ";" .. spot_annot
 						end
-						if pos then
-							text_str = text_str .. " " .. tostring(obj:GetSpotPos(i))
+						if show_pos then
+							text_str = text_str .. " " .. tostring(obj:GetSpotPos(i) - obj_pos)
 						end
 
 						local text_obj = PlaceObject("ChoGGi_OText")
@@ -2508,7 +2526,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				params.spot_type,
 				params.annotation,
 				params.depth_test,
-				params.pos,
+				params.show_pos,
 				params.colour
 			)
 
@@ -2866,7 +2884,14 @@ Blind mouse = A badly formed csv will just leave the game "stuck" and no log tha
 
 		column_limit = column_limit or 5
 
-		filepath = filepath or Mods.ChoGGi_ExampleTranslateGame.env.CurrentModPath .. "Locale/Game.csv"
+		if not filepath then
+			local locale_path = ChoGGi.library_path .. "Locales/"
+			if ChoGGi.ComFuncs.FileExists(locale_path .. ChoGGi.lang .. ".csv") then
+				filepath = locale_path .. ChoGGi.lang .. ".csv"
+			else
+				filepath = locale_path .. "English.csv"
+			end
+		end
 
 		-- this is the LoadCSV func from CommonLua/Core/ParseCSV.lua with some DebugPrint added
 		local fields_remap = {
@@ -2970,8 +2995,8 @@ Blind mouse = A badly formed csv will just leave the game "stuck" and no log tha
 
 		end -- while
 
-		debug_output[-1] = [[You can usually ignore the first two errors.
-the ones with "ID,Text,Translation" and so on.
+		debug_output[-1] = [[You can usually ignore the first error or two.
+(the ones with "ID,Text,Translation" and so on)
 
 ]]
 		OpenExamine(debug_output,nil,"TestLocaleFile")

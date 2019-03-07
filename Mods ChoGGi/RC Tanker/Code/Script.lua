@@ -157,6 +157,9 @@ DefineClass.RCTanker = {
     "rover_accent",
     "none"
   },
+
+	-- show the pin info
+	pin_rollover = T(0,"<ui_command>"),
 }
 
 function RCTanker:Init()
@@ -206,9 +209,6 @@ function RCTanker:GameInit()
 --~ 	self.tank_obj:SetColorizationMaterial(1, -12211457, -24, 0)
 	self.tank_obj:SetColorizationMaterial(2, -3815995, 0, 0)
 	self.tank_obj:SetColorizationMaterial(3, -15328580, -28, 0)
-
-	-- show the pin info
-	self.pin_rollover = T(0,"<ui_command>")
 end
 
 local temp_status_table = {}

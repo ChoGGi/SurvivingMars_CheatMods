@@ -328,7 +328,7 @@ end)
 		end
 
 		TickStart("TestAttaches.Tick.1")
-		for _=1,1000 do
+		for _ = 1,1000 do
 			local attaches = obj:GetAttaches() or ""
 			for i = 1, #attaches do
 				local a = attaches[i]
@@ -339,7 +339,7 @@ end)
 		TickEnd("TestAttaches.Tick.1")
 
 		TickStart("TestAttaches.Tick.2")
-		for _=1,1000 do
+		for _ = 1,1000 do
 			obj:ForEachAttach(function(a)
 				if a.handle then
 				end
