@@ -24,7 +24,7 @@ Press OK to download it or check the Mod Manager to make sure it's enabled.]]) =
 	end
 end
 
-local Trans
+local Translate
 local RetName
 local PopupToggle
 local IsControlPressed
@@ -39,19 +39,19 @@ local str_Water
 local str_Oxygen
 
 function OnMsg.ClassesGenerate()
-	Trans = ChoGGi.ComFuncs.Translate
+	Translate = ChoGGi.ComFuncs.Translate
 	RetName = ChoGGi.ComFuncs.RetName
 	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 
-	str_dome = Trans(1234--[[Dome--]])
-	str_drones = Trans(71--[[Commanding Drones--]])
-	str_state = Trans(3722--[[State--]])
-	str_Overpopulated = Trans(10460--[[<em>Overpopulated Dome</em>--]])
-	str_NotWorking = Trans(7326--[[Not Working--]])
-	str_Power = Trans(79--[[Power--]])
-	str_Water = Trans(681--[[Water--]])
-	str_Oxygen = Trans(682--[[Oxygen--]])
+	str_dome = Translate(1234--[[Dome--]])
+	str_drones = Translate(71--[[Commanding Drones--]])
+	str_state = Translate(3722--[[State--]])
+	str_Overpopulated = Translate(10460--[[<em>Overpopulated Dome</em>--]])
+	str_NotWorking = Translate(7326--[[Not Working--]])
+	str_Power = Translate(79--[[Power--]])
+	str_Water = Translate(681--[[Water--]])
+	str_Oxygen = Translate(682--[[Oxygen--]])
 end
 
 
@@ -369,7 +369,7 @@ function PinsDlg:InitPinButton(button,...)
 				end
 			end
 
-			hint = Trans(hint)
+			hint = Translate(hint)
 
 			-- add status image
 			local image = self:GetPinConditionImage(obj)
@@ -386,7 +386,7 @@ function PinsDlg:InitPinButton(button,...)
 					state_text = str_NotWorking
 					image = image or "UI/Icons/pin_not_working.tga"
 				elseif obj.fractures and #obj.fractures > 0 then
-					state_text = Trans(5626--[[Fractures: <count>--]]):gsub("<count>",#obj.fractures)
+					state_text = Translate(5626--[[Fractures: <count>--]]):gsub("<count>",#obj.fractures)
 					image = image or "UI/Icons/pin_attack.tga"
 				elseif obj.electricity and obj:IsKindOf("ElectricityConsumer") and obj.electricity.consumption > obj.electricity.current_consumption then
 					state_text = str_Power
@@ -458,13 +458,13 @@ function PinsDlg:InitPinButton(button,...)
 		end)
 
 		-- personal touch
-		local count = Trans(298035641454--[[Object--]]) .. " #: " .. #items
+		local count = Translate(298035641454--[[Object--]]) .. " #: " .. #items
 		if #items > 1 then
 			table.insert(items,1,{
 				name = count,
 				image = "UI/Icons/res_theoretical_research.tga",
 				hint = count,
-				hint_title = Trans(126095410863--[[Info--]]),
+				hint_title = Translate(126095410863--[[Info--]]),
 			})
 		end
 

@@ -6,7 +6,7 @@ function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local FileExists = ChoGGi.ComFuncs.FileExists
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
@@ -45,8 +45,8 @@ function OnMsg.ClassesGenerate()
 				text = data.displayname,
 				value = data.savename,
 
-				hint = Trans(4274--[[Playtime : <playtime>--]]):gsub("<playtime>",Trans(playtime)) .. "\n"
-					.. Trans(4273--[[Saved on : <save_date>--]]):gsub("<save_date>",save_date) .. "\n\n"
+				hint = Translate(4274--[[Playtime : <playtime>--]]):gsub("<playtime>",Translate(playtime)) .. "\n"
+					.. Translate(4273--[[Saved on : <save_date>--]]):gsub("<save_date>",save_date) .. "\n\n"
 					.. S[302535920001274--[[This is permanent!--]]],
 			}
 		end
@@ -96,12 +96,12 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = item_list,
 			title = S[302535920000146--[[Delete Saved Games--]]] .. ": " .. #item_list,
-			hint = Trans(6779--[[Warning--]]) .. ": " .. S[302535920001274--[[This is permanent!--]]],
+			hint = Translate(6779--[[Warning--]]) .. ": " .. S[302535920001274--[[This is permanent!--]]],
 			multisel = true,
 			skip_sort = true,
 			checkboxes = {
 				{
-					title = Trans(1000009--[[Confirmation--]]),
+					title = Translate(1000009--[[Confirmation--]]),
 					hint = S[302535920001276--[[Nothing is deleted unless you check this.--]]],
 				},
 			},
@@ -142,9 +142,9 @@ function OnMsg.ClassesGenerate()
 		end
 		ChoGGi.ComFuncs.QuestionBox(
 			S[302535920000039--[["Spam in the console log doesn't necessarily mean a problem with SM (it could just a warning).
-This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surviving Mars--]])),
+This report will go to the %s developers not me."--]]]:format(Translate(1079--[[Surviving Mars--]])),
 			CallBackFunc,
-			Trans(1079--[[Surviving Mars--]]) .. " " .. S[302535920001463--[[Bug Report--]]],
+			Translate(1079--[[Surviving Mars--]]) .. " " .. S[302535920001463--[[Bug Report--]]],
 			S[302535920001464--[[Yes, I know what I'm doing. This is a bug.--]]]
 		)
 	end
@@ -213,7 +213,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 		else
 			MsgPopup(
-				Trans(1000760--[[Not Steam--]]) .. "/" .. Trans(1000759--[[Not Paradox--]]),
+				Translate(1000760--[[Not Steam--]]) .. "/" .. Translate(1000759--[[Not Paradox--]]),
 				S[302535920001362--[[Extract HPKs--]]]
 			)
 			return
@@ -318,7 +318,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 		end
 		local data = HashLogToTable()
 		data[1] = data[1]:gsub("\n\n","")
-		ChoGGi.ComFuncs.OpenInExamineDlg(TableConcat(data,"\n"),nil,Trans(283142739680--[[Game--]]) .. " & " .. S[302535920001355--[[Map--]]] .. " " .. Trans(126095410863--[[Info--]]))
+		ChoGGi.ComFuncs.OpenInExamineDlg(TableConcat(data,"\n"),nil,Translate(283142739680--[[Game--]]) .. " & " .. S[302535920001355--[[Map--]]] .. " " .. Translate(126095410863--[[Info--]]))
 	end
 
 	do -- ModUpload
@@ -368,8 +368,8 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 			-- abort if upload already happening
 			if IsValidThread(mod_upload_thread) then
 				ChoGGi.ComFuncs.MsgWait(
-					Trans(1000011--[[There is an active mod upload--]]),
-					Trans(1000592--[[Error--]]),
+					Translate(1000011--[[There is an active mod upload--]]),
+					Translate(1000592--[[Error--]]),
 					Platform.pops and "UI/ParadoxLogo.tga" or "UI/Common/mod_steam_workshop.tga"
 				)
 				return
@@ -429,9 +429,9 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 				m_c = m_c + 1
 				if steam_upload then
-					upload_msg[m_c] = Trans(1000012--[[Mod <ModLabel> will be uploaded to Steam--]]):gsub("<ModLabel>",mod.title)
+					upload_msg[m_c] = Translate(1000012--[[Mod <ModLabel> will be uploaded to Steam--]]):gsub("<ModLabel>",mod.title)
 				else
-					upload_msg[m_c] = Trans(1000771--[[Mod <ModLabel> will be uploaded to Paradox--]]):gsub("<ModLabel>",mod.title)
+					upload_msg[m_c] = Translate(1000771--[[Mod <ModLabel> will be uploaded to Paradox--]]):gsub("<ModLabel>",mod.title)
 				end
 
 				if not pack_mod then
@@ -468,7 +468,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 					end
 
 					MsgPopup(
-						Trans(5452--[[START--]]),
+						Translate(5452--[[START--]]),
 						S[302535920000367--[[Mod Upload--]]]
 					)
 
@@ -514,8 +514,8 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 					if not prepare_worked then
 						-- let user know if we're good or not
 						ChoGGi.ComFuncs.MsgWait(
-							Trans(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>",mod.title):gsub("<err>",Trans(prepare_results)),
-							Trans(1000592--[[Error--]]) .. ": " .. mod.title,
+							Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>",mod.title):gsub("<err>",Translate(prepare_results)),
+							Translate(1000592--[[Error--]]) .. ": " .. mod.title,
 							upload_image
 						)
 						return
@@ -607,16 +607,16 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 					local msg, title
 					if err and not blank_mod then
-						msg = Trans(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>",mod.title):gsub("<err>",Trans(err))
-						title = Trans(1000592--[[Error--]])
+						msg = Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>",mod.title):gsub("<err>",Translate(err))
+						title = Translate(1000592--[[Error--]])
 					else
-						msg = Trans(1000014--[[Mod <ModLabel> was successfully uploaded!--]]):gsub("<ModLabel>",mod.title)
-						title = Trans(1000015--[[Success--]])
+						msg = Translate(1000014--[[Mod <ModLabel> was successfully uploaded!--]]):gsub("<ModLabel>",mod.title)
+						title = Translate(1000015--[[Success--]])
 					end
 
 					if test then
-						msg = Trans(186760604064--[[Test--]]) .. " " .. msg
-						title = Trans(186760604064--[[Test--]]) .. " " .. title
+						msg = Translate(186760604064--[[Test--]]) .. " " .. msg
+						title = Translate(186760604064--[[Test--]]) .. " " .. title
 					end
 
 					-- update mod log and print it to console log
@@ -638,16 +638,16 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 							end
 						end
 
-						local id_str = Trans(1000021--[[Steam ID--]])
+						local id_str = Translate(1000021--[[Steam ID--]])
 						if not steam_upload then
 							if para_platform then
-								id_str = Trans(1000772--[[Paradox Desktop UUID--]])
+								id_str = Translate(1000772--[[Paradox Desktop UUID--]])
 							else
-								id_str = Trans(1000773--[[Paradox All UUID--]])
+								id_str = Translate(1000773--[[Paradox All UUID--]])
 							end
 						end
 
-						print(mod.title,":",Trans(1000107--[[Mod--]]),id_str,":",item_id)
+						print(mod.title,":",Translate(1000107--[[Mod--]]),id_str,":",item_id)
 					end
 
 					-- let user know if we're good or not
@@ -682,7 +682,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 			end
 			if not (Platform.steam or Platform.pops) then
 				MsgPopup(
-					Trans(1000760--[[Not Steam--]]) .. "/" .. Trans(1000759--[[Not Paradox--]]),
+					Translate(1000760--[[Not Steam--]]) .. "/" .. Translate(1000759--[[Not Paradox--]]),
 					S[302535920000367--[[Mod Upload--]]]
 				)
 				return
@@ -743,7 +743,7 @@ This will always apply if uploading to Paradox.
 Warning: May instantly crash SM (not sure why)."--]]],
 						checked = false,
 					},
-					{title = Trans(186760604064--[[Test--]]),
+					{title = Translate(186760604064--[[Test--]]),
 						level = 2,
 						hint = S[302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]]],
 					},
@@ -797,7 +797,7 @@ Warning: May instantly crash SM (not sure why)."--]]],
 						Msg("ChoGGi_SettingsUpdated")
 						local d,m,h = FormatElapsedTime(os.time(), "dhm")
 						MsgPopup(
-							Trans(4273--[[Saved on <save_date>--]]):gsub("<save_date>",": " .. d .. ":" .. m .. ":" .. h),
+							Translate(4273--[[Saved on <save_date>--]]):gsub("<save_date>",": " .. d .. ":" .. m .. ":" .. h),
 							S[302535920001242--[[Edit ECM Settings--]]]
 						)
 					end
@@ -807,7 +807,7 @@ Warning: May instantly crash SM (not sure why)."--]]],
 	end
 
 	function ChoGGi.MenuFuncs.DisableECM()
-		local title = Trans(251103844022--[[Disable--]]) .. " " .. S[302535920000887--[[ECM--]]]
+		local title = Translate(251103844022--[[Disable--]]) .. " " .. S[302535920000887--[[ECM--]]]
 		local function CallBackFunc(answer)
 			if answer then
 				local ChoGGi = ChoGGi
@@ -882,7 +882,7 @@ Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .
 	If there isn't a status then it's likely a list of options to choose from
 
 	For any issues; please report them to my Github/Steam/NexusMods page, or email %s"--]]]:format(ChoGGi.email),
-			Trans(487939677892--[[Help--]])
+			Translate(487939677892--[[Help--]])
 		)
 	end
 

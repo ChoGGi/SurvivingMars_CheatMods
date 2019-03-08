@@ -5,7 +5,7 @@
 local MeasureImage = UIL.MeasureImage
 
 local S
-local Trans
+local Translate
 local GetParentOfKind
 local PopupToggle
 local Random
@@ -15,7 +15,7 @@ function OnMsg.ClassesGenerate()
 	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 	Random = ChoGGi.ComFuncs.Random
-	Trans = ChoGGi.ComFuncs.Translate
+	Translate = ChoGGi.ComFuncs.Translate
 end
 
 local function GetRootDialog(dlg)
@@ -64,7 +64,7 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	self:BuildImageMenuPopup()
 	self.idImages = g_Classes.ChoGGi_ComboButton:new({
 		Id = "idImages",
-		Text = Trans(3794--[[Image--]]),
+		Text = Translate(3794--[[Image--]]),
 		OnMouseButtonDown = self.idImagesOnMouseButtonDown,
 		Dock = "left",
 	}, self.idButtonContainer)

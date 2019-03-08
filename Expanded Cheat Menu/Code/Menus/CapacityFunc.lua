@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 	local RetObjectCapAndGrid = ChoGGi.ComFuncs.RetObjectCapAndGrid
 	local S = ChoGGi.Strings
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 
 	function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 		local ChoGGi = ChoGGi
@@ -49,10 +49,10 @@ function OnMsg.ClassesGenerate()
 
 		local ChoGGi = ChoGGi
 		local default_setting = capacity
-		local hint_toolarge = Trans(6779--[[Warning--]]) .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
+		local hint_toolarge = Translate(6779--[[Warning--]]) .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -134,7 +134,7 @@ function OnMsg.ClassesGenerate()
 		end
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local hint_toolarge = Trans(6779--[[Warning--]]) .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
+		local hint_toolarge = Translate(6779--[[Warning--]]) .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
 		local default_setting = capacity
 
@@ -144,7 +144,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -266,7 +266,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. Trans(109035890389--[[Capacity--]]),
+			title = S[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. Translate(109035890389--[[Capacity--]]),
 			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 			skip_sort = true,
 		}
@@ -287,7 +287,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local default_setting = capacity
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -359,7 +359,7 @@ function OnMsg.ClassesGenerate()
 	Waste: 1,000,000
 	Mechanized: 1,000,000--]]]
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 50,value = 50},
 			{text = 100,value = 100},
 			{text = 250,value = 250},

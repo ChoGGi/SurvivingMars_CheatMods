@@ -4,7 +4,7 @@ local default_icon = "UI/Icons/Sections/storage.tga"
 local type = type
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
 	local S = ChoGGi.Strings
@@ -45,8 +45,8 @@ function OnMsg.ClassesGenerate()
 			skip_sort = true,
 			checkboxes = {
 				{
-					title = Trans(10087--[[Advanced Orbital Probe--]]),
-					hint = S[302535920000266--[[Spawn--]]] .. " " .. Trans(10087--[[Advanced Orbital Probe--]]),
+					title = Translate(10087--[[Advanced Orbital Probe--]]),
+					hint = S[302535920000266--[[Spawn--]]] .. " " .. Translate(10087--[[Advanced Orbital Probe--]]),
 					checked = GetMissionSponsor().id == "NASA"
 				},
 			},
@@ -58,7 +58,7 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.FoodPerRocketPassenger / r
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -88,7 +88,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920001188--[[%s: om nom nom nom nom--]]]:format(choice[1].text),
-					Trans(4616--[[Food Per Rocket Passenger--]]),
+					Translate(4616--[[Food Per Rocket Passenger--]]),
 					"UI/Icons/Sections/Food_4.tga"
 				)
 			end
@@ -124,7 +124,7 @@ function OnMsg.ClassesGenerate()
 		function ChoGGi.MenuFuncs.AddPrefabBuildings()
 			local UICity = UICity
 
-			local drone_str = Trans(Drone.display_name)
+			local drone_str = Translate(Drone.display_name)
 			local item_list = {
 				{
 					text = drone_str,
@@ -142,7 +142,7 @@ function OnMsg.ClassesGenerate()
 				if not skip_prefabs[id] and not cargo.instant_build and (cargo.group ~= "Hidden" or cargo.group == "Hidden" and show_hidden) then
 					c = c + 1
 					item_list[c] = {
-						text = Trans(cargo.display_name),
+						text = Translate(cargo.display_name),
 						value = 10,
 						hint = S[302535920000106--[[Current--]]] .. ": " .. UICity:GetPrefabs(id),
 						icon = cargo.display_icon,
@@ -169,7 +169,7 @@ function OnMsg.ClassesGenerate()
 				end
 				MsgPopup(
 					S[302535920001191--[[Added prefabs to %s buildings.--]]]:format(#choice),
-					Trans(1110--[[Prefab Buildings--]]),
+					Translate(1110--[[Prefab Buildings--]]),
 					default_icon
 				)
 				-- if the build menu is opened and they add some prefabs it won't use them till it's toggled, so we do this instead
@@ -179,7 +179,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = item_list,
-				title = Trans(1110--[[Prefab Buildings--]]),
+				title = Translate(1110--[[Prefab Buildings--]]),
 				hint = S[302535920001194--[[Use edit box to enter amount of prefabs to add.--]]],
 				custom_type = 3,
 				multisel = true,
@@ -217,7 +217,7 @@ function OnMsg.ClassesGenerate()
 
 				MsgPopup(
 					choice[1].text,
-					Trans(3613--[[Funding--]]),
+					Translate(3613--[[Funding--]]),
 					"UI/Icons/IPButtons/rare_metals.tga"
 				)
 			end
@@ -226,7 +226,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = Trans(3613--[[Funding--]]),
+			title = Translate(3613--[[Funding--]]),
 			hint = hint,
 			skip_sort = true,
 		}

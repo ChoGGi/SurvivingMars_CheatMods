@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Drones = "ECM.ECM.Drones"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(517--[[Drones--]]),
+	Actions[c] = {ActionName = Translate(517--[[Drones--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Drones",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -148,7 +148,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(4645--[[Drone Recharge Time--]]),
+	Actions[c] = {ActionName = Translate(4645--[[Drone Recharge Time--]]),
 		ActionMenubar = str_ECM_Drones,
 		ActionId = ".Drone Recharge Time",
 		ActionIcon = iconD,
@@ -233,7 +233,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Shuttles = "ECM.ECM.Shuttles"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(745--[[Shuttles--]]),
+	Actions[c] = {ActionName = Translate(745--[[Shuttles--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Shuttles",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -285,7 +285,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Rovers = "ECM.ECM.Rovers"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(5438--[[Rovers--]]),
+	Actions[c] = {ActionName = Translate(5438--[[Rovers--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Rovers",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -365,7 +365,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Rockets = "ECM.ECM.Rockets"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(5238--[[Rockets--]]),
+	Actions[c] = {ActionName = Translate(5238--[[Rockets--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Rockets",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -462,7 +462,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(4594--[[Colonists Per Rocket--]]),
+	Actions[c] = {ActionName = Translate(4594--[[Colonists Per Rocket--]]),
 		ActionMenubar = str_ECM_Rockets,
 		ActionId = ".Colonists Per Rocket",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",

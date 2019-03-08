@@ -60,7 +60,7 @@ do -- Translate
 	local type,select,pcall,tostring = type,select,pcall,tostring
 
 	-- translate func that always returns a string
-	function ChoGGi.ComFuncs.Translate(...)
+	function Translate(...)
 		local str,result
 		local stype = type(select(1,...))
 		if stype == "userdata" or stype == "number" then

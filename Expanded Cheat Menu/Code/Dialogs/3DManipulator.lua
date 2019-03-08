@@ -4,7 +4,7 @@
 
 local S
 local RetName
-local Trans
+local Translate
 local GetParentOfKind
 
 --~ local tostring,type,table = tostring,type,table
@@ -13,7 +13,7 @@ local GetParentOfKind
 function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 	RetName = ChoGGi.ComFuncs.RetName
-	Trans = ChoGGi.ComFuncs.Translate
+	Translate = ChoGGi.ComFuncs.Translate
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 end
 
@@ -34,7 +34,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 
 	self.obj_name = RetName(context.obj)
 	self.obj = context.obj
-	self.title = Trans(327465361219--[[Edit--]]) .. " " .. Trans(298035641454--[[Object--]]) .. " " .. S[302535920001432--[[3D--]]] .. ": " .. self.obj_name
+	self.title = Translate(327465361219--[[Edit--]]) .. " " .. Translate(298035641454--[[Object--]]) .. " " .. S[302535920001432--[[3D--]]] .. ": " .. self.obj_name
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)

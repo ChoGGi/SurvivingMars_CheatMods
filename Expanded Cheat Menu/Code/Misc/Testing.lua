@@ -164,7 +164,7 @@ function OnMsg.ClassesGenerate()
 		-- amount of entries in the CSV file
 		string_limit = string_limit or 1550
 
-		local Trans = ChoGGi.ComFuncs.Translate
+		local Translate = ChoGGi.ComFuncs.Translate
 		local missing_strs = {}
 		local c = 0
 		-- we need to pad some zeros
@@ -175,7 +175,7 @@ function OnMsg.ClassesGenerate()
 					break
 				end
 				local num = tonumber("30253592000" .. pad .. i)
-				local str = Trans(num)
+				local str = Translate(num)
 				-- Missing text is from TDevModeGetEnglishText
 				if str == "Missing text" then
 					c = c + 1

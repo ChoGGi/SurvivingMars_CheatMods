@@ -1,13 +1,13 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001355--[[Map--]]] .. " " .. Trans(5422--[[Exploration--]]),
+	Actions[c] = {ActionName = S[302535920001355--[[Map--]]] .. " " .. Translate(5422--[[Exploration--]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Map Exploration",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
@@ -16,7 +16,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(25--[[Anomaly Scanning--]]),
+	Actions[c] = {ActionName = Translate(25--[[Anomaly Scanning--]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Anomaly Scanning",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
@@ -25,7 +25,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(5661--[[Mystery Log--]]),
+	Actions[c] = {ActionName = Translate(5661--[[Mystery Log--]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Mystery Log",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
@@ -44,7 +44,7 @@ Certain mysteries need certain objects which get placed when the map is generate
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(3983--[[Disasters--]]),
+	Actions[c] = {ActionName = Translate(3983--[[Disasters--]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Start Disasters",
 		ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
@@ -53,7 +53,7 @@ Certain mysteries need certain objects which get placed when the map is generate
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(11412--[[Trigger fireworks--]]),
+	Actions[c] = {ActionName = Translate(11412--[[Trigger fireworks--]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Trigger fireworks",
 		ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
@@ -62,7 +62,7 @@ Certain mysteries need certain objects which get placed when the map is generate
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000318--[[Unlock--]]] .. " " .. Trans(697482021580--[[Achievements--]]),
+	Actions[c] = {ActionName = S[302535920000318--[[Unlock--]]] .. " " .. Translate(697482021580--[[Achievements--]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Unlock Achievements",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
@@ -71,7 +71,7 @@ Certain mysteries need certain objects which get placed when the map is generate
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000266--[[Spawn--]]] .. " " .. Trans(547--[[Colonists--]]),
+	Actions[c] = {ActionName = S[302535920000266--[[Spawn--]]] .. " " .. Translate(547--[[Colonists--]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Spawn Colonists",
 		ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
@@ -148,7 +148,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 
 	local str_Cheats_Research = "ECM.Cheats.Research"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(311--[[Research--]]),
+	Actions[c] = {ActionName = Translate(311--[[Research--]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Research",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -157,7 +157,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(311--[[Research--]]) .. " / " .. S[302535920000318--[[Unlock--]]] .. " " .. Trans(3734--[[Tech--]]),
+	Actions[c] = {ActionName = Translate(311--[[Research--]]) .. " / " .. S[302535920000318--[[Unlock--]]] .. " " .. Translate(3734--[[Tech--]]),
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Research / Unlock Tech",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
@@ -167,7 +167,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(311--[[Research--]]) .. " " .. S[302535920000281--[[Remove--]]],
+	Actions[c] = {ActionName = Translate(311--[[Research--]]) .. " " .. S[302535920000281--[[Remove--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Research Remove",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
@@ -214,7 +214,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(7790--[[Research Current Tech--]]),
+	Actions[c] = {ActionName = Translate(7790--[[Research Current Tech--]]),
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Research Current Tec",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
@@ -291,7 +291,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 
 	local str_Cheats_Menu = "ECM.Cheats.Menu"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(1000162--[[Menu--]]),
+	Actions[c] = {ActionName = Translate(1000162--[[Menu--]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Menu",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

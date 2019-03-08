@@ -3,7 +3,7 @@
 -- shortcut keys without a menu item (maybe Menus isn't the best folder for this)
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -17,7 +17,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(174--[[Color Modifier--]]) .. " " .. S[302535920001346--[[Random Colour--]]],
+	Actions[c] = {ActionName = Translate(174--[[Color Modifier--]]) .. " " .. S[302535920001346--[[Random Colour--]]],
 		ActionId = ".Keys.ObjectColourRandom",
 		OnAction = ChoGGi.ComFuncs.ObjectColourRandom,
 		ActionShortcut = "Shift-F6",
@@ -25,7 +25,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(174--[[Color Modifier--]]) .. " " .. S[302535920000025--[[Default Colour--]]],
+	Actions[c] = {ActionName = Translate(174--[[Color Modifier--]]) .. " " .. S[302535920000025--[[Default Colour--]]],
 		ActionId = ".Keys.ObjectColourDefault",
 		OnAction = ChoGGi.ComFuncs.ObjectColourDefault,
 		ActionShortcut = "Ctrl-F6",
@@ -67,7 +67,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000069--[[Examine--]]] .. " " .. S[302535920001103--[[Objects--]]] .. " " .. Trans(1000448--[[Shift--]]),
+	Actions[c] = {ActionName = S[302535920000069--[[Examine--]]] .. " " .. S[302535920001103--[[Objects--]]] .. " " .. Translate(1000448--[[Shift--]]),
 		ActionId = ".Keys.Examine Objects Shift",
 		OnAction = ChoGGi.MenuFuncs.ExamineObjectRadius,
 		radius_amount = 2500,
@@ -76,7 +76,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000069--[[Examine--]]] .. " " .. S[302535920001103--[[Objects--]]] .. " " .. Trans(1000449--[[Ctrl--]]),
+	Actions[c] = {ActionName = S[302535920000069--[[Examine--]]] .. " " .. S[302535920001103--[[Objects--]]] .. " " .. Translate(1000449--[[Ctrl--]]),
 		ActionId = ".Keys.Examine Objects Ctrl",
 		OnAction = ChoGGi.MenuFuncs.ExamineObjectRadius,
 		radius_amount = 10000,

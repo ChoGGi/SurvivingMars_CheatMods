@@ -6,7 +6,7 @@ local S
 local RetName
 local FindThreadFunc
 local DotNameToObject
-local Trans
+local Translate
 local GetParentOfKind
 
 local pairs,type = pairs,type
@@ -17,7 +17,7 @@ function OnMsg.ClassesGenerate()
 	RetName = ChoGGi.ComFuncs.RetName
 	FindThreadFunc = ChoGGi.ComFuncs.FindThreadFunc
 	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
-	Trans = ChoGGi.ComFuncs.Translate
+	Translate = ChoGGi.ComFuncs.Translate
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 end
 
@@ -106,7 +106,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 80,
-		Text = Trans(6879--[[Cancel--]]),
+		Text = Translate(6879--[[Cancel--]]),
 		Background = g_Classes.ChoGGi_Button.bg_red,
 		RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
 		Margins = box(0, 0, 10, 0),

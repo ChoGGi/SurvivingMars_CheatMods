@@ -36,11 +36,11 @@ local WriteModPersistentData = WriteModPersistentData
 local ReadModPersistentData = ReadModPersistentData
 local MaxModDataSize = const.MaxModDataSize
 
-local Trans
+local Translate
 local S
 function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
-	Trans = ChoGGi.ComFuncs.Translate
+	Translate = ChoGGi.ComFuncs.Translate
 end
 
 local function WriteModSettings(settings)
@@ -152,7 +152,7 @@ local function DeleteProfile(name,settings_list)
 	ChoGGi.ComFuncs.QuestionBox(
 		"Delete profile: " .. name,
 		CallBackFunc,
-		Trans(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]]
+		Translate(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 
@@ -177,7 +177,7 @@ local function AddProfilesButton(pgmission,toolbar)
 		TextStyle = "Action",
 		MouseCursor = "UI/Cursors/Rollover.tga",
 		RolloverTemplate = "Rollover",
-		RolloverTitle = Trans(126095410863--[[Info--]]),
+		RolloverTitle = Translate(126095410863--[[Info--]]),
 		RolloverText = [[Save/Load save profiles.]],
 		OnPress = function(self, gamepad)
 			-- load settings if it's an empty table
@@ -185,7 +185,7 @@ local function AddProfilesButton(pgmission,toolbar)
 			-- always show save
 			local menu = {
 				{
-					name = Trans(161964752558--[[Save--]]) .. " Profile",
+					name = Translate(161964752558--[[Save--]]) .. " Profile",
 					hint = "Save current profile.",
 					clicked = function()
 						CreateRealTimeThread(SaveProfile,pgmission.context.params)
@@ -196,13 +196,13 @@ local function AddProfilesButton(pgmission,toolbar)
 			if next(settings_list) then
 
 				menu[#menu+1] = {
-					name = Trans(885629433849--[[Load--]]) .. " Profile >",
+					name = Translate(885629433849--[[Load--]]) .. " Profile >",
 					hint = "Load saved profile.",
 					submenu = {},
 				}
 				local loadm = menu[#menu]
 				menu[#menu+1] = {
-					name = Trans(502364928914--[[Delete--]]) .. " Profile >",
+					name = Translate(502364928914--[[Delete--]]) .. " Profile >",
 					hint = "Delete saved profile.",
 					submenu = {},
 				}

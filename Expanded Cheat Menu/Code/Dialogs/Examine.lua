@@ -66,7 +66,7 @@ local RetSortTextAssTable
 local RetThreadInfo
 local ShowObj
 local TableConcat
-local Trans
+local Translate
 local ValueToStr
 
 local InvalidPos
@@ -94,7 +94,7 @@ function OnMsg.ClassesGenerate()
 	RetSortTextAssTable = ChoGGi.ComFuncs.RetSortTextAssTable
 	ShowObj = ChoGGi.ComFuncs.ShowObj
 	TableConcat = ChoGGi.ComFuncs.TableConcat
-	Trans = ChoGGi.ComFuncs.Translate
+	Translate = ChoGGi.ComFuncs.Translate
 	ValueToStr = ChoGGi.ComFuncs.ValueToStr
 
 	InvalidPos = ChoGGi.Consts.InvalidPos
@@ -240,7 +240,7 @@ function Examine:Init(parent, context)
 		self.idButRefresh = g_Classes.ChoGGi_ToolbarButton:new({
 			Id = "idButRefresh",
 			Image = "CommonAssets/UI/Menu/reload.tga",
-			RolloverTitle = Trans(1000220--[[Refresh--]]),
+			RolloverTitle = Translate(1000220--[[Refresh--]]),
 			RolloverText = S[302535920000092--[[Updates list with any changed values.--]]],
 			OnPress = self.idButRefreshOnPress,
 		}, self.idToolbarButtons)
@@ -248,7 +248,7 @@ function Examine:Init(parent, context)
 		self.idButSetTransp = g_Classes.ChoGGi_ToolbarButton:new({
 			Id = "idButSetTransp",
 			Image = "CommonAssets/UI/Menu/CutSceneArea.tga",
-			RolloverTitle = S[302535920000865--[[Trans--]]],
+			RolloverTitle = S[302535920000865--[[Translate--]]],
 			RolloverText = S[302535920001367--[[Toggles--]]] .. " " .. S[302535920000629--[[UI Transparency--]]],
 			OnPress = self.idButSetTranspOnPress,
 		}, self.idToolbarButtons)
@@ -256,7 +256,7 @@ function Examine:Init(parent, context)
 		self.idButClear = g_Classes.ChoGGi_ToolbarButton:new({
 			Id = "idButClear",
 			Image = "CommonAssets/UI/Menu/NoblePreview.tga",
-			RolloverTitle = Trans(594--[[Clear--]]),
+			RolloverTitle = Translate(594--[[Clear--]]),
 			RolloverText = S[302535920000016--[["Remove any green spheres/reset green coloured objects
 Press once to clear this examine, again to clear all."--]]],
 			OnPress = self.idButClearOnPress,
@@ -273,7 +273,7 @@ Press once to clear this examine, again to clear all."--]]],
 		self.idButDeleteObj = g_Classes.ChoGGi_ToolbarButton:new({
 			Id = "idButDeleteObj",
 			Image = "CommonAssets/UI/Menu/delete_objects.tga",
-			RolloverTitle = Trans(502364928914--[[Delete--]]),
+			RolloverTitle = Translate(502364928914--[[Delete--]]),
 			RolloverText = S[302535920000414--[[Are you sure you wish to delete it?--]]]:format(self.name),
 			OnPress = self.idButDeleteObjOnPress,
 		}, self.idToolbarButtons)
@@ -289,7 +289,7 @@ Press once to clear this examine, again to clear all."--]]],
 		self.idButDeleteAll = g_Classes.ChoGGi_ToolbarButton:new({
 			Id = "idButDeleteAll",
 			Image = "CommonAssets/UI/Menu/UnlockCollection.tga",
-			RolloverTitle = Trans(3768--[[Destroy all?--]]),
+			RolloverTitle = Translate(3768--[[Destroy all?--]]),
 			RolloverText = S[302535920000059--[[Destroy all objects in objlist!--]]],
 			OnPress = self.idButDeleteAllOnPress,
 		}, self.idToolbarButtons)
@@ -325,7 +325,7 @@ Press once to clear this examine, again to clear all."--]]],
 		self.idSortDir = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idSortDir",
 			Dock = "right",
-			Text = Trans(10124--[[Sort--]]),
+			Text = Translate(10124--[[Sort--]]),
 			RolloverText = S[302535920001248--[[Sort normally or backwards.--]]],
 			OnChange = self.idSortDirOnChange,
 			Init = self.CheckButtonInit,
@@ -335,7 +335,7 @@ Press once to clear this examine, again to clear all."--]]],
 			Id = "idShowAllValues",
 			Dock = "right",
 			MinWidth = 0,
-			Text = Trans(4493--[[All--]]),
+			Text = Translate(4493--[[All--]]),
 			RolloverText = S[302535920001391--[[Show all values: getmetatable(obj).--]]],
 			OnChange = self.idShowAllValuesOnChange,
 			Init = self.CheckButtonInit,
@@ -366,7 +366,7 @@ Press once to clear this examine, again to clear all."--]]],
 		--
 		self.idSearch = g_Classes.ChoGGi_Button:new({
 			Id = "idSearch",
-			Text = Trans(10123--[[Search--]]),
+			Text = Translate(10123--[[Search--]]),
 			Dock = "right",
 			RolloverAnchor = "right",
 			RolloverHint = S[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
@@ -394,7 +394,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		self.objects_menu_popup = self:BuildObjectMenuPopup()
 		self.idObjects = g_Classes.ChoGGi_ComboButton:new({
 			Id = "idObjects",
-			Text = Trans(298035641454--[[Object--]]),
+			Text = Translate(298035641454--[[Object--]]),
 			RolloverText = S[302535920001530--[[Various object tools to use.--]]],
 			OnMouseButtonDown = self.idObjectsOnMouseButtonDown,
 			Dock = "left",
@@ -534,7 +534,7 @@ function Examine:idTextOnHyperLinkRollover(link)
 	local name = RetName(obj)
 
 	if self.onclick_funcs[link] == self.OpenListMenu then
-		title = name .. " " .. Trans(1000162--[[Menu--]])
+		title = name .. " " .. Translate(1000162--[[Menu--]])
 		name = S[302535920001540--[[Show context menu for %s.--]]]:format(name)
 
 		-- add the value to the key tooltip
@@ -549,7 +549,7 @@ function Examine:idTextOnHyperLinkRollover(link)
 
 --~ 		-- stick value in search box
 --~ 		obj = self.obj_ref[obj]
---~ 		self.idSearchText:SetText(type(obj) == "userdata" and IsT(obj) and Trans(obj) or tostring(obj))
+--~ 		self.idSearchText:SetText(type(obj) == "userdata" and IsT(obj) and Translate(obj) or tostring(obj))
 	end
 
 	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
@@ -700,7 +700,7 @@ function Examine:idButDeleteAllOnPress()
 				self:SetObj()
 			end
 		end,
-		Trans(697--[[Destroy--]])
+		Translate(697--[[Destroy--]])
 	)
 end
 function Examine:idViewEnumOnChange()
@@ -927,7 +927,7 @@ function Examine:BuildToolsMenuPopup()
 			value = "ChoGGi.UserSettings.ExamineAppendDump",
 			class = "ChoGGi_CheckButtonMenu",
 		},
-		{name = S[302535920000004--[[Dump--]]] .. " " .. Trans(1000145--[[Text--]]),
+		{name = S[302535920000004--[[Dump--]]] .. " " .. Translate(1000145--[[Text--]]),
 			hint = S[302535920000046--[[dumps text to %slogs\DumpedExamine.lua--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
@@ -940,7 +940,7 @@ function Examine:BuildToolsMenuPopup()
 				end
 			end,
 		},
-		{name = S[302535920000004--[[Dump--]]] .. " " .. Trans(298035641454--[[Object--]]),
+		{name = S[302535920000004--[[Dump--]]] .. " " .. Translate(298035641454--[[Object--]]),
 			hint = S[302535920001027--[[dumps object to %slogs\DumpedExamineObject.lua
 
 This can take time on something like the "Building" metatable--]]]:format(ConvertToOSPath("AppData/")),
@@ -959,7 +959,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 				end
 			end,
 		},
-		{name = S[302535920000048--[[View--]]] .. " " .. Trans(1000145--[[Text--]]),
+		{name = S[302535920000048--[[View--]]] .. " " .. Translate(1000145--[[Text--]]),
 			hint = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
@@ -972,7 +972,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 					checkbox = true,
 					text = str,
 					scrollto = scrolled_text,
-					title = S[302535920000048--[[View--]]] .. "/" .. S[302535920000004--[[Dump--]]] .. Trans(1000145--[[Text--]]),
+					title = S[302535920000048--[[View--]]] .. "/" .. S[302535920000004--[[Dump--]]] .. Translate(1000145--[[Text--]]),
 					hint_ok = S[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 					custom_func = function(answer,overwrite)
 						if answer then
@@ -982,7 +982,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 				}
 			end,
 		},
-		{name = S[302535920000048--[[View--]]] .. " " .. Trans(298035641454--[[Object--]]),
+		{name = S[302535920000048--[[View--]]] .. " " .. Translate(298035641454--[[Object--]]),
 			hint = S[302535920000049--[["View text, and optionally dumps object to %sDumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]]:format(ConvertToOSPath("AppData/")),
@@ -997,7 +997,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 						parent = self,
 						checkbox = true,
 						text = str,
-						title = S[302535920000048--[[View--]]] .. "/" .. S[302535920000004--[[Dump--]]] .. Trans(298035641454--[[Object--]]),
+						title = S[302535920000048--[[View--]]] .. "/" .. S[302535920000004--[[Dump--]]] .. Translate(298035641454--[[Object--]]),
 						hint_ok = S[302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]],
@@ -1038,18 +1038,18 @@ This can take time on something like the ""Building"" metatable (don't use this 
 					)
 				else
 					-- make me a MsgPopup
-					print(Trans(9763--[[No objects matching current filters.--]]))
+					print(Translate(9763--[[No objects matching current filters.--]]))
 				end
 			end,
 		},
-		{name = Trans(327465361219--[[Edit--]]) .. " " .. Trans(298035641454--[[Object--]]),
+		{name = Translate(327465361219--[[Edit--]]) .. " " .. Translate(298035641454--[[Object--]]),
 			hint = S[302535920000050--[[Opens object in Object Manipulator.--]]],
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.obj_ref,self)
 			end,
 		},
-		{name = Trans(174--[[Color Modifier--]]),
+		{name = Translate(174--[[Color Modifier--]]),
 			hint = S[302535920000693--[[Select/mouse over an object to change the colours
 Use Shift- or Ctrl- for random colours/reset colours.--]]],
 			image = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
@@ -1098,7 +1098,7 @@ Which you can then mess around with some more in the console."--]]],
 			end,
 		},
 		{is_spacer = true},
-		{name = Trans(931--[[Modified property--]]),
+		{name = Translate(931--[[Modified property--]]),
 			hint = S[302535920001384--[[Get properties different from base/parent object?--]]],
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
@@ -1106,7 +1106,7 @@ Which you can then mess around with some more in the console."--]]],
 					OpenInExamineDlg(
 						GetModifiedProperties(self.obj_ref),
 						self,
-						Trans(931--[[Modified property--]]) .. ": " .. self.name
+						Translate(931--[[Modified property--]]) .. ": " .. self.name
 					)
 				else
 					self:InvalidMsgPopup()
@@ -1177,7 +1177,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 		},
 	}
 	if testing then
-		local name = Trans(327465361219--[[Edit--]]) .. " " .. Trans(298035641454--[[Object--]]) .. " " .. S[302535920001432--[[3D--]]]
+		local name = Translate(327465361219--[[Edit--]]) .. " " .. Translate(298035641454--[[Object--]]) .. " " .. S[302535920001432--[[3D--]]]
 		table.insert(list,9,{name = name,
 			hint = S[302535920001433--[[Fiddle with object angle/axis/pos and so forth.--]]],
 			image = "CommonAssets/UI/Menu/Axis.tga",
@@ -1455,7 +1455,7 @@ function Examine:ShowHexShapeList()
 	local obj = self.obj_ref
 	local entity = obj:GetEntity()
 	if not IsValidEntity(entity) then
-		return self:InvalidMsgPopup(nil,Trans(155--[[Entity--]]))
+		return self:InvalidMsgPopup(nil,Translate(155--[[Entity--]]))
 	end
 
 	self.ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
@@ -1471,7 +1471,7 @@ function Examine:ShowHexShapeList()
 
 	local item_list = {
 		{
-			text = " " .. Trans(594--[[Clear--]]),
+			text = " " .. Translate(594--[[Clear--]]),
 			value = "Clear",
 		},
 		{
@@ -1546,7 +1546,7 @@ end
 function Examine:ShowBBoxList()
 	local obj = self.obj_ref
 	if not IsValidEntity(obj:GetEntity()) then
-		return self:InvalidMsgPopup(nil,Trans(155--[[Entity--]]))
+		return self:InvalidMsgPopup(nil,Translate(155--[[Entity--]]))
 	end
 
 -- might be useful?
@@ -1555,7 +1555,7 @@ function Examine:ShowBBoxList()
 	self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
 
 	local item_list = {
-		{text = " " .. Trans(594--[[Clear--]]),value = "Clear"},
+		{text = " " .. Translate(594--[[Clear--]]),value = "Clear"},
 		{text = "GetObjectBBox",value = "GetObjectBBox"},
 		{text = "GetEntityBBox",value = "GetEntityBBox"},
 		{text = "ObjectHierarchyBBox",value = "ObjectHierarchyBBox"},
@@ -1608,12 +1608,12 @@ function Examine:ShowAttachSpotsList()
 	self.ChoGGi.ComFuncs.AttachSpots_Clear(obj)
 
 	if not IsValidEntity(obj:GetEntity()) then
-		return self:InvalidMsgPopup(nil,Trans(155--[[Entity--]]))
+		return self:InvalidMsgPopup(nil,Translate(155--[[Entity--]]))
 	end
 
 	local item_list = {
-		{text = " " .. Trans(4493--[[All--]]),value = "All"},
-		{text = " " .. Trans(594--[[Clear--]]),value = "Clear"},
+		{text = " " .. Translate(4493--[[All--]]),value = "All"},
+		{text = " " .. Translate(594--[[Clear--]]),value = "Clear"},
 	}
 	local c = #item_list
 
@@ -1692,11 +1692,11 @@ function Examine:ShowSurfacesList()
 
 	local entity = obj:GetEntity()
 	if not IsValidEntity(entity) then
-		return self:InvalidMsgPopup(nil,Trans(155--[[Entity--]]))
+		return self:InvalidMsgPopup(nil,Translate(155--[[Entity--]]))
 	end
 
 	local item_list = {
-		{text = " " .. Trans(594--[[Clear--]]),value = "Clear"},
+		{text = " " .. Translate(594--[[Clear--]]),value = "Clear"},
 		{
 			text = "0",
 			value = 0,
@@ -1821,7 +1821,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			end,
 		},
 		{is_spacer = true},
-		{name = Trans(833734167742--[[Delete Item--]]),
+		{name = Translate(833734167742--[[Delete Item--]]),
 			hint = S[302535920001536--[["Remove the ""%s"" key from %s."--]]]:format(obj_name,self.name),
 			image = "CommonAssets/UI/Menu/DeleteArea.tga",
 			clicked = function()
@@ -2010,7 +2010,7 @@ function Examine:ConvertValueToInfo(obj)
 			end
 		else
 			-- show translated text if possible and return a clickable link
-			local trans_str = Trans(obj)
+			local trans_str = Translate(obj)
 			if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
 				trans_str = tostring(obj)
 			end
@@ -2326,7 +2326,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			end
 
 			local state = obj:GetState()
-			table_insert(list_obj_str, 2, Trans(3722--[[State--]]) .. ": "
+			table_insert(list_obj_str, 2, Translate(3722--[[State--]]) .. ": "
 				.. GetStateName(state) .. ", step: "
 				.. self:HyperLink(obj,function()
 					self:AddSphere(obj)
@@ -2715,7 +2715,7 @@ function Examine:BuildParents(list,list_type,title,sort_type)
 				c = c + 1
 				self.parents_menu_popup[c] = {
 					name = item,
-					hint = S[302535920000069--[[Examine--]]] .. " " .. Trans(3696--[[Class--]]) .. " " .. Trans(298035641454--[[Object--]]) .. ": " .. item,
+					hint = S[302535920000069--[[Examine--]]] .. " " .. Translate(3696--[[Class--]]) .. " " .. Translate(298035641454--[[Object--]]) .. ": " .. item,
 					clicked = function()
 						OpenInExamineDlg(g_Classes[item],self)
 					end,
@@ -2754,7 +2754,7 @@ function Examine:SetObj(startup)
 
 	self:SetToolbarVis(obj)
 
-	self.idText:SetText(Trans(67--[[Loading resources--]]))
+	self.idText:SetText(Translate(67--[[Loading resources--]]))
 
 	if obj_type == "table" then
 		obj_class = g_Classes[obj.class]
@@ -2802,9 +2802,9 @@ function Examine:SetObj(startup)
 
 			self.attaches_menu_popup[i] = {
 				name = name,
-				hint = Trans(3746--[[Class name--]]) .. ": " .. a.class
+				hint = Translate(3746--[[Class name--]]) .. ": " .. a.class
 					.. (a_to and "\n" .. S[302535920001544--[[Attached to: %s--]]]:format(a_to) or "")
-					.. "\n".. S[302535920000955--[[Handle--]]] .. ": " .. (a.handle or Trans(6761--[[None--]]))
+					.. "\n".. S[302535920000955--[[Handle--]]] .. ": " .. (a.handle or Translate(6761--[[None--]]))
 					.. "\n" .. S[302535920000461--[[Position--]]] .. ": " .. tostring(pos),
 				showobj = a,
 				clicked = function()

@@ -17,7 +17,7 @@ function OnMsg.ClassesGenerate()
 	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 	local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 	local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
@@ -254,7 +254,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 		AddSubmenu("EntityData",{"EntityStates","EntitySurfaces","GetAllEntities","HexOutlineShapes","HexInteriorShapes","HexOutlineByHash","HexBuildShapes","HexBuildShapesInversed","HexPeripheralShapes","HexCombinedShapes"})
 		AddSubmenu("g_Classes",{"ClassTemplates","Attaches","FXRules","FXLists"})
 		AddSubmenu("g_CObjectFuncs",{"hr","pf","terrain","UIL","DTM","lpeg","lfs","srp","camera","camera3p","cameraMax","cameraRTS","string","table","package"})
-		AddSubmenu("StoryBits",{"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},Trans(948928900281--[[Story Bits--]]))
+		AddSubmenu("StoryBits",{"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},Translate(948928900281--[[Story Bits--]]))
 		AddSubmenu("UICity",{"UICity.labels","UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters","LRManagerInstance"})
 
 		-- bonus addition at the top
@@ -526,7 +526,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 					end
 					PopupToggle(self,folder.id,items)
 				else
-					print(Trans(591853191640--[[Empty list--]]))
+					print(Translate(591853191640--[[Empty list--]]))
 				end
 			end,
 		}, console.idScripts)

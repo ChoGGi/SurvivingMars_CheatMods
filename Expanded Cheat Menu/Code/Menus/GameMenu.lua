@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -206,7 +206,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(174--[[Color Modifier--]]),
+	Actions[c] = {ActionName = Translate(174--[[Color Modifier--]]),
 		ActionMenubar = "ECM.Game",
 		ActionId = ".Color Modifier",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
@@ -649,7 +649,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 		ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.GUIDockSide and Trans(1000459--[[Right--]]) or Trans(1000457--[[Left--]]),
+				ChoGGi.UserSettings.GUIDockSide and Translate(1000459--[[Right--]]) or Translate(1000457--[[Left--]]),
 				S[302535920001413--[[Change which side (most) GUI menus are on.--]]]
 
 			)

@@ -15,7 +15,7 @@ function OnMsg.ClassesGenerate()
 	local RetIcon = ChoGGi.ComFuncs.RetIcon
 	local RetHint = ChoGGi.ComFuncs.RetHint
 	local Random = ChoGGi.ComFuncs.Random
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 
 	function ChoGGi.MenuFuncs.ReloadMap()
 		local function CallBackFunc(answer)
@@ -25,7 +25,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
-			Trans(6779--[[Warning--]]) .. ": " .. S[302535920001488--[[Reloads map as new game.--]]],
+			Translate(6779--[[Warning--]]) .. ": " .. S[302535920001488--[[Reloads map as new game.--]]],
 			CallBackFunc,
 			S[302535920001487--[[Reload Map--]]]
 		)
@@ -54,7 +54,7 @@ function OnMsg.ClassesGenerate()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.UserSettings.GUIDockSide and Trans(1000459--[[Right--]]) or Trans(1000457--[[Left--]]),
+			ChoGGi.UserSettings.GUIDockSide and Translate(1000459--[[Right--]]) or Translate(1000457--[[Left--]]),
 			S[302535920001412--[[GUI Dock Side--]]]
 		)
 	end
@@ -222,12 +222,12 @@ function OnMsg.ClassesGenerate()
 		local hint_loop = S[302535920001109--[[Loops though and makes all %s visible.--]]]
 
 		local item_list = {
-			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(3984--[[Anomalies--]]),value = "Anomaly",hint = hint_loop:format(Trans(3984--[[Anomalies--]]))},
-			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(3980--[[Buildings--]]),value = "Building",hint = hint_loop:format(Trans(3980--[[Buildings--]]))},
+			{text = S[302535920001084--[[Reset--]]] .. ": " .. Translate(3984--[[Anomalies--]]),value = "Anomaly",hint = hint_loop:format(Translate(3984--[[Anomalies--]]))},
+			{text = S[302535920001084--[[Reset--]]] .. ": " .. Translate(3980--[[Buildings--]]),value = "Building",hint = hint_loop:format(Translate(3980--[[Buildings--]]))},
 			{text = S[302535920001084--[[Reset--]]] .. ": " .. S[302535920000157--[[Cables & Pipes--]]],value = "GridElements",hint = hint_loop:format(S[302535920000157--[[Cables & Pipes--]]])},
-			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(547--[[Colonists--]]),value = "Colonists",hint = hint_loop:format(Trans(547--[[Colonists--]]))},
-			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(5438--[[Rovers--]]) .. " & " .. Trans(517--[[Drones--]]),value = "Unit",hint = hint_loop:format(Trans(5438--[[Rovers--]]) .. " & " .. Trans(517--[[Drones--]]))},
-			{text = S[302535920001084--[[Reset--]]] .. ": " .. Trans(3982--[[Deposits--]]),value = "SurfaceDeposit",hint = hint_loop:format(Trans(3982--[[Deposits--]]))},
+			{text = S[302535920001084--[[Reset--]]] .. ": " .. Translate(547--[[Colonists--]]),value = "Colonists",hint = hint_loop:format(Translate(547--[[Colonists--]]))},
+			{text = S[302535920001084--[[Reset--]]] .. ": " .. Translate(5438--[[Rovers--]]) .. " & " .. Translate(517--[[Drones--]]),value = "Unit",hint = hint_loop:format(Translate(5438--[[Rovers--]]) .. " & " .. Translate(517--[[Drones--]]))},
+			{text = S[302535920001084--[[Reset--]]] .. ": " .. Translate(3982--[[Deposits--]]),value = "SurfaceDeposit",hint = hint_loop:format(Translate(3982--[[Deposits--]]))},
 		}
 		local c = #item_list
 		if obj then
@@ -487,7 +487,7 @@ function OnMsg.ClassesGenerate()
 				custom_type = 1,
 				checkboxes = {
 					{
-						title = Trans(1000220--[[Refresh--]]),
+						title = Translate(1000220--[[Refresh--]]),
 						hint = S[302535920000548--[[List is updated each time you click this.--]]],
 						func = function(dlg)
 							item_list = BuildItemList_Class(value)
@@ -540,7 +540,7 @@ function OnMsg.ClassesGenerate()
 				height = 800,
 				checkboxes = {
 					{
-						title = Trans(1000220--[[Refresh--]]),
+						title = Translate(1000220--[[Refresh--]]),
 						hint = S[302535920000548--[[List is updated each time you click this.--]]],
 						func = function(dlg)
 							item_list = BuildItemList_All()
@@ -704,10 +704,10 @@ function OnMsg.ClassesGenerate()
 	--~ terrain.SetTypeCircle(GetTerrainCursor(), 5000, terrain_type_idx)
 	function ChoGGi.MenuFuncs.ChangeMap()
 		local lookup_table = {
-			[Trans(3474--[[Mission Sponsor--]])] = "idMissionSponsor",
-			[Trans(3478--[[Commander Profile--]])] = "idCommanderProfile",
-			[Trans(3486--[[Mystery--]])] = "idMystery",
-			[Trans(3482--[[Colony Logo--]])] = "idMissionLogo",
+			[Translate(3474--[[Mission Sponsor--]])] = "idMissionSponsor",
+			[Translate(3478--[[Commander Profile--]])] = "idCommanderProfile",
+			[Translate(3486--[[Mystery--]])] = "idMystery",
+			[Translate(3482--[[Colony Logo--]])] = "idMissionLogo",
 			ResPreset_Concrete = "ResPreset_Concrete",
 			ResPreset_Metals = "ResPreset_Metals",
 			ResPreset_Polymers = "ResPreset_Polymers",
@@ -726,11 +726,11 @@ function OnMsg.ClassesGenerate()
 
 		-- open a list dialog to set g_CurrentMissionParams
 		local ItemList_MissionParams = {
-			{text = Trans(3474--[[Mission Sponsor--]]),value = "IMM",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(S[302535920000887--[[ECM--]]],Trans(1635--[[Mission--]]),S[302535920000712--[[Set Sponsor--]]])},
-			{text = Trans(3478--[[Commander Profile--]]),value = "rocketscientist",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(S[302535920000887--[[ECM--]]],Trans(1635--[[Mission--]]),S[302535920000716--[[Set Commander--]]])},
-			{text = Trans(3486--[[Mystery--]]),value = "random",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(Trans(27--[[Cheats--]]),S[302535920000331--[[Start Mystery--]]],"")},
-			{text = Trans(3482--[[Colony Logo--]]),value = "MarsExpress",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(S[302535920000887--[[ECM--]]],Trans(1635--[[Mission--]]),S[302535920000710--[[Change Logo--]]])},
-			{text = Trans(8800--[[Game Rules--]]),value = "",hint = str_hint_rules},
+			{text = Translate(3474--[[Mission Sponsor--]]),value = "IMM",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(S[302535920000887--[[ECM--]]],Translate(1635--[[Mission--]]),S[302535920000712--[[Set Sponsor--]]])},
+			{text = Translate(3478--[[Commander Profile--]]),value = "rocketscientist",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(S[302535920000887--[[ECM--]]],Translate(1635--[[Mission--]]),S[302535920000716--[[Set Commander--]]])},
+			{text = Translate(3486--[[Mystery--]]),value = "random",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(Translate(27--[[Cheats--]]),S[302535920000331--[[Start Mystery--]]],"")},
+			{text = Translate(3482--[[Colony Logo--]]),value = "MarsExpress",hint = S[302535920001386--[[Can be changed after in %s>%s>%s.--]]]:format(S[302535920000887--[[ECM--]]],Translate(1635--[[Mission--]]),S[302535920000710--[[Change Logo--]]])},
+			{text = Translate(8800--[[Game Rules--]]),value = "",hint = str_hint_rules},
 --~ 				{text = "ResPreset_Concrete",value = ""},
 --~ 				{text = "ResPreset_Metals",value = ""},
 --~ 				{text = "ResPreset_Polymers",value = ""},
@@ -752,7 +752,7 @@ function OnMsg.ClassesGenerate()
 				local value = choice[i].value
 
 				-- only game rules needs something something, the rest can use the lookup_table
-				if text == Trans(8800--[[Game Rules--]]) then
+				if text == Translate(8800--[[Game Rules--]]) then
 					-- if more than one entry
 					if value:find(" ") then
 						for i in value:gmatch("%S+") do
@@ -788,12 +788,12 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			table.icopy(MissionParams.idMystery.items),
 --~ 				table.icopy(DataInstances.ResourcePreset),
 		}
-		info_lists[1].name = Trans(3478--[[Commander Profile--]])
-		info_lists[2].name = Trans(3474--[[Mission Sponsor--]])
-		info_lists[3].name = Trans(3482--[[Colony Logo--]])
-		info_lists[4].name = Trans(8800--[[Game Rules--]])
-		info_lists[5].name = Trans(3486--[[Mystery--]])
---~ 			info_lists[6].name = Trans(692--[[Resources--]])
+		info_lists[1].name = Translate(3478--[[Commander Profile--]])
+		info_lists[2].name = Translate(3474--[[Mission Sponsor--]])
+		info_lists[3].name = Translate(3482--[[Colony Logo--]])
+		info_lists[4].name = Translate(8800--[[Game Rules--]])
+		info_lists[5].name = Translate(3486--[[Mystery--]])
+--~ 			info_lists[6].name = Translate(692--[[Resources--]])
 		local dlg_ex_params = ChoGGi.ComFuncs.OpenInExamineDlg(info_lists,nil,"MissionParams")
 
 		local dlg_list_maps
@@ -1002,11 +1002,11 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		local c = 0
 
 		-- always load defaults, then override with custom settings so list is always full
-		local help_str = Trans(487939677892--[[Help--]])
-		local default_str = Trans(1000121--[[Default--]])
+		local help_str = Translate(487939677892--[[Help--]])
+		local default_str = Translate(1000121--[[Default--]])
 		local min_str = S[302535920000110--[[Min--]]]
 		local max_str = S[302535920000941--[[Max--]]]
-		local scale_str = Trans(1000081--[[Scale--]])
+		local scale_str = Translate(1000081--[[Scale--]])
 		local defs = LightmodelPreset:GetProperties()
 		for i = 1, #defs do
 			local def = defs[i]
@@ -1103,7 +1103,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		if not browse then
 			c = c + 1
 			item_list[c] = {
-				text = " " .. Trans(1000121--[[Default--]]),
+				text = " " .. Translate(1000121--[[Default--]]),
 				value = "ChoGGi_Default",
 				hint = S[302535920000981--[[Choose to this remove Permanent setting.--]]],
 			}
@@ -1181,7 +1181,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 					hint = S[302535920000989--[[Make it stay at selected light model all the time (including reboots).--]]],
 				},
 				{
-					title = Trans(327465361219--[[Edit--]]),
+					title = Translate(327465361219--[[Edit--]]),
 					hint = S[302535920000990--[[Open this style in "Change Light Model Custom".--]]],
 				},
 			}
@@ -1304,7 +1304,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 	function ChoGGi.MenuFuncs.SetLightsRadius()
 		local hr = hr
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]),value = Trans(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
+			{text = Translate(1000121--[[Default--]]),value = Translate(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
 			{text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
 			{text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
 			{text = S[302535920001006--[[03 Low (90)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 90},
@@ -1353,7 +1353,7 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		local ChoGGi = ChoGGi
 		local hr = hr
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]),value = Trans(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
+			{text = Translate(1000121--[[Default--]]),value = Translate(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
 			{text = S[302535920001004--[[01 Lowest (25)--]]],value = 25},
 			{text = S[302535920001005--[[02 Lower (50)--]]],value = 50},
 			{text = S[302535920001021--[[03 Low (100)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 100},
@@ -1402,7 +1402,7 @@ And yes Medium is using a higher setting than High..."--]]],
 		local ChoGGi = ChoGGi
 		local hr = hr
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]),value = Trans(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
+			{text = Translate(1000121--[[Default--]]),value = Translate(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
 			{text = S[302535920001031--[[1 Crap (32)--]]],value = 32},
 			{text = S[302535920001032--[[2 Crap (64)--]]],value = 64},
 			{text = S[302535920001033--[[3 Crap (128)--]]],value = 128},
@@ -1445,9 +1445,9 @@ And yes Medium is using a higher setting than High..."--]]],
 	function ChoGGi.MenuFuncs.SetShadowmapSize()
 		local ChoGGi = ChoGGi
 		local hr = hr
-		local hint_highest = Trans(6779--[[Warning--]]) .. ": " .. S[302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]]
+		local hint_highest = Translate(6779--[[Warning--]]) .. ": " .. S[302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]]
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]),value = Trans(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
+			{text = Translate(1000121--[[Default--]]),value = Translate(1000121--[[Default--]]),hint = S[302535920001003--[[restart to enable--]]]},
 			{text = S[302535920001043--[[1 Crap (256)--]]],value = 256},
 			{text = S[302535920001044--[[2 Lower (512)--]]],value = 512},
 			{text = S[302535920001045--[[3 Low (1536)--]]] .. " < " .. S[302535920001065--[[Menu Option--]]],value = 1536},
@@ -1508,7 +1508,7 @@ And yes Medium is using a higher setting than High..."--]]],
 		local hint_small = S[302535920001055--[[Small FPS hit on large base--]]]
 		local hint_fps = S[302535920001056--[[FPS hit--]]]
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 240,value = 240,hint = hint_min},
 			{text = 360,value = 360,hint = hint_min},
 			{text = 480,value = 480,hint = hint_min},
@@ -1688,7 +1688,7 @@ And yes Medium is using a higher setting than High..."--]]],
 		local default_setting = 5
 		local hint_down = S[302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).--]]]
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]),value = default_setting},
+			{text = Translate(1000121--[[Default--]]),value = default_setting},
 			{text = 0,value = 0,hint = S[302535920001063--[[disable mouse border scrolling, WASD still works fine.--]]]},
 			{text = 1,value = 1,hint = hint_down},
 			{text = 2,value = 2,hint = hint_down},
@@ -1732,7 +1732,7 @@ And yes Medium is using a higher setting than High..."--]]],
 	function ChoGGi.MenuFuncs.SetCameraLookatDist()
 		local default_setting = ChoGGi.Consts.CameraLookatDist
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 20,value = 20},
 			{text = 30,value = 30},
@@ -1778,7 +1778,7 @@ And yes Medium is using a higher setting than High..."--]]],
 	function ChoGGi.MenuFuncs.SetCameraZoom()
 		local default_setting = ChoGGi.Consts.CameraZoomToggle
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 16000,value = 16000},
 			{text = 20000,value = 20000},
 			{text = 24000,value = 24000, hint = S[302535920001066--[[What used to be the default for this ECM setting--]]]},

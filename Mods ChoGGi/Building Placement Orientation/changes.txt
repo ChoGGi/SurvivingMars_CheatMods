@@ -1,3 +1,6 @@
+v0.8
+Last update broke the rotation.
+
 v0.7
 Library update.
 

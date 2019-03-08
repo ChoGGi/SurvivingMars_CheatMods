@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Buildings = "ECM.ECM.Buildings"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(3980--[[Buildings--]]),
+	Actions[c] = {ActionName = Translate(3980--[[Buildings--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -100,7 +100,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	local str_ECM_Buildings_SanatoriumsSchools = "ECM.ECM.Buildings.Sanatoriums & Schools"
-	local SandS = Trans(5245--[[Sanatoriums--]]) .. " & " .. Trans(5248--[[Schools--]])
+	local SandS = Translate(5245--[[Sanatoriums--]]) .. " & " .. Translate(5248--[[Schools--]])
 	c = c + 1
 	Actions[c] = {ActionName = SandS,
 		ActionMenubar = "ECM.ECM.Buildings",
@@ -111,7 +111,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(5245--[[Sanatoriums--]]) .. " " .. S[302535920000198--[[Cure All--]]],
+	Actions[c] = {ActionName = Translate(5245--[[Sanatoriums--]]) .. " " .. S[302535920000198--[[Cure All--]]],
 		ActionMenubar = str_ECM_Buildings_SanatoriumsSchools,
 		ActionId = ".Sanatoriums Cure All",
 		ActionIcon = icon,
@@ -125,7 +125,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(5248--[[Schools--]]) .. " " .. S[302535920000200--[[Train All--]]],
+	Actions[c] = {ActionName = Translate(5248--[[Schools--]]) .. " " .. S[302535920000200--[[Train All--]]],
 		ActionMenubar = str_ECM_Buildings_SanatoriumsSchools,
 		ActionId = ".Schools Train All",
 		ActionIcon = icon,
@@ -168,7 +168,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	local str_ECM_Buildings_Farms = "ECM.ECM.Buildings.Farms"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(5068--[[Farms--]]),
+	Actions[c] = {ActionName = Translate(5068--[[Farms--]]),
 		ActionMenubar = "ECM.ECM.Buildings",
 		ActionId = ".Farms",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -186,7 +186,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(4711--[[Crop Fail Threshold--]]),
+	Actions[c] = {ActionName = Translate(4711--[[Crop Fail Threshold--]]),
 		ActionMenubar = str_ECM_Buildings_Farms,
 		ActionId = ".Crop Fail Threshold",
 		ActionIcon = icon,
@@ -224,7 +224,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(134--[[Instant Build--]]),
+	Actions[c] = {ActionName = Translate(134--[[Instant Build--]]),
 		ActionMenubar = str_ECM_Buildings_CablesPipes,
 		ActionId = ".Cables & Pipes: Instant Build",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
@@ -239,7 +239,7 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."--]]]:format(S[30253
 
 	local str_ECM_Buildings_Buildings = "ECM.ECM.Buildings.Buildings"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(3980--[[Buildings--]]),
+	Actions[c] = {ActionName = Translate(3980--[[Buildings--]]),
 		ActionMenubar = "ECM.ECM.Buildings",
 		ActionId = ".Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -625,7 +625,7 @@ Will be overridden by %s.--]]]:format(S[302535920000037--[[Always Clean--]]])
 
 	local str_ECM_Buildings_SpaceElevator = "ECM.ECM.Buildings.Space Elevator"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(1120--[[Space Elevator--]]),
+	Actions[c] = {ActionName = Translate(1120--[[Space Elevator--]]),
 		ActionMenubar = "ECM.ECM.Buildings",
 		ActionId = ".Space Elevator",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

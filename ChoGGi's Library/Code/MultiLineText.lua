@@ -3,7 +3,7 @@
 -- displays text in an editable text box
 
 local S = ChoGGi.Strings
-local Trans = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi.ComFuncs.Translate
 
 local CreateRealTimeThread = CreateRealTimeThread
 local Sleep = Sleep
@@ -58,7 +58,7 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 		--
 		self.idSearch = g_Classes.ChoGGi_Button:new({
 			Id = "idSearch",
-			Text = Trans(10123--[[Search--]]),
+			Text = Translate(10123--[[Search--]]),
 			Dock = "right",
 			RolloverAnchor = "right",
 			RolloverHint = S[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
@@ -76,9 +76,9 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idOkay = g_Classes.ChoGGi_Button:new({
 		Id = "idOkay",
 		Dock = "left",
-		Text = Trans(6878--[[OK--]]),
+		Text = Translate(6878--[[OK--]]),
 		Background = g_Classes.ChoGGi_Button.bg_green,
-		RolloverText = context.hint_ok or Trans(6878--[[OK--]]),
+		RolloverText = context.hint_ok or Translate(6878--[[OK--]]),
 		OnPress = self.idOkayOnPress,
 	}, self.idButtonContainer)
 
@@ -115,7 +115,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idCancel = g_Classes.ChoGGi_Button:new({
 		Id = "idCancel",
 		Dock = "right",
-		Text = Trans(6879--[[Cancel--]]),
+		Text = Translate(6879--[[Cancel--]]),
 		Background = g_Classes.ChoGGi_Button.bg_red,
 		RolloverText = context.hint_cancel or S[302535920001423--[[Close without doing anything.--]]],
 		OnPress = self.idCancelOnPress,

@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
@@ -10,7 +10,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Colonists = "ECM.ECM.Colonists"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(547--[[Colonists--]]),
+	Actions[c] = {ActionName = Translate(547--[[Colonists--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Colonists",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -299,7 +299,7 @@ Works after colonist idle."--]]]
 
 	local str_ECM_Colonists_Workplaces = "ECM.ECM.Colonists.Workplaces"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(5444--[[Workplaces--]]),
+	Actions[c] = {ActionName = Translate(5444--[[Workplaces--]]),
 		ActionMenubar = "ECM.ECM.Colonists",
 		ActionId = ".Workplaces",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -422,7 +422,7 @@ Activated when colonist changes job."--]]]
 
 	local str_ECM_Colonists_Stats = "ECM.ECM.Colonists.Stats"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(5568--[[Stats--]]),
+	Actions[c] = {ActionName = Translate(5568--[[Stats--]]),
 		ActionMenubar = "ECM.ECM.Colonists",
 		ActionId = ".Stats",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -543,7 +543,7 @@ Activated when colonist changes job."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(4576--[[Chance Of Suicide--]]),
+	Actions[c] = {ActionName = Translate(4576--[[Chance Of Suicide--]]),
 		ActionMenubar = str_ECM_Colonists_Stats,
 		ActionId = ".Chance Of Suicide",
 		ActionIcon = StarkFistOfRemoval,
@@ -559,7 +559,7 @@ Activated when colonist changes job."--]]]
 
 	local str_ECM_Colonists_Traits = "ECM.ECM.Colonists.Traits"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(235--[[Traits--]]),
+	Actions[c] = {ActionName = Translate(235--[[Traits--]]),
 		ActionMenubar = "ECM.ECM.Colonists",
 		ActionId = ".Traits",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -575,7 +575,7 @@ Activated when colonist changes job."--]]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait,
-				Trans(302535920000411--[[When colonist graduates this will remove idiot trait.--]])
+				Translate(302535920000411--[[When colonist graduates this will remove idiot trait.--]])
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.UniversityGradRemoveIdiotTrait_Toggle,

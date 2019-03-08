@@ -9,7 +9,7 @@ local IsValid = IsValid
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local RandomColour = ChoGGi.ComFuncs.RandomColour
 	local S = ChoGGi.Strings
 
@@ -235,7 +235,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
-			Trans(6779--[[Warning--]]) .. ": " .. S[302535920001493--[["This will change to a new map, anything unsaved will be lost!"--]]],
+			Translate(6779--[[Warning--]]) .. ": " .. S[302535920001493--[["This will change to a new map, anything unsaved will be lost!"--]]],
 			CallBackFunc,
 			S[302535920001491--[[View All Entities--]]]
 		)
@@ -267,7 +267,7 @@ that'll activate the BadPrefab on it
 				end
 			end
 
-			local title = story.Title and Trans(story.Title) or id
+			local title = story.Title and Translate(story.Title) or id
 			if not (title:find(": ") or title:find(" - ",1,true)) then
 				title = story.group .. ": " .. title
 			end
@@ -278,12 +278,12 @@ that'll activate the BadPrefab on it
 				story = a_story,
 				voiced = story.VoicedText,
 				hint = S[302535920001358--[[Group--]]] .. ": " .. story.group .. "\n\n"
-					.. Trans(T(story.Text,story_table)) .. "\n\n<image " .. story.Image
+					.. Translate(T(story.Text,story_table)) .. "\n\n<image " .. story.Image
 					.. ">",
 			}
 		end
 
-		local title = S[302535920001416--[[Force--]]] .. " " .. Trans(948928900281--[[Story Bits--]])
+		local title = S[302535920001416--[[Force--]]] .. " " .. Translate(948928900281--[[Story Bits--]])
 		local function CallBackFunc(choice)
 			if choice.nothing_selected then
 				return
@@ -459,10 +459,10 @@ that'll activate the BadPrefab on it
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
-			Trans(6779--[[Warning--]]) .. "!\n"
+			Translate(6779--[[Warning--]]) .. "!\n"
 				.. S[302535920000852--[[This will delete all %s of %s--]]]:format(MapCount("map",obj.class),obj.class),
 			CallBackFunc,
-			Trans(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
+			Translate(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
 			S[302535920000856--[[Yes, I want to delete all: %s--]]]:format(obj.class),
 			S[302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."--]]]
 		)
@@ -558,7 +558,7 @@ that'll activate the BadPrefab on it
 				name = S[302535920001417--[[Follow Mouse Grid Size--]]]
 			elseif setting == "DebugGridOpacity" then
 				table.insert(item_list,1,{text = 0,value = 0})
-				name = S[302535920001419--[[Follow Mouse Grid Trans--]]]
+				name = S[302535920001419--[[Follow Mouse Grid Translate--]]]
 			end
 
 			local function CallBackFunc(choice)
@@ -833,7 +833,7 @@ that'll activate the BadPrefab on it
 					path = obj:GetPath()
 				else
 					ChoGGi.ComFuncs.OpenInExamineDlg(obj,nil,S[302535920000467--[[Path Markers--]]])
-					print(Trans(6779--[[Warning--]]),":",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
+					print(Translate(6779--[[Warning--]]),":",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
 				end
 			end
 
@@ -995,11 +995,11 @@ that'll activate the BadPrefab on it
 			end
 
 			local item_list = {
-				{text = " " .. Trans(4493--[[All--]]),value = "All"},
-				{text = Trans(547--[[Colonists--]]),value = "Colonist"},
-				{text = Trans(517--[[Drones--]]),value = "Drone"},
-				{text = Trans(5438--[[Rovers--]]),value = "BaseRover",icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
-				{text = Trans(745--[[Shuttles--]]),value = "CargoShuttle",hint = S[302535920000873--[[Doesn't work that well.--]]]},
+				{text = " " .. Translate(4493--[[All--]]),value = "All"},
+				{text = Translate(547--[[Colonists--]]),value = "Colonist"},
+				{text = Translate(517--[[Drones--]]),value = "Drone"},
+				{text = Translate(5438--[[Rovers--]]),value = "BaseRover",icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
+				{text = Translate(745--[[Shuttles--]]),value = "CargoShuttle",hint = S[302535920000873--[[Doesn't work that well.--]]]},
 			}
 			local aliens
 			if rawget(_G,"ChoGGi_Alien") then

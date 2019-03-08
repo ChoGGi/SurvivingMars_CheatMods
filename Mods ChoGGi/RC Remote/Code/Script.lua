@@ -47,11 +47,11 @@ local MapFindNearest = MapFindNearest
 --~ local axis_z = axis_z
 
 local TableConcat
-local Trans
+local Translate
 
 function OnMsg.ClassesGenerate()
 	TableConcat = ChoGGi.ComFuncs.TableConcat
-	Trans = ChoGGi.ComFuncs.Translate
+	Translate = ChoGGi.ComFuncs.Translate
 
 --~ 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
@@ -257,7 +257,7 @@ DefineClass.RCRemote = {
 }
 
 function RCRemote:GameInit()
-	self.status_text = Trans(6722--[[Idle--]])
+	self.status_text = Translate(6722--[[Idle--]])
 	BaseRover.GameInit(self)
 
 	-- colour #, Color, Roughness, Metallic
@@ -391,7 +391,7 @@ function RCRemote:Goto(...)
 end
 
 function RCRemote:GotoFromUser(...)
-	self.status_text = Trans(63--[[Travelling--]])
+	self.status_text = Translate(63--[[Travelling--]])
 	return BaseRover.GotoFromUser(self,...)
 end
 
@@ -402,7 +402,7 @@ function RCRemote:Idle()
 		PlayFX("Moving", "end", self)
 	end
 
-	self.status_text = Trans(6722--[[Idle--]])
+	self.status_text = Translate(6722--[[Idle--]])
 
 	self:SetState("idle")
 	self:Gossip("Idle")

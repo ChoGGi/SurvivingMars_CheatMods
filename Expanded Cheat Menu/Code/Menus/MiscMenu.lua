@@ -1,14 +1,14 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
 	local str_ECM_Misc = "ECM.ECM.Misc"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(1000207--[[Misc--]]),
+	Actions[c] = {ActionName = Translate(1000207--[[Misc--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Misc",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

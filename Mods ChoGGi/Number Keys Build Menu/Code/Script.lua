@@ -25,7 +25,7 @@ Press OK to download it or check the Mod Manager to make sure it's enabled.]]) =
 
 	local tostring = tostring
 
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -65,7 +65,7 @@ Press OK to download it or check the Mod Manager to make sure it's enabled.]]) =
 	local function AddMenuKey(num,key,name)
 		c = c + 1
 		Actions[c] = {
-			ActionName = S[302535920001414--[[Build menu key: %s--]]]:format(Trans(name)),
+			ActionName = S[302535920001414--[[Build menu key: %s--]]]:format(Translate(name)),
 			ActionId = build_str:format(num),
 			OnAction = function()
 				ShowBuildMenu(num)

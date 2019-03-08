@@ -9,21 +9,21 @@ local default_icon3 = "UI/Icons/IPButtons/shuttle.tga"
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local S = ChoGGi.Strings
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 --~	local RetName = ChoGGi.ComFuncs.RetName
 
 	function ChoGGi.MenuFuncs.SetDroneType()
 		local icons = Presets.EncyclopediaArticle.Vehicles
 		local item_list = {
 			{
-				text = Trans(10278--[[Wasp Drone--]]),
+				text = Translate(10278--[[Wasp Drone--]]),
 				value = "FlyingDrone",
-				hint = "<image " .. icons.FlyingDrone.image .. ">\n\n" .. Trans(10278--[[Wasp Drone--]]),
+				hint = "<image " .. icons.FlyingDrone.image .. ">\n\n" .. Translate(10278--[[Wasp Drone--]]),
 			},
 			{
-				text = Trans(1681--[[Drone--]]),
+				text = Translate(1681--[[Drone--]]),
 				value = "Drone",
-				hint = "<image " .. icons.Drone.image .. ">\n\n" .. Trans(1681--[[Drone--]]),
+				hint = "<image " .. icons.Drone.image .. ">\n\n" .. Translate(1681--[[Drone--]]),
 			},
 		}
 		local sponsor = GetMissionSponsor()
@@ -47,7 +47,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = item_list,
 			title = S[302535920001403--[[Drone Type--]]],
-			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(name) .. "\n"
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Translate(name) .. "\n"
 				.. S[302535920001406--[["Hubs can only have one type of drone, so you'll need pack/unpack all drones for each hub you wish to change (or use Drones>%s)."--]]]:format(S[302535920000513--[[Change Amount of Drones in Hub--]]]),
 		}
 	end
@@ -56,7 +56,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local default_setting = 0
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 1,value = 1},
 			{text = 2,value = 2},
 			{text = 3,value = 3},
@@ -111,7 +111,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.RCRoverMaxRadius
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 40,value = 40},
 			{text = 80,value = 80},
 			{text = 160,value = 160},
@@ -164,7 +164,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.CommandCenterMaxRadius
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 40,value = 40},
 			{text = 80,value = 80},
 			{text = 160,value = 160},
@@ -217,7 +217,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 0,value = 0},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
@@ -264,7 +264,7 @@ function OnMsg.ClassesGenerate()
 		local default_setting = ChoGGi.Consts.SpeedDrone
 		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone")
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting,hint = S[302535920000889--[[base speed--]]]},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting,hint = S[302535920000889--[[base speed--]]]},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
 			{text = 15,value = 15 * r},
@@ -319,7 +319,7 @@ function OnMsg.ClassesGenerate()
 		local default_setting = ChoGGi.Consts.SpeedRC
 		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedRC")
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting,hint = S[302535920000889--[[base speed--]]]},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting,hint = S[302535920000889--[[base speed--]]]},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
 			{text = 15,value = 15 * r},
@@ -407,7 +407,7 @@ function OnMsg.ClassesGenerate()
 				end
 
 				MsgPopup(
-					choice[1].text .. ": " .. Trans(517--[[Drones--]]) .. " " .. change,
+					choice[1].text .. ": " .. Translate(517--[[Drones--]]) .. " " .. change,
 					S[302535920000513--[[Change Amount Of Drones In Hub--]]],
 					default_icon
 				)
@@ -434,7 +434,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.DroneFactoryBuildSpeed
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -562,7 +562,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000907--[[%s: Well, if jacking on'll make strangers think I'm cool, I'll do it!--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneRechargeTime)),
-			Trans(4645--[[Drone Recharge Time--]]),
+			Translate(4645--[[Drone Recharge Time--]]),
 			"UI/Icons/Notifications/low_battery.tga",
 			true
 		)
@@ -586,7 +586,7 @@ function OnMsg.ClassesGenerate()
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("DroneResourceCarryAmount")
 		local hinttoolarge = S[302535920000909--[["If you set this amount larger then a building's ""Storage"" amount then the drones will NOT pick up storage (See: Fixes>%s)."--]]]:format(S[302535920000613--[[Drone Carry Amount--]]])
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25,hint = hinttoolarge},
@@ -641,7 +641,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("CommandCenterMaxDrones")
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -689,7 +689,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("RCRoverMaxDrones")
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -738,7 +738,7 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportStorageCapacity") / r
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
 			{text = 100,value = 100},
@@ -811,7 +811,7 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.StorageShuttle / r
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -870,7 +870,7 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.SpeedShuttle / r
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
 			{text = 100,value = 100},
@@ -925,7 +925,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.ShuttleHubShuttleCapacity
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -986,7 +986,7 @@ function OnMsg.ClassesGenerate()
 		local default_setting = ChoGGi.Consts.GravityRC
 		local r = ChoGGi.Consts.ResourceScale
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 1,value = 1},
 			{text = 2,value = 2},
 			{text = 3,value = 3},
@@ -1043,7 +1043,7 @@ function OnMsg.ClassesGenerate()
 		local default_setting = ChoGGi.Consts.GravityDrone
 		local r = ChoGGi.Consts.ResourceScale
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 1,value = 1},
 			{text = 2,value = 2},
 			{text = 3,value = 3},
@@ -1162,7 +1162,7 @@ function OnMsg.ClassesGenerate()
 			local item_list = {}
 			for i = 1, #Cargo do
 				item_list[i] = {
-					text = Trans(Cargo[i].name),
+					text = Translate(Cargo[i].name),
 					value = Cargo[i].id,
 					meta = Cargo[i],
 				}
@@ -1224,7 +1224,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("CargoCapacity")
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting .. " kg",value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting .. " kg",value = default_setting},
 			{text = "50 000 kg",value = 50000},
 			{text = "100 000 kg",value = 100000},
 			{text = "250 000 kg",value = 250000},
@@ -1267,7 +1267,7 @@ function OnMsg.ClassesGenerate()
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("TravelTimeEarthMars") / r
 		local item_list = {
 			{text = S[302535920000947--[[Instant--]]],value = 0},
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = S[302535920000948--[[Original--]]] .. ": " .. 750,value = 750},
 			{text = S[302535920000949--[[Half of Original--]]] .. ": " .. 375,value = 375},
 			{text = 10,value = 10},
@@ -1321,7 +1321,7 @@ function OnMsg.ClassesGenerate()
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("MaxColonistsPerRocket")
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -1344,7 +1344,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000952--[[%s: Long pig sardines--]]]:format(choice[1].text),
-					Trans(4594--[[Colonists Per Rocket--]]),
+					Translate(4594--[[Colonists Per Rocket--]]),
 					"UI/Icons/Notifications/colonist.tga"
 				)
 			end
@@ -1364,7 +1364,7 @@ function OnMsg.ClassesGenerate()
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.RocketMaxExportAmount
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
 			{text = 15,value = 15 * r},
@@ -1453,7 +1453,7 @@ function OnMsg.ClassesGenerate()
 			local default_setting = ChoGGi.Consts.LaunchFuelPerRocket
 			local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("FuelRocket")
 			local item_list = {
-				{text = Trans(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
+				{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
 				{text = 5,value = 5 * r},
 				{text = 10,value = 10 * r},
 				{text = 15,value = 15 * r},

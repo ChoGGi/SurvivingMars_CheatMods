@@ -3,7 +3,7 @@
 local next,type = next,type
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
@@ -12,24 +12,24 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 		local ChoGGi = ChoGGi
 		local item_list = {
-			{text = Trans(547--[[Colonists--]]),value = "Colonist"},
-			{text = Trans(1120--[[Space Elevator--]]),value = "SpaceElevator"},
-			{text = Trans(3518--[[Drone Hub--]]),value = "DroneHub"},
-			{text = Trans(1685--[[Rocket--]]),value = "SupplyRocket"},
+			{text = Translate(547--[[Colonists--]]),value = "Colonist"},
+			{text = Translate(1120--[[Space Elevator--]]),value = "SpaceElevator"},
+			{text = Translate(3518--[[Drone Hub--]]),value = "DroneHub"},
+			{text = Translate(1685--[[Rocket--]]),value = "SupplyRocket"},
 
-			{text = Trans(1682--[[RC Rover--]]),value = "RCRover"},
-			{text = Trans(1684--[[RC Explorer--]]),value = "RCExplorer"},
-			{text = Trans(1683--[[RC Transport--]]),value = "RCTransport"},
+			{text = Translate(1682--[[RC Rover--]]),value = "RCRover"},
+			{text = Translate(1684--[[RC Explorer--]]),value = "RCExplorer"},
+			{text = Translate(1683--[[RC Transport--]]),value = "RCTransport"},
 
-			{text = Trans(5017--[[Basic Dome--]]),value = "DomeBasic"},
-			{text = Trans(5146--[[Medium Dome--]]),value = "DomeMedium"},
-			{text = Trans(5152--[[Mega Dome--]]),value = "DomeMega"},
-			{text = Trans(5188--[[Oval Dome--]]),value = "DomeOval"},
-			{text = Trans(5093--[[Geoscape Dome--]]),value = "GeoscapeDome"},
-			{text = Trans(9000--[[Micro Dome--]]),value = "DomeMicro"},
-			{text = Trans(9003--[[Trigon Dome--]]),value = "DomeTrigon"},
-			{text = Trans(9009--[[Mega Trigon Dome--]]),value = "DomeMegaTrigon"},
-			{text = Trans(9012--[[Diamond Dome--]]),value = "DomeDiamond"},
+			{text = Translate(5017--[[Basic Dome--]]),value = "DomeBasic"},
+			{text = Translate(5146--[[Medium Dome--]]),value = "DomeMedium"},
+			{text = Translate(5152--[[Mega Dome--]]),value = "DomeMega"},
+			{text = Translate(5188--[[Oval Dome--]]),value = "DomeOval"},
+			{text = Translate(5093--[[Geoscape Dome--]]),value = "GeoscapeDome"},
+			{text = Translate(9000--[[Micro Dome--]]),value = "DomeMicro"},
+			{text = Translate(9003--[[Trigon Dome--]]),value = "DomeTrigon"},
+			{text = Translate(9009--[[Mega Trigon Dome--]]),value = "DomeMegaTrigon"},
+			{text = Translate(9012--[[Diamond Dome--]]),value = "DomeDiamond"},
 			{text = S[302535920000347--[[Star Dome--]]],value = "DomeStar"},
 			{text = S[302535920000351--[[Hexa Dome--]]],value = "DomeHexa"},
 		}
@@ -177,7 +177,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.SetGameSpeed()
 		local hint_str = S[302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>--]]]
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]),value = 1,hint = hint_str:format(1)},
+			{text = Translate(1000121--[[Default--]]),value = 1,hint = hint_str:format(1)},
 			{text = S[302535920001126--[[Double--]]],value = 2,hint = hint_str:format(2)},
 			{text = S[302535920001127--[[Triple--]]],value = 3,hint = hint_str:format(3)},
 			{text = S[302535920001128--[[Quadruple--]]],value = 4,hint = hint_str:format(4)},
@@ -221,7 +221,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local speeds = {
-			[3] = Trans(1000121--[[Default--]]),
+			[3] = Translate(1000121--[[Default--]]),
 			[6] = S[302535920001126--[[Double--]]],
 			[9] = S[302535920001127--[[Triple--]]],
 			[12] = S[302535920001128--[[Quadruple--]]],
@@ -402,7 +402,7 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 			end
 
 			local item_list = {
-				{text = Trans(1000121--[[Default--]]),value = 100},
+				{text = Translate(1000121--[[Default--]]),value = 100},
 				{text = 25,value = 25},
 				{text = 50,value = 50},
 				{text = 100,value = 100},

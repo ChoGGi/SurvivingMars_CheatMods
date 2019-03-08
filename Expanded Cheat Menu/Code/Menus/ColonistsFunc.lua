@@ -6,7 +6,7 @@ local type,table = type,table
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local Random = ChoGGi.ComFuncs.Random
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 	local S = ChoGGi.Strings
 
@@ -99,10 +99,10 @@ function OnMsg.ClassesGenerate()
 
 		-- culling the herd
 		local item_list = {
-			{text = " " .. Trans(7553--[[Homeless--]]),value = "Homeless"},
-			{text = " " .. Trans(6859--[[Unemployed--]]),value = "Unemployed"},
-			{text = " " .. Trans(7031--[[Renegades--]]),value = "Renegade"},
-			{text = " " .. Trans(240--[[Specialization--]]) .. ": " .. Trans(6761--[[None--]]),value = "none"},
+			{text = " " .. Translate(7553--[[Homeless--]]),value = "Homeless"},
+			{text = " " .. Translate(6859--[[Unemployed--]]),value = "Unemployed"},
+			{text = " " .. Translate(7031--[[Renegades--]]),value = "Renegade"},
+			{text = " " .. Translate(240--[[Specialization--]]) .. ": " .. Translate(6761--[[None--]]),value = "none"},
 		}
 		local c = #item_list
 
@@ -117,17 +117,17 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
-		AddToList(Tables.ColonistAges,Trans(987289847467--[[Age Groups--]]))
-		AddToList(Tables.ColonistGenders,Trans(4356--[[Sex--]]):gsub("<right><Gender>",""))
+		AddToList(Tables.ColonistAges,Translate(987289847467--[[Age Groups--]]))
+		AddToList(Tables.ColonistGenders,Translate(4356--[[Sex--]]):gsub("<right><Gender>",""))
 		AddToList(Tables.ColonistRaces,S[302535920000741--[[Race--]]])
-		AddToList(Tables.ColonistSpecializations,Trans(240--[[Specialization--]]))
+		AddToList(Tables.ColonistSpecializations,Translate(240--[[Specialization--]]))
 
 		local birth = Tables.ColonistBirthplaces
 		for i = 1, #birth do
-			local name = Trans(birth[i].text)
+			local name = Translate(birth[i].text)
 			c = c + 1
 			item_list[c] = {
-				text = Trans(4357--[[Birthplace--]]):gsub("<right><UIBirthplace>","") .. ": " .. name,
+				text = Translate(4357--[[Birthplace--]]):gsub("<right><UIBirthplace>","") .. ": " .. name,
 				value = birth[i].value,
 				idx = i,
 				hint = name .. "\n\n<image " .. birth[i].flag .. ">",
@@ -200,18 +200,18 @@ function OnMsg.ClassesGenerate()
 					CullLabel(value)
 				elseif value == "Renegade" then
 					CullTrait(value)
-				elseif text:find(Trans(240--[[Specialization--]])) and (Tables.ColonistSpecializations[value] or value == "none") then
+				elseif text:find(Translate(240--[[Specialization--]])) and (Tables.ColonistSpecializations[value] or value == "none") then
 					CullLabel(value)
-				elseif text:find(Trans(987289847467--[[Age Groups--]])) and Tables.ColonistAges[value] then
+				elseif text:find(Translate(987289847467--[[Age Groups--]])) and Tables.ColonistAges[value] then
 					CullTrait(value)
-				elseif text:find(Trans(4357--[[Birthplace--]]):gsub("<right><UIBirthplace>","")) and Tables.ColonistBirthplaces[value] then
+				elseif text:find(Translate(4357--[[Birthplace--]]):gsub("<right><UIBirthplace>","")) and Tables.ColonistBirthplaces[value] then
 					Cull(value,"birthplace")
 					-- bonus round
 					if not UICity.ChoGGi.DaddysLittleHitler then
 						Msg("ChoGGi_DaddysLittleHitler")
 						UICity.ChoGGi.DaddysLittleHitler = true
 					end
-				elseif text:find(Trans(4356--[[Sex--]]):gsub("<right><Gender>","")) and Tables.ColonistGenders[value] then
+				elseif text:find(Translate(4356--[[Sex--]]):gsub("<right><Gender>","")) and Tables.ColonistGenders[value] then
 					CullTrait(value)
 				elseif text:find(S[302535920000741--[[Race--]]]) and Tables.ColonistRaces[value] then
 					Cull(value,"race",choice[1].idx)
@@ -331,7 +331,7 @@ I think somebody has been playing too much Fallout...--]]],
 			callback = CallBackFunc,
 			items = item_list,
 			title = S[302535920000757--[[Add Applicants To Pool--]]],
-			hint = Trans(6779--[[Warning--]]) .. ": " .. S[302535920000758--[[Will take some time for 25K and up.--]]],
+			hint = Translate(6779--[[Warning--]]) .. ": " .. S[302535920000758--[[Will take some time for 25K and up.--]]],
 			skip_sort = true,
 			checkboxes = {
 				{
@@ -388,7 +388,7 @@ I think somebody has been playing too much Fallout...--]]],
 
 			MsgPopup(
 				S[302535920000765--[[Early night? Vamos al bar un trago!--]]],
-				Trans(217--[[Work Shifts--]]),
+				Translate(217--[[Work Shifts--]]),
 				default_icon
 			)
 		end
@@ -396,7 +396,7 @@ I think somebody has been playing too much Fallout...--]]],
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = Trans(217--[[Work Shifts--]]),
+			title = Translate(217--[[Work Shifts--]]),
 			hint = S[302535920000766--[[This will change ALL shifts.--]]],
 		}
 	end
@@ -407,7 +407,7 @@ I think somebody has been playing too much Fallout...--]]],
 		local hint_low = S[302535920000767--[[Lower = more babies--]]]
 		local hint_high = S[302535920000768--[[Higher = less babies--]]]
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 0,value = 0,hint = hint_low},
 			{text = 35,value = 35,hint = hint_low},
 			{text = 140,value = 140,hint = hint_high},
@@ -625,7 +625,7 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000782--[[%s: Getting away ain't that easy--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.LowSanitySuicideChance)),
-			Trans(4576--[[Chance Of Suicide--]]),
+			Translate(4576--[[Chance Of Suicide--]]),
 			default_icon
 		)
 	end
@@ -716,7 +716,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.DefaultOutsideWorkplacesRadius
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
 			{text = 25,value = 25},
@@ -779,8 +779,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		}
 
 		function ChoGGi.MenuFuncs.SetDeathAge()
-			local default_str = Trans(1000121--[[Default--]])
-			local hint_str = Trans(9559--[[Well, we needed to know that for sure I guess.--]])
+			local default_str = Translate(1000121--[[Default--]])
+			local hint_str = Translate(9559--[[Well, we needed to know that for sure I guess.--]])
 			local item_list = {
 				{text = default_str,value = default_str,hint = S[302535920000794--[[Uses same code as game to pick death ages.--]]]},
 				{text = 60,value = 60},
@@ -852,7 +852,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		for i = 1, #objs do
 			local o = objs[i]
 			if o.specialist == "none" then
-				ChoGGi.ComFuncs.ColonistUpdateSpecialization(o,Trans(3490--[[Random--]]))
+				ChoGGi.ComFuncs.ColonistUpdateSpecialization(o,Translate(3490--[[Random--]]))
 			end
 		end
 
@@ -866,7 +866,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	function ChoGGi.MenuFuncs.SetColonistsAge(action)
 		local setting_mask = action.setting_mask
 
-		local default_str = Trans(1000121--[[Default--]])
+		local default_str = Translate(1000121--[[Default--]])
 		local default_setting = default_str
 		local TraitPresets = TraitPresets
 
@@ -876,7 +876,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			setting_name = "NewColonistAge"
 		else
 			setting_type = ""
-			default_setting = Trans(3490--[[Random--]])
+			default_setting = Translate(3490--[[Random--]])
 		end
 
 		local item_list = {
@@ -892,13 +892,13 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local age = ChoGGi.Tables.ColonistAges[i]
 			local hint
 			if age == "Child" then
-				hint = Trans(TraitPresets[age].description) .. "\n\n" .. Trans(6779--[[Warning--]]) .. ": " .. S[302535920000805--[[Child will remove specialization.--]]]
+				hint = Translate(TraitPresets[age].description) .. "\n\n" .. Translate(6779--[[Warning--]]) .. ": " .. S[302535920000805--[[Child will remove specialization.--]]]
 			else
-				hint = Trans(TraitPresets[age].description)
+				hint = Translate(TraitPresets[age].description)
 			end
 			c = c + 1
 			item_list[c] = {
-				text = Trans(TraitPresets[age].display_name),
+				text = Translate(TraitPresets[age].display_name),
 				value = age,
 				hint = hint,
 				icon = ChoGGi.Tables.ColonistAgeImages[age],
@@ -958,8 +958,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			end
 
 			MsgPopup(
-				choice[1].text .. ": " .. setting_type .. Trans(547--[[Colonists--]]),
-				Trans(547--[[Colonists--]]),
+				choice[1].text .. ": " .. setting_type .. Translate(547--[[Colonists--]]),
+				Translate(547--[[Colonists--]]),
 				default_icon
 			)
 		end
@@ -990,10 +990,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		if setting_mask == 1 then
 			setting_type = S[302535920001356--[[New--]]] .. " "
 			setting_name = "NewColonistGender"
-			default_setting = Trans(1000121--[[Default--]])
+			default_setting = Translate(1000121--[[Default--]])
 		else
 			setting_type = ""
-			default_setting = Trans(3490--[[Random--]])
+			default_setting = Translate(3490--[[Random--]])
 		end
 
 		local item_list = {
@@ -1014,8 +1014,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local gender = ChoGGi.Tables.ColonistGenders[i]
 			c = c + 1
 			item_list[c] = {
-				text = Trans(TraitPresets[gender].display_name),
-				hint = Trans(TraitPresets[gender].description),
+				text = Translate(TraitPresets[gender].display_name),
+				hint = Translate(TraitPresets[gender].description),
 				icon = ChoGGi.Tables.ColonistGenderImages[gender],
 				icon_scale = 500,
 				value = gender,
@@ -1045,7 +1045,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 			-- new
 			if setting_mask == 1 then
-				if value == Trans(1000121--[[Default--]]) then
+				if value == Translate(1000121--[[Default--]]) then
 					ChoGGi.UserSettings.NewColonistGender = nil
 				else
 					ChoGGi.ComFuncs.SetSavedSetting("NewColonistGender",value)
@@ -1075,8 +1075,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			end
 
 			MsgPopup(
-				choice[1].text .. ": " .. setting_type,Trans(547--[[Colonists--]]),
-				Trans(547--[[Colonists--]]),
+				choice[1].text .. ": " .. setting_type,Translate(547--[[Colonists--]]),
+				Translate(547--[[Colonists--]]),
 				default_icon
 			)
 		end
@@ -1107,10 +1107,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		if setting_mask == 1 then
 			setting_type = S[302535920001356--[[New--]]] .. " "
 			setting_name = "NewColonistSpecialization"
-			default_setting = Trans(1000121--[[Default--]])
+			default_setting = Translate(1000121--[[Default--]])
 		else
 			setting_type = ""
-			default_setting = Trans(3490--[[Random--]])
+			default_setting = Translate(3490--[[Random--]])
 		end
 
 		local item_list = {
@@ -1132,8 +1132,8 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		if setting_mask == 1 then
 			c = c + 1
 			item_list[c] = {
-				text = " " .. Trans(3490--[[Random--]]),
-				value = Trans(3490--[[Random--]]),
+				text = " " .. Translate(3490--[[Random--]]),
+				value = Translate(3490--[[Random--]]),
 				hint = S[302535920000811--[[Everyone gets a spec--]]],
 			}
 		end
@@ -1142,9 +1142,9 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			local spec = ChoGGi.Tables.ColonistSpecializations[i]
 			c = c + 1
 			item_list[c] = {
-				text = Trans(TraitPresets[spec].display_name),
+				text = Translate(TraitPresets[spec].display_name),
 				value = spec,
-				hint = Trans(TraitPresets[spec].description),
+				hint = Translate(TraitPresets[spec].description),
 				icon = ChoGGi.Tables.ColonistSpecImages[spec],
 				icon_scale = 500,
 			}
@@ -1172,7 +1172,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 			-- new
 			if setting_mask == 1 then
-				if value == Trans(1000121--[[Default--]]) then
+				if value == Translate(1000121--[[Default--]]) then
 					ChoGGi.UserSettings.NewColonistSpecialization = nil
 				else
 					ChoGGi.ComFuncs.SetSavedSetting("NewColonistSpecialization",value)
@@ -1202,7 +1202,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			end
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text),
-				Trans(547--[[Colonists--]]),
+				Translate(547--[[Colonists--]]),
 				default_icon
 			)
 		end
@@ -1233,10 +1233,10 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		if setting_mask == 1 then
 			setting_type = S[302535920001356--[[New--]]] .. " "
 			setting_name = "NewColonistRace"
-			default_setting = Trans(1000121--[[Default--]])
+			default_setting = Translate(1000121--[[Default--]])
 		else
 			setting_type = ""
-			default_setting = Trans(3490--[[Random--]])
+			default_setting = Translate(3490--[[Random--]])
 		end
 
 		local item_list = {
@@ -1244,7 +1244,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				text = " " .. default_setting,
 				value = default_setting,
 				race = default_setting,
-				hint = Trans(3490--[[Random--]]),
+				hint = Translate(3490--[[Random--]]),
 				icon = ChoGGi.Tables.ColonistRacesImages[default_setting],
 				icon_scale = 500,
 			},
@@ -1286,7 +1286,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 			-- new
 			if setting_mask == 1 then
-				if value == Trans(1000121--[[Default--]]) then
+				if value == Translate(1000121--[[Default--]]) then
 					ChoGGi.UserSettings.NewColonistRace = nil
 				else
 					ChoGGi.ComFuncs.SetSavedSetting("NewColonistRace",value)
@@ -1315,7 +1315,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			end
 
 			-- remove if random
-			if value == Trans(3490--[[Random--]]) then
+			if value == Translate(3490--[[Random--]]) then
 				MilestoneCompleted.DaddysLittleHitler = nil
 				UICity.ChoGGi.DaddysLittleHitler = nil
 			-- if only changing one colonists then you aren't hitler :)
@@ -1326,7 +1326,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].race,S[302535920000819--[[Nationalsozialistische Rassenhygiene--]]]),
-				Trans(547--[[Colonists--]]),
+				Translate(547--[[Colonists--]]),
 				default_icon
 			)
 		end
@@ -1356,7 +1356,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local hint,default_setting,setting_type
 		if setting_mask == 1 then
 			setting_type = S[302535920001356--[[New--]]] .. " "
-			default_setting = Trans(1000121--[[Default--]])
+			default_setting = Translate(1000121--[[Default--]])
 			hint = default_setting
 			local saved = ChoGGi.UserSettings.NewColonistTraits
 			if saved then
@@ -1369,7 +1369,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		elseif setting_mask == 2 then
 			hint = ""
 			setting_type = ""
-			default_setting = Trans(3490--[[Random--]])
+			default_setting = Translate(3490--[[Random--]])
 		end
 
 		hint = hint .. "\n\n" .. S[302535920000821--[[Defaults to adding traits, check Remove to remove. Use Shift or Ctrl to select multiple traits.--]]]
@@ -1379,7 +1379,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			{text = " " .. S[302535920000823--[[All Positive Traits--]]],value = "PositiveTraits",hint = S[302535920000824--[[All the positive traits...--]]]},
 			{text = " " .. S[302535920000825--[[All Negative Traits--]]],value = "NegativeTraits",hint = S[302535920000826--[[All the negative traits...--]]]},
 			{text = " " .. S[302535920001040--[[All Other Traits--]]],value = "OtherTraits",hint = S[302535920001050--[[All the other traits...--]]]},
-			{text = " " .. Trans(652319561018--[[All Traits--]]),value = "AllTraits",hint = S[302535920000828--[[All the traits...--]]]},
+			{text = " " .. Translate(652319561018--[[All Traits--]]),value = "AllTraits",hint = S[302535920000828--[[All the traits...--]]]},
 		}
 		local c = #item_list
 
@@ -1392,9 +1392,9 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				local id = list[i]
 				c = c + 1
 				item_list[c] = {
-					text = Trans(TraitPresets[id].display_name),
+					text = Translate(TraitPresets[id].display_name),
 					value = id,
-					hint = Trans(TraitPresets[id].description),
+					hint = Translate(TraitPresets[id].description),
 				}
 			end
 		end
@@ -1534,7 +1534,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 			MsgPopup(
 				#traits_list .. ": " .. setting_type .. S[302535920000830--[[Colonists traits set--]]],
-				Trans(547--[[Colonists--]]),
+				Translate(547--[[Colonists--]]),
 				default_icon
 			)
 		end
@@ -1581,13 +1581,13 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local item_list = {
 			{text = S[302535920000833--[[All Stats--]]] .. " " .. S[302535920000834--[[Max--]]],value = 1},
 			{text = S[302535920000833--[[All Stats--]]] .. " " .. S[302535920000835--[[Fill--]]],value = 2},
-			{text = Trans(4291--[[Health--]]) .. " " .. S[302535920000834--[[Max--]]],value = 3},
-			{text = Trans(4291--[[Health--]]) .. " " .. S[302535920000835--[[Fill--]]],value = 4},
-			{text = Trans(4297--[[Morale--]]) .. " " .. S[302535920000835--[[Fill--]]],value = 5},
-			{text = Trans(4293--[[Sanity--]]) .. " " .. S[302535920000834--[[Max--]]],value = 6},
-			{text = Trans(4293--[[Sanity--]]) .. " " .. S[302535920000835--[[Fill--]]],value = 7},
-			{text = Trans(4295--[[Comfort--]]) .. " " .. S[302535920000834--[[Max--]]],value = 8},
-			{text = Trans(4295--[[Comfort--]]) .. " " .. S[302535920000835--[[Fill--]]],value = 9},
+			{text = Translate(4291--[[Health--]]) .. " " .. S[302535920000834--[[Max--]]],value = 3},
+			{text = Translate(4291--[[Health--]]) .. " " .. S[302535920000835--[[Fill--]]],value = 4},
+			{text = Translate(4297--[[Morale--]]) .. " " .. S[302535920000835--[[Fill--]]],value = 5},
+			{text = Translate(4293--[[Sanity--]]) .. " " .. S[302535920000834--[[Max--]]],value = 6},
+			{text = Translate(4293--[[Sanity--]]) .. " " .. S[302535920000835--[[Fill--]]],value = 7},
+			{text = Translate(4295--[[Comfort--]]) .. " " .. S[302535920000834--[[Max--]]],value = 8},
+			{text = Translate(4295--[[Comfort--]]) .. " " .. S[302535920000835--[[Fill--]]],value = 9},
 		}
 
 		local function CallBackFunc(choice)
@@ -1659,7 +1659,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000444--[[Set Stats--]]]),
-				Trans(547--[[Colonists--]]),
+				Translate(547--[[Colonists--]]),
 				default_icon
 			)
 		end
@@ -1686,7 +1686,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.SpeedColonist
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
 			{text = 5,value = 5 * r},
 			{text = 10,value = 10 * r},
 			{text = 15,value = 15 * r},
@@ -1736,7 +1736,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(choice[1].text,S[302535920000769--[[Selected--]]]),
-					Trans(547--[[Colonists--]]),
+					Translate(547--[[Colonists--]]),
 					default_icon
 				)
 			end
@@ -1766,7 +1766,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		local default_setting = ChoGGi.Consts.GravityColonist
 		local r = ChoGGi.Consts.ResourceScale
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 1,value = 1},
 			{text = 2,value = 2},
 			{text = 3,value = 3},
@@ -1823,7 +1823,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					S[302535920000839--[[Colonist gravity is now %s.--]]]:format(choice[1].text),
-					Trans(547--[[Colonists--]]),
+					Translate(547--[[Colonists--]]),
 					default_icon
 				)
 			end
@@ -1864,7 +1864,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 		end
 
 		local id = RetTemplateOrClass(obj)
-		local name = Trans(obj.display_name)
+		local name = Translate(obj.display_name)
 		local BuildingSettings = ChoGGi.UserSettings.BuildingSettings
 		if not BuildingSettings[id] or BuildingSettings[id] and not next(BuildingSettings[id]) then
 			BuildingSettings[id] = {
@@ -1883,7 +1883,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			item_list[c] = {
 				text = trait,
 				value = trait,
-				hint = str_hint .. status .. "\n" .. Trans(TraitPresets[trait].description),
+				hint = str_hint .. status .. "\n" .. Translate(TraitPresets[trait].description),
 			}
 		end
 		for i = 1, #ChoGGi.Tables.PositiveTraits do
@@ -1893,7 +1893,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			item_list[c] = {
 				text = trait,
 				value = trait,
-				hint = str_hint .. status .. "\n" .. Trans(TraitPresets[trait].description),
+				hint = str_hint .. status .. "\n" .. Translate(TraitPresets[trait].description),
 			}
 		end
 		for i = 1, #ChoGGi.Tables.OtherTraits do
@@ -1903,7 +1903,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 			item_list[c] = {
 				text = trait,
 				value = trait,
-				hint = str_hint .. status .. "\n" .. Trans(TraitPresets[trait].description),
+				hint = str_hint .. status .. "\n" .. Translate(TraitPresets[trait].description),
 			}
 		end
 
@@ -1954,7 +1954,7 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 
 			MsgPopup(
 				S[302535920000843--[[Toggled traits--]]] .. ": " .. #choice .. (check1 and " " .. S[302535920000844--[[Fired workers--]]] or ""),
-				Trans(4801--[[Workplace--]]),
+				Translate(4801--[[Workplace--]]),
 				default_icon
 			)
 		end

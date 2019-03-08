@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -48,7 +48,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001416--[[Force--]]] .. " " .. Trans(948928900281--[[Story Bits--]]),
+	Actions[c] = {ActionName = S[302535920001416--[[Force--]]] .. " " .. Translate(948928900281--[[Story Bits--]]),
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Force Story Bits",
 		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
@@ -176,7 +176,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(327465361219--[[Edit--]]) .. " " .. Trans(298035641454--[[Object--]]),
+	Actions[c] = {ActionName = Translate(327465361219--[[Edit--]]) .. " " .. Translate(298035641454--[[Object--]]),
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Manipulator",
 		ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
@@ -250,7 +250,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(298035641454--[[Object--]]) .. " " .. S[302535920001476--[[Flags--]]],
+	Actions[c] = {ActionName = Translate(298035641454--[[Object--]]) .. " " .. S[302535920001476--[[Flags--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Object Flags",
 		ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
@@ -351,9 +351,9 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001419--[[Follow Mouse Grid Trans--]]],
+	Actions[c] = {ActionName = S[302535920001419--[[Follow Mouse Grid Translate--]]],
 		ActionMenubar = str_Debug_Grids,
-		ActionId = ".Follow Mouse Grid Trans",
+		ActionId = ".Follow Mouse Grid Translate",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
@@ -363,7 +363,7 @@ function OnMsg.ClassesGenerate()
 		end,
 		OnAction = ChoGGi.MenuFuncs.debug_build_grid_settings,
 		setting_mask = "DebugGridOpacity",
-		ActionSortKey = "9Follow Mouse Grid Trans",
+		ActionSortKey = "9Follow Mouse Grid Translate",
 	}
 
 	local str_Debug_DebugFX = "ECM.Debug.Debug FX"

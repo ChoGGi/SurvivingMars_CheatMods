@@ -4,7 +4,7 @@ local type = type
 
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local S = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
@@ -27,7 +27,7 @@ function OnMsg.ClassesGenerate()
 			local rival = rival_colonies[i]
 			if not skip[rival.id] then
 				local existing = g_RivalAIs[rival.id]
-				local name = Trans(rival.display_name)
+				local name = Translate(rival.display_name)
 				local initial_res = {}
 
 				for j = 1, #rival.initial_resources do
@@ -44,7 +44,7 @@ function OnMsg.ClassesGenerate()
 					rival = rival,
 					existing = existing,
 					hint = name .. "\n\n"
-						.. Trans(rival.description) .. "\n\n" .. TableConcat(initial_res),
+						.. Translate(rival.description) .. "\n\n" .. TableConcat(initial_res),
 				}
 			end
 		end
@@ -100,7 +100,7 @@ function OnMsg.ClassesGenerate()
 
 			MsgPopup(
 				tostring(#choices),
-				Trans(11034--[[Rival Colonies--]])
+				Translate(11034--[[Rival Colonies--]])
 			)
 
 		end
@@ -108,7 +108,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = Trans(11034--[[Rival Colonies--]]),
+			title = Translate(11034--[[Rival Colonies--]]),
 			hint = S[302535920001460--[[Add/remove rival colonies.--]]],
 			multisel = true,
 			custom_type = 3,
@@ -141,12 +141,12 @@ function OnMsg.ClassesGenerate()
 				current = true
 			end
 			item_list[i] = {
-				text = Trans(c.title),
+				text = Translate(c.title),
 				value = c.id,
-				hint = Trans(c.description) .. "\n\n"
+				hint = Translate(c.description) .. "\n\n"
 					.. S[302535920001415--[[Sols to Complete: %s--]]]:format(c.time_completed / DayDuration)
 					.. "\n"
-					.. Trans(10489--[[<newline>Perfect time: <countdown2>--]]):gsub("<countdown2>",c.time_perfected / DayDuration)
+					.. Translate(10489--[[<newline>Perfect time: <countdown2>--]]):gsub("<countdown2>",c.time_perfected / DayDuration)
 					.. (current and "\n\n" .. S[302535920000106--[[Current--]]] or ""),
 			}
 		end
@@ -171,7 +171,7 @@ function OnMsg.ClassesGenerate()
 		local thread = UICity.challenge_thread
 		if not blacklist and IsValidThread(thread) then
 			local _,c = debug.getlocal(thread,1,1)
-			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(c.title) .. ", " .. c.id
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Translate(c.title) .. ", " .. c.id
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
@@ -202,9 +202,9 @@ function OnMsg.ClassesGenerate()
 					value = i,
 					hint = "<image " .. sponsor["goal_image_" .. i] .. ">\n\n"
 						.. S[302535920001409--[[Goal--]]] .. ": "
-						.. Trans(GetGoalDescription(sponsor, i)) .. "\n"
-						.. Trans(128569337702--[[Reward:--]]) .. " "
-						.. Trans(T{reward.Description, reward}),
+						.. Translate(GetGoalDescription(sponsor, i)) .. "\n"
+						.. Translate(128569337702--[[Reward:--]]) .. " "
+						.. Translate(T{reward.Description, reward}),
 					reward = reward,
 					goal = SponsorGoalsMap[sponsor["sponsor_goal_" .. i]],
 				}
@@ -295,9 +295,9 @@ function OnMsg.ClassesGenerate()
 
 				c = c + 1
 				item_list[c] = {
-					text = Trans(spon.display_name),
+					text = Translate(spon.display_name),
 					value = spon.id,
-					hint = Trans(T(spon.effect,stats[2]))
+					hint = Translate(T(spon.effect,stats[2]))
 						.. (spon.save_in ~= "" and "\n\nsave_in: " .. spon.save_in or ""),
 				}
 			end
@@ -338,7 +338,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = item_list,
 			title = S[302535920000712--[[Set Sponsor--]]],
-			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetMissionSponsor().display_name),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Translate(GetMissionSponsor().display_name),
 		}
 	end
 
@@ -366,9 +366,9 @@ function OnMsg.ClassesGenerate()
 				local user_set = UserSettings["Sponsor" .. spon.id]
 				c = c + 1
 				item_list[c] = {
-					text = Trans(spon.display_name),
+					text = Translate(spon.display_name),
 					value = spon.id,
-					hint = Trans(T(spon.effect,stats[2])) .. "\n\n" .. S[302535920001165--[[Enabled Status--]]]
+					hint = Translate(T(spon.effect,stats[2])) .. "\n\n" .. S[302535920001165--[[Enabled Status--]]]
 						.. (user_set and ": " .. user_set or " false")
 						.. (spon.save_in ~= "" and "\n\nsave_in: " .. spon.save_in or ""),
 				}
@@ -418,7 +418,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = item_list,
 			title = S[302535920000714--[[Set Bonuses Sponsor--]]],
-			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetMissionSponsor().display_name) .. "\n\n" .. S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]],
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Translate(GetMissionSponsor().display_name) .. "\n\n" .. S[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).--]]],
 			multisel = true,
 			checkboxes = {
 				{
@@ -447,9 +447,9 @@ function OnMsg.ClassesGenerate()
 			if comm.id ~= "random" and comm.id ~= "None" then
 				c = c + 1
 				item_list[c] = {
-					text = Trans(comm.display_name),
+					text = Translate(comm.display_name),
 					value = comm.id,
-					hint = Trans(comm.effect)
+					hint = Translate(comm.effect)
 				}
 			end
 		end
@@ -488,7 +488,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = item_list,
 			title = S[302535920000716--[[Set Commander--]]],
-			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetCommanderProfile().display_name),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Translate(GetCommanderProfile().display_name),
 		}
 	end
 
@@ -506,9 +506,9 @@ function OnMsg.ClassesGenerate()
 
 				c = c + 1
 				item_list[c] = {
-					text = Trans(comm.display_name),
+					text = Translate(comm.display_name),
 					value = comm.id,
-					hint = Trans(comm.effect) .. "\n\n"
+					hint = Translate(comm.effect) .. "\n\n"
 						.. S[302535920001165--[[Enabled Status--]]]
 						.. (user_set and ": " .. user_set or " false"),
 				}
@@ -559,7 +559,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = item_list,
 			title = S[302535920000718--[[Set Bonuses Commander--]]],
-			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(GetCommanderProfile().display_name),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Translate(GetCommanderProfile().display_name),
 			multisel = true,
 			checkboxes = {
 				{
@@ -584,7 +584,7 @@ function OnMsg.ClassesGenerate()
 		for id,def in pairs(MissionLogoPresetMap) do
 			c = c + 1
 			item_list[c] = {
-				text = Trans(def.display_name),
+				text = Translate(def.display_name),
 				value = id,
 				hint = "<image " .. def.image .. ">",
 			}
@@ -634,7 +634,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = item_list,
 			title = S[302535920001178--[[Set New Logo--]]],
-			hint = S[302535920000106--[[Current--]]] .. ": " .. Trans(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name),
+			hint = S[302535920000106--[[Current--]]] .. ": " .. Translate(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name),
 			height = 800.0,
 			custom_type = 7,
 		}
@@ -691,7 +691,7 @@ function OnMsg.ClassesGenerate()
 
 			MsgPopup(
 				S[302535920001179--[[%s occurrence is now: %s--]]]:format(setting_id,value),
-				Trans(3983--[[Disasters--]]),
+				Translate(3983--[[Disasters--]]),
 				"UI/Icons/Sections/attention.tga"
 			)
 		end
@@ -713,12 +713,12 @@ function OnMsg.ClassesGenerate()
 		for id,def in pairs(GameRulesMap) do
 			c = c + 1
 			item_list[c] = {
-				text = Trans(def.display_name),
+				text = Translate(def.display_name),
 				value = id,
-				hint = Trans(def.description) .. "\n"
-					.. Trans(3491--[[Challenge Mod (%)--]]) .. ": " .. def.challenge_mod .. "\n\n"
+				hint = Translate(def.description) .. "\n"
+					.. Translate(3491--[[Challenge Mod (%)--]]) .. ": " .. def.challenge_mod .. "\n\n"
 					.. (def.exclusionlist and S[302535920001357--[[Exclusion List--]]] .. ": " .. def.exclusionlist or "")
-					.. "\n".. Trans(def.flavor),
+					.. "\n".. Translate(def.flavor),
 			}
 		end
 
@@ -759,7 +759,7 @@ function OnMsg.ClassesGenerate()
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(#choice,S[302535920000129--[[Set--]]]),
-				Trans(8800--[[Game Rules--]]),
+				Translate(8800--[[Game Rules--]]),
 				"UI/Icons/Sections/workshifts.tga"
 			)
 		end
@@ -776,7 +776,7 @@ function OnMsg.ClassesGenerate()
 				c = c + 1
 				hint[c] = " "
 				c = c + 1
-				hint[c] = Trans(GameRulesMap[key].display_name)
+				hint[c] = Translate(GameRulesMap[key].display_name)
 			end
 		end
 		if hint then

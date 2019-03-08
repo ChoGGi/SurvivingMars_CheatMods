@@ -24,7 +24,7 @@ end
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 	local S = ChoGGi.Strings
@@ -721,7 +721,7 @@ function OnMsg.ClassesGenerate()
 		local c = 0
 
 		if IsValid(obj) and IsValidEntity(obj.ChoGGi_orig_entity) then
-			default = Trans(1000121--[[Default--]])
+			default = Translate(1000121--[[Default--]])
 			item_list[1] = {
 				text = " " .. default,
 				value = default,
@@ -825,7 +825,7 @@ function OnMsg.ClassesGenerate()
 
 		for i = 1, #states do
 			item_list[i] = {
-				text = Trans(1000037--[[Name--]]) .. ": " .. states[i] .. ", " .. S[302535920000858--[[Index--]]] .. ": " .. i,
+				text = Translate(1000037--[[Name--]]) .. ": " .. states[i] .. ", " .. S[302535920000858--[[Index--]]] .. ": " .. i,
 				value = states[i],
 			}
 		end
@@ -952,7 +952,7 @@ function OnMsg.ClassesGenerate()
 			spots[obj:GetSpotName(i)] = true
 		end
 
-		local default = Trans(1000121--[[Default--]])
+		local default = Translate(1000121--[[Default--]])
 
 		local item_list = {
 			{text = " " .. default,value = default},
@@ -1120,7 +1120,7 @@ function OnMsg.ClassesGenerate()
 			local fake_ged_socket = {
 				ShowMessage = function(title,msg)
 					if TGetID(title) == 12061 then
-						print("ShowMessage",Trans(title),Trans(msg))
+						print("ShowMessage",Translate(title),Translate(msg))
 					end
 				end,
 			}
@@ -2651,8 +2651,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
 
 			local item_list = {
-				{text = Trans(754117323318--[[Enable--]]),value = true,hint = S[302535920001081--[[Changes signs to materials.--]]]},
-				{text = Trans(251103844022--[[Disable--]]),value = false,hint = S[302535920001082--[[Changes materials to signs.--]]]},
+				{text = Translate(754117323318--[[Enable--]]),value = true,hint = S[302535920001081--[[Changes signs to materials.--]]]},
+				{text = Translate(251103844022--[[Disable--]]),value = false,hint = S[302535920001082--[[Changes materials to signs.--]]]},
 			}
 
 			local function CallBackFunc(choice)
@@ -2754,7 +2754,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				local str_len = #path
 
 				print(S[302535920000497--[[Hook Started--]]],path,line,mask,count)
-				MsgPopup(S[302535920000497--[[Hook Started--]]],Trans(1000113--[[Debug--]]))
+				MsgPopup(S[302535920000497--[[Hook Started--]]],Translate(1000113--[[Debug--]]))
 
 				collectgarbage()
 				local function hook_func(event)
@@ -2783,7 +2783,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				debug.sethook(hook_func,mask or "c", count)
 			else
 				print(S[302535920000498--[[Hook Stopped--]]],path,line,mask,count)
-				MsgPopup(S[302535920000498--[[Hook Stopped--]]],Trans(1000113--[[Debug--]]))
+				MsgPopup(S[302535920000498--[[Hook Stopped--]]],Translate(1000113--[[Debug--]]))
 				ChoGGi.Temp.FunctionsHooked = false
 
 				-- stop capture
@@ -2920,12 +2920,12 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 						[S[302535920000106--[[Current--]]] .. " text"] = entry.text,
 						[S[302535920000106--[[Current--]]] .. " translated_new"] = entry.translated_new,
 						-- add some context
-						[Trans(1000231--[[Previous--]]) .. " id"] = eprev.id,
-						[Trans(1000231--[[Previous--]]) .. " text"] = eprev.text,
-						[Trans(1000231--[[Previous--]]) .. " translated_new"] = eprev.translated_new,
-						[Trans(1000232--[[Next--]]) .. " id"] = enext.id,
-						[Trans(1000232--[[Next--]]) .. " text"] = enext.text,
-						[Trans(1000232--[[Next--]]) .. " translated_new"] = enext.translated_new,
+						[Translate(1000231--[[Previous--]]) .. " id"] = eprev.id,
+						[Translate(1000231--[[Previous--]]) .. " text"] = eprev.text,
+						[Translate(1000231--[[Previous--]]) .. " translated_new"] = eprev.translated_new,
+						[Translate(1000232--[[Next--]]) .. " id"] = enext.id,
+						[Translate(1000232--[[Next--]]) .. " text"] = enext.text,
+						[Translate(1000232--[[Next--]]) .. " translated_new"] = enext.translated_new,
 					}
 				end
 			end
@@ -3071,12 +3071,12 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					test_csv = test_csv,
 					out_table = out_table,
 					out_gendertable = out_gendertable,
-				},nil,S[302535920001123--[[Test Locale--]]] .. ": " .. Trans(951--[[Failed to complete operation.--]]))
+				},nil,S[302535920001123--[[Test Locale--]]] .. ": " .. Translate(951--[[Failed to complete operation.--]]))
 			else
 				ChoGGi.ComFuncs.OpenInExamineDlg({
 					out_table = out_table,
 					out_gendertable = out_gendertable,
-				},nil,S[302535920001123--[[Test Locale--]]] .. ": " .. Trans(1000015--[[Success--]]))
+				},nil,S[302535920001123--[[Test Locale--]]] .. ": " .. Translate(1000015--[[Success--]]))
 			end
 
 		end
@@ -3096,7 +3096,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					return obj
 				else
 					-- if there's any <image, <color, etc tags
-					return Trans(obj)
+					return Translate(obj)
 				end
 			end
 			--
@@ -3130,7 +3130,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					return "box" .. tostring(obj)
 				else
 					-- show translated text if possible and return a clickable link
-					local trans_str = Trans(obj)
+					local trans_str = Translate(obj)
 					if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
 						return tostring(obj)
 					end

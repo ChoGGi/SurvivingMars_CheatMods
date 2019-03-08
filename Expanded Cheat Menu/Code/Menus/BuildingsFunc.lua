@@ -8,7 +8,7 @@ local default_icon2 = "UI/Icons/Sections/storage.tga"
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 	local S = ChoGGi.Strings
 
@@ -110,8 +110,8 @@ function OnMsg.ClassesGenerate()
 		local obj = ChoGGi.ComFuncs.SelObject()
 		if not obj or not IsKindOf(obj,"TrainingBuilding") then
 			MsgPopup(
-				S[302535920001116--[[Select a %s.--]]]:format(Trans(5443--[[Training Buildings--]])),
-				Trans(5443--[[Training Buildings--]])
+				S[302535920001116--[[Select a %s.--]]]:format(Translate(5443--[[Training Buildings--]])),
+				Translate(5443--[[Training Buildings--]])
 			)
 			return
 		end
@@ -121,7 +121,7 @@ function OnMsg.ClassesGenerate()
 		local UserSettings = ChoGGi.UserSettings
 
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]),value = default_setting},
+			{text = Translate(1000121--[[Default--]]),value = default_setting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -187,8 +187,8 @@ function OnMsg.ClassesGenerate()
 		local obj = ChoGGi.ComFuncs.SelObject()
 		if not obj or not IsKindOf(obj,"StatsChange") then
 			MsgPopup(
-				S[302535920001116--[[Select a %s.--]]]:format(Trans(5439--[[Service Buildings--]])),
-				Trans(4810--[[Service--]]),
+				S[302535920001116--[[Select a %s.--]]]:format(Translate(5439--[[Service Buildings--]])),
+				Translate(4810--[[Service--]]),
 				"UI/Icons/Sections/morale.tga"
 			)
 			return
@@ -202,26 +202,26 @@ function OnMsg.ClassesGenerate()
 		local ReturnEditorType = ChoGGi.ComFuncs.ReturnEditorType
 		local hint_type = S[302535920000138--[[Value needs to be a %s.--]]]
 		local item_list = {
-			{text = Trans(728--[[Health change on visit--]]),value = obj:GetClassValue("health_change") / r,setting = "health_change",hint = hint_type:format(ReturnEditorType(obj.properties,"id","health_change"))},
-			{text = Trans(729--[[Sanity change on visit--]]),value = objobj:GetClassValue("sanity_change") / r,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(obj.properties,"id","sanity_change"))},
-			{text = Trans(730--[[Service Comfort--]]),value = obj:GetClassValue("service_comfort") / r,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(obj.properties,"id","service_comfort"))},
-			{text = Trans(731--[[Comfort increase on visit--]]),value = obj:GetClassValue("comfort_increase") / r,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(obj.properties,"id","comfort_increase"))},
+			{text = Translate(728--[[Health change on visit--]]),value = obj:GetClassValue("health_change") / r,setting = "health_change",hint = hint_type:format(ReturnEditorType(obj.properties,"id","health_change"))},
+			{text = Translate(729--[[Sanity change on visit--]]),value = objobj:GetClassValue("sanity_change") / r,setting = "sanity_change",hint = hint_type:format(ReturnEditorType(obj.properties,"id","sanity_change"))},
+			{text = Translate(730--[[Service Comfort--]]),value = obj:GetClassValue("service_comfort") / r,setting = "service_comfort",hint = hint_type:format(ReturnEditorType(obj.properties,"id","service_comfort"))},
+			{text = Translate(731--[[Comfort increase on visit--]]),value = obj:GetClassValue("comfort_increase") / r,setting = "comfort_increase",hint = hint_type:format(ReturnEditorType(obj.properties,"id","comfort_increase"))},
 		}
 		local c = #item_list
 		if is_service then
 			c = c + 1
-			item_list[c] = {text = Trans(734--[[Visit duration--]]),value = obj:GetClassValue("visit_duration"),setting = "visit_duration",hint = hint_type:format(ReturnEditorType(obj.properties,"id","visit_duration"))}
+			item_list[c] = {text = Translate(734--[[Visit duration--]]),value = obj:GetClassValue("visit_duration"),setting = "visit_duration",hint = hint_type:format(ReturnEditorType(obj.properties,"id","visit_duration"))}
 			-- bool
 			c = c + 1
-			item_list[c] = {text = Trans(735--[[Usable by children--]]),value = obj:GetClassValue("usable_by_children"),setting = "usable_by_children",hint = hint_type:format(ReturnEditorType(obj.properties,"id","usable_by_children"))}
+			item_list[c] = {text = Translate(735--[[Usable by children--]]),value = obj:GetClassValue("usable_by_children"),setting = "usable_by_children",hint = hint_type:format(ReturnEditorType(obj.properties,"id","usable_by_children"))}
 			c = c + 1
-			item_list[c] = {text = Trans(736--[[Children Only--]]),value = obj:GetClassValue("children_only"),setting = "children_only",hint = hint_type:format(ReturnEditorType(obj.properties,"id","children_only"))}
+			item_list[c] = {text = Translate(736--[[Children Only--]]),value = obj:GetClassValue("children_only"),setting = "children_only",hint = hint_type:format(ReturnEditorType(obj.properties,"id","children_only"))}
 
 			for i = 1, 11 do
 				local name = "interest" .. i
 				c = c + 1
 				item_list[c] = {
-					text = Trans(732--[[Service interest--]]) .. " " .. i,
+					text = Translate(732--[[Service interest--]]) .. " " .. i,
 					value = obj[name],
 					setting = name,
 					hint = hint_type:format(ReturnEditorType(obj.properties,"id",name)) .. "\n\n" .. ServiceInterestsList,
@@ -246,7 +246,7 @@ function OnMsg.ClassesGenerate()
 			local set = S[302535920000129--[[Set--]]]
 
 			if choice[1].check1 then
-				set = Trans(1000121--[[Default--]])
+				set = Translate(1000121--[[Default--]])
 
 				bs_setting.service_stats = nil
 				-- get defaults
@@ -331,7 +331,7 @@ function OnMsg.ClassesGenerate()
 			skip_sort = true,
 			checkboxes = {
 				{
-					title = Trans(1000121--[[Default--]]),
+					title = Translate(1000121--[[Default--]]),
 					hint = S[302535920001338--[[Reset to default.--]]],
 				},
 			},
@@ -340,7 +340,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SetExportWhenThisAmount()
 		local ChoGGi = ChoGGi
-		local default_setting = Trans(1000121--[[Default--]])
+		local default_setting = Translate(1000121--[[Default--]])
 		local UserSettings = ChoGGi.UserSettings
 		local id = "SpaceElevator"
 		local item_list = {
@@ -405,7 +405,7 @@ function OnMsg.ClassesGenerate()
 		local UserSettings = ChoGGi.UserSettings
 		local id = "SpaceElevator"
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -481,7 +481,7 @@ function OnMsg.ClassesGenerate()
 		local UserSettings = ChoGGi.UserSettings
 		local r = ChoGGi.Consts.ResourceScale
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 20,value = 20},
@@ -526,7 +526,7 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,Trans(8830--[[Food Storage--]])),
+					ChoGGi.ComFuncs.SettingState(choice[1].text,Translate(8830--[[Food Storage--]])),
 					S[302535920000164--[[Storage Amount Of Diner & Grocery--]]],
 					"UI/Icons/Sections/Food_1.tga"
 				)
@@ -601,7 +601,7 @@ function OnMsg.ClassesGenerate()
 		local id = RetTemplateOrClass(obj)
 		local default_setting = g_Classes[id]:GetClassValue("protect_range")
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 40,value = 40},
 			{text = 80,value = 80},
 			{text = 160,value = 160},
@@ -673,7 +673,7 @@ function OnMsg.ClassesGenerate()
 			if not GetBuildingTechsStatus(id) then
 				c = c + 1
 				item_list[c] = {
-					text = Trans(bld.display_name),
+					text = Translate(bld.display_name),
 					value = id,
 				}
 			end
@@ -746,7 +746,7 @@ function OnMsg.ClassesGenerate()
 		if not obj or not obj[type1] then
 			MsgPopup(
 				str1,
-				Trans(3980--[[Buildings--]]),
+				Translate(3980--[[Buildings--]]),
 				default_icon
 			)
 			return
@@ -789,7 +789,7 @@ function OnMsg.ClassesGenerate()
 			"nopower",
 			"AddBuildingElecConsump",
 			"RemoveBuildingElecConsump",
-			Trans(683--[[Power Consumption--]])
+			Translate(683--[[Power Consumption--]])
 		)
 	end
 
@@ -800,7 +800,7 @@ function OnMsg.ClassesGenerate()
 			"nowater",
 			"AddBuildingWaterConsump",
 			"RemoveBuildingWaterConsump",
-			Trans(656--[[Water consumption--]])
+			Translate(656--[[Water consumption--]])
 		)
 	end
 
@@ -811,7 +811,7 @@ function OnMsg.ClassesGenerate()
 			"noair",
 			"AddBuildingAirConsump",
 			"RemoveBuildingAirConsump",
-			Trans(657--[[Oxygen Consumption--]])
+			Translate(657--[[Oxygen Consumption--]])
 		)
 	end
 
@@ -827,7 +827,7 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 		local id = RetTemplateOrClass(obj)
-		local name = Trans(obj.display_name)
+		local name = Translate(obj.display_name)
 		local r = ChoGGi.Consts.ResourceScale
 
 		-- get type of capacity
@@ -849,7 +849,7 @@ function OnMsg.ClassesGenerate()
 		local default_settingD = template[discharge] / r
 
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]),value = Trans(1000121--[[Default--]]),hint = S[302535920000124--[[Charge--]]]
+			{text = Translate(1000121--[[Default--]]),value = Translate(1000121--[[Default--]]),hint = S[302535920000124--[[Charge--]]]
 				.. ": " .. default_settingC .. " / " .. S[302535920000125--[[Discharge--]]]
 				.. ": " .. default_settingD},
 			{text = 25,value = 25},
@@ -893,7 +893,7 @@ function OnMsg.ClassesGenerate()
 				local numberC = value * r
 				local numberD = value * r
 
-				if value == Trans(1000121--[[Default--]]) then
+				if value == Translate(1000121--[[Default--]]) then
 					if check1 then
 						setting.charge = nil
 						numberC = default_settingC * r
@@ -1018,7 +1018,7 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 		local id = RetTemplateOrClass(obj)
-		local name = Trans(obj.display_name)
+		local name = Translate(obj.display_name)
 
 		local r = ChoGGi.Consts.ResourceScale
 		-- get type of producer/base amount
@@ -1034,7 +1034,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 25,value = 25},
 			{text = 50,value = 50},
 			{text = 75,value = 75},
@@ -1152,7 +1152,7 @@ function OnMsg.ClassesGenerate()
 		local id = RetTemplateOrClass(obj)
 
 		local item_list = {
-			{text = Trans(251103844022--[[Disable--]]),value = "Disable"},
+			{text = Translate(251103844022--[[Disable--]]),value = "Disable"},
 			{text = 100,value = 100},
 			{text = 150,value = 150},
 			{text = 250,value = 250},
@@ -1433,7 +1433,7 @@ function OnMsg.ClassesGenerate()
 			S[302535920000153--[["%s:
 	So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
 	it is a friendship greeting from the children of our small but great planet of Potatoho."--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CropFailThreshold)),
-			Trans(4711--[[Crop Fail Threshold--]]),
+			Translate(4711--[[Crop Fail Threshold--]]),
 			"UI/Icons/Sections/Food_1.tga",
 			true
 		)
@@ -1521,7 +1521,7 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			S[302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.InstantCables)),
-			Trans(134--[[Instant Build--]]),
+			Translate(134--[[Instant Build--]]),
 			"UI/Icons/Notifications/timer.tga"
 		)
 	end
@@ -1601,7 +1601,7 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 		if not table.find(bc,"id","HiddenX") then
 			bc[#bc+1] = {
 				id = "HiddenX",
-				name = Trans(1000155--[[Hidden--]]),
+				name = Translate(1000155--[[Hidden--]]),
 				image = "UI/Icons/bmc_placeholder.tga",
 				highlight = "UI/Icons/bmc_placeholder_shine.tga",
 			}
@@ -1653,7 +1653,7 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 
 		local default_setting = g_Classes[id]:GetClassValue("UIRange")
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 10,value = 10},
 			{text = 15,value = 15},
 			{text = 25,value = 25},
