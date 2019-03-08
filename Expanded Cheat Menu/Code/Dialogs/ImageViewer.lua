@@ -4,14 +4,14 @@
 
 local MeasureImage = UIL.MeasureImage
 
-local S
+local Strings
 local Translate
 local GetParentOfKind
 local PopupToggle
 local Random
 
 function OnMsg.ClassesGenerate()
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 	Random = ChoGGi.ComFuncs.Random
@@ -48,7 +48,7 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	end
 
 	self.idImageMenu = Random()
-	self.title = S[302535920001469--[[Image Viewer--]]]
+	self.title = Strings[302535920001469--[[Image Viewer--]]]
 	self.prefix = self.title
 
 	-- By the Power of Grayskull!
@@ -91,9 +91,9 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 
 	-- only one image and it's not a valid image so close
 	if wh == 0 and #self.images == 1 then
-		print(S[302535920000109--[[Invalid Image--]]])
+		print(Strings[302535920000109--[[Invalid Image--]]])
 		MsgPopup(
-			S[302535920000109--[[Invalid Image--]]],
+			Strings[302535920000109--[[Invalid Image--]]],
 			self.title
 		)
 		self:Close()

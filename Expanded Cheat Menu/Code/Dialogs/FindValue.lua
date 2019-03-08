@@ -2,7 +2,7 @@
 
 -- search through tables for values and display them in an examine dialog
 
-local S
+local Strings
 local RetName
 local FindThreadFunc
 local DotNameToObject
@@ -13,7 +13,7 @@ local pairs,type = pairs,type
 
 
 function OnMsg.ClassesGenerate()
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	RetName = ChoGGi.ComFuncs.RetName
 	FindThreadFunc = ChoGGi.ComFuncs.FindThreadFunc
 	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
@@ -40,7 +40,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 
 	self.obj = context.obj
 	self.obj_name = RetName(self.obj)
-	self.title = S[302535920001305--[[Find Within--]]] .. ": " .. self.obj_name
+	self.title = Strings[302535920001305--[[Find Within--]]] .. ": " .. self.obj_name
 	self.title_image = "CommonAssets/UI/Menu/EV_OpenFirst.tga"
 	self.title_image_single = true
 
@@ -56,8 +56,8 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		Id = "idEdit",
 		Dock = "left",
 		MinWidth = 550,
-		RolloverText = S[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
-		Hint = S[302535920001306--[[Enter text to find--]]],
+		RolloverText = Strings[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
+		Hint = Strings[302535920001306--[[Enter text to find--]]],
 		OnKbdKeyDown = self.Input_OnKbdKeyDown,
 	}, self.idTextArea)
 
@@ -65,7 +65,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		Id = "idLimit",
 		Dock = "right",
 		MinWidth = 50,
-		RolloverText = S[302535920001304--[[Set how many levels within this table we check into (careful making it too large).--]]],
+		RolloverText = Strings[302535920001304--[[Set how many levels within this table we check into (careful making it too large).--]]],
 		OnKbdKeyDown = self.Input_OnKbdKeyDown,
 	}, self.idTextArea)
 	self.idLimit:SetText("1")
@@ -79,9 +79,9 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	self.idFind = g_Classes.ChoGGi_Button:new({
 		Id = "idFind",
 		Dock = "left",
-		Text = S[302535920001302--[[Find--]]],
+		Text = Strings[302535920001302--[[Find--]]],
 		Background = g_Classes.ChoGGi_Button.bg_green,
-		RolloverText = S[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
+		RolloverText = Strings[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
 		Margins = box(10, 0, 0, 0),
 		OnPress = self.FindText,
 	}, self.idButtonContainer)
@@ -90,16 +90,16 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		Id = "idCaseSen",
 		Dock = "left",
 		Margins = box(15, 0, 0, 0),
-		Text = S[302535920000501--[[Case-sensitive--]]],
-		RolloverText = S[302535920000502--[[Treat uppercase and lowercase as distinct.--]]],
+		Text = Strings[302535920000501--[[Case-sensitive--]]],
+		RolloverText = Strings[302535920000502--[[Treat uppercase and lowercase as distinct.--]]],
 	}, self.idButtonContainer)
 
 	self.idThreads = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idThreads",
 		Dock = "left",
 		Margins = box(4, 0, 0, 0),
-		Text = S[302535920001360--[[Threads--]]],
-		RolloverText = S[302535920001361--[[Will also search thread func names for value (case is ignored for this).--]]],
+		Text = Strings[302535920001360--[[Threads--]]],
+		RolloverText = Strings[302535920001361--[[Will also search thread func names for value (case is ignored for this).--]]],
 	}, self.idButtonContainer)
 
 	self.idCancel = g_Classes.ChoGGi_Button:new({
@@ -108,7 +108,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		MinWidth = 80,
 		Text = Translate(6879--[[Cancel--]]),
 		Background = g_Classes.ChoGGi_Button.bg_red,
-		RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
+		RolloverText = Strings[302535920000074--[[Cancel without changing anything.--]]],
 		Margins = box(0, 0, 10, 0),
 		OnPress = self.idCloseX.OnPress,
 	}, self.idButtonContainer)
@@ -159,7 +159,7 @@ function ChoGGi_FindValueDlg:FindText()
 	)
 
 	-- and fire off a new dialog
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(self.found_objs,nil,S[302535920000854--[[Results Found--]]])
+	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(self.found_objs,nil,Strings[302535920000854--[[Results Found--]]])
 	-- should do this nicer, but whatever
 	CreateRealTimeThread(function()
 		Sleep(10)

@@ -2,7 +2,7 @@
 
 -- shows a dialog with to execute code in
 
-local S
+local Strings
 local Translate
 local blacklist
 local GetParentOfKind
@@ -10,7 +10,7 @@ local IsControlPressed
 local IsShiftPressed
 
 function OnMsg.ClassesGenerate()
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 	Translate = ChoGGi.ComFuncs.Translate
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
@@ -48,9 +48,9 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
 	end
 
 	self.obj = context.obj
-	self.obj_name = self.obj and ChoGGi.ComFuncs.RetName(self.obj) or S[302535920001073--[[Console--]]]
+	self.obj_name = self.obj and ChoGGi.ComFuncs.RetName(self.obj) or Strings[302535920001073--[[Console--]]]
 
-	self.title = S[302535920000040--[[Exec Code--]]] .. ": " .. self.obj_name
+	self.title = Strings[302535920000040--[[Exec Code--]]] .. ": " .. self.obj_name
 
 	if not self.obj then
 		self.dialog_width = 800.0
@@ -63,7 +63,7 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
 	self:AddScrollEdit()
 
 	-- hinty hint
-	self.idMoveControl.RolloverText = S[302535920000072--[["Paste or type code to be executed here, o is the examined object (ignored when opened from Console).
+	self.idMoveControl.RolloverText = Strings[302535920000072--[["Paste or type code to be executed here, o is the examined object (ignored when opened from Console).
 Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 	-- start off with this as code
 	self.idEdit:SetText(GetFromClipboard() or self.obj and "o" or "")
@@ -95,8 +95,8 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 		self.idExterEdit = g_Classes.ChoGGi_Button:new({
 			Id = "idExterEdit",
 			Dock = "left",
-			Text = S[302535920000471--[[External Editor--]]],
-			RolloverText = S[302535920001434--[["Use an external editor (see settings for editor cmd).
+			Text = Strings[302535920000471--[[External Editor--]]],
+			RolloverText = Strings[302535920001434--[["Use an external editor (see settings for editor cmd).
 Updates external file when you type in editor (only updates text when you press Read File).
 Press again to toggle updating."--]]],
 			Margins = box10,
@@ -106,8 +106,8 @@ Press again to toggle updating."--]]],
 		self.idExterReadFile = g_Classes.ChoGGi_Button:new({
 			Id = "idExterReadFile",
 			Dock = "left",
-			Text = S[302535920001435--[[Read File--]]],
-			RolloverText = S[302535920001436--[[Update editor text with text from %stempedit.lua.--]]]:format(self.idEdit.external_path),
+			Text = Strings[302535920001435--[[Read File--]]],
+			RolloverText = Strings[302535920001436--[[Update editor text with text from %stempedit.lua.--]]]:format(self.idEdit.external_path),
 			Margins = box10,
 			OnPress = self.idExterReadFileOnPress,
 			FoldWhenHidden = true,
@@ -117,8 +117,8 @@ Press again to toggle updating."--]]],
 		self.idExterFocusUpdate = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idExterFocusUpdate",
 			Dock = "left",
-			Text = S[302535920001438--[[Focus Update--]]],
-			RolloverText = S[302535920001437--[[Reads file when you focus on the edit box (instead of pressing Read File).--]]],
+			Text = Strings[302535920001438--[[Focus Update--]]],
+			RolloverText = Strings[302535920001437--[[Reads file when you focus on the edit box (instead of pressing Read File).--]]],
 			Margins = box10,
 			OnChange = self.idExterFocusUpdateOnChange,
 			FoldWhenHidden = true,
@@ -142,8 +142,8 @@ Press again to toggle updating."--]]],
 			Id = "idOK",
 			Dock = "left",
 			Background = g_Classes.ChoGGi_Button.bg_green,
-			Text = S[302535920000040--[[Exec Code--]]],
-			RolloverText = S[302535920000073--[[Execute code in text box (Ctrl-Enter or Shift-Enter will also work).--]]],
+			Text = Strings[302535920000040--[[Exec Code--]]],
+			RolloverText = Strings[302535920000073--[[Execute code in text box (Ctrl-Enter or Shift-Enter will also work).--]]],
 			Margins = box10,
 			OnPress = self.idOKOnPress,
 		}, self.idLeftButs)
@@ -152,8 +152,8 @@ Press again to toggle updating."--]]],
 			self.idInsertObj = g_Classes.ChoGGi_Button:new({
 				Id = "idInsertObj",
 				Dock = "left",
-				Text = S[302535920000075--[[Insert Obj--]]],
-				RolloverText = S[302535920000076--[[At caret position inserts: o--]]],
+				Text = Strings[302535920000075--[[Insert Obj--]]],
+				RolloverText = Strings[302535920000076--[[At caret position inserts: o--]]],
 				Margins = box10,
 				OnPress = self.idInsertObjOnPress,
 			}, self.idLeftButs)
@@ -169,8 +169,8 @@ Press again to toggle updating."--]]],
 	self.idToggleCode = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idToggleCode",
 		Dock = "left",
-		Text = S[302535920001474--[[Code Highlight--]]],
-		RolloverText = S[302535920001475--[[Toggle lua code highlighting.--]]],
+		Text = Strings[302535920001474--[[Code Highlight--]]],
+		RolloverText = Strings[302535920001475--[[Toggle lua code highlighting.--]]],
 		OnChange = self.idToggleCodeOnChange,
 	}, self.idRightButs)
 	self.idToggleCode:SetIconRow(2)
@@ -178,8 +178,8 @@ Press again to toggle updating."--]]],
 	self.idWrapLines = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idWrapLines",
 		Dock = "left",
-		Text = S[302535920001288--[[Wrap Lines--]]],
-		RolloverText = S[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
+		Text = Strings[302535920001288--[[Wrap Lines--]]],
+		RolloverText = Strings[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
 		Margins = box10,
 		OnChange = self.idWrapLinesOnChange,
 	}, self.idRightButs)
@@ -190,7 +190,7 @@ Press again to toggle updating."--]]],
 		Dock = "right",
 		Text = Translate(6879--[[Cancel--]]),
 		Background = g_Classes.ChoGGi_Button.bg_red,
-		RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
+		RolloverText = Strings[302535920000074--[[Cancel without changing anything.--]]],
 		Margins = box(0, 0, 10, 0),
 		OnPress = self.idCloseX.OnPress,
 	}, self.idRightButs)

@@ -7,7 +7,7 @@ function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 		local ChoGGi = ChoGGi
@@ -30,8 +30,8 @@ function OnMsg.ClassesGenerate()
 			{text = Translate(9003--[[Trigon Dome--]]),value = "DomeTrigon"},
 			{text = Translate(9009--[[Mega Trigon Dome--]]),value = "DomeMegaTrigon"},
 			{text = Translate(9012--[[Diamond Dome--]]),value = "DomeDiamond"},
-			{text = S[302535920000347--[[Star Dome--]]],value = "DomeStar"},
-			{text = S[302535920000351--[[Hexa Dome--]]],value = "DomeHexa"},
+			{text = Strings[302535920000347--[[Star Dome--]]],value = "DomeStar"},
+			{text = Strings[302535920000351--[[Hexa Dome--]]],value = "DomeHexa"},
 		}
 
 		if not ChoGGi.UserSettings.UnpinObjects then
@@ -39,7 +39,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- other hint type
-		local EnabledList = {S[302535920001096--[[Auto Unpinned--]]],":"}
+		local EnabledList = {Strings[302535920001096--[[Auto Unpinned--]]],":"}
 		local c = 0
 		local list = ChoGGi.UserSettings.UnpinObjects
 		if next(list) then
@@ -97,19 +97,19 @@ function OnMsg.ClassesGenerate()
 			end
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				S[302535920001093--[[Toggled: %s pinnable objects.--]]]:format(#choice),
-				S[302535920000686--[[Auto Unpin Objects--]]]
+				Strings[302535920001093--[[Toggled: %s pinnable objects.--]]]:format(#choice),
+				Strings[302535920000686--[[Auto Unpin Objects--]]]
 			)
 		end
 
 		c = c + 1
 		EnabledList[c] = "\n"
 		c = c + 1
-		EnabledList[c] = S[302535920001097--[[Enter a class name (SelectedObj.class) to add a custom entry.--]]]
+		EnabledList[c] = Strings[302535920001097--[[Enter a class name (SelectedObj.class) to add a custom entry.--]]]
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920001095--[[Auto Remove Items From Pin List--]]],
+			title = Strings[302535920001095--[[Auto Remove Items From Pin List--]]],
 			hint = TableConcat(EnabledList),
 			multisel = true,
 			skip_sort = true,
@@ -117,13 +117,13 @@ function OnMsg.ClassesGenerate()
 				at_least_one = true,
 				only_one = true,
 				{
-					title = S[302535920001098--[[Add to list--]]],
-					hint = S[302535920001099--[[Add these items to the unpin list.--]]],
+					title = Strings[302535920001098--[[Add to list--]]],
+					hint = Strings[302535920001099--[[Add these items to the unpin list.--]]],
 					checked = true,
 				},
 				{
-					title = S[302535920001100--[[Remove from list--]]],
-					hint = S[302535920001101--[[Remove these items from the unpin list.--]]],
+					title = Strings[302535920001100--[[Remove from list--]]],
+					hint = Strings[302535920001101--[[Remove these items from the unpin list.--]]],
 				},
 			},
 		}
@@ -138,7 +138,7 @@ function OnMsg.ClassesGenerate()
 		end)
 		MsgPopup(
 			"true",
-			S[302535920000688--[[Clean All Objects--]]]
+			Strings[302535920000688--[[Clean All Objects--]]]
 		)
 	end
 
@@ -156,7 +156,7 @@ function OnMsg.ClassesGenerate()
 
 		MsgPopup(
 			"true",
-			S[302535920000690--[[Fix All Objects--]]]
+			Strings[302535920000690--[[Fix All Objects--]]]
 		)
 	end
 
@@ -167,7 +167,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ExplorationQueueMaxSize),
-			S[302535920000700--[[Scanner Queue Larger--]]],
+			Strings[302535920000700--[[Scanner Queue Larger--]]],
 			"UI/Icons/Notifications/scan.tga"
 		)
 	end
@@ -175,16 +175,16 @@ function OnMsg.ClassesGenerate()
 --~ 	SetTimeFactor(1000) = normal speed
 	-- use GetTimeFactor() to check time for changing it so it can be paused?
 	function ChoGGi.MenuFuncs.SetGameSpeed()
-		local hint_str = S[302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>--]]]
+		local hint_str = Strings[302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>--]]]
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]),value = 1,hint = hint_str:format(1)},
-			{text = S[302535920001126--[[Double--]]],value = 2,hint = hint_str:format(2)},
-			{text = S[302535920001127--[[Triple--]]],value = 3,hint = hint_str:format(3)},
-			{text = S[302535920001128--[[Quadruple--]]],value = 4,hint = hint_str:format(4)},
-			{text = S[302535920001129--[[Octuple--]]],value = 8,hint = hint_str:format(8)},
-			{text = S[302535920001130--[[Sexdecuple--]]],value = 16,hint = hint_str:format(16)},
-			{text = S[302535920001131--[[Duotriguple--]]],value = 32,hint = hint_str:format(32)},
-			{text = S[302535920001132--[[Quattuorsexaguple--]]],value = 64,hint = hint_str:format(64)},
+			{text = Strings[302535920001126--[[Double--]]],value = 2,hint = hint_str:format(2)},
+			{text = Strings[302535920001127--[[Triple--]]],value = 3,hint = hint_str:format(3)},
+			{text = Strings[302535920001128--[[Quadruple--]]],value = 4,hint = hint_str:format(4)},
+			{text = Strings[302535920001129--[[Octuple--]]],value = 8,hint = hint_str:format(8)},
+			{text = Strings[302535920001130--[[Sexdecuple--]]],value = 16,hint = hint_str:format(16)},
+			{text = Strings[302535920001131--[[Duotriguple--]]],value = 32,hint = hint_str:format(32)},
+			{text = Strings[302535920001132--[[Quattuorsexaguple--]]],value = 64,hint = hint_str:format(64)},
 		}
 
 		local function CallBackFunc(choice)
@@ -212,8 +212,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					S[302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]]]:format(choice[1].text),
-					S[302535920000702--[[Game Speed--]]],
+					Strings[302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]]]:format(choice[1].text),
+					Strings[302535920000702--[[Game Speed--]]],
 					"UI/Icons/Notifications/timer.tga",
 					true
 				)
@@ -222,21 +222,21 @@ function OnMsg.ClassesGenerate()
 
 		local speeds = {
 			[3] = Translate(1000121--[[Default--]]),
-			[6] = S[302535920001126--[[Double--]]],
-			[9] = S[302535920001127--[[Triple--]]],
-			[12] = S[302535920001128--[[Quadruple--]]],
-			[24] = S[302535920001129--[[Octuple--]]],
-			[48] = S[302535920001130--[[Sexdecuple--]]],
-			[96] = S[302535920001131--[[Duotriguple--]]],
-			[192] = S[302535920001132--[[Quattuorsexaguple--]]],
+			[6] = Strings[302535920001126--[[Double--]]],
+			[9] = Strings[302535920001127--[[Triple--]]],
+			[12] = Strings[302535920001128--[[Quadruple--]]],
+			[24] = Strings[302535920001129--[[Octuple--]]],
+			[48] = Strings[302535920001130--[[Sexdecuple--]]],
+			[96] = Strings[302535920001131--[[Duotriguple--]]],
+			[192] = Strings[302535920001132--[[Quattuorsexaguple--]]],
 		}
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920000702--[[Game Speed--]]],
-			hint = S[302535920000933--[[Current speed: %s--]]]:format(speeds[const.mediumGameSpeed])
-				.. "\n" .. S[302535920001134--[[%s = base number %s multipled by custom value amount.--]]]:format(S[302535920000078--[[Custom Value--]]],const.mediumGameSpeed),
+			title = Strings[302535920000702--[[Game Speed--]]],
+			hint = Strings[302535920000933--[[Current speed: %s--]]]:format(speeds[const.mediumGameSpeed])
+				.. "\n" .. Strings[302535920001134--[[%s = base number %s multipled by custom value amount.--]]]:format(Strings[302535920000078--[[Custom Value--]]],const.mediumGameSpeed),
 			skip_sort = true,
 		}
 	end
@@ -262,24 +262,24 @@ function OnMsg.ClassesGenerate()
 			local obj = ChoGGi.ComFuncs.SelObject()
 			if not obj then
 				MsgPopup(
-					S[302535920001139--[[You need to select an object.--]]],
-					S[302535920000682--[[Change Entity--]]]
+					Strings[302535920001139--[[You need to select an object.--]]],
+					Strings[302535920000682--[[Change Entity--]]]
 				)
 				return
 			end
 
-			local hint_noanim = S[302535920001140--[[No animation.--]]]
+			local hint_noanim = Strings[302535920001140--[[No animation.--]]]
 			local item_list = {
-				{text = " " .. S[302535920001141--[[Default Entity--]]],value = "Default"},
-				{text = " " .. S[302535920001142--[[Kosmonavt--]]],value = "Kosmonavt"},
-				{text = " " .. S[302535920001143--[[Jama--]]],value = "Lama"},
-				{text = " " .. S[302535920001144--[[Green Man--]]],value = "GreenMan"},
-				{text = " " .. S[302535920001145--[[Planet Mars--]]],value = "PlanetMars",hint = hint_noanim},
-				{text = " " .. S[302535920001146--[[Planet Earth--]]],value = "PlanetEarth",hint = hint_noanim},
-				{text = " " .. S[302535920001147--[[Rocket Small--]]],value = "RocketUI",hint = hint_noanim},
-				{text = " " .. S[302535920001148--[[Rocket Regular--]]],value = "Rocket",hint = hint_noanim},
-				{text = " " .. S[302535920001149--[[Combat Rover--]]],value = "CombatRover",hint = hint_noanim},
-				{text = " " .. S[302535920001150--[[PumpStation Demo--]]],value = "PumpStationDemo",hint = hint_noanim},
+				{text = " " .. Strings[302535920001141--[[Default Entity--]]],value = "Default"},
+				{text = " " .. Strings[302535920001142--[[Kosmonavt--]]],value = "Kosmonavt"},
+				{text = " " .. Strings[302535920001143--[[Jama--]]],value = "Lama"},
+				{text = " " .. Strings[302535920001144--[[Green Man--]]],value = "GreenMan"},
+				{text = " " .. Strings[302535920001145--[[Planet Mars--]]],value = "PlanetMars",hint = hint_noanim},
+				{text = " " .. Strings[302535920001146--[[Planet Earth--]]],value = "PlanetEarth",hint = hint_noanim},
+				{text = " " .. Strings[302535920001147--[[Rocket Small--]]],value = "RocketUI",hint = hint_noanim},
+				{text = " " .. Strings[302535920001148--[[Rocket Regular--]]],value = "Rocket",hint = hint_noanim},
+				{text = " " .. Strings[302535920001149--[[Combat Rover--]]],value = "CombatRover",hint = hint_noanim},
+				{text = " " .. Strings[302535920001150--[[PumpStation Demo--]]],value = "PumpStationDemo",hint = hint_noanim},
 			}
 			local c = #item_list
 			local EntityData = EntityData
@@ -321,7 +321,7 @@ function OnMsg.ClassesGenerate()
 					end
 					MsgPopup(
 						choice[1].text .. ": " .. RetName(obj),
-						S[302535920000682--[[Change Entity--]]]
+						Strings[302535920000682--[[Change Entity--]]]
 					)
 				end
 			end
@@ -329,24 +329,24 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = item_list,
-				title = S[302535920000682--[[Change Entity--]]] .. ": " .. RetName(obj),
+				title = Strings[302535920000682--[[Change Entity--]]] .. ": " .. RetName(obj),
 				custom_type = 7,
-				hint = S[302535920000106--[[Current--]]] .. ": "
+				hint = Strings[302535920000106--[[Current--]]] .. ": "
 					.. (obj.ChoGGi_OrigEntity or obj:GetEntity()) .. "\n"
-					.. S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]
+					.. Strings[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]
 					.. "\n\n"
-					.. S[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
+					.. Strings[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
 
 Not permanent for colonists after they exit buildings (for now).--]]],
 				checkboxes = {
 					only_one = true,
 					{
-						title = S[302535920000750--[[Dome Only--]]],
-						hint = S[302535920001255--[[Will only apply to objects in the same dome as selected object.--]]],
+						title = Strings[302535920000750--[[Dome Only--]]],
+						hint = Strings[302535920001255--[[Will only apply to objects in the same dome as selected object.--]]],
 					},
 					{
-						title = S[302535920000752--[[Selected Only--]]],
-						hint = S[302535920001256--[[Will only apply to selected object.--]]],
+						title = Strings[302535920000752--[[Selected Only--]]],
+						hint = Strings[302535920001256--[[Will only apply to selected object.--]]],
 					},
 				},
 			}
@@ -395,8 +395,8 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 			local obj = ChoGGi.ComFuncs.SelObject()
 			if not obj then
 				MsgPopup(
-					S[302535920001139--[[You need to select an object.--]]],
-					S[302535920000684--[[Change Entity Scale--]]]
+					Strings[302535920001139--[[You need to select an object.--]]],
+					Strings[302535920000684--[[Change Entity Scale--]]]
 				)
 				return
 			end
@@ -441,7 +441,7 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 					end
 					MsgPopup(
 						choice[1].text .. ": " .. RetName(obj),
-						S[302535920000684--[[Change Entity Scale--]]],
+						Strings[302535920000684--[[Change Entity Scale--]]],
 						nil,
 						nil,
 						obj
@@ -452,19 +452,19 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = item_list,
-				title = S[302535920000684--[[Change Entity Scale--]]] .. ": " .. RetName(obj),
-				hint = S[302535920001156--[[Current object--]]] .. ": " .. obj:GetScale()
-					.. "\n" .. S[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],
+				title = Strings[302535920000684--[[Change Entity Scale--]]] .. ": " .. RetName(obj),
+				hint = Strings[302535920001156--[[Current object--]]] .. ": " .. obj:GetScale()
+					.. "\n" .. Strings[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],
 				skip_sort = true,
 				checkboxes = {
 					only_one = true,
 					{
-						title = S[302535920000750--[[Dome Only--]]],
-						hint = S[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]],
+						title = Strings[302535920000750--[[Dome Only--]]],
+						hint = Strings[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]],
 					},
 					{
-						title = S[302535920000752--[[Selected Only--]]],
-						hint = S[302535920000753--[[Will only apply to selected colonist.--]]],
+						title = Strings[302535920000752--[[Selected Only--]]],
+						hint = Strings[302535920000753--[[Will only apply to selected colonist.--]]],
 					},
 				},
 			}

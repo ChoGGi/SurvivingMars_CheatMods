@@ -25,7 +25,7 @@ Press OK to download it or check the Mod Manager to make sure it's enabled.]]) =
 end
 
 -- local some stuff that's called a lot
-local S
+local Strings
 local RetName
 local Random
 
@@ -39,7 +39,7 @@ local GetSurfaceHeight = terrain.GetSurfaceHeight
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	RetName = ChoGGi.ComFuncs.RetName
 	Random = ChoGGi.ComFuncs.Random
 end

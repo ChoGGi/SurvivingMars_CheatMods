@@ -24,14 +24,14 @@ Press OK to download it or check the Mod Manager to make sure it's enabled.]]) =
 	end
 end
 
-local S
+local Strings
 local RetName
 local PopupToggle
 local RetAllOfClass
 
 -- generate is late enough that my library is loaded
 function OnMsg.ClassesGenerate()
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	RetName = ChoGGi.ComFuncs.RetName
 	PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass

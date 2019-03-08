@@ -2,7 +2,7 @@
 
 function OnMsg.ClassesGenerate()
 	local Translate = ChoGGi.ComFuncs.Translate
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
@@ -17,7 +17,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000719--[[Add Orbital Probes--]]],
+	Actions[c] = {ActionName = Strings[302535920000719--[[Add Orbital Probes--]]],
 		ActionMenubar = str_ECM_Resources,
 		ActionId = ".Add Orbital Probes",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
@@ -25,10 +25,10 @@ function OnMsg.ClassesGenerate()
 			if GameState.gameplay then
 				return ChoGGi.ComFuncs.SettingState(
 					#(UICity.labels.OrbitalProbe or "") + #(UICity.labels.AdvancedOrbitalProbe or ""),
-					S[302535920000720--[[Add more probes.--]]]
+					Strings[302535920000720--[[Add more probes.--]]]
 				)
 			end
-			return S[302535920000720]
+			return Strings[302535920000720]
 		end,
 		OnAction = ChoGGi.MenuFuncs.AddOrbitalProbes,
 	}
@@ -41,7 +41,7 @@ function OnMsg.ClassesGenerate()
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.FoodPerRocketPassenger,
-				S[302535920000722--[[Change the amount of Food supplied with each Colonist arrival.--]]]
+				Strings[302535920000722--[[Change the amount of Food supplied with each Colonist arrival.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetFoodPerRocketPassenger,
@@ -52,7 +52,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_ECM_Resources,
 		ActionId = ".Prefab Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/gear.tga",
-		RolloverText = Translate(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]]) .. "\n" .. S[302535920000897--[[Drone prefabs--]]],
+		RolloverText = Translate(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]]) .. "\n" .. Strings[302535920000897--[[Drone prefabs--]]],
 		OnAction = ChoGGi.MenuFuncs.AddPrefabBuildings,
 	}
 
@@ -65,20 +65,20 @@ function OnMsg.ClassesGenerate()
 			if GameState.gameplay then
 				return ChoGGi.ComFuncs.SettingState(
 					LocaleInt(UICity.funding),
-					S[302535920000726--[[Add more funding (or reset back to 500 M).--]]]
+					Strings[302535920000726--[[Add more funding (or reset back to 500 M).--]]]
 				)
 			end
-			return S[302535920000726]
+			return Strings[302535920000726]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetFunding,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000727--[[Fill Selected Resource--]]],
+	Actions[c] = {ActionName = Strings[302535920000727--[[Fill Selected Resource--]]],
 		ActionMenubar = str_ECM_Resources,
 		ActionId = ".Fill Selected Resource",
 		ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
-		RolloverText = S[302535920000728--[[Fill the selected/moused over object's resource(s)--]]],
+		RolloverText = Strings[302535920000728--[[Fill the selected/moused over object's resource(s)--]]],
 		OnAction = ChoGGi.MenuFuncs.FillResource,
 		ActionShortcut = "Ctrl-F",
 		ActionBindable = true,

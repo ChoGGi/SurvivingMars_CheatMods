@@ -3,7 +3,7 @@
 function OnMsg.ClassesGenerate()
 	local Translate = ChoGGi.ComFuncs.Translate
 	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 	local StarkFistOfRemoval = "CommonAssets/UI/Menu/AlignSel.tga"
@@ -19,21 +19,21 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000369--[[No More Earthsick--]]],
+	Actions[c] = {ActionName = Strings[302535920000369--[[No More Earthsick--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".No More Earthsick",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NoMoreEarthsick,
-				S[302535920000370--[[Colonists will never become Earthsick (and removes any when you enable this).--]]]
+				Strings[302535920000370--[[Colonists will never become Earthsick (and removes any when you enable this).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000371--[[Traits: Restrict For Selected Building Type--]]],
+	Actions[c] = {ActionName = Strings[302535920000371--[[Traits: Restrict For Selected Building Type--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Traits: Restrict For Selected Building Type",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
@@ -41,15 +41,15 @@ function OnMsg.ClassesGenerate()
 			local obj = ChoGGi.ComFuncs.SelObject()
 			return obj and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".restricttraits",
-				S[302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block will override).--]]]
-			) or S[302535920000372]
+				Strings[302535920000372--[[Select a building and use this to only allow workers with certain traits to work there (block will override).--]]]
+			) or Strings[302535920000372]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetBuildingTraits,
 		toggle_type = "restricttraits",
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000373--[[Traits: Block For Selected Building Type--]]],
+	Actions[c] = {ActionName = Strings[302535920000373--[[Traits: Block For Selected Building Type--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Traits: Block For Selected Building Type",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
@@ -57,75 +57,75 @@ function OnMsg.ClassesGenerate()
 			local obj = ChoGGi.ComFuncs.SelObject()
 			return obj and ChoGGi.ComFuncs.SettingState(
 				"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".blocktraits",
-				S[302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]]
-			) or S[302535920000374]
+				Strings[302535920000374--[[Select a building and use this to block workers with certain traits from working there (overrides restrict).--]]]
+			) or Strings[302535920000374]
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetBuildingTraits,
 		toggle_type = "blocktraits",
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000375--[[The Soylent Option--]]],
+	Actions[c] = {ActionName = Strings[302535920000375--[[The Soylent Option--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".The Soylent Option",
 		ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
-		RolloverText = S[302535920000376--[[Turns selected/moused over colonist into food (between 1-5), or shows a list with choices.--]]],
+		RolloverText = Strings[302535920000376--[[Turns selected/moused over colonist into food (between 1-5), or shows a list with choices.--]]],
 		OnAction = ChoGGi.MenuFuncs.TheSoylentOption,
 		ActionShortcut = "Ctrl-Alt-Numpad 1",
 		ActionBindable = true,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000377--[[Colonists Move Speed--]]],
+	Actions[c] = {ActionName = Strings[302535920000377--[[Colonists Move Speed--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Colonists Move Speed",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SpeedColonist,
-				S[302535920000378--[[How fast colonists will move.--]]]
+				Strings[302535920000378--[[How fast colonists will move.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetColonistMoveSpeed,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000379--[[Add Or Remove Applicants--]]],
+	Actions[c] = {ActionName = Strings[302535920000379--[[Add Or Remove Applicants--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Add Or Remove Applicants",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				#(g_ApplicantPool or ""),
-				S[302535920000380--[[Add random applicants to the passenger pool (has option to remove all).--]]]
+				Strings[302535920000380--[[Add random applicants to the passenger pool (has option to remove all).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.AddApplicantsToPool,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000381--[[Colonists Gravity--]]],
+	Actions[c] = {ActionName = Strings[302535920000381--[[Colonists Gravity--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Colonists Gravity",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.GravityColonist,
-				S[302535920000382--[[Change gravity of Colonists.--]]]
+				Strings[302535920000382--[[Change gravity of Colonists.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetColonistsGravity,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000416--[[Colonists Suffocate--]]],
+	Actions[c] = {ActionName = Strings[302535920000416--[[Colonists Suffocate--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Colonists Suffocate",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.OxygenMaxOutsideTime,
-				S[302535920000417--[["Disable colonists suffocating with no oxygen.
+				Strings[302535920000417--[["Disable colonists suffocating with no oxygen.
 	Works after in-game hour."--]]]
 			)
 		end,
@@ -133,14 +133,14 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000418--[[Colonists Starve--]]],
+	Actions[c] = {ActionName = Strings[302535920000418--[[Colonists Starve--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Colonists Starve",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.TimeBeforeStarving,
-				S[302535920000419--[["Disable colonists starving with no food.
+				Strings[302535920000419--[["Disable colonists starving with no food.
 Works after colonist idle."--]]]
 			)
 		end,
@@ -148,14 +148,14 @@ Works after colonist idle."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000424--[[Set Age New--]]],
+	Actions[c] = {ActionName = Strings[302535920000424--[[Set Age New--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Set Age New",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NewColonistAge,
-				S[302535920000425--[[This will make all newly arrived and born colonists a certain age.--]]]
+				Strings[302535920000425--[[This will make all newly arrived and born colonists a certain age.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetColonistsAge,
@@ -163,24 +163,24 @@ Works after colonist idle."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000426--[[Set Age--]]],
+	Actions[c] = {ActionName = Strings[302535920000426--[[Set Age--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Set Age",
 		ActionIcon = StarkFistOfRemoval,
-		RolloverText = S[302535920000427--[[This will make all colonists a certain age.--]]],
+		RolloverText = Strings[302535920000427--[[This will make all colonists a certain age.--]]],
 		OnAction = ChoGGi.MenuFuncs.SetColonistsAge,
 		setting_mask = 2,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000428--[[Set Gender New--]]],
+	Actions[c] = {ActionName = Strings[302535920000428--[[Set Gender New--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Set Gender New",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NewColonistGender,
-				S[302535920000429--[[This will make all newly arrived and born colonists a certain gender.--]]]
+				Strings[302535920000429--[[This will make all newly arrived and born colonists a certain gender.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetColonistsGender,
@@ -188,24 +188,24 @@ Works after colonist idle."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000430--[[Set Gender--]]],
+	Actions[c] = {ActionName = Strings[302535920000430--[[Set Gender--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Set Gender",
 		ActionIcon = StarkFistOfRemoval,
-		RolloverText = S[302535920000431--[[This will make all colonists a certain gender.--]]],
+		RolloverText = Strings[302535920000431--[[This will make all colonists a certain gender.--]]],
 		OnAction = ChoGGi.MenuFuncs.SetColonistsGender,
 		setting_mask = 2,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000432--[[Set Specialization New--]]],
+	Actions[c] = {ActionName = Strings[302535920000432--[[Set Specialization New--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Set Specialization New",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NewColonistSpecialization,
-				S[302535920000433--[[This will make all newly arrived colonists a certain specialization (children and spec = black cube).--]]]
+				Strings[302535920000433--[[This will make all newly arrived colonists a certain specialization (children and spec = black cube).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetColonistsSpecialization,
@@ -213,24 +213,24 @@ Works after colonist idle."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000434--[[Set Specialization--]]],
+	Actions[c] = {ActionName = Strings[302535920000434--[[Set Specialization--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Set Specialization",
 		ActionIcon = StarkFistOfRemoval,
-		RolloverText = S[302535920000435--[[This will make all colonists a certain specialization.--]]],
+		RolloverText = Strings[302535920000435--[[This will make all colonists a certain specialization.--]]],
 		OnAction = ChoGGi.MenuFuncs.SetColonistsSpecialization,
 		setting_mask = 2,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000436--[[Set Race New--]]],
+	Actions[c] = {ActionName = Strings[302535920000436--[[Set Race New--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Set Race New",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NewColonistRace,
-				S[302535920000437--[[This will make all newly arrived and born colonists a certain race.--]]]
+				Strings[302535920000437--[[This will make all newly arrived and born colonists a certain race.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetColonistsRace,
@@ -238,24 +238,24 @@ Works after colonist idle."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000438--[[Set Race--]]],
+	Actions[c] = {ActionName = Strings[302535920000438--[[Set Race--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Set Race",
 		ActionIcon = StarkFistOfRemoval,
-		RolloverText = S[302535920000439--[[This will make all colonists a certain race.--]]],
+		RolloverText = Strings[302535920000439--[[This will make all colonists a certain race.--]]],
 		OnAction = ChoGGi.MenuFuncs.SetColonistsRace,
 		setting_mask = 2,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000440--[[Set Traits New--]]],
+	Actions[c] = {ActionName = Strings[302535920000440--[[Set Traits New--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Set Traits New",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NewColonistTraits,
-				S[302535920000441--[[This will make all newly arrived and born colonists have certain traits.--]]]
+				Strings[302535920000441--[[This will make all newly arrived and born colonists have certain traits.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetColonistsTraits,
@@ -263,35 +263,35 @@ Works after colonist idle."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000442--[[Set Traits--]]],
+	Actions[c] = {ActionName = Strings[302535920000442--[[Set Traits--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Set Traits",
 		ActionIcon = StarkFistOfRemoval,
-		RolloverText = S[302535920000443--[[Choose traits for all colonists.--]]],
+		RolloverText = Strings[302535920000443--[[Choose traits for all colonists.--]]],
 		OnAction = ChoGGi.MenuFuncs.SetColonistsTraits,
 		setting_mask = 2,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000444--[[Set Stats--]]],
+	Actions[c] = {ActionName = Strings[302535920000444--[[Set Stats--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Set Stats",
 		ActionIcon = StarkFistOfRemoval,
-		RolloverText = S[302535920000445--[["Change the stats of all colonists (health/sanity/comfort/morale).
+		RolloverText = Strings[302535920000445--[["Change the stats of all colonists (health/sanity/comfort/morale).
 
 	Not permanent."--]]],
 		OnAction = ChoGGi.MenuFuncs.SetColonistsStats,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000446--[[Colonist Death Age--]]],
+	Actions[c] = {ActionName = Strings[302535920000446--[[Colonist Death Age--]]],
 		ActionMenubar = str_ECM_Colonists,
 		ActionId = ".Colonist Death Age",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DeathAgeColonist,
-				S[302535920000447--[[Change the age at which colonists die (applies to newly arrived and born colonists as well).--]]]
+				Strings[302535920000447--[[Change the age at which colonists die (applies to newly arrived and born colonists as well).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetDeathAge,
@@ -308,32 +308,32 @@ Works after colonist idle."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000383--[[Fire All Colonists!--]]],
+	Actions[c] = {ActionName = Strings[302535920000383--[[Fire All Colonists!--]]],
 		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Fire All Colonists!",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
-		RolloverText = S[302535920000384--[[Fires everyone from every job.--]]],
+		RolloverText = Strings[302535920000384--[[Fires everyone from every job.--]]],
 		OnAction = ChoGGi.MenuFuncs.FireAllColonists,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000385--[[Set All Work Shifts--]]],
+	Actions[c] = {ActionName = Strings[302535920000385--[[Set All Work Shifts--]]],
 		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Set All Work Shifts",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
-		RolloverText = S[302535920000386--[[Set all shifts on or off (able to cancel).--]]],
+		RolloverText = Strings[302535920000386--[[Set all shifts on or off (able to cancel).--]]],
 		OnAction = ChoGGi.MenuFuncs.SetAllWorkShifts,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000387--[[Colonists Avoid Fired Workplace--]]],
+	Actions[c] = {ActionName = Strings[302535920000387--[[Colonists Avoid Fired Workplace--]]],
 		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Colonists Avoid Fired Workplace",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.AvoidWorkplaceSols,
-				S[302535920000388--[["After being fired, Colonists won't avoid that Workplace searching for a Workplace.
+				Strings[302535920000388--[["After being fired, Colonists won't avoid that Workplace searching for a Workplace.
 	Works after colonist idle."--]]]
 			)
 		end,
@@ -341,14 +341,14 @@ Works after colonist idle."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000389--[[Performance Penalty Non-Specialist--]]],
+	Actions[c] = {ActionName = Strings[302535920000389--[[Performance Penalty Non-Specialist--]]],
 		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Performance Penalty Non-Specialist",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NonSpecialistPerformancePenalty,
-				S[302535920000390--[["Disable performance penalty for non-Specialists.
+				Strings[302535920000390--[["Disable performance penalty for non-Specialists.
 Activated when colonist changes job."--]]]
 			)
 		end,
@@ -356,14 +356,14 @@ Activated when colonist changes job."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001446--[[Performance Penalty Connected Dome--]]],
+	Actions[c] = {ActionName = Strings[302535920001446--[[Performance Penalty Connected Dome--]]],
 		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Performance Penalty Connected Dome",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NonHomeDomePerformancePenalty,
-				S[302535920001451--[["Disable performance penalty for colonists working in another connected dome.
+				Strings[302535920001451--[["Disable performance penalty for colonists working in another connected dome.
 Activated when colonist changes job."--]]]
 			)
 		end,
@@ -371,52 +371,52 @@ Activated when colonist changes job."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000392--[[Outside Workplace Radius--]]],
+	Actions[c] = {ActionName = Strings[302535920000392--[[Outside Workplace Radius--]]],
 		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Outside Workplace Radius",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 					ChoGGi.UserSettings.DefaultOutsideWorkplacesRadius,
-					S[302535920000391--[[Change how many hexes colonists search outside their dome when looking for a Workplace.--]]]
+					Strings[302535920000391--[[Change how many hexes colonists search outside their dome when looking for a Workplace.--]]]
 				)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000393--[[Add Specialization To All--]]],
+	Actions[c] = {ActionName = Strings[302535920000393--[[Add Specialization To All--]]],
 		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Add Specialization To All",
 		ActionIcon = StarkFistOfRemoval,
-		RolloverText = S[302535920000394--[[If Colonist has no Specialization then add a random one--]]],
+		RolloverText = Strings[302535920000394--[[If Colonist has no Specialization then add a random one--]]],
 		OnAction = ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000339--[[Toggle All Shifts--]]],
+	Actions[c] = {ActionName = Strings[302535920000339--[[Toggle All Shifts--]]],
 		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Toggle All Shifts",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
-		RolloverText = S[302535920000340--[[Toggle all workshifts on or off (farms only get one on).--]]],
+		RolloverText = Strings[302535920000340--[[Toggle all workshifts on or off (farms only get one on).--]]],
 		OnAction = CheatToggleAllShifts,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000341--[[Update All Workplaces--]]],
+	Actions[c] = {ActionName = Strings[302535920000341--[[Update All Workplaces--]]],
 		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Update All Workplaces",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
-		RolloverText = S[302535920000342--[[Updates all colonist's workplaces.--]]],
+		RolloverText = Strings[302535920000342--[[Updates all colonist's workplaces.--]]],
 		OnAction = CheatUpdateAllWorkplaces,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000343--[[Clear Forced Workplaces--]]],
+	Actions[c] = {ActionName = Strings[302535920000343--[[Clear Forced Workplaces--]]],
 		ActionMenubar = str_ECM_Colonists_Workplaces,
 		ActionId = ".Clear Forced Workplaces",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
-		RolloverText = S[302535920000344--[["Removes ""user_forced_workplace"" from all colonists."--]]],
+		RolloverText = Strings[302535920000344--[["Removes ""user_forced_workplace"" from all colonists."--]]],
 		OnAction = CheatClearForcedWorkplaces,
 	}
 
@@ -431,42 +431,42 @@ Activated when colonist changes job."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000395--[[Min Comfort Birth--]]],
+	Actions[c] = {ActionName = Strings[302535920000395--[[Min Comfort Birth--]]],
 		ActionMenubar = str_ECM_Colonists_Stats,
 		ActionId = ".Min Comfort Birth",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.MinComfortBirth,
-				S[302535920000396--[[Change the limit on birthing comfort (more/less babies).--]]]
+				Strings[302535920000396--[[Change the limit on birthing comfort (more/less babies).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.SetMinComfortBirth,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000397--[[Visit Fail Penalty--]]],
+	Actions[c] = {ActionName = Strings[302535920000397--[[Visit Fail Penalty--]]],
 		ActionMenubar = str_ECM_Colonists_Stats,
 		ActionId = ".Visit Fail Penalty",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.VisitFailPenalty,
-				S[302535920000398--[[Disable comfort penalty when failing to satisfy a need via a visit.--]]]
+				Strings[302535920000398--[[Disable comfort penalty when failing to satisfy a need via a visit.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.VisitFailPenalty_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000399--[[Renegade Creation Toggle--]]],
+	Actions[c] = {ActionName = Strings[302535920000399--[[Renegade Creation Toggle--]]],
 		ActionMenubar = str_ECM_Colonists_Stats,
 		ActionId = ".Renegade Creation Toggle",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.RenegadeCreation,
-				S[302535920000400--[["Disable creation of renegades.
+				Strings[302535920000400--[["Disable creation of renegades.
 	Works after daily update."--]]]
 			)
 		end,
@@ -474,23 +474,23 @@ Activated when colonist changes job."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000401--[[Set Renegade Status--]]],
+	Actions[c] = {ActionName = Strings[302535920000401--[[Set Renegade Status--]]],
 		ActionMenubar = str_ECM_Colonists_Stats,
 		ActionId = ".Set Renegade Status",
 		ActionIcon = StarkFistOfRemoval,
-		RolloverText = S[302535920000448--[[I'm afraid it could be 9/11 times 1,000.--]]],
+		RolloverText = Strings[302535920000448--[[I'm afraid it could be 9/11 times 1,000.--]]],
 		OnAction = ChoGGi.MenuFuncs.SetRenegadeStatus,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000402--[[Morale Always Max--]]],
+	Actions[c] = {ActionName = Strings[302535920000402--[[Morale Always Max--]]],
 		ActionMenubar = str_ECM_Colonists_Stats,
 		ActionId = ".Morale Always Max",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.HighStatLevel,
-				S[302535920000403--[["Colonists always max morale (will effect birthing rates).
+				Strings[302535920000403--[["Colonists always max morale (will effect birthing rates).
 	Only works on colonists that have yet to spawn (maybe)."--]]]
 			)
 		end,
@@ -498,14 +498,14 @@ Activated when colonist changes job."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000404--[[See Dead Sanity Damage--]]],
+	Actions[c] = {ActionName = Strings[302535920000404--[[See Dead Sanity Damage--]]],
 		ActionMenubar = str_ECM_Colonists_Stats,
 		ActionId = ".See Dead Sanity Damage",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.SeeDeadSanity,
-				S[302535920000405--[["Disable colonists taking sanity damage from seeing dead.
+				Strings[302535920000405--[["Disable colonists taking sanity damage from seeing dead.
 	Works after in-game hour."--]]]
 			)
 		end,
@@ -513,14 +513,14 @@ Activated when colonist changes job."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000406--[[No Home Comfort Damage--]]],
+	Actions[c] = {ActionName = Strings[302535920000406--[[No Home Comfort Damage--]]],
 		ActionMenubar = str_ECM_Colonists_Stats,
 		ActionId = ".No Home Comfort Damage",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.NoHomeComfort,
-				S[302535920000407--[["Disable colonists taking comfort damage from not having a home.
+				Strings[302535920000407--[["Disable colonists taking comfort damage from not having a home.
 	Works after in-game hour."--]]]
 			)
 		end,
@@ -528,14 +528,14 @@ Activated when colonist changes job."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000408--[[Chance Of Sanity Damage--]]],
+	Actions[c] = {ActionName = Strings[302535920000408--[[Chance Of Sanity Damage--]]],
 		ActionMenubar = str_ECM_Colonists_Stats,
 		ActionId = ".Chance Of Sanity Damage",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DustStormSanityDamage,
-				S[302535920000409--[["Disable colonists taking sanity damage from certain events.
+				Strings[302535920000409--[["Disable colonists taking sanity damage from certain events.
 	Works after in-game hour."--]]]
 			)
 		end,
@@ -550,7 +550,7 @@ Activated when colonist changes job."--]]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.LowSanitySuicideChance,
-				S[302535920000415--[["Disable chance of suicide when Sanity reaches zero.
+				Strings[302535920000415--[["Disable chance of suicide when Sanity reaches zero.
 	Works after colonist idle."--]]]
 			)
 		end,
@@ -568,7 +568,7 @@ Activated when colonist changes job."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000410--[[University Grad Remove Idiot--]]],
+	Actions[c] = {ActionName = Strings[302535920000410--[[University Grad Remove Idiot--]]],
 		ActionMenubar = str_ECM_Colonists_Traits,
 		ActionId = ".University Grad Remove Idiot",
 		ActionIcon = StarkFistOfRemoval,
@@ -582,14 +582,14 @@ Activated when colonist changes job."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000412--[[Chance Of Negative Trait--]]],
+	Actions[c] = {ActionName = Strings[302535920000412--[[Chance Of Negative Trait--]]],
 		ActionMenubar = str_ECM_Colonists_Traits,
 		ActionId = ".Chance Of Negative Trait",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.LowSanityNegativeTraitChance,
-				S[302535920000413--[["isable chance of getting a negative trait when Sanity reaches zero.
+				Strings[302535920000413--[["isable chance of getting a negative trait when Sanity reaches zero.
 	Works after colonist idle."--]]]
 			)
 		end,
@@ -597,28 +597,28 @@ Activated when colonist changes job."--]]]
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000420--[[Positive Playground--]]],
+	Actions[c] = {ActionName = Strings[302535920000420--[[Positive Playground--]]],
 		ActionMenubar = str_ECM_Colonists_Traits,
 		ActionId = ".Positive Playground",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.positive_playground_chance,
-				S[302535920000421--[[100% Chance to get a perk (when grown) if colonist has visited a playground as a child.--]]]
+				Strings[302535920000421--[[100% Chance to get a perk (when grown) if colonist has visited a playground as a child.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.PositivePlayground_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000422--[[Project Morpheus Positive Trait--]]],
+	Actions[c] = {ActionName = Strings[302535920000422--[[Project Morpheus Positive Trait--]]],
 		ActionMenubar = str_ECM_Colonists_Traits,
 		ActionId = ".Project Morpheus Positive Trait",
 		ActionIcon = StarkFistOfRemoval,
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance,
-				S[302535920000423--[[100% Chance to get positive trait when Resting and ProjectMorpheus is active.--]]]
+				Strings[302535920000423--[[100% Chance to get positive trait when Resting and ProjectMorpheus is active.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle,

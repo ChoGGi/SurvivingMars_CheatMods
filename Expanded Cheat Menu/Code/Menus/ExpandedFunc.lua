@@ -5,7 +5,7 @@ local type,tostring = type,tostring
 function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local RetName = ChoGGi.ComFuncs.RetName
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local Translate = ChoGGi.ComFuncs.Translate
 
 	do -- BuildGridList
@@ -49,7 +49,7 @@ function OnMsg.ClassesGenerate()
 			grid_list.electricity.name = Translate(79--[[Power--]])
 			grid_list.electricity.__HideCables = {
 				ChoGGi_AddHyperLink = true,
-				name = S[302535920000142--[[Hide--]]] .. " " .. Translate(881--[[Power Cables--]]),
+				name = Strings[302535920000142--[[Hide--]]] .. " " .. Translate(881--[[Power Cables--]]),
 				func = function(ex_dlg)
 					FilterExamineList(ex_dlg,"ElectricityGridElement")
 				end,
@@ -57,7 +57,7 @@ function OnMsg.ClassesGenerate()
 			grid_list.water.name = Translate(681--[[Water--]])
 			grid_list.water.__HidePipes = {
 				ChoGGi_AddHyperLink = true,
-				name = S[302535920000142--[[Hide--]]] .. " " .. Translate(882--[[Pipes--]]),
+				name = Strings[302535920000142--[[Hide--]]] .. " " .. Translate(882--[[Pipes--]]),
 				func = function(ex_dlg)
 					FilterExamineList(ex_dlg,"LifeSupportGridElement")
 				end,
@@ -66,7 +66,7 @@ function OnMsg.ClassesGenerate()
 			BuildGrid(UICity.air,grid_list.air)
 			BuildGrid(UICity.electricity,grid_list.electricity)
 			BuildGrid(UICity.water,grid_list.water)
-			ChoGGi.ComFuncs.OpenInExamineDlg(grid_list,nil,S[302535920001307--[[Grid Info--]]])
+			ChoGGi.ComFuncs.OpenInExamineDlg(grid_list,nil,Strings[302535920001307--[[Grid Info--]]])
 		end
 	end -- do
 
@@ -113,7 +113,7 @@ function OnMsg.ClassesGenerate()
 	--~ 		end,
 --~ 			OutsideBuildings = function(obj)
 --~ 				print("OutsideBuildings")
---~ 				return "- " .. RetName(obj) .. " -\n" .. S[302535920000035--[[Grids--]]]
+--~ 				return "- " .. RetName(obj) .. " -\n" .. Strings[302535920000035--[[Grids--]]]
 --~ 					.. ": " .. Translate(682--[[Oxygen--]])
 --~ 					.. "(" .. (table_find(UICity.air,obj.air.grid) or Translate(6774--[[Error--]])) .. ") "
 --~ 					.. Translate(681--[[Water--]]) .. "("
@@ -136,7 +136,7 @@ function OnMsg.ClassesGenerate()
 					.. ": " .. #(obj.drones or "") .. "/" .. obj:GetMaxDronesCount()
 					.. "\n"
 					.. Translate(295--[[Idle <right>--]]):gsub("<right>",": " .. obj:GetIdleDronesCount())
-					.. ", " .. S[302535920000081--[[Workers--]]] .. ": " .. obj:GetMiningDronesCount()
+					.. ", " .. Strings[302535920000081--[[Workers--]]] .. ": " .. obj:GetMiningDronesCount()
 					.. ", " .. Translate(293--[[Broken <right>--]]):gsub("<right>",": " .. obj:GetBrokenDronesCount())
 					.. ", " .. Translate(294--[[Discharged <right>--]]):gsub("<right>",": " .. obj:GetDischargedDronesCount())
 			end,
@@ -147,7 +147,7 @@ function OnMsg.ClassesGenerate()
 					.. Translate(584248706535--[[Carrying<right><ResourceAmount>--]]):gsub("<right><ResourceAmount>",": " .. amount) .. (res and " (" .. res .. "), " or ", ")
 					.. Translate(3722--[[State--]]) .. ": " .. GetStateName(obj:GetState()) .. ", "
 					.. "\n" .. Translate(4448--[[Dust--]]) .. ": " .. (obj.dust / r) .. "/" .. (obj.dust_max / r)
-					.. ", " .. S[302535920001532--[[Battery--]]] .. ": " .. (obj.battery / r) .. "/" .. (obj.battery_max / r)
+					.. ", " .. Strings[302535920001532--[[Battery--]]] .. ": " .. (obj.battery / r) .. "/" .. (obj.battery_max / r)
 			end,
 			Production = function(obj)
 				local prod = type(obj.GetProducerObj) == "function" and obj:GetProducerObj()
@@ -240,7 +240,7 @@ function OnMsg.ClassesGenerate()
 					.. "\n" .. Translate(3862--[[Medic--]]) .. " (" .. #(l.needMedical or "") .. "): "
 					.. go_to:format(": " .. medic_need)
 					.. ", " .. Translate(526--[[Visitors--]]) .. ": " .. medic_use .. "/" .. medic_max
-					.. "\n\n" .. S[302535920000035--[[Grids--]]] .. ": "
+					.. "\n\n" .. Strings[302535920000035--[[Grids--]]] .. ": "
 					.. a .. "(" .. ga_id .. ") "
 					.. w .. "(" .. gw_id .. ") "
 					.. e .. "(" .. ge_id .. ")"
@@ -363,8 +363,8 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = item_list,
-				title = S[302535920000333--[[Building Info--]]],
-				hint = S[302535920001280--[[Double-click to toggle text (updates every second).--]]],
+				title = Strings[302535920000333--[[Building Info--]]],
+				hint = Strings[302535920001280--[[Double-click to toggle text (updates every second).--]]],
 				custom_type = 7,
 			}
 		end
@@ -374,14 +374,14 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.MonitorInfo()
 		local ChoGGi = ChoGGi
 		local item_list = {
-			{text = S[302535920000936--[[Something you'd like to see added?--]]],value = "New"},
+			{text = Strings[302535920000936--[[Something you'd like to see added?--]]],value = "New"},
 			{text = "",value = "New"},
-			{text = S[302535920000035--[[Grids--]]] .. ": " .. Translate(891--[[Air--]]),value = "Air"},
-			{text = S[302535920000035--[[Grids--]]] .. ": " .. Translate(79--[[Power--]]),value = "Power"},
-			{text = S[302535920000035--[[Grids--]]] .. ": " .. Translate(681--[[Water--]]),value = "Water"},
-			{text = S[302535920000035--[[Grids--]]] .. ": " .. Translate(891--[[Air--]]) .. "/" .. Translate(79--[[Power--]]) .. "/" .. Translate(681--[[Water--]]),value = "Grids"},
-			{text = S[302535920000042--[[City--]]],value = "City"},
-			{text = Translate(547--[[Colonists--]]),value = "Colonists",hint = S[302535920000937--[[Laggy with lots of colonists.--]]]},
+			{text = Strings[302535920000035--[[Grids--]]] .. ": " .. Translate(891--[[Air--]]),value = "Air"},
+			{text = Strings[302535920000035--[[Grids--]]] .. ": " .. Translate(79--[[Power--]]),value = "Power"},
+			{text = Strings[302535920000035--[[Grids--]]] .. ": " .. Translate(681--[[Water--]]),value = "Water"},
+			{text = Strings[302535920000035--[[Grids--]]] .. ": " .. Translate(891--[[Air--]]) .. "/" .. Translate(79--[[Power--]]) .. "/" .. Translate(681--[[Water--]]),value = "Grids"},
+			{text = Strings[302535920000042--[[City--]]],value = "City"},
+			{text = Translate(547--[[Colonists--]]),value = "Colonists",hint = Strings[302535920000937--[[Laggy with lots of colonists.--]]]},
 			{text = Translate(5238--[[Rockets--]]),value = "Rockets"},
 		}
 		if ChoGGi.testing then
@@ -395,8 +395,8 @@ function OnMsg.ClassesGenerate()
 			local value = choice[1].value
 			if value == "New" then
 				ChoGGi.ComFuncs.MsgWait(
-					S[302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]]:format(ChoGGi.email),
-					S[302535920000034--[[Request--]]]
+					Strings[302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]]:format(ChoGGi.email),
+					Strings[302535920000034--[[Request--]]]
 				)
 			else
 				ChoGGi.ComFuncs.DisplayMonitorList(value)
@@ -406,8 +406,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920000555--[[Monitor Info--]]],
-			hint = S[302535920000940--[[Select something to monitor.--]]],
+			title = Strings[302535920000555--[[Monitor Info--]]],
+			hint = Strings[302535920000940--[[Select something to monitor.--]]],
 			custom_type = 7,
 			custom_func = function(sel)
 				ChoGGi.ComFuncs.DisplayMonitorList(sel[1].value,sel[1].parentobj)

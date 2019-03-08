@@ -2,7 +2,7 @@
 
 -- used to do minimal editing of objects (or all of same type)
 
-local S
+local Strings
 local TableConcat
 local RetName
 local DebugGetInfo
@@ -17,7 +17,7 @@ local Min = Min
 local CmpLower = CmpLower
 
 function OnMsg.ClassesGenerate()
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	RetName = ChoGGi.ComFuncs.RetName
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
@@ -58,8 +58,8 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 
 	self.idAutoRefresh = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idAutoRefresh",
-		Text = S[302535920000084--[[Auto-Refresh--]]],
-		RolloverText = S[302535920001257--[[Auto-refresh list every second.--]]],
+		Text = Strings[302535920000084--[[Auto-Refresh--]]],
+		RolloverText = Strings[302535920001257--[[Auto-refresh list every second.--]]],
 		Dock = "left",
 		Margins = box(4,0,0,0),
 		OnChange = self.idAutoRefreshToggle,
@@ -75,33 +75,33 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		Text = Translate(1000220--[[Refresh--]]),
 		Dock = "left",
 		MinWidth = 80,
-		RolloverText = S[302535920000092--[[Updates list with any changed values.--]]],
+		RolloverText = Strings[302535920000092--[[Updates list with any changed values.--]]],
 		OnPress = self.UpdateListContent,
 	}, self.idButtonArea)
 
 	self.idGoto = g_Classes.ChoGGi_Button:new({
 		Id = "idGoto",
-		Text = S[302535920000093--[[Goto Obj--]]],
+		Text = Strings[302535920000093--[[Goto Obj--]]],
 		Dock = "left",
 		MinWidth = 90,
-		RolloverText = S[302535920000094--[[View/select object on map.--]]],
+		RolloverText = Strings[302535920000094--[[View/select object on map.--]]],
 		OnPress = self.idGotoOnPress,
 	}, self.idButtonArea)
 
 	self.idAddNew = g_Classes.ChoGGi_Button:new({
 		Id = "idAddNew",
-		Text = S[302535920001356--[[New--]]],
+		Text = Strings[302535920001356--[[New--]]],
 		Dock = "left",
-		RolloverText = S[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(self.obj_name),
+		RolloverText = Strings[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(self.obj_name),
 		OnPress = self.idAddNewOnPress,
 	}, self.idButtonArea)
 
 	self.idApplyAll = g_Classes.ChoGGi_Button:new({
 		Id = "idApplyAll",
-		Text = S[302535920000099--[[Apply To All--]]],
+		Text = Strings[302535920000099--[[Apply To All--]]],
 		Dock = "left",
 		MinWidth = 100,
-		RolloverText = S[302535920000100--[[Apply selected value to all objects of the same type.--]]],
+		RolloverText = Strings[302535920000100--[[Apply selected value to all objects of the same type.--]]],
 		OnPress = self.idApplyAllOnPress,
 	}, self.idButtonArea)
 
@@ -117,8 +117,8 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 
 	self.idEditValue = g_Classes.ChoGGi_TextInput:new({
 		Id = "idEditValue",
-		RolloverText = S[302535920000102--[[Use to change values of selected list item.--]]],
-		Hint = S[302535920000103--[[Edit Value--]]],
+		RolloverText = Strings[302535920000102--[[Use to change values of selected list item.--]]],
+		Hint = Strings[302535920000103--[[Edit Value--]]],
 		OnTextChanged = self.idEditValueOnTextChanged,
 	}, self.idEditArea)
 
@@ -173,8 +173,8 @@ function ChoGGi_ObjectEditorDlg:idAddNewOnPress()
 		sel_value = false
 	end
 	local item_list = {
-		{text = S[302535920000095--[[New Entry--]]],value = sel_name,hint = S[302535920000096--[[Enter the name of the new entry to be added.--]]]},
-		{text = S[302535920000097--[[New Value--]]],value = sel_value,hint = S[302535920000098--[[Set the value of the new entry to be added.--]]]},
+		{text = Strings[302535920000095--[[New Entry--]]],value = sel_name,hint = Strings[302535920000096--[[Enter the name of the new entry to be added.--]]]},
+		{text = Strings[302535920000097--[[New Value--]]],value = sel_value,hint = Strings[302535920000098--[[Set the value of the new entry to be added.--]]]},
 	}
 
 	local function CallBackFunc(choice)
@@ -192,7 +192,7 @@ function ChoGGi_ObjectEditorDlg:idAddNewOnPress()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = S[302535920000095--[[New Entry--]]],
+		title = Strings[302535920000095--[[New Entry--]]],
 		custom_type = 4,
 	}
 end
@@ -300,7 +300,7 @@ function ChoGGi_ObjectEditorDlg:UpdateListContent()
 	else
 		-- let user know
 		self.idList:Clear()
-		local err = S[302535920000090--[[Error opening: %s--]]]:format(self.obj_name)
+		local err = Strings[302535920000090--[[Error opening: %s--]]]:format(self.obj_name)
 		local listitem = self.idList:CreateTextItem(err)
 		listitem.RolloverText = err
 	end
@@ -360,10 +360,10 @@ function ChoGGi_ObjectEditorDlg:CreateProp(obj)
 
 			if len > 0 and is_next then
 				-- next works for both
-				table_data = len .. " / " .. S[302535920001057--[[Data--]]]
+				table_data = len .. " / " .. Strings[302535920001057--[[Data--]]]
 			elseif is_next then
 				-- ass based
-				table_data = S[302535920001057--[[Data--]]]
+				table_data = Strings[302535920001057--[[Data--]]]
 			else
 				-- blank table
 				table_data = 0

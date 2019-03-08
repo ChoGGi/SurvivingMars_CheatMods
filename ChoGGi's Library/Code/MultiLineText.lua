@@ -2,7 +2,7 @@
 
 -- displays text in an editable text box
 
-local S = ChoGGi.Strings
+local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
 
 local CreateRealTimeThread = CreateRealTimeThread
@@ -51,8 +51,8 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 		--
 		self.idSearchText = g_Classes.ChoGGi_TextInput:new({
 			Id = "idSearchText",
-			RolloverText = S[302535920001529--[["Press <color 0 200 0>Enter</color> to select next found text, and <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text."--]]],
-			Hint = S[302535920000044--[[Go To Text--]]],
+			RolloverText = Strings[302535920001529--[["Press <color 0 200 0>Enter</color> to select next found text, and <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text."--]]],
+			Hint = Strings[302535920000044--[[Go To Text--]]],
 			OnKbdKeyDown = self.idSearchTextOnKbdKeyDown,
 		}, self.idSearchArea)
 		--
@@ -61,8 +61,8 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 			Text = Translate(10123--[[Search--]]),
 			Dock = "right",
 			RolloverAnchor = "right",
-			RolloverHint = S[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
-			RolloverText = S[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
+			RolloverHint = Strings[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
+			RolloverText = Strings[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
 Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top."--]]],
 			OnMouseButtonDown = self.idSearchOnMouseButtonDown,
 		}, self.idSearchArea)
@@ -87,8 +87,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Id = "idOverwrite",
 			Dock = "left",
 			Margins = box(4,0,0,0),
-			Text = S[302535920000721--[[Overwrite--]]],
-			RolloverText = S[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
+			Text = Strings[302535920000721--[[Overwrite--]]],
+			RolloverText = Strings[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
 			OnChange = self.idOverwriteOnChange,
 		}, self.idButtonContainer)
 	end
@@ -96,8 +96,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idWrapLines = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idWrapLines",
 		Dock = "left",
-		Text = S[302535920001288--[[Wrap Lines--]]],
-		RolloverText = S[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
+		Text = Strings[302535920001288--[[Wrap Lines--]]],
+		RolloverText = Strings[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
 		Margins = box(10,0,0,0),
 		OnChange = self.idWrapLinesOnChange,
 	}, self.idButtonContainer)
@@ -106,8 +106,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idToggleCode = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idToggleCode",
 		Dock = "left",
-		Text = S[302535920001474--[[Code Highlight--]]],
-		RolloverText = S[302535920001475--[[Toggle lua code highlighting.--]]],
+		Text = Strings[302535920001474--[[Code Highlight--]]],
+		RolloverText = Strings[302535920001475--[[Toggle lua code highlighting.--]]],
 		Margins = box(10,0,0,0),
 		OnChange = self.idToggleCodeOnChange,
 	}, self.idButtonContainer)
@@ -117,7 +117,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		Dock = "right",
 		Text = Translate(6879--[[Cancel--]]),
 		Background = g_Classes.ChoGGi_Button.bg_red,
-		RolloverText = context.hint_cancel or S[302535920001423--[[Close without doing anything.--]]],
+		RolloverText = context.hint_cancel or Strings[302535920001423--[[Close without doing anything.--]]],
 		OnPress = self.idCancelOnPress,
 	}, self.idButtonContainer)
 

@@ -20,12 +20,12 @@ local transition_time = 0
 
 local RetName
 local GetParentOfKind
-local S
+local Strings
 
 -- need to wait till Library mod is loaded
 function OnMsg.ClassesGenerate()
 	local ChoGGi = ChoGGi
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 	RetName = ChoGGi.ComFuncs.RetName
 end
@@ -72,7 +72,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		ZOrder = 0,
 		RolloverTitle = [[Toggle Controls]],
 		RolloverText = [[Toggle showing controls at bottom.]],
-		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+		RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
 		OnMouseButtonDown = self.idCaptionToggleOnMouseButtonDown,
 		MouseCursor = "UI/Cursors/Rollover.tga",
 		HandleMouse = true,
@@ -111,7 +111,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		Text = [[Dbl Size]],
 		RolloverTitle = [[Double Size]],
 		RolloverText = [[Toggle between original size and double.]],
-		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+		RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
 		OnPress = self.idToggleDblSizeOnPress,
 	}, self.idToggleArea)
 
@@ -121,7 +121,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		Text = [[Reset]],
 		RolloverTitle = [[Reset Dialog]],
 		RolloverText = [[Moves map back to original position and size.]],
-		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+		RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
 		OnPress = self.idResetDialogOnPress,
 	}, self.idToggleArea)
 
@@ -131,7 +131,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		Text = [[Image]],
 		RolloverTitle = [[Use ScreenShots]],
 		RolloverText = [[Screenshots or topography images (needs my map images pack mod)..]],
-		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+		RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
 		OnChange = self.idUseScreenShotsOnChange,
 	}, self.idToggleArea)
 
@@ -145,7 +145,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		Text = [[Update]],
 		RolloverTitle = [[Update Image]],
 		RolloverText = [[This will update the map image (resets camera orientation).]],
-		RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+		RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
 		OnPress = self.idUpdateMapOnPress,
 	}, self.idToggleArea)
 	if not UseScreenshots then

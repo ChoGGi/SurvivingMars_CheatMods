@@ -116,7 +116,7 @@ function OnMsg.ClassesBuilt()
 
 	local AddXTemplate = ChoGGi.ComFuncs.AddXTemplate
 	local RetName = ChoGGi.ComFuncs.RetName
---~ 	local S = ChoGGi.Strings
+--~ 	local Strings = ChoGGi.Strings
 
 	-- pick/drop button for shuttle
 	AddXTemplate("PersonalShuttles_PickDrop","ipShuttle",{

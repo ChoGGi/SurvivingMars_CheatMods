@@ -53,7 +53,7 @@ function OnMsg.ClassesGenerate()
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	Translate = ChoGGi.ComFuncs.Translate
 
---~ 	local S = ChoGGi.Strings
+--~ 	local Strings = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
@@ -161,7 +161,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			MoveRC(2)
 		end,
-		ActionShortcut = "S",
+		ActionShortcut = "Strings",
 		ActionBindable = true,
 		ActionMode = "RCRemote",
 	}

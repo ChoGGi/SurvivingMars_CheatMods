@@ -438,7 +438,7 @@ function OnMsg.InGameInterfaceCreated()
 end
 
 function OnMsg.ClassesBuilt()
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 
 	-- add some prod info to selection panel

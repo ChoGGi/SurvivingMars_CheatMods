@@ -2,7 +2,7 @@
 
 -- mess with entities
 
-local S
+local Strings
 local RetName
 local Translate
 local GetParentOfKind
@@ -11,7 +11,7 @@ local GetParentOfKind
 
 
 function OnMsg.ClassesGenerate()
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	RetName = ChoGGi.ComFuncs.RetName
 	Translate = ChoGGi.ComFuncs.Translate
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
@@ -34,7 +34,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 
 	self.obj_name = RetName(context.obj)
 	self.obj = context.obj
-	self.title = Translate(327465361219--[[Edit--]]) .. " " .. Translate(298035641454--[[Object--]]) .. " " .. S[302535920001432--[[3D--]]] .. ": " .. self.obj_name
+	self.title = Translate(327465361219--[[Edit--]]) .. " " .. Translate(298035641454--[[Object--]]) .. " " .. Strings[302535920001432--[[3D--]]] .. ": " .. self.obj_name
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -72,7 +72,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 		self.idPos_Amount = g_Classes.ChoGGi_TextInput:new({
 			Id = "idPos_Amount",
 			RolloverText = "how much to %s by",
-			Hint = S[302535920000103--[[Edit Value--]]],
+			Hint = Strings[302535920000103--[[Edit Value--]]],
 			HAlign = "left",
 			MinWidth = 250,
 		}, self.idPos_AreaTop)
@@ -148,8 +148,8 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 
 	self.idEditValue = g_Classes.ChoGGi_TextInput:new({
 		Id = "idEditValue",
-		RolloverText = S[302535920000102--[[Use to change values of selected list item.--]]],
-		Hint = S[302535920000103--[[Edit Value--]]],
+		RolloverText = Strings[302535920000102--[[Use to change values of selected list item.--]]],
+		Hint = Strings[302535920000103--[[Edit Value--]]],
 		OnTextChanged = self.idEditValueOnTextChanged,
 	}, self.idEditArea)
 

@@ -7,7 +7,7 @@ function OnMsg.ClassesGenerate()
 	local Translate = ChoGGi.ComFuncs.Translate
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local DeleteObject = ChoGGi.ComFuncs.DeleteObject
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
 		local table_remove = table.remove
@@ -22,7 +22,7 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 		MsgPopup(
-			S[302535920001533--[[Remove Invalid Label Objects--]]],
+			Strings[302535920001533--[[Remove Invalid Label Objects--]]],
 			Translate(4493--[[All--]])
 		)
 	end
@@ -70,7 +70,7 @@ function OnMsg.ClassesGenerate()
 		end
 		MsgPopup(
 			Translate(4493--[[All--]]),
-			S[302535920001351--[[Rocket Crashes Game On Landing--]]]
+			Strings[302535920001351--[[Rocket Crashes Game On Landing--]]]
 		)
 	end
 
@@ -83,7 +83,7 @@ function OnMsg.ClassesGenerate()
 
 		MsgPopup(
 			Translate(4493--[[All--]]),
-			S[302535920001299--[[Toggle Working On All Buildings--]]]
+			Strings[302535920001299--[[Toggle Working On All Buildings--]]]
 		)
 	end
 
@@ -95,7 +95,7 @@ function OnMsg.ClassesGenerate()
 			local Sleep = Sleep
 			MsgPopup(
 				Translate(83--[[Domes--]]),
-				S[302535920001295--[[Drones Not Repairing Domes--]]]
+				Strings[302535920001295--[[Drones Not Repairing Domes--]]]
 			)
 			-- just in case someone decides to click it more than once...
 			if looping_thread then
@@ -134,7 +134,7 @@ function OnMsg.ClassesGenerate()
 				end
 				MsgPopup(
 					Translate(1157--[[Complete thread--]]),
-					S[302535920001295--[[Drones Not Repairing Domes--]]]
+					Strings[302535920001295--[[Drones Not Repairing Domes--]]]
 				)
 			end)
 		end
@@ -152,7 +152,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CheckForBorkedTransportPath),
-			S[302535920001266--[[Borked Transport Pathing--]]],
+			Strings[302535920001266--[[Borked Transport Pathing--]]],
 			"UI/Icons/IPButtons/transport_route.tga"
 		)
 	end
@@ -199,7 +199,7 @@ function OnMsg.ClassesGenerate()
 				end)
 				-- let user know something is happening
 				MsgPopup(
-					S[302535920000464--[[Updating Rovers--]]],
+					Strings[302535920000464--[[Updating Rovers--]]],
 					Translate(5438--[[Rovers--]])
 				)
 				--wait awhile just to be sure
@@ -239,10 +239,10 @@ function OnMsg.ClassesGenerate()
 			end
 
 			ChoGGi.ComFuncs.QuestionBox(
-				Translate(6779--[[Warning--]]) .. "!\n" .. S[302535920000055--[[Reset All Colonists--]]]
-					.. "\n" .. S[302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."--]]],
+				Translate(6779--[[Warning--]]) .. "!\n" .. Strings[302535920000055--[[Reset All Colonists--]]]
+					.. "\n" .. Strings[302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."--]]],
 				CallBackFunc,
-				Translate(6779--[[Warning--]]) .. ": " .. S[302535920000055--[[Reset All Colonists--]]]
+				Translate(6779--[[Warning--]]) .. ": " .. Strings[302535920000055--[[Reset All Colonists--]]]
 			)
 		end
 
@@ -262,7 +262,7 @@ function OnMsg.ClassesGenerate()
 
 			MsgPopup(
 				Translate(4493--[[All--]]),
-				S[302535920000591--[[Colonists Trying To Board Rocket Freezes Game--]]]
+				Strings[302535920000591--[[Colonists Trying To Board Rocket Freezes Game--]]]
 			)
 		end
 
@@ -288,7 +288,7 @@ function OnMsg.ClassesGenerate()
 				end
 			end
 			MsgPopup(
-				S[302535920000585--[[Colonists Stuck Outside Rocket--]]],
+				Strings[302535920000585--[[Colonists Stuck Outside Rocket--]]],
 				Translate(5238--[[Rockets--]])
 			)
 		end
@@ -305,7 +305,7 @@ function OnMsg.ClassesGenerate()
 		ResumePassEdits("ChoGGi.MenuFuncs.ParticlesWithNullPolylines")
 
 		MsgPopup(
-			S[302535920000593--[[Remove Particles With Null Polylines--]]],
+			Strings[302535920000593--[[Remove Particles With Null Polylines--]]],
 			Translate(4493--[[All--]])
 		)
 	end
@@ -315,7 +315,7 @@ function OnMsg.ClassesGenerate()
 		MapDelete(true, "UnpersistedMissingClass")
 		ResumePassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
 		MsgPopup(
-			S[302535920000587--[[Remove Missing Class Objects (Warning)--]]],
+			Strings[302535920000587--[[Remove Missing Class Objects (Warning)--]]],
 			Translate(4493--[[All--]])
 		)
 	end
@@ -341,7 +341,7 @@ function OnMsg.ClassesGenerate()
 		ResumePassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
 
 		MsgPopup(
-			S[302535920000595--[[Mirror Sphere Stuck--]]],
+			Strings[302535920000595--[[Mirror Sphere Stuck--]]],
 			Translate(4493--[[All--]])
 		)
 	end
@@ -358,7 +358,7 @@ function OnMsg.ClassesGenerate()
 			ChoGGi.ComFuncs.ResetHumanCentipedes()
 		end
 		MsgPopup(
-			S[302535920000597--[[Stutter With High FPS--]]],
+			Strings[302535920000597--[[Stutter With High FPS--]]],
 			Translate(4493--[[All--]])
 		)
 	end
@@ -385,7 +385,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.ComFuncs.ToggleWorking(o)
 			end)
 			MsgPopup(
-				S[302535920000599--[[Drones Keep Trying Blocked Areas--]]],
+				Strings[302535920000599--[[Drones Keep Trying Blocked Areas--]]],
 				Translate(4493--[[All--]])
 			)
 		end
@@ -397,7 +397,7 @@ function OnMsg.ClassesGenerate()
 			o:SetPos(HexGetNearestCenter(o:GetVisualPos()))
 		end)
 		MsgPopup(
-			S[302535920000621--[[Align All Buildings To Hex Grid--]]],
+			Strings[302535920000621--[[Align All Buildings To Hex Grid--]]],
 			Translate(4493--[[All--]])
 		)
 	end
@@ -426,8 +426,8 @@ function OnMsg.ClassesGenerate()
 			RemoveUnreachable("SupplyRocket")
 
 			MsgPopup(
-				S[302535920000601--[[Idle Drones Won't Build When Resources Available--]]],
-				S[302535920000971--[[Sites--]]]
+				Strings[302535920000601--[[Idle Drones Won't Build When Resources Available--]]],
+				Strings[302535920000971--[[Sites--]]]
 			)
 		end
 	end -- do
@@ -437,7 +437,7 @@ function OnMsg.ClassesGenerate()
 		MapDelete(true, "GridTile")
 		ResumePassEdits("ChoGGi.MenuFuncs.RemoveYellowGridMarks")
 		MsgPopup(
-			S[302535920000603--[[Remove Yellow Grid Marks--]]],
+			Strings[302535920000603--[[Remove Yellow Grid Marks--]]],
 			Translate(4493--[[All--]])
 		)
 	end
@@ -458,7 +458,7 @@ function OnMsg.ClassesGenerate()
 		ResumePassEdits("ChoGGi.MenuFuncs.RemoveBlueGridMarks")
 
 		MsgPopup(
-			S[302535920001193--[[Remove Blue Grid Marks--]]],
+			Strings[302535920001193--[[Remove Blue Grid Marks--]]],
 			Translate(4493--[[All--]])
 		)
 	end
@@ -470,7 +470,7 @@ function OnMsg.ClassesGenerate()
 			objs[i]:ChangeWorkingStateAnim(true)
 		end
 		MsgPopup(
-			S[302535920000605--[[Project Morpheus Radar Fell Down--]]],
+			Strings[302535920000605--[[Project Morpheus Radar Fell Down--]]],
 			Translate(4493--[[All--]])
 		)
 	end
@@ -481,7 +481,7 @@ function OnMsg.ClassesGenerate()
 			o:GenerateWalkablePoints()
 		end)
 		MsgPopup(
-			S[302535920000583--[[Rebuild Walkable Points In Domes--]]],
+			Strings[302535920000583--[[Rebuild Walkable Points In Domes--]]],
 			Translate(4493--[[All--]])
 		)
 	end
@@ -495,7 +495,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		MsgPopup(
-			S[302535920000609--[[Attach Buildings To Nearest Working Dome--]]],
+			Strings[302535920000609--[[Attach Buildings To Nearest Working Dome--]]],
 			Translate(3980--[[Buildings--]]),
 			"UI/Icons/Sections/basic.tga"
 		)
@@ -523,7 +523,7 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 		MsgPopup(
-			S[302535920000619--[[Fix Black Cube Colonists--]]],
+			Strings[302535920000619--[[Fix Black Cube Colonists--]]],
 			Translate(4493--[[All--]])
 		)
 	end
@@ -555,7 +555,7 @@ function OnMsg.ClassesGenerate()
 			RepairBorkedObjects(g_BrokenSupplyGridElements.water)
 
 			MsgPopup(
-				S[302535920000157--[[Cables & Pipes--]]] .. ": " .. S[302535920000607--[[Instant Repair--]]],
+				Strings[302535920000157--[[Cables & Pipes--]]] .. ": " .. Strings[302535920000607--[[Instant Repair--]]],
 				Translate(4493--[[All--]])
 			)
 		end
@@ -568,7 +568,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.FixMissingModBuildings),
-			S[302535920001483--[[Missing Mod Buildings--]]]
+			Strings[302535920001483--[[Missing Mod Buildings--]]]
 		)
 	end
 
@@ -585,7 +585,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings),
-			S[302535920000248--[[Colonists Stuck Outside Service Buildings--]]],
+			Strings[302535920000248--[[Colonists Stuck Outside Service Buildings--]]],
 			"UI/Icons/IPButtons/colonist_section.tga"
 		)
 	end
@@ -597,7 +597,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
-			S[302535920000613--[[Drone Carry Amount--]]],
+			Strings[302535920000613--[[Drone Carry Amount--]]],
 			"UI/Icons/IPButtons/drone.tga"
 		)
 	end
@@ -609,7 +609,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SortCommandCenterDist),
-			S[302535920000615--[[Sort Command Center Dist--]]]
+			Strings[302535920000615--[[Sort Command Center Dist--]]]
 		)
 	end
 
