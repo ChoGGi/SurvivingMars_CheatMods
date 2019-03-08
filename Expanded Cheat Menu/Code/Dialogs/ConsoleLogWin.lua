@@ -102,12 +102,8 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		RolloverTitle = Strings[302535920001073--[[Console--]]] .. " " .. Translate(487939677892--[[Help--]]),
 	}, self.idTextInputArea)
 
-	if blacklist then
-		self.idTextInput.RolloverText = Strings[302535920001512--[[You need to have my HelperMod enabled to use these:--]]] .. "\n\n\n" .. Strings[302535920001440]
-		self.idTextInput.Hint = Strings[302535920001513--[["ex(obj) = examine object, s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
-	else
-		-- add tooltip
-		self.idTextInput.RolloverText = Strings[302535920001440--[["~obj opens object in examine dlg.
+	-- add tooltip
+	self.idTextInput.RolloverText = Strings[302535920001440--[["~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.
 
 &handle examines object with that handle.
@@ -125,8 +121,7 @@ $123 or $EffectDeposit.display_name prints translated string.
 !UICity.labels.TerrainDeposit[1] move camera and select obj.
 
 s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
-		self.idTextInput.Hint = Strings[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."--]]]
-	end
+	self.idTextInput.Hint = Strings[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."--]]]
 
 	-- look at them sexy internals
 	self.transp_mode = ChoGGi.Temp.transp_mode

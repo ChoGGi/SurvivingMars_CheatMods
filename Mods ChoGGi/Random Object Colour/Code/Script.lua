@@ -26,7 +26,7 @@ end
 
 local function ChangeColour(self)
 	-- we need to wait a sec before we can edit attaches
-	Sleep(1)
+	WaitMsg("OnRender")
 	ChoGGi.ComFuncs.ObjectColourRandom(self)
 end
 

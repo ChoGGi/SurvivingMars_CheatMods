@@ -539,6 +539,13 @@ that'll activate the BadPrefab on it
 		-- if grid is left on when map changes it gets real laggy
 		OnMsg.ChangeMap = DeleteHexes
 
+		-- geysers mostly
+		local HexSize = const.HexSize
+		local MapGet = MapGet
+		local function IsRockOrDeposit(pt)
+			return #MapGet(pt,HexSize,"DoesNotObstructConstruction","SurfaceDeposit","StoneSmall") > 0
+		end
+
 		function ChoGGi.MenuFuncs.debug_build_grid_settings(action)
 			local setting = action.setting_mask
 
@@ -601,41 +608,7 @@ that'll activate the BadPrefab on it
 			}
 		end
 
-		-- geysers mostly
-		local HexSize = const.HexSize
-		local MapGet = MapGet
-		local skippers = {"DoesNotObstructConstruction","SurfaceDeposit","StoneSmall"}
-		local function DontBuildHere(pt)
-			local g_DontBuildHere = g_DontBuildHere
-			return g_DontBuildHere and g_DontBuildHere:Check(pt)
-		end
-		local function IsRockOrDeposit(pt)
-			local objs = MapGet(pt,HexSize,function(o)
-				return o:IsKindOfClasses(skippers)
-			end)
-			if #objs > 0 then
-				return true
-			end
-		end
-
 		function ChoGGi.MenuFuncs.debug_build_grid()
-			-- local all the globals we use more than once for some much needed speed
-			--~ local IsSCell = terrain.IsSCell
-			local IsPassable = terrain.IsPassable
-			local IsTerrainFlatForPlacement = ConstructionController.IsTerrainFlatForPlacement
-			local GetTerrainCursor = GetTerrainCursor
-			local HexGridGetObject = HexGridGetObject
-			local HexToWorld = HexToWorld
-			local WorldToHex = WorldToHex
-			local point = point
-			local Sleep = Sleep
-
-			local red = -65536
-			local green = -16711936
-			local yellow = -256
-			local blue = -16776961
-			local pt20t = {point20}
-			local PlaceObject = PlaceObject
 			local u = ChoGGi.UserSettings
 			local grid_size = type(u.DebugGridSize) == "number" and u.DebugGridSize or 10
 			local grid_opacity = type(u.DebugGridOpacity) == "number" and u.DebugGridOpacity or 15
@@ -649,9 +622,9 @@ that'll activate the BadPrefab on it
 			if IsValidThread(grid_thread) then
 				DeleteHexes()
 			else
-				-- these two loop sections are just a way of building the table and applying the settings once instead of over n over in the while loop
+				-- this loop section is just a way of building the table and applying the settings once instead of over n over in the while loop
 
-				-- get the count of grid_size objects
+				local PlaceObject = PlaceObject
 				local grid_count = 0
 				local q,r = 1,1
 				local z = -q - r
@@ -672,49 +645,76 @@ that'll activate the BadPrefab on it
 
 				-- fire up a new thread and off we go
 				grid_thread = CreateRealTimeThread(function()
-					local last_q, last_r
+				-- local all the globals we use more than once for some speed
+					local IsPassable = terrain.IsPassable
+					local IsTerrainFlatForPlacement = ConstructionController.IsTerrainFlatForPlacement
+					local GetTerrainCursor = GetTerrainCursor
+					local HexGridGetObject = HexGridGetObject
+					local HexToWorld = HexToWorld
+					local WorldToHex = WorldToHex
+					local point = point
+					local Sleep = Sleep
+
+					local red = red
+					local green = green
+					local yellow = yellow
+					local blue = blue
+					local pt20t = {point20}
+
+					local g_DontBuildHere = g_DontBuildHere
+					local ObjectGrid = ObjectGrid
+					local last_q, last_r, old_pt
 					while grid_thread do
-						local ObjectGrid = ObjectGrid
-						local q, r = WorldToHex(GetTerrainCursor())
-						if last_q ~= q or last_r ~= r then
-							local z = -q - r
-							local idx = 0
-							for q_i = q - grid_size, q + grid_size do
-								for r_i = r - grid_size, r + grid_size do
-									for z_i = z - grid_size, z + grid_size do
-										if q_i + r_i + z_i == 0 then
-											idx = idx + 1
-											local c = grid_objs[idx]
-											local pt = point(HexToWorld(q_i, r_i))
-											c:SetPos(pt)
+						-- only update if cursor moved
+						local pt = GetTerrainCursor()
+						if pt ~= old_pt then
+							old_pt = pt
 
-											-- green = pass/build, yellow = no pass/build, blue = pass/no build, red = no pass/no build
-											if DontBuildHere(pt) then
-												c:SetColorModifier(blue)
-											elseif IsPassable(pt) then
-												if IsTerrainFlatForPlacement(nil, pt20t, pt, 0) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
-													c:SetColorModifier(green)
+							local q, r = WorldToHex(pt)
+							if last_q ~= q or last_r ~= r then
+								local z = -q - r
+								local c = 0
+
+								for q_i = q - grid_size, q + grid_size do
+									for r_i = r - grid_size, r + grid_size do
+										for z_i = z - grid_size, z + grid_size do
+											if q_i + r_i + z_i == 0 then
+												-- get next hex marker from list, and move it to pos
+												c = c + 1
+												local hex = grid_objs[c]
+												local pt = point(HexToWorld(q_i, r_i))
+												hex:SetPos(pt)
+
+												-- green = pass/build, yellow = no pass/build, blue = pass/no build, red = no pass/no build
+												if g_DontBuildHere:Check(pt) then
+													hex:SetColorModifier(blue)
+												elseif IsPassable(pt) then
+													if IsTerrainFlatForPlacement(nil, pt20t, pt, 0) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
+														hex:SetColorModifier(green)
+													else
+														hex:SetColorModifier(blue)
+													end
+												elseif IsRockOrDeposit(pt) then
+													hex:SetColorModifier(yellow)
 												else
-													c:SetColorModifier(blue)
+													hex:SetColorModifier(red)
 												end
-											elseif IsRockOrDeposit(pt) then
-												c:SetColorModifier(yellow)
-											else
-												c:SetColorModifier(red)
-											end
 
-										end
-									end
-								end
+											end
+										end -- z_i
+									end -- r_i
+								end -- q_i
+
+								last_q = q
+								last_r = r
+							else
+								WaitMsg("OnRender")
 							end
-							last_q = q
-							last_r = r
-						else
-							Sleep(5)
-						end
+						end -- pt ~= old_pt
+
 						-- might as well make it smoother (and suck up some yummy cpu), i assume nobody is going to leave it on
-						Sleep(10)
-					end
+						WaitMsg("OnRender")
+					end -- while
 				end) -- grid_thread
 			end
 		end
@@ -1113,7 +1113,8 @@ that'll activate the BadPrefab on it
 	--~ CreateRealTimeThread(function()
 	--~	 while true do
 	--~		 terrain.SetTypeCircle(GetTerrainCursor(), 2500, terrain_type_idx)
-	--~		 Sleep(5)
+	--~		 						WaitMsg("OnRender")
+
 	--~	 end
 	--~ end)
 	do -- FlightGrid_Toggle
@@ -1234,9 +1235,9 @@ that'll activate the BadPrefab on it
 						RasterLine(pos + point(x*dbg_step, 0), pos + point(x*dbg_step, size), zoffset, plus1+x)
 					end
 
-					Sleep(5)
+					WaitMsg("OnRender")
 				end
-				Sleep(10)
+					WaitMsg("OnRender")
 			end
 		end
 

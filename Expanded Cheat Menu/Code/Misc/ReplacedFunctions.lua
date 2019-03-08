@@ -1162,6 +1162,11 @@ function OnMsg.ClassesBuilt()
 			["restart()"] = true,
 			["quit(\"restart\")"] = true,
 			["quit('restart')"] = true,
+			-- for blacklisted console
+			["ConsolePrint(print_format(__run(restart)))"] = true,
+			["ConsolePrint(print_format(__run(reboot)))"] = true,
+			["ConsolePrint(print_format(__run(exit)))"] = true,
+			["ConsolePrint(print_format(__run(quit)))"] = true,
 		}
 		-- skip quit from being added to console history to prevent annoyances
 		function Console:AddHistory(text,...)
@@ -1293,11 +1298,9 @@ function OnMsg.ClassesBuilt()
 		end
 	end
 
-	-- custom console rules
-	if not blacklist then
+	do -- Console:Exec
 		-- add a bunch of rules to console input
 		local console_rules = {
-
 			-- print info in console log
 			{
 				-- $userdata/string id
@@ -1324,25 +1327,25 @@ function OnMsg.ClassesBuilt()
 			{
 				-- %image string or table
 				"^%%(.*)",
-				"ChoGGi.ComFuncs.OpenInImageViewerDlg(%s)"
+				"ChoGGi.Temp.OpenInImageViewer(%s)"
 			},
 			{
 				-- ~anything
 				"^~(.*)",
-				"ChoGGi.ComFuncs.OpenInExamineDlg(%s)"
+				"OpenExamine(%s)"
 			},
 			{
 				-- ~!obj_with_attachments
 				"^~!(.*)",
 				[[local attaches = ChoGGi.ComFuncs.GetAllAttaches(%s)
 if #attaches > 0 then
-	ChoGGi.ComFuncs.OpenInExamineDlg(attaches,nil,"GetAllAttaches")
+	OpenExamine(attaches,nil,"GetAllAttaches")
 end]]
 			},
 			{
 				-- &handle
 				"^&(.*)",
-				[[ChoGGi.ComFuncs.OpenInExamineDlg(HandleToObject[%s],nil,"HandleToObject")]]
+				[[OpenExamine(HandleToObject[%s],nil,"HandleToObject")]]
 			},
 			-- built-in
 			{
@@ -1370,48 +1373,65 @@ end]]
 			},
 		}
 
-		local AddConsoleLog = AddConsoleLog
-		local ConsolePrint = ConsolePrint
-		local ConsoleExec = ConsoleExec
-
-		-- skip is used for ECM Scripts
-		function Console:Exec(text,skip)
-			if not skip then
-				self:AddHistory(text)
-				AddConsoleLog("> ", true)
-				AddConsoleLog(text, false)
-			end
-			-- i like my rules kthxbai
-			local err = ConsoleExec(text, console_rules)
-			if err then
-				ConsolePrint(err)
-			end
-		end
-
-		-- and now the console has a blacklist :), though i am a little suprised they left it unfettered this long, been using it as a workaround for months
-		local WaitMsg = WaitMsg
-		local rawget,rawset = rawget,rawset
-		CreateRealTimeThread(function()
-			if not g_ConsoleFENV then
-				WaitMsg("Autorun")
-			end
-			while not g_ConsoleFENV do
-				WaitMsg("OnRender")
-			end
-
-			local run = rawget(g_ConsoleFENV,"__run")
-			g_ConsoleFENV = {__run = run}
-			setmetatable(g_ConsoleFENV, {
-				__index = function(_, key)
-					return rawget(_G, key)
-				end,
-				__newindex = function(_, key, value)
-					rawset(_G, key, value)
+		if blacklist then
+			local function load_match(text, rules)
+				for i = 1, #rules do
+					local capture1, capture2, capture3 = text:match(rules[i][1])
+					if capture1 then
+						return rules[i][2]:format(capture1, capture2, capture3)
+					end
 				end
-			})
+			end
 
-		end)
+			function Console:Exec(text,...)
+				text = load_match(text, console_rules)
+				ChoGGi_OrigFuncs.Console_Exec(self,text,...)
+			end
+		else
 
-	end
+			local AddConsoleLog = AddConsoleLog
+			local ConsolePrint = ConsolePrint
+			local ConsoleExec = ConsoleExec
+
+			-- skip is used for ECM Scripts
+			function Console:Exec(text,skip)
+				if not skip then
+					self:AddHistory(text)
+					AddConsoleLog("> ", true)
+					AddConsoleLog(text, false)
+				end
+				-- i like my rules kthxbai
+				local err = ConsoleExec(text, console_rules)
+				if err then
+					ConsolePrint(err)
+				end
+			end
+
+			-- and now the console has a blacklist :), though i am a little suprised they left it unfettered this long, been using it as a workaround for months
+			local WaitMsg = WaitMsg
+			local rawget,rawset = rawget,rawset
+			CreateRealTimeThread(function()
+				if not g_ConsoleFENV then
+					WaitMsg("Autorun")
+				end
+				while not g_ConsoleFENV do
+					WaitMsg("OnRender")
+				end
+
+				local run = rawget(g_ConsoleFENV,"__run")
+				g_ConsoleFENV = {__run = run}
+				setmetatable(g_ConsoleFENV, {
+					__index = function(_, key)
+						return rawget(_G, key)
+					end,
+					__newindex = function(_, key, value)
+						rawset(_G, key, value)
+					end
+				})
+
+			end)
+
+		end
+	end -- do
 
 end -- ClassesBuilt

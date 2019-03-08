@@ -477,7 +477,7 @@ end
 function Examine:ViewSourceCode()
 	self = GetRootDialog(self)
 	-- add link to view lua source
-	local info = debug_getinfo(self.obj_ref,"Strings")
+	local info = debug_getinfo(self.obj_ref,"S")
 	-- =[C] is 4 chars
 	local str,path = self.ChoGGi.ComFuncs.RetSourceFile(info.source)
 	if not str then
@@ -1966,8 +1966,13 @@ function Examine:ConvertValueToInfo(obj)
 				return TableConcat(res):gsub(",}","}")
 
 			elseif rawget(obj,"ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
-				return "<color " .. obj.colour .. ">" .. obj.name .. "</color> "
-					.. self:HyperLink(obj,obj.func,obj.hint) .. "@" .. HLEnd
+				if obj.colour then
+					return "<color " .. obj.colour .. ">" .. obj.name .. "</color> "
+						.. self:HyperLink(obj,obj.func,obj.hint) .. "@" .. HLEnd
+				else
+					return obj.name .. "</color> "
+						.. self:HyperLink(obj,obj.func,obj.hint) .. "@" .. HLEnd
+				end
 
 			else
 				-- regular table
@@ -2423,14 +2428,23 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 			elseif name == "HGE.XMGrid" then
 				table_insert(data_meta,1,"\ngetmetatable():")
+				table_insert(data_meta,1,"GridGetAllocSize(): " .. self:ConvertValueToInfo(GridGetAllocSize(obj) or 0))
 				local minmax = {obj:minmax()}
 				if minmax[1] then
 					table_insert(data_meta,1,"minmax(): " .. self:ConvertValueToInfo(minmax[1]) .. " "
 						.. self:ConvertValueToInfo(minmax[2]))
 				end
-				table_insert(data_meta,1,"levels(): " .. self:ConvertValueToInfo(obj:levels()))
+				-- this takes a few seconds to load, so it's in a clickable link
+				table_insert(data_meta,1,self:ConvertValueToInfo({
+					ChoGGi_AddHyperLink = true,
+					hint = S[302535920001124--[[Will take a few seconds to complete.--]]],
+					name = "levels(true, 1):",
+					func = function()
+						OpenInExamineDlg({obj:levels(true, 1)})
+					end,
+				}))
+
 				table_insert(data_meta,1,"GetPositiveCells(): " .. self:ConvertValueToInfo(obj:GetPositiveCells()))
-				table_insert(data_meta,1,"GetBilinear(): " .. self:ConvertValueToInfo(obj:GetBilinear()))
 				table_insert(data_meta,1,"EnumZones(): " .. self:ConvertValueToInfo(obj:EnumZones()))
 				table_insert(data_meta,1,"size(): " .. self:ConvertValueToInfo(obj:size()))
 				table_insert(data_meta,1,"packing(): " .. self:ConvertValueToInfo(obj:packing()))

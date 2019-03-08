@@ -89,6 +89,8 @@ do -- RetName
 			end
 		end
 	end
+	lookup_table[empty_func] = "empty_func *C func"
+
 
 	local function AfterLoad()
 		local g = ChoGGi.Temp._G
@@ -108,7 +110,7 @@ do -- RetName
 			-- no need to add tables already added
 			if not lookup_table[value] then
 				local t = type(value)
-				if t == "table" then
+				if t == "table" or t == "userdata" then
 					lookup_table[value] = key
 				elseif t == "function" then
 					if DebugGetInfo(value) == "[C](-1)" then
