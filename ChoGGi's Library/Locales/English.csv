@@ -2,6 +2,7 @@ ID,Text,Translation,Old Translation,Gender
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
+302535920001125,Test Locale File,
 302535920000239,Tools,
 302535920000201,Active,
 302535920000089,Nothing left,
@@ -86,7 +87,6 @@ ID,Text,Translation,Old Translation,Gender
 302535920001518,Double-click <left_click> title to rollup into the title bar.,
 302535920000001,"F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""To import your old settings"".",
-302535920001123,Test Locale,
 302535920001069,Toggle Boolean,
 302535920000497,Hook Started,
 302535920000498,Hook Stopped,
@@ -278,6 +278,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook",
 302535920000870,Shows mod log msgs in an examine dialog.,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920001124,Will take a few seconds to complete.,
 302535920000461,Position,
 302535920000885,Unpacked,
 302535920000463,Add spot offset pos from Origin.,
@@ -986,6 +987,19 @@ Works after colonist idle.",
 Not permanent.",
 302535920000447,Change the age at which colonists die (applies to newly arrived and born colonists as well).,
 302535920000448,"I'm afraid it could be 9/11 times 1,000.",
+302535920001136,Test a CSV for malformed strings (causes freezing when loaded normally).,
+302535920001137,CSV Path,
+302535920001155,"Enter the path to the CSV file you want to test (defaults to mine as an example).
+You can edit the CSV then run this again without having to restart the game.
+",
+302535920001162,Test Columns,
+302535920001166,"Reports any columns above the normal amount (5).
+Columns are added by commas (,). Surround the entire string with """" to use them.
+
+Try to increase or decrease the number if not enough or too many errors show up.
+For the value enter either ""true"" (to use 5) or a number.
+
+You need my HelperMod installed to be able to use this.",
 302535920001547,List Visible Objects,
 302535920001548,Shows list of objects rendered in the current frame.,
 302535920001527,Building Path Markers,

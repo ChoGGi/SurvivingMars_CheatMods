@@ -15,6 +15,7 @@ local lang_name = T(1000696,"Italian")
 
 
 -- You can ignore the rest of the code below
+local csv_path = CurrentModPath .. "Locale/Game.csv"
 
 
 
@@ -24,8 +25,6 @@ local lang_name = T(1000696,"Italian")
 local RegistryRead = RegistryRead
 local LoadTranslationTableFile = LoadTranslationTableFile
 local Msg = Msg
-
-local csv_path = CurrentModPath .. "Locale/Game.csv"
 
 function OnMsg.ModsReloaded()
 	-- make it show up in Options>Gameplay>Language
@@ -44,15 +43,15 @@ function OnMsg.ModsReloaded()
 	-- load lang if option is set to our lang
 	if RegistryRead("Language") == lang_value then
 		LoadTranslationTableFile(csv_path)
-		Msg("TranslationChanged",true)
+		Msg("TranslationChanged","skip_inf_loop")
 	end
 end
 
 -- fires when lang is changed in game
 function OnMsg.TranslationChanged(skip)
-	if not skip and RegistryRead("Language") == lang_value then
+	if skip ~= "skip_inf_loop" and RegistryRead("Language") == lang_value then
 		LoadTranslationTableFile(csv_path)
 		-- we want it to update any other OnMsg.TranslationChanged, but skip this is one (or inf loop)
-		Msg("TranslationChanged",true)
+		Msg("TranslationChanged","skip_inf_loop")
 	end
 end

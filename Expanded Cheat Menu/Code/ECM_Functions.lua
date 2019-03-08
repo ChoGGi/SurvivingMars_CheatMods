@@ -2898,6 +2898,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 --~ 		Mods["bMPAkJP"].env.CurrentModPath .. "Locale/TraduzioneItaliano.csv",
 --~ 		5
 --~ 	)
+		local my_locale = ChoGGi.library_path .. "Locales/English.csv"
 		local csv_load_fields = {
 			"id",
 			"text",
@@ -2959,14 +2960,14 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 		local function TestCSV(filepath,column_limit)
 			if column_limit and type(column_limit) ~= "number" then
-				column_limit = testing and 4 or 5
+				column_limit = filepath == my_locale and 4 or 5
 			end
 
 			-- this is the LoadCSV func from CommonLua/Core/ParseCSV.lua with some DebugPrint added
 			local omit_captions = "omit_captions"
 			local err, str = AsyncFileToString(filepath)
 			if err then
-				print(Strings[302535920001123--[[Test Locale--]]],"ERROR:",err,"FILEPATH:",filepath)
+				print(Strings[302535920001125--[[Test Locale File--]]],"ERROR:",err,"FILEPATH:",filepath)
 				return
 			end
 
@@ -2980,14 +2981,11 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 			local RemoveTrailingSpaces = RemoveTrailingSpaces
 			local FlushLogFile = FlushLogFile
---~ 			local table_insert = table.insert
-
-
-			-- start of function LoadCSV(filepath, rows, csv_load_fields, omit_captions)
 
 			-- remove any carr returns
 			str = str:gsub("\r\n","\n")
 
+			-- mostly LoadCSV()
 			while pos < #str do
 
 				local row, col = {}, 1
@@ -3028,7 +3026,6 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				end
 
 				if not omit_captions then
---~ 					table_insert(rows, row)
 					rows_c = rows_c + 1
 					rows[rows_c] = row
 				end
@@ -3042,14 +3039,14 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		function ChoGGi.ComFuncs.TestLocaleFile(filepath,test_csv,language)
 			if not filepath then
 				if testing then
-					local locale_path = ChoGGi.library_path .. "Locales/"
-					if ChoGGi.ComFuncs.FileExists(locale_path .. ChoGGi.lang .. ".csv") then
-						filepath = locale_path .. ChoGGi.lang .. ".csv"
+					local locale_path = ChoGGi.library_path .. "Locales/" .. ChoGGi.lang .. ".csv"
+					if ChoGGi.ComFuncs.FileExists(locale_path) then
+						filepath = locale_path
 					else
-						filepath = locale_path .. "English.csv"
+						filepath = my_locale
 					end
 				else
-					print(Strings[302535920001123--[[Test Locale--]]],"FILEPATH ERROR:",filepath)
+					print(Strings[302535920001125--[[Test Locale File--]]],"FILEPATH ERROR:",filepath)
 					return
 				end
 			end
@@ -3085,9 +3082,9 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 			local title
 			if f_c > 0 or e_c > 0 then
-				title = Strings[302535920001123--[[Test Locale--]]] .. ": " .. Translate(951--[[Failed to complete operation.--]])
+				title = Strings[302535920001125--[[Test Locale File--]]] .. ": " .. Translate(951--[[Failed to complete operation.--]])
 			else
-				title = Strings[302535920001123--[[Test Locale--]]] .. ": " .. Translate(1000015--[[Success--]])
+				title = Strings[302535920001125--[[Test Locale File--]]] .. ": " .. Translate(1000015--[[Success--]])
 			end
 			local results = {
 				[Strings[302535920001448--[[CSV--]]]] = loaded,

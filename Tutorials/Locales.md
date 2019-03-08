@@ -107,10 +107,11 @@ At the top of any new lua files. It'll work for both T() and T({})
 ### CSV import issue:
 ##### "[LUA ERROR] table index is nil, field ModsLoadLocTables"
 ##### "CommonLua/Core/localization.lua:559: table index is nil"
-###### If you get one of those errors when trying to load your csv file, I have a func in Expanded Cheat Menu:
+##### Also the game may freeze.
 
 ```lua
-ChoGGi.ComFuncs.TestLocaleFile(filepath,test_csv)
+Install my Expanded Cheat Menu mod then go to Menu>Debug>Test Locale File
+
 It'll return a list of translated and failed strings, as well as some context to where the error is.
 
 filepath is the path to the csv file

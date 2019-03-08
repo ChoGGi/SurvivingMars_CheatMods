@@ -4,7 +4,7 @@
 -- ~ ChoGGi.Strings[27]
 
 -- amount of entries in the CSV file
-local string_limit = 1600
+local string_limit = 1560
 
 local _InternalTranslate = _InternalTranslate
 
@@ -56,7 +56,13 @@ local tonumber = tonumber
 local locId_sig = shift(255, 56)
 local LightUserData = LightUserData
 local bor = bor
+
+--~ local c = 0
 --~ local missing_strs = {}
+--~ function ex_missing_strs()
+--~ 	ex(missing_strs)
+--~ end
+
 local function TransZero(pad,first,last,strings)
 	for i = first, last do
 		if i > string_limit then

@@ -22,9 +22,13 @@ To add a language other than Italian: You'll need to edit the first few lines of
 
 You can also get the mod from: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Example%20Translate%20Game
 
-If you get one of these errors when loading your CSV file:
+
+
+If you get one of these errors when trying to load your CSV file:
 "[LUA ERROR] table index is nil, field ModsLoadLocTables"
 "CommonLua/Core/localization.lua:559: table index is nil"
-see the bottom of: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Locales.md
+
+Install my Expanded Cheat Menu mod then go to Menu>Debug>Test Locale File
+It'll return a list of translated and failed strings, as well as some context to where the error is.
 ]],
 })
