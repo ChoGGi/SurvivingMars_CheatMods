@@ -356,12 +356,6 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 			ChoGGi_Logos_TerranDominion = true,
 			ChoGGi_Logos_VeridianDynamics = true,
 		}
-		local ChoGGi_platform_false = {
-			ChoGGi_Library = true,
-		}
-		local ChoGGi_platform_true = {
-			ChoGGi_CheatMenu = true,
-		}
 		local pack_path = "AppData/ModUpload/Pack/"
 		local dest_path = "AppData/ModUpload/"
 
@@ -376,7 +370,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 				ChoGGi.ComFuncs.MsgWait(
 					Trans(1000011--[[There is an active mod upload--]]),
 					Trans(1000592--[[Error--]]),
-					"UI/Common/mod_steam_workshop.tga"
+					Platform.pops and "UI/ParadoxLogo.tga" or "UI/Common/mod_steam_workshop.tga"
 				)
 				return
 			end
@@ -407,12 +401,6 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 				local result
 
 				-- my mods override
-				if ChoGGi_platform_false[mod.id] then
-					para_platform = false
-				end
-				if ChoGGi_platform_true[mod.id] then
-					para_platform = true
-				end
 				if ChoGGi_copy_files[mod.id] then
 					copy_files = false
 				end
@@ -426,9 +414,6 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 				else
 					mod.title = mod.title:gsub(" %(Warning%)$","")
 				end
-
-				-- issue with current (rc1 modding beta) version of sm (this crashes as soon as it creates the archive).
-				pack_mod = false
 
 				-- will fail on paradox mods
 				if mod.lua_revision == 0 then
@@ -453,7 +438,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 					m_c = m_c + 1
 					upload_msg[m_c] = "\n\n"
 					m_c = m_c + 1
-					upload_msg[m_c] = S[302535920000051--[[Mod will not be packed in an hpk archive.--]]]
+					upload_msg[m_c] = S[302535920000051--[[Mod will not be (automagically) packed in an hpk archive.--]]]
 				end
 
 				if not copy_files then
@@ -492,39 +477,37 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 					-- add new mod
 					local err,item_id,prepare_worked,prepare_results
-					if not test then
-						if steam_upload then
-							-- get needed info for mod
-							prepare_worked, prepare_results = Steam_PrepareForUpload(nil, mod, mod_params)
-							-- mod id for clipboard
-							item_id = mod.steam_id
-						-- paradox mods
-						else
-							-- we override the Platform checkbox if a uuid is in metadata.lua
-							-- if both are "" then it's probably a new mod, otherwise check for a uuid and use that prop
-							if mod.pops_desktop_uuid == "" and mod.pops_any_uuid == "" then
-								-- desktop
-								if para_platform then
-									mod_params.publish_os = "windows"
-									mod_params.uuid_property = "pops_desktop_uuid"
-								-- desktop/console
-								else
-									mod_params.publish_os = "any"
-									mod_params.uuid_property = "pops_any_uuid"
-								end
-							elseif mod.pops_any_uuid ~= "" then
-								mod_params.publish_os = "any"
-								mod_params.uuid_property = "pops_any_uuid"
-								para_platform = false
-							elseif mod.pops_desktop_uuid ~= "" then
+					if steam_upload then
+						-- get needed info for mod
+						prepare_worked, prepare_results = Steam_PrepareForUpload(nil, mod, mod_params)
+						-- mod id for clipboard
+						item_id = mod.steam_id
+					-- paradox mods
+					else
+						-- we override the Platform checkbox if a uuid is in metadata.lua
+						-- if both are "" then it's probably a new mod, otherwise check for a uuid and use that prop
+						if mod.pops_desktop_uuid == "" and mod.pops_any_uuid == "" then
+							-- desktop
+							if para_platform then
 								mod_params.publish_os = "windows"
 								mod_params.uuid_property = "pops_desktop_uuid"
-								para_platform = true
+							-- desktop/console
+							else
+								mod_params.publish_os = "any"
+								mod_params.uuid_property = "pops_any_uuid"
 							end
-
-							prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
-							item_id = mod[mod_params.uuid_property]
+						elseif mod.pops_any_uuid ~= "" then
+							mod_params.publish_os = "any"
+							mod_params.uuid_property = "pops_any_uuid"
+							para_platform = false
+						elseif mod.pops_desktop_uuid ~= "" then
+							mod_params.publish_os = "windows"
+							mod_params.uuid_property = "pops_desktop_uuid"
+							para_platform = true
 						end
+
+						prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
+						item_id = mod[mod_params.uuid_property]
 					end
 
 					-- issue with mod platform (workshop/paradox mods)
@@ -564,8 +547,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 
 					end
 
-					-- AsyncPack == crash :(
-					if pack_mod and not true then
+					if pack_mod then
 						local files_to_pack = {}
 						local substring_begin = #dest_path + 1
 						local err, all_files = AsyncListFiles(dest_path, nil, "recursive")
@@ -591,8 +573,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 									})
 								end
 							end
---~ 							err = AsyncPack(pack_path .. ModsPackFileName, dest_path, files_to_pack)
-							err = async.AsyncPack(false,pack_path .. ModsPackFileName, dest_path, files_to_pack)
+							err = AsyncPack(pack_path .. ModsPackFileName, dest_path, files_to_pack)
 						end
 
 					end
@@ -633,14 +614,17 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 						title = Trans(1000015--[[Success--]])
 					end
 
-					if not test then
-						-- update mod log and print it to console log
-						ModLog("\n" .. msg .. ": " .. mod.title)
-						local ModMessageLog = ModMessageLog
-						print(S[302535920001265--[[ModMessageLog--]]],":")
-						for i = 1, #ModMessageLog do
-							print(ModMessageLog[i])
-						end
+					if test then
+						msg = Trans(186760604064--[[Test--]]) .. " " .. msg
+						title = Trans(186760604064--[[Test--]]) .. " " .. title
+					end
+
+					-- update mod log and print it to console log
+					ModLog("\n" .. msg .. ": " .. mod.title)
+					local ModMessageLog = ModMessageLog
+					print(S[302535920001265--[[ModMessageLog--]]],":")
+					for i = 1, #ModMessageLog do
+						print(ModMessageLog[i])
 					end
 
 					-- show id in console/copy to clipb
@@ -679,7 +663,7 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 					end
 				end
 
-				-- add checkbox for paradox asking for desktop/any
+				-- add checkbox for paradox asking for desktop/any?
 				ChoGGi.ComFuncs.QuestionBox(
 					TableConcat(upload_msg),
 					QuestionBoxCallBackFunc,
@@ -730,66 +714,6 @@ This report will go to the %s developers not me."--]]]:format(Trans(1079--[[Surv
 				}
 			end
 
-			-- hide paradox upload if not on plat.pops
-			local checkboxes = {
-				{title = S[302535920001258--[[Copy Files--]]],
-					hint = S[302535920001259--[["Copies all mod files to %sModUpload, uncheck to copy files manually."--]]]:format(ConvertToOSPath("AppData/")),
-					checked = true,
-				},
-				{title = S[302535920001260--[[Blank--]]],
-					hint = S[302535920001261--[["Uploads a blank mod, and prints id in log."--]]],
-				},
-				{title = S[302535920000664--[[Clipboard--]]],
-					hint = S[302535920000665--[[If uploading a mod this copies steam id or uuid to clipboard.--]]],
-					checked = true,
-				},
-				{title = S[302535920001427--[[Pack--]]],
-					-- AsyncPack is crashing sm for me
-					visible = false,
-
-					hint = S[302535920001428--[["Uploads as a packed mod (default for mod editor upload).
-This will always apply if uploading to paradox."--]]],
-					checked = false,
-				},
-				{title = Trans(186760604064--[[Test--]]),
-					level = 2,
-					hint = S[302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]]],
-				},
-				{title = S[302535920001506--[[Steam--]]],
-					level = 2,
-					hint = S[302535920001507--[[Uncheck to upload to Paradox mods (instead of Steam).--]]],
-					checked = upload_to_who,
-					func = function(dlg,check)
-						upload_to_who = check
-						-- steam
-						if check then
-							dlg.idCheckBox7:SetVisible()
-						-- paradox
-						else
-							dlg.idCheckBox7:SetVisible(true)
---~ 								dlg.idCheckBox4:SetCheck(true)
-						end
-					end,
-				},
-				{title = S[302535920001509--[[Platform--]]],
-					level = 2,
-					hint = S[302535920001510--[[Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.--]]],
-					checked = upload_to_whichplatform,
-					visible = false,
-					func = function(_,check)
-						upload_to_whichplatform = check
-					end,
-				},
-			}
-			-- adjust depending on if we can upload to paradox
-			if not Platform.pops then
-				checkboxes[6].visible = false
-			end
-			-- it defaults to hidden, so if it's paradox then we change it to visible
-			if not upload_to_who then
-				checkboxes[7].visible = true
-			end
-
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = item_list,
@@ -799,8 +723,60 @@ This will always apply if uploading to paradox."--]]],
 https://github.com/nickelc/hpk
 hpk create ""Mod folder"" ModContent.hpk
 Move archive to Mod folder/Pack/ModContent.hpk"--]]],
-				checkboxes = checkboxes,
 				height = 800.0,
+				checkboxes = {
+					{title = S[302535920001258--[[Copy Files--]]],
+						hint = S[302535920001259--[["Copies all mod files to %sModUpload, uncheck to copy files manually."--]]]:format(ConvertToOSPath("AppData/")),
+						checked = true,
+					},
+					{title = S[302535920001260--[[Blank--]]],
+						hint = S[302535920001261--[["Uploads a blank mod, and prints id in log."--]]],
+					},
+					{title = S[302535920000664--[[Clipboard--]]],
+						hint = S[302535920000665--[[If uploading a mod this copies steam id or uuid to clipboard.--]]],
+						checked = true,
+					},
+					{title = S[302535920001427--[[Pack--]]],
+						hint = S[302535920001428--[["Uploads as a packed mod (default for mod editor upload).
+This will always apply if uploading to Paradox.
+
+Warning: May instantly crash SM (not sure why)."--]]],
+						checked = false,
+					},
+					{title = Trans(186760604064--[[Test--]]),
+						level = 2,
+						hint = S[302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]]],
+					},
+					{title = S[302535920001506--[[Steam--]]],
+						level = 2,
+						hint = S[302535920001507--[[Uncheck to upload to Paradox mods (instead of Steam).--]]],
+						checked = upload_to_who,
+						func = function(dlg,check)
+							upload_to_who = check
+							-- steam
+							if check then
+								dlg.idCheckBox7:SetVisible()
+							-- paradox
+							else
+								dlg.idCheckBox7:SetVisible(true)
+								-- mark Pack for users
+								dlg.idCheckBox4:SetCheck(true)
+							end
+						end,
+						-- no pops means no sense in showing this
+						visible = Platform.pops,
+					},
+					{title = S[302535920001509--[[Platform--]]],
+						level = 2,
+						hint = S[302535920001510--[[Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.--]]],
+						checked = upload_to_whichplatform,
+						func = function(_,check)
+							upload_to_whichplatform = check
+						end,
+						-- it defaults to hidden, so if it's paradox then we change it to visible
+						visible = not upload_to_who,
+					},
+				},
 			}
 		end
 	end -- do

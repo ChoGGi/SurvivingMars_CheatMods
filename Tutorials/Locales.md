@@ -1,7 +1,7 @@
-### Add easy locale support to your mod (wtf is up with all this StringBase + 1 I see...)
+### Add locale support to your mod (wtf is up with all this StringBase + 1 I see...)
 ```lua
 If you're translating for XWindows, and you need to use a table value use:
-T{123,"string",table_value = something}
+T{123,"string",context_value = some_obj}
 Otherwise you can skip the table creation and just use:
 T(123,"string")
 ```
@@ -104,18 +104,30 @@ At the top of any new lua files. It'll work for both T() and T({})
 ```
 
 
+### CSV import issue:
+##### "[LUA ERROR] table index is nil, field ModsLoadLocTables"
+##### "CommonLua/Core/localization.lua:559: table index is nil"
+###### If you get one of those errors when trying to load your csv file, I have a func in Expanded Cheat Menu:
 
-### "CommonLua/Core/localization.lua:559: table index is nil"
 ```lua
-If you get this error, I have a func in Expanded Cheat Menu called
-ChoGGi.ComFuncs.TestLocaleFile(filepath,column,extra)
+ChoGGi.ComFuncs.TestLocaleFile(filepath,test_csv)
+It'll return a list of translated and failed strings, as well as some context to where the error is.
 
 filepath is the path to the csv file
 Mods.ChoGGi_ExampleTranslateGame.env.CurrentModPath .. "Locale/Game.csv"
+or
 "AppData/Mods/Some Mod/Locales/file.csv"
 
-column defaults to 5 (good for csv with english strings,translated strings)
-increase or decrease if there's not enough or too many errors
+test_csv can be true to report columns above 5 (usual amount for translations).
+It can also be a number for a custom amount of columns (if you get too many or not enough errors).
 
-extra shows extra text, usually not needed (and it's slow)
+for something like
+302535920000887,Example,
+you should send 4
+for something like
+1000591,Error,Errore,
+then 5 will work
+
+test_csv requires you to install my HelperMod for ECM.
 ```
+![Test Locale File](Locales.jpg?raw=true "Test Locale File")

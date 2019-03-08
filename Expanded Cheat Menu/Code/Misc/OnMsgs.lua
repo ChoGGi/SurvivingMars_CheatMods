@@ -536,6 +536,7 @@ end -- ModsReloaded
 -- earliest on-ground objects are loaded?
 --~ function OnMsg.PersistLoad()
 --~ end
+
 function OnMsg.PersistPostLoad()
 	if ChoGGi.UserSettings.FixMissingModBuildings then
 		-- [LUA ERROR] Mars/Lua/Construction.lua:860: attempt to index a boolean value (global 'ControllerMarkers')
@@ -1569,6 +1570,5 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 end -- do
 
 -- if i need to do something on a new game later then CityStart
---~ CreateRealTimeThread(function()
---~ 	WaitMsg("RocketLaunchFromEarth")
---~ end)
+--~ function OnMsg.RocketLaunchFromEarth()
+--~ end
