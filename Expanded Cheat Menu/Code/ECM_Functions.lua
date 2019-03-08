@@ -2893,22 +2893,25 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 	end -- do
 
---~ 	ChoGGi.ComFuncs.TestLocaleFile(
---~ 		Mods["bMPAkJP"].env.CurrentModPath .. "Locale/TraduzioneItaliano.csv"
---~ 	)
 	do -- TestLocaleFile
+--~ 	ChoGGi.ComFuncs.TestLocaleFile(
+--~ 		Mods["bMPAkJP"].env.CurrentModPath .. "Locale/TraduzioneItaliano.csv",
+--~ 		5
+--~ 	)
 		local csv_load_fields = {
-			[1] = "id",
-			[2] = "text",
-			[5] = "translated",
-			[3] = "translated_new",
-			[7] = "gender"
+			"id",
+			"text",
+			"translated",
+			"translated_new",
+			"gender"
 		}
 
 		local failed_strings = {}
-		local c
+		local f_c
+		local error_output = {}
+		local e_c = 0
 
-		local function ProcessLoadedTables_test(loaded, language, out_table, out_gendertable)
+		local function ProcessLoadedTables(loaded, language, out_table, out_gendertable)
 			local order
 			if language == "English" then
 				order = {"translated_new","text","translated"}
@@ -2934,10 +2937,10 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 						out_gendertable[id] = entry.gender
 					end
 				else
-					c = c + 1
+					f_c = f_c + 1
 					local eprev = loaded[i-1]
 					local enext = loaded[i+1]
-					failed_strings[c] = {
+					failed_strings[f_c] = {
 						id = i,
 						[Strings[302535920000106--[[Current--]]] .. " id"] = entry.id,
 						[Strings[302535920000106--[[Current--]]] .. " text"] = entry.text,
@@ -2960,13 +2963,6 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			end
 
 			-- this is the LoadCSV func from CommonLua/Core/ParseCSV.lua with some DebugPrint added
-			local fields_remap = {
-				"id",
-				"text",
-				"translated",
-				"translated_new",
-				"gender"
-			}
 			local omit_captions = "omit_captions"
 			local err, str = AsyncFileToString(filepath)
 			if err then
@@ -2978,7 +2974,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			local rows_c = 0
 			local Q = lpeg.P("\"")
 			local quoted_value = Q * lpeg.Cs((1 - Q + Q * Q / "\"") ^ 0) * Q
-			local raw_value = lpeg.C((1 - lpeg.Strings(",\t\r\n\"")) ^ 0)
+			local raw_value = lpeg.C((1 - lpeg.S(",\t\r\n\"")) ^ 0)
 			local field = (lpeg.P(" ") ^ 0 * quoted_value * lpeg.P(" ") ^ 0 + raw_value) * lpeg.Cp()
 			local space = string.byte(" ", 1)
 
@@ -2986,10 +2982,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			local FlushLogFile = FlushLogFile
 --~ 			local table_insert = table.insert
 
-			local error_output = {}
-			local c = 0
 
-			-- start of function LoadCSV(filepath, rows, fields_remap, omit_captions)
+			-- start of function LoadCSV(filepath, rows, csv_load_fields, omit_captions)
 
 			-- remove any carr returns
 			str = str:gsub("\r\n","\n")
@@ -3002,7 +2996,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 					local value, nextv = field:match(str, pos)
 					value = RemoveTrailingSpaces(value)
-					local f_remap_col = fields_remap[col]
+					local f_remap_col = csv_load_fields[col]
 					if f_remap_col then
 						row[f_remap_col] = value
 					end
@@ -3012,8 +3006,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 					-- only seems to happen on bad things
 					if col > column_limit then
-						c = c + 1
-						error_output[c] = {
+						e_c = e_c + 1
+						error_output[e_c] = {
 							name = "ERROR row: " .. row.id,
 							value = value,
 							string_pos = pos,
@@ -3060,10 +3054,13 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				end
 			end
 
+			-- always reset to 0 for reporting (e_c > 0)
+			e_c = 0
 			if test_csv then
 				if blacklist then
-					ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.TestLocaleFile.test_csv")
+					ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.TestLocaleFile(test_csv)")
 				else
+					table_iclear(error_output)
 					test_csv = TestCSV(filepath,test_csv)
 				end
 			end
@@ -3078,30 +3075,31 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			local out_table, out_gendertable = {},{}
 
 			table_iclear(failed_strings)
-			c = 0
-
-			ProcessLoadedTables_test(
+			f_c = 0
+			ProcessLoadedTables(
 				loaded,
 				language,
 				out_table,
 				out_gendertable
 			)
 
-			if c > 0 or testing then
-				ChoGGi.ComFuncs.OpenInExamineDlg({
-					[Strings[302535920001448--[[CSV--]]]] = loaded,
-					failed_strings = failed_strings,
-					test_csv = test_csv,
-					out_table = out_table,
-					out_gendertable = out_gendertable,
-				},nil,Strings[302535920001123--[[Test Locale--]]] .. ": " .. Translate(951--[[Failed to complete operation.--]]))
+			local title
+			if f_c > 0 or e_c > 0 then
+				title = Strings[302535920001123--[[Test Locale--]]] .. ": " .. Translate(951--[[Failed to complete operation.--]])
 			else
-				ChoGGi.ComFuncs.OpenInExamineDlg({
-					out_table = out_table,
-					out_gendertable = out_gendertable,
-				},nil,Strings[302535920001123--[[Test Locale--]]] .. ": " .. Translate(1000015--[[Success--]]))
+				title = Strings[302535920001123--[[Test Locale--]]] .. ": " .. Translate(1000015--[[Success--]])
+			end
+			local results = {
+				[Strings[302535920001448--[[CSV--]]]] = loaded,
+				failed_strings = failed_strings,
+				out_table = out_table,
+				out_gendertable = out_gendertable,
+			}
+			if test_csv then
+				results.test_csv = test_csv
 			end
 
+			ChoGGi.ComFuncs.OpenInExamineDlg(results,nil,title)
 		end
 	end -- do
 
