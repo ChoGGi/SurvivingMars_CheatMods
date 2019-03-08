@@ -93,7 +93,7 @@ function OnMsg.ClassesBuilt()
 		end,
 		func = function(self, context)
 			---
-			local popup = rawget(terminal.desktop, "idDisableDroneMaintenanceMenu")
+			local popup = terminal.desktop.idDisableDroneMaintenanceMenu
 			if popup then
 				popup:Close()
 			else

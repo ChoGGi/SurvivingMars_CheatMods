@@ -624,6 +624,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 	local ViewObjectMars = ViewObjectMars
 	local IsPoint = IsPoint
 
+	local dark_menu = items.TextStyle == "ChoGGi_CheckButtonMenuOpp"
 	for i = 1, #items do
 		local item = items[i]
 
@@ -632,6 +633,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 			item.disable = true
 			item.centred = true
 		end
+
 
 		-- "ChoGGi_CheckButtonMenu"
 		local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
@@ -643,9 +645,16 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 			Background = items.Background,
 			PressedBackground = items.PressedBackground,
 			FocusedBackground = items.FocusedBackground,
-			TextStyle = items.TextStyle or cls.TextStyle,
+			TextStyle = item.disable and
+				(dark_menu and "ChoGGi_ButtonMenuDisabled" or "ChoGGi_ButtonMenuDisabledDarker")
+				or items.TextStyle or cls.TextStyle,
 			HAlign = item.centred and "center" or "stretch",
 		}, popup.idContainer)
+
+
+		if items.IconPadding then
+			button.idIcon:SetPadding(items.IconPadding)
+		end
 
 		if item.disable then
 			button.idLabel.RolloverTextColor = button.idLabel.TextColor
@@ -789,10 +798,10 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 end
 
 function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu)
-	local popup = rawget(terminal.desktop,popup_id)
+	local popup = terminal.desktop[popup_id]
 	if popup then
 		popup:Close()
-		submenu = submenu or rawget(terminal.desktop,"ChoGGi_submenu_popup")
+		submenu = submenu or terminal.desktop.ChoGGi_submenu_popup
 		if submenu then
 			submenu:Close()
 		end
@@ -814,7 +823,7 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 			Id = popup_id,
 			-- "top" for the console, default "none"
 			AnchorType = anchor or "top",
-			-- "none","smart","left","right","top","center-top","bottom","mouse"
+			-- "none","drop","drop-right","smart","left","right","top","bottom","center-top","center-bottom","mouse"
 			Anchor = parent.box,
 			Background = items.Background,
 			FocusedBackground = items.FocusedBackground,

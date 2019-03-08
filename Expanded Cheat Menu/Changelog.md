@@ -24,6 +24,7 @@
 - > The search box will now search the entire line instead of chunks of it.
 - > Toggle Attach Spots didn't always add the polyline to chains.
 - > View Text: Broke scrolling when I removed the * from the text.
+- > Context Menu>print func params was giving an error msg.
 
 ### Removed:
 - Fixes>All Pipe Skins To Default: It wasn't the best code, and I'm pretty sure they fixed the bug with chrome pipes?

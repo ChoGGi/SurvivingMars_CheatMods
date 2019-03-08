@@ -1389,30 +1389,28 @@ end]]
 		end
 
 		-- and now the console has a blacklist :), though i am a little suprised they left it unfettered this long, been using it as a workaround for months
-		if not blacklist and rawget(_G,"g_ConsoleFENV") == false then
-			local Sleep = Sleep
-			CreateRealTimeThread(function()
-				if not g_ConsoleFENV then
-					WaitMsg("Autorun")
-				end
-				while not g_ConsoleFENV do
-					Sleep(250)
-				end
+		local WaitMsg = WaitMsg
+		local rawget,rawset = rawget,rawset
+		CreateRealTimeThread(function()
+			if not g_ConsoleFENV then
+				WaitMsg("Autorun")
+			end
+			while not g_ConsoleFENV do
+				WaitMsg("OnRender")
+			end
 
-				local rawget,rawset = rawget,rawset
-				local run = rawget(g_ConsoleFENV,"__run")
-				g_ConsoleFENV = {__run = run}
-				setmetatable(g_ConsoleFENV, {
-					__index = function(_, key)
-						return rawget(_G, key)
-					end,
-					__newindex = function(_, key, value)
-						rawset(_G, key, value)
-					end
-				})
+			local run = rawget(g_ConsoleFENV,"__run")
+			g_ConsoleFENV = {__run = run}
+			setmetatable(g_ConsoleFENV, {
+				__index = function(_, key)
+					return rawget(_G, key)
+				end,
+				__newindex = function(_, key, value)
+					rawset(_G, key, value)
+				end
+			})
 
-			end)
-		end
+		end)
 
 	end
 
