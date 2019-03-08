@@ -377,8 +377,6 @@ DefineClass.ChoGGi_DialogSection = {
 
 DefineClass.ChoGGi_ScrollArea = {
 	__parents = {"XScrollArea"},
---~ 	UniformColumnWidth = true,
---~ 	UniformRowHeight = true,
 	Margins = box(4,4,4,4),
 	BorderWidth = 0,
 }
@@ -388,6 +386,8 @@ DefineClass.ChoGGi_SleekScroll = {
 	MinThumbSize = 30,
 	AutoHide = true,
 	Background = invis,
+	-- won't scroll past last text entry
+--~ 	SnapToItems = true,
 
 	RolloverBackground = rollover_blue_darker,
   state = "mouse-out",
@@ -410,10 +410,11 @@ function ChoGGi_SleekScroll:OnSetRollover(rollover)
   self:Invalidate()
 end
 
--- convenience function
+
 function ChoGGi_SleekScroll:SetHorizontal()
-	self.MinHeight = 10
-	self.MinWidth = 10
+	-- fatter scrollbars
+	self.MinHeight = 12
+	self.MinWidth = 12
 end
 
 DefineClass.ChoGGi_Window = {

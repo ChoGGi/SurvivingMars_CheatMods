@@ -11,7 +11,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Test Locale File",
 		ActionIcon = "CommonAssets/UI/Menu/Subtitle.tga",
-		RolloverText = Strings[302535920001136--[[Test a CSV for malformed strings (causes freezing when loaded normally).--]]],
+		RolloverText = Strings[302535920001136--[[Test a CSV for malformed strings (can cause freezing when loaded normally).--]]],
 		OnAction = ChoGGi.MenuFuncs.TestLocaleFile,
 	}
 

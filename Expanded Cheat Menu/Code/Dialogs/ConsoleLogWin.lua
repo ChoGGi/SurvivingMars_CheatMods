@@ -1,17 +1,19 @@
 -- See LICENSE for terms
 
--- displays the log in a dialog
+-- displays the console in a dialog
 
 local Strings
 local Translate
+local TableConcat
 local blacklist
 local GetParentOfKind
 
 function OnMsg.ClassesGenerate()
+	Translate = ChoGGi.ComFuncs.Translate
+	TableConcat = ChoGGi.ComFuncs.TableConcat
+	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 	Strings = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
-	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-	Translate = ChoGGi.ComFuncs.Translate
 end
 
 local function GetRootDialog(dlg)
@@ -67,7 +69,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Id = "idShowModsLog",
 		Dock = "left",
 		Text = Strings[302535920000071--[[Mods Log--]]],
-		RolloverText = Strings[302535920000870--[[Shows any errors from loading mods in console log.--]]],
+		RolloverText = Strings[302535920001123--[[Shows any mod msgs in the log.--]]],
 		OnPress = self.idShowModsLogOnPress,
 	}, self.idButtonContainer)
 
@@ -180,7 +182,9 @@ function ChoGGi_ConsoleLogWin:idShowFileLogOnPress()
 	GetRootDialog(self):UpdateText(text)
 end
 function ChoGGi_ConsoleLogWin:idShowModsLogOnPress()
-	print(ModMessageLog)
+	self = GetRootDialog(self)
+
+	self:UpdateText(self.idText:GetText() .. TableConcat(ModMessageLog,"\n"))
 end
 function ChoGGi_ConsoleLogWin:idClearLogOnPress()
 	GetRootDialog(self).idText:SetText("")
@@ -210,7 +214,7 @@ function ChoGGi_ConsoleLogWin:UpdateText(text)
 	if text then
 		self.idText:SetText(text)
 		CreateRealTimeThread(function()
-			Sleep(10)
+			WaitMsg("OnRender")
 			self:ScrollToBottom()
 		end)
 	end
@@ -218,8 +222,8 @@ end
 
 function ChoGGi_ConsoleLogWin:ScrollToBottom()
 	local y = Max(0, self.idScrollArea.scroll_range_y - self.idScrollArea.content_box:sizey())
-	self.idScrollV:SetScroll(0, y)
 	self.idScrollArea:ScrollTo(0, y)
+	self.idScrollV:SetScroll(y)
 end
 
 function ChoGGi_ConsoleLogWin:Done(result)
