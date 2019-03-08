@@ -13,6 +13,62 @@ function OnMsg.ClassesGenerate()
 	local RandomColour = ChoGGi.ComFuncs.RandomColour
 	local Strings = ChoGGi.Strings
 
+	do -- TestLocaleFile
+		local saved_file_path
+
+		function ChoGGi.MenuFuncs.TestLocaleFile()
+			local hint = Strings[302535920001155--[["Enter the path to the CSV file you want to test (defaults to mine as an example).
+You can edit the CSV then run this again without having to restart the game.
+"--]]]
+
+			local item_list = {
+				{
+					text = Strings[302535920001137--[[CSV Path--]]],
+					value = ChoGGi.library_path .. "Locales/English.csv",
+					hint = hint,
+				},
+				{
+					text = Strings[302535920001162--[[Test Columns--]]],
+					value = "false",
+					hint = Strings[302535920001166--[["Reports any columns above the normal amount (5).
+Columns are added by commas (,). Surround the entire string with """" to use them.
+
+Try to increase or decrease the number if not enough or too many errors show up.
+For the value enter either ""true"" (to use 5) or a number.
+
+You need my HelperMod installed to be able to use this."--]]],
+				},
+			}
+			if saved_file_path then
+				item_list[1].value = saved_file_path
+			end
+
+			local function CallBackFunc(choice)
+				local path = choice[1].value
+				-- keep path if dialog is closed
+				saved_file_path = path
+
+				ChoGGi.ComFuncs.TestLocaleFile(
+--~ 				print(
+					path,
+					ChoGGi.ComFuncs.RetProperType(choice[2].value)
+				)
+			end
+
+			ChoGGi.ComFuncs.OpenInListChoice{
+				callback = CallBackFunc,
+				items = item_list,
+				title = Strings[302535920001125--[[Test Locale File--]]],
+				hint = hint,
+				custom_type = 9,
+				skip_sort = true,
+				width = 900,
+				height = 250,
+			}
+
+		end
+	end -- do
+
 	function ChoGGi.MenuFuncs.ExamineObject()
 		local obj = ChoGGi.ComFuncs.SelObject()
 		if obj then

@@ -3,6 +3,9 @@
 ## v5.8 (Unreleased)
 - Added a context menu to text inputs:
 - > As an extra bonus found out where selection was cleared on focus loss.
+- List Dialog:
+- > Cleaned up hint ordering.
+- > Hide custom value checkbox for certain lists (where you edit the list value instead of adding one).
 
 ## v5.8 (06 Mar 2019)
 - Broke it for non-English langs.

@@ -6,7 +6,7 @@
 ### Added:
 - Console>Tools>Examine Errors: Open (some) errors in an examine dialog (shows stack trace and sometimes a thread).
 - > Not really useful without my HelperMod, or if you want to use "Errors In Console" without the log showing.
-- ChoGGi.ComFuncs.TestLocaleFile(filepath,test_csv): See the bottom of my Locales tutorial for more info.
+- Debug>Test Locale File: Test a CSV for malformed strings (causes freezing when loaded normally).
 
 ### Changed:
 - Figured out how to apply custom rules to console with blacklist, so now everyone can use ~obj (and such).

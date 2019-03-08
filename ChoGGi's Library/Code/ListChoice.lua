@@ -9,12 +9,13 @@ get around to merging some of these types into funcs?
 custom_type = 1 : hides ok/cancel buttons, dblclick fires custom_func with {self.sel}, and sends back all items on ok
 custom_type = 2 : colour selector
 custom_type = 3 : sends back selected item.
-custom_type = 4 : sends back all items
+custom_type = 4 : sends back all items. (shows ok/cancel)
 custom_type = 5 : for Lightmodel: show colour selector when listitem.editor = color,pressing check2 applies the lightmodel without closing dialog, dbl rightclick shows lightmodel lists and lets you pick one to use in new window
 custom_type = 6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
 custom_type = 7 : dblclick fires custom_func with {self.sel} (wrapped in a table, so we can use CallBackFunc for either)
 ?
 custom_type = 8 : same as 7, but dbl rightclick fires custom_func, and dbl click fires ok as normally
+custom_type = 9 : same as 4, but hides filter and doesn't close
 
 ChoGGi.ComFuncs.OpenInListChoice{
 	callback = CallBackFunc,
@@ -186,20 +187,22 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 	self.idList.OnMouseButtonDoubleClick = self.idListOnMouseButtonDoubleClick
 	self.idList.OnKbdKeyDown = self.idListOnKbdKeyDown
 
-	self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
-		Id = "idFilterArea",
-		Dock = "bottom",
-	}, self.idDialog)
+	if self.custom_type ~= 9 then
+		self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idFilterArea",
+			Dock = "bottom",
+		}, self.idDialog)
 
-	self.idFilter = g_Classes.ChoGGi_TextInput:new({
-		Id = "idFilter",
-		RolloverText = Strings[302535920000806--[["Only show items containing this text.
+		self.idFilter = g_Classes.ChoGGi_TextInput:new({
+			Id = "idFilter",
+			RolloverText = Strings[302535920000806--[["Only show items containing this text.
 
-Press Enter to show all items."--]]],
-		Hint = Strings[302535920000068--[[Filter Items--]]],
-		OnTextChanged = self.FilterText,
-		OnKbdKeyDown = self.idFilterOnKbdKeyDown
-	}, self.idFilterArea)
+	Press Enter to show all items."--]]],
+			Hint = Strings[302535920000068--[[Filter Items--]]],
+			OnTextChanged = self.FilterText,
+			OnKbdKeyDown = self.idFilterOnKbdKeyDown
+		}, self.idFilterArea)
+	end
 
 	-- make checkbox work like a button
 	if self.custom_type == 5 then
@@ -242,6 +245,10 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			self.idEditValue:SetVisible(false)
 		else
 			self.idShowCustomVal:SetCheck(true)
+			-- also check the toggle so people don't remove what they shouldn't
+			self.idShowCustomVal:SetVisible(false)
+			-- and add some padding to keep the look
+			self.idEditValue:SetMargins(box(4,0,0,0))
 		end
 	end
 
@@ -291,6 +298,13 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 	-- we need to build this before the colourpicker stuff, or do another check for the colourpicker
 	self:BuildList()
+
+	-- select the first list item, so there's no errors when typing in the input box
+	if self.custom_type ~= 0 then
+		self.idList:SetInitialSelection(true)
+		-- update custom value text
+		self:idListOnSelect("L")
+	end
 
 	-- add the colour picker?
 	if self.custom_type == 2 or self.custom_type == 5 then
@@ -345,10 +359,12 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		}, self.idColorCheckArea)
 		--
 
-		self.idList:SetSelection(1, true)
+		self.idList:SetInitialSelection(true)
+
 		self.sel = self.idList[self.idList.focused_item].item
 		self.idEditValue:SetText(tostring(self.sel.value))
 		self:UpdateColourPicker(self.sel.text)
+
 		if self.custom_type == 2 then
 			self:SetWidth(800)
 			self.idColourContainer:SetVisible(true)
@@ -377,7 +393,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		end
 	end
 
-	if self.custom_type == 7 then
+	if self.custom_type == 7 or self.custom_type == 9 then
 		if self.list.hint then
 			self.list.hint = self.list.hint .. "\n\n" .. Strings[302535920001341--[[Double-click to apply without closing list.--]]]
 		else
@@ -393,9 +409,9 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 	-- are we showing a hint?
 	local hint = self.list.hint
-	if hint ~= "nil" then
+	if hint then
 		self.idMoveControl.RolloverText = hint
-		self.idOK.RolloverText = self.idOK:GetRolloverText() .. "\n\n\n" .. hint
+		self.idOK.RolloverText = hint .. "\n\n\n" .. self.idOK:GetRolloverText()
 	end
 
 	-- hide ok/cancel buttons as they don't do jack
@@ -403,8 +419,10 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		self.idButtonContainer:SetVisible(false)
 	end
 
+	-- we don't want OnColorChanged to fire till after user does something in the dialog
 	self.skip_color_change = false
 
+	-- dialog positioning after it's been sized
 	self:PostInit(self.list.parent)
 end
 
@@ -864,6 +882,11 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(_,button)
 			local choices = {self.sel}
 			self:UpdateReturnedItem(choices)
 			self.custom_func(choices,self)
+		elseif self.custom_type == 9 then
+			-- build self.choices
+			self:GetAllItems()
+			-- send selection back
+			self.list.callback(self.choices)
 		elseif self.custom_type ~= 5 and self.custom_type ~= 2 or self.custom_type == 8 then
 			-- dblclick to close and ret item
 			self.idOK.OnPress()

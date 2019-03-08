@@ -7,6 +7,15 @@ function OnMsg.ClassesGenerate()
 	local c = #Actions
 
 	c = c + 1
+	Actions[c] = {ActionName = Strings[302535920001125--[[Test Locale File--]]],
+		ActionMenubar = "ECM.Debug",
+		ActionId = ".Test Locale File",
+		ActionIcon = "CommonAssets/UI/Menu/Subtitle.tga",
+		RolloverText = Strings[302535920001136--[[Test a CSV for malformed strings (causes freezing when loaded normally).--]]],
+		OnAction = ChoGGi.MenuFuncs.TestLocaleFile,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001547--[[List Visible Objects--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".List Visible Objects",

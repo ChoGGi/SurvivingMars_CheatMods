@@ -85,6 +85,13 @@ function OnMsg.ClassesPostprocess()
 		TextFont = Editor16,
 		id = "ChoGGi_MultiLineEdit",
 	})
+	-- ChoGGi_TextInput
+	PlaceObj("ChoGGi_TextStyle", {
+		TextColor = -14671840,
+		RolloverTextColor = -16777216,
+		TextFont = Editor16,
+		id = "ChoGGi_TextInput",
+	})
 	-- Label
 	PlaceObj("ChoGGi_TextStyle", {
 		TextColor = white,

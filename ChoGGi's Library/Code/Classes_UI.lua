@@ -746,7 +746,7 @@ function ChoGGi_Window:PostInit(parent,pt,title_skip)
 		if move.RolloverText == "" then
 			move.RolloverText = ok .. str
 		else
-			move.RolloverText = ok .. self.idMoveControl:GetRolloverText() .. "\n\n" .. str
+			move.RolloverText = self.idMoveControl:GetRolloverText() .. "\n\n" ..ok ..  str
 		end
 	end
 
@@ -986,15 +986,14 @@ end
 
 DefineClass.ChoGGi_TextInput = {
 	__parents = {"ChoGGi_InputContextMenu","XEdit"},
-
-	AllowTabs = false,
+--~ 	AllowTabs = false,
 	RolloverTitle = Translate(126095410863--[[Info--]]),
 	Background = light_gray,
+	TextStyle = "ChoGGi_TextInput",
 }
 
 DefineClass.ChoGGi_MultiLineEdit = {
 	__parents = {"ChoGGi_InputContextMenu","XMultiLineEdit"},
-
 	TextStyle = "ChoGGi_MultiLineEdit",
 	-- default
 	Background = dark_gray,
@@ -1003,7 +1002,7 @@ DefineClass.ChoGGi_MultiLineEdit = {
 	-- selected
 	SelectionBackground = light_gray,
 	SelectionColor = black,
-
+	-- it'll be fine
 	MaxLen = max_int,
 	MaxLines = max_int,
 }
