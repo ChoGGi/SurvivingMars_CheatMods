@@ -83,7 +83,7 @@ function OnMsg.ClassesGenerate()
 				print("Command", self.class .. "." .. tostring(self.command), "remaining destructors:")
 				for i = 1, destructors[1] do
 					local destructor = destructors[i + 1]
-					local info = debug.getinfo(destructor, "S") or empty_table
+					local info = debug.getinfo(destructor, "Strings") or empty_table
 					local source = info.source or "Unknown"
 					local line = info.linedefined or -1
 					printf("\t%d. %s(%d)", i, source, line)

@@ -13,7 +13,7 @@ local table_unpack = table.unpack
 
 local MsgPopup
 local DebugGetInfo
-local S
+local Strings
 local blacklist
 local ChoGGi_OrigFuncs
 local Translate
@@ -23,7 +23,7 @@ local SetTrans
 
 function OnMsg.ClassesGenerate()
 	MsgPopup = ChoGGi.ComFuncs.MsgPopup
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	Translate = ChoGGi.ComFuncs.Translate
@@ -783,7 +783,7 @@ function OnMsg.ClassesBuilt()
 					StopWait.skipmsg = nil
 				else
 					MsgPopup(
-						S[302535920000735--[[Timer delay skipped--]]],
+						Strings[302535920000735--[[Timer delay skipped--]]],
 						Translate(3486--[[Mystery--]])
 					)
 				end
@@ -996,9 +996,9 @@ function OnMsg.ClassesBuilt()
 				title.FXMouseIn = "ActionButtonHover"
 				title.HandleMouse = true
 				title.RolloverTemplate = "Rollover"
-				title.RolloverTitle = S[302535920001367--[[Toggles--]]]
-				title.RolloverText = S[302535920001410--[[Toggle Visibility--]]]
-				title.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
+				title.RolloverTitle = Strings[302535920001367--[[Toggles--]]]
+				title.RolloverText = Strings[302535920001410--[[Toggle Visibility--]]]
+				title.RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]]
 
 				local toggle = UserSettings.InfopanelMainButVis
 				local toolbar = main_buts[2]
@@ -1049,8 +1049,8 @@ function OnMsg.ClassesBuilt()
 			if section then
 				section.idIcon.FXMouseIn = "ActionButtonHover"
 				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
-				section.RolloverText = S[302535920001410--[[Toggle Visibility--]]]
-				section.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
+				section.RolloverText = Strings[302535920001410--[[Toggle Visibility--]]]
+				section.RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]]
 
 				local toggle = UserSettings.InfopanelCheatsVis
 				local toolbar = SetToolbar(section,"XToolBar",toggle)

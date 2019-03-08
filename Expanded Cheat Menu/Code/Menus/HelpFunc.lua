@@ -7,7 +7,7 @@ function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local FileExists = ChoGGi.ComFuncs.FileExists
 	local Translate = ChoGGi.ComFuncs.Translate
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
 
@@ -47,7 +47,7 @@ function OnMsg.ClassesGenerate()
 
 				hint = Translate(4274--[[Playtime : <playtime>--]]):gsub("<playtime>",Translate(playtime)) .. "\n"
 					.. Translate(4273--[[Saved on : <save_date>--]]):gsub("<save_date>",save_date) .. "\n\n"
-					.. S[302535920001274--[[This is permanent!--]]],
+					.. Strings[302535920001274--[[This is permanent!--]]],
 			}
 		end
 
@@ -59,8 +59,8 @@ function OnMsg.ClassesGenerate()
 
 			if not choice[1].check1 then
 				MsgPopup(
-					S[302535920000038--[[Pick a checkbox next time...--]]],
-					S[302535920000146--[[Delete Saved Games--]]]
+					Strings[302535920000038--[[Pick a checkbox next time...--]]],
+					Strings[302535920000146--[[Delete Saved Games--]]]
 				)
 				return
 			end
@@ -86,8 +86,8 @@ function OnMsg.ClassesGenerate()
 			games_amt = games_amt - #SavegamesList
 			if games_amt > 0 then
 				MsgPopup(
-					S[302535920001275--[[Deleted %s saved games.--]]]:format(games_amt),
-					S[302535920000146--[[Delete Saved Games--]]]
+					Strings[302535920001275--[[Deleted %s saved games.--]]]:format(games_amt),
+					Strings[302535920000146--[[Delete Saved Games--]]]
 				)
 			end
 		end
@@ -95,14 +95,14 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920000146--[[Delete Saved Games--]]] .. ": " .. #item_list,
-			hint = Translate(6779--[[Warning--]]) .. ": " .. S[302535920001274--[[This is permanent!--]]],
+			title = Strings[302535920000146--[[Delete Saved Games--]]] .. ": " .. #item_list,
+			hint = Translate(6779--[[Warning--]]) .. ": " .. Strings[302535920001274--[[This is permanent!--]]],
 			multisel = true,
 			skip_sort = true,
 			checkboxes = {
 				{
 					title = Translate(1000009--[[Confirmation--]]),
-					hint = S[302535920001276--[[Nothing is deleted unless you check this.--]]],
+					hint = Strings[302535920001276--[[Nothing is deleted unless you check this.--]]],
 				},
 			},
 		}
@@ -113,7 +113,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ShowStartupTicks),
-			S[302535920001481--[[Show Startup Ticks--]]]
+			Strings[302535920001481--[[Show Startup Ticks--]]]
 		)
 	end
 
@@ -124,9 +124,9 @@ function OnMsg.ClassesGenerate()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.EnableToolTips,
-				S[302535920001070--[[Restart to take effect.--]]]
+				Strings[302535920001070--[[Restart to take effect.--]]]
 			),
-			S[302535920001014--[[Toggle ToolTips--]]]
+			Strings[302535920001014--[[Toggle ToolTips--]]]
 		)
 	end
 
@@ -141,11 +141,11 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			S[302535920000039--[["Spam in the console log doesn't necessarily mean a problem with SM (it could just a warning).
+			Strings[302535920000039--[["Spam in the console log doesn't necessarily mean a problem with SM (it could just a warning).
 This report will go to the %s developers not me."--]]]:format(Translate(1079--[[Surviving Mars--]])),
 			CallBackFunc,
-			Translate(1079--[[Surviving Mars--]]) .. " " .. S[302535920001463--[[Bug Report--]]],
-			S[302535920001464--[[Yes, I know what I'm doing. This is a bug.--]]]
+			Translate(1079--[[Surviving Mars--]]) .. " " .. Strings[302535920001463--[[Bug Report--]]],
+			Strings[302535920001464--[[Yes, I know what I'm doing. This is a bug.--]]]
 		)
 	end
 
@@ -204,7 +204,7 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 						text = mod.title,
 						value = hpk,
 						hint = "\n"
-							.. S[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.--]]]:format(mod.author)
+							.. Strings[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.--]]]:format(mod.author)
 							.. mod.image,
 						id = id,
 					}
@@ -214,7 +214,7 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 		else
 			MsgPopup(
 				Translate(1000760--[[Not Steam--]]) .. "/" .. Translate(1000759--[[Not Paradox--]]),
-				S[302535920001362--[[Extract HPKs--]]]
+				Strings[302535920001362--[[Extract HPKs--]]]
 			)
 			return
 		end
@@ -222,8 +222,8 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 		if #item_list == 0 then
 			-- good enough msg, probably...
 			MsgPopup(
-				S[302535920000004--[[Dump--]]] .. ": " .. #item_list,
-				S[302535920001362--[[Extract HPKs--]]]
+				Strings[302535920000004--[[Dump--]]] .. ": " .. #item_list,
+				Strings[302535920001362--[[Extract HPKs--]]]
 			)
 			return
 		end
@@ -239,20 +239,20 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 				-- add a note telling people not to be assholes
 				AsyncStringToFile(
 					path .. "/This is not your mod.txt",
-					S[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.--]]]:format(choice[i].author)
+					Strings[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.--]]]:format(choice[i].author)
 				)
 			end
 			MsgPopup(
-				S[302535920000004--[[Dump--]]] .. ": " .. #choice,
-				S[302535920001362--[[Extract HPKs--]]]
+				Strings[302535920000004--[[Dump--]]] .. ": " .. #choice,
+				Strings[302535920001362--[[Extract HPKs--]]]
 			)
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920001362--[[Extract HPKs--]]],
-			hint = S[302535920001365--[[HPK files will be unpacked into AppData/Mods/ModSteamId--]]],
+			title = Strings[302535920001362--[[Extract HPKs--]]],
+			hint = Strings[302535920001365--[[HPK files will be unpacked into AppData/Mods/ModSteamId--]]],
 			multisel = true,
 		}
 	end
@@ -306,7 +306,7 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920000504--[[List All Menu Items--]]],
+			title = Strings[302535920000504--[[List All Menu Items--]]],
 			custom_type = 7,
 			height = 800.0,
 		}
@@ -318,7 +318,7 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 		end
 		local data = HashLogToTable()
 		data[1] = data[1]:gsub("\n\n","")
-		ChoGGi.ComFuncs.OpenInExamineDlg(TableConcat(data,"\n"),nil,Translate(283142739680--[[Game--]]) .. " & " .. S[302535920001355--[[Map--]]] .. " " .. Translate(126095410863--[[Info--]]))
+		ChoGGi.ComFuncs.OpenInExamineDlg(TableConcat(data,"\n"),nil,Translate(283142739680--[[Game--]]) .. " & " .. Strings[302535920001355--[[Map--]]] .. " " .. Translate(126095410863--[[Info--]]))
 	end
 
 	do -- ModUpload
@@ -438,14 +438,14 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 					m_c = m_c + 1
 					upload_msg[m_c] = "\n\n"
 					m_c = m_c + 1
-					upload_msg[m_c] = S[302535920000051--[[Mod will not be (automagically) packed in an hpk archive.--]]]
+					upload_msg[m_c] = Strings[302535920000051--[[Mod will not be (automagically) packed in an hpk archive.--]]]
 				end
 
 				if not copy_files then
 					m_c = m_c + 1
 					upload_msg[m_c] = "\n\n<color 203 120 30>"
 					m_c = m_c + 1
-					upload_msg[m_c] = S[302535920001262--[[%sModUpload folder is empty and waiting for files.--]]]:format(ConvertToOSPath("AppData/"))
+					upload_msg[m_c] = Strings[302535920001262--[[%sModUpload folder is empty and waiting for files.--]]]:format(ConvertToOSPath("AppData/"))
 					m_c = m_c + 1
 					upload_msg[m_c] = "</color>"
 
@@ -459,7 +459,7 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 					m_c = m_c + 1
 					upload_msg[m_c] = "\n\n"
 					m_c = m_c + 1
-					upload_msg[m_c] = S[302535920001263--[["%s is different from your name, do you have permission to upload it?"--]]]:format(mod.author)
+					upload_msg[m_c] = Strings[302535920001263--[["%s is different from your name, do you have permission to upload it?"--]]]:format(mod.author)
 				end
 
 				local function QuestionBoxCallBackFunc(answer)
@@ -469,7 +469,7 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 
 					MsgPopup(
 						Translate(5452--[[START--]]),
-						S[302535920000367--[[Mod Upload--]]]
+						Strings[302535920000367--[[Mod Upload--]]]
 					)
 
 					-- always start with fresh table
@@ -622,7 +622,7 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 					-- update mod log and print it to console log
 					ModLog("\n" .. msg .. ": " .. mod.title)
 					local ModMessageLog = ModMessageLog
-					print(S[302535920001265--[[ModMessageLog--]]],":")
+					print(Strings[302535920001265--[[ModMessageLog--]]],":")
 					for i = 1, #ModMessageLog do
 						print(ModMessageLog[i])
 					end
@@ -683,7 +683,7 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 			if not (Platform.steam or Platform.pops) then
 				MsgPopup(
 					Translate(1000760--[[Not Steam--]]) .. "/" .. Translate(1000759--[[Not Paradox--]]),
-					S[302535920000367--[[Mod Upload--]]]
+					Strings[302535920000367--[[Mod Upload--]]]
 				)
 				return
 			end
@@ -717,27 +717,27 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = item_list,
-				title = S[302535920000367--[[Mod Upload--]]],
-				hint = S[302535920001511--[["AsyncPack crashes SM, so you'll need to use hpk to pack mod ahead of time.
+				title = Strings[302535920000367--[[Mod Upload--]]],
+				hint = Strings[302535920001511--[["AsyncPack crashes SM, so you'll need to use hpk to pack mod ahead of time.
 
 https://github.com/nickelc/hpk
 hpk create ""Mod folder"" ModContent.hpk
 Move archive to Mod folder/Pack/ModContent.hpk"--]]],
 				height = 800.0,
 				checkboxes = {
-					{title = S[302535920001258--[[Copy Files--]]],
-						hint = S[302535920001259--[["Copies all mod files to %sModUpload, uncheck to copy files manually."--]]]:format(ConvertToOSPath("AppData/")),
+					{title = Strings[302535920001258--[[Copy Files--]]],
+						hint = Strings[302535920001259--[["Copies all mod files to %sModUpload, uncheck to copy files manually."--]]]:format(ConvertToOSPath("AppData/")),
 						checked = true,
 					},
-					{title = S[302535920001260--[[Blank--]]],
-						hint = S[302535920001261--[["Uploads a blank mod, and prints id in log."--]]],
+					{title = Strings[302535920001260--[[Blank--]]],
+						hint = Strings[302535920001261--[["Uploads a blank mod, and prints id in log."--]]],
 					},
-					{title = S[302535920000664--[[Clipboard--]]],
-						hint = S[302535920000665--[[If uploading a mod this copies steam id or uuid to clipboard.--]]],
+					{title = Strings[302535920000664--[[Clipboard--]]],
+						hint = Strings[302535920000665--[[If uploading a mod this copies steam id or uuid to clipboard.--]]],
 						checked = true,
 					},
-					{title = S[302535920001427--[[Pack--]]],
-						hint = S[302535920001428--[["Uploads as a packed mod (default for mod editor upload).
+					{title = Strings[302535920001427--[[Pack--]]],
+						hint = Strings[302535920001428--[["Uploads as a packed mod (default for mod editor upload).
 This will always apply if uploading to Paradox.
 
 Warning: May instantly crash SM (not sure why)."--]]],
@@ -745,11 +745,11 @@ Warning: May instantly crash SM (not sure why)."--]]],
 					},
 					{title = Translate(186760604064--[[Test--]]),
 						level = 2,
-						hint = S[302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]]],
+						hint = Strings[302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).--]]],
 					},
-					{title = S[302535920001506--[[Steam--]]],
+					{title = Strings[302535920001506--[[Steam--]]],
 						level = 2,
-						hint = S[302535920001507--[[Uncheck to upload to Paradox mods (instead of Steam).--]]],
+						hint = Strings[302535920001507--[[Uncheck to upload to Paradox mods (instead of Steam).--]]],
 						checked = upload_to_who,
 						func = function(dlg,check)
 							upload_to_who = check
@@ -766,9 +766,9 @@ Warning: May instantly crash SM (not sure why)."--]]],
 						-- no pops means no sense in showing this
 						visible = Platform.pops,
 					},
-					{title = S[302535920001509--[[Platform--]]],
+					{title = Strings[302535920001509--[[Platform--]]],
 						level = 2,
-						hint = S[302535920001510--[[Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.--]]],
+						hint = Strings[302535920001510--[[Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.--]]],
 						checked = upload_to_whichplatform,
 						func = function(_,check)
 							upload_to_whichplatform = check
@@ -785,8 +785,8 @@ Warning: May instantly crash SM (not sure why)."--]]],
 		-- load up settings file in the editor
 		ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 			text = TableToLuaCode(ChoGGi.UserSettings),
-			hint_ok = S[302535920001244--[["Saves settings to file, and applies any changes."--]]],
-			hint_cancel = S[302535920001245--[[Abort without touching anything.--]]],
+			hint_ok = Strings[302535920001244--[["Saves settings to file, and applies any changes."--]]],
+			hint_cancel = Strings[302535920001245--[[Abort without touching anything.--]]],
 			custom_func = function(answer,_,obj)
 				if answer then
 					-- get text and update settings file
@@ -798,7 +798,7 @@ Warning: May instantly crash SM (not sure why)."--]]],
 						local d,m,h = FormatElapsedTime(os.time(), "dhm")
 						MsgPopup(
 							Translate(4273--[[Saved on <save_date>--]]):gsub("<save_date>",": " .. d .. ":" .. m .. ":" .. h),
-							S[302535920001242--[[Edit ECM Settings--]]]
+							Strings[302535920001242--[[Edit ECM Settings--]]]
 						)
 					end
 				end
@@ -807,7 +807,7 @@ Warning: May instantly crash SM (not sure why)."--]]],
 	end
 
 	function ChoGGi.MenuFuncs.DisableECM()
-		local title = Translate(251103844022--[[Disable--]]) .. " " .. S[302535920000887--[[ECM--]]]
+		local title = Translate(251103844022--[[Disable--]]) .. " " .. Strings[302535920000887--[[ECM--]]]
 		local function CallBackFunc(answer)
 			if answer then
 				local ChoGGi = ChoGGi
@@ -815,14 +815,14 @@ Warning: May instantly crash SM (not sure why)."--]]],
 				ChoGGi.SettingFuncs.WriteSettings()
 
 				MsgPopup(
-					S[302535920001070--[[Restart to take effect.--]]],
+					Strings[302535920001070--[[Restart to take effect.--]]],
 					title
 				)
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			S[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
-Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .. S[302535920001070--[[Restart to take effect.--]]],
+			Strings[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
+Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .. Strings[302535920001070--[[Restart to take effect.--]]],
 			CallBackFunc,
 			title
 		)
@@ -850,17 +850,17 @@ Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .
 				ChoGGi.SettingFuncs.WriteSettings()
 
 				MsgPopup(
-					S[302535920001070--[[Restart to take effect.--]]],
-					S[302535920000676--[[Reset ECM Settings--]]]
+					Strings[302535920001070--[[Restart to take effect.--]]],
+					Strings[302535920000676--[[Reset ECM Settings--]]]
 				)
 			end
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
-			S[302535920001072--[[Are you sure you want to reset ECM settings?
-	Old settings are saved as %s (or not saved if you don't use the HelperMod)--]]]:format(old) .. "\n\n" .. S[302535920001070--[[Restart to take effect.--]]],
+			Strings[302535920001072--[[Are you sure you want to reset ECM settings?
+	Old settings are saved as %s (or not saved if you don't use the HelperMod)--]]]:format(old) .. "\n\n" .. Strings[302535920001070--[[Restart to take effect.--]]],
 			CallBackFunc,
-			S[302535920001084--[[Reset--]]] .. "!"
+			Strings[302535920001084--[[Reset--]]] .. "!"
 		)
 	end
 
@@ -878,7 +878,7 @@ Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .
 	function ChoGGi.MenuFuncs.AboutECM()
 		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.MsgWait(
-			S[302535920001078--[["Hover mouse over menu item to get description and enabled status
+			Strings[302535920001078--[["Hover mouse over menu item to get description and enabled status
 	If there isn't a status then it's likely a list of options to choose from
 
 	For any issues; please report them to my Github/Steam/NexusMods page, or email %s"--]]]:format(ChoGGi.email),

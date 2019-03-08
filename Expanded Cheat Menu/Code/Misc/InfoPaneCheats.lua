@@ -9,7 +9,7 @@ local RetName
 local Random
 local Trans
 local MsgPopup
-local S
+local Strings
 local ResourceScale
 
 function OnMsg.ClassesGenerate()
@@ -18,7 +18,7 @@ function OnMsg.ClassesGenerate()
 	Random = ComFuncs.Random
 	Trans = ComFuncs.Translate
 	MsgPopup = ComFuncs.MsgPopup
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	ResourceScale = ChoGGi.Consts.ResourceScale
 
 	Object.CheatExamine = ComFuncs.OpenInExamineDlg
@@ -55,7 +55,7 @@ function OnMsg.ClassesGenerate()
 		-- name has to be set to make the hint show up
 		action.ActionName = action.ActionId
 		action.RolloverText = hint
-		action.RolloverHint = S[302535920000083--[[<left_click> Activate--]]]
+		action.RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]]
 	end
 	local function SetIcon(action,name,icon)
 		-- we're changing the name so we'll set the hint title to the orig name
@@ -68,7 +68,7 @@ function OnMsg.ClassesGenerate()
 		local tempname = Trans(obj["upgrade" .. num .. "_display_name"])
 		-- if there's an upgrade then add hint text, otherwise blank the id to hide it
 		if tempname ~= "" then
-			SetHint(action,S[302535920001207--[["Add: %s to this building.
+			SetHint(action,Strings[302535920001207--[["Add: %s to this building.
 
 %s"--]]]:format(tempname,Trans(T(obj["upgrade" .. num .. "_description"],obj))))
 			SetIcon(action,num,obj["upgrade" .. num .. "_icon"])
@@ -76,50 +76,50 @@ function OnMsg.ClassesGenerate()
 			action.ActionId = ""
 		end
 	end
-	local doublec = S[302535920001199--[[Double the amount of colonist slots for this building.--]]]
-	local resetc = S[302535920001200--[[Reset the capacity of colonist slots for this building.--]]]
+	local doublec = Strings[302535920001199--[[Double the amount of colonist slots for this building.--]]]
+	local resetc = Strings[302535920001200--[[Reset the capacity of colonist slots for this building.--]]]
 
 	local grid_lookup = {
 		OxygenFree = {
 			icon = "UI/Icons/res_oxygen.tga",
 			name = Trans(682--[[Oxygen--]]),
 			text1 = Trans(4325--[[Free--]]),
-			text2 = S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
+			text2 = Strings[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
 			con = "air_consumption",
 		},
 		OxygenNeed = {
 			icon = "UI/Icons/res_oxygen.tga",
 			name = Trans(682--[[Oxygen--]]),
-			text1 = S[302535920000162--[[Need--]]],
-			text2 = S[302535920001221--[[Change this %s so it needs a %s source.--]]],
+			text1 = Strings[302535920000162--[[Need--]]],
+			text2 = Strings[302535920001221--[[Change this %s so it needs a %s source.--]]],
 			con = "air_consumption",
 		},
 		WaterFree = {
 			icon = "UI/Icons/res_water.tga",
 			name = Trans(681--[[Water--]]),
 			text1 = Trans(4325--[[Free--]]),
-			text2 = S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
+			text2 = Strings[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
 			con = "water_consumption",
 		},
 		WaterNeed = {
 			icon = "UI/Icons/res_water.tga",
 			name = Trans(681--[[Water--]]),
-			text1 = S[302535920000162--[[Need--]]],
-			text2 = S[302535920001221--[[Change this %s so it needs a %s source.--]]],
+			text1 = Strings[302535920000162--[[Need--]]],
+			text2 = Strings[302535920001221--[[Change this %s so it needs a %s source.--]]],
 			con = "water_consumption",
 		},
 		PowerFree = {
 			icon = "UI/Icons/res_electricity.tga",
 			name = Trans(11683--[[Electricity--]]),
 			text1 = Trans(4325--[[Free--]]),
-			text2 = S[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
+			text2 = Strings[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
 			con = "electricity_consumption",
 		},
 		PowerNeed = {
 			icon = "UI/Icons/res_electricity.tga",
 			name = Trans(11683--[[Electricity--]]),
-			text1 = S[302535920000162--[[Need--]]],
-			text2 = S[302535920001221--[[Change this %s so it needs a %s source.--]]],
+			text1 = Strings[302535920000162--[[Need--]]],
+			text2 = Strings[302535920001221--[[Change this %s so it needs a %s source.--]]],
 			con = "electricity_consumption",
 		},
 	}
@@ -136,36 +136,36 @@ function OnMsg.ClassesGenerate()
 	local cheats_lookup = {
 -- Colonist
 		FillAll = {
-			des = S[302535920001202--[[Fill all stat bars.--]]],
+			des = Strings[302535920001202--[[Fill all stat bars.--]]],
 		},
 		SpawnColonist = {
-			des = S[302535920000005--[[Drops a new colonist in selected dome.--]]],
+			des = Strings[302535920000005--[[Drops a new colonist in selected dome.--]]],
 			icon = "UI/Icons/ColonyControlCenter/colonist_on.tga",
 		},
 		PrefDbl = {
-			des = S[302535920001203--[[Double %s's performance.--]]],
+			des = Strings[302535920001203--[[Double %s's performance.--]]],
 			des_name = true,
 		},
 		PrefDef = {
-			des = S[302535920001204--[[Reset %s's performance to default.--]]],
+			des = Strings[302535920001204--[[Reset %s's performance to default.--]]],
 			des_name = true,
 		},
 		RandomSpecialization = {
-			des = S[302535920001205--[[Randomly set %s's specialization.--]]],
+			des = Strings[302535920001205--[[Randomly set %s's specialization.--]]],
 			des_name = true,
 		},
 		ReneagadeCapDbl = {
-			des = S[302535920001236--[[Double amount of reneagades this station can negate (currently: %s) < Reselect to update amount.--]]],
+			des = Strings[302535920001236--[[Double amount of reneagades this station can negate (currently: %s) < Reselect to update amount.--]]],
 			des_name = "negated_renegades",
 		},
 		Die = {
-			des = S[302535920001431--[[Kill this colonist!--]]],
+			des = Strings[302535920001431--[[Kill this colonist!--]]],
 		},
 		ToggleConstruct = {
-			des = S[302535920001531--[[Make the building model look like a construction site (toggle).--]]],
+			des = Strings[302535920001531--[[Make the building model look like a construction site (toggle).--]]],
 		},
 		CrimeEvent = {
-			des = S[302535920001541--[[Start a Crime Event--]]],
+			des = Strings[302535920001541--[[Start a Crime Event--]]],
 		},
 
 -- Building
@@ -176,32 +176,32 @@ function OnMsg.ClassesGenerate()
 		ColonistCapDbl = {des = doublec},
 		ColonistCapDef = {des = resetc},
 		WorkManual = {
-			des = S[302535920001210--[[Make this %s need workers.--]]],
+			des = Strings[302535920001210--[[Make this %s need workers.--]]],
 			des_name = true,
 		},
 		CapDef = {
-			des = S[302535920001213--[[Reset the storage capacity of this %s to default.--]]],
+			des = Strings[302535920001213--[[Reset the storage capacity of this %s to default.--]]],
 			des_name = true,
 		},
 		EmptyDepot = {
-			des = S[302535920001214--[[Sticks small depot in front of mech depot and moves all resources to it (max of 20 000).--]]],
+			des = Strings[302535920001214--[[Sticks small depot in front of mech depot and moves all resources to it (max of 20 000).--]]],
 		},
 		["Quick build"] = {
-			des = S[302535920000060--[[Instantly complete building without needing resources.--]]],
+			des = Strings[302535920000060--[[Instantly complete building without needing resources.--]]],
 		},
 		AllShifts = {
-			des = S[302535920001215--[[Turn on all work shifts.--]]],
+			des = Strings[302535920001215--[[Turn on all work shifts.--]]],
 		},
 		Fill = {
-			des = S[302535920001232--[[Fill the storage of this building.--]]],
+			des = Strings[302535920001232--[[Fill the storage of this building.--]]],
 		},
 		MaxShuttlesDbl = {
-			des = S[302535920001217--[[Double the shuttles this ShuttleHub can control.--]]],
+			des = Strings[302535920001217--[[Double the shuttles this ShuttleHub can control.--]]],
 		},
 
 -- Rover/Drone
 		BattCapDbl = {
-			des = S[302535920001216--[[Double the battery capacity.--]]],
+			des = Strings[302535920001216--[[Double the battery capacity.--]]],
 		},
 		Scan = {
 			des = Trans(979029137252--[[Scanned an Anomaly--]]),
@@ -210,43 +210,43 @@ function OnMsg.ClassesGenerate()
 -- Rocket
 		-- when i added a "working" AddDust to rockets it showed up twice, so i'm lazy
 		AddDust2 = {
-			des = S[302535920001225--[[Adds dust and maintenance points.--]]],
+			des = Strings[302535920001225--[[Adds dust and maintenance points.--]]],
 			name = "AddDust",
 		},
 		CleanAndFix2 = {
-			des = S[302535920001226--[[Cleans dust and removes maintenance points.--]]],
+			des = Strings[302535920001226--[[Cleans dust and removes maintenance points.--]]],
 			name = "CleanAndFix",
 		},
 		Launch = {
-			des = Trans(6779--[[Warning--]]) .. ": " .. S[302535920001233--[[Launches rocket without asking.--]]],
+			des = Trans(6779--[[Warning--]]) .. ": " .. Strings[302535920001233--[[Launches rocket without asking.--]]],
 			icon = "UI/Icons/ColonyControlCenter/rocket_r.tga",
 		},
 
 -- Misc
 		FindResource = {
-			des = S[302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).--]]],
+			des = Strings[302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).--]]],
 			icon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 		},
 		Examine = {
-			des = S[302535920001277--[[Open %s in the Object Examiner.--]]],
+			des = Strings[302535920001277--[[Open %s in the Object Examiner.--]]],
 			des_name = true,
 		},
 		AddFuel = {
-			des = S[302535920001053--[[Fill up %s with fuel.--]]],
+			des = Strings[302535920001053--[[Fill up %s with fuel.--]]],
 			des_name = true,
 			icon = "UI/Icons/res_fuel.tga",
 		},
 		DeleteObject = {
-			des = S[302535920000414--[[Are you sure you wish to delete %s?--]]],
+			des = Strings[302535920000414--[[Are you sure you wish to delete %s?--]]],
 			des_name = true,
 			icon = "UI/Icons/Sections/warning.tga",
 		},
 		ColourRandom = {
-			des = S[302535920001224--[[Changes colour of %s to random colours (doesn't change attachments).--]]],
+			des = Strings[302535920001224--[[Changes colour of %s to random colours (doesn't change attachments).--]]],
 			des_name = true,
 		},
 		ColourDefault = {
-			des = S[302535920001246--[[Changes colour of %s back to default.--]]],
+			des = Strings[302535920001246--[[Changes colour of %s back to default.--]]],
 			des_name = true,
 		},
 	}
@@ -287,35 +287,35 @@ function OnMsg.ClassesGenerate()
 			-- the below is somewhat arranged in freq order
 
 			elseif aid == "ToggleCollision" then
-				SetHint(action,S[302535920001543--[[Set collisions on %s. Collisions disabled: %s--]]]:format(name,ComFuncs.SettingState(obj.ChoGGi_CollisionsDisabled)))
+				SetHint(action,Strings[302535920001543--[[Set collisions on %s. Collisions disabled: %s--]]]:format(name,ComFuncs.SettingState(obj.ChoGGi_CollisionsDisabled)))
 				SetIcon(action,nil,"CommonAssets/UI/Menu/ToggleOcclusion.tga")
 
 			elseif aid == "CleanAndFix" then
 				if obj:IsKindOfClasses("UniversalStorageDepot","WasteRockDumpSite") then
 					action.ActionId = ""
 				else
-					SetHint(action,S[302535920001226--[[Cleans dust and removes maintenance points.--]]])
+					SetHint(action,Strings[302535920001226--[[Cleans dust and removes maintenance points.--]]])
 				end
 
 			elseif aid == "AddDust" then
 				if obj:IsKindOfClasses("UniversalStorageDepot","WasteRockDumpSite") then
 					action.ActionId = ""
 				else
-					SetHint(action,S[302535920001225--[[Adds dust and maintenance points.--]]])
+					SetHint(action,Strings[302535920001225--[[Adds dust and maintenance points.--]]])
 				end
 
 			elseif aid == "ToggleSigns" then
 				if obj:IsKindOfClasses("SurfaceDeposit","SubsurfaceDeposit","WasteRockDumpSite","UniversalStorageDepot") then
 					action.ActionId = ""
 				else
-					SetHint(action,S[302535920001223--[[Toggle any signs above %s (until state is changed).--]]]:format(name))
+					SetHint(action,Strings[302535920001223--[[Toggle any signs above %s (until state is changed).--]]]:format(name))
 				end
 
 			elseif aid == "Destroy" then
 				if obj:IsKindOf("SupplyRocket") or obj.destroyed then
 					action.ActionId = ""
 				else
-					SetHint(action,S[302535920001227--[[Turns object into ruin.--]]])
+					SetHint(action,Strings[302535920001227--[[Turns object into ruin.--]]])
 					SetIcon(action,nil,"UI/Icons/IPButtons/demolition.tga")
 				end
 
@@ -323,14 +323,14 @@ function OnMsg.ClassesGenerate()
 				if obj:IsKindOf("SubsurfaceAnomaly") then
 					action.ActionId = ""
 				else
-					SetHint(action,S[302535920001231--[[Refill the deposit to full capacity.--]]])
+					SetHint(action,Strings[302535920001231--[[Refill the deposit to full capacity.--]]])
 				end
 
 			elseif aid == "DoubleMaxAmount" then
 				if obj:IsKindOf("SubsurfaceAnomaly") then
 					action.ActionId = ""
 				else
-					SetHint(action,S[302535920001234--[[Double the amount this %s can hold.--]]]:format(name))
+					SetHint(action,Strings[302535920001234--[[Double the amount this %s can hold.--]]]:format(name))
 				end
 
 			elseif aid == "Upgrade1" then
@@ -341,13 +341,13 @@ function OnMsg.ClassesGenerate()
 				SetUpgradeInfo(action,obj,3)
 			elseif aid == "WorkAuto" then
 				local bs = ChoGGi.UserSettings.BuildingSettings
-				SetHint(action,S[302535920001209--[[Make this %s not need workers (performance: %s).--]]]:format(name,bs and bs[id] and bs[id].performance or 150))
+				SetHint(action,Strings[302535920001209--[[Make this %s not need workers (performance: %s).--]]]:format(name,bs and bs[id] and bs[id].performance or 150))
 
 			elseif aid == "CapDbl" then
 				if obj:IsKindOf("SupplyRocket") then
-					SetHint(action,S[302535920001211--[[Double the export storage capacity of this %s.--]]]:format(name))
+					SetHint(action,Strings[302535920001211--[[Double the export storage capacity of this %s.--]]]:format(name))
 				else
-					SetHint(action,S[302535920001212--[[Double the storage capacity of this %s.--]]]:format(name))
+					SetHint(action,Strings[302535920001212--[[Double the storage capacity of this %s.--]]]:format(name))
 				end
 
 			elseif aid == "Malfunction" then
@@ -361,7 +361,7 @@ function OnMsg.ClassesGenerate()
 				if obj:IsKindOf("DroneHub") or obj.destroyed then
 					action.ActionId = ""
 				else
-					SetHint(action,S[302535920000903--[[Unfreeze frozen object.--]]])
+					SetHint(action,Strings[302535920000903--[[Unfreeze frozen object.--]]])
 				end
 
 			elseif aid == "Empty" then
@@ -369,9 +369,9 @@ function OnMsg.ClassesGenerate()
 					action.ActionId = ""
 				else
 					if obj:IsKindOfClasses("SubsurfaceDeposit","TerrainDeposit") then
-						SetHint(action,S[302535920001228--[[Set the stored amount of this %s to 0.--]]]:format(name))
+						SetHint(action,Strings[302535920001228--[[Set the stored amount of this %s to 0.--]]]:format(name))
 					else
-						SetHint(action,S[302535920001230--[[Empties the storage of this building.
+						SetHint(action,Strings[302535920001230--[[Empties the storage of this building.
 
 If this isn't a dumping site then waste rock will not be emptied.--]]])
 					end
@@ -470,13 +470,13 @@ function Colonist:CheatRandomAge()
 end
 function Colonist:CheatDie()
 	ChoGGi.ComFuncs.QuestionBox(
-		Trans(6779--[[Warning--]]) .. "!\n" .. S[302535920001430--[[Kill colonist-]]] .. "?",
+		Trans(6779--[[Warning--]]) .. "!\n" .. Strings[302535920001430--[[Kill colonist-]]] .. "?",
 		function(answer)
 			if answer then
 				self:SetCommand("Die")
 			end
 		end,
-		Trans(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]]
+		Trans(6779--[[Warning--]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 -- CheatAllShifts
@@ -733,8 +733,8 @@ function Dome:CheatCrimeEvent()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = S[302535920001541--[[Start a Crime Event--]]],
-		hint = S[302535920001542--[[Renegades not required.--]]],
+		title = Strings[302535920001541--[[Start a Crime Event--]]],
+		hint = Strings[302535920001542--[[Renegades not required.--]]],
 	}
 
 end

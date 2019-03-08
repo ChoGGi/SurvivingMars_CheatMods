@@ -27,13 +27,13 @@ end
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
 
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
 	-- goes to placement mode with last built object
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001349--[[Place Last Constructed Building--]]],
+	Actions[c] = {ActionName = Strings[302535920001349--[[Place Last Constructed Building--]]],
 		ActionId = "BuildingPlacementOrientation.LastConstructedBuilding",
 		OnAction = function()
 			local last = UICity.LastConstructedBuilding
@@ -47,7 +47,7 @@ function OnMsg.ClassesGenerate()
 
 	-- goes to placement mode with SelectedObj
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001350--[[Place Last Selected Object--]]],
+	Actions[c] = {ActionName = Strings[302535920001350--[[Place Last Selected Object--]]],
 		ActionId = "BuildingPlacementOrientation.LastSelectedObject",
 		OnAction = function()
 			local ChoGGi = ChoGGi

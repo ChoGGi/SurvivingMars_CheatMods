@@ -26,11 +26,11 @@ end
 
 local TableConcat
 local Random
-local S
+local Strings
 local Translate
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	Random = ChoGGi.ComFuncs.Random
 	Translate = ChoGGi.ComFuncs.Translate

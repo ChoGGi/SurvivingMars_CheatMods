@@ -7,7 +7,7 @@ function OnMsg.ClassesGenerate()
 	local Translate = ChoGGi.ComFuncs.Translate
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local RetName = ChoGGi.ComFuncs.RetName
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.AddOrbitalProbes()
 		local item_list = {
@@ -41,12 +41,12 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920001187--[[Add Probes--]]],
+			title = Strings[302535920001187--[[Add Probes--]]],
 			skip_sort = true,
 			checkboxes = {
 				{
 					title = Translate(10087--[[Advanced Orbital Probe--]]),
-					hint = S[302535920000266--[[Spawn--]]] .. " " .. Translate(10087--[[Advanced Orbital Probe--]]),
+					hint = Strings[302535920000266--[[Spawn--]]] .. " " .. Translate(10087--[[Advanced Orbital Probe--]]),
 					checked = GetMissionSponsor().id == "NASA"
 				},
 			},
@@ -87,7 +87,7 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					S[302535920001188--[[%s: om nom nom nom nom--]]]:format(choice[1].text),
+					Strings[302535920001188--[[%s: om nom nom nom nom--]]]:format(choice[1].text),
 					Translate(4616--[[Food Per Rocket Passenger--]]),
 					"UI/Icons/Sections/Food_4.tga"
 				)
@@ -97,8 +97,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920001190--[[Set Food Per Rocket Passenger--]]],
-			hint = S[302535920000106--[[Current--]]] .. ": " .. hint,
+			title = Strings[302535920001190--[[Set Food Per Rocket Passenger--]]],
+			hint = Strings[302535920000106--[[Current--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end
@@ -129,7 +129,7 @@ function OnMsg.ClassesGenerate()
 				{
 					text = drone_str,
 					value = 10,
-					hint = S[302535920000106--[[Current--]]] .. ": " .. UICity.drone_prefabs,
+					hint = Strings[302535920000106--[[Current--]]] .. ": " .. UICity.drone_prefabs,
 					icon = Drone.display_icon,
 				},
 			}
@@ -144,7 +144,7 @@ function OnMsg.ClassesGenerate()
 					item_list[c] = {
 						text = Translate(cargo.display_name),
 						value = 10,
-						hint = S[302535920000106--[[Current--]]] .. ": " .. UICity:GetPrefabs(id),
+						hint = Strings[302535920000106--[[Current--]]] .. ": " .. UICity:GetPrefabs(id),
 						icon = cargo.display_icon,
 						id = id,
 					}
@@ -168,7 +168,7 @@ function OnMsg.ClassesGenerate()
 					end
 				end
 				MsgPopup(
-					S[302535920001191--[[Added prefabs to %s buildings.--]]]:format(#choice),
+					Strings[302535920001191--[[Added prefabs to %s buildings.--]]]:format(#choice),
 					Translate(1110--[[Prefab Buildings--]]),
 					default_icon
 				)
@@ -180,7 +180,7 @@ function OnMsg.ClassesGenerate()
 				callback = CallBackFunc,
 				items = item_list,
 				title = Translate(1110--[[Prefab Buildings--]]),
-				hint = S[302535920001194--[[Use edit box to enter amount of prefabs to add.--]]],
+				hint = Strings[302535920001194--[[Use edit box to enter amount of prefabs to add.--]]],
 				custom_type = 3,
 				multisel = true,
 			}
@@ -188,8 +188,8 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	function ChoGGi.MenuFuncs.SetFunding()
-		local default_setting = S[302535920001195--[[Reset to 500 M--]]]
-		local hint = S[302535920001196--[[If your funds are a negative value, then you added too much.
+		local default_setting = Strings[302535920001195--[[Reset to 500 M--]]]
+		local hint = Strings[302535920001196--[[If your funds are a negative value, then you added too much.
 
 	Fix with: %s--]]]:format(default_setting)
 		local item_list = {
@@ -237,8 +237,8 @@ function OnMsg.ClassesGenerate()
 		local is_valid = IsValid(obj)
 		if not is_valid or is_valid and not obj.CheatFill and not obj.CheatRefill then
 			MsgPopup(
-				S[302535920001526--[[Not a valid object--]]],
-				S[302535920000727--[[Fill Selected Resource--]]]
+				Strings[302535920001526--[[Not a valid object--]]],
+				Strings[302535920000727--[[Fill Selected Resource--]]]
 			)
 			return
 		end
@@ -252,7 +252,7 @@ function OnMsg.ClassesGenerate()
 
 		MsgPopup(
 			RetName(obj),
-			S[302535920000727--[[Fill Selected Resource--]]]
+			Strings[302535920000727--[[Fill Selected Resource--]]]
 		)
 	end
 

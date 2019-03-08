@@ -27,7 +27,7 @@ end
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
 
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 	local Translate = ChoGGi.ComFuncs.Translate

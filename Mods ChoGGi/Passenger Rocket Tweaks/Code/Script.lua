@@ -26,11 +26,11 @@ end
 
 local table_clear = table.clear
 
-local S
+local Strings
 local Translate
 -- generate is late enough that my library is loaded, but early enough to replace anything I need to
 function OnMsg.ClassesGenerate()
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	Translate = ChoGGi.ComFuncs.Translate
 end
 

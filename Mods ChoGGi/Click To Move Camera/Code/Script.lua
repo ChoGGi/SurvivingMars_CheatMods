@@ -42,7 +42,7 @@ function OnMsg.ClassesGenerate()
 	forbid.MouseR = nil
 	forbid.MouseM = nil
 
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 
 	Actions[#Actions+1] = {ActionName = [[Click To Move]],

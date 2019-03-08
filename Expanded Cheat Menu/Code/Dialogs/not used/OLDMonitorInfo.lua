@@ -7,7 +7,7 @@ if true then
 end
 
 local TableConcat = ChoGGi.ComFuncs.TableConcat
-local S = ChoGGi.Strings
+local Strings = ChoGGi.Strings
 
 local pairs,type,tostring = pairs,type,tostring
 
@@ -60,20 +60,20 @@ function ChoGGi_MonitorInfoDlg:Init()
 
 	ChoGGi.ComFuncs.DialogAddCloseX(self)
 	ChoGGi.ComFuncs.DialogAddCaption(self,{
-		prefix = Concat(S[302535920000555--[[Monitor Info--]]],": "),
+		prefix = Concat(Strings[302535920000555--[[Monitor Info--]]],": "),
 		pos = point(25, border),
 		size = point(dialog_width-self.idCloseX:GetSize():x(), 22)
 	})
 
 	element_y = border / 2 + self.idCaption:GetPos():y() + self.idCaption:GetSize():y()
 
-	local title = S[302535920000084--[[Auto-Refresh--]]]
+	local title = Strings[302535920000084--[[Auto-Refresh--]]]
 	self.idAutoRefresh = g_Classes.CheckButton:new(self)
 	self.idAutoRefresh:SetPos(point(dialog_left, element_y))
 --~ 	self.idAutoRefresh:SetSize(title)
 	self.idAutoRefresh:SetImage("CommonAssets/UI/Controls/Button/CheckButton.tga")
 	self.idAutoRefresh:SetText(title)
-	self.idAutoRefresh:SetHint(S[302535920000085--[["Auto-refresh list every ""Amount""."--]]])
+	self.idAutoRefresh:SetHint(Strings[302535920000085--[["Auto-refresh list every ""Amount""."--]]])
 	self.idAutoRefresh:SetButtonSize(point(16, 16))
 	--add check for auto-refresh
 	function self.idAutoRefresh.button.OnButtonPressed()
@@ -99,12 +99,12 @@ function ChoGGi_MonitorInfoDlg:Init()
 
 	element_x = border * 2 + self.idAutoRefresh:GetPos():x() + self.idAutoRefresh:GetSize():x()
 
-	title = S[1000220--[[Refresh--]]]
+	title = Strings[1000220--[[Refresh--]]]
 	self.idRefresh = g_Classes.Button:new(self)
 	self.idRefresh:SetPos(point(element_x, element_y))
 	self.idRefresh:SetSize(ChoGGi.ComFuncs.RetButtonTextSize(title))
 	self.idRefresh:SetText(title)
-	self.idRefresh:SetHint(S[302535920000086--[[Manually refresh the list.--]]])
+	self.idRefresh:SetHint(Strings[302535920000086--[[Manually refresh the list.--]]])
 	function self.idRefresh.OnButtonPressed()
 		if ChoGGi.testing then
 			OpenExamine(self.obj)
@@ -121,7 +121,7 @@ function ChoGGi_MonitorInfoDlg:Init()
 	self.idTimerAmount:SetVSizing("AnchorToTop")
 	self.idTimerAmount:SetFontStyle("Editor14Bold")
 	self.idTimerAmount:SetText("1000")
-	self.idTimerAmount:SetHint(S[302535920000087--[[Refresh delay in ms--]]])
+	self.idTimerAmount:SetHint(Strings[302535920000087--[[Refresh delay in ms--]]])
 	self.idTimerAmount:SetTextVAlign("center")
 	self.idTimerAmount:SetMaxLen(-1)
 	function self.idTimerAmount.OnValueChanged()
@@ -139,7 +139,7 @@ function ChoGGi_MonitorInfoDlg:Init()
 	self.idText:SetHSizing("Resize")
 	self.idText:SetVSizing("Resize")
 	self.idText:SetFontStyle("Editor12Bold")
-	self.idText:SetHint(S[302535920000088--[[Double right-click to open list of objects.--]]])
+	self.idText:SetHint(Strings[302535920000088--[[Double right-click to open list of objects.--]]])
 	self.idText:SetBackgroundColor(RGBA(0, 0, 0, 16))
 	self.idText:SetScrollBar(true)
 	self.idText:SetScrollAutohide(true)
@@ -211,7 +211,7 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
 			end --for
 		end --if
 	else
-		texttable[#texttable+1] = S[302535920000089--[[Nothing left--]]]
+		texttable[#texttable+1] = Strings[302535920000089--[[Nothing left--]]]
 	end --if #self.tables > 0
 
 	texttable[#texttable+1] = "\n"
@@ -219,7 +219,7 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
 	text = TableConcat(texttable)
 
 	if text == "" then
-		self.idText:SetText(S[302535920000090--[[Error opening: %s--]]]:format(RetName(self.obj)))
+		self.idText:SetText(Strings[302535920000090--[[Error opening: %s--]]]:format(RetName(self.obj)))
 		return
 	end
 	--populate it

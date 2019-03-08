@@ -27,7 +27,7 @@ function OnMsg.ClassesGenerate()
 	local Translate = ChoGGi.ComFuncs.Translate
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
 
@@ -281,7 +281,7 @@ function OnMsg.ClassesGenerate()
 		-- let user know
 		if not skip_msg then
 			MsgPopup(
-				S[302535920000002--[[Dumped: %s--]]]:format(RetName(obj)),
+				Strings[302535920000002--[[Dumped: %s--]]]:format(RetName(obj)),
 				filename,
 				"UI/Icons/Upgrades/magnetic_filtering_04.tga",
 				nil,
@@ -391,8 +391,8 @@ function OnMsg.ClassesGenerate()
 			end
 			if type(obj) ~= "table" then
 				MsgPopup(
-					S[302535920000003--[[Can't dump nothing--]]],
-					S[302535920000004--[[Dump--]]]
+					Strings[302535920000003--[[Can't dump nothing--]]],
+					Strings[302535920000004--[[Dump--]]]
 				)
 				return
 			end
@@ -408,7 +408,7 @@ function OnMsg.ClassesGenerate()
 			if #output_list > 0 then
 				AsyncStringToFile("AppData/logs/DumpedTable.txt",TableConcat(output_list),mode or "-1")
 
-				local msg = S[302535920000002--[[Dumped: %s--]]]:format(name)
+				local msg = Strings[302535920000002--[[Dumped: %s--]]]:format(name)
 				print(msg)
 				MsgPopup(
 					msg,
@@ -420,11 +420,11 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 
-			local msg = S[302535920000003--[[Can't dump nothing--]]] .. ": " .. name .. "\n" .. ValueToLuaCode(obj)
+			local msg = Strings[302535920000003--[[Can't dump nothing--]]] .. ": " .. name .. "\n" .. ValueToLuaCode(obj)
 			print(msg)
 			MsgPopup(
 				msg,
-				S[302535920000004--[[Dump--]]]
+				Strings[302535920000004--[[Dump--]]]
 			)
 
 		end
@@ -713,8 +713,8 @@ function OnMsg.ClassesGenerate()
 
 		local const = const
 
-		local title = planning and S[302535920000862--[[Object Planner--]]] or S[302535920000475--[[Entity Spawner--]]]
-		local hint = planning and S[302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]]] or S[302535920000476--[["Shows list of objects, and spawns at mouse cursor."--]]]
+		local title = planning and Strings[302535920000862--[[Object Planner--]]] or Strings[302535920000475--[[Entity Spawner--]]]
+		local hint = planning and Strings[302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]]] or Strings[302535920000476--[["Shows list of objects, and spawns at mouse cursor."--]]]
 
 		local default
 		local item_list = {}
@@ -789,7 +789,7 @@ function OnMsg.ClassesGenerate()
 
 			if not skip_msg then
 				MsgPopup(
-					choice[1].text .. ": " .. S[302535920000014--[[Spawned--]]],
+					choice[1].text .. ": " .. Strings[302535920000014--[[Spawned--]]],
 					title
 				)
 			end
@@ -825,7 +825,7 @@ function OnMsg.ClassesGenerate()
 
 		for i = 1, #states do
 			item_list[i] = {
-				text = Translate(1000037--[[Name--]]) .. ": " .. states[i] .. ", " .. S[302535920000858--[[Index--]]] .. ": " .. i,
+				text = Translate(1000037--[[Name--]]) .. ": " .. states[i] .. ", " .. Strings[302535920000858--[[Index--]]] .. ": " .. i,
 				value = states[i],
 			}
 		end
@@ -843,7 +843,7 @@ function OnMsg.ClassesGenerate()
 				obj:SetState(value)
 				MsgPopup(
 					ChoGGi.ComFuncs.SettingState(choice[1].text),
-					S[302535920000859--[[Anim State--]]]
+					Strings[302535920000859--[[Anim State--]]]
 				)
 			end
 		end
@@ -851,8 +851,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920000860--[[Set Anim State--]]],
-			hint = S[302535920000861--[[Current State: %s--]]]:format(obj:GetState()),
+			title = Strings[302535920000860--[[Set Anim State--]]],
+			hint = Strings[302535920000861--[[Current State: %s--]]]:format(obj:GetState()),
 			custom_type = 7,
 		}
 	end
@@ -864,7 +864,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local table_list = {}
-		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list,nil,S[302535920000853--[[Monitor--]]] .. ": ThreadsRegister")
+		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list,nil,Strings[302535920000853--[[Monitor--]]] .. ": ThreadsRegister")
 		dlg:EnableAutoRefresh()
 
 		CreateRealTimeThread(function()
@@ -874,7 +874,7 @@ function OnMsg.ClassesGenerate()
 				table_clear(table_list)
 				local c = 0
 				for thread in pairs(ThreadsRegister) do
-					local info = debug_getinfo(thread, 1, "S")
+					local info = debug_getinfo(thread, 1, "Strings")
 					if info then
 						-- we use <tags *num*> as a way to hide the num but still have it there for a unique string
 						c = c + 1
@@ -935,10 +935,10 @@ function OnMsg.ClassesGenerate()
 			obj = obj or ChoGGi.ComFuncs.SelObject()
 		end
 
-		local name = S[302535920000129--[[Set--]]] .. " " .. S[302535920001184--[[Particles--]]]
+		local name = Strings[302535920000129--[[Set--]]] .. " " .. Strings[302535920001184--[[Particles--]]]
 		if not obj or obj and not obj:IsKindOf("FXObject") then
 			MsgPopup(
-				S[302535920000027--[[Nothing selected--]]] .. ": " .. "FXObject",
+				Strings[302535920000027--[[Nothing selected--]]] .. ": " .. "FXObject",
 				name
 			)
 			return
@@ -1030,7 +1030,7 @@ function OnMsg.ClassesGenerate()
 			callback = CallBackFunc,
 			items = item_list,
 			title = name,
-			hint = S[302535920001421--[[Shows list of particles to quickly test out on objects.--]]],
+			hint = Strings[302535920001421--[[Shows list of particles to quickly test out on objects.--]]],
 			custom_type = 7,
 			skip_icons = true,
 		}
@@ -1065,7 +1065,7 @@ function OnMsg.ClassesGenerate()
 		end
 		local text = dlgConsoleLog.idText:GetText()
 		if #text < 1 then
-			print(S[302535920000692--[[Log is blank (well not anymore).--]]])
+			print(Strings[302535920000692--[[Log is blank (well not anymore).--]]])
 			return
 		end
 
@@ -1287,7 +1287,7 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 
-				local spots_table = {[-1] = S[302535920001068--[["Readme:
+				local spots_table = {[-1] = Strings[302535920001068--[["Readme:
 See bottom for box/bsphere/material/mesh.
 The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one)
 
@@ -1368,7 +1368,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 				ChoGGi.ComFuncs.OpenInExamineDlg(
 					spots_table,
 					parent_or_ret,
-					S[302535920000235--[[Attach Spots List--]]] .. ": " .. RetName(obj)
+					Strings[302535920000235--[[Attach Spots List--]]] .. ": " .. RetName(obj)
 				)
 			end
 		end
@@ -1448,7 +1448,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 				else
 					flags_table[f .. " (" .. mask .. ")"] = {
 						ChoGGi_AddHyperLink = true,
-						hint = S[302535920001069--[[Toggle Boolean--]]],
+						hint = Strings[302535920001069--[[Toggle Boolean--]]],
 						name = tostring(flagged),
 						colour = flagged and us.ExamineColourBool or us.ExamineColourBoolFalse,
 						func = function(ex_dlg,_,list_obj)
@@ -1576,7 +1576,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 				if parent_or_ret == true then
 					return EntityMats(obj)
 				else
-					ChoGGi.ComFuncs.OpenInExamineDlg(EntityMats(obj),parent_or_ret,S[302535920001458--[[Material Properties--]]])
+					ChoGGi.ComFuncs.OpenInExamineDlg(EntityMats(obj),parent_or_ret,Strings[302535920001458--[[Material Properties--]]])
 				end
 			else
 				local materials = {}
@@ -1584,7 +1584,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 				for entity in pairs(all_entities) do
 					materials[entity] = EntityMats(entity)
 				end
-				ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent,S[302535920001458--[[Material Properties--]]])
+				ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent,Strings[302535920001458--[[Material Properties--]]])
 			end
 
 		end
@@ -1902,7 +1902,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 					break
 				end
 				list[idx] = {
-					name = name ~= "" and name or S[302535920000723--[[Lua--]]],
+					name = name ~= "" and name or Strings[302535920000723--[[Lua--]]],
 					value = value,
 					level = level,
 				}
@@ -1921,7 +1921,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 					break
 				end
 				list[idx] = {
-					name = name ~= "" and name or S[302535920000723--[[Lua--]]],
+					name = name ~= "" and name or Strings[302535920000723--[[Lua--]]],
 					value = value,
 				}
 				idx = idx + 1
@@ -1958,7 +1958,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 							temp.func = value:sub(2,space - 1)
 							-- change unknown to Lua
 							local n = value:sub(space + 2,-2)
-							temp.name = n ~= "unknown name" and n or S[302535920000723--[[Lua--]]]
+							temp.name = n ~= "unknown name" and n or Strings[302535920000723--[[Lua--]]]
 						end
 					end
 
@@ -1978,7 +1978,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 						for i = 0, nups do
 							local info_got = debug_getinfo(thread,i)
 							if info_got then
-								local name = info_got.name or info_got.what or S[302535920000723--[[Lua--]]]
+								local name = info_got.name or info_got.what or Strings[302535920000723--[[Lua--]]]
 								funcs[i] = {
 									name = name,
 									func = info_got.func,
@@ -2651,8 +2651,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
 
 			local item_list = {
-				{text = Translate(754117323318--[[Enable--]]),value = true,hint = S[302535920001081--[[Changes signs to materials.--]]]},
-				{text = Translate(251103844022--[[Disable--]]),value = false,hint = S[302535920001082--[[Changes materials to signs.--]]]},
+				{text = Translate(754117323318--[[Enable--]]),value = true,hint = Strings[302535920001081--[[Changes signs to materials.--]]]},
+				{text = Translate(251103844022--[[Disable--]]),value = false,hint = Strings[302535920001082--[[Changes materials to signs.--]]]},
 			}
 
 			local function CallBackFunc(choice)
@@ -2683,7 +2683,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = item_list,
-				title = S[302535920001083--[[Change Surface Signs--]]],
+				title = Strings[302535920001083--[[Change Surface Signs--]]],
 			}
 		end
 	end -- do
@@ -2728,10 +2728,10 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 	end
 
 	function ChoGGi.ComFuncs.BlacklistMsg(msg)
-		msg = S[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format(msg)
+		msg = Strings[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format(msg)
 		MsgPopup(
 			msg,
-			S[302535920000000--[[Expanded Cheat Menu--]]]
+			Strings[302535920000000--[[Expanded Cheat Menu--]]]
 		)
 		print(msg)
 	end
@@ -2753,8 +2753,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				path = path or "@AppData/Mods/"
 				local str_len = #path
 
-				print(S[302535920000497--[[Hook Started--]]],path,line,mask,count)
-				MsgPopup(S[302535920000497--[[Hook Started--]]],Translate(1000113--[[Debug--]]))
+				print(Strings[302535920000497--[[Hook Started--]]],path,line,mask,count)
+				MsgPopup(Strings[302535920000497--[[Hook Started--]]],Translate(1000113--[[Debug--]]))
 
 				collectgarbage()
 				local function hook_func(event)
@@ -2763,7 +2763,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					if event == "call" then
 						i = debug_getinfo(2,"Sf")
 					else
-						i = debug_getinfo(2,"S")
+						i = debug_getinfo(2,"Strings")
 					end
 
 					if i.source:sub(1,str_len) == path and (not line or line and i.linedefined == line) then
@@ -2782,8 +2782,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				-- start capture (c = func call, r = func ret, l = enters new line of code)
 				debug.sethook(hook_func,mask or "c", count)
 			else
-				print(S[302535920000498--[[Hook Stopped--]]],path,line,mask,count)
-				MsgPopup(S[302535920000498--[[Hook Stopped--]]],Translate(1000113--[[Debug--]]))
+				print(Strings[302535920000498--[[Hook Stopped--]]],path,line,mask,count)
+				MsgPopup(Strings[302535920000498--[[Hook Stopped--]]],Translate(1000113--[[Debug--]]))
 				ChoGGi.Temp.FunctionsHooked = false
 
 				-- stop capture
@@ -2833,10 +2833,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				end
 			end
 
-			-- add param names if we can
-			local param_names,count = GetParamNames(func)
 			local text_table = {}
-			-- probably a better way to test if it's a class obj
+			-- probably a better way to test if it's a class obj, but this works...
 			local cls_obj = type(parent.IsKindOf) == "function"
 
 			-- and replace the func reference
@@ -2853,8 +2851,21 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 						text_table[c] = i
 						c = c + 1
 						text_table[c] = ": "
-						c = c + 1
-						text_table[c] = cls_obj and i ~= 1 and ValueToLuaCode(varargs[i]) or tostring(varargs[i])
+
+						if cls_obj and i == 1 then
+							c = c + 1
+							text_table[c] = tostring(varargs[i])
+							c = c + 1
+							text_table[c] = " ("
+							c = c + 1
+							text_table[c] = RetName(varargs[i])
+							c = c + 1
+							text_table[c] = ")"
+						else
+							c = c + 1
+							text_table[c] = ValueToLuaCode(varargs[i])
+						end
+
 						c = c + 1
 						text_table[c] = "\n"
 					end
@@ -2916,9 +2927,9 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					local enext = loaded[i+1]
 					failed_strings[c] = {
 						id = i,
-						[S[302535920000106--[[Current--]]] .. " id"] = entry.id,
-						[S[302535920000106--[[Current--]]] .. " text"] = entry.text,
-						[S[302535920000106--[[Current--]]] .. " translated_new"] = entry.translated_new,
+						[Strings[302535920000106--[[Current--]]] .. " id"] = entry.id,
+						[Strings[302535920000106--[[Current--]]] .. " text"] = entry.text,
+						[Strings[302535920000106--[[Current--]]] .. " translated_new"] = entry.translated_new,
 						-- add some context
 						[Translate(1000231--[[Previous--]]) .. " id"] = eprev.id,
 						[Translate(1000231--[[Previous--]]) .. " text"] = eprev.text,
@@ -2947,7 +2958,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			local omit_captions = "omit_captions"
 			local err, str = AsyncFileToString(filepath)
 			if err then
-				print(S[302535920001123--[[Test Locale--]]],"ERROR:",err,"FILEPATH:",filepath)
+				print(Strings[302535920001123--[[Test Locale--]]],"ERROR:",err,"FILEPATH:",filepath)
 				return
 			end
 
@@ -2955,7 +2966,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			local rows_c = 0
 			local Q = lpeg.P("\"")
 			local quoted_value = Q * lpeg.Cs((1 - Q + Q * Q / "\"") ^ 0) * Q
-			local raw_value = lpeg.C((1 - lpeg.S(",\t\r\n\"")) ^ 0)
+			local raw_value = lpeg.C((1 - lpeg.Strings(",\t\r\n\"")) ^ 0)
 			local field = (lpeg.P(" ") ^ 0 * quoted_value * lpeg.P(" ") ^ 0 + raw_value) * lpeg.Cp()
 			local space = string.byte(" ", 1)
 
@@ -3032,7 +3043,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 						filepath = locale_path .. "English.csv"
 					end
 				else
-					print(S[302535920001123--[[Test Locale--]]],"FILEPATH ERROR:",filepath)
+					print(Strings[302535920001123--[[Test Locale--]]],"FILEPATH ERROR:",filepath)
 					return
 				end
 			end
@@ -3066,17 +3077,17 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 			if c > 0 or testing then
 				ChoGGi.ComFuncs.OpenInExamineDlg({
-					[S[302535920001448--[[CSV--]]]] = loaded,
+					[Strings[302535920001448--[[CSV--]]]] = loaded,
 					failed_strings = failed_strings,
 					test_csv = test_csv,
 					out_table = out_table,
 					out_gendertable = out_gendertable,
-				},nil,S[302535920001123--[[Test Locale--]]] .. ": " .. Translate(951--[[Failed to complete operation.--]]))
+				},nil,Strings[302535920001123--[[Test Locale--]]] .. ": " .. Translate(951--[[Failed to complete operation.--]]))
 			else
 				ChoGGi.ComFuncs.OpenInExamineDlg({
 					out_table = out_table,
 					out_gendertable = out_gendertable,
-				},nil,S[302535920001123--[[Test Locale--]]] .. ": " .. Translate(1000015--[[Success--]]))
+				},nil,Strings[302535920001123--[[Test Locale--]]] .. ": " .. Translate(1000015--[[Success--]]))
 			end
 
 		end
@@ -3122,7 +3133,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				if IsPoint(obj) then
 					-- InvalidPos()
 					if obj == InvalidPos then
-						return S[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
+						return Strings[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
 					else
 						return "point" .. tostring(obj)
 					end

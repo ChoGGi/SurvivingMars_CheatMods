@@ -9,7 +9,7 @@ function OnMsg.ClassesGenerate()
 	local RetName = ChoGGi.ComFuncs.RetName
 	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 	local RetObjectCapAndGrid = ChoGGi.ComFuncs.RetObjectCapAndGrid
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local Translate = ChoGGi.ComFuncs.Translate
 
 	function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
@@ -29,7 +29,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
-			S[302535920000565--[[Storage Mechanized Depots Temp--]]],
+			Strings[302535920000565--[[Storage Mechanized Depots Temp--]]],
 			default_icon
 		)
 	end
@@ -40,8 +40,8 @@ function OnMsg.ClassesGenerate()
 
 		if not capacity then
 			MsgPopup(
-				S[302535920000954--[[You need to select a building that has workers.--]]],
-				S[302535920000567--[[Worker Capacity--]]],
+				Strings[302535920000954--[[You need to select a building that has workers.--]]],
+				Strings[302535920000567--[[Worker Capacity--]]],
 				default_icon
 			)
 			return
@@ -49,7 +49,7 @@ function OnMsg.ClassesGenerate()
 
 		local ChoGGi = ChoGGi
 		local default_setting = capacity
-		local hint_toolarge = Translate(6779--[[Warning--]]) .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
+		local hint_toolarge = Translate(6779--[[Warning--]]) .. " " .. Strings[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -104,8 +104,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					S[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(obj),choice[1].text),
-					S[302535920000567--[[Worker Capacity--]]],
+					Strings[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(obj),choice[1].text),
+					Strings[302535920000567--[[Worker Capacity--]]],
 					default_icon
 				)
 			end
@@ -114,8 +114,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. S[302535920000567--[[Worker Capacity--]]],
-			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
+			title = Strings[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. Strings[302535920000567--[[Worker Capacity--]]],
+			hint = Strings[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 			skip_sort = true,
 		}
 	end
@@ -126,15 +126,15 @@ function OnMsg.ClassesGenerate()
 
 		if not cap_type then
 			MsgPopup(
-				S[302535920000958--[[You need to select a building that has capacity (colonists/air/water/elec).--]]],
-				S[302535920000569--[[Building Capacity--]]],
+				Strings[302535920000958--[[You need to select a building that has capacity (colonists/air/water/elec).--]]],
+				Strings[302535920000569--[[Building Capacity--]]],
 				default_icon
 			)
 			return
 		end
 		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
-		local hint_toolarge = Translate(6779--[[Warning--]]) .. " " .. S[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
+		local hint_toolarge = Translate(6779--[[Warning--]]) .. " " .. Strings[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
 		local default_setting = capacity
 
@@ -255,8 +255,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					S[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(obj),choice[1].text),
-					S[302535920000569--[[Building Capacity--]]],
+					Strings[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(obj),choice[1].text),
+					Strings[302535920000569--[[Building Capacity--]]],
 					default_icon
 				)
 			end
@@ -266,8 +266,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. Translate(109035890389--[[Capacity--]]),
-			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
+			title = Strings[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. Translate(109035890389--[[Capacity--]]),
+			hint = Strings[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 			skip_sort = true,
 		}
 	end
@@ -278,8 +278,8 @@ function OnMsg.ClassesGenerate()
 
 		if not capacity then
 			MsgPopup(
-				S[302535920000959--[[You need to select something that has space for visitors (services/trainingbuildings).--]]],
-				S[302535920000571--[[Building Visitor Capacity--]]],
+				Strings[302535920000959--[[You need to select something that has space for visitors (services/trainingbuildings).--]]],
+				Strings[302535920000571--[[Building Visitor Capacity--]]],
 				default_icon2
 			)
 			return
@@ -332,8 +332,8 @@ function OnMsg.ClassesGenerate()
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					S[302535920000960--[[%s visitor capacity is now %s.--]]]:format(RetName(obj),choice[1].text),
-					S[302535920000571--[[Building Visitor Capacity--]]],
+					Strings[302535920000960--[[%s visitor capacity is now %s.--]]]:format(RetName(obj),choice[1].text),
+					Strings[302535920000571--[[Building Visitor Capacity--]]],
 					default_icon2
 				)
 			end
@@ -342,8 +342,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. S[302535920000961--[[Visitor Capacity--]]],
-			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint,
+			title = Strings[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. Strings[302535920000961--[[Visitor Capacity--]]],
+			hint = Strings[302535920000914--[[Current capacity--]]] .. ": " .. hint,
 			skip_sort = true,
 		}
 	end
@@ -353,7 +353,7 @@ function OnMsg.ClassesGenerate()
 
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts[bld_type] / r
-		local hint_max = S[302535920000962--[[Max capacity limited to:
+		local hint_max = Strings[302535920000962--[[Max capacity limited to:
 	Universal: 2,500
 	Other: 20,000
 	Waste: 1,000,000
@@ -453,7 +453,7 @@ function OnMsg.ClassesGenerate()
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
 					choice[1].text .. ": " .. bld_type,
-					S[302535920000573--[[Storage Universal Depot--]]],
+					Strings[302535920000573--[[Storage Universal Depot--]]],
 					"UI/Icons/Sections/basic.tga"
 				)
 			end
@@ -462,8 +462,8 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920000129--[[Set--]]] .. ": " .. bld_type .. " " .. S[302535920000963--[[Size--]]],
-			hint = S[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_max,
+			title = Strings[302535920000129--[[Set--]]] .. ": " .. bld_type .. " " .. Strings[302535920000963--[[Size--]]],
+			hint = Strings[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_max,
 			skip_sort = true,
 		}
 	end

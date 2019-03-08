@@ -18,21 +18,21 @@ function OnMsg.ClassesGenerate()
 	local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 	local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
 	local Translate = ChoGGi.ComFuncs.Translate
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
 
 	local ToolsMenuPopupToggle_list = {
-		{name = S[302535920000040--[[Exec Code--]]],
-			hint = S[302535920001287--[[Instead of a single line, you can enter/execute code in a textbox.--]]],
+		{name = Strings[302535920000040--[[Exec Code--]]],
+			hint = Strings[302535920001287--[[Instead of a single line, you can enter/execute code in a textbox.--]]],
 			clicked = function()
 				ChoGGi.ComFuncs.OpenInExecCodeDlg()
 			end,
 		},
-		{name = S[302535920001026--[[Show File Log--]]],
-			hint = S[302535920001091--[[Flushes log to disk and displays in an examine dialog.--]]],
+		{name = Strings[302535920001026--[[Show File Log--]]],
+			hint = Strings[302535920001091--[[Flushes log to disk and displays in an examine dialog.--]]],
 			clicked = function()
-				local dlg = OpenInExamineDlg(LoadLogfile(),nil,S[302535920001026--[[Show File Log--]]])
+				local dlg = OpenInExamineDlg(LoadLogfile(),nil,Strings[302535920001026--[[Show File Log--]]])
 				CreateRealTimeThread(function()
 					-- yeah, it needs two
 					WaitMsg("OnRender")
@@ -44,17 +44,17 @@ function OnMsg.ClassesGenerate()
 				end)
 			end,
 		},
-		{name = S[302535920000071--[[Mods Log--]]],
-			hint = S[302535920000870--[[Shows mod log msgs in an examine dialog.--]]],
+		{name = Strings[302535920000071--[[Mods Log--]]],
+			hint = Strings[302535920000870--[[Shows mod log msgs in an examine dialog.--]]],
 			clicked = function()
-				OpenInExamineDlg(ModMessageLog,nil,S[302535920000071--[[Mods Log--]]])
+				OpenInExamineDlg(ModMessageLog,nil,Strings[302535920000071--[[Mods Log--]]])
 			end,
 		},
-		{name = S[302535920001497--[[Show Blacklist--]]],
+		{name = Strings[302535920001497--[[Show Blacklist--]]],
 			hint = "Show blacklisted objects",
 			clicked = function()
 				if blacklist then
-					ChoGGi.ComFuncs.BlacklistMsg(S[302535920001497--[[Show Blacklist--]]])
+					ChoGGi.ComFuncs.BlacklistMsg(Strings[302535920001497--[[Show Blacklist--]]])
 					return
 				end
 				-- lib should always have the blacklist enabled
@@ -63,35 +63,35 @@ function OnMsg.ClassesGenerate()
 			end,
 		},
 		{is_spacer = true},
-		{name = S[302535920000734--[[Clear Log--]]],
-			hint = S[302535920001152--[[Clear out the console log (F9 also works).--]]],
+		{name = Strings[302535920000734--[[Clear Log--]]],
+			hint = Strings[302535920001152--[[Clear out the console log (F9 also works).--]]],
 			clicked = cls,
 		},
-		{name = S[302535920000563--[[Copy Log Text--]]],
-			hint = S[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
+		{name = Strings[302535920000563--[[Copy Log Text--]]],
+			hint = Strings[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
 			clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
 		},
-		{name = S[302535920000473--[[Reload ECM Menu--]]],
-			hint = S[302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix or alt-tab).--]]],
+		{name = Strings[302535920000473--[[Reload ECM Menu--]]],
+			hint = Strings[302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix or alt-tab).--]]],
 			clicked = function()
 				Msg("ShortcutsReloaded")
 			end,
 		},
 		{is_spacer = true},
-		{name = S[302535920000853--[[Monitor--]]] .. ": _G",
+		{name = Strings[302535920000853--[[Monitor--]]] .. ": _G",
 			hint = "ChoGGi.ComFuncs.MonitorTableLength(_G)",
 			clicked = function()
 				ChoGGi.ComFuncs.MonitorTableLength(_G,nil,nil,nil,"_G")
 			end,
 		},
-		{name = S[302535920000853--[[Monitor--]]] .. ": ThreadsRegister",
+		{name = Strings[302535920000853--[[Monitor--]]] .. ": ThreadsRegister",
 			hint = "ChoGGi.ComFuncs.MonitorThreads()",
 			clicked = function()
 				ChoGGi.ComFuncs.MonitorThreads()
 			end,
 		},
-		{name = S[302535920000234--[[Monitor Func Calls--]]],
-			hint = S[302535920000300--[["Collects a list of func calls from ""@AppData/Mods/""
+		{name = Strings[302535920000234--[[Monitor Func Calls--]]],
+			hint = Strings[302535920000300--[["Collects a list of func calls from ""@AppData/Mods/""
 Usage: Call it once to start and again to stop, it'll then show a list of func calls.
 
 Call it manually with:
@@ -104,8 +104,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 			end,
 		},
 		{is_spacer = true},
-		{name = S[302535920001378--[[XWindow Inspector--]]],
-			hint = S[302535920001379--[[Opens up the window inspector with terminal.desktop.--]]],
+		{name = Strings[302535920001378--[[XWindow Inspector--]]],
+			hint = Strings[302535920001379--[[Opens up the window inspector with terminal.desktop.--]]],
 			clicked = function()
 				local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos()) or terminal.desktop
 				local ged = ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
@@ -127,7 +127,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 		local disp = title or name .. (func and "()" or "")
 		return {
 			name = disp,
-			hint = S[302535920000491--[[Examine Object--]]] .. ": " .. disp,
+			hint = Strings[302535920000491--[[Examine Object--]]] .. ": " .. disp,
 			clicked = function()
 				if func then
 					if name == "GetLuaSaveGameData" then
@@ -163,7 +163,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 
 --~ 	function ChoGGi.ConsoleFuncs.AddMonitor(name,submenu,idx)
 --~ 		table_insert(submenu,idx or 2,{
---~ 			name = S[302535920000853--[[Monitor--]]] .. ": " .. name,
+--~ 			name = Strings[302535920000853--[[Monitor--]]] .. ": " .. name,
 --~ 			hint = "ChoGGi.ComFuncs.MonitorTableLength(" .. name .. ")",
 --~ 			clicked = function()
 --~ 				if name == "_G" then
@@ -259,8 +259,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 
 		-- bonus addition at the top
 		table_insert(ExamineMenuToggle_list,1,{
-			name = S[302535920001376--[[Auto Update List--]]],
-			hint = S[302535920001377--[[Update this list when ECM updates it.--]]],
+			name = Strings[302535920001376--[[Auto Update List--]]],
+			hint = Strings[302535920001377--[[Update this list when ECM updates it.--]]],
 			class = "ChoGGi_CheckButtonMenu",
 			value = "ChoGGi.UserSettings.ConsoleExamineListUpdate",
 			clicked = function()
@@ -283,7 +283,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 		local function UpdateLogErrors(name)
 
 			_G[name] = function(...)
-				local func_name = S[302535920001077--[[Error from function--]]] .. [[ "]] .. name .. [[" = ]]
+				local func_name = Strings[302535920001077--[[Error from function--]]] .. [[ "]] .. name .. [[" = ]]
 				print(func_name,...)
 
 				local stack_trace
@@ -305,10 +305,10 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 								(err_type == "function" and err_type.. " " or "") .. func_name
 								,...,
 								stack_trace,
-							},nil,S[302535920001479--[[Examine Errors--]]])
+							},nil,Strings[302535920001479--[[Examine Errors--]]])
 						end
 					else
-						OpenInExamineDlg({func_name,...,stack_trace},nil,S[302535920001479--[[Examine Errors--]]])
+						OpenInExamineDlg({func_name,...,stack_trace},nil,Strings[302535920001479--[[Examine Errors--]]])
 					end
 				end
 
@@ -335,8 +335,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 	end -- do
 
 	local ConsoleMenuPopupToggle_list = {
-		{name = S[302535920001479--[[Errors In Console--]]],
-			hint = S[302535920001480--[[Print (some) lua errors in the console (needs %s enabled).--]]]:format(S[302535920001112--[[Console Log--]]]),
+		{name = Strings[302535920001479--[[Errors In Console--]]],
+			hint = Strings[302535920001480--[[Print (some) lua errors in the console (needs %s enabled).--]]]:format(Strings[302535920001112--[[Console Log--]]]),
 			class = "ChoGGi_CheckButtonMenu",
 			value = "ChoGGi.UserSettings.ConsoleErrors",
 			clicked = function()
@@ -345,8 +345,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 				ChoGGi.ConsoleFuncs.ToggleLogErrors(ChoGGi.UserSettings.ConsoleErrors)
 			end,
 		},
-		{name = S[302535920001102--[[Examine Errors--]]],
-			hint = S[302535920001104--[[Open (some) errors in an examine dialog (shows stack trace and sometimes a thread).--]]],
+		{name = Strings[302535920001102--[[Examine Errors--]]],
+			hint = Strings[302535920001104--[[Open (some) errors in an examine dialog (shows stack trace and sometimes a thread).--]]],
 			class = "ChoGGi_CheckButtonMenu",
 			value = "ChoGGi.UserSettings.ExamineErrors",
 			clicked = function()
@@ -354,8 +354,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 				ChoGGi.SettingFuncs.WriteSettings()
 			end,
 		},
-		{name = S[302535920001112--[[Console Log--]]],
-			hint = S[302535920001119--[[Show console log text in-game (probably an annoyance to non-modders).--]]],
+		{name = Strings[302535920001112--[[Console Log--]]],
+			hint = Strings[302535920001119--[[Show console log text in-game (probably an annoyance to non-modders).--]]],
 			class = "ChoGGi_CheckButtonMenu",
 			value = "dlgConsoleLog",
 			clicked = function()
@@ -370,8 +370,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 				end
 			end,
 		},
-		{name = S[302535920001120--[[Console Window--]]],
-			hint = S[302535920001133--[[Show the console log text in an independant window.--]]],
+		{name = Strings[302535920001120--[[Console Window--]]],
+			hint = Strings[302535920001133--[[Show the console log text in an independant window.--]]],
 			class = "ChoGGi_CheckButtonMenu",
 			value = "dlgChoGGi_ConsoleLogWin",
 			clicked = function()
@@ -380,8 +380,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 				ChoGGi.ComFuncs.ShowConsoleLogWin(ChoGGi.UserSettings.ConsoleHistoryWin)
 			end,
 		},
-		{name = S[302535920000483--[[Write Console Log--]]],
-			hint = S[302535920000484--[[Write console log to %slogs/ConsoleLog.log (updated every 5 seconds).--]]]:format(ConvertToOSPath("AppData/")),
+		{name = Strings[302535920000483--[[Write Console Log--]]],
+			hint = Strings[302535920000484--[[Write console log to %slogs/ConsoleLog.log (updated every 5 seconds).--]]]:format(ConvertToOSPath("AppData/")),
 			class = "ChoGGi_CheckButtonMenu",
 			value = "ChoGGi.UserSettings.WriteLogs",
 			clicked = function()
@@ -408,7 +408,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 				items[i] = {
 					-- these can get long so keep 'em short
 					name = text:sub(1,ConsoleHistoryMenuLength),
-					hint = S[302535920001138--[[Execute this command in the console.--]]] .. "\n\n" .. text,
+					hint = Strings[302535920001138--[[Execute this command in the console.--]]] .. "\n\n" .. text,
 					clicked = function()
 						dlgConsole:Exec(text)
 					end,
@@ -456,8 +456,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 	--------------------------------Console popup
 		dlgConsole.idConsoleMenu = g_Classes.ChoGGi_ConsoleButton:new({
 			Id = "idConsoleMenu",
-			RolloverText = S[302535920001089--[[Settings & Commands for the console.--]]],
-			Text = S[302535920001308--[[Settings--]]],
+			RolloverText = Strings[302535920001089--[[Settings & Commands for the console.--]]],
+			Text = Strings[302535920001308--[[Settings--]]],
 			OnPress = function()
 				PopupToggle(dlgConsole.idConsoleMenu,"idConsoleMenuPopup",ConsoleMenuPopupToggle_list)
 			end,
@@ -465,8 +465,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 
 		dlgConsole.idToolsMenu = g_Classes.ChoGGi_ConsoleButton:new({
 			Id = "idToolsMenu",
-			RolloverText = S[302535920000127--[[Various tools to use.--]]],
-			Text = S[302535920000239--[[Tools--]]],
+			RolloverText = Strings[302535920000127--[[Various tools to use.--]]],
+			Text = Strings[302535920000239--[[Tools--]]],
 			OnPress = function()
 				PopupToggle(dlgConsole.idToolsMenu,"idToolsMenuPopup",ToolsMenuPopupToggle_list)
 			end,
@@ -474,8 +474,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 
 		dlgConsole.idExamineMenu = g_Classes.ChoGGi_ConsoleButton:new({
 			Id = "idExamineMenu",
-			RolloverText = S[302535920000491--[[Examine Object--]]],
-			Text = S[302535920000069--[[Examine--]]],
+			RolloverText = Strings[302535920000491--[[Examine Object--]]],
+			Text = Strings[302535920000069--[[Examine--]]],
 			OnPress = function()
 				PopupToggle(dlgConsole.idExamineMenu,"idExamineMenuPopup",ExamineMenuToggle_list)
 			end,
@@ -483,8 +483,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 
 		dlgConsole.idHistoryMenu = g_Classes.ChoGGi_ConsoleButton:new({
 			Id = "idHistoryMenu",
-			RolloverText = S[302535920001080--[[Console history items (mouse-over to see code).--]]],
-			Text = S[302535920000793--[[History--]]],
+			RolloverText = Strings[302535920001080--[[Console history items (mouse-over to see code).--]]],
+			Text = Strings[302535920000793--[[History--]]],
 			OnPress = ChoGGi.ConsoleFuncs.HistoryPopup,
 		}, dlgConsole.idContainer)
 
@@ -513,7 +513,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 						if not err then
 							items[i] = {
 								name = files[i].name,
-								hint = S[302535920001138--[[Execute this command in the console.--]]] .. "\n\n" ..script,
+								hint = Strings[302535920001138--[[Execute this command in the console.--]]] .. "\n\n" ..script,
 								clicked = function()
 									if script:find("-- rem echo on") then
 										console:Exec(script)
@@ -562,8 +562,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 		-- build Scripts button
 		if RetFilesInFolder(ChoGGi.scripts,".lua") then
 			BuildSciptButton(dlg,{
-				Text = S[302535920000353--[[Scripts--]]],
-				RolloverText = S[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."--]]]:format(ChoGGi.scripts),
+				Text = Strings[302535920000353--[[Scripts--]]],
+				RolloverText = Strings[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."--]]]:format(ChoGGi.scripts),
 				id = "idScriptsMenuPopup",
 				script_path = ChoGGi.scripts,
 			})
@@ -572,7 +572,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 		-- check for any folders with lua files in ECM Scripts
 		local folders = ChoGGi.ComFuncs.RetFoldersInFolder(ChoGGi.scripts)
 		if folders then
-			local hint_str = S[302535920001159--[[Any .lua files in %s.--]]]
+			local hint_str = Strings[302535920001159--[[Any .lua files in %s.--]]]
 			for i = 1, #folders do
 				if RetFilesInFolder(folders[i].path,".lua") then
 					BuildSciptButton(dlg,{
@@ -592,9 +592,9 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 		if not ChoGGi.ComFuncs.FileExists(script_path) then
 			AsyncCreatePath(script_path .. "/Functions")
 			-- print some info
-			print(S[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."--]]]:format(ConvertToOSPath(script_path)))
+			print(Strings[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."--]]]:format(ConvertToOSPath(script_path)))
 			-- add some example files and a readme
-			AsyncStringToFile(script_path .. "/readme.txt",S[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
+			AsyncStringToFile(script_path .. "/readme.txt",Strings[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.--]]])
 			AsyncStringToFile(script_path .. "/Read Me.lua",[[ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])
 			AsyncStringToFile(script_path .. "/Functions/Amount of colonists.lua",[[#(UICity.labels.Colonist or "")]])
 			AsyncStringToFile(script_path .. "/Functions/Toggle Working SelectedObj.lua",[[SelectedObj:ToggleWorking()]])

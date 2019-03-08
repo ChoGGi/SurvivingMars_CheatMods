@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local S = ChoGGi.Strings
+local Strings = ChoGGi.Strings
 
 -- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
 DefineClass.ChoGGi_OHexSpot = {
@@ -44,7 +44,7 @@ DefineClass.ChoGGi_BuildingEntityClass = {
 -- add some info/functionality to spawned entity objects
 ChoGGi_BuildingEntityClass.GetDisplayName = CObject.GetEntity
 function ChoGGi_BuildingEntityClass:GetIPDescription()
-	return S[302535920001110--[[Spawned entity object--]]]
+	return Strings[302535920001110--[[Spawned entity object--]]]
 end
 ChoGGi_BuildingEntityClass.OnSelected = AddSelectionParticlesToObj
 -- prevent an error msg in log

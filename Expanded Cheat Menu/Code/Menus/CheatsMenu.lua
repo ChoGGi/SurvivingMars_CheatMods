@@ -2,16 +2,16 @@
 
 function OnMsg.ClassesGenerate()
 	local Translate = ChoGGi.ComFuncs.Translate
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001355--[[Map--]]] .. " " .. Translate(5422--[[Exploration--]]),
+	Actions[c] = {ActionName = Strings[302535920001355--[[Map--]]] .. " " .. Translate(5422--[[Exploration--]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Map Exploration",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
-		RolloverText = S[302535920000328--[[Scanning, deep scanning, core mines, and alien imprints.--]]],
+		RolloverText = Strings[302535920000328--[[Scanning, deep scanning, core mines, and alien imprints.--]]],
 		OnAction = ChoGGi.MenuFuncs.MapExploration,
 	}
 
@@ -20,7 +20,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Anomaly Scanning",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
-		RolloverText = S[302535920001286--[[Scan all or certain types of anomalies.--]]],
+		RolloverText = Strings[302535920001286--[[Scan all or certain types of anomalies.--]]],
 		OnAction = ChoGGi.MenuFuncs.ShowScanAnomaliesOptions,
 	}
 
@@ -29,16 +29,16 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Mystery Log",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
-		RolloverText = S[302535920000330--[[Advance to next part, show what part you're on, or remove mysteries.--]]],
+		RolloverText = Strings[302535920000330--[[Advance to next part, show what part you're on, or remove mysteries.--]]],
 		OnAction = ChoGGi.MenuFuncs.MysteryLog,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000331--[[Start Mystery--]]],
+	Actions[c] = {ActionName = Strings[302535920000331--[[Start Mystery--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Start Mystery",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
-		RolloverText = S[302535920000332--[["Pick and start a mystery (with instant start option).
+		RolloverText = Strings[302535920000332--[["Pick and start a mystery (with instant start option).
 Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance)."--]]],
 		OnAction = ChoGGi.MenuFuncs.ShowMysteryList,
 	}
@@ -48,7 +48,7 @@ Certain mysteries need certain objects which get placed when the map is generate
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Start Disasters",
 		ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
-		RolloverText = S[302535920000334--[[Show the disasters list and optionally start one.--]]],
+		RolloverText = Strings[302535920000334--[[Show the disasters list and optionally start one.--]]],
 		OnAction = ChoGGi.MenuFuncs.DisastersTrigger,
 	}
 
@@ -57,92 +57,92 @@ Certain mysteries need certain objects which get placed when the map is generate
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Trigger fireworks",
 		ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
-		RolloverText = S[302535920001402--[[Add some party to your domes for 3 hours (10 domes max).--]]],
+		RolloverText = Strings[302535920001402--[[Add some party to your domes for 3 hours (10 domes max).--]]],
 		OnAction = TriggerFireworks,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000318--[[Unlock--]]] .. " " .. Translate(697482021580--[[Achievements--]]),
+	Actions[c] = {ActionName = Strings[302535920000318--[[Unlock--]]] .. " " .. Translate(697482021580--[[Achievements--]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Unlock Achievements",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
-		RolloverText = S[302535920001496--[[Show a list of achievements to unlock (permanent!).--]]],
+		RolloverText = Strings[302535920001496--[[Show a list of achievements to unlock (permanent!).--]]],
 		OnAction = ChoGGi.MenuFuncs.UnlockAchievements,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000266--[[Spawn--]]] .. " " .. Translate(547--[[Colonists--]]),
+	Actions[c] = {ActionName = Strings[302535920000266--[[Spawn--]]] .. " " .. Translate(547--[[Colonists--]]),
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Spawn Colonists",
 		ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
-		RolloverText = S[302535920000336--[[Spawn X amount of colonists.--]]],
+		RolloverText = Strings[302535920000336--[[Spawn X amount of colonists.--]]],
 		OnAction = ChoGGi.MenuFuncs.SpawnColonists,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000337--[[Toggle Unlock All Buildings--]]],
+	Actions[c] = {ActionName = Strings[302535920000337--[[Toggle Unlock All Buildings--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Toggle Unlock all buildings",
 		ActionIcon = "CommonAssets/UI/Menu/TerrainConfigEditor.tga",
-		RolloverText = S[302535920000338--[["Unlocks all buildings in the build menu.
+		RolloverText = Strings[302535920000338--[["Unlocks all buildings in the build menu.
 This doesn't apply to sponsor limited ones; see ECM>Buildings>Toggles>%s.
-To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[302535920001398--[[Remove Sponsor Limits--]]],S[302535920000180--[[Unlock Locked Buildings--]]]),
+To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[302535920001398--[[Remove Sponsor Limits--]]],Strings[302535920000180--[[Unlock Locked Buildings--]]]),
 		OnAction = ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000361--[[Unpin All Pinned Objects--]]],
+	Actions[c] = {ActionName = Strings[302535920000361--[[Unpin All Pinned Objects--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Unpin All Pinned Objects",
 		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
-		RolloverText = S[302535920000362--[[Removes all objects from the "Pin" menu.--]]],
+		RolloverText = Strings[302535920000362--[[Removes all objects from the "Pin" menu.--]]],
 		OnAction = UnpinAll,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000363--[[Complete Wires & Pipes--]]],
+	Actions[c] = {ActionName = Strings[302535920000363--[[Complete Wires & Pipes--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Complete Wires & Pipes",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
-		RolloverText = S[302535920000364--[[Complete all wires and pipes instantly.--]]],
+		RolloverText = Strings[302535920000364--[[Complete all wires and pipes instantly.--]]],
 		OnAction = CheatCompleteAllWiresAndPipes,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000365--[[Complete Constructions--]]],
+	Actions[c] = {ActionName = Strings[302535920000365--[[Complete Constructions--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Complete Constructions",
 		ActionIcon = "CommonAssets/UI/Menu/place_custom_object.tga",
-		RolloverText = S[302535920000366--[[Complete all constructions instantly.--]]],
+		RolloverText = Strings[302535920000366--[[Complete all constructions instantly.--]]],
 		OnAction = ChoGGi.MenuFuncs.CompleteConstructions,
 		ActionShortcut = "Alt-B",
 		ActionBindable = true,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000236--[[Mod Editor--]]],
+	Actions[c] = {ActionName = Strings[302535920000236--[[Mod Editor--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Mod Editor",
 		ActionIcon = "CommonAssets/UI/Menu/Action.tga",
-		RolloverText = S[302535920000368--[[Open the mod editor.--]]],
+		RolloverText = Strings[302535920000368--[[Open the mod editor.--]]],
 		OnAction = ChoGGi.MenuFuncs.OpenModEditor,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001393--[[StoryBits ClearCooldowns--]]],
+	Actions[c] = {ActionName = Strings[302535920001393--[[StoryBits ClearCooldowns--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".StoryBits ClearCooldowns",
 		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = S[302535920001392--[[Clears story bit cooldowns... (got me).--]]],
+		RolloverText = Strings[302535920001392--[[Clears story bit cooldowns... (got me).--]]],
 		OnAction = StoryBitCategoryState.ClearCooldowns,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001394--[[Spawn Planetary Anomalies--]]],
+	Actions[c] = {ActionName = Strings[302535920001394--[[Spawn Planetary Anomalies--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Spawn Planetary Anomalies",
 		ActionIcon = "CommonAssets/UI/Menu/LowerTerrainToLevel.tga",
-		RolloverText = S[302535920001395--[[Adds Anomaly locations to Planetary View.--]]],
+		RolloverText = Strings[302535920001395--[[Adds Anomaly locations to Planetary View.--]]],
 		OnAction = ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies,
 	}
 
@@ -157,59 +157,59 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Translate(311--[[Research--]]) .. " / " .. S[302535920000318--[[Unlock--]]] .. " " .. Translate(3734--[[Tech--]]),
+	Actions[c] = {ActionName = Translate(311--[[Research--]]) .. " / " .. Strings[302535920000318--[[Unlock--]]] .. " " .. Translate(3734--[[Tech--]]),
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Research / Unlock Tech",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
-		RolloverText = S[302535920000346--[[Pick what you want to unlock/research (defaults to unlock).--]]],
+		RolloverText = Strings[302535920000346--[[Pick what you want to unlock/research (defaults to unlock).--]]],
 		OnAction = ChoGGi.MenuFuncs.ResearchTech,
 		ActionSortKey = "-1",
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Translate(311--[[Research--]]) .. " " .. S[302535920000281--[[Remove--]]],
+	Actions[c] = {ActionName = Translate(311--[[Research--]]) .. " " .. Strings[302535920000281--[[Remove--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Research Remove",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
-		RolloverText = S[302535920001494--[[Remove a tech from researched list.--]]],
+		RolloverText = Strings[302535920001494--[[Remove a tech from researched list.--]]],
 		OnAction = ChoGGi.MenuFuncs.ResearchRemove,
 		ActionSortKey = "-2",
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001278--[[Instant Research--]]],
+	Actions[c] = {ActionName = Strings[302535920001278--[[Instant Research--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Instant Research",
 		ActionIcon = "CommonAssets/UI/Menu/DarkSideOfTheMoon.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.InstantResearch,
-				S[302535920001279--[[Instantly research anything you click.--]]]
+				Strings[302535920001279--[[Instantly research anything you click.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.InstantResearch_toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000305--[[Research Queue Size--]]],
+	Actions[c] = {ActionName = Strings[302535920000305--[[Research Queue Size--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Research Queue Size",
 		ActionIcon = "CommonAssets/UI/Menu/ShowOcclusion.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.ResearchQueueSize,
-				S[302535920000348--[[Allow more items in queue.--]]]
+				Strings[302535920000348--[[Allow more items in queue.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.ResearchQueueSize_Set,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000349--[[Reset All Research--]]],
+	Actions[c] = {ActionName = Strings[302535920000349--[[Reset All Research--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Reset All Research",
 		ActionIcon = "CommonAssets/UI/Menu/UnlockCollection.tga",
-		RolloverText = S[302535920000350--[[Resets all research (includes breakthrough tech).--]]],
+		RolloverText = Strings[302535920000350--[[Resets all research (includes breakthrough tech).--]]],
 		OnAction = ChoGGi.MenuFuncs.ResetAllResearch,
 	}
 
@@ -218,56 +218,56 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Research Current Tec",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
-		RolloverText = S[302535920000352--[[Complete item currently being researched.--]]],
+		RolloverText = Strings[302535920000352--[[Complete item currently being researched.--]]],
 		OnAction = CheatResearchCurrent,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000295--[[Add Research Points--]]],
+	Actions[c] = {ActionName = Strings[302535920000295--[[Add Research Points--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Add Research Points",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
-		RolloverText = S[302535920000354--[[Add a specified amount of research points.--]]],
+		RolloverText = Strings[302535920000354--[[Add a specified amount of research points.--]]],
 		OnAction = ChoGGi.MenuFuncs.AddResearchPoints,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000355--[[Outsourcing For Free--]]],
+	Actions[c] = {ActionName = Strings[302535920000355--[[Outsourcing For Free--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Outsourcing For Free",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.OutsourceResearchCost,
-				S[302535920000356--[[Outsourcing is free to purchase (over n over).--]]]
+				Strings[302535920000356--[[Outsourcing is free to purchase (over n over).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.OutsourcingFree_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001342--[[Change Outsource Limit--]]],
+	Actions[c] = {ActionName = Strings[302535920001342--[[Change Outsource Limit--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Change Outsource Limit",
 		ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.OutsourceMaxOrderCount,
-				S[302535920001343--[[How many times you can outsource in a row.--]]]
+				Strings[302535920001343--[[How many times you can outsource in a row.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.OutsourceMaxOrderCount_Set,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000357--[[Set Amount Of Breakthroughs Allowed--]]],
+	Actions[c] = {ActionName = Strings[302535920000357--[[Set Amount Of Breakthroughs Allowed--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Set Amount Of Breakthroughs Allowed",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.BreakThroughTechsPerGame,
-				S[302535920000358--[[How many breakthroughs are allowed to be unlocked?--]]]
+				Strings[302535920000358--[[How many breakthroughs are allowed to be unlocked?--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.BreakThroughsAllowed_Set,
@@ -275,14 +275,14 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000359--[[Breakthroughs From OmegaTelescope--]]],
+	Actions[c] = {ActionName = Strings[302535920000359--[[Breakthroughs From OmegaTelescope--]]],
 		ActionMenubar = str_Cheats_Research,
 		ActionId = ".Breakthroughs From OmegaTelescope",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.OmegaTelescopeBreakthroughsCount,
-				S[302535920000360--[[How many breakthroughs the OmegaTelescope will unlock.--]]]
+				Strings[302535920000360--[[How many breakthroughs the OmegaTelescope will unlock.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set,
@@ -299,39 +299,39 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 		ActionSortKey = "1Menu",
 	}
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000232--[[Draggable Cheats Menu--]]],
+	Actions[c] = {ActionName = Strings[302535920000232--[[Draggable Cheats Menu--]]],
 		ActionMenubar = str_Cheats_Menu,
 		ActionId = ".Draggable Cheats Menu",
 		ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.DraggableCheatsMenu,
-				S[302535920000324--[[Cheats menu can be moved.--]]]
+				Strings[302535920000324--[[Cheats menu can be moved.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000325--[[Keep Cheats Menu Position--]]],
+	Actions[c] = {ActionName = Strings[302535920000325--[[Keep Cheats Menu Position--]]],
 		ActionMenubar = str_Cheats_Menu,
 		ActionId = ".Keep Cheats Menu Position",
 		ActionIcon = "CommonAssets/UI/Menu/LockCollection.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.KeepCheatsMenuPosition,
-				S[302535920000326--[[This menu will stay where you drag it.--]]]
+				Strings[302535920000326--[[This menu will stay where you drag it.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001014--[[Hide Cheats Menu--]]],
+	Actions[c] = {ActionName = Strings[302535920001014--[[Hide Cheats Menu--]]],
 		ActionMenubar = str_Cheats_Menu,
 		ActionId = ".Hide Cheats Menu",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
-		RolloverText = S[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again.--]]],
+		RolloverText = Strings[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again.--]]],
 		OnAction = ChoGGi.ComFuncs.CheatsMenu_Toggle,
 		ActionShortcut = "F2",
 		ActionBindable = true,
@@ -339,14 +339,14 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000696--[[Infopanel Cheats--]]],
+	Actions[c] = {ActionName = Strings[302535920000696--[[Infopanel Cheats--]]],
 		ActionMenubar = str_Cheats_Menu,
 		ActionId = ".Infopanel Cheats",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.ToggleInfopanelCheats,
-				S[302535920000697--[[Shows the cheat pane in the info panel (selection panel).--]]]
+				Strings[302535920000697--[[Shows the cheat pane in the info panel (selection panel).--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.InfopanelCheats_Toggle,
@@ -356,14 +356,14 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(S[30253592000139
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000698--[[Infopanel Cheats Cleanup--]]],
+	Actions[c] = {ActionName = Strings[302535920000698--[[Infopanel Cheats Cleanup--]]],
 		ActionMenubar = str_Cheats_Menu,
 		ActionId = ".Infopanel Cheats Cleanup",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.CleanupCheatsInfoPane,
-				S[302535920000699--[[Remove some entries from the cheat pane (restart to re-enable).
+				Strings[302535920000699--[[Remove some entries from the cheat pane (restart to re-enable).
 
 	AddMaintenancePnts, MakeSphereTarget, SpawnWorker, SpawnVisitor--]]]
 			)

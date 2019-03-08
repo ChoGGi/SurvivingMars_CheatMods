@@ -2,10 +2,10 @@
 
 -- displays texture info
 
-local S
+local Strings
 
 function OnMsg.ClassesGenerate()
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 end
 
 DefineClass.ChoGGi_DTMSlotsDlg = {
@@ -18,7 +18,7 @@ DefineClass.ChoGGi_DTMSlotsDlg = {
 function ChoGGi_DTMSlotsDlg:Init(parent, context)
 	local g_Classes = g_Classes
 
-	self.title = S[302535920001486--[[DTM Slots--]]]
+	self.title = Strings[302535920001486--[[DTM Slots--]]]
 
 	local screen = UIL.GetScreenSize()
 	self.dialog_width = screen:x() - 20 + 0.0

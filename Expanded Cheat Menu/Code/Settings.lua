@@ -13,7 +13,7 @@ local ThreadUnlockKey = ThreadUnlockKey
 function OnMsg.ClassesGenerate()
 	-- used for loading/saving settings
 	local function PrintError(err)
-		local err_str = S[302535920000000--[[Expanded Cheat Menu--]]] .. ": " .. S[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err)
+		local err_str = Strings[302535920000000--[[Expanded Cheat Menu--]]] .. ": " .. Strings[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err)
 		if ChoGGi.Temp.GameLoaded then
 			print(err_str)
 		else
@@ -22,7 +22,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	local Translate = ChoGGi.ComFuncs.Translate
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 
 	local AsyncFileToString = not blacklist and AsyncFileToString
@@ -280,7 +280,7 @@ function OnMsg.ClassesGenerate()
 		ThreadUnlockKey(ChoGGi.settings_file)
 
 		if err then
-			print(S[302535920000006--[[Failed to save settings to %s : %s--]]]:format(
+			print(Strings[302535920000006--[[Failed to save settings to %s : %s--]]]:format(
 				ChoGGi.settings_file and ConvertToOSPath(ChoGGi.settings_file) or ChoGGi.settings_file,
 				err
 			))
@@ -499,10 +499,10 @@ function OnMsg.ModsReloaded()
 
 --~ 		-- then we check if this is an older version still using the old way of storing building settings and convert over to new
 --~ 		if not ChoGGi.SettingFuncs.AddOldSettings(ChoGGi.UserSettings,"BuildingsCapacity","capacity") then
---~ 			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsCapacity")
+--~ 			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Strings[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsCapacity")
 --~ 		end
 --~ 		if not ChoGGi.SettingFuncs.AddOldSettings(ChoGGi.UserSettings,"BuildingsProduction","production") then
---~ 			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = S[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsProduction")
+--~ 			ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = Strings[302535920000008--[[Error: Couldn't convert old settings to new settings: %s--]]]:format("BuildingsProduction")
 --~ 		end
 
 	end

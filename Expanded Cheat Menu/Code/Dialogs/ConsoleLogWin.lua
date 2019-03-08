@@ -2,13 +2,13 @@
 
 -- displays the log in a dialog
 
-local S
+local Strings
 local Translate
 local blacklist
 local GetParentOfKind
 
 function OnMsg.ClassesGenerate()
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 	Translate = ChoGGi.ComFuncs.Translate
@@ -30,7 +30,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 
-	self.title = S[302535920001120--[[Console Window--]]]
+	self.title = Strings[302535920001120--[[Console Window--]]]
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -42,8 +42,8 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 
 	self.idToggleTrans = g_Classes.ChoGGi_CheckButton:new({
 		Id = "idToggleTrans",
-		Text = S[302535920000865--[[Translate--]]],
-		RolloverText = S[302535920001367--[[Toggles--]]] .. " " .. S[302535920000629--[[UI Transparency--]]],
+		Text = Strings[302535920000865--[[Translate--]]],
+		RolloverText = Strings[302535920001367--[[Toggles--]]] .. " " .. Strings[302535920000629--[[UI Transparency--]]],
 		Dock = "left",
 		Margins = box(4,0,0,0),
 		OnChange = self.idToggleTransOnChange,
@@ -58,32 +58,32 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 	self.idShowFileLog = g_Classes.ChoGGi_Button:new({
 		Id = "idShowFileLog",
 		Dock = "left",
-		Text = S[302535920001026--[[Show File Log--]]],
-		RolloverText = S[302535920001091--[[Flushes log to disk and displays in console log.--]]],
+		Text = Strings[302535920001026--[[Show File Log--]]],
+		RolloverText = Strings[302535920001091--[[Flushes log to disk and displays in console log.--]]],
 		OnPress = self.idShowFileLogOnPress,
 	}, self.idButtonContainer)
 
 	self.idShowModsLog = g_Classes.ChoGGi_Button:new({
 		Id = "idShowModsLog",
 		Dock = "left",
-		Text = S[302535920000071--[[Mods Log--]]],
-		RolloverText = S[302535920000870--[[Shows any errors from loading mods in console log.--]]],
+		Text = Strings[302535920000071--[[Mods Log--]]],
+		RolloverText = Strings[302535920000870--[[Shows any errors from loading mods in console log.--]]],
 		OnPress = self.idShowModsLogOnPress,
 	}, self.idButtonContainer)
 
 	self.idClearLog = g_Classes.ChoGGi_Button:new({
 		Id = "idClearLog",
 		Dock = "left",
-		Text = S[302535920000734--[[Clear Log--]]],
-		RolloverText = S[302535920000477--[[Clear out the windowed console log.--]]],
+		Text = Strings[302535920000734--[[Clear Log--]]],
+		RolloverText = Strings[302535920000477--[[Clear out the windowed console log.--]]],
 		OnPress = self.idClearLogOnPress,
 	}, self.idButtonContainer)
 
 	self.idCopyText = g_Classes.ChoGGi_Button:new({
 		Id = "idCopyText",
 		Dock = "left",
-		Text = S[302535920000563--[[Copy Log Text--]]],
-		RolloverText = S[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
+		Text = Strings[302535920000563--[[Copy Log Text--]]],
+		RolloverText = Strings[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
 		OnPress = self.idCopyTextOnPress,
 	}, self.idButtonContainer)
 
@@ -99,15 +99,15 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Id = "idTextInput",
 		OnKbdKeyDown = self.idTextInputOnKbdKeyDown,
 		RolloverTemplate = "Rollover",
-		RolloverTitle = S[302535920001073--[[Console--]]] .. " " .. Translate(487939677892--[[Help--]]),
+		RolloverTitle = Strings[302535920001073--[[Console--]]] .. " " .. Translate(487939677892--[[Help--]]),
 	}, self.idTextInputArea)
 
 	if blacklist then
-		self.idTextInput.RolloverText = S[302535920001512--[[You need to have my HelperMod enabled to use these:--]]] .. "\n\n\n" .. S[302535920001440]
-		self.idTextInput.Hint = S[302535920001513--[["ex(obj) = examine object, s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
+		self.idTextInput.RolloverText = Strings[302535920001512--[[You need to have my HelperMod enabled to use these:--]]] .. "\n\n\n" .. Strings[302535920001440]
+		self.idTextInput.Hint = Strings[302535920001513--[["ex(obj) = examine object, s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 	else
 		-- add tooltip
-		self.idTextInput.RolloverText = S[302535920001440--[["~obj opens object in examine dlg.
+		self.idTextInput.RolloverText = Strings[302535920001440--[["~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.
 
 &handle examines object with that handle.
@@ -125,7 +125,7 @@ $123 or $EffectDeposit.display_name prints translated string.
 !UICity.labels.TerrainDeposit[1] move camera and select obj.
 
 s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
-		self.idTextInput.Hint = S[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."--]]]
+		self.idTextInput.Hint = Strings[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."--]]]
 	end
 
 	-- look at them sexy internals

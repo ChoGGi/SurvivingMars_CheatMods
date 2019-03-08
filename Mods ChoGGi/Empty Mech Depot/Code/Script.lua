@@ -25,15 +25,15 @@ Press OK to download it or check the Mod Manager to make sure it's enabled.]]) =
 end
 
 function OnMsg.ClassesBuilt()
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 
 	-- list controlled buildings
 	ChoGGi.ComFuncs.AddXTemplate("EmptyMechDepot","sectionStorage",{
 		__context_of_kind = "MechanizedDepot",
 		Icon = "UI/Icons/Sections/storage.tga",
-		Title = S[302535920000176--[[Empty Mech Depot--]]],
-		RolloverTitle = S[302535920000176--[[Empty Mech Depot--]]],
-		RolloverText = S[302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.--]]],
+		Title = Strings[302535920000176--[[Empty Mech Depot--]]],
+		RolloverTitle = Strings[302535920000176--[[Empty Mech Depot--]]],
+		RolloverText = Strings[302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.--]]],
 		OnContextUpdate = function(self, context)
 			if context.stockpiled_amount > 0 then
 				self:SetVisible(true)

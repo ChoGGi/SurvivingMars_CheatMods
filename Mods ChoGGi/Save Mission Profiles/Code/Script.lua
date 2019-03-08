@@ -37,9 +37,9 @@ local ReadModPersistentData = ReadModPersistentData
 local MaxModDataSize = const.MaxModDataSize
 
 local Translate
-local S
+local Strings
 function OnMsg.ClassesGenerate()
-	S = ChoGGi.Strings
+	Strings = ChoGGi.Strings
 	Translate = ChoGGi.ComFuncs.Translate
 end
 
@@ -152,7 +152,7 @@ local function DeleteProfile(name,settings_list)
 	ChoGGi.ComFuncs.QuestionBox(
 		"Delete profile: " .. name,
 		CallBackFunc,
-		Translate(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]]
+		Translate(6779--[[Warning--]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 

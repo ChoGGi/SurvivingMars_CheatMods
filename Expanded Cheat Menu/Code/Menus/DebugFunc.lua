@@ -11,7 +11,7 @@ function OnMsg.ClassesGenerate()
 	local RetName = ChoGGi.ComFuncs.RetName
 	local Translate = ChoGGi.ComFuncs.Translate
 	local RandomColour = ChoGGi.ComFuncs.RandomColour
-	local S = ChoGGi.Strings
+	local Strings = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.ExamineObject()
 		local obj = ChoGGi.ComFuncs.SelObject()
@@ -39,7 +39,7 @@ function OnMsg.ClassesGenerate()
 		local visibleObjects = MapGet("map", "attached", false, function(obj)
 			return obj:GetFrameMark() - frame > 0
 		end)
-		ChoGGi.ComFuncs.OpenInExamineDlg(visibleObjects,nil,S[302535920001547--[[List Visible Objects--]]])
+		ChoGGi.ComFuncs.OpenInExamineDlg(visibleObjects,nil,Strings[302535920001547--[[List Visible Objects--]]])
 	end
 
 	do -- BuildingPathMarkers_Toggle
@@ -110,7 +110,7 @@ function OnMsg.ClassesGenerate()
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(ChoGGi.Temp.BuildingPathMarkers_Toggle),
-				S[302535920001527--[[Building Path Markers--]]]
+				Strings[302535920001527--[[Building Path Markers--]]]
 			)
 		end
 	end -- do
@@ -121,7 +121,7 @@ function OnMsg.ClassesGenerate()
 
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DebugPersistSaves),
-			S[302535920001498--[[Examine Persist Errors--]]]
+			Strings[302535920001498--[[Examine Persist Errors--]]]
 		)
 	end
 
@@ -235,9 +235,9 @@ function OnMsg.ClassesGenerate()
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
-			Translate(6779--[[Warning--]]) .. ": " .. S[302535920001493--[["This will change to a new map, anything unsaved will be lost!"--]]],
+			Translate(6779--[[Warning--]]) .. ": " .. Strings[302535920001493--[["This will change to a new map, anything unsaved will be lost!"--]]],
 			CallBackFunc,
-			S[302535920001491--[[View All Entities--]]]
+			Strings[302535920001491--[[View All Entities--]]]
 		)
 
 	end
@@ -277,13 +277,13 @@ that'll activate the BadPrefab on it
 				value = id,
 				story = a_story,
 				voiced = story.VoicedText,
-				hint = S[302535920001358--[[Group--]]] .. ": " .. story.group .. "\n\n"
+				hint = Strings[302535920001358--[[Group--]]] .. ": " .. story.group .. "\n\n"
 					.. Translate(T(story.Text,story_table)) .. "\n\n<image " .. story.Image
 					.. ">",
 			}
 		end
 
-		local title = S[302535920001416--[[Force--]]] .. " " .. Translate(948928900281--[[Story Bits--]])
+		local title = Strings[302535920001416--[[Force--]]] .. " " .. Translate(948928900281--[[Story Bits--]])
 		local function CallBackFunc(choice)
 			if choice.nothing_selected then
 				return
@@ -302,7 +302,7 @@ that'll activate the BadPrefab on it
 			callback = CallBackFunc,
 			items = item_list,
 			title = title,
-			hint = S[302535920001359--[["Just lists them for now, I'll make it force them soonish."--]]],
+			hint = Strings[302535920001359--[["Just lists them for now, I'll make it force them soonish."--]]],
 		}
 	end
 
@@ -377,15 +377,15 @@ that'll activate the BadPrefab on it
 			end
 
 			MsgPopup(
-				S[302535920001316--[[Toggled: %s = %s--]]]:format(choice[1].text,new_value),
-				S[302535920001314--[[Toggle Render--]]]
+				Strings[302535920001316--[[Toggled: %s = %s--]]]:format(choice[1].text,new_value),
+				Strings[302535920001314--[[Toggle Render--]]]
 			)
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920001314--[[Toggle Render--]]],
+			title = Strings[302535920001314--[[Toggle Render--]]],
 			skip_sort = true,
 			custom_type = 1,
 		}
@@ -408,7 +408,7 @@ that'll activate the BadPrefab on it
 		ParticlesReload("", true)
 		MsgPopup(
 			"true",
-			S[302535920000495--[[Particles Reload--]]]
+			Strings[302535920000495--[[Particles Reload--]]]
 		)
 	end
 
@@ -422,7 +422,7 @@ that'll activate the BadPrefab on it
 		end
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(MeasureTool.enabled),
-			S[302535920000451--[[Measure Tool--]]]
+			Strings[302535920000451--[[Measure Tool--]]]
 		)
 	end
 
@@ -437,7 +437,7 @@ that'll activate the BadPrefab on it
 		force_load_build = false
 		MsgPopup(
 			"true",
-			S[302535920000453--[[Reload Lua--]]]
+			Strings[302535920000453--[[Reload Lua--]]]
 		)
 	end
 
@@ -460,11 +460,11 @@ that'll activate the BadPrefab on it
 
 		ChoGGi.ComFuncs.QuestionBox(
 			Translate(6779--[[Warning--]]) .. "!\n"
-				.. S[302535920000852--[[This will delete all %s of %s--]]]:format(MapCount("map",obj.class),obj.class),
+				.. Strings[302535920000852--[[This will delete all %s of %s--]]]:format(MapCount("map",obj.class),obj.class),
 			CallBackFunc,
-			Translate(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
-			S[302535920000856--[[Yes, I want to delete all: %s--]]]:format(obj.class),
-			S[302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."--]]]
+			Translate(6779--[[Warning--]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!--]]],
+			Strings[302535920000856--[[Yes, I want to delete all: %s--]]]:format(obj.class),
+			Strings[302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."--]]]
 		)
 	end
 
@@ -555,10 +555,10 @@ that'll activate the BadPrefab on it
 			if setting == "DebugGridSize" then
 				table.insert(item_list,1,{text = 1,value = 1})
 				item_list[#item_list+1] = {text = 125,value = 125}
-				name = S[302535920001417--[[Follow Mouse Grid Size--]]]
+				name = Strings[302535920001417--[[Follow Mouse Grid Size--]]]
 			elseif setting == "DebugGridOpacity" then
 				table.insert(item_list,1,{text = 0,value = 0})
-				name = S[302535920001419--[[Follow Mouse Grid Translate--]]]
+				name = Strings[302535920001419--[[Follow Mouse Grid Translate--]]]
 			end
 
 			local function CallBackFunc(choice)
@@ -832,8 +832,8 @@ that'll activate the BadPrefab on it
 				if obj.GetPath then
 					path = obj:GetPath()
 				else
-					ChoGGi.ComFuncs.OpenInExamineDlg(obj,nil,S[302535920000467--[[Path Markers--]]])
-					print(Translate(6779--[[Warning--]]),":",S[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
+					ChoGGi.ComFuncs.OpenInExamineDlg(obj,nil,Strings[302535920000467--[[Path Markers--]]])
+					print(Translate(6779--[[Warning--]]),":",Strings[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
 				end
 			end
 
@@ -921,8 +921,8 @@ that'll activate the BadPrefab on it
 			-- if user used "Ctrl-Numpad ." on an obj that can't path
 			elseif single then
 				MsgPopup(
-					S[302535920000871--[[Doesn't seem to be an object that moves.--]]],
-					S[302535920000872--[[Pathing--]]],
+					Strings[302535920000871--[[Doesn't seem to be an object that moves.--]]],
+					Strings[302535920000872--[[Pathing--]]],
 					nil,
 					nil,
 					obj
@@ -999,7 +999,7 @@ that'll activate the BadPrefab on it
 				{text = Translate(547--[[Colonists--]]),value = "Colonist"},
 				{text = Translate(517--[[Drones--]]),value = "Drone"},
 				{text = Translate(5438--[[Rovers--]]),value = "BaseRover",icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
-				{text = Translate(745--[[Shuttles--]]),value = "CargoShuttle",hint = S[302535920000873--[[Doesn't work that well.--]]]},
+				{text = Translate(745--[[Shuttles--]]),value = "CargoShuttle",hint = Strings[302535920000873--[[Doesn't work that well.--]]]},
 			}
 			local aliens
 			if rawget(_G,"ChoGGi_Alien") then
@@ -1091,15 +1091,15 @@ that'll activate the BadPrefab on it
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = item_list,
-				title = S[302535920000467--[[Path Markers--]]],
+				title = Strings[302535920000467--[[Path Markers--]]],
 				checkboxes = {
 					{
-						title = S[302535920000876--[[Remove Waypoints--]]],
-						hint = S[302535920000877--[[Remove waypoints from the map and reset colours (select any object type to remove them all).--]]],
+						title = Strings[302535920000876--[[Remove Waypoints--]]],
+						hint = Strings[302535920000877--[[Remove waypoints from the map and reset colours (select any object type to remove them all).--]]],
 					},
 					{
-						title = S[302535920001382--[[Real time--]]],
-						hint = S[302535920000462--[[Maps paths in real time--]]],
+						title = Strings[302535920001382--[[Real time--]]],
+						hint = Strings[302535920000462--[[Maps paths in real time--]]],
 						checked = true,
 					},
 				},

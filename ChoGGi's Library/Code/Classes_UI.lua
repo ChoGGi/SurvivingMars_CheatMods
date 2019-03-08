@@ -5,7 +5,7 @@
 local Translate = ChoGGi.ComFuncs.Translate
 --~ local RetName = ChoGGi.ComFuncs.RetName
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-local S = ChoGGi.Strings
+local Strings = ChoGGi.Strings
 
 local box,point = box,point
 local IsValid = IsValid
@@ -159,7 +159,7 @@ DefineClass.ChoGGi_Buttons = {
 	__parents = {"XTextButton"},
 	TextStyle = "ChoGGi_Buttons",
 	RolloverTitle = Translate(126095410863--[[Info--]]),
-	RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+	RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
 	RolloverTemplate = "Rollover",
 	RolloverBackground = rollover_blue,
 	Margins = box(4,4,4,4),
@@ -198,7 +198,7 @@ DefineClass.ChoGGi_CloseButton = {
 	HAlign = "right",
 	Margins = box(0, 0, 2, 0),
 	RolloverTitle = Translate(1011--[[Close--]]),
-	RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
+	RolloverText = Strings[302535920000074--[[Cancel without changing anything.--]]],
 }
 
 DefineClass.ChoGGi_ConsoleButton = {
@@ -223,7 +223,7 @@ DefineClass.ChoGGi_ComboButton = {
 	Background = light_gray,
 	RolloverBackground = rollover_blue,
 	RolloverTitle = Translate(126095410863--[[Info--]]),
-	RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+	RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
 	RolloverTemplate = "Rollover",
 	PressedBackground = medium_gray,
 	PressedTextColor = white,
@@ -253,7 +253,7 @@ DefineClass.ChoGGi_CheckButton = {
 	__parents = {"XCheckButton"},
 	TextStyle = "ChoGGi_CheckButton",
 	RolloverTitle = Translate(126095410863--[[Info--]]),
-	RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+	RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
 	RolloverTemplate = "Rollover",
 	MinWidth = 60,
 	Text = Translate(6878--[[OK--]]),
@@ -552,9 +552,9 @@ function ChoGGi_Window:AddElements()
 		self.idCaptionImage = g_Classes.ChoGGi_Image:new({
 			Id = "idCaptionImage",
 			Dock = "left",
-			RolloverTitle = S[302535920000093--[[Go to Obj--]]],
-			RolloverText = S[302535920000094--[[View/select object on map.--]]],
-			RolloverHint = S[302535920000083--[[<left_click> Activate--]]],
+			RolloverTitle = Strings[302535920000093--[[Go to Obj--]]],
+			RolloverText = Strings[302535920000094--[[View/select object on map.--]]],
+			RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
 			OnMouseButtonDown = self.idCaptionOnMouseButtonDown,
 			HandleMouse = true,
 		}, self.idTitleLeftSection)
@@ -764,9 +764,9 @@ function ChoGGi_Window:PostInit(parent,pt,title_skip)
 		local ok = ""
 		-- 1 hides the ok/cancel buttons, and it just looks weird for the colour Modifier
 		if is_list and self.custom_type ~= 1 then
-			ok = S[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."--]]] .. "\n\n"
+			ok = Strings[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."--]]] .. "\n\n"
 		end
-		local str = S[302535920001518--[[Double-click <left_click> title to rollup into the title bar.--]]]
+		local str = Strings[302535920001518--[[Double-click <left_click> title to rollup into the title bar.--]]]
 		if move.RolloverText == "" then
 			move.RolloverText = ok .. str
 		else
