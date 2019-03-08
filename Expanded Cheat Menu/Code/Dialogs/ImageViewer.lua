@@ -89,10 +89,10 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	-- first up
 	local wh = self:SetImageFile(self.images[1])
 
-	-- only one image and it's not a valid image so close
+	-- only one image and it's not a valid image so close dlg
 	if wh == 0 and #self.images == 1 then
 		print(Strings[302535920000109--[[Invalid Image--]]])
-		MsgPopup(
+		ChoGGi.ComFuncs.MsgPopup(
 			Strings[302535920000109--[[Invalid Image--]]],
 			self.title
 		)

@@ -206,7 +206,7 @@ end
 -- searches for text or goes to line number
 function ChoGGi_MultiLineTextDlg:ScrollToText(scrollto)
 	CreateRealTimeThread(function()
-		Sleep(1)
+		WaitMsg("OnRender")
 		local edit = GetRootDialog(self).idEdit
 		local line_num
 		if type(scrollto) == "string" then

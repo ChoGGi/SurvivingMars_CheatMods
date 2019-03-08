@@ -9,6 +9,7 @@
 - ChoGGi.ComFuncs.TestLocaleFile(filepath,test_csv): See the bottom of my Locales tutorial for more info.
 
 ### Changed:
+- Figured out how to apply custom rules to console with blacklist, so now everyone can use ~obj (and such).
 - "ChoGGi.CurObj" to "o" (used in Execute Code dialog).
 - Added the stack trace text to Examine Errors.
 - Re-added Pack option to mod upload with a warning that it'll sometimes crash SM for no reason.

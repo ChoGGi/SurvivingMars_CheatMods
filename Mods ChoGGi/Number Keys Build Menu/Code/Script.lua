@@ -53,7 +53,7 @@ Press OK to download it or check the Mod Manager to make sure it's enabled.]]) =
 		else
 			ToggleXBuildMenu(true, "close")
 			CreateRealTimeThread(function()
-				Sleep(1)
+				WaitMsg("OnRender")
 				dlg = Dialogs.XBuildMenu
 				dlg:SelectCategory(BuildCategories[which])
 				dlg:SelectCategory(BuildCategories[which])

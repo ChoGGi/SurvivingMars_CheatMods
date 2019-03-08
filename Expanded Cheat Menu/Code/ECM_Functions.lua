@@ -599,10 +599,12 @@ function OnMsg.ClassesGenerate()
 
 		-- what i access with ECM/Lib
 		ChoGGi.ComFuncs.OpenInExamineDlg = OpenInExamineDlg
-		-- legacy
-		OpenExamine = OpenInExamineDlg
+		-- legacy (and used for console rules, so we can get around it spamming the log)
+		function OpenExamine(...)
+			OpenInExamineDlg(...)
+		end
 		-- short n sweet
-		ex = OpenInExamineDlg
+		ex = OpenExamine
 	end -- do
 
 	function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
@@ -667,16 +669,26 @@ function OnMsg.ClassesGenerate()
 		})
 	end
 
-	function ChoGGi.ComFuncs.OpenInImageViewerDlg(context,parent)
-		if not context then
-			return
+	do -- OpenInImageViewerDlg
+		local function OpenInImageViewerDlg(context,parent)
+			if not context then
+				return
+			end
+
+			return ChoGGi_ImageViewerDlg:new({}, terminal.desktop,{
+				obj = context,
+				parent = parent,
+			})
+		end
+		ChoGGi.ComFuncs.OpenInImageViewerDlg = OpenInImageViewerDlg
+
+		-- used for console rules, so we can get around it spamming the log
+		function ChoGGi.Temp.OpenInImageViewer(...)
+			OpenInImageViewerDlg(...)
 		end
 
-		return ChoGGi_ImageViewerDlg:new({}, terminal.desktop,{
-			obj = context,
-			parent = parent,
-		})
-	end
+	end -- do
+
 	function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(parent)
 		-- if fired from action menu
 		if IsKindOf(parent,"XAction") then
@@ -874,7 +886,7 @@ function OnMsg.ClassesGenerate()
 				table_clear(table_list)
 				local c = 0
 				for thread in pairs(ThreadsRegister) do
-					local info = debug_getinfo(thread, 1, "Strings")
+					local info = debug_getinfo(thread, 1, "S")
 					if info then
 						-- we use <tags *num*> as a way to hide the num but still have it there for a unique string
 						c = c + 1
@@ -2763,7 +2775,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					if event == "call" then
 						i = debug_getinfo(2,"Sf")
 					else
-						i = debug_getinfo(2,"Strings")
+						i = debug_getinfo(2,"S")
 					end
 
 					if i.source:sub(1,str_len) == path and (not line or line and i.linedefined == line) then

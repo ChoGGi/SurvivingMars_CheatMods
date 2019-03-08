@@ -161,7 +161,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = function()
 			MoveRC(2)
 		end,
-		ActionShortcut = "Strings",
+		ActionShortcut = "S",
 		ActionBindable = true,
 		ActionMode = "RCRemote",
 	}
