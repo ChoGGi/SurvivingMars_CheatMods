@@ -1,10 +1,5 @@
-local are_we_setup
-function OnMsg.ReloadLua()
-  if are_we_setup then
-    return
-  end
-  are_we_setup = true
 
+function OnMsg.ReloadLua()
   CreateRealTimeThread(function()
     -- stop bugging me about missing mods
     function GetMissingMods()

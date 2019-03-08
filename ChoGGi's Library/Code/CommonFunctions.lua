@@ -9,7 +9,6 @@ local Trans = ChoGGi.ComFuncs.Translate
 
 local pairs,tonumber,type,rawget = pairs,tonumber,type,rawget
 local getmetatable,tostring = getmetatable,tostring
-local PropObjGetProperty = PropObjGetProperty
 local AsyncRand = AsyncRand
 local IsValid = IsValid
 local IsKindOf = IsKindOf
@@ -73,6 +72,7 @@ do -- RetName
 	local IsObjlist = IsObjlist
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	local Trans = ChoGGi.ComFuncs.Translate
+	local PropObjGetProperty = PropObjGetProperty
 
 	-- we use this table to display names of (some) tables for RetName
 	local lookup_table = {}
@@ -789,10 +789,10 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 end
 
 function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu)
-	local popup = PropObjGetProperty(terminal.desktop,popup_id)
+	local popup = rawget(terminal.desktop,popup_id)
 	if popup then
 		popup:Close()
-		submenu = submenu or PropObjGetProperty(terminal.desktop,"ChoGGi_submenu_popup")
+		submenu = submenu or rawget(terminal.desktop,"ChoGGi_submenu_popup")
 		if submenu then
 			submenu:Close()
 		end

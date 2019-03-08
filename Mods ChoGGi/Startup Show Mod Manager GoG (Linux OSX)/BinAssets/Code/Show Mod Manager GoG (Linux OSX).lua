@@ -39,10 +39,12 @@ end
 function OnMsg.DesktopCreated()
 
   CreateRealTimeThread(function()
+		local WaitMsg = WaitMsg
 		local Dialogs = Dialogs
 
+		WaitMsg("OnRender")
 		while not Dialogs.PGMainMenu do
-			Sleep(100)
+			WaitMsg("OnRender")
 		end
 
 		local orig_SetMode = Dialogs.PGMainMenu.SetMode
@@ -51,7 +53,7 @@ function OnMsg.DesktopCreated()
 			SetModNew(self)
 		end
 
-		-- fire the first time
+		-- needs to fire once here
 		SetModNew(Dialogs.PGMainMenu)
 
 	end)

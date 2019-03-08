@@ -7,14 +7,13 @@ local type,pairs,next,print = type,pairs,next,print
 local tostring,tonumber,rawget = tostring,tonumber,rawget
 local AveragePoint2D = AveragePoint2D
 local PlaceObject = PlaceObject
-local PropObjGetProperty = PropObjGetProperty
 local Sleep = Sleep
 local IsValid = IsValid
 local IsKindOf = IsKindOf
 local IsValidEntity = IsValidEntity
 
 local debug_getinfo,debug_getlocal,debug_getupvalue,debug_gethook
-local debug = PropObjGetProperty(_G,"debug")
+local debug = rawget(_G,"debug")
 if debug then
 	debug_getinfo = debug.getinfo
 	debug_getlocal = debug.getlocal
@@ -450,7 +449,7 @@ function OnMsg.ClassesGenerate()
 		local buffer_table = {newline}
 		local buffer_cnt = 1
 
-		if PropObjGetProperty(_G,"ChoGGi_print_buffer_thread") then
+		if rawget(_G,"ChoGGi_print_buffer_thread") then
 			DeleteThread(ChoGGi_print_buffer_thread)
 		end
 		ChoGGi_print_buffer_thread = CreateRealTimeThread(function()
@@ -603,7 +602,7 @@ function OnMsg.ClassesGenerate()
 		-- legacy
 		OpenExamine = OpenInExamineDlg
 		-- short n sweet
-		ex = OpenExamine
+		ex = OpenInExamineDlg
 	end -- do
 
 	function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
@@ -1435,24 +1434,33 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 
 		local flags_table
 		local function CheckFlags(flags,obj,func_name)
+			local get = "Get" .. func_name
+			local set = "Set" .. func_name
+			local clear = "Clear" .. func_name
+			local us = ChoGGi.UserSettings
+
 			for i = 1, #flags do
 				local f = flags[i]
 				local mask = const[f]
-				local flagged = obj["Get" .. func_name](obj,mask) == mask
+				local flagged = obj[get](obj,mask) == mask
 				if func_name == "ClassFlags" then
 					flags_table[f .. " (" .. mask .. ")"] = flagged
 				else
 					flags_table[f .. " (" .. mask .. ")"] = {
 						ChoGGi_AddHyperLink = true,
+						hint = S[302535920001069--[[Toggle Boolean--]]],
 						name = tostring(flagged),
+						colour = flagged and us.ExamineColourBool or us.ExamineColourBoolFalse,
 						func = function(ex_dlg,_,list_obj)
 							-- if flag is true
-							if obj["Get" .. func_name](obj,mask) == mask then
-								obj["Clear" .. func_name](obj,mask)
+							if obj[get](obj,mask) == mask then
+								obj[clear](obj,mask)
 								list_obj.name = "false"
+								list_obj.colour = us.ExamineColourBoolFalse
 							else
-								obj["Set" .. func_name](obj,mask)
+								obj[set](obj,mask)
 								list_obj.name = "true"
+								list_obj.colour = us.ExamineColourBool
 							end
 							ex_dlg:RefreshExamine()
 						end,
@@ -1754,7 +1762,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 				if func then
 					-- check for func in _G or g_CObjectFuncs
 					local func_obj
-					if PropObjGetProperty(_G,func) then
+					if rawget(_G,func) then
 						func_obj = _G[func]
 					elseif g_CObjectFuncs[func] then
 						func_obj = g_CObjectFuncs[func]
@@ -2825,8 +2833,6 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				end
 			end
 
-
-
 			-- add param names if we can
 			local param_names,count = GetParamNames(func)
 			local text_table = {}
@@ -2864,142 +2870,289 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 	end -- do
 
---[[
-If you get this totally and completely useful error msg when your locale doesn't load:
-CommonLua/Core/localization.lua:559: table index is nil
+--~ 	ChoGGi.ComFuncs.TestLocaleFile(
+--~ 		Mods["bMPAkJP"].env.CurrentModPath .. "Locale/TraduzioneItaliano.csv"
+--~ 	)
+	do -- TestLocaleFile
+		local csv_load_fields = {
+			[1] = "id",
+			[2] = "text",
+			[5] = "translated",
+			[3] = "translated_new",
+			[7] = "gender"
+		}
 
-This will give you *some* idea of where to start looking (helps when you've got 1000+ strings).
-Search the log first for ERROR:, then if it's still happening you'll have to compare between your locale file and the log output
-As this flushes the log every loop it will take some time to load if you have a large locale file (still quicker than a blind mouse).
+		local failed_strings = {}
+		local c
 
-Blind mouse = A badly formed csv will just leave the game "stuck" and no log that you can use.
---]]
-	-- needs a path to your csv file "AppData/Mods/folder/locales/game.csv"
---~ 	ChoGGi.ComFuncs.TestLocaleFile(Mods.ChoGGi_Library.env.CurrentModPath .. "Locales/English.csv")
-	function ChoGGi.ComFuncs.TestLocaleFile(filepath,column_limit,extra)
-		if blacklist then
-			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.TestLocaleFile")
-			return
-		end
-
-		column_limit = column_limit or 5
-
-		if not filepath then
-			local locale_path = ChoGGi.library_path .. "Locales/"
-			if ChoGGi.ComFuncs.FileExists(locale_path .. ChoGGi.lang .. ".csv") then
-				filepath = locale_path .. ChoGGi.lang .. ".csv"
+		local function ProcessLoadedTables_test(loaded, language, out_table, out_gendertable)
+			local order
+			if language == "English" then
+				order = {"translated_new","text","translated"}
 			else
-				filepath = locale_path .. "English.csv"
+				order = {"translated_new","translated","text"}
+			end
+
+			for i = 1, #loaded do
+				local entry = loaded[i]
+				local translation
+				if entry[order[1]] and entry[order[1]] ~= "" then
+					translation = entry[order[1]]
+				elseif entry[order[2]] and entry[order[2]] ~= "" then
+					translation = entry[order[2]]
+				else
+					translation = entry[order[3]]
+				end
+				local id = tonumber(entry.id)
+
+				if id then
+					out_table[id] = translation
+					if out_gendertable then
+						out_gendertable[id] = entry.gender
+					end
+				else
+					c = c + 1
+					local eprev = loaded[i-1]
+					local enext = loaded[i+1]
+					failed_strings[c] = {
+						id = i,
+						[S[302535920000106--[[Current--]]] .. " id"] = entry.id,
+						[S[302535920000106--[[Current--]]] .. " text"] = entry.text,
+						[S[302535920000106--[[Current--]]] .. " translated_new"] = entry.translated_new,
+						-- add some context
+						[Trans(1000231--[[Previous--]]) .. " id"] = eprev.id,
+						[Trans(1000231--[[Previous--]]) .. " text"] = eprev.text,
+						[Trans(1000231--[[Previous--]]) .. " translated_new"] = eprev.translated_new,
+						[Trans(1000232--[[Next--]]) .. " id"] = enext.id,
+						[Trans(1000232--[[Next--]]) .. " text"] = enext.text,
+						[Trans(1000232--[[Next--]]) .. " translated_new"] = enext.translated_new,
+					}
+				end
 			end
 		end
 
-		-- this is the LoadCSV func from CommonLua/Core/ParseCSV.lua with some DebugPrint added
-		local fields_remap = {
-			"id",
-			"text",
-			"translated",
-			"translated_new",
-			"gender"
-		}
-		local omit_captions = "omit_captions"
-		local err, str = AsyncFileToString(filepath)
-		if err then
-			print("TestLocaleFile ERROR:",err,"FILEPATH:",filepath)
-			return
-		end
+		local function TestCSV(filepath,column_limit)
+			if column_limit and type(column_limit) ~= "number" then
+				column_limit = testing and 4 or 5
+			end
 
-		local rows, pos = {}, 1
-		local Q = lpeg.P("\"")
-		local quoted_value = Q * lpeg.Cs((1 - Q + Q * Q / "\"") ^ 0) * Q
-		local raw_value = lpeg.C((1 - lpeg.S(",\t\r\n\"")) ^ 0)
-		local field = (lpeg.P(" ") ^ 0 * quoted_value * lpeg.P(" ") ^ 0 + raw_value) * lpeg.Cp()
-		local space = string.byte(" ", 1)
+			-- this is the LoadCSV func from CommonLua/Core/ParseCSV.lua with some DebugPrint added
+			local fields_remap = {
+				"id",
+				"text",
+				"translated",
+				"translated_new",
+				"gender"
+			}
+			local omit_captions = "omit_captions"
+			local err, str = AsyncFileToString(filepath)
+			if err then
+				print(S[302535920001123--[[Test Locale--]]],"ERROR:",err,"FILEPATH:",filepath)
+				return
+			end
 
-		local RemoveTrailingSpaces = RemoveTrailingSpaces
-		local FlushLogFile = FlushLogFile
-		local table_insert = table.insert
+			local rows, pos = {}, 1
+			local rows_c = 0
+			local Q = lpeg.P("\"")
+			local quoted_value = Q * lpeg.Cs((1 - Q + Q * Q / "\"") ^ 0) * Q
+			local raw_value = lpeg.C((1 - lpeg.S(",\t\r\n\"")) ^ 0)
+			local field = (lpeg.P(" ") ^ 0 * quoted_value * lpeg.P(" ") ^ 0 + raw_value) * lpeg.Cp()
+			local space = string.byte(" ", 1)
 
-		local debug_output = {}
-		local c = 0
+			local RemoveTrailingSpaces = RemoveTrailingSpaces
+			local FlushLogFile = FlushLogFile
+--~ 			local table_insert = table.insert
 
-		-- start of function LoadCSV(filepath, rows, fields_remap, omit_captions)
+			local error_output = {}
+			local c = 0
 
-		-- remove any carr returns
-		str = str:gsub("\r\n","\n")
+			-- start of function LoadCSV(filepath, rows, fields_remap, omit_captions)
 
-		while pos < #str do
-			local previous = ""
-			local row, col = {}, 1
-			local lf = str:sub(pos, pos) == "\n"
+			-- remove any carr returns
+			str = str:gsub("\r\n","\n")
 
-			while pos < #str and not lf do
+			while pos < #str do
 
-				local value, next = field:match(str, pos)
-				value = RemoveTrailingSpaces(value)
-				local f_remap_col = fields_remap[col]
-				if f_remap_col then
-					row[f_remap_col] = value
-				end
-				col = col + 1
-				lf = str:sub(next, next) == "\n"
-				pos = next + 1
+				local row, col = {}, 1
+				local lf = str:sub(pos, pos) == "\n"
+				while pos < #str and not lf do
 
-				-- only seems to happen on bad things
-				if col > column_limit then
+					local value, nextv = field:match(str, pos)
+					value = RemoveTrailingSpaces(value)
+					local f_remap_col = fields_remap[col]
+					if f_remap_col then
+						row[f_remap_col] = value
+					end
+					col = col + 1
+					lf = str:sub(nextv, nextv) == "\n"
+					pos = nextv + 1
 
-					c = c + 1
-					debug_output[c] = {
-						name = "ERROR row: " .. row.id,
-						value = value,
-						string_pos = pos,
-						column = col,
-						general_area = str:sub(pos-50,pos+50),
-						row_gender = row.gender,
-						row_text = row.text,
-						row_id = row.id,
-						row_translated = row.translated,
-						row_translated_new = row.translated_new,
-					}
-				end
-
-				if extra then
-					local nextt = field:match(str, pos)
-					if nextt ~= "" and previous ~= nextt then
+					-- only seems to happen on bad things
+					if col > column_limit then
 						c = c + 1
-						debug_output[c] = {
-							name = nextt,
+						error_output[c] = {
+							name = "ERROR row: " .. row.id,
 							value = value,
 							string_pos = pos,
 							column = col,
 							general_area = str:sub(pos-50,pos+50),
-							row_string_id = row.id,
 							row_gender = row.gender,
 							row_text = row.text,
+							row_id = row.id,
 							row_translated = row.translated,
 							row_translated_new = row.translated_new,
 						}
 					end
-					previous = nextt
+
+				end -- while
+
+				if lf then
+					pos = pos + 1
 				end
+
+				if not omit_captions then
+--~ 					table_insert(rows, row)
+					rows_c = rows_c + 1
+					rows[rows_c] = row
+				end
+				omit_captions = false
 
 			end -- while
 
-			if lf then
-				pos = pos + 1
+			return error_output
+		end
+
+		function ChoGGi.ComFuncs.TestLocaleFile(filepath,test_csv,language)
+			if not filepath then
+				if testing then
+					local locale_path = ChoGGi.library_path .. "Locales/"
+					if ChoGGi.ComFuncs.FileExists(locale_path .. ChoGGi.lang .. ".csv") then
+						filepath = locale_path .. ChoGGi.lang .. ".csv"
+					else
+						filepath = locale_path .. "English.csv"
+					end
+				else
+					print(S[302535920001123--[[Test Locale--]]],"FILEPATH ERROR:",filepath)
+					return
+				end
 			end
 
-			if not omit_captions then
-				table_insert(rows, row)
+			if test_csv then
+				if blacklist then
+					ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.TestLocaleFile.test_csv")
+				else
+					test_csv = TestCSV(filepath,test_csv)
+				end
 			end
-			omit_captions = false
 
-		end -- while
+			local loaded = {}
+			LoadCSV(
+				filepath,
+				loaded,
+				csv_load_fields,
+				"omit_captions"
+			)
+			local out_table, out_gendertable = {},{}
 
-		debug_output[-1] = [[You can usually ignore the first error or two.
-(the ones with "ID,Text,Translation" and so on)
+			table_iclear(failed_strings)
+			c = 0
 
-]]
-		OpenExamine(debug_output,nil,"TestLocaleFile")
-	end
+			ProcessLoadedTables_test(
+				loaded,
+				language,
+				out_table,
+				out_gendertable
+			)
+
+			if c > 0 or testing then
+				ChoGGi.ComFuncs.OpenInExamineDlg({
+					[S[302535920001448--[[CSV--]]]] = loaded,
+					failed_strings = failed_strings,
+					test_csv = test_csv,
+					out_table = out_table,
+					out_gendertable = out_gendertable,
+				},nil,S[302535920001123--[[Test Locale--]]] .. ": " .. Trans(951--[[Failed to complete operation.--]]))
+			else
+				ChoGGi.ComFuncs.OpenInExamineDlg({
+					out_table = out_table,
+					out_gendertable = out_gendertable,
+				},nil,S[302535920001123--[[Test Locale--]]] .. ": " .. Trans(1000015--[[Success--]]))
+			end
+
+		end
+	end -- do
+
+	do -- ValueToStr
+		local IsPoint = IsPoint
+		local IsBox = IsBox
+		local InvalidPos = ChoGGi.Consts.InvalidPos
+
+		function ChoGGi.ComFuncs.ValueToStr(obj,obj_type)
+			obj_type = obj_type or type(obj)
+
+			if obj_type == "string" then
+				-- strings with (object) don't work well with Translate
+				if obj:find("%(") then
+					return obj
+				else
+					-- if there's any <image, <color, etc tags
+					return Trans(obj)
+				end
+			end
+			--
+			if obj_type == "number" then
+				return obj .. ""
+			end
+--~ 			--
+--~ 			if obj_type == "boolean" then
+--~ 				return tostring(obj)
+--~ 			end
+			--
+			if obj_type == "table" then
+
+				if IsValid(obj) then
+					return obj:GetVisualPos()
+				else
+					return RetName(obj)
+				end
+			end
+			--
+			if obj_type == "userdata" then
+
+				if IsPoint(obj) then
+					-- InvalidPos()
+					if obj == InvalidPos then
+						return S[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
+					else
+						return "point" .. tostring(obj)
+					end
+				elseif IsBox(obj) then
+					return "box" .. tostring(obj)
+				else
+					-- show translated text if possible and return a clickable link
+					local trans_str = Trans(obj)
+					if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+						return tostring(obj)
+					end
+					return trans_str
+				end
+			end
+			--
+			if obj_type == "function" then
+				return RetName(obj)
+			end
+	--~ 		--
+	--~ 		if obj_type == "thread" then
+	--~ 			return tostring(obj)
+	--~ 		end
+			--
+			if obj_type == "nil" then
+				return "nil"
+			end
+
+			-- just in case
+			return tostring(obj)
+		end
+	end -- do
 
 end

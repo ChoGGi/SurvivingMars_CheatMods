@@ -1,4 +1,5 @@
 ID,Text,Translation,Old Translation,Gender
+302535920001123,Test Locale,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
@@ -86,6 +87,7 @@ ID,Text,Translation,Old Translation,Gender
 302535920001518,Double-click <left_click> title to rollup into the title bar.,
 302535920000001,"F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""To import your old settings"".",
+302535920001069,Toggle Boolean,
 302535920000497,Hook Started,
 302535920000498,Hook Stopped,
 302535920001068,"Readme:
@@ -1550,8 +1552,10 @@ Move ModContent.hpk to Mod folder/Pack/ModContent.hpk",
 302535920001463,Bug Report,
 302535920001464,"Yes, I know what I'm doing. This is a bug.",
 302535920001427,Pack,
-302535920001428,"Uploads as a packed mod (default for mod editor upload).
-This will always apply if uploading to paradox.",
+302535920001428,"Upload as a packed mod (default for mod editor upload).
+This will always apply if uploading to Paradox.
+
+Warning: May instantly crash SM (not sure why).",
 302535920001412,GUI Dock Side,
 302535920001413,Change which side (most) GUI menus are on.,
 302535920000321,Enable Tooltips,

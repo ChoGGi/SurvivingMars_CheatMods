@@ -17,12 +17,12 @@ function OnMsg.DesktopCreated()
 	--[[
   CreateRealTimeThread(function()
 		-- wait for it (otherwise stuff below won't work right)
-		local Sleep = Sleep
+		local WaitMsg = WaitMsg
 		local Dialogs = Dialogs
 
-		Sleep(100)
+		WaitMsg("OnRender")
 		while not Dialogs.PGMainMenu do
-			Sleep(25)
+			WaitMsg("OnRender")
 		end
 
 		-- starts in load game menu
@@ -36,6 +36,11 @@ function OnMsg.DesktopCreated()
 		XShortcutsTarget:UpdateToolbar()
 		-- show cheat menu
 		XShortcutsTarget:SetVisible(true)
+
+		-- update my list of table names
+		if rawget(_G,"ChoGGi") and ChoGGi.ComFuncs.RetName_Update then
+			ChoGGi.ComFuncs.RetName_Update()
+		end
 
 		-- stop the update news images
 		UIShowParadoxFeeds = empty_func

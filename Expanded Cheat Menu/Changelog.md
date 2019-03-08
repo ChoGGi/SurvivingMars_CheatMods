@@ -6,16 +6,18 @@
 ### Added:
 - Console>Tools>Examine Errors: Open (some) errors in an examine dialog (shows stack trace and sometimes a thread).
 - > Not really useful without my HelperMod, or if you want to use "Errors In Console" without the log showing.
-- ChoGGi.ComFuncs.TestLocaleFile(filepath): Needs my HelperMod to work.
-- > See the bottom of my Locales tutorial for more info.
+- ChoGGi.ComFuncs.TestLocaleFile(filepath,test_csv): See the bottom of my Locales tutorial for more info.
 
 ### Changed:
 - "ChoGGi.CurObj" to "o" (used in Execute Code dialog).
 - Added the stack trace text to Examine Errors.
+- Re-added Pack option to mod upload with a warning that it'll sometimes crash SM for no reason.
 - Examine:
+- > The list now shows "rawer" text, the fancy images/colours text is now shown in the tooltip.
 - > Added entity name to objects with one.
 - > Cleaned up Set Particles: No more dupes, and should hpoefully be better at turning them off
 - > Attach Spots Toggle now shows the pos offset from origin, instead of world pos.
+- > Added ExamineColourBoolFalse setting for false boolean to distinguish from true (green).
 
 ### Fixed:
 - Examine:

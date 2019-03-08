@@ -22,13 +22,17 @@ CreateRealTimeThread(function()
 		end
 
 		-- remove blacklist for any mods in "Mod Ids"
-		for _,mod in pairs(Mods) do
+		local rev = LuaRevision
+		for id,mod in pairs(Mods) do
 			if mod_ids[mod.steam_id] then
+				mod.lua_revision = rev
 				-- just a little overreaching with that blacklist (yeah yeah, safety first and all that)
 				mod.env_old = mod.env
 				mod.env = nil
 				-- add a warning to any mods without a blacklist, so user knows something is up
+--~ 				mod.title = mod.title .. " (BL)"
 				mod.title = mod.title .. " (Warning)"
+--~ 				mod.description = mod.description:gsub([[C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\Mods\]],"AppData/Mods/")
 				mod.description = [[Warning: The blacklist function has been removed for this mod!
 This means it has no limitations and can access your Steam name, Friends list, and any files on your computer.
 In other words, the same as Curiosity and lower.
@@ -37,7 +41,6 @@ In other words, the same as Curiosity and lower.
 			end
 		end
 
-
 		-- just in case anything needs it
 		Msg("ChoGGi_Blacklist")
 	end
@@ -45,4 +48,4 @@ end)
 
 -- return revision, or else you get a blank map on new game
 MountPack("ChoGGi_BinAssets", "Packs/BinAssets.hpk")
-return dofile("ChoGGi_BinAssets/AssetsRevision.lua") or 238808
+return dofile("ChoGGi_BinAssets/AssetsRevision.lua") or 240905
