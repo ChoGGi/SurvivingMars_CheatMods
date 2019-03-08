@@ -4,8 +4,9 @@
 local white = -1
 local black = -16777216
 local light_gray = -2368549
-
-
+local disabled_gray = -4737097
+local disabled_darker = -9013642
+--~
 --[[ from TextStyle
 TextFont
 TextColor
@@ -103,13 +104,6 @@ function OnMsg.ClassesPostprocess()
 		TextFont = Editor16Bold,
 		id = "ChoGGi_ConsoleButton",
 	})
-	-- ButtonMenu
-	PlaceObj("ChoGGi_TextStyle", {
-		TextColor = black,
-		RolloverTextColor = white,
-		TextFont = Editor16Bold,
-		id = "ChoGGi_ButtonMenu",
-	})
 	-- ComboButton
 	PlaceObj("ChoGGi_TextStyle", {
 		RolloverTextColor = white,
@@ -122,13 +116,6 @@ function OnMsg.ClassesPostprocess()
 		TextFont = Editor14Bold,
 		id = "ChoGGi_CheckButton",
 	})
-	-- CheckButtonMenu
-	PlaceObj("ChoGGi_TextStyle", {
-		TextColor = black,
-		RolloverTextColor = white,
-		TextFont = Editor16Bold,
-		id = "ChoGGi_CheckButtonMenu",
-	})
 	PlaceObj("ChoGGi_TextStyle", {
 		TextColor = white,
 		RolloverTextColor = black,
@@ -140,5 +127,32 @@ function OnMsg.ClassesPostprocess()
 		TextColor = white,
 		RolloverTextColor = light_gray,
 		id = "ChoGGi_List",
+	})
+
+	-- ButtonMenu
+	PlaceObj("ChoGGi_TextStyle", {
+		TextColor = black,
+		RolloverTextColor = white,
+		TextFont = Editor16Bold,
+		id = "ChoGGi_ButtonMenu",
+	})
+
+	-- CheckButtonMenu
+	PlaceObj("ChoGGi_TextStyle", {
+		TextColor = black,
+		RolloverTextColor = white,
+		TextFont = Editor16Bold,
+		id = "ChoGGi_CheckButtonMenu",
+	})
+	-- ButtonMenuDisabled
+	PlaceObj("ChoGGi_TextStyle", {
+		TextColor = disabled_gray,
+		TextFont = Editor16Bold,
+		id = "ChoGGi_ButtonMenuDisabled",
+	})
+	PlaceObj("ChoGGi_TextStyle", {
+		TextColor = disabled_darker,
+		TextFont = Editor16Bold,
+		id = "ChoGGi_ButtonMenuDisabledDarker",
 	})
 end

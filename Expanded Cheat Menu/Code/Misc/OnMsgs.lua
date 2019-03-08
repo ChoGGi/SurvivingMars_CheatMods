@@ -365,10 +365,17 @@ function OnMsg.ModsReloaded()
 		-- build console buttons
 		local dlgConsole = dlgConsole
 		if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
+			local edit = dlgConsole.idEdit
+
+			-- add a context menu
+			edit.OnKillFocus = ChoGGi_InputContextMenu.OnKillFocus
+			edit.OnMouseButtonDown = ChoGGi_InputContextMenu.OnMouseButtonDown
+			edit.RetContextList = ChoGGi_InputContextMenu.RetContextList
+
 			-- removes comments from code, and adds a space to each newline, so pasting multi line works
 			local XEditEditOperation = XEdit.EditOperation
 			local StripComments = ChoGGi.ComFuncs.StripComments
-			function dlgConsole.idEdit:EditOperation(insert_text, is_undo_redo, cursor_to_text_start,...)
+			function edit:EditOperation(insert_text, is_undo_redo, cursor_to_text_start,...)
 				if type(insert_text) == "string" then
 					insert_text = StripComments(insert_text)
 					insert_text = insert_text:gsub("\n"," \n")
@@ -376,14 +383,14 @@ function OnMsg.ModsReloaded()
 				return XEditEditOperation(self,insert_text, is_undo_redo, cursor_to_text_start,...)
 			end
 
-			dlgConsole.idEdit.RolloverTemplate = "Rollover"
-			dlgConsole.idEdit.RolloverTitle = Strings[302535920001073--[[Console--]]] .. " " .. Translate(487939677892--[[Help--]])
+			edit.RolloverTemplate = "Rollover"
+			edit.RolloverTitle = Strings[302535920001073--[[Console--]]] .. " " .. Translate(487939677892--[[Help--]])
 			if blacklist then
-				dlgConsole.idEdit.RolloverText = Strings[302535920001512--[[You need to have my HelperMod enabled to use these:--]]] .. "\n\n\n" .. Strings[302535920001440]
-				dlgConsole.idEdit.Hint = Strings[302535920001513--[["ex(obj) = examine object, s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
+				edit.RolloverText = Strings[302535920001512--[[You need to have my HelperMod enabled to use these:--]]] .. "\n\n\n" .. Strings[302535920001440]
+				edit.Hint = Strings[302535920001513--[["ex(obj) = examine object, s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			else
 				-- add tooltip
-				dlgConsole.idEdit.RolloverText = Strings[302535920001440--[["~obj opens object in examine dlg.
+				edit.RolloverText = Strings[302535920001440--[["~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.
 
 &handle examines object with that handle.
@@ -401,7 +408,7 @@ $123 or $EffectDeposit.display_name prints translated string.
 !UICity.labels.TerrainDeposit[1] move camera and select obj.
 
 s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
-				dlgConsole.idEdit.Hint = Strings[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."--]]]
+				edit.Hint = Strings[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."--]]]
 			end
 
 			dlgConsole.ChoGGi_MenuAdded = true

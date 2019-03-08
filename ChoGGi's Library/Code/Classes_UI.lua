@@ -1,8 +1,10 @@
 -- See LICENSE for terms
 
---~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
+--~ box(left/x, top/y, right/w, bottom/h) :minx() :miny() :sizex() :sizey()
+--~ box() or sizebox()
 
 local Translate = ChoGGi.ComFuncs.Translate
+local Random = ChoGGi.ComFuncs.Random
 --~ local RetName = ChoGGi.ComFuncs.RetName
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local Strings = ChoGGi.Strings
@@ -54,23 +56,6 @@ DefineClass.ChoGGi_Text = {
 --~ end
 --~ function XText:OnHyperLinkRollover(hyperlink, hyperlink_box, pos)
 --~ end
-
-DefineClass.ChoGGi_MultiLineEdit = {
-	__parents = {"XMultiLineEdit"},
-	TextStyle = "ChoGGi_MultiLineEdit",
-	-- default
-	Background = dark_gray,
-	-- focused
-	FocusedBackground = darker_gray,
-	-- selected
-	SelectionBackground = light_gray,
-	SelectionColor = black,
-
-	MaxLen = -1,
-	MaxLines = -1,
-	RolloverTemplate = "Rollover",
-	WordWrap = false,
-}
 
 DefineClass.ChoGGi_Label = {
 	__parents = {"XLabel"},
@@ -287,16 +272,6 @@ DefineClass.ChoGGi_CheckButtonMenu = {
 	TextHAlign = "left",
 	RolloverBackground = rollover_blue,
 	Padding = box(4,0,0,0),
-}
-
-DefineClass.ChoGGi_TextInput = {
-	__parents = {"XEdit"},
-	WordWrap = false,
-	AllowTabs = false,
-	RolloverTitle = Translate(126095410863--[[Info--]]),
-	RolloverTemplate = "Rollover",
-	Background = light_gray,
-	MouseCursor = const.DefaultMouseCursor or "UI/Cursors/cursor.tga",
 }
 
 DefineClass.ChoGGi_ExternalTextEditorPlugin = {
@@ -555,7 +530,7 @@ function ChoGGi_Window:AddElements()
 			RolloverTitle = Strings[302535920000093--[[Go to Obj--]]],
 			RolloverText = Strings[302535920000094--[[View/select object on map.--]]],
 			RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
-			OnMouseButtonDown = self.idCaptionOnMouseButtonDown,
+			OnMouseButtonDown = self.idCaptionImageOnMouseButtonDown,
 			HandleMouse = true,
 		}, self.idTitleLeftSection)
 
@@ -589,7 +564,7 @@ function ChoGGi_Window:Done(result,...)
 	XWindow.Done(self,result,...)
 end
 
-function ChoGGi_Window:idCaptionOnMouseButtonDown(pt,button,...)
+function ChoGGi_Window:idCaptionImageOnMouseButtonDown(pt,button,...)
 	ChoGGi_Image.OnMouseButtonDown(pt,button,...)
 	local dlg = GetParentOfKind(self, "ChoGGi_Window")
 	if IsValid(dlg.obj) then
@@ -599,7 +574,7 @@ end
 
 -- returns point(x,y)
 function ChoGGi_Window:GetPos(dialog)
-	return (self[dialog or "idDialog"].box):min()
+	return (self[dialog or "idDialog"] or dialog).box:min()
 end
 
 -- get size of box and offset header
@@ -629,7 +604,7 @@ end
 
 -- takes either a point, or obj to set pos
 function ChoGGi_Window:SetPos(obj,dialog)
-	local dlg = self[dialog or "idDialog"]
+	local dlg = self[dialog or "idDialog"] or dialog
 	local x,y,w,h = self.BoxSize and self:BoxSize(obj) or ChoGGi_Window.BoxSize(self,obj)
 
 	if IsPoint(obj) then
@@ -653,7 +628,7 @@ function ChoGGi_Window:SetPos(obj,dialog)
 end
 
 function ChoGGi_Window:SetSize(w,h,dialog)
-	local dlg = self[dialog or "idDialog"]
+	local dlg = self[dialog or "idDialog"] or dialog
 	local box = dlg.box
 	local x,y = box:minx(),box:miny()
 --~ 	local w,h = size:x(),size:y()
@@ -666,19 +641,20 @@ function ChoGGi_Window:ResetSize(dialog)
 	self:SetSize(self.dialog_width_scaled, self.dialog_height_scaled,dialog or "idDialog")
 end
 function ChoGGi_Window:SetWidth(w, dialog)
-	self:SetSize(w, self[dialog or "idDialog"].box:sizey())
+	self:SetSize(w, (self[dialog or "idDialog"] or dialog).box:sizey())
 end
 function ChoGGi_Window:SetHeight(h,dialog)
-	self:SetSize(self[dialog or "idDialog"].box:sizex(),h)
+	self:SetSize((self[dialog or "idDialog"] or dialog).box:sizex(),h)
 end
 function ChoGGi_Window:GetSize(dialog)
-	return (self[dialog or "idDialog"].box):size()
+--~ 	return (self[dialog or "idDialog"] or dialog):size()
+	return (self[dialog or "idDialog"] or dialog).box:size()
 end
 function ChoGGi_Window:GetHeight(dialog)
-	return (self[dialog or "idDialog"].box):sizey()
+	return (self[dialog or "idDialog"] or dialog).box:sizey()
 end
 function ChoGGi_Window:GetWidth(dialog)
-	return (self[dialog or "idDialog"].box):sizex()
+	return (self[dialog or "idDialog"] or dialog).box:sizex()
 end
 
 local function UpdateListWidth(self)
@@ -874,6 +850,7 @@ end
 if XTextEditor.RemovePlugin then
 	printC("XTextEditor:RemovePlugin() is finally added, replace mine")
 else
+	local table = table
 	function XTextEditor:RemovePlugin(plugin)
 		local idx = table.find(self.plugins,"class",plugin)
 		if idx then
@@ -883,3 +860,150 @@ else
 		end
 	end
 end
+
+-- show a context menu on rightclick
+DefineClass.ChoGGi_InputContextMenu = {
+	__parents = {"ChoGGi_Window"},
+	WordWrap = false,
+	RolloverTemplate = "Rollover",
+	MouseCursor = const.DefaultMouseCursor or "UI/Cursors/cursor.tga",
+}
+--~ XTextEditor:OnKillFocus
+function ChoGGi_InputContextMenu:OnKillFocus()
+  ShowVirtualKeyboard(false)
+  self:DestroyCursorBlinkThread()
+  -- self:ClearSelection()
+	-- what's the point of clearing selection when focus is killed?
+  if self.Ime then
+    HideIme()
+  end
+end
+
+function ChoGGi_InputContextMenu:OnMouseButtonDown(pt, button, ...)
+  if button == "R" then
+		-- id for PopupToggle
+		self.opened_list_menu_id = self.opened_list_menu_id or Random()
+
+		local list = self:RetContextList()
+--~ 		-- style it like the other examine menus
+--~ 		list.Background = -9868951
+--~ 		list.FocusedBackground = -9868951
+--~ 		list.PressedBackground = -12500671
+--~ 		list.TextStyle = "ChoGGi_CheckButtonMenuOpp"
+		list.IconPadding = box(6,0,0,0)
+
+		-- make a fake anchor for PopupToggle to use (
+		self.list_menu_table = self.list_menu_table or {}
+		self.list_menu_table.ChoGGi_self = self
+		-- menu at mouse
+		local x,y = pt:xy()
+		self.list_menu_table.box = sizebox(x,y,0,0)
+
+		ChoGGi.ComFuncs.PopupToggle(
+			self.list_menu_table,self.opened_list_menu_id,list,"drop"
+		)
+
+    return "break"
+  end
+
+	return XTextEditor.OnMouseButtonDown(self,pt, button, ...)
+end
+
+function ChoGGi_InputContextMenu:RetContextList(selected)
+	-- disable certain items
+	local has_clipboard = GetFromClipboard()
+	local has_selection,can_undo,can_redo
+	if self.undo_stack and #self.undo_stack > 0 then
+		can_undo = true
+	end
+  if self.redo_stack and #self.redo_stack > 0 then
+		can_redo = true
+	end
+	if self:HasSelection() then
+		has_selection = true
+	end
+
+	return {
+		{name = Translate(1000746--[[Undo--]]),
+			image = ChoGGi.library_path .. "UI/menu/undo.png",
+			clicked = function()
+				self:Undo()
+				self:SetFocus()
+			end,
+			disable = not can_undo,
+		},
+		{name = Translate(1000222--[[Redo--]]),
+			image = ChoGGi.library_path .. "UI/menu/redo.png",
+			clicked = function()
+				self:Redo()
+				self:SetFocus()
+			end,
+			disable = not can_redo,
+		},
+		{is_spacer = true},
+		{name = Translate(1000234--[[Cut--]]),
+			image = ChoGGi.library_path .. "UI/menu/cut.png",
+			clicked = function()
+				CopyToClipboard(self:GetSelectedText())
+				self:EditOperation()
+				self:SetFocus()
+			end,
+			disable = not has_selection,
+		},
+		{name = Translate(1000233--[[Copy--]]),
+			image = ChoGGi.library_path .. "UI/menu/copy.png",
+			clicked = function()
+				CopyToClipboard(self:GetSelectedText())
+				self:SetFocus()
+			end,
+			disable = not has_selection,
+		},
+		{name = Translate(1000235--[[Paste--]]),
+			image = ChoGGi.library_path .. "UI/menu/paste.png",
+			clicked = function()
+				self:EditOperation(GetFromClipboard(max_int))
+				self:SetFocus()
+			end,
+			disable = has_clipboard == "",
+		},
+		{name = Translate(1000463--[[Delete--]]),
+			image = ChoGGi.library_path .. "UI/menu/delete.png",
+			clicked = function()
+				self:EditOperation()
+				self:SetFocus()
+			end,
+			disable = not has_selection,
+		},
+		{is_spacer = true},
+		{name = Translate(131775917427--[[Select--]]) .. " " .. Translate(4493--[[All--]]),
+			image = ChoGGi.library_path .. "UI/menu/selectall.png",
+			clicked = function()
+				self:SelectAll()
+			end,
+		},
+	}
+end
+
+DefineClass.ChoGGi_TextInput = {
+	__parents = {"ChoGGi_InputContextMenu","XEdit"},
+
+	AllowTabs = false,
+	RolloverTitle = Translate(126095410863--[[Info--]]),
+	Background = light_gray,
+}
+
+DefineClass.ChoGGi_MultiLineEdit = {
+	__parents = {"ChoGGi_InputContextMenu","XMultiLineEdit"},
+
+	TextStyle = "ChoGGi_MultiLineEdit",
+	-- default
+	Background = dark_gray,
+	-- focused
+	FocusedBackground = darker_gray,
+	-- selected
+	SelectionBackground = light_gray,
+	SelectionColor = black,
+
+	MaxLen = max_int,
+	MaxLines = max_int,
+}

@@ -97,7 +97,7 @@ Living Spaces: %s]],
 			end,
 		}
 
-		local popup = rawget(terminal.desktop, "idForceNewDomeMenu")
+		local popup = terminal.desktop.idForceNewDomeMenu
 		if popup then
 			popup:Close()
 		else

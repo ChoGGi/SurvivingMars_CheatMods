@@ -76,7 +76,7 @@ function OnMsg.ClassesGenerate()
 		-- values in examine list
 		ExamineColourNum = "255 255 0",
 		ExamineColourBool = "0 255 0",
-		ExamineColourBoolFalse = "255 150 255",
+		ExamineColourBoolFalse = "255 150 150",
 		ExamineColourStr = "255 255 255",
 		ExamineColourNil = "175 175 175",
 		-- what cmd/editor to use with os.execute(cmd) when doing external editing

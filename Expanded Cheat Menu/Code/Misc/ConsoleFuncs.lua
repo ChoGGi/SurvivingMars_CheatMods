@@ -59,7 +59,7 @@ function OnMsg.ClassesGenerate()
 				end
 				-- lib should always have the blacklist enabled
 				local _,bl = debug.getupvalue(getmetatable(Mods.ChoGGi_Library.env).__index,1)
-				OpenInExamineDlg(bl,nilS[302535920001497--[[Show Blacklist--]]])
+				OpenInExamineDlg(bl,nil,Strings[302535920001497--[[Show Blacklist--]]])
 			end,
 		},
 		{is_spacer = true},

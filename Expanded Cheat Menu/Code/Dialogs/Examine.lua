@@ -117,8 +117,6 @@ DefineClass.Examine = {
 	str_object = false,
 	-- we store the str_object > obj here
 	obj_ref = false,
-	-- getmetatable(obj)
-	obj_metatable = false,
 	-- used to store visibility of obj
 	orig_vis_flash = false,
 	flashing_thread = false,
@@ -1798,10 +1796,8 @@ function Examine:ShowExecCodeWithCode(code)
 end
 
 function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
-	self.list_menu_table = self.list_menu_table or {}
-
 	-- id for PopupToggle
-	self.opened_list_menu = Random()
+	self.opened_list_menu_id = self.opened_list_menu_id or Random()
 
 	-- they're sent as strings, but I need to know if it's a number or string and so on
 	local obj_key,obj_type = RetProperType(obj_name)
@@ -1814,7 +1810,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			hint = Strings[302535920001538--[[Close this menu.--]]],
 			image = "CommonAssets/UI/Menu/default.tga",
 			clicked = function()
-				local popup = rawget(terminal.desktop,self.opened_list_menu)
+				local popup = terminal.desktop[self.opened_list_menu_id]
 				if popup then
 					popup:Close()
 				end
@@ -1836,7 +1832,11 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			hint = Strings[302535920001539--[[Change the value of %s.--]]]:format(obj_name),
 			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
 			clicked = function()
-				self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. obj_value_str)
+				if type(obj_value) == "string" then
+					self:ShowExecCodeWithCode("o." .. obj_name .. [[ = "]] .. obj_value_str .. [["]])
+				else
+					self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. obj_value_str)
+				end
 			end,
 		},
 	}
@@ -1895,10 +1895,11 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 	list.PressedBackground = -12500671
 	list.TextStyle = "ChoGGi_CheckButtonMenuOpp"
 	-- make a fake anchor for PopupToggle to use (
+	self.list_menu_table = self.list_menu_table or {}
 	self.list_menu_table.ChoGGi_self = self
 	self.list_menu_table.box = hyperlink_box
 	self.ChoGGi.ComFuncs.PopupToggle(
-		self.list_menu_table,self.opened_list_menu,list,"left"
+		self.list_menu_table,self.opened_list_menu_id,list,"left"
 	)
 end
 
@@ -1927,8 +1928,8 @@ function Examine:ConvertValueToInfo(obj)
 	end
 	--
 	if obj_type == "table" then
-
-		if IsValid(obj) then
+		-- acts weird with main menu movie xlayer, so we check for GetVisualPos
+		if IsValid(obj) and obj.GetVisualPos then
 			return self:HyperLink(obj,Examine_ConvertValueToInfo)
 				.. obj.class .. HLEnd .. "@"
 				.. self:ConvertValueToInfo(obj:GetVisualPos())
@@ -2137,6 +2138,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	-- dupe list for the "All" checkbox
 	table_clear(skip_dupes)
 
+	local obj_metatable = getmetatable(obj)
 	local c = 0
 	local is_valid_obj
 	local str_not_translated
@@ -2182,8 +2184,8 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		end
 
 		-- keep looping through metatables till we run out
-		if self.obj_metatable and show_all_values then
-			local meta_temp = self.obj_metatable
+		if obj_metatable and show_all_values then
+			local meta_temp = obj_metatable
 			while meta_temp do
 				for k,v in pairs(meta_temp) do
 					local name = self:ConvertValueToInfo(k)
@@ -2225,8 +2227,8 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		-- the regular getmetatable will use __metatable if it exists, so we check this as well
 		if testing and not blacklist then
 			local dbg_metatable = debug.getmetatable(obj)
-			if dbg_metatable and self.obj_metatable ~= dbg_metatable then
-				print("ECM Sez DIFFERENT METATABLE",self.name,"\nmeta:",self.obj_metatable,"\ndbg:",dbg_metatable,"")
+			if dbg_metatable and obj_metatable ~= dbg_metatable then
+				print("ECM Sez DIFFERENT METATABLE",self.name,"\nmeta:",obj_metatable,"\ndbg:",dbg_metatable,"")
 			end
 		end
 
@@ -2291,7 +2293,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 		table_insert(list_obj_str,1,"\t--"
 			.. self:HyperLink(obj,function()
-				OpenInExamineDlg(self.obj_metatable(obj),self)
+				OpenInExamineDlg(obj_metatable(obj),self)
 			end)
 			.. obj.class
 			.. HLEnd
@@ -2373,20 +2375,20 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		list_obj_str[c] = self:ConvertValueToInfo(obj)
 
 		-- add any functions from getmeta to the (scant) list
-		if self.obj_metatable then
+		if obj_metatable then
 			self.ConvertObjToInfo_data_meta = self.ConvertObjToInfo_data_meta or {}
 			local data_meta = self.ConvertObjToInfo_data_meta
 			table_iclear(data_meta)
 
 			local c2 = 0
-			for k, v in pairs(self.obj_metatable) do
+			for k, v in pairs(obj_metatable) do
 				c2 = c2 + 1
 				data_meta[c2] = self:ConvertValueToInfo(k) .. " = " .. self:ConvertValueToInfo(v)
 			end
 			table_sort(data_meta,CmpLower)
 
 			-- add some info for HGE. stuff
-			local name = self.obj_metatable.__name
+			local name = obj_metatable.__name
 			if name == "HGE.TaskRequest" then
 				table_insert(data_meta,1,"\ngetmetatable():")
 				table_insert(data_meta,1,"Unpack(): "
@@ -2408,6 +2410,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				table_insert(data_meta,1,"GetWorkingUnits(): " .. self:ConvertValueToInfo(obj:GetWorkingUnits()))
 				table_insert(data_meta,1,"GetResource(): " .. self:ConvertValueToInfo(obj:GetResource()))
 				table_insert(data_meta,1,"\nGetBuilding(): " .. self:ConvertValueToInfo(obj:GetBuilding()))
+
 			elseif name == "HGE.Grid" then
 				table_insert(data_meta,1,"\ngetmetatable():")
 				table_insert(data_meta,1,"get_default(): " .. self:ConvertValueToInfo(obj:get_default()))
@@ -2417,6 +2420,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 					table_insert(data_meta,1,"\nsize(): " .. self:ConvertValueToInfo(size[1])
 						.. " " .. self:ConvertValueToInfo(size[2]))
 				end
+
 			elseif name == "HGE.XMGrid" then
 				table_insert(data_meta,1,"\ngetmetatable():")
 				local minmax = {obj:minmax()}
@@ -2434,6 +2438,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 --~ 				table_insert(data_meta,1,"histogram(): " .. self:ConvertValueToInfo({obj:histogram()}))
 				-- freeze screen with render error in log ex(Flight_Height:GetBinData())
 				table_insert(data_meta,1,"\nCenterOfMass(): " .. self:ConvertValueToInfo(obj:CenterOfMass()))
+
 			elseif name == "HGE.Box" then
 				table_insert(data_meta,1,"\ngetmetatable():")
 				local points2d = {obj:ToPoints2D()}
@@ -2444,8 +2449,6 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 						.. " " .. self:ConvertValueToInfo(points2d[4])
 					)
 				end
-				table_insert(data_meta,1,"min(): " .. self:ConvertValueToInfo(obj:min()))
-				table_insert(data_meta,1,"max(): " .. self:ConvertValueToInfo(obj:max()))
 				local bsphere = {obj:GetBSphere()}
 				if bsphere[1] then
 					table_insert(data_meta,1,"GetBSphere(): "
@@ -2461,12 +2464,15 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				if Radius ~= Radius2D then
 					table_insert(data_meta,1,"Radius2D(): " .. self:ConvertValueToInfo(Radius2D))
 				end
-				table_insert(data_meta,1,"size(): " .. self:ConvertValueToInfo(obj:size()))
 				table_insert(data_meta,1,"IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
-				table_insert(data_meta,1,"\nIsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
+				table_insert(data_meta,1,"IsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
+				table_insert(data_meta,1,"max(): " .. self:ConvertValueToInfo(obj:max()))
+				table_insert(data_meta,1,"min() x,y: " .. self:ConvertValueToInfo(obj:min()))
+				table_insert(data_meta,1,"\nsize() w,h: " .. self:ConvertValueToInfo(obj:size()))
 				if center:InBox2D(self.ChoGGi.ComFuncs.ConstructableArea()) then
 					table_insert(data_meta,1,self:HyperLink(obj,self.ToggleBBox,Strings[302535920001550--[[Toggle viewing BBox.--]]]) .. Strings[302535920001549--[[View BBox--]]] .. HLEnd)
 				end
+
 			elseif name == "HGE.Point" then
 				table_insert(data_meta,1,"\ngetmetatable():")
 				table_insert(data_meta,1,"__unm(): " .. self:ConvertValueToInfo(obj:__unm()))
@@ -2479,12 +2485,14 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				table_insert(data_meta,1,xyz)
 				table_insert(data_meta,1,"IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
 				table_insert(data_meta,1,"\nIsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
+
 			elseif name == "HGE.RandState" then
 				table_insert(data_meta,1,"\ngetmetatable():")
 				table_insert(data_meta,1,"Last(): " .. self:ConvertValueToInfo(obj:Last()))
 				table_insert(data_meta,1,"GetStable(): " .. self:ConvertValueToInfo(obj:GetStable()))
 				table_insert(data_meta,1,"Get(): " .. self:ConvertValueToInfo(obj:Get()))
 				table_insert(data_meta,1,"\nCount(): " .. self:ConvertValueToInfo(obj:Count()))
+
 			elseif name == "HGE.Quaternion" then
 				table_insert(data_meta,1,"\ngetmetatable():")
 				table_insert(data_meta,1,"Norm(): " .. self:ConvertValueToInfo(obj:Norm()))
@@ -2495,6 +2503,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 					.. " " .. self:ConvertValueToInfo(pitch)
 					.. " " .. self:ConvertValueToInfo(yaw))
 				table_insert(data_meta,1,"\nGetAxisAngle(): " .. self:ConvertValueToInfo(obj:GetAxisAngle()))
+
 			elseif name == "LuaPStr" then
 				table_insert(data_meta,1,"\ngetmetatable():")
 				table_insert(data_meta,1,"hash(): " .. self:ConvertValueToInfo(obj:hash()))
@@ -2506,6 +2515,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 --~ 			elseif name == "HGE.ForEachReachable" then
 --~ 			elseif name == "RSAKey" then
 --~ 			elseif name == "lpeg-pattern" then
+
 			else
 				table_insert(data_meta,1,"\ngetmetatable():")
 				local is_t = IsT(obj)
@@ -2625,8 +2635,8 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 
 	end
 
-	if not (obj == "nil" or is_valid_obj or obj_type == "userdata") and self.obj_metatable then
-		table_insert(list_obj_str, 1,"\t-- metatable: " .. self:ConvertValueToInfo(self.obj_metatable) .. " --")
+	if not (obj == "nil" or is_valid_obj or obj_type == "userdata") and obj_metatable then
+		table_insert(list_obj_str, 1,"\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
 		if self.enum_vars and next(self.enum_vars) then
 			list_obj_str[1] = list_obj_str[1] .. self:HyperLink(obj,function()
 				OpenInExamineDlg(self.enum_vars,self,Strings[302535920001442--[[Enum--]]])
@@ -2758,8 +2768,8 @@ function Examine:SetObj(startup)
 
 	if obj_type == "table" then
 		obj_class = g_Classes[obj.class]
-		self.obj_metatable = getmetatable(obj)
-		if self.obj_metatable then
+		local obj_metatable = getmetatable(obj)
+		if obj_metatable then
 			self.idShowAllValues:SetVisible(true)
 		else
 			self.idShowAllValues:SetVisible(false)
