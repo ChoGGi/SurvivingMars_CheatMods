@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -48,7 +48,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920001084--[[Reset--]]] .. " " .. Trans(5221--[[RC Commanders--]]),
+	Actions[c] = {ActionName = S[302535920001084--[[Reset--]]] .. " " .. Translate(5221--[[RC Commanders--]]),
 		ActionMenubar = str_ECM_Fixes,
 		ActionId = ".Reset RC Commanders",
 		ActionIcon = icon,
@@ -96,7 +96,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_ECM_Fixes,
 		ActionId = ".Remove Missing Class Objects (Warning)",
 		ActionIcon = icon,
-		RolloverText = Trans(6779--[[Warning--]]) .. ": " .. S[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]],
+		RolloverText = Translate(6779--[[Warning--]]) .. ": " .. S[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]],
 		OnAction = ChoGGi.MenuFuncs.RemoveMissingClassObjects,
 		ActionSortKey = "9Remove Missing Class Objects (Warning)",
 	}

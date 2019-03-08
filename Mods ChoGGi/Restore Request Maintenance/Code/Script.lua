@@ -32,15 +32,15 @@ local IsKindOf = IsKindOf
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
 	-- removed functions
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 
 	function RequiresMaintenance:GetUIRequestMaintenanceStatus()
 		local status
 		if self.accumulated_maintenance_points > 0 then
 			if self.maintenance_phase == false then
-				status = Trans(7329--[[Maintenance needed--]])
+				status = Translate(7329--[[Maintenance needed--]])
 			else
-				status = Trans(389--[[Maintenance already requested--]])
+				status = Translate(389--[[Maintenance already requested--]])
 			end
 			return status .. ", Remaining: " .. (self.maintenance_threshold_current - self.accumulated_maintenance_points)
 		end

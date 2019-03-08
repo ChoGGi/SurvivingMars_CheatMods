@@ -61,13 +61,13 @@ end
 
 -- add button to selection panels
 function OnMsg.ClassesBuilt()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 
 	local type_str = S[302535920000266--[[Spawn--]]] .. ": %s"
 	local name_table = {
-		FlyingDrone = Trans(10278--[[Wasp Drone--]]),
-		Drone = Trans(1681--[[Drone--]]),
+		FlyingDrone = Translate(10278--[[Wasp Drone--]]),
+		Drone = Translate(1681--[[Drone--]]),
 	}
 
 	local template_table = {

@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -107,7 +107,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = str_Help_ECM,
 		ActionId = ".Changelog",
 		ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
-		RolloverText = Trans(4915--[[Good News, Everyone!"--]]),
+		RolloverText = Translate(4915--[[Good News, Everyone!"--]]),
 		OnAction = ChoGGi.MenuFuncs.OpenUrl,
 		setting_url = str_url .. "Expanded Cheat Menu/Changelog.md#ecm-changelog",
 		ActionSortKey = "003",
@@ -142,7 +142,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(251103844022--[[Disable--]]) .. " " .. S[302535920000887--[[ECM--]]],
+	Actions[c] = {ActionName = Translate(251103844022--[[Disable--]]) .. " " .. S[302535920000887--[[ECM--]]],
 		ActionMenubar = str_Help_ECM,
 		ActionId = ".Disable ECM",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
@@ -172,7 +172,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_Help_Tutorial = "ECM.Help.Modding Tutorial"
 	c = c + 1
-	Actions[c] = {ActionName = S[302535920000323--[[Modding--]]] .. " " .. Trans(8982--[[Tutorial--]]),
+	Actions[c] = {ActionName = S[302535920000323--[[Modding--]]] .. " " .. Translate(8982--[[Tutorial--]]),
 		ActionMenubar = "ECM.Help",
 		ActionId = ".Modding Tutorial",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -181,7 +181,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = "*" .. Trans(126095410863--[[Info--]]) .. "*",
+	Actions[c] = {ActionName = "*" .. Translate(126095410863--[[Info--]]) .. "*",
 		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Info*",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
@@ -191,7 +191,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = "*" .. Trans(283142739680--[[Game--]]) .. " & " .. S[302535920001355--[[Map--]]] .. " " .. Trans(126095410863--[[Info--]]) .. "*",
+	Actions[c] = {ActionName = "*" .. Translate(283142739680--[[Game--]]) .. " & " .. S[302535920001355--[[Map--]]] .. " " .. Translate(126095410863--[[Info--]]) .. "*",
 		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Game & Map Info*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
@@ -201,13 +201,13 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = "*" .. Trans(5568--[[Stats--]]) .. "*",
+	Actions[c] = {ActionName = "*" .. Translate(5568--[[Stats--]]) .. "*",
 		ActionMenubar = str_Help_Tutorial,
 		ActionId = ".*Stats*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 		RolloverText = S[302535920001281--[[Information about your computer (as seen by SM).--]]],
 		OnAction = function()
-			ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.ComFuncs.RetHardwareInfo(),nil,Trans(5568--[[Stats--]]))
+			ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.ComFuncs.RetHardwareInfo(),nil,Translate(5568--[[Stats--]]))
 		end,
 		ActionSortKey = "-2*Stats*",
 	}

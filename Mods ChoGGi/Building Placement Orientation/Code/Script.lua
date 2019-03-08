@@ -91,7 +91,7 @@ local function SomeCode()
 
 		local ret = {ConstructionController_CreateCursorObj(self, ...)}
 		local last = ChoGGi.Temp.LastPlacedObject
-		if self.template_obj and self.template_obj.can_rotate_during_placement and ChoGGi.UserSettings.UseLastOrientation and IsValid(last) then
+		if self.template_obj and self.template_obj.can_rotate_during_placement and IsValid(last) then
 			SetRollPitchYaw(ret[1],0,0,(last:GetAngle() or 0) + -1*60*60)
 		end
 		return table_unpack(ret)

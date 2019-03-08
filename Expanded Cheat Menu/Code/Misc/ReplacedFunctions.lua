@@ -16,7 +16,7 @@ local DebugGetInfo
 local S
 local blacklist
 local ChoGGi_OrigFuncs
-local Trans
+local Translate
 
 local SaveOrigFunc
 local SetTrans
@@ -26,7 +26,7 @@ function OnMsg.ClassesGenerate()
 	S = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-	Trans = ChoGGi.ComFuncs.Translate
+	Translate = ChoGGi.ComFuncs.Translate
 
 	ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
@@ -220,11 +220,11 @@ function OnMsg.ClassesGenerate()
 	--~					 if not Text:find(SearchName) then
 	--~						 return Text
 	--~					 end
-	--~					 return Text:gsub(SearchName,ColourText(Trans(params[Name])))
+	--~					 return Text:gsub(SearchName,ColourText(Translate(params[Name])))
 	--~				 end
 	--~				 --show popups in console log
 	--~				 local presettext = PopupNotificationPresets[preset]
-	--~				 --print(ColourText("Title: ",true),ColourText(Trans(presettext.title)))
+	--~				 --print(ColourText("Title: ",true),ColourText(Translate(presettext.title)))
 	--~				 local context = _GetPopupNotificationContext(preset, params or empty_table, bPersistable)
 	--~				 context.parent = parent
 	--~				 if bPersistable then
@@ -232,7 +232,7 @@ function OnMsg.ClassesGenerate()
 	--~				 else
 	--~					 context.async_signal = {}
 	--~				 end
-	--~				 local text = Trans(presettext.text,context,true)
+	--~				 local text = Translate(presettext.text,context,true)
 
 
 	--~				 text = ReplaceParam("number1",text)
@@ -247,10 +247,10 @@ function OnMsg.ClassesGenerate()
 	--~				 text = ReplaceParam("sponsor_name",text)
 	--~				 text = ReplaceParam("commander_name",text)
 
-	--~				 --text = text:gsub("<ColonistName(colonist)>",ColourText("<ColonistName(",Trans(params.colonist)) ,")>")
+	--~				 --text = text:gsub("<ColonistName(colonist)>",ColourText("<ColonistName(",Translate(params.colonist)) ,")>")
 
 	--~				 --print(ColourText("Text: ",true),text)
-	--~				 --print(ColourText("Voiced Text: ",true),Trans(presettext.voiced_text))
+	--~				 --print(ColourText("Voiced Text: ",true),Translate(presettext.voiced_text))
 	--~			 end) then
 	--~				 print("<color 255 0 0>Encountered an error trying to convert popup to console msg; showing popup instead (please let me know which popup it is).</color>")
 	--~				 return ChoGGi_OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
@@ -473,7 +473,7 @@ function OnMsg.ClassesGenerate()
 					else
 						entry.RolloverText = action.RolloverText
 					end
-					entry.RolloverTitle = Trans(126095410863--[[Info--]])
+					entry.RolloverTitle = Translate(126095410863--[[Info--]])
 					-- if this func added the id or something then i wouldn't need to do this copy n paste :(
 
 					function entry.OnPress(this, _)
@@ -784,7 +784,7 @@ function OnMsg.ClassesBuilt()
 				else
 					MsgPopup(
 						S[302535920000735--[[Timer delay skipped--]]],
-						Trans(3486--[[Mystery--]])
+						Translate(3486--[[Mystery--]])
 					)
 				end
 

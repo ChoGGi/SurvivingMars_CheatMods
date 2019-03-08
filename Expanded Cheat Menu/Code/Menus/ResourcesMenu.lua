@@ -1,14 +1,14 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
 	local str_ECM_Resources = "ECM.ECM.Resources"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(692--[[Resources--]]),
+	Actions[c] = {ActionName = Translate(692--[[Resources--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Resources",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -34,7 +34,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(4616--[[Food Per Rocket Passenger--]]),
+	Actions[c] = {ActionName = Translate(4616--[[Food Per Rocket Passenger--]]),
 		ActionMenubar = str_ECM_Resources,
 		ActionId = ".Food Per Rocket Passenger",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
@@ -48,16 +48,16 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(1110--[[Prefab Buildings--]]),
+	Actions[c] = {ActionName = Translate(1110--[[Prefab Buildings--]]),
 		ActionMenubar = str_ECM_Resources,
 		ActionId = ".Prefab Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/gear.tga",
-		RolloverText = Trans(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]]) .. "\n" .. S[302535920000897--[[Drone prefabs--]]],
+		RolloverText = Translate(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]]) .. "\n" .. S[302535920000897--[[Drone prefabs--]]],
 		OnAction = ChoGGi.MenuFuncs.AddPrefabBuildings,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Trans(3613--[[Funding--]]),
+	Actions[c] = {ActionName = Translate(3613--[[Funding--]]),
 		ActionMenubar = str_ECM_Resources,
 		ActionId = ".Funding",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",

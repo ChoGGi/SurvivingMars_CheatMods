@@ -51,7 +51,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 
 --~ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetProperType = ChoGGi.ComFuncs.RetProperType
-local Trans = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi.ComFuncs.Translate
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 local S = ChoGGi.Strings
@@ -133,7 +133,7 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 			self[name] = g_Classes.ChoGGi_CheckButton:new({
 				Id = name,
 				Dock = "left",
-				Text = Trans(588--[[Empty--]]),
+				Text = Translate(588--[[Empty--]]),
 			}, self[area_id])
 			local check = self[name]
 
@@ -254,7 +254,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idOK",
 		Dock = "left",
 		MinWidth = 50,
-		Text = Trans(6878--[[OK--]]),
+		Text = Translate(6878--[[OK--]]),
 		Background = g_Classes.ChoGGi_Button.bg_green,
 		RolloverText = S[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."--]]],
 		OnPress = function()
@@ -270,7 +270,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 70,
-		Text = Trans(6879--[[Cancel--]]),
+		Text = Translate(6879--[[Cancel--]]),
 		Background = g_Classes.ChoGGi_Button.bg_red,
 		RolloverText = S[302535920000074--[[Cancel without changing anything.--]]],
 		OnPress = self.idCloseX.OnPress,
@@ -325,21 +325,21 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 		self.idColorCheckElec = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idColorCheckElec",
-			Text = Trans(79--[[Power--]]),
+			Text = Translate(79--[[Power--]]),
 			RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
 
 		self.idColorCheckAir = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idColorCheckAir",
-			Text = Trans(891--[[Air--]]),
+			Text = Translate(891--[[Air--]]),
 			RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
 
 		self.idColorCheckWater = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idColorCheckWater",
-			Text = Trans(681--[[Water--]]),
+			Text = Translate(681--[[Water--]]),
 			RolloverText = S[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
@@ -664,7 +664,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 		if type(item.value) ~= nil and item.value ~= item.text then
 			local value_str
 			if type(item.value) == "userdata" then
-				value_str = Trans(item.value)
+				value_str = Translate(item.value)
 			else
 				value_str = item.value
 			end
@@ -674,7 +674,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 
 		if item.hint then
 			if type(item.hint) == "userdata" then
-				listitem.RolloverText = Trans(item.hint)
+				listitem.RolloverText = Translate(item.hint)
 			else
 				listitem.RolloverText = item.hint
 			end

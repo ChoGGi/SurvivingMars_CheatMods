@@ -6,7 +6,7 @@ local S
 local TableConcat
 local RetName
 local DebugGetInfo
-local Trans
+local Translate
 local GetParentOfKind
 local RetProperType
 
@@ -21,7 +21,7 @@ function OnMsg.ClassesGenerate()
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	RetName = ChoGGi.ComFuncs.RetName
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-	Trans = ChoGGi.ComFuncs.Translate
+	Translate = ChoGGi.ComFuncs.Translate
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 	RetProperType = ChoGGi.ComFuncs.RetProperType
 end
@@ -45,7 +45,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 
 	self.obj_name = RetName(context.obj)
 	self.obj = context.obj
-	self.title = Trans(327465361219--[[Edit--]]) .. " " .. Trans(298035641454--[[Object--]]) .. ": " .. self.obj_name
+	self.title = Translate(327465361219--[[Edit--]]) .. " " .. Translate(298035641454--[[Object--]]) .. ": " .. self.obj_name
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -72,7 +72,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 
 	self.idRefresh = g_Classes.ChoGGi_Button:new({
 		Id = "idRefresh",
-		Text = Trans(1000220--[[Refresh--]]),
+		Text = Translate(1000220--[[Refresh--]]),
 		Dock = "left",
 		MinWidth = 80,
 		RolloverText = S[302535920000092--[[Updates list with any changed values.--]]],
@@ -169,7 +169,7 @@ function ChoGGi_ObjectEditorDlg:idAddNewOnPress()
 		sel_name = self.sel.text
 		sel_value = self.sel.value
 	else
-		sel_name = Trans(3718--[[NONE--]])
+		sel_name = Translate(3718--[[NONE--]])
 		sel_value = false
 	end
 	local item_list = {
@@ -351,7 +351,7 @@ function ChoGGi_ObjectEditorDlg:CreateProp(obj)
 		end
 
 		if IsT(obj) then
-			return "T(\"" .. Trans(obj) .. "\")"
+			return "T(\"" .. Translate(obj) .. "\")"
 		else
 			-- regular table
 			local table_data

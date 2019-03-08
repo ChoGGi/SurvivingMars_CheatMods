@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesGenerate()
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 	local S = ChoGGi.Strings
 	local Actions = ChoGGi.Temp.Actions
@@ -9,7 +9,7 @@ function OnMsg.ClassesGenerate()
 
 	local str_ECM_Capacity = "ECM.ECM.Capacity"
 	c = c + 1
-	Actions[c] = {ActionName = Trans(109035890389--[[Capacity--]]),
+	Actions[c] = {ActionName = Translate(109035890389--[[Capacity--]]),
 		ActionMenubar = "ECM.ECM",
 		ActionId = ".Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",

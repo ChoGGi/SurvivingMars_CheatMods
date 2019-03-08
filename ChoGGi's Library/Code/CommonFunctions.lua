@@ -5,7 +5,7 @@ local testing = ChoGGi.testing
 -- Init.lua
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 -- Strings.lua
-local Trans = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi.ComFuncs.Translate
 
 local pairs,tonumber,type,rawget = pairs,tonumber,type,rawget
 local getmetatable,tostring = getmetatable,tostring
@@ -71,7 +71,7 @@ end -- do
 do -- RetName
 	local IsObjlist = IsObjlist
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local PropObjGetProperty = PropObjGetProperty
 
 	-- we use this table to display names of (some) tables for RetName
@@ -180,11 +180,11 @@ do -- RetName
 				name = obj.name
 			-- colonist names
 			elseif name_type == "table" then
-				name = Trans(obj.name)
+				name = Translate(obj.name)
 
 			-- display
 			elseif PropObjGetProperty(obj,"display_name") and obj.display_name ~= "" then
-				name = Trans(obj.display_name)
+				name = Translate(obj.display_name)
 			-- entity
 			elseif PropObjGetProperty(obj,"entity") and obj.entity ~= "" then
 				name = obj.entity
@@ -210,12 +210,12 @@ do -- RetName
 				end
 				--
 				if type(name) == "userdata" then
-					name = Trans(name)
+					name = Translate(name)
 				end
 			end -- if table
 
 		elseif obj_type == "userdata" then
-			local trans_str = Trans(obj)
+			local trans_str = Translate(obj)
 			-- missing text is from internaltranslate, i check the str length before calling the func as it has to be at least 16 chars
 			if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
 				return tostring(obj)
@@ -257,7 +257,7 @@ function ChoGGi.ComFuncs.RetHint(obj)
 
 	else
 		-- eh
-		return Trans(3718--[[NONE--]])
+		return Translate(3718--[[NONE--]])
 	end
 end
 
@@ -405,7 +405,7 @@ do -- MsgPopup
 		local data = {
 			id = AsyncRand(),
 			title = title or "",
-			text = text or Trans(3718--[[NONE--]]),
+			text = text or Translate(3718--[[NONE--]]),
 			image = ValidateImage(image,"UI/TheIncal.png"),
 		}
 		TableSet_defaults(data, params)
@@ -636,7 +636,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		-- "ChoGGi_CheckButtonMenu"
 		local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
 		local button = cls:new({
-			RolloverTitle = item.hint_title and item.hint_title or item.obj and RetName(item.obj) or Trans(126095410863--[[Info--]]),
+			RolloverTitle = item.hint_title and item.hint_title or item.obj and RetName(item.obj) or Translate(126095410863--[[Info--]]),
 			RolloverText = item.hint or "",
 			RolloverHint = item.hint_bottom or S[302535920000083--[[<left_click> Activate--]]],
 			Text = item.name,
@@ -864,9 +864,9 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image,ok_text,context,parent)
 	-- thread needed for WaitMarsQuestion
 	CreateRealTimeThread(function()
 		local dlg = CreateMarsQuestionBox(
-			title or Trans(1000016--[[Title--]]),
-			text or Trans(3718--[[NONE--]]),
-			ok_text or Trans(6878--[[OK--]]),
+			title or Translate(1000016--[[Title--]]),
+			text or Translate(3718--[[NONE--]]),
+			ok_text or Translate(6878--[[OK--]]),
 			"",
 			parent,
 			ValidateImage(image,"UI/message_picture_01.png"),
@@ -882,10 +882,10 @@ function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,con
 	CreateRealTimeThread(function()
 		if WaitMarsQuestion(
 			parent,
-			title or Trans(1000016--[[Title--]]),
-			text or Trans(3718--[[NONE--]]),
-			ok_msg or Trans(6878--[[OK--]]),
-			cancel_msg or Trans(6879--[[Cancel--]]),
+			title or Translate(1000016--[[Title--]]),
+			text or Translate(3718--[[NONE--]]),
+			ok_msg or Translate(6878--[[OK--]]),
+			cancel_msg or Translate(6879--[[Cancel--]]),
 			ValidateImage(image,"UI/message_picture_01.png"),
 			context
 		) == "ok" then
@@ -1421,8 +1421,8 @@ do -- UpdateDataTables
 		ClassDescendantsList("MysteryBase",function(class)
 			local cls_obj = g_Classes[class]
 			local scenario_name = cls_obj.scenario_name or S[302535920000009--[[Missing Scenario Name--]]]
-			local display_name = Trans(cls_obj.display_name) or S[302535920000010--[[Missing Name--]]]
-			local description = Trans(cls_obj.rollover_text) or S[302535920000011--[[Missing Description--]]]
+			local display_name = Translate(cls_obj.display_name) or S[302535920000010--[[Missing Name--]]]
+			local description = Translate(cls_obj.rollover_text) or S[302535920000011--[[Missing Description--]]]
 
 			local temptable = {
 				class = class,
@@ -1757,7 +1757,7 @@ do -- Rebuildshortcuts
 
 		if DisableECM then
 		-- add a key binding to options to re-enable ECM
-			local name = Trans(754117323318--[[Enable--]]) .. " " ..S[302535920000887--[[ECM--]]]
+			local name = Translate(754117323318--[[Enable--]]) .. " " ..S[302535920000887--[[ECM--]]]
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionName = name,
 				ActionId = name,
@@ -1901,7 +1901,7 @@ function ChoGGi.ComFuncs.ColonistUpdateAge(c,age)
 	end
 
 	local ages = ChoGGi.Tables.ColonistAges
-	if age == Trans(3490--[[Random--]]) then
+	if age == Translate(3490--[[Random--]]) then
 		age = ages[Random(1,6)]
 	end
 	-- remove all age traits
@@ -1950,7 +1950,7 @@ function ChoGGi.ComFuncs.ColonistUpdateGender(c,gender)
 
 	local genders = ChoGGi.Tables.ColonistGenders
 
-	if gender == Trans(3490--[[Random--]]) then
+	if gender == Translate(3490--[[Random--]]) then
 		gender = genders[Random(1,3)]
 	elseif gender == S[302535920000800--[[MaleOrFemale--]]] then
 		gender = genders[Random(1,2)]
@@ -1976,7 +1976,7 @@ function ChoGGi.ComFuncs.ColonistUpdateSpecialization(c,spec)
 
 	-- children don't have spec models so they get black cubed
 	if c.age_trait ~= "Child" then
-		if spec == Trans(3490--[[Random--]]) then
+		if spec == Translate(3490--[[Random--]]) then
 			spec = ChoGGi.Tables.ColonistSpecializations[Random(1,6)]
 		end
 		c:SetSpecialization(spec)
@@ -2007,7 +2007,7 @@ function ChoGGi.ComFuncs.ColonistUpdateRace(c,race)
 		return
 	end
 
-	if race == Trans(3490--[[Random--]]) then
+	if race == Translate(3490--[[Random--]]) then
 		race = Random(1,5)
 	end
 	c.race = race
@@ -2338,7 +2338,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 			MsgPopup(
 				S[302535920000015--[[Can't colour %s.--]]]:format(RetName(obj)),
-				Trans(3595--[[Color--]])
+				Translate(3595--[[Color--]])
 			)
 			return
 		end
@@ -2429,7 +2429,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 
 				MsgPopup(
 					S[302535920000020--[[Colour is set on %s--]]]:format(RetName(obj)),
-					Trans(3595--[[Color--]]),
+					Translate(3595--[[Color--]]),
 					nil,
 					nil,
 					obj
@@ -2440,7 +2440,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = Trans(174--[[Color Modifier--]]) .. ": " .. RetName(obj),
+			title = Translate(174--[[Color Modifier--]]) .. ": " .. RetName(obj),
 			hint = S[302535920000022--[["If number is 8421504 then you probably can't change that colour.
 
 You can copy and paste numbers if you want."--]]],
@@ -2742,7 +2742,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 	for i = 1, #res do
 		local item = ResourceDescription[table_find(ResourceDescription, "name", res[i])]
 		item_list[i] = {
-			text = Trans(item.display_name),
+			text = Translate(item.display_name),
 			value = item.name,
 			icon = TagLookupTable["icon_" .. item.name],
 		}
@@ -2796,7 +2796,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 			else
 				MsgPopup(
 					S[302535920000029--[[Error: Cannot find any %s.--]]]:format(choice[1].text),
-					Trans(15--[[Resource--]])
+					Translate(15--[[Resource--]])
 				)
 			end
 		end
@@ -2931,19 +2931,19 @@ do -- DisplayMonitorList
 			AddGrid(UICity,"water",info)
 		elseif value == "Air" then
 			info = info_grid
-			info_grid.title = Trans(891--[[Air--]])
+			info_grid.title = Translate(891--[[Air--]])
 			AddGrid(UICity,"air",info)
 		elseif value == "Power" then
 			info = info_grid
-			info_grid.title = Trans(79--[[Power--]])
+			info_grid.title = Translate(79--[[Power--]])
 			AddGrid(UICity,"electricity",info)
 		elseif value == "Water" then
 			info = info_grid
-			info_grid.title = Trans(681--[[Water--]])
+			info_grid.title = Translate(681--[[Water--]])
 			AddGrid(UICity,"water",info)
 		elseif value == "Research" then
 			info = {
-				title = Trans(311--[[Research--]]),
+				title = Translate(311--[[Research--]]),
 				listtype = "all",
 				tables = {UICity.tech_status},
 				values = {
@@ -2952,7 +2952,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "Colonists" then
 			info = {
-				title = Trans(547--[[Colonists--]]),
+				title = Translate(547--[[Colonists--]]),
 				tables = UICity.labels.Colonist or "",
 				values = {
 					{name="handle",kind=0},
@@ -2978,7 +2978,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "Rockets" then
 			info = {
-				title = Trans(5238--[[Rockets--]]),
+				title = Translate(5238--[[Rockets--]]),
 				tables = UICity.labels.AllRockets,
 				values = {
 					{name="name",kind=0},
@@ -3070,7 +3070,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = nil
-		which = Trans(460479110814--[[Enabled--]])
+		which = Translate(460479110814--[[Enabled--]])
 	else
 		obj:ClearEnumFlags(coll)
 		if obj.ForEachAttach then
@@ -3079,14 +3079,14 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = true
-		which = Trans(847439380056--[[Disabled--]])
+		which = Translate(847439380056--[[Disabled--]])
 	end
 	ResumePassEdits("ChoGGi.ComFuncs.CollisionsObject_Toggle")
 
 	if not skip_msg then
 		MsgPopup(
 			S[302535920000969--[[Collisions %s on %s--]]]:format(which,RetName(obj)),
-			Trans(302535920000968--[[Collisions--]]),
+			Translate(302535920000968--[[Collisions--]]),
 			nil,
 			nil,
 			obj
@@ -3174,7 +3174,7 @@ GetComputerName(): %s
 
 
 ]],
-		Trans(5568--[[Stats--]]),
+		Translate(5568--[[Stats--]]),
 		TableConcat(hw),
 		TableConcat(mem),
 		TableConcat({GetAdapterMode(0)}," "),
@@ -3228,10 +3228,10 @@ do -- AddXTemplate
 			end,
 			"__context_of_kind", list.__context_of_kind or "",
 			"__template", list.__template or "InfopanelActiveSection",
-			"Title", list.Title or Trans(1000016--[[Title--]]),
+			"Title", list.Title or Translate(1000016--[[Title--]]),
 			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
-			"RolloverTitle", list.RolloverTitle or Trans(126095410863--[[Info--]]),
-			"RolloverText", list.RolloverText or Trans(126095410863--[[Info--]]),
+			"RolloverTitle", list.RolloverTitle or Translate(126095410863--[[Info--]]),
+			"RolloverText", list.RolloverText or Translate(126095410863--[[Info--]]),
 			"RolloverHint", list.RolloverHint or "",
 			"OnContextUpdate", list.OnContextUpdate or empty_func,
 		}, {
@@ -3555,9 +3555,9 @@ function ChoGGi.ComFuncs.DeleteLargeRocks()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		Trans(6779--[[Warning--]]) .. "!\n" .. S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
+		Translate(6779--[[Warning--]]) .. "!\n" .. S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
 		CallBackFunc,
-		Trans(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]]
+		Translate(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 
@@ -3570,9 +3570,9 @@ function ChoGGi.ComFuncs.DeleteSmallRocks()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		Trans(6779--[[Warning--]]) .. "!\n" .. S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
+		Translate(6779--[[Warning--]]) .. "!\n" .. S[302535920001238--[[Removes rocks for that smooth map feel.--]]],
 		CallBackFunc,
-		Trans(6779--[[Warning--]]) .. ": " ..S[302535920000855--[[Last chance before deletion!--]]]
+		Translate(6779--[[Warning--]]) .. ": " ..S[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 
@@ -3588,7 +3588,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 	if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 		MsgPopup(
 			S[302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).--]]],
-			Trans(3595--[[Color--]])
+			Translate(3595--[[Color--]])
 		)
 		return
 	end
@@ -3627,7 +3627,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		items = item_list,
-		title = Trans(174--[[Color Modifier--]]) .. ": " .. RetName(obj),
+		title = Translate(174--[[Color Modifier--]]) .. ": " .. RetName(obj),
 		hint = S[302535920001108--[[Double click to open object/attachment to edit (select to flash object).--]]],
 		custom_type = 1,
 		custom_func = function(sel,dialog)
@@ -4107,11 +4107,11 @@ function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		Trans(6779--[[Warning--]]) .. "!\n" .. S[302535920000414--[[Are you sure you wish to delete %s?--]]]:format(name) .. "?",
+		Translate(6779--[[Warning--]]) .. "!\n" .. S[302535920000414--[[Are you sure you wish to delete %s?--]]]:format(name) .. "?",
 		CallBackFunc,
-		Trans(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
-		Trans(5451--[[DELETE--]]) .. ": " .. name,
-		Trans(6879--[[Cancel--]]) .. " " .. Trans(502364928914--[[Delete--]])
+		Translate(6779--[[Warning--]]) .. ": " .. S[302535920000855--[[Last chance before deletion!--]]],
+		Translate(5451--[[DELETE--]]) .. ": " .. name,
+		Translate(6879--[[Cancel--]]) .. " " .. Translate(502364928914--[[Delete--]])
 	)
 end
 
@@ -4119,11 +4119,11 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 	local name = RetName(obj)
 	local obj_type
 	if obj:IsKindOf("BaseRover") then
-		obj_type = Trans(7825--[[Destroy this Rover.--]])
+		obj_type = Translate(7825--[[Destroy this Rover.--]])
 	elseif obj:IsKindOf("Drone") then
-		obj_type = Trans(7824--[[Destroy this Drone.--]])
+		obj_type = Translate(7824--[[Destroy this Drone.--]])
 	else
-		obj_type = Trans(7822--[[Destroy this building.--]])
+		obj_type = Translate(7822--[[Destroy this building.--]])
 	end
 
 	local function CallBackFunc(answer)
@@ -4147,11 +4147,11 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		Trans(6779--[[Warning--]]) .. "!\n" .. obj_type .. "\n" .. name,
+		Translate(6779--[[Warning--]]) .. "!\n" .. obj_type .. "\n" .. name,
 		CallBackFunc,
-		Trans(6779--[[Warning--]]) .. ": " .. obj_type,
+		Translate(6779--[[Warning--]]) .. ": " .. obj_type,
 		obj_type .. " " .. name,
-		Trans(1176--[[Cancel Destroy--]])
+		Translate(1176--[[Cancel Destroy--]])
 	)
 end
 

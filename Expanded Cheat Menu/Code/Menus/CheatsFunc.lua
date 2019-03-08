@@ -5,7 +5,7 @@ local pairs,type = pairs,type
 
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-	local Trans = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi.ComFuncs.Translate
 	local Random = ChoGGi.ComFuncs.Random
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local S = ChoGGi.Strings
@@ -46,7 +46,7 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.UnlockAchievements()
-		local title = S[302535920000318--[[Unlock--]]] .. " " .. Trans(697482021580--[[Achievements--]])
+		local title = S[302535920000318--[[Unlock--]]] .. " " .. Translate(697482021580--[[Achievements--]])
 		local AchievementUnlock = AchievementUnlock
 		local EngineCanUnlockAchievement = EngineCanUnlockAchievement
 
@@ -60,9 +60,9 @@ function OnMsg.ClassesGenerate()
 			if EngineCanUnlockAchievement(XPlayerActive, id) then
 				c = c + 1
 				item_list[c] = {
-					text = Trans(item.display_name),
+					text = Translate(item.display_name),
 					value = id,
-					hint = Trans(item.how_to) .. "\n\n" .. Trans(item.description)
+					hint = Translate(item.how_to) .. "\n\n" .. Translate(item.description)
 						.. "\n\n<image UI/Achievements/" .. item.image .. ".tga 2500>",
 				}
 			end
@@ -80,7 +80,7 @@ function OnMsg.ClassesGenerate()
 				end
 
 				MsgPopup(
-					#choice,S[302535920000318--[[Unlock--]]] .. ": " .. Trans(697482021580--[[Achievements--]]),
+					#choice,S[302535920000318--[[Unlock--]]] .. ": " .. Translate(697482021580--[[Achievements--]]),
 					title
 				)
 			end)
@@ -89,7 +89,7 @@ function OnMsg.ClassesGenerate()
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = S[302535920000318--[[Unlock--]]] .. " " .. Trans(697482021580--[[Achievements--]]),
+			title = S[302535920000318--[[Unlock--]]] .. " " .. Translate(697482021580--[[Achievements--]]),
 			hint = title,
 			multisel = true,
 		}
@@ -178,7 +178,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.OutsourceMaxOrderCount_Set()
 		local default_setting = ChoGGi.Consts.OutsourceMaxOrderCount
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 100,value = 100},
 			{text = 150,value = 150},
 			{text = 250,value = 250},
@@ -270,10 +270,10 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			Trans(6779--[[Warning--]]) .. "!\n" .. S[302535920001508--[[Save your game.
+			Translate(6779--[[Warning--]]) .. "!\n" .. S[302535920001508--[[Save your game.
 This will switch to a new map.--]]],
 			CallBackFunc,
-			Trans(6779--[[Warning--]]) .. ": " .. S[302535920000236--[[Mod Editor--]]]
+			Translate(6779--[[Warning--]]) .. ": " .. S[302535920000236--[[Mod Editor--]]]
 			)
 	end
 
@@ -342,11 +342,11 @@ This will switch to a new map.--]]],
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			Trans(6779--[[Warning--]]) .. "!\n" .. S[302535920000238--[[Are you sure you want to reset all research (includes breakthrough tech)?
+			Translate(6779--[[Warning--]]) .. "!\n" .. S[302535920000238--[[Are you sure you want to reset all research (includes breakthrough tech)?
 
 	Buildings are still unlocked.--]]],
 			CallBackFunc,
-			Trans(6779--[[Warning--]]) .. "!"
+			Translate(6779--[[Warning--]]) .. "!"
 		)
 	end
 
@@ -633,20 +633,20 @@ This will switch to a new map.--]]],
 
 			local ChoGGi = ChoGGi
 			local item_list = {
-				{text = " " .. S[302535920000240--[[Stop--]]] .. " " .. Trans(3983--[[Disasters--]]),value = "Stop",hint = S[302535920000123--[[Stops most disasters--]]]},
+				{text = " " .. S[302535920000240--[[Stop--]]] .. " " .. Translate(3983--[[Disasters--]]),value = "Stop",hint = S[302535920000123--[[Stops most disasters--]]]},
 
-				{text = Trans(4149--[[Cold Wave--]]),value = "ColdWave",hint = default_mapdata_type},
+				{text = Translate(4149--[[Cold Wave--]]),value = "ColdWave",hint = default_mapdata_type},
 
-				{text = Trans(4142--[[Dust Devils--]]),value = "DustDevils",hint = default_mapdata_type},
-				{text = Trans(4142--[[Dust Devils--]]) .. " " .. S[302535920000241--[[Major--]]],value = "DustDevilsMajor",hint = default_mapdata_type},
+				{text = Translate(4142--[[Dust Devils--]]),value = "DustDevils",hint = default_mapdata_type},
+				{text = Translate(4142--[[Dust Devils--]]) .. " " .. S[302535920000241--[[Major--]]],value = "DustDevilsMajor",hint = default_mapdata_type},
 
-				{text = Trans(4250--[[Dust Storm--]]),value = "DustStorm",hint = default_mapdata_type},
-				{text = Trans(5627--[[Great Dust Storm--]]),value = "DustStormGreat",hint = default_mapdata_type},
-				{text = Trans(5628--[[Electrostatic Dust Storm--]]),value = "DustStormElectrostatic",hint = default_mapdata_type},
+				{text = Translate(4250--[[Dust Storm--]]),value = "DustStorm",hint = default_mapdata_type},
+				{text = Translate(5627--[[Great Dust Storm--]]),value = "DustStormGreat",hint = default_mapdata_type},
+				{text = Translate(5628--[[Electrostatic Dust Storm--]]),value = "DustStormElectrostatic",hint = default_mapdata_type},
 
-				{text = Trans(4146--[[Meteors--]]),value = "Meteor",hint = default_mapdata_type},
-				{text = Trans(4146--[[Meteors--]]) .. " " .. S[302535920000245--[[Multi-Spawn--]]],value = "MeteorMultiSpawn",hint = default_mapdata_type},
-				{text = Trans(5620--[[Meteor Storm--]]),value = "MeteorStorm",hint = default_mapdata_type},
+				{text = Translate(4146--[[Meteors--]]),value = "Meteor",hint = default_mapdata_type},
+				{text = Translate(4146--[[Meteors--]]) .. " " .. S[302535920000245--[[Multi-Spawn--]]],value = "MeteorMultiSpawn",hint = default_mapdata_type},
+				{text = Translate(5620--[[Meteor Storm--]]),value = "MeteorStorm",hint = default_mapdata_type},
 
 				{text = S[302535920000251--[[Metatron Ion Storm--]]],value = "MetatronIonStorm"},
 
@@ -663,10 +663,10 @@ This will switch to a new map.--]]],
 			-- add map settings for disasters
 			local DataInstances = DataInstances
 			local c = #item_list
-			c = AddTableToList(item_list,c,DataInstances.MapSettings_ColdWave,Trans(4149--[[Cold Wave--]]),"ColdWave",{})
-			c = AddTableToList(item_list,c,DataInstances.MapSettings_DustStorm,Trans(4250--[[Dust Storm--]]),"DustStorm",{"major"})
-			c = AddTableToList(item_list,c,DataInstances.MapSettings_DustDevils,Trans(4142--[[Dust Devils--]]),"DustDevils",{"electrostatic","great"})
-			c = AddTableToList(item_list,c,DataInstances.MapSettings_Meteor,Trans(4146--[[Meteors--]]),"Meteor",{"storm","multispawn"})
+			c = AddTableToList(item_list,c,DataInstances.MapSettings_ColdWave,Translate(4149--[[Cold Wave--]]),"ColdWave",{})
+			c = AddTableToList(item_list,c,DataInstances.MapSettings_DustStorm,Translate(4250--[[Dust Storm--]]),"DustStorm",{"major"})
+			c = AddTableToList(item_list,c,DataInstances.MapSettings_DustDevils,Translate(4142--[[Dust Devils--]]),"DustDevils",{"electrostatic","great"})
+			c = AddTableToList(item_list,c,DataInstances.MapSettings_Meteor,Translate(4146--[[Meteors--]]),"Meteor",{"storm","multispawn"})
 
 			local function CallBackFunc(choice)
 				if choice.nothing_selected then
@@ -690,7 +690,7 @@ This will switch to a new map.--]]],
 
 					MsgPopup(
 						choice[i].text,
-						Trans(3983--[[Disasters--]])
+						Translate(3983--[[Disasters--]])
 					)
 				end
 			end
@@ -698,7 +698,7 @@ This will switch to a new map.--]]],
 			ChoGGi.ComFuncs.OpenInListChoice{
 				callback = CallBackFunc,
 				items = item_list,
-				title = Trans(1694--[[Start--]]) .. " " .. Trans(3983--[[Disasters--]]),
+				title = Translate(1694--[[Start--]]) .. " " .. Translate(3983--[[Disasters--]]),
 				hint = S[302535920000252--[[Targeted to mouse cursor (use arrow keys to select and enter to start).--]]],
 				multisel = true,
 			}
@@ -707,11 +707,11 @@ This will switch to a new map.--]]],
 
 	function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 		local item_list = {
-			{text = " " .. Trans(4493--[[All--]]),value = "All",hint = S[302535920000329--[[Scan all anomalies.--]]]},
-			{text = Trans(9--[[Anomaly--]]),value = "SubsurfaceAnomaly",icon = "<image UI/Icons/Anomaly_Event.tga 750>",hint = Trans(14--[[We have detected alien artifacts at this location that will <em>speed up</em> our Research efforts.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
-			{text = Trans(8--[[Breakthrough Tech--]]),value = "SubsurfaceAnomaly_breakthrough",icon = "<image UI/Icons/Anomaly_Breakthrough.tga 750>",hint = Trans(11--[[Our scientists believe that this Anomaly may lead to a <em>Breakthrough</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
-			{text = Trans(3--[[Grant Research--]]),value = "SubsurfaceAnomaly_complete",icon = "<image UI/Icons/Anomaly_Research.tga 750>",hint = Trans(13--[[Sensors readings suggest that this Anomaly will help us with our current <em>Research</em> goals.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
-			{text = Trans(2--[[Unlock Tech--]]),value = "SubsurfaceAnomaly_unlock",icon = "<image UI/Icons/Anomaly_Tech.tga 750>",hint = Trans(12--[[Scans have detected some interesting readings that might help us discover <em>new Technologies</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
+			{text = " " .. Translate(4493--[[All--]]),value = "All",hint = S[302535920000329--[[Scan all anomalies.--]]]},
+			{text = Translate(9--[[Anomaly--]]),value = "SubsurfaceAnomaly",icon = "<image UI/Icons/Anomaly_Event.tga 750>",hint = Translate(14--[[We have detected alien artifacts at this location that will <em>speed up</em> our Research efforts.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
+			{text = Translate(8--[[Breakthrough Tech--]]),value = "SubsurfaceAnomaly_breakthrough",icon = "<image UI/Icons/Anomaly_Breakthrough.tga 750>",hint = Translate(11--[[Our scientists believe that this Anomaly may lead to a <em>Breakthrough</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
+			{text = Translate(3--[[Grant Research--]]),value = "SubsurfaceAnomaly_complete",icon = "<image UI/Icons/Anomaly_Research.tga 750>",hint = Translate(13--[[Sensors readings suggest that this Anomaly will help us with our current <em>Research</em> goals.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
+			{text = Translate(2--[[Unlock Tech--]]),value = "SubsurfaceAnomaly_unlock",icon = "<image UI/Icons/Anomaly_Tech.tga 750>",hint = Translate(12--[[Scans have detected some interesting readings that might help us discover <em>new Technologies</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
 		}
 
 		local function CallBackFunc(choice)
@@ -745,7 +745,7 @@ This will switch to a new map.--]]],
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = Trans(25--[[Anomaly Scanning--]]),
+			title = Translate(25--[[Anomaly Scanning--]]),
 			multisel = true,
 			skip_sort = true,
 		}
@@ -755,26 +755,26 @@ This will switch to a new map.--]]],
 		local ChoGGi = ChoGGi
 		local Consts = Consts
 		local UICity = UICity
-		local title = S[302535920001355--[[Map--]]] .. " " .. Trans(5422--[[Exploration--]])
+		local title = S[302535920001355--[[Map--]]] .. " " .. Translate(5422--[[Exploration--]])
 		local hint_core = S[302535920000253--[[Core: Repeatable, exploit core resources.--]]]
 		local hint_deep = S[302535920000254--[[Deep: Toggleable, exploit deep resources.--]]]
 		local item_list = {
 			{text = S[302535920000258--[[Reveal Map--]]],value = 12,hint = S[302535920000259--[[Reveals the map squares--]]]},
 			{text = S[302535920000260--[[Reveal Map (Deep)--]]],value = 13,hint = S[302535920000261--[[Reveals the map and unlocks "Deep" resources--]]]},
 
-			{text = Trans(4493--[[All--]]),value = 1,hint = hint_core .. "\n" .. hint_deep},
+			{text = Translate(4493--[[All--]]),value = 1,hint = hint_core .. "\n" .. hint_deep},
 			{text = S[302535920000255--[[Deep--]]],value = 2,hint = hint_deep},
 			{text = S[302535920000256--[[Core--]]],value = 3,hint = hint_core},
 
 			{text = S[302535920000257--[[Deep Scan--]]],value = 4,hint = hint_deep .. "\n" .. S[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.DeepScanAvailable},
-			{text = Trans(797--[[Deep Water--]]),value = 5,hint = hint_deep .. "\n" .. S[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepWaterExploitable},
-			{text = Trans(793--[[Deep Metals--]]),value = 6,hint = hint_deep .. "\n" .. S[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepMetalsExploitable},
-			{text = Trans(801--[[Deep Rare Metals--]]),value = 7,hint = hint_deep .. "\n" .. S[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepPreciousMetalsExploitable},
+			{text = Translate(797--[[Deep Water--]]),value = 5,hint = hint_deep .. "\n" .. S[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepWaterExploitable},
+			{text = Translate(793--[[Deep Metals--]]),value = 6,hint = hint_deep .. "\n" .. S[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepMetalsExploitable},
+			{text = Translate(801--[[Deep Rare Metals--]]),value = 7,hint = hint_deep .. "\n" .. S[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepPreciousMetalsExploitable},
 
-			{text = Trans(6548--[[Core Water--]]),value = 8,hint = hint_core},
-			{text = Trans(6546--[[Core Metals--]]),value = 9,hint = hint_core},
-			{text = Trans(6550--[[Core Rare Metals--]]),value = 10,hint = hint_core},
-			{text = Trans(6556--[[Alien Imprints--]]),value = 11,hint = hint_core},
+			{text = Translate(6548--[[Core Water--]]),value = 8,hint = hint_core},
+			{text = Translate(6546--[[Core Metals--]]),value = 9,hint = hint_core},
+			{text = Translate(6550--[[Core Rare Metals--]]),value = 10,hint = hint_core},
+			{text = Translate(6556--[[Alien Imprints--]]),value = 11,hint = hint_core},
 		}
 
 		local function CallBackFunc(choice)
@@ -849,7 +849,7 @@ Deep items will unlock the ability to exploit those resources."--]]],
 	end
 
 	function ChoGGi.MenuFuncs.SpawnColonists()
-		local title = S[302535920000266--[[Spawn--]]] .. " " .. Trans(547--[[Colonists--]])
+		local title = S[302535920000266--[[Spawn--]]] .. " " .. Translate(547--[[Colonists--]])
 		local item_list = {
 			{text = 1,value = 1},
 			{text = 10,value = 10},
@@ -965,9 +965,9 @@ Deep items will unlock the ability to exploit those resources."--]]],
 				callback = CallBackFunc,
 				items = item_list,
 				title = S[302535920000268--[[Start A Mystery--]]],
-				hint = Trans(6779--[[Warning--]]) .. ": " .. S[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
+				hint = Translate(6779--[[Warning--]]) .. ": " .. S[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
 
-	See Cheats>%s to remove."--]]]:format(Trans(5661--[[Mystery Log--]])),
+	See Cheats>%s to remove."--]]]:format(Translate(5661--[[Mystery Log--]])),
 				skip_sort = true,
 				checkboxes = {
 					{
@@ -1005,11 +1005,11 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 									c = c + 1
 									msgs[c] = {
 										[" "] = S[302535920000273--[[Speech--]]] .. ": "
-											.. Trans(seq.voiced_text) .. "\n\n\n\n"
+											.. Translate(seq.voiced_text) .. "\n\n\n\n"
 											.. S[302535920000274--[[Message--]]] .. ": "
-											.. Trans(seq.text),
+											.. Translate(seq.text),
 										speech = seq.voiced_text,
-										class = Trans(seq.title)
+										class = Translate(seq.title)
 									}
 								end
 							end
@@ -1079,7 +1079,7 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 				end
 				MsgPopup(
 					S[302535920000277--[[Removed all!--]]],
-					Trans(5661--[[Mystery Log--]])
+					Translate(5661--[[Mystery Log--]])
 				)
 			elseif choice[1].check1 then
 				-- remove mystery
@@ -1096,8 +1096,8 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 					end
 				end
 				MsgPopup(
-					choice[1].text .. ": " .. Trans(3486--[[Mystery--]]) .. " " .. S[302535920000278--[[Removed--]]] .. "!",
-					Trans(5661--[[Mystery Log--]])
+					choice[1].text .. ": " .. Translate(3486--[[Mystery--]]) .. " " .. S[302535920000278--[[Removed--]]] .. "!",
+					Translate(5661--[[Mystery Log--]])
 				)
 			elseif value then
 				-- next step
@@ -1111,7 +1111,7 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 			items = item_list,
 			custom_type = 6,
 			custom_func = ShowMysteryLog,
-			title = Trans(5661--[[Mystery Log--]]),
+			title = Translate(5661--[[Mystery Log--]]),
 			hint = S[302535920000280--[[Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).
 
 	Sequence part may have more then one check, you may have to skip twice or more.
@@ -1120,11 +1120,11 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 			checkboxes = {
 				{
 					title = S[302535920000281--[[Remove--]]],
-					hint = Trans(6779--[[Warning--]]) .. ": " .. S[302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.--]]],
+					hint = Translate(6779--[[Warning--]]) .. ": " .. S[302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.--]]],
 				},
 				{
 					title = S[302535920000283--[[Remove All--]]],
-					hint = Trans(6779--[[Warning--]]) .. ": " .. S[302535920000284--[[This will remove all the mysteries!--]]],
+					hint = Translate(6779--[[Warning--]]) .. ": " .. S[302535920000284--[[This will remove all the mysteries!--]]],
 				},
 			},
 		}
@@ -1135,7 +1135,7 @@ g_Voice:Play(o.speech)"--]]]:format(S[302535920000040--[[Exec Code--]]]) .. "\n"
 		local g_Classes = g_Classes
 
 		local warning = "\n\n" .. S[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]]
-		local name = Trans(3486--[[Mystery--]]) .. ": " .. ChoGGi.Tables.Mystery[mystery].name
+		local name = Translate(3486--[[Mystery--]]) .. ": " .. ChoGGi.Tables.Mystery[mystery].name
 
 		local ThreadsMessageToThreads = ThreadsMessageToThreads
 		for t in pairs(ThreadsMessageToThreads) do
@@ -1368,7 +1368,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 		local default_setting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
 		local MaxAmount = #UICity.tech_field.Breakthroughs
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 6,value = 6},
 			{text = 12,value = 12},
 			{text = 24,value = 24},
@@ -1412,7 +1412,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 		local default_setting = ChoGGi.Consts.BreakThroughTechsPerGame
 		local MaxAmount = #UICity.tech_field.Breakthroughs
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 26,value = 26,hint = S[302535920000301--[[Doubled the base amount.--]]]},
 			{text = MaxAmount,value = MaxAmount,hint = S[302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).--]]]},
 		}
@@ -1453,7 +1453,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.ResearchQueueSize
 		local item_list = {
-			{text = Trans(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 			{text = 5,value = 5},
 			{text = 10,value = 10},
 			{text = 25,value = 25},
@@ -1568,7 +1568,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 		}
 
 		function ChoGGi.MenuFuncs.ResearchRemove()
-			local title = Trans(311--[[Research--]]) .. " " .. S[302535920000281--[[Remove--]]]
+			local title = Translate(311--[[Research--]]) .. " " .. S[302535920000281--[[Remove--]]]
 			local item_list = {}
 			local c = 0
 
@@ -1580,7 +1580,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 			for id,status in pairs(tech_status) do
 				if status.researched then
 					local tech = TechDef[id]
-					local text = Trans(tech.display_name)
+					local text = Translate(tech.display_name)
 					-- remove " from that one tech...
 					if text:find("\"") then
 						text = text:gsub("\"","")
@@ -1590,7 +1590,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 						text = text,
 						value = id,
 						icon = "<image " .. tech.icon .. " 250>",
-						hint = Trans(T(tech.description,tech)) .. "\n\n" .. Trans(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
+						hint = Translate(T(tech.description,tech)) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
 					}
 				end
 			end
@@ -1600,7 +1600,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 --~ 			for tech_id,tech in pairs(TechDef) do
 --~ 				-- only show stuff researched
 --~ 				if IsTechResearched(tech_id) then
---~ 					local text = Trans(tech.display_name)
+--~ 					local text = Translate(tech.display_name)
 --~ 					-- remove " from that one tech...
 --~ 					if text:find("\"") then
 --~ 						text = text:gsub("\"","")
@@ -1610,7 +1610,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 --~ 						text = text,
 --~ 						value = tech_id,
 --~ 						icon = "<image " .. tech.icon .. " 250>",
---~ 						hint = Trans(T(tech.description,tech)) .. "\n\n" .. Trans(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
+--~ 						hint = Translate(T(tech.description,tech)) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
 --~ 					}
 --~ 				end
 --~ 			end
@@ -1723,7 +1723,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 		end
 
 		function ChoGGi.MenuFuncs.ResearchTech()
-			local title = Trans(311--[[Research--]]) .. " / " .. S[302535920000318--[[Unlock--]]] .. " " .. Trans(3734--[[Tech--]])
+			local title = Translate(311--[[Research--]]) .. " / " .. S[302535920000318--[[Unlock--]]] .. " " .. Translate(3734--[[Tech--]])
 			local item_list = {
 				{
 					text = " " .. S[302535920000306--[[Everything--]]],
@@ -1753,7 +1753,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 			for tech_id,tech in pairs(TechDef) do
 				-- only show stuff not yet researched
 				if not IsTechResearched(tech_id) then
-					local text = Trans(tech.display_name)
+					local text = Translate(tech.display_name)
 					-- remove " from that one tech...
 					if text:find("\"") then
 						text = text:gsub("\"","")
@@ -1763,7 +1763,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 						text = text,
 						value = tech_id,
 						icon = "<image " .. tech.icon .. " 250>",
-						hint = Trans(T(tech.description,tech)) .. "\n\n" .. Trans(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
+						hint = Translate(T(tech.description,tech)) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
 					}
 				end
 			end
@@ -1784,12 +1784,12 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 				local text
 				if check1 then
 					func = "DiscoverTech_Old"
-					text = Trans(2--[[Unlock Tech--]])
+					text = Translate(2--[[Unlock Tech--]])
 				end
 				-- override if both checked
 				if check2 then
 					func = "GrantTech"
-					text = Trans(3--[[Grant Research--]])
+					text = Translate(3--[[Grant Research--]])
 				end
 
 				local g = _G
@@ -1838,12 +1838,12 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 				height = 800,
 				checkboxes = {
 					{
-						title = Trans(2--[[Unlock Tech--]]),
+						title = Translate(2--[[Unlock Tech--]]),
 						hint = S[302535920000319--[[Just unlocks in the research tree.--]]],
 						checked = true,
 					},
 					{
-						title = Trans(311--[[Research--]]),
+						title = Translate(311--[[Research--]]),
 						hint = S[302535920000320--[[Unlocks and researchs.--]]],
 					},
 				},
