@@ -22,7 +22,9 @@ To add a language other than Italian: You'll need to edit the first few lines of
 
 You can also get the mod from: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Example%20Translate%20Game
 
-If you get this error "CommonLua/Core/localization.lua:559: table index is nil", see the bottom of:
-https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Locales.md
+If you get one of these errors:
+"[LUA ERROR] table index is nil, field ModsLoadLocTables"
+"CommonLua/Core/localization.lua:559: table index is nil"
+see the bottom of: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/Locales.md
 ]],
 })

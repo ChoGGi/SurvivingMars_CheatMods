@@ -130,4 +130,4 @@ then 5 will work
 
 test_csv requires you to install my HelperMod for ECM.
 ```
-![Test Locale File](Locales.jpg?raw=true "Test Locale File")
+![Test Locale File](Locales.png?raw=true "Test Locale File")
