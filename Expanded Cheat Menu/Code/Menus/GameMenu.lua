@@ -67,25 +67,22 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Strings[302535920000623--[[Change Terrain Type--]]],
+	Actions[c] = {ActionName = Strings[302535920000623--[[Terrain Texture Change--]]],
 		ActionMenubar = "ECM.Game",
-		ActionId = ".Change Terrain Type",
-		ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
-		RolloverText = function()
-			if GameState.gameplay then
-				local terrain = terrain.GetTerrainType(GetRandomPassable())
-				if terrain < 1 then
-					terrain = 1
-				end
-				return ChoGGi.ComFuncs.SettingState(
-					GetTerrainNamesCombo()[terrain].text[1],
-					Strings[302535920000624--[[Green or Icy mars? Coming right up!
-(don't forget a light model)--]]]
-				)
-			end
-			return Strings[302535920000624]
-		end,
-		OnAction = ChoGGi.MenuFuncs.ChangeTerrainType,
+		ActionId = ".Terrain Texture Change",
+		ActionIcon = "CommonAssets/UI/Menu/terrain_type.tga",
+		RolloverText = Strings[302535920000624--[[Green or Icy mars? Coming right up!
+(don't forget a light model)--]]],
+		OnAction = ChoGGi.MenuFuncs.TerrainTextureChange,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = Strings[302535920001237--[[Terrain Texture Remap--]]],
+		ActionMenubar = "ECM.Game",
+		ActionId = ".Terrain Texture Remap",
+		ActionIcon = "CommonAssets/UI/Menu/terrain_type.tga",
+		RolloverText = Strings[302535920001312--[["Instead of replacing all textures with one then re-adding stuff, this will remap existing textures."--]]],
+		OnAction = ChoGGi.MenuFuncs.TerrainTextureRemap,
 	}
 
 	c = c + 1

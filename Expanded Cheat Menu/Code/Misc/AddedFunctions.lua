@@ -6,7 +6,8 @@ function OnMsg.ClassesGenerate()
 	dumplua = ChoGGi.ComFuncs.DumpLua
 	dumptable = ChoGGi.ComFuncs.DumpTable
 	trans = ChoGGi.ComFuncs.Translate
-	imageview = ChoGGi.ComFuncs.OpenInImageViewerDlg
+	imgview = ChoGGi.ComFuncs.OpenInImageViewerDlg
+	txtview = ChoGGi.ComFuncs.OpenInMultiLineTextDlg
 	so = ChoGGi.ComFuncs.SelObject
 end
 

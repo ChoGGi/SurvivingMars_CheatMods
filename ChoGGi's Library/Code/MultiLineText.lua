@@ -35,7 +35,7 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 	-- overwrite dumped file
 	self.overwrite = context.overwrite
 
-	self.title = context.title or 302535920001301--[[Edit Text--]]
+	self.title = context.title or Strings[302535920001301--[[Edit Text--]]]
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)

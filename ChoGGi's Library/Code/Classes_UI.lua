@@ -551,6 +551,7 @@ function ChoGGi_Window:AddElements()
 		Id = "idCaption",
 		Padding = box(4,0,0,0),
 	}, self.idTitleLeftSection)
+
 	self.idCaption:SetTitle(self)
 
 	-- needed for :Wait()
