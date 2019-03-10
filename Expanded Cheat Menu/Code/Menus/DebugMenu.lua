@@ -268,11 +268,11 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Translate(298035641454--[[Object--]]) .. " " .. Strings[302535920001476--[[Flags--]]],
+	Actions[c] = {ActionName = Translate(298035641454--[[Object--]]) .. " " .. Strings[302535920001476--[[Edit Flags--]]],
 		ActionMenubar = "ECM.Debug",
-		ActionId = ".Object Flags",
+		ActionId = ".Object Edit Flags",
 		ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
-		RolloverText = Strings[302535920001447--[[Shows list of flags set for selected object.--]]],
+		RolloverText = Strings[302535920001447--[[Show and toggle the list of flags for selected object.--]]],
 		OnAction = ChoGGi.ComFuncs.ObjFlagsList,
 	}
 

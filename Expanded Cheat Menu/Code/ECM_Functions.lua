@@ -1513,14 +1513,10 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 
 			flags_table = {}
 
---~ 			local class = obj:GetClassFlags()
---~ 			local enum = obj:GetEnumFlags()
---~ 			local game = obj:GetGameFlags()
-
 			local Flags = Flags
-			CheckFlags(Flags.Class,obj,"ClassFlags")
 			CheckFlags(Flags.Enum,obj,"EnumFlags")
 			CheckFlags(Flags.Game,obj,"GameFlags")
+			CheckFlags(Flags.Class,obj,"ClassFlags")
 
 			if parent_or_ret == true then
 				return flags_table
@@ -1775,13 +1771,42 @@ list[#list+1] = [[	</Material>
 		end
 	end -- do
 
+	do -- CleanInfoAttachDupes
+		local DoneObject = DoneObject
+		local dupe_list = {}
+
+		function ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,list,cls)
+			table_clear(dupe_list)
+
+			-- clean up dupes in order of older
+			for i = 1, #list do
+				local mark = list[i]
+				if not cls or cls and mark:IsKindOf(cls) then
+
+					local pos = tostring(mark:GetVisualPos())
+					local dupe = dupe_list[pos]
+					if dupe then
+						DoneObject(dupe)
+						dupe_list[pos] = mark
+					else
+						dupe_list[pos] = mark
+					end
+
+				end
+			end
+
+			-- remove removed items
+			list:Validate()
+		end
+	end -- do
+
 	do -- BBoxLines_Toggle
 		local point = point
 		local objlist = objlist
 		local IsBox = IsBox
 
 		-- stores objlist of line objects
-		local lines
+		local bbox_lines
 
 		local function SpawnBoxLine(bbox, list, depth_test, colour)
 			local line = PlacePolyline(list, colour)
@@ -1789,7 +1814,7 @@ list[#list+1] = [[	</Material>
 				line:SetDepthTest(true)
 			end
 			line:SetPos(bbox:Center())
-			lines[#lines+1] = line
+			bbox_lines[#bbox_lines+1] = line
 		end
 		local pillar_table = objlist:new()
 		local function SpawnPillarLine(pt, z, obj_height, depth_test, colour)
@@ -1801,14 +1826,14 @@ list[#list+1] = [[	</Material>
 				line:SetDepthTest(true)
 			end
 			line:SetPos(AveragePoint2D(line.vertices):SetZ(z))
-			lines[#lines+1] = line
+			bbox_lines[#bbox_lines+1] = line
 		end
 
 		local function PlaceTerrainBox(bbox, pos, depth_test, colour)
 			local obj_height = bbox:sizez() or 1500
 			local z = pos:z()
 			-- stores all line objs for deletion later
-			lines = objlist:new()
+			bbox_lines = objlist:new()
 
 			local edges = {bbox:ToPoints2D()}
 			-- needed to complete the square (else there's a short blank space of a chunk of a line)
@@ -1851,11 +1876,11 @@ list[#list+1] = [[	</Material>
 				points_top[#points_top] = nil
 			end
 
-			SpawnBoxLine(lines, bbox, points_top, colour)
-			SpawnBoxLine(lines, bbox, points_bot, colour)
+			SpawnBoxLine(bbox_lines, bbox, points_top, colour)
+			SpawnBoxLine(bbox_lines, bbox, points_bot, colour)
 			--]]
 
-			return lines
+			return bbox_lines
 		end
 		local function BBoxLines_Clear(obj,is_box)
 			if not is_box and obj.ChoGGi_bboxobj then
@@ -1925,16 +1950,25 @@ list[#list+1] = [[	</Material>
 	do -- SurfaceLines_Toggle
 		local GetRelativeSurfaces = GetRelativeSurfaces
 
-		-- stores objlist of line objects
-		local lines
+		local function BuildLines(obj,params)
+			local surfs = params.surfs or GetRelativeSurfaces(obj,params.surface_mask or 0)
+			local c = #obj.ChoGGi_surfacelinesobj
 
-		local function BuildLines(points,z,depth_test,offset,colour)
-			local line = PlacePolyline(points, colour)
-			if depth_test then
-				line:SetDepthTest(true)
+			for i = 1, #surfs do
+				local group = surfs[i]
+				-- connect the lines
+				group[#group+1] = group[1]
+
+				local line = PlacePolyline(group, params.colour)
+				if params.depth_test then
+					line:SetDepthTest(true)
+				end
+				line:SetPos(AveragePoint2D(line.vertices):SetZ(group[1]:z()+params.offset))
+				c = c + 1
+				obj.ChoGGi_surfacelinesobj[c] = line
 			end
-			line:SetPos(AveragePoint2D(line.vertices):SetZ(z+offset))
-			lines[#lines+1] = line
+
+			return obj.ChoGGi_surfacelinesobj
 		end
 
 		local function SurfaceLines_Clear(obj)
@@ -1947,59 +1981,27 @@ list[#list+1] = [[	</Material>
 		ChoGGi.ComFuncs.SurfaceLines_Clear = SurfaceLines_Clear
 
 		function ChoGGi.ComFuncs.SurfaceLines_Toggle(obj,params)
+
 			params = params or {}
-			if not IsValid(obj) or (SurfaceLines_Clear(obj) and not params.skip_return) then
+			local is_valid = IsValid(obj)
+			if not is_valid or is_valid and not IsValidEntity(obj:GetEntity()) or not params.skip_return then
 				return
 			end
-			lines = objlist:new()
-
-			local surfs = params.surfs or GetRelativeSurfaces(obj,params.surface_mask or 0)
-			local colour = params.colour or RandomColourLimited()
-
-			for i = 1, #surfs do
-				local group = surfs[i]
-				-- connect the lines
-				group[#group+1] = group[1]
-
-				BuildLines(group,group[1]:z(),params.depth_test,params.offset or 1,colour)
-			end
-
-			obj.ChoGGi_surfacelinesobj = lines
-			do return lines end
-
-			-- build a list of all the points, a new table for each different z value
-			local z_points = {}
-			local dupes = {}
-			for i = 1, #surfs do
-				local group = surfs[i]
-				for j = 1, #group do
-					local pt = group[j]
-					local z = pt:z()
-					-- diff z values means diff line table
-					if not z_points[z] then
-						z_points[z] = {}
-					end
-					-- skip dupe points
-					local pt_str = tostring(pt)
-					if not dupes[pt_str] then
-						dupes[pt_str] = true
-						z_points[z][#z_points[z]+1] = pt
-					end
+			if not params.skip_clear then
+				if (SurfaceLines_Clear(obj) and not params.skip_return) then
+					return
 				end
 			end
 
-			for z,points in pairs(z_points) do
-				-- sort the points so the lines kinda line up
-				table_sort(points,function(a,b)
-					return tostring(a) > tostring(b)
-				end)
+			obj.ChoGGi_surfacelinesobj = obj.ChoGGi_surfacelinesobj or objlist:new()
 
-				BuildLines(points,z,colour)
-			end
+			params.colour = params.colour or RandomColourLimited()
+			params.offset = params.offset or 1
 
-			obj.ChoGGi_surfacelinesobj = lines
-			return lines
+			BuildLines(obj,params)
 
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,obj.ChoGGi_surfacelinesobj)
+			return obj.ChoGGi_surfacelinesobj
 		end
 	end -- do
 
@@ -2223,7 +2225,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			local cq, cr = WorldToHex(obj)
 			local z = obj:GetVisualPos():z() + offset
 
-			local line_list = objlist:new()
+			local c = #obj.ChoGGi_shape_obj
 			for i = 1, #shape do
 				local sq, sr = shape[i]:xy()
 				local q, r = HexRotate(sq, sr, dir)
@@ -2248,7 +2250,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 						text_obj:SetDepthTest(true)
 					end
 					text_obj:SetText(sq .. "," .. sr)
-					text_obj:SetColor1(colour or RandomColourLimited())
+					text_obj:SetColor1(colour)
 					-- slightly larger
 					text_obj:SetScaleInterpolation(110)
 
@@ -2256,10 +2258,9 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				end
 				line:SetPos(center)
 
-				line_list[i] = line
+				c = c + 1
+				obj.ChoGGi_shape_obj[c] = line
 			end
-
-			return line_list
 		end
 		local function ObjHexShape_Clear(obj)
 			if obj.ChoGGi_shape_obj then
@@ -2272,22 +2273,31 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 		function ChoGGi.ComFuncs.ObjHexShape_Toggle(obj,params)
 			params = params or {shape = FallbackOutline}
-
-			-- fallback is just a point(0,0), so nothing to do here
-			if not IsValid(obj) or params.shape == FallbackOutline or #params.shape < 2
-					or (ObjHexShape_Clear(obj) and not params.skip_return) then
+			if not IsValid(obj) or not params.skip_return then
 				return
 			end
+			if not params.skip_clear then
+				if (ObjHexShape_Clear(obj) and not params.skip_return) then
+					return
+				end
+			end
 
-			obj.ChoGGi_shape_obj = BuildShape(
+			obj.ChoGGi_shape_obj = obj.ChoGGi_shape_obj or objlist:new()
+			params.colour = params.colour or RandomColourLimited()
+			params.offset = params.offset or 1
+
+			BuildShape(
 				obj,
 				params.shape,
 				params.depth_test,
 				params.hex_pos,
-				params.colour or RandomColourLimited(),
-				params.offset or 1
+				params.colour,
+				params.offset
 			)
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,obj.ChoGGi_shape_obj,"ChoGGi_OText")
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,obj.ChoGGi_shape_obj,"ChoGGi_OPolyline")
 
+			return obj.ChoGGi_shape_obj
 		end
 	end -- do
 
@@ -2582,7 +2592,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 							text_obj:SetDepthTest(true)
 						end
 						text_obj:SetText(text_str)
-						text_obj:SetColor1(colour or RandomColourLimited())
+						text_obj:SetColor1(colour)
 						obj:Attach(text_obj, i)
 						c = c + 1
 						obj.ChoGGi_ShowAttachSpots[c] = text_obj
@@ -2624,7 +2634,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				line_obj:SetDepthTest(true)
 			end
 			line_obj.max_vertices = #points
-			line_obj:SetMesh(points, colour or RandomColourLimited())
+			line_obj:SetMesh(points, colour)
 			line_obj:SetPos(AveragePoint2D(points))
 
 			c = c + 1
@@ -2641,16 +2651,21 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			end
 
 			params = params or {}
-
 			local is_valid = IsValid(obj)
-			if not is_valid or is_valid and not IsValidEntity(obj:GetEntity())
-				or (AttachSpots_Clear(obj) and not params.skip_return) then
+			if not is_valid or is_valid and not IsValidEntity(obj:GetEntity()) or not params.skip_return then
 				return
 			end
+			if not params.skip_clear then
+				if (AttachSpots_Clear(obj) and not params.skip_return) then
+					return
+				end
+			end
 
-			obj.ChoGGi_ShowAttachSpots = objlist:new()
-			local c = 0
+			obj.ChoGGi_ShowAttachSpots = obj.ChoGGi_ShowAttachSpots or objlist:new()
 
+			params.colour = params.colour or RandomColourLimited()
+
+			local c = #obj.ChoGGi_ShowAttachSpots
 			c = AttachSpots_Add(obj,c,
 				params.spot_type,
 				params.annotation,
@@ -2659,10 +2674,16 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				params.colour
 			)
 
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,obj.ChoGGi_ShowAttachSpots,"ChoGGi_OText")
+
 			-- play connect the dots if there's chains
 			if c > 1 and params.annotation and params.annotation:find("chain") then
 				AttachSpots_Add_Annot(c,obj,params.depth_test,params.colour)
 			end
+
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,obj.ChoGGi_ShowAttachSpots,"ChoGGi_OPolyline")
+
+			return obj.ChoGGi_ShowAttachSpots
 
 		end
 	end -- do
@@ -2670,7 +2691,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 	do -- ShowAnimDebug_Toggle
 		local function AnimDebug_Show(obj,colour)
 			local text = PlaceObject("ChoGGi_OText")
-			text:SetColor1(colour or RandomColourLimited())
+			text:SetColor1(colour)
 
 			-- so we can delete them easy
 			text.ChoGGi_AnimDebug = true
@@ -2691,17 +2712,17 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		end
 
 		local function AnimDebug_Hide(obj)
-			obj:ForEachAttach(function(a)
+			obj:ForEachAttach("ChoGGi_OText",function(a)
 				if a.ChoGGi_AnimDebug then
 					a:delete()
 				end
 			end)
 		end
 
-		local function AnimDebug_ShowAll(cls)
+		local function AnimDebug_ShowAll(cls,colour)
 			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
 			for i = 1, #objs do
-				AnimDebug_Show(objs[i])
+				AnimDebug_Show(objs[i],colour)
 			end
 		end
 
@@ -2712,13 +2733,15 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			end
 		end
 
-		function ChoGGi.ComFuncs.ShowAnimDebug_Toggle(obj)
+		function ChoGGi.ComFuncs.ShowAnimDebug_Toggle(obj,params)
 			-- if fired from action menu
 			if IsKindOf(obj,"XAction") then
 				obj = ChoGGi.ComFuncs.SelObject()
 			else
 				obj = obj or ChoGGi.ComFuncs.SelObject()
 			end
+			params = params or {}
+			params.colour = params.colour or RandomColourLimited()
 
 			if IsValid(obj) then
 				if not obj:GetAnimDebug() then
@@ -2730,15 +2753,15 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					AnimDebug_Hide(obj)
 				else
 					obj.ChoGGi_ShowAnimDebug = true
-					AnimDebug_Show(obj)
+					AnimDebug_Show(obj,params.colour)
 				end
 			else
 				local ChoGGi = ChoGGi
 				ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
 				if ChoGGi.Temp.ShowAnimDebug then
-					AnimDebug_ShowAll("Building")
-					AnimDebug_ShowAll("Unit")
-					AnimDebug_ShowAll("CargoShuttle")
+					AnimDebug_ShowAll("Building",params.colour)
+					AnimDebug_ShowAll("Unit",params.colour)
+					AnimDebug_ShowAll("CargoShuttle",params.colour)
 				else
 					AnimDebug_HideAll("Building")
 					AnimDebug_HideAll("Unit")
@@ -3310,11 +3333,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				end
 			end
 
---~ 			table_sort(vertices,function(a,b)
---~ 				return CmpLower(tostring(a),tostring(b))
---~ 			end)
-
-			local line = PlacePolyline(vertices, colour or RandomColourLimited())
+			local line = PlacePolyline(vertices, colour)
 			line:SetPos(AveragePoint2D(line.vertices))
 
 			obj.ChoGGi_ObjListLine = line
@@ -3330,7 +3349,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 			ObjListLines_Add(objs_list,
 				params.obj,
-				params.colour
+				params.colour or RandomColourLimited()
 			)
 		end
 	end

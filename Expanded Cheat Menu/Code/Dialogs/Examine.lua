@@ -861,13 +861,6 @@ function Examine:BuildObjectMenuPopup()
 				self.ChoGGi.ComFuncs.SetAnimState(self.obj_ref)
 			end,
 		},
-		{name = Strings[302535920000459--[[Anim Debug Toggle--]]],
-			hint = Strings[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
-			image = "CommonAssets/UI/Menu/CameraEditor.tga",
-			clicked = function()
-				self.ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj_ref)
-			end,
-		},
 		{name = Strings[302535920000682--[[Change Entity--]]],
 			hint = Strings[302535920001151--[[Set Entity For %s--]]]:format(self.name),
 			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
@@ -880,6 +873,18 @@ function Examine:BuildObjectMenuPopup()
 			image = "CommonAssets/UI/Menu/place_particles.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.SetParticles(self.obj_ref)
+			end,
+		},
+		{name = Strings[302535920001476--[[Edit Flags--]]],
+			hint = Strings[302535920001447--[[Show and toggle the list of flags for selected object.--]]],
+			image = "CommonAssets/UI/Menu/JoinGame.tga",
+			clicked = function()
+				-- task requests have flags too, ones that aren't listed in the Flags table... (just const.rf*)
+				if self.obj_flags then
+					self.ChoGGi.ComFuncs.ObjFlagsList_TR(self.obj_ref,self)
+				else
+					self.ChoGGi.ComFuncs.ObjFlagsList(self.obj_ref,self)
+				end
 			end,
 		},
 		{is_spacer = true},
@@ -904,6 +909,21 @@ function Examine:BuildObjectMenuPopup()
 				self:ShowAttachSpotsList()
 			end,
 		},
+		{name = Strings[302535920000459--[[Anim Debug Toggle--]]],
+			hint = Strings[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]],
+			image = "CommonAssets/UI/Menu/CameraEditor.tga",
+			clicked = function()
+				self.ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj_ref)
+			end,
+		},
+		{name = Strings[302535920001551--[[Surfaces Toggle--]]],
+			hint = Strings[302535920001552--[[Show a list of surfaces and draw lines over them (GetRelativeSurfaces).--]]],
+			image = "CommonAssets/UI/Menu/ToggleCollisions.tga",
+			clicked = function()
+				self:ShowSurfacesList()
+			end,
+		},
+		{is_spacer = true},
 		{name = Strings[302535920000235--[[Attach Spots List--]]],
 			hint = Strings[302535920001445--[[Shows list of attaches for use with .ent files.--]]],
 			image = "CommonAssets/UI/Menu/ListCollections.tga",
@@ -918,18 +938,6 @@ function Examine:BuildObjectMenuPopup()
 				self.ChoGGi.ComFuncs.GetMaterialProperties(self.obj_ref:GetEntity(),self)
 			end,
 		},
-		{name = Strings[302535920001476--[[Flags--]]],
-			hint = Strings[302535920001447--[[Shows list of flags set for selected object.--]]],
-			image = "CommonAssets/UI/Menu/JoinGame.tga",
-			clicked = function()
-				-- task requests have flags too, ones that aren't listed in the Flags table... (just const.rf*)
-				if self.obj_flags then
-					self.ChoGGi.ComFuncs.ObjFlagsList_TR(self.obj_ref,self)
-				else
-					self.ChoGGi.ComFuncs.ObjFlagsList(self.obj_ref,self)
-				end
-			end,
-		},
 		{name = Strings[302535920001524--[[Entity Surfaces--]]],
 			hint = Strings[302535920001525--[[Shows list of surfaces for the object entity.--]]],
 			image = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
@@ -938,14 +946,6 @@ function Examine:BuildObjectMenuPopup()
 					self.ChoGGi.ComFuncs.RetSurfaceMasks(self.obj_ref),self,
 					Strings[302535920001524--[[Entity Surfaces--]]] .. ": " .. self.name
 				)
-			end,
-		},
-
-		{name = Strings[302535920001551--[[Surfaces Toggle--]]],
-			hint = Strings[302535920001552--[[Show a list of surfaces and draw lines over them (GetRelativeSurfaces).--]]],
-			image = "CommonAssets/UI/Menu/ToggleCollisions.tga",
-			clicked = function()
-				self:ShowSurfacesList()
 			end,
 		},
 	}
@@ -1577,6 +1577,7 @@ function Examine:ShowHexShapeList()
 				skip_return = true,
 				depth_test = choice.check1,
 				hex_pos = choice.check2,
+				skip_clear = choice.check3,
 			})
 		end
 	end
@@ -1597,6 +1598,11 @@ function Examine:ShowHexShapeList()
 				title = Strings[302535920000461--[[Position--]]],
 				hint = Strings[302535920001076--[[Shows the hex position of the spot: (-1,5).--]]],
 				checked = true,
+			},
+			{
+				title = Strings[302535920001560--[[Skip Clear--]]],
+				hint = Strings[302535920001561--[[Info objects will stay instead of being removed when activating a different option.--]]],
+				checked = false,
 			},
 		},
 	}
@@ -1708,7 +1714,12 @@ function Examine:ShowAttachSpotsList()
 		choice = choice[1]
 
 		if choice.value == "All" then
-			self.ChoGGi.ComFuncs.AttachSpots_Toggle(obj)
+			self.ChoGGi.ComFuncs.AttachSpots_Toggle(obj,{
+				skip_return = true,
+				depth_test = choice.check1,
+				show_pos = choice.check2,
+				skip_clear = choice.check3,
+			})
 		elseif choice.value == "Clear" then
 			self.ChoGGi.ComFuncs.AttachSpots_Clear(obj)
 		else
@@ -1718,6 +1729,7 @@ function Examine:ShowAttachSpotsList()
 				skip_return = true,
 				depth_test = choice.check1,
 				show_pos = choice.check2,
+				skip_clear = choice.check3,
 			})
 		end
 	end
@@ -1740,6 +1752,11 @@ function Examine:ShowAttachSpotsList()
 				hint = Strings[302535920000463--[[Add spot offset pos from Origin.--]]],
 				checked = false,
 			},
+			{
+				title = Strings[302535920001560--[[Skip Clear--]]],
+				hint = Strings[302535920001561--[[Info objects will stay instead of being removed when activating a different option.--]]],
+				checked = false,
+			},
 		},
 	}
 end
@@ -1757,7 +1774,7 @@ function Examine:ShowSurfacesList()
 	local item_list = {
 		{text = " " .. Translate(594--[[Clear--]]),value = "Clear"},
 		{
-			text = "0",
+			text = "0: " .. Strings[302535920000968--[[Collisions--]]],
 			value = 0,
 			hint = "Relative Surface index: 0",
 		},
@@ -1776,6 +1793,9 @@ function Examine:ShowSurfacesList()
 				surfs = surfs,
 				hint = "Relative Surface index: " .. i,
 			}
+			if i == 5 then
+				item_list[c].text = item_list[c].text .. ": " .. Strings[302535920001562--[[Selection Area--]]]
+			end
 		end
 	end
 
@@ -1793,6 +1813,7 @@ function Examine:ShowSurfacesList()
 				skip_return = true,
 				surfs = choice.surfs,
 				depth_test = choice.check1,
+				skip_clear = choice.check2,
 			})
 		end
 	end
@@ -1807,6 +1828,11 @@ function Examine:ShowSurfacesList()
 			{
 				title = Strings[302535920001553--[[Depth Test--]]],
 				hint = Strings[302535920001554--[[If enabled lines will hide behind occluding walls (not glass).--]]],
+				checked = false,
+			},
+			{
+				title = Strings[302535920001560--[[Skip Clear--]]],
+				hint = Strings[302535920001561--[[Info objects will stay instead of being removed when activating a different option.--]]],
 				checked = false,
 			},
 		},
@@ -1865,6 +1891,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 
 	local obj_value = self.obj_ref[obj_key]
 	local obj_value_str = tostring(obj_value)
+	local obj_value_type = type(obj_value)
 
 	local list = {
 		{name = obj_name,
@@ -1893,15 +1920,23 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			hint = Strings[302535920001539--[[Change the value of %s.--]]]:format(obj_name),
 			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
 			clicked = function()
-				if type(obj_value) == "string" then
+				if obj_value_type == "string" then
 					self:ShowExecCodeWithCode("o." .. obj_name .. [[ = "]] .. obj_value_str .. [["]])
 				else
 					self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. obj_value_str)
 				end
 			end,
 		},
+		{name = Strings[302535920000664--[[Clipboard--]]],
+			hint = Strings[302535920001566--[[Copy ValueToLuaCode(value) to clipboard.--]]],
+			image = "CommonAssets/UI/Menu/Mirror.tga",
+			clicked = function()
+				CopyToClipboard(ValueToLuaCode(obj_value))
+			end,
+		},
 	}
-	local c = #list
+	local c_orig = #list
+	local c = c_orig
 
 	-- if it's an image path then we add an image viewer
 	if ImageExts()[obj_value_str:sub(-3):lower()] then
@@ -1927,8 +1962,44 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 		}
 	end
 
+	if obj_value_type == "number" then
+		c = c + 1
+		list[c] = {name = Strings[302535920001564--[[Double Number--]]],
+			hint = Strings[302535920001563--[[Set amount to <color 100 255 100>%s</color>.--]]]:format(obj_value * 2),
+			image = "CommonAssets/UI/Menu/change_height_up.tga",
+			clicked = function()
+				self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. (obj_value * 2))
+			end,
+		}
+		c = c + 1
+		list[c] = {name = Strings[302535920001565--[[Halve Number--]]],
+			hint = Strings[302535920001563--[[Set amount to <color 100 255 100>%s</color>.--]]]:format(obj_value / 2),
+			image = "CommonAssets/UI/Menu/change_height_down.tga",
+			clicked = function()
+				self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. (obj_value / 2))
+			end,
+		}
+
+	elseif obj_value_type == "boolean" then
+		c = c + 1
+		list[c] = {name = Strings[302535920001069--[[Toggle Boolean--]]],
+			hint = Strings[302535920001567--[[false to true and true to false.--]]],
+			image = "CommonAssets/UI/Menu/ToggleSelectionOcclusion.tga",
+			clicked = function()
+				self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. tostring(not obj_value))
+			end,
+		}
+		c = c + 1
+		list[c] = {name = Strings[302535920001568--[[Boolean To Table--]]],
+			hint = Strings[302535920001569--[[Set the value to a new table: {}.--]]],
+			image = "CommonAssets/UI/Menu/SelectionFilter.tga",
+			clicked = function()
+				self:ShowExecCodeWithCode("o." .. obj_name .. " = {}")
+			end,
+		}
+
 	-- add print for funcs
-	if type(obj_value) == "function" then
+	elseif obj_value_type == "function" then
 		c = c + 1
 		list[c] = {is_spacer = true}
 		c = c + 1
@@ -1960,6 +2031,10 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 				self.ChoGGi.ComFuncs.PrintToFunc_Remove(obj_key,self.obj_ref)
 			end,
 		}
+	end
+
+	if c ~= c_orig then
+		table_insert(list,6,{is_spacer = true})
 	end
 
 	-- style it like the other examine menus
@@ -2040,10 +2115,10 @@ function Examine:ConvertValueToInfo(obj)
 
 			elseif rawget(obj,"ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
 				if obj.colour then
-					return "<color " .. obj.colour .. ">" .. obj.name .. "</color> "
+					return "<color " .. obj.colour .. ">" .. (obj.name or "") .. "</color> "
 						.. self:HyperLink(obj,obj.func,obj.hint) .. "@" .. HLEnd
 				else
-					return obj.name .. "</color> "
+					return (obj.name or "") .. "</color> "
 						.. self:HyperLink(obj,obj.func,obj.hint) .. "@" .. HLEnd
 				end
 
@@ -2492,7 +2567,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			local m_c = 0
 			for k, v in pairs(obj_metatable) do
 				if not dupes[k] then
-					dupes[v] = true
+					dupes[k] = true
 					m_c = m_c + 1
 					data_meta[m_c] = self:ConvertValueToInfo(k) .. " = " .. self:ConvertValueToInfo(v)
 				end
@@ -2501,7 +2576,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			if type(obj_metatable.__index) == "table" then
 				for k, v in pairs(obj_metatable.__index) do
 					if not dupes[k] then
-						dupes[v] = true
+						dupes[k] = true
 						m_c = m_c + 1
 						data_meta[m_c] = self:ConvertValueToInfo(k) .. " = " .. self:ConvertValueToInfo(v)
 					end
@@ -2522,7 +2597,15 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				)
 				-- we use this with Object>Flags
 				self.obj_flags = obj:GetFlags()
-				table_insert(data_meta,1,"GetFlags(): " .. self:ConvertValueToInfo(self.obj_flags))
+				table_insert(data_meta,1,"GetFlags(): " .. self:ConvertValueToInfo(self.obj_flags)
+					.. self:ConvertValueToInfo({
+						ChoGGi_AddHyperLink = true,
+						hint = Strings[302535920001447--[[Shows list of flags set for selected object.-]]],
+						func = function(ex_dlg)
+							ChoGGi.ComFuncs.ObjFlagsList_TR(obj,ex_dlg)
+						end,
+					})
+				)
 				table_insert(data_meta,1,"GetReciprocalRequest(): " .. self:ConvertValueToInfo(obj:GetReciprocalRequest()))
 				table_insert(data_meta,1,"GetLastServiced(): " .. self:ConvertValueToInfo(obj:GetLastServiced()))
 				table_insert(data_meta,1,"GetFreeUnitSlots(): " .. self:ConvertValueToInfo(obj:GetFreeUnitSlots()))
