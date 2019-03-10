@@ -1,6 +1,14 @@
 ## ECM Changelog
 
 ## v13.0 (Unreleased)
+### Changed:
+- Debug>Force Story Bits shows full list instead of just "actively waiting" ones.
+- Examine:
+- > Added Toolbar>Toggle Objlist: Toggle setting the metatable for this table to an objlist (for using mark/delete all).
+
+### Fixed:
+- Debug>Force Story Bits works properly now.
+- Examine>Tools>Functions failed on some objects.
 
 ## v12.9 (10 Mar 2019)
 ### Added:

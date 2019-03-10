@@ -240,6 +240,7 @@ function RCGarage:RemoveFromGarage(unit)
 			unit:ToggleSiegeMode()
 		end
 
+		unit.ChoGGi_RemHolderPos = nil
 	end)
 
 	self:UpdateGaragePower()

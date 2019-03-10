@@ -1,7 +1,8 @@
 return PlaceObj("ModDef", {
-	"title", "RC Garage v0.3",
-	"version", 3,
-	"saved", 1544356800,
+--~ 	"title", "RC Garage v0.3",
+	"title", "RC Garage v0.4",
+	"version", 4,
+	"saved", 1552219200,
 	"image", "Preview.png",
 	"id", "ChoGGi_RCGarage",
 	"steam_id", "1557866331",

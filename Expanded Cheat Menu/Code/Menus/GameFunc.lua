@@ -171,8 +171,8 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.MapEdgeLimit_Toggle()
 		if ChoGGi.UserSettings.MapEdgeLimit then
 			ChoGGi.UserSettings.MapEdgeLimit = nil
-			hr.CameraRTSBorderAtMinZoom = 0
-			hr.CameraRTSBorderAtMaxZoom = 0
+			hr.CameraRTSBorderAtMinZoom = -1000
+			hr.CameraRTSBorderAtMaxZoom = -1000
 		else
 			ChoGGi.UserSettings.MapEdgeLimit = true
 			hr.CameraRTSBorderAtMinZoom = 1000

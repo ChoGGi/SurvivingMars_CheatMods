@@ -312,29 +312,29 @@ that'll activate the BadPrefab on it
 		local c = 0
 
 		local temp_table = {}
-		local g_StoryBitStates = g_StoryBitStates
-		for id,a_story in pairs(g_StoryBitStates) do
-			local story = StoryBits[id]
+		local StoryBits = StoryBits
+		for id,story_def in pairs(StoryBits) do
 			table_clear(temp_table)
-			for i = 1, #story do
-				if story[i].Name and story[i].Value then
-					temp_table[story[i].Name] = story[i].Value
+			for i = 1, #story_def do
+				local def = story_def[i]
+				if def.Name and def.Value then
+					temp_table[def.Name] = def.Value
 				end
 			end
 
-			local title = story.Title and Translate(story.Title) or id
+			local title = story_def.Title and Translate(story_def.Title) or id
 			if not (title:find(": ") or title:find(" - ",1,true)) then
-				title = story.group .. ": " .. title
+				title = story_def.group .. ": " .. title
 			end
 			c = c + 1
 			item_list[c] = {
 				text = title,
 				value = id,
-				story = a_story,
-				voiced = story.VoicedText,
-				hint = Strings[302535920001358--[[Group--]]] .. ": " .. story.group .. "\n\n"
-					.. Translate(T(story.Text,temp_table)) .. "\n\n<image " .. story.Image
-					.. ">",
+				voiced = story_def.VoicedText,
+				hint = Strings[302535920001358--[[Group--]]] .. ": "
+					.. story_def.group .. "\n\n"
+					.. Translate(T(story_def.Text,temp_table)) .. "\n\n<image "
+					.. story_def.Image .. ">",
 			}
 		end
 
@@ -356,9 +356,7 @@ that'll activate the BadPrefab on it
 				obj = SelectedObj
 			end
 
-			if IsValid(obj) then
-				choice.story:ActivateStoryBit(obj)
-			end
+			ForceActivateStoryBit(choice.value, obj, true)
 
 		end
 
