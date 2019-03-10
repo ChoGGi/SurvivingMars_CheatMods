@@ -1,11 +1,6 @@
 -- See LICENSE for terms
 
 local type,tostring = type,tostring
-local SuspendPassEdits = SuspendPassEdits
-local ResumePassEdits = ResumePassEdits
-local white = white
-local guic = guic
-local IsKindOf = IsKindOf
 
 function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -575,6 +570,8 @@ function OnMsg.ClassesGenerate()
 		local SetHeightCircle = terrain.SetHeightCircle
 		local GetTerrainCursor = GetTerrainCursor
 		local Sleep = Sleep
+		local guic = guic
+		local white = white
 
 		local are_we_flattening
 		local visual_circle
@@ -913,7 +910,80 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		)
 	end
 
-	function ChoGGi.MenuFuncs.ChangeTerrainType()
+	function ChoGGi.MenuFuncs.TerrainTextureRemap()
+		local TerrainTextures = TerrainTextures
+		local GetTerrainTextureIndex = GetTerrainTextureIndex
+		local hint = Strings[302535920000973--[["Change the value (-1) to an index number from Terrain Textures.
+Open %s to see all the textures, the tooltips show the texture index."--]]]:format(Strings[302535920000623--[[Terrain Texture Change--]]])
+
+		local item_list = {}
+		local c = 0
+
+		local used = ChoGGi.ComFuncs.UsedTerrainTextures(true)
+		for name,count in pairs(used) do
+			local index = GetTerrainTextureIndex(name)
+			local terrain = TerrainTextures[index]
+			c = c + 1
+			item_list[c] = {
+				text = terrain.name,
+				-- we could just leave this as the same index, but that means replacing a texture with the same texture (useless time waste)
+				value = -1,
+				count = count,
+				index = index,
+				icon = "<image " .. terrain.texture .. " 100>",
+				hint = Strings[302535920001313--[[Amount used on map: %s--]]]:format(count)
+					.. "\n" .. hint .. "\n\n\n<image " .. terrain.texture .. ">\n\n",
+			}
+		end
+
+		local function CallBackFunc(choices)
+			local map = {}
+			for i = 1, #choices do
+				local choice = choices[i]
+				-- make sure it's a valid  terrain texture id
+				if TerrainTextures[choice.value] then
+					-- existing texture index id to new id
+					map[choice.index] = choice.value
+				end
+			end
+			terrain.RemapType(map)
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = item_list,
+			title = Strings[302535920001237--[[Terrain Texture Remap--]]],
+			sortby = "count",
+			hint = hint,
+
+			-- can only make it 9 if i figure out a way to upload the index numbers
+--~ 			custom_type = 9,
+			custom_type = 4,
+		}
+
+--~ 		SuspendPassEdits("ChoGGi.MenuFuncs.ChangeTerrainType")
+
+	end
+
+	function ChoGGi.MenuFuncs.TerrainTextureChange()
+		local function RestoreSkins(label,temp_skin,idx)
+			for i = 1, #(label or "") do
+				local o = label[i]
+				-- if i don't set waste skins to the ground texture then it won't be the right texture for GetCurrentSkin
+				-- got me
+				if temp_skin then
+					o.orig_terrain1 = idx
+					o.orig_terrain2 = nil
+--~ local _, terrain1, _, terrain2 = TerrainDeposit_CountTiles(o:GetBuildShape(), o:GetPos())
+--~ orig_terrain1 = terrain1
+--~ orig_terrain2 = terrain2
+
+					o:ChangeSkin("Terrain" .. temp_skin)
+				end
+				o:ChangeSkin(o:GetCurrentSkin())
+			end
+		end
+
 		local GridOpFree = GridOpFree
 		local AsyncSetTypeGrid = AsyncSetTypeGrid
 		local MulDivRound = MulDivRound
@@ -921,17 +991,16 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 
 		local TerrainTextures = TerrainTextures
 		local NoisePreset = DataInstances.NoisePreset
-		local guim = ChoGGi.Consts.guim
+		local guim = guim
 
 		local item_list = {}
-		local c = 0
 		for i = 1, #TerrainTextures do
-			c = c + 1
-			item_list[c] = {
-				text = TerrainTextures[i].name,
+			local terrain = TerrainTextures[i]
+			item_list[i] = {
+				text = terrain.name,
 				value = i,
-				icon = "<image " .. TerrainTextures[i].texture .. " 100>",
-				hint = "<image " .. TerrainTextures[i].texture .. ">\n\n",
+				icon = "<image " .. terrain.texture .. " 100>",
+				hint = "<image " .. terrain.texture .. ">\n\n",
 			}
 		end
 
@@ -939,15 +1008,16 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 			if choice.nothing_selected then
 				return
 			end
-			local value = choice[1].value
-			if TerrainTextures[value] then
-				terrain.SetTerrainType{type = value}
+			choice = choice[1]
+
+			if TerrainTextures[choice.value] then
+				SuspendPassEdits("ChoGGi.MenuFuncs.TerrainTextureChange")
+				terrain.SetTerrainType{type = choice.value}
 
 				-- add back dome grass
-				local domes = UICity.labels.Dome or ""
-				for i = 1, #domes do
-					domes[i]:ChangeSkin(domes[i]:GetCurrentSkin())
-				end
+				RestoreSkins(UICity.labels.Dome)
+				-- restore waste piles
+				RestoreSkins(UICity.labels.WasteRockDumpSite,choice.text,choice.value)
 
 				-- re-build concrete marker textures
 				local texture_idx1 = table.find(TerrainTextures, "name", "Regolith") + 1
@@ -978,15 +1048,17 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 							invalid_type = -1,
 						}
 					end
-				end
+				end -- for
 
-			end -- if type(value) == "number" then
+				ResumePassEdits("ChoGGi.MenuFuncs.TerrainTextureChange")
+			end -- if TerrainTextures
+
 		end -- CallBackFunc
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = Strings[302535920000973--[[Change Terrain Texture--]]],
+			title = Strings[302535920000623--[[Terrain Texture Change--]]],
 			hint = Strings[302535920000974--[[Map default: %s--]]]:format(mapdata.BaseLayer),
 			custom_type = 7,
 		}

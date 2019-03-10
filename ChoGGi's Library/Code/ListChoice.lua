@@ -3,6 +3,9 @@
 -- all purpose items list
 
 --[[
+-- build an update items list func for use with ChoGGi.MenuFuncs.TerrainTextureRemap()
+
+
 get around to merging some of these types into funcs?
 
 > 1 = updates selected item with custom value type
@@ -30,6 +33,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 	width = 100.0,
 	skip_sort = true,
 	skip_icons = true,
+	sortby = "text",
 	checkboxes = {
 		only_one = true,
 		at_least_one = true,
@@ -287,9 +291,22 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	if not self.list.skip_sort then
 		-- sort table by display text
 		local sortby = self.list.sortby or "text"
-		table_sort(self.list.items,function(a,b)
-			return CmpLower(a[sortby], b[sortby])
-		end)
+
+		if sortby ~= "text" then
+			table_sort(self.list.items,function(a,b)
+				a = a[sortby]
+				b = b[sortby]
+				if type(a) == "number" and type(b) == "number" then
+					return a > b
+				end
+				return CmpLower(a,b)
+			end)
+		else
+			table_sort(self.list.items,function(a,b)
+				return CmpLower(a[sortby], b[sortby])
+			end)
+		end
+
 	end
 	-- append blank item for adding custom value
 	if self.custom_type == 0 then

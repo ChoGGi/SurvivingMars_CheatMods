@@ -231,13 +231,13 @@ do -- ColonistData
 			{"last_meal",Strings[302535920001229--[[Last Meal--]]]},
 			{"last_rest",Strings[302535920001235--[[Last Rest--]]]},
 			{"dome_name",Translate(1234--[[Dome--]]) .. " " .. Translate(1000037--[[Name--]])},
-			{"dome_pos",Translate(1234--[[Dome--]]) .. " " .. Strings[302535920001237--[[Position--]]]},
+			{"dome_pos",Translate(1234--[[Dome--]]) .. " " .. Strings[302535920000461--[[Position--]]]},
 			{"dome_handle",Translate(1234--[[Dome--]]) .. " " .. Strings[302535920000955--[[Handle--]]]},
 			{"residence_name",Translate(4809--[[Residence--]]) .. " " .. Translate(1000037--[[Name--]])},
-			{"residence_pos",Translate(4809--[[Residence--]]) .. " " .. Strings[302535920001237--[[Position--]]]},
+			{"residence_pos",Translate(4809--[[Residence--]]) .. " " .. Strings[302535920000461--[[Position--]]]},
 			{"residence_dome",Translate(4809--[[Residence--]]) .. " " .. Translate(1234--[[Dome--]])},
 			{"workplace_name",Translate(4801--[[Workplace--]]) .. " " .. Translate(1000037--[[Name--]])},
-			{"workplace_pos",Translate(4801--[[Workplace--]]) .. " " .. Strings[302535920001237--[[Position--]]]},
+			{"workplace_pos",Translate(4801--[[Workplace--]]) .. " " .. Strings[302535920000461--[[Position--]]]},
 			{"workplace_dome",Translate(4801--[[Workplace--]]) .. " " .. Translate(1234--[[Dome--]])},
 		}
 		local t = ChoGGi.Tables
@@ -394,7 +394,7 @@ do -- Graphs
 				data3 = "consumption",
 			},
 			{
-				name = Strings[302535920000035--[[Grids--]]] .. " " .. Translate(682--[[Oxygen--]]) .. " " .. Translate(302535920001457--[[Stored--]]),
+				name = Strings[302535920000035--[[Grids--]]] .. " " .. Translate(682--[[Oxygen--]]) .. " " .. Strings[302535920001457--[[Stored--]]],
 				func = "GetTotalStoredAir",
 				data1 = "ts_resources_grid",
 				data2 = "air",

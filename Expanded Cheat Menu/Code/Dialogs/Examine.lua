@@ -284,6 +284,14 @@ Press once to clear this examine, again to clear all."--]]],
 			OnPress = self.idButMarkAllOnPress,
 		}, self.idToolbarButtons)
 		--
+		self.idButMarkAllLine = g_Classes.ChoGGi_ToolbarButton:new({
+			Id = "idButMarkAllLine",
+			Image = "CommonAssets/UI/Menu/ShowOcclusion.tga",
+			RolloverTitle = Strings[302535920001512--[[Mark All Objects (Line)--]]],
+			RolloverText = Strings[302535920001513--[[Add a line connecting all items in list.--]]],
+			OnPress = self.idButMarkAllLineOnPress,
+		}, self.idToolbarButtons)
+		--
 		self.idButDeleteAll = g_Classes.ChoGGi_ToolbarButton:new({
 			Id = "idButDeleteAll",
 			Image = "CommonAssets/UI/Menu/UnlockCollection.tga",
@@ -649,6 +657,10 @@ function Examine:idButClearOnPress()
 		ClearShowObj(self.obj_ref)
 	end
 	self.marked_objects:Clear()
+
+	if IsObjlist(self.obj_ref) then
+		self.ChoGGi.ComFuncs.ObjListLines_Clear(self.obj_ref)
+	end
 end
 
 function Examine:idButMarkObjectOnPress()
@@ -707,6 +719,11 @@ function Examine:idViewEnumOnChange()
 	self = GetRootDialog(self)
 	self.show_enum_values = not self.show_enum_values
 	self:SetObj()
+end
+
+function Examine:idButMarkAllLineOnPress()
+	self = GetRootDialog(self)
+	self.ChoGGi.ComFuncs.ObjListLines_Toggle(self.obj_ref)
 end
 
 function Examine:idButMarkAllOnPress()
@@ -972,7 +989,7 @@ This can take time on something like the "Building" metatable--]]]:format(Conver
 					checkbox = true,
 					text = str,
 					scrollto = scrolled_text,
-					title = Strings[302535920000048--[[View--]]] .. "/" .. Strings[302535920000004--[[Dump--]]] .. Translate(1000145--[[Text--]]),
+					title = Strings[302535920000048--[[View--]]] .. "/" .. Strings[302535920000004--[[Dump--]]] .. " " .. Translate(1000145--[[Text--]]),
 					hint_ok = Strings[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 					custom_func = function(answer,overwrite)
 						if answer then
@@ -997,7 +1014,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 						parent = self,
 						checkbox = true,
 						text = str,
-						title = Strings[302535920000048--[[View--]]] .. "/" .. Strings[302535920000004--[[Dump--]]] .. Translate(298035641454--[[Object--]]),
+						title = Strings[302535920000048--[[View--]]] .. "/" .. Strings[302535920000004--[[Dump--]]] .. " " .. Translate(298035641454--[[Object--]]),
 						hint_ok = Strings[302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
 
 This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]],
@@ -1177,6 +1194,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 		},
 	}
 	if testing then
+		-- maybe i'll finish this one day :)
 		local name = Translate(327465361219--[[Edit--]]) .. " " .. Translate(298035641454--[[Object--]]) .. " " .. Strings[302535920001432--[[3D--]]]
 		table.insert(list,9,{name = name,
 			hint = Strings[302535920001433--[[Fiddle with object angle/axis/pos and so forth.--]]],
@@ -1185,6 +1203,29 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 				self.ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(self.obj_ref,self)
 			end,
 		})
+		-- view text with tags visible
+		table.insert(list,4,{name = Strings[302535920000048--[[View--]]] .. " " .. Translate(1000145--[[Text--]]) .. " Tags",
+			hint = Strings[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
+			image = "CommonAssets/UI/Menu/change_height_up.tga",
+			clicked = function()
+				-- pure text string
+				local str = self.idText:GetText()
+
+				self.ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+					parent = self,
+					checkbox = true,
+					text = str,
+					title = Strings[302535920000048--[[View--]]] .. "/" .. Strings[302535920000004--[[Dump--]]] .. " " .. Translate(1000145--[[Text--]]),
+					hint_ok = Strings[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
+					custom_func = function(answer,overwrite)
+						if answer then
+							self.ChoGGi.ComFuncs.Dump("\n" .. str,overwrite,"DumpedExamine","lua")
+						end
+					end,
+				}
+			end,
+		})
+
 	end
 	return list
 end
@@ -1842,6 +1883,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			end,
 		},
 	}
+	local c = #list
 
 	-- if it's an image path then we add an image viewer
 	if ImageExts()[obj_value_str:sub(-3):lower()] then
@@ -1855,9 +1897,20 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 		}
 	end
 
+	-- add a mat props list
+	if obj_value_str:sub(-3):lower() == "mtl" then
+		c = c + 1
+		list[c] = {name = Strings[302535920001458--[[Material Properties--]]],
+			hint = Strings[302535920001459--[[Shows list of material settings/.dds files for use with .mtl files.--]]],
+			image = "CommonAssets/UI/Menu/AreaProperties.tga",
+			clicked = function()
+				OpenInExamineDlg(GetMaterialProperties(obj_value_str),self,Strings[302535920001458--[[Material Properties--]]])
+			end,
+		}
+	end
+
 	-- add print for funcs
 	if type(obj_value) == "function" then
-		local c = #list
 		c = c + 1
 		list[c] = {is_spacer = true}
 		c = c + 1
@@ -2300,7 +2353,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 		table_insert(list_obj_str,1,"\t--"
 			.. self:HyperLink(obj,function()
-				OpenInExamineDlg(obj_metatable(obj),self)
+				OpenInExamineDlg(getmetatable(obj),self)
 			end)
 			.. obj.class
 			.. HLEnd
@@ -2330,23 +2383,49 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 					path[i] = path[i]:SetTerrainZ()
 				end
 				path[path_c+1] = going_to
+				-- make it an objlist, so mark all works
+				setmetatable(path, objlist)
 			else
 				path = going_to
 			end
 
-			local state = obj:GetState()
-			table_insert(list_obj_str, 2, Translate(3722--[[State--]]) .. ": "
-				.. GetStateName(state) .. ", step: "
-				.. self:HyperLink(obj,function()
-					self:AddSphere(obj)
-				end)
-				.. self:ConvertValueToInfo(obj:GetStepVector(state,0))
-				.. HLEnd .. "\n"
+--~ 			local state = obj:GetState()
+--~ 			table_insert(list_obj_str, 2, Translate(3722--[[State--]]) .. ": "
+--~ 				.. GetStateName(state) .. ", step: "
+--~ 				.. self:HyperLink(obj,function()
+--~ 					self:AddSphere(obj)
+--~ 				end)
+--~ 				.. self:ConvertValueToInfo(obj:GetStepVector(state,0))
+--~ 				.. HLEnd .. "\n"
 
-				.. (current_pos ~= going_to
-						and Strings[302535920001545--[[Going to %s--]]]:format(self:ConvertValueToInfo(path)) .. "\n"
-						or "")
+--~ 				.. (current_pos ~= going_to
+--~ 						and Strings[302535920001545--[[Going to %s--]]]:format(self:ConvertValueToInfo(path)) .. "\n"
+--~ 						or "")
+--~ 			)
+
+			-- step vector
+			local state = obj:GetState()
+			local step_vector = obj:GetStepVector(state,0)
+			if tostring(step_vector) == "(0, 0, 0)" then
+				step_vector = ""
+			else
+				step_vector =  ", step: " .. self:ConvertValueToInfo(step_vector) .. "\n"
+			end
+			-- pathing
+			if current_pos ~= going_to then
+				path = Strings[302535920001545--[[Going to %s--]]]:format(self:ConvertValueToInfo(path)) .. "\n"
+			else
+				path = ""
+			end
+			-- if neither then add a newline
+			if path == "" and step_vector == "" then
+				path = "\n"
+			end
+
+			table_insert(list_obj_str, 2, Translate(3722--[[State--]]) .. ": "
+				.. GetStateName(state) .. step_vector .. path
 			)
+
 		end
 
 		-- parent object of attached obj
@@ -2673,12 +2752,12 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 
 	if not (obj == "nil" or is_valid_obj or obj_type == "userdata") and obj_metatable then
 		table_insert(list_obj_str, 1,"\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
+
 		if self.enum_vars and next(self.enum_vars) then
 			list_obj_str[1] = list_obj_str[1] .. self:HyperLink(obj,function()
 				OpenInExamineDlg(self.enum_vars,self,Strings[302535920001442--[[Enum--]]])
 			end)
-			.. " enum"
-			.. HLEnd
+			.. " enum" .. HLEnd
 		end
 
 	end
@@ -2690,6 +2769,7 @@ function Examine:SetToolbarVis(obj)
 	-- always hide all
 	self.idButMarkObject:SetVisible()
 	self.idButMarkAll:SetVisible()
+	self.idButMarkAllLine:SetVisible()
 	self.idButDeleteAll:SetVisible()
 	self.idViewEnum:SetVisible()
 	self.idButDeleteObj:SetVisible()
@@ -2723,6 +2803,7 @@ function Examine:SetToolbarVis(obj)
 			-- objlist objects let us do some easy for each
 			if IsObjlist(obj) then
 				self.idButMarkAll:SetVisible(true)
+				self.idButMarkAllLine:SetVisible(true)
 				self.idButDeleteAll:SetVisible(true)
 			end
 
@@ -2885,15 +2966,16 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 
 	-- for bigger lists like _G or MapGet(true): we add a slight delay, so the dialog shows up (progress is happening user)
 		if startup or self.is_chinese then
+			-- the chinese text render is slow as shit, so we have a Sleep in ConvertObjToInfo to keep ui stuff accessible
 			CreateRealTimeThread(function()
 --~ self.ChoGGi.ComFuncs.TickStart("Examine")
 				WaitMsg("OnRender")
-				self.idText:SetText(self:ConvertObjToInfo(obj,obj_type))
+				self:SetTextSafety(self:ConvertObjToInfo(obj,obj_type))
 --~ self.ChoGGi.ComFuncs.TickEnd("Examine",self.name)
 			end)
 		else
 			-- we normally don't want it in a thread with OnRender else it'll mess up my scroll pos (and stuff)
-			self.idText:SetText(self:ConvertObjToInfo(obj,obj_type))
+			self:SetTextSafety(self:ConvertObjToInfo(obj,obj_type))
 		end
 
 	-- comments are good for stuff like this
@@ -2901,6 +2983,24 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 end
 -- for external use
 Examine.UpdateObj = Examine.SetObj
+
+-- [LUA ERROR] CommonLua/X/XText.lua:191: pattern too complex
+function Examine:SetTextSafety(text)
+	self.idText:SetText(text)
+
+	-- wait for it
+	CreateRealTimeThread(function()
+		WaitMsg("OnRender")
+		if self:GetCleanText() == Translate(67--[[Loading resources--]]) then
+			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+				parent = self,
+				text = text,
+--~ 				text = self.idText:GetText(),
+				title = Strings[302535920001461--[[XText:ParseText() just ralphed.--]]],
+			}
+		end
+	end)
+end
 
 local function PopupClose(name)
 	local popup = terminal.desktop[name]
@@ -2925,6 +3025,8 @@ function Examine:Done(...)
 		self.ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
 		self.ChoGGi.ComFuncs.AttachSpots_Clear(obj)
 		self.ChoGGi.ComFuncs.SurfaceLines_Clear(obj)
+	elseif IsObjlist(obj) then
+		self.ChoGGi.ComFuncs.ObjListLines_Clear(obj)
 	end
 	-- clear any spheres/colour marked objs
 	if #self.marked_objects > 0 then

@@ -1216,13 +1216,29 @@ function ChoGGi.ComFuncs.FilterFromTableFunc(list,func,value,is_bool)
 	end)
 end
 
-function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(context)
-	if not context then
-		return
+do -- OpenInMultiLineTextDlg
+	local function OpenInMultiLineTextDlg(obj,parent)
+		if not obj then
+			return
+		end
+
+		if obj.text then
+			return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,obj)
+		end
+
+		return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,{
+			text = obj,
+			parent = parent,
+		})
+	end
+	ChoGGi.ComFuncs.OpenInMultiLineTextDlg = OpenInMultiLineTextDlg
+
+	-- used for console rules, so we can get around it spamming the log
+	function ChoGGi.Temp.OpenInTextViewer(...)
+		OpenInMultiLineTextDlg(...)
 	end
 
-	return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,context)
-end
+end -- do
 
 function ChoGGi.ComFuncs.OpenInListChoice(list)
 	-- if list isn't a table or it has zero items or it doesn't have items/callback func
@@ -3097,7 +3113,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 	if not skip_msg then
 		MsgPopup(
 			Strings[302535920000969--[[Collisions %s on %s--]]]:format(which,RetName(obj)),
-			Translate(302535920000968--[[Collisions--]]),
+			Strings[302535920000968--[[Collisions--]]],
 			nil,
 			nil,
 			obj
@@ -4208,3 +4224,36 @@ do -- ImageExts
 		return ext_list
 	end
 end -- do
+
+function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
+	if not GameState.gameplay then
+		return
+	end
+
+	-- if fired from action menu
+	if IsKindOf(ret,"XAction") then
+		ret = nil
+	end
+
+	local MulDivRound = MulDivRound
+	local TerrainTextures = TerrainTextures
+
+	local tm = terrain.GetTypeGrid()
+	local levels_count, levels_info = tm:levels(true, 1)
+	local size = tm:size()
+	local textures = {}
+	for level, count in pairs(levels_info) do
+		local texture = TerrainTextures[level]
+		if texture then
+			local perc = MulDivRound(100, count, size * size)
+			if perc > 0 then
+				textures[texture.name] = perc
+			end
+		end
+	end
+
+	if ret then
+		return textures
+	end
+	ChoGGi.ComFuncs.OpenInExamineDlg(textures,nil,Strings[302535920001181--[[Used Terrain Textures--]]])
+end

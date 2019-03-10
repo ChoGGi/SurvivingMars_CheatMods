@@ -3,6 +3,7 @@
 local table_find = table.find
 local table_clear = table.clear
 local table_iclear = table.iclear
+local table_sort = table.sort
 local type,pairs,next,print = type,pairs,next,print
 local tostring,tonumber,rawget = tostring,tonumber,rawget
 local AveragePoint2D = AveragePoint2D
@@ -31,11 +32,11 @@ function OnMsg.ClassesGenerate()
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
 
-	local function PlacePolyline(points, colors)
+	local function PlacePolyline(points, colours)
 		local line = ChoGGi_OPolyline:new{
 			max_vertices = #points
 		}
-		line:SetMesh(points, colors)
+		line:SetMesh(points, colours)
 		return line
 	end
 	ChoGGi.ComFuncs.PlacePolyline = PlacePolyline
@@ -295,7 +296,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- DumpTableFunc
-		local table_sort = table.sort
 		local CmpLower = CmpLower
 
 		local output_list = {}
@@ -670,13 +670,13 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- OpenInImageViewerDlg
-		local function OpenInImageViewerDlg(context,parent)
-			if not context then
+		local function OpenInImageViewerDlg(obj,parent)
+			if not obj then
 				return
 			end
 
 			return ChoGGi_ImageViewerDlg:new({}, terminal.desktop,{
-				obj = context,
+				obj = obj,
 				parent = parent,
 			})
 		end
@@ -1539,11 +1539,118 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 		local GetStateLODCount = GetStateLODCount
 		local GetStates = GetStates
 
-		local function EntityMats(entity)
+		local channel_list = {
+			RM = true,
+			BaseColor = true,
+			Dust = true,
+			AO = true,
+			Normal = true,
+			Colorization = true,
+			SI = true,
+			RoughnessMetallic = true,
+			Emissive = true,
+		}
+		local mtl_lookup = {
+			RM = [[		<RMMap Name="%s" mc="%s"/>]],
+			BaseColor = [[		<BaseColorMap Name="%s" mc="%s"/>]],
+			Dust = [[		<DustMap Name="%s" mc="%s"/>]],
+			AO = [[		<AmbientOcclusionMap Name="%s" mc="%s"/>]],
+			Normal = [[		<NormalMap Name="%s" mc="%s"/>]],
+			Colorization = [[		<ColorizationMap Name="%s" mc="%s"/>]],
+			SI = [[		<SIMap Name="%s" mc="%s"/>]],
+			RoughnessMetallic = [[		<RoughnessMetallicMap Name="%s" mc="%s"/>]],
+			Emissive = [[		<EmissiveMap Name="%s" mc="%s"/>]],
+
+			blend = [[		<Property AlphaBlend="%s"/>]],
+			alphatest = [[		<Property AlphaTest="%s"/>]],
+			animation_frames_x = [[		<Property AnimationFramesX="%s"/>]],
+			animation_frames_y = [[		<Property AnimationFramesY="%s"/>]],
+			animation_time = [[		<Property AnimationTime="%s"/>]],
+			castshadow = [[		<Property CastShadow="%s"/>]],
+			depthwrite = [[		<Property DepthWrite="%s"/>]],
+			twosidedshading = [[		<Property TwoSidedShading="%s"/>]],
+			special = [[		<Property Special="%s"/>]],
+			opacity = [[		<Property Opacity="%s"/>]],
+			deposition = [[		<Property Deposition="%s"/>]],
+			terraindistorted = [[		<Property Distortion="%s"/>]],
+--~ 			XX = [[		<Property Anisotropic="%s"/>]],
+--~ 			XX = [[		<Property DepthSmooth="%s"/>]],
+--~ 			XX = [[		<Property DtmDisable="%s"/>]],
+--~ 			XX = [[		<Property EnvMapped="%s"/>]],
+--~ 			XX = [[		<Property GlossColor="%s"/>]],
+--~ 			XX = [[		<Property MarkVolume="%s"/>]],
+--~ 			XX = [[		<Property MaskedCM="%s"/>]],
+--~ 			XX = [[		<Property NoDiffuse="%s"/>]],
+--~ 			XX = [[		<Property NumInstances="%s"/>]],
+--~ 			XX = [[		<Property SelfIllum="%s"/>]],
+--~ 			XX = [[		<Property ShadowBlob="%s"/>]],
+--~ 			XX = [[		<Property SpecularPower="%s"/>]],
+--~ 			XX = [[		<Property SpecularPowerRGB="%s"/>]],
+--~ 			XX = [[		<Property StretchFactor1="%s"/>]],
+--~ 			XX = [[		<Property StretchFactor2="%s"/>]],
+--~ 			XX = [[		<Property SunFacingShading="%s"/>]],
+--~ 			XX = [[		<Property TexScrollTime="%s"/>]],
+--~ 			XX = [[		<Property Translucency="%s"/>]],
+--~ 			XX = [[		<Property TwoSided="%s"/>]],
+--~ 			XX = [[		<Property UnitLighting="%s"/>]],
+--~ 			XX = [[		<Property UOffset="%s"/>]],
+--~ 			XX = [[		<Property USize="%s"/>]],
+--~ 			XX = [[		<Property ViewDependentOpacity="%s"/>]],
+--~ 			XX = [[		<Property VOffset="%s"/>]],
+--~ 			XX = [[		<Property VSize="%s"/>]],
+--~ 			XX = [[		<Property Wind="%s"/>]],
+		}
+
+		local function RetEntityMTLFile(mat)
+			local list = {}
+			local c = 0
+			for key,value in pairs(mat) do
+				if value == true then
+					value = 1
+				elseif value == false then
+					value = 0
+				end
+
+				local mtl = mtl_lookup[key]
+				if mtl then
+					if channel_list[key] then
+						if value ~= "" then
+							c = c + 1
+							list[c] = mtl:format(value,mat[key .. "Channel"])
+						end
+					else
+						c = c + 1
+						list[c] = mtl:format(value)
+					end
+				end
+
+			end
+			table_sort(list)
+
+			table.insert(list,1,[[
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Materials>
+	<Material>]])
+list[#list+1] = [[	</Material>
+</Materials>
+]]
+
+			return TableConcat(list,"\n")
+		end
+		ChoGGi.ComFuncs.RetEntityMTLFile = RetEntityMTLFile
+
+		local function RetEntityMats(entity,skip)
+			-- some of these funcs can crash sm, so lets make sure it's valid
+			if not skip and not IsValidEntity(entity) then
+				return
+			end
+
 			local mats = {}
 			local states = GetStates(entity) or ""
 			for si = 1, #states do
-				local state = GetStateIdx(states[si])
+				local state_str = states[si]
+				local state = GetStateIdx(state_str)
 				local num_lods = GetStateLODCount(entity, state) or 0
 				for li = 1, num_lods do
 					local num_mats = GetStateNumMaterials(entity, state, li - 1) or 0
@@ -1553,16 +1660,23 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 						mat.__mtl = mat_name
 						mat.__lod = li
 						mat.__state = li
-						mats[mat_name .. ", Mat: " .. mi .. ", LOD: " .. li .. ", State: " .. si] = mat
+						mats[mat] = mat_name .. ", Mat: " .. mi .. ", LOD: " .. li .. ", State: " .. state_str .. " (" .. state .. ")"
+
+						mat[1] = {
+							-- move this down to return mats, and make it add all the lods
+							ChoGGi_AddHyperLink = true,
+							hint = Strings[302535920001174--[[Show an example .mtl file for this material (not complete).--]]],
+							name = Strings[302535920001177--[[Generate .mtl--]]],
+							func = function(ex_dlg)
+								ChoGGi.ComFuncs.OpenInExamineDlg(RetEntityMTLFile(mat),ex_dlg,Strings[302535920001458--[[Material Properties--]]])
+							end,
+						}
 					end
 				end
 			end
-			if #mats == 1 then
-				return mats[1]
-			end
 			return mats
 		end
-		ChoGGi.ComFuncs.EntityMats = EntityMats
+		ChoGGi.ComFuncs.RetEntityMats = RetEntityMats
 
 		function ChoGGi.ComFuncs.GetMaterialProperties(obj,parent_or_ret)
 			if not UICity then
@@ -1585,21 +1699,16 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 					obj = obj:GetEntity()
 				end
 
-				-- some of the ent funcs are crashy with bad inputs, so lets just make sure it's an entity
-				if not is_ent and not IsValidEntity(obj) then
-					return
-				end
-
 				if parent_or_ret == true then
-					return EntityMats(obj)
+					return RetEntityMats(obj)
 				else
-					materials = EntityMats(obj)
+					materials = RetEntityMats(obj)
 				end
 			else
 				materials = {}
 				local all_entities = GetAllEntities()
 				for entity in pairs(all_entities) do
-					materials[entity] = EntityMats(entity)
+					materials[entity] = RetEntityMats(entity,true)
 				end
 			end
 
@@ -1655,7 +1764,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 			-- and sort
 			if #images_table > 0 then
 				images_table = ChoGGi.ComFuncs.RetTableNoDupes(images_table)
-				table.sort(images_table, function(a, b)
+				table_sort(images_table, function(a, b)
 					return CmpLower(a.name, b.name)
 				end)
 				ChoGGi.ComFuncs.OpenInImageViewerDlg(images_table,parent)
@@ -1886,7 +1995,7 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 
 			for z,points in pairs(z_points) do
 				-- sort the points so the lines kinda line up
-				table.sort(points,function(a,b)
+				table_sort(points,function(a,b)
 					return tostring(a) > tostring(b)
 				end)
 
@@ -3169,5 +3278,69 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			return tostring(obj),obj_type
 		end
 	end -- do
+
+	do -- ToggleObjLines
+		local table_remove = table.remove
+		local IsPoint = IsPoint
+		local IsBox = IsBox
+		local InvalidPos = ChoGGi.Consts.InvalidPos
+
+		local function ObjListLines_Clear(obj)
+			if IsValid(obj.ChoGGi_ObjListLine) then
+				DoneObject(obj.ChoGGi_ObjListLine)
+			end
+			obj.ChoGGi_ObjListLine = nil
+		end
+		ChoGGi.ComFuncs.ObjListLines_Clear = ObjListLines_Clear
+
+		local function ObjListLines_Add(list,obj,colour)
+			local vertices = {}
+			local c = 0
+
+			-- add any obj pos points of box centres
+			for i = 1, #list do
+				local o = list[i]
+				if IsPoint(o) then
+					c = c + 1
+					vertices[c] = o
+				elseif IsValid(o) then
+					c = c + 1
+					vertices[c] = o:GetVisualPos()
+				elseif IsBox(o) then
+					c = c + 1
+					vertices[c] = o:Center()
+				end
+			end
+			-- remove any invalid pos
+			for i = #vertices, 1, -1 do
+				if vertices[i] == InvalidPos then
+					table_remove(vertices,i)
+				end
+			end
+
+--~ 			table_sort(vertices,function(a,b)
+--~ 				return CmpLower(tostring(a),tostring(b))
+--~ 			end)
+
+			local line = PlacePolyline(vertices, colour or RandomColourLimited())
+			line:SetPos(AveragePoint2D(line.vertices))
+
+			obj.ChoGGi_ObjListLine = line
+		end
+
+		function ChoGGi.ComFuncs.ObjListLines_Toggle(objs_list,params)
+			params = params or {}
+			params.obj = params.obj or objs_list
+
+			if ObjListLines_Clear(params.obj) and not params.skip_return then
+				return
+			end
+
+			ObjListLines_Add(objs_list,
+				params.obj,
+				params.colour
+			)
+		end
+	end
 
 end

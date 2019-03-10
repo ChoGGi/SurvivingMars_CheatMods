@@ -42,7 +42,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Translate(298035641454--[[Object--]]) .. " " .. Translate(302535920001346--[[Random Colour--]]),
+	Actions[c] = {ActionName = Translate(298035641454--[[Object--]]) .. " " .. Strings[302535920001346--[[Random Colour--]]],
 		ActionId = "ChangeObjectColour.ObjectColourRandom",
 		OnAction = ChoGGi.ComFuncs.ObjectColourRandom,
 		ActionShortcut = "Shift-F6",
@@ -50,7 +50,7 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Translate(298035641454--[[Object--]]) .. " " .. Translate(302535920000025--[[Default Colour--]]),
+	Actions[c] = {ActionName = Translate(298035641454--[[Object--]]) .. " " .. Strings[302535920000025--[[Default Colour--]]],
 		ActionId = "ChangeObjectColour.ObjectColourDefault",
 		OnAction = ChoGGi.ComFuncs.ObjectColourDefault,
 		ActionShortcut = "Ctrl-F6",

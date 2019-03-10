@@ -1,31 +1,46 @@
 ## ECM Changelog
 
 ## v12.9 (Unreleased)
-
-## v12.8 (06 Mar 2019)
 ### Added:
+- Game>Terrain Texture Remap: Instead of replacing all textures with one then re-adding stuff, this will remap existing textures.
 - Console>Tools>Examine Errors: Open (some) errors in an examine dialog (shows stack trace and sometimes a thread).
-- > Not really useful without my HelperMod, or if you want to use "Errors In Console" without the log showing.
-- Debug>Test Locale File: Test a CSV for malformed strings (causes freezing when loaded normally).
+- > Useful if you want to use "Errors In Console" without the log showing.
+- Debug>Test Locale File: Test a CSV for malformed strings (which may cause freezing when loaded normally).
+- Debug>Used Terrain Textures: Show a list of terrain textures used in current map.
 
 ### Changed:
+- Renamed Change Terrain Type to Terrain Texture Change.
 - Figured out how to apply custom rules to console with blacklist, so now everyone can use ~obj (and such).
-- "ChoGGi.CurObj" to "o" (used in Execute Code dialog).
-- Added the stack trace text to Examine Errors.
 - Re-added Pack option to mod upload with a warning that it'll sometimes crash SM for no reason.
+- Shift-F4/Ctrl-F4 doesn't return attachments to objects in list.
 - Examine:
 - > The list now shows "rawer" text, the fancy images/colours text is now shown in the tooltip.
 - > Added entity name to objects with one.
 - > Cleaned up Set Particles: No more dupes, and should hpoefully be better at turning them off
 - > Attach Spots Toggle now shows the pos offset from origin, instead of world pos.
 - > Added ExamineColourBoolFalse setting for false boolean to distinguish from true (green).
+- > Added a "Generate .mtl" link to Object>Materials Properties (it doesn't have all the prop names yet).
 
 ### Fixed:
+- Terrain Texture Change was hiding waste sites.
 - Examine:
 - > The search box will now search the entire line instead of chunks of it.
 - > Toggle Attach Spots didn't always add the polyline to chains.
 - > View Text: Broke scrolling when I removed the * from the text.
 - > Context Menu>print func params was giving an error msg.
+- > Object>Material Properties was returning all entities instead of just the one.
+- > Added Mark All Objects (Line) button: When examining an objlist of objs/points will show a line connecting them all.
+- > Added a Material Properties option to the context menu.
+- > If examine fails to parse the text, it'll show it in a text box.
+
+## v12.8 (06 Mar 2019)
+### Changed:
+- "ChoGGi.CurObj" to "o" (used in Execute Code dialog).
+
+### Fixed:
+- Examine:
+- > The search box will now search the entire line instead of chunks of it.
+- > Toggle Attach Spots didn't always add the polyline to chains.
 
 ### Removed:
 - Fixes>All Pipe Skins To Default: It wasn't the best code, and I'm pretty sure they fixed the bug with chrome pipes?

@@ -7,6 +7,15 @@ function OnMsg.ClassesGenerate()
 	local c = #Actions
 
 	c = c + 1
+	Actions[c] = {ActionName = Strings[302535920001181--[[Used Terrain Textures--]]],
+		ActionMenubar = "ECM.Debug",
+		ActionId = ".Used Terrain Textures",
+		ActionIcon = "CommonAssets/UI/Menu/terrain_type.tga",
+		RolloverText = Strings[302535920001198--[[Show a list of terrain textures used in current map.--]]],
+		OnAction = ChoGGi.ComFuncs.ExUsedTerrainTextures,
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001125--[[Test Locale File--]]],
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Test Locale File",
@@ -16,9 +25,9 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Strings[302535920001547--[[List Visible Objects--]]],
+	Actions[c] = {ActionName = Strings[302535920001547--[[Visible Objects--]]],
 		ActionMenubar = "ECM.Debug",
-		ActionId = ".List Visible Objects",
+		ActionId = ".Visible Objects",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = Strings[302535920001548--[[Shows list of objects rendered in the current frame.--]]],
 		OnAction = ChoGGi.MenuFuncs.ListVisibleObjects,

@@ -1330,6 +1330,11 @@ function OnMsg.ClassesBuilt()
 				"ChoGGi.Temp.OpenInImageViewer(%s)"
 			},
 			{
+				-- ^string
+				"^%^(.*)",
+				"ChoGGi.Temp.OpenInTextViewer(%s)"
+			},
+			{
 				-- ~anything
 				"^~(.*)",
 				"OpenExamine(%s)"

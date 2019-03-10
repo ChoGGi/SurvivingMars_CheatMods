@@ -51,19 +51,18 @@ ChoGGi = {
 		},
 
 	-- const.* (I don't think these have default values in-game anywhere, so manually set them.) _GameConst.lua
-		RCRoverMaxRadius = 20,
-		CommandCenterMaxRadius = 35,
-		BreakThroughTechsPerGame = 13,
-		OmegaTelescopeBreakthroughsCount = 3,
-		ExplorationQueueMaxSize = 10,
-		fastGameSpeed = 5,
-		mediumGameSpeed = 3,
-		MoistureVaporatorPenaltyPercent = 40,
-		MoistureVaporatorRange = 5,
-		ResearchQueueSize = 4,
-		ResourceScale = 1000,
-		ResearchPointsScale = 1000,
-		guim = 100,
+		RCRoverMaxRadius = const.RCRoverMaxRadius or 20,
+		CommandCenterMaxRadius = const.CommandCenterMaxRadius or 35,
+		BreakThroughTechsPerGame = const.BreakThroughTechsPerGame or 13,
+		OmegaTelescopeBreakthroughsCount = const.OmegaTelescopeBreakthroughsCount or 3,
+		ExplorationQueueMaxSize = const.ExplorationQueueMaxSize or 10,
+		fastGameSpeed = const.fastGameSpeed or 5,
+		mediumGameSpeed = const.mediumGameSpeed or 3,
+		MoistureVaporatorPenaltyPercent = const.MoistureVaporatorPenaltyPercent or 40,
+		MoistureVaporatorRange = const.MoistureVaporatorRange or 5,
+		ResearchQueueSize = const.ResearchQueueSize or 4,
+		ResourceScale = const.ResourceScale or 1000,
+		ResearchPointsScale = const.ResearchPointsScale or 1000,
 		InvalidPos = InvalidPos(),
 	-- Consts.* (Consts is a prop object, so we can get the defaults later on from OnMsg.OptionsApply(), we declare them now so we can loop them later) _const.lua
 		AvoidWorkplaceSols = false,
@@ -177,8 +176,6 @@ ChoGGi = {
 	OrigFuncs = {},
 	-- /Menus/*
 	MenuFuncs = {},
---~ 	-- OnMsgs.lua
---~ 	MsgFuncs = {},
 	-- InfoPaneCheats.lua
 	InfoFuncs = {},
 	-- Defaults.lua
@@ -191,7 +188,7 @@ ChoGGi = {
 		StartupMsgs = {},
 		-- a list of menuitems and shortcut keys for Msg("ShortcutsReloaded")
 		Actions = {},
-		-- Transparency for some of my dialogs (ex and console log)
+		-- rememeber transparency for some of my dialogs (ex and console log)
 		transp_mode = false,
 		-- stores a table of my dialogs
 		Dialogs = {},
@@ -224,6 +221,7 @@ do -- translate
 	Msg("TranslationChanged")
 end
 
+-- fake mod used to tell if it's my comp, if you want some extra msgs and .testing funcs have at it
 if Mods.ChoGGi_testing then
 	ChoGGi.testing = {}
 end

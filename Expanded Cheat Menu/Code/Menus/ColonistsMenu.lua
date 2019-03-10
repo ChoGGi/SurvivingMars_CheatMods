@@ -575,7 +575,7 @@ Activated when colonist changes job."--]]]
 		RolloverText = function()
 			return ChoGGi.ComFuncs.SettingState(
 				ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait,
-				Translate(302535920000411--[[When colonist graduates this will remove idiot trait.--]])
+				Strings[302535920000411--[[When colonist graduates this will remove idiot trait.--]]]
 			)
 		end,
 		OnAction = ChoGGi.MenuFuncs.UniversityGradRemoveIdiotTrait_Toggle,
