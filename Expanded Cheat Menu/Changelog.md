@@ -5,6 +5,8 @@
 - Debug>Force Story Bits shows full list instead of just "actively waiting" ones.
 - Examine:
 - > Added Toolbar>Toggle Objlist: Toggle setting the metatable for this table to an objlist (for using mark/delete all).
+- > Added a Skip Clear to the Object>Toggle funcs: Instead of removing info objs each time this will leave them.
+- > Added to Context menu: Clipboard, Number Double/Halve, Boolean Toggle/To Table.
 
 ### Fixed:
 - Debug>Force Story Bits works properly now.
