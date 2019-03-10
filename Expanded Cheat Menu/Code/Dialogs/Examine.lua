@@ -276,6 +276,14 @@ Press once to clear this examine, again to clear all."--]]],
 			OnPress = self.idButDeleteObjOnPress,
 		}, self.idToolbarButtons)
 		--
+		self.idButSetObjlist = g_Classes.ChoGGi_ToolbarButton:new({
+			Id = "idButSetObjlist",
+			Image = "CommonAssets/UI/Menu/toggle_post.tga",
+			RolloverTitle = Strings[302535920001558--[[Toggle Objlist--]]],
+			RolloverText = Strings[302535920001559--[[Toggle setting the metatable for this table to an objlist (for using mark/delete all).--]]],
+			OnPress = self.idButToggleObjlistOnPress,
+		}, self.idToolbarButtons)
+		--
 		self.idButMarkAll = g_Classes.ChoGGi_ToolbarButton:new({
 			Id = "idButMarkAll",
 			Image = "CommonAssets/UI/Menu/ExportImageSequence.tga",
@@ -737,6 +745,16 @@ function Examine:idButMarkAllOnPress()
 		end
 	end
 	ResumePassEdits("Examine:idButMarkAllOnPress")
+end
+function Examine:idButToggleObjlistOnPress()
+	local obj = GetRootDialog(self).obj_ref
+
+	local meta = getmetatable(obj)
+	if meta == objlist then
+		setmetatable(obj, nil)
+	elseif not meta then
+		setmetatable(obj, objlist)
+	end
 end
 
 function Examine:AddSphere(obj,c,colour,skip_view,skip_colour)
@@ -1323,7 +1341,7 @@ function Examine:BuildFuncList(obj_name,prefix)
 	local class = _G[obj_name] or {}
 	local skip = true
 	for key,value in pairs(class) do
-		if type(value) == "function" then
+		if type(value) == "function" and type(key) == "string" then
 			self.menu_list_items[prefix .. obj_name .. "." .. key .. ": "] = value
 			skip = false
 		end
@@ -2765,10 +2783,11 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 	return TableConcat(list_obj_str,"\n")
 end
 ---------------------------------------------------------------------------------------------------------------------
-function Examine:SetToolbarVis(obj)
+function Examine:SetToolbarVis(obj,obj_metatable)
 	-- always hide all
 	self.idButMarkObject:SetVisible()
 	self.idButMarkAll:SetVisible()
+	self.idButSetObjlist:SetVisible()
 	self.idButMarkAllLine:SetVisible()
 	self.idButDeleteAll:SetVisible()
 	self.idViewEnum:SetVisible()
@@ -2805,6 +2824,10 @@ function Examine:SetToolbarVis(obj)
 				self.idButMarkAll:SetVisible(true)
 				self.idButMarkAllLine:SetVisible(true)
 				self.idButDeleteAll:SetVisible(true)
+				-- we only want to show it for objlist or non-metatables, because I don't want to save/restore them
+				self.idButSetObjlist:SetVisible(true)
+			elseif not obj_metatable then
+				self.idButSetObjlist:SetVisible(true)
 			end
 
 			-- pretty rare occurrence
@@ -2879,13 +2902,14 @@ function Examine:SetObj(startup)
 	local name = RetName(obj)
 	self.name = name
 
-	self:SetToolbarVis(obj)
+	local obj_metatable = getmetatable(obj)
+
+	self:SetToolbarVis(obj,obj_metatable)
 
 	self.idText:SetText(Translate(67--[[Loading resources--]]))
 
 	if obj_type == "table" then
 		obj_class = g_Classes[obj.class]
-		local obj_metatable = getmetatable(obj)
 		if obj_metatable then
 			self.idShowAllValues:SetVisible(true)
 		else

@@ -1,3 +1,6 @@
+v0.4
+Missing Rovers story fix.
+
 v0.3
 Drone rovers unsiege once they leave the garage.
 Selection is removed once rovers enter the garage.

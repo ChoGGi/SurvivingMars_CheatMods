@@ -1911,8 +1911,8 @@ do -- SetCameraSettings
 		end
 
 		if ChoGGi.UserSettings.MapEdgeLimit then
-			hr.CameraRTSBorderAtMinZoom = 0
-			hr.CameraRTSBorderAtMaxZoom = 0
+			hr.CameraRTSBorderAtMinZoom = -1000
+			hr.CameraRTSBorderAtMaxZoom = -1000
 		else
 			hr.CameraRTSBorderAtMinZoom = 1000
 			hr.CameraRTSBorderAtMaxZoom = 1000

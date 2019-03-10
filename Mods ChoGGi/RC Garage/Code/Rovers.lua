@@ -4,6 +4,7 @@ local IsKindOf = IsKindOf
 local Sleep = Sleep
 local SetUnitControlInteractionMode = SetUnitControlInteractionMode
 local SetUnitControlInteraction = SetUnitControlInteraction
+local FindNearestObject = FindNearestObject
 
 -- add stuff to rovers so they can interact with garage
 
@@ -11,6 +12,8 @@ local SetUnitControlInteraction = SetUnitControlInteraction
 local rcc = RoverCommands
 rcc.ChoGGi_UseGarage = [[Storing in garage]]
 rcc.ChoGGi_InGarage = [[Stored in garage]]
+
+local BaseRover = BaseRover
 
 -- if it's garage otherwise return orig func
 local function CanInteractWithObject_local(interact, obj, interaction_mode)
@@ -65,6 +68,31 @@ function RCRover:Siege(...)
 	end
 end
 
+-- fix for any rovers stuck on the map from missing rover story
+local function RestoreMissingRover(obj)
+	local nearest = FindNearestObject(UICity.labels.RCGarage,obj)
+	obj:SetPos(nearest:GetPos())
+	nearest:RemoveFromGarage(obj)
+end
+
+local InvalidPos = InvalidPos()
+function OnMsg.LoadGame()
+	local rovers = MapGet("map","BaseRover")
+	for i = 1, #rovers do
+		local r = rovers[i]
+		if r.ChoGGi_InGarage and r:GetPos() ~= InvalidPos then
+			RestoreMissingRover(r)
+		end
+	end
+end
+local orig_BaseRover_Appear = BaseRover.Appear or Unit.Appear
+function BaseRover:Appear(...)
+	if self.ChoGGi_InGarage then
+		RestoreMissingRover(self)
+	end
+	return orig_BaseRover_Appear(self,...)
+end
+
 function BaseRover:ChoGGi_UseGarage(garage)
 	-- maybe not needed?
 	self:ExitHolder(garage)
@@ -88,6 +116,7 @@ end
 
 -- override for Patriot missile sys
 function OnMsg.ClassesBuilt()
+
 
 	if rawget(g_Classes,"PMSAttackRover") then
 		local orig_PMSAttackRover_CanInteractWithObject = PMSAttackRover.CanInteractWithObject
