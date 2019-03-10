@@ -320,10 +320,29 @@ end)
 	local TickStart = ChoGGi.ComFuncs.TickStart
 	local TickEnd = ChoGGi.ComFuncs.TickEnd
 
+	function ChoGGi.testing.TestToStr()
+		local tostring = tostring
+
+		TickStart("TestToStr.Tick.1")
+		for _ = 1,1000000 do
+			local num = 12345
+			num = num .. ""
+		end
+		TickEnd("TestToStr.Tick.1")
+
+		TickStart("TestToStr.Tick.2")
+		for _ = 1,1000000 do
+			local num = 12345
+			num = tostring(num)
+		end
+		TickEnd("TestToStr.Tick.2")
+
+	end
+
 	function ChoGGi.testing.TestAttaches(obj)
 		obj = obj or ChoGGi.ComFuncs.SelObject()
 		if not IsValid(obj) then
-			print("TestAttaches invlid obj")
+			print("TestAttaches invalid obj")
 			return
 		end
 

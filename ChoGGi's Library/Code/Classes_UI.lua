@@ -391,6 +391,7 @@ DefineClass.ChoGGi_SleekScroll = {
 
 	RolloverBackground = rollover_blue_darker,
   state = "mouse-out",
+	Margins = box(1, 1, 0, 0),
 }
 -- change bg on mouseover
 ChoGGi_SleekScroll.CalcBackground = XButton.CalcBackground

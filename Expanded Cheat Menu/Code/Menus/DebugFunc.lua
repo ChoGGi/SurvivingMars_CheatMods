@@ -92,10 +92,10 @@ You need my HelperMod installed to be able to use this."--]]],
 
 	function ChoGGi.MenuFuncs.ListVisibleObjects()
 		local frame = (GetFrameMark() / 1024 - 1) * 1024
-		local visibleObjects = MapGet("map", "attached", false, function(obj)
+		local visible = MapGet("map", "attached", false, function(obj)
 			return obj:GetFrameMark() - frame > 0
 		end)
-		ChoGGi.ComFuncs.OpenInExamineDlg(visibleObjects,nil,Strings[302535920001547--[[List Visible Objects--]]])
+		ChoGGi.ComFuncs.OpenInExamineDlg(visible,nil,Strings[302535920001547--[[List Visible Objects--]]])
 	end
 
 	do -- BuildingPathMarkers_Toggle
