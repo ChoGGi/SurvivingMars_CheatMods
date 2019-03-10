@@ -460,7 +460,7 @@ do -- ShowObj
 	}
 	local rand_colours_c = #rand_colours
 	local function rand_c()
-		return rand_colours[AsyncRand(6)+1]
+		return rand_colours[AsyncRand(rand_colours_c)+1]
 	end
 	ChoGGi.ComFuncs.RandomColourLimited = rand_c
 
@@ -4239,7 +4239,7 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	local TerrainTextures = TerrainTextures
 
 	local tm = terrain.GetTypeGrid()
-	local levels_count, levels_info = tm:levels(true, 1)
+	local _, levels_info = tm:levels(true, 1)
 	local size = tm:size()
 	local textures = {}
 	for level, count in pairs(levels_info) do

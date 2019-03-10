@@ -65,7 +65,7 @@ function OnMsg.ClassesGenerate()
 					for i = 1, #choices do
 						rivals_table[i] = choices[i].value
 					end
-					local c = #rivals_table
+					c = #rivals_table
 					if c < 3 then
 						for _ = c, 3 - c do
 							c = c + 1

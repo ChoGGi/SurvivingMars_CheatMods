@@ -6,7 +6,6 @@ local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
 
 local CreateRealTimeThread = CreateRealTimeThread
-local Sleep = Sleep
 
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
