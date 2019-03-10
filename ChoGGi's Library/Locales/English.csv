@@ -1,5 +1,4 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001556,Use the selected object.,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
@@ -1009,6 +1008,7 @@ Works after colonist idle.",
 Not permanent.",
 302535920000447,Change the age at which colonists die (applies to newly arrived and born colonists as well).,
 302535920000448,"I'm afraid it could be 9/11 times 1,000.",
+302535920001556,Use the selected object.,
 302535920001557,Display a story without sending a context object.,
 302535920001555,Choose a random %s to be the context for this storybit.,
 302535920001198,Show a list of terrain textures used in current map.,

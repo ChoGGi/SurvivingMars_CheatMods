@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v5.8 (Unreleased)
+## v6.0 (Unreleased)
+
+## v5.9 (10 Mar 2019)
 - Added a context menu to text inputs:
 - > As an extra bonus found out where selection was cleared on focus loss.
 - List Dialog:
