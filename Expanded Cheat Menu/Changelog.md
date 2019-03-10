@@ -9,6 +9,7 @@
 - Debug>Used Terrain Textures: Show a list of terrain textures used in current map.
 
 ### Changed:
+- Debug>Force Story Bits works, you'll need to pick a contextual object to use.
 - Renamed Change Terrain Type to Terrain Texture Change.
 - Figured out how to apply custom rules to console with blacklist, so now everyone can use ~obj (and such).
 - Re-added Pack option to mod upload with a warning that it'll sometimes crash SM for no reason.
