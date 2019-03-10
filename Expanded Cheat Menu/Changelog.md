@@ -20,18 +20,19 @@
 - > Attach Spots Toggle now shows the pos offset from origin, instead of world pos.
 - > Added ExamineColourBoolFalse setting for false boolean to distinguish from true (green).
 - > Added a "Generate .mtl" link to Object>Materials Properties (it doesn't have all the prop names yet).
+- > Added Mark All Objects (Line) button: When examining an objlist of objs/points will show a line connecting them all.
+- > Added a Material Properties option to the context menu.
+- > If examine fails to parse the text, it'll show it in a text box.
 
 ### Fixed:
 - Terrain Texture Change was hiding waste sites.
+- Colonists names were only displaying the first name.
 - Examine:
 - > The search box will now search the entire line instead of chunks of it.
 - > Toggle Attach Spots didn't always add the polyline to chains.
 - > View Text: Broke scrolling when I removed the * from the text.
 - > Context Menu>print func params was giving an error msg.
 - > Object>Material Properties was returning all entities instead of just the one.
-- > Added Mark All Objects (Line) button: When examining an objlist of objs/points will show a line connecting them all.
-- > Added a Material Properties option to the context menu.
-- > If examine fails to parse the text, it'll show it in a text box.
 
 ## v12.8 (06 Mar 2019)
 ### Changed:
