@@ -45,6 +45,8 @@ Loop Files,*.lua,%sConvert%
 	File.Seek(1)
 	;check if it's a compiled lua
 	If (File.Read(4) = "LuaS")
+	; omerta lua files
+	;~ If (File.Read(4) = "LuaQ")
 		{
 		;need to close the file before we open it again below
 		File.Close()

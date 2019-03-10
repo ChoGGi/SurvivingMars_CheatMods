@@ -1577,28 +1577,33 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 				obj = obj or ChoGGi.ComFuncs.SelObject()
 			end
 
-			if IsValid(obj) then
-				obj = obj:GetEntity()
+			local materials
 
-				-- some of the ent funcs are crashy with bad inputs, so lets just make sure
-				if not IsValidEntity(obj) then
+			local is_ent = IsValidEntity(obj)
+			if IsValid(obj) or is_ent then
+				if not is_ent then
+					obj = obj:GetEntity()
+				end
+
+				-- some of the ent funcs are crashy with bad inputs, so lets just make sure it's an entity
+				if not is_ent and not IsValidEntity(obj) then
 					return
 				end
 
 				if parent_or_ret == true then
 					return EntityMats(obj)
 				else
-					ChoGGi.ComFuncs.OpenInExamineDlg(EntityMats(obj),parent_or_ret,Strings[302535920001458--[[Material Properties--]]])
+					materials = EntityMats(obj)
 				end
 			else
-				local materials = {}
+				materials = {}
 				local all_entities = GetAllEntities()
 				for entity in pairs(all_entities) do
 					materials[entity] = EntityMats(entity)
 				end
-				ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent,Strings[302535920001458--[[Material Properties--]]])
 			end
 
+			ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent_or_ret,Strings[302535920001458--[[Material Properties--]]])
 		end
 	end -- do
 
@@ -3101,9 +3106,9 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 	end -- do
 
 	do -- ValueToStr
+		local getmetatable = getmetatable
 		local IsPoint = IsPoint
 		local IsBox = IsBox
-		local InvalidPos = ChoGGi.Consts.InvalidPos
 
 		function ChoGGi.ComFuncs.ValueToStr(obj,obj_type)
 			obj_type = obj_type or type(obj)
@@ -3111,65 +3116,57 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			if obj_type == "string" then
 				-- strings with (object) don't work well with Translate
 				if obj:find("%(") then
-					return obj
+					return obj,obj_type
+				-- if there's any <image, <color, etc tags
+				elseif obj:find("[<>]") then
+					return Translate(obj),obj_type
 				else
-					-- if there's any <image, <color, etc tags
-					return Translate(obj)
+					return obj,obj_type
 				end
 			end
 			--
 			if obj_type == "number" then
-				return obj .. ""
+				-- faster than tostring()
+				return obj .. "",obj_type
 			end
 --~ 			--
 --~ 			if obj_type == "boolean" then
---~ 				return tostring(obj)
+--~ 				return tostring(obj),obj_type
 --~ 			end
 			--
 			if obj_type == "table" then
-
-				if IsValid(obj) then
-					return obj:GetVisualPos()
-				else
-					return RetName(obj)
-				end
+				return RetName(obj),obj_type
 			end
 			--
 			if obj_type == "userdata" then
-
 				if IsPoint(obj) then
-					-- InvalidPos()
-					if obj == InvalidPos then
-						return Strings[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
-					else
-						return "point" .. tostring(obj)
-					end
+					return "point" .. tostring(obj),obj_type
 				elseif IsBox(obj) then
-					return "box" .. tostring(obj)
-				else
-					-- show translated text if possible and return a clickable link
-					local trans_str = Translate(obj)
-					if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
-						return tostring(obj)
-					end
-					return trans_str
+					return "box" .. tostring(obj),obj_type
 				end
+				-- show translated text if possible and return a clickable link
+				local trans_str = Translate(obj)
+				if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+					local meta = getmetatable(obj).__name
+					return tostring(obj) .. (meta and " " .. meta or ""),obj_type
+				end
+				return trans_str,obj_type
 			end
 			--
 			if obj_type == "function" then
-				return RetName(obj)
+				return RetName(obj),obj_type
 			end
 	--~ 		--
 	--~ 		if obj_type == "thread" then
-	--~ 			return tostring(obj)
+	--~ 			return tostring(obj),obj_type
 	--~ 		end
 			--
 			if obj_type == "nil" then
-				return "nil"
+				return "nil",obj_type
 			end
 
 			-- just in case
-			return tostring(obj)
+			return tostring(obj),obj_type
 		end
 	end -- do
 

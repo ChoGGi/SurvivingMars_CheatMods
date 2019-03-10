@@ -533,6 +533,7 @@ function Examine:idTextOnHyperLinkRollover(link)
 
 	if self.onclick_funcs[link] == self.OpenListMenu then
 		title = name .. " " .. Translate(1000162--[[Menu--]])
+
 		name = Strings[302535920001540--[[Show context menu for %s.--]]]:format(name)
 
 		-- add the value to the key tooltip
@@ -543,6 +544,7 @@ function Examine:idTextOnHyperLinkRollover(link)
 		else
 			obj_value = self.obj_ref[obj]
 		end
+
 		name = name .. "\n\n\n" .. ValueToStr(obj_value)
 
 --~ 		-- stick value in search box
@@ -2232,7 +2234,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		-- the regular getmetatable will use __metatable if it exists, so we check this as well
 		if testing and not blacklist then
 			local dbg_metatable = debug.getmetatable(obj)
-			if dbg_metatable and obj_metatable ~= dbg_metatable then
+			if dbg_metatable and dbg_metatable ~= obj_metatable then
 				print("ECM Sez DIFFERENT METATABLE",self.name,"\nmeta:",obj_metatable,"\ndbg:",dbg_metatable,"")
 			end
 		end
@@ -2364,7 +2366,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			-- some entity details as well
 			table_insert(list_obj_str, 2,
 				"GetEntity(): " .. self:ConvertValueToInfo(obj:GetEntity())
-				.. ", GetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
+				.. "\nGetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
 				.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices())
 				.. ((parent or state_added) and "" or "\n"))
 		end
@@ -2379,17 +2381,36 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		c = c + 1
 		list_obj_str[c] = self:ConvertValueToInfo(obj)
 
-		-- add any functions from getmeta to the (scant) list
+		-- add any functions from getmetatable to the (scant) list
 		if obj_metatable then
+			-- what? it's all about the 3 Rs
 			self.ConvertObjToInfo_data_meta = self.ConvertObjToInfo_data_meta or {}
 			local data_meta = self.ConvertObjToInfo_data_meta
 			table_iclear(data_meta)
 
-			local c2 = 0
+			self.ConvertObjToInfo_data_meta_dupes = self.ConvertObjToInfo_data_meta_dupes or {}
+			local dupes = self.ConvertObjToInfo_data_meta_dupes
+			table_clear(dupes)
+
+			local m_c = 0
 			for k, v in pairs(obj_metatable) do
-				c2 = c2 + 1
-				data_meta[c2] = self:ConvertValueToInfo(k) .. " = " .. self:ConvertValueToInfo(v)
+				if not dupes[k] then
+					dupes[v] = true
+					m_c = m_c + 1
+					data_meta[m_c] = self:ConvertValueToInfo(k) .. " = " .. self:ConvertValueToInfo(v)
+				end
 			end
+			-- any extras from __index (most show index in metatable, not all
+			if type(obj_metatable.__index) == "table" then
+				for k, v in pairs(obj_metatable.__index) do
+					if not dupes[k] then
+						dupes[v] = true
+						m_c = m_c + 1
+						data_meta[m_c] = self:ConvertValueToInfo(k) .. " = " .. self:ConvertValueToInfo(v)
+					end
+				end
+			end
+
 			table_sort(data_meta,CmpLower)
 
 			-- add some info for HGE. stuff
@@ -2437,7 +2458,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				-- this takes a few seconds to load, so it's in a clickable link
 				table_insert(data_meta,1,self:ConvertValueToInfo({
 					ChoGGi_AddHyperLink = true,
-					hint = S[302535920001124--[[Will take a few seconds to complete.--]]],
+					hint = Strings[302535920001124--[[Will take a few seconds to complete.--]]],
 					name = "levels(true, 1):",
 					func = function()
 						OpenInExamineDlg({obj:levels(true, 1)})
@@ -2532,6 +2553,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 			else
 				table_insert(data_meta,1,"\ngetmetatable():")
+
 				local is_t = IsT(obj)
 				if is_t then
 					table_insert(data_meta,1,"THasArgs(): " .. self:ConvertValueToInfo(THasArgs(obj)))
