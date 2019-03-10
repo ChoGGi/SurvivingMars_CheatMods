@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v12.9 (Unreleased)
+## v13.0 (Unreleased)
+
+## v12.9 (10 Mar 2019)
 ### Added:
 - Game>Terrain Texture Remap: Instead of replacing all textures with one then re-adding stuff, this will remap existing textures.
 - Console>Tools>Examine Errors: Open (some) errors in an examine dialog (shows stack trace and sometimes a thread).
