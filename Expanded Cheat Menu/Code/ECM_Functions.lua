@@ -1777,11 +1777,8 @@ list[#list+1] = [[	</Material>
 
 	do -- BBoxLines_Toggle
 		local point = point
-		local guim = guim
 		local objlist = objlist
 		local IsBox = IsBox
---~ 		local MulDivRound = MulDivRound
---~ 		local Max = Max
 
 		-- stores objlist of line objects
 		local lines
@@ -1807,7 +1804,7 @@ list[#list+1] = [[	</Material>
 			lines[#lines+1] = line
 		end
 
-		local function PlaceTerrainBox(bbox, pos, depth_test, colour, step, offset)
+		local function PlaceTerrainBox(bbox, pos, depth_test, colour)
 			local obj_height = bbox:sizez() or 1500
 			local z = pos:z()
 			-- stores all line objs for deletion later
@@ -1915,9 +1912,7 @@ list[#list+1] = [[	</Material>
 					bbox,
 					bbox:Center():SetTerrainZ(),
 					params.depth_test,
-					params.colour or RandomColourLimited(),
-					params.step or guim,
-					params.offset or 1
+					params.colour or RandomColourLimited()
 				)
 				if not is_box then
 					obj.ChoGGi_bboxobj = box
@@ -2924,7 +2919,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		local ValueToLuaCode = ValueToLuaCode
 		local rawset = rawset
 
-		function ChoGGi.ComFuncs.PrintToFunc_Remove(func,name,parent)
+		function ChoGGi.ComFuncs.PrintToFunc_Remove(name,parent)
 			name = tostring(name)
 			local saved_name = name .. "_ChoGGi_savedfunc"
 
@@ -3091,10 +3086,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			local quoted_value = Q * lpeg.Cs((1 - Q + Q * Q / "\"") ^ 0) * Q
 			local raw_value = lpeg.C((1 - lpeg.S(",\t\r\n\"")) ^ 0)
 			local field = (lpeg.P(" ") ^ 0 * quoted_value * lpeg.P(" ") ^ 0 + raw_value) * lpeg.Cp()
-			local space = string.byte(" ", 1)
-
 			local RemoveTrailingSpaces = RemoveTrailingSpaces
-			local FlushLogFile = FlushLogFile
 
 			-- remove any carr returns
 			str = str:gsub("\r\n","\n")

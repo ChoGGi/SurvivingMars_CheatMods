@@ -13,29 +13,6 @@ function OnMsg.ClassesGenerate()
 	local RandomColour = ChoGGi.ComFuncs.RandomColour
 	local Strings = ChoGGi.Strings
 
-	function ChoGGi.MenuFuncs.UsedTerrainTextures()
-		if not GameState.gameplay then
-			return
-		end
-    local MulDivRound = MulDivRound
-    local TerrainTextures = TerrainTextures
-
-    local tm = terrain.GetTypeGrid()
-    local levels_count, levels_info = tm:levels(true, 1)
-    local size = tm:size()
-    local type_info = {}
-    for level, count in pairs(levels_info) do
-      local texture = TerrainTextures[level]
-      if texture then
-        local perc = MulDivRound(100, count, size * size)
-        if perc > 0 then
-          type_info[texture.name] = perc
-        end
-      end
-    end
-		ChoGGi.ComFuncs.OpenInExamineDlg(type_info,nil,Strings[302535920001181--[[Used Terrain Textures--]]])
-	end
-
 	do -- TestLocaleFile
 		local saved_file_path
 
@@ -764,7 +741,7 @@ that'll activate the BadPrefab on it
 					local HexToWorld = HexToWorld
 					local WorldToHex = WorldToHex
 					local point = point
-					local Sleep = Sleep
+					local WaitMsg = WaitMsg
 
 					local red = red
 					local green = green
@@ -1316,7 +1293,7 @@ that'll activate the BadPrefab on it
 		end
 
 		local function GridFunc(size,zoffset)
-			local Sleep = Sleep
+			local WaitMsg = WaitMsg
 
 			local steps = 1 + (size + dbg_step - 1) / dbg_step
 			size = steps * dbg_step

@@ -888,11 +888,6 @@ function ChoGGi_InputContextMenu:OnMouseButtonDown(pt, button, ...)
 		self.opened_list_menu_id = self.opened_list_menu_id or Random()
 
 		local list = self:RetContextList()
---~ 		-- style it like the other examine menus
---~ 		list.Background = -9868951
---~ 		list.FocusedBackground = -9868951
---~ 		list.PressedBackground = -12500671
---~ 		list.TextStyle = "ChoGGi_CheckButtonMenuOpp"
 		list.IconPadding = box(6,0,0,0)
 
 		-- make a fake anchor for PopupToggle to use (
@@ -912,7 +907,7 @@ function ChoGGi_InputContextMenu:OnMouseButtonDown(pt, button, ...)
 	return XTextEditor.OnMouseButtonDown(self,pt, button, ...)
 end
 
-function ChoGGi_InputContextMenu:RetContextList(selected)
+function ChoGGi_InputContextMenu:RetContextList()
 	-- disable certain items
 	local has_clipboard = GetFromClipboard()
 	local has_selection,can_undo,can_redo

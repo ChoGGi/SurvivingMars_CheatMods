@@ -23,7 +23,7 @@ CreateRealTimeThread(function()
 
 		-- remove blacklist for any mods in "Mod Ids"
 		local rev = LuaRevision
-		for id,mod in pairs(Mods) do
+		for _,mod in pairs(Mods) do
 			if mod_ids[mod.steam_id] then
 				mod.lua_revision = rev
 				-- just a little overreaching with that blacklist (yeah yeah, safety first and all that)

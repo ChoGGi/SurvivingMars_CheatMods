@@ -1197,8 +1197,6 @@ function OnMsg.ClassesBuilt()
 	end
 
 	do -- RequiresMaintenance:AddDust
-		local IsBox = IsBox
-		local IsPoint = IsPoint
 		local MulDivRound = MulDivRound
 		-- was giving a nil error in log, I assume devs'll fix it one day
 		function RequiresMaintenance:AddDust(amount,...)

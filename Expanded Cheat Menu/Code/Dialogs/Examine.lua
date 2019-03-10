@@ -1939,7 +1939,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			hint = Strings[302535920001067--[[Remove print from func.--]]],
 			image = "CommonAssets/UI/Menu/reload.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.PrintToFunc_Remove(obj_value,obj_key,self.obj_ref)
+				self.ChoGGi.ComFuncs.PrintToFunc_Remove(obj_key,self.obj_ref)
 			end,
 		}
 	end
