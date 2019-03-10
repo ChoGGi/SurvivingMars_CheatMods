@@ -334,15 +334,14 @@ that'll activate the BadPrefab on it
 		local item_list = {}
 		local c = 0
 
-		local story_table = {}
+		local temp_table = {}
 		local g_StoryBitStates = g_StoryBitStates
 		for id,a_story in pairs(g_StoryBitStates) do
-
 			local story = StoryBits[id]
-			table_clear(story_table)
+			table_clear(temp_table)
 			for i = 1, #story do
 				if story[i].Name and story[i].Value then
-					story_table[story[i].Name] = story[i].Value
+					temp_table[story[i].Name] = story[i].Value
 				end
 			end
 
@@ -357,7 +356,7 @@ that'll activate the BadPrefab on it
 				story = a_story,
 				voiced = story.VoicedText,
 				hint = Strings[302535920001358--[[Group--]]] .. ": " .. story.group .. "\n\n"
-					.. Translate(T(story.Text,story_table)) .. "\n\n<image " .. story.Image
+					.. Translate(T(story.Text,temp_table)) .. "\n\n<image " .. story.Image
 					.. ">",
 			}
 		end
@@ -367,21 +366,54 @@ that'll activate the BadPrefab on it
 			if choice.nothing_selected then
 				return
 			end
+			choice = choice[1]
 
-			-- have a way to enter a class to use a random? object from
---~ 			choice[1].story:ActivateStoryBit()
+			local obj
+			if choice.check1 then
+				obj = table.rand(UICity.labels.Building or empty_table)
+			elseif choice.check2 then
+				obj = table.rand(UICity.labels.Dome or empty_table)
+			elseif choice.check3 then
+				obj = table.rand(UICity.labels.Colonist or empty_table)
+			elseif choice.check4 then
+				obj = SelectedObj
+			end
 
-			MsgPopup(
-				"I said they don't do jack...",
-				title
-			)
+			if IsValid(obj) then
+				choice.story:ActivateStoryBit(obj)
+			end
+
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = title,
-			hint = Strings[302535920001359--[["Just lists them for now, I'll make it force them soonish."--]]],
+			hint = Strings[302535920001359--[[Start or display the msg from a story bit.--]]],
+			checkboxes = {
+				{
+					title = Translate(5426--[[Building--]]),
+					hint = Strings[302535920001555--[[Choose a random %s to be the context for this storybit.--]]]:format(Translate(5426--[[Building--]])),
+				},
+				{
+					title = Translate(1234--[[Dome--]]),
+					hint = Strings[302535920001555--[[Choose a random %s to be the context for this storybit.--]]]:format(Translate(1234--[[Dome--]])),
+				},
+				{
+					title = Translate(4290--[[Colonist--]]),
+					hint = Strings[302535920001555--[[Choose a random %s to be the context for this storybit.--]]]:format(Translate(4290--[[Colonist--]])),
+				},
+				{
+					title = Translate(10147--[[Rover--]]) .. "/" .. Translate(1681--[[Drone--]]),
+					hint = Strings[302535920001555--[[Choose a random %s to be the context for this storybit.--]]]:format(Translate(10147--[[Rover--]]) .. "/" .. Translate(1681--[[Drone--]])),
+					level = 2,
+				},
+				{
+					title = Strings[302535920000769--[[Selected--]]],
+					hint = Strings[302535920001556--[[Use the selected object.--]]],
+					level = 2,
+				},
+			},
 		}
 	end
 

@@ -1,6 +1,5 @@
 ID,Text,Translation,Old Translation,Gender
-302535920001512,Mark All Objects (Line),
-302535920001513,Add a line connecting all items in list.,
+302535920001556,Use the selected object.,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
@@ -164,7 +163,7 @@ You can copy and paste numbers if you want.",
 302535920001441,<left_click> Activate <right_click> Add/Remove Quickbar,
 302535920001439,"~obj, @func, @@type, $id, %img, ^str, *r/*g/*m threads. Hover mouse for more info.",
 302535920001440,"<color 100 255 100>~</color><color 255 255 100>obj</color> opens object in examine dlg, use <color 255 150 150>ex(obj)</color> in lua code.
-<color 100 255 100>~~</color><color 255 255 100>obj</color> opens object's attachments in examine dlg.
+<color 100 255 100>~!</color><color 255 255 100>obj</color> opens object's attachments in examine dlg.
 
 <color 100 255 100>&</color><color 255 255 100>handle</color> examines object with that handle.
 
@@ -299,6 +298,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook",
 302535920000870,Shows mod log msgs in an examine dialog.,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920001512,Mark All Objects (Line),
+302535920001513,Add a line connecting all items in list.,
 302535920001461,XText:ParseText() just ralphed.,
 302535920001124,Will take a few seconds to complete.,
 302535920000461,Position,
@@ -1008,6 +1009,8 @@ Works after colonist idle.",
 Not permanent.",
 302535920000447,Change the age at which colonists die (applies to newly arrived and born colonists as well).,
 302535920000448,"I'm afraid it could be 9/11 times 1,000.",
+302535920001557,Display a story without sending a context object.,
+302535920001555,Choose a random %s to be the context for this storybit.,
 302535920001198,Show a list of terrain textures used in current map.,
 302535920001136,Test a CSV for malformed strings (can cause freezing when loaded normally).,
 302535920001137,CSV Path,
@@ -1038,7 +1041,7 @@ You need my HelperMod installed to be able to use this.",
 302535920001418,Sets the size of the Building/Flight grid.,
 302535920001419,Follow Mouse Grid Trans,
 302535920001420,How transparent the Building grid is.,
-302535920001359,"Just lists them for now, I'll make it force them soonish.",
+302535920001359,Start or display the msg from a story bit.,
 302535920001416,Force,
 302535920001358,Group,
 302535920001382,Real Time,

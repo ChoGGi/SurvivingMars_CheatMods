@@ -70,7 +70,7 @@ function OnMsg.ClassesGenerate()
 		ActionMenubar = "ECM.Debug",
 		ActionId = ".Force Story Bits",
 		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = Strings[302535920001359--[["Just lists them for now, I'll make it force them soonish."--]]],
+		RolloverText = Strings[302535920001359--[[Start or display the msg from a story bit.--]]],
 		OnAction = ChoGGi.MenuFuncs.ForceStoryBits,
 	}
 
