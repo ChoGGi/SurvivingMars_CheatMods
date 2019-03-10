@@ -15,7 +15,7 @@ do -- Translate
 
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
-		local count = count_params(...) > 0
+		local count = count_params(...) > 1
 		local str = count and T(...) or T{...}
 
 		-- not a translatable obj
