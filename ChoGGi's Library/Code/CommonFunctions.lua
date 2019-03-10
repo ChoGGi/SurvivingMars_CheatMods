@@ -192,7 +192,7 @@ do -- RetName
 				name = obj.entity
 			-- objlist
 			elseif IsObjlist(obj) then
-				return obj[1] and ChoGGi.ComFuncs.RetName(obj)(obj[1]) or "objlist"
+				return obj[1] and ChoGGi.ComFuncs.RetName(obj[1]) or "objlist"
 
 			else
 				for i = 1, #values_lookup do
