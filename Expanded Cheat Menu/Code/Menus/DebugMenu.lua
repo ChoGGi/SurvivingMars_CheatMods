@@ -107,9 +107,9 @@ function OnMsg.ClassesGenerate()
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Strings[302535920000449--[[Attach Spots Toggle--]]],
+	Actions[c] = {ActionName = Strings[302535920000449--[[Entity Spots Toggle--]]],
 		ActionMenubar = "ECM.Debug",
-		ActionId = ".Attach Spots Toggle",
+		ActionId = ".Entity Spots Toggle",
 		ActionIcon = "CommonAssets/UI/Menu/ShowAll.tga",
 		RolloverText = function()
 			local obj = SelectedObj
@@ -118,13 +118,13 @@ function OnMsg.ClassesGenerate()
 				Strings[302535920000450--[[Toggle showing attachment spots on selected object.--]]]
 			)
 		end,
-		OnAction = ChoGGi.ComFuncs.AttachSpots_Toggle,
+		OnAction = ChoGGi.ComFuncs.EntitySpots_Toggle,
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Strings[302535920000235--[[Attach Spots List--]]],
+	Actions[c] = {ActionName = Strings[302535920000235--[[Entity Spots--]]],
 		ActionMenubar = "ECM.Debug",
-		ActionId = ".Attach Spots List",
+		ActionId = ".Entity Spots",
 		ActionIcon = "CommonAssets/UI/Menu/ListCollections.tga",
 		RolloverText = Strings[302535920001445--[[Shows list of attaches for use with .ent files.--]]],
 		OnAction = ChoGGi.ComFuncs.ExamineEntSpots,

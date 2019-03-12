@@ -299,13 +299,8 @@ You need my HelperMod installed to be able to use this."--]]],
 	end
 
 	function ChoGGi.MenuFuncs.ForceStoryBits()
---[[
-if you do a ~g_StoryBitStates
-that'll show all the active story state thingss
-then click for example BadPrefab, select a prefab and in tools>Execute code stick:
-o:ActivateStoryBit(s)
-that'll activate the BadPrefab on it
---]]
+--~ ~g_StoryBitStates
+--~ that'll show all the active story state thingss
 		local StoryBits = StoryBits
 
 		local item_list = {}
@@ -560,8 +555,13 @@ that'll activate the BadPrefab on it
 			return
 		end
 
-		-- clone dome = crashy
+		if obj:IsKindOf("Colonist") then
+			ChoGGi.ComFuncs.SpawnColonist(obj,nil,GetTerrainCursor())
+			return
+		end
+
 		local new
+		-- clone dome = crashy
 		if obj:IsKindOf("Dome") then
 			new = g_Classes[obj.class]:new()
 			new:CopyProperties(obj)

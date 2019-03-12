@@ -186,7 +186,7 @@ function OnMsg.ClassesGenerate()
 			if type(value) == "number" then
 
 				ChoGGi.ComFuncs.SetSavedSetting("CommandCenterMaxRadius",value)
-				--we need to set this so the hex grid during placement is enlarged
+				-- we need to set this so the hex grid during placement is enlarged
 				const.CommandCenterMaxRadius = value
 
 				local objs = UICity.labels.DroneHub or ""

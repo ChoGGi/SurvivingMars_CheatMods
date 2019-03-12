@@ -590,6 +590,13 @@ function OnMsg.ClassesGenerate()
 				return opened
 			end
 
+			if not IsKindOf(parent,"XWindow") then
+				parent = nil
+			end
+			if type(title) ~= "string" then
+				title = nil
+			end
+
 			return Examine:new({}, terminal.desktop,{
 				obj = obj,
 				parent = parent,
@@ -610,6 +617,10 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
 		if type(list) ~= "table" then
 			return
+		end
+
+		if not IsKindOf(parent,"XWindow") then
+			parent = nil
 		end
 
 		return ChoGGi_MonitorInfoDlg:new({}, terminal.desktop,{
@@ -633,6 +644,10 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 
+		if not IsKindOf(parent,"XWindow") then
+			parent = nil
+		end
+
 		return ChoGGi_ObjectEditorDlg:new({}, terminal.desktop,{
 			obj = obj,
 			parent = parent,
@@ -645,6 +660,10 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 
+		if not IsKindOf(parent,"XWindow") then
+			parent = nil
+		end
+
 		return ChoGGi_3DManipulatorDlg:new({}, terminal.desktop,{
 			obj = obj,
 			parent = parent,
@@ -652,6 +671,10 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.ComFuncs.OpenInExecCodeDlg(context,parent)
+		if not IsKindOf(parent,"XWindow") then
+			parent = nil
+		end
+
 		return ChoGGi_ExecCodeDlg:new({}, terminal.desktop,{
 			obj = context,
 			parent = parent,
@@ -661,6 +684,10 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.ComFuncs.OpenInFindValueDlg(context,parent)
 		if not context then
 			return
+		end
+
+		if not IsKindOf(parent,"XWindow") then
+			parent = nil
 		end
 
 		return ChoGGi_FindValueDlg:new({}, terminal.desktop,{
@@ -673,6 +700,10 @@ function OnMsg.ClassesGenerate()
 		local function OpenInImageViewerDlg(obj,parent)
 			if not obj then
 				return
+			end
+
+			if not IsKindOf(parent,"XWindow") then
+				parent = nil
 			end
 
 			return ChoGGi_ImageViewerDlg:new({}, terminal.desktop,{
@@ -691,7 +722,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(parent)
 		-- if fired from action menu
-		if IsKindOf(parent,"XAction") then
+		if parent and (IsKindOf(parent,"XAction") or not IsKindOf(parent,"XWindow")) then
 			parent = nil
 		end
 
@@ -829,16 +860,19 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local item_list = {}
-		local states = obj:GetStates() or ""
+		local states_str = obj:GetStates()
+		local states_num = EnumValidStates(obj)
 
-		if testing and #states ~= #EnumValidStates(obj) then
+		if testing and #states_str ~= #states_num then
 			print("SetAnimState: Different state amounts")
 		end
 
-		for i = 1, #states do
+		for i = 1, #states_str do
+			local state = states_str[i]
+			local idx = states_num[i]
 			item_list[i] = {
-				text = Translate(1000037--[[Name--]]) .. ": " .. states[i] .. ", " .. Strings[302535920000858--[[Index--]]] .. ": " .. i,
-				value = states[i],
+				text = Translate(1000037--[[Name--]]) .. ": " .. state .. ", " .. Strings[302535920000858--[[Index--]]] .. ": " .. idx,
+				value = state,
 			}
 		end
 
@@ -1274,7 +1308,7 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	do -- ExamineEntSpots
-		local spots_str = [[<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s,%s,%s" spot_scale="%s" spot_rot="%s,%s,%s,%s"/>]]
+		local spots_str = [[		<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s,%s,%s" spot_scale="%s" spot_rot="%s,%s,%s,%s"/>]]
 
 --~ local list = ChoGGi.ComFuncs.ExamineEntSpots(s,true)
 --~ list = ChoGGi.ComFuncs.TableConcat(list,"\n")
@@ -1288,22 +1322,63 @@ function OnMsg.ClassesGenerate()
 				obj = obj or ChoGGi.ComFuncs.SelObject()
 			end
 
-			if not IsValid(obj) then
+			local entity = obj and obj.GetEntity and obj:GetEntity()
+			if not IsValidEntity(entity) then
 				return
 			end
 
-			local origin_pos_x, origin_pos_y, origin_pos_z = obj:GetSpotLocPosXYZ(0)
-
+			local origin = obj:GetSpotBeginIndex("Origin")
+			local origin_pos_x, origin_pos_y, origin_pos_z = obj:GetSpotLocPosXYZ(origin)
 			local id_start, id_end = obj:GetAllSpots(EntityStates.idle)
-			if not id_end then
-				return
+
+			CreateGameTimeThread(function()
+
+			local list = {}
+			local c = #list
+
+			-- loop through each state and add sections for them
+			local states_str = obj:GetStates()
+			local states_num = EnumValidStates(obj)
+			for i = 1, #states_str do
+				local state_str = states_str[i]
+				local state_num = states_num[i]
+				obj:SetState(state_str)
+				-- till i find something where the channel isn't 1
+				while obj:GetAnim(1) ~= state_num do
+					WaitMsg("OnRender")
+				end
+
+				-- this is our bonus eh
+				local bbox = obj:GetEntityBBox()
+				local x1,y1,z1 = bbox:minxyz()
+				local x2,y2,z2 = bbox:maxxyz()
+				local pos_x, pos_y, pos_z, radius = obj:GetBSphere(state_str, true)
+--~ Basketball_idle.hga
+				c = c + 1
+				list[c] = [[	<state id="]] .. state_str .. [[">
+		<mesh_ref ref="mesh"/>
+		<anim file="]] .. entity .. "_" .. state_str .. [[.hga" duration="]] .. obj:GetAnimDuration(state_str) .. [["/>
+		<bsphere value="]] .. (pos_x - origin_pos_x) .. ","
+					.. (pos_y - origin_pos_y) .. "," .. (pos_z - origin_pos_z) .. ","
+					.. radius .. [["/>
+		<box min="]] .. x1 .. "," .. y1 .. "," .. z1
+					.. [[" max="]] .. x2 .. "," .. y2 .. "," .. z2 .. [["/>
+	</state>]]
+			end -- for states
+
+			local mat = GetStateMaterial(entity,0,0)
+			-- add the rest of the entity info
+			c = c + 1
+			list[c] = [[	<mesh_description id="mesh">
+		<mesh file="]] .. mat:sub(1,-4) .. [[m.hgm"/>
+		<material file="]] .. mat .. [["/>]]
+			-- eh, close enough
+
+			-- stick with idle i guess?
+			obj:SetState("idle")
+			while obj:GetAnim(1) ~= 0 do
+				WaitMsg("OnRender")
 			end
-
-				local spots_table = {[-1] = Strings[302535920001068--[["Readme:
-See bottom for box/bsphere/material/mesh.
-The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one)
-
-"--]]]}
 
 			for i = id_start, id_end do
 				local name = obj:GetSpotName(i)
@@ -1333,8 +1408,8 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 					scale = ""
 				end
 
-				-- means nadda for spot_rot
 				local angle = obj:GetSpotVisualRotation(i)
+				-- means nadda for spot_rot
 				if angle == 0 and axis_x == 0 and axis_y == 0 and axis_z == 4096 then
 					spots_str_t = spots_str_t:gsub([[ spot_rot="%%s,%%s,%%s,%%s"]],"%%s%%s%%s%%s")
 					angle,axis_x,axis_y,axis_z = "","","",""
@@ -1342,47 +1417,48 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 					axis_x = (axis_x + 0.0) / 100
 					axis_y = (axis_y + 0.0) / 100
 					axis_z = (axis_z + 0.0) / 100
-					angle = (angle) / 60  .. ".0000"
+					angle = (angle) / 60
+--~ 					if angle > 360 then
+--~ 						printC("ExamineEntSpots: angle > 360: ",angle)
+--~ 						-- just gotta figure out how to turn 18000 or 3600 into 60 (21600)
+--~ 						angle = 360 - angle
+--~ 					end
 				end
 
 				local pos_x,pos_y,pos_z = obj:GetSpotPosXYZ(i)
 
-				spots_table[i] = spots_str_t:format(
+				c = c + 1
+				list[c] = spots_str_t:format(
 					name,annot,bone,
 					pos_x - origin_pos_x,pos_y - origin_pos_y,pos_z - origin_pos_z,
 					scale,axis_x,axis_y,axis_z,angle
 				)
-			end
+			end -- for spots
 
-			-- this is our bonus eh
-			local bbox = obj:GetEntityBBox()
-			local x1,y1,z1 = bbox:minxyz()
-			local x2,y2,z2 = bbox:maxxyz()
-			spots_table.box = [[<box min="]] .. x1 .. "," .. y1 .. "," .. z1
-				.. [[" max="]] .. x2 .. "," .. y2 .. "," .. z2 .. [["/>]]
+			-- opener
+			table.insert(list,1,Strings[302535920001068--[["The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
+Attachment bspheres are off (x and y are; z and rotate aren't).
+Some of the file names are guesses. This also doesn't include any surf/surf_hash entries."--]]]
+				.. [[
 
-			local pos_x, pos_y, pos_z, rad = obj:GetBSphere("idle", true)
-			spots_table.bsphere = [[<bsphere value="]] .. (pos_x - origin_pos_x) .. ","
-				.. (pos_y - origin_pos_y) .. "," .. (pos_z - origin_pos_z) .. ","
-				.. rad .. [["/>]]
 
-			local entity = obj:GetEntity()
-			if IsValidEntity(entity) then
-				local mat = GetStateMaterial(entity,0,0)
-				spots_table.material = [[<material file="]] .. mat .. [["/>]]
-				-- eh, close enough
-				spots_table.mesh = [[<mesh file="]] .. mat:sub(1,-4) .. [[m.hgm"/>]]
-			end
+<?xml version="1.0" encoding="UTF-8"?>
+<entity path="">]])
+			-- and the closer
+			list[#list+1] = [[	</mesh_description>
+</entity>]]
 
 			if parent_or_ret == true then
-				return spots_table
+				return TableConcat(list,"\n")
 			else
-				ChoGGi.ComFuncs.OpenInExamineDlg(
-					spots_table,
-					parent_or_ret,
-					Strings[302535920000235--[[Attach Spots List--]]] .. ": " .. RetName(obj)
-				)
+				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+					parent = parent_or_ret,
+					text = TableConcat(list,"\n"),
+					title = Strings[302535920000235--[[Entity Spots--]]] .. ": " .. RetName(obj),
+				}
 			end
+
+			end)
 		end
 	end -- do
 
@@ -1623,14 +1699,11 @@ The func I use for spot_rot rounds to two decimal points... (let me know if you 
 			end
 			table_sort(list)
 
-			table.insert(list,1,[[
-
-<?xml version="1.0" encoding="UTF-8"?>
+			table.insert(list,1,[[<?xml version="1.0" encoding="UTF-8"?>
 <Materials>
 	<Material>]])
 list[#list+1] = [[	</Material>
-</Materials>
-]]
+</Materials>]]
 
 			return TableConcat(list,"\n")
 		end
@@ -1664,7 +1737,11 @@ list[#list+1] = [[	</Material>
 							hint = Strings[302535920001174--[[Show an example .mtl file for this material (not complete).--]]],
 							name = Strings[302535920001177--[[Generate .mtl--]]],
 							func = function(ex_dlg)
-								ChoGGi.ComFuncs.OpenInExamineDlg(RetEntityMTLFile(mat),ex_dlg,Strings[302535920001458--[[Material Properties--]]])
+								ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+									parent = ex_dlg,
+									text = RetEntityMTLFile(mat),
+									title = Strings[302535920001458--[[Material Properties--]]] .. ": " .. mat_name,
+								}
 							end,
 						}
 					end
@@ -1689,17 +1766,9 @@ list[#list+1] = [[	</Material>
 
 			local materials
 
-			local is_ent = IsValidEntity(obj)
-			if IsValid(obj) or is_ent then
-				if not is_ent then
-					obj = obj:GetEntity()
-				end
-
-				if parent_or_ret == true then
-					return RetEntityMats(obj)
-				else
-					materials = RetEntityMats(obj)
-				end
+			local entity = obj and obj.GetEntity and obj:GetEntity()
+			if IsValidEntity(entity) then
+				materials = RetEntityMats(entity,true)
 			else
 				materials = {}
 				local all_entities = GetAllEntities()
@@ -1708,7 +1777,11 @@ list[#list+1] = [[	</Material>
 				end
 			end
 
-			ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent_or_ret,Strings[302535920001458--[[Material Properties--]]])
+				if parent_or_ret == true then
+					return materials
+				else
+					ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent_or_ret,Strings[302535920001458--[[Material Properties--]]])
+				end
 		end
 	end -- do
 
@@ -2539,11 +2612,11 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		return block,restrict
 	end
 
-	do -- AttachSpots_Toggle
+	do -- EntitySpots_Toggle
 		local GetSpotNameByType = GetSpotNameByType
 		local old_remove_table = {"ChoGGi_OText","ChoGGi_OOrientation"}
 
-		local function AttachSpots_Clear(obj)
+		local function EntitySpots_Clear(obj)
 			-- just in case (old way of doing it)
 			if obj.ChoGGi_ShowAttachSpots == true then
 				local DoneObject = DoneObject
@@ -2560,9 +2633,10 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				return true
 			end
 		end
-		ChoGGi.ComFuncs.AttachSpots_Clear = AttachSpots_Clear
+		ChoGGi.ComFuncs.EntitySpots_Clear = EntitySpots_Clear
 
-		local function AttachSpots_Add(obj,c,spot_type,annot,depth_test,show_pos,colour)
+		local function EntitySpots_Add(obj,spot_type,annot,depth_test,show_pos,colour)
+			local c = #obj.ChoGGi_ShowAttachSpots
 			local obj_pos = obj:GetVisualPos()
 			local start_id, id_end = obj:GetAllSpots(obj:GetState())
 			for i = start_id, id_end do
@@ -2611,15 +2685,19 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			return c
 		end
 
-		local function AttachSpots_Add_Annot(c,obj,depth_test,colour)
+		local function EntitySpots_Add_Annot(obj,depth_test,colour)
+			local chain_c = 0
 			local points = {}
-			for i = 1, c do
+			for i = 1, #obj.ChoGGi_ShowAttachSpots do
 				local text = obj.ChoGGi_ShowAttachSpots[i]
 				-- use order from above to sort by waypoint number
-				points[text.order] = text:GetPos()
+				if text.order then
+					chain_c = chain_c + 1
+					points[text.order] = text:GetPos()
+				end
 			end
 			-- some stuff has order nums in another spotname?, (the door path for the diner)
-			for i = 1, c do
+			for i = 1, chain_c do
 				if not points[i] then
 					if points[i+1] then
 						points[i] = points[i+1]
@@ -2628,20 +2706,21 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					end
 				end
 			end
+			if chain_c > 0 then
+				local line_obj = PlaceObject("ChoGGi_OPolyline")
+				if depth_test then
+					line_obj:SetDepthTest(true)
+				end
+				line_obj.max_vertices = #points
+				line_obj:SetMesh(points, colour)
+				line_obj:SetPos(AveragePoint2D(points))
 
-			local line_obj = PlaceObject("ChoGGi_OPolyline")
-			if depth_test then
-				line_obj:SetDepthTest(true)
+				obj.ChoGGi_ShowAttachSpots[#obj.ChoGGi_ShowAttachSpots + 1] = line_obj
 			end
-			line_obj.max_vertices = #points
-			line_obj:SetMesh(points, colour)
-			line_obj:SetPos(AveragePoint2D(points))
 
-			c = c + 1
-			obj.ChoGGi_ShowAttachSpots[c] = line_obj
 		end
 
-		function ChoGGi.ComFuncs.AttachSpots_Toggle(obj,params)
+		function ChoGGi.ComFuncs.EntitySpots_Toggle(obj,params)
 			-- if fired from action menu
 			if IsKindOf(obj,"XAction") then
 				obj = ChoGGi.ComFuncs.SelObject()
@@ -2652,11 +2731,12 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 			params = params or {}
 			local is_valid = IsValid(obj)
-			if not is_valid or is_valid and not IsValidEntity(obj:GetEntity()) or not params.skip_return then
+			local entity = obj and obj.GetEntity and obj:GetEntity()
+			if not (is_valid or IsValidEntity(entity) or params.skip_return) then
 				return
 			end
 			if not params.skip_clear then
-				if (AttachSpots_Clear(obj) and not params.skip_return) then
+				if EntitySpots_Clear(obj) and not params.skip_return then
 					return
 				end
 			end
@@ -2665,8 +2745,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 			params.colour = params.colour or RandomColourLimited()
 
-			local c = #obj.ChoGGi_ShowAttachSpots
-			c = AttachSpots_Add(obj,c,
+			EntitySpots_Add(obj,
 				params.spot_type,
 				params.annotation,
 				params.depth_test,
@@ -2677,8 +2756,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,obj.ChoGGi_ShowAttachSpots,"ChoGGi_OText")
 
 			-- play connect the dots if there's chains
-			if c > 1 and params.annotation and params.annotation:find("chain") then
-				AttachSpots_Add_Annot(c,obj,params.depth_test,params.colour)
+			if #obj.ChoGGi_ShowAttachSpots > 1 and params.annotation and params.annotation:find("chain") then
+				EntitySpots_Add_Annot(obj,params.depth_test,RandomColourLimited())
 			end
 
 			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,obj.ChoGGi_ShowAttachSpots,"ChoGGi_OPolyline")
@@ -3039,12 +3118,10 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			"gender"
 		}
 
-		local failed_strings = {}
-		local f_c
-		local error_output = {}
-		local e_c = 0
+		local strings_failed,csv_failed
+		local strings_count,csv_count
 
-		local function ProcessLoadedTables(loaded, language, out_table, out_gendertable)
+		local function ProcessLoadedTables(loaded_csv, language, out_table, out_gendertable)
 			local order
 			if language == "English" then
 				order = {"translated_new","text","translated"}
@@ -3052,8 +3129,11 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				order = {"translated_new","translated","text"}
 			end
 
-			for i = 1, #loaded do
-				local entry = loaded[i]
+			local prev_str = Translate(1000231--[[Previous--]])
+			local next_str = Translate(1000232--[[Next--]])
+
+			for i = 1, #loaded_csv do
+				local entry = loaded_csv[i]
 				local translation
 				if entry[order[1]] and entry[order[1]] ~= "" then
 					translation = entry[order[1]]
@@ -3070,30 +3150,34 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 						out_gendertable[id] = entry.gender
 					end
 				else
-					f_c = f_c + 1
-					local eprev = loaded[i-1]
-					local enext = loaded[i+1]
-					failed_strings[f_c] = {
+					strings_count = strings_count + 1
+					strings_failed[strings_count] = {
 						id = i,
 						[Strings[302535920000106--[[Current--]]] .. " id"] = entry.id,
 						[Strings[302535920000106--[[Current--]]] .. " text"] = entry.text,
 						[Strings[302535920000106--[[Current--]]] .. " translated_new"] = entry.translated_new,
-						-- add some context
-						[Translate(1000231--[[Previous--]]) .. " id"] = eprev.id,
-						[Translate(1000231--[[Previous--]]) .. " text"] = eprev.text,
-						[Translate(1000231--[[Previous--]]) .. " translated_new"] = eprev.translated_new,
-						[Translate(1000232--[[Next--]]) .. " id"] = enext.id,
-						[Translate(1000232--[[Next--]]) .. " text"] = enext.text,
-						[Translate(1000232--[[Next--]]) .. " translated_new"] = enext.translated_new,
 					}
+					-- add some context
+					local eprev = loaded_csv[i-1]
+					local enext = loaded_csv[i+1]
+					local str = strings_failed[strings_count]
+					if eprev then
+						str[prev_str .. " id"] = eprev.id
+						str[prev_str .. " text"] = eprev.text
+						str[prev_str .. " translated_new"] = eprev.translated_new
+					end
+					if enext then
+						str[next_str .. " id"] = enext.id
+						str[next_str .. " text"] = enext.text
+						str[next_str .. " translated_new"] = enext.translated_new
+					end
+
 				end
 			end
 		end
 
 		local function TestCSV(filepath,column_limit)
-			if column_limit and type(column_limit) ~= "number" then
-				column_limit = filepath == my_locale and 4 or 5
-			end
+			column_limit = filepath == my_locale and 4 or column_limit
 
 			-- this is the LoadCSV func from CommonLua/Core/ParseCSV.lua with some DebugPrint added
 			local omit_captions = "omit_captions"
@@ -3113,13 +3197,14 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 			-- remove any carr returns
 			str = str:gsub("\r\n","\n")
+			local str_len = #str
 
 			-- mostly LoadCSV()
-			while pos < #str do
-
+			while pos < str_len do
 				local row, col = {}, 1
 				local lf = str:sub(pos, pos) == "\n"
-				while pos < #str and not lf do
+
+				while pos < str_len and not lf do
 
 					local value, nextv = field:match(str, pos)
 					value = RemoveTrailingSpaces(value)
@@ -3133,8 +3218,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 					-- only seems to happen on bad things
 					if col > column_limit then
-						e_c = e_c + 1
-						error_output[e_c] = {
+						csv_count = csv_count + 1
+						csv_failed[csv_count] = {
 							name = "ERROR row: " .. row.id,
 							value = value,
 							string_pos = pos,
@@ -3148,7 +3233,10 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 						}
 					end
 
-				end -- while
+					if pos >= str_len then
+						break
+					end
+				end -- while inner
 
 				if lf then
 					pos = pos + 1
@@ -3160,9 +3248,13 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				end
 				omit_captions = false
 
-			end -- while
+				if pos >= str_len and not lf then
+					break
+				end
 
-			return error_output
+			end -- while outer
+
+			return csv_failed,rows
 		end
 
 		function ChoGGi.ComFuncs.TestLocaleFile(filepath,test_csv,language)
@@ -3180,49 +3272,56 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				end
 			end
 
-			-- always reset to 0 for reporting (e_c > 0)
-			e_c = 0
-			if test_csv then
+			-- always reset to 0 for reporting (csv_count > 0)
+			local loaded_csv
+			if test_csv or testing then
 				if blacklist then
 					ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.TestLocaleFile(test_csv)")
 				else
-					table_iclear(error_output)
-					test_csv = TestCSV(filepath,test_csv)
+					csv_failed = {}
+					test_csv,loaded_csv = TestCSV(filepath,test_csv)
 				end
 			end
 
-			local loaded = {}
-			LoadCSV(
-				filepath,
-				loaded,
-				csv_load_fields,
-				"omit_captions"
-			)
+			-- my TestCSV is the same as LoadCSV, but without an inf loop if it's a malformed csv file
+			-- so we skip it for test_csv
+			if not loaded_csv then
+				loaded_csv = {}
+				LoadCSV(
+					filepath,
+					loaded_csv,
+					csv_load_fields,
+					"omit_captions"
+				)
+			end
+
 			local out_table, out_gendertable = {},{}
 
-			table_iclear(failed_strings)
-			f_c = 0
-			ProcessLoadedTables(
-				loaded,
-				language,
-				out_table,
-				out_gendertable
-			)
+			strings_failed = {}
+			strings_count = 0
+			pcall(function()
+				ProcessLoadedTables(
+					loaded_csv,
+					language,
+					out_table,
+					out_gendertable
+				)
+			end)
 
 			local title
-			if f_c > 0 or e_c > 0 then
+			if strings_count > 0 or (csv_count > 0 and not (csv_count == 2 and testing )) then
 				title = Strings[302535920001125--[[Test Locale File--]]] .. ": " .. Translate(951--[[Failed to complete operation.--]])
 			else
 				title = Strings[302535920001125--[[Test Locale File--]]] .. ": " .. Translate(1000015--[[Success--]])
 			end
 			local results = {
-				[Strings[302535920001448--[[CSV--]]]] = loaded,
-				failed_strings = failed_strings,
+				loaded_csv = loaded_csv,
+				strings_failed = strings_failed,
 				out_table = out_table,
 				out_gendertable = out_gendertable,
 			}
 			if test_csv then
-				results.test_csv = test_csv
+				results.csv_failed = csv_failed
 			end
 
 			ChoGGi.ComFuncs.OpenInExamineDlg(results,nil,title)
