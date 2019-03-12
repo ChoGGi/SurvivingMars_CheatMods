@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v6.0 (Unreleased)
+- Broke the Colour Modifier last update.
 
 ## v5.9 (10 Mar 2019)
 - Added a context menu to text inputs:

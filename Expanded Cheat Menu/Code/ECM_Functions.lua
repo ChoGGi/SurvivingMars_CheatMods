@@ -590,7 +590,7 @@ function OnMsg.ClassesGenerate()
 				return opened
 			end
 
-			if not IsKindOf(parent,"XWindow") then
+			if parent ~= "str" and not IsKindOf(parent,"XWindow") then
 				parent = nil
 			end
 			if type(title) ~= "string" then
@@ -1623,30 +1623,34 @@ Some of the file names are guesses. This also doesn't include any surf/surf_hash
 			Emissive = true,
 		}
 		local mtl_lookup = {
-			RM = [[		<RMMap Name="%s" mc="%s"/>]],
-			BaseColor = [[		<BaseColorMap Name="%s" mc="%s"/>]],
-			Dust = [[		<DustMap Name="%s" mc="%s"/>]],
 			AO = [[		<AmbientOcclusionMap Name="%s" mc="%s"/>]],
-			Normal = [[		<NormalMap Name="%s" mc="%s"/>]],
+			BaseColor = [[		<BaseColorMap Name="%s" mc="%s"/>]],
 			Colorization = [[		<ColorizationMap Name="%s" mc="%s"/>]],
-			SI = [[		<SIMap Name="%s" mc="%s"/>]],
-			RoughnessMetallic = [[		<RoughnessMetallicMap Name="%s" mc="%s"/>]],
+			Dust = [[		<DustMap Name="%s" mc="%s"/>]],
 			Emissive = [[		<EmissiveMap Name="%s" mc="%s"/>]],
+			Normal = [[		<NormalMap Name="%s" mc="%s"/>]],
+			RM = [[		<RMMap Name="%s" mc="%s"/>]],
+			RoughnessMetallic = [[		<RoughnessMetallicMap Name="%s" mc="%s"/>]],
+			SI = [[		<SIMap Name="%s" mc="%s"/>]],
 
-			blend = [[		<Property AlphaBlend="%s"/>]],
 			alphatest = [[		<Property AlphaTest="%s"/>]],
 			animation_frames_x = [[		<Property AnimationFramesX="%s"/>]],
 			animation_frames_y = [[		<Property AnimationFramesY="%s"/>]],
 			animation_time = [[		<Property AnimationTime="%s"/>]],
+			blend = [[		<Property AlphaBlend="%s"/>]],
 			castshadow = [[		<Property CastShadow="%s"/>]],
-			depthwrite = [[		<Property DepthWrite="%s"/>]],
-			twosidedshading = [[		<Property TwoSidedShading="%s"/>]],
-			special = [[		<Property Special="%s"/>]],
-			opacity = [[		<Property Opacity="%s"/>]],
 			deposition = [[		<Property Deposition="%s"/>]],
-			terraindistorted = [[		<Property Distortion="%s"/>]],
+			depthsmooth = [[		<Property DepthSmooth="%s"/>]],
+			depthwrite = [[		<Property DepthWrite="%s"/>]],
+			distortion = [[		<Property Distortion="%s"/>]],
+			opacity = [[		<Property Opacity="%s"/>]],
+			special = [[		<Property Special="%s"/>]],
+			terraindistorted = [[		<Property TerrainDistortedMesh="%s"/>]],
+			transparentdecal = [[		<Property TransparentDecal="%s"/>]],
+			twosidedshading = [[		<Property TwoSidedShading="%s"/>]],
+			wind = [[		<Property Wind="%s"/>]],
+
 --~ 			XX = [[		<Property Anisotropic="%s"/>]],
---~ 			XX = [[		<Property DepthSmooth="%s"/>]],
 --~ 			XX = [[		<Property DtmDisable="%s"/>]],
 --~ 			XX = [[		<Property EnvMapped="%s"/>]],
 --~ 			XX = [[		<Property GlossColor="%s"/>]],
@@ -1670,12 +1674,12 @@ Some of the file names are guesses. This also doesn't include any surf/surf_hash
 --~ 			XX = [[		<Property ViewDependentOpacity="%s"/>]],
 --~ 			XX = [[		<Property VOffset="%s"/>]],
 --~ 			XX = [[		<Property VSize="%s"/>]],
---~ 			XX = [[		<Property Wind="%s"/>]],
 		}
 
-		local function RetEntityMTLFile(mat)
-			local list = {}
-			local c = 0
+		local function CleanupMTL(mat,list,c)
+			list = list or {}
+			c = c or #list
+
 			for key,value in pairs(mat) do
 				if value == true then
 					value = 1
@@ -1697,17 +1701,45 @@ Some of the file names are guesses. This also doesn't include any surf/surf_hash
 				end
 
 			end
-			table_sort(list)
+			return list,c
+		end
 
-			table.insert(list,1,[[<?xml version="1.0" encoding="UTF-8"?>
+		local function RetEntityMTLFile(mat)
+			local list = {[[<?xml version="1.0" encoding="UTF-8"?>
 <Materials>
-	<Material>]])
-list[#list+1] = [[	</Material>
-</Materials>]]
+	<Material>]]}
+			local c = #list
+
+			-- build main first
+			list,c = CleanupMTL(mat,list,c)
+			c = c + 1
+			list[c] = [[	</Material>]]
+
+			-- add any sub materials
+			for key,sub_mat in pairs(mat) do
+				if type(key) == "string" and key:sub(1,19) == "_sub_material_index" then
+					c = c + 1
+					list[c] = [[	<Material>]]
+					list,c = CleanupMTL(sub_mat,list,c)
+					c = c + 1
+					list[c] = [[	</Material>]]
+				end
+			end
+
+			c = c + 1
+			list[c] = [[</Materials>]]
 
 			return TableConcat(list,"\n")
 		end
 		ChoGGi.ComFuncs.RetEntityMTLFile = RetEntityMTLFile
+
+		local function ExamineExportMat(ex_dlg,mat)
+			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+				parent = ex_dlg,
+				text = RetEntityMTLFile(mat),
+				title = Strings[302535920001458--[[Material Properties--]]] .. ": " .. mat.__mtl,
+			}
+		end
 
 		local function RetEntityMats(entity,skip)
 			-- some of these funcs can crash sm, so lets make sure it's valid
@@ -1725,28 +1757,36 @@ list[#list+1] = [[	</Material>
 					local num_mats = GetStateNumMaterials(entity, state, li - 1) or 0
 					for mi = 1, num_mats do
 						local mat_name = GetStateMaterial(entity,state,mi - 1,li - 1)
-						local mat = GetMaterialProperties(mat_name)
+						local mat = GetMaterialProperties(mat_name,0)
+
+						-- add any sub materials
+						local c = 1
+						while true do
+							local extra = GetMaterialProperties(mat_name,c)
+							if not extra then
+								break
+							end
+							mat["_sub_material_index" .. c] = extra
+							c = c + 1
+						end
+
 						mat.__mtl = mat_name
 						mat.__lod = li
 						mat.__state = li
-						mats[mat] = mat_name .. ", Mat: " .. mi .. ", LOD: " .. li .. ", State: " .. state_str .. " (" .. state .. ")"
-
 						mat[1] = {
-							-- move this down to return mats, and make it add all the lods
 							ChoGGi_AddHyperLink = true,
 							hint = Strings[302535920001174--[[Show an example .mtl file for this material (not complete).--]]],
 							name = Strings[302535920001177--[[Generate .mtl--]]],
 							func = function(ex_dlg)
-								ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
-									parent = ex_dlg,
-									text = RetEntityMTLFile(mat),
-									title = Strings[302535920001458--[[Material Properties--]]] .. ": " .. mat_name,
-								}
+								ExamineExportMat(ex_dlg,mat)
 							end,
 						}
+
+						mats[mat_name .. ", Mat: " .. mi .. ", LOD: " .. li .. ", State: " .. state_str .. " (" .. state .. ")"] = mat
 					end
 				end
 			end
+
 			return mats
 		end
 		ChoGGi.ComFuncs.RetEntityMats = RetEntityMats
@@ -1766,22 +1806,28 @@ list[#list+1] = [[	</Material>
 
 			local materials
 
-			local entity = obj and obj.GetEntity and obj:GetEntity()
-			if IsValidEntity(entity) then
-				materials = RetEntityMats(entity,true)
+			if IsValidEntity(obj) then
+				materials = RetEntityMats(obj,true)
 			else
-				materials = {}
-				local all_entities = GetAllEntities()
-				for entity in pairs(all_entities) do
-					materials[entity] = RetEntityMats(entity,true)
+				local entity = obj and obj.GetEntity and obj:GetEntity()
+				if IsValidEntity(entity) then
+					materials = RetEntityMats(entity,true)
+				else
+					materials = {}
+					local all_entities = GetAllEntities()
+					for entity in pairs(all_entities) do
+						materials[entity] = RetEntityMats(entity,true)
+					end
 				end
 			end
 
-				if parent_or_ret == true then
-					return materials
-				else
-					ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent_or_ret,Strings[302535920001458--[[Material Properties--]]])
-				end
+
+			if parent_or_ret == true then
+				return materials
+			else
+				ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent_or_ret,Strings[302535920001458--[[Material Properties--]]])
+			end
+
 		end
 	end -- do
 
@@ -1832,7 +1878,7 @@ list[#list+1] = [[	</Material>
 
 			-- and sort
 			if #images_table > 0 then
-				images_table = ChoGGi.ComFuncs.RetTableNoDupes(images_table)
+				ChoGGi.ComFuncs.TableCleanDupes(images_table)
 				table_sort(images_table, function(a, b)
 					return CmpLower(a.name, b.name)
 				end)
@@ -3415,8 +3461,13 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			for i = 1, #list do
 				local o = list[i]
 				if IsPoint(o) then
-					c = c + 1
-					vertices[c] = o
+					if o:z() then
+						c = c + 1
+						vertices[c] = o
+					else
+						c = c + 1
+						vertices[c] = o:SetTerrainZ()
+					end
 				elseif IsValid(o) then
 					c = c + 1
 					vertices[c] = o:GetVisualPos()

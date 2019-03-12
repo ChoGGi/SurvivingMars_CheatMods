@@ -5,6 +5,7 @@
 - Debug>Force Story Bits shows full list instead of just "actively waiting" ones.
 - Renamed Attach Spots List/Attach Spots Toggle to Entity Spots/Entity Spots Toggle.
 - Entity Spots now returns a proper looking .ent file (as well as showing states).
+- Hides Cheats menu quickbar when there's no items (for the OCD annoyed by that small white square).
 - Examine:
 - > Added Toolbar>Toggle Objlist: Toggle setting the metatable for this table to an objlist (for using mark/delete all).
 - > Added a Skip Clear to the Object>Toggle funcs: Instead of removing info objs each time this will leave them.

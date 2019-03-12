@@ -316,14 +316,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	-- we need to build this before the colourpicker stuff, or do another check for the colourpicker
 	self:BuildList()
 
-	-- select the first list item, so there's no errors when typing in the input box
-	if self.custom_type ~= 0 then
-		self.idList:SetInitialSelection(true)
-		-- update custom value text
-		self:idListOnSelect("L")
-	end
-
-	-- add the colour picker?
+	-- add the colour picker
 	if self.custom_type == 2 or self.custom_type == 5 then
 		-- keep all colour elements in here for easier... UIy stuff
 		self.idColourContainer = g_Classes.ChoGGi_DialogSection:new({
@@ -434,6 +427,13 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	-- hide ok/cancel buttons as they don't do jack
 	if self.custom_type == 1 then
 		self.idButtonContainer:SetVisible(false)
+	end
+
+	-- select the first list item, so there's no errors when typing in the input box
+	if self.custom_type ~= 0 then
+		self.idList:SetInitialSelection(true)
+		-- update custom value text
+		self:idListOnSelect("L")
 	end
 
 	-- we don't want OnColorChanged to fire till after user does something in the dialog
