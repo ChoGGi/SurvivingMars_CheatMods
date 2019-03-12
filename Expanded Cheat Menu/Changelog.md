@@ -11,6 +11,7 @@
 - > Added a Skip Clear to the Object>Toggle funcs: Instead of removing info objs each time this will leave them.
 - > Added to Context menu: Clipboard, Number Double/Halve, Boolean Toggle/To Table.
 - > Objects menu will show up as long as it's a valid entity (IsValid doesn't work for some attachments).
+- > Added more entries to Get Mat Props, also added sub materials.
 
 ### Fixed:
 - Test Locale File would freeze on certain malformed strings (same as SM does).
