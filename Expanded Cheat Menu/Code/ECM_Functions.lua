@@ -3177,20 +3177,24 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 			local prev_str = Translate(1000231--[[Previous--]])
 			local next_str = Translate(1000232--[[Next--]])
+			local cur_str = Strings[302535920000106--[[Current--]]]
 
 			for i = 1, #loaded_csv do
 				local entry = loaded_csv[i]
+
 				local translation
-				if entry[order[1]] and entry[order[1]] ~= "" then
-					translation = entry[order[1]]
-				elseif entry[order[2]] and entry[order[2]] ~= "" then
-					translation = entry[order[2]]
+				local ord1,ord2 = entry[order[1]],entry[order[2]]
+				if ord1 and ord1 ~= "" then
+					translation = ord1
+				elseif ord2 and ord2 ~= "" then
+					translation = ord2
 				else
 					translation = entry[order[3]]
 				end
+
 				local id = tonumber(entry.id)
 
-				if id then
+				if id and translation then
 					out_table[id] = translation
 					if out_gendertable then
 						out_gendertable[id] = entry.gender
@@ -3198,10 +3202,11 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				else
 					strings_count = strings_count + 1
 					strings_failed[strings_count] = {
-						id = i,
-						[Strings[302535920000106--[[Current--]]] .. " id"] = entry.id,
-						[Strings[302535920000106--[[Current--]]] .. " text"] = entry.text,
-						[Strings[302535920000106--[[Current--]]] .. " translated_new"] = entry.translated_new,
+						name = "index: " .. i,
+						[cur_str .. " id"] = entry.id,
+						[cur_str .. " text"] = entry.text,
+						[cur_str .. " translated_new"] = entry.translated_new,
+						[cur_str .. " translated"] = entry.translated,
 					}
 					-- add some context
 					local eprev = loaded_csv[i-1]
@@ -3211,11 +3216,13 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 						str[prev_str .. " id"] = eprev.id
 						str[prev_str .. " text"] = eprev.text
 						str[prev_str .. " translated_new"] = eprev.translated_new
+						str[prev_str .. " translated"] = eprev.translated
 					end
 					if enext then
 						str[next_str .. " id"] = enext.id
 						str[next_str .. " text"] = enext.text
 						str[next_str .. " translated_new"] = enext.translated_new
+						str[next_str .. " translated"] = enext.translated
 					end
 
 				end
@@ -3325,6 +3332,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.TestLocaleFile(test_csv)")
 				else
 					csv_failed = {}
+					csv_count = 0
 					test_csv,loaded_csv = TestCSV(filepath,test_csv)
 				end
 			end
