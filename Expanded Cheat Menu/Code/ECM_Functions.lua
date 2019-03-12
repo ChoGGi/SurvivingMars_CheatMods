@@ -1894,7 +1894,7 @@ Some of the file names are guesses. This also doesn't include any surf/surf_hash
 		local DoneObject = DoneObject
 		local dupe_list = {}
 
-		function ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,list,cls)
+		function ChoGGi.ComFuncs.CleanInfoAttachDupes(list,cls)
 			table_clear(dupe_list)
 
 			-- clean up dupes in order of older
@@ -2119,7 +2119,7 @@ Some of the file names are guesses. This also doesn't include any surf/surf_hash
 
 			BuildLines(obj,params)
 
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,obj.ChoGGi_surfacelinesobj)
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_surfacelinesobj)
 			return obj.ChoGGi_surfacelinesobj
 		end
 	end -- do
@@ -2413,8 +2413,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				params.colour,
 				params.offset
 			)
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,obj.ChoGGi_shape_obj,"ChoGGi_OText")
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,obj.ChoGGi_shape_obj,"ChoGGi_OPolyline")
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj,"ChoGGi_OText")
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj,"ChoGGi_OPolyline")
 
 			return obj.ChoGGi_shape_obj
 		end
@@ -2799,14 +2799,14 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				params.colour
 			)
 
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,obj.ChoGGi_ShowAttachSpots,"ChoGGi_OText")
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots,"ChoGGi_OText")
 
 			-- play connect the dots if there's chains
 			if #obj.ChoGGi_ShowAttachSpots > 1 and params.annotation and params.annotation:find("chain") then
 				EntitySpots_Add_Annot(obj,params.depth_test,RandomColourLimited())
 			end
 
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj,obj.ChoGGi_ShowAttachSpots,"ChoGGi_OPolyline")
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots,"ChoGGi_OPolyline")
 
 			return obj.ChoGGi_ShowAttachSpots
 

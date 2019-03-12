@@ -307,7 +307,6 @@ You need my HelperMod installed to be able to use this."--]]],
 		local c = 0
 
 		local temp_table = {}
-		local StoryBits = StoryBits
 		for id,story_def in pairs(StoryBits) do
 			table_clear(temp_table)
 			for i = 1, #story_def do
