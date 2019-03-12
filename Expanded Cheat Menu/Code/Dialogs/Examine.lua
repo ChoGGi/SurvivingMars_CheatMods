@@ -2211,7 +2211,6 @@ function Examine:ConvertValueToInfo(obj)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
-
 function Examine:RetDebugUpValue(obj,list,c,nups)
 	for i = 1, nups do
 		local name, value = debug_getupvalue(obj, i)

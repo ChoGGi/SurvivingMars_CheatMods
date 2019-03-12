@@ -3151,10 +3151,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 	end -- do
 
 	do -- TestLocaleFile
---~ 	ChoGGi.ComFuncs.TestLocaleFile(
---~ 		Mods["bMPAkJP"].env.CurrentModPath .. "Locale/TraduzioneItaliano.csv",
---~ 		5
---~ 	)
+--~ ChoGGi.ComFuncs.TestLocaleFile(Mods["bMPAkJP"].env.CurrentModPath .. "Locale/TraduzioneItaliano.csv",true)
 		local my_locale = ChoGGi.library_path .. "Locales/English.csv"
 		local csv_load_fields = {
 			"id",
@@ -3231,6 +3228,12 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 		local function TestCSV(filepath,column_limit)
 			column_limit = filepath == my_locale and 4 or column_limit
+			if column_limit == true then
+				column_limit = 5
+			end
+			if not column_limit then
+				column_limit = 5
+			end
 
 			-- this is the LoadCSV func from CommonLua/Core/ParseCSV.lua with some DebugPrint added
 			local omit_captions = "omit_captions"
@@ -3326,13 +3329,13 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			end
 
 			-- always reset to 0 for reporting (csv_count > 0)
+			csv_count = 0
+			csv_failed = {}
 			local loaded_csv
 			if test_csv or testing then
 				if blacklist then
 					ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.TestLocaleFile(test_csv)")
 				else
-					csv_failed = {}
-					csv_count = 0
 					test_csv,loaded_csv = TestCSV(filepath,test_csv)
 				end
 			end
@@ -3353,6 +3356,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 			strings_failed = {}
 			strings_count = 0
+			-- this can fail, so we pcall it (some results are better than none)
 			pcall(function()
 				ProcessLoadedTables(
 					loaded_csv,
@@ -3363,7 +3367,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			end)
 
 			local title
-			if strings_count > 0 or (csv_count > 0 and not (csv_count == 2 and testing )) then
+			if strings_count > 0 or (csv_count > 0 and not (csv_count == 2 and testing)) then
 				title = Strings[302535920001125--[[Test Locale File--]]] .. ": " .. Translate(951--[[Failed to complete operation.--]])
 			else
 				title = Strings[302535920001125--[[Test Locale File--]]] .. ": " .. Translate(1000015--[[Success--]])
