@@ -1,13 +1,9 @@
 -- See LICENSE for terms
 
-local box = box
 -- collection of res widths
 local hud_lookup_table = {
 	[5760] = box(2560,0,2560,0),
 }
-
-local GetScreenSize = UIL.GetScreenSize
-
 -- value we check for a margin to use
 local current_margin
 
@@ -20,13 +16,13 @@ local function WriteModSettings(clear)
 
 	local err, data = AsyncCompress(ValueToLuaCode(current_margin), false, "lz4")
 	if err then
-		print("Centred UI WriteModSettings 1:",err)
+		print("Centred UI WriteModSettings AsyncCompress:",err)
 		return
 	end
 
 	local err = WriteModPersistentData(data)
 	if err then
-		print("Centred UI WriteModSettings 2:",err)
+		print("Centred UI WriteModSettings WriteModPersistentData:",err)
 		return
 	end
 
@@ -59,7 +55,7 @@ local function ReadModSettings()
 end
 
 -- on startup use either saved margin or check table for res width
-current_margin = ReadModSettings() or hud_lookup_table[GetScreenSize():x()]
+current_margin = ReadModSettings() or hud_lookup_table[UIL.GetScreenSize():x()]
 
 -- when res is changed from options try table first then settings
 function OnMsg.SystemSize(pt)
@@ -104,9 +100,9 @@ function OnMsg.ModsReloaded()
 		"RolloverTitle", [[Set Margin]],
 		"RolloverText", [[Allows you to Test/Save a custom margin.
 Don't forget to send me your res and margin, so I can add them to the list.]],
-		"RolloverHint", T(0,[[<left_click> Show Options <right_click> Test Margin]])),
+		"RolloverHint", T(0,[[<left_click> Show Options <right_click> Test Margin]]),
 		"Id", "idSetupMargins",
-		"Image", string.format("%sUI/hud_margin.png",CurrentModPath),
+		"Image", CurrentModPath .. "UI/hud_margin.png",
 		"FXPress", "MainMenuButtonClick",
 		"OnPress", function()
 			HUD.idSetupMarginsOnPress()
@@ -175,7 +171,7 @@ function HUD.idSetupMarginsOnPress(right)
 				current_margin = nil
 				WriteModSettings(true)
 			elseif choice_str == [[Use Mod Setting]] then
-				current_margin = hud_lookup_table[GetScreenSize():x()]
+				current_margin = hud_lookup_table[UIL.GetScreenSize():x()]
 				WriteModSettings()
 			else
 				SetMargins(choice_str)
