@@ -21,7 +21,7 @@ ID,Text,Translation,Old Translation,Gender
 302535920000971,Sites,
 302535920001476,Edit Flags,
 302535920001447,Shows list of flags set for selected object.,
-302535920000235,Attach Spots List,
+302535920000235,Entity Spots,
 302535920001445,Shows list of attach spots for use with .ent files.,
 302535920001432,3D,
 302535920001433,Fiddle with object angle/axis/pos and so forth.,
@@ -119,11 +119,9 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 302535920001177,Generate .mtl,
 302535920000497,Hook Started,
 302535920000498,Hook Stopped,
-302535920001068,"Readme:
-See bottom for box/bsphere/material/mesh.
-The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one)
-
-",
+302535920001068,"The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
+Attachment bspheres are off (x and y are; z and rotate aren't).
+Some of the file names are guesses. This also doesn't include any surf/surf_hash entries.",
 302535920001411,ECM has been disabled. Change DisableECM to false in settings file.,
 302535920001383,AddXTemplate borked template name: %s template: %s list: %s,
 302535920000013,This shouldn't happen... Well dang something's bork bork bork.,
@@ -298,6 +296,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook",
 302535920000870,Shows mod log msgs in an examine dialog.,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920001570,Fallback,
 302535920001563,Set amount to <color 100 255 100>%s</color>.,
 302535920001564,Double Number,
 302535920001565,Halve Number,
@@ -1112,7 +1111,7 @@ See the examine list for ids.",
 302535920000486,"Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
 
 Use Shift + Arrow keys to change the height/radius.",
-302535920000449,Attach Spots Toggle,
+302535920000449,Entity Spots Toggle,
 302535920000450,Toggle showing attachment spots on selected object.,
 302535920000451,Measure Tool,
 302535920000452,Measures stuff (press again to remove the lines).,

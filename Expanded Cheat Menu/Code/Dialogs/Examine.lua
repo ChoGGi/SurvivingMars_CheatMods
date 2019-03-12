@@ -902,11 +902,11 @@ function Examine:BuildObjectMenuPopup()
 				self:ShowHexShapeList()
 			end,
 		},
-		{name = Strings[302535920000449--[[Attach Spots Toggle--]]],
+		{name = Strings[302535920000449--[[Entity Spots Toggle--]]],
 			hint = Strings[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 			image = "CommonAssets/UI/Menu/ShowAll.tga",
 			clicked = function()
-				self:ShowAttachSpotsList()
+				self:ShowEntitySpotsList()
 			end,
 		},
 		{name = Strings[302535920000459--[[Anim Debug Toggle--]]],
@@ -924,7 +924,7 @@ function Examine:BuildObjectMenuPopup()
 			end,
 		},
 		{is_spacer = true},
-		{name = Strings[302535920000235--[[Attach Spots List--]]],
+		{name = Strings[302535920000235--[[Entity Spots--]]],
 			hint = Strings[302535920001445--[[Shows list of attaches for use with .ent files.--]]],
 			image = "CommonAssets/UI/Menu/ListCollections.tga",
 			clicked = function()
@@ -1534,8 +1534,16 @@ function Examine:ShowHexShapeList()
 			value = "Clear",
 		},
 		{
-			text = "HexNeighbours",
+			text = "HexNeighbours (" .. S[302535920001570--[[Fallback--]]] .. ")",
 			value = HexNeighbours,
+		},
+		{
+			text = "HexSurroundingsCheckShape (" .. S[302535920001570--[[Fallback--]]] .. ")",
+			value = HexSurroundingsCheckShape,
+		},
+		{
+			text = "FallbackOutline (" .. S[302535920001570--[[Fallback--]]] .. ")",
+			value = FallbackOutline,
 		},
 	}
 	local c = #item_list
@@ -1544,7 +1552,7 @@ function Examine:ShowHexShapeList()
 	for i = 1, #self.hex_shape_tables do
 		local shape_list = self.hex_shape_tables[i]
 		local shape = g[shape_list][entity]
-		if shape then
+		if shape and #shape > 0 then
 			c = c + 1
 			item_list[c] = {
 				text = shape_list,
@@ -1667,10 +1675,10 @@ function Examine:ShowBBoxList()
 	}
 end
 
-function Examine:ShowAttachSpotsList()
+function Examine:ShowEntitySpotsList()
 	local obj = self.obj_ref
 
-	self.ChoGGi.ComFuncs.AttachSpots_Clear(obj)
+	self.ChoGGi.ComFuncs.EntitySpots_Clear(obj)
 
 	if not IsValidEntity(obj:GetEntity()) then
 		return self:InvalidMsgPopup(nil,Translate(155--[[Entity--]]))
@@ -1714,16 +1722,16 @@ function Examine:ShowAttachSpotsList()
 		choice = choice[1]
 
 		if choice.value == "All" then
-			self.ChoGGi.ComFuncs.AttachSpots_Toggle(obj,{
+			self.ChoGGi.ComFuncs.EntitySpots_Toggle(obj,{
 				skip_return = true,
 				depth_test = choice.check1,
 				show_pos = choice.check2,
 				skip_clear = choice.check3,
 			})
 		elseif choice.value == "Clear" then
-			self.ChoGGi.ComFuncs.AttachSpots_Clear(obj)
+			self.ChoGGi.ComFuncs.EntitySpots_Clear(obj)
 		else
-			self.ChoGGi.ComFuncs.AttachSpots_Toggle(obj,{
+			self.ChoGGi.ComFuncs.EntitySpots_Toggle(obj,{
 				spot_type = choice.name,
 				annotation = choice.value,
 				skip_return = true,
@@ -1737,7 +1745,7 @@ function Examine:ShowAttachSpotsList()
 	self.ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000449--[[Attach Spots Toggle--]]] .. ": " .. self.name,
+		title = Strings[302535920000449--[[Entity Spots Toggle--]]] .. ": " .. self.name,
 		hint = Strings[302535920000450--[[Toggle showing attachment spots on selected object.--]]],
 		custom_type = 7,
 		skip_icons = true,
@@ -2293,7 +2301,6 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 	local obj_metatable = getmetatable(obj)
 	local c = 0
-	local is_valid_obj
 	local str_not_translated
 
 	if obj_type == "nil" then
@@ -2440,9 +2447,16 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	end
 
 	-- cobjects, not property objs? (IsKindOf)
-	if IsValid(obj) and obj:IsKindOf("CObject") then
-		is_valid_obj = true
-		local valid_ent = IsValidEntity(obj:GetEntity())
+	local is_valid_obj = IsValid(obj)
+	if is_valid_obj and obj:IsKindOf("CObject") then
+		local entity
+		if obj:IsKindOf("Colonist") then
+			entity = GetSpecialistEntity(obj.specialist, obj.entity_gender, obj.race, obj.age_trait, obj.traits)
+		else
+			entity = obj:GetEntity()
+		end
+
+		local valid_ent = IsValidEntity(entity)
 
 		table_insert(list_obj_str,1,"\t--"
 			.. self:HyperLink(obj,function()
@@ -2481,20 +2495,6 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			else
 				path = going_to
 			end
-
---~ 			local state = obj:GetState()
---~ 			table_insert(list_obj_str, 2, Translate(3722--[[State--]]) .. ": "
---~ 				.. GetStateName(state) .. ", step: "
---~ 				.. self:HyperLink(obj,function()
---~ 					self:AddSphere(obj)
---~ 				end)
---~ 				.. self:ConvertValueToInfo(obj:GetStepVector(state,0))
---~ 				.. HLEnd .. "\n"
-
---~ 				.. (current_pos ~= going_to
---~ 						and Strings[302535920001545--[[Going to %s--]]]:format(self:ConvertValueToInfo(path)) .. "\n"
---~ 						or "")
---~ 			)
 
 			-- step vector
 			local state = obj:GetState()
@@ -2537,7 +2537,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		if valid_ent then
 			-- some entity details as well
 			table_insert(list_obj_str, 2,
-				"GetEntity(): " .. self:ConvertValueToInfo(obj:GetEntity())
+				"GetEntity(): " .. self:ConvertValueToInfo(entity)
 				.. "\nGetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
 				.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices())
 				.. ((parent or state_added) and "" or "\n"))
@@ -2895,11 +2895,14 @@ function Examine:SetToolbarVis(obj,obj_metatable)
 			end
 
 			if IsValid(obj) then
-				self.idObjects:SetVisible(true)
 				-- can't mark if it isn't an object, and no sense in marking something off the map
 				if obj:GetPos() ~= InvalidPos then
 					self.idButMarkObject:SetVisible(true)
 				end
+			end
+
+			if obj.GetEntity and IsValidEntity(obj:GetEntity()) then
+				self.idObjects:SetVisible(true)
 			end
 
 			-- objlist objects let us do some easy for each
@@ -3130,7 +3133,7 @@ function Examine:Done(...)
 	if IsValid(obj) then
 		self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
 		self.ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
-		self.ChoGGi.ComFuncs.AttachSpots_Clear(obj)
+		self.ChoGGi.ComFuncs.EntitySpots_Clear(obj)
 		self.ChoGGi.ComFuncs.SurfaceLines_Clear(obj)
 	elseif IsObjlist(obj) then
 		self.ChoGGi.ComFuncs.ObjListLines_Clear(obj)

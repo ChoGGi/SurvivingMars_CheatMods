@@ -3,14 +3,22 @@
 ## v13.0 (Unreleased)
 ### Changed:
 - Debug>Force Story Bits shows full list instead of just "actively waiting" ones.
+- Renamed Attach Spots List/Attach Spots Toggle to Entity Spots/Entity Spots Toggle.
+- Entity Spots now returns a proper looking .ent file (as well as showing states).
 - Examine:
 - > Added Toolbar>Toggle Objlist: Toggle setting the metatable for this table to an objlist (for using mark/delete all).
 - > Added a Skip Clear to the Object>Toggle funcs: Instead of removing info objs each time this will leave them.
 - > Added to Context menu: Clipboard, Number Double/Halve, Boolean Toggle/To Table.
+- > Objects menu will show up as long as it's a valid entity (IsValid doesn't work for some attachments).
 
 ### Fixed:
+- Test Locale File would freeze on certain malformed strings (same as SM does).
+- Clone Object didn't work well on colonists.
 - Debug>Force Story Bits works properly now.
-- Examine>Tools>Functions failed on some objects.
+- Examine:
+- > Tools>Functions failed on some objects.
+- > Colonists use a different func to get the entity, so it now shows that (instead of "Male" for everyone).
+- > It didn't check extra args for properness (sending it a func call that returned a bunch of args caused issues).
 
 ## v12.9 (10 Mar 2019)
 ### Added:
