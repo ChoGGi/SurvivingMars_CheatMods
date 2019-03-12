@@ -12,17 +12,20 @@ RandomColour(1000)
 -- local instead of global lookup is slightly faster
 local table_find = table.find
 local table_clear = table.clear
+local table_iclear = table.iclear
 local AsyncRand = AsyncRand
 
 -- helper function
 local dupe_t = {}
-local function RetTableNoDupes(list)
-	local temp_t = {}
+local temp_t = {}
+local function TableCleanDupes(list)
 	-- quicker to make a new list on large tables
 	if #list > 10000 then
 		dupe_t = {}
+		temp_t = {}
 	else
 		table_clear(dupe_t)
+		table_iclear(temp_t)
 	end
 
 	local c = 0
@@ -34,7 +37,12 @@ local function RetTableNoDupes(list)
 		end
 	end
 
-	return temp_t
+	table_iclear(list)
+	for i = 1, #temp_t do
+		list[i] = temp_t[i]
+	end
+
+	return list
 end
 
 function RandomColour(amount)
@@ -59,7 +67,7 @@ function RandomColour(amount)
 				colour_list[c] = AsyncRand(16777217) + -16777216
 			end
 			-- remove dupes (it's quicker to do this then check the table for each newly added colour)
-			colour_list = RetTableNoDupes(colour_list)
+			TableCleanDupes(colour_list)
 		-- once we're at parity then off we go
 		until #colour_list == amount
 

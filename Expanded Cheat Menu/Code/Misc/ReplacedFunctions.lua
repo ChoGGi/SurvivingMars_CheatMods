@@ -439,14 +439,21 @@ function OnMsg.ClassesGenerate()
 		if self.Toolbar ~= "DevToolbar" then
 			return
 		end
+		local buttons_c = #self
 		-- if any of them are a func then change it to the text
-		for i = 1, #self do
+		for i = 1, buttons_c do
 			local button = self[i]
 			if type(button:GetRolloverText()) == "function" then
 				function button.GetRolloverText()
 					return button.action.RolloverText()
 				end
 			end
+		end
+		-- hide it if no buttons
+		if buttons_c == 0 then
+			self.parent:SetVisible()
+		else
+			self.parent:SetVisible(true)
 		end
 
 	end

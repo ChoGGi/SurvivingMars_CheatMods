@@ -19,6 +19,7 @@ local FindNearestObject = FindNearestObject
 local table_remove = table.remove
 local table_find = table.find
 local table_clear = table.clear
+local table_iclear = table.iclear
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 local function SaveOrigFunc(class_or_func,func_name)
@@ -1124,15 +1125,18 @@ function ChoGGi.ComFuncs.SetSavedSetting(setting,value)
 	end
 end
 
-do -- RetTableNoDupes
+do -- TableCleanDupes
 	local dupe_t = {}
-	function ChoGGi.ComFuncs.RetTableNoDupes(list)
-		local temp_t = {}
+	local temp_t = {}
+	function ChoGGi.ComFuncs.TableCleanDupes(list)
 		local c = 0
+
 		-- quicker to make a new list on large tables
 		if #list > 10000 then
 			dupe_t = {}
+			temp_t = {}
 		else
+			table_iclear(temp_t)
 			table_clear(dupe_t)
 		end
 
@@ -1145,10 +1149,16 @@ do -- RetTableNoDupes
 			end
 		end
 
-		return temp_t
+		-- instead of returning a new table we clear the old and add the values
+		table_iclear(list)
+		for i = 1, #temp_t do
+			list[i] = temp_t[i]
+		end
+
+--~ 		return list
 	end
 end -- do
-local RetTableNoDupes = ChoGGi.ComFuncs.RetTableNoDupes
+local TableCleanDupes = ChoGGi.ComFuncs.TableCleanDupes
 
 -- ChoGGi.ComFuncs.RemoveFromTable(sometable,"class","SelectionArrow")
 function ChoGGi.ComFuncs.RemoveFromTable(list,cls,text)
@@ -1254,7 +1264,6 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 		)
 		return
 	end
-
 	if not IsKindOf(list.parent,"XWindow") then
 		list.parent = nil
 	end
@@ -2227,7 +2236,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 					colour_list[c] = AsyncRand(16777217) + -16777216
 				end
 				-- remove dupes (it's quicker to do this then check the table for each newly added colour)
-				colour_list = RetTableNoDupes(colour_list)
+				TableCleanDupes(colour_list)
 			-- once we're at parity then off we go
 			until #colour_list == amount
 

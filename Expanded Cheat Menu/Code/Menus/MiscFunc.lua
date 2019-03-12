@@ -77,7 +77,7 @@ function OnMsg.ClassesGenerate()
 			end
 
 			-- remove dupes
-			ChoGGi.UserSettings.UnpinObjects = ChoGGi.ComFuncs.RetTableNoDupes(ChoGGi.UserSettings.UnpinObjects)
+			ChoGGi.ComFuncs.TableCleanDupes(ChoGGi.UserSettings.UnpinObjects)
 
 			local found = true
 			while found do

@@ -49,25 +49,12 @@ end
 
 local HLEnd = "</h></color>"
 
-local ClearShowObj
-local DebugGetInfo
-local DeleteObject
-local DotNameToObject
-local GetAllAttaches
+--~ local any funcs used in ConvertValueToInfo
 local GetParentOfKind
 local IsControlPressed
-local OpenInExamineDlg
-local Random
-local RandomColour
-local ImageExts
 local RetName
-local RetProperType
-local RetSortTextAssTable
-local RetThreadInfo
-local ShowObj
 local TableConcat
 local Translate
-local ValueToStr
 
 local InvalidPos
 local Strings
@@ -77,25 +64,11 @@ local testing
 -- need to wait till Library mod is loaded
 function OnMsg.ClassesGenerate()
 	local ChoGGi = ChoGGi
-	ClearShowObj = ChoGGi.ComFuncs.ClearShowObj
-	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-	DeleteObject = ChoGGi.ComFuncs.DeleteObject
-	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
-	GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
 	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 	IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
-	OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
-	Random = ChoGGi.ComFuncs.Random
-	RandomColour = ChoGGi.ComFuncs.RandomColour
-	ImageExts = ChoGGi.ComFuncs.ImageExts
 	RetName = ChoGGi.ComFuncs.RetName
-	RetProperType = ChoGGi.ComFuncs.RetProperType
-	RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
-	RetSortTextAssTable = ChoGGi.ComFuncs.RetSortTextAssTable
-	ShowObj = ChoGGi.ComFuncs.ShowObj
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	Translate = ChoGGi.ComFuncs.Translate
-	ValueToStr = ChoGGi.ComFuncs.ValueToStr
 
 	InvalidPos = ChoGGi.Consts.InvalidPos
 	Strings = ChoGGi.Strings
@@ -181,10 +154,10 @@ function Examine:Init(parent, context)
 	local const = const
 
 	-- my popup func checks for ids and "refreshs" a popup with the same id, so random it is
-	self.idAttachesMenu = Random()
-	self.idParentsMenu = Random()
-	self.idToolsMenu = Random()
-	self.idObjectsMenu = Random()
+	self.idAttachesMenu = self.ChoGGi.ComFuncs.Random()
+	self.idParentsMenu = self.ChoGGi.ComFuncs.Random()
+	self.idToolsMenu = self.ChoGGi.ComFuncs.Random()
+	self.idObjectsMenu = self.ChoGGi.ComFuncs.Random()
 
 	self.attaches_menu_popup = {}
 	self.parents_menu_popup = {}
@@ -204,7 +177,7 @@ function Examine:Init(parent, context)
 		self.str_object = context.parent == "str" and true
 		context.parent = nil
 	end
-	self.name = RetName(self.str_object and DotNameToObject(self.obj) or self.obj)
+	self.name = RetName(self.str_object and self.ChoGGi.ComFuncs.DotNameToObject(self.obj) or self.obj)
 
 	self.title = context.title
 
@@ -307,7 +280,14 @@ Press once to clear this examine, again to clear all."--]]],
 			RolloverText = Strings[302535920000059--[[Destroy all objects in objlist!--]]],
 			OnPress = self.idButDeleteAllOnPress,
 		}, self.idToolbarButtons)
-		-- right side
+
+		-- far right side
+		self.idToolbarButtonsRightRefresh = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idToolbarButtonsRightRefresh",
+			Dock = "right",
+			LayoutMethod = "HList",
+			DrawOnTop = true,
+		}, self.idToolbarArea)
 
 		self.idAutoRefresh_update_str = Strings[302535920001257--[[Auto-refresh list every second.--]]]
 			.. "\n" .. Strings[302535920001422--[[Right-click to change refresh delay.--]]]
@@ -321,48 +301,55 @@ Press once to clear this examine, again to clear all."--]]],
 			OnChange = self.idAutoRefreshOnChange,
 			OnMouseButtonDown = self.idAutoRefreshOnMouseButtonDown,
 			Init = self.CheckButtonInit,
-		}, self.idToolbarArea)
+		}, self.idToolbarButtonsRightRefresh)
 
 		self.idAutoRefreshDelay = g_Classes.ChoGGi_TextInput:new({
 			Id = "idAutoRefreshDelay",
-			Dock = "right",
+			Dock = "left",
 			MinWidth = 50,
 			Margins = box(0,0,6,0),
 			FoldWhenHidden = true,
 			RolloverText = Strings[302535920000967--[[Delay in ms between updating text.--]]],
 			OnTextChanged = self.idAutoRefreshDelayOnTextChanged,
-		}, self.idToolbarArea)
+		}, self.idToolbarButtonsRightRefresh)
 		-- vis is toggled when rightclicking autorefresh checkbox
 		self.idAutoRefreshDelay:SetVisible(false)
 		self.idAutoRefreshDelay:SetText(tostring(self.autorefresh_delay))
-		--
-		self.idSortDir = g_Classes.ChoGGi_CheckButton:new({
-			Id = "idSortDir",
+
+		-- mid right
+		self.idToolbarButtonsRight = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idToolbarButtonsRight",
 			Dock = "right",
-			Text = Translate(10124--[[Sort--]]),
-			RolloverText = Strings[302535920001248--[[Sort normally or backwards.--]]],
-			OnChange = self.idSortDirOnChange,
-			Init = self.CheckButtonInit,
+			LayoutMethod = "HList",
+			DrawOnTop = true,
 		}, self.idToolbarArea)
+
+		--
+		self.idViewEnum = g_Classes.ChoGGi_CheckButton:new({
+			Id = "idViewEnum",
+			MinWidth = 0,
+			Text = Strings[302535920001442--[[Enum--]]],
+			RolloverText = Strings[302535920001443--[[Show values from EnumVars(obj).--]]],
+			OnChange = self.idViewEnumOnChange,
+		}, self.idToolbarButtonsRight)
 		--
 		self.idShowAllValues = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idShowAllValues",
-			Dock = "right",
 			MinWidth = 0,
 			Text = Translate(4493--[[All--]]),
 			RolloverText = Strings[302535920001391--[[Show all values: getmetatable(obj).--]]],
 			OnChange = self.idShowAllValuesOnChange,
 			Init = self.CheckButtonInit,
-		}, self.idToolbarArea)
+		}, self.idToolbarButtonsRight)
 		--
-		self.idViewEnum = g_Classes.ChoGGi_CheckButton:new({
-			Id = "idViewEnum",
-			Dock = "right",
-			MinWidth = 0,
-			Text = Strings[302535920001442--[[Enum--]]],
-			RolloverText = Strings[302535920001443--[[Show values from EnumVars(obj).--]]],
-			OnChange = self.idViewEnumOnChange,
-		}, self.idToolbarArea)
+		self.idSortDir = g_Classes.ChoGGi_CheckButton:new({
+			Id = "idSortDir",
+			Text = Translate(10124--[[Sort--]]),
+			RolloverText = Strings[302535920001248--[[Sort normally or backwards.--]]],
+			OnChange = self.idSortDirOnChange,
+			Init = self.CheckButtonInit,
+		}, self.idToolbarButtonsRight)
+		--
 	end -- toolbar area
 
 	do -- search area
@@ -561,7 +548,7 @@ function Examine:idTextOnHyperLinkRollover(link)
 			obj_value = self.obj_ref[obj]
 		end
 
-		name = name .. "\n\n\n" .. ValueToStr(obj_value)
+		name = name .. "\n\n\n" .. self.ChoGGi.ComFuncs.ValueToStr(obj_value)
 
 --~ 		-- stick value in search box
 --~ 		obj = self.obj_ref[obj]
@@ -656,13 +643,13 @@ function Examine:idButClearOnPress()
 	local count = #self.marked_objects
 	if count > 0 then
 		for i = 1, count do
-			ClearShowObj(self.marked_objects[i])
+			self.ChoGGi.ComFuncs.ClearShowObj(self.marked_objects[i])
 		end
 	else
 		-- clear all spheres
-		ClearShowObj(true)
+		self.ChoGGi.ComFuncs.ClearShowObj(true)
 		-- if this has a custom colour
-		ClearShowObj(self.obj_ref)
+		self.ChoGGi.ComFuncs.ClearShowObj(self.obj_ref)
 	end
 	self.marked_objects:Clear()
 
@@ -710,7 +697,7 @@ function Examine:idButDeleteAllOnPress()
 				SuspendPassEdits("Examine:idButDeleteAllOnPress")
 				for _,obj in pairs(self.obj_ref) do
 					if IsValid(obj) then
-						DeleteObject(obj)
+						self.ChoGGi.ComFuncs.DeleteObject(obj)
 					elseif obj.delete then
 						DoneObject(obj)
 					end
@@ -745,22 +732,26 @@ function Examine:idButMarkAllOnPress()
 		end
 	end
 	ResumePassEdits("Examine:idButMarkAllOnPress")
+	self.ChoGGi.ComFuncs.TableCleanDupes(self.marked_objects)
+
 end
 function Examine:idButToggleObjlistOnPress()
-	local obj = GetRootDialog(self).obj_ref
+	self = GetRootDialog(self)
 
-	local meta = getmetatable(obj)
+	local meta = getmetatable(self.obj_ref)
 	if meta == objlist then
-		setmetatable(obj, nil)
+		setmetatable(self.obj_ref, nil)
 	elseif not meta then
-		setmetatable(obj, objlist)
+		setmetatable(self.obj_ref, objlist)
 	end
+	-- update view
+	self:SetObj()
 end
 
 function Examine:AddSphere(obj,c,colour,skip_view,skip_colour)
-	local sphere = ShowObj(obj, colour,skip_view,skip_colour)
+	local sphere = self.ChoGGi.ComFuncs.ShowObj(obj, colour,skip_view,skip_colour)
 	if IsValid(sphere) then
-		c = (c and c + 1) or (#self.marked_objects + 1)
+		c = (c or #self.marked_objects) + 1
 		self.marked_objects[c] = sphere
 	end
 	return c
@@ -942,7 +933,7 @@ function Examine:BuildObjectMenuPopup()
 			hint = Strings[302535920001525--[[Shows list of surfaces for the object entity.--]]],
 			image = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 			clicked = function()
-				OpenInExamineDlg(
+				self.ChoGGi.ComFuncs.OpenInExamineDlg(
 					self.ChoGGi.ComFuncs.RetSurfaceMasks(self.obj_ref),self,
 					Strings[302535920001524--[[Entity Surfaces--]]] .. ": " .. self.name
 				)
@@ -1067,7 +1058,7 @@ This can take time on something like the ""Building"" metatable (don't use this 
 						self:BuildFuncList("CObject",self.menu_added.CObject)
 					end
 
-					OpenInExamineDlg(
+					self.ChoGGi.ComFuncs.OpenInExamineDlg(
 						self.menu_list_items,self,
 						Strings[302535920001239--[[Functions--]]] .. ": " .. self.name
 					)
@@ -1138,7 +1129,7 @@ Which you can then mess around with some more in the console."--]]],
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
 				if self.obj_ref.IsKindOf and self.obj_ref:IsKindOf("PropertyObject") then
-					OpenInExamineDlg(
+					self.ChoGGi.ComFuncs.OpenInExamineDlg(
 						GetModifiedProperties(self.obj_ref),
 						self,
 						Translate(931--[[Modified property--]]) .. ": " .. self.name
@@ -1165,7 +1156,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 					for i = 1, #props do
 						props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
 					end
-					OpenInExamineDlg(
+					self.ChoGGi.ComFuncs.OpenInExamineDlg(
 						props_list,self,
 						Strings[302535920001389--[[All Properties--]]] .. ": " .. self.name
 					)
@@ -1869,13 +1860,13 @@ local function Show_ConvertValueToInfo(self,button,obj)
 	if button == "L" and GameState.gameplay and (IsValid(obj) or IsPoint(obj)) then
 		self:AddSphere(obj)
 	else
-		OpenInExamineDlg(obj,self)
+		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
 	end
 end
 local function Examine_ConvertValueToInfo(self,button,obj)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" then
-		OpenInExamineDlg(obj,self)
+		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
 	else
 		self:AddSphere(obj)
 	end
@@ -1892,10 +1883,10 @@ end
 
 function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 	-- id for PopupToggle
-	self.opened_list_menu_id = self.opened_list_menu_id or Random()
+	self.opened_list_menu_id = self.opened_list_menu_id or self.ChoGGi.ComFuncs.Random()
 
 	-- they're sent as strings, but I need to know if it's a number or string and so on
-	local obj_key,obj_type = RetProperType(obj_name)
+	local obj_key,obj_type = self.ChoGGi.ComFuncs.RetProperType(obj_name)
 
 	local obj_value = self.obj_ref[obj_key]
 	local obj_value_str = tostring(obj_value)
@@ -1947,7 +1938,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 	local c = c_orig
 
 	-- if it's an image path then we add an image viewer
-	if ImageExts()[obj_value_str:sub(-3):lower()] then
+	if self.ChoGGi.ComFuncs.ImageExts()[obj_value_str:sub(-3):lower()] then
 		c = c + 1
 		list[c] = {name = Strings[302535920001469--[[Image Viewer--]]],
 			hint = Strings[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."--]]],
@@ -1965,7 +1956,11 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			hint = Strings[302535920001459--[[Shows list of material settings/.dds files for use with .mtl files.--]]],
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
-				OpenInExamineDlg(GetMaterialProperties(obj_value_str),self,Strings[302535920001458--[[Material Properties--]]])
+				self.ChoGGi.ComFuncs.OpenInExamineDlg(
+					GetMaterialProperties(obj_value_str),
+					self,
+					Strings[302535920001458--[[Material Properties--]]]
+				)
 			end,
 		}
 	end
@@ -2396,13 +2391,13 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		c = c + 1
 		list_obj_str[c] = self:ConvertValueToInfo(tostring(obj))
 
-		local name = DebugGetInfo(obj)
+		local name = self.ChoGGi.ComFuncs.DebugGetInfo(obj)
 		if name == "[C](-1)" then
 			name = RetName(obj)
 		end
 		c = c + 1
 		list_obj_str[c] = self:HyperLink(obj,function()
-			OpenInExamineDlg(obj,self)
+			self.ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
 		end) .. name .. HLEnd
 	end
 
@@ -2460,7 +2455,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 		table_insert(list_obj_str,1,"\t--"
 			.. self:HyperLink(obj,function()
-				OpenInExamineDlg(getmetatable(obj),self)
+				self.ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(obj),self)
 			end)
 			.. obj.class
 			.. HLEnd
@@ -2591,7 +2586,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				table_insert(data_meta,1,"\ngetmetatable():")
 				table_insert(data_meta,1,"Unpack(): "
 					.. self:HyperLink(obj,function()
-						OpenInExamineDlg({obj:Unpack()},self,Strings[302535920000885--[[Unpacked--]]])
+						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:Unpack()},self,Strings[302535920000885--[[Unpacked--]]])
 					end)
 					.. "table" .. HLEnd
 				)
@@ -2641,7 +2636,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 					hint = Strings[302535920001124--[[Will take a few seconds to complete.--]]],
 					name = "levels(true, 1):",
 					func = function()
-						OpenInExamineDlg({obj:levels(true, 1)})
+						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:levels(true, 1)})
 					end,
 				}))
 
@@ -2753,7 +2748,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	elseif obj_type == "function" then
 		if blacklist then
 			c = c + 1
-			list_obj_str[c] = "\ngetinfo(): " .. DebugGetInfo(obj)
+			list_obj_str[c] = "\ngetinfo(): " .. self.ChoGGi.ComFuncs.DebugGetInfo(obj)
 		else
 			c = c + 1
 			list_obj_str[c] = "\n"
@@ -2813,7 +2808,7 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 				.. "\n"
 		end
 
-		local info_list = RetThreadInfo(obj)
+		local info_list = self.ChoGGi.ComFuncs.RetThreadInfo(obj)
 		-- needed for the table that's returned if blacklist is enabled (it starts at 1, getinfo starts at 0)
 		local starter = info_list[0] and 0 or 1
 
@@ -2856,7 +2851,7 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 
 		if self.enum_vars and next(self.enum_vars) then
 			list_obj_str[1] = list_obj_str[1] .. self:HyperLink(obj,function()
-				OpenInExamineDlg(self.enum_vars,self,Strings[302535920001442--[[Enum--]]])
+				self.ChoGGi.ComFuncs.OpenInExamineDlg(self.enum_vars,self,Strings[302535920001442--[[Enum--]]])
 			end)
 			.. " enum" .. HLEnd
 		end
@@ -2932,7 +2927,7 @@ end
 
 function Examine:BuildParentsMenu(list,list_type,title,sort_type)
 	if list and next(list) then
-		list = RetSortTextAssTable(list,sort_type)
+		list = self.ChoGGi.ComFuncs.RetSortTextAssTable(list,sort_type)
 		self[list_type] = list
 		local c = #self.parents_menu_popup
 
@@ -2953,7 +2948,7 @@ function Examine:BuildParentsMenu(list,list_type,title,sort_type)
 					name = item,
 					hint = Strings[302535920000069--[[Examine--]]] .. " " .. Translate(3696--[[Class--]]) .. " " .. Translate(298035641454--[[Object--]]) .. ": <color 100 255 100>" .. item .. "</color>",
 					clicked = function()
-						OpenInExamineDlg(g_Classes[item],self)
+						self.ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[item],self)
 					end,
 				}
 			end
@@ -2972,7 +2967,7 @@ function Examine:SetObj(startup)
 
 	if self.str_object then
 		-- check if obj string is a ref to an actual object
-		local obj_ref = DotNameToObject(obj)
+		local obj_ref = self.ChoGGi.ComFuncs.DotNameToObject(obj)
 		-- if it is then we use that as the obj to examine
 		if obj_ref then
 			obj = obj_ref
@@ -3022,7 +3017,7 @@ function Examine:SetObj(startup)
 
 		-- attaches button/menu
 		table_iclear(self.attaches_menu_popup)
-		local attaches = GetAllAttaches(obj,true)
+		local attaches = self.ChoGGi.ComFuncs.GetAllAttaches(obj,true)
 		local attach_amount = #attaches
 
 		for i = 1, attach_amount do
@@ -3045,8 +3040,8 @@ function Examine:SetObj(startup)
 					.. "\n" .. Strings[302535920000461--[[Position--]]] .. ": " .. tostring(pos),
 				showobj = a,
 				clicked = function()
-					ClearShowObj(a)
-					OpenInExamineDlg(a,self)
+					self.ChoGGi.ComFuncs.ClearShowObj(a)
+					self.ChoGGi.ComFuncs.OpenInExamineDlg(a,self)
 				end,
 			}
 
