@@ -18,6 +18,7 @@
 - Test Locale File would freeze on certain malformed strings (same as SM does).
 - Clone Object didn't work well on colonists.
 - Debug>Force Story Bits works properly now.
+- Cleaned up the console prints happening since last update.
 - Examine:
 - > Tools>Functions failed on some objects.
 - > Colonists use a different func to get the entity, so it now shows that (instead of "Male" for everyone).

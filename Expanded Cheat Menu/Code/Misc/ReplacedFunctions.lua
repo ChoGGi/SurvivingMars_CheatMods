@@ -1368,15 +1368,15 @@ end]]
 				"^*[gG]%s*(.*)",
 				"CreateGameTimeThread(function() %s end)"
 			},
-			-- prints out cmds entered I assume?
-			{
-				"^(%a[%w.]*)$",
-				"ConsolePrint(print_format(__run(%s)))"
-			},
-			{
-				"(.*)",
-				"ConsolePrint(print_format(%s))"
-			},
+--~ 			-- prints out cmds entered I assume?
+--~ 			{
+--~ 				"^(%a[%w.]*)$",
+--~ 				"ConsolePrint(print_format(__run(%s)))"
+--~ 			},
+--~ 			{
+--~ 				"(.*)",
+--~ 				"ConsolePrint(print_format(%s))"
+--~ 			},
 			{
 				"(.*)",
 				"%s"
