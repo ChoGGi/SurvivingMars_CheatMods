@@ -1,3 +1,6 @@
+v0.4
+Hopefully fixed resupply not opening after awhile.
+
 v0.3
 Update to my lib mod.
 

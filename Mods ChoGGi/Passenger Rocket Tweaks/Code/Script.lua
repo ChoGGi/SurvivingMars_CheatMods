@@ -319,13 +319,14 @@ local function AddUIStuff(content)
 end
 
 local pass_thread
--- override hud button (Lua\X\HUD.lua)
-function HUD.idResupplyOnPress()
-	-- build list once per open (total count and needed count)
-	BuildSpecialistLists()
 
-  if not IsValidThread(CameraTransitionThread) then
-		local dlg = OpenDialog("Resupply")
+local orig_OpenDialog = OpenDialog
+function OpenDialog(dlg_str,...)
+	local dlg = orig_OpenDialog(dlg_str,...)
+	if dlg_str == "Resupply" then
+		-- build list once per open (total count and needed count)
+		BuildSpecialistLists()
+
 		-- replace old func with our piggyback
 		local orig_SetMode = dlg.SetMode
 		function dlg:SetMode(mode,...)
@@ -353,5 +354,7 @@ function HUD.idResupplyOnPress()
 
 			end
 		end
-  end
+	end
+
+	return dlg
 end

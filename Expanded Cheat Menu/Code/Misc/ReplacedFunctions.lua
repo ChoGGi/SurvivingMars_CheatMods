@@ -1377,6 +1377,11 @@ end]]
 --~ 				"(.*)",
 --~ 				"ConsolePrint(print_format(%s))"
 --~ 			},
+			-- remove once rules are made a global table
+			{
+				"^(%a[%w.]*)$",
+				"__run(%s)"
+			},
 			{
 				"(.*)",
 				"%s"

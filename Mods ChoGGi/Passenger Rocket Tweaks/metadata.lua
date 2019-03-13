@@ -1,7 +1,8 @@
 return PlaceObj("ModDef", {
-	"title", "Passenger Rocket Tweaks v0.3",
-	"version", 3,
-	"saved", 1550750400,
+--~ 	"title", "Passenger Rocket Tweaks v0.2",
+	"title", "Passenger Rocket Tweaks v0.4",
+	"version", 4,
+	"saved", 1552478400,
 	"image", "Preview.png",
 	"id", "ChoGGi_PassengerRocketTweaks",
 	"steam_id", "1641796120",
