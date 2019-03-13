@@ -10,7 +10,7 @@ function CursorBuilding:GameInit()
 	end
 
   local g_MapSectors = g_MapSectors
-	for sector,_ in pairs(g_MapSectors) do
+	for sector in pairs(g_MapSectors) do
 		if type(sector) == "table" then
 			sector.ChoGGi_decal = sector.decal
 			if not sector.decal then
@@ -19,7 +19,9 @@ function CursorBuilding:GameInit()
 				sector.decal:SetPos(sector:GetPos())
 				sector.decal:SetScale(MulDivRound(sector.area:sizex(), 100, size)+1)
 			end
-			sector.decal:SetVisible(true)
+			if IsValid(sector.decal) then
+				sector.decal:SetVisible(true)
+			end
 		end
 	end
 
@@ -30,7 +32,7 @@ local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done()
 
   local g_MapSectors = g_MapSectors
-	for sector,_ in pairs(g_MapSectors) do
+	for sector in pairs(g_MapSectors) do
 		if type(sector) == "table" then
 			if not sector.ChoGGi_decal then
 				sector.decal:delete()

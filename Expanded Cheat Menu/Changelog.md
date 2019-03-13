@@ -12,6 +12,7 @@
 - > Added to Context menu: Clipboard, Number Double/Halve, Boolean Toggle/To Table.
 - > Objects menu will show up as long as it's a valid entity (IsValid doesn't work for some attachments).
 - > Added more entries to Get Mat Props, also added sub materials.
+- > Any string item with an image string in it will be displayed in the context menu tooltip.
 
 ### Fixed:
 - Test Locale File would freeze on certain malformed strings (same as SM does).

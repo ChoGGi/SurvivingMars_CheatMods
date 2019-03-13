@@ -122,6 +122,20 @@ do -- RetName
 				end
 			end
 		end
+		-- and any g funcs
+		for cls_key,class in pairs(g.g_Classes) do
+			for key,value in pairs(class) do
+				if type(key) == "string" and not lookup_table[value] then
+					if type(value) == "function" then
+						if DebugGetInfo(value) == "[C](-1)" then
+							lookup_table[value] = cls_key .. "." .. key .. " *C func"
+						else
+							lookup_table[value] = cls_key .. "." .. key
+						end
+					end
+				end
+			end
+		end
 
 	end
 
