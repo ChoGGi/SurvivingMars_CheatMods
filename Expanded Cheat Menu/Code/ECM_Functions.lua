@@ -3228,10 +3228,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 		local function TestCSV(filepath,column_limit)
 			column_limit = filepath == my_locale and 4 or column_limit
-			if column_limit == true then
-				column_limit = 5
-			end
-			if not column_limit then
+			if not column_limit or column_limit == true then
 				column_limit = 5
 			end
 
@@ -3252,15 +3249,15 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			local RemoveTrailingSpaces = RemoveTrailingSpaces
 
 			-- remove any carr returns
-			str = str:gsub("\r\n","\n")
 			local str_len = #str
 
 			-- mostly LoadCSV()
 			while pos < str_len do
 				local row, col = {}, 1
 				local lf = str:sub(pos, pos) == "\n"
+				local crlf = str:sub(pos, pos + 1) == "\r\n"
 
-				while pos < str_len and not lf do
+				while pos < str_len and not lf and not crlf do
 
 					local value, nextv = field:match(str, pos)
 					value = RemoveTrailingSpaces(value)
@@ -3270,6 +3267,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					end
 					col = col + 1
 					lf = str:sub(nextv, nextv) == "\n"
+					crlf = str:sub(nextv, nextv + 1) == "\r\n"
 					pos = nextv + 1
 
 					-- only seems to happen on bad things
@@ -3289,12 +3287,13 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 						}
 					end
 
+					-- stop inf loop from malformed csv
 					if pos >= str_len then
 						break
 					end
 				end -- while inner
 
-				if lf then
+				if crlf then
 					pos = pos + 1
 				end
 
@@ -3304,10 +3303,11 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				end
 				omit_captions = false
 
-				if pos >= str_len and not lf then
+				-- stop inf loop from malformed csv
+--~ 				if pos >= str_len and not lf then
+				if pos >= str_len and not crlf then
 					break
 				end
-
 			end -- while outer
 
 			return csv_failed,rows
@@ -3332,7 +3332,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			csv_count = 0
 			csv_failed = {}
 			local loaded_csv
-			if test_csv or testing then
+			if test_csv then
 				if blacklist then
 					ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.TestLocaleFile(test_csv)")
 				else
@@ -3352,22 +3352,21 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				)
 			end
 
-			local out_table, out_gendertable = {},{}
-
 			strings_failed = {}
 			strings_count = 0
 			-- this can fail, so we pcall it (some results are better than none)
+			local final_strings, final_gendertable = {},{}
 			pcall(function()
 				ProcessLoadedTables(
 					loaded_csv,
 					language,
-					out_table,
-					out_gendertable
+					final_strings,
+					final_gendertable
 				)
 			end)
 
 			local title
-			if strings_count > 0 or (csv_count > 0 and not (csv_count == 2 and testing)) then
+			if strings_count > 0 or csv_count > 0 then
 				title = Strings[302535920001125--[[Test Locale File--]]] .. ": " .. Translate(951--[[Failed to complete operation.--]])
 			else
 				title = Strings[302535920001125--[[Test Locale File--]]] .. ": " .. Translate(1000015--[[Success--]])
@@ -3375,10 +3374,10 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			local results = {
 				loaded_csv = loaded_csv,
 				strings_failed = strings_failed,
-				out_table = out_table,
-				out_gendertable = out_gendertable,
+				final_strings = final_strings,
+				final_gendertable = final_gendertable,
 			}
-			if test_csv then
+			if test_csv and #csv_failed > 0 then
 				results.csv_failed = csv_failed
 			end
 

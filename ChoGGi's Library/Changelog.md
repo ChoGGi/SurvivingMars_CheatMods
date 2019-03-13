@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v6.0 (Unreleased)
+- Added the func names from g_Classes to the RetName func.
 - Broke the Colour Modifier last update.
 
 ## v5.9 (10 Mar 2019)

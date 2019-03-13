@@ -532,12 +532,12 @@ function Examine:idTextOnHyperLinkRollover(link)
 	end
 
 	local title = Strings[302535920000069--[[Examine--]]]
-	local name = RetName(obj)
+	local roll_text = RetName(obj)
 
 	if self.onclick_funcs[link] == self.OpenListMenu then
-		title = name .. " " .. Translate(1000162--[[Menu--]])
+		title = roll_text .. " " .. Translate(1000162--[[Menu--]])
 
-		name = Strings[302535920001540--[[Show context menu for %s.--]]]:format(name)
+		roll_text = Strings[302535920001540--[[Show context menu for %s.--]]]:format(roll_text)
 
 		-- add the value to the key tooltip
 		local obj_value
@@ -548,7 +548,12 @@ function Examine:idTextOnHyperLinkRollover(link)
 			obj_value = self.obj_ref[obj]
 		end
 
-		name = name .. "\n\n\n" .. self.ChoGGi.ComFuncs.ValueToStr(obj_value)
+		local obj_value_str = self.ChoGGi.ComFuncs.ValueToStr(obj_value)
+		roll_text = roll_text .. "\n\n\n" .. obj_value_str
+		-- if it's an image then add 'er to the text
+		if self.ChoGGi.ComFuncs.ImageExts()[obj_value_str:sub(-3):lower()] then
+			roll_text = roll_text .. "\n\n<image " .. obj_value_str .. ">"
+		end
 
 --~ 		-- stick value in search box
 --~ 		obj = self.obj_ref[obj]
@@ -557,7 +562,7 @@ function Examine:idTextOnHyperLinkRollover(link)
 
 	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
 		RolloverTitle = title,
-		RolloverText = (self.onclick_name[link] or name),
+		RolloverText = (self.onclick_name[link] or roll_text),
 		RolloverHint = Strings[302535920001079--[[<left_click> Default Action <right_click> Examine--]]],
 	})
 end
@@ -2142,9 +2147,9 @@ function Examine:ConvertValueToInfo(obj)
 					table_data = 0
 				end
 
---~ 				local name = RetName(obj)
-				local name = "<tags off>" .. RetName(obj) .. "<tags on>"
-				if obj.class and name ~= obj.class then
+				local name_cln = RetName(obj)
+				local name = "<tags off>" .. name_cln .. "<tags on>"
+				if obj.class and name_cln ~= obj.class then
 					name = obj.class .. " (len: " .. table_data .. ", " .. name .. ")"
 				else
 					name = name .. " (len: " .. table_data .. ")"
