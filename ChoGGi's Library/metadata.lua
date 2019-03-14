@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "ChoGGi's Library v5.1",
-	"title", "ChoGGi's Library v6.0 Test",
-	"version", 60,
-	"saved", 1552219200,
+	"title", "ChoGGi's Library v6.1 Test",
+	"version", 61,
+	"saved", 1552564800,
 	"image", "Preview.png",
 	"id", "ChoGGi_Library",
 	"author", "ChoGGi",
@@ -51,5 +51,6 @@ I got tired of copying and pasting functions between different mods to update th
 Also available at:
 https://www.nexusmods.com/survivingmars/mods/89?tab=files
 https://steamcommunity.com/workshop/filedetails/?id=1504386374
-https://mods.paradoxplaza.com/mods/505/Any]],
+https://mods.paradoxplaza.com/mods/505/Any
+https://github.com/ChoGGi/SurvivingMars_CheatMods]],
 })
