@@ -233,6 +233,7 @@ function OnMsg.ClassesGenerate()
 		"Hidden Milestones",
 		"Locales",
 		"Misc",
+		"Msgs",
 		"OnMsgs Load Game",
 		"OnMsgs New Game",
 		"point",
