@@ -20,6 +20,7 @@ local table_remove = table.remove
 local table_find = table.find
 local table_clear = table.clear
 local table_iclear = table.iclear
+local table_sort = table.sort
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 local function SaveOrigFunc(class_or_func,func_name)
@@ -1322,12 +1323,12 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pt)
 
 	-- sort list custom
 	if sort then
-		table.sort(list,function(a,b)
+		table_sort(list,function(a,b)
 			return a[sort] < b[sort]
 		end)
 	else
 		-- sort nearest
-		table.sort(list,function(a,b)
+		table_sort(list,function(a,b)
 			return a:GetDist2D(pt) < b:GetDist2D(pt)
 		end)
 	end
@@ -1375,7 +1376,7 @@ function ChoGGi.ComFuncs.RetSortTextAssTable(list,for_type)
 	end
 
 	-- and send back sorted
-	table.sort(temp_table)
+	table_sort(temp_table)
 	return temp_table
 end
 
@@ -2071,9 +2072,57 @@ function ChoGGi.ComFuncs.ColonistUpdateRace(c,race)
 	c:ChooseEntity()
 end
 
+
 do -- FuckingDrones (took quite a while to figure this fun one out)
 	-- force drones to pickup from pile even if they have a carry cap larger then the amount stored
 	local ResourceScale = ChoGGi.Consts.ResourceScale
+
+	local building
+	local function SortNearest(a,b)
+		if IsValid(a) and IsValid(b) then
+			return building:GetDist2D(a) < building:GetDist2D(b)
+		end
+	end
+
+	local function GetNearestIdleDrone(bld)
+		if not bld or (bld and not bld.command_centers) then
+			return
+		end
+
+		local cc = FindNearestObject(bld.command_centers,bld)
+		-- check if nearest cc has idle drones
+		if cc and cc:GetIdleDronesCount() > 0 then
+			cc = cc.drones
+		else
+			-- sort command_centers by nearest, then loop through each of them till we find an idle drone
+			building = bld
+			table_sort(bld.command_centers,SortNearest)
+			-- get command_center with idle drones
+			for i = 1, #bld.command_centers do
+				if bld.command_centers[i]:GetIdleDronesCount() > 0 then
+					cc = bld.command_centers[i].drones
+					break
+				end
+			end
+		end
+
+		-- it happens
+		if not cc then
+			return
+		end
+
+		-- get an idle drone
+		local idle_idx = table_find(cc,"command","Idle")
+		if idle_idx then
+			return cc[idle_idx]
+		end
+		idle_idx = table_find(cc,"command","WaitCommand")
+		if idle_idx then
+			return cc[idle_idx]
+		end
+	end
+	ChoGGi.ComFuncs.GetNearestIdleDrone = GetNearestIdleDrone
+
 	function ChoGGi.ComFuncs.FuckingDrones(obj)
 		if not IsValid(obj) then
 			return
@@ -2083,26 +2132,30 @@ do -- FuckingDrones (took quite a while to figure this fun one out)
 		-- Well, if jacking on will make strangers think I'm cool, I'll do it.
 
 		local stored
-		local parent
-		local request
-		local resource
+		local is_single = obj:IsKindOf("SingleResourceProducer")
 		-- mines/farms/factories
-		if obj:IsKindOf("SingleResourceProducer") then
-			parent = obj.parent
+		if is_single then
 			stored = obj:GetAmountStored()
-			request = obj.stockpiles[obj:GetNextStockpileIndex()].supply_request
-			resource = obj.resource_produced
-	--~ 	elseif obj:IsKindOf("BlackCubeStockpile") then
 		else
-			parent = obj
 			stored = obj:GetStoredAmount()
-			request = obj.supply_request
-			resource = obj.resource
 		end
 
 		-- only fire if more then one resource
 		if stored > 1000 then
-			local drone = ChoGGi.ComFuncs.GetNearestIdleDrone(parent)
+			local parent
+			local request
+			local resource
+			if is_single then
+				parent = obj.parent
+				request = obj.stockpiles[obj:GetNextStockpileIndex()].supply_request
+				resource = obj.resource_produced
+			else
+				parent = obj
+				request = obj.supply_request
+				resource = obj.resource
+			end
+
+			local drone = GetNearestIdleDrone(parent)
 			if not drone then
 				return
 			end
@@ -2127,48 +2180,6 @@ do -- FuckingDrones (took quite a while to figure this fun one out)
 		end
 	end
 end -- do
-
-function ChoGGi.ComFuncs.GetNearestIdleDrone(bld)
-	if not bld or (bld and not bld.command_centers) then
-		return
-	end
-
-	local cc = FindNearestObject(bld.command_centers,bld)
-	-- check if nearest cc has idle drones
-	if cc and cc:GetIdleDronesCount() > 0 then
-		cc = cc.drones
-	else
-		-- sort command_centers by nearest, then loop through each of them till we find an idle drone
-		table.sort(bld.command_centers,function(a,b)
-			if IsValid(a) and IsValid(b) then
-				return bld:GetDist2D(a) < bld:GetDist2D(b)
-			end
-		end)
-		-- get command_center with idle drones
-		for i = 1, #bld.command_centers do
-			if bld.command_centers[i]:GetIdleDronesCount() > 0 then
-				cc = bld.command_centers[i].drones
-				break
-			end
-		end
-	end
-
-	-- it happens
-	if not cc then
-		return
-	end
-
-	-- get an idle drone
-	local idle_idx = table_find(cc,"command","Idle")
-	if idle_idx then
-		return cc[idle_idx]
-	end
-	idle_idx = table_find(cc,"command","WaitCommand")
-	if idle_idx then
-		return cc[idle_idx]
-	end
-
-end
 
 function ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj,amount)
 	amount = amount or 10
@@ -2456,7 +2467,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 				end
 
 				-- sort table so it's the same as was displayed
-				table.sort(choice,function(a,b)
+				table_sort(choice,function(a,b)
 					return a.text < b.text
 				end)
 				local colour_func = "SetColours"
@@ -3206,7 +3217,7 @@ function ChoGGi.ComFuncs.RetHardwareInfo()
 			hw[chw] = key .. ": " .. value .. "\n"
 		end
 	end
-	table.sort(hw)
+	table_sort(hw)
 	chw = chw + 1
 	hw[chw] = "\n"
 
