@@ -54,6 +54,9 @@ DefineClass.Melanger = {
 	radius = 24*guim,
 	collision_radius = 24*guim,
 	orient_mode = "terrain_large",
+
+	move_thread = false,
+	slime_thread = false,
 }
 
 DefineClass.MelangerBuilding = {
@@ -98,8 +101,8 @@ function Melanger:GameInit()
 	self:SetCommand("Roam")
 
 	-- needs a slight delay for the shuttlehub to do it's thing
-	local Sleep = Sleep
-	CreateRealTimeThread(function()
+	self.move_thread = CreateGameTimeThread(function()
+		local Sleep = Sleep
 		for _ = 1, shuttle_amount do
 			Sleep(Random(1000,2500))
 			self.hub.shuttle_infos[#self.hub.shuttle_infos + 1] = ShuttleInfo:new{hub = self.hub}
@@ -110,15 +113,9 @@ function Melanger:GameInit()
 		-- should be good by now to start thumping
 		Sleep(2500)
 
-
 		local delay = 0
 		local snd
-		while IsValid(self) do
-			-- if I use gametime then it'll speed up the sounds and such, but realtime doesn't pause on pause
-			if UISpeedState == "pause" then
-				WaitMsg("MarsResume")
-			end
-
+		while self.move_thread do
 			Sleep(50)
 			delay = delay + 1
 			if delay > 125 then
@@ -128,20 +125,17 @@ function Melanger:GameInit()
 				StopSound(snd)
 				snd = PlaySound("Object PreciousExtractor LoopPeaks", "ObjectOneshot", nil, 0, false, self, 50)
 				-- PlaySound(sound, _type, volume, fade_time, looping, point_or_object, loud_distance)
-				Sleep(GetSoundDuration(snd))
-				StopSound(snd)
+				Sleep(GetSoundDuration(snd) * 2)
 				self.fake_obj:PlayFX("Dust", "end")
+				StopSound(snd)
 			end
 		end
 	end)
 
 	-- a slimy trail of sand
-	CreateRealTimeThread(function()
-		while IsValid(self) do
-			if UISpeedState == "pause" then
-				WaitMsg("MarsResume")
-			end
-
+	self.slime_thread = CreateGameTimeThread(function()
+		local Sleep = Sleep
+		while self.slime_thread do
 			SetTypeCircle(self:GetVisualPos(), 900, terrain_type_idx)
 			Sleep(Random(2000,4000))
 		end
@@ -154,7 +148,16 @@ local Sleep = Sleep
 function Melanger:MoveSleep(time)
 	Sleep(time)
 end
-
+function Melanger:Done()
+	if IsValidThread(self.move_thread) then
+		DeleteThread(self.move_thread)
+	end
+	if IsValidThread(self.slime_thread) then
+		DeleteThread(self.slime_thread)
+	end
+	self.move_thread = false
+	self.slime_thread = false
+end
 --iddqd
 function Melanger:Repair()
 	self.battery_current = self.battery_max
@@ -223,7 +226,7 @@ function OnMsg.ClassesBuilt()
 				if answer then
 					local Sleep = Sleep
 					local Random = Random
-					CreateRealTimeThread(function()
+					CreateGameTimeThread(function()
 						PlayFX("GroundExplosion", "start", context.fake_obj)
 						PlaySound("Mystery Bombardment ExplodeTarget", "ObjectOneshot", nil, 0, false, context.fake_obj, 1000)
 						Sleep(50)
@@ -247,7 +250,7 @@ function OnMsg.ClassesBuilt()
 				[[Little-death]],
 				[[Destroy the poor defenseless harvester]],
 				[[Spareth ye sprynge]],
-				CurrentModPath .. "UI/Wormy.png",
+				CurrentModPath .. "UI/Wormy.png"
 			)
 			---
 		end,

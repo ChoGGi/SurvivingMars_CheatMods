@@ -141,11 +141,9 @@ function OnMsg.ClassesBuilt()
 				local mouse_pt = GetTerrainCursor()
 				local cls = selected.class
 
-				local objs = MapGet("map", "attached", false, selected.class,
-					function(o)
-						return o.class == cls and mouse_pt:Dist2D(o:GetVisualPos()) <= temp_radius
-					end
-				)
+				local objs = MapGet("map", "attached", false, selected.class,function(o)
+					return o.class == cls and mouse_pt:Dist2D(o:GetVisualPos()) <= temp_radius
+				end)
 
 				SelectionRemove(Selection)
 				if #objs < 1000 then

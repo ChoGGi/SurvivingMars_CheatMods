@@ -3228,7 +3228,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 		local function TestCSV(filepath,column_limit)
 			column_limit = filepath == my_locale and 4 or column_limit
-			if not column_limit or column_limit == true then
+			if not column_limit or column_limit == true or type(column_limit) ~= "number" then
 				column_limit = 5
 			end
 
