@@ -52,7 +52,7 @@ function MarsCompanion:GameInit()
 		local GetTimeFactor = GetTimeFactor
 		local GetHeight = terrain.GetHeight
 
-		while IsValid(self) do
+		while self.dust_thread do
 			-- check if our height is low enough for some dust kickup
 			local pos = self:GetVisualPos()
 			if pos and (pos:z() - GetHeight(pos)) < 1500 then
@@ -82,6 +82,7 @@ function MarsCompanion:Done()
 	if IsValidThread(self.dust_thread) then
 		DeleteThread(self.dust_thread)
 	end
+	self.dust_thread = false
 end
 
 -- gets rid of error in log
@@ -154,11 +155,9 @@ function MarsCompanion:MainLoop()
 		local dest = point(x+self.Random(-15000,15000), y+self.Random(-15000,15000))
 		self.last_good_pos = dest
 
-		local path = self:CalcPath(self:GetVisualPos(),dest)
-
 		self:FlyingFace(dest, 2500)
 		self:SetState("idle") -- level tubes
-		self:FollowPathCmd(path)
+		self:FollowPathCmd(self:CalcPath(self:GetVisualPos(),dest))
 		while self.next_spline do
 			Sleep(1000)
 		end

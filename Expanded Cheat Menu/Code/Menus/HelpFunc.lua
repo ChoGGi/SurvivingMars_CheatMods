@@ -432,6 +432,10 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 					upload_msg[m_c] = Translate(1000012--[[Mod <ModLabel> will be uploaded to Steam--]]):gsub("<ModLabel>",mod.title)
 				else
 					upload_msg[m_c] = Translate(1000771--[[Mod <ModLabel> will be uploaded to Paradox--]]):gsub("<ModLabel>",mod.title)
+					m_c = m_c + 1
+					upload_msg[m_c] = "\n\n"
+					m_c = m_c + 1
+					upload_msg[m_c] = Strings[302535920001572--[[Warning: May instantly crash SM (not sure why).--]]]
 				end
 
 				if not pack_mod then
@@ -738,9 +742,7 @@ Move archive to Mod folder/Pack/ModContent.hpk"--]]],
 					},
 					{title = Strings[302535920001427--[[Pack--]]],
 						hint = Strings[302535920001428--[["Uploads as a packed mod (default for mod editor upload).
-This will always apply if uploading to Paradox.
-
-Warning: May instantly crash SM (not sure why)."--]]],
+This will always apply if uploading to Paradox."--]]] .. "\n\n" .. Strings[302535920001572--[[Warning: May instantly crash SM (not sure why).--]]],
 						checked = false,
 					},
 					{title = Translate(186760604064--[[Test--]]),

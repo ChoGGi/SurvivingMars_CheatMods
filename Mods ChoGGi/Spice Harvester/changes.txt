@@ -1,19 +1,29 @@
+v0.8
+Fixed a bug from last update.
+Shuttles now randomly attack "worms" (suspicious looking rocks).
+Stopped the thumper sound when the game is paused.
+Idle shuttles now fire jets down.
+
 v0.7
 Library update.
 
 v0.6
 Library.
+
 v0.5
 Removed some log spam.
 Cleaning up code (ChoGGi's Library).
+
 v0.4
 It was breaking down, must've been too much spice...
 Added a confirm before destruction.
 Reworked the internals a bit.
+
 v0.3
 Da Vinci...
 No more thumping when the game is paused.
 Sounds actually happen when you destroy it.
 Pin icon changed to build icon instead of attack rover.
+
 v0.2
 thumping and dust.

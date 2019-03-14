@@ -1575,6 +1575,7 @@ Not noticeable unless using higher zoom.",
 302535920000654,Select (or mouse over) an object to follow.,
 302535920000655,Toggle Cursor,
 302535920000656,Toggle between moving camera and selecting objects.,
+302535920001572,Warning: May instantly crash SM (not sure why).,
 302535920000323,Modding,
 302535920001511,"AsyncPack crashes SM, so you'll need to use hpk to pack mod ahead of time.
 
@@ -1595,9 +1596,7 @@ Move ModContent.hpk to Mod folder/Pack/ModContent.hpk",
 302535920001464,"Yes, I know what I'm doing. This is a bug.",
 302535920001427,Pack,
 302535920001428,"Upload as a packed mod (default for mod editor upload).
-This will always apply if uploading to Paradox.
-
-Warning: May instantly crash SM (not sure why).",
+This will always apply if uploading to Paradox.",
 302535920001412,GUI Dock Side,
 302535920001413,Change which side (most) GUI menus are on.,
 302535920000321,Enable Tooltips,

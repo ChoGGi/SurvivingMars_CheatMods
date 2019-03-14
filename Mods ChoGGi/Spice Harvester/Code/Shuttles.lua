@@ -74,6 +74,10 @@ DefineClass.SpiceHarvester_ShuttleHub = {
 }
 DefineClass.SpiceHarvester_CargoShuttle = {
 	__parents = {"CargoShuttle"},
+	dust_thread = false,
+	attack_radius = 50 * const.ResourceScale,
+	-- it'll change after
+	min_wait_rock_attack = 100,
 }
 DefineClass.SpiceHarvester_ShuttleFollowTask = {
 	__parents = {"InitDone"},
@@ -83,7 +87,7 @@ DefineClass.SpiceHarvester_ShuttleFollowTask = {
 	dest_pos = false,
 }
 
--- guess this is what happens when you spawn and attach a hub to a random vehicle
+-- guess this is what happens when you spawn and attach a dronehub to a random vehicle
 function SpiceHarvester_ShuttleHub:InitLandingSpots()
 	-- define the landing spots
 	local slots = {}
@@ -101,31 +105,12 @@ function SpiceHarvester_ShuttleHub:InitLandingSpots()
 	self.has_free_landing_slots = #slots > 0
 end
 
-function SpiceHarvester_CargoShuttle:GoodByeCruelWorld()
-	if IsValid(self) then
-		self:PlayFX("GroundExplosion", "start")
-		local snd = PlaySound("Mystery Bombardment ExplodeTarget", "ObjectOneshot", nil, 0, false, self, 1000)
-		self:PlayFX("Dust", "end")
-		Sleep(50)
-		self:SetVisible(false)
-		Sleep(GetSoundDuration(snd))
---~ 		Sleep(5000)
-		self:PlayFX("GroundExplosion", "end")
-		DoneObject(self)
-	end
-end
-
 function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 
 	-- dust thread
-	CreateRealTimeThread(function()
+	self.dust_thread = CreateGameTimeThread(function()
 		-- we're done if the host harvester is gone
-		while IsValid(self.SpiceHarvester_Harvester) do
-			-- real time threads don't pause when the game is paused
-			if UISpeedState == "pause" then
-				WaitMsg("MarsResume")
-			end
-
+		while self.dust_thread do
 			-- check if our height is low enough for some dust kickup
 			local pos = self:GetVisualPos()
 			if pos and (pos:z() - GetHeight(pos)) < 1500 then
@@ -147,35 +132,92 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 		end -- while valid Harvester
 	end)
 
+	self.min_wait_rock_attack = Random(50,75)
+	local count_before_attack = 0
+
 	-- movement thread
 	while IsValid(self.SpiceHarvester_Harvester) do
-		if UISpeedState == "pause" then
-			WaitMsg("MarsResume")
+		count_before_attack = count_before_attack + 1
+		-- shoot a rock
+		if count_before_attack >= self.min_wait_rock_attack then
+			count_before_attack = 0
+
+			local pos = self:GetVisualPos()
+			local worm = MapGet("map", "WasteRockObstructorSmall",function(o)
+				return pos:Dist2D(o:GetPos()) <= self.attack_radius
+			end)
+			if #worm > 0 then
+				self:AttackWorm(table.rand(worm))
+			end
 		end
 
 		self.hover_height = Random(800,20000)
 		local x,y = self.SpiceHarvester_Harvester:GetVisualPosXYZ()
-		local path = self:CalcPath(
-			self:GetVisualPos(),
-			point(x+Random(-25000,25000), y+Random(-25000,25000))
-		)
+		local dest = point(x+Random(-25000,25000), y+Random(-25000,25000))
+		self:FlyingFace(dest, 2500)
+		self:PlayFX("Waiting", "end")
+		self:SetState("idle") -- level tubes
+		self:FollowPathCmd(self:CalcPath(self:GetVisualPos(),dest))
 
-		self:FollowPathCmd(path)
 		while self.next_spline do
 			Sleep(1000)
 		end
+		self:SetState("fly")
+		self:PlayFX("Waiting", "start")
 		Sleep(Random(2500,10000))
 	end
 
 	-- soundless sleep
-	if IsValid(self) then
-		self:GoodByeCruelWorld()
+	self:GoodByeCruelWorld()
+end
+
+function SpiceHarvester_CargoShuttle:AttackWorm(worm)
+	if not IsValid(worm) then
+		return
 	end
 
+	local pos = self:GetSpotPos(1)
+	local angle, axis = self:GetSpotRotation(1)
+	local rocket = PlaceObject("RocketProjectile", {
+		shooter = self,
+		target = worm,
+	})
+	rocket:Place(pos, axis, angle)
+	rocket:StartMoving()
+	PlayFX("MissileFired", "start", self, nil, pos, rocket.move_dir)
+	CreateGameTimeThread(function()
+		while rocket.move_thread do
+			Sleep(500)
+		end
+		-- make it pretty
+		PlayFX("FuelExplosion", "start", worm, nil, worm:GetPos())
+		worm:delete()
+	end)
 end
 
 function SpiceHarvester_CargoShuttle:Idle()
 	Sleep(1000)
+end
+
+function SpiceHarvester_CargoShuttle:GoodByeCruelWorld()
+	if IsValid(self) then
+		self:PlayFX("GroundExplosion", "start")
+		local snd = PlaySound("Mystery Bombardment ExplodeTarget", "ObjectOneshot", nil, 0, false, self, 1000)
+		self:PlayFX("Dust", "end")
+		Sleep(50)
+		self:SetVisible(false)
+		Sleep(GetSoundDuration(snd))
+--~ 		Sleep(5000)
+		self:PlayFX("GroundExplosion", "end")
+		DoneObject(self)
+	end
+end
+
+function SpiceHarvester_CargoShuttle:Done()
+	if IsValidThread(self.dust_thread) then
+		DeleteThread(self.dust_thread)
+	end
+	self.dust_thread = false
 end
 
 -- gets rid of error in log

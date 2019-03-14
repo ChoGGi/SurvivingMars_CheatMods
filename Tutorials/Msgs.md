@@ -35,16 +35,10 @@ end)
 
 ##### A realtime loop that pauses.
 ```lua
-local is_paused = false
-function OnMsg.MarsPause()
-	is_paused = true
-end
-
 CreateRealTimeThread(function()
 	while true do
-		if is_paused then
+		if UISpeedState == "pause" then
 			WaitMsg("MarsResume")
-			is_paused = false
 		end
 		print("not paused")
 	end
