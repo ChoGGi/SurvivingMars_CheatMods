@@ -1,8 +1,8 @@
 ## ECM Changelog
 
-## v13.1 (Mar 14 2019)
+## v13.1 (Unreleased)
 
-## v13.0 (Unreleased)
+## v13.0 (Mar 14 2019)
 ### Changed:
 - Debug>Force Story Bits shows full list instead of just "actively waiting" ones.
 - Renamed Attach Spots List/Attach Spots Toggle to Entity Spots/Entity Spots Toggle.
