@@ -115,6 +115,7 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 302535920000009,Missing Scenario Name,
 302535920000010,Missing Name,
 302535920000011,Missing Description,
+302535920001571,"The way I test the CSV file means there might be some ""non-errors"" added to strings_failed.",
 302535920001174,Show an example .mtl file for this material (not complete).,
 302535920001177,Generate .mtl,
 302535920000497,Hook Started,

@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v13.1 (Unreleased)
+### Changed:
+- Cleaned up the console output too much last update.
 
 ## v13.0 (Mar 14 2019)
 ### Changed:

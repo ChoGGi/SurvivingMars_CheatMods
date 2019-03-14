@@ -838,10 +838,7 @@ function OnMsg.ClassesBuilt()
 		ChoGGi_OrigFuncs.SupplyGridElement_SetProduction(self, new_production, new_throttled_production, update, ...)
 	end
 
---~ -- see if this gets called less then produce
---~ function SingleResourceProducer:DroneUnloadResource(drone, request, resource, amount)
---~ end
-	--and for regular producers (factories/extractors)
+	-- and for regular producers (factories/extractors)
 	function SingleResourceProducer:Produce(amount_to_produce,...)
 		local amount = ChoGGi.UserSettings.BuildingSettings[self.parent.template_name]
 		if amount and amount.production then
@@ -1368,19 +1365,14 @@ end]]
 				"^*[gG]%s*(.*)",
 				"CreateGameTimeThread(function() %s end)"
 			},
---~ 			-- prints out cmds entered I assume?
---~ 			{
---~ 				"^(%a[%w.]*)$",
---~ 				"ConsolePrint(print_format(__run(%s)))"
---~ 			},
---~ 			{
---~ 				"(.*)",
---~ 				"ConsolePrint(print_format(%s))"
---~ 			},
-			-- remove once rules are made a global table
+			-- prints out cmds entered I assume?
 			{
 				"^(%a[%w.]*)$",
-				"__run(%s)"
+				"ConsolePrint(print_format(__run(%s)))"
+			},
+			{
+				"(.*)",
+				"ConsolePrint(print_format(%s))"
 			},
 			{
 				"(.*)",
@@ -1391,9 +1383,10 @@ end]]
 		if blacklist then
 			local function load_match(text, rules)
 				for i = 1, #rules do
-					local capture1, capture2, capture3 = text:match(rules[i][1])
+					local rule = rules[i]
+					local capture1, capture2, capture3 = text:match(rule[1])
 					if capture1 then
-						return rules[i][2]:format(capture1, capture2, capture3)
+						return rule[2]:format(capture1, capture2, capture3)
 					end
 				end
 			end

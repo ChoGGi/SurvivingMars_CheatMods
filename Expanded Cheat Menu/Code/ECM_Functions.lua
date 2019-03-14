@@ -3249,15 +3249,17 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			local RemoveTrailingSpaces = RemoveTrailingSpaces
 
 			-- remove any carr returns
+			str = str:gsub("\r\n","\n")
 			local str_len = #str
 
 			-- mostly LoadCSV()
 			while pos < str_len do
 				local row, col = {}, 1
 				local lf = str:sub(pos, pos) == "\n"
-				local crlf = str:sub(pos, pos + 1) == "\r\n"
+--~ 				local crlf = str:sub(pos, pos + 1) == "\r\n"
 
-				while pos < str_len and not lf and not crlf do
+--~ 				while pos < str_len and not lf and not crlf do
+				while pos < str_len and not lf do
 
 					local value, nextv = field:match(str, pos)
 					value = RemoveTrailingSpaces(value)
@@ -3267,7 +3269,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					end
 					col = col + 1
 					lf = str:sub(nextv, nextv) == "\n"
-					crlf = str:sub(nextv, nextv + 1) == "\r\n"
+--~ 					crlf = str:sub(nextv, nextv + 1) == "\r\n"
 					pos = nextv + 1
 
 					-- only seems to happen on bad things
@@ -3293,7 +3295,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 					end
 				end -- while inner
 
-				if crlf then
+--~ 				if crlf then
+				if lf then
 					pos = pos + 1
 				end
 
@@ -3304,8 +3307,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				omit_captions = false
 
 				-- stop inf loop from malformed csv
---~ 				if pos >= str_len and not lf then
-				if pos >= str_len and not crlf then
+				if pos >= str_len and not lf then
+--~ 				if pos >= str_len and not crlf then
 					break
 				end
 			end -- while outer
@@ -3353,6 +3356,11 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			end
 
 			strings_failed = {}
+
+			if test_csv then
+				strings_failed[-1] = Strings[302535920001571--[["The way I test the CSV file means there might be some ""non-errors"" added to strings_failed."--]]]
+			end
+
 			strings_count = 0
 			-- this can fail, so we pcall it (some results are better than none)
 			local final_strings, final_gendertable = {},{}
@@ -3378,7 +3386,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				final_gendertable = final_gendertable,
 			}
 			if test_csv and #csv_failed > 0 then
-				results.csv_failed = csv_failed
+				results.csv_failed = test_csv
 			end
 
 			ChoGGi.ComFuncs.OpenInExamineDlg(results,nil,title)
