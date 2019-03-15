@@ -3,6 +3,11 @@
 ## v13.1 (Unreleased)
 ### Changed:
 - Cleaned up the console output too much last update.
+- Examine:
+- > Cleaned up the Entity Spots Toggle to separate the autoattach items better (no more massive dome text).
+
+### Fixed:
+- Examine>Objects>Hex Spots Toggle broke.
 
 ## v13.0 (Mar 14 2019)
 ### Changed:
