@@ -1692,12 +1692,12 @@ function Examine:ShowEntitySpotsList()
 		local spot_name = GetSpotNameByType(obj:GetSpotsType(i))
 		local spot_annot = obj:GetSpotAnnotation(i) or ""
 
-		local count = spot_annot:find("[,:;]")
-		local spot_annot_n
-		if count then
-			spot_annot_n = spot_annot:sub(1,count-1)
+		-- remove waypoints from chain points so they count as one
+		if spot_annot:find("chain") then
+			spot_annot = spot_annot:gsub(",waypoint=%d","")
 		end
-		local name = spot_name .. (spot_annot_n and ";" .. spot_annot_n or "")
+
+		local name = spot_name .. (spot_annot ~= "" and ";" .. spot_annot or "")
 
 		if not dupes[name] then
 			dupes[name] = true
@@ -1705,7 +1705,7 @@ function Examine:ShowEntitySpotsList()
 			item_list[c] = {
 				text = name,
 				name = spot_name,
-				value = spot_annot_n,
+				value = spot_annot,
 				hint = spot_annot,
 			}
 		end
