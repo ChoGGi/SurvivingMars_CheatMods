@@ -1530,15 +1530,15 @@ function Examine:ShowHexShapeList()
 			value = "Clear",
 		},
 		{
-			text = "HexNeighbours (" .. S[302535920001570--[[Fallback--]]] .. ")",
+			text = "HexNeighbours (" .. Strings[302535920001570--[[Fallback--]]] .. ")",
 			value = HexNeighbours,
 		},
 		{
-			text = "HexSurroundingsCheckShape (" .. S[302535920001570--[[Fallback--]]] .. ")",
+			text = "HexSurroundingsCheckShape (" .. Strings[302535920001570--[[Fallback--]]] .. ")",
 			value = HexSurroundingsCheckShape,
 		},
 		{
-			text = "FallbackOutline (" .. S[302535920001570--[[Fallback--]]] .. ")",
+			text = "FallbackOutline (" .. Strings[302535920001570--[[Fallback--]]] .. ")",
 			value = FallbackOutline,
 		},
 	}

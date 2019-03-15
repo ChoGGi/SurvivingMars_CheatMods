@@ -3358,7 +3358,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			strings_failed = {}
 
 			if test_csv then
-				strings_failed[-1] = Strings[302535920001571--[["The way I test the CSV file means there might be some ""non-errors"" added to strings_failed."--]]]
+				strings_failed[-1] = Strings[302535920001571--[["The way I test the CSV file means there might be some ""non-error"" errors added here.
+It's a tradeoff between erroneous errors and the game locking up."--]]]
 			end
 
 			strings_count = 0
