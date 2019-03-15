@@ -7,7 +7,7 @@ ModEnvBlacklist = {--[[Harumph!--]]}
 -- tell people how to get my library mod (if needs be)
 function OnMsg.ModsReloaded()
 	-- version to version check with
-	local min_version = 61
+	local min_version = 62
 	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
 	local p = Platform
 

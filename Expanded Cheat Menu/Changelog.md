@@ -1,8 +1,10 @@
 ## ECM Changelog
 
-## v13.1 (Unreleased)
+## v13.2 (Unreleased)
+
+## v13.1 (Mar 15 2019)
 ### Changed:
-- Cleaned up the console output too much last update.
+- I cleaned up the console output too much last update.
 - Examine:
 - > Cleaned up the Entity Spots Toggle to separate the autoattach items better (no more massive dome text).
 
