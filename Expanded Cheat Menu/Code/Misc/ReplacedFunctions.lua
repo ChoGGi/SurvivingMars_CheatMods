@@ -19,7 +19,18 @@ local ChoGGi_OrigFuncs
 local Translate
 
 local SaveOrigFunc
-local SetTrans
+
+-- set UI transparency
+local function SetTrans(dlg)
+	if not dlg then
+		return
+	end
+	local trans = ChoGGi.UserSettings.Transparency
+	if dlg.class and trans[dlg.class] then
+		dlg:SetTransparency(trans[dlg.class])
+	end
+	return dlg
+end
 
 function OnMsg.ClassesGenerate()
 	MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -27,32 +38,23 @@ function OnMsg.ClassesGenerate()
 	blacklist = ChoGGi.blacklist
 	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	Translate = ChoGGi.ComFuncs.Translate
+	SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
 	ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
-	-- set UI transparency
-	SetTrans = function(obj)
-		if not obj then
-			return
-		end
-		local trans = ChoGGi.UserSettings.Transparency
-		if obj.class and trans[obj.class] then
-			obj:SetTransparency(trans[obj.class])
-		end
-	end
 
-	SaveOrigFunc = function(class_or_func,func_name)
-		if func_name then
-			local newname = class_or_func .. "_" .. func_name
-			if not ChoGGi_OrigFuncs[newname] then
-				ChoGGi_OrigFuncs[newname] = _G[class_or_func][func_name]
-			end
-		else
-			if not ChoGGi_OrigFuncs[class_or_func] then
-				ChoGGi_OrigFuncs[class_or_func] = _G[class_or_func]
-			end
-		end
-	end
+--~ 	SaveOrigFunc = function(class_or_func,func_name)
+--~ 		if func_name then
+--~ 			local newname = class_or_func .. "_" .. func_name
+--~ 			if not ChoGGi_OrigFuncs[newname] then
+--~ 				ChoGGi_OrigFuncs[newname] = _G[class_or_func][func_name]
+--~ 			end
+--~ 		else
+--~ 			if not ChoGGi_OrigFuncs[class_or_func] then
+--~ 				ChoGGi_OrigFuncs[class_or_func] = _G[class_or_func]
+--~ 			end
+--~ 		end
+--~ 	end
 
 	do -- do some stuff
 		local Platform = Platform
@@ -263,12 +265,10 @@ function OnMsg.ClassesGenerate()
 
 		-- UI transparency dialogs (buildmenu, pins, infopanel)
 		function OpenDialog(...)
-			local ret = {ChoGGi_OrigFuncs.OpenDialog(...)}
-			SetTrans(ret)
-			return table_unpack(ret)
+			return SetTrans(ChoGGi_OrigFuncs.OpenDialog(...))
 		end
 
-		--console stuff
+		-- console stuff
 		function ShowConsoleLog(...)
 			ChoGGi_OrigFuncs.ShowConsoleLog(...)
 			SetTrans(dlgConsoleLog)
@@ -1416,28 +1416,29 @@ end]]
 			end
 
 			-- and now the console has a blacklist :), though i am a little suprised they left it unfettered this long, been using it as a workaround for months
-			local WaitMsg = WaitMsg
-			local rawget,rawset = rawget,rawset
-			CreateRealTimeThread(function()
-				if not g_ConsoleFENV then
-					WaitMsg("Autorun")
-				end
-				while not g_ConsoleFENV do
-					WaitMsg("OnRender")
-				end
-
-				local run = rawget(g_ConsoleFENV,"__run")
-				g_ConsoleFENV = {__run = run}
-				setmetatable(g_ConsoleFENV, {
-					__index = function(_, key)
-						return rawget(_G, key)
-					end,
-					__newindex = function(_, key, value)
-						rawset(_G, key, value)
+			if rawget(_G,"g_ConsoleFENV") then
+				local WaitMsg = WaitMsg
+				local rawget,rawset = rawget,rawset
+				CreateRealTimeThread(function()
+					if not g_ConsoleFENV then
+						WaitMsg("Autorun")
 					end
-				})
+					while not g_ConsoleFENV do
+						WaitMsg("OnRender")
+					end
 
-			end)
+					local run = rawget(g_ConsoleFENV,"__run")
+					g_ConsoleFENV = {__run = run}
+					setmetatable(g_ConsoleFENV, {
+						__index = function(_, key)
+							return rawget(_G, key)
+						end,
+						__newindex = function(_, key, value)
+							rawset(_G, key, value)
+						end
+					})
+				end)
+			end
 
 		end
 	end -- do

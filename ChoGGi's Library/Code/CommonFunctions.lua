@@ -73,7 +73,6 @@ end -- do
 do -- RetName
 	local IsObjlist = IsObjlist
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-	local Translate = ChoGGi.ComFuncs.Translate
 	local PropObjGetProperty = PropObjGetProperty
 
 	-- we use this table to display names of (some) tables for RetName

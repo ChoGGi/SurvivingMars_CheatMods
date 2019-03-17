@@ -1698,12 +1698,11 @@ function Examine:ShowEntitySpotsList()
 		end
 
 		local name = spot_name .. (spot_annot ~= "" and ";" .. spot_annot or "")
-
 		if not dupes[name] then
 			dupes[name] = true
 			c = c + 1
 			item_list[c] = {
-				text = name,
+				text = name .. " (" .. Strings[302535920001573--[[Spot Id--]]] .. ": " .. i .. ")",
 				name = spot_name,
 				value = spot_annot,
 				hint = spot_annot,
