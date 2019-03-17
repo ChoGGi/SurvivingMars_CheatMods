@@ -470,9 +470,10 @@ function OnMsg.ClassesGenerate()
 				-- table.concat don't work with non strings/numbers
 				local args = {...}
 				for i = 1, #args do
-					local arg_type = type(args[i])
+					local arg = args[i]
+					local arg_type = type(arg)
 					if arg_type ~= "string" and arg_type ~= "number" then
-						args[i] = tostring(args[i])
+						args[i] = tostring(arg)
 					end
 				end
 				args = TableConcat(args," ")

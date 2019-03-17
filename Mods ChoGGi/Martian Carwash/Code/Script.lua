@@ -40,8 +40,6 @@ local NearestObject = NearestObject
 local Sleep = Sleep
 local Wakeup = Wakeup
 
---~ function OnMsg.ClassesGenerate()
-local Farm = Farm
 DefineClass.Carwash = {
   __parents = {
     "Building",
@@ -59,9 +57,6 @@ DefineClass.Carwash = {
     { template = true, id = "water_consumption", name = T(656, "Water consumption"),  category = "Consumption", editor = "number", default = 0, scale = const.ResourceScale, read_only = true, modifiable = true },
     { template = true, id = "air_consumption",   name = T(657, "Oxygen Consumption"), category = "Consumption", editor = "number", default = 0, scale = const.ResourceScale, read_only = true, modifiable = true },
   },
---~   interior = Farm.interior,
---~   spots = Farm.spots,
---~   anims = Farm.anims,
 
   -- conventional farm
   anim_thread = false,

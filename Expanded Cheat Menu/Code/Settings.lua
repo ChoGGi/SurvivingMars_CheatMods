@@ -299,7 +299,7 @@ function OnMsg.ClassesGenerate()
 			err, settings = AsyncFileToString(ChoGGi.settings_file)
 			if err then
 				-- no settings file so make a new one and read it
-				ChoGGi.SettingFuncs.WriteSettingsOrig()
+				ChoGGi.SettingFuncs.WriteSettings(ChoGGi.Defaults)
 				err, settings = AsyncFileToString(ChoGGi.settings_file)
 				-- something is definitely wrong so just abort, and let user know
 				if err then

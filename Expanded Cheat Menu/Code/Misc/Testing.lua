@@ -147,6 +147,8 @@ function OnMsg.ClassesGenerate()
 		as.Options.AutoPinRovers = false
 		as.Options.Autosave = false
 		as.Options.HintsEnabled = false
+		as.CompletedTutorials = as.CompletedTutorials or {}
+		as.CompletedTutorials.Tutorial1 = true
 		as.Shortcuts["ECM.Debug.Delete Object(s).Delete Object(s)"] = {"Ctrl-Shift-D"}
 	end
 
