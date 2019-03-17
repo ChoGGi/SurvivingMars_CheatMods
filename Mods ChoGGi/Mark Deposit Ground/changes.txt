@@ -1,3 +1,7 @@
+v0.5
+Changed construction sign to default to on.
+Added descriptions to MCR options.
+
 v0.4
 Added MC option to show icons during construction.
 Removed MC option for Vista/Research markers (they're part of hide signs option).

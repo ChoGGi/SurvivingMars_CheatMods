@@ -13,7 +13,6 @@ function OnMsg.ClassesGenerate()
 	local Translate = ChoGGi.ComFuncs.Translate
 
 	function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.StorageMechanizedDepotsTemp = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.StorageMechanizedDepotsTemp)
 
 		local amount
@@ -47,7 +46,6 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 
-		local ChoGGi = ChoGGi
 		local default_setting = capacity
 		local hint_toolarge = Translate(6779--[[Warning--]]) .. " " .. Strings[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
@@ -132,7 +130,6 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local hint_toolarge = Translate(6779--[[Warning--]]) .. " " .. Strings[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
@@ -284,7 +281,6 @@ function OnMsg.ClassesGenerate()
 			)
 			return
 		end
-		local ChoGGi = ChoGGi
 		local default_setting = capacity
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},

@@ -1830,7 +1830,9 @@ do -- Rebuildshortcuts
 				ActionShortcut = "Ctrl-Shift-0",
 				ActionBindable = true,
 			})
-			print(Strings[302535920001411--[[ECM has been disabled. Change DisableECM to false in settings file.--]]])
+			print(Strings[302535920001411--[["ECM has been disabled.
+Use %s to enable it.
+See the bottom of Gameplay>Controls if you've changed the shortcut."--]]]:format("Ctrl-Shift-0"))
 		end
 
 		-- add rightclick action to menuitems

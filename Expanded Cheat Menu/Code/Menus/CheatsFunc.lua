@@ -428,8 +428,6 @@ This will switch to a new map.--]]],
 		end)
 	end
 	function ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm()
-		local ChoGGi = ChoGGi
-
 		local pos = ChoGGi.ComFuncs.SelObject() or GetTerrainCursor()
 		if type(pos) == "table" then
 			pos = pos:GetPos()
@@ -631,7 +629,6 @@ This will switch to a new map.--]]],
 				.. "\n\n" .. Strings[302535920001546]
 			local default_mapdata_type = Strings[302535920000250--[[Default mapdata type--]]]
 
-			local ChoGGi = ChoGGi
 			local item_list = {
 				{text = " " .. Strings[302535920000240--[[Stop--]]] .. " " .. Translate(3983--[[Disasters--]]),value = "Stop",hint = Strings[302535920000123--[[Stops most disasters--]]]},
 
@@ -752,7 +749,6 @@ This will switch to a new map.--]]],
 	end
 
 	function ChoGGi.MenuFuncs.MapExploration()
-		local ChoGGi = ChoGGi
 		local Consts = Consts
 		local UICity = UICity
 		local title = Strings[302535920001355--[[Map--]]] .. " " .. Translate(5422--[[Exploration--]])
@@ -891,7 +887,6 @@ Deep items will unlock the ability to exploit those resources."--]]],
 
 	do -- StartMystery
 		local function StartMystery(mystery_id,instant)
-			local ChoGGi = ChoGGi
 			local UICity = UICity
 
 			-- inform people of actions, so they don't add a bunch of them
@@ -937,7 +932,6 @@ Deep items will unlock the ability to exploit those resources."--]]],
 		end
 
 		function ChoGGi.MenuFuncs.ShowMysteryList()
-			local ChoGGi = ChoGGi
 			local item_list = {}
 			local mysteries = ChoGGi.Tables.Mystery
 			for i = 1, #mysteries do
@@ -1028,7 +1022,6 @@ g_Voice:Play(o.speech)"--]]]:format(Strings[302535920000040--[[Exec Code--]]]) .
 			return
 		end
 
-		local ChoGGi = ChoGGi
 		local item_list = {}
 		local c = 0
 		local mysteries = ChoGGi.Tables.Mystery
@@ -1131,7 +1124,6 @@ g_Voice:Play(o.speech)"--]]]:format(Strings[302535920000040--[[Exec Code--]]]) .
 	end
 
 	function ChoGGi.MenuFuncs.NextMysterySeq(mystery,mystery_idx)
-		local ChoGGi = ChoGGi
 		local g_Classes = g_Classes
 
 		local warning = "\n\n" .. Strings[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]]
@@ -1408,7 +1400,6 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 	end
 
 	function ChoGGi.MenuFuncs.BreakThroughsAllowed_Set()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.BreakThroughTechsPerGame
 		local MaxAmount = #UICity.tech_field.Breakthroughs
 		local item_list = {
@@ -1450,7 +1441,6 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 	end
 
 	function ChoGGi.MenuFuncs.ResearchQueueSize_Set()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.ResearchQueueSize
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},

@@ -1038,7 +1038,6 @@ You need my HelperMod installed to be able to use this."--]]],
 		end
 
 		local function ClearColourAndWP(cls)
-			local ChoGGi = ChoGGi
 			-- remove all thread refs so they stop
 			table_clear(ChoGGi.Temp.UnitPathingHandles)
 			-- and waypoints/colour
@@ -1063,7 +1062,6 @@ You need my HelperMod installed to be able to use this."--]]],
 		end
 
 		function ChoGGi.MenuFuncs.SetPathMarkers()
-			local ChoGGi = ChoGGi
 			ChoGGi.Temp.UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles or {}
 
 			if not mapw then

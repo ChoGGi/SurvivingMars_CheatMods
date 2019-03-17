@@ -27,7 +27,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
-		local ChoGGi = ChoGGi
 		local XTemplates = XTemplates
 
 		if ChoGGi.UserSettings.GUIDockSide then
@@ -292,10 +291,10 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 		local function SensorTower_Toggle()
-			local ChoGGi = ChoGGi
+			local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
 			local objs = UICity.labels.SensorTower or ""
 			for i = 1, #objs do
-				ChoGGi.ComFuncs.ToggleWorking(objs[i])
+				ToggleWorking(objs[i])
 			end
 		end
 		local function RCRoverDeploy_Toggle()
@@ -329,8 +328,6 @@ function OnMsg.ClassesGenerate()
 				manual = nil
 			end
 
-			local ChoGGi = ChoGGi
-			--make a list
 			local item_list = {
 				{text = Strings[302535920001084--[[Reset--]]],value = "Reset"},
 				{text = Strings[302535920001085--[[Sensor Tower Beeping--]]],value = "SensorTowerWorking"},
@@ -553,7 +550,6 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.DisableTextureCompression = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DisableTextureCompression)
 		hr.TR_ToggleTextureCompression = 1
 
@@ -636,8 +632,6 @@ function OnMsg.ClassesGenerate()
 		end
 
 		function ChoGGi.MenuFuncs.FlattenTerrain_Toggle(square)
-			local ChoGGi = ChoGGi
-
 			if are_we_flattening then
 				-- disable shift-arrow keys
 				ToggleHotkeys()
@@ -900,7 +894,6 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 	end
 
 	function ChoGGi.MenuFuncs.PulsatingPins_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.DisablePulsatingPinsMotion = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DisablePulsatingPinsMotion)
 
 		ChoGGi.SettingFuncs.WriteSettings()
@@ -1277,7 +1270,6 @@ Open %s to see all the textures, the tooltips show the texture index."--]]]:form
 	end
 
 	function ChoGGi.MenuFuncs.TransparencyUI_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.TransparencyToggle = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.TransparencyToggle)
 
 		ChoGGi.SettingFuncs.WriteSettings()
@@ -1422,8 +1414,6 @@ Open %s to see all the textures, the tooltips show the texture index."--]]]:form
 	end
 
 	function ChoGGi.MenuFuncs.SetTerrainDetail()
-		local ChoGGi = ChoGGi
-		local hr = hr
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]),value = Translate(1000121--[[Default--]]),hint = Strings[302535920001003--[[restart to enable--]]]},
 			{text = Strings[302535920001004--[[01 Lowest (25)--]]],value = 25},
@@ -1471,8 +1461,6 @@ And yes Medium is using a higher setting than High..."--]]],
 	end
 
 	function ChoGGi.MenuFuncs.SetVideoMemory()
-		local ChoGGi = ChoGGi
-		local hr = hr
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]),value = Translate(1000121--[[Default--]]),hint = Strings[302535920001003--[[restart to enable--]]]},
 			{text = Strings[302535920001031--[[1 Crap (32)--]]],value = 32},
@@ -1515,8 +1503,6 @@ And yes Medium is using a higher setting than High..."--]]],
 	end
 
 	function ChoGGi.MenuFuncs.SetShadowmapSize()
-		local ChoGGi = ChoGGi
-		local hr = hr
 		local hint_highest = Translate(6779--[[Warning--]]) .. ": " .. Strings[302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).--]]]
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]),value = Translate(1000121--[[Default--]]),hint = Strings[302535920001003--[[restart to enable--]]]},

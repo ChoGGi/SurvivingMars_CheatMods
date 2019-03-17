@@ -125,7 +125,9 @@ It's a tradeoff between erroneous errors and the game locking up.",
 302535920001068,"The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
 Attachment bspheres are off (x and y are; z and rotate aren't).
 Some of the file names are guesses. This also doesn't include any surf/surf_hash entries.",
-302535920001411,ECM has been disabled. Change DisableECM to false in settings file.,
+302535920001411,"ECM has been disabled.
+Use %s to enable it.
+See the bottom of Gameplay>Controls if you've changed the shortcut.",
 302535920001383,AddXTemplate borked template name: %s template: %s list: %s,
 302535920000013,This shouldn't happen... Well dang something's bork bork bork.,
 302535920000002,Dumped: <color 100 255 100>%s</color>,

@@ -54,7 +54,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
-		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.FoodPerRocketPassenger / r
 		local item_list = {

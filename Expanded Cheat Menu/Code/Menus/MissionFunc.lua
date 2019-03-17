@@ -256,7 +256,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
-		local ChoGGi = ChoGGi
 		local Consts = Consts
 		ChoGGi.ComFuncs.SetConstsG("MeteorHealthDamage",ChoGGi.ComFuncs.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage))
 		ChoGGi.ComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
@@ -343,7 +342,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetSponsorBonus()
-		local ChoGGi = ChoGGi
 		local UserSettings = ChoGGi.UserSettings
 		local Presets = Presets
 

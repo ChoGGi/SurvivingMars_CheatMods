@@ -109,8 +109,8 @@ If you want to be able to bind a menu item: msg me and I'll add it to keybinding
 There's a cheats section in most selection panels on the right side of the screen.
 Menu>ECM>Misc>Infopanel Cheats (on by default)
 
-Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua, or in-game when blacklist isn't disabled.
-There's also Help>Reset Settings, to manually edit see: Help>ECM>Edit Settings.
+Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua, or in LocalStorage.lua when the blacklist is enabled.
+There's also Help>ECM>Reset Settings, to manually edit see: Help>ECM>Edit Settings.
 
 
 
