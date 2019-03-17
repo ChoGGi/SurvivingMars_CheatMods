@@ -10,7 +10,6 @@ function OnMsg.ClassesGenerate()
 	local Strings = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
-		local ChoGGi = ChoGGi
 		local item_list = {
 			{text = Translate(547--[[Colonists--]]),value = "Colonist"},
 			{text = Translate(1120--[[Space Elevator--]]),value = "SpaceElevator"},
@@ -355,7 +354,6 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 
 	do -- SetEntityScale
 		local function SetScale(obj,Scale)
-			local ChoGGi = ChoGGi
 			local UserSettings = ChoGGi.UserSettings
 			obj:SetScale(Scale)
 

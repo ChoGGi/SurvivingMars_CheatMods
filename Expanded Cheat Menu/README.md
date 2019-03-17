@@ -46,10 +46,8 @@ There's a cheats section in most selection panels on the right side of the scree
 Menu>ECM>Misc>Infopanel Cheats (on by default)
 Hover over menu items for a description (will say if enabled or disabled).
 
-Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua, or in-game when blacklist isn't disabled.
-Help>Reset Settings will also do the same thing.
-
-To manually edit see: Help>ECM>Edit Settings.
+Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua, or in LocalStorage.lua when the blacklist is enabled.
+There's also Help>ECM>Reset Settings, to manually edit see: Help>ECM>Edit Settings.
 ```
 
 

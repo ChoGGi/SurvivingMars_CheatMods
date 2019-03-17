@@ -11,7 +11,6 @@ function OnMsg.ClassesGenerate()
 	local Strings = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.NonHomeDomePerformancePenalty_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("NonHomeDomePerformancePenalty",ChoGGi.ComFuncs.NumRetBool(Consts.NonHomeDomePerformancePenalty,0,ChoGGi.Consts.NonHomeDomePerformancePenalty))
 		ChoGGi.ComFuncs.SetSavedSetting("NonHomeDomePerformancePenalty",Consts.NonHomeDomePerformancePenalty)
 
@@ -25,7 +24,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
-		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.NoMoreEarthsick then
 			ChoGGi.UserSettings.NoMoreEarthsick = nil
 		else
@@ -47,7 +45,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.UniversityGradRemoveIdiotTrait_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.UniversityGradRemoveIdiotTrait)
 
 		ChoGGi.SettingFuncs.WriteSettings()
@@ -62,7 +59,6 @@ function OnMsg.ClassesGenerate()
 --~ 	NaturalDeathReasons.ChoGGi_Soylent = true
 	function ChoGGi.MenuFuncs.TheSoylentOption()
 		local UICity = UICity
-		local ChoGGi = ChoGGi
 		local Tables = ChoGGi.Tables
 
 		-- don't drop BlackCube/MysteryResource
@@ -277,7 +273,6 @@ I think somebody has been playing too much Fallout...--]]],
 	end
 
 	function ChoGGi.MenuFuncs.AddApplicantsToPool()
-		local ChoGGi = ChoGGi
 		local item_list = {
 			{text = 1,value = 1},
 			{text = 10,value = 10},
@@ -450,7 +445,6 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 	end
 
 	function ChoGGi.MenuFuncs.VisitFailPenalty_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("VisitFailPenalty",ChoGGi.ComFuncs.NumRetBool(Consts.VisitFailPenalty,0,ChoGGi.Consts.VisitFailPenalty))
 
 		ChoGGi.ComFuncs.SetSavedSetting("VisitFailPenalty",Consts.VisitFailPenalty)
@@ -465,8 +459,6 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 	end
 
 	function ChoGGi.MenuFuncs.RenegadeCreation_Toggle()
-		local ChoGGi = ChoGGi
-		local Consts = Consts
 		ChoGGi.ComFuncs.SetConstsG("RenegadeCreation",ChoGGi.ComFuncs.ValueRetOpp(Consts.RenegadeCreation,max_int,ChoGGi.Consts.RenegadeCreation))
 
 		ChoGGi.ComFuncs.SetSavedSetting("RenegadeCreation",Consts.RenegadeCreation)
@@ -538,8 +530,6 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 	end
 
 	function ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle()
-		local ChoGGi = ChoGGi
-		-- was -100
 		ChoGGi.ComFuncs.SetConstsG("HighStatLevel",ChoGGi.ComFuncs.NumRetBool(Consts.HighStatLevel,0,ChoGGi.Consts.HighStatLevel))
 		ChoGGi.ComFuncs.SetConstsG("LowStatLevel",ChoGGi.ComFuncs.NumRetBool(Consts.LowStatLevel,0,ChoGGi.Consts.LowStatLevel))
 		ChoGGi.ComFuncs.SetConstsG("HighStatMoraleEffect",ChoGGi.ComFuncs.ValueRetOpp(Consts.HighStatMoraleEffect,max_int,ChoGGi.Consts.HighStatMoraleEffect))
@@ -556,7 +546,6 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 	end
 
 	function ChoGGi.MenuFuncs.ChanceOfSanityDamage_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("DustStormSanityDamage",ChoGGi.ComFuncs.NumRetBool(Consts.DustStormSanityDamage,0,ChoGGi.Consts.DustStormSanityDamage))
 		ChoGGi.ComFuncs.SetConstsG("MysteryDreamSanityDamage",ChoGGi.ComFuncs.NumRetBool(Consts.MysteryDreamSanityDamage,0,ChoGGi.Consts.MysteryDreamSanityDamage))
 		ChoGGi.ComFuncs.SetConstsG("ColdWaveSanityDamage",ChoGGi.ComFuncs.NumRetBool(Consts.ColdWaveSanityDamage,0,ChoGGi.Consts.ColdWaveSanityDamage))
@@ -575,7 +564,6 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 	end
 
 	function ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("SeeDeadSanity",ChoGGi.ComFuncs.NumRetBool(Consts.SeeDeadSanity,0,ChoGGi.Consts.SeeDeadSanity))
 		ChoGGi.ComFuncs.SetSavedSetting("SeeDeadSanity",Consts.SeeDeadSanity)
 
@@ -588,7 +576,6 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 	end
 
 	function ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("NoHomeComfort",ChoGGi.ComFuncs.NumRetBool(Consts.NoHomeComfort,0,ChoGGi.Consts.NoHomeComfort))
 		ChoGGi.ComFuncs.SetSavedSetting("NoHomeComfort",Consts.NoHomeComfort)
 
@@ -605,7 +592,6 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 	end
 
 	function ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("LowSanityNegativeTraitChance",ChoGGi.ComFuncs.NumRetBool(Consts.LowSanityNegativeTraitChance,0,ChoGGi.ComFuncs.GetResearchedTechValue("LowSanityNegativeTraitChance")))
 		ChoGGi.ComFuncs.SetSavedSetting("LowSanityNegativeTraitChance",Consts.LowSanityNegativeTraitChance)
 
@@ -618,7 +604,6 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 	end
 
 	function ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("LowSanitySuicideChance",ChoGGi.ComFuncs.ToggleBoolNum(Consts.LowSanitySuicideChance))
 		ChoGGi.ComFuncs.SetSavedSetting("LowSanitySuicideChance",Consts.LowSanitySuicideChance)
 
@@ -631,7 +616,6 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 	end
 
 	function ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("OxygenMaxOutsideTime",ChoGGi.ComFuncs.ValueRetOpp(Consts.OxygenMaxOutsideTime,max_int,ChoGGi.Consts.OxygenMaxOutsideTime))
 		ChoGGi.ComFuncs.SetSavedSetting("OxygenMaxOutsideTime",Consts.OxygenMaxOutsideTime)
 
@@ -644,7 +628,6 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 	end
 
 	function ChoGGi.MenuFuncs.ColonistsStarve_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("TimeBeforeStarving",ChoGGi.ComFuncs.ValueRetOpp(Consts.TimeBeforeStarving,max_int,ChoGGi.Consts.TimeBeforeStarving))
 		ChoGGi.ComFuncs.SetSavedSetting("TimeBeforeStarving",Consts.TimeBeforeStarving)
 
@@ -660,7 +643,6 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	end
 
 	function ChoGGi.MenuFuncs.AvoidWorkplace_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("AvoidWorkplaceSols",ChoGGi.ComFuncs.NumRetBool(Consts.AvoidWorkplaceSols,0,ChoGGi.Consts.AvoidWorkplaceSols))
 		ChoGGi.ComFuncs.SetSavedSetting("AvoidWorkplaceSols",Consts.AvoidWorkplaceSols)
 
@@ -673,7 +655,6 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	end
 
 	function ChoGGi.MenuFuncs.PositivePlayground_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("positive_playground_chance",ChoGGi.ComFuncs.ValueRetOpp(Consts.positive_playground_chance,101,ChoGGi.Consts.positive_playground_chance))
 		ChoGGi.ComFuncs.SetSavedSetting("positive_playground_chance",Consts.positive_playground_chance)
 
@@ -686,7 +667,6 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	end
 
 	function ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("ProjectMorphiousPositiveTraitChance",ChoGGi.ComFuncs.ValueRetOpp(Consts.ProjectMorphiousPositiveTraitChance,100,ChoGGi.Consts.ProjectMorphiousPositiveTraitChance))
 		ChoGGi.ComFuncs.SetSavedSetting("ProjectMorphiousPositiveTraitChance",Consts.ProjectMorphiousPositiveTraitChance)
 
@@ -699,7 +679,6 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	end
 
 	function ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("NonSpecialistPerformancePenalty",ChoGGi.ComFuncs.NumRetBool(Consts.NonSpecialistPerformancePenalty,0,ChoGGi.ComFuncs.GetResearchedTechValue("NonSpecialistPerformancePenalty")))
 		ChoGGi.ComFuncs.SetSavedSetting("NonSpecialistPerformancePenalty",Consts.NonSpecialistPerformancePenalty)
 
@@ -713,7 +692,6 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	end
 
 	function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.DefaultOutsideWorkplacesRadius
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -847,12 +825,13 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	end -- do
 
 	function ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll()
-		local ChoGGi = ChoGGi
+		local ColonistUpdateSpecialization = ChoGGi.ComFuncs.ColonistUpdateSpecialization
+		local str = Translate(3490--[[Random--]])
 		local objs = UICity.labels.Colonist or ""
 		for i = 1, #objs do
 			local o = objs[i]
 			if o.specialist == "none" then
-				ChoGGi.ComFuncs.ColonistUpdateSpecialization(o,Translate(3490--[[Random--]]))
+				ColonistUpdateSpecialization(o,str)
 			end
 		end
 
@@ -1576,7 +1555,6 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	end
 
 	function ChoGGi.MenuFuncs.SetColonistsStats()
-		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local item_list = {
 			{text = Strings[302535920000833--[[All Stats--]]] .. " " .. Strings[302535920000834--[[Max--]]],value = 1},
@@ -1682,7 +1660,6 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	end
 
 	function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
-		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.SpeedColonist
 		local item_list = {
@@ -1762,7 +1739,6 @@ Therefore a stale piece of bread is better than a big juicy steak.--]]]:format(C
 	end
 
 	function ChoGGi.MenuFuncs.SetColonistsGravity()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.GravityColonist
 		local r = ChoGGi.Consts.ResourceScale
 		local item_list = {

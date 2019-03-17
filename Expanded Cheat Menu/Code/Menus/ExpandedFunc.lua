@@ -372,7 +372,6 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	function ChoGGi.MenuFuncs.MonitorInfo()
-		local ChoGGi = ChoGGi
 		local item_list = {
 			{text = Strings[302535920000936--[[Something you'd like to see added?--]]],value = "New"},
 			{text = "",value = "New"},

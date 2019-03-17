@@ -7,6 +7,7 @@ function OnMsg.ClassesGenerate()
 	local Translate = ChoGGi.ComFuncs.Translate
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 	local DeleteObject = ChoGGi.ComFuncs.DeleteObject
+	local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
 	local Strings = ChoGGi.Strings
 
 	function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
@@ -29,32 +30,33 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.FireMostFixes()
 		CreateRealTimeThread(function()
-			local ChoGGi = ChoGGi
+			local MenuFuncs = ChoGGi.MenuFuncs
 
-			pcall(ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites)
-			pcall(ChoGGi.MenuFuncs.ParticlesWithNullPolylines)
-			pcall(ChoGGi.MenuFuncs.StutterWithHighFPS)
-			pcall(ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame)
-			pcall(ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome)
-			pcall(ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas)
-			pcall(ChoGGi.MenuFuncs.RemoveYellowGridMarks)
-			pcall(ChoGGi.MenuFuncs.RemoveBlueGridMarks)
-			pcall(ChoGGi.MenuFuncs.CablesAndPipesRepair)
-			pcall(ChoGGi.MenuFuncs.MirrorSphereStuck)
-			pcall(ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown)
-			pcall(ChoGGi.MenuFuncs.RemoveInvalidLabelObjects)
+			pcall(MenuFuncs.RemoveUnreachableConstructionSites)
+			pcall(MenuFuncs.ParticlesWithNullPolylines)
+			pcall(MenuFuncs.StutterWithHighFPS)
+			pcall(MenuFuncs.ColonistsTryingToBoardRocketFreezesGame)
+			pcall(MenuFuncs.AttachBuildingsToNearestWorkingDome)
+			pcall(MenuFuncs.DronesKeepTryingBlockedAreas)
+			pcall(MenuFuncs.RemoveYellowGridMarks)
+			pcall(MenuFuncs.RemoveBlueGridMarks)
+			pcall(MenuFuncs.CablesAndPipesRepair)
+			pcall(MenuFuncs.MirrorSphereStuck)
+			pcall(MenuFuncs.ProjectMorpheusRadarFellDown)
+			pcall(MenuFuncs.RemoveInvalidLabelObjects)
 
 			-- loop through and remove all my msgs from the onscreen popups
 			CreateRealTimeThread(function()
+				local MsgPopups = ChoGGi.Temp.MsgPopups
 				Sleep(500)
-				while #ChoGGi.Temp.MsgPopups < 10 do
+				while #MsgPopups < 10 do
 					Sleep(100)
 				end
-				local popups = ChoGGi.Temp.MsgPopups or ""
+				local popups = MsgPopups or ""
 				for i = #popups, 1, -1 do
 					popups[i]:delete()
 				end
-				table.iclear(ChoGGi.Temp.MsgPopups)
+				table.iclear(MsgPopups)
 			end)
 		end)
 	end
@@ -77,7 +79,7 @@ function OnMsg.ClassesGenerate()
 	function ChoGGi.MenuFuncs.ToggleWorkingAll()
 		MapForEach("map","BaseBuilding",function(o)
 			if type(o.ToggleWorking) == "function" and not o:IsKindOfClasses("OrbitalProbe","ResourceStockpile","WasteRockStockpile","BaseRover") then
-				ChoGGi.ComFuncs.ToggleWorking(o)
+				ToggleWorking(o)
 			end
 		end)
 
@@ -141,7 +143,6 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	function ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle()
-		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.CheckForBorkedTransportPath then
 			ChoGGi.UserSettings.CheckForBorkedTransportPath = nil
 		else
@@ -347,11 +348,10 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.StutterWithHighFPS(skip)
-		local ChoGGi = ChoGGi
+		local CheckForBorkedTransportPath = ChoGGi.ComFuncs.CheckForBorkedTransportPath
 		local objs = UICity.labels.Unit or ""
-		--CargoShuttle
 		for i = 1, #objs do
-			ChoGGi.ComFuncs.CheckForBorkedTransportPath(objs[i])
+			CheckForBorkedTransportPath(objs[i])
 		end
 
 		if skip ~= true then
@@ -376,13 +376,12 @@ function OnMsg.ClassesGenerate()
 		end
 
 		function ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
-			local ChoGGi = ChoGGi
 			ResetPriorityQueue("SupplyRocket")
 			ResetPriorityQueue("RCRover")
 			ResetPriorityQueue("DroneHub")
 			-- toggle working state on all ConstructionSite (wakes up drones else they'll wait at hub)
 			MapForEach("map","ConstructionSite",function(o)
-				ChoGGi.ComFuncs.ToggleWorking(o)
+				ToggleWorking(o)
 			end)
 			MsgPopup(
 				Strings[302535920000599--[[Drones Keep Trying Blocked Areas--]]],
@@ -487,7 +486,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
-		local ChoGGi = ChoGGi
 		local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
 		local objs = UICity.labels.InsideBuildings or ""
 		for i = 1, #objs do
@@ -574,7 +572,6 @@ function OnMsg.ClassesGenerate()
 
 	-- broked ai mods... (fix your shit or take it down kthxbai)
 	function ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle()
-		local ChoGGi = ChoGGi
 		if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
 			ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings = nil
 		else
@@ -591,7 +588,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.DroneResourceCarryAmountFix = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DroneResourceCarryAmountFix)
 
 		ChoGGi.SettingFuncs.WriteSettings()
@@ -603,7 +599,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.SortCommandCenterDist = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.SortCommandCenterDist)
 
 		ChoGGi.SettingFuncs.WriteSettings()

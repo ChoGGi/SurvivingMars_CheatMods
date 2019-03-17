@@ -6,17 +6,20 @@ function OnMsg.ModConfigReady()
 	ModConfig:RegisterMod("MarkDepositGround", "Mark Deposit Ground")
 
 	ModConfig:RegisterOption("MarkDepositGround", "HideSigns", {
-		name = "Hide signs",
+		name = [[Hide signs]],
+		desc = [[Hide signs on the map (pressing I will not toggle them).]],
 		type = "boolean",
 		default = MarkDepositGround.HideSigns,
 	})
 	ModConfig:RegisterOption("MarkDepositGround", "AlienAnomaly", {
-		name = "Alien anomaly signs",
+		name = [[Alien Signs]],
+		desc = [[Change anomaly signs to aliens.]],
 		type = "boolean",
 		default = MarkDepositGround.AlienAnomaly,
 	})
 	ModConfig:RegisterOption("MarkDepositGround", "ShowConstruct", {
-		name = "Show during construction",
+		name = [[Construction Signs]],
+		desc = [[Signs are visible during construction.]],
 		type = "boolean",
 		default = MarkDepositGround.ShowConstruct,
 	})
@@ -28,13 +31,10 @@ function OnMsg.ModConfigReady()
 
 end
 
-local AsyncRand = AsyncRand
-local g_Classes = g_Classes
-
-
 local function ChangeMarks(label,entity,value)
 	local anomalies = UICity.labels[label] or ""
 	if value then
+		local AsyncRand = AsyncRand
 		for i = 1, #anomalies do
 			local a = anomalies[i]
 			if not a.ChoGGi_alien then
@@ -45,6 +45,7 @@ local function ChangeMarks(label,entity,value)
 			end
 		end
 	else
+		local g_Classes = g_Classes
 		for i = 1, #anomalies do
 			local a = anomalies[i]
 			a:ChangeEntity(a.ChoGGi_alien or g_Classes[a.class]:GetEntity())

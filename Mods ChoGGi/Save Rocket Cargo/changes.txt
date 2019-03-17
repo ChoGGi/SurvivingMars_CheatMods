@@ -1,0 +1,2 @@
+v0.2
+Added MCR option to clear cargo on launch.

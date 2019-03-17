@@ -3,7 +3,7 @@
 MarkDepositGround = {
 	HideSigns = false,
 	AlienAnomaly = false,
-	ShowConstruct = false,
+	ShowConstruct = true,
 }
 
 MarkDepositGround.UpdateOpacity = function(label,value)
@@ -46,6 +46,8 @@ MarkDepositGround.UpdateDeposit = function(d)
 		pattern:mul_i(texture_mpres, 1)
 	elseif d:IsKindOf("SubsurfaceDepositWater") then
 		pattern:mul_i(texture_water, 1)
+	else
+		return
 	end
 
 	pattern:sub_i(1, 1)
@@ -102,12 +104,8 @@ local function HideSigns()
 	end
 end
 
-function OnMsg.CityStart()
-	HideSigns()
-end
-function OnMsg.LoadGame()
-	HideSigns()
-end
+OnMsg.CityStart = HideSigns
+OnMsg.LoadGame = HideSigns
 
 -- update as they become visible
 function OnMsg.SubsurfaceDepositRevealed(d)

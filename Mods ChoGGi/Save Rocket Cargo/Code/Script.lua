@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+SaveRocketCargo = {
+	ClearOnLaunch = false,
+}
+
 local WaitMsg = WaitMsg
 
 -- temp cargo stored here
@@ -9,28 +13,34 @@ local saved_cargo = {
 	elevator = {},
 }
 
+-- set from LaunchCargoRocket to stop ResetCargo from updating cargo
+local launch_skip = false
+
 local orig_ResetCargo = ResetCargo
 function ResetCargo(...)
-	local g_RocketCargo = g_RocketCargo
-	local g_CargoMode = g_CargoMode
-	if g_RocketCargo and g_CargoMode then
-		-- save cargo before it's cleared
-		local list = saved_cargo[g_CargoMode]
-		for i = 1, #g_RocketCargo do
-			local cargo = g_RocketCargo[i]
-			local saved = list[i]
-			-- if there's already a table then use it
-			if saved then
-				saved.amount = cargo.amount
-				saved.class = cargo.class
-			else
-				list[i] = {
-					amount = cargo.amount,
-					class = cargo.class,
-				}
+	if not launch_skip then
+		local g_RocketCargo = g_RocketCargo
+		local g_CargoMode = g_CargoMode
+		if g_RocketCargo and g_CargoMode then
+			-- save cargo before it's cleared
+			local list = saved_cargo[g_CargoMode]
+			for i = 1, #g_RocketCargo do
+				local cargo = g_RocketCargo[i]
+				local saved = list[i]
+				-- if there's already a table then use it
+				if saved then
+					saved.amount = cargo.amount
+					saved.class = cargo.class
+				else
+					list[i] = {
+						amount = cargo.amount,
+						class = cargo.class,
+					}
+				end
 			end
 		end
 	end
+	launch_skip = false
 	return orig_ResetCargo(...)
 end
 
@@ -76,4 +86,14 @@ function ClearRocketCargo(...)
 	end)
 
 	return ret
+end
+
+local orig_LaunchCargoRocket = LaunchCargoRocket
+function LaunchCargoRocket(...)
+	if SaveRocketCargo.ClearOnLaunch then
+		local mode = UICity and UICity.launch_mode or "rocket"
+		table.iclear(saved_cargo[mode])
+		launch_skip = true
+	end
+	return orig_LaunchCargoRocket(...)
 end

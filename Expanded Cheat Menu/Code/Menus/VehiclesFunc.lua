@@ -53,7 +53,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetRoverChargeRadius()
-		local ChoGGi = ChoGGi
 		local default_setting = 0
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -108,7 +107,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetRoverWorkRadius()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.RCRoverMaxRadius
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -161,7 +159,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.CommandCenterMaxRadius
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -214,7 +211,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -259,7 +255,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
-		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.SpeedDrone
 		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone")
@@ -314,7 +309,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetRCMoveSpeed()
-		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.SpeedRC
 		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedRC")
@@ -369,7 +363,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
-		local ChoGGi = ChoGGi
 		local obj = ChoGGi.ComFuncs.SelObject()
 		if not obj or not obj:IsKindOf("DroneControl") then
 			return
@@ -431,7 +424,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.DroneFactoryBuildSpeed
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -525,7 +517,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("DroneConstructAmount",ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneConstructAmount,max_int,ChoGGi.Consts.DroneConstructAmount))
 		ChoGGi.ComFuncs.SetConstsG("DroneBuildingRepairAmount",ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneBuildingRepairAmount,max_int,ChoGGi.Consts.DroneBuildingRepairAmount))
 		ChoGGi.ComFuncs.SetSavedSetting("DroneConstructAmount",Consts.DroneConstructAmount)
@@ -540,7 +531,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("RCRoverTransferResourceWorkTime",ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverTransferResourceWorkTime,0,ChoGGi.Consts.RCRoverTransferResourceWorkTime))
 		ChoGGi.ComFuncs.SetConstsG("RCTransportGatherResourceWorkTime",ChoGGi.ComFuncs.NumRetBool(Consts.RCTransportGatherResourceWorkTime,0,ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportGatherResourceWorkTime")))
 		ChoGGi.ComFuncs.SetSavedSetting("RCRoverTransferResourceWorkTime",Consts.RCRoverTransferResourceWorkTime)
@@ -555,7 +545,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.DroneRechargeTime_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("DroneRechargeTime",ChoGGi.ComFuncs.NumRetBool(Consts.DroneRechargeTime,0,ChoGGi.Consts.DroneRechargeTime))
 		ChoGGi.ComFuncs.SetSavedSetting("DroneRechargeTime",Consts.DroneRechargeTime)
 
@@ -569,7 +558,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.DroneRepairSupplyLeak_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.SetConstsG("DroneRepairSupplyLeak",ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneRepairSupplyLeak,1,ChoGGi.Consts.DroneRepairSupplyLeak))
 		ChoGGi.ComFuncs.SetSavedSetting("DroneRepairSupplyLeak",Consts.DroneRepairSupplyLeak)
 
@@ -582,7 +570,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetDroneCarryAmount()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("DroneResourceCarryAmount")
 		local hinttoolarge = Strings[302535920000909--[["If you set this amount larger then a building's ""Storage"" amount then the drones will NOT pick up storage (See: Fixes>%s)."--]]]:format(Strings[302535920000613--[[Drone Carry Amount--]]])
 		local item_list = {
@@ -638,7 +625,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("CommandCenterMaxDrones")
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -686,7 +672,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetDronesPerRCRover()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("RCRoverMaxDrones")
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -734,7 +719,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
-		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportStorageCapacity") / r
 		local item_list = {
@@ -807,7 +791,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetShuttleCapacity()
-		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.StorageShuttle / r
 		local item_list = {
@@ -866,7 +849,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetShuttleSpeed()
-		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.SpeedShuttle / r
 		local item_list = {
@@ -922,7 +904,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.ShuttleHubShuttleCapacity
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -982,7 +963,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetGravityRC()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.GravityRC
 		local r = ChoGGi.Consts.ResourceScale
 		local item_list = {
@@ -1039,7 +1019,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetGravityDrones()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.Consts.GravityDrone
 		local r = ChoGGi.Consts.ResourceScale
 		local item_list = {
@@ -1106,8 +1085,6 @@ function OnMsg.ClassesGenerate()
 		end
 
 		local function ShowResupplyList(name,meta)
-			local ChoGGi = ChoGGi
-
 			local item_list = {
 				{text = "pack",value = meta.pack,hint = Strings[302535920001269--[[Amount Per Click--]]]},
 				{text = "kg",value = meta.kg,hint = Strings[302535920001270--[[Weight Per Item--]]]},
@@ -1221,7 +1198,6 @@ function OnMsg.ClassesGenerate()
 --~ 	end
 
 	function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("CargoCapacity")
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting .. " kg",value = default_setting},
@@ -1318,7 +1294,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.SetColonistsPerRocket()
-		local ChoGGi = ChoGGi
 		local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("MaxColonistsPerRocket")
 		local item_list = {
 			{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -1360,7 +1335,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.RocketMaxExportAmount()
-		local ChoGGi = ChoGGi
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.RocketMaxExportAmount
 		local item_list = {
@@ -1448,7 +1422,6 @@ function OnMsg.ClassesGenerate()
 		end
 
 		function ChoGGi.MenuFuncs.LaunchFuelPerRocket()
-			local ChoGGi = ChoGGi
 			local r = ChoGGi.Consts.ResourceScale
 			local default_setting = ChoGGi.Consts.LaunchFuelPerRocket
 			local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("FuelRocket")

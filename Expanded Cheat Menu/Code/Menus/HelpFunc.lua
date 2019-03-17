@@ -118,7 +118,6 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.MenuFuncs.ToolTips_Toggle()
-		local ChoGGi = ChoGGi
 		ChoGGi.UserSettings.EnableToolTips = not ChoGGi.UserSettings.EnableToolTips
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
@@ -258,7 +257,6 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 	end
 
 	function ChoGGi.MenuFuncs.ListAllMenuItems()
-		local ChoGGi = ChoGGi
 		local item_list = {}
 		local c = 0
 
@@ -376,7 +374,6 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 			end
 
 			mod_upload_thread = CreateRealTimeThread(function()
-				local ChoGGi = ChoGGi
 				local mod = choice.mod
 				local mod_path = choice.path
 
@@ -812,7 +809,6 @@ This will always apply if uploading to Paradox."--]]] .. "\n\n" .. Strings[30253
 		local title = Translate(251103844022--[[Disable--]]) .. " " .. Strings[302535920000887--[[ECM--]]]
 		local function CallBackFunc(answer)
 			if answer then
-				local ChoGGi = ChoGGi
 				ChoGGi.UserSettings.DisableECM = not ChoGGi.UserSettings.DisableECM
 				ChoGGi.SettingFuncs.WriteSettings()
 
@@ -878,7 +874,6 @@ Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .
 	end
 
 	function ChoGGi.MenuFuncs.AboutECM()
-		local ChoGGi = ChoGGi
 		ChoGGi.ComFuncs.MsgWait(
 			Strings[302535920001078--[["Hover mouse over menu item to get description and enabled status
 	If there isn't a status then it's likely a list of options to choose from
