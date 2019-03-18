@@ -1,6 +1,12 @@
 ## ECM Changelog
 
-## v13.2 (Unreleased)
+## v13.3 (Unreleased)
+
+## v13.2 (Mar 17 2019)
+### Added:
+- Preliminary Xbox Support (thanks to Gnith for testing).
+- > Certain stuff had to be disabled (the editor crashes the game, so no terrain editing).
+- > Examine and console buttons don't work, and reading the file log probably is a no-go.
 
 ## v13.1 (Mar 15 2019)
 ### Changed:

@@ -30,18 +30,12 @@ function OnMsg.ClassesGenerate()
 			end,
 		},
 		{name = Strings[302535920001026--[[Show File Log--]]],
-			hint = Strings[302535920001091--[[Flushes log to disk and displays in an examine dialog.--]]],
+			hint = Strings[302535920001091--[[Flushes log to disk and displays it.--]]],
 			clicked = function()
-				local dlg = OpenInExamineDlg(LoadLogfile(),nil,Strings[302535920001026--[[Show File Log--]]])
-				CreateRealTimeThread(function()
-					-- yeah, it needs two
-					WaitMsg("OnRender")
-					WaitMsg("OnRender")
-					local v = dlg.idScrollV
-					if v:IsVisible() then
-						dlg.idScrollArea:ScrollTo(nil,v.Max - (v.FullPageAtEnd and v.PageSize or 0))
-					end
-				end)
+				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+					text = LoadLogfile(),
+					title = Strings[302535920001026--[[Show File Log--]]],
+				}
 			end,
 		},
 		{name = Strings[302535920000071--[[Mods Log--]]],
