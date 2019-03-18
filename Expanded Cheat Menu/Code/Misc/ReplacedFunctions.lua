@@ -1149,6 +1149,12 @@ function OnMsg.ClassesBuilt()
 			SetTrans(self)
 			-- and rebuild my console buttons
 			ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(self)
+			-- show log only if console log is enabled
+			if ChoGGi.UserSettings.ConsoleToggleHistory then
+				ShowConsoleLog(true)
+			end
+		elseif ChoGGi.UserSettings.ConsoleShowLogWhenActive then
+			ShowConsoleLog(false)
 		end
 		-- move log up n down
 		ChoGGi.ComFuncs.UpdateConsoleMargins(show)

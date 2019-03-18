@@ -1661,12 +1661,14 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 				-- find a better way to update radius...
 				local obj = SelectedObj
 				CreateRealTimeThread(function()
+					local SelectObj = SelectObj
+					local WaitMsg = WaitMsg
 					local objs = ChoGGi.ComFuncs.RetAllOfClass(id)
 					for i = 1, #objs do
 						local o = objs[i]
 						o:SetUIRange(value)
 						SelectObj(o)
-						Sleep(1)
+						WaitMsg("OnRender")
 					end
 					SelectObj(obj)
 				end)

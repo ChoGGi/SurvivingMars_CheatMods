@@ -3356,40 +3356,38 @@ ChoGGi.ComFuncs.CheatsMenu_Toggle = CheatsMenu_Toggle
 do -- UpdateConsoleMargins
 	local IsEditorActive = IsEditorActive
 	local box = box
+
+	local margins = GetSafeMargins()
 	-- normally visible
-	local margin_vis = box(10, 80, 10, 65)
+	local margin_vis = box(10, 80, 10, 65) + margins
 	-- console hidden
-	local margin_hidden = box(10, 80, 10, 10)
-	local margin_vis_editor_log = box(10, 80, 10, 45)
-	local margin_vis_con_log = box(10, 80, 10, 115)
-	local con_margin_editor = box(0, 0, 0, 50)
-	local con_margin_norm = box(0, 0, 0, 0)
-	local durango = Platform.durango
+	local margin_hidden = box(10, 80, 10, 10) + margins
+	local margin_vis_editor_log = box(10, 80, 10, 45) + margins
+	local margin_vis_con_log = box(10, 80, 10, 115) + margins
+	local con_margin_editor = box(0, 0, 0, 50) + margins
+	local con_margin_norm = box(0, 0, 0, 0) + margins
+--~ box(left/x, top/y, right/w, bottom/h) :minx() :miny() :sizex() :sizey()
+	if Platform.durango then
+		margin_vis = box(60, 80, 10, 65) + margins
+		margin_hidden = box(60, 80, 10, 10) + margins
+		margin_vis_editor_log = box(60, 80, 10, 45) + margins
+		margin_vis_con_log = box(60, 80, 10, 115) + margins
+		con_margin_norm = box(50, -50, 0, 0) + margins
+	end
 
 	function ChoGGi.ComFuncs.UpdateConsoleMargins(console_vis)
-		if dlgConsoleLog then
-			local e
+		if not (dlgConsoleLog or dlgConsole) then
+			return
+		end
 
-			if durango then
-				-- hopefully this works (xbox margins)
-				local margins = GetSafeMargins()
-				margin_vis = box(10, 80, 10, 65) + margins
-				margin_hidden = box(10, 80, 10, 10) + margins
-				margin_vis_editor_log = box(10, 80, 10, 45) + margins
-				margin_vis_con_log = box(10, 80, 10, 115) + margins
-				con_margin_norm = box(0, 0, 0, 0) + margins
-			else
-				e = IsEditorActive()
-			end
-
-				-- editor mode adds a toolbar to the bottom, so we go above it
-			dlgConsole:SetMargins(e and con_margin_editor or con_margin_norm)
-			-- move log text above the buttons i added and make sure log text stays below the cheat menu
-			if console_vis then
-				dlgConsoleLog.idText:SetMargins(e and margin_vis_con_log or margin_vis)
-			else
-				dlgConsoleLog.idText:SetMargins(e and margin_vis_editor_log or margin_hidden)
-			end
+		local e = IsEditorActive()
+		-- editor mode adds a toolbar to the bottom, so we go above it
+		dlgConsole:SetMargins(e and con_margin_editor or con_margin_norm)
+		-- move log text above the buttons i added and make sure log text stays below the cheat menu
+		if console_vis then
+			dlgConsoleLog.idText:SetMargins(e and margin_vis_con_log or margin_vis)
+		else
+			dlgConsoleLog.idText:SetMargins(e and margin_vis_editor_log or margin_hidden)
 		end
 	end
 end -- do

@@ -7,7 +7,7 @@ function OnMsg.ModConfigReady()
 
 	ModConfig:RegisterOption("SaveRocketCargo", "ClearOnLaunch", {
 		name = [[Clear On Launch]],
-		desc = [[Clear cargo for rocket/pod/elevator when launched (not all cargo, just for the one type).]],
+		desc = [[Clear cargo for rocket/pod/elevator when launched (not all cargo, just for the same type).]],
 		type = "boolean",
 		default = SaveRocketCargo.ClearOnLaunch,
 	})

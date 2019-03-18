@@ -351,7 +351,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 		{name = Strings[302535920001112--[[Console Log--]]],
 			hint = Strings[302535920001119--[[Show console log text in-game (probably an annoyance to non-modders).--]]],
 			class = "ChoGGi_CheckButtonMenu",
-			value = "dlgConsoleLog",
+			value = "ChoGGi.UserSettings.ConsoleToggleHistory",
 			clicked = function()
 				ChoGGi.UserSettings.ConsoleToggleHistory = not ChoGGi.UserSettings.ConsoleToggleHistory
 				ChoGGi.SettingFuncs.WriteSettings()
@@ -362,6 +362,15 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 				else
 					DestroyConsoleLog()
 				end
+			end,
+		},
+		{name = Strings[302535920001576--[[Show Log When Console Active--]]],
+			hint = Strings[302535920001575--[[Show console log text when console is active (needs %s enabled).--]]]:format(Strings[302535920001112--[[Console Log--]]]),
+			class = "ChoGGi_CheckButtonMenu",
+			value = "ChoGGi.UserSettings.ConsoleShowLogWhenActive",
+			clicked = function()
+				ChoGGi.UserSettings.ConsoleShowLogWhenActive = not ChoGGi.UserSettings.ConsoleShowLogWhenActive
+				ChoGGi.SettingFuncs.WriteSettings()
 			end,
 		},
 		{name = Strings[302535920001120--[[Console Window--]]],
@@ -593,6 +602,11 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 			AsyncStringToFile(script_path .. "/Functions/Amount of colonists.lua",[[#(UICity.labels.Colonist or "")]])
 			AsyncStringToFile(script_path .. "/Functions/Toggle Working SelectedObj.lua",[[SelectedObj:ToggleWorking()]])
 		end
+	end
+
+	-- enabled detailed logs for xbox
+	if Platform.durango then
+		ChoGGi.ConsoleFuncs.ToggleLogErrors(true)
 	end
 
 end
