@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v13.3 (Unreleased)
+### Added:
+- Console>Settings>Show Log When Console Active: Show console log text when console is active.
 
 ## v13.2 (Mar 17 2019)
 ### Added:

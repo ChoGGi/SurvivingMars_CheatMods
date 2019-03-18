@@ -308,7 +308,6 @@ function PersonalShuttle:DropCargo(obj,pos,dest)
 		carried:ConnectToCommandCenters()
 	end
 	WaitMsg("OnRender")
---~ 	Sleep(1)
 
 	if carried.ChoGGi_SetCommand then
 		carried.SetCommand = carried.ChoGGi_SetCommand

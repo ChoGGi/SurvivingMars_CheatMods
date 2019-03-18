@@ -26,6 +26,7 @@ s = false -- used to store SelectedObj
 
 -- add some simple functions to the cheatmenu for moving it/getting pos
 function XShortcutsHost:SetPos(pt)
+	-- doesn't "stick"
 	self:SetBox(pt:x(),pt:y(),self.box:sizex(),self.box:sizey())
 end
 function XShortcutsHost:GetPos()

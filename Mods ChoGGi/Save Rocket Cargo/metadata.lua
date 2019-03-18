@@ -19,7 +19,7 @@ Closing the rocket dialog is when the cargo is saved, so switching from the pod 
 The cargo will remain saved till you quit or load a different game.
 
 MCR option(s):
-Clear On Launch: Clear cargo for rocket/pod/elevator when launched (not all cargo, just for the one type).
+Clear On Launch: Clear cargo for rocket/pod/elevator when launched (not all cargo, just for the same type).
 
 Requested by... A bunch of people, but the last was Sigmatics.]],
 })

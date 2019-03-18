@@ -252,9 +252,8 @@ function OnMsg.ClassesGenerate()
 		else
 			ChoGGi.UserSettings.KeepCheatsMenuPosition = XShortcutsTarget:GetPos()
 		end
-		-- toggle the menu, to reset/set position
-		XShortcutsTarget:ToggleMenu()
-		XShortcutsTarget:ToggleMenu()
+
+		ChoGGi.ComFuncs.SetCheatsMenuPos()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(

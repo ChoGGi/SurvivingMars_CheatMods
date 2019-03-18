@@ -1071,16 +1071,10 @@ end
 -- fired when cheats menu is toggled
 function OnMsg.DevMenuVisible(visible)
 	if visible then
-		if ChoGGi.UserSettings.KeepCheatsMenuPosition then
-			XShortcutsTarget:SetPos(ChoGGi.UserSettings.KeepCheatsMenuPosition)
-		else
-			-- if user turns off menu pos then it'll stay where it's put, so set back to default pos
-			if Platform.durango then
-				XShortcutsTarget:SetPos(GetSafeMargins():min())
-			else
-				XShortcutsTarget:SetPos(point(0,0))
-			end
-		end
+		CreateRealTimeThread(function()
+			WaitMsg("OnRender")
+			ChoGGi.ComFuncs.SetCheatsMenuPos()
+		end)
 	end
 end
 

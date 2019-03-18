@@ -41,36 +41,53 @@ function OnMsg.ClassesGenerate()
 	end
 	ChoGGi.ComFuncs.PlacePolyline = PlacePolyline
 
-	function ChoGGi.ComFuncs.DraggableCheatsMenu(which)
+	function ChoGGi.ComFuncs.SetCheatsMenuPos()
+		if ChoGGi.UserSettings.KeepCheatsMenuPosition then
+			XShortcutsTarget:SetPos(ChoGGi.UserSettings.KeepCheatsMenuPosition)
+		else
+			local margins = GetSafeMargins():min()
+			-- xbox needs a margin, which is added from somewhere?
+			if Platform.durango then
+				XShortcutsTarget:SetPos(margins+point(50,50))
+			else
+				XShortcutsTarget:SetPos(margins)
+			end
+		end
+	end
+
+	function ChoGGi.ComFuncs.DraggableCheatsMenu(enable)
 		local XShortcutsTarget = XShortcutsTarget
 
-		if which then
-			-- add a bit of spacing above menu
-			XShortcutsTarget.idMenuBar:SetPadding(box(0, 6, 0, 0))
-
+		-- always add the move control so we can re-pos for xbox
+		if not XShortcutsTarget.idMoveControl then
 			-- add move control to menu
 			XShortcutsTarget.idMoveControl = g_Classes.XMoveControl:new({
 				Id = "idMoveControl",
 				MinHeight = 6,
 				VAlign = "top",
 			}, XShortcutsTarget)
+		end
+
+		if enable then
+			-- add a bit of spacing above menu
+			XShortcutsTarget.idMenuBar:SetPadding(box(0, 6, 0, 0))
 
 			-- move the move control to the padding space we created above
-			DelayedCall(1, function()
+			CreateRealTimeThread(function()
+				WaitMsg("OnRender")
 				-- needs a delay (cause we added the control?)
 				local height = XShortcutsTarget.idToolbar.box:maxy() * -1
 				XShortcutsTarget.idMoveControl:SetMargins(box(0,height,0,0))
 			end)
-		elseif XShortcutsTarget.idMoveControl then
-			-- remove my control and padding
-			XShortcutsTarget.idMoveControl:delete()
+		else
+			-- remove my padding
 			XShortcutsTarget.idMenuBar:SetPadding(box(0, 0, 0, 0))
 			-- restore to original pos by toggling menu vis
 			if ChoGGi.UserSettings.ShowCheatsMenu then
-				ChoGGi.ComFuncs.CheatsMenu_Toggle()
-				ChoGGi.ComFuncs.CheatsMenu_Toggle()
+				ChoGGi.ComFuncs.SetCheatsMenuPos()
 			end
 		end
+
 	end
 
 	function ChoGGi.ComFuncs.SetCommanderBonuses(name)
