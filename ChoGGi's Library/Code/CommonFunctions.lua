@@ -79,18 +79,21 @@ do -- RetName
 	local lookup_table = {}
 
 	-- funcs don't change, so we only need to go once
-	local funcs = g_CObjectFuncs
-	for key,value in pairs(funcs) do
-		lookup_table[value] = key .. " *C func"
-	end
-	local function AddFuncs(list,name)
-		for key,value in pairs(list) do
-			if not lookup_table[value] then
-				lookup_table[value] = "ChoGGi." .. name .. "." .. key
+	local AddFuncs
+	pcall(function()
+		local funcs = g_CObjectFuncs
+		for key,value in pairs(funcs) do
+			lookup_table[value] = key .. " *C func"
+		end
+		AddFuncs = function(list,name)
+			for key,value in pairs(list) do
+				if not lookup_table[value] then
+					lookup_table[value] = "ChoGGi." .. name .. "." .. key
+				end
 			end
 		end
-	end
-	lookup_table[empty_func] = "empty_func *C func"
+		lookup_table[empty_func] = "empty_func *C func"
+	end)
 
 
 	local function AfterLoad()
@@ -140,11 +143,11 @@ do -- RetName
 	end
 
 	-- so they work in the main menu
-	AfterLoad()
+	pcall(AfterLoad)
 
 	-- called from onmsgs for citystart/loadgame
 	function ChoGGi.ComFuncs.RetName_Update()
-		AfterLoad()
+		pcall(AfterLoad)
 	end
 	function ChoGGi.ComFuncs.RetName_Table()
 		return lookup_table
@@ -3351,44 +3354,53 @@ end
 ChoGGi.ComFuncs.CheatsMenu_Toggle = CheatsMenu_Toggle
 
 do -- UpdateConsoleMargins
+	local IsEditorActive = IsEditorActive
+	local box = box
 	-- normally visible
 	local margin_vis = box(10, 80, 10, 65)
 	-- console hidden
 	local margin_hidden = box(10, 80, 10, 10)
-
 	local margin_vis_editor_log = box(10, 80, 10, 45)
-
 	local margin_vis_con_log = box(10, 80, 10, 115)
-	local IsEditorActive = IsEditorActive
 	local con_margin_editor = box(0, 0, 0, 50)
 	local con_margin_norm = box(0, 0, 0, 0)
+	local durango = Platform.durango
 
 	function ChoGGi.ComFuncs.UpdateConsoleMargins(console_vis)
 		if dlgConsoleLog then
+			local e
+
+			if durango then
+				-- hopefully this works (xbox margins)
+				local margins = GetSafeMargins()
+				margin_vis = box(10, 80, 10, 65) + margins
+				margin_hidden = box(10, 80, 10, 10) + margins
+				margin_vis_editor_log = box(10, 80, 10, 45) + margins
+				margin_vis_con_log = box(10, 80, 10, 115) + margins
+				con_margin_norm = box(0, 0, 0, 0) + margins
+			else
+				e = IsEditorActive()
+			end
+
+				-- editor mode adds a toolbar to the bottom, so we go above it
+			dlgConsole:SetMargins(e and con_margin_editor or con_margin_norm)
 			-- move log text above the buttons i added and make sure log text stays below the cheat menu
 			if console_vis then
-				-- editor mode adds a toolbar to the bottom, so we go above it
-				if IsEditorActive() then
-					dlgConsole:SetMargins(con_margin_editor)
-					dlgConsoleLog.idText:SetMargins(margin_vis_con_log)
-				else
-					dlgConsole:SetMargins(con_margin_norm)
-					dlgConsoleLog.idText:SetMargins(margin_vis)
-				end
+				dlgConsoleLog.idText:SetMargins(e and margin_vis_con_log or margin_vis)
 			else
-				if IsEditorActive() then
-					dlgConsole:SetMargins(con_margin_editor)
-					dlgConsoleLog.idText:SetMargins(margin_vis_editor_log)
-				else
-					dlgConsole:SetMargins(con_margin_norm)
-					dlgConsoleLog.idText:SetMargins(margin_hidden)
-				end
+				dlgConsoleLog.idText:SetMargins(e and margin_vis_editor_log or margin_hidden)
 			end
 		end
 	end
 end -- do
 
 function ChoGGi.ComFuncs.Editor_Toggle()
+	if Platform.durango then
+		print(Strings[302535920001574--[[Crashes on XBOX!--]]])
+		MsgPopup(Strings[302535920001574--[[Crashes on XBOX!--]]])
+		return
+	end
+
 	-- force editor to toggle once (makes status text work properly the "first" toggle instead of the second)
 	local idx = table_find(terminal.desktop,"class","EditorInterface")
 	if not idx then
@@ -3437,6 +3449,11 @@ function ChoGGi.ComFuncs.Editor_Toggle()
 end
 
 function ChoGGi.ComFuncs.TerrainEditor_Toggle()
+	if Platform.durango then
+		print(Strings[302535920001574--[[Crashes on XBOX!--]]])
+		MsgPopup(Strings[302535920001574--[[Crashes on XBOX!--]]])
+		return
+	end
 	local ChoGGi = ChoGGi
 	ChoGGi.ComFuncs.Editor_Toggle()
 	local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
@@ -3461,6 +3478,11 @@ function ChoGGi.ComFuncs.TerrainEditor_Toggle()
 end
 
 function ChoGGi.ComFuncs.PlaceObjects_Toggle()
+	if Platform.durango then
+		print(Strings[302535920001574--[[Crashes on XBOX!--]]])
+		MsgPopup(Strings[302535920001574--[[Crashes on XBOX!--]]])
+		return
+	end
 	ChoGGi.ComFuncs.Editor_Toggle()
 	if Platform.editor then
 		editor.ClearSel()
