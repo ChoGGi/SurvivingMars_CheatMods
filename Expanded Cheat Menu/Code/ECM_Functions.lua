@@ -552,16 +552,17 @@ function OnMsg.ClassesGenerate()
 		local err, files = AsyncListFiles(folder,ext and "*" .. ext or "*")
 		if not err and #files > 0 then
 			local table_path = {}
-			local path = folder .. "/"
+			local path = folder:sub(-1) == "/" and folder or folder .. "/"
 			for i = 1, #files do
+				local file = files[i]
 				local name
 				if ext then
-					name = files[i]:gsub(path,""):gsub(ext,"")
+					name = file:gsub(path,""):gsub(ext,"")
 				else
-					name = files[i]:gsub(path,"")
+					name = file:gsub(path,"")
 				end
 				table_path[i] = {
-					path = files[i],
+					path = file,
 					name = name,
 				}
 			end
@@ -1623,7 +1624,7 @@ Some of the file names are guesses. This also doesn't include any surf/surf_hash
 
 	do -- GetMaterialProperties
 		local GetMaterialProperties = GetMaterialProperties
-		local GetStateNumMaterials = GetStateNumMaterials
+--~ 		local GetStateNumMaterials = GetStateNumMaterials
 		local GetStateMaterial = GetStateMaterial
 		local GetStateIdx = GetStateIdx
 		local GetStateLODCount = GetStateLODCount
@@ -1772,35 +1773,38 @@ Some of the file names are guesses. This also doesn't include any surf/surf_hash
 				local state = GetStateIdx(state_str)
 				local num_lods = GetStateLODCount(entity, state) or 0
 				for li = 1, num_lods do
-					local num_mats = GetStateNumMaterials(entity, state, li - 1) or 0
+--~ 					local num_mats = GetStateNumMaterials(entity, state, li - 1) or 0
+					local num_mats = 5
 					for mi = 1, num_mats do
 						local mat_name = GetStateMaterial(entity,state,mi - 1,li - 1)
-						local mat = GetMaterialProperties(mat_name,0)
+						if mat_name then
+							local mat = GetMaterialProperties(mat_name,0)
 
-						-- add any sub materials
-						local c = 1
-						while true do
-							local extra = GetMaterialProperties(mat_name,c)
-							if not extra then
-								break
+							-- add any sub materials
+							local c = 1
+							while true do
+								local extra = GetMaterialProperties(mat_name,c)
+								if not extra then
+									break
+								end
+								mat["_sub_material_index" .. c] = extra
+								c = c + 1
 							end
-							mat["_sub_material_index" .. c] = extra
-							c = c + 1
+
+							mat.__mtl = mat_name
+							mat.__lod = li
+							mat.__state = li
+							mat[1] = {
+								ChoGGi_AddHyperLink = true,
+								hint = Strings[302535920001174--[[Show an example .mtl file for this material (not complete).--]]],
+								name = Strings[302535920001177--[[Generate .mtl--]]],
+								func = function(ex_dlg)
+									ExamineExportMat(ex_dlg,mat)
+								end,
+							}
+
+							mats[mat_name .. ", Mat: " .. mi .. ", LOD: " .. li .. ", State: " .. state_str .. " (" .. state .. ")"] = mat
 						end
-
-						mat.__mtl = mat_name
-						mat.__lod = li
-						mat.__state = li
-						mat[1] = {
-							ChoGGi_AddHyperLink = true,
-							hint = Strings[302535920001174--[[Show an example .mtl file for this material (not complete).--]]],
-							name = Strings[302535920001177--[[Generate .mtl--]]],
-							func = function(ex_dlg)
-								ExamineExportMat(ex_dlg,mat)
-							end,
-						}
-
-						mats[mat_name .. ", Mat: " .. mi .. ", LOD: " .. li .. ", State: " .. state_str .. " (" .. state .. ")"] = mat
 					end
 				end
 			end

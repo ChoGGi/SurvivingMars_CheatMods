@@ -4,6 +4,9 @@
 ### Added:
 - Console>Settings>Show Log When Console Active: Show console log text when console is active.
 
+### Changed:
+- Beta compatibility.
+
 ## v13.2 (Mar 17 2019)
 ### Added:
 - Preliminary Xbox Support (thanks to Gnith for testing).

@@ -185,20 +185,14 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- always able to show console
-		local CreateConsole = CreateConsole
 		function ShowConsole(visible)
-			local dlgConsole = dlgConsole
-
-			if visible and not dlgConsole then
+--~ 			ConsoleEnabled = true
+			if visible and not rawget(_G, "dlgConsole") then
 				CreateConsole()
 			end
-	--~ 		if visible then
-	--~ 			ShowConsoleLog(true)
-	--~ 		end
-			if dlgConsole then
+			if rawget(_G, "dlgConsole") then
 				dlgConsole:Show(visible)
 			end
-
 		end
 		-- convert popups to console text
 		function ShowPopupNotification(preset, params, bPersistable, parent,...)
@@ -1049,7 +1043,7 @@ function OnMsg.ClassesBuilt()
 			end
 			--
 
-			local section = TableFindValue(c,"Id","idSectionCheats_ChoGGi")
+			local section = TableFindValue(c,"Id","idsectionCheats_ChoGGi")
 			if section then
 				section.idIcon.FXMouseIn = "ActionButtonHover"
 				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
@@ -1069,7 +1063,7 @@ function OnMsg.ClassesBuilt()
 				end
 			end
 
-			section = TableFindValue(c,"Id","idSectionResidence_ChoGGi")
+			section = TableFindValue(c,"Id","idsectionResidence_ChoGGi")
 			if section then
 				local toggle = true
 				if self.context.capacity > 100 then

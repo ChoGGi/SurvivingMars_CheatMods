@@ -71,30 +71,29 @@ do -- AddMsgToFunc
 end -- do
 
 do -- RetName
-	local IsObjlist = IsObjlist
+	local IsOldObjListType = IsOldObjListType
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	local PropObjGetProperty = PropObjGetProperty
 
 	-- we use this table to display names of (some) tables for RetName
 	local lookup_table = {}
 
-	-- funcs don't change, so we only need to go once
-	local AddFuncs
+	-- add some func names
 	pcall(function()
 		local funcs = g_CObjectFuncs
 		for key,value in pairs(funcs) do
 			lookup_table[value] = key .. " *C func"
 		end
-		AddFuncs = function(list,name)
-			for key,value in pairs(list) do
-				if not lookup_table[value] then
-					lookup_table[value] = "ChoGGi." .. name .. "." .. key
-				end
-			end
-		end
 		lookup_table[empty_func] = "empty_func *C func"
 	end)
 
+	local function AddFuncs(list,name)
+		for key,value in pairs(list) do
+			if not lookup_table[value] then
+				lookup_table[value] = "ChoGGi." .. name .. "." .. key
+			end
+		end
+	end
 
 	local function AfterLoad()
 		local g = ChoGGi.Temp._G
@@ -209,7 +208,7 @@ do -- RetName
 			elseif PropObjGetProperty(obj,"entity") and obj.entity ~= "" then
 				name = obj.entity
 			-- objlist
-			elseif IsObjlist(obj) then
+			elseif IsOldObjListType(obj) then
 				return obj[1] and ChoGGi.ComFuncs.RetName(obj[1]) or "objlist"
 
 			else
@@ -3376,8 +3375,11 @@ do -- UpdateConsoleMargins
 	end
 
 	function ChoGGi.ComFuncs.UpdateConsoleMargins(console_vis)
-		if not (dlgConsoleLog or dlgConsole) then
-			return
+		if not dlgConsole then
+			rawset(_G, "dlgConsole", Console:new({}, terminal.desktop))
+		end
+		if not dlgConsoleLog then
+			rawset(_G, "dlgConsoleLog", ConsoleLog:new({}, terminal.desktop))
 		end
 
 		local e = IsEditorActive()

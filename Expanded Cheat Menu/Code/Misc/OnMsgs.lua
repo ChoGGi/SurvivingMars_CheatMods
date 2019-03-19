@@ -129,6 +129,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		})
 	end
 
+--~ 	function OnMsg.XTemplatesLoaded()
 	local function OnMsgXTemplates()
 		local XTemplates = XTemplates
 		local ChoGGi = ChoGGi
@@ -136,10 +137,14 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 
 		-- add some ids to make it easier to fiddle with selection panel
 		for key,template in pairs(XTemplates) do
-			if key:sub(1,7) == "section" and not template[1].Id then
-				template[1].Id = "idSection" .. key:sub(8) .. "_ChoGGi"
+			if key:sub(1,7) == "section" then
+				local inner = template[1]
+				if inner and not inner.Id then
+					inner.Id = "id" .. template.id .. "_ChoGGi"
+				end
 			end
 		end
+--~ 		XTemplates.sectionCheats
 
 		-- add cheats section to stuff without it
 		local func = ChoGGi.ComFuncs.RemoveXTemplateSections
@@ -266,9 +271,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 	end
 
 	-- called when new DLC is added (or a new game)
-	function OnMsg.XTemplatesLoaded()
-		OnMsgXTemplates()
-	end
+	OnMsg.XTemplatesLoaded = OnMsgXTemplates
 
 	-- use this message to perform post-built actions on the final classes
 	function OnMsg.ClassesBuilt()
@@ -1236,20 +1239,6 @@ do -- LoadGame/CityStart
 		-- re-binding is now an in-game thing, so keys are just defaults
 		UserSettings.KeyBindings = nil
 
---~ 		-- fix an issue I added...
---~ 		for _,settings in pairs(UserSettings.BuildingSettings) do
---~ 			if settings.performance and settings.auto_performance then
---~ 				settings.performance = nil
---~ 				ChoGGi.Temp.WriteSettings = true
---~ 			end
---~ 			for key,value in pairs(settings) do
---~ 				if key == "performance" and value == "disable" then
---~ 					settings.performance = nil
---~ 					ChoGGi.Temp.WriteSettings = true
---~ 				end
---~ 			end
---~ 		end
-
 		SetMissionBonuses(UserSettings,Presets,"MissionSponsorPreset","Sponsor",ChoGGi.ComFuncs.SetSponsorBonuses)
 		SetMissionBonuses(UserSettings,Presets,"CommanderProfilePreset","Commander",ChoGGi.ComFuncs.SetCommanderBonuses)
 
@@ -1456,36 +1445,6 @@ do -- LoadGame/CityStart
 			if UserSettings.CloseDialogsECM then
 				ChoGGi.ComFuncs.CloseDialogsECM()
 			end
-
---~ 			-- remove any outside buildings i accidentally attached to domes ;)
---~ 			local nodomes = UICity.labels.BuildingNoDomes or ""
---~ 			for i = 1, #nodomes do
---~ 				local nodome = nodomes[i]
---~ 				if nodome.dome_required == false and nodome.parent_dome then
-
---~ 					local bld_type
---~ 					-- remove it from the dome label
---~ 					if nodome.closed_shifts then
---~ 						bld_type = "Residence"
---~ 					elseif nodome.colonists then
---~ 						bld_type = "Workplace"
---~ 					end
-
---~ 					if bld_type then
---~ 						if nodome.parent_dome.labels and nodome.parent_dome.labels[bld_type] then
---~ 							local dome = nodome.parent_dome.labels[bld_type]
---~ 							for j = 1, #dome do
---~ 								if dome[j].class == nodome.class then
---~ 									dome[j] = nil
---~ 								end
---~ 							end
---~ 						end
---~ 						-- remove parent_dome
---~ 						nodome.parent_dome = nil
---~ 					end
-
---~ 				end
---~ 			end
 
 		end)
 

@@ -2,13 +2,13 @@ This is needed for certain blacklisted functions in Da Vinci update and beyond.
 Most people will not need to use this, modders may find it useful for testing.
 
 
-You need to copy BinAssets to the SM program file folder (SteamApps\common\Surviving Mars)
+Find and rename LocalStorage.lua to LocalStorage_Settings.lua
+It's located in
+%AppData%\Surviving Mars\
+C:\Users\USERNAME\AppData\Roaming\Surviving Mars (AppData is a hidden folder)
 
-To find the folder:
-Open the Steam client.
-Right-click Surviving Mars.
-Go to Properties>Local Files>Browse Local Files.
-Paste BinAssets into that folder.
+Then you can move "LocalStorage.lua" and "BinAssets" to the profile folder
+
 
 (See Install Help.png)
 
@@ -17,3 +17,9 @@ Paste BinAssets into that folder.
 Symlinking:
 If you symlink the BinAssets folder, you won't need to update HelperMod manually.
 Though HelperMod shouldn't be updated too often.
+
+Other OS locations:
+macOS (OS X):
+~/Library/Application Support/Surviving Mars/
+Linux:
+$XDG_DATA_HOME/Surviving Mars/

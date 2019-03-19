@@ -806,7 +806,7 @@ You need my HelperMod installed to be able to use this."--]]],
 	end
 
 	do -- path markers
-		local IsObjlist = IsObjlist
+		local IsOldObjListType = IsOldObjListType
 		local Clamp = Clamp
 		local point = point
 		local PlaceObject = PlaceObject
@@ -937,7 +937,7 @@ You need my HelperMod installed to be able to use this."--]]],
 					end
 				end
 
-				if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
+				if not IsOldObjListType(obj.ChoGGi_Stored_Waypoints) then
 					obj.ChoGGi_Stored_Waypoints = objlist:new()
 				end
 
@@ -959,7 +959,7 @@ You need my HelperMod installed to be able to use this."--]]],
 
 		local function SetPathMarkersGameTime_Thread(obj,UnitPathingHandles)
 			local colour = RandomColour()
-			if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
+			if not IsOldObjListType(obj.ChoGGi_Stored_Waypoints) then
 				obj.ChoGGi_Stored_Waypoints = objlist:new()
 			end
 
@@ -969,7 +969,7 @@ You need my HelperMod installed to be able to use this."--]]],
 
 				-- remove old wps
 				local stored = obj.ChoGGi_Stored_Waypoints
-				if IsObjlist(stored) then
+				if IsOldObjListType(stored) then
 					-- deletes all objs
 					stored:Destroy()
 					-- clears table list
@@ -1017,7 +1017,7 @@ You need my HelperMod installed to be able to use this."--]]],
 
 		local function RemoveWPDupePos(cls,obj)
 			-- remove dupe pos
-			if IsObjlist(obj.ChoGGi_Stored_Waypoints) then
+			if IsOldObjListType(obj.ChoGGi_Stored_Waypoints) then
 				for i = 1, #obj.ChoGGi_Stored_Waypoints do
 					local wp = obj.ChoGGi_Stored_Waypoints[i]
 
@@ -1051,7 +1051,7 @@ You need my HelperMod installed to be able to use this."--]]],
 				end
 
 				local stored = obj.ChoGGi_Stored_Waypoints
-				if IsObjlist(stored) then
+				if IsOldObjListType(stored) then
 					-- deletes all objs
 					stored:Destroy()
 					-- clears table list

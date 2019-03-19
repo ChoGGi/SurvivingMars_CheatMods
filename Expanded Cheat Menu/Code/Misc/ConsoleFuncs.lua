@@ -577,12 +577,13 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 		if folders then
 			local hint_str = Strings[302535920001159--[[Any .lua files in %s.--]]]
 			for i = 1, #folders do
-				if RetFilesInFolder(folders[i].path,".lua") then
+				local folder = folders[i]
+				if RetFilesInFolder(folder.path,".lua") then
 					BuildSciptButton(dlg,{
-						Text = folders[i].name,
-						RolloverText = hint_str:format(folders[i].path),
-						id = "id" .. folders[i].name .. "MenuPopup",
-						script_path = folders[i].path,
+						Text = folder.name,
+						RolloverText = hint_str:format(folder.path),
+						id = "id" .. folder.name .. "MenuPopup",
+						script_path = folder.path,
 					})
 				end
 			end
@@ -592,7 +593,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 	function ChoGGi.ConsoleFuncs.BuildScriptFiles()
 		local script_path = ChoGGi.scripts
 		-- create folder and some example scripts if folder doesn't exist
-		if not ChoGGi.ComFuncs.FileExists(script_path) then
+		if not ChoGGi.ComFuncs.FileExists(script_path .. "/readme.txt") then
 			AsyncCreatePath(script_path .. "/Functions")
 			-- print some info
 			print(Strings[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."--]]]:format(ConvertToOSPath(script_path)))

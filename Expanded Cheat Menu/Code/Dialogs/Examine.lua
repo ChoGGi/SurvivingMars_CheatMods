@@ -29,7 +29,7 @@ local DeleteThread = DeleteThread
 local EnumVars = EnumVars
 local GetStateName = GetStateName
 local IsKindOf = IsKindOf
-local IsObjlist = IsObjlist
+local IsOldObjListType = IsOldObjListType
 local IsPoint = IsPoint
 local IsT = IsT
 local IsValid = IsValid
@@ -658,7 +658,7 @@ function Examine:idButClearOnPress()
 	end
 	self.marked_objects:Clear()
 
-	if IsObjlist(self.obj_ref) then
+	if IsOldObjListType(self.obj_ref) then
 		self.ChoGGi.ComFuncs.ObjListLines_Clear(self.obj_ref)
 	end
 end
@@ -2092,35 +2092,36 @@ function Examine:ConvertValueToInfo(obj)
 			local len = #obj
 			local obj_metatable = getmetatable(obj)
 
-			-- if it's an objlist then we return a list of the objects
-			if obj_metatable and IsObjlist(obj_metatable) then
-				local res = {
-					self:HyperLink(obj,Examine_ConvertValueToInfo),
-					"objlist",
-					HLEnd,
-					"{",
-				}
-				local c = #res
-				for i = 1, Min(len, 3) do
-					c = c + 1
-					res[c] = i
-					c = c + 1
-					res[c] = "="
-					c = c + 1
-					res[c] = self:ConvertValueToInfo(obj[i])
-					c = c + 1
-					res[c] = ","
-				end
-				if len > 3 then
-					c = c + 1
-					res[c] = "..."
-				end
-				c = c + 1
-				res[c] = "}"
-				-- remove last ,
-				return TableConcat(res):gsub(",}","}")
+--~ 			-- if it's an objlist then we return a list of the objects
+--~ 			if obj_metatable and IsOldObjListType(obj_metatable) then
+--~ 				local res = {
+--~ 					self:HyperLink(obj,Examine_ConvertValueToInfo),
+--~ 					"objlist",
+--~ 					HLEnd,
+--~ 					"{",
+--~ 				}
+--~ 				local c = #res
+--~ 				for i = 1, Min(len, 3) do
+--~ 					c = c + 1
+--~ 					res[c] = i
+--~ 					c = c + 1
+--~ 					res[c] = "="
+--~ 					c = c + 1
+--~ 					res[c] = self:ConvertValueToInfo(obj[i])
+--~ 					c = c + 1
+--~ 					res[c] = ","
+--~ 				end
+--~ 				if len > 3 then
+--~ 					c = c + 1
+--~ 					res[c] = "..."
+--~ 				end
+--~ 				c = c + 1
+--~ 				res[c] = "}"
+--~ 				-- remove last ,
+--~ 				return TableConcat(res):gsub(",}","}")
 
-			elseif rawget(obj,"ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
+--~ 			elseif rawget(obj,"ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
+			if rawget(obj,"ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
 				if obj.colour then
 					return "<color " .. obj.colour .. ">" .. (obj.name or "") .. "</color> "
 						.. self:HyperLink(obj,obj.func,obj.hint) .. "@" .. HLEnd
@@ -2904,7 +2905,7 @@ function Examine:SetToolbarVis(obj,obj_metatable)
 			end
 
 			-- objlist objects let us do some easy for each
-			if IsObjlist(obj) then
+			if IsOldObjListType(obj) then
 				self.idButMarkAll:SetVisible(true)
 				self.idButMarkAllLine:SetVisible(true)
 				self.idButDeleteAll:SetVisible(true)
@@ -3133,7 +3134,7 @@ function Examine:Done(...)
 		self.ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
 		self.ChoGGi.ComFuncs.EntitySpots_Clear(obj)
 		self.ChoGGi.ComFuncs.SurfaceLines_Clear(obj)
-	elseif IsObjlist(obj) then
+	elseif IsOldObjListType(obj) then
 		self.ChoGGi.ComFuncs.ObjListLines_Clear(obj)
 	end
 	-- clear any spheres/colour marked objs

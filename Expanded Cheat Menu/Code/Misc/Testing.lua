@@ -5,20 +5,20 @@
 --~ ChoGGi.ComFuncs.TickStart("Tick.1")
 --~ ChoGGi.ComFuncs.TickEnd("Tick.1")
 
--- for some reason this doesn't work on the selection panel when it's in Generate...
-if Mods.ChoGGi_testing then
-	-- centred hud
-	local GetScreenSize = UIL.GetScreenSize
-	local margins = box(2560,0,2560,0)
-	local orig_GetSafeMargins = GetSafeMargins
-	function GetSafeMargins(win_box)
-		if win_box then
-			return orig_GetSafeMargins(win_box)
-		end
-		-- if lookup table doesn't have width we fire orginal func
-		return GetScreenSize():x() == 5760 and margins or orig_GetSafeMargins()
-	end
-end
+--~ -- for some reason this doesn't work on the selection panel when it's in Generate...
+--~ if Mods.ChoGGi_testing then
+--~ 	-- centred hud
+--~ 	local GetScreenSize = UIL.GetScreenSize
+--~ 	local margins = box(2560,0,2560,0)
+--~ 	local orig_GetSafeMargins = GetSafeMargins
+--~ 	function GetSafeMargins(win_box)
+--~ 		if win_box then
+--~ 			return orig_GetSafeMargins(win_box)
+--~ 		end
+--~ 		-- if lookup table doesn't have width we fire orginal func
+--~ 		return GetScreenSize():x() == 5760 and margins or orig_GetSafeMargins()
+--~ 	end
+--~ end
 
 function OnMsg.ClassesGenerate()
 
