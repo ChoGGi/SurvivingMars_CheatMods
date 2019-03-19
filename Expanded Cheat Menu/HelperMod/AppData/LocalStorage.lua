@@ -1,5 +1,11 @@
+-- load settings before anything else (for anything in /Code that uses them)
+local new_settings_file = "AppData/LocalStorage_Settings.lua"
+g_LocalStorageFile = new_settings_file
+local settings = dofile(new_settings_file)
+LocalStorage = settings
+
 -- any "mods" that need to be loaded before the game is loaded (skip logos, etc)
-dofolder_files("BinAssets/Code")
+dofolder_files("AppData/BinAssets/Code")
 
 -- thread needed for WaitMsg
 CreateRealTimeThread(function()
@@ -11,7 +17,7 @@ CreateRealTimeThread(function()
 		-- build a list of ids from lua files in "Mod Ids"
 		local AsyncFileToString = AsyncFileToString
 		local mod_ids = {}
-		local err, files = AsyncListFiles("BinAssets/Mod Ids","*.lua")
+		local err, files = AsyncListFiles("AppData/BinAssets/Mod Ids","*.lua")
 		if not err and #files > 0 then
 			for i = 1, #files do
 				local err,id = AsyncFileToString(files[i])
@@ -35,7 +41,6 @@ CreateRealTimeThread(function()
 --~ 				mod.description = mod.description:gsub([[C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\Mods\]],"AppData/Mods/")
 				mod.description = [[Warning: The blacklist function has been removed for this mod!
 This means it has no limitations and can access your Steam name, Friends list, and any files on your computer.
-In other words, the same as Curiosity and lower.
 
 ]] .. mod.description
 			end
@@ -46,6 +51,5 @@ In other words, the same as Curiosity and lower.
 	end
 end)
 
--- return revision, or else you get a blank map on new game
-MountPack("ChoGGi_BinAssets", "Packs/BinAssets.hpk")
-return dofile("ChoGGi_BinAssets/AssetsRevision.lua") or 240905
+-- and done
+return settings

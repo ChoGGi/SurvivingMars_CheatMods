@@ -22,7 +22,7 @@ local csv_path = CurrentModPath .. "Locale/Game.csv"
 
 
 -- local some global funcs
-local RegistryRead = RegistryRead
+local GetLanguage = GetLanguage
 local LoadTranslationTableFile = LoadTranslationTableFile
 local Msg = Msg
 
@@ -41,7 +41,7 @@ function OnMsg.ModsReloaded()
 	end
 
 	-- load lang if option is set to our lang
-	if RegistryRead("Language") == lang_value then
+	if GetLanguage() == lang_value then
 		LoadTranslationTableFile(csv_path)
 		Msg("TranslationChanged","skip_inf_loop")
 	end
@@ -49,7 +49,7 @@ end
 
 -- fires when lang is changed in game
 function OnMsg.TranslationChanged(skip)
-	if skip ~= "skip_inf_loop" and RegistryRead("Language") == lang_value then
+	if skip ~= "skip_inf_loop" and GetLanguage() == lang_value then
 		LoadTranslationTableFile(csv_path)
 		-- we want it to update any other OnMsg.TranslationChanged, but skip this is one (or inf loop)
 		Msg("TranslationChanged","skip_inf_loop")

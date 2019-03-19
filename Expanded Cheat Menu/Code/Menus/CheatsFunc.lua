@@ -97,6 +97,7 @@ function OnMsg.ClassesGenerate()
 
 	function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
 		-- GenerateMarsScreenPoI has an inf loop in it that happens when it runs out of spots to place POIs
+		-- might be had now, I think they fixed it
 		local max = #PlanetaryAnomaly.anomaly_names
 
 		local spots = MarsScreenLandingSpots
