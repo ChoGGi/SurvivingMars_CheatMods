@@ -10,6 +10,66 @@ function OnMsg.ClassesGenerate()
 	local TableConcat = ChoGGi.ComFuncs.TableConcat
 	local Strings = ChoGGi.Strings
 
+	-- BetaBetaBeta
+	function ChoGGi.MenuFuncs.TesteringBetaBetaBeta()
+		local item_list = {}
+		local c = 0
+
+		-- stuff already in ECM
+		local lookup_skip = {
+			[7790] = true,
+			[7791] = true,
+			[7792] = true,
+			[7793] = true,
+			[7794] = true,
+			[7795] = true,
+			[7796] = true,
+			[7797] = true,
+			[7798] = true,
+			[12266] = true,
+			[12267] = true,
+			[12268] = true,
+		}
+
+		local cheats = GamepadCheatsList or ""
+
+		for i = 1, #cheats do
+			local cheat = cheats[i]
+			if not lookup_skip[IsT(cheat.display_name)] then
+				local name = Translate(cheat.display_name)
+				c = c + 1
+
+				item_list[c] = {
+					text = name,
+					value = name,
+					func = cheat.func,
+				}
+			end
+		end
+
+		local function CallBackFunc(choice)
+			if #choice < 1 then
+				return
+			end
+			choice = choice[1]
+
+			if type(choice.func) == "function" then
+				choice.func()
+			end
+			MsgPopup(
+				choice.text,
+				Translate(11719--[[BetaBetaBeta--]])
+			)
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = item_list,
+			title = Translate(11719--[[BetaBetaBeta--]]),
+			custom_type = 7,
+		}
+	end
+
 	function ChoGGi.MenuFuncs.CompleteConstructions()
 		SuspendPassEdits("ChoGGi.MenuFuncs.CompleteConstructions")
 		CheatCompleteAllConstructions()
@@ -584,6 +644,7 @@ This will switch to a new map.--]]],
 		}
 
 		local function AddTableToList(t,c,list,text,disaster,types)
+			types = types or {}
 			local func_name = "DisasterTrigger" .. disaster
 			local remove_name = disaster .. "_"
 			-- blanky blank
@@ -610,7 +671,22 @@ This will switch to a new map.--]]],
 
 					-- add entry to the lookup table
 					trigger_table[name] = function()
-						ChoGGi.MenuFuncs[func_name](name,d_type)
+						local func = ChoGGi.MenuFuncs[func_name]
+						if type(func) == "function" then
+							func(name,d_type)
+						else
+							-- BetaBetaBeta workaround
+							func = rawget(_G,"CheatTrigger" .. disaster)
+							if type(func) == "function" then
+								func(name,d_type)
+							else
+								func = rawget(_G,"Cheat" .. disaster)
+								if type(func) == "function" then
+									func(name,d_type)
+								end
+							end
+						end
+
 					end
 
 					c = c + 1
@@ -662,10 +738,39 @@ This will switch to a new map.--]]],
 			-- add map settings for disasters
 			local DataInstances = DataInstances
 			local c = #item_list
-			c = AddTableToList(item_list,c,DataInstances.MapSettings_ColdWave,Translate(4149--[[Cold Wave--]]),"ColdWave",{})
-			c = AddTableToList(item_list,c,DataInstances.MapSettings_DustStorm,Translate(4250--[[Dust Storm--]]),"DustStorm",{"major"})
-			c = AddTableToList(item_list,c,DataInstances.MapSettings_DustDevils,Translate(4142--[[Dust Devils--]]),"DustDevils",{"electrostatic","great"})
-			c = AddTableToList(item_list,c,DataInstances.MapSettings_Meteor,Translate(4146--[[Meteors--]]),"Meteor",{"storm","multispawn"})
+
+			-- add any disaster map settings in DataInstances
+			-- this way i can add "stuff" not yet released without mentioning anything i shouldn't
+			local name_lookup = {
+				ColdWave = {
+					display = Translate(4149--[[Cold Wave--]]),
+				},
+				DustStorm = {
+					display = Translate(4250--[[Dust Storm--]]),
+					types = {"major"},
+				},
+				DustDevils = {
+					display = Translate(4142--[[Dust Devils--]]),
+					types = {"electrostatic","great"},
+				},
+				Meteor = {
+					display = Translate(4146--[[Meteors--]]),
+					types = {"storm","multispawn"},
+				},
+				-- BetaBetaBeta
+			}
+			for key,value in pairs(DataInstances) do
+				if key:sub(1,12) == "MapSettings_" then
+					local name = key:sub(13)
+					local lookup = name_lookup[name]
+					if lookup then
+						c = AddTableToList(item_list,c,value,lookup.display,name,lookup.types)
+					else
+						-- BetaBetaBeta
+						c = AddTableToList(item_list,c,value,name,name)
+					end
+				end
+			end
 
 			local function CallBackFunc(choice)
 				if choice.nothing_selected then
