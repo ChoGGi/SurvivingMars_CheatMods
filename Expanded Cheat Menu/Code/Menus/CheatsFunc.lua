@@ -519,6 +519,8 @@ This will switch to a new map.--]]],
 	end -- do
 
 	function ChoGGi.MenuFuncs.DisastersStop()
+		Msg("CheatStopDisaster")
+
 		local missles = g_IncomingMissiles or empty_table
 		for missle in pairs(missles) do
 			missle:ExplodeInAir()

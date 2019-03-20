@@ -490,6 +490,7 @@ function Examine:ViewSourceCode()
 			Strings[302535920001519--[[View Source--]]]
 		)
 		print(msg)
+		return
 	end
 	self.ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 		parent = self,

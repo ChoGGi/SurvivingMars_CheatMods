@@ -41,6 +41,18 @@ DefineClass.ChoGGi_BuildingEntityClass = {
 	-- defined in ECM OnMsgs
 	ip_template = "ipChoGGi_Entity",
 }
+-- add any auto-attach items
+DefineClass.ChoGGi_BuildingEntityClassAttach = {
+	__parents = {
+		"ChoGGi_BuildingEntityClass",
+		"AutoAttachObject",
+	},
+	auto_attach_at_init = true,
+}
+function ChoGGi_BuildingEntityClassAttach:GameInit()
+	AutoAttachObject.Init(self)
+end
+
 -- add some info/functionality to spawned entity objects
 ChoGGi_BuildingEntityClass.GetDisplayName = CObject.GetEntity
 function ChoGGi_BuildingEntityClass:GetIPDescription()

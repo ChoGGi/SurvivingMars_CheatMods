@@ -23,3 +23,6 @@ macOS (OS X):
 ~/Library/Application Support/Surviving Mars/
 Linux:
 $XDG_DATA_HOME/Surviving Mars/
+
+For those previously using the HelperMod:
+Move the BinAssets folder to the appdata folder to keep any mods/settings.
