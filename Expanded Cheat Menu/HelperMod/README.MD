@@ -25,3 +25,6 @@ macOS (OS X):
 Linux:
 $XDG_DATA_HOME/Surviving Mars/
 ```
+
+##### For those previously using the HelperMod
+Move the BinAssets folder to the appdata folder to keep any mods/settings.

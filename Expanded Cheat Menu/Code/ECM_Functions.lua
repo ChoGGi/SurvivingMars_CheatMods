@@ -815,10 +815,16 @@ function OnMsg.ClassesGenerate()
 			if choice.nothing_selected then
 				return
 			end
-			local value = choice[1].value
+			choice = choice[1]
+			local value = choice.value
 
 			if not obj then
-				obj = PlaceObj("ChoGGi_BuildingEntityClass",{
+				local cls = "ChoGGi_BuildingEntityClass"
+				if choice.check1 then
+					cls = "ChoGGi_BuildingEntityClassAttach"
+				end
+
+				obj = PlaceObj(cls,{
 					"Pos",ChoGGi.ComFuncs.CursorNearestHex()
 				})
 				if planning then
@@ -851,7 +857,7 @@ function OnMsg.ClassesGenerate()
 
 			if not skip_msg then
 				MsgPopup(
-					choice[1].text .. ": " .. Strings[302535920000014--[[Spawned--]]],
+					choice.text .. ": " .. Strings[302535920000014--[[Spawned--]]],
 					title
 				)
 			end
@@ -863,6 +869,12 @@ function OnMsg.ClassesGenerate()
 			title = title,
 			hint = hint,
 			custom_type = list_type or 0,
+			checkboxes = {
+				{
+					title = Strings[302535920001578--[[Auto-Attach--]]],
+					hint = Strings[302535920001579--[[Activate any auto-attach spots this entity has.--]]],
+				},
+			},
 		}
 	end
 

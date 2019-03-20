@@ -595,19 +595,21 @@ Will be overridden by %s.--]]]:format(Strings[302535920000037--[[Always Clean--]
 		end,
 	}
 
-	c = c + 1
-	Actions[c] = {ActionName = Strings[302535920001398--[[Remove Sponsor Limits--]]],
-		ActionMenubar = str_ECM_Buildings_Toggles,
-		ActionId = ".Remove Sponsor Limits",
-		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
-		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
-				ChoGGi.UserSettings.SponsorBuildingLimits,
-				Strings[302535920001399--[[Allow you to build all buildings no matter your sponsor.--]]]
-			)
-		end,
-		OnAction = ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle,
-	}
+  if g_AvailableDlc.gagarin then
+		c = c + 1
+		Actions[c] = {ActionName = Strings[302535920001398--[[Remove Sponsor Limits--]]],
+			ActionMenubar = str_ECM_Buildings_Toggles,
+			ActionId = ".Remove Sponsor Limits",
+			ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
+			RolloverText = function()
+				return ChoGGi.ComFuncs.SettingState(
+					ChoGGi.UserSettings.SponsorBuildingLimits,
+					Strings[302535920001399--[[Allow you to build all buildings no matter your sponsor.--]]]
+				)
+			end,
+			OnAction = ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle,
+		}
+  end
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001407--[[Rotate During Placement--]]],
