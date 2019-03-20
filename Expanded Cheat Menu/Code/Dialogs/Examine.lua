@@ -1545,6 +1545,14 @@ function Examine:ShowHexShapeList()
 	}
 	local c = #item_list
 
+	if type(obj.splat_shape) == "table" and #obj.splat_shape > 0 then
+		c = c + 1
+		item_list[c] = {
+			text = "splat_shape",
+			value = obj.splat_shape,
+		}
+	end
+
 	local g = _G
 	for i = 1, #self.hex_shape_tables do
 		local shape_list = self.hex_shape_tables[i]

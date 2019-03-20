@@ -6,6 +6,18 @@ function OnMsg.ClassesGenerate()
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
+	-- BetaBetaBeta
+	if LuaRevision >= 243160 then
+		c = c + 1
+		Actions[c] = {ActionName = Translate(11719--[[BetaBetaBeta--]]),
+			ActionMenubar = "ECM.Cheats",
+			ActionId = ".Testering",
+			ActionIcon = "CommonAssets/UI/Menu/DarkSideOfTheMoon.tga",
+			RolloverText = Strings[302535920001577--[[Change different BetaBetaBeta properties (NDA workaround).--]]],
+			OnAction = ChoGGi.MenuFuncs.TesteringBetaBetaBeta,
+		}
+	end
+
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001355--[[Map--]]] .. " " .. Translate(5422--[[Exploration--]]),
 		ActionMenubar = "ECM.Cheats",

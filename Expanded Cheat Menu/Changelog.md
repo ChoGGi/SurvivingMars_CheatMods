@@ -7,6 +7,7 @@
 ### Changed:
 - Beta compatibility.
 - Entity Spawner has a checkbox to activate any auto-attach entities.
+- Added some Beta cheats (they won't work if you aren't in the beta).
 
 ## v13.2 (Mar 17 2019)
 ### Added:
