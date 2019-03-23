@@ -7,7 +7,7 @@ function OnMsg.ClassesGenerate()
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
-	local str_ECM_Capacity = "ECM.ECM.Capacity"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Translate(109035890389--[[Capacity--]]),
 		ActionMenubar = "ECM.ECM",
@@ -19,7 +19,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000565--[[Storage Mechanized Depots Temp--]]],
-		ActionMenubar = str_ECM_Capacity,
+		ActionMenubar = "ECM.ECM.Capacity",
 		ActionId = ".Storage Mechanized Depots Temp",
 		ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 		RolloverText = function()
@@ -33,7 +33,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000567--[[Worker Capacity--]]],
-		ActionMenubar = str_ECM_Capacity,
+		ActionMenubar = "ECM.ECM.Capacity",
 		ActionId = ".Worker Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
@@ -50,7 +50,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000569--[[Building Capacity--]]],
-		ActionMenubar = str_ECM_Capacity,
+		ActionMenubar = "ECM.ECM.Capacity",
 		ActionId = ".Building Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
@@ -67,7 +67,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000571--[[Building Visitor Capacity--]]],
-		ActionMenubar = str_ECM_Capacity,
+		ActionMenubar = "ECM.ECM.Capacity",
 		ActionId = ".Building Visitor Capacity",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
@@ -84,7 +84,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000573--[[Storage Universal Depot--]]],
-		ActionMenubar = str_ECM_Capacity,
+		ActionMenubar = "ECM.ECM.Capacity",
 		ActionId = ".Storage Universal Depot",
 		ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 		RolloverText = function()
@@ -99,7 +99,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000575--[[Storage Other Depot--]]],
-		ActionMenubar = str_ECM_Capacity,
+		ActionMenubar = "ECM.ECM.Capacity",
 		ActionId = ".Storage Other Depot",
 		ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 		RolloverText = function()
@@ -114,7 +114,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000577--[[Storage Waste Depot--]]],
-		ActionMenubar = str_ECM_Capacity,
+		ActionMenubar = "ECM.ECM.Capacity",
 		ActionId = ".Storage Waste Depot",
 		ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 		RolloverText = function()
@@ -129,7 +129,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000579--[[Storage Mechanized Depots--]]],
-		ActionMenubar = str_ECM_Capacity,
+		ActionMenubar = "ECM.ECM.Capacity",
 		ActionId = ".Storage Mechanized Depots",
 		ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 		RolloverText = function()

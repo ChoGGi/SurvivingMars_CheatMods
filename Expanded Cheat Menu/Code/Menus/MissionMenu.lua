@@ -6,7 +6,7 @@ function OnMsg.ClassesGenerate()
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
-	local str_ECM_Mission = "ECM.ECM.Mission"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Translate(1635--[[Mission--]]),
 		ActionMenubar = "ECM.ECM",
@@ -18,7 +18,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(11034--[[Rival Colonies--]]),
-		ActionMenubar = str_ECM_Mission,
+		ActionMenubar = "ECM.ECM.Mission",
 		ActionId = ".Rival Colonies",
 		ActionIcon = "CommonAssets/UI/Menu/add_water.tga",
 		RolloverText = Strings[302535920001460--[[Add/remove rival colonies.--]]],
@@ -27,7 +27,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000704--[[Instant Mission Goals--]]],
-		ActionMenubar = str_ECM_Mission,
+		ActionMenubar = "ECM.ECM.Mission",
 		ActionId = ".Instant Mission Goals",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = Strings[302535920000705--[[Shows list of mission goals and allows you to pass any of them.--]]],
@@ -36,7 +36,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000706--[[Instant Colony Approval--]]],
-		ActionMenubar = str_ECM_Mission,
+		ActionMenubar = "ECM.ECM.Mission",
 		ActionId = ".Instant Colony Approval",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = Strings[302535920000707--[[Make your colony instantly approved (can be called before you summon your first victims).--]]],
@@ -45,7 +45,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000710--[[Change Logo--]]],
-		ActionMenubar = str_ECM_Mission,
+		ActionMenubar = "ECM.ECM.Mission",
 		ActionId = ".Change Logo",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = function()
@@ -59,7 +59,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000712--[[Set Sponsor--]]],
-		ActionMenubar = str_ECM_Mission,
+		ActionMenubar = "ECM.ECM.Mission",
 		ActionId = ".Set Sponsor",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = function()
@@ -74,7 +74,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000714--[[Set Bonuses Sponsor--]]],
-		ActionMenubar = str_ECM_Mission,
+		ActionMenubar = "ECM.ECM.Mission",
 		ActionId = ".Set Bonuses Sponsor",
 		ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 		RolloverText = Strings[302535920000715--[[Applies the good effects only (no drawbacks).
@@ -87,7 +87,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000716--[[Set Commander--]]],
-		ActionMenubar = str_ECM_Mission,
+		ActionMenubar = "ECM.ECM.Mission",
 		ActionId = ".Set Commander",
 		ActionIcon = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 		RolloverText = function()
@@ -102,7 +102,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000718--[[Set Bonuses Commander--]]],
-		ActionMenubar = str_ECM_Mission,
+		ActionMenubar = "ECM.ECM.Mission",
 		ActionId = ".Set Bonuses Commander",
 		ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 		RolloverText = Strings[302535920000715--[[Applies the good effects only (no drawbacks).
@@ -115,7 +115,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(8800--[[Game Rules--]]),
-		ActionMenubar = str_ECM_Mission,
+		ActionMenubar = "ECM.ECM.Mission",
 		ActionId = ".Game Rules",
 		ActionIcon = "CommonAssets/UI/Menu/ListCollections.tga",
 		RolloverText = Strings[302535920000965--[["Change the ""Game Rules""."--]]],
@@ -124,14 +124,14 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001247--[[Start Challenge--]]],
-		ActionMenubar = str_ECM_Mission,
+		ActionMenubar = "ECM.ECM.Mission",
 		ActionId = ".Start Challenge",
 		ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
 		RolloverText = Strings[302535920001249--[[Shows a list of challenges you can start (replaces current).--]]],
 		OnAction = ChoGGi.MenuFuncs.StartChallenge,
 	}
 
-	local str_ECM_Mission_Disasters = "ECM.ECM.Mission.Disasters"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Translate(3983--[[Disasters--]]),
 		ActionMenubar = "ECM.ECM.Mission",
@@ -143,7 +143,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000708--[[Meteor Damage--]]],
-		ActionMenubar = str_ECM_Mission_Disasters,
+		ActionMenubar = "ECM.ECM.Mission.Disasters",
 		ActionId = ".Meteor Damage",
 		ActionIcon = "CommonAssets/UI/Menu/remove_water.tga",
 		RolloverText = function()
@@ -157,7 +157,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(4142--[[Dust Devils--]]),
-		ActionMenubar = str_ECM_Mission_Disasters,
+		ActionMenubar = "ECM.ECM.Mission.Disasters",
 		ActionId = ".Dust Devils",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = function()
@@ -170,7 +170,7 @@ Current: %s"--]]]:format(Translate(4142--[[Dust Devils--]]),mapdata.MapSettings_
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(4148--[[Cold Waves--]]),
-		ActionMenubar = str_ECM_Mission_Disasters,
+		ActionMenubar = "ECM.ECM.Mission.Disasters",
 		ActionId = ".Cold Waves",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = function()
@@ -183,7 +183,7 @@ Current: %s"--]]]:format(Translate(4142--[[Dust Devils--]]),mapdata.MapSettings_
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(4144--[[Dust Storms--]]),
-		ActionMenubar = str_ECM_Mission_Disasters,
+		ActionMenubar = "ECM.ECM.Mission.Disasters",
 		ActionId = ".Dust Storms",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = function()
@@ -196,7 +196,7 @@ Current: %s"--]]]:format(Translate(4142--[[Dust Devils--]]),mapdata.MapSettings_
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(4146--[[Meteors--]]),
-		ActionMenubar = str_ECM_Mission_Disasters,
+		ActionMenubar = "ECM.ECM.Mission.Disasters",
 		ActionId = ".Meteors",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = function()

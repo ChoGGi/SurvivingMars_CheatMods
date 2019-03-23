@@ -180,14 +180,15 @@ function ChoGGi_FindValueDlg:RetObjects(obj,parent,str,case,threads,limit,level)
 
 	if type(obj) == "table" then
 
-		local location_str = "L" .. level .. " P: " .. RetName(obj) .. "; %s, " .. RetName(parent)
+		local location_str1 = "L" .. level .. " P: " .. RetName(obj) .. "; "
+		local location_str2 = ", " .. RetName(parent)
 
 		for key,value in pairs(obj) do
 			local key_name,value_name = RetName(key),RetName(value)
 			local key_str,key_type = case and key_name or key_name:lower(), type(key)
 			local value_str,value_type = case and value_name or value_name:lower(), type(value)
 
-			local key_location = location_str:format(key_name)
+			local key_location = location_str1 .. key_name .. location_str2
 
 			-- :find(str,1,true) (1,true means don't use lua patterns, just plain text)
 			if not self.dupe_objs[obj] and not self.found_objs[key_location]
@@ -196,7 +197,7 @@ function ChoGGi_FindValueDlg:RetObjects(obj,parent,str,case,threads,limit,level)
 				self.dupe_objs[obj] = obj
 
 			elseif threads then
-				local value_location = location_str:format(value_name)
+				local value_location = location_str1 .. value_name .. location_str2
 				if key_type == "thread" and not self.dupe_objs[key]
 						and not self.found_objs[key_location] and FindThreadFunc(key,str) then
 					self.found_objs[key_location] = key

@@ -6,7 +6,7 @@ function OnMsg.ClassesGenerate()
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
-	local str_ECM_Resources = "ECM.ECM.Resources"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Translate(692--[[Resources--]]),
 		ActionMenubar = "ECM.ECM",
@@ -18,7 +18,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000719--[[Add Orbital Probes--]]],
-		ActionMenubar = str_ECM_Resources,
+		ActionMenubar = "ECM.ECM.Resources",
 		ActionId = ".Add Orbital Probes",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
 		RolloverText = function()
@@ -35,7 +35,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(4616--[[Food Per Rocket Passenger--]]),
-		ActionMenubar = str_ECM_Resources,
+		ActionMenubar = "ECM.ECM.Resources",
 		ActionId = ".Food Per Rocket Passenger",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
 		RolloverText = function()
@@ -49,7 +49,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(1110--[[Prefab Buildings--]]),
-		ActionMenubar = str_ECM_Resources,
+		ActionMenubar = "ECM.ECM.Resources",
 		ActionId = ".Prefab Buildings",
 		ActionIcon = "CommonAssets/UI/Menu/gear.tga",
 		RolloverText = Translate(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]]) .. "\n" .. Strings[302535920000897--[[Drone prefabs--]]],
@@ -58,7 +58,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(3613--[[Funding--]]),
-		ActionMenubar = str_ECM_Resources,
+		ActionMenubar = "ECM.ECM.Resources",
 		ActionId = ".Funding",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 		RolloverText = function()
@@ -75,7 +75,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000727--[[Fill Selected Resource--]]],
-		ActionMenubar = str_ECM_Resources,
+		ActionMenubar = "ECM.ECM.Resources",
 		ActionId = ".Fill Selected Resource",
 		ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 		RolloverText = Strings[302535920000728--[[Fill the selected/moused over object's resource(s)--]]],

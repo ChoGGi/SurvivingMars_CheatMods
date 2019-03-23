@@ -244,8 +244,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		ActionBindable = true,
 	}
 
-
-	local str_Game_Camera = "ECM.Game.Camera"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001058--[[Camera--]]],
 		ActionMenubar = "ECM.Game",
@@ -257,7 +256,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001084--[[Reset--]]],
-		ActionMenubar = str_Game_Camera,
+		ActionMenubar = "ECM.Game.Camera",
 		ActionId = ".Toggle Cursor",
 		ActionIcon = "CommonAssets/UI/Menu/NewCamera.tga",
 		RolloverText = Strings[302535920001370--[[If something makes the camera view wonky you can use this to fix it.--]]],
@@ -267,7 +266,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000647--[[Border Scrolling--]]],
-		ActionMenubar = str_Game_Camera,
+		ActionMenubar = "ECM.Game.Camera",
 		ActionId = ".Border Scrolling",
 		ActionIcon = "CommonAssets/UI/Menu/CameraToggle.tga",
 		RolloverText = function()
@@ -281,7 +280,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000649--[[Zoom Distance--]]],
-		ActionMenubar = str_Game_Camera,
+		ActionMenubar = "ECM.Game.Camera",
 		ActionId = ".Zoom Distance",
 		ActionIcon = "CommonAssets/UI/Menu/MoveUpCamera.tga",
 		RolloverText = function()
@@ -295,7 +294,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001375--[[Bird's Eye--]]],
-		ActionMenubar = str_Game_Camera,
+		ActionMenubar = "ECM.Game.Camera",
 		ActionId = ".Bird's Eye",
 		ActionIcon = "CommonAssets/UI/Menu/UnlockCamera.tga",
 		RolloverText = function()
@@ -309,7 +308,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000651--[[Toggle Free Camera--]]],
-		ActionMenubar = str_Game_Camera,
+		ActionMenubar = "ECM.Game.Camera",
 		ActionId = ".Toggle Free Camera",
 		ActionIcon = "CommonAssets/UI/Menu/NewCamera.tga",
 		RolloverText = function()
@@ -325,7 +324,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000653--[[Toggle Follow Camera--]]],
-		ActionMenubar = str_Game_Camera,
+		ActionMenubar = "ECM.Game.Camera",
 		ActionId = ".Toggle Follow Camera",
 		ActionIcon = "CommonAssets/UI/Menu/Shot.tga",
 		RolloverText = function()
@@ -341,7 +340,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000655--[[Toggle Cursor--]]],
-		ActionMenubar = str_Game_Camera,
+		ActionMenubar = "ECM.Game.Camera",
 		ActionId = ".Toggle Cursor",
 		ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
 		RolloverText = function()
@@ -357,7 +356,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001489--[[Toggle Map Edge Limit--]]],
-		ActionMenubar = str_Game_Camera,
+		ActionMenubar = "ECM.Game.Camera",
 		ActionId = ".Toggle Cursor",
 		ActionIcon = "CommonAssets/UI/Menu/move_gizmo.tga",
 		RolloverText = function()
@@ -369,7 +368,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		OnAction = ChoGGi.MenuFuncs.MapEdgeLimit_Toggle,
 	}
 
-	local str_Game_Render = "ECM.Game.Render"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000845--[[Render--]]],
 		ActionMenubar = "ECM.Game",
@@ -381,7 +380,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000633--[[Lights Radius--]]],
-		ActionMenubar = str_Game_Render,
+		ActionMenubar = "ECM.Game.Render",
 		ActionId = ".Lights Radius",
 		ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 		RolloverText = function()
@@ -396,7 +395,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000635--[[Terrain Detail--]]],
-		ActionMenubar = str_Game_Render,
+		ActionMenubar = "ECM.Game.Render",
 		ActionId = ".Terrain Detail",
 		ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
 		RolloverText = function()
@@ -411,7 +410,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000637--[[Video Memory--]]],
-		ActionMenubar = str_Game_Render,
+		ActionMenubar = "ECM.Game.Render",
 		ActionId = ".Video Memory",
 		ActionIcon = "CommonAssets/UI/Menu/CountPointLights.tga",
 		RolloverText = function()
@@ -425,7 +424,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000639--[[Shadow Map--]]],
-		ActionMenubar = str_Game_Render,
+		ActionMenubar = "ECM.Game.Render",
 		ActionId = ".Shadow Map",
 		ActionIcon = "CommonAssets/UI/Menu/DisableEyeSpec.tga",
 		RolloverText = function()
@@ -439,7 +438,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000641--[[Disable Texture Compression--]]],
-		ActionMenubar = str_Game_Render,
+		ActionMenubar = "ECM.Game.Render",
 		ActionId = ".Disable Texture Compression",
 		ActionIcon = "CommonAssets/UI/Menu/ExportImageSequence.tga",
 		RolloverText = function()
@@ -453,7 +452,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000643--[[Higher Render Distance--]]],
-		ActionMenubar = str_Game_Render,
+		ActionMenubar = "ECM.Game.Render",
 		ActionId = ".Higher Render Distance",
 		ActionIcon = "CommonAssets/UI/Menu/CameraEditor.tga",
 		RolloverText = function()
@@ -468,7 +467,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000645--[[Higher Shadow Distance--]]],
-		ActionMenubar = str_Game_Render,
+		ActionMenubar = "ECM.Game.Render",
 		ActionId = ".Higher Shadow Distance",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = function()
@@ -481,7 +480,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 		OnAction = ChoGGi.MenuFuncs.HigherShadowDist_Toggle,
 	}
 
-	local str_Game_ExportCSV = "ECM.Game.Export CSV"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001449--[[Export--]]] .. " " .. Strings[302535920001448--[[CSV--]]],
 		ActionMenubar = "ECM.Game",
@@ -493,7 +492,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001208--[[Colonist Data--]]],
-		ActionMenubar = str_Game_ExportCSV,
+		ActionMenubar = "ECM.Game.Export CSV",
 		ActionId = ".Colonist Data",
 		ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 		RolloverText = Strings[302535920001219--[[Export colonist data to %sColonists.csv.--]]]:format(ConvertToOSPath("AppData/")),
@@ -502,7 +501,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001450--[[Graphs Data--]]],
-		ActionMenubar = str_Game_ExportCSV,
+		ActionMenubar = "ECM.Game.Export CSV",
 		ActionId = ".Graphs Data",
 		ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
 		RolloverText = Strings[302535920001452--[[Export command centre graph data to %sGraphs.csv.--]]]:format(ConvertToOSPath("AppData/")),
@@ -511,7 +510,7 @@ Attention: If you get yellow ground areas; just load it again or try %s.--]]]:fo
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001501--[[Map Data--]]],
-		ActionMenubar = str_Game_ExportCSV,
+		ActionMenubar = "ECM.Game.Export CSV",
 		ActionId = ".Map Data",
 		ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 		RolloverText = Strings[302535920001502--[["Export map location data to %sMapData.csv (will take awhile).
@@ -522,7 +521,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 		OnAction = ChoGGi.ComFuncs.ExportMapDataToCSV,
 	}
 
-	local str_Game_Screenshot = "ECM.Game.Screenshot"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000892--[[Screenshot--]]],
 		ActionMenubar = "ECM.Game",
@@ -534,7 +533,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000657--[[Screenshot--]]],
-		ActionMenubar = str_Game_Screenshot,
+		ActionMenubar = "ECM.Game.Screenshot",
 		ActionId = ".Screenshot",
 		ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 		RolloverText = Strings[302535920000658--[[Write screenshot--]]],
@@ -546,7 +545,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000659--[[Screenshot Upsampled--]]],
-		ActionMenubar = str_Game_Screenshot,
+		ActionMenubar = "ECM.Game.Screenshot",
 		ActionId = ".Screenshot Upsampled",
 		ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 		RolloverText = Strings[302535920000660--[[Write screenshot upsampled--]]],
@@ -558,7 +557,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000661--[[Show Interface in Screenshots--]]],
-		ActionMenubar = str_Game_Screenshot,
+		ActionMenubar = "ECM.Game.Screenshot",
 		ActionId = ".Show Interface in Screenshots",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 		RolloverText = function()
@@ -570,7 +569,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 		OnAction = ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle,
 	}
 
-	local str_Game_Interface = "ECM.Game.Interface"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000893--[[Interface--]]],
 		ActionMenubar = "ECM.Game",
@@ -582,7 +581,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000663--[[Toggle Interface--]]],
-		ActionMenubar = str_Game_Interface,
+		ActionMenubar = "ECM.Game.Interface",
 		ActionId = ".Toggle Interface",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleSelectionOcclusion.tga",
 		RolloverText = Strings[302535920000244--[[Warning! This will hide everything. Remember the shortcut or have fun restarting.--]]],
@@ -593,7 +592,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001387--[[Toggle Signs--]]],
-		ActionMenubar = str_Game_Interface,
+		ActionMenubar = "ECM.Game.Interface",
 		ActionId = ".Toggle Signs",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",
 		RolloverText = Strings[302535920001388--[["Concrete, metal deposits, not working, etc..."--]]],
@@ -604,7 +603,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000666--[[Toggle on-screen hints--]]],
-		ActionMenubar = str_Game_Interface,
+		ActionMenubar = "ECM.Game.Interface",
 		ActionId = ".Toggle on-screen hints",
 		ActionIcon = "CommonAssets/UI/Menu/HideUnselected.tga",
 		RolloverText = function()
@@ -618,7 +617,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000668--[[Reset on-screen hints--]]],
-		ActionMenubar = str_Game_Interface,
+		ActionMenubar = "ECM.Game.Interface",
 		ActionId = ".Reset on-screen hints",
 		ActionIcon = "CommonAssets/UI/Menu/HideSelected.tga",
 		RolloverText = Strings[302535920000669--[[Just in case you wanted to see them again.--]]],
@@ -627,7 +626,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000670--[[Never Show Hints--]]],
-		ActionMenubar = str_Game_Interface,
+		ActionMenubar = "ECM.Game.Interface",
 		ActionId = ".Never Show Hints",
 		ActionIcon = "CommonAssets/UI/Menu/set_debug_texture.tga",
 		RolloverText = function()
@@ -641,7 +640,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001412--[[GUI Dock Side--]]],
-		ActionMenubar = str_Game_Interface,
+		ActionMenubar = "ECM.Game.Interface",
 		ActionId = ".GUI Dock Side",
 		ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 		RolloverText = function()

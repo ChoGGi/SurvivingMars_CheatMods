@@ -7,13 +7,13 @@ function OnMsg.ClassesGenerate()
 	local c = #Actions
 
 	-- BetaBetaBeta
-	if LuaRevision >= 243160 then
+	if LuaRevision > 240905 then
 		c = c + 1
 		Actions[c] = {ActionName = Translate(11719--[[BetaBetaBeta--]]),
 			ActionMenubar = "ECM.Cheats",
 			ActionId = ".Testering",
 			ActionIcon = "CommonAssets/UI/Menu/DarkSideOfTheMoon.tga",
-			RolloverText = Strings[302535920001577--[[Change different BetaBetaBeta properties (NDA workaround).--]]],
+			RolloverText = Strings[302535920001577--[[Change different BetaBetaBeta properties (NDA'd).--]]],
 			OnAction = ChoGGi.MenuFuncs.TesteringBetaBetaBeta,
 		}
 	end
@@ -141,15 +141,6 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = Strings[302535920001393--[[StoryBits ClearCooldowns--]]],
-		ActionMenubar = "ECM.Cheats",
-		ActionId = ".StoryBits ClearCooldowns",
-		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-		RolloverText = Strings[302535920001392--[[Clears story bit cooldowns... (got me).--]]],
-		OnAction = StoryBitCategoryState.ClearCooldowns,
-	}
-
-	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001394--[[Spawn Planetary Anomalies--]]],
 		ActionMenubar = "ECM.Cheats",
 		ActionId = ".Spawn Planetary Anomalies",
@@ -158,7 +149,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 		OnAction = ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies,
 	}
 
-	local str_Cheats_Research = "ECM.Cheats.Research"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Translate(311--[[Research--]]),
 		ActionMenubar = "ECM.Cheats",
@@ -170,7 +161,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(311--[[Research--]]) .. " / " .. Strings[302535920000318--[[Unlock--]]] .. " " .. Translate(3734--[[Tech--]]),
-		ActionMenubar = str_Cheats_Research,
+		ActionMenubar = "ECM.Cheats.Research",
 		ActionId = ".Research / Unlock Tech",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = Strings[302535920000346--[[Pick what you want to unlock/research (defaults to unlock).--]]],
@@ -180,7 +171,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(311--[[Research--]]) .. " " .. Strings[302535920000281--[[Remove--]]],
-		ActionMenubar = str_Cheats_Research,
+		ActionMenubar = "ECM.Cheats.Research",
 		ActionId = ".Research Remove",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = Strings[302535920001494--[[Remove a tech from researched list.--]]],
@@ -190,7 +181,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001278--[[Instant Research--]]],
-		ActionMenubar = str_Cheats_Research,
+		ActionMenubar = "ECM.Cheats.Research",
 		ActionId = ".Instant Research",
 		ActionIcon = "CommonAssets/UI/Menu/DarkSideOfTheMoon.tga",
 		RolloverText = function()
@@ -204,7 +195,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000305--[[Research Queue Size--]]],
-		ActionMenubar = str_Cheats_Research,
+		ActionMenubar = "ECM.Cheats.Research",
 		ActionId = ".Research Queue Size",
 		ActionIcon = "CommonAssets/UI/Menu/ShowOcclusion.tga",
 		RolloverText = function()
@@ -218,7 +209,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000349--[[Reset All Research--]]],
-		ActionMenubar = str_Cheats_Research,
+		ActionMenubar = "ECM.Cheats.Research",
 		ActionId = ".Reset All Research",
 		ActionIcon = "CommonAssets/UI/Menu/UnlockCollection.tga",
 		RolloverText = Strings[302535920000350--[[Resets all research (includes breakthrough tech).--]]],
@@ -227,7 +218,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(7790--[[Research Current Tech--]]),
-		ActionMenubar = str_Cheats_Research,
+		ActionMenubar = "ECM.Cheats.Research",
 		ActionId = ".Research Current Tec",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = Strings[302535920000352--[[Complete item currently being researched.--]]],
@@ -236,7 +227,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000295--[[Add Research Points--]]],
-		ActionMenubar = str_Cheats_Research,
+		ActionMenubar = "ECM.Cheats.Research",
 		ActionId = ".Add Research Points",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 		RolloverText = Strings[302535920000354--[[Add a specified amount of research points.--]]],
@@ -245,7 +236,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000355--[[Outsourcing For Free--]]],
-		ActionMenubar = str_Cheats_Research,
+		ActionMenubar = "ECM.Cheats.Research",
 		ActionId = ".Outsourcing For Free",
 		ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 		RolloverText = function()
@@ -259,7 +250,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001342--[[Change Outsource Limit--]]],
-		ActionMenubar = str_Cheats_Research,
+		ActionMenubar = "ECM.Cheats.Research",
 		ActionId = ".Change Outsource Limit",
 		ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
 		RolloverText = function()
@@ -273,7 +264,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000357--[[Set Amount Of Breakthroughs Allowed--]]],
-		ActionMenubar = str_Cheats_Research,
+		ActionMenubar = "ECM.Cheats.Research",
 		ActionId = ".Set Amount Of Breakthroughs Allowed",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = function()
@@ -288,7 +279,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000359--[[Breakthroughs From OmegaTelescope--]]],
-		ActionMenubar = str_Cheats_Research,
+		ActionMenubar = "ECM.Cheats.Research",
 		ActionId = ".Breakthroughs From OmegaTelescope",
 		ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 		RolloverText = function()
@@ -301,7 +292,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 		ActionSortKey = "2Breakthroughs From OmegaTelescope",
 	}
 
-	local str_Cheats_Menu = "ECM.Cheats.Menu"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Translate(1000162--[[Menu--]]),
 		ActionMenubar = "ECM.Cheats",
@@ -312,7 +303,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 	}
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000232--[[Draggable Cheats Menu--]]],
-		ActionMenubar = str_Cheats_Menu,
+		ActionMenubar = "ECM.Cheats.Menu",
 		ActionId = ".Draggable Cheats Menu",
 		ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
 		RolloverText = function()
@@ -326,7 +317,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000325--[[Keep Cheats Menu Position--]]],
-		ActionMenubar = str_Cheats_Menu,
+		ActionMenubar = "ECM.Cheats.Menu",
 		ActionId = ".Keep Cheats Menu Position",
 		ActionIcon = "CommonAssets/UI/Menu/LockCollection.tga",
 		RolloverText = function()
@@ -340,7 +331,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001014--[[Hide Cheats Menu--]]],
-		ActionMenubar = str_Cheats_Menu,
+		ActionMenubar = "ECM.Cheats.Menu",
 		ActionId = ".Hide Cheats Menu",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 		RolloverText = Strings[302535920001019--[[This will hide the Cheats menu; Use F2 to see it again.--]]],
@@ -352,7 +343,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000696--[[Infopanel Cheats--]]],
-		ActionMenubar = str_Cheats_Menu,
+		ActionMenubar = "ECM.Cheats.Menu",
 		ActionId = ".Infopanel Cheats",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 		RolloverText = function()
@@ -369,7 +360,7 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000698--[[Infopanel Cheats Cleanup--]]],
-		ActionMenubar = str_Cheats_Menu,
+		ActionMenubar = "ECM.Cheats.Menu",
 		ActionId = ".Infopanel Cheats Cleanup",
 		ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 		RolloverText = function()
@@ -382,6 +373,52 @@ To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[30253592
 		end,
 		OnAction = ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle,
 		ActionSortKey = "-1Infopanel Cheats Cleanup",
+	}
+
+	-- menu
+	c = c + 1
+	Actions[c] = {ActionName = Translate(948928900281--[[Story Bits--]]),
+		ActionMenubar = "ECM.Cheats",
+		ActionId = ".StoryBits",
+		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+		OnActionEffect = "popup",
+		ActionSortKey = "1StoryBits",
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = Strings[302535920001393--[[Clear Cooldowns--]]],
+		ActionMenubar = "ECM.Cheats.StoryBits",
+		ActionId = ".StoryBits ClearCooldowns",
+		ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
+		RolloverText = Strings[302535920001392--[[Sets story.cooldown_end to GameTime.--]]],
+		OnAction = StoryBitCategoryState.ClearCooldowns,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = Strings[302535920001580--[[Interrupt Supression Times--]]],
+		ActionMenubar = "ECM.Cheats.StoryBits",
+		ActionId = ".Interrupt Supression Times",
+		ActionIcon = "CommonAssets/UI/Menu/Action.tga",
+		RolloverText = Strings[302535920001581--[[Sets story.time_created to -SuppressTime.--]]],
+		OnAction = InterruptStoryBitSupressionTimes,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = Strings[302535920001582--[[Testing Toggle--]]],
+		ActionMenubar = "ECM.Cheats.StoryBits",
+		ActionId = ".Testing Toggle",
+		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+		RolloverText = Strings[302535920001583--[[Toggles g_StoryBitTesting.--]]],
+		OnAction = ToggleStoryBitTesting,
+	}
+
+	c = c + 1
+	Actions[c] = {ActionName = Strings[302535920001584--[[Testing Delete Backlog--]]],
+		ActionMenubar = "ECM.Cheats.StoryBits",
+		ActionId = ".Testing Delete Backlog",
+		ActionIcon = "CommonAssets/UI/Menu/DelCamera.tga",
+		RolloverText = Strings[302535920001585--[[Sets AccountStorage.StoryBitTimestamp to nil.--]]],
+		OnAction = DeleteStoryBitTestingBacklog,
 	}
 
 end

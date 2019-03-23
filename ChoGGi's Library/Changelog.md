@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v6.3 (Unreleased)
+- Added some more func names to RetName.
 
 ## v6.2 (Mar 17 2019)
 - Xbox.

@@ -1524,6 +1524,12 @@ function Examine:ShowHexShapeList()
 		"HexOutlineShapes",
 		"HexPeripheralShapes",
 	}
+	self.hex_shape_funcs = self.hex_shape_funcs or {
+		"GetExtractionShape",
+		"GetExtractionShapeExtended",
+		"GetShapePoints",
+		"GetRotatedShapePoints",
+	}
 
 	local item_list = {
 		{
@@ -1551,6 +1557,26 @@ function Examine:ShowHexShapeList()
 			text = "splat_shape",
 			value = obj.splat_shape,
 		}
+	end
+	if type(obj.periphery_shape) == "table" and #obj.periphery_shape > 0 then
+		c = c + 1
+		item_list[c] = {
+			text = "periphery_shape",
+			value = obj.periphery_shape,
+		}
+	end
+
+	for i = 1, #self.hex_shape_funcs do
+		local shape_list = self.hex_shape_funcs[i]
+		local shape = obj[shape_list] and obj[shape_list](obj)
+
+		if shape and #shape > 0 then
+			c = c + 1
+			item_list[c] = {
+				text = shape_list,
+				value = shape,
+			}
+		end
 	end
 
 	local g = _G
@@ -1922,7 +1948,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			image = "CommonAssets/UI/Menu/DeleteArea.tga",
 			clicked = function()
 				if obj_type == "string" then
-					self:ShowExecCodeWithCode("o." .. obj_name .. " = nil")
+					self:ShowExecCodeWithCode([[o["]] .. obj_name .. [["] = nil]])
 				else
 					self:ShowExecCodeWithCode("table.remove(o" .. "," .. obj_name .. ")")
 				end
@@ -1933,9 +1959,9 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
 			clicked = function()
 				if obj_value_type == "string" then
-					self:ShowExecCodeWithCode("o." .. obj_name .. [[ = "]] .. obj_value_str .. [["]])
+					self:ShowExecCodeWithCode([[o["]] .. obj_name .. [["] = "]] .. obj_value_str .. [["]])
 				else
-					self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. obj_value_str)
+					self:ShowExecCodeWithCode([[o["]] .. obj_name .. [["] = ]] .. obj_value_str)
 				end
 			end,
 		},
@@ -2092,6 +2118,7 @@ function Examine:ConvertValueToInfo(obj)
 	end
 	--
 	if obj_type == "table" then
+
 		-- acts weird with main menu movie xlayer, so we check for GetVisualPos
 		if IsValid(obj) and obj.GetVisualPos then
 			return self:HyperLink(obj,Examine_ConvertValueToInfo)
@@ -2272,6 +2299,8 @@ function Examine:RetFuncArgs(obj)
 
 		-- remove extra , from concat and add ... if it has a vararg
 		return args:gsub(": , ",": (") .. (info.isvararg and ", ...)" or ")")
+	elseif info.isvararg then
+		return "params: (...)"
 	else
 		return "params: ()"
 	end
@@ -2542,7 +2571,8 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			)
 		end
 
-		if valid_ent then
+		-- calling GetNumTris/GetNumVertices on InvisibleObject == CTD
+		if valid_ent and not entity == "InvisibleObject" then
 			-- some entity details as well
 			table_insert(list_obj_str, 2,
 				"GetEntity(): " .. self:ConvertValueToInfo(entity)
@@ -3082,7 +3112,8 @@ Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAsse
 		self.idCaption:SetTitle(self,name_type .. title:gsub(name_type,""))
 	end
 
-	-- for bigger lists like _G or MapGet(true): we add a slight delay, so the dialog shows up (progress is happening user)
+	-- we add a slight delay; useful for bigger lists like _G or MapGet(true)
+	-- so the dialog shows up (progress is happening user)
 		if startup or self.is_chinese then
 			-- the chinese text render is slow as shit, so we have a Sleep in ConvertObjToInfo to keep ui stuff accessible
 			CreateRealTimeThread(function()
