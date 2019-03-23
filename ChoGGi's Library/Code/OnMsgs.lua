@@ -10,6 +10,7 @@ OnMsg.ReloadLua = ChoGGi.ComFuncs.Rebuildshortcuts
 -- use this message to perform post-built actions on the final classes
 function OnMsg.ClassesBuilt()
 	-- add build cat for my items
+	local ChoGGi = ChoGGi
 	local bc = BuildCategories
 	if not table.find(bc,"id","ChoGGi") then
 		bc[#bc+1] = {

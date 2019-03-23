@@ -3,38 +3,6 @@ SpecialistByExperience = {
 	IgnoreSpec = false,
 	SolsToTrain = 25,
 }
-function OnMsg.ModConfigReady()
-  local ModConfig = ModConfig
-  local SpecialistByExperience = SpecialistByExperience
-
-  -- get options
-  SpecialistByExperience.IgnoreSpec = ModConfig:Get("SpecialistByExperience", "IgnoreSpec") or SpecialistByExperience.IgnoreSpec
-  SpecialistByExperience.SolsToTrain = ModConfig:Get("SpecialistByExperience", "SolsToTrain") or  SpecialistByExperience.SolsToTrain
-
-  -- setup menu options
-  ModConfig:RegisterMod("SpecialistByExperience", "Specialist By Experience")
-
-  ModConfig:RegisterOption("SpecialistByExperience", "IgnoreSpec", {
-    name = "Colonists who already have a spec are changed as well.",
-    type = "boolean",
-    default = SpecialistByExperience.IgnoreSpec,
-  })
-  ModConfig:RegisterOption("SpecialistByExperience", "SolsToTrain", {
-    name = "How many Sols before getting new spec.",
-    type = "number",
-    default = SpecialistByExperience.SolsToTrain,
-  })
-
-end
-function OnMsg.ModConfigChanged(mod_id, option_id, value)
-  if mod_id == "SpecialistByExperience" then
-		if option_id == "IgnoreSpec" then
-			SpecialistByExperience.IgnoreSpec = value
-		elseif option_id == "SolsToTrain" then
-			SpecialistByExperience.SolsToTrain = value
-		end
-  end
-end
 
 local orig_Workplace_AddWorker = Workplace.AddWorker
 function Workplace:AddWorker(worker, shift)
@@ -110,6 +78,8 @@ function OnMsg.NewDay(sol) -- NewSol...
           -- only allow spec=none or if modconfig then any spec, then check if worked long enough
           if (c_table.obj.specialist == "none" or ignore_spec) and (sol - c_table.started_on) >= sols_to_train then
 						c_table.obj:SetSpecialization(work.specialist)
+						-- needed to remove NonSpecialistPerformancePenalty
+						c_table.obj:ChangeWorkplacePerformance()
           end
         else
           -- if not valid then remove

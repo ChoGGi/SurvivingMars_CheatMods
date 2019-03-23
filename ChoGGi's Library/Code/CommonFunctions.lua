@@ -382,31 +382,27 @@ end
 ChoGGi.ComFuncs.GetParentOfKind = GetParentOfKind
 
 do -- ValidateImage
-	local MeasureImage = UIL.MeasureImage
-	local default = ChoGGi.library_path .. "UI/TheIncal.png"
+	local m = UIL.MeasureImage
 
 	function ChoGGi.ComFuncs.ValidateImage(image,fallback)
 		-- if measure isn't sent a string it'll spam the log
 		image = tostring(image)
 
 		-- first we try the image path as is
-		local m = MeasureImage(image)
 		-- if x is 0 then it probably isn't a valid image (measure sends back x,y)
-		if m == 0 then
+		if m(image) == 0 then
 			-- try with my lib path
 			image = ChoGGi.library_path .. image
-			m = MeasureImage(image)
 			-- falling back
-			if fallback and m == 0 then
-				image = fallback
-				m = MeasureImage(image)
-				if m == 0 then
+			if m(image) == 0 then
+				image = nil
+				if fallback then
 					image = ChoGGi.library_path .. fallback
-					m = MeasureImage(image)
-					-- falling way back
-					if m == 0 then
-						-- should always exist
-						image = default
+					if m(image) == 0 then
+						image = fallback
+						if m(image) == 0 then
+							image = nil
+						end
 					end
 				end
 			end
@@ -460,8 +456,6 @@ do -- MsgPopup
 			text = text or Translate(3718--[[NONE--]]),
 			image = ValidateImage(image,"UI/TheIncal.png"),
 		}
-
-printC(ValidateImage(image,"UI/TheIncal.png"))
 
 		TableSet_defaults(data, params)
 		TableSet_defaults(data, OnScreenNotificationPreset)
@@ -2591,10 +2585,10 @@ do -- DeleteObject
 	local FlattenTerrainInBuildShape = FlattenTerrainInBuildShape
 	local HasAnySurfaces = HasAnySurfaces
 	local HasRestoreHeight = terrain.HasRestoreHeight
+	local EntitySurfaces_Height = EntitySurfaces.Height
 
 	local UpdateFlightGrid
 	local DeleteObject
-	local holiles = {"MoholeMine","ShuttleHub","MetalsExtractor","JumperShuttleHub"}
 
 	local function ExecFunc(obj,funcname,param)
 		if type(obj[funcname]) == "function" then
@@ -2613,7 +2607,7 @@ do -- DeleteObject
 		-- figured it's quicker using a local function now
 		local waterspire = obj:IsKindOf("WaterReclamationSpire") and not IsValid(obj.parent_dome)
 		local rctransport = obj:IsKindOf("RCTransport")
-		local holy_stuff = obj:IsKindOfClasses(holiles)
+		local holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor","JumperShuttleHub")
 
 		if not waterspire then
 			-- some stuff will leave holes in the world if they're still working
@@ -2644,7 +2638,7 @@ do -- DeleteObject
 		ExecFunc(obj,"Destroy")
 
 		-- still gotta fix the geo dome
-		if obj.GetFlattenShape and HasAnySurfaces(obj, EntitySurfaces.Height, true) and not HasRestoreHeight() then
+		if obj.GetFlattenShape and HasAnySurfaces(obj, EntitySurfaces_Height, true) and not HasRestoreHeight() then
 			FlattenTerrainInBuildShape(obj:GetFlattenShape(), obj)
 		end
 
