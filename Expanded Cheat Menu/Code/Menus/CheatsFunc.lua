@@ -740,7 +740,6 @@ This will switch to a new map.--]]],
 			local c = #item_list
 
 			-- add any disaster map settings in DataInstances
-			-- this way i can add "stuff" not yet released without mentioning anything i shouldn't
 			local name_lookup = {
 				ColdWave = {
 					display = Translate(4149--[[Cold Wave--]]),
@@ -1687,7 +1686,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 						text = text,
 						value = id,
 						icon = "<image " .. tech.icon .. " 250>",
-						hint = Translate(T(tech.description,tech)) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
+						hint = Translate(T{tech.description,tech}) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
 					}
 				end
 			end
@@ -1707,7 +1706,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 --~ 						text = text,
 --~ 						value = tech_id,
 --~ 						icon = "<image " .. tech.icon .. " 250>",
---~ 						hint = Translate(T(tech.description,tech)) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
+--~ 						hint = Translate(T{tech.description,tech}) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
 --~ 					}
 --~ 				end
 --~ 			end
@@ -1766,6 +1765,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 	end -- do
 
 	do -- ResearchTech
+		local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 		local mystery_costs = {
 			SolExploration = 5000,
 			AlienDiggersDestruction = 20000,
@@ -1811,39 +1811,46 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 			end
 		end
 
+		local special_techs = {
+			Breakthroughs = true,
+			Mysteries = true,
+			Storybits = true,
+		}
 		local function AllRegularTechs(tech_func)
-			ResearchTechGroup(tech_func,"Biotech")
-			ResearchTechGroup(tech_func,"Engineering")
-			ResearchTechGroup(tech_func,"Physics")
-			ResearchTechGroup(tech_func,"Robotics")
-			ResearchTechGroup(tech_func,"Social")
+			local TechFields = TechFields
+			for key in pairs(TechFields) do
+				if not special_techs[key] then
+					ResearchTechGroup(tech_func,key)
+				end
+			end
 		end
 
 		function ChoGGi.MenuFuncs.ResearchTech()
 			local title = Translate(311--[[Research--]]) .. " / " .. Strings[302535920000318--[[Unlock--]]] .. " " .. Translate(3734--[[Tech--]])
 			local item_list = {
 				{
-					text = " " .. Strings[302535920000306--[[Everything--]]],
+					text = "  " .. Strings[302535920000306--[[Everything--]]],
 					value = "Everything",
 					hint = Strings[302535920000307--[[All the tech/breakthroughs/mysteries--]]],
 				},
 				{
-					text = " " .. Strings[302535920000308--[[All Tech--]]],
+					text = "  " .. Strings[302535920000308--[[All Tech--]]],
 					value = "AllTech",
 					hint = Strings[302535920000309--[[All the regular tech--]]],
 				},
-				{
-					text = " " .. Strings[302535920000310--[[All Breakthroughs--]]],
-					value = "AllBreakthroughs",
-					hint = Strings[302535920000311--[[All the breakthroughs--]]],
-				},
-				{
-					text = " " .. Strings[302535920000312--[[All Mysteries--]]],
-					value = "AllMysteries",
-					hint = Strings[302535920000313--[[All the mysteries--]]],
-				},
 			}
 			local c = #item_list
+
+			-- add tech fields
+			local TechFields = TechFields
+			for key,value in pairs(TechFields) do
+				c = c + 1
+				item_list[c] = {
+					text = " " .. Translate(value.display_name),
+					value = key,
+					hint = Translate(value.description),
+				}
+			end
 
 			local IsTechResearched = IsTechResearched
 			local TechDef = TechDef
@@ -1855,12 +1862,17 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 					if text:find("\"") then
 						text = text:gsub("\"","")
 					end
+					local icon1,icon2 = "",""
+					if ValidateImage(tech.icon) then
+						icon1 = "<image " .. tech.icon .. " 250>"
+						icon2 = "\n\n<image " .. tech.icon .. " 1500>"
+					end
 					c = c + 1
 					item_list[c] = {
 						text = text,
 						value = tech_id,
-						icon = "<image " .. tech.icon .. " 250>",
-						hint = Translate(T(tech.description,tech)) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
+						icon = icon1,
+						hint = Translate(T{tech.description,tech}) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. icon2,
 					}
 				end
 			end
@@ -1895,8 +1907,9 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 				for i = 1, #choice do
 					local value = choice[i].value
 					if value == "Everything" then
-						ResearchTechGroup(func,"Mysteries")
-						ResearchTechGroup(func,"Breakthroughs")
+						for key in pairs(special_techs) do
+							ResearchTechGroup(func,key)
+						end
 						AllRegularTechs(func)
 					elseif value == "AllTech" then
 						AllRegularTechs(func)
@@ -1905,13 +1918,19 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 					elseif value == "AllMysteries" then
 						ResearchTechGroup(func,"Mysteries")
 					else
-						-- make sure it's an actual tech
-						local tech = TechDef[value]
-						if tech then
-							if tech.group == "Mysteries" then
-								AllowMysteryTech(value,UICity)
+						-- make sure it's an actual field
+						local field = TechFields[value]
+						if field then
+							ResearchTechGroup(func,value)
+						else
+							-- or tech
+							local tech = TechDef[value]
+							if tech then
+								if tech.group == "Mysteries" then
+									AllowMysteryTech(value,UICity)
+								end
+								g[func](value)
 							end
-							g[func](value)
 						end
 					end
 				end

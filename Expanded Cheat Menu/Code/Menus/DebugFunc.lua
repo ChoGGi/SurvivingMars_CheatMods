@@ -338,7 +338,7 @@ You need my HelperMod installed to be able to use this."--]]],
 				voiced = story_def.VoicedText,
 				hint = Strings[302535920001358--[[Group--]]] .. ": "
 					.. story_def.group .. "\n\n"
-					.. Translate(T(story_def.Text,temp_table)) .. "\n\n<image "
+					.. Translate(T{story_def.Text,temp_table}) .. "\n\n<image "
 					.. story_def.Image .. ">",
 			}
 		end

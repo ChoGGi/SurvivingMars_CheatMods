@@ -982,11 +982,11 @@ Open %s to see all the textures, the tooltips show the texture index."--]]]:form
 		local MulDivRound = MulDivRound
 		local sqrt = sqrt
 
-		local TerrainTextures = TerrainTextures
 		local NoisePreset = DataInstances.NoisePreset
 		local guim = guim
 
 		local item_list = {}
+		local TerrainTextures = TerrainTextures
 		for i = 1, #TerrainTextures do
 			local terrain = TerrainTextures[i]
 			item_list[i] = {

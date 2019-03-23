@@ -1,18 +1,30 @@
-### This needs to be placed in the game folder for Surviving Mars
-### NOT in AppData\Surviving Mars (see Install Help.png)
+### Blacklist bypass mod for Surviving Mars mods
 
 ```
-Surviving Mars\BinAssets\AssetsRevision.lua
+Find and rename LocalStorage.lua to LocalStorage_Settings.lua
+It's located in
+%AppData%\Surviving Mars\
+C:\Users\USERNAME\AppData\Roaming\Surviving Mars (AppData is a hidden folder)
 
-Startup Fix Non-Ubuntu Network Crash DA
+Then you can move "LocalStorage.lua" and "BinAssets" to the profile folder
 
-See: https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-linux-steam.1113701/
+
+This will allow ECM to bypass the blacklist added in the Da Vinci update (reverts to Curiosity and below permissions).
 ```
 
-##### OSX Install Help (thanks BodyByBuddha)
+##### Modders:
 ```
-- Expand the zip & you'll see a BinAssets folder & this readme file.
-- Move the BinAssets folder to /Applications/Surviving Mars.app/Contents/Resources
+If you add a file with your steam id to the Mod Ids, then it will also work for yours.
+A warning will be added to the mod manager to any mods without the blacklist active.
+```
 
-If you are using Finder, to open the Surviving Mars.app, right click on the application icon and select Show Package Contents.
+##### Other OS locations
 ```
+macOS (OS X):
+~/Library/Application Support/Surviving Mars/
+Linux:
+$XDG_DATA_HOME/Surviving Mars/
+```
+
+##### For those previously using the HelperMod
+Move the BinAssets folder to the appdata folder to keep any mods/settings.

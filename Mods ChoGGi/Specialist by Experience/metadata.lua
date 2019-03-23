@@ -1,11 +1,13 @@
 return PlaceObj("ModDef", {
-  "title", "Specialist By Experience v0.4",
-  "version", 4,
-  "saved", 1535544000,
+  "title", "Specialist By Experience v0.5",
+--~   "title", "Specialist By Experience v0.4",
+  "version", 5,
+  "saved", 1553342400,
   "id", "ChoGGi_SpecialistByExperience",
   "author", "ChoGGi",
 	"code", {
-		"Code/Script.lua"
+		"Code/Script.lua",
+		"Code/ModConfig.lua",
 	},
 	"image", "Preview.png",
   "steam_id", "1461190633",

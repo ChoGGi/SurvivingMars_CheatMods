@@ -296,7 +296,7 @@ function OnMsg.ClassesGenerate()
 				item_list[c] = {
 					text = Translate(spon.display_name),
 					value = spon.id,
-					hint = Translate(T(spon.effect,stats[2]))
+					hint = Translate(T{spon.effect,stats[2]})
 						.. (spon.save_in ~= "" and "\n\nsave_in: " .. spon.save_in or ""),
 				}
 			end
@@ -366,7 +366,7 @@ function OnMsg.ClassesGenerate()
 				item_list[c] = {
 					text = Translate(spon.display_name),
 					value = spon.id,
-					hint = Translate(T(spon.effect,stats[2])) .. "\n\n" .. Strings[302535920001165--[[Enabled Status--]]]
+					hint = Translate(T{spon.effect,stats[2]}) .. "\n\n" .. Strings[302535920001165--[[Enabled Status--]]]
 						.. (user_set and ": " .. user_set or " false")
 						.. (spon.save_in ~= "" and "\n\nsave_in: " .. spon.save_in or ""),
 				}
