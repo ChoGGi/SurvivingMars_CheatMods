@@ -276,7 +276,7 @@ function OnMsg.ClassesGenerate()
 		OnAction = ChoGGi.ComFuncs.ObjFlagsList,
 	}
 
-	local str_Debug_Grids = "ECM.Debug.Grids"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000035--[[Grids--]]],
 		ActionMenubar = "ECM.Debug",
@@ -288,7 +288,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001328--[[Show Grid Disable--]]],
-		ActionMenubar = str_Debug_Grids,
+		ActionMenubar = "ECM.Debug.Grids",
 		ActionId = ".Show Grid Disable",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 		RolloverText = Strings[302535920001329--[[Hide the white ground grids.--]]],
@@ -298,7 +298,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000724--[[Show Grid Square--]]],
-		ActionMenubar = str_Debug_Grids,
+		ActionMenubar = "ECM.Debug.Grids",
 		ActionId = ".Show Grid Square",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 		RolloverText = Strings[302535920000725--[[Square (use Disable to hide).--]]],
@@ -309,7 +309,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001192--[[Show Grid 45 Square--]]],
-		ActionMenubar = str_Debug_Grids,
+		ActionMenubar = "ECM.Debug.Grids",
 		ActionId = ".Show Grid 45 Square",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 		RolloverText = Strings[302535920001325--[[Square 45 (use Disable to hide).--]]],
@@ -320,7 +320,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001326--[[Show Grid Hex--]]],
-		ActionMenubar = str_Debug_Grids,
+		ActionMenubar = "ECM.Debug.Grids",
 		ActionId = ".Show Grid Hex",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 		RolloverText = Strings[302535920001327--[[Hex (use Disable to hide).--]]],
@@ -331,7 +331,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001297--[[Toggle Flight Grid--]]],
-		ActionMenubar = str_Debug_Grids,
+		ActionMenubar = "ECM.Debug.Grids",
 		ActionId = ".Toggle Flight Grid",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleCollisions.tga",
 		RolloverText = Strings[302535920001298--[[Shows a square grid with terrain/objects shape.--]]],
@@ -342,7 +342,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000499--[[Toggle Building Grid--]]],
-		ActionMenubar = str_Debug_Grids,
+		ActionMenubar = "ECM.Debug.Grids",
 		ActionId = ".Toggle Building Grid",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 		RolloverText = Strings[302535920000500--[["Show a hex grid around mouse: Green = pass/build, Yellow = no pass/build, Blue = pass/no build, Red = no pass/no build."--]]],
@@ -354,7 +354,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001417--[[Follow Mouse Grid Size--]]],
-		ActionMenubar = str_Debug_Grids,
+		ActionMenubar = "ECM.Debug.Grids",
 		ActionId = ".Follow Mouse Grid Size",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 		RolloverText = function()
@@ -370,7 +370,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001419--[[Follow Mouse Grid Translate--]]],
-		ActionMenubar = str_Debug_Grids,
+		ActionMenubar = "ECM.Debug.Grids",
 		ActionId = ".Follow Mouse Grid Translate",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 		RolloverText = function()
@@ -384,7 +384,7 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "9Follow Mouse Grid Translate",
 	}
 
-	local str_Debug_DebugFX = "ECM.Debug.Debug FX"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001175--[[Debug FX--]]],
 		ActionMenubar = "ECM.Debug",
@@ -396,7 +396,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001175--[[Debug FX--]]],
-		ActionMenubar = str_Debug_DebugFX,
+		ActionMenubar = "ECM.Debug.Debug FX",
 		ActionId = ".Debug FX",
 		ActionIcon = "CommonAssets/UI/Menu/FXEditor.tga",
 		RolloverText = function()
@@ -412,7 +412,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001184--[[Particles--]]],
-		ActionMenubar = str_Debug_DebugFX,
+		ActionMenubar = "ECM.Debug.Debug FX",
 		ActionId = ".Particles",
 		ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 		RolloverText = function()
@@ -428,7 +428,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001368--[[Sound FX--]]],
-		ActionMenubar = str_Debug_DebugFX,
+		ActionMenubar = "ECM.Debug.Debug FX",
 		ActionId = ".Sound FX",
 		ActionIcon = "CommonAssets/UI/Menu/DisableEyeSpec.tga",
 		RolloverText = function()
@@ -442,7 +442,7 @@ function OnMsg.ClassesGenerate()
 		setting_msg = Strings[302535920001368],
 	}
 
-	local str_Debug_PathMarkers = "ECM.Debug.Path Markers"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000467--[[Path Markers--]]],
 		ActionMenubar = "ECM.Debug",
@@ -454,7 +454,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000467--[[Path Markers--]]] .. " " .. Strings[302535920001382--[[Real Time--]]],
-		ActionMenubar = str_Debug_PathMarkers,
+		ActionMenubar = "ECM.Debug.Path Markers",
 		ActionId = ".Game Time",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = Strings[302535920000462--[[Maps paths in real time--]]] .. " " .. Strings[302535920000874--[[(see "Path Markers" to mark more than one at a time).--]]],
@@ -465,7 +465,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000467--[[Path Markers--]]],
-		ActionMenubar = str_Debug_PathMarkers,
+		ActionMenubar = "ECM.Debug.Path Markers",
 		ActionId = ".Path Markers",
 		ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 		RolloverText = Strings[302535920000468--[[Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.--]]],
@@ -476,7 +476,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001527--[[Building Path Markers--]]],
-		ActionMenubar = str_Debug_PathMarkers,
+		ActionMenubar = "ECM.Debug.Path Markers",
 		ActionId = ".Building Markers",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleCutSmoothTrans.tga",
 		RolloverText = function()
@@ -495,31 +495,19 @@ function OnMsg.ClassesGenerate()
 		ActionIcon = "CommonAssets/UI/Menu/delete_objects.tga",
 		RolloverText = Strings[302535920000488--[[Will ask for confirmation beforehand (will not delete domes).--]]],
 		OnAction = ChoGGi.MenuFuncs.DeleteAllSelectedObjects,
-		ActionSortKey = "99.Delete All Of Selected Object",
 	}
 
-	local str_Debug_DeleteObjects = "ECM.Debug.Delete Object(s)"
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000489--[[Delete Object(s)--]]],
 		ActionMenubar = "ECM.Debug",
-		ActionId = ".Delete Object(s)",
-		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
-		OnActionEffect = "popup",
-		ActionSortKey = "99.Delete Object(s)",
-	}
-
-	c = c + 1
-	Actions[c] = {ActionName = Strings[302535920000489--[[Delete Object(s)--]]],
-		ActionMenubar = str_Debug_DeleteObjects,
 		ActionId = ".Delete Object(s)",
 		ActionIcon = "CommonAssets/UI/Menu/delete_objects.tga",
 		RolloverText = Strings[302535920000490--[["Deletes selected object or object under mouse cursor (most objs, not all).
 
 Use Editor Mode and mouse drag to select multiple objects for deletion."--]]],
-		OnAction = ChoGGi.ComFuncs.DeleteObject,
+		OnAction = ChoGGi.MenuFuncs.DeleteObject,
 		ActionShortcut = "Ctrl-Alt-Shift-D",
 		ActionBindable = true,
-		ActionSortKey = "99.Delete Object(s)",
 	}
 
 end

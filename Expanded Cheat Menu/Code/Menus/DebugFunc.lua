@@ -13,6 +13,17 @@ function OnMsg.ClassesGenerate()
 	local RandomColour = ChoGGi.ComFuncs.RandomColour
 	local Strings = ChoGGi.Strings
 
+	function ChoGGi.MenuFuncs.DeleteObject(_,_,input)
+		if input == "keyboard" then
+			ChoGGi.ComFuncs.DeleteObject()
+		else
+			local obj = ChoGGi.ComFuncs.SelObject()
+			if IsValid(obj) then
+				ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
+			end
+		end
+	end
+
 	do -- TestLocaleFile
 		local saved_file_path
 
@@ -806,6 +817,7 @@ You need my HelperMod installed to be able to use this."--]]],
 	end
 
 	do -- path markers
+--~ 		PlaceObject("Waypoint")
 		local IsOldObjListType = IsOldObjListType
 		local Clamp = Clamp
 		local point = point

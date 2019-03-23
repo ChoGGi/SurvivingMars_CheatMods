@@ -75,19 +75,26 @@ do -- RetName
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	local PropObjGetProperty = PropObjGetProperty
 
-	-- we use this table to display names of (some) tables for RetName
+	-- we use this table to display names of objects for RetName
 	local lookup_table = {}
 
-	-- add some func names
-	pcall(function()
-		local funcs = g_CObjectFuncs
-		for key,value in pairs(funcs) do
-			lookup_table[value] = key .. " *C func"
+	local function AddFuncs(g,name)
+		local list = g[name]
+		for key,value in pairs(list) do
+			if not lookup_table[value] then
+				if type(value) == "function" then
+					if DebugGetInfo(value) == "[C](-1)" then
+						lookup_table[value] = name .. "." .. key .. " *C"
+					else
+						lookup_table[value] = name .. "." .. key
+					end
+				end
+			end
 		end
-		lookup_table[empty_func] = "empty_func *C func"
-	end)
+	end
 
-	local function AddFuncs(list,name)
+	local function AddFuncsChoGGi(g,name)
+		local list = g.ChoGGi[name]
 		for key,value in pairs(list) do
 			if not lookup_table[value] then
 				lookup_table[value] = "ChoGGi." .. name .. "." .. key
@@ -95,18 +102,42 @@ do -- RetName
 		end
 	end
 
+	-- pcalls = xbox
+
+	-- add some func names
+	pcall(function()
+		local g = ChoGGi.Temp._G
+		lookup_table[g.empty_func] = "empty_func *C"
+		AddFuncs(g,"g_CObjectFuncs")
+	end)
+
 	local function AfterLoad()
 		local g = ChoGGi.Temp._G
-
-		-- ECM func names
-		AddFuncs(g.ChoGGi.ComFuncs,"ComFuncs")
-		AddFuncs(g.ChoGGi.ConsoleFuncs,"ConsoleFuncs")
-		AddFuncs(g.ChoGGi.InfoFuncs,"InfoFuncs")
-		AddFuncs(g.ChoGGi.MenuFuncs,"MenuFuncs")
-		AddFuncs(g.ChoGGi.SettingFuncs,"SettingFuncs")
-		AddFuncs(g.ChoGGi.OrigFuncs,"OrigFuncs")
-
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
+
+		AddFuncs(g,"camera")
+		AddFuncs(g,"camera3p")
+		AddFuncs(g,"cameraMax")
+		AddFuncs(g,"cameraRTS")
+		AddFuncs(g,"coroutine")
+		AddFuncs(g,"debug")
+		AddFuncs(g,"DTM")
+		AddFuncs(g,"lfs")
+		AddFuncs(g,"lpeg")
+		AddFuncs(g,"package")
+		AddFuncs(g,"pf")
+		AddFuncs(g,"srp")
+		AddFuncs(g,"string")
+		AddFuncs(g,"table")
+		AddFuncs(g,"terrain")
+		AddFuncs(g,"UIL")
+		-- ECM func names
+		AddFuncsChoGGi(g,"ComFuncs")
+		AddFuncsChoGGi(g,"ConsoleFuncs")
+		AddFuncsChoGGi(g,"InfoFuncs")
+		AddFuncsChoGGi(g,"MenuFuncs")
+		AddFuncsChoGGi(g,"SettingFuncs")
+		AddFuncsChoGGi(g,"OrigFuncs")
 
 		-- any tables/funcs in _G
 		for key,value in pairs(g) do
@@ -117,7 +148,7 @@ do -- RetName
 					lookup_table[value] = key
 				elseif t == "function" then
 					if DebugGetInfo(value) == "[C](-1)" then
-						lookup_table[value] = key .. " *C func"
+						lookup_table[value] = key .. " *C"
 					else
 						lookup_table[value] = key
 					end
@@ -130,7 +161,7 @@ do -- RetName
 				if type(key) == "string" and not lookup_table[value] then
 					if type(value) == "function" then
 						if DebugGetInfo(value) == "[C](-1)" then
-							lookup_table[value] = cls_key .. "." .. key .. " *C func"
+							lookup_table[value] = cls_key .. "." .. key .. " *C"
 						else
 							lookup_table[value] = cls_key .. "." .. key
 						end
@@ -328,7 +359,7 @@ local function DotNameToObject(str,root,create)
 			-- create is for adding new settings in non-existent tables
 			if not obj_child and not create then
 				-- our treasure hunt is cut short, so return nadda
-				return
+				return false
 			end
 			-- change the parent to the child (create table if absent, this'll only fire when create)
 			parent = obj_child or {}
@@ -340,6 +371,7 @@ local function DotNameToObject(str,root,create)
 	end
 end
 ChoGGi.ComFuncs.DotNameToObject = DotNameToObject
+--~ ChoGGi.ComFuncs.DotNameToObject("ChoGGi.UserSettings.ConsoleErrors")
 
 local function GetParentOfKind(win, cls)
 	while win and not win:IsKindOf(cls) do
@@ -428,6 +460,9 @@ do -- MsgPopup
 			text = text or Translate(3718--[[NONE--]]),
 			image = ValidateImage(image,"UI/TheIncal.png"),
 		}
+
+printC(ValidateImage(image,"UI/TheIncal.png"))
+
 		TableSet_defaults(data, params)
 		TableSet_defaults(data, OnScreenNotificationPreset)
 		if objects then
@@ -1588,7 +1623,7 @@ function ChoGGi.ComFuncs.CreateSetting(str,setting_type)
 end
 
 -- returns whatever is selected > moused over > nearest object to cursor
-function ChoGGi.ComFuncs.SelObject(radius)
+local function SelObject(radius)
 	-- just in case it's called from main menu
 	if not GameState.gameplay then
 		return
@@ -1600,6 +1635,7 @@ function ChoGGi.ComFuncs.SelObject(radius)
 	end
 	return obj
 end
+ChoGGi.ComFuncs.SelObject = SelObject
 
 do -- Rebuildshortcuts
 	-- we want to only remove certain actions from the actual game, not ones added by modders, so list building time...
@@ -2280,9 +2316,9 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 	function ChoGGi.ComFuncs.ObjectColourRandom(obj)
 		-- if fired from action menu
 		if IsKindOf(obj,"XAction") then
-			obj = ChoGGi.ComFuncs.SelObject()
+			obj = SelObject()
 		else
-			obj = obj or ChoGGi.ComFuncs.SelObject()
+			obj = obj or SelObject()
 		end
 
 		if not IsValid(obj) or obj and not obj:IsKindOf("ColorizableObject") then
@@ -2346,9 +2382,9 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 	function ChoGGi.ComFuncs.ObjectColourDefault(obj)
 		-- if fired from action menu
 		if IsKindOf(obj,"XAction") then
-			obj = ChoGGi.ComFuncs.SelObject()
+			obj = SelObject()
 		else
-			obj = obj or ChoGGi.ComFuncs.SelObject()
+			obj = obj or SelObject()
 		end
 
 		if not obj then
@@ -2557,6 +2593,7 @@ do -- DeleteObject
 	local HasRestoreHeight = terrain.HasRestoreHeight
 
 	local UpdateFlightGrid
+	local DeleteObject
 	local holiles = {"MoholeMine","ShuttleHub","MetalsExtractor","JumperShuttleHub"}
 
 	local function ExecFunc(obj,funcname,param)
@@ -2569,7 +2606,7 @@ do -- DeleteObject
 		-- actually delete the whole passage
 		if obj:IsKindOf("Passage") then
 			for i = #obj.elements_under_construction, 1, -1 do
-				ChoGGi.ComFuncs.DeleteObject(obj.elements_under_construction[i])
+				DeleteObject(obj.elements_under_construction[i])
 			end
 		end
 
@@ -2636,17 +2673,10 @@ do -- DeleteObject
 		UpdateFlightGrid()
 	end
 
-	local DeleteObject
 	function ChoGGi.ComFuncs.DeleteObject(obj,editor_delete,skip_demo)
-		-- if fired from action menu
-		if IsKindOf(obj,"XAction") then
-			obj = ChoGGi.ComFuncs.SelObject()
-			editor_delete = nil
-			skip_demo = nil
-		end
-
 		local ChoGGi = ChoGGi
-		if not UpdateFlightGrid then
+		if not (DeleteObject or UpdateFlightGrid) then
+			DeleteObject = ChoGGi.ComFuncs.DeleteObject
 			UpdateFlightGrid = ChoGGi.ComFuncs.UpdateFlightGrid
 		end
 
@@ -2655,7 +2685,6 @@ do -- DeleteObject
 			local objs = editor:GetSel() or ""
 			if #objs > 0 then
 				SuspendPassEdits("ChoGGi.ComFuncs.DeleteObject")
-				DeleteObject = DeleteObject or ChoGGi.ComFuncs.DeleteObject
 				for i = 1, #objs do
 					local o = objs[i]
 					if o.class ~= "MapSector" then
@@ -2664,7 +2693,7 @@ do -- DeleteObject
 				end
 				ResumePassEdits("ChoGGi.ComFuncs.DeleteObject")
 			elseif not obj then
-				obj = ChoGGi.ComFuncs.SelObject()
+				obj = SelObject()
 			end
 		end
 
@@ -2700,9 +2729,9 @@ local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 function ChoGGi.ComFuncs.EmptyMechDepot(obj)
 	-- if fired from action menu
 	if IsKindOf(obj,"XAction") then
-		obj = ChoGGi.ComFuncs.SelObject()
+		obj = SelObject()
 	else
-		obj = IsKindOf(obj,"MechanizedDepot") and obj or ChoGGi.ComFuncs.SelObject()
+		obj = IsKindOf(obj,"MechanizedDepot") and obj or SelObject()
 	end
 
 	if not obj or not IsKindOf(obj,"MechanizedDepot") then
@@ -2793,9 +2822,9 @@ end
 function ChoGGi.ComFuncs.FindNearestResource(obj)
 	-- if fired from action menu
 	if IsKindOf(obj,"XAction") then
-		obj = ChoGGi.ComFuncs.SelObject()
+		obj = SelObject()
 	else
-		obj = obj or ChoGGi.ComFuncs.SelObject()
+		obj = obj or SelObject()
 	end
 
 	if not IsValid(obj) then
@@ -3114,10 +3143,10 @@ end
 function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj,skip_msg)
 	-- if fired from action menu
 	if IsKindOf(obj,"XAction") then
-		obj = ChoGGi.ComFuncs.SelObject()
+		obj = SelObject()
 		skip_msg = nil
 	else
-		obj = obj or ChoGGi.ComFuncs.SelObject()
+		obj = obj or SelObject()
 	end
 
 	if not IsValid(obj) then
@@ -3377,10 +3406,11 @@ do -- UpdateConsoleMargins
 
 	function ChoGGi.ComFuncs.UpdateConsoleMargins(console_vis)
 		if not dlgConsole then
-			rawset(_G, "dlgConsole", Console:new({}, terminal.desktop))
+			CreateConsole()
 		end
 		if not dlgConsoleLog then
-			rawset(_G, "dlgConsoleLog", ConsoleLog:new({}, terminal.desktop))
+			DestroyConsoleLog()
+			ShowConsoleLog()
 		end
 
 		local e = IsEditorActive()
@@ -3675,9 +3705,9 @@ end
 function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 	-- if fired from action menu
 	if IsKindOf(obj,"XAction") then
-		obj = ChoGGi.ComFuncs.SelObject()
+		obj = SelObject()
 	else
-		obj = obj or ChoGGi.ComFuncs.SelObject()
+		obj = obj or SelObject()
 	end
 
 	if not obj or obj and not obj:IsKindOf("ColorizableObject") then

@@ -8,7 +8,7 @@
 --~ 	return orig_XTemplateSpawn(template_or_class, parent, context)
 --~ end
 
-local type = type
+local type,rawget = type,rawget
 local table_unpack = table.unpack
 
 local MsgPopup
@@ -185,15 +185,23 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- always able to show console
-		function ShowConsole(visible)
---~ 			ConsoleEnabled = true
-			if visible and not rawget(_G, "dlgConsole") then
-				CreateConsole()
-			end
-			if rawget(_G, "dlgConsole") then
-				dlgConsole:Show(visible)
-			end
+		function ShowConsole(visible,...)
+			-- ShowConsole checks for this
+			ConsoleEnabled = true
+			return ChoGGi_OrigFuncs.ShowConsole(visible,...)
 		end
+
+		-- console stuff
+		function ShowConsoleLog(...)
+			-- ShowConsoleLog doesn't check for existing like ShowConsole
+			if rawget(_G, "dlgConsoleLog") then
+				dlgConsoleLog:SetVisible(true)
+			else
+				ChoGGi_OrigFuncs.ShowConsoleLog(...)
+			end
+			SetTrans(dlgConsoleLog)
+		end
+
 		-- convert popups to console text
 		function ShowPopupNotification(preset, params, bPersistable, parent,...)
 			--actually actually disable hints
@@ -262,11 +270,6 @@ function OnMsg.ClassesGenerate()
 			return SetTrans(ChoGGi_OrigFuncs.OpenDialog(...))
 		end
 
-		-- console stuff
-		function ShowConsoleLog(...)
-			ChoGGi_OrigFuncs.ShowConsoleLog(...)
-			SetTrans(dlgConsoleLog)
-		end
 	end -- do
 
 	-- Custom Msgs
@@ -1380,67 +1383,74 @@ end]]
 			},
 		}
 
-		if blacklist then
-			local function load_match(text, rules)
-				for i = 1, #rules do
-					local rule = rules[i]
-					local capture1, capture2, capture3 = text:match(rule[1])
-					if capture1 then
-						return rule[2]:format(capture1, capture2, capture3)
-					end
-				end
-			end
-
-			function Console:Exec(text,...)
-				text = load_match(text, console_rules)
-				ChoGGi_OrigFuncs.Console_Exec(self,text,...)
-			end
+		-- no need to replace any funcs if ConsoleRules is a global
+		if ConsoleRules then
+			ConsoleRules = console_rules
 		else
-
-			local AddConsoleLog = AddConsoleLog
-			local ConsolePrint = ConsolePrint
-			local ConsoleExec = ConsoleExec
-
-			-- skip is used for ECM Scripts
-			function Console:Exec(text,skip)
-				if not skip then
-					self:AddHistory(text)
-					AddConsoleLog("> ", true)
-					AddConsoleLog(text, false)
-				end
-				-- i like my rules kthxbai
-				local err = ConsoleExec(text, console_rules)
-				if err then
-					ConsolePrint(err)
-				end
-			end
-
-			-- and now the console has a blacklist :), though i am a little suprised they left it unfettered this long, been using it as a workaround for months
-			if rawget(_G,"g_ConsoleFENV") then
-				local WaitMsg = WaitMsg
-				local rawget,rawset = rawget,rawset
-				CreateRealTimeThread(function()
-					if not g_ConsoleFENV then
-						WaitMsg("Autorun")
-					end
-					while not g_ConsoleFENV do
-						WaitMsg("OnRender")
-					end
-
-					local run = rawget(g_ConsoleFENV,"__run")
-					g_ConsoleFENV = {__run = run}
-					setmetatable(g_ConsoleFENV, {
-						__index = function(_, key)
-							return rawget(_G, key)
-						end,
-						__newindex = function(_, key, value)
-							rawset(_G, key, value)
+			if blacklist then
+				local function load_match(text, rules)
+					for i = 1, #rules do
+						local rule = rules[i]
+						local capture1, capture2, capture3 = text:match(rule[1])
+						if capture1 then
+							return rule[2]:format(capture1, capture2, capture3)
 						end
-					})
-				end)
+					end
+				end
+
+				function Console:Exec(text,...)
+					text = load_match(text, console_rules)
+					ChoGGi_OrigFuncs.Console_Exec(self,text,...)
+				end
+
+			else
+
+				local AddConsoleLog = AddConsoleLog
+				local ConsolePrint = ConsolePrint
+				local ConsoleExec = ConsoleExec
+
+				-- skip is used for ECM Scripts
+				function Console:Exec(text,skip)
+					if not skip then
+						self:AddHistory(text)
+						AddConsoleLog("> ", true)
+						AddConsoleLog(text, false)
+					end
+					-- i like my rules kthxbai
+					local err = ConsoleExec(text, console_rules)
+					if err then
+						ConsolePrint(err)
+					end
+				end
 			end
 
+		end -- rawget rules
+
+		if not blacklist then
+			-- and now the console has a blacklist :), though i am a little suprised they left it unfettered this long, been using it as a workaround for months
+			local WaitMsg = WaitMsg
+			local rawset = rawset
+			CreateRealTimeThread(function()
+				if not g_ConsoleFENV then
+					WaitMsg("Autorun")
+				end
+				while not g_ConsoleFENV do
+					WaitMsg("OnRender")
+				end
+
+				local run = rawget(g_ConsoleFENV,"__run")
+				g_ConsoleFENV = {__run = run}
+				setmetatable(g_ConsoleFENV, {
+					__index = function(_, key)
+						return rawget(_G, key)
+					end,
+					__newindex = function(_, key, value)
+						rawset(_G, key, value)
+					end
+				})
+			end)
 		end
+
 	end -- do
 
 end -- ClassesBuilt

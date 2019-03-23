@@ -6,7 +6,7 @@ function OnMsg.ClassesGenerate()
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
 
-	local str_ECM_Misc = "ECM.ECM.Misc"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Translate(1000207--[[Misc--]]),
 		ActionMenubar = "ECM.ECM",
@@ -18,7 +18,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000682--[[Change Entity--]]],
-		ActionMenubar = str_ECM_Misc,
+		ActionMenubar = "ECM.ECM.Misc",
 		ActionId = ".Change Entity",
 		ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
 		RolloverText = Strings[302535920000683--[[Changes the entity of selected object, all of same type or all of same type in selected object's dome.--]]],
@@ -27,7 +27,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000684--[[Change Entity Scale--]]],
-		ActionMenubar = str_ECM_Misc,
+		ActionMenubar = "ECM.ECM.Misc",
 		ActionId = ".Change Entity Scale",
 		ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 		RolloverText = function()
@@ -42,7 +42,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000686--[[Auto Unpin Objects--]]],
-		ActionMenubar = str_ECM_Misc,
+		ActionMenubar = "ECM.ECM.Misc",
 		ActionId = ".Auto Unpin Objects",
 		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
 		RolloverText = function()
@@ -59,7 +59,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000688--[[Clean All Objects--]]],
-		ActionMenubar = str_ECM_Misc,
+		ActionMenubar = "ECM.ECM.Misc",
 		ActionId = ".Clean All Objects",
 		ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 		RolloverText = Strings[302535920000689--[[Removes all dust from all objects.--]]],
@@ -68,7 +68,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000690--[[Fix All Objects--]]],
-		ActionMenubar = str_ECM_Misc,
+		ActionMenubar = "ECM.ECM.Misc",
 		ActionId = ".Fix All Objects",
 		ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 		RolloverText = Strings[302535920000691--[[Fixes all malfunctioned objects.--]]],
@@ -77,7 +77,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000700--[[Scanner Queue Larger--]]],
-		ActionMenubar = str_ECM_Misc,
+		ActionMenubar = "ECM.ECM.Misc",
 		ActionId = ".Scanner Queue Larger",
 		ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 		RolloverText = function()
@@ -91,7 +91,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000702--[[Game Speed--]]],
-		ActionMenubar = str_ECM_Misc,
+		ActionMenubar = "ECM.ECM.Misc",
 		ActionId = ".Game Speed",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionToTemplates.tga",
 		RolloverText = function()

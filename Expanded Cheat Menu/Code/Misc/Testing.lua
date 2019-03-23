@@ -149,7 +149,7 @@ function OnMsg.ClassesGenerate()
 		as.Options.HintsEnabled = false
 		as.CompletedTutorials = as.CompletedTutorials or {}
 		as.CompletedTutorials.Tutorial1 = true
-		as.Shortcuts["ECM.Debug.Delete Object(s).Delete Object(s)"] = {"Ctrl-Shift-D"}
+		as.Shortcuts["ECM.Debug.Delete Object(s)"] = {"Ctrl-Shift-D"}
 	end
 
 	function ChoGGi.testing.MissingStrings(string_limit)

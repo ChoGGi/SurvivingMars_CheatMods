@@ -3,11 +3,19 @@
 ## v13.3 (Unreleased)
 ### Added:
 - Console>Settings>Show Log When Console Active: Show console log text when console is active.
+- Menu>Cheats>Story Bits.
 
 ### Changed:
 - Beta compatibility.
 - Entity Spawner has a checkbox to activate any auto-attach entities.
 - Added some Beta cheats (they won't work if you aren't in the beta).
+- ECM tries to use ConsoleRules if it's a global table, otherwise does the usual.
+
+### Fixed:
+- Examine:
+- > Context menu: Switched from using periods to brackets for stuff with . and such in the key.
+- > Crash when examining objects using the "InvisibleObject" entity.
+- Find Value didn't work with strings containing %.
 
 ## v13.2 (Mar 17 2019)
 ### Added:

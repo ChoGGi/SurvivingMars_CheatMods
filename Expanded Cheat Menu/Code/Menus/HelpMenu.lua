@@ -71,7 +71,7 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "99.Report Bug",
 	}
 
-	local str_Help_ECM = "ECM.Help.Expanded Cheat Menu"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000000--[[Expanded Cheat Menu--]]],
 		ActionMenubar = "ECM.Help",
@@ -83,7 +83,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000672--[[About ECM--]]],
-		ActionMenubar = str_Help_ECM,
+		ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 		ActionId = ".About ECM",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
 		RolloverText = Strings[302535920000000--[[Expanded Cheat Menu--]]] .. " " .. Strings[302535920000673--[[info dialog.--]]],
@@ -93,7 +93,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000887--[[ECM--]]] .. " " .. Strings[302535920001020--[[Read me--]]],
-		ActionMenubar = str_Help_ECM,
+		ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 		ActionId = ".ECM Read me",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
 		RolloverText = Strings[302535920001025--[[Help! I'm with stupid!--]]],
@@ -104,7 +104,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001029--[[Changelog--]]],
-		ActionMenubar = str_Help_ECM,
+		ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 		ActionId = ".Changelog",
 		ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
 		RolloverText = Translate(4915--[[Good News, Everyone!"--]]),
@@ -115,7 +115,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000321--[[Enable Tooltips--]]],
-		ActionMenubar = str_Help_ECM,
+		ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 		ActionId = ".Toggle ToolTips",
 		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
 		RolloverText = function()
@@ -129,7 +129,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001481--[[Show Startup Ticks--]]],
-		ActionMenubar = str_Help_ECM,
+		ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 		ActionId = ".Show Startup Ticks",
 		ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 		RolloverText = function()
@@ -143,7 +143,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Translate(251103844022--[[Disable--]]) .. " " .. Strings[302535920000887--[[ECM--]]],
-		ActionMenubar = str_Help_ECM,
+		ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 		ActionId = ".Disable ECM",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 		RolloverText = Strings[302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in settings file, or check key bindings for Disable ECM."--]]],
@@ -152,7 +152,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000676--[[Reset ECM Settings--]]],
-		ActionMenubar = str_Help_ECM,
+		ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 		ActionId = ".Reset ECM Settings",
 		ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 		RolloverText = Strings[302535920000677--[[Reset all ECM settings to default (restart to enable).--]]],
@@ -162,7 +162,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001242--[[Edit ECM Settings--]]],
-		ActionMenubar = str_Help_ECM,
+		ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 		ActionId = ".Edit ECM Settings",
 		ActionIcon = "CommonAssets/UI/Menu/UIDesigner.tga",
 		RolloverText = Strings[302535920001243--[[Manually edit ECM settings.--]]],
@@ -170,7 +170,7 @@ function OnMsg.ClassesGenerate()
 		ActionSortKey = "99",
 	}
 
-	local str_Help_Tutorial = "ECM.Help.Modding Tutorial"
+	-- menu
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920000323--[[Modding--]]] .. " " .. Translate(8982--[[Tutorial--]]),
 		ActionMenubar = "ECM.Help",
@@ -182,7 +182,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = "*" .. Translate(126095410863--[[Info--]]) .. "*",
-		ActionMenubar = str_Help_Tutorial,
+		ActionMenubar = "ECM.Help.Modding Tutorial",
 		ActionId = ".*Info*",
 		ActionIcon = "CommonAssets/UI/Menu/help.tga",
 		RolloverText = Strings[302535920001028--[[Have a Tutorial, or general info you'd like to add?--]]] .. " : " .. ChoGGi.email,
@@ -192,7 +192,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = "*" .. Translate(283142739680--[[Game--]]) .. " & " .. Strings[302535920001355--[[Map--]]] .. " " .. Translate(126095410863--[[Info--]]) .. "*",
-		ActionMenubar = str_Help_Tutorial,
+		ActionMenubar = "ECM.Help.Modding Tutorial",
 		ActionId = ".*Game & Map Info*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 		RolloverText = Strings[302535920001282--[[Information about this saved game (mostly objects).--]]],
@@ -202,7 +202,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = "*" .. Translate(5568--[[Stats--]]) .. "*",
-		ActionMenubar = str_Help_Tutorial,
+		ActionMenubar = "ECM.Help.Modding Tutorial",
 		ActionId = ".*Stats*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 		RolloverText = Strings[302535920001281--[[Information about your computer (as seen by SM).--]]],
@@ -214,7 +214,7 @@ function OnMsg.ClassesGenerate()
 
 	c = c + 1
 	Actions[c] = {ActionName = "*" .. Strings[302535920000875--[[Game Functions--]]] .. "*",
-		ActionMenubar = str_Help_Tutorial,
+		ActionMenubar = "ECM.Help.Modding Tutorial",
 		ActionId = ".*Game Functions*",
 		ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 		RolloverText = Strings[302535920001285--[[Opens in webbrowser--]]],
@@ -249,7 +249,7 @@ function OnMsg.ClassesGenerate()
 		local name = tutorial_table[i]
 		c = c + 1
 		Actions[c] = {ActionName = name,
-			ActionMenubar = str_Help_Tutorial,
+			ActionMenubar = "ECM.Help.Modding Tutorial",
 			ActionId = "." .. name,
 			ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
 			RolloverText = Strings[302535920001285--[[Opens in webbrowser--]]],

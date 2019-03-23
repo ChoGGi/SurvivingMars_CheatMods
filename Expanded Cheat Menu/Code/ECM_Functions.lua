@@ -1114,11 +1114,8 @@ function OnMsg.ClassesGenerate()
 	end
 
 	function ChoGGi.ComFuncs.ToggleConsole(show)
-		local dlgConsole = dlgConsole
-		if dlgConsole then
-			ShowConsole(show or not dlgConsole:GetVisible())
-			dlgConsole.idEdit:SetFocus()
-		end
+		ShowConsole(show or not dlgConsole:GetVisible())
+		dlgConsole.idEdit:SetFocus()
 	end
 
 	-- toggle visiblity of console log
@@ -1782,7 +1779,7 @@ Some of the file names are guesses. This also doesn't include any surf/surf_hash
 			for si = 1, #states do
 				local state_str = states[si]
 				local state = GetStateIdx(state_str)
-				local num_lods = GetStateLODCount(entity, 0) or 0
+				local num_lods = GetStateLODCount(entity, state) or 0
 				for li = 1, num_lods do
 					local mat_name = GetStateMaterial(entity,state,li - 1)
 					local mat = GetMaterialProperties(mat_name,0)
