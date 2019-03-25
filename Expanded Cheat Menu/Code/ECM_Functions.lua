@@ -1555,32 +1555,34 @@ Some of the file names are guesses. This also doesn't include any surf/surf_hash
 			local clear = "Clear" .. func_name
 			local us = ChoGGi.UserSettings
 
-			for i = 1, #flags do
-				local f = flags[i]
+			for _,f in pairs(flags) do
 				local mask = const[f]
-				local flagged = obj[get](obj,mask) == mask
-				if func_name == "ClassFlags" then
-					flags_table[f .. " (" .. mask .. ")"] = flagged
-				else
-					flags_table[f .. " (" .. mask .. ")"] = {
-						ChoGGi_AddHyperLink = true,
-						hint = Strings[302535920001069--[[Toggle Boolean--]]],
-						name = tostring(flagged),
-						colour = flagged and us.ExamineColourBool or us.ExamineColourBoolFalse,
-						func = function(ex_dlg,_,list_obj)
-							-- if flag is true
-							if obj[get](obj,mask) == mask then
-								obj[clear](obj,mask)
-								list_obj.name = "false"
-								list_obj.colour = us.ExamineColourBoolFalse
-							else
-								obj[set](obj,mask)
-								list_obj.name = "true"
-								list_obj.colour = us.ExamineColourBool
-							end
-							ex_dlg:RefreshExamine()
-						end,
-					}
+				-- grumble efAlive grumble
+				if mask then
+					local flagged = obj[get](obj,mask) == mask
+					if func_name == "ClassFlags" then
+						flags_table[f .. " (" .. mask .. ")"] = flagged
+					else
+						flags_table[f .. " (" .. mask .. ")"] = {
+							ChoGGi_AddHyperLink = true,
+							hint = Strings[302535920001069--[[Toggle Boolean--]]],
+							name = tostring(flagged),
+							colour = flagged and us.ExamineColourBool or us.ExamineColourBoolFalse,
+							func = function(ex_dlg,_,list_obj)
+								-- if flag is true
+								if obj[get](obj,mask) == mask then
+									obj[clear](obj,mask)
+									list_obj.name = "false"
+									list_obj.colour = us.ExamineColourBoolFalse
+								else
+									obj[set](obj,mask)
+									list_obj.name = "true"
+									list_obj.colour = us.ExamineColourBool
+								end
+								ex_dlg:RefreshExamine()
+							end,
+						}
+					end
 				end
 			end
 		end
@@ -1617,10 +1619,11 @@ Some of the file names are guesses. This also doesn't include any surf/surf_hash
 
 			flags_table = {}
 
-			local Flags = Flags
-			CheckFlags(Flags.Enum,obj,"EnumFlags")
-			CheckFlags(Flags.Game,obj,"GameFlags")
-			CheckFlags(Flags.Class,obj,"ClassFlags")
+			local FlagsByBits = FlagsByBits
+			CheckFlags(FlagsByBits.Enum,obj,"EnumFlags")
+			CheckFlags(FlagsByBits.Game,obj,"GameFlags")
+			CheckFlags(FlagsByBits.Class,obj,"ClassFlags")
+--~ 			CheckFlags(FlagsByBits.Component,obj,"ClassFlags")
 
 			if parent_or_ret == true then
 				return flags_table

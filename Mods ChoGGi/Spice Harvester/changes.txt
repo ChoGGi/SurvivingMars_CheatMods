@@ -1,3 +1,6 @@
+v0.9
+Compatibility with Patriot Missile Defense System.
+
 v0.8
 Fixed a bug from last update.
 Shuttles now randomly attack "worms" (suspicious looking rocks).
