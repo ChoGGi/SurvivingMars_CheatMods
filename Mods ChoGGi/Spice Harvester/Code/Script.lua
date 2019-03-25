@@ -29,6 +29,8 @@ local IsValid = IsValid
 local PlaySound = PlaySound
 local StopSound = StopSound
 local GetSoundDuration = GetSoundDuration
+local Sleep = Sleep
+local g_CObjectFuncs = g_CObjectFuncs
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
@@ -69,6 +71,10 @@ local terrain_type_idx = table.find(TerrainTextures, "name", "Sand_01")
 local SetTypeCircle = terrain.SetTypeCircle
 
 function Melanger:GameInit()
+	local city = self.city or UICity
+	city:RemoveFromLabel("HostileAttackRovers", self)
+	city:AddToLabel("Rover", self)
+
 	self.shuttles = {}
 
 	self:ChangeEntity("PumpStationDemo")
@@ -102,7 +108,6 @@ function Melanger:GameInit()
 
 	-- needs a slight delay for the shuttlehub to do it's thing
 	self.move_thread = CreateGameTimeThread(function()
-		local Sleep = Sleep
 		for _ = 1, shuttle_amount do
 			Sleep(Random(1000,2500))
 			self.hub.shuttle_infos[#self.hub.shuttle_infos + 1] = ShuttleInfo:new{hub = self.hub}
@@ -134,7 +139,6 @@ function Melanger:GameInit()
 
 	-- a slimy trail of sand
 	self.slime_thread = CreateGameTimeThread(function()
-		local Sleep = Sleep
 		while self.slime_thread do
 			SetTypeCircle(self:GetVisualPos(), 900, terrain_type_idx)
 			Sleep(Random(2000,4000))
@@ -144,7 +148,6 @@ function Melanger:GameInit()
 end
 
 -- added in DA update?
-local Sleep = Sleep
 function Melanger:MoveSleep(time)
 	Sleep(time)
 end
@@ -160,14 +163,13 @@ function Melanger:Done()
 end
 --iddqd
 function Melanger:Repair()
+	Sleep(1000)
 	self.battery_current = self.battery_max
-	local city = self.city or UICity
 	self:DisconnectFromCommandCenters()
 	self.current_health = self.max_health
 	self.malfunction_idle_state = nil
 	self:SetState("idle")
 	self.is_repair_request_initialized = false
-	city:AddToLabel("HostileAttackRovers", self)
 	--hacky cmd exit
 	self.command = "" -- so we get around setcmd malf block
 	self:SetCommand("Roam")
@@ -176,12 +178,33 @@ function Melanger:Repair()
 end
 Melanger.Malfunction = Melanger.Repair
 Melanger.Dead = Melanger.Repair
-Melanger.NoBattery = Melanger.Repair
+--~ Melanger.NoBattery = Melanger.Repair
 function Melanger:IsDead()
 	return false
 end
 function Melanger:IsMalfunctioned()
 	return false
+end
+
+function Melanger:CreateSelectionArrow()
+	if not IsValid(self) or not IsKindOf(self, "Unit") then
+		return
+	end
+
+	self.selection_dir_arrow = PlaceParticles("Selection_Direction_Rover")
+	self.selection_dir_arrow:SetGameFlags(const.gofLockedOrientation)
+	self:Attach(self.selection_dir_arrow)
+--~ 	self.selection_dir_arrow:SetScale(MulDivRound(self.direction_arrow_scale, self.selection_scale_uniform, 100))
+	self.selection_dir_arrow:SetScale(130)
+
+	self:UpdateSelectionArrow()
+
+	CreateRealTimeThread(function(obj, arrow)
+		while SelectedObj == self and IsValid(self.selection_dir_arrow) do
+			self:UpdateSelectionArrow()
+			Sleep(50)
+		end
+	end, self)
 end
 
 function OnMsg.ClassesPostprocess()
@@ -206,6 +229,24 @@ end --ClassesPostprocess
 function OnMsg.ClassesBuilt()
 	local ChoGGi = ChoGGi
 
+	local orig_Attach = Melanger.Attach
+	function Melanger:Attach(obj, ...)
+		local ret = orig_Attach(self, obj, ...)
+
+		if self.city then
+			local valid = IsValid(obj)
+			if not valid or valid and obj.class ~= "ParSystem" then
+				return ret
+			end
+
+			if obj:GetParticlesName() == "Selection_Rover" then
+				obj:SetScale(130)
+			end
+		end
+
+		return ret
+	end
+
 	local XTemplates = XTemplates
 	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1],"Melanger_Destroy")
 	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1],"SolariaTelepresence_Melanger_Section")
@@ -224,8 +265,6 @@ function OnMsg.ClassesBuilt()
 			---
 			local function CallBackFunc(answer)
 				if answer then
-					local Sleep = Sleep
-					local Random = Random
 					CreateGameTimeThread(function()
 						PlayFX("GroundExplosion", "start", context.fake_obj)
 						PlaySound("Mystery Bombardment ExplodeTarget", "ObjectOneshot", nil, 0, false, context.fake_obj, 1000)

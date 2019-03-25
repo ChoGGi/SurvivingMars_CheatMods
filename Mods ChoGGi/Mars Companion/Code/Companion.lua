@@ -99,21 +99,6 @@ function MarsCompanion:GoHome()
 	self:delete()
 end
 
-function MarsCompanion:Attach(obj, spot, ...)
-	CargoShuttle.Attach(self, obj, spot, ...)
-
-	local valid = IsValid(obj)
-	if not valid or valid and obj.class ~= "ParSystem" then
-		return
-	end
-
-	local name = obj:GetParticlesName()
-	if name == "Shuttle_Trail" then
-		obj:SetColorModifier(-7096460)
-	elseif name == "Shuttle_Trail_Ignition" or name == "Shuttle_Sides_Ignition" then
-		obj:SetColorModifier(-16711858)
-	end
-end
 
 -- if it idles it'll go home, so we return my command till we remove thread
 function MarsCompanion:Idle()
@@ -239,6 +224,26 @@ function MarsCompanion:BoredFriend()
 		self:GotoPos(new_pos)
 		drone:Detach()
 
+	end
+
+end
+
+function OnMsg.ClassesBuilt()
+	local orig_Attach = MarsCompanion.Attach
+	function MarsCompanion:Attach(obj, ...)
+		orig_Attach(self, obj, ...)
+
+		local valid = IsValid(obj)
+		if not valid or valid and obj.class ~= "ParSystem" then
+			return
+		end
+
+		local name = obj:GetParticlesName()
+		if name == "Shuttle_Trail" then
+			obj:SetColorModifier(-7096460)
+		elseif name == "Shuttle_Trail_Ignition" or name == "Shuttle_Sides_Ignition" then
+			obj:SetColorModifier(-16711858)
+		end
 	end
 
 end
