@@ -1438,15 +1438,18 @@ end]]
 					WaitMsg("OnRender")
 				end
 
+				local original_G = _G
 				local run = rawget(g_ConsoleFENV,"__run")
 				g_ConsoleFENV = {__run = run}
 				setmetatable(g_ConsoleFENV, {
 					__index = function(_, key)
-						return rawget(_G, key)
+--~ 						return rawget(original_G, key)
+						return original_G[key]
 					end,
 					__newindex = function(_, key, value)
-						rawset(_G, key, value)
-					end
+						rawset(original_G, key, value)
+--~ 						original_G[key] = value
+					end,
 				})
 			end)
 		end

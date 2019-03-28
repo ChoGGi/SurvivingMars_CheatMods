@@ -40,12 +40,6 @@ local XCreateRolloverWindow = XCreateRolloverWindow
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 
 local debug_getinfo,debug_getupvalue,debug_getlocal
-local debug = rawget(_G,"debug")
-if debug then
-	debug_getupvalue = debug.getupvalue
-	debug_getinfo = debug.getinfo
-	debug_getlocal = debug.getlocal
-end
 
 local HLEnd = "</h></color>"
 
@@ -74,6 +68,13 @@ function OnMsg.ClassesGenerate()
 	Strings = ChoGGi.Strings
 	blacklist = ChoGGi.blacklist
 	testing = ChoGGi.testing
+
+	local debug = blacklist and false or debug
+	if debug then
+		debug_getupvalue = debug.getupvalue
+		debug_getinfo = debug.getinfo
+		debug_getlocal = debug.getlocal
+	end
 end
 
 local function GetRootDialog(dlg)

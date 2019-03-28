@@ -699,7 +699,7 @@ This report will go to the %s developers not me."--]]]:format(Translate(1079--[[
 			for id,mod in pairs(Mods) do
 				local image = ""
 				-- env_old is from my helpermod
-				local path = mod.env and mod.env.CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
+				local path = mod.env.CurrentModPath or mod.content_path or mod.path
 				if mod.image ~= "" and not path:find(" ") then
 					-- i don't know how to find rtl, so we'll reverse and find it that way.
 					local slash = mod.image:reverse():find("/")

@@ -33,7 +33,10 @@ function OnMsg.ClassesGenerate()
 
 	local ChoGGi = ChoGGi
 	local mod = Mods[ChoGGi.id]
-	local blacklist = mod.env
+	local blacklist = false
+	if not mod.no_blacklist then
+		blacklist = true
+	end
 
 	-- I should really split ChoGGi into funcs and settings... one of these days
 
@@ -41,7 +44,7 @@ function OnMsg.ClassesGenerate()
 	-- is ECM shanghaied by the blacklist?
 	ChoGGi.blacklist = blacklist
 	-- path to this mods' folder
-	ChoGGi.mod_path = blacklist and CurrentModPath or mod.env_old and mod.env_old.CurrentModPath or mod.content_path or mod.path
+	ChoGGi.mod_path = CurrentModPath or mod.content_path or mod.path
 	-- Console>Scripts folder
 	ChoGGi.scripts = "AppData/ECM Scripts"
 	-- you can pry my settings FILE from my cold dead (and not modding SM anymore) hands.
@@ -50,7 +53,7 @@ function OnMsg.ClassesGenerate()
 	if blacklist then
 		ChoGGi.ComFuncs.FileExists = empty_func
 	else
-		-- used for certain funcs in lib comfuncs
+		-- used for certain funcs in lib mod
 		ChoGGi.Temp._G = _G
 
 		local AsyncGetFileAttribute = AsyncGetFileAttribute
