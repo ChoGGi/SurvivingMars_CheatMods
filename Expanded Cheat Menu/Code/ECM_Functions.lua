@@ -14,13 +14,6 @@ local IsKindOf = IsKindOf
 local IsValidEntity = IsValidEntity
 
 local debug_getinfo,debug_getlocal,debug_getupvalue,debug_gethook
-local debug = rawget(_G,"debug")
-if debug then
-	debug_getinfo = debug.getinfo
-	debug_getlocal = debug.getlocal
-	debug_getupvalue = debug.getupvalue
-	debug_gethook = debug.gethook
-end
 
 function OnMsg.ClassesGenerate()
 	local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -31,6 +24,14 @@ function OnMsg.ClassesGenerate()
 	local Strings = ChoGGi.Strings
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
+
+	local debug = blacklist and false or debug
+	if debug then
+		debug_getinfo = debug.getinfo
+		debug_getlocal = debug.getlocal
+		debug_getupvalue = debug.getupvalue
+		debug_gethook = debug.gethook
+	end
 
 	local function PlacePolyline(points, colours)
 		local line = ChoGGi_OPolyline:new{

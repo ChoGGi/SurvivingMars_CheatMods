@@ -20,12 +20,15 @@ function GedSocket:Init()
 	self.bound_objects = {}
 end
 function GedSocket:Done()
-	if self.app then
-		self.app:Close()
-		if not self.app.in_game then
-			os.exit(1)
-		end
-	end
+  if self.app and self.app.window_state == "open" then
+    self.app:Close()
+    if not self.app.in_game then
+      quit()
+    end
+  end
+end
+function GedSocket:OnDisconnect(reason)
+  self:Done()
 end
 function GedSocket:rpcGedQuit()
 	self:delete()
@@ -65,7 +68,7 @@ function GedSocket:rpcObjValue(name, svalue)
 	end
 	self.bound_objects[name] = obj
 	local obj_name, view = name:match("(.+)|(.+)")
-	XObjUpdate(obj_name or name, view)
+  XContextUpdate(obj_name or name, view)
 end
 function GedSocket:rpcOpenApp(template_or_class, context)
 	context = context or {}
