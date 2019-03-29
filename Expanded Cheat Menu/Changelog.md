@@ -12,10 +12,11 @@
 - ECM tries to use ConsoleRules if it's a global table, otherwise does the usual.
 
 ### Fixed:
+- ECM was breaking saving functions in the mod editor.
+- Find Value didn't work with strings containing %.
 - Examine:
 - > Context menu: Switched from using periods to brackets for stuff with . and such in the key.
 - > Crash when examining objects using the "InvisibleObject" entity.
-- Find Value didn't work with strings containing %.
 
 ## v13.2 (Mar 17 2019)
 ### Added:

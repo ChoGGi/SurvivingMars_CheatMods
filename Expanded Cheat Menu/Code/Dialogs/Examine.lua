@@ -521,10 +521,8 @@ function Examine:idTextOnHyperLinkRollover(link)
 		if RolloverWin then
 			XDestroyRolloverWindow()
 		end
-		SetUIMouseCursor(const.DefaultMouseCursor)
 		return
 	end
-  SetUIMouseCursor("CommonAssets/UI/HandCursor.tga")
 
 
 	link = tonumber(link)
