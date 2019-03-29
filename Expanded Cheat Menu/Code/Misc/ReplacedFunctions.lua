@@ -124,7 +124,9 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- used by a func in examine for examining functions (i think), i know something gives an error without this
-		GetFuncSourceString = DebugGetInfo
+		if not Platform.ged then
+			GetFuncSourceString = DebugGetInfo
+		end
 
 		function TGetID(t,...)
 			local t_type = type(t)
@@ -999,7 +1001,7 @@ function OnMsg.ClassesBuilt()
 				title.RolloverTemplate = "Rollover"
 				title.RolloverTitle = Strings[302535920001367--[[Toggles--]]]
 				title.RolloverText = Strings[302535920001410--[[Toggle Visibility--]]]
-				title.RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]]
+				title.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
 
 				local toggle = UserSettings.InfopanelMainButVis
 				local toolbar = main_buts[2]
@@ -1051,7 +1053,7 @@ function OnMsg.ClassesBuilt()
 				section.idIcon.FXMouseIn = "ActionButtonHover"
 				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
 				section.RolloverText = Strings[302535920001410--[[Toggle Visibility--]]]
-				section.RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]]
+				section.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
 
 				local toggle = UserSettings.InfopanelCheatsVis
 				local toolbar = SetToolbar(section,"XToolBar",toggle)

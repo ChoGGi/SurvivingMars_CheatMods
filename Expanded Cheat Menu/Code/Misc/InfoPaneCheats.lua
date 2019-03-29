@@ -7,7 +7,7 @@ local CreateRealTimeThread = CreateRealTimeThread
 
 local RetName
 local Random
-local Trans
+local Translate
 local MsgPopup
 local Strings
 local ResourceScale
@@ -16,7 +16,7 @@ function OnMsg.ClassesGenerate()
 	local ComFuncs = ChoGGi.ComFuncs
 	RetName = ComFuncs.RetName
 	Random = ComFuncs.Random
-	Trans = ComFuncs.Translate
+	Translate = ComFuncs.Translate
 	MsgPopup = ComFuncs.MsgPopup
 	Strings = ChoGGi.Strings
 	ResourceScale = ChoGGi.Consts.ResourceScale
@@ -55,7 +55,7 @@ function OnMsg.ClassesGenerate()
 		-- name has to be set to make the hint show up
 		action.ActionName = action.ActionId
 		action.RolloverText = hint
-		action.RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]]
+		action.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
 	end
 	local function SetIcon(action,name,icon)
 		-- we're changing the name so we'll set the hint title to the orig name
@@ -65,12 +65,12 @@ function OnMsg.ClassesGenerate()
 	end
 
 	local function SetUpgradeInfo(action,obj,num)
-		local tempname = Trans(obj["upgrade" .. num .. "_display_name"])
+		local tempname = Translate(obj["upgrade" .. num .. "_display_name"])
 		-- if there's an upgrade then add hint text, otherwise blank the id to hide it
 		if tempname ~= "" then
 			SetHint(action,Strings[302535920001207--[["Add: %s to this building.
 
-%s"--]]]:format(tempname,Trans(T(obj["upgrade" .. num .. "_description"],obj))))
+%s"--]]]:format(tempname,Translate(T(obj["upgrade" .. num .. "_description"],obj))))
 			SetIcon(action,num,obj["upgrade" .. num .. "_icon"])
 		else
 			action.ActionId = ""
@@ -82,42 +82,42 @@ function OnMsg.ClassesGenerate()
 	local grid_lookup = {
 		OxygenFree = {
 			icon = "UI/Icons/res_oxygen.tga",
-			name = Trans(682--[[Oxygen--]]),
-			text1 = Trans(4325--[[Free--]]),
+			name = Translate(682--[[Oxygen--]]),
+			text1 = Translate(4325--[[Free--]]),
 			text2 = Strings[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
 			con = "air_consumption",
 		},
 		OxygenNeed = {
 			icon = "UI/Icons/res_oxygen.tga",
-			name = Trans(682--[[Oxygen--]]),
+			name = Translate(682--[[Oxygen--]]),
 			text1 = Strings[302535920000162--[[Need--]]],
 			text2 = Strings[302535920001221--[[Change this %s so it needs a %s source.--]]],
 			con = "air_consumption",
 		},
 		WaterFree = {
 			icon = "UI/Icons/res_water.tga",
-			name = Trans(681--[[Water--]]),
-			text1 = Trans(4325--[[Free--]]),
+			name = Translate(681--[[Water--]]),
+			text1 = Translate(4325--[[Free--]]),
 			text2 = Strings[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
 			con = "water_consumption",
 		},
 		WaterNeed = {
 			icon = "UI/Icons/res_water.tga",
-			name = Trans(681--[[Water--]]),
+			name = Translate(681--[[Water--]]),
 			text1 = Strings[302535920000162--[[Need--]]],
 			text2 = Strings[302535920001221--[[Change this %s so it needs a %s source.--]]],
 			con = "water_consumption",
 		},
 		PowerFree = {
 			icon = "UI/Icons/res_electricity.tga",
-			name = Trans(11683--[[Electricity--]]),
-			text1 = Trans(4325--[[Free--]]),
+			name = Translate(11683--[[Electricity--]]),
+			text1 = Translate(4325--[[Free--]]),
 			text2 = Strings[302535920001220--[[Change this %s so it doesn't need a %s source.--]]],
 			con = "electricity_consumption",
 		},
 		PowerNeed = {
 			icon = "UI/Icons/res_electricity.tga",
-			name = Trans(11683--[[Electricity--]]),
+			name = Translate(11683--[[Electricity--]]),
 			text1 = Strings[302535920000162--[[Need--]]],
 			text2 = Strings[302535920001221--[[Change this %s so it needs a %s source.--]]],
 			con = "electricity_consumption",
@@ -204,7 +204,7 @@ function OnMsg.ClassesGenerate()
 			des = Strings[302535920001216--[[Double the battery capacity.--]]],
 		},
 		Scan = {
-			des = Trans(979029137252--[[Scanned an Anomaly--]]),
+			des = Translate(979029137252--[[Scanned an Anomaly--]]),
 			icon = "UI/Icons/pin_scan.tga",
 		},
 -- Rocket
@@ -218,7 +218,7 @@ function OnMsg.ClassesGenerate()
 			name = "CleanAndFix",
 		},
 		Launch = {
-			des = Trans(6779--[[Warning--]]) .. ": " .. Strings[302535920001233--[[Launches rocket without asking.--]]],
+			des = Translate(6779--[[Warning--]]) .. ": " .. Strings[302535920001233--[[Launches rocket without asking.--]]],
 			icon = "UI/Icons/ColonyControlCenter/rocket_r.tga",
 		},
 
@@ -354,7 +354,7 @@ function OnMsg.ClassesGenerate()
 				if obj.destroyed or obj.is_malfunctioned then
 					action.ActionId = ""
 				else
-					SetHint(action,Trans(8039--[[Trait: Idiot (can cause a malfunction)--]]) .. "...\n" .. Trans(53--[[Malfunction--]]) .. "?")
+					SetHint(action,Translate(8039--[[Trait: Idiot (can cause a malfunction)--]]) .. "...\n" .. Translate(53--[[Malfunction--]]) .. "?")
 				end
 
 			elseif aid == "Unfreeze" then
@@ -379,15 +379,15 @@ If this isn't a dumping site then waste rock will not be emptied.--]]])
 
 			elseif aid == "Break" then
 				if obj:IsKindOf("ElectricityGridElement") then
-					SetHint(action,Trans(3890--[[Cable Fault--]]))
+					SetHint(action,Translate(3890--[[Cable Fault--]]))
 				else
-					SetHint(action,Trans(3891--[[Pipe Leak--]]))
+					SetHint(action,Translate(3891--[[Pipe Leak--]]))
 				end
 			elseif aid == "Repair" then
 				if obj:IsKindOf("ElectricityGridElement") then
-					SetHint(action,Trans(6924--[[Repair--]]) .. " " .. Trans(3890--[[Cable Fault--]]))
+					SetHint(action,Translate(6924--[[Repair--]]) .. " " .. Translate(3890--[[Cable Fault--]]))
 				else
-					SetHint(action,Trans(6924--[[Repair--]]) .. " " .. Trans(3891--[[Pipe Leak--]]))
+					SetHint(action,Translate(6924--[[Repair--]]) .. " " .. Translate(3891--[[Pipe Leak--]]))
 				end
 
 			end -- ifs
@@ -470,13 +470,13 @@ function Colonist:CheatRandomAge()
 end
 function Colonist:CheatDie()
 	ChoGGi.ComFuncs.QuestionBox(
-		Trans(6779--[[Warning--]]) .. "!\n" .. Strings[302535920001430--[[Kill colonist-]]] .. "?",
+		Translate(6779--[[Warning--]]) .. "!\n" .. Strings[302535920001430--[[Kill colonist-]]] .. "?",
 		function(answer)
 			if answer then
 				self:SetCommand("Die")
 			end
 		end,
-		Trans(6779--[[Warning--]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!--]]]
+		Translate(6779--[[Warning--]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!--]]]
 	)
 end
 -- CheatAllShifts

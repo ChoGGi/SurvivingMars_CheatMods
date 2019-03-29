@@ -30,9 +30,9 @@ function OnMsg.ClassesGenerate()
 
 	-- be too annoying to add templates to all of these manually
 	XMenuEntry.RolloverTemplate = "Rollover"
-	XMenuEntry.RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]]
+	XMenuEntry.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
 	XListItem.RolloverTemplate = "Rollover"
-	XListItem.RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]]
+	XListItem.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
 
 	-- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I could remove this?)
 	XRolloverWindow.ZOrder = max_int
@@ -48,9 +48,9 @@ function OnMsg.ClassesGenerate()
 	-- make cheats menu look like older one (more gray, less white)
 	local dark_gray = -9868951
 	XMenuBar.Background = dark_gray
-	XMenuBar.RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]]
+	XMenuBar.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
 	XPopupMenu.Background = dark_gray
-	XPopupMenu.RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]]
+	XPopupMenu.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
 	-- it sometimes does a jarring white background
 	XPopupMenu.DisabledBackground = dark_gray
 	-- darker gray
@@ -212,7 +212,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
 					"RolloverTitle", Strings[302535920000682--[[Change Entity--]]],
-					"RolloverHint", Strings[302535920000083--[[<left_click> Activate--]]],
+					"RolloverHint", Translate(608042494285--[[<left_click> Activate--]]),
 					"ContextUpdateOnOpen", false,
 					"OnContextUpdate", function(self)
 						self:SetRolloverText(Strings[302535920001151--[[Set Entity For %s--]]]:format(RetName(self.context)))
@@ -231,7 +231,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 					"__template", "InfopanelButton",
 					"RolloverTitle", Translate(1000077--[[Rotate--]]),
 					"RolloverText", Translate(312752058553--[[Rotate Building Left--]]),
-					"RolloverHint", Strings[302535920000083--[[<left_click> Activate--]]],
+					"RolloverHint", Translate(608042494285--[[<left_click> Activate--]]),
 					"OnPress", function(self)
 						self.context:Rotate()
 						SelectionRemove(self.context)
@@ -243,7 +243,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
 					"RolloverTitle", Strings[302535920000457--[[Anim State Set--]]],
-					"RolloverHint", Strings[302535920000083--[[<left_click> Activate--]]],
+					"RolloverHint", Translate(608042494285--[[<left_click> Activate--]]),
 					"RolloverText", Strings[302535920000458--[[Make object dance on command.--]]],
 					"ContextUpdateOnOpen", false,
 					"OnPress", function(self)
@@ -255,7 +255,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
 					"RolloverTitle", Strings[302535920000129--[[Set--]]] .. " " .. Strings[302535920001184--[[Particles--]]],
-					"RolloverHint", Strings[302535920000083--[[<left_click> Activate--]]],
+					"RolloverHint", Translate(608042494285--[[<left_click> Activate--]]),
 					"RolloverText", Strings[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
 					"OnPress", function(self)
 						ChoGGi.ComFuncs.SetParticles(self.context)

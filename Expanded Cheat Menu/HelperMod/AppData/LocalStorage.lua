@@ -23,21 +23,20 @@ local function LuaModEnv(env)
   return env
 end
 
--- thread needed for WaitMsg
 CreateRealTimeThread(function()
 
-		-- build a list of ids from lua files in "Mod Ids"
-		local AsyncFileToString = AsyncFileToString
-		local mod_ids = {}
-		local err, files = AsyncListFiles("AppData/BinAssets/Mod Ids","*.lua")
-		if not err and #files > 0 then
-			for i = 1, #files do
-				local err,id = AsyncFileToString(files[i])
-				if not err then
-					mod_ids[id] = true
-				end
+	-- build a list of ids from lua files in "Mod Ids"
+	local AsyncFileToString = AsyncFileToString
+	local mod_ids = {}
+	local err, files = AsyncListFiles("AppData/BinAssets/Mod Ids","*.lua")
+	if not err and #files > 0 then
+		for i = 1, #files do
+			local err,id = AsyncFileToString(files[i])
+			if not err then
+				mod_ids[id] = true
 			end
 		end
+	end
 
 	-- needs an inf loop, so it fires whenever mod manager does it's thing.
 	while true do

@@ -689,7 +689,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		local button = cls:new({
 			RolloverTitle = item.hint_title and item.hint_title or item.obj and RetName(item.obj) or Translate(126095410863--[[Info--]]),
 			RolloverText = item.hint or "",
-			RolloverHint = item.hint_bottom or Strings[302535920000083--[[<left_click> Activate--]]],
+			RolloverHint = item.hint_bottom or Translate(608042494285--[[<left_click> Activate--]]),
 			Text = item.name,
 			Background = items.Background,
 			PressedBackground = items.PressedBackground,

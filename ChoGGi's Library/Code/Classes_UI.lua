@@ -144,7 +144,7 @@ DefineClass.ChoGGi_Buttons = {
 	__parents = {"XTextButton"},
 	TextStyle = "ChoGGi_Buttons",
 	RolloverTitle = Translate(126095410863--[[Info--]]),
-	RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
+	RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
 	RolloverTemplate = "Rollover",
 	RolloverBackground = rollover_blue,
 	Margins = box(4,4,4,4),
@@ -208,7 +208,7 @@ DefineClass.ChoGGi_ComboButton = {
 	Background = light_gray,
 	RolloverBackground = rollover_blue,
 	RolloverTitle = Translate(126095410863--[[Info--]]),
-	RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
+	RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
 	RolloverTemplate = "Rollover",
 	PressedBackground = medium_gray,
 	PressedTextColor = white,
@@ -238,7 +238,7 @@ DefineClass.ChoGGi_CheckButton = {
 	__parents = {"XCheckButton"},
 	TextStyle = "ChoGGi_CheckButton",
 	RolloverTitle = Translate(126095410863--[[Info--]]),
-	RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
+	RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
 	RolloverTemplate = "Rollover",
 	MinWidth = 60,
 	Text = Translate(6878--[[OK--]]),
@@ -448,9 +448,6 @@ function ChoGGi_Window:AddElements()
 	local g_Classes = g_Classes
 	local ChoGGi = ChoGGi
 
-	-- good as any place to call it (if i open a dialog with a different cursor this resets it)
-	SetUIMouseCursor(const.DefaultMouseCursor)
-
 	g_ChoGGiDlgs[self] = self.class
 
 	-- scale to UI (See OnMsgs.lua for UIScale)
@@ -531,9 +528,11 @@ function ChoGGi_Window:AddElements()
 			Dock = "left",
 			RolloverTitle = Strings[302535920000093--[[Go to Obj--]]],
 			RolloverText = Strings[302535920000094--[[View/select object on map.--]]],
-			RolloverHint = Strings[302535920000083--[[<left_click> Activate--]]],
+			RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
 			OnMouseButtonDown = self.idCaptionImageOnMouseButtonDown,
 			HandleMouse = true,
+			MaxWidth = 32 * UIScale,
+			MaxHeight = 32 * UIScale,
 		}, self.idTitleLeftSection)
 
 		self.idCaptionImage:SetImage(image)
