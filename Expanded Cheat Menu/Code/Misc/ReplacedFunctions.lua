@@ -1150,10 +1150,16 @@ function OnMsg.ClassesBuilt()
 			ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(self)
 			-- show log only if console log is enabled
 			if ChoGGi.UserSettings.ConsoleToggleHistory then
-				ShowConsoleLog(true)
+				if dlgConsoleLog then
+					dlgConsoleLog:SetVisible(true)
+				else
+					ShowConsoleLog(true)
+				end
 			end
 		elseif ChoGGi.UserSettings.ConsoleShowLogWhenActive then
-			ShowConsoleLog(false)
+			if dlgConsoleLog then
+				dlgConsoleLog:SetVisible(false)
+			end
 		end
 		-- move log up n down
 		ChoGGi.ComFuncs.UpdateConsoleMargins(show)
@@ -1386,7 +1392,7 @@ end]]
 		}
 
 		-- no need to replace any funcs if ConsoleRules is a global
-		if ConsoleRules then
+		if LuaRevision > 240905 and ConsoleRules then
 			ConsoleRules = console_rules
 		else
 			if blacklist then

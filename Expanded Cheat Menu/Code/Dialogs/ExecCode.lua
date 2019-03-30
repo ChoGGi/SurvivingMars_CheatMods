@@ -248,7 +248,6 @@ function ChoGGi_ExecCodeDlg:idOKOnPress()
 	self = GetRootDialog(self)
 	-- exec instead of also closing dialog
 	o = self.obj
---~ 	ShowConsoleLog(true)
 	-- use console to exec code so we can show results in it
 	dlgConsole:Exec(self.idEdit:GetText())
 end
