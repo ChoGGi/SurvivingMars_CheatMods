@@ -1466,7 +1466,7 @@ do -- LoadGame/CityStart
 		if UserSettings.FirstRun ~= false then
 			local function CallBackFunc(answer)
 				if answer then
-					ShowConsoleLog(false)
+					DestroyConsoleLog()
 				else
 					UserSettings.ConsoleToggleHistory = true
 					ShowConsoleLog(true)

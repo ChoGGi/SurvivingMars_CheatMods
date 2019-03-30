@@ -3409,17 +3409,21 @@ do -- UpdateConsoleMargins
 		end
 		if not dlgConsoleLog then
 			DestroyConsoleLog()
-			ShowConsoleLog()
+			dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
 		end
 
 		local e = IsEditorActive()
 		-- editor mode adds a toolbar to the bottom, so we go above it
-		dlgConsole:SetMargins(e and con_margin_editor or con_margin_norm)
+		if dlgConsole then
+			dlgConsole:SetMargins(e and con_margin_editor or con_margin_norm)
+		end
 		-- move log text above the buttons i added and make sure log text stays below the cheat menu
-		if console_vis then
-			dlgConsoleLog.idText:SetMargins(e and margin_vis_con_log or margin_vis)
-		else
-			dlgConsoleLog.idText:SetMargins(e and margin_vis_editor_log or margin_hidden)
+		if dlgConsoleLog then
+			if console_vis then
+				dlgConsoleLog.idText:SetMargins(e and margin_vis_con_log or margin_vis)
+			else
+				dlgConsoleLog.idText:SetMargins(e and margin_vis_editor_log or margin_hidden)
+			end
 		end
 	end
 end -- do
