@@ -124,7 +124,7 @@ function OnMsg.ClassesGenerate()
 		end
 
 		-- used by a func in examine for examining functions (i think), i know something gives an error without this
-		if not Platform.ged then
+		if not (Platform.ged or Platform.editor) then
 			GetFuncSourceString = DebugGetInfo
 		end
 
