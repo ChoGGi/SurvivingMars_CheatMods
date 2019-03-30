@@ -7,17 +7,19 @@ LocalStorage = settings
 -- any "mods" that need to be loaded before the game is loaded (skip logos, etc)
 dofolder_files("AppData/BinAssets/Code")
 
--- a less restrictive env
-local original_G = _G
+-- local some globals
+local setmetatable,pairs = setmetatable,pairs
+-- a less restrictive env (okay, not at all restrictive)
+local orig_G = _G
 local function LuaModEnv(env)
   env = env or {}
-  env._G = original_G
+  env._G = orig_G
 	setmetatable(env, {
 		__index = function(_, key)
-			return original_G[key]
+			return orig_G[key]
 		end,
 		__newindex = function(_, key, value)
-			original_G[key] = value
+			orig_G[key] = value
 		end,
 	})
   return env
@@ -26,10 +28,10 @@ end
 CreateRealTimeThread(function()
 
 	-- build a list of ids from lua files in "Mod Ids"
-	local AsyncFileToString = AsyncFileToString
 	local mod_ids = {}
 	local err, files = AsyncListFiles("AppData/BinAssets/Mod Ids","*.lua")
 	if not err and #files > 0 then
+		local AsyncFileToString = AsyncFileToString
 		for i = 1, #files do
 			local err,id = AsyncFileToString(files[i])
 			if not err then
@@ -44,22 +46,21 @@ CreateRealTimeThread(function()
 		WaitMsg("ModDefsLoaded")
 
 		-- remove blacklist for any mods in "Mod Ids"
-		local rev = LuaRevision
 		for _,mod in pairs(Mods) do
 			if mod_ids[mod.steam_id] then
-				mod.lua_revision = rev
 				-- just a little overreaching with that blacklist (yeah yeah, safety first and all that)
 				mod.no_blacklist = true
-				mod.env.Msg = nil
-				mod.env.getmetatable = nil
-				mod.env.os = nil
-				mod.env = LuaModEnv(mod.env)
+				local env = mod.env
+				for key in pairs(env) do
+					env[key] = orig_G[key]
+				end
+				mod.env = LuaModEnv(env)
 				-- add a warning to any mods without a blacklist, so user knows something is up
 --~ 				mod.title = mod.title .. " (BL)"
 				mod.title = mod.title .. " (Warning)"
 --~ 				mod.description = mod.description:gsub([[C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\Mods\]],"AppData/Mods/")
 				mod.description = [[Warning: The blacklist function has been removed for this mod!
-This means it has no limitations and can access your Steam name, Friends list, and any files on your computer.
+This means it has no limitations and can access your Steam name, Friends list, and run any files on your computer.
 
 ]] .. mod.description
 			end

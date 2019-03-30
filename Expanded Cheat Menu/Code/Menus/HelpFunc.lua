@@ -864,7 +864,7 @@ Change DisableECM to false in settings file to re-enable them."--]]] .. "\n\n" .
 
 	function ChoGGi.MenuFuncs.ReportBugDlg()
 		-- was in orig func, i guess there's never any bugs when modding :)
-		if Platform.ged then
+		if Platform.ged or Platform.editor then
 			return
 		end
 		CreateRealTimeThread(function()
