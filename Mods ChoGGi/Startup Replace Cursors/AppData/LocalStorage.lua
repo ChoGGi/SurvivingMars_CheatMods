@@ -8,7 +8,7 @@ LocalStorage = settings
 dofolder_files("AppData/BinAssets/Code")
 
 -- local some globals
-local setmetatable,pairs = setmetatable,pairs
+local setmetatable,pairs,rawget = setmetatable,pairs,rawget
 -- a less restrictive env (okay, not at all restrictive)
 local orig_G = _G
 local function LuaModEnv(env)
@@ -25,6 +25,7 @@ local function LuaModEnv(env)
   return env
 end
 
+-- thread needed for WaitMsg
 CreateRealTimeThread(function()
 
 	-- build a list of ids from lua files in "Mod Ids"
@@ -52,7 +53,10 @@ CreateRealTimeThread(function()
 				mod.no_blacklist = true
 				local env = mod.env
 				for key in pairs(env) do
-					env[key] = orig_G[key]
+					local g_key = rawget(orig_G,key)
+					if g_key then
+						env[key] = g_key
+					end
 				end
 				mod.env = LuaModEnv(env)
 				-- add a warning to any mods without a blacklist, so user knows something is up
