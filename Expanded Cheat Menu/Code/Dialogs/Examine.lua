@@ -29,12 +29,12 @@ local DeleteThread = DeleteThread
 local EnumVars = EnumVars
 local GetStateName = GetStateName
 local IsKindOf = IsKindOf
-local IsOldObjListType = IsOldObjListType
 local IsPoint = IsPoint
 local IsT = IsT
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
 local IsValidThread = IsValidThread
+local PropObjGetProperty = PropObjGetProperty
 local Sleep = Sleep
 local XCreateRolloverWindow = XCreateRolloverWindow
 local XDestroyRolloverWindow = XDestroyRolloverWindow
@@ -49,6 +49,7 @@ local IsControlPressed
 local RetName
 local TableConcat
 local Translate
+local IsObjlist
 
 local InvalidPos
 local Strings
@@ -63,6 +64,7 @@ function OnMsg.ClassesGenerate()
 	RetName = ChoGGi.ComFuncs.RetName
 	TableConcat = ChoGGi.ComFuncs.TableConcat
 	Translate = ChoGGi.ComFuncs.Translate
+	IsObjlist = ChoGGi.ComFuncs.IsObjlist
 
 	InvalidPos = ChoGGi.Consts.InvalidPos
 	Strings = ChoGGi.Strings
@@ -543,7 +545,7 @@ function Examine:idTextOnHyperLinkRollover(link)
 		local obj_value
 		-- "undefined global" bulldiddy workaround
 		if self.name == "_G" then
-			obj_value = rawget(self.obj_ref,obj)
+			obj_value = PropObjGetProperty(self.obj_ref,obj)
 		else
 			obj_value = self.obj_ref[obj]
 		end
@@ -658,7 +660,7 @@ function Examine:idButClearOnPress()
 	end
 	self.marked_objects:Clear()
 
-	if IsOldObjListType(self.obj_ref) then
+	if IsObjlist(self.obj_ref) then
 		self.ChoGGi.ComFuncs.ObjListLines_Clear(self.obj_ref)
 	end
 end
@@ -2128,7 +2130,7 @@ function Examine:ConvertValueToInfo(obj)
 			local obj_metatable = getmetatable(obj)
 
 --~ 			-- if it's an objlist then we return a list of the objects
---~ 			if obj_metatable and IsOldObjListType(obj_metatable) then
+--~ 			if obj_metatable and IsObjlist(obj_metatable) then
 --~ 				local res = {
 --~ 					self:HyperLink(obj,Examine_ConvertValueToInfo),
 --~ 					"objlist",
@@ -2927,7 +2929,8 @@ function Examine:SetToolbarVis(obj,obj_metatable)
 		if self.name ~= "_G" then
 
 			-- pretty much any class object
-			if obj.delete then
+--~ 			if obj.delete then
+			if PropObjGetProperty(obj,"delete") then
 				self.idButDeleteObj:SetVisible(true)
 			end
 
@@ -2938,12 +2941,12 @@ function Examine:SetToolbarVis(obj,obj_metatable)
 				end
 			end
 
-			if obj.GetEntity and IsValidEntity(obj:GetEntity()) then
+			if PropObjGetProperty(obj,"GetEntity") and IsValidEntity(obj:GetEntity()) then
 				self.idObjects:SetVisible(true)
 			end
 
 			-- objlist objects let us do some easy for each
-			if IsOldObjListType(obj) then
+			if IsObjlist(obj) then
 				self.idButMarkAll:SetVisible(true)
 				self.idButMarkAllLine:SetVisible(true)
 				self.idButDeleteAll:SetVisible(true)
@@ -3168,13 +3171,15 @@ function Examine:Done(...)
 	PopupClose(self.idParentsMenu)
 	PopupClose(self.idToolsMenu)
 	-- if it isn't valid then none of these will exist
-	if IsValid(obj) then
-		self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
-		self.ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
-		self.ChoGGi.ComFuncs.EntitySpots_Clear(obj)
-		self.ChoGGi.ComFuncs.SurfaceLines_Clear(obj)
-	elseif IsOldObjListType(obj) then
-		self.ChoGGi.ComFuncs.ObjListLines_Clear(obj)
+	if self.name ~= "_G" and self.obj_type == "table" then
+		if IsValid(obj) or PropObjGetProperty(obj,"GetEntity") and IsValidEntity(obj:GetEntity()) then
+			self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
+			self.ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
+			self.ChoGGi.ComFuncs.EntitySpots_Clear(obj)
+			self.ChoGGi.ComFuncs.SurfaceLines_Clear(obj)
+		elseif IsObjlist(obj) then
+			self.ChoGGi.ComFuncs.ObjListLines_Clear(obj)
+		end
 	end
 	-- clear any spheres/colour marked objs
 	if #self.marked_objects > 0 then

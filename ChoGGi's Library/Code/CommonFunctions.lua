@@ -70,8 +70,14 @@ do -- AddMsgToFunc
 	end
 end -- do
 
+local function IsObjlist(o)
+  if type(o) == "table" then
+    return getmetatable(o) == objlist
+  end
+end
+ChoGGi.ComFuncs.IsObjlist = IsObjlist
+
 do -- RetName
---~ 	local IsOldObjListType = IsOldObjListType
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	local PropObjGetProperty = PropObjGetProperty
 
@@ -238,10 +244,9 @@ do -- RetName
 			-- entity
 			elseif PropObjGetProperty(obj,"entity") and obj.entity ~= "" then
 				name = obj.entity
-			-- too much stuff is now an objlist
---~ 			-- objlist
---~ 			elseif IsOldObjListType(obj) then
---~ 				return obj[1] and ChoGGi.ComFuncs.RetName(obj[1]) or "objlist"
+			-- objlist
+			elseif IsObjlist(obj) then
+				return obj[1] and ChoGGi.ComFuncs.RetName(obj[1]) or "objlist"
 
 			else
 				for i = 1, #values_lookup do
