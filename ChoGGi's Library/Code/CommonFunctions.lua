@@ -79,7 +79,8 @@ ChoGGi.ComFuncs.IsObjlist = IsObjlist
 
 do -- RetName
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-	local PropObjGetProperty = PropObjGetProperty
+--~ 	local PropObjGetProperty = PropObjGetProperty
+	local IsT = IsT
 
 	-- we use this table to display names of objects for RetName
 	local lookup_table = {}
@@ -189,17 +190,17 @@ do -- RetName
 		return lookup_table
 	end
 
-	local values_lookup = {
-		"encyclopedia_id",
-		"id",
-		"Id",
-		"ActionName",
-		"ActionId",
-		"template_name",
-		"template_class",
-		"class",
-		"__mtl",
-	}
+--~ 	local values_lookup = {
+--~ 		"encyclopedia_id",
+--~ 		"id",
+--~ 		"Id",
+--~ 		"ActionName",
+--~ 		"ActionId",
+--~ 		"template_name",
+--~ 		"template_class",
+--~ 		"class",
+--~ 		"__mtl",
+--~ 	}
 
 	-- try to return a decent name for the obj, failing that return a string
 	function ChoGGi.ComFuncs.RetName(obj)
@@ -224,12 +225,13 @@ do -- RetName
 			return tostring(obj)
 
 		elseif obj_type == "table" then
-			-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env has it's own __index and causes the game to log a warning
+			-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env has it's own __index and causes sm to log an error msg
 			local index = getmetatable(obj)
 			index = index and index.__index
 
 			-- we check in order of less generic "names"
-			local name_type = PropObjGetProperty(obj,"name") and type(obj.name)
+--~ 			local name_type = PropObjGetProperty(obj,"name") and type(obj.name)
+			local name_type = type(obj.name)
 
 			-- custom name from user (probably)
 			if name_type == "string" and obj.name ~= "" then
@@ -239,44 +241,74 @@ do -- RetName
 				name = Translate(obj.name)
 
 			-- display
-			elseif PropObjGetProperty(obj,"display_name") and obj.display_name ~= "" then
+--~ 			elseif PropObjGetProperty(obj,"display_name") and obj.display_name ~= "" then
+			elseif obj.display_name and obj.display_name ~= "" then
 				name = Translate(obj.display_name)
 			-- entity
-			elseif PropObjGetProperty(obj,"entity") and obj.entity ~= "" then
+--~ 			elseif PropObjGetProperty(obj,"entity") and obj.entity ~= "" then
+			elseif obj.entity and obj.entity ~= "" then
 				name = obj.entity
+
+			elseif obj.encyclopedia_id and obj.encyclopedia_id ~= "" then
+				name = obj.encyclopedia_id
+			elseif obj.id and obj.id ~= "" then
+				name = obj.id
+			elseif obj.Id and obj.Id ~= "" then
+				name = obj.Id
+			elseif obj.ActionId and obj.ActionId ~= "" then
+				name = obj.ActionId
+			elseif obj.ActionName and obj.ActionName ~= "" then
+				name = obj.ActionName
+			elseif obj.template_name and obj.template_name ~= "" then
+				name = obj.template_name
+			elseif obj.template_class and obj.template_class ~= "" then
+				name = obj.template_class
+			elseif obj.class and obj.class ~= "" then
+				name = obj.class
+			elseif obj.__mtl and obj.__mtl ~= "" then
+				name = obj.__mtl
+
 			-- objlist
 			elseif IsObjlist(obj) then
 				return obj[1] and ChoGGi.ComFuncs.RetName(obj[1]) or "objlist"
 
-			else
-				for i = 1, #values_lookup do
-					local value_name = values_lookup[i]
-					if index then
-						if PropObjGetProperty(obj,value_name) and obj[value_name] ~= "" then
-							name = obj[value_name]
-							break
-						end
-					else
-						local value = obj[value_name]
-						if value and value ~= "" then
-							name = value
-							break
-						end
-					end
-				end
-				--
-				if type(name) == "userdata" then
-					name = Translate(name)
-				end
-			end -- if table
+--~ 			else
+--~ 				for i = 1, #values_lookup do
+--~ 					local value_name = values_lookup[i]
+--~ 					if index then
+--~ 						if PropObjGetProperty(obj,value_name) and obj[value_name] ~= "" then
+--~ 							name = obj[value_name]
+--~ 							break
+--~ 						end
+--~ 					else
+--~ 						local value = obj[value_name]
+--~ 						if value and value ~= "" then
+--~ 							name = value
+--~ 							break
+--~ 						end
+--~ 					end
+--~ 				end
+--~ 				--
+--~ 				if type(name) == "userdata" then
+--~ 					name = Translate(name)
+--~ 				end
+			end -- if
+
+			if type(name) == "userdata" then
+				name = Translate(name)
+			end
 
 		elseif obj_type == "userdata" then
-			local trans_str = Translate(obj)
-			-- missing text is from internaltranslate, i check the str length before calling the func as it has to be at least 16 chars
-			if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+			if IsT(obj) then
+				local trans_str = Translate(obj)
+				-- missing text is from internaltranslate, i check the str length before calling the func as it has to be at least 16 chars
+				if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+					return tostring(obj)
+				end
+				return trans_str
+			else
 				return tostring(obj)
 			end
-			return trans_str
 
 		elseif obj_type == "function" then
 			return DebugGetInfo(obj)
@@ -349,15 +381,16 @@ local function DotNameToObject(str,root,create)
 			name = num
 		end
 
-		local obj_child
-		if parent == g then
-			-- SM error spams console if you have the affront to try _G.NonExistingKey... (thanks autorun.lua)
-			-- it works prefectly fine of course, but i like a clean log.
-			-- in other words a workaround for "Attempt to use an undefined global '"
-			obj_child = rawget(parent,name)
-		else
-			obj_child = parent[name]
-		end
+--~ 		local obj_child
+--~ 		if parent == g then
+--~ 			-- SM error spams console if you have the affront to try _G.NonExistingKey... (thanks autorun.lua)
+--~ 			-- it works prefectly fine of course, but i like a clean log.
+--~ 			-- in other words a workaround for "Attempt to use an undefined global '"
+--~ 			obj_child = rawget(parent,name)
+--~ 		else
+--~ 			obj_child = parent[name]
+--~ 		end
+		local obj_child = parent[name]
 
 		-- . means we're not at the end yet
 		if match == "." then

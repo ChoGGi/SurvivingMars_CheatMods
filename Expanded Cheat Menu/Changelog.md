@@ -8,8 +8,12 @@
 ### Changed:
 - Beta compatibility.
 - Entity Spawner has a checkbox to activate any auto-attach entities.
-- Added some Beta cheats (they won't work if you aren't in the beta).
+- Added some cheats for the beta.
 - ECM tries to use ConsoleRules if it's a global table, otherwise does the usual.
+- Examine: Added value type to tooltip title.
+- Updated the Monitor Threads/Tables funcs to use the auto-refresh delay of the examine dialog.
+- rawget doesn't work like it should for users without HelperMod, so I disabled the "Attempt to use an undefined global" msg for them.
+- > Otherwise ECM will spam the console log (it'll still print the msg, just not as an error).
 
 ### Fixed:
 - ECM was breaking saving functions in the mod editor.

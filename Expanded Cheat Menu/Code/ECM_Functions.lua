@@ -47,12 +47,12 @@ function OnMsg.ClassesGenerate()
 			XShortcutsTarget:SetPos(ChoGGi.UserSettings.KeepCheatsMenuPosition)
 		else
 			local margins = GetSafeMargins():min()
-			-- xbox needs a margin, which is added from somewhere?
-			if Platform.durango then
-				XShortcutsTarget:SetPos(margins+point(50,50))
-			else
+--~ 			-- xbox needs a margin, which is added from somewhere?
+--~ 			if Platform.durango then
+--~ 				XShortcutsTarget:SetPos(margins+point(50,50))
+--~ 			else
 				XShortcutsTarget:SetPos(margins)
-			end
+--~ 			end
 		end
 	end
 
@@ -954,12 +954,12 @@ function OnMsg.ClassesGenerate()
 				for thread in pairs(ThreadsRegister) do
 					local info = debug_getinfo(thread, 1, "S")
 					if info then
-						-- we use <tags *num*> as a way to hide the num but still have it there for a unique string
 						c = c + 1
-						table_list[info.source .. "(" .. info.linedefined .. ")<tags " .. c .. ">"] = thread
+						-- we use a "tags" tag to store a unique number (examine uses tags off for text, so we need to use on
+						table_list[info.source .. "(" .. info.linedefined .. ")<tags on " .. c .. ">"] = thread
 					end
 				end
-				Sleep(1000)
+				Sleep(dlg.autorefresh_delay or 1000)
 			end
 		end)
 	end
@@ -999,8 +999,7 @@ function OnMsg.ClassesGenerate()
 
 					end
 				end
-
-				Sleep(1000)
+				Sleep(dlg.autorefresh_delay or 1000)
 			end
 		end)
 	end
@@ -3424,8 +3423,7 @@ It's a tradeoff between erroneous errors and the game locking up."--]]]
 
 	do -- ValueToStr
 		local getmetatable = getmetatable
-		local IsPoint = IsPoint
-		local IsBox = IsBox
+		local IsPoint,IsBox,IsT = IsPoint,IsBox,IsT
 
 		function ChoGGi.ComFuncs.ValueToStr(obj,obj_type)
 			obj_type = obj_type or type(obj)
@@ -3446,10 +3444,10 @@ It's a tradeoff between erroneous errors and the game locking up."--]]]
 				-- faster than tostring()
 				return obj .. "",obj_type
 			end
---~ 			--
---~ 			if obj_type == "boolean" then
---~ 				return tostring(obj),obj_type
---~ 			end
+			--
+			if obj_type == "boolean" then
+				return tostring(obj),obj_type
+			end
 			--
 			if obj_type == "table" then
 				return RetName(obj),obj_type
@@ -3461,22 +3459,27 @@ It's a tradeoff between erroneous errors and the game locking up."--]]]
 				elseif IsBox(obj) then
 					return "box" .. tostring(obj),obj_type
 				end
-				-- show translated text if possible and return a clickable link
-				local trans_str = Translate(obj)
-				if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
-					local meta = getmetatable(obj).__name
-					return tostring(obj) .. (meta and " " .. meta or ""),obj_type
+				-- show translated text if possible, otherwise check for metatable name
+				if IsT(obj) then
+					local trans_str = Translate(obj)
+					if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+						local meta = getmetatable(obj).__name
+						return tostring(obj) .. (meta and " " .. meta or ""),obj_type
+					end
+					return trans_str,obj_type
 				end
-				return trans_str,obj_type
+				--
+				local meta = getmetatable(obj).__name
+				return tostring(obj) .. (meta and " " .. meta or ""),obj_type
 			end
 			--
 			if obj_type == "function" then
 				return RetName(obj),obj_type
 			end
-	--~ 		--
-	--~ 		if obj_type == "thread" then
-	--~ 			return tostring(obj),obj_type
-	--~ 		end
+			--
+			if obj_type == "thread" then
+				return tostring(obj),obj_type
+			end
 			--
 			if obj_type == "nil" then
 				return "nil",obj_type

@@ -240,7 +240,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 			ExamineMenuToggle_list[submenu].submenu = submenu_table
 		end
 		--
-		AddSubmenu("_G",{"__cobjectToCObject","Flags","HandleToObject","TranslationTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod","debug.getregistry"})
+		AddSubmenu("_G",{"__cobjectToCObject","FlagsByBits","HandleToObject","TranslationTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod","debug.getregistry"})
 		AddSubmenu("ThreadsRegister",{"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers"})
 		AddSubmenu("Consts",{"g_Consts","const","ModifiablePropScale","const.TagLookupTable"})
 		AddSubmenu("Dialogs",{"terminal.desktop","GetInGameInterface"})
@@ -275,10 +275,16 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 		end
 
 		local function UpdateLogErrors(name)
+			-- replace the error reporting funcs with our own
+			_G[name] = function(msg,...)
+				-- devs may care about undefined globals, but i certainly don't
+				if name == "error" and type(msg) == "string" and msg:sub(1,36) == "Attempt to use an undefined global '" then
+					print(msg,...)
+					return
+				end
 
-			_G[name] = function(...)
 				local func_name = Strings[302535920001077--[[Error from function--]]] .. [[ "]] .. name .. [[" = ]]
-				print(func_name,...)
+				print(func_name,msg,...)
 
 				local stack_trace
 				if blacklist then
@@ -292,17 +298,20 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 				if UserSettings.ExamineErrors then
 					-- i only care to see threads (i don't think funcs show up?)
 					if testing then
-						local err_type = type(select(1,...))
+						local err_type = type(msg)
 						-- not sure if it can ever be a func...?
 						if err_type == "thread" or err_type == "function" or name == "__procall_errorhandler" then
 							OpenInExamineDlg({
-								(err_type == "function" and err_type.. " " or "") .. func_name
+								(err_type == "function" and err_type .. " " or "") .. func_name
 								,...,
 								stack_trace,
 							},nil,Strings[302535920001479--[[Examine Errors--]]])
 						end
 					else
-						OpenInExamineDlg({func_name,...,stack_trace},nil,Strings[302535920001479--[[Examine Errors--]]])
+						OpenInExamineDlg(
+							{func_name,msg,...,stack_trace},
+							nil,Strings[302535920001479--[[Examine Errors--]]]
+						)
 					end
 				end
 
@@ -312,20 +321,35 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 
 		local funcs = {"error","OutputDebugString","ThreadErrorHandler","DlcErrorHandler","syntax_error","RecordError","__procall_errorhandler"}
 		function ChoGGi.ConsoleFuncs.ToggleLogErrors(enable)
+			-- stop "Attempt to create a new global " errors, though I'm not sure why they happen since they're not "new"
+			local orig_Loading = Loading
+			Loading = true
+
 			for i = 1, #funcs do
 				if enable then
 					UpdateLogErrors(funcs[i])
 				else
 					local name = funcs[i]
-					_G[name] = ChoGGi_OrigFuncs[name]
+					if name == "error" then
+						-- skip the one annoying "error"
+						error = function(msg,...)
+							if type(msg) == "string" and msg:sub(1,36) == "Attempt to use an undefined global '" then
+								print(msg,...)
+								return
+							end
+							return ChoGGi_OrigFuncs[name](msg,...)
+						end
+					else
+						_G[name] = ChoGGi_OrigFuncs[name]
+					end
 				end
 			end
+
+			Loading = orig_Loading
 		end
 
-		-- print logged errors to console
-		if UserSettings.ConsoleErrors then
-			ChoGGi.ConsoleFuncs.ToggleLogErrors(true)
-		end
+		-- print logged errors to console/skip annoying "error"
+		ChoGGi.ConsoleFuncs.ToggleLogErrors(UserSettings.ConsoleErrors)
 	end -- do
 
 	local ConsoleMenuPopupToggle_list = {
@@ -603,11 +627,6 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 			AsyncStringToFile(script_path .. "/Functions/Amount of colonists.lua",[[#(UICity.labels.Colonist or "")]])
 			AsyncStringToFile(script_path .. "/Functions/Toggle Working SelectedObj.lua",[[SelectedObj:ToggleWorking()]])
 		end
-	end
-
-	-- enabled detailed logs for xbox
-	if Platform.durango then
-		ChoGGi.ConsoleFuncs.ToggleLogErrors(true)
 	end
 
 end
