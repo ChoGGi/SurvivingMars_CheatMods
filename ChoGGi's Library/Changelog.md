@@ -1,7 +1,11 @@
 ## Library Changelog
 
-## v6.3 (Unreleased)
+## v6.4 (Unreleased)
+
+## v6.3 (Mar 30 2019)
 - Added some more func names to RetName.
+- Restored RetName for objlists.
+- Code cleanup.
 
 ## v6.2 (Mar 17 2019)
 - Xbox.
