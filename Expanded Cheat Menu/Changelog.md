@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v13.3 (Unreleased)
+## v13.4 (Unreleased)
+
+## v13.3 (Mar 30 2019)
 ### Added:
 - Console>Settings>Show Log When Console Active: Show console log text when console is active.
 - Menu>Cheats>Story Bits.
@@ -12,7 +14,7 @@
 - ECM tries to use ConsoleRules if it's a global table, otherwise does the usual.
 - Examine: Added value type to tooltip title.
 - Updated the Monitor Threads/Tables funcs to use the auto-refresh delay of the examine dialog.
-- rawget doesn't work like it should for users without HelperMod, so I disabled the "Attempt to use an undefined global" msg for them.
+- rawget doesn't work like it should for users without HelperMod, so I disabled the "Attempt to use an undefined global" "error".
 - > Otherwise ECM will spam the console log (it'll still print the msg, just not as an error).
 
 ### Fixed:
