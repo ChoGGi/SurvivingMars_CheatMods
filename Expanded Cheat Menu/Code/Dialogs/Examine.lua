@@ -526,35 +526,43 @@ function Examine:idTextOnHyperLinkRollover(link)
 		return
 	end
 
-
 	link = tonumber(link)
 	local obj = self.onclick_objs[link]
 	if not obj then
 		return
 	end
 
-	local title = Strings[302535920000069--[[Examine--]]]
-	local roll_text = RetName(obj)
-
-	if self.onclick_funcs[link] == self.OpenListMenu then
-		title = roll_text .. " " .. Translate(1000162--[[Menu--]])
-
-		roll_text = Strings[302535920001540--[[Show context menu for %s.--]]]:format(roll_text)
-
-		-- add the value to the key tooltip
-		local obj_value
+	local title,obj_str,obj_type,obj_value
+	if self.obj_type == "table" then
 		-- "undefined global" bulldiddy workaround
 		if self.name == "_G" then
 			obj_value = PropObjGetProperty(self.obj_ref,obj)
 		else
 			obj_value = self.obj_ref[obj]
 		end
+		if type(obj_value) ~= "nil" then
+			obj_str,obj_type = self.ChoGGi.ComFuncs.ValueToStr(obj_value)
+		else
+			obj_str,obj_type = self.ChoGGi.ComFuncs.ValueToStr(obj)
+		end
+		title = Strings[302535920000069--[[Examine--]]] .. " (" .. obj_type .. ")"
+	else
+		-- for anything that isn't a table
+		title = Strings[302535920000069--[[Examine--]]]
+	end
 
-		local obj_value_str = self.ChoGGi.ComFuncs.ValueToStr(obj_value)
-		roll_text = roll_text .. "\n\n\n" .. obj_value_str
+	local roll_text = RetName(obj)
+
+	if self.onclick_funcs[link] == self.OpenListMenu then
+		title = roll_text .. " " .. Translate(1000162--[[Menu--]]) .. " (" .. obj_type .. ")"
+
+		roll_text = Strings[302535920001540--[[Show context menu for %s.--]]]:format(roll_text)
+
+		-- add the value to the key tooltip
+		roll_text = roll_text .. "\n\n\n" .. obj_str
 		-- if it's an image then add 'er to the text
-		if self.ChoGGi.ComFuncs.ImageExts()[obj_value_str:sub(-3):lower()] then
-			roll_text = roll_text .. "\n\n<image " .. obj_value_str .. ">"
+		if self.ChoGGi.ComFuncs.ImageExts()[obj_str:sub(-3):lower()] then
+			roll_text = roll_text .. "\n\n<image " .. obj_str .. ">"
 		end
 
 --~ 		-- stick value in search box
@@ -2076,7 +2084,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 		}
 	end
 
-	if c ~= c_orig then
+	if c ~= c_orig and not list[6].is_spacer then
 		table_insert(list,6,{is_spacer = true})
 	end
 
@@ -2208,11 +2216,18 @@ function Examine:ConvertValueToInfo(obj)
 					.. "point" .. tostring(obj) .. HLEnd
 			end
 		else
+
 			-- show translated text if possible and return a clickable link
-			local trans_str = Translate(obj)
-			if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+			local trans_str
+			if IsT(obj) then
+				trans_str = Translate(obj)
+				if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+					trans_str = tostring(obj)
+				end
+			else
 				trans_str = tostring(obj)
 			end
+
 			local meta = getmetatable(obj)
 
 			-- tags off doesn't like ""
@@ -2224,7 +2239,6 @@ function Examine:ConvertValueToInfo(obj)
 
 			-- if meta name then add it
 			if meta and meta.__name then
---~ 				trans_str = trans_str .. "userdata (" .. meta.__name .. ")"
 				trans_str = trans_str .. "(" .. meta.__name .. ")"
 			else
 				trans_str = trans_str .. tostring(obj)
