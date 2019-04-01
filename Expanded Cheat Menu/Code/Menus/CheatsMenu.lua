@@ -9,11 +9,11 @@ function OnMsg.ClassesGenerate()
 	-- BetaBetaBeta
 	if LuaRevision > 240905 then
 		c = c + 1
-		Actions[c] = {ActionName = Translate(11719--[[BetaBetaBeta--]]),
+		Actions[c] = {ActionName = Translate(11719--[[Placeholder--]]),
 			ActionMenubar = "ECM.Cheats",
 			ActionId = ".Testering",
 			ActionIcon = "CommonAssets/UI/Menu/DarkSideOfTheMoon.tga",
-			RolloverText = Strings[302535920001577--[[Change different BetaBetaBeta properties (NDA'd).--]]],
+			RolloverText = Strings[302535920001577--[[Placeholder--]]],
 			OnAction = ChoGGi.MenuFuncs.TesteringBetaBetaBeta,
 		}
 	end

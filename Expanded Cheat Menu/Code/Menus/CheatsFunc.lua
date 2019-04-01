@@ -58,14 +58,14 @@ function OnMsg.ClassesGenerate()
 			end
 			MsgPopup(
 				choice.text,
-				Translate(11719--[[BetaBetaBeta--]])
+				Translate(11719--[[Placeholder--]])
 			)
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = Translate(11719--[[BetaBetaBeta--]]),
+			title = Translate(11719--[[Placeholder--]]),
 			custom_type = 7,
 		}
 	end

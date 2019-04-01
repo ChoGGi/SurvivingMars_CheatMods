@@ -279,7 +279,9 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 			_G[name] = function(msg,...)
 				-- devs may care about undefined globals, but i certainly don't
 				if name == "error" and type(msg) == "string" and msg:sub(1,36) == "Attempt to use an undefined global '" then
-					print(msg,...)
+						if not UserSettings.ConsoleSkipUndefinedGlobals then
+							print(msg,"\n",GetStack(2, false, "\t"))
+						end
 					return
 				end
 
@@ -334,7 +336,9 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 						-- skip the one annoying "error"
 						error = function(msg,...)
 							if type(msg) == "string" and msg:sub(1,36) == "Attempt to use an undefined global '" then
-								print(msg,...)
+								if not UserSettings.ConsoleSkipUndefinedGlobals then
+									print(msg,"\n",GetStack(2, false, "\t"))
+								end
 								return
 							end
 							return ChoGGi_OrigFuncs[name](msg,...)
@@ -369,6 +373,15 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 			value = "ChoGGi.UserSettings.ExamineErrors",
 			clicked = function()
 				ChoGGi.UserSettings.ExamineErrors = not ChoGGi.UserSettings.ExamineErrors
+				ChoGGi.SettingFuncs.WriteSettings()
+			end,
+		},
+		{name = Strings[302535920000310--[[Skip Undefined Globals--]]],
+			hint = Strings[302535920000311--[["Stop the ""Attempt to use an undefined global"" msgs."--]]],
+			class = "ChoGGi_CheckButtonMenu",
+			value = "ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals",
+			clicked = function()
+				ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals = not ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals
 				ChoGGi.SettingFuncs.WriteSettings()
 			end,
 		},

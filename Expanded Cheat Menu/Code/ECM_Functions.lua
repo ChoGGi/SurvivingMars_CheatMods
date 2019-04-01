@@ -864,18 +864,23 @@ function OnMsg.ClassesGenerate()
 			end
 		end
 
+		local checkboxes
+		if list_type ~= 7 then
+			checkboxes = {
+				{
+					title = Strings[302535920001578--[[Auto-Attach--]]],
+					hint = Strings[302535920001579--[[Activate any auto-attach spots this entity has.--]]],
+				},
+			}
+		end
+
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = title,
 			hint = hint,
 			custom_type = list_type or 0,
-			checkboxes = {
-				{
-					title = Strings[302535920001578--[[Auto-Attach--]]],
-					hint = Strings[302535920001579--[[Activate any auto-attach spots this entity has.--]]],
-				},
-			},
+			checkboxes = checkboxes,
 		}
 	end
 

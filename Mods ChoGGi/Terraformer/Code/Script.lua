@@ -46,8 +46,8 @@ Platform.developer = d_before
 -- editor wants a table
 GlobalVar("g_revision_map",{})
 -- stops some log spam in editor (function doesn't exist in SM)
-function UpdateMapRevision()end
-function AsyncGetSourceInfo()end
+UpdateMapRevision = empty_func
+AsyncGetSourceInfo = empty_func
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
@@ -61,7 +61,12 @@ function OnMsg.ClassesGenerate()
 		replace_matching_id = true,
 		ActionId = "Terraformer.Terrain Editor Toggle",
 		RolloverText = Strings[302535920000675--[[Opens up the map editor with the brush tool visible.--]]],
-		OnAction = ChoGGi.ComFuncs.TerrainEditor_Toggle,
+		OnAction = function()
+			ChoGGi.ComFuncs.TerrainEditor_Toggle()
+			if dlgConsoleLog then
+				dlgConsoleLog:SetVisible(false)
+			end
+		end,
 		ActionShortcut = "Shift-F",
 		ActionBindable = true,
 	}

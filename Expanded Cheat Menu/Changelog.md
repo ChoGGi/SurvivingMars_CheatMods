@@ -1,6 +1,13 @@
 ## ECM Changelog
 
 ## v13.4 (Unreleased)
+### Added:
+- Console>Settings>Skip Undefined Globals: Stop the "Attempt to use an undefined global" msgs.
+
+### Fixed:
+- Debug>Pathing failed on jumper shuttles on the landing.
+- Examine wasn't showing entity info it should be.
+- Delete Object was spamming console when deleting a res pile.
 
 ## v13.3 (Mar 30 2019)
 ### Added:

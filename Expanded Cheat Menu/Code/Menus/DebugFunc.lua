@@ -286,7 +286,8 @@ You need my HelperMod installed to be able to use this."--]]],
 
 							if q % mod == 0 and r % mod == 0 and IsBuildableZoneQR(q,r) then
 								local obj = PlaceObj("ChoGGi_BuildingEntityClass",{
-									"Pos",point(xx,yy),
+									-- 11500 so most stuff is floating above the ground
+									"Pos",point(xx,yy,11500),
 								})
 
 								c = c + 1
@@ -828,7 +829,6 @@ You need my HelperMod installed to be able to use this."--]]],
 		local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
 		local SelObject = ChoGGi.ComFuncs.SelObject
 
-		local moveable_classes = {"Movable", "CargoShuttle"}
 		local randcolours = {}
 		local colourcount = 0
 		local dupewppos = {}
@@ -838,6 +838,7 @@ You need my HelperMod installed to be able to use this."--]]],
 
 		local ShowWaypoints_points = {}
 		local function ShowWaypoints(waypoints, colour, obj, skipheight)
+			print("waypoints",waypoints)
 			colour = tonumber(colour) or RandomColour()
 			-- also used for line height
 			if not skipheight then
@@ -886,7 +887,7 @@ You need my HelperMod installed to be able to use this."--]]],
 			table_clear(SetWaypoint_path)
 			local path = SetWaypoint_path
 
-			--we need to build a path for shuttles (and figure out a way to get their dest properly...)
+			-- we need to build a path for shuttles (and figure out a way to get their dest properly...)
 			if obj:IsKindOf("CargoShuttle") then
 
 				-- going to pickup colonist
@@ -898,6 +899,11 @@ You need my HelperMod installed to be able to use this."--]]],
 				elseif obj.is_colonist_transport_task then
 					path[1] = obj.transport_task and (obj.transport_task.dest_pos or obj.transport_task.colonist:GetPos())
 				else
+					path[1] = obj:GetDestination()
+				end
+
+				-- jumper shuttles after first leg
+				if type(path[1]) ~= "userdata" then
 					path[1] = obj:GetDestination()
 				end
 
@@ -1004,7 +1010,7 @@ You need my HelperMod installed to be able to use this."--]]],
 				obj = obj or SelObject()
 			end
 
-			if obj and obj:IsKindOfClasses(moveable_classes) then
+			if obj and obj:IsKindOfClasses("Movable", "CargoShuttle") then
 				local UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles
 
 				if UnitPathingHandles[obj.handle] then
@@ -1082,12 +1088,12 @@ You need my HelperMod installed to be able to use this."--]]],
 				maph = maph - terrain.HeightTileSize()
 			end
 
-			local obj = SelectedObj
-			if IsValid(obj) and obj:IsKindOfClasses(moveable_classes) then
-				randcolours = RandomColour(#randcolours + 1)
-				ChoGGi.MenuFuncs.SetWaypoint(obj)
-				return
-			end
+--~ 			local obj = SelectedObj
+--~ 			if IsValid(obj) and obj:IsKindOfClasses("Movable", "CargoShuttle") then
+--~ 				randcolours = RandomColour(#randcolours + 1)
+--~ 				ChoGGi.MenuFuncs.SetWaypoint(obj)
+--~ 				return
+--~ 			end
 
 			local item_list = {
 				{text = " " .. Translate(4493--[[All--]]),value = "All"},

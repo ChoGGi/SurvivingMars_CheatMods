@@ -1,0 +1,2 @@
+v0.2
+Also changes the build menu draggable model.

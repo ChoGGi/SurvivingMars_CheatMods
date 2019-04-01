@@ -349,67 +349,66 @@ function ChoGGi.ComFuncs.RetHint(obj)
 	end
 end
 
--- "table.table.table.etc" = returns etc as object
--- use .number for index based tables ("terminal.desktop.1.box")
--- root is where we start looking (defaults to _G).
--- create is a boolean to add a table if the dotname is absent.
-local function DotNameToObject(str,root,create)
+do -- DotNameToObject
+	-- "table.table.table.etc" = returns etc as object
+	-- use .number for index based tables ("terminal.desktop.1.box")
+	-- root is where we start looking (defaults to _G).
+	-- create is a boolean to add a table if the dotname is absent.
+	local g
 
-	-- lazy is best
-	if type(str) ~= "string" then
-		return str
-	end
-
-	local g = ChoGGi.Temp._G
-	-- there's always one
-	if str == "_G" then
-		return g
-	end
-	if str == "_ENV" then
-		return _ENV
-	end
-
-	-- parent always starts out as "root"
-	local parent = root or g
-
-	-- https://www.lua.org/pil/14.1.html
-	-- %w is [A-Za-z0-9], [] () + ? . act like regexp (lua patterns)
-	for name,match in str:gmatch("([%w_]+)(.?)") do
-		-- if str included .number we need to make it a number or [name] won't work
-		local num = tonumber(name)
-		if num then
-			name = num
+	function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
+		-- lazy is best
+		if type(str) ~= "string" then
+			return str
 		end
 
---~ 		local obj_child
---~ 		if parent == g then
---~ 			-- SM error spams console if you have the affront to try _G.NonExistingKey... (thanks autorun.lua)
---~ 			-- it works prefectly fine of course, but i like a clean log.
---~ 			-- in other words a workaround for "Attempt to use an undefined global '"
---~ 			obj_child = rawget(parent,name)
---~ 		else
---~ 			obj_child = parent[name]
---~ 		end
-		local obj_child = parent[name]
+		g = g or ChoGGi.Temp._G
+		-- there's always one
+		if str == "_G" then
+			return g
+		end
 
-		-- . means we're not at the end yet
-		if match == "." then
-			-- create is for adding new settings in non-existent tables
-			if not obj_child and not create then
-				-- our treasure hunt is cut short, so return nadda
-				return false
+		-- parent always starts out as "root"
+		local parent = root or g
+
+		-- https://www.lua.org/pil/14.1.html
+		-- %w is [A-Za-z0-9], [] () + ? . act like regexp (lua patterns)
+		for name,match in str:gmatch("([%w_]+)(.?)") do
+			-- if str included .number we need to make it a number or [name] won't work
+			local num = tonumber(name)
+			if num then
+				name = num
 			end
-			-- change the parent to the child (create table if absent, this'll only fire when create)
-			parent = obj_child or {}
-		else
-			-- no more . so we return as conquering heroes with the obj
-			return obj_child
-		end
 
+	--~ 		local obj_child
+	--~ 		if parent == g then
+	--~ 			-- SM error spams console if you have the affront to try _G.NonExistingKey... (thanks autorun.lua)
+	--~ 			-- it works prefectly fine of course, but i like a clean log.
+	--~ 			-- in other words a workaround for "Attempt to use an undefined global"
+	--~ 			obj_child = rawget(parent,name)
+	--~ 		else
+	--~ 			obj_child = parent[name]
+	--~ 		end
+			local obj_child = parent[name]
+
+			-- . means we're not at the end yet
+			if match == "." then
+				-- create is for adding new settings in non-existent tables
+				if not obj_child and not create then
+					-- our treasure hunt is cut short, so return nadda
+					return false
+				end
+				-- change the parent to the child (create table if absent, this'll only fire when create)
+				parent = obj_child or {}
+			else
+				-- no more . so we return as conquering heroes with the obj
+				return obj_child
+			end
+
+		end
 	end
-end
-ChoGGi.ComFuncs.DotNameToObject = DotNameToObject
---~ ChoGGi.ComFuncs.DotNameToObject("ChoGGi.UserSettings.ConsoleErrors")
+end -- do
+local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 
 local function GetParentOfKind(win, cls)
 	while win and not win:IsKindOf(cls) do
@@ -421,23 +420,28 @@ ChoGGi.ComFuncs.GetParentOfKind = GetParentOfKind
 
 do -- ValidateImage
 	local m = UIL.MeasureImage
+	local r = UIL.ReloadImage
 
 	function ChoGGi.ComFuncs.ValidateImage(image,fallback)
 		-- if measure isn't sent a string it'll spam the log
 		image = tostring(image)
+		r(image)
 
 		-- first we try the image path as is
 		-- if x is 0 then it probably isn't a valid image (measure sends back x,y)
 		if m(image) == 0 then
 			-- try with my lib path
 			image = ChoGGi.library_path .. image
+			r(image)
 			-- falling back
 			if m(image) == 0 then
 				image = nil
 				if fallback then
 					image = ChoGGi.library_path .. fallback
+					r(image)
 					if m(image) == 0 then
 						image = fallback
+						r(image)
 						if m(image) == 0 then
 							image = nil
 						end
@@ -2642,10 +2646,10 @@ do -- DeleteObject
 			end
 		end
 
-		-- figured it's quicker using a local function now
 		local waterspire = obj:IsKindOf("WaterReclamationSpire") and not IsValid(obj.parent_dome)
 		local rctransport = obj:IsKindOf("RCTransport")
-		local holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor","JumperShuttleHub")
+		local holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor")
+		local flat_stuff = obj:IsKindOf("ResourceStockpileBase")
 
 		if not waterspire then
 			-- some stuff will leave holes in the world if they're still working
@@ -2672,21 +2676,22 @@ do -- DeleteObject
 			DestroyBuildingImmediate(obj)
 		end
 
-		ExecFunc(obj,"RestoreTerrain")
+		-- causes log spam, transport still drops items carried so...
+		if not waterspire and not rctransport then
+			ExecFunc(obj,"Done")
+		end
+
+		if not flat_stuff then
+			ExecFunc(obj,"RestoreTerrain")
+		end
 		ExecFunc(obj,"Destroy")
 
-		-- still gotta fix the geo dome
-		if obj.GetFlattenShape and HasAnySurfaces(obj, EntitySurfaces_Height, true) and not HasRestoreHeight() then
+		if not flat_stuff and obj.GetFlattenShape and HasAnySurfaces(obj, EntitySurfaces_Height, true) and not HasRestoreHeight() then
 			FlattenTerrainInBuildShape(obj:GetFlattenShape(), obj)
 		end
 
 		ExecFunc(obj,"SetDome",false)
 		ExecFunc(obj,"RemoveFromLabels")
-
-		-- causes log spam, transport still drops items carried so...
-		if not waterspire and not rctransport then
-			ExecFunc(obj,"Done")
-		end
 
 		ExecFunc(obj,"Gossip","done")
 		ExecFunc(obj,"SetHolder",false)
@@ -4023,7 +4028,7 @@ do -- UpdateFlightGrid
 
 		local objs = FlyingObjs or ""
 		for i = 1, #objs do
-			objs[i]:RegisterFlight()
+			objs[i]:RegisterFlight(true)
 		end
 	end
 end -- do

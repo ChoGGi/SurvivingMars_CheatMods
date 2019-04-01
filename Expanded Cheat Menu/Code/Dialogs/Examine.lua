@@ -2587,7 +2587,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		end
 
 		-- calling GetNumTris/GetNumVertices on InvisibleObject == CTD
-		if valid_ent and not entity == "InvisibleObject" then
+		if valid_ent and entity ~= "InvisibleObject" then
 			-- some entity details as well
 			table_insert(list_obj_str, 2,
 				"GetEntity(): " .. self:ConvertValueToInfo(entity)

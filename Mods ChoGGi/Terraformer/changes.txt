@@ -1,3 +1,6 @@
+v1.4
+Made sure console log doesn't show up.
+
 v1.3
 Stop menus from taking up the full width of the screen.
 

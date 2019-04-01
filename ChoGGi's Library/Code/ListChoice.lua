@@ -339,6 +339,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 --~ 		 AdditionalComponent = "none"
 		}, self.idColorPickerArea)
 		-- block it from closing on dbl click
+		self.idColorPicker.idColorSquare.OnColorChanged_Orig = self.idColorPicker.idColorSquare.OnColorChanged
 		self.idColorPicker.idColorSquare.OnColorChanged = self.idColorSquareOnColorChanged
 
 		self.idColorCheckArea = g_Classes.ChoGGi_DialogSection:new({
@@ -502,7 +503,7 @@ function ChoGGi_ListChoiceDlg:idCheckBoxAtLeastOne()
 end
 
 function ChoGGi_ListChoiceDlg:idColorSquareOnColorChanged(colour)
-	GetRootDialog(self).idColorPicker:SetColorInternal(colour)
+	self:OnColorChanged_Orig(colour)
 end
 
 function ChoGGi_ListChoiceDlg:idListOnKbdKeyDown(vk)
@@ -579,11 +580,16 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 		name_str = value
 
 	else
-		value = DotNameToObject(name_str)
+		value = tonumber(name_str)
 		if type(value) == "number" then
 			value_type = "number"
 		else
-			value,value_type = RetProperType(name_str)
+			value = DotNameToObject(name_str)
+			if type(value) == "number" then
+				value_type = "number"
+			else
+				value,value_type = RetProperType(name_str)
+			end
 		end
 	end
 
