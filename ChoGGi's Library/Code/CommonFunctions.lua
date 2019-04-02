@@ -539,8 +539,9 @@ do -- ShowObj
 	local IsValid = IsValid
 	local guic = guic
 	local ViewObjectMars = ViewObjectMars
-	local PlaceObject = PlaceObject
 	local InvalidPos = ChoGGi.Consts.InvalidPos
+	local OVector,OSphere
+
 	-- we just use a few noticeable colours for rand
 	local rand_colours = {
 		green,yellow,cyan,white,red,
@@ -638,7 +639,7 @@ do -- ShowObj
 			-- update with new colour
 			markers[pos]:SetColor(colour)
 		else
-			local sphere = PlaceObject("ChoGGi_OSphere")
+			local sphere = OSphere:new()
 			sphere:SetPos(pt)
 			sphere:SetRadius(50 * guic)
 			sphere:SetColor(colour)
@@ -648,6 +649,7 @@ do -- ShowObj
 	end
 
 	function ChoGGi.ComFuncs.ShowPoint(obj, colour)
+		OSphere = OSphere or ChoGGi_OSphere
 		colour = colour or rand_c()
 		-- single pt
 		if IsPoint(obj) and InvalidPos ~= obj then
@@ -666,7 +668,8 @@ do -- ShowObj
 			return
 		end
 		if IsPoint(obj[1]) and IsPoint(obj[2]) and InvalidPos ~= obj[1] and InvalidPos ~= obj[2] then
-			local vector = PlaceObject("ChoGGi_OVector")
+			OVector = OVector or ChoGGi_OVector
+			local vector = OVector:new()
 			vector:Set(obj[1], obj[2], colour or rand_c())
 			markers[vector] = "vector"
 			return vector
@@ -683,6 +686,7 @@ do -- ShowObj
 		if not (is_valid or is_point) then
 			return
 		end
+		OSphere = OSphere or ChoGGi_OSphere
 		colour = colour or rand_c()
 		local vis_pos = is_valid and obj:GetVisualPos()
 
@@ -946,7 +950,7 @@ end
 
 -- show a circle for time and delete it
 function ChoGGi.ComFuncs.Circle(pos, radius, colour, time)
-	local circle = PlaceObject("ChoGGi_OCircle")
+	local circle = ChoGGi_OCircle:new()
 	circle:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetTerrainCursor())
 	circle:SetRadius(radius or 1000)
 	circle:SetColor(colour or white)
@@ -2648,7 +2652,7 @@ do -- DeleteObject
 
 		local waterspire = obj:IsKindOf("WaterReclamationSpire") and not IsValid(obj.parent_dome)
 		local rctransport = obj:IsKindOf("RCTransport")
-		local holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor")
+--~ 		local holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor")
 		local flat_stuff = obj:IsKindOf("ResourceStockpileBase")
 
 		if not waterspire then
@@ -2696,10 +2700,10 @@ do -- DeleteObject
 		ExecFunc(obj,"Gossip","done")
 		ExecFunc(obj,"SetHolder",false)
 
-		-- only fire for stuff with holes in the ground (takes too long otherwise)
-		if holy_stuff then
-			ExecFunc(obj,"DestroyAttaches")
-		end
+--~ 		-- only fire for stuff with holes in the ground (takes too long otherwise)
+--~ 		if holy_stuff then
+--~ 			ExecFunc(obj,"DestroyAttaches")
+--~ 		end
 
 		-- I did ask nicely
 		if IsValid(obj) then
@@ -4236,23 +4240,34 @@ function ChoGGi.ComFuncs.RetTemplateOrClass(obj)
 	return obj.template_name or obj.class
 end
 
-function ChoGGi.ComFuncs.ToggleConstructEntityView(obj)
-	local func
-	if obj:GetGameFlags(65536) == 65536 then
-		func = "ClearGameFlags"
-	else
-		func = "SetGameFlags"
-	end
 
-	obj[func](obj,65536)
-	if obj.ForEachAttach then
-		obj:ForEachAttach(function(a)
-			if IsValid(a) and a.class:sub(1,8) ~= "GridTile" and not a:IsKindOf("BuildingSign") then
-				a[func](a,65536)
-			end
-		end)
+do -- ToggleBldFlags
+	local function ToggleBldFlags(obj,flag)
+		local func
+		if obj:GetGameFlags(flag) == flag then
+			func = "ClearGameFlags"
+		else
+			func = "SetGameFlags"
+		end
+
+		obj[func](obj,flag)
+		if obj.ForEachAttach then
+			obj:ForEachAttach(function(a)
+				if a.class:sub(1,8) ~= "GridTile" and not a:IsKindOf("BuildingSign") then
+					a[func](a,flag)
+				end
+			end)
+		end
 	end
-end
+	ChoGGi.ComFuncs.ToggleBldFlags = ToggleBldFlags
+
+	function ChoGGi.ComFuncs.ToggleConstructEntityView(obj)
+		ToggleBldFlags(obj,65536)
+	end
+	function ChoGGi.ComFuncs.ToggleEditorEntityView(obj)
+		ToggleBldFlags(obj,2)
+	end
+end -- do
 
 function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
 	local name = RetName(obj)

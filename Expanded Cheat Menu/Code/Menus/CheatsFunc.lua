@@ -494,7 +494,7 @@ This will switch to a new map.--]]],
 		end
 
 		local const = const
-		local storm = PlaceObject("MetatronIonStorm")
+		local storm = MetatronIonStorm:new()
 		storm.expiration_time = ChoGGi.ComFuncs.Random(50 * const.HourDuration, 75 * const.HourDuration) + 14450
 		storm:SetPos(pos)
 		storm:SetAngle(ChoGGi.ComFuncs.Random(1,21600))

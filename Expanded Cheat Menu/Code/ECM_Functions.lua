@@ -7,7 +7,6 @@ local table_sort = table.sort
 local type,pairs,next,print = type,pairs,next,print
 local tostring,tonumber,rawget = tostring,tonumber,rawget
 local AveragePoint2D = AveragePoint2D
-local PlaceObject = PlaceObject
 local Sleep = Sleep
 local IsValid = IsValid
 local IsKindOf = IsKindOf
@@ -2365,6 +2364,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		local RotateRadius = RotateRadius
 		local HexToWorld = HexToWorld
 		local point = point
+		local OText
 
 		local FallbackOutline = FallbackOutline
 		local line_points = objlist:new()
@@ -2396,7 +2396,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				end
 				-- pos text
 				if hex_pos then
-					local text_obj = PlaceObject("ChoGGi_OText")
+					local text_obj = OText:new()
 					if depth_test then
 						text_obj:SetDepthTest(true)
 					end
@@ -2437,6 +2437,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 			params.colour = params.colour or RandomColourLimited()
 			params.offset = params.offset or 1
 
+			OText = OText or ChoGGi_OText
 			BuildShape(
 				obj,
 				params.shape,
@@ -2693,6 +2694,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 	do -- EntitySpots_Toggle
 		local GetSpotNameByType = GetSpotNameByType
 		local old_remove_table = {"ChoGGi_OText","ChoGGi_OOrientation"}
+		local OText,OPolyline
 
 		local function EntitySpots_Clear(obj)
 			-- just in case (old way of doing it)
@@ -2739,7 +2741,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 							text_str = text_str .. " " .. tostring(obj:GetSpotPos(i) - obj_pos)
 						end
 
-						local text_obj = PlaceObject("ChoGGi_OText")
+						local text_obj = OText:new()
 						if depth_test then
 							text_obj:SetDepthTest(true)
 						end
@@ -2785,7 +2787,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				end
 			end
 			if chain_c > 0 then
-				local line_obj = PlaceObject("ChoGGi_OPolyline")
+				local line_obj = OPolyline:new()
 				if depth_test then
 					line_obj:SetDepthTest(true)
 				end
@@ -2823,6 +2825,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 			params.colour = params.colour or RandomColourLimited()
 
+			OText = OText or ChoGGi_OText
+			OPolyline = OPolyline or ChoGGi_OPolyline
 			EntitySpots_Add(obj,
 				params.spot_type,
 				params.annotation,
@@ -2846,8 +2850,10 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 	end -- do
 
 	do -- ShowAnimDebug_Toggle
+		local OText
+
 		local function AnimDebug_Show(obj,colour)
-			local text = PlaceObject("ChoGGi_OText")
+			local text = OText:new()
 			text:SetColor1(colour)
 
 			-- so we can delete them easy
@@ -2904,6 +2910,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 				if not obj:GetAnimDebug() then
 					return
 				end
+				OText = OText or ChoGGi_OText
 
 				if obj.ChoGGi_ShowAnimDebug then
 					obj.ChoGGi_ShowAnimDebug = nil

@@ -71,7 +71,6 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	do -- ViewObjInfo_Toggle
-		local PlaceObject = PlaceObject
 		local GetStateName = GetStateName
 		local IsValid = IsValid
 		local table_find = table.find
@@ -80,6 +79,7 @@ function OnMsg.ClassesGenerate()
 		local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 		local update_info_thread = {}
 		local viewing_obj_info = {}
+		local OText
 
 		local function Dome_GetWorkingSpace(obj)
 			local max_workers = 0
@@ -261,7 +261,7 @@ function OnMsg.ClassesGenerate()
 				end
 				-- skip any missing objects
 				if IsValid(obj) and pos then
-					local text_obj = PlaceObject("ChoGGi_OText")
+					local text_obj = OText:new()
 					text_obj:SetColor1(RandomColourLimited())
 					text_obj:SetText(GetInfo[label](obj))
 					obj:Attach(text_obj)
@@ -342,6 +342,7 @@ function OnMsg.ClassesGenerate()
 				end
 				local value = choice[1].value
 
+				OText = OText or ChoGGi_OText
 				-- cleanup
 				if viewing_obj_info[value] then
 					viewing_obj_info[value] = nil

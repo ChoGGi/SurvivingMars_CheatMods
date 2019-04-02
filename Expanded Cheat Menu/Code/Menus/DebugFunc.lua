@@ -113,8 +113,8 @@ You need my HelperMod installed to be able to use this."--]]],
 --~ 		GetEntityWaypointChains(entity)
 		-- mostly a copy n paste from Lua\Buildings\BuildingWayPoints.lua: ShowWaypoints()
 		local DoneObject = DoneObject
-		local PlaceObject = PlaceObject
 		local AveragePoint2D = AveragePoint2D
+		local OText,OPolyline
 
 		local objlist = objlist
 		local points, colors = objlist:new(),objlist:new()
@@ -130,13 +130,13 @@ You need my HelperMod installed to be able to use this."--]]],
 				local c = i == open and color_door or color_line
 				points[i] = w
 				colors[i] = c
-				local t = PlaceObject("ChoGGi_OText")
+				local t = OText:new()
 				t:SetPos(w:SetZ(w:z() or w:SetTerrainZ(10 * guic)))
 				t:SetColor1(c)
 				t:SetText(i .. "")
 				lines[i] = t
 			end
-			local line = PlaceObject("ChoGGi_OPolyline")
+			local line = OPolyline:new()
 			line:SetPos(AveragePoint2D(points))
 			line:SetMesh(points, colors)
 			lines.line = line
@@ -156,6 +156,8 @@ You need my HelperMod installed to be able to use this."--]]],
 		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
 		function ChoGGi.MenuFuncs.BuildingPathMarkers_Toggle()
+			OText = OText or ChoGGi_OText
+			OPolyline = OPolyline or ChoGGi_OPolyline
 			if ChoGGi.Temp.BuildingPathMarkers_Toggle then
 				ChoGGi.Temp.BuildingPathMarkers_Toggle = nil
 				FollowWaypointPath = ChoGGi_OrigFuncs.FollowWaypointPath
@@ -611,6 +613,8 @@ You need my HelperMod installed to be able to use this."--]]],
 		local IsValid = IsValid
 		local grid_objs = {}
 		local grid_thread = false
+		local OHexSpot
+
 		local function DeleteHexes()
 			-- kill off thread
 			if IsValidThread(grid_thread) then
@@ -706,6 +710,7 @@ You need my HelperMod installed to be able to use this."--]]],
 		end
 
 		function ChoGGi.MenuFuncs.debug_build_grid()
+			OHexSpot = OHexSpot or ChoGGi_OHexSpot
 			local u = ChoGGi.UserSettings
 			local grid_size = type(u.DebugGridSize) == "number" and u.DebugGridSize or 10
 			local grid_opacity = type(u.DebugGridOpacity) == "number" and u.DebugGridOpacity or 15
@@ -721,7 +726,6 @@ You need my HelperMod installed to be able to use this."--]]],
 			else
 				-- this loop section is just a way of building the table and applying the settings once instead of over n over in the while loop
 
-				local PlaceObject = PlaceObject
 				local grid_count = 0
 				local q,r = 1,1
 				local z = -q - r
@@ -730,7 +734,7 @@ You need my HelperMod installed to be able to use this."--]]],
 					for r_i = r - grid_size, r + grid_size do
 						for z_i = z - grid_size, z + grid_size do
 							if q_i + r_i + z_i == 0 then
-								local hex = PlaceObject("ChoGGi_OHexSpot")
+								local hex = OHexSpot:new()
 								hex:SetOpacity(grid_opacity)
 								grid_count = grid_count + 1
 								grid_objs[grid_count] = hex
@@ -818,11 +822,9 @@ You need my HelperMod installed to be able to use this."--]]],
 	end
 
 	do -- path markers
---~ 		PlaceObject("Waypoint")
 		local IsObjlist = ChoGGi.ComFuncs.IsObjlist
 		local Clamp = Clamp
 		local point = point
-		local PlaceObject = PlaceObject
 		local CreateGameTimeThread = CreateGameTimeThread
 		local terrain = terrain
 		local GetHeight = terrain.GetHeight
@@ -835,10 +837,10 @@ You need my HelperMod installed to be able to use this."--]]],
 		-- default height of waypoints (maybe flag_height isn't the best name as no more flags)
 		local flag_height = 50
 		local mapw, maph
+		local OPolyline
 
 		local ShowWaypoints_points = {}
 		local function ShowWaypoints(waypoints, colour, obj, skipheight)
-			print("waypoints",waypoints)
 			colour = tonumber(colour) or RandomColour()
 			-- also used for line height
 			if not skipheight then
@@ -875,7 +877,7 @@ You need my HelperMod installed to be able to use this."--]]],
 			end
 			local last_pos = points[#points]
 			-- and spawn the line
-			local spawnline = PlaceObject("ChoGGi_OPolyline")
+			local spawnline = OPolyline:new()
 			spawnline:SetMesh(points, colour)
 			spawnline:SetPos(last_pos)
 
@@ -1002,6 +1004,7 @@ You need my HelperMod installed to be able to use this."--]]],
 		end
 
 		function ChoGGi.MenuFuncs.SetPathMarkersGameTime(obj,single)
+			OPolyline = OPolyline or ChoGGi_OPolyline
 			-- if fired from action menu
 			if IsKindOf(obj,"XAction") then
 				obj = SelObject()
@@ -1080,6 +1083,7 @@ You need my HelperMod installed to be able to use this."--]]],
 		end
 
 		function ChoGGi.MenuFuncs.SetPathMarkers()
+			OPolyline = OPolyline or ChoGGi_OPolyline
 			ChoGGi.Temp.UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles or {}
 
 			if not mapw then
@@ -1229,7 +1233,6 @@ You need my HelperMod installed to be able to use this."--]]],
 		local FindPassable = FindPassable
 		local GetTerrainCursor = GetTerrainCursor
 		local terrain_GetHeight = terrain.GetHeight
-		local PlaceObject = PlaceObject
 		local DoneObject = DoneObject
 
 		local grid_thread = false
@@ -1242,6 +1245,7 @@ You need my HelperMod installed to be able to use this."--]]],
 		local green = green
 		local flight_lines = {}
 		local points,colors = {},{}
+		local OPolyline
 
 		local function RasterLine(pos1, pos0, zoffset, line_num)
 			pos1 = pos1 or GetTerrainCursor()
@@ -1271,7 +1275,7 @@ You need my HelperMod installed to be able to use this."--]]],
 			local line = flight_lines[line_num]
 			-- just in case it was deleted
 			if not IsValid(line) then
-				line = PlaceObject("ChoGGi_OPolyline")
+				line = OPolyline:new()
 				flight_lines[line_num] = line
 			end
 			line:SetMesh(points, colors)
@@ -1315,7 +1319,7 @@ You need my HelperMod installed to be able to use this."--]]],
 			-- we spawn lines once then re-use them
 			SuspendPassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.GridFunc")
 			for i = 0, (steps + steps) do
-				flight_lines[i] = PlaceObject("ChoGGi_OPolyline")
+				flight_lines[i] = OPolyline:new()
 			end
 			ResumePassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.GridFunc")
 
@@ -1366,6 +1370,8 @@ You need my HelperMod installed to be able to use this."--]]],
 				DeleteLines()
 				return
 			end
+
+			OPolyline = OPolyline or ChoGGi_OPolyline
 			grid_thread = CreateRealTimeThread(GridFunc,size,zoffset)
 		end
 	end -- do

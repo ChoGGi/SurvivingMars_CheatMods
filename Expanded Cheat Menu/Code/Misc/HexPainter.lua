@@ -8,6 +8,7 @@
 --~ HexPainter(GetEntityInverseBuildShape(s:GetEntity()))
 --~ HexPainter(GetEntityCombinedShape(s:GetEntity()))
 
+local OHexSpot
 GlobalVar("g_painted_hexes", false)
 GlobalVar("g_painted_hexes_thread", false)
 function PaintHexArray(arr, mid_hex_pt) --paints zero based hex shapes (such as from GetEntityHexShapes)
@@ -35,7 +36,7 @@ function PaintHexArray(arr, mid_hex_pt) --paints zero based hex shapes (such as 
 				if last_q ~= q or last_r ~= r then
 					for i = 1, #arr do
 						local q_i, r_i = q + arr[i]:x(), r + arr[i]:y()
-						local c = g_painted_hexes[i] or PlaceObject("ChoGGi_OHexSpot")
+						local c = g_painted_hexes[i] or OHexSpot:new()
 						c:SetPos(point(HexToWorld(q_i, r_i)))
 --~ 							c:SetRadius(const.GridSpacing/2)
 --~ 							c:SetColorModifier(RGBA(100, 255, 100, 0))
@@ -53,6 +54,7 @@ end
 -- allows you to redefine hex shapes (right-click offsets the hex grid)
 local HexPainter_toggle
 function HexPainter(arr)
+	OHexSpot = OHexSpot or ChoGGi_OHexSpot
 	if HexPainter_toggle then
 		HexPainter_toggle = nil
 		Dialogs.InGameInterface:SetMode("selection")
@@ -140,7 +142,7 @@ function HexPainterModeDialog:PaintMid()
 		self.hex_mid_circle:delete()
 	end
 	if self.hex_mid_pt then
-		self.hex_mid_circle = PlaceObject("ChoGGi_OHexSpot")
+		self.hex_mid_circle =	OHexSpot:new()
 		self.hex_mid_circle:SetPos(point(HexToWorld(self.hex_mid_pt:x(), self.hex_mid_pt:y())))
 			self.hex_mid_circle:SetColorModifier(RGB(100, 255, 100))
 --~ 			self.hex_mid_circle:SetRadius(const.GridSpacing/2)

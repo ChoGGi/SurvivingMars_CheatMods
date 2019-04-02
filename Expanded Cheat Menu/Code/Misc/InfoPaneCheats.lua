@@ -29,7 +29,8 @@ function OnMsg.ClassesGenerate()
 	RCTransport.CheatFindResource = ComFuncs.FindNearestResource
 	ColorizableObject.CheatColourRandom = ComFuncs.ObjectColourRandom
 	ColorizableObject.CheatColourDefault = ComFuncs.ObjectColourDefault
-	BaseBuilding.CheatToggleConstruct = ComFuncs.ToggleConstructEntityView
+	BaseBuilding.CheatViewConstruct = ComFuncs.ToggleConstructEntityView
+	BaseBuilding.CheatViewEditor = ComFuncs.ToggleEditorEntityView
 	MechanizedDepot.CheatEmptyDepot = ComFuncs.EmptyMechDepot
 	BaseRover.CheatDestroy = ComFuncs.RuinObjectQuestion
 	local Building = Building
@@ -161,8 +162,11 @@ function OnMsg.ClassesGenerate()
 		Die = {
 			des = Strings[302535920001431--[[Kill this colonist!--]]],
 		},
-		ToggleConstruct = {
+		ViewConstruct = {
 			des = Strings[302535920001531--[[Make the building model look like a construction site (toggle).--]]],
+		},
+		ViewEditor = {
+			des = Strings[302535920001531--[[Make the building model look simpler (toggle).--]]],
 		},
 		CrimeEvent = {
 			des = Strings[302535920001541--[[Start a Crime Event--]]],
