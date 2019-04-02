@@ -885,6 +885,17 @@ You need my HelperMod installed to be able to use this."--]]],
 		end -- end of ShowWaypoints
 
 		local SetWaypoint_path = {}
+
+		local function AddShuttlePath(c,path,new_path)
+			if type(new_path) == "table" then
+				-- :GetPath() has them backwards so we'll do the same
+				for i = #new_path, 1, -1 do
+					c = c + 1
+					path[c] = new_path[i]
+				end
+			end
+			return c
+		end
 		function ChoGGi.MenuFuncs.SetWaypoint(obj,setcolour,skipheight)
 			table_clear(SetWaypoint_path)
 			local path = SetWaypoint_path
@@ -912,23 +923,13 @@ You need my HelperMod installed to be able to use this."--]]],
 				local c = #path
 
 				-- the next four points it's going to after current_spline
-				local list = obj.next_spline
-				if list then
-					-- :GetPath() has them backwards so we'll do the same
-					for i = #list, 1, -1 do
-						c = c + 1
-						path[c] = list[i]
-					end
-				end
-
+				c = AddShuttlePath(c,path,obj.next_spline)
 				-- the next four points it's going to
-				list = obj.current_spline
-				if list then
-					for i = #list, 1, -1 do
-						c = c + 1
-						path[c] = list[i]
-					end
-				end
+				c = AddShuttlePath(c,path,obj.current_spline)
+				-- something?
+				c = AddShuttlePath(c,path,obj.current_path)
+
+				-- and lastly the where the line starts
 				c = c + 1
 				path[c] = obj:GetPos()
 

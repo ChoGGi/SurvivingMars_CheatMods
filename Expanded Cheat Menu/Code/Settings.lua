@@ -66,6 +66,8 @@ function OnMsg.ClassesGenerate()
 		ConsoleExamineListUpdate = true,
 		-- how wide the text for the history menu in the Console is
 		ConsoleHistoryMenuLength = 50,
+		-- ECM and Lib make a lot of these :)
+		ConsoleSkipUndefinedGlobals = true,
 		-- the build/passibility grid in debug menu
 		DebugGridOpacity = 15,
 		DebugGridSize = 25,

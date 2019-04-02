@@ -22,6 +22,9 @@ function OnMsg.ClassesGenerate()
 	local blacklist = ChoGGi.blacklist
 	local testing = ChoGGi.testing
 
+	-- store list of undefined globals
+	ChoGGi.Temp.UndefinedGlobals = {}
+
 	local ToolsMenuPopupToggle_list = {
 		{name = Strings[302535920000040--[[Exec Code--]]],
 			hint = Strings[302535920001287--[[Instead of a single line, you can enter/execute code in a textbox.--]]],
@@ -274,14 +277,22 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 			debug_traceback = debug.traceback
 		end
 
+		local UndefinedGlobals = ChoGGi.Temp.UndefinedGlobals
+		local UndefinedGlobals_c = #UndefinedGlobals
+		local function UndefinedGlobalUpdate(msg,stack)
+			UndefinedGlobals_c = UndefinedGlobals_c + 1
+			UndefinedGlobals[UndefinedGlobals_c] = msg .. "\n" .. stack
+			if not UserSettings.ConsoleSkipUndefinedGlobals then
+				print(msg,"\n",stack)
+			end
+		end
+
 		local function UpdateLogErrors(name)
 			-- replace the error reporting funcs with our own
 			_G[name] = function(msg,...)
 				-- devs may care about undefined globals, but i certainly don't
 				if name == "error" and type(msg) == "string" and msg:sub(1,36) == "Attempt to use an undefined global '" then
-						if not UserSettings.ConsoleSkipUndefinedGlobals then
-							print(msg,"\n",GetStack(2, false, "\t"))
-						end
+						UndefinedGlobalUpdate(msg,GetStack(2, false, "\t") or "")
 					return
 				end
 
@@ -336,9 +347,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 						-- skip the one annoying "error"
 						error = function(msg,...)
 							if type(msg) == "string" and msg:sub(1,36) == "Attempt to use an undefined global '" then
-								if not UserSettings.ConsoleSkipUndefinedGlobals then
-									print(msg,"\n",GetStack(2, false, "\t"))
-								end
+								UndefinedGlobalUpdate(msg,GetStack(2, false, "\t") or "")
 								return
 							end
 							return ChoGGi_OrigFuncs[name](msg,...)
@@ -376,10 +385,18 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 				ChoGGi.SettingFuncs.WriteSettings()
 			end,
 		},
+--~ 		{name = Strings[302535920000310--[[Skip Undefined Globals--]]] .. " (" .. #ChoGGi.Temp.UndefinedGlobals .. ")",
 		{name = Strings[302535920000310--[[Skip Undefined Globals--]]],
-			hint = Strings[302535920000311--[["Stop the ""Attempt to use an undefined global"" msgs."--]]],
+			hint = Strings[302535920000311--[["Stop the ""Attempt to use an undefined global"" msgs.
+
+The number is a count of stored msgs, right-click <right_click> to view the list."--]]],
 			class = "ChoGGi_CheckButtonMenu",
 			value = "ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals",
+			mousedown = function(_,_,button)
+				if button == "R" then
+					OpenInExamineDlg(ChoGGi.Temp.UndefinedGlobals,nil,Strings[302535920000310--[[Skip Undefined Globals--]]])
+				end
+			end,
 			clicked = function()
 				ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals = not ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals
 				ChoGGi.SettingFuncs.WriteSettings()
@@ -499,6 +516,9 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 			RolloverText = Strings[302535920001089--[[Settings & Commands for the console.--]]],
 			Text = Strings[302535920001308--[[Settings--]]],
 			OnPress = function()
+				-- update value
+				local idx = table_find(ConsoleMenuPopupToggle_list,"value","ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals")
+				ConsoleMenuPopupToggle_list[idx].name = Strings[302535920000310--[[Skip Undefined Globals--]]] .. " (" .. #ChoGGi.Temp.UndefinedGlobals .. ")"
 				PopupToggle(dlgConsole.idConsoleMenu,"idConsoleMenuPopup",ConsoleMenuPopupToggle_list)
 			end,
 		}, dlgConsole.idContainer)

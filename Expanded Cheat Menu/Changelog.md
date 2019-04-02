@@ -2,7 +2,7 @@
 
 ## v13.4 (Unreleased)
 ### Added:
-- Console>Settings>Skip Undefined Globals: Stop the "Attempt to use an undefined global" msgs.
+- Console>Settings>Skip Undefined Globals: Stop the "Attempt to use an undefined global" msgs (it'll store a list of them you can check).
 
 ### Fixed:
 - Debug>Pathing failed on jumper shuttles on the landing.

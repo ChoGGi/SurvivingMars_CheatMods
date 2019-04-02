@@ -9,7 +9,8 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411157810",
 	"pops_any_uuid", "46d8ac6c-8e28-4224-b987-95c3021482b5",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
-	"lua_revision", LuaRevision,
+--~ 	"lua_revision", LuaRevision,
+	"lua_revision", 243725,
 	"TagGameplay", true,
 	"TagInterface", true,
 	"TagTools", true,
@@ -127,9 +128,8 @@ The steps you take to recreate the issue would also be useful, and maybe a save 
 
 
 ##### Access to missing functionality
-Da Vinci update added a blacklist of functions, you can use this to bypass them (only really useful for modders).
-]] .. ConvertToOSPath(CurrentModPath) .. [[HelperMod
-
+Da Vinci update added a blacklist of functions, you can use this to bypass them (only useful for modders).
+https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Startup%20HelperMod
 
 
 ##### Thanks
