@@ -1335,9 +1335,6 @@ do -- LoadGame/CityStart
 			SetLightmodelOverride(1,UserSettings.Lightmodel)
 		end
 
-		-- defaults to 20 items
-		const.nConsoleHistoryMaxSize = 100
-
 		--long arsed cables
 		if UserSettings.UnlimitedConnectionLength then
 			g_Classes.GridConstructionController.max_hex_distance_to_allow_build = 1000

@@ -2,7 +2,6 @@
 
 -- I didn't get a harumph outta that guy!
 ModEnvBlacklist = {--[[Harumph!--]]}
--- yeah, I know it don't do jack your point?
 
 -- tell people how to get my library mod (if needs be)
 function OnMsg.ModsReloaded()
@@ -27,6 +26,9 @@ Press OK to download it or check the Mod Manager to make sure it's enabled.]]) =
 		end)
 	end
 end
+
+-- defaults to 20 items
+const.nConsoleHistoryMaxSize = 100
 
 -- generate is late enough that my library is loaded, but early enough to replace anything i need to
 function OnMsg.ClassesGenerate()
