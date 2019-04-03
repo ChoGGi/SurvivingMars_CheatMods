@@ -1,4 +1,12 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library v6.4",
+			"version_major", 6,
+			"version_minor", 4,
+		}),
+	},
 	"title", "Terraformer v1.4",
 	"version", 14,
   "saved", 1554120000,

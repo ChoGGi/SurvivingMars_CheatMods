@@ -1,4 +1,12 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library v6.4",
+			"version_major", 6,
+			"version_minor", 4,
+		}),
+	},
 	"title", "Add 5 Times The Resource To Deposits v0.5",
 	"version", 5,
 	"saved", 1549713600,

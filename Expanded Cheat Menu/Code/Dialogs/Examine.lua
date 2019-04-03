@@ -2586,14 +2586,20 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			)
 		end
 
-		-- calling GetNumTris/GetNumVertices on InvisibleObject == CTD
-		if valid_ent and entity ~= "InvisibleObject" then
-			-- some entity details as well
-			table_insert(list_obj_str, 2,
-				"GetEntity(): " .. self:ConvertValueToInfo(entity)
-				.. "\nGetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
-				.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices())
-				.. ((parent or state_added) and "" or "\n"))
+		if valid_ent then
+			if entity == "InvisibleObject" then
+				-- calling GetNumTris/GetNumVertices on InvisibleObject == CTD
+				table_insert(list_obj_str, 2,
+					"GetEntity(): " .. self:ConvertValueToInfo(entity)
+						.. ((parent or state_added) and "" or "\n"))
+			else
+				-- some entity details as well
+				table_insert(list_obj_str, 2,
+					"GetEntity(): " .. self:ConvertValueToInfo(entity)
+						.. "\nGetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
+						.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices())
+						.. ((parent or state_added) and "" or "\n"))
+			end
 		end
 
 	end

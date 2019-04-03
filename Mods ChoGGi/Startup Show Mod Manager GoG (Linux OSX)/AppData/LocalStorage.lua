@@ -4,24 +4,33 @@ g_LocalStorageFile = new_settings_file
 local settings = dofile(new_settings_file)
 LocalStorage = settings
 
+-- skip
+--~ do return settings end
+
 -- any "mods" that need to be loaded before the game is loaded (skip logos, etc)
 dofolder_files("AppData/BinAssets/Code")
 
 -- local some globals
-local setmetatable,pairs,rawget = setmetatable,pairs,rawget
+local setmetatable,getmetatable = setmetatable,getmetatable
+local pairs,rawget = pairs,rawget
 -- a less restrictive env (okay, not at all restrictive)
 local orig_G = _G
+local mod_env = {
+	__index = function(_, key)
+		return orig_G[key]
+	end,
+	__newindex = function(_, key, value)
+		orig_G[key] = value
+	end,
+}
+local orig_OnMsg = getmetatable(orig_G.OnMsg)
 local function LuaModEnv(env)
   env = env or {}
   env._G = orig_G
-	setmetatable(env, {
-		__index = function(_, key)
-			return orig_G[key]
-		end,
-		__newindex = function(_, key, value)
-			orig_G[key] = value
-		end,
-	})
+	setmetatable(env,mod_env)
+	-- it needs to be cleared first
+  setmetatable(env.OnMsg)
+  setmetatable(env.OnMsg,orig_OnMsg)
   return env
 end
 
@@ -53,9 +62,11 @@ CreateRealTimeThread(function()
 				mod.no_blacklist = true
 				local env = mod.env
 				for key in pairs(env) do
-					local g_key = rawget(orig_G,key)
-					if g_key then
-						env[key] = g_key
+					if key ~= "OnMsg" then
+						local g_key = rawget(orig_G,key)
+						if g_key then
+							env[key] = g_key
+						end
 					end
 				end
 				mod.env = LuaModEnv(env)
