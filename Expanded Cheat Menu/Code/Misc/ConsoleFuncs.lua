@@ -56,6 +56,7 @@ function OnMsg.ClassesGenerate()
 				end
 				-- lib should always have the blacklist enabled
 				local _,bl = debug.getupvalue(getmetatable(Mods.ChoGGi_Library.env).__index,1)
+				bl[" " .. Strings[302535920000313--[[OnMsg/Msg blacklist--]]]] = ModMsgBlacklist
 				OpenInExamineDlg(bl,nil,Strings[302535920001497--[[Show Blacklist--]]])
 			end,
 		},
