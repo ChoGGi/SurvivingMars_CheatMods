@@ -10,7 +10,6 @@ SpiceHarvester = {
 	Max_Shuttles = 50,
 }
 
-local Random
 local WaitMsg = WaitMsg
 local MapCount = MapCount
 local DoneObject = DoneObject
@@ -20,10 +19,7 @@ local PlaySound = PlaySound
 local GetSoundDuration = GetSoundDuration
 local GetHeight = terrain.GetHeight
 
--- generate is late enough that my library is loaded, but early enough to replace anything i need to
-function OnMsg.ClassesGenerate()
-	Random = ChoGGi.ComFuncs.Random
-end
+local Random = ChoGGi.ComFuncs.Random
 
 function SpiceHarvester.SpawnShuttle(hub)
 	local sh = SpiceHarvester

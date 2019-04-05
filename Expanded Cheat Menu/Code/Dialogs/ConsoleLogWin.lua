@@ -2,19 +2,11 @@
 
 -- displays the console in a dialog
 
-local Strings
-local Translate
-local TableConcat
-local blacklist
-local GetParentOfKind
-
-function OnMsg.ClassesGenerate()
-	Translate = ChoGGi.ComFuncs.Translate
-	TableConcat = ChoGGi.ComFuncs.TableConcat
-	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-	Strings = ChoGGi.Strings
-	blacklist = ChoGGi.blacklist
-end
+local Translate = ChoGGi.ComFuncs.Translate
+local TableConcat = ChoGGi.ComFuncs.TableConcat
+local Strings = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_ConsoleLogWin")

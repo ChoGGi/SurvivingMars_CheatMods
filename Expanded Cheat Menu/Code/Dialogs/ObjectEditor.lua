@@ -2,29 +2,19 @@
 
 -- used to do minimal editing of objects (or all of same type)
 
-local Strings
-local TableConcat
-local RetName
-local DebugGetInfo
-local Translate
-local GetParentOfKind
-local RetProperType
-
 local tostring,type,table = tostring,type,table
 
 local IsPoint = IsPoint
 local Min = Min
 local CmpLower = CmpLower
 
-function OnMsg.ClassesGenerate()
-	Strings = ChoGGi.Strings
-	TableConcat = ChoGGi.ComFuncs.TableConcat
-	RetName = ChoGGi.ComFuncs.RetName
-	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-	Translate = ChoGGi.ComFuncs.Translate
-	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-	RetProperType = ChoGGi.ComFuncs.RetProperType
-end
+local Strings = ChoGGi.Strings
+local TableConcat = ChoGGi.ComFuncs.TableConcat
+local RetName = ChoGGi.ComFuncs.RetName
+local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
+local Translate = ChoGGi.ComFuncs.Translate
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local RetProperType = ChoGGi.ComFuncs.RetProperType
 
 local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_ObjectEditorDlg")

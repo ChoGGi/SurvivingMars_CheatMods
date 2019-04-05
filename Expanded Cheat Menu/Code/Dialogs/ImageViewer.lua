@@ -4,19 +4,11 @@
 
 local MeasureImage = UIL.MeasureImage
 
-local Strings
-local Translate
-local GetParentOfKind
-local PopupToggle
-local Random
-
-function OnMsg.ClassesGenerate()
-	Strings = ChoGGi.Strings
-	PopupToggle = ChoGGi.ComFuncs.PopupToggle
-	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-	Random = ChoGGi.ComFuncs.Random
-	Translate = ChoGGi.ComFuncs.Translate
-end
+local Strings = ChoGGi.Strings
+local PopupToggle = ChoGGi.ComFuncs.PopupToggle
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local Random = ChoGGi.ComFuncs.Random
+local Translate = ChoGGi.ComFuncs.Translate
 
 local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_ImageViewerDlg")

@@ -2,20 +2,12 @@
 
 -- mess with entities
 
-local Strings
-local RetName
-local Translate
-local GetParentOfKind
-
 --~ local tostring,type,table = tostring,type,table
 
-
-function OnMsg.ClassesGenerate()
-	Strings = ChoGGi.Strings
-	RetName = ChoGGi.ComFuncs.RetName
-	Translate = ChoGGi.ComFuncs.Translate
-	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-end
+local Strings = ChoGGi.Strings
+local RetName = ChoGGi.ComFuncs.RetName
+local Translate = ChoGGi.ComFuncs.Translate
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_3DManipulatorDlg")

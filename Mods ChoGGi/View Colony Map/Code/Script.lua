@@ -1,52 +1,6 @@
 -- See LICENSE for terms
 
-do -- Map Images Pack (it doesn't need to be loaded just installed)
-	local min_version = 1
-	local mod = Mods.ChoGGi_MapImagesPack
-	local p = Platform
-
-	if not mod or mod and not (p.steam or p.pops) and min_version > mod.version then
-		CreateRealTimeThread(function()
-			if WaitMarsQuestion(nil,"Error","View Colony Map requires Map Images Pack (at least v" .. min_version .. [[).
-Press OK to download it or check the Mod Manager to make sure it's enabled.]]) == "ok" then
-				if p.steam then
-					OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1571465108")
-				elseif p.pops then
-					OpenUrl("https://mods.paradoxplaza.com/mods/507/Any")
-				else
-					OpenUrl("https://www.nexusmods.com/survivingmars/mods/77?tab=files")
-				end
-			end
-		end)
-	end
-end -- do
-
---~ local image_str = Mods.ChoGGi_MapImagesPack.env.CurrentModPath .. "Maps/%s.png"
 local image_str = Mods.ChoGGi_MapImagesPack.env.CurrentModPath .. "Maps/"
-
--- tell people how to get my library mod (if needs be)
-function OnMsg.ModsReloaded()
-	-- version to version check with
-	local min_version = 63
-	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
-	local p = Platform
-
-	-- if we can't find mod or mod is less then min_version (we skip steam/pops since it updates automatically)
-	if not idx or idx and not (p.steam or p.pops) and min_version > ModsLoaded[idx].version then
-		CreateRealTimeThread(function()
-			if WaitMarsQuestion(nil,"Error","View Colony Map requires ChoGGi's Library (at least v" .. min_version .. [[).
-Press OK to download it or check the Mod Manager to make sure it's enabled.]]) == "ok" then
-				if p.steam then
-					OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
-				elseif p.pops then
-					OpenUrl("https://mods.paradoxplaza.com/mods/505/Any")
-				else
-					OpenUrl("https://www.nexusmods.com/survivingmars/mods/89?tab=files")
-				end
-			end
-		end)
-	end
-end
 
 local showimage
 local skip_showing_image

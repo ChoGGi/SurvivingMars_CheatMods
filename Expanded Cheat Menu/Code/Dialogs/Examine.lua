@@ -39,44 +39,27 @@ local Sleep = Sleep
 local XCreateRolloverWindow = XCreateRolloverWindow
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 
+local hyperlink_end = "</h></color>"
+
+--~ local any funcs used a lot
+local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
+local RetName = ChoGGi.ComFuncs.RetName
+local TableConcat = ChoGGi.ComFuncs.TableConcat
+local Translate = ChoGGi.ComFuncs.Translate
+local IsObjlist = ChoGGi.ComFuncs.IsObjlist
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+
+local InvalidPos = ChoGGi.Consts.InvalidPos
+local Strings = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
+local testing = ChoGGi.testing
+
 local debug_getinfo,debug_getupvalue,debug_getlocal
-
-local HLEnd = "</h></color>"
-
---~ local any funcs used in ConvertValueToInfo
-local GetParentOfKind
-local IsControlPressed
-local RetName
-local TableConcat
-local Translate
-local IsObjlist
-
-local InvalidPos
-local Strings
-local blacklist
-local testing
-
--- need to wait till Library mod is loaded
-function OnMsg.ClassesGenerate()
-	local ChoGGi = ChoGGi
-	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-	IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
-	RetName = ChoGGi.ComFuncs.RetName
-	TableConcat = ChoGGi.ComFuncs.TableConcat
-	Translate = ChoGGi.ComFuncs.Translate
-	IsObjlist = ChoGGi.ComFuncs.IsObjlist
-
-	InvalidPos = ChoGGi.Consts.InvalidPos
-	Strings = ChoGGi.Strings
-	blacklist = ChoGGi.blacklist
-	testing = ChoGGi.testing
-
-	local debug = blacklist and false or debug
-	if debug then
-		debug_getupvalue = debug.getupvalue
-		debug_getinfo = debug.getinfo
-		debug_getlocal = debug.getlocal
-	end
+local debug = blacklist and false or debug
+if debug then
+	debug_getupvalue = debug.getupvalue
+	debug_getinfo = debug.getinfo
+	debug_getlocal = debug.getlocal
 end
 
 local function GetRootDialog(dlg)
@@ -2131,7 +2114,7 @@ function Examine:ConvertValueToInfo(obj)
 		-- acts weird with main menu movie xlayer, so we check for GetVisualPos
 		if IsValid(obj) and obj.GetVisualPos then
 			return self:HyperLink(obj,Examine_ConvertValueToInfo)
-				.. obj.class .. HLEnd .. "@"
+				.. obj.class .. hyperlink_end .. "@"
 				.. self:ConvertValueToInfo(obj:GetVisualPos())
 		else
 			local len = #obj
@@ -2142,7 +2125,7 @@ function Examine:ConvertValueToInfo(obj)
 --~ 				local res = {
 --~ 					self:HyperLink(obj,Examine_ConvertValueToInfo),
 --~ 					"objlist",
---~ 					HLEnd,
+--~ 					hyperlink_end,
 --~ 					"{",
 --~ 				}
 --~ 				local c = #res
@@ -2169,10 +2152,10 @@ function Examine:ConvertValueToInfo(obj)
 			if rawget(obj,"ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
 				if obj.colour then
 					return "<color " .. obj.colour .. ">" .. (obj.name or "") .. "</color> "
-						.. self:HyperLink(obj,obj.func,obj.hint) .. "@" .. HLEnd
+						.. self:HyperLink(obj,obj.func,obj.hint) .. "@" .. hyperlink_end
 				else
 					return (obj.name or "") .. "</color> "
-						.. self:HyperLink(obj,obj.func,obj.hint) .. "@" .. HLEnd
+						.. self:HyperLink(obj,obj.func,obj.hint) .. "@" .. hyperlink_end
 				end
 
 			else
@@ -2200,7 +2183,7 @@ function Examine:ConvertValueToInfo(obj)
 					name = name .. " (len: " .. table_data .. ")"
 				end
 
-				return self:HyperLink(obj,Examine_ConvertValueToInfo) .. name .. HLEnd
+				return self:HyperLink(obj,Examine_ConvertValueToInfo) .. name .. hyperlink_end
 			end
 		end
 	end
@@ -2213,7 +2196,7 @@ function Examine:ConvertValueToInfo(obj)
 				return Strings[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
 			else
 				return self:HyperLink(obj,Show_ConvertValueToInfo)
-					.. "point" .. tostring(obj) .. HLEnd
+					.. "point" .. tostring(obj) .. hyperlink_end
 			end
 		else
 
@@ -2244,18 +2227,18 @@ function Examine:ConvertValueToInfo(obj)
 				trans_str = trans_str .. tostring(obj)
 			end
 
-			return trans_str .. HLEnd
+			return trans_str .. hyperlink_end
 		end
 	end
 	--
 	if obj_type == "function" then
 		return self:HyperLink(obj,Examine_ConvertValueToInfo)
-			.. RetName(obj) .. HLEnd
+			.. RetName(obj) .. hyperlink_end
 	end
 	--
 	if obj_type == "thread" then
 		return self:HyperLink(obj,Examine_ConvertValueToInfo)
-			.. tostring(obj) .. HLEnd
+			.. tostring(obj) .. hyperlink_end
 	end
 	--
 	if obj_type == "nil" then
@@ -2375,7 +2358,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			local name = self:ConvertValueToInfo(k)
 			local sort = name
 			-- append context menu link
-			name = self:HyperLink(k,self.OpenListMenu,nil,true) .. "* " .. HLEnd .. name
+			name = self:HyperLink(k,self.OpenListMenu,nil,true) .. "* " .. hyperlink_end .. name
 --~ 			local hyper_c = self.onclick_count
 
 			-- store the names if we're doing all props
@@ -2402,7 +2385,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				for k,v in pairs(meta_temp) do
 					local name = self:ConvertValueToInfo(k)
 					local sort = name
-					name = self:HyperLink(k,self.OpenListMenu,nil,true) .. "* " .. HLEnd .. name
+					name = self:HyperLink(k,self.OpenListMenu,nil,true) .. "* " .. hyperlink_end .. name
 
 					if not skip_dupes[sort] then
 						skip_dupes[sort] = true
@@ -2424,7 +2407,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				k = k:sub(2)
 				local name = self:ConvertValueToInfo(k)
 				local sort = name
-				name = self:HyperLink(k,self.OpenListMenu,nil,true) .. "* " .. HLEnd .. name
+				name = self:HyperLink(k,self.OpenListMenu,nil,true) .. "* " .. hyperlink_end .. name
 
 				if not skip_dupes[sort] then
 					skip_dupes[sort] = true
@@ -2455,7 +2438,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		c = c + 1
 		list_obj_str[c] = self:HyperLink(obj,function()
 			self.ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
-		end) .. name .. HLEnd
+		end) .. name .. hyperlink_end
 	end
 
 	if self.sort_dir then
@@ -2515,7 +2498,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				self.ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(obj),self)
 			end)
 			.. obj.class
-			.. HLEnd
+			.. hyperlink_end
 			.. "@"
 			.. self:ConvertValueToInfo(obj:GetVisualPos())
 			.. "--"
@@ -2652,7 +2635,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 					.. self:HyperLink(obj,function()
 						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:Unpack()},self,Strings[302535920000885--[[Unpacked--]]])
 					end)
-					.. "table" .. HLEnd
+					.. "table" .. hyperlink_end
 				)
 				-- we use this with Object>Flags
 				self.obj_flags = obj:GetFlags()
@@ -2744,7 +2727,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				table_insert(data_meta,1,"min() x,y: " .. self:ConvertValueToInfo(obj:min()))
 				table_insert(data_meta,1,"\nsize() w,h: " .. self:ConvertValueToInfo(obj:size()))
 				if center:InBox2D(self.ChoGGi.ComFuncs.ConstructableArea()) then
-					table_insert(data_meta,1,self:HyperLink(obj,self.ToggleBBox,Strings[302535920001550--[[Toggle viewing BBox.--]]]) .. Strings[302535920001549--[[View BBox--]]] .. HLEnd)
+					table_insert(data_meta,1,self:HyperLink(obj,self.ToggleBBox,Strings[302535920001550--[[Toggle viewing BBox.--]]]) .. Strings[302535920001549--[[View BBox--]]] .. hyperlink_end)
 				end
 
 			elseif name == "HGE.Point" then
@@ -2827,7 +2810,7 @@ Mod code works, as well as HG github code. HG code needs to be placed at ""%sSou
 Example: ""Source/Lua/_const.lua""
 
 Decompiled code won't scroll correctly as the line numbers are different."--]]]:format(ConvertToOSPath("AppData/")))
-					.. Strings[302535920001519--[[View Source--]]] .. HLEnd
+					.. Strings[302535920001519--[[View Source--]]] .. hyperlink_end
 			end
 			-- list args
 			local args = self:RetFuncArgs(obj)
@@ -2917,7 +2900,7 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 			list_obj_str[1] = list_obj_str[1] .. self:HyperLink(obj,function()
 				self.ChoGGi.ComFuncs.OpenInExamineDlg(self.enum_vars,self,Strings[302535920001442--[[Enum--]]])
 			end)
-			.. " enum" .. HLEnd
+			.. " enum" .. hyperlink_end
 		end
 
 	end

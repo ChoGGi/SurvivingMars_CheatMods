@@ -1,15 +1,13 @@
 -- See LICENSE for terms
 
-function OnMsg.ClassesGenerate()
-	-- add some shortened func names
-	dump = ChoGGi.ComFuncs.Dump
-	dumplua = ChoGGi.ComFuncs.DumpLua
-	dumptable = ChoGGi.ComFuncs.DumpTable
-	trans = ChoGGi.ComFuncs.Translate
-	imgview = ChoGGi.ComFuncs.OpenInImageViewerDlg
-	txtview = ChoGGi.ComFuncs.OpenInMultiLineTextDlg
-	so = ChoGGi.ComFuncs.SelObject
-end
+-- add some shortened func names
+dump = ChoGGi.ComFuncs.Dump
+dumplua = ChoGGi.ComFuncs.DumpLua
+dumptable = ChoGGi.ComFuncs.DumpTable
+trans = ChoGGi.ComFuncs.Translate
+imgview = ChoGGi.ComFuncs.OpenInImageViewerDlg
+txtview = ChoGGi.ComFuncs.OpenInMultiLineTextDlg
+so = ChoGGi.ComFuncs.SelObject
 
 function restart()
 	quit("restart")

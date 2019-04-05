@@ -1,4 +1,18 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library v6.4",
+			"version_major", 6,
+			"version_minor", 4,
+		}),
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_MapImagesPack",
+			"title", "Map Images Pack v0.1",
+			"version_major", 0,
+			"version_minor", 1,
+		}),
+	},
 	"title", "View Colony Map v0.9",
 	"version", 9,
 	"saved", 1542888000,

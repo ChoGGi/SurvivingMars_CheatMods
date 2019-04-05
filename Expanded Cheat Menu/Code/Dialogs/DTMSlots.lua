@@ -2,11 +2,7 @@
 
 -- displays texture info
 
-local Strings
-
-function OnMsg.ClassesGenerate()
-	Strings = ChoGGi.Strings
-end
+local Strings = ChoGGi.Strings
 
 DefineClass.ChoGGi_DTMSlotsDlg = {
 	__parents = {"ChoGGi_Window"},

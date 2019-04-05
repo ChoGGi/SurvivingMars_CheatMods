@@ -2,21 +2,12 @@
 
 -- shows a dialog with to execute code in
 
-local Strings
-local Translate
-local blacklist
-local GetParentOfKind
-local IsControlPressed
-local IsShiftPressed
-
-function OnMsg.ClassesGenerate()
-	Strings = ChoGGi.Strings
-	blacklist = ChoGGi.blacklist
-	Translate = ChoGGi.ComFuncs.Translate
-	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-	IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
-	IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
-end
+local Strings = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
+local Translate = ChoGGi.ComFuncs.Translate
+local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
+local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_ExecCodeDlg")

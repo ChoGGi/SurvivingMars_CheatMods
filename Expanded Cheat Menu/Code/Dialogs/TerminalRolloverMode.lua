@@ -25,20 +25,16 @@ function ChoGGi_RolloverModeTerminalTarget:MouseEvent(event, pt, button)
 	end
 end
 
-function OnMsg.ClassesGenerate()
-
-	function ChoGGi.ComFuncs.TerminalRolloverMode(enabled,dlg)
-		if not terminal_target then
-			terminal_target = ChoGGi_RolloverModeTerminalTarget:new()
-		end
-		terminal_target.flash_ui = ChoGGi.UserSettings.FlashExamineObject
-
-		if enabled then
-			terminal_dialog = dlg
-			terminal.AddTarget(terminal_target)
-		else
-			terminal.RemoveTarget(terminal_target)
-		end
+function ChoGGi.ComFuncs.TerminalRolloverMode(enabled,dlg)
+	if not terminal_target then
+		terminal_target = ChoGGi_RolloverModeTerminalTarget:new()
 	end
+	terminal_target.flash_ui = ChoGGi.UserSettings.FlashExamineObject
 
+	if enabled then
+		terminal_dialog = dlg
+		terminal.AddTarget(terminal_target)
+	else
+		terminal.RemoveTarget(terminal_target)
+	end
 end

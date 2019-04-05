@@ -2,24 +2,14 @@
 
 -- search through tables for values and display them in an examine dialog
 
-local Strings
-local RetName
-local FindThreadFunc
-local DotNameToObject
-local Translate
-local GetParentOfKind
-
 local pairs,type = pairs,type
 
-
-function OnMsg.ClassesGenerate()
-	Strings = ChoGGi.Strings
-	RetName = ChoGGi.ComFuncs.RetName
-	FindThreadFunc = ChoGGi.ComFuncs.FindThreadFunc
-	DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
-	Translate = ChoGGi.ComFuncs.Translate
-	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-end
+local Strings = ChoGGi.Strings
+local RetName = ChoGGi.ComFuncs.RetName
+local FindThreadFunc = ChoGGi.ComFuncs.FindThreadFunc
+local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
+local Translate = ChoGGi.ComFuncs.Translate
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_FindValueDlg")

@@ -1,59 +1,18 @@
 -- See LICENSE for terms
 
--- tell people how to get my library mod (if needs be)
-function OnMsg.ModsReloaded()
-	-- version to version check with
-	local min_version = 63
-	local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
-	local p = Platform
+local Translate = ChoGGi.ComFuncs.Translate
+local RetName = ChoGGi.ComFuncs.RetName
+local PopupToggle = ChoGGi.ComFuncs.PopupToggle
+local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 
-	-- if we can't find mod or mod is less then min_version (we skip steam/pops since it updates automatically)
-	if not idx or idx and not (p.steam or p.pops) and min_version > ModsLoaded[idx].version then
-		CreateRealTimeThread(function()
-			if WaitMarsQuestion(nil,"Error","Pin Expander requires ChoGGi's Library (at least v" .. min_version .. [[).
-Press OK to download it or check the Mod Manager to make sure it's enabled.]]) == "ok" then
-				if p.steam then
-					OpenUrl("https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374")
-				elseif p.pops then
-					OpenUrl("https://mods.paradoxplaza.com/mods/505/Any")
-				else
-					OpenUrl("https://www.nexusmods.com/survivingmars/mods/89?tab=files")
-				end
-			end
-		end)
-	end
-end
-
-local Translate
-local RetName
-local PopupToggle
-local IsControlPressed
-
-local str_dome
-local str_drones
-local str_state
-local str_Overpopulated
-local str_NotWorking
-local str_Power
-local str_Water
-local str_Oxygen
-
-function OnMsg.ClassesGenerate()
-	Translate = ChoGGi.ComFuncs.Translate
-	RetName = ChoGGi.ComFuncs.RetName
-	PopupToggle = ChoGGi.ComFuncs.PopupToggle
-	IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
-
-	str_dome = Translate(1234--[[Dome--]])
-	str_drones = Translate(71--[[Commanding Drones--]])
-	str_state = Translate(3722--[[State--]])
-	str_Overpopulated = Translate(10460--[[<em>Overpopulated Dome</em>--]])
-	str_NotWorking = Translate(7326--[[Not Working--]])
-	str_Power = Translate(79--[[Power--]])
-	str_Water = Translate(681--[[Water--]])
-	str_Oxygen = Translate(682--[[Oxygen--]])
-end
-
+local str_dome = Translate(1234--[[Dome--]])
+local str_drones = Translate(71--[[Commanding Drones--]])
+local str_state = Translate(3722--[[State--]])
+local str_Overpopulated = Translate(10460--[[<em>Overpopulated Dome</em>--]])
+local str_NotWorking = Translate(7326--[[Not Working--]])
+local str_Power = Translate(79--[[Power--]])
+local str_Water = Translate(681--[[Water--]])
+local str_Oxygen = Translate(682--[[Oxygen--]])
 
 local T = T
 local IsT = IsT

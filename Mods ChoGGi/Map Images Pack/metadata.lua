@@ -1,6 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Map Images Pack v0.1",
 	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1542888000,
 	"image", "Preview.png",
 	"id", "ChoGGi_MapImagesPack",

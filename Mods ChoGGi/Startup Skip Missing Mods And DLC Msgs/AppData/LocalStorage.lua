@@ -28,11 +28,8 @@ local function LuaModEnv(env)
   env = env or {}
   env._G = orig_G
 	setmetatable(env,mod_env)
-	-- for not GP
 	if env.OnMsg then
-		-- it needs to be cleared first
-		setmetatable(env.OnMsg)
-		setmetatable(env.OnMsg,orig_OnMsg)
+		env.OnMsg.__newindex = orig_OnMsg.__newindex
 	end
   return env
 end

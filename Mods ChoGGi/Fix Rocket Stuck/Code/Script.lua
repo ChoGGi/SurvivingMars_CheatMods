@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local table_find = table.find
 local table_remove = table.remove
 local table_clear = table.clear

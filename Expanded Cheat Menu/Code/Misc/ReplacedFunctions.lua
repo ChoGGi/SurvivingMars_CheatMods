@@ -71,8 +71,8 @@ function OnMsg.ClassesGenerate()
 		-- editor wants a table
 		GlobalVar("g_revision_map",{})
 		-- stops some log spam in editor (function doesn't exist in SM)
-		UpdateMapRevision = empty_func
-		AsyncGetSourceInfo = empty_func
+		UpdateMapRevision = rawget(_G,"UpdateMapRevision") or empty_func
+		AsyncGetSourceInfo = rawget(_G,"AsyncGetSourceInfo") or empty_func
 	end -- do
 
 	do -- funcs without a class
