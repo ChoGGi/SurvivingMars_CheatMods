@@ -44,9 +44,24 @@ function SelectionModeDialog:OnMouseButtonDown(pt, button, ...)
 	return orig_SelectionModeDialog_OnMouseButtonDown(self, pt, button, ...)
 end
 
+local mouse_scrolling = true
+function OnMsg.ApplyModOptions(id)
+	if id == "ChoGGi_ShiftClickToMove" then
+		local enabled = Mods[id].options.MouseScrolling
+		mouse_scrolling = enabled
+
+		if enabled then
+			cameraRTS.SetProperties(1,{ScrollBorder = 5})
+		else
+			cameraRTS.SetProperties(1,{ScrollBorder = 0})
+		end
+
+	end
+end
+
 -- disable edge scrolling
 local function StartupCode()
-	if not CtrlClickToMove.MouseScrolling then
+	if not mouse_scrolling then
 		cameraRTS.SetProperties(1,{ScrollBorder = 0})
 	end
 end

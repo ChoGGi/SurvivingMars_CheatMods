@@ -14,13 +14,12 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ShiftClickToMove",
 	"steam_id", "1590473613",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 240905,
 	"code", {
-		"Code/ModConfig.lua",
 		"Code/Script.lua",
 	},
 	"description", [[Hold down Shift and click to move the view.
-Includes Mod Config Reborn option to disable mouse edge scrolling.
+Includes mod option to disable mouse edge scrolling.
 
 You can change the shortcut in Options>Key Bindings.
 

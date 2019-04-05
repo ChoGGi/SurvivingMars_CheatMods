@@ -170,8 +170,7 @@ function ChoGGi_ConsoleLogWin:idToggleTransOnChange()
 	self:SetTranspMode(self.transp_mode)
 end
 function ChoGGi_ConsoleLogWin:idShowFileLogOnPress()
-	local _,text = ReadLog()
-	GetRootDialog(self):UpdateText(text)
+	GetRootDialog(self):UpdateText(LoadLogfile())
 end
 function ChoGGi_ConsoleLogWin:idShowModsLogOnPress()
 	self = GetRootDialog(self)

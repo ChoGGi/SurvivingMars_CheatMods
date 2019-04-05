@@ -1152,8 +1152,7 @@ end
 function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
 	if visible and not dlgChoGGi_ConsoleLogWin then
 		dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop,{})
-		local _,text = ReadLog()
-		dlgChoGGi_ConsoleLogWin:UpdateText(text)
+		dlgChoGGi_ConsoleLogWin:UpdateText(LoadLogfile())
 	end
 
 	local dlg = dlgChoGGi_ConsoleLogWin

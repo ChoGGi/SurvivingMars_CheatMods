@@ -1242,7 +1242,6 @@ function OnMsg.ClassesBuilt()
 			-- send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
 			ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,"dont_finalize",...)
 
-
 			if self.is_template then
 				local cobj = rawget(self.cursor_obj, true)
 				local tobj = setmetatable({
@@ -1255,35 +1254,27 @@ function OnMsg.ClassesBuilt()
 			end
 
 			local statuses = self.construction_statuses
-
-			-- we copy it so the statuses table remains the same
-			local statuses_copy = table.copy(statuses)
-			table.clear(statuses)
-			local c = 0
+			-- make sure we don't get errors down the line
+			if type(statuses) ~= "table" then
+				statuses = {}
+			end
 
 			local UnevenTerrain = ConstructionStatus.UnevenTerrain
 			local BlockingObjects = ConstructionStatus.BlockingObjects
 			local warning = "Placeable"
 
-			for i = 1, #statuses_copy do
-				local status = statuses_copy[i]
+			for i = #statuses, 1, -1 do
+				local status = statuses[i]
 				-- UnevenTerrain: causes issues when placing buildings (martian ground viagra)
 				if status == UnevenTerrain then
-					c = c + 1
-					statuses[c] = status
+					table.remove(statuses,i)
 					warning = "Blocked"
 				elseif status == BlockingObjects then
 					warning = "Obstructing"
 				-- might as well add all the non-errors since they don't block from building
-				elseif status.type ~= "error" then
-					c = c + 1
-					statuses[c] = status
+				elseif status.type == "error" then
+					table.remove(statuses,i)
 				end
-			end
-
-			-- make sure we don't get errors down the line
-			if type(statuses) ~= "table" then
-				statuses = {}
 			end
 
 			-- update cursor obj colour
