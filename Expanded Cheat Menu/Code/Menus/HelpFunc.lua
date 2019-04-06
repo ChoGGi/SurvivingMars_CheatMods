@@ -160,7 +160,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 		local mod_folders = {}
 
 		-- if user installed mod while game is running
-		print("ECM ExtractHPKs ModsReloadDefs:")
+		print("ECM ExtractHPKs ModsReloadDefs():")
 		ModsReloadDefs()
 
 		if Platform.steam and IsSteamAvailable() then
@@ -330,7 +330,7 @@ do -- ModUpload
 	local SplitPath = SplitPath
 	local AsyncCreatePath = AsyncCreatePath
 	local AsyncCopyFile = AsyncCopyFile
-	local IsValidThread = IsValidThread
+	local Sleep = Sleep
 	local mod_params = {}
 
 	-- check the copy box for these
@@ -356,323 +356,367 @@ do -- ModUpload
 	local pack_path = "AppData/ModUpload/Pack/"
 	local dest_path = "AppData/ModUpload/"
 
-	local function CallBackFunc(choice)
-		if choice.nothing_selected then
+	local copy_files
+	local blank_mod
+	local clipboard
+	local pack_mod
+	local test
+	local steam_upload
+	local para_platform
+	local mod,mod_path,upload_image,diff_author
+	local result
+	local choices_len
+	local result_msg = {}
+	local result_title = {}
+	local upload_msg = {}
+	local uploading
+
+	local function UploadMod(answer)
+		if not answer then
 			return
 		end
-		choice = choice[1]
 
-		-- abort if upload already happening
-		if IsValidThread(mod_upload_thread) then
+		MsgPopup(
+			Translate(5452--[[START--]]),
+			Strings[302535920000367--[[Mod Upload--]]]
+		)
+
+		-- always start with fresh table
+		table.clear(mod_params)
+
+		-- add new mod
+		local err,item_id,prepare_worked,prepare_results
+		if steam_upload then
+			-- get needed info for mod
+			prepare_worked, prepare_results = Steam_PrepareForUpload(nil, mod, mod_params)
+			-- mod id for clipboard
+			item_id = mod.steam_id
+		-- paradox mods
+		else
+			-- we override the Platform checkbox if a uuid is in metadata.lua
+			-- if both are "" then it's probably a new mod, otherwise check for a uuid and use that prop
+			if mod.pops_desktop_uuid == "" and mod.pops_any_uuid == "" then
+				-- desktop
+				if para_platform then
+					mod_params.publish_os = "windows"
+					mod_params.uuid_property = "pops_desktop_uuid"
+				-- desktop/console
+				else
+					mod_params.publish_os = "any"
+					mod_params.uuid_property = "pops_any_uuid"
+				end
+			elseif mod.pops_any_uuid ~= "" then
+				mod_params.publish_os = "any"
+				mod_params.uuid_property = "pops_any_uuid"
+				para_platform = false
+			elseif mod.pops_desktop_uuid ~= "" then
+				mod_params.publish_os = "windows"
+				mod_params.uuid_property = "pops_desktop_uuid"
+				para_platform = true
+			end
+
+			prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
+			item_id = mod[mod_params.uuid_property]
+		end
+
+		-- issue with mod platform (workshop/paradox mods)
+		if not prepare_worked then
+			-- let user know if we're good or not
 			ChoGGi.ComFuncs.MsgWait(
-				Translate(1000011--[[There is an active mod upload--]]),
-				Translate(1000592--[[Error--]]),
-				Platform.pops and "UI/ParadoxLogo.tga" or "UI/Common/mod_steam_workshop.tga"
-			)
-			return
-		end
-
-		mod_upload_thread = CreateRealTimeThread(function()
-			local mod = choice.mod
-			local mod_path = choice.path
-
-			local copy_files = choice.check1
-			local blank_mod = choice.check2
-			local clipboard = choice.check3
-			local pack_mod = choice.check4
-			local test = choice.check5
-			local steam_upload = choice.check6
-			local para_platform = choice.check7
-
-			-- pick logo for upload msg boxes
-			local upload_image = "UI/ParadoxLogo.tga"
-			if steam_upload then
-				upload_image = "UI/Common/mod_steam_workshop.tga"
-			else
-				-- mods have to be packed for paradox
-				pack_mod = true
-			end
-
-			local diff_author = mod.author ~= SteamGetPersonaName()
-			local result
-
-			-- my mods override
-			if ChoGGi_copy_files[mod.id] then
-				copy_files = false
-			end
-			if ChoGGi_pack[mod.id] then
-				pack_mod = true
-			end
-
-			-- remove blacklist warning from title (added in helpermod)
-			if testing then
-				mod.title = mod.title:gsub(" %(BL%)$","")
-			else
-				mod.title = mod.title:gsub(" %(Warning%)$","")
-			end
-
-			-- will fail on paradox mods
-			if mod.lua_revision == 0 then
-				mod.lua_revision = LuaRevision
-			end
-			if mod.saved_with_revision == 0 then
-				mod.saved_with_revision = LuaRevision
-			end
-
-			-- build / show confirmation dialog
-			local upload_msg = {}
-			local m_c = 0
-
-			m_c = m_c + 1
-			if steam_upload then
-				upload_msg[m_c] = Translate(1000012--[[Mod <ModLabel> will be uploaded to Steam--]]):gsub("<ModLabel>",mod.title)
-			else
-				upload_msg[m_c] = Translate(1000771--[[Mod <ModLabel> will be uploaded to Paradox--]]):gsub("<ModLabel>",mod.title)
-				m_c = m_c + 1
-				upload_msg[m_c] = "\n\n"
-				m_c = m_c + 1
-				upload_msg[m_c] = Strings[302535920001572--[[Warning: May instantly crash SM (not sure why).--]]]
-			end
-
-			if not pack_mod then
-				m_c = m_c + 1
-				upload_msg[m_c] = "\n\n"
-				m_c = m_c + 1
-				upload_msg[m_c] = Strings[302535920000051--[[Mod will not be (automagically) packed in an hpk archive.--]]]
-			end
-
-			if not copy_files then
-				m_c = m_c + 1
-				upload_msg[m_c] = "\n\n<color 203 120 30>"
-				m_c = m_c + 1
-				upload_msg[m_c] = Strings[302535920001262--[[%sModUpload folder is empty and waiting for files.--]]]:format(ConvertToOSPath("AppData/"))
-				m_c = m_c + 1
-				upload_msg[m_c] = "</color>"
-
-				-- clear out and create upload folder
-				AsyncDeletePath(dest_path)
-				AsyncCreatePath(dest_path)
-			end
-
-			-- show diff author warning unless it's me
-			if diff_author and not testing then
-				m_c = m_c + 1
-				upload_msg[m_c] = "\n\n"
-				m_c = m_c + 1
-				upload_msg[m_c] = Strings[302535920001263--[["%s is different from your name, do you have permission to upload it?"--]]]:format(mod.author)
-			end
-
-			local function QuestionBoxCallBackFunc(answer)
-				if not answer then
-					return
-				end
-
-				MsgPopup(
-					Translate(5452--[[START--]]),
-					Strings[302535920000367--[[Mod Upload--]]]
-				)
-
-				-- always start with fresh table
-				table.clear(mod_params)
-
-				-- add new mod
-				local err,item_id,prepare_worked,prepare_results
-				if steam_upload then
-					-- get needed info for mod
-					prepare_worked, prepare_results = Steam_PrepareForUpload(nil, mod, mod_params)
-					-- mod id for clipboard
-					item_id = mod.steam_id
-				-- paradox mods
-				else
-					-- we override the Platform checkbox if a uuid is in metadata.lua
-					-- if both are "" then it's probably a new mod, otherwise check for a uuid and use that prop
-					if mod.pops_desktop_uuid == "" and mod.pops_any_uuid == "" then
-						-- desktop
-						if para_platform then
-							mod_params.publish_os = "windows"
-							mod_params.uuid_property = "pops_desktop_uuid"
-						-- desktop/console
-						else
-							mod_params.publish_os = "any"
-							mod_params.uuid_property = "pops_any_uuid"
-						end
-					elseif mod.pops_any_uuid ~= "" then
-						mod_params.publish_os = "any"
-						mod_params.uuid_property = "pops_any_uuid"
-						para_platform = false
-					elseif mod.pops_desktop_uuid ~= "" then
-						mod_params.publish_os = "windows"
-						mod_params.uuid_property = "pops_desktop_uuid"
-						para_platform = true
-					end
-
-					prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
-					item_id = mod[mod_params.uuid_property]
-				end
-
-				-- issue with mod platform (workshop/paradox mods)
-				if not prepare_worked then
-					-- let user know if we're good or not
-					ChoGGi.ComFuncs.MsgWait(
-						Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>",mod.title):gsub("<err>",Translate(prepare_results)),
-						Translate(1000592--[[Error--]]) .. ": " .. mod.title,
-						upload_image
-					)
-					return
-				end
-
-				-- update mod, and copy files to ModUpload
-				if copy_files and not blank_mod and not err then
-					mod:SaveItems()
-					AsyncDeletePath(dest_path)
-					AsyncCreatePath(dest_path)
-
-					local err, all_files = AsyncListFiles(mod_path, "*", "recursive,relative")
-					for i = 1, #all_files do
-						local file = all_files[i]
-						local ignore
-						for j = 1, #mod.ignore_files do
-							if MatchWildcard(file, mod.ignore_files[j]) then
-								ignore = true
-								break
-							end
-						end
-						if not ignore then
-							local dest_file = dest_path .. file
-							local dir = SplitPath(dest_file)
-							AsyncCreatePath(dir)
-							err = AsyncCopyFile(mod_path .. file, dest_file, "raw")
-						end
-					end
-
-				end
-
-				if pack_mod then
-					local files_to_pack = {}
-					local substring_begin = #dest_path + 1
-					local err, all_files = AsyncListFiles(dest_path, nil, "recursive")
-					if err then
-						err = T{1000753,"Failed creating content package file (<err>)",err = err}
-					else
-						-- do this after listfiles so it doesn't include it
-						AsyncCreatePath(pack_path)
-
-						for i = 1, #all_files do
-							local file = all_files[i]
-							local ignore
-							for j = 1, #mod.ignore_files do
-								if MatchWildcard(file, mod.ignore_files[j]) then
-									ignore = true
-									break
-								end
-							end
-							if not ignore then
-								table.insert(files_to_pack, {
-									src = file,
-									dst = file:sub(substring_begin),
-								})
-							end
-						end
-						err = AsyncPack(pack_path .. ModsPackFileName, dest_path, files_to_pack)
-					end
-
-				end
-
-				-- update mod on workshop
-				if not err or blank_mod then
-
-					-- check if .hpk exists, and use it if so
-					local os_dest = dest_path .. "Pack/ModContent.hpk"
-					if FileExists(os_dest) then
-						os_dest = ConvertToOSPath(os_dest)
-					else
-						os_dest = ConvertToOSPath(dest_path)
-					end
-
-					mod_params.os_pack_path = os_dest
-					-- maybe we'll deal with these buggers one of these days?
-					mod_params.screenshots = {}
-					-- set last_changes to last_changes or version num
-					mod.last_changes = type(mod.last_changes) == "string" and mod.last_changes ~= "" and tostring(mod.last_changes) or tostring(mod.version)
-
-					-- CommonLua\SteamWorkshop.lua
-					if not test then
-						if steam_upload then
-							result,err = Steam_Upload(nil, mod, mod_params)
-						else
-							result,err = PDX_Upload(nil, mod, mod_params)
-						end
-					end
-				end
-
-				local msg, title
-				if err and not blank_mod then
-					msg = Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>",mod.title):gsub("<err>",Translate(err))
-					title = Translate(1000592--[[Error--]])
-				else
-					msg = Translate(1000014--[[Mod <ModLabel> was successfully uploaded!--]]):gsub("<ModLabel>",mod.title)
-					title = Translate(1000015--[[Success--]])
-				end
-
-				if test then
-					msg = Translate(186760604064--[[Test--]]) .. " " .. msg
-					title = Translate(186760604064--[[Test--]]) .. " " .. title
-				end
-
-				-- update mod log and print it to console log
-				ModLog("\n" .. msg .. ": " .. mod.title)
-				local ModMessageLog = ModMessageLog
-				print(Strings[302535920001265--[[ModMessageLog--]]],":")
-				for i = 1, #ModMessageLog do
-					print(ModMessageLog[i])
-				end
-
-				-- show id in console/copy to clipb
-				if not test and item_id then
-
-					if clipboard and not err then
-						if mod_params.uuid_property then
-							CopyToClipboard("	\"" .. mod_params.uuid_property .. "\", \"" .. item_id .. "\",")
-						else
-							CopyToClipboard("	\"steam_id\", \"" .. item_id .. "\",")
-						end
-					end
-
-					local id_str = Translate(1000021--[[Steam ID--]])
-					if not steam_upload then
-						if para_platform then
-							id_str = Translate(1000772--[[Paradox Desktop UUID--]])
-						else
-							id_str = Translate(1000773--[[Paradox All UUID--]])
-						end
-					end
-
-					print(mod.title,":",Translate(1000107--[[Mod--]]),id_str,":",item_id)
-				end
-
-				-- let user know if we're good or not
-				ChoGGi.ComFuncs.MsgWait(
-					msg,
-					title .. ": " .. mod.title,
-					upload_image
-				)
-
-				if not test and not err then
-					-- remove upload folder
-					AsyncDeletePath(dest_path)
-				end
-			end
-
-			-- add checkbox for paradox asking for desktop/any?
-			ChoGGi.ComFuncs.QuestionBox(
-				TableConcat(upload_msg),
-				QuestionBoxCallBackFunc,
-				mod.title,
-				nil,
-				nil,
+				Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>",mod.title):gsub("<err>",Translate(prepare_results)),
+				Translate(1000592--[[Error--]]) .. ": " .. mod.title,
 				upload_image
 			)
-		end) -- mod_upload_thread
+			return
+		end
+
+		-- update mod, and copy files to ModUpload
+		if copy_files and not blank_mod and not err then
+			mod:SaveItems()
+			AsyncDeletePath(dest_path)
+			AsyncCreatePath(dest_path)
+
+			local err, all_files = AsyncListFiles(mod_path, "*", "recursive,relative")
+			for i = 1, #all_files do
+				local file = all_files[i]
+				local ignore
+				for j = 1, #mod.ignore_files do
+					if MatchWildcard(file, mod.ignore_files[j]) then
+						ignore = true
+						break
+					end
+				end
+				if not ignore then
+					local dest_file = dest_path .. file
+					local dir = SplitPath(dest_file)
+					AsyncCreatePath(dir)
+					err = AsyncCopyFile(mod_path .. file, dest_file, "raw")
+				end
+			end
+
+		end
+
+		if pack_mod then
+			local files_to_pack = {}
+			local substring_begin = #dest_path + 1
+			local err, all_files = AsyncListFiles(dest_path, nil, "recursive")
+			if err then
+				err = T{1000753,"Failed creating content package file (<err>)",err = err}
+			else
+				-- do this after listfiles so it doesn't include it
+				AsyncCreatePath(pack_path)
+
+				for i = 1, #all_files do
+					local file = all_files[i]
+					local ignore
+					for j = 1, #mod.ignore_files do
+						if MatchWildcard(file, mod.ignore_files[j]) then
+							ignore = true
+							break
+						end
+					end
+					if not ignore then
+						table.insert(files_to_pack, {
+							src = file,
+							dst = file:sub(substring_begin),
+						})
+					end
+				end
+				err = AsyncPack(pack_path .. ModsPackFileName, dest_path, files_to_pack)
+			end
+
+		end
+
+		-- update mod on workshop
+		if not err or blank_mod then
+
+			-- check if .hpk exists, and use it if so
+			local os_dest = dest_path .. "Pack/ModContent.hpk"
+			if FileExists(os_dest) then
+				os_dest = ConvertToOSPath(os_dest)
+			else
+				os_dest = ConvertToOSPath(dest_path)
+			end
+
+			mod_params.os_pack_path = os_dest
+			-- set last_changes to last_changes or version num
+			mod.last_changes = type(mod.last_changes) == "string" and mod.last_changes ~= "" and tostring(mod.last_changes) or tostring(mod.version)
+
+			-- CommonLua\SteamWorkshop.lua
+			if not test then
+			-- skip it no matter for new feature testing
+				if steam_upload then
+					result,err = Steam_Upload(nil, mod, mod_params)
+				else
+					result,err = PDX_Upload(nil, mod, mod_params)
+				end
+			end
+		end
+
+		if err and not blank_mod then
+			result_msg[#result_msg+1] = Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>",mod.title):gsub("<err>",Translate(err))
+			if choices_len == 1 then
+				result_title[#result_title+1] = Translate(1000592--[[Error--]])
+			else
+				result_title[#result_title+1] = mod.title
+			end
+		else
+			if choices_len == 1 then
+				result_msg[#result_msg+1] = Translate(1000014--[[Mod <ModLabel> was successfully uploaded!--]]):gsub("<ModLabel>",mod.title)
+				result_title[#result_title+1] = Translate(1000015--[[Success--]])
+			else
+				result_title[#result_title+1] = mod.title
+			end
+		end
+
+		-- show id in console/copy to clipb
+		if not test and item_id then
+
+			if clipboard and not err then
+				if mod_params.uuid_property then
+					CopyToClipboard("	\"" .. mod_params.uuid_property .. "\", \"" .. item_id .. "\",")
+				else
+					CopyToClipboard("	\"steam_id\", \"" .. item_id .. "\",")
+				end
+			end
+
+			local id_str = Translate(1000021--[[Steam ID--]])
+			if not steam_upload then
+				if para_platform then
+					id_str = Translate(1000772--[[Paradox Desktop UUID--]])
+				else
+					id_str = Translate(1000773--[[Paradox All UUID--]])
+				end
+			end
+
+			print(mod.title,":",Translate(1000107--[[Mod--]]),id_str,":",item_id)
+		end
+
+		if not test and not err then
+			-- remove upload folder
+			AsyncDeletePath(dest_path)
+		end
+
+		if choices_len == 1 then
+			uploading = false
+		end
+	end
+
+	local function CallBackFunc(choices)
+--~ 		if choice.nothing_selected then
+--~ 			return
+--~ 		end
+--~ 		choice = choice[1]
+
+		if choices.nothing_selected then
+			return
+		end
+		CreateRealTimeThread(function()
+			local choice = choices[1]
+			copy_files = choice.check1
+			blank_mod = choice.check2
+			clipboard = choice.check3
+			pack_mod = choice.check4
+			test = choice.check5
+			steam_upload = choice.check6
+			para_platform = choice.check7
+
+			choices_len = #choices
+
+			uploading = true
+			for i = 1, choices_len do
+				choice = choices[i]
+				mod = choice.mod
+				mod_path = choice.path
+				-- pick logo for upload msg boxes
+				if steam_upload then
+					upload_image = "UI/Common/mod_steam_workshop.tga"
+				else
+					upload_image = "UI/ParadoxLogo.tga"
+					-- mods have to be packed for paradox
+					pack_mod = true
+				end
+
+				diff_author = mod.author ~= SteamGetPersonaName()
+				result = nil
+
+				-- my mods override
+				if ChoGGi_copy_files[mod.id] then
+					copy_files = false
+				end
+				if ChoGGi_pack[mod.id] then
+					pack_mod = true
+				end
+
+				-- remove blacklist warning from title (added in helpermod)
+				mod.title = mod.title:gsub(" %(BL%)$",""):gsub(" %(Warning%)$","")
+
+				-- will fail on paradox mods
+				if mod.lua_revision == 0 then
+					mod.lua_revision = LuaRevision
+				end
+				if mod.saved_with_revision == 0 then
+					mod.saved_with_revision = LuaRevision
+				end
+
+				table.iclear(result_msg)
+				table.iclear(result_title)
+
+				-- only one mod to upload so we ask questions
+				if choices_len == 1 then
+					-- build / show confirmation dialog
+					table.iclear(upload_msg)
+					local m_c = 0
+
+					m_c = m_c + 1
+					if steam_upload then
+						upload_msg[m_c] = Translate(1000012--[[Mod <ModLabel> will be uploaded to Steam--]]):gsub("<ModLabel>",mod.title)
+					else
+						upload_msg[m_c] = Translate(1000771--[[Mod <ModLabel> will be uploaded to Paradox--]]):gsub("<ModLabel>",mod.title)
+						m_c = m_c + 1
+						upload_msg[m_c] = "\n\n"
+						m_c = m_c + 1
+						upload_msg[m_c] = Strings[302535920001572--[[Warning: May instantly crash SM (not sure why).--]]]
+					end
+
+					if not pack_mod then
+						m_c = m_c + 1
+						upload_msg[m_c] = "\n\n"
+						m_c = m_c + 1
+						upload_msg[m_c] = Strings[302535920000051--[[Mod will not be (automagically) packed in an hpk archive.--]]]
+					end
+
+					if not copy_files then
+						m_c = m_c + 1
+						upload_msg[m_c] = "\n\n<color 203 120 30>"
+						m_c = m_c + 1
+						upload_msg[m_c] = Strings[302535920001262--[[%sModUpload folder is empty and waiting for files.--]]]:format(ConvertToOSPath("AppData/"))
+						m_c = m_c + 1
+						upload_msg[m_c] = "</color>"
+
+						-- clear out and create upload folder
+						AsyncDeletePath(dest_path)
+						AsyncCreatePath(dest_path)
+					end
+
+					-- show diff author warning unless it's me
+					if diff_author and not testing then
+						m_c = m_c + 1
+						upload_msg[m_c] = "\n\n"
+						m_c = m_c + 1
+						upload_msg[m_c] = Strings[302535920001263--[["%s is different from your name, do you have permission to upload it?"--]]]:format(mod.author)
+					end
+				end
+
+				if choices_len == 1 then
+					ChoGGi.ComFuncs.QuestionBox(
+						TableConcat(upload_msg),
+						UploadMod,
+						mod.title,
+						nil,
+						nil,
+						upload_image
+					)
+				else
+					UploadMod(true)
+				end
+			end
+
+			-- QuestionBox creates a thread, so we set this to false in UploadMod for it
+			if choices_len > 1 then
+				uploading = false
+			end
+			-- wait for it
+			while uploading do
+				Sleep(1000)
+			end
+
+			local error_msgs = {}
+			local c = 0
+			for i = 1, #result_msg do
+				c = c + 1
+				error_msgs[c] = result_msg[i] .. " " .. result_title[i]
+			end
+
+			-- update mod log and print it to console log
+			ModLog("\n" .. TableConcat(error_msgs))
+			local ModMessageLog = ModMessageLog
+			print(Strings[302535920001265--[[ModMessageLog--]]],":")
+			for i = 1, #ModMessageLog do
+				print(ModMessageLog[i])
+			end
+
+			print("false!!!!!!!!!")
+			ex(error_msgs)
+			-- let user know if we're good or not
+			ChoGGi.ComFuncs.MsgWait(
+				TableConcat(error_msgs),
+				"All Done!",
+				upload_image
+			)
+
+		end)
+
 	end
 
 	function ChoGGi.MenuFuncs.ModUpload()
@@ -681,28 +725,28 @@ do -- ModUpload
 			return
 		end
 		if not (Platform.steam or Platform.pops) then
+			local msg = Translate(1000760--[[Not Steam--]]) .. "/" .. Translate(1000759--[[Not Paradox--]])
+			print(Strings[302535920000367--[[Mod Upload--]]],":",msg)
 			MsgPopup(
-				Translate(1000760--[[Not Steam--]]) .. "/" .. Translate(1000759--[[Not Paradox--]]),
+				msg,
 				Strings[302535920000367--[[Mod Upload--]]]
 			)
 			return
 		end
 
 		-- if user copied a mod over after game started
-		print("ECM ModUpload ModsReloadDefs:")
+		print("ECM ModUpload ModsReloadDefs():")
 		ModsReloadDefs()
 
 		local item_list = {}
 		local c = 0
 		local Mods = Mods
+		local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 		for id,mod in pairs(Mods) do
 			local image = ""
-			-- env_old is from my helpermod
-			local path = mod.env.CurrentModPath or mod.content_path or mod.path
-			if mod.image ~= "" and not path:find(" ") then
-				-- i don't know how to find rtl, so we'll reverse and find it that way.
-				local slash = mod.image:reverse():find("/")
-				image = "<image " .. path .. "" .. mod.image:sub((slash - 1) * -1) .. ">\n\n"
+			-- can't use <image> tags unless there's no spaces in the path...
+			if ValidateImage(mod.image) and not mod.image:find(" ") then
+				image = "<image " .. mod.image .. ">\n\n"
 			end
 			c = c + 1
 			item_list[c] = {
@@ -710,7 +754,7 @@ do -- ModUpload
 				value = id,
 				hint = image .. mod.description,
 				mod = mod,
-				path = path,
+				path = mod.env.CurrentModPath or mod.content_path or mod.path,
 			}
 		end
 
@@ -718,12 +762,13 @@ do -- ModUpload
 			callback = CallBackFunc,
 			items = item_list,
 			title = Strings[302535920000367--[[Mod Upload--]]],
-			hint = Strings[302535920001511--[["AsyncPack crashes SM, so you'll need to use hpk to pack mod ahead of time.
+			hint = Strings[302535920001511--[["AsyncPack will crash SM after calling it once, you can use hpk to pack mods ahead of time.
 
 https://github.com/nickelc/hpk
 hpk create ""Mod folder"" ModContent.hpk
-Move archive to Mod folder/Pack/ModContent.hpk"--]]],
+Move archive to ""Mod folder/Pack/ModContent.hpk"""--]]],
 			height = 800.0,
+			multisel = true,
 			checkboxes = {
 				{title = Strings[302535920001258--[[Copy Files--]]],
 					hint = Strings[302535920001259--[["Copies all mod files to %sModUpload, uncheck to copy files manually."--]]]:format(ConvertToOSPath("AppData/")),
@@ -738,7 +783,7 @@ Move archive to Mod folder/Pack/ModContent.hpk"--]]],
 				},
 				{title = Strings[302535920001427--[[Pack--]]],
 					hint = Strings[302535920001428--[["Uploads as a packed mod (default for mod editor upload).
-This will always apply if uploading to Paradox."--]]] .. "\n\n" .. Strings[302535920001572--[[Warning: May instantly crash SM (not sure why).--]]],
+This will always apply if uploading to Paradox."--]]] .. "\n\n" .. Strings[302535920001572--[[Warning: Will instantly crash SM when calling it a second time.--]]],
 					checked = false,
 				},
 				{title = Translate(186760604064--[[Test--]]),

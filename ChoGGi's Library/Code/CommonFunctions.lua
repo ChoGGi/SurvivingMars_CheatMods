@@ -414,35 +414,46 @@ end
 ChoGGi.ComFuncs.GetParentOfKind = GetParentOfKind
 
 do -- ValidateImage
-	local m = UIL.MeasureImage
-	local r = UIL.ReloadImage
+	local Measure = UIL.MeasureImage
+	local Reload = UIL.ReloadImage
+	local Ready = UIL.IsImageReady
+	local function ReadyIt(image)
+		if not Ready(image) then
+			Reload(image)
+		end
+	end
 
-	function ChoGGi.ComFuncs.ValidateImage(image,fallback)
+	function ChoGGi.ComFuncs.ValidateImage(image,fallback,path)
 		-- if measure isn't sent a string it'll spam the log
 		image = tostring(image)
-		r(image)
+		ReadyIt(image)
 
 		-- first we try the image path as is
 		-- if x is 0 then it probably isn't a valid image (measure sends back x,y)
-		if m(image) == 0 then
-			-- try with my lib path
-			image = ChoGGi.library_path .. image
-			r(image)
+		if Measure(image) == 0 then
+			-- try with the path
+			path = path or ChoGGi.library_path
+			image = path .. image
+			ReadyIt(image)
 			-- falling back
-			if m(image) == 0 then
+			if Measure(image) == 0 then
 				image = nil
 				if fallback then
-					image = ChoGGi.library_path .. fallback
-					r(image)
-					if m(image) == 0 then
+					fallback = tostring(fallback)
+					image = path .. fallback
+					ReadyIt(image)
+					if Measure(image) == 0 then
 						image = fallback
-						r(image)
-						if m(image) == 0 then
+						ReadyIt(image)
+						if Measure(image) == 0 then
 							image = nil
 						end
 					end
 				end
 			end
+		end
+		if image == path then
+			image = nil
 		end
 
 		return image
@@ -2648,7 +2659,7 @@ do -- DeleteObject
 		local waterspire = obj:IsKindOf("WaterReclamationSpire") and not IsValid(obj.parent_dome)
 		local rctransport = obj:IsKindOf("RCTransport")
 --~ 		local holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor")
-		local flat_stuff = obj:IsKindOf("ResourceStockpileBase")
+--~ 		local flat_stuff = obj:IsKindOf("ResourceStockpileBase")
 
 		if not waterspire then
 			-- some stuff will leave holes in the world if they're still working
@@ -2668,24 +2679,15 @@ do -- DeleteObject
 			end
 		end
 
-		-- demo to the rescue
-		obj.can_demolish = true
-		obj.indestructible = false
-		if not skip_demo and obj.DoDemolish then
-			DestroyBuildingImmediate(obj)
-		end
-
 		-- causes log spam, transport still drops items carried so...
 		if not waterspire and not rctransport then
 			ExecFunc(obj,"Done")
 		end
 
-		if not flat_stuff then
-			ExecFunc(obj,"RestoreTerrain")
-		end
+		ExecFunc(obj,"RestoreTerrain")
 		ExecFunc(obj,"Destroy")
 
-		if not flat_stuff and obj.GetFlattenShape and HasAnySurfaces(obj, EntitySurfaces_Height, true) and not HasRestoreHeight() then
+		if obj.GetFlattenShape and HasAnySurfaces(obj, EntitySurfaces_Height, true) and not HasRestoreHeight() then
 			FlattenTerrainInBuildShape(obj:GetFlattenShape(), obj)
 		end
 
@@ -2699,6 +2701,13 @@ do -- DeleteObject
 --~ 		if holy_stuff then
 --~ 			ExecFunc(obj,"DestroyAttaches")
 --~ 		end
+
+		-- demo to the rescue
+		obj.can_demolish = true
+		obj.indestructible = false
+		if not skip_demo and obj.DoDemolish then
+			DestroyBuildingImmediate(obj)
+		end
 
 		-- I did ask nicely
 		if IsValid(obj) then
@@ -2738,7 +2747,7 @@ do -- DeleteObject
 		end
 
 		-- deleting domes will freeze game if they have anything in them.
-		if obj:IsKindOf("Dome") and #(obj.labels.Buildings or "") > 0 then
+		if obj:IsKindOf("Dome") and not obj:CanDemolish() then
 			MsgPopup(
 				Strings[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).--]]]:format(RetName(obj)),
 				Strings[302535920000489--[[Delete Object(s)--]]]
@@ -4310,7 +4319,7 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 
 	local function CallBackFunc(answer)
 		if answer then
-			if obj:IsKindOf("Dome") and #(obj.labels.Buildings or "") > 0 then
+			if obj:IsKindOf("Dome") and not obj:CanDemolish() then
 				MsgPopup(
 					Strings[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).--]]]:format(name),
 					Strings[302535920000489--[[Delete Object(s)--]]]

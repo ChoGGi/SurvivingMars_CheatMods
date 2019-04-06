@@ -1,6 +1,10 @@
 ## Library Changelog
 
 ## v6.4 (Unreleased)
+- ValidateImage didn't work with non-Library images.
+- Removed some log spam from:
+- > DeleteObject
+- > List Choice dialog.
 
 ## v6.3 (Mar 30 2019)
 - Added some more func names to RetName.

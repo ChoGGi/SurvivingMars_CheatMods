@@ -1,6 +1,5 @@
 ID,Text,Translation,Old Translation,Gender
 302535920001577,Placeholder,
-302535920000313,OnMsg/Msg blacklist,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
@@ -265,6 +264,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920001301,Edit Text,
 302535920000721,Overwrite,
 302535920000827,Check this to overwrite file instead of appending to it.,
+302535920000313,OnMsg/Msg blacklist,
 302535920000310,Skip Undefined Globals,
 302535920000311,"Stop the ""<color 255 255 100>Attempt to use an undefined global</color>"" msgs.
 
@@ -1593,13 +1593,13 @@ Not noticeable unless using higher zoom.",
 302535920000654,Select (or mouse over) an object to follow.,
 302535920000655,Toggle Cursor,
 302535920000656,Toggle between moving camera and selecting objects.,
-302535920001572,Warning: May instantly crash SM (not sure why).,
+302535920001572,Warning: Will instantly crash SM when calling it a second time.,
 302535920000323,Modding,
-302535920001511,"AsyncPack crashes SM, so you'll need to use hpk to pack mod ahead of time.
+302535920001511,"AsyncPack will crash SM after calling it once, you can use hpk to pack mods ahead of time.
 
 https://github.com/nickelc/hpk
 hpk create ""Mod folder"" ModContent.hpk
-Move ModContent.hpk to Mod folder/Pack/ModContent.hpk",
+Move archive to ""Mod folder/Pack/ModContent.hpk""",
 302535920001509,Platform,
 302535920001510,Paradox mods platform: Leave <color 0 255 0>checked</color> to upload to Desktop only or <color 0 255 0>uncheck</color> to upload to Desktop and Console.,
 302535920001506,Steam,

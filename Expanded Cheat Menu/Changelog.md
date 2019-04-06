@@ -4,6 +4,9 @@
 ### Added:
 - Console>Settings>Skip Undefined Globals: Stop the "Attempt to use an undefined global" msgs (it'll store a list of them you can check).
 
+### Changed:
+- Mod Upload supports batch uploading (and hopefully screenshots).
+
 ### Fixed:
 - Debug>Pathing failed on jumper shuttles on the landing.
 - Examine wasn't showing entity info it should be.

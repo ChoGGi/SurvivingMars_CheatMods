@@ -822,14 +822,14 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 				value = 1000000
 			end
 
+			ChoGGi.ComFuncs.SetSavedSetting("StorageShuttle",value)
+			ChoGGi.SettingFuncs.WriteSettings()
+
 			-- loop through and set all shuttles
 			local objs = UICity.labels.CargoShuttle or ""
 			for i = 1, #objs do
 				objs[i].max_shared_storage = value
 			end
-			ChoGGi.ComFuncs.SetSavedSetting("StorageShuttle",value)
-
-			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000929--[[Shuttle storage is now %s.--]]]:format(choice[1].text),
 				Strings[302535920000537--[[Set Capacity--]]],

@@ -547,7 +547,6 @@ function Examine:idTextOnHyperLinkRollover(link)
 		if self.ChoGGi.ComFuncs.ImageExts()[obj_str:sub(-3):lower()] then
 			roll_text = roll_text .. "\n\n<image " .. obj_str .. ">"
 		end
-
 --~ 		-- stick value in search box
 --~ 		obj = self.obj_ref[obj]
 --~ 		self.idSearchText:SetText(type(obj) == "userdata" and IsT(obj) and Translate(obj) or tostring(obj))

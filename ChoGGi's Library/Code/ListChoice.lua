@@ -609,11 +609,11 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 			-- special little guy
 			listitem.FocusedBorderColor = -14113793 -- rollover_blue
 		end
-	else
+	elseif self.idList.focused_item then
 		-- update the item's value
 		self.idList[self.idList.focused_item].item.value = value
 		-- if colour editor
-		if self.idList.focused_item and self.idColourContainer and value_type == "number" then
+		if self.idColourContainer and value_type == "number" then
 			-- update obj colours
 			if self.custom_type == 2 then
 				self:UpdateColour()

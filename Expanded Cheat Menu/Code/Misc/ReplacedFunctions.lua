@@ -2,278 +2,208 @@
 
 -- in-game functions replaced with custom ones
 
---~ local orig_XTemplateSpawn = XTemplateSpawn
---~ function XTemplateSpawn(template_or_class, parent, context)
---~ 	print(template_or_class)
---~ 	return orig_XTemplateSpawn(template_or_class, parent, context)
---~ end
-
 local type,rawget = type,rawget
 local table_unpack = table.unpack
 
-local MsgPopup
-local DebugGetInfo
-local Strings
-local blacklist
-local ChoGGi_OrigFuncs
-local Translate
-
-local SaveOrigFunc
+local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
+local Translate = ChoGGi.ComFuncs.Translate
+local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+local TableConcat = ChoGGi.ComFuncs.TableConcat
+local RetName = ChoGGi.ComFuncs.RetName
+local Strings = ChoGGi.Strings
+local blacklist = ChoGGi.blacklist
 
 -- set UI transparency
 local function SetTrans(dlg)
-	if not dlg then
+	if not dlg or dlg and not dlg.class then
 		return
 	end
-	local trans = ChoGGi.UserSettings.Transparency
-	if dlg.class and trans[dlg.class] then
-		dlg:SetTransparency(trans[dlg.class])
+	local t = ChoGGi.UserSettings.Transparency[dlg.class]
+	if t then
+		dlg:SetTransparency(t)
 	end
 	return dlg
 end
 
-function OnMsg.ClassesGenerate()
-	MsgPopup = ChoGGi.ComFuncs.MsgPopup
-	Strings = ChoGGi.Strings
-	blacklist = ChoGGi.blacklist
-	DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-	Translate = ChoGGi.ComFuncs.Translate
-	SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+do -- do some stuff
+	local p = Platform
+	local d_before = p.developer
+	p.developer = true
 
-	ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+	-- fixes UpdateInterface nil value in editor mode
+	editor.LoadPlaceObjConfig()
+	-- needed for HashLogToTable(), SM was planning to have multiple cities (or from a past game from this engine)?
+	if not rawget(_G,"g_Cities") then
+		GlobalVar("g_Cities",{})
+	end
+	-- editor wants a table
+	GlobalVar("g_revision_map",{})
+	-- stops some log spam in editor (function doesn't exist in SM)
+	UpdateMapRevision = rawget(_G,"UpdateMapRevision") or empty_func
+	AsyncGetSourceInfo = rawget(_G,"AsyncGetSourceInfo") or empty_func
 
+	p.developer = d_before
+end -- do
 
---~ 	SaveOrigFunc = function(class_or_func,func_name)
---~ 		if func_name then
---~ 			local newname = class_or_func .. "_" .. func_name
---~ 			if not ChoGGi_OrigFuncs[newname] then
---~ 				ChoGGi_OrigFuncs[newname] = _G[class_or_func][func_name]
---~ 			end
---~ 		else
---~ 			if not ChoGGi_OrigFuncs[class_or_func] then
---~ 				ChoGGi_OrigFuncs[class_or_func] = _G[class_or_func]
---~ 			end
---~ 		end
---~ 	end
+do -- funcs without a class
+	SaveOrigFunc("GetFuncSourceString")
+	SaveOrigFunc("GetMaxCargoShuttleCapacity")
+	SaveOrigFunc("GetMissingMods")
+	SaveOrigFunc("IsDlcAvailable")
+	SaveOrigFunc("LoadCustomOnScreenNotification")
+	SaveOrigFunc("OpenDialog")
+	SaveOrigFunc("OutputDebugString")
+	SaveOrigFunc("PersistGame")
+	SaveOrigFunc("ShowConsole")
+	SaveOrigFunc("ShowConsoleLog")
+	SaveOrigFunc("ShowPopupNotification")
+	SaveOrigFunc("TDevModeGetEnglishText")
+	SaveOrigFunc("TGetID")
+	SaveOrigFunc("UIGetBuildingPrerequisites")
 
-	do -- do some stuff
-		local Platform = Platform
-		Platform.editor = true
-		-- fixes UpdateInterface nil value in editor mode
-		local d_before = Platform.developer
-		Platform.developer = true
-		editor.LoadPlaceObjConfig()
-		Platform.developer = d_before
-		-- needed for HashLogToTable(), SM was planning to have multiple cities (or from a past game from this engine)?
-		if not rawget(_G,"g_Cities") then
-			GlobalVar("g_Cities",{})
-		end
-		-- editor wants a table
-		GlobalVar("g_revision_map",{})
-		-- stops some log spam in editor (function doesn't exist in SM)
-		UpdateMapRevision = rawget(_G,"UpdateMapRevision") or empty_func
-		AsyncGetSourceInfo = rawget(_G,"AsyncGetSourceInfo") or empty_func
-	end -- do
+	-- work on these persist errors
+	function PersistGame(folder,...)
+		-- collectgarbage is blacklisted, and I'm not sure what issue it'd cause if it doesn't fire (saving weird shit maybe)...
+		if not blacklist and ChoGGi.UserSettings.DebugPersistSaves then
+			collectgarbage("collect")
+			Msg("SaveGame")
+			rawset(_G, "__error_table__", {})
+			local err = EngineSaveGame(folder .. "persist")
+			local error_amt = #__error_table__
 
-	do -- funcs without a class
-		SaveOrigFunc("GetFuncSourceString")
-		SaveOrigFunc("GetMaxCargoShuttleCapacity")
-		SaveOrigFunc("GetMissingMods")
-		SaveOrigFunc("IsDlcAvailable")
-		SaveOrigFunc("LoadCustomOnScreenNotification")
-		SaveOrigFunc("OpenDialog")
-		SaveOrigFunc("OutputDebugString")
-		SaveOrigFunc("PersistGame")
-		SaveOrigFunc("ShowConsole")
-		SaveOrigFunc("ShowConsoleLog")
-		SaveOrigFunc("ShowPopupNotification")
-		SaveOrigFunc("TDevModeGetEnglishText")
-		SaveOrigFunc("TGetID")
-		SaveOrigFunc("UIGetBuildingPrerequisites")
-
-		-- work on these persist errors
-		function PersistGame(folder,...)
-			-- collectgarbage is blacklisted, and I'm not sure what issue it'd cause if it doesn't fire (saving weird shit maybe)...
-			if not blacklist and ChoGGi.UserSettings.DebugPersistSaves then
-				collectgarbage("collect")
-				Msg("SaveGame")
-				rawset(_G, "__error_table__", {})
-				local err = EngineSaveGame(folder .. "persist")
-				local error_amt = #__error_table__
-
-				for i = 1, error_amt do
-					local errors = __error_table__[i]
-					print("Persist error:", errors.error or "unknown")
-					print("Persist stack:")
-					for j = 1, #errors do
-						print("	", tostring(errors[j]))
-					end
+			for i = 1, error_amt do
+				local errors = __error_table__[i]
+				print("Persist error:", errors.error or "unknown")
+				print("Persist stack:")
+				for j = 1, #errors do
+					print("	", tostring(errors[j]))
 				end
-
-				if error_amt > 0 then
-					ChoGGi.ComFuncs.OpenInExamineDlg(__error_table__,nil,"__error_table__ (persists)")
-				end
-				-- be useful for restarting threads, see if devs will add it
-				Msg("PostSaveGame")
-				return err
 			end
 
+			if error_amt > 0 then
+				ChoGGi.ComFuncs.OpenInExamineDlg(__error_table__,nil,"__error_table__ (persists)")
+			end
 			-- be useful for restarting threads, see if devs will add it
 			Msg("PostSaveGame")
-			return ChoGGi_OrigFuncs.PersistGame(folder,...)
+			return err
 		end
 
-		-- used by a func in examine for examining functions (i think), i know something gives an error without this
-		if not (Platform.ged or Platform.editor) then
-			GetFuncSourceString = DebugGetInfo
-		end
+		-- be useful for restarting threads, see if devs will add it
+		Msg("PostSaveGame")
+		return ChoGGi_OrigFuncs.PersistGame(folder,...)
+	end
 
-		function TGetID(t,...)
-			local t_type = type(t)
-			if t_type ~= "table" and t_type ~= "userdata" then
-				return ChoGGi_OrigFuncs.TGetID(T(t,...))
+	-- WARNING: Unable to retrieve a function's source code while saving!
+	-- WARNING: Unable to retrieve a function's source code while saving!
+	-- WARNING: Unable to retrieve a function's source code while saving!
+	if not blacklist then -- GetFuncSourceString
+		local GetFuncSource = GetFuncSource
+		local str1 = "function %s(%s) %s end"
+		local str2 = "\nfunction %s(%s)\n%s\nend"
+
+		function GetFuncSourceString(f, new_name, new_params)
+			local name, params, body = GetFuncSource(f)
+			if not body then
+--~ 				print("WARNING: Unable to retrieve a function's source code while saving!")
+--~ 				return "function() end"
+				return RetName(f)
 			end
-			return ChoGGi_OrigFuncs.TGetID(t,...)
-		end
-
-		-- I guess, don't pass a string to it?
-		function TDevModeGetEnglishText(t,...)
-			if type(t) == "string" then
-				return t
-			end
-			return ChoGGi_OrigFuncs.TDevModeGetEnglishText(t,...)
-		end
-
-		-- fix for sending nil id to it
-		function LoadCustomOnScreenNotification(notification,...)
-			-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
-			if table_unpack(notification) then
-				return ChoGGi_OrigFuncs.LoadCustomOnScreenNotification(notification,...)
-			end
-		end
-
-		function GetMaxCargoShuttleCapacity(...)
-			local ChoGGi = ChoGGi
-			if ChoGGi.UserSettings.StorageShuttle then
-				return ChoGGi.UserSettings.StorageShuttle
+			name = new_name or name
+			params = new_params or params
+			if type(body) == "string" then
+				return str1:format(name, params, body)
 			else
-				return ChoGGi_OrigFuncs.GetMaxCargoShuttleCapacity(...)
+				return str2:format(name, params, TableConcat(body, "\n"))
 			end
 		end
+	end
 
-		-- SkipMissingDLC and no mystery dlc installed means the buildmenu tries to add missing buildings, and call a func that doesn't exist
-		function UIGetBuildingPrerequisites(cat_id, template, bCreateItems,...)
-			if BuildingTemplates[template.id] then
-				return ChoGGi_OrigFuncs.UIGetBuildingPrerequisites(cat_id, template, bCreateItems,...)
-			end
+	function TGetID(t,...)
+		local t_type = type(t)
+		if t_type ~= "table" and t_type ~= "userdata" then
+			return ChoGGi_OrigFuncs.TGetID(T(t,...))
 		end
+		return ChoGGi_OrigFuncs.TGetID(t,...)
+	end
 
-		-- stops confirmation dialog about missing mods (still lets you know they're missing)
-		function GetMissingMods(...)
-			if ChoGGi.UserSettings.SkipMissingMods then
-				return "", false
-			else
-				return ChoGGi_OrigFuncs.GetMissingMods(...)
-			end
+	-- I guess, don't pass a string to it?
+	function TDevModeGetEnglishText(t,...)
+		if type(t) == "string" then
+			return t
 		end
+		return ChoGGi_OrigFuncs.TDevModeGetEnglishText(t,...)
+	end
 
-		-- lets you load saved games that have dlc
-		function IsDlcAvailable(...)
-			if ChoGGi.UserSettings.SkipMissingDLC then
-				return true
-			else
-				return ChoGGi_OrigFuncs.IsDlcAvailable(...)
-			end
+	-- fix for sending nil id to it
+	function LoadCustomOnScreenNotification(notification,...)
+		-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
+		if table_unpack(notification) then
+			return ChoGGi_OrigFuncs.LoadCustomOnScreenNotification(notification,...)
 		end
+	end
 
-		-- always able to show console
-		function ShowConsole(visible,...)
-			-- ShowConsole checks for this
-			ConsoleEnabled = true
-			return ChoGGi_OrigFuncs.ShowConsole(visible,...)
+	function GetMaxCargoShuttleCapacity(...)
+		return ChoGGi.UserSettings.StorageShuttle or ChoGGi_OrigFuncs.GetMaxCargoShuttleCapacity(...)
+	end
+
+	-- SkipMissingDLC and no mystery dlc installed means the buildmenu tries to add missing buildings, and call a func that doesn't exist
+	function UIGetBuildingPrerequisites(cat_id, template, bCreateItems,...)
+		if BuildingTemplates[template.id] then
+			return ChoGGi_OrigFuncs.UIGetBuildingPrerequisites(cat_id, template, bCreateItems,...)
 		end
+	end
 
-		-- console stuff
-		function ShowConsoleLog(...)
-			-- ShowConsoleLog doesn't check for existing like ShowConsole
-			if rawget(_G, "dlgConsoleLog") then
-				dlgConsoleLog:SetVisible(true)
-			else
-				ChoGGi_OrigFuncs.ShowConsoleLog(...)
-			end
-			SetTrans(dlgConsoleLog)
+	-- stops confirmation dialog about missing mods (still lets you know they're missing)
+	function GetMissingMods(...)
+		if ChoGGi.UserSettings.SkipMissingMods then
+			return "", false
+		else
+			return ChoGGi_OrigFuncs.GetMissingMods(...)
 		end
+	end
 
-		-- convert popups to console text
-		function ShowPopupNotification(preset, params, bPersistable, parent,...)
-			--actually actually disable hints
-			if ChoGGi.UserSettings.DisableHints and preset == "SuggestedBuildingConcreteExtractor" then
-				return
-			end
+	-- lets you load saved games that have dlc
+	function IsDlcAvailable(...)
+		return ChoGGi.UserSettings.SkipMissingDLC or ChoGGi_OrigFuncs.IsDlcAvailable(...)
+	end
 
-	--~		 if type(ChoGGi.testing) == "function" then
-	--~		 --if ChoGGi.UserSettings.ConvertPopups and type(preset) == "string" and not preset:find("LaunchIssue_") then
-	--~			 if not procall(function()
-	--~				 local function ColourText(Text,Bool)
-	--~					 if Bool == true then
-	--~						 return "<color 200 200 200>" .. Text .. "</color>"
-	--~					 else
-	--~						 return "<color 75 255 75>" .. Text .. "</color>"
-	--~					 end
-	--~				 end
-	--~				 local function ReplaceParam(Name,Text,SearchName)
-	--~					 SearchName = SearchName or "<" .. Name .. ">"
-	--~					 if not Text:find(SearchName) then
-	--~						 return Text
-	--~					 end
-	--~					 return Text:gsub(SearchName,ColourText(Translate(params[Name])))
-	--~				 end
-	--~				 --show popups in console log
-	--~				 local presettext = PopupNotificationPresets[preset]
-	--~				 --print(ColourText("Title: ",true),ColourText(Translate(presettext.title)))
-	--~				 local context = _GetPopupNotificationContext(preset, params or empty_table, bPersistable)
-	--~				 context.parent = parent
-	--~				 if bPersistable then
-	--~					 context.sync_popup_id = SyncPopupId
-	--~				 else
-	--~					 context.async_signal = {}
-	--~				 end
-	--~				 local text = Translate(presettext.text,context,true)
+	-- always able to show console
+	function ShowConsole(visible,...)
+		-- ShowConsole checks for this
+		ConsoleEnabled = true
+		return ChoGGi_OrigFuncs.ShowConsole(visible,...)
+	end
 
-
-	--~				 text = ReplaceParam("number1",text)
-	--~				 text = ReplaceParam("number2",text)
-	--~				 text = ReplaceParam("effect",text)
-	--~				 text = ReplaceParam("reason",text)
-	--~				 text = ReplaceParam("hint",text)
-	--~				 text = ReplaceParam("objective",text)
-	--~				 text = ReplaceParam("target",text)
-	--~				 text = ReplaceParam("timeout",text)
-	--~				 text = ReplaceParam("count",text)
-	--~				 text = ReplaceParam("sponsor_name",text)
-	--~				 text = ReplaceParam("commander_name",text)
-
-	--~				 --text = text:gsub("<ColonistName(colonist)>",ColourText("<ColonistName(",Translate(params.colonist)) ,")>")
-
-	--~				 --print(ColourText("Text: ",true),text)
-	--~				 --print(ColourText("Voiced Text: ",true),Translate(presettext.voiced_text))
-	--~			 end) then
-	--~				 print("<color 255 0 0>Encountered an error trying to convert popup to console msg; showing popup instead (please let me know which popup it is).</color>")
-	--~				 return ChoGGi_OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
-	--~			 end
-	--~		 else
-	--~			 return ChoGGi_OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent)
-	--~		 end
-			return ChoGGi_OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent,...)
+	-- console stuff
+	function ShowConsoleLog(...)
+		-- ShowConsoleLog doesn't check for existing like ShowConsole
+		if rawget(_G, "dlgConsoleLog") then
+			dlgConsoleLog:SetVisible(true)
+		else
+			ChoGGi_OrigFuncs.ShowConsoleLog(...)
 		end
+		SetTrans(dlgConsoleLog)
+	end
 
-		-- UI transparency dialogs (buildmenu, pins, infopanel)
-		function OpenDialog(...)
-			return SetTrans(ChoGGi_OrigFuncs.OpenDialog(...))
+	-- convert popups to console text
+	function ShowPopupNotification(preset, params, bPersistable, parent,...)
+		-- actually actually disable hints
+		if ChoGGi.UserSettings.DisableHints and preset == "SuggestedBuildingConcreteExtractor" then
+			return
 		end
+		return ChoGGi_OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent,...)
+	end
 
-	end -- do
+	-- UI transparency dialogs (buildmenu, pins, infopanel)
+	function OpenDialog(...)
+		return SetTrans(ChoGGi_OrigFuncs.OpenDialog(...))
+	end
 
+end -- do
+
+function OnMsg.ClassesGenerate()
 	-- Custom Msgs
 	local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
 	AddMsgToFunc("BaseBuilding","GameInit","ChoGGi_SpawnedBaseBuilding")
@@ -339,8 +269,6 @@ function OnMsg.ClassesGenerate()
 		end
 		return ChoGGi_OrigFuncs.ConstructionController_IsObstructed(self,...)
 	end
-
-	-- allows you to build on geysers
 	function DontBuildHere:Check(...)
 		if ChoGGi.UserSettings.BuildOnGeysers then
 			return false
@@ -355,8 +283,8 @@ function OnMsg.ClassesGenerate()
 				self.template_obj.dome_required = false
 				self.template_obj.dome_forbidden = false
 			elseif self.template_obj then
-				self.template_obj.dome_required = cc.template_obj:GetDefaultPropertyValue("dome_required")
-				self.template_obj.dome_forbidden = cc.template_obj:GetDefaultPropertyValue("dome_forbidden")
+				self.template_obj.dome_required = self.template_obj:GetDefaultPropertyValue("dome_required")
+				self.template_obj.dome_forbidden = self.template_obj:GetDefaultPropertyValue("dome_forbidden")
 			end
 		end
 		return ChoGGi_OrigFuncs.CursorBuilding_GameInit(self,...)
@@ -365,34 +293,27 @@ function OnMsg.ClassesGenerate()
 	-- stupid supply pods don't want to play nice
 	function SupplyRocket:FlyToEarth(flight_time, launch_time,...)
 		if ChoGGi.UserSettings.TravelTimeMarsEarth then
-			return ChoGGi_OrigFuncs.SupplyRocket_FlyToEarth(self,g_Consts.TravelTimeMarsEarth, launch_time,...)
+			flight_time = g_Consts.TravelTimeMarsEarth
 		end
 		return ChoGGi_OrigFuncs.SupplyRocket_FlyToEarth(self,flight_time, launch_time,...)
 	end
 
 	function SupplyRocket:FlyToMars(cargo, cost, flight_time, initial, launch_time,...)
 		if ChoGGi.UserSettings.TravelTimeEarthMars then
-			return ChoGGi_OrigFuncs.SupplyRocket_FlyToMars(self,cargo, cost, g_Consts.TravelTimeEarthMars, initial, launch_time,...)
+			flight_time = g_Consts.TravelTimeEarthMars
 		end
-		return ChoGGi_OrigFuncs.SupplyRocket_FlyToMars(self,cargo, cost, flight_time, initial, launch_time,...)
+		return ChoGGi_OrigFuncs.SupplyRocket_FlyToMars(self, cargo, cost, flight_time, initial, launch_time,...)
 	end
 
 	-- no need for fuel to launch rocket
 	function SupplyRocket:HasEnoughFuelToLaunch(...)
-		if ChoGGi.UserSettings.RocketsIgnoreFuel then
-			return true
-		else
-			return ChoGGi_OrigFuncs.SupplyRocket_HasEnoughFuelToLaunch(self,...)
-		end
+		return ChoGGi.UserSettings.RocketsIgnoreFuel or ChoGGi_OrigFuncs.SupplyRocket_HasEnoughFuelToLaunch(self,...)
 	end
 
 	-- override any performance changes if needed
 	function Workplace:GetWorkshiftPerformance(...)
 		local set = ChoGGi.UserSettings.BuildingSettings[self.template_name]
-		if set and set.performance_notauto then
-			return set.performance_notauto
-		end
-		return ChoGGi_OrigFuncs.Workplace_GetWorkshiftPerformance(self,...)
+		return set and set.performance_notauto or ChoGGi_OrigFuncs.Workplace_GetWorkshiftPerformance(self,...)
 	end
 
 	-- UI transparency cheats menu
@@ -608,15 +529,15 @@ end --onmsg library
 
 -- ClassesPreprocess
 function OnMsg.ClassesPreprocess()
-	local ChoGGi = ChoGGi
 	SaveOrigFunc("InfopanelObj","CreateCheatActions")
 
+	local SetInfoPanelCheatHints = ChoGGi.InfoFuncs.SetInfoPanelCheatHints
 	local GetActionsHost = GetActionsHost
 	function InfopanelObj:CreateCheatActions(win,...)
 		-- fire orig func to build cheats
 		if ChoGGi_OrigFuncs.InfopanelObj_CreateCheatActions(self,win,...) then
 			-- then we can add some hints to the cheats
-			return ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
+			return SetInfoPanelCheatHints(GetActionsHost(win))
 		end
 	end
 
