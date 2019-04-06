@@ -6,6 +6,7 @@
 
 ### Changed:
 - Mod Upload supports batch uploading (and hopefully screenshots).
+- Examine will now try to list files in mount points (ie: ~"Textures" or ~"Prefabs").
 
 ### Fixed:
 - Debug>Pathing failed on jumper shuttles on the landing.

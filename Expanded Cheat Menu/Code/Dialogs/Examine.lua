@@ -159,10 +159,18 @@ function Examine:Init(parent, context)
 	self.marked_objects = objlist:new()
 
 	-- if we're examining a string we want to convert to an object
-	if type(self.obj) == "string" and type(context.parent) == "string" then
-		self.str_object = context.parent == "str" and true
-		context.parent = nil
+	if type(self.obj) == "string" then
+		if context.parent == "str" then
+			self.str_object = context.parent == "str" and true
+			context.parent = nil
+		elseif not blacklist then
+			local err, files = AsyncListFiles(self.obj)
+			if not err and #files > 0 then
+				self.obj = files
+			end
+		end
 	end
+
 	self.name = RetName(self.str_object and self.ChoGGi.ComFuncs.DotNameToObject(self.obj) or self.obj)
 
 	self.title = context.title
