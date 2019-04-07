@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ShiftClickToMove",
 	"steam_id", "1590473613",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 240905,
+	"lua_revision", LuaRevision or 243725,
 	"code", {
 		"Code/Script.lua",
 	},

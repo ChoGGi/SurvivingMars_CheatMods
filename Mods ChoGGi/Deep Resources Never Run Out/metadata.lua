@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
 	"code", {"Script.lua"},
 	"image", "Preview.png",
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
   "description", [[Deep resources amounts are all set to 500k and get refilled every new Sol.
 
 Change depth_layer to 1 for underground deposits (or just remove the if for both)

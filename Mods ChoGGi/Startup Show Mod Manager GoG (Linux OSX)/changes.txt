@@ -1,3 +1,6 @@
+v1.0
+Shows Mod Editor as well (not that it'll work... maybe).
+
 v0.9
 AssetsRevision.lua updated (wasn't working on mod manager refresh).
 

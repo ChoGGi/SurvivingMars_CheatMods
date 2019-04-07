@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 		"Code/ModConfig.lua",
 	},
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
   "description", [[Adds a "Lock Residence" button to the selection panel for colonists, and residences ("Lock Residents").
 They can still be kicked out (if you shutdown the building), they just won't change to a new residence if they're locked.
 

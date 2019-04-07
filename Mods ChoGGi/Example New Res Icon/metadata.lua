@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ExampleNewResIcons",
 	"steam_id", "1581373413",
 	"author", "ChoGGi & Rusty",
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
 	"code", {
 		"Code/Add Entities.lua",
 		"Code/Replace Object Entities.lua",

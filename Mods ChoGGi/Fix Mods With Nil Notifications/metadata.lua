@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixModsWithNilNotifications",
 	"steam_id", "1501634618",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
 	"code", {"Code/Script.lua"},
 	"description", [[Some mods will try to add a notification without specifying an id for it; that makes baby Jesus cry.
 

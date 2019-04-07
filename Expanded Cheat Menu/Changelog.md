@@ -5,13 +5,15 @@
 - Console>Settings>Skip Undefined Globals: Stop the "Attempt to use an undefined global" msgs (it'll store a list of them you can check).
 
 ### Changed:
-- Mod Upload supports batch uploading (and hopefully screenshots).
+- Mod Upload supports batch uploading (and screenshots).
 - Examine will now try to list files in mount points (ie: ~"Textures" or ~"Prefabs").
 
 ### Fixed:
 - Debug>Pathing failed on jumper shuttles on the landing.
-- Examine wasn't showing entity info it should be.
 - Delete Object was spamming console when deleting a res pile.
+- Examine:
+- > It wasn't showing entity info it should be.
+- > Missing the metatable for BaseSocket (as well as showing a blank list).
 
 ## v13.3 (Mar 30 2019)
 ### Added:

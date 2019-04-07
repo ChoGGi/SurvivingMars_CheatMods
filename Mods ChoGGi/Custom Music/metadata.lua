@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_CustomMusic",
 	"author", "ChoGGi",
   "steam_id", "1411106409",
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
 	"code", {
 		"Code/Script.lua"
 	},

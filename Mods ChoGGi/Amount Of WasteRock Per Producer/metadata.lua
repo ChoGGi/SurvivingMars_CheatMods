@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"code", {"Script.lua"},
 	"image", "Preview.png",
   "steam_id", "1428163993",
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
   "description", [[Halves amount of waste rock each producer produces.
 
 Requested by PichuTrainer.]],

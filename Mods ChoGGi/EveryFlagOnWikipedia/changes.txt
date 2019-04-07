@@ -1,3 +1,6 @@
+v0.7
+Changed DefaultNationNames to default to true.
+
 v0.6
 Added MCR option to skip adding names list to existing nations.
 

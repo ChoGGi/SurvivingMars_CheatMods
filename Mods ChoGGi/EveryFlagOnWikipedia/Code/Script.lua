@@ -3,7 +3,7 @@
 -- Everything stored in one global table
 EveryFlagOnWikipedia = {
 	RandomBirthplace = true,
-	DefaultNationNames = false,
+	DefaultNationNames = true,
 }
 
 -- local some stuff
@@ -371,7 +371,6 @@ function OnMsg.ModsReloaded()
 	-- Gagarin added names
 	c = AddExisting("Japanese","japan",Nations,c)
 	c = AddExisting("Brazilian","brazil",Nations,c)
-
 
 	do -- add new nations
 		c = c + 1

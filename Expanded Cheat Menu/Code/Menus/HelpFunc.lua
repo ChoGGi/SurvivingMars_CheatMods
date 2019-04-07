@@ -419,6 +419,24 @@ do -- ModUpload
 			item_id = mod[mod_params.uuid_property]
 		end
 
+		-- screenshots
+		local shots_path = "AppData/ModUpload/Screenshots/"
+		AsyncCreatePath(shots_path)
+		mod_params.screenshots = {}
+		for i = 1, 5 do
+			local screenshot = mod["screenshot" .. i]
+			if io.exists(screenshot) then
+				local path, name, ext = SplitPath(screenshot)
+				local new_name = ModsScreenshotPrefix .. name .. ext
+				local new_path = shots_path .. new_name
+				local err = AsyncCopyFile(screenshot, new_path)
+				if not err then
+					local os_path = ConvertToOSPath(new_path)
+					table.insert(mod_params.screenshots, os_path)
+				end
+			end
+		end
+
 		-- issue with mod platform (workshop/paradox mods)
 		if not prepare_worked then
 			-- let user know if we're good or not
@@ -563,11 +581,6 @@ do -- ModUpload
 	end
 
 	local function CallBackFunc(choices)
---~ 		if choice.nothing_selected then
---~ 			return
---~ 		end
---~ 		choice = choice[1]
-
 		if choices.nothing_selected then
 			return
 		end
@@ -695,23 +708,22 @@ do -- ModUpload
 			local c = 0
 			for i = 1, #result_msg do
 				c = c + 1
-				error_msgs[c] = result_msg[i] .. " " .. result_title[i]
+				error_msgs[c] = result_title[i] .. " " .. result_msg[i]
 			end
+			error_msgs = TableConcat(error_msgs)
 
 			-- update mod log and print it to console log
-			ModLog("\n" .. TableConcat(error_msgs))
+			ModLog("\n" .. error_msgs)
 			local ModMessageLog = ModMessageLog
 			print(Strings[302535920001265--[[ModMessageLog--]]],":")
 			for i = 1, #ModMessageLog do
 				print(ModMessageLog[i])
 			end
 
-			print("false!!!!!!!!!")
-			ex(error_msgs)
 			-- let user know if we're good or not
 			ChoGGi.ComFuncs.MsgWait(
-				TableConcat(error_msgs),
-				"All Done!",
+				error_msgs,
+				Strings[302535920001586--[[All Done!--]]],
 				upload_image
 			)
 

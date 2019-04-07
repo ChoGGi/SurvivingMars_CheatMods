@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
-	"title", "Every Flag On Wikipedia v0.6",
-	"version", 6,
-	"saved", 1548504000,
+	"title", "Every Flag On Wikipedia v0.7",
+	"version", 7,
+	"saved", 1554638400,
 	"id", "ChoGGi_EveryFlagOnWikipedia",
 	"author", "ChoGGi",
 	"code", {
@@ -11,16 +11,16 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "1455937967",
 	"pops_any_uuid", "72c38c74-3abc-4248-a29a-9209efbe94f3",
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
   "description", [[Adds every flag on Wikipedia (450+), and no more Martian only names.
 
-Since this game uses nations for names, this also takes all the in-game names and applies them to all the nations (see below to disable).
+Since this game uses nations for names, this also takes all the in-game names and applies them to all the new nations.
 
 This also sets const.FullTransitionToMarsNames to 9999 (Sols), and adds all the names to Mars (I think we've all seen enough of Cosmo Cosmos).
 
 Mod Config Reborn:
-If you want martians to have martian names: Randomise Birthplace
-If you don't want existing nations to use random names: Default Nation Names
+If you want Martians to have martian names: Randomise Birthplace = false
+If you want existing nations to use random names: Default Nation Names = false
 
 I also added a few unique names associated with space.
 Suggestions welcome, for names already added see: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Mods%20ChoGGi/EveryFlagOnWikipedia/Code/Script.lua#L64

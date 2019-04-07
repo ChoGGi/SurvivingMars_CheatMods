@@ -5,7 +5,7 @@ local Strings = ChoGGi.Strings
 -- simplest entity object possible for hexgrids (it went from being laggy with 100 to usable, though that includes some use of local, so who knows)
 DefineClass.ChoGGi_OHexSpot = {
 	__parents = {"CObject"},
-	entity = "GridTile"
+	entity = "GridTile",
 }
 
 -- re-define objects for ease of deleting later on

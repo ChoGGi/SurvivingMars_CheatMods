@@ -2900,7 +2900,9 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 
 	end
 
-	if not (obj == "nil" or is_valid_obj or obj_type == "userdata") and obj_metatable then
+	-- do we add a metatable to it?
+	if not (obj == "nil" or is_valid_obj or obj_type == "userdata") and obj_metatable
+			or is_valid_obj and obj:IsKindOf("BaseSocket") then
 		table_insert(list_obj_str, 1,"\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
 
 		if self.enum_vars and next(self.enum_vars) then
@@ -2939,14 +2941,13 @@ function Examine:SetToolbarVis(obj,obj_metatable)
 		if self.name ~= "_G" then
 
 			-- pretty much any class object
---~ 			if obj.delete then
 			if PropObjGetProperty(obj,"delete") then
 				self.idButDeleteObj:SetVisible(true)
 			end
 
 			if IsValid(obj) then
 				-- can't mark if it isn't an object, and no sense in marking something off the map
-				if obj:GetPos() ~= InvalidPos then
+				if obj.GetPos and obj:GetPos() ~= InvalidPos then
 					self.idButMarkObject:SetVisible(true)
 				end
 			end
