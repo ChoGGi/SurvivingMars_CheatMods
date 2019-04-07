@@ -59,9 +59,9 @@ do -- AddMsgToFunc
 --~ 			local params = {...}
 --~ 			-- pass on args to orig func
 --~ 			if not pcall(function()
---~ 				return ChoGGi_OrigFuncs[class_name .. func_name](table.unpack(params))
+--~ 				return ChoGGi_OrigFuncs[class_name .. "_" .. func_name](table.unpack(params))
 --~ 			end) then
---~ 				print("Function Error: ",class_name .. func_name)
+--~ 				print("Function Error: ",class_name .. "_" .. func_name)
 --~ 				ChoGGi.ComFuncs.OpenInExamineDlg({params},nil,"AddMsgToFunc")
 --~ 			end
 
@@ -4257,7 +4257,7 @@ do -- ToggleBldFlags
 		obj[func](obj,flag)
 		if obj.ForEachAttach then
 			obj:ForEachAttach(function(a)
-				if a.class:sub(1,8) ~= "GridTile" and not a:IsKindOf("BuildingSign") then
+				if not a:IsKindOfClasses("BuildingSign","GridTile") then
 					a[func](a,flag)
 				end
 			end)

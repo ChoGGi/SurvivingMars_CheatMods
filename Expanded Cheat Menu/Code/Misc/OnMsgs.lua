@@ -21,6 +21,18 @@ local testing = ChoGGi.testing
 --~ function OnMsg.ClassesGenerate()
 --~ end
 
+do -- custom msgs
+	local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
+	AddMsgToFunc("BaseBuilding","GameInit","ChoGGi_SpawnedBaseBuilding")
+	AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
+	AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
+
+	AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","air_production")
+	AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducer","electricity_production")
+	AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","water_production")
+	AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducer","production_per_day")
+end -- do
+
 -- be too annoying to add templates to all of these manually
 XMenuEntry.RolloverTemplate = "Rollover"
 XMenuEntry.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
@@ -29,9 +41,6 @@ XListItem.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
 
 -- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I could remove this?)
 XRolloverWindow.ZOrder = max_int
-
--- when it's not visible it doesn't take up space
---~	 XListItem.FoldWhenHidden = true
 
 -- changed from 2000000
 ConsoleLog.ZOrder = 2
@@ -68,13 +77,15 @@ if not ChoGGi.UserSettings.EnableToolTips then
 	ChoGGi_Window.RolloverTemplate = ""
 end
 
--- unforbid binding some keys (i left Enter and Menu, not sure what Menu is for? seems best to leave it)
-local f = ForbiddenShortcutKeys
-f.Lwin = nil
-f.Rwin = nil
-f.MouseL = nil
-f.MouseR = nil
-f.MouseM = nil
+do -- ForbiddenShortcutKeys
+	-- unforbid binding some keys (i left Enter and Menu, not sure what Menu is for? seems best to leave it)
+	local f = ForbiddenShortcutKeys
+	f.Lwin = nil
+	f.Rwin = nil
+	f.MouseL = nil
+	f.MouseR = nil
+	f.MouseM = nil
+end -- do
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
