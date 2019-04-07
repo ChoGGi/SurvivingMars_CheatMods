@@ -1765,6 +1765,8 @@ end -- do
 
 do -- ResearchTech
 	local ValidateImage = ChoGGi.ComFuncs.ValidateImage
+	local IsTechResearched = IsTechResearched
+
 	local mystery_costs = {
 		SolExploration = 5000,
 		AlienDiggersDestruction = 20000,
@@ -1851,7 +1853,6 @@ do -- ResearchTech
 			}
 		end
 
-		local IsTechResearched = IsTechResearched
 		local TechDef = TechDef
 		for tech_id,tech in pairs(TechDef) do
 			-- only show stuff not yet researched
@@ -1862,7 +1863,7 @@ do -- ResearchTech
 					text = text:gsub("\"","")
 				end
 				local icon1,icon2 = "",""
-				if ValidateImage(tech.icon) then
+				if ValidateImage(tech.icon) and not tech.icon:find(" ") then
 					icon1 = "<image " .. tech.icon .. " 250>"
 					icon2 = "\n\n<image " .. tech.icon .. " 1500>"
 				end

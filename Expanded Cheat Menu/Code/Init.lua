@@ -19,7 +19,7 @@ ChoGGi._VERSION = mod.version
 -- is ECM shanghaied by the blacklist?
 ChoGGi.blacklist = blacklist
 -- path to this mods' folder
-ChoGGi.mod_path = CurrentModPath or mod.content_path or mod.path
+ChoGGi.mod_path = mod.env.CurrentModPath or mod.content_path or mod.path
 -- Console>Scripts folder
 ChoGGi.scripts = "AppData/ECM Scripts"
 -- you can pry my settings FILE from my cold dead (and not modding SM anymore) hands.

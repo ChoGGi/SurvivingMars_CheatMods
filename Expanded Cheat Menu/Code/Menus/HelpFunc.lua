@@ -335,8 +335,8 @@ do -- ModUpload
 
 	-- check the copy box for these
 	local ChoGGi_copy_files = {
-		ChoGGi_CheatMenu = true,
-		ChoGGi_Library = true,
+		[ChoGGi.id] = true,
+		[ChoGGi.id_lib] = true,
 	}
 	-- and the pack box
 	local ChoGGi_pack = {

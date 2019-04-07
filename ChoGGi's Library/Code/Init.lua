@@ -34,6 +34,8 @@ ChoGGi = {
 	_LICENSE = LICENSE,
 	-- ECM
 	id = "ChoGGi_CheatMenu",
+	-- this
+	id_lib = "ChoGGi_Library",
 	-- constants
 	Consts = {
 		LightmodelCustom = {
