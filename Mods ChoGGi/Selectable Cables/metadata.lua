@@ -10,6 +10,6 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
 	"description", [[Name pretty much says it all.]],
 })

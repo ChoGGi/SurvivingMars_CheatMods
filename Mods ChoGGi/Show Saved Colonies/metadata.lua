@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
 	"description", [[Puts a dome marker on areas you've already been to.
 This also adds the names of the saves to the pointer text.]],
 })

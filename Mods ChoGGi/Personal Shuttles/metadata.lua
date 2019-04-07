@@ -20,7 +20,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 		"Code/OnMsgs.lua",
 	},
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
 	"description", [[Adds buttons to Shuttle Hubs to spawn personal shuttles.
 Personal shuttles can pick up certain items (rovers, drones, resource piles, and waste rock), scan nearby selected anomalies, and attack nearby dust devils.
 

@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RandomBuildingColour",
 	"steam_id", "1535187230",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
 	"code", {
 		"Code/Script.lua",
 	},

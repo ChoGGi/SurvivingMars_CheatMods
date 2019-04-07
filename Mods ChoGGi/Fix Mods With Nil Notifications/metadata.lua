@@ -7,7 +7,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1501634618",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision or 243725,
-	"code", {"Code/Script.lua"},
+	"code", {
+		"Code/Script.lua",
+	},
 	"description", [[Some mods will try to add a notification without specifying an id for it; that makes baby Jesus cry.
 
 (also the game freezes on load)]],

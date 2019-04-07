@@ -24,7 +24,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
 	"description", [[Shows the map before you load it in the select colony screen.
 
 For those wondering: Purple = mountainous, other colours = buildable.

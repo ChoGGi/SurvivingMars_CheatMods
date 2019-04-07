@@ -8,12 +8,7 @@ local GetHeight = terrain.GetHeight
 
 local guim = guim
 
-local Random
-
--- generate is late enough that my library is loaded, but early enough to replace anything i need to
-function OnMsg.ClassesGenerate()
-	Random = ChoGGi.ComFuncs.Random
-end
+local Random = ChoGGi.ComFuncs.Random
 
 DefineClass.MurderPod = {
 	__parents = {

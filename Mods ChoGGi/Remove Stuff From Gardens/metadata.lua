@@ -7,6 +7,6 @@ return PlaceObj("ModDef", {
 	"code", {"Script.lua"},
 	"image", "Preview.png",
 --~   "steam_id", "XXXXXXXXX",
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
   "description", [[Remove stuff from gardens]],
 })

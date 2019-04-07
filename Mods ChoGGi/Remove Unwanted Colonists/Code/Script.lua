@@ -133,6 +133,6 @@ function OnMsg.ClassesBuilt()
 		})
 	)
 
-	-- add a button to select victim to selection panel of murder po
+	-- add a button to select victim to selection panel of murder pod
 
 end

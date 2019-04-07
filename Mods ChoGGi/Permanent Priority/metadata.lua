@@ -10,6 +10,6 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Script.lua"
 	},
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
 	"description", [[Priority from construction sites will carry over to the completed buildings.]],
 })

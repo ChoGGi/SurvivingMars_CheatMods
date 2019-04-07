@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"pops_desktop_uuid", "9f2beb20-8ac6-4201-af9b-366308bd65fb",
 	"pops_any_uuid", "fb8fc954-40d2-4818-b84f-157903c4ed36",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
 	"code", {
 		"Code/Script.lua",
 		"Code/MurderPod.lua",

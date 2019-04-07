@@ -9,6 +9,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", LuaRevision,
+	"lua_revision", LuaRevision or 243725,
   "description", [[Pauses the game on new notifications (also removes Drone Heavy Load notification).]],
 })
