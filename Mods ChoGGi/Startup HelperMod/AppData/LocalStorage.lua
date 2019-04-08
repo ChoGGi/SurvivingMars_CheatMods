@@ -18,8 +18,7 @@ CreateRealTimeThread(function()
 		WaitMsg("ModDefsLoaded")
 
 		-- local some globals
-		local setmetatable,getmetatable = setmetatable,getmetatable
-		local pairs,rawget = pairs,rawget
+		local setmetatable,pairs,rawget = setmetatable,pairs,rawget
 		-- a less restrictive env (okay, not at all restrictive)
 		local orig_G = _G
 		local mod_env = {
@@ -61,6 +60,7 @@ CreateRealTimeThread(function()
 				mod.no_blacklist = true
 				local env = mod.env
 				for key in pairs(env) do
+					-- we need to use the original __newindex from OnMsg instead of replacing it, or mod OnMsgs don't work
 					if key ~= "OnMsg" then
 						local g_key = rawget(orig_G,key)
 						if g_key then
