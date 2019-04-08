@@ -7,7 +7,69 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Translate = ChoGGi.ComFuncs.Translate
 local Random = ChoGGi.ComFuncs.Random
 local TableConcat = ChoGGi.ComFuncs.TableConcat
+local SelObject = ChoGGi.ComFuncs.SelObject
 local Strings = ChoGGi.Strings
+
+function ChoGGi.MenuFuncs.LightningStrike(_,_,input)
+	local strike_pos
+	if input == "keyboard" then
+		strike_pos = GetTerrainCursor()
+	else
+		strike_pos = GetRandomPassable()
+	end
+
+	local dust_storm = table.rand(DataInstances.MapSettings_DustStorm)
+
+	local strike_radius = dust_storm.strike_radius
+	PlayFX("ElectrostaticStormArea", "start", nil, nil, strike_pos)
+	PlayFX("ElectrostaticStorm", "hit-moment" .. Random(1,4), nil, nil, strike_pos)
+	local fuel_explosions = {}
+	local IsValid = IsValid
+	local IsObjInDome = IsObjInDome
+	local IsCloser2D = IsCloser2D
+	local FuelExplosion = FuelExplosion
+	MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(),
+			"Colonist", "Building", "Drone", "RCRover", "ResourceStockpileBase",function(obj)
+		if not IsCloser2D(obj, strike_pos, strike_radius) or IsObjInDome(obj) then
+			return
+		end
+		PlayFX("ElectrostaticStormObject", "start", nil, obj, strike_pos)
+		if IsValid(obj) then
+			if obj:IsKindOf("Drone") then
+				obj:UseBattery(obj.battery)
+			elseif obj:IsKindOf("RCRover") then
+				obj:SetCommand("Malfunction")
+			elseif obj:IsKindOf("UniversalStorageDepot") then
+				if not obj:IsKindOf("SupplyRocket") and obj:GetStoredAmount("Fuel") > 0 then
+					obj:CheatEmpty()
+					fuel_explosions[#fuel_explosions + 1] = obj
+				end
+			elseif obj:IsKindOf("ResourceStockpileBase") then
+				local amount = obj:GetStoredAmount()
+				if obj.resource == "Fuel" and amount > 0 then
+					obj:AddResourceAmount(-amount, true)
+					fuel_explosions[#fuel_explosions + 1] = obj
+				end
+			elseif obj:IsKindOf("Building") then
+				obj:SetSuspended(true, "Suspended", dust_storm.strike_suspend)
+				if obj:IsKindOf("ElectricityStorage") then
+					obj.electricity.current_storage = Max(0, obj.electricity.current_storage - dust_storm.strike_discharge)
+				end
+			elseif obj:IsKindOf("Colonist") then
+				if not obj:IsDying() then
+					obj:SetCommand("Die", "lighting strike")
+				end
+			end
+		end
+
+	end)
+	for i = 1, #fuel_explosions do
+		local obj = fuel_explosions[i]
+		if IsValid(obj) then
+			FuelExplosion(obj)
+		end
+	end
+end
 
 -- BetaBetaBeta
 function ChoGGi.MenuFuncs.TesteringBetaBetaBeta()
@@ -414,7 +476,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerMissle(amount)
 	if amount == 1 then
 		-- (pt, radius, count, delay_min, delay_max)
 		StartBombard(
-			ChoGGi.ComFuncs.SelObject() or GetTerrainCursor(),
+			SelObject() or GetTerrainCursor(),
 			-- somewhere between 1K and 2K is too small to target some buildings for whatever reason...
 			2000,
 			amount
@@ -457,7 +519,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(severity,storm_type)
 	end)
 end
 function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity,major)
-	local pos = ChoGGi.ComFuncs.SelObject() or GetTerrainCursor()
+	local pos = SelObject() or GetTerrainCursor()
 	if type(pos) == "table" then
 		pos = pos:GetPos()
 	end
@@ -468,7 +530,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity,major)
 end
 function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity,meteors_type)
 	meteors_type = meteors_type or "single"
-	local pos = ChoGGi.ComFuncs.SelObject() or GetTerrainCursor()
+	local pos = SelObject() or GetTerrainCursor()
 	if IsValid(pos) then
 		pos = pos.GetVisualPos and pos:GetVisualPos() or pos:GetPos()
 	end
@@ -487,16 +549,16 @@ function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity,meteors_type)
 	end)
 end
 function ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm()
-	local pos = ChoGGi.ComFuncs.SelObject() or GetTerrainCursor()
+	local pos = SelObject() or GetTerrainCursor()
 	if type(pos) == "table" then
 		pos = pos:GetPos()
 	end
 
 	local const = const
 	local storm = MetatronIonStorm:new()
-	storm.expiration_time = ChoGGi.ComFuncs.Random(50 * const.HourDuration, 75 * const.HourDuration) + 14450
+	storm.expiration_time = Random(50 * const.HourDuration, 75 * const.HourDuration) + 14450
 	storm:SetPos(pos)
-	storm:SetAngle(ChoGGi.ComFuncs.Random(1,21600))
+	storm:SetAngle(Random(1,21600))
 end
 
 do -- DisasterTriggerLightningStrike

@@ -18,6 +18,17 @@ if LuaRevision > 240905 then
 end
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920001587--[[Lightning Strike--]]],
+	ActionMenubar = "ECM.Cheats",
+	ActionId = ".Lightning Strike",
+	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
+	RolloverText = Strings[302535920001588--[[Strike a random pos or at mouse cursor if using shortcut.--]]],
+	OnAction = ChoGGi.MenuFuncs.LightningStrike,
+	ActionShortcut = "Ctrl-Shift-Z",
+	ActionBindable = true,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920001355--[[Map--]]] .. " " .. Translate(5422--[[Exploration--]]),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Map Exploration",

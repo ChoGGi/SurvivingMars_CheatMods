@@ -3,6 +3,7 @@
 ## v13.4 (Unreleased)
 ### Added:
 - Console>Settings>Skip Undefined Globals: Stop the "Attempt to use an undefined global" msgs (it'll store a list of them you can check).
+- Cheats>Lightning Strike: Same as a strike from a dust storm.
 
 ### Changed:
 - Mod Upload supports batch uploading (and screenshots).

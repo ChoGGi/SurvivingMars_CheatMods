@@ -250,7 +250,10 @@ function ChoGGi.ComFuncs.SetSponsorBonuses(name)
 	end
 end
 
-function ChoGGi.ComFuncs.GenerateScreenshotFilename(prefix, folder, ext, just_name)
+function ChoGGi.ComFuncs.GenerateScreenshotFilename(prefix, folder, ext, just_name, ...)
+	if blacklist then
+		return GenerateScreenshotFilename(prefix, folder, ext, just_name, ...)
+	end
 	local match = string.match
 	local Max = Max
 
