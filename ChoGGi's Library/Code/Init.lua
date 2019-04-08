@@ -116,6 +116,7 @@ ChoGGi = {
 		NoHomeComfort = false,
 		NonHomeDomePerformancePenalty = false,
 		NonSpecialistPerformancePenalty = false,
+		OutsideWorkplaceSanityDecrease = false,
 		OutsourceMaxOrderCount = false,
 		OutsourceResearch = false,
 		OutsourceResearchCost = false,

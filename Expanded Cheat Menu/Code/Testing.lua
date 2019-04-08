@@ -20,10 +20,11 @@
 --~ 	end
 --~ end
 
-local ChoGGi = ChoGGi
 if not ChoGGi.testing then
 	return
 end
+
+local Translate = ChoGGi.ComFuncs.Translate
 
 --~ 	local orig_GetStack = GetStack
 --~ 	function GetStack(...)
@@ -154,7 +155,6 @@ function ChoGGi.testing.MissingStrings(string_limit)
 	-- amount of entries in the CSV file
 	string_limit = string_limit or 1550
 
-	local Translate = ChoGGi.ComFuncs.Translate
 	local missing_strs = {}
 	local c = 0
 	-- we need to pad some zeros

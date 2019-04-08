@@ -87,15 +87,20 @@ ChoGGi.Tables = {
 -- also called after mods are loaded, we call it now for any functions that use it before then
 ChoGGi.ComFuncs.UpdateDataTables()
 
+local function GetValueCls(obj,value,fallback)
+	if obj then
+		return obj:GetDefaultPropertyValue(value)
+	end
+	return fallback
+end
+local function GetValueBT(bt,value,fallback)
+	if bt and bt[value] then
+		return bt[value]
+	end
+	return fallback
+end
 
 function OnMsg.ClassesBuilt()
---~ 	-- see ConstructionNamesListFix above
---~ 	local ConstructionNamesListFix = ChoGGi.Tables.ConstructionNamesListFix
---~ 	ClassDescendants("BaseRoverBuilding", function(class, building)
---~ 		ConstructionNamesListFix[class] = building.rover_class
---~ 		ConstructionNamesListFix[building.rover_class] = class
---~ 	end)
-
 	local Consts = Consts
 	local const = const
 	local g_Classes = g_Classes
@@ -114,34 +119,32 @@ function OnMsg.ClassesBuilt()
 	end
 
 	-- get other defaults not stored in Consts
-	ChoGGi.Consts.DroneFactoryBuildSpeed = g_Classes.DroneFactory:GetDefaultPropertyValue("performance")
-	ChoGGi.Consts.StorageShuttle = g_Classes.CargoShuttle:GetDefaultPropertyValue("max_shared_storage")
-	ChoGGi.Consts.SpeedShuttle = g_Classes.CargoShuttle:GetDefaultPropertyValue("move_speed")
-	ChoGGi.Consts.ShuttleHubShuttleCapacity = g_Classes.ShuttleHub:GetDefaultPropertyValue("max_shuttles")
-	ChoGGi.Consts.SpeedDrone = g_Classes.Drone:GetDefaultPropertyValue("move_speed")
-	ChoGGi.Consts.SpeedRC = g_Classes.RCRover:GetDefaultPropertyValue("move_speed")
-	ChoGGi.Consts.SpeedColonist = g_Classes.Colonist:GetDefaultPropertyValue("move_speed")
-	ChoGGi.Consts.RCTransportStorageCapacity = g_Classes.RCTransport:GetDefaultPropertyValue("max_shared_storage")
+	ChoGGi.Consts.DroneFactoryBuildSpeed = GetValueCls(g_Classes.DroneFactory,"performance",100)
+	ChoGGi.Consts.StorageShuttle = GetValueCls(g_Classes.CargoShuttle,"max_shared_storage",3 * r)
+	ChoGGi.Consts.SpeedShuttle = GetValueCls(g_Classes.CargoShuttle,"move_speed",3 * r)
+	ChoGGi.Consts.ShuttleHubShuttleCapacity = GetValueCls(g_Classes.ShuttleHub,"max_shuttles",10)
+	ChoGGi.Consts.SpeedDrone = GetValueCls(g_Classes.Drone,"move_speed",1440)
+	ChoGGi.Consts.SpeedRC = GetValueCls(g_Classes.RCRover,"move_speed",1 * r)
+	ChoGGi.Consts.SpeedColonist = GetValueCls(g_Classes.Colonist,"move_speed",1 * r)
+	ChoGGi.Consts.RCTransportStorageCapacity = GetValueCls(g_Classes.RCTransport,"max_shared_storage",30 * r)
 	if rawget(g_Classes,"RCConstructor") then
-		ChoGGi.Consts.RCConstructorStorageCapacity = g_Classes.RCConstructor:GetDefaultPropertyValue("max_shared_storage")
+		ChoGGi.Consts.RCConstructorStorageCapacity = GetValueCls(g_Classes.RCConstructor,"max_shared_storage",42 * r)
 	end
-	ChoGGi.Consts.StorageUniversalDepot = g_Classes.UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource")
---~ 	ChoGGi.Consts.StorageWasteDepot = WasteRockDumpSite:GetDefaultPropertyValue("max_amount_WasteRock")
-	 --^ that has 45000 as default...
+	ChoGGi.Consts.StorageUniversalDepot = GetValueCls(g_Classes.UniversalStorageDepot,"max_storage_per_resource",30 * r)
 	local bt = BuildingTemplates
-	ChoGGi.Consts.StorageWasteDepot = bt.WasteRockDumpBig.max_amount_WasteRock or (70 * r)
-	ChoGGi.Consts.StorageOtherDepot = bt.StorageConcrete.max_storage_per_resource or (180 * r)
-	ChoGGi.Consts.StorageMechanizedDepot = bt.MechanizedDepotConcrete.max_storage_per_resource or (3950 * r) -- the other 50 is stored on the "porch"
+	ChoGGi.Consts.StorageWasteDepot = GetValueBT(bt.WasteRockDumpBig,"max_amount_WasteRock",70 * r)
+	ChoGGi.Consts.StorageOtherDepot = GetValueBT(bt.StorageConcrete,"max_storage_per_resource",180 * r)
+	ChoGGi.Consts.StorageMechanizedDepot = GetValueBT(bt.MechanizedDepotConcrete,"max_storage_per_resource",3950 * r) -- the other 50 is stored on the "porch"
 	-- ^ they're all UniversalStorageDepot
+	ChoGGi.Consts.RocketMaxExportAmount = GetValueBT(bt.SupplyRocket,"max_export_storage",30 * r)
+	ChoGGi.Consts.LaunchFuelPerRocket = GetValueBT(bt.SupplyRocket,"launch_fuel",60 * r)
 	ChoGGi.Consts.GravityColonist = 0
 	ChoGGi.Consts.GravityDrone = 0
 	ChoGGi.Consts.GravityRC = 0
-	ChoGGi.Consts.RocketMaxExportAmount = bt.SupplyRocket.max_export_storage or (30 * r)
-	ChoGGi.Consts.LaunchFuelPerRocket = bt.SupplyRocket.launch_fuel or (60 * r)
 
 	ChoGGi.Consts.CameraScrollBorder = const.DefaultCameraRTS.ScrollBorder
 	ChoGGi.Consts.CameraLookatDist = const.DefaultCameraRTS.LookatDist
 	ChoGGi.Consts.CameraMaxZoom = const.DefaultCameraRTS.MaxZoom
 	ChoGGi.Consts.CameraMinZoom = const.DefaultCameraRTS.MinZoom
-	ChoGGi.Consts.HigherRenderDist = 120 -- hr.LODDistanceModifier
+	ChoGGi.Consts.HigherRenderDist = hr.LODDistanceModifier
 end

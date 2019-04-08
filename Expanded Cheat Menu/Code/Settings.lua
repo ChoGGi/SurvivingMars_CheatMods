@@ -216,6 +216,7 @@ function ChoGGi.SettingFuncs.SetConstsToSaved()
 		"NoHomeComfort",
 		"NonHomeDomePerformancePenalty",
 		"NonSpecialistPerformancePenalty",
+		"OutsideWorkplaceSanityDecrease",
 		"OutsourceMaxOrderCount",
 		"OutsourceResearch",
 		"OutsourceResearchCost",

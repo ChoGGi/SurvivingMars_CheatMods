@@ -275,16 +275,17 @@ function ChoGGi.ComFuncs.GenerateScreenshotFilename(prefix, folder, ext, just_na
 end
 local GenerateScreenshotFilename = ChoGGi.ComFuncs.GenerateScreenshotFilename
 
-function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg,gen_name)
+function ChoGGi.ComFuncs.Dump(obj,overwrite,file,ext,skip_msg,gen_name)
 	if blacklist then
 		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.Dump")
 		return
 	end
 
-	if mode then
-		mode = nil
+	-- if overwrite is nil then we append, if anything else we overwrite
+	if overwrite then
+		overwrite = nil
 	else
-		mode = "-1"
+		overwrite = "-1"
 	end
 
 	local filename
@@ -295,7 +296,7 @@ function ChoGGi.ComFuncs.Dump(obj,mode,file,ext,skip_msg,gen_name)
 	end
 
 	ThreadLockKey(filename)
-	AsyncStringToFile(filename,obj,mode)
+	AsyncStringToFile(filename,obj,overwrite)
 	ThreadUnlockKey(filename)
 
 	-- let user know

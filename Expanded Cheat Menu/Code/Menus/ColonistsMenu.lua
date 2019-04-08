@@ -370,6 +370,21 @@ Activated when colonist changes job."--]]]
 }
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920001589--[[Outside Workplace Sanity Penalty--]]],
+	ActionMenubar = "ECM.ECM.Colonists.Workplaces",
+	ActionId = ".Outside Workplace Sanity Penalty",
+	ActionIcon = StarkFistOfRemoval,
+	RolloverText = function()
+		return ChoGGi.ComFuncs.SettingState(
+			ChoGGi.UserSettings.OutsideWorkplaceSanityDecrease,
+			Strings[302535920001590--[["Remove the ""Worked outside the Dome"" penalty.
+Activated when colonist changes job."--]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.OutsideWorkplaceSanityDecrease_Toggle,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920000392--[[Outside Workplace Radius--]]],
 	ActionMenubar = "ECM.ECM.Colonists.Workplaces",
 	ActionId = ".Outside Workplace Radius",

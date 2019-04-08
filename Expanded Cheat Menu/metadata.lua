@@ -30,6 +30,14 @@ return PlaceObj("ModDef", {
 		"Code/ECM_Functions.lua",
 		-- defaults,consts,read/save settings
 		"Code/Settings.lua",
+		-- other stuff
+		"Code/AddedFunctions.lua",
+		"Code/ConsoleFuncs.lua",
+		"Code/InfoPaneCheats.lua",
+		"Code/HexPainter.lua",
+		"Code/ReplacedFunctions.lua",
+		"Code/OnMsgs.lua",
+		"Code/GedSocket.lua",
 
 		-- custom dialogs
 		"Code/Dialogs/ConsoleLogWin.lua",
@@ -42,15 +50,6 @@ return PlaceObj("ModDef", {
 		"Code/Dialogs/ImageViewer.lua",
 		"Code/Dialogs/DTMSlots.lua",
 		"Code/Dialogs/TerminalRolloverMode.lua",
-
-		-- stuff that can come later
-		"Code/Misc/AddedFunctions.lua",
-		"Code/Misc/ConsoleFuncs.lua",
-		"Code/Misc/InfoPaneCheats.lua",
-		"Code/Misc/HexPainter.lua",
-		"Code/Misc/ReplacedFunctions.lua",
-		"Code/Misc/OnMsgs.lua",
-		"Code/Misc/GedSocket.lua",
 
 		-- menus/menu items/shortcuts
 		"Code/Menus/BuildingsFunc.lua",
@@ -83,7 +82,7 @@ return PlaceObj("ModDef", {
 		"Code/Menus/Keys.lua",
 
 		-- tortoise hares and all that
-		"Code/Misc/Testing.lua",
+		"Code/Testing.lua",
 
 		-- gee sure would be nice to load these like the devs do, but i suppose it's too much work to limit dofile env.
 	},

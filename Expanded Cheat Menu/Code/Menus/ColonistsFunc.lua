@@ -9,6 +9,19 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.OutsideWorkplaceSanityDecrease_Toggle()
+	ChoGGi.ComFuncs.SetConstsG("OutsideWorkplaceSanityDecrease",ChoGGi.ComFuncs.NumRetBool(Consts.OutsideWorkplaceSanityDecrease,0,ChoGGi.Consts.OutsideWorkplaceSanityDecrease))
+	ChoGGi.ComFuncs.SetSavedSetting("OutsideWorkplaceSanityDecrease",Consts.OutsideWorkplaceSanityDecrease)
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OutsideWorkplaceSanityDecrease),
+		Strings[302535920001589--[[Outside Workplace Sanity Penalty--]]],
+		default_icon,
+		true
+	)
+end
+
 function ChoGGi.MenuFuncs.NonHomeDomePerformancePenalty_Toggle()
 	ChoGGi.ComFuncs.SetConstsG("NonHomeDomePerformancePenalty",ChoGGi.ComFuncs.NumRetBool(Consts.NonHomeDomePerformancePenalty,0,ChoGGi.Consts.NonHomeDomePerformancePenalty))
 	ChoGGi.ComFuncs.SetSavedSetting("NonHomeDomePerformancePenalty",Consts.NonHomeDomePerformancePenalty)

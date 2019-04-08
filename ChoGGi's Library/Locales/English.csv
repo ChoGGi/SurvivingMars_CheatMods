@@ -1,7 +1,5 @@
 ID,Text,Translation,Old Translation,Gender
 302535920001577,Placeholder,
-302535920001587,Lightning Strike,
-302535920001588,Strike a random pos or at mouse cursor if using shortcut.,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
@@ -590,7 +588,7 @@ So we got rid of the auto and stopped off at the Korova for a nightcap.",
 302535920000158,%s: No no I said over there.,
 302535920000159,Unlimited Wonders,
 302535920000160,"%s: Freedom for spires!
-(restart to set disabled).",
+Restart to set disabled.",
 302535920000161,%s: Buildings Instant Build,
 302535920000163,Radius,
 302535920001241,Instant Build,
@@ -666,6 +664,8 @@ Use with <color green>%s</color> to fill up a dome with spires.",
 302535920000230,Remove Building Limits,
 302535920000231,"Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
 See also %s.",
+302535920001587,Lightning Strike,
+302535920001588,Strike a random pos or at mouse cursor if using shortcut.,
 302535920001580,Interrupt Supression Times,
 302535920001581,Sets story.time_created to -SuppressTime.,
 302535920001582,Testing Toggle,
@@ -820,6 +820,9 @@ Best hope you picked India as your Mars sponsor...",
 302535920000317,Select Unlock or Research then select the tech you want. Most mystery tech is locked to that mystery.,
 302535920000319,Just unlocks in the research tree.,
 302535920000320,Unlocks and researchs.,
+302535920001589,Outside Workplace Sanity Penalty,
+302535920001590,"Remove the ""Worked outside the Dome"" penalty.
+Activated when colonist changes job.",
 302535920001446,Performance Penalty Connected Dome,
 302535920001451,"Disable performance penalty for colonists working in another connected dome.
 Activated when colonist changes job.",
@@ -1823,7 +1826,7 @@ Current: <color green>%s</color>",
 302535920000715,"Applies the good effects only (no drawbacks).
 
 (if value already exists; set to larger amount).
-restart to set disabled.",
+Restart to set disabled.",
 302535920000717,Switch to a different commander.,
 302535920000718,Set Bonuses Commander,
 302535920001414,Build menu key: <color green>%s</color>,

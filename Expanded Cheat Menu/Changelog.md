@@ -4,13 +4,14 @@
 ### Added:
 - Console>Settings>Skip Undefined Globals: Stop the "Attempt to use an undefined global" msgs (it'll store a list of them you can check).
 - Cheats>Lightning Strike: Same as a strike from a dust storm.
+- ECM>Colonists>Workplaces>Outside Workplace Sanity Penalty.
 
 ### Changed:
 - Mod Upload supports batch uploading (and screenshots).
 - Examine will now try to list files in mount points (ie: ~"Textures" or ~"Prefabs").
 
 ### Fixed:
-- Game would freeze if ConsoleErrors was false (thanks Andrew Gaspurr).
+- Game would freeze if ConsoleErrors was false (thanks Gaspurr).
 - Debug>Pathing failed on jumper shuttles on the landing.
 - Delete Object was spamming console when deleting a res pile.
 - Examine:
