@@ -7,7 +7,7 @@ local table_insert = table.insert
 local table_remove = table.remove
 local table_find = table.find
 local CmpLower = CmpLower
-local print,type = print,type
+local print,type,rawget = print,type,rawget
 
 -- rebuild list of objects to examine when user changes settings
 OnMsg.ChoGGi_SettingsUpdated = ChoGGi.ConsoleFuncs.BuildExamineMenu
@@ -268,14 +268,10 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 end
 
 do -- ToggleLogErrors
-	local select = select
 	local GetStack = GetStack
 	local UserSettings = ChoGGi.UserSettings
 	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-	local debug_traceback
-	if not blacklist then
-		debug_traceback = debug.traceback
-	end
+	local debug_traceback = not blacklist and debug.traceback
 
 	local UndefinedGlobals = ChoGGi.Temp.UndefinedGlobals
 	local UndefinedGlobals_c = #UndefinedGlobals
@@ -328,32 +324,43 @@ do -- ToggleLogErrors
 				end
 			end
 
+			-- send back the orig func
+			return ChoGGi_OrigFuncs[name](msg,...)
 		end
 
 	end
 
 	local funcs = {"error","OutputDebugString","ThreadErrorHandler","DlcErrorHandler","syntax_error","RecordError","__procall_errorhandler","StoreErrorSource"}
+	local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+	for i = 1, #funcs do
+		local name = funcs[i]
+		if rawget(_G,name) then
+			SaveOrigFunc(name)
+		end
+	end
 	function ChoGGi.ConsoleFuncs.ToggleLogErrors(enable)
 		-- stop "Attempt to create a new global " errors, though I'm not sure why they happen since they're not "new"
 		local orig_Loading = Loading
 		Loading = true
 
 		for i = 1, #funcs do
-			if enable then
-				UpdateLogErrors(funcs[i])
-			else
-				local name = funcs[i]
-				if name == "error" then
-					-- skip the one annoying "error"
-					error = function(msg,...)
-						if type(msg) == "string" and msg:sub(1,36) == "Attempt to use an undefined global '" then
-							UndefinedGlobalUpdate(msg,GetStack(2, false, "\t") or "")
-							return
-						end
-						return ChoGGi_OrigFuncs[name](msg,...)
-					end
+			local name = funcs[i]
+			if rawget(_G,name) then
+				if enable then
+					UpdateLogErrors(name)
 				else
-					_G[name] = ChoGGi_OrigFuncs[name]
+					if name == "error" then
+						_G.error = function(msg,...)
+							-- skip the one annoying "error"
+							if type(msg) == "string" and msg:sub(1,36) == "Attempt to use an undefined global '" then
+								UndefinedGlobalUpdate(msg,GetStack(2, false, "\t") or "")
+								return
+							end
+							return ChoGGi_OrigFuncs[name](msg,...)
+						end
+					else
+						_G[name] = ChoGGi_OrigFuncs[name]
+					end
 				end
 			end
 		end

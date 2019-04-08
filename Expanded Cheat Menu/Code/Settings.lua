@@ -72,9 +72,9 @@ ChoGGi.Defaults = {
 	DebugGridSize = 25,
 	-- disabling this will still leave them for the cheats menu and cheats section
 	EnableToolTips = true,
-	-- append text or create new files
+	-- append text or create a new file each dump
 	ExamineAppendDump = true,
-	-- values in examine list
+	-- coloured values in examine list
 	ExamineColourNum = "255 255 0",
 	ExamineColourBool = "0 255 0",
 	ExamineColourBoolFalse = "255 150 150",
@@ -140,31 +140,31 @@ ChoGGi.Defaults = {
 }
 -- my defaults
 if ChoGGi.testing then
-	local ChoGGi = ChoGGi
+	local Defaults = ChoGGi.Defaults
 	-- add extra debugging defaults for me
-	ChoGGi.Defaults.ShowStartupTicks = true
-	ChoGGi.Defaults.WriteLogs = true
-	ChoGGi.Defaults.FixMissingModBuildings = true
+	Defaults.ShowStartupTicks = true
+	Defaults.WriteLogs = true
+	Defaults.FixMissingModBuildings = true
 	-- and maybe a bit of class
-	ChoGGi.Defaults.Transparency = {
+	Defaults.Transparency = {
 		HUD = 50,
 		PinsDlg = 50,
 		XShortcutsHost = 100,
 	}
 	-- probably not useful for anyone who isn't loading up borked saves to test
-	ChoGGi.Defaults.SkipMissingMods = true
-	ChoGGi.Defaults.SkipMissingDLC = true
+	Defaults.SkipMissingMods = true
+	Defaults.SkipMissingDLC = true
 	--
-	ChoGGi.Defaults.MapEdgeLimit = true
-	ChoGGi.Defaults.StopSelectionPanelResize = true
-	ChoGGi.Defaults.ExternalEditorCmd = "scite \"%s\""
-	ChoGGi.Defaults.ExamineErrors = true
+	Defaults.MapEdgeLimit = true
+	Defaults.StopSelectionPanelResize = true
+	Defaults.ExternalEditorCmd = "scite \"%s\""
+	Defaults.ExamineErrors = true
 end
 
 -- set game values to saved values
 function ChoGGi.SettingFuncs.SetConstsToSaved()
 	local UserSettings = ChoGGi.UserSettings
---Consts.
+	-- Consts.
 	local list = {
 		"AvoidWorkplaceSols",
 		"BirthThreshold",
@@ -240,9 +240,10 @@ function ChoGGi.SettingFuncs.SetConstsToSaved()
 	}
 	local SetConstsG = ChoGGi.ComFuncs.SetConstsG
 	for i = 1, #list do
-		SetConstsG(list[i],UserSettings[list[i]])
+		local item = list[i]
+		SetConstsG(item,UserSettings[item])
 	end
---const.
+	-- const.
 	list = {
 		"BreakThroughTechsPerGame",
 		"ExplorationQueueMaxSize",
@@ -257,8 +258,9 @@ function ChoGGi.SettingFuncs.SetConstsToSaved()
 	}
 	local const = const
 	for i = 1, #list do
-		if UserSettings[list[i]] then
-			const[list[i]] = UserSettings[list[i]]
+		local item = list[i]
+		if UserSettings[item] then
+			const[item] = UserSettings[item]
 		end
 	end
 end

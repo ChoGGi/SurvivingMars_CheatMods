@@ -9,6 +9,7 @@ local FlushLogFile = FlushLogFile
 local IsValid = IsValid
 local Msg = Msg
 local OnMsg = OnMsg
+local CreateRealTimeThread = CreateRealTimeThread
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
@@ -937,92 +938,83 @@ end
 
 -- const.Scale.sols is 720 000 ticks (GameTime)
 function OnMsg.NewDay() -- NewSol...
-	-- let everyone else go first
-	CreateRealTimeThread(function()
-		Sleep(1000)
-		local ChoGGi = ChoGGi
+	local ChoGGi = ChoGGi
 
-		-- remove any closed examine dialogs from the list
-		local g_ExamineDlgs = g_ExamineDlgs or empty_table
-		for obj,dlg in pairs(g_ExamineDlgs) do
-			if dlg.window_state == "destroying" then
-				g_ExamineDlgs[obj] = nil
+	-- remove any closed examine dialogs from the list
+	local g_ExamineDlgs = g_ExamineDlgs or empty_table
+	for obj,dlg in pairs(g_ExamineDlgs) do
+		if dlg.window_state == "destroying" then
+			g_ExamineDlgs[obj] = nil
+		end
+	end
+
+	-- sorts cc list by dist to building
+	if ChoGGi.UserSettings.SortCommandCenterDist then
+		local objs = UICity.labels.Building or ""
+		for i = 1, #objs do
+			local obj = objs[i]
+			-- no sense in doing it with only one center
+			if #obj.command_centers > 1 then
+				table_sort(obj.command_centers,function(a,b)
+					if IsValid(a) and IsValid(b) then
+						return obj:GetDist2D(a) < obj:GetDist2D(b)
+					end
+				end)
 			end
 		end
+	end
 
-		-- sorts cc list by dist to building
-		if ChoGGi.UserSettings.SortCommandCenterDist then
-			local objs = UICity.labels.Building or ""
-			for i = 1, #objs do
-				local obj = objs[i]
-				-- no sense in doing it with only one center
-				if #obj.command_centers > 1 then
-					table_sort(obj.command_centers,function(a,b)
-						if IsValid(a) and IsValid(b) then
-							return obj:GetDist2D(a) < obj:GetDist2D(b)
-						end
-					end)
-				end
-			end
+	-- dump log to disk
+	if ChoGGi.UserSettings.FlushLog then
+		FlushLogFile()
+	end
+
+	-- loop through and remove any missing popups
+	local popups = ChoGGi.Temp.MsgPopups or ""
+	for i = #popups, 1, -1 do
+		local popup = popups[i]
+		if not popup:IsVisible() then
+			popup:delete()
+			table_remove(popups,i)
 		end
-
-		-- dump log to disk
-		if ChoGGi.UserSettings.FlushLog then
-			FlushLogFile()
-		end
-
-		-- loop through and remove any missing popups
-		local popups = ChoGGi.Temp.MsgPopups or ""
-		for i = #popups, 1, -1 do
-			local popup = popups[i]
-			if not popup:IsVisible() then
-				popup:delete()
-				table_remove(popups,i)
-			end
-		end
-
-	end)
+	end
 end
 
 -- const.Scale.hours is 30 000 ticks (GameTime)
 function OnMsg.NewHour()
-	-- let everyone else go first
-	CreateRealTimeThread(function()
-		Sleep(500)
-		local ChoGGi = ChoGGi
+	local ChoGGi = ChoGGi
 
-		-- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
-		if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
-			local labels = UICity.labels
+	-- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
+	if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
+		local labels = UICity.labels
 
-			-- Hey. Do I preach at you when you're lying stoned in the gutter? No!
-			local prods = labels.ResourceProducer or ""
-			for i = 1, #prods do
-				local prod = prods[i]
-				ChoGGi.ComFuncs.FuckingDrones(prod:GetProducerObj())
-				if prod.wasterock_producer then
-					ChoGGi.ComFuncs.FuckingDrones(prod.wasterock_producer)
-				end
+		-- Hey. Do I preach at you when you're lying stoned in the gutter? No!
+		local prods = labels.ResourceProducer or ""
+		for i = 1, #prods do
+			local prod = prods[i]
+			ChoGGi.ComFuncs.FuckingDrones(prod:GetProducerObj())
+			if prod.wasterock_producer then
+				ChoGGi.ComFuncs.FuckingDrones(prod.wasterock_producer)
 			end
-
-			prods = labels.BlackCubeStockpiles or ""
-			for i = 1, #prods do
-				ChoGGi.ComFuncs.FuckingDrones(prods[i])
-			end
-
 		end
 
-		-- pathing? pathing in domes works great... watch out for that invisible wall!
-		-- update: seems like this is an issue from one of those smarter work ai mods
-		if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
-			ChoGGi.ComFuncs.ResetHumanCentipedes()
+		prods = labels.BlackCubeStockpiles or ""
+		for i = 1, #prods do
+			ChoGGi.ComFuncs.FuckingDrones(prods[i])
 		end
 
-		-- some types of crashing won't allow SM to gracefully close and leave a log/minidump as the devs envisioned... No surprise to anyone who's ever done any sort of debugging before.
-		if ChoGGi.UserSettings.FlushLogConstantly then
-			FlushLogFile()
-		end
-	end)
+	end
+
+	-- pathing? pathing in domes works great... watch out for that invisible wall!
+	-- update: seems like this is an issue from one of those smarter work ai mods
+	if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
+		ChoGGi.ComFuncs.ResetHumanCentipedes()
+	end
+
+	-- some types of crashing won't allow SM to gracefully close and leave a log/minidump as the devs envisioned... No surprise to anyone who's ever done any sort of debugging before.
+	if ChoGGi.UserSettings.FlushLogConstantly then
+		FlushLogFile()
+	end
 end
 
 -- const.MinuteDuration is 500 ticks (GameTime)
@@ -1033,12 +1025,15 @@ end
 
 function OnMsg.ResearchQueueChange(city, tech_id)
 	if ChoGGi.UserSettings.InstantResearch then
-		GrantResearchPoints(city.tech_status[tech_id].cost)
-		-- updates the researchdlg by toggling it.
-		if GetDialog("ResearchDlg") then
-			CloseDialog("ResearchDlg")
-			OpenDialog("ResearchDlg")
-		end
+		CreateRealTimeThread(function()
+			Sleep(100)
+			GrantResearchPoints(city.tech_status[tech_id].cost)
+			-- updates the researchdlg by toggling it.
+			if GetDialog("ResearchDlg") then
+				CloseDialog("ResearchDlg")
+				OpenDialog("ResearchDlg")
+			end
+		end)
 	end
 end
 

@@ -9,6 +9,7 @@
 - Examine will now try to list files in mount points (ie: ~"Textures" or ~"Prefabs").
 
 ### Fixed:
+- Game would freeze if ConsoleErrors was false (thanks Andrew Gaspurr).
 - Debug>Pathing failed on jumper shuttles on the landing.
 - Delete Object was spamming console when deleting a res pile.
 - Examine:
