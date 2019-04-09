@@ -71,8 +71,8 @@ function ChoGGi.MenuFuncs.LightningStrike(_,_,input)
 	end
 end
 
--- BetaBetaBeta
-function ChoGGi.MenuFuncs.TesteringBetaBetaBeta()
+-- GreenPlanet
+function ChoGGi.MenuFuncs.TesteringGreenPlanet()
 	local item_list = {}
 	local c = 0
 
@@ -736,7 +736,7 @@ do -- DisastersTrigger
 					if type(func) == "function" then
 						func(name,d_type)
 					else
-						-- BetaBetaBeta workaround
+						-- GreenPlanet
 						func = rawget(_G,"CheatTrigger" .. disaster)
 						if type(func) == "function" then
 							func(name,d_type)
@@ -817,7 +817,7 @@ do -- DisastersTrigger
 				display = Translate(4146--[[Meteors--]]),
 				types = {"storm","multispawn"},
 			},
-			-- BetaBetaBeta
+			-- GreenPlanet
 		}
 		for key,value in pairs(DataInstances) do
 			if key:sub(1,12) == "MapSettings_" then
@@ -826,7 +826,7 @@ do -- DisastersTrigger
 				if lookup then
 					c = AddTableToList(item_list,c,value,lookup.display,name,lookup.types)
 				else
-					-- BetaBetaBeta
+					-- GreenPlanet
 					c = AddTableToList(item_list,c,value,name,name)
 				end
 			end

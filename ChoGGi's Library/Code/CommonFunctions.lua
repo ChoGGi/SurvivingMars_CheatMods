@@ -720,6 +720,32 @@ local ShowObj = ChoGGi.ComFuncs.ShowObj
 local ColourObj = ChoGGi.ComFuncs.ColourObj
 local ClearShowObj = ChoGGi.ComFuncs.ClearShowObj
 
+function ChoGGi.ComFuncs.PopupSubMenu(self,name,item)
+	local popup = self.popup
+	local submenu = popup[name]
+
+	if submenu then
+		submenu:Close()
+	end
+	-- build the new one/open it
+	submenu = g_Classes.ChoGGi_PopupList:new({
+		Opened = true,
+		Id = "ChoGGi_submenu_popup",
+		popup_parent = popup,
+		AnchorType = "smart",
+		Anchor = self.box,
+	}, terminal.desktop)
+	-- item == opened from PopupBuildMenu
+	if item then
+		ChoGGi.ComFuncs.PopupBuildMenu(item.submenu,submenu)
+	else
+		ChoGGi.ComFuncs.PopupBuildMenu(submenu,popup)
+	end
+	submenu:Open()
+	-- add it to the popup
+	popup[name] = submenu
+end
+
 function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 	local g_Classes = g_Classes
 	local ViewObjectMars = ViewObjectMars
@@ -735,7 +761,6 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 			item.centred = true
 		end
 
-
 		-- "ChoGGi_CheckButtonMenu"
 		local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
 		local button = cls:new({
@@ -750,6 +775,8 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 				(dark_menu and "ChoGGi_ButtonMenuDisabled" or "ChoGGi_ButtonMenuDisabledDarker")
 				or items.TextStyle or cls.TextStyle,
 			HAlign = item.centred and "center" or "stretch",
+
+			popup = popup,
 		}, popup.idContainer)
 
 
@@ -853,23 +880,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 
 			local name = "ChoGGi_submenu_" .. item.name
 			submenu_func = function(self)
-				-- close if another is opened
-				local submenu = popup[name]
-				if submenu then
-					submenu:Close()
-				end
-				-- build the new one/open it
-				submenu = g_Classes.ChoGGi_PopupList:new({
-					Opened = true,
-					Id = "ChoGGi_submenu_popup",
-					popup_parent = popup,
-					AnchorType = "smart",
-					Anchor = self.box,
-				}, terminal.desktop)
-				ChoGGi.ComFuncs.PopupBuildMenu(item.submenu,submenu)
-				submenu:Open()
-				-- add it to the popup
-				popup[name] = submenu
+				ChoGGi.ComFuncs.PopupSubMenu(self,name,item)
 			end
 		end
 
@@ -3488,24 +3499,20 @@ function ChoGGi.ComFuncs.Editor_Toggle()
 		EditorDeactivate()
 	end
 
-	local Platform = Platform
+	local p = Platform
 	-- copy n paste from... somewhere?
 	if IsEditorActive() then
 		EditorDeactivate()
---~ 		EditorState(0)
---~ 		table.restore(hr, "Editor")
---~ 		editor.SavedDynRes = false
---~ 		XShortcutsSetMode("Game")
-		Platform.editor = false
-		Platform.developer = false
+		p.editor = false
+		p.developer = false
 		-- restore cheats menu if enabled
 		if ChoGGi.UserSettings.ShowCheatsMenu then
 			CheatsMenu_Toggle()
 			CheatsMenu_Toggle()
 		end
 	else
-		Platform.editor = true
-		Platform.developer = true
+		p.editor = true
+		p.developer = true
 		table.change(hr, "Editor", {
 			ResolutionPercent = 100,
 			SceneWidth = 0,
@@ -4346,34 +4353,6 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 	)
 end
 
--- mask is a combination of numbers IsFlagSet(15,num) will match 1 2 4 8
-function ChoGGi.ComFuncs.RetObjectCapAndGrid(obj,mask)
-	if not IsValid(obj) then
-		return
-	end
-
-	local IsFlagSet = IsFlagSet
-	if IsFlagSet(mask,1) and obj:IsKindOf("ElectricityStorage") then
-		return "electricity", obj:GetClassValue("capacity"), obj.electricity
-
-	elseif IsFlagSet(mask,2) and obj:IsKindOf("AirStorage") then
-		return "air", obj:GetClassValue("air_capacity"), obj.air
-
-	elseif IsFlagSet(mask,4) and obj:IsKindOf("WaterStorage") then
-		return "water", obj:GetClassValue("water_capacity"), obj.water
-
-	elseif IsFlagSet(mask,8) and obj:IsKindOf("Residence") then
-		return "colonist", obj:GetClassValue("capacity")
-
-	elseif IsFlagSet(mask,16) and obj:IsKindOf("Workplace") then
-		return "workplace", obj:GetClassValue("max_workers")
-
-	elseif IsFlagSet(mask,32) and obj:IsKindOfClasses("Service","TrainingBuilding") then
-		return "visitors", obj:GetClassValue("max_visitors")
-
-	end
-end
-
 do -- ImageExts
 	-- easier to keep them in one place
 	local ext_list = {
@@ -4389,35 +4368,40 @@ do -- ImageExts
 	end
 end -- do
 
-function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
-	if not GameState.gameplay then
-		return
+do -- IsPosInMap
+	local construct
+
+	function ChoGGi.ComFuncs.IsPosInMap(pt)
+		construct = construct or ChoGGi.ComFuncs.ConstructableArea()
+		return pt:InBox2D(construct)
 	end
+end -- do
 
-	-- if fired from action menu
-	if IsKindOf(ret,"XAction") then
-		ret = nil
-	end
+do -- PolylineSetParabola
+	-- copy n pasta from Lua/Dev/MapTools.lua
+	local Min = Min
+  local ValueLerp = ValueLerp
+  local function parabola(x)
+    return 4 * x - x * x / 25
+  end
+	local guim10 = 10 * guim
+	local white = white
 
-	local MulDivRound = MulDivRound
-	local TerrainTextures = TerrainTextures
-
-	local tm = terrain.GetTypeGrid()
-	local _, levels_info = tm:levels(true, 1)
-	local size = tm:size()
-	local textures = {}
-	for level, count in pairs(levels_info) do
-		local texture = TerrainTextures[level]
-		if texture then
-			local perc = MulDivRound(100, count, size * size)
-			if perc > 0 then
-				textures[texture.name] = perc
-			end
+	function ChoGGi.ComFuncs.PolylineSetParabola(line, from, to, colour)
+		if not line then
+			return
 		end
+		local parabola_h = Min(from:Dist(to), guim10)
+		local pos_lerp = ValueLerp(from, to, 100)
+		local steps = 10
+		local c = 0
+		for i = 0, steps do
+			local x = i * (100 / steps)
+			local pos = pos_lerp(x)
+			pos = pos:AddZ(parabola(x) * parabola_h / 100)
+			c = c + 1
+			vertices[c] = pos
+		end
+		line:SetMesh(vertices, colour or white)
 	end
-
-	if ret then
-		return textures
-	end
-	ChoGGi.ComFuncs.OpenInExamineDlg(textures,nil,Strings[302535920001181--[[Used Terrain Textures--]]])
-end
+end -- do

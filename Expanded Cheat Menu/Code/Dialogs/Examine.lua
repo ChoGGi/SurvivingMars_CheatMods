@@ -1646,9 +1646,30 @@ function Examine:ShowHexShapeList()
 	}
 end
 
+function Examine:BuildBBoxListItem(item_list,obj,text)
+	local bbox
+	if IsBox(obj) then
+		bbox = obj
+	else
+		bbox = obj[text]
+		if bbox then
+			bbox = bbox(obj)
+		end
+	end
+
+	-- make sure it's on the map, and isn't 0 sized
+	if bbox and self.ChoGGi.ComFuncs.IsPosInMap(bbox:Center())
+			and tostring(bbox:max()) ~= tostring(bbox:min()) then
+		item_list[#item_list+1] = {
+			text = text,
+			bbox = bbox,
+		}
+	end
+end
+
 function Examine:ShowBBoxList()
 	local obj = self.obj_ref
-	if not IsValidEntity(obj:GetEntity()) then
+	if not IsValidEntity(obj.GetEntity and obj:GetEntity()) then
 		return self:InvalidMsgPopup(nil,Translate(155--[[Entity--]]))
 	end
 
@@ -1659,16 +1680,28 @@ function Examine:ShowBBoxList()
 
 	local item_list = {
 		{text = " " .. Translate(594--[[Clear--]]),value = "Clear"},
-		{text = "GetObjectBBox",value = "GetObjectBBox"},
-		{text = "GetEntityBBox",value = "GetEntityBBox"},
-		{text = "ObjectHierarchyBBox",value = "ObjectHierarchyBBox"},
-		{text = "ObjectHierarchyBBox + efCollision",value = "ObjectHierarchyBBox",args = const.efCollision},
-		{text = "GetSurfacesBBox",value = "GetSurfacesBBox"},
-		-- relative nums
---~ 		{text = "GetEntitySurfacesBBox",value = "GetEntitySurfacesBBox"},
+		-- relative
+--~ 		{text = "GetEntityBBox",bbox = s:GetEntityBBox()},
+--~ 		{text = "GetEntitySurfacesBBox",bbox = HexStoreToWorld(obj:GetEntitySurfacesBBox())},
 		-- needs entity string as 2 arg
 --~ 		{text = "GetEntityBoundingBox",value = "GetEntityBoundingBox",args = "use_entity"},
 	}
+
+	self:BuildBBoxListItem(item_list,obj,"GetBBox")
+	self:BuildBBoxListItem(item_list,obj,"GetObjectBBox")
+	self:BuildBBoxListItem(item_list,obj,"GetSurfacesBBox")
+	self:BuildBBoxListItem(item_list,ObjectHierarchyBBox(obj),"ObjectHierarchyBBox")
+	self:BuildBBoxListItem(item_list,ObjectHierarchyBBox(obj,const.efCollision),"ObjectHierarchyBBox + efCollision")
+
+	-- GreenPlanet
+	local name = obj.class:sub(1,-17) .. "s"
+	local g_obj = rawget(_G,name)
+	if g_obj and g_obj[obj.mark] then
+		item_list[#item_list+1] = {
+			text = "mark",
+			bbox = HexStoreToWorld(g_obj[obj.mark].bbox),
+		}
+	end
 
 	local function CallBackFunc(choice)
 		if choice.nothing_selected then
@@ -1680,7 +1713,7 @@ function Examine:ShowBBoxList()
 			self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
 		else
 			self.ChoGGi.ComFuncs.BBoxLines_Toggle(obj,{
-				func = choice.value,
+				bbox = choice.bbox,
 				args = choice.args,
 				skip_return = true,
 				depth_test = choice.check1,
@@ -1692,7 +1725,7 @@ function Examine:ShowBBoxList()
 		callback = CallBackFunc,
 		items = item_list,
 		title = Strings[302535920001472--[[BBox Toggle--]]] .. ": " .. self.name,
-		hint = Strings[302535920000264--[["Defaults to ObjectHierarchyBBox(obj,const.efCollision) if it can't find a func."--]]],
+		hint = Strings[302535920000264--[[Defaults to ObjectHierarchyBBox(obj) if it can't find a func.--]]],
 		skip_sort = true,
 		custom_type = 7,
 		checkboxes = {
@@ -2731,8 +2764,18 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				table_insert(data_meta,1,"IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
 				table_insert(data_meta,1,"IsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
 				table_insert(data_meta,1,"max(): " .. self:ConvertValueToInfo(obj:max()))
-				table_insert(data_meta,1,"min() x,y: " .. self:ConvertValueToInfo(obj:min()))
-				table_insert(data_meta,1,"\nsize() w,h: " .. self:ConvertValueToInfo(obj:size()))
+				local min = obj:size()
+				if min:z() then
+					table_insert(data_meta,1,"min() x,y,z: " .. self:ConvertValueToInfo(min))
+				else
+					table_insert(data_meta,1,"min() x,y: " .. self:ConvertValueToInfo(min))
+				end
+				local size = obj:size()
+				if size:z() then
+					table_insert(data_meta,1,"\nsize() w,h,d: " .. self:ConvertValueToInfo(size))
+				else
+					table_insert(data_meta,1,"\nsize() w,h: " .. self:ConvertValueToInfo(size))
+				end
 				if center:InBox2D(self.ChoGGi.ComFuncs.ConstructableArea()) then
 					table_insert(data_meta,1,self:HyperLink(obj,self.ToggleBBox,Strings[302535920001550--[[Toggle viewing BBox.--]]]) .. Strings[302535920001549--[[View BBox--]]] .. hyperlink_end)
 				end
@@ -3190,6 +3233,9 @@ function Examine:Done(...)
 			self.ChoGGi.ComFuncs.SurfaceLines_Clear(obj)
 		elseif IsObjlist(obj) then
 			self.ChoGGi.ComFuncs.ObjListLines_Clear(obj)
+		end
+		if self.spawned_bbox then
+			self.ChoGGi.ComFuncs.BBoxLines_Clear(self.spawned_bbox)
 		end
 	end
 	-- clear any spheres/colour marked objs

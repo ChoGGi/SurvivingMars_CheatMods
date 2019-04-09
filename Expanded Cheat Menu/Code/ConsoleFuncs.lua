@@ -6,6 +6,7 @@ local table_sort = table.sort
 local table_insert = table.insert
 local table_remove = table.remove
 local table_find = table.find
+local table_iclear = table.iclear
 local CmpLower = CmpLower
 local print,type,rawget = print,type,rawget
 
@@ -138,6 +139,7 @@ local function BuildExamineItem(name,title)
 		end,
 	}
 end
+ChoGGi.ConsoleFuncs.BuildExamineItem = BuildExamineItem
 --
 function ChoGGi.ConsoleFuncs.AddSubmenu(name,list,title)
 	local submenu = table_find(ExamineMenuToggle_list,"name",name)
@@ -174,20 +176,19 @@ end
 
 -- build list of objects to examine
 function ChoGGi.ConsoleFuncs.BuildExamineMenu()
-	table.iclear(ExamineMenuToggle_list)
+	table_iclear(ExamineMenuToggle_list)
 
-	local AddSubmenu = ChoGGi.ConsoleFuncs.AddSubmenu
 	local list = ChoGGi.UserSettings.ConsoleExamineList or ""
 	local submenu
 
+	-- add saved examine items
 	table_sort(list,CmpLower)
-
 	for i = 0, #list do
 		ExamineMenuToggle_list[i] = BuildExamineItem(list[i])
 	end
 
 	-- add submenus to certain items
-	submenu = table_find(ExamineMenuToggle_list,"name","Presets")
+	submenu = table_find(list,"Presets")
 	if submenu then
 		-- remove hint from "submenu" menu
 		ExamineMenuToggle_list[submenu].hint = nil
@@ -217,7 +218,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 		ExamineMenuToggle_list[submenu].submenu = submenu_table
 	end
 	--
-	submenu = table_find(ExamineMenuToggle_list,"name","DataInstances")
+	submenu = table_find(list,"DataInstances")
 	if submenu then
 		ExamineMenuToggle_list[submenu].hint = nil
 		-- we need to build a list
@@ -243,6 +244,50 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 		ExamineMenuToggle_list[submenu].submenu = submenu_table
 	end
 	--
+	submenu = table_find(list,"UICity")
+	if submenu then
+		local labels_name = "UICity.labels"
+		table_insert(ExamineMenuToggle_list,submenu+1,{
+			name = labels_name,
+			hint = labels_name,
+			submenu = {},
+			clicked = function()
+				OpenInExamineDlg(labels_name,"str",labels_name)
+			end,
+			-- mouseover fires before building submenu, so we can update submenu list
+			mouseover = function(self)
+				local UICity = UICity
+				if not UICity then
+					return
+				end
+
+				local list = {}
+				local c = 0
+				local labels = UICity.labels
+				for key,value in pairs(labels) do
+					if #value > 0 then
+						c = c + 1
+						list[c] = key
+					end
+				end
+				table_sort(list,CmpLower)
+				local temp_menu = ExamineMenuToggle_list[table_find(ExamineMenuToggle_list,"name",labels_name)]
+
+				table_iclear(temp_menu.submenu)
+				for i = 1, c do
+					local name = list[i]
+					temp_menu.submenu[i] = BuildExamineItem(
+						labels_name .. "." .. name,
+						name .. "\t(" .. #labels[name] .. ")"
+					)
+				end
+				-- updates the popup menu
+--~ 				ChoGGi.ComFuncs.PopupSubMenu(self,"ChoGGi_submenu_" .. labels_name)
+			end,
+		})
+	end
+	--
+	local AddSubmenu = ChoGGi.ConsoleFuncs.AddSubmenu
 	AddSubmenu("_G",{"AccountStorage","__cobjectToCObject","FlagsByBits","HandleToObject","TranslationTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod","debug.getregistry"})
 	AddSubmenu("ThreadsRegister",{"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers"})
 	AddSubmenu("Consts",{"g_Consts","const","ModifiablePropScale","const.TagLookupTable"})
@@ -252,7 +297,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	AddSubmenu("g_Classes",{"ClassTemplates","Attaches","FXRules","FXLists"})
 	AddSubmenu("g_CObjectFuncs",{"hr","pf","terrain","UIL","DTM","lpeg","lfs","srp","camera","camera3p","cameraMax","cameraRTS","string","table","package"})
 	AddSubmenu("StoryBits",{"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},Translate(948928900281--[[Story Bits--]]))
-	AddSubmenu("UICity",{"UICity.labels","UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters","LRManagerInstance"})
+	AddSubmenu("UICity",{"UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters","LRManagerInstance"})
 
 	-- bonus addition at the top
 	table_insert(ExamineMenuToggle_list,1,{

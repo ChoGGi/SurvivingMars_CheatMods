@@ -368,7 +368,7 @@ Mod code works fine, as well as HG github code. HG code needs to be placed at: "
 Example: ""Source/Lua/_const.lua""
 
 Decompiled code won't scroll correctly as the line numbers are different.",
-302535920000264,"Defaults to ObjectHierarchyBBox(obj,const.efCollision) if it can't find a func.",
+302535920000264,Defaults to ObjectHierarchyBBox(obj) if it can't find a func.,
 302535920001514,Toggle visibility of an input box for executing code.,
 302535920001515,Press enter to execute code.,
 302535920001516,o = examined object,

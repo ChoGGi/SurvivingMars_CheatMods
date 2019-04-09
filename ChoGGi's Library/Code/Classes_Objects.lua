@@ -18,6 +18,11 @@ DefineClass.ChoGGi_OSphere = {
 DefineClass.ChoGGi_OPolyline = {
 	__parents = {"Polyline"},
 }
+function ChoGGi_OPolyline:SetParabola(a, b)
+	ChoGGi.ComFuncs.PolylineSetParabola(self, a, b)
+	self:SetPos(AveragePoint2D(self.vertices))
+end
+
 --~ SetZOffsetInterpolation,SetOpacityInterpolation
 DefineClass.ChoGGi_OText = {
 	__parents = {"Text"},

@@ -1,4 +1,12 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library v6.4",
+			"version_major", 6,
+			"version_minor", 4,
+		}),
+	},
   "title", "Construction: Show Dome Passage Line v0.9",
   "version", 9,
   "saved", 1544702400,

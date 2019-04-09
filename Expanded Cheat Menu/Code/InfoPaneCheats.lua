@@ -673,7 +673,7 @@ end
 function SupplyRocket:CheatAddFuel()
 	-- skip if we're full/over full
 	local actual = self.refuel_request:GetActualAmount()
-	if actual < 1 then
+	if actual == 0 then
 		return
 	end
 
@@ -683,7 +683,11 @@ function SupplyRocket:CheatAddFuel()
 	-- make sure it always shows the correct amount
 	self.refuel_request:SetAmount(0)
 	Msg("RocketRefueled", self)
-	RebuildInfopanel(self)
+	-- update selection panel
+	local sel = SelectedObj
+	if sel and sel.handle == self.handle then
+		RebuildInfopanel(self)
+	end
 end
 function SupplyRocket:CheatAddDust2()
 	self:SetDust(600,0)

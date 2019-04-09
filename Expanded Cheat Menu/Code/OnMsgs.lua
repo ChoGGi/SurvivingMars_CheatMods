@@ -542,10 +542,6 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 
 end -- ModsReloaded
 
--- earliest on-ground objects are loaded?
---~ function OnMsg.PersistLoad()
---~ end
-
 function OnMsg.PersistPostLoad()
 	if ChoGGi.UserSettings.FixMissingModBuildings then
 		-- [LUA ERROR] Mars/Lua/Construction.lua:860: attempt to index a boolean value (global 'ControllerMarkers')

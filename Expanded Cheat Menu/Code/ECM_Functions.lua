@@ -2052,39 +2052,17 @@ do -- BBoxLines_Toggle
 			return
 		end
 
-		-- go forth
-		local bbox
-		if is_box then
-			bbox = obj
-		else
-			local func = params.func
-			local args = params.args
-			if func then
-				-- check for func in _G or g_CObjectFuncs
-				local func_obj
-				if rawget(_G,func) then
-					func_obj = _G[func]
-				elseif g_CObjectFuncs[func] then
-					func_obj = g_CObjectFuncs[func]
-				end
-				-- if it didn't find a global func then we'll try a obj:func()
-				if func_obj then
-					bbox = func_obj(obj,args)
-				else
-					bbox = obj[func] and obj[func](obj,args)
-				end
-			end
+		local bbox = is_box and obj or params.bbox
 
-			-- fallback
-			if not bbox then
-				bbox = ObjectHierarchyBBox(obj,const.efCollision)
-				if not bbox:sizez() then
-					bbox = obj:GetObjectBBox()
-				end
+		-- fallback to sel obj
+		if not IsBox(bbox) then
+			bbox = ObjectHierarchyBBox(obj)
+			if not bbox:sizez() then
+				bbox = obj:GetObjectBBox()
 			end
 		end
 
-		if bbox then
+		if IsBox(bbox) then
 			local box = PlaceTerrainBox(
 				bbox,
 				bbox:Center():SetTerrainZ(),
@@ -3566,5 +3544,66 @@ do -- ToggleObjLines
 			params.obj,
 			params.colour or RandomColourLimited()
 		)
+	end
+end
+
+function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
+	if not GameState.gameplay then
+		return
+	end
+
+	-- if fired from action menu
+	if IsKindOf(ret,"XAction") then
+		ret = nil
+	end
+
+	local MulDivRound = MulDivRound
+	local TerrainTextures = TerrainTextures
+
+	local tm = terrain.GetTypeGrid()
+	local _, levels_info = tm:levels(true, 1)
+	local size = tm:size()
+	local textures = {}
+	for level, count in pairs(levels_info) do
+		local texture = TerrainTextures[level]
+		if texture then
+			local perc = MulDivRound(100, count, size * size)
+			if perc > 0 then
+				textures[texture.name] = perc
+			end
+		end
+	end
+
+	if ret then
+		return textures
+	end
+	ChoGGi.ComFuncs.OpenInExamineDlg(textures,nil,Strings[302535920001181--[[Used Terrain Textures--]]])
+end
+
+-- mask is a combination of numbers. IsFlagSet(15,num) will match 1 2 4 8
+function ChoGGi.ComFuncs.RetObjectCapAndGrid(obj,mask)
+	if not IsValid(obj) then
+		return
+	end
+
+	local IsFlagSet = IsFlagSet
+	if IsFlagSet(mask,1) and obj:IsKindOf("ElectricityStorage") then
+		return "electricity", obj:GetClassValue("capacity"), obj.electricity
+
+	elseif IsFlagSet(mask,2) and obj:IsKindOf("AirStorage") then
+		return "air", obj:GetClassValue("air_capacity"), obj.air
+
+	elseif IsFlagSet(mask,4) and obj:IsKindOf("WaterStorage") then
+		return "water", obj:GetClassValue("water_capacity"), obj.water
+
+	elseif IsFlagSet(mask,8) and obj:IsKindOf("Residence") then
+		return "colonist", obj:GetClassValue("capacity")
+
+	elseif IsFlagSet(mask,16) and obj:IsKindOf("Workplace") then
+		return "workplace", obj:GetClassValue("max_workers")
+
+	elseif IsFlagSet(mask,32) and obj:IsKindOfClasses("Service","TrainingBuilding") then
+		return "visitors", obj:GetClassValue("max_visitors")
+
 	end
 end

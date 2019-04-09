@@ -13,8 +13,6 @@ local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local MapDelete = MapDelete
 local point = point
-local AveragePoint2D = AveragePoint2D
-local PolylineSetParabola = PolylineSetParabola
 
 local point20 = point20
 local green = green
@@ -30,30 +28,15 @@ local too_far_away = 50000
 -- stores list of domes, markers, and dome points
 local dome_list = {}
 
--- simple entity object for hexgrids
-DefineClass.ChoGGi_OHexSpot2 = {
-  __parents = {"CObject"},
-  entity = "GridTile",
-}
-
--- I perfer to add a new object then editing existing ones (easier for mass delete)
-DefineClass.ChoGGi_OPolyline2 = {
-  __parents = {"Polyline"},
-}
-function ChoGGi_OPolyline2:SetParabola(a, b)
-	PolylineSetParabola(self, a, b)
-	self:SetPos(AveragePoint2D(self.vertices))
-end
-
 -- if these are here when a save is loaded without this mod then it'll spam the console
 function OnMsg.SaveGame()
 	SuspendPassEdits("DeleteChoGGiDomeLines")
 	-- if it isn't a valid class then Map* will return all objects :(
-	if g_Classes.ChoGGi_OHexSpot2 then
-		MapDelete(true, "ChoGGi_OHexSpot2")
+	if g_Classes.ChoGGi_OHexSpot then
+		MapDelete(true, "ChoGGi_OHexSpot")
 	end
-	if g_Classes.ChoGGi_OPolyline2 then
-		MapDelete(true, "ChoGGi_OPolyline2")
+	if g_Classes.ChoGGi_OPolyline then
+		MapDelete(true, "ChoGGi_OPolyline")
 	end
 	ResumePassEdits("DeleteChoGGiDomeLines")
 	dome_list = {}
@@ -88,9 +71,9 @@ local function BuildMarkers(dome)
 	-- no need to re-add domes to the list
 	if not dome_list[dome] then
 		dome_list[dome] = {
-			line = ChoGGi_OPolyline2:new(),
-			hex1 = ChoGGi_OHexSpot2:new(),
-			hex2 = ChoGGi_OHexSpot2:new(),
+			line = ChoGGi_OPolyline:new(),
+			hex1 = ChoGGi_OHexSpot:new(),
+			hex2 = ChoGGi_OHexSpot:new(),
 		}
 		local item = dome_list[dome]
 

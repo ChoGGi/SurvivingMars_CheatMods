@@ -1,15 +1,16 @@
 -- See LICENSE for terms
 
 -- local some funcs for faster access
-local PolylineSetParabola = PolylineSetParabola
+local type = type
 local AveragePoint2D = AveragePoint2D
 local IsValid = IsValid
 local IsPoint = IsPoint
 local FixConstructPos = FixConstructPos
 local PlaceObject = PlaceObject
 local _InternalTranslate = _InternalTranslate
-local type = type
 local PlaceText = PlaceText
+
+local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
 
 -- store ref to line,res icon
 local line,text
