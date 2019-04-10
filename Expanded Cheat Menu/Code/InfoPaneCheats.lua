@@ -626,22 +626,33 @@ BaseRover.CheatAddDust = CheatAddDust
 
 Drone.CheatCleanAndFix = function(self)
 	CreateRealTimeThread(function()
+		if not IsValid(self) then
+			return
+		end
 		self.auto_connect = false
 		if self.malfunction_end_state then
 			self:PlayState(self.malfunction_end_state, 1)
-			if not IsValid(self) then
-				return
-			end
 		end
 		self:CheatAddDust()
 		Sleep(10)
 		self.dust = 0
 		self:SetDustVisuals()
+		if drone.command == "NoBattery" then
+			drone.battery = drone.battery_max
+			drone:SetCommand("Fixed", "noBatteryFixed")
+    elseif drone.command == "Malfunction" or drone.command == "Freeze" and drone:CanBeThawed() then
+			self:SetCommand("Fixed", "breakDownFixed")
+		else
+			self:SetCommand("Fixed", "Something")
+		end
 		RebuildInfopanel(self)
  end)
 end
 BaseRover.CheatCleanAndFix = function(self)
 	CreateRealTimeThread(function()
+		if not IsValid(self) then
+			return
+		end
 		self:CheatAddDust()
 		Sleep(10)
 		self.dust = 0
@@ -651,6 +662,7 @@ BaseRover.CheatCleanAndFix = function(self)
 end
 local orig_Building_CheatCleanAndFix = Building.CheatCleanAndFix
 function Building:CheatCleanAndFix()
+	self.dust = self:GetDustMax() - 1
 	self:CheatAddDust()
 	orig_Building_CheatCleanAndFix(self)
 end

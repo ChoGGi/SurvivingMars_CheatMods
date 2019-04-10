@@ -17,6 +17,7 @@
 - Examine:
 - > It wasn't showing entity info it should be.
 - > Missing the metatable for BaseSocket (as well as showing a blank list).
+- > Object>Entity Spots Toggle wasn't keeping spots properly.
 
 ## v13.3 (Mar 30 2019)
 ### Added:

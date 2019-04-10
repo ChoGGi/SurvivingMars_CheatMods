@@ -22,6 +22,32 @@ local testing = ChoGGi.testing
 --~ function OnMsg.ClassesGenerate()
 --~ end
 
+do -- bypass some issues from map editor
+	local p = Platform
+	local d_before = p.developer
+	p.developer = true
+
+	-- fixes UpdateInterface nil value in editor mode
+	editor.LoadPlaceObjConfig()
+	-- needed for HashLogToTable(), SM was planning to have multiple cities (or from a past game from this engine)?
+	if not rawget(_G,"g_Cities") then
+		GlobalVar("g_Cities",{})
+	end
+	-- editor wants a table
+	GlobalVar("g_revision_map",{})
+	-- stops some log spam in editor (function doesn't exist in SM)
+	UpdateMapRevision = rawget(_G,"UpdateMapRevision") or empty_func
+	AsyncGetSourceInfo = rawget(_G,"AsyncGetSourceInfo") or empty_func
+
+	p.developer = d_before
+
+	-- got me, MapTools shouldn't be doing anything
+	if not rawget(_G,"DroneDebug") then
+		DroneDebug = {}
+		DroneDebug.ShowInfo = empty_func
+	end
+end -- do
+
 do -- custom msgs
 	local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
 	AddMsgToFunc("BaseBuilding","GameInit","ChoGGi_SpawnedBaseBuilding")

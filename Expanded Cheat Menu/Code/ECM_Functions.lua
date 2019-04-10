@@ -1935,11 +1935,10 @@ do -- CleanInfoAttachDupes
 			local mark = list[i]
 			if not cls or cls and mark:IsKindOf(cls) then
 
-				local pos = tostring(mark:GetVisualPos())
+				local pos = tostring(mark.GetVisualPos and mark:GetVisualPos() or mark:GetPos())
 				local dupe = dupe_list[pos]
 				if dupe then
 					DoneObject(dupe)
-					dupe_list[pos] = mark
 				else
 					dupe_list[pos] = mark
 				end
@@ -2130,7 +2129,9 @@ do -- SurfaceLines_Toggle
 
 		BuildLines(obj,params)
 
-		ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_surfacelinesobj)
+		if not params.skip_clear then
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_surfacelinesobj)
+		end
 		return obj.ChoGGi_surfacelinesobj
 	end
 end -- do
@@ -2426,8 +2427,10 @@ do -- ObjHexShape_Toggle
 			params.colour,
 			params.offset
 		)
-		ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj,"ChoGGi_OText")
-		ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj,"ChoGGi_OPolyline")
+		if not params.skip_clear then
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj,"ChoGGi_OText")
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj,"ChoGGi_OPolyline")
+		end
 
 		return obj.ChoGGi_shape_obj
 	end
@@ -2708,7 +2711,7 @@ do -- EntitySpots_Toggle
 				if annot then
 					chain = annot:sub(1,5) == "chain"
 				end
---~ 					print(spot_type,"|",spot_annot,"|",annot,"|",chain,"|",spot_annot:sub(1,#annot+1) == annot .. ",")
+--~ 					printC(spot_type,"|",spot_annot,"|",annot,"|",chain,"|",spot_annot:sub(1,#annot+1) == annot .. ",")
 				if not annot or annot and (chain and spot_annot:sub(1,#annot+1) == annot .. ","
 						or not chain and spot_annot:sub(1,#annot) == annot) then
 
@@ -2730,6 +2733,7 @@ do -- EntitySpots_Toggle
 					obj:Attach(text_obj, i)
 					c = c + 1
 					obj.ChoGGi_ShowAttachSpots[c] = text_obj
+--~ 					obj.ChoGGi_ShowAttachSpots[#obj.ChoGGi_ShowAttachSpots+1] = text_obj
 
 					-- append waypoint num for chains later on
 					-- need to reverse string so it finds the last =, since find looks ltr
@@ -2742,7 +2746,6 @@ do -- EntitySpots_Toggle
 				end
 			end
 		end -- for
-		return c
 	end
 
 	local function EntitySpots_Add_Annot(obj,depth_test,colour)
@@ -2815,14 +2818,18 @@ do -- EntitySpots_Toggle
 			params.colour
 		)
 
-		ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots,"ChoGGi_OText")
+		if not params.skip_clear then
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots,"ChoGGi_OText")
+		end
 
 		-- play connect the dots if there's chains
 		if #obj.ChoGGi_ShowAttachSpots > 1 and params.annotation and params.annotation:find("chain") then
 			EntitySpots_Add_Annot(obj,params.depth_test,RandomColourLimited())
 		end
 
-		ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots,"ChoGGi_OPolyline")
+		if not params.skip_clear then
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots,"ChoGGi_OPolyline")
+		end
 
 		return obj.ChoGGi_ShowAttachSpots
 
