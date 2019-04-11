@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_CustomColourScheme",
 	"steam_id", "1565748234",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244124,
 	"TagCosmetics", true,
 	"code", {
 		"Code/Script.lua",

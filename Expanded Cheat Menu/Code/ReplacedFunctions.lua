@@ -221,15 +221,15 @@ function OnMsg.ClassesGenerate()
 		local GetDialog = GetDialog
 		local GetInGameInterface = GetInGameInterface
 		local box = box
-		local PadHeight = Infobar.PadHeight
 
 		-- stop using 58 and the pins size for the selection panel margins
 		SaveOrigFunc("InfopanelDlg","RecalculateMargins")
 		function InfopanelDlg:RecalculateMargins()
 			-- if infobar then use min-height of pad
 			local top_margin = 0
-			if Dialogs.Infobar then
-				top_margin = PadHeight
+			local infobar = Dialogs.Infobar
+			if infobar then
+				top_margin = infobar.box:sizey()
 			end
 
 			local margins = GetSafeMargins()

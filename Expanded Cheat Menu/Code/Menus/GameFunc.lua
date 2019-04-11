@@ -1255,6 +1255,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(mode)
 	hint[h_c] = "\n\n"
 	h_c = h_c + 1
 	hint[h_c] = Strings[302535920000991--[[Double right-click to preview lightmodel without closing dialog.--]]]
+
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
@@ -1263,6 +1264,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(mode)
 		checkboxes = checkboxes,
 		custom_type = 6,
 		custom_func = function(value)
+			SetLightmodelOverride(1)
 			SetLightmodel(1,value)
 		end,
 	}

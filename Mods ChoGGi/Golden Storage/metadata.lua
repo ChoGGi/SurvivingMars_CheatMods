@@ -17,6 +17,6 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244124,
 	"description", [[Converts Metals to Precious Metals (10 to 1 ratio).]],
 })

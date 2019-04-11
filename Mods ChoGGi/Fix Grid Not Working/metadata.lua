@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixGridNotWorking",
 	"steam_id", "1528605256",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244124,
 	"code", {
 		"Code/Script.lua",
 	},

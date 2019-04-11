@@ -141,22 +141,24 @@ local function BuildExamineItem(name,title)
 end
 ChoGGi.ConsoleFuncs.BuildExamineItem = BuildExamineItem
 --
-function ChoGGi.ConsoleFuncs.AddSubmenu(name,list,title)
+function ChoGGi.ConsoleFuncs.AddSubmenu(name,title,...)
 	local submenu = table_find(ExamineMenuToggle_list,"name",name)
 	if submenu then
-		list = list or ""
 		local temp_menu = ExamineMenuToggle_list[submenu]
 		temp_menu.hint = nil
 		if title then
 			temp_menu.name = title
 		end
+		-- add the parent item for people that didn't figure out you can just click the menu
 		temp_menu.submenu = {BuildExamineItem(name)}
 		local c = #temp_menu.submenu
-		for i = 1, #list do
+
+		local params = {...}
+		for i = 1, #params do
 			c = c + 1
-			temp_menu.submenu[c] = BuildExamineItem(list[i])
+			temp_menu.submenu[c] = BuildExamineItem(params[i])
 		end
-		return temp_menu.submenu
+
 	end
 end
 
@@ -281,23 +283,21 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 						name .. "\t(" .. #labels[name] .. ")"
 					)
 				end
-				-- updates the popup menu
---~ 				ChoGGi.ComFuncs.PopupSubMenu(self,"ChoGGi_submenu_" .. labels_name)
 			end,
 		})
 	end
 	--
 	local AddSubmenu = ChoGGi.ConsoleFuncs.AddSubmenu
-	AddSubmenu("_G",{"AccountStorage","__cobjectToCObject","FlagsByBits","HandleToObject","TranslationTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod","debug.getregistry"})
-	AddSubmenu("ThreadsRegister",{"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers"})
-	AddSubmenu("Consts",{"g_Consts","const","ModifiablePropScale","const.TagLookupTable"})
-	AddSubmenu("Dialogs",{"terminal.desktop","GetInGameInterface"})
-	AddSubmenu("GlobalVars",{"GlobalVarValues","PersistableGlobals","GetLuaSaveGameData","GetLuaLoadGamePermanents","GlobalObjs","GlobalObjClasses","GlobalGameTimeThreads","GlobalGameTimeThreadFuncs","GlobalRealTimeThreads","GlobalRealTimeThreadFuncs"})
-	AddSubmenu("EntityData",{"EntityStates","EntitySurfaces","GetAllEntities","HexOutlineShapes","HexInteriorShapes","HexOutlineByHash","HexBuildShapes","HexBuildShapesInversed","HexPeripheralShapes","HexCombinedShapes"})
-	AddSubmenu("g_Classes",{"ClassTemplates","Attaches","FXRules","FXLists"})
-	AddSubmenu("g_CObjectFuncs",{"hr","pf","terrain","UIL","DTM","lpeg","lfs","srp","camera","camera3p","cameraMax","cameraRTS","string","table","package"})
-	AddSubmenu("StoryBits",{"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates"},Translate(948928900281--[[Story Bits--]]))
-	AddSubmenu("UICity",{"UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters","LRManagerInstance"})
+	AddSubmenu("_G",nil,"AccountStorage","__cobjectToCObject","FlagsByBits","HandleToObject","TranslationTable","DeletedCObjects","Flight_MarkedObjs","PropertySetMethod","debug.getregistry")
+	AddSubmenu("ThreadsRegister",nil,"ThreadsMessageToThreads","ThreadsThreadToMessage","s_SeqListPlayers","GameInitThreads")
+	AddSubmenu("Consts",nil,"g_Consts","const","ModifiablePropScale","const.TagLookupTable")
+	AddSubmenu("Dialogs",nil,"terminal.desktop","GetInGameInterface")
+	AddSubmenu("GlobalVars",nil,"GlobalVarValues","PersistableGlobals","GetLuaSaveGameData","GetLuaLoadGamePermanents","GlobalObjs","GlobalObjClasses","GlobalGameTimeThreads","GlobalGameTimeThreadFuncs","GlobalRealTimeThreads","GlobalRealTimeThreadFuncs")
+	AddSubmenu("EntityData",nil,"EntityStates","EntitySurfaces","GetAllEntities","HexOutlineShapes","HexInteriorShapes","HexOutlineByHash","HexBuildShapes","HexBuildShapesInversed","HexPeripheralShapes","HexCombinedShapes")
+	AddSubmenu("g_Classes",nil,"ClassTemplates","Attaches","FXRules","FXLists")
+	AddSubmenu("g_CObjectFuncs",nil,"hr","pf","terrain","UIL","DTM","lpeg","lfs","srp","camera","camera3p","cameraMax","cameraRTS","string","table","package")
+	AddSubmenu("StoryBits",Translate(948928900281--[[Story Bits--]]),"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates")
+	AddSubmenu("UICity",nil,"UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters","LRManagerInstance")
 
 	-- bonus addition at the top
 	table_insert(ExamineMenuToggle_list,1,{

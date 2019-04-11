@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244124,
 	"steam_id", "1504597628",
   "description", [[Defence towers will attack dustdevils.
 

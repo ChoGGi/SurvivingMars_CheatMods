@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244124,
 	"description", [[Drones normally only pick up resources from buildings when the amount stored is equal or greater to their carry amount (ex: if there's 1 res cube and you have the 2x carry upgrade they'll wait for another res cube before they touch it).
 
 This mod forces them to pick up whenever there's at least 1 res cube.

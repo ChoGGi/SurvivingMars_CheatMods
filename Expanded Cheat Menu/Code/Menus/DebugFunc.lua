@@ -54,14 +54,15 @@ You need my HelperMod installed to be able to use this."--]]],
 		end
 
 		local function CallBackFunc(choice)
-			local path = choice[1].value
+			choice = choice[1]
+
+			local path = choice.value
 			-- keep path if dialog is closed
 			saved_file_path = path
 
 			ChoGGi.ComFuncs.TestLocaleFile(
---~ 				print(
 				path,
-				ChoGGi.ComFuncs.RetProperType(choice[2].value)
+				ChoGGi.ComFuncs.RetProperType(choice.value)
 			)
 		end
 
@@ -401,13 +402,24 @@ end
 
 do -- PostProcGrids
 	local SetPostProcPredicate = SetPostProcPredicate
+	local GetPostProcPredicate = GetPostProcPredicate
+
+	local grids = {
+		"grid45",
+		"grid",
+		"hexgrid",
+		"smallgrid",
+	}
 
 	function ChoGGi.MenuFuncs.PostProcGrids(action)
 		local grid_type = action.grid_mask
 		-- always disable other ones
-		SetPostProcPredicate("grid45", false)
-		SetPostProcPredicate("grid", false)
-		SetPostProcPredicate("hexgrid", false)
+		for i = 1, #grids do
+			local name = grids[i]
+			if GetPostProcPredicate(name) then
+				SetPostProcPredicate(name, false)
+			end
+		end
 		if grid_type then
 			SetPostProcPredicate(grid_type, true)
 		end
@@ -416,46 +428,28 @@ end -- do
 
 function ChoGGi.MenuFuncs.Render_Toggle()
 	local item_list = {
-		{text = "RenderAlwaysRenderableObjects",value = "RenderAlwaysRenderableObjects"},
-		{text = "RenderBandOutsideMap",value = "RenderBandOutsideMap"},
-		{text = "RenderBandOutsidersMaxZ",value = "RenderBandOutsidersMaxZ"},
-		{text = "RenderBandOutsidersMinZ",value = "RenderBandOutsidersMinZ"},
-		{text = "RenderBillboards",value = "RenderBillboards"},
-		{text = "RenderBillboardShadows",value = "RenderBillboardShadows"},
-		{text = "RenderBSpheres",value = "RenderBSpheres"},
-		{text = "RenderBuildGrid",value = "RenderBuildGrid"},
-		{text = "RenderCodeRenderables",value = "RenderCodeRenderables"},
-		{text = "RenderDecals",value = "RenderDecals"},
-		{text = "RenderGrass",value = "RenderGrass"},
-		{text = "RenderHasBillboards",value = "RenderHasBillboards"},
-		{text = "RenderIce",value = "RenderIce"},
-		{text = "RenderLights",value = "RenderLights"},
-		{text = "RenderMapObjects",value = "RenderMapObjects"},
-		{text = "RenderMirage",value = "RenderMirage"},
-		{text = "RenderOBBs",value = "RenderOBBs"},
-		{text = "RenderOutsiders",value = "RenderOutsiders"},
-		{text = "RenderParticles",value = "RenderParticles"},
-		{text = "RenderPlanetView",value = "RenderPlanetView"},
-		{text = "RenderSkinned",value = "RenderSkinned"},
-		{text = "RenderStatsFrameTimeCPU",value = "RenderStatsFrameTimeCPU"},
-		{text = "RenderStatsFrameTimeGPU",value = "RenderStatsFrameTimeGPU"},
-		{text = "RenderStatsSmoothing",value = "RenderStatsSmoothing"},
-		{text = "RenderTerrain",value = "RenderTerrain"},
-		{text = "RenderTerrainFirst",value = "RenderTerrainFirst"},
-		{text = "RenderTrails",value = "RenderTrails"},
-		{text = "RenderTransparent",value = "RenderTransparent"},
---~ 		{text = "RenderUIL",value = "RenderUIL"},
-		{text = "RenderUnskinned",value = "RenderUnskinned"},
 		{text = "Shadowmap",value = "Shadowmap"},
 		{text = "TerrainAABB",value = "TerrainAABB"},
 		{text = "ToggleSafearea",value = "ToggleSafearea"},
 	}
+	local c = #item_list
+
+	local vars = EnumVars("hr")
+	for key in pairs(vars) do
+		if key:sub(2,7) == "Render" and key ~= ".RenderUIL" then
+			key = key:sub(2)
+			c = c + 1
+			item_list[c] = {text = key,value = key}
+		end
+	end
+
 	local function CallBackFunc(choice)
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
 
+		local value = choice.value
 		local new_value
 		local obj = ChoGGi.ComFuncs.DotNameToObject(value)
 		if type(obj) == "function" then
@@ -470,7 +464,7 @@ function ChoGGi.MenuFuncs.Render_Toggle()
 		end
 
 		MsgPopup(
-			Strings[302535920001316--[[Toggled: %s = %s--]]]:format(choice[1].text,new_value),
+			Strings[302535920001316--[[Toggled: %s = %s--]]]:format(choice.text,new_value),
 			Strings[302535920001314--[[Toggle Render--]]]
 		)
 	end
@@ -479,7 +473,6 @@ function ChoGGi.MenuFuncs.Render_Toggle()
 		callback = CallBackFunc,
 		items = item_list,
 		title = Strings[302535920001314--[[Toggle Render--]]],
-		skip_sort = true,
 		custom_type = 1,
 	}
 end
@@ -672,8 +665,9 @@ do -- debug_build_grid
 			if choice.nothing_selected then
 				return
 			end
+			choice = choice[1]
 
-			local value = choice[1].value
+			local value = choice.value
 			if type(value) == "number" then
 				UserSettings[setting] = value
 
@@ -1118,6 +1112,7 @@ do -- path markers
 			if choice.nothing_selected and remove ~= true then
 				return
 			end
+
 			local value = choice.value
 			local labels = UICity.labels
 			-- remove wp/lines and reset colours

@@ -329,6 +329,17 @@ Actions[c] = {ActionName = Strings[302535920001326--[[Show Grid Hex--]]],
 }
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920001591--[[Show Grid Small--]]],
+	ActionMenubar = "ECM.Debug.Grids",
+	ActionId = ".Show Grid Small",
+	ActionIcon = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
+	RolloverText = Strings[302535920001592--[[Small (use Disable to hide).--]]],
+	OnAction = ChoGGi.MenuFuncs.PostProcGrids,
+	grid_mask = "smallgrid",
+	ActionSortKey = "0Show Grid Hex",
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920001297--[[Toggle Flight Grid--]]],
 	ActionMenubar = "ECM.Debug.Grids",
 	ActionId = ".Toggle Flight Grid",

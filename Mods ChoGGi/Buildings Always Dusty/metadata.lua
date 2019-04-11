@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411885355",
   "code", {"Script.lua"},
 	"image", "Preview.png",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244124,
   "description", [[Buildings will never lose their dust. This is a visual mod, it doesn't affect maintenance.
 
 Requested by: LegendGamer

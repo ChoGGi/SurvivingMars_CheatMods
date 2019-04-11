@@ -15,6 +15,6 @@ return PlaceObj("ModDef", {
   "author", "ChoGGi",
 	"code", {"Script.lua"},
 	"image", "Preview.png",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244124,
   "description", [[It doesn't do anything, that's your job.]],
 })

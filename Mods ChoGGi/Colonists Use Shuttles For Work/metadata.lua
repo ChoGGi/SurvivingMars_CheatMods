@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 --~ 	"pops_desktop_uuid", "uuid",
 --~ CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244124,
 	"code", {
 		"Code/Script.lua",
 	},

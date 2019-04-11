@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244124,
 	"description", [[Anything added to this storage depot will disappear (good for excess resources).
 
 Be careful where you place it as drones will use it like a regular depot (defaults to no resources accepted).]],

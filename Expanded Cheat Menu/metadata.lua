@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411157810",
 	"pops_any_uuid", "46d8ac6c-8e28-4224-b987-95c3021482b5",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244124,
 	"TagGameplay", true,
 	"TagInterface", true,
 	"TagTools", true,
@@ -30,14 +30,24 @@ return PlaceObj("ModDef", {
 		"Code/ECM_Functions.lua",
 		-- defaults,consts,read/save settings
 		"Code/Settings.lua",
-		-- other stuff
+		-- new global funcs
 		"Code/AddedFunctions.lua",
+		-- console stuff
 		"Code/ConsoleFuncs.lua",
+		-- selection panel cheats pane
 		"Code/InfoPaneCheats.lua",
+		-- paint with hexes: HexPainter()
 		"Code/HexPainter.lua",
+		-- funcs that are replaced...
 		"Code/ReplacedFunctions.lua",
+		-- OnMsgs (most of them)
 		"Code/OnMsgs.lua",
+		-- not sure where to put this stuff?
+		"Code/Homeless.lua",
+		-- used for the ged inspector and whatnot
 		"Code/GedSocket.lua",
+		-- Stop some errors when the editor is activated
+		"Code/MapEditor.lua",
 
 		-- custom dialogs
 		"Code/Dialogs/ConsoleLogWin.lua",

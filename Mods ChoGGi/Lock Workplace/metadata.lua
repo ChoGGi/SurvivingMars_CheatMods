@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 		"Code/ModConfig.lua",
 	},
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244124,
   "description", [[Adds a "Lock Workplace" button to the selection panel for colonists, and workplaces ("Lock Workers").
 They can still be fired (if you shutdown the building/shift), they just won't change to a new workplace if they're locked.
 

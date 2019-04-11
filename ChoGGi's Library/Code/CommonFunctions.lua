@@ -722,13 +722,9 @@ local ClearShowObj = ChoGGi.ComFuncs.ClearShowObj
 
 function ChoGGi.ComFuncs.PopupSubMenu(self,name,item)
 	local popup = self.popup
-	local submenu = popup[name]
 
-	if submenu then
-		submenu:Close()
-	end
 	-- build the new one/open it
-	submenu = g_Classes.ChoGGi_PopupList:new({
+	local submenu = g_Classes.ChoGGi_PopupList:new({
 		Opened = true,
 		Id = "ChoGGi_submenu_popup",
 		popup_parent = popup,
@@ -778,7 +774,6 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 
 			popup = popup,
 		}, popup.idContainer)
-
 
 		if items.IconPadding then
 			button.idIcon:SetPadding(items.IconPadding)
@@ -3515,8 +3510,6 @@ function ChoGGi.ComFuncs.Editor_Toggle()
 		p.developer = true
 		table.change(hr, "Editor", {
 			ResolutionPercent = 100,
-			SceneWidth = 0,
-			SceneHeight = 0,
 			DynResTargetFps = 0,
 			EnablePreciseSelection = 1,
 			ObjectCounter = 1,
