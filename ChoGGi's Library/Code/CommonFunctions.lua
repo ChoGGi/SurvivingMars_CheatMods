@@ -4387,6 +4387,7 @@ do -- PolylineSetParabola
 		local parabola_h = Min(from:Dist(to), guim10)
 		local pos_lerp = ValueLerp(from, to, 100)
 		local steps = 10
+		local vertices = {}
 		local c = 0
 		for i = 0, steps do
 			local x = i * (100 / steps)
