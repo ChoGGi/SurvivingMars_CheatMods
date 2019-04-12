@@ -3456,14 +3456,6 @@ do -- UpdateConsoleMargins
 	end
 
 	function ChoGGi.ComFuncs.UpdateConsoleMargins(console_vis)
-		if not dlgConsole then
-			CreateConsole()
-		end
-		if not dlgConsoleLog then
-			DestroyConsoleLog()
-			dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
-		end
-
 		local e = IsEditorActive()
 		-- editor mode adds a toolbar to the bottom, so we go above it
 		if dlgConsole then

@@ -47,6 +47,7 @@ Debug.Grids>Follow Mouse Grid Trans: 15: How transparent the Building grid is.
 Debug.Grids>Show Grid 45 Square: Square 45 (use Disable to hide).
 Debug.Grids>Show Grid Disable: Hide the white ground grids.
 Debug.Grids>Show Grid Hex: Hex (use Disable to hide).
+Debug.Grids>Show Grid Small: Small (use Disable to hide).
 Debug.Grids>Show Grid Square: Square (use Disable to hide.
 Debug.Grids>Toggle Building Grid: Show a hex grid around mouse:
 Green = pass/build, Yellow = no pass/build,
@@ -251,8 +252,8 @@ Drone prefabs
 ECM.Rockets>Cargo Capacity: Change amount of storage space in rockets.
 ECM.Rockets>Change Resupply Settings: Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click.
 ECM.Rockets>Colonists per Rocket: 12: Change how many colonists can arrive on Mars in a single Rocket.
-ECM.Rockets>Launch Fuel Per Rocket: 60000: Change how much fuel rockets need to launch.
-ECM.Rockets>Max Export Amount: 30000: Change how many rares per rocket you can export.
+ECM.Rockets>Launch Fuel Per Rocket: Change how much fuel rockets need to launch.
+ECM.Rockets>Max Export Amount: Change how many rares per rocket you can export.
 ECM.Rockets>Rockets Ignore Fuel: Rockets don't need fuel to launch.
 ECM.Rockets>Travel Time: Change how long to take to travel between planets.
 ECM.Rovers>RC Gravity: Change gravity of RCs.

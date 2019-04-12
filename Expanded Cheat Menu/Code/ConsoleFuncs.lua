@@ -464,7 +464,7 @@ The number is a count of stored msgs, right-click <right_click> to view the list
 			if ChoGGi.UserSettings.ConsoleToggleHistory then
 				ShowConsoleLog(true)
 				ChoGGi.ComFuncs.UpdateConsoleMargins(true)
-				print("ShowConsoleLog",true)
+				print("ShowConsoleLog: true")
 			else
 				DestroyConsoleLog()
 			end

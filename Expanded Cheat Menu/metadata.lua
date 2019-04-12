@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 			"version_minor", 4,
 		}),
 	},
---~ 	"title", "Expanded Cheat Menu (ECM)",
+--~ 	"title", "Expanded Cheat Menu",
 	"title", "Expanded Cheat Menu v13.4 Test",
 	"version", 134,
 	"saved", 1553947200,
@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_CheatMenu",
 	"author", "ChoGGi",
 	"steam_id", "1411157810",
-	"pops_any_uuid", "46d8ac6c-8e28-4224-b987-95c3021482b5",
+	"pops_any_uuid", "21d18780-d793-4fe4-89ca-6895cd45d639",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
 	"lua_revision", LuaRevision or 244124,
 	"TagGameplay", true,
@@ -160,6 +160,6 @@ Everyone else giving suggestions/pointing out issues.
 ##### Available From:
 https://steamcommunity.com/sharedfiles/filedetails/?id=1411157810
 https://www.nexusmods.com/survivingmars/mods/7
-https://mods.paradoxplaza.com/mods/669/Any
+https://mods.paradoxplaza.com/mods/645/Any
 https://github.com/ChoGGi/SurvivingMars_CheatMods]],
 })

@@ -1,4 +1,4 @@
-You should buy a copy: [GOG](https://www.gog.com/game/surviving_mars) or [Steam](http://store.steampowered.com/app/464920)
+For packaged versions of these mods see [Steam](https://steamcommunity.com/workshop/filedetails/?id=1411210466) or [Nexus Mods](https://www.nexusmods.com/survivingmars/users/659381?tab=user+files).
 
 ### No warranty implied or otherwise!
 
@@ -6,12 +6,12 @@ Enables cheat menu, cheat info pane, console, examine object, adds a whole bunch
 
 ##### Install help
 ```
-Place CheatMod_CheatMenu folder in %AppData%\Surviving Mars\Mods
+Place Expanded Cheat Menu folder in %AppData%\Surviving Mars\Mods
 (create Mods folder if it doesn't exist)
 Other OS locations: https://pcgamingwiki.com/wiki/Surviving_Mars#Save_game_data_location
 Enable with in-game mod manager
 ```
-Also available at: [Steam](https://steamcommunity.com/sharedfiles/filedetails/?id=1411157810), [NexusMods](https://www.nexusmods.com/survivingmars/mods/7), [ParadoxMods](https://mods.paradoxplaza.com/mods/669/Any)
+Also available at: [Steam](https://steamcommunity.com/sharedfiles/filedetails/?id=1411157810), [NexusMods](https://www.nexusmods.com/survivingmars/mods/7), [ParadoxMods](https://mods.paradoxplaza.com/mods/645/Any)
 
 
 
@@ -48,107 +48,6 @@ Hover over menu items for a description (will say if enabled or disabled).
 
 Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua, or in LocalStorage.lua when the blacklist is enabled.
 There's also Help>ECM>Reset Settings, to manually edit see: Help>ECM>Edit Settings.
-```
-
-
-
-##### List of some stuff added (not up to date)
-```
-Add Applicants
-Add Funds/Reset Funds
-Add Mystery Buildings
-Add Prefabs
-Add Research Points
-Allow Dome Forbidden Buildings
-Allow Dome Required Buildings
-Allow Tall Buildings Under Pipes
-Amount of BreakThrough Techs Per Game
-Asteroids (single,multi,storm)
-Avoid Workplace
-Border Scrolling
-Build Spires Outside of Spire Point
-Building Damage Crime
-Cables & Pipes: Instant Build
-Cables & Pipes: Instant Repair
-Cables & Pipes: No Chance of Break
-Camera Zoom Dist
-Chance of Negative Trait
-Chance of Sanity Damage
-Change Logo
-Change Occurrence Level of Disasters
-Change Sponsor/Commander
-Colonist Residence Capacity
-Colonists Add Specialization To All
-Colonists Chance of Suicide
-Colonists Morale Max
-Colonists Min birth threshold
-Colonists Per Rocket
-Colonists Starve
-Colonists Suffocate
-Construction For Cheap
-Crop Fail Threshold (lower the threshold to 0)
-Deep Scan
-Deeper Scan Enable
-Disable Texture Compression
-Drone Battery Infinite
-Drone Build Speed
-Drone Carry Amount Increase
-Drone Meteor Malfunction
-Drone Recharge Time
-Drone Repair Supply Leak
-Drones Per DroneHub Increase
-Drones Per RC Rover Increase
-Fill Resource Selected
-Food Per Rocket Passenger Increase
-Fully Automated Buildings
-Game Speed Default,Double,Triple,Quad,Octuple,Sexdecuple,Duotriguple,Quattuorsexaguple
-Increasable Capacity Colonist/Visitor/Battery/Air/Water
-Instant Build (most items)
-Maintenance Free Buildings
-Meteor Health Damage
-Moisture Vaporator Penalty
-No Home Comfort Damage
-Open In Ged Editor (lets you open some objects in the ged editor)
-Outside Workplace Radius Increase
-Outsource Points 1000000
-Outsourcing Free
-Performance Penalty Non-Specialist
-Positive Playground
-Project Morpheus Positive Trait
-RC Rover Drone Recharge Free
-RC Transport Storage Increase
-RC Transport Transfer Speed
-Remove Building Limits (they can be placed almost anywhere: no uneven terrain, it messes the buildings up)
-Renegade Creation
-Research Every Breakthrough
-Research Every Mystery
-Research Queue Larger
-Rocket Cargo Capacity
-Rocket Travel Instant
-Sanatorium Cure All Traits
-Sanatorium/School Show All Traits
-Scanner Queue Larger
-School Train All Traits
-See Dead Sanity Damage
-Set Colonists Age,Sex,Comfort,Health,Morale,Sanity
-Set Death Age
-Set New Colonists Age,Sex
-Set Shadow Map Size
-Set Transparency of UI items
-Set Opacity of objects
-Show All Traits in Sanatorium/School
-Show Hidden Buildings
-ShuttleHub Shuttles Increase
-Spacing between Pipe Pillars
-Start Mysteries (mysteries don't start till after you have 100 colonists, and an amount of time has passed. they stack up, so I wouldn't start too many)
-Storage Depot / Waste Dump capacity increase
-Toggle Editor (you can move stuff around: if you really want a bunch of colonists moving around inside a dome that isn't there anymore)
-Toggle Infopanel Cheats
-Traits: Add/Remove All Negative or Positive
-Unlimited Wonders
-Unlock Every Breakthrough
-Visit Fail Penalty
-Write Logs
 ```
 
 

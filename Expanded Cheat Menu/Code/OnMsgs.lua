@@ -1454,7 +1454,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			print("<color 200 200 200>",Strings[302535920000887--[[ECM--]]],"</color>:",Strings[302535920000247--[[Startup ticks--]]],":",GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
 		end
 
-		if not testing then
+		if not testing and UserSettings.ConsoleToggleHistory then
 			-- getting tired of people asking how to disable console log
 			print("<color 200 200 200>",Strings[302535920000887--[[ECM--]]],"</color>:",Strings[302535920001309--[["Stop showing these msgs: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(Strings[302535920001308--[[Settings--]]],Strings[302535920001112--[[Console Log--]]]))
 		end

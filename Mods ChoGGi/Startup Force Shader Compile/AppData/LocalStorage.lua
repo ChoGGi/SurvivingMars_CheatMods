@@ -4,11 +4,38 @@ g_LocalStorageFile = new_settings_file
 local settings = dofile(new_settings_file)
 LocalStorage = settings
 
+if Platform.ged then
+	return settings
+end
+
 -- skip
 --~ do return settings end
 
 -- any "mods" that need to be loaded before the game is loaded (skip logos, etc)
 dofolder_files("AppData/BinAssets/Code")
+
+-- local some globals
+local setmetatable,pairs,rawget = setmetatable,pairs,rawget
+-- a less restrictive env (okay, not at all restrictive)
+local orig_G = _G
+local mod_env = {
+	__index = function(_, key)
+		return orig_G[key]
+	end,
+	__newindex = function(_, key, value)
+		orig_G[key] = value
+	end,
+}
+local orig_OnMsg = getmetatable(orig_G.OnMsg)
+local function LuaModEnv(env)
+	env = env or {}
+	env._G = orig_G
+	setmetatable(env,mod_env)
+	if env.OnMsg then
+		env.OnMsg.__newindex = orig_OnMsg.__newindex
+	end
+	return env
+end
 
 -- thread needed for WaitMsg
 CreateRealTimeThread(function()
@@ -16,29 +43,6 @@ CreateRealTimeThread(function()
 	while true do
 		-- wait till mods are loaded
 		WaitMsg("ModDefsLoaded")
-
-		-- local some globals
-		local setmetatable,pairs,rawget = setmetatable,pairs,rawget
-		-- a less restrictive env (okay, not at all restrictive)
-		local orig_G = _G
-		local mod_env = {
-			__index = function(_, key)
-				return orig_G[key]
-			end,
-			__newindex = function(_, key, value)
-				orig_G[key] = value
-			end,
-		}
-		local orig_OnMsg = getmetatable(orig_G.OnMsg)
-		local function LuaModEnv(env)
-			env = env or {}
-			env._G = orig_G
-			setmetatable(env,mod_env)
-			if env.OnMsg then
-				env.OnMsg.__newindex = orig_OnMsg.__newindex
-			end
-			return env
-		end
 
 		-- build a list of ids from lua files in "Mod Ids"
 		local mod_ids = {}

@@ -174,12 +174,12 @@ do -- non-class obj funcs
 
 	-- console stuff
 	SaveOrigFunc("ShowConsoleLog")
-	function ShowConsoleLog(...)
+	function ShowConsoleLog(visible,...)
 		-- ShowConsoleLog doesn't check for existing like ShowConsole
 		if rawget(_G, "dlgConsoleLog") then
-			dlgConsoleLog:SetVisible(true)
+			dlgConsoleLog:SetVisible(visible)
 		else
-			ChoGGi_OrigFuncs.ShowConsoleLog(...)
+			ChoGGi_OrigFuncs.ShowConsoleLog(visible,...)
 		end
 		SetTrans(dlgConsoleLog)
 	end
@@ -1185,7 +1185,7 @@ function OnMsg.ClassesBuilt()
 		else
 			return ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,dont_finalize,...)
 		end
-	end --ConstructionController:UpdateConstructionStatuses
+	end -- ConstructionController:UpdateConstructionStatuses
 
 	-- so we can do long spaced tunnels
 	SaveOrigFunc("TunnelConstructionController","UpdateConstructionStatuses")
@@ -1199,7 +1199,6 @@ function OnMsg.ClassesBuilt()
 	end
 
 	do -- Console:Exec
-		SaveOrigFunc("Console","Exec")
 		-- add a bunch of rules to console input
 		local console_rules = {
 			-- print info in console log
@@ -1283,6 +1282,7 @@ end]]
 		if LuaRevision > 240905 and ConsoleRules then
 			ConsoleRules = console_rules
 		else
+			SaveOrigFunc("Console","Exec")
 			if blacklist then
 				local function load_match(text, rules)
 					for i = 1, #rules do
@@ -1325,7 +1325,7 @@ end]]
 		if not blacklist then
 			-- and now the console has a blacklist :), though i am a little suprised they left it unfettered this long, been using it as a workaround for months
 			local WaitMsg = WaitMsg
-			local rawset = rawset
+--~ 			local rawset = rawset
 			CreateRealTimeThread(function()
 				if not g_ConsoleFENV then
 					WaitMsg("Autorun")
@@ -1343,8 +1343,8 @@ end]]
 						return original_G[key]
 					end,
 					__newindex = function(_, key, value)
-						rawset(original_G, key, value)
---~ 						original_G[key] = value
+--~ 						rawset(original_G, key, value)
+						original_G[key] = value
 					end,
 				})
 			end)
