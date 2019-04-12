@@ -4379,6 +4379,7 @@ do -- PolylineSetParabola
   end
 	local guim10 = 10 * guim
 	local white = white
+	local vertices = {}
 
 	function ChoGGi.ComFuncs.PolylineSetParabola(line, from, to, colour)
 		if not line then
@@ -4387,8 +4388,8 @@ do -- PolylineSetParabola
 		local parabola_h = Min(from:Dist(to), guim10)
 		local pos_lerp = ValueLerp(from, to, 100)
 		local steps = 10
-		local vertices = {}
 		local c = 0
+		table_iclear(vertices)
 		for i = 0, steps do
 			local x = i * (100 / steps)
 			local pos = pos_lerp(x)
