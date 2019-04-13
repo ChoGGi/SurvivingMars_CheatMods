@@ -14,8 +14,7 @@ if not mod.no_blacklist then
 end
 
 -- I should really split ChoGGi into funcs and settings... one of these days
-
-ChoGGi._VERSION = mod.version
+ChoGGi._VERSION = "v" .. mod.version_major .. "." .. mod.version_minor
 -- is ECM shanghaied by the blacklist?
 ChoGGi.blacklist = blacklist
 -- path to this mods' folder

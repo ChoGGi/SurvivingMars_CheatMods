@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Fix: Shuttles Stuck Mid-Air v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1540641600,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixShuttlesStuckMidAir",

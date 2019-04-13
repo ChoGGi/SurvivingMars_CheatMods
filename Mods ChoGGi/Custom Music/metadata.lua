@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Custom Music v0.3",
-	"version", 3,
+	"version_major", 0,
+	"version_minor", 3,
   "saved", 1541160000,
 	"image", "Preview.png",
 	"tags", "Music",
@@ -9,12 +10,13 @@ return PlaceObj("ModDef", {
   "steam_id", "1411106409",
 	"lua_revision", LuaRevision or 244124,
 	"code", {
-		"Code/Script.lua"
+		"Code/Script.lua",
 	},
-	"description", string.format([[Place files in %s
-%%AppData%%\Surviving Mars\Music
+	"description", [[Place files in %AppData%\Surviving Mars\Music
+C:\Users\USERNAME\AppData\Roaming\Surviving Mars\Music (AppData is a hidden folder).
+
 
 As far as I know it only plays opus and wav
 mp3,aac,ogg,flac,aiff = don't work
-Spaces and what not in names are a-ok.]],ConvertToOSPath("AppData/Music")),
+Spaces and what not in names are a-ok.]],
 })

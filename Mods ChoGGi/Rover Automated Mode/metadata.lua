@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Rover Automated Mode v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1553428800,
 	"image", "Preview.png",
 	"id", "ChoGGi_RoverAutomatedMode",

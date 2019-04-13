@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
   "title", "Construction: Show Hex Grid v0.2",
-  "version", 2,
+	"version_major", 0,
+	"version_minor", 2,
   "saved", 1543060800,
   "id", "ChoGGi_ConstructionShowHexGrid",
   "author", "ChoGGi",

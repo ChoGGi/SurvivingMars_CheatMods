@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Logo",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1537876800,
 	"image", "Preview.png",
 	"id", "Something_Oh_So_Unique",

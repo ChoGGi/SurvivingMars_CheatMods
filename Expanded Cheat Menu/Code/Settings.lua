@@ -52,8 +52,7 @@ end -- do
 
 -- stores defaults
 ChoGGi.Defaults = {
-	-- oh we'll change it
-	_VERSION = 0,
+	-- updated when saved
 	_SAVED = 0,
 	-- okay, maybe some people don't want a mod to change the title of their game
 	ChangeWindowTitle = true,

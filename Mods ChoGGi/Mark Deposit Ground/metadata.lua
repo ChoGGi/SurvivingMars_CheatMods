@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Mark Deposit Ground v0.5",
-	"version", 5,
+	"version_major", 0,
+	"version_minor", 5,
 	"saved", 1552564800,
 	"image", "Preview.png",
 	"id", "ChoGGi_MarkDepositGround",

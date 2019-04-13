@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Move HUD Buttons v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1542542400,
 	"image", "Preview.png",
 	"id", "ChoGGi_MoveHUDButtons",

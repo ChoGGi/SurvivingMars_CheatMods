@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Rotate All Buildings v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1542369600,
 	"image", "Preview.png",
 	"id", "ChoGGi_RotateAllBuildings",

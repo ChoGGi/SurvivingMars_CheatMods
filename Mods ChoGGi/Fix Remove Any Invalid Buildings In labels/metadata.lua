@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Fix: Remove Invalid Label Buildings v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 000000000,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixRemoveInvalidLabelBuildings",

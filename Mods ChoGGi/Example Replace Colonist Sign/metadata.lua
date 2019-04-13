@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Example: Replace Colonist Sign v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 000000000,
 	"image", "Preview.png",
 	"id", "ChoGGi_ExampleReplaceColonistSign",

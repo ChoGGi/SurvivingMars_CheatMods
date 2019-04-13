@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Soylent Green Chunks v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1538222400,
 	"image", "Preview.png",
 	"id", "ChoGGi_SoylentGreenChunks",

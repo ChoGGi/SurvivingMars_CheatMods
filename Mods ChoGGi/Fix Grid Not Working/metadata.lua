@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Fix: Grid Not Working v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1538481600,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixGridNotWorking",

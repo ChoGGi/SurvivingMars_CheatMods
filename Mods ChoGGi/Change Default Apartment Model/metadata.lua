@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Change Default Apartment Model v0.2",
-	"version", 2,
+	"version_major", 0,
+	"version_minor", 2,
 	"saved", 1553947200,
 	"image", "Preview.png",
 	"id", "ChoGGi_ChangeDefaultApartmentModel",

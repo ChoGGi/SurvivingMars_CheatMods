@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Fix: Buildings Broken And No Repair v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1545566400,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixBuildingsBrokenDownAndNoRepair",

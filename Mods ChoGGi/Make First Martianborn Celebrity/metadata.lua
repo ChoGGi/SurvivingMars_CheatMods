@@ -1,11 +1,12 @@
 return PlaceObj("ModDef", {
   "title", "Make First Martianborn Celebrity v0.2",
-  "version", 2,
+	"version_major", 0,
+	"version_minor", 2,
   "saved", 1534680000,
   "id", "ChoGGi_MakeFirstMartianbornCelebrity",
   "author", "ChoGGi",
 	"code", {
-		"Script.lua"
+		"Code/Script.lua",
 	},
 	"image", "Preview.png",
   "steam_id", "1432940793",

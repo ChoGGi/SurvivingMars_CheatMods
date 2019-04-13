@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Colonists Use Shuttles For Work v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1551355200,
 	"image", "Preview.png",
 	"id", "ChoGGi_ColonistsUseShuttlesForWork",

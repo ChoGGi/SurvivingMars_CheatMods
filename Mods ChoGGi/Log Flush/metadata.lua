@@ -1,11 +1,14 @@
 return PlaceObj("ModDef", {
 	"title", "Log Flush v0.3",
-	"version", 3,
+	"version_major", 0,
+	"version_minor", 3,
   "saved", 1533297600,
 	"id", "ChoGGi_LogFlush",
 	"steam_id", "1414089790",
 	"author", "ChoGGi",
-	"code", {"Script.lua"},
+	"code", {
+		"Code/Script.lua",
+	},
 	"image", "Preview.png",
 	"lua_revision", LuaRevision or 244124,
 	"description", [[This calls the FlushLogFile() function as soon as the game loads, as well as each new Sol.

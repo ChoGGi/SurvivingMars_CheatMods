@@ -3570,12 +3570,13 @@ end
 
 -- set task request to new amount (for some reason changing the "limit" will also boost the stored amount)
 -- this will reset it back to whatever it was after changing it.
-function ChoGGi.ComFuncs.SetTaskReqAmount(obj,value,task,setting)
+function ChoGGi.ComFuncs.SetTaskReqAmount(obj,value,task,setting,task_num)
+--~ ChoGGi.ComFuncs.SetTaskReqAmount(rocket,value,"export_requests","max_export_storage")
 	-- if it's in a table, it's almost always [1], i'm sure i'll have lots of crap to fix on any update anyways, so screw it
 	if type(obj[task]) == "userdata" then
 		task = obj[task]
 	else
-		task = obj[task][1]
+		task = obj[task][task_num or 1]
 	end
 
 	-- get stored amount

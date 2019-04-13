@@ -4,12 +4,21 @@ local mod_id = "ChoGGi_RaresPerRocket"
 
 local r = ChoGGi.Consts.ResourceScale
 
+-- if modoptions aren't a thing yet
+local function GetModValue()
+	local options = Mods[mod_id].options
+	if options then
+		return options.AmountOfRares * r
+	end
+	return 90 * r
+end
+
 local function UpdateExistingRockets()
 	if not GameState.gameplay then
 		return
 	end
 
-	local value = Mods[mod_id].options.AmountOfRares * r
+	local value = GetModValue()
 
 	local rockets = UICity.labels.AllRockets or ""
 	for i = 1, #rockets do
@@ -36,7 +45,7 @@ end
 -- set when new rocket made
 function OnMsg.BuildingInit(obj)
 	if obj:IsKindOf("SupplyRocket") then
-		obj.max_export_storage = Mods[mod_id].options.AmountOfRares * r
+		obj.max_export_storage = GetModValue()
 	end
 end
 

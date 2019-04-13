@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Borg Collective (Logo)",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1537617600,
 	"image", "Preview.png",
 	"id", "ChoGGi_Logos_BorgCollective",

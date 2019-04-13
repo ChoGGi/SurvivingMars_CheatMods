@@ -1,7 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Multi-Select v0.2",
 --~ 	"title", "Multi-Select v0.1",
-	"version", 2,
+	"version_major", 0,
+	"version_minor", 2,
 	"saved", 1552478400,
 	"image", "Preview.png",
 	"id", "ChoGGi_MultiSelect",

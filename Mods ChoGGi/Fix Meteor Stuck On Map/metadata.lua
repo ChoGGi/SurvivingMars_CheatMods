@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Fix: Meteor Stuck On Map v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1538568000,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixMeteorStuckOnMap",

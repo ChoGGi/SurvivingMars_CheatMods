@@ -1,7 +1,8 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Research Filter v0.3",
 	"title", "Research Filter v0.4",
-	"version", 4,
+	"version_major", 0,
+	"version_minor", 4,
 	"saved", 1551873600,
 	"image", "Preview.png",
 	"id", "ChoGGi_ResearchFilter",

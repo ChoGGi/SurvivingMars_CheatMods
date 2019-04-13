@@ -1,7 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Clear On Demolish v0.2",
 --~ 	"title", "Clear On Demolish",
-	"version", 2,
+	"version_major", 0,
+	"version_minor", 2,
 	"saved", 1555070400,
 	"image", "Preview.png",
 	"id", "ChoGGi_ClearOnDemolish",

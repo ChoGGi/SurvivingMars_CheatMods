@@ -1,7 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Japan Sector Reward For All",
 --~ 	"title", "Japan Sector Reward For All v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1555070400,
 	"image", "Preview.png",
 	"id", "ChoGGi_JapanSectorRewardForAll",

@@ -1,10 +1,13 @@
 return PlaceObj("ModDef", {
 	"title", "Fake Personal Information v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
   "saved", 1533297600,
 	"id", "ChoGGi_FakePersonalInformation",
 	"author", "ChoGGi",
-	"code", {"Script.lua"},
+	"code", {
+		"Code/Script.lua",
+	},
 	"image", "Preview.png",
 	"steam_id", "1449211890",
 	"lua_revision", LuaRevision or 244124,

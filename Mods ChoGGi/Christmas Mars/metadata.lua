@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Christmas Mars v0.2",
-	"version", 2,
+	"version_major", 0,
+	"version_minor", 2,
 	"saved", 1541246400,
 	"image", "Preview.png",
 	"id", "ChoGGi_ChristmasMars",

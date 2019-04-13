@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Change Other To Random Gender v0.1",
-	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
 	"saved", 1539777600,
 	"image", "Preview.png",
 	"id", "ChoGGi_ChangeOtherToRandomGender",

@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Orbital Prefab Drops v0.5",
-	"version", 5,
+	"version_major", 0,
+	"version_minor", 5,
 	"saved", 1542801600,
 	"image", "Preview.png",
 	"id", "ChoGGi_OrbitalPrefabDrops",

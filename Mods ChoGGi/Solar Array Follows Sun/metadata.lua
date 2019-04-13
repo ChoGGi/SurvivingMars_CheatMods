@@ -1,7 +1,8 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "SArray Follows Sun",
 	"title", "Solar Array Follows Sun v0.4",
-	"version", 4,
+	"version_major", 0,
+	"version_minor", 4,
 	"saved", 1546689600,
 	"image", "Preview.png",
 	"id", "ChoGGi_SolarArrayFollowsSun",

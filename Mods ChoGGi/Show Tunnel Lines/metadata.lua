@@ -1,6 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Show Tunnel Lines v0.3",
-	"version", 3,
+	"version_major", 0,
+	"version_minor", 3,
 	"saved", 1549627200,
 	"image", "Preview.png",
 	"id", "ChoGGi_ShowTunnelLines",

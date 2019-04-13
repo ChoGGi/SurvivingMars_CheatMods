@@ -1362,13 +1362,6 @@ do -- LoadGame/CityStart
 			g_Classes.School.max_traits = #ChoGGi.Tables.PositiveTraits
 		end
 
-		-- new version, not that i really need this anymore...
-		if ChoGGi._VERSION ~= UserSettings._VERSION then
-			-- update saved version
-			UserSettings._VERSION = ChoGGi._VERSION
-			ChoGGi.Temp.WriteSettings = true
-		end
-
 		CreateRealTimeThread(function()
 			-- clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
 			local shown = g_ShownOnScreenNotifications or empty_table
@@ -1396,18 +1389,20 @@ do -- LoadGame/CityStart
 
 		-- everyone loves a new titlebar, unless they don't
 		if UserSettings.ChangeWindowTitle then
-			terminal.SetOSWindowTitle(Translate(1079--[[Surviving Mars--]]) .. ": " .. Strings[302535920000887--[[ECM--]]] .. " v" .. ChoGGi._VERSION)
+			terminal.SetOSWindowTitle(Translate(1079--[[Surviving Mars--]]) .. ": " .. Strings[302535920000887--[[ECM--]]] .. " " .. ChoGGi._VERSION)
 		end
 
 		-- first time run info
 		if UserSettings.FirstRun ~= false then
+			UserSettings.FirstRun = false
+			ChoGGi.Temp.WriteSettings = true
+
 			local function CallBackFunc(answer)
 				if answer then
 					DestroyConsoleLog()
 				else
 					UserSettings.ConsoleToggleHistory = true
 					ShowConsoleLog(true)
-					ChoGGi.SettingFuncs.WriteSettings()
 				end
 			end
 			ChoGGi.ComFuncs.QuestionBox(
@@ -1420,9 +1415,6 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 				Strings[302535920001466--[["I know what I'm doing, show me the console log."--]]],
 				ChoGGi.mod_path .. "Preview.png"
 			)
-			-- second place is isn't last place
-			UserSettings.FirstRun = false
-			ChoGGi.Temp.WriteSettings = true
 		end
 
 		-- set zoom/border scrolling

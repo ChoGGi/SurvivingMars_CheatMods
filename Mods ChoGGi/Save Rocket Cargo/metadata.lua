@@ -1,7 +1,8 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Save Rocket Cargo",
 	"title", "Save Rocket Cargo v0.2",
-	"version", 2,
+	"version_major", 0,
+	"version_minor", 2,
 	"saved", 1552824000,
 	"image", "Preview.png",
 	"id", "ChoGGi_SaveRocketCargo",
