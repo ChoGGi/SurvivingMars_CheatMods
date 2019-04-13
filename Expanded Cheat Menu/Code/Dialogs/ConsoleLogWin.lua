@@ -5,7 +5,6 @@
 local Translate = ChoGGi.ComFuncs.Translate
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Strings = ChoGGi.Strings
-local blacklist = ChoGGi.blacklist
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local function GetRootDialog(dlg)

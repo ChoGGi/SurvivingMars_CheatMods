@@ -9,7 +9,6 @@ local ComFuncs = ChoGGi.ComFuncs
 local RetName = ComFuncs.RetName
 local Random = ComFuncs.Random
 local Translate = ComFuncs.Translate
-local MsgPopup = ComFuncs.MsgPopup
 local Strings = ChoGGi.Strings
 local ResourceScale = ChoGGi.Consts.ResourceScale
 

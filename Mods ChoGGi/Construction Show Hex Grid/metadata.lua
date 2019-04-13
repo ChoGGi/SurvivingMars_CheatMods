@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", "Construction: Show Hex Grid v0.2",
+  "title", "Construction: Show Hex Grid",
 	"version_major", 0,
 	"version_minor", 2,
   "saved", 1543060800,

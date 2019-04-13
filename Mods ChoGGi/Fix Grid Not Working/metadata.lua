@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Grid Not Working v0.1",
+	"title", "Fix: Grid Not Working",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1538481600,

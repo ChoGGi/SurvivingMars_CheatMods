@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "1 Percenter v0.2",
+	"title", "1 Percenter",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1534680000,

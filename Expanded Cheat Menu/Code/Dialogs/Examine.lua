@@ -2160,36 +2160,36 @@ function Examine:ConvertValueToInfo(obj)
 			local len = #obj
 			local obj_metatable = getmetatable(obj)
 
---~ 			-- if it's an objlist then we return a list of the objects
---~ 			if obj_metatable and IsObjlist(obj_metatable) then
---~ 				local res = {
---~ 					self:HyperLink(obj,Examine_ConvertValueToInfo),
---~ 					"objlist",
---~ 					hyperlink_end,
---~ 					"{",
---~ 				}
---~ 				local c = #res
---~ 				for i = 1, Min(len, 3) do
---~ 					c = c + 1
---~ 					res[c] = i
---~ 					c = c + 1
---~ 					res[c] = "="
---~ 					c = c + 1
---~ 					res[c] = self:ConvertValueToInfo(obj[i])
---~ 					c = c + 1
---~ 					res[c] = ","
---~ 				end
---~ 				if len > 3 then
---~ 					c = c + 1
---~ 					res[c] = "..."
---~ 				end
---~ 				c = c + 1
---~ 				res[c] = "}"
---~ 				-- remove last ,
---~ 				return TableConcat(res):gsub(",}","}")
+			-- if it's an objlist then we return a list of the objects
+			if obj_metatable and IsObjlist(obj_metatable) then
+				local res = {
+					self:HyperLink(obj,Examine_ConvertValueToInfo),
+					"objlist",
+					hyperlink_end,
+					"{",
+				}
+				local c = #res
+				for i = 1, Min(len, 3) do
+					c = c + 1
+					res[c] = i
+					c = c + 1
+					res[c] = "="
+					c = c + 1
+					res[c] = self:ConvertValueToInfo(obj[i])
+					c = c + 1
+					res[c] = ","
+				end
+				if len > 3 then
+					c = c + 1
+					res[c] = "..."
+				end
+				c = c + 1
+				res[c] = "}"
+				-- remove last ,
+				return TableConcat(res):gsub(",}","}")
 
---~ 			elseif rawget(obj,"ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
-			if rawget(obj,"ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
+			elseif rawget(obj,"ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
+--~ 			if rawget(obj,"ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
 				if obj.colour then
 					return "<color " .. obj.colour .. ">" .. (obj.name or "") .. "</color> "
 						.. self:HyperLink(obj,obj.func,obj.hint) .. "@" .. hyperlink_end

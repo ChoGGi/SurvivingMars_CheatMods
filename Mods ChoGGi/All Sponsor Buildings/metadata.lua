@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "All Sponsor Buildings v0.2",
+	"title", "All Sponsor Buildings",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1542542400,

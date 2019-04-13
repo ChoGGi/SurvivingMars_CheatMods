@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Disable Selection Panel Sizing v0.3",
+	"title", "Disable Selection Panel Sizing",
 	"version_major", 0,
 	"version_minor", 3,
 	"saved", 1546516800,

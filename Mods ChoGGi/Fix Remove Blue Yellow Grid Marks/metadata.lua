@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Remove Blue Yellow Grid Marks v0.2",
+	"title", "Fix: Remove Blue Yellow Grid Marks",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1540987200,

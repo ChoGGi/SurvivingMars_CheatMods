@@ -2,12 +2,12 @@ return PlaceObj("ModDef", {
 	"dependencies", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library v6.4",
+			"title", "ChoGGi's Library",
 			"version_major", 6,
 			"version_minor", 4,
 		}),
 	},
-	"title", "Click To Move Camera v0.2",
+	"title", "Click To Move Camera",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1545134400,

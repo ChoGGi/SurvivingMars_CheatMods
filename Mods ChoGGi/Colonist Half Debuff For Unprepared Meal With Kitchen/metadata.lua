@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Colonist: Half Debuff For Unprepared Meal With Kitchen v0.2",
+	"title", "Colonist: Half Debuff For Unprepared Meal With Kitchen",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1548244800,

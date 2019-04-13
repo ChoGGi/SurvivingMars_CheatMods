@@ -2,13 +2,13 @@ return PlaceObj("ModDef", {
 	"dependencies", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library v6.4",
+			"title", "ChoGGi's Library",
 			"version_major", 6,
 			"version_minor", 4,
 		}),
 	},
 --~ 	"title", "Expanded Cheat Menu",
-	"title", "Expanded Cheat Menu v13.4 Test",
+	"title", "Expanded Cheat Menu Test",
 	"version_major", 13,
 	"version_minor", 4,
 	"saved", 1553947200,

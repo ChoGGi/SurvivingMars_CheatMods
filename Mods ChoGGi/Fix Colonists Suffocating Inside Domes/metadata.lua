@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Colonists Suffocating Inside Domes v0.1",
+	"title", "Fix: Colonists Suffocating Inside Domes",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1546171200,

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Hide Cursor When Using Controller v0.2",
+	"title", "Hide Cursor When Using Controller",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1550923200,

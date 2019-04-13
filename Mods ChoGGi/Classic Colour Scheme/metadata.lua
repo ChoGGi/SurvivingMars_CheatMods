@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Classic Colour Scheme v0.1",
+	"title", "Classic Colour Scheme",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1542369600,

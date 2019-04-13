@@ -1,11 +1,10 @@
 return PlaceObj("ModDef", {
-	"title", "Cheap Fungal Example v0.2",
+	"title", "Cheap Fungal Example",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 000000000,
 	"image", "Preview.png",
 	"id", "ChoGGi_CheapFungalExample",
---~ 	"steam_id", "000000000",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision or 244124,
 	"code", {

@@ -1,11 +1,10 @@
 return PlaceObj("ModDef", {
-	"title", "Custom Sounds Example v0.1",
+	"title", "Custom Sounds Example",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1540987200,
 	"image", "Preview.png",
 	"id", "ChoGGi_CustomSoundsExample",
---~ 	"steam_id", "000000000",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision or 244124,
 	"code", {

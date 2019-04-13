@@ -2,12 +2,12 @@ return PlaceObj("ModDef", {
 	"dependencies", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library v6.4",
+			"title", "ChoGGi's Library",
 			"version_major", 6,
 			"version_minor", 4,
 		}),
 	},
-	"title", "Building Placement Orientation v0.8",
+	"title", "Building Placement Orientation",
 	"version_major", 0,
 	"version_minor", 8,
 	"saved", 1551960000,

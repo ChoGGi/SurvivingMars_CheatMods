@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Custom Music v0.3",
+	"title", "Custom Music",
 	"version_major", 0,
 	"version_minor", 3,
   "saved", 1541160000,

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", "Defence Towers Attack DustDevils v0.5",
+  "title", "Defence Towers Attack DustDevils",
 	"version_major", 0,
 	"version_minor", 5,
   "saved", 1542974400,

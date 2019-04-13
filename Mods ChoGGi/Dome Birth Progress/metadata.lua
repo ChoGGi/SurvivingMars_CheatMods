@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Dome Birth Progress v0.1",
+	"title", "Dome Birth Progress",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1545480000,

@@ -21,6 +21,10 @@ local PlaceObject = PlaceObject
 
 local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
 local MovePointAwayXY = ChoGGi.ComFuncs.MovePointAwayXY
+local Translate = ChoGGi.ComFuncs.Translate
+local Strings = ChoGGi.Strings
+local PopupToggle = ChoGGi.ComFuncs.PopupToggle
+
 
 local name = [[RC Bulldozer]]
 local description = [[Crush, Kill, Destroy]] -- Sarcófago not lost in space...
@@ -46,13 +50,9 @@ if BuildingTemplates.RCHarvesterBuilding then
 	fx_actor_class = "RCHarvester"
 end
 
-local function Trans(...)
-	return _InternalTranslate(T{...})
-end
-
-local idle_text = "Radius: %s, " .. Trans(49--[[Status--]]) .. ": " .. Trans(6722--[[Idle--]])
-local travel_text = "Radius: %s, " .. Trans(49--[[Status--]]) .. ": " .. Trans(63--[[Travelling--]])
-local flatten_text = "Radius: %s, " .. Trans(49--[[Status--]]) .. ": " .. Trans(76--[[Performing maintenance--]])
+local idle_text = "Radius: %s, " .. Translate(49--[[Status--]]) .. ": " .. Translate(6722--[[Idle--]])
+local travel_text = "Radius: %s, " .. Translate(49--[[Status--]]) .. ": " .. Translate(63--[[Travelling--]])
+local flatten_text = "Radius: %s, " .. Translate(49--[[Status--]]) .. ": " .. Translate(76--[[Performing maintenance--]])
 
 DefineClass.RCBulldozer = {
 	__parents = {
@@ -407,9 +407,6 @@ function OnMsg.InGameInterfaceCreated()
 end
 
 function OnMsg.ClassesBuilt()
-	local Strings = ChoGGi.Strings
-	local PopupToggle = ChoGGi.ComFuncs.PopupToggle
-
 	-- add some prod info to selection panel
 	local rover = XTemplates.ipRover[1]
 	-- check for and remove existing templates
@@ -417,16 +414,6 @@ function OnMsg.ClassesBuilt()
 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Dozer")
 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Texture")
 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Circle")
-
---~ 	-- replace status
---~ 	local status = table.find(rover, "Icon", "UI/Icons/Sections/sensor.tga")
---~ 	if status then
---~ 		rover[status]:delete()
---~ 		table.remove(rover,status)
---~ 	else
---~ 		-- screw it stick it at the end
---~ 		status = #rover
---~ 	end
 
 	-- status updates/radius slider
 	table.insert(
@@ -439,10 +426,6 @@ function OnMsg.ClassesBuilt()
 			"Title", T(49, "Status"),
 			"Icon", "UI/Icons/Sections/facility.tga",
 		}, {
---~ 			PlaceObj("XTemplateTemplate", {
---~ 				"__template", "InfopanelText",
---~ 				"Text", T(0,"<StatusUpdate>"),
---~ 			}),
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelSlider",
 				"BindTo", "radius",

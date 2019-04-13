@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Change Default Apartment Model v0.2",
+	"title", "Change Default Apartment Model",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1553947200,

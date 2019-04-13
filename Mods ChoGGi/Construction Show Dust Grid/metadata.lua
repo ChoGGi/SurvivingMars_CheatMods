@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", "Construction: Show Dust Grid v0.2",
+  "title", "Construction: Show Dust Grid",
 	"version_major", 0,
 	"version_minor", 2,
   "saved", 1543060800,

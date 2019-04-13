@@ -7,7 +7,6 @@ local table_unpack = table.unpack
 
 local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 local Translate = ChoGGi.ComFuncs.Translate
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -218,8 +217,6 @@ function OnMsg.ClassesGenerate()
 
 	do -- InfopanelDlg:RecalculateMargins
 		local GetSafeMargins = GetSafeMargins
-		local GetDialog = GetDialog
-		local GetInGameInterface = GetInGameInterface
 		local box = box
 
 		-- stop using 58 and the pins size for the selection panel margins

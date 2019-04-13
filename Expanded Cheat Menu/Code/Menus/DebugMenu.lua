@@ -463,7 +463,7 @@ Actions[c] = {ActionName = Strings[302535920000467--[[Path Markers--]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000467--[[Path Markers--]]] .. " " .. Strings[302535920001382--[[Real Time--]]],
+Actions[c] = {ActionName = Strings[302535920000467--[[Path Markers--]]] .. " " .. Strings[302535920001382--[[Game Time--]]],
 	ActionMenubar = "ECM.Debug.Path Markers",
 	ActionId = ".Game Time",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",

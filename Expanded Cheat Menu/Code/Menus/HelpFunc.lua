@@ -324,7 +324,6 @@ do -- ModUpload
 	-- true = desktop, false = desktop/console
 	local upload_to_whichplatform = true
 
-	local mod_upload_thread
 	local ConvertToOSPath = ConvertToOSPath
 	local MatchWildcard = MatchWildcard
 	local SplitPath = SplitPath
@@ -426,7 +425,7 @@ do -- ModUpload
 		for i = 1, 5 do
 			local screenshot = mod["screenshot" .. i]
 			if io.exists(screenshot) then
-				local path, name, ext = SplitPath(screenshot)
+				local _, name, ext = SplitPath(screenshot)
 				local new_name = ModsScreenshotPrefix .. name .. ext
 				local new_path = shots_path .. new_name
 				local err = AsyncCopyFile(screenshot, new_path)

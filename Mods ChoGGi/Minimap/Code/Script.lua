@@ -41,35 +41,25 @@ ChoGGi_Minimap = {
 }
 
 function OnMsg.ModsReloaded()
-	local xt = XTemplates
-	local idx = table.find(xt.HUD[1],"Id","idBottom")
-	if not idx then
-		print([[ChoGGi Minimap: missing HUD control idBottom]])
+	local xt = ChoGGi.ComFuncs.RetHudButton("idRight")
+	if not xt then
 		return
 	end
-	xt = xt.HUD[1][idx]
-	idx = table.find(xt,"Id","idRight")
-	if not idx then
-		print([[ChoGGi Minimap: missing HUD control idRight]])
-		return
-	end
-	xt = xt[idx][1]
 
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xt,"ChoGGi_Template_Minimap")
 
-	table.insert(xt,#xt,PlaceObj("XTemplateTemplate", {
-		"ChoGGi_Template_Minimap", true,
-		"__template", "HUDButtonTemplate",
-		"RolloverText", [[Click to go places (updates minimap first click).]],
-		"RolloverTitle", [[Minimap]],
-		"Id", "idMinimap",
-		"Image", CurrentModPath .. "UI/minimap.png",
-		"ImageShine", CurrentModPath .. "UI/minimap_shine.png",
-		"FXPress", "MainMenuButtonClick",
-		"OnPress", function()
-			HUD.idMinimapOnPress()
-		end,
-	})
+	table.insert(xt,#xt,
+		PlaceObj("XTemplateTemplate", {
+			"ChoGGi_Template_Minimap", true,
+			"__template", "HUDButtonTemplate",
+			"RolloverText", [[Click to go places (updates minimap first click).]],
+			"RolloverTitle", [[Minimap]],
+			"Id", "idMinimap",
+			"Image", CurrentModPath .. "UI/minimap.png",
+			"ImageShine", CurrentModPath .. "UI/minimap_shine.png",
+			"FXPress", "MainMenuButtonClick",
+			"OnPress", HUD.idMinimapOnPress,
+		})
 	)
 end
 

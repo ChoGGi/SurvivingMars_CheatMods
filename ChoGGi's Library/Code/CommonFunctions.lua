@@ -1258,8 +1258,6 @@ do -- TableCleanDupes
 		for i = 1, #temp_t do
 			list[i] = temp_t[i]
 		end
-
---~ 		return list
 	end
 end -- do
 local TableCleanDupes = ChoGGi.ComFuncs.TableCleanDupes
@@ -1675,6 +1673,7 @@ function ChoGGi.ComFuncs.CreateSetting(str,setting_type)
 end
 
 -- returns whatever is selected > moused over > nearest object to cursor
+-- single selection
 local function SelObject(radius)
 	-- just in case it's called from main menu
 	if not GameState.gameplay then
@@ -1688,6 +1687,39 @@ local function SelObject(radius)
 	return obj
 end
 ChoGGi.ComFuncs.SelObject = SelObject
+
+-- returns whatever is selected > moused over > nearest object to cursor
+-- same as above but with multi selection (returns an indexed table)
+local function SelObjects(radius)
+	-- just in case it's called from main menu
+	if not GameState.gameplay then
+		return
+	end
+
+	-- multiselect/single selected obj
+	local sel = Selection
+	local sel_c = #sel
+	if sel_c > 0 then
+		if sel_c > 1 then
+			if sel[1]:IsKindOf("MultiSelectionWrapper") then
+				return sel[1].objects
+			else
+				return sel
+			end
+		else
+			return sel
+		end
+	end
+
+	-- single/radius selection
+	local obj = SelectedObj or SelectionMouseObj()
+	if not obj then
+		local pt = GetTerrainCursor()
+		obj = MapFindNearest(pt,pt,radius or 1500)
+	end
+	return {obj}
+end
+ChoGGi.ComFuncs.SelObjects = SelObjects
 
 do -- Rebuildshortcuts
 	-- we want to only remove certain actions from the actual game, not ones added by modders, so list building time...
@@ -2634,7 +2666,6 @@ function ChoGGi.ComFuncs.BuildMenu_Toggle()
 end
 
 do -- DeleteObject
-	local IsKindOf = IsKindOf
 	local IsValid = IsValid
 	local DoneObject = DoneObject
 	local DeleteThread = DeleteThread
@@ -4393,3 +4424,22 @@ do -- PolylineSetParabola
 		line:SetMesh(vertices, colour or white)
 	end
 end -- do
+
+-- "idLeft","idMiddle","idRight"
+function ChoGGi.ComFuncs.RetHudButton(side)
+	side = side or "idLeft"
+
+	local xt = XTemplates
+	local idx = table.find(xt.HUD[1],"Id","idBottom")
+	if not idx then
+		print("ChoGGi RetHudButton: Missing HUD control idBottom")
+		return
+	end
+	xt = xt.HUD[1][idx]
+	idx = table.find(xt,"Id",side)
+	if not idx then
+		print("ChoGGi RetHudButton: Missing HUD control " .. side)
+		return
+	end
+	return xt[idx][1]
+end

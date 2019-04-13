@@ -93,21 +93,20 @@ function OnMsg.ModsReloaded()
 		table.remove(xt,idx)
 	end
 
-	table.insert(xt,#xt,PlaceObj("XTemplateTemplate", {
-		"ChoGGi_Template_CentredUI", true,
-		"__template", "HUDButtonTemplate",
+	table.insert(xt,#xt,
+		PlaceObj("XTemplateTemplate", {
+			"ChoGGi_Template_CentredUI", true,
+			"__template", "HUDButtonTemplate",
 
-		"RolloverTitle", [[Set Margin]],
-		"RolloverText", [[Allows you to Test/Save a custom margin.
+			"RolloverTitle", [[Set Margin]],
+			"RolloverText", [[Allows you to Test/Save a custom margin.
 Don't forget to send me your res and margin, so I can add them to the list.]],
-		"RolloverHint", T(0,[[<left_click> Show Options <right_click> Test Margin]]),
-		"Id", "idSetupMargins",
-		"Image", CurrentModPath .. "UI/hud_margin.png",
-		"FXPress", "MainMenuButtonClick",
-		"OnPress", function()
-			HUD.idSetupMarginsOnPress()
-		end,
-	})
+			"RolloverHint", T(0,[[<left_click> Show Options <right_click> Test Margin]]),
+			"Id", "idSetupMargins",
+			"Image", CurrentModPath .. "UI/hud_margin.png",
+			"FXPress", "MainMenuButtonClick",
+			"OnPress", HUD.idSetupMarginsOnPress,
+		})
 	)
 end
 

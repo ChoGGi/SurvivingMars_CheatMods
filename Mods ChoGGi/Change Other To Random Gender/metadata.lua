@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Change Other To Random Gender v0.1",
+	"title", "Change Other To Random Gender",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1539777600,

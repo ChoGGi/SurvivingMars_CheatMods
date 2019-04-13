@@ -4,6 +4,7 @@ local pairs,print,type,tonumber,tostring,table = pairs,print,type,tonumber,tostr
 local table_remove = table.remove
 local table_clear = table.clear
 local table_iclear = table.iclear
+local table_sort = table.sort
 local IsValid = IsValid
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -245,7 +246,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 				c = c + 1
 				entity_list[c] = key
 			end
-			table.sort(entity_list)
+			table_sort(entity_list)
 			local entity_count = #entity_list
 
 			local IsBuildableZoneQR = IsBuildableZoneQR
@@ -816,82 +817,68 @@ end
 
 do -- path markers
 	local IsObjlist = ChoGGi.ComFuncs.IsObjlist
-	local Clamp = Clamp
-	local point = point
 	local CreateGameTimeThread = CreateGameTimeThread
-	local terrain = terrain
-	local GetHeight = terrain.GetHeight
+	local AveragePoint2D = AveragePoint2D
+	local terrain_GetHeight = terrain.GetHeight
 	local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
-	local SelObject = ChoGGi.ComFuncs.SelObject
+	local SelObjects = ChoGGi.ComFuncs.SelObjects
 
 	local randcolours = {}
 	local colourcount = 0
 	local dupewppos = {}
-	-- default height of waypoints (maybe flag_height isn't the best name as no more flags)
+	-- default height of waypoints (maybe flag_height isn't the best name as i stopped using them)
 	local flag_height = 50
-	local mapw, maph
 	local OPolyline
 
-	local ShowWaypoints_points = {}
-	local function ShowWaypoints(waypoints, colour, obj, skipheight)
+	local function ShowWaypoints(waypoints, colour, obj, skip_height, obj_pos)
 		colour = tonumber(colour) or RandomColour()
 		-- also used for line height
-		if not skipheight then
+		if not skip_height then
 			flag_height = flag_height + 4
 		end
-		local height = flag_height
-		local obj_pos = obj:GetVisualPos()
-		local obj_terr = GetHeight(obj_pos)
+
+		obj_pos = obj_pos or obj:GetVisualPos()
+		local obj_terrain = terrain_GetHeight(obj_pos)
 		local obj_height = obj:GetObjectBBox():sizez() / 2
-		local shuttle
 		if obj:IsKindOf("CargoShuttle") then
-			shuttle = obj:GetZ()
+			obj_height = obj_pos:z() - obj_terrain
 		end
+
 		-- some objects don't have pos as waypoint
 		local wp_c = #waypoints
 		if waypoints[wp_c] ~= obj_pos then
-			waypoints[wp_c+1] = obj_pos
+			wp_c = wp_c + 1
+			waypoints[wp_c] = obj_pos
 		end
 
 		-- build a list of points that aren't high in the sky
-		table_clear(ShowWaypoints_points)
-		local points = ShowWaypoints_points
-		for i = 1, #waypoints do
-			local x, y, z = waypoints[i]:xy()
-			x = Clamp(x, 0, mapw)
-			y = Clamp(y, 0, maph)
-			-- shuttle z always puts it too high?
-			z = GetHeight(x, y) + (shuttle and shuttle - obj_terr or obj_height) + height
-			-- .holder being a building they're inside of
-			if not shuttle and obj.holder and obj_pos:z() > obj_terr then
-				z = obj_pos:z()
+		for i = 1, wp_c do
+			local wp = waypoints[i]
+			local z = wp:z()
+			if not z or z and z < obj_terrain then
+				waypoints[i] = wp:SetTerrainZ(obj_height + flag_height)
 			end
-			points[#points + 1] = point(x, y, z)
 		end
-		local last_pos = points[#points]
 		-- and spawn the line
 		local spawnline = OPolyline:new()
-		spawnline:SetMesh(points, colour)
-		spawnline:SetPos(last_pos)
+		spawnline:SetMesh(waypoints, colour)
+		spawnline:SetPos(AveragePoint2D(waypoints))
 
 		obj.ChoGGi_Stored_Waypoints[#obj.ChoGGi_Stored_Waypoints+1] = spawnline
 	end -- end of ShowWaypoints
 
-	local SetWaypoint_path = {}
-
 	local function AddShuttlePath(c,path,new_path)
 		if type(new_path) == "table" then
-			-- :GetPath() has them backwards so we'll do the same
-			for i = #new_path, 1, -1 do
+			for i = 1, #new_path do
 				c = c + 1
 				path[c] = new_path[i]
 			end
 		end
 		return c
 	end
-	function ChoGGi.MenuFuncs.SetWaypoint(obj,setcolour,skipheight)
-		table_clear(SetWaypoint_path)
-		local path = SetWaypoint_path
+
+	function ChoGGi.MenuFuncs.SetWaypoint(obj,setcolour,skip_height)
+		local path = {}
 
 		-- we need to build a path for shuttles (and figure out a way to get their dest properly...)
 		if obj:IsKindOf("CargoShuttle") then
@@ -917,12 +904,16 @@ do -- path markers
 
 			-- the next four points it's going to after current_spline
 			c = AddShuttlePath(c,path,obj.next_spline)
-			-- the next four points it's going to
-			c = AddShuttlePath(c,path,obj.current_spline)
-			-- something?
-			c = AddShuttlePath(c,path,obj.current_path)
+--~ 			-- the next four points it's going to
+--~ 			c = AddShuttlePath(c,path,obj.current_spline)
+--~ 			-- something?
+--~ 			if obj.current_path then
+--~ 				for i = 1, #obj.current_path do
+--~ 					c = AddShuttlePath(c,path,obj.current_path[i])
+--~ 				end
+--~ 			end
 
-			-- and lastly the where the line starts
+			-- where the line starts
 			c = c + 1
 			path[c] = obj:GetPos()
 
@@ -961,17 +952,26 @@ do -- path markers
 			end
 			-- colour it up
 			obj:SetColorModifier(colour)
+
+			-- and lastly make sure path is sorted correctly
+			-- end is where the obj is, and start is where the dest is
+			local obj_pos = obj.GetVisualPos and obj:GetVisualPos() or obj:GetPos()
+			table_sort(path,function(a,b)
+				return obj_pos:Dist2D(a) > obj_pos:Dist2D(b)
+			end)
+
 			-- send path off to make wp
 			ShowWaypoints(
 				path,
 				colour,
 				obj,
-				skipheight
+				skip_height,
+				obj_pos
 			)
 		end
 	end
 
-	local function SetPathMarkersGameTime_Thread(obj,UnitPathingHandles)
+	local function SetPathMarkersGameTime_Thread(obj,handles)
 		local colour = RandomColour()
 		if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
 			obj.ChoGGi_Stored_Waypoints = objlist:new()
@@ -992,34 +992,52 @@ do -- path markers
 
 			-- break thread when obj isn't valid
 			if not IsValid(obj) then
-				UnitPathingHandles[obj.handle] = nil
+				handles[obj.handle] = nil
 			end
-		until not UnitPathingHandles[obj.handle]
+		until not handles[obj.handle]
 	end
+	local function AddObjToGameTimeMarkers(obj,handles,skip)
+		if skip or obj:IsKindOfClasses("Movable", "CargoShuttle") then
 
-	function ChoGGi.MenuFuncs.SetPathMarkersGameTime(obj,single)
-		OPolyline = OPolyline or ChoGGi_OPolyline
-		-- if fired from action menu
-		if IsKindOf(obj,"XAction") then
-			obj = SelObject()
-			single = true
-		else
-			obj = obj or SelObject()
-		end
-
-		if obj and obj:IsKindOfClasses("Movable", "CargoShuttle") then
-			local UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles
-
-			if UnitPathingHandles[obj.handle] then
+			if handles[obj.handle] then
 				-- already exists so remove thread
-				UnitPathingHandles[obj.handle] = nil
+				handles[obj.handle] = nil
 			elseif IsValid(obj) then
 				-- continous loooop of object for pathing it
-				UnitPathingHandles[obj.handle] = CreateGameTimeThread(SetPathMarkersGameTime_Thread,obj,UnitPathingHandles)
+				handles[obj.handle] = CreateGameTimeThread(SetPathMarkersGameTime_Thread,obj,handles)
 			end
+		end
+	end
 
-		-- if user used "Ctrl-Numpad ." on an obj that can't path
-		elseif single then
+	function ChoGGi.MenuFuncs.SetPathMarkersGameTime(obj,menu_fired)
+		OPolyline = OPolyline or ChoGGi_OPolyline
+
+		-- if fired from action menu (or shortcut)
+		if IsKindOf(obj,"XAction") then
+			obj = SelObjects()
+			menu_fired = true
+		else
+			obj = obj or SelObjects()
+		end
+
+		if obj then
+			local handles = ChoGGi.Temp.UnitPathingHandles
+			-- single obj
+			if #obj == 1 then
+				return AddObjToGameTimeMarkers(obj[1],handles)
+			-- multiselect
+ 			elseif #obj > 1 then
+				for i = 1, #obj do
+					AddObjToGameTimeMarkers(obj[i],handles)
+				end
+				return
+			-- single not in a table list (true means we already checked the kindof)
+			elseif obj:IsKindOfClasses("Movable", "CargoShuttle") then
+				return AddObjToGameTimeMarkers(obj,handles,true)
+			end
+		end
+
+		if menu_fired then
 			MsgPopup(
 				Strings[302535920000871--[[Doesn't seem to be an object that moves.--]]],
 				Strings[302535920000872--[[Pathing--]]],
@@ -1036,7 +1054,6 @@ do -- path markers
 			for i = 1, #obj.ChoGGi_Stored_Waypoints do
 				local wp = obj.ChoGGi_Stored_Waypoints[i]
 
---~ 					if wp:IsKindOf(cls) then
 				if wp.class == cls then
 					local pos = tostring(wp:GetPos())
 					if dupewppos[pos] then
@@ -1080,19 +1097,6 @@ do -- path markers
 		OPolyline = OPolyline or ChoGGi_OPolyline
 		ChoGGi.Temp.UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles or {}
 
-		if not mapw then
-			mapw, maph = terrain.GetMapSize()
-			mapw = mapw - terrain.HeightTileSize()
-			maph = maph - terrain.HeightTileSize()
-		end
-
---~ 			local obj = SelectedObj
---~ 			if IsValid(obj) and obj:IsKindOfClasses("Movable", "CargoShuttle") then
---~ 				randcolours = RandomColour(#randcolours + 1)
---~ 				ChoGGi.MenuFuncs.SetWaypoint(obj)
---~ 				return
---~ 			end
-
 		local item_list = {
 			{text = " " .. Translate(4493--[[All--]]),value = "All"},
 			{text = Translate(547--[[Colonists--]]),value = "Colonist"},
@@ -1127,7 +1131,6 @@ do -- path markers
 				end
 
 				-- remove any extra lines
---~ 					MapDelete(true, "ChoGGi_OPolyline")
 				ChoGGi.ComFuncs.RemoveObjs("ChoGGi_OPolyline")
 
 				-- reset stuff
@@ -1198,7 +1201,7 @@ do -- path markers
 					hint = Strings[302535920000877--[[Remove waypoints from the map and reset colours (select any object type to remove them all).--]]],
 				},
 				{
-					title = Strings[302535920001382--[[Real time--]]],
+					title = Strings[302535920001382--[[Game time--]]],
 					hint = Strings[302535920000462--[[Maps paths in real time--]]],
 					checked = true,
 				},

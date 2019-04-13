@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", "Construction: Show Max Radius Range v0.4",
+  "title", "Construction: Show Max Radius Range",
 	"version_major", 0,
 	"version_minor", 4,
   "saved", 1543060800,

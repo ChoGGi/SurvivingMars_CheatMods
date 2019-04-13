@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Increased Render and Shadows v0.3",
+	"title", "Increased Render and Shadows",
 	"version_major", 0,
 	"version_minor", 3,
 	"saved", 1534680000,

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Command Center Distance Sort v0.2",
+	"title", "Command Center Distance Sort",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1551182400,

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", "Black Dust Devils v0.2",
+  "title", "Black Dust Devils",
 	"version_major", 0,
 	"version_minor", 2,
   "saved", 1534680000,

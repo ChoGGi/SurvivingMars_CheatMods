@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Expedition Rocket Stuck Unloading v0.1",
+	"title", "Fix: Expedition Rocket Stuck Unloading",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1542456000,

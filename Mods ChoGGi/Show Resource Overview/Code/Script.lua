@@ -23,20 +23,10 @@ function OnMsg.ClassesPostprocess()
 end
 
 function OnMsg.ModsReloaded()
-
-	local xt = XTemplates
-	local idx = table.find(xt.HUD[1],"Id","idBottom")
-	if not idx then
-		print("ChoGGi: Show Resource Overview missing HUD idBottom")
+	local xt = ChoGGi.ComFuncs.RetHudButton("idRight")
+	if not xt then
 		return
 	end
-	xt = xt.HUD[1][idx]
-	idx = table.find(xt,"Id","idRight")
-	if not idx then
-		print("ChoGGi: Show Resource Overview missing HUD idRight")
-		return
-	end
-	xt = xt[idx][1]
 
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xt,"ChoGGi_Template_ColonyOverview")
 
@@ -50,9 +40,7 @@ function OnMsg.ModsReloaded()
 			"Image", CurrentModPath .. "UI/statistics.png",
 			"ImageShine", "UI/HUD/statistics_shine.tga",
 			"FXPress", "MainMenuButtonClick",
-			"OnPress", function()
-				HUD.idColonyOverviewOnPress()
-			end,
+			"OnPress", HUD.idColonyOverviewOnPress,
 		})
 	)
 

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Example New Res Icons v0.4",
+	"title", "Example New Res Icons",
 	"version_major", 0,
 	"version_minor", 4,
 	"saved", 1545220800,

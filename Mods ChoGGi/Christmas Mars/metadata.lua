@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Christmas Mars v0.2",
+	"title", "Christmas Mars",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1541246400,

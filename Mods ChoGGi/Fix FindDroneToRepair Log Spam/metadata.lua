@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: FindDroneToRepair Log Spam v0.1",
+	"title", "Fix: FindDroneToRepair Log Spam",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1543320000,

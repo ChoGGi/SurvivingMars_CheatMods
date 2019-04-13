@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", "Buildings Always Dusty v0.2",
+  "title", "Buildings Always Dusty",
 	"version_major", 0,
 	"version_minor", 2,
   "saved", 1534334400,

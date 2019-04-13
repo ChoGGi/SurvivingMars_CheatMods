@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Project Morpheus Particle Fell Down v0.1",
+	"title", "Fix: Project Morpheus Particle Fell Down",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1543320000,

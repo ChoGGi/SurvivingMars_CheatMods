@@ -1,6 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Drones Harvest Rocks v0.1",
---~ 	"title", "Drones Harvest Rocks",
+	"title", "Drones Harvest Rocks",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1552392000,

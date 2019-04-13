@@ -27,7 +27,7 @@ function GedSocket:Done()
     end
   end
 end
-function GedSocket:OnDisconnect(reason)
+function GedSocket:OnDisconnect()
   self:Done()
 end
 function GedSocket:rpcGedQuit()

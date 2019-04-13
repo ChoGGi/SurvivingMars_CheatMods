@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", "Deep Resources Never Run Out v0.1",
+  "title", "Deep Resources Never Run Out",
 	"version_major", 0,
 	"version_minor", 1,
   "saved", 1533297600,

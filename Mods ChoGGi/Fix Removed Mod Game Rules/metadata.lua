@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Removed Mod Game Rules v0.1",
+	"title", "Fix: Removed Mod Game Rules",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1545134400,

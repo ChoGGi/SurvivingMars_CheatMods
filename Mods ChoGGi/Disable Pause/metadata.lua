@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Disable Pause v0.1",
+	"title", "Disable Pause",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1543665600,

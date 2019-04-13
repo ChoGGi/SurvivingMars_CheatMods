@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", "Amount Of WasteRock Per Producer v0.2",
+  "title", "Amount Of WasteRock Per Producer",
 	"version_major", 0,
 	"version_minor", 2,
   "saved", 1534680000,
