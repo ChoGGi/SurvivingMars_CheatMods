@@ -398,7 +398,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 				toolbar:SetRolloverTemplate("Rollover")
 				toolbar:SetRolloverTitle(Translate(126095410863--[[Info--]]))
 				toolbar:SetRolloverText(Strings[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
-				toolbar:SetRolloverHint(Strings[302535920001441--[["<left_click> Activate, <right_click> Add/Remove"--]]])
+				toolbar:SetRolloverHint(Strings[302535920001441--[["<left_click> Activate MenuItem <right_click> Add/Remove"--]]])
 			end
 
 			-- always show menu on my computer

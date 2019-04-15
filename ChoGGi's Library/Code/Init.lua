@@ -205,15 +205,6 @@ ChoGGi = {
 	},
 }
 
--- it shouldn't matter if this uses the localed ChoGGi, but...
-function printC(...)
-	if ChoGGi.testing then
-		print(...)
-	end
-end
-
-local ChoGGi = ChoGGi
-
 do -- translate
 	local locale_path = ChoGGi.library_path .. "Locales/"
 	-- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
@@ -227,4 +218,11 @@ end
 -- fake mod used to tell if it's my comp, if you want some extra msgs and .testing funcs have at it
 if Mods.ChoGGi_testing then
 	ChoGGi.testing = {}
+end
+
+local testing = ChoGGi.testing
+function printC(...)
+	if testing then
+		print(...)
+	end
 end

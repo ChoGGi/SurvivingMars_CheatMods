@@ -928,8 +928,7 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 		popup = cls:new({
 			Opened = true,
 			Id = popup_id,
-			-- "top" for the console, default "none"
-			AnchorType = anchor or "top",
+			AnchorType = anchor or "smart",
 			-- "none","drop","drop-right","smart","left","right","top","bottom","center-top","center-bottom","mouse"
 			Anchor = parent.box,
 			Background = items.Background,
@@ -3925,14 +3924,6 @@ do -- GetAllAttaches
 			-- add level limit?
 			if a.ForEachAttach then
 				a:ForEachAttach(ForEach,a.class)
-			end
-			local state_attaches = a.auto_attach_state_attaches
-			if state_attaches then
-				for i = 1, #state_attaches do
-					for j = 1, #state_attaches[i] do
-						AddAttaches(state_attaches[i][j])
-					end
-				end
 			end
 		end
 	end

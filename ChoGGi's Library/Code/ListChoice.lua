@@ -870,8 +870,6 @@ function ChoGGi_ListChoiceDlg:idListOnSelect(button)
 		return
 	end
 
---~ 	if self.custom_type > 0 then
---~ 	end
 	-- 2 = showing the colour picker
 	if self.custom_type == 2 then
 		-- move the colour picker circle

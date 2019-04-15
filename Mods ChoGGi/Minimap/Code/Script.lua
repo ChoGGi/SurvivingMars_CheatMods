@@ -56,7 +56,7 @@ function OnMsg.ModsReloaded()
 			"RolloverTitle", [[Minimap]],
 			"Id", "idMinimap",
 			"Image", CurrentModPath .. "UI/minimap.png",
-			"ImageShine", CurrentModPath .. "UI/minimap_shine.png",
+--~ 			"ImageShine", CurrentModPath .. "UI/minimap_shine.png",
 			"FXPress", "MainMenuButtonClick",
 			"OnPress", HUD.idMinimapOnPress,
 		})

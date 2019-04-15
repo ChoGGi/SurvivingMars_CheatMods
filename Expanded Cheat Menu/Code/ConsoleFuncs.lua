@@ -524,7 +524,7 @@ function ChoGGi.ConsoleFuncs.HistoryPopup(self)
 			}
 		end
 	end
-	PopupToggle(self,"idHistoryMenuPopup",items)
+	PopupToggle(self,"idHistoryMenuPopup",items,"top")
 end
 
 function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
@@ -571,7 +571,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 			-- update value
 			local idx = table_find(ConsoleMenuPopupToggle_list,"value","ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals")
 			ConsoleMenuPopupToggle_list[idx].name = Strings[302535920000310--[[Skip Undefined Globals--]]] .. " (" .. #ChoGGi.Temp.UndefinedGlobals .. ")"
-			PopupToggle(dlgConsole.idConsoleMenu,"idConsoleMenuPopup",ConsoleMenuPopupToggle_list)
+			PopupToggle(dlgConsole.idConsoleMenu,"idConsoleMenuPopup",ConsoleMenuPopupToggle_list,"top")
 		end,
 	}, dlgConsole.idContainer)
 
@@ -580,7 +580,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		RolloverText = Strings[302535920000127--[[Various tools to use.--]]],
 		Text = Strings[302535920000239--[[Tools--]]],
 		OnPress = function()
-			PopupToggle(dlgConsole.idToolsMenu,"idToolsMenuPopup",ToolsMenuPopupToggle_list)
+			PopupToggle(dlgConsole.idToolsMenu,"idToolsMenuPopup",ToolsMenuPopupToggle_list,"top")
 		end,
 	}, dlgConsole.idContainer)
 
@@ -589,7 +589,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		RolloverText = Strings[302535920000491--[[Examine Object--]]],
 		Text = Strings[302535920000069--[[Examine--]]],
 		OnPress = function()
-			PopupToggle(dlgConsole.idExamineMenu,"idExamineMenuPopup",ExamineMenuToggle_list)
+			PopupToggle(dlgConsole.idExamineMenu,"idExamineMenuPopup",ExamineMenuToggle_list,"top")
 		end,
 	}, dlgConsole.idContainer)
 
@@ -636,7 +636,7 @@ local function BuildSciptButton(console,folder)
 						}
 					end
 				end
-				PopupToggle(self,folder.id,items)
+				PopupToggle(self,folder.id,items,"top")
 			else
 				print(Translate(591853191640--[[Empty list--]]))
 			end

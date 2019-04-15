@@ -17,7 +17,7 @@ function OnMsg.ClassesBuilt()
 			id = "ChoGGi",
 			name = ChoGGi.Strings[302535920001400--[[ChoGGi--]]],
 			image = ChoGGi.library_path .. "UI/bmc_incal_resources.png",
-			highlight = ChoGGi.library_path .. "UI/bmc_incal_resources_shine.png",
+--~ 			highlight = ChoGGi.library_path .. "UI/bmc_incal_resources_shine.png",
 		}
 	end
 end
