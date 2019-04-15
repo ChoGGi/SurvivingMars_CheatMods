@@ -142,7 +142,7 @@ function HexPainterModeDialog:PaintMid()
 		self.hex_mid_circle:delete()
 	end
 	if self.hex_mid_pt then
-		self.hex_mid_circle =	OHexSpot:new()
+		self.hex_mid_circle = OHexSpot:new()
 		self.hex_mid_circle:SetPos(point(HexToWorld(self.hex_mid_pt:x(), self.hex_mid_pt:y())))
 			self.hex_mid_circle:SetColorModifier(RGB(100, 255, 100))
 --~ 			self.hex_mid_circle:SetRadius(const.GridSpacing/2)

@@ -14,6 +14,7 @@
 - Game would freeze if ConsoleErrors was false (thanks Gaspurr).
 - Debug>Pathing failed on jumper shuttles on the landing.
 - Delete Object was spamming console when deleting a res pile.
+- Console log ignored settings and stayed on.
 - Examine:
 - > It wasn't showing entity info it should be.
 - > Missing the metatable for BaseSocket (as well as showing a blank list).

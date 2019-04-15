@@ -517,7 +517,9 @@ do -- ModUpload
 
 			mod_params.os_pack_path = os_dest
 			-- set last_changes to last_changes or version num
-			mod.last_changes = type(mod.last_changes) == "string" and mod.last_changes ~= "" and tostring(mod.last_changes) or tostring(mod.version)
+			if not mod.last_changes or mod.last_changes == "" then
+				mod.last_changes = mod.version_major .. "." .. mod.version_minor
+			end
 
 			-- CommonLua\SteamWorkshop.lua
 			if not test then

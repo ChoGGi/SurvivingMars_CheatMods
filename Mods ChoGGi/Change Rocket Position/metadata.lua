@@ -21,5 +21,9 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[Adds a button to rockets that lets you re-position the rocket.
-Costs 10 fuel per re-position.]],
+Costs 10 fuel per re-position.
+
+
+Known Issues:
+Any stored rare metals will get "delivered" to Earth.]],
 })

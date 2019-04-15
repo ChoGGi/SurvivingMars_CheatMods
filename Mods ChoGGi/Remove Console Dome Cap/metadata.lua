@@ -12,5 +12,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Remove the limit of 20 domes on consoles.]],
+	"description", [[Remove the limit of 20 domes on consoles.
+
+Using this mod will make your console catch on fire, go on a murderous rampage, and eat babies (Use at your own risk).]],
 })

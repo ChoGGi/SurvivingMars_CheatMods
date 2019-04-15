@@ -146,5 +146,5 @@ function OnMsg.ClassesBuilt()
 	ChoGGi.Consts.CameraLookatDist = const.DefaultCameraRTS.LookatDist
 	ChoGGi.Consts.CameraMaxZoom = const.DefaultCameraRTS.MaxZoom
 	ChoGGi.Consts.CameraMinZoom = const.DefaultCameraRTS.MinZoom
-	ChoGGi.Consts.HigherRenderDist = hr.LODDistanceModifier
+	ChoGGi.Consts.HigherRenderDist = hr.LODDistanceModifier or 120
 end
