@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Prefab Safety v0.2",
+	"title", "Prefab Safety",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1551441600,
@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1593125913",
 	"pops_any_uuid", "7a951985-0bde-425d-a242-a907a566e039",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

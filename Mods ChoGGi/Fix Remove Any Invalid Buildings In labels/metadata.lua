@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixRemoveInvalidLabelBuildings",
 	"steam_id", "1575894376",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 244124,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

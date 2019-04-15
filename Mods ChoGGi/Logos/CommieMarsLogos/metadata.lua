@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Commie Mars Logos v0.4",
+	"title", "Commie Mars Logos",
 	"version_major", 0,
 	"version_minor", 4,
 	"saved", 1547726400,
@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1502077662",
 	"pops_any_uuid", "5d128e21-df3c-469b-99cc-2a071d9cae5f",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua"
 	},

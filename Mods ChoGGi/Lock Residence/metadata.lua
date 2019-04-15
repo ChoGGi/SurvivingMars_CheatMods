@@ -2,12 +2,12 @@ return PlaceObj("ModDef", {
 	"dependencies", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library v6.4",
+			"title", "ChoGGi's Library",
 			"version_major", 6,
 			"version_minor", 4,
 		}),
 	},
-  "title", "Lock Residence v0.3",
+  "title", "Lock Residence",
 	"version_major", 0,
 	"version_minor", 3,
   "saved", 1548763200,
@@ -19,7 +19,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 		"Code/ModConfig.lua",
 	},
-	"lua_revision", LuaRevision or 244124,
+	"lua_revision", LuaRevision or 244275,
   "description", [[Adds a "Lock Residence" button to the selection panel for colonists, and residences ("Lock Residents").
 They can still be kicked out (if you shutdown the building), they just won't change to a new residence if they're locked.
 

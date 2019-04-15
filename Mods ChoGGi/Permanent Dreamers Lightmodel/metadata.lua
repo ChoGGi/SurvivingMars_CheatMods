@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Permanent Dreamers Lightmodel v0.3",
+	"title", "Permanent Dreamers Lightmodel",
 	"version_major", 0,
 	"version_minor", 3,
 	"saved", 1534680000,
@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"description", [[Always a green morning.
 
 Requested by BLAde.

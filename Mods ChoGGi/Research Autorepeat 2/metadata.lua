@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Research Autorepeat 2 v0.1",
+	"title", "Research Autorepeat 2",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1538395200,
@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ResearchAutorepeat2",
 	"steam_id", "1528212796",
 	"author", "Waywocket & ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

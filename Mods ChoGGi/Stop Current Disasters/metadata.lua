@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", "Stop Current Disasters v0.4",
+  "title", "Stop Current Disasters",
 	"version_major", 0,
 	"version_minor", 4,
   "saved", 1545048000,
@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua"
 	},
 	"image", "Preview.png",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
   "description", [[Stops any running disasters (duststorms, coldwaves, and current meteors/dustdevil) when you load a save (you don't need to leave it enabled afterwards).
 
 

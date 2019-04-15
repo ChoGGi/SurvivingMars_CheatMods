@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Orbital Prefab Drops v0.5",
+	"title", "Orbital Prefab Drops",
 	"version_major", 0,
 	"version_minor", 5,
 	"saved", 1542801600,
@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1545818603",
 	"pops_any_uuid", "20be6c5b-b62d-41c5-af97-de631190ea8a",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 		"Code/ModConfig.lua",

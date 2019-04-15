@@ -2,13 +2,13 @@ return PlaceObj("ModDef", {
 	"dependencies", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library v6.4",
+			"title", "ChoGGi's Library",
 			"version_major", 6,
 			"version_minor", 4,
 		}),
 	},
 --~ 	"title", "Passenger Rocket Tweaks v0.2",
-	"title", "Passenger Rocket Tweaks v0.4",
+	"title", "Passenger Rocket Tweaks",
 	"version_major", 0,
 	"version_minor", 4,
 	"saved", 1552478400,
@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1641796120",
 	"pops_any_uuid", "e27f8c05-6999-4737-8615-5c9820b083ff",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

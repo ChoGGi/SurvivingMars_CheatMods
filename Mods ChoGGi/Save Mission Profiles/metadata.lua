@@ -2,12 +2,12 @@ return PlaceObj("ModDef", {
 	"dependencies", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library v6.4",
+			"title", "ChoGGi's Library",
 			"version_major", 6,
 			"version_minor", 4,
 		}),
 	},
-	"title", "Save Mission Profiles v0.1",
+	"title", "Save Mission Profiles",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1551096000,
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1667138652",
 	"pops_desktop_uuid", "9be35386-0eb9-4093-ab4d-1ae85c1e4e18",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

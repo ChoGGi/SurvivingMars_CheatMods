@@ -2,13 +2,13 @@ return PlaceObj("ModDef", {
 	"dependencies", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library v6.4",
+			"title", "ChoGGi's Library",
 			"version_major", 6,
 			"version_minor", 4,
 		}),
 	},
 --~   "title", "Martian Carwash v0.5",
-  "title", "Martian Carwash v0.6",
+  "title", "Martian Carwash",
 	"version_major", 0,
 	"version_minor", 6,
   "saved", 1551960000,
@@ -20,7 +20,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
   "description", [[Drive your ride through our full service car wash. You don't want to drive a dirty ride, and you shouldn't have to look at one.
 
 This only affects visuals, not maintenance points.]],

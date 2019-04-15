@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "OnMsg Print v0.3",
+	"title", "OnMsg Print",
 	"version_major", 0,
 	"version_minor", 3,
 	"saved", 1545912000,
@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "1604230467",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

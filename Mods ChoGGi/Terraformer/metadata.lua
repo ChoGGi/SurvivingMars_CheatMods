@@ -19,7 +19,7 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"image", "Preview.png",
 	"steam_id", "1415296985",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"description", [[Simple guide: https://steamcommunity.com/sharedfiles/filedetails/?id=1530394137
 
 If you're feeling OCD about a perfect layout for your base then look no further.

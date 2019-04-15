@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Rover Automated Mode v0.1",
+	"title", "Rover Automated Mode",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1553428800,
@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RoverAutomatedMode",
 	"steam_id", "1693093435",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Rightside Menus v0.1",
+	"title", "Rightside Menus",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1542542400,
@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RightsideMenus",
 	"steam_id", "1568674142",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

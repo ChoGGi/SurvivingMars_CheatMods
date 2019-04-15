@@ -2,12 +2,12 @@ return PlaceObj("ModDef", {
 	"dependencies", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library v6.4",
+			"title", "ChoGGi's Library",
 			"version_major", 6,
 			"version_minor", 4,
 		}),
 	},
-	"title", "Remove Unwanted Colonists v0.3",
+	"title", "Remove Unwanted Colonists",
 	"version_major", 0,
 	"version_minor", 3,
 	"saved", 1551355200,
@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"pops_desktop_uuid", "9f2beb20-8ac6-4201-af9b-366308bd65fb",
 	"pops_any_uuid", "fb8fc954-40d2-4818-b84f-157903c4ed36",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 		"Code/MurderPod.lua",

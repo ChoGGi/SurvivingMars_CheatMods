@@ -21,7 +21,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 		"Code/ModConfig.lua",
 	},
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
   "description", [[It's a rover that mines, tell it where to go and if there's a resource (Metals/Concrete) close by it'll start mining it.
 Supports the Auto-mode added in Sagan (boosts the amount stored per stockpile when enabled).
 Use Mod Config Reborn to tweak the settings.

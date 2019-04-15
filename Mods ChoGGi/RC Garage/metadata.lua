@@ -2,13 +2,13 @@ return PlaceObj("ModDef", {
 	"dependencies", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library v6.4",
+			"title", "ChoGGi's Library",
 			"version_major", 6,
 			"version_minor", 4,
 		}),
 	},
 --~ 	"title", "RC Garage v0.3",
-	"title", "RC Garage v0.4",
+	"title", "RC Garage",
 	"version_major", 0,
 	"version_minor", 4,
 	"saved", 1552219200,
@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1557866331",
 	"pops_any_uuid", "fd81692a-a91f-4f22-94f9-ad24a9442e01",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 		"Code/Rovers.lua",

@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", LuaRevision or 244124,
+	"lua_revision", LuaRevision or 244275,
 	"pops_any_uuid", "cd13269f-0574-4f8c-8217-603e5d6bc30a",
   "steam_id", "1479851929",
   "description", [[Show Hex Grid during construction.

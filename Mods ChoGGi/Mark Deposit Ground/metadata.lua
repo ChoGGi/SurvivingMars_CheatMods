@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Mark Deposit Ground v0.5",
+	"title", "Mark Deposit Ground",
 	"version_major", 0,
 	"version_minor", 5,
 	"saved", 1552564800,
@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1555446081",
 	"pops_any_uuid", "8a57f30a-6bae-46c0-99b9-ca497bf74bd3",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 		"Code/ModConfig.lua",

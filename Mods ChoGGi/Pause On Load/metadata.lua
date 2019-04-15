@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Pause On Load v0.1",
+	"title", "Pause On Load",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1542542400,
@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1568680481",
 	"pops_any_uuid", "fe56c088-9b5a-4b2b-9d17-79d163bfe9b8",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

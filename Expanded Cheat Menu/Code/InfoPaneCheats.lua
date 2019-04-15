@@ -241,6 +241,9 @@ It don't matter if you're black or white"--]]],
 	GenerateOffer = {
 		des = Strings[302535920001602--[[Force add a new trade offer.--]]],
 	},
+	ToggleGlass = {
+		des = Strings[302535920001617--[[Toggle opening all dome glass (for screenshots?).--]]],
+	},
 
 -- Rover/Drone
 	BattCapDbl = {
@@ -873,6 +876,19 @@ end
 if rawget(_G,"Sinkhole") then
 	Sinkhole.CheatSpawnFirefly = Sinkhole.TestSpawnFireflyAndGo
 end
+
+do -- Dome:CheatToggleGlass
+	local opened
+	function Dome:CheatToggleGlass()
+		if opened then
+			CloseAllDomes()
+			opened = false
+		else
+			OpenAllDomes()
+			opened = true
+		end
+	end
+end -- do
 
 function Dome:CheatCrimeEvent()
 	-- build a list

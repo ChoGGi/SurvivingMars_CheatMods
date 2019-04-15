@@ -2,18 +2,18 @@ return PlaceObj("ModDef", {
 	"dependencies", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library v6.4",
+			"title", "ChoGGi's Library",
 			"version_major", 6,
 			"version_minor", 4,
 		}),
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_MapImagesPack",
-			"title", "Map Images Pack v0.1",
+			"title", "Map Images Pack",
 			"version_major", 0,
 			"version_minor", 1,
 		}),
 	},
-	"title", "View Colony Map v0.9",
+	"title", "View Colony Map",
 	"version_major", 0,
 	"version_minor", 9,
 	"saved", 1542888000,
@@ -25,7 +25,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"description", [[Shows the map before you load it in the select colony screen.
 
 For those wondering: Purple = mountainous, other colours = buildable.

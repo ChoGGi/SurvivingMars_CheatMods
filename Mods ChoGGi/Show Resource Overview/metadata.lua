@@ -2,12 +2,12 @@ return PlaceObj("ModDef", {
 	"dependencies", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library v6.4",
+			"title", "ChoGGi's Library",
 			"version_major", 6,
 			"version_minor", 4,
 		}),
 	},
-	"title", "Show Resource Overview v0.3",
+	"title", "Show Resource Overview",
 	"version_major", 0,
 	"version_minor", 3,
 	"saved", 1542801600,
@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ShowResourceOverview",
 	"steam_id", "1524654007",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

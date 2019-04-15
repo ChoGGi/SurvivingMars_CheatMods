@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Rover Icons Map Overview v0.1",
+	"title", "Rover Icons Map Overview",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1543924800,
@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RoverIconsMapOverview",
 	"steam_id", "1582759681",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

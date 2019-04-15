@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Permanent Priority v0.2",
+	"title", "Permanent Priority",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1534680000,
@@ -11,6 +11,6 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"description", [[Priority from construction sites will carry over to the completed buildings.]],
 })

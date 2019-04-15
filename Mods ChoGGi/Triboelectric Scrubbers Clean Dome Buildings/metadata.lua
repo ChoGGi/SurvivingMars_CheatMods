@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", "Triboelectric Scrubbers Clean Dome Buildings v0.2",
+  "title", "Triboelectric Scrubbers Clean Dome Buildings",
 	"version_major", 0,
 	"version_minor", 2,
   "saved", 1534680000,
@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
   "description", [[They removed this in the Spirit Update.
 
 Requested by Cinereously.]],

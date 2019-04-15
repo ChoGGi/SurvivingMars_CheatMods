@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Add Trailblazer Skins v0.1",
+	"title", "Add Trailblazer Skins",
 	"version_major", 0,
 	"version_minor", 1,
   "saved", 1533297600,
@@ -9,6 +9,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"description", [[Enable Trailblazer Skins.]],
 })

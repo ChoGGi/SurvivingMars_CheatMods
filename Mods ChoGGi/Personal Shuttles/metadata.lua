@@ -2,12 +2,12 @@ return PlaceObj("ModDef", {
 	"dependencies", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library v6.4",
+			"title", "ChoGGi's Library",
 			"version_major", 6,
 			"version_minor", 4,
 		}),
 	},
-	"title", "Personal Shuttles v0.9",
+	"title", "Personal Shuttles",
 	"version_major", 0,
 	"version_minor", 9,
 	"saved", 1550750400,
@@ -21,7 +21,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 		"Code/OnMsgs.lua",
 	},
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"description", [[Adds buttons to Shuttle Hubs to spawn personal shuttles.
 Personal shuttles can pick up certain items (rovers, drones, resource piles, and waste rock), scan nearby selected anomalies, and attack nearby dust devils.
 

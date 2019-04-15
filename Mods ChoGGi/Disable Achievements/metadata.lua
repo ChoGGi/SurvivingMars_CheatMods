@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
   "steam_id", "1461207873",
-	"lua_revision", LuaRevision or 244124,
+	"lua_revision", LuaRevision or 244275,
   "description", [[Stops you from being able to unlock any Steam achievements.
 
 This isn't permanent, you can disable this anytime to have them working again.

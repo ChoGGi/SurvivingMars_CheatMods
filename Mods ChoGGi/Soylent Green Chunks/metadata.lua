@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Soylent Green Chunks v0.1",
+	"title", "Soylent Green Chunks",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1538222400,
@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_SoylentGreenChunks",
 	"steam_id", "1526429882",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

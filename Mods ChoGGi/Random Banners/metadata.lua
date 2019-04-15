@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Random Banners v0.1",
+	"title", "Random Banners",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1542801600,
@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RandomBanners",
 	"steam_id", "1570198685",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

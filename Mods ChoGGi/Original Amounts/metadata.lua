@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Original Amounts v0.2",
+	"title", "Original Amounts",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1540382400,
@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_OriginalAmounts",
 	"steam_id", "1528548594",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

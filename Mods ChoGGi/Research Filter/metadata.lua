@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Research Filter v0.3",
-	"title", "Research Filter v0.4",
+	"title", "Research Filter",
 	"version_major", 0,
 	"version_minor", 4,
 	"saved", 1551873600,
@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1658288931",
 	"pops_desktop_uuid", "d55f1818-7d13-4779-90db-a14d249cda4d",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

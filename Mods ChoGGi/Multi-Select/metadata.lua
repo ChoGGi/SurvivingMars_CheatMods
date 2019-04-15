@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"title", "Multi-Select v0.2",
 --~ 	"title", "Multi-Select v0.1",
+	"title", "Multi-Select",
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1552478400,
@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1673928672",
 	"pops_desktop_uuid", "d9ea47ff-e175-416f-bcf0-fa8ce3ac4cc0",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

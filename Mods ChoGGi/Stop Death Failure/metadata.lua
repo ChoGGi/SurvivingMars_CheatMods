@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Stop Colonist Death Failure v0.1",
+	"title", "Stop Colonist Death Failure",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1538308800,
@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1526828043",
 	"pops_any_uuid", "423aaecb-0f75-4292-ad08-aa53bf3d543e",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
 	},

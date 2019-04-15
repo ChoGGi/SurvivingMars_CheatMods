@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_DisableSelectionPanelSizing",
 	"steam_id", "1573994315",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 244124,
+	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/ModConfig.lua",
 		"Code/Script.lua",

@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", LuaRevision or 244124,
+	"lua_revision", LuaRevision or 244275,
 	"description", [[Further shadow, and model rendering
 This is somewhat useless without increasing zoom in Expanded Cheat Menu.
 

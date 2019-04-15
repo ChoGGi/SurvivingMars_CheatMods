@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-  "title", "Remove Stuff From Gardens v0.2",
+  "title", "Remove Stuff From Gardens",
 	"version_major", 0,
 	"version_minor", 2,
   "saved", 1533384000,
@@ -10,6 +10,6 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
 --~   "steam_id", "XXXXXXXXX",
-	"lua_revision", LuaRevision or 243725,
+	"lua_revision", LuaRevision or 244275,
   "description", [[Remove stuff from gardens]],
 })
