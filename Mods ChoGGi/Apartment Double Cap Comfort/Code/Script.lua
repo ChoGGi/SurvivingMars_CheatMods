@@ -1,8 +1,13 @@
 -- See LICENSE for terms
 
-local a = BuildingTemplates.Apartments
-local capacity = a.capacity * 2
-local comfort = a.service_comfort * 2
+local capacity
+local comfort
+
+function OnMsg.ClassesBuilt()
+	local a = BuildingTemplates.Apartments
+	capacity = a.capacity * 2
+	comfort = a.service_comfort * 2
+end
 
 -- change settings on newly spawned apartments
 function OnMsg.BuildingInit(obj)

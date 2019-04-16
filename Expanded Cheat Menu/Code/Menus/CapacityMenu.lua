@@ -13,7 +13,6 @@ Actions[c] = {ActionName = Translate(109035890389--[[Capacity--]]),
 	ActionId = ".Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
-	ActionSortKey = "1Capacity",
 }
 
 c = c + 1

@@ -24,7 +24,7 @@
 
 ### Removed:
 HelperMod: You can get it from [Github](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Startup%20HelperMod)
-- > I'm also going to be uploading ECm/Lib as a packed mods for steam.
+- > I'm also going to be uploading ECM/Lib as packed mods for steam.
 
 ## v13.3 (Mar 30 2019)
 ### Added:

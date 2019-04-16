@@ -916,7 +916,7 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(_,button)
 		if self.custom_type == 5 then
 			self:BuildAndApplyLightmodel()
 		elseif self.custom_type == 6 and self.custom_func then
-			self.custom_func(self.sel.func,self)
+			self.custom_func(self.sel.func or self.sel.value,self)
 		elseif self.custom_type == 8 and self.custom_func then
 			-- make sure we send back the checks with it
 			local choices = {self.sel}

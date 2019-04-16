@@ -12,7 +12,6 @@ Actions[c] = {ActionName = Translate(1000207--[[Misc--]]),
 	ActionId = ".Misc",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
-	ActionSortKey = "90Misc",
 }
 
 c = c + 1

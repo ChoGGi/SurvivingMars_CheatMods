@@ -10,8 +10,10 @@ function CursorBuilding:GameInit()
 	if not ChoGGi_ShowMaxRadiusRange.Option1 then
 		return orig_CursorBuilding_GameInit(self)
 	end
-	if self.template:IsKindOfClasses("TriboelectricScrubber","SubsurfaceHeater") then
-
+	if self.template:IsKindOfClasses(
+		"TriboelectricScrubber",
+		"SubsurfaceHeater",
+	) then
 		-- if ecm is active we check for custom range, otherwise use default
 		local uirange
 		local idx = table.find(ModsLoaded,"id","ChoGGi_Library")

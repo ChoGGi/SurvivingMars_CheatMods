@@ -600,6 +600,8 @@ function ChoGGi.MenuFuncs.ObjectCloner(flat)
 
 end
 
+
+-- use HexSlope to check for not-buildable?
 do -- debug_build_grid
 	-- this is somewhat from Lua\hex.lua: debug_build_grid()
 	-- sped up to work with being attached to the mouse pos

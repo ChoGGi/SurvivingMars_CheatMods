@@ -1184,7 +1184,6 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(mode)
 		item_list[c] = {
 			text = key,
 			value = key,
-			func = key,
 			hint = Strings[302535920000986--[[Change Lightmodel--]]],
 		}
 	end

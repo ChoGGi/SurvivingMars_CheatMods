@@ -1612,7 +1612,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(action)
 	local id = action.bld_id
 	local msgpopup = action.bld_msg
 
-	local default_setting = g_Classes[id]:GetClassValue("UIRange")
+	local default_setting = g_Classes[id]:GetDefaultPropertyValue("UIRange")
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 		{text = 10,value = 10},
@@ -1664,7 +1664,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(action)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				choice[1].text .. ":\n" .. Strings[msgpopup],
+				choice[1].text .. ":\n" .. msgpopup,
 				id,
 				"UI/Icons/Upgrades/polymer_blades_04.tga",
 				true

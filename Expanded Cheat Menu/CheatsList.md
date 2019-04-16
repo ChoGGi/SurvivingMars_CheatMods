@@ -54,7 +54,7 @@ Green = pass/build, Yellow = no pass/build,
 Blue = pass/no build, Red = no pass/no build.
 Debug.Grids>Toggle Flight Grid: Shows a square grid with terrain/objects shape.
 Debug.Path Markers>Building Path Markers: Show inside waypoints colonists take to move around (not all buildings).
-Debug.Path Markers>Path Markers Real Time: Maps paths in real time (see Path Markers to mark more than one at a time).
+Debug.Path Markers>Path Markers Game Time: Maps paths in real time (see Path Markers to mark more than one at a time).
 Debug.Path Markers>Path Markers: Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.
 Debug>Anim Debug Toggle: Attaches text to each object showing animation info (or just to selected object).
 Debug>Anim State Set: Make object dance on command.
@@ -255,7 +255,7 @@ ECM.Rockets>Colonists per Rocket: 12: Change how many colonists can arrive on Ma
 ECM.Rockets>Launch Fuel Per Rocket: Change how much fuel rockets need to launch.
 ECM.Rockets>Max Export Amount: Change how many rares per rocket you can export.
 ECM.Rockets>Rockets Ignore Fuel: Rockets don't need fuel to launch.
-ECM.Rockets>Travel Time: Change how long to take to travel between planets.
+ECM.Rockets>Travel Time: 1000: Change how long to take to travel between planets.
 ECM.Rovers>RC Gravity: Change gravity of RCs.
 ECM.Rovers>RC Instant Resource Transfer: Make it instantly gather/transfer resources.
 ECM.Rovers>RC Move Speed: How fast RCs will move.

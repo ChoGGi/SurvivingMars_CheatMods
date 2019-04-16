@@ -13,7 +13,6 @@ Actions[c] = {ActionName = Strings[302535920000922--[[Fixes--]]],
 	ActionId = ".Fixes",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
-	ActionSortKey = "1Fixes",
 }
 
 c = c + 1

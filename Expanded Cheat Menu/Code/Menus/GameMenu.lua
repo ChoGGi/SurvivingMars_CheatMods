@@ -129,33 +129,6 @@ Actions[c] = {ActionName = Strings[302535920000265--[[Pulsating Pins--]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000625--[[Change Light Model--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Change Light Model",
-	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
-	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
-			ChoGGi.UserSettings.Lightmodel,
-			Strings[302535920000626--[[Changes the lighting mode (temporary or permanent).--]]]
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.ChangeLightmodel,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000627--[[Change Light Model Custom--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Change Light Model Custom",
-	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
-	RolloverText = function()
-		-- it can get large, so for this one we stick the description first.
-		return Strings[302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]]
-			.. "\n<color 100 255 100>" .. ValueToLuaCode(ChoGGi.UserSettings.LightmodelCustom) .. "</color>"
-	end,
-	OnAction = ChoGGi.MenuFuncs.EditLightmodelCustom,
-}
-
-c = c + 1
 Actions[c] = {ActionName = Strings[302535920000629--[[UI Transparency--]]],
 	ActionMenubar = "ECM.Game",
 	ActionId = ".UI Transparency",
@@ -650,4 +623,41 @@ Actions[c] = {ActionName = Strings[302535920001412--[[GUI Dock Side--]]],
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.GUIDockSide_Toggle,
+}
+
+-- menu
+c = c + 1
+Actions[c] = {ActionName = Translate(911432559058--[[Light model--]]),
+	ActionMenubar = "ECM.Game",
+	ActionId = ".Lightmodel",
+	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	OnActionEffect = "popup",
+	ActionSortKey = "1Light model",
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000625--[[Light Model--]]],
+	ActionMenubar = "ECM.Game.Lightmodel",
+	ActionId = ".Light Model",
+	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
+	RolloverText = function()
+		return ChoGGi.ComFuncs.SettingState(
+			ChoGGi.UserSettings.Lightmodel,
+			Strings[302535920000626--[[Changes the lighting mode (temporary or permanent).--]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.ChangeLightmodel,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000627--[[Light Model Custom--]]],
+	ActionMenubar = "ECM.Game.Lightmodel",
+	ActionId = ".Light Model Custom",
+	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
+	RolloverText = function()
+		-- it can get large, so for this one we stick the description first.
+		return Strings[302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]]
+			.. "\n<color 100 255 100>" .. ValueToLuaCode(ChoGGi.UserSettings.LightmodelCustom) .. "</color>"
+	end,
+	OnAction = ChoGGi.MenuFuncs.EditLightmodelCustom,
 }

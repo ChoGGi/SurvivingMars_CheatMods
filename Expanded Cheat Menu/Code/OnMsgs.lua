@@ -1138,20 +1138,16 @@ do -- LoadGame/CityStart
 
 	function OnMsg.ChoGGi_Loaded()
 		local UICity = UICity
-		--for new games
-		if not UICity then
-			return
-		end
+		local ChoGGi = ChoGGi
 
 		-- a place to store per-game values
 		if not UICity.ChoGGi then
 			UICity.ChoGGi = {}
 		end
 
-		local ChoGGi = ChoGGi
-
 		-- so ChoGGi_Loaded gets fired only every load, rather than also everytime we save
 		if ChoGGi.Temp.IsChoGGiMsgLoaded == true then
+			printC("IsChoGGiMsgLoadedIsChoGGiMsgLoadedIsChoGGiMsgLoadedIsChoGGiMsgLoadedIsChoGGiMsgLoadedIsChoGGiMsgLoadedIsChoGGiMsgLoadedIsChoGGiMsgLoaded")
 			return
 		end
 		ChoGGi.Temp.IsChoGGiMsgLoaded = true

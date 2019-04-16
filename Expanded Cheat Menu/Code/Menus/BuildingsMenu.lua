@@ -2,6 +2,7 @@
 
 local Translate = ChoGGi.ComFuncs.Translate
 local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
+local RetName = ChoGGi.ComFuncs.RetName
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -14,7 +15,6 @@ Actions[c] = {ActionName = Translate(3980--[[Buildings--]]),
 	ActionId = ".Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
-	ActionSortKey = "1Buildings",
 }
 
 c = c + 1
@@ -29,40 +29,6 @@ Actions[c] = {ActionName = Strings[302535920000164--[[Storage Amount Of Diner & 
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000168--[[Triboelectric Scrubber Radius--]]],
-	ActionMenubar = "ECM.ECM.Buildings",
-	ActionId = ".Triboelectric Scrubber Radius",
-	ActionIcon = icon,
-	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
-			ChoGGi.UserSettings.TriboelectricScrubberRadius,
-			Strings[302535920000170--[[Extend the range of the scrubber.--]]]
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
-	bld_id = "TriboelectricScrubber",
-	bld_msg = Strings[302535920000169--[["Ladies and gentlemen, this is your captain speaking. We have a small problem.
-All four engines have stopped. We are doing our damnedest to get them going again.
-I trust you are not in too much distress."--]]],
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000171--[[SubsurfaceHeater Radius--]]],
-	ActionMenubar = "ECM.ECM.Buildings",
-	ActionId = ".SubsurfaceHeater Radius",
-	ActionIcon = icon,
-	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
-			ChoGGi.UserSettings.SubsurfaceHeaterRadius,
-			Strings[302535920000173--[[Extend the range of the heater.--]]]
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
-	bld_id = "SubsurfaceHeater",
-	bld_msg = Strings[302535920000172--[[Some smart quip about heating?--]]],
 }
 
 c = c + 1
@@ -692,4 +658,50 @@ Actions[c] = {ActionName = Strings[302535920001334--[[Import Amount Per Trip--]]
 	OnAction = ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount,
 	setting_name = "cargo_capacity",
 	setting_msg = Strings[302535920001334],
+}
+
+-- menu
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000163--[[Radius--]]],
+	ActionMenubar = "ECM.ECM.Buildings",
+	ActionId = ".Radius",
+	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	OnActionEffect = "popup",
+	ActionSortKey = "1Radius",
+}
+
+c = c + 1
+Actions[c] = {ActionName = Translate(4818--[[Triboelectric Scrubber--]]),
+	ActionMenubar = "ECM.ECM.Buildings.Radius",
+	ActionId = ".Triboelectric Scrubber",
+	ActionIcon = icon,
+	RolloverText = function()
+		local obj = ChoGGi.ComFuncs.SelObject()
+		return obj and ChoGGi.ComFuncs.SettingState(
+			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
+			Strings[302535920000170--[[Change the range of the %s.--]]]:format(RetName(obj))
+		) or Strings[302535920000170]:format(Translate(4818--[[Triboelectric Scrubber--]]))
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
+	bld_id = "TriboelectricScrubber",
+	bld_msg = Strings[302535920000169--[["Ladies and gentlemen, this is your captain speaking. We have a small problem.
+All four engines have stopped. We are doing our damnedest to get them going again.
+I trust you are not in too much distress."--]]],
+}
+
+c = c + 1
+Actions[c] = {ActionName = Translate(5293--[[Subsurface Heater--]]),
+	ActionMenubar = "ECM.ECM.Buildings.Radius",
+	ActionId = ".Subsurface Heater",
+	ActionIcon = icon,
+	RolloverText = function()
+		local obj = ChoGGi.ComFuncs.SelObject()
+		return obj and ChoGGi.ComFuncs.SettingState(
+			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
+			Strings[302535920000170--[[Change the range of the %s.--]]]:format(RetName(obj))
+		) or Strings[302535920000170]:format(Translate(5293--[[Subsurface Heater--]]))
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
+	bld_id = "SubsurfaceHeater",
+	bld_msg = Strings[302535920000172--[[Some smart quip about heating?--]]],
 }

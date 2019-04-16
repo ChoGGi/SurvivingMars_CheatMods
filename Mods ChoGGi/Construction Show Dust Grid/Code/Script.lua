@@ -12,6 +12,7 @@ local c = 0
 function OnMsg.ModsReloaded()
 	local g_Classes = g_Classes
   local BuildingTemplates = BuildingTemplates
+
 	for id in pairs(BuildingTemplates) do
 		local o = g_Classes[id]
 		if o and o:IsKindOf("DustGenerator") then
