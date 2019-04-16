@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
   "title", "RC Mechanic",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 7,
   "saved", 1543060800,

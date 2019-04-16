@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local default_icon = "UI/Icons/Sections/storage.tga"
 local type = type
 
 local Translate = ChoGGi.ComFuncs.Translate
@@ -167,8 +166,7 @@ do -- AddPrefabs
 			end
 			MsgPopup(
 				Strings[302535920001191--[[Added prefabs to %s buildings.--]]]:format(#choice),
-				Translate(1110--[[Prefab Buildings--]]),
-				default_icon
+				Translate(1110--[[Prefab Buildings--]])
 			)
 			-- if the build menu is opened and they add some prefabs it won't use them till it's toggled, so we do this instead
 			ChoGGi.ComFuncs.UpdateBuildMenu()

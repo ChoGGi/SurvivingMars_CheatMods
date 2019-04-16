@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local default_icon = "UI/Icons/Notifications/research.tga"
 local pairs,type = pairs,type
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -69,66 +68,6 @@ function ChoGGi.MenuFuncs.LightningStrike(_,_,input)
 			FuelExplosion(obj)
 		end
 	end
-end
-
--- GreenPlanet
-function ChoGGi.MenuFuncs.TesteringGreenPlanet()
-	local item_list = {}
-	local c = 0
-
-	-- stuff already in ECM
-	local lookup_skip = {
-		[7790] = true,
-		[7791] = true,
-		[7792] = true,
-		[7793] = true,
-		[7794] = true,
-		[7795] = true,
-		[7796] = true,
-		[7797] = true,
-		[7798] = true,
-		[12266] = true,
-		[12267] = true,
-		[12268] = true,
-	}
-
-	local cheats = GamepadCheatsList or ""
-
-	for i = 1, #cheats do
-		local cheat = cheats[i]
-		if not lookup_skip[IsT(cheat.display_name)] then
-			local name = Translate(cheat.display_name)
-			c = c + 1
-
-			item_list[c] = {
-				text = name,
-				value = name,
-				func = cheat.func,
-			}
-		end
-	end
-
-	local function CallBackFunc(choice)
-		if #choice < 1 then
-			return
-		end
-		choice = choice[1]
-
-		if type(choice.func) == "function" then
-			choice.func()
-		end
-		MsgPopup(
-			choice.text,
-			Translate(11719--[[Placeholder--]])
-		)
-	end
-
-	ChoGGi.ComFuncs.OpenInListChoice{
-		callback = CallBackFunc,
-		items = item_list,
-		title = Translate(11719--[[Placeholder--]]),
-		custom_type = 7,
-	}
 end
 
 function ChoGGi.MenuFuncs.CompleteConstructions()
@@ -331,8 +270,7 @@ function ChoGGi.MenuFuncs.OutsourceMaxOrderCount_Set()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OutsourceMaxOrderCount,Strings[302535920001342--[[Change Outsource Limit--]]]),
-				Strings[302535920001342--[[Change Outsource Limit--]]],
-				default_icon
+				Strings[302535920001342--[[Change Outsource Limit--]]]
 			)
 		end
 	end
@@ -1551,8 +1489,7 @@ function ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000299--[[%s: Research is what I'm doing when I don't know what I'm doing.--]]]:format(choice[1].text),
-				Strings[302535920000359--[[Breakthroughs From OmegaTelescope--]]],
-				default_icon
+				Strings[302535920000359--[[Breakthroughs From OmegaTelescope--]]]
 			)
 		end
 	end
@@ -1592,8 +1529,7 @@ function ChoGGi.MenuFuncs.BreakThroughsAllowed_Set()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000302--[[%s: Strings M R T--]]]:format(choice[1].text),
-				Strings[302535920000357--[[Set Amount Of Breakthroughs Allowed--]]],
-				default_icon
+				Strings[302535920000357--[[Set Amount Of Breakthroughs Allowed--]]]
 			)
 		end
 	end
@@ -1640,8 +1576,7 @@ function ChoGGi.MenuFuncs.ResearchQueueSize_Set()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000304--[[%s: Nerdgasm--]]]:format(ChoGGi.UserSettings.ResearchQueueSize),
-				Strings[302535920000305--[[Research Queue Size--]]],
-				default_icon
+				Strings[302535920000305--[[Research Queue Size--]]]
 			)
 		end
 	end
@@ -1801,15 +1736,13 @@ do -- ResearchRemove
 
 			MsgPopup(
 				Strings[302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.--]]]:format("",#choice),
-				title,
-				default_icon
+				title
 			)
 		end
 		if #item_list == 0 then
 			MsgPopup(
 				Strings[302535920000089--[[Nothing left--]]],
-				title,
-				default_icon
+				title
 			)
 			return
 		end
@@ -2002,8 +1935,7 @@ do -- ResearchTech
 
 			MsgPopup(
 				Strings[302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.--]]]:format(text,#choice),
-				title,
-				default_icon
+				title
 			)
 		end
 

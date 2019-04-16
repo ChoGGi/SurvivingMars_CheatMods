@@ -5,18 +5,6 @@ local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
--- GreenPlanet
-if LuaRevision > 240905 then
-	c = c + 1
-	Actions[c] = {ActionName = Translate(11719--[[Placeholder--]]),
-		ActionMenubar = "ECM.Cheats",
-		ActionId = ".TesteringGreenPlanet",
-		ActionIcon = "CommonAssets/UI/Menu/DarkSideOfTheMoon.tga",
-		RolloverText = Strings[302535920001577--[[Placeholder--]]],
-		OnAction = ChoGGi.MenuFuncs.TesteringGreenPlanet,
-	}
-end
-
 c = c + 1
 Actions[c] = {ActionName = Strings[302535920001587--[[Lightning Strike--]]],
 	ActionMenubar = "ECM.Cheats",

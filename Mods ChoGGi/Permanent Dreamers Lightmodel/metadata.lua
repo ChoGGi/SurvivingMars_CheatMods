@@ -1,5 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Permanent Dreamers Lightmodel",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 3,
 	"saved", 1534680000,

@@ -17,7 +17,7 @@ local InvalidPos = ChoGGi.Consts.InvalidPos
 
 local text_disabled = "Main Garage: " .. ChoGGi.ComFuncs.Translate(847439380056--[[Disabled--]])
 local text_idle = "Main Garage: " .. ChoGGi.ComFuncs.Translate(6939--[[Idle--]])
-local text_rovers = ChoGGi.ComFuncs.Translate(5438--[[Rovers--]]) .. ": %s"
+local text_rovers = ChoGGi.ComFuncs.Translate(5438--[[Rovers--]]) .. ": "
 
 -- stores rovers
 GlobalVar("g_ChoGGi_RCGarageRovers", {})
@@ -90,7 +90,7 @@ function RCGarage:Getui_command()
 	if self:CheckMainGarage() and self.garages.main.working and self.working then
 		local amount = #self.stored_rovers
 		if amount > 0 then
-			self.status_text = string.format(text_rovers,amount)
+			self.status_text = text_rovers .. amount
 		else
 			self.status_text = text_idle
 		end
@@ -404,7 +404,7 @@ function OnMsg.ClassesBuilt()
 						end
 					end
 
-					if text_rovers:format(#context.stored_rovers) == context.status_text then
+					if text_rovers .. #context.stored_rovers == context.status_text then
 						self:SetTitle([[Main Garage]])
 					else
 						self:SetTitle(T(0,"<ui_command>"))
@@ -487,7 +487,7 @@ function OnMsg.ClassesBuilt()
 				"OnContextUpdate", function(self, context)
 					---
 					if context:CheckMainGarage() then
-						self:SetTitle(text_rovers:format(#context.stored_rovers))
+						self:SetTitle(text_rovers .. #context.stored_rovers)
 					end
 					---
 				end,

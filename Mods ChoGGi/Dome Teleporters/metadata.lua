@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Dome Teleporters",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 5,
 	"saved", 1543233600,

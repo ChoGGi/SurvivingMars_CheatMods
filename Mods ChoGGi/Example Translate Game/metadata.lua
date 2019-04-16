@@ -1,5 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Example: Translate Game",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1546344000,

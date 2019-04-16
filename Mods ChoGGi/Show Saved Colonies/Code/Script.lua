@@ -2,7 +2,6 @@
 
 local Sleep = Sleep
 
---~ local img = string.format("%sUI/pm_landed.png",CurrentModPath)
 local img = CurrentModPath .. "UI/pm_landed.png"
 local idmarker = "idMarker%s"
 local marker_name = "%s_%s"
@@ -71,7 +70,6 @@ local function BuildMySpots()
 			if new_markers[table_name] then
 				-- merge save names if dupe location
 				local marker = new_markers[table_name]
---~ 				marker.text = string.format("%s, %s",marker.text,save.displayname)
 				marker.text = marker.text .. ", " .. save.displayname
 			else
 				-- plunk down a new one (most of this code is copied from LandingSiteObject:AttachPredefinedSpots)
@@ -157,7 +155,6 @@ function LandingSiteObject:DisplayCoord(pt, lat, long, lat_org, long_org)
 		local marker = new_markers[marker_name:format(g_CurrentMapParams.latitude,g_CurrentMapParams.longitude)]
 		if marker then
 			local text = self.dialog.idtxtCoord.text
---~ 			self.dialog.idtxtCoord:SetText(string.format("<style ChoGGi_PlanetUISavedGamesText>%s</style>\n%s",marker.text,text))
 			self.dialog.idtxtCoord:SetText("<style ChoGGi_PlanetUISavedGamesText>" .. marker.text .. "</style>\n" .. text)
 		end
 	end

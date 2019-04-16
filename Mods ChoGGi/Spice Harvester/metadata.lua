@@ -9,6 +9,7 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"title", "Spice Harvester v0.7",
 	"title", "Spice Harvester",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 9,
 	"saved", 1553428800,

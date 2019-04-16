@@ -1,9 +1,6 @@
-local CurrentModPath = CurrentModPath
-
-
 -- png or tga can be used
 g_LoadingScreens = {
-	string.format("%sUI/The Incal.png",CurrentModPath),
+	CurrentModPath .. "UI/The Incal.png",
 }
 
 -- if we don't set this then it'll just use SplashScreen.tga

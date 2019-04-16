@@ -208,7 +208,7 @@ function ConstructionSite:GameInit()
 	-- is inner or outer building
 	local outside,inside
 	for i = 1, 3 do
-		local label = self.building_class_proto[string.format("label%s",i)]
+		local label = self.building_class_proto["label" .. i]
 		if label == "OutsideBuildings" then
 		 outside = true
 		 break

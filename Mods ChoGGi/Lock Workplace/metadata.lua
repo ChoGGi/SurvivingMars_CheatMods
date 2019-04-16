@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
   "title", "Lock Workplace",
+	"version", 20,
 	"version_major", 1,
 	"version_minor", 1,
   "saved", 1548504000,

@@ -1,5 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Change Skin Wasp Drones",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1549972800,

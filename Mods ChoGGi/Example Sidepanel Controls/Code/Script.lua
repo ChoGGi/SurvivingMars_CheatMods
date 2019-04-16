@@ -133,7 +133,7 @@ function OnMsg.ClassesBuilt()
 			-- change 5 per movement
 			"StepSize", 5,
 			"OnContextUpdate", function(self, context)
-				-- self.parent.parent:SetTitle(string.format("Change \"max_workers\" limit: %s",context.max_workers))
+--~ 			self.parent.parent:SetTitle([[Change "max_workers" limit: ]] .. context.max_workers)
 			end
 		}),
 		PlaceObj("XTemplateTemplate", {

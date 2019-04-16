@@ -41,7 +41,7 @@ do -- LoadEntity
 
 	LoadEntity(
 		"VeridianDynamics",
-		string.format("%sEntities/VeridianDynamics.ent",CurrentModPath),
+		CurrentModPath .. "Entities/VeridianDynamics.ent",
 		Mods.ChoGGi_Logos_VeridianDynamics
 	)
 end -- LoadEntity
@@ -52,6 +52,6 @@ function OnMsg.ClassesPostprocess()
 		decal_entity = "VeridianDynamics",
 		entity_name = "VeridianDynamics",
 		id = "ChoGGi.Logos.VeridianDynamics",
-		image = string.format("%sUI/VeridianDynamics.png",CurrentModPath),
+		image = CurrentModPath .. "UI/VeridianDynamics.png",
 	})
 end

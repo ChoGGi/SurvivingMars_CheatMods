@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local default_icon = "UI/Icons/Sections/storage.tga"
-local default_icon2 = "UI/Icons/Upgrades/home_collective_04.tga"
 local type,tostring = type,tostring
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -27,8 +25,7 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
-		Strings[302535920000565--[[Storage Mechanized Depots Temp--]]],
-		default_icon
+		Strings[302535920000565--[[Storage Mechanized Depots Temp--]]]
 	)
 end
 
@@ -39,8 +36,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 	if not capacity then
 		MsgPopup(
 			Strings[302535920000954--[[You need to select a building that has workers.--]]],
-			Strings[302535920000567--[[Worker Capacity--]]],
-			default_icon
+			Strings[302535920000567--[[Worker Capacity--]]]
 		)
 		return
 	end
@@ -102,8 +98,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(obj),choice[1].text),
-				Strings[302535920000567--[[Worker Capacity--]]],
-				default_icon
+				Strings[302535920000567--[[Worker Capacity--]]]
 			)
 		end
 	end
@@ -124,8 +119,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	if not cap_type then
 		MsgPopup(
 			Strings[302535920000958--[[You need to select a building that has capacity (colonists/air/water/elec).--]]],
-			Strings[302535920000569--[[Building Capacity--]]],
-			default_icon
+			Strings[302535920000569--[[Building Capacity--]]]
 		)
 		return
 	end
@@ -252,8 +246,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(obj),choice[1].text),
-				Strings[302535920000569--[[Building Capacity--]]],
-				default_icon
+				Strings[302535920000569--[[Building Capacity--]]]
 			)
 		end
 
@@ -275,8 +268,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 	if not capacity then
 		MsgPopup(
 			Strings[302535920000959--[[You need to select something that has space for visitors (services/trainingbuildings).--]]],
-			Strings[302535920000571--[[Building Visitor Capacity--]]],
-			default_icon2
+			Strings[302535920000571--[[Building Visitor Capacity--]]]
 		)
 		return
 	end
@@ -328,8 +320,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000960--[[%s visitor capacity is now %s.--]]]:format(RetName(obj),choice[1].text),
-				Strings[302535920000571--[[Building Visitor Capacity--]]],
-				default_icon2
+				Strings[302535920000571--[[Building Visitor Capacity--]]]
 			)
 		end
 	end

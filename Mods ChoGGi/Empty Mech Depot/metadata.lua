@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
   "title", "Empty Mech Depot",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 7,
   "saved", 1539950400,

@@ -41,7 +41,7 @@ do -- LoadEntity
 
 	LoadEntity(
 		"MarsBar",
-		string.format("%sEntities/MarsBar.ent",CurrentModPath),
+		CurrentModPath .. "Entities/MarsBar.ent",
 		Mods.ChoGGi_Logos_MarsBar
 	)
 end -- LoadEntity
@@ -52,6 +52,6 @@ function OnMsg.ClassesPostprocess()
 		decal_entity = "MarsBar",
 		entity_name = "MarsBar",
 		id = "ChoGGi.Logos.MarsBar",
-		image = string.format("%sUI/MarsBar.png",CurrentModPath),
+		image = CurrentModPath .. "UI/MarsBar.png",
 	})
 end

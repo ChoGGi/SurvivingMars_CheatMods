@@ -41,7 +41,7 @@ do -- LoadEntity
 
 	LoadEntity(
 		"Amazon",
-		string.format("%sEntities/Amazon.ent",CurrentModPath),
+		CurrentModPath .. "Entities/Amazon.ent",
 		Mods.ChoGGi_Logos_Amazon
 	)
 end -- LoadEntity
@@ -52,6 +52,6 @@ function OnMsg.ClassesPostprocess()
 		decal_entity = "Amazon",
 		entity_name = "Amazon",
 		id = "ChoGGi.Logos.Amazon",
-		image = string.format("%sUI/Amazon.png",CurrentModPath),
+		image = CurrentModPath .. "UI/Amazon.png",
 	})
 end

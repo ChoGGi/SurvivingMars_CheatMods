@@ -2,9 +2,6 @@
 
 -- BuildingTemplates,ClassTemplates.Building
 
-local default_icon = "UI/Icons/IPButtons/dome_buildings.tga"
-local default_icon2 = "UI/Icons/Sections/storage.tga"
-
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
@@ -691,8 +688,7 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
 		ChoGGi.ComFuncs.UpdateBuildMenu()
 		MsgPopup(
 			Strings[302535920000116--[[%s: Buildings unlocked.--]]]:format(#choice),
-			Strings[302535920000180--[[Unlock Locked Buildings--]]],
-			default_icon
+			Strings[302535920000180--[[Unlock Locked Buildings--]]]
 		)
 	end
 
@@ -739,8 +735,7 @@ local function BuildingConsumption_Toggle(type1,str1,type2,func1,func2,str2)
 	if not obj or not obj[type1] then
 		MsgPopup(
 			str1,
-			Translate(3980--[[Buildings--]]),
-			default_icon
+			Translate(3980--[[Buildings--]])
 		)
 		return
 	end
@@ -770,8 +765,7 @@ local function BuildingConsumption_Toggle(type1,str1,type2,func1,func2,str2)
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		RetName(obj) .. " " .. str2,
-		which,
-		default_icon
+		which
 	)
 end
 
@@ -813,8 +807,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 	if not obj or obj and not obj:IsKindOfClasses("ElectricityStorage","AirStorage","WaterStorage") then
 		MsgPopup(
 			Strings[302535920000122--[[You need to select something that has capacity (air/water/elec).--]]],
-			Strings[302535920000188--[[Set Charge & Discharge Rates--]]],
-			default_icon
+			Strings[302535920000188--[[Set Charge & Discharge Rates--]]]
 		)
 		return
 	end
@@ -941,8 +934,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000128--[[%s rate is now: %s--]]]:format(RetName(obj),choice[1].text),
-				Strings[302535920000188--[[Set Charge & Discharge Rates--]]],
-				default_icon2
+				Strings[302535920000188--[[Set Charge & Discharge Rates--]]]
 			)
 		end
 	end
@@ -1002,8 +994,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 	if not obj or obj and not obj:IsKindOfClasses("WaterProducer","AirProducer","ElectricityProducer","ResourceProducer") then
 		MsgPopup(
 			Strings[302535920000136--[[Select something that produces (air,water,electricity,other).--]]],
-			Strings[302535920000194--[[Production Amount Set--]]],
-			default_icon2
+			Strings[302535920000194--[[Production Amount Set--]]]
 		)
 		return
 	end
@@ -1114,8 +1105,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			Strings[302535920000137--[[%s production is now: %s--]]]:format(RetName(obj),choice[1].text),
-			Strings[302535920000194--[[Production Amount Set--]]],
-			default_icon2
+			Strings[302535920000194--[[Production Amount Set--]]]
 		)
 	end
 

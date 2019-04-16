@@ -31,24 +31,27 @@ local function ListBuildings(parent,dome)
 	local item_list = {}
 	local c = 0
 
-	--make it pretty
+	local hint_str = [[Position: %s
+
+Colonists: %s
+
+Living Spaces: %s]]
+
+	-- make it pretty
 	for i = 1, #domes do
-		--skip ruined domes, and self
+		-- skip ruined domes, and self
 		if domes[i].air and domes[i].handle ~= dome.handle then
 			local pos = domes[i]:GetVisualPos()
 			c = c + 1
 			item_list[c] = {
 				pos = pos,
 				name = RetName(domes[i]),
-				hint = string.format([[Position: %s
-
-Colonists: %s
-
-Living Spaces: %s]],
+				 -- provide a slight reference
+				hint = hint_str:format(
 					pos,
 					#(domes[i].labels.Colonist or ""),
 					domes[i]:GetLivingSpace() or 0
-				), -- provide a slight reference
+				),
 				clicked = function(_,_,button)
 					ClickObj(dome,domes[i],button)
 				end,

@@ -47,7 +47,7 @@ function OnMsg.ClassesBuilt()
 				self:SetTitle([[Unlock Residence]])
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			else
-				self:SetRolloverText(string.format([[Lock this colonist to always live at %s.]],RetName(context.residence)))
+				self:SetRolloverText([[Lock this colonist to always live at]] .. RetName(context.residence))
 				self:SetTitle([[Lock Residence]])
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			end

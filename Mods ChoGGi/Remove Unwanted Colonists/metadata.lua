@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Remove Unwanted Colonists",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 3,
 	"saved", 1551355200,

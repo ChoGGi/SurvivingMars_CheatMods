@@ -50,11 +50,11 @@ function OnMsg.ClassesBuilt()
 		OnContextUpdate = function(self, context)
 			local name = RetName(context)
 			if context.ChoGGi_DisableMaintenance then
-				self:SetRolloverText(string.format([[This %s will not be maintained (press for menu).]],name))
+				self:SetRolloverText("This " .. name .. " will not be maintained (press for menu).")
 				self:SetTitle("Maintenance Disabled")
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			else
-				self:SetRolloverText(string.format([[This %s will be maintained (press for menu).]],name))
+				self:SetRolloverText("This " .. name .. " will be maintained (press for menu).")
 				self:SetTitle("Maintenance Enabled")
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			end
@@ -68,15 +68,15 @@ function OnMsg.ClassesBuilt()
 				local name = RetName(context)
 				PopupToggle(self,"idDisableDroneMaintenanceMenu",{
 					{
-						name = string.format([[Toggle maintenance on this %s only.]],name),
-						hint = string.format([[Toggles maintenance on only this %s.]],name),
+						name = "Toggle maintenance on this " .. name .. " only.",
+						hint = "Toggles maintenance on only this " .. name .. ".",
 						clicked = function()
 							ToggleMain(context)
 						end,
 					},
 					{
-						name = string.format([[Toggle maintenance on all %s.]],name),
-						hint = string.format([[Toggles maintenance on all %s (all will be set the same as this one).]],name),
+						name = "Toggle maintenance on all " .. name .. ".",
+						hint = "Toggles maintenance on all " .. name .. " (all will be set the same as this one).",
 						clicked = function()
 							local objs = RetAllOfClass(context.class)
 							for i = 1, #objs do

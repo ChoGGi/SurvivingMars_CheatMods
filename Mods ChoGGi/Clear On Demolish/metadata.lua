@@ -1,5 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Clear On Demolish",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1555070400,

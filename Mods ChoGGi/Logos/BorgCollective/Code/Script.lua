@@ -41,7 +41,7 @@ do -- LoadEntity
 
 	LoadEntity(
 		"BorgCollective",
-		string.format("%sEntities/BorgCollective.ent",CurrentModPath),
+		CurrentModPath .. "Entities/BorgCollective.ent",
 		Mods.ChoGGi_Logos_BorgCollective
 	)
 end -- LoadEntity
@@ -52,6 +52,6 @@ function OnMsg.ClassesPostprocess()
 		decal_entity = "BorgCollective",
 		entity_name = "BorgCollective",
 		id = "ChoGGi.Logos.BorgCollective",
-		image = string.format("%sUI/BorgCollective.png",CurrentModPath),
+		image = CurrentModPath .. "UI/BorgCollective.png",
 	})
 end

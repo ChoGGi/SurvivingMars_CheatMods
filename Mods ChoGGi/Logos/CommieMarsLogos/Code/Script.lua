@@ -385,7 +385,7 @@ do -- LoadEntity
 	local EntityData = EntityData
 	local EntityLoadEntities = EntityLoadEntities
 	local SetEntityFadeDistances = SetEntityFadeDistances
-	local ent_path = string.format("%sEntities/%s.ent",mod.env.CurrentModPath,"%s")
+	local ent_path = mod.env.CurrentModPath .. "Entities/"
 
 	for i = 1, logos_length do
 		local file = logos[i].file
@@ -394,7 +394,7 @@ do -- LoadEntity
 		EntityLoadEntities[#EntityLoadEntities + 1] = {
 			mod,
 			file,
-			ent_path:format(file)
+			ent_path .. file .. ".ent"
 		}
 		SetEntityFadeDistances(file, -1, -1)
 	end
@@ -402,9 +402,7 @@ end -- LoadEntity
 
 do -- Postprocess
 	local PlaceObj = PlaceObj
-	local logo_path = string.format("%sUI/%s.png",mod.env.CurrentModPath,"%s")
-	local logo_name = "Commie Marx: %s"
-	local logo_id = "CommieMarsLogos_%s"
+	local logo_path = mod.env.CurrentModPath .. "UI/"
 
 	function OnMsg.ClassesPostprocess()
 		for i = 1, logos_length do
@@ -414,9 +412,9 @@ do -- Postprocess
 			PlaceObj("MissionLogoPreset", {
 				decal_entity = file,
 				entity_name = file,
-				display_name = logo_name:format(logo.name),
-				id = logo_id:format(file),
-				image = logo_path:format(file),
+				display_name = "Commie Marx: " .. logo.name,
+				id = "CommieMarsLogos_" .. file,
+				image = logo_path .. file .. ".png",
 			})
 		end
 	end

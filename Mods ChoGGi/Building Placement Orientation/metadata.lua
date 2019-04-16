@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Building Placement Orientation",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 8,
 	"saved", 1551960000,

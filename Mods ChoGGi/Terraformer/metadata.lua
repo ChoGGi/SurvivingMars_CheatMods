@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Terraformer v1.4",
+	"version", 20,
 	"version_major", 1,
 	"version_minor", 4,
   "saved", 1554120000,

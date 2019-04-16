@@ -1,5 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Every Flag On Wikipedia",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 7,
 	"saved", 1554638400,

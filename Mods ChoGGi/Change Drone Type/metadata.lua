@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Change Drone Type",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 3,
 	"saved", 1550750400,

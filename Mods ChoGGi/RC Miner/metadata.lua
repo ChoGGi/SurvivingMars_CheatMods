@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
   "title", "RC Miner v1.8",
+	"version", 20,
 	"version_major", 1,
 	"version_minor", 8,
   "saved", 1542974400,

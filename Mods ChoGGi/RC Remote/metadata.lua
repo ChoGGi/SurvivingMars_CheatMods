@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "RC Remote",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1551182400,

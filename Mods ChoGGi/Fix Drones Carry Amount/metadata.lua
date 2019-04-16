@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Fix: Drones Carry Amount",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 9,
 	"saved", 1549886400,

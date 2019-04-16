@@ -49,7 +49,7 @@ function OnMsg.ClassesBuilt()
 				self:SetTitle([[Unlock Workplace]])
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			else
-				self:SetRolloverText(string.format([[Lock this colonist to always work at %s.]],RetName(context.workplace)))
+				self:SetRolloverText([[Lock this colonist to always work at ]] .. RetName(context.workplace))
 				self:SetTitle([[Lock Workplace]])
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			end

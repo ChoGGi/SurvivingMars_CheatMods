@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
   "title", "Buildable/Controllable AttackRover",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 1,
   "saved", 1533297600,

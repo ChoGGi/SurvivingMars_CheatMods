@@ -1,5 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Research Autorepeat 2",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1538395200,

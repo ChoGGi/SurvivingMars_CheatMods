@@ -1,5 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "All Positive Traits",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 2,
   "saved", 1533297600,

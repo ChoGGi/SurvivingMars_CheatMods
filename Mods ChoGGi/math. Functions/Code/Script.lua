@@ -531,11 +531,11 @@ function math.test()
 --~ 	local AsyncStringToFile = AsyncStringToFile
 --~ 	ThreadLockKey(tmpfile)
 --~ 	AsyncStringToFile(tmpfile,"a = {","-1")
---~ 	i = 1
---~ 	repeat
---~ 		AsyncStringToFile(tmpfile,string.format("{%s, %s, %s},\n",math.sin(i), math.cos(i), i/3),"-1")
---~ 		i=i+1
---~ 	until i > 1000
+--~ 	for i = 1, 1000 do
+--~ 		AsyncStringToFile(tmpfile,
+--~ 		"{" .. math.sin(i) .. ", " .. math.cos(i) .. ", " .. i/3 .. "},\n",
+--~ 		"-1")
+--~ 	end
 --~ 	AsyncStringToFile(tmpfile,"}","-1")
 --~ 	f:seek("set", 0)
 --~ 	Test(getinfo(function()end),"sin",loadstring(select(2,AsyncFileToString(tmpfile))))()
@@ -579,16 +579,19 @@ function math.test()
   end
 
   local flag
-  local i = 0
   local Max = -200
   local Min = 200
-  repeat
+
+	for i = 1, 10000 do
     local t = math.random(-10,0)
     Max = math.max(Max, t)
     Min = math.min(Min, t)
-    i=i+1
     flag = (Max == 0 and Min == -10)
-  until flag or i>10000
+		if flag then
+			break
+		end
+	end
+
   Test(getinfo(function()end),"random",-10 <= Min and Max<=0)
   Test(getinfo(function()end),"random",flag);
 

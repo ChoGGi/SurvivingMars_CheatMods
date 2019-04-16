@@ -1,5 +1,6 @@
 return PlaceObj("ModDef", {
   "title", "Stop Current Disasters",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 4,
   "saved", 1545048000,

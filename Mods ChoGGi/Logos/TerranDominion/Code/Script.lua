@@ -41,7 +41,7 @@ do -- LoadEntity
 
 	LoadEntity(
 		"TerranDominion",
-		string.format("%sEntities/TerranDominion.ent",CurrentModPath),
+		CurrentModPath .. "Entities/TerranDominion.ent",
 		Mods.ChoGGi_Logos_TerranDominion
 	)
 end -- LoadEntity
@@ -52,6 +52,6 @@ function OnMsg.ClassesPostprocess()
 		decal_entity = "TerranDominion",
 		entity_name = "TerranDominion",
 		id = "ChoGGi.Logos.TerranDominion",
-		image = string.format("%sUI/TerranDominion.png",CurrentModPath),
+		image = CurrentModPath .. "UI/TerranDominion.png",
 	})
 end

@@ -1,7 +1,6 @@
 local CurrentModPath = CurrentModPath
 local PlaceObj = PlaceObj
 
-
 -- copy n paste from ChoGGi.ComFuncs.LoadEntity
 do -- LoadEntity
 	-- no sense in making a new one for each entity
@@ -41,7 +40,7 @@ do -- LoadEntity
 
 	LoadEntity(
 		"CaptainStar",
-		string.format("%sEntities/CaptainStar.ent",CurrentModPath),
+		CurrentModPath .. "Entities/CaptainStar.ent",
 		Mods.ChoGGi_Logos_CaptainStar
 	)
 end -- LoadEntity
@@ -52,6 +51,6 @@ function OnMsg.ClassesPostprocess()
 		decal_entity = "CaptainStar",
 		entity_name = "CaptainStar",
 		id = "ChoGGi.Logos.CaptainStar",
-		image = string.format("%sUI/CaptainStar.png",CurrentModPath),
+		image = CurrentModPath .. "UI/CaptainStar.png",
 	})
 end

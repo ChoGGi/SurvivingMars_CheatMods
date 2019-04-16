@@ -9,6 +9,8 @@
 ### Changed:
 - Mod Upload supports batch uploading (and screenshots).
 - Examine will now try to list files in mount points (ie: ~"Textures" or ~"Prefabs").
+- Changed menu items to use the default ECM icon instead of something maybe vaguely related.
+- > Easier to distinguish between notifications from ECM and from SM.
 
 ### Fixed:
 - Game would freeze if ConsoleErrors was false (thanks Gaspurr).
@@ -19,6 +21,10 @@
 - > It wasn't showing entity info it should be.
 - > Missing the metatable for BaseSocket (as well as showing a blank list).
 - > Object>Entity Spots Toggle wasn't keeping spots properly.
+
+### Removed:
+HelperMod: You can get it from [Github](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Startup%20HelperMod)
+- > I'm also going to be uploading ECm/Lib as a packed mods for steam.
 
 ## v13.3 (Mar 30 2019)
 ### Added:

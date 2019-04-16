@@ -35,14 +35,14 @@ function XShortcutsHost:GetSize()
 	return GetSize(self,"idMenuBar") + GetSize(self,"idBottomContainer")
 end
 
-local function DiscoverTech_local(tech_id)
+local function DiscoverTech(tech_id)
 	UICity:SetTechDiscovered(tech_id)
 end
-DiscoverTech_Old = DiscoverTech_local
+DiscoverTech_Old = DiscoverTech
 
 -- for anyone still using it post-gagarin
 if not rawget(_G, "DiscoverTech") then
-	DiscoverTech = DiscoverTech_local
+	_G.DiscoverTech = DiscoverTech
 end
 
 -- seems like a useful func to have

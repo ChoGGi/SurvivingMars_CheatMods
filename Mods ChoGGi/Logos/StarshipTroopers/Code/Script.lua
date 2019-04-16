@@ -41,7 +41,7 @@ do -- LoadEntity
 
 	LoadEntity(
 		"StarshipTroopers",
-		string.format("%sEntities/StarshipTroopers.ent",CurrentModPath),
+		CurrentModPath .. "Entities/StarshipTroopers.ent",
 		Mods.ChoGGi_Logos_StarshipTroopers
 	)
 end -- LoadEntity
@@ -52,6 +52,6 @@ function OnMsg.ClassesPostprocess()
 		decal_entity = "StarshipTroopers",
 		entity_name = "StarshipTroopers",
 		id = "ChoGGi.Logos.StarshipTroopers",
-		image = string.format("%sUI/StarshipTroopers.png",CurrentModPath),
+		image = CurrentModPath .. "UI/StarshipTroopers.png",
 	})
 end

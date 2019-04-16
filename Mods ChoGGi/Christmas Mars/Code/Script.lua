@@ -39,7 +39,7 @@ do -- LoadEntity
 
 	LoadEntity(
 		"ChristmasMars",
-		string.format("%sEntities/ChristmasMars.ent",CurrentModPath),
+		CurrentModPath .. "Entities/ChristmasMars.ent",
 		Mods.ChoGGi_ChristmasMars
 	)
 end -- LoadEntity
@@ -50,7 +50,7 @@ function OnMsg.ClassesPostprocess()
 		display_name = [[Christmas Mars]],
 		entity_name = "ChristmasMars",
 		id = "ChristmasMars",
-		image = string.format("%sUI/ChristmasMars.png",CurrentModPath),
+		image = CurrentModPath .. "UI/ChristmasMars.png",
 	})
 	-- default logo during spending month
 	if that_time_of_the_year then
@@ -165,7 +165,7 @@ local function SendMsg(msg_name,obj,cls_name)
 	Msg(msg_name,obj,cls_name)
 end
 local function AddMsgToFunc(cls_name,msg_name)
-	local name = string.format("%s_GameInit",cls_name)
+	local name = cls_name .. "_GameInit"
 	if not OrigFuncs[name] then
 		-- save orig
 		OrigFuncs[name] = _G[cls_name].GameInit

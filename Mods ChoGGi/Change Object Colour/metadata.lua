@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Change Object Colour",
+	"version", 20,
 	"version_major", 1,
 	"version_minor", 0,
   "saved", 1550750400,

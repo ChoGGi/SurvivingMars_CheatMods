@@ -1,5 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Example Add More Numbers To Popups",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1545048000,

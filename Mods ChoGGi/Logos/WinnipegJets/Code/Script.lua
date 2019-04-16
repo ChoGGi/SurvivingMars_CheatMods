@@ -41,12 +41,12 @@ do -- LoadEntity
 
 	-- Mars Marx, eh close enough
 	local mod = Mods.ChoGGi_Logos_WinnipegJets
-	local ent_path = string.format("%sEntities/%s.ent",mod.env.CurrentModPath,"%s")
+	local ent_path = mod.env.CurrentModPath .. "Entities/",
 
 	local function LoadDecal(name)
 		LoadEntity(
 			name,
-			ent_path:format(name),
+			ent_path .. name .. ".ent",
 			mod
 		)
 	end
@@ -55,14 +55,14 @@ do -- LoadEntity
 	LoadDecal("WinnipegJets2018")
 end -- LoadEntity
 
-local logo_path = string.format("%sUI/%s.png",mod.env.CurrentModPath,"%s")
+local logo_path = mod.env.CurrentModPath .. "UI/"
 local function LoadLogo(name,display)
 	PlaceObj("MissionLogoPreset", {
 		display_name = display,
 		decal_entity = name,
 		entity_name = name,
-		id = string.format("ChoGGi.Logos.%s",name),
-		image = logo_path:format(name),
+		id = "ChoGGi.Logos." .. name,
+		image = logo_path .. name .. ".png",
 	})
 end
 

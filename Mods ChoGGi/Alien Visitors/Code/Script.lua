@@ -5,7 +5,7 @@ ChoGGi_Alien_Settings = {
 }
 
 
-local image_pin = string.format("%sUI/Alien_Pin.png",CurrentModPath)
+local image_pin = CurrentModPath .. "UI/Alien_Pin.png"
 
 local GetDomeAtPoint = GetDomeAtPoint
 local DomeCollisionCheck = DomeCollisionCheck

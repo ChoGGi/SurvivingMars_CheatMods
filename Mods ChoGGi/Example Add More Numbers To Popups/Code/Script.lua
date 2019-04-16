@@ -1,31 +1,42 @@
 -- See LICENSE for terms
 
-local icon_8min_str = "UI/Icons/Buildings/numbers_0%s.tga"
-local icon_9_str = string.format("%sUI/numbers_0%s.png",CurrentModPath,"%s")
-local icon_10plus_str = string.format("%sUI/numbers_%s.png",CurrentModPath,"%s")
+-- local some globals
+local table_insert = table.insert
+local T = T
+local IsTraitAvailable = IsTraitAvailable
+local IsValid = IsValid
+local IsMassUIModifierPressed = IsMassUIModifierPressed
 
-function FillTraitSelectorItems(object, items, traits, align, list)
+local orig_FillTraitSelectorItems = FillTraitSelectorItems
+function FillTraitSelectorItems(object, items, traits, align, list, ...)
+	local traits_c = #traits
+
+	-- if there's only 9 then return orig func instead of my possibly out of date func
+	if traits_c < 10 then
+		return orig_FillTraitSelectorItems(object, items, traits, align, list, ...)
+	end
+
+	local path_str = CurrentModPath .. "UI/numbers_"
+
+	local TraitPresets = TraitPresets
+	local HexButtonInfopanel = HexButtonInfopanel
+
   local start = #items
-  for i = 1, #traits do
+  for i = 1, traits_c do
     local trait = TraitPresets[traits[i].value]
     if IsTraitAvailable(trait, object.city) then
 
-			-- one little zero...
---~       local icon = "UI/Icons/Buildings/numbers_0" .. start + i .. ".tga"
-
       local icon
 			local num = start + i
-			if num < 9 then
-				icon = icon_8min_str:format(num)
-			elseif num == 9 then
-				icon = icon_9_str:format(num)
+			-- sm includes 01-09
+			if num < 10 then
+				icon = "UI/Icons/Buildings/numbers_0" .. num .. ".tga"
 			else
-				icon = icon_10plus_str:format(num)
+				icon = path_str .. num .. ".png"
 			end
 
-
       local enabled = trait.id ~= object.trait1 and trait.id ~= object.trait2 and trait.id ~= object.trait3
-      table.insert(items, HexButtonInfopanel:new({
+      table_insert(items, HexButtonInfopanel:new({
         ButtonAlign = align,
         name = trait.id,
         icon = icon,
@@ -51,8 +62,8 @@ function FillTraitSelectorItems(object, items, traits, align, list)
         end
       }, list))
       align = align == "top" and "bottom" or "top"
-    else
     end
   end
+
   return align
 end

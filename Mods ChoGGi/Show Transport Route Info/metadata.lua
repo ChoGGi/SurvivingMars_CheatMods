@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Show Transport Route Info",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1548676800,

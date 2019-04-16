@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Store Building States",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1555243200,

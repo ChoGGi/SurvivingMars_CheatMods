@@ -447,6 +447,10 @@ ChoGGi.SettingFuncs.ReadSettings()
 
 local UserSettings = ChoGGi.UserSettings
 
+if UserSettings._VERSION then
+	UserSettings._VERSION = nil
+end
+
 -- could've been from when i used encyclopedia_id for this?
 if UserSettings.BuildingSettings[""] then
 	UserSettings.BuildingSettings[""] = nil

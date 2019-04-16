@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
   "title", "Lock Residence",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 3,
   "saved", 1548763200,

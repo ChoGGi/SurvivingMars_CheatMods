@@ -1,5 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Fix: Mods With Nil Notifications",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1535889600,

@@ -8,6 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Auto Empty Waste Storage",
+	"version", 20,
 	"version_major", 0,
 	"version_minor", 4,
 	"saved", 1539950400,
