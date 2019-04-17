@@ -6,6 +6,7 @@
 - Cheats>Lightning Strike: Same as a strike from a dust storm.
 - ECM>Colonists>Workplaces>Outside Workplace Sanity Penalty.
 - Cheats>Research>Unlock Anomaly BreakThroughs: Unlock any breakthroughs in anomalies (not planetary ones).
+- Game>Export CSV>Map Data (Breakthroughs): Includes breakthrough info as well.
 
 ### Changed:
 - Mod Upload supports batch uploading (and screenshots).

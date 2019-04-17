@@ -21,6 +21,7 @@ local table_find = table.find
 local table_clear = table.clear
 local table_iclear = table.iclear
 local table_sort = table.sort
+local table_copy = table.copy
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 local function SaveOrigFunc(class_or_func,func_name)
@@ -4434,3 +4435,83 @@ function ChoGGi.ComFuncs.RetHudButton(side)
 	end
 	return xt[idx][1]
 end
+
+do -- RetMapSettings
+	local GetRandomMapGenerator = GetRandomMapGenerator
+	local FillRandomMapProps = FillRandomMapProps
+
+	function ChoGGi.ComFuncs.RetMapSettings(gen, params, ...)
+		params = params or g_CurrentMapParams
+		if gen == true then
+			gen = GetRandomMapGenerator() or {}
+		end
+
+		return FillRandomMapProps(gen, params, ...), gen, params
+	end
+end -- do
+
+do --
+	local StableShuffle = StableShuffle
+	local CreateRand = CreateRand
+	local breakthrough_count = const.BreakThroughTechsPerGame
+	local orig_break_list = table.imap(Presets.TechPreset.Breakthroughs, "id")
+	local omega_order_maybe = {}
+	local translated_tech
+
+	function ChoGGi.ComFuncs.RetMapBreakthroughs(gen,omega)
+		-- build list of names once
+		if not translated_tech then
+			translated_tech = {}
+			local TechDef = TechDef
+			for tech_id,tech in pairs(TechDef) do
+				translated_tech[tech_id] = Translate(tech.display_name)
+			end
+		end
+
+		-- start with a clean copy of breaks
+		local break_order = table_copy(orig_break_list)
+
+		local omega_order
+		if omega then
+			omega_order = table_copy(orig_break_list)
+			StableShuffle(omega_order, CreateRand(true, gen.Seed, "OmegaTelescope"), 100)
+		end
+		StableShuffle(break_order, CreateRand(true, gen.Seed, "ShuffleBreakThroughTech"), 100)
+
+		while #break_order > breakthrough_count do
+			table_remove(break_order)
+		end
+
+		local tech_list = {}
+
+		if omega_order then
+			-- remove existing breaks from omega
+			for i = 1, #break_order do
+				local id = break_order[i]
+				local idx = table_find(omega_order,id)
+				if idx then
+					table_remove(omega_order,idx)
+				end
+				-- translate tech
+				tech_list[i] = translated_tech[id]
+			end
+			omega_order_maybe[3] = table_remove(omega_order)
+			omega_order_maybe[2] = table_remove(omega_order)
+			omega_order_maybe[1] = table_remove(omega_order)
+
+			-- and translation names for omega
+			local c = #tech_list
+			for i = 1, 3 do
+				c = c + 1
+				tech_list[c] = translated_tech[omega_order_maybe[i]]
+			end
+		else
+			for i = 1, #break_order do
+				-- translate tech
+				tech_list[i] = translated_tech[break_order[i]]
+			end
+		end
+
+		return tech_list
+	end
+end -- do

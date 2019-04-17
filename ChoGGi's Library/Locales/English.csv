@@ -1466,6 +1466,8 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs.",
 302535920000620,If any colonists are black cubes click this.,
 302535920000621,Align All Buildings To Hex Grid,
 302535920000622,If you have any buildings that aren't aligned to the hex grids use this.,
+302535920001618,Map Data (Breakthroughs),
+302535920001619,This will take <color red>longer</color> (about 15s).,
 302535920000168,Default normal lightmodel list.,
 302535920000973,"Change the value (-1) to an index number from Terrain Textures.
 Open <color green>%s</color> to see all the textures, the tooltips show the texture index.",

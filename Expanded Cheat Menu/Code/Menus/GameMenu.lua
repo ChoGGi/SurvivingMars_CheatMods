@@ -493,6 +493,21 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 	OnAction = ChoGGi.ComFuncs.ExportMapDataToCSV,
 }
 
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001618--[[Map Data (Breakthroughs)--]]],
+	ActionMenubar = "ECM.Game.Export CSV",
+	ActionId = ".Map Data (Breakthroughs)",
+	ActionIcon = "CommonAssets/UI/Menu/LowerTerrainToLevel.tga",
+	RolloverText = Strings[302535920001502--[["Export map location data to %sMapData.csv (will take awhile).
+
+See survivingmarsmaps.com for a filtered list.
+Don't use in start new game screens (rating/topo will be messed up).
+Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu)."--]]]:format(ConvertToOSPath("AppData/"))
+	.. "\n\n" .. Strings[302535920001619--[[This will take <color red>longer</color> (about 15s).--]]],
+	OnAction = ChoGGi.ComFuncs.ExportMapDataToCSV,
+	setting_breakthroughs = true,
+}
+
 -- menu
 c = c + 1
 Actions[c] = {ActionName = Strings[302535920000892--[[Screenshot--]]],

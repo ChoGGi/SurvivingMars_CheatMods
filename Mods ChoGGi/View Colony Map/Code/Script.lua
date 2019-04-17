@@ -5,19 +5,13 @@ if not Mods.ChoGGi_MapImagesPack then
 	return
 end
 
-local GetRandomMapGenerator = GetRandomMapGenerator
-local CreateRand = CreateRand
-local StableShuffle = StableShuffle
 local table_insert = table.insert
-local table_remove = table.remove
-local table_imap = table.imap
-local table_copy = table.copy
-local table_find = table.find
-local table_iclear = table.iclear
 
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Translate = ChoGGi.ComFuncs.Translate
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
+local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
+local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
 
 local image_str = Mods.ChoGGi_MapImagesPack.env.CurrentModPath .. "Maps/"
 
@@ -29,14 +23,12 @@ local extra_info_dlg
 
 -- override this func to create/update image when site changes
 local orig_FillRandomMapProps = FillRandomMapProps
-local function FillRandomMapProps_local(gen, params, ...)
+function FillRandomMapProps(gen, params, ...)
 
 	-- gen is a table when the map is loading, so we can skip it
 	if not gen and not skip_showing_image then
-		params = params or g_CurrentMapParams
-		gen = GetRandomMapGenerator() or {}
-		-- we have to call it separately so we can use gen
-		local map = orig_FillRandomMapProps(gen, params, ...)
+		local map
+		map, gen, params = RetMapSettings(true, params, ...)
 
 		-- check if we already created image viewer, and make one if not
 		if not show_image_dlg then
@@ -47,7 +39,7 @@ local function FillRandomMapProps_local(gen, params, ...)
 		show_image_dlg.idCaption:SetText(map)
 		-- update text info
 		if extra_info_dlg then
-			extra_info_dlg:UpdateInfo(map, gen, params)
+			extra_info_dlg:UpdateInfo(map, gen)
 		end
 
 		return map
@@ -55,7 +47,6 @@ local function FillRandomMapProps_local(gen, params, ...)
 
 	return orig_FillRandomMapProps(gen, params, ...)
 end
-FillRandomMapProps = FillRandomMapProps_local
 
 -- kill off image dialogs
 function OnMsg.ChangeMapDone()
@@ -178,7 +169,6 @@ end
 local function GetRootDialog_Extra(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_VCM_ExtraInfoDlg")
 end
-local hyperlink_end = "</h></color>"
 
 DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 	__parents = {"ChoGGi_Window"},
@@ -188,16 +178,14 @@ DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 	missing_desc = [[You need to be in-game to display this hint.
 Click to open Paradox Breakthroughs Wikipage.]],
 
-	display_list = false,
-	omega_order_maybe = false,
 	translated_tech = false,
 	omega_msg = false,
+	omega_msg_count = false,
 
 	onclick_count = false,
 	onclick_desc = false,
 	onclick_names = false,
 
-	orig_break_list = false,
 	title_text = false,
 }
 
@@ -218,15 +206,10 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 	self.onclick_desc = {}
 	self.onclick_names = {}
 
-	self.display_list = {}
-	self.omega_order_maybe = {}
-
-	self.orig_break_list = table_imap(Presets.TechPreset.Breakthroughs, "id")
-
 	-- build a table of translated tech names
 	self.translated_tech = {}
 	local TechDef = TechDef
-	for tech_id,tech in pairs(TechDef) do
+	for _,tech in pairs(TechDef) do
 		local icon = ""
 		if ValidateImage(tech.icon) and not tech.icon:find(" ") then
 			icon = "\n\n<image " .. tech.icon .. " 1500>"
@@ -237,10 +220,11 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 			desc = self.missing_desc
 		end
 
-		self.translated_tech[tech_id] = self:HyperLink(desc .. "\n\n" .. icon,name)
-			.. name .. hyperlink_end
+		self.translated_tech[name] = self:HyperLink(desc .. "\n\n" .. icon,name)
+			.. name .. "</h></color>"
 	end
 
+	self.omega_msg_count = const.BreakThroughTechsPerGame + 1
 	self.omega_msg = "\n\n" .. Translate(5182--[[Omega Telescope--]]) .. " " .. Translate(437247068170--[[LIST--]]) .. " (maybe):\n"
 
 	self:PostInit()
@@ -295,51 +279,15 @@ function ChoGGi_VCM_ExtraInfoDlg:HyperLink(desc,name)
 	return "<color 255 255 255><h " .. c .. " 230 195 50>",c
 end
 
---~ local testing = ChoGGi.testing
-
-local breakthrough_count = const.BreakThroughTechsPerGame
-function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(map, gen, params)
+function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(map, gen)
 	self.idCaption:SetText(self.title_text .. ": " .. map)
 
-	-- build the list once to get our anomaly breakthroughs
-	local break_order = table_copy(self.orig_break_list)
-	local omega_order = table_copy(self.orig_break_list)
-
-	StableShuffle(break_order, CreateRand(true, gen.Seed, "ShuffleBreakThroughTech"), 100)
-	StableShuffle(omega_order, CreateRand(true, gen.Seed, "OmegaTelescope"), 100)
-
-	while #break_order > breakthrough_count do
-		table_remove(break_order)
+	local display_list = RetMapBreakthroughs(gen, true)
+--~ 	ex(display_list)
+	for i = 1, #display_list do
+		display_list[i] = self.translated_tech[display_list[i]]
 	end
 
-	table_iclear(self.display_list)
-
-	-- omega order
-	for i = 1, #break_order do
-		local id = break_order[i]
-		local idx = table_find(omega_order,id)
-		if idx then
-			table_remove(omega_order,idx)
-		end
-		-- translate tech
-		self.display_list[i] = self.translated_tech[id]
-	end
-	local c = #self.display_list
-
-	self.omega_order_maybe[3] = table_remove(omega_order)
-	self.omega_order_maybe[2] = table_remove(omega_order)
-	self.omega_order_maybe[1] = table_remove(omega_order)
-
-	-- and translation names for omega
-	for i = 1, 3 do
-		c = c + 1
-		self.display_list[c] = self.translated_tech[self.omega_order_maybe[i]]
-	end
-
---~ 	if testing then
---~ 		ex{self.display_list,self.omega_order_maybe}
---~ 	end
-
-	table_insert(self.display_list,breakthrough_count+1,self.omega_msg)
-	self.idText:SetText(TableConcat(self.display_list,"\n"))
+	table_insert(display_list,self.omega_msg_count,self.omega_msg)
+	self.idText:SetText(TableConcat(display_list,"\n"))
 end

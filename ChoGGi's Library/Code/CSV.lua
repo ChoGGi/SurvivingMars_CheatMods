@@ -7,6 +7,8 @@ local CmpLower = CmpLower
 local Strings = ChoGGi.Strings
 local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
+local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
+local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
 
 local function ExportDoneMsg(path)
 	local msg = Strings[302535920001449--[[Export--]]] .. " " .. Strings[302535920001448--[[CSV--]]]
@@ -38,7 +40,7 @@ do -- MapData
 
 	local MapData = MapData
 	local MarsLocales = MarsLocales
-	local function AddLandingSpot(lat,long)
+	local function AddLandingSpot(lat,long,breakthroughs)
 		-- updates map_params to location
 		GetOverlayValues(
 			lat * 60,
@@ -60,10 +62,15 @@ do -- MapData
 			long = long - long * 2
 		end
 
-		local params = landing.map_params
-		local threat = landing.threat_resource_levels
+		local map_name, gen, params
+		if breakthroughs then
+			map_name, gen, params = RetMapSettings(true, landing.map_params)
+		else
+			map_name = FillRandomMapProps(nil,params)
+			params = landing.map_params
+		end
 
-		local map_name = FillRandomMapProps(nil,params)
+		local threat = landing.threat_resource_levels
 		local mapdata = MapData[map_name]
 		-- create item in export list
 		export_count = export_count + 1
@@ -89,6 +96,14 @@ do -- MapData
 
 			map_name = map_name,
 		}
+		if breakthroughs then
+			local data = export_data[export_count]
+			local tech_list = RetMapBreakthroughs(gen)
+			for i = 1, #tech_list do
+				data["break" .. i] = tech_list[i]
+			end
+		end
+
 		-- named location spots
 		local spot_name = params.landing_spot or MarsLocales[params.Locales]
 		if spot_name then
@@ -96,7 +111,14 @@ do -- MapData
 		end
 	end
 
-	function ChoGGi.ComFuncs.ExportMapDataToCSV()
+	function ChoGGi.ComFuncs.ExportMapDataToCSV(action)
+
+		local breakthroughs
+		-- fired from action menu
+		if action and IsKindOf(action,"XAction") and action.setting_breakthroughs then
+			breakthroughs = true
+		end
+
 		north,east,south,west = Translate(6887--[[N--]]),Translate(6888--[[E--]]),Translate(6886--[[Strings--]]),Translate(6889--[[W--]])
 
 		-- save current g_CurrentMapParams to restore later
@@ -130,13 +152,13 @@ do -- MapData
 		for lat = 0, 70 do
 			for long = 0, 180 do
 				-- SE
-				AddLandingSpot(lat,long)
+				AddLandingSpot(lat,long,breakthroughs)
 				-- SW
-				AddLandingSpot(lat,long * -1)
+				AddLandingSpot(lat,long * -1,breakthroughs)
 				-- NE
-				AddLandingSpot(lat * -1,long)
+				AddLandingSpot(lat * -1,long,breakthroughs)
 				-- NW
-				AddLandingSpot(lat * -1,long * -1)
+				AddLandingSpot(lat * -1,long * -1,breakthroughs)
 			end
 		end
 		-- not needed anymore so restore back to orig
@@ -180,6 +202,14 @@ do -- MapData
 			{"map_name",Strings[302535920001503--[[Map Name--]]]},
 			{"landing_spot",Strings[302535920001504--[[Named--]]] .. " " .. Translate(7396--[[Location--]])},
 		}
+		if breakthroughs then
+			local b_str = Translate(11451--[[Breakthrough--]])
+			local c = #csv_columns
+			for i = 1, const.BreakThroughTechsPerGame do
+				c = c + 1
+				csv_columns[c] = {"break" .. i,Translate(11451--[[Breakthrough--]]) .. " " .. i}
+			end
+		end
 
 --~ ex(export_data)
 		-- and now we can save it to disk
