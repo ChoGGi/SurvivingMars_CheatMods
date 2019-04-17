@@ -455,12 +455,20 @@ do -- WriteLogs_Toggle
 	local Dump = ChoGGi.ComFuncs.Dump
 	local newline = ChoGGi.newline
 	local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
-	SaveOrigFunc("DebugPrintNL")
-	SaveOrigFunc("OutputDebugString")
-	SaveOrigFunc("AddConsoleLog") -- also does print()
-	SaveOrigFunc("assert")
-	SaveOrigFunc("printf")
-	SaveOrigFunc("error")
+	local func_names = {
+		"DebugPrintNL",
+--~ 		"DebugPrint", -- causes an error and stops games from loading
+		"OutputDebugString",
+		"AddConsoleLog", -- also does print()
+		"assert",
+		"printf",
+		"lsprintf",
+		"error",
+	}
+
+	for i = 1, #func_names do
+		SaveOrigFunc(func_names[i])
+	end
 	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
 	-- every 5s check buffer and print if anything
@@ -484,7 +492,8 @@ do -- WriteLogs_Toggle
 		end
 	end)
 
-	local function ReplaceFunc(funcname,mask)
+	local function ReplaceFunc(funcname)
+		local mask = funcname == "error" and 1
 		_G[funcname] = function(...)
 
 			-- table.concat don't work with non strings/numbers
@@ -531,21 +540,13 @@ do -- WriteLogs_Toggle
 			AsyncStringToFile("AppData/logs/Console.log"," ")
 
 			-- redirect functions
-			ReplaceFunc("DebugPrintNL")
-			ReplaceFunc("OutputDebugString")
-			ReplaceFunc("AddConsoleLog") -- also does print()
-			ReplaceFunc("assert")
-			ReplaceFunc("printf")
-			ReplaceFunc("error",1)
-			-- causes an error and stops games from loading
-			-- ReplaceFunc("DebugPrint")
+			for i = 1, #func_names do
+				ReplaceFunc(func_names[i])
+			end
 		else
-			ResetFunc("DebugPrintNL")
-			ResetFunc("OutputDebugString")
-			ResetFunc("AddConsoleLog")
-			ResetFunc("assert")
-			ResetFunc("printf")
-			ResetFunc("error")
+			for i = 1, #func_names do
+				ResetFunc(func_names[i])
+			end
 		end
 	end
 end -- do

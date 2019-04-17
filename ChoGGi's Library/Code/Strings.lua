@@ -11,7 +11,7 @@ local _InternalTranslate = _InternalTranslate
 do -- Translate
 	-- local some globals
 	local T,IsT,TGetID,count_params = T,IsT,TGetID,count_params
-	local type,select,pcall,tostring = type,select,pcall,tostring
+	local type,select,tostring = type,select,tostring
 
 	-- translate func that always returns a string
 	function ChoGGi.ComFuncs.Translate(...)
@@ -25,11 +25,11 @@ do -- Translate
 
 		local result
 		-- certain stuff will fail without this obj, so just pass it off to pcall and let it error out
-		if UICity then
+--~ 		if UICity then
 			result,str = true,_InternalTranslate(str)
-		else
-			result,str = pcall(_InternalTranslate,str)
-		end
+--~ 		else
+--~ 			result,str = pcall(_InternalTranslate,str)
+--~ 		end
 
 		-- Missing text means the string id wasn't found (generally)
 		if str == "Missing text" then
@@ -50,6 +50,38 @@ do -- Translate
 	end
 end -- do
 
+do -- fix missing tech defs description in main menu/new game
+	local fake_city = {
+		GetConstructionCost = empty_func,
+		label_modifiers = {},
+	}
+
+	local orig_BuildingInfoLine = BuildingInfoLine
+	local pcall = pcall
+
+	local function ResetFunc()
+		BuildingInfoLine = orig_BuildingInfoLine
+	end
+	-- we don't need to check once UICity exists
+	OnMsg.CityStart = ResetFunc
+	OnMsg.LoadGame = ResetFunc
+
+	function BuildingInfoLine(...)
+		-- add fake city so BuildingInfoLine doesn't fail
+		if not UICity then
+			UICity = fake_city
+		end
+
+		-- just to on the safe side (don't want to leave UICity as fake_city)
+		local result,ret = pcall(orig_BuildingInfoLine,...)
+
+		if UICity == fake_city then
+			UICity = false
+		end
+
+		return ret
+	end
+end -- do
 
 -- we need to pad some zeros
 local tonumber = tonumber

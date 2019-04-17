@@ -24,6 +24,21 @@ if not ChoGGi.testing then
 	return
 end
 
+-- skip showing loading/saving screens
+LoadingScreenOpen = empty_func
+LoadingScreenClose = empty_func
+WaitLoadingScreenClose = empty_func
+
+BaseSavingScreen.game_blocking = false
+BaseSavingScreen.HandleMouse = false
+BaseSavingScreen.transparent = true
+BaseSavingScreen.saving = false
+
+BaseLoadingScreen.game_blocking = false
+BaseLoadingScreen.HandleMouse = false
+BaseLoadingScreen.transparent = true
+BaseSavingScreen.saving = false
+
 local Translate = ChoGGi.ComFuncs.Translate
 
 --~ 	local orig_GetStack = GetStack
