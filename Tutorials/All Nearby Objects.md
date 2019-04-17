@@ -27,7 +27,7 @@ function ReturnAllNearby(radius,sort,pt)
 		-- sort nearest
 		table.sort(list,
 			function(a,b)
-				return a:GetDist2D(pt) < b:GetDist2D(pt)
+				return a:GetVisualDist(pt) < b:GetVisualDist(pt)
 			end
 		)
 	end

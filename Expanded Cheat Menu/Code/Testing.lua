@@ -888,14 +888,6 @@ print(2,"stop")
 ------------------------------------------------------------------------------------------
 
 function OnMsg.ModsReloaded()
-	if not ChoGGi.testing then
-		return
-	end
-
-	local msgs = ChoGGi.Temp.StartupMsgs
-	local print = print
-	for i = 1, #msgs do
-		print(msgs[i])
-	end
+	print(ChoGGi.ComFuncs.TableConcat(ChoGGi.Temp.StartupMsgs))
 	table.iclear(ChoGGi.Temp.StartupMsgs)
 end

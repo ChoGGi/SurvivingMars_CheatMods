@@ -959,7 +959,7 @@ do -- path markers
 			-- end is where the obj is, and start is where the dest is
 			local obj_pos = obj.GetVisualPos and obj:GetVisualPos() or obj:GetPos()
 			table_sort(path,function(a,b)
-				return obj_pos:Dist2D(a) > obj_pos:Dist2D(b)
+				return obj_pos:GetVisualDist(a) > obj_pos:GetVisualDist(b)
 			end)
 
 			-- send path off to make wp

@@ -338,7 +338,7 @@ function RCTanker:TankInteract()
 
 	local obj = self.tank_interact_obj
 	-- make sure we're "close" enough
-	if obj:GetPos():Dist2D(self:GetPos()) > self.min_dist_to_tank then
+	if obj:GetVisualDist(self:GetPos()) > self.min_dist_to_tank then
 		self.status_text = Translate(63--[[Travelling--]])
 		local nearest = obj:GetNearestSpot("idle", "Workrover", self)
 		self:Goto(obj:GetSpotPos(nearest))

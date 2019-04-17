@@ -166,32 +166,46 @@ do -- non-class obj funcs
 	-- always able to show console
 	SaveOrigFunc("ShowConsole")
 	function ShowConsole(visible,...)
-		-- ShowConsole checks for this
-		ConsoleEnabled = true
+		if visible then
+			-- ShowConsole checks for this
+			ConsoleEnabled = true
+		end
 		return ChoGGi_OrigFuncs.ShowConsole(visible,...)
 	end
 
 	-- console stuff
 	SaveOrigFunc("ShowConsoleLog")
 	function ShowConsoleLog(visible,...)
+		-- we only want to show it if:
+		visible = ChoGGi.UserSettings.ConsoleToggleHistory
+
 		-- ShowConsoleLog doesn't check for existing like ShowConsole
 		if rawget(_G, "dlgConsoleLog") then
-			dlgConsoleLog:SetVisible(visible)
+			dlgConsoleLog:SetVisible(visible,...)
 		else
 			ChoGGi_OrigFuncs.ShowConsoleLog(visible,...)
 		end
 		SetTrans(dlgConsoleLog)
 	end
 
-	-- convert popups to console text
-	SaveOrigFunc("ShowPopupNotification")
-	function ShowPopupNotification(preset, params, bPersistable, parent,...)
-		-- actually actually disable hints
-		if ChoGGi.UserSettings.DisableHints and preset == "SuggestedBuildingConcreteExtractor" then
-			return
+	do -- ShowPopupNotification
+		-- skip the notification hint suggestions
+		local suggestions = {}
+		local PopupNotificationPresets = PopupNotificationPresets
+		for key in pairs(PopupNotificationPresets) do
+			if key:sub(1,9) == "Suggested" then
+				suggestions[key] = true
+			end
 		end
-		return ChoGGi_OrigFuncs.ShowPopupNotification(preset, params, bPersistable, parent,...)
-	end
+
+		SaveOrigFunc("ShowPopupNotification")
+		function ShowPopupNotification(preset, ...)
+			if ChoGGi.UserSettings.DisableHints and suggestions[preset] then
+				return
+			end
+			return ChoGGi_OrigFuncs.ShowPopupNotification(preset, ...)
+		end
+	end -- do
 
 	-- UI transparency dialogs (buildmenu, pins, infopanel)
 	SaveOrigFunc("OpenDialog")
@@ -1051,7 +1065,7 @@ function OnMsg.ClassesBuilt()
 			SetTrans(self)
 			-- and rebuild my console buttons
 			ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(self)
-			-- show log only if console log is enabled
+			-- show log if console log is enabled
 			if UserSettings.ConsoleToggleHistory then
 				if dlgConsoleLog then
 					dlgConsoleLog:SetVisible(true)

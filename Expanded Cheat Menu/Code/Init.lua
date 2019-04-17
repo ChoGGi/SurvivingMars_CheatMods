@@ -8,6 +8,8 @@ const.nConsoleHistoryMaxSize = 100
 
 local ChoGGi = ChoGGi
 local mod = Mods[ChoGGi.id]
+
+-- blacklist hindering us?
 local blacklist = false
 if not mod.no_blacklist then
 	blacklist = true

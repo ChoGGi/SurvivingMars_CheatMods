@@ -229,7 +229,7 @@ function PortableMiner:Idle()
 	elseif g_RoverAIResearched and self.auto_mode_on then
 		self:ProcAutomation()
 	-- check if stockpile is existing and full
-  elseif not self.notworking_sign and IsValid(self.stockpile) and (self:GetDist2D(self.stockpile) >= 5000 or
+  elseif not self.notworking_sign and IsValid(self.stockpile) and (self:GetVisualDist(self.stockpile) >= 5000 or
 						self.stockpile:GetStoredAmount() < (self.auto_mode_on and pms.max_res_amount_auto or pms.max_res_amount_man)) then
     self:ShowNotWorkingSign(false)
   end
@@ -244,7 +244,7 @@ end
 
 function PortableMiner:DepositNearby()
 	local d = MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit",--]] function(o)
-		return self:GetDist2D(o) < self.mine_dist
+		return self:GetVisualDist(o) < self.mine_dist
 	end)
 
 		-- if it's concrete and there's a marker then we're good, if it's sub then check depth + tech researched
@@ -298,11 +298,11 @@ function PortableMiner:Load()
       self.stockpile = false
     end
 		-- check if a stockpile is in dist, and if it's the correct res, and not another miner's pile
-    if not self.stockpile or self:GetDist2D(self.stockpile) > 5000 or
+    if not self.stockpile or self:GetVisualDist(self.stockpile) > 5000 or
 					self.stockpile and (self.stockpile.resource ~= self.resource or self.stockpile.miner_handle ~= self.handle) then
 			-- try to get one close by
 			local stockpile = MapFindNearest(self, "map", "PortableStockpile", function(o)
-				return self:GetDist2D(o) < 5000
+				return self:GetVisualDist(o) < 5000
 			end)
 
     -- add new stockpile if none

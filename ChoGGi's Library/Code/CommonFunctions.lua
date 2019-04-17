@@ -1415,7 +1415,7 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius,sort,pt)
 	else
 		-- sort nearest
 		table_sort(list,function(a,b)
-			return a:GetDist2D(pt) < b:GetDist2D(pt)
+			return a:GetVisualDist(pt) < b:GetVisualDist(pt)
 		end)
 	end
 
@@ -2203,7 +2203,7 @@ do -- FuckingDrones (took quite a while to figure this fun one out)
 	local building
 	local function SortNearest(a,b)
 		if IsValid(a) and IsValid(b) then
-			return building:GetDist2D(a) < building:GetDist2D(b)
+			return building:GetVisualDist(a) < building:GetVisualDist(b)
 		end
 	end
 

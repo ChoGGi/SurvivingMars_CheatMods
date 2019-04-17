@@ -64,12 +64,9 @@ function PersonalShuttle:Idle()
 	Sleep(1000)
 end
 
--- meteor targeting
 function PersonalShuttle:GameInit()
---~ 	CargoShuttle.GameInit(self)
 
 	self.city = self.hub.city or UICity
---~ 	self.city:RemoveFromLabel("CargoShuttle", self)
   self.city:AddToLabel("PersonalShuttle", self)
 
 	-- gagarin likes it dark
@@ -156,8 +153,10 @@ function PersonalShuttle:GotoPos(PersonalShuttles,pos,dest)
 			return
 		elseif self.idle_time > 100 and self.old_pos == pos then
 		--
-		else
-			if self.old_dest and point(self.old_dest:x(),self.old_dest:y()):Dist2D(point(dest:x(),dest:y())) < 1000 then
+		elseif self.old_dest then
+			local ox,oy = self.old_dest:xy()
+			local x,y = dest:xy()
+			if point(ox,oy):Dist2D(point(x,y)) < 1000 then
 				if self.first_idle < 25 then
 					self.first_idle = self.first_idle + 1
 					return self.idle_time
@@ -174,7 +173,8 @@ function PersonalShuttle:GotoPos(PersonalShuttles,pos,dest)
 
 	-- check the last path point to see if it's far away (can't be bothered to make a new func that allows you to break off the path)
 	-- and if we move when we're too close it's jerky
-	local dist = pos:Dist2D(point(dest:x(),dest:y())) > 5000
+	local dest_x,dest_y = dest:xy()
+	local dist = pos:Dist2D(point(dest_x,dest_y)) > 5000
 	if dist or self.idle_time > 250 then
 		-- rest on ground
 		self.hover_height = 0
@@ -186,7 +186,7 @@ function PersonalShuttle:GotoPos(PersonalShuttles,pos,dest)
 				Sleep(250)
 				self:PlayFX("Dust", "start")
 				self:PlayFX("Waiting", "start")
-				local land = pos:SetZ(GetSurfaceHeight(pos))
+				local land = pos:SetTerrainZ()
 				self:FlyingFace(land, 2500)
 				self:SetPos(land, 4000)
 				Sleep(750)
@@ -210,7 +210,7 @@ function PersonalShuttle:GotoPos(PersonalShuttles,pos,dest)
 			-- want to be kinda random
 			local path = self:CalcPath(
 				pos,
-				point(dest:x()+Random(-2500,2500),dest:y()+Random(-2500,2500),self.hover_height)
+				point(dest_x+Random(-2500,2500),dest_y+Random(-2500,2500),self.hover_height)
 			)
 
 			if self.is_landed then
@@ -262,7 +262,7 @@ function PersonalShuttle:DropCargo(obj,pos,dest)
 	-- doesn't work if we use this with CalcPath
 	dest = HexGetNearestCenter(dest)
 	-- don't want to be floating above the ground
-	carried:SetPos(dest:SetZ(GetSurfaceHeight(dest)),2500)
+	carried:SetPos(dest:SetTerrainZ(),2500)
 
 	-- we don't want stuff looking weird (drones/rovers can move on their own)
 	if obj and obj:IsKindOf("ResourceStockpileBase") then
@@ -443,7 +443,7 @@ function PersonalShuttle:DefenceTick(already_fired)
 
 		-- get dist (added * 10 as it didn't see to target at the range of it's hex grid)
 		-- it could be from me increasing protection radius, or just how it targets meteors
-		if IsValid(obj) and self:GetVisualDist2D(obj) <= self.shoot_range * 10 then
+		if IsValid(obj) and self:GetVisualDist(obj) <= self.shoot_range * 10 then
 			-- check if tower is working
 			if not IsValid(self) or not self.working or self.destroyed then
 				return

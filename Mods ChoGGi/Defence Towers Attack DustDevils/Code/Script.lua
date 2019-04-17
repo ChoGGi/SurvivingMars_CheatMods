@@ -41,7 +41,7 @@ function OnMsg.ClassesBuilt()
 
 			-- get dist (added * 10 as it didn't see to target at the range of it's hex grid)
 			-- it could be from me increasing protection radius, or just how it targets meteors
-			if IsValid(obj) and self:GetVisualDist2D(obj) <= self.shoot_range * 10 then
+			if IsValid(obj) and self:GetVisualDist(obj) <= self.shoot_range * 10 then
 				-- make sure tower is working
 				if not IsValid(self) or not self.working or self.destroyed then
 					return

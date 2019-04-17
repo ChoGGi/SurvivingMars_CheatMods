@@ -198,7 +198,7 @@ function MarsCompanion:BoredFriend()
 		drone:SetEnumFlags(const.efCollision)
 
 		local drone_pos = drone:GetVisualPos()
-		while self:GetVisualPos():Dist2D(drone_pos) > 500 do
+		while self:GetVisualDist(drone_pos) > 500 do
 			-- keep at it
 			if not IsValid(drone) then
 				drone = FindNearest("Drone", self:GetVisualPos())

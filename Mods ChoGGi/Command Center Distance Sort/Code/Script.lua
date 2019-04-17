@@ -4,7 +4,7 @@ local table_sort = table.sort
 
 local obj_pos
 local function SortDist2D(a,b)
-	return a:GetDist2D(obj_pos) < b:GetDist2D(obj_pos)
+	return a:GetVisualDist(obj_pos) < b:GetVisualDist(obj_pos)
 end
 
 local function SortCC()
