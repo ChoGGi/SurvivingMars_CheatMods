@@ -29,8 +29,7 @@ return PlaceObj("ModDef", {
 	},
 	"lua_revision", LuaRevision or 244275,
 	"description", [[Shows the map before you load it in the select colony screen.
-Optionally show anomaly breakthroughs for that location.
-Omega breakthroughs are at best 1/3, planetary anomalies not included (maybe next update).
+Optionally show anomaly breakthroughs for each location, omega breakthroughs are at best 1/3.
 
 For those wondering: Purple = mountainous, other colours = buildable.
 

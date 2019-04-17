@@ -462,7 +462,6 @@ do -- WriteLogs_Toggle
 		"AddConsoleLog", -- also does print()
 		"assert",
 		"printf",
-		"lsprintf",
 		"error",
 	}
 

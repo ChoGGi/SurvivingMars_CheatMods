@@ -24,20 +24,19 @@ if not ChoGGi.testing then
 	return
 end
 
--- skip showing loading/saving screens
-LoadingScreenOpen = empty_func
-LoadingScreenClose = empty_func
-WaitLoadingScreenClose = empty_func
+do -- skip showing loading/saving screens
+	--~ LoadingScreenOpen = empty_func
+	--~ LoadingScreenClose = empty_func
+	WaitLoadingScreenClose = empty_func
 
-BaseSavingScreen.game_blocking = false
-BaseSavingScreen.HandleMouse = false
-BaseSavingScreen.transparent = true
-BaseSavingScreen.saving = false
-
-BaseLoadingScreen.game_blocking = false
-BaseLoadingScreen.HandleMouse = false
-BaseLoadingScreen.transparent = true
-BaseSavingScreen.saving = false
+	local cls = BaseLoadingScreen
+	cls.HandleMouse = false
+	cls.transparent = true
+	cls.ZOrder = 0
+	cls.MaxHeight = 1
+	cls.MaxWidth = 1
+	cls.FocusOnOpen = "self"
+end -- do
 
 local Translate = ChoGGi.ComFuncs.Translate
 
