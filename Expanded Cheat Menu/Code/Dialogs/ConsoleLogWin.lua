@@ -216,7 +216,7 @@ function ChoGGi_ConsoleLogWin:ScrollToBottom()
 	self.idScrollV:SetScroll(y)
 end
 
-function ChoGGi_ConsoleLogWin:Done(result)
+function ChoGGi_ConsoleLogWin:Done()
 	local ChoGGi = ChoGGi
 	-- closing means user doesn't want to see it next time (probably)
 	ChoGGi.UserSettings.ConsoleHistoryWin = false
@@ -225,7 +225,6 @@ function ChoGGi_ConsoleLogWin:Done(result)
 	-- save the dimensions
 	ChoGGi.UserSettings.ConsoleLogWin_Pos = self:GetPos()
 	ChoGGi.UserSettings.ConsoleLogWin_Size = self:GetSize()
-	ChoGGi_Window.Done(self,result)
 end
 
 dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false

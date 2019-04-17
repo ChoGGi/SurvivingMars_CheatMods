@@ -811,9 +811,9 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		local function CallBackFunc(answer)
 			if answer then
 				-- close dialogs we opened
-				dlg_list_MissionParams:Done()
-				dlg_ex_params:Done()
-				dlg_list_maps:Done()
+				dlg_list_MissionParams:Close()
+				dlg_ex_params:Close()
+				dlg_list_maps:Close()
 
 				-- cleans out missions params
 				InitNewGameMissionParams()
@@ -879,8 +879,8 @@ See the examine list for ids."--]]] .. "\n\n" .. str_hint_rules,
 		callback = CallBackFunc_LoadMapQuestion,
 		close_func = function()
 			-- close dialogs we opened
-			dlg_list_MissionParams:Done()
-			dlg_ex_params:Done()
+			dlg_list_MissionParams:Close()
+			dlg_ex_params:Close()
 		end,
 		items = item_list_MapList,
 		title = Strings[302535920000868--[[Choose Map--]]],

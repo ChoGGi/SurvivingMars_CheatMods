@@ -3,8 +3,6 @@
 local Sleep = Sleep
 
 local img = CurrentModPath .. "UI/pm_landed.png"
-local idmarker = "idMarker%s"
-local marker_name = "%s_%s"
 
 -- stores saved game spots
 local new_markers = {}
@@ -64,7 +62,7 @@ local function BuildMySpots()
 		local save = SavegamesList[i]
 		if type(save.longitude) == "number" and type(save.latitude) == "number" then
 			-- use this to build a table of locations for ease of dupe checking
-			local table_name = marker_name:format(save.latitude,save.longitude)
+			local table_name = save.latitude .. "_" .. save.longitude
 
 			-- check if this location is already added
 			if new_markers[table_name] then
@@ -78,7 +76,7 @@ local function BuildMySpots()
 				marker:SetParent(landing_dlg)
 
 				-- store new marker in our list
-				local marker_id = idmarker:format(idx)
+				local marker_id = "idMarker" .. idx
 				new_markers[table_name] = {
 					id = marker_id,
 					longitude = save.longitude,
@@ -152,7 +150,7 @@ function LandingSiteObject:DisplayCoord(pt, lat, long, lat_org, long_org)
 	if not GameState.gameplay then
 		-- is it one of ours
 		local g_CurrentMapParams = g_CurrentMapParams
-		local marker = new_markers[marker_name:format(g_CurrentMapParams.latitude,g_CurrentMapParams.longitude)]
+		local marker = new_markers[g_CurrentMapParams.latitude .. "_" .. g_CurrentMapParams.longitude]
 		if marker then
 			local text = self.dialog.idtxtCoord.text
 			self.dialog.idtxtCoord:SetText("<style ChoGGi_PlanetUISavedGamesText>" .. marker.text .. "</style>\n" .. text)

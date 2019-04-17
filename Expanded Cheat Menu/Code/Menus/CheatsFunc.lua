@@ -9,6 +9,24 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local SelObject = ChoGGi.ComFuncs.SelObject
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.UnlockBreakthroughs()
+  local function reveal(anomaly)
+    if not IsValid(anomaly) or anomaly.tech_action ~= "breakthrough" then
+      return
+    end
+    anomaly:SetRevealed(true)
+    anomaly:ScanCompleted(false)
+    DoneObject(anomaly)
+  end
+  MapForEach("map", "SubsurfaceAnomalyMarker", function(marker)
+		if marker.tech_action == "breakthrough" then
+			reveal(marker:PlaceDeposit())
+			DoneObject(marker)
+		end
+  end)
+  MapForEach("map", "SubsurfaceAnomaly", reveal)
+end
+
 function ChoGGi.MenuFuncs.LightningStrike(_,_,input)
 	local strike_pos
 	if input == "keyboard" then

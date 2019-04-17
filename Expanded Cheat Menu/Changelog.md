@@ -5,6 +5,7 @@
 - Console>Settings>Skip Undefined Globals: Stop the "Attempt to use an undefined global" msgs (it'll store a list of them you can check).
 - Cheats>Lightning Strike: Same as a strike from a dust storm.
 - ECM>Colonists>Workplaces>Outside Workplace Sanity Penalty.
+- Cheats>Research>Unlock Anomaly BreakThroughs: Unlock any breakthroughs in anomalies (not planetary ones).
 
 ### Changed:
 - Mod Upload supports batch uploading (and screenshots).

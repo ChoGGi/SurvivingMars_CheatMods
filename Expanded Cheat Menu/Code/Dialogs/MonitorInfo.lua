@@ -267,5 +267,4 @@ end
 
 function ChoGGi_MonitorInfoDlg:Done()
 	DeleteThread(self.refreshing_thread)
-	FrameWindow.Done(self)
 end

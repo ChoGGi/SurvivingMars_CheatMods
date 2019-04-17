@@ -419,7 +419,6 @@ function ChoGGi_ObjectEditorDlg:CreatePropList(obj)
 	end
 end
 
-function ChoGGi_ObjectEditorDlg:Done(result)
+function ChoGGi_ObjectEditorDlg:Done()
 	DeleteThread(self.autorefresh_thread)
-	ChoGGi_Window.Done(self,result)
 end

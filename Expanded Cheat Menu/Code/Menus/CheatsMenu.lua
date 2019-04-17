@@ -290,6 +290,16 @@ Actions[c] = {ActionName = Strings[302535920000359--[[Breakthroughs From OmegaTe
 	ActionSortKey = "2Breakthroughs From OmegaTelescope",
 }
 
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000171--[[Unlock Anomaly BreakThroughs--]]],
+	ActionMenubar = "ECM.Cheats.Research",
+	ActionId = ".Unlock Anomaly BreakThroughs",
+	ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
+	RolloverText = Strings[302535920000173--[[Unlock any breakthroughs in anomalies (not planetary ones).--]]],
+	OnAction = ChoGGi.MenuFuncs.UnlockBreakthroughs,
+	ActionSortKey = "2Unlock Anomaly BreakThroughs",
+}
+
 -- menu
 c = c + 1
 Actions[c] = {ActionName = Translate(1000162--[[Menu--]]),

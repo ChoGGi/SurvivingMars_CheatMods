@@ -1,3 +1,7 @@
+v1.0
+Added checkbox to show map location breakthroughs.
+If you close the dialog, it'll open back up.
+
 v0.9
 Requires https://steamcommunity.com/sharedfiles/filedetails/?id=1571465108
 I've added another mod that also uses these images, so sharing is caring.

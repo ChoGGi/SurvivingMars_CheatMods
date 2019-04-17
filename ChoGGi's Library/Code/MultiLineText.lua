@@ -267,19 +267,18 @@ end
 
 --
 function ChoGGi_MultiLineTextDlg:idOkayOnPress()
-	GetRootDialog(self):Done("ok",true)
+	GetRootDialog(self):Close(true)
 end
 
 --
 function ChoGGi_MultiLineTextDlg:idCancelOnPress()
-	GetRootDialog(self):Done("cancel",false)
+	GetRootDialog(self):Close(false)
 end
 
 -- goodbye everybody
-function ChoGGi_MultiLineTextDlg:Done(result,answer)
+function ChoGGi_MultiLineTextDlg:Done(result)
 	-- for dumping text from examine
 	if self.retfunc then
-		self.retfunc(answer,self.overwrite,self)
+		self.retfunc(result,self.overwrite,self)
 	end
-	ChoGGi_Window.Done(self,result)
 end

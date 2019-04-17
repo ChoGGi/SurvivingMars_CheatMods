@@ -758,7 +758,7 @@ function ChoGGi.ComFuncs.CloseDialogsECM()
 	for i = #desktop, 1, -1 do
 		local dlg = desktop[i]
 		if dlg:IsKindOf("ChoGGi_Window") then
-			dlg:Done()
+			dlg:Close()
 		end
 	end
 end

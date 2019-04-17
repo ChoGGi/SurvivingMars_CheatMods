@@ -1,3 +1,9 @@
+v0.8
+Only one mechanic will go to the each job.
+While it's on the job:
+Added a blinky.
+Increased move speed.
+
 v0.7
 Didn't repair some rovers.
 

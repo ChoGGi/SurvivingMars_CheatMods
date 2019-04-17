@@ -585,7 +585,7 @@ function Examine:idTextOnHyperLink(link, argument, hyperlink_box, pos, button)
 	end
 
 end
--- created
+-- create
 function Examine:HyperLink(obj, func, name)
 	local c = self.onclick_count
 	c = c + 1
@@ -3214,7 +3214,7 @@ local function PopupClose(name)
 	end
 end
 
-function Examine:Done(...)
+function Examine:Done()
 	local obj = self.obj_ref
 	-- stop refreshing
 	if IsValidThread(self.autorefresh_thread) then
@@ -3246,6 +3246,4 @@ function Examine:Done(...)
 	local dlgs = g_ExamineDlgs or empty_table
 	dlgs[self.obj] = nil
 	dlgs[obj] = nil
-
-	return ChoGGi_Window.Done(self,...)
 end

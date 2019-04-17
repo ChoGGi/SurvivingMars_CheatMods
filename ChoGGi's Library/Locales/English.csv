@@ -690,6 +690,8 @@ Use with <color green>%s</color> to fill up a dome with spires.",
 302535920000230,Remove Building Limits,
 302535920000231,"Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
 See also %s.",
+302535920000171,Unlock Anomaly BreakThroughs,
+302535920000173,Unlock any breakthroughs in anomalies (not planetary ones).,
 302535920001587,Lightning Strike,
 302535920001588,Strike a random pos or at mouse cursor if using shortcut.,
 302535920001580,Interrupt Supression Times,

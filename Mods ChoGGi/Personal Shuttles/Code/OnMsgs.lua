@@ -108,7 +108,7 @@ local function SpawnShuttle(hub,attacker)
 	end
 end
 
-local icon_str = CurrentModPath .. "UI/shuttle_%s.png"
+local icon_str = CurrentModPath .. "UI/shuttle_"
 local carried_str = "Carried: %s"
 
 -- add all our buttons to the selection panel
@@ -127,10 +127,10 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 		OnContextUpdate = function(self, context)
 			if context.pickup_toggle then
 				self:SetTitle([[Pickup Item]])
-				self:SetIcon(icon_str:format(2))
+				self:SetIcon(icon_str .. 2 .. ".png")
 			else
 				self:SetTitle([[Drop Item]])
-				self:SetIcon(icon_str:format(3))
+				self:SetIcon(icon_str .. 3 .. ".png")
 			end
 		end,
 		func = function(self, context)
@@ -144,7 +144,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 		__context_of_kind = "PersonalShuttle",
 		RolloverTitle = [[Carried Object]],
 		RolloverText = [[Shows name of carried object.]],
-		Icon = icon_str:format(4),
+		Icon = icon_str .. 4 .. ".png",
 		OnContextUpdate = function(self, context)
 			local obj = context.carried_obj
 			if obj then
@@ -162,7 +162,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 		Title = [[Recall Shuttle]],
 		RolloverTitle = [[Recall Shuttle]],
 		RolloverText = [[Send shuttle back to hub.]],
-		Icon = icon_str:format(3),
+		Icon = icon_str .. 3 .. ".png",
 		func = function(_, context)
 			if type(UICity.PersonalShuttles.shuttle_threads[context.handle]) == "boolean" then
 				UICity.PersonalShuttles.shuttle_threads[context.handle] = nil
@@ -182,7 +182,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 	-- spawn shuttle buttons for hub and return shuttle button
 	AddXTemplate("PersonalShuttles_SpawnButtonA","customShuttleHub",{
 		__context_of_kind = "ShuttleHub",
-		Icon = icon_str:format(3),
+		Icon = icon_str .. 3 .. ".png",
 		Title = [[Spawn Attacker]],
 		RolloverTitle = [[Spawn Attacker]],
 		RolloverText = [[Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up items (drones, rovers, res piles, and waste rock) you've selected and marked for pickup.]],
@@ -193,7 +193,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 
 	AddXTemplate("PersonalShuttles_SpawnButtonF","customShuttleHub",{
 		__context_of_kind = "ShuttleHub",
-		Icon = icon_str:format(2),
+		Icon = icon_str .. 2 .. ".png",
 		Title = [[Spawn Friend]],
 		RolloverTitle = [[Spawn Friend]],
 		RolloverText = [[Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, and pick up items (drones, rovers, res piles, and waste rock) you've selected and marked for pickup.]],
@@ -212,7 +212,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 				end
 			end
 		end,
-		Icon = icon_str:format(4),
+		Icon = icon_str .. 4 .. ".png",
 		Title = [[Recall Shuttles]],
 		RolloverTitle = [[Recall Shuttles]],
 		RolloverText = [[Recalls all personal shuttles you've spawned at this Shuttle Hub.]],
@@ -251,11 +251,11 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 			if context.PersonalShuttles_PickUpItem then
 				self:SetTitle([[Pickup Item]])
 				self:SetRolloverTitle([[Marked For Pickup]])
-				self:SetIcon(icon_str:format(2))
+				self:SetIcon(icon_str .. 2 .. ".png")
 			else
 				self:SetTitle([[Ignore Item]])
 				self:SetRolloverTitle([[Mark For Pickup]])
-				self:SetIcon(icon_str:format(1))
+				self:SetIcon(icon_str .. 1 .. ".png")
 			end
 		end,
 		func = function(self, context)

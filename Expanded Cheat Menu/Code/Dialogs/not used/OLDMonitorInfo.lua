@@ -265,5 +265,4 @@ function ChoGGi_MonitorInfoDlg:OnKbdKeyDown(_, vk)
 end
 function ChoGGi_MonitorInfoDlg:Done()
 	self.refreshing = false
-	Window.Done(self)
 end

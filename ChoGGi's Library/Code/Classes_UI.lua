@@ -64,6 +64,7 @@ DefineClass.ChoGGi_Label = {
 	VAlign = "center",
 }
 function ChoGGi_Label:SetTitle(win,title)
+	win = win or self
 	if win.prefix then
 		win.idCaption:SetText(win.prefix .. ": " .. (title or win.title or self.name or ""))
 	else
@@ -508,7 +509,9 @@ function ChoGGi_Window:AddElements()
 				g_ExternalTextEditorActiveCtrl = false
 			end
 			close(...)
-			self:Close("cancel",false)
+			-- MultiLineTextDlg?
+			self:Close(false)
+--~ 			self:Close("cancel",false)
 		end,
 --~ 		OnMouseEnter = function()
 --~ 			SetUIMouseCursor("UI/Cursors/Salvage_no.tga")
@@ -559,11 +562,9 @@ function ChoGGi_Window:AddElements()
 	self.idMoveControl:SetFocus()
 end
 
-function ChoGGi_Window:Done(result,...)
-	-- remove from dialog list
+function ChoGGi_Window:Done()
+	-- remove from my dialog list
 	g_ChoGGiDlgs[self] = nil
-
-	XWindow.Done(self,result,...)
 end
 
 function ChoGGi_Window:idCaptionImageOnMouseButtonDown(pt,button,...)
