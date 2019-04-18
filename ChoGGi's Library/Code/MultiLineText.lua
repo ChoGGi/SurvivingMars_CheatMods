@@ -81,7 +81,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		OnPress = self.idOkayOnPress,
 	}, self.idButtonContainer)
 
-	if context.checkbox then
+	if context.overwrite_check then
 		self.idOverwrite = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idOverwrite",
 			Dock = "left",

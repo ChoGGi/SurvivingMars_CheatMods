@@ -384,7 +384,7 @@ function ChoGGi.InfoFuncs.CheckForMissingCheatDes()
 	local checked = {}
 
 	local g_Classes = g_Classes
-	for key_cls,value_cls in pairs(g_Classes) do
+	for _,value_cls in pairs(g_Classes) do
 		for key_obj,value_obj in pairs(value_cls) do
 			-- skip some cls objs have a false in them, and if we've already checked it
 			-- and if it's not a func / a func with Cheat starting in the name

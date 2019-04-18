@@ -75,6 +75,8 @@ ChoGGi.Defaults = {
 	EnableToolTips = true,
 	-- append text or create a new file each dump
 	ExamineAppendDump = true,
+	-- view/dump text/object (true text, false object)
+	ExamineTextType = true,
 	-- coloured values in examine list
 	ExamineColourNum = "255 255 0",
 	ExamineColourBool = "0 255 0",

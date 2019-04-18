@@ -493,7 +493,7 @@ function Examine:ViewSourceCode()
 		code = true,
 		scrollto = info.linedefined,
 		title = Strings[302535920001519--[[View Source--]]] .. ": " .. info.source,
-		hint_ok = Strings[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
+		hint_ok = Strings[302535920000047--[["View Text/Object, and optionally dumps text to <color green>%slogs\DumpedExamine.lua</color> (may take awhile for large text)."--]]]:format(ConvertToOSPath("AppData/")),
 		custom_func = function(answer,overwrite)
 			if answer then
 				self.ChoGGi.ComFuncs.Dump("\n" .. str,overwrite,"DumpedSource","lua")
@@ -848,6 +848,20 @@ end
 --~ 	return str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>",""):gsub("%* '","'")
 --~ end
 
+function Examine:DumpExamineText(text,name,ext,overwrite)
+	name = name or "DumpedExamine"
+	ext = ext or "lua"
+
+	-- if it gets called from MultiLineTextDlg and the examine dialog was closed
+	local ChoGGi = self.ChoGGi or ChoGGi
+
+	if ChoGGi.UserSettings.ExamineAppendDump then
+		ChoGGi.ComFuncs.Dump("\n" .. text,overwrite,name,ext)
+	else
+		ChoGGi.ComFuncs.Dump(text,overwrite,name,ext,nil,true)
+	end
+end
+
 function Examine:BuildObjectMenuPopup()
 	return {
 		{name = Strings[302535920000457--[[Anim State Set--]]],
@@ -958,87 +972,73 @@ function Examine:BuildToolsMenuPopup()
 			value = "ChoGGi.UserSettings.ExamineAppendDump",
 			class = "ChoGGi_CheckButtonMenu",
 		},
-		{name = Strings[302535920000004--[[Dump--]]] .. " " .. Translate(1000145--[[Text--]]),
-			hint = Strings[302535920000046--[[dumps text to %slogs\DumpedExamine.lua--]]]:format(ConvertToOSPath("AppData/")),
-			image = "CommonAssets/UI/Menu/change_height_down.tga",
-			clicked = function()
-				local str = self:GetCleanText()
-				-- i just compare, so append doesn't really work
-				if self.ChoGGi.UserSettings.ExamineAppendDump then
-					self.ChoGGi.ComFuncs.Dump("\n" .. str,nil,"DumpedExamine","lua")
-				else
-					self.ChoGGi.ComFuncs.Dump(str,"w","DumpedExamine","lua",nil,true)
-				end
-			end,
-		},
-		{name = Strings[302535920000004--[[Dump--]]] .. " " .. Translate(298035641454--[[Object--]]),
-			hint = Strings[302535920001027--[[dumps object to %slogs\DumpedExamineObject.lua
 
-This can take time on something like the "Building" metatable--]]]:format(ConvertToOSPath("AppData/")),
-			image = "CommonAssets/UI/Menu/change_height_down.tga",
-			clicked = function()
-				local str
-				pcall(function()
-					str = ValueToLuaCode(self.obj_ref)
-				end)
-				if str then
-					if self.ChoGGi.UserSettings.ExamineAppendDump then
-						self.ChoGGi.ComFuncs.Dump("\n" .. str,nil,"DumpedExamineObject","lua")
-					else
-						self.ChoGGi.ComFuncs.Dump(str,"w","DumpedExamineObject","lua",nil,true)
-					end
+		{name = self.ChoGGi.UserSettings.ExamineTextType and Translate(1000145--[[Text--]]) or Translate(298035641454--[[Object--]]),
+			hint = Strings[302535920001620--[["Click to toggle between Viewing/Dumping the Text or Object.
+<color green>Text</color> is what you see, <color green>Object</color> is the text created from ValueToLuaCode(obj)."--]]],
+			clicked = function(_,item)
+				self.ChoGGi.UserSettings.ExamineTextType = not self.ChoGGi.UserSettings.ExamineTextType
+				self.ChoGGi.SettingFuncs.WriteSettings()
+
+				-- change this item name
+				if self.ChoGGi.UserSettings.ExamineTextType then
+					item.name = Translate(1000145--[[Text--]])
+				else
+					item.name = Translate(298035641454--[[Object--]])
 				end
 			end,
+			value = "ChoGGi.UserSettings.ExamineTextType",
+			class = "ChoGGi_CheckButtonMenu",
 		},
-		{name = Strings[302535920000048--[[View--]]] .. " " .. Translate(1000145--[[Text--]]),
-			hint = Strings[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
+
+		{name = Strings[302535920000004--[[Dump--]]],
+			hint = Strings[302535920000046--[[Dumps Text/Object to <color green>%slogs\DumpedExamine.lua</color>.--]]]:format(ConvertToOSPath("AppData/"))
+				.. "\n\n" .. Strings[302535920001027--[[Object can take time on something like the ""Building"" class object.--]]],
+			image = "CommonAssets/UI/Menu/change_height_down.tga",
+			clicked = function()
+				local str,name
+				if self.ChoGGi.UserSettings.ExamineTextType then
+					str = self:GetCleanText()
+					name = "DumpedExamineText"
+				else
+					str = ValueToLuaCode(self.obj_ref)
+					name = "DumpedExamineObject"
+				end
+				self:DumpExamineText(str,name)
+			end,
+		},
+		{name = Strings[302535920000048--[[View--]]],
+			hint = Strings[302535920000047--[["View Text/Object, and optionally dumps text to <color green>%slogs\DumpedExamine.lua</color> (may take awhile for large text)."--]]]:format(ConvertToOSPath("AppData/"))
+				.. "\n\n" .. Strings[302535920001027--[[Object can take time on something like the ""Building"" class object.--]]],
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
-				local str,scrolled_text = self:GetCleanText(true)
 				-- pure text string
 --~ 				local str = self.idText:GetText()
 
+				local str,name,scrolled_text,title
+				if self.ChoGGi.UserSettings.ExamineTextType then
+					str,scrolled_text = self:GetCleanText(true)
+					name = "DumpedExamineText"
+					title = Strings[302535920000048--[[View--]]] .. "/" .. Strings[302535920000004--[[Dump--]]] .. " " .. Translate(1000145--[[Text--]])
+				else
+					str = ValueToLuaCode(self.obj_ref)
+					name = "DumpedExamineObject"
+					title = Strings[302535920000048--[[View--]]] .. "/" .. Strings[302535920000004--[[Dump--]]] .. " " .. Translate(298035641454--[[Object--]])
+				end
+
 				self.ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 					parent = self,
-					checkbox = true,
+					overwrite_check = not not self.ChoGGi.UserSettings.ExamineAppendDump,
 					text = str,
 					scrollto = scrolled_text,
-					title = Strings[302535920000048--[[View--]]] .. "/" .. Strings[302535920000004--[[Dump--]]] .. " " .. Translate(1000145--[[Text--]]),
-					hint_ok = Strings[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
+					title = title,
+					hint_ok = Strings[302535920000047]:format(ConvertToOSPath("AppData/")),
 					custom_func = function(answer,overwrite)
 						if answer then
-							self.ChoGGi.ComFuncs.Dump("\n" .. str,overwrite,"DumpedExamine","lua")
+							self:DumpExamineText(str,name,overwrite and "w")
 						end
 					end,
 				}
-			end,
-		},
-		{name = Strings[302535920000048--[[View--]]] .. " " .. Translate(298035641454--[[Object--]]),
-			hint = Strings[302535920000049--[["View text, and optionally dumps object to %sDumpedExamineObject.lua
-
-This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]]:format(ConvertToOSPath("AppData/")),
-			image = "CommonAssets/UI/Menu/change_height_up.tga",
-			clicked = function()
-				local str
-				pcall(function()
-					str = ValueToLuaCode(self.obj_ref)
-				end)
-				if str then
-					self.ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
-						parent = self,
-						checkbox = true,
-						text = str,
-						title = Strings[302535920000048--[[View--]]] .. "/" .. Strings[302535920000004--[[Dump--]]] .. " " .. Translate(298035641454--[[Object--]]),
-						hint_ok = Strings[302535920000049--[["View text, and optionally dumps object to AppData/DumpedExamineObject.lua
-
-This can take time on something like the ""Building"" metatable (don't use this option on large text)"--]]],
-						custom_func = function(answer,overwrite)
-							if answer then
-								self.ChoGGi.ComFuncs.Dump("\n" .. str,overwrite,"DumpedExamineObject","lua")
-							end
-						end,
-					}
-				end
 			end,
 		},
 		{is_spacer = true},
@@ -1218,22 +1218,20 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 			end,
 		})
 		-- view text with tags visible
-		table.insert(list,4,{name = Strings[302535920000048--[[View--]]] .. " " .. Translate(1000145--[[Text--]]) .. " Tags",
-			hint = Strings[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
-			image = "CommonAssets/UI/Menu/change_height_up.tga",
+		table.insert(list,5,{name = Strings[302535920000048--[[View--]]] .. " Tags",
+			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
 				-- pure text string
 				local str = self.idText:GetText()
 
 				self.ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 					parent = self,
-					checkbox = true,
+					overwrite_check = not self.ChoGGi.UserSettings.ExamineAppendDump,
 					text = str,
 					title = Strings[302535920000048--[[View--]]] .. "/" .. Strings[302535920000004--[[Dump--]]] .. " " .. Translate(1000145--[[Text--]]),
-					hint_ok = Strings[302535920000047--[["View text, and optionally dumps text to %sDumpedExamine.lua (don't use this option on large text)."--]]]:format(ConvertToOSPath("AppData/")),
 					custom_func = function(answer,overwrite)
 						if answer then
-							self.ChoGGi.ComFuncs.Dump("\n" .. str,overwrite,"DumpedExamine","lua")
+							self:DumpExamineText(str,"DumpedExamine",overwrite and "w")
 						end
 					end,
 				}

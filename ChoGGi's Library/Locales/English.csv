@@ -343,6 +343,12 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook",
 302535920000870,Shows mod log msgs in an examine dialog.,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920001620,"Click to toggle between Viewing/Dumping the Text or Object.
+<color green>Text</color> is what you see, <color green>Object</color> is the text created from ValueToLuaCode(obj).",
+302535920000046,Dumps Text/Object to <color green>%slogs\DumpedExamine.lua</color>.,
+302535920000047,"View Text/Object, and optionally dumps text to <color green>%slogs\DumpedExamine.lua</color> (may take awhile for large text).",
+302535920000048,View,
+302535920001027,"Object can take time on something like the ""Building"" class object.",
 302535920001573,Spot Id,
 302535920001570,Fallback,
 302535920001563,Set amount to <color green>%s</color>.,
@@ -457,15 +463,6 @@ Press once to clear this examine, again to clear all.",
 302535920000044,Go To Text,
 302535920000045,"Scrolls down one line or scrolls between text in ""Go to text"".
 Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top.",
-302535920000046,dumps text to <color green>%slogs\DumpedExamine.lua</color>,
-302535920000047,"View text, and optionally dumps text to <color green>%slogs\DumpedExamine.lua</color> (don't use this option on large text).",
-302535920000048,View,
-302535920001027,"dumps object to <color green>%slogs\DumpedExamineObject.lua</color>
-
-This can take time on something like the ""Building"" metatable.",
-302535920000049,"View text, and optionally dumps object to <color green>%slogs\DumpedExamineObject.lua</color>
-
-This can take time on something like the ""Building"" metatable (don't use this option on large text)",
 302535920000050,Opens object in Object Editor.,
 302535920000052,"Execute code (using console for output). <color green>o</color> is whatever object is opened in examiner.
 Which you can then mess around with some more in the console.",

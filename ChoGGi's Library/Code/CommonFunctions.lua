@@ -798,7 +798,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		if item.clicked then
 			function button.OnPress(...)
 				cls.OnPress(...)
-				item.clicked(...)
+				item.clicked(...,item)
 				popup:Close()
 			end
 		elseif not item.disable then
@@ -811,7 +811,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		if item.mousedown then
 			function button.OnMouseButtonDown(...)
 				cls.OnMouseButtonDown(...)
-				item.mousedown(...)
+				item.mousedown(...,item)
 				popup:Close()
 			end
 		end
@@ -894,10 +894,10 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 					pos_func()
 				end
 				if item.mouseover then
-					item.mouseover(self, pt, child,...)
+					item.mouseover(self, pt, child,...,item)
 				end
 				if submenu_func then
-					submenu_func(self, pt, child,...)
+					submenu_func(self, pt, child,...,item)
 				end
 			end
 

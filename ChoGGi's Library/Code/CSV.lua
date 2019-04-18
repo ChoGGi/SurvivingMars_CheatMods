@@ -207,7 +207,7 @@ do -- MapData
 			local c = #csv_columns
 			for i = 1, const.BreakThroughTechsPerGame do
 				c = c + 1
-				csv_columns[c] = {"break" .. i,Translate(11451--[[Breakthrough--]]) .. " " .. i}
+				csv_columns[c] = {"break" .. i,b_str .. " " .. i}
 			end
 		end
 

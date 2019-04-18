@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local print,tostring = print,tostring
+local print = print
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local TableConcat = ChoGGi.ComFuncs.TableConcat

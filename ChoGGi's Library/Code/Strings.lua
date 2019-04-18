@@ -73,7 +73,7 @@ do -- fix missing tech defs description in main menu/new game
 		end
 
 		-- just to on the safe side (don't want to leave UICity as fake_city)
-		local result,ret = pcall(orig_BuildingInfoLine,...)
+		local _,ret = pcall(orig_BuildingInfoLine,...)
 
 		if UICity == fake_city then
 			UICity = false

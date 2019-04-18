@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local tostring,type = tostring,type
+local type = type
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Strings = ChoGGi.Strings
