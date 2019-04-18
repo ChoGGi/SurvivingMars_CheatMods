@@ -6,6 +6,20 @@ local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920000049--[[Loading Screen Log--]]],
+	ActionMenubar = "ECM.Debug",
+	ActionId = ".Loading Screen Log",
+	ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
+	RolloverText = function()
+		return ChoGGi.ComFuncs.SettingState(
+			ChoGGi.UserSettings.LoadingScreenLog,
+			Strings[302535920001621--[[Be able to see the console log (and other dialogs) during the loading screen.--]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.LoadingScreenLog_Toggle,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920001181--[[Used Terrain Textures--]]],
 	ActionMenubar = "ECM.Debug",
 	ActionId = ".Used Terrain Textures",

@@ -24,20 +24,6 @@ if not ChoGGi.testing then
 	return
 end
 
-do -- skip showing loading/saving screens
-	--~ LoadingScreenOpen = empty_func
-	--~ LoadingScreenClose = empty_func
-	WaitLoadingScreenClose = empty_func
-
-	local cls = BaseLoadingScreen
-	cls.HandleMouse = false
-	cls.transparent = true
-	cls.ZOrder = 0
-	cls.MaxHeight = 1
-	cls.MaxWidth = 1
-	cls.FocusOnOpen = "self"
-end -- do
-
 local Translate = ChoGGi.ComFuncs.Translate
 
 --~ 	local orig_GetStack = GetStack

@@ -118,12 +118,11 @@ end
 
 function ChoGGi.MenuFuncs.ToolTips_Toggle()
 	ChoGGi.UserSettings.EnableToolTips = not ChoGGi.UserSettings.EnableToolTips
+	ChoGGi.ComFuncs.SetLibraryToolTips()
+
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(
-			ChoGGi.UserSettings.EnableToolTips,
-			Strings[302535920001070--[[Restart to take effect.--]]]
-		),
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.EnableToolTips),
 		Strings[302535920001014--[[Toggle ToolTips--]]]
 	)
 end

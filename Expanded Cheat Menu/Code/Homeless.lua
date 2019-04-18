@@ -1,15 +1,21 @@
 -- See LICENSE for terms
 
--- not sure where to put this stuff?
+-- not sure where to put this stuff
 
 local Translate = ChoGGi.ComFuncs.Translate
 
--- bugfix? (got no place to put it)
+-- bugfix?
 -- got me, MapTools shouldn't be doing anything
 if not rawget(_G,"DroneDebug") then
 	DroneDebug = {}
 	DroneDebug.ShowInfo = empty_func
 end
+
+-- makes the log visible during loading/saving
+ChoGGi.ComFuncs.SetLoadingScreenLog()
+
+-- show/hide tooltips for my stuff
+ChoGGi.ComFuncs.SetLibraryToolTips()
 
 -- be too annoying to add templates to all of these manually
 XMenuEntry.RolloverTemplate = "Rollover"
@@ -37,23 +43,6 @@ XPopupMenu.DisabledBackground = dark_gray
 XPopupMenu.FocusedBackground = -11711669
 
 TextStyles.DevMenuBar.TextColor = white
-
-if not ChoGGi.UserSettings.EnableToolTips then
-	ChoGGi_Text.RolloverTemplate = ""
-	ChoGGi_TextList.RolloverTemplate = ""
-	ChoGGi_MultiLineEdit.RolloverTemplate = ""
-	ChoGGi_MoveControl.RolloverTemplate = ""
-	ChoGGi_Buttons.RolloverTemplate = ""
-	ChoGGi_Image.RolloverTemplate = ""
-	ChoGGi_ComboButton.RolloverTemplate = ""
-	ChoGGi_CheckButton.RolloverTemplate = ""
-	ChoGGi_TextInput.RolloverTemplate = ""
-	ChoGGi_List.RolloverTemplate = ""
-	ChoGGi_ListItem.RolloverTemplate = ""
-	ChoGGi_Dialog.RolloverTemplate = ""
-	ChoGGi_DialogSection.RolloverTemplate = ""
-	ChoGGi_Window.RolloverTemplate = ""
-end
 
 -- unforbid binding some keys (i left Enter and Menu, not sure what Menu is for? seems best to leave it)
 local f = ForbiddenShortcutKeys

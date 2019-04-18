@@ -7,10 +7,12 @@
 - ECM>Colonists>Workplaces>Outside Workplace Sanity Penalty.
 - Cheats>Research>Unlock Anomaly BreakThroughs: Unlock any breakthroughs in anomalies (not planetary ones).
 - Game>Export CSV>Map Data (Breakthroughs): Includes breakthrough info as well.
+- Debug>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
 
 ### Changed:
 - Mod Upload supports batch uploading (and screenshots).
 - Examine will now try to list files in mount points (ie: ~"Textures" or ~"Prefabs").
+- Merged View/Dump menu items in Examine>Tools.
 - Changed menu items to use the default ECM icon instead of something maybe vaguely related.
 - > Easier to distinguish between notifications from ECM and from SM.
 

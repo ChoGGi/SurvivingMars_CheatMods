@@ -45,7 +45,7 @@ return PlaceObj("ModDef", {
 		"Code/ReplacedFunctions.lua",
 		-- OnMsgs (most of them)
 		"Code/OnMsgs.lua",
-		-- not sure where to put this stuff?
+		-- not sure where to put this stuff
 		"Code/Homeless.lua",
 		-- used for the ged inspector and whatnot
 		"Code/GedSocket.lua",

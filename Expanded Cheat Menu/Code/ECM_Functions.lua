@@ -19,6 +19,7 @@ local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
+local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -454,7 +455,6 @@ end --do
 do -- WriteLogs_Toggle
 	local Dump = ChoGGi.ComFuncs.Dump
 	local newline = ChoGGi.newline
-	local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 	local func_names = {
 		"DebugPrintNL",
 --~ 		"DebugPrint", -- causes an error and stops games from loading
@@ -3625,5 +3625,60 @@ function ChoGGi.ComFuncs.RetObjectCapAndGrid(obj,mask)
 	elseif IsFlagSet(mask,32) and obj:IsKindOfClasses("Service","TrainingBuilding") then
 		return "visitors", obj:GetClassValue("max_visitors")
 
+	end
+end
+
+do -- SetLibraryToolTips
+	local dlgs = {
+		"ChoGGi_Text",
+		"ChoGGi_TextList",
+		"ChoGGi_MultiLineEdit",
+		"ChoGGi_MoveControl",
+		"ChoGGi_Buttons",
+		"ChoGGi_Image",
+		"ChoGGi_ComboButton",
+		"ChoGGi_CheckButton",
+		"ChoGGi_TextInput",
+		"ChoGGi_List",
+		"ChoGGi_ListItem",
+		"ChoGGi_Dialog",
+		"ChoGGi_DialogSection",
+		"ChoGGi_Window",
+	}
+	function ChoGGi.ComFuncs.SetLibraryToolTips()
+		local g = _G
+
+		local tip = ChoGGi.UserSettings.EnableToolTips and "Rollover" or ""
+		for i = 1, #dlgs do
+			g[dlgs[i]] = tip
+		end
+	end
+end -- do
+
+function ChoGGi.ComFuncs.SetLoadingScreenLog()
+	SaveOrigFunc("WaitLoadingScreenClose")
+
+	-- screws up speed buttons (and maybe other stuff)
+	-- LoadingScreenOpen = empty_func
+	-- LoadingScreenClose = empty_func
+	if ChoGGi.UserSettings.LoadingScreenLog then
+		WaitLoadingScreenClose = empty_func
+
+		local cls = BaseLoadingScreen
+		cls.HandleMouse = false
+		cls.transparent = true
+		cls.ZOrder = 0
+	else
+		WaitLoadingScreenClose = ChoGGi.OrigFuncs.WaitLoadingScreenClose
+
+		local cls = BaseLoadingScreen
+		cls.HandleMouse = true
+		cls.transparent = false
+		cls.ZOrder = 1000000000
+
+		cls = BaseSavingScreen
+		cls.HandleMouse = true
+		cls.transparent = true
+		cls.ZOrder = 1000000000
 	end
 end

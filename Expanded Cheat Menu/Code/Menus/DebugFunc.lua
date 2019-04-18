@@ -13,6 +13,17 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RandomColour = ChoGGi.ComFuncs.RandomColour
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.LoadingScreenLog_Toggle()
+	ChoGGi.UserSettings.LoadingScreenLog = not ChoGGi.UserSettings.LoadingScreenLog
+	ChoGGi.ComFuncs.SetLoadingScreenLog()
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.LoadingScreenLog),
+		Strings[302535920000049--[[Loading Screen Log--]]]
+	)
+end
+
 function ChoGGi.MenuFuncs.DeleteObject(_,_,input)
 	if input == "keyboard" then
 		ChoGGi.ComFuncs.DeleteObject()
