@@ -4276,6 +4276,8 @@ end
 
 
 do -- ToggleBldFlags
+	local skip = {"BuildingSign","GridTile"}
+
 	local function ToggleBldFlags(obj,flag)
 		local func
 		if obj:GetGameFlags(flag) == flag then
@@ -4287,7 +4289,7 @@ do -- ToggleBldFlags
 		obj[func](obj,flag)
 		if obj.ForEachAttach then
 			obj:ForEachAttach(function(a)
-				if not a:IsKindOfClasses("BuildingSign","GridTile") then
+				if not a:IsKindOfClasses(skip) then
 					a[func](a,flag)
 				end
 			end)

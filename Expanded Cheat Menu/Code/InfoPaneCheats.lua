@@ -374,6 +374,10 @@ local cheats_lookup2 = {
 	Repair = true,
 }
 
+local skip_CleanAndFix_AddDust = {"UniversalStorageDepot","WasteRockDumpSite"}
+local skip_ToggleSigns = {"SubsurfaceDeposit","SurfaceDeposit","UniversalStorageDepot","WasteRockDumpSite"}
+local skip_Empty = {"SubsurfaceDeposit","TerrainDeposit"}
+
 -- check for any cheat funcs missing the tooltip description
 function ChoGGi.InfoFuncs.CheckForMissingCheatDes()
 	local type,pairs = type,pairs
@@ -447,21 +451,21 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 				SetIcon(action,nil,"CommonAssets/UI/Menu/ToggleOcclusion.tga")
 
 			elseif aid == "CleanAndFix" then
-				if obj:IsKindOfClasses("UniversalStorageDepot","WasteRockDumpSite") then
+				if obj:IsKindOfClasses(skip_CleanAndFix_AddDust) then
 					action.ActionId = ""
 				else
 					SetHint(action,Strings[302535920001226--[[Cleans dust and removes maintenance points.--]]])
 				end
 
 			elseif aid == "AddDust" then
-				if obj:IsKindOfClasses("UniversalStorageDepot","WasteRockDumpSite") then
+				if obj:IsKindOfClasses(skip_CleanAndFix_AddDust) then
 					action.ActionId = ""
 				else
 					SetHint(action,Strings[302535920001225--[[Adds dust and maintenance points.--]]])
 				end
 
 			elseif aid == "ToggleSigns" then
-				if obj:IsKindOfClasses("SurfaceDeposit","SubsurfaceDeposit","WasteRockDumpSite","UniversalStorageDepot") then
+				if obj:IsKindOfClasses(skip_ToggleSigns) then
 					action.ActionId = ""
 				else
 					SetHint(action,Strings[302535920001223--[[Toggle any signs above %s (until state is changed).--]]]:format(name))
@@ -524,7 +528,7 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 				if obj:IsKindOf("SubsurfaceAnomaly") then
 					action.ActionId = ""
 				else
-					if obj:IsKindOfClasses("SubsurfaceDeposit","TerrainDeposit") then
+					if obj:IsKindOfClasses(skip_Empty) then
 						SetHint(action,Strings[302535920001228--[[Set the stored amount of this %s to 0.--]]]:format(name))
 					else
 						SetHint(action,Strings[302535920001230--[[Empties the storage of this building.

@@ -598,218 +598,223 @@ function OnMsg.BuildingUpgraded(obj)
 end
 
 -- :GameInit() (Msg.BuildingInit only does Building, not BaseBuilding)
-function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
-	local ChoGGi = ChoGGi
-	local UserSettings = ChoGGi.UserSettings
+do -- ChoGGi_SpawnedBaseBuilding
+	local cls_skip = {"ConstructionSite","ConstructionSiteWithHeightSurfaces"}
+	local cls_food = {"Grocery","Diner"}
+	local cls_inside_to_outside = {"Residence","Workplace","SpireBase"}
 
-	if obj:IsKindOfClasses("ConstructionSite", "ConstructionSiteWithHeightSurfaces") then
-		return
-	end
+	function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
+		local ChoGGi = ChoGGi
+		local UserSettings = ChoGGi.UserSettings
 
-	-- not working code from when tried to have passages placed in entrances
+		if obj:IsKindOfClasses(cls_skip) then
+			return
+		end
 
---~ 	-- if it's a fancy dome then we allow building in the removed entrances
---~ 	if obj:IsKindOf("Dome") then
---~ 		local id_start, id_end = obj:GetAllSpots(obj:GetState())
---~ 		for i = id_start, id_end do
---~ 			if obj:GetSpotName(i) == "Entrance" or obj:GetSpotAnnotation(i) == "att,DomeRoad_04,show" then
---~ 				print(111)
---~ 			end
---~ 		end
---~ 	end
+		-- not working code from when trying to have passages placed in entrances
+	--~ 	-- if it's a fancy dome then we allow building in the removed entrances
+	--~ 	if obj:IsKindOf("Dome") then
+	--~ 		local id_start, id_end = obj:GetAllSpots(obj:GetState())
+	--~ 		for i = id_start, id_end do
+	--~ 			if obj:GetSpotName(i) == "Entrance" or obj:GetSpotAnnotation(i) == "att,DomeRoad_04,show" then
+	--~ 				print(111)
+	--~ 			end
+	--~ 		end
+	--~ 	end
 
-	if UserSettings.CommandCenterMaxRadius and obj:IsKindOf("DroneHub") then
-		-- we set it from the func itself
-		obj:SetWorkRadius()
-
-	elseif UserSettings.ServiceWorkplaceFoodStorage and obj:IsKindOfClasses("Grocery","Diner") then
-		-- for some reason InitConsumptionRequest always adds 5 to it
-		local storedv = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage - (5 * ChoGGi.Consts.ResourceScale)
-		obj.consumption_stored_resources = storedv
-		obj.consumption_max_storage = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage
-
-	elseif UserSettings.RocketMaxExportAmount and obj:IsKindOf("SupplyRocket") then
-		obj.max_export_storage = UserSettings.RocketMaxExportAmount
-
-	elseif obj:IsKindOf("BaseRover") then
-		if UserSettings.RCTransportStorageCapacity and obj:IsKindOf("RCTransport") then
-			obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
-		elseif UserSettings.RCRoverMaxRadius and obj:IsKindOf("RCRover") then
-			-- I override the func so no need to send a value here
+		if UserSettings.CommandCenterMaxRadius and obj:IsKindOf("DroneHub") then
+			-- we set it from the func itself
 			obj:SetWorkRadius()
+
+		elseif UserSettings.ServiceWorkplaceFoodStorage and obj:IsKindOfClasses(cls_food) then
+			-- for some reason InitConsumptionRequest always adds 5 to it
+			local storedv = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage - (5 * ChoGGi.Consts.ResourceScale)
+			obj.consumption_stored_resources = storedv
+			obj.consumption_max_storage = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage
+
+		elseif UserSettings.RocketMaxExportAmount and obj:IsKindOf("SupplyRocket") then
+			obj.max_export_storage = UserSettings.RocketMaxExportAmount
+
+		elseif obj:IsKindOf("BaseRover") then
+			if UserSettings.RCTransportStorageCapacity and obj:IsKindOf("RCTransport") then
+				obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
+			elseif UserSettings.RCRoverMaxRadius and obj:IsKindOf("RCRover") then
+				-- I override the func so no need to send a value here
+				obj:SetWorkRadius()
+			end
+
+			-- applied to all rovers
+			if UserSettings.SpeedRC then
+				obj:SetMoveSpeed(UserSettings.SpeedRC)
+			end
+			if UserSettings.GravityRC then
+				obj:SetGravity(UserSettings.GravityRC)
+			end
+
+		elseif obj:IsKindOf("CargoShuttle") then
+			if UserSettings.StorageShuttle then
+				obj.max_shared_storage = UserSettings.StorageShuttle
+			end
+			if UserSettings.SpeedShuttle then
+				obj.move_speed = UserSettings.SpeedShuttle
+			end
+
+		elseif UserSettings.StorageUniversalDepot and obj:GetEntity() == "StorageDepot" and obj:IsKindOf("UniversalStorageDepot") then
+			obj.max_storage_per_resource = UserSettings.StorageUniversalDepot
+
+		elseif UserSettings.StorageMechanizedDepot and obj:IsKindOf("MechanizedDepot") then
+			obj.max_storage_per_resource = UserSettings.StorageMechanizedDepot
+
+		elseif UserSettings.StorageWasteDepot and obj:IsKindOf("WasteRockDumpSite") then
+			obj.max_amount_WasteRock = UserSettings.StorageWasteDepot
+			if obj:GetStoredAmount() < 0 then
+				obj:CheatEmpty()
+				obj:CheatFill()
+			end
+
+		elseif UserSettings.ShuttleHubFuelStorage and obj.class:find("ShuttleHub") then
+			obj.consumption_max_storage = UserSettings.ShuttleHubFuelStorage
+
+		elseif UserSettings.SchoolTrainAll and obj.class:find("School") then
+			for i = 1, #ChoGGi.Tables.PositiveTraits do
+				obj:SetTrait(i,ChoGGi.Tables.PositiveTraits[i])
+			end
+
+		elseif UserSettings.SanatoriumCureAll and obj.class:find("Sanatorium") then
+			for i = 1, #ChoGGi.Tables.NegativeTraits do
+				obj:SetTrait(i,ChoGGi.Tables.NegativeTraits[i])
+			end
+
+		end -- end of elseif
+
+		if UserSettings.StorageMechanizedDepotsTemp and obj:IsKindOf("ResourceStockpileLR") and obj.parent:IsKindOf("MechanizedDepot") then
+			-- attached temporary resource depots
+			ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj.parent)
 		end
 
-		-- applied to all rovers
-		if UserSettings.SpeedRC then
-			obj:SetMoveSpeed(UserSettings.SpeedRC)
-		end
-		if UserSettings.GravityRC then
-			obj:SetGravity(UserSettings.GravityRC)
-		end
-
-	elseif obj:IsKindOf("CargoShuttle") then
-		if UserSettings.StorageShuttle then
-			obj.max_shared_storage = UserSettings.StorageShuttle
-		end
-		if UserSettings.SpeedShuttle then
-			obj.move_speed = UserSettings.SpeedShuttle
-		end
-
-	elseif UserSettings.StorageUniversalDepot and obj:GetEntity() == "StorageDepot" and obj:IsKindOf("UniversalStorageDepot") then
-		obj.max_storage_per_resource = UserSettings.StorageUniversalDepot
-
-	elseif UserSettings.StorageMechanizedDepot and obj:IsKindOf("MechanizedDepot") then
-		obj.max_storage_per_resource = UserSettings.StorageMechanizedDepot
-
-	elseif UserSettings.StorageWasteDepot and obj:IsKindOf("WasteRockDumpSite") then
-		obj.max_amount_WasteRock = UserSettings.StorageWasteDepot
-		if obj:GetStoredAmount() < 0 then
-			obj:CheatEmpty()
-			obj:CheatFill()
-		end
-
-	elseif UserSettings.ShuttleHubFuelStorage and obj.class:find("ShuttleHub") then
-		obj.consumption_max_storage = UserSettings.ShuttleHubFuelStorage
-
-	elseif UserSettings.SchoolTrainAll and obj.class:find("School") then
-		for i = 1, #ChoGGi.Tables.PositiveTraits do
-			obj:SetTrait(i,ChoGGi.Tables.PositiveTraits[i])
-		end
-
-	elseif UserSettings.SanatoriumCureAll and obj.class:find("Sanatorium") then
-		for i = 1, #ChoGGi.Tables.NegativeTraits do
-			obj:SetTrait(i,ChoGGi.Tables.NegativeTraits[i])
-		end
-
-	end -- end of elseif
-
-	if UserSettings.StorageMechanizedDepotsTemp and obj:IsKindOf("ResourceStockpileLR") and obj.parent:IsKindOf("MechanizedDepot") then
-		-- attached temporary resource depots
-		ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj.parent)
-	end
-
-	-- if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
-	if obj:IsKindOfClasses("Residence","Workplace","SpireBase") then
-		-- seems to need a delay in DA
-		CreateRealTimeThread(function()
-			Sleep(100)
-			ChoGGi.ComFuncs.AttachToNearestDome(obj)
-		end)
-	end
-
-	if UserSettings.StorageOtherDepot then
-		if (obj:GetEntity() ~= "StorageDepot" and obj:IsKindOf("UniversalStorageDepot")) or obj:IsKindOf("MysteryDepot") then
-			obj.max_storage_per_resource = UserSettings.StorageOtherDepot
-		elseif UserSettings.StorageOtherDepot and obj:IsKindOf("BlackCubeDumpSite") then
-			obj.max_amount_BlackCube = UserSettings.StorageOtherDepot
-		end
-	end
-
-	if UserSettings.InsideBuildingsNoMaintenance and obj:IsKindOf("Constructable") then
-		obj.ChoGGi_InsideBuildingsNoMaintenance = true
-		obj.maintenance_build_up_per_hr = -10000
-	end
-
-	if UserSettings.RemoveMaintenanceBuildUp and obj:IsKindOf("RequiresMaintenance") then
-		obj.ChoGGi_RemoveMaintenanceBuildUp = true
-		obj.maintenance_build_up_per_hr = -10000
-	end
-
-	-- saved building settings
-	local bs = UserSettings.BuildingSettings[obj.template_name]
-	if type(bs) == "table" then
-		if next(bs) then
-			-- saved settings for capacity, shuttles
-			if bs.capacity then
-				if obj.base_capacity then
-					obj.capacity = bs.capacity
-				elseif obj.base_air_capacity then
-					obj.air_capacity = bs.capacity
-				elseif obj.base_water_capacity then
-					obj.water_capacity = bs.capacity
-				elseif obj.base_max_shuttles then
-					obj.max_shuttles = bs.capacity
-				end
-			end
-			-- max visitors
-			if bs.visitors and obj.base_max_visitors then
-				obj.max_visitors = bs.visitors
-			end
-			-- max workers
-			if bs.workers then
-				obj.max_workers = bs.workers
-			end
-			-- no power needed
-			if bs.nopower then
-				ChoGGi.ComFuncs.RemoveBuildingElecConsump(obj)
-			end
-			if bs.noair then
-				ChoGGi.ComFuncs.RemoveBuildingAirConsump(obj)
-			end
-			if bs.nowater then
-				ChoGGi.ComFuncs.RemoveBuildingWaterConsump(obj)
-			end
-			-- large protect_range for defence buildings
-			if bs.protect_range then
-				obj.protect_range = bs.protect_range
-				obj.shoot_range = bs.protect_range * guim
-			end
-			-- fully auto building
-			if bs.auto_performance then
-				obj.max_workers = 0
-				obj.automation = 1
-				obj.auto_performance = bs.auto_performance
-			end
-			-- legacy setting
-			if bs.performance then
-				obj.max_workers = 0
-				obj.automation = 1
-				obj.auto_performance = bs.performance
-			end
-			-- just perf boost
-			if bs.performance_notauto then
-				obj.performance = bs.performance_notauto
-			end
-			-- space ele export amount
-			if bs.max_export_storage then
-				obj.max_export_storage = bs.max_export_storage
-			end
-			-- space ele import amount
-			if bs.cargo_capacity then
-				obj.cargo_capacity = bs.cargo_capacity
-			end
-			-- service comforts
-			if bs.service_stats and next(bs.service_stats) then
-				ChoGGi.ComFuncs.UpdateServiceComfortBld(obj,bs.service_stats)
-			end
-			-- training points
-			if bs.evaluation_points then
-				obj.evaluation_points = bs.evaluation_points
-			end
-			-- need to wait a sec for the grid objects to be created
+		-- if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
+		if obj:IsKindOfClasses(cls_inside_to_outside) then
+			-- seems to need a delay in DA
 			CreateRealTimeThread(function()
-				-- dis/charge rates
-				local prod_type = obj.GetStoredAir and "air" or obj.GetStoredWater and "water" or obj.GetStoredPower and "electricity"
-				while not obj[prod_type] do
-					Sleep(100)
-				end
-				if bs.charge then
-					obj[prod_type].max_charge = bs.charge
-					obj["max_" .. prod_type .. "_charge"] = bs.charge
-				end
-				if bs.discharge then
-					obj[prod_type].max_discharge = bs.discharge
-					obj["max_" .. prod_type .. "_discharge"] = bs.discharge
-				end
+				Sleep(100)
+				ChoGGi.ComFuncs.AttachToNearestDome(obj)
 			end)
-
-		else
-			-- empty table so remove
-			UserSettings.BuildingSettings[obj.template_name] = nil
 		end
-	end
 
-end --OnMsg
+		if UserSettings.StorageOtherDepot then
+			if (obj:GetEntity() ~= "StorageDepot" and obj:IsKindOf("UniversalStorageDepot")) or obj:IsKindOf("MysteryDepot") then
+				obj.max_storage_per_resource = UserSettings.StorageOtherDepot
+			elseif UserSettings.StorageOtherDepot and obj:IsKindOf("BlackCubeDumpSite") then
+				obj.max_amount_BlackCube = UserSettings.StorageOtherDepot
+			end
+		end
+
+		if UserSettings.InsideBuildingsNoMaintenance and obj:IsKindOf("Constructable") then
+			obj.ChoGGi_InsideBuildingsNoMaintenance = true
+			obj.maintenance_build_up_per_hr = -10000
+		end
+
+		if UserSettings.RemoveMaintenanceBuildUp and obj:IsKindOf("RequiresMaintenance") then
+			obj.ChoGGi_RemoveMaintenanceBuildUp = true
+			obj.maintenance_build_up_per_hr = -10000
+		end
+
+		-- saved building settings
+		local bs = UserSettings.BuildingSettings[obj.template_name]
+		if type(bs) == "table" then
+			if next(bs) then
+				-- saved settings for capacity, shuttles
+				if bs.capacity then
+					if obj.base_capacity then
+						obj.capacity = bs.capacity
+					elseif obj.base_air_capacity then
+						obj.air_capacity = bs.capacity
+					elseif obj.base_water_capacity then
+						obj.water_capacity = bs.capacity
+					elseif obj.base_max_shuttles then
+						obj.max_shuttles = bs.capacity
+					end
+				end
+				-- max visitors
+				if bs.visitors and obj.base_max_visitors then
+					obj.max_visitors = bs.visitors
+				end
+				-- max workers
+				if bs.workers then
+					obj.max_workers = bs.workers
+				end
+				-- no power needed
+				if bs.nopower then
+					ChoGGi.ComFuncs.RemoveBuildingElecConsump(obj)
+				end
+				if bs.noair then
+					ChoGGi.ComFuncs.RemoveBuildingAirConsump(obj)
+				end
+				if bs.nowater then
+					ChoGGi.ComFuncs.RemoveBuildingWaterConsump(obj)
+				end
+				-- large protect_range for defence buildings
+				if bs.protect_range then
+					obj.protect_range = bs.protect_range
+					obj.shoot_range = bs.protect_range * guim
+				end
+				-- fully auto building
+				if bs.auto_performance then
+					obj.max_workers = 0
+					obj.automation = 1
+					obj.auto_performance = bs.auto_performance
+				end
+				-- legacy setting
+				if bs.performance then
+					obj.max_workers = 0
+					obj.automation = 1
+					obj.auto_performance = bs.performance
+				end
+				-- just perf boost
+				if bs.performance_notauto then
+					obj.performance = bs.performance_notauto
+				end
+				-- space ele export amount
+				if bs.max_export_storage then
+					obj.max_export_storage = bs.max_export_storage
+				end
+				-- space ele import amount
+				if bs.cargo_capacity then
+					obj.cargo_capacity = bs.cargo_capacity
+				end
+				-- service comforts
+				if bs.service_stats and next(bs.service_stats) then
+					ChoGGi.ComFuncs.UpdateServiceComfortBld(obj,bs.service_stats)
+				end
+				-- training points
+				if bs.evaluation_points then
+					obj.evaluation_points = bs.evaluation_points
+				end
+				-- need to wait a sec for the grid objects to be created
+				CreateRealTimeThread(function()
+					-- dis/charge rates
+					local prod_type = obj.GetStoredAir and "air" or obj.GetStoredWater and "water" or obj.GetStoredPower and "electricity"
+					while not obj[prod_type] do
+						Sleep(100)
+					end
+					if bs.charge then
+						obj[prod_type].max_charge = bs.charge
+						obj["max_" .. prod_type .. "_charge"] = bs.charge
+					end
+					if bs.discharge then
+						obj[prod_type].max_discharge = bs.discharge
+						obj["max_" .. prod_type .. "_discharge"] = bs.discharge
+					end
+				end)
+
+			else
+				-- empty table so remove
+				UserSettings.BuildingSettings[obj.template_name] = nil
+			end
+		end
+
+	end --OnMsg
+end -- do
 
 function OnMsg.Demolished(obj)
 	local UICity = UICity
@@ -1249,27 +1254,12 @@ do -- LoadGame/CityStart
 			end
 		end
 
-		--add custom lightmodel
-		local lm = LightmodelPresets
-		if type(lm.ChoGGi_Custom and lm.ChoGGi_Custom.delete) == "function" then
-			lm.ChoGGi_Custom:delete()
-		end
-
-		-- we have to copy the table, so :new doesn't replace my saved settings
-		local temp_lm
-		if UserSettings.LightmodelCustom then
-			temp_lm = table.copy(UserSettings.LightmodelCustom)
-		else
-			temp_lm = table.copy(ChoGGi.Consts.LightmodelCustom)
-		end
-		lm.ChoGGi_Custom = LightmodelPreset:new(temp_lm)
-
 		-- if there's a lightmodel name saved
 		if UserSettings.Lightmodel then
 			SetLightmodelOverride(1,UserSettings.Lightmodel)
 		end
 
-		--long arsed cables
+		-- long arsed cables
 		if UserSettings.UnlimitedConnectionLength then
 			g_Classes.GridConstructionController.max_hex_distance_to_allow_build = 1000
 			const.PassageConstructionGroupMaxSize = 1000

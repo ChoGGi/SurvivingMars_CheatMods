@@ -76,8 +76,9 @@ function ChoGGi.MenuFuncs.RocketCrashesGameOnLanding()
 end
 
 function ChoGGi.MenuFuncs.ToggleWorkingAll()
+	local skips = {"OrbitalProbe","ResourceStockpile","WasteRockStockpile","BaseRover"}
 	MapForEach("map","BaseBuilding",function(o)
-		if type(o.ToggleWorking) == "function" and not o:IsKindOfClasses("OrbitalProbe","ResourceStockpile","WasteRockStockpile","BaseRover") then
+		if type(o.ToggleWorking) == "function" and not o:IsKindOfClasses(skips) then
 			ToggleWorking(o)
 		end
 	end)

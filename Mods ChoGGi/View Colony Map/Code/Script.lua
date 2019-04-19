@@ -49,10 +49,11 @@ function FillRandomMapProps(gen, params, ...)
 end
 
 -- kill off image dialogs
+local cls_kill = {"ChoGGi_VCM_MapImageDlg","ChoGGi_VCM_ExtraInfoDlg"}
 function OnMsg.ChangeMapDone()
 	local term = terminal.desktop
 	for i = #term, 1, -1 do
-		if term[i]:IsKindOfClasses("ChoGGi_VCM_MapImageDlg","ChoGGi_VCM_ExtraInfoDlg") then
+		if term[i]:IsKindOfClasses(cls_kill) then
 			term[i]:Close()
 		end
 	end

@@ -129,6 +129,9 @@ DefineClass.RCTanker = {
 
 	-- show the pin info
 	pin_rollover = T(0,"<ui_command>"),
+
+	-- skip anything else
+	cls_storage = {"AirStorage","WaterStorage"},
 }
 
 function RCTanker:Init()
@@ -269,7 +272,7 @@ function RCTanker:RetInteractInfo(obj)
 
 			-- 0 all good
 			return 0
-		elseif obj:IsKindOfClasses("AirStorage","WaterStorage") and not res_obj then
+		elseif obj:IsKindOfClasses(self.cls_storage) and not res_obj then
 			-- 2 tank but wrong tank type
 			return 2
 		end

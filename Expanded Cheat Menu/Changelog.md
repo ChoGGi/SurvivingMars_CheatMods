@@ -8,6 +8,8 @@
 - Cheats>Research>Unlock Anomaly BreakThroughs: Unlock any breakthroughs in anomalies (not planetary ones).
 - Game>Export CSV>Map Data (Breakthroughs): Includes breakthrough info as well.
 - Debug>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
+- ECM>Game>Lightmodel>List Normal: Changes the list of lightmodels to use (night/day/etc).
+- ECM>Game>Lightmodel>List Disaster: Overrides List Normal.
 
 ### Changed:
 - Mod Upload supports batch uploading (and screenshots).
@@ -28,6 +30,7 @@
 - > Object>Entity Spots Toggle wasn't keeping spots properly.
 
 ### Removed:
+- Game>Light Model Custom: Use the Mod Editor's editor.
 HelperMod: You can get it from [Github](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Startup%20HelperMod)
 - > I'm also going to be uploading ECM/Lib as packed mods for steam.
 

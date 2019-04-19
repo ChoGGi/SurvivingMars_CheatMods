@@ -207,14 +207,6 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 		}, self.idFilterArea)
 	end
 
-	-- make checkbox work like a button
-	if self.custom_type == 5 then
-		function self.idCheckBox2.OnChange()
-			-- show lightmodel lists and lets you pick one to use in new window
-			ChoGGi.MenuFuncs.ChangeLightmodel()
-		end
-	end
-
 	if self.custom_type ~= 7 then
 
 		self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
@@ -316,7 +308,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	self:BuildList()
 
 	-- add the colour picker
-	if self.custom_type == 2 or self.custom_type == 5 then
+	if self.custom_type == 2 then
 		-- keep all colour elements in here for easier... UIy stuff
 		self.idColourContainer = g_Classes.ChoGGi_DialogSection:new({
 			Id = "idColourContainer",
@@ -839,8 +831,6 @@ function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged(colour)
 	-- colour selector
 	if self.custom_type == 2 then
 		self:UpdateColour()
-	elseif self.custom_type == 5 then
-		self:BuildAndApplyLightmodel()
 	end
 end
 
@@ -874,16 +864,6 @@ function ChoGGi_ListChoiceDlg:idListOnSelect(button)
 	if self.custom_type == 2 then
 		-- move the colour picker circle
 		self:UpdateColourPicker(self.sel.text)
-	-- don't show picker unless it's a colour setting (browsing lightmodel)
-	elseif self.custom_type == 5 then
-		if self.sel.editor == "color" then
-			self:SetWidth(800)
-			self:UpdateColourPicker(self.sel.text)
-			self.idColourContainer:SetVisible(true)
-		else
-			self:SetWidth(self.dialog_width_scaled)
-			self.idColourContainer:SetVisible(false)
-		end
 	end
 end
 
@@ -912,37 +892,18 @@ function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(_,button)
 			self.idOK.OnPress()
 		end
 	elseif button == "R" then
-		-- does stuff without closing list
-		if self.custom_type == 5 then
-			self:BuildAndApplyLightmodel()
-		elseif self.custom_type == 6 and self.custom_func then
+		-- do stuff without closing list
+		if self.custom_type == 6 and self.custom_func then
 			self.custom_func(self.sel.func or self.sel.value,self)
 		elseif self.custom_type == 8 and self.custom_func then
 			-- make sure we send back the checks with it
 			local choices = {self.sel}
 			self:UpdateReturnedItem(choices)
 			self.custom_func(choices,self)
---~ 			self.custom_func({self.sel},self)
 		elseif self.idEditValue then
 			self.idEditValue:SetText(self.sel.text)
 		end
 	end
-end
-
-function ChoGGi_ListChoiceDlg:BuildAndApplyLightmodel()
-	-- update list item settings table
-	self:GetAllItems()
-	-- remove defaults
-	local model_table = {}
-	for i = 1, #self.choices do
-		if self.choices[i].value ~= self.choices[i].default then
-			model_table[self.choices[i].sort] = self.choices[i].value
-		end
-	end
-	-- rebuild it
-	LightmodelPresets.ChoGGi_Custom = LightmodelPreset:new(model_table)
-	-- and temp apply
-	SetLightmodel(1,"ChoGGi_Custom")
 end
 
 -- update colour

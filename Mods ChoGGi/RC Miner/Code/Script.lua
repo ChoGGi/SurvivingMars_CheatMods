@@ -106,6 +106,9 @@ DefineClass.PortableMiner = {
 	notworking_sign = false,
 	-- refund res
 	on_demolish_resource_refund = { Metals = 20 * const.ResourceScale, MachineParts = 20 * const.ResourceScale , Electronics = 10 * const.ResourceScale },
+
+	-- skip anything else
+	cls_metal = {"SubsurfaceDepositPreciousMetals","SubsurfaceDepositMetals"},
 }
 
 DefineClass.PortableMinerBuilding = {
@@ -180,7 +183,7 @@ function PortableMiner:ProcAutomation()
 	local unreachable_objects = self:GetUnreachableObjectsTable()
 	local deposit = MapFindNearest(self, "map", "TerrainDepositConcrete", "SubsurfaceDepositPreciousMetals", "SubsurfaceDepositMetals",function(d)
 		if d:IsKindOf("TerrainDepositConcrete") and d:GetDepositMarker() or
-				(d:IsKindOfClasses("SubsurfaceDepositPreciousMetals","SubsurfaceDepositMetals") and
+				(d:IsKindOfClasses(self.cls_metal) and
 				(d.depth_layer < 2 or UICity:IsTechResearched("DeepMetalExtraction"))) then
 			return not unreachable_objects[d]
 		end
@@ -249,7 +252,7 @@ function PortableMiner:DepositNearby()
 
 		-- if it's concrete and there's a marker then we're good, if it's sub then check depth + tech researched
 	if d and (d:IsKindOf("TerrainDepositConcrete") and d:GetDepositMarker() or
-					(d:IsKindOfClasses("SubsurfaceDepositPreciousMetals","SubsurfaceDepositMetals") and
+					(d:IsKindOfClasses(self.cls_metal) and
 					(d.depth_layer < 2 or UICity:IsTechResearched("DeepMetalExtraction")))) then
 		-- let miner know what kind we're mining
 		self.resource = d.resource
@@ -411,7 +414,7 @@ function PortableMiner:DigErUp(pms)
 
 --[[
 	-- stupid surface deposits
-	if self.nearby_deposits[1]:IsKindOfClasses("SurfaceDepositGroup","SurfaceDepositMetals","SurfaceDepositConcrete","SurfaceDepositPolymers") then
+	if self.nearby_deposits[1]:IsKindOfClasses{"SurfaceDepositGroup","SurfaceDepositMetals","SurfaceDepositConcrete","SurfaceDepositPolymers"} then
 		local res = self.nearby_deposits[1]
 		res = res.group and res.group[1] or res
 		-- get one with amounts

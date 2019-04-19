@@ -651,7 +651,7 @@ Actions[c] = {ActionName = Translate(911432559058--[[Light model--]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000625--[[Light Model--]]],
+Actions[c] = {ActionName = Translate(911432559058--[[Light model--]]),
 	ActionMenubar = "ECM.Game.Lightmodel",
 	ActionId = ".Light Model",
 	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
@@ -665,14 +665,33 @@ Actions[c] = {ActionName = Strings[302535920000625--[[Light Model--]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000627--[[Light Model Custom--]]],
+Actions[c] = {ActionName = Strings[302535920001623--[[List Normal--]]],
 	ActionMenubar = "ECM.Game.Lightmodel",
-	ActionId = ".Light Model Custom",
-	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
+	ActionId = ".List Normal",
+	ActionIcon = "CommonAssets/UI/Menu/CountPointLights.tga",
 	RolloverText = function()
-		-- it can get large, so for this one we stick the description first.
-		return Strings[302535920000628--[["Make a custom lightmodel and save it to settings. You still need to use ""Change Light Model"" for permanent."--]]]
-			.. "\n<color 100 255 100>" .. ValueToLuaCode(ChoGGi.UserSettings.LightmodelCustom) .. "</color>"
+		return ChoGGi.ComFuncs.SettingState(
+			NormalLightmodelList,
+			Strings[302535920001624--[[Changes the list of lightmodels to use (night/day/etc).--]]]
+		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.EditLightmodelCustom,
+	setting_func = SetNormalLightmodelList,
+	setting_title = Strings[302535920001623--[[List Normal--]]],
+	OnAction = ChoGGi.MenuFuncs.ChangeLightmodelList,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001625--[[List Disaster--]]],
+	ActionMenubar = "ECM.Game.Lightmodel",
+	ActionId = ".List Disaster",
+	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
+	RolloverText = function()
+		return ChoGGi.ComFuncs.SettingState(
+			DisasterLightmodelList,
+			Strings[302535920001626--[[Overrides List Normal.--]]]
+		)
+	end,
+	setting_func = SetDisasterLightmodelList,
+	setting_title = Strings[302535920001625--[[List Disaster--]]],
+	OnAction = ChoGGi.MenuFuncs.ChangeLightmodelList,
 }

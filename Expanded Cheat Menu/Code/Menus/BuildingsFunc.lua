@@ -804,7 +804,7 @@ end
 
 function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 	local obj = SelectedObj
-	if not obj or obj and not obj:IsKindOfClasses("ElectricityStorage","AirStorage","WaterStorage") then
+	if not obj or obj and not obj:IsKindOfClasses{"ElectricityStorage","AirStorage","WaterStorage"} then
 		MsgPopup(
 			Strings[302535920000122--[[You need to select something that has capacity (air/water/elec).--]]],
 			Strings[302535920000188--[[Set Charge & Discharge Rates--]]]
@@ -991,7 +991,7 @@ end
 
 function ChoGGi.MenuFuncs.SetProductionAmount()
 	local obj = SelectedObj
-	if not obj or obj and not obj:IsKindOfClasses("WaterProducer","AirProducer","ElectricityProducer","ResourceProducer") then
+	if not obj or obj and not obj:IsKindOfClasses{"WaterProducer","AirProducer","ElectricityProducer","ResourceProducer"} then
 		MsgPopup(
 			Strings[302535920000136--[[Select something that produces (air,water,electricity,other).--]]],
 			Strings[302535920000194--[[Production Amount Set--]]]

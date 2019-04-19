@@ -416,6 +416,7 @@ local function BuildAddToList(dlg,obj)
 	ChoGGi.ComFuncs.PopupToggle(dlg,"idBuildingStatesMenuPopup_Add",popup,"left")
 end
 
+local cls_skip = {"SupplyRocket","ExplorableObject","UniversalStorageDepot"}
 function OnMsg.ClassesBuilt()
 	-- hud button
 	local xt = ChoGGi.ComFuncs.RetHudButton("idRight")
@@ -458,11 +459,7 @@ function OnMsg.ClassesBuilt()
 			"ChoGGi_Template_BuildingStates", true,
 			"__context_of_kind", "Building",
       "__condition", function(parent, context)
-        return not IsKindOfClasses(context,
-					"SupplyRocket",
-					"ExplorableObject",
-					"UniversalStorageDepot"
-				)
+        return not context:IsKindOfClasses(cls_skip)
       end,
 			"__template", "InfopanelSection",
 			"Icon", "UI/Icons/Sections/dome.tga",

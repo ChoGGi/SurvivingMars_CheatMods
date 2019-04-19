@@ -11,6 +11,60 @@ local RetHint = ChoGGi.ComFuncs.RetHint
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 
+function ChoGGi.MenuFuncs.ChangeLightmodelList(action)
+	local setting_func = action.setting_func
+	local setting_title = action.setting_title
+
+	local item_list = {}
+	local c = 0
+
+	local LightmodelLists = LightmodelLists
+	for key in pairs(LightmodelLists) do
+		if key == "TheMartian" then
+			c = c + 1
+			item_list[c] = {text = " " .. key,value = key,hint = Translate(1000121--[[Default--]])}
+		elseif key ~= "*" then
+			c = c + 1
+			item_list[c] = {text = key,value = key}
+		end
+	end
+	-- only disaster can be false
+	if setting_title == Strings[302535920001625--[[List Disaster--]]] then
+		c = c + 1
+		item_list[c] = {text = " " .. Strings[302535920001084--[[Reset--]]],value = false}
+	end
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		choice = choice[1]
+
+		if type(choice.value) == "string" or choice.value == false then
+			setting_func(choice.value)
+
+			MsgPopup(
+				ChoGGi.ComFuncs.SettingState(choice.text,Strings[302535920000769--[[Selected--]]]),
+				setting_title
+			)
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = setting_title,
+		hint = Strings[302535920001627--[[This is only visual; this won't affect the game state (unless something uses the list to check).--]]]
+			.. "\n\n" .. Strings[302535920000106--[[Current--]]] .. ": " .. tostring(GetCurrentLightmodelList()),
+		custom_type = 6,
+		custom_func = function(value)
+			if type(value) == "string" then
+				setting_func(value)
+			end
+		end,
+	}
+end
+
 function ChoGGi.MenuFuncs.ReloadMap()
 	local function CallBackFunc(answer)
 		if answer then
@@ -1056,135 +1110,16 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 	}
 end
 
-function ChoGGi.MenuFuncs.EditLightmodelCustom(name)
-	-- if fired from action menu
-	if IsKindOf(name,"XAction") then
-		name = nil
-	end
-
+function ChoGGi.MenuFuncs.ChangeLightmodel()
 	local item_list = {}
 	local c = 0
 
-	-- always load defaults, then override with custom settings so list is always full
-	local help_str = Translate(487939677892--[[Help--]])
-	local default_str = Translate(1000121--[[Default--]])
-	local min_str = Strings[302535920000110--[[Min--]]]
-	local max_str = Strings[302535920000941--[[Max--]]]
-	local scale_str = Translate(1000081--[[Scale--]])
-	local defs = LightmodelPreset:GetProperties()
-	for i = 1, #defs do
-		local def = defs[i]
-		if def.editor ~= "image" and def.editor ~= "dropdownlist"
-				and def.editor ~= "combo" and type(def.value) ~= "userdata" then
-			c = c + 1
-			item_list[c] = {
-				text = (def.editor == "color" and "<color 100 100 255>" or "")
-					.. def.id .. "</color>",
-				sort = def.id,
-				value = def.default,
-				default = def.default,
-				editor = def.editor,
-				hint = (def.id or "") .. "\n"
-					.. help_str .. ": " .. (def.help or "") .. "\n\n"
-					.. default_str .. ": " .. (def.default or "") .. " "
-					.. min_str .. ": " .. (def.min or "") .. " "
-					.. max_str .. ": " .. (def.max or "") .. " "
-					.. scale_str .. ": " .. (def.scale or "")
-			}
-		end
-	end
-
-	-- or loading style from presets
-	name = LightmodelPresets[name or "ChoGGi_Custom"]
-	if not name then
-		return
-	end
-
-	for i = 1, #item_list do
-		if name[item_list[i].sort] then
-			item_list[i].value = name[item_list[i].sort]
-		end
-	end
-
-	local function CallBackFunc(choice)
-		if choice.nothing_selected then
-			return
-		end
-		local model_table = {}
-		for i = 1, #choice do
-			local value = choice[i].value
-			if value ~= choice[i].default then
-				model_table[choice[i].sort] = value
-			end
-		end
-		model_table.id = "ChoGGi_Custom"
-
-		-- make a copy, as LightmodelPreset:new will change it into an object, and i don't want to save that to the settings
-		local temp_lm = table.copy(model_table)
-
-		LightmodelPresets.ChoGGi_Custom = LightmodelPreset:new(temp_lm)
-		if choice[1].check1 then
-			SetLightmodelOverride(1,"ChoGGi_Custom")
-		else
-			SetLightmodel(1,"ChoGGi_Custom")
-		end
-
-		ChoGGi.UserSettings.LightmodelCustom = model_table
-		ChoGGi.SettingFuncs.WriteSettings()
-	end
-
-	ChoGGi.ComFuncs.OpenInListChoice{
-		callback = CallBackFunc,
-		items = item_list,
-		sortby = "sort",
-		custom_type = 5,
-		title = Strings[302535920000975--[[Custom Lightmodel--]]],
-		hint = Strings[302535920000976--[[Use double right click to test without closing dialog
-
-Some settings can't be changed in the editor, but you can manually add them in the settings file (type OpenExamine(LightmodelPresets) and use dump obj).--]]],
-		checkboxes = {
-			{
-				title = Strings[302535920000977--[[Semi-Permanent--]]],
-				hint = Strings[302535920000978--[[Make it stay at selected light model till reboot (use Misc>Change Light Model for Permanent).--]]],
-			},
-			{
-				title = Strings[302535920000979--[[Presets--]]],
-				hint = Strings[302535920000980--[[Opens up the list of premade styles so you can start with the settings from one.--]]],
-			},
-		},
-	}
-end
-
-function ChoGGi.MenuFuncs.ChangeLightmodel(mode)
-	-- if it gets opened by menu then has object so easy way to do this
-	local browse
-	if mode == true then
-		browse = mode
-	end
-
-	local item_list = {}
-	local c = 0
-	if not browse then
-		c = c + 1
-		item_list[c] = {
-			text = " " .. Translate(1000121--[[Default--]]),
-			value = "ChoGGi_Default",
-			hint = Strings[302535920000981--[[Choose to this remove Permanent setting.--]]],
-		}
-		c = c + 1
-		item_list[c] = {
-			text = " " .. Strings[302535920000982--[[Custom--]]],
-			value = "ChoGGi_Custom",
-			hint = Strings[302535920000983--[["Custom Lightmodel made with ""Change Light Model Custom""."--]]],
-		}
-	end
 	local LightmodelPresets = LightmodelPresets
 	for key in pairs(LightmodelPresets) do
 		c = c + 1
 		item_list[c] = {
 			text = key,
 			value = key,
-			hint = Strings[302535920000986--[[Change Lightmodel--]]],
 		}
 	end
 
@@ -1192,80 +1127,61 @@ function ChoGGi.MenuFuncs.ChangeLightmodel(mode)
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "string" then
-			if browse or choice[1].check2 then
-				ChoGGi.MenuFuncs.EditLightmodelCustom(value)
-			else
-				if value == "ChoGGi_Default" then
-					ChoGGi.UserSettings.Lightmodel = nil
-					SetLightmodelOverride(1)
-				else
-					if choice[1].check1 then
-						ChoGGi.UserSettings.Lightmodel = value
-						SetLightmodelOverride(1,value)
-					else
-						SetLightmodelOverride(1)
-						SetLightmodel(1,value)
-					end
-				end
-
-				ChoGGi.SettingFuncs.WriteSettings()
-				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[302535920000769--[[Selected--]]]),
-					Strings[302535920000625--[[Change Light Model--]]]
-				)
+			-- if perm isn't checked then remove the saved setting
+			if not choice.check1 then
+				ChoGGi.UserSettings.Lightmodel = nil
 			end
+
+			if choice.check1 then
+				ChoGGi.UserSettings.Lightmodel = value
+				SetLightmodelOverride(1,value)
+			else
+				SetLightmodelOverride(1)
+				SetLightmodel(1,value)
+			end
+
+			ChoGGi.SettingFuncs.WriteSettings()
+			MsgPopup(
+				ChoGGi.ComFuncs.SettingState(choice.text,Strings[302535920000769--[[Selected--]]]),
+				Translate(911432559058--[[Light model--]])
+			)
 		end
 	end
 
-	local hint = {}
-	local h_c = 0
-	local checkboxes
-	local title = Strings[302535920000985--[[Select Lightmodel Preset--]]]
-	if not browse then
-		title = Strings[302535920000986--[[Change Lightmodel--]]]
-		h_c = h_c + 1
-		hint[h_c] = Strings[302535920000987--[[If you used Permanent; you must choose default to remove the setting (or it'll set the lightmodel next time you start the game).--]]]
-		local lightmodel = ChoGGi.UserSettings.Lightmodel
-		if lightmodel then
-			h_c = h_c + 1
-			hint[h_c] = "\n\n"
-			h_c = h_c + 1
-			hint[h_c] = Strings[302535920000988--[[Permanent--]]]
-			h_c = h_c + 1
-			hint[h_c] = ": "
-			h_c = h_c + 1
-			hint[h_c] = lightmodel
-		end
-		checkboxes = {
-			{
-				title = Strings[302535920000988--[[Permanent--]]],
-				hint = Strings[302535920000989--[[Make it stay at selected light model all the time (including reboots).--]]],
-			},
-			{
-				title = Translate(327465361219--[[Edit--]]),
-				hint = Strings[302535920000990--[[Open this style in "Change Light Model Custom".--]]],
-			},
-		}
+	local hint = {
+		Strings[302535920000987--[[If you used Permanent; you must choose default to remove the setting (or it'll set the lightmodel next time you start the game).--]]],
+	}
+	c = #hint
+
+	local lightmodel = ChoGGi.UserSettings.Lightmodel
+	if lightmodel then
+		c = c + 1
+		hint[c] = Strings[302535920000988--[[Permanent--]]] .. ": " .. lightmodel
 	end
 
-	h_c = h_c + 1
-	hint[h_c] = "\n\n"
-	h_c = h_c + 1
-	hint[h_c] = Strings[302535920000991--[[Double right-click to preview lightmodel without closing dialog.--]]]
+	c = c + 1
+	hint[c] = Strings[302535920000991--[[Double right-click to preview lightmodel without closing dialog.--]]]
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = title,
-		hint = TableConcat(hint),
-		checkboxes = checkboxes,
+		title = Translate(911432559058--[[Light model--]]),
+		hint = TableConcat(hint,"\n\n"),
 		custom_type = 6,
 		custom_func = function(value)
 			SetLightmodelOverride(1)
 			SetLightmodel(1,value)
 		end,
+		checkboxes = {
+			{
+				title = Strings[302535920000988--[[Permanent--]]],
+				hint = Strings[302535920000989--[[Make it stay at selected light model all the time (including reboots).--]]],
+			},
+		},
 	}
 end
 

@@ -600,21 +600,25 @@ function OnMsg.ClassesBuilt()
 		end
 	end
 
-	-- no more stuck focus on textboxes and so on
-	SaveOrigFunc("XDesktop","MouseEvent")
-	function XDesktop:MouseEvent(event, pt, button, time,...)
-		if event == "OnMouseButtonDown" and self.keyboard_focus and self.keyboard_focus:IsKindOfClasses("XTextEditor","XList") then
-			local hud = Dialogs.HUD
-			if hud then
-				hud:SetFocus()
-			else
-				-- hud should always be around, but just in case focus on desktop
-				self:SetFocus()
-			end
-		end
+	do -- XDesktop:MouseEvent
+		local cls_focus = {"XTextEditor","XList"}
 
-		return ChoGGi_OrigFuncs.XDesktop_MouseEvent(self, event, pt, button, time,...)
-	end
+		-- no more stuck focus on textboxes and so on
+		SaveOrigFunc("XDesktop","MouseEvent")
+		function XDesktop:MouseEvent(event, pt, button, time,...)
+			if event == "OnMouseButtonDown" and self.keyboard_focus and self.keyboard_focus:IsKindOfClasses(cls_focus) then
+				local hud = Dialogs.HUD
+				if hud then
+					hud:SetFocus()
+				else
+					-- hud should always be around, but just in case focus on desktop
+					self:SetFocus()
+				end
+			end
+
+			return ChoGGi_OrigFuncs.XDesktop_MouseEvent(self, event, pt, button, time,...)
+		end
+	end -- do
 
 	-- remove annoying msg that happens everytime you click anything (nice)
 	SaveOrigFunc("XWindow","SetId")
@@ -851,6 +855,7 @@ function OnMsg.ClassesBuilt()
 				con:SetMaxHeight(h)
 			end
 		end
+		local cls_training = {"Sanatorium","School"}
 --~ 		local infopanel_list = {
 --~ 			ipBuilding = true,
 --~ 			ipColonist = true,
@@ -933,7 +938,7 @@ function OnMsg.ClassesBuilt()
 			end
 
 			-- this limits height of traits you can choose to 3 till mouse over
-			if UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses("Sanatorium","School") then
+			if UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses(cls_training) then
 
 				local idx
 				if self.context:IsKindOf("School") then

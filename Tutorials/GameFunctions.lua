@@ -2072,7 +2072,7 @@ IsInsideTriangle(C)
 IsInWalkingDist = Mars/Lua/Buildings/Dome.lua(118)
 IsInWalkingDistDome = Mars/Lua/Buildings/Dome.lua(124)
 IsKindOf(object, class)
-IsKindOfClasses = CommonLua/Classes/PropertyObject.lua(70)
+IsKindOfClasses = (object, class, ...) -- takes single string, comma sep strings, or table 'o strings
 IsLoadButtonDisabled = Mars/Lua/UI/SaveLoad.lua(433)
 IsLookupTag = CommonLua/Core/localization.lua(134)
 IsLRTransportAvailable = Mars/Lua/Buildings/ShuttleHub.lua(328)

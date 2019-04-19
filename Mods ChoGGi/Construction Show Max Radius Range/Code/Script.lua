@@ -5,15 +5,14 @@ local GridSpacing = const.GridSpacing
 local HexSize = const.HexSize
 local ShowHexRanges = ShowHexRanges
 
+local cls_saved_settings = {"TriboelectricScrubber","SubsurfaceHeater"}
+
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()
 	if not ChoGGi_ShowMaxRadiusRange.Option1 then
 		return orig_CursorBuilding_GameInit(self)
 	end
-	if self.template:IsKindOfClasses(
-		"TriboelectricScrubber",
-		"SubsurfaceHeater",
-	) then
+	if self.template:IsKindOfClasses(cls_saved_settings) then
 		-- if ecm is active we check for custom range, otherwise use default
 		local uirange
 		local idx = table.find(ModsLoaded,"id","ChoGGi_Library")

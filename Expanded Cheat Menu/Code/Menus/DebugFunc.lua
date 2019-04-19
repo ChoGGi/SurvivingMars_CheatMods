@@ -847,6 +847,7 @@ do -- path markers
 	local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
 	local SelObjects = ChoGGi.ComFuncs.SelObjects
 
+	local path_classes = {"Movable", "CargoShuttle"}
 	local randcolours = {}
 	local colourcount = 0
 	local dupewppos = {}
@@ -1020,8 +1021,9 @@ do -- path markers
 			end
 		until not handles[obj.handle]
 	end
+
 	local function AddObjToGameTimeMarkers(obj,handles,skip)
-		if skip or obj:IsKindOfClasses("Movable", "CargoShuttle") then
+		if skip or obj:IsKindOfClasses(path_classes) then
 
 			if handles[obj.handle] then
 				-- already exists so remove thread
@@ -1056,7 +1058,7 @@ do -- path markers
 				end
 				return
 			-- single not in a table list (true means we already checked the kindof)
-			elseif obj:IsKindOfClasses("Movable", "CargoShuttle") then
+			elseif obj:IsKindOfClasses(path_classes) then
 				return AddObjToGameTimeMarkers(obj,handles,true)
 			end
 		end

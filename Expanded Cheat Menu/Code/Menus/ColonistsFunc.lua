@@ -1819,7 +1819,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(action)
 	local TraitPresets = TraitPresets
 
 	local obj = ChoGGi.ComFuncs.SelObject()
-	if not obj or obj and not obj:IsKindOfClasses("Workplace","TrainingBuilding") then
+	if not obj or obj and not obj:IsKindOfClasses{"Workplace","TrainingBuilding"} then
 		MsgPopup(
 			Strings[302535920000842--[[Select a workplace or training building.--]]],
 			Strings[302535920000992--[[Building Traits--]]]

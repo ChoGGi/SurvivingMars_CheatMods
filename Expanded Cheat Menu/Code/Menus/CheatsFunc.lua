@@ -1249,6 +1249,8 @@ end
 function ChoGGi.MenuFuncs.NextMysterySeq(mystery,mystery_idx)
 	local g_Classes = g_Classes
 
+	local wait_classes = {"SA_WaitMarsTime","SA_WaitTime"}
+	local thread_classes = {"SA_WaitMarsTime","SA_WaitTime","SA_RunSequence"}
 	local warning = "\n\n" .. Strings[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]]
 	local name = Translate(3486--[[Mystery--]]) .. ": " .. ChoGGi.Tables.Mystery[mystery].name
 
@@ -1257,7 +1259,7 @@ function ChoGGi.MenuFuncs.NextMysterySeq(mystery,mystery_idx)
 		if t.player and t.player.mystery_idx == mystery_idx then
 
 			-- only remove finished waittime threads, can cause issues removing other threads
-			if t.finished == true and t.action:IsKindOfClasses("SA_WaitMarsTime","SA_WaitTime","SA_RunSequence") then
+			if t.finished == true and t.action:IsKindOfClasses(thread_classes) then
 				DeleteThread(t.thread)
 			end
 
@@ -1266,6 +1268,7 @@ function ChoGGi.MenuFuncs.NextMysterySeq(mystery,mystery_idx)
 			local state = Player.seq_states
 			local ip = state[seq_list.name].ip
 
+
 			for i = 1, #seq_list do
 				-- skip older seqs
 				if i >= ip then
@@ -1273,7 +1276,7 @@ function ChoGGi.MenuFuncs.NextMysterySeq(mystery,mystery_idx)
 					local title = name .. " " .. Strings[302535920000286--[[Part--]]] .. ": " .. ip
 
 					-- seqs that add delays/tasks
-					if seq:IsKindOfClasses("SA_WaitMarsTime","SA_WaitTime") then
+					if seq:IsKindOfClasses(wait_classes) then
 						ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx}
 						--we don't want to wait
 						seq.wait_type = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_type")

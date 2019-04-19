@@ -38,20 +38,6 @@ ChoGGi = {
 	id_lib = "ChoGGi_Library",
 	-- constants
 	Consts = {
-		LightmodelCustom = {
-			id = "ChoGGi_Custom",
-			pp_bloom_strength = 100,
-			pp_bloom_threshold = 25,
-			pp_bloom_contrast = 75,
-			pp_bloom_colorization = 65,
-			pp_bloom_inner_tint = -4515950,
-			pp_bloom_mip2_radius = 8,
-			pp_bloom_mip3_radius = 10,
-			pp_bloom_mip4_radius = 27,
-			exposure = -100,
-			gamma = -11776858,
-		},
-
 	-- const.* (I don't think these have default values in-game anywhere, so manually set them.) _GameConst.lua
 		RCRoverMaxRadius = const.RCRoverMaxRadius or 20,
 		CommandCenterMaxRadius = const.CommandCenterMaxRadius or 35,

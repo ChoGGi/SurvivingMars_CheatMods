@@ -297,6 +297,7 @@ function RCRemote:RemoteMove(dir)
 	end
 end
 
+local cls_removable = {"Deposition","WasteRockObstructorSmall","WasteRockObstructor","StoneSmall"}
 function RCRemote:FireRocket(target)
 	local pt = GetTerrainCursor()
 	target = target or MapFindNearest(pt,pt,1500)
@@ -319,7 +320,7 @@ function RCRemote:FireRocket(target)
 	PlayFX("MissileFired", "start", self, nil, pos, axis)
 	self.fx_actor_class = "ExplorerRover"
 
-	if target:IsKindOfClasses("Deposition","WasteRockObstructorSmall","WasteRockObstructor","StoneSmall") then
+	if target:IsKindOfClasses(cls_removable) then
 		CreateGameTimeThread(self.ExplodeRock,self,target,rocket)
 	end
 

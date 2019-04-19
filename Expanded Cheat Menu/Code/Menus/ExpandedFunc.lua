@@ -121,7 +121,7 @@ do -- ViewObjInfo_Toggle
 --~ 					.. tostring(obj.electricity and obj.electricity.grid.ChoGGi_GridHandle) .. ")"
 --~ 			end,
 		Deposit = function(obj)
-			if not obj:IsKindOfClasses("SubsurfaceDeposit","TerrainDeposit") then
+			if not obj:IsKindOfClasses{"SubsurfaceDeposit","TerrainDeposit"} then
 				return ""
 			end
 			return "- " .. RetName(obj) .. " -\n" .. Translate(6--[[Depth Layer--]])

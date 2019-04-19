@@ -12,7 +12,7 @@ If working with a large amount of entity objects:
 SuspendPassEdits("SomeIdToUse")
 MapDelete("map", "Building")
 ResumePassEdits("SomeIdToUse")
-Add ,true to suspend if you're changing the terrain
+Add ,true to suspend if you're changing the terrain?
 
 List all objects:
 ~MapGet(true)
@@ -34,11 +34,11 @@ Hash a value:
 Encode16(SHA256(value))
 
 Access varargs (...):
-Use select(index,...) index being the argument you want to select, or run it through a for loop with
+Use select(3,...) 3 being the argument you want to select, or run it through a for loop with
 for i = 1, select("#",...) do
 	local arg = select(i,...)
 end
-Or use: local vararg = {...}
+Or use: local varargs = {...}
 and you can access them like a regular table
 
 Countdown timer (use CreateGameTimeThread to have it follow the speed of the game):

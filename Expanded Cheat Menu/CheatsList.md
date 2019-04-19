@@ -17,6 +17,7 @@ Cheats.Research>Research Queue Size: Allow more items in queue.
 Cheats.Research>Research Remove: Remove a tech from researched list.
 Cheats.Research>Reset All Research: Resets all research (includes breakthrough tech).
 Cheats.Research>Set Amount Of Breakthroughs Allowed: How many breakthroughs are allowed to be unlocked?
+Cheats.Research>Unlock Anomaly BreakThroughs: Unlock any breakthroughs in anomalies (not planetary ones).
 Cheats.StoryBits>Clear Cooldowns: Sets story.cooldown_end to GameTime.
 Cheats.StoryBits>Interrupt Supression Times: Sets story.time_created to -SuppressTime.
 Cheats.StoryBits>Testing Delete Backlog: Sets AccountStorage.StoryBitTimestamp to nil.
@@ -69,6 +70,7 @@ Debug>Entity Spots: Shows list of attach spots for use with .ent files.
 Debug>Examine Object: Opens the object examiner for the selected or moused-over obj.
 Debug>Examine Persist Errors: Shows an examine dialog with any persist errors when saving (needs ECM HelperMod).
 Debug>Force Story Bits: Start or display the msg from a story bit.
+Debug>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
 Debug>Material Properties: Shows list of material settings/.dds files for use with .mtl files.
 Debug>Measure Tool: Measures stuff (press again to remove the lines).
 Debug>Object Cloner: Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).
@@ -101,6 +103,8 @@ ECM.Buildings.Cables & Pipes>Instant Build: Cables & Pipes are built instantly.
 ECM.Buildings.Cables & Pipes>No Chance Of Break: Cables & Pipes will never break.
 ECM.Buildings.Farms>Crop fail threshold: Remove Threshold for failing crops (crops won't fail).
 ECM.Buildings.Farms>Farm Shifts All On: Turns on all the farm shifts.
+ECM.Buildings.Radius>Subsurface Heater: Change the range of the Subsurface Heater.
+ECM.Buildings.Radius>Triboelectric Scrubber: Change the range of the Triboelectric Scrubber.
 ECM.Buildings.Sanatoriums & Schools>Sanatoriums & Schools: Show All Traits: Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.
 ECM.Buildings.Sanatoriums & Schools>Sanatoriums & Schools: Show Full List: Toggle showing full list of trait selectors in side pane.
 ECM.Buildings.Sanatoriums & Schools>Sanatoriums Cure All: Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).
@@ -131,8 +135,6 @@ ECM.Buildings.Toggles>Unlimited Wonders: Unlimited wonder build limit (blocks th
 ECM.Buildings>Empty Mech Depot: Empties out selected/moused over mech depot into a small depot in front of it.
 ECM.Buildings>Moisture Vaporator Penalty: 40: Disable penalty when Moisture Vaporators are close to each other.
 ECM.Buildings>Storage Amount Of Diner & Grocery: Change how much food is stored in them (less chance of starving colonists when busy).
-ECM.Buildings>SubsurfaceHeater Radius: Extend the range of the heater.
-ECM.Buildings>Triboelectric Scrubber Radius: Extend the range of the scrubber.
 ECM.Buildings>Unlock Locked Buildings: Shows a list of buildings you can unlock.
 This doesn't apply to sponsor limited ones; see Toggles>Remove Sponsor Limits.
 ECM.Capacity>Building Capacity: Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).
@@ -266,7 +268,7 @@ ECM.Shuttles>Set ShuttleHub Shuttle Capacity: Change amount of shuttles per shut
 ECM.Shuttles>Set Speed: Change speed of shuttles.
 ECM>Building Info: Shows info about building in text above it.
 ECM>Close Dialogs: Close any dialogs opened by ECM (Examine, Object Editor, Change Colours, etc...).
-ECM>Find Nearest Resource: Select an object and click this to display a list of resources.
+ECM>Find Nearest Resource: Select an object and click this to display a list of resources (Shows nearest resource to object).
 ECM>Grid Info: List objects in grids (air, electricity, and water).
 Game.Camera>Bird's Eye: 20: How far up the camera can move.
 Game.Camera>Border Scrolling: Set size of activation for mouse border scrolling.
@@ -278,6 +280,11 @@ Game.Camera>Toggle Map Edge Limit: Removes pushback limit at the edge of the map
 Game.Camera>Zoom Distance: 32000: Further zoom distance.
 Game.Export CSV>Colonist Data: Export colonist data to C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\Colonists.csv.
 Game.Export CSV>Graphs Data: Export command centre graph data to C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\Graphs.csv.
+Game.Export CSV>Map Data (Breakthroughs): Export map location data to C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\MapData.csv (will take awhile).
+See survivingmarsmaps.com for a filtered list.
+Don't use in start new game screens (rating/topo will be messed up).
+Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu).
+This will take longer (about 15s).
 Game.Export CSV>Map Data: Export map location data to C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\MapData.csv (will take awhile).
 See survivingmarsmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
@@ -288,6 +295,9 @@ Game.Interface>Reset on-screen hints: Just in case you wanted to see them again.
 Game.Interface>Toggle Interface: Warning! This will hide everything. Remember the shortcut or have fun restarting.
 Game.Interface>Toggle Signs: Concrete, metal deposits, not working, etc...
 Game.Interface>Toggle on-screen hints: Don't show hints for this game.
+Game.Lightmodel>Light model: Changes the lighting mode (temporary or permanent).
+Game.Lightmodel>List Disaster: Overrides List Normal.
+Game.Lightmodel>List Normal: Changes the list of lightmodels to use (night/day/etc).
 Game.Render>Higher Render Distance: Renders model from further away.
 Not noticeable unless using higher zoom.
 Game.Render>Higher Shadow Distance: Renders shadows from further away.
@@ -303,8 +313,6 @@ Game.Screenshot>Screenshot Upsampled: Write screenshot upsampled
 Game.Screenshot>Screenshot: Write screenshot
 Game.Screenshot>Show Interface in Screenshots: Do you want to see the interface in screenshots?
 Game>Annoying Sounds: Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping).
-Game>Change Light Model Custom: Make a custom lightmodel and save it to settings. You still need to use "Change Light Model" for permanent.
-Game>Change Light Model: Changes the lighting mode (temporary or permanent).
 Game>Change Map: Change map (options to pick commander, sponsor, etc...
 Attention: If you get yellow ground areas; just load it again or try Reload Map.
 Game>Change Surface Signs To Materials: Changes all the ugly immersion breaking signs to materials (reversible).

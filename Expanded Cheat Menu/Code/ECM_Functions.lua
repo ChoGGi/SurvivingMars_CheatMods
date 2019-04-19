@@ -3601,33 +3601,37 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	ChoGGi.ComFuncs.OpenInExamineDlg(textures,nil,Strings[302535920001181--[[Used Terrain Textures--]]])
 end
 
--- mask is a combination of numbers. IsFlagSet(15,num) will match 1 2 4 8
-function ChoGGi.ComFuncs.RetObjectCapAndGrid(obj,mask)
-	if not IsValid(obj) then
-		return
-	end
-
+do -- RetObjectCapAndGrid
 	local IsFlagSet = IsFlagSet
-	if IsFlagSet(mask,1) and obj:IsKindOf("ElectricityStorage") then
-		return "electricity", obj:GetClassValue("capacity"), obj.electricity
+	local visitors = {"Service","TrainingBuilding"}
 
-	elseif IsFlagSet(mask,2) and obj:IsKindOf("AirStorage") then
-		return "air", obj:GetClassValue("air_capacity"), obj.air
+	-- mask is a combination of numbers. IsFlagSet(15,num) will match 1 2 4 8
+	function ChoGGi.ComFuncs.RetObjectCapAndGrid(obj,mask)
+		if not IsValid(obj) then
+			return
+		end
 
-	elseif IsFlagSet(mask,4) and obj:IsKindOf("WaterStorage") then
-		return "water", obj:GetClassValue("water_capacity"), obj.water
+		if IsFlagSet(mask,1) and obj:IsKindOf("ElectricityStorage") then
+			return "electricity", obj:GetClassValue("capacity"), obj.electricity
 
-	elseif IsFlagSet(mask,8) and obj:IsKindOf("Residence") then
-		return "colonist", obj:GetClassValue("capacity")
+		elseif IsFlagSet(mask,2) and obj:IsKindOf("AirStorage") then
+			return "air", obj:GetClassValue("air_capacity"), obj.air
 
-	elseif IsFlagSet(mask,16) and obj:IsKindOf("Workplace") then
-		return "workplace", obj:GetClassValue("max_workers")
+		elseif IsFlagSet(mask,4) and obj:IsKindOf("WaterStorage") then
+			return "water", obj:GetClassValue("water_capacity"), obj.water
 
-	elseif IsFlagSet(mask,32) and obj:IsKindOfClasses("Service","TrainingBuilding") then
-		return "visitors", obj:GetClassValue("max_visitors")
+		elseif IsFlagSet(mask,8) and obj:IsKindOf("Residence") then
+			return "colonist", obj:GetClassValue("capacity")
 
+		elseif IsFlagSet(mask,16) and obj:IsKindOf("Workplace") then
+			return "workplace", obj:GetClassValue("max_workers")
+
+		elseif IsFlagSet(mask,32) and obj:IsKindOfClasses(visitors) then
+			return "visitors", obj:GetClassValue("max_visitors")
+
+		end
 	end
-end
+end -- do
 
 do -- SetLibraryToolTips
 	local dlgs = {
