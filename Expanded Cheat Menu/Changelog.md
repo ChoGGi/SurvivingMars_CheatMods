@@ -15,6 +15,7 @@
 - Merged View/Dump menu items in Examine>Tools.
 - Changed menu items to use the default ECM icon instead of something maybe vaguely related.
 - > Easier to distinguish between notifications from ECM and from SM.
+- Debug>Examine will try to examine the UI element under the cursor if it can't find an object.
 
 ### Fixed:
 - Game would freeze if ConsoleErrors was false (thanks Gaspurr).

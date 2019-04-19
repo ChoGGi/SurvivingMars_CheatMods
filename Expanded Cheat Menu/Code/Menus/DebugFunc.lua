@@ -93,14 +93,25 @@ You need my HelperMod installed to be able to use this."--]]],
 end -- do
 
 function ChoGGi.MenuFuncs.ExamineObject()
+	-- try to get object in-game first
 	local obj = ChoGGi.ComFuncs.SelObject()
 	if obj then
 		ChoGGi.ComFuncs.OpenInExamineDlg(obj)
 		return
 	end
+
+	local terminal = terminal
+
+	-- next we check if there's a ui element under the cursor and return that
+	local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos())
+	-- everywhere is covered in xdialogs so skip them
+	if target and not target:IsKindOf("XDialog") then
+		ChoGGi.ComFuncs.OpenInExamineDlg(target)
+	end
+
 	-- if in main menu then open examine and console
 	if not Dialogs.HUD then
-		ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop)
+		ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop,point(100,100))
 		ChoGGi.ComFuncs.ToggleConsole(true)
 	end
 end

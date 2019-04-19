@@ -486,7 +486,7 @@ do -- MsgPopup
 		end
 		local params = {
 			expiration = timeout,
---~ 			{expiration = max_int},
+--~ 			expiration = -1,
 --~ 			dismissable = false,
 		}
 		-- if there's no interface then we probably shouldn't open the popup
@@ -2693,12 +2693,13 @@ do -- DeleteObject
 			end
 		end
 
-		local waterspire = obj:IsKindOf("WaterReclamationSpire") and not IsValid(obj.parent_dome)
-		local rctransport = obj:IsKindOf("RCTransport")
---~ 		local holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor")
---~ 		local flat_stuff = obj:IsKindOf("ResourceStockpileBase")
+		local is_deposit = obj:IsKindOf("Deposit")
+		local is_water = obj:IsKindOf("TerrainWaterObject")
+		local is_waterspire = obj:IsKindOf("WaterReclamationSpire") and not IsValid(obj.parent_dome)
+		local is_rctransport = obj:IsKindOf("RCTransport")
+--~ 		local is_holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor")
 
-		if not waterspire then
+		if not is_waterspire then
 			-- some stuff will leave holes in the world if they're still working
 			ExecFunc(obj,"SetWorking")
 		end
@@ -2710,14 +2711,14 @@ do -- DeleteObject
 			end
 		end
 
-		if obj:IsKindOf("Deposit") and obj.group then
+		if is_deposit and obj.group then
 			for i = #obj.group, 1, -1 do
 				obj.group[i]:delete()
 			end
 		end
 
 		-- causes log spam, transport still drops items carried so...
-		if not waterspire and not rctransport then
+		if not is_waterspire and not is_rctransport then
 			ExecFunc(obj,"Done")
 		end
 
@@ -2735,7 +2736,7 @@ do -- DeleteObject
 		ExecFunc(obj,"SetHolder",false)
 
 --~ 		-- only fire for stuff with holes in the ground (takes too long otherwise)
---~ 		if holy_stuff then
+--~ 		if is_holy_stuff then
 --~ 			ExecFunc(obj,"DestroyAttaches")
 --~ 		end
 
@@ -2749,6 +2750,11 @@ do -- DeleteObject
 		-- I did ask nicely
 		if IsValid(obj) then
 			DoneObject(obj)
+		end
+
+		-- remove leftover water
+		if is_water then
+			ApplyAllWaterObjects()
 		end
 
 		-- can't have shuttles avoiding empty space
@@ -3047,9 +3053,17 @@ do -- BuildingConsumption
 
 	function ChoGGi.ComFuncs.RemoveBuildingWaterConsump(obj)
 		RemoveConsumption(obj,"water_consumption","LifeSupportConsumer")
+		if obj:IsKindOf("LandscapeLake") then
+			obj.irrigation = obj:GetDefaultPropertyValue("irrigation") * -1
+			ChoGGi.ComFuncs.ToggleWorking(obj)
+		end
 	end
 	function ChoGGi.ComFuncs.AddBuildingWaterConsump(obj)
 		AddConsumption(obj,"water_consumption","LifeSupportConsumer")
+		if obj:IsKindOf("LandscapeLake") then
+			obj.irrigation = obj:GetDefaultPropertyValue("irrigation")
+			ChoGGi.ComFuncs.ToggleWorking(obj)
+		end
 	end
 	function ChoGGi.ComFuncs.RemoveBuildingElecConsump(obj)
 		RemoveConsumption(obj,"electricity_consumption","ElectricityConsumer")
@@ -4450,7 +4464,7 @@ do -- RetMapSettings
 	end
 end -- do
 
-do --
+do -- RetMapBreakthroughs
 	local StableShuffle = StableShuffle
 	local CreateRand = CreateRand
 	local breakthrough_count = const.BreakThroughTechsPerGame
@@ -4513,5 +4527,27 @@ do --
 		end
 
 		return tech_list
+	end
+end -- do
+
+do -- RetObjectEntity
+	local GetSpecialistEntity = GetSpecialistEntity
+	local IsValidEntity = IsValidEntity
+
+	function ChoGGi.ComFuncs.RetObjectEntity(obj)
+		if not (obj and obj:IsKindOf("CObject")) then
+			return
+		end
+
+		local entity
+		if obj:IsKindOf("Colonist") then
+			entity = GetSpecialistEntity(obj.specialist, obj.entity_gender, obj.race, obj.age_trait, obj.traits)
+		else
+			entity = obj:GetEntity()
+		end
+
+		if IsValidEntity(entity) then
+			return entity
+		end
 	end
 end -- do

@@ -110,6 +110,7 @@ DefineClass.Examine = {
 	-- tables
 	parents_menu_popup = false,
 	attaches_menu_popup = false,
+	attaches_menu_popup_hint = false,
 	tools_menu_popup = false,
 	objects_menu_popup = false,
 
@@ -146,6 +147,7 @@ function Examine:Init(parent, context)
 	self.idObjectsMenu = self.ChoGGi.ComFuncs.Random()
 
 	self.attaches_menu_popup = {}
+	self.attaches_menu_popup_hint = {}
 	self.parents_menu_popup = {}
 	self.pmenu_skip_dupes = {}
 	self.parents = {}
@@ -239,7 +241,7 @@ Press once to clear this examine, again to clear all."--]]],
 			Id = "idButDeleteObj",
 			Image = "CommonAssets/UI/Menu/delete_objects.tga",
 			RolloverTitle = Translate(502364928914--[[Delete--]]),
-			RolloverText = Strings[302535920000414--[[Are you sure you wish to delete it?--]]]:format(self.name),
+			RolloverText = Strings[302535920000414--[[Are you sure you wish to delete <color red>%s</color>?--]]]:format(self.name),
 			OnPress = self.idButDeleteObjOnPress,
 		}, self.idToolbarButtons)
 		--
@@ -468,7 +470,11 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		end
 	end
 
-	self:PostInit(context.parent)
+	if IsPoint(context.parent) then
+		self:PostInit(nil,context.parent)
+	else
+		self:PostInit(context.parent)
+	end
 end
 
 function Examine:ViewSourceCode()
@@ -2522,14 +2528,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	-- cobjects, not property objs? (IsKindOf)
 	local is_valid_obj = IsValid(obj)
 	if is_valid_obj and obj:IsKindOf("CObject") then
-		local entity
-		if obj:IsKindOf("Colonist") then
-			entity = GetSpecialistEntity(obj.specialist, obj.entity_gender, obj.race, obj.age_trait, obj.traits)
-		else
-			entity = obj:GetEntity()
-		end
-
-		local valid_ent = IsValidEntity(entity)
+		local entity = self.ChoGGi.ComFuncs.RetObjectEntity(obj)
 
 		table_insert(list_obj_str,1,"\t--"
 			.. self:HyperLink(obj,function()
@@ -2551,7 +2550,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 		-- stuff that changes anim state?
 		local state_added
-		if obj:IsValidPos() and valid_ent and 0 < obj:GetAnimDuration() then
+		if obj:IsValidPos() and entity and 0 < obj:GetAnimDuration() then
 			state_added = true
 			-- add pathing table
 			local current_pos = obj:GetVisualPos()
@@ -2607,7 +2606,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			)
 		end
 
-		if valid_ent then
+		if entity then
 			if entity == "InvisibleObject" then
 				-- calling GetNumTris/GetNumVertices on InvisibleObject == CTD
 				table_insert(list_obj_str, 2,
@@ -2958,6 +2957,78 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 	return TableConcat(list_obj_str,"\n")
 end
 ---------------------------------------------------------------------------------------------------------------------
+
+function Examine:BuildAttachesPopup(obj)
+	table_iclear(self.attaches_menu_popup)
+	local attaches = self.ChoGGi.ComFuncs.GetAllAttaches(obj,true)
+	local attach_amount = #attaches
+
+	for i = 1, attach_amount do
+		local a = attaches[i]
+		local pos = a.GetVisualPos and a:GetVisualPos()
+
+		local name = RetName(a)
+		if name ~= a.class then
+			name = name .. ": " .. a.class
+		end
+
+		-- build hint
+		table_iclear(self.attaches_menu_popup_hint)
+		local c = 1
+		self.attaches_menu_popup_hint[c] = Translate(3746--[[Class name--]]) .. ": " .. a.class
+
+		-- attached to name
+		if a.ChoGGi_Marked_Attach then
+			c = c + 1
+			self.attaches_menu_popup_hint[c] = Strings[302535920001544--[[Attached to--]]] .. ": " .. a.ChoGGi_Marked_Attach
+			a.ChoGGi_Marked_Attach = nil
+		end
+		if a.handle then
+			c = c + 1
+			self.attaches_menu_popup_hint[c] = Strings[302535920000955--[[Handle--]]] .. ": " .. a.handle
+		end
+		c = c + 1
+		self.attaches_menu_popup_hint[c] = Strings[302535920000461--[[Position--]]] .. ": " .. tostring(pos)
+
+		if a:IsKindOf("ParSystem") then
+			local par_name = a:GetParticlesName()
+			if par_name ~= "" then
+				c = c + 1
+				self.attaches_menu_popup_hint[c] = Strings[302535920001622--[[Particle--]]] .. ": " .. par_name
+			end
+		elseif a:IsKindOf("CObject") then
+			local entity = self.ChoGGi.ComFuncs.RetObjectEntity(a)
+			if entity ~= "" then
+				c = c + 1
+				self.attaches_menu_popup_hint[c] = Translate(155--[[Entity--]]) .. ": " .. entity
+			end
+		end
+
+		self.attaches_menu_popup[i] = {
+			name = name,
+			hint = TableConcat(self.attaches_menu_popup_hint,"\n"),
+			showobj = a,
+			clicked = function()
+				self.ChoGGi.ComFuncs.ClearShowObj(a)
+				self.ChoGGi.ComFuncs.OpenInExamineDlg(a,self)
+			end,
+		}
+
+	end
+
+	if attach_amount > 0 then
+		table_sort(self.attaches_menu_popup, function(a, b)
+			return CmpLower(a.name,b.name)
+		end)
+
+		self.idAttaches:SetVisible(true)
+		self.idAttaches.RolloverText = Strings[302535920000070--[["Shows list of attachments. This %s has %s.
+Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAssets/UI/Menu/NoblePreview.tga 2500>")
+	else
+		self.idAttaches:SetVisible()
+	end
+end
+
 function Examine:SetToolbarVis(obj,obj_metatable)
 	-- always hide all
 	self.idButMarkObject:SetVisible()
@@ -3113,48 +3184,7 @@ function Examine:SetObj(startup)
 		end
 
 		-- attaches button/menu
-		table_iclear(self.attaches_menu_popup)
-		local attaches = self.ChoGGi.ComFuncs.GetAllAttaches(obj,true)
-		local attach_amount = #attaches
-
-		for i = 1, attach_amount do
-			local a = attaches[i]
-			local pos = a.GetVisualPos and a:GetVisualPos()
-
-			local name = RetName(a)
-			if name ~= a.class then
-				name = name .. ": " .. a.class
-			end
-			-- attached to name
-			local a_to = a.ChoGGi_Marked_Attach or false
-			a.ChoGGi_Marked_Attach = nil
-
-			self.attaches_menu_popup[i] = {
-				name = name,
-				hint = Translate(3746--[[Class name--]]) .. ": " .. a.class
-					.. (a_to and "\n" .. Strings[302535920001544--[[Attached to: %s--]]]:format(a_to) or "")
-					.. "\n".. Strings[302535920000955--[[Handle--]]] .. ": " .. (a.handle or Translate(6761--[[None--]]))
-					.. "\n" .. Strings[302535920000461--[[Position--]]] .. ": " .. tostring(pos),
-				showobj = a,
-				clicked = function()
-					self.ChoGGi.ComFuncs.ClearShowObj(a)
-					self.ChoGGi.ComFuncs.OpenInExamineDlg(a,self)
-				end,
-			}
-
-		end
-
-		if attach_amount > 0 then
-			table_sort(self.attaches_menu_popup, function(a, b)
-				return CmpLower(a.name, b.name)
-			end)
-
-			self.idAttaches:SetVisible(true)
-			self.idAttaches.RolloverText = Strings[302535920000070--[["Shows list of attachments. This %s has %s.
-Use %s to hide green markers."--]]]:format(name,attach_amount,"<image CommonAssets/UI/Menu/NoblePreview.tga 2500>")
-		else
-			self.idAttaches:SetVisible()
-		end
+		self:BuildAttachesPopup(obj)
 
 	end -- istable
 

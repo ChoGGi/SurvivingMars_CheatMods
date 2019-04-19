@@ -24,10 +24,18 @@ end
 
 -- this is when RocketPayload_Init is called (CityStart is too soon)
 OnMsg.NewMapLoaded = ChoGGi.ComFuncs.UpdateDataTablesCargo
--- needed for UICity and some others that aren't created till around then
-OnMsg.CityStart = ChoGGi.ComFuncs.RetName_Update
-OnMsg.LoadGame = ChoGGi.ComFuncs.RetName_Update
 OnMsg.LoadGame = ChoGGi.ComFuncs.UpdateDataTablesCargo
+
+-- needed for UICity and some others that aren't created till around then
+local function UpdateNames()
+	-- needs a delay to get GlobalVar names
+	CreateRealTimeThread(function()
+		Sleep(1000)
+		ChoGGi.ComFuncs.RetName_Update()
+	end)
+end
+OnMsg.CityStart = UpdateNames
+OnMsg.LoadGame = UpdateNames
 
 -- now i should probably go around and change all my localed strings...
 OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateStringsList

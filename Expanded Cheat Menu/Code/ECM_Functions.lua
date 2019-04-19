@@ -589,6 +589,7 @@ function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
 end
 
 do -- OpenInExamineDlg
+	local IsPoint = IsPoint
 	local red = red
 	local function FlashTitlebar(title)
 		title:SetBackground(red)
@@ -612,7 +613,7 @@ do -- OpenInExamineDlg
 			return opened
 		end
 
-		if parent ~= "str" and not IsKindOf(parent,"XWindow") then
+		if parent ~= "str" and not (IsKindOf(parent,"XWindow") or IsPoint(parent)) then
 			parent = nil
 		end
 		if type(title) ~= "string" then
