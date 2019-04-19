@@ -34,6 +34,7 @@ local IsT = IsT
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
 local IsValidThread = IsValidThread
+local Msg = Msg
 local PropObjGetProperty = PropObjGetProperty
 local Sleep = Sleep
 local XCreateRolloverWindow = XCreateRolloverWindow
@@ -796,10 +797,12 @@ function Examine:idAutoRefreshOnChange()
 				break
 			end
 			Sleep(self.autorefresh_delay)
+			-- for my monitoring funcs
+			Msg("ChoGGi_Examine_Refresh")
 		end
 	end)
 end
--- for external use
+-- stable name for external use
 function Examine:EnableAutoRefresh()
 	self.idAutoRefreshOnChange(self.idAutoRefresh)
 end
@@ -2080,6 +2083,20 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 	elseif obj_value_type == "function" then
 		c = c + 1
 		list[c] = {is_spacer = true}
+
+		c = c + 1
+		list[c] = {name = Strings[302535920000110--[[Function Results--]]],
+			hint = Strings[302535920000168--[[Continually call this function while showing results in an examine dialog.--]]],
+			image = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
+			clicked = function()
+				-- if it's a class object then add self ref
+				if self.obj_ref.class and g_Classes[self.obj_ref.class] then
+					self:ShowExecCodeWithCode("MonitorFunc(o." .. obj_name .. ",o)")
+				else
+					self:ShowExecCodeWithCode("MonitorFunc(o." .. obj_name .. ")")
+				end
+			end,
+		}
 		c = c + 1
 		list[c] = {name = Strings[302535920000524--[[Print Func--]]],
 			hint = Strings[302535920000906--[[Print func name when this func is called.--]]],
@@ -3214,7 +3231,7 @@ function Examine:SetObj(startup)
 	-- comments are good for stuff like this
 	return obj_class
 end
--- for external use
+-- stable name for external use
 Examine.UpdateObj = Examine.SetObj
 
 -- [LUA ERROR] CommonLua/X/XText.lua:191: pattern too complex

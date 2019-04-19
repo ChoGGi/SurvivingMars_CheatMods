@@ -31,8 +31,12 @@ function ChoGGi.MenuFuncs.LastSelectedObject()
 end
 
 function ChoGGi.MenuFuncs.ExamineObjectRadius(action)
-	local objs = MapGet(GetTerrainCursor(),action.radius_amount or 2500,"attached",false)
+	local pt = GetTerrainCursor()
+	local objs = MapGet(pt,action.radius_amount or 2500,"attached",false)
 	if #objs > 0 then
+		table.sort(objs,function(a,b)
+			return a:GetVisualDist(pt) < b:GetVisualDist(pt)
+		end)
 		ChoGGi.ComFuncs.OpenInExamineDlg(objs,nil,"ExamineObjectRadius")
 	end
 end

@@ -7,10 +7,11 @@ local table_sort = table.sort
 local type,pairs,next,print = type,pairs,next,print
 local tostring,tonumber,rawget = tostring,tonumber,rawget
 local AveragePoint2D = AveragePoint2D
-local Sleep = Sleep
 local IsValid = IsValid
 local IsKindOf = IsKindOf
 local IsValidEntity = IsValidEntity
+local Sleep = Sleep
+local WaitMsg = WaitMsg
 
 local debug_getinfo,debug_getlocal,debug_getupvalue,debug_gethook
 
@@ -967,7 +968,7 @@ function ChoGGi.ComFuncs.MonitorThreads()
 					table_list[info.source .. "(" .. info.linedefined .. ")<tags on " .. c .. ">"] = thread
 				end
 			end
-			Sleep(dlg.autorefresh_delay or 1000)
+			WaitMsg("ChoGGi_Examine_Refresh")
 		end
 	end)
 end
@@ -1007,7 +1008,7 @@ function ChoGGi.ComFuncs.MonitorTableLength(obj,skip_under,pad_to,sortby,name)
 
 				end
 			end
-			Sleep(dlg.autorefresh_delay or 1000)
+			WaitMsg("ChoGGi_Examine_Refresh")
 		end
 	end)
 end
@@ -3686,4 +3687,31 @@ function ChoGGi.ComFuncs.SetLoadingScreenLog()
 		cls.transparent = true
 		cls.ZOrder = 1000000000
 	end
+end
+
+--MonitorFunc (shortcut name in AddedFunctions)
+function ChoGGi.ComFuncs.MonitorFunctionResults(func,...)
+	local varargs = ...
+
+	local results_list = {}
+	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(
+		results_list,
+		nil,
+		Strings[302535920000853--[[Monitor--]]] .. " " .. Strings[302535920000110--[[Function Results--]]]
+	)
+	dlg:EnableAutoRefresh()
+
+	CreateRealTimeThread(function()
+		-- stop when dialog is closed
+		while dlg and dlg.window_state ~= "destroying" do
+
+			table_iclear(results_list)
+			local results = {func(varargs)}
+			for i = 1, #results do
+				results_list[i] = results[i]
+			end
+
+			WaitMsg("ChoGGi_Examine_Refresh")
+		end
+	end)
 end

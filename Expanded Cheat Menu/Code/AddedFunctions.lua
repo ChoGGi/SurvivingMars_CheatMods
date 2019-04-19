@@ -7,6 +7,7 @@ dumptable = ChoGGi.ComFuncs.DumpTable
 trans = ChoGGi.ComFuncs.Translate
 imgview = ChoGGi.ComFuncs.OpenInImageViewerDlg
 txtview = ChoGGi.ComFuncs.OpenInMultiLineTextDlg
+MonitorFunc = ChoGGi.ComFuncs.MonitorFunctionResults
 so = ChoGGi.ComFuncs.SelObject
 
 function restart()

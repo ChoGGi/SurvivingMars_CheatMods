@@ -258,7 +258,7 @@ function ChoGGi_MultiLineTextDlg:idToggleCodeOnChange(check)
 		self.idEdit:RemovePlugin("ChoGGi_CodeEditorPlugin")
 	end
 end
--- for external use
+-- stable name for external use
 function ChoGGi_MultiLineTextDlg:ShowCodeHighlights()
 	self = GetRootDialog(self)
 	self.idEdit:SetPlugins(self.plugin_names)
