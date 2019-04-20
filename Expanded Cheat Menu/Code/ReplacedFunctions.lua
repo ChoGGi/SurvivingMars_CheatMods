@@ -1148,26 +1148,27 @@ function OnMsg.ClassesBuilt()
 	end -- do
 
 
-	local actual_errors
+--~ 	local actual_errors
 	-- so we can build without (as many) limits
 	SaveOrigFunc("ConstructionController","UpdateConstructionStatuses")
 	function ConstructionController:UpdateConstructionStatuses(...)
 		local ret = ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,...)
 		if UserSettings.RemoveBuildingLimits then
 
-			if not actual_errors then
-				local cs = ConstructionStatus
-				actual_errors = {
-					-- UnevenTerrain: causes issues when placing buildings (martian ground viagra)
-					[cs.UnevenTerrain] = true,
-					[cs.BlockingObjects] = true,
-				}
-			end
+--~ 			if not actual_errors then
+--~ 				local cs = ConstructionStatus
+--~ 				actual_errors = {
+--~ 					-- UnevenTerrain: causes issues when placing buildings (martian ground viagra)
+--~ 					[cs.UnevenTerrain] = true,
+--~ 					[cs.BlockingObjects] = true,
+--~ 				}
+--~ 			end
 
 			local statuses = self.construction_statuses or ""
 			for i = 1, #statuses do
 				local status = statuses[i]
-				if status.type == "error" and not actual_errors[status] then
+--~ 				if status.type == "error" and not actual_errors[status] then
+				if status.type == "error" then
 					status.type = "warning"
 				end
 			end
