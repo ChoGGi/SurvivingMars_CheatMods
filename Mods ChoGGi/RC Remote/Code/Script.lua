@@ -25,69 +25,69 @@ local MapFindNearest = MapFindNearest
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Translate = ChoGGi.ComFuncs.Translate
 
-function OnMsg.ClassesGenerate()
-
 --~ 	local Strings = ChoGGi.Strings
+
+local function MoveRC(dir)
+	local self = SelectedObj
+	if self and self:IsKindOf("RCRemote") then
+		-- if already moving in the same dir then abort
+		if self.jumping or (self.command == "RemoteMove" and self.move_dir == dir) then
+			return
+		end
+		self:SetCommand("RemoteMove",dir)
+	end
+end
+
+local function JumpForward()
+	local self = SelectedObj
+	if self and self:IsKindOf("RCRemote") then
+		self.jumping = true
+		PlayFX("Moving", "start", self)
+		self:SetState("moveWalk")
+
+		self.fx_actor_class = "JumperShuttle"
+		PlayFX("Jump", "start", self)
+		PlayFX("JumpUp", "start", self)
+		PlayFX("Accelerate", "start", self)
+		Sleep(150)
+
+		local old_pos = self:GetPos()
+		local pos = MovePointAway(
+			old_pos,
+			self:GetSpotLoc(self:GetSpotBeginIndex(self.jump_move_spot)),
+			self.jump_move_dist
+		)
+		local points = self:RetParabola(old_pos, pos)
+		local count = #points
+		for i = 1, count do
+			if i == count then
+				self:SetPos(points[i]:SetTerrainZ(),250)
+			else
+				self:SetPos(points[i],250)
+			end
+			Sleep(250)
+		end
+		self.fx_actor_class = "ExplorerRover"
+		PlayFX("Moving", "end", self)
+		self:SetState("idle")
+
+		self.fx_actor_class = "JumperShuttle"
+		PlayFX("Accelerate", "end", self)
+		PlayFX("Jump", "end", self)
+		PlayFX("JumpUp", "end", self)
+		PlayFX("JumpDown", "start", self)
+		Sleep(250)
+		PlayFX("Jump", "end", self)
+		PlayFX("JumpDown", "end", self)
+
+		self.fx_actor_class = "ExplorerRover"
+		self.jumping = false
+	end
+end
+
+do -- add shortcut actions
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
-
-	local function MoveRC(dir)
-		local self = SelectedObj
-		if self and self:IsKindOf("RCRemote") then
-			-- if already moving in the same dir then abort
-			if self.jumping or (self.command == "RemoteMove" and self.move_dir == dir) then
-				return
-			end
-			self:SetCommand("RemoteMove",dir)
-		end
-	end
-
-	local function JumpForward()
-		local self = SelectedObj
-		if self and self:IsKindOf("RCRemote") then
-			self.jumping = true
-			PlayFX("Moving", "start", self)
-			self:SetState("moveWalk")
-
-			self.fx_actor_class = "JumperShuttle"
-			PlayFX("Jump", "start", self)
-			PlayFX("JumpUp", "start", self)
-			PlayFX("Accelerate", "start", self)
-			Sleep(150)
-
-			local old_pos = self:GetPos()
-			local pos = MovePointAway(
-				old_pos,
-				self:GetSpotLoc(self:GetSpotBeginIndex(self.jump_move_spot)),
-				self.jump_move_dist
-			)
-			local points = self:RetParabola(old_pos, pos)
-			local count = #points
-			for i = 1, count do
-				if i == count then
-					self:SetPos(points[i]:SetTerrainZ(),250)
-				else
-					self:SetPos(points[i],250)
-				end
-				Sleep(250)
-			end
-			self.fx_actor_class = "ExplorerRover"
-			PlayFX("Moving", "end", self)
-			self:SetState("idle")
-
-			self.fx_actor_class = "JumperShuttle"
-			PlayFX("Accelerate", "end", self)
-			PlayFX("Jump", "end", self)
-			PlayFX("JumpUp", "end", self)
-			PlayFX("JumpDown", "start", self)
-			Sleep(250)
-			PlayFX("Jump", "end", self)
-			PlayFX("JumpDown", "end", self)
-
-			self.fx_actor_class = "ExplorerRover"
-			self.jumping = false
-		end
-	end
 
 	c = c + 1
 	Actions[c] = {ActionName = "Remote: Fire Missile",
@@ -161,8 +161,7 @@ function OnMsg.ClassesGenerate()
 		ActionBindable = true,
 		ActionMode = "RCRemote",
 	}
-
-end
+end -- do
 
 local name = [[RC Remote]]
 local description = [[Remote controlled RC]]

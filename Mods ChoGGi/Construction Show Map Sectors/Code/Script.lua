@@ -4,9 +4,9 @@ local MulDivRound = MulDivRound
 local PlaceObject = PlaceObject
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
-function CursorBuilding:GameInit()
+function CursorBuilding:GameInit(...)
 	if not ChoGGi_ConstructionShowMapSectors.Option1 then
-		return orig_CursorBuilding_GameInit(self)
+		return orig_CursorBuilding_GameInit(self,...)
 	end
 
   local g_MapSectors = g_MapSectors
@@ -25,11 +25,11 @@ function CursorBuilding:GameInit()
 		end
 	end
 
-  return orig_CursorBuilding_GameInit(self)
+  return orig_CursorBuilding_GameInit(self,...)
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
-function CursorBuilding:Done()
+function CursorBuilding:Done(...)
 
   local g_MapSectors = g_MapSectors
 	for sector in pairs(g_MapSectors) do
@@ -42,5 +42,5 @@ function CursorBuilding:Done()
 		end
 	end
 
-  return orig_CursorBuilding_Done(self)
+  return orig_CursorBuilding_Done(self,...)
 end

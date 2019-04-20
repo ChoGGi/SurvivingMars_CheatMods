@@ -980,9 +980,8 @@ do -- path markers
 
 			-- and lastly make sure path is sorted correctly
 			-- end is where the obj is, and start is where the dest is
-			local obj_pos = obj.GetVisualPos and obj:GetVisualPos() or obj:GetPos()
 			table_sort(path,function(a,b)
-				return obj_pos:GetVisualDist(a) > obj_pos:GetVisualDist(b)
+				return obj:GetVisualDist(a) > obj:GetVisualDist(b)
 			end)
 
 			-- send path off to make wp
@@ -991,7 +990,7 @@ do -- path markers
 				colour,
 				obj,
 				skip_height,
-				obj_pos
+				obj.GetVisualPos and obj:GetVisualPos() or obj:GetPos()
 			)
 		end
 	end

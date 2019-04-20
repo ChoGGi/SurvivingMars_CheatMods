@@ -822,10 +822,11 @@ function OnMsg.ClassesBuilt()
 					end
 					hex_world_pos = hex_world_pos:SetZ(build_z)
 
-					local new_pos = self.snap_to_grid and hex_world_pos or pos
-					new_pos = FixConstructPos(new_pos)
+					local new_pos = FixConstructPos(self.snap_to_grid and hex_world_pos or pos)
 
-					if force or (self.cursor_obj:GetPos() ~= new_pos and hex_world_pos:InBox2D(ConstructableArea)) then
+					if force or FixConstructPos(self.cursor_obj:GetPos()) ~= new_pos
+							and hex_world_pos:InBox2D(ConstructableArea) then
+
 						ShowNearbyHexGrid(hex_world_pos)
 						self.cursor_obj:SetPos(new_pos)
 						self:UpdateConstructionObstructors()
@@ -1146,61 +1147,33 @@ function OnMsg.ClassesBuilt()
 		end
 	end -- do
 
+
+	local actual_errors
 	-- so we can build without (as many) limits
 	SaveOrigFunc("ConstructionController","UpdateConstructionStatuses")
-	function ConstructionController:UpdateConstructionStatuses(dont_finalize,...)
+	function ConstructionController:UpdateConstructionStatuses(...)
+		local ret = ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,...)
 		if UserSettings.RemoveBuildingLimits then
-			-- send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
-			ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,"dont_finalize",...)
 
-			if self.is_template then
-				local cobj = rawget(self.cursor_obj, true)
-				local tobj = setmetatable({
-					[true] = cobj,
-					city = UICity
-				}, {
-					__index = self.template_obj
-				})
-				tobj:GatherConstructionStatuses(self.construction_statuses)
+			if not actual_errors then
+				local cs = ConstructionStatus
+				actual_errors = {
+					-- UnevenTerrain: causes issues when placing buildings (martian ground viagra)
+					[cs.UnevenTerrain] = true,
+					[cs.BlockingObjects] = true,
+				}
 			end
 
-			local statuses = self.construction_statuses
-			-- make sure we don't get errors down the line
-			if type(statuses) ~= "table" then
-				statuses = {}
-			end
-
-			local UnevenTerrain = ConstructionStatus.UnevenTerrain
-			local BlockingObjects = ConstructionStatus.BlockingObjects
-			local warning = "Placeable"
-
-			for i = #statuses, 1, -1 do
+			local statuses = self.construction_statuses or ""
+			for i = 1, #statuses do
 				local status = statuses[i]
-				-- UnevenTerrain: causes issues when placing buildings (martian ground viagra)
-				if status == UnevenTerrain then
-					table.remove(statuses,i)
-					warning = "Blocked"
-				elseif status == BlockingObjects then
-					warning = "Obstructing"
-				-- might as well add all the non-errors since they don't block from building
-				elseif status.type == "error" then
-					table.remove(statuses,i)
+				if status.type == "error" and not actual_errors[status] then
+					status.type = "warning"
 				end
 			end
 
-			-- update cursor obj colour
-			self.cursor_obj:SetColorModifier(g_PlacementStateToColor[warning])
-
-			self.construction_statuses = statuses
-			if not dont_finalize then
-				self:FinalizeStatusGathering(statuses)
-			else
-				return statuses
-			end
-
-		else
-			return ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,dont_finalize,...)
 		end
+		return ret
 	end -- ConstructionController:UpdateConstructionStatuses
 
 	-- so we can do long spaced tunnels
