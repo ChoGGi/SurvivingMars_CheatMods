@@ -18,13 +18,13 @@
 
 ### Changed:
 - Mod Upload supports batch uploading (and screenshots).
-- Merged View/Dump menu items in Examine>Tools.
 - Changed menu items to use the default ECM icon instead of something maybe vaguely related.
 - > Easier to distinguish between notifications from ECM and from SM.
 - Debug>Examine will try to examine the UI element under the cursor if it can't find an object.
 - Examine:
 - > It'll try to list files in mount points (ie: ~"Textures" or ~"Prefabs"), needs the HelperMod installed.
 - > The X close button now checks if Ctrl or Shift is being held down (see tooltip for more info).
+- > Merged View/Dump menu items in Tools.
 
 ### Fixed:
 - Game would freeze if ConsoleErrors was false (thanks Gaspurr).

@@ -164,6 +164,8 @@ function Examine:Init(parent, context)
 	self.onclick_objs = {}
 	self.onclick_count = 0
 	self.marked_objects = objlist:new()
+	self.title = context.title
+	self.prefix = Strings[302535920000069--[[Examine--]]]
 
 	-- if we're examining a string we want to convert to an object
 	if type(self.obj) == "string" then
@@ -179,10 +181,6 @@ function Examine:Init(parent, context)
 	end
 
 	self.name = RetName(self.str_object and self.ChoGGi.ComFuncs.DotNameToObject(self.obj) or self.obj)
-
-	self.title = context.title
-
-	self.prefix = Strings[302535920000069--[[Examine--]]]
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -1366,14 +1364,15 @@ end
 
 function Examine:ProcessList(list,prefix)
 	for i = 1, #list do
-		if not self.menu_added[list[i]] then
+		local item = list[i]
+		if not self.menu_added[item] then
 			-- CObject and Object are pretty much the same (Object has a couple more funcs)
-			if list[i] == "CObject" then
+			if item == "CObject" then
 				-- keep it for later (for the rare objects that use CObject, but not Object)
-				self.menu_added[list[i]] = prefix
+				self.menu_added[item] = prefix
 			else
-				self.menu_added[list[i]] = true
-				self:BuildFuncList(list[i],prefix)
+				self.menu_added[item] = true
+				self:BuildFuncList(item,prefix)
 			end
 		end
 	end
@@ -1417,10 +1416,11 @@ function Examine:GetCleanText(scrolled_text,skip_ast)
 		-- we stick all the text chunks into a table to concat after
 		table_iclear(text_temp)
 		for i = 1, #list do
-			if i == 1 and skip_ast and list[i].text == "* " then
+			local text = list[i].text
+			if i == 1 and skip_ast and text == "* " then
 				text_temp[i] = ""
 			else
-				text_temp[i] = list[i].text or ""
+				text_temp[i] = text or ""
 			end
 		end
 

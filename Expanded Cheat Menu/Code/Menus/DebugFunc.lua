@@ -110,8 +110,11 @@ function ChoGGi.MenuFuncs.ExamineObject()
 	end
 
 	-- if in main menu then open examine and console
-	if not Dialogs.HUD and ChoGGi.testing then
-		ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop,point(1920-550,100))
+	if not Dialogs.HUD then
+		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop)
+		-- off centre of central monitor
+		local width = (terminal.desktop.measure_width or 1920) - (dlg.dialog_width_scaled + 100)
+		dlg:SetPos(point(width,100))
 		ChoGGi.ComFuncs.ToggleConsole(true)
 	end
 end

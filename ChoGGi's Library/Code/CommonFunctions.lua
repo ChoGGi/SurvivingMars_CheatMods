@@ -2679,9 +2679,9 @@ do -- DeleteObject
 	local UpdateFlightGrid
 	local DeleteObject
 
-	local function ExecFunc(obj,funcname,param)
+	local function ExecFunc(obj,funcname,...)
 		if type(obj[funcname]) == "function" then
-			obj[funcname](obj,param)
+			obj[funcname](obj,...)
 		end
 	end
 
@@ -2711,17 +2711,23 @@ do -- DeleteObject
 			end
 		end
 
+		-- surface metal
 		if is_deposit and obj.group then
 			for i = #obj.group, 1, -1 do
 				obj.group[i]:delete()
 			end
 		end
 
-		-- causes log spam, transport still drops items carried so...
-		if not is_waterspire and not is_rctransport then
-			ExecFunc(obj,"Done")
-		end
+--~ 		-- can't have shuttles avoiding empty space
+--~ 		ExecFunc(obj,"RemoveFromGrids")
 
+--~ 		-- causes log spam, transport still drops items carried so...
+--~ 		if not is_waterspire and not is_rctransport then
+--~ 			ExecFunc(obj,"RecursiveCall",true, "Done")
+--~ 		end
+		ExecFunc(obj,"RecursiveCall",true, "Done")
+
+		-- ground n whatnot
 		ExecFunc(obj,"RestoreTerrain")
 		ExecFunc(obj,"Destroy")
 
@@ -2758,14 +2764,14 @@ do -- DeleteObject
 		end
 
 		-- can't have shuttles avoiding empty space
-		UpdateFlightGrid()
+--~ 		UpdateFlightGrid()
 	end
 
 	function ChoGGi.ComFuncs.DeleteObject(obj,editor_delete,skip_demo)
 		local ChoGGi = ChoGGi
 		if not (DeleteObject or UpdateFlightGrid) then
 			DeleteObject = ChoGGi.ComFuncs.DeleteObject
-			UpdateFlightGrid = ChoGGi.ComFuncs.UpdateFlightGrid
+--~ 			UpdateFlightGrid = ChoGGi.ComFuncs.UpdateFlightGrid
 		end
 
 		if not editor_delete then
@@ -3590,7 +3596,7 @@ function ChoGGi.ComFuncs.TerrainEditor_Toggle()
 			Dialogs.TerrainBrushesDlg:delete()
 		end
 		-- update flight grid so shuttles don't fly into newly added mountains
-		ChoGGi.ComFuncs.UpdateFlightGrid()
+		Flight_OnHeightChanged()
 	end
 end
 

@@ -501,7 +501,7 @@ function ChoGGi_Window:AddElements()
 	}, self.idMoveControl)
 
 	self:AddCloseXButton()
-	self:AddImageButton()
+	self:AddImageButton(UIScale)
 
 	-- title
 	self.idCaption = g_Classes.ChoGGi_Label:new({
