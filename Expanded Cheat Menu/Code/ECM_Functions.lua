@@ -1379,6 +1379,9 @@ do -- ExamineEntSpots
 		local origin = obj:GetSpotBeginIndex("Origin")
 		local origin_pos_x, origin_pos_y, origin_pos_z = obj:GetSpotLocPosXYZ(origin)
 		local id_start, id_end = obj:GetAllSpots(EntityStates.idle)
+		if not id_end then
+			return
+		end
 
 		CreateGameTimeThread(function()
 
@@ -1944,6 +1947,7 @@ do -- CleanInfoAttachDupes
 
 	function ChoGGi.ComFuncs.CleanInfoAttachDupes(list,cls)
 		table_clear(dupe_list)
+		SuspendPassEdits("ChoGGi.ComFuncs.CleanInfoAttachDupes")
 
 		-- clean up dupes in order of older
 		for i = 1, #list do
@@ -1963,6 +1967,7 @@ do -- CleanInfoAttachDupes
 
 		-- remove removed items
 		list:Validate()
+		ResumePassEdits("ChoGGi.ComFuncs.CleanInfoAttachDupes")
 	end
 end -- do
 
@@ -2049,11 +2054,13 @@ do -- BBoxLines_Toggle
 		return bbox_lines
 	end
 	local function BBoxLines_Clear(obj,is_box)
+		SuspendPassEdits("ChoGGi.ComFuncs.BBoxLines_Clear")
 		if not is_box and obj.ChoGGi_bboxobj then
 			obj.ChoGGi_bboxobj:Destroy()
 			obj.ChoGGi_bboxobj = nil
 			return true
 		end
+		ResumePassEdits("ChoGGi.ComFuncs.BBoxLines_Clear")
 	end
 	ChoGGi.ComFuncs.BBoxLines_Clear = BBoxLines_Clear
 
@@ -2077,12 +2084,14 @@ do -- BBoxLines_Toggle
 		end
 
 		if IsBox(bbox) then
+			SuspendPassEdits("ChoGGi.ComFuncs.BBoxLines_Toggle")
 			local box = PlaceTerrainBox(
 				bbox,
 				bbox:Center():SetTerrainZ(),
 				params.depth_test,
 				params.colour or RandomColourLimited()
 			)
+			ResumePassEdits("ChoGGi.ComFuncs.BBoxLines_Toggle")
 			if not is_box then
 				obj.ChoGGi_bboxobj = box
 			end
@@ -2116,11 +2125,13 @@ do -- SurfaceLines_Toggle
 	end
 
 	local function SurfaceLines_Clear(obj)
+		SuspendPassEdits("ChoGGi.ComFuncs.SurfaceLines_Clear")
 		if obj.ChoGGi_surfacelinesobj then
 			obj.ChoGGi_surfacelinesobj:Destroy()
 			obj.ChoGGi_surfacelinesobj = nil
 			return true
 		end
+		ResumePassEdits("ChoGGi.ComFuncs.SurfaceLines_Clear")
 	end
 	ChoGGi.ComFuncs.SurfaceLines_Clear = SurfaceLines_Clear
 
@@ -2142,7 +2153,9 @@ do -- SurfaceLines_Toggle
 		params.colour = params.colour or RandomColourLimited()
 		params.offset = params.offset or 1
 
+		SuspendPassEdits("ChoGGi.ComFuncs.SurfaceLines_Toggle")
 		BuildLines(obj,params)
+		ResumePassEdits("ChoGGi.ComFuncs.SurfaceLines_Toggle")
 
 		if not params.skip_clear then
 			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_surfacelinesobj)
@@ -2357,39 +2370,38 @@ end -- do
 
 do -- ObjHexShape_Toggle
 	local HexRotate = HexRotate
-	local RotateRadius = RotateRadius
+--~ 	local RotateRadius = RotateRadius
 	local HexToWorld = HexToWorld
 	local point = point
-	local OText
 
+	local OHexSpot,OText
 	local FallbackOutline = FallbackOutline
-	local line_points = objlist:new()
-	local radius = const.HexSize / 2
+--~ 	local radius = const.HexSize / 2
 
 	-- function Dome:GenerateWalkablePoints() (mostly)
 	local function BuildShape(obj,shape,depth_test,hex_pos,colour,offset)
 		local dir = HexAngleToDirection(obj:GetAngle())
 		local cq, cr = WorldToHex(obj)
-		local z = obj:GetVisualPos():z() + offset
 
 		local c = #obj.ChoGGi_shape_obj
 		for i = 1, #shape do
 			local sq, sr = shape[i]:xy()
 			local q, r = HexRotate(sq, sr, dir)
-			local center = point(HexToWorld(cq + q, cr + r)):SetZ(z)
+			local pt = point(HexToWorld(cq + q, cr + r)):SetTerrainZ(offset)
 
-			line_points:Destroy()
-			for j = 1,6 do
-				local x, y = RotateRadius(radius, j * 60 * 60, center, true)
-				line_points[j] = point(x, y, z)
+			local hex = OHexSpot:new()
+			hex:SetOpacity(25)
+			hex:SetPos(pt)
+
+			if colour then
+				hex:SetColorModifier(colour)
 			end
-			-- complete the hex
-			line_points[7] = line_points[1]
-			local line = PlacePolyline(line_points, colour)
+
 			-- wall hax off
 			if depth_test then
-				line:SetDepthTest(true)
+				hex:SetNoDepthTest(true)
 			end
+
 			-- pos text
 			if hex_pos then
 				local text_obj = OText:new()
@@ -2401,20 +2413,21 @@ do -- ObjHexShape_Toggle
 				-- slightly larger
 				text_obj:SetScaleInterpolation(110)
 
-				line:Attach(text_obj)
+				hex:Attach(text_obj)
 			end
-			line:SetPos(center)
 
 			c = c + 1
-			obj.ChoGGi_shape_obj[c] = line
+			obj.ChoGGi_shape_obj[c] = hex
 		end
 	end
 	local function ObjHexShape_Clear(obj)
+		SuspendPassEdits("ChoGGi.ComFuncs.ObjHexShape_Clear")
 		if obj.ChoGGi_shape_obj then
 			obj.ChoGGi_shape_obj:Destroy()
 			obj.ChoGGi_shape_obj = nil
 			return true
 		end
+		ResumePassEdits("ChoGGi.ComFuncs.ObjHexShape_Clear")
 	end
 	ChoGGi.ComFuncs.ObjHexShape_Clear = ObjHexShape_Clear
 
@@ -2433,7 +2446,9 @@ do -- ObjHexShape_Toggle
 		params.colour = params.colour or RandomColourLimited()
 		params.offset = params.offset or 1
 
+		OHexSpot = OHexSpot or ChoGGi_OHexSpot
 		OText = OText or ChoGGi_OText
+		SuspendPassEdits("ChoGGi.ComFuncs.ObjHexShape_Toggle")
 		BuildShape(
 			obj,
 			params.shape,
@@ -2442,9 +2457,10 @@ do -- ObjHexShape_Toggle
 			params.colour,
 			params.offset
 		)
+		ResumePassEdits("ChoGGi.ComFuncs.ObjHexShape_Toggle")
 		if not params.skip_clear then
 			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj,"ChoGGi_OText")
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj,"ChoGGi_OPolyline")
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj,"ChoGGi_OHexSpot")
 		end
 
 		return obj.ChoGGi_shape_obj
@@ -2695,6 +2711,7 @@ do -- EntitySpots_Toggle
 	local OText,OPolyline
 
 	local function EntitySpots_Clear(obj)
+		SuspendPassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
 		-- just in case (old way of doing it)
 		if obj.ChoGGi_ShowAttachSpots == true then
 			local DoneObject = DoneObject
@@ -2710,6 +2727,7 @@ do -- EntitySpots_Toggle
 			obj.ChoGGi_ShowAttachSpots = nil
 			return true
 		end
+		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
 	end
 	ChoGGi.ComFuncs.EntitySpots_Clear = EntitySpots_Clear
 
@@ -2825,6 +2843,7 @@ do -- EntitySpots_Toggle
 
 		OText = OText or ChoGGi_OText
 		OPolyline = OPolyline or ChoGGi_OPolyline
+		SuspendPassEdits("ChoGGi.ComFuncs.EntitySpots_Add")
 		EntitySpots_Add(obj,
 			params.spot_type,
 			params.annotation,
@@ -2832,6 +2851,7 @@ do -- EntitySpots_Toggle
 			params.show_pos,
 			params.colour
 		)
+		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Add")
 
 		if not params.skip_clear then
 			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots,"ChoGGi_OText")
@@ -2839,7 +2859,9 @@ do -- EntitySpots_Toggle
 
 		-- play connect the dots if there's chains
 		if #obj.ChoGGi_ShowAttachSpots > 1 and params.annotation and params.annotation:find("chain") then
+			SuspendPassEdits("ChoGGi.ComFuncs.EntitySpots_Add_Annot")
 			EntitySpots_Add_Annot(obj,params.depth_test,RandomColourLimited())
+			ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Add_Annot")
 		end
 
 		if not params.skip_clear then
@@ -2908,6 +2930,7 @@ do -- ShowAnimDebug_Toggle
 		params = params or {}
 		params.colour = params.colour or RandomColourLimited()
 
+		SuspendPassEdits("ChoGGi.ComFuncs.ShowAnimDebug_Toggle")
 		if IsValid(obj) then
 			if not obj:GetAnimDebug() then
 				return
@@ -2934,12 +2957,12 @@ do -- ShowAnimDebug_Toggle
 				AnimDebug_HideAll("CargoShuttle")
 			end
 		end
+		ResumePassEdits("ChoGGi.ComFuncs.ShowAnimDebug_Toggle")
 	end
 end -- do
 
 do -- ChangeSurfaceSignsToMaterials
 	local function ChangeEntity(cls,entity,random)
-		SuspendPassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials.ChangeEntity")
 		MapForEach("map",cls,function(o)
 			if random then
 				o:ChangeEntity(entity .. Random(1,random))
@@ -2947,15 +2970,12 @@ do -- ChangeSurfaceSignsToMaterials
 				o:ChangeEntity(entity)
 			end
 		end)
-		ResumePassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials.ChangeEntity")
 	end
 	local function ResetEntity(cls)
-		SuspendPassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials.ResetEntity")
 		local entity = g_Classes[cls]:GetDefaultPropertyValue("entity")
 		MapForEach("map",cls,function(o)
 			o:ChangeEntity(entity)
 		end)
-		ResumePassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials.ResetEntity")
 	end
 
 	function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
@@ -2969,6 +2989,7 @@ do -- ChangeSurfaceSignsToMaterials
 			if choice.nothing_selected then
 				return
 			end
+			SuspendPassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials")
 			if choice[1].value then
 				ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
 				ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
@@ -2988,6 +3009,7 @@ do -- ChangeSurfaceSignsToMaterials
 				ResetEntity("SubsurfaceAnomaly_aliens")
 				ResetEntity("SubsurfaceAnomaly_complete")
 			end
+			ResumePassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials")
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
@@ -3511,10 +3533,12 @@ do -- ToggleObjLines
 	local InvalidPos = ChoGGi.Consts.InvalidPos
 
 	local function ObjListLines_Clear(obj)
+		SuspendPassEdits("ChoGGi.ComFuncs.ObjListLines_Clear")
 		if IsValid(obj.ChoGGi_ObjListLine) then
 			DoneObject(obj.ChoGGi_ObjListLine)
 		end
 		obj.ChoGGi_ObjListLine = nil
+		ResumePassEdits("ChoGGi.ComFuncs.ObjListLines_Clear")
 	end
 	ChoGGi.ComFuncs.ObjListLines_Clear = ObjListLines_Clear
 
@@ -3562,10 +3586,12 @@ do -- ToggleObjLines
 			return
 		end
 
+		SuspendPassEdits("ChoGGi.ComFuncs.ObjListLines_Toggle")
 		ObjListLines_Add(objs_list,
 			params.obj,
 			params.colour or RandomColourLimited()
 		)
+		ResumePassEdits("ChoGGi.ComFuncs.ObjListLines_Toggle")
 	end
 end
 

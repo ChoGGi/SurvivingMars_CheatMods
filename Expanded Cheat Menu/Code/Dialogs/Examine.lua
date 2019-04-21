@@ -1762,6 +1762,9 @@ function Examine:ShowEntitySpotsList()
 
 	local dupes = {}
 	local id_start, id_end = obj:GetAllSpots(obj:GetState())
+	if not id_end then
+		return self:InvalidMsgPopup(nil,Translate(155--[[Entity--]]))
+	end
 	for i = id_start, id_end do
 		local spot_name = GetSpotNameByType(obj:GetSpotsType(i))
 		local spot_annot = obj:GetSpotAnnotation(i) or ""
@@ -2084,6 +2087,35 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 		c = c + 1
 		list[c] = {is_spacer = true}
 
+		c = c + 1
+		list[c] = {name = Strings[302535920000625--[[Exec Func--]]],
+			hint = Strings[302535920000627--[[Show func name in exec code line.--]]],
+			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
+			clicked = function()
+				-- no "" for numbers
+				local quote = type(obj_name) == "number" and "" or [["]]
+				-- can we ref it with .name (i'm ignoring _123 since i'm lazy)
+				local is_dot = tostring(obj_name):find("[%a_]")
+				-- if it's a cls obj then make sure to use the obj
+				local is_class = self.obj_ref.class and g_Classes[self.obj_ref.class]
+
+				local code
+				if is_class then
+					if is_dot then
+						code = "o:" .. obj_name .. "()"
+					else
+						code = "o[" .. quote .. obj_name .. quote .. "](o)"
+					end
+				else
+					if is_dot then
+						code = "o." .. obj_name .. "()"
+					else
+						code = "o[" .. quote .. obj_name .. quote .. "]()"
+					end
+				end
+				self:ShowExecCodeWithCode(code)
+			end,
+		}
 		c = c + 1
 		list[c] = {name = Strings[302535920000110--[[Function Results--]]],
 			hint = Strings[302535920000168--[[Continually call this function while showing results in an examine dialog.--]]],
@@ -3015,7 +3047,7 @@ function Examine:BuildAttachesPopup(obj)
 			end
 		elseif a:IsKindOf("CObject") then
 			local entity = self.ChoGGi.ComFuncs.RetObjectEntity(a)
-			if entity ~= "" then
+			if entity then
 				c = c + 1
 				self.attaches_menu_popup_hint[c] = Translate(155--[[Entity--]]) .. ": " .. entity
 			end

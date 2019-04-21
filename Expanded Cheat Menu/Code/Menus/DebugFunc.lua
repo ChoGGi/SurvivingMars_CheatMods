@@ -110,8 +110,8 @@ function ChoGGi.MenuFuncs.ExamineObject()
 	end
 
 	-- if in main menu then open examine and console
-	if not Dialogs.HUD then
-		ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop,point(100,100))
+	if not Dialogs.HUD and ChoGGi.testing then
+		ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop,point(1920-550,100))
 		ChoGGi.ComFuncs.ToggleConsole(true)
 	end
 end

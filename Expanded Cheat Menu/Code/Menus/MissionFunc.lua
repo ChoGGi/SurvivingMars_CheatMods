@@ -271,7 +271,6 @@ The end of mankind. Doesn't matter where it hits. Nothing would survive, not eve
 end
 
 function ChoGGi.MenuFuncs.SetSponsor()
-	local Presets = Presets
 	local GetSponsorDescr = GetSponsorDescr
 
 	local item_list = {}
@@ -431,7 +430,6 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
 end
 
 function ChoGGi.MenuFuncs.SetCommander()
-	local Presets = Presets
 	local g_CurrentMissionParams = g_CurrentMissionParams
 	local UICity = UICity
 
