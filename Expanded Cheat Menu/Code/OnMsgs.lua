@@ -1165,8 +1165,8 @@ do -- LoadGame/CityStart
 		-- late enough that I can set g_Consts.
 		ChoGGi.SettingFuncs.SetConstsToSaved()
 
-		-- needed for DroneResourceCarryAmount?
-		UpdateDroneResourceUnits()
+--~ 		-- needed for DroneResourceCarryAmount?
+--~ 		UpdateDroneResourceUnits()
 
 		-- clear out Temp settings
 		ChoGGi.Temp.UnitPathingHandles = {}

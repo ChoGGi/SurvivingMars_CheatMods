@@ -15,7 +15,7 @@ local pairs,type,tostring,tonumber,rawget = pairs,type,tostring,tonumber,rawget
 
 -- store opened examine dialogs
 if not rawget(_G,"g_ExamineDlgs") then
-	g_ExamineDlgs = objlist:new()
+	g_ExamineDlgs = {}
 end
 
 -- local some global funcs
@@ -71,6 +71,8 @@ DefineClass.Examine = {
 
 	-- what we're examining
 	obj = false,
+	-- all examine dlgs open by another dlg will have the same id (batch close)
+	parent_id = false,
 	-- whatever RetName is
 	name = false,
 	-- if we're examining a string we want to convert to an object
@@ -146,6 +148,8 @@ function Examine:Init(parent, context)
 	self.idParentsMenu = self.ChoGGi.ComFuncs.Random()
 	self.idToolsMenu = self.ChoGGi.ComFuncs.Random()
 	self.idObjectsMenu = self.ChoGGi.ComFuncs.Random()
+	-- add a parent id if there isn't one
+	self.parent_id = context.parent_id or self.ChoGGi.ComFuncs.Random()
 
 	self.attaches_menu_popup = {}
 	self.attaches_menu_popup_hint = {}
@@ -583,7 +587,10 @@ function Examine:idTextOnHyperLink(link, argument, hyperlink_box, pos, button)
 
 	-- we always examine on right-click
 	if button == "R" then
-		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
+		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj,{
+			ex_params = true,
+			parent = self,
+		})
 	else
 		local func = self.onclick_funcs[link]
 		if func then
@@ -961,10 +968,11 @@ function Examine:BuildObjectMenuPopup()
 			hint = Strings[302535920001525--[[Shows list of surfaces for the object entity.--]]],
 			image = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.OpenInExamineDlg(
-					self.ChoGGi.ComFuncs.RetSurfaceMasks(self.obj_ref),self,
-					Strings[302535920001524--[[Entity Surfaces--]]] .. ": " .. self.name
-				)
+				self.ChoGGi.ComFuncs.OpenInExamineDlg(self.ChoGGi.ComFuncs.RetSurfaceMasks(self.obj_ref),{
+					ex_params = true,
+					parent = self,
+					title = Strings[302535920001524--[[Entity Surfaces--]]] .. ": " .. self.name,
+				})
 			end,
 		},
 	}
@@ -1072,10 +1080,11 @@ function Examine:BuildToolsMenuPopup()
 						self:BuildFuncList("CObject",self.menu_added.CObject)
 					end
 
-					self.ChoGGi.ComFuncs.OpenInExamineDlg(
-						self.menu_list_items,self,
-						Strings[302535920001239--[[Functions--]]] .. ": " .. self.name
-					)
+					self.ChoGGi.ComFuncs.OpenInExamineDlg(self.menu_list_items,{
+						ex_params = true,
+						parent = parent,
+						title = Strings[302535920001239--[[Functions--]]] .. ": " .. self.name,
+					})
 				else
 					-- make me a MsgPopup
 					print(Translate(9763--[[No objects matching current filters.--]]))
@@ -1143,11 +1152,11 @@ Which you can then mess around with some more in the console."--]]],
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
 				if self.obj_ref.IsKindOf and self.obj_ref:IsKindOf("PropertyObject") then
-					self.ChoGGi.ComFuncs.OpenInExamineDlg(
-						GetModifiedProperties(self.obj_ref),
-						self,
-						Translate(931--[[Modified property--]]) .. ": " .. self.name
-					)
+					self.ChoGGi.ComFuncs.OpenInExamineDlg(GetModifiedProperties(self.obj_ref),{
+						ex_params = true,
+						parent = parent,
+						title = Translate(931--[[Modified property--]]) .. ": " .. self.name,
+					})
 				else
 					self:InvalidMsgPopup()
 				end
@@ -1170,10 +1179,11 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 					for i = 1, #props do
 						props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
 					end
-					self.ChoGGi.ComFuncs.OpenInExamineDlg(
-						props_list,self,
-						Strings[302535920001389--[[All Properties--]]] .. ": " .. self.name
-					)
+					self.ChoGGi.ComFuncs.OpenInExamineDlg(props_list,{
+						ex_params = true,
+						parent = self,
+						title = Strings[302535920001389--[[All Properties--]]] .. ": " .. self.name,
+					})
 				else
 					self:InvalidMsgPopup()
 				end
@@ -1941,13 +1951,19 @@ local function Show_ConvertValueToInfo(self,button,obj)
 	if button == "L" and GameState.gameplay and (IsValid(obj) or IsPoint(obj)) then
 		self:AddSphere(obj)
 	else
-		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
+		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj,{
+			ex_params = true,
+			parent = self,
+		})
 	end
 end
 local function Examine_ConvertValueToInfo(self,button,obj)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" then
-		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
+		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj,{
+			ex_params = true,
+			parent = self,
+		})
 	else
 		self:AddSphere(obj)
 	end
@@ -2037,11 +2053,11 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			hint = Strings[302535920001459--[[Shows list of material settings/.dds files for use with .mtl files.--]]],
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.OpenInExamineDlg(
-					GetMaterialProperties(obj_value_str),
-					self,
-					Strings[302535920001458--[[Material Properties--]]]
-				)
+				self.ChoGGi.ComFuncs.OpenInExamineDlg(GetMaterialProperties(obj_value_str),{
+					ex_params = true,
+					parent = self,
+					title = Strings[302535920001458--[[Material Properties--]]],
+				})
 			end,
 		}
 	end
@@ -2530,7 +2546,10 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		end
 		c = c + 1
 		list_obj_str[c] = self:HyperLink(obj,function()
-			self.ChoGGi.ComFuncs.OpenInExamineDlg(obj,self)
+			self.ChoGGi.ComFuncs.OpenInExamineDlg(obj,{
+				ex_params = true,
+				parent = self,
+			})
 		end) .. name .. hyperlink_end
 	end
 
@@ -2581,7 +2600,10 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 
 		table_insert(list_obj_str,1,"\t--"
 			.. self:HyperLink(obj,function()
-				self.ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(obj),self)
+				self.ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(obj),{
+					ex_params = true,
+					parent = self,
+				})
 			end)
 			.. obj.class
 			.. hyperlink_end
@@ -2719,7 +2741,11 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 				table_insert(data_meta,1,"\ngetmetatable():")
 				table_insert(data_meta,1,"Unpack(): "
 					.. self:HyperLink(obj,function()
-						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:Unpack()},self,Strings[302535920000885--[[Unpacked--]]])
+						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:Unpack()},{
+							ex_params = true,
+							parent = self,
+							title = Strings[302535920000885--[[Unpacked--]]],
+						})
 					end)
 					.. "table" .. hyperlink_end
 				)
@@ -2769,7 +2795,10 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 					hint = Strings[302535920001124--[[Will take a few seconds to complete.--]]],
 					name = "levels(true, 1):",
 					func = function()
-						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:levels(true, 1)})
+						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:levels(true, 1)},{
+							ex_params = true,
+							parent = self,
+						})
 					end,
 				}))
 
@@ -2996,7 +3025,11 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 
 		if self.enum_vars and next(self.enum_vars) then
 			list_obj_str[1] = list_obj_str[1] .. self:HyperLink(obj,function()
-				self.ChoGGi.ComFuncs.OpenInExamineDlg(self.enum_vars,self,Strings[302535920001442--[[Enum--]]])
+				self.ChoGGi.ComFuncs.OpenInExamineDlg(self.enum_vars,{
+					ex_params = true,
+					parent = self,
+					title = Strings[302535920001442--[[Enum--]]],
+				})
 			end)
 			.. " enum" .. hyperlink_end
 		end
@@ -3059,7 +3092,10 @@ function Examine:BuildAttachesPopup(obj)
 			showobj = a,
 			clicked = function()
 				self.ChoGGi.ComFuncs.ClearShowObj(a)
-				self.ChoGGi.ComFuncs.OpenInExamineDlg(a,self)
+				self.ChoGGi.ComFuncs.OpenInExamineDlg(a,{
+					ex_params = true,
+					parent = self,
+				})
 			end,
 		}
 
@@ -3165,7 +3201,10 @@ function Examine:BuildParentsMenu(list,list_type,title,sort_type)
 					name = item,
 					hint = Strings[302535920000069--[[Examine--]]] .. " " .. Translate(3696--[[Class--]]) .. " " .. Translate(298035641454--[[Object--]]) .. ": <color 100 255 100>" .. item .. "</color>",
 					clicked = function()
-						self.ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[item],self)
+						self.ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[item],{
+							ex_params = true,
+							parent = self,
+						})
 					end,
 				}
 			end

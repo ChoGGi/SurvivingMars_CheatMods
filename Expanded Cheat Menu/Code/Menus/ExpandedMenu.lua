@@ -11,9 +11,7 @@ Actions[c] = {ActionName = Strings[302535920000031--[[Find Nearest Resource--]]]
 	ActionId = ".Find Nearest Resource",
 	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 	RolloverText = Strings[302535920000554--[[Select an object and click this to display a list of resources (Shows nearest resource to object).--]]],
-	OnAction = function()
-		ChoGGi.ComFuncs.FindNearestResource()
-	end,
+	OnAction = ChoGGi.ComFuncs.FindNearestResource,
 }
 
 c = c + 1

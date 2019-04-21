@@ -10,6 +10,14 @@ txtview = ChoGGi.ComFuncs.OpenInMultiLineTextDlg
 MonitorFunc = ChoGGi.ComFuncs.MonitorFunctionResults
 so = ChoGGi.ComFuncs.SelObject
 
+local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+-- legacy (and used for console rules, so we can get around it spamming the log)
+function OpenExamine(...)
+	OpenInExamineDlg(...)
+end
+-- short n sweet
+ex = OpenExamine
+
 function restart()
 	quit("restart")
 end

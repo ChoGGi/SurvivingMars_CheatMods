@@ -598,14 +598,39 @@ do -- OpenInExamineDlg
 		title:SetBackground(ChoGGi_MoveControl.Background)
 	end
 
-	local function OpenInExamineDlg(obj,parent,title)
+	function ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent,title)
+		local params
+		if parent and parent.ex_params then
+			params = parent
+			parent = nil
+		else
+			params = {}
+		end
+
+		-- preserve the orig params
+		if obj then
+			params.obj = obj
+		end
+		if parent then
+			params.parent = parent
+		end
+		if title then
+			params.title = title
+		end
+
+		-- check if the parent has an id and use it
+		if params.parent and params.parent.parent_id then
+			params.parent_id = params.parent.parent_id
+		end
+
 		-- workaround for g_ExamineDlgs
-		if type(obj) == "nil" then
-			obj = "nil"
+		if type(params.obj) == "nil" then
+			params.obj = "nil"
 		end
 
 		-- already examining, so focus and return ( :new() doesn't return the opened dialog).
-		local opened = g_ExamineDlgs[obj]
+		local opened = g_ExamineDlgs[params.obj]
+
 		if opened then
 			-- hit refresh, cause i'm that kinda guy
 			opened:RefreshExamine()
@@ -614,28 +639,15 @@ do -- OpenInExamineDlg
 			return opened
 		end
 
-		if parent ~= "str" and not (IsKindOf(parent,"XWindow") or IsPoint(parent)) then
-			parent = nil
+		if params.parent ~= "str" and not (IsKindOf(params.parent,"XWindow") or IsPoint(params.parent)) then
+			params.parent = nil
 		end
-		if type(title) ~= "string" then
-			title = nil
+		if type(params.title) ~= "string" then
+			params.title = nil
 		end
 
-		return Examine:new({}, terminal.desktop,{
-			obj = obj,
-			parent = parent,
-			title = title,
-		})
+		return Examine:new({},terminal.desktop,params)
 	end
-
-	-- what i access with ECM/Lib
-	ChoGGi.ComFuncs.OpenInExamineDlg = OpenInExamineDlg
-	-- legacy (and used for console rules, so we can get around it spamming the log)
-	function OpenExamine(...)
-		OpenInExamineDlg(...)
-	end
-	-- short n sweet
-	ex = OpenExamine
 end -- do
 
 function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
@@ -755,11 +767,11 @@ function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(parent)
 	})
 end
 
-function ChoGGi.ComFuncs.CloseDialogsECM()
+function ChoGGi.ComFuncs.CloseDialogsECM(skip)
 	local desktop = terminal.desktop
 	for i = #desktop, 1, -1 do
 		local dlg = desktop[i]
-		if dlg:IsKindOf("ChoGGi_Window") then
+		if dlg ~= skip and dlg:IsKindOf("ChoGGi_Window") then
 			dlg:Close()
 		end
 	end

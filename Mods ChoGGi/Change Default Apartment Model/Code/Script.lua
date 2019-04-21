@@ -10,10 +10,11 @@ local function ChangeEntity(template)
 	template.entitydlc5 = ""
 end
 
-local function StartupCode()
+--~ local function StartupCode()
+--~ end
+function OnMsg.ClassesBuilt()
 	ChangeEntity(BuildingTemplates.Apartments)
 	ChangeEntity(ClassTemplates.Building.Apartments)
 end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
+--~ OnMsg.CityStart = StartupCode
+--~ OnMsg.LoadGame = StartupCode

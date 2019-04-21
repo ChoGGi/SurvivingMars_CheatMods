@@ -11,14 +11,20 @@
 - ECM>Game>Lightmodel>List Normal: Changes the list of lightmodels to use (night/day/etc).
 - ECM>Game>Lightmodel>List Disaster: Overrides List Normal.
 - Examine>Context menu (functions)>Function Results: Continually call a function while showing results in an examine dialog.
+- > Call it manually with MonitorFunc(func_obj,params).
+- > Examples:
+- > MonitorFunc(RealTime)
+- > MonitorFunc(XShortcutsTarget.GetActionsMode,XShortcutsTarget)
 
 ### Changed:
 - Mod Upload supports batch uploading (and screenshots).
-- Examine will now try to list files in mount points (ie: ~"Textures" or ~"Prefabs").
 - Merged View/Dump menu items in Examine>Tools.
 - Changed menu items to use the default ECM icon instead of something maybe vaguely related.
 - > Easier to distinguish between notifications from ECM and from SM.
 - Debug>Examine will try to examine the UI element under the cursor if it can't find an object.
+- Examine:
+- > It'll try to list files in mount points (ie: ~"Textures" or ~"Prefabs"), needs the HelperMod installed.
+- > The X close button now checks if Ctrl or Shift is being held down (see tooltip for more info).
 
 ### Fixed:
 - Game would freeze if ConsoleErrors was false (thanks Gaspurr).

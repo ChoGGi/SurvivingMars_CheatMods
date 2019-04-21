@@ -7,6 +7,8 @@ local Translate = ChoGGi.ComFuncs.Translate
 local Random = ChoGGi.ComFuncs.Random
 --~ local RetName = ChoGGi.ComFuncs.RetName
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
+local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local Strings = ChoGGi.Strings
 
 local box,point = box,point
@@ -498,26 +500,24 @@ function ChoGGi_Window:AddElements()
 		HAlign = "right",
 	}, self.idMoveControl)
 
-	local close = self.close_func or empty_func
-	self.idCloseX = g_Classes.ChoGGi_CloseButton:new({
-		Id = "idCloseX",
-		OnPress = function(...)
-			-- kill off exter editor if active
-			local ext = g_ExternalTextEditorActiveCtrl
-			if ext and ext.delete then
-				ext:delete()
-				g_ExternalTextEditorActiveCtrl = false
-			end
-			close(...)
-			-- MultiLineTextDlg?
-			self:Close(false)
---~ 			self:Close("cancel",false)
-		end,
---~ 		OnMouseEnter = function()
---~ 			SetUIMouseCursor("UI/Cursors/Salvage_no.tga")
---~ 		end,
-	}, self.idTitleRightSection)
+	self:AddCloseXButton()
+	self:AddImageButton()
 
+	-- title
+	self.idCaption = g_Classes.ChoGGi_Label:new({
+		Id = "idCaption",
+		Padding = box(4,0,0,0),
+	}, self.idTitleLeftSection)
+
+	self.idCaption:SetTitle(self)
+
+	-- needed for :Wait()
+	self.idDialog:Open()
+	-- it's so blue
+	self.idMoveControl:SetFocus()
+end
+
+function ChoGGi_Window:AddImageButton()
 	-- we use PropObjGetProperty so it doesn't spam the log with errors on _G and mod _G
 	local o = self.obj
 	local image = self.title_image or (type(o) == "table" and self.name ~= "_G"
@@ -526,7 +526,7 @@ function ChoGGi_Window:AddElements()
 
 	-- as long as x isn't 0 then it's an image
 	if type(image) == "string" and MeasureImage(image) ~= 0 then
-		self.idCaptionImage = g_Classes.ChoGGi_Image:new({
+		self.idCaptionImage = ChoGGi_Image:new({
 			Id = "idCaptionImage",
 			Dock = "left",
 			RolloverTitle = Strings[302535920000093--[[Go to Obj--]]],
@@ -547,19 +547,49 @@ function ChoGGi_Window:AddElements()
 			self.idCaptionImage:SetRolloverText("")
 		end
 	end
+end
 
-	-- title
-	self.idCaption = g_Classes.ChoGGi_Label:new({
-		Id = "idCaption",
-		Padding = box(4,0,0,0),
-	}, self.idTitleLeftSection)
+function ChoGGi_Window:AddCloseXButton()
+	local close = self.close_func or empty_func
 
-	self.idCaption:SetTitle(self)
+	local RolloverText
+	if self:IsKindOf("Examine") then
+		RolloverText = Strings[302535920000628--[["Close the examine dialog
+Hold Shift to close all ""parent"" examine dialogs.
+Hold Ctrl to close all ECM dialogs."--]]]
+	end
 
-	-- needed for :Wait()
-	self.idDialog:Open()
-	-- it's so blue
-	self.idMoveControl:SetFocus()
+	self.idCloseX = ChoGGi_CloseButton:new({
+		Id = "idCloseX",
+		RolloverText = RolloverText or ChoGGi_CloseButton.RolloverText,
+		OnPress = function(...)
+			if self:IsKindOf("Examine") then
+				-- close all ecm dialogs
+				if IsControlPressed() then
+					ChoGGi.ComFuncs.CloseDialogsECM(self)
+				-- close all parent examine dialogs
+				elseif IsShiftPressed() then
+					local g_ExamineDlgs = g_ExamineDlgs or empty_table
+					for _,dlg in pairs(g_ExamineDlgs) do
+						if dlg ~= self and dlg.parent_id == self.parent_id then
+							dlg:Close()
+						end
+					end
+				end
+			elseif self:IsKindOf("ChoGGi_ExecCodeDlg") then
+				-- kill off exter editor if active
+				local ext = g_ExternalTextEditorActiveCtrl
+				if ext and ext.delete then
+					ext:delete()
+					g_ExternalTextEditorActiveCtrl = false
+				end
+			end
+			-- pass along any args to the close func
+			close(...)
+			-- MultiLineTextDlg?
+			self:Close(false)
+		end,
+	}, self.idTitleRightSection)
 end
 
 function ChoGGi_Window:Done()
