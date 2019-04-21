@@ -72,9 +72,7 @@ Actions[c] = {ActionName = Strings[302535920000489--[[Delete Object(s)--]]],
 	replace_matching_id = true,
 	ActionId = "Terraformer.Delete Object(s)",
 	RolloverText = Strings[302535920001238--[[Removes most rocks for that smooth map feel (will take about 30 seconds).--]]],
-	OnAction = function()
-		ChoGGi.ComFuncs.DeleteObject()
-	end,
+	OnAction = ChoGGi.ComFuncs.DeleteObject,
 	ActionShortcut = "Ctrl-Shift-Alt-D",
 	ActionBindable = true,
 }

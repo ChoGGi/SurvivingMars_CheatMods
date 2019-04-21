@@ -2666,17 +2666,18 @@ function ChoGGi.ComFuncs.BuildMenu_Toggle()
 end
 
 do -- DeleteObject
-	local IsValid = IsValid
 	local DoneObject = DoneObject
 	local DeleteThread = DeleteThread
 	local CreateRealTimeThread = CreateRealTimeThread
 	local DestroyBuildingImmediate = DestroyBuildingImmediate
 	local FlattenTerrainInBuildShape = FlattenTerrainInBuildShape
 	local HasAnySurfaces = HasAnySurfaces
-	local HasRestoreHeight = terrain.HasRestoreHeight
+	local ApplyAllWaterObjects = ApplyAllWaterObjects
+	local terrain_HasRestoreHeight = terrain.HasRestoreHeight
+	local terrain_UpdateWaterGridFromObject = terrain.UpdateWaterGridFromObject
 	local EntitySurfaces_Height = EntitySurfaces.Height
+	local procall = procall
 
-	local UpdateFlightGrid
 	local DeleteObject
 
 	local function ExecFunc(obj,funcname,...)
@@ -2686,6 +2687,15 @@ do -- DeleteObject
 	end
 
 	local function DeleteFunc(obj,skip_demo)
+		-- deleting domes will freeze game if they have anything in them.
+		if obj:IsKindOf("Dome") and not obj:CanDemolish() then
+			MsgPopup(
+				Strings[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).--]]]:format(RetName(obj)),
+				Strings[302535920000489--[[Delete Object(s)--]]]
+			)
+			return
+		end
+
 		-- actually delete the whole passage
 		if obj:IsKindOf("Passage") then
 			for i = #obj.elements_under_construction, 1, -1 do
@@ -2701,7 +2711,24 @@ do -- DeleteObject
 
 		if not is_waterspire then
 			-- some stuff will leave holes in the world if they're still working
-			ExecFunc(obj,"SetWorking")
+			procall(ExecFunc,obj,"SetWorking")
+		end
+
+--~ 		-- can't have shuttles avoiding empty space
+--~ 		ExecFunc(obj,"RemoveFromGrids")
+
+--~ 		-- causes log spam, transport still drops items carried so...
+--~ 		if not is_waterspire and not is_rctransport then
+--~ 			ExecFunc(obj,"RecursiveCall",true, "Done")
+--~ 		end
+		procall(ExecFunc,obj,"RecursiveCall",true, "Done")
+
+		-- remove leftover water
+		if is_water then
+			if IsValid(obj.water_obj) then
+				terrain_UpdateWaterGridFromObject(obj.water_obj)
+			end
+			ApplyAllWaterObjects()
 		end
 
 		-- stop any threads (reduce log spam)
@@ -2718,28 +2745,19 @@ do -- DeleteObject
 			end
 		end
 
---~ 		-- can't have shuttles avoiding empty space
---~ 		ExecFunc(obj,"RemoveFromGrids")
-
---~ 		-- causes log spam, transport still drops items carried so...
---~ 		if not is_waterspire and not is_rctransport then
---~ 			ExecFunc(obj,"RecursiveCall",true, "Done")
---~ 		end
-		ExecFunc(obj,"RecursiveCall",true, "Done")
-
 		-- ground n whatnot
-		ExecFunc(obj,"RestoreTerrain")
-		ExecFunc(obj,"Destroy")
+		procall(ExecFunc,obj,"RestoreTerrain")
+		procall(ExecFunc,obj,"Destroy")
 
-		if obj.GetFlattenShape and HasAnySurfaces(obj, EntitySurfaces_Height, true) and not HasRestoreHeight() then
+		if obj.GetFlattenShape and HasAnySurfaces(obj, EntitySurfaces_Height, true) and not terrain_HasRestoreHeight() then
 			FlattenTerrainInBuildShape(obj:GetFlattenShape(), obj)
 		end
 
-		ExecFunc(obj,"SetDome",false)
-		ExecFunc(obj,"RemoveFromLabels")
+		procall(ExecFunc,obj,"SetDome",false)
+		procall(ExecFunc,obj,"RemoveFromLabels")
 
-		ExecFunc(obj,"Gossip","done")
-		ExecFunc(obj,"SetHolder",false)
+		procall(ExecFunc,obj,"Gossip","done")
+		procall(ExecFunc,obj,"SetHolder",false)
 
 --~ 		-- only fire for stuff with holes in the ground (takes too long otherwise)
 --~ 		if is_holy_stuff then
@@ -2757,55 +2775,28 @@ do -- DeleteObject
 		if IsValid(obj) then
 			DoneObject(obj)
 		end
-
-		-- remove leftover water
-		if is_water then
-			ApplyAllWaterObjects()
-		end
-
-		-- can't have shuttles avoiding empty space
---~ 		UpdateFlightGrid()
 	end
 
-	function ChoGGi.ComFuncs.DeleteObject(obj,editor_delete,skip_demo)
+	function ChoGGi.ComFuncs.DeleteObject(objs,skip_demo)
 		local ChoGGi = ChoGGi
-		if not (DeleteObject or UpdateFlightGrid) then
-			DeleteObject = ChoGGi.ComFuncs.DeleteObject
---~ 			UpdateFlightGrid = ChoGGi.ComFuncs.UpdateFlightGrid
+		DeleteObject = DeleteObject or ChoGGi.ComFuncs.DeleteObject
+
+		if IsKindOf(objs,"XAction") then
+			objs = SelObjects()
+		else
+			objs = objs or SelObjects()
 		end
 
-		if not editor_delete then
-			-- multiple selection from editor mode
-			local objs = editor:GetSel() or ""
-			if #objs > 0 then
-				SuspendPassEdits("ChoGGi.ComFuncs.DeleteObject")
-				for i = 1, #objs do
-					local o = objs[i]
-					if o.class ~= "MapSector" then
-						DeleteObject(o,true)
-					end
+		if IsValid(objs) then
+			CreateRealTimeThread(DeleteFunc,objs,skip_demo)
+		elseif type(objs) == "table" then
+			SuspendPassEdits("ChoGGi.ComFuncs.DeleteObject")
+			CreateRealTimeThread(function()
+				for i = #objs, 1, -1 do
+					DeleteFunc(objs[i],skip_demo)
 				end
-				ResumePassEdits("ChoGGi.ComFuncs.DeleteObject")
-			elseif not obj then
-				obj = SelObject()
-			end
-		end
-
-		if not IsValid(obj) then
-			return
-		end
-
-		-- deleting domes will freeze game if they have anything in them.
-		if obj:IsKindOf("Dome") and not obj:CanDemolish() then
-			MsgPopup(
-				Strings[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).--]]]:format(RetName(obj)),
-				Strings[302535920000489--[[Delete Object(s)--]]]
-			)
-			return
-		end
-
-		if Flight_MarkedObjs[obj] then
-			Flight_MarkedObjs[obj] = nil
+			end)
+			ResumePassEdits("ChoGGi.ComFuncs.DeleteObject")
 		end
 
 --~ 		-- hopefully i can remove all log spam one of these days
@@ -2814,7 +2805,6 @@ do -- DeleteObject
 --~ 			printC("DeleteObject",name,"DeleteObject")
 --~ 		end
 
-		CreateRealTimeThread(DeleteFunc,obj,skip_demo)
 	end
 end -- do
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
@@ -4006,74 +3996,6 @@ do -- PadNumWithZeros
 		pads[diff+1] = num
 
 		return TableConcat(pads)
-	end
-end -- do
-
-do -- UpdateFlightGrid
-	local GetMapSize = terrain.GetMapSize
-	local IsHeightChanged = terrain.IsHeightChanged
-	local GetHeightGrid = terrain.GetHeightGrid
-	local Flight_MarkPathSpline = Flight_MarkPathSpline
-
-	local mark_flags = const.efWalkable + const.efApplyToGrids + const.efCollision
-	local type_tile = terrain.TypeTileSize()
-	local work_step = 16 * type_tile
-	local mark_step = 16 * type_tile
-	local map_size
-	local function Flight_NewGrid(step, packing)
-		map_size = map_size or GetMapSize()
-		local work_size = map_size / (step or work_step)
-		return grid(work_size, packing or 32)
-	end
-	local function TrajectMark(spline)
-		return spline and Flight_MarkPathSpline(Flight_Traject, spline, mark_step)
-	end
-	local function UpdateAttached(obj)
-		Flight_ObjsToMark[obj] = true
-	end
-	local function UpdateTraject(obj)
-		if obj.idle_mark_pos then
-			Flight_Traject:AddCircle(1, obj.idle_mark_pos, mark_step, obj.collision_radius)
-		end
-		TrajectMark(obj.current_spline)
-		TrajectMark(obj.next_spline)
-	end
-
-	function ChoGGi.ComFuncs.UpdateFlightGrid()
-		Flight_Free()
-
-		Flight_OrigHeight = Flight_NewGrid()
-		GetHeightGrid(Flight_OrigHeight, work_step, IsHeightChanged())
-
-		if not Flight_OrigHeight then
-			Flight_OrigHeight = Flight_NewGrid()
-			GetHeightGrid(Flight_OrigHeight, work_step, IsHeightChanged())
-		end
-
-		Flight_Height = Flight_OrigHeight:clone()
-		local Flight_MarkedObjs = Flight_MarkedObjs
-		if Flight_MarkedObjs then
-			for obj in pairs(Flight_MarkedObjs) do
-				if not Flight_ObjToUnmark[obj] then
-					Flight_ObjsToMark[obj] = true
-				end
-			end
-		else
-			Flight_ObjsToMark = {}
-			MapForEach("map", "attached", false, nil, mark_flags,UpdateAttached)
-		end
-		Flight_ObjToUnmark = {}
-		Flight_MarkedObjs = {}
-		MarkThreadProc()
-
-		Flight_Traject = Flight_NewGrid(mark_step, 16)
-
-		MapForEach("map", "FlyingObject", UpdateTraject)
-
-		local objs = FlyingObjs or ""
-		for i = 1, #objs do
-			objs[i]:RegisterFlight(true)
-		end
 	end
 end -- do
 

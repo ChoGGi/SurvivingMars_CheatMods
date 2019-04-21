@@ -327,8 +327,9 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 
 	local objs = UICity.labels.MirrorSpheres or ""
 	for i = 1, #objs do
-		if not IsValid(objs[i].target) then
-			DeleteObject(objs[i])
+		local obj = objs[i]
+		if not IsValid(obj.target) then
+			DeleteObject(obj)
 		end
 	end
 
