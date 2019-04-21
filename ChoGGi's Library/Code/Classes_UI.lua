@@ -575,6 +575,8 @@ Hold Ctrl to close all ECM dialogs."--]]]
 							dlg:Close()
 						end
 					end
+					-- we don't want to close this one
+					return
 				end
 			elseif self:IsKindOf("ChoGGi_ExecCodeDlg") then
 				-- kill off exter editor if active
