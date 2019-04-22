@@ -517,7 +517,7 @@ function ChoGGi_Window:AddElements()
 	self.idMoveControl:SetFocus()
 end
 
-function ChoGGi_Window:AddImageButton()
+function ChoGGi_Window:AddImageButton(UIScale)
 	-- we use PropObjGetProperty so it doesn't spam the log with errors on _G and mod _G
 	local o = self.obj
 	local image = self.title_image or (type(o) == "table" and self.name ~= "_G"

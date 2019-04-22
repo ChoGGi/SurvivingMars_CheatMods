@@ -1,7 +1,8 @@
 ### No warranty implied or otherwise!
 
-See also: [nexus mods](https://www.nexusmods.com/survivingmars/users/659381?tab=user+files)
-See also: [nexus misc mods](https://www.nexusmods.com/survivingmars/mods/77)
+See also: [Steam Workshop](https://steamcommunity.com/workshop/filedetails/?id=1411210466)
+See also: [Nexus mods](https://www.nexusmods.com/survivingmars/users/659381?tab=user+files)
+See also: [Nexus mods](https://www.nexusmods.com/survivingmars/mods/77)
 
 ### These are all included in Expanded Cheat Menu, but if you want them...
 

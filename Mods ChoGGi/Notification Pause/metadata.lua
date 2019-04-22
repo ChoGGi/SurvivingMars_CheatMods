@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
   "title", "Notification Pause",
 	"version", 20,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
   "saved", 1547294400,
   "id", "ChoGGi_NotificationPause",
   "author", "ChoGGi",

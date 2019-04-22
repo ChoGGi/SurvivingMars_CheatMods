@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -118,7 +119,7 @@ Actions[c] = {ActionName = Strings[302535920000321--[[Enable Tooltips--]]],
 	ActionId = ".Toggle ToolTips",
 	ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.EnableToolTips,
 			Strings[302535920000322--[[Disabling this will remove most of the tooltips (leaves the cheat menu and cheats pane ones).--]]]
 		)
@@ -132,7 +133,7 @@ Actions[c] = {ActionName = Strings[302535920001481--[[Show Startup Ticks--]]],
 	ActionId = ".Show Startup Ticks",
 	ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.ShowStartupTicks,
 			Strings[302535920001482--[[Prints to console how many ticks it takes the map to load.--]]]
 		)

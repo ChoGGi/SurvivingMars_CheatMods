@@ -1219,9 +1219,10 @@ function ChoGGi.ComFuncs.SetConstsG(name,value)
 end
 
 -- if value is the same as stored then make it false instead of default value, so it doesn't apply next time
-function ChoGGi.ComFuncs.SetSavedSetting(setting,value)
+function ChoGGi.ComFuncs.SetSavedConstSetting(setting,value)
+	value = value or const[setting] or Consts[setting]
 	local ChoGGi = ChoGGi
-	--if setting is the same as the default then remove it
+	-- if setting is the same as the default then remove it
 	if ChoGGi.Consts[setting] == value then
 		ChoGGi.UserSettings[setting] = nil
 	else
@@ -4481,3 +4482,48 @@ do -- RetObjectEntity
 		end
 	end
 end -- do
+
+function ChoGGi.ComFuncs.DisastersStop()
+	CheatStopDisaster()
+--~ 	Msg("CheatStopDisaster")
+
+	local missles = g_IncomingMissiles or empty_table
+	for missle in pairs(missles) do
+		missle:ExplodeInAir()
+	end
+
+	if g_DustStorm then
+		StopDustStorm()
+		g_DustStormType = false
+	end
+
+	if g_ColdWave then
+		StopColdWave()
+		g_ColdWave = false
+	end
+
+	if g_RainDisaster then
+		StopRainsDisaster()
+		g_RainDisaster = false
+	end
+
+	local objs = g_DustDevils or ""
+	for i = #objs, 1, -1 do
+		objs[i]:delete()
+	end
+
+	objs = g_MeteorsPredicted or ""
+	for i = #objs, 1, -1 do
+		local o = objs[i]
+		Msg("MeteorIntercepted", o)
+		o:ExplodeInAir()
+	end
+
+	objs = g_IonStorms or ""
+	local table_remove = table.remove
+	for i = #objs, 1, -1 do
+		objs[i]:delete()
+		table_remove(g_IonStorms,i)
+	end
+
+end

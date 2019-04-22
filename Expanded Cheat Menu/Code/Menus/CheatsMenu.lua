@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -183,7 +184,7 @@ Actions[c] = {ActionName = Strings[302535920001278--[[Instant Research--]]],
 	ActionId = ".Instant Research",
 	ActionIcon = "CommonAssets/UI/Menu/DarkSideOfTheMoon.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.InstantResearch,
 			Strings[302535920001279--[[Instantly research anything you click.--]]]
 		)
@@ -197,7 +198,7 @@ Actions[c] = {ActionName = Strings[302535920000305--[[Research Queue Size--]]],
 	ActionId = ".Research Queue Size",
 	ActionIcon = "CommonAssets/UI/Menu/ShowOcclusion.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.ResearchQueueSize,
 			Strings[302535920000348--[[Allow more items in queue.--]]]
 		)
@@ -238,26 +239,26 @@ Actions[c] = {ActionName = Strings[302535920000355--[[Outsourcing For Free--]]],
 	ActionId = ".Outsourcing For Free",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.OutsourceResearchCost,
-			Strings[302535920000356--[[Outsourcing is free to purchase (over n over).--]]]
+			Translate(839458405314--[[Outsource Research Cost (in millions)--]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.OutsourcingFree_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001342--[[Change Outsource Limit--]]],
+Actions[c] = {ActionName = Translate(970197122036--[[Maximum Outsource Orders--]]),
 	ActionMenubar = "ECM.Cheats.Research",
-	ActionId = ".Change Outsource Limit",
+	ActionId = ".Maximum Outsource Orders",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.OutsourceMaxOrderCount,
 			Strings[302535920001343--[[How many times you can outsource in a row.--]]]
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.OutsourceMaxOrderCount_Set,
+	OnAction = ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount,
 }
 
 c = c + 1
@@ -266,7 +267,7 @@ Actions[c] = {ActionName = Strings[302535920000357--[[Set Amount Of Breakthrough
 	ActionId = ".Set Amount Of Breakthroughs Allowed",
 	ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.BreakThroughTechsPerGame,
 			Strings[302535920000358--[[How many breakthroughs are allowed to be unlocked?--]]]
 		)
@@ -281,7 +282,7 @@ Actions[c] = {ActionName = Strings[302535920000359--[[Breakthroughs From OmegaTe
 	ActionId = ".Breakthroughs From OmegaTelescope",
 	ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.OmegaTelescopeBreakthroughsCount,
 			Strings[302535920000360--[[How many breakthroughs the OmegaTelescope will unlock.--]]]
 		)
@@ -315,7 +316,7 @@ Actions[c] = {ActionName = Strings[302535920000232--[[Draggable Cheats Menu--]]]
 	ActionId = ".Draggable Cheats Menu",
 	ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.DraggableCheatsMenu,
 			Strings[302535920000324--[[Cheats menu can be moved.--]]]
 		)
@@ -329,7 +330,7 @@ Actions[c] = {ActionName = Strings[302535920000325--[[Keep Cheats Menu Position-
 	ActionId = ".Keep Cheats Menu Position",
 	ActionIcon = "CommonAssets/UI/Menu/LockCollection.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.KeepCheatsMenuPosition,
 			Strings[302535920000326--[[This menu will stay where you drag it.--]]]
 		)
@@ -355,7 +356,7 @@ Actions[c] = {ActionName = Strings[302535920000696--[[Infopanel Cheats--]]],
 	ActionId = ".Infopanel Cheats",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.ToggleInfopanelCheats,
 			Strings[302535920000697--[[Shows the cheat pane in the info panel (selection panel).--]]]
 		)
@@ -372,7 +373,7 @@ Actions[c] = {ActionName = Strings[302535920000698--[[Infopanel Cheats Cleanup--
 	ActionId = ".Infopanel Cheats Cleanup",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.CleanupCheatsInfoPane,
 			Strings[302535920000699--[[Remove some entries from the cheat pane (restart to re-enable).
 

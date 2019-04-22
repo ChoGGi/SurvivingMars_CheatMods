@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -11,7 +12,7 @@ Actions[c] = {ActionName = Strings[302535920000049--[[Loading Screen Log--]]],
 	ActionId = ".Loading Screen Log",
 	ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.LoadingScreenLog,
 			Strings[302535920001621--[[Be able to see the console log (and other dialogs) during the loading screen.--]]]
 		)
@@ -52,7 +53,7 @@ Actions[c] = {ActionName = Strings[302535920001498--[[Examine Persist Errors--]]
 	ActionId = ".Examine Persist Errors",
 	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.DebugPersistSaves,
 			Strings[302535920001499--[[Shows an examine dialog with any persist errors when saving (needs ECM HelperMod).--]]]
 		)
@@ -111,7 +112,7 @@ Actions[c] = {ActionName = Strings[302535920001310--[[DTM Slots Display--]]],
 	ActionId = ".DTM Slots Display",
 	ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			GetDialog("DTMSlotsDlg") and true,
 			Strings[302535920001311--[[Show DTM slots display--]]]
 		)
@@ -126,7 +127,7 @@ Actions[c] = {ActionName = Strings[302535920000449--[[Entity Spots Toggle--]]],
 	ActionIcon = "CommonAssets/UI/Menu/ShowAll.tga",
 	RolloverText = function()
 		local obj = SelectedObj
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			obj and obj.ChoGGi_ShowAttachSpots,
 			Strings[302535920000450--[[Toggle showing attachment spots on selected object.--]]]
 		)
@@ -149,7 +150,7 @@ Actions[c] = {ActionName = Strings[302535920000451--[[Measure Tool--]]],
 	ActionId = ".Measure Tool",
 	ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			MeasureTool.enabled,
 			Strings[302535920000452--[[Measures stuff (press again to remove the lines).--]]]
 		)
@@ -195,10 +196,10 @@ Actions[c] = {ActionName = Strings[302535920000459--[[Anim Debug Toggle--]]],
 	ActionIcon = "CommonAssets/UI/Menu/CameraEditor.tga",
 	RolloverText = function()
 		local obj = SelectedObj
-		return obj and ChoGGi.ComFuncs.SettingState(
+		return obj and SettingState(
 			obj.ChoGGi_ShowAnimDebug,
 			Strings[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).--]]]
-		) or ChoGGi.ComFuncs.SettingState(
+		) or SettingState(
 			ChoGGi.Temp.ShowAnimDebug,
 			Strings[302535920000460]
 		)
@@ -382,7 +383,7 @@ Actions[c] = {ActionName = Strings[302535920001417--[[Follow Mouse Grid Size--]]
 	ActionId = ".Follow Mouse Grid Size",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			"ChoGGi.UserSettings.DebugGridSize",
 			Strings[302535920001418--[[Sets the size of the Building/Flight grid.--]]]
 		)
@@ -398,7 +399,7 @@ Actions[c] = {ActionName = Strings[302535920001419--[[Follow Mouse Grid Translat
 	ActionId = ".Follow Mouse Grid Translate",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			"ChoGGi.UserSettings.DebugGridOpacity",
 			Strings[302535920001420--[[How transparent the Building grid is.--]]]
 		)
@@ -424,7 +425,7 @@ Actions[c] = {ActionName = Strings[302535920001175--[[Debug FX--]]],
 	ActionId = ".Debug FX",
 	ActionIcon = "CommonAssets/UI/Menu/FXEditor.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			DebugFX,
 			Strings[302535920001176--[[Toggle showing FX debug info in console.--]]]
 		)
@@ -440,7 +441,7 @@ Actions[c] = {ActionName = Strings[302535920001184--[[Particles--]]],
 	ActionId = ".Particles",
 	ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			DebugFXParticles,
 			Strings[302535920001176--[[Toggle showing FX debug info in console.--]]]
 		)
@@ -456,7 +457,7 @@ Actions[c] = {ActionName = Strings[302535920001368--[[Sound FX--]]],
 	ActionId = ".Sound FX",
 	ActionIcon = "CommonAssets/UI/Menu/DisableEyeSpec.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			DebugFXSound,
 			Strings[302535920001176--[[Toggle showing FX debug info in console.--]]]
 		)
@@ -504,7 +505,7 @@ Actions[c] = {ActionName = Strings[302535920001527--[[Building Path Markers--]]]
 	ActionId = ".Building Markers",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleCutSmoothTrans.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.Temp.BuildingPathMarkers_Toggle,
 			Strings[302535920001528--[[Show inside waypoints colonists take to move around (not all buildings).--]]]
 		)

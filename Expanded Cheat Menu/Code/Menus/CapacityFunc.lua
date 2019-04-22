@@ -434,13 +434,12 @@ Mechanized: 1,000,000--]]]
 			end
 
 			-- for new buildings
-			ChoGGi.ComFuncs.SetSavedSetting(bld_type,value)
+			ChoGGi.ComFuncs.SetSavedConstSetting(bld_type,value)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				choice[1].text .. ": " .. bld_type,
-				Strings[302535920000573--[[Storage Universal Depot--]]],
-				"UI/Icons/Sections/basic.tga"
+				Strings[302535920000573--[[Storage Universal Depot--]]]
 			)
 		end
 	end

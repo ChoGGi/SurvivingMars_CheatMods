@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
@@ -21,7 +22,7 @@ Actions[c] = {ActionName = Strings[302535920000565--[[Storage Mechanized Depots 
 	ActionId = ".Storage Mechanized Depots Temp",
 	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.StorageMechanizedDepotsTemp,
 			Strings[302535920000566--[[Allow the temporary storage to hold 100 instead of 50 cubes.--]]]
 		)
@@ -36,7 +37,7 @@ Actions[c] = {ActionName = Strings[302535920000567--[[Worker Capacity--]]],
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = function()
 		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".workers",
 			Strings[302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."--]]]
 		) or Strings[302535920000568]
@@ -53,7 +54,7 @@ Actions[c] = {ActionName = Strings[302535920000569--[[Building Capacity--]]],
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = function()
 		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".capacity",
 			Strings[302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).--]]]
 		) or Strings[302535920000570]
@@ -70,7 +71,7 @@ Actions[c] = {ActionName = Strings[302535920000571--[[Building Visitor Capacity-
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = function()
 		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".visitors",
 			Strings[302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.--]]]
 		) or Strings[302535920000572]
@@ -86,7 +87,7 @@ Actions[c] = {ActionName = Strings[302535920000573--[[Storage Universal Depot--]
 	ActionId = ".Storage Universal Depot",
 	ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.StorageUniversalDepot,
 			Strings[302535920000574--[[Change universal storage depot capacity.--]]]
 		)
@@ -101,7 +102,7 @@ Actions[c] = {ActionName = Strings[302535920000575--[[Storage Other Depot--]]],
 	ActionId = ".Storage Other Depot",
 	ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.StorageOtherDepot,
 			Strings[302535920000576--[[Change other storage depot capacity.--]]]
 		)
@@ -116,7 +117,7 @@ Actions[c] = {ActionName = Strings[302535920000577--[[Storage Waste Depot--]]],
 	ActionId = ".Storage Waste Depot",
 	ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.StorageWasteDepot,
 			Strings[302535920000578--[[Change waste storage depot capacity.--]]]
 		)
@@ -131,7 +132,7 @@ Actions[c] = {ActionName = Strings[302535920000579--[[Storage Mechanized Depots-
 	ActionId = ".Storage Mechanized Depots",
 	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.StorageMechanizedDepot,
 			Strings[302535920000580--[[Change mechanized depot storage capacity.--]]]
 		)

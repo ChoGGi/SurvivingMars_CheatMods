@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -29,8 +30,8 @@ Actions[c] = {ActionName = Strings[302535920000684--[[Change Entity Scale--]]],
 	ActionId = ".Change Entity Scale",
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = SelectedObj
+		return obj and SettingState(
 			obj:GetScale(),
 			Strings[302535920000685--[[You want them big, you want them small; have at it.--]]]
 		) or Strings[302535920000685]
@@ -44,10 +45,6 @@ Actions[c] = {ActionName = Strings[302535920000686--[[Auto Unpin Objects--]]],
 	ActionId = ".Auto Unpin Objects",
 	ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
 	RolloverText = function()
---~ 			return ChoGGi.ComFuncs.SettingState(
---~ 				ChoGGi.UserSettings.UnpinObjects,
---~ 				Strings[302535920000687--[[Will automagically stop any of these objects from being added to the pinned list.--]]]
---~ 			)
 		-- it can get large, so for this one we stick the description first.
 		return Strings[302535920000687--[[Will automagically stop any of these objects from being added to the pinned list.--]]]
 			.. "\n<color 100 255 100>" .. ValueToLuaCode(ChoGGi.UserSettings.UnpinObjects) .. "</color>"
@@ -79,7 +76,7 @@ Actions[c] = {ActionName = Strings[302535920000700--[[Scanner Queue Larger--]]],
 	ActionId = ".Scanner Queue Larger",
 	ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.ExplorationQueueMaxSize,
 			Strings[302535920000701--[[Queue up to 100 squares.--]]]
 		)
@@ -93,7 +90,7 @@ Actions[c] = {ActionName = Strings[302535920000702--[[Game Speed--]]],
 	ActionId = ".Game Speed",
 	ActionIcon = "CommonAssets/UI/Menu/SelectionToTemplates.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.mediumGameSpeed,
 			Strings[302535920000703--[[Change the game speed (only for medium/fast, normal is normal).--]]]
 		)

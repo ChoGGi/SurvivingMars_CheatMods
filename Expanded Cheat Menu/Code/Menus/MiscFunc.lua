@@ -160,13 +160,12 @@ end
 
 function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
 	const.ExplorationQueueMaxSize = ChoGGi.ComFuncs.ValueRetOpp(const.ExplorationQueueMaxSize,100,ChoGGi.Consts.ExplorationQueueMaxSize)
-	ChoGGi.ComFuncs.SetSavedSetting("ExplorationQueueMaxSize",const.ExplorationQueueMaxSize)
+	ChoGGi.ComFuncs.SetSavedConstSetting("ExplorationQueueMaxSize")
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ExplorationQueueMaxSize),
-		Strings[302535920000700--[[Scanner Queue Larger--]]],
-		"UI/Icons/Notifications/scan.tga"
+		Strings[302535920000700--[[Scanner Queue Larger--]]]
 	)
 end
 
@@ -212,7 +211,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 			MsgPopup(
 				Strings[302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]]]:format(choice[1].text),
 				Strings[302535920000702--[[Game Speed--]]],
-				"UI/Icons/Notifications/timer.tga",
+				nil,
 				true
 			)
 		end

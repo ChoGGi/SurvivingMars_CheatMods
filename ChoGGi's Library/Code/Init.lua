@@ -79,6 +79,7 @@ ChoGGi = {
 		DustStormSanityDamage = false,
 		Electronics_cost_modifier = false,
 		Electronics_dome_cost_modifier = false,
+		ExportPricePreciousMetals = false,
 		FoodPerRocketPassenger = false,
 		HighStatLevel = false,
 		HighStatMoraleEffect = false,

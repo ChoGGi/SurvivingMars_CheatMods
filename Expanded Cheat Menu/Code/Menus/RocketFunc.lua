@@ -50,9 +50,8 @@ do -- ChangeResupplySettings
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000850--[[Change Resupply Settings--]]],
 				Strings[302535920001272--[[Updated--]]],
-				"UI/Icons/Sections/spaceship.tga"
+				Strings[302535920000850--[[Change Resupply Settings--]]]
 			)
 		end
 
@@ -151,13 +150,12 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("CargoCapacity",value)
-			ChoGGi.ComFuncs.SetSavedSetting("CargoCapacity",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("CargoCapacity")
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000945--[[%s: I can still see some space...--]]]:format(choice[1].text),
-				Strings[302535920000559--[[Cargo Capacity--]]],
-				"UI/Icons/Sections/spaceship.tga"
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				Translate(4598--[[Payload Capacity--]])
 			)
 		end
 	end
@@ -206,14 +204,13 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
 			local value = value * r
 			ChoGGi.ComFuncs.SetConstsG("TravelTimeEarthMars",value)
 			ChoGGi.ComFuncs.SetConstsG("TravelTimeMarsEarth",value)
-			ChoGGi.ComFuncs.SetSavedSetting("TravelTimeEarthMars",value)
-			ChoGGi.ComFuncs.SetSavedSetting("TravelTimeMarsEarth",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("TravelTimeEarthMars")
+			ChoGGi.ComFuncs.SetSavedConstSetting("TravelTimeMarsEarth")
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000950--[[%s: 88 MPH--]]]:format(choice.text),
-				Strings[302535920000561--[[Travel Time--]]],
-				"UI/Upgrades/autoregulator_04/timer.tga"
+				Strings[302535920000561--[[Travel Time--]]]
 			)
 		end
 	end
@@ -248,13 +245,12 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("MaxColonistsPerRocket",value)
-			ChoGGi.ComFuncs.SetSavedSetting("MaxColonistsPerRocket",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("MaxColonistsPerRocket")
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000952--[[%s: Long pig sardines--]]]:format(choice[1].text),
-				Translate(4594--[[Colonists Per Rocket--]]),
-				"UI/Icons/Notifications/colonist.tga"
+				Translate(4594--[[Colonists Per Rocket--]])
 			)
 		end
 	end
@@ -268,7 +264,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 	}
 end
 
-function ChoGGi.MenuFuncs.RocketMaxExportAmount()
+function ChoGGi.MenuFuncs.SetRocketMaxExportAmount()
 	local r = ChoGGi.Consts.ResourceScale
 	local default_setting = ChoGGi.Consts.RocketMaxExportAmount
 	local item_list = {
@@ -311,9 +307,8 @@ function ChoGGi.MenuFuncs.RocketMaxExportAmount()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[302535920000769--[[Selected--]]]),
-				Strings[302535920001291--[[Max Export Amount--]]],
-				"UI/Icons/Sections/PreciousMetals_2.tga"
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				Strings[302535920001291--[[Max Export Amount--]]]
 			)
 		end
 	end
@@ -352,12 +347,11 @@ do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RocketsIgnoreFuel),
-			Strings[302535920001319--[[Rockets Ignore Fuel--]]],
-			"UI/Icons/Sections/Fuel_1.tga"
+			Strings[302535920001319--[[Rockets Ignore Fuel--]]]
 		)
 	end
 
-	function ChoGGi.MenuFuncs.LaunchFuelPerRocket()
+	function ChoGGi.MenuFuncs.SetLaunchFuelPerRocket()
 		local r = ChoGGi.Consts.ResourceScale
 		local default_setting = ChoGGi.Consts.LaunchFuelPerRocket
 		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("FuelRocket")
@@ -395,9 +389,8 @@ do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[302535920000769--[[Selected--]]]),
-					Strings[302535920001317--[[Launch Fuel Per Rocket--]]],
-					"UI/Icons/Sections/Fuel_1.tga"
+					ChoGGi.ComFuncs.SettingState(choice[1].text),
+					Strings[302535920001317--[[Launch Fuel Per Rocket--]]]
 				)
 			end
 		end

@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -19,7 +20,7 @@ Actions[c] = {ActionName = Strings[302535920000535--[[Set ShuttleHub Shuttle Cap
 	ActionId = ".Set ShuttleHub Shuttle Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/ShowAll.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			"ChoGGi.UserSettings.BuildingSettings.ShuttleHub.shuttles",
 			Strings[302535920000536--[[Change amount of shuttles per shuttlehub.--]]]
 		)
@@ -28,12 +29,12 @@ Actions[c] = {ActionName = Strings[302535920000535--[[Set ShuttleHub Shuttle Cap
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000537--[[Set Capacity--]]],
+Actions[c] = {ActionName = Strings[302535920000930--[[Set Cargo Shuttle Capacity--]]],
 	ActionMenubar = "ECM.ECM.Shuttles",
-	ActionId = ".Set Capacity",
+	ActionId = ".Set Cargo Shuttle Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.StorageShuttle,
 			Strings[302535920000538--[[Change capacity of shuttles.--]]]
 		)
@@ -42,12 +43,12 @@ Actions[c] = {ActionName = Strings[302535920000537--[[Set Capacity--]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000539--[[Set Speed--]]],
+Actions[c] = {ActionName = Strings[302535920000932--[[Set Cargo Shuttle Speed--]]],
 	ActionMenubar = "ECM.ECM.Shuttles",
-	ActionId = ".Set Speed",
+	ActionId = ".Set Cargo Shuttle Speed",
 	ActionIcon = "CommonAssets/UI/Menu/move_gizmo.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.SpeedShuttle,
 			Strings[302535920000540--[[Change speed of shuttles.--]]]
 		)

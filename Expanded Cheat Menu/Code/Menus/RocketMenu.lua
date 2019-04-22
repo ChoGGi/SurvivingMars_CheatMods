@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -19,12 +20,12 @@ Actions[c] = {ActionName = Strings[302535920001291--[[Max Export Amount--]]],
 	ActionId = ".Max Export Amount",
 	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.RocketMaxExportAmount,
 			Strings[302535920001290--[[Change how many rares per rocket you can export.--]]]
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.RocketMaxExportAmount,
+	OnAction = ChoGGi.MenuFuncs.SetRocketMaxExportAmount,
 }
 
 c = c + 1
@@ -33,12 +34,12 @@ Actions[c] = {ActionName = Strings[302535920001317--[[Launch Fuel Per Rocket--]]
 	ActionId = ".Launch Fuel Per Rocket",
 	ActionIcon = "CommonAssets/UI/Menu/DisableNormalMaps.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.LaunchFuelPerRocket,
 			Strings[302535920001318--[[Change how much fuel rockets need to launch.--]]]
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.LaunchFuelPerRocket,
+	OnAction = ChoGGi.MenuFuncs.SetLaunchFuelPerRocket,
 }
 
 c = c + 1
@@ -47,7 +48,7 @@ Actions[c] = {ActionName = Strings[302535920001319--[[Rockets Ignore Fuel--]]],
 	ActionId = ".Launch Fuel Per Rocket",
 	ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.RocketsIgnoreFuel,
 			Strings[302535920001320--[[Rockets don't need fuel to launch.--]]]
 		)
@@ -74,14 +75,14 @@ Actions[c] = {ActionName = Strings[302535920000850--[[Change Resupply Settings--
 --~ 	}
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000559--[[Cargo Capacity--]]],
+Actions[c] = {ActionName = Translate(4598--[[Payload Capacity--]]),
 	ActionMenubar = "ECM.ECM.Rockets",
-	ActionId = ".Cargo Capacity",
+	ActionId = ".Payload Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.CargoCapacity,
-			Strings[302535920000560--[[Change amount of storage space in rockets.--]]]
+			Translate(4597--[[Maximum payload (in kg) of a resupply Rocket--]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetRocketCargoCapacity,
@@ -93,9 +94,9 @@ Actions[c] = {ActionName = Strings[302535920000561--[[Travel Time--]]],
 	ActionId = ".Travel Time",
 	ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.TravelTimeEarthMars,
-			Strings[302535920000562--[[Change how long to take to travel between planets.--]]]
+			Translate(4591--[[Time it takes for a Rocket to travel from Mars to Earth--]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetRocketTravelTime,
@@ -107,9 +108,9 @@ Actions[c] = {ActionName = Translate(4594--[[Colonists Per Rocket--]]),
 	ActionId = ".Colonists Per Rocket",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
-			Consts.MaxColonistsPerRocket,
-			Strings[302535920000564--[[Change how many colonists can arrive on Mars in a single Rocket.--]]]
+		return SettingState(
+			ChoGGi.UserSettings.MaxColonistsPerRocket,
+			Translate(4593--[[Maximum number of Colonists that can arrive on Mars in a single Rocket--]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetColonistsPerRocket,

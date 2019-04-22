@@ -7,6 +7,59 @@ local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
 --~	local RetName = ChoGGi.ComFuncs.RetName
 
+function ChoGGi.MenuFuncs.SetRoverChargeRadius()
+	local default_setting = 0
+	local item_list = {
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+		{text = 1,value = 1},
+		{text = 2,value = 2},
+		{text = 3,value = 3},
+		{text = 4,value = 4},
+		{text = 5,value = 5},
+		{text = 10,value = 10},
+		{text = 25,value = 25},
+		{text = 50,value = 50},
+		{text = 100,value = 100},
+		{text = 250,value = 250},
+		{text = 500,value = 500},
+	}
+
+	--other hint type
+	local hint = default_setting
+	if ChoGGi.UserSettings.RCChargeDist then
+		hint = ChoGGi.UserSettings.RCChargeDist
+	end
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		local value = choice[1].value
+		if type(value) == "number" then
+
+			if value == default_setting then
+				ChoGGi.UserSettings.RCChargeDist = nil
+			else
+				ChoGGi.UserSettings.RCChargeDist = value
+			end
+
+			ChoGGi.SettingFuncs.WriteSettings()
+			MsgPopup(
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				Strings[302535920000541--[[RC Set Charging Distance--]]]
+			)
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = Strings[302535920000880--[[Set Rover Charge Radius--]]],
+		hint = Strings[302535920000106--[[Current--]]] .. ": " .. hint,
+		skip_sort = true,
+	}
+end
+
 function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 	local r = ChoGGi.Consts.ResourceScale
 	local default_setting = ChoGGi.Consts.SpeedRC
@@ -37,7 +90,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetSavedSetting("SpeedRC",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedRC",value)
 			local objs = UICity.labels.Rover or ""
 			for i = 1, #objs do
 				objs[i]:SetMoveSpeed(value)
@@ -45,7 +98,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[302535920000769--[[Selected--]]]),
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
 				Strings[302535920000543--[[RC Move Speed--]]]
 			)
 		end
@@ -96,11 +149,11 @@ function ChoGGi.MenuFuncs.SetGravityRC()
 			for i = 1, #objs do
 				objs[i]:SetGravity(value)
 			end
-			ChoGGi.ComFuncs.SetSavedSetting("GravityRC",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("GravityRC",value)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000919--[[RC gravity is now %s.--]]]:format(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
 				Strings[302535920000545--[[RC Gravity--]]]
 			)
 		end
@@ -118,14 +171,13 @@ end
 function ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle()
 	ChoGGi.ComFuncs.SetConstsG("RCRoverTransferResourceWorkTime",ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverTransferResourceWorkTime,0,ChoGGi.Consts.RCRoverTransferResourceWorkTime))
 	ChoGGi.ComFuncs.SetConstsG("RCTransportGatherResourceWorkTime",ChoGGi.ComFuncs.NumRetBool(Consts.RCTransportGatherResourceWorkTime,0,ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportGatherResourceWorkTime")))
-	ChoGGi.ComFuncs.SetSavedSetting("RCRoverTransferResourceWorkTime",Consts.RCRoverTransferResourceWorkTime)
-	ChoGGi.ComFuncs.SetSavedSetting("RCTransportGatherResourceWorkTime",Consts.RCTransportGatherResourceWorkTime)
+	ChoGGi.ComFuncs.SetSavedConstSetting("RCRoverTransferResourceWorkTime")
+	ChoGGi.ComFuncs.SetSavedConstSetting("RCTransportGatherResourceWorkTime")
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		Strings[302535920000905--[[%s: Slight of hand--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverTransferResourceWorkTime)),
-		Strings[302535920000549--[[RC Instant Resource Transfer--]]],
-		"UI/Icons/IPButtons/resources_section.tga"
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverTransferResourceWorkTime),
+		Strings[302535920000549--[[RC Instant Resource Transfer--]]]
 	)
 end
 
@@ -180,14 +232,13 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 			if default then
 				ChoGGi.UserSettings.RCTransportStorageCapacity = nil
 			else
-				ChoGGi.ComFuncs.SetSavedSetting("RCTransportStorageCapacity",value)
+				ChoGGi.ComFuncs.SetSavedConstSetting("RCTransportStorageCapacity",value)
 			end
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000926--[[RC Transport capacity is now %s.--]]]:format(choice[1].text),
-				Strings[302535920000551--[[RC Storage Capacity--]]],
-				"UI/Icons/bmc_building_storages_shine.tga"
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				Strings[302535920000551--[[RC Storage Capacity--]]]
 			)
 		end
 	end
@@ -225,9 +276,9 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 		local value = choice[1].value
 		if type(value) == "number" then
 
-			ChoGGi.ComFuncs.SetSavedSetting("RCRoverMaxRadius",value)
-			--we need to set this so the hex grid during placement is enlarged
+			-- we need to set this so the hex grid during placement is enlarged
 			const.RCRoverMaxRadius = value
+			ChoGGi.ComFuncs.SetSavedConstSetting("RCRoverMaxRadius")
 
 			local objs = UICity.labels.RCRover or ""
 			for i = 1, #objs do
@@ -236,9 +287,8 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000883--[[%s: I can see for miles and miles.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverMaxRadius)),
-				Strings[302535920000505--[[Work Radius RC Rover--]]],
-				"UI/Icons/Upgrades/service_bots_04.tga"
+				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverMaxRadius),
+				Strings[302535920000505--[[Work Radius RC Rover--]]]
 			)
 		end
 	end

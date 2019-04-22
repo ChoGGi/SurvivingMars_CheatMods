@@ -196,6 +196,7 @@ function ChoGGi.SettingFuncs.SetConstsToSaved()
 		"DustStormSanityDamage",
 		"Electronics_cost_modifier",
 		"Electronics_dome_cost_modifier",
+		"ExportPricePreciousMetals",
 		"FoodPerRocketPassenger",
 		"HighStatLevel",
 		"HighStatMoraleEffect",

@@ -40,7 +40,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 				value = 1000000
 			end
 
-			ChoGGi.ComFuncs.SetSavedSetting("StorageShuttle",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("StorageShuttle",value)
 			ChoGGi.SettingFuncs.WriteSettings()
 
 			-- loop through and set all shuttles
@@ -49,8 +49,8 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 				objs[i].max_shared_storage = value
 			end
 			MsgPopup(
-				Strings[302535920000929--[[Shuttle storage is now %s.--]]]:format(choice[1].text),
-				Strings[302535920000537--[[Set Capacity--]]]
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				Strings[302535920000930--[[Set Cargo Shuttle Capacity--]]]
 			)
 		end
 	end
@@ -99,12 +99,12 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 			for i = 1, #objs do
 				objs[i].move_speed = value
 			end
-			ChoGGi.ComFuncs.SetSavedSetting("SpeedShuttle",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedShuttle",value)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000931--[[Shuttle speed is now %s.--]]]:format(choice[1].text),
-				Strings[302535920000539--[[Set Speed--]]]
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				Strings[302535920000932--[[Set Cargo Shuttle Speed--]]]
 			)
 		end
 	end
@@ -162,7 +162,7 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			Strings[302535920000934--[[ShuttleHub shuttle capacity is now %s.--]]]:format(choice[1].text),
+			ChoGGi.ComFuncs.SettingState(choice[1].text),
 			Strings[302535920000535--[[Set ShuttleHub Shuttle Capacity--]]]
 		)
 	end

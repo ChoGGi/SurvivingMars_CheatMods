@@ -1,0 +1,3 @@
+rc flying drone 
+space to jump, rightclick? to shoot
+q/e up/down buttons

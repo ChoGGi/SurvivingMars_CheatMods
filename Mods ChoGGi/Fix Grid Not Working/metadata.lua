@@ -15,6 +15,7 @@ return PlaceObj("ModDef", {
 	"description", [[When you load a save this will go through the grids and check for objects that shouldn't be in there.
 
 If your batteries haven't been charging since the Sagan update this will fix it.
+This won't fix the seemingly random unpowered buildings bug (try salvaging and rebuilding cables running parallel under pipes).
 
 You can remove afterwards.]],
 })

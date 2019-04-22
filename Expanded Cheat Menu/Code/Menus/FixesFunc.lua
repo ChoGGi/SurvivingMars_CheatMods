@@ -153,8 +153,7 @@ function ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CheckForBorkedTransportPath),
-		Strings[302535920001266--[[Borked Transport Pathing--]]],
-		"UI/Icons/IPButtons/transport_route.tga"
+		Strings[302535920001266--[[Borked Transport Pathing--]]]
 	)
 end
 
@@ -495,8 +494,7 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
 
 	MsgPopup(
 		Strings[302535920000609--[[Attach Buildings To Nearest Working Dome--]]],
-		Translate(3980--[[Buildings--]]),
-		"UI/Icons/Sections/basic.tga"
+		Translate(3980--[[Buildings--]])
 	)
 end
 
@@ -583,8 +581,7 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings),
-		Strings[302535920000248--[[Colonists Stuck Outside Service Buildings--]]],
-		"UI/Icons/IPButtons/colonist_section.tga"
+		Strings[302535920000248--[[Colonists Stuck Outside Service Buildings--]]]
 	)
 end
 
@@ -594,8 +591,7 @@ function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
-		Strings[302535920000613--[[Drone Carry Amount--]]],
-		"UI/Icons/IPButtons/drone.tga"
+		Strings[302535920000613--[[Drone Carry Amount--]]]
 	)
 end
 

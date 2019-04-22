@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -47,7 +48,7 @@ Actions[c] = {ActionName = Strings[302535920000710--[[Change Logo--]]],
 	ActionId = ".Change Logo",
 	ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			g_CurrentMissionParams.idMissionLogo,
 			Strings[302535920000711--[[Change the logo for anything that uses the logo.--]]]
 		)
@@ -61,7 +62,7 @@ Actions[c] = {ActionName = Strings[302535920000712--[[Set Sponsor--]]],
 	ActionId = ".Set Sponsor",
 	ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			g_CurrentMissionParams.idMissionSponsor,
 			Strings[302535920000713--[[Switch to a different sponsor.--]]]
 		)
@@ -89,7 +90,7 @@ Actions[c] = {ActionName = Strings[302535920000716--[[Set Commander--]]],
 	ActionId = ".Set Commander",
 	ActionIcon = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			g_CurrentMissionParams.idCommanderProfile,
 			Strings[302535920000717--[[Switch to a different commander.--]]]
 		)
@@ -145,9 +146,9 @@ Actions[c] = {ActionName = Strings[302535920000708--[[Meteor Damage--]]],
 	ActionId = ".Meteor Damage",
 	ActionIcon = "CommonAssets/UI/Menu/remove_water.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.MeteorHealthDamage,
-			Strings[302535920000709--[[Disable Meteor damage (colonists?).--]]]
+			Translate(7563--[[Health damage from small meteor (one-time on impact)--]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle,

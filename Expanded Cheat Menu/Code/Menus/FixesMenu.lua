@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -249,7 +250,7 @@ Actions[c] = {ActionName = Strings[302535920001266--[[Borked Transport Pathing--
 	ActionId = ".Borked Transport Pathing",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.CheckForBorkedTransportPath,
 			Strings[302535920001268--[["RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed).
 
@@ -265,7 +266,7 @@ Actions[c] = {ActionName = Strings[302535920000248--[[Colonists Stuck Outside Se
 	ActionId = ".Colonists Stuck Outside Service Buildings",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings,
 			Strings[302535920000249--[["Colonists will leave a diner/etc and stop outside of it and not move anymore (might be related to one of those smarter worker ai mods).
 
@@ -281,7 +282,7 @@ Actions[c] = {ActionName = Strings[302535920000613--[[Drone Carry Amount--]]],
 	ActionId = ".Drone Carry Amount",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.DroneResourceCarryAmountFix,
 			Strings[302535920000614--[["Drones only pick up resources from buildings when the amount stored is equal or greater then their carry amount.
 This forces them to pick up whenever there's more then one resource).
@@ -298,7 +299,7 @@ Actions[c] = {ActionName = Strings[302535920000615--[[Sort Command Center Dist--
 	ActionId = ".Sort Command Center Dist",
 	ActionIcon = "CommonAssets/UI/Menu/Axis.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.SortCommandCenterDist,
 			Strings[302535920000616--[["Each Sol goes through all buildings and sorts their cc list by nearest.
 
@@ -314,7 +315,7 @@ Actions[c] = {ActionName = Strings[302535920001483--[[Missing Mod Buildings--]]]
 	ActionId = ".Missing Mod Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/SelectRoute.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.FixMissingModBuildings,
 			Strings[302535920001484--[["Removes any placed buildings that were from a mod.
 This may break the save in other ways, best to just use it for testing."--]]]

@@ -44,7 +44,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodelList(action)
 			setting_func(choice.value)
 
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text,Strings[302535920000769--[[Selected--]]]),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				setting_title
 			)
 		end
@@ -314,7 +314,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
 			end
 		end
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[302535920000769--[[Selected--]]]),
+			ChoGGi.ComFuncs.SettingState(choice[1].text),
 			Strings[302535920000694--[[Set Opacity--]]]
 		)
 	end
@@ -696,8 +696,7 @@ do -- FlattenGround
 
 			MsgPopup(
 				Strings[302535920001164--[[Flattening has been stopped, now updating buildable.--]]],
-				Strings[302535920000485--[[Terrain Flatten Toggle--]]],
-				"UI/Icons/Sections/WasteRock_1.tga"
+				Strings[302535920000485--[[Terrain Flatten Toggle--]]]
 			)
 			-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
 			ToggleCollisions(ChoGGi)
@@ -715,8 +714,7 @@ do -- FlattenGround
 			flatten_height = GetHeight(GetTerrainCursor())
 			MsgPopup(
 				Strings[302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.--]]]:format(flatten_height),
-				Strings[302535920000485--[[Terrain Flatten Toggle--]]],
-				"UI/Icons/Sections/warning.tga"
+				Strings[302535920000485--[[Terrain Flatten Toggle--]]]
 			)
 			visual_circle = Circle:new()
 			visual_circle:SetRadius(size)
@@ -1146,7 +1144,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text,Strings[302535920000769--[[Selected--]]]),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Translate(911432559058--[[Light model--]])
 			)
 		end
@@ -1307,7 +1305,7 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
 				value = 100000
 			end
 			hr.LightsRadiusModifier = value
-			ChoGGi.ComFuncs.SetSavedSetting("LightsRadius",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("LightsRadius",value)
 		else
 			ChoGGi.UserSettings.LightsRadius = nil
 		end
@@ -1353,7 +1351,7 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
 				value = 1000
 			end
 			hr.TR_MaxChunks = value
-			ChoGGi.ComFuncs.SetSavedSetting("TerrainDetail",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("TerrainDetail",value)
 		else
 			ChoGGi.UserSettings.TerrainDetail = nil
 		end
@@ -1397,7 +1395,7 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
 		end
 		if type(value) == "number" then
 			hr.DTM_VideoMemory = value
-			ChoGGi.ComFuncs.SetSavedSetting("VideoMemory",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("VideoMemory",value)
 		else
 			ChoGGi.UserSettings.VideoMemory = nil
 		end
@@ -1442,7 +1440,7 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
 				value = 16384
 			end
 			hr.ShadowmapSize = value
-			ChoGGi.ComFuncs.SetSavedSetting("ShadowmapSize",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("ShadowmapSize",value)
 		else
 			ChoGGi.UserSettings.ShadowmapSize = nil
 		end
@@ -1507,11 +1505,11 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
 		end
 		if type(value) == "number" then
 			hr.LODDistanceModifier = value
-			ChoGGi.ComFuncs.SetSavedSetting("HigherRenderDist",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("HigherRenderDist",value)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherRenderDist,Strings[302535920000643--[[Higher Render Distance--]]]),
+				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherRenderDist),
 				Strings[302535920000643--[[Higher Render Distance--]]]
 			)
 		end
@@ -1682,14 +1680,13 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 			return
 		end
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetSavedSetting("BorderScrollingArea",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("BorderScrollingArea",value)
 			ChoGGi.ComFuncs.SetCameraSettings()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				choice[1].value .. ": " .. Strings[302535920001064--[[Mouse--]]] .. " " .. Strings[302535920000647--[[Border Scrolling--]]],
-				Strings[302535920000647--[[Border Scrolling--]]],
-				"UI/Icons/IPButtons/status_effects.tga"
+				ChoGGi.ComFuncs.SettingState(choice[1].value),
+				Strings[302535920000647--[[Border Scrolling--]]]
 			)
 		end
 	end
@@ -1728,14 +1725,13 @@ function ChoGGi.MenuFuncs.SetCameraLookatDist()
 			return
 		end
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetSavedSetting("CameraLookatDist",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("CameraLookatDist",value)
 			ChoGGi.ComFuncs.SetCameraSettings()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				choice[1].text .. ": " .. Strings[302535920001375--[[Bird's Eye--]]],
-				Strings[302535920001375--[[Bird's Eye--]]],
-				"UI/Icons/IPButtons/status_effects.tga"
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				Strings[302535920001375--[[Bird's Eye--]]]
 			)
 		end
 	end
@@ -1772,14 +1768,13 @@ function ChoGGi.MenuFuncs.SetCameraZoom()
 			return
 		end
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetSavedSetting("CameraZoomToggle",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("CameraZoomToggle",value)
 			ChoGGi.ComFuncs.SetCameraSettings()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				choice[1].text,
-				Strings[302535920000649--[[Zoom Distance--]]],
-				"UI/Icons/IPButtons/status_effects.tga"
+				Strings[302535920000649--[[Zoom Distance--]]]
 			)
 		end
 	end

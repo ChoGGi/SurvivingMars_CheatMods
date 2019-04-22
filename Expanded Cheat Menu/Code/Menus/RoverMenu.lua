@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -20,7 +21,7 @@ Actions[c] = {ActionName = Strings[302535920000541--[[RC Set Charging Distance--
 	ActionId = ".RC Set Charging Distance",
 	ActionIcon = iconRC,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.RCChargeDist,
 			Strings[302535920000542--[[Distance from power lines that rovers can charge.--]]]
 		)
@@ -34,7 +35,7 @@ Actions[c] = {ActionName = Strings[302535920000543--[[RC Move Speed--]]],
 	ActionId = ".RC Move Speed",
 	ActionIcon = "CommonAssets/UI/Menu/move_gizmo.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.SpeedRC,
 			Strings[302535920000544--[[How fast RCs will move.--]]]
 		)
@@ -48,7 +49,7 @@ Actions[c] = {ActionName = Strings[302535920000545--[[RC Gravity--]]],
 	ActionId = ".RC Gravity",
 	ActionIcon = iconRC,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.GravityRC,
 			Strings[302535920000546--[[Change gravity of RCs.--]]]
 		)
@@ -62,7 +63,7 @@ Actions[c] = {ActionName = Strings[302535920000549--[[RC Instant Resource Transf
 	ActionId = ".RC Transport Instant Transfer",
 	ActionIcon = "CommonAssets/UI/Menu/Mirror.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.RCRoverTransferResourceWorkTime,
 			Strings[302535920000550--[[Make it instantly gather/transfer resources.--]]]
 		)
@@ -76,7 +77,7 @@ Actions[c] = {ActionName = Strings[302535920000551--[[RC Storage Capacity--]]],
 	ActionId = ".RC Storage Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.RCTransportStorageCapacity,
 			Strings[302535920000552--[[Change amount of resources RC Transports/Constructors can carry.--]]]
 		)

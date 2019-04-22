@@ -1263,8 +1263,7 @@ do -- FlightGrid_Toggle
 
 	local grid_thread = false
 	local Flight_Height_temp = false
-	local type_tile = terrain.TypeTileSize()
-	local work_step = 16 * type_tile
+	local work_step = 16 * terrain.TypeTileSize()
 	local dbg_step = work_step / 4 -- 400
 	local max_diff = 10 * guim
 	local white = white
@@ -1373,6 +1372,17 @@ do -- FlightGrid_Toggle
 	end
 
 	function ChoGGi.MenuFuncs.FlightGrid_Toggle(size,zoffset)
+		if not Flight_Height then
+			return
+		end
+
+		if IsValidThread(grid_thread) then
+			DeleteThread(grid_thread)
+			grid_thread = false
+			DeleteLines()
+			return
+		end
+
 		local grid_size = ChoGGi.UserSettings.DebugGridSize
 		grid_size = type(grid_size) == "number" and grid_size * 10
 
@@ -1385,17 +1395,7 @@ do -- FlightGrid_Toggle
 			zoffset = zoffset or 0
 		end
 
-		if not Flight_Height then
-			return
-		end
 		Flight_Height_temp = Flight_Height
-
-		if IsValidThread(grid_thread) then
-			DeleteThread(grid_thread)
-			grid_thread = false
-			DeleteLines()
-			return
-		end
 
 		OPolyline = OPolyline or ChoGGi_OPolyline
 		grid_thread = CreateRealTimeThread(GridFunc,size,zoffset)

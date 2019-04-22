@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -120,7 +121,7 @@ Actions[c] = {ActionName = Strings[302535920000265--[[Pulsating Pins--]]],
 	ActionId = ".Pulsating Pins",
 	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.DisablePulsatingPinsMotion,
 			Strings[302535920000335--[[When true pins will no longer do the pulsating motion (hover over to stop).--]]]
 		)
@@ -145,7 +146,7 @@ Actions[c] = {ActionName = Strings[302535920000631--[[UI Transparency Mouseover-
 	ActionId = ".UI Transparency Mouseover",
 	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.TransparencyToggle,
 			Strings[302535920000632--[[Toggle removing transparency on mouseover.--]]]
 		)
@@ -159,9 +160,9 @@ Actions[c] = {ActionName = Strings[302535920000694--[[Set Opacity--]]],
 	ActionId = ".Set Opacity",
 	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
+		local obj = SelectedObj
 		if IsValid(obj) then
-			return ChoGGi.ComFuncs.SettingState(
+			return SettingState(
 				obj:GetOpacity(),
 				Strings[302535920000695--[[Change the opacity of objects.--]]]
 			)
@@ -242,7 +243,7 @@ Actions[c] = {ActionName = Strings[302535920000647--[[Border Scrolling--]]],
 	ActionId = ".Border Scrolling",
 	ActionIcon = "CommonAssets/UI/Menu/CameraToggle.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.BorderScrollingToggle,
 			Strings[302535920000648--[[Set size of activation for mouse border scrolling.--]]]
 		)
@@ -256,7 +257,7 @@ Actions[c] = {ActionName = Strings[302535920000649--[[Zoom Distance--]]],
 	ActionId = ".Zoom Distance",
 	ActionIcon = "CommonAssets/UI/Menu/MoveUpCamera.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.CameraZoomToggle,
 			Strings[302535920000650--[[Further zoom distance.--]]]
 		)
@@ -270,7 +271,7 @@ Actions[c] = {ActionName = Strings[302535920001375--[[Bird's Eye--]]],
 	ActionId = ".Bird's Eye",
 	ActionIcon = "CommonAssets/UI/Menu/UnlockCamera.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.CameraLookatDist,
 			Strings[302535920001429--[[How far up the camera can move.--]]]
 		)
@@ -284,7 +285,7 @@ Actions[c] = {ActionName = Strings[302535920000651--[[Toggle Free Camera--]]],
 	ActionId = ".Toggle Free Camera",
 	ActionIcon = "CommonAssets/UI/Menu/NewCamera.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			cameraFly.IsActive(),
 			Strings[302535920000652--[[I believe I can fly.--]]]
 		)
@@ -300,7 +301,7 @@ Actions[c] = {ActionName = Strings[302535920000653--[[Toggle Follow Camera--]]],
 	ActionId = ".Toggle Follow Camera",
 	ActionIcon = "CommonAssets/UI/Menu/Shot.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			camera3p.IsActive(),
 			Strings[302535920000654--[[Select (or mouse over) an object to follow.--]]]
 		)
@@ -316,7 +317,7 @@ Actions[c] = {ActionName = Strings[302535920000655--[[Toggle Cursor--]]],
 	ActionId = ".Toggle Cursor",
 	ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			IsMouseCursorHidden(),
 			Strings[302535920000656--[[Toggle between moving camera and selecting objects.--]]]
 		)
@@ -332,7 +333,7 @@ Actions[c] = {ActionName = Strings[302535920001489--[[Toggle Map Edge Limit--]]]
 	ActionId = ".Toggle Cursor",
 	ActionIcon = "CommonAssets/UI/Menu/move_gizmo.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.MapEdgeLimit,
 			Strings[302535920001490--[[Removes pushback limit at the edge of the map.--]]]
 		)
@@ -356,7 +357,7 @@ Actions[c] = {ActionName = Strings[302535920000633--[[Lights Radius--]]],
 	ActionId = ".Lights Radius",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.LightsRadius,
 			Strings[302535920000634--[[Sets light radius (Menu>Options>Video>Lights), menu options max out at 100.
 Lets you see lights from further away/more bleedout?--]]]
@@ -371,7 +372,7 @@ Actions[c] = {ActionName = Strings[302535920000635--[[Terrain Detail--]]],
 	ActionId = ".Terrain Detail",
 	ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.TerrainDetail,
 			Strings[302535920000636--[[Sets hr.TR_MaxChunks (Menu>Options>Video>Terrain), menu options max out at 200.
 Makes the background terrain more detailed (make sure to also stick Terrain on Ultra in the options menu).--]]]
@@ -386,7 +387,7 @@ Actions[c] = {ActionName = Strings[302535920000637--[[Video Memory--]]],
 	ActionId = ".Video Memory",
 	ActionIcon = "CommonAssets/UI/Menu/CountPointLights.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.VideoMemory,
 			Strings[302535920000638--[[Sets hr.DTM_VideoMemory (Menu>Options>Video>Textures), menu options max out at 2048.--]]]
 		)
@@ -400,7 +401,7 @@ Actions[c] = {ActionName = Strings[302535920000639--[[Shadow Map--]]],
 	ActionId = ".Shadow Map",
 	ActionIcon = "CommonAssets/UI/Menu/DisableEyeSpec.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.ShadowmapSize,
 			Strings[302535920000640--[[Sets the shadow map size (Menu>Options>Video>Shadows), menu options max out at 4096.--]]]
 		)
@@ -414,7 +415,7 @@ Actions[c] = {ActionName = Strings[302535920000641--[[Disable Texture Compressio
 	ActionId = ".Disable Texture Compression",
 	ActionIcon = "CommonAssets/UI/Menu/ExportImageSequence.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.DisableTextureCompression,
 			Strings[302535920000642--[[Toggle texture compression (game defaults to on, seems to make a difference of 600MB vram).--]]]
 		)
@@ -428,7 +429,7 @@ Actions[c] = {ActionName = Strings[302535920000643--[[Higher Render Distance--]]
 	ActionId = ".Higher Render Distance",
 	ActionIcon = "CommonAssets/UI/Menu/CameraEditor.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.HigherRenderDist,
 			Strings[302535920000644--[[Renders model from further away.
 Not noticeable unless using higher zoom.--]]]
@@ -443,7 +444,7 @@ Actions[c] = {ActionName = Strings[302535920000645--[[Higher Shadow Distance--]]
 	ActionId = ".Higher Shadow Distance",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.HigherShadowDist,
 			Strings[302535920000646--[[Renders shadows from further away.
 Not noticeable unless using higher zoom.--]]]
@@ -548,7 +549,7 @@ Actions[c] = {ActionName = Strings[302535920000661--[[Show Interface in Screensh
 	ActionId = ".Show Interface in Screenshots",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.ShowInterfaceInScreenshots,
 			Strings[302535920000662--[[Do you want to see the interface in screenshots?--]]]
 		)
@@ -594,7 +595,7 @@ Actions[c] = {ActionName = Strings[302535920000666--[[Toggle on-screen hints--]]
 	ActionId = ".Toggle on-screen hints",
 	ActionIcon = "CommonAssets/UI/Menu/HideUnselected.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			HintsEnabled,
 			Strings[302535920000667--[[Don't show hints for this game.--]]]
 		)
@@ -617,7 +618,7 @@ Actions[c] = {ActionName = Strings[302535920000670--[[Never Show Hints--]]],
 	ActionId = ".Never Show Hints",
 	ActionIcon = "CommonAssets/UI/Menu/set_debug_texture.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.DisableHints,
 			Strings[302535920000671--[[No more hints ever.--]]]
 		)
@@ -631,7 +632,7 @@ Actions[c] = {ActionName = Strings[302535920001412--[[GUI Dock Side--]]],
 	ActionId = ".GUI Dock Side",
 	ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.GUIDockSide and Translate(1000459--[[Right--]]) or Translate(1000457--[[Left--]]),
 			Strings[302535920001413--[[Change which side (most) GUI menus are on.--]]]
 
@@ -656,7 +657,7 @@ Actions[c] = {ActionName = Translate(911432559058--[[Light model--]]),
 	ActionId = ".Light Model",
 	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.Lightmodel,
 			Strings[302535920000626--[[Changes the lighting mode (temporary or permanent).--]]]
 		)
@@ -670,7 +671,7 @@ Actions[c] = {ActionName = Strings[302535920001623--[[List Normal--]]],
 	ActionId = ".List Normal",
 	ActionIcon = "CommonAssets/UI/Menu/CountPointLights.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			NormalLightmodelList,
 			Strings[302535920001624--[[Changes the list of lightmodels to use (night/day/etc).--]]]
 		)
@@ -686,7 +687,7 @@ Actions[c] = {ActionName = Strings[302535920001625--[[List Disaster--]]],
 	ActionId = ".List Disaster",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			DisasterLightmodelList,
 			Strings[302535920001626--[[Overrides List Normal.--]]]
 		)

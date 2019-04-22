@@ -254,7 +254,7 @@ function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
 	}
 end
 
-function ChoGGi.MenuFuncs.OutsourceMaxOrderCount_Set()
+function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()
 	local default_setting = ChoGGi.Consts.OutsourceMaxOrderCount
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -283,12 +283,12 @@ function ChoGGi.MenuFuncs.OutsourceMaxOrderCount_Set()
 		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("OutsourceMaxOrderCount",value)
-			ChoGGi.ComFuncs.SetSavedSetting("OutsourceMaxOrderCount",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("OutsourceMaxOrderCount")
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OutsourceMaxOrderCount,Strings[302535920001342--[[Change Outsource Limit--]]]),
-				Strings[302535920001342--[[Change Outsource Limit--]]]
+				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OutsourceMaxOrderCount),
+				Translate(970197122036--[[Maximum Outsource Orders--]])
 			)
 		end
 	end
@@ -296,7 +296,7 @@ function ChoGGi.MenuFuncs.OutsourceMaxOrderCount_Set()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920001342--[[Change Outsource Limit--]]],
+		title = Translate(970197122036--[[Maximum Outsource Orders--]]),
 		hint = Strings[302535920000106--[[Current--]]] .. ": " .. hint,
 		skip_sort = true,
 	}
@@ -307,7 +307,7 @@ function ChoGGi.MenuFuncs.InstantResearch_toggle()
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.InstantResearch,Strings[302535920001278--[[Instant Research--]]]),
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.InstantResearch),
 		Strings[302535920001278--[[Instant Research--]]]
 	)
 end
@@ -319,7 +319,7 @@ function ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle()
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DraggableCheatsMenu,Strings[302535920000232--[[Draggable Cheats Menu--]]]),
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DraggableCheatsMenu),
 		Strings[302535920000232--[[Draggable Cheats Menu--]]]
 	)
 end
@@ -595,48 +595,9 @@ do -- DisasterTriggerLightningStrike
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.DisastersStop()
-	Msg("CheatStopDisaster")
-
-	local missles = g_IncomingMissiles or empty_table
-	for missle in pairs(missles) do
-		missle:ExplodeInAir()
-	end
-
-	if g_DustStorm then
-		StopDustStorm()
-		-- stop doesn't always seem to work, so adding this as well
-		g_DustStormType = false
-	end
-
-	if g_ColdWave then
-		StopColdWave()
-		g_ColdWave = false
-	end
-
-	local objs = g_DustDevils or ""
-	for i = #objs, 1, -1 do
-		objs[i]:delete()
-	end
-
-	objs = g_MeteorsPredicted or ""
-	for i = #objs, 1, -1 do
-		local o = objs[i]
-		Msg("MeteorIntercepted", o)
-		o:ExplodeInAir()
-	end
-
-	objs = g_IonStorms or ""
-	local table_remove = table.remove
-	for i = #objs, 1, -1 do
-		objs[i]:delete()
-		table_remove(g_IonStorms,i)
-	end
-end
-
 do -- DisastersTrigger
 	local trigger_table = {
-		Stop = ChoGGi.MenuFuncs.DisastersStop,
+		Stop = ChoGGi.ComFuncs.DisastersStop,
 		ColdWave = ChoGGi.MenuFuncs.DisasterTriggerColdWave,
 		DustStorm = ChoGGi.MenuFuncs.DisasterTriggerDustStorm,
 		Meteor = ChoGGi.MenuFuncs.DisasterTriggerMeteor,
@@ -993,8 +954,7 @@ function ChoGGi.MenuFuncs.SpawnColonists()
 			CheatSpawnNColonists(value)
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[302535920000014--[[Spawned--]]]),
-				title,
-				"UI/Icons/Sections/colonist.tga"
+				title
 			)
 		end
 	end
@@ -1410,8 +1370,7 @@ function ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle()
 		ChoGGi.ComFuncs.UpdateBuildMenu()
 		MsgPopup(
 			Strings[302535920000293--[[%s: all buildings for construction.--]]]:format(choice[1].text),
-			Strings[302535920000337--[[Toggle Unlock All Buildings--]]],
-			"UI/Icons/Upgrades/build_2.tga"
+			Strings[302535920000337--[[Toggle Unlock All Buildings--]]]
 		)
 	end
 
@@ -1454,8 +1413,7 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 		end
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[302535920000294--[[Added--]]]),
-			Strings[302535920000295--[[Add Research Points--]]],
-			"UI/Icons/Upgrades/eternal_fusion_04.tga"
+			Strings[302535920000295--[[Add Research Points--]]]
 		)
 	end
 
@@ -1470,14 +1428,14 @@ end
 
 function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
 	ChoGGi.ComFuncs.SetConstsG("OutsourceResearchCost",ChoGGi.ComFuncs.NumRetBool(Consts.OutsourceResearchCost,0,ChoGGi.Consts.OutsourceResearchCost))
-	ChoGGi.ComFuncs.SetSavedSetting("OutsourceResearchCost",Consts.OutsourceResearchCost)
+	ChoGGi.ComFuncs.SetSavedConstSetting("OutsourceResearchCost")
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		Strings[302535920000297--[["%s
 Best hope you picked India as your Mars sponsor..."--]]]:format(ChoGGi.UserSettings.OutsourceResearchCost),
 		Strings[302535920000355--[[Outsourcing For Free--]]],
-		"UI/Icons/Sections/research_1.tga",
+		nil,
 		true
 	)
 end
@@ -1505,7 +1463,7 @@ function ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set()
 		local value = choice[1].value
 		if type(value) == "number" then
 			const.OmegaTelescopeBreakthroughsCount = value
-			ChoGGi.ComFuncs.SetSavedSetting("OmegaTelescopeBreakthroughsCount",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("OmegaTelescopeBreakthroughsCount")
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
@@ -1545,7 +1503,7 @@ function ChoGGi.MenuFuncs.BreakThroughsAllowed_Set()
 		local value = choice[1].value
 		if type(value) == "number" then
 			const.BreakThroughTechsPerGame = value
-			ChoGGi.ComFuncs.SetSavedSetting("BreakThroughTechsPerGame",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("BreakThroughTechsPerGame")
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
@@ -1592,7 +1550,7 @@ function ChoGGi.MenuFuncs.ResearchQueueSize_Set()
 		if type(value) == "number" then
 
 			const.ResearchQueueSize = value
-			ChoGGi.ComFuncs.SetSavedSetting("ResearchQueueSize",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("ResearchQueueSize")
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(

@@ -257,7 +257,7 @@ end
 function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
 	local Consts = Consts
 	ChoGGi.ComFuncs.SetConstsG("MeteorHealthDamage",ChoGGi.ComFuncs.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage))
-	ChoGGi.ComFuncs.SetSavedSetting("MeteorHealthDamage",Consts.MeteorHealthDamage)
+	ChoGGi.ComFuncs.SetSavedConstSetting("MeteorHealthDamage")
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(Strings[302535920001160--[["%s
@@ -265,7 +265,7 @@ Damage? Total, sir.
 It's what we call a global killer.
 The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MeteorHealthDamage)),
 		Strings[302535920000708--[[Meteor Damage--]]],
-		"UI/Icons/Notifications/meteor_storm.tga",
+		nil,
 		true
 	)
 end
@@ -686,8 +686,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 
 		MsgPopup(
 			Strings[302535920001179--[[%s occurrence is now: %s--]]]:format(setting_id,value),
-			Translate(3983--[[Disasters--]]),
-			"UI/Icons/Sections/attention.tga"
+			Translate(3983--[[Disasters--]])
 		)
 	end
 
@@ -754,8 +753,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(#choice,Strings[302535920000129--[[Set--]]]),
-			Translate(8800--[[Game Rules--]]),
-			"UI/Icons/Sections/workshifts.tga"
+			Translate(8800--[[Game Rules--]])
 		)
 	end
 

@@ -2,6 +2,7 @@
 
 ## v6.4 (Unreleased)
 - ValidateImage didn't work with non-Library images.
+- DeleteObject works with multi-selection.
 - Removed some log spam from:
 - > DeleteObject
 - > List Choice dialog.

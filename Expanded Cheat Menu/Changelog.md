@@ -10,6 +10,7 @@
 - Debug>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
 - ECM>Game>Lightmodel>List Normal: Changes the list of lightmodels to use (night/day/etc).
 - ECM>Game>Lightmodel>List Disaster: Overrides List Normal.
+- ECM>Resources>Rare Metals Price (M): Amount of Funding received by exporting one unit of Rare Metals.
 - Examine>Context menu (functions)>Function Results: Continually call a function while showing results in an examine dialog.
 - > Call it manually with MonitorFunc(func_obj,params).
 - > Examples:
@@ -18,7 +19,8 @@
 
 ### Changed:
 - Mod Upload supports batch uploading (and screenshots).
-- Changed menu items to use the default ECM icon instead of something maybe vaguely related.
+- Menu items to use the default ECM icon instead of something maybe vaguely related.
+- Some menu items to use translated text instead of mine.
 - > Easier to distinguish between notifications from ECM and from SM.
 - Debug>Examine will try to examine the UI element under the cursor if it can't find an object.
 - Examine:

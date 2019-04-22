@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 local RetName = ChoGGi.ComFuncs.RetName
 local Strings = ChoGGi.Strings
@@ -23,7 +24,7 @@ Actions[c] = {ActionName = Strings[302535920000164--[[Storage Amount Of Diner & 
 	ActionId = ".Storage Amount Of Diner & Grocery",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.ServiceWorkplaceFoodStorage,
 			Strings[302535920000167--[[Change how much food is stored in them (less chance of starving colonists when busy).--]]]
 		)
@@ -46,7 +47,7 @@ Actions[c] = {ActionName = Strings[302535920000210--[[Moisture Vaporator Penalty
 	ActionId = ".Moisture Vaporator Penalty",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.MoistureVaporatorRange,
 			Strings[302535920000211--[[Disable penalty when Moisture Vaporators are close to each other.--]]]
 		)
@@ -81,7 +82,7 @@ Actions[c] = {ActionName = Translate(5245--[[Sanatoriums--]]) .. " " .. Strings[
 	ActionId = ".Sanatoriums Cure All",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.SanatoriumCureAll,
 			Strings[302535920000199--[[Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).--]]]
 		)
@@ -95,7 +96,7 @@ Actions[c] = {ActionName = Translate(5248--[[Schools--]]) .. " " .. Strings[3025
 	ActionId = ".Schools Train All",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.SchoolTrainAll,
 			Strings[302535920000199--[[Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).--]]]
 		)
@@ -109,7 +110,7 @@ Actions[c] = {ActionName = SandS .. ": " .. Strings[302535920000202--[[Show All 
 	ActionId = ".Sanatoriums & Schools: Show All Traits",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits,
 			Strings[302535920000203--[[Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.--]]]
 		)
@@ -123,7 +124,7 @@ Actions[c] = {ActionName = SandS .. ": " .. Strings[302535920000204--[[Show Full
 	ActionId = ".Sanatoriums & Schools: Show Full List",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.SanatoriumSchoolShowAll,
 			Strings[302535920000205--[[Toggle showing full list of trait selectors in side pane.--]]]
 		)
@@ -156,9 +157,9 @@ Actions[c] = {ActionName = Translate(4711--[[Crop Fail Threshold--]]),
 	ActionId = ".Crop Fail Threshold",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.CropFailThreshold,
-			Strings[302535920000213--[[Remove Threshold for failing crops (crops won't fail).--]]]
+			Translate(4710--[[Average performance of Farms required for Crops to succeed--]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.CropFailThreshold_Toggle,
@@ -180,7 +181,7 @@ Actions[c] = {ActionName = Strings[302535920000218--[[No Chance Of Break--]]],
 	ActionId = ".Cables & Pipes: No Chance Of Break",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.BreakChanceCablePipe,
 			Strings[302535920000157--[[Cables & Pipes--]]] .. " " .. Strings[302535920000219--[[will never break.--]]]
 		)
@@ -194,7 +195,7 @@ Actions[c] = {ActionName = Translate(134--[[Instant Build--]]),
 	ActionId = ".Cables & Pipes: Instant Build",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.InstantCables,
 			Strings[302535920000157--[[Cables & Pipes--]]] .. " " .. Strings[302535920000221--[[are built instantly.--]]]
 		)
@@ -219,8 +220,8 @@ Actions[c] = {ActionName = Strings[302535920000194--[[Production Amount Set--]]]
 	ActionId = ".Production Amount Set",
 	ActionIcon = icon,
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = SelectedObj
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".production",
 			Strings[302535920000195--[["Set production of buildings of selected type, also applies to newly placed ones.
 Works on any building that produces."--]]]
@@ -237,8 +238,8 @@ Actions[c] = {ActionName = Strings[302535920000186--[[Power-free Building--]]],
 	ActionId = ".Power-free Building",
 	ActionIcon = icon,
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = SelectedObj
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".nopower",
 			Strings[302535920000187--[[Toggle electricity use for selected building type.--]]]
 		) or Strings[302535920000187]
@@ -253,8 +254,8 @@ Actions[c] = {ActionName = Strings[302535920001251--[[Water-free Building--]]],
 	ActionId = ".Water-free Building",
 	ActionIcon = icon,
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = SelectedObj
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".nowater",
 			Strings[302535920001252--[[Toggle water use for selected building type.--]]]
 		) or Strings[302535920001252]
@@ -269,8 +270,8 @@ Actions[c] = {ActionName = Strings[302535920001253--[[Oxygen-free Building--]]],
 	ActionId = ".Oxygen-free Building",
 	ActionIcon = icon,
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = SelectedObj
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".noair",
 			Strings[302535920001254--[[Toggle oxygen use for selected building type.--]]]
 		) or Strings[302535920001254]
@@ -296,8 +297,8 @@ Actions[c] = {ActionName = Strings[302535920000178--[[Protection Radius--]]],
 	ActionId = ".Protection Radius",
 	ActionIcon = icon,
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = SelectedObj
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".protect_range",
 			Strings[302535920000179--[[Change threat protection coverage distance.--]]]
 		) or Strings[302535920000179]
@@ -311,8 +312,8 @@ Actions[c] = {ActionName = Strings[302535920000196--[[Fully Automated Building--
 	ActionId = ".Fully Automated Building",
 	ActionIcon = icon,
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = SelectedObj
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".auto_performance",
 			Strings[302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).--]]]
 		) or Strings[302535920000197]
@@ -326,8 +327,8 @@ Actions[c] = {ActionName = Strings[302535920001114--[[Service Building Stats--]]
 	ActionId = ".Service Building Stats",
 	ActionIcon = icon,
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = SelectedObj
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".service_stats",
 			Strings[302535920001115--[["Tweak settings for parks and such.
 Health change, Sanity change, Service Comfort, Comfort increase."--]]]
@@ -342,8 +343,8 @@ Actions[c] = {ActionName = Strings[302535920001344--[[Points To Train--]]],
 	ActionId = ".Points To Train",
 	ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = SelectedObj
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".evaluation_points",
 			Strings[302535920001345--[[How many points are needed to finish training.--]]]
 		) or Strings[302535920001345]
@@ -367,7 +368,7 @@ Actions[c] = {ActionName = Strings[302535920000159--[[Unlimited Wonders--]]],
 	ActionId = ".Unlimited Wonders",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.Building_wonder,
 			Strings[302535920000223--[["Unlimited wonder build limit (blocks the ""build a wonder"" achievement)."--]]]
 		)
@@ -381,7 +382,7 @@ Actions[c] = {ActionName = Strings[302535920000224--[[Show Hidden Buildings--]]]
 	ActionId = ".Show Hidden Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.Building_hide_from_build_menu,
 			Strings[302535920000225--[[Show hidden buildings in build menu.--]]]
 		)
@@ -395,7 +396,7 @@ Actions[c] = {ActionName = Strings[302535920001241--[[Instant Build--]]],
 	ActionId = ".Instant Build",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.Building_instant_build,
 			Strings[302535920000229--[[Buildings are built instantly.--]]]
 		)
@@ -409,7 +410,7 @@ Actions[c] = {ActionName = Strings[302535920000226--[[Remove Spire Point Limit--
 	ActionId = ".Remove Spire Point Limit",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.Building_dome_spot,
 			Strings[302535920000227--[["Build spires anywhere in domes.
 Use with %s to fill up a dome with spires."--]]]:format(Strings[302535920000230--[[Remove Building Limits--]]])
@@ -424,7 +425,7 @@ Actions[c] = {ActionName = Strings[302535920000230--[[Remove Building Limits--]]
 	ActionId = ".Remove Building Limits",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.RemoveBuildingLimits,
 			Strings[302535920000231--[["Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
 See also %s."--]]]:format(Strings[302535920000226--[[Remove Spire Point Limit--]]])
@@ -439,7 +440,7 @@ Actions[c] = {ActionName = Strings[302535920000214--[[Cheap Construction--]]],
 	ActionId = ".Cheap Construction",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.rebuild_cost_modifier,
 			Strings[302535920000215--[[Build with minimal resources.--]]]
 		)
@@ -453,7 +454,7 @@ Actions[c] = {ActionName = Strings[302535920000216--[[Building Damage Crime--]]]
 	ActionId = ".Building Damage Crime",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount,
 			Strings[302535920000217--[[Disable damage from renegedes to buildings.--]]]
 		)
@@ -467,7 +468,7 @@ Actions[c] = {ActionName = Strings[302535920000206--[[Maintenance Free Inside--]
 	ActionId = ".Maintenance Free Inside",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.InsideBuildingsNoMaintenance,
 			Strings[302535920000207--[[Buildings inside domes don't build maintenance points (takes away instead of adding).--]]]
 		)
@@ -481,7 +482,7 @@ Actions[c] = {ActionName = Strings[302535920000208--[[Maintenance Free--]]],
 	ActionId = ".Maintenance Free",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.RemoveMaintenanceBuildUp,
 			Strings[302535920000209--[[Building maintenance points reverse (takes away instead of adding).--]]]
 		)
@@ -495,7 +496,7 @@ Actions[c] = {ActionName = Strings[302535920000174--[[Always Dusty--]]],
 	ActionId = ".Always Dusty",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.AlwaysDustyBuildings,
 			Strings[302535920000175--[[Buildings will never lose their dust (unless you turn this off, then it'll reset the dust amount).
 Will be overridden by %s.--]]]:format(Strings[302535920000037--[[Always Clean--]]])
@@ -510,7 +511,7 @@ Actions[c] = {ActionName = Strings[302535920000037--[[Always Clean--]]],
 	ActionId = ".Always Clean",
 	ActionIcon = icon,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.AlwaysCleanBuildings,
 			Strings[302535920000316--[[Buildings will never get dusty.--]]]
 		)
@@ -519,12 +520,12 @@ Actions[c] = {ActionName = Strings[302535920000037--[[Always Clean--]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000182--[[Pipes Pillars Spacing--]]],
+Actions[c] = {ActionName = Translate(4713--[[Pipes pillar spacing--]]),
 	ActionMenubar = "ECM.ECM.Buildings.Toggles",
-	ActionId = ".Pipes Pillars Spacing",
+	ActionId = ".Pipes pillar spacing",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.PipesPillarSpacing,
 			Strings[302535920000183--[[Only place Pillars at start and end.--]]]
 		)
@@ -538,7 +539,7 @@ Actions[c] = {ActionName = Strings[302535920000184--[[Unlimited Connection Lengt
 	ActionId = ".Unlimited Connection Length",
 	ActionIcon = "CommonAssets/UI/Menu/road_type.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.UnlimitedConnectionLength,
 			Strings[302535920000185--[[No more length limits to pipes, cables, and passages.--]]]
 		)
@@ -553,7 +554,7 @@ Actions[c] = {ActionName = Strings[302535920000064--[[Build On Geysers--]]],
 	ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
 	OnAction = ChoGGi.MenuFuncs.BuildOnGeysers_Toggle,
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.BuildOnGeysers,
 			Strings[302535920000065--[[Allows you to build on geysers. Use Shift-F4 around the area to delete the geyser objects (about 10-20 depending on size).--]]]
 		)
@@ -567,7 +568,7 @@ if g_AvailableDlc.gagarin then
 		ActionId = ".Remove Sponsor Limits",
 		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
 		RolloverText = function()
-			return ChoGGi.ComFuncs.SettingState(
+			return SettingState(
 				ChoGGi.UserSettings.SponsorBuildingLimits,
 				Strings[302535920001399--[[Allow you to build all buildings no matter your sponsor.--]]]
 			)
@@ -582,7 +583,7 @@ Actions[c] = {ActionName = Strings[302535920001407--[[Rotate During Placement--]
 	ActionId = ".Rotate During Placement",
 	ActionIcon = "CommonAssets/UI/Menu/RotateObjectsTool.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.RotateDuringPlacement,
 			Strings[302535920001408--[[Allow you to rotate all buildings.--]]]
 		)
@@ -606,7 +607,7 @@ Actions[c] = {ActionName = Strings[302535920001330--[[Instant Export On Toggle--
 	ActionId = ".Instant Export On Toggle",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.SpaceElevatorToggleInstantExport,
 			Strings[302535920001331--[[Toggle Forbid Exports to have it instantly export current stock.--]]]
 		)
@@ -620,7 +621,7 @@ Actions[c] = {ActionName = Strings[302535920001336--[[Export When This Amount--]
 	ActionId = ".Export When This Amount",
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			"ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount",
 			Strings[302535920001337--[[When you have this many rares in storage launch right away.--]]]
 		)
@@ -634,7 +635,7 @@ Actions[c] = {ActionName = Strings[302535920001332--[[Export Amount Per Trip--]]
 	ActionId = ".Export Amount Per Trip",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			"ChoGGi.UserSettings.BuildingSettings.SpaceElevator.max_export_storage",
 			Strings[302535920001333--[[How many rare metals you can export per trip.--]]]
 		)
@@ -650,7 +651,7 @@ Actions[c] = {ActionName = Strings[302535920001334--[[Import Amount Per Trip--]]
 	ActionId = ".Import Amount Per Trip",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			"ChoGGi.UserSettings.BuildingSettings.SpaceElevator.cargo_capacity",
 			Strings[302535920001335--[[How much storage for import you can use.--]]]
 		)
@@ -676,8 +677,8 @@ Actions[c] = {ActionName = Translate(4818--[[Triboelectric Scrubber--]]),
 	ActionId = ".Triboelectric Scrubber",
 	ActionIcon = icon,
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = SelectedObj
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
 			Strings[302535920000170--[[Change the range of the %s.--]]]:format(RetName(obj))
 		) or Strings[302535920000170]:format(Translate(4818--[[Triboelectric Scrubber--]]))
@@ -695,8 +696,8 @@ Actions[c] = {ActionName = Translate(5293--[[Subsurface Heater--]]),
 	ActionId = ".Subsurface Heater",
 	ActionIcon = icon,
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = SelectedObj
+		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
 			Strings[302535920000170--[[Change the range of the %s.--]]]:format(RetName(obj))
 		) or Strings[302535920000170]:format(Translate(5293--[[Subsurface Heater--]]))

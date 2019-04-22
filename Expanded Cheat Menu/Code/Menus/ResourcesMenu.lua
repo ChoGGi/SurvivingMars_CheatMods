@@ -1,9 +1,11 @@
 -- See LICENSE for terms
 
 local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
+local LocaleInt = LocaleInt
 
 -- menu
 c = c + 1
@@ -15,13 +17,30 @@ Actions[c] = {ActionName = Translate(692--[[Resources--]]),
 }
 
 c = c + 1
+Actions[c] = {ActionName = Translate(4604--[[Rare Metals Price (M)--]]),
+	ActionMenubar = "ECM.ECM.Resources",
+	ActionId = ".Rare Metals Price (M)",
+	ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
+	RolloverText = function()
+		if GameState.gameplay then
+			return SettingState(
+				ChoGGi.UserSettings.ExportPricePreciousMetals,
+				Translate(4603--[[Amount of Funding (in millions) received by exporting one unit of Rare Metals--]])
+			)
+		end
+		return Translate(4603)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetFundingPerRareMetalExport,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920000719--[[Add Orbital Probes--]]],
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Add Orbital Probes",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
 	RolloverText = function()
 		if GameState.gameplay then
-			return ChoGGi.ComFuncs.SettingState(
+			return SettingState(
 				#(UICity.labels.OrbitalProbe or "") + #(UICity.labels.AdvancedOrbitalProbe or ""),
 				Strings[302535920000720--[[Add more probes.--]]]
 			)
@@ -37,9 +56,9 @@ Actions[c] = {ActionName = Translate(4616--[[Food Per Rocket Passenger--]]),
 	ActionId = ".Food Per Rocket Passenger",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return SettingState(
 			ChoGGi.UserSettings.FoodPerRocketPassenger,
-			Strings[302535920000722--[[Change the amount of Food supplied with each Colonist arrival.--]]]
+			Translate(4615--[[The amount of Food (unscaled) supplied with each Colonist arrival--]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetFoodPerRocketPassenger,
@@ -50,7 +69,8 @@ Actions[c] = {ActionName = Translate(1110--[[Prefab Buildings--]]),
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Prefab Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/gear.tga",
-	RolloverText = Translate(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]]) .. "\n" .. Strings[302535920000897--[[Drone prefabs--]]],
+	RolloverText = Translate(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]])
+		.. "\n\n" .. Strings[302535920000897--[[Drone prefabs--]]],
 	OnAction = ChoGGi.MenuFuncs.AddPrefabBuildings,
 }
 
@@ -61,7 +81,7 @@ Actions[c] = {ActionName = Translate(3613--[[Funding--]]),
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
 		if GameState.gameplay then
-			return ChoGGi.ComFuncs.SettingState(
+			return SettingState(
 				LocaleInt(UICity.funding),
 				Strings[302535920000726--[[Add more funding (or reset back to 500 M).--]]]
 			)

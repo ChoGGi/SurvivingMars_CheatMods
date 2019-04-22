@@ -31,9 +31,9 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 		local value = choice[1].value
 		if type(value) == "number" then
 
-			ChoGGi.ComFuncs.SetSavedSetting("RCRoverMaxRadius",value)
-			--we need to set this so the hex grid during placement is enlarged
+			-- we need to set this so the hex grid during placement is enlarged
 			const.RCRoverMaxRadius = value
+			ChoGGi.ComFuncs.SetSavedConstSetting("RCRoverMaxRadius")
 
 			local objs = UICity.labels.RCRover or ""
 			for i = 1, #objs do
@@ -42,9 +42,8 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000883--[[%s: I can see for miles and miles.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverMaxRadius)),
-				Strings[302535920000505--[[Work Radius RC Rover--]]],
-				"UI/Icons/Upgrades/service_bots_04.tga"
+				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverMaxRadius),
+				Strings[302535920000505--[[Work Radius RC Rover--]]]
 			)
 		end
 	end
@@ -123,9 +122,9 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 		local value = choice[1].value
 		if type(value) == "number" then
 
-			ChoGGi.ComFuncs.SetSavedSetting("CommandCenterMaxRadius",value)
 			-- we need to set this so the hex grid during placement is enlarged
 			const.CommandCenterMaxRadius = value
+			ChoGGi.ComFuncs.SetSavedConstSetting("CommandCenterMaxRadius")
 
 			local objs = UICity.labels.DroneHub or ""
 			for i = 1, #objs do
@@ -134,9 +133,8 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000883--[[%s: I can see for miles and miles--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CommandCenterMaxRadius)),
-				Strings[302535920000507--[[Work Radius DroneHub--]]],
-				"UI/Icons/Upgrades/service_bots_04.tga"
+				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CommandCenterMaxRadius),
+				Strings[302535920000507--[[Work Radius DroneHub--]]]
 			)
 		end
 	end
@@ -176,10 +174,10 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("DroneTransformWasteRockObstructorToStockpileAmount",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("DroneTransformWasteRockObstructorToStockpileAmount")
 
-			ChoGGi.ComFuncs.SetSavedSetting("DroneTransformWasteRockObstructorToStockpileAmount",Consts.DroneTransformWasteRockObstructorToStockpileAmount)
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[302535920000769--[[Selected--]]]),
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
 				Strings[302535920000509--[[Drone Rock To Concrete Speed--]]]
 			)
 		end
@@ -228,11 +226,11 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 			for i = 1, #objs do
 				objs[i]:SetMoveSpeed(value)
 			end
-			ChoGGi.ComFuncs.SetSavedSetting("SpeedDrone",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedDrone",value)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[302535920000769--[[Selected--]]]),
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
 				Strings[302535920000511--[[Drone Move Speed--]]]
 			)
 		end
@@ -384,11 +382,11 @@ function ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle()
 	local cConsts = ChoGGi.Consts
 	local SetConstsG = ChoGGi.ComFuncs.SetConstsG
 	local NumRetBool = ChoGGi.ComFuncs.NumRetBool
-	local SetSavedSetting = ChoGGi.ComFuncs.SetSavedSetting
+	local SetSavedConstSetting = ChoGGi.ComFuncs.SetSavedConstSetting
 	for i = 1, #list do
 		local name = list[i]
 		SetConstsG(name,NumRetBool(Consts[name],0,cConsts[name]))
-		SetSavedSetting(name,Consts[name])
+		SetSavedConstSetting(name,Consts[name])
 	end
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -401,8 +399,8 @@ end
 function ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle()
 	ChoGGi.ComFuncs.SetConstsG("DroneConstructAmount",ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneConstructAmount,max_int,ChoGGi.Consts.DroneConstructAmount))
 	ChoGGi.ComFuncs.SetConstsG("DroneBuildingRepairAmount",ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneBuildingRepairAmount,max_int,ChoGGi.Consts.DroneBuildingRepairAmount))
-	ChoGGi.ComFuncs.SetSavedSetting("DroneConstructAmount",Consts.DroneConstructAmount)
-	ChoGGi.ComFuncs.SetSavedSetting("DroneBuildingRepairAmount",Consts.DroneBuildingRepairAmount)
+	ChoGGi.ComFuncs.SetSavedConstSetting("DroneConstructAmount")
+	ChoGGi.ComFuncs.SetSavedConstSetting("DroneBuildingRepairAmount")
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
@@ -413,24 +411,24 @@ end
 
 function ChoGGi.MenuFuncs.DroneRechargeTime_Toggle()
 	ChoGGi.ComFuncs.SetConstsG("DroneRechargeTime",ChoGGi.ComFuncs.NumRetBool(Consts.DroneRechargeTime,0,ChoGGi.Consts.DroneRechargeTime))
-	ChoGGi.ComFuncs.SetSavedSetting("DroneRechargeTime",Consts.DroneRechargeTime)
+	ChoGGi.ComFuncs.SetSavedConstSetting("DroneRechargeTime")
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		Strings[302535920000907--[[%s: Well, if jacking on'll make strangers think I'm cool, I'll do it!--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneRechargeTime)),
 		Translate(4645--[[Drone Recharge Time--]]),
-		"UI/Icons/Notifications/low_battery.tga",
+		nil,
 		true
 	)
 end
 
 function ChoGGi.MenuFuncs.DroneRepairSupplyLeak_Toggle()
 	ChoGGi.ComFuncs.SetConstsG("DroneRepairSupplyLeak",ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneRepairSupplyLeak,1,ChoGGi.Consts.DroneRepairSupplyLeak))
-	ChoGGi.ComFuncs.SetSavedSetting("DroneRepairSupplyLeak",Consts.DroneRepairSupplyLeak)
+	ChoGGi.ComFuncs.SetSavedConstSetting("DroneRepairSupplyLeak")
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		Strings[302535920000908--[[%s: You know what they say about leaky pipes.--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneRepairSupplyLeak)),
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneRepairSupplyLeak),
 		Strings[302535920000527--[[Drone Repair Supply Leak Speed--]]]
 	)
 end
@@ -468,12 +466,12 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 			end
 			ChoGGi.ComFuncs.SetConstsG("DroneResourceCarryAmount",value)
 			UpdateDroneResourceUnits()
-			ChoGGi.ComFuncs.SetSavedSetting("DroneResourceCarryAmount",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("DroneResourceCarryAmount")
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000911--[[Drones can carry %s items.--]]]:format(choice[1].text),
-				Strings[302535920000529--[[Drone Carry Amount--]]]
+				Translate(6980--[[Drone resource carry amount--]])
 			)
 		end
 	end
@@ -516,12 +514,12 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("CommandCenterMaxDrones",value)
-			ChoGGi.ComFuncs.SetSavedSetting("CommandCenterMaxDrones",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("CommandCenterMaxDrones")
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000916--[[DroneHubs can control %s drones.--]]]:format(choice[1].text),
-				Strings[302535920000531--[[Drones Per Drone Hub--]]]
+				Translate(4707--[[Command center max Drones--]])
 			)
 		end
 	end
@@ -562,12 +560,12 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 		local value = choice[1].value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("RCRoverMaxDrones",value)
-			ChoGGi.ComFuncs.SetSavedSetting("RCRoverMaxDrones",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("RCRoverMaxDrones")
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000921--[[RC Rovers can control %s drones.--]]]:format(choice[1].text),
-				Strings[302535920000533--[[Drones Per RC Rover--]]]
+				Translate(4633--[[RC Commander max Drones--]])
 			)
 		end
 	end
@@ -617,11 +615,11 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
 			for i = 1, #objs do
 				objs[i]:SetGravity(value)
 			end
-			ChoGGi.ComFuncs.SetSavedSetting("GravityDrone",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("GravityDrone",value)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000919--[[RC gravity is now %s.--]]]:format(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice[1].text),
 				Strings[302535920000517--[[Drone Gravity--]]]
 			)
 		end

@@ -1,38 +1,27 @@
 -- See LICENSE for terms
 
-local SetGameSpeedState = SetGameSpeedState
-
-local function PauseGame()
-	if not GameState.gameplay then
+local function PauseGame(id)
+	if id == "TransportationDroneOverload" or not GameState.gameplay then
 		return
 	end
 
 	SetGameSpeedState("pause")
 end
 
-function OnMsg.ClassesBuilt()
-
-  -- does nothing instead of updating g_HeavyLoadDroneHubs
-	DroneControl.UpdateHeavyLoadNotification = empty_func
---~   function DroneControl:UpdateHeavyLoadNotification()
---~ 	end
-
-  --pause when new notif happens
-  local orig_AddOnScreenNotification = AddOnScreenNotification
-  function AddOnScreenNotification(id, callback, params, cycle_objs)
-    PauseGame()
-    return orig_AddOnScreenNotification(id, callback, params, cycle_objs)
-  end
-
-  local orig_AddCustomOnScreenNotification = AddCustomOnScreenNotification
-  function AddCustomOnScreenNotification(id, title, text, image, callback, params)
-    PauseGame()
-    return orig_AddCustomOnScreenNotification(id, title, text, image, callback, params)
-  end
-
+-- pause when new notif happens
+local orig_AddOnScreenNotification = AddOnScreenNotification
+function AddOnScreenNotification(id, ...)
+	PauseGame(id)
+	return orig_AddOnScreenNotification(id, ...)
 end
 
-local function SomeCode()
+local orig_AddCustomOnScreenNotification = AddCustomOnScreenNotification
+function AddCustomOnScreenNotification(id, ...)
+	PauseGame(id)
+	return orig_AddCustomOnScreenNotification(id, ...)
+end
+
+function OnMsg.LoadGame()
   -- make sure there aren't any showing at the moment
   g_HeavyLoadDroneHubs = {}
 
@@ -43,13 +32,4 @@ local function SomeCode()
       break
     end
   end
-
-end
-
-function OnMsg.CityStart()
-  SomeCode()
-end
-
-function OnMsg.LoadGame()
-  SomeCode()
 end

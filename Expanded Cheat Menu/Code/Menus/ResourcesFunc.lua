@@ -7,6 +7,55 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.SetFundingPerRareMetalExport()
+	local default_setting = ChoGGi.Consts.ExportPricePreciousMetals
+	local item_list = {
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
+		{text = 5,value = 5},
+		{text = 10,value = 10},
+		{text = 15,value = 15},
+		{text = 50,value = 50},
+		{text = 75,value = 75},
+		{text = 100,value = 100},
+		{text = 250,value = 250},
+		{text = 500,value = 500},
+		{text = 1000,value = 1000},
+		{text = 10000,value = 10000},
+	}
+
+	local hint = default_setting
+	local ExportPricePreciousMetals = ChoGGi.UserSettings.ExportPricePreciousMetals
+	if ExportPricePreciousMetals then
+		hint = ExportPricePreciousMetals
+	end
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		local value = choice[1].value
+		if type(value) == "number" then
+			local value = value
+			ChoGGi.ComFuncs.SetConstsG("ExportPricePreciousMetals",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("ExportPricePreciousMetals")
+
+			ChoGGi.SettingFuncs.WriteSettings()
+			MsgPopup(
+				choice[1].text,
+				Strings[302535920000719--[[Funding Per Rare Metal Export--]]]
+			)
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = Strings[302535920000719--[[Funding Per Rare Metal Export--]]],
+		hint = Strings[302535920000106--[[Current--]]] .. ": " .. hint,
+		skip_sort = true,
+	}
+end
+
 function ChoGGi.MenuFuncs.AddOrbitalProbes()
 	local item_list = {
 		{text = 5,value = 5},
@@ -80,13 +129,12 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 		if type(value) == "number" then
 			local value = value * r
 			ChoGGi.ComFuncs.SetConstsG("FoodPerRocketPassenger",value)
-			ChoGGi.ComFuncs.SetSavedSetting("FoodPerRocketPassenger",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("FoodPerRocketPassenger")
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920001188--[[%s: om nom nom nom nom--]]]:format(choice[1].text),
-				Translate(4616--[[Food Per Rocket Passenger--]]),
-				"UI/Icons/Sections/Food_4.tga"
+				Translate(4616--[[Food Per Rocket Passenger--]])
 			)
 		end
 	end
@@ -213,8 +261,7 @@ Fix with: %s--]]]:format(default_setting)
 
 			MsgPopup(
 				choice[1].text,
-				Translate(3613--[[Funding--]]),
-				"UI/Icons/IPButtons/rare_metals.tga"
+				Translate(3613--[[Funding--]])
 			)
 		end
 	end
