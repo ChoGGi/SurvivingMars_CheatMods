@@ -8,6 +8,47 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.SetTimeFactor()
+	local item_list = {
+		{text = Translate(1000121--[[Default--]]) .. ": " .. 1000,value = 1000},
+		{text = 100,value = 100},
+		{text = 150,value = 150},
+		{text = 250,value = 250},
+		{text = 500,value = 500},
+		{text = 1000,value = 1000},
+		{text = 2500,value = 2500},
+		{text = 10000,value = 10000},
+		{text = 25000,value = 25000},
+		{text = 100000,value = 100000},
+	}
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		choice = choice[1]
+
+		local value = choice.value
+		if type(value) == "number" then
+
+			SetTimeFactor(value)
+
+			MsgPopup(
+				choice.text,
+				Strings[302535920000356--[[Time Factor--]]]
+			)
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = Strings[302535920000356--[[Time Factor--]]],
+		hint = Strings[302535920000106--[[Current--]]] .. ": " .. GetTimeFactor(),
+		skip_sort = true,
+	}
+end
+
 function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 	local item_list = {
 		{text = Translate(547--[[Colonists--]]),value = "Colonist"},

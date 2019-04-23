@@ -12,6 +12,7 @@
 - Cheats>Research>Unlock Anomaly BreakThroughs: Unlock any breakthroughs in anomalies (not planetary ones).
 - Game>Export CSV>Map Data (Breakthroughs): Includes breakthrough info as well.
 - Debug>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
+- ECM>Misc>Time Factor: Change the time factor (not permanently); for ease of screenshots or something.
 - ECM>Game>Lightmodel>List Normal: Changes the list of lightmodels to use (night/day/etc).
 - ECM>Game>Lightmodel>List Disaster: Overrides List Normal.
 - ECM>Resources>Rare Metals Price (M): Amount of Funding received by exporting one unit of Rare Metals.

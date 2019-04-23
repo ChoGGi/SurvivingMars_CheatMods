@@ -98,3 +98,18 @@ Actions[c] = {ActionName = Strings[302535920000702--[[Game Speed--]]],
 	OnAction = ChoGGi.MenuFuncs.SetGameSpeed,
 	ActionSortKey = "90",
 }
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000356--[[Time Factor--]]],
+	ActionMenubar = "ECM.ECM.Misc",
+	ActionId = ".Time Factor",
+	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
+	RolloverText = function()
+		return SettingState(
+			GetTimeFactor(),
+			Strings[302535920000387--[[Change the time factor (not permanently); for ease of screenshots or something.--]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetTimeFactor,
+	ActionSortKey = "91",
+}

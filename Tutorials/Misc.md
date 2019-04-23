@@ -71,6 +71,10 @@ for i = #some_table, 1, -1 do
 	table.remove(some_table,i)
 end
 
+Use particles on any object:
+Change the obj.fx_actor_class to match the "Actor" name then PlayFX will work.
+Don't forget to backup the original, so you can restore it after.
+
 Info from other people:
 
 Crysm: 7200 units per revolution. So units = (degrees * 20)

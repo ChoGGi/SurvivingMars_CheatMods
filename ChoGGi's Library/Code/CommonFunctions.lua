@@ -370,8 +370,8 @@ do -- DotNameToObject
 		local parent = root or g
 
 		-- https://www.lua.org/pil/14.1.html
-		-- %w is [A-Za-z0-9], [] () + ? . act like regexp (lua patterns)
-		for name,match in str:gmatch("([%w_]+)(.?)") do
+		-- %s is space chars, %w is [A-Za-z0-9], [] () + ? . act like regexp (lua patterns)
+		for name,match in str:gmatch("([%s%w_]+)(.?)") do
 			-- if str included .number we need to make it a number or [name] won't work
 			local num = tonumber(name)
 			if num then
@@ -385,7 +385,6 @@ do -- DotNameToObject
 			else
 				obj_child = parent[name]
 			end
---~ 			local obj_child = parent[name]
 
 			-- . means we're not at the end yet
 			if match == "." then
@@ -1863,7 +1862,9 @@ do -- Rebuildshortcuts
 	AddItems("MapSettings_Meteor")
 	AddItems("MapSettings_Meteor","MultiSpawn")
 	AddItems("MapSettings_Meteor","Storm")
+	-- GreenPlanet (add the rest)
 
+	local is_list_sorted
 	function ChoGGi.ComFuncs.Rebuildshortcuts()
 		local XShortcutsTarget = XShortcutsTarget
 
@@ -1907,6 +1908,15 @@ do -- Rebuildshortcuts
 		-- and add mine
 		local XAction = XAction
 		local Actions = ChoGGi.Temp.Actions
+
+		-- make my entries sorted in the keybindings menu
+		if not is_list_sorted then
+			local CmpLower = CmpLower
+			table.sort(Actions,function(a,b)
+				return CmpLower(a.ActionName,b.ActionName)
+			end)
+			is_list_sorted = true
+		end
 
 --~ 		Actions = {}
 --~ 		Actions[#Actions+1] = {

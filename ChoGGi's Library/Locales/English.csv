@@ -1,6 +1,5 @@
 ID,Text,Translation,Old Translation,Gender
 302535920001577,Placeholder,
-302535920000213,Previously set in an ECM menu (meaning it's active and the setting here will override this value).,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
@@ -537,6 +536,7 @@ Press Enter to refresh list (update names).
 Double left-click <left_click> selected item to open in new editor.",
 302535920000102,Use to change values of selected list item.,
 302535920000103,Edit Value,
+302535920000213,Previously set in an ECM menu (meaning it's active and the setting here will override this value).,
 302535920000158,Consts,
 302535920000182,The scale this amount will be multipled by when used.,
 302535920000941,Funding Per Rare Metal Export,
@@ -1658,6 +1658,8 @@ For any issues; please report them to my Github/Steam/NexusMods page, or email <
 302535920000673,info dialog.,
 302535920000676,Reset ECM Settings,
 302535920000677,Reset all ECM settings to default (restart to enable).,
+302535920000356,Time Factor,
+302535920000387,Change the time factor (not permanently); for ease of screenshots or something.,
 302535920000523,How many to multiple the default speed by: <color green>%s</color>.,
 302535920000694,Set Opacity,
 302535920000680,Annoying Sounds,
