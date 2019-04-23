@@ -4001,16 +4001,29 @@ do -- PadNumWithZeros
 end -- do
 
 function ChoGGi.ComFuncs.RemoveObjs(cls,reason)
-	-- if we don't send a reason then it'll skip suspend, if the reason is already sus then skip as well
+	-- if there's a reason then check if it's suspending
 	local not_sus = reason and not s_SuspendPassEditsReasons[reason]
+	-- if it isn't then suspend it
 	if not_sus then
 		-- suspending pass edits makes deleting much faster
 		SuspendPassEdits(reason)
 	end
-	-- if it isn't a valid class then Map* will return all objects :(
-	if g_Classes[cls] then
-		MapDelete(true, cls)
+
+	if type(cls) == "table" then
+		local g_Classes = g_Classes
+		local MapDelete = MapDelete
+		for i = 1, #cls do
+			-- if it isn't a valid class then Map* will return all objects :(
+			if g_Classes[cls] then
+				MapDelete(true, cls)
+			end
+		end
+	else
+		if g_Classes[cls] then
+			MapDelete(true, cls)
+		end
 	end
+
 	if not_sus then
 		ResumePassEdits(reason)
 	end

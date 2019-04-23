@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
 	"title", "All Sponsor Buildings",
 	"version", 20,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"saved", 1542542400,
 	"image", "Preview.png",
 	"id", "ChoGGi_AllSponsorBuildings",
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"description", [[Removes sponsor limit placed on certain buildings/vehicles.
 Works on new or saved games, and can be removed anytime.
 
-You need to research "Rover Printing" to build rovers.
+You need to research "Robotics>Rover Printing" to build (any) rovers.
 
 
 

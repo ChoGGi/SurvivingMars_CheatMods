@@ -1,3 +1,6 @@
+v0.7
+Added the Starving Colonists one to the skip list.
+
 v0.6
 It was pausing from Drone Heavy Load notification.
 

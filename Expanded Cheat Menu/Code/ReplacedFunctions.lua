@@ -10,22 +10,11 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Translate = ChoGGi.ComFuncs.Translate
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 local TableConcat = ChoGGi.ComFuncs.TableConcat
+local SetDlgTrans = ChoGGi.ComFuncs.SetDlgTrans
 local RetName = ChoGGi.ComFuncs.RetName
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
-
--- set UI transparency
-local function SetTrans(dlg)
-	if not dlg or dlg and not dlg.class then
-		return
-	end
-	local t = ChoGGi.UserSettings.Transparency[dlg.class]
-	if t then
-		dlg:SetTransparency(t)
-	end
-	return dlg
-end
 
 do -- non-class obj funcs
 	-- stops the help webpage from showing up every single time
@@ -185,7 +174,7 @@ do -- non-class obj funcs
 		else
 			ChoGGi_OrigFuncs.ShowConsoleLog(visible,...)
 		end
-		SetTrans(dlgConsoleLog)
+		SetDlgTrans(dlgConsoleLog)
 	end
 
 	do -- ShowPopupNotification
@@ -210,7 +199,7 @@ do -- non-class obj funcs
 	-- UI transparency dialogs (buildmenu, pins, infopanel)
 	SaveOrigFunc("OpenDialog")
 	function OpenDialog(...)
-		return SetTrans(ChoGGi_OrigFuncs.OpenDialog(...))
+		return SetDlgTrans(ChoGGi_OrigFuncs.OpenDialog(...))
 	end
 end -- do
 
@@ -318,7 +307,7 @@ function OnMsg.ClassesGenerate()
 	-- UI transparency cheats menu
 	SaveOrigFunc("XShortcutsHost","SetVisible")
 	function XShortcutsHost:SetVisible(...)
-		SetTrans(self)
+		SetDlgTrans(self)
 		return ChoGGi_OrigFuncs.XShortcutsHost_SetVisible(self,...)
 	end
 
@@ -793,7 +782,7 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("XWindow","OnMouseLeft")
 	function XWindow:OnMouseLeft(pt, child,...)
 		if UserSettings.TransparencyToggle then
-			SetTrans(self)
+			SetDlgTrans(self)
 		end
 		return ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, pt, child,...)
 	end
@@ -1068,7 +1057,7 @@ function OnMsg.ClassesBuilt()
 		ChoGGi_OrigFuncs.Console_Show(self, show,...)
 		if show then
 			-- adding transparency for console stuff
-			SetTrans(self)
+			SetDlgTrans(self)
 			-- and rebuild my console buttons
 			ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(self)
 			-- show log if console log is enabled

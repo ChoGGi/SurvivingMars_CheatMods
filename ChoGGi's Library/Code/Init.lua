@@ -189,6 +189,8 @@ ChoGGi = {
 	UserSettings = {
 		BuildingSettings = {},
 		Transparency = {},
+		-- saved Consts settings
+		Consts = {},
 	},
 }
 

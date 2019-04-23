@@ -1273,7 +1273,8 @@ do -- SetTransparencyUI
 			callback = CallBackFunc,
 			items = item_list,
 			title = Strings[302535920000629--[[Set UI Transparency--]]],
-			hint = Strings[302535920001002--[[For some reason they went opposite day with this one: 255 is invisible and 0 is visible.--]]],
+			hint = Strings[302535920001002--[["For some reason they went opposite day with this one: 255 is invisible and 0 is visible.
+Set value to 0 to remove setting."--]]],
 			custom_type = 4,
 		}
 	end

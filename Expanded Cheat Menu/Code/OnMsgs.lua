@@ -437,6 +437,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 				end
 			end
 
+			-- and this bugger screws me over on GetBuildingTechsStatus
 			local name = id
 			if name:find("RC") and name:find("Building") then
 				name = name:gsub("Building","")
@@ -1165,8 +1166,16 @@ do -- LoadGame/CityStart
 		-- late enough that I can set g_Consts.
 		ChoGGi.SettingFuncs.SetConstsToSaved()
 
---~ 		-- needed for DroneResourceCarryAmount?
---~ 		UpdateDroneResourceUnits()
+		-- any saved Consts settings (from the Consts menu)
+		local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+		local ChoGGi_Consts = ChoGGi.UserSettings.Consts
+		for key,value in pairs(ChoGGi_Consts) do
+			SetConstsG(key,value)
+		end
+		-- think about removing other Consts from other menus
+
+		-- needed for DroneResourceCarryAmount (set in Consts)
+		UpdateDroneResourceUnits()
 
 		-- clear out Temp settings
 		ChoGGi.Temp.UnitPathingHandles = {}

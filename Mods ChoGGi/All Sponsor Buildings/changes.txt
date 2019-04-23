@@ -1,2 +1,5 @@
+v0.3
+Updating code to parity with ECM.
+
 v0.2
 Didn't unlock rovers and maybe more (thanks Zend/Olaf).

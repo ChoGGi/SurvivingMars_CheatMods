@@ -17,7 +17,6 @@ function OnMsg.ClassesBuilt()
 			id = "ChoGGi",
 			name = ChoGGi.Strings[302535920001400--[[ChoGGi--]]],
 			image = ChoGGi.library_path .. "UI/bmc_incal_resources.png",
---~ 			highlight = ChoGGi.library_path .. "UI/bmc_incal_resources_shine.png",
 		}
 	end
 end
@@ -37,7 +36,7 @@ end
 OnMsg.CityStart = UpdateNames
 OnMsg.LoadGame = UpdateNames
 
--- now i should probably go around and change all my localed strings...
+-- update my cached strings
 OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateStringsList
 OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateDataTablesCargo
 OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateDataTables
@@ -78,21 +77,22 @@ function SetUserUIScale(val,...)
 end
 
 local function RemoveChoGGiObjects()
-	SuspendPassEdits("SaveGame/LoadGame RemoveChoGGiObjects")
+	SuspendPassEdits("ChoGGiLibrary.OnMsgs.RemoveChoGGiObjects")
 	MapDelete(true, "RotatyThing", function(o)
 		if o.ChoGGi_blinky then
 			return true
 		end
 	end)
-	local RemoveObjs = ChoGGi.ComFuncs.RemoveObjs
-	RemoveObjs("ChoGGi_OHexSpot")
-	RemoveObjs("ChoGGi_OVector")
-	RemoveObjs("ChoGGi_OSphere")
-	RemoveObjs("ChoGGi_OPolyline")
-	RemoveObjs("ChoGGi_OText")
-	RemoveObjs("ChoGGi_OCircle")
-	RemoveObjs("ChoGGi_OOrientation")
-	ResumePassEdits("SaveGame/LoadGame RemoveChoGGiObjects")
+	ChoGGi.ComFuncs.RemoveObjs{
+		"ChoGGi_OHexSpot",
+		"ChoGGi_OVector",
+		"ChoGGi_OSphere",
+		"ChoGGi_OPolyline",
+		"ChoGGi_OText",
+		"ChoGGi_OCircle",
+		"ChoGGi_OOrientation",
+	}
+	ResumePassEdits("ChoGGiLibrary.OnMsgs.RemoveChoGGiObjects")
 end
 OnMsg.SaveGame = RemoveChoGGiObjects
 OnMsg.LoadGame = RemoveChoGGiObjects

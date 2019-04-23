@@ -3753,3 +3753,15 @@ function ChoGGi.ComFuncs.MonitorFunctionResults(func,...)
 		end
 	end)
 end
+
+-- set UI transparency
+function ChoGGi.ComFuncs.SetDlgTrans(dlg)
+	if not dlg or dlg and not dlg.class then
+		return
+	end
+	local t = ChoGGi.UserSettings.Transparency[dlg.class]
+	if t then
+		dlg:SetTransparency(t)
+	end
+	return dlg
+end

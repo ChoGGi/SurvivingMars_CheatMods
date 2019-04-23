@@ -1,7 +1,12 @@
 -- See LICENSE for terms
 
+local lookup_skips = {
+	TransportationDroneOverload = true,
+	StarvingColonists = true,
+}
+
 local function PauseGame(id)
-	if id == "TransportationDroneOverload" or not GameState.gameplay then
+	if lookup_skips[id] or not GameState.gameplay then
 		return
 	end
 
@@ -19,17 +24,4 @@ local orig_AddCustomOnScreenNotification = AddCustomOnScreenNotification
 function AddCustomOnScreenNotification(id, ...)
 	PauseGame(id)
 	return orig_AddCustomOnScreenNotification(id, ...)
-end
-
-function OnMsg.LoadGame()
-  -- make sure there aren't any showing at the moment
-  g_HeavyLoadDroneHubs = {}
-
-  local notif = g_ActiveOnScreenNotifications
-	for i = 1, #notif do
-    if notif[i][1] == "TransportationDroneOverload" then
-      table.remove(notif,i)
-      break
-    end
-  end
 end

@@ -29,27 +29,6 @@ local AsyncFileToString = not blacklist and AsyncFileToString
 local AsyncCopyFile = not blacklist and AsyncCopyFile
 local AsyncStringToFile = not blacklist and AsyncStringToFile
 
-do -- cheat menu custom menus
-	local Actions = ChoGGi.Temp.Actions
-	local c = #Actions
-	local function AddMenuitem(name,str_id,sort)
-		c = c + 1
-		Actions[c] = {
-			ActionMenubar = "DevMenu",
-			ActionName = Translate(str_id),
-			ActionId = name,
-			ActionSortKey = sort,
-			OnActionEffect = "popup",
-			ChoGGi_ECM = true,
-		}
-	end
-	AddMenuitem("ECM.Cheats",27,"01")
-	AddMenuitem("ECM.ECM",302535920000887,"02")
-	AddMenuitem("ECM.Game",283142739680,"03")
-	AddMenuitem("ECM.Debug",1000113,"04")
-	AddMenuitem("ECM.Help",487939677892,"05")
-end -- do
-
 -- stores defaults
 ChoGGi.Defaults = {
 	-- updated when saved
@@ -450,22 +429,18 @@ ChoGGi.SettingFuncs.ReadSettings()
 
 local UserSettings = ChoGGi.UserSettings
 
-if UserSettings._VERSION then
-	UserSettings._VERSION = nil
+if ChoGGi.testing or UserSettings.ShowStartupTicks then
+	-- from here till the end of OnMsg.ChoGGi_Loaded()
+	ChoGGi.Temp.StartupTicks = GetPreciseTicks()
 end
 
--- could've been from when i used encyclopedia_id for this?
-if UserSettings.BuildingSettings[""] then
-	UserSettings.BuildingSettings[""] = nil
+-- Menu>Consts settings saved here
+if not UserSettings.Consts then
+	UserSettings.Consts = {}
 end
 
 if UserSettings.ConsoleExamineListUpdate then
 	UserSettings.ConsoleExamineList = ChoGGi.Defaults.ConsoleExamineList
-end
-
-if ChoGGi.testing or UserSettings.ShowStartupTicks then
-	-- from here to the end of OnMsg.ChoGGi_Loaded()
-	ChoGGi.Temp.StartupTicks = GetPreciseTicks()
 end
 
 -- bloody hint popups
@@ -479,5 +454,22 @@ if not blacklist and UserSettings.WriteLogs then
 	ChoGGi.ComFuncs.WriteLogs_Toggle(UserSettings.WriteLogs)
 end
 
+-- CLEAN UP
+
 -- remove it once n fer all (brain fart from ShowScanAndMapOptions)
 UserSettings.DeepScanAvailable = nil
+
+-- i never used it...
+if UserSettings._VERSION then
+	UserSettings._VERSION = nil
+end
+
+-- removed
+if UserSettings.LightmodelCustom then
+	UserSettings.LightmodelCustom = nil
+end
+
+-- could've been from when i used encyclopedia_id for this?
+if UserSettings.BuildingSettings[""] then
+	UserSettings.BuildingSettings[""] = nil
+end

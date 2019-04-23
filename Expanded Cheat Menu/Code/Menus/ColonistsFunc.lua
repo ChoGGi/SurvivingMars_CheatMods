@@ -708,15 +708,15 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
 			ChoGGi.ComFuncs.SetSavedConstSetting("DefaultOutsideWorkplacesRadius")
 
 			ChoGGi.SettingFuncs.WriteSettings()
-				MsgPopup(
-					Strings[302535920000789--[[%s: There's a voice that keeps on calling me
+			MsgPopup(
+				Strings[302535920000789--[[%s: There's a voice that keeps on calling me
 Down the road is where I'll always be
 Maybe tomorrow, I'll find what I call home
 Until tomorrow, you know I'm free to roam--]]]:format(choice[1].text),
-					Translate(4691--[[Default outside Workplaces radius--]]),
-					nil,
-					true
-				)
+				Translate(4691--[[Default outside Workplaces radius--]]),
+				nil,
+				true
+			)
 		end
 	end
 

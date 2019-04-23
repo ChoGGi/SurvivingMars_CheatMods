@@ -3,6 +3,7 @@
 -- not sure where to put this stuff
 
 local Translate = ChoGGi.ComFuncs.Translate
+local Strings = ChoGGi.Strings
 
 -- now to get the devs to add this by default (Added the X so people realise it isn't offical)
 local Mods,rawset = Mods,rawset
@@ -49,6 +50,27 @@ XPopupMenu.DisabledBackground = dark_gray
 XPopupMenu.FocusedBackground = -11711669
 
 TextStyles.DevMenuBar.TextColor = white
+
+-- cheat menu names
+local Actions = ChoGGi.Temp.Actions
+local c = #Actions
+local function AddMenuitem(id,name,sort)
+	c = c + 1
+	Actions[c] = {
+		ActionMenubar = "DevMenu",
+		ActionName = name,
+		ActionId = id,
+		ActionSortKey = sort,
+		OnActionEffect = "popup",
+		ChoGGi_ECM = true,
+	}
+end
+AddMenuitem("ECM.Cheats",Translate(27),"01")
+AddMenuitem("ECM.ECM",Strings[302535920000887],"02")
+AddMenuitem("ECM.Consts",Strings[302535920000158],"03")
+AddMenuitem("ECM.Game",Translate(283142739680),"04")
+AddMenuitem("ECM.Debug",Translate(1000113),"05")
+AddMenuitem("ECM.Help",Translate(487939677892),"06")
 
 -- unforbid binding some keys (i left Enter and Menu, not sure what Menu is for? seems best to leave it)
 local f = ForbiddenShortcutKeys

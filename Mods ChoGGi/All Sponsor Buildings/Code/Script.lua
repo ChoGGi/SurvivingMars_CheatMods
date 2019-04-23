@@ -17,8 +17,10 @@ function OnMsg.ModsReloaded()
 		if name:find("RC") and name:find("Building") then
 			name = name:gsub("Building","")
 		end
-
-		table.remove_entry(BuildingTechRequirements[id],"check_supply",name)
+		local idx = table.find(BuildingTechRequirements[id],"check_supply",name)
+		if idx then
+			table.remove(BuildingTechRequirements[id],idx)
+		end
 
 	end
 end

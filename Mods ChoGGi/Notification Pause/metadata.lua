@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
   "title", "Notification Pause",
 	"version", 20,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
   "saved", 1547294400,
   "id", "ChoGGi_NotificationPause",
   "author", "ChoGGi",
@@ -12,5 +12,9 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
 	"lua_revision", LuaRevision or 244275,
-  "description", [[Pauses the game on new notifications (also removes Drone Heavy Load notification).]],
+  "description", [[Pauses the game on new notifications.
+
+Skips pausing for:
+Starving Colonists
+Drone Heavy Load]],
 })

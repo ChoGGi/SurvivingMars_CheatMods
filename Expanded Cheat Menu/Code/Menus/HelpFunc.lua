@@ -265,16 +265,9 @@ function ChoGGi.MenuFuncs.ListAllMenuItems()
 		if a.OnActionEffect ~= "popup" and a.ActionName ~= "" then
 			c = c + 1
 			local hint_text = type(a.RolloverText) == "function" and a.RolloverText() or a.RolloverText
-			local icon_str
+			local icon
 			if a.ActionIcon and a.ActionIcon ~= "" then
-				icon_str = "<image " .. a.ActionIcon .. " 2500>"
-			end
-
-			-- bonus for list all items
-			local icon_scale
-			if a.ActionId:sub(1,9) == "ECM.Keys." then
-				icon_str = ChoGGi.library_path .. "UI/bmc_incal_resources.png"
-				icon_scale = 650
+				icon = "<image " .. a.ActionIcon .. " 2500>"
 			end
 
 			local short = a.ActionShortcut
@@ -282,8 +275,7 @@ function ChoGGi.MenuFuncs.ListAllMenuItems()
 			item_list[c] = {
 				text = a.ActionName,
 				value = a.ActionName,
-				icon = icon_str,
-				icon_scale = icon_scale,
+				icon = icon,
 				func = a.OnAction,
 				hint = (hint_text ~= "" and hint_text .. "\n\n" or "")
 					.. "<color 200 255 200>" .. a.ActionId .. "</color>"

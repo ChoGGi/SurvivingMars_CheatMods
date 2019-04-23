@@ -1,5 +1,6 @@
 ID,Text,Translation,Old Translation,Gender
 302535920001577,Placeholder,
+302535920000213,Previously set in an ECM menu (meaning it's active and the setting here will override this value).,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
@@ -536,6 +537,8 @@ Press Enter to refresh list (update names).
 Double left-click <left_click> selected item to open in new editor.",
 302535920000102,Use to change values of selected list item.,
 302535920000103,Edit Value,
+302535920000158,Consts,
+302535920000182,The scale this amount will be multipled by when used.,
 302535920000941,Funding Per Rare Metal Export,
 302535920000850,Change Resupply Settings,
 302535920000719,Add Orbital Probes,
@@ -1478,7 +1481,8 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 302535920000998,Cheat Menu,
 302535920000999,Transparency has been updated.,
 302535920001000,Buttons at bottom,
-302535920001002,For some reason they went opposite day with this one: 255 is invisible and 0 is visible.,
+302535920001002,"For some reason they went opposite day with this one: <color yellow>255</color> is invisible and <color yellow>0</color> is visible.
+Set value to <color green>0</color> to remove setting.",
 302535920001003,restart to enable,
 302535920001004,01 Lowest (25),
 302535920001005,02 Lower (50),

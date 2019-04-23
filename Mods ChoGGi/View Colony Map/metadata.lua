@@ -31,7 +31,7 @@ return PlaceObj("ModDef", {
 	"description", [[Shows the map before you load it in the select colony screen.
 Optionally show anomaly breakthroughs for each location, omega breakthroughs are at best 1/3.
 
-For those wondering: Purple = mountainous, other colours = buildable.
+Colour levels: Purple = mountainous, other colours = buildable.
 
 View all maps: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Map%20Images%20Pack/Maps]],
 })

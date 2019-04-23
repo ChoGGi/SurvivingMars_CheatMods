@@ -58,6 +58,7 @@ local RetProperType = ChoGGi.ComFuncs.RetProperType
 local Translate = ChoGGi.ComFuncs.Translate
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
+local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 local Strings = ChoGGi.Strings
 
 local type,tostring = type,tostring
@@ -628,8 +629,7 @@ function ChoGGi_ListChoiceDlg:AddItemIcon(g,item)
 		if item_temp then
 			local x = MeasureImage(item_temp.display_icon or "")
 			if x > 0 then
-				item.icon = item_temp.display_icon
-				return true
+				return item_temp.display_icon
 			end
 		end
 
@@ -654,22 +654,19 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 		-- is there an icon to add
 		local text,display_icon
 		if item.icon then
-			-- if x is 0 then it's not an actual image
-				if item.icon:find("<image ") then
-					display_icon = true
-					text = item.icon .. " " .. item.text
-				else
-					local x = MeasureImage(item.icon)
-					if x > 0 then
-						display_icon = true
-						text = item.text
-					end
+			if item.icon:find("<image ") then
+				display_icon = item.icon
+				text = item.icon .. " " .. item.text
+			else
+				local icon = ValidateImage(item.icon)
+				if icon then
+					display_icon = icon
+					text = item.text
 				end
+			end
 		else
 			display_icon = not self.skip_icons and self:AddItemIcon(g,item)
-			if not text then
-				text = item.text
-			end
+			text = item.text
 		end
 
 		--
@@ -718,7 +715,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 				Dock = "left",
 				VAlign = "center",
 			}, listitem)
-			listitem.idImage:SetImage(item.icon)
+			listitem.idImage:SetImage(display_icon)
 			if item.icon_scale then
 				listitem.idImage:SetImageScale(point(item.icon_scale, item.icon_scale))
 			end

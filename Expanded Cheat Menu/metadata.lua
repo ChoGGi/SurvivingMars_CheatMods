@@ -73,6 +73,8 @@ return PlaceObj("ModDef", {
 		"Code/Menus/CheatsMenu.lua",
 		"Code/Menus/ColonistsFunc.lua",
 		"Code/Menus/ColonistsMenu.lua",
+		"Code/Menus/ConstsFunc.lua",
+		"Code/Menus/ConstsMenu.lua",
 		"Code/Menus/DebugFunc.lua",
 		"Code/Menus/DebugMenu.lua",
 		"Code/Menus/DroneFunc.lua",

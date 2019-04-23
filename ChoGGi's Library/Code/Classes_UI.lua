@@ -443,7 +443,7 @@ DefineClass.ChoGGi_Window = {
 
 -- store opened dialogs
 if not PropObjGetProperty(_G,"g_ChoGGiDlgs") then
-	g_ChoGGiDlgs = objlist:new()
+	g_ChoGGiDlgs = {}
 end
 
 -- parent,context

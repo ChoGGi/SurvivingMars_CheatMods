@@ -511,7 +511,7 @@ function Examine:ViewSourceCode()
 	}
 end
 
--- (link, hyperlink_box, pos)
+-- hover (link, hyperlink_box, pos)
 function Examine:idTextOnHyperLinkRollover(link)
 	self = GetRootDialog(self)
 
@@ -540,8 +540,12 @@ function Examine:idTextOnHyperLinkRollover(link)
 		else
 			obj_value = self.obj_ref[obj]
 		end
-		if type(obj_value) ~= "nil" then
+		local obj_value_type = type(obj_value)
+		if obj_value_type ~= "nil" then
 			obj_str,obj_type = self.ChoGGi.ComFuncs.ValueToStr(obj_value)
+			if obj_value_type == "function" then
+				obj_str = obj_str .. "\n" .. self.ChoGGi.ComFuncs.DebugGetInfo(obj_value)
+			end
 		else
 			obj_str,obj_type = self.ChoGGi.ComFuncs.ValueToStr(obj)
 		end
@@ -564,9 +568,6 @@ function Examine:idTextOnHyperLinkRollover(link)
 		if self.ChoGGi.ComFuncs.ImageExts()[obj_str:sub(-3):lower()] then
 			roll_text = roll_text .. "\n\n<image " .. obj_str .. ">"
 		end
---~ 		-- stick value in search box
---~ 		obj = self.obj_ref[obj]
---~ 		self.idSearchText:SetText(type(obj) == "userdata" and IsT(obj) and Translate(obj) or tostring(obj))
 	end
 
 	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
