@@ -1,35 +1,27 @@
 ### Feed this "Table.Table.Object" and you'll get Object back.
 
 ##### use .number for index based tables DotNameToObject("terminal.desktop.1.box")
+##### spaces and whatnot are fine to use (pretty much anything but a .)
 
 ```lua
 -- local some globals for that extra bit 'o speed
 local type,tonumber,rawget = type,tonumber,rawget
 
+local g
+
 -- root is where we start looking (defaults to _G).
 -- create is a boolean to add a table if the dotname is absent.
 function DotNameToObject(str,root,create)
-
-	-- lazy is best
-	if type(str) ~= "string" then
-		return str
-	end
-
-	local g = _G
-	-- there's always one
-	if str == "_G" then
-		return g
-	end
-	if str == "_ENV" then
-		return _ENV
-	end
+	g = g or _G
 
 	-- parent always starts out as "root"
 	local parent = root or g
 
 	-- https://www.lua.org/pil/14.1.html
-	-- %w is [A-Za-z0-9], [] () + ? . act like regexp (lua patterns)
-	for name,match in str:gmatch("([%w_]+)(.?)") do
+	-- [] () + ? . act like regexp ones
+	-- % escape special chars
+	-- ^ complement of the match (the "opposite" of the match)
+	for name,match in str:gmatch("([^%.]+)(.?)") do
 		-- if str included .number we need to make it a number or [name] won't work
 		local num = tonumber(name)
 		if num then
@@ -37,10 +29,8 @@ function DotNameToObject(str,root,create)
 		end
 
 		local obj_child
+		-- workaround for "Attempt to use an undefined global"
 		if parent == g then
-			-- SM error spams console if you have the affront to try _G.NonExistingKey... (thanks autorun.lua)
-			-- it works prefectly fine of course, but i like a clean log.
-			-- in other words a workaround for "Attempt to use an undefined global '"
 			obj_child = rawget(parent,name)
 		else
 			obj_child = parent[name]

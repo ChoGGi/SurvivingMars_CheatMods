@@ -347,65 +347,52 @@ function ChoGGi.ComFuncs.RetHint(obj)
 	end
 end
 
-do -- DotNameToObject
-	-- "table.table.table.etc" = returns etc as object
-	-- use .number for index based tables ("terminal.desktop.1.box")
-	-- root is where we start looking (defaults to _G).
-	-- create is a boolean to add a table if the "name" is absent.
-	local g
+-- "table.table.table.etc" = returns etc as object
+-- use .number for index based tables ("terminal.desktop.1.box")
+-- root is where we start looking (defaults to _G).
+-- create is a boolean to add a table if the "name" is absent.
+local function DotNameToObject(str,root,create)
+	local g = ChoGGi.Temp._G
 
-	function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
-		-- lazy is best
-		if type(str) ~= "string" then
-			return str
+	-- parent always starts out as "root"
+	local parent = root or g
+
+	-- https://www.lua.org/pil/14.1.html
+	-- [] () + ? . act like regexp ones
+	-- % escape special chars
+	-- ^ complement of the match (the "opposite" of the match)
+	for name,match in str:gmatch("([^%.]+)(.?)") do
+		-- if str included .number we need to make it a number or [name] won't work
+		local num = tonumber(name)
+		if num then
+			name = num
 		end
 
-		g = g or ChoGGi.Temp._G
-		-- there's always one
-		if str == "_G" then
-			return g
+		local obj_child
+		-- workaround for "Attempt to use an undefined global"
+		if parent == g then
+			obj_child = rawget(parent,name)
+		else
+			obj_child = parent[name]
 		end
 
-		-- parent always starts out as "root"
-		local parent = root or g
-
-		-- https://www.lua.org/pil/14.1.html
-		-- [] () + ? . act like regexp ones
-		-- % escape special chars
-		-- ^ complement of the match (the "opposite" of the match)
-		for name,match in str:gmatch("([^%.]+)(.?)") do
-			-- if str included .number we need to make it a number or [name] won't work
-			local num = tonumber(name)
-			if num then
-				name = num
+		-- . means we're not at the end yet
+		if match == "." then
+			-- create is for adding new settings in non-existent tables
+			if not obj_child and not create then
+				-- our treasure hunt is cut short, so return nadda
+				return false
 			end
-
-			local obj_child
-			-- workaround for "Attempt to use an undefined global"
-			if parent == g then
-				obj_child = rawget(parent,name)
-			else
-				obj_child = parent[name]
-			end
-
-			-- . means we're not at the end yet
-			if match == "." then
-				-- create is for adding new settings in non-existent tables
-				if not obj_child and not create then
-					-- our treasure hunt is cut short, so return nadda
-					return false
-				end
-				-- change the parent to the child (create table if absent, this'll only fire when create)
-				parent = obj_child or {}
-			else
-				-- no more . so we return as conquering heroes with the obj
-				return obj_child
-			end
-
+			-- change the parent to the child (create table if absent, this'll only fire when create)
+			parent = obj_child or {}
+		else
+			-- no more . so we return as conquering heroes with the obj
+			return obj_child
 		end
+
 	end
-end -- do
-local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
+end
+ChoGGi.ComFuncs.DotNameToObject = DotNameToObject
 
 local function GetParentOfKind(win, cls)
 	while win and not win:IsKindOf(cls) do
