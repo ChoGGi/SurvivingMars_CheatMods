@@ -3,7 +3,7 @@
 ## v6.4 (Unreleased)
 - ValidateImage didn't work with non-Library images.
 - DeleteObject works with multi-selection.
-- DotNameToObject didn't work with spaces.
+- Made DotNameToObject compatible with keys that don't support dotnames (spaces and so on).
 - Removed some log spam from:
 - > DeleteObject
 - > List Choice dialog.

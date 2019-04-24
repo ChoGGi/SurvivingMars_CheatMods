@@ -351,7 +351,7 @@ do -- DotNameToObject
 	-- "table.table.table.etc" = returns etc as object
 	-- use .number for index based tables ("terminal.desktop.1.box")
 	-- root is where we start looking (defaults to _G).
-	-- create is a boolean to add a table if the dotname is absent.
+	-- create is a boolean to add a table if the "name" is absent.
 	local g
 
 	function ChoGGi.ComFuncs.DotNameToObject(str,root,create)
@@ -370,8 +370,10 @@ do -- DotNameToObject
 		local parent = root or g
 
 		-- https://www.lua.org/pil/14.1.html
-		-- %s is space chars, %w is [A-Za-z0-9], [] () + ? . act like regexp (lua patterns)
-		for name,match in str:gmatch("([%s%w_]+)(.?)") do
+		-- [] () + ? . act like regexp ones
+		-- % escape special chars
+		-- ^ complement of the match (the "opposite" of the match)
+		for name,match in str:gmatch("([^%.]+)(.?)") do
 			-- if str included .number we need to make it a number or [name] won't work
 			local num = tonumber(name)
 			if num then
