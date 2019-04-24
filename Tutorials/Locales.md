@@ -114,12 +114,12 @@ Install my Expanded Cheat Menu mod then go to Menu>Debug>Test Locale File
 
 It'll return a list of translated and failed strings, as well as some context to where the error is.
 
-filepath is the path to the csv file
+File Path is the path to the csv file
 Mods.ChoGGi_ExampleTranslateGame.env.CurrentModPath .. "Locale/Game.csv"
 or
 "AppData/Mods/Some Mod/Locales/file.csv"
 
-test_csv can be true to report columns above 5 (usual amount for translations).
+Test Columns can be true to report columns above 5 (usual amount for translations).
 It can also be a number for a custom amount of columns (if you get too many or not enough errors).
 
 for something like
@@ -129,6 +129,6 @@ for something like
 1000591,Error,Errore,
 then 5 will work
 
-test_csv requires you to install my HelperMod for ECM.
+Test Columns requires you to install my HelperMod for ECM.
 ```
 ![Test Locale File](Locales.png?raw=true "Test Locale File")

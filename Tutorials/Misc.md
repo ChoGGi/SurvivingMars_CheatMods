@@ -1,47 +1,47 @@
 ### Random info about random stuff.
 
 ```lua
-Be careful when using CreateGameTimeThread(), as they are persistent.
-If you have one with an inf loop the next time you load a game it'll still be there.
-Store a ref and check with IsValidThread(t) and DeleteThread(t)
+--~ Be careful when using CreateGameTimeThread(), as they are persistent.
+--~ If you have one with an inf loop the next time you load a game it'll still be there.
+--~ Store a ref and check with IsValidThread(thread) and DeleteThread(thread)
 
-To get your mod path (if user renames your mod folder):
+--~ To get your mod path (if user renames your mod folder):
 CurrentModPath
 
-If working with a large amount of entity objects:
+--~ If working with a large amount of entity objects:
 SuspendPassEdits("SomeIdToUse")
 MapDelete("map", "Building")
 ResumePassEdits("SomeIdToUse")
-Add ,true to suspend if you're changing the terrain?
+--~ Add ,true to suspend if you're changing the terrain?
 
-List all objects:
+--~ List all objects:
 ~MapGet(true)
-Just domes:
+--~ Just domes:
 ~MapGet(true,"Dome")
-Just get objects on the map (colonists in a building are off the map):
+--~ Just get objects on the map (colonists in a building are off the map):
 MapGet("map","ResourceStockpile","ResourceStockpileLR")
-Skip attachments
+--~ Skip attachments
 MapGet("map","attached", false)
-Filter out which objects are returned:
+--~ Filter out which objects are returned:
 MapGet("map", "Building", function(o)
 	return o.ui_working
 end)
 
-Add cargo to the initial rocket:
-https://steamcommunity.com/workshop/discussions/18446744073709551615/1694923613869322889/?appid=464920
+--~ Add cargo to the initial rocket:
+--~ https://steamcommunity.com/workshop/discussions/18446744073709551615/1694923613869322889/?appid=464920
 
-Hash a value:
+--~ Hash a value:
 Encode16(SHA256(value))
 
-Access varargs (...):
-Use select(3,...) 3 being the argument you want to select, or run it through a for loop with
+--~ Access varargs (...):
+--~ Use select(3,...) 3 being the argument you want to select, or run it through a for loop with
 for i = 1, select("#",...) do
 	local arg = select(i,...)
 end
-Or use: local varargs = {...}
-and you can access them like a regular table
+--~ Or use: local varargs = {...}
+--~ and you can access them like a regular table
 
-Countdown timer (use CreateGameTimeThread to have it follow the speed of the game):
+--~ Countdown timer (use CreateGameTimeThread to have it follow the speed of the game):
 local countdown = CreateRealTimeThread(function()
 	Sleep(10000)
 	-- do something after 10 seconds
@@ -65,21 +65,21 @@ CreateRealTimeThread(function()
 	end
 end
 
-Loop backwards through a table (good for deleting as you go):
+--~ Loop backwards through a table (good for deleting as you go):
 for i = #some_table, 1, -1 do
 	print(some_table[i])
 	table.remove(some_table,i)
 end
 
-Use particles on any object:
-Change the obj.fx_actor_class to match the "Actor" name then PlayFX will work.
-Don't forget to backup the original, so you can restore it after.
+--~ Use particles on any object:
+--~ Change the obj.fx_actor_class to match the "Actor" name then PlayFX will work.
+--~ Don't forget to backup the original, so you can restore it after.
 
-Info from other people:
+--~ Info from other people:
 
-Crysm: 7200 units per revolution. So units = (degrees * 20)
+--~ Crysm: 7200 units per revolution. So units = (degrees * 20)
 
-BullettMAGNETTs CustomAssetDocs
-https://docs.google.com/document/d/1LcZMS8UeRAQZZsPE-bsx75ZMGPUFGdbS-M9jDBMFEYs
+--~ BullettMAGNETTs CustomAssetDocs
+--~ https://docs.google.com/document/d/1LcZMS8UeRAQZZsPE-bsx75ZMGPUFGdbS-M9jDBMFEYs
 
 ```
