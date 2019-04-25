@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Bouncy Drones",
-	"version", 20,
+	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,
 	"saved", 1534680000,

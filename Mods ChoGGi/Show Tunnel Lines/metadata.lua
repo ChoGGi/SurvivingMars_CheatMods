@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Show Tunnel Lines",
-	"version", 20,
+	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
 	"saved", 1549627200,

@@ -1265,7 +1265,8 @@ do -- FlightGrid_Toggle
 	local Flight_Height_temp = false
 	local work_step = 16 * terrain.TypeTileSize()
 	local dbg_step = work_step / 4 -- 400
-	local max_diff = 10 * guim
+	local dbg_stepm1 = dbg_step - 1
+	local max_diff = 5 * guim
 	local white = white
 	local green = green
 	local flight_lines = {}
@@ -1275,15 +1276,7 @@ do -- FlightGrid_Toggle
 	local function RasterLine(pos1, pos0, zoffset, line_num)
 		pos1 = pos1 or GetTerrainCursor()
 		pos0 = pos0 or FindPassable(GetTerrainCursor())
-		if not pos0 then
-			return
-		end
-		local diff = pos1 - pos0
-		local dist = diff:Len2D()
-		local steps = 1 + (dist + dbg_step - 1) / dbg_step
-
-		table_iclear(points)
-		table_iclear(colors)
+		local steps = 1 + ((pos1 - pos0):Len2D() + dbg_stepm1) / dbg_step
 
 		for i = 1, steps do
 			local pos = pos0 + MulDivRound(pos1 - pos0, i - 1, steps - 1)
@@ -1305,10 +1298,6 @@ do -- FlightGrid_Toggle
 		end
 		line:SetMesh(points, colors)
 		line:SetPos(AveragePoint2D(points))
-
---~ 			local line = PlacePolyline(points, colors)
---~ 			flight_lines_c = flight_lines_c + 1
---~ 			flight_lines[flight_lines_c] = line
 	end
 
 	local function DeleteLines()
@@ -1348,6 +1337,7 @@ do -- FlightGrid_Toggle
 		end
 		ResumePassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.GridFunc")
 
+		local plus1 = steps+1
 		local pos_old,pos_new,pos
 		while grid_thread do
 			-- we only update when cursor moves
@@ -1360,14 +1350,11 @@ do -- FlightGrid_Toggle
 				for y = 0, steps do
 					RasterLine(pos + point(0, y*dbg_step), pos + point(size, y*dbg_step), zoffset, y)
 				end
-				local plus1 = steps+1
 				for x = 0, steps do
 					RasterLine(pos + point(x*dbg_step, 0), pos + point(x*dbg_step, size), zoffset, plus1+x)
 				end
-
-				WaitMsg("OnRender")
 			end
-				WaitMsg("OnRender")
+			WaitMsg("OnRender")
 		end
 	end
 
@@ -1383,21 +1370,29 @@ do -- FlightGrid_Toggle
 			return
 		end
 
-		local grid_size = ChoGGi.UserSettings.DebugGridSize
-		grid_size = type(grid_size) == "number" and grid_size * 10
+		local u = ChoGGi.UserSettings
+		local grid_size = u.DebugGridSize
+
+		if type(grid_size) == "number" then
+			grid_size = (grid_size * 10) * guim
+		else
+			grid_size = 256 * guim
+		end
 
 		-- if fired from action menu
 		if IsKindOf(size,"XAction") then
-			size = (grid_size or 256) * guim
+			size = grid_size
 			zoffset = 0
 		else
-			size = size or ((grid_size or 256) * guim)
+			size = size or grid_size
 			zoffset = zoffset or 0
 		end
 
 		Flight_Height_temp = Flight_Height
 
 		OPolyline = OPolyline or ChoGGi_OPolyline
+		table_iclear(points)
+		table_iclear(colors)
 		grid_thread = CreateRealTimeThread(GridFunc,size,zoffset)
 	end
 end -- do

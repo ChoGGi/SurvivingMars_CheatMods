@@ -1,9 +1,19 @@
-ChoGGi_AddWaterEachSol = {
-	AmountOfWater = 50,
-}
+-- See LICENSE for terms
+
+local mod_id = "ChoGGi_AddWaterEachSol"
+local mod = Mods[mod_id]
+local mod_AmountOfWater = mod.options and mod.options.AmountOfWater or 50
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_AmountOfWater = mod.options.AmountOfWater
+end
 
 function OnMsg.NewDay()
-	local water = ChoGGi_AddWaterEachSol.AmountOfWater * const.ResourceScale
+	local water = mod_AmountOfWater * const.ResourceScale
 
 	MapForEach("map","SubsurfaceDepositWater",function(o)
 		if type(o.amount) == "number" then
@@ -14,3 +24,5 @@ function OnMsg.NewDay()
 		end
 	end)
 end
+
+

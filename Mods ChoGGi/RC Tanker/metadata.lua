@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "RC Tanker",
-	"version", 20,
+	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1550750400,
@@ -20,12 +20,12 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
-		"Code/ModConfig.lua",
 	},
+	"has_options", true,
 	"description", [[Allows you to drain an oxygen or water tank, and fill another tank.
 Adds two buttons to the selection panel: One to switch between draining and filling, and one to switch the resource type.
 
-By default it can hold an unlimited amount, includes a Mod Config Reborn setting to limit it to X units (if you feel it's too cheap).
+By default it can hold an unlimited amount, includes a mod options setting to limit it to X units (if you feel it's too cheap).
 
 Depending on DLC installed RC and tank will use different models.]],
 })

@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Add 5 Times The Resource To Deposits",
-	"version", 20,
+	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,
 	"saved", 1549713600,

@@ -105,9 +105,6 @@ local function StartStopSpinner(obj,working)
 		end
 	end)
 end
---~ -- if we get persist errors
---~ function OnMsg.SaveGame()
---~ end
 
 function DomeTeleporter:GameInit()
 	RechargeStation.GameInit(self)
@@ -133,20 +130,21 @@ function DomeTeleporter:GameInit()
 		self:MoveInside(self.parent_dome)
 	end
 
-	DelayedCall(0,function()
+	CreateRealTimeThread(function()
 		self:ForEachAttach("RechargeStationPlatform",function(a)
 			-- we don't want it looking too much like a drone thang
 			a:SetColorizationMaterial(1, -16777216, -128, 120)
 			a:SetColorizationMaterial(2, -12189696, 120, 20)
 			a:SetColorizationMaterial(3, -11579569, 0, 0)
 
-			self.rotating_thing = a.auto_attach_state_attaches[1][1]
-			-- spin!
-			self.rotating_thing.entity = "FarmSprinkler"
-			self.rotating_thing:ChangeEntity("FarmSprinkler")
-			self.rotating_thing:SetAttachOffset(point(0,0,300))
-			self.rotating_thing:SetColorizationMaterial(2, -10986395, 120, 20)
-			self.rotating_thing:SetColorizationMaterial(3, -11436131, -128, 48)
+			a:ForEachAttach("LampGroundOuter_01",function(a2)
+				-- spin!
+				a2:ChangeEntity("FarmSprinkler")
+				a2:SetAttachOffset(point(0,0,300))
+				a2:SetColorizationMaterial(2, -10986395, 120, 20)
+				a2:SetColorizationMaterial(3, -11436131, -128, 48)
+				self.rotating_thing = a2
+			end)
 			StartStopSpinner(self,self.working)
 --~ DefenceLaserBeam 10
 --~ DefenceTurretPlatform 50

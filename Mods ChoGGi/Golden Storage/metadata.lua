@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Golden Storage",
-	"version", 20,
+	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,
 	"saved", 1550923200,

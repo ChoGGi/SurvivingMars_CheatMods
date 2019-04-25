@@ -7,6 +7,10 @@
 
 --~ To get your mod path (if user renames your mod folder):
 CurrentModPath
+--~ Your (if any) mod options
+CurrentModOptions
+--~ To Access another mods stuff use
+Mods.MOD_ID.env.CurrentModPath
 
 --~ If working with a large amount of entity objects:
 SuspendPassEdits("SomeIdToUse")

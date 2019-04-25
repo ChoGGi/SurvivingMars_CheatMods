@@ -1,4 +1,7 @@
+-- See LICENSE for terms
+
 local IsValid = IsValid
+local WaitMsg = WaitMsg
 
 local function CheckMorph()
 	local morphs = UICity.labels.ProjectMorpheus or ""
@@ -14,7 +17,7 @@ local function CheckMorph()
 						obj:SetUIWorking(not working)
 						-- wait for it...
 						while obj:GetStateText() ~= "end" do
-							Sleep(500)
+							WaitMsg("OnRender")
 						end
 						obj:SetUIWorking(working)
 					end)
@@ -24,10 +27,5 @@ local function CheckMorph()
 	end
 end
 
-function OnMsg.NewDay()
-	CheckMorph()
-end
-
-function OnMsg.LoadGame()
-	CheckMorph()
-end
+OnMsg.NewDay = CheckMorph
+OnMsg.LoadGame = CheckMorph

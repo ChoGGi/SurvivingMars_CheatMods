@@ -53,7 +53,8 @@ function OpenDialog(dlg_str,...)
 	if dlg_str == "ResearchDlg" then
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
-			local left_side = dlg.idOverlayDlg.idActionBar.parent
+--~ 			local left_side = dlg.idOverlayDlg.idActionBar.parent
+			local left_side = dlg.idActionBar.parent
 
 			local area = XWindow:new({
 				Id = "idFilterArea",

@@ -1,8 +1,19 @@
--- modconfig
-SpecialistByExperience = {
-	IgnoreSpec = false,
-	SolsToTrain = 25,
-}
+-- See LICENSE for terms
+
+local mod_id = "ChoGGi_SpecialistByExperience"
+local mod = Mods[mod_id]
+local mod_IgnoreSpec = mod.options and mod.options.IgnoreSpec or false
+local mod_SolsToTrain = mod.options and mod.options.SolsToTrain or 25
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_IgnoreSpec = mod.options.IgnoreSpec
+	mod_SolsToTrain = mod.options.SolsToTrain
+end
 
 local orig_Workplace_AddWorker = Workplace.AddWorker
 function Workplace:AddWorker(worker, shift)
@@ -62,8 +73,6 @@ end
 -- loop through all the workplaces, and check for anyone who worked over 24 Sols
 local pairs,IsValid = pairs,IsValid
 function OnMsg.NewDay(sol) -- NewSol...
-  local ignore_spec = SpecialistByExperience.IgnoreSpec
-  local sols_to_train = SpecialistByExperience.SolsToTrain
   local g_Classes = g_Classes
 
   local workplaces = UICity.labels.Workplace or ""
@@ -76,7 +85,7 @@ function OnMsg.NewDay(sol) -- NewSol...
         -- just in case
         if IsValid(c_table.obj) or not c_table.obj.dying then
           -- only allow spec=none or if modconfig then any spec, then check if worked long enough
-          if (c_table.obj.specialist == "none" or ignore_spec) and (sol - c_table.started_on) >= sols_to_train then
+          if (c_table.obj.specialist == "none" or IgnoreSpec) and (sol - c_table.started_on) >= mod_SolsToTrain then
 						c_table.obj:SetSpecialization(work.specialist)
 						-- needed to remove NonSpecialistPerformancePenalty
 						c_table.obj:ChangeWorkplacePerformance()

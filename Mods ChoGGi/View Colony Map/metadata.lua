@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"title", "View Colony Map v0.9",
 	"title", "View Colony Map",
-	"version", 20,
+	"version", 11,
 	"version_major", 1,
 	"version_minor", 1,
 	"saved", 1555416000,

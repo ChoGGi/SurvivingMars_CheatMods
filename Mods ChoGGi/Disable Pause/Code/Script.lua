@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 -- speed up/down actions
 local orig_SetGameSpeedState = SetGameSpeedState
 function SetGameSpeedState(speed,...)

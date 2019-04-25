@@ -1,15 +1,33 @@
 -- See LICENSE for terms
 
--- default options
-OrbitalPrefabDrops = {
-	PrefabOnly = true,
-	Outside = true,
-	Inside = false,
-	DomeCrack = true,
-	ModelType = 1,
-}
-local models = {"SupplyPod","Hex1_Placeholder","ArcPod"}
+local mod_id = "ChoGGi_OrbitalPrefabDrops"
+local mod = Mods[mod_id]
+local mod_PrefabOnly = mod.options and mod.options.PrefabOnly or true
+local mod_Outside = mod.options and mod.options.Outside or true
+local mod_Inside = mod.options and mod.options.Inside or false
+local mod_DomeCrack = mod.options and mod.options.DomeCrack or true
+local mod_ModelType = mod.options and mod.options.ModelType or 1
 
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_PrefabOnly = mod.options.PrefabOnly
+	mod_Outside = mod.options.Outside
+	mod_Inside = mod.options.Inside
+	mod_DomeCrack = mod.options.DomeCrack
+	mod_ModelType = mod.options.ModelType
+	-- not sure if you can pass min/max onto mod options
+	if not g_AvailableDlc.gagarin and mod_ModelType == 3 then
+		mod.options.ModelType = 2
+		mod_ModelType = 2
+	end
+
+end
+
+local models = {"SupplyPod","Hex1_Placeholder","ArcPod"}
 
 local Sleep = Sleep
 local PlayFX = PlayFX
@@ -63,7 +81,6 @@ local function YamatoHasshin(site)
 	local const = const
 	-- hide the actual site for now
 	site:SetVisible()
-	local opd = OrbitalPrefabDrops
 	local city = site.city or UICity
 	-- where the prefab is
 	local spawn_pos = site:GetVisualPos()
@@ -107,10 +124,11 @@ local function YamatoHasshin(site)
 		spawn_pos = terrain.GetIntersection(pos, spawn_pos)
 		local hover_pos = spawn_pos + site_height
 
-		local pod = PlaceObject("Hex1_Placeholder")
+--~ 		local pod = PlaceObject("Hex1_Placeholder")
+		local pod = PlaceObject("InvisibleObject")
 		pod.landing_particle = blinky
 
-		pod:ChangeEntity(models[opd.ModelType])
+		pod:ChangeEntity(models[mod_ModelType])
 		pod:SetColorizationMaterial(1,-12845056, 0,128)
 		pod:SetColorizationMaterial(2,-16777216, 0,128)
 		pod:SetColorizationMaterial(3,-10053783, 0,128)
@@ -144,7 +162,7 @@ local function YamatoHasshin(site)
 		local quarter = land_time/4
 		Sleep(quarter*3)
 		PlayFX("RocketLand", "hit-ground", pod, false, spawn_pos)
-		if opd.DomeCrack then
+		if mod_DomeCrack then
 			local dome = GetDomeAtHex(WorldToHex(spawn_pos))
 			if dome then
 				local _, dome_pt, dome_normal = BaseMeteor.HitsDome(dome,spawn_pos)
@@ -225,12 +243,11 @@ function ConstructionSite:GameInit()
 	-- cables/pipes don't work that well, passages are fine, but with the detaching rockets it gets pretty busy
 	local grid = self.building_class:find("GridElement") or self.building_class:find("Switch")
 
-	local opd = OrbitalPrefabDrops
 	-- we always allow prefabs (that's the mod...), but check if inside/outside are allowed
-	if self.prefab and (outside and opd.Outside or inside and opd.Inside) then
+	if self.prefab and (outside and mod_Outside or inside and mod_Inside) then
 		YamatoHasshin(self)
 	-- same but if prefab only is disabled
-	elseif not grid and not opd.PrefabOnly and (outside and opd.Outside or inside and opd.Inside) then
+	elseif not grid and not mod_PrefabOnly and (outside and mod_Outside or inside and mod_Inside) then
 		YamatoHasshin(self)
 	else
 		orig_ConstructionSite_GameInit(self)

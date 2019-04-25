@@ -49,7 +49,7 @@ ChoGGi.Defaults = {
 	ConsoleSkipUndefinedGlobals = true,
 	-- the build/passibility grid in debug menu
 	DebugGridOpacity = 15,
-	DebugGridSize = 25,
+	DebugGridSize = 35,
 	-- disabling this will still leave them for the cheats menu and cheats section
 	EnableToolTips = true,
 	-- append text or create a new file each dump
@@ -88,6 +88,7 @@ ChoGGi.Defaults = {
 	InfopanelMainButVis = true,
 	-- show the cheats menu...
 	ShowCheatsMenu = true,
+--~ 	InfopanelCheatsVis = true,
 	-- maybe you don't want to see the interface in screenshots
 	ShowInterfaceInScreenshots = true,
 	-- Mod Editor shows the help page every single time you open it.

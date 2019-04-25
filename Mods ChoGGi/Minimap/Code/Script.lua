@@ -1,10 +1,24 @@
 -- See LICENSE for terms
 
+local mod_id = "ChoGGi_Minimap"
+local mod = Mods[mod_id]
+local mod_UseScreenshots = mod.options and mod.options.UseScreenshots or true
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_UseScreenshots = mod.options.UseScreenshots
+	ChoGGi_Minimap_Options.UpdateTopoImage(mod_UseScreenshots)
+end
+
 local IsValid = IsValid
 
 local image_mod = Mods.ChoGGi_MapImagesPack
-ChoGGi_Minimap = {
-	UseScreenshots = true,
+
+ChoGGi_Minimap_Options = {
 	image_str = image_mod and image_mod.env.CurrentModPath .. "Maps/",
 	UpdateTopoImage = function(value)
 		-- find our map dlg
@@ -25,11 +39,11 @@ ChoGGi_Minimap = {
 		if value then
 			map_dlg:UpdateMapImage(map_dlg.map_file)
 		else
-			local str = ChoGGi_Minimap.image_str
+			local str = ChoGGi_Minimap_Options.image_str
 			if not str then
 				local image_mod = Mods.ChoGGi_MapImagesPack
-				ChoGGi_Minimap.image_str = image_mod and image_mod.env.CurrentModPath .. "Maps/"
-				str = ChoGGi_Minimap.image_str
+				ChoGGi_Minimap_Options.image_str = image_mod and image_mod.env.CurrentModPath .. "Maps/"
+				str = ChoGGi_Minimap_Options.image_str
 			end
 			if str then
 				map_dlg:UpdateMapImage(str .. map_dlg.map_name .. ".png")
@@ -56,7 +70,6 @@ function OnMsg.ModsReloaded()
 			"RolloverTitle", [[Minimap]],
 			"Id", "idMinimap",
 			"Image", CurrentModPath .. "UI/minimap.png",
---~ 			"ImageShine", CurrentModPath .. "UI/minimap_shine.png",
 			"FXPress", "MainMenuButtonClick",
 			"OnPress", HUD.idMinimapOnPress,
 		})
@@ -109,25 +122,25 @@ function HUD.idMinimapOnPress()
 			x = dlg_x,
 			y = dlg_y,
 		})
-		local ChoGGi_Minimap = ChoGGi_Minimap
+		local ChoGGi_Minimap_Options = ChoGGi_Minimap_Options
 
 		-- auto-update image once per load
-		if ChoGGi_Minimap.UseScreenshots and not screenshot_taken then
+		if mod_UseScreenshots and not screenshot_taken then
 			map_dlg:idUpdateMapOnPress()
 			screenshot_taken = true
 		end
 
 		local map = MapName()
 		-- use topo image instead of screenshot
-		if ChoGGi_Minimap.UseScreenshots then
+		if mod_UseScreenshots then
 			map_dlg:UpdateMapImage(map_dlg.map_file)
 		else
 			-- check for formatting string
-			local str = ChoGGi_Minimap.image_str
+			local str = ChoGGi_Minimap_Options.image_str
 			if not str then
 				local image_mod = Mods.ChoGGi_MapImagesPack
-				ChoGGi_Minimap.image_str = image_mod and image_mod.env.CurrentModPath .. "Maps/"
-				str = ChoGGi_Minimap.image_str
+				ChoGGi_Minimap_Options.image_str = image_mod and image_mod.env.CurrentModPath .. "Maps/"
+				str = ChoGGi_Minimap_Options.image_str
 			end
 			if str then
 				map_dlg:UpdateMapImage(str .. map .. ".png")

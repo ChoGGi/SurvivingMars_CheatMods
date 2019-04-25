@@ -1,13 +1,22 @@
 -- See LICENSE for terms
 
+local mod_id = "ChoGGi_RCTanker"
+local mod = Mods[mod_id]
+local mod_LimitStorage = mod.options and mod.options.LimitStorage or 0
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_LimitStorage = mod.options.LimitStorage
+end
+
 local Strings = ChoGGi.Strings
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
-
-RCTankerMCR = {
-	LimitStorage = 0,
-}
 
 -- local some globals
 local IsValid = IsValid
@@ -245,7 +254,7 @@ function RCTanker:RetInteractInfo(obj)
 			local amount = self.storage_amount
 
 			-- 0 means no limit
-			local limit = RCTankerMCR.LimitStorage
+			local limit = mod_LimitStorage
 			-- resources use 1 to display 1000, so that's what we edit in MCR
 			limit = limit > 0 and limit * ResourceScale or false
 
@@ -368,7 +377,7 @@ function RCTanker:TankInteract()
 	local current_storage = res_obj.current_storage
 
 	-- 0 means no limit
-	local limit = RCTankerMCR.LimitStorage
+	local limit = mod_LimitStorage
 	-- resources use 1 to display 1000, so that's what we edit in MCR
 	limit = limit > 0 and limit * ResourceScale or false
 

@@ -58,7 +58,6 @@ return PlaceObj("ModDef", {
 		"Code/Dialogs/FindValue.lua",
 --~ 		"Code/Dialogs/MonitorInfo.lua",
 		"Code/Dialogs/ObjectEditor.lua",
-		"Code/Dialogs/3DManipulator.lua",
 		"Code/Dialogs/ImageViewer.lua",
 		"Code/Dialogs/DTMSlots.lua",
 		"Code/Dialogs/TerminalRolloverMode.lua",

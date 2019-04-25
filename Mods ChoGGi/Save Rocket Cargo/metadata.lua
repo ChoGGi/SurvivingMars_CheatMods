@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Save Rocket Cargo",
 	"title", "Save Rocket Cargo",
-	"version", 20,
+	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1552824000,
@@ -13,14 +13,14 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
-		"Code/ModConfig.lua",
 	},
+	"has_options", true,
 	"description", [[Stops rocket cargo from being removed when you leave the rocket screen.
 
 Closing the rocket dialog is when the cargo is saved, so switching from the pod cargo to the elevator will not save the pod cargo.
 The cargo will remain saved till you quit or load a different game.
 
-MCR option(s):
+mod options:
 Clear On Launch: Clear cargo for rocket/pod/elevator when launched (not all cargo, just for the same type).
 
 Requested by... A bunch of people, but the last was Sigmatics.]],

@@ -1,5 +1,18 @@
 -- See LICENSE for terms
 
+local mod_id = "ChoGGi_ConstructionShowDomePassageLine"
+local mod = Mods[mod_id]
+local mod_Option1 = mod.options and mod.options.Option1 or true
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_Option1 = mod.options.Option1
+end
+
 local pairs = pairs
 local table_sort = table.sort
 
@@ -119,7 +132,7 @@ end
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
-	if not ChoGGi_ConstructionShowDomePassageLine.Option1 then
+	if not mod_Option1 then
 		return orig_CursorBuilding_GameInit(self)
 	end
 --~ ex(dome_list)
@@ -199,7 +212,7 @@ end
 
 local orig_ConstructionController_Rotate = ConstructionController.Rotate
 function ConstructionController:Rotate(delta,...)
-	if not ChoGGi_ConstructionShowDomePassageLine.Option1 then
+	if not mod_Option1 then
 		return orig_ConstructionController_Rotate(self, delta,...)
 	end
 	-- it needs to fire first so we can get updated angle
@@ -210,7 +223,7 @@ end
 
 local orig_ConstructionController_UpdateCursor = ConstructionController.UpdateCursor
 function ConstructionController:UpdateCursor(pos, force,...)
-	if not ChoGGi_ConstructionShowDomePassageLine.Option1 then
+	if not mod_Option1 then
 		return orig_ConstructionController_UpdateCursor(self, pos, force,...)
 	end
 	UpdateMarkers(self,pos)

@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Mark Deposit Ground",
-	"version", 20,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"saved", 1552564800,
 	"image", "Preview.png",
 	"id", "ChoGGi_MarkDepositGround",
@@ -12,9 +12,8 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
-		"Code/ModConfig.lua",
-		"Code/ShowConstruct.lua",
 	},
+	"has_options", true,
 	"description", [[Marks the ground around deposits so you can turn off the ugly signs and still see where they are.
 Marks are sized depending on max amount.
 

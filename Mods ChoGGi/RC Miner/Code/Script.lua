@@ -1,5 +1,32 @@
 -- See LICENSE for terms
 
+local mod_id = "ChoGGi_PortableMiner"
+local mod = Mods[mod_id]
+
+local r
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+	r = r or const.ResourceScale
+
+	local pms = PortableMinerSettings
+	pms.mine_amount = mod.options.mine_amount * r
+	pms.max_res_amount_man = mod.options.max_res_amount_man * r
+	pms.max_z_stack_man = mod.options.max_res_amount_man / 10
+	pms.max_res_amount_auto = mod.options.max_res_amount_auto * r
+	pms.max_z_stack_auto = mod.options.max_res_amount_auto / 10
+
+	pms.mine_time_anim.Concrete = mod.options.mine_time_animConcrete
+	pms.mine_time_idle.Concrete = mod.options.mine_time_idleConcrete
+	pms.mine_time_anim.Metals = mod.options.mine_time_animMetals
+	pms.mine_time_idle.Metals = mod.options.mine_time_idleMetals
+	pms.mine_time_anim.PreciousMetals = mod.options.mine_time_animPreciousMetals
+	pms.mine_time_idle.PreciousMetals = mod.options.mine_time_idlePreciousMetals
+	pms.visual_cues = mod.options.visual_cues
+end
+
 PortableMinerSettings = {
 	-- how much to mine each time
 	mine_amount = 1 * const.ResourceScale,

@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Mark Selected Building Type",
-	"version", 20,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-	"saved", 1544875200,
+	"version_minor", 2,
+	"saved", 1556193600,
 	"image", "Preview.png",
 	"id", "ChoGGi_MarkSelectedBuildingType",
 	"steam_id", "1592261075",
@@ -12,11 +12,11 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
-		"Code/ModConfig.lua",
 	},
+	"has_options", true,
 	"description", [[When you select a building/rover, all buildings of the same type will have a beam of light.
 
-Has Mod Config Reborn option to toggle in-game.
+Has mod option to toggle in-game.
 
 Requested by JustCarlsFine.]],
 })

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Map Images Pack v0.1",
 	"title", "Map Images Pack",
-	"version", 20,
+	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1542888000,

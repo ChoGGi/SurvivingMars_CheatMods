@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"title", "RC Garage v0.3",
 	"title", "RC Garage",
-	"version", 20,
+	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,
 	"saved", 1552219200,

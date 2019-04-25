@@ -5,7 +5,6 @@ return PlaceObj("ModDef", {
 	"saved", 1555502400,
 	"image", "Preview.png",
 	"id", "ChoGGi_HawkingInstituteMoreWorkSlots",
---~ 	"steam_id", "000000000",
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision or 244275,
 	"code", {

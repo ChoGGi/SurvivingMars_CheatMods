@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Save Mission Profiles",
-	"version", 20,
+	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1551096000,

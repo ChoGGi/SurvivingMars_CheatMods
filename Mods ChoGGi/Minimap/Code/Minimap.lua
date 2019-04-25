@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+local mod_id = "ChoGGi_Minimap"
+local mod = Mods[mod_id]
+local mod_UseScreenshots = mod.options and mod.options.UseScreenshots or true
+
 -- clickable map image
 
 local ViewObjectMars = ViewObjectMars
@@ -137,9 +141,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		OnChange = self.idUseScreenShotsOnChange,
 	}, self.idToggleArea)
 
-	local UseScreenshots = ChoGGi_Minimap.UseScreenshots
-
-	self.idUseScreenShots:SetCheck(UseScreenshots)
+	self.idUseScreenShots:SetCheck(mod_UseScreenshots)
 
 	self.idUpdateMap = g_Classes.ChoGGi_Button:new({
 		Id = "idUpdateMap",
@@ -150,7 +152,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
 		OnPress = self.idUpdateMapOnPress,
 	}, self.idToggleArea)
-	if not UseScreenshots then
+	if not mod_UseScreenshots then
 		self.idUpdateMap:SetVisible(false)
 	end
 
@@ -187,13 +189,11 @@ end
 
 function ChoGGi_MinimapDlg:idUseScreenShotsOnChange()
 	local check = self:GetCheck()
-	ChoGGi_Minimap.UpdateTopoImage(check)
+	ChoGGi_Minimap_Options.UpdateTopoImage(check)
 	GetRootDialog(self).idUpdateMap:SetVisible(check)
 
-	-- update mcr if it's enabled
-	if table.find(ModsLoaded,"id","bpy1eJQ") then
-		ModConfig:Set("ChoGGi_Minimap", "UseScreenshots", check)
-	end
+	mod.options.UseScreenshots = check
+	-- hopefully the devs add an option to update options...
 end
 
 function ChoGGi_MinimapDlg:idResetDialogOnPress()
@@ -315,7 +315,7 @@ function ChoGGi_MinimapDlg:idUpdateMapOnPress()
 	end
 
 	-- no need to update...
-	if not ChoGGi_Minimap.UseScreenshots then
+	if not mod_UseScreenshots then
 		self:UpdateMapImage()
 		return
 	end

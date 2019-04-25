@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Standing Unlocks Sponsor Buildings",
-	"version", 20,
+	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1542628800,

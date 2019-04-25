@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
   "title", "Disable Drone Maintenance",
-	"version", 20,
+	"version", 10,
 	"version_major", 1,
 	"version_minor", 0,
   "saved", 1543060800,

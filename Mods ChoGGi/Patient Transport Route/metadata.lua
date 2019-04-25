@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Patient Transport Route",
-	"version", 20,
+	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1540900800,
@@ -11,11 +11,11 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision or 244275,
 	"code", {
-		"Code/ModConfig.lua",
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[Transports will no longer remove a route just because the supply area is empty of resources.
 Instead they'll just sit by the pickup area till more shows up.
 
-Use Mod Config Reborn to change minimum resource to wait for (default 1).]],
+Use mod options to change minimum resource to wait for (default 1).]],
 })

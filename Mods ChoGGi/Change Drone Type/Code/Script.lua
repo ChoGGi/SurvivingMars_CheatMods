@@ -1,8 +1,17 @@
 -- See LICENSE for terms
 
-ChangeDroneType = {
-	Aerodynamics = false,
-}
+local mod_id = "ChoGGi_ChangeDroneType"
+local mod = Mods[mod_id]
+local mod_Aerodynamics = mod.options and mod.options.Aerodynamics or false
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_Aerodynamics = mod.options.Aerodynamics
+end
 
 -- function called when a drone is created
 function City:CreateDrone()
@@ -53,7 +62,7 @@ function OnMsg.ClassesBuilt()
 		Icon = "UI/Icons/Sections/drone.tga",
 
 		__condition = function()
-			if ChangeDroneType.Aerodynamics then
+			if mod_Aerodynamics then
 				return UICity:IsTechResearched("MartianAerodynamics")
 			else
 				return true

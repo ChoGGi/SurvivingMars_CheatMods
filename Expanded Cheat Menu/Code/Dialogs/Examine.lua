@@ -1226,16 +1226,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 		},
 	}
 	if testing then
-		-- maybe i'll finish this one day :)
-		local name = Translate(327465361219--[[Edit--]]) .. " " .. Translate(298035641454--[[Object--]]) .. " " .. Strings[302535920001432--[[3D--]]]
-		table.insert(list,9,{name = name,
-			hint = Strings[302535920001433--[[Fiddle with object angle/axis/pos and so forth.--]]],
-			image = "CommonAssets/UI/Menu/Axis.tga",
-			clicked = function()
-				self.ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(self.obj_ref,self)
-			end,
-		})
-		-- view text with tags visible
+		-- view raw text with tags visible
 		table.insert(list,5,{name = Strings[302535920000048--[[View--]]] .. " Tags",
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
@@ -1255,8 +1246,8 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 				}
 			end,
 		})
-
 	end
+
 	return list
 end
 

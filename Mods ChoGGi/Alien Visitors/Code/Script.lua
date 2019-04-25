@@ -1,8 +1,17 @@
 -- See LICENSE for terms
 
-ChoGGi_Alien_Settings = {
-	MaxSpawn = 10,
-}
+local mod_id = "ChoGGi_AlienVisitors"
+local mod = Mods[mod_id]
+local mod_MaxSpawn = mod.options and mod.options.MaxSpawn or 10
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_MaxSpawn = mod.options.MaxSpawn
+end
 
 
 local image_pin = CurrentModPath .. "UI/Alien_Pin.png"
@@ -228,7 +237,7 @@ local function StartupCode()
 	end
 	local ChoGGi_Alien = ChoGGi_Alien
 	-- spawn a min of 4
-	for i = 1, AsyncRand(ChoGGi_Alien_Settings.MaxSpawn - 4 + 1) + 4 do
+	for i = 1, AsyncRand(mod_MaxSpawn - 4 + 1) + 4 do
 		ChoGGi_Alien:new()
 	end
 

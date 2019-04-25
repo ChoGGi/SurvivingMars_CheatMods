@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
   "title", "Lock Residence",
-	"version", 20,
+	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
   "saved", 1548763200,
@@ -16,15 +16,15 @@ return PlaceObj("ModDef", {
   "id", "ChoGGi_LockResidence",
   "author", "ChoGGi",
 	"steam_id", "1635694550",
+	"lua_revision", LuaRevision or 244275,
   "code", {
 		"Code/Script.lua",
-		"Code/ModConfig.lua",
 	},
-	"lua_revision", LuaRevision or 244275,
+	"has_options", true,
   "description", [[Adds a "Lock Residence" button to the selection panel for colonists, and residences ("Lock Residents").
 They can still be kicked out (if you shutdown the building), they just won't change to a new residence if they're locked.
 
-Includes Mod Config Reborn option to force workers to never change residence (may cause issues).
+Includes mod options to force workers to never change residence (may cause issues).
 
 Lock Workplace: https://steamcommunity.com/sharedfiles/filedetails/?id=1422914403]],
 })

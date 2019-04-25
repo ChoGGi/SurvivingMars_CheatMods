@@ -8,10 +8,10 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Dome Teleporters",
-	"version", 20,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
-	"saved", 1543233600,
+	"version_minor", 6,
+	"saved", 1555156800,
 	"image", "Preview.png",
 	"id", "ChoGGi_DomeTeleporters",
 	"steam_id", "1572847416",
@@ -19,11 +19,11 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision or 244275,
 	"code", {
-		"Code/ModConfig.lua",
 		"Code/Script.lua",
 		"Code/TeleporterConstruction.lua",
 		"Code/TeleporterLines.lua",
 	},
+	"has_options", true,
 	"description", [[In-dome teleporters that act like passages (also shows connected lines when you select one).
 This will allow you to have pure resident domes that connect to the work/leisure domes.
 You can set shifts that colonists are allowed to use the teleporter.

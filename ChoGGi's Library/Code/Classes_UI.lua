@@ -786,8 +786,6 @@ function ChoGGi_Window:PostInit(parent,pt,title_skip)
 	end
 
 end
--- needed till i update view colony map
-ChoGGi_Window.SetInitPos = ChoGGi_Window.PostInit
 
 -- scrollable textbox
 function ChoGGi_Window:AddScrollText()

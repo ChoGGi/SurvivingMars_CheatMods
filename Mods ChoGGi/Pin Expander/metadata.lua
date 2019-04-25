@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Pin Expander",
-	"version", 20,
+	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,
 	"saved", 1544097600,

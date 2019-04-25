@@ -3925,7 +3925,7 @@ do -- GetAllAttaches
 
 	local mark
 	local function ForEach(a,parent_cls)
-		if not attach_dupes[a] and IsValid(a) and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
+		if not attach_dupes[a] and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
 			attach_dupes[a] = true
 			attaches_count = attaches_count + 1
 			attaches_list[attaches_count] = a

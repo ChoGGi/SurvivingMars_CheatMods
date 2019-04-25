@@ -1304,7 +1304,6 @@ end]]
 		if not blacklist then
 			-- and now the console has a blacklist :), though i am a little suprised they left it unfettered this long, been using it as a workaround for months
 			local WaitMsg = WaitMsg
---~ 			local rawset = rawset
 			CreateRealTimeThread(function()
 				if not g_ConsoleFENV then
 					WaitMsg("Autorun")
@@ -1318,11 +1317,9 @@ end]]
 				g_ConsoleFENV = {__run = run}
 				setmetatable(g_ConsoleFENV, {
 					__index = function(_, key)
---~ 						return rawget(original_G, key)
 						return original_G[key]
 					end,
 					__newindex = function(_, key, value)
---~ 						rawset(original_G, key, value)
 						original_G[key] = value
 					end,
 				})

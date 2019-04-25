@@ -1,14 +1,14 @@
 -- See LICENSE for terms
 
 local mod_id = "ChoGGi_RaresPerRocket"
+local mod = Mods[mod_id]
 
 local r = ChoGGi.Consts.ResourceScale
 
 -- if modoptions aren't a thing yet
 local function GetModValue()
-	local options = Mods[mod_id].options
-	if options then
-		return options.AmountOfRares * r
+	if mod.options then
+		return mod.options.AmountOfRares * r
 	end
 	return 90 * r
 end

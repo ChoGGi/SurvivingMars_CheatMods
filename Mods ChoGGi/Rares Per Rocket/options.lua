@@ -9,7 +9,8 @@ DefineClass("ModOptions_ChoGGi_RaresPerRocket", {
 			id = "AmountOfRares",
 			max = 300,
 			min = 30,
-			name = T(0, "Amount of rares"),
+			name = "Amount of rares",
+			desc = "sdfsdfsdfxcgerhgs453q4357ythdgf",
 		},
 	},
 })

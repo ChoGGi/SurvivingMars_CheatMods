@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
   "title", "Notification Pause",
-	"version", 20,
+	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,
   "saved", 1547294400,

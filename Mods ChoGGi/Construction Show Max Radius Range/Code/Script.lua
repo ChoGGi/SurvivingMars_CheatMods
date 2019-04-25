@@ -1,17 +1,29 @@
 -- See LICENSE for terms
 
-local white = -1
+local white = white
 local GridSpacing = const.GridSpacing
 local HexSize = const.HexSize
 local ShowHexRanges = ShowHexRanges
 
-local cls_saved_settings = {"TriboelectricScrubber","SubsurfaceHeater"}
+local mod_id = "ChoGGi_ShowMaxRadiusRange"
+local mod = Mods[mod_id]
+
+local function AddRadius(self,radius)
+	local circle = Circle:new()
+	circle:SetRadius(radius)
+	circle:SetColor(white)
+	self:Attach(circle)
+end
+
+local cls_saved_settings = {"TriboelectricScrubber","SubsurfaceHeater","CoreHeatConvector","ForestationPlant"}
+local cls_heaters = {"SubsurfaceHeater","CoreHeatConvector"}
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()
-	if not ChoGGi_ShowMaxRadiusRange.Option1 then
+	if not mod.options.ShowConstruct then
 		return orig_CursorBuilding_GameInit(self)
 	end
+
 	if self.template:IsKindOfClasses(cls_saved_settings) then
 		-- if ecm is active we check for custom range, otherwise use default
 		local uirange
@@ -29,32 +41,20 @@ function CursorBuilding:GameInit()
 		-- and call this again to update grid marker
 		ShowHexRanges(UICity, false, self, "GetSelectionRadiusScale")
 
-		if self.template:IsKindOf("SubsurfaceHeater") then
-			local circle = Circle:new()
-
-			circle:SetRadius((uirange * GridSpacing) + HexSize)
-			circle:SetColor(white)
-			self:Attach(circle)
+		if self.template:IsKindOfClasses(cls_heaters) then
+			AddRadius(self,(uirange * GridSpacing) + HexSize)
 		end
 
 	elseif self.template:IsKindOf("MoholeMine") then
-		local circle = Circle:new()
-
-		circle:SetRadius(MoholeMine.GetHeatRange(self.template))
-		circle:SetColor(white)
-		self:Attach(circle)
-
+		AddRadius(self,MoholeMine.GetHeatRange(self.template))
 	elseif self.template:IsKindOf("ArtificialSun") then
-		local circle = Circle:new()
-
-		circle:SetRadius(ArtificialSun.GetHeatRange(self.template))
-		circle:SetColor(white)
-		self:Attach(circle)
-
+		AddRadius(self,ArtificialSun.GetHeatRange(self.template))
+	elseif self.template:IsKindOf("AdvancedStirlingGenerator") then
+		AddRadius(self,AdvancedStirlingGenerator.GetHeatRange(self.template))
 	end
 
 --~ 	ex(self)
 	return orig_CursorBuilding_GameInit(self)
 end
 
--- since the circle gets attached to the CursorBuilding it'll be removed when it's removed, no need to fiddle with :Done()
+-- since the circle gets attached to the CursorBuilding it'll be removed when it's removed, no need to fiddle with :Close()

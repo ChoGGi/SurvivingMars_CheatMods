@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Show Amount Per Rare On Rockets",
-	"version", 20,
+	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
 	"saved", 1539950400,

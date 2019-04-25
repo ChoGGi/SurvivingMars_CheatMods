@@ -1,0 +1,6 @@
+activate profiles at sols
+
+If it were possible to have it happen automatically when the building was built, that would be the absolute ideal. Or even to set it during construction!
+
+I'll add that specialists option, I'll think about implementing the auto adding to a profile. I'd have to figure out about how to display a UI for it.
+

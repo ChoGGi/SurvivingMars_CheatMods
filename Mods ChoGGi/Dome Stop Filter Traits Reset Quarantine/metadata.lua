@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Dome: Stop Filter Traits Reset Quarantine",
-	"version", 20,
+	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 1540209600,

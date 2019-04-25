@@ -1,10 +1,35 @@
 -- See LICENSE for terms
 
--- Everything stored in one global table
-EveryFlagOnWikipedia = {
-	RandomBirthplace = true,
-	DefaultNationNames = true,
-}
+local mod_id = "ChoGGi_EveryFlagOnWikipedia"
+local mod = Mods[mod_id]
+local mod_RandomBirthplace = mod.options and mod.options.RandomBirthplace or true
+local mod_DefaultNationNames = mod.options and mod.options.DefaultNationNames or true
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_RandomBirthplace = mod.options.RandomBirthplace
+	mod_DefaultNationNames = mod.options.DefaultNationNames
+end
+
+local AsyncRand = AsyncRand
+local NameUnit = NameUnit
+
+local orig_GenerateColonistData = GenerateColonistData
+function GenerateColonistData(...)
+  if mod_RandomBirthplace then
+    local Nations = Nations
+    local c = orig_GenerateColonistData(...)
+    c.birthplace = Nations[AsyncRand(#Nations - 1 + 1) + 1].value
+    NameUnit(c)
+    return c
+  else
+    return orig_GenerateColonistData(...)
+  end
+end
 
 -- local some stuff
 local table_find = table.find
@@ -3125,7 +3150,7 @@ function OnMsg.ModsReloaded()
 
 
 	-- skip adding full names list to existing nations
-	local rand_birth = EveryFlagOnWikipedia.DefaultNationNames
+	local rand_birth = mod_DefaultNationNames
 
 	-- add list of names from earlier for each nation
 	for i = 1, #Nations do

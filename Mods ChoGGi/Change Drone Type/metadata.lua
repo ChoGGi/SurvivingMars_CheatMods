@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Change Drone Type",
-	"version", 20,
+	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
 	"saved", 1550750400,
@@ -20,10 +20,10 @@ return PlaceObj("ModDef", {
 	"lua_revision", LuaRevision or 244275,
 	"code", {
 		"Code/Script.lua",
-		"Code/ModConfig.lua",
 	},
+	"has_options", true,
 	"description", [[Adds a button to hubs and rovers that lets you switch between wasp (flying) and regular drones (global setting, not per building).
 
-Mod Config Reborn:
+mod options:
 Option to only show button when Martian Aerodynamics is researched.]],
 })

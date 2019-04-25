@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Construction: Extend Length",
-	"version", 20,
+	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
 	"saved", 1542888000,
@@ -10,11 +10,11 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"lua_revision", LuaRevision or 244275,
 	"code", {
-		"Code/ModConfig.lua",
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[Extend length of pipes/cables/passages from 20 to 500.
-Can be changed with Mod Config Reborn.
+Can be changed with mod options.
 
 Requested by Adi.
 

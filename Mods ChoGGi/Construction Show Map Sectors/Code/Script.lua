@@ -1,12 +1,27 @@
+-- See LICENSE for terms
+
+local mod_id = "ChoGGi_ConstructionShowMapSectors"
+local mod = Mods[mod_id]
+local mod_Option1 = mod.options and mod.options.Option1 or true
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_Option1 = mod.options.Option1
+end
+
 local size = 100 * guim
 local green = green
 local MulDivRound = MulDivRound
 local PlaceObject = PlaceObject
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
-function CursorBuilding:GameInit(...)
-	if not ChoGGi_ConstructionShowMapSectors.Option1 then
-		return orig_CursorBuilding_GameInit(self,...)
+function CursorBuilding.GameInit(...)
+	if not mod_Option1 then
+		return orig_CursorBuilding_GameInit(...)
 	end
 
   local g_MapSectors = g_MapSectors
@@ -25,22 +40,24 @@ function CursorBuilding:GameInit(...)
 		end
 	end
 
-  return orig_CursorBuilding_GameInit(self,...)
+  return orig_CursorBuilding_GameInit(...)
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
-function CursorBuilding:Done(...)
+function CursorBuilding.Done(...)
 
-  local g_MapSectors = g_MapSectors
-	for sector in pairs(g_MapSectors) do
-		if type(sector) == "table" then
-			if not sector.ChoGGi_decal then
-				sector.decal:delete()
+	if mod_Option1 then
+		local g_MapSectors = g_MapSectors
+		for sector in pairs(g_MapSectors) do
+			if type(sector) == "table" then
+				if not sector.ChoGGi_decal then
+					sector.decal:delete()
+				end
+				sector.decal = sector.ChoGGi_decal
+				sector:UpdateDecal()
 			end
-			sector.decal = sector.ChoGGi_decal
-			sector:UpdateDecal()
 		end
 	end
 
-  return orig_CursorBuilding_Done(self,...)
+  return orig_CursorBuilding_Done(...)
 end

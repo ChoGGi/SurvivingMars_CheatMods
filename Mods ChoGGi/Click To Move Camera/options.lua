@@ -1,11 +1,12 @@
-DefineClass("ModOptions_ChoGGi_MononokeShishiGami", {
+DefineClass("ModOptions_ChoGGi_ShiftClickToMove", {
 	__parents = {"ModOptionsObject"},
 	properties = {
 		{
-			default = "true",
+			default = "false",
 			editor = "bool",
-			id = "MouseScrolling",
-			name = T(0, "Border Mouse Scrolling"),
+			id = "EdgeScrolling",
+			name = "Edge Scrolling",
+			desc = "Disable scrolling when mouse near edge.",
 		},
 	},
 })

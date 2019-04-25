@@ -1,8 +1,17 @@
 -- See LICENSE for terms
 
-SaveRocketCargo = {
-	ClearOnLaunch = false,
-}
+local mod_id = "ChoGGi_SaveRocketCargo"
+local mod = Mods[mod_id]
+local mod_ClearOnLaunch = mod.options and mod.options.ClearOnLaunch or true
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_ClearOnLaunch = mod.options.ClearOnLaunch
+end
 
 local WaitMsg = WaitMsg
 
@@ -90,7 +99,7 @@ end
 
 local orig_LaunchCargoRocket = LaunchCargoRocket
 function LaunchCargoRocket(...)
-	if SaveRocketCargo.ClearOnLaunch then
+	if mod_ClearOnLaunch then
 		local mode = UICity and UICity.launch_mode or "rocket"
 		table.iclear(saved_cargo[mode])
 		launch_skip = true

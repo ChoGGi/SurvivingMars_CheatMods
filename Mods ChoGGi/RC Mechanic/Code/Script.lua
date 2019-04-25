@@ -208,24 +208,6 @@ function OnMsg.ClassesPostprocess()
 	end
 end
 
-local function CheatAddDust(self)
-	-- get dust amount, and convert to percentage
-	local dust_amt = (obj:GetDust() + 0.0) / 100
-	if dust_amt ~= 0.0 then
-		local value = 100
-		sprinkler:ForEachAttach(SprinklerColour,-8249088)
-		while true do
-			if value == 0 then
-				break
-			end
-			value = value - 1
-			obj:SetDust(dust_amt * value, DustMaterialExterior)
-			Sleep(100)
-		end
-		sprinkler:ForEachAttach(SprinklerColour,-10197916)
-	end
-end
-
 -- RCMech_CleanAndFix
 local DustMaterialExterior = const.DustMaterialExterior
 local function RCMech_ResetDust(self)

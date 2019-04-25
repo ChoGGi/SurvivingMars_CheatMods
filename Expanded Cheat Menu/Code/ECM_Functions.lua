@@ -690,22 +690,6 @@ function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj,parent)
 	})
 end
 
-function ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(obj,parent)
-	obj = IsValid(obj) and obj or ChoGGi.ComFuncs.SelObject()
-	if not obj then
-		return
-	end
-
-	if not IsKindOf(parent,"XWindow") then
-		parent = nil
-	end
-
-	return ChoGGi_3DManipulatorDlg:new({}, terminal.desktop,{
-		obj = obj,
-		parent = parent,
-	})
-end
-
 function ChoGGi.ComFuncs.OpenInExecCodeDlg(context,parent)
 	if not IsKindOf(parent,"XWindow") then
 		parent = nil

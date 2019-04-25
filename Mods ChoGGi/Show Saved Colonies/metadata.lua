@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
 	"title", "Show Saved Colonies",
-	"version", 20,
+	"version", 9,
 	"version_major", 0,
 	"version_minor", 9,
 	"saved", 1545480000,

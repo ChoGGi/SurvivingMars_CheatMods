@@ -11,12 +11,15 @@ local Strings = ChoGGi.Strings
 function ChoGGi.MenuFuncs.SetTimeFactor()
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. 1000,value = 1000},
+		{text = 0,value = 0,hint = Translate(6869--[[Pause--]])},
 		{text = 100,value = 100},
 		{text = 150,value = 150},
 		{text = 250,value = 250},
 		{text = 500,value = 500},
-		{text = 1000,value = 1000},
+		{text = 1000,value = 1000,hint = Translate(4020--[[Play at normal speed.--]])},
 		{text = 2500,value = 2500},
+		{text = 3000,value = 3000,hint = Translate(4023--[[Play at three times normal speed.--]])},
+		{text = 5000,value = 5000,hint = Translate(4025--[[Play at five times normal speed.--]])},
 		{text = 10000,value = 10000},
 		{text = 25000,value = 25000},
 		{text = 100000,value = 100000},
@@ -29,7 +32,8 @@ function ChoGGi.MenuFuncs.SetTimeFactor()
 		choice = choice[1]
 
 		local value = choice.value
-		if type(value) == "number" then
+		if type(value) == "number" and value > -1 then
+			-- making the time factor neg = inf loop
 
 			SetTimeFactor(value)
 

@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Personal Shuttles",
-	"version", 20,
+	"version", 9,
 	"version_major", 0,
 	"version_minor", 9,
 	"saved", 1550750400,

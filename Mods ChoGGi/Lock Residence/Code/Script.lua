@@ -1,14 +1,22 @@
 -- See LICENSE for terms
 
--- put this in script or change load order in metadata
-LockResidence = {
-	NeverChange = false,
-}
+local mod_id = "ChoGGi_LockResidence"
+local mod = Mods[mod_id]
+local mod_NeverChange = mod.options and mod.options.NeverChange or false
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_NeverChange = mod.options.NeverChange
+end
 
 -- make the value the below buttons set actually do something
 local orig_Colonist_SetResidence = Colonist.SetResidence
 function Colonist:SetResidence(home, ...)
-	if self.ChoGGi_LockResidence and (home or LockResidence.NeverChange) then
+	if self.ChoGGi_LockResidence and (home or mod_NeverChange) then
 		return
 	end
 	-- we only fire the func if the lock isn't there, yeah i'm sure this won't cause any issues :)

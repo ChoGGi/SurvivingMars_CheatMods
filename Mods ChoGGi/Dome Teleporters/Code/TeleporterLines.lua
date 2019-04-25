@@ -8,6 +8,7 @@ local table_clear = table.clear
 
 local teleporter_lines = {}
 local two_pointer = {}
+
 local cls = "DomeTeleporter"
 
 function OnMsg.SelectedObjChange(obj, prev)

@@ -1,14 +1,22 @@
 -- See LICENSE for terms
 
--- put this in script or change load order in metadata
-LockWorkplace = {
-	NeverChange = false,
-}
+local mod_id = "ChoGGi_LockWorkplace"
+local mod = Mods[mod_id]
+local mod_NeverChange = mod.options and mod.options.NeverChange or false
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_NeverChange = mod.options.NeverChange
+end
 
 -- make the value the below buttons set actually do something
 local orig_Colonist_SetWorkplace = Colonist.SetWorkplace
 function Colonist:SetWorkplace(building, shift, ...)
-	if self.ChoGGi_Lockworkplace and (building or LockWorkplace.NeverChange) then
+	if self.ChoGGi_Lockworkplace and (building or mod_NeverChange) then
 		return
 	end
 	-- we only fire the func if the lock isn't there, yeah i'm sure this won't cause any issues :)

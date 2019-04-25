@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Minimap",
-	"version", 20,
+	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,
 	"saved", 1551787200,
@@ -21,12 +21,12 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Minimap.lua",
 		"Code/Script.lua",
-		"Code/ModConfig.lua",
 	},
+	"has_options", true,
 	"description", [[It's an image of the map you can click on to move the camera around (useful for setting transport routes).
 This is an image, so click target isn't perfect.
 
 For those of us using ultrawide the image doesn't work that well.
-There's a Mod Config Reborn option to use my topography images instead:
+There's a mod options to use my topography images instead:
 https://steamcommunity.com/sharedfiles/filedetails/?id=1571465108]],
 })

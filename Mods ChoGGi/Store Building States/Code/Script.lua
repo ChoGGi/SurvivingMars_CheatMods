@@ -68,6 +68,8 @@ local function ActivateProfile(profile)
 					ToggleShift(obj,set_value,2)
 				elseif setting == "shift3" then
 					ToggleShift(obj,set_value,3)
+				elseif setting == "specialist_enforce_mode" then
+					obj:SetSpecialistEnforce(set_value)
 				end
 
 			end
@@ -199,6 +201,7 @@ local function ShowList_AddTo(obj,profile)
 	local working_str = Translate(11230--[[Working--]])
 	local priority_str = Translate(172--[[Priority--]])
 	local shifts_str = Translate(217--[[Work Shifts--]])
+	local enforce_spec_str = Translate(8746--[[Workforce: Enforce Specialists--]])
 	local shifts1_str = shifts_str .. ": 1"
 	local shifts2_str = shifts_str .. ": 2"
 	local shifts3_str = shifts_str .. ": 3"
@@ -230,25 +233,36 @@ local function ShowList_AddTo(obj,profile)
 		}
 	end
 
+	local boolean_hint_str = Translate("Enter <color green>true</color> or <color green>false</color> to have it turned on or off.")
+
+	local is_workplace_obj = obj:IsKindOf("Workplace")
+	if is_workplace_obj then
+		c = c + 1
+		item_list[c] = {
+			text = enforce_spec_str,
+			hint = boolean_hint_str,
+			value = obj.specialist_enforce_mode,
+		}
+	end
+
 	local is_shift_obj = obj:IsKindOf("ShiftsBuilding")
 	if is_shift_obj then
-		local hint_str = "Enter <color green>true</color> or <color green>false</color> to have it turned on or off."
 		c = c + 1
 		item_list[c] = {
 			text = shifts1_str,
-			hint = hint_str,
+			hint = boolean_hint_str,
 			value = not obj:IsClosedShift(1),
 		}
 		c = c + 1
 		item_list[c] = {
 			text = shifts2_str,
-			hint = hint_str,
+			hint = boolean_hint_str,
 			value = not obj:IsClosedShift(2),
 		}
 		c = c + 1
 		item_list[c] = {
 			text = shifts3_str,
-			hint = hint_str,
+			hint = boolean_hint_str,
 			value = not obj:IsClosedShift(3),
 		}
 	end
@@ -269,6 +283,7 @@ local function ShowList_AddTo(obj,profile)
 		local working_chk = choices[1].check1
 		local priority_chk = choices[1].check2
 		local shifts_chk = choices[1].check3
+		local enforce_spec_chk = choices[1].check3
 
 		local profile,building_state
 		local BuildingStates = g_ChoGGi_BuildingStates
@@ -293,7 +308,7 @@ local function ShowList_AddTo(obj,profile)
 		end
 
 		-- if all of type then we use these below
-		local working,priority,shift1,shift2,shift3
+		local working,priority,shift1,shift2,shift3,specialist_enforce_mode
 
 		for i = 2, #choices do
 
@@ -316,9 +331,11 @@ local function ShowList_AddTo(obj,profile)
 			elseif text == shifts3_str and shifts_chk and type(value) == "boolean" then
 				building_state.shift3 = value
 				shift3 = value
+			elseif text == enforce_spec_str and enforce_spec_chk and type(value) == "boolean" then
+				building_state.specialist_enforce_mode = value
+				specialist_enforce_mode = value
 			end
 		end
-		ex{shift1,shift2,shift3,choices}
 
 		-- all of type checkbox
 		if choices[1].check4 then
@@ -331,6 +348,7 @@ local function ShowList_AddTo(obj,profile)
 				building_state.shift1 = shift1
 				building_state.shift2 = shift2
 				building_state.shift3 = shift3
+				building_state.specialist_enforce_mode = specialist_enforce_mode
 			end
 		end
 
@@ -361,6 +379,12 @@ local function ShowList_AddTo(obj,profile)
 				hint = "Uncheck to exclude this setting from profile.",
 				checked = is_shift_obj,
 				visible = is_shift_obj,
+			},
+			{
+				title = [[Enforce Spec]],
+				hint = "Uncheck to exclude this setting from profile.",
+				checked = is_workplace_obj,
+				visible = is_workplace_obj,
 			},
 			{
 				title = "Add All",

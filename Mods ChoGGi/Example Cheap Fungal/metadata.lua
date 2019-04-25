@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Cheap Fungal Example",
-	"version", 20,
+	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
-	"saved", 000000000,
+	"saved", 1556193600,
 	"image", "Preview.png",
 	"id", "ChoGGi_CheapFungalExample",
 	"author", "ChoGGi",

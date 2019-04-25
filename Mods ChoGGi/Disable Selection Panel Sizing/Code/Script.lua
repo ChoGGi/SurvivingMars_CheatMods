@@ -1,8 +1,25 @@
+-- See LICENSE for terms
+
+local mod_id = "ChoGGi_DisableSelectionPanelSizing"
+local mod = Mods[mod_id]
+local mod_Enabled = mod.options and mod.options.Enabled or true
+local mod_ScrollSelection = mod.options and mod.options.ScrollSelection or false
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	mod_Enabled = mod.options.Enabled
+	mod_ScrollSelection = mod.options.ScrollSelection
+end
+
 local XSizeConstrained_WindowUpdateMeasure = XSizeConstrainedWindow.UpdateMeasure
 local XWindow_UpdateMeasure = XWindow.UpdateMeasure
 
 function XSizeConstrainedWindow:UpdateMeasure(...)
-	if DisableSelectionPanelSizing.Enabled then
+	if mod_Enabled then
 		XWindow_UpdateMeasure(self,...)
 	else
 		return XSizeConstrained_WindowUpdateMeasure(self,...)
@@ -94,7 +111,7 @@ function InfopanelDlg:Open(...)
 		until self.visible
 
 		-- give me the scroll. goddamn it blinky
-		if DisableSelectionPanelSizing.ScrollSelection and infopanel_list[self.XTemplate] then
+		if mod_ScrollSelection and infopanel_list[self.XTemplate] then
 			self.idActionButtons.parent:SetZOrder(2)
 			AddScrollDialogXTemplates(self)
 		end
