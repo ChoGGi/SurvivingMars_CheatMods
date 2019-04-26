@@ -106,7 +106,7 @@ function OnMsg.ClassesBuilt()
 	local g_Classes = g_Classes
 
 	local cConsts = ChoGGi.Consts
-	local r = cConsts.ResourceScale
+	local r = const.ResourceScale
 
 	-- get the default values for our Consts
 	for key,value in pairs(cConsts) do

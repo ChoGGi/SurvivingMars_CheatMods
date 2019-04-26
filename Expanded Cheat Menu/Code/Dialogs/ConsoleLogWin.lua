@@ -39,7 +39,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		RolloverText = Strings[302535920001367--[[Toggles--]]] .. " " .. Strings[302535920000629--[[UI Transparency--]]],
 		Dock = "left",
 		Margins = box(4,0,0,0),
-		OnChange = self.idToggleTransOnChange,
+		OnChange = self.idToggleTrans_OnChange,
 	}, self.idButtonContainer)
 
 	self.idToggleTrans:AddInterpolation{
@@ -53,7 +53,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Dock = "left",
 		Text = Strings[302535920001026--[[Show File Log--]]],
 		RolloverText = Strings[302535920001091--[[Flushes log to disk and displays in console log.--]]],
-		OnPress = self.idShowFileLogOnPress,
+		OnPress = self.idShowFileLog_OnPress,
 	}, self.idButtonContainer)
 
 	self.idShowModsLog = g_Classes.ChoGGi_Button:new({
@@ -61,7 +61,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Dock = "left",
 		Text = Strings[302535920000071--[[Mods Log--]]],
 		RolloverText = Strings[302535920001123--[[Shows any mod msgs in the log.--]]],
-		OnPress = self.idShowModsLogOnPress,
+		OnPress = self.idShowModsLog_OnPress,
 	}, self.idButtonContainer)
 
 	self.idClearLog = g_Classes.ChoGGi_Button:new({
@@ -69,7 +69,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Dock = "left",
 		Text = Strings[302535920000734--[[Clear Log--]]],
 		RolloverText = Strings[302535920000477--[[Clear out the windowed console log.--]]],
-		OnPress = self.idClearLogOnPress,
+		OnPress = self.idClearLog_OnPress,
 	}, self.idButtonContainer)
 
 	self.idCopyText = g_Classes.ChoGGi_Button:new({
@@ -77,7 +77,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Dock = "left",
 		Text = Strings[302535920000563--[[Copy Log Text--]]],
 		RolloverText = Strings[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
-		OnPress = self.idCopyTextOnPress,
+		OnPress = self.idCopyText_OnPress,
 	}, self.idButtonContainer)
 
 	-- text box with log in it
@@ -90,7 +90,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 
 	self.idTextInput = g_Classes.ChoGGi_TextInput:new({
 		Id = "idTextInput",
-		OnKbdKeyDown = self.idTextInputOnKbdKeyDown,
+		OnKbdKeyDown = self.idTextInput_OnKbdKeyDown,
 		RolloverTemplate = "Rollover",
 		RolloverTitle = Strings[302535920001073--[[Console--]]] .. " " .. Translate(487939677892--[[Help--]]),
 	}, self.idTextInputArea)
@@ -123,7 +123,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 	self:PostInit()
 end
 
-function ChoGGi_ConsoleLogWin:idTextInputOnKbdKeyDown(vk,...)
+function ChoGGi_ConsoleLogWin:idTextInput_OnKbdKeyDown(vk,...)
 	local dlgConsole = dlgConsole
 	if not dlgConsole then
 		return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
@@ -163,23 +163,23 @@ function ChoGGi_ConsoleLogWin:idTextInputOnKbdKeyDown(vk,...)
 	return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
 end
 
-function ChoGGi_ConsoleLogWin:idToggleTransOnChange()
+function ChoGGi_ConsoleLogWin:idToggleTrans_OnChange()
 	self = GetRootDialog(self)
 	self.transp_mode = not self.transp_mode
 	self:SetTranspMode(self.transp_mode)
 end
-function ChoGGi_ConsoleLogWin:idShowFileLogOnPress()
+function ChoGGi_ConsoleLogWin:idShowFileLog_OnPress()
 	GetRootDialog(self):UpdateText(LoadLogfile())
 end
-function ChoGGi_ConsoleLogWin:idShowModsLogOnPress()
+function ChoGGi_ConsoleLogWin:idShowModsLog_OnPress()
 	self = GetRootDialog(self)
 
 	self:UpdateText(self.idText:GetText() .. TableConcat(ModMessageLog,"\n"))
 end
-function ChoGGi_ConsoleLogWin:idClearLogOnPress()
+function ChoGGi_ConsoleLogWin:idClearLog_OnPress()
 	GetRootDialog(self).idText:SetText("")
 end
-function ChoGGi_ConsoleLogWin:idCopyTextOnPress()
+function ChoGGi_ConsoleLogWin:idCopyText_OnPress()
 	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{text = GetRootDialog(self).idText:GetText()}
 end
 

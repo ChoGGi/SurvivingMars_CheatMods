@@ -186,10 +186,10 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 
 	self:AddScrollList()
 
-	self.idList.OnMouseButtonDown = self.idListOnMouseButtonDown
-	self.idList.OnKbdKeyUp = self.idListOnKbdKeyUp
-	self.idList.OnMouseButtonDoubleClick = self.idListOnMouseButtonDoubleClick
-	self.idList.OnKbdKeyDown = self.idListOnKbdKeyDown
+	self.idList.OnMouseButtonDown = self.idList_OnMouseButtonDown
+	self.idList.OnKbdKeyUp = self.idList_OnKbdKeyUp
+	self.idList.OnMouseButtonDoubleClick = self.idList_OnMouseButtonDoubleClick
+	self.idList.OnKbdKeyDown = self.idList_OnKbdKeyDown
 
 	if self.custom_type ~= 9 then
 		self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
@@ -204,7 +204,7 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 	Press Enter to show all items."--]]],
 			Hint = Strings[302535920000068--[[Filter Items--]]],
 			OnTextChanged = self.FilterText,
-			OnKbdKeyDown = self.idFilterOnKbdKeyDown
+			OnKbdKeyDown = self.idFilter_OnKbdKeyDown
 		}, self.idFilterArea)
 	end
 
@@ -224,7 +224,7 @@ It won't be visible unless the ""%s"" checkbox is enabled.
 
 Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]]:format(Strings[302535920000078--[[Custom Value--]]]),
 			Hint = Strings[302535920000078--[[Custom Value--]]],
-			OnKbdKeyDown = self.idEditValueOnKbdKeyDown
+			OnKbdKeyDown = self.idEditValue_OnKbdKeyDown
 		}, self.idEditArea)
 
 		self.idShowCustomVal = g_Classes.ChoGGi_CheckButton:new({
@@ -233,7 +233,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			Margins = box(4,0,0,0),
 			Text = Strings[302535920000078--[[Custom Value--]]],
 			RolloverText = Strings[302535920000077]:format(Strings[302535920000078]),
-			OnChange = self.idShowCustomValOnChange,
+			OnChange = self.idShowCustomVal_OnChange,
 		}, self.idEditArea)
 
 		-- toggle vis and checkmark depending on which list
@@ -325,14 +325,14 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		}, self.idColourContainer)
 
 		self.idColorPicker = g_Classes.XColorPicker:new({
-			OnColorChanged = self.idColorPickerOnColorChanged,
+			OnColorChanged = self.idColorPicker_OnColorChanged,
 			AdditionalComponent = "alpha"
 --~ 		 AdditionalComponent = "intensity"
 --~ 		 AdditionalComponent = "none"
 		}, self.idColorPickerArea)
 		-- block it from closing on dbl click
 		self.idColorPicker.idColorSquare.OnColorChanged_Orig = self.idColorPicker.idColorSquare.OnColorChanged
-		self.idColorPicker.idColorSquare.OnColorChanged = self.idColorSquareOnColorChanged
+		self.idColorPicker.idColorSquare.OnColorChanged = self.idColorSquare_OnColorChanged
 
 		self.idColorCheckArea = g_Classes.ChoGGi_DialogSection:new({
 			Id = "idColorCheckArea",
@@ -426,7 +426,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	if self.custom_type ~= 0 then
 		self.idList:SetInitialSelection(true)
 		-- update custom value text
-		self:idListOnSelect("L")
+		self:idList_OnSelect("L")
 	end
 
 	-- we don't want OnColorChanged to fire till after user does something in the dialog
@@ -436,7 +436,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	self:PostInit(self.list.parent)
 end
 
-function ChoGGi_ListChoiceDlg:idShowCustomValOnChange(check)
+function ChoGGi_ListChoiceDlg:idShowCustomVal_OnChange(check)
 	self = GetRootDialog(self)
 	local item = self.idList[#self.idList]
 	item:SetVisible(check)
@@ -494,14 +494,14 @@ function ChoGGi_ListChoiceDlg:idCheckBoxAtLeastOne()
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idColorSquareOnColorChanged(colour)
+function ChoGGi_ListChoiceDlg:idColorSquare_OnColorChanged(colour)
 	self:OnColorChanged_Orig(colour)
 end
 
-function ChoGGi_ListChoiceDlg:idListOnKbdKeyDown(vk)
+function ChoGGi_ListChoiceDlg:idList_OnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
-		self:idListOnMouseButtonDoubleClick(nil,"L")
+		self:idList_OnMouseButtonDoubleClick(nil,"L")
 		return "break"
 	elseif vk == const.vkEsc then
 		self.idCloseX:Press()
@@ -510,17 +510,17 @@ function ChoGGi_ListChoiceDlg:idListOnKbdKeyDown(vk)
 	return "continue"
 end
 
-function ChoGGi_ListChoiceDlg:idListOnMouseButtonDown(pt,button,...)
+function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDown(pt,button,...)
 	g_Classes.ChoGGi_List.OnMouseButtonDown(self,pt,button)
-	GetRootDialog(self):idListOnSelect(button)
+	GetRootDialog(self):idList_OnSelect(button)
 end
 
-function ChoGGi_ListChoiceDlg:idListOnKbdKeyUp(...)
+function ChoGGi_ListChoiceDlg:idList_OnKbdKeyUp(...)
 	ChoGGi_List.OnKbdKeyUp(...)
-	GetRootDialog(self):idListOnSelect("L")
+	GetRootDialog(self):idList_OnSelect("L")
 end
 
-function ChoGGi_ListChoiceDlg:idEditValueOnKbdKeyDown(vk,...)
+function ChoGGi_ListChoiceDlg:idEditValue_OnKbdKeyDown(vk,...)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
 		self.idOK:Press()
@@ -730,7 +730,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idFilterOnKbdKeyDown(vk)
+function ChoGGi_ListChoiceDlg:idFilter_OnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
 		self:FilterText(true)
@@ -804,7 +804,7 @@ function ChoGGi_ListChoiceDlg:UpdateColour()
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged(colour)
+function ChoGGi_ListChoiceDlg:idColorPicker_OnColorChanged(colour)
 	self = GetRootDialog(self)
 	local sel_idx = self.idList.focused_item
 	-- no list item selected, so just return
@@ -831,7 +831,7 @@ function ChoGGi_ListChoiceDlg:idColorPickerOnColorChanged(colour)
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idListOnSelect(button)
+function ChoGGi_ListChoiceDlg:idList_OnSelect(button)
 	if not self.idList.focused_item then
 		return
 	end
@@ -864,7 +864,7 @@ function ChoGGi_ListChoiceDlg:idListOnSelect(button)
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idListOnMouseButtonDoubleClick(_,button)
+function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDoubleClick(_,button)
 	if self.class == "ChoGGi_List" then
 		self = GetRootDialog(self)
 	end
@@ -971,46 +971,4 @@ function ChoGGi_ListChoiceDlg:GetAllItems()
 	end
 
 	self:UpdateReturnedItem(self.choices)
-end
-
--- copied from GedPropEditors.lua. it's normally only called when GED is loaded, but we need it for the colour picker
-local IconScale = point(500, 500)
-local IconColor = RGB(0, 0, 0)
-local RolloverBackground = RGB(204, 232, 255)
-local PressedBackground = RGB(121, 189, 241)
-local Background = RGBA(0, 0, 0, 0)
-local DisabledIconColor = RGBA(0, 0, 0, 128)
-local padding1 = box(1, 2, 1, 1)
-local padding2 = box(1, 1, 1, 2)
-function CreateNumberEditor(parent, id, up_pressed, down_pressed)
-	local g_Classes = g_Classes
-	local button_panel = g_Classes.XWindow:new({Dock = "right"}, parent)
-	local top_btn = g_Classes.XTextButton:new({
-		Dock = "top",
-		OnPress = up_pressed,
-		Padding = padding1,
-		Icon = "CommonAssets/UI/arrowup-40.tga",
-		IconScale = IconScale,
-		IconColor = IconColor,
-		DisabledIconColor = DisabledIconColor,
-		Background = Background,
-		DisabledBackground = Background,
-		RolloverBackground = RolloverBackground,
-		PressedBackground = PressedBackground,
-	}, button_panel, nil, nil, "NumberArrow")
-	local bottom_btn = g_Classes.XTextButton:new({
-		Dock = "bottom",
-		OnPress = down_pressed,
-		Padding = padding2,
-		Icon = "CommonAssets/UI/arrowdown-40.tga",
-		IconScale = IconScale,
-		IconColor = IconColor,
-		DisabledIconColor = DisabledIconColor,
-		Background = Background,
-		DisabledBackground = Background,
-		RolloverBackground = RolloverBackground,
-		PressedBackground = PressedBackground,
-	}, button_panel, nil, nil, "NumberArrow")
-	local edit = g_Classes.XEdit:new({Id = id, Dock = "box"}, parent)
-	return edit, top_btn, bottom_btn
 end

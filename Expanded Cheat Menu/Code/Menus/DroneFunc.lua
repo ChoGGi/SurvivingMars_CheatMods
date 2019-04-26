@@ -193,7 +193,7 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 end
 
 function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.SpeedDrone
 	local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone")
 	local item_list = {
@@ -581,7 +581,7 @@ end
 
 function ChoGGi.MenuFuncs.SetGravityDrones()
 	local default_setting = ChoGGi.Consts.GravityDrone
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 		{text = 1,value = 1},

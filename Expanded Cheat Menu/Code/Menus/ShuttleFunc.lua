@@ -8,7 +8,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 --~	local RetName = ChoGGi.ComFuncs.RetName
 
 function ChoGGi.MenuFuncs.SetShuttleCapacity()
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.StorageShuttle / r
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
@@ -65,7 +65,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 end
 
 function ChoGGi.MenuFuncs.SetShuttleSpeed()
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.SpeedShuttle / r
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},

@@ -212,7 +212,7 @@ function Examine:Init(parent, context)
 			Image = "CommonAssets/UI/Menu/reload.tga",
 			RolloverTitle = Translate(1000220--[[Refresh--]]),
 			RolloverText = Strings[302535920000092--[[Updates list with any changed values.--]]],
-			OnPress = self.idButRefreshOnPress,
+			OnPress = self.idButRefresh_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButSetTransp = g_Classes.ChoGGi_ToolbarButton:new({
@@ -220,7 +220,7 @@ function Examine:Init(parent, context)
 			Image = "CommonAssets/UI/Menu/CutSceneArea.tga",
 			RolloverTitle = Strings[302535920000865--[[Translate--]]],
 			RolloverText = Strings[302535920001367--[[Toggles--]]] .. " " .. Strings[302535920000629--[[UI Transparency--]]],
-			OnPress = self.idButSetTranspOnPress,
+			OnPress = self.idButSetTransp_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButClear = g_Classes.ChoGGi_ToolbarButton:new({
@@ -229,7 +229,7 @@ function Examine:Init(parent, context)
 			RolloverTitle = Translate(594--[[Clear--]]),
 			RolloverText = Strings[302535920000016--[["Remove any green spheres/reset green coloured objects
 Press once to clear this examine, again to clear all."--]]],
-			OnPress = self.idButClearOnPress,
+			OnPress = self.idButClear_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButMarkObject = g_Classes.ChoGGi_ToolbarButton:new({
@@ -237,7 +237,7 @@ Press once to clear this examine, again to clear all."--]]],
 			Image = "CommonAssets/UI/Menu/DisableEyeSpec.tga",
 			RolloverTitle = Strings[302535920000057--[[Mark Object--]]],
 			RolloverText = Strings[302535920000021--[[Mark object with green sphere and/or paint.--]]],
-			OnPress = self.idButMarkObjectOnPress,
+			OnPress = self.idButMarkObject_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButDeleteObj = g_Classes.ChoGGi_ToolbarButton:new({
@@ -245,7 +245,7 @@ Press once to clear this examine, again to clear all."--]]],
 			Image = "CommonAssets/UI/Menu/delete_objects.tga",
 			RolloverTitle = Translate(502364928914--[[Delete--]]),
 			RolloverText = Strings[302535920000414--[[Are you sure you wish to delete <color red>%s</color>?--]]]:format(self.name),
-			OnPress = self.idButDeleteObjOnPress,
+			OnPress = self.idButDeleteObj_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButSetObjlist = g_Classes.ChoGGi_ToolbarButton:new({
@@ -253,7 +253,7 @@ Press once to clear this examine, again to clear all."--]]],
 			Image = "CommonAssets/UI/Menu/toggle_post.tga",
 			RolloverTitle = Strings[302535920001558--[[Toggle Objlist--]]],
 			RolloverText = Strings[302535920001559--[[Toggle setting the metatable for this table to an objlist (for using mark/delete all).--]]],
-			OnPress = self.idButToggleObjlistOnPress,
+			OnPress = self.idButToggleObjlist_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButMarkAll = g_Classes.ChoGGi_ToolbarButton:new({
@@ -261,7 +261,7 @@ Press once to clear this examine, again to clear all."--]]],
 			Image = "CommonAssets/UI/Menu/ExportImageSequence.tga",
 			RolloverTitle = Strings[302535920000058--[[Mark All Objects--]]],
 			RolloverText = Strings[302535920000056--[[Mark all items in objlist with green spheres.--]]],
-			OnPress = self.idButMarkAllOnPress,
+			OnPress = self.idButMarkAll_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButMarkAllLine = g_Classes.ChoGGi_ToolbarButton:new({
@@ -269,7 +269,7 @@ Press once to clear this examine, again to clear all."--]]],
 			Image = "CommonAssets/UI/Menu/ShowOcclusion.tga",
 			RolloverTitle = Strings[302535920001512--[[Mark All Objects (Line)--]]],
 			RolloverText = Strings[302535920001513--[[Add a line connecting all items in list.--]]],
-			OnPress = self.idButMarkAllLineOnPress,
+			OnPress = self.idButMarkAllLine_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButDeleteAll = g_Classes.ChoGGi_ToolbarButton:new({
@@ -277,7 +277,7 @@ Press once to clear this examine, again to clear all."--]]],
 			Image = "CommonAssets/UI/Menu/UnlockCollection.tga",
 			RolloverTitle = Translate(3768--[[Destroy all?--]]),
 			RolloverText = Strings[302535920000059--[[Destroy all objects in objlist!--]]],
-			OnPress = self.idButDeleteAllOnPress,
+			OnPress = self.idButDeleteAll_OnPress,
 		}, self.idToolbarButtons)
 
 		-- far right side
@@ -297,9 +297,8 @@ Press once to clear this examine, again to clear all."--]]],
 			Text = Strings[302535920000084--[[Auto-Refresh--]]],
 			RolloverText = self.idAutoRefresh_update_str:format(self.autorefresh_delay),
 			RolloverHint = Strings[302535920001425--[["<left_click> Toggle, <right_click> Set Delay"--]]],
-			OnChange = self.idAutoRefreshOnChange,
-			OnMouseButtonDown = self.idAutoRefreshOnMouseButtonDown,
-			Init = self.CheckButtonInit,
+			OnChange = self.idAutoRefresh_OnChange,
+			OnMouseButtonDown = self.idAutoRefresh_OnMouseButtonDown,
 		}, self.idToolbarButtonsRightRefresh)
 
 		self.idAutoRefreshDelay = g_Classes.ChoGGi_TextInput:new({
@@ -309,7 +308,7 @@ Press once to clear this examine, again to clear all."--]]],
 			Margins = box(0,0,6,0),
 			FoldWhenHidden = true,
 			RolloverText = Strings[302535920000967--[[Delay in ms between updating text.--]]],
-			OnTextChanged = self.idAutoRefreshDelayOnTextChanged,
+			OnTextChanged = self.idAutoRefreshDelay_OnTextChanged,
 		}, self.idToolbarButtonsRightRefresh)
 		-- vis is toggled when rightclicking autorefresh checkbox
 		self.idAutoRefreshDelay:SetVisible(false)
@@ -329,7 +328,7 @@ Press once to clear this examine, again to clear all."--]]],
 			MinWidth = 0,
 			Text = Strings[302535920001442--[[Enum--]]],
 			RolloverText = Strings[302535920001443--[[Show values from EnumVars(obj).--]]],
-			OnChange = self.idViewEnumOnChange,
+			OnChange = self.idViewEnum_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
 		self.idShowAllValues = g_Classes.ChoGGi_CheckButton:new({
@@ -337,16 +336,14 @@ Press once to clear this examine, again to clear all."--]]],
 			MinWidth = 0,
 			Text = Translate(4493--[[All--]]),
 			RolloverText = Strings[302535920001391--[[Show all values: getmetatable(obj).--]]],
-			OnChange = self.idShowAllValuesOnChange,
-			Init = self.CheckButtonInit,
+			OnChange = self.idShowAllValues_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
 		self.idSortDir = g_Classes.ChoGGi_CheckButton:new({
 			Id = "idSortDir",
 			Text = Translate(10124--[[Sort--]]),
 			RolloverText = Strings[302535920001248--[[Sort normally or backwards.--]]],
-			OnChange = self.idSortDirOnChange,
-			Init = self.CheckButtonInit,
+			OnChange = self.idSortDir_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
 	end -- toolbar area
@@ -361,7 +358,7 @@ Press once to clear this examine, again to clear all."--]]],
 			Id = "idSearchText",
 			RolloverText = Strings[302535920000043--[["Press <color 0 200 0>Enter</color> to scroll to next found text, <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text, <color 0 200 0>Arrow Keys</color> to scroll to each end."--]]],
 			Hint = Strings[302535920000044--[[Go To Text--]]],
-			OnKbdKeyDown = self.idSearchTextOnKbdKeyDown,
+			OnKbdKeyDown = self.idSearchText_OnKbdKeyDown,
 		}, self.idSearchArea)
 		--
 		self.idSearch = g_Classes.ChoGGi_Button:new({
@@ -372,7 +369,7 @@ Press once to clear this examine, again to clear all."--]]],
 			RolloverHint = Strings[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
 			RolloverText = Strings[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
 Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top."--]]],
-			OnMouseButtonDown = self.idSearchOnMouseButtonDown,
+			OnMouseButtonDown = self.idSearch_OnMouseButtonDown,
 		}, self.idSearchArea)
 	end
 
@@ -387,7 +384,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Id = "idTools",
 			Text = Strings[302535920000239--[[Tools--]]],
 			RolloverText = Strings[302535920001426--[[Various tools to use.--]]],
-			OnMouseButtonDown = self.idToolsOnMouseButtonDown,
+			OnMouseButtonDown = self.idTools_OnMouseButtonDown,
 			Dock = "left",
 		}, self.idMenuArea)
 		--
@@ -396,7 +393,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Id = "idObjects",
 			Text = Translate(298035641454--[[Object--]]),
 			RolloverText = Strings[302535920001530--[[Various object tools to use.--]]],
-			OnMouseButtonDown = self.idObjectsOnMouseButtonDown,
+			OnMouseButtonDown = self.idObjects_OnMouseButtonDown,
 			Dock = "left",
 			FoldWhenHidden = true,
 		}, self.idMenuArea)
@@ -406,7 +403,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Id = "idParents",
 			Text = Strings[302535920000520--[[Parents--]]],
 			RolloverText = Strings[302535920000553--[[Examine parent and ancestor objects.--]]],
-			OnMouseButtonDown = self.idParentsOnMouseButtonDown,
+			OnMouseButtonDown = self.idParents_OnMouseButtonDown,
 			Dock = "left",
 			FoldWhenHidden = true,
 		}, self.idMenuArea)
@@ -416,7 +413,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Id = "idAttaches",
 			Text = Strings[302535920000053--[[Attaches--]]],
 			RolloverText = Strings[302535920000054--[[Any objects attached to this object.--]]],
-			OnMouseButtonDown = self.idAttachesOnMouseButtonDown,
+			OnMouseButtonDown = self.idAttaches_OnMouseButtonDown,
 			Dock = "left",
 			FoldWhenHidden = true,
 		}, self.idMenuArea)
@@ -428,8 +425,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Text = Strings[302535920000040--[[Exec Code--]]],
 			RolloverText = Strings[302535920001514--[[Toggle visibility of an input box for executing code.--]]]
 				.. "\n" .. Strings[302535920001517--[["Use ""o"" as a reference to the examined object."--]]],
-			OnChange = self.idToggleExecCodeOnChange,
-			Init = self.CheckButtonInit,
+			OnChange = self.idToggleExecCode_OnChange,
 		}, self.idMenuArea)
 		--
 	end -- tools area
@@ -445,7 +441,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			RolloverText = Strings[302535920001515--[[Press enter to execute code.--]]]
 				.. "\n" .. Strings[302535920001517--[["Use ""o"" as a reference to the examined object."--]]],
 			Hint = Strings[302535920001516--[[o = examined object--]]],
-			OnKbdKeyDown = self.idExecCodeOnKbdKeyDown,
+			OnKbdKeyDown = self.idExecCode_OnKbdKeyDown,
 		}, self.idExecCodeArea)
 		-- could change the bg for this...
 		-- self.idExecCode:SetPlugins({"ChoGGi_CodeEditorPlugin"})
@@ -455,8 +451,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	-- text box with obj info in it
 	self:AddScrollText()
 
-	self.idText.OnHyperLink = self.idTextOnHyperLink
-	self.idText.OnHyperLinkRollover = self.idTextOnHyperLinkRollover
+	self.idText.OnHyperLink = self.idText_OnHyperLink
+	self.idText.OnHyperLinkRollover = self.idText_OnHyperLinkRollover
 
 	-- look at them sexy internals
 	self.transp_mode = self.ChoGGi.Temp.transp_mode
@@ -512,7 +508,7 @@ function Examine:ViewSourceCode()
 end
 
 -- hover (link, hyperlink_box, pos)
-function Examine:idTextOnHyperLinkRollover(link)
+function Examine:idText_OnHyperLinkRollover(link)
 	self = GetRootDialog(self)
 
 	if not self.ChoGGi.UserSettings.EnableToolTips then
@@ -578,7 +574,7 @@ function Examine:idTextOnHyperLinkRollover(link)
 end
 
 -- clicked
-function Examine:idTextOnHyperLink(link, argument, hyperlink_box, pos, button)
+function Examine:idText_OnHyperLink(link, argument, hyperlink_box, pos, button)
 	self = GetRootDialog(self)
 
 	link = tonumber(link)
@@ -613,7 +609,7 @@ function Examine:HyperLink(obj, func, name)
 	return "<color 150 170 250><h " .. c .. " 230 195 50>",c
 end
 
-function Examine:idExecCodeOnKbdKeyDown(vk,...)
+function Examine:idExecCode_OnKbdKeyDown(vk,...)
 	if vk == const.vkEnter then
 		if dlgConsole then
 			o = GetRootDialog(self).obj_ref
@@ -626,7 +622,7 @@ function Examine:idExecCodeOnKbdKeyDown(vk,...)
 	return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
 end
 
-function Examine:idToggleExecCodeOnChange(visible)
+function Examine:idToggleExecCode_OnChange(visible)
 --~ 	-- if it's called directly we set the check if needed
 --~ 	local checked = self:GetCheck()
 
@@ -638,24 +634,25 @@ function Examine:idToggleExecCodeOnChange(visible)
 	end
 end
 
-function Examine:idButRefreshOnPress()
+function Examine:idButRefresh_OnPress()
 	self = GetRootDialog(self)
 	self:SetObj()
 	if IsKindOf(self.obj_ref,"XWindow") and self.obj_ref.class ~= "InGameInterface" then
 		self:FlashWindow()
 	end
 end
+-- stable name for external use
 function Examine:RefreshExamine()
-	self:idButRefreshOnPress()
+	self:idButRefresh_OnPress()
 end
 
-function Examine:idButSetTranspOnPress()
+function Examine:idButSetTransp_OnPress()
 	self = GetRootDialog(self)
 	self.transp_mode = not self.transp_mode
 	self:SetTranspMode(self.transp_mode)
 end
 
-function Examine:idButClearOnPress()
+function Examine:idButClear_OnPress()
 	self = GetRootDialog(self)
 	-- clear marked objs for this examine
 	local count = #self.marked_objects
@@ -676,7 +673,7 @@ function Examine:idButClearOnPress()
 	end
 end
 
-function Examine:idButMarkObjectOnPress()
+function Examine:idButMarkObject_OnPress()
 	self = GetRootDialog(self)
 	if IsValid(self.obj_ref) then
 		-- i don't use AddSphere since that won't add the ColourObj
@@ -701,18 +698,18 @@ function Examine:idButMarkObjectOnPress()
 	end
 end
 
-function Examine:idButDeleteObjOnPress()
+function Examine:idButDeleteObj_OnPress()
 	self = GetRootDialog(self)
 	self.ChoGGi.ComFuncs.DeleteObjectQuestion(self.obj_ref)
 end
 
-function Examine:idButDeleteAllOnPress()
+function Examine:idButDeleteAll_OnPress()
 	self = GetRootDialog(self)
 	self.ChoGGi.ComFuncs.QuestionBox(
 		Strings[302535920000059--[[Destroy all objects in objlist!--]]],
 		function(answer)
 			if answer then
-				SuspendPassEdits("Examine:idButDeleteAllOnPress")
+				SuspendPassEdits("Examine:idButDeleteAll_OnPress")
 				for _,obj in pairs(self.obj_ref) do
 					if IsValid(obj) then
 						self.ChoGGi.ComFuncs.DeleteObject(obj)
@@ -720,7 +717,7 @@ function Examine:idButDeleteAllOnPress()
 						DoneObject(obj)
 					end
 				end
-				ResumePassEdits("Examine:idButDeleteAllOnPress")
+				ResumePassEdits("Examine:idButDeleteAll_OnPress")
 				-- force a refresh on the list, so people can see something as well
 				self:SetObj()
 			end
@@ -728,32 +725,32 @@ function Examine:idButDeleteAllOnPress()
 		Translate(697--[[Destroy--]])
 	)
 end
-function Examine:idViewEnumOnChange()
+function Examine:idViewEnum_OnChange()
 	self = GetRootDialog(self)
 	self.show_enum_values = not self.show_enum_values
 	self:SetObj()
 end
 
-function Examine:idButMarkAllLineOnPress()
+function Examine:idButMarkAllLine_OnPress()
 	self = GetRootDialog(self)
 	self.ChoGGi.ComFuncs.ObjListLines_Toggle(self.obj_ref)
 end
 
-function Examine:idButMarkAllOnPress()
+function Examine:idButMarkAll_OnPress()
 	self = GetRootDialog(self)
 	local c = #self.marked_objects
 	-- suspending makes it faster to add objects
-	SuspendPassEdits("Examine:idButMarkAllOnPress")
+	SuspendPassEdits("Examine:idButMarkAll_OnPress")
 	for _,v in pairs(self.obj_ref) do
 		if IsValid(v) or IsPoint(v) then
 			c = self:AddSphere(v,c,nil,true,true)
 		end
 	end
-	ResumePassEdits("Examine:idButMarkAllOnPress")
+	ResumePassEdits("Examine:idButMarkAll_OnPress")
 	self.ChoGGi.ComFuncs.TableCleanDupes(self.marked_objects)
 
 end
-function Examine:idButToggleObjlistOnPress()
+function Examine:idButToggleObjlist_OnPress()
 	self = GetRootDialog(self)
 
 	local meta = getmetatable(self.obj_ref)
@@ -775,7 +772,7 @@ function Examine:AddSphere(obj,c,colour,skip_view,skip_colour)
 	return c
 end
 
-function Examine:idAutoRefreshOnChange()
+function Examine:idAutoRefresh_OnChange()
 	-- if it's called directly we set the check if needed
 	local checked = self:GetCheck()
 
@@ -810,10 +807,10 @@ function Examine:idAutoRefreshOnChange()
 end
 -- stable name for external use
 function Examine:EnableAutoRefresh()
-	self.idAutoRefreshOnChange(self.idAutoRefresh)
+	self.idAutoRefresh_OnChange(self.idAutoRefresh)
 end
 
-function Examine:idAutoRefreshOnMouseButtonDown(pt,button,...)
+function Examine:idAutoRefresh_OnMouseButtonDown(pt,button,...)
 	g_Classes.ChoGGi_CheckButton.OnMouseButtonDown(self,pt,button,...)
 	if button == "R" then
 
@@ -832,7 +829,7 @@ function Examine:idAutoRefreshOnMouseButtonDown(pt,button,...)
 	end
 end
 
-function Examine:idAutoRefreshDelayOnTextChanged()
+function Examine:idAutoRefreshDelay_OnTextChanged()
 	local num = tonumber(self:GetText())
 	-- someone always enters a non-number...
 	if num then
@@ -846,13 +843,13 @@ function Examine:idAutoRefreshDelayOnTextChanged()
 	end
 end
 
-function Examine:idSortDirOnChange()
+function Examine:idSortDir_OnChange()
 	self = GetRootDialog(self)
 	self.sort_dir = not self.sort_dir
 	self:SetObj()
 end
 
-function Examine:idShowAllValuesOnChange()
+function Examine:idShowAllValues_OnChange()
 	self = GetRootDialog(self)
 	self.show_all_values = not self.show_all_values
 	self:SetObj()
@@ -1226,6 +1223,17 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 		},
 	}
 	if testing then
+
+		-- maybe i'll finish this one day :)
+		local name = Translate(327465361219--[[Edit--]]) .. " " .. Translate(298035641454--[[Object--]]) .. " " .. Strings[302535920001432--[[3D--]]]
+		table.insert(list,9,{name = name,
+			hint = Strings[302535920001433--[[Fiddle with object angle/axis/pos and so forth.--]]],
+			image = "CommonAssets/UI/Menu/Axis.tga",
+			clicked = function()
+				self.ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(self.obj_ref,self)
+			end,
+		})
+
 		-- view raw text with tags visible
 		table.insert(list,5,{name = Strings[302535920000048--[[View--]]] .. " Tags",
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
@@ -1246,6 +1254,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 				}
 			end,
 		})
+
 	end
 
 	return list
@@ -1267,22 +1276,22 @@ local function CallMenu(self,popup_id,items,pt,button,...)
 	end
 end
 
-function Examine:idToolsOnMouseButtonDown(pt,button,...)
+function Examine:idTools_OnMouseButtonDown(pt,button,...)
 	CallMenu(self,"idToolsMenu","tools_menu_popup",pt,button,...)
 end
-function Examine:idObjectsOnMouseButtonDown(pt,button,...)
+function Examine:idObjects_OnMouseButtonDown(pt,button,...)
 	CallMenu(self,"idObjectsMenu","objects_menu_popup",pt,button,...)
 end
 
-function Examine:idParentsOnMouseButtonDown(pt,button,...)
+function Examine:idParents_OnMouseButtonDown(pt,button,...)
 	CallMenu(self,"idParentsMenu","parents_menu_popup",pt,button,...)
 end
 
-function Examine:idAttachesOnMouseButtonDown(pt,button,...)
+function Examine:idAttaches_OnMouseButtonDown(pt,button,...)
 	CallMenu(self,"idAttachesMenu","attaches_menu_popup",pt,button,...)
 end
 
-function Examine:idSearchOnMouseButtonDown(pt,button,...)
+function Examine:idSearch_OnMouseButtonDown(pt,button,...)
 	ChoGGi_Button.OnMouseButtonDown(self,pt,button,...)
 	self = GetRootDialog(self)
 	if button == "L" then
@@ -1294,7 +1303,7 @@ function Examine:idSearchOnMouseButtonDown(pt,button,...)
 	end
 end
 
-function Examine:idSearchTextOnKbdKeyDown(vk,...)
+function Examine:idSearchText_OnKbdKeyDown(vk,...)
 	self = GetRootDialog(self)
 
 	local c = const
@@ -1963,7 +1972,7 @@ end
 
 function Examine:ShowExecCodeWithCode(code)
 	-- open exec code and paste "o.obj_name = value"
-	self:idToggleExecCodeOnChange(true)
+	self:idToggleExecCode_OnChange(true)
 	self.idExecCode:SetText(code)
 	-- set focus and cursor to end of text
 	self.idExecCode:SetFocus()
@@ -3348,7 +3357,7 @@ function Examine:Done()
 	end
 	-- clear any spheres/colour marked objs
 	if #self.marked_objects > 0 then
-		self:idButClearOnPress()
+		self:idButClear_OnPress()
 	end
 	-- remove this dialog from list of examine dialogs
 	local dlgs = g_ExamineDlgs or empty_table

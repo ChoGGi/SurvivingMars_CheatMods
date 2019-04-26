@@ -61,7 +61,7 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 end
 
 function ChoGGi.MenuFuncs.SetRCMoveSpeed()
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.SpeedRC
 	local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedRC")
 	local item_list = {
@@ -115,7 +115,7 @@ end
 
 function ChoGGi.MenuFuncs.SetGravityRC()
 	local default_setting = ChoGGi.Consts.GravityRC
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 		{text = 1,value = 1},
@@ -182,7 +182,7 @@ function ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle()
 end
 
 function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportStorageCapacity") / r
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},

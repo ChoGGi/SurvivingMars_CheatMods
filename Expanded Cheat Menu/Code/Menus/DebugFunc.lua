@@ -94,9 +94,11 @@ end -- do
 
 function ChoGGi.MenuFuncs.ExamineObject()
 	-- try to get object in-game first
-	local obj = ChoGGi.ComFuncs.SelObject()
-	if obj then
-		ChoGGi.ComFuncs.OpenInExamineDlg(obj)
+	local objs = ChoGGi.ComFuncs.SelObjects()
+	local c = #objs
+	if c > 0 then
+		-- if it's a single obj then examine that, otherwise the whole list
+		ChoGGi.ComFuncs.OpenInExamineDlg(c == 1 and objs[1] or objs)
 		return
 	end
 

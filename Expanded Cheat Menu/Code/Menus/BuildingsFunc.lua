@@ -190,7 +190,7 @@ function ChoGGi.MenuFuncs.SetServiceBuildingStats()
 		)
 		return
 	end
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local id = RetTemplateOrClass(obj)
 	local ServiceInterestsList = table.concat(ServiceInterestsList,", ")
 	local name = RetName(obj)
@@ -371,7 +371,7 @@ function ChoGGi.MenuFuncs.SetExportWhenThisAmount()
 		if value == default_setting then
 			setting.export_when_this_amount = nil
 		else
-			setting.export_when_this_amount = value * ChoGGi.Consts.ResourceScale
+			setting.export_when_this_amount = value * const.ResourceScale
 		end
 
 		ChoGGi.SettingFuncs.WriteSettings()
@@ -394,7 +394,7 @@ function ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount(action)
 	local setting_name = action.setting_name
 	local title = action.setting_msg
 
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local default_setting = SpaceElevator[setting_name] / r
 	local UserSettings = ChoGGi.UserSettings
 	local id = "SpaceElevator"
@@ -471,7 +471,7 @@ end
 function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
 	local default_setting = 5
 	local UserSettings = ChoGGi.UserSettings
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 		{text = 10,value = 10},
@@ -809,7 +809,7 @@ function ChoGGi.MenuFuncs.SetMaxChangeOrDischarge()
 	end
 	local id = RetTemplateOrClass(obj)
 	local name = Translate(obj.display_name)
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 
 	-- get type of capacity
 	local cap_type,charge,discharge
@@ -997,7 +997,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 	local id = RetTemplateOrClass(obj)
 	local name = Translate(obj.display_name)
 
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	-- get type of producer/base amount
 	local prod_type,default_setting
 	if obj:IsKindOf("WaterProducer") then

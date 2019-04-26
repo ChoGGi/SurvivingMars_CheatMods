@@ -101,7 +101,7 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
 end
 
 function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.FoodPerRocketPassenger / r
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},

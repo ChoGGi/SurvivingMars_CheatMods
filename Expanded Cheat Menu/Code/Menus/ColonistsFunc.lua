@@ -87,7 +87,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 		else
 			res = "Food"
 		end
-		PlaceResourcePile(meat_bag:GetVisualPos(), res, Random(1,5) * ChoGGi.Consts.ResourceScale)
+		PlaceResourcePile(meat_bag:GetVisualPos(), res, Random(1,5) * const.ResourceScale)
 		meat_bag:Erase()
 	end
 
@@ -398,7 +398,7 @@ function ChoGGi.MenuFuncs.SetAllWorkShifts()
 end
 
 function ChoGGi.MenuFuncs.SetMinComfortBirth()
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.MinComfortBirth / r
 	local hint_low = Strings[302535920000767--[[Lower = more babies--]]]
 	local hint_high = Strings[302535920000768--[[Higher = less babies--]]]
@@ -1537,7 +1537,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(action)
 end
 
 function ChoGGi.MenuFuncs.SetColonistsStats()
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local item_list = {
 		{text = Strings[302535920000833--[[All Stats--]]] .. " " .. Strings[302535920000834--[[Max--]]],value = 1},
 		{text = Strings[302535920000833--[[All Stats--]]] .. " " .. Strings[302535920000835--[[Fill--]]],value = 2},
@@ -1641,7 +1641,7 @@ Warning: Disable births or else...--]]],
 end
 
 function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.SpeedColonist
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
@@ -1720,7 +1720,7 @@ end
 
 function ChoGGi.MenuFuncs.SetColonistsGravity()
 	local default_setting = ChoGGi.Consts.GravityColonist
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
 		{text = 1,value = 1},

@@ -52,7 +52,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		RolloverText = Strings[302535920001257--[[Auto-refresh list every second.--]]],
 		Dock = "left",
 		Margins = box(4,0,0,0),
-		OnChange = self.idAutoRefreshToggle,
+		OnChange = self.idAutoRefresh_OnChange,
 	}, self.idCheckboxArea)
 
 	self.idButtonArea = g_Classes.ChoGGi_DialogSection:new({
@@ -75,7 +75,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		Dock = "left",
 		MinWidth = 90,
 		RolloverText = Strings[302535920000094--[[View/select object on map.--]]],
-		OnPress = self.idGotoOnPress,
+		OnPress = self.idGoto_OnPress,
 	}, self.idButtonArea)
 
 	self.idAddNew = g_Classes.ChoGGi_Button:new({
@@ -83,7 +83,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		Text = Strings[302535920001356--[[New--]]],
 		Dock = "left",
 		RolloverText = Strings[302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).--]]]:format(self.obj_name),
-		OnPress = self.idAddNewOnPress,
+		OnPress = self.idAddNew_OnPress,
 	}, self.idButtonArea)
 
 	self.idApplyAll = g_Classes.ChoGGi_Button:new({
@@ -92,13 +92,13 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		Dock = "left",
 		MinWidth = 100,
 		RolloverText = Strings[302535920000100--[[Apply selected value to all objects of the same type.--]]],
-		OnPress = self.idApplyAllOnPress,
+		OnPress = self.idApplyAll_OnPress,
 	}, self.idButtonArea)
 
 	self:AddScrollList()
 
-	self.idList.OnMouseButtonDown = self.idListOnMouseButtonDown
-	self.idList.OnMouseButtonDoubleClick = self.idListOnMouseButtonDoubleClick
+	self.idList.OnMouseButtonDown = self.idList_OnMouseButtonDown
+	self.idList.OnMouseButtonDoubleClick = self.idList_OnMouseButtonDoubleClick
 
 	self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
 		Id = "idEditArea",
@@ -109,7 +109,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		Id = "idEditValue",
 		RolloverText = Strings[302535920000102--[[Use to change values of selected list item.--]]],
 		Hint = Strings[302535920000103--[[Edit Value--]]],
-		OnTextChanged = self.idEditValueOnTextChanged,
+		OnTextChanged = self.idEditValue_OnTextChanged,
 	}, self.idEditArea)
 
 	-- update item list
@@ -118,18 +118,18 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 	self:PostInit(context.parent)
 end
 
-function ChoGGi_ObjectEditorDlg:idGotoOnPress()
+function ChoGGi_ObjectEditorDlg:idGoto_OnPress()
 	ViewAndSelectObject(GetRootDialog(self).obj)
 end
 
-function ChoGGi_ObjectEditorDlg:idListOnMouseButtonDoubleClick()
+function ChoGGi_ObjectEditorDlg:idList_OnMouseButtonDoubleClick()
 	self = GetRootDialog(self)
 	if self.idList.focused_item and type(self.sel.object) == "table" then
 		ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.sel.object,self)
 	end
 end
 
-function ChoGGi_ObjectEditorDlg:idApplyAllOnPress()
+function ChoGGi_ObjectEditorDlg:idApplyAll_OnPress()
 	self = GetRootDialog(self)
 	if self.sel and self.sel.value then
 		MapForEach(true,self.obj.class,function(o)
@@ -139,7 +139,7 @@ function ChoGGi_ObjectEditorDlg:idApplyAllOnPress()
 end
 
 -- update edit text box with selected value
-function ChoGGi_ObjectEditorDlg:idListOnMouseButtonDown(pt,button,...)
+function ChoGGi_ObjectEditorDlg:idList_OnMouseButtonDown(pt,button,...)
 	g_Classes.ChoGGi_List.OnMouseButtonDown(self,pt,button)
 	self = GetRootDialog(self)
 	if not self.idList.focused_item then
@@ -151,7 +151,7 @@ function ChoGGi_ObjectEditorDlg:idListOnMouseButtonDown(pt,button,...)
 	self.idEditValue:SetFocus()
 end
 
-function ChoGGi_ObjectEditorDlg:idAddNewOnPress()
+function ChoGGi_ObjectEditorDlg:idAddNew_OnPress()
 	self = GetRootDialog(self)
 	local sel_name
 	local sel_value
@@ -187,7 +187,7 @@ function ChoGGi_ObjectEditorDlg:idAddNewOnPress()
 	}
 end
 
-function ChoGGi_ObjectEditorDlg:idEditValueOnTextChanged()
+function ChoGGi_ObjectEditorDlg:idEditValue_OnTextChanged()
 	self = GetRootDialog(self)
 
 	if not self.idList.focused_item then
@@ -225,7 +225,7 @@ function ChoGGi_ObjectEditorDlg:idEditValueOnTextChanged()
 	end
 end
 
-function ChoGGi_ObjectEditorDlg:idAutoRefreshToggle()
+function ChoGGi_ObjectEditorDlg:idAutoRefresh_OnChange()
 	self = GetRootDialog(self)
 	-- if already running then stop and return
 	if IsValidThread(self.autorefresh_thread) then

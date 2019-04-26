@@ -170,7 +170,7 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 end
 
 function ChoGGi.MenuFuncs.SetRocketTravelTime()
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("TravelTimeEarthMars") / r
 	local item_list = {
 		{text = Strings[302535920000947--[[Instant--]]],value = 0},
@@ -265,7 +265,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 end
 
 function ChoGGi.MenuFuncs.SetRocketMaxExportAmount()
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.RocketMaxExportAmount
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
@@ -352,7 +352,7 @@ do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 	end
 
 	function ChoGGi.MenuFuncs.SetLaunchFuelPerRocket()
-		local r = ChoGGi.Consts.ResourceScale
+		local r = const.ResourceScale
 		local default_setting = ChoGGi.Consts.LaunchFuelPerRocket
 		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("FuelRocket")
 		local item_list = {

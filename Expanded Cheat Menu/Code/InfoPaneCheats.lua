@@ -10,7 +10,7 @@ local RetName = ComFuncs.RetName
 local Random = ComFuncs.Random
 local Translate = ComFuncs.Translate
 local Strings = ChoGGi.Strings
-local ResourceScale = ChoGGi.Consts.ResourceScale
+local ResourceScale = const.ResourceScale
 
 Object.CheatExamine = ComFuncs.OpenInExamineDlg
 Object.CheatToggleCollision = ComFuncs.CollisionsObject_Toggle

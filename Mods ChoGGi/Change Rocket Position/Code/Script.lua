@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local fuel_needed = 10 * ChoGGi.Consts.ResearchPointsScale
+local fuel_needed = 10 * const.ResearchPointsScale
 
 local function CanPositionRocket(obj)
 	return (obj.command == "WaitLaunchOrder" or obj.command == "Refuel")

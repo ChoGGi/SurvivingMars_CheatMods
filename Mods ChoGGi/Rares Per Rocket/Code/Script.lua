@@ -3,7 +3,7 @@
 local mod_id = "ChoGGi_RaresPerRocket"
 local mod = Mods[mod_id]
 
-local r = ChoGGi.Consts.ResourceScale
+local r = const.ResourceScale
 
 -- if modoptions aren't a thing yet
 local function GetModValue()

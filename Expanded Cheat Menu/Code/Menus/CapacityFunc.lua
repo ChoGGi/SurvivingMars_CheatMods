@@ -123,7 +123,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 		)
 		return
 	end
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local hint_toolarge = Translate(6779--[[Warning--]]) .. " " .. Strings[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
 	local default_setting = capacity
@@ -337,7 +337,7 @@ end
 function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 	local bld_type = action.bld_type
 
-	local r = ChoGGi.Consts.ResourceScale
+	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts[bld_type] / r
 	local hint_max = Strings[302535920000962--[[Max capacity limited to:
 Universal: 2,500

@@ -59,9 +59,9 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 	-- start off with this as code
 	self.idEdit:SetText(GetFromClipboard() or self.obj and "o" or "")
 	-- let us override enter/esc
-	self.idEdit.OnKbdKeyDown = self.idEditOnKbdKeyDown
+	self.idEdit.OnKbdKeyDown = self.idEdit_OnKbdKeyDown
 	-- update text on focus
-	self.idEdit.OnSetFocus = self.idEditOnSetFocus
+	self.idEdit.OnSetFocus = self.idEdit_OnSetFocus
 
 	self.idEdit:SetPlugins(self.plugin_names)
 --~ 	self.idEdit.update_thread = self.idEdit:CreateThread("update_thread", self.idEdit.UpdateThread, self.idEdit)
@@ -91,7 +91,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 Updates external file when you type in editor (only updates text when you press Read File).
 Press again to toggle updating."--]]],
 			Margins = box10,
-			OnPress = self.idExterEditOnPress,
+			OnPress = self.idExterEdit_OnPress,
 		}, self.idTopButs)
 
 		self.idExterReadFile = g_Classes.ChoGGi_Button:new({
@@ -100,7 +100,7 @@ Press again to toggle updating."--]]],
 			Text = Strings[302535920001435--[[Read File--]]],
 			RolloverText = Strings[302535920001436--[[Update editor text with text from %stempedit.lua.--]]]:format(self.idEdit.external_path),
 			Margins = box10,
-			OnPress = self.idExterReadFileOnPress,
+			OnPress = self.idExterReadFile_OnPress,
 			FoldWhenHidden = true,
 		}, self.idTopButs)
 		self.idExterReadFile:SetVisible(false)
@@ -111,7 +111,7 @@ Press again to toggle updating."--]]],
 			Text = Strings[302535920001438--[[Focus Update--]]],
 			RolloverText = Strings[302535920001437--[[Reads file when you focus on the edit box (instead of pressing Read File).--]]],
 			Margins = box10,
-			OnChange = self.idExterFocusUpdateOnChange,
+			OnChange = self.idExterFocusUpdate_OnChange,
 			FoldWhenHidden = true,
 		}, self.idTopButs)
 		self.idExterFocusUpdate:SetVisible(false)
@@ -136,7 +136,7 @@ Press again to toggle updating."--]]],
 			Text = Strings[302535920000040--[[Exec Code--]]],
 			RolloverText = Strings[302535920000073--[[Execute code in text box (Ctrl-Enter or Shift-Enter will also work).--]]],
 			Margins = box10,
-			OnPress = self.idOKOnPress,
+			OnPress = self.idOK_OnPress,
 		}, self.idLeftButs)
 
 		if self.obj then
@@ -146,7 +146,7 @@ Press again to toggle updating."--]]],
 				Text = Strings[302535920000075--[[Insert Obj--]]],
 				RolloverText = Strings[302535920000076--[[At caret position inserts: o--]]],
 				Margins = box10,
-				OnPress = self.idInsertObjOnPress,
+				OnPress = self.idInsertObj_OnPress,
 			}, self.idLeftButs)
 		end
 	end -- left side
@@ -162,7 +162,7 @@ Press again to toggle updating."--]]],
 		Dock = "left",
 		Text = Strings[302535920001474--[[Code Highlight--]]],
 		RolloverText = Strings[302535920001475--[[Toggle lua code highlighting.--]]],
-		OnChange = self.idToggleCodeOnChange,
+		OnChange = self.idToggleCode_OnChange,
 	}, self.idRightButs)
 	self.idToggleCode:SetIconRow(2)
 
@@ -172,7 +172,7 @@ Press again to toggle updating."--]]],
 		Text = Strings[302535920001288--[[Wrap Lines--]]],
 		RolloverText = Strings[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
 		Margins = box10,
-		OnChange = self.idWrapLinesOnChange,
+		OnChange = self.idWrapLines_OnChange,
 	}, self.idRightButs)
 	self.idWrapLines:SetIconRow(ChoGGi.UserSettings.WordWrap and 2 or 1)
 
@@ -192,7 +192,7 @@ Press again to toggle updating."--]]],
 end
 
 -- toggle code highlighting
-function ChoGGi_ExecCodeDlg:idToggleCodeOnChange(check)
+function ChoGGi_ExecCodeDlg:idToggleCode_OnChange(check)
 	self = GetRootDialog(self)
 	if check then
 		self.idEdit:SetPlugins(self.plugin_names)
@@ -201,22 +201,22 @@ function ChoGGi_ExecCodeDlg:idToggleCodeOnChange(check)
 	end
 end
 
-function ChoGGi_ExecCodeDlg:idEditOnSetFocus(...)
+function ChoGGi_ExecCodeDlg:idEdit_OnSetFocus(...)
 	if self.focus_update and self == g_ExternalTextEditorActiveCtrl then
 		ChoGGi_ExternalTextEditorPlugin.ApplyEdit(nil, "Modified", self)
 	end
 	return ChoGGi_MultiLineEdit.OnSetFocus(self,...)
 end
 
-function ChoGGi_ExecCodeDlg:idExterFocusUpdateOnChange(which)
+function ChoGGi_ExecCodeDlg:idExterFocusUpdate_OnChange(which)
 	GetRootDialog(self).idEdit.focus_update = which
 end
 
-function ChoGGi_ExecCodeDlg:idExterReadFileOnPress()
+function ChoGGi_ExecCodeDlg:idExterReadFile_OnPress()
 	ChoGGi_ExternalTextEditorPlugin.ApplyEdit(nil, "Modified", GetRootDialog(self).idEdit)
 end
 
-function ChoGGi_ExecCodeDlg:idExterEditOnPress()
+function ChoGGi_ExecCodeDlg:idExterEdit_OnPress()
 	self = GetRootDialog(self)
 	-- stop updating
 	if self.idEdit == g_ExternalTextEditorActiveCtrl then
@@ -235,7 +235,7 @@ function ChoGGi_ExecCodeDlg:idExterEditOnPress()
 	end
 end
 
-function ChoGGi_ExecCodeDlg:idOKOnPress()
+function ChoGGi_ExecCodeDlg:idOK_OnPress()
 	self = GetRootDialog(self)
 	-- exec instead of also closing dialog
 	o = self.obj
@@ -243,19 +243,19 @@ function ChoGGi_ExecCodeDlg:idOKOnPress()
 	dlgConsole:Exec(self.idEdit:GetText())
 end
 
-function ChoGGi_ExecCodeDlg:idInsertObjOnPress()
+function ChoGGi_ExecCodeDlg:idInsertObj_OnPress()
 	self = GetRootDialog(self)
 	self.idEdit:EditOperation("o",true)
 	self.idEdit:SetFocus()
 end
 
-function ChoGGi_ExecCodeDlg:idWrapLinesOnChange(which)
+function ChoGGi_ExecCodeDlg:idWrapLines_OnChange(which)
 	ChoGGi.UserSettings.WordWrap = which
 	GetRootDialog(self).idEdit:SetWordWrap(which)
 end
 
 local const = const
-function ChoGGi_ExecCodeDlg:idEditOnKbdKeyDown(vk)
+function ChoGGi_ExecCodeDlg:idEdit_OnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter and (IsShiftPressed() or IsControlPressed()) then
 		self.idOK:Press()

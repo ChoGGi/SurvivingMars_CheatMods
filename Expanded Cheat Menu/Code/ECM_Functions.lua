@@ -690,6 +690,29 @@ function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj,parent)
 	})
 end
 
+function ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(obj,parent)
+	-- if fired from action menu
+	if IsKindOf(obj,"XAction") then
+		obj = ChoGGi.ComFuncs.SelObject()
+		parent = nil
+	else
+		obj = obj or ChoGGi.ComFuncs.SelObject()
+	end
+
+	if not obj then
+		return
+	end
+
+	if not IsKindOf(parent,"XWindow") then
+		parent = nil
+	end
+
+	return ChoGGi_3DManipulatorDlg:new({}, terminal.desktop,{
+		obj = obj,
+		parent = parent,
+	})
+end
+
 function ChoGGi.ComFuncs.OpenInExecCodeDlg(context,parent)
 	if not IsKindOf(parent,"XWindow") then
 		parent = nil
@@ -2569,7 +2592,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		if name == "FuelRocket" then
 			if UICity:IsTechResearched("AdvancedMartianEngines") then
 				local a = ReturnTechAmount("AdvancedMartianEngines","launch_fuel")
-				return ChoGGi.Consts.LaunchFuelPerRocket - (a * ChoGGi.Consts.ResourceScale)
+				return ChoGGi.Consts.LaunchFuelPerRocket - (a * const.ResourceScale)
 			end
 			return ChoGGi.Consts.LaunchFuelPerRocket
 		end
@@ -2648,7 +2671,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 
 			if UICity:IsTechResearched("TransportOptimization") then
 				local a = ReturnTechAmount("TransportOptimization","max_shared_storage")
-				return amount + (a * ChoGGi.Consts.ResourceScale)
+				return amount + (a * const.ResourceScale)
 			end
 			return amount
 		end

@@ -988,8 +988,8 @@ function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,con
 			parent,
 			title or Translate(1000016--[[Title--]]),
 			text or Translate(3718--[[NONE--]]),
-			ok_msg or Translate(6878--[[OK--]]),
-			cancel_msg or Translate(6879--[[Cancel--]]),
+			ok_msg or nil,
+			cancel_msg or nil,
 			ValidateImage(image,"UI/message_picture_01.png"),
 			context
 		) == "ok" then
@@ -1664,49 +1664,35 @@ end
 -- returns whatever is selected > moused over > nearest object to cursor
 -- single selection
 local function SelObject(radius)
-	-- just in case it's called from main menu
-	if not GameState.gameplay then
-		return
-	end
+	-- single selection
 	local obj = SelectedObj or SelectionMouseObj()
-	if not obj then
+	if obj then
+		-- if it's multi then return the first one
+		if obj:IsKindOf("MultiSelectionWrapper") then
+			return obj.objects[1]
+		end
+	else
+		-- radius selection
 		local pt = GetTerrainCursor()
 		obj = MapFindNearest(pt,pt,radius or 1500)
 	end
+
 	return obj
 end
 ChoGGi.ComFuncs.SelObject = SelObject
 
--- returns whatever is selected > moused over > nearest object to cursor
--- same as above but with multi selection (returns an indexed table)
+-- returns an indexed table of objects, add a radius to get objs close to cursor
 local function SelObjects(radius)
-	-- just in case it's called from main menu
-	if not GameState.gameplay then
-		return
-	end
-
-	-- multiselect/single selected obj
-	local sel = Selection
-	local sel_c = #sel
-	if sel_c > 0 then
-		if sel_c > 1 then
-			if sel[1]:IsKindOf("MultiSelectionWrapper") then
-				return sel[1].objects
-			else
-				return sel
-			end
+	local objs = SelectedObj or SelectionMouseObj()
+	if not radius and objs then
+		if objs:IsKindOf("MultiSelectionWrapper") then
+			return objs.objects
 		else
-			return sel
+			return {objs}
 		end
+	else
+		return MapGet(GetTerrainCursor(),radius,"attached",false)
 	end
-
-	-- single/radius selection
-	local obj = SelectedObj or SelectionMouseObj()
-	if not obj then
-		local pt = GetTerrainCursor()
-		obj = MapFindNearest(pt,pt,radius or 1500)
-	end
-	return {obj}
 end
 ChoGGi.ComFuncs.SelObjects = SelObjects
 
@@ -2199,7 +2185,7 @@ end
 
 do -- FuckingDrones (took quite a while to figure this fun one out)
 	-- force drones to pickup from pile even if they have a carry cap larger then the amount stored
-	local ResourceScale = ChoGGi.Consts.ResourceScale
+	local ResourceScale = const.ResourceScale
 
 	local building
 	local function SortNearest(a,b)
@@ -2313,7 +2299,7 @@ function ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj,amount)
 	local io_demand_req = io_stockpile.demand[resource]
 
 	io_stockpile.max_z = amount
-	amount = (amount * 10) * ChoGGi.Consts.ResourceScale
+	amount = (amount * 10) * const.ResourceScale
 	io_supply_req:SetAmount(amount)
 	io_demand_req:SetAmount(amount)
 end
@@ -3693,7 +3679,7 @@ end -- do
 
 -- fixup name we get from Object
 function ChoGGi.ComFuncs.ConstructionModeNameClean(itemname)
-	--we want template_name or we have to guess from the placeobj name
+	-- we want template_name or we have to guess from the placeobj name
 	local tempname = itemname:match("^.+template_name%A+([A-Za-z_%s]+).+$")
 	if not tempname then
 		tempname = itemname:match("^PlaceObj%('(%a+).+$")
@@ -3705,7 +3691,8 @@ function ChoGGi.ComFuncs.ConstructionModeNameClean(itemname)
 			"revealed", true,
 			"grade", "Very High",
 		})
-		local r = ChoGGi.Consts.ResourceScale
+
+		local r = const.ResourceScale
 		obj.max_amount = ChoGGi.ComFuncs.Random(1000 * r,100000 * r)
 		obj:CheatRefill()
 		obj.amount = obj.max_amount

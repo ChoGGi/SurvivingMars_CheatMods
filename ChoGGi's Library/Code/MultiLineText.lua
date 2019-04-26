@@ -52,7 +52,7 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 			Id = "idSearchText",
 			RolloverText = Strings[302535920001529--[["Press <color 0 200 0>Enter</color> to select next found text, and <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text."--]]],
 			Hint = Strings[302535920000044--[[Go To Text--]]],
-			OnKbdKeyDown = self.idSearchTextOnKbdKeyDown,
+			OnKbdKeyDown = self.idSearchText_OnKbdKeyDown,
 		}, self.idSearchArea)
 		--
 		self.idSearch = g_Classes.ChoGGi_Button:new({
@@ -63,7 +63,7 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 			RolloverHint = Strings[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
 			RolloverText = Strings[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
 Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top."--]]],
-			OnMouseButtonDown = self.idSearchOnMouseButtonDown,
+			OnMouseButtonDown = self.idSearch_OnMouseButtonDown,
 		}, self.idSearchArea)
 	end
 
@@ -78,7 +78,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		Text = Translate(6878--[[OK--]]),
 		Background = g_Classes.ChoGGi_Button.bg_green,
 		RolloverText = context.hint_ok or Translate(6878--[[OK--]]),
-		OnPress = self.idOkayOnPress,
+		OnPress = self.idOkay_OnPress,
 	}, self.idButtonContainer)
 
 	if context.overwrite_check then
@@ -88,7 +88,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Margins = box(4,0,0,0),
 			Text = Strings[302535920000721--[[Overwrite--]]],
 			RolloverText = Strings[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
-			OnChange = self.idOverwriteOnChange,
+			OnChange = self.idOverwrite_OnChange,
 		}, self.idButtonContainer)
 	end
 
@@ -98,7 +98,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		Text = Strings[302535920001288--[[Wrap Lines--]]],
 		RolloverText = Strings[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
 		Margins = box(10,0,0,0),
-		OnChange = self.idWrapLinesOnChange,
+		OnChange = self.idWrapLines_OnChange,
 	}, self.idButtonContainer)
 	self.idWrapLines:SetIconRow(ChoGGi.UserSettings.WordWrap and 2 or 1)
 
@@ -108,7 +108,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		Text = Strings[302535920001474--[[Code Highlight--]]],
 		RolloverText = Strings[302535920001475--[[Toggle lua code highlighting.--]]],
 		Margins = box(10,0,0,0),
-		OnChange = self.idToggleCodeOnChange,
+		OnChange = self.idToggleCode_OnChange,
 	}, self.idButtonContainer)
 
 	self.idCancel = g_Classes.ChoGGi_Button:new({
@@ -117,7 +117,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		Text = Translate(6879--[[Cancel--]]),
 		Background = g_Classes.ChoGGi_Button.bg_red,
 		RolloverText = context.hint_cancel or Strings[302535920001423--[[Close without doing anything.--]]],
-		OnPress = self.idCancelOnPress,
+		OnPress = self.idCancel_OnPress,
 	}, self.idButtonContainer)
 
 	if context.scrollto then
@@ -131,7 +131,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self:PostInit(context.parent)
 end
 
-function ChoGGi_MultiLineTextDlg:idSearchOnMouseButtonDown(pt,button,...)
+function ChoGGi_MultiLineTextDlg:idSearch_OnMouseButtonDown(pt,button,...)
 	ChoGGi_Button.OnMouseButtonDown(self,pt,button,...)
 	self = GetRootDialog(self)
 	if button == "L" then
@@ -176,7 +176,7 @@ function ChoGGi_MultiLineTextDlg:FindNext(text,previous)
 	end
 end
 
-function ChoGGi_MultiLineTextDlg:idSearchTextOnKbdKeyDown(vk,...)
+function ChoGGi_MultiLineTextDlg:idSearchText_OnKbdKeyDown(vk,...)
 	self = GetRootDialog(self)
 
 	local c = const
@@ -234,7 +234,7 @@ function ChoGGi_MultiLineTextDlg:ScrollToText(scrollto)
 end
 
 -- this gets sent to Dump()
-function ChoGGi_MultiLineTextDlg:idOverwriteOnChange()
+function ChoGGi_MultiLineTextDlg:idOverwrite_OnChange()
 	self = GetRootDialog(self)
 	if self.overwrite then
 		self.overwrite = false
@@ -244,13 +244,13 @@ function ChoGGi_MultiLineTextDlg:idOverwriteOnChange()
 end
 
 -- maybe i should make this do something for the displayed text...
-function ChoGGi_MultiLineTextDlg:idWrapLinesOnChange(check)
+function ChoGGi_MultiLineTextDlg:idWrapLines_OnChange(check)
 	ChoGGi.UserSettings.WordWrap = check
 	GetRootDialog(self).idEdit:SetWordWrap(check)
 end
 
 -- toggle code highlighting
-function ChoGGi_MultiLineTextDlg:idToggleCodeOnChange(check)
+function ChoGGi_MultiLineTextDlg:idToggleCode_OnChange(check)
 	self = GetRootDialog(self)
 	if check then
 		self.idEdit:SetPlugins(self.plugin_names)
@@ -266,12 +266,12 @@ function ChoGGi_MultiLineTextDlg:ShowCodeHighlights()
 end
 
 --
-function ChoGGi_MultiLineTextDlg:idOkayOnPress()
+function ChoGGi_MultiLineTextDlg:idOkay_OnPress()
 	GetRootDialog(self):Close(true)
 end
 
 --
-function ChoGGi_MultiLineTextDlg:idCancelOnPress()
+function ChoGGi_MultiLineTextDlg:idCancel_OnPress()
 	GetRootDialog(self):Close(false)
 end
 

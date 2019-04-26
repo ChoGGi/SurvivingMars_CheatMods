@@ -57,7 +57,7 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	self.idImages = g_Classes.ChoGGi_ComboButton:new({
 		Id = "idImages",
 		Text = Translate(3794--[[Image--]]),
-		OnMouseButtonDown = self.idImagesOnMouseButtonDown,
+		OnMouseButtonDown = self.idImages_OnMouseButtonDown,
 		Dock = "left",
 	}, self.idButtonContainer)
 
@@ -123,7 +123,7 @@ function ChoGGi_ImageViewerDlg:SetImageFile(image)
 	return w+h
 end
 
-function ChoGGi_ImageViewerDlg:idImagesOnMouseButtonDown()
+function ChoGGi_ImageViewerDlg:idImages_OnMouseButtonDown()
 	local dlg = GetRootDialog(self)
 	PopupToggle(self,dlg.idImageMenu,dlg.image_menu_popup,"left")
 end

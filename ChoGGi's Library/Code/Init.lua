@@ -48,9 +48,6 @@ ChoGGi = {
 		mediumGameSpeed = const.mediumGameSpeed or 3,
 		MoistureVaporatorPenaltyPercent = const.MoistureVaporatorPenaltyPercent or 40,
 		MoistureVaporatorRange = const.MoistureVaporatorRange or 5,
-		ResearchQueueSize = const.ResearchQueueSize or 4,
-		ResourceScale = const.ResourceScale or 1000,
-		ResearchPointsScale = const.ResearchPointsScale or 1000,
 		InvalidPos = InvalidPos(),
 	-- Consts.* (Consts is a prop object, so we can get the defaults later on from OnMsg.OptionsApply(), we declare them now so we can loop them later) _const.lua
 		AvoidWorkplaceSols = false,

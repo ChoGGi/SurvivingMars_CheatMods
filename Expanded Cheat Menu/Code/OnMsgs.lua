@@ -629,7 +629,7 @@ do -- ChoGGi_SpawnedBaseBuilding
 
 		elseif UserSettings.ServiceWorkplaceFoodStorage and obj:IsKindOfClasses(cls_food) then
 			-- for some reason InitConsumptionRequest always adds 5 to it
-			local storedv = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage - (5 * ChoGGi.Consts.ResourceScale)
+			local storedv = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage - (5 * const.ResourceScale)
 			obj.consumption_stored_resources = storedv
 			obj.consumption_max_storage = ChoGGi.UserSettings.ServiceWorkplaceFoodStorage
 

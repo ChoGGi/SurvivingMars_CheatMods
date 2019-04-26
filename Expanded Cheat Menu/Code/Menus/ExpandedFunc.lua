@@ -73,7 +73,7 @@ do -- ViewObjInfo_Toggle
 	local GetStateName = GetStateName
 	local IsValid = IsValid
 	local table_find = table.find
-	local r = ChoGGi.Consts.ResearchPointsScale
+	local r = const.ResearchPointsScale
 	local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
 	local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 	local update_info_thread = {}
