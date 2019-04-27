@@ -421,12 +421,16 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 
 	end -- DisableECM
 
+	local SponsorBuildingLimits = UserSettings.SponsorBuildingLimits
+	local Building_hide_from_build_menu = UserSettings.Building_hide_from_build_menu
+	local Building_wonder = UserSettings.Building_wonder
+
 	local BuildingTechRequirements = BuildingTechRequirements
 	local BuildingTemplates = BuildingTemplates
 	for id,bld in pairs(BuildingTemplates) do
 
 		-- remove sponsor limits on buildings
-		if UserSettings.SponsorBuildingLimits then
+		if SponsorBuildingLimits then
 			-- set each status to false if it isn't
 			for i = 1, 3 do
 				local str = "sponsor_status" .. i
@@ -449,7 +453,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 		end
 
 		-- make hidden buildings visible
-		if UserSettings.Building_hide_from_build_menu then
+		if Building_hide_from_build_menu then
 			if bld.id ~= "LifesupportSwitch" and bld.id ~= "ElectricitySwitch" then
 				bld.hide_from_build_menu_ChoGGi = bld.hide_from_build_menu
 				bld.hide_from_build_menu = false
@@ -460,7 +464,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 		end
 
 		-- wonder building limit
-		if UserSettings.Building_wonder then
+		if Building_wonder then
 			bld.wonder = nil
 		end
 

@@ -600,7 +600,7 @@ do -- OpenInExamineDlg
 
 	function ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent,title)
 		local params
-		if parent and parent.ex_params then
+		if parent and type(parent) == "table" and parent.ex_params then
 			params = parent
 			parent = nil
 		else

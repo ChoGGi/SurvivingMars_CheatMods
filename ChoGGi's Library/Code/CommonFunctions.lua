@@ -1664,6 +1664,9 @@ end
 -- returns whatever is selected > moused over > nearest object to cursor
 -- single selection
 local function SelObject(radius)
+	if not GameState.gameplay then
+		return empty_table
+	end
 	-- single selection
 	local obj = SelectedObj or SelectionMouseObj()
 	if obj then
@@ -1683,6 +1686,9 @@ ChoGGi.ComFuncs.SelObject = SelObject
 
 -- returns an indexed table of objects, add a radius to get objs close to cursor
 local function SelObjects(radius)
+	if not GameState.gameplay then
+		return empty_table
+	end
 	local objs = SelectedObj or SelectionMouseObj()
 	if not radius and objs then
 		if objs:IsKindOf("MultiSelectionWrapper") then

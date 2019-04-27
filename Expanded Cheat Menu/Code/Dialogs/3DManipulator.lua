@@ -2,7 +2,12 @@
 
 -- mess with entities
 
---~ local tostring,type,table = tostring,type,table
+--~ local tostring,type = tostring,type
+local point = point
+local IsPoint = IsPoint
+local IsValid = IsValid
+local GetRollPitchYaw = GetRollPitchYaw
+local SetRollPitchYaw = SetRollPitchYaw
 
 local Strings = ChoGGi.Strings
 local RetName = ChoGGi.ComFuncs.RetName
@@ -20,7 +25,25 @@ DefineClass.ChoGGi_3DManipulatorDlg = {
 	dialog_width = 750.0,
 	dialog_height = 650.0,
 
+	-- if it's an attach item then we use different funcs
+	is_attach = false,
+	parent = false,
+
+	-- save pos button
+	saved_pos = false,
+	saved_rollpitchyaw = false,
+
+	-- how much to move by
 	default_amount = 1000,
+	-- pos buttons
+	pos_xyz_list = {
+		"X+","Y+","Z+",
+		"X-","Y-","Z-",
+	},
+	rpy_list = {
+		"Roll+","Pitch+","Yaw+",
+		"Roll-","Pitch-","Yaw-",
+	},
 }
 
 function ChoGGi_3DManipulatorDlg:Init(parent, context)
@@ -28,6 +51,12 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 
 	self.obj_name = RetName(context.obj)
 	self.obj = context.obj
+
+	self.parent = self.obj:GetParent()
+	if IsValid(self.parent) then
+		is_attach = true
+	end
+
 	self.title = Translate(327465361219--[[Edit--]]) .. " " .. Translate(298035641454--[[Object--]]) .. " " .. Strings[302535920001432--[[3D--]]] .. ": " .. self.obj_name
 
 	-- By the Power of Grayskull!
@@ -37,35 +66,45 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 --~ SetAttachOffset
 --~ SetRollPitchYaw
 
-	do -- idPos_Area
-		self.idPos_Area = g_Classes.ChoGGi_DialogSection:new({
-			Id = "idPos_Area",
+	do -- idPosArea
+		self.idPosArea = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idPosArea",
 			Dock = "top",
 			Margins = box(2,2,2,2)
 		}, self.idDialog)
 
-		-- top
-		self.idPos_AreaTop = g_Classes.ChoGGi_DialogSection:new({
-			Id = "idPos_AreaTop",
+		-- pos top
+		self.idPosAreaTop = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idPosAreaTop",
 			Dock = "top",
-		}, self.idPos_Area)
+		}, self.idPosArea)
 
 		self.idPosSave = g_Classes.ChoGGi_Button:new({
 			Id = "idPosSave",
 			Text = Translate(5467--[[SAVE--]]),
-			RolloverText = "Store the position.",
+			RolloverText = Strings[302535920000396--[["Store the position, roll, pitch, and yaw."--]]],
 			OnPress = self.idPosSave_OnPress,
 			-- updaterollover when clicked?
 			Dock = "left",
-		}, self.idPos_AreaTop)
+		}, self.idPosAreaTop)
+		-- always save current
+		self:idPosSave_OnPress()
 
 		self.idPosRestore = g_Classes.ChoGGi_Button:new({
 			Id = "idPosRestore",
 			Text = Translate(5469--[[RESET--]]),
-			RolloverText = "Restore saved position.",
+			RolloverText = Strings[302535920000398--[["Restore the position, roll, pitch, and yaw."--]]],
 			OnPress = self.idPosRestore_OnPress,
 			Dock = "left",
-		}, self.idPos_AreaTop)
+		}, self.idPosAreaTop)
+
+		self.idPosClear = g_Classes.ChoGGi_Button:new({
+			Id = "idPosClear",
+			Text = Translate(5448--[[CLEAR--]]),
+			RolloverText = Strings[302535920000404--[["Clear the position, roll, pitch, and yaw."--]]],
+			OnPress = self.idPosClear_OnPress,
+			Dock = "left",
+		}, self.idPosAreaTop)
 
 		self.idAmount = g_Classes.ChoGGi_TextInput:new({
 			Id = "idAmount",
@@ -73,69 +112,132 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 			Hint = Translate(1000100--[[Amount--]]),
 			HAlign = "right",
 			MinWidth = 250,
-		}, self.idPos_AreaTop)
+		}, self.idPosAreaTop)
 
-		-- bottom
-		self.idPos_AreaBot = g_Classes.ChoGGi_DialogSection:new({
-			Id = "idPos_AreaBot",
+		-- pos bottom
+		self.idPosAreaBot = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idPosAreaBot",
 			Dock = "bottom",
-		}, self.idPos_Area)
+		}, self.idPosArea)
 
-		local xyz_list = {
-			"XPlus","YPlus","ZPlus",
-			"XMinus","YMinus","ZMinus",
+		self.idPosAreaBotPlus = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idPosAreaBotPlus",
+			Dock = "top",
+		}, self.idPosAreaBot)
+
+		local pos_xyz_list = {
+			Translate(1000497--[[X--]]) .. Translate(1000541--[[+--]]),
+			Translate(1000498--[[Y--]]) .. Translate(1000541--[[+--]]),
+			Translate(1000499--[[Z--]]) .. Translate(1000541--[[+--]]),
+
+			Translate(1000497--[[X--]]) .. Translate(1000540--[[---]]),
+			Translate(1000498--[[Y--]]) .. Translate(1000540--[[---]]),
+			Translate(1000499--[[Z--]]) .. Translate(1000540--[[---]]),
 		}
 
-		self.idPos_AreaBotPlus = g_Classes.ChoGGi_DialogSection:new({
-			Id = "idPos_AreaBotPlus",
-			Dock = "top",
-		}, self.idPos_AreaBot)
-
 		for i = 1, 3 do
-			local id = "isPos_" .. xyz_list[i]
+			local name = pos_xyz_list[i]
+			local id = "idPos_" .. name
 			self[id] = g_Classes.ChoGGi_Button:new({
 				Id = id,
-				Text = id,
+				Text = name,
+				text_lookup = self.pos_xyz_list[i],
 				Dock = "left",
-			}, self.idPos_AreaBotPlus)
+				OnPress = self.idPosButtons_OnPress,
+			}, self.idPosAreaBotPlus)
 		end
 
-		self.idPos_AreaBotMinus = g_Classes.ChoGGi_DialogSection:new({
-			Id = "idPos_AreaBotMinus",
+		self.idPosAreaBotMinus = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idPosAreaBotMinus",
 			Dock = "bottom",
-		}, self.idPos_AreaBot)
+		}, self.idPosAreaBot)
 
 		for i = 4, 6 do
-			local id = "isPos_" .. xyz_list[i]
+			local name = pos_xyz_list[i]
+			local id = "idPos_" .. name
 			self[id] = g_Classes.ChoGGi_Button:new({
 				Id = id,
-				Text = id,
+				Text = name,
+				text_lookup = self.pos_xyz_list[i],
 				Dock = "left",
-			}, self.idPos_AreaBotMinus)
+				OnPress = self.idPosButtons_OnPress,
+			}, self.idPosAreaBotMinus)
 		end
 
 	end -- do
 
-	do -- idAngle_Area
-		self.idAngle_Area = g_Classes.ChoGGi_DialogSection:new({
-			Id = "idAngle_Area",
+	do -- roll pitchy aw area
+		self.idRollPitchYawArea = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idRollPitchYawArea",
 			Dock = "top",
 		}, self.idDialog)
+
+		self.idRollPitchYawAreaBotPlus = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idRollPitchYawAreaBotPlus",
+			Dock = "top",
+		}, self.idRollPitchYawArea)
+
+		local rpy_list = {
+			Strings[302535920000391--[[Roll--]]] .. Translate(1000541--[[+--]]),
+			Strings[302535920000392--[[Pitch--]]] .. Translate(1000541--[[+--]]),
+			Strings[302535920000395--[[Yaw--]]] .. Translate(1000541--[[+--]]),
+
+			Strings[302535920000391--[[Roll--]]] .. Translate(1000540--[[---]]),
+			Strings[302535920000392--[[Pitch--]]] .. Translate(1000540--[[---]]),
+			Strings[302535920000395--[[Yaw--]]] .. Translate(1000540--[[---]]),
+		}
+
+		for i = 1, 3 do
+			local name = rpy_list[i]
+			local id = "idRPY_" .. name
+			self[id] = g_Classes.ChoGGi_Button:new({
+				Id = id,
+				Text = name,
+				text_lookup = self.rpy_list[i],
+				Dock = "left",
+				OnPress = self.idRollPitchYawButtons_OnPress,
+			}, self.idRollPitchYawAreaBotPlus)
+		end
+
+		self.idRollPitchYawAreaBotMinus = g_Classes.ChoGGi_DialogSection:new({
+			Id = "idRollPitchYawAreaBotMinus",
+			Dock = "bottom",
+		}, self.idRollPitchYawArea)
+
+		for i = 4, 6 do
+			local name = rpy_list[i]
+			local id = "idRPY_" .. name
+			self[id] = g_Classes.ChoGGi_Button:new({
+				Id = id,
+				Text = name,
+				text_lookup = self.rpy_list[i],
+				Dock = "left",
+				OnPress = self.idRollPitchYawButtons_OnPress,
+			}, self.idRollPitchYawAreaBotMinus)
+		end
+
 	end -- do
 
-	do -- idAxis_Area
-		self.idAxis_Area = g_Classes.ChoGGi_DialogSection:new({
-			Id = "idAxis_Area",
-			Dock = "top",
-		}, self.idDialog)
-	end -- do
+--~ 	do -- idAngleArea
+--~ 		self.idAngleArea = g_Classes.ChoGGi_DialogSection:new({
+--~ 			Id = "idAngleArea",
+--~ 			Dock = "top",
+--~ 		}, self.idDialog)
+--~ 	end -- do
 
-	do -- idOrient_Area
-		self.idOrient_Area = g_Classes.ChoGGi_DialogSection:new({
-			Id = "idOrient_Area",
-			Dock = "top",
-		}, self.idDialog)
-	end -- do
+--~ 	do -- idAxisArea
+--~ 		self.idAxisArea = g_Classes.ChoGGi_DialogSection:new({
+--~ 			Id = "idAxisArea",
+--~ 			Dock = "top",
+--~ 		}, self.idDialog)
+--~ 	end -- do
+
+--~ 	do -- idOrientArea
+--~ 		self.idOrientArea = g_Classes.ChoGGi_DialogSection:new({
+--~ 			Id = "idOrientArea",
+--~ 			Dock = "top",
+--~ 		}, self.idDialog)
+--~ 	end -- do
 
 --~ 	self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
 --~ 		Id = "idEditArea",
@@ -160,9 +262,73 @@ function ChoGGi_3DManipulatorDlg:RetAmount()
 	end
 	return self.default_amount
 end
+
+function ChoGGi_3DManipulatorDlg:idRollPitchYawButtons_OnPress()
+	local text = self.text_lookup
+	self = GetRootDialog(self)
+	local amount = self:RetAmount()
+
+	local roll,pitch,yaw = GetRollPitchYaw(self.obj)
+
+	if text == "Roll+" then
+		roll = roll + amount
+	elseif text == "Pitch+" then
+		pitch = pitch + amount
+	elseif text == "Yaw+" then
+		yaw = yaw + amount
+	elseif text == "Roll-" then
+		roll = roll + (amount * -1)
+	elseif text == "Pitch-" then
+		pitch = pitch + (amount * -1)
+	elseif text == "Yaw-" then
+		yaw = yaw + (amount * -1)
+	end
+
+	SetRollPitchYaw(self.obj,roll,pitch,yaw)
+end
+
+function ChoGGi_3DManipulatorDlg:idPosButtons_OnPress()
+	local text = self.text_lookup
+	self = GetRootDialog(self)
+	local amount = self:RetAmount()
+
+	local x,y,z = 0,0,0
+
+	if text == "X+" then
+		x = amount
+	elseif text == "Y+" then
+		y = amount
+	elseif text == "Z+" then
+		z = amount
+	elseif text == "X-" then
+		x = amount * -1
+	elseif text == "Y-" then
+		y = amount * -1
+	elseif text == "Z-" then
+		z = amount * -1
+	end
+
+	self.obj:SetPos(self.obj:GetPos()+point(x,y,z))
+end
+
+function ChoGGi_3DManipulatorDlg:idPosClear_OnPress()
+	self = GetRootDialog(self)
+	self.saved_rollpitchyaw = false
+	self.saved_pos = false
+end
+
 function ChoGGi_3DManipulatorDlg:idPosRestore_OnPress()
 	self = GetRootDialog(self)
+	if IsPoint(self.saved_pos) then
+		self.obj:SetPos(self.saved_pos)
+	end
+	if self.saved_rollpitchyaw then
+		local rpw = self.saved_rollpitchyaw
+		SetRollPitchYaw(self.obj,rpw[1],rpw[2],rpw[3])
+	end
 end
 function ChoGGi_3DManipulatorDlg:idPosSave_OnPress()
 	self = GetRootDialog(self)
+	self.saved_pos = self.obj:GetPos()
+	self.saved_rollpitchyaw = {GetRollPitchYaw(self.obj)}
 end
