@@ -561,7 +561,7 @@ function Examine:idText_OnHyperLinkRollover(link)
 		-- add the value to the key tooltip
 		roll_text = roll_text .. "\n\n\n" .. obj_str
 		-- if it's an image then add 'er to the text
-		if self.ChoGGi.ComFuncs.ImageExts()[obj_str:sub(-3):lower()] then
+		if self.ChoGGi.ComFuncs.ValidateImage(obj_str) and self.ChoGGi.ComFuncs.ImageExts()[obj_str:sub(-3):lower()] then
 			roll_text = roll_text .. "\n\n<image " .. obj_str .. ">"
 		end
 	end

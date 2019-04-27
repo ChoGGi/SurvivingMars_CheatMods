@@ -788,7 +788,7 @@ Move archive to ""Mod folder/Pack/ModContent.hpk"""--]]],
 				{title = Strings[302535920001427--[[Pack--]]],
 					hint = Strings[302535920001428--[["Uploads as a packed mod (default for mod editor upload).
 This will always apply if uploading to Paradox."--]]] .. "\n\n" .. Strings[302535920001572--[[Warning: Will instantly crash SM when calling it a second time.--]]],
-					checked = false,
+					checked = true,
 				},
 				{title = Translate(186760604064--[[Test--]]),
 					level = 2,

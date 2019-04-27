@@ -404,8 +404,8 @@ ChoGGi.ComFuncs.GetParentOfKind = GetParentOfKind
 
 do -- ValidateImage
 	local Measure = UIL.MeasureImage
-	local Reload = UIL.ReloadImage
 	local Ready = UIL.IsImageReady
+	local Reload = UIL.ReloadImage
 	local function ReadyIt(image)
 		if not Ready(image) then
 			Reload(image)

@@ -6,6 +6,7 @@ function OmegaTelescope:UnlockBreakthroughs(...)
 
 	local UICity = UICity
   local breakthroughs = UICity:GetUnregisteredBreakthroughs()
+  StableShuffle(breakthroughs, UICity:CreateResearchRand("OmegaTelescope"), 100)
 	for i = 1, #breakthroughs do
 		UICity:SetTechDiscovered(breakthroughs[i])
 	end
