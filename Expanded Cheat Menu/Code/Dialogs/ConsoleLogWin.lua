@@ -72,12 +72,20 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		OnPress = self.idClearLog_OnPress,
 	}, self.idButtonContainer)
 
-	self.idCopyText = g_Classes.ChoGGi_Button:new({
-		Id = "idCopyText",
+	self.idViewText = g_Classes.ChoGGi_Button:new({
+		Id = "idViewText",
 		Dock = "left",
-		Text = Strings[302535920000563--[[Copy Log Text--]]],
+		Text = Strings[302535920000563--[[View Log Text--]]],
 		RolloverText = Strings[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
-		OnPress = self.idCopyText_OnPress,
+		OnPress = self.idViewText_OnPress,
+	}, self.idButtonContainer)
+
+	self.idClipboardCopy = g_Classes.ChoGGi_Button:new({
+		Id = "idClipboardCopy",
+		Dock = "left",
+		Text = Strings[302535920000664--[[Clipboard--]]],
+		RolloverText = Strings[302535920000406--[[Copy text to the clipboard.--]]],
+		OnPress = self.idClipboardCopy_OnPress,
 	}, self.idButtonContainer)
 
 	-- text box with log in it
@@ -174,13 +182,19 @@ end
 function ChoGGi_ConsoleLogWin:idShowModsLog_OnPress()
 	self = GetRootDialog(self)
 
-	self:UpdateText(self.idText:GetText() .. TableConcat(ModMessageLog,"\n"))
+	self:UpdateText(
+		self.idText:GetText() .. "\n\nModMessageLog:\n"
+			.. TableConcat(ModMessageLog,"\n")
+	)
 end
 function ChoGGi_ConsoleLogWin:idClearLog_OnPress()
 	GetRootDialog(self).idText:SetText("")
 end
-function ChoGGi_ConsoleLogWin:idCopyText_OnPress()
-	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{text = GetRootDialog(self).idText:GetText()}
+function ChoGGi_ConsoleLogWin:idClipboardCopy_OnPress()
+	CopyToClipboard(GetRootDialog(self).idText:GetText())
+end
+function ChoGGi_ConsoleLogWin:idViewText_OnPress()
+	ChoGGi.ComFuncs.OpenInMultiLineTextDlg(GetRootDialog(self).idText:GetText())
 end
 
 function ChoGGi_ConsoleLogWin:SetTranspMode(toggle)

@@ -65,7 +65,7 @@ local ToolsMenuPopupToggle_list = {
 		hint = Strings[302535920001152--[[Clear out the console log (F9 also works).--]]],
 		clicked = cls,
 	},
-	{name = Strings[302535920000563--[[Copy Log Text--]]],
+	{name = Strings[302535920000563--[[View Log Text--]]],
 		hint = Strings[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
 		clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
 	},
