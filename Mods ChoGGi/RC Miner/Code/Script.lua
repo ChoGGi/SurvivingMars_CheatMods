@@ -153,7 +153,7 @@ function PortableMiner:GameInit()
 	-- select sounds
 	self.fx_actor_class = "AttackRover"
 
-	-- colour #, Color, Roughness, Metallic
+	-- Colour #, Colour, Roughness, Metallic (r/m go from -128 to 127)
 	-- middle area
 	self:SetColorizationMaterial(1, -10592674, -128, 120)
 	-- body

@@ -76,7 +76,7 @@ function RCGarage:GameInit(...)
 end
 
 function RCGarage:SetPalette()
-	-- colour #, Color, Roughness, Metallic
+	-- Colour #, Colour, Roughness, Metallic (r/m go from -128 to 127) (r/m go from -128 to 127)
 	-- bottom bars
 	self:SetColorizationMaterial(1, -9175040, -100, 120)
 	-- body

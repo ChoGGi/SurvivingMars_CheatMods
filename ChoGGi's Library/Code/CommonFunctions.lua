@@ -404,48 +404,16 @@ ChoGGi.ComFuncs.GetParentOfKind = GetParentOfKind
 
 do -- ValidateImage
 	local Measure = UIL.MeasureImage
-	local Ready = UIL.IsImageReady
-	local Reload = UIL.ReloadImage
-	local function ReadyIt(image)
-		if not Ready(image) then
-			Reload(image)
-		end
-	end
 
-	function ChoGGi.ComFuncs.ValidateImage(image,fallback,path)
-		-- if measure isn't sent a string it'll spam the log
-		image = tostring(image)
-		ReadyIt(image)
-
-		-- first we try the image path as is
-		-- if x is 0 then it probably isn't a valid image (measure sends back x,y)
-		if Measure(image) == 0 then
-			-- try with the path
-			path = path or ChoGGi.library_path
-			image = path .. image
-			ReadyIt(image)
-			-- falling back
-			if Measure(image) == 0 then
-				image = nil
-				if fallback then
-					fallback = tostring(fallback)
-					image = path .. fallback
-					ReadyIt(image)
-					if Measure(image) == 0 then
-						image = fallback
-						ReadyIt(image)
-						if Measure(image) == 0 then
-							image = nil
-						end
-					end
-				end
-			end
-		end
-		if image == path then
-			image = nil
+	function ChoGGi.ComFuncs.ValidateImage(image)
+		if not image then
+			return
 		end
 
-		return image
+		local x,y = Measure(image)
+		if x > 0 and y > 0 then
+			return image
+		end
 	end
 end
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
@@ -491,7 +459,7 @@ do -- MsgPopup
 			id = AsyncRand(),
 			title = title or "",
 			text = text or Translate(3718--[[NONE--]]),
-			image = ValidateImage(image,"UI/TheIncal.png"),
+			image = image and ValidateImage(image) or ChoGGi.library_path .. "UI/TheIncal.png",
 		}
 
 		TableSet_defaults(data, params)
@@ -964,17 +932,18 @@ function ChoGGi.ComFuncs.Circle(pos, radius, colour, time)
 end
 
 -- this is a question box without a question (WaitPopupNotification only works in-game, not main menu)
-function ChoGGi.ComFuncs.MsgWait(text,title,image,ok_text,context,parent)
+function ChoGGi.ComFuncs.MsgWait(text,caption,image,ok_text,context,parent,template)
 	-- thread needed for WaitMarsQuestion
 	CreateRealTimeThread(function()
 		local dlg = CreateMarsQuestionBox(
-			title or Translate(1000016--[[Title--]]),
+			caption or Translate(1000016--[[Title--]]),
 			text or Translate(3718--[[NONE--]]),
-			ok_text or Translate(6878--[[OK--]]),
-			"",
+			ok_text or nil,
+			nil,
 			parent,
-			ValidateImage(image,"UI/message_picture_01.png"),
-			context
+			ValidateImage(image),
+			image = image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
+			context,template
 		)
 		-- hide cancel button since we don't care about it, and we ignore them anyways...
 		dlg.idList[2]:delete()
@@ -982,16 +951,19 @@ function ChoGGi.ComFuncs.MsgWait(text,title,image,ok_text,context,parent)
 end
 
 -- well that's the question isn't it?
-function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_msg,cancel_msg,image,context,parent)
+function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_text,cancel_text,image,context,parent,template)
+	if not image then
+		image = ChoGGi.library_path .. "UI/message_picture_01.png"
+	end
 	CreateRealTimeThread(function()
 		if WaitMarsQuestion(
 			parent,
 			title or Translate(1000016--[[Title--]]),
 			text or Translate(3718--[[NONE--]]),
-			ok_msg or nil,
-			cancel_msg or nil,
-			ValidateImage(image,"UI/message_picture_01.png"),
-			context
+			ok_text or nil,
+			cancel_text or nil,
+			image = image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
+			context,template
 		) == "ok" then
 			if func then
 				func(true)

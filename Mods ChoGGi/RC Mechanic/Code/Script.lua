@@ -58,7 +58,7 @@ function RCMechanic:GameInit()
 
 	-- select sounds
 	self.fx_actor_class = "AttackRover"
-	-- colour #, Color, Roughness, Metallic
+	-- Colour #, Colour, Roughness, Metallic (r/m go from -128 to 127)
 	-- middle area
 	self:SetColorizationMaterial(1, -9175040, -128, 120)
 	-- body

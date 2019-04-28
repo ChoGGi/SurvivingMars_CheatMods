@@ -57,7 +57,6 @@ local flatten_text = "Radius: %s, " .. Translate(49--[[Status--]]) .. ": " .. Tr
 DefineClass.RCBulldozer = {
 	__parents = {
 		"BaseRover",
---~ 		"ComponentAttach",
 	},
   name = name,
 	description = description,
@@ -86,11 +85,6 @@ DefineClass.RCBulldozer = {
 	texture_terrain = table.find(TerrainTextures, "name", "Dig"),
 	-- used to place the circle
 	away_spot = false,
-
---~ 	-- likely useless...
---~ 	orient_mode = "terrain",
---~ 	-- need something to update driveable area
---~ 	shape_obj = false,
 }
 
 DefineClass.RCBulldozerBuilding = {
@@ -99,10 +93,9 @@ DefineClass.RCBulldozerBuilding = {
 }
 
 function RCBulldozer:GameInit()
---~ 	BaseRover.GameInit(self)
-
 	self.away_spot = self:GetSpotBeginIndex(away_spot)
-	-- colour #, Color, Roughness, Metallic
+
+	-- Colour #, Colour, Roughness, Metallic (r/m go from -128 to 127)
 	-- middle area
 	self:SetColorizationMaterial(1, colour1, -128, 120)
 	-- body
@@ -110,11 +103,9 @@ function RCBulldozer:GameInit()
 	-- color of bands
 	self:SetColorizationMaterial(3, colour3, -128, 48)
 	if colour4 then
-		self:SetColorizationMaterial(4, colour3, -128, 48)
+		self:SetColorizationMaterial(4, colour4, -128, 48)
 	end
 
---~ 	-- have to wait for HexOutlineShapes to be built, this one is about as big as the largest we can make the hex
---~ 	self.shape_obj = HexOutlineShapes.DomeMega
 end
 
 --~ function RCBulldozer:GetStatusUpdate()
@@ -206,8 +197,10 @@ local efCollision = const.efCollision + const.efApplyToGrids
 local efSelectable = const.efSelectable
 -- a very ugly hack to update driveable area
 function RCBulldozer:AddDriveable()
+	SuspendPassEdits("RCBulldozer:AddDriveable")
 	self.site = PlaceObject("ConstructionSite", {})
-	self.site:SetBuildingClass("DomeBasic")
+--~ 	self.site:SetBuildingClass("DomeBasic")
+	self.site:SetBuildingClass("DomeMega")
 	self.site:SetVisible()
 	-- so dozer doesn't get scared of itself
 	self.site:ClearHierarchyEnumFlags(efCollision + efSelectable)
@@ -222,6 +215,7 @@ function RCBulldozer:AddDriveable()
 		self.site.resource_stockpile:delete()
 		self.site.resource_stockpile = nil
 	end)
+	ResumePassEdits("RCBulldozer:AddDriveable")
 end
 
 function RCBulldozer:StartDozer()

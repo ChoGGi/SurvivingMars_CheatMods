@@ -176,7 +176,7 @@ function RCTanker:GameInit()
 	-- select sound
 	self.fx_actor_class = "AttackRover"
 
-	-- colour #, Color, Roughness, Metallic
+	-- Colour #, Colour, Roughness, Metallic (r/m go from -128 to 127)
 	-- middle area
 	self:SetColorizationMaterial(1, -14710529, 12, 32)
 	-- body
