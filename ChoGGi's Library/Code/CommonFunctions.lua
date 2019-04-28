@@ -941,8 +941,7 @@ function ChoGGi.ComFuncs.MsgWait(text,caption,image,ok_text,context,parent,templ
 			ok_text or nil,
 			nil,
 			parent,
-			ValidateImage(image),
-			image = image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
+			image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
 			context,template
 		)
 		-- hide cancel button since we don't care about it, and we ignore them anyways...
@@ -962,7 +961,7 @@ function ChoGGi.ComFuncs.QuestionBox(text,func,title,ok_text,cancel_text,image,c
 			text or Translate(3718--[[NONE--]]),
 			ok_text or nil,
 			cancel_text or nil,
-			image = image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
+			image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
 			context,template
 		) == "ok" then
 			if func then
