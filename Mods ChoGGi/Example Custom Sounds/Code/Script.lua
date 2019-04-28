@@ -1,7 +1,30 @@
+-- some sound funcs to use with the sounds defined below:
+--~ handle = PlaySound(sound, _type, volume, fade_time, looping, point_or_object, loud_distance)
+--~ StopSound(handle)
+--~ IsSoundPlaying(handle)
+--~ SetSoundVolume(handle, volume, time)
+--~ GetSoundVolume(handle)
+
+--[[
+PlaySound("Object LandingPad Fail")
+PlaySound("Object MOXIE Loop", "ObjectLoopLimited-A", nil, 0, true, SelectedObj, 1000)
+
+-- if you're making a looping sound test with:
+local snd_playing = false
+local function TestSound(snd)
+	StopSound(snd_playing)
+	snd_playing = PlaySound(snd)
+end
+TestSound("Object MOXIE Loop")
+--]]
+
 function OnMsg.ClassesBuilt()
 	-- if you have ecm use OpenExamine(SoundPreset), to see the object properties
-	-- or grab the decompiled lua files from my discord channel and open CommonLua\Classes\Sounds\Sounds.lua (line: 69)
+	-- or grab the decompiled lua files from my discord channel and open CommonLua\Classes\Sounds\Sounds.lua
 	-- Data\SoundPreset.lua, and Lua\Config\__SoundTypes.lua
+
+	-- that's right no .ext
+	local Example_Sound_File = CurrentModPath .. "Sounds/OhHaiMark"
 
 	-- as basic a sound as you can
 	-- PlaySound("OhHaiMark")
@@ -9,7 +32,7 @@ function OnMsg.ClassesBuilt()
 		id = "OhHaiMark",
 		type = "UI",
 		PlaceObj("Sample", {
-			"file", CurrentModPath .. "Sounds/OhHaiMark",
+			"file", Example_Sound_File,
 		}),
 	})
 
@@ -23,7 +46,7 @@ function OnMsg.ClassesBuilt()
 		volume = 110,
 		type = "ObjectLoopLimited-A",
 		PlaceObj("Sample", {
-			"file", CurrentModPath .. "Sounds/OhHaiMark",
+			"file", Example_Sound_File,
 			"frequency", 50,
 		}),
 --~ 		PlaceObj("Sample", {
@@ -35,6 +58,7 @@ function OnMsg.ClassesBuilt()
 --~ 			"frequency", 50,
 --~ 		}),
 	})
+--~ 	PlaySound("Object OhHaiMark Loop", "ObjectLoopLimited-A", nil, 0, true, SelectedObj, 1000)
 
 	-- a oneshot for use with an object
 	-- PlaySound("Object OhHaiMark Oneshot")
@@ -45,10 +69,14 @@ function OnMsg.ClassesBuilt()
 		volume = 40,
 		type = "ObjectOneshotLimited-B",
 		PlaceObj("Sample", {
-			"file", CurrentModPath .. "Sounds/OhHaiMark",
+			"file", Example_Sound_File,
 			"frequency", 10,
 		}),
 	})
+--~ PlaySound("Object OhHaiMark Oneshot", "ObjectOneshotLimited-B", nil, 0, true, SelectedObj, 1000)
+
+	-- needed to rebuild sound lists
+	ReloadSoundBanks()
 
 --~ PlaceObj('ActionFXSound', {
 --~ 	'Action', "SelectObj",
@@ -56,26 +84,5 @@ function OnMsg.ClassesBuilt()
 --~ 	'Actor', "RCTransport",
 --~ 	'Sound', "Object OhHaiMark Oneshot",
 --~ })
-
-	-- needed to rebuild lists
-	ReloadSoundBanks()
-
-	--[[
-	-- PlaySound(sound, _type, volume, fade_time, looping, point_or_object, loud_distance)
-
-	PlaySound("Object OhHaiMark Loop", "ObjectLoopLimited-A", nil, 0, true, SelectedObj, 1000)
-	PlaySound("Object MOXIE Loop", "ObjectLoopLimited-A", nil, 0, true, SelectedObj, 1000)
-	PlaySound("Object OhHaiMark Oneshot", "ObjectOneshotLimited-B", nil, 0, true, SelectedObj, 1000)
-	--]]
-
-	-- if you're making a looping sound test with:
-	--[[
-	GlobalVar("snd_playing", false)
-	local function TestSound(snd)
-		StopSound(snd_playing)
-		snd_playing = PlaySound(snd)
-	end
-	TestSound("Object MOXIE Loop")
-	--]]
 
 end
