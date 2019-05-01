@@ -98,6 +98,8 @@ DefineClass.Examine = {
 	autorefresh_delay = 1000,
 	-- any objs from this examine that were marked with a sphere/colour
 	marked_objects = false,
+	-- skip adding prefix to title
+	override_title = false,
 
 	-- only chinese goes slow as shit for some reason, so i added this to at least stop the game from freezing till obj is examined
 	is_chinese = false,
@@ -165,6 +167,7 @@ function Examine:Init(parent, context)
 	self.onclick_count = 0
 	self.marked_objects = objlist:new()
 	self.title = context.title
+	self.override_title = context.override_title
 	self.prefix = Strings[302535920000069--[[Examine--]]]
 
 	-- if we're examining a string we want to convert to an object
@@ -3280,9 +3283,13 @@ function Examine:SetObj(startup)
 	if obj == "nil" then
 		self.idCaption:SetTitle(self,obj)
 	else
-		local name_type = obj_type .. ": "
-		local title = self.title or name or obj
-		self.idCaption:SetTitle(self,name_type .. title:gsub(name_type,""))
+		if self.override_title then
+			self.idCaption:SetTitle(self,self.title)
+		else
+			local name_type = obj_type .. ": "
+			local title = self.title or name or obj
+			self.idCaption:SetTitle(self,name_type .. title:gsub(name_type,""))
+		end
 	end
 
 	-- we add a slight delay; useful for bigger lists like _G or MapGet(true)

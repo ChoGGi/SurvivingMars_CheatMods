@@ -24,10 +24,12 @@
 
 ### Changed:
 - Mod Upload supports batch uploading (and screenshots).
-- Menu items to use the default ECM icon instead of something maybe vaguely related.
-- Some menu items to use translated text instead of mine.
-- > Easier to distinguish between notifications from ECM and from SM.
+- Some menu items now use translated text instead of mine.
 - Debug>Examine will try to examine the UI element under the cursor if it can't find an object.
+- Console>~obj will show all results instead of only the first one (in a table).
+- Renamed imgview/txtview to OpenImageViewer/OpenTextViewer.
+- Menu items to use the default ECM icon instead of something maybe vaguely related:
+- > Easier to distinguish between notifications from ECM and from SM.
 - Examine:
 - > It'll try to list files in mount points (ie: ~"Textures" or ~"Prefabs"), needs the HelperMod installed.
 - > The X close button now checks if Ctrl or Shift is being held down (see tooltip for more info).

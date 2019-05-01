@@ -222,9 +222,9 @@ You can copy and paste numbers if you want.",
 
 <color green>@@</color><color yellow>EntityData</color> prints type of obj, use <color red>type(obj)</color> in lua code.
 
-<color green>%</color><color yellow>""UI/Vignette.tga""</color> opens image in image viewer, use <color red>imgview(image)</color> in lua code.
+<color green>%</color><color yellow>""UI/Vignette.tga""</color> opens image in image viewer, use <color red>OpenImageViewer(image)</color> in lua code.
 
-<color green>^</color><color yellow>""text string""</color> opens text in text editor, use <color red>txtview(string)</color> in lua code.
+<color green>^</color><color yellow>""text string""</color> opens text in text editor, use <color red>OpenTextViewer(string)</color> in lua code.
 
 <color green>$</color><color yellow>123</color> or <color green>$</color><color yellow>EffectDeposit.display_name</color> prints translated string, use <color red>trans(obj)</color> in lua code.
 

@@ -5,10 +5,17 @@ dump = ChoGGi.ComFuncs.Dump
 dumplua = ChoGGi.ComFuncs.DumpLua
 dumptable = ChoGGi.ComFuncs.DumpTable
 trans = ChoGGi.ComFuncs.Translate
-imgview = ChoGGi.ComFuncs.OpenInImageViewerDlg
-txtview = ChoGGi.ComFuncs.OpenInMultiLineTextDlg
 MonitorFunc = ChoGGi.ComFuncs.MonitorFunctionResults
 so = ChoGGi.ComFuncs.SelObject
+-- used for console rules, so we can get around it spamming the log
+local OpenInImageViewerDlg = ChoGGi.ComFuncs.OpenInImageViewerDlg
+function OpenImageViewer(...)
+	OpenInImageViewerDlg(...)
+end
+local OpenInMultiLineTextDlg = ChoGGi.ComFuncs.OpenInMultiLineTextDlg
+function OpenTextViewer(...)
+	OpenInMultiLineTextDlg(...)
+end
 
 local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 -- legacy (and used for console rules, so we can get around it spamming the log)

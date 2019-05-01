@@ -1206,17 +1206,28 @@ function OnMsg.ClassesBuilt()
 			{
 				-- %image string or table
 				"^%%(.*)",
-				"ChoGGi.Temp.OpenInImageViewer(%s)"
+				"OpenImageViewer(%s)"
 			},
 			{
 				-- ^string
 				"^%^(.*)",
-				"ChoGGi.Temp.OpenInTextViewer(%s)"
+				"OpenTextViewer(%s)"
 			},
 			{
 				-- ~anything
 				"^~(.*)",
-				"OpenExamine(%s)"
+				[[local params = {%s}
+if #params == 1 then
+	OpenExamine(params[1])
+else
+	OpenExamine(nil,{
+		obj = params,
+		ex_params = true,
+		override_title = true,
+		title = ChoGGi.Strings[302535920000069] .. " " .. ChoGGi.Strings[302535920001073]
+			.. ": " .. ChoGGi.ComFuncs.RetName(params[1]),
+	})
+end]] -- title strings: Examine Console
 			},
 			{
 				-- ~!obj_with_attachments

@@ -599,13 +599,19 @@ do -- OpenInExamineDlg
 	end
 
 	function ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent,title)
-		local params
-		if parent and type(parent) == "table" and parent.ex_params then
-			params = parent
-			parent = nil
-		else
-			params = {}
+		local params,p_type
+		-- check if parent is an opened examine dialog, or other
+		if parent then
+			p_type = type(parent)
+			-- we only (somewhat) care about parent being a string,point,dialog
+			if p_type == "table" and parent.ex_params then
+				params = parent
+				parent = nil
+			elseif p_type ~= "string" and p_type ~= "table" and p_type ~= "userdata" then
+				parent = nil
+			end
 		end
+		params = params or {}
 
 		-- preserve the orig params
 		if obj then
@@ -619,7 +625,7 @@ do -- OpenInExamineDlg
 		end
 
 		-- check if the parent has an id and use it
-		if params.parent and params.parent.parent_id then
+		if params.parent and p_type == "table" and params.parent.parent_id then
 			params.parent_id = params.parent.parent_id
 		end
 
@@ -739,29 +745,20 @@ function ChoGGi.ComFuncs.OpenInFindValueDlg(context,parent)
 	})
 end
 
-do -- OpenInImageViewerDlg
-	local function OpenInImageViewerDlg(obj,parent)
-		if not obj then
-			return
-		end
-
-		if not IsKindOf(parent,"XWindow") then
-			parent = nil
-		end
-
-		return ChoGGi_ImageViewerDlg:new({}, terminal.desktop,{
-			obj = obj,
-			parent = parent,
-		})
-	end
-	ChoGGi.ComFuncs.OpenInImageViewerDlg = OpenInImageViewerDlg
-
-	-- used for console rules, so we can get around it spamming the log
-	function ChoGGi.Temp.OpenInImageViewer(...)
-		OpenInImageViewerDlg(...)
+function ChoGGi.ComFuncs.OpenInImageViewerDlg(obj,parent)
+	if not obj then
+		return
 	end
 
-end -- do
+	if not IsKindOf(parent,"XWindow") then
+		parent = nil
+	end
+
+	return ChoGGi_ImageViewerDlg:new({}, terminal.desktop,{
+		obj = obj,
+		parent = parent,
+	})
+end
 
 function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(parent)
 	-- if fired from action menu

@@ -1288,32 +1288,23 @@ function ChoGGi.ComFuncs.FilterFromTableFunc(list,func,value,is_bool)
 	end)
 end
 
-do -- OpenInMultiLineTextDlg
-	local function OpenInMultiLineTextDlg(obj,parent)
-		if not obj then
-			return
-		end
-
-		if obj.text then
-			return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,obj)
-		end
-
-		if not IsKindOf(parent,"XWindow") then
-			parent = nil
-		end
-		return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,{
-			text = obj,
-			parent = parent,
-		})
-	end
-	ChoGGi.ComFuncs.OpenInMultiLineTextDlg = OpenInMultiLineTextDlg
-
-	-- used for console rules, so we can get around it spamming the log
-	function ChoGGi.Temp.OpenInTextViewer(...)
-		OpenInMultiLineTextDlg(...)
+function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(obj,parent)
+	if not obj then
+		return
 	end
 
-end -- do
+	if obj.text then
+		return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,obj)
+	end
+
+	if not IsKindOf(parent,"XWindow") then
+		parent = nil
+	end
+	return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop,{
+		text = obj,
+		parent = parent,
+	})
+end
 
 function ChoGGi.ComFuncs.OpenInListChoice(list)
 	-- if list isn't a table or it has zero items or it doesn't have items/callback func

@@ -53,11 +53,6 @@ DefineClass.ChoGGi_Text = {
 	RolloverTemplate = "Rollover",
 	RolloverTitle = Translate(126095410863--[[Info--]]),
 }
---~ function ChoGGi_Text:OnHyperLinkRollover()
---~ print("Rollover")
---~ end
---~ function XText:OnHyperLinkRollover(hyperlink, hyperlink_box, pos)
---~ end
 
 DefineClass.ChoGGi_Label = {
 	__parents = {"XLabel"},
@@ -67,7 +62,7 @@ DefineClass.ChoGGi_Label = {
 }
 function ChoGGi_Label:SetTitle(win,title)
 	win = win or self
-	if win.prefix then
+	if win.prefix and not win.override_title then
 		win.idCaption:SetText(win.prefix .. ": " .. (title or win.title or self.name or ""))
 	else
 		win.idCaption:SetText(title or win.title or self.name or "")
