@@ -1659,7 +1659,7 @@ local function SelObjects(radius)
 			return {objs}
 		end
 	else
-		return MapGet(GetTerrainCursor(),radius,"attached",false)
+		return MapGet(GetTerrainCursor(),radius or 1500,"attached",false)
 	end
 end
 ChoGGi.ComFuncs.SelObjects = SelObjects
