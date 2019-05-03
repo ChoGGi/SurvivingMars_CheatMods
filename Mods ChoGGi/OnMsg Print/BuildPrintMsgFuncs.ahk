@@ -16,10 +16,10 @@ global msg_list := []
 
 ParseLuaFiles("CommonLua")
 ParseLuaFiles("Data")
-ParseLuaFiles("DLC")
+ParseLuaFiles("Dlc")
 ParseLuaFiles("Lua")
 
-; spammy
+; very spammy
 msg_list.Delete("OnRender")
 msg_list.Delete("ObjModified")
 msg_list.Delete("UIPropertyChanged")
@@ -36,14 +36,22 @@ FileAppend %output_str%,PrintMsgFuncs.lua
 
 ExitApp
 
-AddNameToList(start_str,end_str)
+BuildName(str,start_str,end_str,occurrence := 1)
   {
 	; get msg name + length of start string
-	start_of_msg := InStr(A_LoopField,start_str,true) + StrLen(start_str)
+	local start_of_msg := InStr(str,start_str,true,,occurrence) + StrLen(start_str)
 	; search from next char
-	end_of_msg := InStr(A_LoopField,end_str, false, start_of_msg)
+	local end_of_msg := InStr(str,end_str, false, start_of_msg)
 	; and we gotta name
-	name := SubStr(A_LoopField, start_of_msg , end_of_msg - start_of_msg)
+	local name := SubStr(str, start_of_msg , end_of_msg - start_of_msg)
+	; send 'er back
+	return name
+	}
+
+AddNameToList(name := false,str := false,start_str := false,end_str := false)
+  {
+	If !(name)
+		name := BuildName(str,start_str,end_str)
 	; skip dupes
 	If !(msg_list[name])
 		msg_list[name] := "function OnMsg." name "(...)`r`n`tprint(""Msg." name """,...)`r`nend`r`n"
@@ -56,14 +64,25 @@ ParseLuaFiles(folder)
 		FileRead, temptext, %A_LoopFileLongPath%
 		Loop, parse, temptext, `n, `r
 			{
+			;~ WaitMsg("ExampleMsg")
 			If InStr(A_LoopField,"WaitMsg(""",true)
-				AddNameToList("WaitMsg(""","""")
+				AddNameToList(,A_LoopField,"WaitMsg(""","""")
+
+			;~ function OnMsg.ExampleMsg
 			Else If InStr(A_LoopField, "function OnMsg.", true)
-				AddNameToList("function OnMsg.","(")
+				AddNameToList(,A_LoopField,"function OnMsg.","(")
+
+			;~ Msg(\"ExampleMsg\")
 			Else If InStr(A_LoopField,"""Msg(\""", true)
-				AddNameToList("""Msg(\""","\""")
+				AddNameToList(,A_LoopField,"""Msg(\""","\""")
+
+			;~ Msg("ExampleMsg")
 			Else If InStr(A_LoopField, "Msg(""", true)
-				AddNameToList("Msg(""","""")
+				AddNameToList(,A_LoopField,"Msg(""","""")
+
+			;~ DefineStoryBitTrigger("Skip text", "ExampleMsg")
+			Else If InStr(A_LoopField, "DefineStoryBitTrigger(""", true)
+				AddNameToList(BuildName(BuildName(A_LoopField,"DefineStoryBitTrigger(",")"),"""","""",3))
 			}
 		}
 	}

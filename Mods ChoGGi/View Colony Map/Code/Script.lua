@@ -79,7 +79,7 @@ local function GetRootDialog(dlg)
 end
 
 DefineClass.ChoGGi_VCM_MapImageDlg = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 	dialog_width = 500.0,
 	dialog_height = 500.0,
 }
@@ -88,19 +88,19 @@ function ChoGGi_VCM_MapImageDlg:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
-	self.idTopArea = g_Classes.ChoGGi_DialogSection:new({
+	self.idTopArea = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idTopArea",
 	}, self.idDialog)
 	self.idImage = XFrame:new({
 		Id = "idImage",
 	}, self.idTopArea)
 
-	self.idBottomArea = g_Classes.ChoGGi_DialogSection:new({
+	self.idBottomArea = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idBottomArea",
 		Dock = "bottom",
 	}, self.idDialog)
 
-	self.idShowExtra = g_Classes.ChoGGi_CheckButton:new({
+	self.idShowExtra = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idShowExtra",
 		Text = Translate(11451--[[Breakthrough--]]),
 		RolloverText = "Show breakthroughs for this location.",
@@ -172,7 +172,7 @@ local function GetRootDialog_Extra(dlg)
 end
 
 DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 	dialog_width = 400.0,
 	dialog_height = 500.0,
 

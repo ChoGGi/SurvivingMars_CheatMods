@@ -1,0 +1,2 @@
+v0.2
+Added progress to Sanatorium/School (mouseover lifetime info).

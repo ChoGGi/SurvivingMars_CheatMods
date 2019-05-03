@@ -5,7 +5,7 @@
 local Strings = ChoGGi.Strings
 
 DefineClass.ChoGGi_DTMSlotsDlg = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 
 	dialog_width = false,
 	dialog_height = false,
@@ -23,7 +23,7 @@ function ChoGGi_DTMSlotsDlg:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
-	self.idInfo = g_Classes.ChoGGi_DialogSection:new({
+	self.idInfo = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idInfo",
 	}, self.idDialog)
 

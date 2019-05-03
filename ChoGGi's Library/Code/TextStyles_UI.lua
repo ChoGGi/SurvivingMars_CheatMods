@@ -37,7 +37,7 @@ local Editor16Bold = font .. ", 16, bold, aa"
 local Editor16 = font .. ", 16, aa"
 
 -- no sense in adding these to each item
-DefineClass.ChoGGi_TextStyle = {
+DefineClass.ChoGGi_XTextStyle = {
 	__parents = {"TextStyle"},
 	DisabledShadowColor = invis0_48,
 	DisabledRolloverTextColor = gray40_128,
@@ -65,91 +65,91 @@ function OnMsg.ClassesPostprocess()
 	})
 
 	-- Text
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = white,
 		RolloverTextColor = white,
 		TextFont = Editor12Bold,
 		id = "ChoGGi_Text12",
 	})
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = white,
 		RolloverTextColor = white,
 		TextFont = Editor14Bold,
 		id = "ChoGGi_Text14",
 	})
 	-- TextList
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = white,
 		RolloverTextColor = light_gray,
 		TextFont = Editor12Bold,
 		id = "ChoGGi_TextList12",
 	})
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = white,
 		RolloverTextColor = light_gray,
 		TextFont = Editor14Bold,
 		id = "ChoGGi_TextList14",
 	})
 	-- MultiLineEdit
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = white,
 		RolloverTextColor = white,
 		TextFont = Editor16,
 		id = "ChoGGi_MultiLineEdit",
 	})
 	-- ChoGGi_TextInput
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = -14671840,
 		RolloverTextColor = -16777216,
 		TextFont = Editor16,
 		id = "ChoGGi_TextInput",
 	})
 	-- Label
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = white,
 		TextFont = Editor14Bold,
 		id = "ChoGGi_Label",
 	})
 	-- Buttons
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = gray32_255,
 		RolloverTextColor = white,
 		TextFont = Editor14Bold,
 		id = "ChoGGi_Buttons",
 	})
 	-- ConsoleButton
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		RolloverTextColor = white,
 		TextFont = Editor16Bold,
 		id = "ChoGGi_ConsoleButton",
 	})
 	-- ComboButton
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		RolloverTextColor = white,
 		id = "ChoGGi_ComboButton",
 	})
 	-- CheckButton
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = white,
 		RolloverTextColor = light_gray,
 		TextFont = Editor14Bold,
 		id = "ChoGGi_CheckButton",
 	})
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = white,
 		RolloverTextColor = black,
 		TextFont = Editor16Bold,
 		id = "ChoGGi_CheckButtonMenuOpp",
 	})
 	-- List
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = white,
 		RolloverTextColor = light_gray,
 		id = "ChoGGi_List",
 	})
 
 	-- ButtonMenu
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = black,
 		RolloverTextColor = white,
 		TextFont = Editor16Bold,
@@ -157,19 +157,19 @@ function OnMsg.ClassesPostprocess()
 	})
 
 	-- CheckButtonMenu
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = black,
 		RolloverTextColor = white,
 		TextFont = Editor16Bold,
 		id = "ChoGGi_CheckButtonMenu",
 	})
 	-- ButtonMenuDisabled
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = disabled_gray,
 		TextFont = Editor16Bold,
 		id = "ChoGGi_ButtonMenuDisabled",
 	})
-	PlaceObj("ChoGGi_TextStyle", {
+	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = disabled_darker,
 		TextFont = Editor16Bold,
 		id = "ChoGGi_ButtonMenuDisabledDarker",

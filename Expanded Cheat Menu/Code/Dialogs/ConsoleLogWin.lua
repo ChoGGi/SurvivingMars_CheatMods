@@ -11,7 +11,7 @@ local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_ConsoleLogWin")
 end
 DefineClass.ChoGGi_ConsoleLogWin = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 	transp_mode = false,
 	update_thread = false,
 
@@ -28,12 +28,12 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
-	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
+	self.idButtonContainer = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idButtonContainer",
 		Dock = "top",
 	}, self.idDialog)
 
-	self.idToggleTrans = g_Classes.ChoGGi_CheckButton:new({
+	self.idToggleTrans = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idToggleTrans",
 		Text = Strings[302535920000865--[[Translate--]]],
 		RolloverText = Strings[302535920001367--[[Toggles--]]] .. " " .. Strings[302535920000629--[[UI Transparency--]]],
@@ -48,23 +48,28 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		flags = const.intfIgnoreParent
 	}
 
-	self.idShowFileLog = g_Classes.ChoGGi_Button:new({
+	self.idShowFileLog = g_Classes.ChoGGi_XButton:new({
 		Id = "idShowFileLog",
 		Dock = "left",
-		Text = Strings[302535920001026--[[Show File Log--]]],
+		Text = Strings[302535920001026--[[Update Text--]]],
 		RolloverText = Strings[302535920001091--[[Flushes log to disk and displays in console log.--]]],
 		OnPress = self.idShowFileLog_OnPress,
 	}, self.idButtonContainer)
 
-	self.idShowModsLog = g_Classes.ChoGGi_Button:new({
+	self.idShowModsLog = g_Classes.ChoGGi_XButton:new({
 		Id = "idShowModsLog",
 		Dock = "left",
-		Text = Strings[302535920000071--[[Mods Log--]]],
+		Text = Strings[302535920000071--[[Show Mods Log--]]],
 		RolloverText = Strings[302535920001123--[[Shows any mod msgs in the log.--]]],
 		OnPress = self.idShowModsLog_OnPress,
 	}, self.idButtonContainer)
 
-	self.idClearLog = g_Classes.ChoGGi_Button:new({
+	self.idButtonSpacer = g_Classes.ChoGGi_XSpacer:new({
+		Margins = box(8,0,0,0),
+		Dock = "left",
+	}, self.idButtonContainer)
+
+	self.idClearLog = g_Classes.ChoGGi_XButton:new({
 		Id = "idClearLog",
 		Dock = "left",
 		Text = Strings[302535920000734--[[Clear Log--]]],
@@ -72,15 +77,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		OnPress = self.idClearLog_OnPress,
 	}, self.idButtonContainer)
 
-	self.idViewText = g_Classes.ChoGGi_Button:new({
-		Id = "idViewText",
-		Dock = "left",
-		Text = Strings[302535920000563--[[View Log Text--]]],
-		RolloverText = Strings[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
-		OnPress = self.idViewText_OnPress,
-	}, self.idButtonContainer)
-
-	self.idClipboardCopy = g_Classes.ChoGGi_Button:new({
+	self.idClipboardCopy = g_Classes.ChoGGi_XButton:new({
 		Id = "idClipboardCopy",
 		Dock = "left",
 		Text = Strings[302535920000664--[[Clipboard--]]],
@@ -89,14 +86,15 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 	}, self.idButtonContainer)
 
 	-- text box with log in it
-	self:AddScrollText()
+	self:AddScrollEdit()
+--~ 	self:AddScrollText()
 
-	self.idTextInputArea = g_Classes.ChoGGi_DialogSection:new({
+	self.idTextInputArea = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idTextInputArea",
 		Dock = "bottom",
 	}, self.idDialog)
 
-	self.idTextInput = g_Classes.ChoGGi_TextInput:new({
+	self.idTextInput = g_Classes.ChoGGi_XTextInput:new({
 		Id = "idTextInput",
 		OnKbdKeyDown = self.idTextInput_OnKbdKeyDown,
 		RolloverTemplate = "Rollover",
@@ -134,7 +132,7 @@ end
 function ChoGGi_ConsoleLogWin:idTextInput_OnKbdKeyDown(vk,...)
 	local dlgConsole = dlgConsole
 	if not dlgConsole then
-		return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
+		return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self,vk,...)
 	end
 	local input = GetRootDialog(self).idTextInput
 
@@ -168,7 +166,7 @@ function ChoGGi_ConsoleLogWin:idTextInput_OnKbdKeyDown(vk,...)
 		return "break"
 	end
 
-	return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
+	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self,vk,...)
 end
 
 function ChoGGi_ConsoleLogWin:idToggleTrans_OnChange()
@@ -183,18 +181,15 @@ function ChoGGi_ConsoleLogWin:idShowModsLog_OnPress()
 	self = GetRootDialog(self)
 
 	self:UpdateText(
-		self.idText:GetText() .. "\n\nModMessageLog:\n"
+		self.idEdit:GetText() .. "\n\nModMessageLog:\n"
 			.. TableConcat(ModMessageLog,"\n")
 	)
 end
 function ChoGGi_ConsoleLogWin:idClearLog_OnPress()
-	GetRootDialog(self).idText:SetText("")
+	GetRootDialog(self).idEdit:SetText("")
 end
 function ChoGGi_ConsoleLogWin:idClipboardCopy_OnPress()
-	CopyToClipboard(GetRootDialog(self).idText:GetText())
-end
-function ChoGGi_ConsoleLogWin:idViewText_OnPress()
-	ChoGGi.ComFuncs.OpenInMultiLineTextDlg(GetRootDialog(self).idText:GetText())
+	CopyToClipboard(GetRootDialog(self).idEdit:GetText())
 end
 
 function ChoGGi_ConsoleLogWin:SetTranspMode(toggle)
@@ -216,17 +211,19 @@ end
 
 function ChoGGi_ConsoleLogWin:UpdateText(text)
 	if text then
-		self.idText:SetText(text)
+		self.idEdit:SetText(text)
 		CreateRealTimeThread(function()
-			WaitMsg("OnRender")
+--~ 			WaitMsg("OnRender")
 			self:ScrollToBottom()
 		end)
 	end
 end
 
 function ChoGGi_ConsoleLogWin:ScrollToBottom()
-	local y = Max(0, self.idScrollArea.scroll_range_y - self.idScrollArea.content_box:sizey())
-	self.idScrollArea:ScrollTo(0, y)
+--~ 	local y = Max(0, self.idScrollArea.scroll_range_y - self.idScrollArea.content_box:sizey())
+--~ 	self.idScrollArea:ScrollTo(0, y)
+	local y = Max(0, self.idEdit.scroll_range_y - self.idEdit.content_box:sizey())
+	self.idEdit:ScrollTo(0, y)
 	self.idScrollV:SetScroll(y)
 end
 
@@ -248,7 +245,7 @@ function OnMsg.ConsoleLine(text, bNewLine)
 		return
 	end
 
-	local old_text = dlg.idText:GetText()
+	local old_text = dlg.idEdit:GetText()
 
 	if bNewLine then
 		text = old_text .. "\n" .. text

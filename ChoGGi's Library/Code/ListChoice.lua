@@ -71,7 +71,7 @@ local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_ListChoiceDlg")
 end
 DefineClass.ChoGGi_ListChoiceDlg = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 	choices = false,
 	colorpicker = false,
 	-- we don't want OnColorChanged to fire till after user does something in the dialog
@@ -113,12 +113,12 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 
 	-- setup checkboxes
 	if self.list.checkboxes and #self.list.checkboxes > 0 then
-		self.idCheckboxArea = g_Classes.ChoGGi_DialogSection:new({
+		self.idCheckboxArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idCheckboxArea",
 			Dock = "top",
 			Margins = box(8,4,0,4),
 		}, self.idDialog)
-		self.idCheckboxArea2 = g_Classes.ChoGGi_DialogSection:new({
+		self.idCheckboxArea2 = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idCheckboxArea2",
 			Dock = "top",
 			Margins = box(8,4,0,14),
@@ -135,7 +135,7 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 				area_id = area_id .. list_check.level
 			end
 
-			self[name] = g_Classes.ChoGGi_CheckButton:new({
+			self[name] = g_Classes.ChoGGi_XCheckButton:new({
 				Id = name,
 				Dock = "left",
 				Text = Translate(588--[[Empty--]]),
@@ -192,12 +192,12 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 	self.idList.OnKbdKeyDown = self.idList_OnKbdKeyDown
 
 	if self.custom_type ~= 9 then
-		self.idFilterArea = g_Classes.ChoGGi_DialogSection:new({
+		self.idFilterArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idFilterArea",
 			Dock = "bottom",
 		}, self.idDialog)
 
-		self.idFilter = g_Classes.ChoGGi_TextInput:new({
+		self.idFilter = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idFilter",
 			RolloverText = Strings[302535920000806--[["Only show items containing this text.
 
@@ -210,13 +210,13 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 
 	if self.custom_type ~= 7 then
 
-		self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
+		self.idEditArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idEditArea",
 			Dock = "bottom",
 			Margins = box(0,8,4,4),
 		}, self.idDialog)
 
-		self.idEditValue = g_Classes.ChoGGi_TextInput:new({
+		self.idEditValue = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idEditValue",
 			RolloverText = Strings[302535920000077--[["Enter a custom value to be applied.
 The listitem <color 0 200 0>must</color> be selected for this to take effect (it's the last listitem).
@@ -227,7 +227,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			OnKbdKeyDown = self.idEditValue_OnKbdKeyDown
 		}, self.idEditArea)
 
-		self.idShowCustomVal = g_Classes.ChoGGi_CheckButton:new({
+		self.idShowCustomVal = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idShowCustomVal",
 			Dock = "left",
 			Margins = box(4,0,0,0),
@@ -248,17 +248,17 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		end
 	end
 
-	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
+	self.idButtonContainer = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idButtonContainer",
 		Dock = "bottom",
 	}, self.idDialog)
 
-	self.idOK = g_Classes.ChoGGi_Button:new({
+	self.idOK = g_Classes.ChoGGi_XButton:new({
 		Id = "idOK",
 		Dock = "left",
 		MinWidth = 50,
 		Text = Translate(6878--[[OK--]]),
-		Background = g_Classes.ChoGGi_Button.bg_green,
+		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = Strings[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."--]]],
 		OnPress = function()
 			-- build self.choices
@@ -269,12 +269,12 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		end,
 	}, self.idButtonContainer)
 
-	self.idCancel = g_Classes.ChoGGi_Button:new({
+	self.idCancel = g_Classes.ChoGGi_XButton:new({
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 70,
 		Text = Translate(6879--[[Cancel--]]),
-		Background = g_Classes.ChoGGi_Button.bg_red,
+		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = Strings[302535920000074--[[Cancel without changing anything.--]]],
 		OnPress = self.idCloseX.OnPress,
 	}, self.idButtonContainer)
@@ -311,7 +311,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	-- add the colour picker
 	if self.custom_type == 2 then
 		-- keep all colour elements in here for easier... UIy stuff
-		self.idColourContainer = g_Classes.ChoGGi_DialogSection:new({
+		self.idColourContainer = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idColourContainer",
 			MinWidth = 550,
 			Margins = box(0, 10, 10, 0),
@@ -319,7 +319,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		}, self.idDialog)
 		self.idColourContainer:SetVisible(false)
 
-		self.idColorPickerArea = g_Classes.ChoGGi_DialogSection:new({
+		self.idColorPickerArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idColorPickerArea",
 			Dock = "top",
 		}, self.idColourContainer)
@@ -334,27 +334,27 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		self.idColorPicker.idColorSquare.OnColorChanged_Orig = self.idColorPicker.idColorSquare.OnColorChanged
 		self.idColorPicker.idColorSquare.OnColorChanged = self.idColorSquare_OnColorChanged
 
-		self.idColorCheckArea = g_Classes.ChoGGi_DialogSection:new({
+		self.idColorCheckArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idColorCheckArea",
 			Dock = "top",
 			HAlign = "center",
 		}, self.idColourContainer)
 
-		self.idColorCheckElec = g_Classes.ChoGGi_CheckButton:new({
+		self.idColorCheckElec = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idColorCheckElec",
 			Text = Translate(79--[[Power--]]),
 			RolloverText = Strings[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
 
-		self.idColorCheckAir = g_Classes.ChoGGi_CheckButton:new({
+		self.idColorCheckAir = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idColorCheckAir",
 			Text = Translate(891--[[Air--]]),
 			RolloverText = Strings[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
 
-		self.idColorCheckWater = g_Classes.ChoGGi_CheckButton:new({
+		self.idColorCheckWater = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idColorCheckWater",
 			Text = Translate(681--[[Water--]]),
 			RolloverText = Strings[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
@@ -511,12 +511,12 @@ function ChoGGi_ListChoiceDlg:idList_OnKbdKeyDown(vk)
 end
 
 function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDown(pt,button,...)
-	g_Classes.ChoGGi_List.OnMouseButtonDown(self,pt,button)
+	g_Classes.ChoGGi_XList.OnMouseButtonDown(self,pt,button)
 	GetRootDialog(self):idList_OnSelect(button)
 end
 
 function ChoGGi_ListChoiceDlg:idList_OnKbdKeyUp(...)
-	ChoGGi_List.OnKbdKeyUp(...)
+	g_Classes.ChoGGi_XList.OnKbdKeyUp(...)
 	GetRootDialog(self):idList_OnSelect("L")
 end
 
@@ -526,7 +526,7 @@ function ChoGGi_ListChoiceDlg:idEditValue_OnKbdKeyDown(vk,...)
 		self.idOK:Press()
 		return "break"
 	end
-	return ChoGGi_TextInput.OnKbdKeyDown(self.idEditValue,vk,...)
+	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idEditValue,vk,...)
 end
 
 function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
@@ -710,7 +710,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 		end
 
 		if display_icon and not self.skip_icons then
-			listitem.idImage = g_Classes.ChoGGi_Image:new({
+			listitem.idImage = g_Classes.ChoGGi_XImage:new({
 				Id = "idImage",
 				Dock = "left",
 				VAlign = "center",
@@ -740,7 +740,7 @@ function ChoGGi_ListChoiceDlg:idFilter_OnKbdKeyDown(vk)
 		self.idCloseX:Press()
 		return "break"
 	end
-	return ChoGGi_TextInput.OnKbdKeyDown(self.idFilter, vk)
+	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idFilter, vk)
 end
 
 function ChoGGi_ListChoiceDlg:FilterText(txt)
@@ -865,7 +865,7 @@ function ChoGGi_ListChoiceDlg:idList_OnSelect(button)
 end
 
 function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDoubleClick(_,button)
-	if self.class == "ChoGGi_List" then
+	if self.class == "ChoGGi_XList" then
 		self = GetRootDialog(self)
 	end
 

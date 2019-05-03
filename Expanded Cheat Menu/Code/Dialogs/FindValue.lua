@@ -14,7 +14,7 @@ local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_FindValueDlg")
 end
 DefineClass.ChoGGi_FindValueDlg = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 	obj = false,
 	obj_name = false,
 	dialog_width = 700.0,
@@ -36,12 +36,12 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
-	self.idTextArea = g_Classes.ChoGGi_DialogSection:new({
+	self.idTextArea = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idTextArea",
 		Dock = "top",
 	}, self.idDialog)
 
-	self.idEdit = g_Classes.ChoGGi_TextInput:new({
+	self.idEdit = g_Classes.ChoGGi_XTextInput:new({
 		Id = "idEdit",
 		Dock = "left",
 		MinWidth = 550,
@@ -50,7 +50,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		OnKbdKeyDown = self.Input_OnKbdKeyDown,
 	}, self.idTextArea)
 
-	self.idLimit = g_Classes.ChoGGi_TextInput:new({
+	self.idLimit = g_Classes.ChoGGi_XTextInput:new({
 		Id = "idLimit",
 		Dock = "right",
 		MinWidth = 50,
@@ -59,23 +59,23 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	}, self.idTextArea)
 	self.idLimit:SetText("1")
 
-	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
+	self.idButtonContainer = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idButtonContainer",
 		Dock = "bottom",
 		Margins = box(0,0,0,4),
 	}, self.idDialog)
 
-	self.idFind = g_Classes.ChoGGi_Button:new({
+	self.idFind = g_Classes.ChoGGi_XButton:new({
 		Id = "idFind",
 		Dock = "left",
 		Text = Strings[302535920001302--[[Find--]]],
-		Background = g_Classes.ChoGGi_Button.bg_green,
+		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = Strings[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
 		Margins = box(10, 0, 0, 0),
 		OnPress = self.FindText,
 	}, self.idButtonContainer)
 
-	self.idCaseSen = g_Classes.ChoGGi_CheckButton:new({
+	self.idCaseSen = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idCaseSen",
 		Dock = "left",
 		Margins = box(15, 0, 0, 0),
@@ -83,7 +83,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		RolloverText = Strings[302535920000502--[[Treat uppercase and lowercase as distinct.--]]],
 	}, self.idButtonContainer)
 
-	self.idThreads = g_Classes.ChoGGi_CheckButton:new({
+	self.idThreads = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idThreads",
 		Dock = "left",
 		Margins = box(4, 0, 0, 0),
@@ -91,12 +91,12 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 		RolloverText = Strings[302535920001361--[[Will also search thread func names for value (case is ignored for this).--]]],
 	}, self.idButtonContainer)
 
-	self.idCancel = g_Classes.ChoGGi_Button:new({
+	self.idCancel = g_Classes.ChoGGi_XButton:new({
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 80,
 		Text = Translate(6879--[[Cancel--]]),
-		Background = g_Classes.ChoGGi_Button.bg_red,
+		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = Strings[302535920000074--[[Cancel without changing anything.--]]],
 		Margins = box(0, 0, 10, 0),
 		OnPress = self.idCloseX.OnPress,
@@ -224,5 +224,5 @@ function ChoGGi_FindValueDlg:Input_OnKbdKeyDown(vk)
 		return "break"
 	end
 
-	return ChoGGi_TextInput.OnKbdKeyDown(self.idEdit, vk)
+	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idEdit, vk)
 end

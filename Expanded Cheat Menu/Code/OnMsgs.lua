@@ -321,9 +321,9 @@ function OnMsg.ModsReloaded()
 			local edit = dlgConsole.idEdit
 
 			-- add a context menu
-			edit.OnKillFocus = ChoGGi_InputContextMenu.OnKillFocus
-			edit.OnMouseButtonDown = ChoGGi_InputContextMenu.OnMouseButtonDown
-			edit.RetContextList = ChoGGi_InputContextMenu.RetContextList
+			edit.OnKillFocus = g_Classes.ChoGGi_XInputContextMenu.OnKillFocus
+			edit.OnMouseButtonDown = g_Classes.ChoGGi_XInputContextMenu.OnMouseButtonDown
+			edit.RetContextList = g_Classes.ChoGGi_XInputContextMenu.RetContextList
 
 			-- removes comments from code, and adds a space to each newline, so pasting multi line works
 			local XEditEditOperation = XEdit.EditOperation

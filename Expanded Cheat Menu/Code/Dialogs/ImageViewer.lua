@@ -14,7 +14,7 @@ local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_ImageViewerDlg")
 end
 DefineClass.ChoGGi_ImageViewerDlg = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 
 	dialog_width = 700.0,
 	dialog_height = 700.0,
@@ -46,7 +46,7 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
-	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
+	self.idButtonContainer = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idButtonContainer",
 		Dock = "top",
 		-- dark gray
@@ -54,14 +54,14 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	}, self.idDialog)
 
 	self:BuildImageMenuPopup()
-	self.idImages = g_Classes.ChoGGi_ComboButton:new({
+	self.idImages = g_Classes.ChoGGi_XComboButton:new({
 		Id = "idImages",
 		Text = Translate(3794--[[Image--]]),
 		OnMouseButtonDown = self.idImages_OnMouseButtonDown,
 		Dock = "left",
 	}, self.idButtonContainer)
 
-	self.idImageSize = g_Classes.ChoGGi_Text:new({
+	self.idImageSize = g_Classes.ChoGGi_XText:new({
 		Id = "idImageSize",
 		Dock = "left",
 		VAlign = "center",

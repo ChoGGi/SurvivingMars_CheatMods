@@ -18,7 +18,7 @@ local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_3DManipulatorDlg")
 end
 DefineClass.ChoGGi_3DManipulatorDlg = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 	obj = false,
 	obj_name = false,
 
@@ -67,19 +67,19 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 --~ SetRollPitchYaw
 
 	do -- idPosArea
-		self.idPosArea = g_Classes.ChoGGi_DialogSection:new({
+		self.idPosArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idPosArea",
 			Dock = "top",
 			Margins = box(2,2,2,2)
 		}, self.idDialog)
 
 		-- pos top
-		self.idPosAreaTop = g_Classes.ChoGGi_DialogSection:new({
+		self.idPosAreaTop = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idPosAreaTop",
 			Dock = "top",
 		}, self.idPosArea)
 
-		self.idPosSave = g_Classes.ChoGGi_Button:new({
+		self.idPosSave = g_Classes.ChoGGi_XButton:new({
 			Id = "idPosSave",
 			Text = Translate(5467--[[SAVE--]]),
 			RolloverText = Strings[302535920000396--[["Store the position, roll, pitch, and yaw."--]]],
@@ -90,7 +90,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 		-- always save current
 		self:idPosSave_OnPress()
 
-		self.idPosRestore = g_Classes.ChoGGi_Button:new({
+		self.idPosRestore = g_Classes.ChoGGi_XButton:new({
 			Id = "idPosRestore",
 			Text = Translate(5469--[[RESET--]]),
 			RolloverText = Strings[302535920000398--[["Restore the position, roll, pitch, and yaw."--]]],
@@ -98,7 +98,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 			Dock = "left",
 		}, self.idPosAreaTop)
 
-		self.idPosClear = g_Classes.ChoGGi_Button:new({
+		self.idPosClear = g_Classes.ChoGGi_XButton:new({
 			Id = "idPosClear",
 			Text = Translate(5448--[[CLEAR--]]),
 			RolloverText = Strings[302535920000404--[["Clear the position, roll, pitch, and yaw."--]]],
@@ -106,7 +106,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 			Dock = "left",
 		}, self.idPosAreaTop)
 
-		self.idAmount = g_Classes.ChoGGi_TextInput:new({
+		self.idAmount = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idAmount",
 			RolloverText = Strings[302535920000389--[[The amount used when a button is pressed (default: %s).--]]]:format(self.default_amount),
 			Hint = Translate(1000100--[[Amount--]]),
@@ -115,12 +115,12 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 		}, self.idPosAreaTop)
 
 		-- pos bottom
-		self.idPosAreaBot = g_Classes.ChoGGi_DialogSection:new({
+		self.idPosAreaBot = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idPosAreaBot",
 			Dock = "bottom",
 		}, self.idPosArea)
 
-		self.idPosAreaBotPlus = g_Classes.ChoGGi_DialogSection:new({
+		self.idPosAreaBotPlus = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idPosAreaBotPlus",
 			Dock = "top",
 		}, self.idPosAreaBot)
@@ -138,7 +138,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 		for i = 1, 3 do
 			local name = pos_xyz_list[i]
 			local id = "idPos_" .. name
-			self[id] = g_Classes.ChoGGi_Button:new({
+			self[id] = g_Classes.ChoGGi_XButton:new({
 				Id = id,
 				Text = name,
 				text_lookup = self.pos_xyz_list[i],
@@ -147,7 +147,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 			}, self.idPosAreaBotPlus)
 		end
 
-		self.idPosAreaBotMinus = g_Classes.ChoGGi_DialogSection:new({
+		self.idPosAreaBotMinus = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idPosAreaBotMinus",
 			Dock = "bottom",
 		}, self.idPosAreaBot)
@@ -155,7 +155,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 		for i = 4, 6 do
 			local name = pos_xyz_list[i]
 			local id = "idPos_" .. name
-			self[id] = g_Classes.ChoGGi_Button:new({
+			self[id] = g_Classes.ChoGGi_XButton:new({
 				Id = id,
 				Text = name,
 				text_lookup = self.pos_xyz_list[i],
@@ -167,12 +167,12 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 	end -- do
 
 	do -- roll pitchy aw area
-		self.idRollPitchYawArea = g_Classes.ChoGGi_DialogSection:new({
+		self.idRollPitchYawArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idRollPitchYawArea",
 			Dock = "top",
 		}, self.idDialog)
 
-		self.idRollPitchYawAreaBotPlus = g_Classes.ChoGGi_DialogSection:new({
+		self.idRollPitchYawAreaBotPlus = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idRollPitchYawAreaBotPlus",
 			Dock = "top",
 		}, self.idRollPitchYawArea)
@@ -190,7 +190,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 		for i = 1, 3 do
 			local name = rpy_list[i]
 			local id = "idRPY_" .. name
-			self[id] = g_Classes.ChoGGi_Button:new({
+			self[id] = g_Classes.ChoGGi_XButton:new({
 				Id = id,
 				Text = name,
 				text_lookup = self.rpy_list[i],
@@ -199,7 +199,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 			}, self.idRollPitchYawAreaBotPlus)
 		end
 
-		self.idRollPitchYawAreaBotMinus = g_Classes.ChoGGi_DialogSection:new({
+		self.idRollPitchYawAreaBotMinus = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idRollPitchYawAreaBotMinus",
 			Dock = "bottom",
 		}, self.idRollPitchYawArea)
@@ -207,7 +207,7 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 		for i = 4, 6 do
 			local name = rpy_list[i]
 			local id = "idRPY_" .. name
-			self[id] = g_Classes.ChoGGi_Button:new({
+			self[id] = g_Classes.ChoGGi_XButton:new({
 				Id = id,
 				Text = name,
 				text_lookup = self.rpy_list[i],
@@ -219,32 +219,32 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 	end -- do
 
 --~ 	do -- idAngleArea
---~ 		self.idAngleArea = g_Classes.ChoGGi_DialogSection:new({
+--~ 		self.idAngleArea = g_Classes.ChoGGi_XDialogSection:new({
 --~ 			Id = "idAngleArea",
 --~ 			Dock = "top",
 --~ 		}, self.idDialog)
 --~ 	end -- do
 
 --~ 	do -- idAxisArea
---~ 		self.idAxisArea = g_Classes.ChoGGi_DialogSection:new({
+--~ 		self.idAxisArea = g_Classes.ChoGGi_XDialogSection:new({
 --~ 			Id = "idAxisArea",
 --~ 			Dock = "top",
 --~ 		}, self.idDialog)
 --~ 	end -- do
 
 --~ 	do -- idOrientArea
---~ 		self.idOrientArea = g_Classes.ChoGGi_DialogSection:new({
+--~ 		self.idOrientArea = g_Classes.ChoGGi_XDialogSection:new({
 --~ 			Id = "idOrientArea",
 --~ 			Dock = "top",
 --~ 		}, self.idDialog)
 --~ 	end -- do
 
---~ 	self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
+--~ 	self.idEditArea = g_Classes.ChoGGi_XDialogSection:new({
 --~ 		Id = "idEditArea",
 --~ 		Dock = "bottom",
 --~ 	}, self.idDialog)
 
---~ 	self.idEditValue = g_Classes.ChoGGi_TextInput:new({
+--~ 	self.idEditValue = g_Classes.ChoGGi_XTextInput:new({
 --~ 		Id = "idEditValue",
 --~ 		RolloverText = Strings[302535920000102--[[Use to change values of selected list item.--]]],
 --~ 		Hint = Strings[302535920000103--[[Edit Value--]]],

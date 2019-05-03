@@ -35,8 +35,8 @@
 - > The X close button now checks if Ctrl or Shift is being held down (see tooltip for more info).
 - > Merged View/Dump menu items in Tools.
 - Console Window:
-- > Renamed Copy Log Text to View Log Text.
 - > Added a Clipboard button (copies log to clipboard).
+- > Text is now selectable (also removed Copy Log Text).
 
 ### Fixed:
 - Game would freeze if ConsoleErrors was false (thanks Gaspurr).

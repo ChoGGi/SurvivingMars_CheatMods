@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Add Progress To Training Section",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-	"saved", 1555329600,
+	"version_minor", 2,
+	"saved", 1556798400,
 	"image", "Preview.png",
 	"id", "ChoGGi_AddProgressToTrainingSection",
 	"steam_id", "1713299705",
@@ -14,6 +14,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[Edits tooltip to show list of students and their training progress.
+Works for University, Sanatorium, and School (uses age for schools).
 
 Requested by Tassyr.]],
 })

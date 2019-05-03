@@ -14,14 +14,14 @@ local function GetRootDialog(dlg)
 end
 
 DefineClass.ChoGGi_MultiLineTextDlg = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 	retfunc = false,
 	overwrite = false,
 	context = false,
 	dialog_width = 800.0,
 	dialog_height = 600.0,
 
-	plugin_names = {"ChoGGi_CodeEditorPlugin"},
+	plugin_names = {"ChoGGi_XCodeEditorPlugin"},
 }
 
 function ChoGGi_MultiLineTextDlg:Init(parent, context)
@@ -43,19 +43,19 @@ function ChoGGi_MultiLineTextDlg:Init(parent, context)
 	self.idEdit:SetText(context.text)
 
 	do -- search area
-		self.idSearchArea = g_Classes.ChoGGi_DialogSection:new({
+		self.idSearchArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idSearchArea",
 			Dock = "top",
 		}, self.idDialog)
 		--
-		self.idSearchText = g_Classes.ChoGGi_TextInput:new({
+		self.idSearchText = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idSearchText",
 			RolloverText = Strings[302535920001529--[["Press <color 0 200 0>Enter</color> to select next found text, and <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text."--]]],
 			Hint = Strings[302535920000044--[[Go To Text--]]],
 			OnKbdKeyDown = self.idSearchText_OnKbdKeyDown,
 		}, self.idSearchArea)
 		--
-		self.idSearch = g_Classes.ChoGGi_Button:new({
+		self.idSearch = g_Classes.ChoGGi_XButton:new({
 			Id = "idSearch",
 			Text = Translate(10123--[[Search--]]),
 			Dock = "right",
@@ -67,22 +67,22 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		}, self.idSearchArea)
 	end
 
-	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
+	self.idButtonContainer = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idButtonContainer",
 		Dock = "bottom",
 	}, self.idDialog)
 
-	self.idOkay = g_Classes.ChoGGi_Button:new({
+	self.idOkay = g_Classes.ChoGGi_XButton:new({
 		Id = "idOkay",
 		Dock = "left",
 		Text = Translate(6878--[[OK--]]),
-		Background = g_Classes.ChoGGi_Button.bg_green,
+		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = context.hint_ok or Translate(6878--[[OK--]]),
 		OnPress = self.idOkay_OnPress,
 	}, self.idButtonContainer)
 
 	if context.overwrite_check then
-		self.idOverwrite = g_Classes.ChoGGi_CheckButton:new({
+		self.idOverwrite = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idOverwrite",
 			Dock = "left",
 			Margins = box(4,0,0,0),
@@ -92,7 +92,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		}, self.idButtonContainer)
 	end
 
-	self.idWrapLines = g_Classes.ChoGGi_CheckButton:new({
+	self.idWrapLines = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idWrapLines",
 		Dock = "left",
 		Text = Strings[302535920001288--[[Wrap Lines--]]],
@@ -102,7 +102,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	}, self.idButtonContainer)
 	self.idWrapLines:SetIconRow(ChoGGi.UserSettings.WordWrap and 2 or 1)
 
-	self.idToggleCode = g_Classes.ChoGGi_CheckButton:new({
+	self.idToggleCode = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idToggleCode",
 		Dock = "left",
 		Text = Strings[302535920001474--[[Code Highlight--]]],
@@ -111,11 +111,11 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		OnChange = self.idToggleCode_OnChange,
 	}, self.idButtonContainer)
 
-	self.idCancel = g_Classes.ChoGGi_Button:new({
+	self.idCancel = g_Classes.ChoGGi_XButton:new({
 		Id = "idCancel",
 		Dock = "right",
 		Text = Translate(6879--[[Cancel--]]),
-		Background = g_Classes.ChoGGi_Button.bg_red,
+		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = context.hint_cancel or Strings[302535920001423--[[Close without doing anything.--]]],
 		OnPress = self.idCancel_OnPress,
 	}, self.idButtonContainer)
@@ -132,7 +132,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 end
 
 function ChoGGi_MultiLineTextDlg:idSearch_OnMouseButtonDown(pt,button,...)
-	ChoGGi_Button.OnMouseButtonDown(self,pt,button,...)
+	g_Classes.ChoGGi_XButton.OnMouseButtonDown(self,pt,button,...)
 	self = GetRootDialog(self)
 	if button == "L" then
 		self:FindNext()
@@ -199,7 +199,7 @@ function ChoGGi_MultiLineTextDlg:idSearchText_OnKbdKeyDown(vk,...)
 		end
 	end
 
-	return ChoGGi_TextInput.OnKbdKeyDown(self.idSearchText,vk,...)
+	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idSearchText,vk,...)
 end
 
 -- searches for text or goes to line number
@@ -255,7 +255,7 @@ function ChoGGi_MultiLineTextDlg:idToggleCode_OnChange(check)
 	if check then
 		self.idEdit:SetPlugins(self.plugin_names)
 	else
-		self.idEdit:RemovePlugin("ChoGGi_CodeEditorPlugin")
+		self.idEdit:RemovePlugin("ChoGGi_XCodeEditorPlugin")
 	end
 end
 -- stable name for external use

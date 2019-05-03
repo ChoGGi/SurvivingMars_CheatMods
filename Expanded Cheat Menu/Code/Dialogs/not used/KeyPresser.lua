@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 DefineClass.ChoGGi_KeyPresserDlg = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 }
 
 const.vkLeftWin_ChoGGi = 92
@@ -33,7 +33,7 @@ function ChoGGi_KeyPresserDlg:Init(parent, context)
 	-- let us override enter/esc
 	self.idEdit.OnKbdKeyDown = function(obj, vk)
 		print("vk:",vk,"key:",VKStrNames[vk])
-		return g_Classes.ChoGGi_MultiLineEdit.OnKbdKeyDown(obj, vk)
+		return g_Classes.ChoGGi_XMultiLineEdit.OnKbdKeyDown(obj, vk)
 	end
 
 	self:PostInit(context.parent)

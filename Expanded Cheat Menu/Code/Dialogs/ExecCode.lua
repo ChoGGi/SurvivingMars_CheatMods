@@ -13,7 +13,7 @@ local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_ExecCodeDlg")
 end
 DefineClass.ChoGGi_ExecCodeDlg = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 	obj = false,
 	obj_name = false,
 
@@ -30,11 +30,11 @@ function ChoGGi_ExecCodeDlg:Init(parent, context)
 	local g_Classes = g_Classes
 
 	if blacklist then
-		self.plugin_names = {"ChoGGi_CodeEditorPlugin"}
+		self.plugin_names = {"ChoGGi_XCodeEditorPlugin"}
 	else
 		self.plugin_names = {
-			"ChoGGi_CodeEditorPlugin",
-			"ChoGGi_ExternalTextEditorPlugin",
+			"ChoGGi_XCodeEditorPlugin",
+			"ChoGGi_XExternalTextEditorPlugin",
 		}
 	end
 
@@ -66,7 +66,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 	self.idEdit:SetPlugins(self.plugin_names)
 --~ 	self.idEdit.update_thread = self.idEdit:CreateThread("update_thread", self.idEdit.UpdateThread, self.idEdit)
 
-	self.idButtonContainer = g_Classes.ChoGGi_DialogSection:new({
+	self.idButtonContainer = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idButtonContainer",
 		Dock = "bottom",
 		Margins = box(0,0,0,4),
@@ -74,7 +74,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 
 	-- top row
 	if not blacklist then
-		self.idTopButs = g_Classes.ChoGGi_DialogSection:new({
+		self.idTopButs = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idTopButs",
 			Dock = "top",
 			Margins = box(0,0,0,4),
@@ -83,7 +83,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 		self.idEdit.external_cmd = ChoGGi.UserSettings.ExternalEditorCmd
 		self.idEdit.external_path = ChoGGi.UserSettings.ExternalEditorPath
 
-		self.idExterEdit = g_Classes.ChoGGi_Button:new({
+		self.idExterEdit = g_Classes.ChoGGi_XButton:new({
 			Id = "idExterEdit",
 			Dock = "left",
 			Text = Strings[302535920000471--[[External Editor--]]],
@@ -94,7 +94,7 @@ Press again to toggle updating."--]]],
 			OnPress = self.idExterEdit_OnPress,
 		}, self.idTopButs)
 
-		self.idExterReadFile = g_Classes.ChoGGi_Button:new({
+		self.idExterReadFile = g_Classes.ChoGGi_XButton:new({
 			Id = "idExterReadFile",
 			Dock = "left",
 			Text = Strings[302535920001435--[[Read File--]]],
@@ -105,7 +105,7 @@ Press again to toggle updating."--]]],
 		}, self.idTopButs)
 		self.idExterReadFile:SetVisible(false)
 
-		self.idExterFocusUpdate = g_Classes.ChoGGi_CheckButton:new({
+		self.idExterFocusUpdate = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idExterFocusUpdate",
 			Dock = "left",
 			Text = Strings[302535920001438--[[Focus Update--]]],
@@ -117,22 +117,22 @@ Press again to toggle updating."--]]],
 		self.idExterFocusUpdate:SetVisible(false)
 	end -- top row
 
-	self.idBottomButs = g_Classes.ChoGGi_DialogSection:new({
+	self.idBottomButs = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idBottomButs",
 		Dock = "bottom",
 	}, self.idButtonContainer)
 
 	do -- left side
 
-		self.idLeftButs = g_Classes.ChoGGi_DialogSection:new({
+		self.idLeftButs = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idLeftButs",
 			Dock = "left",
 		}, self.idBottomButs)
 
-		self.idOK = g_Classes.ChoGGi_Button:new({
+		self.idOK = g_Classes.ChoGGi_XButton:new({
 			Id = "idOK",
 			Dock = "left",
-			Background = g_Classes.ChoGGi_Button.bg_green,
+			Background = g_Classes.ChoGGi_XButton.bg_green,
 			Text = Strings[302535920000040--[[Exec Code--]]],
 			RolloverText = Strings[302535920000073--[[Execute code in text box (Ctrl-Enter or Shift-Enter will also work).--]]],
 			Margins = box10,
@@ -140,7 +140,7 @@ Press again to toggle updating."--]]],
 		}, self.idLeftButs)
 
 		if self.obj then
-			self.idInsertObj = g_Classes.ChoGGi_Button:new({
+			self.idInsertObj = g_Classes.ChoGGi_XButton:new({
 				Id = "idInsertObj",
 				Dock = "left",
 				Text = Strings[302535920000075--[[Insert Obj--]]],
@@ -152,12 +152,12 @@ Press again to toggle updating."--]]],
 	end -- left side
 
 	do -- right side
-	self.idRightButs = g_Classes.ChoGGi_DialogSection:new({
+	self.idRightButs = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idRightButs",
 		Dock = "right",
 	}, self.idBottomButs)
 
-	self.idToggleCode = g_Classes.ChoGGi_CheckButton:new({
+	self.idToggleCode = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idToggleCode",
 		Dock = "left",
 		Text = Strings[302535920001474--[[Code Highlight--]]],
@@ -166,7 +166,7 @@ Press again to toggle updating."--]]],
 	}, self.idRightButs)
 	self.idToggleCode:SetIconRow(2)
 
-	self.idWrapLines = g_Classes.ChoGGi_CheckButton:new({
+	self.idWrapLines = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idWrapLines",
 		Dock = "left",
 		Text = Strings[302535920001288--[[Wrap Lines--]]],
@@ -176,11 +176,11 @@ Press again to toggle updating."--]]],
 	}, self.idRightButs)
 	self.idWrapLines:SetIconRow(ChoGGi.UserSettings.WordWrap and 2 or 1)
 
-	self.idCancel = g_Classes.ChoGGi_Button:new({
+	self.idCancel = g_Classes.ChoGGi_XButton:new({
 		Id = "idCancel",
 		Dock = "right",
 		Text = Translate(6879--[[Cancel--]]),
-		Background = g_Classes.ChoGGi_Button.bg_red,
+		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = Strings[302535920000074--[[Cancel without changing anything.--]]],
 		Margins = box(0, 0, 10, 0),
 		OnPress = self.idCloseX.OnPress,
@@ -197,15 +197,15 @@ function ChoGGi_ExecCodeDlg:idToggleCode_OnChange(check)
 	if check then
 		self.idEdit:SetPlugins(self.plugin_names)
 	else
-		self.idEdit:RemovePlugin("ChoGGi_CodeEditorPlugin")
+		self.idEdit:RemovePlugin("ChoGGi_XCodeEditorPlugin")
 	end
 end
 
 function ChoGGi_ExecCodeDlg:idEdit_OnSetFocus(...)
 	if self.focus_update and self == g_ExternalTextEditorActiveCtrl then
-		ChoGGi_ExternalTextEditorPlugin.ApplyEdit(nil, "Modified", self)
+		g_Classes.ChoGGi_XExternalTextEditorPlugin.ApplyEdit(nil, "Modified", self)
 	end
-	return ChoGGi_MultiLineEdit.OnSetFocus(self,...)
+	return g_Classes.ChoGGi_XMultiLineEdit.OnSetFocus(self,...)
 end
 
 function ChoGGi_ExecCodeDlg:idExterFocusUpdate_OnChange(which)
@@ -213,7 +213,7 @@ function ChoGGi_ExecCodeDlg:idExterFocusUpdate_OnChange(which)
 end
 
 function ChoGGi_ExecCodeDlg:idExterReadFile_OnPress()
-	ChoGGi_ExternalTextEditorPlugin.ApplyEdit(nil, "Modified", GetRootDialog(self).idEdit)
+	g_Classes.ChoGGi_XExternalTextEditorPlugin.ApplyEdit(nil, "Modified", GetRootDialog(self).idEdit)
 end
 
 function ChoGGi_ExecCodeDlg:idExterEdit_OnPress()
@@ -227,7 +227,7 @@ function ChoGGi_ExecCodeDlg:idExterEdit_OnPress()
 	end
 
 	-- add updater
-	local idx = table.find(self.idEdit.plugins,"class","ChoGGi_ExternalTextEditorPlugin")
+	local idx = table.find(self.idEdit.plugins,"class","ChoGGi_XExternalTextEditorPlugin")
 	if idx then
 		self.idExterReadFile:SetVisible(true)
 		self.idExterFocusUpdate:SetVisible(true)
@@ -264,7 +264,7 @@ function ChoGGi_ExecCodeDlg:idEdit_OnKbdKeyDown(vk)
 		self.idCloseX:Press()
 		return "break"
 	end
-	return ChoGGi_TextInput.OnKbdKeyDown(self.idEdit, vk)
+	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idEdit, vk)
 end
 
 function ChoGGi_ExecCodeDlg:Done()

@@ -40,7 +40,7 @@ local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_MinimapDlg")
 end
 DefineClass.ChoGGi_MinimapDlg = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 	dialog_width = 500.0,
 	dialog_height = 500.0,
 	dialog_original_pos = false,
@@ -72,7 +72,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
-	self.idCaptionToggle = g_Classes.ChoGGi_ImageRows:new({
+	self.idCaptionToggle = g_Classes.ChoGGi_XImageRows:new({
 		Id = "idCaptionToggle",
 		Dock = "left",
 		ZOrder = 0,
@@ -92,7 +92,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 
 	self.idDialog:SetTransparency(self.opacity)
 
-	self.idMapArea = g_Classes.ChoGGi_DialogSection:new({
+	self.idMapArea = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idMapArea",
 	}, self.idDialog)
 
@@ -100,18 +100,18 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		Id = "idMapImage",
 	}, self.idMapArea)
 
-	self.idMapControl = g_Classes.ChoGGi_MapControl:new({
+	self.idMapControl = g_Classes.ChoGGi_XMapControl:new({
 		Id = "idMapControl",
 	}, self.idMapImage)
 
-	self.idToggleArea = g_Classes.ChoGGi_DialogSection:new({
+	self.idToggleArea = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idToggleArea",
 		Dock = "bottom",
 	}, self.idDialog)
 	self.idToggleArea:SetVisible(false)
 	self.idToggleArea:SetTransparency(-255)
 
-	self.idToggleDblSize = g_Classes.ChoGGi_Button:new({
+	self.idToggleDblSize = g_Classes.ChoGGi_XButton:new({
 		Id = "idToggleDblSize",
 		Dock = "left",
 		Text = [[Dbl Size]],
@@ -121,7 +121,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		OnPress = self.idToggleDblSizeOnPress,
 	}, self.idToggleArea)
 
-	self.idResetDialog = g_Classes.ChoGGi_Button:new({
+	self.idResetDialog = g_Classes.ChoGGi_XButton:new({
 		Id = "idResetDialog",
 		Dock = "left",
 		Text = [[Reset]],
@@ -131,7 +131,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		OnPress = self.idResetDialogOnPress,
 	}, self.idToggleArea)
 
-	self.idUseScreenShots = g_Classes.ChoGGi_CheckButton:new({
+	self.idUseScreenShots = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idUseScreenShots",
 		Dock = "left",
 		Text = [[Image]],
@@ -143,7 +143,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 
 	self.idUseScreenShots:SetCheck(mod_UseScreenshots)
 
-	self.idUpdateMap = g_Classes.ChoGGi_Button:new({
+	self.idUpdateMap = g_Classes.ChoGGi_XButton:new({
 		Id = "idUpdateMap",
 		Dock = "left",
 		Text = [[Update]],
@@ -156,7 +156,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		self.idUpdateMap:SetVisible(false)
 	end
 
-	self.idOpacity = g_Classes.ChoGGi_TextInput:new({
+	self.idOpacity = g_Classes.ChoGGi_XTextInput:new({
 		Id = "idOpacity",
 		Dock = "right",
 		MinWidth = 50,
@@ -359,7 +359,7 @@ function ChoGGi_MinimapDlg:UpdateMapImage(image)
 	end
 end
 
-DefineClass.ChoGGi_MapControl = {
+DefineClass.ChoGGi_XMapControl = {
   __parents = {"XControl"},
 	-- the little red circle that could
   slider_color = red,
@@ -375,7 +375,7 @@ DefineClass.ChoGGi_MapControl = {
 	sphere_colour = green,
 }
 
-function ChoGGi_MapControl:OnMouseButtonDown(pt, button)
+function ChoGGi_XMapControl:OnMouseButtonDown(pt, button)
   if button == "L" then
 
 		if not IsValid(self.sphere) then
@@ -394,7 +394,7 @@ function ChoGGi_MapControl:OnMouseButtonDown(pt, button)
     return "break"
   end
 end
-function ChoGGi_MapControl:OnMouseButtonUp(pt, button)
+function ChoGGi_XMapControl:OnMouseButtonUp(pt, button)
   if button == "L" then
 		if IsValid(self.sphere) then
 			self.sphere:delete()
@@ -404,7 +404,7 @@ function ChoGGi_MapControl:OnMouseButtonUp(pt, button)
   end
 end
 
-function ChoGGi_MapControl:OnMousePos(pt)
+function ChoGGi_XMapControl:OnMousePos(pt)
   if not self.mouse_down then
     return "break"
   end
@@ -425,19 +425,19 @@ function ChoGGi_MapControl:OnMousePos(pt)
   return "break"
 end
 
-function ChoGGi_MapControl:OnMouseEnter(...)
+function ChoGGi_XMapControl:OnMouseEnter(...)
 	self.mouse_pt = true
 	-- workaround to update mouse pos
 	self.desktop:SetFocus()
 	self:SetFocus()
 	return XWindow.OnMouseEnter(self,...)
 end
-function ChoGGi_MapControl:OnMouseLeft(...)
+function ChoGGi_XMapControl:OnMouseLeft(...)
 	self.mouse_pt = false
 	return XWindow.OnMouseLeft(self,...)
 end
 
-function ChoGGi_MapControl:DrawContent(clip_rect)
+function ChoGGi_XMapControl:DrawContent(clip_rect)
 	if not self.mouse_pt then
 		return
 	end

@@ -108,7 +108,7 @@ function ChoGGi.MenuFuncs.ExamineObject()
 	local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos())
 	-- everywhere is covered in xdialogs so skip them
 	if target and not target:IsKindOf("XDialog") then
-		ChoGGi.ComFuncs.OpenInExamineDlg(target)
+		return ChoGGi.ComFuncs.OpenInExamineDlg(target)
 	end
 
 	-- if in main menu then open examine and console

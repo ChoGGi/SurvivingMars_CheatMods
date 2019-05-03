@@ -39,7 +39,7 @@ if ChoGGi.testing then
 	text_style1 = "ChoGGi_Text14"
 	text_style2 = "ChoGGi_TextList14"
 end
-DefineClass.ChoGGi_Text = {
+DefineClass.ChoGGi_XText = {
 	__parents = {"XText"},
 	TextStyle = text_style1,
 	-- default
@@ -54,13 +54,13 @@ DefineClass.ChoGGi_Text = {
 	RolloverTitle = Translate(126095410863--[[Info--]]),
 }
 
-DefineClass.ChoGGi_Label = {
+DefineClass.ChoGGi_XLabel = {
 	__parents = {"XLabel"},
 	TextStyle = "ChoGGi_Label",
 	Translate = false,
 	VAlign = "center",
 }
-function ChoGGi_Label:SetTitle(win,title)
+function ChoGGi_XLabel:SetTitle(win,title)
 	win = win or self
 	if win.prefix and not win.override_title then
 		win.idCaption:SetText(win.prefix .. ": " .. (title or win.title or self.name or ""))
@@ -69,7 +69,7 @@ function ChoGGi_Label:SetTitle(win,title)
 	end
 end
 
-DefineClass.ChoGGi_Image = {
+DefineClass.ChoGGi_XImage = {
 	__parents = {"XImage"},
 	Column = 1,
 	Columns = 2,
@@ -80,7 +80,7 @@ DefineClass.ChoGGi_Image = {
 	RolloverTemplate = "Rollover",
 }
 
-DefineClass.ChoGGi_ImageRows = {
+DefineClass.ChoGGi_XImageRows = {
 	__parents = {"XImage"},
 	Rows = 2,
 	VAlign = "center",
@@ -88,7 +88,7 @@ DefineClass.ChoGGi_ImageRows = {
 	ImageScale = point(250, 250),
 	RolloverTemplate = "Rollover",
 }
-DefineClass.ChoGGi_MoveControl = {
+DefineClass.ChoGGi_XMoveControl = {
 	__parents = {"XMoveControl"},
 	Dock = "top",
 	Background = medium_gray,
@@ -98,7 +98,7 @@ DefineClass.ChoGGi_MoveControl = {
 	RolloverTemplate = "Rollover",
 }
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
-function ChoGGi_MoveControl:OnKbdKeyDown(vk,...)
+function ChoGGi_XMoveControl:OnKbdKeyDown(vk,...)
 	if vk == const.vkEsc and IsShiftPressed() then
 		self.dialog.idCloseX:Press()
 		return "break"
@@ -106,10 +106,10 @@ function ChoGGi_MoveControl:OnKbdKeyDown(vk,...)
 	return XMoveControl.OnKbdKeyDown(self,vk,...)
 end
 
-function ChoGGi_MoveControl:ToggleRollup(win,bool)
+function ChoGGi_XMoveControl:ToggleRollup(win,bool)
 	for i = 1, #win.idDialog do
 		local section = win.idDialog[i]
-		if section.class ~= "ChoGGi_MoveControl" then
+		if section.class ~= "ChoGGi_XMoveControl" then
 			section:SetVisible(bool)
 		end
 	end
@@ -119,9 +119,9 @@ function ChoGGi_MoveControl:ToggleRollup(win,bool)
 	end
 end
 
-function ChoGGi_MoveControl:OnMouseButtonDoubleClick(pt,button,...)
+function ChoGGi_XMoveControl:OnMouseButtonDoubleClick(pt,button,...)
 	-- window object
-	local win = GetParentOfKind(self, "ChoGGi_Window")
+	local win = GetParentOfKind(self, "ChoGGi_XWindow")
 	if win.idDialog then
 		if win.dialog_rolled_up then
 			-- already rolled up so unhide sections and get saved size
@@ -138,7 +138,7 @@ function ChoGGi_MoveControl:OnMouseButtonDoubleClick(pt,button,...)
 	return XMoveControl.OnMouseButtonDoubleClick(self,pt,button,...)
 end
 
-DefineClass.ChoGGi_Buttons = {
+DefineClass.ChoGGi_XButtons = {
 	__parents = {"XTextButton"},
 	TextStyle = "ChoGGi_Buttons",
 	RolloverTitle = Translate(126095410863--[[Info--]]),
@@ -152,8 +152,8 @@ DefineClass.ChoGGi_Buttons = {
 	FoldWhenHidden = true,
 }
 
-DefineClass.ChoGGi_ToolbarButton = {
-	__parents = {"ChoGGi_Buttons"},
+DefineClass.ChoGGi_XToolbarButton = {
+	__parents = {"ChoGGi_XButtons"},
 	RolloverZoom = 1600,
 	ImageScale = point(1100,1100),
 	MinWidth = 0,
@@ -162,20 +162,20 @@ DefineClass.ChoGGi_ToolbarButton = {
 	RolloverBackground = white,
 	PressedBackground = light_gray,
 }
-DefineClass.ChoGGi_Button = {
-	__parents = {"ChoGGi_Buttons"},
+DefineClass.ChoGGi_XButton = {
+	__parents = {"ChoGGi_XButtons"},
 --~ 	MinWidth = 60,
 	Text = Translate(6878--[[OK--]]),
 	Background = light_gray,
 	bg_green = -8192126,
 	bg_red = -41121,
 }
-function ChoGGi_Button:Init()
+function ChoGGi_XButton:Init()
 	self.idLabel:SetDock("box")
 end
 
-DefineClass.ChoGGi_CloseButton = {
-	__parents = {"ChoGGi_Buttons"},
+DefineClass.ChoGGi_XCloseButton = {
+	__parents = {"ChoGGi_XButtons"},
 	Image = "UI/Common/mission_no.tga",
 	VAlign = "center",
 	HAlign = "right",
@@ -184,8 +184,8 @@ DefineClass.ChoGGi_CloseButton = {
 	RolloverText = Strings[302535920000074--[[Cancel without changing anything.--]]],
 }
 
-DefineClass.ChoGGi_ConsoleButton = {
-	__parents = {"ChoGGi_Button"},
+DefineClass.ChoGGi_XConsoleButton = {
+	__parents = {"ChoGGi_XButton"},
 	TextStyle = "ChoGGi_ConsoleButton",
 	Padding = box(5, 2, 5, 2),
 	BorderWidth = 1,
@@ -194,13 +194,13 @@ DefineClass.ChoGGi_ConsoleButton = {
 	Margins = box(4,0,0,0),
 }
 
-DefineClass.ChoGGi_ButtonMenu = {
-	__parents = {"ChoGGi_Button"},
+DefineClass.ChoGGi_XButtonMenu = {
+	__parents = {"ChoGGi_XButton"},
 	TextStyle = "ChoGGi_ButtonMenu",
 	LayoutMethod = "HList",
 	Margins = box(0,0,0,0),
 }
-DefineClass.ChoGGi_ComboButton = {
+DefineClass.ChoGGi_XComboButton = {
 	__parents = {"XComboButton"},
 	TextStyle = "ChoGGi_ComboButton",
 	Background = light_gray,
@@ -216,10 +216,10 @@ DefineClass.ChoGGi_ComboButton = {
 	BorderColor = black,
 	RolloverBorderColor = black,
 }
---~ function ChoGGi_ComboButton:Init()
+--~ function ChoGGi_XComboButton:Init()
 --~ 	self:SetIcon("CommonAssets/UI/arrowright-40.tga")
 --~ end
---~ function ChoGGi_ComboButton:OnMouseButtonDown()
+--~ function ChoGGi_XComboButton:OnMouseButtonDown()
 --~ 	self:SetIcon("CommonAssets/UI/arrowdown-40.tga")
 --~ 	DeleteThread(self.popup_opened)
 --~ 	self.popup_opened = CreateRealTimeThread(function()
@@ -228,11 +228,11 @@ DefineClass.ChoGGi_ComboButton = {
 --~ 		end
 --~ 	end)
 --~ end
---~ function ChoGGi_ComboButton:OnMouseButtonUp()
+--~ function ChoGGi_XComboButton:OnMouseButtonUp()
 --~ 	self:SetIcon("CommonAssets/UI/arrowright-40.tga")
 --~ end
 
-DefineClass.ChoGGi_CheckButton = {
+DefineClass.ChoGGi_XCheckButton = {
 	__parents = {"XCheckButton"},
 	TextStyle = "ChoGGi_CheckButton",
 	RolloverTitle = Translate(126095410863--[[Info--]]),
@@ -243,11 +243,11 @@ DefineClass.ChoGGi_CheckButton = {
 	RolloverZoom = 1100,
 	FoldWhenHidden = true,
 }
-function ChoGGi_CheckButton:Init()
+function ChoGGi_XCheckButton:Init()
 	self.idIcon:SetBackground(light_gray)
 end
 
-DefineClass.ChoGGi_PopupList = {
+DefineClass.ChoGGi_XPopupList = {
 	__parents = {"XPopupList"},
 	-- -1000 is for XRollovers which get max_int
 	ZOrder = max_int - 1000,
@@ -255,15 +255,15 @@ DefineClass.ChoGGi_PopupList = {
 	BorderWidth = 2,
 --~ 	LayoutMethod = "VList",
 }
-function ChoGGi_PopupList:Close(...)
+function ChoGGi_XPopupList:Close(...)
 	if self.items and self.items.clear_objs then
 		ChoGGi.ComFuncs.ClearShowObj(true)
 	end
 	XPopupList.Close(self,...)
 end
 
-DefineClass.ChoGGi_CheckButtonMenu = {
-	__parents = {"ChoGGi_CheckButton"},
+DefineClass.ChoGGi_XCheckButtonMenu = {
+	__parents = {"ChoGGi_XCheckButton"},
 	TextStyle = "ChoGGi_CheckButtonMenu",
 	Background = light_gray,
 	PressedBackground = medium_gray,
@@ -272,11 +272,11 @@ DefineClass.ChoGGi_CheckButtonMenu = {
 	Padding = box(4,0,0,0),
 }
 
-DefineClass.ChoGGi_ExternalTextEditorPlugin = {
+DefineClass.ChoGGi_XExternalTextEditorPlugin = {
 	__parents = {"XExternalTextEditorPlugin"},
 }
 
-function ChoGGi_ExternalTextEditorPlugin:OpenEditor(edit)
+function ChoGGi_XExternalTextEditorPlugin:OpenEditor(edit)
 	local g = ChoGGi.Temp._G
   g_ExternalTextEditorActiveCtrl = edit
 	edit.external_file = edit.external_path .. "/tempedit.lua"
@@ -291,12 +291,12 @@ function ChoGGi_ExternalTextEditorPlugin:OpenEditor(edit)
 		print("ExternalTextEditorPlugin:",result)
 	end
 end
-function ChoGGi_ExternalTextEditorPlugin:OnTextChanged(edit)
+function ChoGGi_XExternalTextEditorPlugin:OnTextChanged(edit)
   if g_ExternalTextEditorActiveCtrl == edit then
     ChoGGi.Temp._G.AsyncStringToFile(edit.external_file, edit:GetText())
   end
 end
-function ChoGGi_ExternalTextEditorPlugin.ApplyEdit(file, change, edit)
+function ChoGGi_XExternalTextEditorPlugin.ApplyEdit(file, change, edit)
   if g_ExternalTextEditorActiveCtrl == edit and change == "Modified" then
     local err, content = ChoGGi.Temp._G.AsyncFileToString(file or edit.external_file)
     if not err and edit then
@@ -304,13 +304,13 @@ function ChoGGi_ExternalTextEditorPlugin.ApplyEdit(file, change, edit)
     end
 	end
 end
-DefineClass.ChoGGi_CodeEditorPlugin = {
+DefineClass.ChoGGi_XCodeEditorPlugin = {
 	__parents = {"XCodeEditorPlugin"},
   SelectionColor = -11364918,
   KeywordColor = -7421793,
 }
 
-DefineClass.ChoGGi_List = {
+DefineClass.ChoGGi_XList = {
 	__parents = {"XList"},
 	TextStyle = "ChoGGi_List",
 	RolloverTemplate = "Rollover",
@@ -319,21 +319,21 @@ DefineClass.ChoGGi_List = {
 	FocusedBackground = darker_gray,
 	loaded = false,
 }
-function ChoGGi_List:CreateTextItem(text, props, context)
+function ChoGGi_XList:CreateTextItem(text, props, context)
 	local g_Classes = g_Classes
 	props = props or {}
-	local item = g_Classes.ChoGGi_ListItem:new({
+	local item = g_Classes.ChoGGi_XListItem:new({
 		selectable = props.selectable,
-		MinWidth = GetParentOfKind(self, "ChoGGi_Window"):GetWidth(),
+		MinWidth = GetParentOfKind(self, "ChoGGi_XWindow"):GetWidth(),
 	}, self)
 
 	props.selectable = nil
-	local text_control = g_Classes.ChoGGi_TextList:new(props, item, context)
+	local text_control = g_Classes.ChoGGi_XTextList:new(props, item, context)
 	item.idText = text_control
 	text_control:SetText(text)
 	return item
 end
-DefineClass.ChoGGi_TextList = {
+DefineClass.ChoGGi_XTextList = {
 	__parents = {"XText"},
 	TextStyle = text_style2,
 	RolloverTemplate = "Rollover",
@@ -341,7 +341,7 @@ DefineClass.ChoGGi_TextList = {
 	VAlign = "center",
 }
 
-DefineClass.ChoGGi_ListItem = {
+DefineClass.ChoGGi_XListItem = {
 	__parents = {"XListItem"},
 	RolloverZoom = 1100,
 	SelectionBackground = darker_blue,
@@ -349,7 +349,7 @@ DefineClass.ChoGGi_ListItem = {
 	FoldWhenHidden = true,
 }
 
-DefineClass.ChoGGi_Dialog = {
+DefineClass.ChoGGi_XDialog = {
 	__parents = {"XDialog"},
 	HandleMouse = true,
 	Translate = false,
@@ -364,7 +364,7 @@ DefineClass.ChoGGi_Dialog = {
 	Clip = "self",
 }
 
-DefineClass.ChoGGi_DialogSection = {
+DefineClass.ChoGGi_XDialogSection = {
 	__parents = {"XWindow"},
 	HandleMouse = true,
 	FoldWhenHidden = true,
@@ -373,13 +373,13 @@ DefineClass.ChoGGi_DialogSection = {
 	Clip = "self",
 }
 
-DefineClass.ChoGGi_ScrollArea = {
+DefineClass.ChoGGi_XScrollArea = {
 	__parents = {"XScrollArea"},
 	Margins = box(4,4,4,4),
 	BorderWidth = 0,
 }
 
-DefineClass.ChoGGi_SleekScroll = {
+DefineClass.ChoGGi_XSleekScroll = {
 	__parents = {"XSleekScroll"},
 	MinThumbSize = 30,
 	AutoHide = true,
@@ -392,8 +392,8 @@ DefineClass.ChoGGi_SleekScroll = {
 	Margins = box(1, 1, 0, 0),
 }
 -- change bg on mouseover
-ChoGGi_SleekScroll.CalcBackground = XButton.CalcBackground
-function ChoGGi_SleekScroll:OnSetRollover(rollover)
+ChoGGi_XSleekScroll.CalcBackground = XButton.CalcBackground
+function ChoGGi_XSleekScroll:OnSetRollover(rollover)
   XControl.OnSetRollover(self, rollover)
   if rollover then
     if self.state == "mouse-out" then
@@ -410,13 +410,13 @@ function ChoGGi_SleekScroll:OnSetRollover(rollover)
 end
 
 
-function ChoGGi_SleekScroll:SetHorizontal()
+function ChoGGi_XSleekScroll:SetHorizontal()
 	-- fatter scrollbars
 	self.MinHeight = 12
 	self.MinWidth = 12
 end
 
-DefineClass.ChoGGi_Window = {
+DefineClass.ChoGGi_XWindow = {
 	__parents = {"XWindow"},
 	dialog_width = 500.0,
 	dialog_height = 500.0,
@@ -442,7 +442,7 @@ if not PropObjGetProperty(_G,"g_ChoGGiDlgs") then
 end
 
 -- parent,context
-function ChoGGi_Window:AddElements()
+function ChoGGi_XWindow:AddElements()
 	local g_Classes = g_Classes
 	local ChoGGi = ChoGGi
 
@@ -464,7 +464,7 @@ function ChoGGi_Window:AddElements()
 	end
 
 	-- add container dialog for everything to fit in
-	self.idDialog = g_Classes.ChoGGi_Dialog:new({
+	self.idDialog = g_Classes.ChoGGi_XDialog:new({
 		-- keep stuff from spilling outside the dialog
 		Clip = "self",
 	}, self)
@@ -476,7 +476,7 @@ function ChoGGi_Window:AddElements()
 		Id = "idSizeControl",
 	}, self.idDialog)
 
-	self.idMoveControl = g_Classes.ChoGGi_MoveControl:new({
+	self.idMoveControl = g_Classes.ChoGGi_XMoveControl:new({
 		Id = "idMoveControl",
 		dialog = self,
 			-- need a bit of space so the X fits in the header
@@ -484,13 +484,13 @@ function ChoGGi_Window:AddElements()
 		-- stop title from overflowing
 	}, self.idDialog)
 
-	self.idTitleLeftSection = g_Classes.ChoGGi_DialogSection:new({
+	self.idTitleLeftSection = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idTitleLeftSection",
 		HAlign = "left",
 		Margins = box(0,0,32,0),
 	}, self.idMoveControl)
 
-	self.idTitleRightSection = g_Classes.ChoGGi_DialogSection:new({
+	self.idTitleRightSection = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idTitleRightSection",
 		HAlign = "right",
 	}, self.idMoveControl)
@@ -499,7 +499,7 @@ function ChoGGi_Window:AddElements()
 	self:AddImageButton(UIScale)
 
 	-- title
-	self.idCaption = g_Classes.ChoGGi_Label:new({
+	self.idCaption = g_Classes.ChoGGi_XLabel:new({
 		Id = "idCaption",
 		Padding = box(4,0,0,0),
 	}, self.idTitleLeftSection)
@@ -512,7 +512,7 @@ function ChoGGi_Window:AddElements()
 	self.idMoveControl:SetFocus()
 end
 
-function ChoGGi_Window:AddImageButton(UIScale)
+function ChoGGi_XWindow:AddImageButton(UIScale)
 	-- we use PropObjGetProperty so it doesn't spam the log with errors on _G and mod _G
 	local o = self.obj
 	local image = self.title_image or (type(o) == "table" and self.name ~= "_G"
@@ -521,7 +521,7 @@ function ChoGGi_Window:AddImageButton(UIScale)
 
 	-- as long as x isn't 0 then it's an image
 	if type(image) == "string" and MeasureImage(image) ~= 0 then
-		self.idCaptionImage = ChoGGi_Image:new({
+		self.idCaptionImage = ChoGGi_XImage:new({
 			Id = "idCaptionImage",
 			Dock = "left",
 			RolloverTitle = Strings[302535920000093--[[Go to Obj--]]],
@@ -544,7 +544,7 @@ function ChoGGi_Window:AddImageButton(UIScale)
 	end
 end
 
-function ChoGGi_Window:AddCloseXButton()
+function ChoGGi_XWindow:AddCloseXButton()
 	local close = self.close_func or empty_func
 
 	local RolloverText
@@ -553,10 +553,11 @@ function ChoGGi_Window:AddCloseXButton()
 Hold Shift to close all ""parent"" examine dialogs.
 Hold Ctrl to close all ECM dialogs."--]]]
 	end
+	local g_Classes = g_Classes
 
-	self.idCloseX = ChoGGi_CloseButton:new({
+	self.idCloseX = g_Classes.ChoGGi_XCloseButton:new({
 		Id = "idCloseX",
-		RolloverText = RolloverText or ChoGGi_CloseButton.RolloverText,
+		RolloverText = RolloverText or g_Classes.ChoGGi_XCloseButton.RolloverText,
 		OnPress = function(...)
 			if self:IsKindOf("Examine") then
 				-- close all ecm dialogs
@@ -589,26 +590,26 @@ Hold Ctrl to close all ECM dialogs."--]]]
 	}, self.idTitleRightSection)
 end
 
-function ChoGGi_Window:Done()
+function ChoGGi_XWindow:Done()
 	-- remove from my dialog list
 	g_ChoGGiDlgs[self] = nil
 end
 
-function ChoGGi_Window:idCaptionImageOnMouseButtonDown(pt,button,...)
-	ChoGGi_Image.OnMouseButtonDown(pt,button,...)
-	local dlg = GetParentOfKind(self, "ChoGGi_Window")
+function ChoGGi_XWindow:idCaptionImageOnMouseButtonDown(pt,button,...)
+	g_Classes.ChoGGi_XImage.OnMouseButtonDown(pt,button,...)
+	local dlg = GetParentOfKind(self, "ChoGGi_XWindow")
 	if IsValid(dlg.obj) then
 		ViewAndSelectObject(dlg.obj)
 	end
 end
 
 -- returns point(x,y)
-function ChoGGi_Window:GetPos(dialog)
+function ChoGGi_XWindow:GetPos(dialog)
 	return (self[dialog or "idDialog"] or dialog).box:min()
 end
 
 -- get size of box and offset header
-function ChoGGi_Window:BoxSize(obj)
+function ChoGGi_XWindow:BoxSize(obj)
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 	local obj_dlg = obj.idDialog or obj.idContainer
 	if not obj_dlg then
@@ -633,9 +634,9 @@ function ChoGGi_Window:BoxSize(obj)
 end
 
 -- takes either a point, or obj to set pos
-function ChoGGi_Window:SetPos(obj,dialog)
+function ChoGGi_XWindow:SetPos(obj,dialog)
 	local dlg = self[dialog or "idDialog"] or dialog
-	local x,y,w,h = self.BoxSize and self:BoxSize(obj) or ChoGGi_Window.BoxSize(self,obj)
+	local x,y,w,h = self.BoxSize and self:BoxSize(obj) or g_Classes.ChoGGi_XWindow.BoxSize(self,obj)
 
 	if IsPoint(obj) then
 		local box = dlg.box
@@ -657,7 +658,7 @@ function ChoGGi_Window:SetPos(obj,dialog)
 	dlg:SetBox(x,y,w,h)
 end
 
-function ChoGGi_Window:SetSize(w,h,dialog)
+function ChoGGi_XWindow:SetSize(w,h,dialog)
 	local dlg = self[dialog or "idDialog"] or dialog
 	local box = dlg.box
 	local x,y = box:minx(),box:miny()
@@ -667,36 +668,27 @@ function ChoGGi_Window:SetSize(w,h,dialog)
 	end
 	dlg:SetBox(x,y,w or 100,h or 100)
 end
-function ChoGGi_Window:ResetSize(dialog)
+function ChoGGi_XWindow:ResetSize(dialog)
 	self:SetSize(self.dialog_width_scaled, self.dialog_height_scaled,dialog or "idDialog")
 end
-function ChoGGi_Window:SetWidth(w, dialog)
+function ChoGGi_XWindow:SetWidth(w, dialog)
 	self:SetSize(w, (self[dialog or "idDialog"] or dialog).box:sizey())
 end
-function ChoGGi_Window:SetHeight(h,dialog)
+function ChoGGi_XWindow:SetHeight(h,dialog)
 	self:SetSize((self[dialog or "idDialog"] or dialog).box:sizex(),h)
 end
-function ChoGGi_Window:GetSize(dialog)
+function ChoGGi_XWindow:GetSize(dialog)
 --~ 	return (self[dialog or "idDialog"] or dialog):size()
 	return (self[dialog or "idDialog"] or dialog).box:size()
 end
-function ChoGGi_Window:GetHeight(dialog)
+function ChoGGi_XWindow:GetHeight(dialog)
 	return (self[dialog or "idDialog"] or dialog).box:sizey()
 end
-function ChoGGi_Window:GetWidth(dialog)
+function ChoGGi_XWindow:GetWidth(dialog)
 	return (self[dialog or "idDialog"] or dialog).box:sizex()
 end
 
-local function UpdateListWidth(self)
-	WaitMsg("OnRender")
-	if self.idList[1] then
-		local width = self.idList[1].box:sizex()
-		if width > 0 then
-			self:SetWidth(width + 35)
-		end
-	end
-end
-function ChoGGi_Window:PostInit(parent,pt,title_skip)
+function ChoGGi_XWindow:PostInit(parent,pt,title_skip)
 	local x,y,w,h
 
 	-- some funcs opened in examine have more than one return value
@@ -761,7 +753,15 @@ function ChoGGi_Window:PostInit(parent,pt,title_skip)
 
 	-- resize width of dialog to match width of first list item
 	if is_list then
-		CreateRealTimeThread(UpdateListWidth,self)
+		CreateRealTimeThread(function()
+			WaitMsg("OnRender")
+			if self.idList[1] then
+				local width = self.idList[1].box:sizex()
+				if width > 0 then
+					self:SetWidth(width + 35)
+				end
+			end
+		end)
 	end
 
 	-- add some tooltipping
@@ -783,61 +783,61 @@ function ChoGGi_Window:PostInit(parent,pt,title_skip)
 end
 
 -- scrollable textbox
-function ChoGGi_Window:AddScrollText()
+function ChoGGi_XWindow:AddScrollText()
 	local g_Classes = g_Classes
 
-	self.idScrollSection = g_Classes.ChoGGi_DialogSection:new({
+	self.idScrollSection = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idScrollSection",
 		BorderWidth = 1,
 		Margins = box(0,0,0,0),
 		BorderColor = light_gray,
 	}, self.idDialog)
 
-	self.idScrollArea = g_Classes.ChoGGi_ScrollArea:new({
+	self.idScrollArea = g_Classes.ChoGGi_XScrollArea:new({
 		Id = "idScrollArea",
 		VScroll = "idScrollV",
 		HScroll = "idScrollH",
 	}, self.idScrollSection)
 
-	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollV = g_Classes.ChoGGi_XSleekScroll:new({
 		Id = "idScrollV",
 		Target = "idScrollArea",
 		Dock = "right",
 	}, self.idScrollSection)
 
-	self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollH = g_Classes.ChoGGi_XSleekScroll:new({
 		Id = "idScrollH",
 		Target = "idScrollArea",
 		Dock = "bottom",
 		Horizontal = true,
 	}, self.idScrollSection)
 
-	self.idText = g_Classes.ChoGGi_Text:new({
+	self.idText = g_Classes.ChoGGi_XText:new({
 		Id = "idText",
 	}, self.idScrollArea)
 end
 
-function ChoGGi_Window:AddScrollList()
+function ChoGGi_XWindow:AddScrollList()
 	local g_Classes = g_Classes
 
-	self.idScrollSection = g_Classes.ChoGGi_DialogSection:new({
+	self.idScrollSection = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idScrollSection",
 		Margins = box(4,4,4,4),
 	}, self.idDialog)
 
-	self.idList = g_Classes.ChoGGi_List:new({
+	self.idList = g_Classes.ChoGGi_XList:new({
 		Id = "idList",
 		VScroll = "idScrollV",
 		HScroll = "idScrollH",
 	}, self.idScrollSection)
 
-	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollV = g_Classes.ChoGGi_XSleekScroll:new({
 		Id = "idScrollV",
 		Target = "idList",
 		Dock = "right",
 	}, self.idScrollSection)
 
-	self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollH = g_Classes.ChoGGi_XSleekScroll:new({
 		Id = "idScrollH",
 		Target = "idList",
 		Dock = "bottom",
@@ -845,28 +845,28 @@ function ChoGGi_Window:AddScrollList()
 	}, self.idScrollSection)
 end
 
-function ChoGGi_Window:AddScrollEdit()
+function ChoGGi_XWindow:AddScrollEdit()
 	local g_Classes = g_Classes
 
-	self.idScrollSection = g_Classes.ChoGGi_DialogSection:new({
+	self.idScrollSection = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idScrollSection",
 		Margins = box(4,4,4,4),
 	}, self.idDialog)
 
-	self.idScrollV = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollV = g_Classes.ChoGGi_XSleekScroll:new({
 		Id = "idScrollV",
 		Target = "idEdit",
 		Dock = "right",
 	}, self.idScrollSection)
 
-	self.idScrollH = g_Classes.ChoGGi_SleekScroll:new({
+	self.idScrollH = g_Classes.ChoGGi_XSleekScroll:new({
 		Id = "idScrollH",
 		Target = "idEdit",
 		Dock = "bottom",
 		Horizontal = true,
 	}, self.idScrollSection)
 
-	self.idEdit = g_Classes.ChoGGi_MultiLineEdit:new({
+	self.idEdit = g_Classes.ChoGGi_XMultiLineEdit:new({
 		Id = "idEdit",
 		VScroll = "idScrollV",
 		HScroll = "idScrollH",
@@ -890,14 +890,14 @@ else
 end
 
 -- show a context menu on rightclick
-DefineClass.ChoGGi_InputContextMenu = {
-	__parents = {"ChoGGi_Window"},
+DefineClass.ChoGGi_XInputContextMenu = {
+	__parents = {"ChoGGi_XWindow"},
 	WordWrap = false,
 	RolloverTemplate = "Rollover",
 	MouseCursor = const.DefaultMouseCursor or "UI/Cursors/cursor.tga",
 }
 --~ XTextEditor:OnKillFocus
-function ChoGGi_InputContextMenu:OnKillFocus()
+function ChoGGi_XInputContextMenu:OnKillFocus()
   ShowVirtualKeyboard(false)
   self:DestroyCursorBlinkThread()
   -- self:ClearSelection()
@@ -907,7 +907,7 @@ function ChoGGi_InputContextMenu:OnKillFocus()
   end
 end
 
-function ChoGGi_InputContextMenu:OnMouseButtonDown(pt, button, ...)
+function ChoGGi_XInputContextMenu:OnMouseButtonDown(pt, button, ...)
   if button == "R" then
 		-- id for PopupToggle
 		self.opened_list_menu_id = self.opened_list_menu_id or Random()
@@ -932,7 +932,7 @@ function ChoGGi_InputContextMenu:OnMouseButtonDown(pt, button, ...)
 	return XTextEditor.OnMouseButtonDown(self,pt, button, ...)
 end
 
-function ChoGGi_InputContextMenu:RetContextList()
+function ChoGGi_XInputContextMenu:RetContextList()
 	-- disable certain items
 	local has_clipboard = GetFromClipboard()
 	local has_selection,can_undo,can_redo
@@ -1007,16 +1007,16 @@ function ChoGGi_InputContextMenu:RetContextList()
 	}
 end
 
-DefineClass.ChoGGi_TextInput = {
-	__parents = {"ChoGGi_InputContextMenu","XEdit"},
+DefineClass.ChoGGi_XTextInput = {
+	__parents = {"ChoGGi_XInputContextMenu","XEdit"},
 --~ 	AllowTabs = false,
 	RolloverTitle = Translate(126095410863--[[Info--]]),
 	Background = light_gray,
 	TextStyle = "ChoGGi_TextInput",
 }
 
-DefineClass.ChoGGi_MultiLineEdit = {
-	__parents = {"ChoGGi_InputContextMenu","XMultiLineEdit"},
+DefineClass.ChoGGi_XMultiLineEdit = {
+	__parents = {"ChoGGi_XInputContextMenu","XMultiLineEdit"},
 	TextStyle = "ChoGGi_MultiLineEdit",
 	-- default
 	Background = dark_gray,
@@ -1028,4 +1028,8 @@ DefineClass.ChoGGi_MultiLineEdit = {
 	-- it'll be fine
 	MaxLen = max_int,
 	MaxLines = max_int,
+}
+
+DefineClass.ChoGGi_XSpacer = {
+	__parents = {"XControl"},
 }

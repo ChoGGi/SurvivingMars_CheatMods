@@ -67,7 +67,7 @@ local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"Examine")
 end
 DefineClass.Examine = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 
 	-- what we're examining
 	obj = false,
@@ -190,13 +190,13 @@ function Examine:Init(parent, context)
 
 	do -- toolbar area
 		-- everything grouped gets a window to go in
-		self.idToolbarArea = g_Classes.ChoGGi_DialogSection:new({
+		self.idToolbarArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idToolbarArea",
 			Dock = "top",
 			DrawOnTop = true,
 		}, self.idDialog)
 
-		self.idToolbarButtons = g_Classes.ChoGGi_DialogSection:new({
+		self.idToolbarButtons = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idToolbarButtons",
 			Dock = "left",
 			LayoutMethod = "HList",
@@ -210,7 +210,7 @@ function Examine:Init(parent, context)
 		}
 
 		-- add all the toolbar buttons than toggle vis when we set the menu
-		self.idButRefresh = g_Classes.ChoGGi_ToolbarButton:new({
+		self.idButRefresh = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButRefresh",
 			Image = "CommonAssets/UI/Menu/reload.tga",
 			RolloverTitle = Translate(1000220--[[Refresh--]]),
@@ -218,7 +218,7 @@ function Examine:Init(parent, context)
 			OnPress = self.idButRefresh_OnPress,
 		}, self.idToolbarButtons)
 		--
-		self.idButSetTransp = g_Classes.ChoGGi_ToolbarButton:new({
+		self.idButSetTransp = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButSetTransp",
 			Image = "CommonAssets/UI/Menu/CutSceneArea.tga",
 			RolloverTitle = Strings[302535920000865--[[Translate--]]],
@@ -226,7 +226,7 @@ function Examine:Init(parent, context)
 			OnPress = self.idButSetTransp_OnPress,
 		}, self.idToolbarButtons)
 		--
-		self.idButClear = g_Classes.ChoGGi_ToolbarButton:new({
+		self.idButClear = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButClear",
 			Image = "CommonAssets/UI/Menu/NoblePreview.tga",
 			RolloverTitle = Translate(594--[[Clear--]]),
@@ -235,7 +235,7 @@ Press once to clear this examine, again to clear all."--]]],
 			OnPress = self.idButClear_OnPress,
 		}, self.idToolbarButtons)
 		--
-		self.idButMarkObject = g_Classes.ChoGGi_ToolbarButton:new({
+		self.idButMarkObject = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButMarkObject",
 			Image = "CommonAssets/UI/Menu/DisableEyeSpec.tga",
 			RolloverTitle = Strings[302535920000057--[[Mark Object--]]],
@@ -243,7 +243,7 @@ Press once to clear this examine, again to clear all."--]]],
 			OnPress = self.idButMarkObject_OnPress,
 		}, self.idToolbarButtons)
 		--
-		self.idButDeleteObj = g_Classes.ChoGGi_ToolbarButton:new({
+		self.idButDeleteObj = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButDeleteObj",
 			Image = "CommonAssets/UI/Menu/delete_objects.tga",
 			RolloverTitle = Translate(502364928914--[[Delete--]]),
@@ -251,7 +251,7 @@ Press once to clear this examine, again to clear all."--]]],
 			OnPress = self.idButDeleteObj_OnPress,
 		}, self.idToolbarButtons)
 		--
-		self.idButSetObjlist = g_Classes.ChoGGi_ToolbarButton:new({
+		self.idButSetObjlist = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButSetObjlist",
 			Image = "CommonAssets/UI/Menu/toggle_post.tga",
 			RolloverTitle = Strings[302535920001558--[[Toggle Objlist--]]],
@@ -259,7 +259,7 @@ Press once to clear this examine, again to clear all."--]]],
 			OnPress = self.idButToggleObjlist_OnPress,
 		}, self.idToolbarButtons)
 		--
-		self.idButMarkAll = g_Classes.ChoGGi_ToolbarButton:new({
+		self.idButMarkAll = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButMarkAll",
 			Image = "CommonAssets/UI/Menu/ExportImageSequence.tga",
 			RolloverTitle = Strings[302535920000058--[[Mark All Objects--]]],
@@ -267,7 +267,7 @@ Press once to clear this examine, again to clear all."--]]],
 			OnPress = self.idButMarkAll_OnPress,
 		}, self.idToolbarButtons)
 		--
-		self.idButMarkAllLine = g_Classes.ChoGGi_ToolbarButton:new({
+		self.idButMarkAllLine = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButMarkAllLine",
 			Image = "CommonAssets/UI/Menu/ShowOcclusion.tga",
 			RolloverTitle = Strings[302535920001512--[[Mark All Objects (Line)--]]],
@@ -275,7 +275,7 @@ Press once to clear this examine, again to clear all."--]]],
 			OnPress = self.idButMarkAllLine_OnPress,
 		}, self.idToolbarButtons)
 		--
-		self.idButDeleteAll = g_Classes.ChoGGi_ToolbarButton:new({
+		self.idButDeleteAll = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButDeleteAll",
 			Image = "CommonAssets/UI/Menu/UnlockCollection.tga",
 			RolloverTitle = Translate(3768--[[Destroy all?--]]),
@@ -284,7 +284,7 @@ Press once to clear this examine, again to clear all."--]]],
 		}, self.idToolbarButtons)
 
 		-- far right side
-		self.idToolbarButtonsRightRefresh = g_Classes.ChoGGi_DialogSection:new({
+		self.idToolbarButtonsRightRefresh = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idToolbarButtonsRightRefresh",
 			Dock = "right",
 			LayoutMethod = "HList",
@@ -294,7 +294,7 @@ Press once to clear this examine, again to clear all."--]]],
 		self.idAutoRefresh_update_str = Strings[302535920001257--[[Auto-refresh list every second.--]]]
 			.. "\n" .. Strings[302535920001422--[[Right-click to change refresh delay.--]]]
 			.. "\n" .. Strings[302535920000106--[[Current--]]] .. ": <color 100 255 100>%s</color>"
-		self.idAutoRefresh = g_Classes.ChoGGi_CheckButton:new({
+		self.idAutoRefresh = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idAutoRefresh",
 			Dock = "right",
 			Text = Strings[302535920000084--[[Auto-Refresh--]]],
@@ -304,7 +304,7 @@ Press once to clear this examine, again to clear all."--]]],
 			OnMouseButtonDown = self.idAutoRefresh_OnMouseButtonDown,
 		}, self.idToolbarButtonsRightRefresh)
 
-		self.idAutoRefreshDelay = g_Classes.ChoGGi_TextInput:new({
+		self.idAutoRefreshDelay = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idAutoRefreshDelay",
 			Dock = "left",
 			MinWidth = 50,
@@ -318,7 +318,7 @@ Press once to clear this examine, again to clear all."--]]],
 		self.idAutoRefreshDelay:SetText(tostring(self.autorefresh_delay))
 
 		-- mid right
-		self.idToolbarButtonsRight = g_Classes.ChoGGi_DialogSection:new({
+		self.idToolbarButtonsRight = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idToolbarButtonsRight",
 			Dock = "right",
 			LayoutMethod = "HList",
@@ -326,7 +326,7 @@ Press once to clear this examine, again to clear all."--]]],
 		}, self.idToolbarArea)
 
 		--
-		self.idViewEnum = g_Classes.ChoGGi_CheckButton:new({
+		self.idViewEnum = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idViewEnum",
 			MinWidth = 0,
 			Text = Strings[302535920001442--[[Enum--]]],
@@ -334,7 +334,7 @@ Press once to clear this examine, again to clear all."--]]],
 			OnChange = self.idViewEnum_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
-		self.idShowAllValues = g_Classes.ChoGGi_CheckButton:new({
+		self.idShowAllValues = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idShowAllValues",
 			MinWidth = 0,
 			Text = Translate(4493--[[All--]]),
@@ -342,7 +342,7 @@ Press once to clear this examine, again to clear all."--]]],
 			OnChange = self.idShowAllValues_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
-		self.idSortDir = g_Classes.ChoGGi_CheckButton:new({
+		self.idSortDir = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idSortDir",
 			Text = Translate(10124--[[Sort--]]),
 			RolloverText = Strings[302535920001248--[[Sort normally or backwards.--]]],
@@ -352,19 +352,19 @@ Press once to clear this examine, again to clear all."--]]],
 	end -- toolbar area
 
 	do -- search area
-		self.idSearchArea = g_Classes.ChoGGi_DialogSection:new({
+		self.idSearchArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idSearchArea",
 			Dock = "top",
 		}, self.idDialog)
 		--
-		self.idSearchText = g_Classes.ChoGGi_TextInput:new({
+		self.idSearchText = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idSearchText",
 			RolloverText = Strings[302535920000043--[["Press <color 0 200 0>Enter</color> to scroll to next found text, <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text, <color 0 200 0>Arrow Keys</color> to scroll to each end."--]]],
 			Hint = Strings[302535920000044--[[Go To Text--]]],
 			OnKbdKeyDown = self.idSearchText_OnKbdKeyDown,
 		}, self.idSearchArea)
 		--
-		self.idSearch = g_Classes.ChoGGi_Button:new({
+		self.idSearch = g_Classes.ChoGGi_XButton:new({
 			Id = "idSearch",
 			Text = Translate(10123--[[Search--]]),
 			Dock = "right",
@@ -377,13 +377,13 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	end
 
 	do -- tools area
-		self.idMenuArea = g_Classes.ChoGGi_DialogSection:new({
+		self.idMenuArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idMenuArea",
 			Dock = "top",
 		}, self.idDialog)
 		--
 		self.tools_menu_popup = self:BuildToolsMenuPopup()
-		self.idTools = g_Classes.ChoGGi_ComboButton:new({
+		self.idTools = g_Classes.ChoGGi_XComboButton:new({
 			Id = "idTools",
 			Text = Strings[302535920000239--[[Tools--]]],
 			RolloverText = Strings[302535920001426--[[Various tools to use.--]]],
@@ -392,7 +392,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		}, self.idMenuArea)
 		--
 		self.objects_menu_popup = self:BuildObjectMenuPopup()
-		self.idObjects = g_Classes.ChoGGi_ComboButton:new({
+		self.idObjects = g_Classes.ChoGGi_XComboButton:new({
 			Id = "idObjects",
 			Text = Translate(298035641454--[[Object--]]),
 			RolloverText = Strings[302535920001530--[[Various object tools to use.--]]],
@@ -402,7 +402,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		}, self.idMenuArea)
 		self.idObjects:SetVisible(false)
 		--
-		self.idParents = g_Classes.ChoGGi_ComboButton:new({
+		self.idParents = g_Classes.ChoGGi_XComboButton:new({
 			Id = "idParents",
 			Text = Strings[302535920000520--[[Parents--]]],
 			RolloverText = Strings[302535920000553--[[Examine parent and ancestor objects.--]]],
@@ -412,7 +412,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		}, self.idMenuArea)
 		self.idParents:SetVisible(false)
 		--
-		self.idAttaches = g_Classes.ChoGGi_ComboButton:new({
+		self.idAttaches = g_Classes.ChoGGi_XComboButton:new({
 			Id = "idAttaches",
 			Text = Strings[302535920000053--[[Attaches--]]],
 			RolloverText = Strings[302535920000054--[[Any objects attached to this object.--]]],
@@ -422,7 +422,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		}, self.idMenuArea)
 		self.idAttaches:SetVisible(false)
 		--
-		self.idToggleExecCode = g_Classes.ChoGGi_CheckButton:new({
+		self.idToggleExecCode = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idToggleExecCode",
 			Dock = "right",
 			Text = Strings[302535920000040--[[Exec Code--]]],
@@ -433,13 +433,13 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		--
 	end -- tools area
 	do -- exec code area
-		self.idExecCodeArea = g_Classes.ChoGGi_DialogSection:new({
+		self.idExecCodeArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idExecCodeArea",
 			Dock = "top",
 		}, self.idDialog)
 		self.idExecCodeArea:SetVisible(false)
 		--
-		self.idExecCode = g_Classes.ChoGGi_TextInput:new({
+		self.idExecCode = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idExecCode",
 			RolloverText = Strings[302535920001515--[[Press enter to execute code.--]]]
 				.. "\n" .. Strings[302535920001517--[["Use ""o"" as a reference to the examined object."--]]],
@@ -447,7 +447,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			OnKbdKeyDown = self.idExecCode_OnKbdKeyDown,
 		}, self.idExecCodeArea)
 		-- could change the bg for this...
-		-- self.idExecCode:SetPlugins({"ChoGGi_CodeEditorPlugin"})
+		-- self.idExecCode:SetPlugins({"ChoGGi_XCodeEditorPlugin"})
 		--
 	end -- exec code area
 
@@ -622,7 +622,7 @@ function Examine:idExecCode_OnKbdKeyDown(vk,...)
 		return "break"
 	end
 
-	return ChoGGi_TextInput.OnKbdKeyDown(self,vk,...)
+	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self,vk,...)
 end
 
 function Examine:idToggleExecCode_OnChange(visible)
@@ -814,7 +814,7 @@ function Examine:EnableAutoRefresh()
 end
 
 function Examine:idAutoRefresh_OnMouseButtonDown(pt,button,...)
-	g_Classes.ChoGGi_CheckButton.OnMouseButtonDown(self,pt,button,...)
+	g_Classes.ChoGGi_XCheckButton.OnMouseButtonDown(self,pt,button,...)
 	if button == "R" then
 
 		self = GetRootDialog(self)
@@ -986,7 +986,7 @@ function Examine:BuildToolsMenuPopup()
 				self.ChoGGi.SettingFuncs.WriteSettings()
 			end,
 			value = "ChoGGi.UserSettings.ExamineAppendDump",
-			class = "ChoGGi_CheckButtonMenu",
+			class = "ChoGGi_XCheckButtonMenu",
 		},
 
 		{name = self.ChoGGi.UserSettings.ExamineTextType and Translate(1000145--[[Text--]]) or Translate(298035641454--[[Object--]]),
@@ -1004,7 +1004,7 @@ function Examine:BuildToolsMenuPopup()
 				end
 			end,
 			value = "ChoGGi.UserSettings.ExamineTextType",
-			class = "ChoGGi_CheckButtonMenu",
+			class = "ChoGGi_XCheckButtonMenu",
 		},
 
 		{name = Strings[302535920000004--[[Dump--]]],
@@ -1222,7 +1222,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 				self.ChoGGi.SettingFuncs.WriteSettings()
 			end,
 			value = "ChoGGi.UserSettings.FlashExamineObject",
-			class = "ChoGGi_CheckButtonMenu",
+			class = "ChoGGi_XCheckButtonMenu",
 		},
 	}
 	if testing then
@@ -1265,7 +1265,7 @@ end
 
 local function CallMenu(self,popup_id,items,pt,button,...)
 	if pt then
-		ChoGGi_ComboButton.OnMouseButtonDown(self,pt,button,...)
+		g_Classes.ChoGGi_XComboButton.OnMouseButtonDown(self,pt,button,...)
 	end
 	if button == "L" then
 		local dlg = self
@@ -1295,7 +1295,7 @@ function Examine:idAttaches_OnMouseButtonDown(pt,button,...)
 end
 
 function Examine:idSearch_OnMouseButtonDown(pt,button,...)
-	ChoGGi_Button.OnMouseButtonDown(self,pt,button,...)
+	g_Classes.ChoGGi_XButton.OnMouseButtonDown(self,pt,button,...)
 	self = GetRootDialog(self)
 	if button == "L" then
 		self:FindNext()
@@ -1347,7 +1347,7 @@ function Examine:idSearchText_OnKbdKeyDown(vk,...)
 		end
 	end
 
-	return ChoGGi_TextInput.OnKbdKeyDown(self.idSearchText,vk,...)
+	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idSearchText,vk,...)
 end
 
 -- adds class name then list of functions below

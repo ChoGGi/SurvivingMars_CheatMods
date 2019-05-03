@@ -681,7 +681,7 @@ function ChoGGi.ComFuncs.PopupSubMenu(self,name,item)
 	local popup = self.popup
 
 	-- build the new one/open it
-	local submenu = g_Classes.ChoGGi_PopupList:new({
+	local submenu = g_Classes.ChoGGi_XPopupList:new({
 		Opened = true,
 		Id = "ChoGGi_submenu_popup",
 		popup_parent = popup,
@@ -714,8 +714,8 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 			item.centred = true
 		end
 
-		-- "ChoGGi_CheckButtonMenu"
-		local cls = g_Classes[item.class or "ChoGGi_ButtonMenu"]
+		-- "ChoGGi_XCheckButtonMenu"
+		local cls = g_Classes[item.class or "ChoGGi_XButtonMenu"]
 		local button = cls:new({
 			RolloverTitle = item.hint_title and item.hint_title or item.obj and RetName(item.obj) or Translate(126095410863--[[Info--]]),
 			RolloverText = item.hint or "",
@@ -824,7 +824,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		local submenu_func
 		if item.submenu then
 			-- add the ...
-			g_Classes.ChoGGi_Label:new({
+			g_Classes.ChoGGi_XLabel:new({
 				Dock = "right",
 				text = "...",
 				TextStyle = items.TextStyle or cls.TextStyle,
@@ -876,7 +876,7 @@ function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu
 	end
 
 	if not popup or reopen then
-		local cls = ChoGGi_PopupList
+		local cls = ChoGGi_XPopupList
 
 		items.Background = items.Background or cls.Background
 		items.FocusedBackground = items.FocusedBackground or cls.FocusedBackground

@@ -20,7 +20,7 @@ local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg,"ChoGGi_ObjectEditorDlg")
 end
 DefineClass.ChoGGi_ObjectEditorDlg = {
-	__parents = {"ChoGGi_Window"},
+	__parents = {"ChoGGi_XWindow"},
 	choices = {},
 	obj = false,
 	obj_name = false,
@@ -41,12 +41,12 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 	self:AddElements(parent, context)
 
 	-- checkboxes (ok checkbox, maybe do some more stuff here)
-	self.idCheckboxArea = g_Classes.ChoGGi_DialogSection:new({
+	self.idCheckboxArea = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idCheckboxArea",
 		Dock = "top",
 	}, self.idDialog)
 
-	self.idAutoRefresh = g_Classes.ChoGGi_CheckButton:new({
+	self.idAutoRefresh = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idAutoRefresh",
 		Text = Strings[302535920000084--[[Auto-Refresh--]]],
 		RolloverText = Strings[302535920001257--[[Auto-refresh list every second.--]]],
@@ -55,12 +55,12 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		OnChange = self.idAutoRefresh_OnChange,
 	}, self.idCheckboxArea)
 
-	self.idButtonArea = g_Classes.ChoGGi_DialogSection:new({
+	self.idButtonArea = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idButtonArea",
 		Dock = "top",
 	}, self.idDialog)
 
-	self.idRefresh = g_Classes.ChoGGi_Button:new({
+	self.idRefresh = g_Classes.ChoGGi_XButton:new({
 		Id = "idRefresh",
 		Text = Translate(1000220--[[Refresh--]]),
 		Dock = "left",
@@ -69,7 +69,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		OnPress = self.UpdateListContent,
 	}, self.idButtonArea)
 
-	self.idGoto = g_Classes.ChoGGi_Button:new({
+	self.idGoto = g_Classes.ChoGGi_XButton:new({
 		Id = "idGoto",
 		Text = Strings[302535920000093--[[Goto Obj--]]],
 		Dock = "left",
@@ -78,7 +78,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		OnPress = self.idGoto_OnPress,
 	}, self.idButtonArea)
 
-	self.idAddNew = g_Classes.ChoGGi_Button:new({
+	self.idAddNew = g_Classes.ChoGGi_XButton:new({
 		Id = "idAddNew",
 		Text = Strings[302535920001356--[[New--]]],
 		Dock = "left",
@@ -86,7 +86,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		OnPress = self.idAddNew_OnPress,
 	}, self.idButtonArea)
 
-	self.idApplyAll = g_Classes.ChoGGi_Button:new({
+	self.idApplyAll = g_Classes.ChoGGi_XButton:new({
 		Id = "idApplyAll",
 		Text = Strings[302535920000099--[[Apply To All--]]],
 		Dock = "left",
@@ -100,12 +100,12 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 	self.idList.OnMouseButtonDown = self.idList_OnMouseButtonDown
 	self.idList.OnMouseButtonDoubleClick = self.idList_OnMouseButtonDoubleClick
 
-	self.idEditArea = g_Classes.ChoGGi_DialogSection:new({
+	self.idEditArea = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idEditArea",
 		Dock = "bottom",
 	}, self.idDialog)
 
-	self.idEditValue = g_Classes.ChoGGi_TextInput:new({
+	self.idEditValue = g_Classes.ChoGGi_XTextInput:new({
 		Id = "idEditValue",
 		RolloverText = Strings[302535920000102--[[Use to change values of selected list item.--]]],
 		Hint = Strings[302535920000103--[[Edit Value--]]],
@@ -140,7 +140,7 @@ end
 
 -- update edit text box with selected value
 function ChoGGi_ObjectEditorDlg:idList_OnMouseButtonDown(pt,button,...)
-	g_Classes.ChoGGi_List.OnMouseButtonDown(self,pt,button)
+	g_Classes.ChoGGi_XList.OnMouseButtonDown(self,pt,button)
 	self = GetRootDialog(self)
 	if not self.idList.focused_item then
 		return

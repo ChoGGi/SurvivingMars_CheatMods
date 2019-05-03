@@ -18,6 +18,7 @@ local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
 local Translate = ChoGGi.ComFuncs.Translate
+local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -32,32 +33,23 @@ local ToolsMenuPopupToggle_list = {
 			ChoGGi.ComFuncs.OpenInExecCodeDlg()
 		end,
 	},
-	{name = Strings[302535920001026--[[Show File Log--]]],
-		hint = Strings[302535920001091--[[Flushes log to disk and displays it.--]]],
-		clicked = function()
-			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
-				text = LoadLogfile(),
-				title = Strings[302535920001026--[[Show File Log--]]],
-			}
-		end,
-	},
-	{name = Strings[302535920000071--[[Mods Log--]]],
-		hint = Strings[302535920000870--[[Shows mod log msgs in an examine dialog.--]]],
-		clicked = function()
-			OpenInExamineDlg(ModMessageLog,nil,Strings[302535920000071--[[Mods Log--]]])
-		end,
-	},
 	{name = Strings[302535920001497--[[Show Blacklist--]]],
 		hint = "Show blacklisted objects",
 		clicked = function()
 			if blacklist then
-				ChoGGi.ComFuncs.BlacklistMsg(Strings[302535920001497--[[Show Blacklist--]]])
+				ChoGGi.ComFuncs.BlacklistMsg(Strings[302535920001497])
 				return
 			end
 			-- lib should always have the blacklist enabled
 			local _,bl = debug.getupvalue(getmetatable(Mods[ChoGGi.id_lib].env).__index,1)
 			bl[" " .. Strings[302535920000313--[[OnMsg/Msg blacklist--]]]] = ModMsgBlacklist
-			OpenInExamineDlg(bl,nil,Strings[302535920001497--[[Show Blacklist--]]])
+			OpenInExamineDlg(bl,nil,Strings[302535920001497])
+		end,
+	},
+	{name = Strings[302535920000473--[[Reload ECM Menu--]]],
+		hint = Strings[302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix or alt-tab).--]]],
+		clicked = function()
+			Msg("ShortcutsReloaded")
 		end,
 	},
 	{is_spacer = true},
@@ -67,12 +59,20 @@ local ToolsMenuPopupToggle_list = {
 	},
 	{name = Strings[302535920000563--[[View Log Text--]]],
 		hint = Strings[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
-		clicked = ChoGGi.ComFuncs.SelectConsoleLogText,
-	},
-	{name = Strings[302535920000473--[[Reload ECM Menu--]]],
-		hint = Strings[302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix or alt-tab).--]]],
 		clicked = function()
-			Msg("ShortcutsReloaded")
+			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+				text = LoadLogfile(),
+				title = Strings[302535920000563],
+			}
+		end,
+	},
+	{name = Strings[302535920000071--[[Show Mods Log--]]],
+		hint = Strings[302535920001123--[[Shows any mod msgs in the log.--]]],
+		clicked = function()
+			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+				text = TableConcat(ModMessageLog,"\n"),
+				title = Strings[302535920000071],
+			}
 		end,
 	},
 	{is_spacer = true},
@@ -95,7 +95,7 @@ Usage: Call it once to start and again to stop, it'll then show a list of func c
 Call it manually with:
 ChoGGi.ComFuncs.ToggleFuncHook(path,line,mask,count)
 https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
-		class = "ChoGGi_CheckButtonMenu",
+		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.Temp.FunctionsHooked",
 		clicked = function()
 			ChoGGi.ComFuncs.ToggleFuncHook()
@@ -303,7 +303,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	table_insert(ExamineMenuToggle_list,1,{
 		name = Strings[302535920001376--[[Auto Update List--]]],
 		hint = Strings[302535920001377--[[Update this list when ECM updates it.--]]],
-		class = "ChoGGi_CheckButtonMenu",
+		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.UserSettings.ConsoleExamineListUpdate",
 		clicked = function()
 			ChoGGi.UserSettings.ConsoleExamineListUpdate = not ChoGGi.UserSettings.ConsoleExamineListUpdate
@@ -420,7 +420,7 @@ end -- do
 local ConsoleMenuPopupToggle_list = {
 	{name = Strings[302535920001479--[[Errors In Console--]]],
 		hint = Strings[302535920001480--[[Print (some) lua errors in the console (needs %s enabled).--]]]:format(Strings[302535920001112--[[Console Log--]]]),
-		class = "ChoGGi_CheckButtonMenu",
+		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.UserSettings.ConsoleErrors",
 		clicked = function()
 			ChoGGi.UserSettings.ConsoleErrors = not ChoGGi.UserSettings.ConsoleErrors
@@ -430,7 +430,7 @@ local ConsoleMenuPopupToggle_list = {
 	},
 	{name = Strings[302535920001102--[[Examine Errors--]]],
 		hint = Strings[302535920001104--[[Open (some) errors in an examine dialog (shows stack trace and sometimes a thread).--]]],
-		class = "ChoGGi_CheckButtonMenu",
+		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.UserSettings.ExamineErrors",
 		clicked = function()
 			ChoGGi.UserSettings.ExamineErrors = not ChoGGi.UserSettings.ExamineErrors
@@ -442,7 +442,7 @@ local ConsoleMenuPopupToggle_list = {
 		hint = Strings[302535920000311--[["Stop the ""Attempt to use an undefined global"" msgs.
 
 The number is a count of stored msgs, right-click <right_click> to view the list."--]]],
-		class = "ChoGGi_CheckButtonMenu",
+		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals",
 		mousedown = function(_,_,button)
 			if button == "R" then
@@ -456,7 +456,7 @@ The number is a count of stored msgs, right-click <right_click> to view the list
 	},
 	{name = Strings[302535920001112--[[Console Log--]]],
 		hint = Strings[302535920001119--[[Show console log text in-game (probably an annoyance to non-modders).--]]],
-		class = "ChoGGi_CheckButtonMenu",
+		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.UserSettings.ConsoleToggleHistory",
 		clicked = function()
 			ChoGGi.UserSettings.ConsoleToggleHistory = not ChoGGi.UserSettings.ConsoleToggleHistory
@@ -472,7 +472,7 @@ The number is a count of stored msgs, right-click <right_click> to view the list
 	},
 	{name = Strings[302535920001576--[[Show Log When Console Active--]]],
 		hint = Strings[302535920001575--[[Show console log text when console is active (needs %s enabled).--]]]:format(Strings[302535920001112--[[Console Log--]]]),
-		class = "ChoGGi_CheckButtonMenu",
+		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.UserSettings.ConsoleShowLogWhenActive",
 		clicked = function()
 			ChoGGi.UserSettings.ConsoleShowLogWhenActive = not ChoGGi.UserSettings.ConsoleShowLogWhenActive
@@ -481,7 +481,7 @@ The number is a count of stored msgs, right-click <right_click> to view the list
 	},
 	{name = Strings[302535920001120--[[Console Window--]]],
 		hint = Strings[302535920001133--[[Show the console log text in an independant window.--]]],
-		class = "ChoGGi_CheckButtonMenu",
+		class = "ChoGGi_XCheckButtonMenu",
 		value = "dlgChoGGi_ConsoleLogWin",
 		clicked = function()
 			ChoGGi.UserSettings.ConsoleHistoryWin = not ChoGGi.UserSettings.ConsoleHistoryWin
@@ -491,7 +491,7 @@ The number is a count of stored msgs, right-click <right_click> to view the list
 	},
 	{name = Strings[302535920000483--[[Write Console Log--]]],
 		hint = Strings[302535920000484--[[Write console log to %slogs/ConsoleLog.log (updated every 5 seconds).--]]]:format(ConvertToOSPath("AppData/")),
-		class = "ChoGGi_CheckButtonMenu",
+		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.UserSettings.WriteLogs",
 		clicked = function()
 			if ChoGGi.UserSettings.WriteLogs then
@@ -541,7 +541,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 	end
 
 	-- add close button
-	g_Classes.ChoGGi_CloseButton:new({
+	g_Classes.ChoGGi_XCloseButton:new({
 		Id = "idClose",
 		OnPress = function()
 			dlgConsole:Show()
@@ -563,7 +563,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 	}, dlgConsole)
 
 --------------------------------Console popup
-	dlgConsole.idConsoleMenu = g_Classes.ChoGGi_ConsoleButton:new({
+	dlgConsole.idConsoleMenu = g_Classes.ChoGGi_XConsoleButton:new({
 		Id = "idConsoleMenu",
 		RolloverText = Strings[302535920001089--[[Settings & Commands for the console.--]]],
 		Text = Strings[302535920001308--[[Settings--]]],
@@ -575,7 +575,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		end,
 	}, dlgConsole.idContainer)
 
-	dlgConsole.idToolsMenu = g_Classes.ChoGGi_ConsoleButton:new({
+	dlgConsole.idToolsMenu = g_Classes.ChoGGi_XConsoleButton:new({
 		Id = "idToolsMenu",
 		RolloverText = Strings[302535920000127--[[Various tools to use.--]]],
 		Text = Strings[302535920000239--[[Tools--]]],
@@ -584,7 +584,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		end,
 	}, dlgConsole.idContainer)
 
-	dlgConsole.idExamineMenu = g_Classes.ChoGGi_ConsoleButton:new({
+	dlgConsole.idExamineMenu = g_Classes.ChoGGi_XConsoleButton:new({
 		Id = "idExamineMenu",
 		RolloverText = Strings[302535920000491--[[Examine Object--]]],
 		Text = Strings[302535920000069--[[Examine--]]],
@@ -593,7 +593,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		end,
 	}, dlgConsole.idContainer)
 
-	dlgConsole.idHistoryMenu = g_Classes.ChoGGi_ConsoleButton:new({
+	dlgConsole.idHistoryMenu = g_Classes.ChoGGi_XConsoleButton:new({
 		Id = "idHistoryMenu",
 		RolloverText = Strings[302535920001080--[[Console history items (mouse-over to see code).--]]],
 		Text = Strings[302535920000793--[[History--]]],
@@ -612,7 +612,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 end
 
 local function BuildSciptButton(console,folder)
-	g_Classes.ChoGGi_ConsoleButton:new({
+	g_Classes.ChoGGi_XConsoleButton:new({
 		RolloverText = folder.RolloverText,
 		Text = folder.Text,
 		OnPress = function(self)

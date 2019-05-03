@@ -595,7 +595,7 @@ do -- OpenInExamineDlg
 	local function FlashTitlebar(title)
 		title:SetBackground(red)
 		Sleep(500)
-		title:SetBackground(ChoGGi_MoveControl.Background)
+		title:SetBackground(g_Classes.ChoGGi_XMoveControl.Background)
 	end
 
 	function ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent,title)
@@ -775,7 +775,7 @@ function ChoGGi.ComFuncs.CloseDialogsECM(skip)
 	local desktop = terminal.desktop
 	for i = #desktop, 1, -1 do
 		local dlg = desktop[i]
-		if dlg ~= skip and dlg:IsKindOf("ChoGGi_Window") then
+		if dlg ~= skip and dlg:IsKindOf("ChoGGi_XWindow") then
 			dlg:Close()
 		end
 	end
@@ -1168,20 +1168,6 @@ function ChoGGi.ComFuncs.ToggleConsoleLog()
 	else
 		dlgConsoleLog = ConsoleLog:new({}, terminal.desktop)
 	end
-end
-
-function ChoGGi.ComFuncs.SelectConsoleLogText()
-	local dlgConsoleLog = dlgConsoleLog
-	if not dlgConsoleLog then
-		return
-	end
-	local text = dlgConsoleLog.idText:GetText()
-	if #text < 1 then
-		print(Strings[302535920000692--[[Log is blank (well not anymore).--]]])
-		return
-	end
-
-	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{text = text}
 end
 
 function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
@@ -3678,20 +3664,20 @@ end -- do
 
 do -- SetLibraryToolTips
 	local dlgs = {
-		"ChoGGi_Text",
-		"ChoGGi_TextList",
-		"ChoGGi_MultiLineEdit",
-		"ChoGGi_MoveControl",
-		"ChoGGi_Buttons",
-		"ChoGGi_Image",
-		"ChoGGi_ComboButton",
-		"ChoGGi_CheckButton",
-		"ChoGGi_TextInput",
-		"ChoGGi_List",
-		"ChoGGi_ListItem",
-		"ChoGGi_Dialog",
-		"ChoGGi_DialogSection",
-		"ChoGGi_Window",
+		"ChoGGi_XText",
+		"ChoGGi_XTextList",
+		"ChoGGi_XMultiLineEdit",
+		"ChoGGi_XMoveControl",
+		"ChoGGi_XButtons",
+		"ChoGGi_XImage",
+		"ChoGGi_XComboButton",
+		"ChoGGi_XCheckButton",
+		"ChoGGi_XTextInput",
+		"ChoGGi_XList",
+		"ChoGGi_XListItem",
+		"ChoGGi_XDialog",
+		"ChoGGi_XDialogSection",
+		"ChoGGi_XWindow",
 	}
 	function ChoGGi.ComFuncs.SetLibraryToolTips()
 		local g = _G
