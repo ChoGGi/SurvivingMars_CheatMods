@@ -1,2 +1,5 @@
+v0.3
+School now shows the percent needed to get traits from the school.
+
 v0.2
 Added progress to Sanatorium/School (mouseover lifetime info).

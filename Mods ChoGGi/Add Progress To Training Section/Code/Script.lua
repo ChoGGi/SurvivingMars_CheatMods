@@ -51,6 +51,10 @@ function School:GetTrainedRollover()
 
 		for j = 1, #shift do
 			local unit = shift[j]
+
+      unit.training_points = unit.training_points or {}
+			local units_points = unit.training_points[self.training_type] or 0
+
 			c = c + 1
 			text[c] = _InternalTranslate(T{unit:GetDisplayName()})
 				.. _InternalTranslate("<right>")
@@ -58,7 +62,9 @@ function School:GetTrainedRollover()
 					unit.age or 0,
 					100,
 					unit.MinAge_Adult or Colonist.MinAge_Adult
-				) .. "%"
+				)
+				-- 150 is from function School:OnTrainingCompleted(unit)
+				.. "% (" .. MulDivRound(units_points,100,150) .. "%)"
 		end
 	end
 	return table_concat(text, "<newline><left>")

@@ -5,6 +5,7 @@
 local type = type
 local table_sort = table.sort
 local table_remove = table.remove
+local table_find = table.find
 local FlushLogFile = FlushLogFile
 --~ local IsValid = IsValid
 local Msg = Msg
@@ -72,12 +73,6 @@ end
 
 do -- OnMsg ClassesBuilt/XTemplatesLoaded
 	local PlaceObj = PlaceObj
-	local function AddCheatsPane(xt,func)
-		func(xt,"__template","sectionCheats")
-		xt[#xt+1] = PlaceObj("XTemplateTemplate", {
-			"__template", "sectionCheats",
-		})
-	end
 
 --~ 	function OnMsg.XTemplatesLoaded()
 	local function OnMsgXTemplates()
@@ -85,40 +80,26 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		local ChoGGi = ChoGGi
 		local UserSettings = ChoGGi.UserSettings
 
-		-- add some ids to make it easier to fiddle with selection panel
 		for key,template in pairs(XTemplates) do
+			local xt = template[1]
+			-- add some ids to make it easier to fiddle with selection panel
 			if key:sub(1,7) == "section" then
-				local inner = template[1]
-				if inner and not inner.Id then
-					inner.Id = "id" .. template.id .. "_ChoGGi"
+				if xt and not xt.Id then
+					xt.Id = "id" .. template.id .. "_ChoGGi"
 				end
+			-- add cheats section to stuff without it
+			elseif key:sub(1,2) == "ip" and not table_find(xt,"__template","sectionCheats") then
+				xt[#xt+1] = PlaceObj("XTemplateTemplate", {
+					"__template", "sectionCheats",
+				})
 			end
 		end
---~ 		XTemplates.sectionCheats
-
-		-- add cheats section to stuff without it
-		local func = ChoGGi.ComFuncs.RemoveXTemplateSections
-		AddCheatsPane(XTemplates.ipAlienDigger[1],func)
-		AddCheatsPane(XTemplates.ipAttackRover[1],func)
-		AddCheatsPane(XTemplates.ipConstruction[1],func)
-		AddCheatsPane(XTemplates.ipEffectDeposit[1],func)
-		AddCheatsPane(XTemplates.ipFirefly[1],func)
-		AddCheatsPane(XTemplates.ipGridConstruction[1],func)
-		AddCheatsPane(XTemplates.ipLeak[1],func)
-		AddCheatsPane(XTemplates.ipPillaredPipe[1],func)
-		AddCheatsPane(XTemplates.ipResourcePile[1],func)
-		AddCheatsPane(XTemplates.ipRogue[1],func)
-		AddCheatsPane(XTemplates.ipShuttle[1],func)
-		AddCheatsPane(XTemplates.ipSinkhole[1],func)
-		AddCheatsPane(XTemplates.ipSwitch[1],func)
-		AddCheatsPane(XTemplates.ipTerrainDeposit[1],func)
-		-- and remove it from Resource Overview, though it is "removed" from the game now anyways...
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipResourceOverview[1],"__template","sectionCheats")
 
 		-- no sense in firing the func without cheats pane enabled
 		XTemplates.sectionCheats[1].__condition = function(parent, context)
 			return config.BuildingInfopanelCheats and context:CreateCheatActions(parent)
 		end
+
 		-- remove all that spacing between buttons
 		XTemplates.sectionCheats[1][1].LayoutHSpacing = 10
 
@@ -136,10 +117,10 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		-- change rollover max width
 		if UserSettings.WiderRollovers then
 			local roll = XTemplates.Rollover[1]
-			local idx = table.find(roll,"Id","idContent")
+			local idx = table_find(roll,"Id","idContent")
 			if idx then
 				roll = roll[idx]
-				idx = table.find(roll,"Id","idText")
+				idx = table_find(roll,"Id","idText")
 				if idx then
 					roll[idx].MaxWidth = UserSettings.WiderRollovers
 				end
@@ -227,7 +208,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 	function OnMsg.ClassesBuilt()
 		-- add HiddenX cat for Hidden items
 		local bc = BuildCategories
-		if ChoGGi.UserSettings.Building_hide_from_build_menu and not table.find(bc,"id","HiddenX") then
+		if ChoGGi.UserSettings.Building_hide_from_build_menu and not table_find(bc,"id","HiddenX") then
 			bc[#bc+1] = {
 				id = "HiddenX",
 				name = Translate(1000155--[[Hidden--]]),
@@ -446,7 +427,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			if name:find("RC") and name:find("Building") then
 				name = name:gsub("Building","")
 			end
-			local idx = table.find(BuildingTechRequirements[id],"check_supply",name)
+			local idx = table_find(BuildingTechRequirements[id],"check_supply",name)
 			if idx then
 				table_remove(BuildingTechRequirements[id],idx)
 			end
