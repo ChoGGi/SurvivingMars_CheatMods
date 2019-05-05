@@ -45,6 +45,7 @@
 - Debug>Pathing failed on jumper shuttles on the landing.
 - Delete Object was spamming console when deleting a res pile.
 - Console log ignored settings and stayed on.
+- Workaround for the upgrade cheats in the cheats pane with Silva's Modular Apartments.
 - Examine:
 - > It wasn't showing entity info it should be.
 - > Missing the metatable for BaseSocket (as well as showing a blank list).

@@ -205,6 +205,20 @@ end -- do
 
 function OnMsg.ClassesGenerate()
 	local UserSettings = ChoGGi.UserSettings
+
+	-- using the CheatUpgrade func in the cheats pane with Silva's Modular Apartments == inf loop
+	do -- Building:CheatUpgrade*()
+		local CreateRealTimeThread = CreateRealTimeThread
+		local Building = Building
+		for i = 1, 3 do
+			local name = "CheatUpgrade" .. i
+			SaveOrigFunc("Building",name)
+			Building[name] = function(...)
+				CreateRealTimeThread(ChoGGi_OrigFuncs["Building_CheatUpgrade" .. i],...)
+			end
+		end
+	end -- do
+
 	-- that's what we call a small font
 	do -- XSizeConstrainedWindow.UpdateMeasure
 		local XWindow_UpdateMeasure = XWindow.UpdateMeasure
@@ -252,11 +266,11 @@ function OnMsg.ClassesGenerate()
 		return ChoGGi_OrigFuncs.ConstructionController_IsObstructed(self,...)
 	end
 	SaveOrigFunc("DontBuildHere","Check")
-	function DontBuildHere:Check(...)
+	function DontBuildHere.Check(...)
 		if UserSettings.BuildOnGeysers then
 			return false
 		end
-		return ChoGGi_OrigFuncs.DontBuildHere_Check(self,...)
+		return ChoGGi_OrigFuncs.DontBuildHere_Check(...)
 	end
 
 	-- allows you to build outside buildings inside and vice
@@ -506,7 +520,7 @@ function OnMsg.ClassesGenerate()
 		if new_rad then
 			rad = new_rad
 		end
-		return ChoGGi_OrigFuncs.BaseRover_GetCableNearby(self, rad,...)
+		return ChoGGi_OrigFuncs.BaseRover_GetCableNearby(self, rad, ...)
 	end
 
 	do -- InfopanelObj:CreateCheatActions
@@ -573,9 +587,9 @@ function OnMsg.ClassesBuilt()
 
 	-- unbreakable cables/pipes
 	SaveOrigFunc("SupplyGridFragment","RandomElementBreakageOnWorkshiftChange")
-	function SupplyGridFragment:RandomElementBreakageOnWorkshiftChange(...)
+	function SupplyGridFragment.RandomElementBreakageOnWorkshiftChange(...)
 		if not UserSettings.BreakChanceCablePipe then
-			return ChoGGi_OrigFuncs.SupplyGridFragment_RandomElementBreakageOnWorkshiftChange(self,...)
+			return ChoGGi_OrigFuncs.SupplyGridFragment_RandomElementBreakageOnWorkshiftChange(...)
 		end
 	end
 
@@ -1104,8 +1118,10 @@ function OnMsg.ClassesBuilt()
 	SaveOrigFunc("Console","TextChanged")
 	function Console:TextChanged(...)
 		ChoGGi_OrigFuncs.Console_TextChanged(self,...)
-		if self.idEdit:GetText() == "`" then
-			self.idEdit:SetText("")
+		local text = self.idEdit:GetText()
+		if text:sub(-1) == "`" then
+			self.idEdit:SetText(text:sub(1,-2))
+			self.idEdit:SetCursor(1,#text-1)
 		end
 	end
 
@@ -1137,26 +1153,15 @@ function OnMsg.ClassesBuilt()
 	end -- do
 
 
---~ 	local actual_errors
 	-- so we can build without (as many) limits
 	SaveOrigFunc("ConstructionController","UpdateConstructionStatuses")
 	function ConstructionController:UpdateConstructionStatuses(...)
 		local ret = ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,...)
 		if UserSettings.RemoveBuildingLimits then
 
---~ 			if not actual_errors then
---~ 				local cs = ConstructionStatus
---~ 				actual_errors = {
---~ 					-- UnevenTerrain: causes issues when placing buildings (martian ground viagra)
---~ 					[cs.UnevenTerrain] = true,
---~ 					[cs.BlockingObjects] = true,
---~ 				}
---~ 			end
-
 			local statuses = self.construction_statuses or ""
 			for i = 1, #statuses do
 				local status = statuses[i]
---~ 				if status.type == "error" and not actual_errors[status] then
 				if status.type == "error" then
 					status.type = "warning"
 				end
