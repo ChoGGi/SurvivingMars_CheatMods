@@ -1963,7 +1963,7 @@ function ChoGGi.ComFuncs.AttachToNearestDome(obj)
 	end
 end
 
---toggle working status
+-- toggle working status
 function ChoGGi.ComFuncs.ToggleWorking(obj)
 	if IsValid(obj) then
 		CreateRealTimeThread(function()
@@ -4048,11 +4048,8 @@ end -- do
 
 function ChoGGi.ComFuncs.RetAllOfClass(cls)
 	local objects = UICity.labels[cls] or {}
-	if #objects == 0 then
-		-- if it isn't in g_Classes then MapGet will return everything
-		if not g_Classes[cls] then
-			return {}
-		end
+	if #objects == 0 and g_Classes[cls] then
+		-- if it isn't in g_Classes then MapGet will return *everything*
 		return MapGet(true,cls)
 	end
 	return objects

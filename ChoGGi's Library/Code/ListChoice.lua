@@ -259,13 +259,18 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		MinWidth = 50,
 		Text = Translate(6878--[[OK--]]),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
-		RolloverText = Strings[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."--]]],
+		RolloverText = Strings[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>).
+This will always send back all items (not selection)."--]]],
 		OnPress = function()
 			-- build self.choices
-			self:GetAllItems()
+			self:GetSelectedItems()
 			-- send selection back
-			self.list.callback(self.choices)
-			self:Close("cancel")
+			if self.list.callback then
+				self.list.callback(self.choices)
+			else
+				self.list.custom_func(self.choices)
+			end
+			self:Close("ok")
 		end,
 	}, self.idButtonContainer)
 
@@ -881,7 +886,7 @@ function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDoubleClick(_,button)
 			self.custom_func(choices,self)
 		elseif self.custom_type == 9 then
 			-- build self.choices
-			self:GetAllItems()
+			self:GetSelectedItems()
 			-- send selection back
 			self.list.callback(self.choices)
 		elseif self.custom_type ~= 5 and self.custom_type ~= 2 or self.custom_type == 8 then
@@ -937,7 +942,7 @@ function ChoGGi_ListChoiceDlg:UpdateReturnedItem(choices)
 	return choices
 end
 
-function ChoGGi_ListChoiceDlg:GetAllItems()
+function ChoGGi_ListChoiceDlg:GetSelectedItems()
 	-- get sel item(s)
 	local items = {}
 	if self.custom_type == 0 or self.custom_type == 3 or self.custom_type == 6 then

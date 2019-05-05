@@ -833,7 +833,7 @@ function OnMsg.ClassesBuilt()
 
 	-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
 	do -- InfopanelDlg:Open
-		local TableFindValue = table.find_value
+		local table_find_value = table.find_value
 		local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 		local CreateRealTimeThread = CreateRealTimeThread
 		local DeleteThread = DeleteThread
@@ -956,7 +956,7 @@ function OnMsg.ClassesBuilt()
 			end
 			--
 
-			local section = TableFindValue(c,"Id","idsectionCheats_ChoGGi")
+			local section = table_find_value(c,"Id","idsectionCheats_ChoGGi")
 			if section then
 				section.idIcon.FXMouseIn = "ActionButtonHover"
 				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
@@ -976,7 +976,7 @@ function OnMsg.ClassesBuilt()
 				end
 			end
 
-			section = TableFindValue(c,"Id","idsectionResidence_ChoGGi")
+			section = table_find_value(c,"Id","idsectionResidence_ChoGGi")
 			if section then
 				local toggle = true
 				if self.context.capacity > 100 then

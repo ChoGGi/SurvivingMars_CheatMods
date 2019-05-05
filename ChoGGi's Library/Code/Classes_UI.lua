@@ -565,12 +565,7 @@ Hold Ctrl to close all ECM dialogs."--]]]
 					ChoGGi.ComFuncs.CloseDialogsECM(self)
 				-- close all parent examine dialogs
 				elseif IsShiftPressed() then
-					local g_ExamineDlgs = g_ExamineDlgs or empty_table
-					for _,dlg in pairs(g_ExamineDlgs) do
-						if dlg ~= self and dlg.parent_id == self.parent_id then
-							dlg:Close()
-						end
-					end
+					ChoGGi.ComFuncs.CloseChildExamineDlgs(self)
 					-- we don't want to close this one
 					return
 				end

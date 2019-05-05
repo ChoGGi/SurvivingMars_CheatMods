@@ -1060,7 +1060,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 				local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
 				for i = 1, #objs do
 					local o = objs[i]
-					if RetTemplateOrClass(obj) == id then
+					if RetTemplateOrClass(o) == id then
 						o[prod_type]:SetProduction(amount)
 					end
 				end
@@ -1078,7 +1078,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 					local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
 					for i = 1, #objs do
 						local o = objs[i]
-						if RetTemplateOrClass(obj) == id then
+						if RetTemplateOrClass(o) == id then
 							o:GetProducerObj().production_per_day = amount
 							o:GetProducerObj():Produce(amount)
 						end

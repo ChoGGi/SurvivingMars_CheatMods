@@ -3755,3 +3755,13 @@ function ChoGGi.ComFuncs.SetDlgTrans(dlg)
 	end
 	return dlg
 end
+
+-- close any examine dlgs opened from "parent" examine dlg
+function ChoGGi.ComFuncs.CloseChildExamineDlgs(self)
+	local g_ExamineDlgs = g_ExamineDlgs or empty_table
+	for _,dlg in pairs(g_ExamineDlgs) do
+		if dlg ~= self and dlg.parent_id == self.parent_id then
+			dlg:Close()
+		end
+	end
+end

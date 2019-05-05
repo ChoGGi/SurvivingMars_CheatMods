@@ -13,7 +13,9 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[This will validate images for all modded buildings and try to fix the image path of missing ones.
+	"description", [[If you have older mods missing the build menu icons; this is the mod for you.
+
+This will validate images for all modded buildings and try to fix the image path of missing ones.
 
 
 

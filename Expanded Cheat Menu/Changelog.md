@@ -23,6 +23,7 @@
 - > MonitorFunc(XShortcutsTarget.GetActionsMode,XShortcutsTarget)
 
 ### Changed:
+- Game>Change Map has resources to choose, and merged dialogs to make it simpler.
 - Mod Upload supports batch uploading (and screenshots).
 - Some menu items now use translated text instead of mine.
 - Debug>Examine will try to examine the UI element under the cursor if it can't find an object.
@@ -39,6 +40,7 @@
 - > Text is now selectable (also removed Copy Log Text).
 
 ### Fixed:
+- Set Production would set objects of a different class.
 - Game would freeze if ConsoleErrors was false (thanks Gaspurr).
 - Debug>Pathing failed on jumper shuttles on the landing.
 - Delete Object was spamming console when deleting a res pile.

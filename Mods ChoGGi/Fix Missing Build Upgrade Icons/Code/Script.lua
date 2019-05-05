@@ -1,17 +1,10 @@
 -- See LICENSE for terms
 
 local Measure = UIL.MeasureImage
---~ local Ready = UIL.IsImageReady
---~ local Reload = UIL.ReloadImage
 local function FixPath(image,mod_path)
 	if not image then
 		return
 	end
-
---~ 	-- leftover from my library func (doesn't hurt to check)
---~ 	if not Ready(image) then
---~ 		Reload(image)
---~ 	end
 
 	local x,y = Measure(image)
 	if x > 0 and y > 0 then

@@ -890,6 +890,7 @@ end
 
 -- const.Scale.sols is 720 000 ticks (GameTime)
 function OnMsg.NewDay() -- NewSol...
+--~ 	Msg("NewSol")
 	local ChoGGi = ChoGGi
 
 	-- remove any closed examine dialogs from the list

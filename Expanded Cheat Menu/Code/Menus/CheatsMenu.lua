@@ -45,9 +45,9 @@ Actions[c] = {ActionName = Translate(5661--[[Mystery Log--]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000331--[[Start Mystery--]]],
+Actions[c] = {ActionName = Strings[302535920000331--[[Mystery Start--]]],
 	ActionMenubar = "ECM.Cheats",
-	ActionId = ".Start Mystery",
+	ActionId = ".Mystery Start",
 	ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
 	RolloverText = Strings[302535920000332--[["Pick and start a mystery (with instant start option).
 Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance)."--]]],
@@ -57,7 +57,7 @@ Certain mysteries need certain objects which get placed when the map is generate
 c = c + 1
 Actions[c] = {ActionName = Translate(3983--[[Disasters--]]),
 	ActionMenubar = "ECM.Cheats",
-	ActionId = ".Start Disasters",
+	ActionId = ".Disasters",
 	ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
 	RolloverText = Strings[302535920000334--[[Show the disasters list and optionally start one.--]]],
 	OnAction = ChoGGi.MenuFuncs.DisastersTrigger,
