@@ -311,7 +311,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000310,Skip Undefined Globals,
 302535920000311,"Stop the ""<color yellow>Attempt to use an undefined global</color>"" msgs.
 
-The number is a count of stored msgs, right-click <right_click> to view the list."
+The number is a count of stored msgs, right-click to view the list."
 302535920001575,Show console log text when console is active (needs <color green>%s</color> enabled).,
 302535920001576,Show Log When Console Active,
 302535920001123,Shows any mod msgs in the log.,
@@ -350,7 +350,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook",
 302535920001112,Console Log,
 302535920001119,Show console log text in-game (probably an annoyance to non-modders).,
 302535920001133,Show the console log in a window.,
-302535920001138,Execute this command in the console.,
+302535920000407,<left_click> Execute <right_click> Paste,
+302535920001138,"Execute this command in the console, Right-click to paste code in console.",
 302535920001159,Any .lua files in <color green>%s</color>.,
 302535920000071,Show Mods Log,
 302535920000692,Log is blank (well not anymore).,
@@ -478,7 +479,9 @@ Press once to clear this examine, again to clear all.",
 302535920000553,Examine parent and ancestor objects.,
 302535920000414,Are you sure you wish to delete <color red>%s</color>?,
 302535920000228,Assign to,
-302535920000043,"Press <color green>Enter</color> to scroll to next found text, <color green>Ctrl-Enter</color> to scroll to previous found text, <color green>Arrow Keys</color> to scroll to each end.",
+302535920000043,"<color green>Enter</color> to scroll to next found text
+<color green>Ctrl-Enter</color> to scroll to previous found text
+<color yellow>Arrow Keys</color> to scroll to each end",
 302535920000044,Go To Text,
 302535920000045,"Scrolls down one line or scrolls between text in ""Go to text"".
 Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top.",

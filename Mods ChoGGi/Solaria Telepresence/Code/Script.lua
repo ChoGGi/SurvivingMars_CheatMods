@@ -122,7 +122,7 @@ Right click to view selected list item building.]]
 			name = RetName(obj),
 			-- provide a slight reference
 			hint = hint .. " at pos: " .. pos,
-			clicked = function(_,_,button)
+			mouseup = function(_,_,_,button)
 				ClickObj(self,obj,button,which)
 			end,
 		}
@@ -144,7 +144,7 @@ Right click to view selected list item building.]]
 		pos = self:GetVisualPos(),
 		hint = [[Solaria control building.
 You can't remove... Only view (or maybe See would be a better term).]],
-		clicked = function(_,_,button)
+		mouseup = function(_,_,_,button)
 			ClickObj(self,obj,button,which)
 		end,
 	})

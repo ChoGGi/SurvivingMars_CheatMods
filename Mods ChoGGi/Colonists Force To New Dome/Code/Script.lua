@@ -52,7 +52,7 @@ Living Spaces: %s]]
 					#(domes[i].labels.Colonist or ""),
 					domes[i]:GetLivingSpace() or 0
 				),
-				clicked = function(_,_,button)
+				mouseup = function(_,_,_,button)
 					ClickObj(dome,domes[i],button)
 				end,
 			}
@@ -68,7 +68,7 @@ Living Spaces: %s]]
 		name = [[ Current Dome]],
 		pos = dome:GetVisualPos(),
 		hint = [[Currently selected dome]],
-		clicked = function(_,_,button)
+		mouseup = function(_,_,_,button)
 			ClickObj(false,dome,button)
 		end,
 	}

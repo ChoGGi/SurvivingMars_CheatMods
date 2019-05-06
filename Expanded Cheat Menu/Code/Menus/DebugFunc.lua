@@ -5,6 +5,7 @@ local table_remove = table.remove
 local table_clear = table.clear
 local table_iclear = table.iclear
 local table_sort = table.sort
+local table_find = table.find
 local IsValid = IsValid
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -227,6 +228,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 		if not answer then
 			return
 		end
+		local WaitMsg = WaitMsg
 		-- a mystery without anything visible added to the ground
 		g_CurrentMissionParams.idMystery = "BlackCubeMystery"
 		local gen = RandomMapGenerator:new()
@@ -240,12 +242,16 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 		gen:Generate()
 		CreateRealTimeThread(function()
 			-- don't fire the rest till map is good n loaded
-			WaitMsg("RocketLaunchFromEarth")
+			local Dialogs = Dialogs
+			Sleep(5000)
 			while not Dialogs.PopupNotification do
-				Sleep(500)
+				WaitMsg("OnRender")
 			end
+			WaitMsg("RocketLaunchFromEarth")
 			-- close welcome to mars msg
-			Dialogs.PopupNotification:Close()
+			if Dialogs.PopupNotification then
+				Dialogs.PopupNotification:Close()
+			end
 			-- remove all notifications
 			local dlg = GetDialog("OnScreenNotificationsDlg")
 			if dlg then
@@ -260,7 +266,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
 			SetLightmodelOverride(1,"TheMartian1_Night")
 
-			local texture = table.find(TerrainTextures,"name","Prefab_Violet")
+			local texture = table_find(TerrainTextures,"name","Prefab_Orange")
 			terrain.SetTerrainType{type = texture or 1}
 
 			Sleep(1000)
@@ -322,12 +328,32 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 
 							c = c + 1
 							obj:ChangeEntity(entity_list[c])
+
+							-- if it has a working state then set it
+							local states_str = obj:GetStates()
+							local idx = table_find(states_str,"working")
+							if idx then
+								obj:SetState(states_str[idx])
+							else
+								-- opened works as well
+								idx = table_find(states_str,"idleOpened")
+								if idx then
+									obj:SetState(states_str[idx])
+								end
+							end
 						end
 					end
 
 				end -- for
 			end -- for
+			CheatMapExplore("deep scanned")
 			ResumePassEdits("ChoGGi.MenuFuncs.ViewAllEntities")
+
+			if ChoGGi.testing then
+				WaitMsg("OnRender")
+				ChoGGi.ComFuncs.CloseDialogsECM()
+				cls()
+			end
 
 		end)
 	end
@@ -1242,7 +1268,7 @@ end
 
 --little bit of painting
 --~ local terrain_type = "Grass_01"
---~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+--~ local terrain_type_idx = table_find(TerrainTextures, "name", terrain_type)
 --~ CreateRealTimeThread(function()
 --~	 while true do
 --~		 terrain.SetTypeCircle(GetTerrainCursor(), 2500, terrain_type_idx)

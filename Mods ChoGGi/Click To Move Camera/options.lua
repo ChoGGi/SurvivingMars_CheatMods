@@ -2,7 +2,7 @@ DefineClass("ModOptions_ChoGGi_ShiftClickToMove", {
 	__parents = {"ModOptionsObject"},
 	properties = {
 		{
-			default = "false",
+			default = "true",
 			editor = "bool",
 			id = "EdgeScrolling",
 			name = "Edge Scrolling",

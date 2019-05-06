@@ -992,7 +992,7 @@ function Examine:BuildToolsMenuPopup()
 		{name = self.ChoGGi.UserSettings.ExamineTextType and Translate(1000145--[[Text--]]) or Translate(298035641454--[[Object--]]),
 			hint = Strings[302535920001620--[["Click to toggle between Viewing/Dumping the Text or Object.
 <color green>Text</color> is what you see, <color green>Object</color> is the text created from ValueToLuaCode(obj)."--]]],
-			clicked = function(_,item)
+			clicked = function(item)
 				self.ChoGGi.UserSettings.ExamineTextType = not self.ChoGGi.UserSettings.ExamineTextType
 				self.ChoGGi.SettingFuncs.WriteSettings()
 

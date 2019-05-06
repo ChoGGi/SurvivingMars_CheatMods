@@ -257,7 +257,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 				OpenInExamineDlg(labels_name,"str",labels_name)
 			end,
 			-- mouseover fires before building submenu, so we can update submenu list
-			mouseover = function(self)
+			mouseover = function()
 				local UICity = UICity
 				if not UICity then
 					return
@@ -437,21 +437,20 @@ local ConsoleMenuPopupToggle_list = {
 			ChoGGi.SettingFuncs.WriteSettings()
 		end,
 	},
---~ 		{name = Strings[302535920000310--[[Skip Undefined Globals--]]] .. " (" .. #ChoGGi.Temp.UndefinedGlobals .. ")",
 	{name = Strings[302535920000310--[[Skip Undefined Globals--]]],
 		hint = Strings[302535920000311--[["Stop the ""Attempt to use an undefined global"" msgs.
 
-The number is a count of stored msgs, right-click <right_click> to view the list."--]]],
+The number is a count of stored msgs, right-click to view the list."--]]],
+		hint_bottom = Strings[302535920001444--[[<left_click> Activate <right_click> Alt Activate--]]],
 		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals",
-		mousedown = function(_,_,button)
+		mouseup = function(_,_,_,button)
 			if button == "R" then
+				ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals = not ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals
+				ChoGGi.SettingFuncs.WriteSettings()
+			elseif button == "R" then
 				OpenInExamineDlg(ChoGGi.Temp.UndefinedGlobals,nil,Strings[302535920000310--[[Skip Undefined Globals--]]])
 			end
-		end,
-		clicked = function()
-			ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals = not ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals
-			ChoGGi.SettingFuncs.WriteSettings()
 		end,
 	},
 	{name = Strings[302535920001112--[[Console Log--]]],
@@ -467,6 +466,7 @@ The number is a count of stored msgs, right-click <right_click> to view the list
 				print("ShowConsoleLog: true")
 			else
 				DestroyConsoleLog()
+				print("ShowConsoleLog: false")
 			end
 		end,
 	},
@@ -517,9 +517,16 @@ function ChoGGi.ConsoleFuncs.HistoryPopup(self)
 			items[i] = {
 				-- these can get long so keep 'em short
 				name = text:sub(1,ConsoleHistoryMenuLength),
-				hint = Strings[302535920001138--[[Execute this command in the console.--]]] .. "\n\n" .. text,
-				clicked = function()
-					dlgConsole:Exec(text)
+				hint = Strings[302535920001138--[["Execute this command in the console, Right-click to paste code in console."--]]] .. "\n\n" .. text,
+				hint_bottom = Strings[302535920000407--[[<left_click> Execute <right_click> Paste--]]],
+				mouseup = function(_,_,_,button)
+					if button == "L" then
+						dlgConsole:Exec(text)
+					elseif button == "R" then
+						dlgConsole.idEdit:SetFocus()
+						dlgConsole.idEdit:SetText(text)
+						dlgConsole.idEdit:SetCursor(1,#text)
+					end
 				end,
 			}
 		end
@@ -625,12 +632,19 @@ local function BuildSciptButton(console,folder)
 					if not err then
 						items[i] = {
 							name = files[i].name,
-							hint = Strings[302535920001138--[[Execute this command in the console.--]]] .. "\n\n" ..script,
-							clicked = function()
-								if script:find("-- rem echo on") then
-									console:Exec(script)
-								else
-									console:Exec(script,true)
+							hint = Strings[302535920001138--[["Execute this command in the console, Right-click to paste code in console."--]]] .. "\n\n" ..script,
+							hint_bottom = Strings[302535920000407--[[<left_click> Execute <right_click> Paste--]]],
+							mouseup = function(_,_,_,button)
+								if button == "L" then
+									if script:find("-- rem echo on") then
+										console:Exec(script)
+									else
+										console:Exec(script,true)
+									end
+								elseif button == "R" then
+									dlgConsole.idEdit:SetFocus()
+									dlgConsole.idEdit:SetText(script)
+									dlgConsole.idEdit:SetCursor(1,#script)
 								end
 							end,
 						}

@@ -754,9 +754,10 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 		if item.clicked then
 			function button.OnPress(...)
 				cls.OnPress(...)
-				item.clicked(...,item)
+				item.clicked(item,...)
 				popup:Close()
 			end
+		-- "disable" stops the menu from closing when clicked
 		elseif not item.disable then
 			function button.OnPress(...)
 				cls.OnPress(...)
@@ -764,11 +765,14 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 			end
 		end
 
-		if item.mousedown then
-			function button.OnMouseButtonDown(...)
-				cls.OnMouseButtonDown(...)
-				item.mousedown(...,item)
-				popup:Close()
+		if item.mouseup then
+			function button:OnMouseButtonUp(pt, button, ...)
+				-- make sure cursor was in button area when mouse released
+				if pt:InBox2D(self.box) then
+					cls.OnMouseButtonUp(self, pt, button,...)
+					item.mouseup(item, self, pt, button,...)
+					popup:Close()
+				end
 			end
 		end
 
@@ -832,14 +836,14 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 
 			local name = "ChoGGi_submenu_" .. item.name
 			submenu_func = function(self)
-				ChoGGi.ComFuncs.PopupSubMenu(self,name,item)
+				ChoGGi.ComFuncs.PopupSubMenu(self, name, item)
 			end
 		end
 
 		-- add our mouseenter funcs
 		if item.mouseover or showobj_func or colourobj_func or pos_func or submenu_func then
-			function button:OnMouseEnter(pt, child,...)
-				cls.OnMouseEnter(self, pt, child,...)
+			function button:OnMouseEnter(pt, child, ...)
+				cls.OnMouseEnter(self, pt, child, ...)
 				if showobj_func then
 					showobj_func()
 				end
@@ -850,10 +854,10 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 					pos_func()
 				end
 				if item.mouseover then
-					item.mouseover(self, pt, child,...,item)
+					item.mouseover(self, pt, child, item, ...)
 				end
 				if submenu_func then
-					submenu_func(self, pt, child,...,item)
+					submenu_func(self, pt, child, item, ...)
 				end
 			end
 
@@ -861,7 +865,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items,popup)
 	end
 end
 
-function ChoGGi.ComFuncs.PopupToggle(parent,popup_id,items,anchor,reopen,submenu)
+function ChoGGi.ComFuncs.PopupToggle(parent, popup_id, items, anchor, reopen, submenu)
 	local popup = terminal.desktop[popup_id]
 	if popup then
 		popup:Close()

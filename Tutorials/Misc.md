@@ -85,9 +85,17 @@ if not GameState.gameplay then
 	return
 end
 
+--~ Don't pass vars on the end of varargs
+-- works
+SomeFunc(var1,var2,...)
+-- not gonna work (it'll only take the first var arg)
+SomeFunc(var1,...,var2)
+
+
 --~ Info from other people:
 
 --~ Crysm: 7200 units per revolution. So units = (degrees * 20)
+--~ 21600 / 360
 
 --~ BullettMAGNETTs CustomAssetDocs
 --~ https://docs.google.com/document/d/1LcZMS8UeRAQZZsPE-bsx75ZMGPUFGdbS-M9jDBMFEYs

@@ -389,8 +389,8 @@ function PinsDlg:InitPinButton(button,...)
 					hint = hint,
 					hint_title = hint_title,
 					hint_bottom = T(0,"<left_click> Select <right_click> View"),
-					mousedown = function(_,pt,mouse_but)
-						if mouse_but == "L" then
+					mouseup = function(_,_,_,button)
+						if button == "L" then
 							if obj.class == "SupplyRocket" then
 								orig_button_OnPress(button_obj,gamepad,varargs)
 							else

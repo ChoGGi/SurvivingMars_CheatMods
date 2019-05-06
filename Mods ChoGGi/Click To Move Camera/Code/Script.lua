@@ -47,25 +47,24 @@ end
 local mod_id = "ChoGGi_ShiftClickToMove"
 local mod = Mods[mod_id]
 
-local mouse_scrolling = true
+local edge_scrolling = true
 function OnMsg.ApplyModOptions(id)
 	if id ~= mod_id then
 		return
 	end
 
-	local enabled = mod.options.EdgeScrolling
-	mouse_scrolling = enabled
+	edge_scrolling = mod.options.EdgeScrolling
 
-	if enabled then
+	if edge_scrolling then
 		cameraRTS.SetProperties(1,{ScrollBorder = 5})
 	else
 		cameraRTS.SetProperties(1,{ScrollBorder = 0})
 	end
 end
 
--- disable edge scrolling
+-- disable edge scrolling on load
 local function StartupCode()
-	if not mouse_scrolling then
+	if not edge_scrolling then
 		cameraRTS.SetProperties(1,{ScrollBorder = 0})
 	end
 end
