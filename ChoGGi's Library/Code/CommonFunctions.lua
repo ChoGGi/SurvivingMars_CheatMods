@@ -194,10 +194,14 @@ do -- RetName
 				-- why it has a false is beyond me (something to do with that object[true] = userdata?)
 				if key ~= false and not lookup_table[value] then
 					if type(value) == "function" then
-						if DebugGetInfo(value) == "[C](-1)" then
-							lookup_table[value] = cls_key .. "." .. key .. " *C"
+						local name = DebugGetInfo(value)
+						if name == "[C](-1)" then
+							lookup_table[value] = key .. " *C"
 						else
-							lookup_table[value] = cls_key .. "." .. key
+--~ 							Unit.lua(75):MoveSleep
+							-- need to reverse string so it finds the last /, since find looks ltr
+							local slash = name:reverse():find("/")
+							lookup_table[value] = name:sub((slash * -1) + 1) .. ":" .. key
 						end
 					end
 				end
