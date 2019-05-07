@@ -515,6 +515,24 @@ function Examine:ViewSourceCode()
 	}
 end
 
+function Examine:AddDistToRollover(c,roll_text,idx,idx_value,obj,obj_value)
+	if IsPoint(idx) then
+		c = c + 1
+		roll_text[c] = obj
+		c = c + 1
+		roll_text[c] = ":Dist2D("
+		c = c + 1
+		roll_text[c] = idx_value
+		c = c + 1
+		roll_text[c] = ") = "
+		c = c + 1
+		roll_text[c] = obj_value:Dist2D(idx)
+		c = c + 1
+		roll_text[c] = "\n"
+	end
+	return c
+end
+
 -- hover (link, hyperlink_box, pos)
 function Examine:idText_OnHyperLinkRollover(link)
 	self = GetRootDialog(self)
@@ -536,20 +554,22 @@ function Examine:idText_OnHyperLinkRollover(link)
 		return
 	end
 
+	local obj_name = RetName(obj)
+	local roll_text = {}
+	local c = 0
+
 	local title,obj_str,obj_type
-	if self.obj_type == "table" or self.obj_type == "userdata" or self.obj_type == "string" then
-		local obj_value
-		-- "undefined global" bulldiddy workaround
-		if self.name == "_G" then
-			obj_value = PropObjGetProperty(self.obj_ref,obj)
-		else
-			obj_value = self.obj_ref[obj]
-		end
+	if self.obj_type == "table" or self.obj_type == "userdata" or self.obj_type == "string" or self.obj_type == "number" then
+		local obj_value = self.ChoGGi.ComFuncs.RetTableValue(self.obj_ref,obj)
 		local obj_value_type = type(obj_value)
 		if obj_value_type ~= "nil" then
 			obj_str,obj_type = self.ChoGGi.ComFuncs.ValueToStr(obj_value)
 			if obj_value_type == "function" then
 				obj_str = obj_str .. "\n" .. self.ChoGGi.ComFuncs.DebugGetInfo(obj_value)
+			elseif IsPoint(obj_value) and type(obj) == "number" then
+				-- check for and add dist from idx-1 and +1
+				c = self:AddDistToRollover(c,roll_text,self.obj_ref[obj-1],obj-1,obj,obj_value)
+				c = self:AddDistToRollover(c,roll_text,self.obj_ref[obj+1],obj+1,obj,obj_value)
 			end
 		else
 			obj_str,obj_type = self.ChoGGi.ComFuncs.ValueToStr(obj)
@@ -560,24 +580,34 @@ function Examine:idText_OnHyperLinkRollover(link)
 		title = Strings[302535920000069--[[Examine--]]]
 	end
 
-	local roll_text = RetName(obj)
-
 	if self.onclick_funcs[link] == self.OpenListMenu then
-		title = roll_text .. " " .. Translate(1000162--[[Menu--]]) .. " (" .. obj_type .. ")"
+		title = obj_name .. " " .. Translate(1000162--[[Menu--]]) .. " (" .. obj_type .. ")"
 
-		roll_text = Strings[302535920001540--[[Show context menu for %s.--]]]:format(roll_text)
-
+		-- stick info at the top of list
+		table_insert(roll_text,1,Strings[302535920001540--[[Show context menu for <color green>%s</color>.--]]]:format(obj_name)
+			.. "\n"
+		)
 		-- add the value to the key tooltip
-		roll_text = roll_text .. "\n\n\n" .. obj_str
+		table_insert(roll_text,2,obj_str .. "\n\n")
+		c = c + 2
+
 		-- if it's an image then add 'er to the text
 		if self.ChoGGi.ComFuncs.ValidateImage(obj_str) and self.ChoGGi.ComFuncs.ImageExts()[obj_str:sub(-3):lower()] then
-			roll_text = roll_text .. "\n\n<image " .. obj_str .. ">"
+			c = c + 1
+			roll_text[c] = "\n\n<image "
+			c = c + 1
+			roll_text[c] = obj_str
+			c = c + 1
+			roll_text[c] = ">"
 		end
+	else
+		c = c + 1
+		roll_text[c] = obj_name
 	end
 
 	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
 		RolloverTitle = title,
-		RolloverText = (self.onclick_name[link] or roll_text),
+		RolloverText = (self.onclick_name[link] or TableConcat(roll_text)),
 		RolloverHint = Strings[302535920001079--[[<left_click> Default Action <right_click> Examine--]]],
 	})
 end

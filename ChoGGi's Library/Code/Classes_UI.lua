@@ -629,8 +629,9 @@ function ChoGGi_XWindow:BoxSize(obj)
 end
 
 -- takes either a point, or obj to set pos
-function ChoGGi_XWindow:SetPos(obj,dialog)
-	local dlg = self[dialog or "idDialog"] or dialog
+--~ ChoGGi_XWindow.SetPos(window,pos)
+function ChoGGi_XWindow:SetPos(obj,dialog,children)
+	local dlg = self and self[dialog or "idDialog"] or type(dialog) == table and dialog or self
 	local x,y,w,h = self.BoxSize and self:BoxSize(obj) or g_Classes.ChoGGi_XWindow.BoxSize(self,obj)
 
 	if IsPoint(obj) then
@@ -650,7 +651,7 @@ function ChoGGi_XWindow:SetPos(obj,dialog)
 		h = box:sizey()
 	end
 
-	dlg:SetBox(x,y,w,h)
+	dlg:SetBox(x,y,w,h,children)
 end
 
 function ChoGGi_XWindow:SetSize(w,h,dialog)

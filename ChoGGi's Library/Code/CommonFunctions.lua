@@ -4523,3 +4523,12 @@ function ChoGGi.ComFuncs.DisastersStop()
 	end
 
 end
+function ChoGGi.ComFuncs.RetTableValue(obj,key)
+	-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env uses the metatable from _G.__index and causes sm to log an error msg
+	local index = getmetatable(obj)
+	if index and index.__index then
+		return PropObjGetProperty(obj,key)
+	else
+		return obj[key]
+	end
+end
