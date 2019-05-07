@@ -4,6 +4,7 @@
 - ValidateImage didn't work with non-Library images.
 - DeleteObject works with multi-selection.
 - Made DotNameToObject compatible with keys that don't support dotnames (spaces and so on).
+- Added the func names from some metatables (point,box,etc) to the RetName func.
 - Removed some log spam from:
 - > DeleteObject
 - > List Choice dialog.

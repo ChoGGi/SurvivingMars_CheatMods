@@ -2,10 +2,9 @@
 
 ## v13.4 (Unreleased)
 ### Added:
-- Menu>Consts:
+- Menu>Cheats>Consts:
 - > Lists all the Consts settings (for any I haven't added to a menu).
 - > Any Consts changed will override ones that have been added to a (non-Consts) menu.
-- > If you have previously changed it; there'll be a list item added with the value.
 - Console>Settings>Skip Undefined Globals: Stop the "Attempt to use an undefined global" msgs (it'll store a list of them you can check).
 - Cheats>Lightning Strike: Same as a strike from a dust storm.
 - ECM>Colonists>Workplaces>Outside Workplace Sanity Penalty.

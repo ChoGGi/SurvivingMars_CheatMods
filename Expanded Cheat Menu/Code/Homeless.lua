@@ -65,12 +65,11 @@ local function AddMenuitem(id,name,sort)
 		ChoGGi_ECM = true,
 	}
 end
-AddMenuitem("ECM.Cheats",Translate(27),"01")
-AddMenuitem("ECM.ECM",Strings[302535920000887],"02")
-AddMenuitem("ECM.Consts",Strings[302535920000158],"03")
-AddMenuitem("ECM.Game",Translate(283142739680),"04")
-AddMenuitem("ECM.Debug",Translate(1000113),"05")
-AddMenuitem("ECM.Help",Translate(487939677892),"06")
+AddMenuitem("ECM.Cheats",Translate(27),"1")
+AddMenuitem("ECM.ECM",Strings[302535920000887],"2")
+AddMenuitem("ECM.Game",Translate(283142739680),"3")
+AddMenuitem("ECM.Debug",Translate(1000113),"4")
+AddMenuitem("ECM.Help",Translate(487939677892),"5")
 
 -- unforbid binding some keys (i left Enter and Menu, not sure what Menu is for? seems best to leave it)
 local f = ForbiddenShortcutKeys

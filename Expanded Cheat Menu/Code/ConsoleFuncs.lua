@@ -376,13 +376,21 @@ do -- ToggleLogErrors
 	end
 
 	local funcs = {"error","OutputDebugString","ThreadErrorHandler","DlcErrorHandler","syntax_error","RecordError","__procall_errorhandler","StoreErrorSource"}
+
+	-- save orig funcs (if toggling happens)
 	local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+	local lookup_table = ChoGGi.ComFuncs.RetName_Table()
 	for i = 1, #funcs do
 		local name = funcs[i]
 		if rawget(_G,name) then
 			SaveOrigFunc(name)
+			local func = _G[name]
+			if not lookup_table[func] then
+				lookup_table[func] = name
+			end
 		end
 	end
+
 	function ChoGGi.ConsoleFuncs.ToggleLogErrors(enable)
 		-- stop "Attempt to create a new global " errors, though I'm not sure why they happen since they're not "new"
 		local orig_Loading = Loading

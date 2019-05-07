@@ -86,8 +86,22 @@ do -- RetName
 	-- we use this table to display names of objects for RetName
 	local lookup_table = {}
 
+	local function AddFuncsUserData(meta,name)
+		for key,value in pairs(meta) do
+			if not lookup_table[value] then
+				if type(value) == "function" then
+					if DebugGetInfo(value) == "[C](-1)" then
+						lookup_table[value] = name .. "." .. key .. " *C"
+					else
+						lookup_table[value] = name .. "." .. key
+					end
+				end
+			end
+		end
+	end
+
 	local function AddFuncs(g,name)
-		local list = g[name]
+		local list = g[name] or empty_table
 		for key,value in pairs(list) do
 			if not lookup_table[value] then
 				if type(value) == "function" then
@@ -101,16 +115,20 @@ do -- RetName
 		end
 	end
 
-	local function AddFuncsChoGGi(g,name)
+	local function AddFuncsChoGGi(g,name,skip)
 		local list = g.ChoGGi[name]
 		for key,value in pairs(list) do
 			if not lookup_table[value] then
-				lookup_table[value] = "ChoGGi." .. name .. "." .. key
+				if skip then
+					lookup_table[value] = key
+				else
+					lookup_table[value] = "ChoGGi." .. name .. "." .. key
+				end
 			end
 		end
 	end
 
-	-- pcalls = xbox
+	-- pcalls for xbox
 
 	-- add some func names
 	pcall(function()
@@ -145,7 +163,18 @@ do -- RetName
 		AddFuncsChoGGi(g,"InfoFuncs")
 		AddFuncsChoGGi(g,"MenuFuncs")
 		AddFuncsChoGGi(g,"SettingFuncs")
-		AddFuncsChoGGi(g,"OrigFuncs")
+		AddFuncsChoGGi(g,"OrigFuncs",true)
+		-- some userdata funcs
+		AddFuncsUserData(__range_meta,"range")
+		AddFuncsUserData(Request_GetMeta(),"TaskRequest")
+		AddFuncsUserData(getmetatable(quaternion(point20, 0)),"quaternion")
+		AddFuncsUserData(getmetatable(set()),"set")
+		AddFuncsUserData(getmetatable(RandState()),"RandState")
+		AddFuncsUserData(getmetatable(pstr()),"pstr")
+		AddFuncsUserData(getmetatable(NewGrid(0, 0, 1)),"grid")
+		AddFuncsUserData(getmetatable(grid(0,0)),"xmgrid")
+		AddFuncsUserData(getmetatable(point20),"point")
+		AddFuncsUserData(getmetatable(empty_box),"box")
 
 		-- any tables/funcs in _G
 		for key,value in pairs(g) do

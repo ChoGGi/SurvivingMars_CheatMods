@@ -2,10 +2,21 @@
 
 local Translate = ChoGGi.ComFuncs.Translate
 local SettingState = ChoGGi.ComFuncs.SettingState
+local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 local type = type
+
+-- menu
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000158--[[Consts--]]],
+	ActionMenubar = "ECM.Cheats",
+	ActionId = ".Consts",
+	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	OnActionEffect = "popup",
+	ActionSortKey = "1Consts",
+}
 
 -- group name to icon
 local icons = {
@@ -40,7 +51,7 @@ for i = 1, #ConstDef do
 
 	c = c + 1
 	Actions[c] = {ActionName = group_name,
-		ActionMenubar = "ECM.Consts",
+		ActionMenubar = "ECM.Cheats.Consts",
 		ActionId = "." .. group_name,
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
@@ -53,7 +64,7 @@ for i = 1, #ConstDef do
 
 		c = c + 1
 		Actions[c] = {ActionName = name,
-			ActionMenubar = "ECM.Consts." .. group_name,
+			ActionMenubar = "ECM.Cheats.Consts." .. group_name,
 			ActionId = "." .. name,
 			ActionIcon = icon,
 			RolloverText = function()

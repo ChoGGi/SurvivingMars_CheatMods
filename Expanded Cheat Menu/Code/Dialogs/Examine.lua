@@ -165,6 +165,11 @@ function Examine:Init(parent, context)
 	self.onclick_name = {}
 	self.onclick_objs = {}
 	self.onclick_count = 0
+	self.info_list_obj_str = {}
+	self.info_list_sort_obj = {}
+	self.info_list_sort_num = {}
+	self.info_list_skip_dupes = {}
+	self.info_list_data_meta = {}
 	self.marked_objects = objlist:new()
 	self.title = context.title
 	self.override_title = context.override_title
@@ -531,8 +536,9 @@ function Examine:idText_OnHyperLinkRollover(link)
 		return
 	end
 
-	local title,obj_str,obj_type,obj_value
-	if self.obj_type == "table" then
+	local title,obj_str,obj_type
+	if self.obj_type == "table" or self.obj_type == "userdata" or self.obj_type == "string" then
+		local obj_value
 		-- "undefined global" bulldiddy workaround
 		if self.name == "_G" then
 			obj_value = PropObjGetProperty(self.obj_ref,obj)
@@ -2117,7 +2123,7 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 				-- can we ref it with .name (i'm ignoring _123 since i'm lazy)
 				local is_dot = tostring(obj_name):find("[%a_]")
 				-- if it's a cls obj then make sure to use the obj
-				local is_class = self.obj_ref.class and g_Classes[self.obj_ref.class]
+				local is_class = self.obj_ref.class and g_Classes[self.obj_ref.class] or self.obj_type == "userdata" or self.obj_type == "string"
 
 				local code
 				if is_class then
@@ -2142,42 +2148,44 @@ function Examine:OpenListMenu(_,obj_name,_,hyperlink_box)
 			image = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 			clicked = function()
 				-- if it's a class object then add self ref
-				if self.obj_ref.class and g_Classes[self.obj_ref.class] then
+				if self.obj_ref.class and g_Classes[self.obj_ref.class] or self.obj_type == "userdata" or self.obj_type == "string" then
 					self:ShowExecCodeWithCode("MonitorFunc(o." .. obj_name .. ",o)")
 				else
 					self:ShowExecCodeWithCode("MonitorFunc(o." .. obj_name .. ")")
 				end
 			end,
 		}
-		c = c + 1
-		list[c] = {name = Strings[302535920000524--[[Print Func--]]],
-			hint = Strings[302535920000906--[[Print func name when this func is called.--]]],
-			image = "CommonAssets/UI/Menu/Action.tga",
-			clicked = function()
-				self.ChoGGi.ComFuncs.PrintToFunc_Add(
-					obj_value, -- func to print
-					obj_key, -- func name
-					self.obj_ref, -- parent
-					self.name .. "." .. obj_key -- printed name
-				)
-			end,
-		}
-		c = c + 1
-		list[c] = {name = Strings[302535920000745--[[Print Func Params--]]],
-			hint = Strings[302535920000906] .. "\n\n" .. Strings[302535920000984--[[Also prints params (if this func is attached to a class obj then the first arg will only return the name).--]]],
-			image = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
-			clicked = function()
-				self.ChoGGi.ComFuncs.PrintToFunc_Add(obj_value,obj_key,self.obj_ref,self.name .. "." .. obj_key,true)
-			end,
-		}
-		c = c + 1
-		list[c] = {name = Strings[302535920000900--[[Print Reset--]]],
-			hint = Strings[302535920001067--[[Remove print from func.--]]],
-			image = "CommonAssets/UI/Menu/reload.tga",
-			clicked = function()
-				self.ChoGGi.ComFuncs.PrintToFunc_Remove(obj_key,self.obj_ref)
-			end,
-		}
+		if self.obj_type ~= "userdata" and self.obj_type ~= "string" then
+			c = c + 1
+			list[c] = {name = Strings[302535920000524--[[Print Func--]]],
+				hint = Strings[302535920000906--[[Print func name when this func is called.--]]],
+				image = "CommonAssets/UI/Menu/Action.tga",
+				clicked = function()
+					self.ChoGGi.ComFuncs.PrintToFunc_Add(
+						obj_value, -- func to print
+						obj_key, -- func name
+						self.obj_ref, -- parent
+						self.name .. "." .. obj_key -- printed name
+					)
+				end,
+			}
+			c = c + 1
+			list[c] = {name = Strings[302535920000745--[[Print Func Params--]]],
+				hint = Strings[302535920000906] .. "\n\n" .. Strings[302535920000984--[[Also prints params (if this func is attached to a class obj then the first arg will only return the name).--]]],
+				image = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
+				clicked = function()
+					self.ChoGGi.ComFuncs.PrintToFunc_Add(obj_value,obj_key,self.obj_ref,self.name .. "." .. obj_key,true)
+				end,
+			}
+			c = c + 1
+			list[c] = {name = Strings[302535920000900--[[Print Reset--]]],
+				hint = Strings[302535920001067--[[Remove print from func.--]]],
+				image = "CommonAssets/UI/Menu/reload.tga",
+				clicked = function()
+					self.ChoGGi.ComFuncs.PrintToFunc_Remove(obj_key,self.obj_ref)
+				end,
+			}
+		end
 	end
 
 	if c ~= c_orig and not list[6].is_spacer then
@@ -2428,39 +2436,97 @@ function Examine:ToggleBBox(_,bbox)
 	end
 end
 
+function Examine:SortInfoList(list,list_sort_num)
+	list_sort_num = list_sort_num or self.info_list_sort_num
+	local list_sort_obj = self.info_list_sort_obj
+	if self.sort_dir then
+		-- sort backwards
+		table_sort(list,function(a, b)
+			-- strings
+			local c,d = list_sort_obj[a], list_sort_obj[b]
+			if c and d then
+				return CmpLower(d, c)
+			end
+			-- numbers
+			c,d = list_sort_num[a], list_sort_num[b]
+			if c and d then
+				return c > d
+			end
+			if c or d then
+				return d and true
+			end
+			-- just in case
+			return CmpLower(b, a)
+		end)
+	else
+		-- sort normally
+		table_sort(list,function(a, b)
+			-- strings
+			local c,d = list_sort_obj[a], list_sort_obj[b]
+			if c and d then
+				return CmpLower(c, d)
+			end
+			-- numbers
+			c,d = list_sort_num[a], list_sort_num[b]
+			if c and d then
+				return c < d
+			end
+			if c or d then
+				return c and true
+			end
+			-- just in case
+			return CmpLower(a, b)
+		end)
+	end
+end
+
+function Examine:AddItemsToInfoList(obj,c,list,skip_dupes,list_obj_str,is_enum)
+	local list_sort_obj = self.info_list_sort_obj
+	local list_obj_str = list_obj_str or self.info_list_obj_str
+
+	for k,v in pairs(list) do
+		if is_enum then
+			-- remove the . at the start
+			k = k:sub(2)
+		end
+		local name = self:ConvertValueToInfo(k)
+		local sort = name
+		name = self:HyperLink(k,self.OpenListMenu,nil,true) .. "* " .. hyperlink_end .. name
+
+		if not skip_dupes[sort] then
+			skip_dupes[sort] = true
+			local str_tmp = name .. " = " .. self:ConvertValueToInfo(obj[k] or v)
+			c = c + 1
+			list_obj_str[c] = str_tmp
+			list_sort_obj[str_tmp] = sort
+		end
+	end
+	return c
+end
+
 function Examine:ConvertObjToInfo(obj,obj_type)
-	-- i like reusing tables... these are for sorting, and dupe skipping
-	self.ConvertObjToInfo_list_obj_str = self.ConvertObjToInfo_list_obj_str or {}
-	self.ConvertObjToInfo_list_sort_num = self.ConvertObjToInfo_list_sort_num or {}
-	self.ConvertObjToInfo_list_sort_obj = self.ConvertObjToInfo_list_sort_obj or {}
-	self.ConvertObjToInfo_skip_dupes = self.ConvertObjToInfo_skip_dupes or {}
-	local list_obj_str = self.ConvertObjToInfo_list_obj_str
-	local list_sort_obj = self.ConvertObjToInfo_list_sort_obj
-	local list_sort_num = self.ConvertObjToInfo_list_sort_num
-	local skip_dupes = self.ConvertObjToInfo_skip_dupes
 	-- the list we return with concat
-	table_iclear(list_obj_str)
-	-- list of strs to sort with
-	table_clear(list_sort_num)
+	local list_obj_str = self.info_list_obj_str
 	-- list of nums to sort with
-	table_clear(list_sort_obj)
+	local list_sort_obj = self.info_list_sort_obj
+	-- list of strs to sort with
+	local list_sort_num = self.info_list_sort_num
 	-- dupe list for the "All" checkbox
+	local skip_dupes = self.info_list_skip_dupes
+
+	table_clear(list_obj_str)
+	table_clear(list_sort_obj)
+	table_clear(list_sort_num)
 	table_clear(skip_dupes)
 
 	local obj_metatable = getmetatable(obj)
 	local c = 0
 	local str_not_translated
-
-	if obj_type == "nil" then
-		return obj_type
-	elseif obj_type == "boolean" or obj_type == "number" then
-		return tostring(obj)
-	end
+	local show_all_values = self.show_all_values
 
 	if obj_type == "table" then
 
 		local is_chinese = self.is_chinese
-		local show_all_values = self.show_all_values
 		for k,v in pairs(obj) do
 			-- sorely needed delay for chinese (or it "freezes" the game when loading something like _G)
 			-- i assume text rendering is slower for the chars, 'cause examine is really slow with them.
@@ -2495,41 +2561,14 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		if obj_metatable and show_all_values then
 			local meta_temp = obj_metatable
 			while meta_temp do
-				for k,v in pairs(meta_temp) do
-					local name = self:ConvertValueToInfo(k)
-					local sort = name
-					name = self:HyperLink(k,self.OpenListMenu,nil,true) .. "* " .. hyperlink_end .. name
-
-					if not skip_dupes[sort] then
-						skip_dupes[sort] = true
-						c = c + 1
-						local str_tmp = name .. " = " .. self:ConvertValueToInfo(obj[k] or v)
-						list_obj_str[c] = str_tmp
-						list_sort_obj[str_tmp] = sort
-					end
-
-				end
+				c = self:AddItemsToInfoList(obj,c,meta_temp,skip_dupes,list_obj_str)
 				meta_temp = getmetatable(meta_temp)
 			end
 		end
 
 		-- pretty rare occurrence
 		if self.show_enum_values and self.enum_vars then
-			for k,v in pairs(self.enum_vars) do
-				-- remove the . at the start
-				k = k:sub(2)
-				local name = self:ConvertValueToInfo(k)
-				local sort = name
-				name = self:HyperLink(k,self.OpenListMenu,nil,true) .. "* " .. hyperlink_end .. name
-
-				if not skip_dupes[sort] then
-					skip_dupes[sort] = true
-					c = c + 1
-					local str_tmp = name .. " = " .. self:ConvertValueToInfo(v)
-					list_obj_str[c] = str_tmp
-					list_sort_obj[str_tmp] = sort
-				end
-			end
+			c = self:AddItemsToInfoList(obj,c,self.enum_vars,skip_dupes,list_obj_str,true)
 		end
 
 		-- the regular getmetatable will use __metatable if it exists, so we check this as well
@@ -2557,45 +2596,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 		end) .. name .. hyperlink_end
 	end
 
-	if self.sort_dir then
-		-- sort backwards
-		table_sort(list_obj_str,function(a, b)
-			-- strings
-			local c,d = list_sort_obj[a], list_sort_obj[b]
-			if c and d then
-				return CmpLower(d, c)
-			end
-			-- numbers
-			c,d = list_sort_num[a], list_sort_num[b]
-			if c and d then
-				return c > d
-			end
-			if c or d then
-				return d and true
-			end
-			-- just in case
-			return CmpLower(b, a)
-		end)
-	else
-		-- sort normally
-		table_sort(list_obj_str,function(a, b)
-			-- strings
-			local c,d = list_sort_obj[a], list_sort_obj[b]
-			if c and d then
-				return CmpLower(c, d)
-			end
-			-- numbers
-			c,d = list_sort_num[a], list_sort_num[b]
-			if c and d then
-				return c < d
-			end
-			if c or d then
-				return c and true
-			end
-			-- just in case
-			return CmpLower(a, b)
-		end)
-	end
+	self:SortInfoList(list_obj_str,list_sort_num)
 
 	-- cobjects, not property objs? (IsKindOf)
 	local is_valid_obj = IsValid(obj)
@@ -2696,48 +2697,31 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 						.. ((parent or state_added) and "" or "\n"))
 			end
 		end
-
 	end
 
-	if obj_type == "number" or obj_type == "boolean" or obj_type == "string" then
+	if obj_type == "number" or obj_type == "boolean" or (obj_type == "string" and not show_all_values) then
 		c = c + 1
 		list_obj_str[c] = self:ConvertValueToInfo(obj)
 
-	elseif obj_type == "userdata" then
+	elseif obj_type == "userdata" or (obj_type == "string" and show_all_values) then
 		c = c + 1
 		list_obj_str[c] = self:ConvertValueToInfo(obj)
 
 		-- add any functions from getmetatable to the (scant) list
 		if obj_metatable then
-			-- what? it's all about the 3 Rs
-			self.ConvertObjToInfo_data_meta = self.ConvertObjToInfo_data_meta or {}
-			local data_meta = self.ConvertObjToInfo_data_meta
-			table_iclear(data_meta)
-
-			self.ConvertObjToInfo_data_meta_dupes = self.ConvertObjToInfo_data_meta_dupes or {}
-			local dupes = self.ConvertObjToInfo_data_meta_dupes
-			table_clear(dupes)
+			local data_meta = self.info_list_data_meta
+			table_clear(data_meta)
+			table_clear(skip_dupes)
+			table_clear(list_sort_obj)
 
 			local m_c = 0
-			for k, v in pairs(obj_metatable) do
-				if not dupes[k] then
-					dupes[k] = true
-					m_c = m_c + 1
-					data_meta[m_c] = self:ConvertValueToInfo(k) .. " = " .. self:ConvertValueToInfo(v)
-				end
-			end
+			mc = self:AddItemsToInfoList(empty_table,m_c,obj_metatable,skip_dupes,data_meta)
 			-- any extras from __index (most show index in metatable, not all
 			if type(obj_metatable.__index) == "table" then
-				for k, v in pairs(obj_metatable.__index) do
-					if not dupes[k] then
-						dupes[k] = true
-						m_c = m_c + 1
-						data_meta[m_c] = self:ConvertValueToInfo(k) .. " = " .. self:ConvertValueToInfo(v)
-					end
-				end
+				mc = self:AddItemsToInfoList(empty_table,m_c,obj_metatable.__index,skip_dupes,data_meta)
 			end
 
-			table_sort(data_meta,CmpLower)
+			self:SortInfoList(data_meta,empty_table)
 
 			-- add some info for HGE. stuff
 			local name = obj_metatable.__name
@@ -3137,6 +3121,12 @@ function Examine:SetToolbarVis(obj,obj_metatable)
 		self.idButClear:SetVisible()
 	end
 
+	if obj_metatable and self.obj_type ~= "userdata" then
+		self.idShowAllValues:SetVisible(true)
+	else
+		self.idShowAllValues:SetVisible(false)
+	end
+
 	if self.obj_type == "table" then
 		-- none of it works on _G, and i'll take any bit of speed for _G
 		if self.name ~= "_G" then
@@ -3244,6 +3234,7 @@ function Examine:SetObj(startup)
 	self.name = name
 
 	local obj_metatable = getmetatable(obj)
+	self.obj_metatable = obj_metatable
 
 	self:SetToolbarVis(obj,obj_metatable)
 
@@ -3251,11 +3242,6 @@ function Examine:SetObj(startup)
 
 	if obj_type == "table" then
 		obj_class = g_Classes[obj.class]
-		if obj_metatable then
-			self.idShowAllValues:SetVisible(true)
-		else
-			self.idShowAllValues:SetVisible(false)
-		end
 
 		-- add table length to title
 		if #obj > 0 then
