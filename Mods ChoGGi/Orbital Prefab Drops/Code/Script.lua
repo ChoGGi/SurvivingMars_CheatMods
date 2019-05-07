@@ -68,7 +68,8 @@ local orig_ConstructionSite_GameInit = ConstructionSite.GameInit
 local function YamatoHasshin(site)
 
 	-- stick the site underground by it's height then make it rise from the dead
-	local site_bbox = ObjectHierarchyBBox(site,const.efCollision)
+--~ 	local site_bbox = ObjectHierarchyBBox(site,const.efCollision)
+	local site_bbox = ObjectHierarchyBBox(site)
 	if not site_bbox:sizez() then
 		site_bbox = site:GetObjectBBox()
 	end

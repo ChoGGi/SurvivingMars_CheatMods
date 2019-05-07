@@ -379,6 +379,7 @@ do -- ToggleLogErrors
 
 	-- save orig funcs (if toggling happens)
 	local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	local lookup_table = ChoGGi.ComFuncs.RetName_Table()
 	for i = 1, #funcs do
 		local name = funcs[i]
@@ -386,7 +387,11 @@ do -- ToggleLogErrors
 			SaveOrigFunc(name)
 			local func = _G[name]
 			if not lookup_table[func] then
-				lookup_table[func] = name
+				if DebugGetInfo(func) == "[C](-1)" then
+					lookup_table[func] = name .. " *C"
+				else
+					lookup_table[func] = name
+				end
 			end
 		end
 	end

@@ -85,6 +85,9 @@ do -- RetName
 
 	-- we use this table to display names of objects for RetName
 	local lookup_table = {}
+	local g = ChoGGi.Temp._G
+	-- add some func names
+	lookup_table[g.empty_func] = "empty_func *C"
 
 	local function AddFuncsUserData(meta,name)
 		for key,value in pairs(meta) do
@@ -99,8 +102,19 @@ do -- RetName
 			end
 		end
 	end
+	-- some userdata funcs
+	AddFuncsUserData(__range_meta,"range")
+	AddFuncsUserData(Request_GetMeta(),"TaskRequest")
+	AddFuncsUserData(getmetatable(quaternion(point20, 0)),"quaternion")
+	AddFuncsUserData(getmetatable(set()),"set")
+	AddFuncsUserData(getmetatable(RandState()),"RandState")
+	AddFuncsUserData(getmetatable(pstr()),"pstr")
+	AddFuncsUserData(getmetatable(NewGrid(0, 0, 1)),"grid")
+	AddFuncsUserData(getmetatable(grid(0,0)),"xmgrid")
+	AddFuncsUserData(getmetatable(point20),"point")
+	AddFuncsUserData(getmetatable(empty_box),"box")
 
-	local function AddFuncs(g,name)
+	local function AddFuncs(name)
 		local list = g[name] or empty_table
 		for key,value in pairs(list) do
 			if not lookup_table[value] then
@@ -114,8 +128,25 @@ do -- RetName
 			end
 		end
 	end
+	AddFuncs("g_CObjectFuncs")
+	AddFuncs("camera")
+	AddFuncs("camera3p")
+	AddFuncs("cameraMax")
+	AddFuncs("cameraRTS")
+	AddFuncs("coroutine")
+	AddFuncs("debug")
+	AddFuncs("DTM")
+	AddFuncs("lfs")
+	AddFuncs("lpeg")
+	AddFuncs("package")
+	AddFuncs("pf")
+	AddFuncs("srp")
+	AddFuncs("string")
+	AddFuncs("table")
+	AddFuncs("terrain")
+	AddFuncs("UIL")
 
-	local function AddFuncsChoGGi(g,name,skip)
+	local function AddFuncsChoGGi(name,skip)
 		local list = g.ChoGGi[name]
 		for key,value in pairs(list) do
 			if not lookup_table[value] then
@@ -128,53 +159,17 @@ do -- RetName
 		end
 	end
 
-	-- pcalls for xbox
-
-	-- add some func names
-	pcall(function()
-		local g = ChoGGi.Temp._G
-		lookup_table[g.empty_func] = "empty_func *C"
-		AddFuncs(g,"g_CObjectFuncs")
-	end)
-
-	local function AfterLoad()
+	local function BuildNameList()
 		local g = ChoGGi.Temp._G
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
 
-		AddFuncs(g,"camera")
-		AddFuncs(g,"camera3p")
-		AddFuncs(g,"cameraMax")
-		AddFuncs(g,"cameraRTS")
-		AddFuncs(g,"coroutine")
-		AddFuncs(g,"debug")
-		AddFuncs(g,"DTM")
-		AddFuncs(g,"lfs")
-		AddFuncs(g,"lpeg")
-		AddFuncs(g,"package")
-		AddFuncs(g,"pf")
-		AddFuncs(g,"srp")
-		AddFuncs(g,"string")
-		AddFuncs(g,"table")
-		AddFuncs(g,"terrain")
-		AddFuncs(g,"UIL")
-		-- ECM func names
-		AddFuncsChoGGi(g,"ComFuncs")
-		AddFuncsChoGGi(g,"ConsoleFuncs")
-		AddFuncsChoGGi(g,"InfoFuncs")
-		AddFuncsChoGGi(g,"MenuFuncs")
-		AddFuncsChoGGi(g,"SettingFuncs")
-		AddFuncsChoGGi(g,"OrigFuncs",true)
-		-- some userdata funcs
-		AddFuncsUserData(__range_meta,"range")
-		AddFuncsUserData(Request_GetMeta(),"TaskRequest")
-		AddFuncsUserData(getmetatable(quaternion(point20, 0)),"quaternion")
-		AddFuncsUserData(getmetatable(set()),"set")
-		AddFuncsUserData(getmetatable(RandState()),"RandState")
-		AddFuncsUserData(getmetatable(pstr()),"pstr")
-		AddFuncsUserData(getmetatable(NewGrid(0, 0, 1)),"grid")
-		AddFuncsUserData(getmetatable(grid(0,0)),"xmgrid")
-		AddFuncsUserData(getmetatable(point20),"point")
-		AddFuncsUserData(getmetatable(empty_box),"box")
+		-- ECM func names (some are added by ecm, so we want to update list when it's called again)
+		AddFuncsChoGGi("ComFuncs")
+		AddFuncsChoGGi("ConsoleFuncs")
+		AddFuncsChoGGi("InfoFuncs")
+		AddFuncsChoGGi("MenuFuncs")
+		AddFuncsChoGGi("SettingFuncs")
+		AddFuncsChoGGi("OrigFuncs",true)
 
 		-- any tables/funcs in _G
 		for key,value in pairs(g) do
@@ -192,10 +187,12 @@ do -- RetName
 				end
 			end
 		end
-		-- and any g funcs
+
+		-- and any g_Classes funcs
 		for cls_key,class in pairs(g.g_Classes) do
 			for key,value in pairs(class) do
-				if type(key) == "string" and not lookup_table[value] then
+				-- why it has a false is beyond me (something to do with that object[true] = userdata?)
+				if key ~= false and not lookup_table[value] then
 					if type(value) == "function" then
 						if DebugGetInfo(value) == "[C](-1)" then
 							lookup_table[value] = cls_key .. "." .. key .. " *C"
@@ -206,16 +203,14 @@ do -- RetName
 				end
 			end
 		end
-
 	end
 
 	-- so they work in the main menu
-	pcall(AfterLoad)
+	BuildNameList()
 
 	-- called from onmsgs for citystart/loadgame
-	function ChoGGi.ComFuncs.RetName_Update()
-		pcall(AfterLoad)
-	end
+	ChoGGi.ComFuncs.RetName_Update = BuildNameList
+	-- probably only of interest to me
 	function ChoGGi.ComFuncs.RetName_Table()
 		return lookup_table
 	end

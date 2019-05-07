@@ -2886,7 +2886,8 @@ do -- ShowAnimDebug_Toggle
 		text.ChoGGi_AnimDebug = true
 		obj:Attach(text, 0)
 
-		local obj_bbox = ObjectHierarchyBBox(obj,const.efCollision)
+--~ 		local obj_bbox = ObjectHierarchyBBox(obj,const.efCollision)
+		local obj_bbox = ObjectHierarchyBBox(obj)
 		if not obj_bbox:sizez() then
 			obj_bbox = obj:GetObjectBBox()
 		end
