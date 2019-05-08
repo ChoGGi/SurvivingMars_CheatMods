@@ -10,12 +10,13 @@ local Translate = ChoGGi.ComFuncs.Translate
 local pairs,tonumber,type,rawget = pairs,tonumber,type,rawget
 local getmetatable,tostring = getmetatable,tostring
 local AsyncRand = AsyncRand
+local FindNearestObject = FindNearestObject
+local GetTerrainCursor = GetTerrainCursor
 local IsValid = IsValid
 local IsKindOf = IsKindOf
-local GetTerrainCursor = GetTerrainCursor
 local MapFilter = MapFilter
 local MapGet = MapGet
-local FindNearestObject = FindNearestObject
+local PropObjGetProperty = PropObjGetProperty
 local table_remove = table.remove
 local table_find = table.find
 local table_clear = table.clear
@@ -80,7 +81,6 @@ ChoGGi.ComFuncs.IsObjlist = IsObjlist
 
 do -- RetName
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-	local PropObjGetProperty = PropObjGetProperty
 	local IsT = IsT
 
 	-- we use this table to display names of objects for RetName
@@ -199,7 +199,7 @@ do -- RetName
 						if name == "[C](-1)" then
 							lookup_table[value] = key .. " *C"
 						else
---~ 							Unit.lua(75):MoveSleep
+							-- Unit.lua(75):MoveSleep
 							-- need to reverse string so it finds the last /, since find looks ltr
 							local slash = name:reverse():find("/")
 							lookup_table[value] = name:sub((slash * -1) + 1) .. ":" .. key
@@ -259,7 +259,6 @@ do -- RetName
 		elseif obj_type == "table" then
 			-- we check in order of less generic "names"
 			local name_type = PropObjGetProperty(obj,"name") and type(obj.name)
---~ 			local name_type = type(obj.name)
 
 			-- custom name from user (probably)
 			if name_type == "string" and obj.name ~= "" then
@@ -270,31 +269,10 @@ do -- RetName
 
 			-- display
 			elseif PropObjGetProperty(obj,"display_name") and obj.display_name ~= "" then
---~ 			elseif obj.display_name and obj.display_name ~= "" then
 				name = Translate(obj.display_name)
 			-- entity
 			elseif PropObjGetProperty(obj,"entity") and obj.entity ~= "" then
---~ 			elseif obj.entity and obj.entity ~= "" then
 				name = obj.entity
-
---~ 			elseif obj.encyclopedia_id and obj.encyclopedia_id ~= "" then
---~ 				name = obj.encyclopedia_id
---~ 			elseif obj.id and obj.id ~= "" then
---~ 				name = obj.id
---~ 			elseif obj.Id and obj.Id ~= "" then
---~ 				name = obj.Id
---~ 			elseif obj.ActionId and obj.ActionId ~= "" then
---~ 				name = obj.ActionId
---~ 			elseif obj.ActionName and obj.ActionName ~= "" then
---~ 				name = obj.ActionName
---~ 			elseif obj.template_name and obj.template_name ~= "" then
---~ 				name = obj.template_name
---~ 			elseif obj.template_class and obj.template_class ~= "" then
---~ 				name = obj.template_class
---~ 			elseif obj.class and obj.class ~= "" then
---~ 				name = obj.class
---~ 			elseif obj.__mtl and obj.__mtl ~= "" then
---~ 				name = obj.__mtl
 
 			-- objlist
 			elseif IsObjlist(obj) then
@@ -320,10 +298,6 @@ do -- RetName
 					name = Translate(name)
 				end
 			end -- if
-
---~ 			if type(name) == "userdata" then
---~ 				name = Translate(name)
---~ 			end
 
 		elseif obj_type == "userdata" then
 			if IsT(obj) then
@@ -2696,20 +2670,12 @@ do -- DeleteObject
 		local is_water = obj:IsKindOf("TerrainWaterObject")
 		local is_waterspire = obj:IsKindOf("WaterReclamationSpire") and not IsValid(obj.parent_dome)
 		local is_rctransport = obj:IsKindOf("RCTransport")
---~ 		local is_holy_stuff = obj:IsKindOfClasses("MoholeMine","ShuttleHub","MetalsExtractor")
 
 		if not is_waterspire then
 			-- some stuff will leave holes in the world if they're still working
 			procall(ExecFunc,obj,"SetWorking")
 		end
 
---~ 		-- can't have shuttles avoiding empty space
---~ 		ExecFunc(obj,"RemoveFromGrids")
-
---~ 		-- causes log spam, transport still drops items carried so...
---~ 		if not is_waterspire and not is_rctransport then
---~ 			ExecFunc(obj,"RecursiveCall",true, "Done")
---~ 		end
 		procall(ExecFunc,obj,"RecursiveCall",true, "Done")
 
 		-- remove leftover water
@@ -2738,20 +2704,27 @@ do -- DeleteObject
 		procall(ExecFunc,obj,"RestoreTerrain")
 		procall(ExecFunc,obj,"Destroy")
 
-		if obj.GetFlattenShape and HasAnySurfaces(obj, EntitySurfaces_Height, true) and not terrain_HasRestoreHeight() then
-			FlattenTerrainInBuildShape(obj:GetFlattenShape(), obj)
+		-- do we need to flatten the ground beneath
+		if obj.GetFlattenShape then
+			local shape = obj:GetFlattenShape()
+			if shape ~= FallbackOutline then
+				if HasAnySurfaces(obj, EntitySurfaces_Height, true)
+				and not terrain_HasRestoreHeight() then
+					FlattenTerrainInBuildShape(shape, obj)
+				end
+			end
 		end
+--~ 		if obj.GetFlattenShape
+--~ 		and HasAnySurfaces(obj, EntitySurfaces_Height, true)
+--~ 		and not terrain_HasRestoreHeight() then
+--~ 			FlattenTerrainInBuildShape(obj:GetFlattenShape(), obj)
+--~ 		end
 
 		procall(ExecFunc,obj,"SetDome",false)
 		procall(ExecFunc,obj,"RemoveFromLabels")
 
 		procall(ExecFunc,obj,"Gossip","done")
 		procall(ExecFunc,obj,"SetHolder",false)
-
---~ 		-- only fire for stuff with holes in the ground (takes too long otherwise)
---~ 		if is_holy_stuff then
---~ 			ExecFunc(obj,"DestroyAttaches")
---~ 		end
 
 		-- demo to the rescue
 		obj.can_demolish = true
@@ -4530,7 +4503,12 @@ function ChoGGi.ComFuncs.RetTableValue(obj,key)
 	-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env uses the metatable from _G.__index and causes sm to log an error msg
 	local index = getmetatable(obj)
 	if index and index.__index then
-		return PropObjGetProperty(obj,key)
+		-- and PropObjGetProperty will bug out on some tables
+		if rawget(obj,"class") then
+			return PropObjGetProperty(obj,key)
+		else
+			return rawget(obj,key)
+		end
 	else
 		return obj[key]
 	end
