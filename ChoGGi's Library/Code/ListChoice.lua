@@ -263,11 +263,11 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 This will always send back all items (not selection)."--]]],
 		OnPress = function()
 			-- build self.choices
-			self:GetSelectedItems()
+			self:GetListItems()
 			-- send selection back
 			if self.list.callback then
 				self.list.callback(self.choices)
-			else
+			elseif self.list.custom_func then
 				self.list.custom_func(self.choices)
 			end
 			self:Close("ok")
@@ -686,7 +686,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 			listitem.RolloverHint = item.hint_bottom
 		end
 
-		if self.custom_type > 4 then
+		if self.custom_type > 4 and self.custom_type ~= 5 then
 			listitem.RolloverHint = Strings[302535920001444--[["<left_click> Activate, <right_click> Alt Activate"--]]]
 		end
 
@@ -886,10 +886,10 @@ function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDoubleClick(_,button)
 			self.custom_func(choices,self)
 		elseif self.custom_type == 9 then
 			-- build self.choices
-			self:GetSelectedItems()
+			self:GetListItems()
 			-- send selection back
 			self.list.callback(self.choices)
-		elseif self.custom_type ~= 5 and self.custom_type ~= 2 or self.custom_type == 8 then
+		elseif self.custom_type ~= 2 or self.custom_type == 8 then
 			-- dblclick to close and ret item
 			self.idOK.OnPress()
 		end
@@ -922,38 +922,45 @@ end
 
 function ChoGGi_ListChoiceDlg:UpdateReturnedItem(choices)
 	choices = choices or {[1] = {}}
-	if self.idEditValue ~= nil then
-		-- always return the custom value (and try to convert it to correct type)
-		choices[1].editvalue = RetProperType(self.idEditValue:GetText())
+	local choice1 = choices[1]
+
+	-- always return the custom value (and try to convert it to correct type)
+	if self.idEditValue then
+		choice1.list_editvalue = RetProperType(self.idEditValue:GetText())
 	end
 
 	-- add checkbox statuses
 	if self.list.checkboxes and #self.list.checkboxes > 0 then
 		for i = 1, #self.list.checkboxes do
-			choices[1]["check" .. i] = self["idCheckBox" .. i]:GetCheck()
+			choice1["check" .. i] = self["idCheckBox" .. i]:GetCheck()
 		end
 	end
 	-- and if it's a colourpicker list send that back as well
 	if self.idColourContainer then
-		choices[1].checkair = self.idColorCheckAir:GetCheck()
-		choices[1].checkwater = self.idColorCheckWater:GetCheck()
-		choices[1].checkelec = self.idColorCheckElec:GetCheck()
+		choice1.list_checkair = self.idColorCheckAir:GetCheck()
+		choice1.list_checkwater = self.idColorCheckWater:GetCheck()
+		choice1.list_checkelec = self.idColorCheckElec:GetCheck()
 	end
 	return choices
 end
 
-function ChoGGi_ListChoiceDlg:GetSelectedItems()
-	-- get sel item(s)
+function ChoGGi_ListChoiceDlg:GetListItems()
 	local items = {}
+
+	-- get sel item(s)
 	if self.custom_type == 0 or self.custom_type == 3 or self.custom_type == 6 then
 		-- loop through and add all selected items to the list
 		for i = 1, #self.idList.selection do
 			items[i] = self.idList[self.idList.selection[i]].item
 		end
 	else
+		local sel = self.idList.selection and self.idList.selection[1]
 		-- get all (visible) items
 		for i = 1, #self.idList do
 			items[i] = self.idList[i].item
+			if sel and i == sel then
+				items[i].list_selected = true
+			end
 		end
 	end
 

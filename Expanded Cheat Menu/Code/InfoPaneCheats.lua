@@ -57,12 +57,14 @@ local function SetIcon(action,name,icon)
 end
 
 local function SetUpgradeInfo(action,obj,num)
-	local tempname = Translate(obj["upgrade" .. num .. "_display_name"])
 	-- if there's an upgrade then add hint text, otherwise blank the id to hide it
-	if tempname ~= "" then
+	if obj:GetUpgradeID(num) ~= "" then
 		SetHint(action,Strings[302535920001207--[["Add: %s to this building.
 
-%s"--]]]:format(tempname,Translate(T(obj["upgrade" .. num .. "_description"],obj))))
+%s"--]]]:format(
+			Translate(obj["upgrade" .. num .. "_display_name"]),
+			Translate(T{obj["upgrade" .. num .. "_description"],obj})
+		))
 		SetIcon(action,num,obj["upgrade" .. num .. "_icon"])
 	else
 		action.ActionId = ""

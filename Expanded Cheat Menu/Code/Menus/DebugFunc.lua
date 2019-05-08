@@ -877,6 +877,8 @@ do -- path markers
 	local terrain_GetHeight = terrain.GetHeight
 	local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
 	local SelObjects = ChoGGi.ComFuncs.SelObjects
+	local WaitMsg = WaitMsg
+	local Sleep = Sleep
 
 	local path_classes = {"Movable", "CargoShuttle"}
 	local randcolours = {}
@@ -923,17 +925,7 @@ do -- path markers
 		obj.ChoGGi_Stored_Waypoints[#obj.ChoGGi_Stored_Waypoints+1] = spawnline
 	end -- end of ShowWaypoints
 
-	local function AddShuttlePath(c,path,new_path)
-		if type(new_path) == "table" then
-			for i = 1, #new_path do
-				c = c + 1
-				path[c] = new_path[i]
-			end
-		end
-		return c
-	end
-
-	function ChoGGi.MenuFuncs.SetWaypoint(obj,setcolour,skip_height)
+	local function SetWaypoint(obj,setcolour,skip_height)
 		local path = {}
 
 		-- we need to build a path for shuttles (and figure out a way to get their dest properly...)
@@ -959,15 +951,12 @@ do -- path markers
 			local c = #path
 
 			-- the next four points it's going to after current_spline
-			c = AddShuttlePath(c,path,obj.next_spline)
---~ 			-- the next four points it's going to
---~ 			c = AddShuttlePath(c,path,obj.current_spline)
---~ 			-- something?
---~ 			if obj.current_path then
---~ 				for i = 1, #obj.current_path do
---~ 					c = AddShuttlePath(c,path,obj.current_path[i])
---~ 				end
---~ 			end
+			if type(obj.next_spline) == "table" then
+				for i = 1, #obj.next_spline do
+					c = c + 1
+					path[c] = obj.next_spline[i]
+				end
+			end
 
 			-- where the line starts
 			c = c + 1
@@ -1025,34 +1014,40 @@ do -- path markers
 			)
 		end
 	end
+	ChoGGi.MenuFuncs.SetWaypoint = SetWaypoint
 
-	local function SetPathMarkersGameTime_Thread(obj,handles)
+	local function SetPathMarkersGameTime_Thread(obj,handles,delay)
 		local colour = RandomColour()
 		if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
 			obj.ChoGGi_Stored_Waypoints = objlist:new()
 		end
 
-		repeat
-			ChoGGi.MenuFuncs.SetWaypoint(obj,colour,true)
-			Sleep(500)
-
-			-- remove old wps
-			local stored = obj.ChoGGi_Stored_Waypoints
-			if IsObjlist(stored) then
-				-- deletes all objs
-				stored:Destroy()
-				-- clears table list
-				stored:Clear()
+		while handles[obj.handle] do
+			SetWaypoint(obj,colour,true)
+			if delay == 0 or delay == -1 then
+				-- if we only do one then it'll be invis unless paused
+				-- 2+ is too much ficker
+				WaitMsg("OnRender")
+				WaitMsg("OnRender")
+				-- if you like bears then you'd figure the third is just right... ah well twofer
+			else
+				Sleep(delay)
 			end
+
+			-- deletes all wp objs
+			obj.ChoGGi_Stored_Waypoints:Destroy()
+			-- clears table list
+			obj.ChoGGi_Stored_Waypoints:Clear()
 
 			-- break thread when obj isn't valid
 			if not IsValid(obj) then
 				handles[obj.handle] = nil
+				break
 			end
-		until not handles[obj.handle]
+		end
 	end
 
-	local function AddObjToGameTimeMarkers(obj,handles,skip)
+	local function AddObjToGameTimeMarkers(obj,handles,delay,skip)
 		if skip or obj:IsKindOfClasses(path_classes) then
 
 			if handles[obj.handle] then
@@ -1060,36 +1055,42 @@ do -- path markers
 				handles[obj.handle] = nil
 			elseif IsValid(obj) then
 				-- continous loooop of object for pathing it
-				handles[obj.handle] = CreateGameTimeThread(SetPathMarkersGameTime_Thread,obj,handles)
+				handles[obj.handle] = CreateGameTimeThread(SetPathMarkersGameTime_Thread,obj,handles,delay)
 			end
 		end
 	end
 
-	function ChoGGi.MenuFuncs.SetPathMarkersGameTime(obj,menu_fired)
+	local function SetPathMarkersGameTime(obj,menu_fired,menu_delay)
 		OPolyline = OPolyline or ChoGGi_OPolyline
 
+		local delay = 500
 		-- if fired from action menu (or shortcut)
 		if IsKindOf(obj,"XAction") then
 			obj = SelObjects()
+			if #obj == 0 then
+				obj = nil
+			end
 			menu_fired = true
 		else
 			obj = obj or SelObjects()
+			delay = type(menu_delay) == "number" and menu_delay or delay
 		end
 
 		if obj then
 			local handles = ChoGGi.Temp.UnitPathingHandles
-			-- single obj
 			if #obj == 1 then
-				return AddObjToGameTimeMarkers(obj[1],handles)
-			-- multiselect
+				-- single obj
+				obj = obj[1]
  			elseif #obj > 1 then
+				-- multiselect
 				for i = 1, #obj do
-					AddObjToGameTimeMarkers(obj[i],handles)
+					AddObjToGameTimeMarkers(obj[i],handles,delay)
 				end
 				return
-			-- single not in a table list (true means we already checked the kindof)
-			elseif obj:IsKindOfClasses(path_classes) then
-				return AddObjToGameTimeMarkers(obj,handles,true)
+			end
+			-- single not in a table list (true because we already checked the kindof)
+			if obj:IsKindOfClasses(path_classes) then
+				return AddObjToGameTimeMarkers(obj,handles,delay,true)
 			end
 		end
 
@@ -1103,6 +1104,7 @@ do -- path markers
 			)
 		end
 	end
+	ChoGGi.MenuFuncs.SetPathMarkersGameTime = SetPathMarkersGameTime
 
 	local function RemoveWPDupePos(cls,obj)
 		-- remove dupe pos
@@ -1154,7 +1156,10 @@ do -- path markers
 		ChoGGi.Temp.UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles or {}
 
 		local item_list = {
-			{text = " " .. Translate(4493--[[All--]]),value = "All"},
+--~ 			{text = Strings[302535920000413--[[Delay--]]],value = 500,path_type = "Delay",hint = Strings[302535920000415--[[Delay in ms between updating paths (0 to update every other render).--]]]},
+			{text = Strings[302535920000413--[[Delay--]]],value = 0,path_type = "Delay",hint = Strings[302535920000415--[[Delay in ms between updating paths (0 to update every other render).--]]]},
+			{text = Translate(4493--[[All--]]),value = "All"},
+
 			{text = Translate(547--[[Colonists--]]),value = "Colonist"},
 			{text = Translate(517--[[Drones--]]),value = "Drone"},
 			{text = Translate(5438--[[Rovers--]]),value = "BaseRover",icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
@@ -1166,15 +1171,25 @@ do -- path markers
 			item_list[#item_list+1] = {text = "Alien Visitors",value = "ChoGGi_Alien"}
 		end
 
-		local function CallBackFunc(choice)
-			choice = choice[1]
-			local remove = choice.check1
-			if choice.nothing_selected and remove ~= true then
+		local function CallBackFunc(choices)
+			local choice1 = choices[1]
+			local remove = choice1.check1
+			if choices[1].nothing_selected and remove ~= true then
 				return
 			end
 
+--~ ex(choices)
+			local choice,delay
+			for i = 1, #choices do
+				local choice_item = choices[i]
+				if choice_item.list_selected then
+					choice = choice_item
+				elseif choice_item.path_type == "Delay" then
+					delay = choice_item.value
+				end
+			end
+
 			local value = choice.value
-			local labels = UICity.labels
 			-- remove wp/lines and reset colours
 			if remove then
 
@@ -1195,14 +1210,20 @@ do -- path markers
 				colourcount = 0
 				dupewppos = {}
 
-			elseif value then -- add waypoints
+			-- naughty user
+			elseif value == "Delay" then
+				MsgPopup(
+					Strings[302535920000416--[[Delay isn't a valid class.--]]],
+					Strings[302535920000872--[[Pathing--]]]
+				)
+				return
 
-				local SetPathMarkersGameTime = ChoGGi.MenuFuncs.SetPathMarkersGameTime
-				local SetWaypoint = ChoGGi.MenuFuncs.SetWaypoint
+			-- add waypoints
+			elseif value then
 				local function swp(list)
-					if choice.check2 then
+					if choice1.check2 then
 						for i = 1, #list do
-							SetPathMarkersGameTime(list[i])
+							SetPathMarkersGameTime(list[i],nil,delay)
 						end
 					else
 						for i = 1, #list do
@@ -1212,6 +1233,7 @@ do -- path markers
 				end
 
 				if value == "All" then
+					local labels = UICity.labels
 					local table1 = MapFilter(labels.Unit or empty_table,IsValid)
 					local table2 = MapFilter(labels.CargoShuttle or empty_table,IsValid)
 					local table3 = MapFilter(labels.Colonist or empty_table,IsValid)
@@ -1222,8 +1244,10 @@ do -- path markers
 					swp(table1)
 					swp(table2)
 					swp(table3)
-				else
-					local table1 = MapGet(true,value,IsValid)
+				-- skip any non-cls objects (or mapget returns all)
+				elseif g_Classes[value] then
+--~ 					local table1 = MapGet(true,value,IsValid)
+					local table1 = MapGet(true,value)
 					colourcount = colourcount + #table1
 					randcolours = RandomColour(colourcount + 1)
 					swp(table1)
@@ -1251,6 +1275,8 @@ do -- path markers
 			callback = CallBackFunc,
 			items = item_list,
 			title = Strings[302535920000467--[[Path Markers--]]],
+			skip_sort = true,
+			custom_type = 4,
 			checkboxes = {
 				{
 					title = Strings[302535920000876--[[Remove Waypoints--]]],

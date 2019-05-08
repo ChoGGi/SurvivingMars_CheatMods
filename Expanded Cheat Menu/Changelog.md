@@ -28,6 +28,7 @@
 - Debug>Examine will try to examine the UI element under the cursor if it can't find an object.
 - Renamed imgview/txtview to OpenImageViewer/OpenTextViewer.
 - Cleaned up Debug>View All Entities.
+- Exposed delay option for Debug>Path Markers>GameTime (and fixed some minor issues with markers).
 - Console:
 - > ~obj will show all results instead of only the first one (in a table).
 - > Right-clicking history or scripts will paste the code into the console.

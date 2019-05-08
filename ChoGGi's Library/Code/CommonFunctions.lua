@@ -138,6 +138,7 @@ do -- RetName
 	AddFuncs("DTM")
 	AddFuncs("lfs")
 	AddFuncs("lpeg")
+	AddFuncs("objlist")
 	AddFuncs("package")
 	AddFuncs("pf")
 	AddFuncs("srp")
@@ -2488,23 +2489,18 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 	}
 
 	-- make sure we're in the same grid
-	local function CheckGrid(fake_parent,func,obj,obj_bld,choice)
-		-- used to check for grid connections
-		local check_air = choice[1].checkair
-		local check_water = choice[1].checkwater
-		local check_elec = choice[1].checkelec
-
+	local function CheckGrid(fake_parent,func,obj,obj_bld,choice,c_air,c_water,c_elec)
 		-- this is ugly, i should clean it up
-		if not check_air and not check_water and not check_elec then
+		if not c_air and not c_water and not c_elec then
 			colour_funcs[func](obj,choice)
 		else
-			if check_air and obj_bld.air and fake_parent.air and obj_bld.air.grid.elements[1].building == fake_parent.air.grid.elements[1].building then
+			if c_air and obj_bld.air and fake_parent.air and obj_bld.air.grid.elements[1].building == fake_parent.air.grid.elements[1].building then
 				colour_funcs[func](obj,choice)
 			end
-			if check_water and obj_bld.water and fake_parent.water and obj_bld.water.grid.elements[1].building == fake_parent.water.grid.elements[1].building then
+			if c_water and obj_bld.water and fake_parent.water and obj_bld.water.grid.elements[1].building == fake_parent.water.grid.elements[1].building then
 				colour_funcs[func](obj,choice)
 			end
-			if check_elec and obj_bld.electricity and fake_parent.electricity and obj_bld.electricity.grid.elements[1].building == fake_parent.electricity.grid.elements[1].building then
+			if c_elec and obj_bld.electricity and fake_parent.electricity and obj_bld.electricity.grid.elements[1].building == fake_parent.electricity.grid.elements[1].building then
 				colour_funcs[func](obj,choice)
 			end
 		end
@@ -2580,29 +2576,36 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 				table_sort(choice,function(a,b)
 					return a.text < b.text
 				end)
+
+				-- used to check for grid connections
+				local choice1 = choice[1]
+				local c_air = choice1.list_checkair
+				local c_water = choice1.list_checkwater
+				local c_elec = choice1.list_checkelec
+
 				local colour_func = "SetColours"
-				if choice[1].check2 then
+				if choice1.check2 then
 					colour_func = "RestoreOldPalette"
 				end
 
 				-- all of type checkbox
-				if choice[1].check1 then
+				if choice1.check1 then
 					local labels = ChoGGi.ComFuncs.RetAllOfClass(label)
 					for i = 1, #labels do
 						local lab_obj = labels[i]
 						if parent then
 							local attaches = GetAllAttaches(lab_obj)
 							for j = 1, #attaches do
-								CheckGrid(fake_parent,colour_func,attaches[j],lab_obj,choice)
+								CheckGrid(fake_parent,colour_func,attaches[j],lab_obj,choice,c_air,c_water,c_elec)
 							end
 						else
-							CheckGrid(fake_parent,colour_func,lab_obj,lab_obj,choice)
+							CheckGrid(fake_parent,colour_func,lab_obj,lab_obj,choice,c_air,c_water,c_elec)
 						end
 					end
 
 				-- single building change
 				else
-					CheckGrid(fake_parent,colour_func,obj,obj,choice)
+					CheckGrid(fake_parent,colour_func,obj,obj,choice,c_air,c_water,c_elec)
 				end
 
 				MsgPopup(
