@@ -614,9 +614,7 @@ do -- OpenInExamineDlg
 		params = params or {}
 
 		-- preserve the orig params
-		if obj then
-			params.obj = obj
-		end
+		params.obj = obj
 		if parent then
 			params.parent = parent
 		end
@@ -3463,6 +3461,7 @@ end -- do
 do -- ValueToStr
 	local getmetatable = getmetatable
 	local IsPoint,IsBox,IsT = IsPoint,IsBox,IsT
+	local missing_text = ChoGGi.Temp.missing_text
 
 	function ChoGGi.ComFuncs.ValueToStr(obj,obj_type)
 		obj_type = obj_type or type(obj)
@@ -3501,7 +3500,7 @@ do -- ValueToStr
 			-- show translated text if possible, otherwise check for metatable name
 			if IsT(obj) then
 				local trans_str = Translate(obj)
-				if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+				if trans_str == missing_text or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
 					local meta = getmetatable(obj).__name
 					return tostring(obj) .. (meta and " " .. meta or ""),obj_type
 				end

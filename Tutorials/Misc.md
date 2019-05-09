@@ -100,13 +100,13 @@ SomeFunc(var1,...,var2)
 --~ BullettMAGNETTs CustomAssetDocs
 --~ https://docs.google.com/document/d/1LcZMS8UeRAQZZsPE-bsx75ZMGPUFGdbS-M9jDBMFEYs
 
---~ Return the time from GameTime()
---~ TimeToDayHourMinSec(GameTime())
+--~ StGaby: Return the played time
 function TimeToDayHourMinSec(time)
+	time = time or GameTime()
 	local seconds = time * 60 / const.MinuteDuration % 60
 	local minutes = time / const.MinuteDuration % const.MinutesPerHour
-	local hours = UICity.hour + time / const.HourDuration
-	local days = UICity.day + hours / const.HoursPerDay
+	local hours = City.hour + time / const.HourDuration
+	local days = City.day + hours / const.HoursPerDay
 	return days, hours % const.HoursPerDay, minutes, seconds
 end
 ```

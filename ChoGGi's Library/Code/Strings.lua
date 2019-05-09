@@ -6,49 +6,46 @@
 -- amount of entries in the CSV file
 local string_limit = 1650
 
+
+-- the string _InternalTranslate returns on failure
+local missing_text = ChoGGi.Temp.missing_text
+
+-- local some globals
 local _InternalTranslate = _InternalTranslate
+local type,select,tostring,next = type,select,tostring,next
+local T,IsT,TGetID,count_params = T,IsT,TGetID,count_params
 
-do -- Translate
-	-- local some globals
-	local T,IsT,TGetID,count_params = T,IsT,TGetID,count_params
-	local type,select,tostring = type,select,tostring
+-- translate func that always returns a string
+local function Translate(...)
+	local count = count_params(...) > 1
+	local str = count and T(...) or T{...}
 
-	-- translate func that always returns a string
-	function ChoGGi.ComFuncs.Translate(...)
-		local count = count_params(...) > 1
-		local str = count and T(...) or T{...}
-
-		-- not a translatable obj
-		if not IsT(str) then
-			return "Missing text"
-		end
-
-		local result
-		-- certain stuff will fail without this obj, so just pass it off to pcall and let it error out
---~ 		if UICity then
-			result,str = true,_InternalTranslate(str)
---~ 		else
---~ 			result,str = pcall(_InternalTranslate,str)
---~ 		end
-
-		-- Missing text means the string id wasn't found (generally)
-		if str == "Missing text" then
-			return (IsT(str) and TGetID(str) or tostring(...)) .. " *bad string id?"
-		-- just in case
-		elseif not result or type(str) ~= "string" then
-			-- if count over 1 then use the second arg (which might be a string)
-			str = not count and select(2,...)
-			if type(str) == "string" then
-				return str
-			end
-			-- i'd rather know if something failed by having a bad string rather than a failed func
-			return (IsT(str) and TGetID(str) or tostring(...)) .. " *bad string id?"
-		end
-
-		-- and done
-		return str
+	-- not a translatable obj
+	if not IsT(str) then
+		return missing_text
 	end
-end -- do
+
+	local result
+	result,str = true,_InternalTranslate(str)
+
+	-- Missing text means the string id wasn't found (generally)
+	if str == missing_text then
+		return (IsT(str) and TGetID(str) or tostring(...)) .. " *bad string id?"
+	-- just in case
+	elseif not result or type(str) ~= "string" then
+		-- if count over 1 then use the second arg (which might be a string)
+		str = not count and select(2,...)
+		if type(str) == "string" then
+			return str
+		end
+		-- i'd rather know if something failed by having a bad string rather than a failed func
+		return (IsT(str) and TGetID(str) or tostring(...)) .. " *bad string id?"
+	end
+
+	-- and done
+	return str
+end
+ChoGGi.ComFuncs.Translate = Translate
 
 do -- fix missing tech defs description in main menu/new game
 	local fake_city = {
@@ -84,55 +81,47 @@ do -- fix missing tech defs description in main menu/new game
 end -- do
 
 -- we need to pad some zeros
-local tonumber = tonumber
 local locId_sig = shift(255, 56)
 local LightUserData = LightUserData
 local bor = bor
-
---~ local c = 0
---~ local missing_strs = {}
---~ function ex_missing_strs()
---~ 	ex(missing_strs)
---~ end
-
-local function TransZero(pad,first,last,strings)
-	for i = first, last do
-		if i > string_limit then
-			break
-		end
-		local num = tonumber("30253592000" .. pad .. i)
-
---~ 		-- toggle to check for missing strings
---~ 		local str = _InternalTranslate(LightUserData(bor(num, locId_sig)))
---~ 		if str == "Missing text" or #str > 16 and str:sub(-16) == " *bad string id?" then
---~ 			c = c + 1
---~ 			missing_strs[#missing_strs+1] = num
---~ 		else
---~ 			strings[num] = str
-			strings[num] = _InternalTranslate(LightUserData(bor(num, locId_sig)))
---~ 		end
-
-	end
-end
-
+local GetLanguage = GetLanguage
 function ChoGGi.ComFuncs.UpdateStringsList()
 	local lang = GetLanguage()
 	ChoGGi.lang = lang
-
 	-- a table of translated strings (includes <> stuff unlike TranslationTable)
 	local strings = ChoGGi.Strings
-	-- 0000 = 0 if we try to pass as a number (as well as doing 001 to 1)
-	TransZero("000",0,9,strings)
-	TransZero("00",10,99,strings)
-	TransZero(0,100,999,strings)
-	TransZero("",1000,9999,strings)
+
+	-- if there's a missing id print/return a warning
+	if not next(strings) then
+		local meta = {}
+		setmetatable(strings,meta)
+		meta.__index = function(_,id)
+			if type(id) == "number" then
+				id = "ECM Sez: bad string id? " .. id
+				print(id)
+				return id
+			end
+		end
+	end
+
+	-- translate all my strings
+	local iter = 302535920000000+string_limit
+	for i = 302535920000001, iter do
+		local str = _InternalTranslate(LightUserData(bor(i, locId_sig)))
+		-- if the missing text is within the last 50 then we can safely break
+		if (iter - 50) < i and str == missing_text then
+			break
+		end
+		strings[i] = str
+	end
+
 	-- and update my global ref
 	ChoGGi.Strings = strings
 
 	-- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
 	if lang ~= "English" then
 			-- first get the unicode font name
-		local f = ChoGGi.ComFuncs.Translate(997--[[*font*, 15, aa--]])
+		local f = Translate(997--[[*font*, 15, aa--]])
 		-- index of first , then crop out the rest
 		f = f:sub(1,f:find(",")-1)
 		ChoGGi.font = f

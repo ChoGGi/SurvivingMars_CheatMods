@@ -357,6 +357,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook",
 302535920000071,Show Mods Log,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920000417,Null reference,
 302535920000628,"Close the examine dialog
 Hold <color green>Shift</color> to close all ""grouped"" examine dialogs (any ex dlg opened from an ex dlg).
 Hold <color green>Ctrl</color> to close <color red>all</color> ECM dialogs.",

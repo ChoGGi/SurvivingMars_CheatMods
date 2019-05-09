@@ -29,19 +29,20 @@
 - Renamed imgview/txtview to OpenImageViewer/OpenTextViewer.
 - Cleaned up Debug>View All Entities.
 - Exposed delay option for Debug>Path Markers>GameTime (and fixed some minor issues with markers).
+- Menu items to use the default ECM icon instead of something maybe vaguely related:
+- > Easier to distinguish between notifications from ECM and from SM.
 - Console:
 - > ~obj will show all results instead of only the first one (in a table).
 - > Right-clicking history or scripts will paste the code into the console.
-- Menu items to use the default ECM icon instead of something maybe vaguely related:
-- > Easier to distinguish between notifications from ECM and from SM.
+- Console Window:
+- > Added a Clipboard button (copies log to clipboard).
+- > Text is now selectable (also removed Copy Log Text).
 - Examine:
 - > It'll try to list files in mount points (ie: ~"Textures" or ~"Prefabs"), needs the HelperMod installed.
 - > The X close button now checks if Ctrl or Shift is being held down (see tooltip for more info).
 - > Merged View/Dump menu items in Tools.
 - > Added Dist2D len to index tables of points (context menu tooltip).
-- Console Window:
-- > Added a Clipboard button (copies log to clipboard).
-- > Text is now selectable (also removed Copy Log Text).
+- > "All" checkbox wasn't parsing ._index for metatables.
 
 ### Fixed:
 - Set Production would set objects of a different class.

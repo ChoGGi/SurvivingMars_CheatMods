@@ -28,9 +28,12 @@ function OnMsg.ClassesBuilt()
 		"__template", "InfopanelActiveSection",
 
 		-- you can set these here or in OnContextUpdate below
-		-- "Icon", "",
-		-- "Title", "",
-		-- "RolloverText", "",
+--~ 		"Icon", "",
+--~ 		"Title", "",
+--~ 		"RolloverText", "",
+
+		-- certain things don't have a rollover template, so use this if the rollover isn't showing up
+--~ 		"RolloverTemplate", "Rollover",
 
 		"RolloverTitle", "Hello, this needs to have something here for the hint to showup",
 		"RolloverHint",  "",
@@ -103,8 +106,8 @@ function OnMsg.ClassesBuilt()
 				-- make the slider scroll to current amount
 				self.Scroll = context.max_workers
 				self.parent.parent:SetTitle([[Change "max_workers" limit: ]] .. context.max_workers)
-			end
-		})
+			end,
+		}),
 	})
 
 	RemoveXTemplateSections(XTemplates.ipBuilding[1],"SOMETHINGUNIQUE3")

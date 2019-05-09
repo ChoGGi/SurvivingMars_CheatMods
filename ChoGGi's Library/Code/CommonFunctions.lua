@@ -82,6 +82,7 @@ ChoGGi.ComFuncs.IsObjlist = IsObjlist
 do -- RetName
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	local IsT = IsT
+	local missing_text = ChoGGi.Temp.missing_text
 
 	-- we use this table to display names of objects for RetName
 	local lookup_table = {}
@@ -171,6 +172,12 @@ do -- RetName
 		AddFuncsChoGGi("MenuFuncs")
 		AddFuncsChoGGi("SettingFuncs")
 		AddFuncsChoGGi("OrigFuncs",true)
+
+		for key,value in pairs(g.ChoGGi) do
+			if not lookup_table[value] then
+				lookup_table[value] = "ChoGGi." .. key
+			end
+		end
 
 		-- any tables/funcs in _G
 		for key,value in pairs(g) do
@@ -303,7 +310,7 @@ do -- RetName
 			if IsT(obj) then
 				local trans_str = Translate(obj)
 				-- missing text is from internaltranslate, i check the str length before calling the func as it has to be at least 16 chars
-				if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+				if trans_str == missing_text or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
 					return tostring(obj)
 				end
 				return trans_str

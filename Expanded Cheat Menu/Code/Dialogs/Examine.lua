@@ -54,6 +54,7 @@ local InvalidPos = ChoGGi.Consts.InvalidPos
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
+local missing_text = ChoGGi.Temp.missing_text
 
 local debug_getinfo,debug_getupvalue,debug_getlocal
 local debug = blacklist and false or debug
@@ -139,8 +140,8 @@ function Examine:Init(parent, context)
 
 	self.obj = context.obj
 
-	-- already examining list
-	g_ExamineDlgs[self.obj] = self
+--~ 	-- already examining list
+--~ 	g_ExamineDlgs[self.obj] = self
 
 	self.ChoGGi = ChoGGi
 	local const = const
@@ -187,6 +188,9 @@ function Examine:Init(parent, context)
 			end
 		end
 	end
+
+	-- examining list
+	g_ExamineDlgs[self.obj] = self
 
 	self.name = RetName(self.str_object and self.ChoGGi.ComFuncs.DotNameToObject(self.obj) or self.obj)
 
@@ -2355,7 +2359,7 @@ function Examine:ConvertValueToInfo(obj)
 			local trans_str
 			if IsT(obj) then
 				trans_str = Translate(obj)
-				if trans_str == "Missing text" or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+				if trans_str == missing_text or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
 					trans_str = tostring(obj)
 				end
 			else
@@ -2592,6 +2596,10 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 			local meta_temp = obj_metatable
 			while meta_temp do
 				c = self:AddItemsToInfoList(obj,c,meta_temp,skip_dupes,list_obj_str)
+				if type(meta_temp.__index) == "table" then
+					c = self:AddItemsToInfoList(obj,c,meta_temp.__index,skip_dupes,list_obj_str)
+				end
+
 				meta_temp = getmetatable(meta_temp)
 			end
 		end
@@ -2730,6 +2738,9 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 	end
 
 	if obj_type == "number" or obj_type == "boolean" or (obj_type == "string" and not show_all_values) then
+		if obj == "nil" then
+			return Strings[302535920000417--[[Null reference--]]]
+		end
 		c = c + 1
 		list_obj_str[c] = self:ConvertValueToInfo(obj)
 
