@@ -13,7 +13,6 @@ local IsValidThread = IsValidThread
 local CreateRealTimeThread = CreateRealTimeThread
 local IsValid = IsValid
 local RecalcBuildableGrid = RecalcBuildableGrid
-local MovePointAway = MovePointAway
 local MapDelete = MapDelete
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
@@ -22,7 +21,7 @@ local PlaceObject = PlaceObject
 local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
 local MovePointAwayXY = ChoGGi.ComFuncs.MovePointAwayXY
 local Translate = ChoGGi.ComFuncs.Translate
-local Strings = ChoGGi.Strings
+--~ local Strings = ChoGGi.Strings
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 
 
@@ -475,7 +474,7 @@ function OnMsg.ClassesBuilt()
 				"parent", function(self)
 					return self.parent
 				end,
-				"func", function(self, context)
+				"func", function(self)
 					---
 --~ 					ex(texture_list)
 					PopupToggle(self,"idBullDozerMenuPopup",texture_list,"left")

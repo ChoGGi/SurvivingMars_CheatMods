@@ -12,10 +12,7 @@ local point = point
 local box = box
 local sizebox = sizebox
 local tonumber = tonumber
---~ local ScreenToGame = ScreenToGame
-local HexGetNearestCenter = HexGetNearestCenter
 local ScaleXY = ScaleXY
-local ClampPoint = terrain.ClampPoint
 local DrawImageFit = UIL.DrawImageFit
 local GetSurfaceHeight = terrain.GetSurfaceHeight
 local cameraRTS = cameraRTS
@@ -394,7 +391,7 @@ function ChoGGi_XMapControl:OnMouseButtonDown(pt, button)
     return "break"
   end
 end
-function ChoGGi_XMapControl:OnMouseButtonUp(pt, button)
+function ChoGGi_XMapControl:OnMouseButtonUp(_, button)
   if button == "L" then
 		if IsValid(self.sphere) then
 			self.sphere:delete()
@@ -437,7 +434,8 @@ function ChoGGi_XMapControl:OnMouseLeft(...)
 	return XWindow.OnMouseLeft(self,...)
 end
 
-function ChoGGi_XMapControl:DrawContent(clip_rect)
+--~ (clip_rect)
+function ChoGGi_XMapControl:DrawContent()
 	if not self.mouse_pt then
 		return
 	end

@@ -23,7 +23,7 @@ CreateRealTimeThread(function()
       g_PopsAttemptingLogin = false
       WaitGetParadoxAccountData()
       local err, token = PopsTokenRetrieveCurrent()
-      if token then
+      if not err and token then
         LocalStorage.ParadoxAuthToken = token
         SaveLocalStorage()
       end

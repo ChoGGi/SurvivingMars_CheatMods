@@ -10,7 +10,6 @@ local IsValid = IsValid
 
 local Translate = ChoGGi.ComFuncs.Translate
 local RetName = ChoGGi.ComFuncs.RetName
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 
 -- store list of profiles in saved game
 GlobalVar("g_ChoGGi_BuildingStates",{})
@@ -83,8 +82,6 @@ local popup = {}
 function HUD.idBuildingStatesOnPress(dlg)
 	table_iclear(popup)
 	local c = 0
-
-	local HandleToObject = HandleToObject
 
 	local hint_str = Translate([[<left_click> Activate this profile.
 <right_click> Delete this profile.]])
@@ -459,7 +456,7 @@ function OnMsg.ClassesBuilt()
 	end
 
 	-- building menus
-	local xt = XTemplates.ipBuilding[1][1]
+	xt = XTemplates.ipBuilding[1][1]
 	-- check for and remove existing template
 	local idx = table.find(xt, "ChoGGi_Template_BuildingStates", true)
 	if idx then
@@ -482,7 +479,7 @@ function OnMsg.ClassesBuilt()
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_BuildingStates", true,
 			"__context_of_kind", "Building",
-      "__condition", function(parent, context)
+      "__condition", function(_, context)
         return not context:IsKindOfClasses(cls_skip)
       end,
 			"__template", "InfopanelSection",

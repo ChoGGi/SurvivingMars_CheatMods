@@ -118,7 +118,7 @@ end
 
 function ResourceOverview:GetAdvancedResourcesRollover()
 	local ret = {
-			T(3654, "Advanced resource production, consumption and other stats from the <em>last Sol</em>, unless otherwise stated. Resources in consumption buildings are not counted towards the total available amount. Resource maintenance is estimated per Sol."},
+			T(3654, "Advanced resource production, consumption and other stats from the <em>last Sol</em>, unless otherwise stated. Resources in consumption buildings are not counted towards the total available amount. Resource maintenance is estimated per Sol."),
 			T(316, "<newline>"),
 			T(3655, "Polymers production<right><polymers(PolymersProducedYesterday)>", self),
 			T(3656, "From surface deposits<right><polymers(PolymersGatheredYesterday)>", self),

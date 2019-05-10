@@ -33,7 +33,6 @@ end
 
 -- local some stuff
 local table_find = table.find
-local AsyncRand = AsyncRand
 local path = CurrentModPath .. "Flags/flag_"
 
 local function AddExisting(name,flag_name,Nations,c)

@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 -- local some globals
-local IsMouseCursorHidden = IsMouseCursorHidden
 local engineHideMouseCursor = engineHideMouseCursor
 local engineShowMouseCursor = engineShowMouseCursor
 

@@ -20,7 +20,7 @@ local function WriteModSettings(clear)
 		return
 	end
 
-	local err = WriteModPersistentData(data)
+	err = WriteModPersistentData(data)
 	if err then
 		print("Centred UI WriteModSettings WriteModPersistentData:",err)
 		return
@@ -79,6 +79,7 @@ function OnMsg.ModsReloaded()
 		print([[Centred UI: Missing HUD control idBottom]])
 		return
 	end
+
 	xt = xt.HUD[1][idx]
 	idx = table.find(xt,"Id","idRight")
 	if not idx then
@@ -87,7 +88,7 @@ function OnMsg.ModsReloaded()
 	end
 	xt = xt[idx][1]
 
-	local idx = table.find(xt, "ChoGGi_Template_CentredUI", true)
+	idx = table.find(xt, "ChoGGi_Template_CentredUI", true)
 	if idx then
 		xt[idx]:delete()
 		table.remove(xt,idx)

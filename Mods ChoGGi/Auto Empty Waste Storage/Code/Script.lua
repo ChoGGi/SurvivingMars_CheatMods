@@ -28,7 +28,7 @@ function OnMsg.ClassesBuilt()
 		__context_of_kind = "WasteRockDumpSite",
 		Icon = "UI/Icons/Upgrades/build_2.tga",
 		RolloverTitle = [[Auto Empty]],
-		OnContextUpdate = function(self, context)
+		OnContextUpdate = function(self)
 			---
 			if AutoEmptyWasteStorage.Enabled then
 				self:SetRolloverText([[Will empty all waste rock sites.]])
@@ -41,7 +41,7 @@ function OnMsg.ClassesBuilt()
 			end
 			---
 		end,
-		func = function(self, context)
+		func = function(_, context)
 				---
 				AutoEmptyWasteStorage.Enabled = not AutoEmptyWasteStorage.Enabled
 --~ 				print(AutoEmptyWasteStorage.Enabled)
@@ -54,7 +54,7 @@ function OnMsg.ClassesBuilt()
 		__context_of_kind = "WasteRockDumpSite",
 		Icon = "UI/Icons/Upgrades/build_2.tga",
 		RolloverTitle = [[Auto Empty]],
-		OnContextUpdate = function(self, context)
+		OnContextUpdate = function(self)
 			---
 			if AutoEmptyWasteStorage.Which == 1 then
 				self:SetRolloverText([[Will empty all waste rock sites every Sol.]])
@@ -67,7 +67,7 @@ function OnMsg.ClassesBuilt()
 			end
 			---
 		end,
-		func = function(self, context)
+		func = function(_, context)
 				---
 				if AutoEmptyWasteStorage.Which == 1 then
 					AutoEmptyWasteStorage.Which = 2

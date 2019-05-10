@@ -1,46 +1,47 @@
-local GetObjects = GetObjects
+local MapGet = MapGet
 
 --~ depth_layer: 2 = core, 1 = underground
 
 -- change to false to have it work on all SubsurfaceDeposits
 local apply_to_core_only = true
 
-local function LargerDeposits()
-  local r = const.ResourceScale
+local function LargerDeposits(objs)
+  objs = objs or MapGet("map", "SubsurfaceDepositWater","SubsurfaceDepositMetals","SubsurfaceDepositPreciousMetals")
 
-  GetObjects{
-    classes = {"SubsurfaceDepositWater","SubsurfaceDepositMetals","SubsurfaceDepositPreciousMetals"},
-    filter = function(o)
-      if apply_to_core_only then
-        if o.depth_layer == 2 then
-          o.max_amount = 500000 * r
-          o.grade = "Very High"
-        end
-      else
-        o.max_amount = 500000 * r
+  local max = 500000 * const.ResourceScale
+
+  for i = 1, #objs do
+    local o = objs[i]
+    if apply_to_core_only then
+      if o.depth_layer == 2 then
+        o.max_amount = max
         o.grade = "Very High"
       end
-    end,
-  }
+    else
+      o.max_amount = max
+      o.grade = "Very High"
+    end
+  end
 end
 
-local function RefillAllDeposits(cls)
-  GetObjects{
-    classes = {"SubsurfaceDepositWater","SubsurfaceDepositMetals","SubsurfaceDepositPreciousMetals"},
-    filter = function(o)
-      if apply_to_core_only then
-        if o.depth_layer == 1 then
-          o:CheatRefill()
-        end
-      else
+local function RefillAllDeposits(objs)
+  objs = objs or MapGet("map", "SubsurfaceDepositWater","SubsurfaceDepositMetals","SubsurfaceDepositPreciousMetals")
+
+  for i = 1, #objs do
+    local o = objs[i]
+    if apply_to_core_only then
+      if o.depth_layer == 1 then
         o:CheatRefill()
       end
-    end,
-  }
+    else
+      o:CheatRefill()
+    end
+  end
 end
 
 function OnMsg.LoadGame()
-  LargerDeposits()
-  RefillAllDeposits()
+  local objs = MapGet("map", "SubsurfaceDepositWater","SubsurfaceDepositMetals","SubsurfaceDepositPreciousMetals")
+  LargerDeposits(objs)
+  RefillAllDeposits(objs)
 end
 OnMsg.NewDay = RefillAllDeposits

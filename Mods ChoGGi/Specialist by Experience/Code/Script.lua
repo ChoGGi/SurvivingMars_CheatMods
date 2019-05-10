@@ -73,8 +73,6 @@ end
 -- loop through all the workplaces, and check for anyone who worked over 24 Sols
 local pairs,IsValid = pairs,IsValid
 function OnMsg.NewDay(sol) -- NewSol...
-  local g_Classes = g_Classes
-
   local workplaces = UICity.labels.Workplace or ""
   for i = 1, #workplaces do
     local work = workplaces[i]

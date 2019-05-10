@@ -30,8 +30,6 @@ local classes_to_remove = {
 	"DecorInt_03","DecorInt_04",
 }
 
-local DoneObject = DoneObject
-
 local orig_Service_GameInit = Service.GameInit
 function Service:GameInit()
 

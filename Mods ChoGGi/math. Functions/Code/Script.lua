@@ -582,7 +582,7 @@ function math.test()
   local Max = -200
   local Min = 200
 
-	for i = 1, 10000 do
+	for _ = 1, 10000 do
     local t = math.random(-10,0)
     Max = math.max(Max, t)
     Min = math.min(Min, t)

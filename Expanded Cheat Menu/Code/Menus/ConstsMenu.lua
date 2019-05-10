@@ -6,8 +6,6 @@ local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
-local type = type
-
 -- menu
 c = c + 1
 Actions[c] = {ActionName = Strings[302535920000158--[[Consts--]]],

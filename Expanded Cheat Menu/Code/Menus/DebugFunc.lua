@@ -369,6 +369,7 @@ end
 function ChoGGi.MenuFuncs.ForceStoryBits()
 --~ ~g_StoryBitStates
 --~ that'll show all the active story state thingss
+
 	local StoryBits = StoryBits
 
 	local item_list = {}
@@ -388,19 +389,24 @@ function ChoGGi.MenuFuncs.ForceStoryBits()
 		if not (title:find(": ") or title:find(" - ",1,true)) then
 			title = story_def.group .. ": " .. title
 		end
+		local voiced
+		if story_def.VoicedText then
+			voiced = "<color yellow>" .. Translate(6855--[[Voiced Text--]]) .. "</color>: " .. Translate(story_def.VoicedText)
+		end
+
 		c = c + 1
 		item_list[c] = {
 			text = title,
 			value = id,
-			voiced = story_def.VoicedText,
 			hint = Strings[302535920001358--[[Group--]]] .. ": "
 				.. story_def.group .. "\n\n"
-				.. Translate(T{story_def.Text,temp_table}) .. "\n\n<image "
-				.. story_def.Image .. ">",
+				.. (story_def.Text and Translate(T{story_def.Text,temp_table}) or "")
+				.. (voiced and "\n\n" .. voiced or "")
+				.. (story_def.Image ~= "" and "\n\n<image " .. story_def.Image .. ">" or "")
 		}
 	end
 
-	local title = Strings[302535920001416--[[Force--]]] .. " " .. Translate(948928900281--[[Story Bits--]])
+	local title = Translate(186760604064--[[Test--]]) .. " " .. Translate(948928900281--[[Story Bits--]])
 	local function CallBackFunc(choice)
 		if choice.nothing_selected then
 			return
@@ -415,6 +421,10 @@ function ChoGGi.MenuFuncs.ForceStoryBits()
 		elseif choice.check3 then
 			obj = table.rand(UICity.labels.Colonist or empty_table)
 		elseif choice.check4 then
+			obj = table.rand(UICity.labels.Drone or empty_table)
+		elseif choice.check5 then
+			obj = table.rand(UICity.labels.Rover or empty_table)
+		elseif choice.check6 then
 			obj = SelectedObj
 		end
 
@@ -426,7 +436,7 @@ function ChoGGi.MenuFuncs.ForceStoryBits()
 		callback = CallBackFunc,
 		items = item_list,
 		title = title,
-		hint = Strings[302535920001359--[[Start or display the msg from a story bit.--]]],
+		hint = Strings[302535920001359--[[Test activate a story bit.--]]],
 		checkboxes = {
 			{
 				title = Translate(5426--[[Building--]]),
@@ -441,8 +451,13 @@ function ChoGGi.MenuFuncs.ForceStoryBits()
 				hint = Strings[302535920001555--[[Choose a random %s to be the context for this storybit.--]]]:format(Translate(4290--[[Colonist--]])),
 			},
 			{
-				title = Translate(10147--[[Rover--]]) .. "/" .. Translate(1681--[[Drone--]]),
-				hint = Strings[302535920001555--[[Choose a random %s to be the context for this storybit.--]]]:format(Translate(10147--[[Rover--]]) .. "/" .. Translate(1681--[[Drone--]])),
+				title = Translate(1681--[[Drone--]]),
+				hint = Strings[302535920001555--[[Choose a random %s to be the context for this storybit.--]]]:format(Translate(1681--[[Drone--]])),
+				level = 2,
+			},
+			{
+				title = Translate(10147--[[Rover--]]),
+				hint = Strings[302535920001555--[[Choose a random %s to be the context for this storybit.--]]]:format(Translate(10147--[[Rover--]])),
 				level = 2,
 			},
 			{
@@ -653,221 +668,66 @@ function ChoGGi.MenuFuncs.ObjectCloner(flat)
 
 end
 
+function ChoGGi.MenuFuncs.DebugBuildGridSettings(action)
+	local setting = action.setting_mask
 
--- use HexSlope to check for not-buildable?
-do -- debug_build_grid
-	-- this is somewhat from Lua\hex.lua: debug_build_grid()
-	-- sped up to work with being attached to the mouse pos
-	local IsValid = IsValid
-	local grid_objs = {}
-	local grid_thread = false
-	local OHexSpot
+	local item_list = {
+		{text = 5,value = 5},
+		{text = 10,value = 10},
+		{text = 15,value = 15},
+		{text = 20,value = 20},
+		{text = 25,value = 25},
+		{text = 35,value = 35},
+		{text = 50,value = 50},
+		{text = 60,value = 60},
+		{text = 70,value = 70},
+		{text = 80,value = 80},
+		{text = 90,value = 90},
+		{text = 100,value = 100},
+	}
 
-	local function DeleteHexes()
-		-- kill off thread
-		if IsValidThread(grid_thread) then
-			DeleteThread(grid_thread)
+	local name
+	if setting == "DebugGridSize" then
+		table.insert(item_list,1,{text = 1,value = 1})
+		item_list[#item_list+1] = {text = 125,value = 125}
+
+		name = Strings[302535920001417--[[Follow Mouse Grid Size--]]]
+	elseif setting == "DebugGridOpacity" then
+		table.insert(item_list,1,{text = 0,value = 0})
+
+		name = Strings[302535920001419--[[Follow Mouse Grid Translate--]]]
+	end
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
 		end
-		-- just in case
-		grid_thread = false
+		choice = choice[1]
 
-		if GameState.gameplay then
-			-- store hexes off-map
-			SuspendPassEdits("ChoGGi.MenuFuncs.debug_build_grid_settings")
-			for i = 1, #grid_objs do
-				local o = grid_objs[i]
-				if IsValid(o) then
-					o:delete()
-				end
+		local value = choice.value
+		if type(value) == "number" then
+			ChoGGi.UserSettings[setting] = value
+
+			-- update grid
+			if IsValidThread(ChoGGi.Temp.grid_thread) then
+				-- twice to toggle
+				ChoGGi.ComFuncs.DebugBuildGrid()
+				ChoGGi.ComFuncs.DebugBuildGrid()
 			end
-			ResumePassEdits("ChoGGi.MenuFuncs.debug_build_grid_settings")
-			table_iclear(grid_objs)
+			ChoGGi.SettingFuncs.WriteSettings()
+			MsgPopup(
+				tostring(value),
+				name
+			)
 		end
 	end
 
-	-- if grid is left on when map changes it gets real laggy
-	OnMsg.ChangeMap = DeleteHexes
-
-	-- geysers mostly
-	local HexSize = const.HexSize
-	local MapGet = MapGet
-	local function IsRockOrDeposit(pt)
-		return #MapGet(pt,HexSize,"DoesNotObstructConstruction","SurfaceDeposit","StoneSmall") > 0
-	end
-
-	function ChoGGi.MenuFuncs.debug_build_grid_settings(action)
-		local setting = action.setting_mask
-
-		local UserSettings = ChoGGi.UserSettings
-		local item_list = {
-			{text = 10,value = 10},
-			{text = 15,value = 15},
-			{text = 25,value = 25},
-			{text = 50,value = 50},
-			{text = 75,value = 75},
-			{text = 100,value = 100},
-		}
-		local name
-		if setting == "DebugGridSize" then
-			table.insert(item_list,1,{text = 1,value = 1})
-			item_list[#item_list+1] = {text = 125,value = 125}
-			name = Strings[302535920001417--[[Follow Mouse Grid Size--]]]
-		elseif setting == "DebugGridOpacity" then
-			table.insert(item_list,1,{text = 0,value = 0})
-			name = Strings[302535920001419--[[Follow Mouse Grid Translate--]]]
-		end
-
-		local function CallBackFunc(choice)
-			if choice.nothing_selected then
-				return
-			end
-			choice = choice[1]
-
-			local value = choice.value
-			if type(value) == "number" then
-				UserSettings[setting] = value
-
-				if setting == "DebugGridOpacity" then
-					for i = 1, #grid_objs do
-						local o = grid_objs[i]
-						if IsValid(o) then
-							o:SetOpacity(value)
-						end
-					end
-				end
-
-				-- update grid
-				if IsValidThread(grid_thread) then
-					-- twice to toggle
-					ChoGGi.MenuFuncs.debug_build_grid()
-					ChoGGi.MenuFuncs.debug_build_grid()
-				end
-				ChoGGi.SettingFuncs.WriteSettings()
-				MsgPopup(
-					tostring(value),
-					name
-				)
-			end
-		end
-
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = item_list,
-			title = name,
-			skip_sort = true,
-		}
-	end
-
-	function ChoGGi.MenuFuncs.debug_build_grid()
-		OHexSpot = OHexSpot or ChoGGi_OHexSpot
-		local u = ChoGGi.UserSettings
-		local grid_size = type(u.DebugGridSize) == "number" and u.DebugGridSize or 10
-		local grid_opacity = type(u.DebugGridOpacity) == "number" and u.DebugGridOpacity or 15
-
-		-- 125 = 47251 objects (had a crash at 250, and it's not like you need one that big)
-		if grid_size > 125 then
-			grid_size = 125
-		end
-
-		-- already running
-		if IsValidThread(grid_thread) then
-			DeleteHexes()
-		else
-			-- this loop section is just a way of building the table and applying the settings once instead of over n over in the while loop
-
-			local grid_count = 0
-			local q,r = 1,1
-			local z = -q - r
-			SuspendPassEdits("ChoGGi.MenuFuncs.debug_build_grid")
-			for q_i = q - grid_size, q + grid_size do
-				for r_i = r - grid_size, r + grid_size do
-					for z_i = z - grid_size, z + grid_size do
-						if q_i + r_i + z_i == 0 then
-							local hex = OHexSpot:new()
-							hex:SetOpacity(grid_opacity)
-							grid_count = grid_count + 1
-							grid_objs[grid_count] = hex
-						end
-					end
-				end
-			end
-			ResumePassEdits("ChoGGi.MenuFuncs.debug_build_grid")
-
-			-- fire up a new thread and off we go
-			grid_thread = CreateRealTimeThread(function()
-			-- local all the globals we use more than once for some speed
-				local IsPassable = terrain.IsPassable
-				local IsTerrainFlatForPlacement = ConstructionController.IsTerrainFlatForPlacement
-				local GetTerrainCursor = GetTerrainCursor
-				local HexGridGetObject = HexGridGetObject
-				local HexToWorld = HexToWorld
-				local WorldToHex = WorldToHex
-				local point = point
-				local WaitMsg = WaitMsg
-
-				local red = red
-				local green = green
-				local yellow = yellow
-				local blue = blue
-				local pt20t = {point20}
-
-				local g_DontBuildHere = g_DontBuildHere
-				local ObjectGrid = ObjectGrid
-				local last_q, last_r, old_pt
-				while grid_thread do
-					-- only update if cursor moved
-					local pt = GetTerrainCursor()
-					if pt ~= old_pt then
-						old_pt = pt
-
-						local q, r = WorldToHex(pt)
-						if last_q ~= q or last_r ~= r then
-							local z = -q - r
-							local c = 0
-
-							for q_i = q - grid_size, q + grid_size do
-								for r_i = r - grid_size, r + grid_size do
-									for z_i = z - grid_size, z + grid_size do
-										if q_i + r_i + z_i == 0 then
-											-- get next hex marker from list, and move it to pos
-											c = c + 1
-											local hex = grid_objs[c]
-											local pt = point(HexToWorld(q_i, r_i))
-											hex:SetPos(pt)
-
-											-- green = pass/build, yellow = no pass/build, blue = pass/no build, red = no pass/no build
-											if g_DontBuildHere:Check(pt) then
-												hex:SetColorModifier(blue)
-											elseif IsPassable(pt) then
-												if IsTerrainFlatForPlacement(nil, pt20t, pt, 0) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
-													hex:SetColorModifier(green)
-												else
-													hex:SetColorModifier(blue)
-												end
-											elseif IsRockOrDeposit(pt) then
-												hex:SetColorModifier(yellow)
-											else
-												hex:SetColorModifier(red)
-											end
-
-										end
-									end -- z_i
-								end -- r_i
-							end -- q_i
-
-							last_q = q
-							last_r = r
-						else
-							WaitMsg("OnRender")
-						end
-					end -- pt ~= old_pt
-
-					-- might as well make it smoother (and suck up some yummy cpu), i assume nobody is going to leave it on
-					WaitMsg("OnRender")
-				end -- while
-			end) -- grid_thread
-		end
-	end
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = name,
+		skip_sort = true,
+	}
 end
 
 do -- path markers

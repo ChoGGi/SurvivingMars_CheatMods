@@ -80,7 +80,9 @@ function OnMsg.ClassesBuilt()
 		"__template", "InfopanelSection",
 
 		-- only show up for buildings that need maintenance
-		"__condition", function (parent, context) return context:DoesRequireMaintenance() end,
+		"__condition", function (_, context)
+			return context:IsKindOf("RequiresMaintenance") and context:DoesRequireMaintenance()
+    end,
 
 		"RolloverText", "Look ma it slides!",
 		"RolloverHintGamepad", "",
@@ -119,7 +121,9 @@ function OnMsg.ClassesBuilt()
 		"__template", "InfopanelActiveSection",
 
 		-- only show up for buildings that require main
-		"__condition", function (parent, context) return context:DoesRequireMaintenance() end,
+		"__condition", function (_, context)
+			return context:IsKindOf("RequiresMaintenance") and context:DoesRequireMaintenance()
+    end,
 
 		"RolloverText", "Look ma it slides!",
 		"RolloverHintGamepad", "",
@@ -135,9 +139,9 @@ function OnMsg.ClassesBuilt()
 			"min", 5,
 			-- change 5 per movement
 			"StepSize", 5,
-			"OnContextUpdate", function(self, context)
+--~ 			"OnContextUpdate", function(self, context)
 --~ 			self.parent.parent:SetTitle([[Change "max_workers" limit: ]] .. context.max_workers)
-			end
+--~ 			end
 		}),
 		PlaceObj("XTemplateTemplate", {
 			"__template", "InfopanelSlider",
@@ -166,7 +170,8 @@ function OnMsg.ClassesBuilt()
 		"RolloverText", "only shows when hour is 10 or over",
 		"RolloverTitle", " ",
 		"RolloverHint",  "",
-		"OnContextUpdate", function(self, context)
+--~ 	(self, context)
+		"OnContextUpdate", function(self)
 			if UICity.hour >= 10 then
 				self:SetVisible(true)
 				self:SetMaxHeight()
@@ -188,7 +193,8 @@ function OnMsg.ClassesBuilt()
 		"RolloverText", "Clicking this once will add 5 times the amount of stored resources.",
 		"RolloverTitle", "",
 		"RolloverHint",  "",
-		"OnPress", function(self, context)
+--~ 		(self, context)
+		"OnPress", function()
 			---
 			local objs = UICity.labels.SubsurfaceDeposit or ""
 			for i = 1, #objs do

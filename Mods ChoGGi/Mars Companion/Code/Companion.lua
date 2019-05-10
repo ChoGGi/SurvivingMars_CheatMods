@@ -47,7 +47,6 @@ function MarsCompanion:GameInit()
 	-- dust thread
 	self.dust_thread = CreateGameTimeThread(function()
 		-- if we local in the thread it isn't caught by debug.getupvalue
-		local IsValid = IsValid
 		local Sleep = Sleep
 		local GetTimeFactor = GetTimeFactor
 		local GetHeight = terrain.GetHeight
@@ -76,8 +75,7 @@ function MarsCompanion:GameInit()
 end
 
 function MarsCompanion:Done()
-	local city = self.city or UICity
-  self.city:RemoveFromLabel("MarsCompanion", self)
+  (self.city or UICity):RemoveFromLabel("MarsCompanion", self)
 
 	if IsValidThread(self.dust_thread) then
 		DeleteThread(self.dust_thread)
@@ -109,7 +107,6 @@ end
 function MarsCompanion:MainLoop()
 	local IsValid = IsValid
 	local Sleep = Sleep
-	local MovePointAway = MovePointAway
 
 	local cGetLookAt = cameraRTS.GetLookAt
 	local cGetPos = cameraRTS.GetPos

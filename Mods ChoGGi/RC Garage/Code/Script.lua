@@ -12,7 +12,6 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local RetName = ChoGGi.ComFuncs.RetName
 local Random = ChoGGi.ComFuncs.Random
-local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
 local text_disabled = "Main Garage: " .. ChoGGi.ComFuncs.Translate(847439380056--[[Disabled--]])
@@ -112,7 +111,6 @@ function RCGarage:StickInGarage(unit)
     return
   end
 
-	local linked_obj = self.linked_obj
 	if not IsValid(self) then
 		return
 	end

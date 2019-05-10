@@ -235,16 +235,17 @@ local function StartupCode()
 	if #(UICity.labels.ChoGGi_Alien or "") > 0 then
 		return
 	end
+
 	local ChoGGi_Alien = ChoGGi_Alien
 	-- spawn a min of 4
-	for i = 1, AsyncRand(mod_MaxSpawn - 4 + 1) + 4 do
+	for _ = 1, AsyncRand(mod_MaxSpawn - 4 + 1) + 4 do
 		ChoGGi_Alien:new()
 	end
 
 	-- testing
-	if not true then
+	if false then
 		for _ = 1, 600 do
-			local alien = ChoGGi_Alien:new()
+			ChoGGi_Alien:new()
 		end
 --~ local pt = c()
 --~ alien:SetPos(pt:SetTerrainZ())

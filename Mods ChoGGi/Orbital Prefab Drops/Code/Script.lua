@@ -33,7 +33,6 @@ local Sleep = Sleep
 local PlayFX = PlayFX
 local IsValid = IsValid
 local CreateGameTimeThread = CreateGameTimeThread
-local MovePointAway = MovePointAway
 local SetRollPitchYaw = SetRollPitchYaw
 local AsyncRand = AsyncRand
 local atan = atan
@@ -43,7 +42,6 @@ local WorldToHex = WorldToHex
 local ObjectHierarchyBBox = ObjectHierarchyBBox
 
 local BaseMeteor = BaseMeteor
-local pt1000 = point(0,0,1000)
 local pt1500 = point(0,0,1500)
 local times36060 = 360*60
 local times18060 = 180*60
@@ -79,7 +77,6 @@ local function YamatoHasshin(site)
 		site_height = pt1500
 	end
 
-	local const = const
 	-- hide the actual site for now
 	site:SetVisible()
 	local city = site.city or UICity
@@ -152,7 +149,8 @@ local function YamatoHasshin(site)
 
 		-- mid-way
 		PlayFX("RocketLand", "pre-hit-ground2", pod, false, spawn_pos)
-		local accel, land_time = pod:GetAccelerationAndTime(spawn_pos, final_speed, flight_speed)
+    local accel
+		accel, land_time = pod:GetAccelerationAndTime(spawn_pos, final_speed, flight_speed)
 		pod:SetAcceleration(accel)
 		pod:SetPos(hover_pos, land_time)
 		SetRollPitchYaw(pod, 0, 0, yaw, land_time)

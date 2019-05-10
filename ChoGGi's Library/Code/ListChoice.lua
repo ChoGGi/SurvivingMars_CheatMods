@@ -9,7 +9,7 @@
 get around to merging some of these types into funcs?
 
 > 1 = updates selected item with custom value type
-custom_type = 1 : hides ok/cancel buttons, dblclick fires custom_func with {self.sel}, and sends back all items on ok
+custom_type = 1 : hides ok/cancel buttons, dblclick fires custom_func with {self.sel}
 custom_type = 2 : colour selector
 custom_type = 3 : sends back selected item.
 custom_type = 4 : sends back all items. (shows ok/cancel)
@@ -63,7 +63,6 @@ local Strings = ChoGGi.Strings
 
 local type,tostring = type,tostring
 local table_sort = table.sort
-local RGBA,RGB = RGBA,RGB
 local point = point
 local MeasureImage = UIL.MeasureImage
 
@@ -91,7 +90,6 @@ DefineClass.ChoGGi_ListChoiceDlg = {
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
 function ChoGGi_ListChoiceDlg:Init(parent, context)
-	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 
 	self.list = context.list
@@ -188,7 +186,7 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 
 	self.idList.OnMouseButtonDown = self.idList_OnMouseButtonDown
 	self.idList.OnKbdKeyUp = self.idList_OnKbdKeyUp
-	self.idList.OnMouseButtonDoubleClick = self.idList_OnMouseButtonDoubleClick
+	self.idList.OnMouseButtonDoubleClick = self.BuildReturnList
 	self.idList.OnKbdKeyDown = self.idList_OnKbdKeyDown
 
 	if self.custom_type ~= 9 then
@@ -261,17 +259,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = Strings[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>).
 This will always send back all items (not selection)."--]]],
-		OnPress = function()
-			-- build self.choices
-			self:GetListItems()
-			-- send selection back
-			if self.list.callback then
-				self.list.callback(self.choices)
-			elseif self.list.custom_func then
-				self.list.custom_func(self.choices)
-			end
-			self:Close("ok")
-		end,
+		OnPress = self.BuildReturnList
 	}, self.idButtonContainer)
 
 	self.idCancel = g_Classes.ChoGGi_XButton:new({
@@ -286,10 +274,8 @@ This will always send back all items (not selection)."--]]],
 
 	-- are we sorting the list?
 	if not self.list.skip_sort then
-		-- sort table by display text
-		local sortby = self.list.sortby or "text"
-
-		if sortby ~= "text" then
+		local sortby = self.list.sortby
+		if sortby then
 			table_sort(self.list.items,function(a,b)
 				a = a[sortby]
 				b = b[sortby]
@@ -299,12 +285,13 @@ This will always send back all items (not selection)."--]]],
 				return CmpLower(a,b)
 			end)
 		else
+			-- default to display text
 			table_sort(self.list.items,function(a,b)
-				return CmpLower(a[sortby], b[sortby])
+				return CmpLower(a.text, b.text)
 			end)
 		end
-
 	end
+
 	-- append blank item for adding custom value
 	if self.custom_type == 0 then
 		self.list.items[#self.list.items+1] = {text = "",hint = "",value = false}
@@ -506,7 +493,7 @@ end
 function ChoGGi_ListChoiceDlg:idList_OnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
-		self:idList_OnMouseButtonDoubleClick(nil,"L")
+		self:BuildReturnList(nil,"L")
 		return "break"
 	elseif vk == const.vkEsc then
 		self.idCloseX:Press()
@@ -528,7 +515,7 @@ end
 function ChoGGi_ListChoiceDlg:idEditValue_OnKbdKeyDown(vk,...)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
-		self.idOK:Press()
+		self:BuildReturnList(_,"L")
 		return "break"
 	end
 	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idEditValue,vk,...)
@@ -869,39 +856,50 @@ function ChoGGi_ListChoiceDlg:idList_OnSelect(button)
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDoubleClick(_,button)
-	if self.class == "ChoGGi_XList" then
-		self = GetRootDialog(self)
+--~ function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDoubleClick(_,button)
+function ChoGGi_ListChoiceDlg:CallbackSelectedList()
+	-- build self.choices
+	if self.sel then
+		self.choices = {self.sel}
+		self:UpdateReturnedItem(self.choices)
+	else
+		self:GetListItems()
 	end
+	-- send selection back
+	if self.custom_func then
+		self.custom_func(self.choices)
+	end
+end
 
-	if not self.sel then
-		return
+function ChoGGi_ListChoiceDlg:BuildReturnList(_,button)
+--~ 	if self.class == "ChoGGi_XList" then
+--~
+	-- select all items (ok button)
+	if self.class == "ChoGGi_XButton" then
+		button = "L"
 	end
+	self = GetRootDialog(self)
+
 	if button == "L" then
 		-- fire custom_func with sel
 		if self.custom_func and (self.custom_type == 1 or self.custom_type == 7) then
-			-- make sure we send back the checks with it
-			local choices = {self.sel}
-			self:UpdateReturnedItem(choices)
-			self.custom_func(choices,self)
+			self:CallbackSelectedList()
 		elseif self.custom_type == 9 then
 			-- build self.choices
 			self:GetListItems()
 			-- send selection back
-			self.list.callback(self.choices)
+			self.custom_func(self.choices)
 		elseif self.custom_type ~= 2 or self.custom_type == 8 then
-			-- dblclick to close and ret item
-			self.idOK.OnPress()
+			self:CallbackSelectedList()
+			-- build self.choices
+			self:Close("ok")
 		end
-	elseif button == "R" then
+	elseif self.sel and button == "R" then
 		-- do stuff without closing list
 		if self.custom_type == 6 and self.custom_func then
 			self.custom_func(self.sel.func or self.sel.value,self)
-		elseif self.custom_type == 8 and self.custom_func then
-			-- make sure we send back the checks with it
-			local choices = {self.sel}
-			self:UpdateReturnedItem(choices)
-			self.custom_func(choices,self)
+		elseif self.custom_type == 8 then
+			self:CallbackSelectedList()
 		elseif self.idEditValue then
 			self.idEditValue:SetText(self.sel.text)
 		end

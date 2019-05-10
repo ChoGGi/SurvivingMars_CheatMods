@@ -69,8 +69,8 @@ function CursorBuilding:GameInit()
 
 	for i = 1, #dust_gens do
 		local cls = labels[dust_gens[i]] or ""
-		for i = 1, #cls do
-			ShowBuildingHexes(cls[i])
+		for j = 1, #cls do
+			ShowBuildingHexes(cls[j])
 		end
 	end
 

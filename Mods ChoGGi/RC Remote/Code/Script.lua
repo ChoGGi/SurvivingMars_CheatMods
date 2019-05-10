@@ -6,7 +6,6 @@ local vkW = const.vkW
 local vkA = const.vkA
 local vkS = const.vkS
 local vkD = const.vkD
-local vkShift = const.vkShift
 local function parabola(x)
 	return 4 * x - x * x / 25
 end
@@ -22,7 +21,6 @@ local GetTerrainCursor = GetTerrainCursor
 local MapFindNearest = MapFindNearest
 --~ local axis_z = axis_z
 
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Translate = ChoGGi.ComFuncs.Translate
 
 --~ 	local Strings = ChoGGi.Strings
@@ -331,7 +329,7 @@ function RCRemote:ExplodeRock(target,rocket)
 	end
 	-- maybe it was removed before we arrived?
 	if IsValid(target) then
-		local snd = PlaySound("Mystery Bombardment ExplodeAir", "ObjectOneshot", nil, 0, false, target)
+		PlaySound("Mystery Bombardment ExplodeAir", "ObjectOneshot", nil, 0, false, target)
 		PlayFX("GroundExplosion", "start", target, target, target:GetPos())
 		target:delete()
 	end

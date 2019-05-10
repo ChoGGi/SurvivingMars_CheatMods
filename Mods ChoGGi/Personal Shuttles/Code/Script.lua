@@ -7,10 +7,7 @@ local GameTime = GameTime
 local DeleteThread = DeleteThread
 local PlayFX = PlayFX
 local IsValid = IsValid
-local GetSurfaceHeight = terrain.GetSurfaceHeight
 
-local Strings = ChoGGi.Strings
-local RetName = ChoGGi.ComFuncs.RetName
 local Random = ChoGGi.ComFuncs.Random
 
 PersonalShuttles = {
@@ -89,8 +86,7 @@ function PersonalShuttle:GameInit()
 end
 
 function PersonalShuttle:Done()
-	local city = self.city or UICity
-  self.city:RemoveFromLabel("PersonalShuttle", self)
+  (self.city or UICity):RemoveFromLabel("PersonalShuttle", self)
 end
 
 -- gets rid of error in log
@@ -121,7 +117,6 @@ function PersonalShuttle:FollowMouse()
 	self.idle_time = 0
 
 	self.old_dest = false
-	local dest_orig_temp = false
 	self.first_idle = 0
 
 	-- following mouse loop
@@ -129,7 +124,7 @@ function PersonalShuttle:FollowMouse()
 		local pos = self:GetVisualPos()
 		local dest = GetTerrainCursor()
 
-		self:GotoPos(PersonalShuttles,pos,dest)
+		self:GotoPos(pos,dest)
 
 		local obj = SelectedObj
 		if IsValid(obj) and obj ~= self then
@@ -146,7 +141,7 @@ function PersonalShuttle:FollowMouse()
 end
 
 -- where are we going
-function PersonalShuttle:GotoPos(PersonalShuttles,pos,dest)
+function PersonalShuttle:GotoPos(pos,dest)
 	-- too quick and it's jerky *or* mouse making small movements
 	if self.in_flight then
 		if self.idle_time < 100 then
@@ -378,8 +373,6 @@ end
 
 -- pretty much a direct copynpaste from explorer (just removed stuff that's rover only)
 function PersonalShuttle:AnalyzeAnomaly(anomaly)
-	local PersonalShuttles = PersonalShuttles
-
 	if not IsValid(self) then
 		return
 	end

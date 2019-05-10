@@ -1,4 +1,4 @@
-function OnMsg.TechResearched(tech_id, city, first_time)
+function OnMsg.TechResearched(tech_id, city)
 --~ 	-- skip any tech you can't repeat
 --~ 	if not TechDef[tech_id].repeatable then
 --~ 		return

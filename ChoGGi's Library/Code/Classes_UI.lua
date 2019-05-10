@@ -97,7 +97,6 @@ DefineClass.ChoGGi_XMoveControl = {
 	RolloverTitle = Translate(126095410863--[[Info--]]),
 	RolloverTemplate = "Rollover",
 }
-local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 function ChoGGi_XMoveControl:OnKbdKeyDown(vk,...)
 	if vk == const.vkEsc and IsShiftPressed() then
 		self.dialog.idCloseX:Press()

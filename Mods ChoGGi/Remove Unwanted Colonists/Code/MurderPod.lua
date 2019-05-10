@@ -2,7 +2,6 @@
 
 local Sleep = Sleep
 local IsValid = IsValid
-local IsValidThread = IsValidThread
 local GetRandomPassableAround = GetRandomPassableAround
 local GetHeight = terrain.GetHeight
 
@@ -227,7 +226,7 @@ function MurderPod:Abduct()
 	self.panel_text = [[Victim going to "Earth"]]
 
 	-- human shaped meteors (bonus meteors, since murder is bad)
-	for i = 1, Random(1,3) do
+	for _ = 1, Random(1,3) do
 		CreateGameTimeThread(MurderPod.LaunchMeteor,self,entity)
 	end
 

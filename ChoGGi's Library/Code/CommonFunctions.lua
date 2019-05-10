@@ -175,7 +175,9 @@ do -- RetName
 
 		for key,value in pairs(g.ChoGGi) do
 			if not lookup_table[value] then
-				lookup_table[value] = "ChoGGi." .. key
+				if type(value) == "table" then
+					lookup_table[value] = "ChoGGi." .. key
+				end
 			end
 		end
 
@@ -197,7 +199,7 @@ do -- RetName
 		end
 
 		-- and any g_Classes funcs
-		for cls_key,class in pairs(g.g_Classes) do
+		for _,class in pairs(g.g_Classes) do
 			for key,value in pairs(class) do
 				-- why it has a false is beyond me (something to do with that object[true] = userdata?)
 				if key ~= false and not lookup_table[value] then
@@ -2676,7 +2678,6 @@ do -- DeleteObject
 		local is_deposit = obj:IsKindOf("Deposit")
 		local is_water = obj:IsKindOf("TerrainWaterObject")
 		local is_waterspire = obj:IsKindOf("WaterReclamationSpire") and not IsValid(obj.parent_dome)
-		local is_rctransport = obj:IsKindOf("RCTransport")
 
 		if not is_waterspire then
 			-- some stuff will leave holes in the world if they're still working
@@ -2721,11 +2722,6 @@ do -- DeleteObject
 				end
 			end
 		end
---~ 		if obj.GetFlattenShape
---~ 		and HasAnySurfaces(obj, EntitySurfaces_Height, true)
---~ 		and not terrain_HasRestoreHeight() then
---~ 			FlattenTerrainInBuildShape(obj:GetFlattenShape(), obj)
---~ 		end
 
 		procall(ExecFunc,obj,"SetDome",false)
 		procall(ExecFunc,obj,"RemoveFromLabels")
@@ -3981,7 +3977,8 @@ function ChoGGi.ComFuncs.RemoveObjs(cls,reason)
 	if type(cls) == "table" then
 		local g_Classes = g_Classes
 		local MapDelete = MapDelete
-		for i = 1, #cls do
+
+		for _ = 1, #cls do
 			-- if it isn't a valid class then Map* will return all objects :(
 			if g_Classes[cls] then
 				MapDelete(true, cls)
@@ -4510,13 +4507,184 @@ function ChoGGi.ComFuncs.RetTableValue(obj,key)
 	-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env uses the metatable from _G.__index and causes sm to log an error msg
 	local index = getmetatable(obj)
 	if index and index.__index then
-		-- and PropObjGetProperty will bug out on some tables
-		if rawget(obj,"class") then
-			return PropObjGetProperty(obj,key)
-		else
-			return rawget(obj,key)
-		end
+		return PropObjGetProperty(obj,key)
+--~ 		-- and PropObjGetProperty will bug out on some tables
+--~ 		if rawget(obj,"class") then
+--~ 			return PropObjGetProperty(obj,key)
+--~ 		else
+--~ 			return rawget(obj,key)
+--~ 		end
 	else
 		return obj[key]
+	end
+end
+
+-- use HexSlope to check for not-buildable?
+do -- DebugBuildGrid
+	-- this is somewhat from Lua\hex.lua: debug_build_grid()
+	-- sped up to work with being attached to the mouse pos
+	local IsValid = IsValid
+	local grid_objs = {}
+	local Temp = ChoGGi.Temp
+	local OHexSpot
+
+	local function CleanUp()
+		-- kill off thread
+		if IsValidThread(Temp.grid_thread) then
+			DeleteThread(Temp.grid_thread)
+		end
+		-- just in case
+		Temp.grid_thread = false
+
+		if GameState.gameplay then
+			-- store hexes off-map
+			SuspendPassEdits("ChoGGi.ComFuncs.DebugBuildGrid_settings")
+			for i = 1, #grid_objs do
+				local o = grid_objs[i]
+				if IsValid(o) then
+					o:delete()
+				end
+			end
+			ResumePassEdits("ChoGGi.ComFuncs.DebugBuildGrid_settings")
+			table_iclear(grid_objs)
+		end
+	end
+
+	-- if grid is left on when map changes it gets real laggy
+	OnMsg.ChangeMap = CleanUp
+	-- make sure grid isn't saved in persist
+	OnMsg.SaveGame = CleanUp
+
+	function ChoGGi.ComFuncs.DebugBuildGrid(action)
+		local is_valid_thread = IsValidThread(Temp.grid_thread)
+
+		-- if not fired from action
+		if not IsKindOf(action,"XAction") then
+			-- always start clean
+			if is_valid_thread then
+				CleanUp()
+				is_valid_thread = false
+			end
+			-- if it's false then we don't want to start it again
+			if action == false then
+				return
+			end
+		end
+
+		OHexSpot = OHexSpot or ChoGGi_OHexSpot
+		local u = ChoGGi.UserSettings
+		local grid_opacity = type(u.DebugGridOpacity) == "number" and u.DebugGridOpacity or 15
+		local grid_size = type(u.DebugGridSize) == "number" and u.DebugGridSize or 25
+
+		-- 125 = 47251 objects (had a crash at 250, and it's not like you need one that big)
+		if grid_size > 125 then
+			grid_size = 125
+		end
+
+		-- already running
+		if is_valid_thread then
+			CleanUp()
+		else
+			-- this loop section is just a way of building the table and applying the settings once instead of over n over in the while loop
+
+			local grid_count = 0
+			local q,r = 1,1
+			local z = -q - r
+			SuspendPassEdits("ChoGGi.ComFuncs.DebugBuildGrid")
+			for q_i = q - grid_size, q + grid_size do
+				for r_i = r - grid_size, r + grid_size do
+					for z_i = z - grid_size, z + grid_size do
+						if q_i + r_i + z_i == 0 then
+							local hex = OHexSpot:new()
+							hex:SetOpacity(grid_opacity)
+							grid_count = grid_count + 1
+							grid_objs[grid_count] = hex
+						end
+					end
+				end
+			end
+			ResumePassEdits("ChoGGi.ComFuncs.DebugBuildGrid")
+
+			-- fire up a new thread and off we go
+			Temp.grid_thread = CreateRealTimeThread(function()
+			-- local all the globals we use more than once for some speed
+				local IsPassable = terrain.IsPassable
+				local IsTerrainFlatForPlacement = ConstructionController.IsTerrainFlatForPlacement
+				local GetTerrainCursor = GetTerrainCursor
+				local HexGridGetObject = HexGridGetObject
+				local HexGetUnits = HexGetUnits
+				local HexToWorld = HexToWorld
+				local WorldToHex = WorldToHex
+				local point = point
+				local WaitMsg = WaitMsg
+
+				local cls_stones = {"DoesNotObstructConstruction","SurfaceDeposit","StoneSmall"}
+				local red = red
+				local green = green
+				local yellow = yellow
+				local blue = blue
+				local pt20t = {point20}
+
+				local g_DontBuildHere = g_DontBuildHere
+				local ObjectGrid = ObjectGrid
+				local last_q, last_r, old_pt
+				while Temp.grid_thread do
+					-- only update if cursor moved
+					local pt = GetTerrainCursor()
+					if pt ~= old_pt then
+						old_pt = pt
+
+						local q, r = WorldToHex(pt)
+						if last_q ~= q or last_r ~= r then
+							local z = -q - r
+							local c = 0
+
+							for q_i = q - grid_size, q + grid_size do
+								for r_i = r - grid_size, r + grid_size do
+									for z_i = z - grid_size, z + grid_size do
+										if q_i + r_i + z_i == 0 then
+											-- get next hex marker from list, and move it to pos
+											c = c + 1
+											local hex = grid_objs[c]
+											local pt = point(HexToWorld(q_i, r_i))
+											hex:SetPos(pt)
+
+											-- green = pass/build, yellow = no pass/build, blue = pass/no build, red = no pass/no build
+
+											-- geysers
+											if g_DontBuildHere:Check(pt) then
+												hex:SetColorModifier(blue)
+											-- for some reason returns false for dumping sites...
+											elseif IsPassable(pt) or HexGridGetObject(ObjectGrid, q_i, r_i, nil, "WasteRockStockpileUngridedNoBlockPass") then
+												if IsTerrainFlatForPlacement(nil, pt20t, pt, 0) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
+													hex:SetColorModifier(green)
+												else
+													hex:SetColorModifier(blue)
+												end
+--~ 											elseif HexGridGetObject(ObjectGrid, q_i, r_i, nil, "WasteRockStockpileUngridedNoBlockPass") then
+--~ 												hex:SetColorModifier(blue)
+											elseif HexGetUnits(hex, "RechargeStation", pt, 0, true, nil,cls_stones) then
+												hex:SetColorModifier(yellow)
+											else
+												hex:SetColorModifier(red)
+											end
+
+										end
+									end -- z_i
+								end -- r_i
+							end -- q_i
+
+							last_q = q
+							last_r = r
+						else
+							WaitMsg("OnRender")
+						end
+					end -- pt ~= old_pt
+
+					-- might as well make it smoother (and suck up some yummy cpu), i assume nobody is going to leave it on
+					WaitMsg("OnRender")
+				end -- while
+			end) -- grid_thread
+		end
 	end
 end

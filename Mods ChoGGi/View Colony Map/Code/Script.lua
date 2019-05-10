@@ -73,10 +73,10 @@ OnMsg.CityStart = ResetFunc
 OnMsg.LoadGame = ResetFunc
 
 -- a dialog that shows an image
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg,"ChoGGi_VCM_MapImageDlg")
-end
+--~ local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+--~ local function GetRootDialog(dlg)
+--~ 	return GetParentOfKind(dlg,"ChoGGi_VCM_MapImageDlg")
+--~ end
 
 DefineClass.ChoGGi_VCM_MapImageDlg = {
 	__parents = {"ChoGGi_XWindow"},
@@ -239,7 +239,8 @@ function ChoGGi_VCM_ExtraInfoDlg:Done()
 end
 
 -- clicked
-function ChoGGi_VCM_ExtraInfoDlg:idTextOnHyperLink(link, argument, hyperlink_box, pos, button)
+--~ (link, argument, hyperlink_box, pos, button)
+function ChoGGi_VCM_ExtraInfoDlg:idTextOnHyperLink(link)
 	self = GetRootDialog_Extra(self)
 
 	local desc = self.onclick_desc[tonumber(link)]

@@ -24,7 +24,7 @@ if not ChoGGi.testing then
 	return
 end
 
-local Translate = ChoGGi.ComFuncs.Translate
+--~ local Translate = ChoGGi.ComFuncs.Translate
 
 --~ 	local orig_GetStack = GetStack
 --~ 	function GetStack(...)

@@ -1222,8 +1222,16 @@ function OnMsg.ClassesBuilt()
 				-- ~anything
 				"^~(.*)",
 				[[local params = {%s}
+				print(#params,params)
 if #params == 1 then
 	OpenExamine(params[1])
+elseif #params == 3 then
+	OpenExamine(params[1],{
+		parent = params[2],
+		title = params[3],
+		ex_params = true,
+		override_title = true,
+	})
 else
 	OpenExamine(nil,{
 		obj = params,

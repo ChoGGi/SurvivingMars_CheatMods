@@ -21,7 +21,6 @@ ColorizationMaterialEncode(RGB(22,36,50),roughness,metallic)
 -- not my speeling
 
 local ColorizationMaterialEncode = ColorizationMaterialEncode
-local RGB = RGB
 function OnMsg.ClassesPostprocess()
 	-- check for the id of the scheme so we don't add dupes
 	if not Presets.ColonyColorScheme.Default.ChoGGi_Custom_Scheme then

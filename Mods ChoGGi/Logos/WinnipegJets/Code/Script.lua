@@ -1,6 +1,3 @@
-local DelayedLoadEntity = DelayedLoadEntity
-local PlaceObj = PlaceObj
-
 
 -- copy n paste from ChoGGi.ComFuncs.LoadEntity
 do -- LoadEntity
@@ -41,7 +38,7 @@ do -- LoadEntity
 
 	-- Mars Marx, eh close enough
 	local mod = Mods.ChoGGi_Logos_WinnipegJets
-	local ent_path = mod.env.CurrentModPath .. "Entities/",
+	local ent_path = mod.env.CurrentModPath .. "Entities/"
 
 	local function LoadDecal(name)
 		LoadEntity(

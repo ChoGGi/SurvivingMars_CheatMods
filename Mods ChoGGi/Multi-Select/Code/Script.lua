@@ -19,7 +19,6 @@ local RotateRadius = RotateRadius
 local MulDivRound = MulDivRound
 local Max = Max
 local Min = Min
-local Clamp = Clamp
 local point = point
 local PlaceTerrainCircle = PlaceTerrainCircle
 
@@ -77,7 +76,6 @@ function OnMsg.ClassesBuilt()
 	local selection_changed = false
 	local saved_radius = 1000
 
-	local GoToPos = UnitController.GoToPos
 	local OnMouseButtonDown = SelectionModeDialog.OnMouseButtonDown
 	function SelectionModeDialog:OnMouseButtonDown(pt, button,...)
 		if button == "R" and #Selection > 1 then

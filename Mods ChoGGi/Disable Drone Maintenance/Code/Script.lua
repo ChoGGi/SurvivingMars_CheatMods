@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local Strings = ChoGGi.Strings
+--~ local Strings = ChoGGi.Strings
 local RetName = ChoGGi.ComFuncs.RetName
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
@@ -44,8 +44,8 @@ function OnMsg.ClassesBuilt()
 	ChoGGi.ComFuncs.AddXTemplate("DisableMaintenance","ipBuilding",{
 		__context_of_kind = "Building",
 		-- only show up for buildings that need maintenance
-		__condition = function (parent, context)
-			return context:DoesRequireMaintenance()
+		__condition = function (_, context)
+			return context:IsKindOf("RequiresMaintenance") and context:DoesRequireMaintenance()
 		end,
 		OnContextUpdate = function(self, context)
 			local name = RetName(context)

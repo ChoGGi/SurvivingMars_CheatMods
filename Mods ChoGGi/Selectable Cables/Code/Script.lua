@@ -10,7 +10,6 @@ function ElectricityGridElement:GetInfopanelTemplate(...)
 end
 
 -- so we know something is selected
-local SelectionArrowAdd = SelectionArrowAdd
 function ElectricityGridElement:OnSelected()
 	-- not construction site and not a switch (they already have a parsystem added)
 	if not self.building_class_proto and not self.is_switch then
@@ -32,7 +31,7 @@ function OnMsg.ClassesBuilt()
     id = "ipCable",
     PlaceObj("XTemplateTemplate", {
       "__context_of_kind", "ElectricityGridElement",
-      "__condition", function (parent, context) return context.is_hub or not context.is_switch end,
+      "__condition", function (_, context) return context.is_hub or not context.is_switch end,
       "__template", "Infopanel",
       "Description", T(313911890683, "<description>"),
     }, {

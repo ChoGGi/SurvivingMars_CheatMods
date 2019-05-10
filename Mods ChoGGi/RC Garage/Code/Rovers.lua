@@ -16,7 +16,8 @@ rcc.ChoGGi_InGarage = [[Stored in garage]]
 local BaseRover = BaseRover
 
 -- if it's garage otherwise return orig func
-local function CanInteractWithObject_local(interact, obj, interaction_mode)
+--~ (interact, obj, interaction_mode)
+local function CanInteractWithObject_local(interact, obj)
 	local garage = g_ChoGGi_RCGarages
 	if (interact == false or interact == "default" or interact == "move")
 		and garage.main and garage.main.working

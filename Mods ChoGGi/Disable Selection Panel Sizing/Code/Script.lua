@@ -61,7 +61,6 @@ local infopanel_list = {
 }
 
 -- get around to finishing this (scrollable selection panel)
-local GetSafeAreaBox = GetSafeAreaBox
 local function AddScrollDialogXTemplates(obj)
 	local g_Classes = g_Classes
 

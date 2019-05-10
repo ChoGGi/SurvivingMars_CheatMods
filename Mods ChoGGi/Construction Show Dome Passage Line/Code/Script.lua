@@ -29,7 +29,6 @@ local point = point
 
 local point20 = point20
 local green = green
-local white_str = EncodeNumbersToString({white})
 -- keep my hexes above dome ones (30 is from UpdateShapeHexes(obj))
 local point31z = point(0,0,31)
 -- how long passages can be

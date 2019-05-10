@@ -2,7 +2,7 @@
 
 local table_clear = table.clear
 
-local Strings = ChoGGi.Strings
+--~ local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
 
 local needed_specialist = {}
@@ -120,7 +120,7 @@ function OnMsg.ClassesBuilt()
 						"LayoutMethod", "VList",
 					}, {
 						PlaceObj("XTemplateWindow", {
-							"__condition", function(parent, context)
+							"__condition", function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
@@ -130,7 +130,7 @@ function OnMsg.ClassesBuilt()
 							"Text", T(3848, "No specialization"),
 						}),
 						PlaceObj("XTemplateWindow", {
-							"__condition", function(parent, context)
+							"__condition", function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
@@ -140,7 +140,7 @@ function OnMsg.ClassesBuilt()
 							"Text", T(3850, "Scientist"),
 						}),
 						PlaceObj("XTemplateWindow", {
-							"__condition", function(parent, context)
+							"__condition", function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
@@ -150,7 +150,7 @@ function OnMsg.ClassesBuilt()
 							"Text", T(3853, "Engineer"),
 						}),
 						PlaceObj("XTemplateWindow", {
-							"__condition", function(parent, context)
+							"__condition", function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
@@ -205,7 +205,7 @@ function OnMsg.ClassesBuilt()
 						"LayoutMethod", "VList",
 					}, {
 						PlaceObj("XTemplateWindow", {
-							"__condition", function(parent, context)
+							"__condition", function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
@@ -215,7 +215,7 @@ function OnMsg.ClassesBuilt()
 							"Text", T(3859, "Geologist"),
 						}),
 						PlaceObj("XTemplateWindow", {
-							"__condition", function(parent, context)
+							"__condition", function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
@@ -225,7 +225,7 @@ function OnMsg.ClassesBuilt()
 							"Text", T(3865, "Botanist"),
 						}),
 						PlaceObj("XTemplateWindow", {
-							"__condition", function(parent, context)
+							"__condition", function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",

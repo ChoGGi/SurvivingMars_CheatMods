@@ -61,9 +61,7 @@ GlobalGameTimeThread("SolarArrayOrientation", function()
 				end
 
 			end
-
 		end
-
 	end
 end)
 

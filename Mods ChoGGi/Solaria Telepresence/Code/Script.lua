@@ -5,18 +5,15 @@ local RetName = ChoGGi.ComFuncs.RetName
 local FilterFromTable = ChoGGi.ComFuncs.FilterFromTable
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
-local type,tostring,string = type,tostring,string
+local type = type
 
-local DebugPrint = DebugPrint
 local OnMsg = OnMsg
-local FilterObjects = FilterObjects
 local IsValid = IsValid
 local RebuildInfopanel = RebuildInfopanel
 local XTemplates = XTemplates
 local ObjModified = ObjModified
 local PlaceObj = PlaceObj
 local ViewPos = ViewPos
-local SelectObj = SelectObj
 
 DefineClass.Solaria = {
 	__parents = {
@@ -411,7 +408,8 @@ Right click in list to view (closes menu).]])
 		RolloverText = [[Shows list of all controlled buildings (for removal of telepresence control).
 
 Right click list item to view (closes menu).]],
-		OnContextUpdate = function(self, context)
+--~ 		OnContextUpdate = function(self, context)
+		OnContextUpdate = function(self)
 			if UICity.SolariaTelepresence_RemoteControlledBuildings > 0 then
 				self:SetVisible(true)
 				self:SetMaxHeight()

@@ -59,18 +59,17 @@ end
 
 -- if it's a waste rock and it doesn't DoesNotObstructConstruction then it's "safe" (read: non-cheaty) to remove
 local orig_CanDemolish = DemolishModeDialog.CanDemolish
-function DemolishModeDialog:CanDemolish(pt, obj,...)
-	local obj = obj or SelectionMouseObj()
+function DemolishModeDialog:CanDemolish(pt, obj, ...)
+	obj = obj or SelectionMouseObj()
 	if IsValid(obj) and obj:IsKindOf("WasteRockObstructorSmall") and obj:IsKindOf("DoesNotObstructConstruction") then
 		return true
 	end
 
-	return orig_CanDemolish(self,pt, obj,...)
+	return orig_CanDemolish(self, pt, obj, ...)
 end
 
 local orig_OnMouseButtonDown = DemolishModeDialog.OnMouseButtonDown
-function DemolishModeDialog:OnMouseButtonDown(pt, button, obj,...)
-	local obj
+function DemolishModeDialog:OnMouseButtonDown(pt, button, obj, ...)
 	if button == "L" then
 		obj = obj or SelectionMouseObj()
 		if IsValid(obj) and obj:IsKindOf("WasteRockObstructorSmall") and obj:IsKindOf("DoesNotObstructConstruction") then
@@ -80,5 +79,5 @@ function DemolishModeDialog:OnMouseButtonDown(pt, button, obj,...)
 		return "break"
 	end
 
-	return orig_OnMouseButtonDown(self,pt, button, obj,...)
+	return orig_OnMouseButtonDown(self, pt, button, obj, ...)
 end

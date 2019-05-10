@@ -21,7 +21,7 @@ local function PrintError(err)
 	end
 end
 
-local Translate = ChoGGi.ComFuncs.Translate
+--~ local Translate = ChoGGi.ComFuncs.Translate
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 

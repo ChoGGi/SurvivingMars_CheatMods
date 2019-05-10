@@ -3,30 +3,24 @@
 local RebuildInfopanel = RebuildInfopanel
 local T = T
 local PlayFX = PlayFX
-local IsKindOf = IsKindOf
-
 local Translate = ChoGGi.ComFuncs.Translate
 
-function OnMsg.ClassesGenerate()
-
-	-- removed functions
-	function RequiresMaintenance:GetUIRequestMaintenanceStatus()
-		local status
-		if self.accumulated_maintenance_points > 0 then
-			if self.maintenance_phase == false then
-				status = Translate(7329--[[Maintenance needed--]])
-			else
-				status = Translate(389--[[Maintenance already requested--]])
-			end
-			return status .. ", Remaining: " .. (self.maintenance_threshold_current - self.accumulated_maintenance_points)
-		end
-		return T(390, "No deterioration")
-	end
-	function RequiresMaintenance:UIRequestMaintenance()
-		RebuildInfopanel(self)
-		return self:RequestMaintenance(true)
-	end
-
+-- removed functions
+function RequiresMaintenance:GetUIRequestMaintenanceStatus()
+  local status
+  if self.accumulated_maintenance_points > 0 then
+    if self.maintenance_phase == false then
+      status = Translate(7329--[[Maintenance needed--]])
+    else
+      status = Translate(389--[[Maintenance already requested--]])
+    end
+    return status .. ", Remaining: " .. (self.maintenance_threshold_current - self.accumulated_maintenance_points)
+  end
+  return T(390, "No deterioration")
+end
+function RequiresMaintenance:UIRequestMaintenance()
+  RebuildInfopanel(self)
+  return self:RequestMaintenance(true)
 end
 
 function OnMsg.ClassesBuilt()
@@ -40,8 +34,8 @@ function OnMsg.ClassesBuilt()
 	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipBuilding[1][1],"ChoGGi_RestoreMaintenance")
 	XTemplates.ipBuilding[1][1][#XTemplates.ipBuilding[1][1]+1] = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_RestoreMaintenance", true,
-		"__condition", function(parent, context)
-			return IsKindOf(context, "RequiresMaintenance") and context:DoesRequireMaintenance()
+		"__condition", function(_, context)
+			return context:IsKindOf("RequiresMaintenance") and context:DoesRequireMaintenance()
 		end,
 		"__template", "InfopanelButton",
 		"RolloverText", T(182273828429, "Request maintenance from nearby Drones. The required maintenance resource must be available in the area.<newline><newline>Status: <em><UIRequestMaintenanceStatus></em>"),

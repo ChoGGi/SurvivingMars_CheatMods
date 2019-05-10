@@ -95,7 +95,7 @@ function OnMsg.ClassesBuilt()
 	ChoGGi.ComFuncs.RemoveXTemplateSections(template,"ChoGGi_Template_ColonistSucker",true)
 
 	-- we want to insert above warning
-	local warning = table.find(template, "__template", "sectionCheats")
+	warning = table.find(template, "__template", "sectionCheats")
 	if warning then
 		warning = warning - 1
 	else

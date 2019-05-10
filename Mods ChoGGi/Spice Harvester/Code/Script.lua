@@ -5,7 +5,6 @@ local PlaySound = PlaySound
 local StopSound = StopSound
 local GetSoundDuration = GetSoundDuration
 local Sleep = Sleep
-local g_CObjectFuncs = g_CObjectFuncs
 
 local Random = ChoGGi.ComFuncs.Random
 
@@ -171,7 +170,7 @@ function Melanger:CreateSelectionArrow()
 
 	self:UpdateSelectionArrow()
 
-	CreateRealTimeThread(function(obj, arrow)
+	CreateRealTimeThread(function()
 		while SelectedObj == self and IsValid(self.selection_dir_arrow) do
 			self:UpdateSelectionArrow()
 			Sleep(50)
@@ -231,8 +230,8 @@ function OnMsg.ClassesBuilt()
 		Title = [[Destroy]],
 		RolloverTitle = [[Destroy]],
 		RolloverText = [[Remove this harvester.]],
-		OnContextUpdate = function(self, context)
-		end,
+--~ 		OnContextUpdate = function(self, context)
+--~ 		end,
 		func = function(self, context)
 			---
 			local function CallBackFunc(answer)

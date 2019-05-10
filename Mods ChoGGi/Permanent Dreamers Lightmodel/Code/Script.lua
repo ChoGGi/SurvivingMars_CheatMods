@@ -12,7 +12,6 @@ Dreamers_Night Green
 Dreamers_Noon
 --]]
 
-local table = table
 local SetLightmodelOverride = SetLightmodelOverride
 local DelayedCall = DelayedCall
 

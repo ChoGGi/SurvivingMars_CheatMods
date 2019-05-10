@@ -4,14 +4,12 @@ local IsValid = IsValid
 local Sleep = Sleep
 local SetRollPitchYaw = SetRollPitchYaw
 local PlayFX = PlayFX
-local CalcOrientation = CalcOrientation
 local CreateDomeNetworks = CreateDomeNetworks
 local ConnectDomesWithPassage = ConnectDomesWithPassage
 local IsObjInDome = IsObjInDome
 local SetState = g_CObjectFuncs.SetState
 local table_remove = table.remove
 local table_find = table.find
-local table_clear = table.clear
 
 local function RemoveTableItem(list,name,value)
 	local idx = table_find(list, name, value)
@@ -227,19 +225,19 @@ function DomeTeleporter:ToggleShift(shift,...)
 	end
 end
 
-local function AliceGaveUpTheCokeHabit(unit)
---~ The bigger the figure the better I like her
---~ The better I like her the better I feed her
---~ The better I feed her the bigger the figure
---~ The bigger the figure the more I can love
-	Sleep(500)
-	local num = 1
-	while num ~= 100 do
-		unit:SetScale(num)
-		num = num + 1
-		Sleep(10)
-	end
-end
+--~ local function AliceGaveUpTheCokeHabit(unit)
+-- The bigger the figure the better I like her
+-- The better I like her the better I feed her
+-- The better I feed her the bigger the figure
+-- The bigger the figure the more I can love
+--~ 	Sleep(500)
+--~ 	local num = 1
+--~ 	while num ~= 100 do
+--~ 		unit:SetScale(num)
+--~ 		num = num + 1
+--~ 		Sleep(10)
+--~ 	end
+--~ end
 
 -- makes units step onto the porters
 local GetEntranceFallback = WaypointsObj.GetEntranceFallback
@@ -256,7 +254,8 @@ end
 local times36060 = 360*60
 
 -- no go unless both work
-function DomeTeleporter:TraverseTunnel(unit, start_point, exit_point, param)
+--~ (unit, start_point, exit_point, param)
+function DomeTeleporter:TraverseTunnel(unit)
 
 	if self.working and self.linked_obj.working and IsValid(self) and IsValid(self.linked_obj) then
 		PlayFX("MysteryDream", "end", self)

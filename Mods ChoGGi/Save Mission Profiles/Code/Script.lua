@@ -41,7 +41,7 @@ local function WriteModSettings(settings)
 		end
 	end
 
-	local err = WriteModPersistentData(data)
+	err = WriteModPersistentData(data)
 	if err then
 		print(err)
 		return
@@ -151,7 +151,7 @@ local function AddProfilesButton(pgmission,toolbar)
 		RolloverTemplate = "Rollover",
 		RolloverTitle = Translate(126095410863--[[Info--]]),
 		RolloverText = [[Save/Load save profiles.]],
-		OnPress = function(self, gamepad)
+		OnPress = function(self)
 			-- load settings if it's an empty table
 			local settings_list = ReadModSettings()
 			-- always show save

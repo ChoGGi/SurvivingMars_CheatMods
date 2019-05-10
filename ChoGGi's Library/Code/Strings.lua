@@ -106,7 +106,7 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 
 	-- translate all my strings
 	local iter = 302535920000000+string_limit
-	for i = 302535920000001, iter do
+	for i = 302535920000000, iter do
 		local str = _InternalTranslate(LightUserData(bor(i, locId_sig)))
 		-- if the missing text is within the last 50 then we can safely break
 		if (iter - 50) < i and str == missing_text then

@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local function AddButton(buttons,id,title,menu,func)
+local function AddButton(buttons,id,title,func)
 	buttons[id] = XWindow:new({
 		Id = id,
 		ZOrder = 0,
@@ -36,11 +36,11 @@ local function SetModNew(menu)
 	if idx then
 		buttons = buttons[idx]
 
-		AddButton(buttons,"idModManager",T(1129, "MOD MANAGER"),menu,function()
+		AddButton(buttons,"idModManager",T(1129, "MOD MANAGER"),function()
 			menu:SetMode("ModManager")
 		end)
 
-		AddButton(buttons,"idModEditor",T(1130, "MOD EDITOR"),nil,function()
+		AddButton(buttons,"idModEditor",T(1130, "MOD EDITOR"),function()
 			CreateRealTimeThread(ModEditorOpen)
 		end)
 

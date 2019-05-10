@@ -13,7 +13,7 @@ function OnMsg.ApplyModOptions(id)
 	mod_LimitStorage = mod.options.LimitStorage
 end
 
-local Strings = ChoGGi.Strings
+--~ local Strings = ChoGGi.Strings
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
@@ -23,7 +23,6 @@ local IsValid = IsValid
 local Sleep = Sleep
 local MulDivRound = MulDivRound
 local T = T
-local table_remove = table.remove
 local ResourceScale = const.ResourceScale
 
 local name = [[RC Tanker]]
@@ -374,8 +373,6 @@ function RCTanker:TankInteract()
 		res_type = "water"
 	end
 
-	local current_storage = res_obj.current_storage
-
 	-- 0 means no limit
 	local limit = mod_LimitStorage
 	-- resources use 1 to display 1000, so that's what we edit in MCR
@@ -537,7 +534,7 @@ Press to toggle.]])
 Press to toggle.]],
 			"RolloverTitle", [[Drain Tank]],
 			"Icon", "UI/Icons/IPButtons/unload.tga",
-			"OnPress", function (self, gamepad)
+			"OnPress", function (self)
 				UpdateToggleDir(self.context,self)
 			end,
 			"AltPress", true,
@@ -582,7 +579,7 @@ Press to toggle.]],
 			"RolloverText", T(0,[[Type of resource you can transfer with this RC.
 
 <image UI/Common/mission_no.tga 1600> Warning: Changing will empty RC tank!]]),
-			"OnPress", function (self, gamepad)
+			"OnPress", function (self)
 				UpdateToggleRes(self.context,self)
 			end,
 			"AltPress", true,

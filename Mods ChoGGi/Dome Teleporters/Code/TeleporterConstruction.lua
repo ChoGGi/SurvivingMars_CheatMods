@@ -21,7 +21,6 @@ end
 
 GlobalVar("CityDomeTeleporterConstruction", {})
 
-local Sleep = Sleep
 local table_unpack = table.unpack
 
 -- chooses which construct mode to start

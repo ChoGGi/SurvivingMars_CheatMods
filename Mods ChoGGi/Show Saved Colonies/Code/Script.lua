@@ -128,7 +128,7 @@ function LandingSiteObject:CalcMarkersVisibility()
 	end
 
 	local cur_phase = PlanetRotationObj:GetAnimPhase()
-	for name,obj in pairs(new_markers) do
+	for _,obj in pairs(new_markers) do
 		local phase = self:CalcAnimPhaseUsingLongitude(obj.longitude * 60)
 		local dist = Min((cur_phase-phase)%self.anim_duration, (phase-cur_phase)%self.anim_duration)
 		self.dialog[obj.id]:SetVisible(dist <= 2400)

@@ -2,7 +2,6 @@
 
 local IsValidThread = IsValidThread
 local IsValid = IsValid
-local GameTime = GameTime
 local Sleep = Sleep
 
 local MulDivRound = MulDivRound
@@ -111,7 +110,6 @@ function FireworksLauncher:RocketMove()
 	local tick = 50
 	local dir = SetLen(self.move_dir, self.start_speed)
 	local max_height = terrain.GetMaxHeight()
-	local tStart = GameTime()
   local target = self.target
   local max_travel = MulDivRound(self.max_speed, tick, 1000)
 

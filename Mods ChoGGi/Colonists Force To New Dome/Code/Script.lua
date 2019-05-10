@@ -1,14 +1,11 @@
 -- See LICENSE for terms
 
-local Strings = ChoGGi.Strings
+--~ local Strings = ChoGGi.Strings
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local RetName = ChoGGi.ComFuncs.RetName
 
-local rawget = rawget
 local XTemplates = XTemplates
-local PlaceObj = PlaceObj
 local IsValid = IsValid
-local ViewPos = ViewPos
 
 local function ClickObj(old,new,button)
 	--skip selected dome
@@ -93,7 +90,7 @@ function OnMsg.ClassesBuilt()
 
 	ChoGGi.ComFuncs.AddXTemplate("ForceNewDome","sectionDome",{
 		-- skip any ruined domes
-		__condition = function(parent, context)
+		__condition = function(_, context)
 			return context.working
 		end,
 		Icon = "UI/Icons/bmc_domes_shine.tga",

@@ -9,7 +9,6 @@ Sing it with the feeling now, car wash, yeah]]
 
 local CreateGameTimeThread = CreateGameTimeThread
 local DeleteThread = DeleteThread
-local DoneObject = DoneObject
 local IsValid = IsValid
 local IsValidThread = IsValidThread
 local NearestObject = NearestObject
@@ -191,7 +190,6 @@ end
 
 -- fake the pipe hookups
 local PlaceObject = PlaceObject
-local GetMaxHeightInHex = GetMaxHeightInHex
 local orig_SetWaterMarkers = SetWaterMarkers
 function SetWaterMarkers(obj,show,list,...)
 	local marked = orig_SetWaterMarkers(obj,show,list,...)

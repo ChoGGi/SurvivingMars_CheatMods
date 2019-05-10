@@ -9,7 +9,6 @@ local table_find = table.find
 local KbdShortcut = KbdShortcut
 local CreateRealTimeThread = CreateRealTimeThread
 local T,_InternalTranslate = T,_InternalTranslate
-local vkEnter = const.vkEnter
 
 local function FilterTech(str)
 	-- loop through the stored tech cats

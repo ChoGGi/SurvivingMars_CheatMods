@@ -10,7 +10,6 @@ SpiceHarvester = {
 	Max_Shuttles = 50,
 }
 
-local WaitMsg = WaitMsg
 local MapCount = MapCount
 local DoneObject = DoneObject
 local Sleep = Sleep

@@ -80,11 +80,11 @@ Actions[c] = {ActionName = Strings[302535920001491--[[View All Entities--]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001416--[[Force--]]] .. " " .. Translate(948928900281--[[Story Bits--]]),
+Actions[c] = {ActionName = Translate(186760604064--[[Test--]]) .. " " .. Translate(948928900281--[[Story Bits--]]),
 	ActionMenubar = "ECM.Debug",
-	ActionId = ".Force Story Bits",
+	ActionId = ".Test Story Bits",
 	ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-	RolloverText = Strings[302535920001359--[[Start or display the msg from a story bit.--]]],
+	RolloverText = Strings[302535920001359--[[Test activate a story bit.--]]],
 	OnAction = ChoGGi.MenuFuncs.ForceStoryBits,
 }
 
@@ -371,7 +371,7 @@ Actions[c] = {ActionName = Strings[302535920000499--[[Toggle Building Grid--]]],
 	ActionId = ".Toggle Building Grid",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 	RolloverText = Strings[302535920000500--[["Show a hex grid around mouse: Green = pass/build, Yellow = no pass/build, Blue = pass/no build, Red = no pass/no build."--]]],
-	OnAction = ChoGGi.MenuFuncs.debug_build_grid,
+	OnAction = ChoGGi.ComFuncs.DebugBuildGrid,
 	ActionShortcut = "Shift-F1",
 	ActionBindable = true,
 	ActionSortKey = "8Toggle Grid Follow Mouse",
@@ -388,7 +388,7 @@ Actions[c] = {ActionName = Strings[302535920001417--[[Follow Mouse Grid Size--]]
 			Strings[302535920001418--[[Sets the size of the Building/Flight grid.--]]]
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.debug_build_grid_settings,
+	OnAction = ChoGGi.MenuFuncs.DebugBuildGridSettings,
 	setting_mask = "DebugGridSize",
 	ActionSortKey = "9Follow Mouse Grid Size",
 }
@@ -404,7 +404,7 @@ Actions[c] = {ActionName = Strings[302535920001419--[[Follow Mouse Grid Translat
 			Strings[302535920001420--[[How transparent the Building grid is.--]]]
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.debug_build_grid_settings,
+	OnAction = ChoGGi.MenuFuncs.DebugBuildGridSettings,
 	setting_mask = "DebugGridOpacity",
 	ActionSortKey = "9Follow Mouse Grid Translate",
 }

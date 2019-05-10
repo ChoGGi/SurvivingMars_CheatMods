@@ -11,7 +11,8 @@ local two_pointer = {}
 
 local cls = "DomeTeleporter"
 
-function OnMsg.SelectedObjChange(obj, prev)
+--~ (obj, prev)
+function OnMsg.SelectedObjChange(obj)
 	if not IsKindOf(obj,cls) then
 		return
 	end
