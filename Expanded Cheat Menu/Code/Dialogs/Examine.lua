@@ -42,7 +42,7 @@ local XDestroyRolloverWindow = XDestroyRolloverWindow
 
 local hyperlink_end = "</h></color>"
 
---~ local any funcs used a lot
+-- local any funcs used a lot
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local RetName = ChoGGi.ComFuncs.RetName
 local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -139,9 +139,6 @@ function Examine:Init(parent, context)
 	local g_Classes = g_Classes
 
 	self.obj = context.obj
-
---~ 	-- already examining list
---~ 	g_ExamineDlgs[self.obj] = self
 
 	self.ChoGGi = ChoGGi
 	local const = const
@@ -666,9 +663,6 @@ function Examine:idExecCode_OnKbdKeyDown(vk,...)
 end
 
 function Examine:idToggleExecCode_OnChange(visible)
---~ 	-- if it's called directly we set the check if needed
---~ 	local checked = self:GetCheck()
-
 	self = GetRootDialog(self)
 	local vis = self.idExecCodeArea:GetVisible()
 	if vis ~= visible then
@@ -898,11 +892,6 @@ function Examine:idShowAllValues_OnChange()
 	self:SetObj()
 end
 
---~ function Examine:CleanTextForView(str)
---~ 	-- remove html tags (any </*> closing tags, <left>, <color *>, <h *>, and * added by the context menus)
---~ 	return str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>",""):gsub("%* '","'")
---~ end
-
 function Examine:DumpExamineText(text,name,ext,overwrite)
 	name = name or "DumpedExamine"
 	ext = ext or "lua"
@@ -1070,7 +1059,6 @@ function Examine:BuildToolsMenuPopup()
 			clicked = function()
 				-- pure text string
 --~ 				local str = self.idText:GetText()
-
 				local str,name,scrolled_text,title
 				if self.ChoGGi.UserSettings.ExamineTextType then
 					str,scrolled_text = self:GetCleanText(true)
@@ -1429,6 +1417,10 @@ function Examine:InvalidMsgPopup(msg,title)
 	)
 end
 
+--~ function Examine:CleanTextForView(str)
+--~ 	-- remove html tags (any </*> closing tags, <left>, <color *>, <h *>, and * added by the context menus)
+--~ 	return str:gsub("</[%s%a%d]*>",""):gsub("<left>",""):gsub("<color [%s%a%d]*>",""):gsub("<h [%s%a%d]*>",""):gsub("%* '","'")
+--~ end
 -- scrolled_text is modified from a boolean to the scrolled text and sent back
 -- skip_ast = i added an * to use for the context menu marker (defaults to true)
 function Examine:GetCleanText(scrolled_text,skip_ast)
@@ -3324,8 +3316,8 @@ function Examine:SetObj(startup)
 		if startup or self.is_chinese then
 			-- the chinese text render is slow as shit, so we have a Sleep in ConvertObjToInfo to keep ui stuff accessible
 			CreateRealTimeThread(function()
---~ self.ChoGGi.ComFuncs.TickStart("Examine")
 				WaitMsg("OnRender")
+--~ self.ChoGGi.ComFuncs.TickStart("Examine")
 				self:SetTextSafety(self:ConvertObjToInfo(obj,obj_type))
 --~ self.ChoGGi.ComFuncs.TickEnd("Examine",self.name)
 			end)

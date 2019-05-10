@@ -1,30 +1,38 @@
 -- See LICENSE for terms
 
--- probably best not to use this on a saved game?
-
 --~ HexPainter()
 --~ HexPainter(GetEntityHexShapes(s:GetEntity()))
 --~ HexPainter(GetEntityBuildShape(s:GetEntity()))
 --~ HexPainter(GetEntityInverseBuildShape(s:GetEntity()))
 --~ HexPainter(GetEntityCombinedShape(s:GetEntity()))
 
-local OHexSpot
-GlobalVar("g_painted_hexes", false)
-GlobalVar("g_painted_hexes_thread", false)
-function PaintHexArray(arr, mid_hex_pt) --paints zero based hex shapes (such as from GetEntityHexShapes)
-	if IsValidThread(g_painted_hexes_thread) then
-		DeleteThread(g_painted_hexes_thread)
-	end
+local WorldToHex = WorldToHex
+local GetTerrainCursor = GetTerrainCursor
+local WaitMsg = WaitMsg
 
-	if g_painted_hexes then
-		g_painted_hexes:Destroy()
-		g_painted_hexes = false
+local OHexSpot
+local painted_hexes = false
+local painted_hexes_thread = false
+
+local function ClearHexes()
+	if IsValidThread(painted_hexes_thread) then
+		DeleteThread(painted_hexes_thread)
 	end
+	if painted_hexes then
+		painted_hexes:Destroy()
+		painted_hexes = false
+	end
+end
+
+OnMsg.SaveGame = ClearHexes
+
+function PaintHexArray(arr, mid_hex_pt) --paints zero based hex shapes (such as from GetEntityHexShapes)
+	ClearHexes()
 
 	if arr then
-		g_painted_hexes_thread = CreateRealTimeThread(function()
+		painted_hexes_thread = CreateRealTimeThread(function()
 			local last_q, last_r
-			g_painted_hexes = objlist:new()
+			painted_hexes = objlist:new()
 
 			while true do
 				local q, r
@@ -36,16 +44,17 @@ function PaintHexArray(arr, mid_hex_pt) --paints zero based hex shapes (such as 
 				if last_q ~= q or last_r ~= r then
 					for i = 1, #arr do
 						local q_i, r_i = q + arr[i]:x(), r + arr[i]:y()
-						local c = g_painted_hexes[i] or OHexSpot:new()
+						local c = painted_hexes[i] or OHexSpot:new()
 						c:SetPos(point(HexToWorld(q_i, r_i)))
---~ 							c:SetRadius(const.GridSpacing/2)
---~ 							c:SetColorModifier(RGBA(100, 255, 100, 0))
-						g_painted_hexes[i] = c
+--~ 						c:SetRadius(const.GridSpacing/2)
+--~ 						c:SetColorModifier(RGBA(100, 255, 100, 0))
+						painted_hexes[i] = c
 					end
 					last_q = q
 					last_r = r
 				end
-				Sleep(50)
+--~ 				Sleep(50)
+				WaitMsg("OnRender")
 			end
 		end)
 	end
@@ -64,7 +73,7 @@ function HexPainter(arr)
 	end
 end
 
-GlobalVar("g_HexPainterResultArr", false)
+local g_HexPainterResultArr = false
 
 DefineClass.HexPainterModeDialog = {
 	__parents = { "InterfaceModeDialog" },

@@ -6,7 +6,7 @@
 - Made DotNameToObject compatible with keys that don't support dotnames (spaces and so on).
 - RetName:
 - Added the func names from some metatables (point,box,etc).
-- class funcs now looks like: Unit.lua(75):MoveSleep
+- Class funcs now looks like: Unit.lua(75):MoveSleep
 - Removed some log spam from:
 - > DeleteObject
 - > List Choice dialog.

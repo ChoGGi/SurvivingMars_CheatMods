@@ -568,7 +568,7 @@ print("ChoGGi.testing")
 --~ 		Loading = false
 --[[
 	-- don't expect much, unless you've got a copy of Haerald around
-	GlobalVar("outputSocket", false)
+	outputSocket = false
 	local function Mine_luadebugger_Start(self)
 		if self.started then
 			print("Already started")

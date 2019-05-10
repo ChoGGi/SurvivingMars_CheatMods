@@ -85,10 +85,10 @@ do -- RetName
 	local missing_text = ChoGGi.Temp.missing_text
 
 	-- we use this table to display names of objects for RetName
-	local lookup_table = {}
+	local lookup_table = {[false] = "false"}
 	local g = ChoGGi.Temp._G
-	-- add some func names
-	lookup_table[g.empty_func] = "empty_func *C"
+--~ 	-- add some func names
+--~ 	lookup_table[g.empty_func] = "empty_func *C"
 
 	local function AddFuncsUserData(meta,name)
 		for key,value in pairs(meta) do
@@ -162,7 +162,7 @@ do -- RetName
 	end
 
 	local function BuildNameList()
-		local g = ChoGGi.Temp._G
+		g = ChoGGi.Temp._G
 		lookup_table[g.terminal.desktop] = "terminal.desktop"
 
 		-- ECM func names (some are added by ecm, so we want to update list when it's called again)
@@ -211,7 +211,12 @@ do -- RetName
 							-- Unit.lua(75):MoveSleep
 							-- need to reverse string so it finds the last /, since find looks ltr
 							local slash = name:reverse():find("/")
-							lookup_table[value] = name:sub((slash * -1) + 1) .. ":" .. key
+							if slash then
+								lookup_table[value] = name:sub((slash * -1) + 1) .. ":" .. key
+							else
+								-- the name'll be [string ""](8):
+								lookup_table[value] = "string():" .. key
+							end
 						end
 					end
 				end

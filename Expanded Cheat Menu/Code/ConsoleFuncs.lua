@@ -375,7 +375,7 @@ do -- ToggleLogErrors
 
 	end
 
-	local funcs = {"error","OutputDebugString","ThreadErrorHandler","DlcErrorHandler","syntax_error","RecordError","__procall_errorhandler","StoreErrorSource"}
+	local funcs = {"error","OutputDebugString","ThreadErrorHandler","DlcErrorHandler","syntax_error","RecordError","StoreErrorSource"}
 
 	-- save orig funcs (if toggling happens)
 	local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
