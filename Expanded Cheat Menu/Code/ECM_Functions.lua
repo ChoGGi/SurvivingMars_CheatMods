@@ -1360,6 +1360,43 @@ end -- do
 do -- ExamineEntSpots
 	local spots_str = [[		<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s,%s,%s" spot_scale="%s" spot_rot="%s,%s,%s,%s"/>]]
 
+	local RetOriginSurfaces
+	local pts_c
+	local pts_tmp = {}
+	local suffix = [["/>]]
+	local function BuildSurf(c,list,obj,name,surf)
+		local prefix = [[		<surf type="]] .. name .. [[" points="]]
+
+		local surfs = RetOriginSurfaces(obj,surf)
+		for i = 1, #surfs do
+			local pts = surfs[i]
+			table_iclear(pts_tmp)
+			pts_c = 0
+
+			local count = #pts
+			for j = 1, count do
+				local x,y,z = pts[j]:xyz()
+				pts_c = pts_c + 1
+				pts_tmp[pts_c] = x
+				pts_c = pts_c + 1
+				pts_tmp[pts_c] = ","
+				pts_c = pts_c + 1
+				pts_tmp[pts_c] = y
+				pts_c = pts_c + 1
+				pts_tmp[pts_c] = ","
+				pts_c = pts_c + 1
+				pts_tmp[pts_c] = z
+				if j ~= count then
+					pts_c = pts_c + 1
+					pts_tmp[pts_c] = ";"
+				end
+			end
+			c = c + 1
+			list[c] = prefix .. TableConcat(pts_tmp) .. suffix
+		end
+		return c
+	end
+
 --~ local list = ChoGGi.ComFuncs.ExamineEntSpots(s,true)
 --~ list = ChoGGi.ComFuncs.TableConcat(list,"\n")
 --~ ChoGGi.ComFuncs.Dump(list,nil,nil,"ent")
@@ -1423,7 +1460,7 @@ do -- ExamineEntSpots
 		-- add the rest of the entity info
 		c = c + 1
 		list[c] = [[	<mesh_description id="mesh">
-		<mesh file="]] .. mat:sub(1,-4) .. [[m.hgm"/>
+		<mesh file="]] .. mat:sub(1,-3) .. [[.hgm"/>
 		<material file="]] .. mat .. [["/>]]
 		-- eh, close enough
 
@@ -1435,68 +1472,94 @@ do -- ExamineEntSpots
 
 		for i = id_start, id_end do
 			local name = obj:GetSpotName(i)
+			-- it isn't needed
+			if name ~= "Origin" then
+				-- make a copy to edit
+				local spots_str_t = spots_str
 
-			-- make a copy to edit
-			local spots_str_t = spots_str
+				-- we don't want to fill the list with stuff we don't use
+				local annot = obj:GetSpotAnnotation(i)
+				if not annot then
+					annot = ""
+					spots_str_t = spots_str_t:gsub([[ spot_note="%%s"]],"%%s")
+				end
 
-			-- we don't want to fill the list with stuff we don't use
-			local annot = obj:GetSpotAnnotation(i)
-			if not annot then
-				annot = ""
-				spots_str_t = spots_str_t:gsub([[ spot_note="%%s"]],"%%s")
-			end
+				local bone = obj:GetSpotBone(i)
+				if bone == "" then
+					spots_str_t = spots_str_t:gsub([[ bone="%%s"]],"%%s")
+				end
 
-			local bone = obj:GetSpotBone(i)
-			if bone == "" then
-				spots_str_t = spots_str_t:gsub([[ bone="%%s"]],"%%s")
-			end
+				-- axis,scale
+				local _,_,_,_,axis_x,axis_y,axis_z = obj:GetSpotLocXYZ(i)
 
-			-- axis,scale
-			local _,_,_,_,axis_x,axis_y,axis_z = obj:GetSpotLocXYZ(i)
+				-- 100 is default
+				local scale = obj:GetSpotVisualScale(i)
+				if scale == 100 then
+					spots_str_t = spots_str_t:gsub([[ spot_scale="%%s"]],"%%s")
+					scale = ""
+				end
 
-			-- 100 is default
-			local scale = obj:GetSpotVisualScale(i)
-			if scale == 100 then
-				spots_str_t = spots_str_t:gsub([[ spot_scale="%%s"]],"%%s")
-				scale = ""
-			end
-
-			local angle = obj:GetSpotVisualRotation(i)
-			-- means nadda for spot_rot
-			if angle == 0 and axis_x == 0 and axis_y == 0 and axis_z == 4096 then
-				spots_str_t = spots_str_t:gsub([[ spot_rot="%%s,%%s,%%s,%%s"]],"%%s%%s%%s%%s")
-				angle,axis_x,axis_y,axis_z = "","","",""
-			else
-				axis_x = (axis_x + 0.0) / 100
-				axis_y = (axis_y + 0.0) / 100
-				axis_z = (axis_z + 0.0) / 100
-				angle = (angle) / 60
+				local angle = obj:GetSpotVisualRotation(i)
+				-- means nadda for spot_rot
+				if angle == 0 and axis_x == 0 and axis_y == 0 and axis_z == 4096 then
+					spots_str_t = spots_str_t:gsub([[ spot_rot="%%s,%%s,%%s,%%s"]],"%%s%%s%%s%%s")
+					angle,axis_x,axis_y,axis_z = "","","",""
+				else
+					axis_x = (axis_x + 0.0) / 100
+					axis_y = (axis_y + 0.0) / 100
+					axis_z = (axis_z + 0.0) / 100
+					angle = (angle) / 60
 --~ 					if angle > 360 then
 --~ 						printC("ExamineEntSpots: angle > 360: ",angle)
 --~ 						-- just gotta figure out how to turn 18000 or 3600 into 60 (21600)
 --~ 						angle = 360 - angle
 --~ 					end
+				end
+
+				local pos_x,pos_y,pos_z = obj:GetSpotPosXYZ(i)
+
+				c = c + 1
+				list[c] = spots_str_t:format(
+					name,annot,bone,
+					pos_x - origin_pos_x,pos_y - origin_pos_y,pos_z - origin_pos_z,
+					scale,axis_x,axis_y,axis_z,angle
+				)
 			end
 
-			local pos_x,pos_y,pos_z = obj:GetSpotPosXYZ(i)
-
-			c = c + 1
-			list[c] = spots_str_t:format(
-				name,annot,bone,
-				pos_x - origin_pos_x,pos_y - origin_pos_y,pos_z - origin_pos_z,
-				scale,axis_x,axis_y,axis_z,angle
-			)
 		end -- for spots
+
+		-- add surfs
+		RetOriginSurfaces = RetOriginSurfaces or ChoGGi.ComFuncs.RetOriginSurfaces
+		-- hex_shape
+		c = BuildSurf(c,list,obj,"hex_shape",5)
+		-- selection
+		c = BuildSurf(c,list,obj,"selection",7)
+		-- collision
+		c = BuildSurf(c,list,obj,"collision",0)
+
+		-- they don't actually match up to the ones in the ent file... got me
+		-- masks are from EntitySurfaces
+		local _,_,hash = GetSurfaceHexShapes(entity, 0, 32)
+		c = c + 1
+		list[c] = [[		<surf_hash type="hex_shape" value="]] .. hash .. [["/>]]
+		_,_,hash = GetSurfaceHexShapes(entity, 0, 128)
+		c = c + 1
+		list[c] = [[		<surf_hash type="selection" value="]] .. hash .. [["/>]]
+		_,_,hash = GetSurfaceHexShapes(entity, 0, 1)
+		c = c + 1
+		list[c] = [[		<surf_hash type="collision" value="]] .. hash .. [["/>]]
 
 		-- opener
 		table.insert(list,1,Strings[302535920001068--[["The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
 Attachment bspheres are off (x and y are; z and rotate aren't).
-Some of the file names are guesses. This also doesn't include any surf/surf_hash entries."--]]]
+Some of the file names are guesses. <anim> is a guess, try removing it.
+No idea about the surf_hash values."--]]]
 			.. [[
 
 
 <?xml version="1.0" encoding="UTF-8"?>
 <entity path="">]])
+
 		-- and the closer
 		list[#list+1] = [[	</mesh_description>
 </entity>]]
@@ -1704,6 +1767,8 @@ do -- GetMaterialProperties
 		transparentdecal = [[		<Property TransparentDecal="%s"/>]],
 		twosidedshading = [[		<Property TwoSidedShading="%s"/>]],
 		wind = [[		<Property Wind="%s"/>]],
+		flags = [[		<Property Flags="%s"/>]],
+		emflags = [[		<Property EMFlags="%s"/>]],
 
 --~ 			XX = [[		<Property Anisotropic="%s"/>]],
 --~ 			XX = [[		<Property DtmDisable="%s"/>]],
@@ -2165,8 +2230,23 @@ do -- SurfaceLines_Toggle
 	end
 end -- do
 
+function ChoGGi.ComFuncs.RetOriginSurfaces(obj,surf)
+	-- collision (see also 5,7)
+	surf = surf or 0
+
+	local surfs = GetRelativeSurfaces(obj,surf)
+	local origin = obj:GetPos()
+	for i = 1, #surfs do
+		local pts = surfs[i]
+		for j = 1, #pts do
+			pts[j] = pts[j] - origin
+		end
+	end
+	return surfs
+end
+
 function ChoGGi.ComFuncs.MoveObjToGround(obj)
-	obj:SetZ(obj:GetVisualPos():SetTerrainZ())
+	obj:SetZ(obj:GetPos():SetTerrainZ())
 end
 
 function ChoGGi.ComFuncs.GetDesktopWindow(class)

@@ -44,6 +44,7 @@
 - > Merged View/Dump menu items in Tools.
 - > Added Dist2D len to index tables of points (context menu tooltip).
 - > "All" checkbox wasn't parsing ._index for metatables.
+- > Entity Spots now adds the surf/surf_hash values.
 
 ### Fixed:
 - Set Production would set objects of a different class.

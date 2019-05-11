@@ -40,3 +40,5 @@
 <Property VOffset="0.000000"/>
 <Property VSize="1.000000"/>
 <Property Wind="0"/>
+<Property EMFlags="7"/>
+<Property Flags="520"/>

@@ -1920,7 +1920,9 @@ function Examine:ShowSurfacesList()
 				surfs = surfs,
 				hint = "Relative Surface index: " .. i,
 			}
-			if i == 7 then
+			if i == 5 then
+				item_list[c].text = item_list[c].text .. ": " .. Strings[302535920000422--[[Hex Shape--]]]
+			elseif i == 7 then
 				item_list[c].text = item_list[c].text .. ": " .. Strings[302535920001562--[[Selection Area--]]]
 			end
 		end

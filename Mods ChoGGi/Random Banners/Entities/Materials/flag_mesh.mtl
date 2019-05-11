@@ -18,5 +18,7 @@
 		<Property TwoSidedShading="0"/>
 		<Property CastShadow="1"/>
 		<Property DepthWrite="1"/>
+		<Property EMFlags="7"/>
+		<Property Flags="520"/>
 	</Material>
 </Materials>

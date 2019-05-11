@@ -172,7 +172,8 @@ It's a tradeoff between erroneous errors and the game locking up.",
 302535920000498,Hook Stopped,
 302535920001068,"The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
 Attachment bspheres are off (x and y are; z and rotate aren't).
-Some of the file names are guesses. This also doesn't include any surf/surf_hash entries.",
+Some of the file names are guesses. <anim> is a guess, try removing it.
+No idea about the surf_hash values.",
 302535920001411,"ECM has been disabled.
 Use <color green>%s</color> to enable it.
 See the bottom of Gameplay>Controls if you've changed the shortcut.",
@@ -357,6 +358,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook",
 302535920000071,Show Mods Log,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920000422,Hex Shape,
 302535920000417,Null reference,
 302535920000628,"Close the examine dialog
 Hold <color green>Shift</color> to close all ""grouped"" examine dialogs (any ex dlg opened from an ex dlg).

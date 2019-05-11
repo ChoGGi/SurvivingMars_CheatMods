@@ -2,12 +2,11 @@
 <entity path="">
 	<state id="idle">
 		<mesh_ref ref="mesh"/>
-		<mesh file="Flag_01_USA_mesh.hgm"/>
 		<bsphere value="359,1,1435,1515"/>
 		<box min="-130,-137,2" max="848,138,2869"/>
 	</state>
 	<mesh_description id="mesh">
-		<anim file="Flag_01_USA_idle.hga" duration="0"/>
+		<mesh file="Flag_01_USA_mesh.hgm"/>
 		<material file="flag_mesh.mtl"/>
 		<attach name="Top" spot_pos="370,-10,3435"/>
 		<attach name="Workdrone" spot_pos="-368,-6,0"/>
@@ -16,5 +15,67 @@
 		<attach name="Workdrone" spot_pos="11,389,0" spot_rot="0.0,0.0,-0.7,270"/>
 		<attach name="Workrover" spot_pos="11,-822,0" spot_rot="0.0,0.0,0.7,90"/>
 		<attach name="Workrover" spot_pos="11,888,0" spot_rot="0.0,0.0,-0.7,270"/>
+		<surf type="hex_shape" points="1329,-231,0;-383,13,0;1329,242,0"/>
+		<surf type="selection" points="-250,-433,0;-500,0,0;-250,433,0"/>
+		<surf type="selection" points="1250,-433,0;-250,-433,0;-250,433,0"/>
+		<surf type="selection" points="1250,433,0;1250,-433,0;-250,433,0"/>
+		<surf type="selection" points="1250,433,0;1500,0,0;1250,-433,0"/>
+		<surf type="collision" points="-67,-120,75;-118,-70,75;-136,-1,75"/>
+		<surf type="collision" points="-118,68,0;-136,-1,0;-118,-70,0"/>
+		<surf type="collision" points="-118,-70,0;-67,-120,0;2,-139,0"/>
+		<surf type="collision" points="-118,68,0;-118,-70,0;2,-139,0"/>
+		<surf type="collision" points="-67,-120,75;-136,-1,75;71,-120,75"/>
+		<surf type="collision" points="-118,-70,0;-136,-1,0;-39,-1,2896"/>
+		<surf type="collision" points="2,-139,0;-67,-120,0;-18,-35,2896"/>
+		<surf type="collision" points="-67,-120,0;-118,-70,0;-33,-21,2896"/>
+		<surf type="collision" points="-39,-1,2896;-33,-21,2896;-118,-70,0"/>
+		<surf type="collision" points="-33,-21,2896;-18,-35,2896;-67,-120,0"/>
+		<surf type="collision" points="-18,-35,2896;2,-41,2896;2,-139,0"/>
+		<surf type="collision" points="-18,-35,2896;-33,-21,2896;-39,-1,2896"/>
+		<surf type="collision" points="-18,-35,2896;-39,-1,2896;22,-35,2896"/>
+		<surf type="collision" points="-136,-1,75;-118,68,75;-67,119,75"/>
+		<surf type="collision" points="-136,-1,75;-67,119,75;71,119,75"/>
+		<surf type="collision" points="2,138,0;-67,119,0;-118,68,0"/>
+		<surf type="collision" points="-136,-1,0;-118,68,0;-33,20,2896"/>
+		<surf type="collision" points="-118,68,0;-67,119,0;-18,34,2896"/>
+		<surf type="collision" points="-67,119,0;2,138,0;2,40,2896"/>
+		<surf type="collision" points="-33,20,2896;-39,-1,2896;-136,-1,0"/>
+		<surf type="collision" points="-18,34,2896;-33,20,2896;-118,68,0"/>
+		<surf type="collision" points="2,40,2896;-18,34,2896;-67,119,0"/>
+		<surf type="collision" points="-39,-1,2896;-33,20,2896;-18,34,2896"/>
+		<surf type="collision" points="-39,-1,2896;-18,34,2896;22,34,2896"/>
+		<surf type="collision" points="2,-139,75;-67,-120,75;71,-120,75"/>
+		<surf type="collision" points="71,-120,0;121,-70,0;2,-139,0"/>
+		<surf type="collision" points="121,68,0;-118,68,0;2,-139,0"/>
+		<surf type="collision" points="-136,-1,75;71,119,75;71,-120,75"/>
+		<surf type="collision" points="121,-70,0;121,68,0;2,-139,0"/>
+		<surf type="collision" points="140,-1,75;121,-70,75;71,-120,75"/>
+		<surf type="collision" points="121,-70,0;140,-1,0;121,68,0"/>
+		<surf type="collision" points="71,119,75;140,-1,75;71,-120,75"/>
+		<surf type="collision" points="71,-120,0;2,-139,0;2,-41,2896"/>
+		<surf type="collision" points="121,-70,0;71,-120,0;22,-35,2896"/>
+		<surf type="collision" points="140,-1,0;121,-70,0;36,-21,2896"/>
+		<surf type="collision" points="2,-41,2896;22,-35,2896;71,-120,0"/>
+		<surf type="collision" points="22,-35,2896;36,-21,2896;121,-70,0"/>
+		<surf type="collision" points="36,-21,2896;42,-1,2896;140,-1,0"/>
+		<surf type="collision" points="2,-41,2896;-18,-35,2896;22,-35,2896"/>
+		<surf type="collision" points="-39,-1,2896;22,34,2896;22,-35,2896"/>
+		<surf type="collision" points="22,34,2896;42,-1,2896;22,-35,2896"/>
+		<surf type="collision" points="42,-1,2896;36,-21,2896;22,-35,2896"/>
+		<surf type="collision" points="121,68,0;2,138,0;-118,68,0"/>
+		<surf type="collision" points="-67,119,75;2,138,75;71,119,75"/>
+		<surf type="collision" points="121,68,0;71,119,0;2,138,0"/>
+		<surf type="collision" points="71,119,75;121,68,75;140,-1,75"/>
+		<surf type="collision" points="71,119,0;121,68,0;36,20,2896"/>
+		<surf type="collision" points="2,138,0;71,119,0;22,34,2896"/>
+		<surf type="collision" points="121,68,0;140,-1,0;42,-1,2896"/>
+		<surf type="collision" points="22,34,2896;2,40,2896;2,138,0"/>
+		<surf type="collision" points="42,-1,2896;36,20,2896;121,68,0"/>
+		<surf type="collision" points="36,20,2896;22,34,2896;71,119,0"/>
+		<surf type="collision" points="-18,34,2896;2,40,2896;22,34,2896"/>
+		<surf type="collision" points="22,34,2896;36,20,2896;42,-1,2896"/>
+		<surf_hash type="hex_shape" value="4613800970290206405"/>
+		<surf_hash type="selection" value="-246110273027568834"/>
+		<surf_hash type="collision" value="1843366640"/>
 	</mesh_description>
 </entity>

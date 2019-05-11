@@ -5,44 +5,54 @@ if not g_AvailableDlc.gagarin then
 	return
 end
 
--- build lists of flag entities (nation names)
-local flag_spons_1 = {}
-local flag_c = 0
-local EntityData = EntityData
-for key in pairs(EntityData) do
-	if key:find("Flag_01_") then
-		flag_c = flag_c + 1
-		flag_spons_1[flag_c] = key:sub(9)
-	end
-end
-local flag_spons_2 = {}
-local flag_spons_3 = {}
-for i = 1, flag_c do
-	flag_spons_2[i] = "Flag_02_" .. flag_spons_1[i]
-	flag_spons_3[i] = "Flag_03_" .. flag_spons_1[i]
-	flag_spons_1[i] = "Flag_01_" .. flag_spons_1[i]
-end
-local lookup = {
-	Flag_01_ = flag_spons_1,
-	Flag_02_ = flag_spons_2,
-	Flag_03_ = flag_spons_3,
+-- GetEntity seems to be called a little too early (for my setup only probably)
+local lookup_table = {
+	Flag_01_ = {"Hex1_Placeholder"},
+	Flag_02_ = {"Hex1_Placeholder"},
+	Flag_03_ = {"Hex1_Placeholder"},
 }
--- welcome to our bonus eh
-flag_spons_1[#flag_spons_1+1] = "Flag_01_Pride"
-flag_spons_2[#flag_spons_2+1] = "Flag_02_Pride"
-flag_spons_3[#flag_spons_3+1] = "Flag_03_Pride"
+
+-- if any mods add flags
+function OnMsg.ModsReloaded()
+	-- build lists of flag entities (nation names)
+	local flag_c = 0
+	local flag_spons_1 = lookup_table.Flag_01_
+	local EntityData = EntityData
+	for key in pairs(EntityData) do
+		if key:find("Flag_01_") then
+			flag_c = flag_c + 1
+			flag_spons_1[flag_c] = key:sub(9)
+		end
+	end
+	local flag_spons_2 = lookup_table.Flag_02_
+	local flag_spons_3 = lookup_table.Flag_03_
+	for i = 1, flag_c do
+		flag_spons_2[i] = "Flag_02_" .. flag_spons_1[i]
+		flag_spons_3[i] = "Flag_03_" .. flag_spons_1[i]
+		flag_spons_1[i] = "Flag_01_" .. flag_spons_1[i]
+	end
+	lookup_table.Flag_01_ = flag_spons_1
+	lookup_table.Flag_02_ = flag_spons_2
+	lookup_table.Flag_03_ = flag_spons_3
+
+	-- welcome to our bonus eh
+	flag_c = flag_c + 1
+	flag_spons_1[flag_c] = "Flag_01_Pride"
+	flag_spons_2[flag_c] = "Flag_02_Pride"
+	flag_spons_3[flag_c] = "Flag_03_Pride"
+end
 
 function SponsorBannerBase:GetEntity()
 	-- default entity = return a random flag
 	if self.entity == "Hex1_Placeholder" then
-		return table.rand(lookup[self.banner])
+		return table.rand(lookup_table[self.banner])
 	else
 		return self.entity
 	end
 end
 
 function SponsorBannerBase:GetSkins()
-	return lookup[self.banner]
+	return lookup_table[self.banner]
 end
 
 
@@ -54,6 +64,7 @@ local entity_list = {
 	"Flag_01_Pride",
 	"Flag_02_Pride",
 	"Flag_03_Pride",
+	"Cemetery",
 }
 
 -- local instead of global is quicker
