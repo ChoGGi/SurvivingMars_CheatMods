@@ -88,9 +88,41 @@ end
 --~ Don't pass vars on the end of varargs
 -- works
 SomeFunc(var1,var2,...)
--- not gonna work (it'll only take the first var arg)
+-- doesn't work (it'll only take the first var arg)
 SomeFunc(var1,...,var2)
 
+--~ for all funcs of a class obj: print the func name when it fires
+function OnMsg.ClassesBuilt()
+	-- the obj in question
+	local obj_to_print = ChoGGi_OHexSpot
+	-- local some globals
+	local print = print
+	local type,pairs,getmetatable = type,pairs,getmetatable
+	-- the "magic"
+	local function ReplaceFuncs(list)
+		for key,value in pairs(list) do
+			-- replacing _ funcs means bad things
+			if key:sub(1,1) ~= "_" and type(value) == "function" then
+				obj_to_print[key] = function(...)
+					-- add the ... to also print args
+					print(key)
+					return value(...)
+				end
+			end
+		end
+	end
+
+	-- loop through all the metatables and call our replace func
+	local mt = getmetatable(obj_to_print)
+	while mt do
+		ReplaceFuncs(mt)
+		if type(mt.__index) == "table" then
+			ReplaceFuncs(mt.__index)
+		end
+		-- next one up the ladder
+		mt = getmetatable(mt)
+	end
+end
 
 --~ Info from other people:
 

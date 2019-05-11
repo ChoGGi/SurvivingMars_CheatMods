@@ -17,12 +17,14 @@ local IsKindOf = IsKindOf
 local MapFilter = MapFilter
 local MapGet = MapGet
 local PropObjGetProperty = PropObjGetProperty
+local ResumePassEdits = ResumePassEdits
 local table_remove = table.remove
 local table_find = table.find
 local table_clear = table.clear
 local table_iclear = table.iclear
 local table_sort = table.sort
 local table_copy = table.copy
+local SuspendPassEdits = SuspendPassEdits
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 local function SaveOrigFunc(class_or_func,func_name)
@@ -4524,8 +4526,7 @@ function ChoGGi.ComFuncs.RetTableValue(obj,key)
 	end
 end
 
--- use HexSlope to check for not-buildable?
-do -- DebugBuildGrid
+do -- BuildableHexGrid
 	-- this is somewhat from Lua\hex.lua: debug_build_grid()
 	-- sped up to work with being attached to the mouse pos
 	local IsValid = IsValid
@@ -4541,18 +4542,18 @@ do -- DebugBuildGrid
 		-- just in case
 		Temp.grid_thread = false
 
+		-- SuspendPassEdits errors out if there's no map
 		if GameState.gameplay then
-			-- store hexes off-map
-			SuspendPassEdits("ChoGGi.ComFuncs.DebugBuildGrid_settings")
+			SuspendPassEdits("ChoGGi.ComFuncs.BuildableHexGrid_CleanUp")
 			for i = 1, #grid_objs do
 				local o = grid_objs[i]
 				if IsValid(o) then
 					o:delete()
 				end
 			end
-			ResumePassEdits("ChoGGi.ComFuncs.DebugBuildGrid_settings")
-			table_iclear(grid_objs)
+			ResumePassEdits("ChoGGi.ComFuncs.BuildableHexGrid_CleanUp")
 		end
+--~ 		table_iclear(grid_objs)
 	end
 
 	-- if grid is left on when map changes it gets real laggy
@@ -4560,7 +4561,7 @@ do -- DebugBuildGrid
 	-- make sure grid isn't saved in persist
 	OnMsg.SaveGame = CleanUp
 
-	function ChoGGi.ComFuncs.DebugBuildGrid(action)
+	function ChoGGi.ComFuncs.BuildableHexGrid(action)
 		local is_valid_thread = IsValidThread(Temp.grid_thread)
 
 		-- if not fired from action
@@ -4581,10 +4582,10 @@ do -- DebugBuildGrid
 		local grid_opacity = type(u.DebugGridOpacity) == "number" and u.DebugGridOpacity or 15
 		local grid_size = type(u.DebugGridSize) == "number" and u.DebugGridSize or 25
 
-		-- 125 = 47251 objects (had a crash at 250, and it's not like you need one that big)
-		if grid_size > 125 then
-			grid_size = 125
-		end
+--~ 		-- 125 = 47251 objects (had a crash at 250, and it's not like you need one that big)
+--~ 		if grid_size > 256 then
+--~ 			grid_size = 256
+--~ 		end
 
 		-- already running
 		if is_valid_thread then
@@ -4595,7 +4596,7 @@ do -- DebugBuildGrid
 			local grid_count = 0
 			local q,r = 1,1
 			local z = -q - r
-			SuspendPassEdits("ChoGGi.ComFuncs.DebugBuildGrid")
+			SuspendPassEdits("ChoGGi.ComFuncs.BuildableHexGrid")
 			for q_i = q - grid_size, q + grid_size do
 				for r_i = r - grid_size, r + grid_size do
 					for z_i = z - grid_size, z + grid_size do
@@ -4608,12 +4609,13 @@ do -- DebugBuildGrid
 					end
 				end
 			end
-			ResumePassEdits("ChoGGi.ComFuncs.DebugBuildGrid")
+			ResumePassEdits("ChoGGi.ComFuncs.BuildableHexGrid")
 
-			-- fire up a new thread and off we go
+			-- off we go
 			Temp.grid_thread = CreateRealTimeThread(function()
-			-- local all the globals we use more than once for some speed
-				local IsPassable = terrain.IsPassable
+				-- local all the globals we use more than once for some speed
+				local terrain_IsPassable = terrain.IsPassable
+				local terrain_GetSurfaceHeight = terrain.GetSurfaceHeight
 				local IsTerrainFlatForPlacement = ConstructionController.IsTerrainFlatForPlacement
 				local GetTerrainCursor = GetTerrainCursor
 				local HexGridGetObject = HexGridGetObject
@@ -4623,6 +4625,10 @@ do -- DebugBuildGrid
 				local point = point
 				local WaitMsg = WaitMsg
 
+				CalcBuildableGrid()
+				local g_BuildableZ = g_BuildableZ
+				local UnbuildableZ = buildUnbuildableZ()
+
 				local cls_stones = {"DoesNotObstructConstruction","SurfaceDeposit","StoneSmall"}
 				local red = red
 				local green = green
@@ -4630,13 +4636,19 @@ do -- DebugBuildGrid
 				local blue = blue
 				local pt20t = {point20}
 
-				local g_DontBuildHere = g_DontBuildHere
 				local ObjectGrid = ObjectGrid
-				local last_q, last_r, old_pt
+				local const_HexSize = const.HexSize
+
+				local g_DontBuildHere = g_DontBuildHere
+
+				local last_q, last_r
+				-- 0,0 to make sure it updates the first time
+				local old_pt,pt = point(0,0)
+
 				while Temp.grid_thread do
-					-- only update if cursor moved
-					local pt = GetTerrainCursor()
-					if pt ~= old_pt then
+					-- only update if cursor moved a hex
+					pt = GetTerrainCursor()
+					if old_pt:Dist2D(pt) > const_HexSize then
 						old_pt = pt
 
 						local q, r = WorldToHex(pt)
@@ -4656,22 +4668,32 @@ do -- DebugBuildGrid
 
 											-- green = pass/build, yellow = no pass/build, blue = pass/no build, red = no pass/no build
 
+											local obj = HexGridGetObject(ObjectGrid, q_i, r_i)
+
 											-- geysers
-											if g_DontBuildHere:Check(pt) then
+											if obj == g_DontBuildHere then
 												hex:SetColorModifier(blue)
-											-- for some reason returns false for dumping sites...
-											elseif IsPassable(pt) or HexGridGetObject(ObjectGrid, q_i, r_i, nil, "WasteRockStockpileUngridedNoBlockPass") then
-												if IsTerrainFlatForPlacement(nil, pt20t, pt, 0) and not HexGridGetObject(ObjectGrid, q_i, r_i) then
-													hex:SetColorModifier(green)
-												else
-													hex:SetColorModifier(blue)
-												end
---~ 											elseif HexGridGetObject(ObjectGrid, q_i, r_i, nil, "WasteRockStockpileUngridedNoBlockPass") then
---~ 												hex:SetColorModifier(blue)
-											elseif HexGetUnits(hex, "RechargeStation", pt, 0, true, nil,cls_stones) then
-												hex:SetColorModifier(yellow)
 											else
-												hex:SetColorModifier(red)
+												-- returns UnbuildableZ if it isn't buildable
+												local build_z = g_BuildableZ:get(q_i + r_i / 2, r_i)
+
+												-- slopes over 1024? aren't passable (let alone buildable)
+												if build_z == UnbuildableZ or HexSlope(q_i, r_i) > 1024 then
+													hex:SetColorModifier(red)
+												-- stuff that can be pathed? (or dump sites which IsPassable returns false for)
+--~ 												obj:IsKindOf("WasteRockStockpileUngridedNoBlockPass") then
+												elseif terrain_IsPassable(pt) or obj and obj.class == "WasteRockDumpSite" then
+													if build_z ~= UnbuildableZ and not obj then
+														hex:SetColorModifier(green)
+													else
+														hex:SetColorModifier(blue)
+													end
+												-- any objs left aren't passable
+												elseif obj then
+													hex:SetColorModifier(red)
+												else
+													hex:SetColorModifier(yellow)
+												end
 											end
 
 										end

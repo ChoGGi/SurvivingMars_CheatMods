@@ -11,7 +11,8 @@ XXXXX = {
 }
 --]]
 
-local pairs,type,tostring,tonumber,rawget = pairs,type,tostring,tonumber,rawget
+local pairs,type,tostring,tonumber = pairs,type,tostring,tonumber
+local getmetatable,rawget = getmetatable,rawget
 
 -- store opened examine dialogs
 if not rawget(_G,"g_ExamineDlgs") then
@@ -2768,7 +2769,7 @@ function Examine:ConvertObjToInfo(obj,obj_type)
 							title = Strings[302535920000885--[[Unpacked--]]],
 						})
 					end)
-					.. "table" .. hyperlink_end
+					.. Strings[302535920000048--[[View--]]] .. hyperlink_end
 				)
 				-- we use this with Object>Flags
 				self.obj_flags = obj:GetFlags()

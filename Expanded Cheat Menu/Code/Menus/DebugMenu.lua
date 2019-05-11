@@ -371,7 +371,7 @@ Actions[c] = {ActionName = Strings[302535920000499--[[Toggle Building Grid--]]],
 	ActionId = ".Toggle Building Grid",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
 	RolloverText = Strings[302535920000500--[["Show a hex grid around mouse: Green = pass/build, Yellow = no pass/build, Blue = pass/no build, Red = no pass/no build."--]]],
-	OnAction = ChoGGi.ComFuncs.DebugBuildGrid,
+	OnAction = ChoGGi.ComFuncs.BuildableHexGrid,
 	ActionShortcut = "Shift-F1",
 	ActionBindable = true,
 	ActionSortKey = "8Toggle Grid Follow Mouse",
@@ -388,7 +388,7 @@ Actions[c] = {ActionName = Strings[302535920001417--[[Follow Mouse Grid Size--]]
 			Strings[302535920001418--[[Sets the size of the Building/Flight grid.--]]]
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.DebugBuildGridSettings,
+	OnAction = ChoGGi.MenuFuncs.BuildableHexGridSettings,
 	setting_mask = "DebugGridSize",
 	ActionSortKey = "9Follow Mouse Grid Size",
 }
@@ -404,7 +404,7 @@ Actions[c] = {ActionName = Strings[302535920001419--[[Follow Mouse Grid Translat
 			Strings[302535920001420--[[How transparent the Building grid is.--]]]
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.DebugBuildGridSettings,
+	OnAction = ChoGGi.MenuFuncs.BuildableHexGridSettings,
 	setting_mask = "DebugGridOpacity",
 	ActionSortKey = "9Follow Mouse Grid Translate",
 }
@@ -527,11 +527,54 @@ Actions[c] = {ActionName = Strings[302535920000489--[[Delete Object(s)--]]],
 	ActionMenubar = "ECM.Debug",
 	ActionId = ".Delete Object(s)",
 	ActionIcon = "CommonAssets/UI/Menu/delete_objects.tga",
-	RolloverText = Strings[302535920000490--[["Deletes selected object or object under mouse cursor (most objs, not all).
-
-Use Editor Mode and mouse drag to select multiple objects for deletion."--]]],
+	RolloverText = Strings[302535920000490--[[Deletes selected object or object under mouse cursor (most objs, not all).--]]],
 	OnAction = ChoGGi.MenuFuncs.DeleteObject,
 	ActionShortcut = "Ctrl-Alt-Shift-D",
 	ActionBindable = true,
+}
+
+-- menu
+c = c + 1
+Actions[c] = {ActionName = Translate(3578--[[Framerate Counter--]]) .. " " .. Translate(7396--[[Location--]]),
+	ActionMenubar = "ECM.Debug",
+	ActionId = ".Framerate Counter Location",
+	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	OnActionEffect = "popup",
+	ActionSortKey = "1Framerate Counter Location",
+	RolloverText = Strings[302535920000421--[[Enable counter with in-game options (I can add an option here if it's wanted).--]]],
+}
+
+c = c + 1
+Actions[c] = {ActionName = Translate(1000458--[[Up--]]) .. " " .. Translate(1000457--[[Left--]]),
+	ActionMenubar = "ECM.Debug.Framerate Counter Location",
+	ActionId = ".Up Left",
+	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
+	OnAction = ChoGGi.MenuFuncs.SetFrameCounterLocation,
+	setting_mask = 0,
+}
+c = c + 1
+Actions[c] = {ActionName = Translate(1000458--[[Up--]]) .. " " .. Translate(1000459--[[Right--]]),
+	ActionMenubar = "ECM.Debug.Framerate Counter Location",
+	ActionId = ".Up Left",
+	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
+	OnAction = ChoGGi.MenuFuncs.SetFrameCounterLocation,
+	setting_mask = 1,
+	RolloverText = Translate(1000121--[[Default--]]),
+}
+c = c + 1
+Actions[c] = {ActionName = Translate(1000460--[[Down--]]) .. " " .. Translate(1000457--[[Left--]]),
+	ActionMenubar = "ECM.Debug.Framerate Counter Location",
+	ActionId = ".Up Left",
+	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
+	OnAction = ChoGGi.MenuFuncs.SetFrameCounterLocation,
+	setting_mask = 2,
+}
+c = c + 1
+Actions[c] = {ActionName = Translate(1000460--[[Down--]]) .. " " .. Translate(1000459--[[Right--]]),
+	ActionMenubar = "ECM.Debug.Framerate Counter Location",
+	ActionId = ".Up Left",
+	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
+	OnAction = ChoGGi.MenuFuncs.SetFrameCounterLocation,
+	setting_mask = 3,
 }
 

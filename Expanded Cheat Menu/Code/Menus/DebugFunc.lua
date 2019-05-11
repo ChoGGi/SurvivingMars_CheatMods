@@ -14,6 +14,18 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RandomColour = ChoGGi.ComFuncs.RandomColour
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.SetFrameCounterLocation(action)
+	local setting = action.setting_mask
+	hr.FpsCounterPos = setting
+
+	if setting == 1 then
+		ChoGGi.UserSettings.FrameCounterLocation = nil
+	else
+		ChoGGi.UserSettings.FrameCounterLocation = setting
+	end
+	ChoGGi.SettingFuncs.WriteSettings()
+end
+
 function ChoGGi.MenuFuncs.LoadingScreenLog_Toggle()
 	ChoGGi.UserSettings.LoadingScreenLog = not ChoGGi.UserSettings.LoadingScreenLog
 	ChoGGi.ComFuncs.SetLoadingScreenLog()
@@ -668,7 +680,7 @@ function ChoGGi.MenuFuncs.ObjectCloner(flat)
 
 end
 
-function ChoGGi.MenuFuncs.DebugBuildGridSettings(action)
+function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 	local setting = action.setting_mask
 
 	local item_list = {
@@ -689,7 +701,16 @@ function ChoGGi.MenuFuncs.DebugBuildGridSettings(action)
 	local name
 	if setting == "DebugGridSize" then
 		table.insert(item_list,1,{text = 1,value = 1})
-		item_list[#item_list+1] = {text = 125,value = 125}
+		local hint = Strings[302535920000419--[[125 = 47251 hex spots.--]]]
+		local c = #item_list+1
+		item_list[c] = {text = 125,value = 125,hint = hint}
+		c = c + 1
+		item_list[c] = {text = 150,value = 150,hint = hint}
+		c = c + 1
+		item_list[c] = {text = 200,value = 200,hint = hint}
+		c = c + 1
+--~ 		197377
+		item_list[c] = {text = 256,value = 256,hint = hint}
 
 		name = Strings[302535920001417--[[Follow Mouse Grid Size--]]]
 	elseif setting == "DebugGridOpacity" then
@@ -711,8 +732,8 @@ function ChoGGi.MenuFuncs.DebugBuildGridSettings(action)
 			-- update grid
 			if IsValidThread(ChoGGi.Temp.grid_thread) then
 				-- twice to toggle
-				ChoGGi.ComFuncs.DebugBuildGrid()
-				ChoGGi.ComFuncs.DebugBuildGrid()
+				ChoGGi.ComFuncs.BuildableHexGrid(false)
+				ChoGGi.ComFuncs.BuildableHexGrid(true)
 			end
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(

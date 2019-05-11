@@ -15,6 +15,7 @@
 - ECM>Game>Lightmodel>List Normal: Changes the list of lightmodels to use (night/day/etc).
 - ECM>Game>Lightmodel>List Disaster: Overrides List Normal.
 - ECM>Resources>Rare Metals Price (M): Amount of Funding received by exporting one unit of Rare Metals.
+- Re-Added Framerate Counter Location: Reposition the FPS counter (enable from in-game options).
 - Examine>Context menu (functions)>Function Results: Continually call a function while showing results in an examine dialog.
 - > Call it manually with MonitorFunc(func_obj,params).
 - > Examples:

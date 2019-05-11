@@ -1184,6 +1184,10 @@ do -- LoadGame/CityStart
 
 
 
+		if UserSettings.FrameCounterLocation then
+			hr.FpsCounterPos = UserSettings.FrameCounterLocation
+		end
+
 		if UserSettings.mediumGameSpeed then
 			const.mediumGameSpeed = UserSettings.mediumGameSpeed
 		end

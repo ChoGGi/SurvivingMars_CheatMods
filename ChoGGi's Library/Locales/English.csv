@@ -1067,6 +1067,8 @@ Only works on colonists that have yet to spawn (maybe).",
 Not permanent.",
 302535920000447,Change the age at which colonists die (applies to newly arrived and born colonists as well).,
 302535920000448,"I'm afraid it could be 9/11 times 1,000.",
+302535920000421,Enable counter with in-game options (I can add an option here if it's wanted).,
+302535920000419,125 = 47251 hex spots.,
 302535920000413,Delay,
 302535920000415,Delay in ms between updating paths (0 to update every other render).,
 302535920000416,Delay isn't a valid class.,
@@ -1187,9 +1189,7 @@ It's not as if domes need to be where you placed them (people will just ignore i
 302535920000487,Delete All Of Selected Object,
 302535920000488,Will ask for confirmation beforehand (will not delete domes).,
 302535920000489,Delete Object(s),
-302535920000490,"Deletes selected object or object under mouse cursor (most objs, not all).
-
-Use Editor Mode and mouse drag to select multiple objects for deletion.",
+302535920000490,Deletes selected object or object under mouse cursor (most objs, not all).,
 302535920000492,Opens the object examiner for the selected or moused-over obj.,
 302535920000493,Change Map,
 302535920000494,"Change map (options to pick commander, sponsor, etc...
