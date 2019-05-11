@@ -820,8 +820,8 @@ function ChoGGi.ComFuncs.EntitySpawner(obj,skip_msg,list_type,planning)
 			}
 		end
 	else
-		local all_entities = GetAllEntities()
-		for key in pairs(all_entities) do
+		local EntityData = EntityData
+		for key in pairs(EntityData) do
 			c = c + 1
 			item_list[c] = {
 				text = key,
@@ -1199,7 +1199,7 @@ end
 -- This doesn't add anything to metadata/items, it only converts files.
 --~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles("MOD_ID")
 --~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.MOD_ID,".tga")
---~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.ChoGGi_XXXXXXXXXX)
+--~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.ChoGGi_XDefaultMod)
 function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod,ext)
 	if blacklist then
 		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ConvertImagesToLogoFiles")
@@ -1281,16 +1281,16 @@ do -- ConvertImagesToResEntities
 
 		err = AsyncStringToFile(ent_output, [[<?xml version="1.0" encoding="UTF-8"?>
 <entity path="">
-<state id="idle">
-	<mesh_ref ref="mesh"/>
-</state>
-<mesh_description id="mesh">
-	<src file=""/>
-	<mesh file="SignConcreteDeposit_mesh.hgm"/>
-	<material file="]] .. mtl_file .. [["/>
-	<bsphere value="0,0,50,1301"/>
-	<box min="-920,-920,50" max="920,920,50"/>
-</mesh_description>
+	<state id="idle">
+		<mesh_ref ref="mesh"/>
+	</state>
+	<mesh_description id="mesh">
+		<src file=""/>
+		<mesh file="SignConcreteDeposit_mesh.hgm"/>
+		<material file="]] .. mtl_file .. [["/>
+		<bsphere value="0,0,50,1301"/>
+		<box min="-920,-920,50" max="920,920,50"/>
+	</mesh_description>
 </entity>
 ]])
 
@@ -1337,6 +1337,7 @@ do -- ConvertImagesToResEntities
 			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ConvertImagesToResEntities")
 			return
 		end
+		mod = mod or Mods.ChoGGi_XDefaultMod
 		if type(mod) == "string" then
 			mod = Mods[mod]
 		end
@@ -1407,23 +1408,23 @@ do -- ExamineEntSpots
 			local pos_x, pos_y, pos_z, radius = obj:GetBSphere(state_str, true)
 --~ Basketball_idle.hga
 			c = c + 1
-			list[c] = [[	<state id="]] .. state_str .. [[">
-	<mesh_ref ref="mesh"/>
-	<anim file="]] .. entity .. "_" .. state_str .. [[.hga" duration="]] .. obj:GetAnimDuration(state_str) .. [["/>
-	<bsphere value="]] .. (pos_x - origin_pos_x) .. ","
+			list[c] = [[		<state id="]] .. state_str .. [[">
+		<mesh_ref ref="mesh"/>
+		<anim file="]] .. entity .. "_" .. state_str .. [[.hga" duration="]] .. obj:GetAnimDuration(state_str) .. [["/>
+		<bsphere value="]] .. (pos_x - origin_pos_x) .. ","
 				.. (pos_y - origin_pos_y) .. "," .. (pos_z - origin_pos_z) .. ","
 				.. radius .. [["/>
-	<box min="]] .. x1 .. "," .. y1 .. "," .. z1
+		<box min="]] .. x1 .. "," .. y1 .. "," .. z1
 				.. [[" max="]] .. x2 .. "," .. y2 .. "," .. z2 .. [["/>
-</state>]]
+	</state>]]
 		end -- for states
 
 		local mat = GetStateMaterial(entity,0,0)
 		-- add the rest of the entity info
 		c = c + 1
 		list[c] = [[	<mesh_description id="mesh">
-	<mesh file="]] .. mat:sub(1,-4) .. [[m.hgm"/>
-	<material file="]] .. mat .. [["/>]]
+		<mesh file="]] .. mat:sub(1,-4) .. [[m.hgm"/>
+		<material file="]] .. mat .. [["/>]]
 		-- eh, close enough
 
 		-- stick with idle i guess?
@@ -1761,7 +1762,7 @@ do -- GetMaterialProperties
 	local function RetEntityMTLFile(mat)
 		local list = {[[<?xml version="1.0" encoding="UTF-8"?>
 <Materials>
-<Material>]]}
+	<Material>]]}
 		local c = #list
 
 		-- build main first
@@ -1865,8 +1866,8 @@ do -- GetMaterialProperties
 				materials = RetEntityMats(entity,true)
 			else
 				materials = {}
-				local all_entities = GetAllEntities()
-				for entity in pairs(all_entities) do
+				local EntityData = EntityData
+				for entity in pairs(EntityData) do
 					materials[entity] = RetEntityMats(entity,true)
 				end
 			end

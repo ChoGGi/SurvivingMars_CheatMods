@@ -286,8 +286,8 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			-- make an index table of ents for placement
 			local entity_list = {}
 			local c = 0
-			local all_entities = GetAllEntities()
-			for key in pairs(all_entities) do
+			local EntityData = EntityData
+			for key in pairs(EntityData) do
 				c = c + 1
 				entity_list[c] = key
 			end

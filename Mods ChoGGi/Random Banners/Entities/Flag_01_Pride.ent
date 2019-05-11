@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity path="">
+	<state id="idle">
+		<mesh_ref ref="mesh"/>
+		<mesh file="Flag_01_USA_mesh.hgm"/>
+		<bsphere value="359,1,1435,1515"/>
+		<box min="-130,-137,2" max="848,138,2869"/>
+	</state>
+	<mesh_description id="mesh">
+		<anim file="Flag_01_USA_idle.hga" duration="0"/>
+		<material file="flag_mesh.mtl"/>
+		<attach name="Top" spot_pos="370,-10,3435"/>
+		<attach name="Workdrone" spot_pos="-368,-6,0"/>
+		<attach name="Workdrone" spot_pos="11,-390,0" spot_rot="0.0,0.0,0.7,90"/>
+		<attach name="Workdrone" spot_pos="372,-6,0" spot_rot="0.0,0.0,1.0,180"/>
+		<attach name="Workdrone" spot_pos="11,389,0" spot_rot="0.0,0.0,-0.7,270"/>
+		<attach name="Workrover" spot_pos="11,-822,0" spot_rot="0.0,0.0,0.7,90"/>
+		<attach name="Workrover" spot_pos="11,888,0" spot_rot="0.0,0.0,-0.7,270"/>
+	</mesh_description>
+</entity>

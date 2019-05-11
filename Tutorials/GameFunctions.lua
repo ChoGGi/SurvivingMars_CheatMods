@@ -1314,7 +1314,7 @@ GetAdditionalBuildingLock = Mars/Lua/X/BuildMenu.lua(175)
 GetAllAnimMoments = Mars/Lua/Buildings/Building.lua(2485)
 GetAllCableConnectionClassesTable = Mars/Lua/ElectricityGrid.lua(39)
 GetAllConnectedGrids = Mars/Lua/SupplyGrid.lua(598)
-GetAllEntities()
+GetAllEntities() -- EntityData lists more
 GetAllocationsCount(C)
 GetAllSpots(C)
 GetAlpha(C)

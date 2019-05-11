@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Materials>
+	<Material>
+		<BaseColorMap Name="flag.dds" mc="0"/>
+		<NormalMap Name="Textures/2990001.dds" mc="0"/>
+		<RMMap Name="Textures/2990002.dds" mc="0"/>
+		<Property Special="None"/>
+		<Property AlphaBlend="None"/>
+		<Property AnimationTime="0"/>
+		<Property AnimationFramesX="1"/>
+		<Property TransparentDecal="0"/>
+		<Property AlphaTest="0"/>
+		<Property TerrainDistortedMesh="0"/>
+		<Property Opacity="19"/>
+		<Property AnimationFramesY="1"/>
+		<Property DepthSmooth="0"/>
+		<Property Deposition="0"/>
+		<Property TwoSidedShading="0"/>
+		<Property CastShadow="1"/>
+		<Property DepthWrite="1"/>
+	</Material>
+</Materials>
