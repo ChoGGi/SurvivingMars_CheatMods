@@ -810,7 +810,8 @@ do -- path markers
 		local path = {}
 
 		-- we need to build a path for shuttles (and figure out a way to get their dest properly...)
-		if obj:IsKindOf("CargoShuttle") then
+		local is_shuttle = obj:IsKindOf("CargoShuttle")
+		if is_shuttle then
 
 			-- going to pickup colonist
 			if obj.command == "GoHome" then
@@ -875,15 +876,19 @@ do -- path markers
 			if not obj.ChoGGi_WaypointPathAdded then
 				-- used to reset the colour later on
 				obj.ChoGGi_WaypointPathAdded = obj:GetColorModifier()
+				obj.ChoGGi_WaypointPathAdded_storedcolour = colour
 			end
+
 			-- colour it up
-			obj:SetColorModifier(colour)
+			obj:SetColorModifier(obj.ChoGGi_WaypointPathAdded_storedcolour or colour)
 
 			-- and lastly make sure path is sorted correctly
 			-- end is where the obj is, and start is where the dest is
-			table_sort(path,function(a,b)
-				return obj:GetVisualDist(a) > obj:GetVisualDist(b)
-			end)
+			if is_shuttle then
+				table_sort(path,function(a,b)
+					return obj:GetVisualDist(a) > obj:GetVisualDist(b)
+				end)
+			end
 
 			-- send path off to make wp
 			ShowWaypoints(
@@ -1008,7 +1013,7 @@ do -- path markers
 		end
 	end
 
-	local function ClearColourAndWP(cls)
+	local function ClearColourAndWP(cls,skip)
 		-- remove all thread refs so they stop
 		table_clear(ChoGGi.Temp.UnitPathingHandles)
 		-- and waypoints/colour
@@ -1016,9 +1021,10 @@ do -- path markers
 		for i = 1, #objs do
 			local obj = objs[i]
 
-			if obj.ChoGGi_WaypointPathAdded then
+			if not skip and obj.ChoGGi_WaypointPathAdded then
 				obj:SetColorModifier(obj.ChoGGi_WaypointPathAdded)
 				obj.ChoGGi_WaypointPathAdded = nil
+				obj.ChoGGi_WaypointPathAdded_storedcolour = nil
 			end
 
 			local stored = obj.ChoGGi_Stored_Waypoints
@@ -1031,13 +1037,65 @@ do -- path markers
 
 		end
 	end
+	local function CleanDupes()
+		-- remove any waypoints in the same pos
+		local function ClearAllDupeWP(cls)
+			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+			for i = 1, #objs do
+				local obj = objs[i]
+				if obj and obj.ChoGGi_Stored_Waypoints then
+					RemoveWPDupePos("WayPoint",obj)
+					RemoveWPDupePos("Sphere",obj)
+				end
+			end
+		end
+		ClearAllDupeWP("CargoShuttle")
+		ClearAllDupeWP("Unit")
+		ClearAllDupeWP("Colonist")
+	end
+
+
+	local aliens
+	local new_objs_loop = true
+	local function StopAndRemoveAll(skip)
+		if not skip then
+			new_objs_loop = false
+		end
+		-- reset all the base colours/waypoints
+		ClearColourAndWP("CargoShuttle",skip)
+		ClearColourAndWP("Unit",skip)
+		ClearColourAndWP("Colonist",skip)
+		if aliens then
+			ClearColourAndWP("ChoGGi_Alien",skip)
+		end
+
+		-- remove any extra lines
+		ChoGGi.ComFuncs.RemoveObjs("ChoGGi_OPolyline")
+
+		-- reset stuff
+		flag_height = 50
+		randcolours = {}
+		colourcount = 0
+		dupewppos = {}
+	end
+
+	local function SetMarkers(list,check,delay)
+		if check then
+			for i = 1, #list do
+				SetPathMarkersGameTime(list[i],nil,delay)
+			end
+		else
+			for i = 1, #list do
+				SetWaypoint(list[i])
+			end
+		end
+	end
 
 	function ChoGGi.MenuFuncs.SetPathMarkers()
 		OPolyline = OPolyline or ChoGGi_OPolyline
 		ChoGGi.Temp.UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles or {}
 
 		local item_list = {
---~ 			{text = Strings[302535920000413--[[Delay--]]],value = 500,path_type = "Delay",hint = Strings[302535920000415--[[Delay in ms between updating paths (0 to update every other render).--]]]},
 			{text = Strings[302535920000413--[[Delay--]]],value = 0,path_type = "Delay",hint = Strings[302535920000415--[[Delay in ms between updating paths (0 to update every other render).--]]]},
 			{text = Translate(4493--[[All--]]),value = "All"},
 
@@ -1046,7 +1104,6 @@ do -- path markers
 			{text = Translate(5438--[[Rovers--]]),value = "BaseRover",icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
 			{text = Translate(745--[[Shuttles--]]),value = "CargoShuttle",hint = Strings[302535920000873--[[Doesn't work that well.--]]]},
 		}
-		local aliens
 		if rawget(_G,"ChoGGi_Alien") then
 			aliens = true
 			item_list[#item_list+1] = {text = "Alien Visitors",value = "ChoGGi_Alien"}
@@ -1071,25 +1128,10 @@ do -- path markers
 			end
 
 			local value = choice.value
-			-- remove wp/lines and reset colours
+
 			if remove then
-
-				-- reset all the base colours/waypoints
-				ClearColourAndWP("CargoShuttle")
-				ClearColourAndWP("Unit")
-				ClearColourAndWP("Colonist")
-				if aliens then
-					ClearColourAndWP("ChoGGi_Alien")
-				end
-
-				-- remove any extra lines
-				ChoGGi.ComFuncs.RemoveObjs("ChoGGi_OPolyline")
-
-				-- reset stuff
-				flag_height = 50
-				randcolours = {}
-				colourcount = 0
-				dupewppos = {}
+				-- remove wp/lines and reset colours
+				StopAndRemoveAll()
 
 			-- naughty user
 			elseif value == "Delay" then
@@ -1101,53 +1143,82 @@ do -- path markers
 
 			-- add waypoints
 			elseif value then
-				local function swp(list)
-					if choice1.check2 then
-						for i = 1, #list do
-							SetPathMarkersGameTime(list[i],nil,delay)
-						end
-					else
-						for i = 1, #list do
-							SetWaypoint(list[i])
-						end
-					end
-				end
 
 				if value == "All" then
-					local labels = UICity.labels
-					local table1 = MapFilter(labels.Unit or empty_table,IsValid)
-					local table2 = MapFilter(labels.CargoShuttle or empty_table,IsValid)
-					local table3 = MapFilter(labels.Colonist or empty_table,IsValid)
-					colourcount = colourcount + #table1
-					colourcount = colourcount + #table2
-					colourcount = colourcount + #table3
-					randcolours = RandomColour(colourcount + 1)
-					swp(table1)
-					swp(table2)
-					swp(table3)
+--~ 					local labels = UICity.labels
+
+--~ 					local table1 = labels.Unit or ""
+--~ 					local table2 = labels.CargoShuttle or ""
+--~ 					local table3 = labels.Colonist or ""
+
+--~ 					colourcount = colourcount + #table1
+--~ 					colourcount = colourcount + #table2
+--~ 					colourcount = colourcount + #table3
+--~ 					randcolours = RandomColour(colourcount + 1)
+--~ 					SetMarkers(table1,choice1.check2,delay)
+--~ 					SetMarkers(table2,choice1.check2,delay)
+--~ 					SetMarkers(table3,choice1.check2,delay)
+--~ 					CleanDupes()
+
+					CreateGameTimeThread(function()
+						local labels = UICity.labels
+						local table1 = labels.Unit or ""
+						local table2 = labels.CargoShuttle or ""
+						local table3 = labels.Colonist or ""
+						-- +1 to make it fire the first time
+						local current = #table1+#table2+#table3+1
+
+						while new_objs_loop do
+							table1 = labels.Unit or ""
+							table2 = labels.CargoShuttle or ""
+							table3 = labels.Colonist or ""
+							local count = #table1+#table2+#table3
+							if current ~= count then
+								-- update list when
+								StopAndRemoveAll(true)
+
+								current = count
+								colourcount = colourcount + #table1
+								colourcount = colourcount + #table2
+								colourcount = colourcount + #table3
+								randcolours = RandomColour(colourcount + 1)
+								SetMarkers(table1,choice1.check2,delay)
+								SetMarkers(table2,choice1.check2,delay)
+								SetMarkers(table3,choice1.check2,delay)
+
+								CleanDupes()
+							end
+							Sleep(2500)
+						end
+						new_objs_loop = true
+					end)
+
 				-- skip any non-cls objects (or mapget returns all)
 				elseif g_Classes[value] then
---~ 					local table1 = MapGet(true,value,IsValid)
-					local table1 = MapGet(true,value)
-					colourcount = colourcount + #table1
-					randcolours = RandomColour(colourcount + 1)
-					swp(table1)
+					CreateGameTimeThread(function()
+						local labels = UICity.labels
+						local table1 = labels[value] or MapGet("map",value)
+						-- +1 to make it fire the first time
+						local current = #table1+1
+
+						while new_objs_loop do
+							table1 = labels[value] or MapGet("map",value)
+							if current ~= #table1 then
+								-- update list when
+								StopAndRemoveAll(true)
+
+								current = #table1
+								colourcount = colourcount + current
+								randcolours = RandomColour(colourcount + 1)
+								SetMarkers(table1,choice1.check2,delay)
+								CleanDupes()
+							end
+							Sleep(2500)
+						end
+						new_objs_loop = true
+					end)
 				end
 
-				-- remove any waypoints in the same pos
-				local function ClearAllDupeWP(cls)
-					local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
-					for i = 1, #objs do
-						local obj = objs[i]
-						if obj and obj.ChoGGi_Stored_Waypoints then
-							RemoveWPDupePos("WayPoint",obj)
-							RemoveWPDupePos("Sphere",obj)
-						end
-					end
-				end
-				ClearAllDupeWP("CargoShuttle")
-				ClearAllDupeWP("Unit")
-				ClearAllDupeWP("Colonist")
 
 			end
 		end

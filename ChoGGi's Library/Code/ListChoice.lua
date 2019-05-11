@@ -860,6 +860,7 @@ end
 function ChoGGi_ListChoiceDlg:CallbackSelectedList()
 	-- build self.choices
 	if self.sel then
+		self.sel.list_selected = true
 		self.choices = {self.sel}
 		self:UpdateReturnedItem(self.choices)
 	else
@@ -876,15 +877,16 @@ function ChoGGi_ListChoiceDlg:BuildReturnList(_,button)
 --~
 	-- select all items (ok button)
 	if self.class == "ChoGGi_XButton" then
+		print("xbut")
 		button = "L"
 	end
 	self = GetRootDialog(self)
 
 	if button == "L" then
 		-- fire custom_func with sel
-		if self.custom_func and (self.custom_type == 1 or self.custom_type == 7) then
+		if self.custom_type == 1 or self.custom_type == 7 then
 			self:CallbackSelectedList()
-		elseif self.custom_type == 9 then
+		elseif self.custom_func and self.custom_type == 9 then
 			-- build self.choices
 			self:GetListItems()
 			-- send selection back
@@ -958,6 +960,8 @@ function ChoGGi_ListChoiceDlg:GetListItems()
 			items[i] = self.idList[i].item
 			if sel and i == sel then
 				items[i].list_selected = true
+			else
+				items[i].list_selected = nil
 			end
 		end
 	end

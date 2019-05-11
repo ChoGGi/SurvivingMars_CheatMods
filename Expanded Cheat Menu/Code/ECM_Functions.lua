@@ -1537,23 +1537,10 @@ do -- ExamineEntSpots
 		-- collision
 		c = BuildSurf(c,list,obj,"collision",0)
 
-		-- they don't actually match up to the ones in the ent file... got me
-		-- masks are from EntitySurfaces
-		local _,_,hash = GetSurfaceHexShapes(entity, 0, 32)
-		c = c + 1
-		list[c] = [[		<surf_hash type="hex_shape" value="]] .. hash .. [["/>]]
-		_,_,hash = GetSurfaceHexShapes(entity, 0, 128)
-		c = c + 1
-		list[c] = [[		<surf_hash type="selection" value="]] .. hash .. [["/>]]
-		_,_,hash = GetSurfaceHexShapes(entity, 0, 1)
-		c = c + 1
-		list[c] = [[		<surf_hash type="collision" value="]] .. hash .. [["/>]]
-
 		-- opener
 		table.insert(list,1,Strings[302535920001068--[["The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
 Attachment bspheres are off (x and y are; z and rotate aren't).
-Some of the file names are guesses. <anim> is a guess, try removing it.
-No idea about the surf_hash values."--]]]
+Some of the file names are guesses. <anim> is a guess, try removing it."--]]]
 			.. [[
 
 

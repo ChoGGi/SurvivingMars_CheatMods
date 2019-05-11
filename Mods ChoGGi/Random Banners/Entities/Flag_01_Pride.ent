@@ -74,8 +74,5 @@
 		<surf type="collision" points="36,20,2896;22,34,2896;71,119,0"/>
 		<surf type="collision" points="-18,34,2896;2,40,2896;22,34,2896"/>
 		<surf type="collision" points="22,34,2896;36,20,2896;42,-1,2896"/>
-		<surf_hash type="hex_shape" value="4613800970290206405"/>
-		<surf_hash type="selection" value="-246110273027568834"/>
-		<surf_hash type="collision" value="1843366640"/>
 	</mesh_description>
 </entity>

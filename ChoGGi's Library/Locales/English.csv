@@ -172,8 +172,7 @@ It's a tradeoff between erroneous errors and the game locking up.",
 302535920000498,Hook Stopped,
 302535920001068,"The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
 Attachment bspheres are off (x and y are; z and rotate aren't).
-Some of the file names are guesses. <anim> is a guess, try removing it.
-No idea about the surf_hash values.",
+Some of the file names are guesses. <anim> is a guess, try removing it.",
 302535920001411,"ECM has been disabled.
 Use <color green>%s</color> to enable it.
 See the bottom of Gameplay>Controls if you've changed the shortcut.",
