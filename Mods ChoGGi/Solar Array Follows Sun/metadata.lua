@@ -1,9 +1,17 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 6,
+			"version_minor", 4,
+		}),
+	},
 --~ 	"title", "SArray Follows Sun",
 	"title", "Solar Array Follows Sun",
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"saved", 1546689600,
 	"image", "Preview.png",
 	"id", "ChoGGi_SolarArrayFollowsSun",

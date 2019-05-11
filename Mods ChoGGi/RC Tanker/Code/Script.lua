@@ -594,12 +594,6 @@ Press to toggle.]],
 end
 
 -- the below is for removing the persist warnings from the log
-local orig_PersistGame = PersistGame
-function PersistGame(...)
-	local ret = orig_PersistGame(...)
-	Msg("PostSaveGame")
-	return ret
-end
 
 -- idle any tankers, and save state of tankers fiddling with tanks
 function OnMsg.SaveGame()
@@ -631,4 +625,5 @@ local function RestoreCmds()
 	end
 end
 OnMsg.LoadGame = RestoreCmds
+-- PostSaveGame is added by my lib mod
 OnMsg.PostSaveGame = RestoreCmds

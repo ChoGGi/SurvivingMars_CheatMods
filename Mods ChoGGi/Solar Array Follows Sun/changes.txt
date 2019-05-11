@@ -1,3 +1,6 @@
+v0.5
+Requires my Library mod.
+
 v0.4
 Removed the persist error that showed up in the log.
 

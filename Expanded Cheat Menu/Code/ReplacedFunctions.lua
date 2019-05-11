@@ -5,13 +5,14 @@
 local type,rawget = type,rawget
 local table_unpack = table.unpack
 
-local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Translate = ChoGGi.ComFuncs.Translate
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local SetDlgTrans = ChoGGi.ComFuncs.SetDlgTrans
 local RetName = ChoGGi.ComFuncs.RetName
+
+local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -36,8 +37,7 @@ do -- non-class obj funcs
 		end
 	end -- do
 
-	-- work on these persist errors
-	SaveOrigFunc("PersistGame")
+	-- work on these persist errors (func saved in lib mod)
 	function PersistGame(folder,...)
 		-- collectgarbage is blacklisted, and I'm not sure what issue it'd cause if it doesn't fire (saving weird shit maybe)...
 		if not blacklist and ChoGGi.UserSettings.DebugPersistSaves then
@@ -59,6 +59,7 @@ do -- non-class obj funcs
 			if error_amt > 0 then
 				ChoGGi.ComFuncs.OpenInExamineDlg(__error_table__,nil,"__error_table__ (persists)")
 			end
+
 			-- be useful for restarting threads, see if devs will add it
 			Msg("PostSaveGame")
 			return err
@@ -290,25 +291,25 @@ function OnMsg.ClassesGenerate()
 
 	-- stupid supply pods don't want to play nice
 	SaveOrigFunc("SupplyRocket","FlyToEarth")
-	function SupplyRocket:FlyToEarth(flight_time, launch_time,...)
+	function SupplyRocket:FlyToEarth(flight_time, ...)
 		if UserSettings.TravelTimeMarsEarth then
 			flight_time = g_Consts.TravelTimeMarsEarth
 		end
-		return ChoGGi_OrigFuncs.SupplyRocket_FlyToEarth(self,flight_time, launch_time,...)
+		return ChoGGi_OrigFuncs.SupplyRocket_FlyToEarth(self,flight_time, ...)
 	end
 
 	SaveOrigFunc("SupplyRocket","FlyToMars")
-	function SupplyRocket:FlyToMars(cargo, cost, flight_time, initial, launch_time,...)
+	function SupplyRocket:FlyToMars(cargo, cost, flight_time, ...)
 		if UserSettings.TravelTimeEarthMars then
 			flight_time = g_Consts.TravelTimeEarthMars
 		end
-		return ChoGGi_OrigFuncs.SupplyRocket_FlyToMars(self, cargo, cost, flight_time, initial, launch_time,...)
+		return ChoGGi_OrigFuncs.SupplyRocket_FlyToMars(self, cargo, cost, flight_time, ...)
 	end
 
 	-- no need for fuel to launch rocket
 	SaveOrigFunc("SupplyRocket","HasEnoughFuelToLaunch")
-	function SupplyRocket:HasEnoughFuelToLaunch(...)
-		return UserSettings.RocketsIgnoreFuel or ChoGGi_OrigFuncs.SupplyRocket_HasEnoughFuelToLaunch(self,...)
+	function SupplyRocket.HasEnoughFuelToLaunch(...)
+		return UserSettings.RocketsIgnoreFuel or ChoGGi_OrigFuncs.SupplyRocket_HasEnoughFuelToLaunch(...)
 	end
 
 	-- override any performance changes if needed

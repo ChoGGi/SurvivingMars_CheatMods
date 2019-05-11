@@ -1,14 +1,27 @@
 -- See LICENSE for terms
 
 -- add/replace functions
+local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+
+-- add PostSaveGame to be a companion for SaveGame
+SaveOrigFunc("PersistGame")
+function PersistGame(...)
+	local ret = ChoGGi_OrigFuncs.PersistGame(...)
+
+	-- useful for restarting threads, see if devs will add it
+	Msg("PostSaveGame")
+
+	return ret
+end
 
 -- This updates my dlgs when the ui scale is changed
 local pairs = pairs
 local GetSafeAreaBox = GetSafeAreaBox
--- I guess I need a replacefuncs for lib as well...
-local orig_SetUserUIScale = SetUserUIScale
+
+SaveOrigFunc("SetUserUIScale")
 function SetUserUIScale(val,...)
-	orig_SetUserUIScale(val,...)
+	ChoGGi_OrigFuncs.SetUserUIScale(val,...)
 
 	local UIScale = (val + 0.0) / 100
 	-- update existing dialogs
@@ -43,9 +56,13 @@ if not rawget(_G,"CreateNumberEditor") then
 	local DisabledIconColor = RGBA(0, 0, 0, 128)
 	local padding1 = box(1, 2, 1, 1)
 	local padding2 = box(1, 1, 1, 2)
+
 	function CreateNumberEditor(parent, id, up_pressed, down_pressed)
 		local g_Classes = g_Classes
-		local button_panel = g_Classes.XWindow:new({Dock = "right"}, parent)
+
+		local button_panel = g_Classes.XWindow:new({
+			Dock = "right",
+		}, parent)
 		local top_btn = g_Classes.XTextButton:new({
 			Dock = "top",
 			OnPress = up_pressed,
@@ -72,7 +89,11 @@ if not rawget(_G,"CreateNumberEditor") then
 			RolloverBackground = RolloverBackground,
 			PressedBackground = PressedBackground,
 		}, button_panel, nil, nil, "NumberArrow")
-		local edit = g_Classes.XEdit:new({Id = id, Dock = "box"}, parent)
+		local edit = g_Classes.XEdit:new({
+			Id = id,
+			Dock = "box",
+		}, parent)
+
 		return edit, top_btn, bottom_btn
 	end
 end

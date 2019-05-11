@@ -6,7 +6,8 @@
 - Made DotNameToObject compatible with keys that don't support dotnames (spaces and so on).
 - RetName:
 - Added the func names from some metatables (point,box,etc).
-- Class funcs now looks like: Unit.lua(75):MoveSleep
+- Class funcs now looks like: Unit.lua(75):MoveSleep.
+- Add a Msg("PostSaveGame") to the end of PersistGame().
 - Removed some log spam from:
 - > DeleteObject
 - > List Choice dialog.

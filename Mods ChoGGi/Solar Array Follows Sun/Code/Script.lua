@@ -66,17 +66,12 @@ GlobalGameTimeThread("SolarArrayOrientation", function()
 end)
 
 -- the below is for removing the persist warnings from the log
-local orig_PersistGame = PersistGame
-function PersistGame(...)
-	local ret = orig_PersistGame(...)
-	Msg("PostSaveGame")
-	return ret
-end
 
 function OnMsg.SaveGame()
   DeleteThread(SolarArrayOrientation)
 	_G.SolarArrayOrientation = false
 end
+-- PostSaveGame is added by my lib mod
 function OnMsg.PostSaveGame()
 	RestartGlobalGameTimeThread("SolarArrayOrientation")
 end
