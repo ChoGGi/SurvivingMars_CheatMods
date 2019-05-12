@@ -3332,14 +3332,12 @@ function Examine:SetObj(startup)
 	-- comments are good for stuff like this
 	return obj_class
 end
--- stable name for external use
-Examine.UpdateObj = Examine.SetObj
 
--- [LUA ERROR] CommonLua/X/XText.lua:191: pattern too complex
 function Examine:SetTextSafety(text)
-	self.idText:SetText(text)
+	-- \0 = non-text chars (ParseText ralphs)
+	self.idText:SetText(text:gsub("\0",""))
 
-	-- wait for it
+	-- [LUA ERROR] CommonLua/X/XText.lua:191: pattern too complex
 	CreateRealTimeThread(function()
 		WaitMsg("OnRender")
 		if self:GetCleanText() == Translate(67--[[Loading resources--]]) then

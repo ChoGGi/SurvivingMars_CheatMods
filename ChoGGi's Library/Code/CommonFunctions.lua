@@ -81,156 +81,218 @@ local function IsObjlist(o)
 end
 ChoGGi.ComFuncs.IsObjlist = IsObjlist
 
+-- "table.table.table.etc" = returns etc as object
+-- use .number for index based tables ("terminal.desktop.1.box")
+-- root is where we start looking (defaults to _G).
+-- create is a boolean to add a table if the "name" is absent.
+local function DotNameToObject(str,root,create)
+	local g = ChoGGi.Temp._G
+
+	-- parent always starts out as "root"
+	local parent = root or g
+
+	-- https://www.lua.org/pil/14.1.html
+	-- [] () + ? . act like regexp ones
+	-- % escape special chars
+	-- ^ complement of the match (the "opposite" of the match)
+	for name,match in str:gmatch("([^%.]+)(.?)") do
+		-- if str included .number we need to make it a number or [name] won't work
+		local num = tonumber(name)
+		if num then
+			name = num
+		end
+
+		local obj_child
+		-- workaround for "Attempt to use an undefined global"
+		if parent == g then
+			obj_child = rawget(parent,name)
+		else
+			obj_child = parent[name]
+		end
+
+		-- . means we're not at the end yet
+		if match == "." then
+			-- create is for adding new settings in non-existent tables
+			if not obj_child and not create then
+				-- our treasure hunt is cut short, so return nadda
+				return false
+			end
+			-- change the parent to the child (create table if absent, this'll only fire when create)
+			parent = obj_child or {}
+		else
+			-- no more . so we return as conquering heroes with the obj
+			return obj_child
+		end
+
+	end
+end
+ChoGGi.ComFuncs.DotNameToObject = DotNameToObject
+
 do -- RetName
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	local IsT = IsT
 	local missing_text = ChoGGi.Temp.missing_text
 
 	-- we use this table to display names of objects for RetName
-	local lookup_table = {[false] = "false"}
+	ChoGGi_Names_lookup_table = ChoGGi_Names_lookup_table or {}
+	local lookup_table
 	local g = ChoGGi.Temp._G
---~ 	-- add some func names
---~ 	lookup_table[g.empty_func] = "empty_func *C"
 
-	local function AddFuncsUserData(meta,name)
-		for key,value in pairs(meta) do
-			if not lookup_table[value] then
-				if type(value) == "function" then
-					if DebugGetInfo(value) == "[C](-1)" then
-						lookup_table[value] = name .. "." .. key .. " *C"
-					else
-						lookup_table[value] = name .. "." .. key
-					end
+	local function AddFuncToList(key,value,name)
+		if not lookup_table[value] then
+			if type(value) == "function" then
+				if DebugGetInfo(value) == "[C](-1)" then
+					lookup_table[value] = name .. "." .. key .. " *C"
+				else
+					lookup_table[value] = name .. "." .. key
 				end
 			end
 		end
 	end
-	-- some userdata funcs
-	AddFuncsUserData(__range_meta,"range")
-	AddFuncsUserData(Request_GetMeta(),"TaskRequest")
-	AddFuncsUserData(getmetatable(quaternion(point20, 0)),"quaternion")
-	AddFuncsUserData(getmetatable(set()),"set")
-	AddFuncsUserData(getmetatable(RandState()),"RandState")
-	AddFuncsUserData(getmetatable(pstr()),"pstr")
-	AddFuncsUserData(getmetatable(NewGrid(0, 0, 1)),"grid")
-	AddFuncsUserData(getmetatable(grid(0,0)),"xmgrid")
-	AddFuncsUserData(getmetatable(point20),"point")
-	AddFuncsUserData(getmetatable(empty_box),"box")
+
+	do -- add stuff we can add now
+		lookup_table = ChoGGi_Names_lookup_table or {}
+		local function AddFuncsUserData(meta,name)
+			for key,value in pairs(meta) do
+				AddFuncToList(key,value,name)
+			end
+		end
+		-- some userdata funcs
+		local userdata_tables = {
+			range = __range_meta,
+			TaskRequest = Request_GetMeta(),
+			quaternion = getmetatable(quaternion(point20, 0)),
+			set = getmetatable(set()),
+			RandState = getmetatable(RandState()),
+			pstr = getmetatable(pstr()),
+			grid = getmetatable(NewGrid(0, 0, 1)),
+			xmgrid = getmetatable(grid(0,0)),
+			point = getmetatable(point20),
+			box = getmetatable(empty_box),
+		}
+		for name,meta in pairs(userdata_tables) do
+			AddFuncsUserData(meta,name)
+		end
+	end -- do
 
 	local function AddFuncs(name)
-		local list = g[name] or empty_table
+		local list = name:find("%.") and DotNameToObject(name) or g[name] or empty_table
 		for key,value in pairs(list) do
-			if not lookup_table[value] then
-				if type(value) == "function" then
-					if DebugGetInfo(value) == "[C](-1)" then
-						lookup_table[value] = name .. "." .. key .. " *C"
-					else
-						lookup_table[value] = name .. "." .. key
-					end
-				end
-			end
+			AddFuncToList(key,value,name)
 		end
 	end
-	AddFuncs("g_CObjectFuncs")
-	AddFuncs("camera")
-	AddFuncs("camera3p")
-	AddFuncs("cameraMax")
-	AddFuncs("cameraRTS")
-	AddFuncs("coroutine")
-	AddFuncs("debug")
-	AddFuncs("DTM")
-	AddFuncs("lfs")
-	AddFuncs("lpeg")
-	AddFuncs("objlist")
-	AddFuncs("package")
-	AddFuncs("pf")
-	AddFuncs("srp")
-	AddFuncs("string")
-	AddFuncs("table")
-	AddFuncs("terrain")
-	AddFuncs("UIL")
-
-	local function AddFuncsChoGGi(name,skip)
-		local list = g.ChoGGi[name]
-		for key,value in pairs(list) do
-			if not lookup_table[value] then
-				if skip then
-					lookup_table[value] = key
-				else
-					lookup_table[value] = "ChoGGi." .. name .. "." .. key
-				end
-			end
-		end
+	local func_tables = {
+		"g_CObjectFuncs","camera","camera3p","cameraMax","cameraRTS","coroutine",
+		"DTM","lpeg","objlist","pf","srp","string","table","terrain","terminal",
+		"UIL",
+	}
+	for i = 1, #func_tables do
+		AddFuncs(func_tables[i])
 	end
 
-	local function BuildNameList()
-		g = ChoGGi.Temp._G
-		lookup_table[g.terminal.desktop] = "terminal.desktop"
-
-		-- ECM func names (some are added by ecm, so we want to update list when it's called again)
-		AddFuncsChoGGi("ComFuncs")
-		AddFuncsChoGGi("ConsoleFuncs")
-		AddFuncsChoGGi("InfoFuncs")
-		AddFuncsChoGGi("MenuFuncs")
-		AddFuncsChoGGi("SettingFuncs")
-		AddFuncsChoGGi("OrigFuncs",true)
-
-		for key,value in pairs(g.ChoGGi) do
-			if not lookup_table[value] then
-				if type(value) == "table" then
-					lookup_table[value] = "ChoGGi." .. key
-				end
-			end
-		end
-
-		-- any tables/funcs in _G
-		for key,value in pairs(g) do
-			-- no need to add tables already added
-			if not lookup_table[value] then
-				local t = type(value)
-				if t == "table" or t == "userdata" then
-					lookup_table[value] = key
-				elseif t == "function" then
-					if DebugGetInfo(value) == "[C](-1)" then
-						lookup_table[value] = key .. " *C"
-					else
+	do -- stuff we need to be in-game for
+		local function AddFuncsChoGGi(name,skip)
+			local list = g.ChoGGi[name]
+			for key,value in pairs(list) do
+				if not lookup_table[value] then
+					if skip then
 						lookup_table[value] = key
+					else
+						lookup_table[value] = "ChoGGi." .. name .. "." .. key
 					end
 				end
 			end
 		end
 
-		-- and any g_Classes funcs
-		for _,class in pairs(g.g_Classes) do
-			for key,value in pairs(class) do
-				-- why it has a false is beyond me (something to do with that object[true] = userdata?)
-				if key ~= false and not lookup_table[value] then
-					if type(value) == "function" then
-						local name = DebugGetInfo(value)
-						if name == "[C](-1)" then
+		local function BuildNameList()
+			lookup_table = ChoGGi_Names_lookup_table or {}
+			g = ChoGGi.Temp._G
+			lookup_table[g.terminal.desktop] = "terminal.desktop"
+
+			AddFuncs("lfs")
+			AddFuncs("debug")
+			AddFuncs("package")
+			AddFuncs("package.searchers")
+			if not ChoGGi.blacklist then
+				local registry = g.debug.getregistry()
+				local name = "debug.getregistry()"
+				for key,value in pairs(registry) do
+					local t = type(value)
+					if t == "function" then
+						AddFuncToList(key,value,name)
+					elseif t == "table" then
+						for key2,value2 in pairs(value) do
+							AddFuncToList(key,value2,key2)
+						end
+					end
+				end
+			end
+
+			-- ECM func names (some are added by ecm, so we want to update list when it's called again)
+			AddFuncsChoGGi("ComFuncs")
+			AddFuncsChoGGi("ConsoleFuncs")
+			AddFuncsChoGGi("InfoFuncs")
+			AddFuncsChoGGi("MenuFuncs")
+			AddFuncsChoGGi("SettingFuncs")
+			AddFuncsChoGGi("OrigFuncs",true)
+
+			for key,value in pairs(g.ChoGGi) do
+				if not lookup_table[value] then
+					if type(value) == "table" then
+						lookup_table[value] = "ChoGGi." .. key
+					end
+				end
+			end
+
+			-- any tables/funcs in _G
+			for key,value in pairs(g) do
+				-- no need to add tables already added
+				if not lookup_table[value] then
+					local t = type(value)
+					if t == "table" or t == "userdata" then
+						lookup_table[value] = key
+					elseif t == "function" then
+						if DebugGetInfo(value) == "[C](-1)" then
 							lookup_table[value] = key .. " *C"
 						else
-							-- Unit.lua(75):MoveSleep
-							-- need to reverse string so it finds the last /, since find looks ltr
-							local slash = name:reverse():find("/")
-							if slash then
-								lookup_table[value] = name:sub((slash * -1) + 1) .. ":" .. key
+							lookup_table[value] = key
+						end
+					end
+				end
+			end
+
+			-- and any g_Classes funcs
+			for _,class in pairs(g.g_Classes) do
+				for key,value in pairs(class) do
+					-- why it has a false is beyond me (something to do with that object[true] = userdata?)
+					if key ~= false and not lookup_table[value] then
+						if type(value) == "function" then
+							local name = DebugGetInfo(value)
+							if name == "[C](-1)" then
+								lookup_table[value] = key .. " *C"
 							else
-								-- the name'll be [string ""](8):
-								lookup_table[value] = "string():" .. key
+								-- Unit.lua(75):MoveSleep
+								-- need to reverse string so it finds the last /, since find looks ltr
+								local slash = name:reverse():find("/")
+								if slash then
+									lookup_table[value] = name:sub((slash * -1) + 1) .. ":" .. key
+								else
+									-- the name'll be [string ""](8):
+									lookup_table[value] = "string():" .. key
+								end
 							end
 						end
 					end
 				end
 			end
 		end
-	end
 
-	-- so they work in the main menu
-	BuildNameList()
+		-- so they work in the main menu
+		BuildNameList()
 
-	-- called from onmsgs for citystart/loadgame
-	ChoGGi.ComFuncs.RetName_Update = BuildNameList
+		-- called from onmsgs for citystart/loadgame
+		ChoGGi.ComFuncs.RetName_Update = BuildNameList
+	end -- do
 	-- probably only of interest to me
 	function ChoGGi.ComFuncs.RetName_Table()
 		return lookup_table
@@ -365,53 +427,6 @@ function ChoGGi.ComFuncs.RetHint(obj)
 		return Translate(3718--[[NONE--]])
 	end
 end
-
--- "table.table.table.etc" = returns etc as object
--- use .number for index based tables ("terminal.desktop.1.box")
--- root is where we start looking (defaults to _G).
--- create is a boolean to add a table if the "name" is absent.
-local function DotNameToObject(str,root,create)
-	local g = ChoGGi.Temp._G
-
-	-- parent always starts out as "root"
-	local parent = root or g
-
-	-- https://www.lua.org/pil/14.1.html
-	-- [] () + ? . act like regexp ones
-	-- % escape special chars
-	-- ^ complement of the match (the "opposite" of the match)
-	for name,match in str:gmatch("([^%.]+)(.?)") do
-		-- if str included .number we need to make it a number or [name] won't work
-		local num = tonumber(name)
-		if num then
-			name = num
-		end
-
-		local obj_child
-		-- workaround for "Attempt to use an undefined global"
-		if parent == g then
-			obj_child = rawget(parent,name)
-		else
-			obj_child = parent[name]
-		end
-
-		-- . means we're not at the end yet
-		if match == "." then
-			-- create is for adding new settings in non-existent tables
-			if not obj_child and not create then
-				-- our treasure hunt is cut short, so return nadda
-				return false
-			end
-			-- change the parent to the child (create table if absent, this'll only fire when create)
-			parent = obj_child or {}
-		else
-			-- no more . so we return as conquering heroes with the obj
-			return obj_child
-		end
-
-	end
-end
-ChoGGi.ComFuncs.DotNameToObject = DotNameToObject
 
 local function GetParentOfKind(win, cls)
 	while win and not win:IsKindOf(cls) do
@@ -1646,46 +1661,55 @@ function ChoGGi.ComFuncs.CreateSetting(str,setting_type)
 	end
 end
 
--- returns whatever is selected > moused over > nearest object to cursor
--- single selection
-local function SelObject(radius)
-	if not GameState.gameplay then
-		return empty_table
-	end
+do -- SelObject/SelObjects
+	local SelectionMouseObj = SelectionMouseObj
+	local MapFindNearest = MapFindNearest
+	local MapGet = MapGet
+	local radius4h = const.HexSize / 4
+
+	-- returns whatever is selected > moused over > nearest object to cursor
 	-- single selection
-	local obj = SelectedObj or SelectionMouseObj()
-	if obj then
-		-- if it's multi then return the first one
-		if obj:IsKindOf("MultiSelectionWrapper") then
-			return obj.objects[1]
+	function ChoGGi.ComFuncs.SelObject(radius)
+		if not GameState.gameplay then
+			return
 		end
-	else
-		-- radius selection
-		local pt = GetTerrainCursor()
-		obj = MapFindNearest(pt,pt,radius or 1500)
-	end
+		-- single selection
+		local obj = SelectedObj or SelectionMouseObj()
 
-	return obj
-end
-ChoGGi.ComFuncs.SelObject = SelObject
-
--- returns an indexed table of objects, add a radius to get objs close to cursor
-local function SelObjects(radius)
-	if not GameState.gameplay then
-		return empty_table
-	end
-	local objs = SelectedObj or SelectionMouseObj()
-	if not radius and objs then
-		if objs:IsKindOf("MultiSelectionWrapper") then
-			return objs.objects
+		if obj then
+			-- if it's multi then return the first one
+			if obj:IsKindOf("MultiSelectionWrapper") then
+				return obj.objects[1]
+			end
 		else
-			return {objs}
+			-- radius selection
+			local pt = GetTerrainCursor()
+			obj = MapFindNearest(pt,pt,radius or radius4h)
 		end
-	else
-		return MapGet(GetTerrainCursor(),radius or 1500,"attached",false)
+
+		return obj
+	end
+
+	-- returns an indexed table of objects, add a radius to get objs close to cursor
+	function ChoGGi.ComFuncs.SelObjects(radius)
+		if not GameState.gameplay then
+			return empty_table
+		end
+		local objs = SelectedObj or SelectionMouseObj()
+
+		if not radius and objs then
+			if objs:IsKindOf("MultiSelectionWrapper") then
+				return objs.objects
+			else
+				return {objs}
+			end
+		else
+			return MapGet(GetTerrainCursor(),radius or radius4h,"attached",false)
+		end
 	end
 end
-ChoGGi.ComFuncs.SelObjects = SelObjects
+local SelObject = ChoGGi.ComFuncs.SelObject
+local SelObjects = ChoGGi.ComFuncs.SelObjects
 
 do -- Rebuildshortcuts
 	-- we want to only remove certain actions from the actual game, not ones added by modders, so list building time...

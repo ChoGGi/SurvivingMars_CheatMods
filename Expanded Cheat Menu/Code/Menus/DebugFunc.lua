@@ -254,26 +254,17 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 		gen:Generate()
 		CreateRealTimeThread(function()
 			-- don't fire the rest till map is good n loaded
-			local Dialogs = Dialogs
-			Sleep(5000)
-			while not Dialogs.PopupNotification do
-				WaitMsg("OnRender")
-			end
-			WaitMsg("RocketLaunchFromEarth")
+			WaitMsg("MessageBoxOpened")
+
 			-- close welcome to mars msg
+			local Dialogs = Dialogs
 			if Dialogs.PopupNotification then
 				Dialogs.PopupNotification:Close()
 			end
-			-- remove all notifications
-			local dlg = GetDialog("OnScreenNotificationsDlg")
-			if dlg then
-				local notes = g_ActiveOnScreenNotifications
-				for i = #notes, 1, -1 do
-					dlg:RemoveNotification(notes[i][1])
-				end
-			end
-			-- pause it
+
+			-- pause it for now (it helps it not freeze)
 			SetGameSpeedState("pause")
+
 			-- lightmodel
 			LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
 			SetLightmodelOverride(1,"TheMartian1_Night")
@@ -281,7 +272,8 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			local texture = table_find(TerrainTextures,"name","Prefab_Orange")
 			terrain.SetTerrainType{type = texture or 1}
 
-			Sleep(1000)
+			-- wait a bit till we're sure the map is around
+			WaitMsg("MysteryChosen")
 
 			-- make an index table of ents for placement
 			local entity_list = {}
@@ -365,6 +357,16 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 				WaitMsg("OnRender")
 				ChoGGi.ComFuncs.CloseDialogsECM()
 				cls()
+			end
+
+			Sleep(2500)
+			-- remove all notifications
+			local dlg = Dialogs.OnScreenNotificationsDlg
+			if dlg then
+				local notes = g_ActiveOnScreenNotifications
+				for i = #notes, 1, -1 do
+					dlg:RemoveNotification(notes[i][1])
+				end
 			end
 
 		end)
@@ -952,13 +954,13 @@ do -- path markers
 		local delay = 500
 		-- if fired from action menu (or shortcut)
 		if IsKindOf(obj,"XAction") then
-			obj = SelObjects()
+			obj = SelObjects(1500)
 			if #obj == 0 then
 				obj = nil
 			end
 			menu_fired = true
 		else
-			obj = obj or SelObjects()
+			obj = obj or SelObjects(1500)
 			delay = type(menu_delay) == "number" and menu_delay or delay
 		end
 

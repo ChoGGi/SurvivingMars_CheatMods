@@ -147,14 +147,16 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("CargoCapacity",value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("CargoCapacity")
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Translate(4598--[[Payload Capacity--]])
 			)
 		end
@@ -287,7 +289,9 @@ function ChoGGi.MenuFuncs.SetRocketMaxExportAmount()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			if value == default_setting then
 				ChoGGi.UserSettings.RocketMaxExportAmount = nil
@@ -307,7 +311,7 @@ function ChoGGi.MenuFuncs.SetRocketMaxExportAmount()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920001291--[[Max Export Amount--]]]
 			)
 		end
@@ -378,7 +382,9 @@ do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 			if choice.nothing_selected then
 				return
 			end
-			local value = choice[1].value
+			choice = choice[1]
+
+			local value = choice.value
 			if type(value) == "number" then
 				if value == default_setting then
 					ChoGGi.UserSettings.LaunchFuelPerRocket = nil
@@ -389,7 +395,7 @@ do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 
 				ChoGGi.SettingFuncs.WriteSettings()
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text),
+					ChoGGi.ComFuncs.SettingState(choice.text),
 					Strings[302535920001317--[[Launch Fuel Per Rocket--]]]
 				)
 			end

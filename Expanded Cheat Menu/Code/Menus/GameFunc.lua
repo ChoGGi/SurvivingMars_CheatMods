@@ -292,7 +292,9 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			obj:SetOpacity(value)
 		elseif type(value) == "string" then
@@ -314,7 +316,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
 			end
 		end
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text),
+			ChoGGi.ComFuncs.SettingState(choice.text),
 			Strings[302535920000694--[[Set Opacity--]]]
 		)
 	end
@@ -1271,7 +1273,9 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if not value then
 			return
 		end
@@ -1287,7 +1291,7 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text),
+			ChoGGi.ComFuncs.SettingState(choice.text),
 			Strings[302535920000633--[[Lights Radius--]]]
 		)
 	end
@@ -1317,7 +1321,9 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if not value then
 			return
 		end
@@ -1333,7 +1339,7 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text),
+			ChoGGi.ComFuncs.SettingState(choice.text),
 			Strings[302535920000635--[[Terrain Detail--]]]
 		)
 	end
@@ -1364,7 +1370,9 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if not value then
 			return
 		end
@@ -1377,7 +1385,7 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text),
+			ChoGGi.ComFuncs.SettingState(choice.text),
 			Strings[302535920000637--[[Video Memory--]]]
 		)
 	end
@@ -1405,7 +1413,9 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
 	}
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if not value then
 			return
 		end
@@ -1422,7 +1432,7 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text),
+			ChoGGi.ComFuncs.SettingState(choice.text),
 			Strings[302535920000639--[[Shadow Map--]]]
 		)
 	end
@@ -1650,7 +1660,9 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if not value then
 			return
 		end
@@ -1660,7 +1672,7 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].value),
+				ChoGGi.ComFuncs.SettingState(choice.value),
 				Strings[302535920000647--[[Border Scrolling--]]]
 			)
 		end
@@ -1695,7 +1707,9 @@ function ChoGGi.MenuFuncs.SetCameraLookatDist()
 	end
 
 	local function CallBackFunc(choice)
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if not value then
 			return
 		end
@@ -1705,7 +1719,7 @@ function ChoGGi.MenuFuncs.SetCameraLookatDist()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920001375--[[Bird's Eye--]]]
 			)
 		end

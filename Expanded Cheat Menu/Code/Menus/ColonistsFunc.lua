@@ -768,7 +768,9 @@ do -- SetDeathAge
 			if choice.nothing_selected then
 				return
 			end
-			local value = choice[1].value
+			choice = choice[1]
+
+			local value = choice.value
 
 			local amount = movie_lookup[value]
 			if not amount and type(value) == "number" then
@@ -796,7 +798,7 @@ do -- SetDeathAge
 				ChoGGi.SettingFuncs.WriteSettings()
 
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[302535920000446--[[Colonist Death Age--]]]),
+					ChoGGi.ComFuncs.SettingState(choice.text,Strings[302535920000446--[[Colonist Death Age--]]]),
 					Strings[302535920000446--[[Colonist Death Age--]]]
 				)
 			end
@@ -885,10 +887,12 @@ function ChoGGi.MenuFuncs.SetColonistsAge(action)
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		local obj = SelectedObj
 		local dome
-		if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+		if IsKindOf(obj,"Colonist") and obj.dome and choice.check1 then
 			dome = obj.dome
 		end
 
@@ -903,7 +907,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(action)
 
 		-- existing
 		elseif setting_mask == 2 then
-			if choice[1].check2 then
+			if choice.check2 then
 				if obj then
 					ChoGGi.ComFuncs.ColonistUpdateAge(obj,value)
 				end
@@ -924,7 +928,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(action)
 		end
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text,setting_type),
+			ChoGGi.ComFuncs.SettingState(choice.text,setting_type),
 			Strings[302535920000807--[[Colonist Age--]]]
 		)
 	end
@@ -1000,11 +1004,12 @@ function ChoGGi.MenuFuncs.SetColonistsGender(action)
 		if choice.nothing_selected then
 			return
 		end
+		choice = choice[1]
 
-		local value = choice[1].value
+		local value = choice.value
 		local obj = SelectedObj
 		local dome
-		if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+		if IsKindOf(obj,"Colonist") and obj.dome and choice.check1 then
 			dome = obj.dome
 		end
 
@@ -1019,7 +1024,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(action)
 
 		-- existing
 		elseif setting_mask == 2 then
-			if choice[1].check2 then
+			if choice.check2 then
 				if obj then
 					ChoGGi.ComFuncs.ColonistUpdateGender(obj,value)
 				end
@@ -1040,7 +1045,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(action)
 		end
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text,setting_type),
+			ChoGGi.ComFuncs.SettingState(choice.text,setting_type),
 			Strings[302535920000810--[[Colonist Gender--]]]
 		)
 	end
@@ -1127,10 +1132,12 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(action)
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		local obj = SelectedObj
 		local dome
-		if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+		if IsKindOf(obj,"Colonist") and obj.dome and choice.check1 then
 			dome = obj.dome
 		end
 
@@ -1145,7 +1152,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(action)
 
 		-- existing
 		elseif setting_mask == 2 then
-			if choice[1].check2 then
+			if choice.check2 then
 				if obj then
 					ChoGGi.ComFuncs.ColonistUpdateSpecialization(obj,value)
 				end
@@ -1165,7 +1172,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(action)
 
 		end
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text),
+			ChoGGi.ComFuncs.SettingState(choice.text),
 			Strings[302535920000813--[[Colonist Specialization--]]]
 		)
 	end
@@ -1240,10 +1247,12 @@ function ChoGGi.MenuFuncs.SetColonistsRace(action)
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		local obj = SelectedObj
 		local dome
-		if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+		if IsKindOf(obj,"Colonist") and obj.dome and choice.check1 then
 			dome = obj.dome
 		end
 
@@ -1258,7 +1267,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(action)
 
 		-- existing
 		elseif setting_mask == 2 then
-			if choice[1].check2 then
+			if choice.check2 then
 				if obj then
 					ChoGGi.ComFuncs.ColonistUpdateRace(obj,value)
 				end
@@ -1282,13 +1291,13 @@ function ChoGGi.MenuFuncs.SetColonistsRace(action)
 			MilestoneCompleted.DaddysLittleHitler = nil
 			UICity.ChoGGi.DaddysLittleHitler = nil
 		-- if only changing one colonists then you aren't hitler :)
-		elseif not choice[1].check2 and not UICity.ChoGGi.DaddysLittleHitler then
+		elseif not choice.check2 and not UICity.ChoGGi.DaddysLittleHitler then
 			Msg("ChoGGi_DaddysLittleHitler")
 			UICity.ChoGGi.DaddysLittleHitler = true
 		end
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].race,Strings[302535920000819--[[Nationalsozialistische Rassenhygiene--]]]),
+			ChoGGi.ComFuncs.SettingState(choice.race,Strings[302535920000819--[[Nationalsozialistische Rassenhygiene--]]]),
 			Strings[302535920000820--[[Colonist Race--]]]
 		)
 	end
@@ -1554,10 +1563,12 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		local obj = SelectedObj
 		local dome
-		if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+		if IsKindOf(obj,"Colonist") and obj.dome and choice.check1 then
 			dome = obj.dome
 		end
 
@@ -1618,7 +1629,7 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
 		end
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text),
+			ChoGGi.ComFuncs.SettingState(choice.text),
 			Strings[302535920000836--[[Set Stats Of All Colonists--]]]
 		)
 	end
@@ -1664,15 +1675,17 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		local obj = SelectedObj
 		local dome
-		if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+		if IsKindOf(obj,"Colonist") and obj.dome and choice.check1 then
 			dome = obj.dome
 		end
 
 		if type(value) == "number" then
-			if choice[1].check2 then
+			if choice.check2 then
 				if obj then
 					obj:SetMoveSpeed(value)
 				end
@@ -1693,7 +1706,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
 			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedColonist",value)
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000838--[[Colonist Move Speed--]]]
 			)
 		end
@@ -1747,16 +1760,18 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		local obj = SelectedObj
 		local dome
-		if IsKindOf(obj,"Colonist") and obj.dome and choice[1].check1 then
+		if IsKindOf(obj,"Colonist") and obj.dome and choice.check1 then
 			dome = obj.dome
 		end
 
 		if type(value) == "number" then
 			value = value * r
-			if choice[1].check2 then
+			if choice.check2 then
 				if obj then
 					obj:SetGravity(value)
 				end
@@ -1778,7 +1793,7 @@ function ChoGGi.MenuFuncs.SetColonistsGravity()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000840--[[Set Colonist Gravity--]]]
 			)
 		end

@@ -461,8 +461,8 @@ do -- WriteLogs_Toggle
 --~ 		"DebugPrint", -- causes an error and stops games from loading
 		"OutputDebugString",
 		"AddConsoleLog", -- also does print()
+--~ 		"printf",
 		"assert",
-		"printf",
 		"error",
 	}
 
@@ -935,15 +935,16 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 		if choice.nothing_selected then
 			return
 		end
+		choice = choice[1]
 
-		local value = choice[1].value
+		local value = choice.value
 		-- if user wants to play it again we'll need to have it set to another state and everything has idle
 		obj:SetState("idle")
 
 		if value ~= "idle" then
 			obj:SetState(value)
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000859--[[Anim State--]]]
 			)
 		end

@@ -34,7 +34,9 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 
 			if value == default_setting then
@@ -45,7 +47,7 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000541--[[RC Set Charging Distance--]]]
 			)
 		end
@@ -88,7 +90,9 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedRC",value)
 			local objs = UICity.labels.Rover or ""
@@ -98,7 +102,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000543--[[RC Move Speed--]]]
 			)
 		end
@@ -142,7 +146,9 @@ function ChoGGi.MenuFuncs.SetGravityRC()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			local value = value * r
 			local objs = UICity.labels.Rover or ""
@@ -153,7 +159,7 @@ function ChoGGi.MenuFuncs.SetGravityRC()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000545--[[RC Gravity--]]]
 			)
 		end
@@ -204,7 +210,9 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			local default = value == default_setting
 
@@ -237,7 +245,7 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000551--[[RC Storage Capacity--]]]
 			)
 		end

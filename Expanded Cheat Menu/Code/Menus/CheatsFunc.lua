@@ -949,11 +949,13 @@ function ChoGGi.MenuFuncs.SpawnColonists()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			CheatSpawnNColonists(value)
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[302535920000014--[[Spawned--]]]),
+				ChoGGi.ComFuncs.SettingState(choice.text,Strings[302535920000014--[[Spawned--]]]),
 				title
 			)
 		end
@@ -1403,7 +1405,9 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			UICity:AddResearchPoints(value)
 		elseif value == "Reset" then
@@ -1412,7 +1416,7 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 			Consts.SponsorResearch = default
 		end
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[302535920000294--[[Added--]]]),
+			ChoGGi.ComFuncs.SettingState(choice.text),
 			Strings[302535920000295--[[Add Research Points--]]]
 		)
 	end

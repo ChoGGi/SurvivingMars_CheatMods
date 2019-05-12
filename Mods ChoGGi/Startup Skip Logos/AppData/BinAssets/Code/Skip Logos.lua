@@ -26,9 +26,15 @@ function OnMsg.DesktopCreated()
 		end
 
 		-- starts in load game menu
-		Dialogs.PGMainMenu:SetMode("Load")
+		CreateRealTimeThread(function()
+			Sleep(1000)
+			-- make sure load menu doesn't steal focus away from console if it's open
+			if not dlgConsole:GetVisible() then
+				Dialogs.PGMainMenu:SetMode("Load")
+			end
+		end)
 
-		-- load mods
+		-- load mods in main menu
 		ModsReloadItems()
 		WaitMsg("OnRender")
 
@@ -42,8 +48,12 @@ function OnMsg.DesktopCreated()
 			ChoGGi.ComFuncs.RetName_Update()
 		end
 
-		-- stop the update news images
+		-- remove the update news
 		UIShowParadoxFeeds = empty_func
+		WaitMsg("OnRender")
+		if Dialogs.PGMainMenu.idContent.idParadoxNews then
+			Dialogs.PGMainMenu.idContent.idParadoxNews:delete()
+		end
 	end)
 	--]]
 

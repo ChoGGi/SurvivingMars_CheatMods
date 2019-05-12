@@ -7,14 +7,16 @@
 - > Any Consts changed will override ones that have been added to a (non-Consts) menu.
 - Console>Settings>Skip Undefined Globals: Stop the "Attempt to use an undefined global" msgs (it'll store a list of them you can check).
 - Cheats>Lightning Strike: Same as a strike from a dust storm.
-- ECM>Colonists>Workplaces>Outside Workplace Sanity Penalty.
 - Cheats>Research>Unlock Anomaly BreakThroughs: Unlock any breakthroughs in anomalies (not planetary ones).
-- Game>Export CSV>Map Data (Breakthroughs): Includes breakthrough info as well.
 - Debug>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
-- ECM>Misc>Time Factor: Change the time factor (not permanently); for ease of screenshots or something.
+- Game>Export CSV>Map Data (Breakthroughs): Includes breakthrough info as well.
+- ECM>Buildings>Farms>Unlock Crops: Shows list of locked crops.
+- ECM>Colonists>Workplaces>Outside Workplace Sanity Penalty.
 - ECM>Game>Lightmodel>List Normal: Changes the list of lightmodels to use (night/day/etc).
 - ECM>Game>Lightmodel>List Disaster: Overrides List Normal.
+- ECM>Misc>Time Factor: Change the time factor (not permanently); for ease of screenshots or something.
 - ECM>Resources>Rare Metals Price (M): Amount of Funding received by exporting one unit of Rare Metals.
+- ECM>Rockets>Payload Capacity: Maximum payload (in kg) of a resupply Rocket.
 - Re-Added Framerate Counter Location: Reposition the FPS counter (enable from in-game options).
 - Examine>Context menu (functions)>Function Results: Continually call a function while showing results in an examine dialog.
 - > Call it manually with MonitorFunc(func_obj,params).
@@ -30,6 +32,7 @@
 - Renamed imgview/txtview to OpenImageViewer/OpenTextViewer.
 - Cleaned up Debug>View All Entities.
 - Exposed delay option for Debug>Path Markers>GameTime (and fixed some minor issues with markers).
+- Renamed Force Story Bits to Test Story Bits.
 - Menu items to use the default ECM icon instead of something maybe vaguely related:
 - > Easier to distinguish between notifications from ECM and from SM.
 - Console:
@@ -54,6 +57,7 @@
 - Console log ignored settings and stayed on.
 - Workaround for the upgrade cheats in the cheats pane with Silva's Modular Apartments.
 - Force Story Bits: Rover/Drone/Selected checkboxes didn't work properly.
+- Fixed the [UI WARNING] Assigning window id error (thanks McKaby).
 - Examine:
 - > It wasn't showing entity info it should be.
 - > Missing the metatable for BaseSocket (as well as showing a blank list).

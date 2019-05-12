@@ -165,6 +165,15 @@ Actions[c] = {ActionName = Translate(4711--[[Crop Fail Threshold--]]),
 	OnAction = ChoGGi.MenuFuncs.CropFailThreshold_Toggle,
 }
 
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000423--[[Unlock Crops--]]],
+	ActionMenubar = "ECM.ECM.Buildings.Farms",
+	ActionId = ".Unlock Crops",
+	ActionIcon = icon,
+	RolloverText = Strings[302535920000444--[[Shows list of locked crops.--]]],
+	OnAction = ChoGGi.MenuFuncs.UnlockCrops,
+}
+
 -- menu
 c = c + 1
 Actions[c] = {ActionName = Strings[302535920000157--[[Cables & Pipes--]]],

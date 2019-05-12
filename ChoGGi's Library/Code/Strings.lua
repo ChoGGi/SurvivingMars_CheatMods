@@ -93,15 +93,15 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 
 	-- if there's a missing id print/return a warning
 	if not next(strings) then
-		local meta = {}
-		setmetatable(strings,meta)
-		meta.__index = function(_,id)
-			if type(id) == "number" then
-				id = "ECM Sez: bad string id? " .. id
-				print(id)
-				return id
-			end
-		end
+		setmetatable(strings,{
+			__index = function(_,id)
+				if type(id) == "number" then
+					id = "ECM Sez: bad string id? " .. id
+					print(id)
+					return id
+				end
+			end,
+		})
 	end
 
 	-- translate all my strings

@@ -295,7 +295,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	AddSubmenu("GlobalVars",nil,"GlobalVarValues","PersistableGlobals","GetLuaSaveGameData","GetLuaLoadGamePermanents","GlobalObjs","GlobalObjClasses","GlobalGameTimeThreads","GlobalGameTimeThreadFuncs","GlobalRealTimeThreads","GlobalRealTimeThreadFuncs")
 	AddSubmenu("EntityData",nil,"EntityStates","EntitySurfaces","HexOutlineShapes","HexInteriorShapes","HexOutlineByHash","HexBuildShapes","HexBuildShapesInversed","HexPeripheralShapes","HexCombinedShapes")
 	AddSubmenu("g_Classes",nil,"ClassTemplates","Attaches","FXRules","FXLists")
-	AddSubmenu("g_CObjectFuncs",nil,"hr","pf","terrain","UIL","DTM","lpeg","lfs","srp","camera","camera3p","cameraMax","cameraRTS","string","table","package")
+	AddSubmenu("g_CObjectFuncs",nil,"hr","pf","terrain","UIL","DTM","lpeg","srp","camera","camera3p","cameraMax","cameraRTS","string","table","package","debug","lfs")
 	AddSubmenu("StoryBits",Translate(948928900281--[[Story Bits--]]),"StoryBitCategories","StoryBitTriggersCombo","g_StoryBitStates","g_StoryBitCategoryStates")
 	AddSubmenu("UICity",nil,"UICity.tech_status","BuildMenuPrerequisiteOverrides","BuildingTechRequirements","g_ApplicantPool","TaskRequesters","LRManagerInstance")
 
@@ -338,15 +338,13 @@ do -- ToggleLogErrors
 			end
 
 			local func_name = Strings[302535920001077--[[Error from function--]]] .. [[ "]] .. name .. [[" = ]]
-			print(func_name,msg,...)
+			local stack_trace = GetStack(2, false, "\t")
+			print(func_name,msg,...,"\nGetStack:\n",stack_trace)
 
-			local stack_trace
-			if blacklist then
-				stack_trace = GetStack(2, false, "\t")
-				print(stack_trace)
-			else
-				stack_trace = debug_traceback(nil,2)
-				print(stack_trace)
+			local stack_trace2
+			if not blacklist then
+				stack_trace2 = debug_traceback(nil,2)
+				print("\ndebug.traceback:\n",stack_trace2)
 			end
 
 			if UserSettings.ExamineErrors then
@@ -354,16 +352,15 @@ do -- ToggleLogErrors
 				if testing then
 					local err_type = type(msg)
 					-- not sure if it can ever be a func...?
-					if err_type == "thread" or err_type == "function" or name == "__procall_errorhandler" then
+					if err_type == "thread" or err_type == "function" then
 						OpenInExamineDlg({
-							(err_type == "function" and err_type .. " " or "") .. func_name
-							,...,
-							stack_trace,
+							(err_type == "function" and err_type .. " " or "") .. func_name,
+							...,stack_trace,stack_trace2,
 						},nil,Strings[302535920001479--[[Examine Errors--]]])
 					end
 				else
 					OpenInExamineDlg(
-						{func_name,msg,...,stack_trace},
+						{func_name,msg,...,stack_trace,stack_trace2,},
 						nil,Strings[302535920001479--[[Examine Errors--]]]
 					)
 				end

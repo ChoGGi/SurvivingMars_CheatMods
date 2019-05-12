@@ -32,7 +32,9 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			local value = value * r
 			-- not tested but I assume too much = dead save as well (like rc and transport)
@@ -49,7 +51,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 				objs[i].max_shared_storage = value
 			end
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000930--[[Set Cargo Shuttle Capacity--]]]
 			)
 		end
@@ -91,7 +93,9 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			local value = value * r
 			-- loop through and set all shuttles
@@ -103,7 +107,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000932--[[Set Cargo Shuttle Speed--]]]
 			)
 		end
@@ -146,7 +150,9 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			-- loop through and set all shuttles
 			local objs = UICity.labels.ShuttleHub or ""
@@ -162,7 +168,7 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text),
+			ChoGGi.ComFuncs.SettingState(choice.text),
 			Strings[302535920000535--[[Set ShuttleHub Shuttle Capacity--]]]
 		)
 	end

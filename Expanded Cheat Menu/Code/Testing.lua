@@ -24,6 +24,27 @@ if not ChoGGi.testing then
 	return
 end
 
+local function StartUp()
+	CreateRealTimeThread(function()
+		-- pause on load
+		WaitMsg("Resume")
+		print("pause")
+		SetGameSpeedState("pause")
+	end)
+
+	-- print startup msgs to console log
+	local msgs = ChoGGi.Temp.StartupMsgs
+	for i = 1, #msgs do
+		print(msgs[i])
+	end
+	table.iclear(ChoGGi.Temp.StartupMsgs)
+
+	print("<color 200 200 200>ECM</color>: <color 128 255 128>Testing Enabled</color>")
+end
+
+OnMsg.LoadGame = StartUp
+OnMsg.CityStart = StartUp
+
 --~ local Translate = ChoGGi.ComFuncs.Translate
 
 --~ 	local orig_GetStack = GetStack
@@ -154,9 +175,17 @@ end
 --~ 		-- stop welcome to mars msg for LoadMapForScreenShot
 --~ 		ShowStartGamePopup = empty_func
 -- this is just for Map Images Pack. it loads the map, positions camera to fixed pos, and takes named screenshot
---~ 		ChoGGi.testing.LoadMapForScreenShot("BlankBigTerraceCMix_13")
-function ChoGGi.testing.LoadMapForScreenShot(map)
 
+--~ ChoGGi.testing.LoadMapForScreenShot("BlankBigTerraceCMix_13")
+
+--~ CreateRealTimeThread(function()
+--~ 	for map in pairs(MapData) do
+--~ 		if map:sub(1,5) == "Blank" then
+--~ 			ChoGGi.testing.LoadMapForScreenShot(map)
+--~ 		end
+--~ 	end
+--~ end)
+local function Screenie(map)
 	-- a mystery without anything visible added to the ground
 	g_CurrentMissionParams.idMystery = "BlackCubeMystery"
 	local gen = RandomMapGenerator:new()
@@ -168,51 +197,64 @@ function ChoGGi.testing.LoadMapForScreenShot(map)
 	gen.FeaturesRatio = 0
 	-- load the map
 	gen:Generate()
-	CreateRealTimeThread(function()
-		-- don't fire the rest till map is good n loaded
-		WaitMsg("RocketLaunchFromEarth")
-		while not Dialogs.PopupNotification do
-			Sleep(500)
-		end
-		-- close welcome to mars msg
+
+	-- don't fire the rest till map is good n loaded
+	WaitMsg("MessageBoxOpened")
+	-- close welcome to mars msg
+	if Dialogs.PopupNotification then
 		Dialogs.PopupNotification:Close()
+	end
 
-		-- hide signs (just in case any are in the currently exposed sector)
-		SetSignsVisible(false)
-		-- hide all the sector markers
-		local g_MapSectors = g_MapSectors
-		for sector in pairs(g_MapSectors) do
-			if type(sector) ~= "number" and sector.decal then
-				sector.decal:SetVisible(false)
-			end
+	-- pause it for now (it helps it not freeze)
+	SetGameSpeedState("pause")
+	-- wait a bit till we're sure the map is around
+	Sleep(1000)
+
+	-- hide signs (just in case any are in the currently exposed sector)
+	SetSignsVisible(false)
+	-- hide all the sector markers
+	local g_MapSectors = g_MapSectors
+	for sector in pairs(g_MapSectors) do
+		if type(sector) ~= "number" and sector.decal then
+			sector.decal:SetVisible(false)
 		end
+	end
 
-		-- lightmodel
-		LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
-		SetLightmodelOverride(1,"TheMartian1_Night")
+	-- lightmodel
+	LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
+	SetLightmodelOverride(1,"TheMartian1_Night")
 
-		-- larger render dist (we zoom out a fair bit)
-		hr.FarZ = 7000000
-		-- zoom out for the whole map (more purple)
-		local cam_params = {GetCamera()}
-		cam_params[4] = 10500
-		SetCamera(table.unpack(cam_params))
---~ 				cam_params[4] = 25000
+	-- larger render dist (we zoom out a fair bit)
+	hr.FarZ = 7000000
+	-- zoom out for the whole map (more purple)
+	local cam_params = {GetCamera()}
+	cam_params[4] = 10500
+	SetCamera(table.unpack(cam_params))
 
-		-- remove black curtains on the sides
-		table.remove_entry(terminal.desktop,XTemplate,"OverviewMapCurtains")
-		-- and the rest of the ui
-		local Dialogs = Dialogs
-		for _,value in pairs(Dialogs) do
-			if type(value) ~= "string" then
-				value:delete()
-			end
+	-- remove black curtains on the sides
+	table.remove_entry(terminal.desktop,XTemplate,"OverviewMapCurtains")
+	-- and the rest of the ui
+	local Dialogs = Dialogs
+	for _,value in pairs(Dialogs) do
+		if type(value) ~= "string" then
+			value:delete()
 		end
-		-- and a bit more delay
-		Sleep(100)
+	end
+	-- and a bit more delay
+	Sleep(250)
+	WaitMsg("OnRender")
 
-		WriteScreenshot("AppData/" .. map .. ".png")
-	end)
+	local name = "AppData/" .. map .. ".tga"
+	WriteScreenshot(name)
+	WaitMsg("OnRender")
+	print(name)
+end
+function ChoGGi.testing.LoadMapForScreenShot(map)
+	if CurrentThread() then
+		Screenie(map)
+	else
+		CreateRealTimeThread(Screenie,map)
+	end
 end
 
 -- just needs the save file name
@@ -473,7 +515,22 @@ print("ChoGGi.testing")
 
 --~ 	 end -- ClassesGenerate
 ------------------------------------------------------------------------------------------
---~ 	function OnMsg.ClassesPreprocess()
+function OnMsg.ClassesPreprocess()
+	-- removes some spam from logs (might cause weirdness so just for me)
+	local umc = UnpersistedMissingClass
+	local empty_func = empty_func
+	umc.CanReserveResidence = empty_func
+	umc.GetEntrance = empty_func
+	umc.GetEntrancePoints = empty_func
+	umc.GetUIStatusOverrideForWorkCommand = empty_func
+	umc.HasFreeVisitSlots = empty_func
+	umc.RefreshNightLightsState = empty_func
+	umc.RemoveCommandCenter = empty_func
+	umc.RemoveResident = empty_func
+	umc.RemoveWorker = empty_func
+	umc.SetIsNightLightPossible = empty_func
+	umc.Unassign = empty_func
+	umc.UpdateAttachedSigns = empty_func
 
 --~ 		-- fix the arcology dome spot
 --~ 		SaveOrigFunc("SpireBase","GameInit")
@@ -491,14 +548,14 @@ print("ChoGGi.testing")
 --~ 			end
 --~ 		end
 ------------------------------------------------------------------------------------------
---~ 		end -- ClassesPreprocess
+end -- ClassesPreprocess
 
 --~ 		-- where we add new BuildingTemplates
---~ 		function OnMsg.ClassesPostprocess()
+--~ function OnMsg.ClassesPostprocess()
 
---~ 		end -- ClassesPostprocess
+--~ end -- ClassesPostprocess
 ------------------------------------------------------------------------------------------
---~ 	function OnMsg.ClassesBuilt()
+--~ function OnMsg.ClassesBuilt()
 
 --~ 		-- add an overlay for dead rover
 --~ 		SaveOrigFunc("PinsDlg","GetPinConditionImage")
@@ -836,10 +893,22 @@ print(2,"stop")
 	--~	 ProjectSync()
 	end
 --]]
---~ 	end -- ClassesBuilt
+--~ end -- ClassesBuilt
 ------------------------------------------------------------------------------------------
 
 function OnMsg.ModsReloaded()
+	-- print any mod error msgs in console
+	local startup = ChoGGi.Temp.StartupMsgs
+	local c = #startup
+
+	local log = ModMessageLog
+	for i = 1, #log do
+		local msg = log[i]
+		if msg:find("Error loading") then
+			c = c + 1
+			startup[c] = msg
+		end
+	end
 	print(ChoGGi.ComFuncs.TableConcat(ChoGGi.Temp.StartupMsgs))
 	table.iclear(ChoGGi.Temp.StartupMsgs)
 end

@@ -171,13 +171,15 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG("DroneTransformWasteRockObstructorToStockpileAmount",value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("DroneTransformWasteRockObstructorToStockpileAmount")
 
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000509--[[Drone Rock To Concrete Speed--]]]
 			)
 		end
@@ -220,7 +222,9 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			local objs = UICity.labels.Drone or ""
 			for i = 1, #objs do
@@ -230,7 +234,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000511--[[Drone Move Speed--]]]
 			)
 		end
@@ -338,7 +342,9 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			local objs = UICity.labels.DroneFactory or ""
 			for i = 1, #objs do
@@ -354,7 +360,7 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].text),
+			ChoGGi.ComFuncs.SettingState(choice.text),
 			Strings[302535920000515--[[DroneFactory Build Speed--]]]
 		)
 	end
@@ -607,7 +613,9 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			local value = value * r
 			--loop through and set all
@@ -619,7 +627,7 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000517--[[Drone Gravity--]]]
 			)
 		end

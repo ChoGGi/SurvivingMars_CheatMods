@@ -37,33 +37,13 @@ end -- do
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
-	local ChoGGi = ChoGGi
-
 	-- stops crashing with certain missing pinned objects
 	if ChoGGi.UserSettings.FixMissingModBuildings then
 		local umc = UnpersistedMissingClass
 		ChoGGi.ComFuncs.AddParentToClass(umc,"AutoAttachObject")
 		ChoGGi.ComFuncs.AddParentToClass(umc,"PinnableObject")
 		umc.entity = "ErrorAnimatedMesh"
-
-		-- removes some spam from logs (might cause weirdness so just for me)
-		if testing then
-			local empty_func = empty_func
-			umc.CanReserveResidence = empty_func
-			umc.GetEntrance = empty_func
-			umc.GetEntrancePoints = empty_func
-			umc.GetUIStatusOverrideForWorkCommand = empty_func
-			umc.HasFreeVisitSlots = empty_func
-			umc.RefreshNightLightsState = empty_func
-			umc.RemoveCommandCenter = empty_func
-			umc.RemoveResident = empty_func
-			umc.RemoveWorker = empty_func
-			umc.SetIsNightLightPossible = empty_func
-			umc.Unassign = empty_func
-			umc.UpdateAttachedSigns = empty_func
-		end
 	end
-
 end
 
 -- where we can add new BuildingTemplates
@@ -75,15 +55,15 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 	local PlaceObj = PlaceObj
 
 --~ 	function OnMsg.XTemplatesLoaded()
-	local function OnMsgXTemplates()
+	local function OnMsg_XTemplatesLoaded()
 		local XTemplates = XTemplates
 		local ChoGGi = ChoGGi
 		local UserSettings = ChoGGi.UserSettings
 
 		for key,template in pairs(XTemplates) do
 			local xt = template[1]
-			-- add some ids to make it easier to fiddle with selection panel
-			if key:sub(1,7) == "section" then
+			-- add some ids to make it easier to fiddle with selection panel (making sure to skip the repeatable ones)
+			if key:sub(1,7) == "section" and key:sub(-3) ~= "Row" then
 				if xt and not xt.Id then
 					xt.Id = "id" .. template.id .. "_ChoGGi"
 				end
@@ -202,7 +182,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 	end
 
 	-- called when new DLC is added (or a new game)
-	OnMsg.XTemplatesLoaded = OnMsgXTemplates
+	OnMsg.XTemplatesLoaded = OnMsg_XTemplatesLoaded
 
 	-- use this message to perform post-built actions on the final classes
 	function OnMsg.ClassesBuilt()
@@ -217,7 +197,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 			}
 		end
 
-		OnMsgXTemplates()
+		OnMsg_XTemplatesLoaded()
 	end
 
 end -- do
@@ -383,7 +363,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			end
 
 			-- always show menu on my computer
-			if UserSettings.ShowCheatsMenu or testing then
+			if testing or UserSettings.ShowCheatsMenu then
 				XShortcutsTarget:SetVisible(true)
 			end
 
@@ -461,17 +441,6 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			end
 		end
 	end
-
-	-- print any mod error msgs in console
-	local log = ModMessageLog
-	local startup = ChoGGi.Temp.StartupMsgs
-	for i = 1, #log do
-		local msg = log[i]
-		if msg:find("Error loading") then
-			startup[#startup+1] = msg
-		end
-	end
-
 end -- ModsReloaded
 
 function OnMsg.PersistPostLoad()
@@ -1030,7 +999,7 @@ function OnMsg.ApplicationQuit()
 	local ChoGGi = ChoGGi
 
 	-- resetting settings?
-	if ChoGGi.Temp.ResetECMSettings or testing then
+	if testing or ChoGGi.Temp.ResetECMSettings then
 		return
 	end
 
@@ -1105,22 +1074,19 @@ do -- LoadGame/CityStart
 	local function SetMissionBonuses(UserSettings,Presets,preset,which,Func)
 		local list = Presets[preset].Default or ""
 		for i = 1, #list do
-			local item = list[i]
-			if UserSettings[which .. item.id] then
-				Func(item.id)
+			local id = list[i].id
+			if UserSettings[which .. id] then
+				Func(id)
 			end
 		end
 	end
 
 	-- saved game is loaded
 	function OnMsg.LoadGame()
-		ChoGGi.Temp.IsChoGGiMsgLoaded = false
 		Msg("ChoGGi_Loaded")
 	end
-	-- for new games
+	-- new game is loaded (this is before the map is loaded)
 	function OnMsg.CityStart()
-		local ChoGGi = ChoGGi
-		ChoGGi.Temp.IsChoGGiMsgLoaded = false
 		-- reset my mystery msgs to hidden
 		ChoGGi.UserSettings.ShowMysteryMsgs = nil
 		Msg("ChoGGi_Loaded")
@@ -1130,17 +1096,10 @@ do -- LoadGame/CityStart
 		local UICity = UICity
 		local ChoGGi = ChoGGi
 
-		-- a place to store per-game values
+		-- a place to store per-game values... that i'll use one of these days (tm)
 		if not UICity.ChoGGi then
 			UICity.ChoGGi = {}
 		end
-
-		-- so ChoGGi_Loaded gets fired only every load, rather than also everytime we save
-		if ChoGGi.Temp.IsChoGGiMsgLoaded == true then
-			printC("IsChoGGiMsgLoadedIsChoGGiMsgLoadedIsChoGGiMsgLoadedIsChoGGiMsgLoadedIsChoGGiMsgLoadedIsChoGGiMsgLoadedIsChoGGiMsgLoadedIsChoGGiMsgLoaded")
-			return
-		end
-		ChoGGi.Temp.IsChoGGiMsgLoaded = true
 
 		local UserSettings = ChoGGi.UserSettings
 		local g_Classes = g_Classes
@@ -1361,15 +1320,6 @@ do -- LoadGame/CityStart
 
 		end)
 
-		-- print startup msgs to console log
-		if not testing then
-			local msgs = ChoGGi.Temp.StartupMsgs
-			for i = 1, #msgs do
-				print(msgs[i])
-			end
-			table.iclear(ChoGGi.Temp.StartupMsgs)
-		end
-
 		-- everyone loves a new titlebar, unless they don't
 		if UserSettings.ChangeWindowTitle then
 			terminal.SetOSWindowTitle(Translate(1079--[[Surviving Mars--]]) .. ": " .. Strings[302535920000887--[[ECM--]]] .. " " .. ChoGGi._VERSION)
@@ -1422,8 +1372,6 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			FlushLogFile()
 		end
 
-		printC("<color 200 200 200>ECM</color>: <color 128 255 128>Testing Enabled</color>")
-
 		-- how long startup takes
 		if testing or UserSettings.ShowStartupTicks then
 			print("<color 200 200 200>",Strings[302535920000887--[[ECM--]]],"</color>:",Strings[302535920000247--[[Startup ticks--]]],":",GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
@@ -1440,6 +1388,8 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 	end --OnMsg
 end -- do
 
--- if i need to do something on a new game later then CityStart
---~ function OnMsg.RocketLaunchFromEarth()
+-- if i need to do something on a new game that needs the map (or objs on the map)
+--~ function OnMsg.MapSectorsReady()
 --~ end
+-- you can also do a thread and a WaitMsg for DepositsSpawned or Resume
+-- or MessageBoxOpened/MessageBoxClosed (the welcome msg)

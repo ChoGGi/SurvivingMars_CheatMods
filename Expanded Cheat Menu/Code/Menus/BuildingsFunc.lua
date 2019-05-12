@@ -8,6 +8,43 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.UnlockCrops()
+	local item_list = {}
+	local c = 0
+
+	local CropPresets = CropPresets
+	for id,crop in pairs(CropPresets) do
+		if crop.Locked then
+			c = c + 1
+			item_list[c] = {
+				text = Translate(crop.DisplayName),
+				value = id,
+				hint = Translate(crop.Desc),
+				icon = crop.icon,
+			}
+		end
+	end
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		local value = choice[1].value
+		if CropPresets[value] then
+			UnlockCrop(value)
+			MsgPopup(
+				ChoGGi.ComFuncs.SettingState(value),
+				Strings[302535920000423--[[Unlock Crops--]]]
+			)
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = Strings[302535920000423--[[Unlock Crops--]]],
+	}
+end
+
 function ChoGGi.MenuFuncs.RotateDuringPlacement_Toggle()
 	local buildings = ClassTemplates.Building
 
@@ -36,7 +73,7 @@ function ChoGGi.MenuFuncs.RotateDuringPlacement_Toggle()
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RotateDuringPlacement,Strings[302535920001407--[[Rotate During Placement--]]]),
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RotateDuringPlacement),
 		Strings[302535920001407--[[Rotate During Placement--]]]
 	)
 end
@@ -90,7 +127,7 @@ function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	ChoGGi.ComFuncs.UpdateBuildMenu()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SponsorBuildingLimits,Strings[302535920001398--[[Remove Sponsor Limits--]]]),
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SponsorBuildingLimits),
 		Strings[302535920001398--[[Remove Sponsor Limits--]]]
 	)
 end
@@ -99,7 +136,7 @@ function ChoGGi.MenuFuncs.BuildOnGeysers_Toggle()
 	ChoGGi.UserSettings.BuildOnGeysers = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.BuildOnGeysers)
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.BuildOnGeysers,Strings[302535920000064--[[Build On Geysers--]]]),
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.BuildOnGeysers),
 		Strings[302535920000064--[[Build On Geysers--]]]
 	)
 end
@@ -165,7 +202,7 @@ function ChoGGi.MenuFuncs.SetTrainingPoints()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].value,name),
+				ChoGGi.ComFuncs.SettingState(value,name),
 				Strings[302535920001344--[[Points To Train--]]]
 			)
 		end
@@ -366,7 +403,9 @@ function ChoGGi.MenuFuncs.SetExportWhenThisAmount()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 
 		if value == default_setting then
 			setting.export_when_this_amount = nil
@@ -376,7 +415,7 @@ function ChoGGi.MenuFuncs.SetExportWhenThisAmount()
 
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice[1].value),
+			ChoGGi.ComFuncs.SettingState(choice.value),
 			Strings[302535920001336--[[Export When This Amount--]]]
 		)
 	end
@@ -426,7 +465,9 @@ function ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount(action)
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			value = value * r
 
@@ -443,8 +484,8 @@ function ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount(action)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text,Strings[title]),
-				Strings[302535920001332--[[Export Amount Per Trip--]]]
+				ChoGGi.ComFuncs.SettingState(choice.text),
+				title
 			)
 		end
 	end
@@ -495,7 +536,9 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
+		choice = choice[1]
+
+		local value = choice.value
 		if type(value) == "number" then
 			value = value * r
 
@@ -518,7 +561,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice[1].text),
+				ChoGGi.ComFuncs.SettingState(choice.text),
 				Strings[302535920000164--[[Storage Amount Of Diner & Grocery--]]]
 			)
 		end

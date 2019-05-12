@@ -9,16 +9,13 @@ const.nConsoleHistoryMaxSize = 100
 local ChoGGi = ChoGGi
 local mod = Mods[ChoGGi.id]
 
--- blacklist hindering us?
-local blacklist = false
-if not mod.no_blacklist then
-	blacklist = true
+-- is ECM shanghaied by the blacklist?
+if mod.no_blacklist then
+	ChoGGi.blacklist = false
 end
 
 -- I should really split ChoGGi into funcs and settings... one of these days
 ChoGGi._VERSION = "v" .. mod.version_major .. "." .. mod.version_minor
--- is ECM shanghaied by the blacklist?
-ChoGGi.blacklist = blacklist
 -- path to this mods' folder
 ChoGGi.mod_path = mod.env.CurrentModPath or mod.content_path or mod.path
 -- Console>Scripts folder
@@ -26,7 +23,7 @@ ChoGGi.scripts = "AppData/ECM Scripts"
 -- you can pry my settings FILE from my cold dead (and not modding SM anymore) hands.
 ChoGGi.settings_file = "AppData/CheatMenuModSettings.lua"
 
-if blacklist then
+if ChoGGi.blacklist then
 	ChoGGi.ComFuncs.FileExists = empty_func
 else
 	-- used for certain funcs in lib mod

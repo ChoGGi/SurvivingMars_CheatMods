@@ -36,6 +36,8 @@ ChoGGi = {
 	id = "ChoGGi_CheatMenu",
 	-- this
 	id_lib = "ChoGGi_Library",
+	-- is ECM shanghaied by the blacklist?
+	blacklist = true,
 	-- constants
 	Consts = {
 	-- const.* (I don't think these have default values in-game anywhere, so manually set them.) _GameConst.lua

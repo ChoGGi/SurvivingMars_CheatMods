@@ -566,6 +566,8 @@ Double left-click <left_click> selected item to open in new editor.",
 302535920001195,Reset to 500 M,
 302535920001196,"If your funds are a negative value, then you added too much.
 Fix with: %s",
+302535920000423,Unlock Crops,
+302535920000444,Shows list of locked crops.,
 302535920001407,Rotate During Placement,
 302535920001408,Allow you to rotate all buildings.,
 302535920001398,Remove Sponsor Limits,
@@ -1190,7 +1192,7 @@ It's not as if domes need to be where you placed them (people will just ignore i
 302535920000487,Delete All Of Selected Object,
 302535920000488,Will ask for confirmation beforehand (will not delete domes).,
 302535920000489,Delete Object(s),
-302535920000490,Deletes selected object or object under mouse cursor (most objs, not all).,
+302535920000490,"Deletes selected object or object under mouse cursor (most objs, not all).",
 302535920000492,Opens the object examiner for the selected or moused-over obj.,
 302535920000493,Change Map,
 302535920000494,"Change map (options to pick commander, sponsor, etc...
