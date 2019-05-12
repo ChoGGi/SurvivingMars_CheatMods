@@ -1,5 +1,6 @@
-==== AUTOMATICALLY GENERATED ====
+## ==== AUTOMATICALLY GENERATED ====
 
+```
 Cheats.Consts.Buildings>Building dust accumulation per Sol: Dust accumulation per Sol
 Cheats.Consts.Buildings>Building dust max percentage per Sol: Maximum dust accumulated per Sol
 Cheats.Consts.Buildings>Building dust min per Sol: Minimum dust accumulated per Sol
@@ -554,3 +555,4 @@ Shortcut Keys>Place Last Constructed Building
 Shortcut Keys>Place Last Selected Object
 Shortcut Keys>Restart
 Shortcut Keys>Show Console
+```
