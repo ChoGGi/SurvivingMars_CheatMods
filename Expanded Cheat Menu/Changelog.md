@@ -50,6 +50,7 @@
 - > Entity Spots now adds the surf/surf_hash values.
 
 ### Fixed:
+- Auto Unpin Object could freeze the game (thanks ronrn).
 - Set Production would set objects of a different class.
 - Game would freeze if ConsoleErrors was false (thanks Gaspurr).
 - Debug>Pathing failed on jumper shuttles on the landing.

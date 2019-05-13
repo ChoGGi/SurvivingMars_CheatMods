@@ -54,15 +54,12 @@ function ChoGGi.MenuFuncs.SetTimeFactor()
 end
 
 function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
+
 	local item_list = {
 		{text = Translate(547--[[Colonists--]]), value = "Colonist"},
 		{text = Translate(1120--[[Space Elevator--]]), value = "SpaceElevator"},
 		{text = Translate(3518--[[Drone Hub--]]), value = "DroneHub"},
 		{text = Translate(1685--[[Rocket--]]), value = "SupplyRocket"},
-
-		{text = Translate(1682--[[RC Rover--]]), value = "RCRover"},
-		{text = Translate(1684--[[RC Explorer--]]), value = "RCExplorer"},
-		{text = Translate(1683--[[RC Transport--]]), value = "RCTransport"},
 
 		{text = Translate(5017--[[Basic Dome--]]), value = "DomeBasic"},
 		{text = Translate(5146--[[Medium Dome--]]), value = "DomeMedium"},
@@ -76,86 +73,68 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 		{text = Strings[302535920000347--[[Star Dome--]]], value = "DomeStar"},
 		{text = Strings[302535920000351--[[Hexa Dome--]]], value = "DomeHexa"},
 	}
+	local c = #item_list
 
-	if not ChoGGi.UserSettings.UnpinObjects then
-		ChoGGi.UserSettings.UnpinObjects = {}
-	end
-
-	-- other hint type
-	local EnabledList = {Strings[302535920001096--[[Auto Unpinned--]]], ":"}
-	local c = 0
-	local list = ChoGGi.UserSettings.UnpinObjects
-	if next(list) then
-		local objs = list or ""
-		for i = 1, #objs do
+	-- build list with .
+	local g_Classes = g_Classes
+	for key,value in pairs(g_Classes) do
+		-- it adds them all and i just check .class
+		if value.pin_on_start and key ~= "BaseRover" and key ~= "SpaceElevator" then
 			c = c + 1
-			EnabledList[c] = " "
-			c = c + 1
-			EnabledList[c] = objs[i]
+			item_list[c] = {
+				text = value.display_name and Translate(value.display_name) or key,
+				value = key,
+				icon = value.display_icon,
+			}
 		end
 	end
 
-	local function CallBackFunc(choice)
-		if choice.nothing_selected then
+	local UserSettings = ChoGGi.UserSettings
+	UserSettings.UnpinObjects = UserSettings.UnpinObjects or {}
+
+	-- add hints to enabled
+	for i = 1, #item_list do
+		local item = item_list[i]
+		if UserSettings.UnpinObjects[item] then
+			item.hint = Strings[302535920000030--[[Enabled--]]]
+		end
+	end
+
+	local function CallBackFunc(choices)
+		if choices.nothing_selected then
 			return
 		end
-		local check1 = choice[1].check1
-		local check2 = choice[1].check2
+		local checks = choices[1]
 
-		local pins = ChoGGi.UserSettings.UnpinObjects
-		local p_c = #pins
-		for i = 1, #choice do
-			local value = choice[i].value
-			if check2 then
-				for j = 1, #pins do
-					local pin = pins[j]
-					if pin == value then
-						pin = false
-					end
-				end
-			elseif check1 then
-				p_c = p_c + 1
-				pins[p_c] = value
+		local pins = UserSettings.UnpinObjects
+		if checks.check1 then
+			for i = 1, #choices do
+				pins[choices[i].value] = true
 			end
-		end
-
-		-- remove dupes
-		ChoGGi.ComFuncs.TableCleanDupes(ChoGGi.UserSettings.UnpinObjects)
-
-		local found = true
-		while found do
-			found = nil
-			for i = 1, #ChoGGi.UserSettings.UnpinObjects do
-				if ChoGGi.UserSettings.UnpinObjects[i] == false then
-					ChoGGi.UserSettings.UnpinObjects[i] = nil
-					found = true
-					break
-				end
+		elseif checks.check2 then
+			for i = 1, #choices do
+				pins[choices[i].value] = nil
 			end
 		end
 
 		--if it's empty then remove setting
-		if not next(ChoGGi.UserSettings.UnpinObjects) then
-			ChoGGi.UserSettings.UnpinObjects = nil
+		if not next(UserSettings.UnpinObjects) then
+			UserSettings.UnpinObjects = nil
 		end
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			Strings[302535920001093--[[Toggled: %s pinnable objects.--]]]:format(#choice),
+			Strings[302535920001093--[[Toggled: %s pinnable objects.--]]]:format(#choices),
 			Strings[302535920000686--[[Auto Unpin Objects--]]]
 		)
 	end
 
-	c = c + 1
-	EnabledList[c] = "\n"
-	c = c + 1
-	EnabledList[c] = Strings[302535920001097--[[Enter a class name (SelectedObj.class) to add a custom entry.--]]]
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920001095--[[Auto Remove Items From Pin List--]]],
-		hint = TableConcat(EnabledList),
+		title = Strings[302535920000686--[[Auto Unpin Objects--]]],
+		hint = Strings[302535920001097--[[Enter a class name (SelectedObj.class) to add a custom entry.--]]],
 		multisel = true,
-		skip_sort = true,
+		sortby = "value",
 		checkboxes = {
 			at_least_one = true,
 			only_one = true,

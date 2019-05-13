@@ -21,7 +21,6 @@ local NameUnit = NameUnit
 local orig_GenerateColonistData = GenerateColonistData
 function GenerateColonistData(...)
   if mod_RandomBirthplace then
-    local Nations = Nations
     local c = orig_GenerateColonistData(...)
     c.birthplace = Nations[AsyncRand(#Nations - 1 + 1) + 1].value
     NameUnit(c)
