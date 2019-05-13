@@ -17,7 +17,7 @@ function ChoGGi_RolloverModeTerminalTarget:MouseEvent(event, pt, button)
 		if button == "L" then
 			local term = terminal.desktop
 			local target = term:GetMouseTarget(pt) or term
-			ChoGGi.ComFuncs.OpenInExamineDlg(target,terminal_dialog)
+			ChoGGi.ComFuncs.OpenInExamineDlg(target, terminal_dialog)
 		end
 		-- right or middle so goodbye
 		ChoGGi.ComFuncs.TerminalRolloverMode(false)
@@ -25,7 +25,7 @@ function ChoGGi_RolloverModeTerminalTarget:MouseEvent(event, pt, button)
 	end
 end
 
-function ChoGGi.ComFuncs.TerminalRolloverMode(enabled,dlg)
+function ChoGGi.ComFuncs.TerminalRolloverMode(enabled, dlg)
 	if not terminal_target then
 		terminal_target = ChoGGi_RolloverModeTerminalTarget:new()
 	end

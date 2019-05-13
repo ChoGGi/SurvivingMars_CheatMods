@@ -9,7 +9,7 @@ function OnMsg.LoadGame()
 	UnlockBuilding("DefenceTower")
 end
 
-local next,pairs = next,pairs
+local next, pairs = next, pairs
 local IsValid = IsValid
 local IsValidThread = IsValidThread
 local CreateRealTimeThread = CreateRealTimeThread
@@ -28,7 +28,7 @@ function OnMsg.ClassesBuilt()
 	function DefenceTower:DefenceTick(...)
 
 		-- place at end of function to have it protect dustdevils before meteors
-		orig_DefenceTower_DefenceTick(self,...)
+		orig_DefenceTower_DefenceTick(self, ...)
 
 		-- copied from orig func
 		if IsValidThread(self.track_thread) then
@@ -83,7 +83,7 @@ function OnMsg.ClassesBuilt()
 
 		-- only remove devil handles if they're actually gone
 		if next(devils) then
-			for handle,obj in pairs(devils) do
+			for handle, obj in pairs(devils) do
 				if not IsValid(obj) then
 					devils[handle] = nil
 				end

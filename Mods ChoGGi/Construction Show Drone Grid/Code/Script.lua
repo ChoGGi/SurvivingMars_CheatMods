@@ -38,12 +38,12 @@ function CursorBuilding:GameInit()
 
 	-- change colours
   local g_HexRanges = g_HexRanges
-	for range,obj in pairs(g_HexRanges) do
-		if IsKindOf(obj,"SupplyRocket") then
+	for range, obj in pairs(g_HexRanges) do
+		if IsKindOf(obj, "SupplyRocket") then
 			for i = 1, #range.decals do
 				range.decals[i]:SetColorModifier(green)
 			end
-		elseif IsKindOf(obj,"RCRover") then
+		elseif IsKindOf(obj, "RCRover") then
 			for i = 1, #range.decals do
 				range.decals[i]:SetColorModifier(yellow)
 			end

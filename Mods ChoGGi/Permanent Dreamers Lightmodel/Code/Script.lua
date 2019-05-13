@@ -16,18 +16,18 @@ local SetLightmodelOverride = SetLightmodelOverride
 local DelayedCall = DelayedCall
 
 function OnMsg.CityStart()
-  SetLightmodelOverride(1,lightmodel)
+  SetLightmodelOverride(1, lightmodel)
 end
 
 function OnMsg.LoadGame()
-  SetLightmodelOverride(1,lightmodel)
+  SetLightmodelOverride(1, lightmodel)
 end
 
 local orig_ClosePlanetCamera = ClosePlanetCamera
 function ClosePlanetCamera(planet)
   -- needs a slight delay
 	DelayedCall(100, function()
-    SetLightmodelOverride(1,lightmodel)
+    SetLightmodelOverride(1, lightmodel)
   end)
   return orig_ClosePlanetCamera(planet)
 end

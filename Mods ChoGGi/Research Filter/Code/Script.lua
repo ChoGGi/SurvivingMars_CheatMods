@@ -8,7 +8,7 @@ local count = 0
 local table_find = table.find
 local KbdShortcut = KbdShortcut
 local CreateRealTimeThread = CreateRealTimeThread
-local T,_InternalTranslate = T,_InternalTranslate
+local T, _InternalTranslate = T, _InternalTranslate
 
 local function FilterTech(str)
 	-- loop through the stored tech cats
@@ -30,7 +30,7 @@ local function FilterTech(str)
 end
 
 -- it's quicker to the user
-local function OnKbdKeyDown(input,vk, ...)
+local function OnKbdKeyDown(input, vk, ...)
 	if KbdShortcut(vk) == "Shift-Enter" then
 		input:SetText("")
 		FilterTech("")
@@ -39,7 +39,7 @@ local function OnKbdKeyDown(input,vk, ...)
 	return XEdit.OnKbdKeyDown(input, vk, ...)
 end
 
-local function OnKbdKeyUp(input,vk, ...)
+local function OnKbdKeyUp(input, vk, ...)
 	FilterTech(input:GetText())
 	return XEdit.OnKbdKeyUp(input, vk, ...)
 end
@@ -62,7 +62,7 @@ local function EditDlg(dlg)
 	local input = XEdit:new({
 		Id = "idFilterBar",
 		RolloverTemplate = "Rollover",
-		RolloverTitle = _InternalTranslate(T(126095410863,"Info")),
+		RolloverTitle = _InternalTranslate(T(126095410863, "Info")),
 		RolloverText = [[Filter checks name, description, and id.
 <color 0 200 0>Shift-Enter</color> to clear.]],
 		Hint = [[Tech Filter]],
@@ -95,7 +95,7 @@ local function EditDlg(dlg)
 					tech_list[count] = {
 						id = c.id,
 						-- stick all the strings into one for quicker searching (i use a \0 (null char) so the strings are separate)
-						str = c.id .. "\t" .. _InternalTranslate(T{c.description,c})
+						str = c.id .. "\t" .. _InternalTranslate(T{c.description, c})
 							.. "\t" .. _InternalTranslate(T(c.display_name)),
 						-- ui ref
 						tech = tech,
@@ -104,7 +104,7 @@ local function EditDlg(dlg)
 					}
 				else
 					-- could just use tech_list[count], but just in case? (it's still quicker than translating each time I suppose)
-					local item = tech_list[table_find(tech_list,"id",c.id)]
+					local item = tech_list[table_find(tech_list, "id", c.id)]
 					if item then
 						item.tech = tech
 						item.vis = true
@@ -117,10 +117,10 @@ local function EditDlg(dlg)
 end
 
 local orig_OpenDialog = OpenDialog
-function OpenDialog(dlg_str,...)
-	local dlg = orig_OpenDialog(dlg_str,...)
+function OpenDialog(dlg_str, ...)
+	local dlg = orig_OpenDialog(dlg_str, ...)
 	if dlg_str == "ResearchDlg" then
-		CreateRealTimeThread(EditDlg,dlg)
+		CreateRealTimeThread(EditDlg, dlg)
 	end
 	return dlg
 end

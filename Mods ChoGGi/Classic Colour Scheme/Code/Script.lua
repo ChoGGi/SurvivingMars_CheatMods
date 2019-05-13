@@ -8,7 +8,7 @@ RGBA(r, g, b, a)
 
 RGBA(GetRGBA(2199664752))
 
-ColonyColorSchemes.ChoGGi_Classic_Colour_Scheme.cables_base = ColorizationMaterialEncode(RGB(22,36,50), -128, 128)
+ColonyColorSchemes.ChoGGi_Classic_Colour_Scheme.cables_base = ColorizationMaterialEncode(RGB(22, 36, 50), -128, 128)
 
 	ColonyColorSchemes.ChoGGi_Classic_Colour_Scheme.inside_accent_2 = ColorizationMaterialEncode(2367520, 64, -32)
 
@@ -130,7 +130,7 @@ subheat
 -- this is just a copy n paste of one of the in-game schemes
 -- convert the numbers with ColorizationMaterialDecode(2209066747), this will return three numbers:
 -- a value you can use with GetRGB(value), roughness value, metallic value
--- to convert back into the proper number use ColorizationMaterialEncode(RGB(22,36,50), rough, met)
+-- to convert back into the proper number use ColorizationMaterialEncode(RGB(22, 36, 50), rough, met)
 
 -- not my speeling
 

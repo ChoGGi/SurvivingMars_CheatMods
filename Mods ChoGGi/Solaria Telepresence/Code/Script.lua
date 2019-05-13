@@ -24,7 +24,7 @@ DefineClass.Solaria = {
 	-- anim inside
 	interior = {"ResearchLabInterior"},
 	spots = {"Terminal"},
-	anims = {{anim = "terminal",all = true}},
+	anims = {{anim = "terminal", all = true}},
 
 	-- production is workers * (prod:GetClassValue("production_per_day") / 4)
 	-- how much performance does each worker add? this'll add bonus prod on top
@@ -45,7 +45,7 @@ function Solaria:GameInit()
 	self:SetColor3(-10263981)
 
 	-- it's a workplace after all (bland ftw)
-	self:DestroyAttaches{"VRWorkshopHologram","DecorInt_02"}
+	self:DestroyAttaches{"VRWorkshopHologram", "DecorInt_02"}
 	self:ForEachAttach(function(a)
 		if a.class:find("Door") then
 			a:SetColorModifier(1)
@@ -54,8 +54,8 @@ function Solaria:GameInit()
 end
 
 -- build and show a list of viable buildings
-local filter_table = {DroneFactory=true,FungalFarm=true,FusionReactor=true,MetalsExtractor=true,PreciousMetalsExtractor=true}
-local function ClickObj(self,obj,button,which)
+local filter_table = {DroneFactory=true, FungalFarm=true, FusionReactor=true, MetalsExtractor=true, PreciousMetalsExtractor=true}
+local function ClickObj(self, obj, button, which)
 	if button == "R" then
 		ViewPos(obj:GetVisualPos())
 	else
@@ -69,7 +69,7 @@ local function ClickObj(self,obj,button,which)
 	end
 end
 
-function Solaria:ListBuildings(which,parent)
+function Solaria:ListBuildings(which, parent)
 	local list = UICity.labels.OutsideBuildings or ""
 	local hint
 	local item_list = {}
@@ -80,7 +80,7 @@ function Solaria:ListBuildings(which,parent)
 
 Right click to view selected list item building.]]
 		-- remove any we already control
-		list = MapFilter(list,function(o)
+		list = MapFilter(list, function(o)
 			if not o.SolariaTelepresence_Remote_Controlled then
 				return true
 			end
@@ -98,7 +98,7 @@ Right click to view selected list item building.]]
 		hint = [[Click to remove control of building.%s
 
 Right click to view selected list item building.]]
-		list = MapFilter(list,function(o)
+		list = MapFilter(list, function(o)
 			if o.SolariaTelepresence_Remote_Controlled then
 				return true
 			end
@@ -119,8 +119,8 @@ Right click to view selected list item building.]]
 			name = RetName(obj),
 			-- provide a slight reference
 			hint = hint .. " at pos: " .. pos,
-			mouseup = function(_,_,_,button)
-				ClickObj(self,obj,button,which)
+			mouseup = function(_, _, _, button)
+				ClickObj(self, obj, button, which)
 			end,
 		}
 	end
@@ -136,17 +136,17 @@ Right click to view selected list item building.]]
 	end
 
 	-- add controller for ease of movement
-	table.insert(item_list,1,{
+	table.insert(item_list, 1, {
 		name = [[ Solaria Controller]],
 		pos = self:GetVisualPos(),
 		hint = [[Solaria control building.
 You can't remove... Only view (or maybe See would be a better term).]],
-		mouseup = function(_,_,_,button)
-			ClickObj(self,obj,button,which)
+		mouseup = function(_, _, _, button)
+			ClickObj(self, obj, button, which)
 		end,
 	})
 
-	PopupToggle(parent,"idSolariaTelepresenceMenu",item_list,"left")
+	PopupToggle(parent, "idSolariaTelepresenceMenu", item_list, "left")
 end
 
 function Solaria:AttachBuilding(obj)
@@ -319,7 +319,7 @@ function OnMsg.ClassesPostprocess()
 Worker amount is dependent on controlled building.
 
 Telepresence control may take up to a shift to propagate to controlled building.]],
-			"build_category","ChoGGi",
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", CurrentModPath .. "UI/TheIncal.png",
 			"build_pos", 12,
@@ -336,7 +336,7 @@ Telepresence control may take up to a shift to propagate to controlled building.
 
 	PlaceObj("TechPreset", {
 		SortKey = 11,
-		description = T(0,[[New Building: <em>Solaria</em> (<buildinginfo('Solaria')>) - a building that allows colonists to remote control production buildings. Consumes Electronics.
+		description = T(0, [[New Building: <em>Solaria</em> (<buildinginfo('Solaria')>) - a building that allows colonists to remote control production buildings. Consumes Electronics.
 
 <grey>"How do you know it's Sci-Fi? VR is commercially viable."
 <right>Shams Jorjani</grey><left>]]),
@@ -353,8 +353,8 @@ Telepresence control may take up to a shift to propagate to controlled building.
 end -- ClassesPostprocess
 
 function OnMsg.ClassesBuilt()
---~ 	ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace1","sectionWorkplace",{
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace1",nil,{
+--~ 	ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace1", "sectionWorkplace", {
+	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace[1], "SolariaTelepresence_sectionWorkplace1", nil, {
 
 		__context_of_kind = "Solaria",
 		RolloverTitle = [[Telepresence]],
@@ -378,7 +378,7 @@ Right click in list to view (closes menu).]])
 		func = function(self, context)
 			---
 			if not context.SolariaTelepresence_Remote_Controller then
-				context:ListBuildings("activate",self)
+				context:ListBuildings("activate", self)
 			else
 				local building = context.SolariaTelepresence_Remote_Controller.building
 				local CallBackFunc = function(answer)
@@ -398,8 +398,8 @@ Right click in list to view (closes menu).]])
 	})
 
 	-- list controlled buildings
---~ 	ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace2","sectionWorkplace",{
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace2",nil,{
+--~ 	ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace2", "sectionWorkplace", {
+	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace[1], "SolariaTelepresence_sectionWorkplace2", nil, {
 		__context_of_kind = "Solaria",
 		Icon = "UI/Icons/Upgrades/build_2.tga",
 		Title = [[All Attached Buildings]],
@@ -419,14 +419,14 @@ Right click list item to view (closes menu).]],
 			end
 		end,
 		func = function(self, context)
-			context:ListBuildings("remove",self)
+			context:ListBuildings("remove", self)
 			ObjModified(context)
 		end,
 	})
 
 	-- go to controlled/controller building
---~ 	ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace3","sectionWorkplace",{
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace[1],"SolariaTelepresence_sectionWorkplace3",nil,{
+--~ 	ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace3", "sectionWorkplace", {
+	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace[1], "SolariaTelepresence_sectionWorkplace3", nil, {
 		__context_of_kind = "Workplace",
 		Icon = "UI/Icons/Anomaly_Event.tga",
 		RolloverTitle = [[Telepresence]],
@@ -457,14 +457,14 @@ Right click list item to view (closes menu).]],
 		end,
 	})
 
-	local rawget,setmetatable,type = rawget,setmetatable,type
+	local rawget, setmetatable, type = rawget, setmetatable, type
 
 	--so we can build without NoNearbyWorkers limit
-	ChoGGi.ComFuncs.SaveOrigFunc("ConstructionController","UpdateConstructionStatuses")
+	ChoGGi.ComFuncs.SaveOrigFunc("ConstructionController", "UpdateConstructionStatuses")
 	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 	function ConstructionController:UpdateConstructionStatuses(dont_finalize)
 		--send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
-		ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self,"dont_finalize")
+		ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self, "dont_finalize")
 
 		local status = self.construction_statuses
 

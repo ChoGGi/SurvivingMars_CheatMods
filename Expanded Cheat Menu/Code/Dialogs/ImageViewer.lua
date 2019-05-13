@@ -11,7 +11,7 @@ local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg,"ChoGGi_ImageViewerDlg")
+	return GetParentOfKind(dlg, "ChoGGi_ImageViewerDlg")
 end
 DefineClass.ChoGGi_ImageViewerDlg = {
 	__parents = {"ChoGGi_XWindow"},
@@ -111,9 +111,9 @@ end
 function ChoGGi_ImageViewerDlg:SetImageFile(image)
 	self = GetRootDialog(self)
 	self.idImage:SetImage(image.path)
-	self.idCaption:SetTitle(self,image.path)
+	self.idCaption:SetTitle(self, image.path)
 
-	local w,h = MeasureImage(image.path)
+	local w, h = MeasureImage(image.path)
 
 	if image.name and image.name ~= "" then
 		self.idImageSize:SetText(w .. "x" .. h .. " (" .. image.name .. ")")
@@ -125,5 +125,5 @@ end
 
 function ChoGGi_ImageViewerDlg:idImages_OnMouseButtonDown()
 	local dlg = GetRootDialog(self)
-	PopupToggle(self,dlg.idImageMenu,dlg.image_menu_popup,"left")
+	PopupToggle(self, dlg.idImageMenu, dlg.image_menu_popup, "left")
 end

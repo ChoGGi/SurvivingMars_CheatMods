@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local pairs,print,type,tonumber,tostring,table = pairs,print,type,tonumber,tostring,table
+local pairs, print, type, tonumber, tostring, table = pairs, print, type, tonumber, tostring, table
 local table_remove = table.remove
 local table_clear = table.clear
 local table_iclear = table.iclear
@@ -37,7 +37,7 @@ function ChoGGi.MenuFuncs.LoadingScreenLog_Toggle()
 	)
 end
 
-function ChoGGi.MenuFuncs.DeleteObject(_,_,input)
+function ChoGGi.MenuFuncs.DeleteObject(_, _, input)
 	if input == "keyboard" then
 		ChoGGi.ComFuncs.DeleteObject()
 	else
@@ -66,7 +66,7 @@ You can edit the CSV then run this again without having to restart the game.
 				text = Strings[302535920001162--[[Test Columns--]]],
 				value = "false",
 				hint = Strings[302535920001166--[["Reports any columns above the normal amount (5).
-Columns are added by commas (,). Surround the entire string with """" to use them.
+Columns are added by commas (, ). Surround the entire string with """" to use them.
 
 Try to increase or decrease the number if not enough or too many errors show up.
 For the value enter either ""true"" (to use 5) or a number.
@@ -129,7 +129,7 @@ function ChoGGi.MenuFuncs.ExamineObject()
 		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop)
 		-- off centre of central monitor
 		local width = (terminal.desktop.measure_width or 1920) - (dlg.dialog_width_scaled + 100)
-		dlg:SetPos(point(width,100))
+		dlg:SetPos(point(width, 100))
 		ChoGGi.ComFuncs.ToggleConsole(true)
 	end
 end
@@ -147,7 +147,7 @@ function ChoGGi.MenuFuncs.ListVisibleObjects()
 	local visible = MapGet("map", "attached", false, function(obj)
 		return obj:GetFrameMark() - frame > 0
 	end)
-	ChoGGi.ComFuncs.OpenInExamineDlg(visible,nil,Strings[302535920001547--[[Visible Objects--]]])
+	ChoGGi.ComFuncs.OpenInExamineDlg(visible, nil, Strings[302535920001547--[[Visible Objects--]]])
 end
 
 do -- BuildingPathMarkers_Toggle
@@ -155,10 +155,10 @@ do -- BuildingPathMarkers_Toggle
 	-- mostly a copy n paste from Lua\Buildings\BuildingWayPoints.lua: ShowWaypoints()
 	local DoneObject = DoneObject
 	local AveragePoint2D = AveragePoint2D
-	local OText,OPolyline
+	local OText, OPolyline
 
 	local objlist = objlist
-	local points, colors = objlist:new(),objlist:new()
+	local points, colors = objlist:new(), objlist:new()
 	local function ShowWaypoints(waypoints, open)
 		points:Clear()
 		colors:Clear()
@@ -262,18 +262,18 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 				Dialogs.PopupNotification:Close()
 			end
 
-			-- pause it for now (it helps it not freeze)
-			SetGameSpeedState("pause")
-
 			-- lightmodel
 			LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
-			SetLightmodelOverride(1,"TheMartian1_Night")
+			SetLightmodelOverride(1, "TheMartian1_Night")
 
-			local texture = table_find(TerrainTextures,"name","Prefab_Orange")
+			local texture = table_find(TerrainTextures, "name", "Prefab_Orange")
 			terrain.SetTerrainType{type = texture or 1}
 
 			-- wait a bit till we're sure the map is around
-			WaitMsg("MysteryChosen")
+			local GameState = GameState
+			while not GameState.gameplay do
+				Sleep(500)
+			end
 
 			-- make an index table of ents for placement
 			local entity_list = {}
@@ -289,9 +289,9 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			local IsBuildableZoneQR = IsBuildableZoneQR
 			local WorldToHex = WorldToHex
 			local point = point
-			local PlaceObj = PlaceObj
+			local ChoGGi_BuildingEntityClass = ChoGGi_BuildingEntityClass
 
-			local width,height = ConstructableArea:sizexyz()
+			local width, height = ConstructableArea:sizexyz()
 			width = width / 1000
 			height = height / 1000
 
@@ -307,44 +307,40 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 						break
 					end
 
-					local xx,yy = x * 1000, y * 1000
-					local q, r = WorldToHex(xx,yy)
-
 					local mod = 5
 					local plusone = entity_list[c+1]
 					if plusone then
-						-- domes are big
-						local sub8 = plusone:sub(1,8)
-						local sub5 = plusone:sub(1,5)
-						if plusone:find("Dome") and sub8 ~= "DomeRoad" and sub8 ~= "DomeDoor" and not plusone:find("Entrance") then
+						-- add more space for certain objs
+						local sub8 = plusone:sub(1, 8)
+						local sub5 = plusone:sub(1, 5)
+						if plusone:find("Dome") and sub8 ~= "DomeRoad"
+								and sub8 ~= "DomeDoor" and not plusone:find("Entrance") then
 							mod = 16
-						elseif sub5 == "Unit_" or sub5 == "Arrow" or plusone:find("Door") or plusone:find("DecLogo") then
+						elseif sub5 == "Unit_" or sub5 == "Arrow" or plusone:find("Door")
+								or plusone:find("DecLogo") then
 							mod = 1
 						elseif plusone:find("Cliff") then
 							mod = 8
 						end
 
-						if q % mod == 0 and r % mod == 0 and IsBuildableZoneQR(q,r) then
-							local obj = PlaceObj("ChoGGi_BuildingEntityClass",{
-								-- 11500 so most stuff is floating above the ground
-								"Pos",point(xx,yy,11500),
-							})
+						local x1000, y1000 = x * 1000, y * 1000
+						local q, r = WorldToHex(x1000, y1000)
+						if q % mod == 0 and r % mod == 0 and IsBuildableZoneQR(q, r) then
+							local obj = ChoGGi_BuildingEntityClass:new()
+							-- 11500 so stuff is floating above the ground
+							obj:SetPos(point(x1000, y1000, 11500))
 
 							c = c + 1
 							obj:ChangeEntity(entity_list[c])
 
 							-- if it has a working state then set it
 							local states_str = obj:GetStates()
-							local idx = table_find(states_str,"working")
+							local idx = table_find(states_str, "working")
+								or table_find(states_str, "idleOpened")
 							if idx then
 								obj:SetState(states_str[idx])
-							else
-								-- opened works as well
-								idx = table_find(states_str,"idleOpened")
-								if idx then
-									obj:SetState(states_str[idx])
-								end
 							end
+
 						end
 					end
 
@@ -390,7 +386,7 @@ function ChoGGi.MenuFuncs.ForceStoryBits()
 	local c = 0
 
 	local temp_table = {}
-	for id,story_def in pairs(StoryBits) do
+	for id, story_def in pairs(StoryBits) do
 		table_clear(temp_table)
 		for i = 1, #story_def do
 			local def = story_def[i]
@@ -400,7 +396,7 @@ function ChoGGi.MenuFuncs.ForceStoryBits()
 		end
 
 		local title = story_def.Title and Translate(story_def.Title) or id
-		if not (title:find(": ") or title:find(" - ",1,true)) then
+		if not (title:find(": ") or title:find(" - ", 1, true)) then
 			title = story_def.group .. ": " .. title
 		end
 		local voiced
@@ -414,7 +410,7 @@ function ChoGGi.MenuFuncs.ForceStoryBits()
 			value = id,
 			hint = Strings[302535920001358--[[Group--]]] .. ": "
 				.. story_def.group .. "\n\n"
-				.. (story_def.Text and Translate(T{story_def.Text,temp_table}) or "")
+				.. (story_def.Text and Translate(T{story_def.Text, temp_table}) or "")
 				.. (voiced and "\n\n" .. voiced or "")
 				.. (story_def.Image ~= "" and "\n\n<image " .. story_def.Image .. ">" or "")
 		}
@@ -511,18 +507,18 @@ end -- do
 
 function ChoGGi.MenuFuncs.Render_Toggle()
 	local item_list = {
-		{text = "Shadowmap",value = "Shadowmap"},
-		{text = "TerrainAABB",value = "TerrainAABB"},
-		{text = "ToggleSafearea",value = "ToggleSafearea"},
+		{text = "Shadowmap", value = "Shadowmap"},
+		{text = "TerrainAABB", value = "TerrainAABB"},
+		{text = "ToggleSafearea", value = "ToggleSafearea"},
 	}
 	local c = #item_list
 
 	local vars = EnumVars("hr")
 	for key in pairs(vars) do
-		if key:sub(2,7) == "Render" and key ~= ".RenderUIL" then
+		if key:sub(2, 7) == "Render" and key ~= ".RenderUIL" then
 			key = key:sub(2)
 			c = c + 1
-			item_list[c] = {text = key,value = key}
+			item_list[c] = {text = key, value = key}
 		end
 	end
 
@@ -547,7 +543,7 @@ function ChoGGi.MenuFuncs.Render_Toggle()
 		end
 
 		MsgPopup(
-			Strings[302535920001316--[[Toggled: %s = %s--]]]:format(choice.text,new_value),
+			Strings[302535920001316--[[Toggled: %s = %s--]]]:format(choice.text, new_value),
 			Strings[302535920001314--[[Toggle Render--]]]
 		)
 	end
@@ -585,9 +581,9 @@ function ChoGGi.MenuFuncs.MeasureTool_Toggle()
 	local MeasureTool = MeasureTool
 	MeasureTool.Toggle()
 	if MeasureTool.enabled then
-		MeasureTool.OnMouseButtonDown(nil,"L")
+		MeasureTool.OnMouseButtonDown(nil, "L")
 	else
-		MeasureTool.OnMouseButtonDown(nil,"R")
+		MeasureTool.OnMouseButtonDown(nil, "R")
 	end
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(MeasureTool.enabled),
@@ -623,13 +619,13 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
 			return
 		end
 		SuspendPassEdits("ChoGGi.MenuFuncs.DeleteAllSelectedObjects")
-		MapDelete(true,obj.class)
+		MapDelete(true, obj.class)
 		ResumePassEdits("ChoGGi.MenuFuncs.DeleteAllSelectedObjects")
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
 		Translate(6779--[[Warning--]]) .. "!\n"
-			.. Strings[302535920000852--[[This will delete all %s of %s--]]]:format(MapCount("map",obj.class),obj.class),
+			.. Strings[302535920000852--[[This will delete all %s of %s--]]]:format(MapCount("map", obj.class), obj.class),
 		CallBackFunc,
 		Translate(6779--[[Warning--]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!--]]],
 		Strings[302535920000856--[[Yes, I want to delete all: %s--]]]:format(obj.class),
@@ -644,7 +640,7 @@ function ChoGGi.MenuFuncs.ObjectCloner(flat)
 	end
 
 	if obj:IsKindOf("Colonist") then
-		ChoGGi.ComFuncs.SpawnColonist(obj,nil,GetTerrainCursor())
+		ChoGGi.ComFuncs.SpawnColonist(obj, nil, GetTerrainCursor())
 		return
 	end
 
@@ -686,37 +682,37 @@ function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 	local setting = action.setting_mask
 
 	local item_list = {
-		{text = 5,value = 5},
-		{text = 10,value = 10},
-		{text = 15,value = 15},
-		{text = 20,value = 20},
-		{text = 25,value = 25},
-		{text = 35,value = 35},
-		{text = 50,value = 50},
-		{text = 60,value = 60},
-		{text = 70,value = 70},
-		{text = 80,value = 80},
-		{text = 90,value = 90},
-		{text = 100,value = 100},
+		{text = 5, value = 5},
+		{text = 10, value = 10},
+		{text = 15, value = 15},
+		{text = 20, value = 20},
+		{text = 25, value = 25},
+		{text = 35, value = 35},
+		{text = 50, value = 50},
+		{text = 60, value = 60},
+		{text = 70, value = 70},
+		{text = 80, value = 80},
+		{text = 90, value = 90},
+		{text = 100, value = 100},
 	}
 
 	local name
 	if setting == "DebugGridSize" then
-		table.insert(item_list,1,{text = 1,value = 1})
+		table.insert(item_list, 1, {text = 1, value = 1})
 		local hint = Strings[302535920000419--[[125 = 47251 hex spots.--]]]
 		local c = #item_list+1
-		item_list[c] = {text = 125,value = 125,hint = hint}
+		item_list[c] = {text = 125, value = 125, hint = hint}
 		c = c + 1
-		item_list[c] = {text = 150,value = 150,hint = hint}
+		item_list[c] = {text = 150, value = 150, hint = hint}
 		c = c + 1
-		item_list[c] = {text = 200,value = 200,hint = hint}
+		item_list[c] = {text = 200, value = 200, hint = hint}
 		c = c + 1
 --~ 		197377
-		item_list[c] = {text = 256,value = 256,hint = hint}
+		item_list[c] = {text = 256, value = 256, hint = hint}
 
 		name = Strings[302535920001417--[[Follow Mouse Grid Size--]]]
 	elseif setting == "DebugGridOpacity" then
-		table.insert(item_list,1,{text = 0,value = 0})
+		table.insert(item_list, 1, {text = 0, value = 0})
 
 		name = Strings[302535920001419--[[Follow Mouse Grid Translate--]]]
 	end
@@ -808,7 +804,7 @@ do -- path markers
 		obj.ChoGGi_Stored_Waypoints[#obj.ChoGGi_Stored_Waypoints+1] = spawnline
 	end -- end of ShowWaypoints
 
-	local function SetWaypoint(obj,setcolour,skip_height)
+	local function SetWaypoint(obj, setcolour, skip_height)
 		local path = {}
 
 		-- we need to build a path for shuttles (and figure out a way to get their dest properly...)
@@ -851,8 +847,8 @@ do -- path markers
 			if obj.GetPath then
 				path = obj:GetPath()
 			else
-				ChoGGi.ComFuncs.OpenInExamineDlg(obj,nil,Strings[302535920000467--[[Path Markers--]]])
-				print(Translate(6779--[[Warning--]]),":",Strings[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
+				ChoGGi.ComFuncs.OpenInExamineDlg(obj, nil, Strings[302535920000467--[[Path Markers--]]])
+				print(Translate(6779--[[Warning--]]), ":", Strings[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.--]]]:format(RetName(obj)))
 			end
 		end
 
@@ -887,7 +883,7 @@ do -- path markers
 			-- and lastly make sure path is sorted correctly
 			-- end is where the obj is, and start is where the dest is
 			if is_shuttle then
-				table_sort(path,function(a,b)
+				table_sort(path, function(a, b)
 					return obj:GetVisualDist(a) > obj:GetVisualDist(b)
 				end)
 			end
@@ -904,14 +900,14 @@ do -- path markers
 	end
 	ChoGGi.MenuFuncs.SetWaypoint = SetWaypoint
 
-	local function SetPathMarkersGameTime_Thread(obj,handles,delay)
+	local function SetPathMarkersGameTime_Thread(obj, handles, delay)
 		local colour = RandomColour()
 		if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
 			obj.ChoGGi_Stored_Waypoints = objlist:new()
 		end
 
 		while handles[obj.handle] do
-			SetWaypoint(obj,colour,true)
+			SetWaypoint(obj, colour, true)
 			if delay == 0 or delay == -1 then
 				-- if we only do one then it'll be invis unless paused
 				-- 2+ is too much ficker
@@ -935,7 +931,7 @@ do -- path markers
 		end
 	end
 
-	local function AddObjToGameTimeMarkers(obj,handles,delay,skip)
+	local function AddObjToGameTimeMarkers(obj, handles, delay, skip)
 		if skip or obj:IsKindOfClasses(path_classes) then
 
 			if handles[obj.handle] then
@@ -943,17 +939,17 @@ do -- path markers
 				handles[obj.handle] = nil
 			elseif IsValid(obj) then
 				-- continous loooop of object for pathing it
-				handles[obj.handle] = CreateGameTimeThread(SetPathMarkersGameTime_Thread,obj,handles,delay)
+				handles[obj.handle] = CreateGameTimeThread(SetPathMarkersGameTime_Thread, obj, handles, delay)
 			end
 		end
 	end
 
-	local function SetPathMarkersGameTime(obj,menu_fired,menu_delay)
+	local function SetPathMarkersGameTime(obj, menu_fired, menu_delay)
 		OPolyline = OPolyline or ChoGGi_OPolyline
 
 		local delay = 500
 		-- if fired from action menu (or shortcut)
-		if IsKindOf(obj,"XAction") then
+		if IsKindOf(obj, "XAction") then
 			obj = SelObjects(1500)
 			if #obj == 0 then
 				obj = nil
@@ -972,13 +968,13 @@ do -- path markers
  			elseif #obj > 1 then
 				-- multiselect
 				for i = 1, #obj do
-					AddObjToGameTimeMarkers(obj[i],handles,delay)
+					AddObjToGameTimeMarkers(obj[i], handles, delay)
 				end
 				return
 			end
 			-- single not in a table list (true because we already checked the kindof)
 			if obj:IsKindOfClasses(path_classes) then
-				return AddObjToGameTimeMarkers(obj,handles,delay,true)
+				return AddObjToGameTimeMarkers(obj, handles, delay, true)
 			end
 		end
 
@@ -994,7 +990,7 @@ do -- path markers
 	end
 	ChoGGi.MenuFuncs.SetPathMarkersGameTime = SetPathMarkersGameTime
 
-	local function RemoveWPDupePos(cls,obj)
+	local function RemoveWPDupePos(cls, obj)
 		-- remove dupe pos
 		if IsObjlist(obj.ChoGGi_Stored_Waypoints) then
 			for i = 1, #obj.ChoGGi_Stored_Waypoints do
@@ -1015,7 +1011,7 @@ do -- path markers
 		end
 	end
 
-	local function ClearColourAndWP(cls,skip)
+	local function ClearColourAndWP(cls, skip)
 		-- remove all thread refs so they stop
 		table_clear(ChoGGi.Temp.UnitPathingHandles)
 		-- and waypoints/colour
@@ -1046,8 +1042,8 @@ do -- path markers
 			for i = 1, #objs do
 				local obj = objs[i]
 				if obj and obj.ChoGGi_Stored_Waypoints then
-					RemoveWPDupePos("WayPoint",obj)
-					RemoveWPDupePos("Sphere",obj)
+					RemoveWPDupePos("WayPoint", obj)
+					RemoveWPDupePos("Sphere", obj)
 				end
 			end
 		end
@@ -1064,11 +1060,11 @@ do -- path markers
 			new_objs_loop = false
 		end
 		-- reset all the base colours/waypoints
-		ClearColourAndWP("CargoShuttle",skip)
-		ClearColourAndWP("Unit",skip)
-		ClearColourAndWP("Colonist",skip)
+		ClearColourAndWP("CargoShuttle", skip)
+		ClearColourAndWP("Unit", skip)
+		ClearColourAndWP("Colonist", skip)
 		if aliens then
-			ClearColourAndWP("ChoGGi_Alien",skip)
+			ClearColourAndWP("ChoGGi_Alien", skip)
 		end
 
 		-- remove any extra lines
@@ -1081,10 +1077,10 @@ do -- path markers
 		dupewppos = {}
 	end
 
-	local function SetMarkers(list,check,delay)
+	local function SetMarkers(list, check, delay)
 		if check then
 			for i = 1, #list do
-				SetPathMarkersGameTime(list[i],nil,delay)
+				SetPathMarkersGameTime(list[i], nil, delay)
 			end
 		else
 			for i = 1, #list do
@@ -1098,17 +1094,17 @@ do -- path markers
 		ChoGGi.Temp.UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles or {}
 
 		local item_list = {
-			{text = Strings[302535920000413--[[Delay--]]],value = 0,path_type = "Delay",hint = Strings[302535920000415--[[Delay in ms between updating paths (0 to update every other render).--]]]},
-			{text = Translate(4493--[[All--]]),value = "All"},
+			{text = Strings[302535920000413--[[Delay--]]], value = 0, path_type = "Delay", hint = Strings[302535920000415--[[Delay in ms between updating paths (0 to update every other render).--]]]},
+			{text = Translate(4493--[[All--]]), value = "All"},
 
-			{text = Translate(547--[[Colonists--]]),value = "Colonist"},
-			{text = Translate(517--[[Drones--]]),value = "Drone"},
-			{text = Translate(5438--[[Rovers--]]),value = "BaseRover",icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
-			{text = Translate(745--[[Shuttles--]]),value = "CargoShuttle",hint = Strings[302535920000873--[[Doesn't work that well.--]]]},
+			{text = Translate(547--[[Colonists--]]), value = "Colonist"},
+			{text = Translate(517--[[Drones--]]), value = "Drone"},
+			{text = Translate(5438--[[Rovers--]]), value = "BaseRover", icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
+			{text = Translate(745--[[Shuttles--]]), value = "CargoShuttle", hint = Strings[302535920000873--[[Doesn't work that well.--]]]},
 		}
-		if rawget(_G,"ChoGGi_Alien") then
+		if rawget(_G, "ChoGGi_Alien") then
 			aliens = true
-			item_list[#item_list+1] = {text = "Alien Visitors",value = "ChoGGi_Alien"}
+			item_list[#item_list+1] = {text = "Alien Visitors", value = "ChoGGi_Alien"}
 		end
 
 		local function CallBackFunc(choices)
@@ -1119,7 +1115,7 @@ do -- path markers
 			end
 
 --~ ex(choices)
-			local choice,delay
+			local choice, delay
 			for i = 1, #choices do
 				local choice_item = choices[i]
 				if choice_item.list_selected then
@@ -1157,9 +1153,9 @@ do -- path markers
 --~ 					colourcount = colourcount + #table2
 --~ 					colourcount = colourcount + #table3
 --~ 					randcolours = RandomColour(colourcount + 1)
---~ 					SetMarkers(table1,choice1.check2,delay)
---~ 					SetMarkers(table2,choice1.check2,delay)
---~ 					SetMarkers(table3,choice1.check2,delay)
+--~ 					SetMarkers(table1, choice1.check2, delay)
+--~ 					SetMarkers(table2, choice1.check2, delay)
+--~ 					SetMarkers(table3, choice1.check2, delay)
 --~ 					CleanDupes()
 
 					CreateGameTimeThread(function()
@@ -1184,9 +1180,9 @@ do -- path markers
 								colourcount = colourcount + #table2
 								colourcount = colourcount + #table3
 								randcolours = RandomColour(colourcount + 1)
-								SetMarkers(table1,choice1.check2,delay)
-								SetMarkers(table2,choice1.check2,delay)
-								SetMarkers(table3,choice1.check2,delay)
+								SetMarkers(table1, choice1.check2, delay)
+								SetMarkers(table2, choice1.check2, delay)
+								SetMarkers(table3, choice1.check2, delay)
 
 								CleanDupes()
 							end
@@ -1199,12 +1195,12 @@ do -- path markers
 				elseif g_Classes[value] then
 					CreateGameTimeThread(function()
 						local labels = UICity.labels
-						local table1 = labels[value] or MapGet("map",value)
+						local table1 = labels[value] or MapGet("map", value)
 						-- +1 to make it fire the first time
 						local current = #table1+1
 
 						while new_objs_loop do
-							table1 = labels[value] or MapGet("map",value)
+							table1 = labels[value] or MapGet("map", value)
 							if current ~= #table1 then
 								-- update list when
 								StopAndRemoveAll(true)
@@ -1212,7 +1208,7 @@ do -- path markers
 								current = #table1
 								colourcount = colourcount + current
 								randcolours = RandomColour(colourcount + 1)
-								SetMarkers(table1,choice1.check2,delay)
+								SetMarkers(table1, choice1.check2, delay)
 								CleanDupes()
 							end
 							Sleep(2500)
@@ -1278,7 +1274,7 @@ do -- FlightGrid_Toggle
 	local white = white
 	local green = green
 	local flight_lines = {}
-	local points,colors = {},{}
+	local points, colors = {}, {}
 	local OPolyline
 
 	local function RasterLine(pos1, pos0, zoffset, line_num)
@@ -1331,7 +1327,7 @@ do -- FlightGrid_Toggle
 		end
 	end
 
-	local function GridFunc(size,zoffset)
+	local function GridFunc(size, zoffset)
 		local WaitMsg = WaitMsg
 
 		local steps = 1 + (size + dbg_step - 1) / dbg_step
@@ -1346,7 +1342,7 @@ do -- FlightGrid_Toggle
 		ResumePassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.GridFunc")
 
 		local plus1 = steps+1
-		local pos_old,pos_new,pos
+		local pos_old, pos_new, pos
 		while grid_thread do
 			-- we only update when cursor moves
 			pos_new = GetTerrainCursor()
@@ -1366,7 +1362,7 @@ do -- FlightGrid_Toggle
 		end
 	end
 
-	function ChoGGi.MenuFuncs.FlightGrid_Toggle(size,zoffset)
+	function ChoGGi.MenuFuncs.FlightGrid_Toggle(size, zoffset)
 		if not Flight_Height then
 			return
 		end
@@ -1388,7 +1384,7 @@ do -- FlightGrid_Toggle
 		end
 
 		-- if fired from action menu
-		if IsKindOf(size,"XAction") then
+		if IsKindOf(size, "XAction") then
 			size = grid_size
 			zoffset = 0
 		else
@@ -1401,6 +1397,6 @@ do -- FlightGrid_Toggle
 		OPolyline = OPolyline or ChoGGi_OPolyline
 		table_iclear(points)
 		table_iclear(colors)
-		grid_thread = CreateRealTimeThread(GridFunc,size,zoffset)
+		grid_thread = CreateRealTimeThread(GridFunc, size, zoffset)
 	end
 end -- do

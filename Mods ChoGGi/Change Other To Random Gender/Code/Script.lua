@@ -1,5 +1,5 @@
 local AsyncRand = AsyncRand
-local genders = {"Male","Female"}
+local genders = {"Male", "Female"}
 
 local function ChangeGender(c)
 	if c.gender == "OtherGender" then

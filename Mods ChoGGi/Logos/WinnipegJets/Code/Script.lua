@@ -25,7 +25,7 @@ do -- LoadEntity
 	local EntityLoadEntities = EntityLoadEntities
 	local SetEntityFadeDistances = SetEntityFadeDistances
 
-	local function LoadEntity(name,path,mod,template)
+	local function LoadEntity(name, path, mod, template)
 		EntityData[name] = entity_templates[template or "decal"]
 
 		EntityLoadEntities[#EntityLoadEntities + 1] = {
@@ -53,7 +53,7 @@ do -- LoadEntity
 end -- LoadEntity
 
 local logo_path = mod.env.CurrentModPath .. "UI/"
-local function LoadLogo(name,display)
+local function LoadLogo(name, display)
 	PlaceObj("MissionLogoPreset", {
 		display_name = display,
 		decal_entity = name,
@@ -64,6 +64,6 @@ local function LoadLogo(name,display)
 end
 
 function OnMsg.ClassesPostprocess()
-	LoadLogo("WinnipegJets2011","Winnipeg Jets 2011")
-	LoadLogo("WinnipegJets2018","Winnipeg Jets 2018")
+	LoadLogo("WinnipegJets2011", "Winnipeg Jets 2011")
+	LoadLogo("WinnipegJets2018", "Winnipeg Jets 2018")
 end

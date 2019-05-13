@@ -8,7 +8,7 @@ local Strings = ChoGGi.Strings
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg,"ChoGGi_ConsoleLogWin")
+	return GetParentOfKind(dlg, "ChoGGi_ConsoleLogWin")
 end
 DefineClass.ChoGGi_ConsoleLogWin = {
 	__parents = {"ChoGGi_XWindow"},
@@ -38,7 +38,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 		Text = Strings[302535920000865--[[Translate--]]],
 		RolloverText = Strings[302535920001367--[[Toggles--]]] .. " " .. Strings[302535920000629--[[UI Transparency--]]],
 		Dock = "left",
-		Margins = box(4,0,0,0),
+		Margins = box(4, 0, 0, 0),
 		OnChange = self.idToggleTrans_OnChange,
 	}, self.idButtonContainer)
 
@@ -65,7 +65,7 @@ function ChoGGi_ConsoleLogWin:Init(parent, context)
 	}, self.idButtonContainer)
 
 	self.idButtonSpacer = g_Classes.ChoGGi_XSpacer:new({
-		Margins = box(8,0,0,0),
+		Margins = box(8, 0, 0, 0),
 		Dock = "left",
 	}, self.idButtonContainer)
 
@@ -129,10 +129,10 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 	self:PostInit()
 end
 
-function ChoGGi_ConsoleLogWin:idTextInput_OnKbdKeyDown(vk,...)
+function ChoGGi_ConsoleLogWin:idTextInput_OnKbdKeyDown(vk, ...)
 	local dlgConsole = dlgConsole
 	if not dlgConsole then
-		return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self,vk,...)
+		return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self, vk, ...)
 	end
 	local input = GetRootDialog(self).idTextInput
 
@@ -152,7 +152,7 @@ function ChoGGi_ConsoleLogWin:idTextInput_OnKbdKeyDown(vk,...)
 		end
 		local text = dlgConsole.history_queue[dlgConsole.history_queue_idx] or ""
 		input:SetText(text)
-		input:SetCursor(1,#text)
+		input:SetCursor(1, #text)
 		return "break"
 	elseif vk == const.vkDown then
 		if dlgConsole.history_queue_idx <= 1 then
@@ -162,11 +162,11 @@ function ChoGGi_ConsoleLogWin:idTextInput_OnKbdKeyDown(vk,...)
 		end
 		local text = dlgConsole.history_queue[dlgConsole.history_queue_idx] or ""
 		input:SetText(text)
-		input:SetCursor(1,#text)
+		input:SetCursor(1, #text)
 		return "break"
 	end
 
-	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self,vk,...)
+	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self, vk, ...)
 end
 
 function ChoGGi_ConsoleLogWin:idToggleTrans_OnChange()
@@ -182,7 +182,7 @@ function ChoGGi_ConsoleLogWin:idShowModsLog_OnPress()
 
 	self:UpdateText(
 		self.idEdit:GetText() .. "\n\nModMessageLog:\n"
-			.. TableConcat(ModMessageLog,"\n")
+			.. TableConcat(ModMessageLog, "\n")
 	)
 end
 function ChoGGi_ConsoleLogWin:idClearLog_OnPress()

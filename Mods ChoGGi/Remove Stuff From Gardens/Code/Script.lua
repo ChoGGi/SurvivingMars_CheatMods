@@ -23,11 +23,11 @@ local buildings_to_check = {
 
 local classes_to_remove = {
   -- roads
-	"DomeRoadConnection_08","DecGardenRoad_05",
+	"DomeRoadConnection_08", "DecGardenRoad_05",
   -- lamps
 	"LampInt_03",
   -- benches
-	"DecorInt_03","DecorInt_04",
+	"DecorInt_03", "DecorInt_04",
 }
 
 local orig_Service_GameInit = Service.GameInit

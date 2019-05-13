@@ -28,7 +28,7 @@ function OnMsg.ClassesBuilt()
 	local ObjModified = ObjModified
 	local RetName = ChoGGi.ComFuncs.RetName
 
-	local function LoopWorkplace(context,which)
+	local function LoopWorkplace(context, which)
 		for i = 1, #context.workers do
 			local workers = context.workers[i]
 			for j = 1, #workers do
@@ -38,7 +38,7 @@ function OnMsg.ClassesBuilt()
 	end
 
 	-- add button to colonists
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipColonist[1],"LockworkplaceColonist",nil,{
+	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipColonist[1], "LockworkplaceColonist", nil, {
 		__context_of_kind = "Colonist",
 		OnContextUpdate = function(self, context)
 			---
@@ -75,7 +75,7 @@ function OnMsg.ClassesBuilt()
 		end,
 	})
 
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace,"LockworkplaceWorkplace",nil,{
+	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace, "LockworkplaceWorkplace", nil, {
 		__context_of_kind = "Workplace",
 		OnContextUpdate = function(self, context)
 			---
@@ -97,7 +97,7 @@ function OnMsg.ClassesBuilt()
 				LoopWorkplace(context)
 			else
 				context.ChoGGi_Lockworkplace = true
-				LoopWorkplace(context,true)
+				LoopWorkplace(context, true)
 			end
 			ObjModified(context)
 			---

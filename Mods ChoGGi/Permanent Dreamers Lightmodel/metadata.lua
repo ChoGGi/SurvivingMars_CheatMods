@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
 	"saved", 1534680000,
 	"id", "ChoGGi_PermanentDreamersLightmodel",
 	"author", "ChoGGi",
-	"image","Preview.png",
+	"image", "Preview.png",
 	"steam_id", "1433249476",
 	"code", {
 		"Code/Script.lua",

@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -53,11 +52,10 @@ function OnMsg.SelectionAdded(obj)
 end
 
 local function StartupCode()
-	ChoGGi.ComFuncs.SaveOrigFunc("ConstructionController","CreateCursorObj")
+	ChoGGi.ComFuncs.SaveOrigFunc("ConstructionController", "CreateCursorObj")
 	local ConstructionController_CreateCursorObj = ChoGGi.OrigFuncs.ConstructionController_CreateCursorObj
 
 	local IsValid = IsValid
-	local SetRollPitchYaw = SetRollPitchYaw
 	local table_unpack = table.unpack
 	-- set orientation to same as last object
 	function ConstructionController:CreateCursorObj(...)
@@ -65,7 +63,7 @@ local function StartupCode()
 		local ret = {ConstructionController_CreateCursorObj(self, ...)}
 		local last = ChoGGi.Temp.LastPlacedObject
 		if self.template_obj and self.template_obj.can_rotate_during_placement and IsValid(last) then
-			SetRollPitchYaw(ret[1],0,0,(last:GetAngle() or 0) + -1*60*60)
+			ret[1]:SetAngle(last:GetAngle() or 0)
 		end
 		return table_unpack(ret)
 

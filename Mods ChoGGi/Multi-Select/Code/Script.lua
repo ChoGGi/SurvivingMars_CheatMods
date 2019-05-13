@@ -48,7 +48,7 @@ local function UpdateCircle()
   for i = 1, steps do
     local x, y = RotateRadius(radius, MulDivRound(21600, i, steps), orig_pos, true)
     points[i] = point(
-			x,y
+			x, y
 		):SetTerrainZ(30)
   end
 	-- connect the dots
@@ -67,7 +67,7 @@ local function UpdateCircle()
 		text_obj:SetText(radius)
 		circle:Attach(text_obj)
   end
-  circle:SetMesh(points,white)
+  circle:SetMesh(points, white)
 end
 
 function OnMsg.ClassesBuilt()
@@ -77,7 +77,7 @@ function OnMsg.ClassesBuilt()
 	local saved_radius = 1000
 
 	local OnMouseButtonDown = SelectionModeDialog.OnMouseButtonDown
-	function SelectionModeDialog:OnMouseButtonDown(pt, button,...)
+	function SelectionModeDialog:OnMouseButtonDown(pt, button, ...)
 		if button == "R" and #Selection > 1 then
 			local Selection = Selection
 			for i = 1, #Selection do
@@ -103,7 +103,7 @@ function OnMsg.ClassesBuilt()
 			local obj = GetPreciseCursorObj()
 			if obj and obj:IsKindOf("DroneBase") then
 				local Selection = Selection
-				local idx = table.find(Selection,"handle",obj.handle)
+				local idx = table.find(Selection, "handle", obj.handle)
 				if idx then
 					SelectionRemove(obj)
 				else
@@ -119,7 +119,7 @@ function OnMsg.ClassesBuilt()
 
 				-- PlaceTerrainCircle(center, radius, color, step, offset, max_steps)
 				radius = orig_pos and orig_pos:Dist2D(GetTerrainCursor()) or 10
-				circle = PlaceTerrainCircle(orig_pos,radius)
+				circle = PlaceTerrainCircle(orig_pos, radius)
 				circle:SetDepthTest(false)
 
 				circle_enabled = true
@@ -127,11 +127,11 @@ function OnMsg.ClassesBuilt()
 
 			return "break"
 		end
-		return OnMouseButtonDown(self,pt, button,...)
+		return OnMouseButtonDown(self, pt, button, ...)
 	end
 
 	local OnMouseButtonDoubleClick = SelectionModeDialog.OnMouseButtonDoubleClick
-	function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button,...)
+	function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)
 		if button == "L" and MouseShortcut(button) == "Shift-MouseL" then
 			local selected = GetPreciseCursorObj()
 			if selected and selected:IsKindOf("DroneBase") then
@@ -139,7 +139,7 @@ function OnMsg.ClassesBuilt()
 				local mouse_pt = GetTerrainCursor()
 				local cls = selected.class
 
-				local objs = MapGet("map", "attached", false, selected.class,function(o)
+				local objs = MapGet("map", "attached", false, selected.class, function(o)
 					return o.class == cls and mouse_pt:Dist2D(o:GetVisualPos()) <= temp_radius
 				end)
 
@@ -155,11 +155,11 @@ function OnMsg.ClassesBuilt()
 			end
 		end
 
-		return OnMouseButtonDoubleClick(self,pt, button,...)
+		return OnMouseButtonDoubleClick(self, pt, button, ...)
 	end
 
 	local OnMouseButtonUp = SelectionModeDialog.OnMouseButtonUp
-	function SelectionModeDialog:OnMouseButtonUp(pt, button,...)
+	function SelectionModeDialog:OnMouseButtonUp(pt, button, ...)
 		if not (dbl_clicked and selection_changed) and button == "L" and circle_enabled and MouseShortcut(button) == "Shift-MouseL" then
 
 			if circle and IsValid(circle) then
@@ -167,7 +167,7 @@ function OnMsg.ClassesBuilt()
 			end
 
 			SelectionRemove(Selection)
-			local units = MapGet(orig_pos,radius,"attached",false,"DroneBase"--[[,"Colonist"--]])
+			local units = MapGet(orig_pos, radius, "attached", false, "DroneBase"--[[, "Colonist"--]])
 			if #units < 1000 then
 				SelectionAdd(units)
 			end
@@ -184,7 +184,7 @@ function OnMsg.ClassesBuilt()
 		dbl_clicked = false
 		selection_changed = false
 
-		return OnMouseButtonUp(self,pt, button,...)
+		return OnMouseButtonUp(self, pt, button, ...)
 	end
 
 	local OnMousePos = SelectionModeDialog.OnMousePos

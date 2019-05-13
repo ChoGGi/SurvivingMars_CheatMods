@@ -32,7 +32,7 @@ else
 	local AsyncGetFileAttribute = AsyncGetFileAttribute
 	function ChoGGi.ComFuncs.FileExists(file)
 		-- folders don't have a size
-		local err,_ = AsyncGetFileAttribute(file,"size")
+		local err, _ = AsyncGetFileAttribute(file, "size")
 		if not err then
 			return true
 		end

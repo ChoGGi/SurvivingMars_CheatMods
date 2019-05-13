@@ -25,13 +25,13 @@ function OnMsg.ClassesGenerate()
 		self.title = getmetatable(self.obj).display_name
 		self.title_image = self.obj:GetPinIcon()
 
-		self:AddElements(parent,context)
+		self:AddElements(parent, context)
 		self:AddScrollList()
 
 		self.idList:SetLayoutMethod("Grid")
 
 		-- get pos of pins and stick it above
-		self.idDialog:SetBox(2880,540,self.dialog_width_scaled,self.dialog_height_scaled)
+		self.idDialog:SetBox(2880, 540, self.dialog_width_scaled, self.dialog_height_scaled)
 
 		self.items = ChoGGi.ComFuncs.RetAllOfClass(self.obj.class)
 		self:BuildList()
@@ -58,13 +58,13 @@ function OnMsg.ClassesGenerate()
 			local item = self.items[i]
 			local name = RetName(item)
 
-			local text = string.format("<image %s 2000> %s",PinsDlg:GetPinConditionImage(item),name)
+			local text = string.format("<image %s 2000> %s", PinsDlg:GetPinConditionImage(item), name)
 			local listitem = self.idList:CreateTextItem(text)
 			-- easier access
 			listitem.item = item
 
 			-- add rollover text
-			local button = PinsDlg[table.find(PinsDlg,"context",item)]
+			local button = PinsDlg[table.find(PinsDlg, "context", item)]
 			if button then
 				listitem.RolloverTitle = button.RolloverTitle
 				listitem.RolloverText = button.RolloverText

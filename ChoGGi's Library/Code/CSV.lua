@@ -12,8 +12,8 @@ local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
 
 local function ExportDoneMsg(path)
 	local msg = Strings[302535920001449--[[Export--]]] .. " " .. Strings[302535920001448--[[CSV--]]]
-	ChoGGi.ComFuncs.MsgPopup(path,msg)
-	print(msg,path)
+	ChoGGi.ComFuncs.MsgPopup(path, msg)
+	print(msg, path)
 end
 
 do -- MapData
@@ -36,11 +36,11 @@ do -- MapData
 	local export_count = 0
 	-- stores temp landing spot
 	local landing
-	local north,east,south,west
+	local north, east, south, west
 
 	local MapData = MapData
 	local MarsLocales = MarsLocales
-	local function AddLandingSpot(lat,long,breakthroughs)
+	local function AddLandingSpot(lat, long, breakthroughs)
 		-- updates map_params to location
 		GetOverlayValues(
 			lat * 60,
@@ -51,7 +51,7 @@ do -- MapData
 		-- updates threat/res map info
 		landing:RecalcThreatResourceLevels()
 		-- coord names in csv
-		local lat_name,long_name = south,east
+		local lat_name, long_name = south, east
 		-- we store all lat/long numbers as pos in csv
 		if lat < 0 then
 			lat_name = north
@@ -66,7 +66,7 @@ do -- MapData
 		if breakthroughs then
 			map_name, gen, params = RetMapSettings(true, landing.map_params)
 		else
-			map_name = FillRandomMapProps(nil,params)
+			map_name = FillRandomMapProps(nil, params)
 			params = landing.map_params
 		end
 
@@ -115,11 +115,11 @@ do -- MapData
 
 		local breakthroughs
 		-- fired from action menu
-		if action and IsKindOf(action,"XAction") and action.setting_breakthroughs then
+		if action and IsKindOf(action, "XAction") and action.setting_breakthroughs then
 			breakthroughs = true
 		end
 
-		north,east,south,west = Translate(6887--[[N--]]),Translate(6888--[[E--]]),Translate(6886--[[Strings--]]),Translate(6889--[[W--]])
+		north, east, south, west = Translate(6887--[[N--]]), Translate(6888--[[E--]]), Translate(6886--[[Strings--]]), Translate(6889--[[W--]])
 
 		-- save current g_CurrentMapParams to restore later
 		local params = g_CurrentMapParams
@@ -152,13 +152,13 @@ do -- MapData
 		for lat = 0, 70 do
 			for long = 0, 180 do
 				-- SE
-				AddLandingSpot(lat,long,breakthroughs)
+				AddLandingSpot(lat, long, breakthroughs)
 				-- SW
-				AddLandingSpot(lat,long * -1,breakthroughs)
+				AddLandingSpot(lat, long * -1, breakthroughs)
 				-- NE
-				AddLandingSpot(lat * -1,long,breakthroughs)
+				AddLandingSpot(lat * -1, long, breakthroughs)
 				-- NW
-				AddLandingSpot(lat * -1,long * -1,breakthroughs)
+				AddLandingSpot(lat * -1, long * -1, breakthroughs)
 			end
 		end
 		-- not needed anymore so restore back to orig
@@ -175,39 +175,39 @@ do -- MapData
 			g_TitleObj = false
 		end
 		-- restore saved map params (just in case anything uses the values)
-		for key,value in pairs(params_saved) do
+		for key, value in pairs(params_saved) do
 			params[key] = value
 		end
 
 		local csv_columns = {
-			{"latitude_degree",Translate(6890--[[Latitude--]]) .. " " .. Strings[302535920001505--[[°--]]]},
-			{"latitude",Translate(6890--[[Latitude--]])},
-			{"longitude_degree",Translate(6892--[[Longitude--]]) .. " " .. Strings[302535920001505--[[°--]]]},
-			{"longitude",Translate(6892--[[Longitude--]])},
-			{"topography",Translate(284813068603--[[Topography--]])},
-			{"diff_chall",Translate(774720837511--[[Difficulty Challenge --]]):gsub(" <percentage>%%","")},
-			{"altitude",Translate(4135--[[Altitude--]])},
-			{"temperature",Translate(4141--[[Temperature--]])},
+			{"latitude_degree", Translate(6890--[[Latitude--]]) .. " " .. Strings[302535920001505--[[°--]]]},
+			{"latitude", Translate(6890--[[Latitude--]])},
+			{"longitude_degree", Translate(6892--[[Longitude--]]) .. " " .. Strings[302535920001505--[[°--]]]},
+			{"longitude", Translate(6892--[[Longitude--]])},
+			{"topography", Translate(284813068603--[[Topography--]])},
+			{"diff_chall", Translate(774720837511--[[Difficulty Challenge --]]):gsub(" <percentage>%%", "")},
+			{"altitude", Translate(4135--[[Altitude--]])},
+			{"temperature", Translate(4141--[[Temperature--]])},
 
-			{"metals",Translate(3514--[[Metals--]])},
-			{"metals_rare",Translate(4139--[[Rare Metals--]])},
-			{"concrete",Translate(3513--[[Concrete--]])},
-			{"water",Translate(681--[[Water--]])},
+			{"metals", Translate(3514--[[Metals--]])},
+			{"metals_rare", Translate(4139--[[Rare Metals--]])},
+			{"concrete", Translate(3513--[[Concrete--]])},
+			{"water", Translate(681--[[Water--]])},
 
-			{"dust_devils",Translate(4142--[[Dust Devils--]])},
-			{"dust_storms",Translate(4144--[[Dust Storms--]])},
-			{"meteors",Translate(4146--[[Meteors--]])},
-			{"cold_waves",Translate(4148--[[Cold Waves--]])},
+			{"dust_devils", Translate(4142--[[Dust Devils--]])},
+			{"dust_storms", Translate(4144--[[Dust Storms--]])},
+			{"meteors", Translate(4146--[[Meteors--]])},
+			{"cold_waves", Translate(4148--[[Cold Waves--]])},
 
-			{"map_name",Strings[302535920001503--[[Map Name--]]]},
-			{"landing_spot",Strings[302535920001504--[[Named--]]] .. " " .. Translate(7396--[[Location--]])},
+			{"map_name", Strings[302535920001503--[[Map Name--]]]},
+			{"landing_spot", Strings[302535920001504--[[Named--]]] .. " " .. Translate(7396--[[Location--]])},
 		}
 		if breakthroughs then
 			local b_str = Translate(11451--[[Breakthrough--]])
 			local c = #csv_columns
 			for i = 1, const.BreakThroughTechsPerGame do
 				c = c + 1
-				csv_columns[c] = {"break" .. i,b_str .. " " .. i}
+				csv_columns[c] = {"break" .. i, b_str .. " " .. i}
 			end
 		end
 
@@ -221,14 +221,14 @@ end --do
 
 do -- ColonistData
 	-- build list of traits to skip (added as columns, we don't want dupes)
-	local function AddSkipped(traits,list)
+	local function AddSkipped(traits, list)
 		for i = 1, #traits do
 			list[traits[i]] = true
 		end
 		return list
 	end
 
-	local function AddTraits(traits,list)
+	local function AddTraits(traits, list)
 		local str = Translate(3720--[[Trait--]])
 		local c = #list
 		for i = 1, #traits do
@@ -244,41 +244,41 @@ do -- ColonistData
 
 	function ChoGGi.ComFuncs.ExportColonistDataToCSV()
 		local csv_columns = {
-			{"name",Translate(1000037--[[Name--]])},
-			{"age",Strings[302535920001222--[[Age--]]]},
-			{"age_trait",Strings[302535920001222--[[Age--]]] .. " " .. Translate(3720--[[Trait--]])},
-			{"death_age",Translate(4284--[[Age of death--]])},
-			{"birthplace",Translate(4357--[[Birthplace--]]):gsub("<right><UIBirthplace>","")},
-			{"gender",Translate(4356--[[Sex--]]):gsub("<right><Gender>","")},
-			{"race",Strings[302535920000741--[[Race--]]]},
-			{"specialist",Translate(240--[[Specialization--]])},
-			{"performance",Translate(4283--[[Worker performance--]])},
-			{"health",Translate(4291--[[Health--]])},
-			{"comfort",Translate(4295--[[Comfort--]])},
-			{"morale",Translate(4297--[[Morale--]])},
-			{"sanity",Translate(4293--[[Sanity--]])},
-			{"handle",Strings[302535920000955--[[Handle--]]]},
-			{"last_meal",Strings[302535920001229--[[Last Meal--]]]},
-			{"last_rest",Strings[302535920001235--[[Last Rest--]]]},
-			{"dome_name",Translate(1234--[[Dome--]]) .. " " .. Translate(1000037--[[Name--]])},
-			{"dome_pos",Translate(1234--[[Dome--]]) .. " " .. Strings[302535920000461--[[Position--]]]},
-			{"dome_handle",Translate(1234--[[Dome--]]) .. " " .. Strings[302535920000955--[[Handle--]]]},
-			{"residence_name",Translate(4809--[[Residence--]]) .. " " .. Translate(1000037--[[Name--]])},
-			{"residence_pos",Translate(4809--[[Residence--]]) .. " " .. Strings[302535920000461--[[Position--]]]},
-			{"residence_dome",Translate(4809--[[Residence--]]) .. " " .. Translate(1234--[[Dome--]])},
-			{"workplace_name",Translate(4801--[[Workplace--]]) .. " " .. Translate(1000037--[[Name--]])},
-			{"workplace_pos",Translate(4801--[[Workplace--]]) .. " " .. Strings[302535920000461--[[Position--]]]},
-			{"workplace_dome",Translate(4801--[[Workplace--]]) .. " " .. Translate(1234--[[Dome--]])},
+			{"name", Translate(1000037--[[Name--]])},
+			{"age", Strings[302535920001222--[[Age--]]]},
+			{"age_trait", Strings[302535920001222--[[Age--]]] .. " " .. Translate(3720--[[Trait--]])},
+			{"death_age", Translate(4284--[[Age of death--]])},
+			{"birthplace", Translate(4357--[[Birthplace--]]):gsub("<right><UIBirthplace>", "")},
+			{"gender", Translate(4356--[[Sex--]]):gsub("<right><Gender>", "")},
+			{"race", Strings[302535920000741--[[Race--]]]},
+			{"specialist", Translate(240--[[Specialization--]])},
+			{"performance", Translate(4283--[[Worker performance--]])},
+			{"health", Translate(4291--[[Health--]])},
+			{"comfort", Translate(4295--[[Comfort--]])},
+			{"morale", Translate(4297--[[Morale--]])},
+			{"sanity", Translate(4293--[[Sanity--]])},
+			{"handle", Strings[302535920000955--[[Handle--]]]},
+			{"last_meal", Strings[302535920001229--[[Last Meal--]]]},
+			{"last_rest", Strings[302535920001235--[[Last Rest--]]]},
+			{"dome_name", Translate(1234--[[Dome--]]) .. " " .. Translate(1000037--[[Name--]])},
+			{"dome_pos", Translate(1234--[[Dome--]]) .. " " .. Strings[302535920000461--[[Position--]]]},
+			{"dome_handle", Translate(1234--[[Dome--]]) .. " " .. Strings[302535920000955--[[Handle--]]]},
+			{"residence_name", Translate(4809--[[Residence--]]) .. " " .. Translate(1000037--[[Name--]])},
+			{"residence_pos", Translate(4809--[[Residence--]]) .. " " .. Strings[302535920000461--[[Position--]]]},
+			{"residence_dome", Translate(4809--[[Residence--]]) .. " " .. Translate(1234--[[Dome--]])},
+			{"workplace_name", Translate(4801--[[Workplace--]]) .. " " .. Translate(1000037--[[Name--]])},
+			{"workplace_pos", Translate(4801--[[Workplace--]]) .. " " .. Strings[302535920000461--[[Position--]]]},
+			{"workplace_dome", Translate(4801--[[Workplace--]]) .. " " .. Translate(1234--[[Dome--]])},
 		}
 		local t = ChoGGi.Tables
-		csv_columns = AddTraits(t.NegativeTraits,csv_columns)
-		csv_columns = AddTraits(t.PositiveTraits,csv_columns)
-		csv_columns = AddTraits(t.OtherTraits,csv_columns)
+		csv_columns = AddTraits(t.NegativeTraits, csv_columns)
+		csv_columns = AddTraits(t.PositiveTraits, csv_columns)
+		csv_columns = AddTraits(t.OtherTraits, csv_columns)
 		-- we need to make sure these are added (but only once)
 		local skipped_traits = {}
-		skipped_traits = AddSkipped(t.ColonistAges,skipped_traits)
-		skipped_traits = AddSkipped(t.ColonistGenders,skipped_traits)
-		skipped_traits = AddSkipped(t.ColonistSpecializations,skipped_traits)
+		skipped_traits = AddSkipped(t.ColonistAges, skipped_traits)
+		skipped_traits = AddSkipped(t.ColonistGenders, skipped_traits)
+		skipped_traits = AddSkipped(t.ColonistSpecializations, skipped_traits)
 
 		local export_data = {}
 		local colonists = UICity.labels.Colonist or ""
@@ -345,7 +345,7 @@ do -- Graphs
 	local Resources = Resources
 	local StockpileResourceList = StockpileResourceList
 
-	local function BuildTable(export_data,c,cat,current,list)
+	local function BuildTable(export_data, c, cat, current, list)
 		export_data[c] = {
 			category = cat,
 			current = current,
@@ -472,8 +472,8 @@ do -- Graphs
 
 		-- the rest are sols
 		local csv_columns = {
-			{"category",Translate(1000097--[[Category--]])},
-			{"current",Strings[302535920000106--[[Current--]]] .. " " .. Translate(4031--[[Sol <day>--]]):gsub(" <day>","")},
+			{"category", Translate(1000097--[[Category--]])},
+			{"current", Strings[302535920000106--[[Current--]]] .. " " .. Translate(4031--[[Sol <day>--]]):gsub(" <day>", "")},
 		}
 		local c = #csv_columns
 
@@ -483,7 +483,7 @@ do -- Graphs
 			c = c + 1
 			csv_columns[c] = {
 				"sol" .. i,
-				sol_str:gsub("<day>",i)
+				sol_str:gsub("<day>", i)
 			}
 		end
 
@@ -491,7 +491,7 @@ do -- Graphs
 		c = 0
 
 		-- build csv lists
-		for label,list in pairs(loop_table_label) do
+		for label, list in pairs(loop_table_label) do
 			c = c + 1
 			export_data = BuildTable(
 				export_data,

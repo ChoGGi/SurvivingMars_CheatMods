@@ -23,7 +23,7 @@ It won't actually save anything to file, but you can access the edited scheme in
 
 Manually convert the numbers with ColorizationMaterialDecode(NUMBER), this will return three numbers:
 a value you can use with GetRGB(value), roughness value, metallic value
-to convert back into the proper number use ColorizationMaterialEncode(RGB(22,36,50), rough, met)
+to convert back into the proper number use ColorizationMaterialEncode(RGB(22, 36, 50), rough, met)
 You can use my Change Object Colour mod to test out the values.
 
 Direct download: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Example%20Colour%20Scheme

@@ -12,8 +12,8 @@ local missing_text = ChoGGi.Temp.missing_text
 
 -- local some globals
 local _InternalTranslate = _InternalTranslate
-local type,select,tostring,next = type,select,tostring,next
-local T,IsT,TGetID,count_params = T,IsT,TGetID,count_params
+local type, select, tostring, next = type, select, tostring, next
+local T, IsT, TGetID, count_params = T, IsT, TGetID, count_params
 
 -- translate func that always returns a string
 local function Translate(...)
@@ -26,7 +26,7 @@ local function Translate(...)
 	end
 
 	local result
-	result,str = true,_InternalTranslate(str)
+	result, str = true, _InternalTranslate(str)
 
 	-- Missing text means the string id wasn't found (generally)
 	if str == missing_text then
@@ -34,7 +34,7 @@ local function Translate(...)
 	-- just in case
 	elseif not result or type(str) ~= "string" then
 		-- if count over 1 then use the second arg (which might be a string)
-		str = not count and select(2,...)
+		str = not count and select(2, ...)
 		if type(str) == "string" then
 			return str
 		end
@@ -70,7 +70,7 @@ do -- fix missing tech defs description in main menu/new game
 		end
 
 		-- just to on the safe side (don't want to leave UICity as fake_city)
-		local _,ret = pcall(orig_BuildingInfoLine,...)
+		local _, ret = pcall(orig_BuildingInfoLine, ...)
 
 		if UICity == fake_city then
 			UICity = false
@@ -93,8 +93,8 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 
 	-- if there's a missing id print/return a warning
 	if not next(strings) then
-		setmetatable(strings,{
-			__index = function(_,id)
+		setmetatable(strings, {
+			__index = function(_, id)
 				if type(id) == "number" then
 					id = "ECM Sez: bad string id? " .. id
 					print(id)
@@ -123,7 +123,7 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 			-- first get the unicode font name
 		local f = Translate(997--[[*font*, 15, aa--]])
 		-- index of first , then crop out the rest
-		f = f:sub(1,f:find(",")-1)
+		f = f:sub(1, f:find(", ")-1)
 		ChoGGi.font = f
 
 		-- these four don't get to use non-eng fonts, cause screw you is why

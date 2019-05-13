@@ -21,7 +21,7 @@ local text_rovers = ChoGGi.ComFuncs.Translate(5438--[[Rovers--]]) .. ": "
 -- stores rovers
 GlobalVar("g_ChoGGi_RCGarageRovers", {})
 -- stores all garages and power used
-local map_center = point(0,0)
+local map_center = point(0, 0)
 GlobalVar("g_ChoGGi_RCGarages", {
 	power_per_rover = 500,
 	power_per_garage = 1000,
@@ -47,13 +47,13 @@ DefineClass.RCGarage = {
 	-- keeps a modifier obj to change power use
 	power_modifier = false,
 	-- show the pin info
-	pin_rollover = T(0,"<ui_command>"),
+	pin_rollover = T(0, "<ui_command>"),
 }
 
 function RCGarage:GameInit(...)
---~ 	Building.GameInit(self,...)
+--~ 	Building.GameInit(self, ...)
 --~ 	-- from Holder class
---~ 	WaypointsObj.GameInit(self,...)
+--~ 	WaypointsObj.GameInit(self, ...)
 
 	-- add a ref to global var for easy access
 	self.stored_rovers = g_ChoGGi_RCGarageRovers
@@ -66,7 +66,7 @@ function RCGarage:GameInit(...)
 		self.garages[#self.garages+1] = self
 	end
 
-	self:ForEachAttach("TunnelEntranceDoor",function(a)
+	self:ForEachAttach("TunnelEntranceDoor", function(a)
 		a:SetColorModifier(-15198184)
 		-- easy access for later
 		self.door = a
@@ -105,7 +105,7 @@ end
 
 local DustMaterialExterior = const.DustMaterialExterior
 function RCGarage:StickInGarage(unit)
-	local unit_idx = table_find(self.stored_rovers,"handle",unit.handle)
+	local unit_idx = table_find(self.stored_rovers, "handle", unit.handle)
 
   if not IsValid(self) or unit_idx then
     return
@@ -162,9 +162,9 @@ function RCGarage:RemoveFromGarage(unit)
 	unit.ChoGGi_InGarage = nil
 	unit.accumulate_dust = true
 	-- update list
-	local unit_idx = table_find(self.stored_rovers,"handle",unit.handle)
+	local unit_idx = table_find(self.stored_rovers, "handle", unit.handle)
 	if unit_idx then
-		table_remove(self.stored_rovers,unit_idx)
+		table_remove(self.stored_rovers, unit_idx)
 	end
 
 	CreateGameTimeThread(function()
@@ -174,7 +174,7 @@ function RCGarage:RemoveFromGarage(unit)
 			Sleep(self.door:TimeToOpen())
 		end
 		-- Get the fuck outta here!
-		unit:SetCommand("ExitBuilding",self, nil, "tunnel_entrance")
+		unit:SetCommand("ExitBuilding", self, nil, "tunnel_entrance")
 		-- get door opening anim and use it here
 		while unit.command == "ExitBuilding" do
 			Sleep(250)
@@ -186,15 +186,15 @@ function RCGarage:RemoveFromGarage(unit)
 		local pt = unit:GetPos()
 		local rem = unit.ChoGGi_RemHolderPos ~= InvalidPos and unit.ChoGGi_RemHolderPos
 		-- get nearby pass area
-		unit:SetCommand("Goto",GetPassablePointNearby(pt ~= InvalidPos and pt or rem))
+		unit:SetCommand("Goto", GetPassablePointNearby(pt ~= InvalidPos and pt or rem))
 		Sleep(2500)
 
 		-- last ditch effort (should only happen when you cheat delete building)
 		if not IsValidPos(pt) then
 			local last = g_ChoGGi_RCGarages.last_pass
-			pt = rem or last ~= InvalidPos and last or point(0,0,terrain.GetHeight(map_center))
+			pt = rem or last ~= InvalidPos and last or point(0, 0, terrain.GetHeight(map_center))
 			unit:SetPos(pt)
-			unit:SetCommand("Goto",GetPassablePointNearby(unit:GetPos()))
+			unit:SetCommand("Goto", GetPassablePointNearby(unit:GetPos()))
 		end
 
 		-- drop some drones
@@ -249,7 +249,7 @@ function RCGarage:CheckMainGarage(skip)
 			if obj ~= skip and IsValid(obj) and not obj.destroyed then
 				-- add as main and remove it's regular ref
 				main = obj
-				table_remove(self.garages,i)
+				table_remove(self.garages, i)
 				break
 			end
 		end
@@ -264,7 +264,7 @@ function RCGarage:CheckMainGarage(skip)
 	return main
 end
 
-local function CountPower(power,list,amount)
+local function CountPower(power, list, amount)
 	for i = #list, 1, -1 do
 		if IsValid(list[i]) then
 			if list[i].working then
@@ -272,7 +272,7 @@ local function CountPower(power,list,amount)
 			end
 		else
 			-- good as any place to clean out missing objs
-			table_remove(list,i)
+			table_remove(list, i)
 		end
 	end
 	return power
@@ -282,8 +282,8 @@ function RCGarage:UpdateGaragePower(skip_check)
 		-- main always uses 5
 		local power = 5000
 		-- add the rest
-		power = CountPower(power,self.garages,self.garages.power_per_garage)
-		power = CountPower(power,self.stored_rovers,self.garages.power_per_rover)
+		power = CountPower(power, self.garages, self.garages.power_per_garage)
+		power = CountPower(power, self.stored_rovers, self.garages.power_per_rover)
 		-- and update our modifier
 		if self.garages.main.power_modifier then
 			self.garages.main.power_modifier:Change(power)
@@ -299,18 +299,18 @@ function RCGarage:UpdateGaragePower(skip_check)
 end
 
 -- we just update power use here (if main is down rovers are blocked), need to add some status text when main isn't working
-function RCGarage:OnSetWorking(working,...)
-	Building.OnSetWorking(self,working,...)
+function RCGarage:OnSetWorking(working, ...)
+	Building.OnSetWorking(self, working, ...)
 	self:UpdateGaragePower()
 end
 
 function RCGarage:OnDemolish(...)
 	self.garages.last_pass = self:GetPos()
-	Building.OnDemolish(self,...)
+	Building.OnDemolish(self, ...)
 	self:RemoveGarage()
 end
 
-function OnMsg.OnSetWorking(obj,working)
+function OnMsg.OnSetWorking(obj, working)
 	local garages = g_ChoGGi_RCGarages
 	if obj == garages.main then
 		for obj in pairs(garages) do
@@ -324,23 +324,23 @@ end
 
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.RCGarage then
-		PlaceObj("BuildingTemplate",{
-			"Id","RCGarage",
-			"template_class","RCGarage",
+		PlaceObj("BuildingTemplate", {
+			"Id", "RCGarage",
+			"template_class", "RCGarage",
 			-- pricey?
-			"construction_cost_Metals",40000,
-			"construction_cost_MachineParts",40000,
-			"construction_cost_Electronics",20000,
+			"construction_cost_Metals", 40000,
+			"construction_cost_MachineParts", 40000,
+			"construction_cost_Electronics", 20000,
 
-			"dome_forbidden",true,
-			"display_name",name,
-			"display_name_pl",name,
-			"description",description,
-			"build_category","ChoGGi",
+			"dome_forbidden", true,
+			"display_name", name,
+			"display_name_pl", name,
+			"description", description,
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", display_icon,
-			"encyclopedia_exclude",true,
-			"entity","TunnelEntrance",
+			"encyclopedia_exclude", true,
+			"entity", "TunnelEntrance",
 			-- add a bit of pallor to the skeleton
 			"palette_color1", "pipes_metal",
 			"palette_color2", "mining_base",
@@ -361,7 +361,7 @@ function OnMsg.ClassesBuilt()
 	if idx then
 		building[idx]:delete()
 		-- we need to remove for insert
-		table_remove(building,idx)
+		table_remove(building, idx)
 	else
 		-- insert above consumption
 		idx = table_find(building, "__template", "sectionConsumption")
@@ -405,7 +405,7 @@ function OnMsg.ClassesBuilt()
 					if text_rovers .. #context.stored_rovers == context.status_text then
 						self:SetTitle([[Main Garage]])
 					else
-						self:SetTitle(T(0,"<ui_command>"))
+						self:SetTitle(T(0, "<ui_command>"))
 					end
 
 					---
@@ -430,7 +430,7 @@ function OnMsg.ClassesBuilt()
 			PlaceObj('XTemplateTemplate', {
 				"__template", "InfopanelActiveSection",
 				"Icon", "UI/Icons/ColonyControlCenter/homeless_off.tga",
-				"Title",[[Eject All]],
+				"Title", [[Eject All]],
 				"RolloverText", [[Forces out all rovers to main garage area]],
 				"OnContextUpdate", function(self, context)
 					-- hide if this isn't main garage
@@ -461,7 +461,7 @@ function OnMsg.ClassesBuilt()
 									unit.ChoGGi_InGarage = nil
 									unit.accumulate_dust = true
 									unit:SetPos(context:GetPos())
-									unit:SetCommand("Goto",GetPassablePointNearby(unit:GetPos()+point(Random(-5000,5000),Random(-5000,5000))))
+									unit:SetCommand("Goto", GetPassablePointNearby(unit:GetPos()+point(Random(-5000, 5000), Random(-5000, 5000))))
 								end
 								table_clear(g_ChoGGi_RCGarageRovers)
 								context:UpdateGaragePower()
@@ -522,7 +522,7 @@ function OnMsg.ClassesBuilt()
 						end
 
 						-- and show it
-						PopupToggle(self,"idRCGarageMenu",item_list,"left")
+						PopupToggle(self, "idRCGarageMenu", item_list, "left")
 
 						ObjModified(context)
 						---

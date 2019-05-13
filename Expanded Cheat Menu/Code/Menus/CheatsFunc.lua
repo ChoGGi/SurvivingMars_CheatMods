@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local pairs,type = pairs,type
+local pairs, type = pairs, type
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Translate = ChoGGi.ComFuncs.Translate
@@ -27,7 +27,7 @@ function ChoGGi.MenuFuncs.UnlockBreakthroughs()
   MapForEach("map", "SubsurfaceAnomaly", reveal)
 end
 
-function ChoGGi.MenuFuncs.LightningStrike(_,_,input)
+function ChoGGi.MenuFuncs.LightningStrike(_, _, input)
 	local strike_pos
 	if input == "keyboard" then
 		strike_pos = GetTerrainCursor()
@@ -39,14 +39,14 @@ function ChoGGi.MenuFuncs.LightningStrike(_,_,input)
 
 	local strike_radius = dust_storm.strike_radius
 	PlayFX("ElectrostaticStormArea", "start", nil, nil, strike_pos)
-	PlayFX("ElectrostaticStorm", "hit-moment" .. Random(1,4), nil, nil, strike_pos)
+	PlayFX("ElectrostaticStorm", "hit-moment" .. Random(1, 4), nil, nil, strike_pos)
 	local fuel_explosions = {}
 	local IsValid = IsValid
 	local IsObjInDome = IsObjInDome
 	local IsCloser2D = IsCloser2D
 	local FuelExplosion = FuelExplosion
 	MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(),
-			"Colonist", "Building", "Drone", "RCRover", "ResourceStockpileBase",function(obj)
+			"Colonist", "Building", "Drone", "RCRover", "ResourceStockpileBase", function(obj)
 		if not IsCloser2D(obj, strike_pos, strike_radius) or IsObjInDome(obj) then
 			return
 		end
@@ -134,7 +134,7 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 	local item_list = {}
 	local c = 0
 
-	for id,item in pairs(AchievementPresets) do
+	for id, item in pairs(AchievementPresets) do
 		if EngineCanUnlockAchievement(XPlayerActive, id) then
 			c = c + 1
 			item_list[c] = {
@@ -158,7 +158,7 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 			end
 
 			MsgPopup(
-				#choice,Strings[302535920000318--[[Unlock--]]] .. ": " .. Translate(697482021580--[[Achievements--]]),
+				#choice, Strings[302535920000318--[[Unlock--]]] .. ": " .. Translate(697482021580--[[Achievements--]]),
 				title
 			)
 		end)
@@ -189,12 +189,12 @@ function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
 	end
 
 	local item_list = {
-		{text = 1,value = 1},
-		{text = 5,value = 5},
-		{text = 10,value = 10},
-		{text = 15,value = 15},
-		{text = 25,value = 25},
-		{text = max,value = max},
+		{text = 1, value = 1},
+		{text = 5, value = 5},
+		{text = 10, value = 10},
+		{text = 15, value = 15},
+		{text = 25, value = 25},
+		{text = max, value = max},
 	}
 
 	local function CallBackFunc(choice)
@@ -257,18 +257,18 @@ end
 function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()
 	local default_setting = ChoGGi.Consts.OutsourceMaxOrderCount
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 100,value = 100},
-		{text = 150,value = 150},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
-		{text = 2500,value = 2500},
-		{text = 5000,value = 5000},
-		{text = 10000,value = 10000},
-		{text = 25000,value = 25000},
-		{text = 50000,value = 50000},
-		{text = 100000,value = 100000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 100, value = 100},
+		{text = 150, value = 150},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
+		{text = 2500, value = 2500},
+		{text = 5000, value = 5000},
+		{text = 10000, value = 10000},
+		{text = 25000, value = 25000},
+		{text = 50000, value = 50000},
+		{text = 100000, value = 100000},
 	}
 
 	local hint = default_setting
@@ -282,7 +282,7 @@ function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConstsG("OutsourceMaxOrderCount",value)
+			ChoGGi.ComFuncs.SetConstsG("OutsourceMaxOrderCount", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("OutsourceMaxOrderCount")
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -452,7 +452,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerMissle(amount)
 					1000,
 					1
 				)
-				Sleep(Random(100,750))
+				Sleep(Random(100, 750))
 			end
 			-- restore popup
 			osnp.Bombardment = preset
@@ -467,14 +467,14 @@ function ChoGGi.MenuFuncs.DisasterTriggerColdWave(severity)
 		StartColdWave(descr)
 	end)
 end
-function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(severity,storm_type)
+function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(severity, storm_type)
 	CreateGameTimeThread(function()
 		local data = DataInstances.MapSettings_DustStorm
 		local descr = data[severity] or data[mapdata.MapSettings_DustStorm] or data.DustStorm_VeryLow
-		StartDustStorm(storm_type or "normal",descr)
+		StartDustStorm(storm_type or "normal", descr)
 	end)
 end
-function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity,major)
+function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity, major)
 	local pos = SelObject() or GetTerrainCursor()
 	if type(pos) == "table" then
 		pos = pos:GetPos()
@@ -484,7 +484,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity,major)
 	local descr = data[severity] or data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
 	GenerateDustDevil(pos, descr, nil, major):Start()
 end
-function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity,meteors_type)
+function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type)
 	meteors_type = meteors_type or "single"
 	local pos = SelObject() or GetTerrainCursor()
 	if IsValid(pos) then
@@ -514,7 +514,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm()
 	local storm = MetatronIonStorm:new()
 	storm.expiration_time = Random(50 * const.HourDuration, 75 * const.HourDuration) + 14450
 	storm:SetPos(pos)
-	storm:SetAngle(Random(1,21600))
+	storm:SetAngle(Random(1, 21600))
 end
 
 do -- DisasterTriggerLightningStrike
@@ -580,7 +580,7 @@ do -- DisasterTriggerLightningStrike
 			for _ = 1, amount or 1 do
 				strike_pos = GetRandomPassable()
 				PlayFX("ElectrostaticStormArea", "start", nil, nil, strike_pos)
-				PlayFX("ElectrostaticStorm", "hit-moment" .. Random(1,5), nil, nil, strike_pos)
+				PlayFX("ElectrostaticStorm", "hit-moment" .. Random(1, 5), nil, nil, strike_pos)
 				MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(), "Colonist", "Building", "Drone", "RCRover", "ResourceStockpileBase", MapForEachObjStrike)
 				local exp = fuel_explosions or ""
 				for i = 1, #exp do
@@ -589,7 +589,7 @@ do -- DisasterTriggerLightningStrike
 					end
 				end
 				-- don't want to spam all at once
-				Sleep(Random(100,750))
+				Sleep(Random(100, 750))
 			end
 		end)
 	end
@@ -605,23 +605,23 @@ do -- DisastersTrigger
 		DustDevils = ChoGGi.MenuFuncs.DisasterTriggerDustDevils,
 
 		DustDevilsMajor = function()
-			ChoGGi.MenuFuncs.DisasterTriggerDustDevils(nil,"major")
+			ChoGGi.MenuFuncs.DisasterTriggerDustDevils(nil, "major")
 		end,
 		DustStormElectrostatic = function()
-			ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil,"electrostatic")
+			ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil, "electrostatic")
 		end,
 		DustStormGreat = function()
-			ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil,"great")
+			ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil, "great")
 		end,
 		MeteorStorm = function()
-			ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil,"storm")
+			ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil, "storm")
 		end,
 		MeteorMultiSpawn = function()
-			ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil,"multispawn")
+			ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil, "multispawn")
 		end,
 	}
 
-	local function AddTableToList(t,c,list,text,disaster,types)
+	local function AddTableToList(t, c, list, text, disaster, types)
 		types = types or {}
 		local func_name = "DisasterTrigger" .. disaster
 		local remove_name = disaster .. "_"
@@ -635,7 +635,7 @@ do -- DisastersTrigger
 			-- add rule settings to tooltip
 			local hint = {}
 			local hc = 0
-			for key,value in pairs(rule) do
+			for key, value in pairs(rule) do
 				if key ~= "name" and key ~= "use_in_gen" then
 					hc = hc + 1
 					hint[hc] = key .. ": " .. tostring(value)
@@ -651,16 +651,16 @@ do -- DisastersTrigger
 				trigger_table[name] = function()
 					local func = ChoGGi.MenuFuncs[func_name]
 					if type(func) == "function" then
-						func(name,d_type)
+						func(name, d_type)
 					else
 						-- GreenPlanet
-						func = rawget(_G,"CheatTrigger" .. disaster)
+						func = rawget(_G, "CheatTrigger" .. disaster)
 						if type(func) == "function" then
-							func(name,d_type)
+							func(name, d_type)
 						else
-							func = rawget(_G,"Cheat" .. disaster)
+							func = rawget(_G, "Cheat" .. disaster)
 							if type(func) == "function" then
-								func(name,d_type)
+								func(name, d_type)
 							end
 						end
 					end
@@ -669,9 +669,9 @@ do -- DisastersTrigger
 
 				c = c + 1
 				t[c] = {
-					text = text .. ": " .. name:gsub(remove_name,""),
+					text = text .. ": " .. name:gsub(remove_name, ""),
 					value = name,
-					hint = TableConcat(hint,"\n"),
+					hint = TableConcat(hint, "\n"),
 				}
 			end
 		end
@@ -686,32 +686,32 @@ do -- DisastersTrigger
 		local default_mapdata_type = Strings[302535920000250--[[Default mapdata type--]]]
 
 		local item_list = {
-			{text = " " .. Strings[302535920000240--[[Stop--]]] .. " " .. Translate(3983--[[Disasters--]]),value = "Stop",hint = Strings[302535920000123--[[Stops most disasters--]]]},
+			{text = " " .. Strings[302535920000240--[[Stop--]]] .. " " .. Translate(3983--[[Disasters--]]), value = "Stop", hint = Strings[302535920000123--[[Stops most disasters--]]]},
 
-			{text = Translate(4149--[[Cold Wave--]]),value = "ColdWave",hint = default_mapdata_type},
+			{text = Translate(4149--[[Cold Wave--]]), value = "ColdWave", hint = default_mapdata_type},
 
-			{text = Translate(4142--[[Dust Devils--]]),value = "DustDevils",hint = default_mapdata_type},
-			{text = Translate(4142--[[Dust Devils--]]) .. " " .. Strings[302535920000241--[[Major--]]],value = "DustDevilsMajor",hint = default_mapdata_type},
+			{text = Translate(4142--[[Dust Devils--]]), value = "DustDevils", hint = default_mapdata_type},
+			{text = Translate(4142--[[Dust Devils--]]) .. " " .. Strings[302535920000241--[[Major--]]], value = "DustDevilsMajor", hint = default_mapdata_type},
 
-			{text = Translate(4250--[[Dust Storm--]]),value = "DustStorm",hint = default_mapdata_type},
-			{text = Translate(5627--[[Great Dust Storm--]]),value = "DustStormGreat",hint = default_mapdata_type},
-			{text = Translate(5628--[[Electrostatic Dust Storm--]]),value = "DustStormElectrostatic",hint = default_mapdata_type},
+			{text = Translate(4250--[[Dust Storm--]]), value = "DustStorm", hint = default_mapdata_type},
+			{text = Translate(5627--[[Great Dust Storm--]]), value = "DustStormGreat", hint = default_mapdata_type},
+			{text = Translate(5628--[[Electrostatic Dust Storm--]]), value = "DustStormElectrostatic", hint = default_mapdata_type},
 
-			{text = Translate(4146--[[Meteors--]]),value = "Meteor",hint = default_mapdata_type},
-			{text = Translate(4146--[[Meteors--]]) .. " " .. Strings[302535920000245--[[Multi-Spawn--]]],value = "MeteorMultiSpawn",hint = default_mapdata_type},
-			{text = Translate(5620--[[Meteor Storm--]]),value = "MeteorStorm",hint = default_mapdata_type},
+			{text = Translate(4146--[[Meteors--]]), value = "Meteor", hint = default_mapdata_type},
+			{text = Translate(4146--[[Meteors--]]) .. " " .. Strings[302535920000245--[[Multi-Spawn--]]], value = "MeteorMultiSpawn", hint = default_mapdata_type},
+			{text = Translate(5620--[[Meteor Storm--]]), value = "MeteorStorm", hint = default_mapdata_type},
 
-			{text = Strings[302535920000251--[[Metatron Ion Storm--]]],value = "MetatronIonStorm"},
+			{text = Strings[302535920000251--[[Metatron Ion Storm--]]], value = "MetatronIonStorm"},
 
-			{text = Strings[302535920000246--[[Missle--]]] .. " " .. 1,value = "Missle1",hint = missile_hint},
-			{text = Strings[302535920000246--[[Missle--]]] .. " " .. 50,value = "Missle50",hint = missile_hint},
-			{text = Strings[302535920000246--[[Missle--]]] .. " " .. 100,value = "Missle100",hint = missile_hint},
-			{text = Strings[302535920000246--[[Missle--]]] .. " " .. 500,value = "Missle500",hint = missile_hint},
+			{text = Strings[302535920000246--[[Missle--]]] .. " " .. 1, value = "Missle1", hint = missile_hint},
+			{text = Strings[302535920000246--[[Missle--]]] .. " " .. 50, value = "Missle50", hint = missile_hint},
+			{text = Strings[302535920000246--[[Missle--]]] .. " " .. 100, value = "Missle100", hint = missile_hint},
+			{text = Strings[302535920000246--[[Missle--]]] .. " " .. 500, value = "Missle500", hint = missile_hint},
 
-			{text = Strings[302535920001373--[[Lightning Strike--]]] .. " " .. 1,value = "LightningStrike1",hint = strike_hint},
-			{text = Strings[302535920001373--[[Lightning Strike--]]] .. " " .. 50,value = "LightningStrike50",hint = strike_hint},
-			{text = Strings[302535920001373--[[Lightning Strike--]]] .. " " .. 100,value = "LightningStrike100",hint = strike_hint},
-			{text = Strings[302535920001373--[[Lightning Strike--]]] .. " " .. 500,value = "LightningStrike500",hint = strike_hint},
+			{text = Strings[302535920001373--[[Lightning Strike--]]] .. " " .. 1, value = "LightningStrike1", hint = strike_hint},
+			{text = Strings[302535920001373--[[Lightning Strike--]]] .. " " .. 50, value = "LightningStrike50", hint = strike_hint},
+			{text = Strings[302535920001373--[[Lightning Strike--]]] .. " " .. 100, value = "LightningStrike100", hint = strike_hint},
+			{text = Strings[302535920001373--[[Lightning Strike--]]] .. " " .. 500, value = "LightningStrike500", hint = strike_hint},
 		}
 		-- add map settings for disasters
 		local DataInstances = DataInstances
@@ -728,23 +728,23 @@ do -- DisastersTrigger
 			},
 			DustDevils = {
 				display = Translate(4142--[[Dust Devils--]]),
-				types = {"electrostatic","great"},
+				types = {"electrostatic", "great"},
 			},
 			Meteor = {
 				display = Translate(4146--[[Meteors--]]),
-				types = {"storm","multispawn"},
+				types = {"storm", "multispawn"},
 			},
 			-- GreenPlanet
 		}
-		for key,value in pairs(DataInstances) do
-			if key:sub(1,12) == "MapSettings_" then
+		for key, value in pairs(DataInstances) do
+			if key:sub(1, 12) == "MapSettings_" then
 				local name = key:sub(13)
 				local lookup = name_lookup[name]
 				if lookup then
-					c = AddTableToList(item_list,c,value,lookup.display,name,lookup.types)
+					c = AddTableToList(item_list, c, value, lookup.display, name, lookup.types)
 				else
 					-- GreenPlanet
-					c = AddTableToList(item_list,c,value,name,name)
+					c = AddTableToList(item_list, c, value, name, name)
 				end
 			end
 		end
@@ -787,13 +787,57 @@ do -- DisastersTrigger
 end -- do
 
 function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
+	BuildNames()
+
 	local item_list = {
-		{text = " " .. Translate(4493--[[All--]]),value = "All",hint = Strings[302535920000329--[[Scan all anomalies.--]]]},
-		{text = Translate(9--[[Anomaly--]]),value = "SubsurfaceAnomaly",icon = "<image UI/Icons/Anomaly_Event.tga 750>",hint = Translate(14--[[We have detected alien artifacts at this location that will <em>speed up</em> our Research efforts.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
-		{text = Translate(8--[[Breakthrough Tech--]]),value = "SubsurfaceAnomaly_breakthrough",icon = "<image UI/Icons/Anomaly_Breakthrough.tga 750>",hint = Translate(11--[[Our scientists believe that this Anomaly may lead to a <em>Breakthrough</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
-		{text = Translate(3--[[Grant Research--]]),value = "SubsurfaceAnomaly_complete",icon = "<image UI/Icons/Anomaly_Research.tga 750>",hint = Translate(13--[[Sensors readings suggest that this Anomaly will help us with our current <em>Research</em> goals.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
-		{text = Translate(2--[[Unlock Tech--]]),value = "SubsurfaceAnomaly_unlock",icon = "<image UI/Icons/Anomaly_Tech.tga 750>",hint = Translate(12--[[Scans have detected some interesting readings that might help us discover <em>new Technologies</em>.<newline><newline>Send an <em>Explorer</em> to analyze the Anomaly.--]])},
+		{
+			text = " " .. Translate(4493--[[All--]]),
+			value = "All",
+			hint = Strings[302535920000329--[[Scan all anomalies.--]]],
+		},
+		{
+			text = Translate(9--[[Anomaly--]]),
+			value = "SubsurfaceAnomaly",
+			hint = Translate(22--[[Our scans have found some interesting readings in this Sector. Further analysis is needed.<newline><newline>Send an RC Explorer to analyze the Anomaly.--]]),
+			icon = "<image UI/Icons/Anomaly_Custom.tga 750>",
+		},
 	}
+	local c = #item_list
+
+	local names_lookup = {
+		SubsurfaceAnomaly_aliens = {
+			title = Translate(5616--[[Alien Artifact Analyzed--]]),
+			icon = "UI/Icons/Anomaly_Event.tga",
+		},
+		SubsurfaceAnomaly_breakthrough = {
+			title = Translate(8--[[Breakthrough Tech--]]),
+			icon = "UI/Icons/Anomaly_Breakthrough.tga",
+		},
+		SubsurfaceAnomaly_complete = {
+			title = Translate(3--[[Grant Research--]]),
+			icon = "UI/Icons/Anomaly_Research.tga",
+		},
+		SubsurfaceAnomaly_unlock = {
+			title = Translate(2--[[Unlock Tech--]]),
+			icon = "UI/Icons/Anomaly_Tech.tga",
+		},
+		MetatronAnomaly = {
+			title = Translate(9818--[[Metatron's Challenge--]]),
+		},
+		MirrorSphereAnomaly = {
+			title = Translate(1182--[[Mirror Sphere--]]),
+		},
+	}
+
+	ClassDescendantsList("SubsurfaceAnomaly", function(name, class)
+		c = c + 1
+		item_list[c] = 		{
+			text = names_lookup[name].title or Translate(class.display_name),
+			value = name,
+			hint = Translate(class.description or 25--[[Anomaly Scanning--]]),
+			icon = "<image " .. (names_lookup[name].icon or "UI/Icons/Anomaly_Custom.tga") .. " 750>",
+		}
+	end)
 
 	local function CallBackFunc(choice)
 		if choice.nothing_selected then
@@ -806,6 +850,7 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 			-- if 4 are selected that's all
 			if value == "All" or #choice > 3 then
 				local a = UICity.labels.Anomaly or ""
+				-- go backwards it'll be removed once scanned
 				for j = #a, 1, -1 do
 					a[j]:CheatScan()
 				end
@@ -815,7 +860,7 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 				local a = UICity.labels.Anomaly or ""
 				for j = #a, 1, -1 do
 					local anomnom = a[j]
-					if anomnom:IsKindOf(value) then
+					if anomnom.class == value then
 						anomnom:CheatScan()
 					end
 				end
@@ -828,7 +873,6 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 		items = item_list,
 		title = Translate(25--[[Anomaly Scanning--]]),
 		multisel = true,
-		skip_sort = true,
 	}
 end
 
@@ -839,22 +883,22 @@ function ChoGGi.MenuFuncs.MapExploration()
 	local hint_core = Strings[302535920000253--[[Core: Repeatable, exploit core resources.--]]]
 	local hint_deep = Strings[302535920000254--[[Deep: Toggleable, exploit deep resources.--]]]
 	local item_list = {
-		{text = Strings[302535920000258--[[Reveal Map--]]],value = 12,hint = Strings[302535920000259--[[Reveals the map squares--]]]},
-		{text = Strings[302535920000260--[[Reveal Map (Deep)--]]],value = 13,hint = Strings[302535920000261--[[Reveals the map and unlocks "Deep" resources--]]]},
+		{text = Strings[302535920000258--[[Reveal Map--]]], value = 12, hint = Strings[302535920000259--[[Reveals the map squares--]]]},
+		{text = Strings[302535920000260--[[Reveal Map (Deep)--]]], value = 13, hint = Strings[302535920000261--[[Reveals the map and unlocks "Deep" resources--]]]},
 
-		{text = Translate(4493--[[All--]]),value = 1,hint = hint_core .. "\n" .. hint_deep},
-		{text = Strings[302535920000255--[[Deep--]]],value = 2,hint = hint_deep},
-		{text = Strings[302535920000256--[[Core--]]],value = 3,hint = hint_core},
+		{text = Translate(4493--[[All--]]), value = 1, hint = hint_core .. "\n" .. hint_deep},
+		{text = Strings[302535920000255--[[Deep--]]], value = 2, hint = hint_deep},
+		{text = Strings[302535920000256--[[Core--]]], value = 3, hint = hint_core},
 
-		{text = Strings[302535920000257--[[Deep Scan--]]],value = 4,hint = hint_deep .. "\n" .. Strings[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.DeepScanAvailable},
-		{text = Translate(797--[[Deep Water--]]),value = 5,hint = hint_deep .. "\n" .. Strings[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepWaterExploitable},
-		{text = Translate(793--[[Deep Metals--]]),value = 6,hint = hint_deep .. "\n" .. Strings[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepMetalsExploitable},
-		{text = Translate(801--[[Deep Rare Metals--]]),value = 7,hint = hint_deep .. "\n" .. Strings[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepPreciousMetalsExploitable},
+		{text = Strings[302535920000257--[[Deep Scan--]]], value = 4, hint = hint_deep .. "\n" .. Strings[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.DeepScanAvailable},
+		{text = Translate(797--[[Deep Water--]]), value = 5, hint = hint_deep .. "\n" .. Strings[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepWaterExploitable},
+		{text = Translate(793--[[Deep Metals--]]), value = 6, hint = hint_deep .. "\n" .. Strings[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepMetalsExploitable},
+		{text = Translate(801--[[Deep Rare Metals--]]), value = 7, hint = hint_deep .. "\n" .. Strings[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepPreciousMetalsExploitable},
 
-		{text = Translate(6548--[[Core Water--]]),value = 8,hint = hint_core},
-		{text = Translate(6546--[[Core Metals--]]),value = 9,hint = hint_core},
-		{text = Translate(6550--[[Core Rare Metals--]]),value = 10,hint = hint_core},
-		{text = Translate(6556--[[Alien Imprints--]]),value = 11,hint = hint_core},
+		{text = Translate(6548--[[Core Water--]]), value = 8, hint = hint_core},
+		{text = Translate(6546--[[Core Metals--]]), value = 9, hint = hint_core},
+		{text = Translate(6550--[[Core Rare Metals--]]), value = 10, hint = hint_core},
+		{text = Translate(6556--[[Alien Imprints--]]), value = 11, hint = hint_core},
 	}
 
 	local function CallBackFunc(choice)
@@ -862,19 +906,19 @@ function ChoGGi.MenuFuncs.MapExploration()
 			return
 		end
 		local function ExploreDeep()
-			ChoGGi.ComFuncs.SetConstsG("DeepScanAvailable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
-			ChoGGi.ComFuncs.SetConstsG("IsDeepWaterExploitable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
-			ChoGGi.ComFuncs.SetConstsG("IsDeepMetalsExploitable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
-			ChoGGi.ComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+			ChoGGi.ComFuncs.SetConstsG("DeepScanAvailable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
+			ChoGGi.ComFuncs.SetConstsG("IsDeepWaterExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+			ChoGGi.ComFuncs.SetConstsG("IsDeepMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+			ChoGGi.ComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
 		end
 		local function ExploreCore()
-			Msg("TechResearched","CoreWater", UICity)
-			Msg("TechResearched","CoreMetals", UICity)
-			Msg("TechResearched","CoreRareMetals", UICity)
-			Msg("TechResearched","AlienImprints", UICity)
+			Msg("TechResearched", "CoreWater", UICity)
+			Msg("TechResearched", "CoreMetals", UICity)
+			Msg("TechResearched", "CoreRareMetals", UICity)
+			Msg("TechResearched", "AlienImprints", UICity)
 		end
 
-		for i = 1,#choice do
+		for i = 1, #choice do
 			local value = choice[i].value
 			if value == 1 then
 				CheatMapExplore("deep scanned")
@@ -884,21 +928,21 @@ function ChoGGi.MenuFuncs.MapExploration()
 			elseif value == 3 then
 				ExploreCore()
 			elseif value == 4 then
-				ChoGGi.ComFuncs.SetConstsG("DeepScanAvailable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
+				ChoGGi.ComFuncs.SetConstsG("DeepScanAvailable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
 			elseif value == 5 then
-				ChoGGi.ComFuncs.SetConstsG("IsDeepWaterExploitable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+				ChoGGi.ComFuncs.SetConstsG("IsDeepWaterExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
 			elseif value == 6 then
-				ChoGGi.ComFuncs.SetConstsG("IsDeepMetalsExploitable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+				ChoGGi.ComFuncs.SetConstsG("IsDeepMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
 			elseif value == 7 then
-				ChoGGi.ComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable",ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+				ChoGGi.ComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
 			elseif value == 8 then
-				Msg("TechResearched","CoreWater", UICity)
+				Msg("TechResearched", "CoreWater", UICity)
 			elseif value == 9 then
-				Msg("TechResearched","CoreMetals", UICity)
+				Msg("TechResearched", "CoreMetals", UICity)
 			elseif value == 10 then
-				Msg("TechResearched","CoreRareMetals", UICity)
+				Msg("TechResearched", "CoreRareMetals", UICity)
 			elseif value == 11 then
-				Msg("TechResearched","AlienImprints", UICity)
+				Msg("TechResearched", "AlienImprints", UICity)
 			elseif value == 12 then
 				CheatMapExplore("scanned")
 			elseif value == 13 then
@@ -931,18 +975,18 @@ end
 function ChoGGi.MenuFuncs.SpawnColonists()
 	local title = Strings[302535920000266--[[Spawn--]]] .. " " .. Translate(547--[[Colonists--]])
 	local item_list = {
-		{text = 1,value = 1},
-		{text = 10,value = 10},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
-		{text = 2500,value = 2500},
-		{text = 5000,value = 5000},
-		{text = 10000,value = 10000},
+		{text = 1, value = 1},
+		{text = 10, value = 10},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
+		{text = 2500, value = 2500},
+		{text = 5000, value = 5000},
+		{text = 10000, value = 10000},
 	}
 
 	local function CallBackFunc(choice)
@@ -955,7 +999,7 @@ function ChoGGi.MenuFuncs.SpawnColonists()
 		if type(value) == "number" then
 			CheatSpawnNColonists(value)
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text,Strings[302535920000014--[[Spawned--]]]),
+				ChoGGi.ComFuncs.SettingState(choice.text, Strings[302535920000014--[[Spawned--]]]),
 				title
 			)
 		end
@@ -971,7 +1015,7 @@ function ChoGGi.MenuFuncs.SpawnColonists()
 end
 
 do -- StartMystery
-	local function StartMystery(mystery_id,instant)
+	local function StartMystery(mystery_id, instant)
 		local UICity = UICity
 
 		-- inform people of actions, so they don't add a bunch of them
@@ -980,7 +1024,7 @@ do -- StartMystery
 		UICity.mystery_id = mystery_id
 
 		local TechDef = TechDef
-		for tech_id,tech in pairs(TechDef) do
+		for tech_id, tech in pairs(TechDef) do
 			if tech.mystery == mystery_id then
 				if not UICity.tech_status[tech_id] then
 					UICity.tech_status[tech_id] = {points = 0, field = tech.group}
@@ -1034,7 +1078,7 @@ do -- StartMystery
 			local value = choice[1].value
 			if choice[1].check1 then
 				-- instant
-				StartMystery(value,true)
+				StartMystery(value, true)
 			else
 				StartMystery(value)
 			end
@@ -1098,7 +1142,7 @@ g_Voice:Play(o.speech)"--]]]:format(Strings[302535920000040--[[Exec Code--]]]) .
 		end
 	end
 	-- display to user
-	ChoGGi.ComFuncs.OpenInExamineDlg(msgs,point(550,100))
+	ChoGGi.ComFuncs.OpenInExamineDlg(msgs, point(550, 100))
 end
 
 function ChoGGi.MenuFuncs.MysteryLog()
@@ -1179,7 +1223,7 @@ function ChoGGi.MenuFuncs.MysteryLog()
 			)
 		elseif value then
 			-- next step
-			ChoGGi.MenuFuncs.NextMysterySeq(value,mystery_idx)
+			ChoGGi.MenuFuncs.NextMysterySeq(value, mystery_idx)
 		end
 
 	end
@@ -1208,11 +1252,11 @@ Double right-click selected mystery to review past messages.--]]],
 	}
 end
 
-function ChoGGi.MenuFuncs.NextMysterySeq(mystery,mystery_idx)
+function ChoGGi.MenuFuncs.NextMysterySeq(mystery, mystery_idx)
 	local g_Classes = g_Classes
 
-	local wait_classes = {"SA_WaitMarsTime","SA_WaitTime"}
-	local thread_classes = {"SA_WaitMarsTime","SA_WaitTime","SA_RunSequence"}
+	local wait_classes = {"SA_WaitMarsTime", "SA_WaitTime"}
+	local thread_classes = {"SA_WaitMarsTime", "SA_WaitTime", "SA_RunSequence"}
 	local warning = "\n\n" .. Strings[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."--]]]
 	local name = Translate(3486--[[Mystery--]]) .. ": " .. ChoGGi.Tables.Mystery[mystery].name
 
@@ -1270,7 +1314,7 @@ function ChoGGi.MenuFuncs.NextMysterySeq(mystery,mystery_idx)
 								seq.expression = nil
 								--the first SA_WaitExpression always has a SA_WaitMarsTime, if they're skipping the first then i doubt they want this
 								if i == 1 or i == 2 then
-									ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx,again = true}
+									ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx, again = true}
 								else
 									ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx}
 								end
@@ -1293,7 +1337,7 @@ Wait for a Sol or two for it to update (should give a popup msg).--]]] .. warnin
 					elseif seq:IsKindOf("SA_WaitMsg") then
 						local function CallBackFunc(answer)
 							if answer then
-								ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx,again = true}
+								ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx, again = true}
 								-- send fake msg (ok it's real, but it hasn't happened)
 								Msg(seq.msg)
 								Player:UpdateCurrentIP(seq_list)
@@ -1348,8 +1392,8 @@ end
 
 function ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle()
 	local item_list = {
-		{text = Strings[302535920000547--[[Lock--]]],value = "Lock"},
-		{text = Strings[302535920000318--[[Unlock--]]],value = "Unlock"},
+		{text = Strings[302535920000547--[[Lock--]]], value = "Lock"},
+		{text = Strings[302535920000318--[[Unlock--]]], value = "Unlock"},
 	}
 
 	local function CallBackFunc(choice)
@@ -1360,7 +1404,7 @@ function ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle()
 		if choice[1].value == "Lock" then
 			-- reverse what the unlock cheat does
 			local bmpv = BuildMenuPrerequisiteOverrides
-			for id,value in pairs(bmpv) do
+			for id, value in pairs(bmpv) do
 				if value == true then
 					bmpv[id] = nil
 				end
@@ -1386,19 +1430,19 @@ end
 
 function ChoGGi.MenuFuncs.AddResearchPoints()
 	local item_list = {
-		{text = Strings[302535920001084--[[Reset--]]],value = "Reset",hint = Strings[302535920000292--[[Resets sponsor points to default for that sponsor--]]]},
-		{text = 100,value = 100},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
-		{text = 2500,value = 2500},
-		{text = 5000,value = 5000},
-		{text = 10000,value = 10000},
-		{text = 25000,value = 25000},
-		{text = 50000,value = 50000},
-		{text = 100000,value = 100000},
-		{text = 100000000,value = 100000000},
+		{text = Strings[302535920001084--[[Reset--]]], value = "Reset", hint = Strings[302535920000292--[[Resets sponsor points to default for that sponsor--]]]},
+		{text = 100, value = 100},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
+		{text = 2500, value = 2500},
+		{text = 5000, value = 5000},
+		{text = 10000, value = 10000},
+		{text = 25000, value = 25000},
+		{text = 50000, value = 50000},
+		{text = 100000, value = 100000},
+		{text = 100000000, value = 100000000},
 	}
 
 	local function CallBackFunc(choice)
@@ -1431,7 +1475,7 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 end
 
 function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("OutsourceResearchCost",ChoGGi.ComFuncs.NumRetBool(Consts.OutsourceResearchCost,0,ChoGGi.Consts.OutsourceResearchCost))
+	ChoGGi.ComFuncs.SetConstsG("OutsourceResearchCost", ChoGGi.ComFuncs.NumRetBool(Consts.OutsourceResearchCost, 0, ChoGGi.Consts.OutsourceResearchCost))
 	ChoGGi.ComFuncs.SetSavedConstSetting("OutsourceResearchCost")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -1448,11 +1492,11 @@ function ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set()
 	local default_setting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
 	local MaxAmount = #UICity.tech_field.Breakthroughs
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 6,value = 6},
-		{text = 12,value = 12},
-		{text = 24,value = 24},
-		{text = MaxAmount,value = MaxAmount,hint = Strings[302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).--]]]},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 6, value = 6},
+		{text = 12, value = 12},
+		{text = 24, value = 24},
+		{text = MaxAmount, value = MaxAmount, hint = Strings[302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).--]]]},
 	}
 
 	local hint = default_setting
@@ -1490,9 +1534,9 @@ function ChoGGi.MenuFuncs.BreakThroughsAllowed_Set()
 	local default_setting = ChoGGi.Consts.BreakThroughTechsPerGame
 	local MaxAmount = #UICity.tech_field.Breakthroughs
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 26,value = 26,hint = Strings[302535920000301--[[Doubled the base amount.--]]]},
-		{text = MaxAmount,value = MaxAmount,hint = Strings[302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).--]]]},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 26, value = 26, hint = Strings[302535920000301--[[Doubled the base amount.--]]]},
+		{text = MaxAmount, value = MaxAmount, hint = Strings[302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).--]]]},
 	}
 
 	local hint = default_setting
@@ -1529,14 +1573,14 @@ end
 function ChoGGi.MenuFuncs.ResearchQueueSize_Set()
 	local default_setting = ChoGGi.Consts.ResearchQueueSize
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 5,value = 5},
-		{text = 10,value = 10},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 5, value = 5},
+		{text = 10, value = 10},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
 	}
 
 	--other hint type
@@ -1602,7 +1646,7 @@ do -- ResearchRemove
 		end,
 		NanoRefinement = function()
 			local IsKindOf = IsKindOf
-			MapForEach("map", "DepositExploiter",function(obj)
+			MapForEach("map", "DepositExploiter", function(obj)
 				if IsKindOf(obj, "BaseBuilding") then
 					obj:UpdateConsumption()
 					if obj:HasMember("DepositChanged") then
@@ -1652,40 +1696,40 @@ do -- ResearchRemove
 		local TechDef = g.TechDef
 
 		local tech_status = UICity.tech_status or ""
-		for id,status in pairs(tech_status) do
+		for id, status in pairs(tech_status) do
 			if status.researched then
 				local tech = TechDef[id]
 				local text = Translate(tech.display_name)
 				-- remove " from that one tech...
 				if text:find("\"") then
-					text = text:gsub("\"","")
+					text = text:gsub("\"", "")
 				end
 				c = c + 1
 				item_list[c] = {
 					text = text,
 					value = id,
 					icon = "<image " .. tech.icon .. " 250>",
-					hint = Translate(T{tech.description,tech}) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
+					hint = Translate(T{tech.description, tech}) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
 				}
 			end
 		end
 
 --~ 			local IsTechResearched = IsTechResearched
 --~ 			local TechDef = TechDef
---~ 			for tech_id,tech in pairs(TechDef) do
+--~ 			for tech_id, tech in pairs(TechDef) do
 --~ 				-- only show stuff researched
 --~ 				if IsTechResearched(tech_id) then
 --~ 					local text = Translate(tech.display_name)
 --~ 					-- remove " from that one tech...
 --~ 					if text:find("\"") then
---~ 						text = text:gsub("\"","")
+--~ 						text = text:gsub("\"", "")
 --~ 					end
 --~ 					c = c + 1
 --~ 					item_list[c] = {
 --~ 						text = text,
 --~ 						value = tech_id,
 --~ 						icon = "<image " .. tech.icon .. " 250>",
---~ 						hint = Translate(T{tech.description,tech}) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
+--~ 						hint = Translate(T{tech.description, tech}) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
 --~ 					}
 --~ 				end
 --~ 			end
@@ -1718,7 +1762,7 @@ do -- ResearchRemove
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 
 			MsgPopup(
-				Strings[302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.--]]]:format("",#choice),
+				Strings[302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.--]]]:format("", #choice),
 				title
 			)
 		end
@@ -1759,7 +1803,7 @@ do -- ResearchTech
 		IonStormPrediction = 5000,
 	}
 	-- needed to be able to unlock/research some mystery tech
-	local function AllowMysteryTech(id,city)
+	local function AllowMysteryTech(id, city)
 		-- add tech_status if it's a mystery tech from a different mystery
 		if not city.tech_status[id] then
 			city.tech_status[id] = {
@@ -1771,19 +1815,19 @@ do -- ResearchTech
 				city.tech_status[id].cost = mystery_costs[id]
 			end
 		end
-		if not table.find(city.tech_field.Mysteries,id) then
+		if not table.find(city.tech_field.Mysteries, id) then
 			city.tech_field.Mysteries[#city.tech_field.Mysteries+1] = id
 		end
 	end
 
 	-- tech_func = DiscoverTech_Old/GrantTech
-	local function ResearchTechGroup(tech_func,group)
+	local function ResearchTechGroup(tech_func, group)
 		local TechDef = TechDef
 		local UICity = UICity
-		for tech_id,tech in pairs(TechDef) do
+		for tech_id, tech in pairs(TechDef) do
 			if tech.group == group then
 				if tech.group == "Mysteries" then
-					AllowMysteryTech(tech_id,UICity)
+					AllowMysteryTech(tech_id, UICity)
 				end
 				_G[tech_func](tech_id)
 			end
@@ -1799,7 +1843,7 @@ do -- ResearchTech
 		local TechFields = TechFields
 		for key in pairs(TechFields) do
 			if not special_techs[key] then
-				ResearchTechGroup(tech_func,key)
+				ResearchTechGroup(tech_func, key)
 			end
 		end
 	end
@@ -1822,7 +1866,7 @@ do -- ResearchTech
 
 		-- add tech fields
 		local TechFields = TechFields
-		for key,value in pairs(TechFields) do
+		for key, value in pairs(TechFields) do
 			c = c + 1
 			item_list[c] = {
 				text = " " .. Translate(value.display_name),
@@ -1832,15 +1876,15 @@ do -- ResearchTech
 		end
 
 		local TechDef = TechDef
-		for tech_id,tech in pairs(TechDef) do
+		for tech_id, tech in pairs(TechDef) do
 			-- only show stuff not yet researched
 			if not IsTechResearched(tech_id) then
 				local text = Translate(tech.display_name)
 				-- remove " from that one tech...
 				if text:find("\"") then
-					text = text:gsub("\"","")
+					text = text:gsub("\"", "")
 				end
-				local icon1,icon2 = "",""
+				local icon1, icon2 = "", ""
 				if ValidateImage(tech.icon) and not tech.icon:find(" ") then
 					icon1 = "<image " .. tech.icon .. " 250>"
 					icon2 = "\n\n<image " .. tech.icon .. " 1500>"
@@ -1850,7 +1894,7 @@ do -- ResearchTech
 					text = text,
 					value = tech_id,
 					icon = icon1,
-					hint = Translate(T{tech.description,tech}) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. icon2,
+					hint = Translate(T{tech.description, tech}) .. "\n\n" .. Translate(1000097--[[Category--]]) .. ": " .. tech.group .. icon2,
 				}
 			end
 		end
@@ -1886,26 +1930,26 @@ do -- ResearchTech
 				local value = choice[i].value
 				if value == "Everything" then
 					for key in pairs(special_techs) do
-						ResearchTechGroup(func,key)
+						ResearchTechGroup(func, key)
 					end
 					AllRegularTechs(func)
 				elseif value == "AllTech" then
 					AllRegularTechs(func)
 				elseif value == "AllBreakthroughs" then
-					ResearchTechGroup(func,"Breakthroughs")
+					ResearchTechGroup(func, "Breakthroughs")
 				elseif value == "AllMysteries" then
-					ResearchTechGroup(func,"Mysteries")
+					ResearchTechGroup(func, "Mysteries")
 				else
 					-- make sure it's an actual field
 					local field = TechFields[value]
 					if field then
-						ResearchTechGroup(func,value)
+						ResearchTechGroup(func, value)
 					else
 						-- or tech
 						local tech = TechDef[value]
 						if tech then
 							if tech.group == "Mysteries" then
-								AllowMysteryTech(value,UICity)
+								AllowMysteryTech(value, UICity)
 							end
 							g[func](value)
 						end
@@ -1917,7 +1961,7 @@ do -- ResearchTech
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 
 			MsgPopup(
-				Strings[302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.--]]]:format(text,#choice),
+				Strings[302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.--]]]:format(text, #choice),
 				title
 			)
 		end

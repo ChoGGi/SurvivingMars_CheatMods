@@ -25,7 +25,7 @@ function RCTransport:TransportRouteLoad(...)
 	-- save supply obj
 	local supply = self.transport_route.from
 	-- fire off orig
-	orig_RCTransport_TransportRouteLoad(self,...)
+	orig_RCTransport_TransportRouteLoad(self, ...)
 
 	-- if this is false then TransportRouteLoad removed it
 	if not self.transport_route.from then
@@ -86,5 +86,5 @@ function RCTransport:TransportRouteUnload(...)
 		return
 	end
 
-	return orig_RCTransport_TransportRouteUnload(self,...)
+	return orig_RCTransport_TransportRouteUnload(self, ...)
 end

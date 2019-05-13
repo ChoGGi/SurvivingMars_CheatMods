@@ -4,17 +4,17 @@ local ObjModified = ObjModified
 local PlaceObj = PlaceObj
 
 -- remove (maybe) existing xtemplate entry (xtemplates are only built on New Game, and when new dlc is added?)
-local function RemoveXTemplateSections(list,name)
+local function RemoveXTemplateSections(list, name)
 	local idx = table.find(list, name, true)
 	if idx then
 		list[idx]:delete()
-		table.remove(list,idx)
+		table.remove(list, idx)
 	end
 end
 
 function OnMsg.ClassesBuilt()
 
-	RemoveXTemplateSections(XTemplates.sectionWorkplace,"SOMETHINGUNIQUE1")
+	RemoveXTemplateSections(XTemplates.sectionWorkplace, "SOMETHINGUNIQUE1")
 	-- this adds a button to all workplaces that changes depending on Object.working (a building that works...)
 	XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
 		-- we use this to check for our added template crap
@@ -71,7 +71,7 @@ function OnMsg.ClassesBuilt()
 		}),
 	})
 
-	RemoveXTemplateSections(XTemplates.sectionWorkplace,"SOMETHINGUNIQUE2")
+	RemoveXTemplateSections(XTemplates.sectionWorkplace, "SOMETHINGUNIQUE2")
 	-- slider added to all workplaces to adjust number of workers allowed
 	XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
 		"SOMETHINGUNIQUE2", true,
@@ -112,7 +112,7 @@ function OnMsg.ClassesBuilt()
 		}),
 	})
 
-	RemoveXTemplateSections(XTemplates.ipBuilding[1],"SOMETHINGUNIQUE3")
+	RemoveXTemplateSections(XTemplates.ipBuilding[1], "SOMETHINGUNIQUE3")
 	-- two sliders, one header, or just remove Title to not have one at all
 	XTemplates.ipBuilding[1][#XTemplates.ipBuilding[1]+1] = PlaceObj("XTemplateTemplate", {
 		"SOMETHINGUNIQUE3", true,
@@ -154,7 +154,7 @@ function OnMsg.ClassesBuilt()
 		}),
 	})
 
-	RemoveXTemplateSections(XTemplates.sectionWorkplace,"SOMETHINGUNIQUE4")
+	RemoveXTemplateSections(XTemplates.sectionWorkplace, "SOMETHINGUNIQUE4")
 	-- this adds a button to the resource overview that only shows when hour is over 10
 	-- it needs the [1] or it takes over the whole screen (it's usually only needed for ipResourceOverview not the section ones)
 	XTemplates.ipResourceOverview[1][#XTemplates.ipResourceOverview[1]+1] = PlaceObj("XTemplateTemplate", {
@@ -182,7 +182,7 @@ function OnMsg.ClassesBuilt()
 		end,
 	})
 
-	RemoveXTemplateSections(XTemplates.sectionWorkplace,"SOMETHINGUNIQUE5")
+	RemoveXTemplateSections(XTemplates.sectionWorkplace, "SOMETHINGUNIQUE5")
 	-- add an actual button (at the top of the panel)
 	XTemplates.ipSubsurfaceDeposit[1][#XTemplates.ipSubsurfaceDeposit[1]+1] = PlaceObj("XTemplateTemplate", {
 		"SOMETHINGUNIQUE5", true,

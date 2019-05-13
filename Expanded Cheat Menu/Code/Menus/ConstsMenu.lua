@@ -14,6 +14,7 @@ Actions[c] = {ActionName = Strings[302535920000158--[[Consts--]]],
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
 	ActionSortKey = "1Consts",
+	RolloverText = Strings[302535920000526--[[Any cheats changed here will override ones from a non-Consts menu.--]]],
 }
 
 -- group name to icon
@@ -66,7 +67,7 @@ for i = 1, #ConstDef do
 			ActionId = "." .. name,
 			ActionIcon = icon,
 			RolloverText = function()
-				return SettingState(ChoGGi.UserSettings.Consts[const.id],desc)
+				return SettingState(ChoGGi.UserSettings.Consts[const.id], desc)
 			end,
 			OnAction = ChoGGi.MenuFuncs.SetConstMenu,
 			setting_name = name,

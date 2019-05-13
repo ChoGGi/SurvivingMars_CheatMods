@@ -2,7 +2,7 @@ local function RemoveMoxieFromSuspend()
   local g_SuspendLabels = g_SuspendLabels
   for i = 1, #g_SuspendLabels do
     if g_SuspendLabels[i] == "MOXIE" then
-      table.remove(g_SuspendLabels,i)
+      table.remove(g_SuspendLabels, i)
       break
     end
   end

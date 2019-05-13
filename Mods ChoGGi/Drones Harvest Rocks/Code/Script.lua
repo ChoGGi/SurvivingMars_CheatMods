@@ -14,7 +14,7 @@ local function DroneRemoveRock(obj)
 	end
 	local rock_pos = obj:GetPos()
 
-	local drone = MapFindNearest(rock_pos,"map","Drone",efSelectable,function(d)
+	local drone = MapFindNearest(rock_pos, "map", "Drone", efSelectable, function(d)
 		if d.command == "Idle" then
 			return true
 		end
@@ -23,14 +23,14 @@ local function DroneRemoveRock(obj)
 		return
 	end
 
-	drone:SetCommand("Goto",GetRandomPassableAround(rock_pos, 500):SetTerrainZ())
+	drone:SetCommand("Goto", GetRandomPassableAround(rock_pos, 500):SetTerrainZ())
 
 	-- good enough
 	while drone.command ~= "Idle" and drone.command ~= "GoHome" do
 		WaitMsg("OnRender")
 	end
 
-	drone:SetCommand("ChoGGi_RockRemove",obj)
+	drone:SetCommand("ChoGGi_RockRemove", obj)
 end
 
 function Drone:ChoGGi_RockRemove(obj)
@@ -73,7 +73,7 @@ function DemolishModeDialog:OnMouseButtonDown(pt, button, obj, ...)
 	if button == "L" then
 		obj = obj or SelectionMouseObj()
 		if IsValid(obj) and obj:IsKindOf("WasteRockObstructorSmall") and obj:IsKindOf("DoesNotObstructConstruction") then
-			CreateGameTimeThread(DroneRemoveRock,obj)
+			CreateGameTimeThread(DroneRemoveRock, obj)
 		end
 
 		return "break"

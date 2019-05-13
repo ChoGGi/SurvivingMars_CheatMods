@@ -27,7 +27,7 @@ function OnMsg.ApplyModOptions(id)
 
 end
 
-local models = {"SupplyPod","Hex1_Placeholder","ArcPod"}
+local models = {"SupplyPod", "Hex1_Placeholder", "ArcPod"}
 
 local Sleep = Sleep
 local PlayFX = PlayFX
@@ -42,7 +42,7 @@ local WorldToHex = WorldToHex
 local ObjectHierarchyBBox = ObjectHierarchyBBox
 
 local BaseMeteor = BaseMeteor
-local pt1500 = point(0,0,1500)
+local pt1500 = point(0, 0, 1500)
 local times36060 = 360*60
 local times18060 = 180*60
 -- from AttackRover
@@ -66,13 +66,13 @@ local orig_ConstructionSite_GameInit = ConstructionSite.GameInit
 local function YamatoHasshin(site)
 
 	-- stick the site underground by it's height then make it rise from the dead
---~ 	local site_bbox = ObjectHierarchyBBox(site,const.efCollision)
+--~ 	local site_bbox = ObjectHierarchyBBox(site, const.efCollision)
 	local site_bbox = ObjectHierarchyBBox(site)
 	if not site_bbox:sizez() then
 		site_bbox = site:GetObjectBBox()
 	end
 
-	local site_height = point(0,0,site_bbox:sizez())
+	local site_height = point(0, 0, site_bbox:sizez())
 	if not site_height:z() then
 		site_height = pt1500
 	end
@@ -91,17 +91,17 @@ local function YamatoHasshin(site)
 	local ar = AttackRover
 	local sr = SupplyRocket
 --~ -- landing/takeoff parameters
---~ orbital_altitude = 2500*guim,
---~ orbital_velocity = 100*guim,
+--~ orbital_altitude = 2500*guim, 
+--~ orbital_velocity = 100*guim, 
 --~ -- second set for the first rocket
---~ orbital_altitude_first = 400*guim,
---~ orbital_velocity_first = 43*guim,
---~ warm_up = 10000,
+--~ orbital_altitude_first = 400*guim, 
+--~ orbital_velocity_first = 43*guim, 
+--~ warm_up = 10000, 
 
 --~ -- pre-hit ground moments, all are relative to hit-ground
---~ pre_hit_ground = 10000,
---~ pre_hit_ground2 = 13000,
---~ pre_hit_groud_decal = 0,
+--~ pre_hit_ground = 10000, 
+--~ pre_hit_ground2 = 13000, 
+--~ pre_hit_groud_decal = 0, 
 
 
 	-- pretty much a copy n paste of AttackRover:Spawn()... okay not anymore, but I swear it was
@@ -127,16 +127,16 @@ local function YamatoHasshin(site)
 		pod.landing_particle = blinky
 
 		pod:ChangeEntity(models[mod_ModelType])
-		pod:SetColorizationMaterial(1,-12845056, 0,128)
-		pod:SetColorizationMaterial(2,-16777216, 0,128)
-		pod:SetColorizationMaterial(3,-10053783, 0,128)
+		pod:SetColorizationMaterial(1, -12845056, 0, 128)
+		pod:SetColorizationMaterial(2, -16777216, 0, 128)
+		pod:SetColorizationMaterial(3, -10053783, 0, 128)
 
 		pod.fx_actor_base_class = "FXRocket"
 		pod.fx_actor_class = "SupplyRocket"
 		pod:SetPos(pos)
 
 		flight_dist = spawn_pos:Dist(pos)
-		local flight_speed = ar.spawn_flight_speed - city:Random(2500,10000)
+		local flight_speed = ar.spawn_flight_speed - city:Random(2500, 10000)
 		local total_time = MulDivRound(1000, flight_dist, flight_speed)
 		local land_time = MulDivRound(1000, ar.spawn_land_dist, flight_speed)
 		local pitch = -atan(dir:Len2D(), dir:z())
@@ -164,7 +164,7 @@ local function YamatoHasshin(site)
 		if mod_DomeCrack then
 			local dome = GetDomeAtHex(WorldToHex(spawn_pos))
 			if dome then
-				local _, dome_pt, dome_normal = BaseMeteor.HitsDome(dome,spawn_pos)
+				local _, dome_pt, dome_normal = BaseMeteor.HitsDome(dome, spawn_pos)
 				BaseMeteor.CrackDome(dome, dome, dome_pt, dome_normal)
 			end
 		end
@@ -174,7 +174,7 @@ local function YamatoHasshin(site)
 		land_decal:SetPos(spawn_pos)
 		land_decal:SetAngle(AsyncRand(times36060))
 		land_decal:SetScale(40 + AsyncRand(50))
-		CreateGameTimeThread(DecalRemoval,land_decal)
+		CreateGameTimeThread(DecalRemoval, land_decal)
 
 		-- byebye blinky
 		DoneObject(blinky)
@@ -194,7 +194,7 @@ local function YamatoHasshin(site)
 			site:SetVisible(true)
 			spawn_pos = spawn_pos + site_height
 			-- it's like jebus
-			site:SetPos(spawn_pos,3000)
+			site:SetPos(spawn_pos, 3000)
 
 --~ 			PlayFX("Dust", "end", pod)
 			-- fire off the usual stuff so the drones make with the building
@@ -223,7 +223,7 @@ end
 
 function ConstructionSite:GameInit()
 	-- is inner or outer building
-	local outside,inside
+	local outside, inside
 	for i = 1, 3 do
 		local label = self.building_class_proto["label" .. i]
 		if label == "OutsideBuildings" then

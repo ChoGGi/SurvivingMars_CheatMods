@@ -7,7 +7,7 @@ local RetName = ChoGGi.ComFuncs.RetName
 local XTemplates = XTemplates
 local IsValid = IsValid
 
-local function ClickObj(old,new,button)
+local function ClickObj(old, new, button)
 	--skip selected dome
 	if not old or not IsValid(new) then
 		return
@@ -22,7 +22,7 @@ local function ClickObj(old,new,button)
 	end
 end
 
-local function ListBuildings(parent,dome)
+local function ListBuildings(parent, dome)
 	local domes = UICity.labels.Dome or ""
 
 	local item_list = {}
@@ -49,8 +49,8 @@ Living Spaces: %s]]
 					#(domes[i].labels.Colonist or ""),
 					domes[i]:GetLivingSpace() or 0
 				),
-				mouseup = function(_,_,_,button)
-					ClickObj(dome,domes[i],button)
+				mouseup = function(_, _, _, button)
+					ClickObj(dome, domes[i], button)
 				end,
 			}
 		end
@@ -65,8 +65,8 @@ Living Spaces: %s]]
 		name = [[ Current Dome]],
 		pos = dome:GetVisualPos(),
 		hint = [[Currently selected dome]],
-		mouseup = function(_,_,_,button)
-			ClickObj(false,dome,button)
+		mouseup = function(_, _, _, button)
+			ClickObj(false, dome, button)
 		end,
 	}
 
@@ -74,7 +74,7 @@ Living Spaces: %s]]
 	if popup then
 		popup:Close()
 	else
-		PopupToggle(parent,"idForceNewDomeMenu",item_list)
+		PopupToggle(parent, "idForceNewDomeMenu", item_list)
 	end
 
 end
@@ -84,11 +84,11 @@ function OnMsg.ClassesBuilt()
 
 	-- old version cleanup
 	if XTemplates.sectionDome.ChoGGi_ForceNewDome then
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionDome[1],"ChoGGi_ForceNewDome")
+		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionDome[1], "ChoGGi_ForceNewDome")
 		XTemplates.sectionDome.ChoGGi_ForceNewDome = nil
 	end
 
-	ChoGGi.ComFuncs.AddXTemplate("ForceNewDome","sectionDome",{
+	ChoGGi.ComFuncs.AddXTemplate("ForceNewDome", "sectionDome", {
 		-- skip any ruined domes
 		__condition = function(_, context)
 			return context.working

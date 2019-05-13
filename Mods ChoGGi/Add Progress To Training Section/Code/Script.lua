@@ -5,7 +5,7 @@ local MulDivRound = MulDivRound
 local _InternalTranslate = _InternalTranslate
 local T = T
 
-local function GetPoints(self,text,skip)
+local function GetPoints(self, text, skip)
 	local c = #text
 	if not skip then
 		c = c + 1
@@ -24,7 +24,7 @@ local function GetPoints(self,text,skip)
 			c = c + 1
 			text[c] = _InternalTranslate(T{unit:GetDisplayName()})
 				.. _InternalTranslate("<right>")
-				.. MulDivRound(units_points,100,self.evaluation_points) .. "%"
+				.. MulDivRound(units_points, 100, self.evaluation_points) .. "%"
 		end
 	end
 	return table_concat(text, "<newline><left>")
@@ -32,12 +32,12 @@ end
 
 local orig_MartianUniversity_GetTrainedRollover = MartianUniversity.GetTrainedRollover
 function MartianUniversity:GetTrainedRollover(...)
-  local text = {orig_MartianUniversity_GetTrainedRollover(self,...)}
-	return GetPoints(self,text)
+  local text = {orig_MartianUniversity_GetTrainedRollover(self, ...)}
+	return GetPoints(self, text)
 end
 
 function Sanatorium:GetTrainedRollover()
-	return GetPoints(self,{},true)
+	return GetPoints(self, {}, true)
 end
 
 function School:GetTrainedRollover()
@@ -64,7 +64,7 @@ function School:GetTrainedRollover()
 					unit.MinAge_Adult or Colonist.MinAge_Adult
 				)
 				-- 150 is from function School:OnTrainingCompleted(unit)
-				.. "% (" .. MulDivRound(units_points,100,150) .. "%)"
+				.. "% (" .. MulDivRound(units_points, 100, 150) .. "%)"
 		end
 	end
 	return table_concat(text, "<newline><left>")
@@ -73,7 +73,7 @@ end
 -- add a rollover to the lifetime area
 local function OnMsgXTemplates()
 	local xt = XTemplates.sectionTraits[1]
-	local idx = table.find(xt,"class","XTemplateWindow")
+	local idx = table.find(xt, "class", "XTemplateWindow")
 	if not idx then
 		return
 	end
@@ -87,7 +87,7 @@ local function OnMsgXTemplates()
 			local item = xt[i]
 			item.RolloverTemplate = "InfopanelSectionRollover"
 			item.RolloverText = T(7977, "<TrainedRollover>")
-			item.RolloverTitle = T(126824585435,"Training Program")
+			item.RolloverTitle = T(126824585435, "Training Program")
 		end
 	end
 end

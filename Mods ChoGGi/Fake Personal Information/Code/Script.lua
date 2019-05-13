@@ -37,11 +37,11 @@ g_ParadoxUserId = false
 g_ParadoxHashedUserId = false
 
 -- close enough...
-local user_id = table.concat{AsyncRand(),AsyncRand(),AsyncRand(),AsyncRand()}
+local user_id = table.concat{AsyncRand(), AsyncRand(), AsyncRand(), AsyncRand()}
 g_ParadoxUserId = user_id
 
 -- if it's good enough for HG
-local user_id_hashed = tostring(Encode16(SHA256(table.concat{g_ParadoxUserId,"GVF235LWMID64DC4DC6508FSQE4823179D7034D99DEE"})))
+local user_id_hashed = tostring(Encode16(SHA256(table.concat{g_ParadoxUserId, "GVF235LWMID64DC4DC6508FSQE4823179D7034D99DEE"})))
 
 -- this is probably for uploading saved games to the cloud (thanks SkiRich)
 g_ParadoxHashedUserId = user_id_hashed

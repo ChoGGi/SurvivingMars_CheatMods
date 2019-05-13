@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local tostring,type = tostring,type
+local tostring, type = tostring, type
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Strings = ChoGGi.Strings
@@ -11,16 +11,16 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.StorageShuttle / r
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 5,value = 5},
-		{text = 10,value = 10},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000,hint = Strings[302535920000928--[[somewhere above 1000 may delete the save (when it's full)--]]]},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 5, value = 5},
+		{text = 10, value = 10},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000, hint = Strings[302535920000928--[[somewhere above 1000 may delete the save (when it's full)--]]]},
 	}
 
 	local hint = default_setting
@@ -42,7 +42,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 				value = 1000000
 			end
 
-			ChoGGi.ComFuncs.SetSavedConstSetting("StorageShuttle",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("StorageShuttle", value)
 			ChoGGi.SettingFuncs.WriteSettings()
 
 			-- loop through and set all shuttles
@@ -70,18 +70,18 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.SpeedShuttle / r
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
-		{text = 5000,value = 5000},
-		{text = 10000,value = 10000},
-		{text = 25000,value = 25000},
-		{text = 50000,value = 50000},
-		{text = 100000,value = 100000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
+		{text = 5000, value = 5000},
+		{text = 10000, value = 10000},
+		{text = 25000, value = 25000},
+		{text = 50000, value = 50000},
+		{text = 100000, value = 100000},
 	}
 
 	local hint = default_setting
@@ -103,7 +103,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 			for i = 1, #objs do
 				objs[i].move_speed = value
 			end
-			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedShuttle",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedShuttle", value)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
@@ -125,14 +125,14 @@ end
 function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 	local default_setting = ChoGGi.Consts.ShuttleHubShuttleCapacity
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
 	}
 
 	--check if there's an entry for building

@@ -492,7 +492,7 @@ Actions[c] = {ActionName = Strings[302535920000401--[[Set Renegade Status--]]],
 	ActionMenubar = "ECM.ECM.Colonists.Stats",
 	ActionId = ".Set Renegade Status",
 	ActionIcon = StarkFistOfRemoval,
-	RolloverText = Strings[302535920000448--[[I'm afraid it could be 9/11 times 1,000.--]]],
+	RolloverText = Strings[302535920000448--[[I'm afraid it could be 9/11 times 1, 000.--]]],
 	OnAction = ChoGGi.MenuFuncs.SetRenegadeStatus,
 }
 

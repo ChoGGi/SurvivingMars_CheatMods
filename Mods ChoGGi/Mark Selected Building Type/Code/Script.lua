@@ -28,7 +28,7 @@ function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
 			if IsValid(beam) then
 				beam:SetScale(scale)
 			else
-				table_remove(beams,i)
+				table_remove(beams, i)
 			end
 		end
 		ResumePassEdits("ChoGGi_MarkSelectedBuildingType:ScaleSmallObjects")
@@ -47,7 +47,7 @@ local function ClearBeams()
   table_iclear(beams)
 end
 
---~ local skips = {"Shuttle","Drone","Colonist","LifeSupportGridElement","ElectricityGridElement"}
+--~ local skips = {"Shuttle", "Drone", "Colonist", "LifeSupportGridElement", "ElectricityGridElement"}
 
 local function MarkObjects(obj)
 	if not mod_Mark then

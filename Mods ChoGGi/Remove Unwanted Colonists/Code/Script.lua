@@ -11,7 +11,7 @@ local function WaitForIt(victim)
 	end
 	Sleep(10000)
 	if IsValid(victim) and IsValid(victim.ChoGGi_MurderPod) then
-		victim:SetCommand("Goto",g_IdiotMonument:GetPos())
+		victim:SetCommand("Goto", g_IdiotMonument:GetPos())
 		WaitForIt(victim)
 	end
 end
@@ -27,8 +27,8 @@ local function LaunchPod(victim)
 
 	-- get the fuck outta here
 	if IsValid(g_IdiotMonument) then
-		victim:SetCommand("Goto",g_IdiotMonument:GetPos())
-		CreateGameTimeThread(WaitForIt,victim)
+		victim:SetCommand("Goto", g_IdiotMonument:GetPos())
+		CreateGameTimeThread(WaitForIt, victim)
 	end
 end
 
@@ -37,7 +37,7 @@ function OnMsg.ClassesBuilt()
 	local template = xt.ipColonist[1]
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(template,"ChoGGi_Template_ColonistSucker",true)
+	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_ColonistSucker", true)
 
 	-- we want to insert above warning
 	local warning = table.find(template, "__template", "sectionWarning")
@@ -58,7 +58,7 @@ function OnMsg.ClassesBuilt()
 			"Title", [[Remove Colonist]],
 			"RolloverTitle", [[Remove Colonist]],
 			"RolloverText", [[Thumbs down means colonist will get sucked up and deported to Earth.]],
-			"RolloverHint", T(0,[[<left_click> Toggle]]),
+			"RolloverHint", T(0, [[<left_click> Toggle]]),
 			"OnContextUpdate", function(self, context)
 				---
 				if context.ChoGGi_MurderPod then
@@ -92,7 +92,7 @@ function OnMsg.ClassesBuilt()
 
 	template = xt.ipShuttle[1]
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(template,"ChoGGi_Template_ColonistSucker",true)
+	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_ColonistSucker", true)
 
 	-- we want to insert above warning
 	warning = table.find(template, "__template", "sectionCheats")
@@ -110,14 +110,14 @@ function OnMsg.ClassesBuilt()
 			"ChoGGi_Template_ColonistSucker", true,
 			"__template", "InfopanelActiveSection",
 			"__context_of_kind", "MurderPod",
-			"__condition", function (_,context)
+			"__condition", function (_, context)
 				return IsValid(context.target)
 			end,
 			"Icon", "UI/Icons/Sections/colonist.tga",
 			"Title", [[Select Colonist]],
 			"RolloverTitle", [[Select Colonist]],
 			"RolloverText", [[Selects the colonist.]],
-			"RolloverHint", T(0,[[<left_click> Select]]),
+			"RolloverHint", T(0, [[<left_click> Select]]),
 		}, {
 			PlaceObj("XTemplateFunc", {
 				"name", "OnActivate(self, context)",

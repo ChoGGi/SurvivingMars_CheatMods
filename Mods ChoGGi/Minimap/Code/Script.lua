@@ -60,9 +60,9 @@ function OnMsg.ModsReloaded()
 		return
 	end
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xt,"ChoGGi_Template_Minimap")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(xt, "ChoGGi_Template_Minimap")
 
-	table.insert(xt,#xt,
+	table.insert(xt, #xt,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_Minimap", true,
 			"__template", "HUDButtonTemplate",
@@ -99,7 +99,7 @@ end
 
 
 local map_dlg = false
-local dlg_x,dlg_y
+local dlg_x, dlg_y
 
 function OnMsg.SaveGame()
 	if map_dlg and IsValid(map_dlg.idMapControl.sphere) then
@@ -118,7 +118,7 @@ function HUD.idMinimapOnPress()
 		map_dlg = false
 		Dialogs.HUD.idMinimapHighlight:SetVisible(false)
 	else
-		map_dlg = ChoGGi_MinimapDlg:new({}, terminal.desktop,{
+		map_dlg = ChoGGi_MinimapDlg:new({}, terminal.desktop, {
 			x = dlg_x,
 			y = dlg_y,
 		})

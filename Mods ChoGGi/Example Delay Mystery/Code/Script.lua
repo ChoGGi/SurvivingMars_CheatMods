@@ -7,7 +7,7 @@ function City:InitMystery()
 
 	-- abort if gamerule isn't active
 	local active_rules = GetActiveGameRules()
-	if not table.find(active_rules,rule_id) then
+	if not table.find(active_rules, rule_id) then
 		return orig_City_InitMystery(self)
 	end
 

@@ -19,7 +19,7 @@ local function MsgPopup(msg)
 
 	CreateRealTimeThread(function()
 		AddCustomOnScreenNotification(
-			id,title,msg,icon,nil,{expiration=timeout}
+			id, title, msg, icon, nil, {expiration=timeout}
 		)
 		-- since I use AsyncRand for the id, I don't want this getting too large.
 		g_ShownOnScreenNotifications[id] = nil

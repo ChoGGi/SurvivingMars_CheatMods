@@ -15,7 +15,7 @@ end
 function OnMsg.NewDay()
 	local water = mod_AmountOfWater * const.ResourceScale
 
-	MapForEach("map","SubsurfaceDepositWater",function(o)
+	MapForEach("map", "SubsurfaceDepositWater", function(o)
 		if type(o.amount) == "number" then
 			o.amount = o.amount + water
 			if o.amount > o.max_amount then

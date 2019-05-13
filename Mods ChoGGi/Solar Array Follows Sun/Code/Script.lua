@@ -3,7 +3,7 @@
 local function AddPanels(bld)
 	bld.ChoGGi_panels = {}
 	local c = 0
-	bld:ForEachAttach("SolarArrayPanel",function(a)
+	bld:ForEachAttach("SolarArrayPanel", function(a)
 		c = c + 1
 		bld.ChoGGi_panels[c] = a
 	end)

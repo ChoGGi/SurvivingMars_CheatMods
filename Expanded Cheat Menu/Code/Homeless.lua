@@ -6,14 +6,14 @@ local Translate = ChoGGi.ComFuncs.Translate
 local Strings = ChoGGi.Strings
 
 -- now to get the devs to add this by default (Added the X so people realise it isn't offical)
-local Mods,rawset = Mods,rawset
-for id,mod in pairs(Mods) do
-	rawset(mod.env,"CurrentModId_X",id)
+local Mods, rawset = Mods, rawset
+for id, mod in pairs(Mods) do
+	rawset(mod.env, "CurrentModId_X", id)
 end
 
 -- bugfix?
 -- got me, MapTools shouldn't be doing anything
-if not rawget(_G,"DroneDebug") then
+if not rawget(_G, "DroneDebug") then
 	DroneDebug = {}
 	DroneDebug.ShowInfo = empty_func
 end
@@ -54,7 +54,7 @@ TextStyles.DevMenuBar.TextColor = white
 -- cheat menu names
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
-local function AddMenuitem(id,name,sort)
+local function AddMenuitem(id, name, sort)
 	c = c + 1
 	Actions[c] = {
 		ActionMenubar = "DevMenu",
@@ -65,11 +65,11 @@ local function AddMenuitem(id,name,sort)
 		ChoGGi_ECM = true,
 	}
 end
-AddMenuitem("ECM.Cheats",Translate(27),"1")
-AddMenuitem("ECM.ECM",Strings[302535920000887],"2")
-AddMenuitem("ECM.Game",Translate(283142739680),"3")
-AddMenuitem("ECM.Debug",Translate(1000113),"4")
-AddMenuitem("ECM.Help",Translate(487939677892),"5")
+AddMenuitem("ECM.Cheats", Translate(27), "1")
+AddMenuitem("ECM.ECM", Strings[302535920000887], "2")
+AddMenuitem("ECM.Game", Translate(283142739680), "3")
+AddMenuitem("ECM.Debug", Translate(1000113), "4")
+AddMenuitem("ECM.Help", Translate(487939677892), "5")
 
 -- unforbid binding some keys (i left Enter and Menu, not sure what Menu is for? seems best to leave it)
 local f = ForbiddenShortcutKeys

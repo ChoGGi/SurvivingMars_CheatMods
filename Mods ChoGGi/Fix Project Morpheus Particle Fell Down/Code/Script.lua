@@ -9,7 +9,7 @@ local function CheckMorph()
 		local obj = morphs[i]
 		-- if it's turned off then pretty sure it won't fall off
 		if obj.ui_working and IsValid(obj) then
-			obj:ForEachAttach("ParSystem",function(a)
+			obj:ForEachAttach("ParSystem", function(a)
 				-- if there's not spot name then it's fallen down
 				if a:GetParticlesName() == "ProjectMorpheus_Projector" and a:GetAttachSpotName() == "" then
 					CreateGameTimeThread(function()

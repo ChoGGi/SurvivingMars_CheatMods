@@ -9,7 +9,7 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 	local ConstsC = ChoGGi.UserSettings.Consts
 
 	local setting_scale = action.setting_scale
-	printC(setting_scale,"setting_scale")
+	printC(setting_scale, "setting_scale")
 	-- see about using scale to setup the numbers
 
 	local setting_id = action.setting_id
@@ -18,22 +18,22 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 	local default_setting = action.setting_value
 
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 15,value = 15},
-		{text = 20,value = 20},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
-		{text = 10000,value = 10000},
-		{text = 25000,value = 25000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 15, value = 15},
+		{text = 20, value = 20},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
+		{text = 10000, value = 10000},
+		{text = 25000, value = 25000},
 	}
 	local previous = ChoGGi.UserSettings[setting_id]
 	if previous then
-		table.insert(item_list,2,{
+		table.insert(item_list, 2, {
 			text = Translate(1000231--[[Previous--]]) .. ": " .. previous,
 			value = previous,
 			hint = Strings[302535920000213--[[Previously set in an ECM menu (meaning it's active and the setting here will override this value).--]]]
@@ -53,7 +53,7 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 		local value = choice.value
 
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConstsG(setting_id,value)
+			ChoGGi.ComFuncs.SetConstsG(setting_id, value)
 			-- if setting is the same as the default then remove it
 			if Consts:GetDefaultPropertyValue(setting_id) == value then
 				ConstsC[setting] = nil
@@ -62,7 +62,7 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 			end
 
 			ChoGGi.SettingFuncs.WriteSettings()
-			MsgPopup(choice.text,setting_name)
+			MsgPopup(choice.text, setting_name)
 		end
 	end
 

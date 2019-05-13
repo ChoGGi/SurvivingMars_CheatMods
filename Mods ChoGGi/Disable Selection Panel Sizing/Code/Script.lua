@@ -20,9 +20,9 @@ local XWindow_UpdateMeasure = XWindow.UpdateMeasure
 
 function XSizeConstrainedWindow:UpdateMeasure(...)
 	if mod_Enabled then
-		XWindow_UpdateMeasure(self,...)
+		XWindow_UpdateMeasure(self, ...)
 	else
-		return XSizeConstrained_WindowUpdateMeasure(self,...)
+		return XSizeConstrained_WindowUpdateMeasure(self, ...)
 	end
 end
 
@@ -116,5 +116,5 @@ function InfopanelDlg:Open(...)
 		end
 	end)
 
-	return Infopanel_DlgOpen(self,...)
+	return Infopanel_DlgOpen(self, ...)
 end

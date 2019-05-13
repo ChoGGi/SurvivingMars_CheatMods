@@ -135,7 +135,7 @@ DefineClass.PortableMiner = {
 	on_demolish_resource_refund = { Metals = 20 * const.ResourceScale, MachineParts = 20 * const.ResourceScale , Electronics = 10 * const.ResourceScale },
 
 	-- skip anything else
-	cls_metal = {"SubsurfaceDepositPreciousMetals","SubsurfaceDepositMetals"},
+	cls_metal = {"SubsurfaceDepositPreciousMetals", "SubsurfaceDepositMetals"},
 }
 
 DefineClass.PortableMinerBuilding = {
@@ -167,13 +167,13 @@ function PortableMiner:GameInit()
 
 	-- show the pin info
 	self.producers = {self}
-	self.pin_rollover = T(0,"<ui_command>")
+	self.pin_rollover = T(0, "<ui_command>")
 end
 
 -- retrieves prod info
-local function BuildProdInfo(self,info,res_name)
+local function BuildProdInfo(self, info, res_name)
 	if self.resource ~= res_name then
-		info[#info+1] = T{476, "Lifetime production<right><resource(LifetimeProduction,resource)>",
+		info[#info+1] = T{476, "Lifetime production<right><resource(LifetimeProduction, resource)>",
 			resource = res_name, LifetimeProduction = self.lifetime_table[res_name], self}
 	end
 end
@@ -181,9 +181,9 @@ end
 function PortableMiner:Getui_command()
 	local info = {}
 	-- add life time info from the not selected reses
-	BuildProdInfo(self,info,"Metals")
-	BuildProdInfo(self,info,"PreciousMetals")
-	BuildProdInfo(self,info,"Concrete")
+	BuildProdInfo(self, info, "Metals")
+	BuildProdInfo(self, info, "PreciousMetals")
+	BuildProdInfo(self, info, "Concrete")
 	-- change lifetime to lifetime of that res
 	self.lifetime_production = self.lifetime_table[self.resource]
 	info[#info+1] = GetUIRollover(self)
@@ -208,7 +208,7 @@ PortableMiner.ToggleAutoMode_Update = RCTransport.ToggleAutoMode_Update
 -- for auto mode
 function PortableMiner:ProcAutomation()
 	local unreachable_objects = self:GetUnreachableObjectsTable()
-	local deposit = MapFindNearest(self, "map", "TerrainDepositConcrete", "SubsurfaceDepositPreciousMetals", "SubsurfaceDepositMetals",function(d)
+	local deposit = MapFindNearest(self, "map", "TerrainDepositConcrete", "SubsurfaceDepositPreciousMetals", "SubsurfaceDepositMetals", function(d)
 		if d:IsKindOf("TerrainDepositConcrete") and d:GetDepositMarker() or
 				(d:IsKindOfClasses(self.cls_metal) and
 				(d.depth_layer < 2 or UICity:IsTechResearched("DeepMetalExtraction"))) then
@@ -221,7 +221,7 @@ function PortableMiner:ProcAutomation()
 		if self:HasPath(deposit_pos, "Origin") then
 			-- if leaving an empty site then this sign should be turned off
 			self:ShowNotWorkingSign(false)
-			self:SetCommand("Goto",deposit_pos)
+			self:SetCommand("Goto", deposit_pos)
 		else
 			unreachable_objects[deposit] = true
 		end
@@ -231,7 +231,7 @@ function PortableMiner:ProcAutomation()
 		for i = 1, #miners do
 			miners[i].auto_mode_on = false
 			miners[i]:ShowNotWorkingSign(true)
---~ 			miners[i]:SetCommand("Idle",10000)
+--~ 			miners[i]:SetCommand("Idle", 10000)
 			miners[i]:SetCommand("Idle")
 		end
 	end
@@ -245,7 +245,7 @@ function PortableMiner:ToggleAutoMode(broadcast)
 	if IsValid(self.stockpile) then
 		self.stockpile.max_z = self.auto_mode_on and pms.max_z_stack_man or pms.max_z_stack_auto
 	end
-	return BaseRover.ToggleAutoMode(self,broadcast)
+	return BaseRover.ToggleAutoMode(self, broadcast)
 end
 
 function PortableMiner:Idle()
@@ -273,7 +273,7 @@ function PortableMiner:Idle()
 end
 
 function PortableMiner:DepositNearby()
-	local d = MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit",--]] function(o)
+	local d = MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit", --]] function(o)
 		return self:GetVisualDist(o) < self.mine_dist
 	end)
 
@@ -299,10 +299,10 @@ end
 function PortableMiner:ShowNotWorkingSign(bool)
   if bool then
     self.notworking_sign = true
-    self:AttachSign(self.notworking_sign,"SignNotWorking")
+    self:AttachSign(self.notworking_sign, "SignNotWorking")
   else
     self.notworking_sign = false
-    self:AttachSign(self.notworking_sign,"SignNotWorking")
+    self:AttachSign(self.notworking_sign, "SignNotWorking")
   end
 end
 
@@ -441,13 +441,13 @@ function PortableMiner:DigErUp(pms)
 
 --[[
 	-- stupid surface deposits
-	if self.nearby_deposits[1]:IsKindOfClasses{"SurfaceDepositGroup","SurfaceDepositMetals","SurfaceDepositConcrete","SurfaceDepositPolymers"} then
+	if self.nearby_deposits[1]:IsKindOfClasses{"SurfaceDepositGroup", "SurfaceDepositMetals", "SurfaceDepositConcrete", "SurfaceDepositPolymers"} then
 		local res = self.nearby_deposits[1]
 		res = res.group and res.group[1] or res
 		-- get one with amounts
 		while true do
 			if res.transport_request:GetActualAmount() == 0 then
-				table.remove(self.nearby_deposits[1].group,1)
+				table.remove(self.nearby_deposits[1].group, 1)
 				res = self.nearby_deposits[1]
 				res = res.group and res.group[1] or res
 			else
@@ -469,12 +469,12 @@ function PortableMiner:DigErUp(pms)
 		amount = d.amount
 	end
 
-	local extracted,paint
+	local extracted, paint
 	if self.resource == "Concrete" then
-		extracted = TerrainDepositExtractor.ExtractResource(self,amount)
+		extracted = TerrainDepositExtractor.ExtractResource(self, amount)
 		paint = concrete_paint
 	elseif self.resource == "Metals" or self.resource == "PreciousMetals" then
-		extracted = BuildingDepositExploiterComponent.ExtractResource(self,amount)
+		extracted = BuildingDepositExploiterComponent.ExtractResource(self, amount)
 		paint = metal_paint
 	end
 
@@ -486,7 +486,7 @@ function PortableMiner:DigErUp(pms)
 	-- visual cues
 	if pms.visual_cues then
 		local pt = self:GetLogicalPos()
-		pt = point(pt:x()+Random(-5000, 5000),pt:y()+Random(-5000, 5000))
+		pt = point(pt:x()+Random(-5000, 5000), pt:y()+Random(-5000, 5000))
 		SetTypeCircle(pt, 250, paint)
 	end
 
@@ -499,7 +499,7 @@ function PortableMiner:CanExploit()
 end
 
 function PortableMiner:OnSelected()
-	self:AttachSign(false,"SignNotWorking")
+	self:AttachSign(false, "SignNotWorking")
   table.remove_entry(g_IdleExtractors, self)
 end
 
@@ -510,30 +510,30 @@ end
 
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.PortableMinerBuilding then
-		PlaceObj("BuildingTemplate",{
-			"Id","PortableMinerBuilding",
-			"template_class","PortableMinerBuilding",
+		PlaceObj("BuildingTemplate", {
+			"Id", "PortableMinerBuilding",
+			"template_class", "PortableMinerBuilding",
 			-- pricey?
-			"construction_cost_Metals",40000,
-			"construction_cost_MachineParts",40000,
-			"construction_cost_Electronics",20000,
+			"construction_cost_Metals", 40000,
+			"construction_cost_MachineParts", 40000,
+			"construction_cost_Electronics", 20000,
 			-- add a bit of pallor to the skeleton
 			"palette_color1", "rover_base",
 			"palette_color2", "inside_base",
 			"palette_color3", "outside_base",
 
-			"dome_forbidden",true,
-			"display_name",name,
-			"display_name_pl",name,
-			"description",description,
-			"build_category","ChoGGi",
+			"dome_forbidden", true,
+			"display_name", name,
+			"display_name_pl", name,
+			"description", description,
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", display_icon,
-			"encyclopedia_exclude",true,
-			"count_as_building",false,
-			"prio_button",false,
-			"on_off_button",false,
-			"entity","CombatRover",
+			"encyclopedia_exclude", true,
+			"count_as_building", false,
+			"prio_button", false,
+			"on_off_button", false,
+			"entity", "CombatRover",
 		})
 	end
 end
@@ -543,7 +543,7 @@ end
 --~ 	local rover = XTemplates.ipRover[1]
 
 --~ 	-- check for and remove existing template
---~ 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_PortableMiner_Prod",true)
+--~ 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_PortableMiner_Prod", true)
 
 --~ 	table.insert(
 --~ 		rover,
@@ -557,7 +557,7 @@ end
 --~ 		}, {
 --~ 			PlaceObj("XTemplateTemplate", {
 --~ 				"__template", "InfopanelText",
---~ 				"Text",  T(0,"<CargoManifest>"),
+--~ 				"Text",  T(0, "<CargoManifest>"),
 --~ 			}),
 --~ 		})
 --~ 	)

@@ -10,7 +10,7 @@ local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg,"ChoGGi_ExecCodeDlg")
+	return GetParentOfKind(dlg, "ChoGGi_ExecCodeDlg")
 end
 DefineClass.ChoGGi_ExecCodeDlg = {
 	__parents = {"ChoGGi_XWindow"},
@@ -24,7 +24,7 @@ DefineClass.ChoGGi_ExecCodeDlg = {
 	external_path = false,
 }
 
-local box10 = box(10,0,0,0)
+local box10 = box(10, 0, 0, 0)
 function ChoGGi_ExecCodeDlg:Init(parent, context)
 	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
@@ -69,7 +69,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 	self.idButtonContainer = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idButtonContainer",
 		Dock = "bottom",
-		Margins = box(0,0,0,4),
+		Margins = box(0, 0, 0, 4),
 	}, self.idDialog)
 
 	-- top row
@@ -77,7 +77,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."--]]]
 		self.idTopButs = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idTopButs",
 			Dock = "top",
-			Margins = box(0,0,0,4),
+			Margins = box(0, 0, 0, 4),
 		}, self.idButtonContainer)
 
 		self.idEdit.external_cmd = ChoGGi.UserSettings.ExternalEditorCmd
@@ -205,7 +205,7 @@ function ChoGGi_ExecCodeDlg:idEdit_OnSetFocus(...)
 	if self.focus_update and self == g_ExternalTextEditorActiveCtrl then
 		g_Classes.ChoGGi_XExternalTextEditorPlugin.ApplyEdit(nil, "Modified", self)
 	end
-	return g_Classes.ChoGGi_XMultiLineEdit.OnSetFocus(self,...)
+	return g_Classes.ChoGGi_XMultiLineEdit.OnSetFocus(self, ...)
 end
 
 function ChoGGi_ExecCodeDlg:idExterFocusUpdate_OnChange(which)
@@ -227,7 +227,7 @@ function ChoGGi_ExecCodeDlg:idExterEdit_OnPress()
 	end
 
 	-- add updater
-	local idx = table.find(self.idEdit.plugins,"class","ChoGGi_XExternalTextEditorPlugin")
+	local idx = table.find(self.idEdit.plugins, "class", "ChoGGi_XExternalTextEditorPlugin")
 	if idx then
 		self.idExterReadFile:SetVisible(true)
 		self.idExterFocusUpdate:SetVisible(true)
@@ -245,7 +245,7 @@ end
 
 function ChoGGi_ExecCodeDlg:idInsertObj_OnPress()
 	self = GetRootDialog(self)
-	self.idEdit:EditOperation("o",true)
+	self.idEdit:EditOperation("o", true)
 	self.idEdit:SetFocus()
 end
 

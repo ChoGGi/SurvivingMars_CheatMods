@@ -12,7 +12,7 @@ function OnMsg.ClassesBuilt()
 	-- add build cat for my items
 	local ChoGGi = ChoGGi
 	local bc = BuildCategories
-	if not table.find(bc,"id","ChoGGi") then
+	if not table.find(bc, "id", "ChoGGi") then
 		bc[#bc+1] = {
 			id = "ChoGGi",
 			name = ChoGGi.Strings[302535920001400--[[ChoGGi--]]],

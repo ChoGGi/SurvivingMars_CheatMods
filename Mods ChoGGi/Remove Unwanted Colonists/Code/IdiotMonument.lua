@@ -17,7 +17,7 @@ function IdiotMonument:GameInit()
 	g_IdiotMonument = self
 
 	self:SetScale(250)
-	self:SetPos(self:GetPos()+point(0,0,5000),10000)
+	self:SetPos(self:GetPos()+point(0, 0, 5000), 10000)
 end
 
 function IdiotMonument:OnDemolish()
@@ -38,19 +38,19 @@ end
 
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.IdiotMonument then
-		PlaceObj("BuildingTemplate",{
-			"Id","IdiotMonument",
-			"template_class","IdiotMonument",
-			"construction_cost_Concrete",1000,
-			"display_name",[[Idiot Monument]],
-			"display_name_pl",[[Idiot Monuments]],
-			"description",[[Here kitty kitty kitty]],
+		PlaceObj("BuildingTemplate", {
+			"Id", "IdiotMonument",
+			"template_class", "IdiotMonument",
+			"construction_cost_Concrete", 1000,
+			"display_name", [[Idiot Monument]],
+			"display_name_pl", [[Idiot Monuments]],
+			"description", [[Here kitty kitty kitty]],
 			"display_icon", CurrentModPath .. "UI/IdiotMonument.png",
-			"build_category","ChoGGi",
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
-			"dome_forbidden",true,
-			"encyclopedia_exclude",true,
-			"on_off_button",false,
+			"dome_forbidden", true,
+			"encyclopedia_exclude", true,
+			"on_off_button", false,
 		})
 	end
 end

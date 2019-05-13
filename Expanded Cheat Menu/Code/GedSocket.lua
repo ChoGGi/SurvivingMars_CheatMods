@@ -4,7 +4,7 @@
 XTemplates.GedInspector.save_in = "Ged"
 
 -- if it gets added then
-if rawget(_G,"GedSocket") then
+if rawget(_G, "GedSocket") then
 	return
 end
 

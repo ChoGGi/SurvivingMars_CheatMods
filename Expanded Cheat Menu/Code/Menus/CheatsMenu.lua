@@ -27,15 +27,6 @@ Actions[c] = {ActionName = Strings[302535920001355--[[Map--]]] .. " " .. Transla
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(25--[[Anomaly Scanning--]]),
-	ActionMenubar = "ECM.Cheats",
-	ActionId = ".Anomaly Scanning",
-	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
-	RolloverText = Strings[302535920001286--[[Scan all or certain types of anomalies.--]]],
-	OnAction = ChoGGi.MenuFuncs.ShowScanAnomaliesOptions,
-}
-
-c = c + 1
 Actions[c] = {ActionName = Translate(5661--[[Mystery Log--]]),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Mystery Log",
@@ -97,7 +88,7 @@ Actions[c] = {ActionName = Strings[302535920000337--[[Toggle Unlock All Building
 	ActionIcon = "CommonAssets/UI/Menu/TerrainConfigEditor.tga",
 	RolloverText = Strings[302535920000338--[["Unlocks all buildings in the build menu.
 This doesn't apply to sponsor limited ones; see ECM>Buildings>Toggles>%s.
-To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[302535920001398--[[Remove Sponsor Limits--]]],Strings[302535920000180--[[Unlock Locked Buildings--]]]),
+To unlock a single building: See ECM>Buildings>%s."--]]]:format(Strings[302535920001398--[[Remove Sponsor Limits--]]], Strings[302535920000180--[[Unlock Locked Buildings--]]]),
 	OnAction = ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle,
 }
 
@@ -137,15 +128,6 @@ Actions[c] = {ActionName = Strings[302535920000236--[[Mod Editor--]]],
 	ActionIcon = "CommonAssets/UI/Menu/Action.tga",
 	RolloverText = Strings[302535920000368--[[Open the mod editor.--]]],
 	OnAction = ChoGGi.MenuFuncs.OpenModEditor,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920001394--[[Spawn Planetary Anomalies--]]],
-	ActionMenubar = "ECM.Cheats",
-	ActionId = ".Spawn Planetary Anomalies",
-	ActionIcon = "CommonAssets/UI/Menu/LowerTerrainToLevel.tga",
-	RolloverText = Strings[302535920001395--[[Adds Anomaly locations to Planetary View.--]]],
-	OnAction = ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies,
 }
 
 -- menu
@@ -291,16 +273,6 @@ Actions[c] = {ActionName = Strings[302535920000359--[[Breakthroughs From OmegaTe
 	ActionSortKey = "2Breakthroughs From OmegaTelescope",
 }
 
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000171--[[Unlock Anomaly BreakThroughs--]]],
-	ActionMenubar = "ECM.Cheats.Research",
-	ActionId = ".Unlock Anomaly BreakThroughs",
-	ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
-	RolloverText = Strings[302535920000173--[[Unlock any breakthroughs in anomalies (not planetary ones).--]]],
-	OnAction = ChoGGi.MenuFuncs.UnlockBreakthroughs,
-	ActionSortKey = "2Unlock Anomaly BreakThroughs",
-}
-
 -- menu
 c = c + 1
 Actions[c] = {ActionName = Translate(1000162--[[Menu--]]),
@@ -428,4 +400,41 @@ Actions[c] = {ActionName = Strings[302535920001584--[[Testing Delete Backlog--]]
 	ActionIcon = "CommonAssets/UI/Menu/DelCamera.tga",
 	RolloverText = Strings[302535920001585--[[Sets AccountStorage.StoryBitTimestamp to nil.--]]],
 	OnAction = DeleteStoryBitTestingBacklog,
+}
+
+-- menu
+c = c + 1
+Actions[c] = {ActionName = Translate(3984--[[Anomalies--]]),
+	ActionMenubar = "ECM.Cheats",
+	ActionId = ".Anomalies",
+	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	OnActionEffect = "popup",
+	ActionSortKey = "1Anomalies",
+}
+
+c = c + 1
+Actions[c] = {ActionName = Translate(25--[[Anomaly Scanning--]]),
+	ActionMenubar = "ECM.Cheats.Anomalies",
+	ActionId = ".Anomaly Scanning",
+	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
+	RolloverText = Strings[302535920001286--[[Scan all or certain types of anomalies.--]]],
+	OnAction = ChoGGi.MenuFuncs.ShowScanAnomaliesOptions,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000171--[[Unlock Anomaly BreakThroughs--]]],
+	ActionMenubar = "ECM.Cheats.Anomalies",
+	ActionId = ".Unlock Anomaly BreakThroughs",
+	ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
+	RolloverText = Strings[302535920000173--[[Unlock any breakthroughs in anomalies (not planetary ones).--]]],
+	OnAction = ChoGGi.MenuFuncs.UnlockBreakthroughs,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001394--[[Spawn Planetary Anomalies--]]],
+	ActionMenubar = "ECM.Cheats.Anomalies",
+	ActionId = ".Spawn Planetary Anomalies",
+	ActionIcon = "CommonAssets/UI/Menu/LowerTerrainToLevel.tga",
+	RolloverText = Strings[302535920001395--[[Adds Anomaly locations to Planetary View.--]]],
+	OnAction = ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies,
 }

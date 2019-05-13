@@ -12,7 +12,7 @@ function GoldenStorage:GameInit()
   -- start off with all resource demands blocked
   for i = 1, #self.resource do
     if self.resource[i] ~= "Metals" then
-      self:ToggleAcceptResource(self.resource[i],true)
+      self:ToggleAcceptResource(self.resource[i], true)
     end
   end
 
@@ -55,7 +55,7 @@ function GoldenStorage:GameInit()
 end
 
 -- only allowed to toggle metals
-function GoldenStorage:ToggleAcceptResource(res,startup)
+function GoldenStorage:ToggleAcceptResource(res, startup)
   if not startup and res ~= "Metals" then
     return
   end
@@ -83,7 +83,7 @@ function OnMsg.ClassesPostprocess()
 			"display_name", [[Golden Storage]],
 			"display_name_pl", [[Golden Storage]],
 			"description", [[Converts Metals to PreciousMetals.]],
-			"build_category","ChoGGi",
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", CurrentModPath .. "UI/golden_storage.png",
 			"entity", "ResourcePlatform",

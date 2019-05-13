@@ -71,8 +71,8 @@ end
 function MurderPod:Spawn(arrival_height)
   arrival_height = arrival_height or self.arrival_height
 
-	local x,y = self:GetVictimPos()
-	local current_pos = point(x,y)
+	local x, y = self:GetVictimPos()
+	local current_pos = point(x, y)
 
 	local goto_pos = GetRandomPassableAround(
 		current_pos,
@@ -84,7 +84,7 @@ function MurderPod:Spawn(arrival_height)
 
 	Sleep(5000)
 	self.fx_actor_class = "AttackRover"
-	self:PlayFX("Land","start")
+	self:PlayFX("Land", "start")
 
 	self:SetCommand("StalkerTime")
 end
@@ -131,10 +131,10 @@ end
 
 function MurderPod:LaunchMeteor(entity)
 	--  1 to 4 sols
-	Sleep(Random(self.min_meteor_time,self.max_meteor_time))
+	Sleep(Random(self.min_meteor_time, self.max_meteor_time))
 --~ 	Sleep(5000)
 	local data = DataInstances.MapSettings_Meteor.Meteor_VeryLow
-	local descr = SpawnMeteor(data,nil,nil,GetRandomPassable())
+	local descr = SpawnMeteor(data, nil, nil, GetRandomPassable())
 	-- I got a missle once, not sure why...
 	if descr.meteor:IsKindOf("BombardMissile") then
 		g_IncomingMissiles[descr.meteor] = nil
@@ -157,19 +157,19 @@ end
 function MurderPod:GetVictimPos()
 	local victim = self.target
 	-- otherwise float around the victim walking around the dome/whatever building they're in, or if somethings borked then a rand pos
-	local x,y
+	local x, y
 	if victim:IsValidPos() then
-		x,y = victim:GetVisualPosXYZ()
+		x, y = victim:GetVisualPosXYZ()
 	elseif victim.holder and victim.holder:IsValidPos() then
-		x,y = victim.holder:GetVisualPosXYZ()
+		x, y = victim.holder:GetVisualPosXYZ()
 	else
 		local rand = GetRandomPassable()
-		x,y = rand:x(),rand:y()
+		x, y = rand:x(), rand:y()
 	end
-	return x,y
+	return x, y
 end
 
-local point500 = point(0,0,500)
+local point500 = point(0, 0, 500)
 function MurderPod:Abduct()
 	local victim = self.target
 
@@ -177,7 +177,7 @@ function MurderPod:Abduct()
 		self:SetCommand("StalkerTime")
 	end
 
-	victim:SetCommand("Goto",self:GetPos())
+	victim:SetCommand("Goto", self:GetPos())
 	-- you ain't going nowhere
 	if IsValid(victim.workplace) then
 		victim.workplace:FireWorker(victim)
@@ -201,7 +201,7 @@ function MurderPod:Abduct()
 	victim.status_effects = {
 		StatusEffect_StressedOut = 1
 	}
-	UpdateAttachedSign(victim,true)
+	UpdateAttachedSign(victim, true)
 
 	local path = self:CalcPath(
 		self:GetPos(),
@@ -214,7 +214,7 @@ function MurderPod:Abduct()
 
 	self.fx_actor_class = "Shuttle"
 	self:PlayFX("ShuttleLoad", "start", victim)
-	victim:SetPos(self:GetPos()+point500,2500)
+	victim:SetPos(self:GetPos()+point500, 2500)
 	Sleep(2500)
 	self:PlayFX("ShuttleLoad", "end", victim)
 
@@ -226,8 +226,8 @@ function MurderPod:Abduct()
 	self.panel_text = [[Victim going to "Earth"]]
 
 	-- human shaped meteors (bonus meteors, since murder is bad)
-	for _ = 1, Random(1,3) do
-		CreateGameTimeThread(MurderPod.LaunchMeteor,self,entity)
+	for _ = 1, Random(1, 3) do
+		CreateGameTimeThread(MurderPod.LaunchMeteor, self, entity)
 	end
 
 	-- What did Mission Control ever do for us? Without it, where would we be? Free! Free to roam the universe!
@@ -246,11 +246,11 @@ function MurderPod:StalkerTime()
 		end
 
 		-- otherwise float around the victim walking around the dome/whatever building they're in, or if somethings borked then a rand pos
-		local x,y = self:GetVictimPos()
+		local x, y = self:GetVictimPos()
 
 		local path = self:CalcPath(
 			self:GetPos(),
-			point(x+Random(-5000,5000), y+Random(-5000,5000))
+			point(x+Random(-5000, 5000), y+Random(-5000, 5000))
 		)
 
 		self:FollowPathCmd(path)
@@ -258,7 +258,7 @@ function MurderPod:StalkerTime()
 			Sleep(1000)
 		end
 
-		Sleep(Random(2500,10000))
+		Sleep(Random(2500, 10000))
 	end
 
 	-- soundless sleep
@@ -279,9 +279,9 @@ end
 
 -- add switch skins if dlc
 if g_AvailableDlc.gagarin then
-	local rockets = {"SupplyPod","ArcPod"}
-	local palettes = {SupplyPod.rocket_palette,ArkPod.rocket_palette}
+	local rockets = {"SupplyPod", "ArcPod"}
+	local palettes = {SupplyPod.rocket_palette, ArkPod.rocket_palette}
 	function MurderPod:GetSkins()
-		return rockets,palettes
+		return rockets, palettes
 	end
 end

@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 -- fired when we go to first new game section
-local function OverrideBackButton(toolbar,something)
+local function OverrideBackButton(toolbar, something)
 	-- skip if we're not in "main" area
 	if not toolbar.idnext or something.Mode ~= "properties" then
 		return
@@ -13,10 +13,10 @@ local function OverrideBackButton(toolbar,something)
 		CreateRealTimeThread(function(...)
 			if WaitMarsQuestion(
 				terminal.desktop,
-				T(4165,"Back"),
-				T(1010,"Main Menu")
+				T(4165, "Back"),
+				T(1010, "Main Menu")
 			) == "ok" then
-				orig_OnPress(self,...)
+				orig_OnPress(self, ...)
 			end
 		end)
 	end
@@ -34,13 +34,13 @@ function SetPlanetCamera(planet, state, ...)
 			local toolbar = something.idToolBar
 
 			if pgmission.Mode == "sponsor" then
-				OverrideBackButton(toolbar,something)
+				OverrideBackButton(toolbar, something)
 
 				-- hook into toolbar button area so we can keep adding the button
 				local orig_RebuildActions = toolbar.RebuildActions
 				toolbar.RebuildActions = function(self, context, ...)
 					orig_RebuildActions(self, context, ...)
-					OverrideBackButton(toolbar,something)
+					OverrideBackButton(toolbar, something)
 				end
 			end
 

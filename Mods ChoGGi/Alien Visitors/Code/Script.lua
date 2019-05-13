@@ -69,7 +69,7 @@ end
 function ChoGGi_Alien:KillThreads()
 	-- I'm sure there's a better way to get rid of the persist errors...
 	CreateRealTimeThread(function()
-		DeleteThread(self.command_thread,true)
+		DeleteThread(self.command_thread, true)
 		Sleep(250)
 		self:SetCommand("Idle")
 	end)
@@ -80,7 +80,7 @@ local function IsPlayablePoint(pt)
 	return pt:InBox2D(g_MapArea) and GetBuildableZ(WorldToHex(pt:xy())) ~= UnbuildableZ and IsPassable(pt)
 end
 
-local names_list = {"Family","Female","Male"}
+local names_list = {"Family", "Female", "Male"}
 function ChoGGi_Alien:Init()
 	local city = self.city or UICity
 	self.city = city

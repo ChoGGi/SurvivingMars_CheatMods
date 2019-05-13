@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local pairs,type = pairs,type
+local pairs, type = pairs, type
 local Sleep = Sleep
 
 local Translate = ChoGGi.ComFuncs.Translate
@@ -12,11 +12,11 @@ local Strings = ChoGGi.Strings
 function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
 	local table_remove = table.remove
 	local labels = UICity.labels
-	for id,label in pairs(labels) do
+	for id, label in pairs(labels) do
 		if id ~= "Consts" then
 			for i = #label, 1, -1 do
 				if not IsValid(label[i]) then
-					table_remove(label,i)
+					table_remove(label, i)
 				end
 			end
 		end
@@ -63,7 +63,7 @@ end
 function ChoGGi.MenuFuncs.RocketCrashesGameOnLanding()
 	local rockets = UICity.labels.SupplyRocket or ""
 	for i = 1, #rockets do
-		rockets[i]:ForEachAttach("ParSystem",function(a)
+		rockets[i]:ForEachAttach("ParSystem", function(a)
 			if type(a.polyline) == "string" and a.polyline:find("\0") then
 				a:delete()
 			end
@@ -76,8 +76,8 @@ function ChoGGi.MenuFuncs.RocketCrashesGameOnLanding()
 end
 
 function ChoGGi.MenuFuncs.ToggleWorkingAll()
-	local skips = {"OrbitalProbe","ResourceStockpile","WasteRockStockpile","BaseRover"}
-	MapForEach("map","BaseBuilding",function(o)
+	local skips = {"OrbitalProbe", "ResourceStockpile", "WasteRockStockpile", "BaseRover"}
+	MapForEach("map", "BaseBuilding", function(o)
 		if type(o.ToggleWorking) == "function" and not o:IsKindOfClasses(skips) then
 			ToggleWorking(o)
 		end
@@ -185,7 +185,7 @@ do --ResetCommanders
 			local before_table = {}
 
 			-- get all commanders stuck in deploy with at least one drone
-			MapForEach("map","RCRover",function(rc)
+			MapForEach("map", "RCRover", function(rc)
 				local drones = #rc.attached_drones > 0
 				if drones then
 					if rc:GetState() == GetStateIdx("deployIdle") then
@@ -205,7 +205,7 @@ do --ResetCommanders
 			--wait awhile just to be sure
 			Sleep(5000)
 			--go through and reset any rovers still doing the same thing
-			for _,rc_table in pairs(before_table) do
+			for _, rc_table in pairs(before_table) do
 				local state = rc_table.rc:GetState() == GetStateIdx("deployIdle")
 				local drones = #rc_table.rc.attached_drones == rc_table.amount
 				if state and drones then
@@ -230,7 +230,7 @@ do -- Colonist stuff
 				for i = 1, #objs do
 					local c = objs[i]
 					local is_valid = IsValid(c)
-					SpawnColonist(c,nil,is_valid and c:GetVisualPos(),UICity)
+					SpawnColonist(c, nil, is_valid and c:GetVisualPos(), UICity)
 					if is_valid then
 						c:delete()
 					end
@@ -254,8 +254,8 @@ do -- Colonist stuff
 			local c = objs[i]
 			local is_valid = IsValid(c)
 			if is_valid and c:GetStateText() == "movePlanet" then
-				local rocket = FindNearestObject(rockets,c)
-				SpawnColonist(c,rocket,c:GetVisualPos(),UICity)
+				local rocket = FindNearestObject(rockets, c)
+				SpawnColonist(c, rocket, c:GetVisualPos(), UICity)
 				c:delete()
 			end
 		end
@@ -266,14 +266,14 @@ do -- Colonist stuff
 		)
 	end
 
-	local function AttachedColonist(c,pos,rocket,city)
+	local function AttachedColonist(c, pos, rocket, city)
 		-- try to remove attached colonist from rocket, and get pos so we can create a new c at the same pos
 		if IsValid(c) then
 			c:Detach()
-			SpawnColonist(c,rocket,pos,city)
+			SpawnColonist(c, rocket, pos, city)
 			c:delete()
 		else
-			SpawnColonist(nil,nil,rocket,pos,city)
+			SpawnColonist(nil, nil, rocket, pos, city)
 		end
 	end
 	function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
@@ -284,7 +284,7 @@ do -- Colonist stuff
 			-- SupplyRocket also returns rockets in space
 			if rockets[i]:GetPos() ~= InvalidPos then
 				local pos = GetPassablePointNearby(rockets[i]:GetPos())
-				rockets[i]:ForEachAttach("Colonist",AttachedColonist,pos,rockets[i],UICity)
+				rockets[i]:ForEachAttach("Colonist", AttachedColonist, pos, rockets[i], UICity)
 			end
 		end
 		MsgPopup(
@@ -297,7 +297,7 @@ end -- do
 
 function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 	SuspendPassEdits("ChoGGi.MenuFuncs.ParticlesWithNullPolylines")
-	MapDelete(true, "ParSystem",function(o)
+	MapDelete(true, "ParSystem", function(o)
 		if type(o.polyline) == "string" and o.polyline:find("\0") then
 			return true
 		end
@@ -333,7 +333,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 	end
 
 	SuspendPassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
-	MapDelete(true, "ParSystem",function(o)
+	MapDelete(true, "ParSystem", function(o)
 		if o:GetParticlesName() == "PowerDecoy_Captured" and
 				type(o.polyline) == "string" and o.polyline:find("\0") then
 			return true
@@ -366,7 +366,7 @@ end
 do -- DronesKeepTryingBlockedAreas
 	local function ResetPriorityQueue(cls_name)
 		local max = const.MaxBuildingPriority
-		MapForEach("map",cls_name,function(o)
+		MapForEach("map", cls_name, function(o)
 			-- clears out the queues
 			o.priority_queue = {}
 			for priority = -1, max do
@@ -380,7 +380,7 @@ do -- DronesKeepTryingBlockedAreas
 		ResetPriorityQueue("RCRover")
 		ResetPriorityQueue("DroneHub")
 		-- toggle working state on all ConstructionSite (wakes up drones else they'll wait at hub)
-		MapForEach("map","ConstructionSite",function(o)
+		MapForEach("map", "ConstructionSite", function(o)
 			ToggleWorking(o)
 		end)
 		MsgPopup(
@@ -392,7 +392,7 @@ end -- do
 
 function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
 	local HexGetNearestCenter = HexGetNearestCenter
-	MapForEach("map","Building",function(o)
+	MapForEach("map", "Building", function(o)
 		o:SetPos(HexGetNearestCenter(o:GetVisualPos()))
 	end)
 	MsgPopup(
@@ -402,9 +402,9 @@ function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
 end
 
 do -- RemoveUnreachableConstructionSites
-	local type,pairs = type,pairs
+	local type, pairs = type, pairs
 	local function RemoveUnreachable(cls_name)
-		MapForEach("map",cls_name,function(o)
+		MapForEach("map", cls_name, function(o)
 			local unreach = o.unreachable_buildings or empty_table
 			for bld in pairs(unreach) do
 				if type(bld.IsKindOf) == "function" and bld:IsKindOf("ConstructionSite") then
@@ -443,13 +443,13 @@ end
 
 function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 	SuspendPassEdits("ChoGGi.MenuFuncs.RemoveBlueGridMarks")
-	MapDelete(true, "RangeHexRadius",function(o)
+	MapDelete(true, "RangeHexRadius", function(o)
 		if not o.ToggleWorkZone then
 			return true
 		end
 	end)
 	-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
-	MapDelete(true, "WireFramedPrettification",function(o)
+	MapDelete(true, "WireFramedPrettification", function(o)
 		if o:GetEntity() == "RoverTransport" then
 			return true
 		end
@@ -475,7 +475,7 @@ function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 end
 
 function ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes()
-	MapForEach("map","Dome",function(o)
+	MapForEach("map", "Dome", function(o)
 		o.walkable_points = false
 		o:GenerateWalkablePoints()
 	end)
@@ -614,7 +614,7 @@ end
 --~	 local pos
 --~	 for i = 1, #list do
 --~		 pos = list[i]:GetPos()
---~		 pos = tostring(point(pos:x(),pos:y()))
+--~		 pos = tostring(point(pos:x(), pos:y()))
 --~		 if not positions[pos] then
 --~			 positions[pos] = true
 --~		 else
@@ -641,11 +641,11 @@ end
 
 --~ --show all elec consumption
 --~ local amount = 0
---~ MapForEach("map",nil,function(o)
+--~ MapForEach("map", nil, function(o)
 --~ 	if o.class and o.electricity and o.electricity.consumption then
 --~ 		local temp = o.electricity.consumption / 1000
 --~ 		amount = amount + temp
---~ 		print(o.class,": ",temp)
+--~ 		print(o.class, ": ", temp)
 --~ 	end
 --~ end)
 --~ print(amount)

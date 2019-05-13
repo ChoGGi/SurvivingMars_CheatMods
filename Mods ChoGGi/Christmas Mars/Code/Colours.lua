@@ -7,14 +7,14 @@ local green = -16711936
 local red = -65536
 local white = -1
 
-local function AttachesColoured(a,class,colour)
+local function AttachesColoured(a, class, colour)
 	if a.class == class then
 		a:SetColorModifier(colour)
 	end
 end
 -- oh it happens more than you'd think
-local function AttachColour(s,class,colour)
-	s:ForEachAttach(AttachesColoured,class,colour)
+local function AttachColour(s, class, colour)
+	s:ForEachAttach(AttachesColoured, class, colour)
 end
 
 local function RGRG(s)
@@ -31,21 +31,21 @@ local function GRGR(s)
 	s:SetColor4(red)
 end
 
-local function AttachesPassageRamp(a,colour)
+local function AttachesPassageRamp(a, colour)
 	if a.class == "LampInt_05" then
 		a:SetColorModifier(colour)
 	end
 end
 local function SpawnedPassageRamp(s)
 	local colour
-	if Random(1,10) > 5 then
+	if Random(1, 10) > 5 then
 		s:SetColorModifier(green)
 		colour = red
 	else
 		s:SetColorModifier(red)
 		colour = green
 	end
-	s:ForEachAttach(AttachesPassageRamp,colour)
+	s:ForEachAttach(AttachesPassageRamp, colour)
 end
 
 local HangingGardensElements = {
@@ -475,7 +475,7 @@ end
 
 local function SpawnedWaterTank(s)
 	GRGR(s)
-	AttachColour(s,"WaterTankFloat",green)
+	AttachColour(s, "WaterTankFloat", green)
 end
 
 local function AttachesWaterExtractor(a)
@@ -506,7 +506,7 @@ end
 
 local function SpawnedOxygenTank(s)
 	GRGR(s)
-	AttachColour(s,"AirTankArrow",red)
+	AttachColour(s, "AirTankArrow", red)
 end
 
 local function AttachesMOXIE(a)
@@ -580,13 +580,13 @@ local function SpawnedRechargeStation(s)
 end
 
 local function SpawnedLandingPad(s)
-	AttachColour(s,"LampInt_04",green)
-	AttachColour(s,"LampInt_05",red)
+	AttachColour(s, "LampInt_04", green)
+	AttachColour(s, "LampInt_05", red)
 end
 
 local function SpawnedTunnel(s)
 	GRGR(s)
-	AttachColour(s,"TunnelEntranceDoor",green)
+	AttachColour(s, "TunnelEntranceDoor", green)
 end
 
 local function AttachesSupplyRocket(a)
@@ -672,6 +672,6 @@ local object_list = {
 	WaterTank = SpawnedWaterTank,
 	WaterTankLarge = SpawnedWaterTankLarge,
 }
-function OnMsg.ChristmasMars_SpawnedBuilding(s,cls)
+function OnMsg.ChristmasMars_SpawnedBuilding(s, cls)
 	object_list[cls](s)
 end

@@ -4,7 +4,7 @@ local orig_Colonist_Work = Colonist.Work
 function Colonist:Work(...)
 	local dest = self.workplace and self.workplace.parent_dome
 	if not IsValid(dest) then
-		return orig_Colonist_Work(self,...)
+		return orig_Colonist_Work(self, ...)
 	end
 
 	-- call a shuttle and wait for it
@@ -17,5 +17,5 @@ function Colonist:Work(...)
 		end
 	end
 
-	return orig_Colonist_Work(self,...)
+	return orig_Colonist_Work(self, ...)
 end

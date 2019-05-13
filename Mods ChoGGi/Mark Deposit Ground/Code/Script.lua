@@ -68,7 +68,7 @@ local function UpdateDeposit(d)
 	d.ground_is_marked = true
 end
 
-local function UpdateOpacity(label,value)
+local function UpdateOpacity(label, value)
 	value = value and 0 or 100
 	local deposits = UICity.labels[label] or ""
 	for i = 1, #deposits do
@@ -90,14 +90,14 @@ end
 
 local orig_TerrainDepositMarker_SpawnDeposit = TerrainDepositMarker.SpawnDeposit
 function TerrainDepositMarker:SpawnDeposit(...)
-	local d = orig_TerrainDepositMarker_SpawnDeposit(self,...)
+	local d = orig_TerrainDepositMarker_SpawnDeposit(self, ...)
 	d:SetOpacity(mod_HideSigns and 0 or 100)
 	return d
 end
 
 local orig_SubsurfaceAnomalyMarker_SpawnDeposit = SubsurfaceAnomalyMarker.SpawnDeposit
 function SubsurfaceAnomalyMarker:SpawnDeposit(...)
-	local a = orig_SubsurfaceAnomalyMarker_SpawnDeposit(self,...)
+	local a = orig_SubsurfaceAnomalyMarker_SpawnDeposit(self, ...)
 	if mod_AlienAnomaly then
 		-- needs a delay for some reason
 		CreateRealTimeThread(function()
@@ -121,8 +121,8 @@ local function HideSigns()
 		-- gotta use SetOpacity as SetVisible is set when you zoom out
 		local value = mod_HideSigns and 0 or 100
 
-		UpdateOpacity("SubsurfaceDeposit",value)
-		UpdateOpacity("EffectDeposit",value)
+		UpdateOpacity("SubsurfaceDeposit", value)
+		UpdateOpacity("EffectDeposit", value)
 
 		local deposits = UICity.labels.TerrainDeposit or ""
 		for i = 1, #deposits do
@@ -148,7 +148,7 @@ end
 OnMsg.CityStart = HideSigns
 OnMsg.LoadGame = HideSigns
 
-local function ChangeMarks(label,entity,value)
+local function ChangeMarks(label, entity, value)
 	local anomalies = UICity.labels[label] or ""
 	if value then
 		local AsyncRand = AsyncRand
@@ -182,13 +182,13 @@ function OnMsg.ApplyModOptions(id)
 	if GameState.gameplay then
 		if mod_AlienAnomaly ~= mod.options.AlienAnomaly then
 			mod_AlienAnomaly = mod.options.AlienAnomaly
-			ChangeMarks("Anomaly","GreenMan",mod_AlienAnomaly)
+			ChangeMarks("Anomaly", "GreenMan", mod_AlienAnomaly)
 		end
 		if mod_HideSigns ~= mod.options.HideSigns then
 			mod_HideSigns = mod.options.HideSigns
-			UpdateOpacity("SubsurfaceDeposit",mod_HideSigns)
-			UpdateOpacity("EffectDeposit",mod_HideSigns)
-			UpdateOpacity("TerrainDeposit",mod_HideSigns)
+			UpdateOpacity("SubsurfaceDeposit", mod_HideSigns)
+			UpdateOpacity("EffectDeposit", mod_HideSigns)
+			UpdateOpacity("TerrainDeposit", mod_HideSigns)
 		end
 	end
 end
@@ -196,9 +196,9 @@ end
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()
 	if mod_ShowConstruct and mod_HideSigns then
-		UpdateOpacity("SubsurfaceDeposit",false)
-		UpdateOpacity("EffectDeposit",false)
-		UpdateOpacity("TerrainDeposit",false)
+		UpdateOpacity("SubsurfaceDeposit", false)
+		UpdateOpacity("EffectDeposit", false)
+		UpdateOpacity("TerrainDeposit", false)
 	end
 	return orig_CursorBuilding_GameInit(self)
 end
@@ -206,9 +206,9 @@ end
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done()
 	if mod_ShowConstruct and mod_HideSigns then
-		UpdateOpacity("SubsurfaceDeposit",true)
-		UpdateOpacity("EffectDeposit",true)
-		UpdateOpacity("TerrainDeposit",true)
+		UpdateOpacity("SubsurfaceDeposit", true)
+		UpdateOpacity("EffectDeposit", true)
+		UpdateOpacity("TerrainDeposit", true)
 	end
 	return orig_CursorBuilding_Done(self)
 end

@@ -9,7 +9,7 @@ function OnMsg.ModsReloaded()
 	local cn = 0
 
 	local TraitPresets = TraitPresets
-	for name,trait in pairs(TraitPresets) do
+	for name, trait in pairs(TraitPresets) do
     if trait.category == "Positive" then
 			cp = cp + 1
       positive_traits[cp] = name
@@ -21,16 +21,16 @@ function OnMsg.ModsReloaded()
 
 end
 
-local function SetTraits(c,traits,func)
+local function SetTraits(c, traits, func)
   for i = 1, #traits do
     -- true isn't needed for RemoveTrait, and only needed for certain AddTrait
-    c[func](c,traits[i],true)
+    c[func](c, traits[i], true)
   end
 end
 
 local function UpdateTraits(c)
-  SetTraits(c,positive_traits,"AddTrait")
-  SetTraits(c,negative_traits,"RemoveTrait")
+  SetTraits(c, positive_traits, "AddTrait")
+  SetTraits(c, negative_traits, "RemoveTrait")
 end
 
 OnMsg.ColonistArrived = UpdateTraits

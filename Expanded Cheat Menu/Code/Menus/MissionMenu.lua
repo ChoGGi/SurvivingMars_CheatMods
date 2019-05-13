@@ -161,7 +161,7 @@ Actions[c] = {ActionName = Translate(4142--[[Dust Devils--]]),
 	ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 	RolloverText = function()
 		return Strings[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(Translate(4142--[[Dust Devils--]]),mapdata.MapSettings_DustDevils)
+Current: %s"--]]]:format(Translate(4142--[[Dust Devils--]]), mapdata.MapSettings_DustDevils)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
 	setting_id = "DustDevils",
@@ -174,7 +174,7 @@ Actions[c] = {ActionName = Translate(4148--[[Cold Waves--]]),
 	ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 	RolloverText = function()
 		return Strings[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(Translate(4149--[[Cold Wave--]]),mapdata.MapSettings_ColdWave)
+Current: %s"--]]]:format(Translate(4149--[[Cold Wave--]]), mapdata.MapSettings_ColdWave)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
 	setting_id = "ColdWave",
@@ -187,7 +187,7 @@ Actions[c] = {ActionName = Translate(4144--[[Dust Storms--]]),
 	ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 	RolloverText = function()
 		return Strings[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(Translate(4250--[[Dust Storm--]]),mapdata.MapSettings_DustStorm)
+Current: %s"--]]]:format(Translate(4250--[[Dust Storm--]]), mapdata.MapSettings_DustStorm)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
 	setting_id = "DustStorm",
@@ -200,7 +200,7 @@ Actions[c] = {ActionName = Translate(4146--[[Meteors--]]),
 	ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 	RolloverText = function()
 		return Strings[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(Translate(4146--[[Meteors--]]),mapdata.MapSettings_Meteor)
+Current: %s"--]]]:format(Translate(4146--[[Meteors--]]), mapdata.MapSettings_Meteor)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
 	setting_id = "Meteor",

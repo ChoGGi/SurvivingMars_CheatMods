@@ -22,7 +22,7 @@ local Random = ChoGGi.ComFuncs.Random
 
 function SpiceHarvester.SpawnShuttle(hub)
 	local sh = SpiceHarvester
-	for _,s_i in pairs(hub.shuttle_infos) do
+	for _, s_i in pairs(hub.shuttle_infos) do
 		if MapCount("map", "CargoShuttle") >= (sh.Max_Shuttles or 50) then
 			return
 		end
@@ -53,9 +53,9 @@ function SpiceHarvester.SpawnShuttle(hub)
 		end)
 
 		-- brown stained bugs
-		shuttle:SetColorizationMaterial(1, sh.Color1 or -12247037, Random(-128,127), Random(-128,127))
-		shuttle:SetColorizationMaterial(2, sh.Color2 or -11196403, Random(-128,127), Random(-128,127))
-		shuttle:SetColorizationMaterial(3, sh.Color3 or -13297406, Random(-128,127), Random(-128,127))
+		shuttle:SetColorizationMaterial(1, sh.Color1 or -12247037, Random(-128, 127), Random(-128, 127))
+		shuttle:SetColorizationMaterial(2, sh.Color2 or -11196403, Random(-128, 127), Random(-128, 127))
+		shuttle:SetColorizationMaterial(3, sh.Color3 or -13297406, Random(-128, 127), Random(-128, 127))
 
 		-- follow that cursor little minion
 		shuttle:SetCommand("SpiceHarvester_FollowHarvester")
@@ -127,7 +127,7 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 		end -- while valid Harvester
 	end)
 
-	self.min_wait_rock_attack = Random(50,75)
+	self.min_wait_rock_attack = Random(50, 75)
 	local count_before_attack = 0
 
 	-- movement thread
@@ -138,7 +138,7 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 			count_before_attack = 0
 
 			local pos = self:GetVisualPos()
-			local worm = MapGet("map", "WasteRockObstructorSmall",function(o)
+			local worm = MapGet("map", "WasteRockObstructorSmall", function(o)
 				return pos:Dist2D(o:GetPos()) <= self.attack_radius
 			end)
 			if #worm > 0 then
@@ -146,20 +146,20 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 			end
 		end
 
-		self.hover_height = Random(800,20000)
-		local x,y = self.SpiceHarvester_Harvester:GetVisualPosXYZ()
-		local dest = point(x+Random(-25000,25000), y+Random(-25000,25000))
+		self.hover_height = Random(800, 20000)
+		local x, y = self.SpiceHarvester_Harvester:GetVisualPosXYZ()
+		local dest = point(x+Random(-25000, 25000), y+Random(-25000, 25000))
 		self:FlyingFace(dest, 2500)
 		self:PlayFX("Waiting", "end")
 		self:SetState("idle") -- level tubes
-		self:FollowPathCmd(self:CalcPath(self:GetVisualPos(),dest))
+		self:FollowPathCmd(self:CalcPath(self:GetVisualPos(), dest))
 
 		while self.next_spline do
 			Sleep(1000)
 		end
 		self:SetState("fly")
 		self:PlayFX("Waiting", "start")
-		Sleep(Random(2500,10000))
+		Sleep(Random(2500, 10000))
 	end
 
 	-- soundless sleep

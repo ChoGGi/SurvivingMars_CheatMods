@@ -2,7 +2,7 @@
 
 -- collection of res widths
 local hud_lookup_table = {
-	[5760] = box(2560,0,2560,0),
+	[5760] = box(2560, 0, 2560, 0),
 }
 -- value we check for a margin to use
 local current_margin
@@ -16,13 +16,13 @@ local function WriteModSettings(clear)
 
 	local err, data = AsyncCompress(ValueToLuaCode(current_margin), false, "lz4")
 	if err then
-		print("Centred UI WriteModSettings AsyncCompress:",err)
+		print("Centred UI WriteModSettings AsyncCompress:", err)
 		return
 	end
 
 	err = WriteModPersistentData(data)
 	if err then
-		print("Centred UI WriteModSettings WriteModPersistentData:",err)
+		print("Centred UI WriteModSettings WriteModPersistentData:", err)
 		return
 	end
 
@@ -31,7 +31,7 @@ end
 
 local function ReadModSettings()
 	-- try to read saved settings
-	local err,settings_data = ReadModPersistentData()
+	local err, settings_data = ReadModPersistentData()
 
 	if err or not settings_data or settings_data == "" then
 		-- no settings found so write default settings (it returns the saved setting)
@@ -40,14 +40,14 @@ local function ReadModSettings()
 
 	err, settings_data = AsyncDecompress(settings_data)
 	if err then
-		print("Centred UI ReadModSettings 1:",err)
+		print("Centred UI ReadModSettings 1:", err)
 		return
 	end
 
 	-- and convert it to lua / update in-game settings
 	err, current_margin = LuaCodeToTuple(settings_data)
 	if err then
-		print("Centred UI ReadModSettings 2:",err)
+		print("Centred UI ReadModSettings 2:", err)
 		return
 	end
 
@@ -74,14 +74,14 @@ end
 
 function OnMsg.ModsReloaded()
 	local xt = XTemplates
-	local idx = table.find(xt.HUD[1],"Id","idBottom")
+	local idx = table.find(xt.HUD[1], "Id", "idBottom")
 	if not idx then
 		print([[Centred UI: Missing HUD control idBottom]])
 		return
 	end
 
 	xt = xt.HUD[1][idx]
-	idx = table.find(xt,"Id","idRight")
+	idx = table.find(xt, "Id", "idRight")
 	if not idx then
 		print([[Centred UI: Missing HUD control idRight]])
 		return
@@ -91,10 +91,10 @@ function OnMsg.ModsReloaded()
 	idx = table.find(xt, "ChoGGi_Template_CentredUI", true)
 	if idx then
 		xt[idx]:delete()
-		table.remove(xt,idx)
+		table.remove(xt, idx)
 	end
 
-	table.insert(xt,#xt,
+	table.insert(xt, #xt,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_CentredUI", true,
 			"__template", "HUDButtonTemplate",
@@ -102,7 +102,7 @@ function OnMsg.ModsReloaded()
 			"RolloverTitle", [[Set Margin]],
 			"RolloverText", [[Allows you to Test/Save a custom margin.
 Don't forget to send me your res and margin, so I can add them to the list.]],
-			"RolloverHint", T(0,[[<left_click> Show Options <right_click> Test Margin]]),
+			"RolloverHint", T(0, [[<left_click> Show Options <right_click> Test Margin]]),
 			"Id", "idSetupMargins",
 			"Image", CurrentModPath .. "UI/hud_margin.png",
 			"FXPress", "MainMenuButtonClick",
@@ -141,7 +141,7 @@ local function SetMargins(choice_str)
 		margin = tonumber(margin)
 
 		if type(margin) == "number" then
-			current_margin = box(margin,0,margin,0)
+			current_margin = box(margin, 0, margin, 0)
 
 			if choice_str == [[Save Margin]] then
 				WriteModSettings()
@@ -161,7 +161,7 @@ function HUD.idSetupMarginsOnPress(right)
 			SetMargins([[Test Margin]])
 		else
 			local choice_str = WaitListChoice(
-				{[[Test Margin]],[[Save Margin]],[[Clear Saved Setting]],[[Use Mod Setting]]},
+				{[[Test Margin]], [[Save Margin]], [[Clear Saved Setting]], [[Use Mod Setting]]},
 				[[Set Margin]]
 			)
 

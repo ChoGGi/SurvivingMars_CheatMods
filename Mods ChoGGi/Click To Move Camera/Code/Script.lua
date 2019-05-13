@@ -27,7 +27,7 @@ Actions[#Actions+1] = {ActionName = [[Click To Move]],
 -- update shortcut name for use below
 local shortcut
 function OnMsg.ShortcutsReloaded()
-	local action = table.find_value(XShortcutsTarget.actions,"ActionId","ChoGGi_ClickToMove")
+	local action = table.find_value(XShortcutsTarget.actions, "ActionId", "ChoGGi_ClickToMove")
 	if action then
 		shortcut = action.ActionShortcut
 	end
@@ -56,16 +56,16 @@ function OnMsg.ApplyModOptions(id)
 	edge_scrolling = mod.options.EdgeScrolling
 
 	if edge_scrolling then
-		cameraRTS.SetProperties(1,{ScrollBorder = 5})
+		cameraRTS.SetProperties(1, {ScrollBorder = 5})
 	else
-		cameraRTS.SetProperties(1,{ScrollBorder = 0})
+		cameraRTS.SetProperties(1, {ScrollBorder = 0})
 	end
 end
 
 -- disable edge scrolling on load
 local function StartupCode()
 	if not edge_scrolling then
-		cameraRTS.SetProperties(1,{ScrollBorder = 0})
+		cameraRTS.SetProperties(1, {ScrollBorder = 0})
 	end
 end
 

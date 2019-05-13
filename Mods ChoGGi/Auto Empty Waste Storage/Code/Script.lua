@@ -24,7 +24,7 @@ OnMsg.NewHour = CleanUp
 
 function OnMsg.ClassesBuilt()
 
-	ChoGGi.ComFuncs.AddXTemplate("AutoEmptyWasteStorage_customWasteRockDumpBig1","customWasteRockDumpBig",{
+	ChoGGi.ComFuncs.AddXTemplate("AutoEmptyWasteStorage_customWasteRockDumpBig1", "customWasteRockDumpBig", {
 		__context_of_kind = "WasteRockDumpSite",
 		Icon = "UI/Icons/Upgrades/build_2.tga",
 		RolloverTitle = [[Auto Empty]],
@@ -50,7 +50,7 @@ function OnMsg.ClassesBuilt()
 		end,
 	})
 
-	ChoGGi.ComFuncs.AddXTemplate("AutoEmptyWasteStorage_customWasteRockDumpBig2","customWasteRockDumpBig",{
+	ChoGGi.ComFuncs.AddXTemplate("AutoEmptyWasteStorage_customWasteRockDumpBig2", "customWasteRockDumpBig", {
 		__context_of_kind = "WasteRockDumpSite",
 		Icon = "UI/Icons/Upgrades/build_2.tga",
 		RolloverTitle = [[Auto Empty]],

@@ -6,7 +6,7 @@ local Sleep = Sleep
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 
-local function UpdateIcons(time,direction,signs)
+local function UpdateIcons(time, direction, signs)
 	SuspendPassEdits("ChoGGi_UpdateOverviewIcons")
 	local SignsOverviewCameraScaleUp = const.SignsOverviewCameraScaleUp
 
@@ -38,6 +38,6 @@ local orig_OverviewModeDialog_ScaleSmallObjects = OverviewModeDialog.ScaleSmallO
 function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
 	orig_OverviewModeDialog_ScaleSmallObjects(self, time, direction, ...)
 
-	CreateRealTimeThread(UpdateIcons,time,direction,MapGet(true, "BaseRover"))
+	CreateRealTimeThread(UpdateIcons, time, direction, MapGet(true, "BaseRover"))
 end
 

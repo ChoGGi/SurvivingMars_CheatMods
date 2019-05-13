@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"tags", "Graphics",
 	"id", "ChoGGi_IncreasedRenderDistance",
 	"author", "ChoGGi",
-	"image","Preview.png",
+	"image", "Preview.png",
 	"steam_id", "1411109283",
 	"code", {
 		"Code/Script.lua",

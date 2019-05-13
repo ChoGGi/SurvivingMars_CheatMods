@@ -14,10 +14,10 @@ DefineClass.MedicalSanatorium = {
 
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.MedicalSanatorium then
-		PlaceObj("BuildingTemplate",{
+		PlaceObj("BuildingTemplate", {
 			"Id", "MedicalSanatorium",
 			"template_class", "MedicalSanatorium",
-			"dome_required",true,
+			"dome_required", true,
 
 			"construction_cost_Concrete", 30000,
 			"construction_cost_Metals", 20000,

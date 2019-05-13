@@ -13,7 +13,7 @@ local function StartupCode()
 		hub = {current_fuel = 0},
 		transport_task = MarsCompanion_FollowTask:new({
 			state = "ready_to_follow",
-			dest_pos = point(0,0)
+			dest_pos = point(0, 0)
 		}),
 --~ 			info_obj = s_i,
 		info_obj = {current_fuel = 0},

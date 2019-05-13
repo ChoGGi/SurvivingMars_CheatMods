@@ -30,7 +30,7 @@ local point = point
 local point20 = point20
 local green = green
 -- keep my hexes above dome ones (30 is from UpdateShapeHexes(obj))
-local point31z = point(0,0,31)
+local point31z = point(0, 0, 31)
 -- how long passages can be
 local max_hex = GridConstructionController.max_hex_distance_to_allow_build - 3 -- removed 3 for the angles passages (may) need
 -- hex to hex
@@ -110,7 +110,7 @@ OnMsg.LoadGame = BuildExistingDomeSpots
 OnMsg.CityStart = BuildExistingDomeSpots
 
 -- sort the dome spots by the nearest to the "pos"
-local function RetNearestSpot(dome,pos)
+local function RetNearestSpot(dome, pos)
 	local pos_spots
 
 	-- if it's in the table then it's a placed dome
@@ -122,7 +122,7 @@ local function RetNearestSpot(dome,pos)
 	end
 
 	-- sort by nearest
-	table_sort(pos_spots,function(a,b)
+	table_sort(pos_spots, function(a, b)
 		return a:Dist2D(pos) < b:Dist2D(pos)
 	end)
 	-- and done
@@ -144,11 +144,11 @@ function CursorBuilding:GameInit(...)
 	end
 
 	-- orig func
-	return orig_CursorBuilding_GameInit(self,...)
+	return orig_CursorBuilding_GameInit(self, ...)
 end
 
 -- remove removed domes from dome_list
-local function ListCleanup(dome,item)
+local function ListCleanup(dome, item)
 	item.line:delete()
 	item.hex1:delete()
 	item.hex2:delete()
@@ -159,23 +159,23 @@ local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done(...)
 	-- we're done construction hide all the markers
 	SuspendPassEdits("ChoGGi_CleanupOldMarkers")
-	for dome,item in pairs(dome_list) do
+	for dome, item in pairs(dome_list) do
 		if IsValid(dome) then
 			item.line:SetVisible()
 			item.hex1:SetVisible()
 			item.hex2:SetVisible()
 		else
-			ListCleanup(dome,item)
+			ListCleanup(dome, item)
 		end
 	end
 	ResumePassEdits("ChoGGi_CleanupOldMarkers")
-	return orig_CursorBuilding_Done(self,...)
+	return orig_CursorBuilding_Done(self, ...)
 end
 
-local function UpdateMarkers(self,pos)
+local function UpdateMarkers(self, pos)
 	pos = pos or self.cursor_obj:GetVisualPos()
 	-- loop through domes and show any lines that are close enough
-	for dome,item in pairs(dome_list) do
+	for dome, item in pairs(dome_list) do
 		if IsValid(dome) then
 			local d_pos = dome:GetVisualPos()
 			-- any domes too far away, just hide markers instead of checking for hex closeness
@@ -185,9 +185,9 @@ local function UpdateMarkers(self,pos)
 				item.hex2:SetVisible()
 			else
 				-- get nearest hex from placed dome to cursor
-				local placed_dome_spot = (RetNearestSpot(dome,pos) or point20) + point31z
+				local placed_dome_spot = (RetNearestSpot(dome, pos) or point20) + point31z
 				-- get nearest hex from cursor dome to placed dome
-				local cursor_dome_spot = (RetNearestSpot(self.cursor_obj,d_pos) or point20) + point31z
+				local cursor_dome_spot = (RetNearestSpot(self.cursor_obj, d_pos) or point20) + point31z
 				-- show line if it's close enough
 				if placed_dome_spot:Dist2D(cursor_dome_spot) > max_dist then
 					-- hide it, or we'll have a line pointing at where the dome used to be (till it's too far away)
@@ -195,7 +195,7 @@ local function UpdateMarkers(self,pos)
 					item.hex1:SetVisible()
 					item.hex2:SetVisible()
 				else
-					item.line:SetParabola(cursor_dome_spot,placed_dome_spot)
+					item.line:SetParabola(cursor_dome_spot, placed_dome_spot)
 					item.line:SetVisible(true)
 					item.hex1:SetPos(cursor_dome_spot)
 					item.hex1:SetVisible(true)
@@ -204,35 +204,35 @@ local function UpdateMarkers(self,pos)
 				end
 			end
 		else
-			ListCleanup(dome,item)
+			ListCleanup(dome, item)
 		end
 	end
 end
 
 local orig_ConstructionController_Rotate = ConstructionController.Rotate
-function ConstructionController:Rotate(delta,...)
+function ConstructionController:Rotate(delta, ...)
 	if not mod_Option1 then
-		return orig_ConstructionController_Rotate(self, delta,...)
+		return orig_ConstructionController_Rotate(self, delta, ...)
 	end
 	-- it needs to fire first so we can get updated angle
-	local ret = orig_ConstructionController_Rotate(self, delta,...)
+	local ret = orig_ConstructionController_Rotate(self, delta, ...)
 	UpdateMarkers(self)
 	return ret
 end
 
 local orig_ConstructionController_UpdateCursor = ConstructionController.UpdateCursor
-function ConstructionController:UpdateCursor(pos, force,...)
+function ConstructionController:UpdateCursor(pos, force, ...)
 	if not mod_Option1 then
-		return orig_ConstructionController_UpdateCursor(self, pos, force,...)
+		return orig_ConstructionController_UpdateCursor(self, pos, force, ...)
 	end
-	UpdateMarkers(self,pos)
-	return orig_ConstructionController_UpdateCursor(self, pos, force,...)
+	UpdateMarkers(self, pos)
+	return orig_ConstructionController_UpdateCursor(self, pos, force, ...)
 end
 
 -- they should get removed when the cursor building is removed, but just in case
 function OnMsg.Demolished(dome)
   -- remove demo'ed domes from the list
   if dome_list[dome] then
-		ListCleanup(dome,dome_list[dome])
+		ListCleanup(dome, dome_list[dome])
   end
 end

@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 4,
 		}),
 	},
---~ 	"title", "Expanded Cheat Menu",
 	"title", "Expanded Cheat Menu Test",
 	"version", 134,
 	"version_major", 13,
@@ -30,7 +29,7 @@ return PlaceObj("ModDef", {
 		"Code/Init.lua",
 		-- common functions
 		"Code/ECM_Functions.lua",
-		-- defaults,consts,read/save settings
+		-- defaults, consts, read/save settings
 		"Code/Settings.lua",
 		-- new global funcs
 		"Code/AddedFunctions.lua",
@@ -111,59 +110,10 @@ return PlaceObj("ModDef", {
 
 If you forget where a menu item is: Menu>Help>List All Menu Items (use "Filter Items" at the bottom).
 
-##### Info
-F2: Toggle the cheats menu (Ctrl-F2 to toggle cheats panel).
-F3: Set object opacity.
-F4: Open object examiner (Shift-F4 for area).
-F5: Open object manipulator (or use Tools>Edit obj in Examine).
-F6: Change building colour (Shift-F6 or Ctrl-F6 to apply random/default).
-F7: Toggle using last building orientation.
-F9: Clear the console log.
-Enter or Tilde: Show the console.
-Ctrl+F: Fill resource of object.
-Number keys: Toggle build menu (Shift-*Num for menus above 10).
-Ctrl-Alt-Shift-R: Opens console and places "restart" in it.
-Ctrl-Space: Opens placement mode with the last built object.
-Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits).
-Ctrl-Alt-Shift-D: Delete object (select multiple objects in editor and use this to delete them all).
-Shift-Q: Clone selected object to mouse position.
-Ctrl-Shift-T: Terrain Editor Mode (manipulate/paint ground).
 
-More shortcut keys are available; see cheat menu items.
-You can edit the shortcut keys; see in-game keybindings.
-If you want to be able to bind a menu item: msg me and I'll add it to keybindings.
-
-There's a cheats section in most selection panels on the right side of the screen.
-Menu>ECM>Misc>Infopanel Cheats (on by default)
-
-Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua, or in LocalStorage.lua when the blacklist is enabled.
-There's also Help>ECM>Reset Settings, to manually edit see: Help>ECM>Edit Settings.
-
-
-
-##### For more info see Menu>Help>ECM>Readme
-Bleeding edge: https://github.com/ChoGGi/SurvivingMars_CheatMods
-
-
-
-##### Help it doesn't work!
-Logs are stored at %APPDATA%\Surviving Mars\logs or C:\Users\USERNAME\AppData\Roaming\Surviving Mars\logs
-I can't help if I don't know what's wrong.
-The steps you take to recreate the issue would also be useful, and maybe a save game depending on the issue.
-
-
-
-##### Access to missing functionality
-Da Vinci update added a blacklist of functions, you can use this to bypass them (only useful for modders).
-https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Startup%20HelperMod
-
-
-##### Thanks
-chippydip (for the original mod): http://steamcommunity.com/sharedfiles/filedetails/?id=1336604230
-admbraden (for gifting me a Steam copy): https://steamcommunity.com/id/admbraden
-HPK archiver: https://github.com/nickelc/hpk
-unluac: https://sourceforge.net/projects/unluac/
-Everyone else giving suggestions/pointing out issues.
+[url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/README.md]README[/url]
+[url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog]Changelog[/url]
+[url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/CheatsList.md]Menu Cheats List[/url]
 
 
 

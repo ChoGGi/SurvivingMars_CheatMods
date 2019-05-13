@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local tostring,type = tostring,type
+local tostring, type = tostring, type
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Strings = ChoGGi.Strings
@@ -10,12 +10,12 @@ local Translate = ChoGGi.ComFuncs.Translate
 function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 	local default_setting = ChoGGi.Consts.RCRoverMaxRadius
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 40,value = 40},
-		{text = 80,value = 80},
-		{text = 160,value = 160},
-		{text = 320,value = 320,hint = Strings[302535920000111--[[Cover the entire map from the centre.--]]]},
-		{text = 640,value = 640,hint = Strings[302535920000112--[[Cover the entire map from a corner.--]]]},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 40, value = 40},
+		{text = 80, value = 80},
+		{text = 160, value = 160},
+		{text = 320, value = 320, hint = Strings[302535920000111--[[Cover the entire map from the centre.--]]]},
+		{text = 640, value = 640, hint = Strings[302535920000112--[[Cover the entire map from a corner.--]]]},
 	}
 
 	--other hint type
@@ -101,12 +101,12 @@ end
 function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 	local default_setting = ChoGGi.Consts.CommandCenterMaxRadius
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 40,value = 40},
-		{text = 80,value = 80},
-		{text = 160,value = 160},
-		{text = 320,value = 320,hint = Strings[302535920000111--[[Cover the entire map from the centre.--]]]},
-		{text = 640,value = 640,hint = Strings[302535920000112--[[Cover the entire map from a corner.--]]]},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 40, value = 40},
+		{text = 80, value = 80},
+		{text = 160, value = 160},
+		{text = 320, value = 320, hint = Strings[302535920000111--[[Cover the entire map from the centre.--]]]},
+		{text = 640, value = 640, hint = Strings[302535920000112--[[Cover the entire map from a corner.--]]]},
 	}
 
 	--other hint type
@@ -152,14 +152,14 @@ end
 function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 	local default_setting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 0,value = 0},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 0, value = 0},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
 	}
 
 	local hint = default_setting
@@ -175,7 +175,7 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 
 		local value = choice.value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConstsG("DroneTransformWasteRockObstructorToStockpileAmount",value)
+			ChoGGi.ComFuncs.SetConstsG("DroneTransformWasteRockObstructorToStockpileAmount", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("DroneTransformWasteRockObstructorToStockpileAmount")
 
 			MsgPopup(
@@ -199,18 +199,18 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 	local default_setting = ChoGGi.Consts.SpeedDrone
 	local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone")
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting,hint = Strings[302535920000889--[[base speed--]]]},
-		{text = 5,value = 5 * r},
-		{text = 10,value = 10 * r},
-		{text = 15,value = 15 * r},
-		{text = 25,value = 25 * r},
-		{text = 50,value = 50 * r},
-		{text = 100,value = 100 * r},
-		{text = 1000,value = 1000 * r},
-		{text = 10000,value = 10000 * r},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r), value = default_setting, hint = Strings[302535920000889--[[base speed--]]]},
+		{text = 5, value = 5 * r},
+		{text = 10, value = 10 * r},
+		{text = 15, value = 15 * r},
+		{text = 25, value = 25 * r},
+		{text = 50, value = 50 * r},
+		{text = 100, value = 100 * r},
+		{text = 1000, value = 1000 * r},
+		{text = 10000, value = 10000 * r},
 	}
 	if default_setting ~= UpgradedSetting then
-		table.insert(item_list,2,{text = Strings[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting,hint = Strings[302535920000891--[[apply tech unlocks--]]]})
+		table.insert(item_list, 2, {text = Strings[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r), value = UpgradedSetting, hint = Strings[302535920000891--[[apply tech unlocks--]]]})
 	end
 
 	local hint = UpgradedSetting
@@ -230,7 +230,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 			for i = 1, #objs do
 				objs[i]:SetMoveSpeed(value)
 			end
-			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedDrone",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedDrone", value)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
@@ -257,14 +257,14 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
 
 	local CurrentAmount = obj:GetDronesCount()
 	local item_list = {
-		{text = Strings[302535920000894--[[Current amount--]]] .. ": " .. CurrentAmount,value = CurrentAmount},
-		{text = 1,value = 1},
-		{text = 5,value = 5},
-		{text = 10,value = 10},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
+		{text = Strings[302535920000894--[[Current amount--]]] .. ": " .. CurrentAmount, value = CurrentAmount},
+		{text = 1, value = 1},
+		{text = 5, value = 5},
+		{text = 10, value = 10},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
 	}
 
 	local function CallBackFunc(choice)
@@ -312,20 +312,20 @@ end
 function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
 	local default_setting = ChoGGi.Consts.DroneFactoryBuildSpeed
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
-		{text = 2500,value = 2500},
-		{text = 5000,value = 5000},
-		{text = 10000,value = 10000},
-		{text = 25000,value = 25000},
-		{text = 50000,value = 50000},
-		{text = 100000,value = 100000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
+		{text = 2500, value = 2500},
+		{text = 5000, value = 5000},
+		{text = 10000, value = 10000},
+		{text = 25000, value = 25000},
+		{text = 50000, value = 50000},
+		{text = 100000, value = 100000},
 	}
 
 	if not ChoGGi.UserSettings.BuildingSettings.DroneFactory then
@@ -391,8 +391,8 @@ function ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle()
 	local SetSavedConstSetting = ChoGGi.ComFuncs.SetSavedConstSetting
 	for i = 1, #list do
 		local name = list[i]
-		SetConstsG(name,NumRetBool(Consts[name],0,cConsts[name]))
-		SetSavedConstSetting(name,Consts[name])
+		SetConstsG(name, NumRetBool(Consts[name], 0, cConsts[name]))
+		SetSavedConstSetting(name, Consts[name])
 	end
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -403,8 +403,8 @@ function ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle()
 end
 
 function ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("DroneConstructAmount",ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneConstructAmount,max_int,ChoGGi.Consts.DroneConstructAmount))
-	ChoGGi.ComFuncs.SetConstsG("DroneBuildingRepairAmount",ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneBuildingRepairAmount,max_int,ChoGGi.Consts.DroneBuildingRepairAmount))
+	ChoGGi.ComFuncs.SetConstsG("DroneConstructAmount", ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneConstructAmount, max_int, ChoGGi.Consts.DroneConstructAmount))
+	ChoGGi.ComFuncs.SetConstsG("DroneBuildingRepairAmount", ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneBuildingRepairAmount, max_int, ChoGGi.Consts.DroneBuildingRepairAmount))
 	ChoGGi.ComFuncs.SetSavedConstSetting("DroneConstructAmount")
 	ChoGGi.ComFuncs.SetSavedConstSetting("DroneBuildingRepairAmount")
 
@@ -416,7 +416,7 @@ function ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle()
 end
 
 function ChoGGi.MenuFuncs.DroneRechargeTime_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("DroneRechargeTime",ChoGGi.ComFuncs.NumRetBool(Consts.DroneRechargeTime,0,ChoGGi.Consts.DroneRechargeTime))
+	ChoGGi.ComFuncs.SetConstsG("DroneRechargeTime", ChoGGi.ComFuncs.NumRetBool(Consts.DroneRechargeTime, 0, ChoGGi.Consts.DroneRechargeTime))
 	ChoGGi.ComFuncs.SetSavedConstSetting("DroneRechargeTime")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -429,7 +429,7 @@ function ChoGGi.MenuFuncs.DroneRechargeTime_Toggle()
 end
 
 function ChoGGi.MenuFuncs.DroneRepairSupplyLeak_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("DroneRepairSupplyLeak",ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneRepairSupplyLeak,1,ChoGGi.Consts.DroneRepairSupplyLeak))
+	ChoGGi.ComFuncs.SetConstsG("DroneRepairSupplyLeak", ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneRepairSupplyLeak, 1, ChoGGi.Consts.DroneRepairSupplyLeak))
 	ChoGGi.ComFuncs.SetSavedConstSetting("DroneRepairSupplyLeak")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -443,16 +443,16 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("DroneResourceCarryAmount")
 	local hinttoolarge = Strings[302535920000909--[["If you set this amount larger then a building's ""Storage"" amount then the drones will NOT pick up storage (See: Fixes>%s)."--]]]:format(Strings[302535920000613--[[Drone Carry Amount--]]])
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 5,value = 5},
-		{text = 10,value = 10},
-		{text = 25,value = 25,hint = hinttoolarge},
-		{text = 50,value = 50,hint = hinttoolarge},
-		{text = 75,value = 75,hint = hinttoolarge},
-		{text = 100,value = 100,hint = hinttoolarge},
-		{text = 250,value = 250,hint = hinttoolarge},
-		{text = 500,value = 500,hint = hinttoolarge},
-		{text = 1000,value = 1000,hint = hinttoolarge .. "\n\n" .. Strings[302535920000910--[[Somewhere above 1000 will delete the save (when it's full)--]]]},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 5, value = 5},
+		{text = 10, value = 10},
+		{text = 25, value = 25, hint = hinttoolarge},
+		{text = 50, value = 50, hint = hinttoolarge},
+		{text = 75, value = 75, hint = hinttoolarge},
+		{text = 100, value = 100, hint = hinttoolarge},
+		{text = 250, value = 250, hint = hinttoolarge},
+		{text = 500, value = 500, hint = hinttoolarge},
+		{text = 1000, value = 1000, hint = hinttoolarge .. "\n\n" .. Strings[302535920000910--[[Somewhere above 1000 will delete the save (when it's full)--]]]},
 	}
 
 	local hint = default_setting
@@ -470,7 +470,7 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 			if value > 1000 then
 				value = 1000
 			end
-			ChoGGi.ComFuncs.SetConstsG("DroneResourceCarryAmount",value)
+			ChoGGi.ComFuncs.SetConstsG("DroneResourceCarryAmount", value)
 			UpdateDroneResourceUnits()
 			ChoGGi.ComFuncs.SetSavedConstSetting("DroneResourceCarryAmount")
 
@@ -496,16 +496,16 @@ end
 function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("CommandCenterMaxDrones")
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 5,value = 5},
-		{text = 10,value = 10},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 5, value = 5},
+		{text = 10, value = 10},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
 	}
 
 	local hint = default_setting
@@ -519,7 +519,7 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConstsG("CommandCenterMaxDrones",value)
+			ChoGGi.ComFuncs.SetConstsG("CommandCenterMaxDrones", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("CommandCenterMaxDrones")
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -542,16 +542,16 @@ end
 function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("RCRoverMaxDrones")
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 5,value = 5},
-		{text = 10,value = 10},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 5, value = 5},
+		{text = 10, value = 10},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
 	}
 
 	local hint = default_setting
@@ -565,7 +565,7 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConstsG("RCRoverMaxDrones",value)
+			ChoGGi.ComFuncs.SetConstsG("RCRoverMaxDrones", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("RCRoverMaxDrones")
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -589,20 +589,20 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
 	local default_setting = ChoGGi.Consts.GravityDrone
 	local r = const.ResourceScale
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 1,value = 1},
-		{text = 2,value = 2},
-		{text = 3,value = 3},
-		{text = 4,value = 4},
-		{text = 5,value = 5},
-		{text = 10,value = 10},
-		{text = 15,value = 15},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 1, value = 1},
+		{text = 2, value = 2},
+		{text = 3, value = 3},
+		{text = 4, value = 4},
+		{text = 5, value = 5},
+		{text = 10, value = 10},
+		{text = 15, value = 15},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
 	}
 
 	local hint = default_setting
@@ -623,7 +623,7 @@ function ChoGGi.MenuFuncs.SetGravityDrones()
 			for i = 1, #objs do
 				objs[i]:SetGravity(value)
 			end
-			ChoGGi.ComFuncs.SetSavedConstSetting("GravityDrone",value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("GravityDrone", value)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(

@@ -2,7 +2,7 @@
 
 -- search through tables for values and display them in an examine dialog
 
-local pairs,type = pairs,type
+local pairs, type = pairs, type
 
 local Strings = ChoGGi.Strings
 local RetName = ChoGGi.ComFuncs.RetName
@@ -11,7 +11,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg,"ChoGGi_FindValueDlg")
+	return GetParentOfKind(dlg, "ChoGGi_FindValueDlg")
 end
 DefineClass.ChoGGi_FindValueDlg = {
 	__parents = {"ChoGGi_XWindow"},
@@ -62,7 +62,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	self.idButtonContainer = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idButtonContainer",
 		Dock = "bottom",
-		Margins = box(0,0,0,4),
+		Margins = box(0, 0, 0, 4),
 	}, self.idDialog)
 
 	self.idFind = g_Classes.ChoGGi_XButton:new({
@@ -110,7 +110,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	self:PostInit(context.parent)
 end
 
---~ function ChoGGi_FindValueDlg:RetStringCase(value,case)
+--~ function ChoGGi_FindValueDlg:RetStringCase(value, case)
 --~ 	local obj_type = type(value)
 --~ 	if obj_type == "string" then
 --~ 		return case and value or value:lower(), obj_type
@@ -148,15 +148,15 @@ function ChoGGi_FindValueDlg:FindText()
 	)
 
 	-- and fire off a new dialog
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(self.found_objs,nil,Strings[302535920000854--[[Results Found--]]])
+	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(self.found_objs, nil, Strings[302535920000854--[[Results Found--]]])
 	-- should do this nicer, but whatever
 	CreateRealTimeThread(function()
 		Sleep(10)
-		dlg:SetPos(self:GetPos()+point(0,self.idDialog.box:sizey()))
+		dlg:SetPos(self:GetPos()+point(0, self.idDialog.box:sizey()))
 	end)
 end
 
-function ChoGGi_FindValueDlg:RetObjects(obj,parent,str,case,threads,limit,level)
+function ChoGGi_FindValueDlg:RetObjects(obj, parent, str, case, threads, limit, level)
 	if not level then
 		level = 0
 	end
@@ -172,28 +172,28 @@ function ChoGGi_FindValueDlg:RetObjects(obj,parent,str,case,threads,limit,level)
 		local location_str1 = "L" .. level .. " P: " .. RetName(obj) .. "; "
 		local location_str2 = ", " .. RetName(parent)
 
-		for key,value in pairs(obj) do
-			local key_name,value_name = RetName(key),RetName(value)
-			local key_str,key_type = case and key_name or key_name:lower(), type(key)
-			local value_str,value_type = case and value_name or value_name:lower(), type(value)
+		for key, value in pairs(obj) do
+			local key_name, value_name = RetName(key), RetName(value)
+			local key_str, key_type = case and key_name or key_name:lower(), type(key)
+			local value_str, value_type = case and value_name or value_name:lower(), type(value)
 
 			local key_location = location_str1 .. key_name .. location_str2
 
-			-- :find(str,1,true) (1,true means don't use lua patterns, just plain text)
+			-- :find(str, 1, true) (1, true means don't use lua patterns, just plain text)
 			if not self.dupe_objs[obj] and not self.found_objs[key_location]
-					and (key_str:find(str,1,true) or value_str:find(str,1,true)) then
+					and (key_str:find(str, 1, true) or value_str:find(str, 1, true)) then
 				self.found_objs[key_location] = obj
 				self.dupe_objs[obj] = obj
 
 			elseif threads then
 				local value_location = location_str1 .. value_name .. location_str2
 				if key_type == "thread" and not self.dupe_objs[key]
-						and not self.found_objs[key_location] and FindThreadFunc(key,str) then
+						and not self.found_objs[key_location] and FindThreadFunc(key, str) then
 					self.found_objs[key_location] = key
 					self.dupe_objs[key] = key
 
 				elseif value_type == "thread" and not self.dupe_objs[value]
-						and not self.found_objs[value_location] and FindThreadFunc(value,str) then
+						and not self.found_objs[value_location] and FindThreadFunc(value, str) then
 					self.found_objs[value_location] = value
 					self.dupe_objs[value] = value
 
@@ -202,10 +202,10 @@ function ChoGGi_FindValueDlg:RetObjects(obj,parent,str,case,threads,limit,level)
 
 			-- keep on searching
 			if key_type == "table" then
-				self:RetObjects(key,obj,str,case,threads,limit,level+1)
+				self:RetObjects(key, obj, str, case, threads, limit, level+1)
 			end
 			if value_type == "table" then
-				self:RetObjects(value,obj,str,case,threads,limit,level+1)
+				self:RetObjects(value, obj, str, case, threads, limit, level+1)
 			end
 
 		end

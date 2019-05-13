@@ -4,8 +4,8 @@ local table_find = table.find
 local table_clear = table.clear
 local table_iclear = table.iclear
 local table_sort = table.sort
-local type,pairs,next,print = type,pairs,next,print
-local tostring,tonumber,rawget = tostring,tonumber,rawget
+local type, pairs, next, print = type, pairs, next, print
+local tostring, tonumber, rawget = tostring, tonumber, rawget
 local AveragePoint2D = AveragePoint2D
 local IsValid = IsValid
 local IsKindOf = IsKindOf
@@ -13,7 +13,7 @@ local IsValidEntity = IsValidEntity
 local Sleep = Sleep
 local WaitMsg = WaitMsg
 
-local debug_getinfo,debug_getlocal,debug_getupvalue,debug_gethook
+local debug_getinfo, debug_getlocal, debug_getupvalue, debug_gethook
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
@@ -49,7 +49,7 @@ function ChoGGi.ComFuncs.SetCheatsMenuPos()
 		local margins = GetSafeMargins():min()
 --~ 			-- xbox needs a margin, which is added from somewhere?
 --~ 			if Platform.durango then
---~ 				XShortcutsTarget:SetPos(margins+point(50,50))
+--~ 				XShortcutsTarget:SetPos(margins+point(50, 50))
 --~ 			else
 			XShortcutsTarget:SetPos(margins)
 --~ 			end
@@ -78,7 +78,7 @@ function ChoGGi.ComFuncs.DraggableCheatsMenu(enable)
 			WaitMsg("OnRender")
 			-- needs a delay (cause we added the control?)
 			local height = XShortcutsTarget.idToolbar.box:maxy() * -1
-			XShortcutsTarget.idMoveControl:SetMargins(box(0,height,0,0))
+			XShortcutsTarget.idMoveControl:SetMargins(box(0, height, 0, 0))
 		end)
 	else
 		-- remove my padding
@@ -92,7 +92,7 @@ function ChoGGi.ComFuncs.DraggableCheatsMenu(enable)
 end
 
 function ChoGGi.ComFuncs.SetCommanderBonuses(name)
-	local comm = table.find_value(MissionParams.idCommanderProfile.items,"id",g_CurrentMissionParams.idCommanderProfile)
+	local comm = table.find_value(MissionParams.idCommanderProfile.items, "id", g_CurrentMissionParams.idCommanderProfile)
 	if not comm then
 		return
 	end
@@ -111,7 +111,7 @@ end
 function ChoGGi.ComFuncs.SetSponsorBonuses(name)
 	local ChoGGi = ChoGGi
 
-	local sponsor = table.find_value(MissionParams.idMissionSponsor.items,"id",g_CurrentMissionParams.idMissionSponsor)
+	local sponsor = table.find_value(MissionParams.idMissionSponsor.items, "id", g_CurrentMissionParams.idMissionSponsor)
 	if not sponsor then
 		return
 	end
@@ -119,136 +119,136 @@ function ChoGGi.ComFuncs.SetSponsorBonuses(name)
 	local bonus = Presets.MissionSponsorPreset.Default[name]
 	-- bonuses multiple sponsors have (CompareAmounts returns equal or larger amount)
 	if sponsor.cargo then
-		sponsor.cargo = ChoGGi.ComFuncs.CompareAmounts(sponsor.cargo,bonus.cargo)
+		sponsor.cargo = ChoGGi.ComFuncs.CompareAmounts(sponsor.cargo, bonus.cargo)
 	end
 	if sponsor.additional_research_points then
-		sponsor.additional_research_points = ChoGGi.ComFuncs.CompareAmounts(sponsor.additional_research_points,bonus.additional_research_points)
+		sponsor.additional_research_points = ChoGGi.ComFuncs.CompareAmounts(sponsor.additional_research_points, bonus.additional_research_points)
 	end
 
 	local c = #sponsor
 	if name == "IMM" then
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","FoodPerRocketPassenger",
-			"Amount",9000
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "FoodPerRocketPassenger",
+			"Amount", 9000
 		})
 	elseif name == "NASA" then
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","SponsorFundingPerInterval",
-			"Amount",500
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "SponsorFundingPerInterval",
+			"Amount", 500
 		})
 	elseif name == "BlueSun" then
-		sponsor.rocket_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.rocket_price,bonus.rocket_price)
-		sponsor.applicants_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_price,bonus.applicants_price)
+		sponsor.rocket_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.rocket_price, bonus.rocket_price)
+		sponsor.applicants_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_price, bonus.applicants_price)
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_GrantTech",{
-			"Field","Physics",
-			"Research","DeepMetalExtraction"
+		sponsor[c] = PlaceObj("TechEffect_GrantTech", {
+			"Field", "Physics",
+			"Research", "DeepMetalExtraction"
 		})
 	elseif name == "CNSA" then
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","ApplicantGenerationInterval",
-			"Percent",-50
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "ApplicantGenerationInterval",
+			"Percent", -50
 		})
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","MaxColonistsPerRocket",
-			"Amount",10
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "MaxColonistsPerRocket",
+			"Amount", 10
 		})
 	elseif name == "ISRO" then
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_GrantTech",{
-			"Field","Engineering",
-			"Research","LowGEngineering"
+		sponsor[c] = PlaceObj("TechEffect_GrantTech", {
+			"Field", "Engineering",
+			"Research", "LowGEngineering"
 		})
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","Concrete_cost_modifier",
-			"Percent",-20
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "Concrete_cost_modifier",
+			"Percent", -20
 		})
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","Electronics_cost_modifier",
-			"Percent",-20
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "Electronics_cost_modifier",
+			"Percent", -20
 		})
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","MachineParts_cost_modifier",
-			"Percent",-20
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "MachineParts_cost_modifier",
+			"Percent", -20
 		})
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","ApplicantsPoolStartingSize",
-			"Percent",50
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "ApplicantsPoolStartingSize",
+			"Percent", 50
 		})
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","Metals_cost_modifier",
-			"Percent",-20
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "Metals_cost_modifier",
+			"Percent", -20
 		})
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","Polymers_cost_modifier",
-			"Percent",-20
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "Polymers_cost_modifier",
+			"Percent", -20
 		})
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","PreciousMetals_cost_modifier",
-			"Percent",-20
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "PreciousMetals_cost_modifier",
+			"Percent", -20
 		})
 	elseif name == "ESA" then
-		sponsor.funding_per_tech = ChoGGi.ComFuncs.CompareAmounts(sponsor.funding_per_tech,bonus.funding_per_tech)
-		sponsor.funding_per_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.funding_per_breakthrough,bonus.funding_per_breakthrough)
+		sponsor.funding_per_tech = ChoGGi.ComFuncs.CompareAmounts(sponsor.funding_per_tech, bonus.funding_per_tech)
+		sponsor.funding_per_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.funding_per_breakthrough, bonus.funding_per_breakthrough)
 	elseif name == "SpaceY" then
-		sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
-		sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
-		sponsor.modifier_name2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name2,bonus.bonusmodifier_name2)
-		sponsor.modifier_value2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value2,bonus.modifier_value2)
-		sponsor.modifier_name3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name3,bonus.modifier_name3)
-		sponsor.modifier_value3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value3,bonus.modifier_value3)
+		sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1, bonus.modifier_name1)
+		sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1, bonus.modifier_value1)
+		sponsor.modifier_name2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name2, bonus.bonusmodifier_name2)
+		sponsor.modifier_value2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value2, bonus.modifier_value2)
+		sponsor.modifier_name3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name3, bonus.modifier_name3)
+		sponsor.modifier_value3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value3, bonus.modifier_value3)
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","CommandCenterMaxDrones",
-			"Percent",20
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "CommandCenterMaxDrones",
+			"Percent", 20
 		})
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","starting_drones",
-			"Percent",4
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "starting_drones",
+			"Percent", 4
 		})
 	elseif name == "NewArk" then
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel",{
-			"Label","Consts",
-			"Prop","BirthThreshold",
-			"Percent",-50
+		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
+			"Label", "Consts",
+			"Prop", "BirthThreshold",
+			"Percent", -50
 		})
 	elseif name == "Roscosmos" then
-		sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1,bonus.modifier_name1)
-		sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1,bonus.modifier_value1)
+		sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1, bonus.modifier_name1)
+		sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1, bonus.modifier_value1)
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_GrantTech",{
-			"Field","Robotics",
-			"Research","FueledExtractors"
+		sponsor[c] = PlaceObj("TechEffect_GrantTech", {
+			"Field", "Robotics",
+			"Research", "FueledExtractors"
 		})
 	elseif name == "Paradox" then
-		sponsor.applicants_per_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_per_breakthrough,bonus.applicants_per_breakthrough)
-		sponsor.anomaly_bonus_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.anomaly_bonus_breakthrough,bonus.anomaly_bonus_breakthrough)
+		sponsor.applicants_per_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_per_breakthrough, bonus.applicants_per_breakthrough)
+		sponsor.anomaly_bonus_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.anomaly_bonus_breakthrough, bonus.anomaly_bonus_breakthrough)
 	end
 end
 
@@ -277,7 +277,7 @@ function ChoGGi.ComFuncs.GenerateScreenshotFilename(prefix, folder, ext, just_na
 end
 local GenerateScreenshotFilename = ChoGGi.ComFuncs.GenerateScreenshotFilename
 
-function ChoGGi.ComFuncs.Dump(obj,overwrite,file,ext,skip_msg,gen_name)
+function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 	if blacklist then
 		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.Dump")
 		return
@@ -292,13 +292,13 @@ function ChoGGi.ComFuncs.Dump(obj,overwrite,file,ext,skip_msg,gen_name)
 
 	local filename
 	if gen_name then
-		filename = GenerateScreenshotFilename(file or "DumpedText","AppData/logs/",ext or "txt")
+		filename = GenerateScreenshotFilename(file or "DumpedText", "AppData/logs/", ext or "txt")
 	else
 		filename = "AppData/logs/" .. (file or "DumpedText") .. "." .. (ext or "txt")
 	end
 
 	ThreadLockKey(filename)
-	AsyncStringToFile(filename,obj,overwrite)
+	AsyncStringToFile(filename, obj, overwrite)
 	ThreadUnlockKey(filename)
 
 	-- let user know
@@ -314,7 +314,7 @@ function ChoGGi.ComFuncs.Dump(obj,overwrite,file,ext,skip_msg,gen_name)
 end
 
 function ChoGGi.ComFuncs.DumpLua(obj)
-	ChoGGi.ComFuncs.Dump(ChoGGi.newline .. ValueToLuaCode(obj),nil,"DumpedLua","lua")
+	ChoGGi.ComFuncs.Dump(ChoGGi.newline .. ValueToLuaCode(obj), nil, "DumpedLua", "lua")
 end
 
 do -- DumpTableFunc
@@ -324,7 +324,7 @@ do -- DumpTableFunc
 	local c
 	local level_limit
 
-	local function SortTableFunc(a,b)
+	local function SortTableFunc(a, b)
 		if a.key and b.key then
 			return CmpLower(
 				RetName(a.key),
@@ -334,7 +334,7 @@ do -- DumpTableFunc
 		return a.key and true or b.key and true
 	end
 
-	local function DumpTableFunc(obj,level, parent_name)
+	local function DumpTableFunc(obj, level, parent_name)
 		if level == level_limit then
 			return 0
 		end
@@ -363,14 +363,14 @@ do -- DumpTableFunc
 			local t_c = 0
 
 			-- get all key/value pairs in the table
-			for key,value in pairs(obj) do
+			for key, value in pairs(obj) do
 				t_c = t_c + 1
 				temp_list[t_c] = {
 					key = key,
 					value = value,
 				}
 			end
-			table_sort(temp_list,SortTableFunc)
+			table_sort(temp_list, SortTableFunc)
 
 			-- now we can return an ordered list
 			for i = 1, t_c do
@@ -406,7 +406,7 @@ do -- DumpTableFunc
 	mode = -1 to append or nil to overwrite (default: append)
 	limit = how far down the rabbit hole (default 3)
 	--]]
-	function ChoGGi.ComFuncs.DumpTable(obj,mode,limit)
+	function ChoGGi.ComFuncs.DumpTable(obj, mode, limit)
 		if blacklist then
 			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.DumpTable")
 			return
@@ -425,10 +425,10 @@ do -- DumpTableFunc
 		-- make sure it's empty
 		table_iclear(output_list)
 		c = 0
-		DumpTableFunc(obj,0)
+		DumpTableFunc(obj, 0)
 
 		if #output_list > 0 then
-			AsyncStringToFile("AppData/logs/DumpedTable.txt",TableConcat(output_list),mode or "-1")
+			AsyncStringToFile("AppData/logs/DumpedTable.txt", TableConcat(output_list), mode or "-1")
 
 			local msg = Strings[302535920000002--[[Dumped: %s--]]]:format(name)
 			print(msg)
@@ -477,14 +477,14 @@ do -- WriteLogs_Toggle
 	local buffer_table = {newline}
 	local buffer_cnt = 1
 
-	if rawget(_G,"ChoGGi_print_buffer_thread") then
+	if rawget(_G, "ChoGGi_print_buffer_thread") then
 		DeleteThread(ChoGGi_print_buffer_thread)
 	end
 	ChoGGi_print_buffer_thread = CreateRealTimeThread(function()
 		while true do
 			Sleep(timer)
 			if buffer_cnt > 1 then
-				Dump(TableConcat(buffer_table,newline),nil,"Console","log",true)
+				Dump(TableConcat(buffer_table, newline), nil, "Console", "log", true)
 				table_iclear(buffer_table)
 				buffer_table[1] = newline
 				buffer_cnt = 1
@@ -505,7 +505,7 @@ do -- WriteLogs_Toggle
 					args[i] = tostring(arg)
 				end
 			end
-			args = TableConcat(args," ")
+			args = TableConcat(args, " ")
 
 			if buffer_table[buffer_cnt] ~= args then
 				buffer_cnt = buffer_cnt + 1
@@ -536,8 +536,8 @@ do -- WriteLogs_Toggle
 
 		if which then
 			-- move old log to previous and add a blank log
-			AsyncCopyFile("AppData/logs/Console.log","AppData/logs/Console.previous.log","raw")
-			AsyncStringToFile("AppData/logs/Console.log"," ")
+			AsyncCopyFile("AppData/logs/Console.log", "AppData/logs/Console.previous.log", "raw")
+			AsyncStringToFile("AppData/logs/Console.log", " ")
 
 			-- redirect functions
 			for i = 1, #func_names do
@@ -552,8 +552,8 @@ do -- WriteLogs_Toggle
 end -- do
 
 -- returns table with list of files without path or ext and path, or exclude ext to return all files
-function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
-	local err, files = AsyncListFiles(folder,ext and "*" .. ext or "*")
+function ChoGGi.ComFuncs.RetFilesInFolder(folder, ext)
+	local err, files = AsyncListFiles(folder, ext and "*" .. ext or "*")
 	if not err and #files > 0 then
 		local table_path = {}
 		local path = folder:sub(-1) == "/" and folder or folder .. "/"
@@ -561,9 +561,9 @@ function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
 			local file = files[i]
 			local name
 			if ext then
-				name = file:gsub(path,""):gsub(ext,"")
+				name = file:gsub(path, ""):gsub(ext, "")
 			else
-				name = file:gsub(path,"")
+				name = file:gsub(path, "")
 			end
 			table_path[i] = {
 				path = file,
@@ -575,14 +575,14 @@ function ChoGGi.ComFuncs.RetFilesInFolder(folder,ext)
 end
 
 function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
-	local err, folders = AsyncListFiles(folder,"*","folders")
+	local err, folders = AsyncListFiles(folder, "*", "folders")
 	if not err and #folders > 0 then
 		local table_path = {}
 		local path = folder .. "/"
 		for i = 1, #folders do
 			table_path[i] = {
 				path = folders[i],
-				name = folders[i]:gsub(path,""),
+				name = folders[i]:gsub(path, ""),
 			}
 		end
 		return table_path
@@ -598,12 +598,12 @@ do -- OpenInExamineDlg
 		title:SetBackground(g_Classes.ChoGGi_XMoveControl.Background)
 	end
 
-	function ChoGGi.ComFuncs.OpenInExamineDlg(obj,parent,title)
-		local params,p_type
+	function ChoGGi.ComFuncs.OpenInExamineDlg(obj, parent, title)
+		local params, p_type
 		-- check if parent is an opened examine dialog, or other
 		if parent then
 			p_type = type(parent)
-			-- we only (somewhat) care about parent being a string,point,dialog
+			-- we only (somewhat) care about parent being a string, point, dialog
 			if p_type == "table" and parent.ex_params then
 				params = parent
 				parent = nil
@@ -639,31 +639,31 @@ do -- OpenInExamineDlg
 			-- hit refresh, cause i'm that kinda guy
 			opened:RefreshExamine()
 			-- and flash the titlebar
-			CreateRealTimeThread(FlashTitlebar,opened.idMoveControl)
+			CreateRealTimeThread(FlashTitlebar, opened.idMoveControl)
 			return opened
 		end
 
-		if params.parent ~= "str" and not (IsKindOf(params.parent,"XWindow") or IsPoint(params.parent)) then
+		if params.parent ~= "str" and not (IsKindOf(params.parent, "XWindow") or IsPoint(params.parent)) then
 			params.parent = nil
 		end
 		if type(params.title) ~= "string" then
 			params.title = nil
 		end
 
-		return Examine:new({},terminal.desktop,params)
+		return Examine:new({}, terminal.desktop, params)
 	end
 end -- do
 
-function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
+function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list, parent)
 	if type(list) ~= "table" then
 		return
 	end
 
-	if not IsKindOf(parent,"XWindow") then
+	if not IsKindOf(parent, "XWindow") then
 		parent = nil
 	end
 
-	return ChoGGi_MonitorInfoDlg:new({}, terminal.desktop,{
+	return ChoGGi_MonitorInfoDlg:new({}, terminal.desktop, {
 		obj = list,
 		parent = parent,
 		tables = list.tables,
@@ -671,9 +671,9 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list,parent)
 	})
 end
 
-function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj,parent)
+function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj, parent)
 	-- if fired from action menu
-	if IsKindOf(obj,"XAction") then
+	if IsKindOf(obj, "XAction") then
 		obj = ChoGGi.ComFuncs.SelObject()
 		parent = nil
 	else
@@ -684,19 +684,19 @@ function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj,parent)
 		return
 	end
 
-	if not IsKindOf(parent,"XWindow") then
+	if not IsKindOf(parent, "XWindow") then
 		parent = nil
 	end
 
-	return ChoGGi_ObjectEditorDlg:new({}, terminal.desktop,{
+	return ChoGGi_ObjectEditorDlg:new({}, terminal.desktop, {
 		obj = obj,
 		parent = parent,
 	})
 end
 
-function ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(obj,parent)
+function ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(obj, parent)
 	-- if fired from action menu
-	if IsKindOf(obj,"XAction") then
+	if IsKindOf(obj, "XAction") then
 		obj = ChoGGi.ComFuncs.SelObject()
 		parent = nil
 	else
@@ -707,52 +707,52 @@ function ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(obj,parent)
 		return
 	end
 
-	if not IsKindOf(parent,"XWindow") then
+	if not IsKindOf(parent, "XWindow") then
 		parent = nil
 	end
 
-	return ChoGGi_3DManipulatorDlg:new({}, terminal.desktop,{
+	return ChoGGi_3DManipulatorDlg:new({}, terminal.desktop, {
 		obj = obj,
 		parent = parent,
 	})
 end
 
-function ChoGGi.ComFuncs.OpenInExecCodeDlg(context,parent)
-	if not IsKindOf(parent,"XWindow") then
+function ChoGGi.ComFuncs.OpenInExecCodeDlg(context, parent)
+	if not IsKindOf(parent, "XWindow") then
 		parent = nil
 	end
 
-	return ChoGGi_ExecCodeDlg:new({}, terminal.desktop,{
+	return ChoGGi_ExecCodeDlg:new({}, terminal.desktop, {
 		obj = context,
 		parent = parent,
 	})
 end
 
-function ChoGGi.ComFuncs.OpenInFindValueDlg(context,parent)
+function ChoGGi.ComFuncs.OpenInFindValueDlg(context, parent)
 	if not context then
 		return
 	end
 
-	if not IsKindOf(parent,"XWindow") then
+	if not IsKindOf(parent, "XWindow") then
 		parent = nil
 	end
 
-	return ChoGGi_FindValueDlg:new({}, terminal.desktop,{
+	return ChoGGi_FindValueDlg:new({}, terminal.desktop, {
 		obj = context,
 		parent = parent,
 	})
 end
 
-function ChoGGi.ComFuncs.OpenInImageViewerDlg(obj,parent)
+function ChoGGi.ComFuncs.OpenInImageViewerDlg(obj, parent)
 	if not obj then
 		return
 	end
 
-	if not IsKindOf(parent,"XWindow") then
+	if not IsKindOf(parent, "XWindow") then
 		parent = nil
 	end
 
-	return ChoGGi_ImageViewerDlg:new({}, terminal.desktop,{
+	return ChoGGi_ImageViewerDlg:new({}, terminal.desktop, {
 		obj = obj,
 		parent = parent,
 	})
@@ -760,11 +760,11 @@ end
 
 function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(parent)
 	-- if fired from action menu
-	if parent and (IsKindOf(parent,"XAction") or not IsKindOf(parent,"XWindow")) then
+	if parent and (IsKindOf(parent, "XAction") or not IsKindOf(parent, "XWindow")) then
 		parent = nil
 	end
 
-	return ChoGGi_DTMSlotsDlg:new({}, terminal.desktop,{
+	return ChoGGi_DTMSlotsDlg:new({}, terminal.desktop, {
 		parent = parent,
 	})
 end
@@ -779,9 +779,9 @@ function ChoGGi.ComFuncs.CloseDialogsECM(skip)
 	end
 end
 
-function ChoGGi.ComFuncs.EntitySpawner(obj,skip_msg,list_type,planning)
+function ChoGGi.ComFuncs.EntitySpawner(obj, skip_msg, list_type, planning)
 	-- if fired from action menu
-	if IsKindOf(obj,"XAction") then
+	if IsKindOf(obj, "XAction") then
 		if obj.setting_planning then
 			planning = true
 		else
@@ -812,7 +812,7 @@ function ChoGGi.ComFuncs.EntitySpawner(obj,skip_msg,list_type,planning)
 
 	if planning then
 		local BuildingTemplates = BuildingTemplates
-		for key,value in pairs(BuildingTemplates) do
+		for key, value in pairs(BuildingTemplates) do
 			c = c + 1
 			item_list[c] = {
 				text = key,
@@ -838,14 +838,14 @@ function ChoGGi.ComFuncs.EntitySpawner(obj,skip_msg,list_type,planning)
 		local value = choice.value
 
 		if not obj then
-			local cls = "ChoGGi_BuildingEntityClass"
+			local cls = ChoGGi_BuildingEntityClass
 			if choice.check1 then
-				cls = "ChoGGi_BuildingEntityClassAttach"
+				cls = ChoGGi_BuildingEntityClassAttach
 			end
 
-			obj = PlaceObj(cls,{
-				"Pos",ChoGGi.ComFuncs.CursorNearestHex()
-			})
+			obj = cls:new()
+			obj:SetPos(ChoGGi.ComFuncs.CursorNearestHex())
+
 			if planning then
 				obj.planning = true
 				obj:SetGameFlags(const.gofUnderConstruction)
@@ -904,7 +904,7 @@ end
 
 function ChoGGi.ComFuncs.SetAnimState(obj)
 	-- if fired from action menu
-	if IsKindOf(obj,"XAction") then
+	if IsKindOf(obj, "XAction") then
 		obj = ChoGGi.ComFuncs.SelObject()
 	else
 		obj = obj or ChoGGi.ComFuncs.SelObject()
@@ -966,7 +966,7 @@ function ChoGGi.ComFuncs.MonitorThreads()
 	end
 
 	local table_list = {}
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list,nil,Strings[302535920000853--[[Monitor--]]] .. ": ThreadsRegister")
+	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, nil, Strings[302535920000853--[[Monitor--]]] .. ": ThreadsRegister")
 	dlg:EnableAutoRefresh()
 
 	CreateRealTimeThread(function()
@@ -992,11 +992,11 @@ end
 -- skip_under: don't show any tables under this length
 -- pad_to: needed for sorting in examine (prefixes zeros to length)
 --~ 	ChoGGi.ComFuncs.MonitorTableLength(_G)
-function ChoGGi.ComFuncs.MonitorTableLength(obj,skip_under,pad_to,sortby,name)
+function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, pad_to, sortby, name)
 	name = name or RetName(obj)
 	skip_under = skip_under or 25
 	local table_list = {}
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list,nil,name)
+	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, nil, name)
 	dlg:EnableAutoRefresh()
 	local PadNumWithZeros = ChoGGi.ComFuncs.PadNumWithZeros
 
@@ -1005,7 +1005,7 @@ function ChoGGi.ComFuncs.MonitorTableLength(obj,skip_under,pad_to,sortby,name)
 		while dlg and dlg.window_state ~= "destroying" do
 			table_clear(table_list)
 
-			for key,value in pairs(obj) do
+			for key, value in pairs(obj) do
 				if type(value) == "table" then
 					-- tables can be index or associative or a mix
 					local length = 0
@@ -1015,7 +1015,7 @@ function ChoGGi.ComFuncs.MonitorTableLength(obj,skip_under,pad_to,sortby,name)
 					-- skip the tiny tables
 					if length > skip_under then
 						if not sortby then
-							table_list[PadNumWithZeros(length,pad_to) .. " " .. key] = value
+							table_list[PadNumWithZeros(length, pad_to) .. " " .. key] = value
 						elseif sortby == 1 then
 							table_list[key .. " " .. length] = value
 						end
@@ -1030,7 +1030,7 @@ end
 
 function ChoGGi.ComFuncs.SetParticles(obj)
 	-- if fired from action menu
-	if IsKindOf(obj,"XAction") then
+	if IsKindOf(obj, "XAction") then
 		obj = ChoGGi.ComFuncs.SelObject()
 	else
 		obj = obj or ChoGGi.ComFuncs.SelObject()
@@ -1056,7 +1056,7 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 	local default = Translate(1000121--[[Default--]])
 
 	local item_list = {
-		{text = " " .. default,value = default},
+		{text = " " .. default, value = default},
 	}
 	local c = #item_list
 
@@ -1096,7 +1096,7 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 		if obj.ChoGGi_playing_fx then
 			PlayFX(obj.ChoGGi_playing_fx, "end", obj)
 			if obj.DestroyFX then
-				obj:DestroyFX(obj,obj.ChoGGi_playing_fx)
+				obj:DestroyFX(obj, obj.ChoGGi_playing_fx)
 			end
 			obj.ChoGGi_playing_fx = nil
 		end
@@ -1142,7 +1142,7 @@ function ChoGGi.ComFuncs.ToggleConsole(show)
 	local dlg = dlgConsole
 
 	local visible = dlg and dlg:GetVisible()
-	if IsKindOf(show,"XAction") then
+	if IsKindOf(show, "XAction") then
 		show = not visible
 		if dlg and visible then
 			return dlg.idEdit:SetFocus()
@@ -1171,7 +1171,7 @@ end
 
 function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
 	if visible and not dlgChoGGi_ConsoleLogWin then
-		dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop,{})
+		dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop, {})
 		dlgChoGGi_ConsoleLogWin:UpdateText(LoadLogfile())
 	end
 
@@ -1189,7 +1189,7 @@ function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
 		if pos then
 			dlg:SetPos(pos)
 		else
-			dlg:SetPos(point(100,100))
+			dlg:SetPos(point(100, 100))
 		end
 
 	end
@@ -1199,24 +1199,25 @@ end
 -- They have to be min of 8bit, and will be resized to power of 2.
 -- This doesn't add anything to metadata/items, it only converts files.
 --~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles("MOD_ID")
---~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.MOD_ID,".tga")
+--~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.MOD_ID, ".tga")
 --~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.ChoGGi_XDefaultMod)
-function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod,ext)
+function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod, ext)
 	if blacklist then
 		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ConvertImagesToLogoFiles")
 		return
 	end
+	mod = mod or Mods.ChoGGi_XDefaultMod
 	if type(mod) == "string" then
 		mod = Mods[mod]
 	end
-	local images = ChoGGi.ComFuncs.RetFilesInFolder("AppData/Logos",ext or ".png")
+	local images = ChoGGi.ComFuncs.RetFilesInFolder("AppData/Logos", ext or ".png")
 	if images then
 		-- returns error msgs and prints in console
 		local TGetID = TGetID
 		local fake_ged_socket = {
-			ShowMessage = function(title,msg)
+			ShowMessage = function(title, msg)
 				if TGetID(title) == 12061 then
-					print("ShowMessage",Translate(title),Translate(msg))
+					print("ShowMessage", Translate(title), Translate(msg))
 				end
 			end,
 		}
@@ -1230,7 +1231,7 @@ function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod,ext)
 				ModItemDecalEntity:new{
 					entity_name = images[i].name,
 					name = images[i].name,
-					filename = filename:gsub("\\","/"),
+					filename = filename:gsub("\\", "/"),
 					mod = mod,
 				},
 				nil,
@@ -1246,7 +1247,7 @@ do -- ConvertImagesToResEntities
 	local ConvertToOSPath = ConvertToOSPath
 	local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
 --~ 	ModItemDecalEntity:Import
-	local function ModItemDecalEntityImport(name,filename,mod)
+	local function ModItemDecalEntityImport(name, filename, mod)
 		local output_dir = ConvertToOSPath(mod.content_path)
 
 		local ent_dir = output_dir .. "Entities/"
@@ -1289,8 +1290,8 @@ do -- ConvertImagesToResEntities
 		<src file=""/>
 		<mesh file="SignConcreteDeposit_mesh.hgm"/>
 		<material file="]] .. mtl_file .. [["/>
-		<bsphere value="0,0,50,1301"/>
-		<box min="-920,-920,50" max="920,920,50"/>
+		<bsphere value="0, 0, 50, 1301"/>
+		<box min="-920, -920, 50" max="920, 920, 50"/>
 	</mesh_description>
 </entity>
 ]])
@@ -1315,7 +1316,7 @@ do -- ConvertImagesToResEntities
 --~ 				return err
 --~ 			end
 
-		err = AsyncStringToFile(mtl_output,[[<?xml version="1.0" encoding="UTF-8"?>
+		err = AsyncStringToFile(mtl_output, [[<?xml version="1.0" encoding="UTF-8"?>
 <Materials>
 <Material>
 	<BaseColorMap Name="]] .. name .. [[.dds" mc="0"/>
@@ -1332,8 +1333,8 @@ do -- ConvertImagesToResEntities
 
 --~ 	ChoGGi.ComFuncs.ConvertImagesToResEntities("ChoGGi_ExampleNewResIcon")
 --~ 	ChoGGi.ComFuncs.ConvertImagesToResEntities("MOD_ID")
---~ 	ChoGGi.ComFuncs.ConvertImagesToResEntities(Mods.MOD_ID,".tga")
-	function ChoGGi.ComFuncs.ConvertImagesToResEntities(mod,ext)
+--~ 	ChoGGi.ComFuncs.ConvertImagesToResEntities(Mods.MOD_ID, ".tga")
+	function ChoGGi.ComFuncs.ConvertImagesToResEntities(mod, ext)
 		if blacklist then
 			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ConvertImagesToResEntities")
 			return
@@ -1342,13 +1343,13 @@ do -- ConvertImagesToResEntities
 		if type(mod) == "string" then
 			mod = Mods[mod]
 		end
-		local images = RetFilesInFolder("AppData/Logos",ext or ".png")
+		local images = RetFilesInFolder("AppData/Logos", ext or ".png")
 		if images then
 			for i = 1, #images do
 				local filename = ConvertToOSPath(images[i].path)
 				ModItemDecalEntityImport(
 					images[i].name,
-					filename:gsub("\\","/"),
+					filename:gsub("\\", "/"),
 					mod
 				)
 				print(filename)
@@ -1359,16 +1360,16 @@ do -- ConvertImagesToResEntities
 end -- do
 
 do -- ExamineEntSpots
-	local spots_str = [[		<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s,%s,%s" spot_scale="%s" spot_rot="%s,%s,%s,%s"/>]]
+	local spots_str = [[		<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s, %s, %s" spot_scale="%s" spot_rot="%s, %s, %s, %s"/>]]
 
 	local RetOriginSurfaces
 	local pts_c
 	local pts_tmp = {}
 	local suffix = [["/>]]
-	local function BuildSurf(c,list,obj,name,surf)
+	local function BuildSurf(c, list, obj, name, surf)
 		local prefix = [[		<surf type="]] .. name .. [[" points="]]
 
-		local surfs = RetOriginSurfaces(obj,surf)
+		local surfs = RetOriginSurfaces(obj, surf)
 		for i = 1, #surfs do
 			local pts = surfs[i]
 			table_iclear(pts_tmp)
@@ -1376,15 +1377,15 @@ do -- ExamineEntSpots
 
 			local count = #pts
 			for j = 1, count do
-				local x,y,z = pts[j]:xyz()
+				local x, y, z = pts[j]:xyz()
 				pts_c = pts_c + 1
 				pts_tmp[pts_c] = x
 				pts_c = pts_c + 1
-				pts_tmp[pts_c] = ","
+				pts_tmp[pts_c] = ", "
 				pts_c = pts_c + 1
 				pts_tmp[pts_c] = y
 				pts_c = pts_c + 1
-				pts_tmp[pts_c] = ","
+				pts_tmp[pts_c] = ", "
 				pts_c = pts_c + 1
 				pts_tmp[pts_c] = z
 				if j ~= count then
@@ -1398,12 +1399,12 @@ do -- ExamineEntSpots
 		return c
 	end
 
---~ local list = ChoGGi.ComFuncs.ExamineEntSpots(s,true)
---~ list = ChoGGi.ComFuncs.TableConcat(list,"\n")
---~ ChoGGi.ComFuncs.Dump(list,nil,nil,"ent")
-	function ChoGGi.ComFuncs.ExamineEntSpots(obj,parent_or_ret)
+--~ local list = ChoGGi.ComFuncs.ExamineEntSpots(s, true)
+--~ list = ChoGGi.ComFuncs.TableConcat(list, "\n")
+--~ ChoGGi.ComFuncs.Dump(list, nil, nil, "ent")
+	function ChoGGi.ComFuncs.ExamineEntSpots(obj, parent_or_ret)
 		-- if fired from action menu
-		if IsKindOf(obj,"XAction") then
+		if IsKindOf(obj, "XAction") then
 			obj = ChoGGi.ComFuncs.SelObject()
 			parent_or_ret = nil
 		else
@@ -1441,27 +1442,27 @@ do -- ExamineEntSpots
 
 			-- this is our bonus eh
 			local bbox = obj:GetEntityBBox()
-			local x1,y1,z1 = bbox:minxyz()
-			local x2,y2,z2 = bbox:maxxyz()
+			local x1, y1, z1 = bbox:minxyz()
+			local x2, y2, z2 = bbox:maxxyz()
 			local pos_x, pos_y, pos_z, radius = obj:GetBSphere(state_str, true)
 --~ Basketball_idle.hga
 			c = c + 1
 			list[c] = [[		<state id="]] .. state_str .. [[">
 		<mesh_ref ref="mesh"/>
 		<anim file="]] .. entity .. "_" .. state_str .. [[.hga" duration="]] .. obj:GetAnimDuration(state_str) .. [["/>
-		<bsphere value="]] .. (pos_x - origin_pos_x) .. ","
-				.. (pos_y - origin_pos_y) .. "," .. (pos_z - origin_pos_z) .. ","
+		<bsphere value="]] .. (pos_x - origin_pos_x) .. ", "
+				.. (pos_y - origin_pos_y) .. ", " .. (pos_z - origin_pos_z) .. ", "
 				.. radius .. [["/>
-		<box min="]] .. x1 .. "," .. y1 .. "," .. z1
-				.. [[" max="]] .. x2 .. "," .. y2 .. "," .. z2 .. [["/>
+		<box min="]] .. x1 .. ", " .. y1 .. ", " .. z1
+				.. [[" max="]] .. x2 .. ", " .. y2 .. ", " .. z2 .. [["/>
 	</state>]]
 		end -- for states
 
-		local mat = GetStateMaterial(entity,0,0)
+		local mat = GetStateMaterial(entity, 0, 0)
 		-- add the rest of the entity info
 		c = c + 1
 		list[c] = [[	<mesh_description id="mesh">
-		<mesh file="]] .. mat:sub(1,-3) .. [[.hgm"/>
+		<mesh file="]] .. mat:sub(1, -3) .. [[.hgm"/>
 		<material file="]] .. mat .. [["/>]]
 		-- eh, close enough
 
@@ -1482,48 +1483,48 @@ do -- ExamineEntSpots
 				local annot = obj:GetSpotAnnotation(i)
 				if not annot then
 					annot = ""
-					spots_str_t = spots_str_t:gsub([[ spot_note="%%s"]],"%%s")
+					spots_str_t = spots_str_t:gsub([[ spot_note="%%s"]], "%%s")
 				end
 
 				local bone = obj:GetSpotBone(i)
 				if bone == "" then
-					spots_str_t = spots_str_t:gsub([[ bone="%%s"]],"%%s")
+					spots_str_t = spots_str_t:gsub([[ bone="%%s"]], "%%s")
 				end
 
-				-- axis,scale
-				local _,_,_,_,axis_x,axis_y,axis_z = obj:GetSpotLocXYZ(i)
+				-- axis, scale
+				local _, _, _, _, axis_x, axis_y, axis_z = obj:GetSpotLocXYZ(i)
 
 				-- 100 is default
 				local scale = obj:GetSpotVisualScale(i)
 				if scale == 100 then
-					spots_str_t = spots_str_t:gsub([[ spot_scale="%%s"]],"%%s")
+					spots_str_t = spots_str_t:gsub([[ spot_scale="%%s"]], "%%s")
 					scale = ""
 				end
 
 				local angle = obj:GetSpotVisualRotation(i)
 				-- means nadda for spot_rot
 				if angle == 0 and axis_x == 0 and axis_y == 0 and axis_z == 4096 then
-					spots_str_t = spots_str_t:gsub([[ spot_rot="%%s,%%s,%%s,%%s"]],"%%s%%s%%s%%s")
-					angle,axis_x,axis_y,axis_z = "","","",""
+					spots_str_t = spots_str_t:gsub([[ spot_rot="%%s, %%s, %%s, %%s"]], "%%s%%s%%s%%s")
+					angle, axis_x, axis_y, axis_z = "", "", "", ""
 				else
 					axis_x = (axis_x + 0.0) / 100
 					axis_y = (axis_y + 0.0) / 100
 					axis_z = (axis_z + 0.0) / 100
 					angle = (angle) / 60
 --~ 					if angle > 360 then
---~ 						printC("ExamineEntSpots: angle > 360: ",angle)
+--~ 						printC("ExamineEntSpots: angle > 360: ", angle)
 --~ 						-- just gotta figure out how to turn 18000 or 3600 into 60 (21600)
 --~ 						angle = 360 - angle
 --~ 					end
 				end
 
-				local pos_x,pos_y,pos_z = obj:GetSpotPosXYZ(i)
+				local pos_x, pos_y, pos_z = obj:GetSpotPosXYZ(i)
 
 				c = c + 1
 				list[c] = spots_str_t:format(
-					name,annot,bone,
-					pos_x - origin_pos_x,pos_y - origin_pos_y,pos_z - origin_pos_z,
-					scale,axis_x,axis_y,axis_z,angle
+					name, annot, bone,
+					pos_x - origin_pos_x, pos_y - origin_pos_y, pos_z - origin_pos_z,
+					scale, axis_x, axis_y, axis_z, angle
 				)
 			end
 
@@ -1532,14 +1533,14 @@ do -- ExamineEntSpots
 		-- add surfs
 		RetOriginSurfaces = RetOriginSurfaces or ChoGGi.ComFuncs.RetOriginSurfaces
 		-- hex_shape
-		c = BuildSurf(c,list,obj,"hex_shape",5)
+		c = BuildSurf(c, list, obj, "hex_shape", 5)
 		-- selection
-		c = BuildSurf(c,list,obj,"selection",7)
+		c = BuildSurf(c, list, obj, "selection", 7)
 		-- collision
-		c = BuildSurf(c,list,obj,"collision",0)
+		c = BuildSurf(c, list, obj, "collision", 0)
 
 		-- opener
-		table.insert(list,1,Strings[302535920001068--[["The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
+		table.insert(list, 1, Strings[302535920001068--[["The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
 Attachment bspheres are off (x and y are; z and rotate aren't).
 Some of the file names are guesses. <anim> is a guess, try removing it."--]]]
 			.. [[
@@ -1553,11 +1554,11 @@ Some of the file names are guesses. <anim> is a guess, try removing it."--]]]
 </entity>]]
 
 		if parent_or_ret == true then
-			return TableConcat(list,"\n")
+			return TableConcat(list, "\n")
 		else
 			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 				parent = parent_or_ret,
-				text = TableConcat(list,"\n"),
+				text = TableConcat(list, "\n"),
 				title = Strings[302535920000235--[[Entity Spots--]]] .. ": " .. RetName(obj),
 			}
 		end
@@ -1572,7 +1573,7 @@ do -- RetHexSurfaces
 	local GetSurfaceHexShapes = GetSurfaceHexShapes
 	local EntitySurfaces = EntitySurfaces
 
-	local function AddToList(filter,list,c,shape,name,key,value,state,hash)
+	local function AddToList(filter, list, c, shape, name, key, value, state, hash)
 		if shape and (not filter or filter and #shape > 0) then
 			c = c + 1
 			list[c] = {
@@ -1587,24 +1588,24 @@ do -- RetHexSurfaces
 		return c
 	end
 
-	function ChoGGi.ComFuncs.RetHexSurfaces(entity,filter,parent_or_ret)
+	function ChoGGi.ComFuncs.RetHexSurfaces(entity, filter, parent_or_ret)
 		local list = {}
 		local c = 0
 
 		local all_states = GetStates(entity)
 		for i = 1, #all_states do
 			local state = GetStateIdx(all_states[i])
-			for key,value in pairs(EntitySurfaces) do
+			for key, value in pairs(EntitySurfaces) do
 				local outline, interior, hash = GetSurfaceHexShapes(entity, state, value)
-				c = AddToList(filter,list,c,outline,"outline",key,value,state,hash)
-				c = AddToList(filter,list,c,interior,"interior",key,value,state,hash)
+				c = AddToList(filter, list, c, outline, "outline", key, value, state, hash)
+				c = AddToList(filter, list, c, interior, "interior", key, value, state, hash)
 			end
 		end
 
 		if parent_or_ret == true then
 			return list
 		else
-			ChoGGi.ComFuncs.OpenInExamineDlg(list,nil,"RetHexSurfaces")
+			ChoGGi.ComFuncs.OpenInExamineDlg(list, nil, "RetHexSurfaces")
 		end
 	end
 end -- do
@@ -1616,26 +1617,26 @@ do -- ObjFlagsList
 	-- get list of const.rf* flags
 	local rf_flags = {}
 	local int_flags = {}
-	for flag,value in pairs(const) do
-		if flag:sub(1,2) == "rf" and type(value) == "number" then
+	for flag, value in pairs(const) do
+		if flag:sub(1, 2) == "rf" and type(value) == "number" then
 			rf_flags[flag] = value
-		elseif flag:sub(1,3) == "int" and type(value) == "number" then
+		elseif flag:sub(1, 3) == "int" and type(value) == "number" then
 			int_flags[flag] = value
 		end
 	end
 
 	local flags_table
-	local function CheckFlags(flags,obj,func_name)
+	local function CheckFlags(flags, obj, func_name)
 		local get = "Get" .. func_name
 		local set = "Set" .. func_name
 		local clear = "Clear" .. func_name
 		local us = ChoGGi.UserSettings
 
-		for _,f in pairs(flags) do
+		for _, f in pairs(flags) do
 			local mask = const[f]
 			-- grumble efAlive grumble
 			if mask then
-				local flagged = obj[get](obj,mask) == mask
+				local flagged = obj[get](obj, mask) == mask
 				if func_name == "ClassFlags" then
 					flags_table[f .. " (" .. mask .. ")"] = flagged
 				else
@@ -1644,14 +1645,14 @@ do -- ObjFlagsList
 						hint = Strings[302535920001069--[[Toggle Boolean--]]],
 						name = tostring(flagged),
 						colour = flagged and us.ExamineColourBool or us.ExamineColourBoolFalse,
-						func = function(ex_dlg,_,list_obj)
+						func = function(ex_dlg, _, list_obj)
 							-- if flag is true
-							if obj[get](obj,mask) == mask then
-								obj[clear](obj,mask)
+							if obj[get](obj, mask) == mask then
+								obj[clear](obj, mask)
 								list_obj.name = "false"
 								list_obj.colour = us.ExamineColourBoolFalse
 							else
-								obj[set](obj,mask)
+								obj[set](obj, mask)
 								list_obj.name = "true"
 								list_obj.colour = us.ExamineColourBool
 							end
@@ -1663,26 +1664,26 @@ do -- ObjFlagsList
 		end
 	end
 
-	function ChoGGi.ComFuncs.ObjFlagsList_TR(obj,parent_or_ret)
+	function ChoGGi.ComFuncs.ObjFlagsList_TR(obj, parent_or_ret)
 		if not obj or obj.__name ~= "HGE.TaskRequest" then
 			return
 		end
 		flags_table = {}
 
-		for flag,value in pairs(rf_flags) do
+		for flag, value in pairs(rf_flags) do
 			flags_table[flag .. " (" .. value .. ")"] = obj:IsAnyFlagSet(value)
 		end
 
 		if parent_or_ret == true then
 			return flags_table
 		else
-			ChoGGi.ComFuncs.OpenInExamineDlg(flags_table,parent_or_ret,RetName(obj))
+			ChoGGi.ComFuncs.OpenInExamineDlg(flags_table, parent_or_ret, RetName(obj))
 		end
 	end
 
-	function ChoGGi.ComFuncs.ObjFlagsList(obj,parent_or_ret)
+	function ChoGGi.ComFuncs.ObjFlagsList(obj, parent_or_ret)
 		-- if fired from action menu
-		if IsKindOf(obj,"XAction") then
+		if IsKindOf(obj, "XAction") then
 			obj = ChoGGi.ComFuncs.SelObject()
 			parent_or_ret = nil
 		else
@@ -1696,15 +1697,15 @@ do -- ObjFlagsList
 		flags_table = {}
 
 		local FlagsByBits = FlagsByBits
-		CheckFlags(FlagsByBits.Enum,obj,"EnumFlags")
-		CheckFlags(FlagsByBits.Game,obj,"GameFlags")
-		CheckFlags(FlagsByBits.Class,obj,"ClassFlags")
---~ 			CheckFlags(FlagsByBits.Component,obj,"ClassFlags")
+		CheckFlags(FlagsByBits.Enum, obj, "EnumFlags")
+		CheckFlags(FlagsByBits.Game, obj, "GameFlags")
+		CheckFlags(FlagsByBits.Class, obj, "ClassFlags")
+--~ 			CheckFlags(FlagsByBits.Component, obj, "ClassFlags")
 
 		if parent_or_ret == true then
 			return flags_table
 		else
-			ChoGGi.ComFuncs.OpenInExamineDlg(flags_table,parent_or_ret,RetName(obj))
+			ChoGGi.ComFuncs.OpenInExamineDlg(flags_table, parent_or_ret, RetName(obj))
 		end
 
 	end
@@ -1784,11 +1785,11 @@ do -- GetMaterialProperties
 --~ 			XX = [[		<Property VSize="%s"/>]],
 	}
 
-	local function CleanupMTL(mat,list,c)
+	local function CleanupMTL(mat, list, c)
 		list = list or {}
 		c = c or #list
 
-		for key,value in pairs(mat) do
+		for key, value in pairs(mat) do
 			if value == true then
 				value = 1
 			elseif value == false then
@@ -1800,7 +1801,7 @@ do -- GetMaterialProperties
 				if channel_list[key] then
 					if value ~= "" then
 						c = c + 1
-						list[c] = mtl:format(value,mat[key .. "Channel"])
+						list[c] = mtl:format(value, mat[key .. "Channel"])
 					end
 				else
 					c = c + 1
@@ -1809,7 +1810,7 @@ do -- GetMaterialProperties
 			end
 
 		end
-		return list,c
+		return list, c
 	end
 
 	local function RetEntityMTLFile(mat)
@@ -1819,16 +1820,16 @@ do -- GetMaterialProperties
 		local c = #list
 
 		-- build main first
-		list,c = CleanupMTL(mat,list,c)
+		list, c = CleanupMTL(mat, list, c)
 		c = c + 1
 		list[c] = [[	</Material>]]
 
 		-- add any sub materials
-		for key,sub_mat in pairs(mat) do
-			if type(key) == "string" and key:sub(1,19) == "_sub_material_index" then
+		for key, sub_mat in pairs(mat) do
+			if type(key) == "string" and key:sub(1, 19) == "_sub_material_index" then
 				c = c + 1
 				list[c] = [[	<Material>]]
-				list,c = CleanupMTL(sub_mat,list,c)
+				list, c = CleanupMTL(sub_mat, list, c)
 				c = c + 1
 				list[c] = [[	</Material>]]
 			end
@@ -1837,11 +1838,11 @@ do -- GetMaterialProperties
 		c = c + 1
 		list[c] = [[</Materials>]]
 
-		return TableConcat(list,"\n")
+		return TableConcat(list, "\n")
 	end
 	ChoGGi.ComFuncs.RetEntityMTLFile = RetEntityMTLFile
 
-	local function ExamineExportMat(ex_dlg,mat)
+	local function ExamineExportMat(ex_dlg, mat)
 		ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 			parent = ex_dlg,
 			text = RetEntityMTLFile(mat),
@@ -1849,7 +1850,7 @@ do -- GetMaterialProperties
 		}
 	end
 
-	local function RetEntityMats(entity,skip)
+	local function RetEntityMats(entity, skip)
 		-- some of these funcs can crash sm, so lets make sure it's valid
 		if not skip and not IsValidEntity(entity) then
 			return
@@ -1862,13 +1863,13 @@ do -- GetMaterialProperties
 			local state = GetStateIdx(state_str)
 			local num_lods = GetStateLODCount(entity, state) or 0
 			for li = 1, num_lods do
-				local mat_name = GetStateMaterial(entity,state,li - 1)
-				local mat = GetMaterialProperties(mat_name,0)
+				local mat_name = GetStateMaterial(entity, state, li - 1)
+				local mat = GetMaterialProperties(mat_name, 0)
 
 				-- add any sub materials
 				local c = 1
 				while true do
-					local extra = GetMaterialProperties(mat_name,c)
+					local extra = GetMaterialProperties(mat_name, c)
 					if not extra then
 						break
 					end
@@ -1884,7 +1885,7 @@ do -- GetMaterialProperties
 					hint = Strings[302535920001174--[[Show an example .mtl file for this material (not complete).--]]],
 					name = Strings[302535920001177--[[Generate .mtl--]]],
 					func = function(ex_dlg)
-						ExamineExportMat(ex_dlg,mat)
+						ExamineExportMat(ex_dlg, mat)
 					end,
 				}
 
@@ -1896,13 +1897,13 @@ do -- GetMaterialProperties
 	end
 	ChoGGi.ComFuncs.RetEntityMats = RetEntityMats
 
-	function ChoGGi.ComFuncs.GetMaterialProperties(obj,parent_or_ret)
+	function ChoGGi.ComFuncs.GetMaterialProperties(obj, parent_or_ret)
 		if not UICity then
 			return
 		end
 
 		-- if fired from action menu
-		if IsKindOf(obj,"XAction") then
+		if IsKindOf(obj, "XAction") then
 			obj = ChoGGi.ComFuncs.SelObject()
 			parent_or_ret = nil
 		else
@@ -1912,16 +1913,16 @@ do -- GetMaterialProperties
 		local materials
 
 		if IsValidEntity(obj) then
-			materials = RetEntityMats(obj,true)
+			materials = RetEntityMats(obj, true)
 		else
 			local entity = obj and obj.GetEntity and obj:GetEntity()
 			if IsValidEntity(entity) then
-				materials = RetEntityMats(entity,true)
+				materials = RetEntityMats(entity, true)
 			else
 				materials = {}
 				local EntityData = EntityData
 				for entity in pairs(EntityData) do
-					materials[entity] = RetEntityMats(entity,true)
+					materials[entity] = RetEntityMats(entity, true)
 				end
 			end
 		end
@@ -1930,7 +1931,7 @@ do -- GetMaterialProperties
 		if parent_or_ret == true then
 			return materials
 		else
-			ChoGGi.ComFuncs.OpenInExamineDlg(materials,parent_or_ret,Strings[302535920001458--[[Material Properties--]]])
+			ChoGGi.ComFuncs.OpenInExamineDlg(materials, parent_or_ret, Strings[302535920001458--[[Material Properties--]]])
 		end
 
 	end
@@ -1943,7 +1944,7 @@ do -- DisplayObjectImages
 	local ImageExts = ChoGGi.ComFuncs.ImageExts
 
 	-- grab any strings with the correct ext
-	local function AddToList(c,key,value)
+	local function AddToList(c, key, value)
 		if type(value) == "string" and ImageExts()[value:sub(-3):lower()] then
 			local dupe_test = key .. value
 
@@ -1959,7 +1960,7 @@ do -- DisplayObjectImages
 		return c
 	end
 
-	function ChoGGi.ComFuncs.DisplayObjectImages(obj,parent,images)
+	function ChoGGi.ComFuncs.DisplayObjectImages(obj, parent, images)
 		images_table = images or {
 			dupes = {},
 		}
@@ -1969,14 +1970,14 @@ do -- DisplayObjectImages
 		local c = #images_table
 
 		-- and images
-		for key,value in pairs(obj) do
-			c = AddToList(c,key,value)
+		for key, value in pairs(obj) do
+			c = AddToList(c, key, value)
 		end
 		-- any meta images
 		local meta = getmetatable(obj)
 		while meta do
-			for key,value in pairs(meta) do
-				c = AddToList(c,key,obj[key] or value)
+			for key, value in pairs(meta) do
+				c = AddToList(c, key, obj[key] or value)
 			end
 			meta = getmetatable(meta)
 		end
@@ -1987,7 +1988,7 @@ do -- DisplayObjectImages
 			table_sort(images_table, function(a, b)
 				return CmpLower(a.name, b.name)
 			end)
-			ChoGGi.ComFuncs.OpenInImageViewerDlg(images_table,parent)
+			ChoGGi.ComFuncs.OpenInImageViewerDlg(images_table, parent)
 			return true
 		end
 		return false
@@ -1999,7 +2000,7 @@ do -- CleanInfoAttachDupes
 	local DoneObject = DoneObject
 	local dupe_list = {}
 
-	function ChoGGi.ComFuncs.CleanInfoAttachDupes(list,cls)
+	function ChoGGi.ComFuncs.CleanInfoAttachDupes(list, cls)
 		table_clear(dupe_list)
 		SuspendPassEdits("ChoGGi.ComFuncs.CleanInfoAttachDupes")
 
@@ -2066,14 +2067,14 @@ do -- BBoxLines_Toggle
 		edges[6] = edges[2]
 
 		-- we need a list of top/bottom box points
-		local points_top,points_bot = {},{}
+		local points_top, points_bot = {}, {}
 		for i = 1, #edges - 1 do
 			local edge = edges[i]
 			if i < 5 then
 				-- the four "pillars"
 				SpawnPillarLine(edge, z, obj_height, depth_test, colour)
 			end
-			local x,y = edge:xy()
+			local x, y = edge:xy()
 			points_top[#points_top + 1] = point(x, y, z + obj_height)
 			points_bot[#points_bot + 1] = point(x, y, z)
 		end
@@ -2107,7 +2108,7 @@ do -- BBoxLines_Toggle
 
 		return bbox_lines
 	end
-	local function BBoxLines_Clear(obj,is_box)
+	local function BBoxLines_Clear(obj, is_box)
 		SuspendPassEdits("ChoGGi.ComFuncs.BBoxLines_Clear")
 		if not is_box and obj.ChoGGi_bboxobj then
 			obj.ChoGGi_bboxobj:Destroy()
@@ -2118,12 +2119,12 @@ do -- BBoxLines_Toggle
 	end
 	ChoGGi.ComFuncs.BBoxLines_Clear = BBoxLines_Clear
 
-	function ChoGGi.ComFuncs.BBoxLines_Toggle(obj,params)
+	function ChoGGi.ComFuncs.BBoxLines_Toggle(obj, params)
 		params = params or {}
 		obj = obj or ChoGGi.ComFuncs.SelObject()
 		local is_box = IsBox(obj)
 
-		if not (IsValid(obj) or is_box) or (BBoxLines_Clear(obj,is_box) and not params.skip_return) then
+		if not (IsValid(obj) or is_box) or (BBoxLines_Clear(obj, is_box) and not params.skip_return) then
 			return
 		end
 
@@ -2157,8 +2158,8 @@ end -- do
 do -- SurfaceLines_Toggle
 	local GetRelativeSurfaces = GetRelativeSurfaces
 
-	local function BuildLines(obj,params)
-		local surfs = params.surfs or GetRelativeSurfaces(obj,params.surface_mask or 0)
+	local function BuildLines(obj, params)
+		local surfs = params.surfs or GetRelativeSurfaces(obj, params.surface_mask or 0)
 		local c = #obj.ChoGGi_surfacelinesobj
 
 		for i = 1, #surfs do
@@ -2189,7 +2190,7 @@ do -- SurfaceLines_Toggle
 	end
 	ChoGGi.ComFuncs.SurfaceLines_Clear = SurfaceLines_Clear
 
-	function ChoGGi.ComFuncs.SurfaceLines_Toggle(obj,params)
+	function ChoGGi.ComFuncs.SurfaceLines_Toggle(obj, params)
 
 		params = params or {}
 		local is_valid = IsValid(obj)
@@ -2208,7 +2209,7 @@ do -- SurfaceLines_Toggle
 		params.offset = params.offset or 1
 
 		SuspendPassEdits("ChoGGi.ComFuncs.SurfaceLines_Toggle")
-		BuildLines(obj,params)
+		BuildLines(obj, params)
 		ResumePassEdits("ChoGGi.ComFuncs.SurfaceLines_Toggle")
 
 		if not params.skip_clear then
@@ -2218,11 +2219,11 @@ do -- SurfaceLines_Toggle
 	end
 end -- do
 
-function ChoGGi.ComFuncs.RetOriginSurfaces(obj,surf)
-	-- collision (see also 5,7)
+function ChoGGi.ComFuncs.RetOriginSurfaces(obj, surf)
+	-- collision (see also 5, 7)
 	surf = surf or 0
 
-	local surfs = GetRelativeSurfaces(obj,surf)
+	local surfs = GetRelativeSurfaces(obj, surf)
 	local origin = obj:GetPos()
 	for i = 1, #surfs do
 		local pts = surfs[i]
@@ -2239,12 +2240,12 @@ end
 
 function ChoGGi.ComFuncs.GetDesktopWindow(class)
 	local desktop = terminal.desktop
-	return desktop[table_find(desktop,"class",class)]
+	return desktop[table_find(desktop, "class", class)]
 end
 
 do -- RetThreadInfo/FindThreadFunc
 	local GedInspectorFormatObject = GedInspectorFormatObject
-	local function DbgGetlocal(thread,level)
+	local function DbgGetlocal(thread, level)
 		local list = {}
 		local idx = 1
 		while true do
@@ -2297,18 +2298,18 @@ do -- RetThreadInfo/FindThreadFunc
 			-- build a list of func name / level
 			for i = 1, #threads do
 				-- why'd i add the "= false"?
-				local temp = {level = false,func = false,name = false}
+				local temp = {level = false, func = false, name = false}
 
 				local t = threads[i]
-				for key,value in pairs(t) do
+				for key, value in pairs(t) do
 					if key == "key" then
 						temp.level = value
 					elseif key == "value" then
 						-- split "func(line num) name" into two
-						local space = value:find(") ",1,true)
-						temp.func = value:sub(2,space - 1)
+						local space = value:find(") ", 1, true)
+						temp.func = value:sub(2, space - 1)
 						-- change unknown to Lua
-						local n = value:sub(space + 2,-2)
+						local n = value:sub(space + 2, -2)
 						temp.name = n ~= "unknown name" and n or Strings[302535920000723--[[Lua--]]]
 					end
 				end
@@ -2319,7 +2320,7 @@ do -- RetThreadInfo/FindThreadFunc
 		else
 			funcs.gethook = debug_gethook(thread)
 
-			local info = debug_getinfo(thread,0,"Slfunt")
+			local info = debug_getinfo(thread, 0, "Slfunt")
 			if info then
 				local nups = info.nups
 				if nups > 0 then
@@ -2327,14 +2328,14 @@ do -- RetThreadInfo/FindThreadFunc
 					nups = nups + 1
 
 					for i = 0, nups do
-						local info_got = debug_getinfo(thread,i)
+						local info_got = debug_getinfo(thread, i)
 						if info_got then
 							local name = info_got.name or info_got.what or Strings[302535920000723--[[Lua--]]]
 							funcs[i] = {
 								name = name,
 								func = info_got.func,
 								level = i,
-								getlocal = DbgGetlocal(thread,i),
+								getlocal = DbgGetlocal(thread, i),
 								getupvalue = DbgGetupvalue(info_got),
 							}
 						end
@@ -2347,14 +2348,14 @@ do -- RetThreadInfo/FindThreadFunc
 	end
 
 	-- find/return func if str in func name
-	function ChoGGi.ComFuncs.FindThreadFunc(thread,str)
+	function ChoGGi.ComFuncs.FindThreadFunc(thread, str)
 		-- needs an empty table to work it's magic
 		GedInspectedObjects[thread] = {}
 		-- returns a table of the funcs in the thread
 		local threads = GedInspectorFormatObject(thread).members
 		for i = 1, #threads do
-			for key,value in pairs(threads[i]) do
-				if key == "value" and value:find_lower(str,1,true) then
+			for key, value in pairs(threads[i]) do
+				if key == "value" and value:find_lower(str, 1, true) then
 					return value
 				end
 			end
@@ -2374,7 +2375,7 @@ do -- DebugGetInfo
 			local info = debug_getinfo(obj)
 			-- sub(2): removes @, Mars is ingame files, mods is mods...
 			local src = info.source ~= "" and info.source or info.short_src
-			return src:sub(2):gsub("Mars/",""):gsub("AppData/Mods/","")
+			return src:sub(2):gsub("Mars/", ""):gsub("AppData/Mods/", "")
 				.. "(" .. info.linedefined .. ")"
 		end
 	end
@@ -2402,37 +2403,37 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 ~ModConfig.Set
 --]]
 		-- remove @
-		local at = path:sub(1,1)
+		local at = path:sub(1, 1)
 		if at == "@" then
 			path = path:sub(2)
 		end
 
-		local err,code
+		local err, code
 		-- mods (we need to skip CommonLua else it'll open the luac file)
-		local comlua = path:sub(1,10)
+		local comlua = path:sub(1, 10)
 		if comlua ~= "CommonLua/" and FileExists(path) then
-			err,code = AsyncFileToString(path)
+			err, code = AsyncFileToString(path)
 			if not err then
-				return code,path
+				return code, path
 			end
 		end
 
 		-- might as well return commonlua/dlc files...
-		if path:sub(1,5) == "Mars/" then
+		if path:sub(1, 5) == "Mars/" then
 			path = source_path .. path:sub(6)
-			err,code = AsyncFileToString(path)
+			err, code = AsyncFileToString(path)
 			if not err then
-				return code,path
+				return code, path
 			end
 		elseif comlua == "CommonLua/" then
 			path = source_path .. path
-			err,code = AsyncFileToString(path)
+			err, code = AsyncFileToString(path)
 			if not err then
-				return code,path
+				return code, path
 			end
 		end
 
-		return nil,(err and err .. "\n" or "") .. path
+		return nil, (err and err .. "\n" or "") .. path
 
 	end
 end -- do
@@ -2443,12 +2444,12 @@ do -- ObjHexShape_Toggle
 	local HexToWorld = HexToWorld
 	local point = point
 
-	local OHexSpot,OText
+	local OHexSpot, OText
 	local FallbackOutline = FallbackOutline
 --~ 	local radius = const.HexSize / 2
 
 	-- function Dome:GenerateWalkablePoints() (mostly)
-	local function BuildShape(obj,shape,depth_test,hex_pos,colour,offset)
+	local function BuildShape(obj, shape, depth_test, hex_pos, colour, offset)
 		local dir = HexAngleToDirection(obj:GetAngle())
 		local cq, cr = WorldToHex(obj)
 
@@ -2477,7 +2478,7 @@ do -- ObjHexShape_Toggle
 				if depth_test then
 					text_obj:SetDepthTest(true)
 				end
-				text_obj:SetText(sq .. "," .. sr)
+				text_obj:SetText(sq .. ", " .. sr)
 				text_obj:SetColor1(colour)
 				-- slightly larger
 				text_obj:SetScaleInterpolation(110)
@@ -2500,7 +2501,7 @@ do -- ObjHexShape_Toggle
 	end
 	ChoGGi.ComFuncs.ObjHexShape_Clear = ObjHexShape_Clear
 
-	function ChoGGi.ComFuncs.ObjHexShape_Toggle(obj,params)
+	function ChoGGi.ComFuncs.ObjHexShape_Toggle(obj, params)
 		params = params or {shape = FallbackOutline}
 		if not IsValid(obj) or not params.skip_return then
 			return
@@ -2528,8 +2529,8 @@ do -- ObjHexShape_Toggle
 		)
 		ResumePassEdits("ChoGGi.ComFuncs.ObjHexShape_Toggle")
 		if not params.skip_clear then
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj,"ChoGGi_OText")
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj,"ChoGGi_OHexSpot")
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj, "ChoGGi_OText")
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj, "ChoGGi_OHexSpot")
 		end
 
 		return obj.ChoGGi_shape_obj
@@ -2552,7 +2553,7 @@ function ChoGGi.ComFuncs.RetSurfaceMasks(obj)
 	local GetEntityNumSurfaces = GetEntityNumSurfaces
 
 	local EntitySurfaces = EntitySurfaces
-	for key,value in pairs(EntitySurfaces) do
+	for key, value in pairs(EntitySurfaces) do
 		local surfs = GetEntityNumSurfaces(entity, value)
 		local surf_bool = obj:HasAnySurfaces(value)
 
@@ -2567,22 +2568,22 @@ end
 
 do -- ReturnTechAmount/GetResearchedTechValue
 	--[[
-	ReturnTechAmount(tech,prop)
+	ReturnTechAmount(tech, prop)
 	returns number from Object (so you know how much it changes)
 	see: Data/Object.lua, or ex(Object)
 
-	ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
+	ReturnTechAmount("GeneralTraining", "NonSpecialistPerformancePenalty")
 	^returns 10
-	ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
+	ReturnTechAmount("SupportiveCommunity", "LowSanityNegativeTraitChance")
 	^ returns 0.7
 
 	it returns percentages in decimal for ease of mathing (SM has no math. funcs)
 	ie: SupportiveCommunity is -70 this returns it as 0.7
 	it also returns negative amounts as positive (I prefer num - Amt, not num + NegAmt)
 	--]]
-	local function ReturnTechAmount(tech,prop)
+	local function ReturnTechAmount(tech, prop)
 		local techdef = TechDef[tech]
-		local idx = table.find(techdef,"Prop",prop)
+		local idx = table.find(techdef, "Prop", prop)
 		if idx then
 			tech = techdef[idx]
 			local number
@@ -2608,7 +2609,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 	end
 	ChoGGi.ComFuncs.ReturnTechAmount = ReturnTechAmount
 
-	function ChoGGi.ComFuncs.GetResearchedTechValue(name,cls)
+	function ChoGGi.ComFuncs.GetResearchedTechValue(name, cls)
 		local ChoGGi = ChoGGi
 		local UICity = UICity
 
@@ -2616,11 +2617,11 @@ do -- ReturnTechAmount/GetResearchedTechValue
 			local move_speed = ChoGGi.Consts.SpeedDrone
 
 			if UICity:IsTechResearched("LowGDrive") then
-				local p = ReturnTechAmount("LowGDrive","move_speed")
+				local p = ReturnTechAmount("LowGDrive", "move_speed")
 				move_speed = move_speed + (move_speed * p)
 			end
 			if UICity:IsTechResearched("AdvancedDroneDrive") then
-				local p = ReturnTechAmount("AdvancedDroneDrive","move_speed")
+				local p = ReturnTechAmount("AdvancedDroneDrive", "move_speed")
 				move_speed = move_speed + (move_speed * p)
 			end
 			return move_speed
@@ -2629,11 +2630,11 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		if name == "MaxColonistsPerRocket" then
 			local per_rocket = ChoGGi.Consts.MaxColonistsPerRocket
 			if UICity:IsTechResearched("CompactPassengerModule") then
-				local a = ReturnTechAmount("CompactPassengerModule","MaxColonistsPerRocket")
+				local a = ReturnTechAmount("CompactPassengerModule", "MaxColonistsPerRocket")
 				per_rocket = per_rocket + a
 			end
 			if UICity:IsTechResearched("CryoSleep") then
-				local a = ReturnTechAmount("CryoSleep","MaxColonistsPerRocket")
+				local a = ReturnTechAmount("CryoSleep", "MaxColonistsPerRocket")
 				per_rocket = per_rocket + a
 			end
 			return per_rocket
@@ -2641,7 +2642,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		--
 		if name == "FuelRocket" then
 			if UICity:IsTechResearched("AdvancedMartianEngines") then
-				local a = ReturnTechAmount("AdvancedMartianEngines","launch_fuel")
+				local a = ReturnTechAmount("AdvancedMartianEngines", "launch_fuel")
 				return ChoGGi.Consts.LaunchFuelPerRocket - (a * const.ResourceScale)
 			end
 			return ChoGGi.Consts.LaunchFuelPerRocket
@@ -2649,7 +2650,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		--
 		if name == "SpeedRC" then
 			if UICity:IsTechResearched("LowGDrive") then
-				local p = ReturnTechAmount("LowGDrive","move_speed")
+				local p = ReturnTechAmount("LowGDrive", "move_speed")
 				return ChoGGi.Consts.SpeedRC + ChoGGi.Consts.SpeedRC * p
 			end
 			return ChoGGi.Consts.SpeedRC
@@ -2657,7 +2658,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		--
 		if name == "CargoCapacity" then
 			if UICity:IsTechResearched("FuelCompression") then
-				local a = ReturnTechAmount("FuelCompression","CargoCapacity")
+				local a = ReturnTechAmount("FuelCompression", "CargoCapacity")
 				return ChoGGi.Consts.CargoCapacity + a
 			end
 			return ChoGGi.Consts.CargoCapacity
@@ -2665,7 +2666,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		--
 		if name == "CommandCenterMaxDrones" then
 			if UICity:IsTechResearched("DroneSwarm") then
-				local a = ReturnTechAmount("DroneSwarm","CommandCenterMaxDrones")
+				local a = ReturnTechAmount("DroneSwarm", "CommandCenterMaxDrones")
 				return ChoGGi.Consts.CommandCenterMaxDrones + a
 			end
 			return ChoGGi.Consts.CommandCenterMaxDrones
@@ -2673,7 +2674,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		--
 		if name == "DroneResourceCarryAmount" then
 			if UICity:IsTechResearched("ArtificialMuscles") then
-				local a = ReturnTechAmount("ArtificialMuscles","DroneResourceCarryAmount")
+				local a = ReturnTechAmount("ArtificialMuscles", "DroneResourceCarryAmount")
 				return ChoGGi.Consts.DroneResourceCarryAmount + a
 			end
 			return ChoGGi.Consts.DroneResourceCarryAmount
@@ -2681,7 +2682,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		--
 		if name == "LowSanityNegativeTraitChance" then
 			if UICity:IsTechResearched("SupportiveCommunity") then
-				local p = ReturnTechAmount("SupportiveCommunity","LowSanityNegativeTraitChance")
+				local p = ReturnTechAmount("SupportiveCommunity", "LowSanityNegativeTraitChance")
 				--[[
 				LowSanityNegativeTraitChance = 30%
 				SupportiveCommunity = -70%
@@ -2694,7 +2695,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		--
 		if name == "NonSpecialistPerformancePenalty" then
 			if UICity:IsTechResearched("GeneralTraining") then
-				local a = ReturnTechAmount("GeneralTraining","NonSpecialistPerformancePenalty")
+				local a = ReturnTechAmount("GeneralTraining", "NonSpecialistPerformancePenalty")
 				return ChoGGi.Consts.NonSpecialistPerformancePenalty - a
 			end
 			return ChoGGi.Consts.NonSpecialistPerformancePenalty
@@ -2702,7 +2703,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		--
 		if name == "RCRoverMaxDrones" then
 			if UICity:IsTechResearched("RoverCommandAI") then
-				local a = ReturnTechAmount("RoverCommandAI","RCRoverMaxDrones")
+				local a = ReturnTechAmount("RoverCommandAI", "RCRoverMaxDrones")
 				return ChoGGi.Consts.RCRoverMaxDrones + a
 			end
 			return ChoGGi.Consts.RCRoverMaxDrones
@@ -2710,7 +2711,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		--
 		if name == "RCTransportGatherResourceWorkTime" then
 			if UICity:IsTechResearched("TransportOptimization") then
-				local p = ReturnTechAmount("TransportOptimization","RCTransportGatherResourceWorkTime")
+				local p = ReturnTechAmount("TransportOptimization", "RCTransportGatherResourceWorkTime")
 				return ChoGGi.Consts.RCTransportGatherResourceWorkTime * p
 			end
 			return ChoGGi.Consts.RCTransportGatherResourceWorkTime
@@ -2720,7 +2721,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 			local amount = cls == "RCConstructor" and ChoGGi.Consts.RCConstructorStorageCapacity or ChoGGi.Consts.RCTransportStorageCapacity
 
 			if UICity:IsTechResearched("TransportOptimization") then
-				local a = ReturnTechAmount("TransportOptimization","max_shared_storage")
+				local a = ReturnTechAmount("TransportOptimization", "max_shared_storage")
 				return amount + (a * const.ResourceScale)
 			end
 			return amount
@@ -2728,7 +2729,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		--
 		if name == "TravelTimeEarthMars" then
 			if UICity:IsTechResearched("PlasmaRocket") then
-				local p = ReturnTechAmount("PlasmaRocket","TravelTimeEarthMars")
+				local p = ReturnTechAmount("PlasmaRocket", "TravelTimeEarthMars")
 				return ChoGGi.Consts.TravelTimeEarthMars * p
 			end
 			return ChoGGi.Consts.TravelTimeEarthMars
@@ -2736,7 +2737,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		--
 		if name == "TravelTimeMarsEarth" then
 			if UICity:IsTechResearched("PlasmaRocket") then
-				local p = ReturnTechAmount("PlasmaRocket","TravelTimeMarsEarth")
+				local p = ReturnTechAmount("PlasmaRocket", "TravelTimeMarsEarth")
 				return ChoGGi.Consts.TravelTimeMarsEarth * p
 			end
 			return ChoGGi.Consts.TravelTimeMarsEarth
@@ -2745,11 +2746,11 @@ do -- ReturnTechAmount/GetResearchedTechValue
 	end
 end -- do
 
-function ChoGGi.ComFuncs.RetBuildingPermissions(traits,settings)
+function ChoGGi.ComFuncs.RetBuildingPermissions(traits, settings)
 	settings.restricttraits = settings.restricttraits or {}
 	settings.blocktraits = settings.blocktraits or {}
 	traits = traits or {}
-	local block,restrict
+	local block, restrict
 
 	local rtotal = 0
 	for _ in pairs(settings.restricttraits) do
@@ -2771,20 +2772,20 @@ function ChoGGi.ComFuncs.RetBuildingPermissions(traits,settings)
 		restrict = true
 	end
 
-	return block,restrict
+	return block, restrict
 end
 
 do -- EntitySpots_Toggle
 	local GetSpotNameByType = GetSpotNameByType
-	local old_remove_table = {"ChoGGi_OText","ChoGGi_OOrientation"}
-	local OText,OPolyline
+	local old_remove_table = {"ChoGGi_OText", "ChoGGi_OOrientation"}
+	local OText, OPolyline
 
 	local function EntitySpots_Clear(obj)
 		SuspendPassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
 		-- just in case (old way of doing it)
 		if obj.ChoGGi_ShowAttachSpots == true then
 			local DoneObject = DoneObject
-			obj:DestroyAttaches(old_remove_table,function(a)
+			obj:DestroyAttaches(old_remove_table, function(a)
 				if a.ChoGGi_ShowAttachSpots then
 					DoneObject(a)
 				end
@@ -2800,7 +2801,7 @@ do -- EntitySpots_Toggle
 	end
 	ChoGGi.ComFuncs.EntitySpots_Clear = EntitySpots_Clear
 
-	local function EntitySpots_Add(obj,spot_type,annot,depth_test,show_pos,colour)
+	local function EntitySpots_Add(obj, spot_type, annot, depth_test, show_pos, colour)
 		local c = #obj.ChoGGi_ShowAttachSpots
 		local obj_pos = obj:GetVisualPos()
 		local start_id, id_end = obj:GetAllSpots(obj:GetState())
@@ -2808,14 +2809,14 @@ do -- EntitySpots_Toggle
 			local spot_name = GetSpotNameByType(obj:GetSpotsType(i)) or ""
 			if not spot_type or spot_name == spot_type then
 				local spot_annot = obj:GetSpotAnnotation(i) or ""
-				-- if it's a chain then we need to check for "annot," so chain=2 doesn't include chain=20
+				-- if it's a chain then we need to check for "annot, " so chain=2 doesn't include chain=20
 				local chain
 				if annot then
-					chain = annot:sub(1,5) == "chain"
+					chain = annot:sub(1, 5) == "chain"
 				end
---~ 					printC(spot_type,"|",spot_annot,"|",annot,"|",chain,"|",spot_annot:sub(1,#annot+1) == annot .. ",")
-				if not annot or annot and (chain and spot_annot:sub(1,#annot+1) == annot .. ","
-						or not chain and spot_annot:sub(1,#annot) == annot) then
+--~ 					printC(spot_type, "|", spot_annot, "|", annot, "|", chain, "|", spot_annot:sub(1, #annot+1) == annot .. ", ")
+				if not annot or annot and (chain and spot_annot:sub(1, #annot+1) == annot .. ", "
+						or not chain and spot_annot:sub(1, #annot) == annot) then
 
 					local text_str = obj:GetSpotName(i)
 					text_str = i .. "." .. text_str
@@ -2850,7 +2851,7 @@ do -- EntitySpots_Toggle
 		end -- for
 	end
 
-	local function EntitySpots_Add_Annot(obj,depth_test,colour)
+	local function EntitySpots_Add_Annot(obj, depth_test, colour)
 		local chain_c = 0
 		local points = {}
 		for i = 1, #obj.ChoGGi_ShowAttachSpots do
@@ -2885,9 +2886,9 @@ do -- EntitySpots_Toggle
 
 	end
 
-	function ChoGGi.ComFuncs.EntitySpots_Toggle(obj,params)
+	function ChoGGi.ComFuncs.EntitySpots_Toggle(obj, params)
 		-- if fired from action menu
-		if IsKindOf(obj,"XAction") then
+		if IsKindOf(obj, "XAction") then
 			obj = ChoGGi.ComFuncs.SelObject()
 			params = {}
 		else
@@ -2923,18 +2924,18 @@ do -- EntitySpots_Toggle
 		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Add")
 
 		if not params.skip_clear then
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots,"ChoGGi_OText")
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots, "ChoGGi_OText")
 		end
 
 		-- play connect the dots if there's chains
 		if #obj.ChoGGi_ShowAttachSpots > 1 and params.annotation and params.annotation:find("chain") then
 			SuspendPassEdits("ChoGGi.ComFuncs.EntitySpots_Add_Annot")
-			EntitySpots_Add_Annot(obj,params.depth_test,RandomColourLimited())
+			EntitySpots_Add_Annot(obj, params.depth_test, RandomColourLimited())
 			ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Add_Annot")
 		end
 
 		if not params.skip_clear then
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots,"ChoGGi_OPolyline")
+			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots, "ChoGGi_OPolyline")
 		end
 
 		return obj.ChoGGi_ShowAttachSpots
@@ -2945,7 +2946,7 @@ end -- do
 do -- ShowAnimDebug_Toggle
 	local OText
 
-	local function AnimDebug_Show(obj,colour)
+	local function AnimDebug_Show(obj, colour)
 		local text = OText:new()
 		text:SetColor1(colour)
 
@@ -2953,13 +2954,13 @@ do -- ShowAnimDebug_Toggle
 		text.ChoGGi_AnimDebug = true
 		obj:Attach(text, 0)
 
---~ 		local obj_bbox = ObjectHierarchyBBox(obj,const.efCollision)
+--~ 		local obj_bbox = ObjectHierarchyBBox(obj, const.efCollision)
 		local obj_bbox = ObjectHierarchyBBox(obj)
 		if not obj_bbox:sizez() then
 			obj_bbox = obj:GetObjectBBox()
 		end
 
-		text:SetAttachOffset(point(0,0,obj_bbox:sizez() + 100))
+		text:SetAttachOffset(point(0, 0, obj_bbox:sizez() + 100))
 		CreateGameTimeThread(function()
 			while IsValid(text) do
 				text:SetText(obj:GetAnimDebug())
@@ -2969,17 +2970,17 @@ do -- ShowAnimDebug_Toggle
 	end
 
 	local function AnimDebug_Hide(obj)
-		obj:ForEachAttach("ChoGGi_OText",function(a)
+		obj:ForEachAttach("ChoGGi_OText", function(a)
 			if a.ChoGGi_AnimDebug then
 				a:delete()
 			end
 		end)
 	end
 
-	local function AnimDebug_ShowAll(cls,colour)
+	local function AnimDebug_ShowAll(cls, colour)
 		local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
 		for i = 1, #objs do
-			AnimDebug_Show(objs[i],colour)
+			AnimDebug_Show(objs[i], colour)
 		end
 	end
 
@@ -2990,9 +2991,9 @@ do -- ShowAnimDebug_Toggle
 		end
 	end
 
-	function ChoGGi.ComFuncs.ShowAnimDebug_Toggle(obj,params)
+	function ChoGGi.ComFuncs.ShowAnimDebug_Toggle(obj, params)
 		-- if fired from action menu
-		if IsKindOf(obj,"XAction") then
+		if IsKindOf(obj, "XAction") then
 			obj = ChoGGi.ComFuncs.SelObject()
 		else
 			obj = obj or ChoGGi.ComFuncs.SelObject()
@@ -3012,15 +3013,15 @@ do -- ShowAnimDebug_Toggle
 				AnimDebug_Hide(obj)
 			else
 				obj.ChoGGi_ShowAnimDebug = true
-				AnimDebug_Show(obj,params.colour)
+				AnimDebug_Show(obj, params.colour)
 			end
 		else
 			local ChoGGi = ChoGGi
 			ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
 			if ChoGGi.Temp.ShowAnimDebug then
-				AnimDebug_ShowAll("Building",params.colour)
-				AnimDebug_ShowAll("Unit",params.colour)
-				AnimDebug_ShowAll("CargoShuttle",params.colour)
+				AnimDebug_ShowAll("Building", params.colour)
+				AnimDebug_ShowAll("Unit", params.colour)
+				AnimDebug_ShowAll("CargoShuttle", params.colour)
 			else
 				AnimDebug_HideAll("Building")
 				AnimDebug_HideAll("Unit")
@@ -3032,10 +3033,10 @@ do -- ShowAnimDebug_Toggle
 end -- do
 
 do -- ChangeSurfaceSignsToMaterials
-	local function ChangeEntity(cls,entity,random)
-		MapForEach("map",cls,function(o)
+	local function ChangeEntity(cls, entity, random)
+		MapForEach("map", cls, function(o)
 			if random then
-				o:ChangeEntity(entity .. Random(1,random))
+				o:ChangeEntity(entity .. Random(1, random))
 			else
 				o:ChangeEntity(entity)
 			end
@@ -3043,7 +3044,7 @@ do -- ChangeSurfaceSignsToMaterials
 	end
 	local function ResetEntity(cls)
 		local entity = g_Classes[cls]:GetDefaultPropertyValue("entity")
-		MapForEach("map",cls,function(o)
+		MapForEach("map", cls, function(o)
 			o:ChangeEntity(entity)
 		end)
 	end
@@ -3051,8 +3052,8 @@ do -- ChangeSurfaceSignsToMaterials
 	function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
 
 		local item_list = {
-			{text = Translate(754117323318--[[Enable--]]),value = true,hint = Strings[302535920001081--[[Changes signs to materials.--]]]},
-			{text = Translate(251103844022--[[Disable--]]),value = false,hint = Strings[302535920001082--[[Changes materials to signs.--]]]},
+			{text = Translate(754117323318--[[Enable--]]), value = true, hint = Strings[302535920001081--[[Changes signs to materials.--]]]},
+			{text = Translate(251103844022--[[Disable--]]), value = false, hint = Strings[302535920001082--[[Changes materials to signs.--]]]},
 		}
 
 		local function CallBackFunc(choice)
@@ -3061,13 +3062,13 @@ do -- ChangeSurfaceSignsToMaterials
 			end
 			SuspendPassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials")
 			if choice[1].value then
-				ChangeEntity("SubsurfaceDepositWater","DecSpider_01")
-				ChangeEntity("SubsurfaceDepositMetals","DecDebris_01")
-				ChangeEntity("SubsurfaceDepositPreciousMetals","DecSurfaceDepositConcrete_01")
-				ChangeEntity("TerrainDepositConcrete","DecDustDevils_0",5)
-				ChangeEntity("SubsurfaceAnomaly","DebrisConcrete")
-				ChangeEntity("SubsurfaceAnomaly_unlock","DebrisMetal")
-				ChangeEntity("SubsurfaceAnomaly_breakthrough","DebrisPolymer")
+				ChangeEntity("SubsurfaceDepositWater", "DecSpider_01")
+				ChangeEntity("SubsurfaceDepositMetals", "DecDebris_01")
+				ChangeEntity("SubsurfaceDepositPreciousMetals", "DecSurfaceDepositConcrete_01")
+				ChangeEntity("TerrainDepositConcrete", "DecDustDevils_0", 5)
+				ChangeEntity("SubsurfaceAnomaly", "DebrisConcrete")
+				ChangeEntity("SubsurfaceAnomaly_unlock", "DebrisMetal")
+				ChangeEntity("SubsurfaceAnomaly_breakthrough", "DebrisPolymer")
 			else
 				ResetEntity("SubsurfaceDepositWater")
 				ResetEntity("SubsurfaceDepositMetals")
@@ -3090,7 +3091,7 @@ do -- ChangeSurfaceSignsToMaterials
 	end
 end -- do
 
-function ChoGGi.ComFuncs.UpdateServiceComfortBld(obj,service_stats)
+function ChoGGi.ComFuncs.UpdateServiceComfortBld(obj, service_stats)
 	if not obj or not service_stats then
 		return
 	end
@@ -3141,7 +3142,7 @@ end
 do -- ToggleFuncHook
 	-- counts funcs calls, and keeps a table of func|line num
 	local func_table = {}
-	function ChoGGi.ComFuncs.ToggleFuncHook(path,line,mask,count)
+	function ChoGGi.ComFuncs.ToggleFuncHook(path, line, mask, count)
 		if blacklist then
 			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ToggleFuncHook")
 			return
@@ -3155,20 +3156,20 @@ do -- ToggleFuncHook
 			path = path or "@AppData/Mods/"
 			local str_len = #path
 
-			print(Strings[302535920000497--[[Hook Started--]]],path,line,mask,count)
-			MsgPopup(Strings[302535920000497--[[Hook Started--]]],Translate(1000113--[[Debug--]]))
+			print(Strings[302535920000497--[[Hook Started--]]], path, line, mask, count)
+			MsgPopup(Strings[302535920000497--[[Hook Started--]]], Translate(1000113--[[Debug--]]))
 
 			collectgarbage()
 			local function hook_func(event)
 
 				local i
 				if event == "call" then
-					i = debug_getinfo(2,"Sf")
+					i = debug_getinfo(2, "Sf")
 				else
-					i = debug_getinfo(2,"S")
+					i = debug_getinfo(2, "S")
 				end
 
-				if i.source:sub(1,str_len) == path and (not line or line and i.linedefined == line) then
+				if i.source:sub(1, str_len) == path and (not line or line and i.linedefined == line) then
 
 					local lua_obj
 					if event == "call" then
@@ -3182,16 +3183,16 @@ do -- ToggleFuncHook
 				end
 			end
 			-- start capture (c = func call, r = func ret, l = enters new line of code)
-			debug.sethook(hook_func,mask or "c", count)
+			debug.sethook(hook_func, mask or "c", count)
 		else
-			print(Strings[302535920000498--[[Hook Stopped--]]],path,line,mask,count)
-			MsgPopup(Strings[302535920000498--[[Hook Stopped--]]],Translate(1000113--[[Debug--]]))
+			print(Strings[302535920000498--[[Hook Stopped--]]], path, line, mask, count)
+			MsgPopup(Strings[302535920000498--[[Hook Stopped--]]], Translate(1000113--[[Debug--]]))
 			ChoGGi.Temp.FunctionsHooked = false
 
 			-- stop capture
 			debug.sethook()
 			-- view the results
-			ChoGGi.ComFuncs.OpenInExamineDlg(func_table,nil,"Func call count (" .. #func_table .. ")")
+			ChoGGi.ComFuncs.OpenInExamineDlg(func_table, nil, "Func call count (" .. #func_table .. ")")
 		end
 	end
 end -- do
@@ -3200,7 +3201,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 	local ValueToLuaCode = ValueToLuaCode
 	local rawset = rawset
 
-	function ChoGGi.ComFuncs.PrintToFunc_Remove(name,parent)
+	function ChoGGi.ComFuncs.PrintToFunc_Remove(name, parent)
 		name = tostring(name)
 		local saved_name = name .. "_ChoGGi_savedfunc"
 
@@ -3212,7 +3213,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 
 	end
 
-	function ChoGGi.ComFuncs.PrintToFunc_Add(func,name,parent,func_name,params)
+	function ChoGGi.ComFuncs.PrintToFunc_Add(func, name, parent, func_name, params)
 		name = tostring(name)
 		local saved_name = name .. "_ChoGGi_savedfunc"
 
@@ -3222,9 +3223,9 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 			-- SM error spams console if you have the affront to try _G.NonExistingKey... (thanks autorun.lua)
 			-- it works prefectly fine of course, but i like a clean log.
 			-- in other words a workaround for "Attempt to use an undefined global '"
-			saved = rawget(parent,saved_name)
+			saved = rawget(parent, saved_name)
 			if not saved then
-				rawset(parent,saved_name,func)
+				rawset(parent, saved_name, func)
 				saved = func
 			end
 		else
@@ -3271,7 +3272,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 					c = c + 1
 					text_table[c] = "\n"
 				end
-				print(func_name,"\n",TableConcat(text_table))
+				print(func_name, "\n", TableConcat(text_table))
 			else
 				-- no params
 				print(func_name)
@@ -3284,7 +3285,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 end -- do
 
 do -- TestLocaleFile
---~ ChoGGi.ComFuncs.TestLocaleFile(Mods["bMPAkJP"].env.CurrentModPath .. "Locale/TraduzioneItaliano.csv",true)
+--~ ChoGGi.ComFuncs.TestLocaleFile(Mods["bMPAkJP"].env.CurrentModPath .. "Locale/TraduzioneItaliano.csv", true)
 	local my_locale = ChoGGi.library_path .. "Locales/English.csv"
 	local csv_load_fields = {
 		"id",
@@ -3294,15 +3295,15 @@ do -- TestLocaleFile
 		"gender"
 	}
 
-	local strings_failed,csv_failed
-	local strings_count,csv_count
+	local strings_failed, csv_failed
+	local strings_count, csv_count
 
 	local function ProcessLoadedTables(loaded_csv, language, out_table, out_gendertable)
 		local order
 		if language == "English" then
-			order = {"translated_new","text","translated"}
+			order = {"translated_new", "text", "translated"}
 		else
-			order = {"translated_new","translated","text"}
+			order = {"translated_new", "translated", "text"}
 		end
 
 		local prev_str = Translate(1000231--[[Previous--]])
@@ -3313,7 +3314,7 @@ do -- TestLocaleFile
 			local entry = loaded_csv[i]
 
 			local translation
-			local ord1,ord2 = entry[order[1]],entry[order[2]]
+			local ord1, ord2 = entry[order[1]], entry[order[2]]
 			if ord1 and ord1 ~= "" then
 				translation = ord1
 			elseif ord2 and ord2 ~= "" then
@@ -3359,7 +3360,7 @@ do -- TestLocaleFile
 		end
 	end
 
-	local function TestCSV(filepath,column_limit)
+	local function TestCSV(filepath, column_limit)
 		column_limit = filepath == my_locale and 4 or column_limit
 		if not column_limit or column_limit == true or type(column_limit) ~= "number" then
 			column_limit = 5
@@ -3369,7 +3370,7 @@ do -- TestLocaleFile
 		local omit_captions = "omit_captions"
 		local err, str = AsyncFileToString(filepath)
 		if err then
-			print(Strings[302535920001125--[[Test Locale File--]]],"ERROR:",err,"FILEPATH:",filepath)
+			print(Strings[302535920001125--[[Test Locale File--]]], "ERROR:", err, "FILEPATH:", filepath)
 			return
 		end
 
@@ -3377,12 +3378,12 @@ do -- TestLocaleFile
 		local rows_c = 0
 		local Q = lpeg.P("\"")
 		local quoted_value = Q * lpeg.Cs((1 - Q + Q * Q / "\"") ^ 0) * Q
-		local raw_value = lpeg.C((1 - lpeg.S(",\t\r\n\"")) ^ 0)
+		local raw_value = lpeg.C((1 - lpeg.S(", \t\r\n\"")) ^ 0)
 		local field = (lpeg.P(" ") ^ 0 * quoted_value * lpeg.P(" ") ^ 0 + raw_value) * lpeg.Cp()
 		local RemoveTrailingSpaces = RemoveTrailingSpaces
 
 		-- remove any carr returns
-		str = str:gsub("\r\n","\n")
+		str = str:gsub("\r\n", "\n")
 		local str_len = #str
 
 		-- mostly LoadCSV()
@@ -3413,7 +3414,7 @@ do -- TestLocaleFile
 						value = value,
 						string_pos = pos,
 						column = col,
-						general_area = str:sub(pos-50,pos+50),
+						general_area = str:sub(pos-50, pos+50),
 						row_gender = row.gender,
 						row_text = row.text,
 						row_id = row.id,
@@ -3446,10 +3447,10 @@ do -- TestLocaleFile
 			end
 		end -- while outer
 
-		return csv_failed,rows
+		return csv_failed, rows
 	end
 
-	function ChoGGi.ComFuncs.TestLocaleFile(filepath,test_csv,language)
+	function ChoGGi.ComFuncs.TestLocaleFile(filepath, test_csv, language)
 		if not filepath then
 			if testing then
 				local locale_path = ChoGGi.library_path .. "Locales/" .. ChoGGi.lang .. ".csv"
@@ -3459,7 +3460,7 @@ do -- TestLocaleFile
 					filepath = my_locale
 				end
 			else
-				print(Strings[302535920001125--[[Test Locale File--]]],"FILEPATH ERROR:",filepath)
+				print(Strings[302535920001125--[[Test Locale File--]]], "FILEPATH ERROR:", filepath)
 				return
 			end
 		end
@@ -3472,7 +3473,7 @@ do -- TestLocaleFile
 			if blacklist then
 				ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.TestLocaleFile(test_csv)")
 			else
-				test_csv,loaded_csv = TestCSV(filepath,test_csv)
+				test_csv, loaded_csv = TestCSV(filepath, test_csv)
 			end
 		end
 
@@ -3497,7 +3498,7 @@ It's a tradeoff between erroneous errors and the game locking up."--]]]
 
 		strings_count = 0
 		-- this can fail, so we pcall it (some results are better than none)
-		local final_strings, final_gendertable = {},{}
+		local final_strings, final_gendertable = {}, {}
 		pcall(function()
 			ProcessLoadedTables(
 				loaded_csv,
@@ -3523,77 +3524,77 @@ It's a tradeoff between erroneous errors and the game locking up."--]]]
 			results.csv_failed = test_csv
 		end
 
-		ChoGGi.ComFuncs.OpenInExamineDlg(results,nil,title)
+		ChoGGi.ComFuncs.OpenInExamineDlg(results, nil, title)
 	end
 end -- do
 
 do -- ValueToStr
 	local getmetatable = getmetatable
-	local IsPoint,IsBox,IsT = IsPoint,IsBox,IsT
+	local IsPoint, IsBox, IsT = IsPoint, IsBox, IsT
 	local missing_text = ChoGGi.Temp.missing_text
 
-	function ChoGGi.ComFuncs.ValueToStr(obj,obj_type)
+	function ChoGGi.ComFuncs.ValueToStr(obj, obj_type)
 		obj_type = obj_type or type(obj)
 
 		if obj_type == "string" then
 			-- strings with (object) don't work well with Translate
 			if obj:find("%(") then
-				return obj,obj_type
+				return obj, obj_type
 			-- if there's any <image, <color, etc tags
 			elseif obj:find("[<>]") then
-				return Translate(obj),obj_type
+				return Translate(obj), obj_type
 			else
-				return obj,obj_type
+				return obj, obj_type
 			end
 		end
 		--
 		if obj_type == "number" then
 			-- faster than tostring()
-			return obj .. "",obj_type
+			return obj .. "", obj_type
 		end
 		--
 		if obj_type == "boolean" then
-			return tostring(obj),obj_type
+			return tostring(obj), obj_type
 		end
 		--
 		if obj_type == "table" then
-			return RetName(obj),obj_type
+			return RetName(obj), obj_type
 		end
 		--
 		if obj_type == "userdata" then
 			if IsPoint(obj) then
-				return "point" .. tostring(obj),obj_type
+				return "point" .. tostring(obj), obj_type
 			elseif IsBox(obj) then
-				return "box" .. tostring(obj),obj_type
+				return "box" .. tostring(obj), obj_type
 			end
 			-- show translated text if possible, otherwise check for metatable name
 			if IsT(obj) then
 				local trans_str = Translate(obj)
 				if trans_str == missing_text or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
 					local meta = getmetatable(obj).__name
-					return tostring(obj) .. (meta and " " .. meta or ""),obj_type
+					return tostring(obj) .. (meta and " " .. meta or ""), obj_type
 				end
-				return trans_str,obj_type
+				return trans_str, obj_type
 			end
 			--
 			local meta = getmetatable(obj).__name
-			return tostring(obj) .. (meta and " " .. meta or ""),obj_type
+			return tostring(obj) .. (meta and " " .. meta or ""), obj_type
 		end
 		--
 		if obj_type == "function" then
-			return RetName(obj),obj_type
+			return RetName(obj), obj_type
 		end
 		--
 		if obj_type == "thread" then
-			return tostring(obj),obj_type
+			return tostring(obj), obj_type
 		end
 		--
 		if obj_type == "nil" then
-			return "nil",obj_type
+			return "nil", obj_type
 		end
 
 		-- just in case
-		return tostring(obj),obj_type
+		return tostring(obj), obj_type
 	end
 end -- do
 
@@ -3613,7 +3614,7 @@ do -- ToggleObjLines
 	end
 	ChoGGi.ComFuncs.ObjListLines_Clear = ObjListLines_Clear
 
-	local function ObjListLines_Add(list,obj,colour)
+	local function ObjListLines_Add(list, obj, colour)
 		local vertices = {}
 		local c = 0
 
@@ -3639,7 +3640,7 @@ do -- ToggleObjLines
 		-- remove any invalid pos
 		for i = #vertices, 1, -1 do
 			if vertices[i] == InvalidPos then
-				table_remove(vertices,i)
+				table_remove(vertices, i)
 			end
 		end
 
@@ -3649,7 +3650,7 @@ do -- ToggleObjLines
 		obj.ChoGGi_ObjListLine = line
 	end
 
-	function ChoGGi.ComFuncs.ObjListLines_Toggle(objs_list,params)
+	function ChoGGi.ComFuncs.ObjListLines_Toggle(objs_list, params)
 		params = params or {}
 		params.obj = params.obj or objs_list
 
@@ -3672,7 +3673,7 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	end
 
 	-- if fired from action menu
-	if IsKindOf(ret,"XAction") then
+	if IsKindOf(ret, "XAction") then
 		ret = nil
 	end
 
@@ -3696,35 +3697,35 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	if ret then
 		return textures
 	end
-	ChoGGi.ComFuncs.OpenInExamineDlg(textures,nil,Strings[302535920001181--[[Used Terrain Textures--]]])
+	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, Strings[302535920001181--[[Used Terrain Textures--]]])
 end
 
 do -- RetObjectCapAndGrid
 	local IsFlagSet = IsFlagSet
-	local visitors = {"Service","TrainingBuilding"}
+	local visitors = {"Service", "TrainingBuilding"}
 
-	-- mask is a combination of numbers. IsFlagSet(15,num) will match 1 2 4 8
-	function ChoGGi.ComFuncs.RetObjectCapAndGrid(obj,mask)
+	-- mask is a combination of numbers. IsFlagSet(15, num) will match 1 2 4 8
+	function ChoGGi.ComFuncs.RetObjectCapAndGrid(obj, mask)
 		if not IsValid(obj) then
 			return
 		end
 
-		if IsFlagSet(mask,1) and obj:IsKindOf("ElectricityStorage") then
+		if IsFlagSet(mask, 1) and obj:IsKindOf("ElectricityStorage") then
 			return "electricity", obj:GetClassValue("capacity"), obj.electricity
 
-		elseif IsFlagSet(mask,2) and obj:IsKindOf("AirStorage") then
+		elseif IsFlagSet(mask, 2) and obj:IsKindOf("AirStorage") then
 			return "air", obj:GetClassValue("air_capacity"), obj.air
 
-		elseif IsFlagSet(mask,4) and obj:IsKindOf("WaterStorage") then
+		elseif IsFlagSet(mask, 4) and obj:IsKindOf("WaterStorage") then
 			return "water", obj:GetClassValue("water_capacity"), obj.water
 
-		elseif IsFlagSet(mask,8) and obj:IsKindOf("Residence") then
+		elseif IsFlagSet(mask, 8) and obj:IsKindOf("Residence") then
 			return "colonist", obj:GetClassValue("capacity")
 
-		elseif IsFlagSet(mask,16) and obj:IsKindOf("Workplace") then
+		elseif IsFlagSet(mask, 16) and obj:IsKindOf("Workplace") then
 			return "workplace", obj:GetClassValue("max_workers")
 
-		elseif IsFlagSet(mask,32) and obj:IsKindOfClasses(visitors) then
+		elseif IsFlagSet(mask, 32) and obj:IsKindOfClasses(visitors) then
 			return "visitors", obj:GetClassValue("max_visitors")
 
 		end
@@ -3787,7 +3788,7 @@ function ChoGGi.ComFuncs.SetLoadingScreenLog()
 end
 
 --MonitorFunc (shortcut name in AddedFunctions)
-function ChoGGi.ComFuncs.MonitorFunctionResults(func,...)
+function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 	local varargs = ...
 
 	local results_list = {}
@@ -3828,7 +3829,7 @@ end
 -- close any examine dlgs opened from "parent" examine dlg
 function ChoGGi.ComFuncs.CloseChildExamineDlgs(self)
 	local g_ExamineDlgs = g_ExamineDlgs or empty_table
-	for _,dlg in pairs(g_ExamineDlgs) do
+	for _, dlg in pairs(g_ExamineDlgs) do
 		if dlg ~= self and dlg.parent_id == self.parent_id then
 			dlg:Close()
 		end

@@ -32,7 +32,7 @@ function ChoGGi_KeyPresserDlg:Init(parent, context)
 
 	-- let us override enter/esc
 	self.idEdit.OnKbdKeyDown = function(obj, vk)
-		print("vk:",vk,"key:",VKStrNames[vk])
+		print("vk:", vk, "key:", VKStrNames[vk])
 		return g_Classes.ChoGGi_XMultiLineEdit.OnKbdKeyDown(obj, vk)
 	end
 

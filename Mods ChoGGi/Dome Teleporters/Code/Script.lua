@@ -2,7 +2,6 @@
 
 local IsValid = IsValid
 local Sleep = Sleep
-local SetRollPitchYaw = SetRollPitchYaw
 local PlayFX = PlayFX
 local CreateDomeNetworks = CreateDomeNetworks
 local ConnectDomesWithPassage = ConnectDomesWithPassage
@@ -11,43 +10,43 @@ local SetState = g_CObjectFuncs.SetState
 local table_remove = table.remove
 local table_find = table.find
 
-local function RemoveTableItem(list,name,value)
+local function RemoveTableItem(list, name, value)
 	local idx = table_find(list, name, value)
 	if idx then
 		if not type(list[idx]) == "function" then
 			list[idx]:delete()
 		end
-		table_remove(list,idx)
+		table_remove(list, idx)
 	end
 end
 
 -- build menu button
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.DomeTeleporter then
-		PlaceObj("BuildingTemplate",{
-			"Id","DomeTeleporter",
-			"template_class","DomeTeleporter",
-			"can_rotate_during_placement",true,
+		PlaceObj("BuildingTemplate", {
+			"Id", "DomeTeleporter",
+			"template_class", "DomeTeleporter",
+			"can_rotate_during_placement", true,
 
-			"construction_cost_Concrete",2000,
-			"build_points",1000,
+			"construction_cost_Concrete", 2000,
+			"build_points", 1000,
 			"palette_color1", "mining_base",
 			"palette_color2", "life_base",
 			"palette_color3", "outside_base",
 
 			"electricity_consumption", 500,
 
-			"dome_required",true,
-			"display_name",[[Dome Teleporter]],
-			"description",[[It's a teleporter for your domes that acts like a passage.]],
-			"build_category","ChoGGi",
+			"dome_required", true,
+			"display_name", [[Dome Teleporter]],
+			"description", [[It's a teleporter for your domes that acts like a passage.]],
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", CurrentModPath .. "UI/orbital_drop.png",
-			"encyclopedia_exclude",true,
-			"on_off_button",true,
+			"encyclopedia_exclude", true,
+			"on_off_button", true,
 			"prio_button", true,
-			"entity","RechargeStation",
-			"demolish_sinking", range(0,0),
+			"entity", "RechargeStation",
+			"demolish_sinking", range(0, 0),
 
 			"construction_mode", "dome_teleporter_construction",
 			"ip_template", "ipBuilding",
@@ -59,10 +58,10 @@ end
 
 -- we fire our own modified GameInit, so we don't want the one from tunnel (not sure how else to remove it)
 function OnMsg.ClassesBuilt()
-	RemoveTableItem(DomeTeleporter.___GameInit,Tunnel.GameInit)
+	RemoveTableItem(DomeTeleporter.___GameInit, Tunnel.GameInit)
 end
 function OnMsg.ClassesPreprocess()
-	RemoveTableItem(DomeTeleporter.__parents,"LifeSupportGridObject")
+	RemoveTableItem(DomeTeleporter.__parents, "LifeSupportGridObject")
 end
 
 DefineClass.DomeTeleporter = {
@@ -88,7 +87,7 @@ DomeTeleporter.CreateElectricityElement = ElectricityConsumer.CreateElectricityE
 DomeTeleporter.DisconnectDomes = Passage.DisconnectDomes
 DomeTeleporter.CleanHackedPotentials = Passage.CleanHackedPotentials
 
-local function StartStopSpinner(obj,working)
+local function StartStopSpinner(obj, working)
 	DeleteThread(obj.spinner_toggle_thread)
 	obj.spinner_toggle_thread = CreateGameTimeThread(function()
 		if not IsValid(obj.rotating_thing) then
@@ -129,25 +128,25 @@ function DomeTeleporter:GameInit()
 	end
 
 	CreateRealTimeThread(function()
-		self:ForEachAttach("RechargeStationPlatform",function(a)
+		self:ForEachAttach("RechargeStationPlatform", function(a)
 			-- we don't want it looking too much like a drone thang
 			a:SetColorizationMaterial(1, -16777216, -128, 120)
 			a:SetColorizationMaterial(2, -12189696, 120, 20)
 			a:SetColorizationMaterial(3, -11579569, 0, 0)
 
-			a:ForEachAttach("LampGroundOuter_01",function(a2)
+			a:ForEachAttach("LampGroundOuter_01", function(a2)
 				-- spin!
 				a2:ChangeEntity("FarmSprinkler")
-				a2:SetAttachOffset(point(0,0,300))
+				a2:SetAttachOffset(point(0, 0, 300))
 				a2:SetColorizationMaterial(2, -10986395, 120, 20)
 				a2:SetColorizationMaterial(3, -11436131, -128, 48)
 				self.rotating_thing = a2
 			end)
-			StartStopSpinner(self,self.working)
+			StartStopSpinner(self, self.working)
 --~ DefenceLaserBeam 10
 --~ DefenceTurretPlatform 50
 --~ DroneHubRobots 80
---~ :SetAttachOffset(point(200,00,80))
+--~ :SetAttachOffset(point(200, 00, 80))
 		end)
 	end)
 
@@ -175,10 +174,10 @@ function DomeTeleporter:OnDestroyed()
 	ElectricityGridObject.OnDestroyed(self)
 end
 
-function DomeTeleporter:OnSetWorking(working,...)
-	BaseBuilding.OnSetWorking(self,working,...)
+function DomeTeleporter:OnSetWorking(working, ...)
+	BaseBuilding.OnSetWorking(self, working, ...)
 	-- maybe make it look a little cleaner when somebody toggles it a bunch
-	StartStopSpinner(self,working)
+	StartStopSpinner(self, working)
 
 	if working then
 		PlayFX("DroneRechargePulse", "start", self)
@@ -216,8 +215,8 @@ function DomeTeleporter:TryConnectDomes()
 end
 
 -- match up workshifts with each other
-function DomeTeleporter:ToggleShift(shift,...)
-	ShiftsBuilding.ToggleShift(self,shift,...)
+function DomeTeleporter:ToggleShift(shift, ...)
+	ShiftsBuilding.ToggleShift(self, shift, ...)
 	if self:IsClosedShift(shift) then
 		self.linked_obj:CloseShift(shift)
 	else
@@ -318,7 +317,7 @@ function DomeTeleporter:TraverseTunnel(unit)
 				end
 
 				if IsValid(unit) and IsValid(linked_obj) then
-					linked_obj:ExitTunnel(unit,self)
+					linked_obj:ExitTunnel(unit, self)
 				end
 			elseif IsValid(self) then
 				self:ExitTunnel(unit)
@@ -331,12 +330,12 @@ function DomeTeleporter:TraverseTunnel(unit)
 	end
 end
 
-function DomeTeleporter:ExitTunnel(unit,other)
+function DomeTeleporter:ExitTunnel(unit, other)
 	PlayFX("MysteryDream", "end", self)
 	PlayFX("MysteryDream", "start", self)
 	Sleep(100)
 	SetState(self.platform, "chargingIdle")
-	SetRollPitchYaw(self,0,0,self:Random(times36060),600)
+	self:SetAngle(self:Random(times36060), 600)
 	Sleep(650)
 --~ 	AliceGaveUpTheCokeHabit(unit)
 	unit:SetScale(100)

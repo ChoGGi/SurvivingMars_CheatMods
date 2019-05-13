@@ -79,7 +79,7 @@ DefineClass.RCBulldozer = {
 	-- store radius here, so we're not updating it all the time
 	visual_circle_size = false,
 	-- show the pin info
-	pin_rollover = T(0,"<ui_command>"),
+	pin_rollover = T(0, "<ui_command>"),
 	-- change texture when dozing
 	texture_terrain = table.find(TerrainTextures, "name", "Dig"),
 	-- used to place the circle
@@ -163,7 +163,7 @@ function RCBulldozer:GotoFromUser(...)
 	else
 		self.status_text = travel_text:format(self.radius)
 	end
-	return BaseRover.GotoFromUser(self,...)
+	return BaseRover.GotoFromUser(self, ...)
 end
 
 function RCBulldozer:StopDozer()
@@ -301,7 +301,7 @@ function RCBulldozer:Idle()
 	self:SetState("idle")
 
 --~ 	Halt()
-	DeleteThread(self.command_thread,true)
+	DeleteThread(self.command_thread, true)
 	self.command_thread = false
 end
 
@@ -321,29 +321,29 @@ end
 
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.RCBulldozerBuilding then
-		PlaceObj("BuildingTemplate",{
-			"Id","RCBulldozerBuilding",
-			"template_class","RCBulldozerBuilding",
+		PlaceObj("BuildingTemplate", {
+			"Id", "RCBulldozerBuilding",
+			"template_class", "RCBulldozerBuilding",
 			-- pricey?
-			"construction_cost_Metals",40000,
-			"construction_cost_MachineParts",40000,
-			"construction_cost_Electronics",20000,
+			"construction_cost_Metals", 40000,
+			"construction_cost_MachineParts", 40000,
+			"construction_cost_Electronics", 20000,
 			-- add a bit of pallor to the skeleton
 			"palette_color1", "rover_base",
 
-			"dome_forbidden",true,
-			"display_name",name,
-			"display_name_pl",name,
-			"description",description,
-			"build_category","ChoGGi",
+			"dome_forbidden", true,
+			"display_name", name,
+			"display_name_pl", name,
+			"description", description,
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", display_icon,
-			"encyclopedia_exclude",true,
-			"on_off_button",false,
-			"count_as_building",false,
-			"prio_button",false,
+			"encyclopedia_exclude", true,
+			"on_off_button", false,
+			"count_as_building", false,
+			"prio_button", false,
 
-			"entity",entity2,
+			"entity", entity2,
 		})
 	end
 end
@@ -351,7 +351,7 @@ end
 -- build list of textures for popup menu below
 local texture_list
 function OnMsg.InGameInterfaceCreated()
-	local smallest = point(1,1)
+	local smallest = point(1, 1)
 	texture_list = {}
 	local TerrainTextures = TerrainTextures
 	local image = "<image %s>"
@@ -381,11 +381,11 @@ function OnMsg.InGameInterfaceCreated()
 		}
 	end
 	-- sort by name
-	table.sort(texture_list,function(a,b)
-			return CmpLower(a.name,b.name)
+	table.sort(texture_list, function(a, b)
+			return CmpLower(a.name, b.name)
 	end)
 	-- and add the no change one
-	table.insert(texture_list,1,{
+	table.insert(texture_list, 1, {
 		name = [[No Change]],
 		hint = [[Don't change ground texture when dozing.]],
 		clicked = function()
@@ -403,10 +403,10 @@ function OnMsg.ClassesBuilt()
 	-- add some prod info to selection panel
 	local rover = XTemplates.ipRover[1]
 	-- check for and remove existing templates
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Status")
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Dozer")
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Texture")
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCBulldozer_Circle")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_RCBulldozer_Status")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_RCBulldozer_Dozer")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_RCBulldozer_Texture")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_RCBulldozer_Circle")
 
 	-- status updates/radius slider
 	table.insert(
@@ -477,7 +477,7 @@ function OnMsg.ClassesBuilt()
 				"func", function(self)
 					---
 --~ 					ex(texture_list)
-					PopupToggle(self,"idBullDozerMenuPopup",texture_list,"left")
+					PopupToggle(self, "idBullDozerMenuPopup", texture_list, "left")
 					---
 				end
 			})

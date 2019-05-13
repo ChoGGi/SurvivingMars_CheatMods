@@ -29,7 +29,7 @@ function OnMsg.ClassesPostprocess()
 			"display_name", [[Bottomless WasteRock]],
 			"display_name_pl", [[Bottomless WasteRock]],
 			"description", [[Warning: Any waste rocks dumped at this depot will disappear.]],
-			"build_category","ChoGGi",
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", CurrentModPath .. "UI/res_waste_rock.png",
 			"entity", "ResourcePlatform",

@@ -36,7 +36,7 @@ local function BuildSpecialistLists()
 end
 
 local filter_table = {}
-local function GetMatchingColonistsCount(self,spec)
+local function GetMatchingColonistsCount(self, spec)
 	table_clear(filter_table)
   filter_table[spec] = true
 
@@ -53,20 +53,20 @@ local function GetMatchingColonistsCount(self,spec)
   return count
 end
 
-local function GetSpecInfo(self,win,label)
+local function GetSpecInfo(self, win, label)
 	local matching_win = win:ResolveId("idChoGGiPassInfo_" .. label)
 	if matching_win then
-		local count = GetMatchingColonistsCount(self,label)
+		local count = GetMatchingColonistsCount(self, label)
 		local all = all_specialist[label]
 		local needed = needed_specialist[label]
-		matching_win:SetText(T{0,"<c>/<n>/<a>",c = count,n = needed,a = all})
+		matching_win:SetText(T{0, "<c>/<n>/<a>", c = count, n = needed, a = all})
 	end
 end
-function SetUIResupplyParams(self,win)
-	GetSpecInfo(self,win,"none")
+function SetUIResupplyParams(self, win)
+	GetSpecInfo(self, win, "none")
 	local ColonistSpecializationList = ColonistSpecializationList
 	for i = 1, #ColonistSpecializationList do
-		GetSpecInfo(self,win,ColonistSpecializationList[i])
+		GetSpecInfo(self, win, ColonistSpecializationList[i])
 	end
 end
 
@@ -76,11 +76,11 @@ function OnMsg.ClassesBuilt()
 	pcall(function()
 
 		local pass = XTemplates.ResupplyPassengers[1]
-		local template = pass[table.find(pass,"Id","idContent")]
-		template = template[table.find(template,"Id","idTop")]
-		ChoGGi.ComFuncs.RemoveXTemplateSections(template,"Id","idPassInfo_ChoGGi")
+		local template = pass[table.find(pass, "Id", "idContent")]
+		template = template[table.find(template, "Id", "idTop")]
+		ChoGGi.ComFuncs.RemoveXTemplateSections(template, "Id", "idPassInfo_ChoGGi")
 
-		table.insert(template,3,PlaceObj("XTemplateWindow", {
+		table.insert(template, 3, PlaceObj("XTemplateWindow", {
 			"Id", "idPassInfo_ChoGGi",
 			"HAlign", "left",
 			"Dock", "top",
@@ -107,7 +107,7 @@ function OnMsg.ClassesBuilt()
 				"LayoutMethod", "HList",
 				"ContextUpdateOnOpen", true,
 				"OnContextUpdate", function (self, context, ...)
-					SetUIResupplyParams(context,self)
+					SetUIResupplyParams(context, self)
 				end,
 			}, {
 
@@ -292,16 +292,16 @@ end
 local pass_thread
 
 local orig_OpenDialog = OpenDialog
-function OpenDialog(dlg_str,...)
-	local dlg = orig_OpenDialog(dlg_str,...)
+function OpenDialog(dlg_str, ...)
+	local dlg = orig_OpenDialog(dlg_str, ...)
 	if dlg_str == "Resupply" then
 		-- build list once per open (total count and needed count)
 		BuildSpecialistLists()
 
 		-- replace old func with our piggyback
 		local orig_SetMode = dlg.SetMode
-		function dlg:SetMode(mode,...)
-			orig_SetMode(self,mode,...)
+		function dlg:SetMode(mode, ...)
+			orig_SetMode(self, mode, ...)
 			if mode == "passengers" then
 				local content = self.idTemplate.idPassengers
 
@@ -309,17 +309,17 @@ function OpenDialog(dlg_str,...)
 				if IsValidThread(pass_thread) then
 					DeleteThread(pass_thread)
 				end
-				pass_thread = CreateRealTimeThread(AddUIStuff,content)
+				pass_thread = CreateRealTimeThread(AddUIStuff, content)
 
 				-- when we switch back from filter mode
 				local orig_SetMode2 = content.SetMode
-				function content:SetMode(mode,...)
-					orig_SetMode2(self,mode,...)
+				function content:SetMode(mode, ...)
+					orig_SetMode2(self, mode, ...)
 					if mode == "review" then
 						if IsValidThread(pass_thread) then
 							DeleteThread(pass_thread)
 						end
-						pass_thread = CreateRealTimeThread(AddUIStuff,content)
+						pass_thread = CreateRealTimeThread(AddUIStuff, content)
 					end
 				end
 

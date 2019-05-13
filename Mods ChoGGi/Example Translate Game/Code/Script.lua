@@ -6,7 +6,7 @@ local pdx_locale = "it"
 
 -- see ModTools\Game.csv for other translated lang names
 -- or if you use ECM put this in the console: ~AllLanguages
-local lang_name = T(1000696,"Italian")
+local lang_name = T(1000696, "Italian")
 --  or just use a string:
 -- local lang_name = "Italian"
 
@@ -30,7 +30,7 @@ function OnMsg.ModsReloaded()
 	-- make it show up in Options>Gameplay>Language
 	local langs = OptionsData.Options.Language
 	-- no need to add it if it's already added
-	if not table.find(langs,"value",lang_value) then
+	if not table.find(langs, "value", lang_value) then
 		langs[#langs+1] = {
 			iso_639_1 = iso_639_1,
 			pdx_locale = pdx_locale,
@@ -43,7 +43,7 @@ function OnMsg.ModsReloaded()
 	-- load lang if option is set to our lang
 	if GetLanguage() == lang_value then
 		LoadTranslationTableFile(csv_path)
-		Msg("TranslationChanged","skip_inf_loop")
+		Msg("TranslationChanged", "skip_inf_loop")
 	end
 end
 
@@ -52,6 +52,6 @@ function OnMsg.TranslationChanged(skip)
 	if skip ~= "skip_inf_loop" and GetLanguage() == lang_value then
 		LoadTranslationTableFile(csv_path)
 		-- we want it to update any other OnMsg.TranslationChanged, but skip this is one (or inf loop)
-		Msg("TranslationChanged","skip_inf_loop")
+		Msg("TranslationChanged", "skip_inf_loop")
 	end
 end

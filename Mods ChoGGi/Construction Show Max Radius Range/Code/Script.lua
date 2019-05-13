@@ -8,15 +8,15 @@ local ShowHexRanges = ShowHexRanges
 local mod_id = "ChoGGi_ShowMaxRadiusRange"
 local mod = Mods[mod_id]
 
-local function AddRadius(self,radius)
+local function AddRadius(self, radius)
 	local circle = Circle:new()
 	circle:SetRadius(radius)
 	circle:SetColor(white)
 	self:Attach(circle)
 end
 
-local cls_saved_settings = {"TriboelectricScrubber","SubsurfaceHeater","CoreHeatConvector","ForestationPlant"}
-local cls_heaters = {"SubsurfaceHeater","CoreHeatConvector"}
+local cls_saved_settings = {"TriboelectricScrubber", "SubsurfaceHeater", "CoreHeatConvector", "ForestationPlant"}
+local cls_heaters = {"SubsurfaceHeater", "CoreHeatConvector"}
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()
@@ -27,7 +27,7 @@ function CursorBuilding:GameInit()
 	if self.template:IsKindOfClasses(cls_saved_settings) then
 		-- if ecm is active we check for custom range, otherwise use default
 		local uirange
-		local idx = table.find(ModsLoaded,"id","ChoGGi_Library")
+		local idx = table.find(ModsLoaded, "id", "ChoGGi_Library")
 		if idx then
 			local bs = ChoGGi.UserSettings.BuildingSettings[self.template.template_name]
 			if bs and bs.uirange then
@@ -42,15 +42,15 @@ function CursorBuilding:GameInit()
 		ShowHexRanges(UICity, false, self, "GetSelectionRadiusScale")
 
 		if self.template:IsKindOfClasses(cls_heaters) then
-			AddRadius(self,(uirange * GridSpacing) + HexSize)
+			AddRadius(self, (uirange * GridSpacing) + HexSize)
 		end
 
 	elseif self.template:IsKindOf("MoholeMine") then
-		AddRadius(self,MoholeMine.GetHeatRange(self.template))
+		AddRadius(self, MoholeMine.GetHeatRange(self.template))
 	elseif self.template:IsKindOf("ArtificialSun") then
-		AddRadius(self,ArtificialSun.GetHeatRange(self.template))
+		AddRadius(self, ArtificialSun.GetHeatRange(self.template))
 	elseif self.template:IsKindOf("AdvancedStirlingGenerator") then
-		AddRadius(self,AdvancedStirlingGenerator.GetHeatRange(self.template))
+		AddRadius(self, AdvancedStirlingGenerator.GetHeatRange(self.template))
 	end
 
 --~ 	ex(self)

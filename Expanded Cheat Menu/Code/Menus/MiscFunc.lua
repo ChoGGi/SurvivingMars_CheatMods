@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local next,type = next,type
+local next, type = next, type
 
 local Translate = ChoGGi.ComFuncs.Translate
 local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -10,19 +10,19 @@ local Strings = ChoGGi.Strings
 
 function ChoGGi.MenuFuncs.SetTimeFactor()
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. 1000,value = 1000},
-		{text = 0,value = 0,hint = Translate(6869--[[Pause--]])},
-		{text = 100,value = 100},
-		{text = 150,value = 150},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000,hint = Translate(4020--[[Play at normal speed.--]])},
-		{text = 2500,value = 2500},
-		{text = 3000,value = 3000,hint = Translate(4023--[[Play at three times normal speed.--]])},
-		{text = 5000,value = 5000,hint = Translate(4025--[[Play at five times normal speed.--]])},
-		{text = 10000,value = 10000},
-		{text = 25000,value = 25000},
-		{text = 100000,value = 100000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. 1000, value = 1000},
+		{text = 0, value = 0, hint = Translate(6869--[[Pause--]])},
+		{text = 100, value = 100},
+		{text = 150, value = 150},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000, hint = Translate(4020--[[Play at normal speed.--]])},
+		{text = 2500, value = 2500},
+		{text = 3000, value = 3000, hint = Translate(4023--[[Play at three times normal speed.--]])},
+		{text = 5000, value = 5000, hint = Translate(4025--[[Play at five times normal speed.--]])},
+		{text = 10000, value = 10000},
+		{text = 25000, value = 25000},
+		{text = 100000, value = 100000},
 	}
 
 	local function CallBackFunc(choice)
@@ -55,26 +55,26 @@ end
 
 function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 	local item_list = {
-		{text = Translate(547--[[Colonists--]]),value = "Colonist"},
-		{text = Translate(1120--[[Space Elevator--]]),value = "SpaceElevator"},
-		{text = Translate(3518--[[Drone Hub--]]),value = "DroneHub"},
-		{text = Translate(1685--[[Rocket--]]),value = "SupplyRocket"},
+		{text = Translate(547--[[Colonists--]]), value = "Colonist"},
+		{text = Translate(1120--[[Space Elevator--]]), value = "SpaceElevator"},
+		{text = Translate(3518--[[Drone Hub--]]), value = "DroneHub"},
+		{text = Translate(1685--[[Rocket--]]), value = "SupplyRocket"},
 
-		{text = Translate(1682--[[RC Rover--]]),value = "RCRover"},
-		{text = Translate(1684--[[RC Explorer--]]),value = "RCExplorer"},
-		{text = Translate(1683--[[RC Transport--]]),value = "RCTransport"},
+		{text = Translate(1682--[[RC Rover--]]), value = "RCRover"},
+		{text = Translate(1684--[[RC Explorer--]]), value = "RCExplorer"},
+		{text = Translate(1683--[[RC Transport--]]), value = "RCTransport"},
 
-		{text = Translate(5017--[[Basic Dome--]]),value = "DomeBasic"},
-		{text = Translate(5146--[[Medium Dome--]]),value = "DomeMedium"},
-		{text = Translate(5152--[[Mega Dome--]]),value = "DomeMega"},
-		{text = Translate(5188--[[Oval Dome--]]),value = "DomeOval"},
-		{text = Translate(5093--[[Geoscape Dome--]]),value = "GeoscapeDome"},
-		{text = Translate(9000--[[Micro Dome--]]),value = "DomeMicro"},
-		{text = Translate(9003--[[Trigon Dome--]]),value = "DomeTrigon"},
-		{text = Translate(9009--[[Mega Trigon Dome--]]),value = "DomeMegaTrigon"},
-		{text = Translate(9012--[[Diamond Dome--]]),value = "DomeDiamond"},
-		{text = Strings[302535920000347--[[Star Dome--]]],value = "DomeStar"},
-		{text = Strings[302535920000351--[[Hexa Dome--]]],value = "DomeHexa"},
+		{text = Translate(5017--[[Basic Dome--]]), value = "DomeBasic"},
+		{text = Translate(5146--[[Medium Dome--]]), value = "DomeMedium"},
+		{text = Translate(5152--[[Mega Dome--]]), value = "DomeMega"},
+		{text = Translate(5188--[[Oval Dome--]]), value = "DomeOval"},
+		{text = Translate(5093--[[Geoscape Dome--]]), value = "GeoscapeDome"},
+		{text = Translate(9000--[[Micro Dome--]]), value = "DomeMicro"},
+		{text = Translate(9003--[[Trigon Dome--]]), value = "DomeTrigon"},
+		{text = Translate(9009--[[Mega Trigon Dome--]]), value = "DomeMegaTrigon"},
+		{text = Translate(9012--[[Diamond Dome--]]), value = "DomeDiamond"},
+		{text = Strings[302535920000347--[[Star Dome--]]], value = "DomeStar"},
+		{text = Strings[302535920000351--[[Hexa Dome--]]], value = "DomeHexa"},
 	}
 
 	if not ChoGGi.UserSettings.UnpinObjects then
@@ -82,7 +82,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 	end
 
 	-- other hint type
-	local EnabledList = {Strings[302535920001096--[[Auto Unpinned--]]],":"}
+	local EnabledList = {Strings[302535920001096--[[Auto Unpinned--]]], ":"}
 	local c = 0
 	local list = ChoGGi.UserSettings.UnpinObjects
 	if next(list) then
@@ -174,9 +174,9 @@ end
 
 function ChoGGi.MenuFuncs.CleanAllObjects()
 	local dust = const.DustMaterialExterior
-	MapForEach("map","BaseBuilding",function(o)
+	MapForEach("map", "BaseBuilding", function(o)
 		if o.SetDust then
-			o:SetDust(0,dust)
+			o:SetDust(0, dust)
 		end
 	end)
 	MsgPopup(
@@ -186,15 +186,15 @@ function ChoGGi.MenuFuncs.CleanAllObjects()
 end
 
 function ChoGGi.MenuFuncs.FixAllObjects()
-	MapForEach("map","BaseBuilding",function(o)
+	MapForEach("map", "BaseBuilding", function(o)
 		if o.Repair then
 			o:Repair()
 			o.accumulated_maintenance_points = 0
 		end
 	end)
 
-	MapForEach("map","Drone",function(o)
-		o:SetCommand("RepairDrone",s)
+	MapForEach("map", "Drone", function(o)
+		o:SetCommand("RepairDrone", s)
 	end)
 
 	MsgPopup(
@@ -204,7 +204,7 @@ function ChoGGi.MenuFuncs.FixAllObjects()
 end
 
 function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
-	const.ExplorationQueueMaxSize = ChoGGi.ComFuncs.ValueRetOpp(const.ExplorationQueueMaxSize,100,ChoGGi.Consts.ExplorationQueueMaxSize)
+	const.ExplorationQueueMaxSize = ChoGGi.ComFuncs.ValueRetOpp(const.ExplorationQueueMaxSize, 100, ChoGGi.Consts.ExplorationQueueMaxSize)
 	ChoGGi.ComFuncs.SetSavedConstSetting("ExplorationQueueMaxSize")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -219,14 +219,14 @@ end
 function ChoGGi.MenuFuncs.SetGameSpeed()
 	local hint_str = Strings[302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>--]]]
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]),value = 1,hint = hint_str:format(1)},
-		{text = Strings[302535920001126--[[Double--]]],value = 2,hint = hint_str:format(2)},
-		{text = Strings[302535920001127--[[Triple--]]],value = 3,hint = hint_str:format(3)},
-		{text = Strings[302535920001128--[[Quadruple--]]],value = 4,hint = hint_str:format(4)},
-		{text = Strings[302535920001129--[[Octuple--]]],value = 8,hint = hint_str:format(8)},
-		{text = Strings[302535920001130--[[Sexdecuple--]]],value = 16,hint = hint_str:format(16)},
-		{text = Strings[302535920001131--[[Duotriguple--]]],value = 32,hint = hint_str:format(32)},
-		{text = Strings[302535920001132--[[Quattuorsexaguple--]]],value = 64,hint = hint_str:format(64)},
+		{text = Translate(1000121--[[Default--]]), value = 1, hint = hint_str:format(1)},
+		{text = Strings[302535920001126--[[Double--]]], value = 2, hint = hint_str:format(2)},
+		{text = Strings[302535920001127--[[Triple--]]], value = 3, hint = hint_str:format(3)},
+		{text = Strings[302535920001128--[[Quadruple--]]], value = 4, hint = hint_str:format(4)},
+		{text = Strings[302535920001129--[[Octuple--]]], value = 8, hint = hint_str:format(8)},
+		{text = Strings[302535920001130--[[Sexdecuple--]]], value = 16, hint = hint_str:format(16)},
+		{text = Strings[302535920001131--[[Duotriguple--]]], value = 32, hint = hint_str:format(32)},
+		{text = Strings[302535920001132--[[Quattuorsexaguple--]]], value = 64, hint = hint_str:format(64)},
 	}
 
 	local function CallBackFunc(choice)
@@ -278,13 +278,13 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 		items = item_list,
 		title = Strings[302535920000702--[[Game Speed--]]],
 		hint = Strings[302535920000933--[[Current speed: %s--]]]:format(speeds[const.mediumGameSpeed])
-			.. "\n" .. Strings[302535920001134--[[%s = base number %s multipled by custom value amount.--]]]:format(Strings[302535920000078--[[Custom Value--]]],const.mediumGameSpeed),
+			.. "\n" .. Strings[302535920001134--[[%s = base number %s multipled by custom value amount.--]]]:format(Strings[302535920000078--[[Custom Value--]]], const.mediumGameSpeed),
 		skip_sort = true,
 	}
 end
 
 do -- SetEntity
-	local function SetEntity(obj,entity)
+	local function SetEntity(obj, entity)
 		--backup orig
 		if not obj.ChoGGi_OrigEntity then
 			obj.ChoGGi_OrigEntity = obj:GetEntity()
@@ -312,16 +312,16 @@ do -- SetEntity
 
 		local hint_noanim = Strings[302535920001140--[[No animation.--]]]
 		local item_list = {
-			{text = " " .. Strings[302535920001141--[[Default Entity--]]],value = "Default"},
-			{text = " " .. Strings[302535920001142--[[Kosmonavt--]]],value = "Kosmonavt"},
-			{text = " " .. Strings[302535920001143--[[Jama--]]],value = "Lama"},
-			{text = " " .. Strings[302535920001144--[[Green Man--]]],value = "GreenMan"},
-			{text = " " .. Strings[302535920001145--[[Planet Mars--]]],value = "PlanetMars",hint = hint_noanim},
-			{text = " " .. Strings[302535920001146--[[Planet Earth--]]],value = "PlanetEarth",hint = hint_noanim},
-			{text = " " .. Strings[302535920001147--[[Rocket Small--]]],value = "RocketUI",hint = hint_noanim},
-			{text = " " .. Strings[302535920001148--[[Rocket Regular--]]],value = "Rocket",hint = hint_noanim},
-			{text = " " .. Strings[302535920001149--[[Combat Rover--]]],value = "CombatRover",hint = hint_noanim},
-			{text = " " .. Strings[302535920001150--[[PumpStation Demo--]]],value = "PumpStationDemo",hint = hint_noanim},
+			{text = " " .. Strings[302535920001141--[[Default Entity--]]], value = "Default"},
+			{text = " " .. Strings[302535920001142--[[Kosmonavt--]]], value = "Kosmonavt"},
+			{text = " " .. Strings[302535920001143--[[Jama--]]], value = "Lama"},
+			{text = " " .. Strings[302535920001144--[[Green Man--]]], value = "GreenMan"},
+			{text = " " .. Strings[302535920001145--[[Planet Mars--]]], value = "PlanetMars", hint = hint_noanim},
+			{text = " " .. Strings[302535920001146--[[Planet Earth--]]], value = "PlanetEarth", hint = hint_noanim},
+			{text = " " .. Strings[302535920001147--[[Rocket Small--]]], value = "RocketUI", hint = hint_noanim},
+			{text = " " .. Strings[302535920001148--[[Rocket Regular--]]], value = "Rocket", hint = hint_noanim},
+			{text = " " .. Strings[302535920001149--[[Combat Rover--]]], value = "CombatRover", hint = hint_noanim},
+			{text = " " .. Strings[302535920001150--[[PumpStation Demo--]]], value = "PumpStationDemo", hint = hint_noanim},
 		}
 		local c = #item_list
 		local EntityData = EntityData
@@ -349,15 +349,15 @@ do -- SetEntity
 			if EntityData[value] or value == "Default" then
 
 				if check2 then
-					SetEntity(obj,value)
+					SetEntity(obj, value)
 				else
-					MapForEach("map",obj.class,function(o)
+					MapForEach("map", obj.class, function(o)
 						if dome then
 							if o.dome and o.dome.handle == dome.handle then
-								SetEntity(o,value)
+								SetEntity(o, value)
 							end
 						else
-							SetEntity(o,value)
+							SetEntity(o, value)
 						end
 					end)
 				end
@@ -396,7 +396,7 @@ Not permanent for colonists after they exit buildings (for now).--]]],
 end -- do
 
 do -- SetEntityScale
-	local function SetScale(obj,Scale)
+	local function SetScale(obj, Scale)
 		local UserSettings = ChoGGi.UserSettings
 		obj:SetScale(Scale)
 
@@ -443,14 +443,14 @@ do -- SetEntityScale
 		end
 
 		local item_list = {
-			{text = Translate(1000121--[[Default--]]),value = 100},
-			{text = 25,value = 25},
-			{text = 50,value = 50},
-			{text = 100,value = 100},
-			{text = 250,value = 250},
-			{text = 500,value = 500},
-			{text = 1000,value = 1000},
-			{text = 10000,value = 10000},
+			{text = Translate(1000121--[[Default--]]), value = 100},
+			{text = 25, value = 25},
+			{text = 50, value = 50},
+			{text = 100, value = 100},
+			{text = 250, value = 250},
+			{text = 500, value = 500},
+			{text = 1000, value = 1000},
+			{text = 10000, value = 10000},
 		}
 
 		local function CallBackFunc(choice)
@@ -468,15 +468,15 @@ do -- SetEntityScale
 			if type(value) == "number" then
 
 				if check2 then
-					SetScale(obj,value)
+					SetScale(obj, value)
 				else
-					MapForEach("map",obj.class,function(o)
+					MapForEach("map", obj.class, function(o)
 						if dome then
 							if o.dome and o.dome.handle == dome.handle then
-								SetScale(o,value)
+								SetScale(o, value)
 							end
 						else
-							SetScale(o,value)
+							SetScale(o, value)
 						end
 					end)
 				end

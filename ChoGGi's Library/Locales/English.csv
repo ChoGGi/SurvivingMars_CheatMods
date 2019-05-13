@@ -1,4 +1,4 @@
-ID,Text,Translation,Old Translation,Gender
+ID, Text, Translation, Old Translation, Gender
 302535920001577,Placeholder,
 302535920001400,ChoGGi,
 302535920000887,ECM,
@@ -95,13 +95,14 @@ ID,Text,Translation,Old Translation,Gender
 302535920000033,Post a request on Nexus or Github or send an email to: <color green>%s</color>,
 302535920001092,Pins,
 302535920000004,Dump,
+302535920000528,Move %s by %s.,
 302535920000389,The amount used when a button is pressed (default: %s).,
 302535920000391,Roll,
 302535920000392,Pitch,
 302535920000395,Yaw,
 302535920000396,"Store the position, roll, pitch, and yaw.",
-302535920000398,"Restore the position, roll, pitch, and yaw.",
-302535920000404,"Clear the position, roll, pitch, and yaw.",
+302535920000398,"Restore the position, roll, pitch, and yaw (hold Shift to restore the original instead of saved).",
+302535920000404,"Clear the position, roll, pitch, and yaw (hold Shift to also clear the originals).",
 302535920001503,Map Name,
 302535920001505,°,
 302535920001504,Named,
@@ -324,7 +325,7 @@ The number is a count of stored msgs, right-click to view the list."
 Usage: Call it once to start and again to stop, it'll then show a list of func calls.
 
 Call it manually with:
-ChoGGi.ComFuncs.ToggleFuncHook(path,line,mask,count)
+ChoGGi.ComFuncs.ToggleFuncHook(path, line, mask, count)
 https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook",
 302535920000127,Various tools to use.,
 302535920001497,Show Blacklist,
@@ -448,7 +449,7 @@ Decompiled code won't scroll correctly as the line numbers are different.",
 302535920001248,Sort normally or backwards.,
 302535920001397,"Not the actual properties (see object.properties for those).
 
-Use obj:GetProperty(""NAME"") and obj:SetProperty(""NAME"",value)
+Use obj:GetProperty(""NAME"") and obj:SetProperty(""NAME"", value)
 You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 ",
 302535920001396,point,
@@ -548,6 +549,7 @@ Press Enter to refresh list (update names).
 Double left-click <left_click> selected item to open in new editor.",
 302535920000102,Use to change values of selected list item.,
 302535920000103,Edit Value,
+302535920000526,Any cheats changed here will override ones from a non-Consts menu.,
 302535920000213,Previously set in an ECM menu (meaning it's active and the setting here will override this value).,
 302535920000158,Consts,
 302535920000182,The scale this amount will be multipled by when used.,
@@ -624,7 +626,7 @@ Where the fear has gone there will be nothing. Only I will remain.",
 Going down, down.
 Working in a coal mine.
 Whew, about to slip down.",
-302535920000136,"Select something that produces (air,water,electricity,other).",
+302535920000136,"Select something that produces (air, water, electricity, other).",
 302535920000137,<color green>%s</color> production is now: <color yellow>%s</color>,
 302535920000139,Production Amount,
 302535920000140,Current production,
@@ -647,7 +649,7 @@ C'mon, you want pussy, come on in Pussy Lovers! If we don't got it, you don't wa
 Take advantage of our penny pussy sale! If you buy one piece of pussy at the regular price, you get another piece of pussy of equal or lesser value for only a penny!
 Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!",
 302535920000153,"%s:
-So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
+So, er, we the crew of the Eagle 5,if we do encounter, make first contact with alien beings,
 it is a friendship greeting from the children of our small but great planet of Potatoho.",
 302535920000154,"%s:
 Your home will not be a hut on some swampy outback planet your home will be the entire universe.",
@@ -1090,7 +1092,7 @@ You can edit the CSV then run this again without having to restart the game.
 ",
 302535920001162,Test Columns,
 302535920001166,"Reports any columns above the normal amount (5).
-Columns are added by commas (,). Surround the entire string with """" to use them.
+Columns are added by commas (, ). Surround the entire string with """" to use them.
 
 Try to increase or decrease the number if not enough or too many errors show up.
 For the value enter either ""true"" (to use 5) or a number.
@@ -1513,7 +1515,7 @@ Set value to <color green>0</color> to remove setting.",
 302535920001021,03 Low (100) < Menu Option,
 302535920001022,04 Medium (150) < Menu Option,
 302535920001024,06 Ultra (200) < Menu Option,
-302535920001030,"Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 1000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.
+302535920001030,"Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 1000,if you've got a Nvidia Volta and want to use more memory then do it through the settings file.
 
 And yes Medium is using a higher setting than High...",
 302535920001031,1 Crap (32),

@@ -40,7 +40,7 @@ DefineClass.Carwash = {
 	marker = false,
 }
 
-local function SprinklerColour(attach,color)
+local function SprinklerColour(attach, color)
 	if attach:GetParticlesName() == "HydroponicFarm_Shower" then
 		attach:SetColorModifier(color or -10197916)
 	end
@@ -60,14 +60,14 @@ function Carwash:GameInit()
       if self.working then
         local obj = nil
         -- check for anything on the "tarmac"
-        obj = NearestObject(self,UICity.labels.Unit or {},1000)
+        obj = NearestObject(self, UICity.labels.Unit or {}, 1000)
         -- if so clean them
         if obj then
           -- get dust amount, and convert to percentage
           local dust_amt = (obj:GetDust() + 0.0) / 100
           if dust_amt ~= 0.0 then
             local value = 100
-						sprinkler:ForEachAttach(SprinklerColour,-8249088)
+						sprinkler:ForEachAttach(SprinklerColour, -8249088)
             while true do
               if value == 0 then
                 break
@@ -76,7 +76,7 @@ function Carwash:GameInit()
               obj:SetDust(dust_amt * value, DustMaterialExterior)
               Sleep(100)
             end
-						sprinkler:ForEachAttach(SprinklerColour,-10197916)
+						sprinkler:ForEachAttach(SprinklerColour, -10197916)
           end
         end
       end
@@ -88,7 +88,7 @@ function Carwash:GameInit()
   self:SetColorModifier(-16777216)
 
   -- remove the lights/etc
-	self:DestroyAttaches{"DecorInt_10","LampInt_04"}
+	self:DestroyAttaches{"DecorInt_10", "LampInt_04"}
 
   -- remove collision so we can drive over it
   self:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
@@ -110,13 +110,13 @@ function Carwash:StartAnimThread(sprinkler)
 				PlayFX("FarmWater", "start", sprinkler)
 
 --~ 				sprinkler.fx_actor_class = "AlienDigger"
---~ 				PlayFX("Deconstruct", "start",sprinkler)
+--~ 				PlayFX("Deconstruct", "start", sprinkler)
 --~ 				sprinkler.fx_actor_class = false
 
 				self.is_up = true
 
 				-- larger spray
-				sprinkler:ForEachAttach("ParSystem",function(a)
+				sprinkler:ForEachAttach("ParSystem", function(a)
 					if a:GetParticlesName() == "HydroponicFarm_Shower" then
 						a:SetScale(250)
 					end
@@ -126,7 +126,7 @@ function Carwash:StartAnimThread(sprinkler)
 				PlayFX("FarmWater", "end", sprinkler)
 
 --~ 				sprinkler.fx_actor_class = "AlienDigger"
---~ 				PlayFX("Deconstruct", "end",sprinkler)
+--~ 				PlayFX("Deconstruct", "end", sprinkler)
 --~ 				sprinkler.fx_actor_class = false
 
 				sprinkler:SetAnim(1, "workingEnd")
@@ -180,7 +180,7 @@ function Carwash:OnDestroyed()
 	-- make sure sprinkler is stopped
 	if self.sprinkler then
 --~ 		self.sprinkler.fx_actor_class = "AlienDigger"
---~ 		PlayFX("Deconstruct", "end",self.sprinkler)
+--~ 		PlayFX("Deconstruct", "end", self.sprinkler)
 --~ 		self.sprinkler.fx_actor_class = false
 		PlayFX("FarmWater", "end", self.sprinkler)
 		self.sprinkler:SetAnim(1, "workingEnd")
@@ -191,13 +191,13 @@ end
 -- fake the pipe hookups
 local PlaceObject = PlaceObject
 local orig_SetWaterMarkers = SetWaterMarkers
-function SetWaterMarkers(obj,show,list,...)
-	local marked = orig_SetWaterMarkers(obj,show,list,...)
+function SetWaterMarkers(obj, show, list, ...)
+	local marked = orig_SetWaterMarkers(obj, show, list, ...)
 	-- means it found n added markers then made them invis since they're "touching" the building
 	if marked and show and show ~= "update" and obj:IsKindOf("Carwash") then
 
 		-- we need to add extra marker and move them to the correct places
-		obj:ForEachAttach("GridTileWater",function(a)
+		obj:ForEachAttach("GridTileWater", function(a)
 			-- they're normally made invis because they're "under" a building
 			a:SetVisible(true)
 
@@ -232,45 +232,45 @@ end
 
 -- needed by SetWaterMarkers() in construction.lua
 local orig_HasSpot = g_CObjectFuncs.HasSpot
-function Carwash:HasSpot(name,...)
+function Carwash:HasSpot(name, ...)
 	if name == "Lifesupportgrid" then
 		return true
 	end
-	return orig_HasSpot(self,name,...)
+	return orig_HasSpot(self, name, ...)
 end
 --
 local orig_GetSpotRange = g_CObjectFuncs.GetSpotRange
-function Carwash:GetSpotRange(name,...)
+function Carwash:GetSpotRange(name, ...)
 	if name == "Lifesupportgrid" then
 		-- the lamp spots work for my needs
-		return 4,6
+		return 4, 6
 	end
-	return orig_GetSpotRange(self,name,...)
+	return orig_GetSpotRange(self, name, ...)
 end
 
 local GetPipeConnections = {
 	-- hex_point, direction (0..5), spot-index, entity-to-attach, something else
-	-- i only need 4 per,but i'm lazy
-	{point(1,-2),0,4,"SignWater"},
-	{point(1,-2),1,4,"SignWater"},
-	{point(1,-2),2,4,"SignWater"},
-	{point(1,-2),3,4,"SignWater"},
-	{point(1,-2),4,4,"SignWater"},
-	{point(1,-2),5,4,"SignWater"},
+	-- i only need 4 per, but i'm lazy
+	{point(1, -2), 0, 4, "SignWater"},
+	{point(1, -2), 1, 4, "SignWater"},
+	{point(1, -2), 2, 4, "SignWater"},
+	{point(1, -2), 3, 4, "SignWater"},
+	{point(1, -2), 4, 4, "SignWater"},
+	{point(1, -2), 5, 4, "SignWater"},
 	----------------------------------
-	{point(-2,1),0,5,"SignWater"},
-	{point(-2,1),1,5,"SignWater"},
-	{point(-2,1),2,5,"SignWater"},
-	{point(-2,1),3,5,"SignWater"},
-	{point(-2,1),4,5,"SignWater"},
-	{point(-2,1),5,5,"SignWater"},
+	{point(-2, 1), 0, 5, "SignWater"},
+	{point(-2, 1), 1, 5, "SignWater"},
+	{point(-2, 1), 2, 5, "SignWater"},
+	{point(-2, 1), 3, 5, "SignWater"},
+	{point(-2, 1), 4, 5, "SignWater"},
+	{point(-2, 1), 5, 5, "SignWater"},
 	----------------------------------
-	{point(1,1),0,6,"SignWater"},
-	{point(1,1),1,6,"SignWater"},
-	{point(1,1),2,6,"SignWater"},
-	{point(1,1),3,6,"SignWater"},
-	{point(1,1),4,6,"SignWater"},
-	{point(1,1),5,6,"SignWater"},
+	{point(1, 1), 0, 6, "SignWater"},
+	{point(1, 1), 1, 6, "SignWater"},
+	{point(1, 1), 2, 6, "SignWater"},
+	{point(1, 1), 3, 6, "SignWater"},
+	{point(1, 1), 4, 6, "SignWater"},
+	{point(1, 1), 5, 6, "SignWater"},
 }
 
 function Carwash.GetPipeConnections(...)
@@ -283,8 +283,8 @@ local HexNeighbours = HexNeighbours
 local HexGetBuilding = HexGetBuilding
 local WorldToHex = WorldToHex
 local orig_LifeSupportGridElement_UpdateVisuals = LifeSupportGridElement.UpdateVisuals
-function LifeSupportGridElement:UpdateVisuals(supply_resource,...)
-	local result = orig_LifeSupportGridElement_UpdateVisuals(self,supply_resource,...)
+function LifeSupportGridElement:UpdateVisuals(supply_resource, ...)
+	local result = orig_LifeSupportGridElement_UpdateVisuals(self, supply_resource, ...)
 
 	-- check for connections to a carwash and make it the seam entity
 	if result then
@@ -301,7 +301,7 @@ function LifeSupportGridElement:UpdateVisuals(supply_resource,...)
 					local bld_angle = 180 * 60 + dir * 60 * 60
 					-- from SetAttachAngle to GetAttachAngle the numbers change (rotation loops over?)
 					local neg = bld_angle - 21600
-					self:ForEachAttach("TubeHubPlug",function(a)
+					self:ForEachAttach("TubeHubPlug", function(a)
 						-- check the angle of the attach to make sure we only change the correct one
 						local angle = a:GetAttachAngle()
 						if angle == bld_angle or angle == neg then
@@ -327,7 +327,7 @@ function OnMsg.ClassesPostprocess()
 			"display_name", [[Martian Carwash]],
 			"display_name_pl", [[Martian Carwashes]],
 			"description", description_text,
-			"build_category","ChoGGi",
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", CurrentModPath .. "UI/carwash.png",
 			"entity", "Farm",
@@ -340,7 +340,7 @@ function OnMsg.ClassesPostprocess()
 			"construction_cost_Polymers", 1000,
 			"maintenance_resource_type", "Metals",
 			"maintenance_resource_amount", 1000,
-			"demolish_sinking", range(1,5),
+			"demolish_sinking", range(1, 5),
 		})
 	end
 end --ClassesPostprocess

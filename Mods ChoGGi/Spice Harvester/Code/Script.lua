@@ -59,7 +59,7 @@ function Melanger:GameInit()
 	-- still pretty slow, faster?
 	self:SetMoveSpeed(750000)
 
-	local shuttle_amount = Random(2,4)
+	local shuttle_amount = Random(2, 4)
 
 	self.hub = SpiceHarvester_ShuttleHub:new{
 		starting_shuttles = shuttle_amount,
@@ -80,7 +80,7 @@ function Melanger:GameInit()
 	-- needs a slight delay for the shuttlehub to do it's thing
 	self.move_thread = CreateGameTimeThread(function()
 		for _ = 1, shuttle_amount do
-			Sleep(Random(1000,2500))
+			Sleep(Random(1000, 2500))
 			self.hub.shuttle_infos[#self.hub.shuttle_infos + 1] = ShuttleInfo:new{hub = self.hub}
 			self.shuttles[#self.shuttles+1] = SpiceHarvester.SpawnShuttle(self.hub)
 			-- delay between launch
@@ -112,7 +112,7 @@ function Melanger:GameInit()
 	self.slime_thread = CreateGameTimeThread(function()
 		while self.slime_thread do
 			SetTypeCircle(self:GetVisualPos(), 900, terrain_type_idx)
-			Sleep(Random(2000,4000))
+			Sleep(Random(2000, 4000))
 		end
 	end)
 
@@ -179,21 +179,21 @@ function Melanger:CreateSelectionArrow()
 end
 
 function OnMsg.ClassesPostprocess()
-	PlaceObj("BuildingTemplate",{
-		"Id","MelangerBuilding",
-		"template_class","MelangerBuilding",
+	PlaceObj("BuildingTemplate", {
+		"Id", "MelangerBuilding",
+		"template_class", "MelangerBuilding",
 		-- pricey bit 'o kit
-		"construction_cost_Metals",1000,
-		"dome_forbidden",true,
-		"display_name",[[Spice Harvester]],
-		"description",[[Doesn't do jack (unless you count roaming around and thumping).]],
-		"build_category","ChoGGi",
+		"construction_cost_Metals", 1000,
+		"dome_forbidden", true,
+		"display_name", [[Spice Harvester]],
+		"description", [[Doesn't do jack (unless you count roaming around and thumping).]],
+		"build_category", "ChoGGi",
 		"Group", "ChoGGi",
-		"display_icon","UI/Icons/Buildings/boomerang_garden.tga",
-		"encyclopedia_exclude",true,
-		"on_off_button",false,
-		"prio_button",false,
-		"entity","PumpStationDemo",
+		"display_icon", "UI/Icons/Buildings/boomerang_garden.tga",
+		"encyclopedia_exclude", true,
+		"on_off_button", false,
+		"prio_button", false,
+		"entity", "PumpStationDemo",
 	})
 end --ClassesPostprocess
 
@@ -219,12 +219,12 @@ function OnMsg.ClassesBuilt()
 	end
 
 	local XTemplates = XTemplates
-	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1],"Melanger_Destroy")
-	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1],"SolariaTelepresence_Melanger_Section")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1], "Melanger_Destroy")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1], "SolariaTelepresence_Melanger_Section")
 
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipAttackRover[1],"Melanger_Destroy",nil,{
+	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipAttackRover[1], "Melanger_Destroy", nil, {
 
---~ 	ChoGGi.ComFuncs.AddXTemplate("Melanger_Destroy","ipAttackRover",{
+--~ 	ChoGGi.ComFuncs.AddXTemplate("Melanger_Destroy", "ipAttackRover", {
 		__context_of_kind = "Melanger",
 		Icon = "UI/Icons/Sections/resource_no_accept.tga",
 		Title = [[Destroy]],
@@ -248,7 +248,7 @@ function OnMsg.ClassesBuilt()
 						for i = 1, #context.shuttles do
 							context.shuttles[i]:GoodByeCruelWorld()
 							-- delay between launch
-							Sleep(Random(1000,2500))
+							Sleep(Random(1000, 2500))
 						end
 
 					end)

@@ -1,6 +1,6 @@
 function OnMsg.ClassesPostprocess()
 
-  PlaceObj("RadioStationPreset",{
+  PlaceObj("RadioStationPreset", {
     display_name = [[Custom Music]],
     folder = "AppData/Music",
     group = "Default",

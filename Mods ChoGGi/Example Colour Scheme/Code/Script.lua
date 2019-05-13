@@ -13,9 +13,9 @@ will give you something like
 (rough and met are how mottled/shiny the surface is)
 
 to get a number for the list use
-ColorizationMaterialEncode(colour_value,roughness,metallic)
+ColorizationMaterialEncode(colour_value, roughness, metallic)
 or
-ColorizationMaterialEncode(RGB(22,36,50),roughness,metallic)
+ColorizationMaterialEncode(RGB(22, 36, 50), roughness, metallic)
 --]]
 
 -- not my speeling

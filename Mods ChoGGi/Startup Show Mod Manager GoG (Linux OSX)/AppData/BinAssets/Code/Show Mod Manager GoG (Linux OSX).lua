@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local function AddButton(buttons,id,title,func)
+local function AddButton(buttons, id, title, func)
 	buttons[id] = XWindow:new({
 		Id = id,
 		ZOrder = 0,
@@ -30,17 +30,17 @@ local function SetModNew(menu)
 	local buttons = menu.idContent and menu.idContent.idBottomButtons
 	local idx
 	if buttons then
-		idx = table_find(buttons,"class","XWindow")
+		idx = table_find(buttons, "class", "XWindow")
 	end
 
 	if idx then
 		buttons = buttons[idx]
 
-		AddButton(buttons,"idModManager",T(1129, "MOD MANAGER"),function()
+		AddButton(buttons, "idModManager", T(1129, "MOD MANAGER"), function()
 			menu:SetMode("ModManager")
 		end)
 
-		AddButton(buttons,"idModEditor",T(1130, "MOD EDITOR"),function()
+		AddButton(buttons, "idModEditor", T(1130, "MOD EDITOR"), function()
 			CreateRealTimeThread(ModEditorOpen)
 		end)
 
@@ -63,8 +63,8 @@ function OnMsg.DesktopCreated()
 
 		-- if users goes into options or something than we fire it again at main menu
 		local orig_SetMode = Dialogs.PGMainMenu.SetMode
-		function Dialogs.PGMainMenu:SetMode(mode,...)
-			orig_SetMode(self,mode,...)
+		function Dialogs.PGMainMenu:SetMode(mode, ...)
+			orig_SetMode(self, mode, ...)
 			if mode == "" then
 				SetModNew(self)
 			end

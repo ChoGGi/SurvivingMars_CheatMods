@@ -21,14 +21,14 @@ local testing = ChoGGi.testing
 
 do -- custom msgs
 	local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
-	AddMsgToFunc("BaseBuilding","GameInit","ChoGGi_SpawnedBaseBuilding")
-	AddMsgToFunc("Drone","GameInit","ChoGGi_SpawnedDrone")
-	AddMsgToFunc("PinnableObject","TogglePin","ChoGGi_TogglePinnableObject")
+	AddMsgToFunc("BaseBuilding", "GameInit", "ChoGGi_SpawnedBaseBuilding")
+	AddMsgToFunc("Drone", "GameInit", "ChoGGi_SpawnedDrone")
+	AddMsgToFunc("PinnableObject", "TogglePin", "ChoGGi_TogglePinnableObject")
 
-	AddMsgToFunc("AirProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","air_production")
-	AddMsgToFunc("ElectricityProducer","CreateElectricityElement","ChoGGi_SpawnedProducer","electricity_production")
-	AddMsgToFunc("WaterProducer","CreateLifeSupportElements","ChoGGi_SpawnedProducer","water_production")
-	AddMsgToFunc("SingleResourceProducer","Init","ChoGGi_SpawnedProducer","production_per_day")
+	AddMsgToFunc("AirProducer", "CreateLifeSupportElements", "ChoGGi_SpawnedProducer", "air_production")
+	AddMsgToFunc("ElectricityProducer", "CreateElectricityElement", "ChoGGi_SpawnedProducer", "electricity_production")
+	AddMsgToFunc("WaterProducer", "CreateLifeSupportElements", "ChoGGi_SpawnedProducer", "water_production")
+	AddMsgToFunc("SingleResourceProducer", "Init", "ChoGGi_SpawnedProducer", "production_per_day")
 end -- do
 
 --~ -- use this message to mess with the classdefs (before classes are built)
@@ -40,8 +40,8 @@ function OnMsg.ClassesPreprocess()
 	-- stops crashing with certain missing pinned objects
 	if ChoGGi.UserSettings.FixMissingModBuildings then
 		local umc = UnpersistedMissingClass
-		ChoGGi.ComFuncs.AddParentToClass(umc,"AutoAttachObject")
-		ChoGGi.ComFuncs.AddParentToClass(umc,"PinnableObject")
+		ChoGGi.ComFuncs.AddParentToClass(umc, "AutoAttachObject")
+		ChoGGi.ComFuncs.AddParentToClass(umc, "PinnableObject")
 		umc.entity = "ErrorAnimatedMesh"
 	end
 end
@@ -60,15 +60,15 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		local ChoGGi = ChoGGi
 		local UserSettings = ChoGGi.UserSettings
 
-		for key,template in pairs(XTemplates) do
+		for key, template in pairs(XTemplates) do
 			local xt = template[1]
 			-- add some ids to make it easier to fiddle with selection panel (making sure to skip the repeatable ones)
-			if key:sub(1,7) == "section" and key:sub(-3) ~= "Row" then
+			if key:sub(1, 7) == "section" and key:sub(-3) ~= "Row" then
 				if xt and not xt.Id then
 					xt.Id = "id" .. template.id .. "_ChoGGi"
 				end
 			-- add cheats section to stuff without it
-			elseif key:sub(1,2) == "ip" and not table_find(xt,"__template","sectionCheats") then
+			elseif key:sub(1, 2) == "ip" and not table_find(xt, "__template", "sectionCheats") then
 				xt[#xt+1] = PlaceObj("XTemplateTemplate", {
 					"__template", "sectionCheats",
 				})
@@ -90,17 +90,17 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		if UserSettings.GUIDockSide then
 			XTemplates.NewOverlayDlg[1].Dock = "right"
 			XTemplates.SaveLoadContentWindow[1].Dock = "right"
-			ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1],"Dock","left","Dock","right")
+			ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1], "Dock", "left", "Dock", "right")
 			XTemplates.PhotoMode[1].Dock = "right"
 		end
 
 		-- change rollover max width
 		if UserSettings.WiderRollovers then
 			local roll = XTemplates.Rollover[1]
-			local idx = table_find(roll,"Id","idContent")
+			local idx = table_find(roll, "Id", "idContent")
 			if idx then
 				roll = roll[idx]
-				idx = table_find(roll,"Id","idText")
+				idx = table_find(roll, "Id", "idText")
 				if idx then
 					roll[idx].MaxWidth = UserSettings.WiderRollovers
 				end
@@ -130,9 +130,9 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 					end,
 					"OnPress", function(self)
 						if self.context.planning then
-							ChoGGi.ComFuncs.EntitySpawner(self.context,true,7,true)
+							ChoGGi.ComFuncs.EntitySpawner(self.context, true, 7, true)
 						else
-							ChoGGi.ComFuncs.EntitySpawner(self.context,true,7)
+							ChoGGi.ComFuncs.EntitySpawner(self.context, true, 7)
 						end
 					end,
 					"Icon", "UI/Icons/IPButtons/shuttle.tga",
@@ -188,7 +188,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 	function OnMsg.ClassesBuilt()
 		-- add HiddenX cat for Hidden items
 		local bc = BuildCategories
-		if ChoGGi.UserSettings.Building_hide_from_build_menu and not table_find(bc,"id","HiddenX") then
+		if ChoGGi.UserSettings.Building_hide_from_build_menu and not table_find(bc, "id", "HiddenX") then
 			bc[#bc+1] = {
 				id = "HiddenX",
 				name = Translate(1000155--[[Hidden--]]),
@@ -213,8 +213,8 @@ function OnMsg.ModsReloaded()
 		for i = #Actions, 1, -1 do
 			local a = Actions[i]
 			-- if it's a . than we haven't updated it yet
-			if a.ActionId:sub(1,1) == "." then
-				table_remove(Actions,i)
+			if a.ActionId:sub(1, 1) == "." then
+				table_remove(Actions, i)
 			end
 		end
 	else
@@ -231,19 +231,19 @@ function OnMsg.ModsReloaded()
 		}
 
 		-- add preset menu items
-		ClassDescendantsList("Preset", function(name, cls)
+		ClassDescendantsList("Preset", function(name, class)
 			if not name:find("ChoGGi") then
 				c = c + 1
 				Actions[c] = {
 					ActionMenubar = "ECM.Debug.Ged Presets Editor",
 					ActionName = name,
 					ActionId = "." .. name,
-					ActionIcon = cls.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
+					ActionIcon = class.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
 					RolloverText = Strings[302535920000733--[[Open a preset in the editor.--]]],
 					OnAction = function()
 						OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
 							PresetClass = name,
-							SingleFile = cls.SingleFile
+							SingleFile = class.SingleFile
 						})
 					end,
 				}
@@ -254,7 +254,7 @@ function OnMsg.ModsReloaded()
 		for i = 1, c do
 			local a = Actions[i]
 			-- if it's a . than we haven't updated it yet
-			if a.ActionId:sub(1,1) == "." then
+			if a.ActionId:sub(1, 1) == "." then
 				a.ActionTranslate = false
 				a.replace_matching_id = true
 				a.ActionId = (a.ActionMenubar ~= "" and a.ActionMenubar or "ECM") .. a.ActionId
@@ -289,12 +289,12 @@ function OnMsg.ModsReloaded()
 			-- removes comments from code, and adds a space to each newline, so pasting multi line works
 			local XEditEditOperation = XEdit.EditOperation
 			local StripComments = ChoGGi.ComFuncs.StripComments
-			function edit:EditOperation(insert_text, is_undo_redo, cursor_to_text_start,...)
+			function edit:EditOperation(insert_text, is_undo_redo, cursor_to_text_start, ...)
 				if type(insert_text) == "string" then
 					insert_text = StripComments(insert_text)
-					insert_text = insert_text:gsub("\n"," \n")
+					insert_text = insert_text:gsub("\n", " \n")
 				end
-				return XEditEditOperation(self,insert_text, is_undo_redo, cursor_to_text_start,...)
+				return XEditEditOperation(self, insert_text, is_undo_redo, cursor_to_text_start, ...)
 			end
 
 			edit.RolloverTemplate = "Rollover"
@@ -388,7 +388,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 
 	local BuildingTechRequirements = BuildingTechRequirements
 	local BuildingTemplates = BuildingTemplates
-	for id,bld in pairs(BuildingTemplates) do
+	for id, bld in pairs(BuildingTemplates) do
 
 		-- remove sponsor limits on buildings
 		if SponsorBuildingLimits then
@@ -405,11 +405,11 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			-- and this bugger screws me over on GetBuildingTechsStatus
 			local name = id
 			if name:find("RC") and name:find("Building") then
-				name = name:gsub("Building","")
+				name = name:gsub("Building", "")
 			end
-			local idx = table_find(BuildingTechRequirements[id],"check_supply",name)
+			local idx = table_find(BuildingTechRequirements[id], "check_supply", name)
 			if idx then
-				table_remove(BuildingTechRequirements[id],idx)
+				table_remove(BuildingTechRequirements[id], idx)
 			end
 		end
 
@@ -434,7 +434,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 	-- unlock buildings that cannot rotate
 	if UserSettings.RotateDuringPlacement then
 		local buildings = ClassTemplates.Building
-		for _,bld in pairs(buildings) do
+		for _, bld in pairs(buildings) do
 			if bld.can_rotate_during_placement == false then
 				bld.can_rotate_during_placement_ChoGGi_orig = true
 				bld.can_rotate_during_placement = true
@@ -460,18 +460,18 @@ function OnMsg.PersistPostLoad()
 
 		local printit = ChoGGi.UserSettings.FixMissingModBuildingsLog
 
-		-- GetFreeSpace,GetFreeLivingSpace,GetFreeWorkplaces,GetFreeWorkplacesAround
+		-- GetFreeSpace, GetFreeLivingSpace, GetFreeWorkplaces, GetFreeWorkplacesAround
 		local labels = UICity.labels or empty_table
-		for label_id,label in pairs(labels) do
+		for label_id, label in pairs(labels) do
 			if label_id ~= "Consts" then
 				for i = #label, 1, -1 do
 					local obj = label[i]
 					if obj:IsKindOf("UnpersistedMissingClass") then
 						if printit then
-							print(Strings[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"--]]]:format(label_id,RetName(obj),obj:GetEntity(),obj.handle))
+							print(Strings[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"--]]]:format(label_id, RetName(obj), obj:GetEntity(), obj.handle))
 						end
 						obj:delete()
-						table_remove(label,i)
+						table_remove(label, i)
 					end
 				end
 			end
@@ -518,7 +518,7 @@ do -- ConstructionSitePlaced
 end -- do
 
 -- make sure they use with our new values
-function OnMsg.ChoGGi_SpawnedProducer(obj,prod_type)
+function OnMsg.ChoGGi_SpawnedProducer(obj, prod_type)
 	local prod = ChoGGi.UserSettings.BuildingSettings[obj.template_name]
 	if prod and prod.production then
 		obj[prod_type] = prod.production
@@ -539,24 +539,24 @@ end
 -- some upgrades change amounts, so reset them to ours
 function OnMsg.BuildingUpgraded(obj)
 	if obj:IsKindOf("ElectricityProducer") then
-		Msg("ChoGGi_SpawnedProducer",obj,"electricity_production")
+		Msg("ChoGGi_SpawnedProducer", obj, "electricity_production")
 	elseif obj:IsKindOf("AirProducer") then
-		Msg("ChoGGi_SpawnedProducer",obj,"air_production")
+		Msg("ChoGGi_SpawnedProducer", obj, "air_production")
 	elseif obj:IsKindOf("WaterProducer") then
-		Msg("ChoGGi_SpawnedProducer",obj,"water_production")
+		Msg("ChoGGi_SpawnedProducer", obj, "water_production")
 	elseif obj:IsKindOf("SingleResourceProducer") then
-		Msg("ChoGGi_SpawnedProducer",obj,"production_per_day")
+		Msg("ChoGGi_SpawnedProducer", obj, "production_per_day")
 	else
 		-- do we want to check id for upgrades that don't change? seems too much like work
-		Msg("ChoGGi_SpawnedBaseBuilding",obj)
+		Msg("ChoGGi_SpawnedBaseBuilding", obj)
 	end
 end
 
 -- :GameInit() (Msg.BuildingInit only does Building, not BaseBuilding)
 do -- ChoGGi_SpawnedBaseBuilding
-	local cls_skip = {"ConstructionSite","ConstructionSiteWithHeightSurfaces"}
-	local cls_food = {"Grocery","Diner"}
-	local cls_inside_to_outside = {"Residence","Workplace","SpireBase"}
+	local cls_skip = {"ConstructionSite", "ConstructionSiteWithHeightSurfaces"}
+	local cls_food = {"Grocery", "Diner"}
+	local cls_inside_to_outside = {"Residence", "Workplace", "SpireBase"}
 
 	function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		local ChoGGi = ChoGGi
@@ -571,7 +571,7 @@ do -- ChoGGi_SpawnedBaseBuilding
 	--~ 	if obj:IsKindOf("Dome") then
 	--~ 		local id_start, id_end = obj:GetAllSpots(obj:GetState())
 	--~ 		for i = id_start, id_end do
-	--~ 			if obj:GetSpotName(i) == "Entrance" or obj:GetSpotAnnotation(i) == "att,DomeRoad_04,show" then
+	--~ 			if obj:GetSpotName(i) == "Entrance" or obj:GetSpotAnnotation(i) == "att, DomeRoad_04, show" then
 	--~ 				print(111)
 	--~ 			end
 	--~ 		end
@@ -632,12 +632,12 @@ do -- ChoGGi_SpawnedBaseBuilding
 
 		elseif UserSettings.SchoolTrainAll and obj.class:find("School") then
 			for i = 1, #ChoGGi.Tables.PositiveTraits do
-				obj:SetTrait(i,ChoGGi.Tables.PositiveTraits[i])
+				obj:SetTrait(i, ChoGGi.Tables.PositiveTraits[i])
 			end
 
 		elseif UserSettings.SanatoriumCureAll and obj.class:find("Sanatorium") then
 			for i = 1, #ChoGGi.Tables.NegativeTraits do
-				obj:SetTrait(i,ChoGGi.Tables.NegativeTraits[i])
+				obj:SetTrait(i, ChoGGi.Tables.NegativeTraits[i])
 			end
 
 		end -- end of elseif
@@ -739,7 +739,7 @@ do -- ChoGGi_SpawnedBaseBuilding
 				end
 				-- service comforts
 				if bs.service_stats and next(bs.service_stats) then
-					ChoGGi.ComFuncs.UpdateServiceComfortBld(obj,bs.service_stats)
+					ChoGGi.ComFuncs.UpdateServiceComfortBld(obj, bs.service_stats)
 				end
 				-- training points
 				if bs.evaluation_points then
@@ -789,27 +789,27 @@ function OnMsg.Demolished(obj)
 end --OnMsg
 
 do -- ColonistCreated
-	local function ColonistCreated(obj,skip)
+	local function ColonistCreated(obj, skip)
 		local UserSettings = ChoGGi.UserSettings
 
 		if UserSettings.GravityColonist then
 			obj:SetGravity(UserSettings.GravityColonist)
 		end
 		if UserSettings.NewColonistGender then
-			ChoGGi.ComFuncs.ColonistUpdateGender(obj,UserSettings.NewColonistGender)
+			ChoGGi.ComFuncs.ColonistUpdateGender(obj, UserSettings.NewColonistGender)
 		end
 		if UserSettings.NewColonistAge then
-			ChoGGi.ComFuncs.ColonistUpdateAge(obj,UserSettings.NewColonistAge)
+			ChoGGi.ComFuncs.ColonistUpdateAge(obj, UserSettings.NewColonistAge)
 		end
 		-- children don't have spec models so they get black cube
 		if UserSettings.NewColonistSpecialization and not skip then
-			ChoGGi.ComFuncs.ColonistUpdateSpecialization(obj,UserSettings.NewColonistSpecialization)
+			ChoGGi.ComFuncs.ColonistUpdateSpecialization(obj, UserSettings.NewColonistSpecialization)
 		end
 		if UserSettings.NewColonistRace then
-			ChoGGi.ComFuncs.ColonistUpdateRace(obj,UserSettings.NewColonistRace)
+			ChoGGi.ComFuncs.ColonistUpdateRace(obj, UserSettings.NewColonistRace)
 		end
 		if UserSettings.NewColonistTraits then
-			ChoGGi.ComFuncs.ColonistUpdateTraits(obj,true,UserSettings.NewColonistTraits)
+			ChoGGi.ComFuncs.ColonistUpdateTraits(obj, true, UserSettings.NewColonistTraits)
 		end
 		if UserSettings.SpeedColonist then
 			obj:SetMoveSpeed(UserSettings.SpeedColonist)
@@ -845,7 +845,7 @@ function OnMsg.NewDay() -- NewSol...
 
 	-- remove any closed examine dialogs from the list
 	local g_ExamineDlgs = g_ExamineDlgs or empty_table
-	for obj,dlg in pairs(g_ExamineDlgs) do
+	for obj, dlg in pairs(g_ExamineDlgs) do
 		if dlg.window_state == "destroying" then
 			g_ExamineDlgs[obj] = nil
 		end
@@ -858,7 +858,7 @@ function OnMsg.NewDay() -- NewSol...
 			local obj = objs[i]
 			-- no sense in doing it with only one center
 			if #obj.command_centers > 1 then
-				table_sort(obj.command_centers,function(a,b)
+				table_sort(obj.command_centers, function(a, b)
 					return obj:GetVisualDist(a) < obj:GetVisualDist(b)
 				end)
 			end
@@ -876,7 +876,7 @@ function OnMsg.NewDay() -- NewSol...
 		local popup = popups[i]
 		if not popup:IsVisible() then
 			popup:delete()
-			table_remove(popups,i)
+			table_remove(popups, i)
 		end
 	end
 end
@@ -1071,7 +1071,7 @@ function OnMsg.ChangeMap()
 end
 
 do -- LoadGame/CityStart
-	local function SetMissionBonuses(UserSettings,Presets,preset,which,Func)
+	local function SetMissionBonuses(UserSettings, Presets, preset, which, Func)
 		local list = Presets[preset].Default or ""
 		for i = 1, #list do
 			local id = list[i].id
@@ -1114,8 +1114,8 @@ do -- LoadGame/CityStart
 		-- any saved Consts settings (from the Consts menu)
 		local SetConstsG = ChoGGi.ComFuncs.SetConstsG
 		local ChoGGi_Consts = ChoGGi.UserSettings.Consts
-		for key,value in pairs(ChoGGi_Consts) do
-			SetConstsG(key,value)
+		for key, value in pairs(ChoGGi_Consts) do
+			SetConstsG(key, value)
 		end
 		-- think about removing other Consts from other menus
 
@@ -1132,8 +1132,8 @@ do -- LoadGame/CityStart
 		-- re-binding is now an in-game thing, so keys are just defaults
 		UserSettings.KeyBindings = nil
 
-		SetMissionBonuses(UserSettings,Presets,"MissionSponsorPreset","Sponsor",ChoGGi.ComFuncs.SetSponsorBonuses)
-		SetMissionBonuses(UserSettings,Presets,"CommanderProfilePreset","Commander",ChoGGi.ComFuncs.SetCommanderBonuses)
+		SetMissionBonuses(UserSettings, Presets, "MissionSponsorPreset", "Sponsor", ChoGGi.ComFuncs.SetSponsorBonuses)
+		SetMissionBonuses(UserSettings, Presets, "CommanderProfilePreset", "Commander", ChoGGi.ComFuncs.SetCommanderBonuses)
 
 
 
@@ -1157,7 +1157,7 @@ do -- LoadGame/CityStart
 		-- make hidden buildings visible
 		if UserSettings.Building_hide_from_build_menu then
 			local bmpo = BuildMenuPrerequisiteOverrides
-			for key,value in pairs(bmpo) do
+			for key, value in pairs(bmpo) do
 				if value == "hide" then
 					bmpo[key] = true
 				end
@@ -1176,7 +1176,7 @@ do -- LoadGame/CityStart
 		if not blacklist then
 			local autoexec = ChoGGi.scripts .. "/autoexec.lua"
 			if ChoGGi.ComFuncs.FileExists(autoexec) then
-				print("ECM auto-executing: ",ConvertToOSPath(autoexec))
+				print("ECM auto-executing: ", ConvertToOSPath(autoexec))
 				dofile(autoexec)
 			end
 		end
@@ -1214,7 +1214,7 @@ do -- LoadGame/CityStart
 
 		-- if there's a lightmodel name saved
 		if UserSettings.Lightmodel then
-			SetLightmodelOverride(1,UserSettings.Lightmodel)
+			SetLightmodelOverride(1, UserSettings.Lightmodel)
 		end
 
 		-- long arsed cables
@@ -1341,7 +1341,7 @@ do -- LoadGame/CityStart
 			ChoGGi.ComFuncs.QuestionBox(
 				Strings[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]]
-					.. "\n\n" .. Strings[302535920001309--[["Stop showing console log: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(Strings[302535920001308--[[Settings--]]],Strings[302535920001112--[[Console Log--]]]),
+					.. "\n\n" .. Strings[302535920001309--[["Stop showing console log: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(Strings[302535920001308--[[Settings--]]], Strings[302535920001112--[[Console Log--]]]),
 				CallBackFunc,
 				Strings[302535920000000--[[Expanded Cheat Menu--]]] .. " " .. Strings[302535920000201--[[Active--]]],
 				Strings[302535920001465--[[Stop talking and start cheating!--]]],
@@ -1374,12 +1374,12 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 		-- how long startup takes
 		if testing or UserSettings.ShowStartupTicks then
-			print("<color 200 200 200>",Strings[302535920000887--[[ECM--]]],"</color>:",Strings[302535920000247--[[Startup ticks--]]],":",GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
+			print("<color 200 200 200>", Strings[302535920000887--[[ECM--]]], "</color>:", Strings[302535920000247--[[Startup ticks--]]], ":", GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
 		end
 
 		if not testing and UserSettings.ConsoleToggleHistory then
 			-- getting tired of people asking how to disable console log
-			print("<color 200 200 200>",Strings[302535920000887--[[ECM--]]],"</color>:",Strings[302535920001309--[["Stop showing these msgs: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(Strings[302535920001308--[[Settings--]]],Strings[302535920001112--[[Console Log--]]]))
+			print("<color 200 200 200>", Strings[302535920000887--[[ECM--]]], "</color>:", Strings[302535920001309--[["Stop showing these msgs: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(Strings[302535920001308--[[Settings--]]], Strings[302535920001112--[[Console Log--]]]))
 		end
 
 		-- used to check when game has started and it's safe to print() etc

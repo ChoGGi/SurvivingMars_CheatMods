@@ -60,7 +60,7 @@ function RCTankerTank:Init()
 	self:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
 
 	-- attach the arrow objs
-	local id_start, id_end = self:GetSpotBeginIndex("Autoattach"),self:GetSpotEndIndex("Autoattach")
+	local id_start, id_end = self:GetSpotBeginIndex("Autoattach"), self:GetSpotEndIndex("Autoattach")
 	for i = id_start, id_end do
 		local spot_annotation = self:GetSpotAnnotation(i)
 		if spot_annotation and spot_annotation:find("AirTankArrow") then
@@ -74,8 +74,8 @@ end
 RCTankerTank.ResetIndicatorAnimations = StorageWithIndicators.ResetIndicatorAnimations
 
 function RCTankerTank:ResetArrow()
-	self:ForEachAttach("AirTankArrow",function(a)
-		a:SetAnimPhase(1,3333)
+	self:ForEachAttach("AirTankArrow", function(a)
+		a:SetAnimPhase(1, 3333)
 	end)
 end
 
@@ -84,7 +84,7 @@ function RCTankerTank:UpdateIndicators(res_obj)
 		return
 	end
 	-- we just use the capacity from whatever tank we're working with
-	self:ForEachAttach("AirTankArrow",function(a)
+	self:ForEachAttach("AirTankArrow", function(a)
 		-- local StorageIndicatorAnimDuration = 3333
 		local phase = MulDivRound(res_obj.current_storage, 3333, res_obj.storage_capacity)
 		-- we want to build up to 3333 instead of down
@@ -136,10 +136,10 @@ DefineClass.RCTanker = {
   },
 
 	-- show the pin info
-	pin_rollover = T(0,"<ui_command>"),
+	pin_rollover = T(0, "<ui_command>"),
 
 	-- skip anything else
-	cls_storage = {"AirStorage","WaterStorage"},
+	cls_storage = {"AirStorage", "WaterStorage"},
 }
 
 function RCTanker:Init()
@@ -152,11 +152,11 @@ function RCTanker:Init()
 	if entity_tank == "OxygenTankLargeCP3" then
 		self:Attach(tank, self:GetSpotBeginIndex("Panel"))
 		tank:SetScale(35)
-		tank:SetAttachOffset(point(0,0,83))
+		tank:SetAttachOffset(point(0, 0, 83))
 	else
 		self:Attach(tank, self:GetSpotBeginIndex("Drone"))
 		tank:SetScale(70)
-		tank:SetAttachOffset(point(-360,0,980))
+		tank:SetAttachOffset(point(-360, 0, 980))
 
 		-- rotate it a bit
 		local rotate = quaternion(0, 2700, 0) * quaternion(0, 2700, 0)
@@ -207,7 +207,7 @@ function RCTanker:GotoFromUser(...)
 	self.status_text = Translate(63--[[Travelling--]])
 	-- if user broke off TankInteract then clear this here
 	self:TankInteractCleanup(2)
-	return BaseRover.GotoFromUser(self,...)
+	return BaseRover.GotoFromUser(self, ...)
 end
 
 function RCTanker:Idle()
@@ -216,7 +216,7 @@ function RCTanker:Idle()
 	self:SetState("idle")
 	self:Gossip("Idle")
 
-	DeleteThread(self.command_thread,true)
+	DeleteThread(self.command_thread, true)
 	self.command_thread = false
 end
 
@@ -238,11 +238,11 @@ function RCTanker:RetInteractInfo(obj)
 
 	local tank_type = self.tank_type
 
-	local res_obj,text
+	local res_obj, text
 	if self.tank_type == "AirStorage" then
-		res_obj,text = obj.air,Translate(682--[[Oxygen--]])
+		res_obj, text = obj.air, Translate(682--[[Oxygen--]])
 	else
-		res_obj,text = obj.water,Translate(681--[[Water--]])
+		res_obj, text = obj.water, Translate(681--[[Water--]])
 	end
 
 	local interact = self.interaction_mode
@@ -294,7 +294,7 @@ function RCTanker:CanInteractWithObject(obj, ...)
 	local status = self:RetInteractInfo(obj)
 	if status then
 		if status == 0 then
-			return true, T(0, "<UnitMoveControl('ButtonA',interaction_mode)>:    "
+			return true, T(0, "<UnitMoveControl('ButtonA', interaction_mode)>:    "
 				.. (self.tank_direction and "<image UI/Icons/IPButtons/unload.tga> Drain" or "<image UI/Icons/IPButtons/load.tga> Fill")
 				.. " " .. self:RetResIconText() .. " Tank.")
 		elseif status == 1 then
@@ -363,7 +363,7 @@ function RCTanker:TankInteract()
 	end
 
 	local tank_type = self.tank_type
-	local res_obj,res_type
+	local res_obj, res_type
 
 	if tank_type == "AirStorage" then
 		res_obj = obj.air
@@ -390,11 +390,11 @@ function RCTanker:TankInteract()
 	self.tank_particle = part
 
 	if entity_tank == "OxygenTankLargeCP3" then
-		part:SetAttachAngle(8800 + Random(1,2700))
-		part:SetAttachOffset(point(-300,475,525))
+		part:SetAttachAngle(8800 + Random(1, 2700))
+		part:SetAttachOffset(point(-300, 475, 525))
 	else
-		part:SetAttachAngle(9800 + Random(1,2700))
-		part:SetAttachOffset(point(-250,550,700))
+		part:SetAttachAngle(9800 + Random(1, 2700))
+		part:SetAttachOffset(point(-250, 550, 700))
 	end
 
 	local amount = self.amount_per_loop
@@ -465,25 +465,25 @@ DefineClass.RCTankerBuilding = {
 
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.RCTankerBuilding then
-		PlaceObj("BuildingTemplate",{
-			"Id","RCTankerBuilding",
-			"template_class","RCTankerBuilding",
+		PlaceObj("BuildingTemplate", {
+			"Id", "RCTankerBuilding",
+			"template_class", "RCTankerBuilding",
 			-- pricey?
-			"construction_cost_Metals",40000,
-			"construction_cost_MachineParts",40000,
-			"construction_cost_Electronics",20000,
+			"construction_cost_Metals", 40000,
+			"construction_cost_MachineParts", 40000,
+			"construction_cost_Electronics", 20000,
 			-- add a bit of pallor to the skeleton
 			"palette_color1", "rover_base",
 
-			"dome_forbidden",true,
-			"display_name",name,
-			"display_name_pl",name,
-			"description",description,
-			"build_category","ChoGGi",
+			"dome_forbidden", true,
+			"display_name", name,
+			"display_name_pl", name,
+			"description", description,
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", display_icon,
-			"encyclopedia_exclude",true,
-			"on_off_button",false,
+			"encyclopedia_exclude", true,
+			"on_off_button", false,
 			"entity", entity_rc_building,
 		})
 	end
@@ -494,10 +494,10 @@ function OnMsg.ClassesBuilt()
 	local rover = XTemplates.ipRover[1]
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCTanker_ToggleDir",true)
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover,"ChoGGi_Template_RCTanker_ToggleRes",true)
+	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_RCTanker_ToggleDir", true)
+	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_RCTanker_ToggleRes", true)
 
-	local function UpdateToggleDir(self,button)
+	local function UpdateToggleDir(self, button)
 		if self.tank_interact_obj then
 			self:TankInteractCleanup()
 			self:SetCommand("Idle")
@@ -535,18 +535,18 @@ Press to toggle.]],
 			"RolloverTitle", [[Drain Tank]],
 			"Icon", "UI/Icons/IPButtons/unload.tga",
 			"OnPress", function (self)
-				UpdateToggleDir(self.context,self)
+				UpdateToggleDir(self.context, self)
 			end,
 			"AltPress", true,
 			"OnAltPress", function (self, gamepad)
 				if gamepad then
-					UpdateToggleDir(self.context,self)
+					UpdateToggleDir(self.context, self)
 				end
 			end,
 		})
 	)
 
-	local function UpdateToggleRes(self,button)
+	local function UpdateToggleRes(self, button)
 		if self.tank_interact_obj then
 			self:TankInteractCleanup()
 			self:SetCommand("Idle")
@@ -576,16 +576,16 @@ Press to toggle.]],
 			"__template", "InfopanelButton",
 			"Icon", "UI/Icons/Sections/Oxygen_1.tga",
 			"RolloverTitle", Translate(682--[[Oxygen--]]) .. "\n\nPress to toggle.",
-			"RolloverText", T(0,[[Type of resource you can transfer with this RC.
+			"RolloverText", T(0, [[Type of resource you can transfer with this RC.
 
 <image UI/Common/mission_no.tga 1600> Warning: Changing will empty RC tank!]]),
 			"OnPress", function (self)
-				UpdateToggleRes(self.context,self)
+				UpdateToggleRes(self.context, self)
 			end,
 			"AltPress", true,
 			"OnAltPress", function (self, gamepad)
 				if gamepad then
-					UpdateToggleRes(self.context,self)
+					UpdateToggleRes(self.context, self)
 				end
 			end,
 		})
@@ -620,7 +620,7 @@ local function RestoreCmds()
 		elseif t.resume_goto and t.resume_goto:IsValid() then
 			local pos = t.resume_goto
 			t.resume_goto = nil
-			t:SetCommand("GotoFromUser",pos)
+			t:SetCommand("GotoFromUser", pos)
 		end
 	end
 end

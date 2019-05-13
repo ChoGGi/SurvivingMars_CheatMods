@@ -41,7 +41,7 @@ function OnMsg.ModsReloaded()
 	end
 
 	local build_str = "BuildmenuKeys.BuildMenu%s"
-	local function AddMenuKey(num,key,name)
+	local function AddMenuKey(num, key, name)
 		c = c + 1
 		Actions[c] = {
 			ActionName = Strings[302535920001414--[[Build menu key: %s--]]]:format(Translate(name)),
@@ -60,9 +60,9 @@ function OnMsg.ModsReloaded()
 	for i = 1, #BuildCategories do
 		if i < 10 then
 			-- the key has to be a string
-			AddMenuKey(i,tostring(i),BuildCategories[i].name)
+			AddMenuKey(i, tostring(i), BuildCategories[i].name)
 		elseif i == 10 then
-			AddMenuKey(i,"0",BuildCategories[i].name)
+			AddMenuKey(i, "0", BuildCategories[i].name)
 		else
 			-- skip Hidden
 			if BuildCategories[i].id == "Hidden" then
@@ -70,10 +70,10 @@ function OnMsg.ModsReloaded()
 			else
 				if skipped then
 					-- -1 more for skipping Hidden
-					AddMenuKey(i,build_str:format(i - 11),BuildCategories[i].name)
+					AddMenuKey(i, build_str:format(i - 11), BuildCategories[i].name)
 				else
 					-- -10 since we're doing Shift-*
-					AddMenuKey(i,build_str:format(i - 10),BuildCategories[i].name)
+					AddMenuKey(i, build_str:format(i - 10), BuildCategories[i].name)
 				end
 			end
 		end

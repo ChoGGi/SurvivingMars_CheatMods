@@ -90,10 +90,10 @@ function OnMsg.ClassesBuilt()
 	}
 
 	template_table.__context_of_kind = "RCRover"
-	ChoGGi.ComFuncs.AddXTemplate("ChangeDroneType","ipRover",template_table)
+	ChoGGi.ComFuncs.AddXTemplate("ChangeDroneType", "ipRover", template_table)
 
 	template_table.__context_of_kind = "DroneHub"
-	ChoGGi.ComFuncs.AddXTemplate("ChangeDroneType","ipBuilding",template_table)
+	ChoGGi.ComFuncs.AddXTemplate("ChangeDroneType", "ipBuilding", template_table)
 
 end
 

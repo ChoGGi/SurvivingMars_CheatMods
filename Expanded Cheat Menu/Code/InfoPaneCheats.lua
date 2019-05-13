@@ -43,29 +43,29 @@ function ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
 	end
 end
 
-local function SetHint(action,hint)
+local function SetHint(action, hint)
 	-- name has to be set to make the hint show up
 	action.ActionName = action.ActionId
 	action.RolloverText = hint
 	action.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
 end
-local function SetIcon(action,name,icon)
+local function SetIcon(action, name, icon)
 	-- we're changing the name so we'll set the hint title to the orig name
 	action.RolloverTitle = action.ActionName
 	action.ActionName = name or "\0"
 	action.ActionIcon = icon
 end
 
-local function SetUpgradeInfo(action,obj,num)
+local function SetUpgradeInfo(action, obj, num)
 	-- if there's an upgrade then add hint text, otherwise blank the id to hide it
 	if obj:GetUpgradeID(num) ~= "" then
-		SetHint(action,Strings[302535920001207--[["Add: %s to this building.
+		SetHint(action, Strings[302535920001207--[["Add: %s to this building.
 
 %s"--]]]:format(
 			Translate(obj["upgrade" .. num .. "_display_name"]),
-			Translate(T{obj["upgrade" .. num .. "_description"],obj})
+			Translate(T{obj["upgrade" .. num .. "_description"], obj})
 		))
-		SetIcon(action,num,obj["upgrade" .. num .. "_icon"])
+		SetIcon(action, num, obj["upgrade" .. num .. "_icon"])
 	else
 		action.ActionId = ""
 	end
@@ -117,11 +117,11 @@ local grid_lookup = {
 		con = "electricity_consumption",
 	},
 }
-local function SetGridInfo(action,obj,name,grid)
+local function SetGridInfo(action, obj, name, grid)
 	local consumption = obj[grid.con]
 	if consumption and consumption ~= 0 then
-		SetHint(action,grid.text2:format(name,grid.name))
-		SetIcon(action,grid.text1,grid.icon)
+		SetHint(action, grid.text2:format(name, grid.name))
+		SetIcon(action, grid.text1, grid.icon)
 	else
 		action.ActionId = ""
 	end
@@ -376,13 +376,13 @@ local cheats_lookup2 = {
 	Repair = true,
 }
 
-local skip_CleanAndFix_AddDust = {"UniversalStorageDepot","WasteRockDumpSite"}
-local skip_ToggleSigns = {"SubsurfaceDeposit","SurfaceDeposit","WasteRockDumpSite"}
-local skip_Empty = {"SubsurfaceDeposit","TerrainDeposit"}
+local skip_CleanAndFix_AddDust = {"UniversalStorageDepot", "WasteRockDumpSite"}
+local skip_ToggleSigns = {"SubsurfaceDeposit", "SurfaceDeposit", "WasteRockDumpSite"}
+local skip_Empty = {"SubsurfaceDeposit", "TerrainDeposit"}
 
 -- check for any cheat funcs missing the tooltip description
 function ChoGGi.InfoFuncs.CheckForMissingCheatDes()
-	local type,pairs = type,pairs
+	local type, pairs = type, pairs
 
 	-- list any missing ones
 	local missing = {}
@@ -390,11 +390,11 @@ function ChoGGi.InfoFuncs.CheckForMissingCheatDes()
 	local checked = {}
 
 	local g_Classes = g_Classes
-	for _,value_cls in pairs(g_Classes) do
-		for key_obj,value_obj in pairs(value_cls) do
+	for _, value_cls in pairs(g_Classes) do
+		for key_obj, value_obj in pairs(value_cls) do
 			-- skip some cls objs have a false in them, and if we've already checked it
 			-- and if it's not a func / a func with Cheat starting in the name
-			if key_obj ~= false and not checked[value_obj] and type(value_obj) == "function" and key_obj:sub(1,5) == "Cheat" then
+			if key_obj ~= false and not checked[value_obj] and type(value_obj) == "function" and key_obj:sub(1, 5) == "Cheat" then
 				-- always add func to checked list
 				checked[value_obj] = true
 
@@ -427,12 +427,12 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 			if look.des then
 				if look.des_name then
 					if type(look.des_name) == "string" then
-						SetHint(action,look.des:format(obj[look.des_name]))
+						SetHint(action, look.des:format(obj[look.des_name]))
 					else
-						SetHint(action,look.des:format(name))
+						SetHint(action, look.des:format(name))
 					end
 				else
-					SetHint(action,look.des)
+					SetHint(action, look.des)
 				end
 			end
 
@@ -440,90 +440,90 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 				action.ActionName = look.name
 			end
 			if look.icon then
-				SetIcon(action,look.icon_name,look.icon)
+				SetIcon(action, look.icon_name, look.icon)
 			end
 
 		elseif grid_lookup[aid] then
-			SetGridInfo(action,obj,name,grid_lookup[aid])
+			SetGridInfo(action, obj, name, grid_lookup[aid])
 
 		-- cheats_lookup2 is a list of name = true
 		elseif cheats_lookup2[aid] then
 			if aid == "ToggleCollision" then
-				SetHint(action,Strings[302535920001543--[[Set collisions on %s. Collisions disabled: %s--]]]:format(name,ComFuncs.SettingState(obj.ChoGGi_CollisionsDisabled)))
-				SetIcon(action,nil,"CommonAssets/UI/Menu/ToggleOcclusion.tga")
+				SetHint(action, Strings[302535920001543--[[Set collisions on %s. Collisions disabled: %s--]]]:format(name, ComFuncs.SettingState(obj.ChoGGi_CollisionsDisabled)))
+				SetIcon(action, nil, "CommonAssets/UI/Menu/ToggleOcclusion.tga")
 
 			elseif aid == "CleanAndFix" then
 				if obj:IsKindOfClasses(skip_CleanAndFix_AddDust) then
 					action.ActionId = ""
 				else
-					SetHint(action,Strings[302535920001226--[[Cleans dust and removes maintenance points.--]]])
+					SetHint(action, Strings[302535920001226--[[Cleans dust and removes maintenance points.--]]])
 				end
 
 			elseif aid == "AddDust" then
 				if obj:IsKindOfClasses(skip_CleanAndFix_AddDust) then
 					action.ActionId = ""
 				else
-					SetHint(action,Strings[302535920001225--[[Adds dust and maintenance points.--]]])
+					SetHint(action, Strings[302535920001225--[[Adds dust and maintenance points.--]]])
 				end
 
 			elseif aid == "ToggleSigns" then
 				if obj:IsKindOfClasses(skip_ToggleSigns) then
 					action.ActionId = ""
 				else
-					SetHint(action,Strings[302535920001223--[[Toggle any signs above %s (until state is changed).--]]]:format(name))
+					SetHint(action, Strings[302535920001223--[[Toggle any signs above %s (until state is changed).--]]]:format(name))
 				end
 
 			elseif aid == "Destroy" then
 				if obj:IsKindOf("SupplyRocket") or obj.destroyed then
 					action.ActionId = ""
 				else
-					SetHint(action,Strings[302535920001227--[[Turns object into ruin.--]]])
-					SetIcon(action,nil,"UI/Icons/IPButtons/demolition.tga")
+					SetHint(action, Strings[302535920001227--[[Turns object into ruin.--]]])
+					SetIcon(action, nil, "UI/Icons/IPButtons/demolition.tga")
 				end
 
 			elseif aid == "Refill" then
 				if obj:IsKindOf("SubsurfaceAnomaly") then
 					action.ActionId = ""
 				else
-					SetHint(action,Strings[302535920001231--[[Refill the deposit to full capacity.--]]])
+					SetHint(action, Strings[302535920001231--[[Refill the deposit to full capacity.--]]])
 				end
 
 			elseif aid == "DoubleMaxAmount" then
 				if obj:IsKindOf("SubsurfaceAnomaly") then
 					action.ActionId = ""
 				else
-					SetHint(action,Strings[302535920001234--[[Double the amount this %s can hold.--]]]:format(name))
+					SetHint(action, Strings[302535920001234--[[Double the amount this %s can hold.--]]]:format(name))
 				end
 
 			elseif aid == "Upgrade1" then
-				SetUpgradeInfo(action,obj,1)
+				SetUpgradeInfo(action, obj, 1)
 			elseif aid == "Upgrade2" then
-				SetUpgradeInfo(action,obj,2)
+				SetUpgradeInfo(action, obj, 2)
 			elseif aid == "Upgrade3" then
-				SetUpgradeInfo(action,obj,3)
+				SetUpgradeInfo(action, obj, 3)
 			elseif aid == "WorkAuto" then
 				local bs = ChoGGi.UserSettings.BuildingSettings
-				SetHint(action,Strings[302535920001209--[[Make this %s not need workers (performance: %s).--]]]:format(name,bs and bs[id] and bs[id].performance or 150))
+				SetHint(action, Strings[302535920001209--[[Make this %s not need workers (performance: %s).--]]]:format(name, bs and bs[id] and bs[id].performance or 150))
 
 			elseif aid == "CapDbl" then
 				if obj:IsKindOf("SupplyRocket") then
-					SetHint(action,Strings[302535920001211--[[Double the export storage capacity of this %s.--]]]:format(name))
+					SetHint(action, Strings[302535920001211--[[Double the export storage capacity of this %s.--]]]:format(name))
 				else
-					SetHint(action,Strings[302535920001212--[[Double the storage capacity of this %s.--]]]:format(name))
+					SetHint(action, Strings[302535920001212--[[Double the storage capacity of this %s.--]]]:format(name))
 				end
 
 			elseif aid == "Malfunction" then
 				if obj.destroyed or obj.is_malfunctioned then
 					action.ActionId = ""
 				else
-					SetHint(action,Translate(8039--[[Trait: Idiot (can cause a malfunction)--]]) .. "...\n" .. Translate(53--[[Malfunction--]]) .. "?")
+					SetHint(action, Translate(8039--[[Trait: Idiot (can cause a malfunction)--]]) .. "...\n" .. Translate(53--[[Malfunction--]]) .. "?")
 				end
 
 			elseif aid == "Unfreeze" then
 				if obj:IsKindOf("DroneHub") or obj.destroyed then
 					action.ActionId = ""
 				else
-					SetHint(action,Strings[302535920000903--[[Unfreeze frozen object.--]]])
+					SetHint(action, Strings[302535920000903--[[Unfreeze frozen object.--]]])
 				end
 
 			elseif aid == "Empty" then
@@ -531,9 +531,9 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 					action.ActionId = ""
 				else
 					if obj:IsKindOfClasses(skip_Empty) then
-						SetHint(action,Strings[302535920001228--[[Set the stored amount of this %s to 0.--]]]:format(name))
+						SetHint(action, Strings[302535920001228--[[Set the stored amount of this %s to 0.--]]]:format(name))
 					else
-						SetHint(action,Strings[302535920001230--[[Empties the storage of this building.
+						SetHint(action, Strings[302535920001230--[[Empties the storage of this building.
 
 	If this isn't a dumping site then waste rock will not be emptied.--]]])
 					end
@@ -541,20 +541,20 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 
 			elseif aid == "Break" then
 				if obj:IsKindOf("ElectricityGridElement") then
-					SetHint(action,Translate(3890--[[Cable Fault--]]))
+					SetHint(action, Translate(3890--[[Cable Fault--]]))
 				else
-					SetHint(action,Translate(3891--[[Pipe Leak--]]))
+					SetHint(action, Translate(3891--[[Pipe Leak--]]))
 				end
 			elseif aid == "Repair" then
 				if obj:IsKindOf("ElectricityGridElement") then
-					SetHint(action,Translate(6924--[[Repair--]]) .. " " .. Translate(3890--[[Cable Fault--]]))
+					SetHint(action, Translate(6924--[[Repair--]]) .. " " .. Translate(3890--[[Cable Fault--]]))
 				else
-					SetHint(action,Translate(6924--[[Repair--]]) .. " " .. Translate(3891--[[Pipe Leak--]]))
+					SetHint(action, Translate(6924--[[Repair--]]) .. " " .. Translate(3891--[[Pipe Leak--]]))
 				end
 			end
 
 		else
-			SetHint(action,"Missing Hint")
+			SetHint(action, "Missing Hint")
 		end -- lookup ifs
 	end -- for
 
@@ -600,7 +600,7 @@ function Colonist:CheatFillAll()
 	self:CheatFillMorale()
 end
 function Colonist:CheatRenegade()
-	self:AddTrait("Renegade",true)
+	self:AddTrait("Renegade", true)
 end
 function Colonist:CheatRenegadeClear()
 	self:RemoveTrait("Renegade")
@@ -610,13 +610,13 @@ function Colonist:CheatRenegadeClear()
 	end)
 end
 function Colonist:CheatRandomRace()
-	self.race = Random(1,5)
+	self.race = Random(1, 5)
 	self:ChooseEntity()
 end
 function Colonist:CheatRandomSpec()
 	-- skip children, or they'll be a black cube
 	if not self:GetEntity():find("Child") then
-		self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[Random(1,#ChoGGi.Tables.ColonistSpecializations)],"init")
+		self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[Random(1, #ChoGGi.Tables.ColonistSpecializations)], "init")
 	end
 end
 function Colonist:CheatPrefDbl()
@@ -626,10 +626,10 @@ function Colonist:CheatPrefDef()
 	self.performance = self:GetClassValue("performance")
 end
 function Colonist:CheatRandomGender()
-	ChoGGi.ComFuncs.ColonistUpdateGender(self,ChoGGi.Tables.ColonistGenders[Random(1,#ChoGGi.Tables.ColonistGenders)])
+	ChoGGi.ComFuncs.ColonistUpdateGender(self, ChoGGi.Tables.ColonistGenders[Random(1, #ChoGGi.Tables.ColonistGenders)])
 end
 function Colonist:CheatRandomAge()
-	ChoGGi.ComFuncs.ColonistUpdateAge(self,ChoGGi.Tables.ColonistAges[Random(1,#ChoGGi.Tables.ColonistAges)])
+	ChoGGi.ComFuncs.ColonistUpdateAge(self, ChoGGi.Tables.ColonistAges[Random(1, #ChoGGi.Tables.ColonistAges)])
 end
 function Colonist:CheatDie()
 	ChoGGi.ComFuncs.QuestionBox(
@@ -701,15 +701,15 @@ end
 -- CheatCap storage
 local function RetGridValues(obj)
 	if obj:IsKindOf("ElectricityStorage") then
-		return "capacity",obj.electricity
+		return "capacity", obj.electricity
 	elseif obj:IsKindOf("AirStorage") then
-		return "air_capacity",obj.air
+		return "air_capacity", obj.air
 	elseif obj:IsKindOf("WaterStorage") then
-		return "water_capacity",obj.water
+		return "water_capacity", obj.water
 	end
 end
 local function CheatCapDbl(obj)
-	local cap_key,grid = RetGridValues(obj)
+	local cap_key, grid = RetGridValues(obj)
 	local new = obj[cap_key] * 2
 	obj[cap_key] = new
 	grid.storage_capacity = new
@@ -717,7 +717,7 @@ local function CheatCapDbl(obj)
 	ChoGGi.ComFuncs.ToggleWorking(obj)
 end
 local function CheatCapDef(obj)
-	local cap_key,grid = RetGridValues(obj)
+	local cap_key, grid = RetGridValues(obj)
 	local new = obj:GetClassValue(cap_key)
 	obj[cap_key] = new
 	grid.storage_capacity = new
@@ -845,10 +845,10 @@ function SecurityStation:CheatReneagadeCapDef()
 end
 
 function SupplyRocket:CheatCapDbl()
-	ChoGGi.ComFuncs.SetTaskReqAmount(self,self.max_export_storage * 2,"export_requests","max_export_storage")
+	ChoGGi.ComFuncs.SetTaskReqAmount(self, self.max_export_storage * 2, "export_requests", "max_export_storage")
 end
 function SupplyRocket:CheatCapDef()
-	ChoGGi.ComFuncs.SetTaskReqAmount(self,self:GetClassValue("max_export_storage"),"export_requests","max_export_storage")
+	ChoGGi.ComFuncs.SetTaskReqAmount(self, self:GetClassValue("max_export_storage"), "export_requests", "max_export_storage")
 end
 
 function SupplyRocket:CheatAddFuel()
@@ -871,15 +871,15 @@ function SupplyRocket:CheatAddFuel()
 	end
 end
 function SupplyRocket:CheatAddDust2()
-	self:SetDust(600,0)
+	self:SetDust(600, 0)
 	ApplyToObjAndAttaches(self, SetObjDust, 600)
 end
 function SupplyRocket:CheatCleanAndFix2()
-	self:SetDust(0,0)
+	self:SetDust(0, 0)
 	ApplyToObjAndAttaches(self, SetObjDust, 0)
 end
 
-if rawget(_G,"Sinkhole") then
+if rawget(_G, "Sinkhole") then
 	Sinkhole.CheatSpawnFirefly = Sinkhole.TestSpawnFireflyAndGo
 end
 
@@ -904,8 +904,8 @@ function Dome:CheatCrimeEvent()
 	}}
 	local c = #item_list
 	local Dome = Dome
-	for key,value in pairs(Dome) do
-		if type(value) == "function" and key:sub(1,12) == "CrimeEvents_" then
+	for key, value in pairs(Dome) do
+		if type(value) == "function" and key:sub(1, 12) == "CrimeEvents_" then
 			c = c + 1
 			item_list[c] = {
 				text = key:sub(13),

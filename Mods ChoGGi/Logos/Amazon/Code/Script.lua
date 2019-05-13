@@ -28,7 +28,7 @@ do -- LoadEntity
 	local EntityLoadEntities = EntityLoadEntities
 	local SetEntityFadeDistances = SetEntityFadeDistances
 
-	local function LoadEntity(name,path,mod,template)
+	local function LoadEntity(name, path, mod, template)
 		EntityData[name] = entity_templates[template or "decal"]
 
 		EntityLoadEntities[#EntityLoadEntities + 1] = {

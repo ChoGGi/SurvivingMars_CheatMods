@@ -11,7 +11,7 @@ function OnMsg.ClassesBuilt()
 		-- get them lazy drones working
 		FuckingDrones(self)
 		-- be on your way
-		return orig_SingleResourceProducer_Produce(self,...)
+		return orig_SingleResourceProducer_Produce(self, ...)
 	end
 
 end
@@ -42,7 +42,7 @@ local mod = Mods[mod_id]
 local default_drone_amount
 
 local function UpdateAmount(amount)
-	SetConstsG("DroneResourceCarryAmount",amount)
+	SetConstsG("DroneResourceCarryAmount", amount)
 	UpdateDroneResourceUnits()
 end
 

@@ -8,7 +8,7 @@ local display_icon = CurrentModPath .. "UI/rover_combat.png"
 local idle_text = ChoGGi.ComFuncs.Translate(6722--[[Idle--]])
 local travel_text = ChoGGi.ComFuncs.Translate(63--[[Travelling--]])
 
-GlobalVar("g_RCMechanicRepairing",{})
+GlobalVar("g_RCMechanicRepairing", {})
 
 DefineClass.RCMechanic = {
 	__parents = {
@@ -31,7 +31,7 @@ DefineClass.RCMechanic = {
 	on_demolish_resource_refund = { Metals = 20 * const.ResourceScale, MachineParts = 20 * const.ResourceScale , Electronics = 10 * const.ResourceScale },
 
 	-- show the pin info
-	pin_rollover = T(0,"<ui_command>"),
+	pin_rollover = T(0, "<ui_command>"),
 }
 
 DefineClass.RCMechanicBuilding = {
@@ -53,7 +53,7 @@ function RCMechanic:GameInit()
 		200
 	)
 	self.blinky:SetAttachOffset(
-		point(offset:x(),offset:y(),self:GetObjectBBox():sizez())
+		point(offset:x(), offset:y(), self:GetObjectBBox():sizez())
 	)
 
 	-- select sounds
@@ -75,7 +75,7 @@ end
 
 function RCMechanic:GotoFromUser(...)
 	self.status_text = travel_text
-	return BaseRover.GotoFromUser(self,...)
+	return BaseRover.GotoFromUser(self, ...)
 end
 
 -- for auto mode
@@ -85,7 +85,7 @@ function RCMechanic:ProcAutomation()
 	local unreachable_objects = self:GetUnreachableObjectsTable()
 	unreachable_objects = unreachable_objects or {}
 
-	local rover = MapFindNearest(self, "map", "BaseRover", "Drone" ,function(o)
+	local rover = MapFindNearest(self, "map", "BaseRover", "Drone" , function(o)
 		local go_fix_it
 		-- check for rovers without a cc or if all cc nearby have no working drones
 		if o.command == "Malfunction" then
@@ -95,7 +95,7 @@ function RCMechanic:ProcAutomation()
 					return
 				end
 			elseif o:IsKindOf("Drone") then
-				if not table.find(g_BrokenDrones,"handle",o.handle) then
+				if not table.find(g_BrokenDrones, "handle", o.handle) then
 					return
 				end
 			end
@@ -183,27 +183,27 @@ end
 
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.RCMechanicBuilding then
-		PlaceObj("BuildingTemplate",{
-			"Id","RCMechanicBuilding",
-			"template_class","RCMechanicBuilding",
+		PlaceObj("BuildingTemplate", {
+			"Id", "RCMechanicBuilding",
+			"template_class", "RCMechanicBuilding",
 			-- pricey?
-			"construction_cost_Metals",40000,
-			"construction_cost_MachineParts",40000,
-			"construction_cost_Electronics",20000,
+			"construction_cost_Metals", 40000,
+			"construction_cost_MachineParts", 40000,
+			"construction_cost_Electronics", 20000,
 			-- add a bit of pallor to the skeleton
 			"palette_color1", "rover_base",
 
-			"dome_forbidden",true,
-			"display_name",name,
-			"display_name_pl",name,
-			"description",description,
-			"build_category","ChoGGi",
+			"dome_forbidden", true,
+			"display_name", name,
+			"display_name_pl", name,
+			"description", description,
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", display_icon,
-			"encyclopedia_exclude",true,
-			"on_off_button",false,
-			"entity","CombatRover",
-			"palettes","AttackRoverBlue",
+			"encyclopedia_exclude", true,
+			"on_off_button", false,
+			"entity", "CombatRover",
+			"palettes", "AttackRoverBlue",
 		})
 	end
 end

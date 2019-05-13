@@ -20,8 +20,8 @@ local pairs = pairs
 local GetSafeAreaBox = GetSafeAreaBox
 
 SaveOrigFunc("SetUserUIScale")
-function SetUserUIScale(val,...)
-	ChoGGi_OrigFuncs.SetUserUIScale(val,...)
+function SetUserUIScale(val, ...)
+	ChoGGi_OrigFuncs.SetUserUIScale(val, ...)
 
 	local UIScale = (val + 0.0) / 100
 	-- update existing dialogs
@@ -32,7 +32,7 @@ function SetUserUIScale(val,...)
 		dlg.header_scaled = dlg.header * UIScale
 
 		-- make sure the size i use is below the res w/h
-		local _,_,x,y = GetSafeAreaBox():xyxy()
+		local _, _, x, y = GetSafeAreaBox():xyxy()
 		if dlg.dialog_width_scaled > x then
 			dlg.dialog_width_scaled = x - 50
 		end
@@ -47,7 +47,7 @@ function SetUserUIScale(val,...)
 end
 
 -- copied from GedPropEditors.lua. it's normally only called when GED is loaded, but we need it for the colour picker
-if not rawget(_G,"CreateNumberEditor") then
+if not rawget(_G, "CreateNumberEditor") then
 	local IconScale = point(500, 500)
 	local IconColor = RGB(0, 0, 0)
 	local RolloverBackground = RGB(204, 232, 255)

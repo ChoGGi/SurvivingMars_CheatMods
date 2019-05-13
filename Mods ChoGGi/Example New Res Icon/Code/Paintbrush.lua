@@ -4,16 +4,16 @@
 --~ }
 
 -- No sense in creating a table each time we select one
-local metals = {"SignMetalsDeposit","SignExampleMetalDeposit"}
-local concrete = {"SignConcreteDeposit","SignExampleConcreteDeposit"}
+local metals = {"SignMetalsDeposit", "SignExampleMetalDeposit"}
+local concrete = {"SignConcreteDeposit", "SignExampleConcreteDeposit"}
 
 -- make the paintbrush show up
 function SubsurfaceDepositMetals:GetSkins()
---~ 	return metals,palettes
+--~ 	return metals, palettes
 	return metals
 end
 function TerrainDepositConcrete:GetSkins()
---~ 	return concrete,palettes
+--~ 	return concrete, palettes
 	return concrete
 end
 

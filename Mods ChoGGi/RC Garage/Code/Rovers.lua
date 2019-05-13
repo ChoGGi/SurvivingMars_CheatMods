@@ -22,15 +22,15 @@ local function CanInteractWithObject_local(interact, obj)
 	if (interact == false or interact == "default" or interact == "move")
 		and garage.main and garage.main.working
 		and IsKindOf(obj, "RCGarage") and obj:CheckMainGarage() then
-		return true, T(0, [[<UnitMoveControl('ButtonA',interaction_mode)>: Use Garage]])
+		return true, T(0, [[<UnitMoveControl('ButtonA', interaction_mode)>: Use Garage]])
 	end
 end
 
 local orig_BaseRover_CanInteractWithObject = BaseRover.CanInteractWithObject
 function BaseRover:CanInteractWithObject(obj, interaction_mode, ...)
-	local ret1,ret2 = CanInteractWithObject_local(self.interaction_mode, obj, interaction_mode)
+	local ret1, ret2 = CanInteractWithObject_local(self.interaction_mode, obj, interaction_mode)
 	if ret1 then
-		return ret1,ret2
+		return ret1, ret2
 	end
 
 	return orig_BaseRover_CanInteractWithObject(self, obj, interaction_mode, ...)
@@ -54,7 +54,7 @@ end
 local orig_BaseRover_GotoFromUser = BaseRover.GotoFromUser or Unit.GotoFromUser
 function BaseRover:GotoFromUser(...)
 	if not self.ChoGGi_InGarage then
-		return orig_BaseRover_GotoFromUser(self,...)
+		return orig_BaseRover_GotoFromUser(self, ...)
 	end
 end
 -- maybe add SetCommand
@@ -65,20 +65,20 @@ function RCRover:Siege(...)
 	if self.ChoGGi_InGarage then
 		Sleep(5000)
 	else
-		return orig_RCRover_Siege(self,...)
+		return orig_RCRover_Siege(self, ...)
 	end
 end
 
 -- fix for any rovers stuck on the map from missing rover story
 local function RestoreMissingRover(obj)
-	local nearest = FindNearestObject(UICity.labels.RCGarage,obj)
+	local nearest = FindNearestObject(UICity.labels.RCGarage, obj)
 	obj:SetPos(nearest:GetPos())
 	nearest:RemoveFromGarage(obj)
 end
 
 local InvalidPos = InvalidPos()
 function OnMsg.LoadGame()
-	local rovers = MapGet("map","BaseRover")
+	local rovers = MapGet("map", "BaseRover")
 	for i = 1, #rovers do
 		local r = rovers[i]
 		if r.ChoGGi_InGarage and r:GetPos() ~= InvalidPos then
@@ -91,7 +91,7 @@ function BaseRover:Appear(...)
 	if self.ChoGGi_InGarage then
 		RestoreMissingRover(self)
 	end
-	return orig_BaseRover_Appear(self,...)
+	return orig_BaseRover_Appear(self, ...)
 end
 
 function BaseRover:ChoGGi_UseGarage(garage)
@@ -119,23 +119,23 @@ end
 function OnMsg.ClassesBuilt()
 
 
-	if rawget(g_Classes,"PMSAttackRover") then
+	if rawget(g_Classes, "PMSAttackRover") then
 		local orig_PMSAttackRover_CanInteractWithObject = PMSAttackRover.CanInteractWithObject
 		function PMSAttackRover:CanInteractWithObject(obj, interaction_mode, ...)
-			local ret1,ret2 = CanInteractWithObject_local(self, obj, interaction_mode)
+			local ret1, ret2 = CanInteractWithObject_local(self, obj, interaction_mode)
 			if ret1 then
-				return ret1,ret2
+				return ret1, ret2
 			end
 			return orig_PMSAttackRover_CanInteractWithObject(self, obj, interaction_mode, ...)
 		end
 	end
 
-	if rawget(g_Classes,"NASAAttackRover") then
+	if rawget(g_Classes, "NASAAttackRover") then
 		local orig_NASAAttackRover_CanInteractWithObject = NASAAttackRover.CanInteractWithObject
 		function NASAAttackRover:CanInteractWithObject(obj, interaction_mode, ...)
-			local ret1,ret2 = CanInteractWithObject_local(self, obj, interaction_mode)
+			local ret1, ret2 = CanInteractWithObject_local(self, obj, interaction_mode)
 			if ret1 then
-				return ret1,ret2
+				return ret1, ret2
 			end
 			return orig_NASAAttackRover_CanInteractWithObject(self, obj, interaction_mode, ...)
 		end

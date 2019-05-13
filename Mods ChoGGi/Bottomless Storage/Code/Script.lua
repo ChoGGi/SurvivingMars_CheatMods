@@ -35,7 +35,7 @@ function OnMsg.ClassesPostprocess()
 			"display_name", [[Bottomless Storage]],
 			"display_name_pl", [[Bottomless Storage]],
 			"description", [[Warning: Anything added to this depot will disappear.]],
-			"build_category","ChoGGi",
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", CurrentModPath .. "UI/bottomless_storage.png",
 			"entity", "ResourcePlatform",

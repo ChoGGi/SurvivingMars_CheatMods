@@ -52,12 +52,12 @@ end
 
 local orig_Workplace_RemoveWorker = Workplace.RemoveWorker
 function Workplace:RemoveWorker(worker)
-  FiredWorker(self,worker)
+  FiredWorker(self, worker)
   return orig_Workplace_RemoveWorker(self, worker)
 end
 local orig_Workplace_FireWorker = Workplace.FireWorker
 function Workplace:FireWorker(worker)
-  FiredWorker(self,worker)
+  FiredWorker(self, worker)
   return orig_Workplace_FireWorker(self, worker)
 end
 
@@ -71,14 +71,14 @@ function Workplace:KickAllWorkers()
 end
 
 -- loop through all the workplaces, and check for anyone who worked over 24 Sols
-local pairs,IsValid = pairs,IsValid
+local pairs, IsValid = pairs, IsValid
 function OnMsg.NewDay(sol) -- NewSol...
   local workplaces = UICity.labels.Workplace or ""
   for i = 1, #workplaces do
     local work = workplaces[i]
     -- only workplaces with my table
     if work.ChoGGi_SpecByExp then
-      for handle,c_table in pairs(work.ChoGGi_SpecByExp) do
+      for handle, c_table in pairs(work.ChoGGi_SpecByExp) do
 
         -- just in case
         if IsValid(c_table.obj) or not c_table.obj.dying then

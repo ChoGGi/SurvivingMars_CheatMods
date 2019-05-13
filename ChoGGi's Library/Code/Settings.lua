@@ -8,15 +8,15 @@ ChoGGi.Tables = {
 	-- display names only!
 	ColonistRaces = {
 		-- caucasian
-		Translate(1859--[[White--]]),[Translate(1859--[[White--]])] = true,
+		Translate(1859--[[White--]]), [Translate(1859--[[White--]])] = true,
 		-- african
-		Strings[302535920000739--[[Black--]]],[Strings[302535920000739--[[Black--]]]] = true,
+		Strings[302535920000739--[[Black--]]], [Strings[302535920000739--[[Black--]]]] = true,
 		-- asian
-		Strings[302535920000740--[[Asian--]]],[Strings[302535920000740--[[Asian--]]]] = true,
+		Strings[302535920000740--[[Asian--]]], [Strings[302535920000740--[[Asian--]]]] = true,
 		-- aryan (indo-iranian is too much of a mouthful and aryan will just make some people pissy)
-		Strings[302535920001283--[[Indian--]]],[Strings[302535920001283--[[Indian--]]]] = true,
+		Strings[302535920001283--[[Indian--]]], [Strings[302535920001283--[[Indian--]]]] = true,
 		-- hispanic
-		Strings[302535920001284--[[Hispanic--]]],[Strings[302535920001284--[[Hispanic--]]]] = true,
+		Strings[302535920001284--[[Hispanic--]]], [Strings[302535920001284--[[Hispanic--]]]] = true,
 	},
 	ColonistRacesImages = {
 		[Translate(1859--[[White--]])] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_01.tga",
@@ -87,13 +87,13 @@ ChoGGi.Tables = {
 -- also called after mods are loaded, we call it now for any functions that use it before then
 ChoGGi.ComFuncs.UpdateDataTables()
 
-local function GetValueCls(obj,value,fallback)
+local function GetValueCls(obj, value, fallback)
 	if obj then
 		return obj:GetDefaultPropertyValue(value)
 	end
 	return fallback
 end
-local function GetValueBT(bt,value,fallback)
+local function GetValueBT(bt, value, fallback)
 	if bt and bt[value] then
 		return bt[value]
 	end
@@ -109,7 +109,7 @@ function OnMsg.ClassesBuilt()
 	local r = const.ResourceScale
 
 	-- get the default values for our Consts
-	for key,value in pairs(cConsts) do
+	for key, value in pairs(cConsts) do
 		if value == false then
 			local setting = Consts:GetDefaultPropertyValue(key)
 			if setting then
@@ -119,25 +119,25 @@ function OnMsg.ClassesBuilt()
 	end
 
 	-- get other defaults not stored in Consts
-	ChoGGi.Consts.DroneFactoryBuildSpeed = GetValueCls(g_Classes.DroneFactory,"performance",100)
-	ChoGGi.Consts.StorageShuttle = GetValueCls(g_Classes.CargoShuttle,"max_shared_storage",3 * r)
-	ChoGGi.Consts.SpeedShuttle = GetValueCls(g_Classes.CargoShuttle,"move_speed",3 * r)
-	ChoGGi.Consts.ShuttleHubShuttleCapacity = GetValueCls(g_Classes.ShuttleHub,"max_shuttles",10)
-	ChoGGi.Consts.SpeedDrone = GetValueCls(g_Classes.Drone,"move_speed",1440)
-	ChoGGi.Consts.SpeedRC = GetValueCls(g_Classes.RCRover,"move_speed",1 * r)
-	ChoGGi.Consts.SpeedColonist = GetValueCls(g_Classes.Colonist,"move_speed",1 * r)
-	ChoGGi.Consts.RCTransportStorageCapacity = GetValueCls(g_Classes.RCTransport,"max_shared_storage",30 * r)
-	if rawget(g_Classes,"RCConstructor") then
-		ChoGGi.Consts.RCConstructorStorageCapacity = GetValueCls(g_Classes.RCConstructor,"max_shared_storage",42 * r)
+	ChoGGi.Consts.DroneFactoryBuildSpeed = GetValueCls(g_Classes.DroneFactory, "performance", 100)
+	ChoGGi.Consts.StorageShuttle = GetValueCls(g_Classes.CargoShuttle, "max_shared_storage", 3 * r)
+	ChoGGi.Consts.SpeedShuttle = GetValueCls(g_Classes.CargoShuttle, "move_speed", 3 * r)
+	ChoGGi.Consts.ShuttleHubShuttleCapacity = GetValueCls(g_Classes.ShuttleHub, "max_shuttles", 10)
+	ChoGGi.Consts.SpeedDrone = GetValueCls(g_Classes.Drone, "move_speed", 1440)
+	ChoGGi.Consts.SpeedRC = GetValueCls(g_Classes.RCRover, "move_speed", 1 * r)
+	ChoGGi.Consts.SpeedColonist = GetValueCls(g_Classes.Colonist, "move_speed", 1 * r)
+	ChoGGi.Consts.RCTransportStorageCapacity = GetValueCls(g_Classes.RCTransport, "max_shared_storage", 30 * r)
+	if rawget(g_Classes, "RCConstructor") then
+		ChoGGi.Consts.RCConstructorStorageCapacity = GetValueCls(g_Classes.RCConstructor, "max_shared_storage", 42 * r)
 	end
-	ChoGGi.Consts.StorageUniversalDepot = GetValueCls(g_Classes.UniversalStorageDepot,"max_storage_per_resource",30 * r)
+	ChoGGi.Consts.StorageUniversalDepot = GetValueCls(g_Classes.UniversalStorageDepot, "max_storage_per_resource", 30 * r)
 	local bt = BuildingTemplates
-	ChoGGi.Consts.StorageWasteDepot = GetValueBT(bt.WasteRockDumpBig,"max_amount_WasteRock",70 * r)
-	ChoGGi.Consts.StorageOtherDepot = GetValueBT(bt.StorageConcrete,"max_storage_per_resource",180 * r)
-	ChoGGi.Consts.StorageMechanizedDepot = GetValueBT(bt.MechanizedDepotConcrete,"max_storage_per_resource",3950 * r) -- the other 50 is stored on the "porch"
+	ChoGGi.Consts.StorageWasteDepot = GetValueBT(bt.WasteRockDumpBig, "max_amount_WasteRock", 70 * r)
+	ChoGGi.Consts.StorageOtherDepot = GetValueBT(bt.StorageConcrete, "max_storage_per_resource", 180 * r)
+	ChoGGi.Consts.StorageMechanizedDepot = GetValueBT(bt.MechanizedDepotConcrete, "max_storage_per_resource", 3950 * r) -- the other 50 is stored on the "porch"
 	-- ^ they're all UniversalStorageDepot
-	ChoGGi.Consts.RocketMaxExportAmount = GetValueBT(bt.SupplyRocket,"max_export_storage",30 * r)
-	ChoGGi.Consts.LaunchFuelPerRocket = GetValueBT(bt.SupplyRocket,"launch_fuel",60 * r)
+	ChoGGi.Consts.RocketMaxExportAmount = GetValueBT(bt.SupplyRocket, "max_export_storage", 30 * r)
+	ChoGGi.Consts.LaunchFuelPerRocket = GetValueBT(bt.SupplyRocket, "launch_fuel", 60 * r)
 	ChoGGi.Consts.GravityColonist = 0
 	ChoGGi.Consts.GravityDrone = 0
 	ChoGGi.Consts.GravityRC = 0

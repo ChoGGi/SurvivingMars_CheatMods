@@ -9,16 +9,16 @@ function Dome:CalcBirth(...)
 	if limit and limit > 0 and amount >= limit then
 		return
 	end
-	return orig_CalcBirth(self,...)
+	return orig_CalcBirth(self, ...)
 end
 
 local apply_to_all = false
-local labels,current
+local labels, current
 function OnMsg.ClassesBuilt()
 	-- add some prod info to selection panel
 	local dome = XTemplates.sectionDome[1]
 	-- check for and remove existing templates
-	ChoGGi.ComFuncs.RemoveXTemplateSections(dome,"ChoGGi_Template_DomeLimitBirths")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(dome, "ChoGGi_Template_DomeLimitBirths")
 
 	-- status updates/radius slider
 	table.insert(

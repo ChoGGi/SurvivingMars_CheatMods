@@ -23,7 +23,7 @@ function ChoGGi_OPolyline:SetParabola(a, b)
 	self:SetPos(AveragePoint2D(self.vertices))
 end
 
---~ SetZOffsetInterpolation,SetOpacityInterpolation
+--~ SetZOffsetInterpolation, SetOpacityInterpolation
 DefineClass.ChoGGi_OText = {
 	__parents = {"Text"},
 	text_style = "Action",
@@ -68,5 +68,5 @@ ChoGGi_BuildingEntityClass.OnSelected = AddSelectionParticlesToObj
 ChoGGi_BuildingEntityClass.BuildWaypointChains = empty_func
 -- round n round she goes
 function ChoGGi_BuildingEntityClass:Rotate(delta)
-	SetRollPitchYaw(self,0,0,(self:GetAngle() or 0) + (delta or -1)*60*60)
+	self:SetAngle((self:GetAngle() or 0) + (delta or -1)*60*60)
 end

@@ -34,9 +34,9 @@ function ChoGGi.MenuFuncs.ExamineObjectRadius(action)
 	local objs = ChoGGi.ComFuncs.SelObjects(action.radius_amount or 2500)
 	if #objs > 0 then
 		-- sort by nearest
-		table.sort(objs,function(a,b)
+		table.sort(objs, function(a, b)
 			return a:GetVisualDist(pt) < b:GetVisualDist(pt)
 		end)
-		ChoGGi.ComFuncs.OpenInExamineDlg(objs,nil,"ExamineObjectRadius")
+		ChoGGi.ComFuncs.OpenInExamineDlg(objs, nil, "ExamineObjectRadius")
 	end
 end

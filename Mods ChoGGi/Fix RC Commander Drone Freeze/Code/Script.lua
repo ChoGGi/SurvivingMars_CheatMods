@@ -9,7 +9,7 @@ function OnMsg.LoadGame()
 		for j = #attached_drones, 1, -1 do
 			local drone = attached_drones[j]
 			if not IsValid(drone) then
-				table.remove(attached_drones,j)
+				table.remove(attached_drones, j)
 			end
 		end
 	end

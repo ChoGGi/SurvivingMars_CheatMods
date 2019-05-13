@@ -49,7 +49,7 @@ local function ShowBuildingHexes(bld)
 		obj.bind_to = "GetDustRadius"
 		obj:SetScale(bld:GetDustRadius())
 		for i = 1, #obj.decals do
-			obj.decals[i]:SetColorModifier(16775073,1500)
+			obj.decals[i]:SetColorModifier(16775073, 1500)
 		end
 	end
 end

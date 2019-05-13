@@ -10,17 +10,17 @@ local Strings = ChoGGi.Strings
 function ChoGGi.MenuFuncs.SetFundingPerRareMetalExport()
 	local default_setting = ChoGGi.Consts.ExportPricePreciousMetals
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 5,value = 5},
-		{text = 10,value = 10},
-		{text = 15,value = 15},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
-		{text = 10000,value = 10000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 5, value = 5},
+		{text = 10, value = 10},
+		{text = 15, value = 15},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
+		{text = 10000, value = 10000},
 	}
 
 	local hint = default_setting
@@ -36,7 +36,7 @@ function ChoGGi.MenuFuncs.SetFundingPerRareMetalExport()
 		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value
-			ChoGGi.ComFuncs.SetConstsG("ExportPricePreciousMetals",value)
+			ChoGGi.ComFuncs.SetConstsG("ExportPricePreciousMetals", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("ExportPricePreciousMetals")
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -58,12 +58,12 @@ end
 
 function ChoGGi.MenuFuncs.AddOrbitalProbes()
 	local item_list = {
-		{text = 5,value = 5},
-		{text = 10,value = 10},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 100,value = 100},
-		{text = 200,value = 200},
+		{text = 5, value = 5},
+		{text = 10, value = 10},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 100, value = 100},
+		{text = 200, value = 200},
 	}
 
 	local function CallBackFunc(choice)
@@ -80,7 +80,7 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
 				cls = "AdvancedOrbitalProbe"
 			end
 			for _ = 1, value do
-				PlaceObject(cls,{city = UICity})
+				PlaceObject(cls, {city = UICity})
 			end
 		end
 	end
@@ -104,15 +104,15 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.FoodPerRocketPassenger / r
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
-		{text = 10000,value = 10000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
+		{text = 10000, value = 10000},
 	}
 
 	local hint = default_setting
@@ -128,7 +128,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value * r
-			ChoGGi.ComFuncs.SetConstsG("FoodPerRocketPassenger",value)
+			ChoGGi.ComFuncs.SetConstsG("FoodPerRocketPassenger", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("FoodPerRocketPassenger")
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -182,7 +182,7 @@ do -- AddPrefabs
 
 		local show_hidden = ChoGGi.UserSettings.Building_hide_from_build_menu
 		local BuildingTemplates = BuildingTemplates
-		for id,cargo in pairs(BuildingTemplates) do
+		for id, cargo in pairs(BuildingTemplates) do
 			-- baclcube is instant, instant doesn't need prefabs, and hidden normally don't show up
 			if not skip_prefabs[id] and not cargo.instant_build and (cargo.group ~= "Hidden" or cargo.group == "Hidden" and show_hidden) then
 				c = c + 1
@@ -208,7 +208,7 @@ do -- AddPrefabs
 					if text == drone_str then
 						UICity.drone_prefabs = UICity.drone_prefabs + value
 					else
-						UICity:AddPrefabs(choice[i].id,value,false)
+						UICity:AddPrefabs(choice[i].id, value, false)
 					end
 				end
 			end
@@ -237,13 +237,13 @@ function ChoGGi.MenuFuncs.SetFunding()
 
 Fix with: %s--]]]:format(default_setting)
 	local item_list = {
-		{text = default_setting,value = 500},
-		{text = "100 M",value = 100,hint = hint},
-		{text = "1 000 M",value = 1000,hint = hint},
-		{text = "10 000 M",value = 10000,hint = hint},
-		{text = "100 000 M",value = 100000,hint = hint},
-		{text = "1 000 000 000 M",value = 1000000000,hint = hint},
-		{text = "90 000 000 000 M",value = 90000000000,hint = hint},
+		{text = default_setting, value = 500},
+		{text = "100 M", value = 100, hint = hint},
+		{text = "1 000 M", value = 1000, hint = hint},
+		{text = "10 000 M", value = 10000, hint = hint},
+		{text = "100 000 M", value = 100000, hint = hint},
+		{text = "1 000 000 000 M", value = 1000000000, hint = hint},
+		{text = "90 000 000 000 M", value = 90000000000, hint = hint},
 	}
 
 	local function CallBackFunc(choice)

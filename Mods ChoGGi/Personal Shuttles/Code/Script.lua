@@ -124,11 +124,11 @@ function PersonalShuttle:FollowMouse()
 		local pos = self:GetVisualPos()
 		local dest = GetTerrainCursor()
 
-		self:GotoPos(pos,dest)
+		self:GotoPos(pos, dest)
 
 		local obj = SelectedObj
 		if IsValid(obj) and obj ~= self then
-			self:SelectedObject(obj,pos,dest)
+			self:SelectedObject(obj, pos, dest)
 		end
 
 		self.idle_time = self.idle_time + 10
@@ -141,7 +141,7 @@ function PersonalShuttle:FollowMouse()
 end
 
 -- where are we going
-function PersonalShuttle:GotoPos(pos,dest)
+function PersonalShuttle:GotoPos(pos, dest)
 	-- too quick and it's jerky *or* mouse making small movements
 	if self.in_flight then
 		if self.idle_time < 100 then
@@ -149,9 +149,9 @@ function PersonalShuttle:GotoPos(pos,dest)
 		elseif self.idle_time > 100 and self.old_pos == pos then
 		--
 		elseif self.old_dest then
-			local ox,oy = self.old_dest:xy()
-			local x,y = dest:xy()
-			if point(ox,oy):Dist2D(point(x,y)) < 1000 then
+			local ox, oy = self.old_dest:xy()
+			local x, y = dest:xy()
+			if point(ox, oy):Dist2D(point(x, y)) < 1000 then
 				if self.first_idle < 25 then
 					self.first_idle = self.first_idle + 1
 					return self.idle_time
@@ -168,8 +168,8 @@ function PersonalShuttle:GotoPos(pos,dest)
 
 	-- check the last path point to see if it's far away (can't be bothered to make a new func that allows you to break off the path)
 	-- and if we move when we're too close it's jerky
-	local dest_x,dest_y = dest:xy()
-	local dist = pos:Dist2D(point(dest_x,dest_y)) > 5000
+	local dest_x, dest_y = dest:xy()
+	local dist = pos:Dist2D(point(dest_x, dest_y)) > 5000
 	if dist or self.idle_time > 250 then
 		-- rest on ground
 		self.hover_height = 0
@@ -205,7 +205,7 @@ function PersonalShuttle:GotoPos(pos,dest)
 			-- want to be kinda random
 			local path = self:CalcPath(
 				pos,
-				point(dest_x+Random(-2500,2500),dest_y+Random(-2500,2500),self.hover_height)
+				point(dest_x+Random(-2500, 2500), dest_y+Random(-2500, 2500), self.hover_height)
 			)
 
 			if self.is_landed then
@@ -242,7 +242,7 @@ function PersonalShuttle:GotoPos(pos,dest)
 	self.old_dest = dest
 end
 
-function PersonalShuttle:DropCargo(obj,pos,dest)
+function PersonalShuttle:DropCargo(obj, pos, dest)
 	local carried = self.carried_obj
 
 	-- if fired from recall
@@ -250,14 +250,14 @@ function PersonalShuttle:DropCargo(obj,pos,dest)
 	pos = pos or self:GetPos()
 
 	-- drop it off nearby
-	self:WaitFollowPath(self:CalcPath(pos,dest))
+	self:WaitFollowPath(self:CalcPath(pos, dest))
 
 	self:PlayFX("ShuttleUnload", "start", carried)
 	carried:Detach()
 	-- doesn't work if we use this with CalcPath
 	dest = HexGetNearestCenter(dest)
 	-- don't want to be floating above the ground
-	carried:SetPos(dest:SetTerrainZ(),2500)
+	carried:SetPos(dest:SetTerrainZ(), 2500)
 
 	-- we don't want stuff looking weird (drones/rovers can move on their own)
 	if obj and obj:IsKindOf("ResourceStockpileBase") then
@@ -294,11 +294,11 @@ local function IdleDroneInAir()
 end
 
 -- pickup/dropoff/scan
-function PersonalShuttle:SelectedObject(obj,pos,dest)
+function PersonalShuttle:SelectedObject(obj, pos, dest)
 	-- Anomaly scanning
 	if obj:IsKindOf("SubsurfaceAnomaly") then
 		-- scan nearby SubsurfaceAnomaly
-		local anomaly = NearestObject(pos,MapGet("map","SubsurfaceAnomaly"),2000)
+		local anomaly = NearestObject(pos, MapGet("map", "SubsurfaceAnomaly"), 2000)
 		-- make sure it's the right one, and not already being scanned by another
 		if anomaly and obj == anomaly and not UICity.PersonalShuttles.shuttle_scanning_anomaly[anomaly.handle] then
 			PlayFX("ArtificialSunCharge", "start", anomaly)
@@ -310,13 +310,13 @@ function PersonalShuttle:SelectedObject(obj,pos,dest)
 
 	-- are we carrying, and is pickup set to drop?
 	elseif IsValid(self.carried_obj) and self.pickup_toggle == false then
-		self:DropCargo(obj,pos,dest)
+		self:DropCargo(obj, pos, dest)
 
 	-- if it's marked for pickup and shuttle is set to pickup and it isn't already carrying then grab it
 	elseif obj.PersonalShuttles_PickUpItem and self.pickup_toggle and not IsValid(self.carried_obj) then
 
 		-- goto item
-		self:WaitFollowPath(self:CalcPath(pos,obj:GetVisualPos()))
+		self:WaitFollowPath(self:CalcPath(pos, obj:GetVisualPos()))
 
 		if not UICity.PersonalShuttles.shuttle_carried[obj.handle] then
 			UICity.PersonalShuttles.shuttle_carried[obj.handle] = true
@@ -327,21 +327,21 @@ function PersonalShuttle:SelectedObject(obj,pos,dest)
 			obj.PersonalShuttles_PickUpItem = nil
 			-- PlayFX of beaming, transport one i think
 			self:PlayFX("ShuttleLoad", "start", obj)
-			obj:SetPos(self:GetVisualPos(),2500)
+			obj:SetPos(self:GetVisualPos(), 2500)
 			Sleep(2500)
 			-- pick it up
-			self:Attach(obj,self:GetSpotBeginIndex("Origin"))
+			self:Attach(obj, self:GetSpotBeginIndex("Origin"))
 			-- bottom or top?
---~ 			obj:SetAttachOffset(point(0,0,400))
+--~ 			obj:SetAttachOffset(point(0, 0, 400))
 
 			if obj:IsKindOf("BaseRover") then
-				obj:SetAttachOffset(point(0,0,400))
+				obj:SetAttachOffset(point(0, 0, 400))
 			elseif obj:IsKindOf("Drone") then
-				obj:SetAttachOffset(point(0,0,325))
+				obj:SetAttachOffset(point(0, 0, 325))
 				obj.ChoGGi_SetCommand = obj.SetCommand
 				obj.SetCommand = IdleDroneInAir
 			else
-				obj:SetAttachOffset(point(0,0,350))
+				obj:SetAttachOffset(point(0, 0, 350))
 			end
 
 			if PersonalShuttles.drop_toggle then

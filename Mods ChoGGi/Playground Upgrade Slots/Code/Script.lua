@@ -5,8 +5,8 @@ function OnMsg.ClassesBuilt()
 	local n = BuildingTemplates.Playground
 
 	n.upgrade1_id = "Playground_max_visitors1"
-	n.upgrade1_display_name = T(109035890389,"Capacity")
-	n.upgrade1_description = T(0,"+<upgrade1_add_value_1> max_visitors, +1 <icon_Power> Consumption")
+	n.upgrade1_display_name = T(109035890389, "Capacity")
+	n.upgrade1_description = T(0, "+<upgrade1_add_value_1> max_visitors, +1 <icon_Power> Consumption")
 	n.upgrade1_icon = "UI/Icons/Upgrades/home_collective_01.tga"
 	n.upgrade1_mod_prop_id_1 = "max_visitors"
 	n.upgrade1_add_value_1 = 7
@@ -16,8 +16,8 @@ function OnMsg.ClassesBuilt()
 	n.upgrade1_upgrade_cost_Metals = 1000
 
 	n.upgrade2_id = "Playground_max_visitors2"
-	n.upgrade2_display_name = T(109035890389,"Capacity")
-	n.upgrade2_description = T(0,"+<upgrade2_add_value_1> max_visitors, +1.5 <icon_Power> Consumption")
+	n.upgrade2_display_name = T(109035890389, "Capacity")
+	n.upgrade2_description = T(0, "+<upgrade2_add_value_1> max_visitors, +1.5 <icon_Power> Consumption")
 	n.upgrade2_icon = "UI/Icons/Upgrades/home_collective_01.tga"
 	n.upgrade2_mod_prop_id_1 = "max_visitors"
 	n.upgrade2_add_value_1 = 12
@@ -27,8 +27,8 @@ function OnMsg.ClassesBuilt()
 	n.upgrade2_upgrade_cost_Metals = 3000
 
 	n.upgrade3_id = "Playground_max_visitors3"
-	n.upgrade3_display_name = T(109035890389,"Capacity")
-	n.upgrade3_description = T(0,"+<upgrade3_add_value_1> max_visitors, +2.5 <icon_Power> Consumption")
+	n.upgrade3_display_name = T(109035890389, "Capacity")
+	n.upgrade3_description = T(0, "+<upgrade3_add_value_1> max_visitors, +2.5 <icon_Power> Consumption")
 	n.upgrade3_icon = "UI/Icons/Upgrades/home_collective_01.tga"
 	n.upgrade3_mod_prop_id_1 = "max_visitors"
 	n.upgrade3_add_value_1 = 40

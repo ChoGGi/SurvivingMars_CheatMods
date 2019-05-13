@@ -13,7 +13,7 @@ function OnMsg.LoadGame()
 		for j = #task_requests, 1, -1 do
 			local req = task_requests[j]
 			if type(req) ~= "userdata" then
-				table.remove(task_requests,j)
+				table.remove(task_requests, j)
 			end
 		end
 

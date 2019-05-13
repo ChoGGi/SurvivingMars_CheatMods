@@ -24,7 +24,7 @@ return PlaceObj("ModDef", {
 		"Code/Strings.lua",
 		-- functions used in a couple places
 		"Code/CommonFunctions.lua",
-		-- defaults,consts
+		-- defaults, consts
 		"Code/Settings.lua",
 		-- for OnMsg functions
 		"Code/OnMsgs.lua",

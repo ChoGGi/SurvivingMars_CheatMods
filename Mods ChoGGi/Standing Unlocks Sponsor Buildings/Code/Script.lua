@@ -7,7 +7,7 @@ function OnMsg.ModsReloaded()
 	local BuildingTechRequirements = BuildingTechRequirements
 
 	local BuildingTemplates = BuildingTemplates
-	for id,bld in pairs(BuildingTemplates) do
+	for id, bld in pairs(BuildingTemplates) do
 		for i = 1, 3 do
 			local name = "sponsor_name" .. i
 			if bld[name] ~= "" then
@@ -29,11 +29,11 @@ function OnMsg.ModsReloaded()
 
 		local name = id
 		if name:find("RC") and name:find("Building") then
-			name = name:gsub("Building","")
+			name = name:gsub("Building", "")
 		end
-		local idx = table.find(BuildingTechRequirements[id],"check_supply",name)
+		local idx = table.find(BuildingTechRequirements[id], "check_supply", name)
 		if idx then
-			table.remove(BuildingTechRequirements[id],idx)
+			table.remove(BuildingTechRequirements[id], idx)
 		end
 
 	end
@@ -43,12 +43,12 @@ end
 function OnMsg.NewDay()
 	local BuildingTemplates = BuildingTemplates
 	local RivalAIs = RivalAIs
-	for id,rival in pairs(RivalAIs) do
+	for id, rival in pairs(RivalAIs) do
 		-- there's none locked to it, then nothing to do
 		local rival_bld = buildings[id]
 		if rival_bld then
 			local standing = rival.resources.standing > 59
-			for bld_id,list in pairs(rival_bld) do
+			for bld_id, list in pairs(rival_bld) do
 				-- not sure why they added three sponsors so we'll just be lazy
 				for i = 1, 3 do
 					if standing then

@@ -5,7 +5,7 @@ local table_unpack = table.unpack
 -- add marker to any prefab building
 local orig_ConstructionSite_Complete = ConstructionSite.Complete
 function ConstructionSite:Complete(...)
-	local ret = {orig_ConstructionSite_Complete(self,...)}
+	local ret = {orig_ConstructionSite_Complete(self, ...)}
 
 	if self.prefab then
 		ret[1].ChoGGi_PrefabSafety = true
@@ -23,7 +23,7 @@ function OnMsg.ClassesBuilt()
 end
 
 -- we don't want it adding a prefab when the site is removed
-local skip = {"ConstructionSite","BaseRoverBuilding"}
+local skip = {"ConstructionSite", "BaseRoverBuilding"}
 
 local function Refund(self)
 	if self.ChoGGi_PrefabSafety and not self:IsKindOfClasses(skip) then
@@ -43,14 +43,14 @@ end
 local orig_BaseBuilding_delete = BaseBuilding.delete or Object.delete
 function BaseBuilding:delete(...)
 	Refund(self)
-	return orig_BaseBuilding_delete(self,...)
+	return orig_BaseBuilding_delete(self, ...)
 end
 
 -- of course rovers have to be different
 local orig_BaseRoverBuilding_GameInit = BaseRoverBuilding.GameInit
 function BaseRoverBuilding:GameInit(...)
 	if not self.ChoGGi_PrefabSafety then
-		return orig_BaseRoverBuilding_GameInit(self,...)
+		return orig_BaseRoverBuilding_GameInit(self, ...)
 	end
 
 	CreateGameTimeThread(function()

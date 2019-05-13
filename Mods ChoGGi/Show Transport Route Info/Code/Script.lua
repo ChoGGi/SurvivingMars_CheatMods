@@ -12,8 +12,8 @@ local PlaceText = PlaceText
 
 local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
 
--- store ref to line,res icon
-local line,text
+-- store ref to line, res icon
+local line, text
 -- removes line when selection changes
 local function RemoveLine()
 	if IsValid(line) then
@@ -33,7 +33,7 @@ function OnMsg.SaveGame()
 	RemoveLine()
 end
 
-local pt_1500 = point(0,0,1500)
+local pt_1500 = point(0, 0, 1500)
 function OnMsg.SelectionAdded(obj)
 	-- always remove it (since we add a new one each time)
 	RemoveLine()
@@ -65,7 +65,7 @@ function OnMsg.SelectionAdded(obj)
 	if is_res then
 		text = _InternalTranslate(is_res.display_name)
 	else
-		text = _InternalTranslate(T(4493,"All"))
+		text = _InternalTranslate(T(4493, "All"))
 	end
 
 	text = PlaceText(

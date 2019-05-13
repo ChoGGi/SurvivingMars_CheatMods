@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"saved", 1539950400,
 	"id", "ChoGGi_AutoEmptyWasteStorage",
 	"author", "ChoGGi",
-	"image","Preview.png",
+	"image", "Preview.png",
 	"code", {
 		"Code/Script.lua"
 	},

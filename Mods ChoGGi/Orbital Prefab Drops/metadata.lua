@@ -24,7 +24,7 @@ Prefab Only: Only rocket drop prefabs (or all buildings depending on above optio
 Dome Crack: If the drop is in a dome, it'll crack the glass.
 Model Type: 1 = supply pod, 2 = old black hex, 3 = arc pod (Space Race DLC).
 
-Defaults are PrefabOnly = true,Outside = true,Inside = false,DomeCrack = true, ModelType = 1
+Defaults are PrefabOnly = true, Outside = true, Inside = false, DomeCrack = true, ModelType = 1
 
 
 Known Issues:

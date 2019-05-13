@@ -9,7 +9,7 @@ local orig_RequiresMaintenance_RequestMaintenance = RequiresMaintenance.RequestM
 -- only allow main if disable isn't
 function RequiresMaintenance:RequestMaintenance(...)
 	if not self.ChoGGi_DisableMaintenance then
-		orig_RequiresMaintenance_RequestMaintenance(self,...)
+		orig_RequiresMaintenance_RequestMaintenance(self, ...)
 	end
 end
 
@@ -37,11 +37,11 @@ function OnMsg.ClassesBuilt()
 
 	-- old version cleanup
 	if XTemplates.ipBuilding.ChoGGi_DisableMaintenance then
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipBuilding[1],"ChoGGi_DisableMaintenance")
+		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipBuilding[1], "ChoGGi_DisableMaintenance")
 		XTemplates.ipBuilding.ChoGGi_DisableMaintenance = nil
 	end
 
-	ChoGGi.ComFuncs.AddXTemplate("DisableMaintenance","ipBuilding",{
+	ChoGGi.ComFuncs.AddXTemplate("DisableMaintenance", "ipBuilding", {
 		__context_of_kind = "Building",
 		-- only show up for buildings that need maintenance
 		__condition = function (_, context)
@@ -66,7 +66,7 @@ function OnMsg.ClassesBuilt()
 				popup:Close()
 			else
 				local name = RetName(context)
-				PopupToggle(self,"idDisableDroneMaintenanceMenu",{
+				PopupToggle(self, "idDisableDroneMaintenanceMenu", {
 					{
 						name = "Toggle maintenance on this " .. name .. " only.",
 						hint = "Toggles maintenance on only this " .. name .. ".",
@@ -84,7 +84,7 @@ function OnMsg.ClassesBuilt()
 							end
 						end,
 					},
-				},"left")
+				}, "left")
 			end
 			---
 		end,

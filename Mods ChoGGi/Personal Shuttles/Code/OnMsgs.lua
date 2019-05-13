@@ -43,7 +43,7 @@ function OnMsg.NewDay() -- newsol
 	local IsValid = IsValid
 	local HandleToObject = HandleToObject
   if next(UICity.PersonalShuttles.shuttle_threads) then
-    for h,_ in pairs(UICity.PersonalShuttles.shuttle_threads) do
+    for h, _ in pairs(UICity.PersonalShuttles.shuttle_threads) do
       if not IsValid(HandleToObject[h]) then
         UICity.PersonalShuttles.shuttle_threads[h] = nil
       end
@@ -52,8 +52,8 @@ function OnMsg.NewDay() -- newsol
 
 end
 
--- which true=attack,false=friend
-local function SpawnShuttle(hub,attacker)
+-- which true=attack, false=friend
+local function SpawnShuttle(hub, attacker)
 	local PersonalShuttles = PersonalShuttles
 	local UICity = UICity
 	for i = 1, #hub.shuttle_infos do
@@ -119,7 +119,7 @@ function OnMsg.ClassesBuilt()
 --~ 	local Strings = ChoGGi.Strings
 
 	-- pick/drop button for shuttle
-	AddXTemplate("PersonalShuttles_PickDrop","ipShuttle",{
+	AddXTemplate("PersonalShuttles_PickDrop", "ipShuttle", {
 		__context_of_kind = "PersonalShuttle",
 		RolloverTitle = [[Pickup/Drop Item]],
 		RolloverText = [[Pickup: Item with "Pickup" enabled will be picked up.
@@ -140,7 +140,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 	})
 
 	-- info showing carried item
-	AddXTemplate("PersonalShuttles_CarriedItem","ipShuttle",{
+	AddXTemplate("PersonalShuttles_CarriedItem", "ipShuttle", {
 		__context_of_kind = "PersonalShuttle",
 		RolloverTitle = [[Carried Object]],
 		RolloverText = [[Shows name of carried object.]],
@@ -157,7 +157,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 			end
 		end,
 	})
-	AddXTemplate("PersonalShuttles_Recall","ipShuttle",{
+	AddXTemplate("PersonalShuttles_Recall", "ipShuttle", {
 		__context_of_kind = "PersonalShuttle",
 		Title = [[Recall Shuttle]],
 		RolloverTitle = [[Recall Shuttle]],
@@ -180,18 +180,18 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 	})
 
 	-- spawn shuttle buttons for hub and return shuttle button
-	AddXTemplate("PersonalShuttles_SpawnButtonA","customShuttleHub",{
+	AddXTemplate("PersonalShuttles_SpawnButtonA", "customShuttleHub", {
 		__context_of_kind = "ShuttleHub",
 		Icon = icon_str .. 3 .. ".png",
 		Title = [[Spawn Attacker]],
 		RolloverTitle = [[Spawn Attacker]],
 		RolloverText = [[Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up items (drones, rovers, res piles, and waste rock) you've selected and marked for pickup.]],
 		func = function(self, context)
-			SpawnShuttle(context,true)
+			SpawnShuttle(context, true)
 		end,
 	})
 
-	AddXTemplate("PersonalShuttles_SpawnButtonF","customShuttleHub",{
+	AddXTemplate("PersonalShuttles_SpawnButtonF", "customShuttleHub", {
 		__context_of_kind = "ShuttleHub",
 		Icon = icon_str .. 2 .. ".png",
 		Title = [[Spawn Friend]],
@@ -202,7 +202,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 		end,
 	})
 
-	AddXTemplate("PersonalShuttles_RecallButton","customShuttleHub",{
+	AddXTemplate("PersonalShuttles_RecallButton", "customShuttleHub", {
 		__context_of_kind = "ShuttleHub",
 		__condition = function(_, context)
 			for i = 1, #context.shuttle_infos do
@@ -268,13 +268,13 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 		end,
 	}
 
-	AddXTemplate("PersonalShuttles_ResourceStockpile","ipResourcePile",res_table)
+	AddXTemplate("PersonalShuttles_ResourceStockpile", "ipResourcePile", res_table)
 
 	res_table.__context_of_kind = "Drone"
-	AddXTemplate("PersonalShuttles_ResourceDrone","ipDrone",res_table)
+	AddXTemplate("PersonalShuttles_ResourceDrone", "ipDrone", res_table)
 
 	res_table.__context_of_kind = "BaseRover"
-	AddXTemplate("PersonalShuttles_ResourceRover","ipRover",res_table)
+	AddXTemplate("PersonalShuttles_ResourceRover", "ipRover", res_table)
 
 	res_table.__context_of_kind = "UniversalStorageDepot"
 	res_table.__condition = function(_, context)
@@ -283,6 +283,6 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 			return IsKindOf(context, "UniversalStorageDepot") and not context:IsKindOf("SupplyRocket") and not IsKindOf(context, "SpaceElevator")
 		end
 	end
-	AddXTemplate("PersonalShuttles_UniversalStorageDepot","ipBuilding",res_table)
+	AddXTemplate("PersonalShuttles_UniversalStorageDepot", "ipBuilding", res_table)
 
 end -- OnMsg

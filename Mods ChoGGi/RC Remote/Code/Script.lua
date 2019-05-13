@@ -32,7 +32,7 @@ local function MoveRC(dir)
 		if self.jumping or (self.command == "RemoteMove" and self.move_dir == dir) then
 			return
 		end
-		self:SetCommand("RemoteMove",dir)
+		self:SetCommand("RemoteMove", dir)
 	end
 end
 
@@ -59,9 +59,9 @@ local function JumpForward()
 		local count = #points
 		for i = 1, count do
 			if i == count then
-				self:SetPos(points[i]:SetTerrainZ(),250)
+				self:SetPos(points[i]:SetTerrainZ(), 250)
 			else
-				self:SetPos(points[i],250)
+				self:SetPos(points[i], 250)
 			end
 			Sleep(250)
 		end
@@ -240,7 +240,7 @@ function RCRemote:GameInit()
 	self:SetColorizationMaterial(3, -13028496, 0, 12)
 
 	-- show the pin info
-	self.pin_rollover = T(0,"<ui_command>")
+	self.pin_rollover = T(0, "<ui_command>")
 end
 
 function RCRemote:RetParabola(from, to)
@@ -294,10 +294,10 @@ function RCRemote:RemoteMove(dir)
 	end
 end
 
-local cls_removable = {"Deposition","WasteRockObstructorSmall","WasteRockObstructor","StoneSmall"}
+local cls_removable = {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor", "StoneSmall"}
 function RCRemote:FireRocket(target)
 	local pt = GetTerrainCursor()
-	target = target or MapFindNearest(pt,pt,1500)
+	target = target or MapFindNearest(pt, pt, 1500)
 	if not IsValid(target) then
 		return
 	end
@@ -318,12 +318,12 @@ function RCRemote:FireRocket(target)
 	self.fx_actor_class = "ExplorerRover"
 
 	if target:IsKindOfClasses(cls_removable) then
-		CreateGameTimeThread(self.ExplodeRock,self,target,rocket)
+		CreateGameTimeThread(self.ExplodeRock, self, target, rocket)
 	end
 
 end
 
-function RCRemote:ExplodeRock(target,rocket)
+function RCRemote:ExplodeRock(target, rocket)
 	while rocket.move_thread do
 		Sleep(500)
 	end
@@ -364,7 +364,7 @@ end
 
 function RCRemote:GotoFromUser(...)
 	self.status_text = Translate(63--[[Travelling--]])
-	return BaseRover.GotoFromUser(self,...)
+	return BaseRover.GotoFromUser(self, ...)
 end
 
 function RCRemote:Idle()
@@ -379,7 +379,7 @@ function RCRemote:Idle()
 	self:SetState("idle")
 	self:Gossip("Idle")
 
-	DeleteThread(self.command_thread,true)
+	DeleteThread(self.command_thread, true)
 	self.command_thread = false
 end
 
@@ -390,24 +390,24 @@ DefineClass.RCRemoteBuilding = {
 
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.RCRemoteBuilding then
-		PlaceObj("BuildingTemplate",{
-			"Id","RCRemoteBuilding",
-			"template_class","RCRemoteBuilding",
-			"construction_cost_Metals",1000,
-			"construction_cost_MachineParts",1000,
-			"construction_cost_Electronics",1000,
+		PlaceObj("BuildingTemplate", {
+			"Id", "RCRemoteBuilding",
+			"template_class", "RCRemoteBuilding",
+			"construction_cost_Metals", 1000,
+			"construction_cost_MachineParts", 1000,
+			"construction_cost_Electronics", 1000,
 			-- add a bit of pallor to the skeleton
 			"palette_color1", "rover_base",
 
-			"dome_forbidden",true,
-			"display_name",name,
-			"display_name_pl",name,
-			"description",description,
-			"build_category","ChoGGi",
+			"dome_forbidden", true,
+			"display_name", name,
+			"display_name_pl", name,
+			"description", description,
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", display_icon,
-			"encyclopedia_exclude",true,
-			"on_off_button",false,
+			"encyclopedia_exclude", true,
+			"on_off_button", false,
 			"entity", "RCRoverBuilding",
 		})
 	end
@@ -464,6 +464,6 @@ if g_AvailableDlc.gagarin then
 end
 
 function RCRemote:GetSkins()
-	return entity,palettes
+	return entity, palettes
 end
 

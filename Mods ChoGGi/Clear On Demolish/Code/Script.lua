@@ -9,9 +9,9 @@ local HasAnySurfaces = HasAnySurfaces
 local HasRestoreHeight = terrain.HasRestoreHeight
 local EntitySurfaces_Height = EntitySurfaces.Height
 
-local function ExecFunc(obj,funcname,param)
+local function ExecFunc(obj, funcname, param)
 	if type(obj[funcname]) == "function" then
-		obj[funcname](obj,param)
+		obj[funcname](obj, param)
 	end
 end
 
@@ -22,21 +22,21 @@ function OnMsg.Demolished(obj)
 
 	-- causes log spam, transport still drops items carried so...
 	if not obj:IsKindOf("WaterReclamationSpire") and not IsValid(obj.parent_dome) and not obj:IsKindOf("RCTransport") then
-		ExecFunc(obj,"Done")
+		ExecFunc(obj, "Done")
 	end
 
-	ExecFunc(obj,"RestoreTerrain")
-	ExecFunc(obj,"Destroy")
+	ExecFunc(obj, "RestoreTerrain")
+	ExecFunc(obj, "Destroy")
 
 	if obj.GetFlattenShape and HasAnySurfaces(obj, EntitySurfaces_Height, true) and not HasRestoreHeight() then
 		FlattenTerrainInBuildShape(obj:GetFlattenShape(), obj)
 	end
 
-	ExecFunc(obj,"SetDome",false)
-	ExecFunc(obj,"RemoveFromLabels")
+	ExecFunc(obj, "SetDome", false)
+	ExecFunc(obj, "RemoveFromLabels")
 
-	ExecFunc(obj,"Gossip","done")
-	ExecFunc(obj,"SetHolder",false)
+	ExecFunc(obj, "Gossip", "done")
+	ExecFunc(obj, "SetHolder", false)
 
 	-- I did ask nicely
 	if IsValid(obj) then

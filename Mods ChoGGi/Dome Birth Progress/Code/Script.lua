@@ -4,7 +4,7 @@ local MulDivRound = MulDivRound
 
 local orig_Dome_GetBirthText = Dome.GetBirthText
 function Dome:GetBirthText(...)
-	local info = orig_Dome_GetBirthText(self,...)
+	local info = orig_Dome_GetBirthText(self, ...)
 
 	local list = info[1]
 	list.j = list.j + 1

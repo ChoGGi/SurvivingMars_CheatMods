@@ -9,7 +9,7 @@
 --~ if Mods.ChoGGi_testing then
 --~ 	-- centred hud
 --~ 	local GetScreenSize = UIL.GetScreenSize
---~ 	local margins = box(2560,0,2560,0)
+--~ 	local margins = box(2560, 0, 2560, 0)
 --~ 	local orig_GetSafeMargins = GetSafeMargins
 --~ 	function GetSafeMargins(win_box)
 --~ 		if win_box then
@@ -47,89 +47,84 @@ OnMsg.CityStart = StartUp
 
 --~ local Translate = ChoGGi.ComFuncs.Translate
 
---~ 	local orig_GetStack = GetStack
---~ 	function GetStack(...)
---~ 		print("GetStack:",...)
---~ 		return orig_GetStack(...)
+--~ do -- TraceCall/Trace (commented out in CommonLua\PropertyObject.lua)
+--~ -- g_traceMeta
+--~ -- g_traceEntryMeta
+--~ 	-- needs to be true for traces to be active (see CommonLua\Classes\StateObject.lua)
+--~ 	StateObject.so_debug_triggers = true
+--~ 	-- CommonLua\Movable.lua
+--~ 	function Movable:SetSpeed(speed)
+--~ 		pf.SetSpeed(self, speed)
 --~ 	end
-do -- TraceCall/Trace (commented out in CommonLua\PropertyObject.lua)
---~ g_traceMeta
---~ g_traceEntryMeta
-	-- needs to be true for traces to be active (see CommonLua\Classes\StateObject.lua)
-	StateObject.so_debug_triggers = true
-	-- CommonLua\Movable.lua
-	function Movable:SetSpeed(speed)
-		pf.SetSpeed(self, speed)
-	end
 
-	local GetStack = GetStack
-	local GameTime = GameTime
-	local rawget,rawset = rawget,rawset
-	local setmetatable = setmetatable
-	local table_remove = table.remove
-	local table_insert = table.insert
+--~ 	local GetStack = GetStack
+--~ 	local GameTime = GameTime
+--~ 	local rawget, rawset = rawget, rawset
+--~ 	local setmetatable = setmetatable
+--~ 	local table_remove = table.remove
+--~ 	local table_insert = table.insert
 
-	function PropertyObject:TraceCall(member)
-		print("PropertyObject:TraceCall",self.class)
-		local orig_member_fn = self[member]
-		self[member] = function(self, ...)
-			self:Trace("[Call]", member, GetStack(2), ...)
-			return orig_member_fn(self, ...)
-		end
-	end
-	function PropertyObject:Trace(...)
-		print("PropertyObject:Trace",self.class)
-		local t = rawget(self, "trace_log")
-		if not t then
-			t = {}
-			setmetatable(t, g_traceMeta)
-			rawset(self, "trace_log", t)
-		end
-		local threshold = GameTime() - (3000)
-		while #t >= 50 and threshold > t[#t][1] do
-			table_remove(t)
-		end
-		local data = {
-			GameTime(),
-			...
-		}
-		setmetatable(data, g_traceEntryMeta)
-		table_insert(t, 1, data)
-	end
+--~ 	function PropertyObject:TraceCall(member)
+--~ 		print("PropertyObject:TraceCall", self.class)
+--~ 		local orig_member_fn = self[member]
+--~ 		self[member] = function(self, ...)
+--~ 			self:Trace("[Call]", member, GetStack(2), ...)
+--~ 			return orig_member_fn(self, ...)
+--~ 		end
+--~ 	end
+--~ 	function PropertyObject:Trace(...)
+--~ 		print("PropertyObject:Trace", self.class)
+--~ 		local t = rawget(self, "trace_log")
+--~ 		if not t then
+--~ 			t = {}
+--~ 			setmetatable(t, g_traceMeta)
+--~ 			rawset(self, "trace_log", t)
+--~ 		end
+--~ 		local threshold = GameTime() - (3000)
+--~ 		while #t >= 50 and threshold > t[#t][1] do
+--~ 			table_remove(t)
+--~ 		end
+--~ 		local data = {
+--~ 			GameTime(),
+--~ 			...
+--~ 		}
+--~ 		setmetatable(data, g_traceEntryMeta)
+--~ 		table_insert(t, 1, data)
+--~ 	end
 
-	function SetCommandErrorChecks(self, command, ...)
-		print("SetCommandErrorChecks",self.class)
-		local destructors = self.command_destructors
-		if command == "->Idle" and destructors and destructors[1] > 0 then
-			print("Command", self.class .. "." .. tostring(self.command), "remaining destructors:")
-			for i = 1, destructors[1] do
-				local destructor = destructors[i + 1]
-				local info = debug.getinfo(destructor, "S") or empty_table
-				local source = info.source or "Unknown"
-				local line = info.linedefined or -1
-				printf("\t%d. %s(%d)", i, source, line)
-			end
-			error(string.format("Command %s.%s did not pop its destructors.", self.class, tostring(self.command)), 2)
-		end
-		if command and command ~= "->Idle" then
-			if type(command) ~= "function" and not self:HasMember(command) then
-				error(string.format("Invalid command %s:%s", self.class, tostring(command)), 3)
-			end
-			if IsBeingDestructed(self) then
-				error(string.format("%s:SetCommand('%s') called from Done() or delete()", self.class, tostring(command)), 3)
-			end
-		end
-		self.command_call_stack = GetStack(3)
-		if self.trace_setcmd then
-			if self.trace_setcmd == "log" then
-				self:Trace("SetCommand", tostring(command), self.command_call_stack, ...)
-			else
-				error(string.format("%s:SetCommand(%s) time %d, old command %s", self.class, concat_params(", ", tostring(command), ...), GameTime(), tostring(self.command)), 3)
-			end
-		end
-	end
+--~ 	function SetCommandErrorChecks(self, command, ...)
+--~ 		print("SetCommandErrorChecks", self.class)
+--~ 		local destructors = self.command_destructors
+--~ 		if command == "->Idle" and destructors and destructors[1] > 0 then
+--~ 			print("Command", self.class .. "." .. tostring(self.command), "remaining destructors:")
+--~ 			for i = 1, destructors[1] do
+--~ 				local destructor = destructors[i + 1]
+--~ 				local info = debug.getinfo(destructor, "S") or empty_table
+--~ 				local source = info.source or "Unknown"
+--~ 				local line = info.linedefined or -1
+--~ 				printf("\t%d. %s(%d)", i, source, line)
+--~ 			end
+--~ 			error(string.format("Command %s.%s did not pop its destructors.", self.class, tostring(self.command)), 2)
+--~ 		end
+--~ 		if command and command ~= "->Idle" then
+--~ 			if type(command) ~= "function" and not self:HasMember(command) then
+--~ 				error(string.format("Invalid command %s:%s", self.class, tostring(command)), 3)
+--~ 			end
+--~ 			if IsBeingDestructed(self) then
+--~ 				error(string.format("%s:SetCommand('%s') called from Done() or delete()", self.class, tostring(command)), 3)
+--~ 			end
+--~ 		end
+--~ 		self.command_call_stack = GetStack(3)
+--~ 		if self.trace_setcmd then
+--~ 			if self.trace_setcmd == "log" then
+--~ 				self:Trace("SetCommand", tostring(command), self.command_call_stack, ...)
+--~ 			else
+--~ 				error(string.format("%s:SetCommand(%s) time %d, old command %s", self.class, concat_params(", ", tostring(command), ...), GameTime(), tostring(self.command)), 3)
+--~ 			end
+--~ 		end
+--~ 	end
 
-end -- do
+--~ end -- do
 
 
 --~ 		-- ParseText is picky about the text it'll parse
@@ -138,9 +133,9 @@ end -- do
 --~ 			local varargs = ...
 --~ 			local ret
 --~ 			if not procall(function()
---~ 				ret = orig(self,varargs)
+--~ 				ret = orig(self, varargs)
 --~ 			end) then
---~ 				ChoGGi.ComFuncs.Dump(self.text,"w","ParseText","lua",nil,true)
+--~ 				ChoGGi.ComFuncs.Dump(self.text, "w", "ParseText", "lua", nil, true)
 --~ 			end
 --~ 			return ret
 --~ 		end
@@ -152,9 +147,9 @@ end -- do
 --~ 			local image = self:GetImage()
 --~ 			-- unless it is bitching about memorysavegame :)
 --~ 			if image ~= "" and not image:find("memorysavegame") and not FileExists(image) then
---~ 				print(RetName(self.parent),image,"DC")
+--~ 				print(RetName(self.parent), image, "DC")
 --~ 			end
---~ 			return orig_XImage_DrawContent(self,...)
+--~ 			return orig_XImage_DrawContent(self, ...)
 --~ 		end
 
 -- for some annoying reason my account settings are sometimes reset, so (probably something to do with some pop funcs I block)
@@ -180,7 +175,7 @@ end
 
 --~ CreateRealTimeThread(function()
 --~ 	for map in pairs(MapData) do
---~ 		if map:sub(1,5) == "Blank" then
+--~ 		if map:sub(1, 5) == "Blank" then
 --~ 			ChoGGi.testing.LoadMapForScreenShot(map)
 --~ 		end
 --~ 	end
@@ -205,10 +200,16 @@ local function Screenie(map)
 		Dialogs.PopupNotification:Close()
 	end
 
-	-- pause it for now (it helps it not freeze)
-	SetGameSpeedState("pause")
+--~ 	-- pause it for now (it helps it not freeze)
+--~ 	SetGameSpeedState("pause")
+--~ 	-- wait a bit till we're sure the map is around
+--~ 	Sleep(1000)
+
 	-- wait a bit till we're sure the map is around
-	Sleep(1000)
+	local GameState = GameState
+	while not GameState.gameplay do
+		Sleep(500)
+	end
 
 	-- hide signs (just in case any are in the currently exposed sector)
 	SetSignsVisible(false)
@@ -222,7 +223,7 @@ local function Screenie(map)
 
 	-- lightmodel
 	LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
-	SetLightmodelOverride(1,"TheMartian1_Night")
+	SetLightmodelOverride(1, "TheMartian1_Night")
 
 	-- larger render dist (we zoom out a fair bit)
 	hr.FarZ = 7000000
@@ -232,10 +233,10 @@ local function Screenie(map)
 	SetCamera(table.unpack(cam_params))
 
 	-- remove black curtains on the sides
-	table.remove_entry(terminal.desktop,XTemplate,"OverviewMapCurtains")
+	table.remove_entry(terminal.desktop, XTemplate, "OverviewMapCurtains")
 	-- and the rest of the ui
 	local Dialogs = Dialogs
-	for _,value in pairs(Dialogs) do
+	for _, value in pairs(Dialogs) do
 		if type(value) ~= "string" then
 			value:delete()
 		end
@@ -253,7 +254,7 @@ function ChoGGi.testing.LoadMapForScreenShot(map)
 	if CurrentThread() then
 		Screenie(map)
 	else
-		CreateRealTimeThread(Screenie,map)
+		CreateRealTimeThread(Screenie, map)
 	end
 end
 
@@ -286,20 +287,20 @@ function ChoGGi.testing.ExportSave(name)
 		end)
 
 		Unmount("exported")
-		print("Exported",name)
+		print("Exported", name)
 	end)
 end
 --[[
 MountPack("exported", "AppData/ExportedSave/NAME.savegame.sav")
 CreateRealTimeThread(function()
-Savegame.LoadWithBackup("NAME.savegame.sav", function(folder,...)
-print(folder,...)
+Savegame.LoadWithBackup("NAME.savegame.sav", function(folder, ...)
+print(folder, ...)
 local err, files = io.listfiles(folder, "*", "relative")
 if err then
 	print(err)
 end
 for i = 1, #files do
-	print(folder,files[i])
+	print(folder, files[i])
 end
 end)
 end)
@@ -310,7 +311,7 @@ end)
 --~ 	)
 --~ 	print(AsyncDecompress(str))
 --~
---~ 	ChoGGi.ComFuncs.Dump(str,nil,"DumpedLua","lua")
+--~ 	ChoGGi.ComFuncs.Dump(str, nil, "DumpedLua", "lua")
 
 
 
@@ -320,14 +321,14 @@ function ChoGGi.testing.TestToStr()
 	local tostring = tostring
 
 	ChoGGi.ComFuncs.TickStart("TestToStr.Tick.1")
-	for _ = 1,1000000 do
+	for _ = 1, 1000000 do
 		local num = 12345
 		num = num .. ""
 	end
 	ChoGGi.ComFuncs.TickEnd("TestToStr.Tick.1")
 
 	ChoGGi.ComFuncs.TickStart("TestToStr.Tick.2")
-	for _ = 1,1000000 do
+	for _ = 1, 1000000 do
 		local num = 12345
 		num = tostring(num)
 	end
@@ -343,7 +344,7 @@ function ChoGGi.testing.TestAttaches(obj)
 	end
 
 	ChoGGi.ComFuncs.TickStart("TestAttaches.Tick.1")
-	for _ = 1,1000 do
+	for _ = 1, 1000 do
 		local attaches = obj:GetAttaches() or ""
 		for i = 1, #attaches do
 			local a = attaches[i]
@@ -354,7 +355,7 @@ function ChoGGi.testing.TestAttaches(obj)
 	ChoGGi.ComFuncs.TickEnd("TestAttaches.Tick.1")
 
 	ChoGGi.ComFuncs.TickStart("TestAttaches.Tick.2")
-	for _ = 1,1000 do
+	for _ = 1, 1000 do
 		obj:ForEachAttach(function(a)
 			if a.handle then
 			end
@@ -434,7 +435,7 @@ function ChoGGi.testing.TestCompress(amount)
 	-- 50 loops of AsyncCompress(lz4_data)
 	-- 1404 ticks
 	-- 50 loops of compress/decompress
-	-- 1512,1491,1491 ticks (did it three times)
+	-- 1512, 1491, 1491 ticks (did it three times)
 
 	-- zstd compressed to #251660
 	-- 50 loops of AsyncDecompress(zstd_data)
@@ -442,18 +443,18 @@ function ChoGGi.testing.TestCompress(amount)
 	-- 50 loops of AsyncCompress(zstd_data)
 	-- 1508 ticks
 	-- 50 loops of compress/decompress
-	-- 1650,1676,1691 ticks (did it three times)
+	-- 1650, 1676, 1691 ticks (did it three times)
 
 	ChoGGi.ComFuncs.TickStart("TestCompress_lz4.Tick")
 	for _ = 1, amount or 50 do
-		local _,lz4_data = AsyncCompress(TableToLuaCode(TranslationTable), false, "lz4")
+		local _, lz4_data = AsyncCompress(TableToLuaCode(TranslationTable), false, "lz4")
 		AsyncDecompress(lz4_data)
 	end
 	ChoGGi.ComFuncs.TickEnd("TestCompress_lz4.Tick")
 
 	ChoGGi.ComFuncs.TickStart("TestCompress_zstd.Tick")
 	for _ = 1, amount or 50 do
-		local _,zstd_data = AsyncCompress(TableToLuaCode(TranslationTable), false, "zstd")
+		local _, zstd_data = AsyncCompress(TableToLuaCode(TranslationTable), false, "zstd")
 		AsyncDecompress(zstd_data)
 	end
 	ChoGGi.ComFuncs.TickEnd("TestCompress_zstd.Tick")
@@ -492,18 +493,18 @@ function ChoGGi.testing.TestRandom(amount)
 	ChoGGi.ComFuncs.TickStart("TestRandom.Tick")
 		local values = {}
 		for i = 1, amount or 10000 do
-			values[i] = Random(0,10000)
+			values[i] = Random(0, 10000)
 		end
 	ChoGGi.ComFuncs.TickEnd("TestRandom.Tick")
-	print("Random:\n",values)
+	print("Random:\n", values)
 
 	ChoGGi.ComFuncs.TickStart("Random.1.Tick")
 		values = {}
 		for i = 1, amount or 10000 do
-			values[i] = Random1(0,10000)
+			values[i] = Random1(0, 10000)
 		end
 	ChoGGi.ComFuncs.TickEnd("Random.1.Tick")
-	print("Random1:\n",values)
+	print("Random1:\n", values)
 
 	ChoGGi.ComFuncs.TickEnd("TestRandom.Total")
 end
@@ -533,7 +534,7 @@ function OnMsg.ClassesPreprocess()
 	umc.UpdateAttachedSigns = empty_func
 
 --~ 		-- fix the arcology dome spot
---~ 		SaveOrigFunc("SpireBase","GameInit")
+--~ 		SaveOrigFunc("SpireBase", "GameInit")
 --~ 		function SpireBase:GameInit()
 --~ 			local dome = IsObjInDome(self)
 --~ 			if self.spire_frame_entity ~= "none" and IsValidEntity(self.spire_frame_entity) then
@@ -558,9 +559,9 @@ end -- ClassesPreprocess
 --~ function OnMsg.ClassesBuilt()
 
 --~ 		-- add an overlay for dead rover
---~ 		SaveOrigFunc("PinsDlg","GetPinConditionImage")
+--~ 		SaveOrigFunc("PinsDlg", "GetPinConditionImage")
 --~ 		function PinsDlg:GetPinConditionImage(obj)
---~ 			local ret = ChoGGi.OrigFuncs.PinsDlg_GetPinConditionImage(self,obj)
+--~ 			local ret = ChoGGi.OrigFuncs.PinsDlg_GetPinConditionImage(self, obj)
 --~ 			if obj.command == "Dead" and not obj.working then
 --~ 				print(obj.class)
 --~ 				return "UI/Icons/pin_not_working.tga"
@@ -589,7 +590,7 @@ end -- ClassesPreprocess
 --~ function SetThreadDebugHookX(hook)
 --~ 	local set_hook = hook or debug.sethook
 --~ 	for thread in pairs(ThreadsRegister) do
---~ 		set_hook(thread,hookTick,"c",10)
+--~ 		set_hook(thread, hookTick, "c", 10)
 --~ 	end
 --~ 	ThreadsEnableDebugHook(hook)
 --~ 	ThreadDebugHook = hook or false
@@ -656,7 +657,7 @@ end -- ClassesPreprocess
 					if exit_code ~= 0 then
 					print("Could not launch Haerald Debugger from:", os_path, "\n\nExec error:", std_error , std_out)
 
-print(0,"stop")
+print(0, "stop")
 						self:Stop()
 						return
 					end
@@ -678,7 +679,7 @@ print(0,"stop")
 			end
 			if not server:isconnected() then
 				print("Could not connect to debugger at " .. controller_host .. ":" .. debugger_port)
-print(1,"stop")
+print(1, "stop")
 				self:Stop()
 				return
 			end
@@ -832,7 +833,7 @@ print(1,"stop")
 			while self:DebuggerTick() do
 				Sleep(25)
 			end
-print(2,"stop")
+print(2, "stop")
 			self:Stop()
 		end)
 
@@ -871,7 +872,7 @@ print(2,"stop")
 		local ReadPacket = luadebugger.ReadPacket
 		function luadebugger:ReadPacket(packet)
 			print(packet)
-			return ReadPacket(self,packet)
+			return ReadPacket(self, packet)
 		end
 
 		config.Haerald = {

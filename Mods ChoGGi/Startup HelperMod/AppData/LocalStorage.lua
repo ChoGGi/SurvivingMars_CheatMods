@@ -15,7 +15,7 @@ end
 dofolder_files("AppData/BinAssets/Code")
 
 -- local some globals
-local setmetatable,pairs,rawget = setmetatable,pairs,rawget
+local setmetatable, pairs, rawget = setmetatable, pairs, rawget
 -- a less restrictive env (okay, not at all restrictive)
 local orig_G = _G
 local mod_env = {
@@ -30,7 +30,7 @@ local orig_OnMsg = getmetatable(orig_G.OnMsg)
 local function LuaModEnv(env)
 	env = env or {}
 	env._G = orig_G
-	setmetatable(env,mod_env)
+	setmetatable(env, mod_env)
 	if env.OnMsg then
 		env.OnMsg.__newindex = orig_OnMsg.__newindex
 	end
@@ -46,11 +46,11 @@ CreateRealTimeThread(function()
 
 		-- build a list of ids from lua files in "Mod Ids"
 		local mod_ids = {}
-		local err, files = AsyncListFiles("AppData/BinAssets/Mod Ids","*.lua")
+		local err, files = AsyncListFiles("AppData/BinAssets/Mod Ids", "*.lua")
 		if not err and #files > 0 then
 			local AsyncFileToString = AsyncFileToString
 			for i = 1, #files do
-				local err,id = AsyncFileToString(files[i])
+				local err, id = AsyncFileToString(files[i])
 				if not err then
 					mod_ids[id] = true
 				end
@@ -58,7 +58,7 @@ CreateRealTimeThread(function()
 		end
 
 		-- remove blacklist for any mods in "Mod Ids"
-		for _,mod in pairs(Mods) do
+		for _, mod in pairs(Mods) do
 			if mod_ids[mod.steam_id] then
 				-- just a little overreaching with that blacklist (yeah yeah, safety first and all that)
 				mod.no_blacklist = true
@@ -66,7 +66,7 @@ CreateRealTimeThread(function()
 				for key in pairs(env) do
 					-- we need to use the original __newindex from OnMsg instead of replacing it, or mod OnMsgs don't work
 					if key ~= "OnMsg" then
-						local g_key = rawget(orig_G,key)
+						local g_key = rawget(orig_G, key)
 						if g_key then
 							env[key] = g_key
 						end
@@ -76,7 +76,7 @@ CreateRealTimeThread(function()
 				-- add a warning to any mods without a blacklist, so user knows something is up
 --~ 				mod.title = mod.title .. " (BL)"
 				mod.title = mod.title .. " (Warning)"
---~ 				mod.description = mod.description:gsub([[C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\Mods\]],"AppData/Mods/")
+--~ 				mod.description = mod.description:gsub([[C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\Mods\]], "AppData/Mods/")
 				mod.description = [[Warning: The blacklist function has been removed for this mod!
 This means it has no limitations and can access your Steam name, Friends list, and run any files on your computer.
 

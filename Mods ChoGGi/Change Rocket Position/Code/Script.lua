@@ -12,7 +12,7 @@ local orig_SupplyRocket_Takeoff = SupplyRocket.Takeoff
 function SupplyRocket:Takeoff(...)
 	-- save fuel amount -10
 	self.ChoGGi_RepositionRocket = (self.launch_fuel - self.refuel_request:GetActualAmount()) - fuel_needed
-	return orig_SupplyRocket_Takeoff(self,...)
+	return orig_SupplyRocket_Takeoff(self, ...)
 end
 
 local Sleep = Sleep
@@ -66,8 +66,8 @@ end
 
 function OnMsg.ClassesBuilt()
 	-- add button to colonists
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.customSupplyRocket[1],"ChangeRocketPosition",nil,{
-		RolloverText = T(0,[[<left_click> Land this rocket somewhere else.]]),
+	ChoGGi.ComFuncs.AddXTemplate(XTemplates.customSupplyRocket[1], "ChangeRocketPosition", nil, {
+		RolloverText = T(0, [[<left_click> Land this rocket somewhere else.]]),
 		Title = [[Reposition Rocket]],
 		Icon = "UI/Icons/IPButtons/automated_mode.tga",
 

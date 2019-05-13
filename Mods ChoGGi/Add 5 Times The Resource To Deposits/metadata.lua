@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"image","Preview.png",
+	"image", "Preview.png",
 	"steam_id", "1427609324",
 	"lua_revision", LuaRevision or 244275,
 	"description", [[Adds a button to water/metal/concrete deposits to multiple the amount of all deposits of the same resource by 5.

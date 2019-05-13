@@ -29,17 +29,17 @@ function OnMsg.ClassesBuilt()
 		"Title", [[5 Times the amount1]],
 		"RolloverText", [[Clicking this once will add 5 times the amount of stored resources to all deposits of the same type.]],
 		"RolloverTitle", "Info",
-		"RolloverHint",	T(0,"Activate <left_click>"),
+		"RolloverHint", 	T(0, "Activate <left_click>"),
 		"OnPress", BumpAmount,
 	})
 
 	local d = XTemplates.ipSubsurfaceDeposit[1]
-	ChoGGi.ComFuncs.RemoveXTemplateSections(d,"ChoGGi_MultipleAmount")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(d, "ChoGGi_MultipleAmount")
 	-- check if the buttons were already added (you can have one for each, but meh)
 	d[#d+1] = template
 
 	d = XTemplates.ipTerrainDeposit[1]
-	ChoGGi.ComFuncs.RemoveXTemplateSections(d,"ChoGGi_MultipleAmount")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(d, "ChoGGi_MultipleAmount")
 	d[#d+1] = template
 
 

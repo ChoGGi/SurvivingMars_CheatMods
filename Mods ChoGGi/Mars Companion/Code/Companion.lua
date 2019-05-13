@@ -123,10 +123,10 @@ function MarsCompanion:MainLoop()
 			print("else")
 			cam = self.last_good_pos
 		end
-		local x,y = cam:x(),cam:y()
+		local x, y = cam:x(), cam:y()
 
-		local max = (cGetPos():z() - tGetHeight(x,y)) - 10000
-		self.hover_height = self.Random(self.min_hover_height,max > self.min_hover_height and max or self.min_hover_height+1)
+		local max = (cGetPos():z() - tGetHeight(x, y)) - 10000
+		self.hover_height = self.Random(self.min_hover_height, max > self.min_hover_height and max or self.min_hover_height+1)
 
 		if self.hover_height > cGetProperties(1).MaxZoom then
 			self.hover_height = 1000
@@ -134,18 +134,18 @@ function MarsCompanion:MainLoop()
 			self.hover_height = self.min_hover_height
 		end
 
-		local dest = point(x+self.Random(-15000,15000), y+self.Random(-15000,15000))
+		local dest = point(x+self.Random(-15000, 15000), y+self.Random(-15000, 15000))
 		self.last_good_pos = dest
 
 		self:FlyingFace(dest, 2500)
 		self:SetState("idle") -- level tubes
-		self:FollowPathCmd(self:CalcPath(self:GetVisualPos(),dest))
+		self:FollowPathCmd(self:CalcPath(self:GetVisualPos(), dest))
 		while self.next_spline do
 			Sleep(1000)
 		end
 
 		self:SetState("fly") -- down tubes
-		Sleep(self.Random(2500,10000))
+		Sleep(self.Random(2500, 10000))
 
 --~ 		if same_pos_count > self.boredom_count then
 --~ 			-- your friend is bored
@@ -164,7 +164,7 @@ function MarsCompanion:MainLoop()
 end
 
 function MarsCompanion:GotoPos(drone)
-	local path = self:CalcPath(self:GetVisualPos(),drone:GetVisualPos())
+	local path = self:CalcPath(self:GetVisualPos(), drone:GetVisualPos())
 
 	self:FlyingFace(path, 2500)
 	self:FollowPathCmd(path)
@@ -179,7 +179,7 @@ local function IdleDroneInAir()
 end
 
 function MarsCompanion:BoredFriend()
-	local rand = self.Random(-10,10)
+	local rand = self.Random(-10, 10)
 
 	rand = 0
 
@@ -207,17 +207,17 @@ function MarsCompanion:BoredFriend()
 		self:SetState("fly") -- down tubes
 
 		-- stick drone on shuttle
-		self:Attach(drone,self:GetSpotBeginIndex("Origin"))
-		drone:SetAttachOffset(point(0,0,325))
+		self:Attach(drone, self:GetSpotBeginIndex("Origin"))
+		drone:SetAttachOffset(point(0, 0, 325))
 		drone.ChoGGi_SetCommand = drone.SetCommand
 		drone.SetCommand = IdleDroneInAir
 
 		local blds = self.city.labels.OutsideBuildings or ""
 		local new_pos = GetRandomPassableAround(
-			blds[self.Random(1,#blds)]:GetPos(),
+			blds[self.Random(1, #blds)]:GetPos(),
 			10000, 1000, self.city
 		)
-		self.hover_height = self.Random(self.min_hover_height,5000)
+		self.hover_height = self.Random(self.min_hover_height, 5000)
 		self:GotoPos(new_pos)
 		drone:Detach()
 

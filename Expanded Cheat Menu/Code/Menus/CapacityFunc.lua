@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local type,tostring = type,tostring
+local type, tostring = type, tostring
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
@@ -19,7 +19,7 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 	local SetMechanizedDepotTempAmount = ChoGGi.ComFuncs.SetMechanizedDepotTempAmount
 	local objs = UICity.labels.MechanizedDepots or ""
 	for i = 1, #objs do
-		SetMechanizedDepotTempAmount(objs[i],amount)
+		SetMechanizedDepotTempAmount(objs[i], amount)
 	end
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -31,7 +31,7 @@ end
 
 function ChoGGi.MenuFuncs.SetWorkerCapacity()
 	local obj = SelectedObj
-	local _,capacity = RetObjectCapAndGrid(obj,16)
+	local _, capacity = RetObjectCapAndGrid(obj, 16)
 
 	if not capacity then
 		MsgPopup(
@@ -45,21 +45,21 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 	local hint_toolarge = Translate(6779--[[Warning--]]) .. " " .. Strings[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
 
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 10,value = 10},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000,hint = hint_toolarge},
-		{text = 2000,value = 2000,hint = hint_toolarge},
-		{text = 3000,value = 3000,hint = hint_toolarge},
-		{text = 4000,value = 4000,hint = hint_toolarge},
-		{text = 5000,value = 5000,hint = hint_toolarge},
-		{text = 10000,value = 10000,hint = hint_toolarge},
-		{text = 25000,value = 25000,hint = hint_toolarge},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 10, value = 10},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000, hint = hint_toolarge},
+		{text = 2000, value = 2000, hint = hint_toolarge},
+		{text = 3000, value = 3000, hint = hint_toolarge},
+		{text = 4000, value = 4000, hint = hint_toolarge},
+		{text = 5000, value = 5000, hint = hint_toolarge},
+		{text = 10000, value = 10000, hint = hint_toolarge},
+		{text = 25000, value = 25000, hint = hint_toolarge},
 	}
 
 	-- check if there's an entry for building
@@ -97,7 +97,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(obj),choice[1].text),
+				Strings[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(obj), choice[1].text),
 				Strings[302535920000567--[[Worker Capacity--]]]
 			)
 		end
@@ -114,7 +114,7 @@ end
 
 function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	local obj = SelectedObj
-	local cap_type,capacity = RetObjectCapAndGrid(obj,15)
+	local cap_type, capacity = RetObjectCapAndGrid(obj, 15)
 
 	if not cap_type then
 		MsgPopup(
@@ -134,23 +134,23 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	end
 
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 10,value = 10},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000,hint = hint_toolarge},
-		{text = 2000,value = 2000,hint = hint_toolarge},
-		{text = 3000,value = 3000,hint = hint_toolarge},
-		{text = 4000,value = 4000,hint = hint_toolarge},
-		{text = 5000,value = 5000,hint = hint_toolarge},
-		{text = 10000,value = 10000,hint = hint_toolarge},
-		{text = 25000,value = 25000,hint = hint_toolarge},
-		{text = 50000,value = 50000,hint = hint_toolarge},
-		{text = 100000,value = 100000,hint = hint_toolarge},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 10, value = 10},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000, hint = hint_toolarge},
+		{text = 2000, value = 2000, hint = hint_toolarge},
+		{text = 3000, value = 3000, hint = hint_toolarge},
+		{text = 4000, value = 4000, hint = hint_toolarge},
+		{text = 5000, value = 5000, hint = hint_toolarge},
+		{text = 10000, value = 10000, hint = hint_toolarge},
+		{text = 25000, value = 25000, hint = hint_toolarge},
+		{text = 50000, value = 50000, hint = hint_toolarge},
+		{text = 100000, value = 100000, hint = hint_toolarge},
 	}
 
 	-- check if there's an entry for building
@@ -184,7 +184,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 				amount = value * r
 			end
 
-			local function StoredAmount(prod,current)
+			local function StoredAmount(prod, current)
 				local percent = prod:GetStoragePercent()
 				if percent == 0 then
 					return "empty"
@@ -207,7 +207,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 						o.capacity = amount
 						local grid = o[cap_type]
 						grid.storage_capacity = amount
-						grid.storage_mode = StoredAmount(grid,grid.storage_mode)
+						grid.storage_mode = StoredAmount(grid, grid.storage_mode)
 						ToggleWorking(o)
 					end
 				end
@@ -231,7 +231,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 						o[cap_name] = amount
 						local grid = o[cap_type]
 						grid.storage_capacity = amount
-						grid.storage_mode = StoredAmount(grid,grid.storage_mode)
+						grid.storage_mode = StoredAmount(grid, grid.storage_mode)
 						ToggleWorking(o)
 					end
 				end
@@ -245,7 +245,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(obj),choice[1].text),
+				Strings[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(obj), choice[1].text),
 				Strings[302535920000569--[[Building Capacity--]]]
 			)
 		end
@@ -263,7 +263,7 @@ end
 
 function ChoGGi.MenuFuncs.SetVisitorCapacity()
 	local obj = SelectedObj
-	local _,capacity = RetObjectCapAndGrid(obj,32)
+	local _, capacity = RetObjectCapAndGrid(obj, 32)
 
 	if not capacity then
 		MsgPopup(
@@ -274,15 +274,15 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 	end
 	local default_setting = capacity
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 10,value = 10},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 10, value = 10},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
 	}
 
 	-- check if there's an entry for building
@@ -319,7 +319,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000960--[[%s visitor capacity is now %s.--]]]:format(RetName(obj),choice[1].text),
+				Strings[302535920000960--[[%s visitor capacity is now %s.--]]]:format(RetName(obj), choice[1].text),
 				Strings[302535920000571--[[Building Visitor Capacity--]]]
 			)
 		end
@@ -340,23 +340,23 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts[bld_type] / r
 	local hint_max = Strings[302535920000962--[[Max capacity limited to:
-Universal: 2,500
-Other: 20,000
-Waste: 1,000,000
-Mechanized: 1,000,000--]]]
+Universal: 2, 500
+Other: 20, 000
+Waste: 1, 000, 000
+Mechanized: 1, 000, 000--]]]
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 50,value = 50},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
-		{text = 2500,value = 2500,hint = hint_max},
-		{text = 5000,value = 5000,hint = hint_max},
-		{text = 10000,value = 10000,hint = hint_max},
-		{text = 20000,value = 20000,hint = hint_max},
-		{text = 100000,value = 100000,hint = hint_max},
-		{text = 1000000,value = 1000000,hint = hint_max},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 50, value = 50},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
+		{text = 2500, value = 2500, hint = hint_max},
+		{text = 5000, value = 5000, hint = hint_max},
+		{text = 10000, value = 10000, hint = hint_max},
+		{text = 20000, value = 20000, hint = hint_max},
+		{text = 100000, value = 100000, hint = hint_max},
+		{text = 1000000, value = 1000000, hint = hint_max},
 	}
 
 	local hint = default_setting
@@ -401,14 +401,14 @@ Mechanized: 1,000,000--]]]
 						o.max_storage_per_resource = value
 					end
 				end
-				local function OtherDepot(label,res)
+				local function OtherDepot(label, res)
 					local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
 					for i = 1, #objs do
 						objs[i][res] = value
 					end
 				end
-				OtherDepot("MysteryResource","max_storage_per_resource")
-				OtherDepot("BlackCubeDumpSite","max_amount_BlackCube")
+				OtherDepot("MysteryResource", "max_storage_per_resource")
+				OtherDepot("BlackCubeDumpSite", "max_amount_BlackCube")
 
 			elseif bld_type == "StorageUniversalDepot" then
 				if value > 2500000 then
@@ -434,7 +434,7 @@ Mechanized: 1,000,000--]]]
 			end
 
 			-- for new buildings
-			ChoGGi.ComFuncs.SetSavedConstSetting(bld_type,value)
+			ChoGGi.ComFuncs.SetSavedConstSetting(bld_type, value)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(

@@ -41,14 +41,14 @@ s = false -- used to store SelectedObj
 -- add some simple functions to the cheatmenu for moving it/getting pos
 function XShortcutsHost:SetPos(pt)
 	-- doesn't "stick"
-	self:SetBox(pt:x(),pt:y(),self.box:sizex(),self.box:sizey())
+	self:SetBox(pt:x(), pt:y(), self.box:sizex(), self.box:sizey())
 end
 function XShortcutsHost:GetPos()
-	return ChoGGi_Window.GetPos(self,"idMenuBar")
+	return ChoGGi_Window.GetPos(self, "idMenuBar")
 end
 function XShortcutsHost:GetSize()
 	local GetSize = ChoGGi_Window.GetSize
-	return GetSize(self,"idMenuBar") + GetSize(self,"idBottomContainer")
+	return GetSize(self, "idMenuBar") + GetSize(self, "idBottomContainer")
 end
 
 local function DiscoverTech(tech_id)
@@ -62,7 +62,7 @@ if not rawget(_G, "DiscoverTech") then
 end
 
 -- seems like a useful func to have
-if not rawget(Colonist,"HasTrait") then
+if not rawget(Colonist, "HasTrait") then
 	function Colonist:HasTrait(trait)
 		if self.traits[trait] then
 			return true

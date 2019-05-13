@@ -109,7 +109,7 @@ end
 
 local orig_LandingSiteObject_AttachPredefinedSpots = LandingSiteObject.AttachPredefinedSpots
 function LandingSiteObject:AttachPredefinedSpots(...)
-	orig_LandingSiteObject_AttachPredefinedSpots(self,...)
+	orig_LandingSiteObject_AttachPredefinedSpots(self, ...)
 	-- we only want this to happen when picking a landing spot
 	if not GameState.gameplay then
 		LandingSite_object = self
@@ -128,7 +128,7 @@ function LandingSiteObject:CalcMarkersVisibility()
 	end
 
 	local cur_phase = PlanetRotationObj:GetAnimPhase()
-	for _,obj in pairs(new_markers) do
+	for _, obj in pairs(new_markers) do
 		local phase = self:CalcAnimPhaseUsingLongitude(obj.longitude * 60)
 		local dist = Min((cur_phase-phase)%self.anim_duration, (phase-cur_phase)%self.anim_duration)
 		self.dialog[obj.id]:SetVisible(dist <= 2400)
@@ -139,7 +139,7 @@ end
 function OnMsg.ClassesPostprocess()
 	PlaceObj("TextStyle", {
 		TextColor = -1,
-		TextFont = T(986,"SchemeBk, 15, aa"),
+		TextFont = T(986, "SchemeBk, 15, aa"),
 		id = "ChoGGi_PlanetUISavedGamesText"
 	})
 end

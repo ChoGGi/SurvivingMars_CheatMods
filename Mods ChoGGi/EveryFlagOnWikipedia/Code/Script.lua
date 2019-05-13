@@ -35,8 +35,8 @@ end
 local table_find = table.find
 local path = CurrentModPath .. "Flags/flag_"
 
-local function AddExisting(name,flag_name,Nations,c)
-	local idx = table_find(Nations,"value",name)
+local function AddExisting(name, flag_name, Nations, c)
+	local idx = table_find(Nations, "value", name)
 	if idx then
 		Nations[idx].flag = path .. flag_name .. ".png"
 	else
@@ -342,12 +342,12 @@ function OnMsg.ModsReloaded()
 	}
 
 	-- loop through each nation group
-	for Name_R,Race in pairs(HumanNames) do
-		-- then each type of name Family,Female,Male,Unique
-		for Type,Names in pairs(Race) do
+	for Name_R, Race in pairs(HumanNames) do
+		-- then each type of name Family, Female, Male, Unique
+		for Type, Names in pairs(Race) do
 
 			if Type == "Unique" then
-				for Type2,Names2 in pairs(Names) do
+				for Type2, Names2 in pairs(Names) do
 					for i = 1, #Names2 do
 						name_table[Type][Type2][#name_table[Type][Type2]+1] = Names2[i]
 					end
@@ -355,7 +355,7 @@ function OnMsg.ModsReloaded()
 
 			-- Bulgarian and Russian both have extra tables added
 			elseif Name_R == "Bulgarian" or Name_R == "Russian" then
-				for Type2,Names2 in pairs(Names) do
+				for Type2, Names2 in pairs(Names) do
 					if Type2 == "First" then
 						for i = 1, #Names2 do
 							name_table[Type][#name_table[Type]+1] = Names2[i]
@@ -367,7 +367,7 @@ function OnMsg.ModsReloaded()
 					end
 				end
 
-			else -- regular names (Female,Male,Family)
+			else -- regular names (Female, Male, Family)
 				for i = 1, #Names do
 					name_table[Type][#name_table[Type]+1] = Names[i]
 				end
@@ -383,18 +383,18 @@ function OnMsg.ModsReloaded()
 	local c = #Nations
 
 	-- make sure built-in ones use my bigger flags
-	c = AddExisting("English","the_united_kingdom",Nations,c)
-	c = AddExisting("American","the_united_states",Nations,c)
-	c = AddExisting("German","germany",Nations,c)
-	c = AddExisting("French","france",Nations,c)
-	c = AddExisting("Russian","russia",Nations,c)
-	c = AddExisting("Chinese","the_peoples_republic_of_china",Nations,c)
-	c = AddExisting("Bulgarian","bulgaria",Nations,c)
-	c = AddExisting("Indian","india",Nations,c)
-	c = AddExisting("Swedish","sweden",Nations,c)
+	c = AddExisting("English", "the_united_kingdom", Nations, c)
+	c = AddExisting("American", "the_united_states", Nations, c)
+	c = AddExisting("German", "germany", Nations, c)
+	c = AddExisting("French", "france", Nations, c)
+	c = AddExisting("Russian", "russia", Nations, c)
+	c = AddExisting("Chinese", "the_peoples_republic_of_china", Nations, c)
+	c = AddExisting("Bulgarian", "bulgaria", Nations, c)
+	c = AddExisting("Indian", "india", Nations, c)
+	c = AddExisting("Swedish", "sweden", Nations, c)
 	-- Gagarin added names
-	c = AddExisting("Japanese","japan",Nations,c)
-	c = AddExisting("Brazilian","brazil",Nations,c)
+	c = AddExisting("Japanese", "japan", Nations, c)
+	c = AddExisting("Brazilian", "brazil", Nations, c)
 
 	do -- add new nations
 		c = c + 1
@@ -1929,9 +1929,9 @@ function OnMsg.ModsReloaded()
 		}
 		c = c + 1
 		Nations[c] = {
-			value = "rapa_nui,_chile",
+			value = "rapa_nui, _chile",
 			text = "Rapa Nui, Chile",
-			flag = path .. "rapa_nui,_chile.png",
+			flag = path .. "rapa_nui, _chile.png",
 		}
 		c = c + 1
 		Nations[c] = {

@@ -1,1 +1,1 @@
-MountFolder("UI/Cursors","BinAssets/Cursors/")
+MountFolder("UI/Cursors", "BinAssets/Cursors/")

@@ -11,22 +11,22 @@ local GetRandomPassablePoint = GetRandomPassablePoint
 local GetPassablePointNearby = GetPassablePointNearby
 local InvalidPos = InvalidPos()
 
-local function RemoveInvalid(count,list)
+local function RemoveInvalid(count, list)
 	for i = #list, 1, -1 do
 		if not IsValid(list[i]) then
 			count = count + 1
-			table_remove(list,i)
+			table_remove(list, i)
 		end
 	end
 	return count
 end
 
-local function SpawnColonist(old_c,building,pos,city)
+local function SpawnColonist(old_c, building, pos, city)
 	city = city or UICity
 
 	local colonist
 	if old_c then
-		colonist = GenerateColonistData(city, old_c.age_trait, false, {gender=old_c.gender,entity_gender=old_c.entity_gender,no_traits = "no_traits",no_specialization=true})
+		colonist = GenerateColonistData(city, old_c.age_trait, false, {gender=old_c.gender, entity_gender=old_c.entity_gender, no_traits = "no_traits", no_specialization=true})
 		--we set all the set gen doesn't (it's more for random gen after all
 		colonist.birthplace = old_c.birthplace
 		colonist.death_age = old_c.death_age
@@ -56,11 +56,11 @@ end
 --~ 	for i = #r.task_requests, 1, -1 do
 --~ 		local task = r.task_requests[i]
 --~ 		if task:GetResource() == r.maintenance_requirements.resource and task:GetFillIndex() == 1000000 and task:GetFlags() == 1028 then
---~ 			table_remove(r.task_requests,i)
+--~ 			table_remove(r.task_requests, i)
 --~ 		end
 --~ 	end
 --~ end
-local function AddStockPile(res,amount,pos)
+local function AddStockPile(res, amount, pos)
 	local stockpile = PlaceObj("ResourceStockpile", {
 		"Pos", pos,
 		"resource", res,
@@ -89,7 +89,7 @@ function OnMsg.LoadGame()
 
 				-- has expectation of passengers, but none are on the rocket
 				if type(r.cargo) == "table" then
-					local pass = table_find(r.cargo,"class","Passengers")
+					local pass = table_find(r.cargo, "class", "Passengers")
 					pass = r.cargo[pass]
 					if type(pass) == "table" and pass.amount > 0 and #pass.applicants_data == 0 then
 						r:SetCommand("Unload")
@@ -105,15 +105,15 @@ function OnMsg.LoadGame()
 							-- valid but stuck on WorkCycle cmd
 							unload_it = true
 							c:SetCommand("Idle")
-							table_remove(crew,j)
+							table_remove(crew, j)
 							-- if we don't add the thread it spams log with [LUA ERROR] attempt to yield across a C-call boundary
 							CreateGameTimeThread(function()
 								c:ExitBuilding(r)
 							end)
 						else
 							-- more invalid colonists...
-							SpawnColonist_lib(c,r,nil,UICity)
-							table_remove(crew,j)
+							SpawnColonist_lib(c, r, nil, UICity)
+							table_remove(crew, j)
 						end
 					end
 
@@ -132,11 +132,11 @@ function OnMsg.LoadGame()
 										UICity.drone_prefabs = UICity.drone_prefabs + 1
 									end
 								end)
-								table_remove(drones,j)
+								table_remove(drones, j)
 							end
 						else
 							UICity.drone_prefabs = UICity.drone_prefabs + 1
-							table_remove(drones,j)
+							table_remove(drones, j)
 						end
 					end
 
@@ -146,10 +146,10 @@ function OnMsg.LoadGame()
 				end
 
 				-- invalid drones
-				local invalid = RemoveInvalid(0,r.drones_exiting or "")
-				invalid = RemoveInvalid(invalid,r.drones_entering or "")
-				invalid = RemoveInvalid(invalid,r.drones_in_queue_to_charge or "")
-				invalid = RemoveInvalid(invalid,r.drones or "")
+				local invalid = RemoveInvalid(0, r.drones_exiting or "")
+				invalid = RemoveInvalid(invalid, r.drones_entering or "")
+				invalid = RemoveInvalid(invalid, r.drones_in_queue_to_charge or "")
+				invalid = RemoveInvalid(invalid, r.drones or "")
 				UICity.drone_prefabs = UICity.drone_prefabs + invalid
 
 --~ 				if r.maintenance_request then
@@ -193,14 +193,14 @@ function OnMsg.LoadGame()
 					if j % 2 == 0 and spawned ~= 2 and r:GetSpotName(j) == "Workrover" then
 						local amount = r:GetStoredExportResourceAmount()
 						if amount > 500 then
-							AddStockPile("PreciousMetals",amount,r:GetSpotPos(j))
+							AddStockPile("PreciousMetals", amount, r:GetSpotPos(j))
 						end
 						spawned = spawned + 1
 					elseif j % 2 ~= 0 and spawned ~= 2 and r:GetSpotName(j) == "Workrover" then
 						local extra = r.unload_fuel_request and r.unload_fuel_request:GetActualAmount() or 0
 						local amount = r.launch_fuel - r.refuel_request:GetActualAmount() + extra
 						if amount > 500 then
-							AddStockPile("Fuel",amount,r:GetSpotPos(j))
+							AddStockPile("Fuel", amount, r:GetSpotPos(j))
 						end
 						spawned = spawned + 1
 					end
@@ -208,7 +208,7 @@ function OnMsg.LoadGame()
 				r:SetCommand("Unload")
 
 --~ 				RemoveOldMainTasks(r)
---~ 				r:SetCommand("WaitMaintenance",r.maintenance_requirements.resource, r.maintenance_request:GetTargetAmount())
+--~ 				r:SetCommand("WaitMaintenance", r.maintenance_requirements.resource, r.maintenance_request:GetTargetAmount())
 
 --~ 			-- any of the above WaitMaintenance rockets
 --~ 			elseif r.command == "Refuel" and r.maintenance_request then
@@ -226,10 +226,10 @@ function OnMsg.LoadGame()
 	local pads = UICity.labels.LandingPad or ""
 	for i = 1, #pads do
 		local p = pads[i]
-		local has,rocket = p:HasRocket()
+		local has, rocket = p:HasRocket()
 		-- InvalidPos means it's not on mars
 		if has and rocket:GetPos() == InvalidPos and IsValid(rocket.landing_site) then
-			rocket:SetCommand("LandOnMars",rocket.landing_site)
+			rocket:SetCommand("LandOnMars", rocket.landing_site)
 		end
 	end
 

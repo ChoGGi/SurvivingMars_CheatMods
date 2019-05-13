@@ -55,7 +55,7 @@ local function ReadModSettings()
 	local settings_table
 
 	-- try to read saved settings
-	local err,settings_data = ReadModPersistentData()
+	local err, settings_data = ReadModPersistentData()
 
 	if err or not settings_data or settings_data == "" then
 		-- no settings found so write default settings (it returns the saved setting)
@@ -83,7 +83,7 @@ local function ReadModSettings()
 end
 
 local function SaveProfile(params)
-	local choice_str = WaitInputText("Save Profile","Type a profile name to use.")
+	local choice_str = WaitInputText("Save Profile", "Type a profile name to use.")
 	if choice_str and choice_str ~= "" then
 		g_SaveMissionProfiles[choice_str] = {
 			map = g_CurrentMapParams,
@@ -95,7 +95,7 @@ local function SaveProfile(params)
 	end
 end
 
-local function LoadProfile(name,settings,pgmission)
+local function LoadProfile(name, settings, pgmission)
 	local function CallBackFunc(answer)
 		if answer then
 			-- update in-game settings
@@ -113,7 +113,7 @@ local function LoadProfile(name,settings,pgmission)
 		CallBackFunc
 	)
 end
-local function DeleteProfile(name,settings_list)
+local function DeleteProfile(name, settings_list)
 	local function CallBackFunc(answer)
 		if answer then
 			settings_list[name] = nil
@@ -129,7 +129,7 @@ local function DeleteProfile(name,settings_list)
 end
 
 -- fired when we go to first new game section
-local function AddProfilesButton(pgmission,toolbar)
+local function AddProfilesButton(pgmission, toolbar)
 	if toolbar.idChoGGi_ProfileButton then
 		return
 	end
@@ -160,7 +160,7 @@ local function AddProfilesButton(pgmission,toolbar)
 					name = Translate(161964752558--[[Save--]]) .. " Profile",
 					hint = "Save current profile.",
 					clicked = function()
-						CreateRealTimeThread(SaveProfile,pgmission.context.params)
+						CreateRealTimeThread(SaveProfile, pgmission.context.params)
 					end,
 				},
 			}
@@ -181,24 +181,24 @@ local function AddProfilesButton(pgmission,toolbar)
 				local delm = menu[#menu]
 
 				-- add name/params to submenus
-				for name,settings in pairs(settings_list) do
+				for name, settings in pairs(settings_list) do
 					loadm.submenu[#loadm.submenu+1] = {
 						name = name,
 						clicked = function()
-							LoadProfile(name,settings,pgmission)
+							LoadProfile(name, settings, pgmission)
 						end,
 					}
 					delm.submenu[#delm.submenu+1] = {
 						name = name,
 						clicked = function()
-							DeleteProfile(name,settings_list)
+							DeleteProfile(name, settings_list)
 						end,
 					}
 				end
 			end
 
 			-- and finally show menu
-			ChoGGi.ComFuncs.PopupToggle(toolbar.idChoGGi_ProfileButton,"ChoGGi_MissionProfilesPopup",menu)
+			ChoGGi.ComFuncs.PopupToggle(toolbar.idChoGGi_ProfileButton, "ChoGGi_MissionProfilesPopup", menu)
 		end,
 	}, toolbar)
 
@@ -213,12 +213,12 @@ function SetPlanetCamera(planet, state, ...)
 			WaitMsg("OnRender")
 			local pgmission = Dialogs.PGMainMenu.idContent.PGMission
 			local toolbar = pgmission[1][1].idToolBar
-			AddProfilesButton(pgmission,toolbar)
+			AddProfilesButton(pgmission, toolbar)
 			-- hook into toolbar button area so we can keep adding the button
 			local orig_RebuildActions = toolbar.RebuildActions
 			toolbar.RebuildActions = function(self, context, ...)
 				orig_RebuildActions(self, context, ...)
-				AddProfilesButton(pgmission,toolbar)
+				AddProfilesButton(pgmission, toolbar)
 			end
 		end)
 	end

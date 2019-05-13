@@ -40,7 +40,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 			title = "Check1",
 			hint = "Check1Hint",
 			checked = false,
-			func = function(dlg,check) end,
+			func = function(dlg, check) end,
 		},
 		{
 			title = "Check2",
@@ -61,13 +61,13 @@ local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 local Strings = ChoGGi.Strings
 
-local type,tostring = type,tostring
+local type, tostring = type, tostring
 local table_sort = table.sort
 local point = point
 local MeasureImage = UIL.MeasureImage
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg,"ChoGGi_ListChoiceDlg")
+	return GetParentOfKind(dlg, "ChoGGi_ListChoiceDlg")
 end
 DefineClass.ChoGGi_ListChoiceDlg = {
 	__parents = {"ChoGGi_XWindow"},
@@ -114,12 +114,12 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 		self.idCheckboxArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idCheckboxArea",
 			Dock = "top",
-			Margins = box(8,4,0,4),
+			Margins = box(8, 4, 0, 4),
 		}, self.idDialog)
 		self.idCheckboxArea2 = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idCheckboxArea2",
 			Dock = "top",
-			Margins = box(8,4,0,14),
+			Margins = box(8, 4, 0, 14),
 			FoldWhenHidden = true,
 		}, self.idDialog)
 
@@ -164,8 +164,8 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 					-- update check so user sees something
 					local new_check = not check:GetCheck()
 					check:SetCheck(new_check)
-					-- send dlg,check back with func
-					list_check.func(self,new_check)
+					-- send dlg, check back with func
+					list_check.func(self, new_check)
 				end
 			end
 			if list_check.checked then
@@ -211,7 +211,7 @@ function ChoGGi_ListChoiceDlg:Init(parent, context)
 		self.idEditArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idEditArea",
 			Dock = "bottom",
-			Margins = box(0,8,4,4),
+			Margins = box(0, 8, 4, 4),
 		}, self.idDialog)
 
 		self.idEditValue = g_Classes.ChoGGi_XTextInput:new({
@@ -228,7 +228,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		self.idShowCustomVal = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idShowCustomVal",
 			Dock = "left",
-			Margins = box(4,0,0,0),
+			Margins = box(4, 0, 0, 0),
 			Text = Strings[302535920000078--[[Custom Value--]]],
 			RolloverText = Strings[302535920000077]:format(Strings[302535920000078]),
 			OnChange = self.idShowCustomVal_OnChange,
@@ -242,7 +242,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			-- also check the toggle so people don't remove what they shouldn't
 			self.idShowCustomVal:SetVisible(false)
 			-- and add some padding to keep the look
-			self.idEditValue:SetMargins(box(4,0,0,0))
+			self.idEditValue:SetMargins(box(4, 0, 0, 0))
 		end
 	end
 
@@ -276,17 +276,17 @@ This will always send back all items (not selection)."--]]],
 	if not self.list.skip_sort then
 		local sortby = self.list.sortby
 		if sortby then
-			table_sort(self.list.items,function(a,b)
+			table_sort(self.list.items, function(a, b)
 				a = a[sortby]
 				b = b[sortby]
 				if type(a) == "number" and type(b) == "number" then
 					return a > b
 				end
-				return CmpLower(a,b)
+				return CmpLower(a, b)
 			end)
 		else
 			-- default to display text
-			table_sort(self.list.items,function(a,b)
+			table_sort(self.list.items, function(a, b)
 				return CmpLower(a.text, b.text)
 			end)
 		end
@@ -294,7 +294,7 @@ This will always send back all items (not selection)."--]]],
 
 	-- append blank item for adding custom value
 	if self.custom_type == 0 then
-		self.list.items[#self.list.items+1] = {text = "",hint = "",value = false}
+		self.list.items[#self.list.items+1] = {text = "", hint = "", value = false}
 	end
 
 	-- we need to build this before the colourpicker stuff, or do another check for the colourpicker
@@ -493,7 +493,7 @@ end
 function ChoGGi_ListChoiceDlg:idList_OnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
-		self:BuildReturnList(nil,"L")
+		self:BuildReturnList(nil, "L")
 		return "break"
 	elseif vk == const.vkEsc then
 		self.idCloseX:Press()
@@ -502,8 +502,8 @@ function ChoGGi_ListChoiceDlg:idList_OnKbdKeyDown(vk)
 	return "continue"
 end
 
-function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDown(pt,button,...)
-	g_Classes.ChoGGi_XList.OnMouseButtonDown(self,pt,button)
+function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDown(pt, button, ...)
+	g_Classes.ChoGGi_XList.OnMouseButtonDown(self, pt, button)
 	GetRootDialog(self):idList_OnSelect(button)
 end
 
@@ -512,13 +512,13 @@ function ChoGGi_ListChoiceDlg:idList_OnKbdKeyUp(...)
 	GetRootDialog(self):idList_OnSelect("L")
 end
 
-function ChoGGi_ListChoiceDlg:idEditValue_OnKbdKeyDown(vk,...)
+function ChoGGi_ListChoiceDlg:idEditValue_OnKbdKeyDown(vk, ...)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
-		self:BuildReturnList(_,"L")
+		self:BuildReturnList(_, "L")
 		return "break"
 	end
-	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idEditValue,vk,...)
+	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idEditValue, vk, ...)
 end
 
 function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
@@ -529,23 +529,23 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	end
 	self.old_edit_value = text
 
-	local value,value_type
+	local value, value_type
 	local name_str = text
 
-	-- if user pastes an rgb or rgba func string translate to colour: RGBA(233,123,32,100)
-	if text:sub(1,3) == "RGB" then
+	-- if user pastes an rgb or rgba func string translate to colour: RGBA(233, 123, 32, 100)
+	if text:sub(1, 3) == "RGB" then
 		-- remove any spaces/newlines etc
-		text = text:gsub("[%s%c]","")
-		-- get us (0,0,0), and func name
+		text = text:gsub("[%s%c]", "")
+		-- get us (0, 0, 0), and func name
 		text = text:sub(4)
 		local func = "RGB"
 		local count = 3
-		if text:sub(1,1) == "A" then
+		if text:sub(1, 1) == "A" then
 			text = text:sub(2)
 			func = "RGBA"
 			count = 4
 		end
-		text = text:gsub("%(",""):gsub("%)","")
+		text = text:gsub("%(", ""):gsub("%)", "")
 		-- grab the values
 		local values = {}
 		local c = 0
@@ -557,9 +557,9 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 		end
 
 		if #values == 3 then
-			value,value_type = RetProperType(_G[func](values[1],values[2],values[3]))
+			value, value_type = RetProperType(_G[func](values[1], values[2], values[3]))
 		else
-			value,value_type = RetProperType(_G[func](values[1],values[2],values[3],values[4]))
+			value, value_type = RetProperType(_G[func](values[1], values[2], values[3], values[4]))
 		end
 		name_str = value
 
@@ -572,12 +572,12 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 			if type(value) == "number" then
 				value_type = "number"
 			else
-				value,value_type = RetProperType(name_str)
+				value, value_type = RetProperType(name_str)
 			end
 		end
 	end
 
---~ 	printC(text,value,value_type)
+--~ 	printC(text, value, value_type)
 	if self.custom_type == 0 then
 		-- last item is a blank item for custom value
 		if self.idShowCustomVal:GetCheck() then
@@ -607,8 +607,8 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 	end
 end
 
-local item_icon_table = {"Resources","BuildingTemplates","g_Classes"}
-function ChoGGi_ListChoiceDlg:AddItemIcon(g,item)
+local item_icon_table = {"Resources", "BuildingTemplates", "g_Classes"}
+function ChoGGi_ListChoiceDlg:AddItemIcon(g, item)
 	for i = 1, 3 do
 		local list = g[item_icon_table[i]]
 
@@ -644,7 +644,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 		local item = self.items[i]
 
 		-- is there an icon to add
-		local text,display_icon
+		local text, display_icon
 		if item.icon then
 			if item.icon:find("<image ") then
 				display_icon = item.icon
@@ -657,7 +657,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 				end
 			end
 		else
-			display_icon = not self.skip_icons and self:AddItemIcon(g,item)
+			display_icon = not self.skip_icons and self:AddItemIcon(g, item)
 			text = item.text
 		end
 
@@ -717,7 +717,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 
 	-- restore scroll pos
 	if save_pos then
-		self.idList:ScrollTo(nil,save_pos[1])
+		self.idList:ScrollTo(nil, save_pos[1])
 		self.idScrollV:SetScroll(save_pos[2])
 	end
 end
@@ -842,7 +842,7 @@ function ChoGGi_ListChoiceDlg:idList_OnSelect(button)
 
 	-- blick world obj
 	if self.select_flash and self.sel.obj then
-		ChoGGi.ComFuncs.AddBlinkyToObj(self.sel.obj,8000)
+		ChoGGi.ComFuncs.AddBlinkyToObj(self.sel.obj, 8000)
 	end
 
 	if button ~= "L" then
@@ -856,15 +856,15 @@ function ChoGGi_ListChoiceDlg:idList_OnSelect(button)
 	end
 end
 
---~ function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDoubleClick(_,button)
+--~ function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDoubleClick(_, button)
 function ChoGGi_ListChoiceDlg:CallbackSelectedList()
 	-- build self.choices
-	if self.sel then
+	if self.sel and not self.list.multisel then
 		self.sel.list_selected = true
 		self.choices = {self.sel}
 		self:UpdateReturnedItem(self.choices)
 	else
-		self:GetListItems()
+		self:GetListItems(true)
 	end
 	-- send selection back
 	if self.custom_func then
@@ -872,12 +872,9 @@ function ChoGGi_ListChoiceDlg:CallbackSelectedList()
 	end
 end
 
-function ChoGGi_ListChoiceDlg:BuildReturnList(_,button)
---~ 	if self.class == "ChoGGi_XList" then
---~
+function ChoGGi_ListChoiceDlg:BuildReturnList(_, button)
 	-- select all items (ok button)
 	if self.class == "ChoGGi_XButton" then
-		print("xbut")
 		button = "L"
 	end
 	self = GetRootDialog(self)
@@ -899,7 +896,7 @@ function ChoGGi_ListChoiceDlg:BuildReturnList(_,button)
 	elseif self.sel and button == "R" then
 		-- do stuff without closing list
 		if self.custom_type == 6 and self.custom_func then
-			self.custom_func(self.sel.func or self.sel.value,self)
+			self.custom_func(self.sel.func or self.sel.value, self)
 		elseif self.custom_type == 8 then
 			self:CallbackSelectedList()
 		elseif self.idEditValue then
@@ -944,11 +941,11 @@ function ChoGGi_ListChoiceDlg:UpdateReturnedItem(choices)
 	return choices
 end
 
-function ChoGGi_ListChoiceDlg:GetListItems()
+function ChoGGi_ListChoiceDlg:GetListItems(skip)
 	local items = {}
 
 	-- get sel item(s)
-	if self.custom_type == 0 or self.custom_type == 3 or self.custom_type == 6 then
+	if not skip or self.custom_type == 0 or self.custom_type == 3 or self.custom_type == 6 then
 		-- loop through and add all selected items to the list
 		for i = 1, #self.idList.selection do
 			items[i] = self.idList[self.idList.selection[i]].item

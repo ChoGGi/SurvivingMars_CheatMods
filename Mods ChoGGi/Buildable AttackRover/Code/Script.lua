@@ -18,24 +18,24 @@ DefineClass.AttackRoverBuilding2 = {
 
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.AttackRoverBuilding2 then
-		PlaceObj("BuildingTemplate",{
-			"Id","AttackRoverBuilding2",
-			"template_class","AttackRoverBuilding2",
-			"construction_cost_Metals",20000,
-			"construction_cost_Electronics",10000,
-			"dome_forbidden",true,
-			"display_name","RC AttackRover",
-			"display_name_pl","RC AttackRover",
-			"description","Not much",
-			"build_category","ChoGGi",
+		PlaceObj("BuildingTemplate", {
+			"Id", "AttackRoverBuilding2",
+			"template_class", "AttackRoverBuilding2",
+			"construction_cost_Metals", 20000,
+			"construction_cost_Electronics", 10000,
+			"dome_forbidden", true,
+			"display_name", "RC AttackRover",
+			"display_name_pl", "RC AttackRover",
+			"description", "Not much",
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
-			"display_icon","UI/Icons/Buildings/rover_combat.tga",
-			"build_pos",2,
-			"entity","RoverTransportBuilding",
-			"encyclopedia_exclude",true,
-			"on_off_button",false,
-			"prio_button",false,
-			"palettes","AttackRoverRed"
+			"display_icon", "UI/Icons/Buildings/rover_combat.tga",
+			"build_pos", 2,
+			"entity", "RoverTransportBuilding",
+			"encyclopedia_exclude", true,
+			"on_off_button", false,
+			"prio_button", false,
+			"palettes", "AttackRoverRed"
 		})
 	end
 

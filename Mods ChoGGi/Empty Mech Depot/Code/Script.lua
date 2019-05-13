@@ -4,7 +4,7 @@ function OnMsg.ClassesBuilt()
 	local Strings = ChoGGi.Strings
 
 	-- list controlled buildings
-	ChoGGi.ComFuncs.AddXTemplate("EmptyMechDepot","sectionStorage",{
+	ChoGGi.ComFuncs.AddXTemplate("EmptyMechDepot", "sectionStorage", {
 		__context_of_kind = "MechanizedDepot",
 		Icon = "UI/Icons/Sections/storage.tga",
 		Title = Strings[302535920000176--[[Empty Mech Depot--]]],
@@ -22,6 +22,6 @@ function OnMsg.ClassesBuilt()
 		func = function(_, context)
 			ChoGGi.ComFuncs.EmptyMechDepot(context)
 		end,
-	},true)
+	}, true)
 
 end

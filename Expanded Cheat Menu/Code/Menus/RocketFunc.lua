@@ -8,7 +8,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 --~	local RetName = ChoGGi.ComFuncs.RetName
 
 do -- ChangeResupplySettings
-	local function CheckResupplySetting(cargo_val,name,value,meta)
+	local function CheckResupplySetting(cargo_val, name, value, meta)
 		if ChoGGi.Tables.CargoPresets[name][cargo_val] == value then
 			ChoGGi.UserSettings.CargoSettings[name][cargo_val] = nil
 		else
@@ -17,12 +17,12 @@ do -- ChangeResupplySettings
 		meta[cargo_val] = value
 	end
 
-	local function ShowResupplyList(name,meta)
+	local function ShowResupplyList(name, meta)
 		local item_list = {
-			{text = "pack",value = meta.pack,hint = Strings[302535920001269--[[Amount Per Click--]]]},
-			{text = "kg",value = meta.kg,hint = Strings[302535920001270--[[Weight Per Item--]]]},
-			{text = "price",value = meta.price,hint = Strings[302535920001271--[[Price Per Item--]]]},
-			{text = "locked",value = meta.locked,hint = Strings[302535920000126--[[Locked From Resupply View--]]]},
+			{text = "pack", value = meta.pack, hint = Strings[302535920001269--[[Amount Per Click--]]]},
+			{text = "kg", value = meta.kg, hint = Strings[302535920001270--[[Weight Per Item--]]]},
+			{text = "price", value = meta.price, hint = Strings[302535920001271--[[Price Per Item--]]]},
+			{text = "locked", value = meta.locked, hint = Strings[302535920000126--[[Locked From Resupply View--]]]},
 		}
 
 		local function CallBackFunc(choice)
@@ -35,16 +35,16 @@ do -- ChangeResupplySettings
 			end
 
 			for i = 1, #choice do
-				local value,value_type = ChoGGi.ComFuncs.RetProperType(choice[i].value)
+				local value, value_type = ChoGGi.ComFuncs.RetProperType(choice[i].value)
 				local text = choice[i].text
 				if text == "pack" and value_type == "number" then
-					CheckResupplySetting("pack",name,value,meta)
+					CheckResupplySetting("pack", name, value, meta)
 				elseif text == "kg" and value_type == "number" then
-					CheckResupplySetting("kg",name,value,meta)
+					CheckResupplySetting("kg", name, value, meta)
 				elseif text == "price" and value_type == "number" then
-					CheckResupplySetting("price",name,value,meta)
+					CheckResupplySetting("price", name, value, meta)
 				elseif text == "locked" and value_type == "boolean" then
-					CheckResupplySetting("locked",name,value,meta)
+					CheckResupplySetting("locked", name, value, meta)
 				end
 			end
 
@@ -85,7 +85,7 @@ do -- ChangeResupplySettings
 			if choice[1].check1 then
 				ChoGGi.UserSettings.CargoSettings = nil
 
-				for cargo_id,cargo in pairs(Cargo) do
+				for cargo_id, cargo in pairs(Cargo) do
 					local preset = CargoPresets[cargo_id]
 					cargo.pack = preset.pack
 					cargo.kg = preset.kg
@@ -96,7 +96,7 @@ do -- ChangeResupplySettings
 				return
 			end
 
-			ShowResupplyList(choice[1].value,choice[1].meta)
+			ShowResupplyList(choice[1].value, choice[1].meta)
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
@@ -132,15 +132,15 @@ end -- do
 function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("CargoCapacity")
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting .. " kg",value = default_setting},
-		{text = "50 000 kg",value = 50000},
-		{text = "100 000 kg",value = 100000},
-		{text = "250 000 kg",value = 250000},
-		{text = "500 000 kg",value = 500000},
-		{text = "1 000 000 kg",value = 1000000},
-		{text = "10 000 000 kg",value = 10000000},
-		{text = "100 000 000 kg",value = 100000000},
-		{text = "1 000 000 000 kg",value = 1000000000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting .. " kg", value = default_setting},
+		{text = "50 000 kg", value = 50000},
+		{text = "100 000 kg", value = 100000},
+		{text = "250 000 kg", value = 250000},
+		{text = "500 000 kg", value = 500000},
+		{text = "1 000 000 kg", value = 1000000},
+		{text = "10 000 000 kg", value = 10000000},
+		{text = "100 000 000 kg", value = 100000000},
+		{text = "1 000 000 000 kg", value = 1000000000},
 	}
 
 	local function CallBackFunc(choice)
@@ -151,7 +151,7 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 
 		local value = choice.value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConstsG("CargoCapacity",value)
+			ChoGGi.ComFuncs.SetConstsG("CargoCapacity", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("CargoCapacity")
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -175,19 +175,19 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("TravelTimeEarthMars") / r
 	local item_list = {
-		{text = Strings[302535920000947--[[Instant--]]],value = 0},
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = Strings[302535920000948--[[Original--]]] .. ": " .. 750,value = 750},
-		{text = Strings[302535920000949--[[Half of Original--]]] .. ": " .. 375,value = 375},
-		{text = 10,value = 10},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 100,value = 100},
-		{text = 150,value = 150},
-		{text = 200,value = 200},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
+		{text = Strings[302535920000947--[[Instant--]]], value = 0},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Strings[302535920000948--[[Original--]]] .. ": " .. 750, value = 750},
+		{text = Strings[302535920000949--[[Half of Original--]]] .. ": " .. 375, value = 375},
+		{text = 10, value = 10},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 100, value = 100},
+		{text = 150, value = 150},
+		{text = 200, value = 200},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
 	}
 
 	local hint = default_setting
@@ -204,8 +204,8 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
 		local value = choice.value
 		if type(value) == "number" then
 			local value = value * r
-			ChoGGi.ComFuncs.SetConstsG("TravelTimeEarthMars",value)
-			ChoGGi.ComFuncs.SetConstsG("TravelTimeMarsEarth",value)
+			ChoGGi.ComFuncs.SetConstsG("TravelTimeEarthMars", value)
+			ChoGGi.ComFuncs.SetConstsG("TravelTimeMarsEarth", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("TravelTimeEarthMars")
 			ChoGGi.ComFuncs.SetSavedConstSetting("TravelTimeMarsEarth")
 
@@ -229,15 +229,15 @@ end
 function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("MaxColonistsPerRocket")
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting,value = default_setting},
-		{text = 25,value = 25},
-		{text = 50,value = 50},
-		{text = 75,value = 75},
-		{text = 100,value = 100},
-		{text = 250,value = 250},
-		{text = 500,value = 500},
-		{text = 1000,value = 1000},
-		{text = 10000,value = 10000},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = 25, value = 25},
+		{text = 50, value = 50},
+		{text = 75, value = 75},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
+		{text = 10000, value = 10000},
 	}
 
 	local function CallBackFunc(choice)
@@ -246,7 +246,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConstsG("MaxColonistsPerRocket",value)
+			ChoGGi.ComFuncs.SetConstsG("MaxColonistsPerRocket", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("MaxColonistsPerRocket")
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -270,15 +270,15 @@ function ChoGGi.MenuFuncs.SetRocketMaxExportAmount()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.RocketMaxExportAmount
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
-		{text = 5,value = 5 * r},
-		{text = 10,value = 10 * r},
-		{text = 15,value = 15 * r},
-		{text = 25,value = 25 * r},
-		{text = 50,value = 50 * r},
-		{text = 100,value = 100 * r},
-		{text = 1000,value = 1000 * r},
-		{text = 10000,value = 10000 * r},
+		{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r), value = default_setting},
+		{text = 5, value = 5 * r},
+		{text = 10, value = 10 * r},
+		{text = 15, value = 15 * r},
+		{text = 25, value = 25 * r},
+		{text = 50, value = 50 * r},
+		{text = 100, value = 100 * r},
+		{text = 1000, value = 1000 * r},
+		{text = 10000, value = 10000 * r},
 	}
 
 	if not ChoGGi.UserSettings.RocketMaxExportAmount then
@@ -303,7 +303,7 @@ function ChoGGi.MenuFuncs.SetRocketMaxExportAmount()
 			for i = 1, #rockets do
 				local rocket = rockets[i]
 				if rocket.export_requests then
-					ChoGGi.ComFuncs.SetTaskReqAmount(rocket,value,"export_requests","max_export_storage")
+					ChoGGi.ComFuncs.SetTaskReqAmount(rocket, value, "export_requests", "max_export_storage")
 				else
 					rocket.max_export_storage = value
 				end
@@ -332,7 +332,7 @@ do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 		for i = 1, #rockets do
 			local rocket = rockets[i]
 			if rocket.refuel_request then
-				ChoGGi.ComFuncs.SetTaskReqAmount(rocket,amount,"refuel_request","launch_fuel")
+				ChoGGi.ComFuncs.SetTaskReqAmount(rocket, amount, "refuel_request", "launch_fuel")
 			else
 				rocket.launch_fuel = amount
 			end
@@ -360,18 +360,18 @@ do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 		local default_setting = ChoGGi.Consts.LaunchFuelPerRocket
 		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("FuelRocket")
 		local item_list = {
-			{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r),value = default_setting},
-			{text = 5,value = 5 * r},
-			{text = 10,value = 10 * r},
-			{text = 15,value = 15 * r},
-			{text = 25,value = 25 * r},
-			{text = 50,value = 50 * r},
-			{text = 100,value = 100 * r},
-			{text = 1000,value = 1000 * r},
-			{text = 10000,value = 10000 * r},
+			{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r), value = default_setting},
+			{text = 5, value = 5 * r},
+			{text = 10, value = 10 * r},
+			{text = 15, value = 15 * r},
+			{text = 25, value = 25 * r},
+			{text = 50, value = 50 * r},
+			{text = 100, value = 100 * r},
+			{text = 1000, value = 1000 * r},
+			{text = 10000, value = 10000 * r},
 		}
 		if default_setting ~= UpgradedSetting then
-			table.insert(item_list,2,{text = Strings[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r),value = UpgradedSetting})
+			table.insert(item_list, 2, {text = Strings[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r), value = UpgradedSetting})
 		end
 
 		if not ChoGGi.UserSettings.LaunchFuelPerRocket then

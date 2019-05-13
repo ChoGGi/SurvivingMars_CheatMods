@@ -2,7 +2,7 @@
 
 -- stores default values and some tables
 
-local next,pairs,type,table = next,pairs,type,table
+local next, pairs, type, table = next, pairs, type, table
 local os_time = os.time
 
 local LuaCodeToTuple = LuaCodeToTuple
@@ -226,7 +226,7 @@ function ChoGGi.SettingFuncs.SetConstsToSaved()
 	local SetConstsG = ChoGGi.ComFuncs.SetConstsG
 	for i = 1, #list do
 		local item = list[i]
-		SetConstsG(item,UserSettings[item])
+		SetConstsG(item, UserSettings[item])
 	end
 	-- const.
 	list = {
@@ -259,13 +259,13 @@ function ChoGGi.SettingFuncs.WriteSettingsAdmin(settings)
 	local bak = ChoGGi.settings_file .. ".bak"
 	--locks the file while we write (i mean it says thread, ah well can't hurt)?
 	ThreadLockKey(bak)
-	AsyncCopyFile(ChoGGi.settings_file,bak)
+	AsyncCopyFile(ChoGGi.settings_file, bak)
 	ThreadUnlockKey(bak)
 
 	ThreadLockKey(ChoGGi.settings_file)
 	table.sort(settings)
 	-- and write it to disk
-	local err = AsyncStringToFile(ChoGGi.settings_file,TableToLuaCode(settings))
+	local err = AsyncStringToFile(ChoGGi.settings_file, TableToLuaCode(settings))
 	ThreadUnlockKey(ChoGGi.settings_file)
 
 	if err then
@@ -369,13 +369,13 @@ function OnMsg.ClassesBuilt()
 	local UserSettings = ChoGGi.UserSettings
 	-- if setting doesn't exist then add default
 	local Defaults = ChoGGi.Defaults
-	for key,value in pairs(Defaults) do
+	for key, value in pairs(Defaults) do
 		if type(UserSettings[key]) == "nil" then
 			UserSettings[key] = value
 		end
 	end
 
---~ 	for key,value in pairs(Defaults.XXXXXXX) do
+--~ 	for key, value in pairs(Defaults.XXXXXXX) do
 --~ 		if type(UserSettings.XXXXXXX[key]) == "nil" then
 --~ 			UserSettings.XXXXXXX[key] = value
 --~ 		end
@@ -383,7 +383,7 @@ function OnMsg.ClassesBuilt()
 end
 
 local function RemoveEmpty(settings)
-	for key,value in pairs(settings) do
+	for key, value in pairs(settings) do
 		if not next(value) then
 			settings[key] = nil
 		end
@@ -400,9 +400,9 @@ local ChoGGi = ChoGGi
 -- saving settings to a file or to local storage
 if blacklist then
 	-- check if settings are in AccountStorage and migrate them to LocalStorage
-	local err,old_settings = ReadModPersistentData()
+	local err, old_settings = ReadModPersistentData()
 	if not err and old_settings and old_settings ~= "" then
-		err,old_settings = AsyncDecompress(old_settings)
+		err, old_settings = AsyncDecompress(old_settings)
 		if not err then
 			err, old_settings = LuaCodeToTuple(old_settings)
 			if not err then

@@ -2,7 +2,7 @@
 
 -- used to do minimal editing of objects (or all of same type)
 
-local tostring,type,table = tostring,type,table
+local tostring, type, table = tostring, type, table
 
 local IsPoint = IsPoint
 local Min = Min
@@ -17,7 +17,7 @@ local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local RetProperType = ChoGGi.ComFuncs.RetProperType
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg,"ChoGGi_ObjectEditorDlg")
+	return GetParentOfKind(dlg, "ChoGGi_ObjectEditorDlg")
 end
 DefineClass.ChoGGi_ObjectEditorDlg = {
 	__parents = {"ChoGGi_XWindow"},
@@ -51,7 +51,7 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 		Text = Strings[302535920000084--[[Auto-Refresh--]]],
 		RolloverText = Strings[302535920001257--[[Auto-refresh list every second.--]]],
 		Dock = "left",
-		Margins = box(4,0,0,0),
+		Margins = box(4, 0, 0, 0),
 		OnChange = self.idAutoRefresh_OnChange,
 	}, self.idCheckboxArea)
 
@@ -125,22 +125,22 @@ end
 function ChoGGi_ObjectEditorDlg:idList_OnMouseButtonDoubleClick()
 	self = GetRootDialog(self)
 	if self.idList.focused_item and type(self.sel.object) == "table" then
-		ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.sel.object,self)
+		ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.sel.object, self)
 	end
 end
 
 function ChoGGi_ObjectEditorDlg:idApplyAll_OnPress()
 	self = GetRootDialog(self)
 	if self.sel and self.sel.value then
-		MapForEach(true,self.obj.class,function(o)
+		MapForEach(true, self.obj.class, function(o)
 			o[self.sel.text] = RetProperType(self.sel.value)
 		end)
 	end
 end
 
 -- update edit text box with selected value
-function ChoGGi_ObjectEditorDlg:idList_OnMouseButtonDown(pt,button,...)
-	g_Classes.ChoGGi_XList.OnMouseButtonDown(self,pt,button)
+function ChoGGi_ObjectEditorDlg:idList_OnMouseButtonDown(pt, button, ...)
+	g_Classes.ChoGGi_XList.OnMouseButtonDown(self, pt, button)
 	self = GetRootDialog(self)
 	if not self.idList.focused_item then
 		return
@@ -163,8 +163,8 @@ function ChoGGi_ObjectEditorDlg:idAddNew_OnPress()
 		sel_value = false
 	end
 	local item_list = {
-		{text = Strings[302535920000095--[[New Entry--]]],value = sel_name,hint = Strings[302535920000096--[[Enter the name of the new entry to be added.--]]]},
-		{text = Strings[302535920000097--[[New Value--]]],value = sel_value,hint = Strings[302535920000098--[[Set the value of the new entry to be added.--]]]},
+		{text = Strings[302535920000095--[[New Entry--]]], value = sel_name, hint = Strings[302535920000096--[[Enter the name of the new entry to be added.--]]]},
+		{text = Strings[302535920000097--[[New Value--]]], value = sel_value, hint = Strings[302535920000098--[[Set the value of the new entry to be added.--]]]},
 	}
 
 	local function CallBackFunc(choice)
@@ -196,7 +196,7 @@ function ChoGGi_ObjectEditorDlg:idEditValue_OnTextChanged()
 	local sel_idx = self.idList.focused_item
 	--
 	local edit_text = self.idEditValue:GetText()
-	local edit_value,edit_type = RetProperType(edit_text)
+	local edit_value, edit_type = RetProperType(edit_text)
 	local obj_value = self.obj[self.idList[sel_idx].item.text]
 	local obj_type = type(obj_value)
 	-- only update strings/numbers/boolean/nil
@@ -285,7 +285,7 @@ function ChoGGi_ObjectEditorDlg:UpdateListContent()
 		-- populate it
 		self:BuildList()
 		-- and scroll to old pos
-		self.idList:ScrollTo(scroll_x,scroll_y)
+		self.idList:ScrollTo(scroll_x, scroll_y)
 		self.idScrollV:SetScroll(scroll_bar)
 	else
 		-- let user know
@@ -305,16 +305,16 @@ function ChoGGi_ObjectEditorDlg:CreateProp(obj)
 	end
 
 	if IsValid(obj) then
-		local x,y,z = obj:GetVisualPosXYZ()
-		return obj.class .. " @ (" .. x .. "," .. y .. "," .. z .. ")"
+		local x, y, z = obj:GetVisualPosXYZ()
+		return obj.class .. " @ (" .. x .. ", " .. y .. ", " .. z .. ")"
 	end
 
 	if IsPoint(obj) then
-		local x,y,z = obj:xyz()
+		local x, y, z = obj:xyz()
 		if z then
-			return "(" .. x .. "," .. y .. "," .. z .. ")"
+			return "(" .. x .. ", " .. y .. ", " .. z .. ")"
 		else
-			return "(" .. x .. "," .. y .. ")"
+			return "(" .. x .. ", " .. y .. ")"
 		end
 	end
 
@@ -337,7 +337,7 @@ function ChoGGi_ObjectEditorDlg:CreateProp(obj)
 			if #obj > 3 then
 				res[#res+1] = "..."
 			end
-			return "objlist{" .. TableConcat(res,", ") .. "}"
+			return "objlist{" .. TableConcat(res, ", ") .. "}"
 		end
 
 		if IsT(obj) then

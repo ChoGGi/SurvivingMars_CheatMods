@@ -34,7 +34,7 @@ function OnMsg.ClassesGenerate()
 end
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg,"ChoGGi_MinimapDlg")
+	return GetParentOfKind(dlg, "ChoGGi_MinimapDlg")
 end
 DefineClass.ChoGGi_MinimapDlg = {
 	__parents = {"ChoGGi_XWindow"},
@@ -83,7 +83,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		ScaleModifier = point(2000, 2000),
 	}, self.idMoveControl)
 	self.idCaptionToggle:SetRow(1)
-	self.idCaption:SetPadding(box(self.idCaptionToggle.box:sizex(),0,0,0))
+	self.idCaption:SetPadding(box(self.idCaptionToggle.box:sizex(), 0, 0, 0))
 	-- disable rollup for minimap (add as option in bottom
 --~ 	self.idMoveControl.OnMouseButtonDoubleClick = empty_func
 
@@ -163,13 +163,13 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 	self.idOpacity:SetText(tostring(self.opacity))
 
 	-- default dialog position if we can't find the ui stuff (new version or whatnot)
-	local x,y = 150,75
+	local x, y = 150, 75
 	local HUD = Dialogs.HUD
 
 	if HUD then
 		-- wrapped in a pcall, so if we fail then it doesn't matter (other than an error in the log)
 		pcall(function()
-			x,y = HUD.idRight.box:minxyz()
+			x, y = HUD.idRight.box:minxyz()
 --~ 			x = x - 25
 			y = y - self.dialog_height_scaled
 		end)
@@ -178,10 +178,10 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 	-- restore old pos
 	x = context.x or x
 	y = context.y or y
-	local pt = point(x,y)
+	local pt = point(x, y)
 	self.dialog_original_pos = pt
 
-	self:PostInit(nil,pt)
+	self:PostInit(nil, pt)
 end
 
 function ChoGGi_MinimapDlg:idUseScreenShotsOnChange()
@@ -196,16 +196,16 @@ end
 function ChoGGi_MinimapDlg:idResetDialogOnPress()
 	self = GetRootDialog(self)
 	self:ResetSize()
-	self:PostInit(nil,self.dialog_original_pos,true)
+	self:PostInit(nil, self.dialog_original_pos, true)
 end
 
 function ChoGGi_MinimapDlg:idToggleDblSizeOnPress()
 	self = GetRootDialog(self)
 	local size = self:GetSize()
 	if size:x() == self.dialog_width_scaled and size:y() == self.dialog_height_scaled then
-		self:SetSize(self.dialog_width_scaled*2,self.dialog_height_scaled*2)
+		self:SetSize(self.dialog_width_scaled*2, self.dialog_height_scaled*2)
 		-- we don't want it off screen
-		self:PostInit(nil,self:GetPos(),true)
+		self:PostInit(nil, self:GetPos(), true)
 	else
 		self:ResetSize()
 	end
@@ -329,7 +329,7 @@ function ChoGGi_MinimapDlg:idUpdateMapOnPress()
 		if not WaitCaptureScreenshot(self.map_file, {
 --~ 			width = 1920,
 --~ 			height = 1080,
---~ 			src = box(point20, point(1920,1080)),
+--~ 			src = box(point20, point(1920, 1080)),
 			interface = false,
 		}) then
 			WaitMsg("OnRender")
@@ -427,11 +427,11 @@ function ChoGGi_XMapControl:OnMouseEnter(...)
 	-- workaround to update mouse pos
 	self.desktop:SetFocus()
 	self:SetFocus()
-	return XWindow.OnMouseEnter(self,...)
+	return XWindow.OnMouseEnter(self, ...)
 end
 function ChoGGi_XMapControl:OnMouseLeft(...)
 	self.mouse_pt = false
-	return XWindow.OnMouseLeft(self,...)
+	return XWindow.OnMouseLeft(self, ...)
 end
 
 --~ (clip_rect)
@@ -462,7 +462,7 @@ function ChoGGi_XMapControl:DrawContent()
 		miny + weight_y * sizey / 1000
 	)
 --~ 	print(slider_pos)
-	local slide_x,slide_y = self.slider_size:xy()
+	local slide_x, slide_y = self.slider_size:xy()
 
 	local slider_size = point(ScaleXY(self.scale, slide_x, slide_y))
 	local slider_box = sizebox(slider_pos - slider_size / 2, slider_size)

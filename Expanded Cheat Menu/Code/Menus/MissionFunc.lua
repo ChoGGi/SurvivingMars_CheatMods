@@ -145,7 +145,7 @@ function ChoGGi.MenuFuncs.StartChallenge()
 			hint = Translate(c.description) .. "\n\n"
 				.. Strings[302535920001415--[[Sols to Complete: %s--]]]:format(c.time_completed / DayDuration)
 				.. "\n"
-				.. Translate(10489--[[<newline>Perfect time: <countdown2>--]]):gsub("<countdown2>",c.time_perfected / DayDuration)
+				.. Translate(10489--[[<newline>Perfect time: <countdown2>--]]):gsub("<countdown2>", c.time_perfected / DayDuration)
 				.. (current and "\n\n" .. Strings[302535920000106--[[Current--]]] or ""),
 		}
 	end
@@ -169,7 +169,7 @@ function ChoGGi.MenuFuncs.StartChallenge()
 	local hint
 	local thread = UICity.challenge_thread
 	if not blacklist and IsValidThread(thread) then
-		local _,c = debug.getlocal(thread,1,1)
+		local _, c = debug.getlocal(thread, 1, 1)
 		hint = Strings[302535920000106--[[Current--]]] .. ": " .. Translate(c.title) .. ", " .. c.id
 	end
 
@@ -256,7 +256,7 @@ end
 
 function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
 	local Consts = Consts
-	ChoGGi.ComFuncs.SetConstsG("MeteorHealthDamage",ChoGGi.ComFuncs.NumRetBool(Consts.MeteorHealthDamage,0,ChoGGi.Consts.MeteorHealthDamage))
+	ChoGGi.ComFuncs.SetConstsG("MeteorHealthDamage", ChoGGi.ComFuncs.NumRetBool(Consts.MeteorHealthDamage, 0, ChoGGi.Consts.MeteorHealthDamage))
 	ChoGGi.ComFuncs.SetSavedConstSetting("MeteorHealthDamage")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -294,7 +294,7 @@ function ChoGGi.MenuFuncs.SetSponsor()
 			item_list[c] = {
 				text = Translate(spon.display_name),
 				value = spon.id,
-				hint = Translate(T{spon.effect,stats[2]})
+				hint = Translate(T{spon.effect, stats[2]})
 					.. (spon.save_in ~= "" and "\n\nsave_in: " .. spon.save_in or ""),
 			}
 		end
@@ -364,7 +364,7 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
 			item_list[c] = {
 				text = Translate(spon.display_name),
 				value = spon.id,
-				hint = Translate(T{spon.effect,stats[2]}) .. "\n\n" .. Strings[302535920001165--[[Enabled Status--]]]
+				hint = Translate(T{spon.effect, stats[2]}) .. "\n\n" .. Strings[302535920001165--[[Enabled Status--]]]
 					.. (user_set and ": " .. user_set or " false")
 					.. (spon.save_in ~= "" and "\n\nsave_in: " .. spon.save_in or ""),
 			}
@@ -576,7 +576,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 
 	local item_list = {}
 	local c = 0
-	for id,def in pairs(MissionLogoPresetMap) do
+	for id, def in pairs(MissionLogoPresetMap) do
 		c = c + 1
 		item_list[c] = {
 			text = Translate(def.display_name),
@@ -656,7 +656,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 
 		local hint = {}
 		local hc = 0
-		for key,value in pairs(rule) do
+		for key, value in pairs(rule) do
 			if key ~= "name" and key ~= "use_in_gen" then
 				hc = hc + 1
 				hint[hc] = key .. ": " .. tostring(value)
@@ -666,7 +666,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 		item_list[c] = {
 			text = rule.name,
 			value = rule.name,
-			hint = TableConcat(hint,"\n"),
+			hint = TableConcat(hint, "\n"),
 		}
 	end
 
@@ -685,7 +685,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 		end
 
 		MsgPopup(
-			Strings[302535920001179--[[%s occurrence is now: %s--]]]:format(setting_id,value),
+			Strings[302535920001179--[[%s occurrence is now: %s--]]]:format(setting_id, value),
 			Translate(3983--[[Disasters--]])
 		)
 	end
@@ -704,7 +704,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 
 	local item_list = {}
 	local c = 0
-	for id,def in pairs(GameRulesMap) do
+	for id, def in pairs(GameRulesMap) do
 		c = c + 1
 		item_list[c] = {
 			text = Translate(def.display_name),
@@ -752,7 +752,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		end
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(#choice,Strings[302535920000129--[[Set--]]]),
+			ChoGGi.ComFuncs.SettingState(#choice, Strings[302535920000129--[[Set--]]]),
 			Translate(8800--[[Game Rules--]])
 		)
 	end

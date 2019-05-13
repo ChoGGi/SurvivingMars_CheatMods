@@ -10,7 +10,7 @@ local CreateRealTimeThread = CreateRealTimeThread
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg,"ChoGGi_MultiLineTextDlg")
+	return GetParentOfKind(dlg, "ChoGGi_MultiLineTextDlg")
 end
 
 DefineClass.ChoGGi_MultiLineTextDlg = {
@@ -85,7 +85,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		self.idOverwrite = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idOverwrite",
 			Dock = "left",
-			Margins = box(4,0,0,0),
+			Margins = box(4, 0, 0, 0),
 			Text = Strings[302535920000721--[[Overwrite--]]],
 			RolloverText = Strings[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
 			OnChange = self.idOverwrite_OnChange,
@@ -97,7 +97,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		Dock = "left",
 		Text = Strings[302535920001288--[[Wrap Lines--]]],
 		RolloverText = Strings[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
-		Margins = box(10,0,0,0),
+		Margins = box(10, 0, 0, 0),
 		OnChange = self.idWrapLines_OnChange,
 	}, self.idButtonContainer)
 	self.idWrapLines:SetIconRow(ChoGGi.UserSettings.WordWrap and 2 or 1)
@@ -107,7 +107,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		Dock = "left",
 		Text = Strings[302535920001474--[[Code Highlight--]]],
 		RolloverText = Strings[302535920001475--[[Toggle lua code highlighting.--]]],
-		Margins = box(10,0,0,0),
+		Margins = box(10, 0, 0, 0),
 		OnChange = self.idToggleCode_OnChange,
 	}, self.idButtonContainer)
 
@@ -131,19 +131,19 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self:PostInit(context.parent)
 end
 
-function ChoGGi_MultiLineTextDlg:idSearch_OnMouseButtonDown(pt,button,...)
-	g_Classes.ChoGGi_XButton.OnMouseButtonDown(self,pt,button,...)
+function ChoGGi_MultiLineTextDlg:idSearch_OnMouseButtonDown(pt, button, ...)
+	g_Classes.ChoGGi_XButton.OnMouseButtonDown(self, pt, button, ...)
 	self = GetRootDialog(self)
 	if button == "L" then
 		self:FindNext()
 	elseif button == "R" then
-		self:FindNext(nil,true)
+		self:FindNext(nil, true)
 	else
 		self:ScrollToText(0)
 	end
 end
 
-function ChoGGi_MultiLineTextDlg:FindNext(text,previous)
+function ChoGGi_MultiLineTextDlg:FindNext(text, previous)
 	text = text or self.idSearchText:GetText()
 	local edit = self.idEdit
 	local current_y = edit.cursor_line
@@ -176,13 +176,13 @@ function ChoGGi_MultiLineTextDlg:FindNext(text,previous)
 	end
 end
 
-function ChoGGi_MultiLineTextDlg:idSearchText_OnKbdKeyDown(vk,...)
+function ChoGGi_MultiLineTextDlg:idSearchText_OnKbdKeyDown(vk, ...)
 	self = GetRootDialog(self)
 
 	local c = const
 	if vk == c.vkEnter then
 		if IsControlPressed() then
-			self:FindNext(nil,true)
+			self:FindNext(nil, true)
 		else
 			self:FindNext()
 		end
@@ -199,7 +199,7 @@ function ChoGGi_MultiLineTextDlg:idSearchText_OnKbdKeyDown(vk,...)
 		end
 	end
 
-	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idSearchText,vk,...)
+	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idSearchText, vk, ...)
 end
 
 -- searches for text or goes to line number
@@ -213,7 +213,7 @@ function ChoGGi_MultiLineTextDlg:ScrollToText(scrollto)
 			local lines = edit.lines
 			for i = 1, #lines do
 				local line = lines[i]
-				if line:find(scrollto,1,true) then
+				if line:find(scrollto, 1, true) then
 					line_num = i
 					break
 				end
@@ -224,7 +224,7 @@ function ChoGGi_MultiLineTextDlg:ScrollToText(scrollto)
 
 		if line_num then
 			edit:SetCursor(line_num, 0, false)
-			edit:SetCursor(line_num,edit.line_widths[line_num], true)
+			edit:SetCursor(line_num, edit.line_widths[line_num], true)
 			-- ScrollCursorIntoView needs focus for whatever reason
 			edit:SetFocus()
 			edit:ScrollCursorIntoView()
@@ -279,6 +279,6 @@ end
 function ChoGGi_MultiLineTextDlg:Done(result)
 	-- for dumping text from examine
 	if self.retfunc then
-		self.retfunc(result,self.overwrite,self)
+		self.retfunc(result, self.overwrite, self)
 	end
 end

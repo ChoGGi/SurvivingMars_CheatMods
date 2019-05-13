@@ -8,7 +8,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 function OnMsg.ClassesPostprocess()
 	-- if action exists then replace it, otherwise add to the end
 	local GameShortcuts = XTemplates.GameShortcuts
-	local idx = table.find(GameShortcuts,"ActionId","actionColonyOverview")
+	local idx = table.find(GameShortcuts, "ActionId", "actionColonyOverview")
 	-- add the shortcut
 	GameShortcuts[idx or #GameShortcuts+1] = PlaceObj("XTemplateAction", {
 		"ActionId", "actionColonyOverview",
@@ -28,9 +28,9 @@ function OnMsg.ModsReloaded()
 		return
 	end
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xt,"ChoGGi_Template_ColonyOverview")
+	ChoGGi.ComFuncs.RemoveXTemplateSections(xt, "ChoGGi_Template_ColonyOverview")
 
-	table.insert(xt,#xt,
+	table.insert(xt, #xt,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_ColonyOverview", true,
 			"__template", "HUDButtonTemplate",

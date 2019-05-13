@@ -10,7 +10,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Translate = ChoGGi.ComFuncs.Translate
 local Strings = ChoGGi.Strings
 
-local pairs,type,tostring = pairs,type,tostring
+local pairs, type, tostring = pairs, type, tostring
 
 -- 1 above console log, 1000 above examine
 local zorder = 2001001
@@ -46,7 +46,7 @@ function ChoGGi_MonitorInfoDlg:Init()
 	local point = point
 
 	--element pos is based on
-	self:SetPos(point(0,0))
+	self:SetPos(point(0, 0))
 
 	local dialog_width = 400
 	local dialog_height = 600
@@ -60,8 +60,8 @@ function ChoGGi_MonitorInfoDlg:Init()
 	local dialog_left = border
 
 	ChoGGi.ComFuncs.DialogAddCloseX(self)
-	ChoGGi.ComFuncs.DialogAddCaption(self,{
-		prefix = string.format("%s : ",Strings[302535920000555--[[Monitor Info--]]]),
+	ChoGGi.ComFuncs.DialogAddCaption(self, {
+		prefix = string.format("%s : ", Strings[302535920000555--[[Monitor Info--]]]),
 		pos = point(25, border),
 		size = point(dialog_width-self.idCloseX:GetSize():x(), 22)
 	})
@@ -86,7 +86,7 @@ function ChoGGi_MonitorInfoDlg:Init()
 				Sleep(self.delay)
 				--check for missing table objects
 				if self.obj.title:find("Grids") then
-					self.tables = ChoGGi.ComFuncs.RemoveMissingTableObjects(self.tables,"elements")
+					self.tables = ChoGGi.ComFuncs.RemoveMissingTableObjects(self.tables, "elements")
 					--break if there's none left
 					if #self.tables == 0 then
 						--fire once more to show the nothing here text
@@ -126,7 +126,7 @@ function ChoGGi_MonitorInfoDlg:Init()
 	self.idTimerAmount:SetTextVAlign("center")
 	self.idTimerAmount:SetMaxLen(-1)
 	function self.idTimerAmount.OnValueChanged()
-		local delay,delay_type = ChoGGi.ComFuncs.RetProperType(self.idTimerAmount:GetText())
+		local delay, delay_type = ChoGGi.ComFuncs.RetProperType(self.idTimerAmount:GetText())
 		if delay_type == "number" and delay > 0 then
 			self.delay = delay
 		end
@@ -145,7 +145,7 @@ function ChoGGi_MonitorInfoDlg:Init()
 	self.idText:SetScrollBar(true)
 	self.idText:SetScrollAutohide(true)
 	function self.idText.OnRButtonDoubleClick()
-		OpenExamine(self.tables,true)
+		OpenExamine(self.tables, true)
 	end
 
 	--so elements move when dialog re-sizes
@@ -176,13 +176,13 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
 				print("all")
 				ex(self.tables[i])
 				ex(self.values)
-				for SecName,SecValue in pairs(self.tables[i]) do
+				for SecName, SecValue in pairs(self.tables[i]) do
 				--goes through all tables
 
 					--goes through each table
 					texttable[#texttable+1] = SecName
 					texttable[#texttable+1] = "\n"
-					for Key,Value in pairs(SecValue) do
+					for Key, Value in pairs(SecValue) do
 
 						if self.values[Key] then
 							for j = 1, #self.values do
@@ -190,7 +190,7 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
 								--name = monitort[SecName.name]
 								texttable[#texttable+1] = "\t"
 								texttable[#texttable+1] = v.name
-								self:BuildValue(Value,0)
+								self:BuildValue(Value, 0)
 							end
 						elseif Key == "field" then
 							texttable[#texttable+1] = "\t"
@@ -202,11 +202,11 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
 
 				end
 			else
-				for _,Value in pairs(self.values) do
+				for _, Value in pairs(self.values) do
 					name = monitort[Value.name]
 					if name or type(name) == "boolean" then
 						texttable[#texttable+1] = Value.name
-						self:BuildValue(name,Value.kind)
+						self:BuildValue(name, Value.kind)
 					end
 				end
 			end --for
@@ -229,7 +229,7 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
 	self.idText.scroll:SetPosition(scrollpos)
 end
 
-function ChoGGi_MonitorInfoDlg:BuildValue(name,kind)
+function ChoGGi_MonitorInfoDlg:BuildValue(name, kind)
 	--0 = value
 	if kind == 0 then
 		texttable[#texttable+1] = ": "
@@ -243,7 +243,7 @@ function ChoGGi_MonitorInfoDlg:BuildValue(name,kind)
 	--2=list table values
 	elseif kind == 2 then
 		texttable[#texttable+1] = ":\n"
-		for t_name,t_value in pairs(name) do
+		for t_name, t_value in pairs(name) do
 			texttable[#texttable+1] = "\t"
 			texttable[#texttable+1] = t_name
 			texttable[#texttable+1] = ": "

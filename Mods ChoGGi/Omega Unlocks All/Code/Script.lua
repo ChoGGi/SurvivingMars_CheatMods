@@ -2,7 +2,7 @@
 
 local orig = OmegaTelescope.UnlockBreakthroughs
 function OmegaTelescope:UnlockBreakthroughs(...)
-	orig(self,...)
+	orig(self, ...)
 
 	local UICity = UICity
   local breakthroughs = UICity:GetUnregisteredBreakthroughs()

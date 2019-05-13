@@ -2,7 +2,7 @@
 -- we need to return our new infopanel (if it isn"t another panel)
 local orig_ElectricityGridElement_GetInfopanelTemplate = ElectricityGridElement.GetInfopanelTemplate
 function ElectricityGridElement:GetInfopanelTemplate(...)
-	local ret = orig_ElectricityGridElement_GetInfopanelTemplate(self,...)
+	local ret = orig_ElectricityGridElement_GetInfopanelTemplate(self, ...)
 	if not ret or ret == "ipLeak" then
 		return "ipCable"
 	end
@@ -19,7 +19,7 @@ end
 
 function OnMsg.ClassesBuilt()
 
-	local XTemplates,PlaceObj = XTemplates,PlaceObj
+	local XTemplates, PlaceObj = XTemplates, PlaceObj
 
   -- saved per each game
 	if XTemplates.ipCable then

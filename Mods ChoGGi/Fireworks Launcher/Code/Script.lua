@@ -44,9 +44,9 @@ function FireworksLauncher:GameInit()
 		cover:SetColorModifier(-16777216)
 		cover:SetScale(325)
 		-- move just below the ground
-		cover:SetPos(self_pos+point(0,0,-3300))
+		cover:SetPos(self_pos+point(0, 0, -3300))
 
-		cover:SetPos(self_pos,5000)
+		cover:SetPos(self_pos, 5000)
 		Sleep(5000)
 
 		-- now we make it look like the building
@@ -56,7 +56,7 @@ function FireworksLauncher:GameInit()
 		self:SetColorizationMaterial(2, 10790052, 120, 16)
 		self:SetColorizationMaterial(3, 11016730, -128, 48)
 		SetRollPitchYaw(self, 0, 10800, 0)
-		local new_pos = self_pos+point(0,0,2800)
+		local new_pos = self_pos+point(0, 0, 2800)
 		self:SetPos(new_pos)
 
 		-- add some attaches
@@ -66,7 +66,7 @@ function FireworksLauncher:GameInit()
 		rocket:SetScale(500)
 		self:Attach(rocket)
 		SetRollPitchYaw(rocket, 0, 10800, 0)
-		rocket:SetAttachOffset(point(0,0,610))
+		rocket:SetAttachOffset(point(0, 0, 610))
 		rocket.fx_actor_class = "AttackRover"
 		self.rocket_attach = rocket
 
@@ -77,11 +77,11 @@ function FireworksLauncher:GameInit()
 		base:SetColorizationMaterial(3, -5694693, -128, 48)
 		self:Attach(base)
 		SetRollPitchYaw(base, 0, 16200, 0)
-		base:SetAttachOffset(point(650,0,1500))
+		base:SetAttachOffset(point(650, 0, 1500))
 
 		Sleep(8000)
 		-- move cover back below ground
-		cover:SetPos(self_pos+point(0,0,-3300),5000)
+		cover:SetPos(self_pos+point(0, 0, -3300), 5000)
 		Sleep(5000)
 
 		DoneObject(cover)
@@ -184,7 +184,7 @@ function FireworksLauncher:LaunchFireworks(visual_only)
 		rocket:SetScale(400)
 		rocket.move_dir = axis_z
 		rocket.shooter = self
-		local x,y = terrain.GetMapSize()
+		local x, y = terrain.GetMapSize()
 		local target
 		if IsValid(FireworksLauncher_targetobj) then
 			target = FireworksLauncher_targetobj
@@ -193,7 +193,7 @@ function FireworksLauncher:LaunchFireworks(visual_only)
 			FireworksLauncher_targetobj = target
 		end
 
-		local target_pos = point(self:Random(0,x), self:Random(0,y), terrain.GetMaxHeight())
+		local target_pos = point(self:Random(0, x), self:Random(0, y), terrain.GetMaxHeight())
 		target:SetPos(target_pos)
 		rocket.target = target
 		rocket.Move = self.RocketMove
@@ -225,27 +225,27 @@ end
 
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.FireworksLauncher then
-		PlaceObj("BuildingTemplate",{
-			"Id","FireworksLauncher",
-			"template_class","FireworksLauncher",
-			"construction_cost_Concrete",15000,
-			"construction_cost_Metal",5000,
+		PlaceObj("BuildingTemplate", {
+			"Id", "FireworksLauncher",
+			"template_class", "FireworksLauncher",
+			"construction_cost_Concrete", 15000,
+			"construction_cost_Metal", 5000,
 			"palette_color1", "outside_base",
 			"palette_color2", "inside_base",
 			"palette_color3", "rover_base",
-			"display_name",[[Fireworks Launcher]],
-			"display_name_pl",[[Fireworks Launchers]],
-			"description",[[Launches fireworks and slightly raises temperature.]],
-			"display_icon",display_icon,
-			"entity",entity,
-			"build_category","ChoGGi",
+			"display_name", [[Fireworks Launcher]],
+			"display_name_pl", [[Fireworks Launchers]],
+			"description", [[Launches fireworks and slightly raises temperature.]],
+			"display_icon", display_icon,
+			"entity", entity,
+			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
-			"encyclopedia_exclude",true,
-			"on_off_button",false,
-			"prio_button",false,
-			"use_demolished_state",true,
-			"demolish_sinking",range(2, 10),
-			"auto_clear",false,
+			"encyclopedia_exclude", true,
+			"on_off_button", false,
+			"prio_button", false,
+			"use_demolished_state", true,
+			"demolish_sinking", range(2, 10),
+			"auto_clear", false,
 		})
 	end
 end
@@ -254,7 +254,7 @@ function OnMsg.ClassesBuilt()
 	local building = XTemplates.ipBuilding[1]
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(building,"ChoGGi_Template_FireworksLauncher_DoStuff",true)
+	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_FireworksLauncher_DoStuff", true)
 
 	table.insert(
 		building,
@@ -265,24 +265,24 @@ function OnMsg.ClassesBuilt()
 			"__context_of_kind", "FireworksLauncher",
 			"__template", "InfopanelButton",
 
-			"RolloverText", T(0,[[Fire off some fireworks (Costs 100 million to use).
+			"RolloverText", T(0, [[Fire off some fireworks (Costs 100 million to use).
 Right-click to skip cost/temperature increase (also happens if you don't have enough cash).]]),
 			"RolloverTitle", [[Yamato Hasshin!]],
-			"RolloverHint", T(0,[[<left_click> Hot Fireworks <right_click> Visual Fireworks]]),
+			"RolloverHint", T(0, [[<left_click> Hot Fireworks <right_click> Visual Fireworks]]),
 			"Icon", "UI/Icons/IPButtons/drill.tga",
 
 			"OnPress", function (self, gamepad)
 				-- left click action (arg is if ctrl is being held down)
-				self.context:LaunchFireworks(false,not gamepad and IsMassUIModifierPressed())
+				self.context:LaunchFireworks(false, not gamepad and IsMassUIModifierPressed())
 				ObjModified(self.context)
 			end,
 			"AltPress", true,
 			"OnAltPress", function (self, gamepad)
 				-- right click action
 				if gamepad then
-					self.context:LaunchFireworks(true,true)
+					self.context:LaunchFireworks(true, true)
 				else
-					self.context:LaunchFireworks(true,IsMassUIModifierPressed())
+					self.context:LaunchFireworks(true, IsMassUIModifierPressed())
 				end
 				ObjModified(self.context)
 			end,

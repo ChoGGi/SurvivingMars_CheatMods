@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local type,tostring = type,tostring
+local type, tostring = type, tostring
 
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetName = ChoGGi.ComFuncs.RetName
@@ -9,25 +9,25 @@ local Translate = ChoGGi.ComFuncs.Translate
 
 do -- BuildGridList
 	local IsValid = IsValid
-	local function BuildGrid(grid,list)
+	local function BuildGrid(grid, list)
 		local g_str = Translate(11629--[[GRID <i>--]])
 		for i = 1, #grid do
 			for j = 1, #grid[i].elements do
 				local bld = grid[i].elements[j].building
-				local name,display_name = RetName(bld),Translate(bld.display_name)
+				local name, display_name = RetName(bld), Translate(bld.display_name)
 
 				if name == display_name then
-					list[g_str:gsub("<i>",i) .. " - " .. name .. " h: " .. bld.handle] = bld
+					list[g_str:gsub("<i>", i) .. " - " .. name .. " h: " .. bld.handle] = bld
 				else
-					list[g_str:gsub("<i>",i) .. " - " .. display_name .. " " .. name .. " h: " .. bld.handle] = bld
+					list[g_str:gsub("<i>", i) .. " - " .. display_name .. " " .. name .. " h: " .. bld.handle] = bld
 				end
 			end
 		end
 	end
-	local function FilterExamineList(ex_dlg,class)
+	local function FilterExamineList(ex_dlg, class)
 		-- loop through and remove any matching objects, as well as the hyperlink table
 		local obj_ref = ex_dlg.obj_ref
-		for key,value in pairs(obj_ref) do
+		for key, value in pairs(obj_ref) do
 			if value.ChoGGi_AddHyperLink then
 				obj_ref[key] = nil
 			elseif IsValid(value) and value.class == class then
@@ -50,7 +50,7 @@ do -- BuildGridList
 			ChoGGi_AddHyperLink = true,
 			name = Strings[302535920000142--[[Hide--]]] .. " " .. Translate(881--[[Power Cables--]]),
 			func = function(ex_dlg)
-				FilterExamineList(ex_dlg,"ElectricityGridElement")
+				FilterExamineList(ex_dlg, "ElectricityGridElement")
 			end,
 		}
 		grid_list.water.name = Translate(681--[[Water--]])
@@ -58,14 +58,14 @@ do -- BuildGridList
 			ChoGGi_AddHyperLink = true,
 			name = Strings[302535920000142--[[Hide--]]] .. " " .. Translate(882--[[Pipes--]]),
 			func = function(ex_dlg)
-				FilterExamineList(ex_dlg,"LifeSupportGridElement")
+				FilterExamineList(ex_dlg, "LifeSupportGridElement")
 			end,
 		}
 
-		BuildGrid(UICity.air,grid_list.air)
-		BuildGrid(UICity.electricity,grid_list.electricity)
-		BuildGrid(UICity.water,grid_list.water)
-		ChoGGi.ComFuncs.OpenInExamineDlg(grid_list,nil,Strings[302535920001307--[[Grid Info--]]])
+		BuildGrid(UICity.air, grid_list.air)
+		BuildGrid(UICity.electricity, grid_list.electricity)
+		BuildGrid(UICity.water, grid_list.water)
+		ChoGGi.ComFuncs.OpenInExamineDlg(grid_list, nil, Strings[302535920001307--[[Grid Info--]]])
 	end
 end -- do
 
@@ -92,15 +92,15 @@ do -- ViewObjInfo_Toggle
 		return max_workers
 	end
 
-	local function GetService(dome,label)
-		local use,max,handles = 0,0,{}
+	local function GetService(dome, label)
+		local use, max, handles = 0, 0, {}
 		local services = dome.labels[label] or ""
 		for i = 1, #services do
 			use = use + #services[i].visitors
 			max = max + services[i].max_visitors
 			handles[services[i].handle] = true
 		end
-		return use,max,handles
+		return use, max, handles
 	end
 
 	local GetInfo = {
@@ -114,14 +114,14 @@ do -- ViewObjInfo_Toggle
 --~ 				print("OutsideBuildings")
 --~ 				return "- " .. RetName(obj) .. " -\n" .. Strings[302535920000035--[[Grids--]]]
 --~ 					.. ": " .. Translate(682--[[Oxygen--]])
---~ 					.. "(" .. (table_find(UICity.air,obj.air.grid) or Translate(6774--[[Error--]])) .. ") "
+--~ 					.. "(" .. (table_find(UICity.air, obj.air.grid) or Translate(6774--[[Error--]])) .. ") "
 --~ 					.. Translate(681--[[Water--]]) .. "("
 --~ 					.. tostring(obj.water and obj.water.grid.ChoGGi_GridHandle) .. ") "
 --~ 					.. Translate(79--[[Power--]]) .. "("
 --~ 					.. tostring(obj.electricity and obj.electricity.grid.ChoGGi_GridHandle) .. ")"
 --~ 			end,
 		Deposit = function(obj)
-			if not obj:IsKindOfClasses{"SubsurfaceDeposit","TerrainDeposit"} then
+			if not obj:IsKindOfClasses{"SubsurfaceDeposit", "TerrainDeposit"} then
 				return ""
 			end
 			return "- " .. RetName(obj) .. " -\n" .. Translate(6--[[Depth Layer--]])
@@ -134,16 +134,16 @@ do -- ViewObjInfo_Toggle
 			return "- " .. RetName(obj) .. " -\n" .. Translate(517--[[Drones--]])
 				.. ": " .. #(obj.drones or "") .. "/" .. obj:GetMaxDronesCount()
 				.. "\n"
-				.. Translate(295--[[Idle <right>--]]):gsub("<right>",": " .. obj:GetIdleDronesCount())
+				.. Translate(295--[[Idle <right>--]]):gsub("<right>", ": " .. obj:GetIdleDronesCount())
 				.. ", " .. Strings[302535920000081--[[Workers--]]] .. ": " .. obj:GetMiningDronesCount()
-				.. ", " .. Translate(293--[[Broken <right>--]]):gsub("<right>",": " .. obj:GetBrokenDronesCount())
-				.. ", " .. Translate(294--[[Discharged <right>--]]):gsub("<right>",": " .. obj:GetDischargedDronesCount())
+				.. ", " .. Translate(293--[[Broken <right>--]]):gsub("<right>", ": " .. obj:GetBrokenDronesCount())
+				.. ", " .. Translate(294--[[Discharged <right>--]]):gsub("<right>", ": " .. obj:GetDischargedDronesCount())
 		end,
 		Drone = function(obj)
 			local amount = obj.amount and obj.amount / r or 0
 			local res = obj.resource
 			return "- " .. RetName(obj) .. " -\n"
-				.. Translate(584248706535--[[Carrying<right><ResourceAmount>--]]):gsub("<right><ResourceAmount>",": " .. amount) .. (res and " (" .. res .. "), " or ", ")
+				.. Translate(584248706535--[[Carrying<right><ResourceAmount>--]]):gsub("<right><ResourceAmount>", ": " .. amount) .. (res and " (" .. res .. "), " or ", ")
 				.. Translate(3722--[[State--]]) .. ": " .. GetStateName(obj:GetState()) .. ", "
 				.. "\n" .. Translate(4448--[[Dust--]]) .. ": " .. (obj.dust / r) .. "/" .. (obj.dust_max / r)
 				.. ", " .. Strings[302535920001532--[[Battery--]]] .. ": " .. (obj.battery / r) .. "/" .. (obj.battery_max / r)
@@ -166,9 +166,9 @@ do -- ViewObjInfo_Toggle
 				end
 				waste = "- " .. Translate(4518--[[Waste Rock--]]) .. " -\n"
 				.. Translate(80--[[Production--]]) .. ": " .. prefix .. " " .. predprod .. ", "
-				.. Translate(6729--[[Daily Production <n>--]]):gsub("<n>",": " .. (waste:GetPredictedDailyProduction() / r))
+				.. Translate(6729--[[Daily Production <n>--]]):gsub("<n>", ": " .. (waste:GetPredictedDailyProduction() / r))
 				.. ", "
-				.. Translate(434--[[Lifetime<right><lifetime>--]]):gsub("<right><lifetime>",": " .. (waste.lifetime_production / r))
+				.. Translate(434--[[Lifetime<right><lifetime>--]]):gsub("<right><lifetime>", ": " .. (waste.lifetime_production / r))
 				.. "\n" .. Translate(519--[[Storage--]]) .. ": "
 				.. (waste:GetAmountStored() / r) .. "/" .. (waste.max_storage / r)
 			end
@@ -181,20 +181,20 @@ do -- ViewObjInfo_Toggle
 
 			return TableConcat({"- " .. RetName(obj) .. " -\n" .. Translate(80--[[Production--]])
 				.. ": " .. prefix .. predprod .. ", "
-				.. Translate(6729--[[Daily Production <n>--]]):gsub("<n>",": " .. (prod:GetPredictedDailyProduction() / r))
+				.. Translate(6729--[[Daily Production <n>--]]):gsub("<n>", ": " .. (prod:GetPredictedDailyProduction() / r))
 				.. ", "
-				.. Translate(434--[[Lifetime<right><lifetime>--]]):gsub("<right><lifetime>",": " .. (prod.lifetime_production / r))
+				.. Translate(434--[[Lifetime<right><lifetime>--]]):gsub("<right><lifetime>", ": " .. (prod.lifetime_production / r))
 				.. "\n" .. Translate(519--[[Storage--]]) .. ": "
 				.. (prod:GetAmountStored() / r) .. "/" .. (prod.max_storage / r)
-				,waste},"\n")
+				, waste}, "\n")
 		end,
 		Dome = function(obj)
 			if not obj.air then
 				return ""
 			end
-			local medic_use,medic_max,medic_handles = GetService(obj,"needMedical")
-			local food_use,food_max,food_handles = GetService(obj,"needFood")
-			local food_need,medic_need = 0,0
+			local medic_use, medic_max, medic_handles = GetService(obj, "needMedical")
+			local food_use, food_max, food_handles = GetService(obj, "needFood")
+			local food_need, medic_need = 0, 0
 			local c = obj.labels.Colonist
 			for i = 1, #c do
 				if c[i].command == "VisitService" then
@@ -208,16 +208,16 @@ do -- ViewObjInfo_Toggle
 			end
 
 			-- the .. below is (too long/too many ..) for ZeroBrane compile (used to find some stuff to clean up), so this is to shorten it
-			local go_to = Translate(4439--[[Going to--]]):gsub("<right><h SelectTarget InfopanelSelect><Target></h>","%%s")
-			local a,e,w = Translate(682--[[Oxygen--]]),Translate(79--[[Power--]]),Translate(681--[[Water--]])
+			local go_to = Translate(4439--[[Going to--]]):gsub("<right><h SelectTarget InfopanelSelect><Target></h>", "%%s")
+			local a, e, w = Translate(682--[[Oxygen--]]), Translate(79--[[Power--]]), Translate(681--[[Water--]])
 			local city = obj.city or UICity
 
 			local ga = obj.air
 			local ge = obj.electricity
 			local gw = obj.water
-			local ga_id = table_find(city.air,ga.grid) or Translate(6774--[[Error--]])
-			local ge_id = table_find(city.electricity,ge.grid) or Translate(6774--[[Error--]])
-			local gw_id = table_find(city.water,gw.grid) or Translate(6774--[[Error--]])
+			local ga_id = table_find(city.air, ga.grid) or Translate(6774--[[Error--]])
+			local ge_id = table_find(city.electricity, ge.grid) or Translate(6774--[[Error--]])
+			local gw_id = table_find(city.water, gw.grid) or Translate(6774--[[Error--]])
 			local l = obj.labels
 
 			return "- " .. RetName(obj) .. " -\n"
@@ -225,7 +225,7 @@ do -- ViewObjInfo_Toggle
 				.. "\n" .. Translate(6859--[[Unemployed--]]) .. ": " .. #(l.Unemployed or "") .. "/" .. Dome_GetWorkingSpace(obj)
 				.. ", " .. Translate(7553--[[Homeless--]]) .. ": " .. #(l.Homeless or "") .. "/" .. obj:GetLivingSpace()
 				.. "\n" .. Translate(7031--[[Renegades--]]) .. ": " .. #(l.Renegade or "")
-				.. ", " .. Translate(5647--[[Dead Colonists: <count>--]]):gsub("<count>",#(l.DeadColonist or ""))
+				.. ", " .. Translate(5647--[[Dead Colonists: <count>--]]):gsub("<count>", #(l.DeadColonist or ""))
 				.. "\n" .. Translate(6647--[[Guru--]]) .. ": " .. #(l.Guru or "")
 				.. ", " .. Translate(6640--[[Genius--]]) .. ": " .. #(l.Genius or "")
 				.. ", " .. Translate(6642--[[Celebrity--]]) .. ": " .. #(l.Celebrity or "")
@@ -246,8 +246,8 @@ do -- ViewObjInfo_Toggle
 		end,
 	}
 
-	local ptz8000 = point(0,0,8000)
-	local ptz2000 = point(0,0,2000)
+	local ptz8000 = point(0, 0, 8000)
+	local ptz2000 = point(0, 0, 2000)
 	local function AddViewObjInfo(label)
 		local objs = RetAllOfClass(label)
 		SuspendPassEdits("ChoGGi.MenuFuncs.BuildingInfo_Toggle.AddViewObjInfo")
@@ -323,16 +323,16 @@ do -- ViewObjInfo_Toggle
 
 	function ChoGGi.MenuFuncs.BuildingInfo_Toggle()
 		local item_list = {
-			{text = Translate(83--[[Domes--]]),value = "Dome"},
-			{text = Translate(3982--[[Deposits--]]),value = "Deposit"},
-			{text = Translate(80--[[Production--]]),value = "Production"},
-			{text = Translate(517--[[Drones--]]),value = "Drone"},
-			{text = Translate(5433--[[Drone Control--]]),value = "DroneControl"},
---~ 				{text = Translate(4290--[[Colonist--]]),value = "Colonist"},
---~ 				{text = Translate(885971788025--[[Outside Buildings--]]),value = "OutsideBuildings"},
+			{text = Translate(83--[[Domes--]]), value = "Dome"},
+			{text = Translate(3982--[[Deposits--]]), value = "Deposit"},
+			{text = Translate(80--[[Production--]]), value = "Production"},
+			{text = Translate(517--[[Drones--]]), value = "Drone"},
+			{text = Translate(5433--[[Drone Control--]]), value = "DroneControl"},
+--~ 				{text = Translate(4290--[[Colonist--]]), value = "Colonist"},
+--~ 				{text = Translate(885971788025--[[Outside Buildings--]]), value = "OutsideBuildings"},
 
---~ 			 {text = Translate(79--[[Power--]]),value = "Power"},
---~			 {text = Translate(81--[[Life Support--]]),value = "Life-Support"},
+--~ 			 {text = Translate(79--[[Power--]]), value = "Power"},
+--~			 {text = Translate(81--[[Life Support--]]), value = "Life-Support"},
 		}
 
 		local function CallBackFunc(choice)
@@ -373,18 +373,18 @@ end -- do
 
 function ChoGGi.MenuFuncs.MonitorInfo()
 	local item_list = {
-		{text = Strings[302535920000936--[[Something you'd like to see added?--]]],value = "New"},
-		{text = "",value = "New"},
-		{text = Strings[302535920000035--[[Grids--]]] .. ": " .. Translate(891--[[Air--]]),value = "Air"},
-		{text = Strings[302535920000035--[[Grids--]]] .. ": " .. Translate(79--[[Power--]]),value = "Power"},
-		{text = Strings[302535920000035--[[Grids--]]] .. ": " .. Translate(681--[[Water--]]),value = "Water"},
-		{text = Strings[302535920000035--[[Grids--]]] .. ": " .. Translate(891--[[Air--]]) .. "/" .. Translate(79--[[Power--]]) .. "/" .. Translate(681--[[Water--]]),value = "Grids"},
-		{text = Strings[302535920000042--[[City--]]],value = "City"},
-		{text = Translate(547--[[Colonists--]]),value = "Colonists",hint = Strings[302535920000937--[[Laggy with lots of colonists.--]]]},
-		{text = Translate(5238--[[Rockets--]]),value = "Rockets"},
+		{text = Strings[302535920000936--[[Something you'd like to see added?--]]], value = "New"},
+		{text = "", value = "New"},
+		{text = Strings[302535920000035--[[Grids--]]] .. ": " .. Translate(891--[[Air--]]), value = "Air"},
+		{text = Strings[302535920000035--[[Grids--]]] .. ": " .. Translate(79--[[Power--]]), value = "Power"},
+		{text = Strings[302535920000035--[[Grids--]]] .. ": " .. Translate(681--[[Water--]]), value = "Water"},
+		{text = Strings[302535920000035--[[Grids--]]] .. ": " .. Translate(891--[[Air--]]) .. "/" .. Translate(79--[[Power--]]) .. "/" .. Translate(681--[[Water--]]), value = "Grids"},
+		{text = Strings[302535920000042--[[City--]]], value = "City"},
+		{text = Translate(547--[[Colonists--]]), value = "Colonists", hint = Strings[302535920000937--[[Laggy with lots of colonists.--]]]},
+		{text = Translate(5238--[[Rockets--]]), value = "Rockets"},
 	}
 	if ChoGGi.testing then
-		item_list[#item_list+1] = {text = Translate(311--[[Research--]]),value = "Research"}
+		item_list[#item_list+1] = {text = Translate(311--[[Research--]]), value = "Research"}
 	end
 
 	local function CallBackFunc(choice)
@@ -409,7 +409,7 @@ function ChoGGi.MenuFuncs.MonitorInfo()
 		hint = Strings[302535920000940--[[Select something to monitor.--]]],
 		custom_type = 7,
 		custom_func = function(sel)
-			ChoGGi.ComFuncs.DisplayMonitorList(sel[1].value,sel[1].parentobj)
+			ChoGGi.ComFuncs.DisplayMonitorList(sel[1].value, sel[1].parentobj)
 		end,
 		skip_sort = true,
 	}

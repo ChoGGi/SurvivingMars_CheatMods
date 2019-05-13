@@ -40,7 +40,7 @@ function OnMsg.LoadGame()
 --~ 	ex(CityTunnelConstruction[UICity])
 
 	local AddPFTunnel = Tunnel.AddPFTunnel
-	MapForEach("map","DomeTeleporter", AddPFTunnel)
+	MapForEach("map", "DomeTeleporter", AddPFTunnel)
 end
 
 -- backup the CityTunnelConstruction obj
@@ -53,7 +53,7 @@ local function GetCityTunnelConstruction()
 end
 
 -- this is called by some func in TunnelConstructionDialog
-local function CallTunnelFunc(func,...)
+local function CallTunnelFunc(func, ...)
 	GetCityTunnelConstruction()
 	CityTunnelConstruction = CityDomeTeleporterConstruction
 	local ret = {func(...)}
@@ -63,7 +63,7 @@ end
 
 local orig_OpenTunnelConstructionInfopanel = OpenTunnelConstructionInfopanel
 function OpenTunnelConstructionInfopanel(...)
-	return CallTunnelFunc(orig_OpenTunnelConstructionInfopanel,...)
+	return CallTunnelFunc(orig_OpenTunnelConstructionInfopanel, ...)
 end
 
 DefineClass.DomeTeleporterConstructionDialog = {
@@ -90,7 +90,7 @@ function OnMsg.ClassesBuilt()
 	for i = 1, #funcs do
 		local name = funcs[i]
 		DomeTeleporterConstructionDialog[name] = function(...)
-			return CallTunnelFunc(TunnelConstructionDialog[name],...)
+			return CallTunnelFunc(TunnelConstructionDialog[name], ...)
 		end
 	end
 end
@@ -106,11 +106,11 @@ local TunnelConstructionController = TunnelConstructionController
 local orig_CreateConstructionGroup = CreateConstructionGroup
 function DomeTeleporterConstructionController.Activate(...)
 
-	function CreateConstructionGroup(template,...)
+	function CreateConstructionGroup(template, ...)
 		if template == "Tunnel" then
 			template = "DomeTeleporter"
 		end
-		return orig_CreateConstructionGroup(template,...)
+		return orig_CreateConstructionGroup(template, ...)
 	end
 
 	local ret = {TunnelConstructionController.Activate(...)}

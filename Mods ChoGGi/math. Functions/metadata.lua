@@ -22,10 +22,10 @@ Which is why I'm not just using math.cos = cos... (you can access them as math.s
 I'm going for accuracy not speed: Bench with GetPreciseTicks()
 
 Implemented:
-abs,ceil,deg,exp,floor,fmod,huge,log,max,maxinteger,min,mininteger,modf,pi,rad,random,randomseed,sqrt,tointeger,type,ult
+abs, ceil, deg, exp, floor, fmod, huge, log, max, maxinteger, min, mininteger, modf, pi, rad, random, randomseed, sqrt, tointeger, type, ult
 
 Not implemented yet:
-cos,sin,tan,acos,asin,atan
+cos, sin, tan, acos, asin, atan
 
 
 I'm only implementing the ones listed in the manual, if you have some to add: feel free to send them to me.

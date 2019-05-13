@@ -251,16 +251,16 @@ local state_table = {
 }
 
 local orig_PinsDlg_InitPinButton = PinsDlg.InitPinButton
-function PinsDlg:InitPinButton(button,...)
+function PinsDlg:InitPinButton(button, ...)
 	-- fire off the orig func so we have a button to work with
-	orig_PinsDlg_InitPinButton(self,button,...)
+	orig_PinsDlg_InitPinButton(self, button, ...)
 
 	-- block orig func unless ctrl
 	local orig_button_OnPress = button.OnPress
-	function button.OnPress(button_obj,gamepad,...)
+	function button.OnPress(button_obj, gamepad, ...)
 		-- if pressing ctrl then abort
 		if IsControlPressed() then
-			return orig_button_OnPress(button_obj,gamepad,...)
+			return orig_button_OnPress(button_obj, gamepad, ...)
 		end
 		local varargs = ...
 
@@ -298,7 +298,7 @@ function PinsDlg:InitPinButton(button,...)
 			if build_category then
 				objs = labels[build_category]
 			else
-				objs = MapGet("map",meta.class)
+				objs = MapGet("map", meta.class)
 			end
 		end
 
@@ -310,7 +310,7 @@ function PinsDlg:InitPinButton(button,...)
 			local obj = objs[i]
 
 			-- add rollover text
-			local pinbutton = self[table_find(self,"context",obj)]
+			local pinbutton = self[table_find(self, "context", obj)]
 			local hint
 			local hint_title = ""
 
@@ -345,7 +345,7 @@ function PinsDlg:InitPinButton(button,...)
 					state_text = str_NotWorking
 					image = image or "UI/Icons/pin_not_working.tga"
 				elseif obj.fractures and #obj.fractures > 0 then
-					state_text = Translate(5626--[[Fractures: <count>--]]):gsub("<count>",#obj.fractures)
+					state_text = Translate(5626--[[Fractures: <count>--]]):gsub("<count>", #obj.fractures)
 					image = image or "UI/Icons/pin_attack.tga"
 				elseif obj.electricity and obj:IsKindOf("ElectricityConsumer") and obj.electricity.consumption > obj.electricity.current_consumption then
 					state_text = str_Power
@@ -388,23 +388,23 @@ function PinsDlg:InitPinButton(button,...)
 					image = image,
 					hint = hint,
 					hint_title = hint_title,
-					hint_bottom = T(0,"<left_click> Select <right_click> View"),
-					mouseup = function(_,_,_,button)
+					hint_bottom = T(0, "<left_click> Select <right_click> View"),
+					mouseup = function(_, _, _, button)
 						if button == "L" then
 							if obj.class == "SupplyRocket" then
-								orig_button_OnPress(button_obj,gamepad,varargs)
+								orig_button_OnPress(button_obj, gamepad, varargs)
 							else
 								ViewObjectMars(obj)
 								SelectObj(obj)
 							end
-							PopupToggle(button_obj.idCondition,"idPinPopup",items,nil,true)
+							PopupToggle(button_obj.idCondition, "idPinPopup", items, nil, true)
 						else
 							if obj.class == "SupplyRocket" then
-								orig_button_OnPress(button_obj,gamepad)
+								orig_button_OnPress(button_obj, gamepad)
 							else
 								ViewObjectMars(obj)
 							end
-							PopupToggle(button_obj.idCondition,"idPinPopup",items,nil,true)
+							PopupToggle(button_obj.idCondition, "idPinPopup", items, nil, true)
 						end
 					end,
 				}
@@ -419,7 +419,7 @@ function PinsDlg:InitPinButton(button,...)
 		-- personal touch
 		local count = Translate(298035641454--[[Object--]]) .. " #: " .. #items
 		if #items > 1 then
-			table.insert(items,1,{
+			table.insert(items, 1, {
 				name = count,
 				image = "UI/Icons/res_theoretical_research.tga",
 				hint = count,
@@ -428,7 +428,7 @@ function PinsDlg:InitPinButton(button,...)
 		end
 
 --~ ex(items)
-		PopupToggle(button_obj.idCondition,"idPinPopup",items,"top",true)
+		PopupToggle(button_obj.idCondition, "idPinPopup", items, "top", true)
 	end
 
 end

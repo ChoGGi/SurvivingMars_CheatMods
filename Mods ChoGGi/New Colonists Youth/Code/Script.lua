@@ -6,7 +6,7 @@ function OnMsg.ModsReloaded()
 	local c = 0
 
 	local TraitPresets = TraitPresets
-	for name,trait in pairs(TraitPresets) do
+	for name, trait in pairs(TraitPresets) do
     if trait.category == "Age Group" then
 			c = c + 1
       traits_age[c] = name

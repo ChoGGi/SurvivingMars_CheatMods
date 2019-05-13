@@ -24,7 +24,7 @@ local function UpdateExistingRockets()
 	for i = 1, #rockets do
 		local rocket = rockets[i]
 		if rocket.export_requests then
-			ChoGGi.ComFuncs.SetTaskReqAmount(rocket,value,"export_requests","max_export_storage")
+			ChoGGi.ComFuncs.SetTaskReqAmount(rocket, value, "export_requests", "max_export_storage")
 		else
 			rocket.max_export_storage = value
 		end

@@ -18,6 +18,6 @@ C:\Users\USERNAME\AppData\Roaming\Surviving Mars\Music (AppData is a hidden fold
 
 
 As far as I know it only plays opus and wav
-mp3,aac,ogg,flac,aiff = don't work
+mp3, aac, ogg, flac, aiff = don't work
 Spaces and what not in names are a-ok.]],
 })
