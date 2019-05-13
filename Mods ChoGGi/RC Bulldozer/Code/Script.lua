@@ -57,7 +57,7 @@ DefineClass.RCBulldozer = {
 	__parents = {
 		"BaseRover",
 	},
-  name = name,
+	name = name,
 	description = description,
 	display_icon = display_icon,
 	display_name = name,

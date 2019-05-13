@@ -36,10 +36,10 @@ DefineClass.RCGarage = {
 	__parents = {
 		"Building",
 		"Holder",
-    "ElectricityConsumer",
+		"ElectricityConsumer",
 	},
 	-- they're not "that" tall (and it was in Tunnel so screw you for questioning my authority)
-  is_tall = false,
+	is_tall = false,
 	-- holds list of rovers
 	stored_rovers = false,
 	-- list of garages and power
@@ -107,9 +107,9 @@ local DustMaterialExterior = const.DustMaterialExterior
 function RCGarage:StickInGarage(unit)
 	local unit_idx = table_find(self.stored_rovers, "handle", unit.handle)
 
-  if not IsValid(self) or unit_idx then
-    return
-  end
+	if not IsValid(self) or unit_idx then
+		return
+	end
 
 	if not IsValid(self) then
 		return

@@ -22,14 +22,14 @@ DefineClass.MurderPod = {
 	entity = "SupplyPod",
 	-- victim
 	target = false,
-  arrival_height = 1000 * guim,
-  leave_height = 1000 * guim,
-  hover_height = 30 * guim,
-  hover_height_orig = 30 * guim,
-  arrival_time = 10000,
+	arrival_height = 1000 * guim,
+	leave_height = 1000 * guim,
+	hover_height = 30 * guim,
+	hover_height_orig = 30 * guim,
+	arrival_time = 10000,
 	min_pos_radius = 250 * guim,
 	max_pos_radius = 1500 * guim,
-  pre_leave_offset = 1000,
+	pre_leave_offset = 1000,
 	min_meteor_time = const.Scale.sols,
 	max_meteor_time = const.Scale.sols * 4,
 
@@ -69,7 +69,7 @@ function MurderPod:GetDisplayName()
 end
 
 function MurderPod:Spawn(arrival_height)
-  arrival_height = arrival_height or self.arrival_height
+	arrival_height = arrival_height or self.arrival_height
 
 	local x, y = self:GetVictimPos()
 	local current_pos = point(x, y)
@@ -90,12 +90,12 @@ function MurderPod:Spawn(arrival_height)
 end
 
 function MurderPod:Leave(leave_height)
-  leave_height = leave_height or self.leave_height
+	leave_height = leave_height or self.leave_height
 
 	self.fx_actor_class = "SupplyRocket"
 	self:PlayFX("RocketEngine", "start")
 
-  Sleep(5000)
+	Sleep(5000)
 	local current_pos = self:GetPos()
 
 	local goto_pos = GetRandomPassableAround(
@@ -126,11 +126,11 @@ function MurderPod:Leave(leave_height)
 		self.hover_height = leave_height / amount
 	end
 
-  DoneObject(self)
+	DoneObject(self)
 end
 
 function MurderPod:LaunchMeteor(entity)
-	--  1 to 4 sols
+	--	1 to 4 sols
 	Sleep(Random(self.min_meteor_time, self.max_meteor_time))
 --~ 	Sleep(5000)
 	local data = DataInstances.MapSettings_Meteor.Meteor_VeryLow

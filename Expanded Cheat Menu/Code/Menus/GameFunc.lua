@@ -960,7 +960,7 @@ Open %s to see all the textures, the tooltips show the texture index."--]]]:form
 		local map = {}
 		for i = 1, #choices do
 			local choice = choices[i]
-			-- make sure it's a valid  terrain texture id
+			-- make sure it's a valid	terrain texture id
 			if TerrainTextures[choice.value] then
 				-- existing texture index id to new id
 				map[choice.index] = choice.value

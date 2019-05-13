@@ -1,10 +1,10 @@
-local AsyncRand = AsyncRand
+local table_rand = table.rand
 local genders = {"Male", "Female"}
 
 local function ChangeGender(c)
 	if c.gender == "OtherGender" then
 		c:RemoveTrait("OtherGender")
-		local gender = genders[AsyncRand(2 - 1 + 1) + 1]
+		local gender = table_rand(genders)
 
 		c:AddTrait(gender)
 		c.gender = gender

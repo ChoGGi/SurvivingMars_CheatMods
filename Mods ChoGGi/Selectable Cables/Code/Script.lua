@@ -21,20 +21,20 @@ function OnMsg.ClassesBuilt()
 
 	local XTemplates, PlaceObj = XTemplates, PlaceObj
 
-  -- saved per each game
+	-- saved per each game
 	if XTemplates.ipCable then
 		XTemplates.ipCable:delete()
 	end
 
-  XTemplates.ipCable = PlaceObj("XTemplate", {
-    group = "Infopanel Sections",
-    id = "ipCable",
-    PlaceObj("XTemplateTemplate", {
-      "__context_of_kind", "ElectricityGridElement",
-      "__condition", function (_, context) return context.is_hub or not context.is_switch end,
-      "__template", "Infopanel",
-      "Description", T(313911890683, "<description>"),
-    }, {
+	XTemplates.ipCable = PlaceObj("XTemplate", {
+		group = "Infopanel Sections",
+		id = "ipCable",
+		PlaceObj("XTemplateTemplate", {
+			"__context_of_kind", "ElectricityGridElement",
+			"__condition", function (_, context) return context.is_hub or not context.is_switch end,
+			"__template", "Infopanel",
+			"Description", T(313911890683, "<description>"),
+		}, {
 
 			PlaceObj("XTemplateTemplate", {
 				"comment", "salvage",
@@ -70,6 +70,6 @@ function OnMsg.ClassesBuilt()
 				}),
 			}),
 
-    }),
-  })
+		}),
+	})
 end --OnMsg

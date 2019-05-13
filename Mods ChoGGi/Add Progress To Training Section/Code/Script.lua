@@ -18,7 +18,7 @@ local function GetPoints(self, text, skip)
 
 		for j = 1, #shift do
 			local unit = shift[j]
-      unit.training_points = unit.training_points or {}
+			unit.training_points = unit.training_points or {}
 			local units_points = unit.training_points[self.training_type] or 0
 
 			c = c + 1
@@ -32,7 +32,7 @@ end
 
 local orig_MartianUniversity_GetTrainedRollover = MartianUniversity.GetTrainedRollover
 function MartianUniversity:GetTrainedRollover(...)
-  local text = {orig_MartianUniversity_GetTrainedRollover(self, ...)}
+	local text = {orig_MartianUniversity_GetTrainedRollover(self, ...)}
 	return GetPoints(self, text)
 end
 
@@ -52,7 +52,7 @@ function School:GetTrainedRollover()
 		for j = 1, #shift do
 			local unit = shift[j]
 
-      unit.training_points = unit.training_points or {}
+			unit.training_points = unit.training_points or {}
 			local units_points = unit.training_points[self.training_type] or 0
 
 			c = c + 1

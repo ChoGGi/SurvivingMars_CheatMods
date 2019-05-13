@@ -2,5 +2,5 @@
 
 local orig_CalcWasteRockAmount = CalcWasteRockAmount
 function CalcWasteRockAmount(...)
-  return orig_CalcWasteRockAmount(...) / 2
+	return orig_CalcWasteRockAmount(...) / 2
 end

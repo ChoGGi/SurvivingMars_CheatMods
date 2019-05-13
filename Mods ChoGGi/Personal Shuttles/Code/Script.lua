@@ -64,7 +64,7 @@ end
 function PersonalShuttle:GameInit()
 
 	self.city = self.hub.city or UICity
-  self.city:AddToLabel("PersonalShuttle", self)
+	self.city:AddToLabel("PersonalShuttle", self)
 
 	-- gagarin likes it dark
 	self:SetColorModifier(-1)
@@ -86,7 +86,7 @@ function PersonalShuttle:GameInit()
 end
 
 function PersonalShuttle:Done()
-  (self.city or UICity):RemoveFromLabel("PersonalShuttle", self)
+	(self.city or UICity):RemoveFromLabel("PersonalShuttle", self)
 end
 
 -- gets rid of error in log

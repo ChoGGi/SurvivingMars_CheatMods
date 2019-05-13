@@ -86,7 +86,7 @@ DefineClass.PortableMiner = {
 		"BuildingDepositExploiterComponent",
 	},
 	-- these are all set above
-  name = name,
+	name = name,
 	display_name = name,
 	description = description,
 	display_icon = display_icon,
@@ -161,9 +161,9 @@ function PortableMiner:GameInit()
 	-- color of bands
 	self:SetColorizationMaterial(3, -13031651, -128, 48)
 
-  if self.entity_scale then
-    self:SetScale(self.entity_scale)
-  end
+	if self.entity_scale then
+		self:SetScale(self.entity_scale)
+	end
 
 	-- show the pin info
 	self.producers = {self}
@@ -195,7 +195,7 @@ function PortableMiner:GetAmountStored()
 	return self.stockpile and self.stockpile:GetStoredAmount() or 0
 end
 function PortableMiner:GetResourceProduced()
-  return self.resource
+	return self.resource
 end
 function PortableMiner:GetPredictedDailyProduction()
 	return self.production_per_day
@@ -251,18 +251,18 @@ end
 function PortableMiner:Idle()
 	local pms = PortableMinerSettings
 	-- if there's one near then mine that bugger
-  if self:DepositNearby() then
-    self:ShowNotWorkingSign(false)
-    --  get to work
-    self:SetCommand("Load")
+	if self:DepositNearby() then
+		self:ShowNotWorkingSign(false)
+		--	get to work
+		self:SetCommand("Load")
 	-- we in auto-mode?
 	elseif g_RoverAIResearched and self.auto_mode_on then
 		self:ProcAutomation()
 	-- check if stockpile is existing and full
-  elseif not self.notworking_sign and IsValid(self.stockpile) and (self:GetVisualDist(self.stockpile) >= 5000 or
+	elseif not self.notworking_sign and IsValid(self.stockpile) and (self:GetVisualDist(self.stockpile) >= 5000 or
 						self.stockpile:GetStoredAmount() < (self.auto_mode_on and pms.max_res_amount_auto or pms.max_res_amount_man)) then
-    self:ShowNotWorkingSign(false)
-  end
+		self:ShowNotWorkingSign(false)
+	end
 
 --~ 	Sleep(type(delay) == "number" or 2500)
 
@@ -297,13 +297,13 @@ function PortableMiner:DepositNearby()
 end
 
 function PortableMiner:ShowNotWorkingSign(bool)
-  if bool then
-    self.notworking_sign = true
-    self:AttachSign(self.notworking_sign, "SignNotWorking")
-  else
-    self.notworking_sign = false
-    self:AttachSign(self.notworking_sign, "SignNotWorking")
-  end
+	if bool then
+		self.notworking_sign = true
+		self:AttachSign(self.notworking_sign, "SignNotWorking")
+	else
+		self.notworking_sign = false
+		self:AttachSign(self.notworking_sign, "SignNotWorking")
+	end
 end
 
 -- get rid of it showing up in the buildings not working OnScreenNotificationPreset
@@ -322,47 +322,47 @@ function PortableMiner:Load()
 	local pms = PortableMinerSettings
 
 	local skip_end
-  if #self.nearby_deposits > 0 then
-    -- remove removed stockpile
-    if not IsValid(self.stockpile) then
-      self.stockpile = false
-    end
+	if #self.nearby_deposits > 0 then
+		-- remove removed stockpile
+		if not IsValid(self.stockpile) then
+			self.stockpile = false
+		end
 		-- check if a stockpile is in dist, and if it's the correct res, and not another miner's pile
-    if not self.stockpile or self:GetVisualDist(self.stockpile) > 5000 or
+		if not self.stockpile or self:GetVisualDist(self.stockpile) > 5000 or
 					self.stockpile and (self.stockpile.resource ~= self.resource or self.stockpile.miner_handle ~= self.handle) then
 			-- try to get one close by
 			local stockpile = MapFindNearest(self, "map", "PortableStockpile", function(o)
 				return self:GetVisualDist(o) < 5000
 			end)
 
-    -- add new stockpile if none
-      if not stockpile or stockpile and (stockpile.resource ~= self.resource or stockpile.miner_handle ~= self.handle) then
-        -- plunk down a new res stockpile
-        stockpile = PlaceObj("PortableStockpile", {
-          -- time to get all humping robot on christmas
-          "Pos", MovePointAway(self:GetDestination(), self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)), -800),
-          "Angle", self:GetAngle(),
-          "resource", self.resource,
-          "destroy_when_empty", true
-        })
-      end
-      stockpile.miner_handle = self.handle
-      -- why doesn't this work in PlaceObj? needs happen after GameInit maybe?
-      stockpile.max_z = self.auto_mode_on and pms.max_z_stack_auto or pms.max_z_stack_man
+		-- add new stockpile if none
+			if not stockpile or stockpile and (stockpile.resource ~= self.resource or stockpile.miner_handle ~= self.handle) then
+				-- plunk down a new res stockpile
+				stockpile = PlaceObj("PortableStockpile", {
+					-- time to get all humping robot on christmas
+					"Pos", MovePointAway(self:GetDestination(), self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)), -800),
+					"Angle", self:GetAngle(),
+					"resource", self.resource,
+					"destroy_when_empty", true
+				})
+			end
+			stockpile.miner_handle = self.handle
+			-- why doesn't this work in PlaceObj? needs happen after GameInit maybe?
+			stockpile.max_z = self.auto_mode_on and pms.max_z_stack_auto or pms.max_z_stack_man
 			-- assign it to the miner
-      self.stockpile = stockpile
-    end
-    --  stop at max_res_amount per stockpile
-    if self.stockpile:GetStoredAmount() < (self.auto_mode_on and pms.max_res_amount_auto or pms.max_res_amount_man) then
-      -- remove the sign
-      self:ShowNotWorkingSign(false)
-      -- up n down n up n down
-      self:SetStateText(self.default_anim)
-      Sleep(pms.mine_time_anim[self.resource] or self:TimeToAnimEnd())
+			self.stockpile = stockpile
+		end
+		--	stop at max_res_amount per stockpile
+		if self.stockpile:GetStoredAmount() < (self.auto_mode_on and pms.max_res_amount_auto or pms.max_res_amount_man) then
+			-- remove the sign
+			self:ShowNotWorkingSign(false)
+			-- up n down n up n down
+			self:SetStateText(self.default_anim)
+			Sleep(pms.mine_time_anim[self.resource] or self:TimeToAnimEnd())
 
-      -- mine some loot
-      local mined = self:DigErUp(pms)
-      if mined then
+			-- mine some loot
+			local mined = self:DigErUp(pms)
+			if mined then
 				-- if it gets deleted by somebody mid mine :)
 				if IsValid(self.stockpile) then
 					-- update stockpile
@@ -381,14 +381,14 @@ function PortableMiner:Load()
 				self.lifetime_production = self.lifetime_table.All
 				-- daily reset
 				self.production_per_day = self.production_per_day + mined
-      end
-    else
-      -- no need to keep on re-showing sign (assuming there isn't a check for this, but an if bool is quicker then whatever it does)
-      if not self.notworking_sign then
-        self:ShowNotWorkingSign(true)
-      end
-    end
-  end
+			end
+		else
+			-- no need to keep on re-showing sign (assuming there isn't a check for this, but an if bool is quicker then whatever it does)
+			if not self.notworking_sign then
+				self:ShowNotWorkingSign(true)
+			end
+		end
+	end
 
 	if not skip_end then
 		-- if not idle state then make idle state (the raise up motion of the mining)
@@ -414,8 +414,8 @@ local function MineIsEmpty(miner)
 	-- needed to mine other concrete
 	miner.found_deposit = false
 	-- if there's a mine nearby then off we go
-  if miner:DepositNearby() then
-    miner:SetCommand("Load")
+	if miner:DepositNearby() then
+		miner:SetCommand("Load")
 		return
 	end
 	-- omg it's isn't doing anythings @!@!#!?
@@ -428,6 +428,7 @@ end
 local concrete_paint = table.find(TerrainTextures, "name", "Dig")
 local metal_paint = table.find(TerrainTextures, "name", "SandFrozen")
 local SetTypeCircle = terrain.SetTypeCircle
+local AsyncRand = AsyncRand
 local function Random(m, n)
 	return AsyncRand(n - m + 1) + m
 end
@@ -435,9 +436,9 @@ end
 function PortableMiner:DigErUp(pms)
 	local d = self.nearby_deposits[1]
 
-  if not IsValid(d) then
-    return MineIsEmpty(self)
-  end
+	if not IsValid(d) then
+		return MineIsEmpty(self)
+	end
 
 --[[
 	-- stupid surface deposits
@@ -479,9 +480,9 @@ function PortableMiner:DigErUp(pms)
 	end
 
 	-- if it's empty ExtractResource will delete it
-  if extracted == 0 or not IsValid(d) then
-    return MineIsEmpty(self)
-  end
+	if extracted == 0 or not IsValid(d) then
+		return MineIsEmpty(self)
+	end
 
 	-- visual cues
 	if pms.visual_cues then
@@ -490,7 +491,7 @@ function PortableMiner:DigErUp(pms)
 		SetTypeCircle(pt, 250, paint)
 	end
 
-  return extracted
+	return extracted
 end
 
 function PortableMiner:CanExploit()
@@ -500,12 +501,12 @@ end
 
 function PortableMiner:OnSelected()
 	self:AttachSign(false, "SignNotWorking")
-  table.remove_entry(g_IdleExtractors, self)
+	table.remove_entry(g_IdleExtractors, self)
 end
 
 -- needed for Concrete
 function PortableMiner:GetExtractionShape()
-  return self.mine_area
+	return self.mine_area
 end
 
 function OnMsg.ClassesPostprocess()
@@ -557,7 +558,7 @@ end
 --~ 		}, {
 --~ 			PlaceObj("XTemplateTemplate", {
 --~ 				"__template", "InfopanelText",
---~ 				"Text",  T(0, "<CargoManifest>"),
+--~ 				"Text",	T(0, "<CargoManifest>"),
 --~ 			}),
 --~ 		})
 --~ 	)

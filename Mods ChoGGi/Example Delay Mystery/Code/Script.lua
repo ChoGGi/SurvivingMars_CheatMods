@@ -11,7 +11,7 @@ function City:InitMystery()
 		return orig_City_InitMystery(self)
 	end
 
-  if self.mystery_id ~= "" then
+	if self.mystery_id ~= "" then
 		-- override the expression before we load the mystery
 		local cls_obj = g_Classes[self.mystery_id]
 		local scenario = DataInstances.Scenario[cls_obj.scenario_name]
@@ -29,8 +29,8 @@ function City:InitMystery()
 			end
 		end
 
-    cls_obj:new{city = self}
-  end
-  Msg("MysteryChosen")
+		cls_obj:new{city = self}
+	end
+	Msg("MysteryChosen")
 
 end

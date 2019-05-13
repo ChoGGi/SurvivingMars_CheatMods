@@ -7,23 +7,23 @@ return PlaceObj("ModDef", {
 			"version_minor", 4,
 		}),
 	},
-  "title", "Solaria Telepresence",
+	"title", "Solaria Telepresence",
 	"version", 9,
 	"version_major", 0,
 	"version_minor", 9,
-  "saved", 1539950400,
-  "tags", "Buildings",
+	"saved", 1539950400,
+	"tags", "Buildings",
 	"image", "Preview.png",
-  "id", "ChoGGi_SolariaTelepresence",
-  "author", "ChoGGi",
-  "steam_id", "1411115080",
+	"id", "ChoGGi_SolariaTelepresence",
+	"author", "ChoGGi",
+	"steam_id", "1411115080",
 	"pops_any_uuid", "65797e25-1cb2-441e-9738-c00e353bad0e",
-  "code", {
+	"code", {
 		"Code/Script.lua",
 		"Code/WorkVRWorkshop.lua",
 	},
 	"lua_revision", LuaRevision or 244275,
-  "description", [[Adds a telepresence VR building; remote control factories and mines (with reduced production).
+	"description", [[Adds a telepresence VR building; remote control factories and mines (with reduced production).
 
 This mod also removes distance limits on workplace buildings placed outside of domes (hard not to).
 

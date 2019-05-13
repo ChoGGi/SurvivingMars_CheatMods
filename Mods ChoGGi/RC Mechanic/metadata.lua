@@ -7,23 +7,23 @@ return PlaceObj("ModDef", {
 			"version_minor", 4,
 		}),
 	},
---~   "title", "RC Mechanic v0.7",
-  "title", "RC Mechanic",
+--~	 "title", "RC Mechanic v0.7",
+	"title", "RC Mechanic",
 	"version", 8,
 	"version_major", 0,
 	"version_minor", 8,
-  "saved", 1554811200,
+	"saved", 1554811200,
 	"image", "Preview.png",
-  "tags", "Buildings",
-  "id", "ChoGGi_RCMechanic",
-  "author", "ChoGGi",
-  "steam_id", "1528832147",
+	"tags", "Buildings",
+	"id", "ChoGGi_RCMechanic",
+	"author", "ChoGGi",
+	"steam_id", "1528832147",
 	"pops_any_uuid", "9c7eb052-0151-4a3e-bdfc-9392b71264bd",
-  "code", {
+	"code", {
 		"Code/Script.lua",
 	},
 	"lua_revision", LuaRevision or 244275,
-  "description", [[Autonomous repair of Drones/RCs that have broken down due to driving into a dust devil or something equally smart.
+	"description", [[Autonomous repair of Drones/RCs that have broken down due to driving into a dust devil or something equally smart.
 
 Ignores any that are within distance of working drone hubs/rockets.
 

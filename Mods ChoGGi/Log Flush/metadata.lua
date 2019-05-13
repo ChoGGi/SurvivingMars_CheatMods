@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-  "saved", 1533297600,
+	"saved", 1533297600,
 	"id", "ChoGGi_LogFlush",
 	"steam_id", "1414089790",
 	"author", "ChoGGi",

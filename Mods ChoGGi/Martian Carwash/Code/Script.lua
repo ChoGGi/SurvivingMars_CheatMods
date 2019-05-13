@@ -16,27 +16,27 @@ local Sleep = Sleep
 local Wakeup = Wakeup
 
 DefineClass.Carwash = {
-  __parents = {
-    "Building",
-    "ElectricityConsumer",
-    "LifeSupportConsumer",
-    "OutsideBuildingWithShifts",
-    "ColdSensitive",
-  },
+	__parents = {
+		"Building",
+		"ElectricityConsumer",
+		"LifeSupportConsumer",
+		"OutsideBuildingWithShifts",
+		"ColdSensitive",
+	},
 
-  -- stuff from water tanks
-  building_update_time = 10000,
+	-- stuff from water tanks
+	building_update_time = 10000,
 
-  -- stuff from farm
-  properties = {
-    { template = true, id = "water_consumption", name = T(656, "Water consumption"),  category = "Consumption", editor = "number", default = 0, scale = const.ResourceScale, read_only = true, modifiable = true },
-    { template = true, id = "air_consumption",   name = T(657, "Oxygen Consumption"), category = "Consumption", editor = "number", default = 0, scale = const.ResourceScale, read_only = true, modifiable = true },
-  },
+	-- stuff from farm
+	properties = {
+		{ template = true, id = "water_consumption", name = T(656, "Water consumption"),	category = "Consumption", editor = "number", default = 0, scale = const.ResourceScale, read_only = true, modifiable = true },
+		{ template = true, id = "air_consumption",	 name = T(657, "Oxygen Consumption"), category = "Consumption", editor = "number", default = 0, scale = const.ResourceScale, read_only = true, modifiable = true },
+	},
 
-  -- conventional farm
-  anim_thread = false,
+	-- conventional farm
+	anim_thread = false,
 
-  nearby_thread = false,
+	nearby_thread = false,
 	marker = false,
 }
 
@@ -55,43 +55,43 @@ function Carwash:GameInit()
 
 	self:StartAnimThread(sprinkler)
 
-  self.nearby_thread = CreateGameTimeThread(function()
-    while IsValid(self) and not self.destroyed do
-      if self.working then
-        local obj = nil
-        -- check for anything on the "tarmac"
-        obj = NearestObject(self, UICity.labels.Unit or {}, 1000)
-        -- if so clean them
-        if obj then
-          -- get dust amount, and convert to percentage
-          local dust_amt = (obj:GetDust() + 0.0) / 100
-          if dust_amt ~= 0.0 then
-            local value = 100
+	self.nearby_thread = CreateGameTimeThread(function()
+		while IsValid(self) and not self.destroyed do
+			if self.working then
+				local obj = nil
+				-- check for anything on the "tarmac"
+				obj = NearestObject(self, UICity.labels.Unit or {}, 1000)
+				-- if so clean them
+				if obj then
+					-- get dust amount, and convert to percentage
+					local dust_amt = (obj:GetDust() + 0.0) / 100
+					if dust_amt ~= 0.0 then
+						local value = 100
 						sprinkler:ForEachAttach(SprinklerColour, -8249088)
-            while true do
-              if value == 0 then
-                break
-              end
-              value = value - 1
-              obj:SetDust(dust_amt * value, DustMaterialExterior)
-              Sleep(100)
-            end
+						while true do
+							if value == 0 then
+								break
+							end
+							value = value - 1
+							obj:SetDust(dust_amt * value, DustMaterialExterior)
+							Sleep(100)
+						end
 						sprinkler:ForEachAttach(SprinklerColour, -10197916)
-          end
-        end
-      end
-      Sleep(1000)
-    end
-  end)
+					end
+				end
+			end
+			Sleep(1000)
+		end
+	end)
 
-  -- make it look like not farm colours
-  self:SetColorModifier(-16777216)
+	-- make it look like not farm colours
+	self:SetColorModifier(-16777216)
 
-  -- remove the lights/etc
+	-- remove the lights/etc
 	self:DestroyAttaches{"DecorInt_10", "LampInt_04"}
 
-  -- remove collision so we can drive over it
-  self:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
+	-- remove collision so we can drive over it
+	self:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
 end
 
 function Carwash:StartAnimThread(sprinkler)
@@ -146,27 +146,27 @@ function Carwash:StartAnimThread(sprinkler)
 end
 
 function Carwash:OnSetWorking(working)
-  OutsideBuildingWithShifts.OnSetWorking(self, working)
-  ElectricityConsumer.OnSetWorking(self, working)
+	OutsideBuildingWithShifts.OnSetWorking(self, working)
+	ElectricityConsumer.OnSetWorking(self, working)
 
-  if IsValidThread(self.anim_thread) then
-    Wakeup(self.anim_thread)
+	if IsValidThread(self.anim_thread) then
+		Wakeup(self.anim_thread)
 	else
 		FarmConventional.StartAnimThread(self)
-  end
+	end
 end
 
 function Carwash:UpdateAttachedSigns()
-  ElectricityConsumer.UpdateAttachedSigns(self)
+	ElectricityConsumer.UpdateAttachedSigns(self)
 
-  LifeSupportConsumer.UpdateAttachedSigns(self)
+	LifeSupportConsumer.UpdateAttachedSigns(self)
 end
 
 function Carwash:Done()
-  FarmConventional.Done(self)
-  if IsValidThread(self.nearby_thread) then
-    DeleteThread(self.nearby_thread)
-  end
+	FarmConventional.Done(self)
+	if IsValidThread(self.nearby_thread) then
+		DeleteThread(self.nearby_thread)
+	end
 end
 
 -- we want main points, but no dust

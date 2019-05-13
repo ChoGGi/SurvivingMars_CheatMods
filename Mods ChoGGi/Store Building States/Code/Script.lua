@@ -479,9 +479,9 @@ function OnMsg.ClassesBuilt()
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_BuildingStates", true,
 			"__context_of_kind", "Building",
-      "__condition", function(_, context)
-        return not context:IsKindOfClasses(cls_skip)
-      end,
+			"__condition", function(_, context)
+				return not context:IsKindOfClasses(cls_skip)
+			end,
 			"__template", "InfopanelSection",
 			"Icon", "UI/Icons/Sections/dome.tga",
 		}, {

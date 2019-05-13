@@ -3,7 +3,7 @@ local IsValid = IsValid
 local removed_str = "Remove Invalid Label Buildings: %s> %s, entity: %s, handle: %s"
 function OnMsg.LoadGame()
 	-- loop through all the label objects and remove any invalid ones
-  local labels = UICity.labels
+	local labels = UICity.labels
 	for label_id, label in pairs(labels) do
 		-- not sure why they added Consts to labels when everything else in here is a building/vehicle/colonist of some sort.
 		if label_id ~= "Consts" then

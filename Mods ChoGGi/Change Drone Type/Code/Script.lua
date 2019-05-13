@@ -15,8 +15,8 @@ end
 
 -- function called when a drone is created
 function City:CreateDrone()
-  local classdef = g_Classes[UICity.drone_class] or Drone
-  return classdef:new{city = self}
+	local classdef = g_Classes[UICity.drone_class] or Drone
+	return classdef:new{city = self}
 end
 
 -- devs made PickEntity always default to whatever has been spawned already, which we don't want
@@ -33,15 +33,15 @@ FlyingDrone.PickEntity = PickEntity
 
 -- drones have a func to set skins of all drones in same cc
 function Drone:ChangeSkin(skin, palette)
-  self:OnSkinChanged(skin, palette)
-  local cc = self.command_center
+	self:OnSkinChanged(skin, palette)
+	local cc = self.command_center
 	local drones = cc and cc.drones or ""
 	for i = 1, #drones do
 		local drone = drones[i]
-    if drone ~= self and not drone:IsKindOf("FlyingDrone") then
-      drone:OnSkinChanged(skin, palette)
-    end
-  end
+		if drone ~= self and not drone:IsKindOf("FlyingDrone") then
+			drone:OnSkinChanged(skin, palette)
+		end
+	end
 end
 
 -- add button to selection panels

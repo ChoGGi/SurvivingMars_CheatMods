@@ -43,7 +43,7 @@ local ObjectHierarchyBBox = ObjectHierarchyBBox
 
 local BaseMeteor = BaseMeteor
 local pt1500 = point(0, 0, 1500)
-local times36060 = 360*60
+local times36061 = (360*60)+1
 local times18060 = 180*60
 -- from AttackRover
 local final_speed = 10*guim
@@ -91,17 +91,17 @@ local function YamatoHasshin(site)
 	local ar = AttackRover
 	local sr = SupplyRocket
 --~ -- landing/takeoff parameters
---~ orbital_altitude = 2500*guim, 
---~ orbital_velocity = 100*guim, 
+--~ orbital_altitude = 2500*guim,
+--~ orbital_velocity = 100*guim,
 --~ -- second set for the first rocket
---~ orbital_altitude_first = 400*guim, 
---~ orbital_velocity_first = 43*guim, 
---~ warm_up = 10000, 
+--~ orbital_altitude_first = 400*guim,
+--~ orbital_velocity_first = 43*guim,
+--~ warm_up = 10000,
 
 --~ -- pre-hit ground moments, all are relative to hit-ground
---~ pre_hit_ground = 10000, 
---~ pre_hit_ground2 = 13000, 
---~ pre_hit_groud_decal = 0, 
+--~ pre_hit_ground = 10000,
+--~ pre_hit_ground2 = 13000,
+--~ pre_hit_groud_decal = 0,
 
 
 	-- pretty much a copy n paste of AttackRover:Spawn()... okay not anymore, but I swear it was
@@ -149,7 +149,7 @@ local function YamatoHasshin(site)
 
 		-- mid-way
 		PlayFX("RocketLand", "pre-hit-ground2", pod, false, spawn_pos)
-    local accel
+		local accel
 		accel, land_time = pod:GetAccelerationAndTime(spawn_pos, final_speed, flight_speed)
 		pod:SetAcceleration(accel)
 		pod:SetPos(hover_pos, land_time)
@@ -172,7 +172,7 @@ local function YamatoHasshin(site)
 
 		local land_decal = PlaceObject(ar.land_decal_name)
 		land_decal:SetPos(spawn_pos)
-		land_decal:SetAngle(AsyncRand(times36060))
+		land_decal:SetAngle(AsyncRand(times36061))
 		land_decal:SetScale(40 + AsyncRand(50))
 		CreateGameTimeThread(DecalRemoval, land_decal)
 

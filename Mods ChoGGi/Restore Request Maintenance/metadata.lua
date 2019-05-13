@@ -20,7 +20,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua"
 	},
 	"lua_revision", LuaRevision or 244275,
-  "description", [[Restores "Request Maintenance" button.
+	"description", [[Restores "Request Maintenance" button.
 
 It's set not to show up unless you can request maintenance.]],
 })

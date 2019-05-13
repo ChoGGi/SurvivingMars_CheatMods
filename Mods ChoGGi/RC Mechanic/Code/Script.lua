@@ -15,7 +15,7 @@ DefineClass.RCMechanic = {
 		"BaseRover",
 		"ComponentAttach",
 	},
-  name = name,
+	name = name,
 	description = description,
 	display_icon = display_icon,
 	display_name = name,
@@ -246,7 +246,7 @@ Drone.RCMech_CleanAndFix = function(self)
 		if self.command == "NoBattery" then
 			self.battery = self.battery_max
 			self:SetCommand("Fixed", "noBatteryFixed")
-    elseif self.command == "Malfunction" or self.command == "Freeze" and self:CanBeThawed() then
+		elseif self.command == "Malfunction" or self.command == "Freeze" and self:CanBeThawed() then
 			self:SetCommand("Fixed", "breakDownFixed")
 		else
 			self:SetCommand("Fixed", "Something")

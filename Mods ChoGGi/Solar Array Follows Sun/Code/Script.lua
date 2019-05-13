@@ -68,7 +68,7 @@ end)
 -- the below is for removing the persist warnings from the log
 
 function OnMsg.SaveGame()
-  DeleteThread(SolarArrayOrientation)
+	DeleteThread(SolarArrayOrientation)
 	_G.SolarArrayOrientation = false
 end
 -- PostSaveGame is added by my lib mod

@@ -36,7 +36,7 @@ function OnMsg.ClassesBuilt()
 --~ 		"RolloverTemplate", "Rollover",
 
 		"RolloverTitle", "Hello, this needs to have something here for the hint to showup",
-		"RolloverHint",  "",
+		"RolloverHint",	"",
 		"OnContextUpdate", function(self, context)
 			-- context is the object selected
 			if context.working then
@@ -82,7 +82,7 @@ function OnMsg.ClassesBuilt()
 		-- only show up for buildings that need maintenance
 		"__condition", function (_, context)
 			return context:IsKindOf("RequiresMaintenance") and context:DoesRequireMaintenance()
-    end,
+		end,
 
 		"RolloverText", "Look ma it slides!",
 		"RolloverHintGamepad", "",
@@ -123,7 +123,7 @@ function OnMsg.ClassesBuilt()
 		-- only show up for buildings that require main
 		"__condition", function (_, context)
 			return context:IsKindOf("RequiresMaintenance") and context:DoesRequireMaintenance()
-    end,
+		end,
 
 		"RolloverText", "Look ma it slides!",
 		"RolloverHintGamepad", "",
@@ -169,7 +169,7 @@ function OnMsg.ClassesBuilt()
 		"Title", "hour over 10",
 		"RolloverText", "only shows when hour is 10 or over",
 		"RolloverTitle", " ",
-		"RolloverHint",  "",
+		"RolloverHint",	"",
 --~ 	(self, context)
 		"OnContextUpdate", function(self)
 			if UICity.hour >= 10 then
@@ -192,7 +192,7 @@ function OnMsg.ClassesBuilt()
 		"Title", "5 Times the amount",
 		"RolloverText", "Clicking this once will add 5 times the amount of stored resources.",
 		"RolloverTitle", "",
-		"RolloverHint",  "",
+		"RolloverHint",	"",
 --~ 		(self, context)
 		"OnPress", function()
 			---

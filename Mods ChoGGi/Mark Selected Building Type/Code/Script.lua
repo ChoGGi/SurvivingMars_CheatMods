@@ -44,7 +44,7 @@ local function ClearBeams()
 			DoneObject(beam)
 		end
 	end
-  table_iclear(beams)
+	table_iclear(beams)
 end
 
 --~ local skips = {"Shuttle", "Drone", "Colonist", "LifeSupportGridElement", "ElectricityGridElement"}

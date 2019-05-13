@@ -97,7 +97,7 @@ DefineClass.RCTanker = {
 		"BaseRover",
 		"ComponentAttach",
 	},
-  name = name,
+	name = name,
 	description = description,
 	display_icon = display_icon,
 	display_name = name,
@@ -128,12 +128,12 @@ DefineClass.RCTanker = {
 	-- true = drain tank, false = fill
 	tank_direction = true,
 
-  palette = {
-    "rover_base",
-    "rover_dark",
-    "rover_accent",
-    "none"
-  },
+	palette = {
+		"rover_base",
+		"rover_dark",
+		"rover_accent",
+		"none"
+	},
 
 	-- show the pin info
 	pin_rollover = T(0, "<ui_command>"),
@@ -232,9 +232,9 @@ end
 
 -- returns false or number value (0 working, 1+ error)
 function RCTanker:RetInteractInfo(obj)
-  if self.command == "Dead" or not IsValid(obj) then
-    return false
-  end
+	if self.command == "Dead" or not IsValid(obj) then
+		return false
+	end
 
 	local tank_type = self.tank_type
 
@@ -294,7 +294,7 @@ function RCTanker:CanInteractWithObject(obj, ...)
 	local status = self:RetInteractInfo(obj)
 	if status then
 		if status == 0 then
-			return true, T(0, "<UnitMoveControl('ButtonA', interaction_mode)>:    "
+			return true, T(0, "<UnitMoveControl('ButtonA', interaction_mode)>:		"
 				.. (self.tank_direction and "<image UI/Icons/IPButtons/unload.tga> Drain" or "<image UI/Icons/IPButtons/load.tga> Fill")
 				.. " " .. self:RetResIconText() .. " Tank.")
 		elseif status == 1 then

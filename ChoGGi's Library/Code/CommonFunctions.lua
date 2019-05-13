@@ -75,9 +75,9 @@ do -- AddMsgToFunc
 end -- do
 
 local function IsObjlist(o)
-  if type(o) == "table" then
-    return getmetatable(o) == objlist
-  end
+	if type(o) == "table" then
+		return getmetatable(o) == objlist
+	end
 end
 ChoGGi.ComFuncs.IsObjlist = IsObjlist
 
@@ -1651,13 +1651,8 @@ do -- UpdateDataTables
 end -- do
 
 local function Random(m, n)
-	if n then
-		-- m = min, n = max
-		return AsyncRand(n - m + 1) + m
-	else
-		-- m = max, min = 0 OR number between 0 and max_int
-		return m and AsyncRand(m) or AsyncRand()
-	end
+	-- m = min, n = max OR if not n then m = max, min = 0 OR number between 0 and max_int?
+	return n and AsyncRand(n - m + 1) + m or m and AsyncRand(m) or AsyncRand()
 end
 ChoGGi.ComFuncs.Random = Random
 
@@ -3454,7 +3449,7 @@ do -- AddXTemplate
 
 	function ChoGGi.ComFuncs.AddXTemplate(xt, name, pos, list)
 		-- old: name, template, list, toplevel
-		-- new  xt, 		name, 		pos, 	list
+		-- new	xt, 		name, 		pos, 	list
 		if type(xt) == "string" then
 			if list then
 				AddXTemplateNew(XTemplates[name], xt, nil, pos)
@@ -4050,7 +4045,7 @@ do -- SpawnColonist
 			colonist = GenerateColonistData(city, old_c.age_trait, false, {
 				gender = old_c.gender,
 				entity_gender = old_c.entity_gender,
-				no_traits  =  "no_traits",
+				no_traits	=	"no_traits",
 				no_specialization = true,
 			})
 			-- we set all the set gen doesn't (it's more for random gen after all
@@ -4189,19 +4184,19 @@ function ChoGGi.ComFuncs.RetSpotPos(obj, building, spot)
 end
 
 function ChoGGi.ComFuncs.RetSpotNames(obj)
-  if not obj:HasEntity() then
-    return
-  end
+	if not obj:HasEntity() then
+		return
+	end
 	local names = {}
-  local id_start, id_end = obj:GetAllSpots(obj:GetState())
-  for i = id_start, id_end do
+	local id_start, id_end = obj:GetAllSpots(obj:GetState())
+	for i = id_start, id_end do
 		local spot_annotation = obj:GetSpotAnnotation(i)
 		local text_str = obj:GetSpotName(i) or "MISSING SPOT NAME"
 		if spot_annotation then
 			text_str = text_str .. ";" .. spot_annotation
 		end
 		names[i] = text_str
-  end
+	end
 	return names
 end
 
@@ -4352,10 +4347,10 @@ end -- do
 do -- PolylineSetParabola
 	-- copy n pasta from Lua/Dev/MapTools.lua
 	local Min = Min
-  local ValueLerp = ValueLerp
-  local function parabola(x)
-    return 4 * x - x * x / 25
-  end
+	local ValueLerp = ValueLerp
+	local function parabola(x)
+		return 4 * x - x * x / 25
+	end
 	local guim10 = 10 * guim
 	local white = white
 	local vertices = {}

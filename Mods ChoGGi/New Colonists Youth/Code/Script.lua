@@ -2,15 +2,15 @@ local traits_age = {}
 
 --build age trait list
 function OnMsg.ModsReloaded()
-  table.iclear(traits_age)
+	table.iclear(traits_age)
 	local c = 0
 
 	local TraitPresets = TraitPresets
 	for name, trait in pairs(TraitPresets) do
-    if trait.category == "Age Group" then
+		if trait.category == "Age Group" then
 			c = c + 1
-      traits_age[c] = name
-    end
+			traits_age[c] = name
+		end
 	end
 end
 
@@ -23,9 +23,9 @@ local function UpdateTraits(colonist)
 end
 
 function OnMsg.ColonistArrived(colonist)
-  UpdateTraits(colonist)
+	UpdateTraits(colonist)
 end
 
 function OnMsg.ColonistBorn(colonist)
-  UpdateTraits(colonist)
+	UpdateTraits(colonist)
 end

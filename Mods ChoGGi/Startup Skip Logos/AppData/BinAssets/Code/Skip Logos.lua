@@ -15,7 +15,7 @@ function OnMsg.DesktopCreated()
 
 	-- bonus:
 	--[[
-  CreateRealTimeThread(function()
+	CreateRealTimeThread(function()
 		-- wait for it (otherwise stuff below won't work right)
 		local WaitMsg = WaitMsg
 		local Dialogs = Dialogs

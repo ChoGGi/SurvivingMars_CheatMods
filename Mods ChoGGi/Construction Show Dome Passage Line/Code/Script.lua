@@ -100,10 +100,10 @@ end
 
 -- add any existing domes to dome_list
 local function BuildExistingDomeSpots()
-  local domes = UICity.labels.Domes or ""
-  for i = 1, #domes do
+	local domes = UICity.labels.Domes or ""
+	for i = 1, #domes do
 		BuildMarkers(domes[i])
-  end
+	end
 end
 OnMsg.LoadGame = BuildExistingDomeSpots
 -- I doubt any domes are on a new game (maybe a tutorial level?)
@@ -231,8 +231,8 @@ end
 
 -- they should get removed when the cursor building is removed, but just in case
 function OnMsg.Demolished(dome)
-  -- remove demo'ed domes from the list
-  if dome_list[dome] then
+	-- remove demo'ed domes from the list
+	if dome_list[dome] then
 		ListCleanup(dome, dome_list[dome])
-  end
+	end
 end

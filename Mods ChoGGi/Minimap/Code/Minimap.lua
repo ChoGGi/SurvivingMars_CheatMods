@@ -357,11 +357,11 @@ function ChoGGi_MinimapDlg:UpdateMapImage(image)
 end
 
 DefineClass.ChoGGi_XMapControl = {
-  __parents = {"XControl"},
+	__parents = {"XControl"},
 	-- the little red circle that could
-  slider_color = red,
-  slider_size = point(20, 20),
-  slider_image = "CommonAssets/UI/circle-20.tga",
+	slider_color = red,
+	slider_size = point(20, 20),
+	slider_image = "CommonAssets/UI/circle-20.tga",
 	-- update circle?
 	mouse_pt = false,
 	-- move camera?
@@ -373,7 +373,7 @@ DefineClass.ChoGGi_XMapControl = {
 }
 
 function ChoGGi_XMapControl:OnMouseButtonDown(pt, button)
-  if button == "L" then
+	if button == "L" then
 
 		if not IsValid(self.sphere) then
 			self.sphere = ChoGGi_OSphere:new()
@@ -388,23 +388,23 @@ function ChoGGi_XMapControl:OnMouseButtonDown(pt, button)
 		self.desktop:SetFocus()
 		self:SetFocus()
 
-    return "break"
-  end
+		return "break"
+	end
 end
 function ChoGGi_XMapControl:OnMouseButtonUp(_, button)
-  if button == "L" then
+	if button == "L" then
 		if IsValid(self.sphere) then
 			self.sphere:delete()
 		end
 		self.mouse_down = false
-    return "break"
-  end
+		return "break"
+	end
 end
 
 function ChoGGi_XMapControl:OnMousePos(pt)
-  if not self.mouse_down then
-    return "break"
-  end
+	if not self.mouse_down then
+		return "break"
+	end
 
 	-- relative pt on map image
 	local content_box = self.content_box
@@ -419,7 +419,7 @@ function ChoGGi_XMapControl:OnMousePos(pt)
 	-- off we go
 	ViewObjectMars(pt)
 
-  return "break"
+	return "break"
 end
 
 function ChoGGi_XMapControl:OnMouseEnter(...)
@@ -440,7 +440,7 @@ function ChoGGi_XMapControl:DrawContent()
 		return
 	end
 
-  local content_box = self.content_box
+	local content_box = self.content_box
 
 	-- workaround to update mouse pos
 	self.desktop:SetFocus()
@@ -453,11 +453,11 @@ function ChoGGi_XMapControl:DrawContent()
 	local sizey = content_box:sizey()
 
 	-- I'm sure there's a better way to do this
-  local percent_x = 1000 - Clamp((x - minx) * 1000 / sizex, 0, 1000)
-  local percent_y = 1000 - Clamp((y - miny) * 1000 / sizey, 0, 1000)
-  local weight_x = 1000 - Clamp(percent_x, 0, 1000)
-  local weight_y = 1000 - Clamp(percent_y, 0, 1000)
-  local slider_pos = point(
+	local percent_x = 1000 - Clamp((x - minx) * 1000 / sizex, 0, 1000)
+	local percent_y = 1000 - Clamp((y - miny) * 1000 / sizey, 0, 1000)
+	local weight_x = 1000 - Clamp(percent_x, 0, 1000)
+	local weight_y = 1000 - Clamp(percent_y, 0, 1000)
+	local slider_pos = point(
 		minx + weight_x * sizex / 1000,
 		miny + weight_y * sizey / 1000
 	)

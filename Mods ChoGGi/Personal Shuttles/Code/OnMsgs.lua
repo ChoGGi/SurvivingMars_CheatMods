@@ -3,52 +3,52 @@
 local IsKindOf = IsKindOf
 
 local function SomeCode()
-  local UICity = UICity
+	local UICity = UICity
 
-  -- place to store per-game values
-  if not UICity.PersonalShuttles then
-    UICity.PersonalShuttles = {}
-  end
-  -- objects carried by shuttles
-  if not UICity.PersonalShuttles.shuttle_carried then
-    UICity.PersonalShuttles.shuttle_carried = {}
-  end
-  -- controllable shuttle handles launched (true = attacker, false = friend)
-  if not UICity.PersonalShuttles.shuttle_threads then
-    UICity.PersonalShuttles.shuttle_threads = {}
-  end
-  -- we just want one shuttle scanning per anomaly (list of anomaly handles that are being scanned)
-  if not UICity.PersonalShuttles.shuttle_scanning_anomaly then
-    UICity.PersonalShuttles.shuttle_scanning_anomaly = {}
-  end
+	-- place to store per-game values
+	if not UICity.PersonalShuttles then
+		UICity.PersonalShuttles = {}
+	end
+	-- objects carried by shuttles
+	if not UICity.PersonalShuttles.shuttle_carried then
+		UICity.PersonalShuttles.shuttle_carried = {}
+	end
+	-- controllable shuttle handles launched (true = attacker, false = friend)
+	if not UICity.PersonalShuttles.shuttle_threads then
+		UICity.PersonalShuttles.shuttle_threads = {}
+	end
+	-- we just want one shuttle scanning per anomaly (list of anomaly handles that are being scanned)
+	if not UICity.PersonalShuttles.shuttle_scanning_anomaly then
+		UICity.PersonalShuttles.shuttle_scanning_anomaly = {}
+	end
 
-  -- clear out Temp settings
-  PersonalShuttles.shuttle_rocket_DD = {}
-  PersonalShuttles.unit_pathing_handles = {}
+	-- clear out Temp settings
+	PersonalShuttles.shuttle_rocket_DD = {}
+	PersonalShuttles.unit_pathing_handles = {}
 end
 
 function OnMsg.CityStart()
-  SomeCode()
+	SomeCode()
 end
 
 function OnMsg.LoadGame()
-  SomeCode()
+	SomeCode()
 end
 
 
 function OnMsg.NewDay() -- newsol
-  local UICity = UICity
+	local UICity = UICity
 
-  -- clean up old handles
+	-- clean up old handles
 	local IsValid = IsValid
 	local HandleToObject = HandleToObject
-  if next(UICity.PersonalShuttles.shuttle_threads) then
-    for h, _ in pairs(UICity.PersonalShuttles.shuttle_threads) do
-      if not IsValid(HandleToObject[h]) then
-        UICity.PersonalShuttles.shuttle_threads[h] = nil
-      end
-    end
-  end
+	if next(UICity.PersonalShuttles.shuttle_threads) then
+		for h, _ in pairs(UICity.PersonalShuttles.shuttle_threads) do
+			if not IsValid(HandleToObject[h]) then
+				UICity.PersonalShuttles.shuttle_threads[h] = nil
+			end
+		end
+	end
 
 end
 

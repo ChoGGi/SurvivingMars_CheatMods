@@ -15,19 +15,23 @@ function OnMsg.ApplyModOptions(id)
 	mod_DefaultNationNames = mod.options.DefaultNationNames
 end
 
-local AsyncRand = AsyncRand
-local NameUnit = NameUnit
 
+local table_rand = table.rand
+local function GetNationName()
+	return table_rand(Nations).value
+end
+
+local NameUnit = NameUnit
 local orig_GenerateColonistData = GenerateColonistData
 function GenerateColonistData(...)
-  if mod_RandomBirthplace then
-    local c = orig_GenerateColonistData(...)
-    c.birthplace = Nations[AsyncRand(#Nations - 1 + 1) + 1].value
-    NameUnit(c)
-    return c
-  else
-    return orig_GenerateColonistData(...)
-  end
+	if mod_RandomBirthplace then
+		local c = orig_GenerateColonistData(...)
+		c.birthplace = GetNationName()
+		NameUnit(c)
+		return c
+	else
+		return orig_GenerateColonistData(...)
+	end
 end
 
 -- local some stuff
@@ -67,9 +71,10 @@ function OnMsg.ModsReloaded()
 	end
 
 	-- replace the func that gets a nation (it gets a weighted nation depending on your sponsors instead of all of them)
-	function GetWeightedRandNation()
-		return Nations[AsyncRand(#Nations - 1 + 1) + 1].value
-	end
+	GetWeightedRandNation = GetNationName
+
+	-- I doubt any game will last 9999 sols
+	const.FullTransitionToMarsNames = 9999
 
 	-- get all human names then merge into one table and apply to all nations
 	local name_table = {
@@ -375,8 +380,6 @@ function OnMsg.ModsReloaded()
 		end
 	end
 
-	-- I doubt any game will last 9999 sols
-	const.FullTransitionToMarsNames = 9999
 
 	-- instead of just replacing the orig table we add on to it (just in case more nations are added, maybe by another mod)
 	local c = #Nations

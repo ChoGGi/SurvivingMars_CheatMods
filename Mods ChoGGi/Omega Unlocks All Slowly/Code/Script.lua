@@ -10,7 +10,7 @@ function OnMsg.NewDay()
 	local UICity = UICity
 
 	-- if there's none left to discover
-  local breakthroughs = UICity:GetUnregisteredBreakthroughs()
+	local breakthroughs = UICity:GetUnregisteredBreakthroughs()
 	if not breakthroughs[1] then
 		return
 	end
@@ -29,7 +29,7 @@ function OnMsg.NewDay()
 		return
 	end
 
-  StableShuffle(breakthroughs, UICity:CreateResearchRand("OmegaTelescope"), 100)
+	StableShuffle(breakthroughs, UICity:CreateResearchRand("OmegaTelescope"), 100)
 	local def = TechDef[breakthroughs[1]]
 
 	-- we already checked for breakthroughs[1], but why not check again :)

@@ -151,7 +151,6 @@ OnMsg.LoadGame = HideSigns
 local function ChangeMarks(label, entity, value)
 	local anomalies = UICity.labels[label] or ""
 	if value then
-		local AsyncRand = AsyncRand
 		for i = 1, #anomalies do
 			local a = anomalies[i]
 			if entity == "AlienAnomaly" and not a.ChoGGi_alien then

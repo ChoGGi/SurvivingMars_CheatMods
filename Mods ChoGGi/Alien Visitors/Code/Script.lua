@@ -47,13 +47,13 @@ DefineClass.ChoGGi_Alien = {
 	roam_target_radius = 500*guim,
 	spawn_pos = false,
 --~ 	-- magical alien POWAH
---~   electricity = false,
+--~	 electricity = false,
 --~ 	-- how close does it need to be for the POWAH
 --~ 	electricity_radius = 100,
 
 --~ 	electricity_production = 10000,
 --~ 	nearby_building = false,
---~   production_lifetime = 0,
+--~	 production_lifetime = 0,
 }
 
 function ChoGGi_Alien:GetDisplayName()
@@ -177,7 +177,7 @@ end
 --~ function ChoGGi_Alien:GetElecBldNearby(rad) --within charge range
 --~ 	rad = rad or self.electricity_radius
 
---~ 	local lst = MapGet(self, "hex", rad + 1, "ElectricityConsumer", function(o) return o:GetGameFlags(gofUnderConstruction) == 0 end  )
+--~ 	local lst = MapGet(self, "hex", rad + 1, "ElectricityConsumer", function(o) return o:GetGameFlags(gofUnderConstruction) == 0 end	)
 --~ 	local c = FindNearestObject(lst, self)
 --~ 	return c and HexAxialDistance(c, self) <= rad and c or false
 --~ end
@@ -188,34 +188,34 @@ end
 --~ 	end
 --~ print("PowerNearbyBld")
 
---~   local old_grid = self.electricity and self.electricity.grid
---~   local new_grid = self.nearby_building and self.nearby_building.electricity.grid
---~   if old_grid == new_grid then
---~     return
---~   end
+--~	 local old_grid = self.electricity and self.electricity.grid
+--~	 local new_grid = self.nearby_building and self.nearby_building.electricity.grid
+--~	 if old_grid == new_grid then
+--~		 return
+--~	 end
 
---~   if not self.nearby_building and self.nearby_building then
---~     PlayFX("Working", "start", self.panel_obj)
---~   elseif self.nearby_building and not self.nearby_building then
---~     PlayFX("Working", "end", self.panel_obj)
---~   end
+--~	 if not self.nearby_building and self.nearby_building then
+--~		 PlayFX("Working", "start", self.panel_obj)
+--~	 elseif self.nearby_building and not self.nearby_building then
+--~		 PlayFX("Working", "end", self.panel_obj)
+--~	 end
 
---~   if old_grid then
---~     old_grid:RemoveElement(self.electricity)
---~   end
---~   if not new_grid then
---~     self.production_lifetime = self.production_lifetime + self.electricity.production_lifetime
---~     self.electricity = false
---~   else
---~     if not self.electricity then
---~       self.electricity = NewSupplyGridProducer(self)
---~       self.electricity:SetProduction(self.electricity_production)
---~     end
---~     new_grid:AddElement(self.electricity)
---~   end
---~   if SelectedObj == self then
---~     ReopenSelectionXInfopanel()
---~   end
+--~	 if old_grid then
+--~		 old_grid:RemoveElement(self.electricity)
+--~	 end
+--~	 if not new_grid then
+--~		 self.production_lifetime = self.production_lifetime + self.electricity.production_lifetime
+--~		 self.electricity = false
+--~	 else
+--~		 if not self.electricity then
+--~			 self.electricity = NewSupplyGridProducer(self)
+--~			 self.electricity:SetProduction(self.electricity_production)
+--~		 end
+--~		 new_grid:AddElement(self.electricity)
+--~	 end
+--~	 if SelectedObj == self then
+--~		 ReopenSelectionXInfopanel()
+--~	 end
 --~ 	ex(self.electricity)
 --~ 	ex(self.nearby_building.electricity)
 --~ end
@@ -237,8 +237,13 @@ local function StartupCode()
 	end
 
 	local ChoGGi_Alien = ChoGGi_Alien
+
 	-- spawn a min of 4
-	for _ = 1, AsyncRand(mod_MaxSpawn - 4 + 1) + 4 do
+	local count = AsyncRand(mod_MaxSpawn)
+	if count < 4 then
+		count = 4
+	end
+	for _ = 1, count do
 		ChoGGi_Alien:new()
 	end
 
@@ -289,9 +294,9 @@ function OnMsg.ClassesBuilt()
 				"__template", "InfopanelButton",
 				"RolloverTitle", "dfgfdgfd",
 				"ContextUpdateOnOpen", false,
-				"OnContextUpdate", function(self)
-					self:SetRolloverText("XXXXXXXXXX")
-				end,
+--~ 				"OnContextUpdate", function(self)
+--~ 					self:SetRolloverText("XXXXXXXXXX")
+--~ 				end,
 --~ 					"OnPress", function(self)
 --~ 						ChoGGi.ComFuncs.EntitySpawner(self.context)
 --~ 					end,

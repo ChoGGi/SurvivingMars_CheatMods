@@ -7,20 +7,20 @@ local Translate = ChoGGi.ComFuncs.Translate
 
 -- removed functions
 function RequiresMaintenance:GetUIRequestMaintenanceStatus()
-  local status
-  if self.accumulated_maintenance_points > 0 then
-    if self.maintenance_phase == false then
-      status = Translate(7329--[[Maintenance needed--]])
-    else
-      status = Translate(389--[[Maintenance already requested--]])
-    end
-    return status .. ", Remaining: " .. (self.maintenance_threshold_current - self.accumulated_maintenance_points)
-  end
-  return T(390, "No deterioration")
+	local status
+	if self.accumulated_maintenance_points > 0 then
+		if self.maintenance_phase == false then
+			status = Translate(7329--[[Maintenance needed--]])
+		else
+			status = Translate(389--[[Maintenance already requested--]])
+		end
+		return status .. ", Remaining: " .. (self.maintenance_threshold_current - self.accumulated_maintenance_points)
+	end
+	return T(390, "No deterioration")
 end
 function RequiresMaintenance:UIRequestMaintenance()
-  RebuildInfopanel(self)
-  return self:RequestMaintenance(true)
+	RebuildInfopanel(self)
+	return self:RequestMaintenance(true)
 end
 
 function OnMsg.ClassesBuilt()

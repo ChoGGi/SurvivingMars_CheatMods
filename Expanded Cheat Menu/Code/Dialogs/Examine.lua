@@ -2683,7 +2683,7 @@ function Examine:ConvertObjToInfo(obj, obj_type)
 			if tostring(step_vector) == "(0, 0, 0)" then
 				step_vector = ""
 			else
-				step_vector =  ", step: " .. self:ConvertValueToInfo(step_vector) .. "\n"
+				step_vector =	", step: " .. self:ConvertValueToInfo(step_vector) .. "\n"
 			end
 			-- pathing
 			if current_pos ~= going_to then

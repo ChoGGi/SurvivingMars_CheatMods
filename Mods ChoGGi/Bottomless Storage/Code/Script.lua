@@ -1,27 +1,27 @@
 -- See LICENSE for terms
 
 DefineClass.BottomlessStorage = {
-  __parents = {
-    "UniversalStorageDepot"
-  },
+	__parents = {
+		"UniversalStorageDepot"
+	},
 }
 
 function BottomlessStorage:GameInit()
-  -- start off with all resource demands blocked
-  for i = 1, #self.resource do
-    self:ToggleAcceptResource(self.resource[i])
-  end
+	-- start off with all resource demands blocked
+	for i = 1, #self.resource do
+		self:ToggleAcceptResource(self.resource[i])
+	end
 
-  -- make sure it isn't mistaken for a regular depot
-  self:SetColorModifier(0)
+	-- make sure it isn't mistaken for a regular depot
+	self:SetColorModifier(0)
 end
 
 --om nom nom nom nom
 function BottomlessStorage:DroneUnloadResource(drone, request, resource, amount)
-  UniversalStorageDepot.DroneUnloadResource(self, drone, request, resource, amount)
-  --ResourceStockpileBase.DroneUnloadResource(self, drone, request, resource, amount)
-  self:ClearAllResources()
-  RebuildInfopanel(self)
+	UniversalStorageDepot.DroneUnloadResource(self, drone, request, resource, amount)
+	--ResourceStockpileBase.DroneUnloadResource(self, drone, request, resource, amount)
+	self:ClearAllResources()
+	RebuildInfopanel(self)
 end
 
 --add building to building template list

@@ -11,12 +11,12 @@ return PlaceObj("ModDef", {
 	"version", 14,
 	"version_major", 1,
 	"version_minor", 4,
-  "saved", 1554120000,
+	"saved", 1554120000,
 	"id", "ChoGGi_Terraformer",
 	"author", "ChoGGi",
-  "code", {
-    "Code/Script.lua",
-  },
+	"code", {
+		"Code/Script.lua",
+	},
 	"TagOther", true,
 	"image", "Preview.png",
 	"steam_id", "1415296985",

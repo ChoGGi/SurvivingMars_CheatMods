@@ -38,19 +38,19 @@ end
 local filter_table = {}
 local function GetMatchingColonistsCount(self, spec)
 	table_clear(filter_table)
-  filter_table[spec] = true
+	filter_table[spec] = true
 
-  local colonists = self.approved_applicants
-  local count = 0
+	local colonists = self.approved_applicants
+	local count = 0
 	-- what dome?
-  local label = not not self.dome
-  for i = 1, #colonists do
-    local colonist = label and colonists[i] or colonists[i][1]
-    if TraitFilterColonist(filter_table, colonist.traits) > 0 then
-      count = count + 1
-    end
-  end
-  return count
+	local label = not not self.dome
+	for i = 1, #colonists do
+		local colonist = label and colonists[i] or colonists[i][1]
+		if TraitFilterColonist(filter_table, colonist.traits) > 0 then
+			count = count + 1
+		end
+	end
+	return count
 end
 
 local function GetSpecInfo(self, win, label)

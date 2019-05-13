@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
 AutoEmptyWasteStorage = {
-  Enabled = true,
-  Which = 1
+	Enabled = true,
+	Which = 1
 }
 local AutoEmptyWasteStorage = AutoEmptyWasteStorage
 
@@ -10,7 +10,7 @@ local function EmptyAll()
 	local objs = UICity.labels.WasteRockDumpSite or ""
 	for i = 1, #objs do
 		objs[i]:CheatEmpty()
-  end
+	end
 end
 
 local function CleanUp()

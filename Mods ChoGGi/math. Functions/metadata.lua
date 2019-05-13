@@ -1,18 +1,18 @@
 return PlaceObj("ModDef", {
-  "title", [["math." Functions]],
+	"title", [["math." Functions]],
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,
-  "saved", 1532865600,
-  "id", "ChoGGi_AddMathFunctions",
-  "author", "ChoGGi",
+	"saved", 1532865600,
+	"id", "ChoGGi_AddMathFunctions",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-  "steam_id", "1443143020",
+	"steam_id", "1443143020",
 	"lua_revision", LuaRevision or 244275,
-  "description", [[Modders only (unless it's a mod that uses these functions).
+	"description", [[Modders only (unless it's a mod that uses these functions).
 
 For some reason SM doesn't have any of lua "math." functions.
 Functions are either from SM (math.min = Min()), or pure lua.

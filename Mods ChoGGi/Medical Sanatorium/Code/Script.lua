@@ -1,14 +1,14 @@
 -- See LICENSE for terms
 
 DefineClass.MedicalSanatorium = {
-  __parents = {
-    "Sanatorium",
-    "InteriorAmbientLife"
-  },
-  flags = {efWalkable = true},
-  interior = {
-    "InfirmaryInterior"
-  },
+	__parents = {
+		"Sanatorium",
+		"InteriorAmbientLife"
+	},
+	flags = {efWalkable = true},
+	interior = {
+		"InfirmaryInterior"
+	},
 
 }
 

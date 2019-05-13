@@ -49,7 +49,7 @@ end
 
 function OnMsg.DesktopCreated()
 
-  CreateRealTimeThread(function()
+	CreateRealTimeThread(function()
 		local WaitMsg = WaitMsg
 		local Dialogs = Dialogs
 

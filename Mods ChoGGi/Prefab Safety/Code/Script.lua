@@ -17,9 +17,9 @@ end
 -- need to get the proper class name for rover buildings
 local rover_building_lookup = {}
 function OnMsg.ClassesBuilt()
-  ClassDescendants("BaseRoverBuilding", function(class, building)
+	ClassDescendants("BaseRoverBuilding", function(class, building)
 		rover_building_lookup[building.rover_class] = class
-  end)
+	end)
 end
 
 -- we don't want it adding a prefab when the site is removed

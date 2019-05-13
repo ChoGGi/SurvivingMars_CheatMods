@@ -22,7 +22,7 @@ function MarsCompanion:GameInit()
 
 	-- label stuff
 	self.city = self.hub.city or UICity
-  self.city:AddToLabel("MarsCompanion", self)
+	self.city:AddToLabel("MarsCompanion", self)
 
 	self:SetState("fly") -- down tubes
 	self:PlayFX("Land", "start")
@@ -75,7 +75,7 @@ function MarsCompanion:GameInit()
 end
 
 function MarsCompanion:Done()
-  (self.city or UICity):RemoveFromLabel("MarsCompanion", self)
+	(self.city or UICity):RemoveFromLabel("MarsCompanion", self)
 
 	if IsValidThread(self.dust_thread) then
 		DeleteThread(self.dust_thread)

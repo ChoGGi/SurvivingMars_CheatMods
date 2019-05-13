@@ -110,8 +110,8 @@ function FireworksLauncher:RocketMove()
 	local tick = 50
 	local dir = SetLen(self.move_dir, self.start_speed)
 	local max_height = terrain.GetMaxHeight()
-  local target = self.target
-  local max_travel = MulDivRound(self.max_speed, tick, 1000)
+	local target = self.target
+	local max_travel = MulDivRound(self.max_speed, tick, 1000)
 
 	while IsValid(self) and self:GetZ() < max_height do
 		local target_pos = target:GetPos()

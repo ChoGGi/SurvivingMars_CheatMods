@@ -44,8 +44,8 @@ DefineClass.ChoGGi_XTextStyle = {
 	DisabledTextColor = gray32_128,
 	TextFont = GedDefault,
 	-- close enough?
-  group = "Common",
-  save_in = "Common",
+	group = "Common",
+	save_in = "Common",
 	-- we get an error from Preset:Register() if we don't have this (still works fine)
 	PresetClass = "TextStyle",
 }

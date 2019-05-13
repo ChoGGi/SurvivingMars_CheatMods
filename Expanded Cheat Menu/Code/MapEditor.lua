@@ -4,7 +4,7 @@ p.developer = true
 
 editor.ObjClassList = ""
 const.SelectionFilters = {
-  {"Unit", name = "Units"}
+	{"Unit", name = "Units"}
 }
 
 editor.Camera = {

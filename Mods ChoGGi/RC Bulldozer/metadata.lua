@@ -7,22 +7,22 @@ return PlaceObj("ModDef", {
 			"version_minor", 4,
 		}),
 	},
-  "title", "RC Bulldozer",
+	"title", "RC Bulldozer",
 	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,
-  "saved", 1542974400,
+	"saved", 1542974400,
 	"image", "Preview.png",
-  "tags", "Buildings",
-  "id", "ChoGGi_RCBulldozer",
-  "author", "ChoGGi",
-  "steam_id", "1538213471",
+	"tags", "Buildings",
+	"id", "ChoGGi_RCBulldozer",
+	"author", "ChoGGi",
+	"steam_id", "1538213471",
 	"pops_any_uuid", "c4cbd03c-5dc3-4953-9e13-fbea09273916",
-  "code", {
+	"code", {
 		"Code/Script.lua",
 	},
 	"lua_revision", LuaRevision or 244275,
-  "description", [[Flattens the ground in front of it.
+	"description", [[Flattens the ground in front of it.
 
 Options to change the radius, show a circle where it flattens, and change the ground texture (or turn it off).
 The buildable area won't be updated till you turn off Dozer Toggle (expensive function call).

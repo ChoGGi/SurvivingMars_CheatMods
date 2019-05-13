@@ -5,5 +5,5 @@ local orig_InitRenderEngine = InitRenderEngine
 -- passing nil or "" crashes it, but a space seems good enough that it skips the precompiled shaders
 --~ function InitRenderEngine(path)
 function InitRenderEngine()
-  return orig_InitRenderEngine(" ")
+	return orig_InitRenderEngine(" ")
 end

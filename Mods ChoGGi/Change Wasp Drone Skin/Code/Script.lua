@@ -11,5 +11,5 @@ for key in pairs(EntityData) do
 end
 
 function FlyingDrone:GetSkins()
-  return skins
+	return skins
 end

@@ -809,7 +809,7 @@ Drone.CheatCleanAndFix = function(self)
 		if drone.command == "NoBattery" then
 			drone.battery = drone.battery_max
 			drone:SetCommand("Fixed", "noBatteryFixed")
-    elseif drone.command == "Malfunction" or drone.command == "Freeze" and drone:CanBeThawed() then
+		elseif drone.command == "Malfunction" or drone.command == "Freeze" and drone:CanBeThawed() then
 			self:SetCommand("Fixed", "breakDownFixed")
 		else
 			self:SetCommand("Fixed", "Something")

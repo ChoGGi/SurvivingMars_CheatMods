@@ -24,7 +24,7 @@ function CursorBuilding.GameInit(...)
 		return orig_CursorBuilding_GameInit(...)
 	end
 
-  local g_MapSectors = g_MapSectors
+	local g_MapSectors = g_MapSectors
 	for sector in pairs(g_MapSectors) do
 		if type(sector) == "table" then
 			sector.ChoGGi_decal = sector.decal
@@ -40,7 +40,7 @@ function CursorBuilding.GameInit(...)
 		end
 	end
 
-  return orig_CursorBuilding_GameInit(...)
+	return orig_CursorBuilding_GameInit(...)
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
@@ -59,5 +59,5 @@ function CursorBuilding.Done(...)
 		end
 	end
 
-  return orig_CursorBuilding_Done(...)
+	return orig_CursorBuilding_Done(...)
 end

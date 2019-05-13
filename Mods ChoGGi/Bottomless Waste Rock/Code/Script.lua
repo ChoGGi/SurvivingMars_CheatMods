@@ -1,21 +1,21 @@
 -- See LICENSE for terms
 
 DefineClass.BottomlessWasteRock = {
-  __parents = {
-    "WasteRockDumpSite"
-  },
+	__parents = {
+		"WasteRockDumpSite"
+	},
 }
 
 function BottomlessWasteRock:GameInit()
-  -- make sure it isn't mistaken for a regular depot
-  self:SetColorModifier(-11252937)
+	-- make sure it isn't mistaken for a regular depot
+	self:SetColorModifier(-11252937)
 end
 
 --om nom nom nom nom
 function BottomlessWasteRock:DroneUnloadResource(drone, request, resource, amount)
-  WasteRockDumpSite.DroneUnloadResource(self, drone, request, resource, amount)
-  self:CheatEmpty()
-  RebuildInfopanel(self)
+	WasteRockDumpSite.DroneUnloadResource(self, drone, request, resource, amount)
+	self:CheatEmpty()
+	RebuildInfopanel(self)
 end
 
 --add building to building template list

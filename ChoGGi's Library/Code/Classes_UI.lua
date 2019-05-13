@@ -277,13 +277,13 @@ DefineClass.ChoGGi_XExternalTextEditorPlugin = {
 
 function ChoGGi_XExternalTextEditorPlugin:OpenEditor(edit)
 	local g = ChoGGi.Temp._G
-  g_ExternalTextEditorActiveCtrl = edit
+	g_ExternalTextEditorActiveCtrl = edit
 	edit.external_file = edit.external_path .. "/tempedit.lua"
 
-  g.AsyncCreatePath(edit.external_path)
+	g.AsyncCreatePath(edit.external_path)
 
-  g.AsyncStringToFile(edit.external_file, edit:GetText())
-  local cmd = edit.external_cmd:format(ConvertToOSPath(edit.external_file))
+	g.AsyncStringToFile(edit.external_file, edit:GetText())
+	local cmd = edit.external_cmd:format(ConvertToOSPath(edit.external_file))
 
 	local exec, result = g.os.execute(cmd)
 	if not exec then
@@ -291,22 +291,22 @@ function ChoGGi_XExternalTextEditorPlugin:OpenEditor(edit)
 	end
 end
 function ChoGGi_XExternalTextEditorPlugin:OnTextChanged(edit)
-  if g_ExternalTextEditorActiveCtrl == edit then
-    ChoGGi.Temp._G.AsyncStringToFile(edit.external_file, edit:GetText())
-  end
+	if g_ExternalTextEditorActiveCtrl == edit then
+		ChoGGi.Temp._G.AsyncStringToFile(edit.external_file, edit:GetText())
+	end
 end
 function ChoGGi_XExternalTextEditorPlugin.ApplyEdit(file, change, edit)
-  if g_ExternalTextEditorActiveCtrl == edit and change == "Modified" then
-    local err, content = ChoGGi.Temp._G.AsyncFileToString(file or edit.external_file)
-    if not err and edit then
-      edit:SetText(content)
-    end
+	if g_ExternalTextEditorActiveCtrl == edit and change == "Modified" then
+		local err, content = ChoGGi.Temp._G.AsyncFileToString(file or edit.external_file)
+		if not err and edit then
+			edit:SetText(content)
+		end
 	end
 end
 DefineClass.ChoGGi_XCodeEditorPlugin = {
 	__parents = {"XCodeEditorPlugin"},
-  SelectionColor = -11364918,
-  KeywordColor = -7421793,
+	SelectionColor = -11364918,
+	KeywordColor = -7421793,
 }
 
 DefineClass.ChoGGi_XList = {
@@ -387,25 +387,25 @@ DefineClass.ChoGGi_XSleekScroll = {
 --~ 	SnapToItems = true,
 
 	RolloverBackground = rollover_blue_darker,
-  state = "mouse-out",
+	state = "mouse-out",
 	Margins = box(1, 1, 0, 0),
 }
 -- change bg on mouseover
 ChoGGi_XSleekScroll.CalcBackground = XButton.CalcBackground
 function ChoGGi_XSleekScroll:OnSetRollover(rollover)
-  XControl.OnSetRollover(self, rollover)
-  if rollover then
-    if self.state == "mouse-out" then
-      self.state = "mouse-in"
---~     elseif self.state == "pressed-out" then
---~       self.state = "pressed-in"
-    end
-  elseif self.state == "mouse-in" then
-    self.state = "mouse-out"
---~   elseif self.state == "pressed-in" then
---~     self.state = "pressed-out"
-  end
-  self:Invalidate()
+	XControl.OnSetRollover(self, rollover)
+	if rollover then
+		if self.state == "mouse-out" then
+			self.state = "mouse-in"
+--~		 elseif self.state == "pressed-out" then
+--~			 self.state = "pressed-in"
+		end
+	elseif self.state == "mouse-in" then
+		self.state = "mouse-out"
+--~	 elseif self.state == "pressed-in" then
+--~		 self.state = "pressed-out"
+	end
+	self:Invalidate()
 end
 
 
@@ -771,7 +771,7 @@ function ChoGGi_XWindow:PostInit(parent, pt, title_skip)
 		if move.RolloverText == "" then
 			move.RolloverText = ok .. str
 		else
-			move.RolloverText = self.idMoveControl:GetRolloverText() .. "\n\n" ..ok ..  str
+			move.RolloverText = self.idMoveControl:GetRolloverText() .. "\n\n" ..ok ..	str
 		end
 	end
 
@@ -893,17 +893,17 @@ DefineClass.ChoGGi_XInputContextMenu = {
 }
 --~ XTextEditor:OnKillFocus
 function ChoGGi_XInputContextMenu:OnKillFocus()
-  ShowVirtualKeyboard(false)
-  self:DestroyCursorBlinkThread()
-  -- self:ClearSelection()
+	ShowVirtualKeyboard(false)
+	self:DestroyCursorBlinkThread()
+	-- self:ClearSelection()
 	-- what's the point of clearing selection when focus is killed?
-  if self.Ime then
-    HideIme()
-  end
+	if self.Ime then
+		HideIme()
+	end
 end
 
 function ChoGGi_XInputContextMenu:OnMouseButtonDown(pt, button, ...)
-  if button == "R" then
+	if button == "R" then
 		-- id for PopupToggle
 		self.opened_list_menu_id = self.opened_list_menu_id or Random()
 
@@ -921,8 +921,8 @@ function ChoGGi_XInputContextMenu:OnMouseButtonDown(pt, button, ...)
 			self.list_menu_table, self.opened_list_menu_id, list, "drop"
 		)
 
-    return "break"
-  end
+		return "break"
+	end
 
 	return XTextEditor.OnMouseButtonDown(self, pt, button, ...)
 end
@@ -934,7 +934,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 	if self.undo_stack and #self.undo_stack > 0 then
 		can_undo = true
 	end
-  if self.redo_stack and #self.redo_stack > 0 then
+	if self.redo_stack and #self.redo_stack > 0 then
 		can_redo = true
 	end
 	if self:HasSelection() then

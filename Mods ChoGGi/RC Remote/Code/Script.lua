@@ -170,7 +170,7 @@ DefineClass.RCRemote = {
 		"BaseRover",
 		"ComponentAttach",
 	},
-  name = name,
+	name = name,
 	description = description,
 	display_icon = display_icon,
 	display_name = name,
@@ -219,12 +219,12 @@ DefineClass.RCRemote = {
 		},
 	},
 
-  palette = {
-    "rover_base",
-    "rover_dark",
-    "rover_accent",
-    "none"
-  },
+	palette = {
+		"rover_base",
+		"rover_dark",
+		"rover_accent",
+		"none"
+	},
 }
 
 function RCRemote:GameInit()
@@ -244,16 +244,16 @@ function RCRemote:GameInit()
 end
 
 function RCRemote:RetParabola(from, to)
-  local parabola_h = Min(from:Dist(to), 50 * guim)
-  local pos_lerp = ValueLerp(from, to, 100)
-  local steps = 10
-  local vertices = {}
-  for i = 0, steps do
-    local x = i * (100 / steps)
-    local pos = pos_lerp(x)
-    pos = pos:AddZ(parabola(x) * parabola_h / 100)
+	local parabola_h = Min(from:Dist(to), 50 * guim)
+	local pos_lerp = ValueLerp(from, to, 100)
+	local steps = 10
+	local vertices = {}
+	for i = 0, steps do
+		local x = i * (100 / steps)
+		local pos = pos_lerp(x)
+		pos = pos:AddZ(parabola(x) * parabola_h / 100)
 		vertices[i+1] = pos
-  end
+	end
 	return vertices
 end
 
@@ -309,9 +309,9 @@ function RCRemote:FireRocket(target)
 		target = target,
 	})
 
-  rocket:SetPos(pos)
-  rocket.move_dir = axis
-  rocket:StartMoving()
+	rocket:SetPos(pos)
+	rocket.move_dir = axis
+	rocket:StartMoving()
 
 	self.fx_actor_class = "DefenceTower"
 	PlayFX("MissileFired", "start", self, nil, pos, axis)
@@ -433,7 +433,7 @@ function OnMsg.SelectionAdded(obj)
 end
 function OnMsg.SelectionRemoved()
 	-- go back to normal controls
-  if shortcuts_mode then
+	if shortcuts_mode then
 		XShortcutsSetMode(shortcuts_mode)
 		shortcuts_mode = false
 	end
