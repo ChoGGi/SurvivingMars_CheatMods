@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 			"version_minor", 4,
 		}),
 	},
-	"title", "RC Bulldozer",
+	"title", "RC Bulldozer (Obsolete)",
 	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,

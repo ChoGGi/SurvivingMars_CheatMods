@@ -427,11 +427,8 @@ end
 -- for painting the ground
 local concrete_paint = table.find(TerrainTextures, "name", "Dig")
 local metal_paint = table.find(TerrainTextures, "name", "SandFrozen")
-local SetTypeCircle = terrain.SetTypeCircle
-local AsyncRand = AsyncRand
-local function Random(m, n)
-	return AsyncRand(n - m + 1) + m
-end
+local terrain_SetTypeCircle = terrain.SetTypeCircle
+local Random = ChoGGi.ComFuncs.Random
 
 function PortableMiner:DigErUp(pms)
 	local d = self.nearby_deposits[1]
@@ -488,7 +485,7 @@ function PortableMiner:DigErUp(pms)
 	if pms.visual_cues then
 		local pt = self:GetLogicalPos()
 		pt = point(pt:x()+Random(-5000, 5000), pt:y()+Random(-5000, 5000))
-		SetTypeCircle(pt, 250, paint)
+		terrain_SetTypeCircle(pt, 250, paint)
 	end
 
 	return extracted

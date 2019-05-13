@@ -24,6 +24,7 @@ local table_clear = table.clear
 local table_iclear = table.iclear
 local table_sort = table.sort
 local table_copy = table.copy
+local table_rand = table.rand
 local SuspendPassEdits = SuspendPassEdits
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
@@ -552,13 +553,13 @@ do -- ShowObj
 
 	-- we just use a few noticeable colours for rand
 	local rand_colours = {
-		green, yellow, cyan, white, red,
+		green, yellow, cyan, white,
+		-46777, -- lighter red than "red"
 		-65369, -- pink
 		-39680, -- slightly darker orange (don't want it blending in to the ground as much as -23296)
 	}
-	local rand_colours_c = #rand_colours
 	local function rand_c()
-		return rand_colours[AsyncRand(rand_colours_c)+1]
+		return table_rand(rand_colours)
 	end
 	ChoGGi.ComFuncs.RandomColourLimited = rand_c
 
@@ -1269,7 +1270,6 @@ do -- TableCleanDupes
 		end
 	end
 end -- do
-local TableCleanDupes = ChoGGi.ComFuncs.TableCleanDupes
 
 -- ChoGGi.ComFuncs.RemoveFromTable(sometable, "class", "SelectionArrow")
 function ChoGGi.ComFuncs.RemoveFromTable(list, cls, text)
@@ -2326,6 +2326,23 @@ function ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj, amount)
 end
 
 do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRandom/ObjectColourDefault/ChangeObjectColour
+	local color_ass = {}
+	local SaveOldPalette
+	local colour_funcs = {
+		SetColours = function(obj, choice)
+			SaveOldPalette(obj)
+			for i = 1, 4 do
+				obj:SetColorizationMaterial(i,
+					choice[i].value,
+					choice[i+8].value,
+					choice[i+4].value
+				)
+			end
+			obj:SetColorModifier(choice[13].value)
+		end,
+		RestoreOldPalette = RestoreOldPalette,
+	}
+
 	function ChoGGi.ComFuncs.SaveOldPalette(obj)
 		if not IsValid(obj) then
 			return
@@ -2340,7 +2357,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			obj.ChoGGi_origcolors[-1] = obj:GetColorModifier()
 		end
 	end
-	local SaveOldPalette = ChoGGi.ComFuncs.SaveOldPalette
+	SaveOldPalette = ChoGGi.ComFuncs.SaveOldPalette
 
 	function ChoGGi.ComFuncs.RestoreOldPalette(obj)
 		if not IsValid(obj) then
@@ -2372,29 +2389,36 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 
 	function ChoGGi.ComFuncs.RandomColour(amount)
 		if amount and type(amount) == "number" and amount > 1 then
-			-- somewhere to store the colours
+			-- temp associative table of colour ids
+			table_clear(color_ass)
+			-- indexed list of colours we return
 			local colour_list = {}
-			-- populate list with amount we want
+			-- when this reaches amount we return the list
+			local c = 0
+			-- loop through the amount once
 			for i = 1, amount do
 				-- 16777216: https://en.wikipedia.org/wiki/Color_depth#True_color_(24-bit)
-				-- kinda, we skip the alpha values
-				colour_list[i] = AsyncRand(16777217) + -16777216
-			end
-
-			-- now remove all dupes and add more till we hit amount
-			local c
-			-- we use repeat instead of while, as this checks at the end instead of beginning (ie: after we've removed dupes once)
-			repeat
-				c = #colour_list
-				-- loop missing amount
-				for _ = 1, amount - #colour_list do
+				-- we skip the alpha values
+				local colour = AsyncRand(16777217) + -16777216
+				if not color_ass[colour] then
+					color_ass[colour] = true
 					c = c + 1
-					colour_list[c] = AsyncRand(16777217) + -16777216
 				end
-				-- remove dupes (it's quicker to do this then check the table for each newly added colour)
-				TableCleanDupes(colour_list)
-			-- once we're at parity then off we go
-			until #colour_list == amount
+			end
+			-- then make sure we're at count (
+			while c < amount do
+				local colour = AsyncRand(16777217) + -16777216
+				if not color_ass[colour] then
+					color_ass[colour] = true
+					c = c + 1
+				end
+			end
+			-- convert ass to idx list
+			c = 0
+			for colour in pairs(color_ass) do
+				c = c + 1
+				colour_list[c] = colour
+			end
 
 			return colour_list
 		end
@@ -2420,9 +2444,10 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 
 		local a_list = ChoGGi.ComFuncs.GetAllAttaches(obj)
 		for i = 1, #a_list do
-			if a_list[i]:IsKindOf("ColorizableObject") then
+			local a = a_list[i]
+			if a:IsKindOf("ColorizableObject") then
 				c = c + 1
-				attaches[c] = {obj = a_list[i], c = {}}
+				attaches[c] = {obj = a, c = {}}
 			end
 		end
 
@@ -2492,21 +2517,6 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		end
 
 	end
-
-	local colour_funcs = {
-		SetColours = function(obj, choice)
-			ChoGGi.ComFuncs.SaveOldPalette(obj)
-			for i = 1, 4 do
-				obj:SetColorizationMaterial(i,
-					choice[i].value,
-					choice[i+8].value,
-					choice[i+4].value
-				)
-			end
-			obj:SetColorModifier(choice[13].value)
-		end,
-		RestoreOldPalette = RestoreOldPalette,
-	}
 
 	-- make sure we're in the same grid
 	local function CheckGrid(fake_parent, func, obj, obj_bld, choice, c_air, c_water, c_elec)

@@ -786,8 +786,8 @@ function Examine:idButMarkAll_OnPress()
 	end
 	ResumePassEdits("Examine:idButMarkAll_OnPress")
 	self.ChoGGi.ComFuncs.TableCleanDupes(self.marked_objects)
-
 end
+
 function Examine:idButToggleObjlist_OnPress()
 	self = GetRootDialog(self)
 

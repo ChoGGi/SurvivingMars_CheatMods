@@ -470,7 +470,7 @@ function ChoGGi.testing.TestRandomColour(amount)
 	s("TestRandomColour.1.Total")
 	for _ = 1, amount or 5 do
 		s("TestRandomColour.1.Tick")
-		RandomColour(100000)
+		RandomColour(1000000)
 		e("TestRandomColour.1.Tick")
 	end
 	e("TestRandomColour.1.Total")
@@ -479,7 +479,7 @@ function ChoGGi.testing.TestRandomColour(amount)
 	s("TestRandomColour2.Total")
 	for _ = 1, amount or 5 do
 		s("TestRandomColour.2.Tick")
-		RandomColour2(100000)
+		RandomColour2(1000000)
 		e("TestRandomColour.2.Tick")
 	end
 	e("TestRandomColour2.Total")
