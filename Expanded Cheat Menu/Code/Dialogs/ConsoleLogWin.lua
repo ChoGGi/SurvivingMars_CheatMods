@@ -8,9 +8,9 @@ local Strings = ChoGGi.Strings
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_ConsoleLogWin")
+	return GetParentOfKind(dlg, "ChoGGi_DlgConsoleLogWin")
 end
-DefineClass.ChoGGi_ConsoleLogWin = {
+DefineClass.ChoGGi_DlgConsoleLogWin = {
 	__parents = {"ChoGGi_XWindow"},
 	transp_mode = false,
 	update_thread = false,
@@ -19,7 +19,7 @@ DefineClass.ChoGGi_ConsoleLogWin = {
 	dialog_height = 500.0,
 }
 
-function ChoGGi_ConsoleLogWin:Init(parent, context)
+function ChoGGi_DlgConsoleLogWin:Init(parent, context)
 	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 
@@ -129,7 +129,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 	self:PostInit()
 end
 
-function ChoGGi_ConsoleLogWin:idTextInput_OnKbdKeyDown(vk, ...)
+function ChoGGi_DlgConsoleLogWin:idTextInput_OnKbdKeyDown(vk, ...)
 	local dlgConsole = dlgConsole
 	if not dlgConsole then
 		return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self, vk, ...)
@@ -169,15 +169,15 @@ function ChoGGi_ConsoleLogWin:idTextInput_OnKbdKeyDown(vk, ...)
 	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self, vk, ...)
 end
 
-function ChoGGi_ConsoleLogWin:idToggleTrans_OnChange()
+function ChoGGi_DlgConsoleLogWin:idToggleTrans_OnChange()
 	self = GetRootDialog(self)
 	self.transp_mode = not self.transp_mode
 	self:SetTranspMode(self.transp_mode)
 end
-function ChoGGi_ConsoleLogWin:idShowFileLog_OnPress()
+function ChoGGi_DlgConsoleLogWin:idShowFileLog_OnPress()
 	GetRootDialog(self):UpdateText(LoadLogfile())
 end
-function ChoGGi_ConsoleLogWin:idShowModsLog_OnPress()
+function ChoGGi_DlgConsoleLogWin:idShowModsLog_OnPress()
 	self = GetRootDialog(self)
 
 	self:UpdateText(
@@ -185,14 +185,14 @@ function ChoGGi_ConsoleLogWin:idShowModsLog_OnPress()
 			.. TableConcat(ModMessageLog, "\n")
 	)
 end
-function ChoGGi_ConsoleLogWin:idClearLog_OnPress()
+function ChoGGi_DlgConsoleLogWin:idClearLog_OnPress()
 	GetRootDialog(self).idEdit:SetText("")
 end
-function ChoGGi_ConsoleLogWin:idClipboardCopy_OnPress()
+function ChoGGi_DlgConsoleLogWin:idClipboardCopy_OnPress()
 	CopyToClipboard(GetRootDialog(self).idEdit:GetText())
 end
 
-function ChoGGi_ConsoleLogWin:SetTranspMode(toggle)
+function ChoGGi_DlgConsoleLogWin:SetTranspMode(toggle)
 	self:ClearModifiers()
 	if toggle then
 		self:AddInterpolation{
@@ -209,7 +209,7 @@ function ChoGGi_ConsoleLogWin:SetTranspMode(toggle)
 	ChoGGi.Temp.transp_mode = toggle
 end
 
-function ChoGGi_ConsoleLogWin:UpdateText(text)
+function ChoGGi_DlgConsoleLogWin:UpdateText(text)
 	if text then
 		self.idEdit:SetText(text)
 		CreateRealTimeThread(function()
@@ -219,7 +219,7 @@ function ChoGGi_ConsoleLogWin:UpdateText(text)
 	end
 end
 
-function ChoGGi_ConsoleLogWin:ScrollToBottom()
+function ChoGGi_DlgConsoleLogWin:ScrollToBottom()
 --~ 	local y = Max(0, self.idScrollArea.scroll_range_y - self.idScrollArea.content_box:sizey())
 --~ 	self.idScrollArea:ScrollTo(0, y)
 	local y = Max(0, self.idEdit.scroll_range_y - self.idEdit.content_box:sizey())
@@ -227,20 +227,20 @@ function ChoGGi_ConsoleLogWin:ScrollToBottom()
 	self.idScrollV:SetScroll(y)
 end
 
-function ChoGGi_ConsoleLogWin:Done()
+function ChoGGi_DlgConsoleLogWin:Done()
 	local ChoGGi = ChoGGi
 	-- closing means user doesn't want to see it next time (probably)
 	ChoGGi.UserSettings.ConsoleHistoryWin = false
-	dlgChoGGi_ConsoleLogWin = false
+	dlgChoGGi_DlgConsoleLogWin = false
 	ChoGGi.SettingFuncs.WriteSettings()
 	-- save the dimensions
 	ChoGGi.UserSettings.ConsoleLogWin_Pos = self:GetPos()
 	ChoGGi.UserSettings.ConsoleLogWin_Size = self:GetSize()
 end
 
-dlgChoGGi_ConsoleLogWin = rawget(_G, "dlgChoGGi_ConsoleLogWin") or false
+dlgChoGGi_DlgConsoleLogWin = rawget(_G, "dlgChoGGi_DlgConsoleLogWin") or false
 function OnMsg.ConsoleLine(text, bNewLine)
-	local dlg = dlgChoGGi_ConsoleLogWin
+	local dlg = dlgChoGGi_DlgConsoleLogWin
 	if not dlg then
 		return
 	end

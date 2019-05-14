@@ -4,14 +4,14 @@
 
 local Strings = ChoGGi.Strings
 
-DefineClass.ChoGGi_DTMSlotsDlg = {
+DefineClass.ChoGGi_DlgDTMSlots = {
 	__parents = {"ChoGGi_XWindow"},
 
 	dialog_width = false,
 	dialog_height = false,
 }
 
-function ChoGGi_DTMSlotsDlg:Init(parent, context)
+function ChoGGi_DlgDTMSlots:Init(parent, context)
 	local g_Classes = g_Classes
 
 	self.title = Strings[302535920001486--[[DTM Slots--]]]
@@ -33,7 +33,7 @@ function ChoGGi_DTMSlotsDlg:Init(parent, context)
 	self:PostInit(context.parent)
 end
 
-function ChoGGi_DTMSlotsDlg:DrawContent()
+function ChoGGi_DlgDTMSlots:DrawContent()
 	local l_dbgDrawSlots = UIL.l_dbgDrawSlots
 	local levels = DTM.GetSlotLevels()
 	local bbox = self.idInfo.content_box

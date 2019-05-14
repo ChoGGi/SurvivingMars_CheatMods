@@ -17,9 +17,9 @@ local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local RetProperType = ChoGGi.ComFuncs.RetProperType
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_ObjectEditorDlg")
+	return GetParentOfKind(dlg, "ChoGGi_DlgObjectEditor")
 end
-DefineClass.ChoGGi_ObjectEditorDlg = {
+DefineClass.ChoGGi_DlgObjectEditor = {
 	__parents = {"ChoGGi_XWindow"},
 	choices = {},
 	obj = false,
@@ -30,7 +30,7 @@ DefineClass.ChoGGi_ObjectEditorDlg = {
 	dialog_height = 650.0,
 }
 
-function ChoGGi_ObjectEditorDlg:Init(parent, context)
+function ChoGGi_DlgObjectEditor:Init(parent, context)
 	local g_Classes = g_Classes
 
 	self.obj_name = RetName(context.obj)
@@ -118,18 +118,18 @@ function ChoGGi_ObjectEditorDlg:Init(parent, context)
 	self:PostInit(context.parent)
 end
 
-function ChoGGi_ObjectEditorDlg:idGoto_OnPress()
+function ChoGGi_DlgObjectEditor:idGoto_OnPress()
 	ViewAndSelectObject(GetRootDialog(self).obj)
 end
 
-function ChoGGi_ObjectEditorDlg:idList_OnMouseButtonDoubleClick()
+function ChoGGi_DlgObjectEditor:idList_OnMouseButtonDoubleClick()
 	self = GetRootDialog(self)
 	if self.idList.focused_item and type(self.sel.object) == "table" then
 		ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.sel.object, self)
 	end
 end
 
-function ChoGGi_ObjectEditorDlg:idApplyAll_OnPress()
+function ChoGGi_DlgObjectEditor:idApplyAll_OnPress()
 	self = GetRootDialog(self)
 	if self.sel and self.sel.value then
 		MapForEach(true, self.obj.class, function(o)
@@ -139,7 +139,7 @@ function ChoGGi_ObjectEditorDlg:idApplyAll_OnPress()
 end
 
 -- update edit text box with selected value
-function ChoGGi_ObjectEditorDlg:idList_OnMouseButtonDown(pt, button, ...)
+function ChoGGi_DlgObjectEditor:idList_OnMouseButtonDown(pt, button, ...)
 	g_Classes.ChoGGi_XList.OnMouseButtonDown(self, pt, button)
 	self = GetRootDialog(self)
 	if not self.idList.focused_item then
@@ -151,7 +151,7 @@ function ChoGGi_ObjectEditorDlg:idList_OnMouseButtonDown(pt, button, ...)
 	self.idEditValue:SetFocus()
 end
 
-function ChoGGi_ObjectEditorDlg:idAddNew_OnPress()
+function ChoGGi_DlgObjectEditor:idAddNew_OnPress()
 	self = GetRootDialog(self)
 	local sel_name
 	local sel_value
@@ -187,7 +187,7 @@ function ChoGGi_ObjectEditorDlg:idAddNew_OnPress()
 	}
 end
 
-function ChoGGi_ObjectEditorDlg:idEditValue_OnTextChanged()
+function ChoGGi_DlgObjectEditor:idEditValue_OnTextChanged()
 	self = GetRootDialog(self)
 
 	if not self.idList.focused_item then
@@ -225,7 +225,7 @@ function ChoGGi_ObjectEditorDlg:idEditValue_OnTextChanged()
 	end
 end
 
-function ChoGGi_ObjectEditorDlg:idAutoRefresh_OnChange()
+function ChoGGi_DlgObjectEditor:idAutoRefresh_OnChange()
 	self = GetRootDialog(self)
 	-- if already running then stop and return
 	if IsValidThread(self.autorefresh_thread) then
@@ -246,7 +246,7 @@ function ChoGGi_ObjectEditorDlg:idAutoRefresh_OnChange()
 	end)
 end
 
-function ChoGGi_ObjectEditorDlg:OnKbdKeyDown(_, vk)
+function ChoGGi_DlgObjectEditor:OnKbdKeyDown(_, vk)
 	local const = const
 	if vk == const.vkEsc then
 		self.idCloseX:Press()
@@ -260,7 +260,7 @@ function ChoGGi_ObjectEditorDlg:OnKbdKeyDown(_, vk)
 	return "continue"
 end
 
-function ChoGGi_ObjectEditorDlg:BuildList()
+function ChoGGi_DlgObjectEditor:BuildList()
 	self.idList:Clear()
 	for i = 1, #self.items do
 		local item = self.items[i]
@@ -271,7 +271,7 @@ function ChoGGi_ObjectEditorDlg:BuildList()
 	end
 end
 
-function ChoGGi_ObjectEditorDlg:UpdateListContent()
+function ChoGGi_DlgObjectEditor:UpdateListContent()
 	self = GetRootDialog(self)
 	local obj = self.obj
 	-- get scroll pos
@@ -296,7 +296,7 @@ function ChoGGi_ObjectEditorDlg:UpdateListContent()
 	end
 end
 
-function ChoGGi_ObjectEditorDlg:CreateProp(obj)
+function ChoGGi_DlgObjectEditor:CreateProp(obj)
 	local objlist = objlist
 	local obj_type = type(obj)
 
@@ -373,7 +373,7 @@ function ChoGGi_ObjectEditorDlg:CreateProp(obj)
 	return tostring(obj)
 end
 
-function ChoGGi_ObjectEditorDlg:CreatePropList(obj)
+function ChoGGi_DlgObjectEditor:CreatePropList(obj)
 	if type(obj) == "table" then
 		local res = {}
 		local sort = {}
@@ -419,6 +419,6 @@ function ChoGGi_ObjectEditorDlg:CreatePropList(obj)
 	end
 end
 
-function ChoGGi_ObjectEditorDlg:Done()
+function ChoGGi_DlgObjectEditor:Done()
 	DeleteThread(self.autorefresh_thread)
 end

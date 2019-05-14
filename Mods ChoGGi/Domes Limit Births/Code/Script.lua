@@ -13,17 +13,26 @@ function Dome:CalcBirth(...)
 end
 
 local apply_to_all = false
-local labels, current
+-- currently selected dome
+local current
+
+-- make sure apply to all is always defaults to false (otherwise it'll could update when user doesn't expect)
+function OnMsg.SelectionRemoved()
+	current = false
+	apply_to_all = false
+end
+
 function OnMsg.ClassesBuilt()
-	-- add some prod info to selection panel
 	local dome = XTemplates.sectionDome[1]
-	-- check for and remove existing templates
+	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(dome, "ChoGGi_Template_DomeLimitBirths")
+	-- try to stick it just below the colonist section
+	local idx = table.find(dome,"Icon","UI/Icons/Sections/colonist.tga")
 
 	-- status updates/radius slider
 	table.insert(
 		dome,
-		#dome,
+		idx and idx+1 or #dome+1,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_DomeLimitBirths", true,
 			"__template", "InfopanelSection",
@@ -31,7 +40,6 @@ function OnMsg.ClassesBuilt()
 			"Icon", "UI/Icons/Sections/dome.tga",
 			"RolloverTemplate", "Rollover",
 			"RolloverTitle", [[Apply To All?]],
-			"RolloverText", [[Apply value to this dome only.]],
 		}, {
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelSlider",
@@ -64,15 +72,17 @@ function OnMsg.ClassesBuilt()
 
 					-- update all domes
 					if apply_to_all then
-						local domes = labels.Dome or ""
+						local domes = (self.city or UICity).labels.Dome or ""
 						for i = 1, #domes do
 							domes[i].ChoGGi_DomeLimitBirths = context.ChoGGi_DomeLimitBirths
 						end
 						pp:SetIcon("UI/Icons/Sections/Overpopulated.tga")
-						pp:SetRolloverText([[Apply value to all domes!]])
+						pp:SetRolloverText([[Apply value to all domes.]])
 					else
 						pp:SetIcon("UI/Icons/Sections/dome.tga")
-						pp:SetRolloverText([[Apply value to this dome only.]])
+						pp:SetRolloverText(T(0,[[Apply value to this dome only.
+
+<left_click> to apply to all domes!]]))
 					end
 					---
 				end,
@@ -92,10 +102,3 @@ function OnMsg.ClassesBuilt()
 		})
 	)
 end
-
-local function StartupCode()
-	labels = UICity.labels
-end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode

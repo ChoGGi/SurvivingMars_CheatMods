@@ -25,6 +25,8 @@
 - > MonitorFunc(XShortcutsTarget.GetActionsMode,XShortcutsTarget)
 
 ### Changed:
+- Cleaned up class names, so ~_G.ChoGGi_* looks cleaner.
+- MonitorThreads works without HelperMod.
 - Game>Change Map has resources to choose, and merged dialogs to make it simpler.
 - Mod Upload supports batch uploading (and screenshots).
 - Some menu items now use translated text instead of mine.
@@ -48,6 +50,8 @@
 - > Added Dist2D len to index tables of points (context menu tooltip).
 - > "All" checkbox wasn't parsing ._index for metatables.
 - > Entity Spots now adds the surf/surf_hash values.
+- > Added a SafeExamine func to Examine dlgs:
+- > > If you find something examine fails to examine please let me know what it is.
 
 ### Fixed:
 - Auto Unpin Object could freeze the game (thanks ronrn).

@@ -10,9 +10,9 @@ local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_ExecCodeDlg")
+	return GetParentOfKind(dlg, "ChoGGi_DlgExecCode")
 end
-DefineClass.ChoGGi_ExecCodeDlg = {
+DefineClass.ChoGGi_DlgExecCode = {
 	__parents = {"ChoGGi_XWindow"},
 	obj = false,
 	obj_name = false,
@@ -25,7 +25,7 @@ DefineClass.ChoGGi_ExecCodeDlg = {
 }
 
 local box10 = box(10, 0, 0, 0)
-function ChoGGi_ExecCodeDlg:Init(parent, context)
+function ChoGGi_DlgExecCode:Init(parent, context)
 	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 
@@ -192,7 +192,7 @@ Press again to toggle updating."--]]],
 end
 
 -- toggle code highlighting
-function ChoGGi_ExecCodeDlg:idToggleCode_OnChange(check)
+function ChoGGi_DlgExecCode:idToggleCode_OnChange(check)
 	self = GetRootDialog(self)
 	if check then
 		self.idEdit:SetPlugins(self.plugin_names)
@@ -201,22 +201,22 @@ function ChoGGi_ExecCodeDlg:idToggleCode_OnChange(check)
 	end
 end
 
-function ChoGGi_ExecCodeDlg:idEdit_OnSetFocus(...)
+function ChoGGi_DlgExecCode:idEdit_OnSetFocus(...)
 	if self.focus_update and self == g_ExternalTextEditorActiveCtrl then
 		g_Classes.ChoGGi_XExternalTextEditorPlugin.ApplyEdit(nil, "Modified", self)
 	end
 	return g_Classes.ChoGGi_XMultiLineEdit.OnSetFocus(self, ...)
 end
 
-function ChoGGi_ExecCodeDlg:idExterFocusUpdate_OnChange(which)
+function ChoGGi_DlgExecCode:idExterFocusUpdate_OnChange(which)
 	GetRootDialog(self).idEdit.focus_update = which
 end
 
-function ChoGGi_ExecCodeDlg:idExterReadFile_OnPress()
+function ChoGGi_DlgExecCode:idExterReadFile_OnPress()
 	g_Classes.ChoGGi_XExternalTextEditorPlugin.ApplyEdit(nil, "Modified", GetRootDialog(self).idEdit)
 end
 
-function ChoGGi_ExecCodeDlg:idExterEdit_OnPress()
+function ChoGGi_DlgExecCode:idExterEdit_OnPress()
 	self = GetRootDialog(self)
 	-- stop updating
 	if self.idEdit == g_ExternalTextEditorActiveCtrl then
@@ -235,7 +235,7 @@ function ChoGGi_ExecCodeDlg:idExterEdit_OnPress()
 	end
 end
 
-function ChoGGi_ExecCodeDlg:idOK_OnPress()
+function ChoGGi_DlgExecCode:idOK_OnPress()
 	self = GetRootDialog(self)
 	-- exec instead of also closing dialog
 	o = self.obj
@@ -243,19 +243,19 @@ function ChoGGi_ExecCodeDlg:idOK_OnPress()
 	dlgConsole:Exec(self.idEdit:GetText())
 end
 
-function ChoGGi_ExecCodeDlg:idInsertObj_OnPress()
+function ChoGGi_DlgExecCode:idInsertObj_OnPress()
 	self = GetRootDialog(self)
 	self.idEdit:EditOperation("o", true)
 	self.idEdit:SetFocus()
 end
 
-function ChoGGi_ExecCodeDlg:idWrapLines_OnChange(which)
+function ChoGGi_DlgExecCode:idWrapLines_OnChange(which)
 	ChoGGi.UserSettings.WordWrap = which
 	GetRootDialog(self).idEdit:SetWordWrap(which)
 end
 
 local const = const
-function ChoGGi_ExecCodeDlg:idEdit_OnKbdKeyDown(vk)
+function ChoGGi_DlgExecCode:idEdit_OnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter and (IsShiftPressed() or IsControlPressed()) then
 		self.idOK:Press()
@@ -267,7 +267,7 @@ function ChoGGi_ExecCodeDlg:idEdit_OnKbdKeyDown(vk)
 	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idEdit, vk)
 end
 
-function ChoGGi_ExecCodeDlg:Done()
+function ChoGGi_DlgExecCode:Done()
 	-- kill off external editor stuff?
 	if self.idEdit == g_ExternalTextEditorActiveCtrl then
 		g_ExternalTextEditorActiveCtrl = false

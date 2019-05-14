@@ -15,9 +15,9 @@ local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_3DManipulatorDlg")
+	return GetParentOfKind(dlg, "ChoGGi_Dlg3DManipulator")
 end
-DefineClass.ChoGGi_3DManipulatorDlg = {
+DefineClass.ChoGGi_Dlg3DManipulator = {
 	__parents = {"ChoGGi_XWindow"},
 	obj = false,
 	obj_name = false,
@@ -49,7 +49,7 @@ DefineClass.ChoGGi_3DManipulatorDlg = {
 --~ 	},
 }
 
-function ChoGGi_3DManipulatorDlg:Init(parent, context)
+function ChoGGi_Dlg3DManipulator:Init(parent, context)
 	local g_Classes = g_Classes
 
 	self.obj_name = RetName(context.obj)
@@ -262,18 +262,18 @@ function ChoGGi_3DManipulatorDlg:Init(parent, context)
 
 end
 
-function ChoGGi_3DManipulatorDlg:GetCtrlRolloverText()
+function ChoGGi_Dlg3DManipulator:GetCtrlRolloverText()
 	return self.ChoGGi_RolloverText:format(
 		self.text_lookup,
 		GetRootDialog(self):GetAdjustAmount()
 	)
 end
 
-function ChoGGi_3DManipulatorDlg:GetAdjustAmount()
+function ChoGGi_Dlg3DManipulator:GetAdjustAmount()
 	return tonumber(self.idAmount:GetText()) or self.default_amount
 end
 
-function ChoGGi_3DManipulatorDlg:LimitDegree(num)
+function ChoGGi_Dlg3DManipulator:LimitDegree(num)
 --~ 	if num > self.degrees then
 --~ 		num = num - self.degrees
 --~ 	end
@@ -283,7 +283,7 @@ function ChoGGi_3DManipulatorDlg:LimitDegree(num)
 	return num
 end
 
-function ChoGGi_3DManipulatorDlg:CorrectNumber(num, negative)
+function ChoGGi_Dlg3DManipulator:CorrectNumber(num, negative)
 	local amount = self:GetAdjustAmount()
 
 	if negative then
@@ -299,11 +299,11 @@ function ChoGGi_3DManipulatorDlg:CorrectNumber(num, negative)
 	return num
 end
 
-function ChoGGi_3DManipulatorDlg:idRollPitchYawButtons2_OnPress()
+function ChoGGi_Dlg3DManipulator:idRollPitchYawButtons2_OnPress()
 	self:SetAngle((self:GetAngle() or 0) + (delta or -1)*60*60)
 end
 
-function ChoGGi_3DManipulatorDlg:idRollPitchYawButtons_OnPress()
+function ChoGGi_Dlg3DManipulator:idRollPitchYawButtons_OnPress()
 	local text = self.text_lookup
 	self = GetRootDialog(self)
 	local obj = self.obj
@@ -336,7 +336,7 @@ print("B", roll, pitch, yaw)
 	SetRollPitchYaw(obj, roll, pitch, yaw)
 end
 
-function ChoGGi_3DManipulatorDlg:idPosButtons_OnPress()
+function ChoGGi_Dlg3DManipulator:idPosButtons_OnPress()
 	local text = self.text_lookup
 	self = GetRootDialog(self)
 	local obj = self.obj
@@ -362,7 +362,7 @@ function ChoGGi_3DManipulatorDlg:idPosButtons_OnPress()
 	obj:SetPos(obj:GetPos()+point(x, y, z))
 end
 
-function ChoGGi_3DManipulatorDlg:idPosClear_OnPress()
+function ChoGGi_Dlg3DManipulator:idPosClear_OnPress()
 	self = GetRootDialog(self)
 	self.saved_angle = false
 	self.saved_axis = false
@@ -372,7 +372,7 @@ function ChoGGi_3DManipulatorDlg:idPosClear_OnPress()
 	end
 end
 
-function ChoGGi_3DManipulatorDlg:idPosRestore_OnPress()
+function ChoGGi_Dlg3DManipulator:idPosRestore_OnPress()
 	self = GetRootDialog(self)
 	local obj = self.obj
 
@@ -401,7 +401,7 @@ function ChoGGi_3DManipulatorDlg:idPosRestore_OnPress()
 	end
 end
 
-function ChoGGi_3DManipulatorDlg:idPosSave_OnPress()
+function ChoGGi_Dlg3DManipulator:idPosSave_OnPress()
 	self = GetRootDialog(self)
 	local obj = self.obj
 

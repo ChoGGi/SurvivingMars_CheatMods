@@ -22,14 +22,7 @@ ChoGGi_Minimap_Options = {
 	image_str = image_mod and image_mod.env.CurrentModPath .. "Maps/",
 	UpdateTopoImage = function(value)
 		-- find our map dlg
-		local map_dlg
-		local g_ChoGGiDlgs = g_ChoGGiDlgs
-		for dlg in pairs(g_ChoGGiDlgs) do
-			if dlg:IsKindOf("ChoGGi_MinimapDlg") then
-				map_dlg = dlg
-				break
-			end
-		end
+		local map_dlg = ChoGGi.ComFuncs.RetMapDlg_MiniMap()
 
 		if not map_dlg then
 			return

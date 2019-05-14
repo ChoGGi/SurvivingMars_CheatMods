@@ -11,9 +11,9 @@ local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_ImageViewerDlg")
+	return GetParentOfKind(dlg, "ChoGGi_DlgImageViewer")
 end
-DefineClass.ChoGGi_ImageViewerDlg = {
+DefineClass.ChoGGi_DlgImageViewer = {
 	__parents = {"ChoGGi_XWindow"},
 
 	dialog_width = 700.0,
@@ -26,7 +26,7 @@ DefineClass.ChoGGi_ImageViewerDlg = {
 	idImageMenu = false,
 }
 
-function ChoGGi_ImageViewerDlg:Init(parent, context)
+function ChoGGi_DlgImageViewer:Init(parent, context)
 	local g_Classes = g_Classes
 
 	self.images = context.obj
@@ -94,7 +94,7 @@ function ChoGGi_ImageViewerDlg:Init(parent, context)
 	self:PostInit(context.parent)
 end
 
-function ChoGGi_ImageViewerDlg:BuildImageMenuPopup()
+function ChoGGi_DlgImageViewer:BuildImageMenuPopup()
 	local images = {}
 	for i = 1, #self.images do
 		local image = self.images[i]
@@ -108,7 +108,7 @@ function ChoGGi_ImageViewerDlg:BuildImageMenuPopup()
 	self.image_menu_popup = images
 end
 
-function ChoGGi_ImageViewerDlg:SetImageFile(image)
+function ChoGGi_DlgImageViewer:SetImageFile(image)
 	self = GetRootDialog(self)
 	self.idImage:SetImage(image.path)
 	self.idCaption:SetTitle(self, image.path)
@@ -123,7 +123,7 @@ function ChoGGi_ImageViewerDlg:SetImageFile(image)
 	return w+h
 end
 
-function ChoGGi_ImageViewerDlg:idImages_OnMouseButtonDown()
+function ChoGGi_DlgImageViewer:idImages_OnMouseButtonDown()
 	local dlg = GetRootDialog(self)
 	PopupToggle(self, dlg.idImageMenu, dlg.image_menu_popup, "left")
 end

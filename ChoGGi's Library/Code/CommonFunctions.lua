@@ -136,10 +136,10 @@ do -- RetName
 
 	-- we use this table to display names of objects for RetName
 	local g = ChoGGi.Temp._G
-	if not rawget(g, "ChoGGi_Names_lookup_table") then
-		g.ChoGGi_Names_lookup_table = {}
+	if not rawget(g, "ChoGGi_lookup_names") then
+		g.ChoGGi_lookup_names = {}
 	end
-	local lookup_table = g.ChoGGi_Names_lookup_table
+	local lookup_table = g.ChoGGi_lookup_names
 
 	local function AddFuncToList(key, value, name)
 		if not lookup_table[value] then
@@ -154,7 +154,7 @@ do -- RetName
 	end
 
 	do -- add stuff we can add now
-		lookup_table = ChoGGi_Names_lookup_table or {}
+		lookup_table = ChoGGi_lookup_names or {}
 		local function AddFuncsUserData(meta, name)
 			for key, value in pairs(meta) do
 				AddFuncToList(key, value, name)
@@ -194,9 +194,9 @@ do -- RetName
 		end
 	end
 	local func_tables = {
-		"g_CObjectFuncs", "camera", "camera3p", "cameraMax", "cameraRTS", "coroutine",
-		"DTM", "lpeg", "objlist", "pf", "srp", "string", "table", "terrain", "terminal",
-		"UIL",
+		"g_CObjectFuncs", "camera", "camera3p", "cameraMax", "cameraRTS",
+		"coroutine", "DTM", "lpeg", "objlist", "pf", "srp", "string", "table",
+		"terrain", "terminal", "UIL","TFormat",
 	}
 	for i = 1, #func_tables do
 		AddFuncs(func_tables[i])
@@ -217,7 +217,7 @@ do -- RetName
 		end
 
 		local function BuildNameList()
-			lookup_table = ChoGGi_Names_lookup_table or {}
+			lookup_table = ChoGGi_lookup_names or {}
 			g = ChoGGi.Temp._G
 			lookup_table[g.terminal.desktop] = "terminal.desktop"
 
@@ -233,8 +233,11 @@ do -- RetName
 					if t == "function" then
 						AddFuncToList(key, value, name)
 					elseif t == "table" then
-						for key2, value2 in pairs(value) do
-							AddFuncToList(key, value2, key2)
+						-- we get _G later
+						if value ~= g then
+							for key2, value2 in pairs(value) do
+								AddFuncToList(key, value2, key2)
+							end
 						end
 					end
 				end
@@ -305,10 +308,6 @@ do -- RetName
 		-- called from onmsgs for citystart/loadgame
 		ChoGGi.ComFuncs.RetName_Update = BuildNameList
 	end -- do
-	-- probably only of interest to me
-	function ChoGGi.ComFuncs.RetName_Table()
-		return lookup_table
-	end
 
 	local values_lookup = {
 		"encyclopedia_id",
@@ -326,12 +325,13 @@ do -- RetName
 
 	-- try to return a decent name for the obj, failing that return a string
 	function ChoGGi.ComFuncs.RetName(obj)
-		-- bool and nils are easy enough
+		-- booleans and nil are easy enough
 		if not obj then
 			return obj == false and "false" or "nil"
 		elseif obj == true then
 			return "true"
 		end
+
 		-- any of the _G tables
 		local lookuped = lookup_table[obj]
 		if lookuped then
@@ -1343,13 +1343,13 @@ function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(obj, parent)
 	end
 
 	if obj.text then
-		return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop, obj)
+		return ChoGGi_DlgMultiLineText:new({}, terminal.desktop, obj)
 	end
 
 	if not IsKindOf(parent, "XWindow") then
 		parent = nil
 	end
-	return ChoGGi_MultiLineTextDlg:new({}, terminal.desktop, {
+	return ChoGGi_DlgMultiLineText:new({}, terminal.desktop, {
 		text = obj,
 		parent = parent,
 	})
@@ -1370,7 +1370,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 		list.parent = nil
 	end
 
-	return ChoGGi_ListChoiceDlg:new({}, terminal.desktop, {
+	return ChoGGi_DlgListChoice:new({}, terminal.desktop, {
 		list = list,
 	})
 end
@@ -2327,7 +2327,7 @@ end
 
 do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRandom/ObjectColourDefault/ChangeObjectColour
 	local color_ass = {}
-	local SaveOldPalette
+	local SaveOldPalette,RestoreOldPalette,RandomColour
 	local colour_funcs = {
 		SetColours = function(obj, choice)
 			SaveOldPalette(obj)
@@ -2373,7 +2373,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			obj.ChoGGi_origcolors = nil
 		end
 	end
-	local RestoreOldPalette = ChoGGi.ComFuncs.RestoreOldPalette
+	RestoreOldPalette = ChoGGi.ComFuncs.RestoreOldPalette
 
 	function ChoGGi.ComFuncs.GetPalette(obj)
 		if not IsValid(obj) then
@@ -2426,7 +2426,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		-- return a single colour
 		return AsyncRand(16777217) + -16777216
 	end
-	local RandomColour = ChoGGi.ComFuncs.RandomColour
+	RandomColour = ChoGGi.ComFuncs.RandomColour
 
 	function ChoGGi.ComFuncs.ObjectColourRandom(obj)
 		-- if fired from action menu
@@ -4508,7 +4508,6 @@ end -- do
 
 function ChoGGi.ComFuncs.DisastersStop()
 	CheatStopDisaster()
---~ 	Msg("CheatStopDisaster")
 
 	local missles = g_IncomingMissiles or empty_table
 	for missle in pairs(missles) do
@@ -4543,7 +4542,6 @@ function ChoGGi.ComFuncs.DisastersStop()
 	end
 
 	objs = g_IonStorms or ""
-	local table_remove = table.remove
 	for i = #objs, 1, -1 do
 		objs[i]:delete()
 		table_remove(g_IonStorms, i)
@@ -4554,13 +4552,12 @@ function ChoGGi.ComFuncs.RetTableValue(obj, key)
 	-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env uses the metatable from _G.__index and causes sm to log an error msg
 	local index = getmetatable(obj)
 	if index and index.__index then
-		return PropObjGetProperty(obj, key)
---~ 		-- and PropObjGetProperty will bug out on some tables
---~ 		if rawget(obj, "class") then
---~ 			return PropObjGetProperty(obj, key)
---~ 		else
---~ 			return rawget(obj, key)
---~ 		end
+		-- and PropObjGetProperty will bug out on some tables
+		if IsValid(obj) then
+			return PropObjGetProperty(obj, key)
+		else
+			return rawget(obj, key)
+		end
 	else
 		return obj[key]
 	end
@@ -4754,4 +4751,17 @@ do -- BuildableHexGrid
 			end) -- grid_thread
 		end
 	end
+end
+
+-- not a ComFunc so much as me wanting to keep all refs to ChoGGi_dlgs_opened in this mod (just in case)
+function ChoGGi.ComFuncs.RetMapDlg_MiniMap()
+	local map_dlg
+	local ChoGGi_dlgs_opened = ChoGGi_dlgs_opened
+	for dlg in pairs(ChoGGi_dlgs_opened) do
+		if dlg:IsKindOf("ChoGGi_MinimapDlg") then
+			map_dlg = dlg
+			break
+		end
+	end
+	return map_dlg
 end

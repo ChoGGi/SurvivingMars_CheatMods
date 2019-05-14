@@ -21,7 +21,7 @@ If you forget where a menu item is: Menu>Help>List All Menu Items (use "Filter I
 
 F2: Toggle the cheats menu (Ctrl-F2 to toggle cheats panel).
 F3: Set object opacity.
-F4: Open object examiner (Shift-F4 for area).
+F4: Open object examiner (Shift/Ctrl-F4 for area examine).
 F5: Open object manipulator (or use Tools>Edit obj in Examine).
 F6: Change building colour (Shift-F6 or Ctrl-F6 to apply random/default).
 F7: Toggle using last building orientation.
@@ -64,27 +64,21 @@ dump(12345) : dump puts files in AppData/logs
 dumplua(dlgConsole) : dump using ValueToLuaCode()
 trans() : translates "userdata: **********" or 6543256 to text
 SelectedObj : or s
-SelectionMouseObj() : or m(), object under mouse cursor
-GetPreciseCursorObj() : or mc(), like SelectionMouseObj but compact
-GetTerrainCursorObjSel() : or mh(), just the handle
-GetTerrainCursor() : or c(), position of cursor: use with s:SetPos(c()), or point(c():x(), c():y(), c():z())
-terminal.GetMousePos : or cs, mouse pos on screen, not map
+SelectionMouseObj() : or m(): object under mouse cursor
+GetPreciseCursorObj() : or mc(): like SelectionMouseObj but compact
+GetTerrainCursorObjSel() : or mh(): just the handle
+GetTerrainCursor() : or c(): position of cursor: use with obj:SetPos(c())
+terminal.GetMousePos : or cs(): mouse pos on screen, not map
 
-~example for OpenExamine()
-@function for debug.getinfo()
-@@example for type()
-$example to translate userdata/stringbase
-!example to select/view
-!!example to examine attached objects
-&handle to open object in examiner
-*r/*g/*m to wrap code in real/game/mapreal time threads
+See the console tooltip for shortcuts and other info.
 
-you can paste chunks of code in the console to test out (no -- comments allowed, since DA update merges pasted lines):
- local BuildingTemplates = BuildingTemplates
- for _,building in pairs(BuildingTemplates) do
-		print(building.id)
-	end
-Or create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu.
+you can paste chunks of code in the console to test out:
+local BuildingTemplates = BuildingTemplates
+for id,bld in pairs(BuildingTemplates) do
+	print(id,bld.max_workers)
+end
+
+Create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu (needs HelperMod).
 ```
 
 
@@ -100,23 +94,40 @@ If you increase a number high enough it'll go negative.
 Depot capacities have been limited, so adding too much won't crash and delete your game when you save.
 	>Best I can tell is a height limit of 65536 for any objects.
 
-SM will freeze when you disable ECM
+SM will freeze when you disable ECM.
 	> ECM hooks into a lot of stuff, if you don't want the game to freeze when you disable it then restart SM so mods aren't loaded and then disable it.
 
-Silva's Modular Apartments and the Cheats pane upgrade 1/2/3 == game freezing
-	> Do it manually; Select building, in console paste: s:ApplyUpgrade(1,true)
+Silva's Modular Apartments and the Cheats pane upgrade 1/2/3 == game freezing.
+	> Fixed in v13.4
+
+Examine can fail to examine stuff.
+	> Please let me know what it failed on.
 ```
 
 
 
 ##### Modder related (Misc Info)
-```
-If you want to examine an object that could get replaced with a new obj (and have examine refresh on the new obj):
-OpenExamine("ChoGGi.UserSetting.ThisObjCanChange","str")
-To choose where to open the examine dialog
-OpenExamine(obj,point(x,y))
-To have a custom title
-OpenExamine(obj,nil,"Custom Title")
+```lua
+-- If you want to examine an object that could get replaced with a new obj (and have examine refresh on the new obj):
+OpenExamine("SomeTable.ThisObjCanChange", "str")
+-- To choose where to open the examine dialog
+OpenExamine(obj, point(x,y))
+-- To have a custom title
+OpenExamine(obj, nil, "Custom Title")
+-- Loop the results of a function in an examine dialog
+-- Set auto-refresh to how often you want the func fired
+ChoGGi.ComFuncs.MonitorFunctionResults(func, arg1, arg2, etc args)
+-- Get some info about a thread (more info if HelperMod installed)
+ChoGGi.ComFuncs.RetThreadInfo(thread)
+-- Checks a thread for a func name
+ChoGGi.ComFuncs.FindThreadFunc(thread, str)
+-- monitor a table (defaults to _G)
+-- skip_under: don't show any tables under this length (default: 25)
+-- sortby: nil = table length, 1 = table names
+-- ChoGGi.ComFuncs.MonitorTableLength(HandleToObject)
+ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby)
+-- lists the func location for all threads in ThreadsRegister
+ChoGGi.ComFuncs.MonitorThreads()
 ```
 
 

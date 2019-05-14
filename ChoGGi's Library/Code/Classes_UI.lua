@@ -435,9 +435,9 @@ DefineClass.ChoGGi_XWindow = {
 	action_host = false,
 }
 
--- store opened dialogs
-if not PropObjGetProperty(_G, "g_ChoGGiDlgs") then
-	g_ChoGGiDlgs = {}
+-- store opened dialogs (make sure any refs to this table are only used in this mod)
+if not rawget(_G, "ChoGGi_dlgs_opened") then
+	ChoGGi_dlgs_opened = {}
 end
 
 -- parent, context
@@ -445,7 +445,7 @@ function ChoGGi_XWindow:AddElements()
 	local g_Classes = g_Classes
 	local ChoGGi = ChoGGi
 
-	g_ChoGGiDlgs[self] = self.class
+	ChoGGi_dlgs_opened[self] = self.class
 
 	-- scale to UI (See OnMsgs.lua for UIScale)
 	local UIScale = ChoGGi.Temp.UIScale
@@ -547,7 +547,7 @@ function ChoGGi_XWindow:AddCloseXButton()
 	local close = self.close_func or empty_func
 
 	local RolloverText
-	if self:IsKindOf("Examine") then
+	if self:IsKindOf("ChoGGi_DlgExamine") then
 		RolloverText = Strings[302535920000628--[["Close the examine dialog
 Hold Shift to close all ""parent"" examine dialogs.
 Hold Ctrl to close all ECM dialogs."--]]]
@@ -558,7 +558,7 @@ Hold Ctrl to close all ECM dialogs."--]]]
 		Id = "idCloseX",
 		RolloverText = RolloverText or g_Classes.ChoGGi_XCloseButton.RolloverText,
 		OnPress = function(...)
-			if self:IsKindOf("Examine") then
+			if self:IsKindOf("ChoGGi_DlgExamine") then
 				-- close all ecm dialogs
 				if IsControlPressed() then
 					ChoGGi.ComFuncs.CloseDialogsECM(self)
@@ -568,7 +568,7 @@ Hold Ctrl to close all ECM dialogs."--]]]
 					-- we don't want to close this one
 					return
 				end
-			elseif self:IsKindOf("ChoGGi_ExecCodeDlg") then
+			elseif self:IsKindOf("ChoGGi_DlgExecCode") then
 				-- kill off exter editor if active
 				local ext = g_ExternalTextEditorActiveCtrl
 				if ext and ext.delete then
@@ -586,7 +586,7 @@ end
 
 function ChoGGi_XWindow:Done()
 	-- remove from my dialog list
-	g_ChoGGiDlgs[self] = nil
+	ChoGGi_dlgs_opened[self] = nil
 end
 
 function ChoGGi_XWindow:idCaptionImageOnMouseButtonDown(pt, button, ...)
@@ -614,7 +614,7 @@ function ChoGGi_XWindow:BoxSize(obj)
 	local box = obj_dlg.box
 	x = box:minx()
 	y = box:miny() + self.header_scaled
-	if self.class == "Examine" then
+	if self.class == "ChoGGi_DlgExamine" then
 		-- it's a copy of examine/find value wanting a new window offset, so we want the size of it
 		w = box:sizex()
 		h = box:sizey()

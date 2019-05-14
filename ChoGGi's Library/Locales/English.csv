@@ -1,5 +1,4 @@
 ID, Text, Translation, Old Translation, Gender
-302535920001577,Placeholder,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
@@ -1693,8 +1692,6 @@ For any issues; please report them to my Github/Steam/NexusMods page, or email <
 302535920001088,%s: Stop that bloody bouzouki!,
 302535920001090,You can only reset all sounds at once.,
 302535920001093,Toggled: <color green>%s</color> pinnable objects.,
-302535920001095,Auto Remove Items From Pin List,
-302535920001096,Auto Unpinned,
 302535920001097,Enter a class name (SelectedObj.class) to add a custom entry.,
 302535920001098,Add to list,
 302535920001099,Add these items to the unpin list.,

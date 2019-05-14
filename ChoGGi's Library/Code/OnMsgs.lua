@@ -23,7 +23,6 @@ end
 
 -- this is when RocketPayload_Init is called (CityStart is too soon)
 OnMsg.NewMapLoaded = ChoGGi.ComFuncs.UpdateDataTablesCargo
-OnMsg.LoadGame = ChoGGi.ComFuncs.UpdateDataTablesCargo
 
 -- needed for UICity and some others that aren't created till around then
 local function Startup()
@@ -35,7 +34,6 @@ local function Startup()
 end
 
 OnMsg.CityStart = Startup
-OnMsg.LoadGame = Startup
 
 -- update my cached strings
 OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateStringsList
@@ -54,16 +52,13 @@ local function RemoveChoGGiObjects()
 			return true
 		end
 	end)
-	ChoGGi.ComFuncs.RemoveObjs{
-		"ChoGGi_OHexSpot",
-		"ChoGGi_OVector",
-		"ChoGGi_OSphere",
-		"ChoGGi_OPolyline",
-		"ChoGGi_OText",
-		"ChoGGi_OCircle",
-		"ChoGGi_OOrientation",
-	}
+	ChoGGi.ComFuncs.RemoveObjs("ChoGGi_ODeleteObjs")
 	ResumePassEdits("ChoGGiLibrary.OnMsgs.RemoveChoGGiObjects")
 end
 OnMsg.SaveGame = RemoveChoGGiObjects
-OnMsg.LoadGame = RemoveChoGGiObjects
+
+function OnMsg.LoadGame()
+	ChoGGi.ComFuncs.UpdateDataTablesCargo()
+	Startup()
+	RemoveChoGGiObjects()
+end

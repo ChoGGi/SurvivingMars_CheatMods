@@ -1,10 +1,10 @@
-function OnMsg.CityStart()
+-- See LICENSE for terms
+
+local function StartUp()
 	CreateRealTimeThread(function()
 		WaitMsg("MarsResume")
 		SetGameSpeedState("pause")
 	end)
 end
-
-function OnMsg.LoadGame()
-	SetGameSpeedState("pause")
-end
+OnMsg.LoadGame = StartUp
+OnMsg.CityStart = StartUp

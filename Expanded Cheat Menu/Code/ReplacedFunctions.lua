@@ -7,10 +7,10 @@ local table_unpack = table.unpack
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Translate = ChoGGi.ComFuncs.Translate
-local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local SetDlgTrans = ChoGGi.ComFuncs.SetDlgTrans
 local RetName = ChoGGi.ComFuncs.RetName
+local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
 local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 local Strings = ChoGGi.Strings
@@ -1200,7 +1200,6 @@ function OnMsg.ClassesBuilt()
 				-- ~anything
 				"^~(.*)",
 				[[local params = {%s}
-				print(#params, params)
 if #params == 1 then
 	OpenExamine(params[1])
 elseif #params == 3 then

@@ -28,8 +28,8 @@ function OnMsg.DesktopCreated()
 		-- starts in load game menu
 		CreateRealTimeThread(function()
 			Sleep(1000)
-			-- make sure load menu doesn't steal focus away from console if it's open
-			if not dlgConsole:GetVisible() then
+			-- make sure load menu doesn't steal focus away from console/examine if opened
+			if not (dlgConsole:GetVisible() or ChoGGi_dlgs_examine and next(ChoGGi_dlgs_examine)) then
 				Dialogs.PGMainMenu:SetMode("Load")
 			end
 		end)

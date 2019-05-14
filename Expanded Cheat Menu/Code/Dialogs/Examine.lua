@@ -12,11 +12,15 @@ XXXXX = {
 --]]
 
 local pairs, type, tostring, tonumber = pairs, type, tostring, tonumber
-local getmetatable, rawget = getmetatable, rawget
+local getmetatable, rawget, next = getmetatable, rawget, next
 
 -- store opened examine dialogs
-if not rawget(_G, "g_ExamineDlgs") then
-	g_ExamineDlgs = {}
+if not rawget(_G, "ChoGGi_dlgs_examine") then
+	ChoGGi_dlgs_examine = {}
+end
+-- stores list of ex dlgs that have replaced funcs
+if not rawget(_G, "ChoGGi_dlgs_examine_funcs") then
+	ChoGGi_dlgs_examine_funcs = {}
 end
 
 -- local some global funcs
@@ -66,9 +70,9 @@ if debug then
 end
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "Examine")
+	return GetParentOfKind(dlg, "ChoGGi_DlgExamine")
 end
-DefineClass.Examine = {
+DefineClass.ChoGGi_DlgExamine = {
 	__parents = {"ChoGGi_XWindow"},
 
 	-- what we're examining
@@ -136,7 +140,7 @@ DefineClass.Examine = {
 	idAutoRefresh_update_str = false,
 }
 
-function Examine:Init(parent, context)
+function ChoGGi_DlgExamine:Init(parent, context)
 	local g_Classes = g_Classes
 
 	self.obj = context.obj
@@ -188,7 +192,7 @@ function Examine:Init(parent, context)
 	end
 
 	-- examining list
-	g_ExamineDlgs[self.obj] = self
+	ChoGGi_dlgs_examine[self.obj] = self
 
 	self.name = RetName(self.str_object and self.ChoGGi.ComFuncs.DotNameToObject(self.obj) or self.obj)
 
@@ -486,7 +490,63 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	end
 end
 
-function Examine:ViewSourceCode()
+do -- SafeExamine
+	-- some funcs don't check for an existing value (or something)
+	-- so we replace those while we're examining
+	local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+	-- backup any funcs we replace (while dialog(s) are opened)
+	SaveOrigFunc("TFormat","Stat")
+
+	local function Enable(self,replaced,name)
+		if replaced[name] then
+			-- already exists, so don't rereplace func, just add new dlg
+			replaced[name][self.obj] = true
+		else
+			-- add what we use to distinguish between ex dialogs
+			replaced[name] = {[self.obj] = true}
+
+			-- TFormat.Stat doesn't check if value is a number, or not nil
+			function TFormat.Stat(context_obj, value, ...)
+				value = value or 0
+				return ChoGGi_OrigFuncs.TFormat_Stat(context_obj, value, ...)
+			end
+		end
+
+	end
+
+	local function Disable(self,replaced,name)
+		if replaced[name] then
+			replaced[name][self.obj] = nil
+			if not next(replaced[name]) then
+				-- don't need this table anymore
+				replaced[name] = nil
+				-- no more dlgs left in table, so we can unreplace the func
+				TFormat.Stat = ChoGGi_OrigFuncs.TFormat_Stat
+			end
+		else
+			-- should never happen (tm)
+			printC("EXAMINE ERROR! SafeExamine can't find dialog for disable:",name)
+		end
+	end
+
+	function ChoGGi_DlgExamine:SafeExamine(enable)
+
+		local replaced = ChoGGi_dlgs_examine_funcs
+		if enable then
+			if IsKindOf(self.obj_ref, "XTemplateTemplate") then
+				Enable(self,replaced,"TFormat.Stat")
+			end
+		else
+			if IsKindOf(self.obj_ref, "XTemplateTemplate") then
+				Disable(self,replaced,"TFormat.Stat")
+			end
+		end
+
+	end
+end -- do
+
+function ChoGGi_DlgExamine:ViewSourceCode()
 	self = GetRootDialog(self)
 	-- add link to view lua source
 	local info = debug_getinfo(self.obj_ref, "S")
@@ -517,7 +577,7 @@ function Examine:ViewSourceCode()
 	}
 end
 
-function Examine:AddDistToRollover(c, roll_text, idx, idx_value, obj, obj_value)
+function ChoGGi_DlgExamine:AddDistToRollover(c, roll_text, idx, idx_value, obj, obj_value)
 	if IsPoint(idx) then
 		c = c + 1
 		roll_text[c] = obj
@@ -536,7 +596,7 @@ function Examine:AddDistToRollover(c, roll_text, idx, idx_value, obj, obj_value)
 end
 
 -- hover (link, hyperlink_box, pos)
-function Examine:idText_OnHyperLinkRollover(link)
+function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 	self = GetRootDialog(self)
 
 	if not self.ChoGGi.UserSettings.EnableToolTips then
@@ -615,7 +675,7 @@ function Examine:idText_OnHyperLinkRollover(link)
 end
 
 -- clicked
-function Examine:idText_OnHyperLink(link, argument, hyperlink_box, pos, button)
+function ChoGGi_DlgExamine:idText_OnHyperLink(link, argument, hyperlink_box, pos, button)
 	self = GetRootDialog(self)
 
 	link = tonumber(link)
@@ -636,7 +696,7 @@ function Examine:idText_OnHyperLink(link, argument, hyperlink_box, pos, button)
 
 end
 -- create
-function Examine:HyperLink(obj, func, name)
+function ChoGGi_DlgExamine:HyperLink(obj, func, name)
 	local c = self.onclick_count
 	c = c + 1
 
@@ -650,7 +710,7 @@ function Examine:HyperLink(obj, func, name)
 	return "<color 150 170 250><h " .. c .. " 230 195 50>", c
 end
 
-function Examine:idExecCode_OnKbdKeyDown(vk, ...)
+function ChoGGi_DlgExamine:idExecCode_OnKbdKeyDown(vk, ...)
 	if vk == const.vkEnter then
 		if dlgConsole then
 			o = GetRootDialog(self).obj_ref
@@ -663,7 +723,7 @@ function Examine:idExecCode_OnKbdKeyDown(vk, ...)
 	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self, vk, ...)
 end
 
-function Examine:idToggleExecCode_OnChange(visible)
+function ChoGGi_DlgExamine:idToggleExecCode_OnChange(visible)
 	self = GetRootDialog(self)
 	local vis = self.idExecCodeArea:GetVisible()
 	if vis ~= visible then
@@ -672,7 +732,7 @@ function Examine:idToggleExecCode_OnChange(visible)
 	end
 end
 
-function Examine:idButRefresh_OnPress()
+function ChoGGi_DlgExamine:idButRefresh_OnPress()
 	self = GetRootDialog(self)
 	self:SetObj()
 	if IsKindOf(self.obj_ref, "XWindow") and self.obj_ref.class ~= "InGameInterface" then
@@ -680,17 +740,17 @@ function Examine:idButRefresh_OnPress()
 	end
 end
 -- stable name for external use
-function Examine:RefreshExamine()
+function ChoGGi_DlgExamine:RefreshExamine()
 	self:idButRefresh_OnPress()
 end
 
-function Examine:idButSetTransp_OnPress()
+function ChoGGi_DlgExamine:idButSetTransp_OnPress()
 	self = GetRootDialog(self)
 	self.transp_mode = not self.transp_mode
 	self:SetTranspMode(self.transp_mode)
 end
 
-function Examine:idButClear_OnPress()
+function ChoGGi_DlgExamine:idButClear_OnPress()
 	self = GetRootDialog(self)
 	-- clear marked objs for this examine
 	local count = #self.marked_objects
@@ -711,7 +771,7 @@ function Examine:idButClear_OnPress()
 	end
 end
 
-function Examine:idButMarkObject_OnPress()
+function ChoGGi_DlgExamine:idButMarkObject_OnPress()
 	self = GetRootDialog(self)
 	if IsValid(self.obj_ref) then
 		-- i don't use AddSphere since that won't add the ColourObj
@@ -736,18 +796,18 @@ function Examine:idButMarkObject_OnPress()
 	end
 end
 
-function Examine:idButDeleteObj_OnPress()
+function ChoGGi_DlgExamine:idButDeleteObj_OnPress()
 	self = GetRootDialog(self)
 	self.ChoGGi.ComFuncs.DeleteObjectQuestion(self.obj_ref)
 end
 
-function Examine:idButDeleteAll_OnPress()
+function ChoGGi_DlgExamine:idButDeleteAll_OnPress()
 	self = GetRootDialog(self)
 	self.ChoGGi.ComFuncs.QuestionBox(
 		Strings[302535920000059--[[Destroy all objects in objlist!--]]],
 		function(answer)
 			if answer then
-				SuspendPassEdits("Examine:idButDeleteAll_OnPress")
+				SuspendPassEdits("ChoGGi_DlgExamine:idButDeleteAll_OnPress")
 				for _, obj in pairs(self.obj_ref) do
 					if IsValid(obj) then
 						self.ChoGGi.ComFuncs.DeleteObject(obj)
@@ -755,7 +815,7 @@ function Examine:idButDeleteAll_OnPress()
 						DoneObject(obj)
 					end
 				end
-				ResumePassEdits("Examine:idButDeleteAll_OnPress")
+				ResumePassEdits("ChoGGi_DlgExamine:idButDeleteAll_OnPress")
 				-- force a refresh on the list, so people can see something as well
 				self:SetObj()
 			end
@@ -763,32 +823,32 @@ function Examine:idButDeleteAll_OnPress()
 		Translate(697--[[Destroy--]])
 	)
 end
-function Examine:idViewEnum_OnChange()
+function ChoGGi_DlgExamine:idViewEnum_OnChange()
 	self = GetRootDialog(self)
 	self.show_enum_values = not self.show_enum_values
 	self:SetObj()
 end
 
-function Examine:idButMarkAllLine_OnPress()
+function ChoGGi_DlgExamine:idButMarkAllLine_OnPress()
 	self = GetRootDialog(self)
 	self.ChoGGi.ComFuncs.ObjListLines_Toggle(self.obj_ref)
 end
 
-function Examine:idButMarkAll_OnPress()
+function ChoGGi_DlgExamine:idButMarkAll_OnPress()
 	self = GetRootDialog(self)
 	local c = #self.marked_objects
 	-- suspending makes it faster to add objects
-	SuspendPassEdits("Examine:idButMarkAll_OnPress")
+	SuspendPassEdits("ChoGGi_DlgExamine:idButMarkAll_OnPress")
 	for _, v in pairs(self.obj_ref) do
 		if IsValid(v) or IsPoint(v) then
 			c = self:AddSphere(v, c, nil, true, true)
 		end
 	end
-	ResumePassEdits("Examine:idButMarkAll_OnPress")
+	ResumePassEdits("ChoGGi_DlgExamine:idButMarkAll_OnPress")
 	self.ChoGGi.ComFuncs.TableCleanDupes(self.marked_objects)
 end
 
-function Examine:idButToggleObjlist_OnPress()
+function ChoGGi_DlgExamine:idButToggleObjlist_OnPress()
 	self = GetRootDialog(self)
 
 	local meta = getmetatable(self.obj_ref)
@@ -801,7 +861,7 @@ function Examine:idButToggleObjlist_OnPress()
 	self:SetObj()
 end
 
-function Examine:AddSphere(obj, c, colour, skip_view, skip_colour)
+function ChoGGi_DlgExamine:AddSphere(obj, c, colour, skip_view, skip_colour)
 	local sphere = self.ChoGGi.ComFuncs.ShowObj(obj, colour, skip_view, skip_colour)
 	if IsValid(sphere) then
 		c = (c or #self.marked_objects) + 1
@@ -810,7 +870,7 @@ function Examine:AddSphere(obj, c, colour, skip_view, skip_colour)
 	return c
 end
 
-function Examine:idAutoRefresh_OnChange()
+function ChoGGi_DlgExamine:idAutoRefresh_OnChange()
 	-- if it's called directly we set the check if needed
 	local checked = self:GetCheck()
 
@@ -844,11 +904,11 @@ function Examine:idAutoRefresh_OnChange()
 	end)
 end
 -- stable name for external use
-function Examine:EnableAutoRefresh()
+function ChoGGi_DlgExamine:EnableAutoRefresh()
 	self.idAutoRefresh_OnChange(self.idAutoRefresh)
 end
 
-function Examine:idAutoRefresh_OnMouseButtonDown(pt, button, ...)
+function ChoGGi_DlgExamine:idAutoRefresh_OnMouseButtonDown(pt, button, ...)
 	g_Classes.ChoGGi_XCheckButton.OnMouseButtonDown(self, pt, button, ...)
 	if button == "R" then
 
@@ -867,7 +927,7 @@ function Examine:idAutoRefresh_OnMouseButtonDown(pt, button, ...)
 	end
 end
 
-function Examine:idAutoRefreshDelay_OnTextChanged()
+function ChoGGi_DlgExamine:idAutoRefreshDelay_OnTextChanged()
 	local num = tonumber(self:GetText())
 	-- someone always enters a non-number...
 	if num then
@@ -881,19 +941,19 @@ function Examine:idAutoRefreshDelay_OnTextChanged()
 	end
 end
 
-function Examine:idSortDir_OnChange()
+function ChoGGi_DlgExamine:idSortDir_OnChange()
 	self = GetRootDialog(self)
 	self.sort_dir = not self.sort_dir
 	self:SetObj()
 end
 
-function Examine:idShowAllValues_OnChange()
+function ChoGGi_DlgExamine:idShowAllValues_OnChange()
 	self = GetRootDialog(self)
 	self.show_all_values = not self.show_all_values
 	self:SetObj()
 end
 
-function Examine:DumpExamineText(text, name, ext, overwrite)
+function ChoGGi_DlgExamine:DumpExamineText(text, name, ext, overwrite)
 	name = name or "DumpedExamine"
 	ext = ext or "lua"
 
@@ -907,7 +967,7 @@ function Examine:DumpExamineText(text, name, ext, overwrite)
 	end
 end
 
-function Examine:BuildObjectMenuPopup()
+function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 	return {
 		{name = Strings[302535920000457--[[Anim State Set--]]],
 			hint = Strings[302535920000458--[[Make object dance on command.--]]],
@@ -1007,7 +1067,7 @@ function Examine:BuildObjectMenuPopup()
 	}
 end
 
-function Examine:BuildToolsMenuPopup()
+function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 	local list = {
 		{name = Strings[302535920001467--[[Append Dump--]]],
 			hint = Strings[302535920001468--[["Append text to same file, or create a new file each time."--]]],
@@ -1308,22 +1368,22 @@ local function CallMenu(self, popup_id, items, pt, button, ...)
 	end
 end
 
-function Examine:idTools_OnMouseButtonDown(pt, button, ...)
+function ChoGGi_DlgExamine:idTools_OnMouseButtonDown(pt, button, ...)
 	CallMenu(self, "idToolsMenu", "tools_menu_popup", pt, button, ...)
 end
-function Examine:idObjects_OnMouseButtonDown(pt, button, ...)
+function ChoGGi_DlgExamine:idObjects_OnMouseButtonDown(pt, button, ...)
 	CallMenu(self, "idObjectsMenu", "objects_menu_popup", pt, button, ...)
 end
 
-function Examine:idParents_OnMouseButtonDown(pt, button, ...)
+function ChoGGi_DlgExamine:idParents_OnMouseButtonDown(pt, button, ...)
 	CallMenu(self, "idParentsMenu", "parents_menu_popup", pt, button, ...)
 end
 
-function Examine:idAttaches_OnMouseButtonDown(pt, button, ...)
+function ChoGGi_DlgExamine:idAttaches_OnMouseButtonDown(pt, button, ...)
 	CallMenu(self, "idAttachesMenu", "attaches_menu_popup", pt, button, ...)
 end
 
-function Examine:idSearch_OnMouseButtonDown(pt, button, ...)
+function ChoGGi_DlgExamine:idSearch_OnMouseButtonDown(pt, button, ...)
 	g_Classes.ChoGGi_XButton.OnMouseButtonDown(self, pt, button, ...)
 	self = GetRootDialog(self)
 	if button == "L" then
@@ -1335,7 +1395,7 @@ function Examine:idSearch_OnMouseButtonDown(pt, button, ...)
 	end
 end
 
-function Examine:idSearchText_OnKbdKeyDown(vk, ...)
+function ChoGGi_DlgExamine:idSearchText_OnKbdKeyDown(vk, ...)
 	self = GetRootDialog(self)
 
 	local c = const
@@ -1380,7 +1440,7 @@ function Examine:idSearchText_OnKbdKeyDown(vk, ...)
 end
 
 -- adds class name then list of functions below
-function Examine:BuildFuncList(obj_name, prefix)
+function ChoGGi_DlgExamine:BuildFuncList(obj_name, prefix)
 	prefix = prefix or ""
 	local class = _G[obj_name] or {}
 	local skip = true
@@ -1395,7 +1455,7 @@ function Examine:BuildFuncList(obj_name, prefix)
 	end
 end
 
-function Examine:ProcessList(list, prefix)
+function ChoGGi_DlgExamine:ProcessList(list, prefix)
 	for i = 1, #list do
 		local item = list[i]
 		if not self.menu_added[item] then
@@ -1411,20 +1471,20 @@ function Examine:ProcessList(list, prefix)
 	end
 end
 
-function Examine:InvalidMsgPopup(msg, title)
+function ChoGGi_DlgExamine:InvalidMsgPopup(msg, title)
 	ChoGGi.ComFuncs.MsgPopup(
 		msg or Strings[302535920001526--[[Not a valid object--]]],
 		title or Strings[302535920000069--[[Examine--]]]
 	)
 end
 
---~ function Examine:CleanTextForView(str)
+--~ function ChoGGi_DlgExamine:CleanTextForView(str)
 --~ 	-- remove html tags (any </*> closing tags, <left>, <color *>, <h *>, and * added by the context menus)
 --~ 	return str:gsub("</[%s%a%d]*>", ""):gsub("<left>", ""):gsub("<color [%s%a%d]*>", ""):gsub("<h [%s%a%d]*>", ""):gsub("%* '", "'")
 --~ end
 -- scrolled_text is modified from a boolean to the scrolled text and sent back
 -- skip_ast = i added an * to use for the context menu marker (defaults to true)
-function Examine:GetCleanText(scrolled_text, skip_ast)
+function ChoGGi_DlgExamine:GetCleanText(scrolled_text, skip_ast)
 	if skip_ast ~= false then
 		skip_ast = true
 	end
@@ -1485,7 +1545,7 @@ function Examine:GetCleanText(scrolled_text, skip_ast)
 	return TableConcat(cache_temp, "\n"), scrolled_text
 end
 
-function Examine:FindNext(text, previous)
+function ChoGGi_DlgExamine:FindNext(text, previous)
 	text = text or self.idSearchText:GetText()
 	local current_y = self.idScrollArea.OffsetY
 	local min_match, closest_match = false, false
@@ -1525,7 +1585,7 @@ function Examine:FindNext(text, previous)
 	end
 end
 
-function Examine:FlashWindow()
+function ChoGGi_DlgExamine:FlashWindow()
 	-- doesn't lead to good stuff
 	if not self.obj_ref.desktop then
 		return
@@ -1560,7 +1620,7 @@ function Examine:FlashWindow()
 	end)
 end
 
-function Examine:ShowHexShapeList()
+function ChoGGi_DlgExamine:ShowHexShapeList()
 	local obj = self.obj_ref
 	local entity = obj:GetEntity()
 	if not IsValidEntity(entity) then
@@ -1700,7 +1760,7 @@ function Examine:ShowHexShapeList()
 	}
 end
 
-function Examine:BuildBBoxListItem(item_list, obj, text)
+function ChoGGi_DlgExamine:BuildBBoxListItem(item_list, obj, text)
 	local bbox
 	if IsBox(obj) then
 		bbox = obj
@@ -1721,7 +1781,7 @@ function Examine:BuildBBoxListItem(item_list, obj, text)
 	end
 end
 
-function Examine:ShowBBoxList()
+function ChoGGi_DlgExamine:ShowBBoxList()
 	local obj = self.obj_ref
 	if not IsValidEntity(obj.GetEntity and obj:GetEntity()) then
 		return self:InvalidMsgPopup(nil, Translate(155--[[Entity--]]))
@@ -1792,7 +1852,7 @@ function Examine:ShowBBoxList()
 	}
 end
 
-function Examine:ShowEntitySpotsList()
+function ChoGGi_DlgExamine:ShowEntitySpotsList()
 	local obj = self.obj_ref
 
 	self.ChoGGi.ComFuncs.EntitySpots_Clear(obj)
@@ -1888,7 +1948,7 @@ function Examine:ShowEntitySpotsList()
 	}
 end
 
-function Examine:ShowSurfacesList()
+function ChoGGi_DlgExamine:ShowSurfacesList()
 	local obj = self.obj_ref
 
 	self.ChoGGi.ComFuncs.SurfaceLines_Clear(obj)
@@ -1968,7 +2028,7 @@ function Examine:ShowSurfacesList()
 	}
 end
 
-function Examine:SetTranspMode(toggle)
+function ChoGGi_DlgExamine:SetTranspMode(toggle)
 	self:ClearModifiers()
 	if toggle then
 		self:AddInterpolation{
@@ -2008,7 +2068,7 @@ local function Examine_ConvertValueToInfo(self, button, obj)
 	end
 end
 
-function Examine:ShowExecCodeWithCode(code)
+function ChoGGi_DlgExamine:ShowExecCodeWithCode(code)
 	-- open exec code and paste "o.obj_name = value"
 	self:idToggleExecCode_OnChange(true)
 	self.idExecCode:SetText(code)
@@ -2017,7 +2077,7 @@ function Examine:ShowExecCodeWithCode(code)
 	self.idExecCode:SetCursor(1, #self.idExecCode:GetText())
 end
 
-function Examine:OpenListMenu(_, obj_name, _, hyperlink_box)
+function ChoGGi_DlgExamine:OpenListMenu(_, obj_name, _, hyperlink_box)
 	-- id for PopupToggle
 	self.opened_list_menu_id = self.opened_list_menu_id or self.ChoGGi.ComFuncs.Random()
 
@@ -2235,7 +2295,7 @@ function Examine:OpenListMenu(_, obj_name, _, hyperlink_box)
 	)
 end
 
-function Examine:ConvertValueToInfo(obj)
+function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 	local obj_type = type(obj)
 
 	if obj_type == "string" then
@@ -2400,7 +2460,7 @@ function Examine:ConvertValueToInfo(obj)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
-function Examine:RetDebugUpValue(obj, list, c, nups)
+function ChoGGi_DlgExamine:RetDebugUpValue(obj, list, c, nups)
 	for i = 1, nups do
 		local name, value = debug_getupvalue(obj, i)
 		if name then
@@ -2414,7 +2474,7 @@ function Examine:RetDebugUpValue(obj, list, c, nups)
 	return c
 end
 
-function Examine:RetDebugGetInfo(obj)
+function ChoGGi_DlgExamine:RetDebugGetInfo(obj)
 	self.RetDebugInfo_table = self.RetDebugInfo_table or objlist:new()
 	local temp = self.RetDebugInfo_table
 	temp:Destroy()
@@ -2431,7 +2491,7 @@ function Examine:RetDebugGetInfo(obj)
 	table_insert(temp, 1, "\ngetinfo(): ")
 	return TableConcat(temp, "\n")
 end
-function Examine:RetFuncArgs(obj)
+function ChoGGi_DlgExamine:RetFuncArgs(obj)
 	self.RetDebugInfo_table = self.RetDebugInfo_table or objlist:new()
 	local temp = self.RetDebugInfo_table
 	temp:Destroy()
@@ -2454,7 +2514,7 @@ function Examine:RetFuncArgs(obj)
 	end
 end
 
-function Examine:ToggleBBox(_, bbox)
+function ChoGGi_DlgExamine:ToggleBBox(_, bbox)
 	if self.spawned_bbox then
 		-- the clear func expects it this way
 		self.spawned_bbox.ChoGGi_bboxobj = self.spawned_bbox
@@ -2465,7 +2525,7 @@ function Examine:ToggleBBox(_, bbox)
 	end
 end
 
-function Examine:SortInfoList(list, list_sort_num)
+function ChoGGi_DlgExamine:SortInfoList(list, list_sort_num)
 	list_sort_num = list_sort_num or self.info_list_sort_num
 	local list_sort_obj = self.info_list_sort_obj
 	if self.sort_dir then
@@ -2509,7 +2569,7 @@ function Examine:SortInfoList(list, list_sort_num)
 	end
 end
 
-function Examine:AddItemsToInfoList(obj, c, list, skip_dupes, list_obj_str, is_enum)
+function ChoGGi_DlgExamine:AddItemsToInfoList(obj, c, list, skip_dupes, list_obj_str, is_enum)
 	local list_sort_obj = self.info_list_sort_obj
 	local list_obj_str = list_obj_str or self.info_list_obj_str
 
@@ -2533,7 +2593,7 @@ function Examine:AddItemsToInfoList(obj, c, list, skip_dupes, list_obj_str, is_e
 	return c
 end
 
-function Examine:ConvertObjToInfo(obj, obj_type)
+function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 	-- the list we return with concat
 	local list_obj_str = self.info_list_obj_str
 	-- list of nums to sort with
@@ -3064,7 +3124,7 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 end
 ---------------------------------------------------------------------------------------------------------------------
 
-function Examine:BuildAttachesPopup(obj)
+function ChoGGi_DlgExamine:BuildAttachesPopup(obj)
 	table_iclear(self.attaches_menu_popup)
 	local attaches = self.ChoGGi.ComFuncs.GetAllAttaches(obj, true)
 	local attach_amount = #attaches
@@ -3138,7 +3198,7 @@ Use %s to hide green markers."--]]]:format(name, attach_amount, "<image CommonAs
 	end
 end
 
-function Examine:SetToolbarVis(obj, obj_metatable)
+function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 	-- always hide all
 	self.idButMarkObject:SetVisible()
 	self.idButMarkAll:SetVisible()
@@ -3208,7 +3268,7 @@ function Examine:SetToolbarVis(obj, obj_metatable)
 
 end
 
-function Examine:BuildParentsMenu(list, list_type, title, sort_type)
+function ChoGGi_DlgExamine:BuildParentsMenu(list, list_type, title, sort_type)
 	if list and next(list) then
 		list = self.ChoGGi.ComFuncs.RetSortTextAssTable(list, sort_type)
 		self[list_type] = list
@@ -3243,7 +3303,7 @@ function Examine:BuildParentsMenu(list, list_type, title, sort_type)
 	end
 end
 
-function Examine:SetObj(startup)
+function ChoGGi_DlgExamine:SetObj(startup)
 	local obj = self.obj
 
 	-- reset the hyperlinks
@@ -3261,6 +3321,9 @@ function Examine:SetObj(startup)
 	end
 	-- so we can access the obj elsewhere
 	self.obj_ref = obj
+
+	-- certain funcs need to have an override so we can examine stuff
+	self:SafeExamine(true)
 
 	local obj_type = type(obj)
 	self.obj_type = obj_type
@@ -3333,7 +3396,7 @@ function Examine:SetObj(startup)
 	return obj_class
 end
 
-function Examine:SetTextSafety(text)
+function ChoGGi_DlgExamine:SetTextSafety(text)
 	-- \0 = non-text chars (ParseText ralphs)
 	self.idText:SetText(text:gsub("\0", ""))
 
@@ -3358,7 +3421,10 @@ local function PopupClose(name)
 	end
 end
 
-function Examine:Done()
+function ChoGGi_DlgExamine:Done()
+	-- revert funcs
+	self:SafeExamine()
+
 	local obj = self.obj_ref
 	-- stop refreshing
 	if IsValidThread(self.autorefresh_thread) then
@@ -3387,7 +3453,7 @@ function Examine:Done()
 		self:idButClear_OnPress()
 	end
 	-- remove this dialog from list of examine dialogs
-	local dlgs = g_ExamineDlgs or empty_table
+	local dlgs = ChoGGi_dlgs_examine or empty_table
 	dlgs[self.obj] = nil
 	dlgs[obj] = nil
 end

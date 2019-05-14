@@ -1,0 +1,3 @@
+v0.2
+Apply to all stayed enabled if you deselected and reselected the same dome.
+Repositioned where it's displayed and made the tooltip more obvious.

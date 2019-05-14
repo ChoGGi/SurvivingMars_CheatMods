@@ -25,8 +25,8 @@ function SetUserUIScale(val, ...)
 
 	local UIScale = (val + 0.0) / 100
 	-- update existing dialogs
-	local g_ChoGGiDlgs = g_ChoGGiDlgs
-	for dlg in pairs(g_ChoGGiDlgs) do
+	local ChoGGi_dlgs_opened = ChoGGi_dlgs_opened
+	for dlg in pairs(ChoGGi_dlgs_opened) do
 		dlg.dialog_width_scaled = dlg.dialog_width * UIScale
 		dlg.dialog_height_scaled = dlg.dialog_height * UIScale
 		dlg.header_scaled = dlg.header * UIScale

@@ -67,9 +67,9 @@ local point = point
 local MeasureImage = UIL.MeasureImage
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_ListChoiceDlg")
+	return GetParentOfKind(dlg, "ChoGGi_DlgListChoice")
 end
-DefineClass.ChoGGi_ListChoiceDlg = {
+DefineClass.ChoGGi_DlgListChoice = {
 	__parents = {"ChoGGi_XWindow"},
 	choices = false,
 	colorpicker = false,
@@ -89,7 +89,7 @@ DefineClass.ChoGGi_ListChoiceDlg = {
 }
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
-function ChoGGi_ListChoiceDlg:Init(parent, context)
+function ChoGGi_DlgListChoice:Init(parent, context)
 	local g_Classes = g_Classes
 
 	self.list = context.list
@@ -428,7 +428,7 @@ This will always send back all items (not selection)."--]]],
 	self:PostInit(self.list.parent)
 end
 
-function ChoGGi_ListChoiceDlg:idShowCustomVal_OnChange(check)
+function ChoGGi_DlgListChoice:idShowCustomVal_OnChange(check)
 	self = GetRootDialog(self)
 	local item = self.idList[#self.idList]
 	item:SetVisible(check)
@@ -446,7 +446,7 @@ function ChoGGi_ListChoiceDlg:idShowCustomVal_OnChange(check)
 end
 
 -- uncheck all the other checks
-function ChoGGi_ListChoiceDlg:idCheckBoxOnlyOne()
+function ChoGGi_DlgListChoice:idCheckBoxOnlyOne()
 	local checks = self.parent
 	if self:GetCheck() then
 		for i = 1, #checks do
@@ -458,7 +458,7 @@ function ChoGGi_ListChoiceDlg:idCheckBoxOnlyOne()
 	end
 end
 -- make sure at least one is checked
-function ChoGGi_ListChoiceDlg:idCheckBoxAtLeastOne()
+function ChoGGi_DlgListChoice:idCheckBoxAtLeastOne()
 	local checks = self.parent
 	if not self:GetCheck() then
 		local current_idx
@@ -486,11 +486,11 @@ function ChoGGi_ListChoiceDlg:idCheckBoxAtLeastOne()
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idColorSquare_OnColorChanged(colour)
+function ChoGGi_DlgListChoice:idColorSquare_OnColorChanged(colour)
 	self:OnColorChanged_Orig(colour)
 end
 
-function ChoGGi_ListChoiceDlg:idList_OnKbdKeyDown(vk)
+function ChoGGi_DlgListChoice:idList_OnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
 		self:BuildReturnList(nil, "L")
@@ -502,17 +502,17 @@ function ChoGGi_ListChoiceDlg:idList_OnKbdKeyDown(vk)
 	return "continue"
 end
 
-function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDown(pt, button, ...)
+function ChoGGi_DlgListChoice:idList_OnMouseButtonDown(pt, button, ...)
 	g_Classes.ChoGGi_XList.OnMouseButtonDown(self, pt, button)
 	GetRootDialog(self):idList_OnSelect(button)
 end
 
-function ChoGGi_ListChoiceDlg:idList_OnKbdKeyUp(...)
+function ChoGGi_DlgListChoice:idList_OnKbdKeyUp(...)
 	g_Classes.ChoGGi_XList.OnKbdKeyUp(...)
 	GetRootDialog(self):idList_OnSelect("L")
 end
 
-function ChoGGi_ListChoiceDlg:idEditValue_OnKbdKeyDown(vk, ...)
+function ChoGGi_DlgListChoice:idEditValue_OnKbdKeyDown(vk, ...)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
 		self:BuildReturnList(_, "L")
@@ -521,7 +521,7 @@ function ChoGGi_ListChoiceDlg:idEditValue_OnKbdKeyDown(vk, ...)
 	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idEditValue, vk, ...)
 end
 
-function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
+function ChoGGi_DlgListChoice:idEditValueOnTextChanged()
 	local text = self:GetText()
 	self = GetRootDialog(self)
 	if text == self.old_edit_value then
@@ -608,7 +608,7 @@ function ChoGGi_ListChoiceDlg:idEditValueOnTextChanged()
 end
 
 local item_icon_table = {"Resources", "BuildingTemplates", "g_Classes"}
-function ChoGGi_ListChoiceDlg:AddItemIcon(g, item)
+function ChoGGi_DlgListChoice:AddItemIcon(g, item)
 	for i = 1, 3 do
 		local list = g[item_icon_table[i]]
 
@@ -628,7 +628,7 @@ function ChoGGi_ListChoiceDlg:AddItemIcon(g, item)
 	end
 end
 
-function ChoGGi_ListChoiceDlg:BuildList(save_pos)
+function ChoGGi_DlgListChoice:BuildList(save_pos)
 	local g = _G
 	local g_Classes = g.g_Classes
 
@@ -722,7 +722,7 @@ function ChoGGi_ListChoiceDlg:BuildList(save_pos)
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idFilter_OnKbdKeyDown(vk)
+function ChoGGi_DlgListChoice:idFilter_OnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
 		self:FilterText(true)
@@ -735,7 +735,7 @@ function ChoGGi_ListChoiceDlg:idFilter_OnKbdKeyDown(vk)
 	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idFilter, vk)
 end
 
-function ChoGGi_ListChoiceDlg:FilterText(txt)
+function ChoGGi_DlgListChoice:FilterText(txt)
 	self = GetRootDialog(self)
 	-- rebuild list
 	self:BuildList()
@@ -767,7 +767,7 @@ function ChoGGi_ListChoiceDlg:FilterText(txt)
 	self.idList.focused_item = false
 end
 
-function ChoGGi_ListChoiceDlg:UpdateColour()
+function ChoGGi_DlgListChoice:UpdateColour()
 	if not self.obj then
 		-- grab the object from the last list item
 		self.obj = self.idList[#self.idList].item.obj
@@ -796,7 +796,7 @@ function ChoGGi_ListChoiceDlg:UpdateColour()
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idColorPicker_OnColorChanged(colour)
+function ChoGGi_DlgListChoice:idColorPicker_OnColorChanged(colour)
 	self = GetRootDialog(self)
 	local sel_idx = self.idList.focused_item
 	-- no list item selected, so just return
@@ -823,7 +823,7 @@ function ChoGGi_ListChoiceDlg:idColorPicker_OnColorChanged(colour)
 	end
 end
 
-function ChoGGi_ListChoiceDlg:idList_OnSelect(button)
+function ChoGGi_DlgListChoice:idList_OnSelect(button)
 	if not self.idList.focused_item then
 		return
 	end
@@ -856,8 +856,8 @@ function ChoGGi_ListChoiceDlg:idList_OnSelect(button)
 	end
 end
 
---~ function ChoGGi_ListChoiceDlg:idList_OnMouseButtonDoubleClick(_, button)
-function ChoGGi_ListChoiceDlg:CallbackSelectedList()
+--~ function ChoGGi_DlgListChoice:idList_OnMouseButtonDoubleClick(_, button)
+function ChoGGi_DlgListChoice:CallbackSelectedList()
 	-- build self.choices
 	if self.sel and not self.list.multisel then
 		self.sel.list_selected = true
@@ -872,7 +872,7 @@ function ChoGGi_ListChoiceDlg:CallbackSelectedList()
 	end
 end
 
-function ChoGGi_ListChoiceDlg:BuildReturnList(_, button)
+function ChoGGi_DlgListChoice:BuildReturnList(_, button)
 	-- select all items (ok button)
 	if self.class == "ChoGGi_XButton" then
 		button = "L"
@@ -906,7 +906,7 @@ function ChoGGi_ListChoiceDlg:BuildReturnList(_, button)
 end
 
 -- update colour
-function ChoGGi_ListChoiceDlg:UpdateColourPicker(text)
+function ChoGGi_DlgListChoice:UpdateColourPicker(text)
 	-- if it's colourpicker mode and we selected Metallic or Roughness then skip updating
 	if self.custom_type == 2 and not text:find("Color") then
 		return
@@ -917,7 +917,7 @@ function ChoGGi_ListChoiceDlg:UpdateColourPicker(text)
 	end
 end
 
-function ChoGGi_ListChoiceDlg:UpdateReturnedItem(choices)
+function ChoGGi_DlgListChoice:UpdateReturnedItem(choices)
 	choices = choices or {[1] = {}}
 	local choice1 = choices[1]
 
@@ -941,7 +941,7 @@ function ChoGGi_ListChoiceDlg:UpdateReturnedItem(choices)
 	return choices
 end
 
-function ChoGGi_ListChoiceDlg:GetListItems(skip)
+function ChoGGi_DlgListChoice:GetListItems(skip)
 	local items = {}
 
 	-- get sel item(s)

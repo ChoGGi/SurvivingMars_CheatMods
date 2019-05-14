@@ -14,7 +14,7 @@ local pairs, type, tostring = pairs, type, tostring
 -- 1 above console log, 1000 above examine
 local zorder = 2001001
 
-DefineClass.ChoGGi_MonitorInfoDlg = {
+DefineClass.ChoGGi_DlgMonitorInfo = {
 	__parents = {"FrameWindow"},
 	ZOrder = zorder,
 	--defaults
@@ -28,7 +28,7 @@ DefineClass.ChoGGi_MonitorInfoDlg = {
 	translate = false,
 }
 
-function ChoGGi_MonitorInfoDlg:Init()
+function ChoGGi_DlgMonitorInfo:Init()
 
 
 
@@ -158,7 +158,7 @@ local texttable
 local text
 local monitort
 local name
-function ChoGGi_MonitorInfoDlg:UpdateText()
+function ChoGGi_DlgMonitorInfo:UpdateText()
 	--check for scroll pos
 	local scrollpos = self.idText.scroll:GetPosition()
 	--create prop list for list
@@ -228,7 +228,7 @@ function ChoGGi_MonitorInfoDlg:UpdateText()
 	self.idText.scroll:SetPosition(scrollpos)
 end
 
-function ChoGGi_MonitorInfoDlg:BuildValue(name, kind)
+function ChoGGi_DlgMonitorInfo:BuildValue(name, kind)
 	--0 = value
 	if kind == 0 then
 		texttable[#texttable+1] = ": "
@@ -256,13 +256,13 @@ end
 
 
 --esc closes
-function ChoGGi_MonitorInfoDlg:OnKbdKeyDown(_, vk)
+function ChoGGi_DlgMonitorInfo:OnKbdKeyDown(_, vk)
 	if vk == const.vkEsc then
 		self.idCloseX:Press()
 		return "break"
 	end
 	return "continue"
 end
-function ChoGGi_MonitorInfoDlg:Done()
+function ChoGGi_DlgMonitorInfo:Done()
 	self.refreshing = false
 end

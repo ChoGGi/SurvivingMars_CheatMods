@@ -116,7 +116,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 			group = "Infopanel Sections",
 			id = "ipChoGGi_Entity",
 			PlaceObj("XTemplateTemplate", {
-				"__context_of_kind", "ChoGGi_BuildingEntityClass",
+				"__context_of_kind", "ChoGGi_OBuildingEntityClass",
 				"__template", "Infopanel",
 			}, {
 
@@ -829,10 +829,10 @@ function OnMsg.NewDay() -- NewSol...
 	local ChoGGi = ChoGGi
 
 	-- remove any closed examine dialogs from the list
-	local g_ExamineDlgs = g_ExamineDlgs or empty_table
-	for obj, dlg in pairs(g_ExamineDlgs) do
+	local ChoGGi_dlgs_examine = ChoGGi_dlgs_examine or empty_table
+	for obj, dlg in pairs(ChoGGi_dlgs_examine) do
 		if dlg.window_state == "destroying" then
-			g_ExamineDlgs[obj] = nil
+			ChoGGi_dlgs_examine[obj] = nil
 		end
 	end
 
@@ -989,7 +989,7 @@ function OnMsg.ApplicationQuit()
 	end
 
 	-- console window settings
-	local dlg = dlgChoGGi_ConsoleLogWin
+	local dlg = dlgChoGGi_DlgConsoleLogWin
 	if dlg then
 		ChoGGi.UserSettings.ConsoleLogWin_Pos = dlg:GetPos()
 		ChoGGi.UserSettings.ConsoleLogWin_Size = dlg:GetSize()

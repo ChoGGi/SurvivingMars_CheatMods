@@ -11,9 +11,9 @@ local Translate = ChoGGi.ComFuncs.Translate
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_FindValueDlg")
+	return GetParentOfKind(dlg, "ChoGGi_DlgFindValue")
 end
-DefineClass.ChoGGi_FindValueDlg = {
+DefineClass.ChoGGi_DlgFindValue = {
 	__parents = {"ChoGGi_XWindow"},
 	obj = false,
 	obj_name = false,
@@ -24,7 +24,7 @@ DefineClass.ChoGGi_FindValueDlg = {
 	dupe_objs = {},
 }
 
-function ChoGGi_FindValueDlg:Init(parent, context)
+function ChoGGi_DlgFindValue:Init(parent, context)
 	local g_Classes = g_Classes
 
 	self.obj = context.obj
@@ -110,7 +110,7 @@ function ChoGGi_FindValueDlg:Init(parent, context)
 	self:PostInit(context.parent)
 end
 
---~ function ChoGGi_FindValueDlg:RetStringCase(value, case)
+--~ function ChoGGi_DlgFindValue:RetStringCase(value, case)
 --~ 	local obj_type = type(value)
 --~ 	if obj_type == "string" then
 --~ 		return case and value or value:lower(), obj_type
@@ -119,7 +119,7 @@ end
 --~ 	end
 --~ end
 
-function ChoGGi_FindValueDlg:FindText()
+function ChoGGi_DlgFindValue:FindText()
 	self = GetRootDialog(self)
 	local str = self.idEdit:GetText()
 	-- no sense in finding nothing
@@ -156,7 +156,7 @@ function ChoGGi_FindValueDlg:FindText()
 	end)
 end
 
-function ChoGGi_FindValueDlg:RetObjects(obj, parent, str, case, threads, limit, level)
+function ChoGGi_DlgFindValue:RetObjects(obj, parent, str, case, threads, limit, level)
 	if not level then
 		level = 0
 	end
@@ -214,7 +214,7 @@ function ChoGGi_FindValueDlg:RetObjects(obj, parent, str, case, threads, limit, 
 end
 
 local const = const
-function ChoGGi_FindValueDlg:Input_OnKbdKeyDown(vk)
+function ChoGGi_DlgFindValue:Input_OnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
 		self:FindText()

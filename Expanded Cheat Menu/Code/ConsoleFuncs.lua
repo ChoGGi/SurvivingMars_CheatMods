@@ -78,9 +78,7 @@ local ToolsMenuPopupToggle_list = {
 	{is_spacer = true},
 	{name = Strings[302535920000853--[[Monitor--]]] .. ": _G",
 		hint = "ChoGGi.ComFuncs.MonitorTableLength(_G)",
-		clicked = function()
-			ChoGGi.ComFuncs.MonitorTableLength(_G, nil, nil, nil, "_G")
-		end,
+		clicked = ChoGGi.ComFuncs.MonitorTableLength,
 	},
 	{name = Strings[302535920000853--[[Monitor--]]] .. ": ThreadsRegister",
 		hint = "ChoGGi.ComFuncs.MonitorThreads()",
@@ -377,7 +375,7 @@ do -- ToggleLogErrors
 	-- save orig funcs (if toggling happens)
 	local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-	local lookup_table = ChoGGi.ComFuncs.RetName_Table()
+	local lookup_table = ChoGGi_lookup_names
 	for i = 1, #funcs do
 		local name = funcs[i]
 		if rawget(_G, name) then
@@ -492,7 +490,7 @@ The number is a count of stored msgs, right-click to view the list."--]]],
 	{name = Strings[302535920001120--[[Console Window--]]],
 		hint = Strings[302535920001133--[[Show the console log text in an independant window.--]]],
 		class = "ChoGGi_XCheckButtonMenu",
-		value = "dlgChoGGi_ConsoleLogWin",
+		value = "dlgChoGGi_DlgConsoleLogWin",
 		clicked = function()
 			ChoGGi.UserSettings.ConsoleHistoryWin = not ChoGGi.UserSettings.ConsoleHistoryWin
 			ChoGGi.SettingFuncs.WriteSettings()

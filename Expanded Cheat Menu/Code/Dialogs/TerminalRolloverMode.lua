@@ -5,14 +5,14 @@
 local terminal_target
 local terminal_dialog
 
-DefineClass.ChoGGi_RolloverModeTerminalTarget = {
+DefineClass.ChoGGi_DlgRolloverModeTerminalTarget = {
 	__parents = {
 		"TerminalTarget"
 	},
 	terminal_target_priority = 20000000,
 }
 
-function ChoGGi_RolloverModeTerminalTarget:MouseEvent(event, pt, button)
+function ChoGGi_DlgRolloverModeTerminalTarget:MouseEvent(event, pt, button)
 	if event == "OnMouseButtonDown" then
 		if button == "L" then
 			local term = terminal.desktop
@@ -27,7 +27,7 @@ end
 
 function ChoGGi.ComFuncs.TerminalRolloverMode(enabled, dlg)
 	if not terminal_target then
-		terminal_target = ChoGGi_RolloverModeTerminalTarget:new()
+		terminal_target = ChoGGi_DlgRolloverModeTerminalTarget:new()
 	end
 	terminal_target.flash_ui = ChoGGi.UserSettings.FlashExamineObject
 

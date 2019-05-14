@@ -289,7 +289,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			local IsBuildableZoneQR = IsBuildableZoneQR
 			local WorldToHex = WorldToHex
 			local point = point
-			local ChoGGi_BuildingEntityClass = ChoGGi_BuildingEntityClass
+			local ChoGGi_OBuildingEntityClass = ChoGGi_OBuildingEntityClass
 
 			local width, height = ConstructableArea:sizexyz()
 			width = width / 1000
@@ -326,7 +326,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 						local x1000, y1000 = x * 1000, y * 1000
 						local q, r = WorldToHex(x1000, y1000)
 						if q % mod == 0 and r % mod == 0 and IsBuildableZoneQR(q, r) then
-							local obj = ChoGGi_BuildingEntityClass:new()
+							local obj = ChoGGi_OBuildingEntityClass:new()
 							-- 11500 so stuff is floating above the ground
 							obj:SetPos(point(x1000, y1000, 11500))
 

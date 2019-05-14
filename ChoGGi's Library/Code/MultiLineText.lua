@@ -10,10 +10,10 @@ local CreateRealTimeThread = CreateRealTimeThread
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_MultiLineTextDlg")
+	return GetParentOfKind(dlg, "ChoGGi_DlgMultiLineText")
 end
 
-DefineClass.ChoGGi_MultiLineTextDlg = {
+DefineClass.ChoGGi_DlgMultiLineText = {
 	__parents = {"ChoGGi_XWindow"},
 	retfunc = false,
 	overwrite = false,
@@ -24,7 +24,7 @@ DefineClass.ChoGGi_MultiLineTextDlg = {
 	plugin_names = {"ChoGGi_XCodeEditorPlugin"},
 }
 
-function ChoGGi_MultiLineTextDlg:Init(parent, context)
+function ChoGGi_DlgMultiLineText:Init(parent, context)
 	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 --~ 	self.context = context
@@ -131,7 +131,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self:PostInit(context.parent)
 end
 
-function ChoGGi_MultiLineTextDlg:idSearch_OnMouseButtonDown(pt, button, ...)
+function ChoGGi_DlgMultiLineText:idSearch_OnMouseButtonDown(pt, button, ...)
 	g_Classes.ChoGGi_XButton.OnMouseButtonDown(self, pt, button, ...)
 	self = GetRootDialog(self)
 	if button == "L" then
@@ -143,7 +143,7 @@ function ChoGGi_MultiLineTextDlg:idSearch_OnMouseButtonDown(pt, button, ...)
 	end
 end
 
-function ChoGGi_MultiLineTextDlg:FindNext(text, previous)
+function ChoGGi_DlgMultiLineText:FindNext(text, previous)
 	text = text or self.idSearchText:GetText()
 	local edit = self.idEdit
 	local current_y = edit.cursor_line
@@ -176,7 +176,7 @@ function ChoGGi_MultiLineTextDlg:FindNext(text, previous)
 	end
 end
 
-function ChoGGi_MultiLineTextDlg:idSearchText_OnKbdKeyDown(vk, ...)
+function ChoGGi_DlgMultiLineText:idSearchText_OnKbdKeyDown(vk, ...)
 	self = GetRootDialog(self)
 
 	local c = const
@@ -203,7 +203,7 @@ function ChoGGi_MultiLineTextDlg:idSearchText_OnKbdKeyDown(vk, ...)
 end
 
 -- searches for text or goes to line number
-function ChoGGi_MultiLineTextDlg:ScrollToText(scrollto)
+function ChoGGi_DlgMultiLineText:ScrollToText(scrollto)
 	CreateRealTimeThread(function()
 		WaitMsg("OnRender")
 		local edit = GetRootDialog(self).idEdit
@@ -234,7 +234,7 @@ function ChoGGi_MultiLineTextDlg:ScrollToText(scrollto)
 end
 
 -- this gets sent to Dump()
-function ChoGGi_MultiLineTextDlg:idOverwrite_OnChange()
+function ChoGGi_DlgMultiLineText:idOverwrite_OnChange()
 	self = GetRootDialog(self)
 	if self.overwrite then
 		self.overwrite = false
@@ -244,13 +244,13 @@ function ChoGGi_MultiLineTextDlg:idOverwrite_OnChange()
 end
 
 -- maybe i should make this do something for the displayed text...
-function ChoGGi_MultiLineTextDlg:idWrapLines_OnChange(check)
+function ChoGGi_DlgMultiLineText:idWrapLines_OnChange(check)
 	ChoGGi.UserSettings.WordWrap = check
 	GetRootDialog(self).idEdit:SetWordWrap(check)
 end
 
 -- toggle code highlighting
-function ChoGGi_MultiLineTextDlg:idToggleCode_OnChange(check)
+function ChoGGi_DlgMultiLineText:idToggleCode_OnChange(check)
 	self = GetRootDialog(self)
 	if check then
 		self.idEdit:SetPlugins(self.plugin_names)
@@ -259,24 +259,24 @@ function ChoGGi_MultiLineTextDlg:idToggleCode_OnChange(check)
 	end
 end
 -- stable name for external use
-function ChoGGi_MultiLineTextDlg:ShowCodeHighlights()
+function ChoGGi_DlgMultiLineText:ShowCodeHighlights()
 	self = GetRootDialog(self)
 	self.idEdit:SetPlugins(self.plugin_names)
 	self.idToggleCode:SetCheck(true)
 end
 
 --
-function ChoGGi_MultiLineTextDlg:idOkay_OnPress()
+function ChoGGi_DlgMultiLineText:idOkay_OnPress()
 	GetRootDialog(self):Close(true)
 end
 
 --
-function ChoGGi_MultiLineTextDlg:idCancel_OnPress()
+function ChoGGi_DlgMultiLineText:idCancel_OnPress()
 	GetRootDialog(self):Close(false)
 end
 
 -- goodbye everybody
-function ChoGGi_MultiLineTextDlg:Done(result)
+function ChoGGi_DlgMultiLineText:Done(result)
 	-- for dumping text from examine
 	if self.retfunc then
 		self.retfunc(result, self.overwrite, self)

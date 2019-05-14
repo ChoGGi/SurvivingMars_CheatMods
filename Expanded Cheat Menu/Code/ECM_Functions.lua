@@ -477,10 +477,10 @@ do -- WriteLogs_Toggle
 	local buffer_table = {newline}
 	local buffer_cnt = 1
 
-	if rawget(_G, "ChoGGi_print_buffer_thread") then
-		DeleteThread(ChoGGi_print_buffer_thread)
+	if rawget(_G, "ChoGGi_thread_print_buffer") then
+		DeleteThread(ChoGGi_thread_print_buffer)
 	end
-	ChoGGi_print_buffer_thread = CreateRealTimeThread(function()
+	ChoGGi_thread_print_buffer = CreateRealTimeThread(function()
 		while true do
 			Sleep(timer)
 			if buffer_cnt > 1 then
@@ -627,13 +627,13 @@ do -- OpenInExamineDlg
 			params.parent_id = params.parent.parent_id
 		end
 
-		-- workaround for g_ExamineDlgs
+		-- workaround for ChoGGi_dlgs_examine
 		if type(params.obj) == "nil" then
 			params.obj = "nil"
 		end
 
 		-- already examining, so focus and return ( :new() doesn't return the opened dialog).
-		local opened = g_ExamineDlgs[params.obj]
+		local opened = ChoGGi_dlgs_examine[params.obj]
 
 		if opened then
 			-- hit refresh, cause i'm that kinda guy
@@ -650,7 +650,7 @@ do -- OpenInExamineDlg
 			params.title = nil
 		end
 
-		return Examine:new({}, terminal.desktop, params)
+		return ChoGGi_DlgExamine:new({}, terminal.desktop, params)
 	end
 end -- do
 
@@ -663,7 +663,7 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list, parent)
 		parent = nil
 	end
 
-	return ChoGGi_MonitorInfoDlg:new({}, terminal.desktop, {
+	return ChoGGi_DlgMonitorInfo:new({}, terminal.desktop, {
 		obj = list,
 		parent = parent,
 		tables = list.tables,
@@ -688,7 +688,7 @@ function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj, parent)
 		parent = nil
 	end
 
-	return ChoGGi_ObjectEditorDlg:new({}, terminal.desktop, {
+	return ChoGGi_DlgObjectEditor:new({}, terminal.desktop, {
 		obj = obj,
 		parent = parent,
 	})
@@ -711,7 +711,7 @@ function ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(obj, parent)
 		parent = nil
 	end
 
-	return ChoGGi_3DManipulatorDlg:new({}, terminal.desktop, {
+	return ChoGGi_Dlg3DManipulator:new({}, terminal.desktop, {
 		obj = obj,
 		parent = parent,
 	})
@@ -722,7 +722,7 @@ function ChoGGi.ComFuncs.OpenInExecCodeDlg(context, parent)
 		parent = nil
 	end
 
-	return ChoGGi_ExecCodeDlg:new({}, terminal.desktop, {
+	return ChoGGi_DlgExecCode:new({}, terminal.desktop, {
 		obj = context,
 		parent = parent,
 	})
@@ -737,7 +737,7 @@ function ChoGGi.ComFuncs.OpenInFindValueDlg(context, parent)
 		parent = nil
 	end
 
-	return ChoGGi_FindValueDlg:new({}, terminal.desktop, {
+	return ChoGGi_DlgFindValue:new({}, terminal.desktop, {
 		obj = context,
 		parent = parent,
 	})
@@ -752,7 +752,7 @@ function ChoGGi.ComFuncs.OpenInImageViewerDlg(obj, parent)
 		parent = nil
 	end
 
-	return ChoGGi_ImageViewerDlg:new({}, terminal.desktop, {
+	return ChoGGi_DlgImageViewer:new({}, terminal.desktop, {
 		obj = obj,
 		parent = parent,
 	})
@@ -764,7 +764,7 @@ function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(parent)
 		parent = nil
 	end
 
-	return ChoGGi_DTMSlotsDlg:new({}, terminal.desktop, {
+	return ChoGGi_DlgDTMSlots:new({}, terminal.desktop, {
 		parent = parent,
 	})
 end
@@ -838,9 +838,9 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, skip_msg, list_type, planning)
 		local value = choice.value
 
 		if not obj then
-			local cls = ChoGGi_BuildingEntityClass
+			local cls = ChoGGi_OBuildingEntityClass
 			if choice.check1 then
-				cls = ChoGGi_BuildingEntityClassAttach
+				cls = ChoGGi_OBuildingEntityClassAttach
 			end
 
 			obj = cls:new()
@@ -960,14 +960,10 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 end
 
 function ChoGGi.ComFuncs.MonitorThreads()
-	if blacklist then
-		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.MonitorThreads")
-		return
-	end
-
 	local table_list = {}
 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, nil, Strings[302535920000853--[[Monitor--]]] .. ": ThreadsRegister")
 	dlg:EnableAutoRefresh()
+	local RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
 
 	CreateRealTimeThread(function()
 		-- stop when dialog is closed
@@ -976,12 +972,25 @@ function ChoGGi.ComFuncs.MonitorThreads()
 			table_clear(table_list)
 			local c = 0
 			for thread in pairs(ThreadsRegister) do
-				local info = debug_getinfo(thread, 1, "S")
-				if info then
-					c = c + 1
-					-- we use a "tags" tag to store a unique number (examine uses tags off for text, so we need to use on
-					table_list[info.source .. "(" .. info.linedefined .. ")<tags on " .. c .. ">"] = thread
+				if blacklist then
+					local funcs = RetThreadInfo(thread)
+					for i = 1, #funcs do
+						local info = funcs[i]
+						if info.func ~= "[C](-1)" then
+							c = c + 1
+							table_list[info.func .. "<tags on " .. c .. ">"] = thread
+							break
+						end
+					end
+				else
+					local info = debug_getinfo(thread, 1, "S")
+					if info then
+						c = c + 1
+						-- we use a "tags" tag to store a unique number (examine uses tags off for text, so we need to use on
+						table_list[info.source .. "(" .. info.linedefined .. ")<tags on " .. c .. ">"] = thread
+					end
 				end
+
 			end
 			WaitMsg("ChoGGi_Examine_Refresh")
 		end
@@ -989,14 +998,14 @@ function ChoGGi.ComFuncs.MonitorThreads()
 end
 
 -- sortby: nil = table length, 1 = table names
--- skip_under: don't show any tables under this length
--- pad_to: needed for sorting in examine (prefixes zeros to length)
+-- skip_under: don't show any tables under this length (default 25)
 --~ 	ChoGGi.ComFuncs.MonitorTableLength(_G)
-function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, pad_to, sortby, name)
-	name = name or RetName(obj)
+function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby, title)
+	obj = obj or _G
+	title = title or RetName(obj)
 	skip_under = skip_under or 25
 	local table_list = {}
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, nil, name)
+	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, nil, title)
 	dlg:EnableAutoRefresh()
 	local PadNumWithZeros = ChoGGi.ComFuncs.PadNumWithZeros
 
@@ -1015,7 +1024,7 @@ function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, pad_to, sortby, nam
 					-- skip the tiny tables
 					if length > skip_under then
 						if not sortby then
-							table_list[PadNumWithZeros(length, pad_to) .. " " .. key] = value
+							table_list[PadNumWithZeros(length) .. " " .. key] = value
 						elseif sortby == 1 then
 							table_list[key .. " " .. length] = value
 						end
@@ -1170,12 +1179,12 @@ function ChoGGi.ComFuncs.ToggleConsoleLog()
 end
 
 function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
-	if visible and not dlgChoGGi_ConsoleLogWin then
-		dlgChoGGi_ConsoleLogWin = ChoGGi_ConsoleLogWin:new({}, terminal.desktop, {})
-		dlgChoGGi_ConsoleLogWin:UpdateText(LoadLogfile())
+	if visible and not dlgChoGGi_DlgConsoleLogWin then
+		dlgChoGGi_DlgConsoleLogWin = ChoGGi_DlgConsoleLogWin:new({}, terminal.desktop, {})
+		dlgChoGGi_DlgConsoleLogWin:UpdateText(LoadLogfile())
 	end
 
-	local dlg = dlgChoGGi_ConsoleLogWin
+	local dlg = dlgChoGGi_DlgConsoleLogWin
 	if dlg then
 		dlg:SetVisible(visible)
 
@@ -2292,7 +2301,11 @@ do -- RetThreadInfo/FindThreadFunc
 
 		if blacklist then
 			-- func expects an empty table
-			GedInspectedObjects[thread] = {}
+			if GedInspectedObjects[thread] then
+				table_clear(GedInspectedObjects[thread])
+			else
+				GedInspectedObjects[thread] = {}
+			end
 			-- returns a table of the funcs in the thread
 			local threads = GedInspectorFormatObject(thread).members
 			-- build a list of func name / level
@@ -2307,7 +2320,8 @@ do -- RetThreadInfo/FindThreadFunc
 					elseif key == "value" then
 						-- split "func(line num) name" into two
 						local space = value:find(") ", 1, true)
-						temp.func = value:sub(2, space - 1)
+--~ 						temp.func = value:sub(2, space - 1)
+						temp.func = value:sub(2, space)
 						-- change unknown to Lua
 						local n = value:sub(space + 2, -2)
 						temp.name = n ~= "unknown name" and n or Strings[302535920000723--[[Lua--]]]
@@ -3828,8 +3842,8 @@ end
 
 -- close any examine dlgs opened from "parent" examine dlg
 function ChoGGi.ComFuncs.CloseChildExamineDlgs(self)
-	local g_ExamineDlgs = g_ExamineDlgs or empty_table
-	for _, dlg in pairs(g_ExamineDlgs) do
+	local ChoGGi_dlgs_examine = ChoGGi_dlgs_examine or empty_table
+	for _, dlg in pairs(ChoGGi_dlgs_examine) do
 		if dlg ~= self and dlg.parent_id == self.parent_id then
 			dlg:Close()
 		end

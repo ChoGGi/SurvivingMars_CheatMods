@@ -25,10 +25,9 @@ if not ChoGGi.testing then
 end
 
 local function StartUp()
+	-- pause on load
 	CreateRealTimeThread(function()
-		-- pause on load
-		WaitMsg("Resume")
-		print("pause")
+		WaitMsg("MarsResume")
 		SetGameSpeedState("pause")
 	end)
 
@@ -317,6 +316,33 @@ end)
 
 -- benchmarking stuff
 
+function ChoGGi.testing.TestLocalVsTableLookup()
+
+	local lookup_table = {}
+	for i = 1, 10000 do
+		lookup_table[i] = true
+	end
+
+	local nothing
+	ChoGGi.ComFuncs.TickStart("TestLocalVsTableLookup.Tick.1")
+	for _ = 1, 100000000 do
+		local lookuped = lookup_table[1234]
+		if lookuped then
+			nothing = lookuped
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("TestLocalVsTableLookup.Tick.1")
+
+	ChoGGi.ComFuncs.TickStart("TestLocalVsTableLookup.Tick.2")
+	for _ = 1, 100000000 do
+		if lookup_table[1234] then
+			nothing = lookup_table[1234]
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("TestLocalVsTableLookup.Tick.2")
+
+end
+
 function ChoGGi.testing.TestToStr()
 	local tostring = tostring
 
@@ -465,24 +491,24 @@ function ChoGGi.testing.TestRandomColour(amount)
 	local RandomColour = ChoGGi.ComFuncs.RandomColour
 	local RandomColour2 = ChoGGi.ComFuncs.RandomColour2
 
-	local s = ChoGGi.ComFuncs.TickStart
-	local e = ChoGGi.ComFuncs.TickEnd
-	s("TestRandomColour.1.Total")
+	local TickStart = ChoGGi.ComFuncs.TickStart
+	local TickEnd = ChoGGi.ComFuncs.TickEnd
+	TickStart("TestRandomColour.1.Total")
 	for _ = 1, amount or 5 do
-		s("TestRandomColour.1.Tick")
+		TickStart("TestRandomColour.1.Tick")
 		RandomColour(1000000)
-		e("TestRandomColour.1.Tick")
+		TickEnd("TestRandomColour.1.Tick")
 	end
-	e("TestRandomColour.1.Total")
+	TickEnd("TestRandomColour.1.Total")
 
 	print("\n\n")
-	s("TestRandomColour2.Total")
+	TickStart("TestRandomColour2.Total")
 	for _ = 1, amount or 5 do
-		s("TestRandomColour.2.Tick")
+		TickStart("TestRandomColour.2.Tick")
 		RandomColour2(1000000)
-		e("TestRandomColour.2.Tick")
+		TickEnd("TestRandomColour.2.Tick")
 	end
-	e("TestRandomColour2.Total")
+	TickEnd("TestRandomColour2.Total")
 end
 
 function ChoGGi.testing.TestRandom(amount)
