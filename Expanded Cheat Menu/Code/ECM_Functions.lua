@@ -969,30 +969,30 @@ function ChoGGi.ComFuncs.MonitorThreads()
 		-- stop when dialog is closed
 		local ThreadsRegister = ThreadsRegister
 		while dlg and dlg.window_state ~= "destroying" do
-			table_clear(table_list)
-			local c = 0
-			for thread in pairs(ThreadsRegister) do
-				if blacklist then
-					local funcs = RetThreadInfo(thread)
-					for i = 1, #funcs do
-						local info = funcs[i]
-						if info.func ~= "[C](-1)" then
+			-- only update when it's our dlg sending the msg
+			local ok,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
+			if msg_dlg == dlg then
+				-- we use a "tags" tag to store a unique number (examine uses tags off for text, so we need to use on
+				local c = 0
+				table_clear(table_list)
+				for thread in pairs(ThreadsRegister) do
+					if blacklist then
+						-- first func is always a C func (WaitMsg or Sleep), and we want a file name
+						local info = RetThreadInfo(thread)[2]
+						if info then
 							c = c + 1
 							table_list[info.func .. "<tags on " .. c .. ">"] = thread
-							break
+						end
+					else
+						local info = debug_getinfo(thread, 1, "S")
+						if info then
+							c = c + 1
+							table_list[info.source .. "(" .. info.linedefined .. ")<tags on " .. c .. ">"] = thread
 						end
 					end
-				else
-					local info = debug_getinfo(thread, 1, "S")
-					if info then
-						c = c + 1
-						-- we use a "tags" tag to store a unique number (examine uses tags off for text, so we need to use on
-						table_list[info.source .. "(" .. info.linedefined .. ")<tags on " .. c .. ">"] = thread
-					end
 				end
-
 			end
-			WaitMsg("ChoGGi_Examine_Refresh")
+
 		end
 	end)
 end
@@ -1012,27 +1012,31 @@ function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby, title)
 	CreateRealTimeThread(function()
 		-- stop when dialog is closed
 		while dlg and dlg.window_state ~= "destroying" do
-			table_clear(table_list)
+			-- only update when it's our dlg sending the msg
+			local ok,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
+			if msg_dlg == dlg then
+				table_clear(table_list)
 
-			for key, value in pairs(obj) do
-				if type(value) == "table" then
-					-- tables can be index or associative or a mix
-					local length = 0
-					for _ in pairs(value) do
-						length = length + 1
-					end
-					-- skip the tiny tables
-					if length > skip_under then
-						if not sortby then
-							table_list[PadNumWithZeros(length) .. " " .. key] = value
-						elseif sortby == 1 then
-							table_list[key .. " " .. length] = value
+				for key, value in pairs(obj) do
+					if type(value) == "table" then
+						-- tables can be index or associative or a mix
+						local length = 0
+						for _ in pairs(value) do
+							length = length + 1
 						end
-					end
+						-- skip the tiny tables
+						if length > skip_under then
+							if not sortby then
+								table_list[PadNumWithZeros(length) .. " " .. key] = value
+							elseif sortby == 1 then
+								table_list[key .. " " .. length] = value
+							end
+						end
 
+					end
 				end
 			end
-			WaitMsg("ChoGGi_Examine_Refresh")
+
 		end
 	end)
 end
@@ -2141,10 +2145,7 @@ do -- BBoxLines_Toggle
 
 		-- fallback to sel obj
 		if not IsBox(bbox) then
-			bbox = ObjectHierarchyBBox(obj)
-			if not bbox:sizez() then
-				bbox = obj:GetObjectBBox()
-			end
+			bbox = obj:GetObjectBBox()
 		end
 
 		if IsBox(bbox) then
@@ -2254,6 +2255,8 @@ end
 
 do -- RetThreadInfo/FindThreadFunc
 	local GedInspectorFormatObject = GedInspectorFormatObject
+	local GedInspectedObjects_l
+
 	local function DbgGetlocal(thread, level)
 		local list = {}
 		local idx = 1
@@ -2300,11 +2303,12 @@ do -- RetThreadInfo/FindThreadFunc
 		local funcs = {}
 
 		if blacklist then
-			-- func expects an empty table
-			if GedInspectedObjects[thread] then
-				table_clear(GedInspectedObjects[thread])
+			GedInspectedObjects_l = GedInspectedObjects_l or GedInspectedObjects
+			-- func expects a table
+			if GedInspectedObjects_l[thread] then
+				table_clear(GedInspectedObjects_l[thread])
 			else
-				GedInspectedObjects[thread] = {}
+				GedInspectedObjects_l[thread] = {}
 			end
 			-- returns a table of the funcs in the thread
 			local threads = GedInspectorFormatObject(thread).members
@@ -2320,7 +2324,6 @@ do -- RetThreadInfo/FindThreadFunc
 					elseif key == "value" then
 						-- split "func(line num) name" into two
 						local space = value:find(") ", 1, true)
---~ 						temp.func = value:sub(2, space - 1)
 						temp.func = value:sub(2, space)
 						-- change unknown to Lua
 						local n = value:sub(space + 2, -2)
@@ -2454,13 +2457,11 @@ end -- do
 
 do -- ObjHexShape_Toggle
 	local HexRotate = HexRotate
---~ 	local RotateRadius = RotateRadius
 	local HexToWorld = HexToWorld
 	local point = point
 
 	local OHexSpot, OText
 	local FallbackOutline = FallbackOutline
---~ 	local radius = const.HexSize / 2
 
 	-- function Dome:GenerateWalkablePoints() (mostly)
 	local function BuildShape(obj, shape, depth_test, hex_pos, colour, offset)
@@ -2482,7 +2483,7 @@ do -- ObjHexShape_Toggle
 			end
 
 			-- wall hax off
-			if depth_test then
+			if not depth_test then
 				hex:SetNoDepthTest(true)
 			end
 
@@ -2968,13 +2969,9 @@ do -- ShowAnimDebug_Toggle
 		text.ChoGGi_AnimDebug = true
 		obj:Attach(text, 0)
 
---~ 		local obj_bbox = ObjectHierarchyBBox(obj, const.efCollision)
-		local obj_bbox = ObjectHierarchyBBox(obj)
-		if not obj_bbox:sizez() then
-			obj_bbox = obj:GetObjectBBox()
-		end
+		local obj_bbox = obj:GetObjectBBox():sizez()
 
-		text:SetAttachOffset(point(0, 0, obj_bbox:sizez() + 100))
+		text:SetAttachOffset(point(0, 0, obj_bbox + 100))
 		CreateGameTimeThread(function()
 			while IsValid(text) do
 				text:SetText(obj:GetAnimDebug())
@@ -3233,7 +3230,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 
 		-- move orig to saved name (if it hasn't already been)
 		local saved
-		if parent == ChoGGi.Temp._G then
+		if parent == _G then
 			-- SM error spams console if you have the affront to try _G.NonExistingKey... (thanks autorun.lua)
 			-- it works prefectly fine of course, but i like a clean log.
 			-- in other words a workaround for "Attempt to use an undefined global '"
@@ -3816,14 +3813,15 @@ function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 	CreateRealTimeThread(function()
 		-- stop when dialog is closed
 		while dlg and dlg.window_state ~= "destroying" do
-
-			table_iclear(results_list)
-			local results = {func(varargs)}
-			for i = 1, #results do
-				results_list[i] = results[i]
+			-- only update when it's our dlg sending the msg
+			local ok,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
+			if msg_dlg == dlg then
+				table_iclear(results_list)
+				local results = {func(varargs)}
+				for i = 1, #results do
+					results_list[i] = results[i]
+				end
 			end
-
-			WaitMsg("ChoGGi_Examine_Refresh")
 		end
 	end)
 end

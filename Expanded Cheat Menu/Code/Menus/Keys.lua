@@ -47,21 +47,12 @@ Actions[c] = {ActionName = Strings[302535920001348--[[Restart--]]],
 	ActionBindable = true,
 }
 
--- goes to placement mode with last built object
+-- goes to placement mode with SelectedObj or last built object
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001349--[[Place Last Constructed Building--]]],
-	ActionId = ".Keys.LastConstructedBuilding",
-	OnAction = ChoGGi.MenuFuncs.LastConstructedBuilding,
+Actions[c] = {ActionName = Strings[302535920001350--[[Place Last Selected/Constructed Building--]]],
+	ActionId = ".Keys.PlaceLastSelectedConstructedBld",
+	OnAction = ChoGGi.ComFuncs.PlaceLastSelectedConstructedBld,
 	ActionShortcut = "Ctrl-Space",
-	ActionBindable = true,
-}
-
--- goes to placement mode with SelectedObj
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920001350--[[Place Last Selected Object--]]],
-	ActionId = ".Keys.LastSelectedObject",
-	OnAction = ChoGGi.MenuFuncs.LastSelectedObject,
-	ActionShortcut = "Ctrl-Shift-Space",
 	ActionBindable = true,
 }
 

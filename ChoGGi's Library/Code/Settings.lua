@@ -65,10 +65,19 @@ ChoGGi.Tables = {
 
 	-- some names need to be fixed when doing construction placement
 	ConstructionNamesListFix = {
-		-- can't build em
-		Rocket = "",
+		SupplyRocket = "SupplyRocketBuilding",
+		Rocket = "SupplyRocketBuilding",
 		-- added when a rocket lands
 		RocketLandingSite = "LandingPad",
+		RCConstructor = "RCConstructorBuilding",
+		RCDriller = "RCDrillerBuilding",
+		ExplorerRover = "RCExplorerBuilding",
+		RCHarvester = "RCHarvesterBuilding",
+		RCRover = "RCRoverBuilding",
+		RCSensor = "RCSensorBuilding",
+		RCSolar = "RCSolarBuilding",
+		RCTerraformer = "RCTerraformerBuilding",
+		RCTransport = "RCTransportBuilding",
 	},
 	Cargo = {},
 	CargoPresets = {},

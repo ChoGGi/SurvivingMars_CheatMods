@@ -12,6 +12,13 @@ local mod = Mods[ChoGGi.id]
 -- is ECM shanghaied by the blacklist?
 if mod.no_blacklist then
 	ChoGGi.blacklist = false
+	Msg("ChoGGi_UpdateBlacklistFuncs",mod.env)
+	-- makes some stuff easier
+	local lib_env = Mods.ChoGGi_Library.env
+	lib_env._G = mod.env._G
+	lib_env.rawget = mod.env.rawget
+	lib_env.getmetatable = mod.env.getmetatable
+	lib_env.os = mod.env.os
 end
 
 -- I should really split ChoGGi into funcs and settings... one of these days
@@ -26,9 +33,6 @@ ChoGGi.settings_file = "AppData/CheatMenuModSettings.lua"
 if ChoGGi.blacklist then
 	ChoGGi.ComFuncs.FileExists = empty_func
 else
-	-- used for certain funcs in lib mod
-	ChoGGi.Temp._G = _G
-
 	local AsyncGetFileAttribute = AsyncGetFileAttribute
 	function ChoGGi.ComFuncs.FileExists(file)
 		-- folders don't have a size

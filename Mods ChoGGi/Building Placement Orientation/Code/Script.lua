@@ -4,52 +4,24 @@ local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
--- goes to placement mode with last built object
+-- goes to placement mode with SelectedObj or last built object
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001349--[[Place Last Constructed Building--]]],
-	ActionId = "BuildingPlacementOrientation.LastConstructedBuilding",
-	OnAction = function()
-		local last = UICity.LastConstructedBuilding
-		if type(last) == "table" then
-			ChoGGi.ComFuncs.ConstructionModeSet(last.template_name ~= "" and last.template_name or last:GetEntity())
-		end
-	end,
+Actions[c] = {ActionName = Strings[302535920001350--[[Place Last Selected/Constructed Building--]]],
+	ActionId = "BuildingPlacementOrientation.LastSelectedObject",
+	OnAction = ChoGGi.ComFuncs.PlaceLastSelectedConstructedBld,
 	ActionShortcut = "Ctrl-Space",
 	replace_matching_id = true,
 }
 
--- goes to placement mode with SelectedObj
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920001350--[[Place Last Selected Object--]]],
-	ActionId = "BuildingPlacementOrientation.LastSelectedObject",
-	OnAction = function()
-		local ChoGGi = ChoGGi
-		local obj = ChoGGi.ComFuncs.SelObject()
-		if type(obj) == "table" then
-			ChoGGi.Temp.LastPlacedObject = obj
-			ChoGGi.ComFuncs.ConstructionModeNameClean(ValueToLuaCode(obj))
-		end
-	end,
-	ActionShortcut = "Ctrl-Shift-Space",
-	replace_matching_id = true,
-}
-
-function OnMsg.BuildingPlaced(obj)
-	if obj:IsKindOf("Building") then
-		ChoGGi.Temp.LastPlacedObject = obj
-	end
-end --OnMsg
-function OnMsg.ConstructionSitePlaced(obj)
-	if obj:IsKindOf("Building") then
-		ChoGGi.Temp.LastPlacedObject = obj
-	end
-end --OnMsg
-function OnMsg.SelectionAdded(obj)
-	-- update last placed (or selected)
+local function UpdateLast(obj)
 	if obj:IsKindOf("Building") then
 		ChoGGi.Temp.LastPlacedObject = obj
 	end
 end
+
+OnMsg.BuildingPlaced = UpdateLast
+OnMsg.ConstructionSitePlaced = UpdateLast
+OnMsg.SelectionAdded = UpdateLast
 
 local function StartupCode()
 	ChoGGi.ComFuncs.SaveOrigFunc("ConstructionController", "CreateCursorObj")

@@ -85,6 +85,7 @@ local locId_sig = shift(255, 56)
 local LightUserData = LightUserData
 local bor = bor
 local GetLanguage = GetLanguage
+local setmetatable = setmetatable
 function ChoGGi.ComFuncs.UpdateStringsList()
 	local lang = GetLanguage()
 	ChoGGi.lang = lang

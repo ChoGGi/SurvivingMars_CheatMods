@@ -39,7 +39,6 @@ local atan = atan
 local point = point
 local GetDomeAtHex = GetDomeAtHex
 local WorldToHex = WorldToHex
-local ObjectHierarchyBBox = ObjectHierarchyBBox
 
 local BaseMeteor = BaseMeteor
 local pt1500 = point(0, 0, 1500)
@@ -66,13 +65,7 @@ local orig_ConstructionSite_GameInit = ConstructionSite.GameInit
 local function YamatoHasshin(site)
 
 	-- stick the site underground by it's height then make it rise from the dead
---~ 	local site_bbox = ObjectHierarchyBBox(site, const.efCollision)
-	local site_bbox = ObjectHierarchyBBox(site)
-	if not site_bbox:sizez() then
-		site_bbox = site:GetObjectBBox()
-	end
-
-	local site_height = point(0, 0, site_bbox:sizez())
+	local site_height = point(0, 0, site:GetObjectBBox():sizez())
 	if not site_height:z() then
 		site_height = pt1500
 	end

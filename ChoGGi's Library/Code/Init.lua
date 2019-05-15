@@ -181,8 +181,6 @@ ChoGGi = {
 		transp_mode = false,
 		-- stores a table of my dialogs
 		Dialogs = {},
-		-- ECM will replace this with unblacklisted _G if ECM HelperMod is installed
-		_G = _G,
 		-- they changed it once, they can change it again (trans func returns this for fail)
 		missing_text = "Missing text",
 	},
@@ -208,11 +206,9 @@ end
 -- fake mod used to tell if it's my comp, if you want some extra msgs and .testing funcs have at it
 if Mods.ChoGGi_testing then
 	ChoGGi.testing = {}
-end
-
-local testing = ChoGGi.testing
-function printC(...)
-	if testing then
+	function printC(...)
 		print(...)
 	end
+else
+	printC = empty_func
 end

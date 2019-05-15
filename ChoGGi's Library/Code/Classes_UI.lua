@@ -276,28 +276,30 @@ DefineClass.ChoGGi_XExternalTextEditorPlugin = {
 }
 
 function ChoGGi_XExternalTextEditorPlugin:OpenEditor(edit)
-	local g = ChoGGi.Temp._G
-	g_ExternalTextEditorActiveCtrl = edit
+	local _G = _G
+	_G.g_ExternalTextEditorActiveCtrl = edit
 	edit.external_file = edit.external_path .. "/tempedit.lua"
 
-	g.AsyncCreatePath(edit.external_path)
+	_G.AsyncCreatePath(edit.external_path)
 
-	g.AsyncStringToFile(edit.external_file, edit:GetText())
-	local cmd = edit.external_cmd:format(ConvertToOSPath(edit.external_file))
+	_G.AsyncStringToFile(edit.external_file, edit:GetText())
+	local cmd = edit.external_cmd:format(_G.ConvertToOSPath(edit.external_file))
 
-	local exec, result = g.os.execute(cmd)
+	local exec, result = os.execute(cmd)
 	if not exec then
 		print("ExternalTextEditorPlugin:", result)
 	end
 end
 function ChoGGi_XExternalTextEditorPlugin:OnTextChanged(edit)
-	if g_ExternalTextEditorActiveCtrl == edit then
-		ChoGGi.Temp._G.AsyncStringToFile(edit.external_file, edit:GetText())
+	local _G = _G
+	if _G.g_ExternalTextEditorActiveCtrl == edit then
+		_G.AsyncStringToFile(edit.external_file, edit:GetText())
 	end
 end
 function ChoGGi_XExternalTextEditorPlugin.ApplyEdit(file, change, edit)
-	if g_ExternalTextEditorActiveCtrl == edit and change == "Modified" then
-		local err, content = ChoGGi.Temp._G.AsyncFileToString(file or edit.external_file)
+	local _G = _G
+	if _G.g_ExternalTextEditorActiveCtrl == edit and change == "Modified" then
+		local err, content = _G.AsyncFileToString(file or edit.external_file)
 		if not err and edit then
 			edit:SetText(content)
 		end

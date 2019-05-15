@@ -7,8 +7,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 -- Strings.lua
 local Translate = ChoGGi.ComFuncs.Translate
 
-local pairs, tonumber, type, rawget = pairs, tonumber, type, rawget
-local getmetatable, tostring = getmetatable, tostring
+local pairs, tonumber, type, tostring = pairs, tonumber, type, tostring
 local AsyncRand = AsyncRand
 local FindNearestObject = FindNearestObject
 local GetTerrainCursor = GetTerrainCursor
@@ -26,6 +25,13 @@ local table_sort = table.sort
 local table_copy = table.copy
 local table_rand = table.rand
 local SuspendPassEdits = SuspendPassEdits
+
+local rawget, getmetatable = rawget, getmetatable
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	-- make sure we use the actual funcs if we can
+	rawget = env.rawget
+	getmetatable = env.getmetatable
+end
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
 local function SaveOrigFunc(class_or_func, func_name)
@@ -87,10 +93,10 @@ ChoGGi.ComFuncs.IsObjlist = IsObjlist
 -- root is where we start looking (defaults to _G).
 -- create is a boolean to add a table if the "name" is absent.
 local function DotNameToObject(str, root, create)
-	local g = ChoGGi.Temp._G
+	local _G = _G
 
 	-- parent always starts out as "root"
-	local parent = root or g
+	local parent = root or _G
 
 	-- https://www.lua.org/pil/14.1.html
 	-- [] () + ? . act like regexp ones
@@ -105,7 +111,7 @@ local function DotNameToObject(str, root, create)
 
 		local obj_child
 		-- workaround for "Attempt to use an undefined global"
-		if parent == g then
+		if parent == _G then
 			obj_child = rawget(parent, name)
 		else
 			obj_child = parent[name]
@@ -135,7 +141,7 @@ do -- RetName
 	local missing_text = ChoGGi.Temp.missing_text
 
 	-- we use this table to display names of objects for RetName
-	local g = ChoGGi.Temp._G
+	local g = _G
 	if not rawget(g, "ChoGGi_lookup_names") then
 		g.ChoGGi_lookup_names = {}
 	end
@@ -218,7 +224,8 @@ do -- RetName
 
 		local function BuildNameList()
 			lookup_table = ChoGGi_lookup_names or {}
-			g = ChoGGi.Temp._G
+			-- if env._G was updated from ECM HelperMod
+			g = _G
 			lookup_table[g.terminal.desktop] = "terminal.desktop"
 
 			AddFuncs("lfs")
@@ -236,7 +243,7 @@ do -- RetName
 						-- we get _G later
 						if value ~= g then
 							for key2, value2 in pairs(value) do
-								AddFuncToList(key, value2, key2)
+								AddFuncToList(key, value2, "dbg_reg()."..key2)
 							end
 						end
 					end
@@ -3703,27 +3710,20 @@ do -- AddBlinkyToObj
 	end
 end -- do
 
--- fixup name we get from Object
-function ChoGGi.ComFuncs.ConstructionModeNameClean(itemname)
-	-- we want template_name or we have to guess from the placeobj name
-	local tempname = itemname:match("^.+template_name%A+([A-Za-z_%s]+).+$")
-	if not tempname then
-		tempname = itemname:match("^PlaceObj%('(%a+).+$")
+function ChoGGi.ComFuncs.PlaceLastSelectedConstructedBld()
+	local obj = ChoGGi.ComFuncs.SelObject()
+	local Temp = ChoGGi.Temp
+
+	if obj then
+		Temp.LastPlacedObject = obj
+	elseif Temp.LastPlacedObject then
+		obj = Temp.LastPlacedObject
+	else
+		obj = UICity.LastConstructedBuilding
 	end
 
-	if tempname:find("Deposit") then
-		local obj = PlaceObj(tempname, {
-			"Pos", ChoGGi.ComFuncs.CursorNearestHex(),
-			"revealed", true,
-			"grade", "Very High",
-		})
-
-		local r = const.ResourceScale
-		obj.max_amount = ChoGGi.ComFuncs.Random(1000 * r, 100000 * r)
-		obj:CheatRefill()
-		obj.amount = obj.max_amount
-	else
-		ChoGGi.ComFuncs.ConstructionModeSet(tempname)
+	if obj and obj.class then
+		ChoGGi.ComFuncs.ConstructionModeSet(ChoGGi.ComFuncs.RetTemplateOrClass(obj))
 	end
 end
 
@@ -3734,10 +3734,8 @@ function ChoGGi.ComFuncs.ConstructionModeSet(itemname)
 		CloseDialog("XBuildMenu")
 	end
 	-- fix up some names
-	local fixed = ChoGGi.Tables.ConstructionNamesListFix[itemname]
-	if fixed then
-		itemname = fixed
-	end
+	itemname = ChoGGi.Tables.ConstructionNamesListFix[itemname] or itemname
+
 	-- n all the rest
 	local igi = Dialogs.InGameInterface
 	if not igi or not igi:GetVisible() then
@@ -3751,16 +3749,17 @@ function ChoGGi.ComFuncs.ConstructionModeSet(itemname)
 	local _, _, can_build, action = UIGetBuildingPrerequisites(bld_template.build_category, bld_template, true)
 
 	local dlg = Dialogs.XBuildMenu
+	local name = bld_template.id ~= "" and bld_template.id or bld_template.template_name or bld_template.template_class
 	if action then
 		action(dlg, {
 			enabled = can_build,
-			name = bld_template.id ~= "" and bld_template.id or bld_template.template_name,
+			name = name,
 			construction_mode = bld_template.construction_mode
 		})
 	-- ?
 	else
 		igi:SetMode("construction", {
-			template = bld_template.template_name,
+			template = name,
 			selected_dome = dlg and dlg.context.selected_dome
 		})
 	end
@@ -4223,7 +4222,7 @@ do -- ConstructableArea
 end -- do
 
 function ChoGGi.ComFuncs.RetTemplateOrClass(obj)
-	return obj.template_name or obj.class
+	return obj.template_name ~= "" and obj.template_name or obj.class
 end
 
 
@@ -4549,11 +4548,11 @@ function ChoGGi.ComFuncs.DisastersStop()
 
 end
 function ChoGGi.ComFuncs.RetTableValue(obj, key)
-	-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env uses the metatable from _G.__index and causes sm to log an error msg
-	local index = getmetatable(obj)
-	if index and index.__index then
-		-- and PropObjGetProperty will bug out on some tables
-		if IsValid(obj) then
+	local meta = getmetatable(obj)
+	if meta and meta.__index then
+		-- some stuff like mod.env uses the metatable from _G.__index and causes sm to log an error (still works fine though)
+		if type(key) == "string" then
+			-- PropObjGetProperty works better on class funcs, but it can mess up on some tables so only use it for strings)
 			return PropObjGetProperty(obj, key)
 		else
 			return rawget(obj, key)
@@ -4764,4 +4763,19 @@ function ChoGGi.ComFuncs.RetMapDlg_MiniMap()
 		end
 	end
 	return map_dlg
+end
+
+function ChoGGi.ComFuncs.SetWinObjectVis(obj,visible)
+	-- XWindow:GetVisible()
+	if obj.target_visible then
+		-- it's visible and we don't want it visible
+		if not visible then
+			obj:SetVisible()
+		end
+	else
+		-- it's not visible and we want it visible
+		if visible then
+			obj:SetVisible(true)
+		end
+	end
 end

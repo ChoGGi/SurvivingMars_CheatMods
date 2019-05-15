@@ -70,6 +70,7 @@
 
 ### Removed:
 - Game>Light Model Custom: Use the Mod Editor's editor.
+- Ctrl-Shift-Space: Merged into Ctrl-Space (selection overrides last built).
 HelperMod: You can get it from [Github](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Startup%20HelperMod)
 - > I'm also going to be uploading ECM/Lib as packed mods for steam.
 
