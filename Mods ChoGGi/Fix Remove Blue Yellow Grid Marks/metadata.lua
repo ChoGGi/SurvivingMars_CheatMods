@@ -7,8 +7,9 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_FixRemoveBlueYellowGridMarks",
 	"steam_id", "1553086208",
+	"pops_any_uuid", "7486c4ab-af06-42d5-b30d-7815ac10998b",
 	"author", "ChoGGi",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"code", {
 		"Code/Script.lua",
 	},

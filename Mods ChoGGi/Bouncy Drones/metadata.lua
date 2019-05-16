@@ -8,14 +8,15 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"image", "Preview.png",
 	"steam_id", "1411104911",
+	"pops_any_uuid", "ec7b284b-c997-42b2-b0f6-430852fbedaa",
 	"code", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"description", [[Drones bounce when they move around (Colonists and Rovers default to no bounce).
 
-You can change the bounce amount if you have Mod Config installed.
+You can change the bounce amount in Mod Options.
 
 
 

@@ -7,11 +7,12 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_BuildingsAlwaysDusty",
 	"author", "ChoGGi",
 	"steam_id", "1411885355",
+	"pops_any_uuid", "cfc22b13-e9b3-4b06-8994-35344794cd73",
 	"code", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"description", [[Buildings will never lose their dust. This is a visual mod, it doesn't affect maintenance.
 
 Requested by: LegendGamer

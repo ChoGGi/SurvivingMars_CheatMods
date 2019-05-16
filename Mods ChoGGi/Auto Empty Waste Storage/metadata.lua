@@ -18,9 +18,10 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"steam_id", "1485526508",
+	"pops_any_uuid", "aa37094c-9a32-42f9-b934-950923b3f1f6",
 	"description", [[Automatically empties waste storage sites.
 
-Use Mod Config to toggle enabled, and hourly/daily empty.]],
+Use Mod Options to toggle enabled, and hourly/daily empty.]],
 })

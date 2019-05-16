@@ -19,7 +19,8 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
 	"steam_id", "1432964482",
-	"lua_revision", 244275,
+	"pops_any_uuid", "91bc1730-8406-463c-9efe-f0a138fdb26e",
+	"lua_revision", 244677,
 	"description", [[Adds a menu to the dome selection panel allowing you to force colonists to migrate to a new dome.
 May have to do it a couple times to make sure they're all gone.
 

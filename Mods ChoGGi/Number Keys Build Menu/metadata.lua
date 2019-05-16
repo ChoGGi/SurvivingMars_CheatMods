@@ -15,8 +15,9 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_NumberKeysBuildMenu",
 	"steam_id", "1594874242",
+	"pops_any_uuid", "5e0057b9-4f8d-46e2-918b-ad161e4df697",
 	"author", "ChoGGi",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"code", {
 		"Code/Script.lua",
 	},

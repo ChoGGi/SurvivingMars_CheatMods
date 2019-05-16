@@ -3291,11 +3291,15 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 end
 
 do -- BuildParentsMenu
-	local function ParentClicked(item)
-		item.dlg.ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[item.name], {
-			ex_params = true,
-			parent = item.dlg,
-		})
+	local function ParentClicked(item, _, _, button)
+		if button == "R" then
+			CopyToClipboard(item.name)
+		else
+			item.dlg.ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[item.name], {
+				ex_params = true,
+				parent = item.dlg,
+			})
+		end
 	end
 
 	function ChoGGi_DlgExamine:BuildParentsMenu(list, list_type, title, sort_type)
@@ -3319,8 +3323,12 @@ do -- BuildParentsMenu
 					c = c + 1
 					self.parents_menu_popup[c] = {
 						name = item,
-						hint = Strings[302535920000069--[[Examine--]]] .. " " .. self.string_Class .. " " .. self.string_Object .. ": <color 100 255 100>" .. item .. "</color>",
-						clicked = ParentClicked,
+						hint = Strings[302535920000069--[[Examine--]]] .. " "
+							.. self.string_Class .. " " .. self.string_Object
+							.. ": <color 100 255 100>" .. item .. "</color>\n"
+							.. Strings[302535920000904--[[<right_click> to copy <color green>%s</color> to clipboard.--]]]:format(self.string_Classname),
+						hint_bottom = Translate(608042494285--[[<left_click> Activate--]]) .. " " .. Strings[302535920000883--[[<right_click> Clipboard--]]],
+						mouseup = ParentClicked,
 						dlg = self,
 					}
 				end

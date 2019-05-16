@@ -8,10 +8,11 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"image", "Preview.png",
 	"steam_id", "1433249476",
+	"pops_any_uuid", "1df82b63-e65e-4d4f-b22e-cfc33556fdf0",
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"description", [[Always a green morning.
 
 Requested by BLAde.

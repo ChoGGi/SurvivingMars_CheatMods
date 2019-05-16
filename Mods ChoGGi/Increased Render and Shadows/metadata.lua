@@ -9,10 +9,11 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"image", "Preview.png",
 	"steam_id", "1411109283",
+	"pops_any_uuid", "7c5ef428-03a9-4171-bd9d-522be412f69e",
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"description", [[Further shadow, and model rendering
 This is somewhat useless without increasing zoom in Expanded Cheat Menu.
 

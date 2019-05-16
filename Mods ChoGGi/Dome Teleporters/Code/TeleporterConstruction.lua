@@ -35,9 +35,11 @@ function OnMsg.NewMap()
 end
 function OnMsg.LoadGame()
 	CityDomeTeleporterConstruction[UICity] = DomeTeleporterConstructionController:new()
---~ 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(CityDomeTeleporterConstruction[UICity])
---~ 	dlg:EnableAutoRefresh()
---~ 	ex(CityTunnelConstruction[UICity])
+	-- dbg
+	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(CityDomeTeleporterConstruction[UICity])
+	dlg:EnableAutoRefresh()
+	ex(CityTunnelConstruction[UICity])
+	-- dbg
 
 	local AddPFTunnel = Tunnel.AddPFTunnel
 	MapForEach("map", "DomeTeleporter", AddPFTunnel)
@@ -62,8 +64,11 @@ local function CallTunnelFunc(func, ...)
 end
 
 local orig_OpenTunnelConstructionInfopanel = OpenTunnelConstructionInfopanel
-function OpenTunnelConstructionInfopanel(...)
-	return CallTunnelFunc(orig_OpenTunnelConstructionInfopanel, ...)
+function OpenTunnelConstructionInfopanel(template, ...)
+	if template == "DomeTeleporter" then
+		return CallTunnelFunc(orig_OpenTunnelConstructionInfopanel, template, ...)
+	end
+	return orig_OpenTunnelConstructionInfopanel(template, ...)
 end
 
 DefineClass.DomeTeleporterConstructionDialog = {
@@ -83,16 +88,20 @@ local funcs = {
 	"OnKbdKeyDown",
 	"OnShortcut",
 }
+
+local TunnelConstructionController_cls
 function OnMsg.ClassesBuilt()
+	TunnelConstructionController_cls = TunnelConstructionController
+
 	local TunnelConstructionDialog = TunnelConstructionDialog
 	local DomeTeleporterConstructionDialog = DomeTeleporterConstructionDialog
-
 	for i = 1, #funcs do
 		local name = funcs[i]
 		DomeTeleporterConstructionDialog[name] = function(...)
 			return CallTunnelFunc(TunnelConstructionDialog[name], ...)
 		end
 	end
+
 end
 
 -- controller->
@@ -101,21 +110,19 @@ DefineClass.DomeTeleporterConstructionController = {
 	max_hex_distance_to_allow_build = mod_BuildDist,
 }
 
-local TunnelConstructionController = TunnelConstructionController
-
 local orig_CreateConstructionGroup = CreateConstructionGroup
 function DomeTeleporterConstructionController.Activate(...)
-
+	-- replace func so it returns our template
 	function CreateConstructionGroup(template, ...)
 		if template == "Tunnel" then
 			template = "DomeTeleporter"
 		end
 		return orig_CreateConstructionGroup(template, ...)
 	end
-
-	local ret = {TunnelConstructionController.Activate(...)}
-
+	-- get obj
+	local ret = {TunnelConstructionController_cls.Activate(...)}
+	-- restore func
 	CreateConstructionGroup = orig_CreateConstructionGroup
+	-- and done
 	return table_unpack(ret)
-
 end

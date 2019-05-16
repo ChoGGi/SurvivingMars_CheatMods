@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Save Rocket Cargo",
 	"title", "Save Rocket Cargo",
 	"version", 2,
 	"version_major", 0,
@@ -10,7 +9,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1681523723",
 	"pops_any_uuid", "983cde10-49f0-4aab-b882-9061ca99b0ee",
 	"author", "ChoGGi",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"code", {
 		"Code/Script.lua",
 	},

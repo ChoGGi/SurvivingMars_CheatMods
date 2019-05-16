@@ -353,7 +353,7 @@ do -- ModUpload
 	local upload_msg = {}
 	local uploading
 
-	local function UploadMod(answer)
+	local function UploadMod(answer,batch)
 		if not answer then
 			return
 		end
@@ -421,7 +421,6 @@ do -- ModUpload
 
 		-- issue with mod platform (workshop/paradox mods)
 		if not prepare_worked then
-			-- let user know if we're good or not
 			ChoGGi.ComFuncs.MsgWait(
 				Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>", mod.title):gsub("<err>", Translate(prepare_results)),
 				Translate(1000592--[[Error--]]) .. ": " .. mod.title,
@@ -533,12 +532,12 @@ do -- ModUpload
 
 		-- show id in console/copy to clipb
 		if not test and item_id then
-
-			if clipboard and not err then
+			-- don't copy to clipb if batch or failed
+			if batch ~= "batch" and clipboard and not err then
 				if mod_params.uuid_property then
-					CopyToClipboard("	\"" .. mod_params.uuid_property .. "\", \"" .. item_id .. "\", ")
+					CopyToClipboard("	\"" .. mod_params.uuid_property .. "\", \"" .. item_id .. "\",")
 				else
-					CopyToClipboard("	\"steam_id\", \"" .. item_id .. "\", ")
+					CopyToClipboard("	\"steam_id\", \"" .. item_id .. "\",")
 				end
 			end
 
@@ -677,7 +676,7 @@ do -- ModUpload
 							upload_image
 						)
 					else
-						UploadMod(true)
+						UploadMod(true,"batch")
 					end
 				end
 
@@ -743,19 +742,21 @@ do -- ModUpload
 		local Mods = Mods
 		local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 		for id, mod in pairs(Mods) do
-			local image = ""
-			-- can't use <image> tags unless there's no spaces in the path...
-			if ValidateImage(mod.image) and not mod.image:find(" ") then
-				image = "<image " .. mod.image .. ">\n\n"
+			if id ~= "ChoGGi_testing" and mod.content_path:sub(1,11) ~= "PackedMods/" then
+				local image = ""
+				-- can't use <image> tags unless there's no spaces in the path...
+				if ValidateImage(mod.image) and not mod.image:find(" ") then
+					image = "<image " .. mod.image .. ">\n\n"
+				end
+				c = c + 1
+				item_list[c] = {
+					text = mod.title,
+					value = id,
+					hint = image .. mod.description,
+					mod = mod,
+					path = mod.env.CurrentModPath or mod.content_path or mod.path,
+				}
 			end
-			c = c + 1
-			item_list[c] = {
-				text = mod.title,
-				value = id,
-				hint = image .. mod.description,
-				mod = mod,
-				path = mod.env.CurrentModPath or mod.content_path or mod.path,
-			}
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{

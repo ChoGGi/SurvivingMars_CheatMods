@@ -7,8 +7,9 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_CustomColourScheme",
 	"steam_id", "1565748234",
+	"pops_any_uuid", "8e6c8527-d1e3-411e-848f-689671614778",
 	"author", "ChoGGi",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"TagCosmetics", true,
 	"code", {
 		"Code/Script.lua",

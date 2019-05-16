@@ -7,8 +7,9 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_FixMeteorStuckOnMap",
 	"steam_id", "1529788090",
+	"pops_any_uuid", "52131cff-856e-40b9-ac18-782f28811ad3",
 	"author", "ChoGGi",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"code", {
 		"Code/Script.lua",
 	},

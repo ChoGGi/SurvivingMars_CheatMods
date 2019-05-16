@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ConstructionShowDustGrid",
 	"author", "ChoGGi",
 	"image", "Preview.png",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"steam_id", "1566670588",
 	"pops_any_uuid", "b53b9bb2-60ca-44da-a36e-72b7d062b8f9",
 	"code", {

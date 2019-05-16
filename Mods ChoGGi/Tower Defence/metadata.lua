@@ -15,8 +15,9 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_TowerDefense",
 	"steam_id", "1504640997",
+	"pops_any_uuid", "de575d3f-099e-4c4f-9ab0-18c174506aab",
 	"author", "ChoGGi",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"code", {
 		"Code/Script.lua",
 	},

@@ -16,10 +16,11 @@ return PlaceObj("ModDef", {
 	"tags", "Building",
 	"id", "ChoGGi_EmptyMechDepot",
 	"steam_id", "1411108310",
+	"pops_any_uuid", "c3b2ae57-aaf6-4dd1-a5ad-2bd33afd0505",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"description", [[Adds a button to mech depots to empty them out into a small depot in front of them.]],
 })

@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"pops_any_uuid", "5d128e21-df3c-469b-99cc-2a071d9cae5f",
 	"author", "ChoGGi",
 	"TagColonyLogos", true,
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"code", {
 		"Code/Script.lua"
 	},

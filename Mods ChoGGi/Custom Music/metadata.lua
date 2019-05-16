@@ -9,7 +9,8 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_CustomMusic",
 	"author", "ChoGGi",
 	"steam_id", "1411106409",
-	"lua_revision", 244275,
+	"pops_any_uuid", "8485c765-6701-4ce6-ab46-abc2a33b329f",
+	"lua_revision", 244677,
 	"code", {
 		"Code/Script.lua",
 	},

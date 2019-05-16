@@ -7,8 +7,9 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_DomeStopFilterTraitsResetQuarantine",
 	"steam_id", "1545891654",
+	"pops_any_uuid", "f0cd5380-3933-4835-8ed6-5ba01d7d8179",
 	"author", "ChoGGi",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"code", {
 		"Code/Script.lua",
 	},

@@ -11,7 +11,8 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
 	"steam_id", "1428163993",
-	"lua_revision", 244275,
+	"pops_any_uuid", "2128aa77-6734-4ea8-808c-be1a54cbdd23",
+	"lua_revision", 244677,
 	"description", [[Halves amount of waste rock each producer produces.
 
 Requested by PichuTrainer.]],

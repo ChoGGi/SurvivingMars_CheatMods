@@ -254,7 +254,7 @@ function RCTanker:RetInteractInfo(obj)
 
 			-- 0 means no limit
 			local limit = mod_LimitStorage
-			-- resources use 1 to display 1000, so that's what we edit in MCR
+			-- resources use 1 to display 1000, so that's what we edit in mod options
 			limit = limit > 0 and limit * ResourceScale or false
 
 			-- true = drain tank, false = fill
@@ -375,7 +375,7 @@ function RCTanker:TankInteract()
 
 	-- 0 means no limit
 	local limit = mod_LimitStorage
-	-- resources use 1 to display 1000, so that's what we edit in MCR
+	-- resources use 1 to display 1000, so that's what we edit in mod optns
 	limit = limit > 0 and limit * ResourceScale or false
 
 	SetUnitControlInteraction(false, self)

@@ -10,8 +10,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"steam_id", "1449211890",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"description", [[I don't care for a game storing my personal information.
 This changes all your stored info to the info for Haemimont Games and/or the CEO (thanks Google).
 

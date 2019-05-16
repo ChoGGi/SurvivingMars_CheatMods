@@ -8,11 +8,12 @@ return PlaceObj("ModDef", {
 	"tags", "Gameplay",
 	"id", "ChoGGi_BlackDustDevils",
 	"steam_id", "1411966010",
+	"pops_any_uuid", "9bfea1e7-9280-497d-b27a-e625a05a2b51",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"description", [[Makes all newly spawned dust devils black instead of brown.]],
 })

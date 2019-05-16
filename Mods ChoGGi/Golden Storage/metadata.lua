@@ -16,9 +16,10 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_GoldenStorage",
 	"author", "ChoGGi",
 	"steam_id", "1411108831",
+	"pops_any_uuid", "b939a69f-92a8-483d-a0d7-89dc76b1727b",
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"description", [[Converts Metals to Precious Metals (10 to 1 ratio).]],
 })

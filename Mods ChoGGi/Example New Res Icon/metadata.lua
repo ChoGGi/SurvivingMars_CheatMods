@@ -7,8 +7,9 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_ExampleNewResIcons",
 	"steam_id", "1581373413",
+	"pops_any_uuid", "e415aa53-69de-49b3-8711-8b6fe51b4d28",
 	"author", "ChoGGi & Rusty",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"code", {
 		"Code/Add Entities.lua",
 		"Code/Replace Object Entities.lua",

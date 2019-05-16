@@ -7,17 +7,18 @@ return PlaceObj("ModDef", {
 			"version_minor", 4,
 		}),
 	},
+--~ 	"title", "Dome Teleporters v0.5",
 	"title", "Dome Teleporters",
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"saved", 1555156800,
 	"image", "Preview.png",
 	"id", "ChoGGi_DomeTeleporters",
 	"steam_id", "1572847416",
 	"pops_any_uuid", "9d8cb03c-6e7b-440e-b8d5-9542d12fd003",
 	"author", "ChoGGi",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"code", {
 		"Code/Script.lua",
 		"Code/TeleporterConstruction.lua",
@@ -29,7 +30,7 @@ This will allow you to have pure resident domes that connect to the work/leisure
 You can set shifts that colonists are allowed to use the teleporter.
 Treat these like regular passages, as they share some of the same limitations.
 
-Length defaults to tunnel length, use Mod Config Reborn to change.
+Length defaults to tunnel length, use Mod Options to change.
 
 Known Issues:
 If you turn it off, then the colonists will group up in front of it (I figured that was better then them quitting and so on).

@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "1522200776",
 	"pops_any_uuid", "f11ce232-278a-422e-b12d-476f9a148d1c",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"description", [[Shows maxed grid for ranged buildings when in construction mode.
 Ranged buildings:
 Triboelectric Scrubber

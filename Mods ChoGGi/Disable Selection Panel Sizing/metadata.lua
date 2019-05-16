@@ -7,8 +7,9 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_DisableSelectionPanelSizing",
 	"steam_id", "1573994315",
+	"pops_any_uuid", "9d26158c-97e7-4f28-af71-506a588730f1",
 	"author", "ChoGGi",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"code", {
 		"Code/Script.lua",
 	},

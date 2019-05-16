@@ -11,6 +11,8 @@ SetWorkingDir %A_ScriptDir%
 
 Loop Files,*,D
 	{
+	FileDelete %A_LoopFileName%\Pack\ModContent.hpk
+	FileRemoveDir %A_LoopFileName%\Pack
 	FileDelete ModContent.hpk
 	RunWait hpk.exe create --cripple-lua-files "%A_LoopFileName%" ModContent.hpk
 	FileCreateDir %A_LoopFileName%\Pack

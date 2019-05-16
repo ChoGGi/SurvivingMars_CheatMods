@@ -15,8 +15,9 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_RandomBuildingColour",
 	"steam_id", "1535187230",
+	"pops_any_uuid", "be840c93-a616-4175-9049-472b297c897c",
 	"author", "ChoGGi",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"code", {
 		"Code/Script.lua",
 	},

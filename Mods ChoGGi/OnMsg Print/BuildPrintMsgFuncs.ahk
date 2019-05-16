@@ -22,6 +22,7 @@ ParseLuaFiles("Lua")
 ; very spammy
 msg_list.Delete("OnRender")
 msg_list.Delete("ObjModified")
+msg_list.Delete("OverlaySupplyGridChanged")
 msg_list.Delete("UIPropertyChanged")
 msg_list.Delete("ConsoleLine")
 msg_list.Delete("PrefabCacheUnloaded")

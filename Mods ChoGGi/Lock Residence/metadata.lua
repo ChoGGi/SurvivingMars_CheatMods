@@ -13,10 +13,11 @@ return PlaceObj("ModDef", {
 	"version_minor", 3,
 	"saved", 1548763200,
 	"image", "Preview.png",
-	"id", "ChoGGi_LockResidence",
 	"author", "ChoGGi",
+	"id", "ChoGGi_LockResidence",
 	"steam_id", "1635694550",
-	"lua_revision", 244275,
+	"pops_any_uuid", "eaa85815-b77c-416e-a71b-e23694489348",
+	"lua_revision", 244677,
 	"code", {
 		"Code/Script.lua",
 	},

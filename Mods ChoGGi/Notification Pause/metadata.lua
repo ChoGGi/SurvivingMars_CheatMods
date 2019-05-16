@@ -7,11 +7,12 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_NotificationPause",
 	"author", "ChoGGi",
 	"steam_id", "1411111982",
+	"pops_any_uuid", "21a83d51-419f-45fe-810f-2e520b174fb1",
 	"code", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"description", [[Pauses the game on new notifications.
 
 Skips pausing for:

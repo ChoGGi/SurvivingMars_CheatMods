@@ -16,10 +16,11 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RestoreRequestMaintenance",
 	"author", "ChoGGi",
 	"steam_id", "1411114444",
+	"pops_any_uuid", "45cb4a51-9b11-463b-93ef-31bf6bb7c8db",
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"description", [[Restores "Request Maintenance" button.
 
 It's set not to show up unless you can request maintenance.]],

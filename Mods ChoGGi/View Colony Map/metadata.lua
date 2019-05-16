@@ -27,7 +27,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 244275,
+	"lua_revision", 244677,
 	"description", [[Shows the map before you load it in the select colony screen.
 Optionally show anomaly breakthroughs for each location, omega breakthroughs are at best 1/3.
 
