@@ -928,6 +928,17 @@ function Dome:CheatCrimeEvent()
 		title = Strings[302535920001541--[[Start a Crime Event--]]],
 		hint = Strings[302535920001542--[[Renegades not required.--]]],
 	}
-
 end
 
+local function LandscapeLakeCheatVol(self,num)
+	local five = 0.05 * self.volume_max
+	self:SetVolume(self.volume + (five * num))
+end
+
+function LandscapeLake:CheatVolPlus5()
+	LandscapeLakeCheatVol(self,1)
+end
+
+function LandscapeLake:CheatVolMinus5()
+	LandscapeLakeCheatVol(self,-1)
+end

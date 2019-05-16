@@ -158,10 +158,14 @@ c = c + 1
 Actions[c] = {ActionName = Translate(4142--[[Dust Devils--]]),
 	ActionMenubar = "ECM.ECM.Mission.Disasters",
 	ActionId = ".Dust Devils",
-	ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
+	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
-		return Strings[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(Translate(4142--[[Dust Devils--]]), mapdata.MapSettings_DustDevils)
+		return SettingState(
+			mapdata.MapSettings_DustDevils,
+			Strings[302535920000966--[[Set the occurrence level of %s disasters.--]]]:format(
+				Translate(4142--[[Dust Devils--]])
+			)
+		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
 	setting_id = "DustDevils",
@@ -171,10 +175,14 @@ c = c + 1
 Actions[c] = {ActionName = Translate(4148--[[Cold Waves--]]),
 	ActionMenubar = "ECM.ECM.Mission.Disasters",
 	ActionId = ".Cold Waves",
-	ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
+	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
-		return Strings[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(Translate(4149--[[Cold Wave--]]), mapdata.MapSettings_ColdWave)
+		return SettingState(
+			mapdata.MapSettings_ColdWave,
+			Strings[302535920000966--[[Set the occurrence level of %s disasters.--]]]:format(
+				Translate(4149--[[Cold Wave--]])
+			)
+		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
 	setting_id = "ColdWave",
@@ -184,10 +192,14 @@ c = c + 1
 Actions[c] = {ActionName = Translate(4144--[[Dust Storms--]]),
 	ActionMenubar = "ECM.ECM.Mission.Disasters",
 	ActionId = ".Dust Storms",
-	ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
+	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
-		return Strings[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(Translate(4250--[[Dust Storm--]]), mapdata.MapSettings_DustStorm)
+		return SettingState(
+			mapdata.MapSettings_DustStorm,
+			Strings[302535920000966--[[Set the occurrence level of %s disasters.--]]]:format(
+				Translate(4250--[[Dust Storm--]])
+			)
+		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
 	setting_id = "DustStorm",
@@ -197,11 +209,58 @@ c = c + 1
 Actions[c] = {ActionName = Translate(4146--[[Meteors--]]),
 	ActionMenubar = "ECM.ECM.Mission.Disasters",
 	ActionId = ".Meteors",
-	ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
+	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
-		return Strings[302535920000966--[["Set the occurrence level of %s disasters.
-Current: %s"--]]]:format(Translate(4146--[[Meteors--]]), mapdata.MapSettings_Meteor)
+		return SettingState(
+			mapdata.MapSettings_Meteor,
+			Strings[302535920000966--[[Set the occurrence level of %s disasters.--]]]:format(
+				Translate(4146--[[Meteors--]])
+			)
+		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
 	setting_id = "Meteor",
+}
+
+-- rains and quakes act diff
+c = c + 1
+Actions[c] = {ActionName = Translate(558613651480--[[Toxic Rains--]]),
+	ActionMenubar = "ECM.ECM.Mission.Disasters",
+	ActionId = ".Toxic Rains",
+	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
+	RolloverText = function()
+		local set = false
+		if not ChoGGi.UserSettings.DisasterRainsDisable then
+			set = Translate(12259--[[Automated--]])
+		end
+		return SettingState(
+			set,
+			Strings[302535920000867--[[Toggle occurrence of %s disasters.--]]]:format(
+				Translate(369748345658--[[Toxic Rain--]])
+			)
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence_Toggle,
+	setting_name = Translate(369748345658--[[Toxic Rain--]]),
+}
+
+c = c + 1
+Actions[c] = {ActionName = Translate(382404446864--[[Marsquake--]]),
+	ActionMenubar = "ECM.ECM.Mission.Disasters",
+	ActionId = ".Marsquake",
+	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
+	RolloverText = function()
+		local set = false
+		if not ChoGGi.UserSettings.DisasterQuakeDisable then
+			set = Translate(12259--[[Automated--]])
+		end
+		return SettingState(
+			set,
+			Strings[302535920000867--[[Toggle occurrence of %s disasters.--]]]:format(
+				Translate(382404446864--[[Marsquake--]])
+			)
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence_Toggle,
+	setting_name = Translate(382404446864--[[Marsquake--]]),
 }

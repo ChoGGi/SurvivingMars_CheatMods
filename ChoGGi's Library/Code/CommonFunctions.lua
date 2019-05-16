@@ -1710,15 +1710,15 @@ do -- SelObject/SelObjects
 		end
 		local objs = SelectedObj or SelectionMouseObj()
 
-		if not radius and objs then
+		if objs or not radius then
 			if objs:IsKindOf("MultiSelectionWrapper") then
 				return objs.objects
 			else
 				return {objs}
 			end
-		else
-			return MapGet(GetTerrainCursor(), radius or radius4h, "attached", false)
 		end
+
+		return MapGet(GetTerrainCursor(), radius or radius4h, "attached", false)
 	end
 end
 local SelObject = ChoGGi.ComFuncs.SelObject
@@ -1836,6 +1836,7 @@ do -- Rebuildshortcuts
 		Tools = true,
 		["Tools.Extras"] = true,
 	}
+	-- don't care about the actions/want to leave them in editor menu, but we don't want the keys
 	local removekey_lookup = {
 		E_FlagsEditor = true,
 		E_AttachEditor = true,
@@ -1846,26 +1847,20 @@ do -- Rebuildshortcuts
 		E_DeleteObjects = true,
 		E_MoveGizmo = true,
 	}
-
-	-- auto-add all the TriggerDisaster ones (ok some)
---~ 	local trigg_str = "TriggerDisaster%s%s"
-	local DataInstances = DataInstances
-	local function AddItems(name, suffix)
-		local list = DataInstances[name]
-		for i = 1, #list do
-			remove_lookup["TriggerDisaster" .. list[i].name .. (suffix or "")] = true
+	-- auto-add all the TriggerDisaster ones
+	local ass = XShortcutsTarget.actions
+	for i = 1, #ass do
+		local a = ass[i]
+		if a.ActionId and a.ActionId:sub(1,15) == "TriggerDisaster" then
+			remove_lookup[a.ActionId] = true
 		end
 	end
-	AddItems("MapSettings_DustDevils")
-	AddItems("MapSettings_DustDevils", "Major")
-	AddItems("MapSettings_DustStorm")
-	AddItems("MapSettings_DustStorm", "Great")
-	AddItems("MapSettings_DustStorm", "Electrostatic")
-	AddItems("MapSettings_ColdWave")
-	AddItems("MapSettings_Meteor")
-	AddItems("MapSettings_Meteor", "MultiSpawn")
-	AddItems("MapSettings_Meteor", "Storm")
-	-- GreenPlanet (add the rest)
+-- re-add dev stuff to check
+--~ XTemplateSpawn("CommonShortcuts", XShortcutsTarget)
+--~ XTemplateSpawn("EditorShortcuts", XShortcutsTarget)
+--~ XTemplateSpawn("DeveloperShortcuts", XShortcutsTarget)
+--~ XTemplateSpawn("SimShortcuts", XShortcutsTarget)
+--~ XTemplateSpawn("GameShortcuts", XShortcutsTarget)
 
 	local is_list_sorted
 	function ChoGGi.ComFuncs.Rebuildshortcuts()
@@ -1876,8 +1871,9 @@ do -- Rebuildshortcuts
 		end
 
 		-- remove unwanted actions
-		for i = #XShortcutsTarget.actions, 1, -1 do
-			local a = XShortcutsTarget.actions[i]
+		local ass = XShortcutsTarget.actions
+		for i = #ass, 1, -1 do
+			local a = ass[i]
 			if a.ChoGGi_ECM or remove_lookup[a.ActionId] then
 				a:delete()
 				table_remove(XShortcutsTarget.actions, i)

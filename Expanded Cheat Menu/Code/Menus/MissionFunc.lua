@@ -8,6 +8,34 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 
+function ChoGGi.MenuFuncs.SetDisasterOccurrence_Toggle(action)
+	local setting_name = action.setting_name
+	local us = ChoGGi.UserSettings
+
+	local setting
+	if setting_name == Translate(369748345658--[[Toxic Rain--]]) then
+		if us.DisasterRainsDisable then
+			us.DisasterRainsDisable = nil
+		else
+			us.DisasterRainsDisable = true
+		end
+		setting = us.DisasterRainsDisable
+	elseif setting_name == Translate(382404446864--[[Marsquake--]]) then
+		if us.DisasterQuakeDisable then
+			us.DisasterQuakeDisable = nil
+		else
+			us.DisasterQuakeDisable = true
+		end
+		setting = us.DisasterQuakeDisable
+	end
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(setting),
+		setting_name
+	)
+end
+
 function ChoGGi.MenuFuncs.ChangeRivalColonies()
 --~ 		MarsScreenLandingSpots
 	local g_CurrentMissionParams = g_CurrentMissionParams

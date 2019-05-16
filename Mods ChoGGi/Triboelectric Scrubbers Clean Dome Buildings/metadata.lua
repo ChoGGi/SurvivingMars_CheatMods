@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", LuaRevision or 244275,
+	"lua_revision", 244275,
 	"description", [[They removed this in the Spirit Update.
 
 Requested by Cinereously.]],

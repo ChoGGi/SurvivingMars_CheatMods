@@ -24,6 +24,7 @@ end
 --~ local Translate = ChoGGi.ComFuncs.Translate
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
+local testing = ChoGGi.testing
 
 local AsyncFileToString = not blacklist and AsyncFileToString
 local AsyncCopyFile = not blacklist and AsyncCopyFile
@@ -122,7 +123,7 @@ ChoGGi.Defaults = {
 	},
 }
 -- my defaults
-if ChoGGi.testing then
+if testing then
 	local Defaults = ChoGGi.Defaults
 	-- add extra debugging defaults for me
 	Defaults.ShowStartupTicks = true
@@ -146,108 +147,27 @@ end
 
 -- set game values to saved values
 function ChoGGi.SettingFuncs.SetConstsToSaved()
+
 	local UserSettings = ChoGGi.UserSettings
-	-- Consts.
-	local list = {
-		"AvoidWorkplaceSols",
-		"BirthThreshold",
-		"CargoCapacity",
-		"ColdWaveSanityDamage",
-		"CommandCenterMaxDrones",
-		"Concrete_cost_modifier",
-		"Concrete_dome_cost_modifier",
-		"CrimeEventDestroyedBuildingsCount",
-		"CrimeEventSabotageBuildingsCount ",
-		"CropFailThreshold",
-		"DeepScanAvailable",
-		"DefaultOutsideWorkplacesRadius",
-		"DroneBuildingRepairAmount",
-		"DroneBuildingRepairBatteryUse",
-		"DroneCarryBatteryUse",
-		"DroneConstructAmount",
-		"DroneConstructBatteryUse",
-		"DroneDeconstructBatteryUse",
-		"DroneMoveBatteryUse",
-		"DroneRechargeTime",
-		"DroneRepairSupplyLeak",
-		"DroneResourceCarryAmount",
-		"DroneTransformWasteRockObstructorToStockpileAmount",
-		"DroneTransformWasteRockObstructorToStockpileBatteryUse",
-		"DustStormSanityDamage",
-		"Electronics_cost_modifier",
-		"Electronics_dome_cost_modifier",
-		"ExportPricePreciousMetals",
-		"FoodPerRocketPassenger",
-		"HighStatLevel",
-		"HighStatMoraleEffect",
-		"InstantCables",
-		"InstantPipes",
-		"IsDeepMetalsExploitable",
-		"IsDeepPreciousMetalsExploitable",
-		"IsDeepWaterExploitable",
-		"LowSanityNegativeTraitChance",
-		"LowSanitySuicideChance",
-		"LowStatLevel",
-		"MachineParts_cost_modifier",
-		"MachineParts_dome_cost_modifier",
-		"MaxColonistsPerRocket",
-		"Metals_cost_modifier",
-		"Metals_dome_cost_modifier",
-		"MeteorHealthDamage",
-		"MeteorSanityDamage",
-		"MinComfortBirth",
-		"MysteryDreamSanityDamage",
-		"NoHomeComfort",
-		"NonHomeDomePerformancePenalty",
-		"NonSpecialistPerformancePenalty",
-		"OutsideWorkplaceSanityDecrease",
-		"OutsourceMaxOrderCount",
-		"OutsourceResearch",
-		"OutsourceResearchCost",
-		"OxygenMaxOutsideTime",
-		"PipesPillarSpacing",
-		"Polymers_cost_modifier",
-		"Polymers_dome_cost_modifier",
-		"positive_playground_chance",
-		"PreciousMetals_cost_modifier",
-		"PreciousMetals_dome_cost_modifier",
-		"ProjectMorphiousPositiveTraitChance",
-		"RCRoverMaxDrones",
-		"RCRoverTransferResourceWorkTime",
-		"RCTransportGatherResourceWorkTime",
-		"rebuild_cost_modifier",
-		"RenegadeCreation",
-		"SeeDeadSanity",
-		"TimeBeforeStarving",
-		"TravelTimeEarthMars",
-		"TravelTimeMarsEarth",
-		"VisitFailPenalty",
-	}
 	local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+	local const = const
+
+	-- Consts.
+	local list = ChoGGi.Tables.Consts_names
 	for i = 1, #list do
 		local item = list[i]
 		SetConstsG(item, UserSettings[item])
 	end
+
 	-- const.
-	list = {
-		"BreakThroughTechsPerGame",
-		"ExplorationQueueMaxSize",
-		"fastGameSpeed",
-		"mediumGameSpeed",
-		"MoistureVaporatorPenaltyPercent",
-		"MoistureVaporatorRange",
-		"ResearchQueueSize",
-		"RCRoverMaxRadius",
-		"CommandCenterMaxRadius",
-		"OmegaTelescopeBreakthroughsCount",
-	}
-	local const = const
+	list = ChoGGi.Tables.const_names
 	for i = 1, #list do
 		local item = list[i]
 		if UserSettings[item] then
 			const[item] = UserSettings[item]
 		end
 	end
+
 end
 
 -- called everytime we set a setting in menu
@@ -430,7 +350,7 @@ ChoGGi.SettingFuncs.ReadSettings()
 
 local UserSettings = ChoGGi.UserSettings
 
-if ChoGGi.testing or UserSettings.ShowStartupTicks then
+if testing or UserSettings.ShowStartupTicks then
 	-- from here till the end of OnMsg.ChoGGi_Loaded()
 	ChoGGi.Temp.StartupTicks = GetPreciseTicks()
 end

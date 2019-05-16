@@ -39,92 +39,7 @@ ChoGGi = {
 	-- is ECM shanghaied by the blacklist?
 	blacklist = true,
 	-- constants
-	Consts = {
-	-- const.* (I don't think these have default values in-game anywhere, so manually set them.) _GameConst.lua
-		RCRoverMaxRadius = const.RCRoverMaxRadius or 20,
-		CommandCenterMaxRadius = const.CommandCenterMaxRadius or 35,
-		BreakThroughTechsPerGame = const.BreakThroughTechsPerGame or 13,
-		OmegaTelescopeBreakthroughsCount = const.OmegaTelescopeBreakthroughsCount or 3,
-		ExplorationQueueMaxSize = const.ExplorationQueueMaxSize or 10,
-		fastGameSpeed = const.fastGameSpeed or 5,
-		mediumGameSpeed = const.mediumGameSpeed or 3,
-		MoistureVaporatorPenaltyPercent = const.MoistureVaporatorPenaltyPercent or 40,
-		MoistureVaporatorRange = const.MoistureVaporatorRange or 5,
-		InvalidPos = InvalidPos(),
-	-- Consts.* (Consts is a prop object, so we can get the defaults later on from OnMsg.OptionsApply(), we declare them now so we can loop them later) _const.lua
-		AvoidWorkplaceSols = false,
-		BirthThreshold = false,
-		CargoCapacity = false,
-		ColdWaveSanityDamage = false,
-		CommandCenterMaxDrones = false,
-		Concrete_cost_modifier = false,
-		Concrete_dome_cost_modifier = false,
-		CrimeEventDestroyedBuildingsCount = false,
-		CrimeEventSabotageBuildingsCount = false,
-		CropFailThreshold = false,
-		DefaultOutsideWorkplacesRadius = false,
-		DroneBuildingRepairAmount = false,
-		DroneBuildingRepairBatteryUse = false,
-		DroneCarryBatteryUse = false,
-		DroneConstructAmount = false,
-		DroneConstructBatteryUse = false,
-		DroneDeconstructBatteryUse = false,
-		DroneMoveBatteryUse = false,
-		DroneRechargeTime = false,
-		DroneRepairSupplyLeak = false,
-		DroneResourceCarryAmount = false,
-		DroneTransformWasteRockObstructorToStockpileAmount = false,
-		DroneTransformWasteRockObstructorToStockpileBatteryUse = false,
-		DustStormSanityDamage = false,
-		Electronics_cost_modifier = false,
-		Electronics_dome_cost_modifier = false,
-		ExportPricePreciousMetals = false,
-		FoodPerRocketPassenger = false,
-		HighStatLevel = false,
-		HighStatMoraleEffect = false,
-		InstantCables = false,
-		InstantPipes = false,
-		IsDeepMetalsExploitable = false,
-		IsDeepPreciousMetalsExploitable = false,
-		IsDeepWaterExploitable = false,
-		LowSanityNegativeTraitChance = false,
-		LowSanitySuicideChance = false,
-		LowStatLevel = false,
-		MachineParts_cost_modifier = false,
-		MachineParts_dome_cost_modifier = false,
-		MaxColonistsPerRocket = false,
-		Metals_cost_modifier = false,
-		Metals_dome_cost_modifier = false,
-		MeteorHealthDamage = false,
-		MeteorSanityDamage = false,
-		MinComfortBirth = false,
-		MysteryDreamSanityDamage = false,
-		NoHomeComfort = false,
-		NonHomeDomePerformancePenalty = false,
-		NonSpecialistPerformancePenalty = false,
-		OutsideWorkplaceSanityDecrease = false,
-		OutsourceMaxOrderCount = false,
-		OutsourceResearch = false,
-		OutsourceResearchCost = false,
-		OxygenMaxOutsideTime = false,
-		PipesPillarSpacing = false,
-		Polymers_cost_modifier = false,
-		Polymers_dome_cost_modifier = false,
-		positive_playground_chance = false,
-		PreciousMetals_cost_modifier = false,
-		PreciousMetals_dome_cost_modifier = false,
-		ProjectMorphiousPositiveTraitChance = false,
-		RCRoverMaxDrones = false,
-		RCRoverTransferResourceWorkTime = false,
-		RCTransportGatherResourceWorkTime = false,
-		rebuild_cost_modifier = false,
-		RenegadeCreation = false,
-		SeeDeadSanity = false,
-		TimeBeforeStarving = false,
-		TravelTimeEarthMars = false,
-		TravelTimeMarsEarth = false,
-		VisitFailPenalty = false,
-	},
+	Consts = {},
 	-- default ECM settings
 	Defaults = false,
 	-- means of communication
@@ -150,6 +65,99 @@ ChoGGi = {
 		OtherTraits = {},
 		PositiveTraits = {},
 		Resources = {},
+		SchoolTraits = {},
+		SanatoriumTraits = {},
+		-- don't want to have to declare these more than i have to
+		Consts_names = {
+			"AvoidWorkplaceSols",
+			"BirthThreshold",
+			"CargoCapacity",
+			"ColdWaveSanityDamage",
+			"CommandCenterMaxDrones",
+			"Concrete_cost_modifier",
+			"Concrete_dome_cost_modifier",
+			"CrimeEventDestroyedBuildingsCount",
+			"CrimeEventSabotageBuildingsCount",
+			"CropFailThreshold",
+			"DeepScanAvailable",
+			"DefaultOutsideWorkplacesRadius",
+			"DroneBuildingRepairAmount",
+			"DroneBuildingRepairBatteryUse",
+			"DroneCarryBatteryUse",
+			"DroneConstructAmount",
+			"DroneConstructBatteryUse",
+			"DroneDeconstructBatteryUse",
+			"DroneMoveBatteryUse",
+			"DroneRechargeTime",
+			"DroneRepairSupplyLeak",
+			"DroneResourceCarryAmount",
+			"DroneTimeToWorkOnLandscapeMultiplier",
+			"DroneTransformWasteRockObstructorToStockpileAmount",
+			"DroneTransformWasteRockObstructorToStockpileBatteryUse",
+			"DustStormSanityDamage",
+			"Electronics_cost_modifier",
+			"Electronics_dome_cost_modifier",
+			"ExportPricePreciousMetals",
+			"FoodPerRocketPassenger",
+			"HighStatLevel",
+			"HighStatMoraleEffect",
+			"InstantCables",
+			"InstantPipes",
+			"IsDeepMetalsExploitable",
+			"IsDeepPreciousMetalsExploitable",
+			"IsDeepWaterExploitable",
+			"LowSanityNegativeTraitChance",
+			"LowSanitySuicideChance",
+			"LowStatLevel",
+			"MachineParts_cost_modifier",
+			"MachineParts_dome_cost_modifier",
+			"MaxColonistsPerRocket",
+			"Metals_cost_modifier",
+			"Metals_dome_cost_modifier",
+			"MeteorHealthDamage",
+			"MeteorSanityDamage",
+			"MinComfortBirth",
+			"MysteryDreamSanityDamage",
+			"NoHomeComfort",
+			"NonHomeDomePerformancePenalty",
+			"NonSpecialistPerformancePenalty",
+			"OutsideWorkplaceSanityDecrease",
+			"OutsourceMaxOrderCount",
+			"OutsourceResearch",
+			"OutsourceResearchCost",
+			"OxygenMaxOutsideTime",
+			"PipesPillarSpacing",
+			"Polymers_cost_modifier",
+			"Polymers_dome_cost_modifier",
+			"positive_playground_chance",
+			"PreciousMetals_cost_modifier",
+			"PreciousMetals_dome_cost_modifier",
+			"ProjectMorphiousPositiveTraitChance",
+			"RCRoverMaxDrones",
+			"RCRoverTransferResourceWorkTime",
+			"RCTransportGatherResourceWorkTime",
+			"rebuild_cost_modifier",
+			"RenegadeCreation",
+			"SeeDeadSanity",
+			"TimeBeforeStarving",
+			"TravelTimeEarthMars",
+			"TravelTimeMarsEarth",
+			"VisitFailPenalty",
+		},
+		const_names = {
+			"BreakThroughTechsPerGame",
+			"CommandCenterMaxRadius",
+			"DroneRestrictRadius",
+			"ExplorationQueueMaxSize",
+			"fastGameSpeed",
+			"MaxToxicRainPools",
+			"mediumGameSpeed",
+			"MoistureVaporatorPenaltyPercent",
+			"MoistureVaporatorRange",
+			"OmegaTelescopeBreakthroughsCount",
+			"RCRoverMaxRadius",
+			"ResearchQueueSize",
+		},
 	},
 	-- stuff that isn't ready for release, more print msgs, and some default settings
 	testing = false,
@@ -201,7 +209,7 @@ do -- translate
 	end
 
 	Msg("TranslationChanged")
-end
+end -- do
 
 -- fake mod used to tell if it's my comp, if you want some extra msgs and .testing funcs have at it
 if Mods.ChoGGi_testing then
@@ -212,3 +220,26 @@ if Mods.ChoGGi_testing then
 else
 	printC = empty_func
 end
+
+do -- Add default Consts/const values to ChoGGi.Consts
+	-- Consts.* (Consts is a prop object, so we can get the defaults later on from OnMsg.OptionsApply(), we declare them now so we can loop them later) _const.lua
+	local cConsts = ChoGGi.Consts
+	local Consts_names = ChoGGi.Tables.Consts_names
+	for i = 1, #Consts_names do
+		cConsts[Consts_names[i]] = false
+	end
+
+	-- const.* (I don't think these have default values in-game anywhere, so manually set them.) _GameConst.lua
+	cConsts.RCRoverMaxRadius = const.RCRoverMaxRadius or 20
+	cConsts.CommandCenterMaxRadius = const.CommandCenterMaxRadius or 35
+--~ 	cConsts.DroneRestrictRadius = const.DroneRestrictRadius or 70000
+	cConsts.BreakThroughTechsPerGame = const.BreakThroughTechsPerGame or 13
+	cConsts.OmegaTelescopeBreakthroughsCount = const.OmegaTelescopeBreakthroughsCount or 3
+	cConsts.ExplorationQueueMaxSize = const.ExplorationQueueMaxSize or 10
+	cConsts.fastGameSpeed = const.fastGameSpeed or 5
+	cConsts.MaxToxicRainPools = const.MaxToxicRainPools or 30
+	cConsts.mediumGameSpeed = const.mediumGameSpeed or 3
+	cConsts.MoistureVaporatorPenaltyPercent = const.MoistureVaporatorPenaltyPercent or 40
+	cConsts.MoistureVaporatorRange = const.MoistureVaporatorRange or 5
+	cConsts.InvalidPos = InvalidPos()
+end -- do

@@ -35,6 +35,4 @@ function OnMsg.InGameInterfaceCreated()
 end
 
 -- change spacebar pause when bindings change
-function OnMsg.ShortcutsReloaded()
-	UpdateActions()
-end
+OnMsg.ShortcutsReloaded = UpdateActions

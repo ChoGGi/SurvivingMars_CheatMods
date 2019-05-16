@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_HawkingInstituteMoreWorkSlots",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 244275,
+	"lua_revision", 244275,
 	"code", {
 		"Code/Script.lua",
 	},

@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v6.4 (Unreleased)
+## v6.5 (Unreleased)
+
+## v6.4 (May 15 2019)
 - ValidateImage didn't work with non-Library images.
 - DeleteObject works with multi-selection.
 - Made DotNameToObject compatible with keys that don't support dotnames (spaces and so on).

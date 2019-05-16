@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v13.4 (Unreleased)
+## v13.5 (Unreleased)
+
+## v13.4 (May 15 2019)
 ### Added:
 - Menu>Cheats>Consts:
 - > Lists all the Consts settings (for any I haven't added to a menu).
@@ -11,12 +13,29 @@
 - Debug>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
 - Game>Export CSV>Map Data (Breakthroughs): Includes breakthrough info as well.
 - ECM>Buildings>Farms>Unlock Crops: Shows list of locked crops.
+- ECM>Buildings>Radius>Forestation Plant: Set radius.
+- ECM>Buildings>Radius>Core Heat Convector: Set radius.
 - ECM>Colonists>Workplaces>Outside Workplace Sanity Penalty.
 - ECM>Game>Lightmodel>List Normal: Changes the list of lightmodels to use (night/day/etc).
 - ECM>Game>Lightmodel>List Disaster: Overrides List Normal.
 - ECM>Misc>Time Factor: Change the time factor (not permanently); for ease of screenshots or something.
+- ECM>Mission>Disasters>Marsquake: Toggle occurrence of Marsquake disasters.
+- ECM>Mission>Disasters>Toxic Rains: Toggle occurrence of Toxic Rain disasters.
 - ECM>Resources>Rare Metals Price (M): Amount of Funding received by exporting one unit of Rare Metals.
 - ECM>Rockets>Payload Capacity: Maximum payload (in kg) of a resupply Rocket.
+- ECM>Terraforming>Open Air Domes: Open the domes to the fresh air (or lack of).
+- ECM>Terraforming>Parameter All Max: Set all params to 100.
+- ECM>Terraforming>Parameter All Min: Set all params to 0.
+- ECM>Terraforming>Parameter Atmosphere: Set Atmosphere Params
+- ECM>Terraforming>Parameter Temperature: Set Temperature Params
+- ECM>Terraforming>Parameter Vegetation: Set Vegetation Params
+- ECM>Terraforming>Parameter Water: Set Water Params
+- ECM>Terraforming>Plant Random Lichen: Plants a bunch of Lichen/Grass.
+- ECM>Terraforming>Plant Random Vegetation: Plants a bunch of Tree/Bush/Grass.
+- ECM>Terraforming>Remove LandScaping Limits: Allows you to start building on uneven ground, and removes the size limits.
+- ECM>Terraforming>Soil Quality: Set Soil Quality.
+- ECM>Terraforming>Toxic Pools Max: Max amount of pools that can form.
+- Lakes>Cheats pane>Volume Plus/Minus 5%.
 - Re-Added Framerate Counter Location: Reposition the FPS counter (enable from in-game options).
 - Examine>Context menu (functions)>Function Results: Continually call a function while showing results in an examine dialog.
 - > Call it manually with MonitorFunc(func_obj,params).
@@ -35,6 +54,7 @@
 - Cleaned up Debug>View All Entities.
 - Exposed delay option for Debug>Path Markers>GameTime (and fixed some minor issues with markers).
 - Renamed Force Story Bits to Test Story Bits.
+- Added DroneTimeToWorkOnLandscapeMultiplier to ECM>Drones>Drone Build Speed.
 - Menu items to use the default ECM icon instead of something maybe vaguely related:
 - > Easier to distinguish between notifications from ECM and from SM.
 - Console:

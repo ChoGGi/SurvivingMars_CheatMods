@@ -89,9 +89,12 @@ function ChoGGi.MenuFuncs.LightningStrike(_, _, input)
 end
 
 function ChoGGi.MenuFuncs.CompleteConstructions()
+	-- speed up buildings/ground
 	SuspendPassEdits("ChoGGi.MenuFuncs.CompleteConstructions")
+  SuspendTerrainInvalidations("ChoGGi.MenuFuncs.CompleteConstructions")
 	CheatCompleteAllConstructions()
 	ResumePassEdits("ChoGGi.MenuFuncs.CompleteConstructions")
+  ResumeTerrainInvalidations("ChoGGi.MenuFuncs.CompleteConstructions")
 end
 
 function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()

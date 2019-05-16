@@ -629,13 +629,15 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		obj.consumption_max_storage = UserSettings.ShuttleHubFuelStorage
 
 	elseif UserSettings.SchoolTrainAll and obj.class:find("School") then
-		for i = 1, #ChoGGi.Tables.PositiveTraits do
-			obj:SetTrait(i, ChoGGi.Tables.PositiveTraits[i])
+		local list = ChoGGi.Tables.PositiveTraits
+		for i = 1, #list do
+			obj:SetTrait(i, list[i])
 		end
 
 	elseif UserSettings.SanatoriumCureAll and obj.class:find("Sanatorium") then
-		for i = 1, #ChoGGi.Tables.NegativeTraits do
-			obj:SetTrait(i, ChoGGi.Tables.NegativeTraits[i])
+		local list = ChoGGi.Tables.NegativeTraits
+		for i = 1, #list do
+			obj:SetTrait(i, list[i])
 		end
 
 	end -- end of elseif

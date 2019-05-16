@@ -20,6 +20,6 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", LuaRevision or 244275,
+	"lua_revision", 244275,
 	"description", [[Adds a button to mech depots to empty them out into a small depot in front of them.]],
 })

@@ -21,7 +21,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", LuaRevision or 244275,
+	"lua_revision", 244275,
 	"description", [[Flattens the ground in front of it.
 
 Options to change the radius, show a circle where it flattens, and change the ground texture (or turn it off).

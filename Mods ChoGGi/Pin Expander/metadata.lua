@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_PinExpander",
 	"steam_id", "1503773725",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 244275,
+	"lua_revision", 244275,
 	"code", {
 		"Code/Script.lua",
 	},

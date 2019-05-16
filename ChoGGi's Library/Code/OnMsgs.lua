@@ -39,6 +39,7 @@ OnMsg.CityStart = Startup
 OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateStringsList
 OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateDataTablesCargo
 OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateDataTables
+OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateOtherTables
 
 OnMsg.ModsReloaded = ChoGGi.ComFuncs.UpdateDataTables
 

@@ -13,14 +13,32 @@ local RetName = ChoGGi.ComFuncs.RetName
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 
 local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+local UserSettings = ChoGGi.UserSettings
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
 do -- non-class obj funcs
+
+	-- don't trigger quakes
+	SaveOrigFunc("TriggerMarsquake")
+	function TriggerMarsquake(...)
+		if not UserSettings.DisasterQuakeDisable then
+			return ChoGGi_OrigFuncs.TriggerMarsquake(...)
+		end
+	end
+
+	-- don't trigger toxic rains
+	SaveOrigFunc("RainProcedure")
+	function RainProcedure(settings, ...)
+		if settings.type == "normal" or not UserSettings.DisasterRainsDisable then
+			return ChoGGi_OrigFuncs.RainProcedure(settings, ...)
+		end
+	end
+
 	-- stops the help webpage from showing up every single time
 	SaveOrigFunc("GedOpHelpMod")
-	if Platform.editor and ChoGGi.UserSettings.SkipModHelpPage then
+	if Platform.editor and UserSettings.SkipModHelpPage then
 		GedOpHelpMod = empty_func
 	end
 
@@ -40,7 +58,7 @@ do -- non-class obj funcs
 	-- work on these persist errors (func saved in lib mod)
 	function PersistGame(folder, ...)
 		-- collectgarbage is blacklisted, and I'm not sure what issue it'd cause if it doesn't fire (saving weird shit maybe)...
-		if not blacklist and ChoGGi.UserSettings.DebugPersistSaves then
+		if not blacklist and UserSettings.DebugPersistSaves then
 			collectgarbage("collect")
 			Msg("SaveGame")
 			rawset(_G, "__error_table__", {})
@@ -126,7 +144,7 @@ do -- non-class obj funcs
 	-- change rocket cargo cap
 	SaveOrigFunc("GetMaxCargoShuttleCapacity")
 	function GetMaxCargoShuttleCapacity(...)
-		return ChoGGi.UserSettings.StorageShuttle or ChoGGi_OrigFuncs.GetMaxCargoShuttleCapacity(...)
+		return UserSettings.StorageShuttle or ChoGGi_OrigFuncs.GetMaxCargoShuttleCapacity(...)
 	end
 
 	-- SkipMissingDLC and no mystery dlc installed means the buildmenu tries to add missing buildings, and call a func that doesn't exist
@@ -140,7 +158,7 @@ do -- non-class obj funcs
 	-- stops confirmation dialog about missing mods (still lets you know they're missing)
 	SaveOrigFunc("GetMissingMods")
 	function GetMissingMods(...)
-		if ChoGGi.UserSettings.SkipMissingMods then
+		if UserSettings.SkipMissingMods then
 			return "", false
 		else
 			return ChoGGi_OrigFuncs.GetMissingMods(...)
@@ -150,7 +168,7 @@ do -- non-class obj funcs
 	-- lets you load saved games that have dlc
 	SaveOrigFunc("IsDlcAvailable")
 	function IsDlcAvailable(...)
-		return ChoGGi.UserSettings.SkipMissingDLC or ChoGGi_OrigFuncs.IsDlcAvailable(...)
+		return UserSettings.SkipMissingDLC or ChoGGi_OrigFuncs.IsDlcAvailable(...)
 	end
 
 	-- always able to show console
@@ -167,7 +185,7 @@ do -- non-class obj funcs
 	SaveOrigFunc("ShowConsoleLog")
 	function ShowConsoleLog(visible, ...)
 		-- we only want to show it if:
-		visible = ChoGGi.UserSettings.ConsoleToggleHistory
+		visible = UserSettings.ConsoleToggleHistory
 
 		-- ShowConsoleLog doesn't check for existing like ShowConsole
 		if rawget(_G, "dlgConsoleLog") then
@@ -190,7 +208,7 @@ do -- non-class obj funcs
 
 		SaveOrigFunc("ShowPopupNotification")
 		function ShowPopupNotification(preset, ...)
-			if ChoGGi.UserSettings.DisableHints and suggestions[preset] then
+			if UserSettings.DisableHints and suggestions[preset] then
 				return
 			end
 			return ChoGGi_OrigFuncs.ShowPopupNotification(preset, ...)
@@ -204,9 +222,51 @@ do -- non-class obj funcs
 	end
 end -- do
 
-function OnMsg.ClassesGenerate()
-	local UserSettings = ChoGGi.UserSettings
+do -- Class:Func needed before Generate
+	do -- LandscapeConstructionController:UpdateConstructionStatuses
+		local ignore_status
+--~ -- per building
+--~ ClassTemplates.Building.LandscapeTerrace.max_boundary = max_int
+--~ -- none-marked
+--~ const.Terraforming.LandscapeMaxBoundary = max_int
+--~ const.Terraforming.LandscapeMaxHexes = max_int
 
+		SaveOrigFunc("LandscapeConstructionController", "UpdateConstructionStatuses")
+		function LandscapeConstructionController:UpdateConstructionStatuses(...)
+			local ret = ChoGGi_OrigFuncs.LandscapeConstructionController_UpdateConstructionStatuses(self, ...)
+			if UserSettings.RemoveLandScapingLimits then
+				-- build our list of error to warning statuses
+				if not ignore_status then
+					local cs = ConstructionStatus
+					ignore_status = {
+						[cs.LandscapeTooLarge] = true,
+						[cs.LandscapeUnavailable] = true,
+						[cs.LandscapeLowTerrain] = true,
+						[cs.BlockingObjects] = true,
+						[cs.LandscapeRampUnlinked] = true,
+					}
+					-- can cause crashing
+					if testing then
+						ignore_status[cs.LandscapeOutOfBounds] = true
+					end
+				end
+
+				-- change all the ones we care about to warnings
+				local statuses = self.construction_statuses or ""
+				for i = 1, #statuses do
+					local status = statuses[i]
+					if ignore_status[status] then
+						status.type = "warning"
+					end
+				end
+			end
+
+			return ret
+		end
+	end -- do
+end -- do
+
+function OnMsg.ClassesGenerate()
 	-- using the CheatUpgrade func in the cheats pane with Silva's Modular Apartments == inf loop
 	do -- Building:CheatUpgrade*()
 		local CreateRealTimeThread = CreateRealTimeThread
@@ -266,6 +326,7 @@ function OnMsg.ClassesGenerate()
 		end
 		return ChoGGi_OrigFuncs.ConstructionController_IsObstructed(self, ...)
 	end
+
 	SaveOrigFunc("DontBuildHere", "Check")
 	function DontBuildHere.Check(...)
 		if UserSettings.BuildOnGeysers then
@@ -560,8 +621,6 @@ end -- ClassesGenerate
 --~ end -- ClassesPostprocess
 
 function OnMsg.ClassesBuilt()
-	local UserSettings = ChoGGi.UserSettings
-
 	SaveOrigFunc("SpaceElevator", "DroneUnloadResource")
 	function SpaceElevator:DroneUnloadResource(...)
 		local export_when = ChoGGi.ComFuncs.DotNameToObject("ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount")
@@ -1129,7 +1188,6 @@ function OnMsg.ClassesBuilt()
 			end
 		end
 	end -- do
-
 
 	-- so we can build without (as many) limits
 	SaveOrigFunc("ConstructionController", "UpdateConstructionStatuses")

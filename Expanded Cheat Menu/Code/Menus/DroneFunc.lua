@@ -403,8 +403,10 @@ function ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle()
 end
 
 function ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle()
+	ChoGGi.ComFuncs.SetConstsG("DroneTimeToWorkOnLandscapeMultiplier", ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneTimeToWorkOnLandscapeMultiplier, max_int, ChoGGi.Consts.DroneTimeToWorkOnLandscapeMultiplier))
 	ChoGGi.ComFuncs.SetConstsG("DroneConstructAmount", ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneConstructAmount, max_int, ChoGGi.Consts.DroneConstructAmount))
 	ChoGGi.ComFuncs.SetConstsG("DroneBuildingRepairAmount", ChoGGi.ComFuncs.ValueRetOpp(Consts.DroneBuildingRepairAmount, max_int, ChoGGi.Consts.DroneBuildingRepairAmount))
+	ChoGGi.ComFuncs.SetSavedConstSetting("DroneTimeToWorkOnLandscapeMultiplier")
 	ChoGGi.ComFuncs.SetSavedConstSetting("DroneConstructAmount")
 	ChoGGi.ComFuncs.SetSavedConstSetting("DroneBuildingRepairAmount")
 

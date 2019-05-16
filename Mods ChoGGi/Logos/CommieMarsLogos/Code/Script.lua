@@ -269,6 +269,18 @@ local logos = {
 		name = "Jordanian Communist Party",
 	},
 	{
+		file = "Laika_Albania",
+		name = "Laika Albania",
+	},
+	{
+		file = "Laika_Husky",
+		name = "Laika Husky",
+	},
+	{
+		file = "Laika_Posta_Romana1959",
+		name = "Laika Posta Romana (1959)",
+	},
+	{
 		file = "Lebanese_Communist_Party",
 		name = "Lebanese Communist Party",
 	},

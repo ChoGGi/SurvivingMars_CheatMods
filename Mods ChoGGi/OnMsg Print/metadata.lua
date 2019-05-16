@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "1604230467",
 	"author", "ChoGGi",
-	"lua_revision", LuaRevision or 244275,
+	"lua_revision", 244275,
 	"code", {
 		"Code/Script.lua",
 	},

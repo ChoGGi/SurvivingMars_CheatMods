@@ -1829,13 +1829,12 @@ function ChoGGi_DlgExamine:ShowBBoxList()
 	self:BuildBBoxListItem(item_list, ObjectHierarchyBBox(obj), "ObjectHierarchyBBox")
 	self:BuildBBoxListItem(item_list, ObjectHierarchyBBox(obj, const.efCollision), "ObjectHierarchyBBox + efCollision")
 
-	-- GreenPlanet
-	local name = obj.class:sub(1, -17) .. "s"
-	local g_obj = rawget(_G, name)
-	if g_obj and g_obj[obj.mark] then
+	-- add to examine bbox toggle
+	local landscape = Landscapes[obj.mark]
+	if landscape and IsBox(landscape.bbox) then
 		item_list[#item_list+1] = {
-			text = "mark",
-			bbox = HexStoreToWorld(g_obj[obj.mark].bbox),
+			text = Translate(12019--[[Landscape--]]) .. " bbox",
+			bbox = HexStoreToWorld(landscape.bbox),
 		}
 	end
 
@@ -2424,11 +2423,19 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 		if IsPoint(obj) then
 			-- InvalidPos()
 			if obj == InvalidPos then
-				return Strings[302535920000066--[[<color 203 120 30>Off-Map</color>--]]]
+				-- show off map for tables and the point for points
+				if self.obj_type == "userdata" then
+					return self:HyperLink(obj, Show_ConvertValueToInfo)
+						.. "point" .. tostring(InvalidPos) .. self.hyperlink_end
+				else
+					return self:HyperLink(obj, Show_ConvertValueToInfo)
+						.. Strings[302535920000066--[[<color 203 120 30>Off-Map</color>--]]] .. self.hyperlink_end
+				end
 			else
 				return self:HyperLink(obj, Show_ConvertValueToInfo)
 					.. "point" .. tostring(obj) .. self.hyperlink_end
 			end
+
 		else
 
 			-- show translated text if possible and return a clickable link

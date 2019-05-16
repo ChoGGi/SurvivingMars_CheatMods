@@ -436,8 +436,9 @@ Actions[c] = {ActionName = Strings[302535920000230--[[Remove Building Limits--]]
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.RemoveBuildingLimits,
-			Strings[302535920000231--[["Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
+			Strings[302535920000231--[["Buildings can be placed almost anywhere.
 See also %s."--]]]:format(Strings[302535920000226--[[Remove Spire Point Limit--]]])
+				.. "\n\n" .. Strings[302535920000866--[[Restart to disable.--]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle,
@@ -714,4 +715,38 @@ Actions[c] = {ActionName = Translate(5293--[[Subsurface Heater--]]),
 	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
 	bld_id = "SubsurfaceHeater",
 	bld_msg = Strings[302535920000172--[[Some smart quip about heating?--]]],
+}
+
+c = c + 1
+Actions[c] = {ActionName = Translate(357216170041--[[Forestation Plant--]]),
+	ActionMenubar = "ECM.ECM.Buildings.Radius",
+	ActionId = ".Forestation Plant",
+	ActionIcon = icon,
+	RolloverText = function()
+		local obj = ChoGGi.ComFuncs.SelObject()
+		return obj and ChoGGi.ComFuncs.SettingState(
+			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
+			Strings[302535920000170--[[Change the range of the %s.--]]]:format(RetName(obj))
+		) or Strings[302535920000170]:format(Translate(357216170041--[[Forestation Plant--]]))
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
+	bld_id = "ForestationPlant",
+	bld_msg = Strings[302535920000788--[[New building radius.--]]],
+}
+
+c = c + 1
+Actions[c] = {ActionName = Translate(11933--[[Core Heat Convector--]]),
+	ActionMenubar = "ECM.ECM.Buildings.Radius",
+	ActionId = ".Core Heat Convector",
+	ActionIcon = icon,
+	RolloverText = function()
+		local obj = ChoGGi.ComFuncs.SelObject()
+		return obj and ChoGGi.ComFuncs.SettingState(
+			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
+			Strings[302535920000170--[[Change the range of the %s.--]]]:format(RetName(obj))
+		) or Strings[302535920000170]:format(Translate(11933--[[Core Heat Convector--]]))
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
+	bld_id = "CoreHeatConvector",
+	bld_msg = Strings[302535920000788--[[New building radius.--]]],
 }

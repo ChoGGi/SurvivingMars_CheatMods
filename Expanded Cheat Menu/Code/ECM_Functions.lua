@@ -303,8 +303,10 @@ function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 
 	-- let user know
 	if not skip_msg then
+		local msg = Strings[302535920000002--[[Dumped--]]] .. ": " .. RetName(obj)
+		print(filename,"\n",msg:sub(1,msg:find("\n")))
 		MsgPopup(
-			Strings[302535920000002--[[Dumped: %s--]]]:format(RetName(obj)),
+			msg,
 			filename,
 			"UI/Icons/Upgrades/magnetic_filtering_04.tga",
 			nil,
@@ -428,13 +430,15 @@ do -- DumpTableFunc
 		DumpTableFunc(obj, 0)
 
 		if #output_list > 0 then
-			AsyncStringToFile("AppData/logs/DumpedTable.txt", TableConcat(output_list), mode or "-1")
+			local filename = "AppData/logs/DumpedTable.txt"
+			AsyncStringToFile(filename, TableConcat(output_list), mode or "-1")
 
-			local msg = Strings[302535920000002--[[Dumped: %s--]]]:format(name)
-			print(msg)
+			local msg = Strings[302535920000002--[[Dumped--]]] .. ": " .. name
+			-- print msg to first newline
+			print(filename,"\n",msg:sub(1,msg:find("\n")))
 			MsgPopup(
 				msg,
-				"AppData/logs/DumpedText.txt",
+				filename,
 				nil,
 				nil,
 				obj

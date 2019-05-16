@@ -1,6 +1,9 @@
 ## ==== AUTOMATICALLY GENERATED ====
 
 ```
+Cheats.Anomalies>Anomaly Scanning: Scan all or certain types of anomalies.
+Cheats.Anomalies>Spawn Planetary Anomalies: Adds Anomaly locations to Planetary View.
+Cheats.Anomalies>Unlock Anomaly BreakThroughs: Unlock any breakthroughs in anomalies (not planetary ones).
 Cheats.Consts.Buildings>Building dust accumulation per Sol: Dust accumulation per Sol
 Cheats.Consts.Buildings>Building dust max percentage per Sol: Maximum dust accumulated per Sol
 Cheats.Consts.Buildings>Building dust min per Sol: Minimum dust accumulated per Sol
@@ -221,12 +224,10 @@ Cheats.Research>Research Queue Size: Allow more items in queue.
 Cheats.Research>Research Remove: Remove a tech from researched list.
 Cheats.Research>Reset All Research: Resets all research (includes breakthrough tech).
 Cheats.Research>Set Amount Of Breakthroughs Allowed: How many breakthroughs are allowed to be unlocked?
-Cheats.Research>Unlock Anomaly BreakThroughs: Unlock any breakthroughs in anomalies (not planetary ones).
 Cheats.StoryBits>Clear Cooldowns: Sets story.cooldown_end to GameTime.
 Cheats.StoryBits>Interrupt Supression Times: Sets story.time_created to -SuppressTime.
 Cheats.StoryBits>Testing Delete Backlog: Sets AccountStorage.StoryBitTimestamp to nil.
 Cheats.StoryBits>Testing Toggle: Toggles g_StoryBitTesting.
-Cheats>Anomaly Scanning: Scan all or certain types of anomalies.
 Cheats>Complete Constructions: Complete all constructions instantly.
 Cheats>Complete Wires & Pipes: Complete all wires and pipes instantly.
 Cheats>Disasters: Show the disasters list and optionally start one.
@@ -237,7 +238,6 @@ Cheats>Mystery Log: Advance to next part, show what part you're on, or remove my
 Cheats>Mystery Start: Pick and start a mystery (with instant start option).
 Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance).
 Cheats>Spawn Colonists: Spawn X amount of colonists.
-Cheats>Spawn Planetary Anomalies: Adds Anomaly locations to Planetary View.
 Cheats>Toggle Unlock All Buildings: Unlocks all buildings for construction.
 This doesn't apply to sponsor limited ones; see ECM>Buildings>Toggles>Remove Sponsor Limits.
 To unlock a single building: See ECM>Buildings>Unlock Locked Buildings.
@@ -277,6 +277,7 @@ Debug>Entity Spots: Shows list of attach spots for use with .ent files.
 Debug>Examine Object: Opens the object examiner for the selected or moused-over obj.
 Debug>Examine Persist Errors: Shows an examine dialog with any persist errors when saving (needs ECM HelperMod).
 Debug>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
+Warning: Leave welcome to Mars msg onscreen till map is loaded.
 Debug>Material Properties: Shows list of material settings/.dds files for use with .mtl files.
 Debug>Measure Tool: Measures stuff (press again to remove the lines).
 Debug>Object Cloner: Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).
@@ -311,6 +312,8 @@ ECM.Buildings.Cables & Pipes>No Chance Of Break: Cables & Pipes will never break
 ECM.Buildings.Farms>Crop fail threshold: Average performance of Farms required for Crops to succeed
 ECM.Buildings.Farms>Farm Shifts All On: Turns on all the farm shifts.
 ECM.Buildings.Farms>Unlock Crops: Shows list of locked crops.
+ECM.Buildings.Radius>Core Heat Convector: Change the range of the Core Heat Convector.
+ECM.Buildings.Radius>Forestation Plant: Change the range of the Forestation Plant.
 ECM.Buildings.Radius>Subsurface Heater: Change the range of the Subsurface Heater.
 ECM.Buildings.Radius>Triboelectric Scrubber: Change the range of the Triboelectric Scrubber.
 ECM.Buildings.Sanatoriums & Schools>Sanatoriums & Schools: Show All Traits: Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.
@@ -331,8 +334,9 @@ ECM.Buildings.Toggles>Instant Build: Buildings are built instantly.
 ECM.Buildings.Toggles>Maintenance Free Inside: Buildings inside domes don't build maintenance points (takes away instead of adding).
 ECM.Buildings.Toggles>Maintenance Free: Building maintenance points reverse (takes away instead of adding).
 ECM.Buildings.Toggles>Pipes pillar spacing: 1000: Only place Pillars at start and end.
-ECM.Buildings.Toggles>Remove Building Limits: Buildings can be placed almost anywhere (I left uneven terrain blocked, and pipes don't like domes).
+ECM.Buildings.Toggles>Remove Building Limits: Buildings can be placed almost anywhere.
 See also Remove Spire Point Limit.
+Restart to disable.
 ECM.Buildings.Toggles>Remove Spire Point Limit: Build spires anywhere in domes.
 Use with Remove Building Limits to fill up a dome with spires.
 ECM.Buildings.Toggles>Remove Sponsor Limits: Allow you to build all buildings no matter your sponsor.
@@ -438,8 +442,10 @@ ECM.Misc>Time Factor: 1000: Change the time factor (not permanently); for ease o
 ECM.Mission.Disasters>Cold Waves: Set the occurrence level of Cold Wave disasters.
 ECM.Mission.Disasters>Dust Devils: Set the occurrence level of Dust Devils disasters.
 ECM.Mission.Disasters>Dust Storms: Set the occurrence level of Dust Storm disasters.
+ECM.Mission.Disasters>Marsquake: Automated: Toggle occurrence of Marsquake disasters.
 ECM.Mission.Disasters>Meteor Damage: Health damage from small meteor (one-time on impact)
 ECM.Mission.Disasters>Meteors: Set the occurrence level of Meteors disasters.
+ECM.Mission.Disasters>Toxic Rains: Automated: Toggle occurrence of Toxic Rain disasters.
 ECM.Mission>Change Logo: MarsExpress: Change the logo for anything that uses the logo.
 ECM.Mission>Game Rules: Change the "Game Rules".
 ECM.Mission>Instant Colony Approval: Make your colony instantly approved (can be called before you summon your first victims).
@@ -476,6 +482,19 @@ ECM.Rovers>RC Storage Capacity: Change amount of resources RC Transports/Constru
 ECM.Shuttles>Set Cargo Shuttle Capacity: Change capacity of shuttles.
 ECM.Shuttles>Set Cargo Shuttle Speed: Change speed of shuttles.
 ECM.Shuttles>Set ShuttleHub Shuttle Capacity: Change amount of shuttles per shuttlehub.
+ECM.Terraforming>Open Air Domes Toggle: Open the domes to the fresh air (or lack of).
+ECM.Terraforming>Parameter All Max: Set all params to 100.
+ECM.Terraforming>Parameter All Min: Set all params to 0.
+ECM.Terraforming>Parameter Atmosphere: Set Atmosphere Params
+ECM.Terraforming>Parameter Temperature: Set Temperature Params
+ECM.Terraforming>Parameter Vegetation: Set Vegetation Params
+ECM.Terraforming>Parameter Water: Set Water Params
+ECM.Terraforming>Plant Random Lichen: Plants a bunch of Lichen/Grass.
+ECM.Terraforming>Plant Random Vegetation: Plants a bunch of Tree/Bush/Grass.
+ECM.Terraforming>Remove LandScaping Limits: Allows you to start building on uneven ground, and removes the size limits.
+Restart to disable.
+ECM.Terraforming>Soil Quality: Set Soil Quality
+ECM.Terraforming>Toxic Pools Max: 30: Max amount of pools that can form.
 ECM>Building Info: Shows info about building in text above it.
 ECM>Close Dialogs: Close any dialogs opened by ECM (Examine, Object Editor, Change Colours, etc...).
 ECM>Find Nearest Resource: Select an object and click this to display a list of resources (Shows nearest resource to object).
@@ -551,8 +570,7 @@ Shortcut Keys>Color Modifier Default Colour
 Shortcut Keys>Color Modifier Random Colour
 Shortcut Keys>Examine Objects Ctrl
 Shortcut Keys>Examine Objects Shift
-Shortcut Keys>Place Last Constructed Building
-Shortcut Keys>Place Last Selected Object
+Shortcut Keys>Place Last Selected/Constructed Building
 Shortcut Keys>Restart
 Shortcut Keys>Show Console
 ```
