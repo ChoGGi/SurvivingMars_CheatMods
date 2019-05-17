@@ -1089,7 +1089,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 	local c = 0
 
 	local LightmodelPresets = LightmodelPresets
-	for key, value in pairs(LightmodelPresets) do
+	for key in pairs(LightmodelPresets) do
 		c = c + 1
 		item_list[c] = {
 			text = key,

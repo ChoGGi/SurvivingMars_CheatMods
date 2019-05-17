@@ -1,3 +1,6 @@
+v0.6
+Armstrong (thanks misukhanov).
+
 v0.5
 Added concrete.
 The button now only works for that type of resource instead of all.

@@ -1,6 +1,9 @@
 ## Library Changelog
 
-## v6.5 (Unreleased)
+## v6.6 (Unreleased)
+
+## v6.5 (May 17 2019)
+- Code cleanup.
 
 ## v6.4 (May 15 2019)
 - ValidateImage didn't work with non-Library images.

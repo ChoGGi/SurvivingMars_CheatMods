@@ -2475,7 +2475,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			-- when this reaches amount we return the list
 			local c = 0
 			-- loop through the amount once
-			for i = 1, amount do
+			for _ = 1, amount do
 				-- 16777216: https://en.wikipedia.org/wiki/Color_depth#True_color_(24-bit)
 				-- we skip the alpha values
 				local colour = AsyncRand(16777217) + -16777216
@@ -4649,11 +4649,8 @@ do -- BuildableHexGrid
 			Temp.grid_thread = CreateRealTimeThread(function()
 				-- local all the globals we use more than once for some speed
 				local terrain_IsPassable = terrain.IsPassable
-				local terrain_GetSurfaceHeight = terrain.GetSurfaceHeight
-				local IsTerrainFlatForPlacement = ConstructionController.IsTerrainFlatForPlacement
 				local GetTerrainCursor = GetTerrainCursor
 				local HexGridGetObject = HexGridGetObject
-				local HexGetUnits = HexGetUnits
 				local HexToWorld = HexToWorld
 				local WorldToHex = WorldToHex
 				local point = point
@@ -4663,12 +4660,10 @@ do -- BuildableHexGrid
 				local g_BuildableZ = g_BuildableZ
 				local UnbuildableZ = buildUnbuildableZ()
 
-				local cls_stones = {"DoesNotObstructConstruction", "SurfaceDeposit", "StoneSmall"}
 				local red = red
 				local green = green
 				local yellow = yellow
 				local blue = blue
-				local pt20t = {point20}
 
 				local ObjectGrid = ObjectGrid
 				local const_HexSize = const.HexSize

@@ -974,7 +974,7 @@ function ChoGGi.ComFuncs.MonitorThreads()
 		local ThreadsRegister = ThreadsRegister
 		while dlg and dlg.window_state ~= "destroying" do
 			-- only update when it's our dlg sending the msg
-			local ok,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
+			local _,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
 			if msg_dlg == dlg then
 				-- we use a "tags" tag to store a unique number (examine uses tags off for text, so we need to use on
 				local c = 0
@@ -1017,7 +1017,7 @@ function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby, title)
 		-- stop when dialog is closed
 		while dlg and dlg.window_state ~= "destroying" do
 			-- only update when it's our dlg sending the msg
-			local ok,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
+			local _,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
 			if msg_dlg == dlg then
 				table_clear(table_list)
 
@@ -3815,7 +3815,7 @@ function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 		-- stop when dialog is closed
 		while dlg and dlg.window_state ~= "destroying" do
 			-- only update when it's our dlg sending the msg
-			local ok,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
+			local _,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
 			if msg_dlg == dlg then
 				table_iclear(results_list)
 				local results = {func(varargs)}

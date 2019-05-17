@@ -20,7 +20,7 @@ function OnMsg.ClassesPostprocess()
 		group = "Default",
 		id = "FullyTerraformed",
 		PlaceObj("Effect_Code", {
-			OnApplyEffect = function(self, city, parent)
+			OnApplyEffect = function()
 				-- max params
 				local SetTerraformParamPct = SetTerraformParamPct
 				for param in pairs(Terraforming) do
@@ -70,7 +70,7 @@ Y'all motherfuckers lying, and getting me pissed."
 		group = "Default",
 		id = "TerraformingLocked",
 		PlaceObj("Effect_Code", {
-			OnApplyEffect = function(self, city, parent)
+			OnApplyEffect = function()
 				g_ChoGGi_GM_TerraformingLocked = true
 			end
 		}),

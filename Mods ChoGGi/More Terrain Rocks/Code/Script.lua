@@ -83,7 +83,9 @@ local function OnMsgXTemplates()
 			PlaceObj('XTemplateTemplate', {
 				'comment', "salvage",
 				'__context_of_kind', "Demolishable",
-				'__condition', function (parent, context) return context:ShouldShowDemolishButton() end,
+				'__condition', function (_, context)
+          return context:ShouldShowDemolishButton()
+        end,
 				'__template', "InfopanelButton",
 				'RolloverTitle', T(3973, --[[XTemplate ipBuilding RolloverTitle]] "Salvage"),
 				'RolloverHintGamepad', T(7657, --[[XTemplate ipBuilding RolloverHintGamepad]] "<ButtonY> Activate"),

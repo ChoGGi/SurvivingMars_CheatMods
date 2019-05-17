@@ -2,7 +2,10 @@
 
 local max_int = max_int
 local function BumpAmount(self)
-	local objs = UICity.labels[self.context.class] or ""
+
+	-- hey guys, lets just remove some labels, I'm sure no modders would ever use them
+--~ 	local objs = UICity.labels[self.context.class] or ""
+	local objs = MapGet("map",self.context.class)
 	for i = 1, #objs do
 		local obj = objs[i]
 		-- bump the amounts
@@ -20,19 +23,20 @@ local function BumpAmount(self)
 end
 
 function OnMsg.ClassesBuilt()
-	local XTemplates = XTemplates
 
 	local template = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_MultipleAmount", true,
+		"Id", "ChoGGi_MultipleAmount",
 		"__template", "InfopanelButton",
 		"Icon", "UI/Icons/Sections/Metals_2.tga",
-		"Title", [[5 Times the amount1]],
-		"RolloverText", [[Clicking this once will add 5 times the amount of stored resources to all deposits of the same type.]],
-		"RolloverTitle", "Info",
+		"Title", [[5* The Amount]],
+		"RolloverText", [[Clicking this once will add 5 times the amount of stored resources to all deposits of the same type (and make the grade very high).]],
+		"RolloverTitle", T(126095410863,"Info"),
 		"RolloverHint", 	T(0, "Activate <left_click>"),
 		"OnPress", BumpAmount,
 	})
 
+	local XTemplates = XTemplates
 	local d = XTemplates.ipSubsurfaceDeposit[1]
 	ChoGGi.ComFuncs.RemoveXTemplateSections(d, "ChoGGi_MultipleAmount")
 	-- check if the buttons were already added (you can have one for each, but meh)
@@ -41,6 +45,4 @@ function OnMsg.ClassesBuilt()
 	d = XTemplates.ipTerrainDeposit[1]
 	ChoGGi.ComFuncs.RemoveXTemplateSections(d, "ChoGGi_MultipleAmount")
 	d[#d+1] = template
-
-
 end

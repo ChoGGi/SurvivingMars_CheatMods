@@ -3,7 +3,6 @@
 local next, type = next, type
 
 local Translate = ChoGGi.ComFuncs.Translate
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Strings = ChoGGi.Strings

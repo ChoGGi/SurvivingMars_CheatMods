@@ -130,7 +130,6 @@ end
 -- override limits
 function OnMsg.ClassesGenerate()
 
-	local table_remove = table.remove
 	local ignore_status
 	local orig_UpdateConstructionStatuses = LandscapeConstructionController.UpdateConstructionStatuses
 	function LandscapeConstructionController:UpdateConstructionStatuses(...)

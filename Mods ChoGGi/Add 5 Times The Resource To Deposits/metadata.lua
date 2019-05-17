@@ -8,10 +8,10 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Add 5 Times The Resource To Deposits",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
-	"saved", 1549713600,
+	"version_minor", 6,
+	"saved", 1558094400,
 	"id", "ChoGGi_Add5TimesTheResourceToDeposits",
 	"author", "ChoGGi",
 	"code", {

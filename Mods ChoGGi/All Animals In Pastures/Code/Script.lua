@@ -347,7 +347,7 @@ function PastureAnimal:SetGrazingState(duration, ...)
 			Sleep(anim_time)
 			self:SetState(state .. "Idle","ChoGGi_skip")
 			Sleep(duration)
-			local anim_time = self:SetState(state .. "End","ChoGGi_skip")
+			anim_time = self:SetState(state .. "End","ChoGGi_skip")
 			Sleep(anim_time)
 
 			self:SetState("idle","ChoGGi_skip")

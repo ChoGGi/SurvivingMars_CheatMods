@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v13.5 (Unreleased)
+## v13.6 (Unreleased)
+
+## v13.5 (May 17 2019)
 ### Fixed:
 - Some problems with Cheats pane>CleanAndFix (thanks bholfeltz).
 - Examine>Object>Ent Spots Toggle wasn't working on chains (GetSpotAnnotation changed ", " to "," for _reasons_).

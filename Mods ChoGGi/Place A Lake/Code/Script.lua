@@ -74,7 +74,7 @@ function OnMsg.ClassesPostprocess()
 			"display_name_pl",[[Place-a-lakes]],
 			"description",[[lake thingy... ?]],
 			"display_icon", "UI/Icons/Buildings/terraforming_big_lake.tga",
-			"entity","Ice_Cliff_06",
+			"entity", entity,
 			"build_category","ChoGGi",
 			"Group", "ChoGGi",
 			"encyclopedia_exclude",true,
