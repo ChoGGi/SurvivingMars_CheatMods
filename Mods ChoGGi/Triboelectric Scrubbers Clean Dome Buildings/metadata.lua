@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Triboelectric Scrubbers Clean Dome Buildings",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"saved", 1534680000,
 	"image", "Preview.png",
 	"id", "ChoGGi_TriboelectricScrubbersCleanDomeBuildings",

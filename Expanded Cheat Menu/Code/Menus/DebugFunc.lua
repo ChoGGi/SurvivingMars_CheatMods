@@ -669,9 +669,11 @@ function ChoGGi.MenuFuncs.ObjectCloner(flat)
 		new:SetPos(hex)
 	end
 
---~ 	if new.CheatRefill then
---~ 		new:CheatRefill()
---~ 	end
+	if new:IsKindOf("SubsurfaceDeposit") then
+		if new.CheatRefill then
+			new:CheatRefill()
+		end
+	end
 --~ 	if new.CheatFill then
 --~ 		new:CheatFill()
 --~ 	end

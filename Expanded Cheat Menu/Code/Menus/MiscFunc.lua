@@ -96,7 +96,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 	for i = 1, #item_list do
 		local item = item_list[i]
 		if UserSettings.UnpinObjects[item] then
-			item.hint = Strings[302535920000030--[[Enabled--]]]
+			item.hint = Translate(12227--[[Enabled--]])
 		end
 	end
 

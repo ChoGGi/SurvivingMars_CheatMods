@@ -434,6 +434,7 @@ end -- do
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
 	SuspendPassEdits("ChoGGi.MenuFuncs.RemoveYellowGridMarks")
 	MapDelete(true, "GridTile")
+	MapDelete(true, "GridTileWater")
 	ResumePassEdits("ChoGGi.MenuFuncs.RemoveYellowGridMarks")
 	MsgPopup(
 		Strings[302535920000603--[[Remove Yellow Grid Marks--]]],

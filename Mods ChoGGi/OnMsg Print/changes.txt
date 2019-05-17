@@ -7,7 +7,7 @@ ApplyModOptions
 BreathableAtmosphereChanged
 CheatStopDisaster
 ClosePlanetaryView
-ConstructionSitePlace (possible mistake, as ConstructionSitePlaced exists)
+ConstructionSitePlace
 ConstructionSiteRemoved
 CropProduced
 CurrentlyEditedModItemsChosen

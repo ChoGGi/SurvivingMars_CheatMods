@@ -1,3 +1,10 @@
+v0.5
+Specialisation count section is now optional (default: disabled).
+Addd Mod Options:
+More Spec Info: Show more specialist info.
+Position Pass List: Enable changing position of passenger list.
+PosX/PosY: Margins to use for list.
+
 v0.4
 Hopefully fixed resupply not opening after awhile.
 

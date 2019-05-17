@@ -81,6 +81,8 @@ end
 function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
 	local BuildingTechRequirements = BuildingTechRequirements
 	local BuildingTemplates = BuildingTemplates
+	local table_remove = table.remove
+	local table_find = table.find
 
 	if ChoGGi.UserSettings.SponsorBuildingLimits then
 		-- used when starting/loading a game
@@ -104,9 +106,10 @@ function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
 		for id, bld in pairs(BuildingTemplates) do
 			-- set each status to false if it isn't
 			for i = 1, 3 do
-				local str = "sponsor_status" .. i .. "_ChoGGi_orig"
-				if bld[str] ~= false then
-					bld["sponsor_status" .. i .. "_ChoGGi_orig"] = bld[str]
+				local str = "sponsor_status" .. i
+				local status = bld[str]
+				if status ~= false then
+					bld["sponsor_status" .. i .. "_ChoGGi_orig"] = status
 					bld[str] = false
 				end
 			end
@@ -116,7 +119,7 @@ function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
 			if name:find("RC") and name:find("Building") then
 				name = name:gsub("Building", "")
 			end
-			local idx = table.find(BuildingTechRequirements[id], "check_supply", name)
+			local idx = table_find(BuildingTechRequirements[id], "check_supply", name)
 			if idx then
 				table_remove(BuildingTechRequirements[id], idx)
 			end

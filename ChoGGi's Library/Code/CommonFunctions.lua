@@ -2328,6 +2328,82 @@ function ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj, amount)
 	io_demand_req:SetAmount(amount)
 end
 
+do -- GetAllAttaches
+	local objlist = objlist
+	local attach_dupes = {}
+	local attaches_list, attaches_count
+	local obj_cls
+--~ 	local skip = {"GridTile", "GridTileWater", "BuildingSign", "ExplorableObject", "TerrainDeposit", "DroneBase", "Dome"}
+	local skip = {"ExplorableObject", "TerrainDeposit", "DroneBase", "Dome"}
+
+	local function AddAttaches(obj)
+		for _, a in pairs(obj) do
+			if not attach_dupes[a] and IsValid(a) and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
+				attach_dupes[a] = true
+				attaches_count = attaches_count + 1
+				attaches_list[attaches_count] = a
+			end
+		end
+	end
+
+	local mark
+	local function ForEach(a, parent_cls)
+		if not attach_dupes[a] and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
+			attach_dupes[a] = true
+			attaches_count = attaches_count + 1
+			attaches_list[attaches_count] = a
+			if mark then
+				a.ChoGGi_Marked_Attach = parent_cls
+			end
+			-- add level limit?
+			if a.ForEachAttach then
+				a:ForEachAttach(ForEach, a.class)
+			end
+		end
+	end
+
+	function ChoGGi.ComFuncs.GetAllAttaches(obj, mark_attaches)
+		mark = mark_attaches
+
+		table_clear(attach_dupes)
+		if not IsValid(obj) then
+			-- I always use #attach_list so "" is fine by me
+			return ""
+		end
+
+		-- we use objlist instead of {} for delete all button in examine
+		attaches_list = objlist:new()
+		attaches_count = 0
+		obj_cls = obj.class
+
+		-- add regular attachments
+		if obj.ForEachAttach then
+			obj:ForEachAttach(ForEach, obj.class)
+		end
+--~ 		local attaches = obj:GetClassFlags(const.cfComponentAttach) ~= 0
+
+		-- add any non-attached attaches (stuff that's kinda attached, like the concrete arm thing)
+		AddAttaches(obj)
+		-- and the anim_obj added in gagarin
+		if IsValid(obj.anim_obj) then
+			AddAttaches(obj.anim_obj)
+		end
+		-- pastures
+		if obj.current_herd then
+			AddAttaches(obj.current_herd)
+		end
+
+		-- remove original obj if it's in the list
+		local idx = table_find(attaches_list, obj)
+		if idx then
+			table_remove(attaches_list, idx)
+		end
+
+		return attaches_list
+	end
+end -- do
+local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
+
 do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRandom/ObjectColourDefault/ChangeObjectColour
 	local color_ass = {}
 	local SaveOldPalette,RestoreOldPalette,RandomColour
@@ -2445,7 +2521,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		local attaches = {}
 		local c = 0
 
-		local a_list = ChoGGi.ComFuncs.GetAllAttaches(obj)
+		local a_list = GetAllAttaches(obj)
 		for i = 1, #a_list do
 			local a = a_list[i]
 			if a:IsKindOf("ColorizableObject") then
@@ -2514,7 +2590,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			RestoreOldPalette(obj)
 		end
 
-		local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
+		local attaches = GetAllAttaches(obj)
 		for i = 1, #attaches do
 			RestoreOldPalette(attaches[i])
 		end
@@ -2540,8 +2616,6 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 	end
 
 	function ChoGGi.ComFuncs.ChangeObjectColour(obj, parent, dialog)
-		local ChoGGi = ChoGGi
-		local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
 		if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 			MsgPopup(
 				Strings[302535920000015--[[Can't colour %s.--]]]:format(RetName(obj)),
@@ -3281,7 +3355,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = nil
-		which = Translate(460479110814--[[Enabled--]])
+		which = Translate(12227--[[Enabled--]])
 	else
 		obj:ClearEnumFlags(coll)
 		if obj.ForEachAttach then
@@ -3824,7 +3898,8 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 			obj = obj,
 			hint = Strings[302535920001106--[[Change main object colours.--]]],
 		}
-		local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
+
+		local attaches = GetAllAttaches(obj)
 		for i = 1, #attaches do
 			local a = attaches[i]
 			if a:IsKindOf("ColorizableObject") then
@@ -3912,81 +3987,6 @@ function ChoGGi.ComFuncs.SetTableValue(tab, id, id_name, item, value)
 		return tab[idx]
 	end
 end
-
-do -- GetAllAttaches
-	local objlist = objlist
-	local attach_dupes = {}
-	local attaches_list, attaches_count
-	local obj_cls
---~ 	local skip = {"GridTile", "GridTileWater", "BuildingSign", "ExplorableObject", "TerrainDeposit", "DroneBase", "Dome"}
-	local skip = {"ExplorableObject", "TerrainDeposit", "DroneBase", "Dome"}
-
-	local function AddAttaches(obj)
-		for _, a in pairs(obj) do
-			if not attach_dupes[a] and IsValid(a) and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
-				attach_dupes[a] = true
-				attaches_count = attaches_count + 1
-				attaches_list[attaches_count] = a
-			end
-		end
-	end
-
-	local mark
-	local function ForEach(a, parent_cls)
-		if not attach_dupes[a] and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
-			attach_dupes[a] = true
-			attaches_count = attaches_count + 1
-			attaches_list[attaches_count] = a
-			if mark then
-				a.ChoGGi_Marked_Attach = parent_cls
-			end
-			-- add level limit?
-			if a.ForEachAttach then
-				a:ForEachAttach(ForEach, a.class)
-			end
-		end
-	end
-
-	function ChoGGi.ComFuncs.GetAllAttaches(obj, mark_attaches)
-		mark = mark_attaches
-
-		table_clear(attach_dupes)
-		if not IsValid(obj) then
-			-- I always use #attach_list so "" is fine by me
-			return ""
-		end
-
-		-- we use objlist instead of {} for delete all button in examine
-		attaches_list = objlist:new()
-		attaches_count = 0
-		obj_cls = obj.class
-
-		-- add regular attachments
-		if obj.ForEachAttach then
-			obj:ForEachAttach(ForEach, obj.class)
-		end
---~ 		local attaches = obj:GetClassFlags(const.cfComponentAttach) ~= 0
-
-		-- add any non-attached attaches (stuff that's kinda attached, like the concrete arm thing)
-		AddAttaches(obj)
-		-- and the anim_obj added in gagarin
-		if IsValid(obj.anim_obj) then
-			AddAttaches(obj.anim_obj)
-		end
-		-- pastures
-		if obj.current_herd then
-			AddAttaches(obj.current_herd)
-		end
-
-		-- remove original obj if it's in the list
-		local idx = table_find(attaches_list, obj)
-		if idx then
-			table_remove(attaches_list, idx)
-		end
-
-		return attaches_list
-	end
-end -- do
 
 do -- PadNumWithZeros
 	local pads = objlist:new()
@@ -4227,8 +4227,6 @@ end
 
 
 do -- ToggleBldFlags
-	local skip = {"BuildingSign", "GridTile"}
-
 	local function ToggleBldFlags(obj, flag)
 		local func
 		if obj:GetGameFlags(flag) == flag then
@@ -4238,12 +4236,12 @@ do -- ToggleBldFlags
 		end
 
 		obj[func](obj, flag)
-		if obj.ForEachAttach then
-			obj:ForEachAttach(function(a)
-				if not a:IsKindOfClasses(skip) then
-					a[func](a, flag)
-				end
-			end)
+		local attaches = GetAllAttaches(obj)
+		for i = 1, #attaches do
+			local a = attaches[i]
+			if not (a:IsKindOf("BuildingSign") or a:IsKindOf("GridTile") or a:IsKindOf("GridTileWater")) then
+				a[func](a, flag)
+			end
 		end
 	end
 	ChoGGi.ComFuncs.ToggleBldFlags = ToggleBldFlags

@@ -670,7 +670,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 
 	local item_list = {
 		{
-		text = " " .. Strings[302535920000036--[[Disabled--]]],
+		text = " " .. Translate(847439380056--[[Disabled--]]),
 		value = "disabled",
 		}
 	}
@@ -729,15 +729,18 @@ end
 function ChoGGi.MenuFuncs.ChangeRules()
 	local GameRulesMap = GameRulesMap
 	local g_CurrentMissionParams = g_CurrentMissionParams
+	local IsGameRuleActive = IsGameRuleActive
 
 	local item_list = {}
 	local c = 0
 	for id, def in pairs(GameRulesMap) do
+		local enabled = IsGameRuleActive(id)
 		c = c + 1
 		item_list[c] = {
-			text = Translate(def.display_name),
+			text = Translate(def.display_name) .. (enabled and " *" or ""),
 			value = id,
-			hint = Translate(def.description) .. "\n"
+			hint = (enabled and "<color green>" .. Translate(12227--[[Enabled--]]) .. "</color>\n" or "")
+				.. Translate(def.description) .. "\n"
 				.. Translate(3491--[[Challenge Mod (%)--]]) .. ": " .. def.challenge_mod .. "\n\n"
 				.. (def.exclusionlist and Strings[302535920001357--[[Exclusion List--]]] .. ": " .. def.exclusionlist or "")
 				.. "\n".. Translate(def.flavor),

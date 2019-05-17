@@ -893,10 +893,10 @@ function ChoGGi.MenuFuncs.MapExploration()
 		{text = Strings[302535920000255--[[Deep--]]], value = 2, hint = hint_deep},
 		{text = Strings[302535920000256--[[Core--]]], value = 3, hint = hint_core},
 
-		{text = Strings[302535920000257--[[Deep Scan--]]], value = 4, hint = hint_deep .. "\n" .. Strings[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.DeepScanAvailable},
-		{text = Translate(797--[[Deep Water--]]), value = 5, hint = hint_deep .. "\n" .. Strings[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepWaterExploitable},
-		{text = Translate(793--[[Deep Metals--]]), value = 6, hint = hint_deep .. "\n" .. Strings[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepMetalsExploitable},
-		{text = Translate(801--[[Deep Rare Metals--]]), value = 7, hint = hint_deep .. "\n" .. Strings[302535920000030--[[Enabled--]]] .. ": " .. g_Consts.IsDeepPreciousMetalsExploitable},
+		{text = Strings[302535920000257--[[Deep Scan--]]], value = 4, hint = hint_deep .. "\n" .. Translate(12227--[[Enabled--]]) .. ": " .. g_Consts.DeepScanAvailable},
+		{text = Translate(797--[[Deep Water--]]), value = 5, hint = hint_deep .. "\n" .. Translate(12227--[[Enabled--]]) .. ": " .. g_Consts.IsDeepWaterExploitable},
+		{text = Translate(793--[[Deep Metals--]]), value = 6, hint = hint_deep .. "\n" .. Translate(12227--[[Enabled--]]) .. ": " .. g_Consts.IsDeepMetalsExploitable},
+		{text = Translate(801--[[Deep Rare Metals--]]), value = 7, hint = hint_deep .. "\n" .. Translate(12227--[[Enabled--]]) .. ": " .. g_Consts.IsDeepPreciousMetalsExploitable},
 
 		{text = Translate(6548--[[Core Water--]]), value = 8, hint = hint_core},
 		{text = Translate(6546--[[Core Metals--]]), value = 9, hint = hint_core},

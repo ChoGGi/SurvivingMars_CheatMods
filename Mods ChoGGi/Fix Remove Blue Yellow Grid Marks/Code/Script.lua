@@ -4,7 +4,7 @@ function OnMsg.LoadGame()
 	SuspendPassEdits("RemoveBlueYellowGridMarks")
 
 	-- blue/yellow markers
-	MapDelete(true, "GridTile", "RangeHexRadius", function(o)
+	MapDelete(true, "GridTile", "GridTileWater", "RangeHexRadius", function(o)
 		-- SkiRich's Toggle Hub Zone
 		if not o.ToggleWorkZone then
 			return true

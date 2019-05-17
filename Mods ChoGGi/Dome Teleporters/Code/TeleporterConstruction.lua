@@ -35,11 +35,11 @@ function OnMsg.NewMap()
 end
 function OnMsg.LoadGame()
 	CityDomeTeleporterConstruction[UICity] = DomeTeleporterConstructionController:new()
-	-- dbg
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(CityDomeTeleporterConstruction[UICity])
-	dlg:EnableAutoRefresh()
-	ex(CityTunnelConstruction[UICity])
-	-- dbg
+--~ 	-- dbg
+--~ 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(CityDomeTeleporterConstruction[UICity])
+--~ 	dlg:EnableAutoRefresh()
+--~ 	ex(CityTunnelConstruction[UICity])
+--~ 	-- dbg
 
 	local AddPFTunnel = Tunnel.AddPFTunnel
 	MapForEach("map", "DomeTeleporter", AddPFTunnel)

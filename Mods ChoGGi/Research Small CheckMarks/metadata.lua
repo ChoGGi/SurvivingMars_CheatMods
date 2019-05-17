@@ -14,7 +14,5 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[The finished research checkmarks in Green Planet are a bit large for my taste.
-This also reduces the blue background (I can add a mod option to completely hide the bg?).
-
-It's safe to leave this mod enabled on Tereshkhova (it won't do anything till the game uses Green Planet LuaRevision).]],
+This also reduces the blue background (I can add a mod option to completely hide the bg?).]],
 })

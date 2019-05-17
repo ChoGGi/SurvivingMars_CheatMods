@@ -27,8 +27,8 @@ UIPropertyChanged
 
 
 See also:
-https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/OnMsgs%20Load%20Game.md#load-game
-https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/OnMsgs%20New%20Game.md#new-game
-https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/OnMsg%20Print
+[url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/OnMsgs%20Load%20Game.md#readme]OnMsgs Load Game[/url]
+[url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Tutorials/OnMsgs%20New%20Game.md#readme]OnMsgs New Game[/url]
+[url=https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/OnMsg%20Print]OnMsg Print[/url]
 ]],
 })

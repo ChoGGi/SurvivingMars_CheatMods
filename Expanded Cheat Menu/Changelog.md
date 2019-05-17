@@ -4,6 +4,8 @@
 ### Fixed:
 - Some problems with Cheats pane>CleanAndFix (thanks bholfeltz).
 - Examine>Object>Ent Spots Toggle wasn't working on chains (GetSpotAnnotation changed ", " to "," for _reasons_).
+- Cloning wasn't updating the new deposit (thanks McKaby).
+- Remove Sponsor Limits didn't work until restart.
 
 ## v13.4 (May 15 2019)
 ### Added:

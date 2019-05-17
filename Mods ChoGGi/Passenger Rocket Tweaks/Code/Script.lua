@@ -2,6 +2,36 @@
 
 local table_clear = table.clear
 
+local mod_id = "ChoGGi_PassengerRocketTweaks"
+local mod = Mods[mod_id]
+
+local mod_MoreSpecInfo = mod.options and mod.options.MoreSpecInfo or false
+local mod_PosPassList = mod.options and mod.options.PosPassList or false
+local mod_PosX = mod.options and mod.options.PosX or 700
+local mod_PosY = mod.options and mod.options.PosY or 500
+
+local ToggleSpecInfo
+local function ModOptions()
+	mod_MoreSpecInfo = mod.options.MoreSpecInfo
+	ToggleSpecInfo()
+	mod_PosPassList = mod.options.PosPassList
+	mod_PosX = mod.options.PosX
+	mod_PosY = mod.options.PosY
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	ModOptions()
+end
+
+-- for some reason mod options aren't retrieved before this script is loaded...
+OnMsg.CityStart = ModOptions
+OnMsg.LoadGame = ModOptions
+
 --~ local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
 
@@ -71,7 +101,7 @@ function SetUIResupplyParams(self, win)
 end
 
 -- add extra info to select colonists
-function OnMsg.ClassesBuilt()
+ToggleSpecInfo = function()
 	-- I'm lazy, sue me
 	pcall(function()
 
@@ -79,6 +109,9 @@ function OnMsg.ClassesBuilt()
 		local template = pass[table.find(pass, "Id", "idContent")]
 		template = template[table.find(template, "Id", "idTop")]
 		ChoGGi.ComFuncs.RemoveXTemplateSections(template, "Id", "idPassInfo_ChoGGi")
+		if not mod_MoreSpecInfo then
+			return
+		end
 
 		table.insert(template, 3, PlaceObj("XTemplateWindow", {
 			"Id", "idPassInfo_ChoGGi",
@@ -119,7 +152,7 @@ function OnMsg.ClassesBuilt()
 					PlaceObj("XTemplateWindow", {
 						"LayoutMethod", "VList",
 					}, {
-						PlaceObj("XTemplateWindow", {
+						PlaceObj("XTemplateWindow", {-- none
 							"__condition", function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
@@ -129,7 +162,7 @@ function OnMsg.ClassesBuilt()
 							"Translate", true,
 							"Text", T(3848, "No specialization"),
 						}),
-						PlaceObj("XTemplateWindow", {
+						PlaceObj("XTemplateWindow", {-- Botanist
 							"__condition", function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
@@ -137,9 +170,9 @@ function OnMsg.ClassesBuilt()
 							"Padding", box(0, 0, 0, 0),
 							"TextStyle", "PGLandingPosDetails",
 							"Translate", true,
-							"Text", T(3850, "Scientist"),
+							"Text", T(3865, "Botanist"),
 						}),
-						PlaceObj("XTemplateWindow", {
+						PlaceObj("XTemplateWindow", {-- Engineer
 							"__condition", function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
@@ -149,7 +182,7 @@ function OnMsg.ClassesBuilt()
 							"Translate", true,
 							"Text", T(3853, "Engineer"),
 						}),
-						PlaceObj("XTemplateWindow", {
+						PlaceObj("XTemplateWindow", {-- Geologist
 							"__condition", function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
@@ -157,8 +190,9 @@ function OnMsg.ClassesBuilt()
 							"Padding", box(0, 0, 0, 0),
 							"TextStyle", "PGLandingPosDetails",
 							"Translate", true,
-							"Text", T(6682, "Officer"),
+							"Text", T(3859, "Geologist"),
 						}),
+
 					}),
 
 					PlaceObj("XTemplateWindow", {
@@ -173,7 +207,7 @@ function OnMsg.ClassesBuilt()
 						}),
 						PlaceObj("XTemplateWindow", {
 							"__class", "XText",
-							"Id", "idChoGGiPassInfo_scientist",
+							"Id", "idChoGGiPassInfo_botanist",
 							"Padding", box(0, 0, 0, 0),
 							"TextStyle", "PGChallengeDescription",
 							"Translate", true,
@@ -187,11 +221,12 @@ function OnMsg.ClassesBuilt()
 						}),
 						PlaceObj("XTemplateWindow", {
 							"__class", "XText",
-							"Id", "idChoGGiPassInfo_security",
+							"Id", "idChoGGiPassInfo_geologist",
 							"Padding", box(0, 0, 0, 0),
 							"TextStyle", "PGChallengeDescription",
 							"Translate", true,
 						}),
+
 					}),
 				}),
 
@@ -212,28 +247,29 @@ function OnMsg.ClassesBuilt()
 							"Padding", box(0, 0, 0, 0),
 							"TextStyle", "PGLandingPosDetails",
 							"Translate", true,
-							"Text", T(3859, "Geologist"),
-						}),
-						PlaceObj("XTemplateWindow", {
-							"__condition", function()
-								return not UICity or UICity.launch_mode ~= "passenger_pod"
-							end,
-							"__class", "XText",
-							"Padding", box(0, 0, 0, 0),
-							"TextStyle", "PGLandingPosDetails",
-							"Translate", true,
-							"Text", T(3865, "Botanist"),
-						}),
-						PlaceObj("XTemplateWindow", {
-							"__condition", function()
-								return not UICity or UICity.launch_mode ~= "passenger_pod"
-							end,
-							"__class", "XText",
-							"Padding", box(0, 0, 0, 0),
-							"TextStyle", "PGLandingPosDetails",
-							"Translate", true,
 							"Text", T(3862, "Medic"),
 						}),
+						PlaceObj("XTemplateWindow", {
+							"__condition", function()
+								return not UICity or UICity.launch_mode ~= "passenger_pod"
+							end,
+							"__class", "XText",
+							"Padding", box(0, 0, 0, 0),
+							"TextStyle", "PGLandingPosDetails",
+							"Translate", true,
+							"Text", T(3850, "Scientist"),
+						}),
+						PlaceObj("XTemplateWindow", {
+							"__condition", function()
+								return not UICity or UICity.launch_mode ~= "passenger_pod"
+							end,
+							"__class", "XText",
+							"Padding", box(0, 0, 0, 0),
+							"TextStyle", "PGLandingPosDetails",
+							"Translate", true,
+							"Text", T(6682, "Officer"),
+						}),
+
 					}),
 
 					PlaceObj("XTemplateWindow", {
@@ -241,25 +277,26 @@ function OnMsg.ClassesBuilt()
 					}, {
 						PlaceObj("XTemplateWindow", {
 							"__class", "XText",
-							"Id", "idChoGGiPassInfo_geologist",
-							"Padding", box(0, 0, 0, 0),
-							"TextStyle", "PGChallengeDescription",
-							"Translate", true,
-						}),
-						PlaceObj("XTemplateWindow", {
-							"__class", "XText",
-							"Id", "idChoGGiPassInfo_botanist",
-							"Padding", box(0, 0, 0, 0),
-							"TextStyle", "PGChallengeDescription",
-							"Translate", true,
-						}),
-						PlaceObj("XTemplateWindow", {
-							"__class", "XText",
 							"Id", "idChoGGiPassInfo_medic",
 							"Padding", box(0, 0, 0, 0),
 							"TextStyle", "PGChallengeDescription",
 							"Translate", true,
 						}),
+						PlaceObj("XTemplateWindow", {
+							"__class", "XText",
+							"Id", "idChoGGiPassInfo_scientist",
+							"Padding", box(0, 0, 0, 0),
+							"TextStyle", "PGChallengeDescription",
+							"Translate", true,
+						}),
+						PlaceObj("XTemplateWindow", {
+							"__class", "XText",
+							"Id", "idChoGGiPassInfo_security",
+							"Padding", box(0, 0, 0, 0),
+							"TextStyle", "PGChallengeDescription",
+							"Translate", true,
+						}),
+
 					}),
 				}),
 			}),
@@ -270,6 +307,21 @@ end
 local function AddUIStuff(content)
 	-- wait for it (thanks SkiRich)
 	WaitMsg("OnRender")
+
+	mod_PosPassList = mod.options.PosPassList
+	mod_PosX = mod.options.PosX
+	mod_PosY = mod.options.PosY
+	if mod_PosPassList then
+		content.idListsWrapper:SetMargins(box(
+			mod_PosX,
+			mod_PosY * -1,
+			0, 0
+		))
+	end
+
+	-- fatty boy
+	content.idLeftScroll:SetMaxWidth(24)
+	content.idLeftScroll:SetMinWidth(24)
 
 	-- back button
 	local orig_back = content.idToolBar.idback.OnPress
@@ -291,41 +343,44 @@ end
 
 local pass_thread
 
+local function ResDlg(dlg)
+	-- build list once per open (total count and needed count)
+	BuildSpecialistLists()
+
+	-- replace old func with our piggyback
+	local orig_SetMode = dlg.SetMode
+	function dlg:SetMode(mode, ...)
+		orig_SetMode(self, mode, ...)
+		if mode == "passengers" then
+			local content = self.idTemplate.idPassengers
+
+			-- first time pass list opens
+			if IsValidThread(pass_thread) then
+				DeleteThread(pass_thread)
+			end
+			pass_thread = CreateRealTimeThread(AddUIStuff, content)
+
+			-- when we switch back from filter mode
+			local orig_SetMode2 = content.SetMode
+			function content:SetMode(mode, ...)
+				orig_SetMode2(self, mode, ...)
+				if mode == "review" then
+					if IsValidThread(pass_thread) then
+						DeleteThread(pass_thread)
+					end
+					pass_thread = CreateRealTimeThread(AddUIStuff, content)
+				end
+			end
+
+		end
+	end
+end
+
 local orig_OpenDialog = OpenDialog
 function OpenDialog(dlg_str, ...)
 	local dlg = orig_OpenDialog(dlg_str, ...)
 	if dlg_str == "Resupply" then
-		-- build list once per open (total count and needed count)
-		BuildSpecialistLists()
-
-		-- replace old func with our piggyback
-		local orig_SetMode = dlg.SetMode
-		function dlg:SetMode(mode, ...)
-			orig_SetMode(self, mode, ...)
-			if mode == "passengers" then
-				local content = self.idTemplate.idPassengers
-
-				-- first time pass list opens
-				if IsValidThread(pass_thread) then
-					DeleteThread(pass_thread)
-				end
-				pass_thread = CreateRealTimeThread(AddUIStuff, content)
-
-				-- when we switch back from filter mode
-				local orig_SetMode2 = content.SetMode
-				function content:SetMode(mode, ...)
-					orig_SetMode2(self, mode, ...)
-					if mode == "review" then
-						if IsValidThread(pass_thread) then
-							DeleteThread(pass_thread)
-						end
-						pass_thread = CreateRealTimeThread(AddUIStuff, content)
-					end
-				end
-
-			end
-		end
+		ResDlg(dlg)
 	end
-
 	return dlg
 end

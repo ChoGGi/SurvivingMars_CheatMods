@@ -1089,7 +1089,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 	local c = 0
 
 	local LightmodelPresets = LightmodelPresets
-	for key in pairs(LightmodelPresets) do
+	for key, value in pairs(LightmodelPresets) do
 		c = c + 1
 		item_list[c] = {
 			text = key,
@@ -1146,9 +1146,9 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 		title = Translate(911432559058--[[Light model--]]),
 		hint = TableConcat(hint, "\n\n"),
 		custom_type = 6,
-		custom_func = function(value)
+		custom_func = function(choice)
 			SetLightmodelOverride(1)
-			SetLightmodel(1, value)
+			SetLightmodel(1, choice[1].value)
 		end,
 		checkboxes = {
 			{
