@@ -13,6 +13,14 @@ function OnMsg.ApplyModOptions(id)
 	mod_NeverChange = mod.options.NeverChange
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	mod_NeverChange = mod.options.NeverChange
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
+
 -- make the value the below buttons set actually do something
 local orig_Colonist_SetResidence = Colonist.SetResidence
 function Colonist:SetResidence(home, ...)

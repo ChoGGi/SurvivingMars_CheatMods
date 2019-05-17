@@ -13,6 +13,14 @@ function OnMsg.ApplyModOptions(id)
 	mod_Aerodynamics = mod.options.Aerodynamics
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function SomeCode()
+	mod_Aerodynamics = mod.options.Aerodynamics
+end
+
+OnMsg.CityStart = SomeCode
+OnMsg.LoadGame = SomeCode
+
 -- function called when a drone is created
 function City:CreateDrone()
 	local classdef = g_Classes[UICity.drone_class] or Drone

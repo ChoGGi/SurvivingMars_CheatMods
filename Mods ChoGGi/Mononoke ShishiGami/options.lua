@@ -2,7 +2,7 @@ DefineClass("ModOptions_ChoGGi_MononokeShishiGami", {
 	__parents = {"ModOptionsObject"},
 	properties = {
 		{
-			default = "true",
+			default = true,
 			editor = "bool",
 			id = "ToggleShrubs",
 			name = "Toggle Shrubs",

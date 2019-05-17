@@ -46,12 +46,6 @@ local ToolsMenuPopupToggle_list = {
 			OpenInExamineDlg(bl, nil, Strings[302535920001497])
 		end,
 	},
-	{name = Strings[302535920000473--[[Reload ECM Menu--]]],
-		hint = Strings[302535920000474--[[Fiddling around in the editor mod can break the menu / shortcuts added by ECM (use this to fix or alt-tab).--]]],
-		clicked = function()
-			Msg("ShortcutsReloaded")
-		end,
-	},
 	{is_spacer = true},
 	{name = Strings[302535920000734--[[Clear Log--]]],
 		hint = Strings[302535920001152--[[Clear out the console log (F9 also works).--]]],

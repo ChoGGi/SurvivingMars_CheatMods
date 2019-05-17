@@ -48,18 +48,6 @@ Actions[c] = {ActionName = Strings[302535920000367--[[Mod Upload--]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000473--[[Reload ECM Menu--]]],
-	ActionMenubar = "ECM.Help",
-	ActionId = ".Reload ECM Menu",
-	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
-	RolloverText = Strings[302535920000474--[[Fiddling around in the editor mode can break the menu / shortcuts added by ECM (use this to fix or alt-tab).--]]],
-	OnAction = function()
-		Msg("ShortcutsReloaded")
-	end,
-	ActionSortKey = "95.Reload ECM Menu",
-}
-
-c = c + 1
 Actions[c] = {ActionName = Strings[302535920001380--[[Report Bug--]]],
 	ActionMenubar = "ECM.Help",
 	ActionId = ".Report Bug",

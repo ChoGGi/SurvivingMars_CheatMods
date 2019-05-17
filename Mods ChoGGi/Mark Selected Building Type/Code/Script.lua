@@ -98,6 +98,19 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	mod_Mark = mod.options.Mark
+	if mod_Mark then
+		MarkObjects(SelectedObj)
+	else
+		ClearBeams()
+	end
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
+
 -- add beams (also fires when changing selection)
 OnMsg.SelectionAdded = MarkObjects
 -- remove beams when no selection

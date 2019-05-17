@@ -1710,7 +1710,7 @@ do -- SelObject/SelObjects
 		end
 		local objs = SelectedObj or SelectionMouseObj()
 
-		if objs or not radius then
+		if not radius and objs then
 			if objs:IsKindOf("MultiSelectionWrapper") then
 				return objs.objects
 			else
@@ -3972,6 +3972,10 @@ do -- GetAllAttaches
 		-- and the anim_obj added in gagarin
 		if IsValid(obj.anim_obj) then
 			AddAttaches(obj.anim_obj)
+		end
+		-- pastures
+		if obj.current_herd then
+			AddAttaches(obj.current_herd)
 		end
 
 		-- remove original obj if it's in the list

@@ -13,6 +13,14 @@ function OnMsg.ApplyModOptions(id)
 	mod_Option1 = mod.options.Option1
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	mod_Option1 = mod.options.Option1
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
+
 local pairs = pairs
 local table_sort = table.sort
 

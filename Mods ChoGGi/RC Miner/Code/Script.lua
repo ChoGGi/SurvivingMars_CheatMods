@@ -4,11 +4,7 @@ local mod_id = "ChoGGi_PortableMiner"
 local mod = Mods[mod_id]
 
 local r
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
-		return
-	end
+local function UpdateOptions()
 	r = r or const.ResourceScale
 
 	local pms = PortableMinerSettings
@@ -26,6 +22,22 @@ function OnMsg.ApplyModOptions(id)
 	pms.mine_time_idle.PreciousMetals = mod.options.mine_time_idlePreciousMetals
 	pms.visual_cues = mod.options.visual_cues
 end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+	UpdateOptions()
+end
+
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	UpdateOptions()
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
 
 PortableMinerSettings = {
 	-- how much to mine each time

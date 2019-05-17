@@ -15,6 +15,14 @@ function OnMsg.ApplyModOptions(id)
 	mod_DefaultNationNames = mod.options.DefaultNationNames
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	mod_RandomBirthplace = mod.options.RandomBirthplace
+	mod_DefaultNationNames = mod.options.DefaultNationNames
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
 
 local table_rand = table.rand
 local function GetNationName()

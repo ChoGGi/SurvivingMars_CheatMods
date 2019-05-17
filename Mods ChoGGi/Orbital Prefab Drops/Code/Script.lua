@@ -24,8 +24,24 @@ function OnMsg.ApplyModOptions(id)
 		mod.options.ModelType = 2
 		mod_ModelType = 2
 	end
-
 end
+
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	mod_PrefabOnly = mod.options.PrefabOnly
+	mod_Outside = mod.options.Outside
+	mod_Inside = mod.options.Inside
+	mod_DomeCrack = mod.options.DomeCrack
+	mod_ModelType = mod.options.ModelType
+	-- not sure if you can pass min/max onto mod options
+	if not g_AvailableDlc.gagarin and mod_ModelType == 3 then
+		mod.options.ModelType = 2
+		mod_ModelType = 2
+	end
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
 
 local models = {"SupplyPod", "Hex1_Placeholder", "ArcPod"}
 

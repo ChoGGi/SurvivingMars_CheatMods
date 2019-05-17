@@ -25,12 +25,6 @@ if not ChoGGi.testing then
 end
 
 local function StartUp()
-	-- pause on load
-	CreateRealTimeThread(function()
-		WaitMsg("MarsResume")
-		SetGameSpeedState("pause")
-	end)
-
 	-- print startup msgs to console log
 	local msgs = ChoGGi.Temp.StartupMsgs
 	for i = 1, #msgs do

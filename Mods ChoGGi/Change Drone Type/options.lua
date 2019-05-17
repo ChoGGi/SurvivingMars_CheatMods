@@ -4,7 +4,7 @@ DefineClass("ModOptions_ChoGGi_ChangeDroneType", {
 	},
 	properties = {
 		{
-			default = "false",
+			default = false,
 			editor = "bool",
 			id = "Aerodynamics",
 			name = [[Martian Aerodynamics]],

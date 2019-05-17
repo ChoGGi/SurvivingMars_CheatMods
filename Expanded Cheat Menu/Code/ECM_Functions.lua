@@ -2829,12 +2829,9 @@ do -- EntitySpots_Toggle
 			if not spot_type or spot_name == spot_type then
 				local spot_annot = obj:GetSpotAnnotation(i) or ""
 				-- if it's a chain then we need to check for "annot, " so chain=2 doesn't include chain=20
-				local chain
-				if annot then
-					chain = annot:sub(1, 5) == "chain"
-				end
---~ 					printC(spot_type, "|", spot_annot, "|", annot, "|", chain, "|", spot_annot:sub(1, #annot+1) == annot .. ", ")
-				if not annot or annot and (chain and spot_annot:sub(1, #annot+1) == annot .. ", "
+				local chain = annot and annot:find("chain")
+--~ printC(spot_type, "|", spot_annot, "|", annot, "|", chain, "|", spot_annot:sub(1, #annot+1) == annot .. ", ")
+				if not annot or annot and (chain and spot_annot:sub(1, #annot+1) == annot .. ","
 						or not chain and spot_annot:sub(1, #annot) == annot) then
 
 					local text_str = obj:GetSpotName(i)
@@ -2855,7 +2852,6 @@ do -- EntitySpots_Toggle
 					obj:Attach(text_obj, i)
 					c = c + 1
 					obj.ChoGGi_ShowAttachSpots[c] = text_obj
---~ 					obj.ChoGGi_ShowAttachSpots[#obj.ChoGGi_ShowAttachSpots+1] = text_obj
 
 					-- append waypoint num for chains later on
 					-- need to reverse string so it finds the last =, since find looks ltr
@@ -2891,6 +2887,7 @@ do -- EntitySpots_Toggle
 				end
 			end
 		end
+
 		if chain_c > 0 then
 			local line_obj = OPolyline:new()
 			if depth_test then

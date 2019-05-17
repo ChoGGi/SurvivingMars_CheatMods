@@ -4,7 +4,7 @@ DefineClass("ModOptions_ChoGGi_DronesCarryAmountFix", {
 	},
 	properties = {
 		{
-			default = "false",
+			default = false,
 			editor = "bool",
 			id = "UseCarryAmount",
 			name = T(0, "Use Carry Amount"),

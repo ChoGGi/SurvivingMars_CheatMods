@@ -767,12 +767,6 @@ end
 function Drone:CheatBattCapDef()
 	self.battery_max = const.BaseRoverMaxBattery
 end
---~ function Drone:CheatBattEmpty()
---~ 	self:ApplyBatteryChange(self.battery_max * -1)
---~ end
---~ function Drone:CheatBattRefill()
---~ 	self.battery = self.battery_max
---~ end
 
 -- CheatMoveSpeedDbl
 local function CheatMoveSpeedDbl(self)
@@ -787,13 +781,17 @@ BaseRover.CheatMoveSpeedDbl = CheatMoveSpeedDbl
 BaseRover.CheatMoveSpeedDef = CheatMoveSpeedDef
 -- CheatCleanAndFix
 local function CheatAddDust(self)
-	self.dust = self:GetDustMax() - 1
+	self.dust = (self.visual_max_dust or 50000) - 1
+	self:SetDustVisuals()
+end
+local function RemoveDust(self)
+	self.dust = 0
 	self:SetDustVisuals()
 end
 Drone.CheatAddDust = CheatAddDust
 BaseRover.CheatAddDust = CheatAddDust
 
-Drone.CheatCleanAndFix = function(self)
+function Drone:CheatCleanAndFix()
 	CreateRealTimeThread(function()
 		if not IsValid(self) then
 			return
@@ -803,13 +801,12 @@ Drone.CheatCleanAndFix = function(self)
 			self:PlayState(self.malfunction_end_state, 1)
 		end
 		self:CheatAddDust()
-		Sleep(10)
-		self.dust = 0
-		self:SetDustVisuals()
-		if drone.command == "NoBattery" then
-			drone.battery = drone.battery_max
-			drone:SetCommand("Fixed", "noBatteryFixed")
-		elseif drone.command == "Malfunction" or drone.command == "Freeze" and drone:CanBeThawed() then
+		RemoveDust(self)
+		-- why not
+		if self.command == "NoBattery" then
+			self.battery = self.battery_max
+			self:SetCommand("Fixed", "noBatteryFixed")
+		elseif self.command == "Malfunction" or self.command == "Freeze" and self:CanBeThawed() then
 			self:SetCommand("Fixed", "breakDownFixed")
 		else
 			self:SetCommand("Fixed", "Something")
@@ -817,22 +814,19 @@ Drone.CheatCleanAndFix = function(self)
 		RebuildInfopanel(self)
  end)
 end
-BaseRover.CheatCleanAndFix = function(self)
+function BaseRover:CheatCleanAndFix()
 	CreateRealTimeThread(function()
 		if not IsValid(self) then
 			return
 		end
 		self:CheatAddDust()
-		Sleep(10)
-		self.dust = 0
-		self:SetDustVisuals()
+		RemoveDust(self)
 		self:Repair()
  end)
 end
 local orig_Building_CheatCleanAndFix = Building.CheatCleanAndFix
 function Building:CheatCleanAndFix()
-	self.dust = self:GetDustMax() - 1
-	self:CheatAddDust()
+	self:ResetDust()
 	orig_Building_CheatCleanAndFix(self)
 end
 

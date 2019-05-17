@@ -1,5 +1,5 @@
 v0.6
-Green Planet.
+Armstrong update.
 
 v0.5
 Changed construction sign to default to on.

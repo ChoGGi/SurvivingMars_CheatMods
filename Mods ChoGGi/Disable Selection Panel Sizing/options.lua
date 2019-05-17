@@ -4,14 +4,14 @@ DefineClass("ModOptions_ChoGGi_DisableSelectionPanelSizing", {
 	},
 	properties = {
 		{
-			default = "true",
+			default = true,
 			editor = "bool",
 			id = "Enabled",
 			name = "Disable Panel Sizing",
 			desc = "If you want to re-enable the auto-sizing.",
 		},
 		{
-			default = "false",
+			default = false,
 			editor = "bool",
 			id = "ScrollSelection",
 			name = "Scroll Sections",

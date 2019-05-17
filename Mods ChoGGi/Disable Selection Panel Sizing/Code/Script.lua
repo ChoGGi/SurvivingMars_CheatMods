@@ -15,6 +15,15 @@ function OnMsg.ApplyModOptions(id)
 	mod_ScrollSelection = mod.options.ScrollSelection
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	mod_Enabled = mod.options.Enabled
+	mod_ScrollSelection = mod.options.ScrollSelection
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
+
 local XSizeConstrained_WindowUpdateMeasure = XSizeConstrainedWindow.UpdateMeasure
 local XWindow_UpdateMeasure = XWindow.UpdateMeasure
 

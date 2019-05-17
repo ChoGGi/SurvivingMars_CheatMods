@@ -2,7 +2,7 @@ v0.7
 Tunnels.
 
 v0.6
-Green Planet.
+Armstrong update.
 Changed the construction controller to use built-in funcs instead of copy pasta.
 
 v0.5

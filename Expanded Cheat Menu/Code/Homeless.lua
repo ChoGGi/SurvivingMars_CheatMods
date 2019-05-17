@@ -9,6 +9,7 @@ local Strings = ChoGGi.Strings
 local Mods, rawset = Mods, rawset
 for id, mod in pairs(Mods) do
 	rawset(mod.env, "CurrentModId_X", id)
+	rawset(mod.env, "CurrentModObj_X", mod)
 end
 
 -- bugfix?

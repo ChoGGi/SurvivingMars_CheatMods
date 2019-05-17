@@ -13,6 +13,13 @@ function OnMsg.ApplyModOptions(id)
 	mod_MaxSpawn = mod.options.MaxSpawn
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function SomeCode()
+	mod_MaxSpawn = mod.options.MaxSpawn
+end
+
+OnMsg.CityStart = SomeCode
+OnMsg.LoadGame = SomeCode
 
 local image_pin = CurrentModPath .. "UI/Alien_Pin.png"
 

@@ -172,11 +172,7 @@ local function ChangeMarks(label, entity, value)
 	end
 end
 
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
-		return
-	end
+local function UpdateOptions()
 	-- update signs
 	if GameState.gameplay then
 		if mod_AlienAnomaly ~= mod.options.AlienAnomaly then
@@ -191,6 +187,22 @@ function OnMsg.ApplyModOptions(id)
 		end
 	end
 end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+	UpdateOptions()
+end
+
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	UpdateOptions()
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit()

@@ -4,7 +4,7 @@ DefineClass("ModOptions_ChoGGi_SpecialistByExperience", {
 	},
 	properties = {
 		{
-			default = "false",
+			default = false,
 			editor = "bool",
 			id = "IgnoreSpec",
 			name = "Colonists who already have a spec are changed as well.",

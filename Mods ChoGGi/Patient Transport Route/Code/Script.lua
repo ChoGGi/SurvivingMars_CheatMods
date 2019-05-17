@@ -13,6 +13,14 @@ function OnMsg.ApplyModOptions(id)
 	mod_Amount = mod.options.Amount * const.ResourceScale
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	mod_Amount = mod.options.Amount * const.ResourceScale
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
+
 local Sleep = Sleep
 local table_clear = table.clear
 

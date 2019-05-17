@@ -13,6 +13,14 @@ function OnMsg.ApplyModOptions(id)
 	mod_LimitStorage = mod.options.LimitStorage
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	mod_LimitStorage = mod.options.LimitStorage
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
+
 --~ local Strings = ChoGGi.Strings
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Random = ChoGGi.ComFuncs.Random

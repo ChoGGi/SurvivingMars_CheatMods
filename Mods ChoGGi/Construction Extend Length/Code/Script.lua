@@ -9,18 +9,23 @@ function OnMsg.ApplyModOptions(id)
 		return
 	end
 
-	const.PassageConstructionGroupMaxSize = mod.options.PassChunks
-	CityGridConstruction[UICity].max_hex_distance_to_allow_build = mod.options.BuildDist
-	GridConstructionController.max_hex_distance_to_allow_build = mod.options.BuildDist
+	mod_BuildDist = mod.options.BuildDist
+	mod_PassChunks = mod.options.PassChunks
+
+	const.PassageConstructionGroupMaxSize = mod_PassChunks
+	CityGridConstruction[UICity].max_hex_distance_to_allow_build = mod_BuildDist
+	GridConstructionController.max_hex_distance_to_allow_build = mod_BuildDist
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
 local function SomeCode()
+	mod_BuildDist = mod.options.BuildDist
+	mod_PassChunks = mod.options.PassChunks
+
 	CityGridConstruction[UICity].max_hex_distance_to_allow_build = mod_BuildDist
 	GridConstructionController.max_hex_distance_to_allow_build = mod_BuildDist
 	const.PassageConstructionGroupMaxSize = mod_PassChunks
 end
 
--- new games
 OnMsg.CityStart = SomeCode
--- loaded games
 OnMsg.LoadGame = SomeCode

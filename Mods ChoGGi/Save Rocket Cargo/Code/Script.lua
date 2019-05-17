@@ -13,6 +13,14 @@ function OnMsg.ApplyModOptions(id)
 	mod_ClearOnLaunch = mod.options.ClearOnLaunch
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	mod_ClearOnLaunch = mod.options.ClearOnLaunch
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
+
 local WaitMsg = WaitMsg
 
 -- temp cargo stored here

@@ -4,14 +4,14 @@ DefineClass("ModOptions_ChoGGi_EveryFlagOnWikipedia", {
 	},
 	properties = {
 		{
-			default = "true",
+			default = true,
 			editor = "bool",
 			id = "RandomBirthplace",
 			name = "Randomise Birthplace",
 			desc = "Randomly picks birthplace for martians (so they don't all have martian names).",
 		},
 		{
-			default = "true",
+			default = true,
 			editor = "bool",
 			id = "DefaultNationNames",
 			name = "Default Nation Names",

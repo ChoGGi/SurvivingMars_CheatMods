@@ -4,7 +4,7 @@ DefineClass("ModOptions_ChoGGi_SaveRocketCargo", {
 	},
 	properties = {
 		{
-			default = "false",
+			default = false,
 			editor = "bool",
 			id = "ClearOnLaunch",
 			name = "Clear On Launch",

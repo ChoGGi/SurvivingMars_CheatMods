@@ -1,5 +1,5 @@
 v0.5
-Green Planet.
+Armstrong update.
 
 v0.4
 Cleaning up the code a bit, probably be imperceptibly faster.

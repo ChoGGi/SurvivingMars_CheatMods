@@ -85,7 +85,7 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 			desc = "XXXXXXXXXXXXXX",
 		},
 		{
-			default = "true",
+			default = true,
 			editor = "bool",
 			id = "visual_cues",
 			name = "Paint ground around mine",

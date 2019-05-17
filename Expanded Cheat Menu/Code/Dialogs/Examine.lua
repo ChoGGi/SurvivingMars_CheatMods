@@ -1899,7 +1899,7 @@ function ChoGGi_DlgExamine:ShowEntitySpotsList()
 
 		-- remove waypoints from chain points so they count as one
 		if spot_annot:find("chain") then
-			spot_annot = spot_annot:gsub(", waypoint=%d", "")
+			spot_annot = spot_annot:gsub(",waypoint=%d", "")
 		end
 
 		local name = spot_name .. (spot_annot ~= "" and ";" .. spot_annot or "")

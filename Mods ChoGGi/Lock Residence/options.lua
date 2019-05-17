@@ -4,7 +4,7 @@ DefineClass("ModOptions_ChoGGi_LockResidence", {
 	},
 	properties = {
 		{
-			default = "false",
+			default = false,
 			editor = "bool",
 			id = "NeverChange",
 			name = "Never Change",

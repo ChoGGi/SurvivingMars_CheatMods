@@ -4,7 +4,7 @@ DefineClass("ModOptions_ChoGGi_MarkSelectedBuildingType", {
 	},
 	properties = {
 		{
-			default = "true",
+			default = true,
 			editor = "bool",
 			id = "Mark",
 			name = "Mark Buildings",

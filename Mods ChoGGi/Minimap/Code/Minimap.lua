@@ -4,6 +4,14 @@ local mod_id = "ChoGGi_Minimap"
 local mod = Mods[mod_id]
 local mod_UseScreenshots = mod.options and mod.options.UseScreenshots or true
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	mod_UseScreenshots = mod.options and mod.options.UseScreenshots or true
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
+
 -- clickable map image
 
 local ViewObjectMars = ViewObjectMars

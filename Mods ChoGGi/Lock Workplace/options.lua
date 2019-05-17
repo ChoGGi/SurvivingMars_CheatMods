@@ -4,7 +4,7 @@ DefineClass("ModOptions_ChoGGi_LockWorkplace", {
 	},
 	properties = {
 		{
-			default = "false",
+			default = false,
 			editor = "bool",
 			id = "NeverChange",
 			name = "Never Change",

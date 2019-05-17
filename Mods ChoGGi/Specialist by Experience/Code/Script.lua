@@ -15,6 +15,15 @@ function OnMsg.ApplyModOptions(id)
 	mod_SolsToTrain = mod.options.SolsToTrain
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	mod_IgnoreSpec = mod.options.IgnoreSpec
+	mod_SolsToTrain = mod.options.SolsToTrain
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
+
 local orig_Workplace_AddWorker = Workplace.AddWorker
 function Workplace:AddWorker(worker, shift)
 	-- ignore workplaces without a spec

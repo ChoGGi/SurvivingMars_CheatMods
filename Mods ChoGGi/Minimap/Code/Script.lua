@@ -14,6 +14,15 @@ function OnMsg.ApplyModOptions(id)
 	ChoGGi_Minimap_Options.UpdateTopoImage(mod_UseScreenshots)
 end
 
+-- for some reason mod options aren't retrieved before this script is loaded...
+local function StartupCode()
+	mod_UseScreenshots = mod.options.UseScreenshots
+	ChoGGi_Minimap_Options.UpdateTopoImage(mod_UseScreenshots)
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
+
 local IsValid = IsValid
 
 local image_mod = Mods.ChoGGi_MapImagesPack
