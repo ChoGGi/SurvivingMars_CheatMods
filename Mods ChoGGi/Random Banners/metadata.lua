@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Random Banners",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
-	"saved", 1542801600,
+	"version_minor", 3,
+	"saved", 1558094400,
 	"image", "Preview.png",
 	"id", "ChoGGi_RandomBanners",
 	"steam_id", "1570198685",

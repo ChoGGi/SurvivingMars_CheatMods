@@ -8,10 +8,10 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Restore Request Maintenance",
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
-	"saved", 1539950400,
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
+	"saved", 1558094400,
 	"image", "Preview.png",
 	"id", "ChoGGi_RestoreRequestMaintenance",
 	"author", "ChoGGi",
@@ -23,5 +23,5 @@ return PlaceObj("ModDef", {
 	"lua_revision", 244677,
 	"description", [[Restores "Request Maintenance" button.
 
-It's set not to show up unless you can request maintenance.]],
+It says hidden when maintenance isn't required.]],
 })

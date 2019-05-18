@@ -24,28 +24,23 @@ function OnMsg.ModsReloaded()
 			flag_spons_1[flag_c] = key:sub(9)
 		end
 	end
-	local flag_spons_2 = lookup_table.Flag_02_
-	local flag_spons_3 = lookup_table.Flag_03_
+	-- make changeskin button consistent
+	table.sort(flag_spons_1)
+
 	for i = 1, flag_c do
-		flag_spons_2[i] = "Flag_02_" .. flag_spons_1[i]
-		flag_spons_3[i] = "Flag_03_" .. flag_spons_1[i]
+		lookup_table.Flag_02_[i] = "Flag_02_" .. flag_spons_1[i]
+		lookup_table.Flag_03_[i] = "Flag_03_" .. flag_spons_1[i]
 		flag_spons_1[i] = "Flag_01_" .. flag_spons_1[i]
 	end
-	lookup_table.Flag_01_ = flag_spons_1
-	lookup_table.Flag_02_ = flag_spons_2
-	lookup_table.Flag_03_ = flag_spons_3
-
-	-- welcome to our bonus eh
-	flag_c = flag_c + 1
-	flag_spons_1[flag_c] = "Flag_01_Pride"
-	flag_spons_2[flag_c] = "Flag_02_Pride"
-	flag_spons_3[flag_c] = "Flag_03_Pride"
 end
 
-function SponsorBannerBase:GetEntity()
-	-- default entity = return a random flag
+--~ local orig_SponsorBannerBase_GetEntity = SponsorBannerBase.GetEntity
+function SponsorBannerBase:GetEntity(...)
 	if self.entity == "Hex1_Placeholder" then
+		-- default entity = return a random flag
 		return table.rand(lookup_table[self.banner])
+--~ 	-- default entity = return orig func flag
+--~ 		return orig_SponsorBannerBase_GetEntity(self, ...)
 	else
 		return self.entity
 	end
@@ -64,7 +59,6 @@ local entity_list = {
 	"Flag_01_Pride",
 	"Flag_02_Pride",
 	"Flag_03_Pride",
-	"Cemetery",
 }
 
 -- local instead of global is quicker

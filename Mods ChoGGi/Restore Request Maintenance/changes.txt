@@ -1,18 +1,27 @@
+v1.0
+Armstring (thanks misukhanov).
+
 v0.9
 Library update.
 
 v0.8
 Added remaining maintenance points to mouseover.
+
 v0.7
 Library.
+
 v0.6
 Sagan.
+
 v0.5
 Cleaning up code (ChoGGi's Library).
+
 v0.4
 Might have introduced a bug in the last update.
 Cleaning up code (ChoGGi's Library).
+
 v0.3
 Hopefully fixing an issue.
+
 v0.2
 Da Vinci

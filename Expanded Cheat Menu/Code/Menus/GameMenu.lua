@@ -244,7 +244,7 @@ Actions[c] = {ActionName = Strings[302535920000647--[[Border Scrolling--]]],
 	ActionIcon = "CommonAssets/UI/Menu/CameraToggle.tga",
 	RolloverText = function()
 		return SettingState(
-			ChoGGi.UserSettings.BorderScrollingToggle,
+			ChoGGi.UserSettings.BorderScrollingArea,
 			Strings[302535920000648--[[Set size of activation for mouse border scrolling.--]]]
 		)
 	end,

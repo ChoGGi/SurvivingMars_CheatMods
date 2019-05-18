@@ -16,7 +16,6 @@ local IsKindOf = IsKindOf
 local MapFilter = MapFilter
 local MapGet = MapGet
 local PropObjGetProperty = PropObjGetProperty
-local ResumePassEdits = ResumePassEdits
 local table_remove = table.remove
 local table_find = table.find
 local table_clear = table.clear
@@ -25,6 +24,7 @@ local table_sort = table.sort
 local table_copy = table.copy
 local table_rand = table.rand
 local SuspendPassEdits = SuspendPassEdits
+local ResumePassEdits = ResumePassEdits
 
 local rawget, getmetatable = rawget, getmetatable
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -4771,4 +4771,67 @@ function ChoGGi.ComFuncs.SetWinObjectVis(obj,visible)
 			obj:SetVisible(true)
 		end
 	end
+end
+
+-- dbg_PlantRandomVegetation(choice.value) copy pasta
+function ChoGGi.ComFuncs.PlantRandomVegetation(amount)
+	SuspendPassEdits("ChoGGi.ComFuncs.PlantRandomVegetation")
+	-- might help speed it up?
+	SuspendTerrainInvalidations("ChoGGi.ComFuncs.PlantRandomVegetation")
+
+  local presets = {}
+  local presets_c = 0
+  local veg_preset_lookup = veg_preset_lookup
+  for i = 1, #veg_preset_lookup do
+		local veg = veg_preset_lookup[i]
+    if veg.group ~= "Lichen" and veg.group ~= "Vegetable" then
+			presets_c = presets_c + 1
+			presets[presets_c] = veg
+    end
+  end
+
+	local HexToWorld = HexToWorld
+	local DoesContainVegetation = DoesContainVegetation
+	local CanVegGrowAt_C = rawget(_G,"Vegetation_CanVegetationGrowAt_C")
+	local CanVegGrowAt = CanVegetationGrowAt
+	local PlaceVegetation = PlaceVegetation
+
+	local ObjectGrid = ObjectGrid
+	local LandscapeGrid = LandscapeGrid
+	local VegetationGrid = VegetationGrid
+	local HexMapWidth = HexMapWidth
+  local twidth, theight = terrain.GetMapSize()
+  local total_elements = HexMapWidth * HexMapHeight
+
+	-- stored placed
+	local exists = {}
+
+  amount = amount or 100
+  for i = 1, amount do
+    local idx = Random(99999999) % total_elements
+    local x = idx % HexMapWidth
+    local y = idx / HexMapWidth
+		if not exists[x..y] then
+			local q = x - y / 2
+			local r = y
+			local wx, wy = HexToWorld(q, r)
+			if twidth > wx and theight > wy then
+				local p = presets[Random(presets_c) + 1]
+				local data = VegetationGrid:get(x, y)
+				if not DoesContainVegetation(data)
+						and CanVegGrowAt_C and CanVegGrowAt_C(ObjectGrid, LandscapeGrid, data, q, r)
+						or CanVegetationGrowAt(data, q, r) then
+					PlaceVegetation(q, r, p)
+					exists[x..y] = true
+				else
+					i = i - 1
+				end
+			else
+				i = i - 1
+			end
+		end
+  end
+
+	ResumePassEdits("ChoGGi.ComFuncs.PlantRandomVegetation")
+	ResumeTerrainInvalidations("ChoGGi.ComFuncs.PlantRandomVegetation")
 end

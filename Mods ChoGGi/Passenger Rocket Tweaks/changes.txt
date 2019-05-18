@@ -1,6 +1,6 @@
 v0.5
 Specialisation count section is now optional (default: disabled).
-Addd Mod Options:
+Added Mod Options:
 More Spec Info: Show more specialist info.
 Position Pass List: Enable changing position of passenger list.
 PosX/PosY: Margins to use for list.

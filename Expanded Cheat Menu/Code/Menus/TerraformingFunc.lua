@@ -155,6 +155,7 @@ function ChoGGi.MenuFuncs.PlantRandomVegetation()
 		return
 	end
 
+	local hint = Strings[302535920000758--[[Will take some time for 25K and up.--]]]
 	local item_list = {
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -164,8 +165,8 @@ function ChoGGi.MenuFuncs.PlantRandomVegetation()
 		{text = 1000, value = 1000},
 		{text = 5000, value = 5000},
 		{text = 10000, value = 10000},
-		{text = 25000, value = 25000},
-		{text = 100000, value = 100000},
+		{text = 25000, value = 25000, hint = hint},
+		{text = 50000, value = 50000, hint = hint},
 	}
 
 	local function CallBackFunc(choice)
@@ -176,9 +177,7 @@ function ChoGGi.MenuFuncs.PlantRandomVegetation()
 
 		if type(choice.value) == "number" then
 
-			SuspendPassEdits("ChoGGi.MenuFuncs.PlantRandomVegetation")
-			dbg_PlantRandomVegetation(choice.value)
-			ResumePassEdits("ChoGGi.MenuFuncs.PlantRandomVegetation")
+			ChoGGi.ComFuncs.PlantRandomVegetation(choice.value)
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.value),
@@ -191,6 +190,7 @@ function ChoGGi.MenuFuncs.PlantRandomVegetation()
 		callback = CallBackFunc,
 		items = item_list,
 		title = Strings[302535920000529--[[Plant Random Vegetation--]]],
+		hint = hint,
 		skip_sort = true,
 	}
 end

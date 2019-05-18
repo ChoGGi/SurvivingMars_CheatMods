@@ -16,5 +16,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"description", [[Show Hex Grid during construction.
 
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1743031290]Show Hex Buildable Grid[/url]
+
+
 Toggle in-game with mod options.]],
 })

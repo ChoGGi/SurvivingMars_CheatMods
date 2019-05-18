@@ -30,5 +30,9 @@ Blue = pass/no build
 Red = no pass/no build
 The colours use the centre of the hex, so they aren't exact.
 
-Toggle in-game with Mod Options.]],
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1479851929]Show Hex Grid[/url]
+
+
+Toggle in-game with Mod Options.
+You can also set the size/opacity.]],
 })

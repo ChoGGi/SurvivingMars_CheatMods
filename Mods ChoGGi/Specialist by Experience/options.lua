@@ -7,7 +7,7 @@ DefineClass("ModOptions_ChoGGi_SpecialistByExperience", {
 			default = false,
 			editor = "bool",
 			id = "IgnoreSpec",
-			name = "Colonists who already have a spec are changed as well.",
+			name = "Override existing specs",
 			desc = "XXXXXXXXXXXXXX",
 		},
 		{
@@ -16,7 +16,7 @@ DefineClass("ModOptions_ChoGGi_SpecialistByExperience", {
 			id = "SolsToTrain",
 			max = 500,
 			min = 1,
-			name = "How many Sols before getting new spec.",
+			name = "Sols to work before getting new spec",
 			desc = "XXXXXXXXXXXXXX",
 		},
 	},

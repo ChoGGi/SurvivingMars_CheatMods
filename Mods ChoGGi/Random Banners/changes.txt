@@ -1,3 +1,7 @@
+v0.3
+Fixed not having all flags show up with Change Skin button (thanks D_A_R_K_N_E_S_S).
+Change Skin is now consistent about the order of flags.
+
 v0.2
 Enabled change skin button.
 Rainbows on Mars (for that capslock guy).
