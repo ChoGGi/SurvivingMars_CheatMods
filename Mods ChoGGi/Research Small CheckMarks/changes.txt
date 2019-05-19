@@ -1,0 +1,2 @@
+v0.2
+Added mod option to shrink the percent counter.

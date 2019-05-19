@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+if not g_AvailableDlc.gagarin then
+	return
+end
+
 local skins = {}
 local c = 0
 local EntityData = EntityData

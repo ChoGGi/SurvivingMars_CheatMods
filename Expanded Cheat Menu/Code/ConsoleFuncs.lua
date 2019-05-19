@@ -448,10 +448,10 @@ The number is a count of stored msgs, right-click to view the list."--]]],
 		value = "ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals",
 		mouseup = function(_, _, _, button)
 			if button == "R" then
+				OpenInExamineDlg(ChoGGi.Temp.UndefinedGlobals, nil, Strings[302535920000310--[[Skip Undefined Globals--]]])
+			else
 				ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals = not ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals
 				ChoGGi.SettingFuncs.WriteSettings()
-			elseif button == "R" then
-				OpenInExamineDlg(ChoGGi.Temp.UndefinedGlobals, nil, Strings[302535920000310--[[Skip Undefined Globals--]]])
 			end
 		end,
 	},
@@ -522,12 +522,12 @@ function ChoGGi.ConsoleFuncs.HistoryPopup(self)
 				hint = Strings[302535920001138--[["Execute this command in the console, Right-click to paste code in console."--]]] .. "\n\n" .. text,
 				hint_bottom = Strings[302535920000407--[[<left_click> Execute <right_click> Paste--]]],
 				mouseup = function(_, _, _, button)
-					if button == "L" then
-						dlgConsole:Exec(text)
-					elseif button == "R" then
+					if button == "R" then
 						dlgConsole.idEdit:SetFocus()
 						dlgConsole.idEdit:SetText(text)
 						dlgConsole.idEdit:SetCursor(1, #text)
+					else
+						dlgConsole:Exec(text)
 					end
 				end,
 			}
@@ -637,16 +637,16 @@ local function BuildSciptButton(console, folder)
 							hint = Strings[302535920001138--[["Execute this command in the console, Right-click to paste code in console."--]]] .. "\n\n" ..script,
 							hint_bottom = Strings[302535920000407--[[<left_click> Execute <right_click> Paste--]]],
 							mouseup = function(_, _, _, button)
-								if button == "L" then
+								if button == "R" then
+									dlgConsole.idEdit:SetFocus()
+									dlgConsole.idEdit:SetText(script)
+									dlgConsole.idEdit:SetCursor(1, #script)
+								else
 									if script:find("-- rem echo on") then
 										console:Exec(script)
 									else
 										console:Exec(script, true)
 									end
-								elseif button == "R" then
-									dlgConsole.idEdit:SetFocus()
-									dlgConsole.idEdit:SetText(script)
-									dlgConsole.idEdit:SetCursor(1, #script)
 								end
 							end,
 						}

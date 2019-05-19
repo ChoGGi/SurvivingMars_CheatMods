@@ -1,9 +1,26 @@
 -- See LICENSE for terms
 
--- skip if we're on Tereshkhova
-if LuaRevision <= 240905 then
-	return
+local mod_id = "ChoGGi_ResearchSmallCheckMarks"
+local mod = Mods[mod_id]
+
+local mod_ChangePercent = mod.options and mod.options.ChangePercent or true
+
+local function ModOptions()
+	mod_ChangePercent = mod.options.ChangePercent
 end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	ModOptions()
+end
+
+-- for some reason mod options aren't retrieved before this script is loaded...
+OnMsg.CityStart = ModOptions
+OnMsg.LoadGame = ModOptions
 
 local function EditDlg(dlg)
 	WaitMsg("OnRender")
@@ -16,7 +33,7 @@ local function EditDlg(dlg)
 			for j = 1, #techfield do
 				local tech = techfield[j]
 
-				if tech.idProgressInfo then
+				if mod_ChangePercent and tech.idProgressInfo then
 					-- fiddle with in-progress tech
 					for l = 1, #tech.idProgressInfo do
 						local element = tech.idProgressInfo[l]

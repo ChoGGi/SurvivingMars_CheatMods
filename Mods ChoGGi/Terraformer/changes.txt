@@ -44,4 +44,4 @@ Fixed issue with pipes getting marked as uneven terrain.
 v0.2
 Shift Left/Right to change radius.
 Shift Up/Down to change height.
-Added Mod Config support for the radius/height diff amount.
+Added Mod Option support for the radius/height diff amount.

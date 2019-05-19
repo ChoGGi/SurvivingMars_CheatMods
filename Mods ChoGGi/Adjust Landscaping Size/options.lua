@@ -15,7 +15,7 @@ DefineClass("ModOptions_ChoGGi_AdjustLandscapingSize", {
 			default = false,
 			editor = "bool",
 			id = "RemoveLandScapingLimits",
-			name = "Remove LandScaping Limits",
+			name = "Remove Landscaping Limits",
 		},
 	},
 })

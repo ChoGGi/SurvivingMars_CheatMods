@@ -46,8 +46,55 @@ InsidePasture.GetHarvestTypesTable = ReturnAllPastures
 OpenPasture.GetHarvestTypesTable = ReturnAllPastures
 Pasture.GetHarvestTypesTable = ReturnAllPastures
 
+local drone_entities = {"Drone", "Drone_Trailblazer", "DroneMaintenance", "DroneMiner", "DroneWorker"}
+if g_AvailableDlc.gagarin then
+	local c = #drone_entities
+	local EntityData = EntityData
+	for key in pairs(EntityData) do
+		if key:find("DroneJapanFlying") then
+			c = c + 1
+			drone_entities[c] = key
+		end
+	end
+end
+
 local CurrentModPath = CurrentModPath
 local animals = {
+	-- spots are needed (for out vs in)
+	Cow = {
+		grazing_spot_in = "Turkey",
+		grazing_spot_out = "Cow",
+	},
+	Goat = {
+		grazing_spot_in = "Turkey",
+		grazing_spot_out = "Goat",
+	},
+	Ostrich = {
+		grazing_spot_in = "Turkey",
+		grazing_spot_out = "Ostrich",
+	},
+	Pig = {
+		grazing_spot_in = "Turkey",
+		grazing_spot_out = "Pig",
+	},
+
+	Chicken = {
+		grazing_spot_in = "Chicken",
+		grazing_spot_out = "Goat",
+	},
+	Goose = {
+		grazing_spot_in = "Goose",
+		grazing_spot_out = "Goat",
+	},
+	RabbitPasture = {
+		grazing_spot_in = "RabbitPasture",
+		grazing_spot_out = "Goat",
+	},
+	Turkey = {
+		grazing_spot_in = "Turkey",
+		grazing_spot_out = "Goat",
+	},
+
 	Cat = {
 		description = T(381255823464, "Rabbits provide much better Food gain than chickens, but need more sustenance and need twice more time to grow."),
 		display_icon = CurrentModPath .. "UI/animal_cat.tga",
@@ -302,8 +349,40 @@ local animals = {
 		water_consumption = 2500,
 		infopanel_pos = animals_origcount+11,
 	},
+
+	GreenMan = {
+		description = T(381255823464, "Rabbits provide much better Food gain than chickens, but need more sustenance and need twice more time to grow."),
+		display_icon = CurrentModPath .. "UI/animal_greenman.tga",
+		display_name = T(0,"Alien"),
+		entities = {
+			"GreenMan",
+		},
+		food = 600,
+		grazing_spot_in = "Chicken",
+		grazing_spot_out = "Goat",
+		health = 24,
+		herd_size = 25,
+		air_consumption = 600,
+		lifetime = 1440000,
+		water_consumption = 600,
+		infopanel_pos = animals_origcount+12,
+	},
+	Drone = {
+		description = T(947790430318, "Chickens grow fast and have a small Oxygen and Water consumption, providing a fast and reliable Food source."),
+		display_icon = "UI/Icons/Buildings/drone.tga",
+		display_name = T(1681,"Drone"),
+		entities = drone_entities,
+		food = 200,
+		grazing_spot_in = "Turkey",
+		grazing_spot_out = "Cow",
+		health = 20,
+		herd_size = 25,
+		air_consumption = 300,
+		lifetime = 720000,
+		water_consumption = 300,
+		infopanel_pos = animals_origcount+13,
+	},
 }
--- are aliens animals? I don't know if I'd want to eat them?
 
 local orig_PastureAnimal_GameInit = PastureAnimal.GameInit
 function PastureAnimal:GameInit(...)
@@ -311,6 +390,29 @@ function PastureAnimal:GameInit(...)
 		self.ChoGGi_animal = true
 	end
 	return orig_PastureAnimal_GameInit(self, ...)
+end
+
+-- make drones smaller
+local orig_PastureAnimal_Spawn = PastureAnimal.Spawn
+function PastureAnimal:Spawn(...)
+	orig_PastureAnimal_Spawn(self, ...)
+	if self.animal_type == "ChoGGi_PastureAnimal_Drone" then
+		self:SetScale(50)
+	end
+end
+local orig_Pasture_ScaleAnimals = Pasture.ScaleAnimals
+function Pasture:ScaleAnimals(...)
+	local herd = self.current_herd
+	if herd[1] and herd[1].animal_type == "ChoGGi_PastureAnimal_Drone" then
+		for i = 1, #herd do
+			local animal = herd[i]
+			if animal.animal_type == "ChoGGi_PastureAnimal_Drone" then
+				animal:SetScale(50)
+			end
+		end
+	else
+		orig_Pasture_ScaleAnimals(self, ...)
+	end
 end
 
 -- set anim when grazing
@@ -333,6 +435,9 @@ function PastureAnimal:SetGrazingState(duration, ...)
 		-- shorter long pig
 		elseif table_find(states,"playGround1Idle") then
 			state = table.rand(graze_rand2)
+		-- crunchy pig
+		elseif table_find(states,"rechargeDroneIdle") then
+			state = "gather"
 		end
 
 		if state == "graze" then
@@ -342,7 +447,10 @@ function PastureAnimal:SetGrazingState(duration, ...)
 				self:SetState("idle","ChoGGi_skip")
 				Sleep(1000)
 			end
-		elseif state == "standEnjoySurface" or state == "playGround1" or state == "playGround2" then
+		-- start idle end
+		elseif state == "standEnjoySurface"
+				or state == "playGround1" or state == "playGround2"
+				or state == "gather" then
 			local anim_time = self:SetState(state .. "Start","ChoGGi_skip")
 			Sleep(anim_time)
 			self:SetState(state .. "Idle","ChoGGi_skip")
@@ -364,22 +472,34 @@ end
 -- inf loop if the grazing spot is missing (hello fallback...)
 local orig_PastureAnimal_Graze = PastureAnimal.Graze
 function PastureAnimal:Graze(...)
+	local item
 	if self.ChoGGi_animal then
-		local item = animals[self.animal_type:sub(22)]
-		if self.pasture:IsKindOf("InsidePasture") then
-			self.grazing_spot = item.grazing_spot_in
-			pasture_animals[self.animal_type].grazing_spot = item.grazing_spot_in
-		else
-			self.grazing_spot = item.grazing_spot_out
-			pasture_animals[self.animal_type].grazing_spot = item.grazing_spot_out
-		end
+		item = animals[self.animal_type:sub(22)]
+	else
+		item = animals[self.animal_type]
+	end
+	if self.pasture:IsKindOf("InsidePasture") then
+		self.grazing_spot = item.grazing_spot_in
+		pasture_animals[self.animal_type].grazing_spot = item.grazing_spot_in
+	else
+		self.grazing_spot = item.grazing_spot_out
+		pasture_animals[self.animal_type].grazing_spot = item.grazing_spot_out
 	end
 
 	return orig_PastureAnimal_Graze(self, ...)
 end
 
-local roam_rand1 = {"layGrassIdle", "standIdle", "standPanicIdle", "standDrawIdle"}
-local roam_rand2 = {"layGrassIdle", "standIdle", "standPanicIdle", "playDance", "playVideoGames", "standShop"}
+local roam_rand1 = {"layGrassIdle", "standIdle", "standPanicIdle",
+ "standDrawIdle",
+	}
+local roam_rand2 = {"layGrassIdle", "standIdle", "standPanicIdle", "playDance",
+ "playVideoGames", "standShop",
+	}
+local roam_rand3 = {"breakDownIdle", "chargingStationIdle", "cleanBuildingIdle",
+ "constructIdle",  "noBatteryIdle",  "rechargeDroneIdle",  "repairBuildingIdle",
+ "repairDroneIdle", "rogueIdle",
+	}
+
 function OnMsg.ClassesBuilt()
 	-- set idle anim
 	local orig_PastureAnimal_SetState = PastureAnimal.SetState
@@ -392,6 +512,9 @@ function OnMsg.ClassesBuilt()
 			-- shorter long pig
 			elseif table_find(states,"playGround1Idle") then
 				state = table_rand(roam_rand2)
+			-- crunchy pig
+			elseif table_find(states,"rechargeDroneIdle") then
+				state = table_rand(roam_rand3)
 			end
 
 			if skip == "ChoGGi_skip" then
@@ -419,26 +542,29 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	for id, item in pairs(animals) do
-		PlaceObj("Animal", {
-			AnimalClass = "ChoGGi_PastureAnimal",
-			-- doesn't matter
-			PastureClass = "InsidePasture",
-			group = "Pasture",
-			id = "ChoGGi_PastureAnimal_" .. id,
-			save_in = "shepard",
+		-- skip default animals (we just need them for the spots)
+		if item.display_name then
+			PlaceObj("Animal", {
+				AnimalClass = "ChoGGi_PastureAnimal",
+				-- doesn't matter
+				PastureClass = "InsidePasture",
+				group = "Pasture",
+				id = "ChoGGi_PastureAnimal_" .. id,
+				save_in = "shepard",
 
-			infopanel_pos = item.infopanel_pos,
-			description = item.description,
-			display_icon = item.display_icon,
-			display_name = item.display_name,
-			entities = item.entities,
-			food = item.food,
-			health = item.health,
-			herd_size = item.herd_size,
-			air_consumption = item.air_consumption,
-			lifetime = item.lifetime,
-			water_consumption = item.water_consumption,
-		})
+				infopanel_pos = item.infopanel_pos,
+				description = item.description,
+				display_icon = item.display_icon,
+				display_name = item.display_name,
+				entities = item.entities,
+				food = item.food,
+				health = item.health,
+				herd_size = item.herd_size,
+				air_consumption = item.air_consumption,
+				lifetime = item.lifetime,
+				water_consumption = item.water_consumption,
+			})
+		end
 	end
 end
 

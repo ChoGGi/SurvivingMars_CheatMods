@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "All Animals In Pastures",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-	"saved", 1558008000,
+	"version_minor", 2,
+	"saved", 1558180800,
 	"image", "Preview.png",
 	"id", "ChoGGi_AllAnimalsInPastures",
 	"steam_id", "1743515571",
@@ -15,6 +15,8 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[Adds all the animals to the pasture breeds.
 Mmmmm dog meat.
+
+There's a mod option to open outside ranches when selected.
 
 Yes, I know the tortoise does a conga line out the door, but I don't want to fix it.
 

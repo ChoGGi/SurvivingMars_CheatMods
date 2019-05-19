@@ -128,6 +128,56 @@ local function DeleteProfile(name, settings_list)
 	)
 end
 
+local function ProfileButtonPressed(pgmission, toolbar)
+	-- load settings if it's an empty table
+	local settings_list = ReadModSettings()
+	-- always show save
+	local menu = {
+		{
+			name = Translate(161964752558--[[Save--]]) .. " Profile",
+			hint = "Save current profile.",
+			clicked = function()
+				CreateRealTimeThread(SaveProfile, pgmission.context.params)
+			end,
+		},
+	}
+	-- show load/delete when there's something added
+	if next(settings_list) then
+
+		menu[#menu+1] = {
+			name = Translate(885629433849--[[Load--]]) .. " Profile >",
+			hint = "Load saved profile.",
+			submenu = {},
+		}
+		local loadm = menu[#menu]
+		menu[#menu+1] = {
+			name = Translate(502364928914--[[Delete--]]) .. " Profile >",
+			hint = "Delete saved profile.",
+			submenu = {},
+		}
+		local delm = menu[#menu]
+
+		-- add name/params to submenus
+		for name, settings in pairs(settings_list) do
+			loadm.submenu[#loadm.submenu+1] = {
+				name = name,
+				clicked = function()
+					LoadProfile(name, settings, pgmission)
+				end,
+			}
+			delm.submenu[#delm.submenu+1] = {
+				name = name,
+				clicked = function()
+					DeleteProfile(name, settings_list)
+				end,
+			}
+		end
+	end
+
+	-- and finally show menu
+	ChoGGi.ComFuncs.PopupToggle(toolbar.idChoGGi_ProfileButton, "ChoGGi_MissionProfilesPopup", menu)
+end
+
 -- fired when we go to first new game section
 local function AddProfilesButton(pgmission, toolbar)
 	if toolbar.idChoGGi_ProfileButton then
@@ -151,54 +201,8 @@ local function AddProfilesButton(pgmission, toolbar)
 		RolloverTemplate = "Rollover",
 		RolloverTitle = Translate(126095410863--[[Info--]]),
 		RolloverText = [[Save/Load save profiles.]],
-		OnPress = function(self)
-			-- load settings if it's an empty table
-			local settings_list = ReadModSettings()
-			-- always show save
-			local menu = {
-				{
-					name = Translate(161964752558--[[Save--]]) .. " Profile",
-					hint = "Save current profile.",
-					clicked = function()
-						CreateRealTimeThread(SaveProfile, pgmission.context.params)
-					end,
-				},
-			}
-			-- show load/delete when there's something added
-			if next(settings_list) then
-
-				menu[#menu+1] = {
-					name = Translate(885629433849--[[Load--]]) .. " Profile >",
-					hint = "Load saved profile.",
-					submenu = {},
-				}
-				local loadm = menu[#menu]
-				menu[#menu+1] = {
-					name = Translate(502364928914--[[Delete--]]) .. " Profile >",
-					hint = "Delete saved profile.",
-					submenu = {},
-				}
-				local delm = menu[#menu]
-
-				-- add name/params to submenus
-				for name, settings in pairs(settings_list) do
-					loadm.submenu[#loadm.submenu+1] = {
-						name = name,
-						clicked = function()
-							LoadProfile(name, settings, pgmission)
-						end,
-					}
-					delm.submenu[#delm.submenu+1] = {
-						name = name,
-						clicked = function()
-							DeleteProfile(name, settings_list)
-						end,
-					}
-				end
-			end
-
-			-- and finally show menu
-			ChoGGi.ComFuncs.PopupToggle(toolbar.idChoGGi_ProfileButton, "ChoGGi_MissionProfilesPopup", menu)
+		OnPress = function()
+			ProfileButtonPressed(pgmission, toolbar)
 		end,
 	}, toolbar)
 

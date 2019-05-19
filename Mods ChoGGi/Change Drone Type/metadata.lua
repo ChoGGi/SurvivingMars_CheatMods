@@ -8,10 +8,10 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Change Drone Type",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
-	"saved", 1550750400,
+	"version_minor", 4,
+	"saved", 1558180800,
 	"image", "Preview.png",
 	"id", "ChoGGi_ChangeDroneType",
 	"steam_id", "1592984375",
@@ -25,5 +25,6 @@ return PlaceObj("ModDef", {
 	"description", [[Adds a button to hubs and rovers that lets you switch between wasp (flying) and regular drones (global setting, not per building).
 
 mod options:
-Option to only show button when Martian Aerodynamics is researched.]],
+Option to only show button when Martian Aerodynamics is researched.
+Always Wasp Drones: Forces drones to always be wasp drones.]],
 })

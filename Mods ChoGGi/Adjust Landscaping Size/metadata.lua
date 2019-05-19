@@ -27,7 +27,7 @@ Press Shift-Q/Shift-E to increase/decrease the size (rebind them in the controls
 
 Mod Options:
 Step Size: How much to change the size each press.
-Remove LandScaping Limits: Ignores pretty much all the errors (left out of bounds as that can crash the game).]],
+Remove Landscaping Limits: Ignores most of the errors (NOT out of bounds as that can crash the game).]],
 	"TagLandscaping", true,
 	"TagInterface", true,
 })

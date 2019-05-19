@@ -98,7 +98,7 @@ function HUD.idBuildingStatesOnPress(dlg)
 				name = profile.name,
 				hint_title = "Profile: " .. profile.name,
 				hint = hint_str,
-				mouseup = function(_,_,_,button)
+				mouseup = function(_, _, _, button)
 					if button == "R" then
 						table_remove(BuildingStates,i)
 						ChoGGi.ComFuncs.MsgPopup("Deleted Profile: " .. profile.name,"Building States")
@@ -156,7 +156,7 @@ local function BuildRemoveFromList(dlg,obj)
 					name = profile.name,
 					hint_title = "Remove From: " .. profile.name,
 					hint = hint_str:format(class),
-					mouseup = function(_,_,mouse)
+					mouseup = function(_, _, _, button)
 						if mouse == "R" then
 							RemoveAllOfClass(profile,class)
 						else

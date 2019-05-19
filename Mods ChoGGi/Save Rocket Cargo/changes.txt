@@ -1,2 +1,5 @@
+v0.3
+Add Clear button to the cargo screen.
+
 v0.2
-Added MCR option to clear cargo on launch.
+Added Mod Option to clear cargo on launch.

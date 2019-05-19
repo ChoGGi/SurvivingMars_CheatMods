@@ -2,6 +2,7 @@ ID, Text, Translation, Old Translation, Gender
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
+302535920000758,Will take some time for 25K and up.,
 302535920000866,Restart to disable.,
 302535920000967,Delay in ms between updating text.,
 302535920000388,Works after colonist idle.,
@@ -927,7 +928,6 @@ This will not effect your applicants/game failure (genocide without reprisal ftw
 302535920000755,Applicants,
 302535920000756,%s: Added applicants.,
 302535920000757,Add Applicants To Pool,
-302535920000758,Will take some time for 25K and up.,
 302535920000759,Clear Applicant Pool,
 302535920000760,"Remove all the applicants currently in the pool (checking this will ignore your list selection).
 
@@ -1209,7 +1209,8 @@ It's not as if domes need to be where you placed them (people will just ignore i
 302535920000488,Will ask for confirmation beforehand (will not delete domes).,
 302535920000489,Delete Object(s),
 302535920000490,"Deletes selected object or object under mouse cursor (most objs, not all).",
-302535920000492,Opens the object examiner for the selected or moused-over obj.,
+302535920000492,"Opens the object examiner for the selected or moused-over obj.
+Use Shift-F4 or Ctrl-F4 to show a list of all objects in a radius around cursor.",
 302535920000493,Change Map,
 302535920000494,"Change map (options to pick commander, sponsor, etc...
 
@@ -1603,7 +1604,8 @@ https://github.com/nickelc/hpk
 <color green>hpk create ""Mod folder"" ModContent.hpk</color>
 Move archive to ""Mod folder/Pack/ModContent.hpk""",
 302535920001509,Platform,
-302535920001510,Paradox mods platform: Leave <color 0 255 0>checked</color> to upload to Desktop only or <color 0 255 0>uncheck</color> to upload to Desktop and Console.,
+302535920001510,"Paradox mods platform: Leave <color 0 255 0>checked</color> to upload to Desktop only or <color 0 255 0>uncheck</color> to upload to Desktop and Console.
+If you have only defined all/desktop in your metadata.lua then it'll ignore this and pick based on that.",
 302535920001506,Steam,
 302535920001507,Uncheck to upload to Paradox mods (instead of Steam).,
 302535920001485,Does everything other than uploading mod to workshop (see AppData/ModUpload).,

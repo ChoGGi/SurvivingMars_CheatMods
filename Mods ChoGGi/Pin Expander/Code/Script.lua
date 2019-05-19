@@ -390,22 +390,15 @@ function PinsDlg:InitPinButton(button, ...)
 					hint_title = hint_title,
 					hint_bottom = T(0, "<left_click> Select <right_click> View"),
 					mouseup = function(_, _, _, button)
-						if button == "L" then
-							if obj.class == "SupplyRocket" then
-								orig_button_OnPress(button_obj, gamepad, varargs)
-							else
-								ViewObjectMars(obj)
+						if obj.class == "SupplyRocket" then
+							orig_button_OnPress(button_obj, gamepad)
+						else
+							ViewObjectMars(obj)
+							if button == "L" then
 								SelectObj(obj)
 							end
-							PopupToggle(button_obj.idCondition, "idPinPopup", items, nil, true)
-						else
-							if obj.class == "SupplyRocket" then
-								orig_button_OnPress(button_obj, gamepad)
-							else
-								ViewObjectMars(obj)
-							end
-							PopupToggle(button_obj.idCondition, "idPinPopup", items, nil, true)
 						end
+						PopupToggle(button_obj.idCondition, "idPinPopup", items, nil, true)
 					end,
 				}
 			end

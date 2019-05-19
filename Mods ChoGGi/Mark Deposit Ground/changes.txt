@@ -3,7 +3,7 @@ Armstrong update.
 
 v0.5
 Changed construction sign to default to on.
-Added descriptions to MCR options.
+Added descriptions to mod options.
 
 v0.4
 Added MC option to show icons during construction.

@@ -421,11 +421,16 @@ do -- ModUpload
 
 		-- issue with mod platform (workshop/paradox mods)
 		if not prepare_worked then
-			ChoGGi.ComFuncs.MsgWait(
-				Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>", mod.title):gsub("<err>", Translate(prepare_results)),
-				Translate(1000592--[[Error--]]) .. ": " .. mod.title,
-				upload_image
-			)
+			local msg = Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>", mod.title):gsub("<err>", Translate(prepare_results))
+			if batch then
+				print(msg)
+			else
+				ChoGGi.ComFuncs.MsgWait(
+					msg,
+					Translate(1000592--[[Error--]]) .. ": " .. mod.title,
+					upload_image
+				)
+			end
 			return
 		end
 
@@ -503,9 +508,8 @@ do -- ModUpload
 				mod.last_changes = mod.version_major .. "." .. mod.version_minor
 			end
 
-			-- CommonLua\SteamWorkshop.lua
+			-- skip it for testing
 			if not test then
-			-- skip it no matter for new feature testing
 				if steam_upload then
 					result, err = Steam_Upload(nil, mod, mod_params)
 				else

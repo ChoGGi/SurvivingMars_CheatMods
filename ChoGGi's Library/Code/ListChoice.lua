@@ -868,7 +868,7 @@ function ChoGGi_DlgListChoice:CallbackSelectedList()
 	end
 	-- send selection back
 	if self.custom_func then
-		self.custom_func(self.choices)
+		self.custom_func(self.choices, self)
 	end
 end
 
@@ -887,7 +887,7 @@ function ChoGGi_DlgListChoice:BuildReturnList(_, button)
 			-- build self.choices
 			self:GetListItems()
 			-- send selection back
-			self.custom_func(self.choices)
+			self.custom_func(self.choices, self)
 		elseif self.custom_type ~= 2 or self.custom_type == 8 then
 			self:CallbackSelectedList()
 			-- build self.choices

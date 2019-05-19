@@ -1,6 +1,6 @@
 v0.5
-Added an Image checkbox (does the same as the MCR option).
-It'll work without MCR, but it won't save the setting.
+Added an Image checkbox (does the same as the mod option).
+It'll work without mod options, but it won't save the setting.
 
 v0.4
 Library update.
@@ -10,5 +10,5 @@ Added Double Size and Reset Dialog buttons for fiddling with dialog.
 
 v0.2
 Takes a screenshot of the map the first time you open it.
-Only works decently for 16:9, there's a ModConfig option to use the topo images like v0.1.
+Only works decently for 16:9, there's a mod option to use the topo images like v0.1.
 Adds a toggle controls button, use it to set opacity/manually update image.

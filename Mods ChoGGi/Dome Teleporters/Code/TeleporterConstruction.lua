@@ -24,9 +24,10 @@ GlobalVar("CityDomeTeleporterConstruction", {})
 local table_unpack = table.unpack
 
 -- chooses which construct mode to start
-local orig_GetCurrentConstructionControllerDlg = GetCurrentConstructionControllerDlg
-function GetCurrentConstructionControllerDlg(...)
-	return InGameInterfaceMode == "dome_teleporter_construction" and CityDomeTeleporterConstruction[UICity] or orig_GetCurrentConstructionControllerDlg(...)
+local orig_GetConstructionController = GetConstructionController
+function GetConstructionController(mode, ...)
+  mode = mode or InGameInterfaceMode
+	return mode == "dome_teleporter_construction" and CityDomeTeleporterConstruction[UICity] or orig_GetConstructionController(mode, ...)
 end
 
 -- add our custom construction controller

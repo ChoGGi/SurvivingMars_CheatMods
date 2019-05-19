@@ -46,12 +46,7 @@ end
 
 local function EditDlg(dlg)
 	WaitMsg("OnRender")
-	local left_side
-	if LuaRevision > 240905 then
-		left_side = dlg.idActionBar.parent
-	else
-		left_side = dlg.idOverlayDlg.idActionBar.parent
-	end
+	local left_side = dlg.idActionBar.parent
 
 	local area = XWindow:new({
 		Id = "idFilterArea",
@@ -62,9 +57,9 @@ local function EditDlg(dlg)
 	local input = XEdit:new({
 		Id = "idFilterBar",
 		RolloverTemplate = "Rollover",
-		RolloverTitle = _InternalTranslate(T(126095410863, "Info")),
-		RolloverText = [[Filter checks name, description, and id.
-<color 0 200 0>Shift-Enter</color> to clear.]],
+		RolloverTitle = T(126095410863, "Info"),
+		RolloverText = T(0,[[Filter checks name, description, and id.
+<color 0 200 0>Shift-Enter</color> to clear.]]),
 		Hint = [[Tech Filter]],
 		TextStyle = "LogInTitle",
 		OnKbdKeyUp = OnKbdKeyUp,

@@ -2,7 +2,7 @@ v0.7
 Changed DefaultNationNames to default to true.
 
 v0.6
-Added MCR option to skip adding names list to existing nations.
+Added mod option to skip adding names list to existing nations.
 
 v0.5
 Fixed name issue.
@@ -15,7 +15,7 @@ Slightly faster loading.
 
 v0.3
 List of all names is now applied to built-in countries.
-Random birthplace defaults to true (use Mod Config to disable).
+Random birthplace defaults to true (use Mod Option to disable).
 Now with 10% more randomness (or something like that).
 Also now packed in an .hpk for size (5MB -> under 1MB).
 

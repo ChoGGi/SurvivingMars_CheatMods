@@ -1,3 +1,6 @@
+v0.8
+Log spam about GetCurrentConstructionControllerDlg.
+
 v0.7
 Tunnels.
 

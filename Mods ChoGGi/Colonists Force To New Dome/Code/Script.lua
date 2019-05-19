@@ -12,13 +12,13 @@ local function ClickObj(old, new, button)
 	if not old or not IsValid(new) then
 		return
 	end
-	if button == "L" then
+	if button == "R" then
+		ViewObjectMars(new)
+	else
 		local c = old.labels.Colonist
 		for i = #c, 1, -1 do
 			c[i]:SetDome(new)
 		end
-	elseif button == "R" then
-		ViewObjectMars(new)
 	end
 end
 

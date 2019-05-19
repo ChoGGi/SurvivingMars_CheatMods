@@ -1146,9 +1146,11 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 		title = Translate(911432559058--[[Light model--]]),
 		hint = TableConcat(hint, "\n\n"),
 		custom_type = 6,
-		custom_func = function(choice)
+		custom_func = function(choice_value)
 			SetLightmodelOverride(1)
-			SetLightmodel(1, choice[1].value)
+			SetLightmodel(1,
+				type(choice_value) == "string" and choice_value or choice_value[1].value
+			)
 		end,
 		checkboxes = {
 			{

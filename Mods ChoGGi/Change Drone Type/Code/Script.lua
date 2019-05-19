@@ -3,6 +3,12 @@
 local mod_id = "ChoGGi_ChangeDroneType"
 local mod = Mods[mod_id]
 local mod_Aerodynamics = mod.options and mod.options.Aerodynamics or false
+local mod_AlwaysWasp = mod.options and mod.options.AlwaysWasp or false
+
+local function ModOptions()
+	mod_Aerodynamics = mod.options.Aerodynamics
+	mod_AlwaysWasp = mod.options.AlwaysWasp
+end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
@@ -10,20 +16,19 @@ function OnMsg.ApplyModOptions(id)
 		return
 	end
 
-	mod_Aerodynamics = mod.options.Aerodynamics
+	ModOptions()
 end
 
 -- for some reason mod options aren't retrieved before this script is loaded...
-local function SomeCode()
-	mod_Aerodynamics = mod.options.Aerodynamics
-end
-
-OnMsg.CityStart = SomeCode
-OnMsg.LoadGame = SomeCode
+OnMsg.CityStart = ModOptions
+OnMsg.LoadGame = ModOptions
 
 -- function called when a drone is created
 function City:CreateDrone()
-	local classdef = g_Classes[UICity.drone_class] or Drone
+	if mod_AlwaysWasp then
+		return FlyingDrone:new{city = self}
+	end
+	local classdef = g_Classes[self.drone_class] or Drone
 	return classdef:new{city = self}
 end
 
@@ -109,7 +114,11 @@ end
 local GetMissionSponsor = GetMissionSponsor
 local function StartupCode()
 	local city = UICity
-	city.drone_class = city.drone_class or GetMissionSponsor().drone_class or "Drone"
+	if mod_AlwaysWasp then
+		city.drone_class = "FlyingDrone"
+	else
+		city.drone_class = city.drone_class or GetMissionSponsor().drone_class or "Drone"
+	end
 end
 
 OnMsg.CityStart = StartupCode

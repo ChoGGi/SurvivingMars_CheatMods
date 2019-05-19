@@ -1106,8 +1106,10 @@ See Cheats>%s to remove."--]]]:format(Translate(5661--[[Mystery Log--]])),
 end -- do
 
 -- loops through all the sequences and adds the logs we've already seen
-local function ShowMysteryLog(MystName)
-	local msgs = {MystName .. "\n\n" .. Strings[302535920000272--[["To play back speech press the ""%s"" checkbox and type in
+local function ShowMysteryLog(choice)
+	local myst_id = choice[1].value
+
+	local msgs = {myst_id .. "\n\n" .. Strings[302535920000272--[["To play back speech press the ""%s"" checkbox and type in
 g_Voice:Play(o.speech)"--]]]:format(Strings[302535920000040--[[Exec Code--]]]) .. "\n"}
 	local c = #msgs
 	local s_SeqListPlayers = s_SeqListPlayers
@@ -1118,7 +1120,7 @@ g_Voice:Play(o.speech)"--]]]:format(Strings[302535920000040--[[Exec Code--]]]) .
 	for i = 1, #s_SeqListPlayers do
 		if i > 1 then
 			local seq_list = s_SeqListPlayers[i].seq_list
-			if seq_list.name == MystName then
+			if seq_list.name == myst_id then
 				for j = 1, #seq_list do
 					local scenarios = seq_list[j]
 					local state = s_SeqListPlayers[i].seq_states[scenarios.name]

@@ -61,8 +61,13 @@ function ResetCargo(...)
 	return orig_ResetCargo(...)
 end
 
-local fivers
+local function ClearCargo()
+	local mode = UICity.launch_mode or "rocket"
+	table.iclear(saved_cargo[mode])
+	launch_skip = true
+end
 
+local fivers
 local orig_ClearRocketCargo = ClearRocketCargo
 function ClearRocketCargo(...)
 	local ret = orig_ClearRocketCargo(...)
@@ -70,8 +75,8 @@ function ClearRocketCargo(...)
 	-- build list of resources to use for / 5
 	if not fivers then
 		fivers = {}
-		local r = Resources
-		for key in pairs(r) do
+		local Resources = Resources
+		for key in pairs(Resources) do
 			fivers[key] = true
 		end
 	end
@@ -83,6 +88,7 @@ function ClearRocketCargo(...)
 		while not Dialogs.Resupply do
 			WaitMsg("OnRender")
 		end
+
 		-- and add saved cargo
 		local payload = Dialogs.Resupply.context
 		local list = saved_cargo[UICity.launch_mode]
@@ -98,7 +104,32 @@ function ClearRocketCargo(...)
 			for _ = 1, amount do
 				payload:AddItem(item.class)
 			end
-		end
+		end -- for
+
+		WaitMsg("OnRender")
+
+		-- add a clear cargo button
+		local toolbar = Dialogs.Resupply.idTemplate.idPayload.idToolBar
+		toolbar.idChoGGi_ClearButton = XTextButton:new({
+			Id = "idChoGGi_ClearButton",
+			Text = T(5448,"CLEAR"),
+			FXMouseIn = "ActionButtonHover",
+			FXPress = "ActionButtonClick",
+			FXPressDisabled = "UIDisabledButtonPressed",
+			HAlign = "center",
+			Background = 0,
+			FocusedBackground = 0,
+			RolloverBackground = 0,
+			PressedBackground = 0,
+			RolloverZoom = 1100,
+			TextStyle = "Action",
+			MouseCursor = "UI/Cursors/Rollover.tga",
+			RolloverTemplate = "Rollover",
+			RolloverTitle = T(126095410863,"Info"),
+			RolloverText = T(0,[[Clear saved cargo list.
+My list not the game list (reopen dialog to see changes).]]),
+			OnPress = ClearCargo,
+		}, toolbar)
 
 	end)
 

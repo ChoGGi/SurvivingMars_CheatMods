@@ -1,8 +1,11 @@
 v0.5
 Cleaned up code, and hopefully fixed the "not getting water after awhile" problem.
+
 v0.4
 Da Vinci
+
 v0.3
-Use Mod Config to set the amount of water given each Sol.
+Use Mod Option to set the amount of water given each Sol.
+
 v0.2
 Turns out it was increasing the amount above max...

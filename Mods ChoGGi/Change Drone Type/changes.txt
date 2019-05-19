@@ -1,5 +1,8 @@
+v0.4
+Added Always Wasp Drones option.
+
 v0.3
 Update to my lib mod.
 
 v0.2
-Added MCR option to hide button till Martian Aerodynamics is researched.
+Added mod option to hide button till Martian Aerodynamics is researched.
