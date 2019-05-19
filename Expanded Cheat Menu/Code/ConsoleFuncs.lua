@@ -55,6 +55,8 @@ local ToolsMenuPopupToggle_list = {
 		hint = Strings[302535920001154--[[Displays the log text in a window you can copy sections from.--]]],
 		clicked = function()
 			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+				width = 1600,
+				height = 1000,
 				text = LoadLogfile(),
 				title = Strings[302535920000563],
 			}

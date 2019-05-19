@@ -13,9 +13,9 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetName = ChoGGi.ComFuncs.RetName
 local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 local Translate = ChoGGi.ComFuncs.Translate
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local RetProperType = ChoGGi.ComFuncs.RetProperType
 
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg, "ChoGGi_DlgObjectEditor")
 end

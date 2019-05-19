@@ -36,6 +36,9 @@ function ChoGGi_DlgMultiLineText:Init(parent, context)
 
 	self.title = context.title or Strings[302535920001301--[[Edit Text--]]]
 
+	self.dialog_width = context.width or self.dialog_width
+	self.dialog_height = context.height or self.dialog_height
+
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 

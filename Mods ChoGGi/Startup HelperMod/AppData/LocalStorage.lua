@@ -58,15 +58,16 @@ CreateRealTimeThread(function()
 		end
 
 		-- remove blacklist for any mods in "Mod Ids"
-		for _, mod in pairs(Mods) do
+		for id,mod in pairs(Mods) do
 			if mod_ids[mod.steam_id] then
-				-- just a little overreaching with that blacklist (yeah yeah, safety first and all that)
+				-- mods can see if funcs are blacklisted or not
 				mod.no_blacklist = true
+				-- restore unlimited env
 				local env = mod.env
 				for key in pairs(env) do
 					-- we need to use the original __newindex from OnMsg instead of replacing it, or mod OnMsgs don't work
 					if key ~= "OnMsg" then
-						local g_key = rawget(orig_G, key)
+						local g_key = rawget(orig_G,key)
 						if g_key then
 							env[key] = g_key
 						end
@@ -74,13 +75,13 @@ CreateRealTimeThread(function()
 				end
 				mod.env = LuaModEnv(env)
 				-- add a warning to any mods without a blacklist, so user knows something is up
---~ 				mod.title = mod.title .. " (BL)"
 				mod.title = mod.title .. " (Warning)"
---~ 				mod.description = mod.description:gsub([[C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\Mods\]], "AppData/Mods/")
-				mod.description = [[Warning: The blacklist function has been removed for this mod!
+				if id ~= "ChoGGi_CheatMenu" then
+					mod.description = [[Warning: The blacklist function has been removed for this mod!
 This means it has no limitations and can access your Steam name, Friends list, and run any files on your computer.
 
-]] .. mod.description
+--~ ]] .. mod.description
+				end
 			end
 		end
 

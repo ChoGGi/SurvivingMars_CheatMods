@@ -42,17 +42,11 @@ local function PlacePolyline(points, colours)
 end
 ChoGGi.ComFuncs.PlacePolyline = PlacePolyline
 
-function ChoGGi.ComFuncs.SetCheatsMenuPos()
-	if ChoGGi.UserSettings.KeepCheatsMenuPosition then
-		XShortcutsTarget:SetPos(ChoGGi.UserSettings.KeepCheatsMenuPosition)
+function ChoGGi.ComFuncs.SetCheatsMenuPos(pos)
+	if pos or ChoGGi.UserSettings.KeepCheatsMenuPosition then
+		XShortcutsTarget:SetPos(pos or ChoGGi.UserSettings.KeepCheatsMenuPosition)
 	else
-		local margins = GetSafeMargins():min()
---~ 			-- xbox needs a margin, which is added from somewhere?
---~ 			if Platform.durango then
---~ 				XShortcutsTarget:SetPos(margins+point(50, 50))
---~ 			else
-			XShortcutsTarget:SetPos(margins)
---~ 			end
+		XShortcutsTarget:SetPos(GetSafeMargins():min())
 	end
 end
 

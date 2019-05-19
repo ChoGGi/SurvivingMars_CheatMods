@@ -663,23 +663,36 @@ function OnMsg.ClassesBuilt()
 		end
 	end
 
-	do -- XDesktop:MouseEvent
-		local cls_focus = {"XTextEditor", "XList"}
-
-		-- no more stuck focus on textboxes and so on
-		SaveOrigFunc("XDesktop", "MouseEvent")
-		function XDesktop:MouseEvent(event, pt, button, time, ...)
-			if event == "OnMouseButtonDown" and self.keyboard_focus and self.keyboard_focus:IsKindOfClasses(cls_focus) then
-				local hud = Dialogs.HUD
-				if hud then
-					hud:SetFocus()
-				else
-					-- hud should always be around, but just in case focus on desktop
-					self:SetFocus()
+	do -- MouseEvent/XEvent
+		local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+		local function ResetFocus(func_name, self, event, ...)
+			-- if the focus is currently on an ecm dialog then focus on previous xdialog
+			if (event == "OnMouseButtonDown" or event == "OnXButtonDown")
+					and self.keyboard_focus
+					and GetParentOfKind(self.keyboard_focus, "ChoGGi_XWindow")
+			then
+				local focus_log = terminal.desktop.focus_log
+				for i = #focus_log, 1, -1 do
+					local obj = focus_log[i]
+					if obj:IsKindOf("XDialog") then
+						obj:SetFocus()
+						break
+					end
 				end
 			end
+			return ChoGGi_OrigFuncs[func_name](self, event, ...)
+		end
 
-			return ChoGGi_OrigFuncs.XDesktop_MouseEvent(self, event, pt, button, time, ...)
+		-- no more stuck focus on ECM textboxes/lists
+		SaveOrigFunc("XDesktop", "MouseEvent")
+		function XDesktop:MouseEvent(event, ...)
+			return ResetFocus("XDesktop_MouseEvent", self, event, ...)
+		end
+
+		-- make sure focus isn't on my dialogs if gamepad is in play
+		SaveOrigFunc("XDesktop", "XEvent")
+		function XDesktop:XEvent(event, ...)
+			return ResetFocus("XDesktop_XEvent", self, event, ...)
 		end
 	end -- do
 

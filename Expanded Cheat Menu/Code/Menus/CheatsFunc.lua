@@ -330,11 +330,13 @@ end
 function ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle()
 	if ChoGGi.UserSettings.KeepCheatsMenuPosition then
 		ChoGGi.UserSettings.KeepCheatsMenuPosition = nil
+		ChoGGi.ComFuncs.SetCheatsMenuPos()
 	else
-		ChoGGi.UserSettings.KeepCheatsMenuPosition = XShortcutsTarget:GetPos()
+		local pos = XShortcutsTarget:GetPos()
+		ChoGGi.UserSettings.KeepCheatsMenuPosition = pos
+		ChoGGi.ComFuncs.SetCheatsMenuPos(pos)
 	end
 
-	ChoGGi.ComFuncs.SetCheatsMenuPos()
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
@@ -790,7 +792,8 @@ do -- DisastersTrigger
 end -- do
 
 function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
-	BuildNames()
+	-- what did this do?
+--~ 	BuildNames()
 
 	local item_list = {
 		{

@@ -611,7 +611,7 @@ do -- ModUpload
 					end
 
 					-- remove blacklist warning from title (added in helpermod)
-					mod.title = mod.title:gsub(" %(BL%)$", ""):gsub(" %(Warning%)$", "")
+					mod.title = mod.title:gsub(" %(Warning%)$", "")
 
 					-- will fail on paradox mods
 					if mod.lua_revision == 0 then

@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v13.6 (Unreleased)
+### Fixed:
+- Anomaly Scanning didn't open (thanks mys721tx).
 
 ## v13.5 (May 17 2019)
 ### Fixed:
