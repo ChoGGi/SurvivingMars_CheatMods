@@ -23,6 +23,7 @@ From Marx with love.
 
 You can use Expanded Cheat Menu to change the logo of an existing game.
 
+I probably should've kept a list of credits... I didn't make any of these images.
 
 
 

@@ -37,6 +37,37 @@ end -- do
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
+	-- Add default Consts/const values to ChoGGi.Consts
+	if not ChoGGi.Tables.Consts_names then
+		local cConsts = ChoGGi.Consts
+		local names = {}
+
+		local c = 0
+		local Consts = Consts
+		for key,value in pairs(Consts) do
+			if type(value) == "number" then
+				c = c + 1
+				names[c] = key
+				cConsts[key] = value
+			end
+		end
+		ChoGGi.Tables.Consts_names = names
+
+		-- const.* (I don't think these have default values in-game anywhere, so manually set them.) _GameConst.lua
+		cConsts.RCRoverMaxRadius = const.RCRoverMaxRadius or 20
+		cConsts.CommandCenterMaxRadius = const.CommandCenterMaxRadius or 35
+	--~ 	cConsts.DroneRestrictRadius = const.DroneRestrictRadius or 70000
+		cConsts.BreakThroughTechsPerGame = const.BreakThroughTechsPerGame or 13
+		cConsts.OmegaTelescopeBreakthroughsCount = const.OmegaTelescopeBreakthroughsCount or 3
+		cConsts.ExplorationQueueMaxSize = const.ExplorationQueueMaxSize or 10
+		cConsts.fastGameSpeed = const.fastGameSpeed or 5
+		cConsts.MaxToxicRainPools = const.MaxToxicRainPools or 30
+		cConsts.mediumGameSpeed = const.mediumGameSpeed or 3
+		cConsts.MoistureVaporatorPenaltyPercent = const.MoistureVaporatorPenaltyPercent or 40
+		cConsts.MoistureVaporatorRange = const.MoistureVaporatorRange or 5
+		cConsts.InvalidPos = InvalidPos()
+	end
+
 	-- stops crashing with certain missing pinned objects
 	if ChoGGi.UserSettings.FixMissingModBuildings then
 		local umc = UnpersistedMissingClass
@@ -825,6 +856,25 @@ function OnMsg.SelectionRemoved()
 	s = false
 end
 
+function OnMsg.ChangeMapDone(map)
+	-- first time run info
+	if map == "PreGame" and ChoGGi.UserSettings.FirstRun ~= false then
+	print("ChangeMapDone")
+		ChoGGi.UserSettings.FirstRun = false
+		DestroyConsoleLog()
+		ChoGGi.SettingFuncs.WriteSettings()
+
+		ChoGGi.ComFuncs.MsgWait(
+			Strings[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]]
+				.. "\n\n" .. Strings[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."--]]]:format(Strings[302535920001308--[[Settings--]]], Strings[302535920001112--[[Console Log--]]]),
+			Translate(10126--[[Installed Mods--]]) .. ": " .. Strings[302535920000000--[[Expanded Cheat Menu--]]],
+			ChoGGi.mod_path .. "Preview.png",
+			Strings[302535920001465--[[Stop talking and start cheating!--]]]
+		)
+	end
+end
+
 -- const.Scale.sols is 720 000 ticks (GameTime)
 function OnMsg.NewDay() -- NewSol...
 --~ 	Msg("NewSol")
@@ -1327,25 +1377,16 @@ do -- LoadGame/CityStart
 		-- first time run info
 		if UserSettings.FirstRun ~= false then
 			UserSettings.FirstRun = false
+			DestroyConsoleLog()
 			ChoGGi.Temp.WriteSettings = true
 
-			local function CallBackFunc(answer)
-				if answer then
-					DestroyConsoleLog()
-				else
-					UserSettings.ConsoleToggleHistory = true
-					ShowConsoleLog(true)
-				end
-			end
-			ChoGGi.ComFuncs.QuestionBox(
+			ChoGGi.ComFuncs.MsgWait(
 				Strings[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]]
-					.. "\n\n" .. Strings[302535920001309--[["Stop showing console log: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(Strings[302535920001308--[[Settings--]]], Strings[302535920001112--[[Console Log--]]]),
-				CallBackFunc,
-				Strings[302535920000000--[[Expanded Cheat Menu--]]] .. " " .. Strings[302535920000201--[[Active--]]],
-				Strings[302535920001465--[[Stop talking and start cheating!--]]],
-				Strings[302535920001466--[["I know what I'm doing, show me the console log."--]]],
-				ChoGGi.mod_path .. "Preview.png"
+					.. "\n\n" .. Strings[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."--]]]:format(Strings[302535920001308--[[Settings--]]], Strings[302535920001112--[[Console Log--]]]),
+			Translate(10126--[[Installed Mods--]]) .. ": " .. Strings[302535920000000--[[Expanded Cheat Menu--]]],
+				ChoGGi.mod_path .. "Preview.png",
+				Strings[302535920001465--[[Stop talking and start cheating!--]]]
 			)
 		end
 
@@ -1377,8 +1418,8 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 		end
 
 		if not testing and UserSettings.ConsoleToggleHistory then
-			-- getting tired of people asking how to disable console log
-			print("<color 200 200 200>", Strings[302535920000887--[[ECM--]]], "</color>:", Strings[302535920001309--[["Stop showing these msgs: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s""."--]]]:format(Strings[302535920001308--[[Settings--]]], Strings[302535920001112--[[Console Log--]]]))
+			-- getting tired of people asking how to disable console log (really tired, guess even this is too much...)
+			print("<color 200 200 200>", Strings[302535920000887--[[ECM--]]], "</color>:", Strings[302535920001309--[["Stop showing console log: Press Tilde or Enter and click the ""<color green>%s</color>"" button then make sure ""<color green>%s</color>"" is unchecked."--]]]:format(Strings[302535920001308--[[Settings--]]], Strings[302535920001112--[[Console Log--]]]))
 		end
 
 		-- used to check when game has started and it's safe to print() etc

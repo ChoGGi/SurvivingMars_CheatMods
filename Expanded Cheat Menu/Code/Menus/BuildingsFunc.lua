@@ -240,7 +240,7 @@ function ChoGGi.MenuFuncs.SetServiceBuildingStats()
 	local hint_type = Strings[302535920000138--[[Value needs to be a %s.--]]]
 	local item_list = {
 		{text = Translate(728--[[Health change on visit--]]), value = obj:GetClassValue("health_change") / r, setting = "health_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "health_change"))},
-		{text = Translate(729--[[Sanity change on visit--]]), value = objobj:GetClassValue("sanity_change") / r, setting = "sanity_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "sanity_change"))},
+		{text = Translate(729--[[Sanity change on visit--]]), value = obj:GetClassValue("sanity_change") / r, setting = "sanity_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "sanity_change"))},
 		{text = Translate(730--[[Service Comfort--]]), value = obj:GetClassValue("service_comfort") / r, setting = "service_comfort", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "service_comfort"))},
 		{text = Translate(731--[[Comfort increase on visit--]]), value = obj:GetClassValue("comfort_increase") / r, setting = "comfort_increase", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "comfort_increase"))},
 	}
@@ -1538,8 +1538,11 @@ end
 do -- Building_wonder_Toggle
 	local function SetWonders(bool)
 		local BuildingTemplates = BuildingTemplates
-		for _, bld in pairs(BuildingTemplates) do
+		for id, bld in pairs(BuildingTemplates) do
 			if bld.group == "Wonders" then
+				bld.wonder = bool
+			-- a wonder, but not a wonder... how wonderful.
+			elseif id == "OpenCity" then
 				bld.wonder = bool
 			end
 		end

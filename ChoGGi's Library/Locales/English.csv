@@ -21,7 +21,6 @@ ID, Text, Translation, Old Translation, Gender
 302535920001181,Used Terrain Textures,
 302535920001125,Test Locale File,
 302535920000239,Tools,
-302535920000201,Active,
 302535920000089,Nothing left,
 302535920001526,Not a valid object,
 302535920000547,Lock,
@@ -211,6 +210,7 @@ You can copy and paste numbers if you want.",
 302535920000028,Find Resource,
 302535920000029,Error: Cannot find any <color red>%s</color>.,
 302535920000032,Select a resource to find,
+302535920000030,"To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked.",
 302535920001441,<left_click> Activate MenuItem <right_click> Add/Remove Quickbar,
 302535920001439,"~obj, @func, @@type, $id, %img, ^str, *r/*g/*m threads. Hover mouse for more info.",
 302535920001440,"<color green>~</color><color yellow>obj</color> opens object in examine dlg, use <color red>ex(obj)</color> in lua code.
@@ -238,7 +238,7 @@ You can copy and paste numbers if you want.",
 302535920000503,<right_click> an item/submenu to add/remove it from the quickbar.,
 302535920001465,Stop talking and start cheating!,
 302535920001466,"I know what I'm doing, show me the console log.",
-302535920001309,"Stop showing console log: Press Tilde or Enter and click the ""%s"" button then uncheck ""%s"".",
+302535920001309,"Stop showing console log: Press Tilde or Enter and click the ""<color green>%s</color>"" button then make sure ""<color green>%s</color>"" is unchecked.",
 302535920000247,Startup ticks,
 302535920000729,You've started a mystery!,
 302535920000730,You've chosen a mystery!,
@@ -464,8 +464,8 @@ Decompiled code won't scroll correctly as the line numbers are different.",
 302535920001248,Sort normally or backwards.,
 302535920001397,"Not the actual properties (see object.properties for those).
 
-Use <color yellow>obj:GetProperty(""NAME"")</color> and <color yellow>obj:SetProperty(""NAME"", value)</color>
-You can access a default value with <color yellow>obj:GetDefaultPropertyValue(""NAME"")</color>
+Use obj:GetProperty(""NAME"") and obj:SetProperty(""NAME"", value)
+You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 ",
 302535920001396,point,
 302535920001389,All Properties,
@@ -1775,6 +1775,7 @@ AddMaintenancePnts, MakeSphereTarget, SpawnWorker, SpawnVisitor",
 302535920000701,Queue up to 100 squares.,
 302535920000702,Game Speed,
 302535920000703,"Change the game speed (only for medium/fast, normal is normal).",
+302535920000201,Active,
 302535920000867,Toggle occurrence of <color yellow>%s</color> disasters.,
 302535920001460,Add/remove rival colonies.,
 302535920001462,<color green>%s</color> rival colonies.,

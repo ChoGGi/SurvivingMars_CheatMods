@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Mononoke Shishi-Gami",
+	"title", "Mononoke Shishi-gami",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

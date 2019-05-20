@@ -1024,21 +1024,21 @@ function ChoGGi.MenuFuncs.SetColonistsGender(action)
 
 		-- existing
 		elseif setting_mask == 2 then
+			local ColonistUpdateGender = ChoGGi.ComFuncs.ColonistUpdateGender
 			if choice.check2 then
 				if obj then
-					ChoGGi.ComFuncs.ColonistUpdateGender(obj, value)
+					ColonistUpdateGender(obj, value)
 				end
 			else
-				local ColonistUpdateGender = ChoGGi.ComFuncs.ColonistUpdateGender
 				local objs = UICity.labels.Colonist or ""
 				for i = 1, #objs do
+					local o = objs[i]
 					if dome then
-						local o = objs[i]
 						if o.dome and o.dome.handle == dome.handle then
 							ColonistUpdateGender(o, value)
 						end
 					else
-						ColonistUpdateGender(objs[i], value)
+						ColonistUpdateGender(o, value)
 					end
 				end
 			end

@@ -147,12 +147,10 @@ end
 
 -- set game values to saved values
 function ChoGGi.SettingFuncs.SetConstsToSaved()
-
 	local UserSettings = ChoGGi.UserSettings
 	local SetConstsG = ChoGGi.ComFuncs.SetConstsG
 	local const = const
 
-	-- Consts.
 	local list = ChoGGi.Tables.Consts_names
 	for i = 1, #list do
 		local item = list[i]

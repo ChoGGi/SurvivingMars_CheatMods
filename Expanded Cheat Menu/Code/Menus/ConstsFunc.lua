@@ -6,10 +6,11 @@ local Strings = ChoGGi.Strings
 
 function ChoGGi.MenuFuncs.SetConstMenu(action)
 	local ChoGGi = ChoGGi
-	local ConstsC = ChoGGi.UserSettings.Consts
+	local ConstsUS = ChoGGi.UserSettings.Consts
+	local ConstsC = ChoGGi.Consts
 
 	local setting_scale = action.setting_scale
-	printC(setting_scale, "setting_scale")
+--~ 	printC(setting_scale, "setting_scale")
 	-- see about using scale to setup the numbers
 
 	local setting_id = action.setting_id
@@ -41,8 +42,8 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 	end
 
 	local hint = default_setting
-	if ConstsC[setting_id] then
-		hint = ConstsC[setting_id]
+	if ConstsUS[setting_id] then
+		hint = ConstsUS[setting_id]
 	end
 
 	local function CallBackFunc(choice)
@@ -55,14 +56,17 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetConstsG(setting_id, value)
 			-- if setting is the same as the default then remove it
-			if Consts:GetDefaultPropertyValue(setting_id) == value then
-				ConstsC[setting] = nil
+			if ConstsC[setting_id] == value then
+				ConstsUS[setting_id] = nil
 			else
-				ConstsC[setting] = value
+				ConstsUS[setting_id] = value
 			end
 
 			ChoGGi.SettingFuncs.WriteSettings()
-			MsgPopup(choice.text, setting_name)
+			MsgPopup(
+				ChoGGi.ComFuncs.SettingState(choice.text),
+				setting_name
+			)
 		end
 	end
 

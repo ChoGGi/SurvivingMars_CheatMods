@@ -1230,7 +1230,9 @@ function ChoGGi.ComFuncs.SetConstsG(name, value)
 	if value then
 		-- some mods check Consts or g_Consts, so we'll just do both to be sure
 		Consts[name] = value
-		g_Consts[name] = value
+		if g_Consts then
+			g_Consts[name] = value
+		end
 	end
 end
 
@@ -2156,7 +2158,12 @@ function ChoGGi.ComFuncs.ColonistUpdateGender(c, gender)
 	-- needed for updating entity
 	c.gender = gender
 	-- set entity gender
-	c.entity_gender = gender
+	if gender == "OtherGender" then
+		c.entity_gender = Random(1, 100) <= 50 and "Male" or "Female"
+		c.fx_actor_class = c.entity_gender == "Male" and "ColonistFemale" or "ColonistMale"
+	else
+		c.entity_gender = gender
+	end
 	-- now we can set the new entity
 	c:ChooseEntity()
 end
