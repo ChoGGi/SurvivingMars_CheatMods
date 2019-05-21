@@ -185,14 +185,14 @@ Actions[c] = {ActionName = Strings[302535920000157--[[Cables & Pipes--]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000218--[[No Chance Of Break--]]],
+Actions[c] = {ActionName = Strings[302535920000218--[[No Break--]]],
 	ActionMenubar = "ECM.ECM.Buildings.Cables & Pipes",
-	ActionId = ".Cables & Pipes: No Chance Of Break",
+	ActionId = ".No Break",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 	RolloverText = function()
 		return SettingState(
-			ChoGGi.UserSettings.BreakChanceCablePipe,
-			Strings[302535920000157--[[Cables & Pipes--]]] .. " " .. Strings[302535920000219--[[will never break.--]]]
+			ChoGGi.UserSettings.CablesAndPipesNoBreak,
+			Strings[302535920000157--[[Cables & Pipes--]]] .. " " .. Strings[302535920000218--[[No Break--]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle,
@@ -201,12 +201,12 @@ Actions[c] = {ActionName = Strings[302535920000218--[[No Chance Of Break--]]],
 c = c + 1
 Actions[c] = {ActionName = Translate(134--[[Instant Build--]]),
 	ActionMenubar = "ECM.ECM.Buildings.Cables & Pipes",
-	ActionId = ".Cables & Pipes: Instant Build",
+	ActionId = ".Instant Build",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.InstantCables,
-			Strings[302535920000157--[[Cables & Pipes--]]] .. " " .. Strings[302535920000221--[[are built instantly.--]]]
+			Strings[302535920000157--[[Cables & Pipes--]]] .. " " .. Translate(134--[[Instant Build--]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle,

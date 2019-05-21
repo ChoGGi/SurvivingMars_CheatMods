@@ -1,2 +1,5 @@
+v0.3
+More stringent check for the different entities.
+
 v0.2
 Update to my lib mod.

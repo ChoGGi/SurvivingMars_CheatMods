@@ -39,17 +39,21 @@ Tank will always refer to the storage on the ground, not the tank on the RC.]]
 local display_icon = CurrentModPath .. "UI/rover_tanker.png"
 
 local entity_tank = "AirTank"
-if IsValidEntity("OxygenTankLargeCP3") then
-	entity_tank = "OxygenTankLargeCP3"
+if g_AvailableDlc.contentpack3 then
+	if IsValidEntity("OxygenTankLargeCP3") then
+		entity_tank = "OxygenTankLargeCP3"
+	end
 end
 
 local entity_rc = "RoverTransport"
-if IsValidEntity("RoverChinaSolarRC") then
-	entity_rc = "RoverChinaSolarRC"
-end
 local entity_rc_building = "RoverTransportBuilding"
-if IsValidEntity("RoverChinaSolarRCBuilding") then
-	entity_rc_building = "RoverChinaSolarRCBuilding"
+if g_AvailableDlc.gagarin then
+	if IsValidEntity("RoverChinaSolarRC") then
+		entity_rc = "RoverChinaSolarRC"
+	end
+	if IsValidEntity("RoverChinaSolarRCBuilding") then
+		entity_rc_building = "RoverChinaSolarRCBuilding"
+	end
 end
 
 DefineClass.RCTankerTank = {

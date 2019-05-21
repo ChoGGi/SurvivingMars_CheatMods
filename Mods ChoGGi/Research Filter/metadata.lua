@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_ResearchFilter",
 	"steam_id", "1658288931",
-	"pops_desktop_uuid", "d55f1818-7d13-4779-90db-a14d249cda4d",
+	"pops_any_uuid", "d55f1818-7d13-4779-90db-a14d249cda4d",
 	"author", "ChoGGi",
 	"lua_revision", 244677,
 	"code", {

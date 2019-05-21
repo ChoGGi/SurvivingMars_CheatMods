@@ -184,13 +184,19 @@ function OnMsg.LoadGame()
 					end
 				end
 
-			elseif r.command == "Countdown" then
+			elseif r.command == "Countdown" or r.command == "Takeoff" then
 				-- exited means exited (unless it's really really close, close enough)
 				if type(r.drones_exiting) == "table" then
 					for i = #r.drones_exiting, 1, -1 do
 						local drone = r.drones_exiting[i]
+						-- off map
+						if r.command == "Takeoff" and drone:GetPos() == InvalidPos then
+							table_remove(r.drones_exiting, i)
+							drone:delete()
+							UICity.drone_prefabs = UICity.drone_prefabs + 1
 						-- not moving or outside the rocket
-						if drone.moving == false or r_pos:Dist2D(drone:GetVisualPos()) > 1500 then
+						elseif r.command == "Countdown" and (drone.moving == false
+								or r_pos:Dist2D(drone:GetVisualPos()) > 1500) then
 							table_remove(r.drones_exiting, i)
 						end
 					end

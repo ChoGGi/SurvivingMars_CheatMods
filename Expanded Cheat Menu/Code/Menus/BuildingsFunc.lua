@@ -1501,14 +1501,14 @@ So we got rid of the auto and stopped off at the Korova for a nightcap.--]]]:for
 end
 
 function ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle()
-	ChoGGi.UserSettings.BreakChanceCablePipe = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.BreakChanceCablePipe)
+	ChoGGi.UserSettings.CablesAndPipesNoBreak = not ChoGGi.UserSettings.CablesAndPipesNoBreak
 
-	const.BreakChanceCable = ChoGGi.ComFuncs.ValueRetOpp(const.BreakChanceCable, 600, 10000000)
-	const.BreakChancePipe = ChoGGi.ComFuncs.ValueRetOpp(const.BreakChancePipe, 600, 10000000)
+--~ 	const.BreakChanceCable = ChoGGi.ComFuncs.ValueRetOpp(const.BreakChanceCable, 600, 10000000)
+--~ 	const.BreakChancePipe = ChoGGi.ComFuncs.ValueRetOpp(const.BreakChancePipe, 600, 10000000)
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		Strings[302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.BreakChanceCablePipe)),
+		Strings[302535920000156--[[%s: Aliens? We gotta deal with aliens too?--]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CablesAndPipesNoBreak)),
 		Strings[302535920000218--[[No Chance Of Break--]]]
 	)
 end

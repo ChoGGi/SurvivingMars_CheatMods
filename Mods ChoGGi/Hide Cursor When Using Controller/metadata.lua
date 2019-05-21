@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_HideCursorWhenUsingController",
 	"steam_id", "1640439684",
-	"pops_desktop_uuid", "2793acf3-56ba-48f3-8e62-e46bb3a4e165",
+	"pops_any_uuid", "2793acf3-56ba-48f3-8e62-e46bb3a4e165",
 	"author", "ChoGGi",
 	"lua_revision", 244677,
 	"code", {

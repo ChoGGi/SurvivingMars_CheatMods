@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Terraforming Existing Saves",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-	"saved", 1555329600,
+	"version_minor", 2,
+	"saved", 1558440000,
 	"image", "Preview.png",
 	"id", "ChoGGi_TerraformingExistingSaves",
 	"steam_id", "1743037670",

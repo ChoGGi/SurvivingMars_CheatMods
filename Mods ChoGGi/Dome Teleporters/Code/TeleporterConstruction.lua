@@ -32,7 +32,9 @@ end
 
 -- add our custom construction controller
 function OnMsg.NewMap()
-	CityDomeTeleporterConstruction[UICity] = DomeTeleporterConstructionController:new()
+	if UICity then
+		CityDomeTeleporterConstruction[UICity] = DomeTeleporterConstructionController:new()
+	end
 end
 function OnMsg.LoadGame()
 	CityDomeTeleporterConstruction[UICity] = DomeTeleporterConstructionController:new()

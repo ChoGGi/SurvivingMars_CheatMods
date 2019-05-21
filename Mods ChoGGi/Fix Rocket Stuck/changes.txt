@@ -1,3 +1,6 @@
+v1.3
+The drones_exiting table has a drone that's off the map.
+
 v1.2
 The drones_exiting table has a drone that already exited.
 

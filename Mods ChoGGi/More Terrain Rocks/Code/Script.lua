@@ -4,10 +4,10 @@ local IsKindOf = IsKindOf
 -- we don't specifiy a PrefabMarkers to use, so we skip this to skip the error msg
 local orig_PlacePrefab = LevelPrefabController.PlacePrefab
 function LevelPrefabController:PlacePrefab(...)
-	if IsKindOf(self.template_obj,"ChoGGi_LevelPrefabBuilding") then
+	if IsKindOf(self.template_obj, "ChoGGi_LevelPrefabBuilding") then
 		return
 	end
-	return orig_PlacePrefab(self,...)
+	return orig_PlacePrefab(self, ...)
 end
 
 DefineClass.ChoGGi_LevelPrefabBuilding = {
@@ -34,9 +34,9 @@ local function OnMsgXTemplates()
 
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
-				"RolloverTitle", T(1000081,"Scale"),
+				"RolloverTitle", T(1000081, "Scale"),
 				"RolloverText", "Scale +",
-				"RolloverHint", T(608042494285,"<left_click> Activate"),
+				"RolloverHint", T(608042494285, "<left_click> Activate"),
 				"OnPress", function(self)
 					-- speeds it up if it's a large scale
 					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Scale")
@@ -48,9 +48,9 @@ local function OnMsgXTemplates()
 			}),
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
-				"RolloverTitle", T(1000081,"Scale"),
+				"RolloverTitle", T(1000081, "Scale"),
 				"RolloverText", "Scale -",
-				"RolloverHint", T(608042494285,"<left_click> Activate"),
+				"RolloverHint", T(608042494285, "<left_click> Activate"),
 				"OnPress", function(self)
 					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Scale")
 					local c = self.context
@@ -62,9 +62,9 @@ local function OnMsgXTemplates()
 
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
-				"RolloverTitle", T(1000077,"Rotate"),
-				"RolloverText", T(312752058553,"Rotate Building Left"),
-				"RolloverHint", T(608042494285,"<left_click> Activate"),
+				"RolloverTitle", T(1000077, "Rotate"),
+				"RolloverText", T(312752058553, "Rotate Building Left"),
+				"RolloverHint", T(608042494285, "<left_click> Activate"),
 				"OnPress", function(self)
 					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Rotate")
 					local c = self.context
@@ -135,42 +135,42 @@ OnMsg.XTemplatesLoaded = OnMsgXTemplates
 local GetMaterialProperties = GetMaterialProperties
 local GetStateMaterial = GetStateMaterial
 
-local function AddToMenu(bt,cat,entity,desc,index)
+local function AddToMenu(bt, cat, entity, desc, index)
 	local id = "ChoGGi_LandscapeRock_" .. entity
 	if not bt[id] then
-		local mat = GetMaterialProperties(GetStateMaterial(entity,0,0),0)
+		local mat = GetMaterialProperties(GetStateMaterial(entity, 0, 0), 0)
 		if mat and mat.BaseColor and mat.BaseColor ~= "" then
 			PlaceObj("BuildingTemplate", {
-				"Group",cat,
-				"build_category",cat,
-				"Id",id,
---~ 				"template_class","LevelPrefabBuilding",
-				"template_class","ChoGGi_LevelPrefabBuilding",
-				"construction_cost_WasteRock",cat == "LandscapeRockBuildingsLightSmall" and 1000 or 10000,
-				"build_points",cat == "LandscapeRockBuildingsLightSmall" and 500 or 2500,
-				"is_tall",cat ~= "LandscapeRockBuildingsLightSmall" and true,
-				"use_demolished_state",false,
-				"build_pos",index,
-				"on_off_button",false,
-				"prio_button",false,
-				"count_as_building",false,
+				"Group", cat,
+				"build_category", cat,
+				"Id", id,
+--~ 				"template_class", "LevelPrefabBuilding",
+				"template_class", "ChoGGi_LevelPrefabBuilding",
+				"construction_cost_WasteRock", cat == "LandscapeRockBuildingsLightSmall" and 1000 or 10000,
+				"build_points", cat == "LandscapeRockBuildingsLightSmall" and 500 or 2500,
+				"is_tall", cat ~= "LandscapeRockBuildingsLightSmall" and true,
+				"use_demolished_state", false,
+				"build_pos", index,
+				"on_off_button", false,
+				"prio_button", false,
+				"count_as_building", false,
 
-				"description",desc .. "\n\n<image " .. mat.BaseColor .. " 200>",
-				"display_icon",mat.BaseColor,
-				"display_name",entity,
-				"display_name_pl",entity,
-				"entity",entity,
+				"description", desc .. "\n\n<image " .. mat.BaseColor .. " 200>",
+				"display_icon", mat.BaseColor,
+				"display_name", entity,
+				"display_name_pl", entity,
+				"entity", entity,
 
 				-- we don't want crystal rocks added along with
-				"PrefabType","Gameplay",
-				"PrefabBaseName","ChoGGi_Sez_Hello_There",
+				"PrefabType", "Gameplay",
+				"PrefabBaseName", "ChoGGi_Sez_Hello_There",
 			})
 		end
 	end
 end
 
 -- skip the Missing spot 'Top' in 'ConstructionSite' state 'idle' msg
-local function SkipTops(obj,spot_type)
+local function SkipTops(obj, spot_type)
 	if obj:GetSpotBeginIndex(spot_type) == -1 then
 		return "Origin"
 	end
@@ -178,52 +178,40 @@ local function SkipTops(obj,spot_type)
 end
 
 local orig_AttachToObject = AttachToObject
-function AttachToObject(to, childclass, spot_type,...)
-	spot_type = SkipTops(to,spot_type)
-	return orig_AttachToObject(to, childclass, spot_type,...)
+function AttachToObject(to, childclass, spot_type, ...)
+	spot_type = SkipTops(to, spot_type)
+	return orig_AttachToObject(to, childclass, spot_type, ...)
 end
 
 local orig_AttachPartToObject = AttachPartToObject
-function AttachPartToObject(to, part, spot_type,...)
-	spot_type = SkipTops(to,spot_type)
-	return orig_AttachPartToObject(to, part, spot_type,...)
+function AttachPartToObject(to, part, spot_type, ...)
+	spot_type = SkipTops(to, spot_type)
+	return orig_AttachPartToObject(to, part, spot_type, ...)
 end
 
 function OnMsg.ClassesBuilt()
 	OnMsgXTemplates()
 
 	local bc = BuildCategories
-	if not table.find(bc,"id","RockFormations_ChoGGi") then
+	if not table.find(bc, "id", "RockFormations_ChoGGi") then
 		bc[#bc+1] = {
 			id = "RockFormations_ChoGGi",
 			name = T(255661810896, "Rock Formations"),
 			image = "UI/Icons/Buildings/rock_formation.tga",
 		}
-
-		-- fake item to make build menu show up
-		PlaceObj("BuildingTemplate", {
-			"Group","RockFormations_ChoGGi",
-			"build_category","RockFormations_ChoGGi",
-			"Id","RockFormations_ChoGGi_Ignore",
-			"display_name","Ignore me",
-			"description",[[Build menus need at least one actual item or they won't show up.
-You can build this if you want it won't hurt anything.]],
-			"template_class","Building",
-			"display_icon","UI/Icons/Buildings/placeholder.tga",
-		})
 	end
 end
 
 -- going with a manual list of rocks, maybe we'll do a sub EntityData ?
 local rocks = {
-	{"Rocks_01","Rocks_02","Rocks_03","Rocks_04"},
-	{"RocksDark_01","RocksDark_02","RocksDark_03","RocksDark_04","RocksDark_05"},
-	{"RocksLight_01","RocksLight_02","RocksLight_03","RocksLight_04","RocksLight_05","RocksLight_06"},
-	{"RocksLightSmall_01","RocksLightSmall_02","RocksLightSmall_03","RocksLightSmall_04","RocksLightSmall_05","RocksLightSmall_06","RocksLightSmall_07","RocksLightSmall_08"},
-	{"RocksSlate_01","RocksSlate_02","RocksSlate_03","RocksSlate_04","RocksSlate_05","RocksSlate_06","RocksSlate_07"},
-	{"Cliff_01","Cliff_02","Cliff_03"},
-	{"CliffDark_01","CliffDark_02","CliffDark_03"},
-	{"Ice_Cliff_01","Ice_Cliff_02","Ice_Cliff_03","Ice_Cliff_04","Ice_Cliff_05","Ice_Cliff_06"},
+	{"Rocks_01", "Rocks_02", "Rocks_03", "Rocks_04"},
+	{"RocksDark_01", "RocksDark_02", "RocksDark_03", "RocksDark_04", "RocksDark_05"},
+	{"RocksLight_01", "RocksLight_02", "RocksLight_03", "RocksLight_04", "RocksLight_05", "RocksLight_06"},
+	{"RocksLightSmall_01", "RocksLightSmall_02", "RocksLightSmall_03", "RocksLightSmall_04", "RocksLightSmall_05", "RocksLightSmall_06", "RocksLightSmall_07", "RocksLightSmall_08"},
+	{"RocksSlate_01", "RocksSlate_02", "RocksSlate_03", "RocksSlate_04", "RocksSlate_05", "RocksSlate_06", "RocksSlate_07"},
+	{"Cliff_01", "Cliff_02", "Cliff_03"},
+	{"CliffDark_01", "CliffDark_02", "CliffDark_03"},
+	{"Ice_Cliff_01", "Ice_Cliff_02", "Ice_Cliff_03", "Ice_Cliff_04", "Ice_Cliff_05", "Ice_Cliff_06"},
 }
 local cats = {
 	"LandscapeRockBuildingsRocks",
@@ -238,7 +226,7 @@ local cats = {
 
 function OnMsg.ClassesPostprocess()
 	-- if entities aren't loaded then wait it out
-	if not GetMaterialProperties(GetStateMaterial("Rocks_01",0,0),0) or Presets.BuildMenuSubcategory.Default.LandscapeRockBuildingsRocks then
+	if not GetMaterialProperties(GetStateMaterial("Rocks_01", 0, 0), 0) or Presets.BuildMenuSubcategory.Default.LandscapeRockBuildingsRocks then
 		return
 	end
 
@@ -334,8 +322,30 @@ function OnMsg.ClassesPostprocess()
 		local rock = rocks[i]
 		local cat = cats[i]
 		for j = 1, #rock do
-			AddToMenu(bt,cat,rock[j],desc,j)
+			AddToMenu(bt, cat, rock[j], desc, j)
 		end
 	end
 
+	if not bt.RockFormations_ChoGGi_Ignore then
+		-- fake item to make build menu show up
+		PlaceObj("BuildingTemplate", {
+			"Group", "RockFormations_ChoGGi",
+			"build_category", "RockFormations_ChoGGi",
+			"Id", "RockFormations_ChoGGi_Ignore",
+			"display_name", "Ignore me",
+			"display_name_pl", "Ignore me",
+			"description", [[Build menus need at least one actual item or they won't show up.
+You can build this if you want it won't hurt anything.]],
+			"template_class", "Building",
+			"display_icon", "UI/Icons/Buildings/placeholder.tga",
+		})
+	end
+
+
+end
+
+function OnMsg.ConstructionSitePlaced(site)
+	if site.building_class_proto:IsKindOf("ChoGGi_LevelPrefabBuilding") then
+		site:SetScale(25)
+	end
 end

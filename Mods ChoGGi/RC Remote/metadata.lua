@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_RCRemote",
 	"steam_id", "1667310894",
-	"pops_desktop_uuid", "3ccc0532-9857-4515-9c50-6610d323129d",
+	"pops_any_uuid", "3ccc0532-9857-4515-9c50-6610d323129d",
 	"author", "ChoGGi",
 	"lua_revision", 244677,
 	"code", {

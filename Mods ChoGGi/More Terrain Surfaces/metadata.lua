@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "More Terrain Surfaces",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-	"saved", 1553342400,
+	"version_minor", 2,
+	"saved", 1558440000,
 	"image", "Preview.png",
 	"id", "ChoGGi_MoreTerrainSurfaces",
 	"steam_id", "1743036767",

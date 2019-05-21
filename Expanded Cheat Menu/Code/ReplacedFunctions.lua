@@ -664,11 +664,19 @@ function OnMsg.ClassesBuilt()
 	end
 
 	-- unbreakable cables/pipes
-	SaveOrigFunc("SupplyGridFragment", "RandomElementBreakageOnWorkshiftChange")
-	function SupplyGridFragment.RandomElementBreakageOnWorkshiftChange(...)
-		if not UserSettings.BreakChanceCablePipe then
-			return ChoGGi_OrigFuncs.SupplyGridFragment_RandomElementBreakageOnWorkshiftChange(...)
+	SaveOrigFunc("SupplyGridFragment", "IsBreakable")
+	function SupplyGridFragment.IsBreakable(...)
+		if UserSettings.CablesAndPipesNoBreak then
+			return false
 		end
+		return ChoGGi_OrigFuncs.SupplyGridFragment_IsBreakable(...)
+	end
+	SaveOrigFunc("BreakableSupplyGridElement", "CanBreak")
+	function BreakableSupplyGridElement.CanBreak(...)
+		if UserSettings.CablesAndPipesNoBreak then
+			return false
+		end
+		return ChoGGi_OrigFuncs.BreakableSupplyGridElement_CanBreak(...)
 	end
 
 	-- no more pulsating pin motion

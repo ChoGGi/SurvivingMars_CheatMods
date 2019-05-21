@@ -22,6 +22,8 @@ DefineClass.ChoGGi_DlgImageViewer = {
 	images = false,
 	-- index list of popup menu items
 	image_menu_popup = false,
+	-- viewed image path
+	image_path = false,
 	-- id for togglepopup
 	idImageMenu = false,
 }
@@ -94,6 +96,25 @@ function ChoGGi_DlgImageViewer:Init(parent, context)
 	self:PostInit(context.parent)
 end
 
+function ChoGGi_DlgImageViewer:ExportImage()
+	if blacklist then
+		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi_DlgImageViewer:ExportImage()")
+		return
+	end
+	-- need to reverse string so it finds the last /, since find looks ltr
+	local slash = self.image_path:reverse():find("/")
+	if slash then
+		local name = self.image_path:sub((slash * -1) + 1)
+		AsyncCopyFile(self.image_path, "AppData/" .. name)
+		local msg = ConvertToOSPath("AppData/" .. name)
+		print(msg)
+		ChoGGi.ComFuncs.MsgPopup(
+			msg,
+			Strings[302535920001449--[[Export--]]]
+		)
+	end
+end
+
 function ChoGGi_DlgImageViewer:BuildImageMenuPopup()
 	local images = {}
 	for i = 1, #self.images do
@@ -105,12 +126,21 @@ function ChoGGi_DlgImageViewer:BuildImageMenuPopup()
 			end,
 		}
 	end
+	images[#images+1] = {is_spacer = true}
+	images[#images+1] = {
+		name = Strings[302535920001449--[[Export--]]],
+		hint = Strings[302535920000219--[[Export viewed image to %s.--]]]:format(ConvertToOSPath("AppData")),
+		clicked = function()
+			self:ExportImage()
+		end,
+	}
 	self.image_menu_popup = images
 end
 
 function ChoGGi_DlgImageViewer:SetImageFile(image)
 	self = GetRootDialog(self)
 	self.idImage:SetImage(image.path)
+	self.image_path = image.path
 	self.idCaption:SetTitle(self, image.path)
 
 	local w, h = MeasureImage(image.path)

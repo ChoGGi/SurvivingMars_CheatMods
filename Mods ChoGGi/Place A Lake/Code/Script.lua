@@ -2,6 +2,7 @@
 
 local entity = "Ice_Cliff_06"
 
+local ApplyAllWaterObjects = ApplyAllWaterObjects
 DefineClass.InstantLake = {
 	__parents = {
 		"Building",
@@ -20,13 +21,13 @@ function InstantLake:GameInit()
 	local pos = self:GetPos()+point(0,0,500)
 	self.water_level = 500
 	self.water_obj:SetPos(pos)
-	self:UpdateWatergrid()
+	ApplyAllWaterObjects()
 end
 
 function InstantLake:Done()
 	if IsValid(self.water_obj) then
 		DoneObject(self.water_obj)
-		self:UpdateWatergrid()
+		ApplyAllWaterObjects()
 	end
 end
 
@@ -40,13 +41,7 @@ function InstantLake:UpdateLevel(level)
 	end
 
 	self.water_obj:SetPos(self:GetPos()+point(0,0,self.water_level))
-	self:UpdateWatergrid()
-end
-
-function InstantLake:UpdateWatergrid()
-	terrain.ClearWater()
-	terrain.UpdateWaterGridFromObject(self.water_obj)
---~ 	ApplyAllWaterObjects()
+	ApplyAllWaterObjects()
 end
 
 function InstantLake:AdjustLevel(dir,smaller)

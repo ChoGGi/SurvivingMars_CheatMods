@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_StoreBuildingStates",
 	"steam_id", "1713268417",
-	"pops_desktop_uuid", "0defb259-a312-4a66-930a-c17112004766",
+	"pops_any_uuid", "0defb259-a312-4a66-930a-c17112004766",
 	"author", "ChoGGi",
 	"lua_revision", 244677,
 	"code", {

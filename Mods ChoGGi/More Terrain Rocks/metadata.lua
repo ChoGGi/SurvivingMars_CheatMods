@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "More Terrain Rocks",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-	"saved", 1553774400,
+	"version_minor", 2,
+	"saved", 1558440000,
 	"image", "Preview.png",
 	"id", "ChoGGi_MoreTerrainRocks",
 	"steam_id", "1743036391",
@@ -14,6 +14,8 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[Adds more rocks to a new category in the build menu.
-You can rotate and scale once they're placed.]],
+You can rotate and scale once they're placed.
+
+The rocks will look small till they're built (so drones can reach).]],
 	"TagLandscaping", true,
 })

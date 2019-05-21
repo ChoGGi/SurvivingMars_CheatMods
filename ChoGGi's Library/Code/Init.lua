@@ -39,7 +39,7 @@ ChoGGi = {
 	-- is ECM shanghaied by the blacklist?
 	blacklist = true,
 	-- constants
-	Consts = {},
+	Consts = {InvalidPos = InvalidPos()},
 	-- default ECM settings
 	Defaults = false,
 	-- means of communication

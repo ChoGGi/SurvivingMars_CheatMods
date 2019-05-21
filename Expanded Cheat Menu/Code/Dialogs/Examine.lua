@@ -1221,31 +1221,31 @@ Use Shift- or Ctrl- for random colours/reset colours.--]]],
 				self.ChoGGi.ComFuncs.ChangeObjectColour(self.obj_ref)
 			end,
 		},
-		{name = Strings[302535920001469--[[Image Viewer--]]],
-			hint = Strings[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."--]]],
-			image = "CommonAssets/UI/Menu/light_model.tga",
-			clicked = function()
-				-- check for loaded entity textures
-				local textures = self.obj_ref.UsedTextures and self.obj_ref:UsedTextures() or ""
-				local images_table = {
-					dupes = {},
-				}
-				for i = 1, #textures do
-					images_table[i] = {
-						name = textures[i] .. " *obj:UsedTextures()",
-						path = DTM.TexName(textures[i]),
-					}
-					images_table.dupes[images_table[i].name .. images_table[i].path] = true
-				end
-				-- checks for image in obj and metatable
-				if not self.ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref, self, images_table) then
-					self.ChoGGi.ComFuncs.MsgPopup(
-						Strings[302535920001471--[[No images found.--]]],
-						Strings[302535920001469--[[Image Viewer--]]]
-					)
-				end
-			end,
-		},
+--~ 		{name = Strings[302535920001469--[[Image Viewer--]]],
+--~ 			hint = Strings[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."--]]],
+--~ 			image = "CommonAssets/UI/Menu/light_model.tga",
+--~ 			clicked = function()
+--~ 				-- check for loaded entity textures
+--~ 				local textures = self.obj_ref.UsedTextures and self.obj_ref:UsedTextures() or ""
+--~ 				local images_table = {
+--~ 					dupes = {},
+--~ 				}
+--~ 				for i = 1, #textures do
+--~ 					images_table[i] = {
+--~ 						name = textures[i] .. " *obj:UsedTextures()",
+--~ 						path = DTM.TexName(textures[i]),
+--~ 					}
+--~ 					images_table.dupes[images_table[i].name .. images_table[i].path] = true
+--~ 				end
+--~ 				-- checks for image in obj and metatable
+--~ 				if not self.ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref, self, images_table) then
+--~ 					self.ChoGGi.ComFuncs.MsgPopup(
+--~ 						Strings[302535920001471--[[No images found.--]]],
+--~ 						Strings[302535920001469--[[Image Viewer--]]]
+--~ 					)
+--~ 				end
+--~ 			end,
+--~ 		},
 		{name = Strings[302535920001305--[[Find Within--]]],
 			hint = Strings[302535920001303--[[Search for text within %s.--]]]:format(self.name),
 			image = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
@@ -2464,7 +2464,12 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 
 			-- if meta name then add it
 			if meta and meta.__name then
-				trans_str = trans_str .. "(" .. meta.__name .. ")"
+				-- add TaskRequest res name
+				if obj.GetResource then
+					trans_str = trans_str .. "(" .. obj:GetResource() .. ", " .. meta.__name .. ")"
+				else
+					trans_str = trans_str .. "(" .. meta.__name .. ")"
+				end
 			else
 				trans_str = trans_str .. tostring(obj)
 			end
@@ -3255,7 +3260,7 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 		SetWinObjectVis(self.idButDeleteObj,PropObjGetProperty(obj, "delete"))
 
 		-- can't mark if it isn't an object, and no sense in marking something off the map
-		SetWinObjectVis(self.idButMarkObject,IsValid(obj) and obj:GetPos() ~= InvalidPos)
+		SetWinObjectVis(self.idButMarkObject,IsValid(obj) and tostring(obj:GetPos()) ~= InvalidPos)
 
 		if not self.obj_entity and PropObjGetProperty(obj, "GetEntity") then
 			local entity = obj:GetEntity()

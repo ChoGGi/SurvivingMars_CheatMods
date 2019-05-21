@@ -1,7 +1,9 @@
 ID, Text, Translation, Old Translation, Gender
+302535920000219,Export viewed image to <color green>%s</color>.,
 302535920001400,ChoGGi,
 302535920000887,ECM,
 302535920000000,Expanded Cheat Menu,
+302535920001449,Export,
 302535920000758,Will take some time for 25K and up.,
 302535920000866,Restart to disable.,
 302535920000967,Delay in ms between updating text.,
@@ -439,10 +441,10 @@ Hold <color green>Ctrl</color> to close <color red>all</color> ECM dialogs.",
 302535920001521,Lua source file not found.,
 302535920001519,View Source,
 302535920001520,"Opens source code in text viewer (if it exists):
-Mod code works fine, as well as HG github code. HG code needs to be placed at: ""<color green>%sSource</color>""
-Example: ""<color yellow>Source/Lua/_const.lua</color>""
+Mod code works fine, as well as HG github code (decompiled will have different line numbers).
 
-Decompiled code won't scroll correctly as the line numbers are different.",
+Source code needs to be placed at: ""<color green>%sSource</color>""
+Example: ""<color yellow>Source/Lua/_const.lua</color>""",
 302535920000264,Defaults to obj:GetObjectBBox() if it can't find a func.,
 302535920001514,Toggle visibility of an input box for executing code.,
 302535920001515,Press enter to execute code.,
@@ -731,9 +733,7 @@ Works on any building that produces.",
 302535920000215,Build with minimal resources.,
 302535920000216,Building Damage Crime,
 302535920000217,Disable damage from renegedes to buildings.,
-302535920000218,No Chance Of Break,
-302535920000219,will never break.,
-302535920000221,are built instantly.,
+302535920000218,No Break,
 302535920000223,Unlimited wonder build limit (blocks the <color yellow>build a wonder</color> achievement).,
 302535920000224,Show Hidden Buildings,
 302535920000225,Show hidden buildings in build menu.,
@@ -1467,7 +1467,6 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 302535920001488,Reloads map as new game.,
 302535920001208,Colonist Data,
 302535920001219,Export colonist data to <color green>%sColonists.csv</color>.,
-302535920001449,Export,
 302535920001450,Graphs Data,
 302535920001452,Export command centre graph data to %sGraphs.csv.,
 302535920000862,Object Planner,

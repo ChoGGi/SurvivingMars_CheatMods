@@ -1,63 +1,51 @@
 -- See LICENSE for terms
 
-local function AddToMenu(bt,t,desc,index)
+local function AddToMenu(bt, t, desc, index)
 	local id = "LandscapeTexture" .. t.name
 	if not bt[id] then
 		PlaceObj("BuildingTemplate", {
-			"Group",t.cat,
-			"build_category",t.cat,
-			"Id",id,
-			"template_class","LandscapeTextureBuilding",
-			"can_rotate_during_placement",false,
-			"can_resize_during_placement",true,
-			"dome_forbidden",true,
-			"display_name",t.name,
-			"display_name_pl",t.name,
-			"description",desc .. "\n\n<image " .. t.texture .. ">",
---~ 			"display_icon","UI/Icons/Buildings/terrain_sands.tga",
-			"display_icon",t.texture,
-			"entity","InvisibleObject",
-			"indestructible",true,
-			"demolish_sinking",range(0, 0),
-			"construction_mode","landscape_texture",
-			"refund_on_salvage",false,
-			"count_as_building",false,
-			"texture_type",t.name,
+			"Group", t.cat,
+			"build_category", t.cat,
+			"Id", id,
+			"template_class", "LandscapeTextureBuilding",
+			"can_rotate_during_placement", false,
+			"can_resize_during_placement", true,
+			"dome_forbidden", true,
+			"display_name", t.name,
+			"display_name_pl", t.name,
+			"description", desc .. "\n\n<image " .. t.texture .. ">",
+--~ 			"display_icon", "UI/Icons/Buildings/terrain_sands.tga",
+			"display_icon", t.texture,
+			"entity", "InvisibleObject",
+			"indestructible", true,
+			"demolish_sinking", range(0, 0),
+			"construction_mode", "landscape_texture",
+			"refund_on_salvage", false,
+			"count_as_building", false,
+			"texture_type", t.name,
 			-- Use next texture since I group them?
---~ 			"texture_alt","Sand_02",
+--~ 			"texture_alt", "Sand_02",
 			-- Wonder if this works as a range?
-			"texture_ratio",60,
-			"texture_pattern","Landscape",
-			"build_pos",index,
+			"texture_ratio", 60,
+			"texture_pattern", "Landscape",
+			"build_pos", index,
 		})
 	end
 end
 
 local CmpLower = CmpLower
-local function NameSort(a,b)
-	return CmpLower(a.name,b.name)
+local function NameSort(a, b)
+	return CmpLower(a.name, b.name)
 end
 
 function OnMsg.ClassesBuilt()
 	local bc = BuildCategories
-	if not table.find(bc,"id","LandscapeTextures_ChoGGi") then
+	if not table.find(bc, "id", "LandscapeTextures_ChoGGi") then
 		bc[#bc+1] = {
 			id = "LandscapeTextures_ChoGGi",
 			name = T(12400, "Change Surface"),
 			image = "UI/Icons/Buildings/terrain.tga",
 		}
-
-		-- fake item to make build menu show up
-		PlaceObj("BuildingTemplate", {
-			"Group","LandscapeTextures_ChoGGi",
-			"build_category","LandscapeTextures_ChoGGi",
-			"Id","LandscapeTextures_ChoGGi_Ignore",
-			"display_name","Ignore me",
-			"description",[[Build menus need at least one actual item or they won't show up.
-You can build this if you want it won't hurt anything.]],
-			"template_class","Building",
-			"display_icon","UI/Icons/Buildings/placeholder.tga",
-		})
 	end
 end
 
@@ -154,7 +142,7 @@ function OnMsg.ClassesPostprocess()
 	for i = 1, #TerrainTextures do
 		local t = TerrainTextures[i]
 		-- grab from first 4 and last 4 to check for names
-		local list_name1 = t.name:sub(1,4)
+		local list_name1 = t.name:sub(1, 4)
 		local list_name2 = t.name:sub(-4)
 		local cat1 = lookup[list_name1]
 		local cat2 = lookup[list_name2]
@@ -183,20 +171,35 @@ function OnMsg.ClassesPostprocess()
 
 	-- sort lists by name so we can use the list index for sorting
 	local sort = table.sort
-	sort(lists.Terr,NameSort)
-	sort(lists.Sand,NameSort)
-	sort(lists.Chao,NameSort)
-	sort(lists.Pref,NameSort)
-	sort(lists.Rock,NameSort)
-	sort(lists.Misc,NameSort)
+	sort(lists.Terr, NameSort)
+	sort(lists.Sand, NameSort)
+	sort(lists.Chao, NameSort)
+	sort(lists.Pref, NameSort)
+	sort(lists.Rock, NameSort)
+	sort(lists.Misc, NameSort)
 
 	desc = _InternalTranslate(T(527078695208, "Marks a surface for Drones to change into the Sands type.<if(has_dlc('armstrong'))><newline><newline><em>Degrades local Soil Quality.</em></if>"))
 	local bt = BuildingTemplates
 
-	for _,list in pairs(lists) do
+	for _, list in pairs(lists) do
 		for i = 1, #list do
-			AddToMenu(bt,list[i],desc,i)
+			AddToMenu(bt, list[i], desc, i)
 		end
+	end
+
+	if not bt.LandscapeTextures_ChoGGi_Ignore then
+		-- fake item to make build menu show up
+		PlaceObj("BuildingTemplate", {
+			"Group", "LandscapeTextures_ChoGGi",
+			"build_category", "LandscapeTextures_ChoGGi",
+			"Id", "LandscapeTextures_ChoGGi_Ignore",
+			"display_name", "Ignore me",
+			"display_name_pl", "Ignore me",
+			"description", [[Build menus need at least one actual item or they won't show up.
+You can build this if you want it won't hurt anything.]],
+			"template_class", "Building",
+			"display_icon", "UI/Icons/Buildings/placeholder.tga",
+		})
 	end
 
 end

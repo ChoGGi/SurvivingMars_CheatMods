@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Fix: Rocket Stuck",
-	"version", 12,
+	"version", 13,
 	"version_major", 1,
-	"version_minor", 2,
-	"saved", 1543579200,
+	"version_minor", 3,
+	"saved", 1558440000,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixExpeditionRocketStuckUnloading",
 	"steam_id", "1567028510",
@@ -20,7 +20,7 @@ Unloading colonist crew from expedition.
 Maintenance */5.
 Drones stuck inside.
 Planetary anomaly drones stuck inside.
-Drones the rocket thinks are stuck inside.
+Drones the rocket thinks are stuck inside (+2).
 
 If this doesn't fix it for you, then I'll need a copy of your saved game.]],
 })

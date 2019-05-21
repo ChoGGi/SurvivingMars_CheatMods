@@ -137,3 +137,21 @@ end
 function OnMsg.LoadGame()
 	CreateRealTimeThread(EnableTerra)
 end
+
+local orig_SupplyRocket_Unload = SupplyRocket.Unload
+function SupplyRocket:Unload(...)
+	-- rockets need demand/supply or disappearing acts
+	if self.demand and not self.demand.Seeds and (g_NoTerraforming == false or not IsGameRuleActive("NoTerraforming")) then
+		if self.resource then
+			if not table.find(self.resource,"Seeds") then
+				self.resource[#self.resource+1] = "Seeds"
+			end
+		end
+		-- eeeh, I'm lazy
+		if type(self.task_requests) == "table" then
+			table.iclear(self.task_requests)
+		end
+		self:CreateResourceRequests()
+	end
+	return orig_SupplyRocket_Unload(self, ...)
+end
