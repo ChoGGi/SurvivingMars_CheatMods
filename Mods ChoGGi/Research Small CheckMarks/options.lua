@@ -10,5 +10,11 @@ DefineClass("ModOptions_ChoGGi_ResearchSmallCheckMarks", {
 			id = "ChangePercent",
 			name = "Shrink percent counters.",
 		},
+		{
+			default = false,
+			editor = "bool",
+			id = "HideBackground",
+			name = "Hide blue background.",
+		},
 	},
 })

@@ -27,39 +27,6 @@ function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
 	)
 end
 
-function ChoGGi.MenuFuncs.FireMostFixes()
-	CreateRealTimeThread(function()
-		local MenuFuncs = ChoGGi.MenuFuncs
-
-		pcall(MenuFuncs.RemoveUnreachableConstructionSites)
-		pcall(MenuFuncs.ParticlesWithNullPolylines)
-		pcall(MenuFuncs.StutterWithHighFPS)
-		pcall(MenuFuncs.ColonistsTryingToBoardRocketFreezesGame)
-		pcall(MenuFuncs.AttachBuildingsToNearestWorkingDome)
-		pcall(MenuFuncs.DronesKeepTryingBlockedAreas)
-		pcall(MenuFuncs.RemoveYellowGridMarks)
-		pcall(MenuFuncs.RemoveBlueGridMarks)
-		pcall(MenuFuncs.CablesAndPipesRepair)
-		pcall(MenuFuncs.MirrorSphereStuck)
-		pcall(MenuFuncs.ProjectMorpheusRadarFellDown)
-		pcall(MenuFuncs.RemoveInvalidLabelObjects)
-
-		-- loop through and remove all my msgs from the onscreen popups
-		CreateRealTimeThread(function()
-			local MsgPopups = ChoGGi.Temp.MsgPopups
-			Sleep(500)
-			while #MsgPopups < 10 do
-				Sleep(100)
-			end
-			local popups = MsgPopups or ""
-			for i = #popups, 1, -1 do
-				popups[i]:delete()
-			end
-			table.iclear(MsgPopups)
-		end)
-	end)
-end
-
 function ChoGGi.MenuFuncs.RocketCrashesGameOnLanding()
 	local rockets = UICity.labels.SupplyRocket or ""
 	for i = 1, #rockets do
@@ -311,12 +278,23 @@ function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 end
 
 function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
-	SuspendPassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
-	MapDelete(true, "UnpersistedMissingClass")
-	ResumePassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
-	MsgPopup(
-		Strings[302535920000587--[[Remove Missing Class Objects (Warning)--]]],
-		Translate(4493--[[All--]])
+	local function CallBackFunc(answer)
+		if answer then
+			SuspendPassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
+			MapDelete(true, "UnpersistedMissingClass")
+			ResumePassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
+			MsgPopup(
+				Strings[302535920000587--[[Remove Missing Class Objects--]]],
+				Translate(4493--[[All--]])
+			)
+		end
+	end
+
+	ChoGGi.ComFuncs.QuestionBox(
+		Translate(6779--[[Warning--]]) .. "!\n"
+			.. Strings[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]],
+		CallBackFunc,
+		Translate(6779--[[Warning--]]) .. ": " .. Strings[302535920000587--[[Remove Missing Class Objects--]]]
 	)
 end
 
@@ -558,6 +536,39 @@ do -- CablesAndPipesRepair
 		)
 	end
 end -- do
+
+function ChoGGi.MenuFuncs.FireMostFixes()
+	CreateRealTimeThread(function()
+		local MenuFuncs = ChoGGi.MenuFuncs
+
+		pcall(MenuFuncs.RemoveUnreachableConstructionSites)
+		pcall(MenuFuncs.ParticlesWithNullPolylines)
+		pcall(MenuFuncs.StutterWithHighFPS)
+		pcall(MenuFuncs.ColonistsTryingToBoardRocketFreezesGame)
+		pcall(MenuFuncs.AttachBuildingsToNearestWorkingDome)
+		pcall(MenuFuncs.DronesKeepTryingBlockedAreas)
+		pcall(MenuFuncs.RemoveYellowGridMarks)
+		pcall(MenuFuncs.RemoveBlueGridMarks)
+		pcall(MenuFuncs.CablesAndPipesRepair)
+		pcall(MenuFuncs.MirrorSphereStuck)
+		pcall(MenuFuncs.ProjectMorpheusRadarFellDown)
+		pcall(MenuFuncs.RemoveInvalidLabelObjects)
+
+		-- loop through and remove all my msgs from the onscreen popups
+		CreateRealTimeThread(function()
+			local MsgPopups = ChoGGi.Temp.MsgPopups
+			Sleep(500)
+			while #MsgPopups < 10 do
+				Sleep(100)
+			end
+			local popups = MsgPopups or ""
+			for i = #popups, 1, -1 do
+				popups[i]:delete()
+			end
+			table.iclear(MsgPopups)
+		end)
+	end)
+end
 
 ------------------------- toggles
 

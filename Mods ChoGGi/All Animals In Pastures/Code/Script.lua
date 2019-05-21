@@ -1,9 +1,5 @@
 -- See LICENSE for terms
 
-if not g_AvailableDlc.shepard then
-	return
-end
-
 local table_find = table.find
 local table_rand = table.rand
 
@@ -546,7 +542,6 @@ function OnMsg.ClassesPostprocess()
 		if item.display_name then
 			PlaceObj("Animal", {
 				AnimalClass = "ChoGGi_PastureAnimal",
-				-- doesn't matter
 				PastureClass = "InsidePasture",
 				group = "Pasture",
 				id = "ChoGGi_PastureAnimal_" .. id,
@@ -582,4 +577,20 @@ function OnMsg.SelectionRemoved(obj)
 	if obj.entity == "OpenPasture_Open" and obj:IsKindOf("OpenPasture") and not OpenAirBuildings then
 		obj:ChangeEntity("OpenPasture")
 	end
+end
+
+-- limit crop dialog size
+local GetScreenSize = UIL.GetScreenSize
+local width = GetScreenSize():x() - 100
+function OnMsg.SystemSize()
+	width = GetScreenSize():x() - 100
+end
+local orig_InfopanelItems_Open = InfopanelItems.Open
+function InfopanelItems:Open(...)
+	self:SetMaxWidth(width - Dialogs.Infopanel.box:sizex())
+	return orig_InfopanelItems_Open(self, ...)
+end
+
+if not g_AvailableDlc.shepard then
+	return
 end

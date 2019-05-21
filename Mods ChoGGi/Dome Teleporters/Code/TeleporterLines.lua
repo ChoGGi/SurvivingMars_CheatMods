@@ -4,6 +4,8 @@ local IsValid = IsValid
 local PlacePolyline = PlacePolyline
 local AveragePoint2D = AveragePoint2D
 local pairs = pairs
+local next = next
+local IsKindOf = IsKindOf
 local table_clear = table.clear
 
 local teleporter_lines = {}
@@ -41,6 +43,10 @@ end
 
 -- when selection is removed (or changed) hide all the lines
 function OnMsg.SelectionRemoved()
+	if not next(teleporter_lines) then
+		return
+	end
+
 	for _, table_item in pairs(teleporter_lines) do
 		if IsValid(table_item.line) then
 			table_item.line:delete()

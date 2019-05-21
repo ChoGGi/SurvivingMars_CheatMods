@@ -1,2 +1,5 @@
+v0.3
+Added mod option to completely remove the blue background.
+
 v0.2
 Added mod option to shrink the percent counter.

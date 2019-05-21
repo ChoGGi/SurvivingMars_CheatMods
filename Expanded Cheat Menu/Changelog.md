@@ -5,6 +5,7 @@
 - Anomaly Scanning didn't open (thanks mys721tx).
 - Consts and Service Building Stats (thanks Kami-sama).
 - Set Gender = Other made colonists invisible (thanks Kami-sama).
+- Color Modifier> All Of Type/Default Colour checkboxs didn't work (thanks Kami-sama).
 
 ## v13.5 (May 17 2019)
 ### Fixed:

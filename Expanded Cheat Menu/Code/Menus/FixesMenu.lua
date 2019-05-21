@@ -14,6 +14,7 @@ Actions[c] = {ActionName = Strings[302535920000922--[[Fixes--]]],
 	ActionId = ".Fixes",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
+	RolloverText = Strings[302535920000036--[[Click lightly--]]],
 }
 
 c = c + 1
@@ -91,9 +92,9 @@ This will do a little copy n paste fix (they'll keep the same traits/whatnot).--
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000587--[[Remove Missing Class Objects (Warning)--]]],
+Actions[c] = {ActionName = Strings[302535920000587--[[Remove Missing Class Objects--]]],
 	ActionMenubar = "ECM.ECM.Fixes",
-	ActionId = ".Remove Missing Class Objects (Warning)",
+	ActionId = ".Remove Missing Class Objects",
 	ActionIcon = icon,
 	RolloverText = Translate(6779--[[Warning--]]) .. ": " .. Strings[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).--]]],
 	OnAction = ChoGGi.MenuFuncs.RemoveMissingClassObjects,

@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Change Default Apartment Model",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
-	"saved", 1553947200,
+	"version_minor", 3,
+	"saved", 1558353600,
 	"image", "Preview.png",
 	"id", "ChoGGi_ChangeDefaultApartmentModel",
 	"steam_id", "1699011019",

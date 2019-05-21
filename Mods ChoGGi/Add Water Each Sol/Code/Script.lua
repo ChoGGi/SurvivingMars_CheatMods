@@ -13,12 +13,12 @@ function OnMsg.ApplyModOptions(id)
 end
 
 -- for some reason mod options aren't retrieved before this script is loaded...
-local function SomeCode()
+local function StartupCode()
 	mod_AmountOfWater = mod.options.AmountOfWater
 end
 
-OnMsg.CityStart = SomeCode
-OnMsg.LoadGame = SomeCode
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
 
 function OnMsg.NewDay()
 	local water = mod_AmountOfWater * const.ResourceScale

@@ -82,11 +82,11 @@ function OnMsg.LoadGame()
 	local rockets = UICity.labels.AllRockets or ""
 	for i = 1, #rockets do
 		local r = rockets[i]
+		local r_pos = r:GetPos()
 
 		-- skip any pods and ones not on the ground
-		if not r:IsKindOf("SupplyPod") and r:GetPos() ~= InvalidPos then
+		if not r:IsKindOf("SupplyPod") and r_pos ~= InvalidPos then
 			if r.command == "Unload" then
-
 				-- has expectation of passengers, but none are on the rocket
 				if type(r.cargo) == "table" then
 					local pass = table_find(r.cargo, "class", "Passengers")
@@ -181,6 +181,18 @@ function OnMsg.LoadGame()
 						r.export_requests = { r:AddDemandRequest("PreciousMetals", r.max_export_storage, 0, unit_count) }
 						r:ToggleAllowExport()
 						r:ToggleAllowExport()
+					end
+				end
+
+			elseif r.command == "Countdown" then
+				-- exited means exited (unless it's really really close, close enough)
+				if type(r.drones_exiting) == "table" then
+					for i = #r.drones_exiting, 1, -1 do
+						local drone = r.drones_exiting[i]
+						-- not moving or outside the rocket
+						if drone.moving == false or r_pos:Dist2D(drone:GetVisualPos()) > 1500 then
+							table_remove(r.drones_exiting, i)
+						end
 					end
 				end
 

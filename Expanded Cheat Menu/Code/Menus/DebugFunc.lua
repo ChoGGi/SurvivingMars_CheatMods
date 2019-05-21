@@ -592,12 +592,12 @@ function ChoGGi.MenuFuncs.MeasureTool_Toggle()
 end
 
 function ChoGGi.MenuFuncs.ReloadLua()
-	-- stop "Attempt to create a new global" in log
-	local orig_Loading = Loading
-	Loading = true
-	force_load_build = true
-	Loading = orig_Loading
+	if ChoGGi.blacklist then
+		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.MenuFuncs.ReloadLua")
+		return
+	end
 
+	force_load_build = true
 	ReloadLua()
 	force_load_build = false
 	MsgPopup(

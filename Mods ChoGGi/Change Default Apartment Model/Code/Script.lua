@@ -8,13 +8,20 @@ local function ChangeEntity(template)
 	template.entity = "ApartmentsCP3"
 	template.entity5 = "HiveHabitat"
 	template.entitydlc5 = ""
+
+	template.entity = "ApartmentsCP3"
+	template.palette_color1 ="inside_base"
+	template.palette_color2 ="inside_wood"
+	template.palette_color3 ="none"
+
+
+	template.entity5 = "HiveHabitat"
+	template.palette5_color1 ="inside_accent_1"
+	template.palette5_color2 ="inside_base"
+	template.palette5_color3 ="inside_accent_housing"
 end
 
---~ local function StartupCode()
---~ end
 function OnMsg.ClassesBuilt()
 	ChangeEntity(BuildingTemplates.Apartments)
 	ChangeEntity(ClassTemplates.Building.Apartments)
 end
---~ OnMsg.CityStart = StartupCode
---~ OnMsg.LoadGame = StartupCode

@@ -2,7 +2,7 @@
 
 local IsKindOf = IsKindOf
 
-local function SomeCode()
+local function StartupCode()
 	local UICity = UICity
 
 	-- place to store per-game values
@@ -27,14 +27,8 @@ local function SomeCode()
 	PersonalShuttles.unit_pathing_handles = {}
 end
 
-function OnMsg.CityStart()
-	SomeCode()
-end
-
-function OnMsg.LoadGame()
-	SomeCode()
-end
-
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
 
 function OnMsg.NewDay() -- newsol
 	local UICity = UICity
@@ -89,14 +83,11 @@ local function SpawnShuttle(hub, attacker)
 			-- do we attack dustdevils?
 			if attacker then
 				UICity.PersonalShuttles.shuttle_threads[shuttle.handle] = true
-				shuttle:SetColor1(PersonalShuttles.attacker_color1 or -9624026)
-				shuttle:SetColor2(PersonalShuttles.attacker_color2 or 0)
-				shuttle:SetColor3(PersonalShuttles.attacker_color3 or -13892861)
 			else
 				UICity.PersonalShuttles.shuttle_threads[shuttle.handle] = false
-				shuttle:SetColor1(PersonalShuttles.friend_colour1 or -16711941)
-				shuttle:SetColor2(PersonalShuttles.friend_colour2 or -16760065)
-				shuttle:SetColor3(PersonalShuttles.friend_colour3 or -1)
+				shuttle:SetColorizationMaterial(1, PersonalShuttles.friend_colour1 or -16711941, -100, 120)
+				shuttle:SetColorizationMaterial(2, PersonalShuttles.friend_colour2 or -16760065, 120, 20)
+				shuttle:SetColorizationMaterial(3, PersonalShuttles.friend_colour3 or -1, -128, 48)
 			end
 			-- follow that cursor little minion
 			shuttle:SetCommand("FollowMouse")

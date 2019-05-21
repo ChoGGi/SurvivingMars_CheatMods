@@ -4,9 +4,11 @@ local mod_id = "ChoGGi_ResearchSmallCheckMarks"
 local mod = Mods[mod_id]
 
 local mod_ChangePercent = mod.options and mod.options.ChangePercent or true
+local mod_HideBackground = mod.options and mod.options.HideBackground or true
 
 local function ModOptions()
 	mod_ChangePercent = mod.options.ChangePercent
+	mod_HideBackground = mod.options.HideBackground
 end
 
 -- fired when option is changed
@@ -53,7 +55,11 @@ local function EditDlg(dlg)
 						local element = button[l]
 						if element.Image == "UI/Icons/Research/rm_completed.tga" then
 							-- less visible blue
-							element:SetTransparency(135)
+							if mod_HideBackground then
+								element:SetTransparency(255)
+							else
+								element:SetTransparency(135)
+							end
 						elseif element.Image == "UI/Icons/Research/rm_researched_2.tga" then
 							element:SetHAlign("left")
 							element:SetVAlign("top")

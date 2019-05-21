@@ -1357,6 +1357,7 @@ Mechanized: 1,000,000",
 302535920000578,Change waste storage depot capacity.,
 302535920000579,Storage Mechanized Depots,
 302535920000580,Change mechanized depot storage capacity.,
+302535920000036,Click lightly,
 302535920001533,Remove Invalid Label Objects,
 302535920001534,Checks the city.labels for invalid objects and removes them from the label.,
 302535920001483,Missing Mod Buildings,
@@ -1397,7 +1398,7 @@ You may need to toggle the recall drones button (for certain issues).",
 302535920000586,"If any colonists are stuck AND you don't have any other rockets unloading colonists.
 
 This will do a little copy n paste fix (they'll keep the same traits/whatnot).",
-302535920000587,Remove Missing Class Objects (Warning),
+302535920000587,Remove Missing Class Objects,
 302535920000588,"May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).",
 302535920000589,Fire Most Fixes,
 302535920000590,"Fires all the fixes in the ""Most"" menu (nuke 'em from orbit and all that).

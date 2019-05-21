@@ -14,6 +14,7 @@ local XTemplates = XTemplates
 local ObjModified = ObjModified
 local PlaceObj = PlaceObj
 local ViewPos = ViewPos
+local table_insert = table.insert
 
 DefineClass.Solaria = {
 	__parents = {
@@ -35,14 +36,12 @@ DefineClass.Solaria = {
 }
 
 function Solaria:GameInit()
---~ 	Workplace.GameInit(self)
-
 	-- always leave it turned off, so it doesn't use resources till user turns it on
 	self:ToggleWorking()
-	-- brown/yellow seems a good choice for a vr workplace
-	self:SetColor1(-10991554)
-	self:SetColor2(-7963804)
-	self:SetColor3(-10263981)
+--~ 	-- brown/yellow seems a good choice for a vr workplace
+--~ 	self:SetColorizationMaterial(1, -10991554, -100, 120)
+--~ 	self:SetColorizationMaterial(2, -7963804, 120, 20)
+--~ 	self:SetColorizationMaterial(3, -10263981, -128, 48)
 
 	-- it's a workplace after all (bland ftw)
 	self:DestroyAttaches{"VRWorkshopHologram", "DecorInt_02"}
@@ -54,10 +53,17 @@ function Solaria:GameInit()
 end
 
 -- build and show a list of viable buildings
-local filter_table = {DroneFactory=true, FungalFarm=true, FusionReactor=true, MetalsExtractor=true, PreciousMetalsExtractor=true}
+local filter_table = {
+	DroneFactory = true,
+	FungalFarm = true,
+	FusionReactor = true,
+	MetalsExtractor = true,
+	PreciousMetalsExtractor = true,
+}
+
 local function ClickObj(self, obj, button, which)
 	if button == "R" then
-		ViewPos(obj:GetVisualPos())
+		ViewPos(obj:GetPos())
 	else
 		if obj.handle ~= self.handle and IsValid(obj) then
 			if which == "activate" then
@@ -70,7 +76,7 @@ local function ClickObj(self, obj, button, which)
 end
 
 function Solaria:ListBuildings(which, parent)
-	local list = UICity.labels.OutsideBuildings or ""
+	local list = table.copy(UICity.labels.OutsideBuildings)
 	local hint
 	local item_list = {}
 
@@ -113,12 +119,10 @@ Right click to view selected list item building.]]
 	-- make it pretty
 	for i = 1, #list do
 		local obj = list[i]
-		local pos = obj:GetPos()
 		item_list[i] = {
-			pos = pos,
 			name = RetName(obj),
 			-- provide a slight reference
-			hint = hint .. " at pos: " .. pos,
+			hint = hint .. " at pos: " .. tostring(obj:GetPos()),
 			mouseup = function(_, _, _, button)
 				ClickObj(self, obj, button, which)
 			end,
@@ -136,9 +140,8 @@ Right click to view selected list item building.]]
 	end
 
 	-- add controller for ease of movement
-	table.insert(item_list, 1, {
-		name = [[ Solaria Controller]],
-		pos = self:GetVisualPos(),
+	table_insert(item_list, 1, {
+		name = [[Solaria Controller]],
 		hint = [[Solaria control building.
 You can't remove... Only view (or maybe See would be a better term).]],
 		mouseup = function(_, _, _, button)
@@ -186,7 +189,7 @@ function Solaria:AttachBuilding(obj)
 	obj:SetUIWorking(true)
 
 	MsgPopup(
-		"Viewing: " .. RetName(obj) .. " Pos: " .. obj:GetVisualPos()
+		"Viewing: " .. RetName(obj) .. " Pos: " .. tostring(obj:GetPos()),
 		[[Solaria]],
 		"UI/Icons/Upgrades/holographic_scanner_04.tga"
 	)
@@ -235,7 +238,7 @@ function Solaria:RemoveBuilding(obj)
 		UICity.SolariaTelepresence_RemoteControlledBuildings = UICity.SolariaTelepresence_RemoteControlledBuildings - 1
 
 		MsgPopup(
-			"Removed: " .. RetName(obj) .. " Pos: " .. obj:GetVisualPos()
+			"Removed: " .. RetName(obj) .. " Pos: " .. tostring(obj:GetPos()),
 			[[Solaria]],
 			"UI/Icons/Upgrades/holographic_scanner_03.tga"
 		)
@@ -314,7 +317,7 @@ function OnMsg.ClassesPostprocess()
 			"consumption_amount", 1500,
 			"consumption_type", 4,
 			"display_name", [[Solaria Telepresence]],
-			"display_name_pl", [[Solaria Telepresence]],
+			"display_name_pl", [[Solaria Telepresences]],
 			"description", [[A telepresence VR building, remote control factories and mines (with reduced production).
 Worker amount is dependent on controlled building.
 
@@ -326,7 +329,11 @@ Telepresence control may take up to a shift to propagate to controlled building.
 			"label1", "InsideBuildings",
 			"label2", "Workshop",
 			"entity", "VRWorkshop",
-			"palettes", "VRWorkshop",
+--~ 			"palettes", "VRWorkshop",
+			"palette_color1","inside_accent_2",
+			"palette_color2","inside_base",
+			"palette_color3","inside_accent_service",
+
 			"demolish_sinking", range(5, 10),
 			"demolish_debris", 80,
 			"electricity_consumption", 15000,
@@ -353,9 +360,9 @@ Telepresence control may take up to a shift to propagate to controlled building.
 end -- ClassesPostprocess
 
 function OnMsg.ClassesBuilt()
---~ 	ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace1", "sectionWorkplace", {
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace[1], "SolariaTelepresence_sectionWorkplace1", nil, {
-
+	local XTemplates = XTemplates
+	local AddXTemplate = ChoGGi.ComFuncs.AddXTemplate
+	AddXTemplate(XTemplates.sectionWorkplace, "SolariaTelepresence_sectionWorkplace1", nil, {
 		__context_of_kind = "Solaria",
 		RolloverTitle = [[Telepresence]],
 		RolloverHint = [[Change to Pickup and select resource pile you've previously marked for pickup.
@@ -387,7 +394,7 @@ Right click in list to view (closes menu).]])
 					end
 				end
 				ChoGGi.ComFuncs.QuestionBox(
-					"Are you sure you want to remove telepresence viewing from " .. RetName(building) .. " located at " .. building:GetVisualPos(),
+					"Are you sure you want to remove telepresence viewing from " .. RetName(building) .. " located at " .. tostring(building:GetPos()),
 					CallBackFunc,
 					[[Solaria Telepresence]]
 				)
@@ -398,17 +405,13 @@ Right click in list to view (closes menu).]])
 	})
 
 	-- list controlled buildings
---~ 	ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace2", "sectionWorkplace", {
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace[1], "SolariaTelepresence_sectionWorkplace2", nil, {
+	AddXTemplate(XTemplates.sectionWorkplace, "SolariaTelepresence_sectionWorkplace2", nil, {
 		__context_of_kind = "Solaria",
 		Icon = "UI/Icons/Upgrades/build_2.tga",
 		Title = [[All Attached Buildings]],
 		RolloverTitle = [[Telepresence]],
-		RolloverHint = [[<left_click> Remove telepresence]],
-		RolloverText = [[Shows list of all controlled buildings (for removal of telepresence control).
-
-Right click list item to view (closes menu).]],
---~ 		OnContextUpdate = function(self, context)
+		RolloverHint = T(0, [[<left_click> Remove Telepresence <right_click> View Building]]),
+		RolloverText = [[Shows list of all controlled buildings (for removal of telepresence control).]],
 		OnContextUpdate = function(self)
 			if UICity.SolariaTelepresence_RemoteControlledBuildings > 0 then
 				self:SetVisible(true)
@@ -425,27 +428,26 @@ Right click list item to view (closes menu).]],
 	})
 
 	-- go to controlled/controller building
---~ 	ChoGGi.ComFuncs.AddXTemplate("SolariaTelepresence_sectionWorkplace3", "sectionWorkplace", {
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace[1], "SolariaTelepresence_sectionWorkplace3", nil, {
+	AddXTemplate(XTemplates.sectionWorkplace, "SolariaTelepresence_sectionWorkplace3", nil, {
 		__context_of_kind = "Workplace",
 		Icon = "UI/Icons/Anomaly_Event.tga",
 		RolloverTitle = [[Telepresence]],
-		RolloverHint = [[<left_click> Viewing]],
+		RolloverHint = T(0, [[<left_click> Viewing]]),
 		OnContextUpdate = function(self, context)
-		-- only show if on correct building and remote control is enabled
-		if context.SolariaTelepresence_Remote_Controller or context.SolariaTelepresence_Remote_Controlled then
-			if context.SolariaTelepresence_Remote_Controller then
-				self:SetTitle(RetName(context.SolariaTelepresence_Remote_Controller.building))
-				self:SetRolloverText([[Select and view controlled building.]])
-			elseif context.SolariaTelepresence_Remote_Controlled then
-				self:SetTitle([[Solaria Telepresence]])
-				self:SetRolloverText([[Select and view Solaria controller.]])
-			end
-			self:SetVisible(true)
-			self:SetMaxHeight()
-		else
-			self:SetVisible(false)
-			self:SetMaxHeight(0)
+			-- only show if on correct building and remote control is enabled
+			if context.SolariaTelepresence_Remote_Controller or context.SolariaTelepresence_Remote_Controlled then
+				if context.SolariaTelepresence_Remote_Controller then
+					self:SetTitle(RetName(context.SolariaTelepresence_Remote_Controller.building))
+					self:SetRolloverText([[Select and view controlled building.]])
+				elseif context.SolariaTelepresence_Remote_Controlled then
+					self:SetTitle([[Solaria Telepresence]])
+					self:SetRolloverText([[Select and view Solaria controller.]])
+				end
+				self:SetVisible(true)
+				self:SetMaxHeight()
+			else
+				self:SetVisible(false)
+				self:SetMaxHeight(0)
 			end
 		end,
 		func = function(self, context)
@@ -457,59 +459,26 @@ Right click list item to view (closes menu).]],
 		end,
 	})
 
-	local rawget, setmetatable, type = rawget, setmetatable, type
+	-- so we can build without NoNearbyWorkers limit
+	local NoNearbyWorkers = ConstructionStatus.NoNearbyWorkers
+	local orig_ConstructionController_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+	function ConstructionController:UpdateConstructionStatuses(...)
+		local ret = orig_ConstructionController_UpdateConstructionStatuses(self, ...)
 
-	--so we can build without NoNearbyWorkers limit
-	ChoGGi.ComFuncs.SaveOrigFunc("ConstructionController", "UpdateConstructionStatuses")
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-	function ConstructionController:UpdateConstructionStatuses(dont_finalize)
-		--send "dont_finalize" so it comes back here without doing FinalizeStatusGathering
-		ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self, "dont_finalize")
-
-		local status = self.construction_statuses
-
-		if self.is_template then
-			local cobj = rawget(self.cursor_obj, true)
-			local tobj = setmetatable({
-				[true] = cobj,
-				["city"] = UICity
-			}, {
-				__index = self.template_obj
-			})
-			tobj:GatherConstructionStatuses(self.construction_statuses)
-		end
-
-		--remove errors we want to remove
-		local statusNew = {}
-		local ConstructionStatus = ConstructionStatus
-		if type(status) == "table" and #status > 0 then
-			for i = 1, #status do
-
-				if status[i] ~= ConstructionStatus.NoNearbyWorkers then
-					statusNew[#statusNew+1] = status[i]
-				end
-
+		local statuses = self.construction_statuses or ""
+		for i = 1, #statuses do
+			local status = statuses[i]
+			if status == NoNearbyWorkers then
+				status.type = "warning"
 			end
 		end
-		--make sure we don't get errors down the line
-		if type(statusNew) == "boolean" then
-			statusNew = {}
-		end
 
-		self.construction_statuses = statusNew
-		status = self.construction_statuses
-
-		if not dont_finalize then
-			self:FinalizeStatusGathering(status)
-		else
-			return status
-		end
-	end
-
+		return ret
+	end -- ConstructionController:UpdateConstructionStatuses
 
 end -- ClassesBuilt
 
-local function SomeCode()
+local function StartupCode()
 	-- store amount of controlled buildings for toggling visiblity of "All Attached Buildings" button
 	local UICity = UICity
 	if not UICity.SolariaTelepresence_RemoteControlledBuildings then
@@ -520,8 +489,8 @@ local function SomeCode()
 	end
 end
 
-OnMsg.CityStart = SomeCode
-OnMsg.LoadGame = SomeCode
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
 
 function OnMsg.TechResearched(tech_id)
 	if tech_id == "CreativeRealitiesSolaria" then

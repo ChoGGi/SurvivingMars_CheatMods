@@ -4,22 +4,23 @@ local mod_id = "ChoGGi_AlienVisitors"
 local mod = Mods[mod_id]
 local mod_MaxSpawn = mod.options and mod.options.MaxSpawn or 10
 
+local function ModOptions()
+	mod_MaxSpawn = mod.options.MaxSpawn
+end
+
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
 	if id ~= mod_id then
 		return
 	end
 
-	mod_MaxSpawn = mod.options.MaxSpawn
+	ModOptions()
 end
 
 -- for some reason mod options aren't retrieved before this script is loaded...
-local function SomeCode()
-	mod_MaxSpawn = mod.options.MaxSpawn
-end
 
-OnMsg.CityStart = SomeCode
-OnMsg.LoadGame = SomeCode
+OnMsg.CityStart = ModOptions
+OnMsg.LoadGame = ModOptions
 
 local image_pin = CurrentModPath .. "UI/Alien_Pin.png"
 
@@ -292,23 +293,9 @@ function OnMsg.ClassesBuilt()
 		group = "Infopanel Sections",
 		id = "ipChoGGi_Alien",
 		PlaceObj("XTemplateTemplate", {
---~ 			"__condition", function () return true end,
 			"__context_of_kind", "ChoGGi_Alien",
 			"__template", "Infopanel",
 		}, {
-
-			PlaceObj("XTemplateTemplate", {
-				"__template", "InfopanelButton",
-				"RolloverTitle", "dfgfdgfd",
-				"ContextUpdateOnOpen", false,
---~ 				"OnContextUpdate", function(self)
---~ 					self:SetRolloverText("XXXXXXXXXX")
---~ 				end,
---~ 					"OnPress", function(self)
---~ 						ChoGGi.ComFuncs.EntitySpawner(self.context)
---~ 					end,
---~ 					"Icon", "UI/Icons/IPButtons/tunnel.tga",
-			}),
 			PlaceObj("XTemplateTemplate", {
 				"__template", "sectionCheats",
 			}),

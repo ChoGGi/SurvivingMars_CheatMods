@@ -3171,163 +3171,6 @@ do -- BuildingConsumption
 	end
 end -- do
 
-do -- DisplayMonitorList
-	local function AddGrid(city, name, info)
-		local c = #info.tables
-		for i = 1, #city[name] do
-			c = c + 1
-			info.tables[c] = city[name][i]
-		end
-	end
-
-	function ChoGGi.ComFuncs.DisplayMonitorList(value, parent)
-		if value == "New" then
-			local ChoGGi = ChoGGi
-			ChoGGi.ComFuncs.MsgWait(
-				Strings[302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]]:format(ChoGGi.email),
-				Strings[302535920000034--[[Request--]]]
-			)
-			return
-		end
-
-		local UICity = UICity
-		local info
-		--0=value, 1=#table, 2=list table values
-		local info_grid = {
-			tables = {},
-			values = {
-				{name="connectors", kind=1},
-				{name="consumers", kind=1},
-				{name="producers", kind=1},
-				{name="storages", kind=1},
-				{name="all_consumers_supplied", kind=0},
-				{name="charge", kind=0},
-				{name="discharge", kind=0},
-				{name="current_consumption", kind=0},
-				{name="current_production", kind=0},
-				{name="current_reserve", kind=0},
-				{name="current_storage", kind=0},
-				{name="current_storage_change", kind=0},
-				{name="current_throttled_production", kind=0},
-				{name="current_waste", kind=0},
-			}
-		}
-		if value == "Grids" then
-			info = info_grid
-			info_grid.title = Strings[302535920000035--[[Grids--]]]
-			AddGrid(UICity, "air", info)
-			AddGrid(UICity, "electricity", info)
-			AddGrid(UICity, "water", info)
-		elseif value == "Air" then
-			info = info_grid
-			info_grid.title = Translate(891--[[Air--]])
-			AddGrid(UICity, "air", info)
-		elseif value == "Power" then
-			info = info_grid
-			info_grid.title = Translate(79--[[Power--]])
-			AddGrid(UICity, "electricity", info)
-		elseif value == "Water" then
-			info = info_grid
-			info_grid.title = Translate(681--[[Water--]])
-			AddGrid(UICity, "water", info)
-		elseif value == "Research" then
-			info = {
-				title = Translate(311--[[Research--]]),
-				listtype = "all",
-				tables = {UICity.tech_status},
-				values = {
-					researched = true
-				}
-			}
-		elseif value == "Colonists" then
-			info = {
-				title = Translate(547--[[Colonists--]]),
-				tables = UICity.labels.Colonist or "",
-				values = {
-					{name="handle", kind=0},
-					{name="command", kind=0},
-					{name="goto_target", kind=0},
-					{name="age", kind=0},
-					{name="age_trait", kind=0},
-					{name="death_age", kind=0},
-					{name="race", kind=0},
-					{name="gender", kind=0},
-					{name="birthplace", kind=0},
-					{name="specialist", kind=0},
-					{name="sols", kind=0},
-					--{name="workplace", kind=0},
-					{name="workplace_shift", kind=0},
-					--{name="residence", kind=0},
-					--{name="current_dome", kind=0},
-					{name="daily_interest", kind=0},
-					{name="daily_interest_fail", kind=0},
-					{name="dome_enter_fails", kind=0},
-					{name="traits", kind=2},
-				}
-			}
-		elseif value == "Rockets" then
-			info = {
-				title = Translate(5238--[[Rockets--]]),
-				tables = UICity.labels.AllRockets,
-				values = {
-					{name="name", kind=0},
-					{name="handle", kind=0},
-					{name="command", kind=0},
-					{name="status", kind=0},
-					{name="priority", kind=0},
-					{name="working", kind=0},
-					{name="charging_progress", kind=0},
-					{name="charging_time_left", kind=0},
-					{name="landed", kind=0},
-					{name="drones", kind=1},
-					--{name="units", kind=1},
-					{name="unreachable_buildings", kind=0},
-				}
-			}
-		elseif value == "City" then
-			info = {
-				title = Strings[302535920000042--[[City--]]],
-				tables = {UICity},
-				values = {
-					{name="rand_state", kind=0},
-					{name="day", kind=0},
-					{name="hour", kind=0},
-					{name="minute", kind=0},
-					{name="total_export", kind=0},
-					{name="total_export_funding", kind=0},
-					{name="funding", kind=0},
-					{name="research_queue", kind=1},
-					{name="consumption_resources_consumed_today", kind=2},
-					{name="maintenance_resources_consumed_today", kind=2},
-					{name="gathered_resources_today", kind=2},
-					{name="consumption_resources_consumed_yesterday", kind=2},
-					{name="maintenance_resources_consumed_yesterday", kind=2},
-					{name="gathered_resources_yesterday", kind=2},
-					 --{name="unlocked_upgrades", kind=2},
-				}
-			}
-		end
-		if info then
-			if not IsKindOf(parent, "XWindow") then
-				parent = nil
-			end
-			ChoGGi.ComFuncs.OpenInMonitorInfoDlg(info, parent)
-		end
-	end
-end -- do
-
-function ChoGGi.ComFuncs.ResetHumanCentipedes()
-	local objs = UICity.labels.Colonist or ""
-	for i = 1, #objs do
-		local obj = objs[i]
-		-- only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
-		if obj:IsValidPos() and not obj:GetPath() then
-			-- too close and they keep doing the human centipede
-			obj:SetCommand("Goto", GetPassablePointNearby(obj:GetVisualPos()+point(Random(-1000, 1000), Random(-1000, 1000))))
-		end
-	end
-end
-
 function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 	-- if fired from action menu
 	if IsKindOf(obj, "XAction") then
@@ -3396,24 +3239,6 @@ function ChoGGi.ComFuncs.ToggleCollisions(cls)
 		CollisionsObject_Toggle(o, true)
 	end)
 	ResumePassEdits("ChoGGi.ComFuncs.ToggleCollisions")
-end
-
-function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj)
-	CreateRealTimeThread(function()
-		-- let it sleep for awhile
-		Sleep(1000)
-		-- 0 means it's stopped, so anything above that and without a path means it's borked (probably)
-		if obj:GetAnim() > 0 and obj:GetPathLen() == 0 then
-			obj:InterruptCommand()
-			MsgPopup(
-				Strings[302535920001267--[[%s at position: %s was stopped.--]]]:format(RetName(obj), obj:GetVisualPos()),
-				Strings[302535920001266--[[Borked Transport Pathing--]]],
-				"UI/Icons/IPButtons/transport_route.tga",
-				nil,
-				obj
-			)
-		end
-	end)
 end
 
 function ChoGGi.ComFuncs.RetHardwareInfo()
@@ -3503,7 +3328,14 @@ do -- RemoveXTemplateSections
 	end
 end -- do
 do -- AddXTemplate
-	local function AddXTemplateNew(xt, name, pos, list)
+	local empty_func = empty_func
+	local function RetTrue()
+		return true
+	end
+	local function RetParent(self)
+		return self.parent
+	end
+	local function AddTemplate(xt, name, pos, list)
 		if not xt or not name or not list then
 			local f = ObjPropertyListToLuaCode
 			print(Strings[302535920001383--[[AddXTemplate borked template name: %s template: %s list: %s--]]]:format(name and f(name), template and f(template), list and f(list)))
@@ -3512,12 +3344,13 @@ do -- AddXTemplate
 		local stored_name = "ChoGGi_Template_" .. name
 
 		ChoGGi.ComFuncs.RemoveXTemplateSections(xt, stored_name)
-
-		table.insert(xt, pos or #xt, PlaceObj("XTemplateTemplate", {
+		pos = pos or #xt
+		if pos < 1 then
+			pos = 1
+		end
+		table.insert(xt, pos, PlaceObj("XTemplateTemplate", {
 			stored_name, true,
-			"__condition", list.__condition or function()
-				return true
-			end,
+			"__condition", list.__condition or RetTrue,
 			"__context_of_kind", list.__context_of_kind or "",
 			"__template", list.__template or "InfopanelActiveSection",
 			"Title", list.Title or Translate(1000016--[[Title--]]),
@@ -3529,9 +3362,7 @@ do -- AddXTemplate
 		}, {
 			PlaceObj("XTemplateFunc", {
 				"name", "OnActivate(self, context)",
-				"parent", function(self)
-						return self.parent
-					end,
+				"parent", RetParent,
 				"func", list.func or empty_func,
 			})
 		}))
@@ -3539,19 +3370,17 @@ do -- AddXTemplate
 
 	--~ AddXTemplateNew(XTemplates.ipColonist[1], "LockworkplaceColonist", nil, {
 	--~ AddXTemplate("SolariaTelepresence_sectionWorkplace1", "sectionWorkplace", {
-	--~ function ChoGGi.ComFuncs.AddXTemplate(name, template, list, toplevel)
-
 	function ChoGGi.ComFuncs.AddXTemplate(xt, name, pos, list)
 		-- old: name, template, list, toplevel
 		-- new	xt, 		name, 		pos, 	list
 		if type(xt) == "string" then
 			if list then
-				AddXTemplateNew(XTemplates[name], xt, nil, pos)
+				AddTemplate(XTemplates[name], xt, nil, pos)
 			else
-				AddXTemplateNew(XTemplates[name][1], xt, nil, pos)
+				AddTemplate(XTemplates[name][1], xt, nil, pos)
 			end
 		else
-			AddXTemplateNew(xt, name, pos, list)
+			AddTemplate(xt, name, pos, list)
 		end
 	end
 end -- do
@@ -4083,7 +3912,9 @@ do -- SpawnColonist
 		Msg("ColonistBorn", colonist)
 
 		-- can't fire till after :new()
-		colonist:SetSpecialization(old_c.specialist)
+		if old_c then
+			colonist:SetSpecialization(old_c.specialist)
+		end
 		colonist:SetPos(pos or building and GetPassablePointNearby(building:GetPos()) or GetRandomPassablePoint())
 
 		-- if age/spec is different then updates to new entity

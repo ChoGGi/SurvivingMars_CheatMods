@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Fix: FindDroneToRepair Log Spam",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-	"saved", 1543320000,
+	"version_minor", 2,
+	"saved", 1558353600,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixFindDroneToRepairLogSpam",
 	"steam_id", "1576382631",

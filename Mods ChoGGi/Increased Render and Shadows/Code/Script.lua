@@ -1,4 +1,5 @@
-local function SomeCode()
+
+local function StartupCode()
 
 	--lot of lag for some small rocks in distance
 	--hr.DistanceModifier = 260 --default 130
@@ -17,11 +18,5 @@ local function SomeCode()
 
 end
 
-function OnMsg.CityStart()
-	SomeCode()
-end
-
-function OnMsg.LoadGame()
-	SomeCode()
-end
-
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode

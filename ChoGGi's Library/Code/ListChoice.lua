@@ -104,7 +104,7 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 	self.skip_icons = self.list.skip_icons
 
 	self.dialog_width = self.list.width or 500.0
-	self.dialog_height = self.list.height or 615.0
+	self.dialog_height = self.list.height or 625.0
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -864,7 +864,7 @@ function ChoGGi_DlgListChoice:CallbackSelectedList()
 		self.choices = {self.sel}
 		self:UpdateReturnedItem(self.choices)
 	else
-		self:GetListItems(true)
+		self:GetListItems("skip")
 	end
 	-- send selection back
 	if self.custom_func then
@@ -883,20 +883,31 @@ function ChoGGi_DlgListChoice:BuildReturnList(_, button)
 		-- fire custom_func with sel
 		if self.custom_type == 1 or self.custom_type == 7 then
 			self:CallbackSelectedList()
-		elseif self.custom_func and self.custom_type == 9 then
+		elseif self.custom_type == 9 then
 			-- build self.choices
 			self:GetListItems()
 			-- send selection back
-			self.custom_func(self.choices, self)
-		elseif self.custom_type ~= 2 or self.custom_type == 8 then
-			self:CallbackSelectedList()
+			if self.custom_func then
+				self.custom_func(self.choices, self)
+			end
+		elseif self.custom_type == 2 then
 			-- build self.choices
+			self:GetListItems("all")
+			-- send selection back
+			if self.custom_func then
+				self.custom_func(self.choices, self)
+			end
+		else
+			-- build self.choices
+			self:CallbackSelectedList()
 			self:Close("ok")
 		end
 	elseif self.sel and button == "R" then
 		-- do stuff without closing list
-		if self.custom_type == 6 and self.custom_func then
-			self.custom_func(self.sel.func or self.sel.value, self)
+		if self.custom_type == 6 then
+			if self.custom_func then
+				self.custom_func(self.sel.func or self.sel.value, self)
+			end
 		elseif self.custom_type == 8 then
 			self:CallbackSelectedList()
 		elseif self.idEditValue then
@@ -941,14 +952,18 @@ function ChoGGi_DlgListChoice:UpdateReturnedItem(choices)
 	return choices
 end
 
-function ChoGGi_DlgListChoice:GetListItems(skip)
+function ChoGGi_DlgListChoice:GetListItems(which)
 	local items = {}
 
 	-- get sel item(s)
-	if not skip or self.custom_type == 0 or self.custom_type == 3 or self.custom_type == 6 then
+	if not which or self.custom_type == 0 or self.custom_type == 3 or self.custom_type == 6 then
 		-- loop through and add all selected items to the list
 		for i = 1, #self.idList.selection do
 			items[i] = self.idList[self.idList.selection[i]].item
+		end
+	elseif which == "all" then
+		for i = 1, #self.idList do
+			items[i] = self.idList[i].item
 		end
 	else
 		local sel = self.idList.selection and self.idList.selection[1]

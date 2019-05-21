@@ -24,15 +24,14 @@ OnMsg.ConstructionSitePlaced = UpdateLast
 OnMsg.SelectionAdded = UpdateLast
 
 local function StartupCode()
-	ChoGGi.ComFuncs.SaveOrigFunc("ConstructionController", "CreateCursorObj")
-	local ConstructionController_CreateCursorObj = ChoGGi.OrigFuncs.ConstructionController_CreateCursorObj
+	local orig_ConstructionController_CreateCursorObj = ConstructionController.CreateCursorObj
 
 	local IsValid = IsValid
 	local table_unpack = table.unpack
 	-- set orientation to same as last object
 	function ConstructionController:CreateCursorObj(...)
 
-		local ret = {ConstructionController_CreateCursorObj(self, ...)}
+		local ret = {orig_ConstructionController_CreateCursorObj(self, ...)}
 		local last = ChoGGi.Temp.LastPlacedObject
 		if self.template_obj and self.template_obj.can_rotate_during_placement and IsValid(last) then
 			ret[1]:SetAngle(last:GetAngle() or 0)

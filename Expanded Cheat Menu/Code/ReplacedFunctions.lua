@@ -267,6 +267,24 @@ do -- Class:Func needed before Generate
 end -- do
 
 function OnMsg.ClassesGenerate()
+
+	-- limit size of crops to window width - selection panel size
+	do -- InfopanelItems:Open()
+		local GetScreenSize = UIL.GetScreenSize
+		local width = GetScreenSize():x() - 100
+		function OnMsg.SystemSize()
+			width = GetScreenSize():x() - 100
+		end
+
+		SaveOrigFunc("InfopanelItems", "Open")
+		function InfopanelItems:Open(...)
+			if UserSettings.LimitCropsUIWidth then
+				self:SetMaxWidth(width - Dialogs.Infopanel.box:sizex())
+			end
+			return ChoGGi_OrigFuncs.InfopanelItems_Open(self, ...)
+		end
+	end -- do
+
 	-- using the CheatUpgrade func in the cheats pane with Silva's Modular Apartments == inf loop
 	do -- Building:CheatUpgrade*()
 		local CreateRealTimeThread = CreateRealTimeThread

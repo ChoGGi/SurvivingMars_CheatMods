@@ -1003,7 +1003,11 @@ function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 			hint = Strings[302535920001151--[[Set Entity For %s--]]]:format(self.name),
 			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.EntitySpawner(self.obj_ref, true, 7)
+				self.ChoGGi.ComFuncs.EntitySpawner(self.obj_ref, {
+					skip_msg = true,
+					list_type = 7,
+					title_postfix = RetName(self.name),
+				})
 			end,
 		},
 		{name = Strings[302535920000129--[[Set--]]] .. " " .. Strings[302535920001184--[[Particles--]]],

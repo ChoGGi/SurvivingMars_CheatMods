@@ -120,15 +120,22 @@ local function BuildExamineItem(name, title)
 	return {
 		name = disp,
 		hint = Strings[302535920000491--[[Examine Object--]]] .. ": " .. disp,
-		clicked = function()
-			if func then
-				if name == "GetLuaSaveGameData" then
-					OpenInExamineDlg({obj()}, nil, disp)
-				else
-					OpenInExamineDlg(obj(), nil, disp)
-				end
+		hint_bottom = Strings[302535920000407--[[<left_click> Execute <right_click> Paste--]]],
+		mouseup = function(_, _, _, button)
+			if button == "R" then
+				dlgConsole.idEdit:SetFocus()
+				dlgConsole.idEdit:SetText("~" .. name)
+				dlgConsole.idEdit:SetCursor(1, #name+1)
 			else
-				OpenInExamineDlg(name, "str", disp)
+				if func then
+					if name == "GetLuaSaveGameData" then
+						OpenInExamineDlg({obj()}, nil, disp)
+					else
+						OpenInExamineDlg(obj(), nil, disp)
+					end
+				else
+					OpenInExamineDlg(name, "str", disp)
+				end
 			end
 		end,
 	}

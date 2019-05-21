@@ -1,3 +1,6 @@
+v0.3
+Added limit to crop selection list width.
+
 v0.2
 Added Alien and Drone animals (Gotta keep your iron levels up).
 Outdoor/Indoor built-in animals weren't using feeding spots in opposite ranches.

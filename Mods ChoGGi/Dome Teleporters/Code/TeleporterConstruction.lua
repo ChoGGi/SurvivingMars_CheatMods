@@ -83,11 +83,15 @@ local funcs = {
 	"Open",
 	"Close",
 	"TryPlace",
+	"OnKbdKeyDown",
 	"OnMouseButtonDown",
 	"OnMouseButtonDoubleClick",
 	"OnMousePos",
-	"OnKbdKeyDown",
 	"OnShortcut",
+
+	"OnSystemVirtualKeyboard",
+	"OnXButtonRepeat",
+	"OnXNewPacket",
 }
 
 local TunnelConstructionController_cls

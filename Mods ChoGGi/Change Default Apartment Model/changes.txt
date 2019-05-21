@@ -1,2 +1,5 @@
+v0.3
+Fixed red apartments (thanks alphaprior).
+
 v0.2
 Also changes the build menu draggable model.

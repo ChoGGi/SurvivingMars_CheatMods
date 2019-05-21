@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Research: Small CheckMarks",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
-	"saved", 1558180800,
+	"version_minor", 3,
+	"saved", 1558353600,
 	"image", "Preview.png",
 	"id", "ChoGGi_ResearchSmallCheckMarks",
 	"steam_id", "1730362010",
@@ -16,7 +16,10 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagInterface", true,
 	"description", [[The finished research checkmarks in Green Planet are a bit large for my taste.
+This also reduces the blue background opacity.
 
-Includes mod option to reduce the percent numbers.
-This also reduces the blue background (I can add a mod option to completely hide the bg?).]],
+Mod Options:
+Shrink percent counters: Like the checkmarks, but slightly bigger.
+Hide blue background: removes the light blue background over completed ones.
+]],
 })

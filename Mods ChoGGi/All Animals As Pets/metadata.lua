@@ -1,0 +1,17 @@
+return PlaceObj("ModDef", {
+	"title", "All Animals As Pets",
+	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
+	"saved", 1558353600,
+	"image", "Preview.png",
+	"id", "ChoGGi_AllAnimalsAsPets",
+	"steam_id", "1747548861",
+	"pops_any_uuid", "eea5d130-fe84-4a33-8dae-73ebaac1f12b",
+	"author", "ChoGGi",
+	"lua_revision", 244677,
+	"code", {
+		"Code/Script.lua",
+	},
+	"description", [[Add all the pasture animals as pets.]],
+})

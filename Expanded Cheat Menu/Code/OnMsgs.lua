@@ -161,9 +161,18 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 					end,
 					"OnPress", function(self)
 						if self.context.planning then
-							ChoGGi.ComFuncs.EntitySpawner(self.context, true, 7, true)
+							ChoGGi.ComFuncs.EntitySpawner(self.context, {
+								skip_msg = true,
+								list_type = 7,
+								planning = true,
+								title_postfix = RetName(self.context),
+							})
 						else
-							ChoGGi.ComFuncs.EntitySpawner(self.context, true, 7)
+							ChoGGi.ComFuncs.EntitySpawner(self.context, {
+								skip_msg = true,
+								list_type = 7,
+								title_postfix = RetName(self.context),
+							})
 						end
 					end,
 					"Icon", "UI/Icons/IPButtons/shuttle.tga",
