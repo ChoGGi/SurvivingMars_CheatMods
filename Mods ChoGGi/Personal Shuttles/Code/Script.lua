@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 -- local some stuff that's called a lot
+local tostring = tostring
 local point = point
 local Sleep = Sleep
 local GameTime = GameTime
@@ -53,6 +54,11 @@ DefineClass.PersonalShuttle = {
 	shoot_range = 25 * guim,
 	reload_time = const.HourDuration,
 	track_thread = false,
+
+	-- attached obj offsets
+	offset_rover = point(0, 0, 400),
+	offset_drone = point(0, 0, 325),
+	offset_other = point(0, 0, 350),
 }
 
 -- if it idles it'll go home, so we return my command till we remove thread
@@ -144,14 +150,15 @@ end
 function PersonalShuttle:GotoPos(pos, dest)
 	-- too quick and it's jerky *or* mouse making small movements
 	if self.in_flight then
-		if self.idle_time < 100 then
+		if self.idle_time < 125 then
 			return
-		elseif self.idle_time > 100 and self.old_pos == pos then
-		--
-		elseif self.old_dest then
-			local ox, oy = self.old_dest:xy()
-			local x, y = dest:xy()
-			if point(ox, oy):Dist2D(point(x, y)) < 1000 then
+--~ 		elseif self.idle_time > 100 and self.old_pos == pos then
+--~ 		--
+		elseif self.old_dest and not (self.idle_time > 125 and self.old_pos == pos) then
+--~ 			local ox, oy = self.old_dest:xy()
+--~ 			local x, y = dest:xy()
+--~ 			if point(ox, oy):Dist2D(point(x, y)) < 1000 then
+			if self.old_dest:Dist2D(dest) < 1000 then
 				if self.first_idle < 25 then
 					self.first_idle = self.first_idle + 1
 					return self.idle_time
@@ -161,15 +168,16 @@ function PersonalShuttle:GotoPos(pos, dest)
 	end
 	self.first_idle = 0
 
-	-- don't try to fly if pos or dest aren't different (spams log)
-	if pos == dest then
+	-- don't try to fly if pos or dest are the same
+	if tostring(pos) == tostring(dest) then
 		return
 	end
 
 	-- check the last path point to see if it's far away (can't be bothered to make a new func that allows you to break off the path)
 	-- and if we move when we're too close it's jerky
 	local dest_x, dest_y = dest:xy()
-	local dist = pos:Dist2D(point(dest_x, dest_y)) > 5000
+--~ 	local dist = pos:Dist2D(point(dest_x, dest_y)) > 5000
+	local dist = pos:Dist2D(dest) > 5000
 	if dist or self.idle_time > 250 then
 		-- rest on ground
 		self.hover_height = 0
@@ -273,6 +281,7 @@ function PersonalShuttle:DropCargo(obj, pos, dest)
 	end
 	WaitMsg("OnRender")
 
+	-- restore our fake drone override command
 	if carried.ChoGGi_SetCommand then
 		carried.SetCommand = carried.ChoGGi_SetCommand
 		carried.ChoGGi_SetCommand = nil
@@ -331,17 +340,15 @@ function PersonalShuttle:SelectedObject(obj, pos, dest)
 			Sleep(2500)
 			-- pick it up
 			self:Attach(obj, self:GetSpotBeginIndex("Origin"))
-			-- bottom or top?
---~ 			obj:SetAttachOffset(point(0, 0, 400))
-
+			-- offset attach
 			if obj:IsKindOf("BaseRover") then
-				obj:SetAttachOffset(point(0, 0, 400))
+				obj:SetAttachOffset(self.offset_rover)
 			elseif obj:IsKindOf("Drone") then
-				obj:SetAttachOffset(point(0, 0, 325))
+				obj:SetAttachOffset(self.offset_drone)
 				obj.ChoGGi_SetCommand = obj.SetCommand
 				obj.SetCommand = IdleDroneInAir
 			else
-				obj:SetAttachOffset(point(0, 0, 350))
+				obj:SetAttachOffset(self.offset_other)
 			end
 
 			if PersonalShuttles.drop_toggle then

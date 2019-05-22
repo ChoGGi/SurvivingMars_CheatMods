@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v13.6 (Unreleased)
+## v13.7 (Unreleased)
+
+## v13.6 (May 22 2019)
 ### Changed:
 - Added an Export func to the image viewer (needs HelperMod).
 

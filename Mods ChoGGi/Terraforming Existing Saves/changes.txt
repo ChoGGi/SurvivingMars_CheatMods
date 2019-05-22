@@ -1,2 +1,5 @@
+v0.3
+Mod is no longer needed once you save the game.
+
 v0.2
 Fixed disappearing rockets (demand/supply reqs were missing).

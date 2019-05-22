@@ -1,6 +1,9 @@
 ## Library Changelog
 
-## v6.6 (Unreleased)
+## v6.7 (Unreleased)
+
+## v6.6 (May 22 2019)
+- Bump.
 
 ## v6.5 (May 17 2019)
 - Code cleanup.

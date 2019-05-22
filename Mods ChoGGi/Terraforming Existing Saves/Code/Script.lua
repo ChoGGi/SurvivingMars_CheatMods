@@ -116,6 +116,24 @@ local function EnableTerra()
 	-- can't hurt?
 	SavegameFixups.StopInfiniteRains()
 
+	-- make sure any existing rockets have seed funcs (pods seem fine without this)
+	local rockets = UICity.labels.SupplyRocket or ""
+	for i = 1, #rockets do
+		local r = rockets[i]
+		if r.demand and not r.demand.Seeds then
+			if r.resource then
+				if not table.find(r.resource,"Seeds") then
+					r.resource[#r.resource+1] = "Seeds"
+				end
+			end
+			-- eeeh, I'm lazy
+			if type(r.task_requests) == "table" then
+				table.iclear(r.task_requests)
+			end
+			r:CreateResourceRequests()
+		end
+	end
+
 	-- show terraform intro msg
 	local id = "TerraformingIntro"
 	AddOnScreenNotification(id)
@@ -136,22 +154,4 @@ end
 -- we need a slight delay before checking g_NoTerraforming
 function OnMsg.LoadGame()
 	CreateRealTimeThread(EnableTerra)
-end
-
-local orig_SupplyRocket_Unload = SupplyRocket.Unload
-function SupplyRocket:Unload(...)
-	-- rockets need demand/supply or disappearing acts
-	if self.demand and not self.demand.Seeds and (g_NoTerraforming == false or not IsGameRuleActive("NoTerraforming")) then
-		if self.resource then
-			if not table.find(self.resource,"Seeds") then
-				self.resource[#self.resource+1] = "Seeds"
-			end
-		end
-		-- eeeh, I'm lazy
-		if type(self.task_requests) == "table" then
-			table.iclear(self.task_requests)
-		end
-		self:CreateResourceRequests()
-	end
-	return orig_SupplyRocket_Unload(self, ...)
 end

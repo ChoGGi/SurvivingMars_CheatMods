@@ -2,6 +2,7 @@
 
 -- unlock one per sol (assuming a telescope is working)
 function OnMsg.NewDay()
+--~ function OnMsg.NewHour()
 	-- no sense in checking if this isn't true
 	if not g_OmegaTelescopeBonusGiven then
 		return
@@ -29,8 +30,8 @@ function OnMsg.NewDay()
 		return
 	end
 
-	StableShuffle(breakthroughs, UICity:CreateResearchRand("OmegaTelescope"), 100)
-	local def = TechDef[breakthroughs[1]]
+--~ 	StableShuffle(breakthroughs, UICity:CreateResearchRand("OmegaTelescope"), 100)
+	local def = TechDef[table.rand(breakthroughs)]
 
 	-- we already checked for breakthroughs[1], but why not check again :)
 	if not def then

@@ -275,6 +275,7 @@ Debug>Entity Spawner: Shows list of objects, and spawns at mouse cursor.
 Debug>Entity Spots Toggle: Toggle showing attachment spots on selected object.
 Debug>Entity Spots: Shows list of attach spots for use with .ent files.
 Debug>Examine Object: Opens the object examiner for the selected or moused-over obj.
+Use Shift-F4 or Ctrl-F4 to show a list of all objects in a radius around cursor.
 Debug>Examine Persist Errors: Shows an examine dialog with any persist errors when saving (needs ECM HelperMod).
 Debug>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
 Warning: Leave welcome to Mars msg onscreen till map is loaded.
@@ -307,8 +308,8 @@ ECM.Buildings.Buildings>Service Building Stats: Tweak settings for parks and suc
 Health change, Sanity change, Service Comfort, Comfort increase.
 ECM.Buildings.Buildings>Set Charge & Discharge Rates: Change how fast Air/Water/Battery storage capacity changes.
 ECM.Buildings.Buildings>Water-free Building: Toggle water use for selected building type.
-ECM.Buildings.Cables & Pipes>Instant Build: Cables & Pipes are built instantly.
-ECM.Buildings.Cables & Pipes>No Chance Of Break: Cables & Pipes will never break.
+ECM.Buildings.Cables & Pipes>Instant Build: Cables & Pipes Instant Build
+ECM.Buildings.Cables & Pipes>No Break: Cables & Pipes No Break
 ECM.Buildings.Farms>Crop fail threshold: Average performance of Farms required for Crops to succeed
 ECM.Buildings.Farms>Farm Shifts All On: Turns on all the farm shifts.
 ECM.Buildings.Farms>Unlock Crops: Shows list of locked crops.
@@ -343,7 +344,7 @@ ECM.Buildings.Toggles>Remove Sponsor Limits: Allow you to build all buildings no
 ECM.Buildings.Toggles>Rotate During Placement: Allow you to rotate all buildings.
 ECM.Buildings.Toggles>Show Hidden Buildings: Show hidden buildings in build menu.
 ECM.Buildings.Toggles>Unlimited Connection Length: No more length limits to pipes, cables, and passages.
-ECM.Buildings.Toggles>Unlimited Wonders: Unlimited wonder build limit (blocks the "build a wonder" achievement).
+ECM.Buildings.Toggles>Unlimited Wonders: Unlimited wonder build limit (blocks the build a wonder achievement).
 ECM.Buildings>Empty Mech Depot: Empties out selected/moused over mech depot into a small depot in front of it.
 ECM.Buildings>Moisture Vaporator Penalty: 40: Disable penalty when Moisture Vaporators are close to each other.
 ECM.Buildings>Storage Amount Of Diner & Grocery: Change how much food is stored in them (less chance of starving colonists when busy).
@@ -436,7 +437,7 @@ ECM.Misc>Change Entity Scale: You want them big, you want them small; have at it
 ECM.Misc>Change Entity: Changes the entity of selected object, all of same type or all of same type in selected object's dome.
 ECM.Misc>Clean All Objects: Removes all dust from all objects.
 ECM.Misc>Fix All Objects: Fixes all malfunctioned objects.
-ECM.Misc>Game Speed: 3: Change the game speed (only for medium/fast, normal is normal).
+ECM.Misc>Game Speed: 12: Change the game speed (only for medium/fast, normal is normal).
 ECM.Misc>Scanner Queue Larger: Queue up to 100 squares.
 ECM.Misc>Time Factor: 1000: Change the time factor (not permanently); for ease of screenshots or something.
 ECM.Mission.Disasters>Cold Waves: Set the occurrence level of Cold Wave disasters.
@@ -500,7 +501,7 @@ ECM>Close Dialogs: Close any dialogs opened by ECM (Examine, Object Editor, Chan
 ECM>Find Nearest Resource: Select an object and click this to display a list of resources (Shows nearest resource to object).
 ECM>Grid Info: List objects in grids (air, electricity, and water).
 Game.Camera>Bird's Eye: 20: How far up the camera can move.
-Game.Camera>Border Scrolling: Set size of activation for mouse border scrolling.
+Game.Camera>Border Scrolling: 2: Set size of activation for mouse border scrolling.
 Game.Camera>Reset: If something makes the camera view wonky you can use this to fix it.
 Game.Camera>Toggle Cursor: Toggle between moving camera and selecting objects.
 Game.Camera>Toggle Follow Camera: Select (or mouse over) an object to follow.
@@ -549,7 +550,7 @@ Game>Color Modifier: Select/mouse over an object to change the colours
 Use Shift- or Ctrl- for random colours/reset colours.
 Game>Delete Large Rocks: Removes rocks for that smooth map feel.
 Game>Delete Small Rocks: Removes rocks for that smooth map feel.
-Game>List All Objects: A list of objects; double-click on one to select and move the camera to it.
+Game>List All Objects: A list of objects; <image UI/Infopanel/left_click.tga 1400>*2 on one to select and move the camera to it.
 Game>Object Planner: Places fake construction site objects at mouse cursor (collision disabled).
 Game>Place Objects: Opens editor mode with the place objects dialog.
 Game>Pulsating Pins Disable: When true pins will no longer do the pulsating motion (hover over to stop).
@@ -565,7 +566,6 @@ Game>UI Transparency Mouseover: Toggle removing transparency on mouseover.
 Game>UI Transparency: Change the transparency of UI items (info panel, menu, pins).
 Game>Whiter Rocks: Helps the rocks blend in better when using the polar ground texture.
 Shortcut Keys>Clear Log
-Shortcut Keys>Click To Move
 Shortcut Keys>Color Modifier Default Colour
 Shortcut Keys>Color Modifier Random Colour
 Shortcut Keys>Examine Objects Ctrl

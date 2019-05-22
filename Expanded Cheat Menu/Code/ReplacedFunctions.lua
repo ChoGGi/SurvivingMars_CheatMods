@@ -1307,8 +1307,7 @@ elseif #params == 3 then
 		override_title = true,
 	})
 else
-	OpenExamine(nil, {
-		obj = params,
+	OpenExamine(params, {
 		ex_params = true,
 		override_title = true,
 		title = ChoGGi.Strings[302535920000069] .. " " .. ChoGGi.Strings[302535920001073]
@@ -1319,9 +1318,10 @@ end]] -- title strings: Examine Console
 			{
 				-- ~!obj_with_attachments
 				"^~!(.*)",
-				[[local attaches = ChoGGi.ComFuncs.GetAllAttaches(%s)
+				[[local obj = %s
+local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
 if #attaches > 0 then
-	OpenExamine(attaches, nil, "GetAllAttaches")
+	OpenExamine(attaches, nil, "GetAllAttaches " .. ChoGGi.ComFuncs.RetName(obj))
 end]]
 			},
 			{

@@ -1,0 +1,2 @@
+v0.2
+Unlocks random breakthroughs instead of using the StableShuffle method Omega uses.

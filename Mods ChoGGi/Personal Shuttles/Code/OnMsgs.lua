@@ -30,16 +30,15 @@ end
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
 
-function OnMsg.NewDay() -- newsol
-	local UICity = UICity
-
+function OnMsg.NewDay() -- NewSol
 	-- clean up old handles
 	local IsValid = IsValid
 	local HandleToObject = HandleToObject
-	if next(UICity.PersonalShuttles.shuttle_threads) then
-		for h, _ in pairs(UICity.PersonalShuttles.shuttle_threads) do
+	local threads = UICity.PersonalShuttles.shuttle_threads
+	if next(threads) then
+		for h, _ in pairs(threads) do
 			if not IsValid(HandleToObject[h]) then
-				UICity.PersonalShuttles.shuttle_threads[h] = nil
+				threads[h] = nil
 			end
 		end
 	end
@@ -83,6 +82,9 @@ local function SpawnShuttle(hub, attacker)
 			-- do we attack dustdevils?
 			if attacker then
 				UICity.PersonalShuttles.shuttle_threads[shuttle.handle] = true
+				shuttle:SetColorizationMaterial(1, PersonalShuttles.attacker_color1 or -2031616, -100, 120)
+				shuttle:SetColorizationMaterial(2, PersonalShuttles.attacker_color2 or -16777216, 120, 20)
+				shuttle:SetColorizationMaterial(3, PersonalShuttles.attacker_color3 or -9043968, -128, 48)
 			else
 				UICity.PersonalShuttles.shuttle_threads[shuttle.handle] = false
 				shuttle:SetColorizationMaterial(1, PersonalShuttles.friend_colour1 or -16711941, -100, 120)
