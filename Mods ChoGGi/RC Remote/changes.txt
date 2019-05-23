@@ -1,3 +1,6 @@
+v0.3
+Shift to toggle high speed.
+
 v0.2
 Q fires a missile at the mouse cursor object (useful for removing rocks).
 Changed how backwards works (tap it once to face backwards).

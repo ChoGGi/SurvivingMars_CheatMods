@@ -335,6 +335,11 @@ do -- ModUpload
 		ChoGGi_MapImagesPack = true,
 		ChoGGi_CommieMarxLogos = true,
 	}
+	-- don't add these mods to upload list
+	local skip_mods = {
+		ChoGGi_XDefaultMod = true,
+		ChoGGi_testing = true,
+	}
 	local pack_path = "AppData/ModUpload/Pack/"
 	local dest_path = "AppData/ModUpload/"
 
@@ -519,7 +524,11 @@ do -- ModUpload
 		end
 
 		if err and not blank_mod then
-			result_msg[#result_msg+1] = Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>", mod.title):gsub("<err>", Translate(err))
+			local msg = Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>", mod.title):gsub("<err>", Translate(err))
+			if batch then
+				print(Translate("<color red>" .. msg .. "</color>"))
+			end
+			result_msg[#result_msg+1] = msg
 			if choices_len == 1 then
 				result_title[#result_title+1] = Translate(1000592--[[Error--]])
 			else
@@ -557,10 +566,10 @@ do -- ModUpload
 			print(mod.title, ":", Translate(1000107--[[Mod--]]), id_str, ":", item_id)
 		end
 
-		if not test and not err then
-			-- remove upload folder
-			AsyncDeletePath(dest_path)
-		end
+--~ 		if not test and not err then
+--~ 			-- remove upload folder
+--~ 			AsyncDeletePath(dest_path)
+--~ 		end
 
 		if choices_len == 1 then
 			uploading = false
@@ -713,7 +722,7 @@ do -- ModUpload
 
 			-- let user know if we're good or not
 			ChoGGi.ComFuncs.MsgWait(
-				error_msgs,
+				Strings[302535920000221--[[See log for any batch errors.--]]] .. "\n\n" .. error_msgs,
 				Strings[302535920001586--[[All Done!--]]],
 				upload_image
 			)
@@ -746,7 +755,8 @@ do -- ModUpload
 		local Mods = Mods
 		local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 		for id, mod in pairs(Mods) do
-			if id ~= "ChoGGi_testing" and mod.content_path:sub(1,11) ~= "PackedMods/" then
+			-- skip some mods and all packed mods
+			if not skip_mods[id] and mod.content_path:sub(1,11) ~= "PackedMods/" then
 				local image = ""
 				-- can't use <image> tags unless there's no spaces in the path...
 				if ValidateImage(mod.image) and not mod.image:find(" ") then

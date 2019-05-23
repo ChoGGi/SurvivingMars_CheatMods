@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "More Terrain Rocks",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
-	"saved", 1558440000,
+	"version_minor", 3,
+	"saved", 1558526400,
 	"image", "Preview.png",
 	"id", "ChoGGi_MoreTerrainRocks",
 	"steam_id", "1743036391",
@@ -13,8 +13,11 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[Adds more rocks to a new category in the build menu.
 You can rotate and scale once they're placed.
+
+Mod Option to change the cost of rocks (larger rocks, small cost 1 waste rock).
 
 The rocks will look small till they're built (so drones can reach).]],
 	"TagLandscaping", true,

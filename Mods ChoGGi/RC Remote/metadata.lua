@@ -8,10 +8,10 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "RC Remote",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
-	"saved", 1551182400,
+	"version_minor", 3,
+	"saved", 1558612800,
 	"image", "Preview.png",
 	"id", "ChoGGi_RCRemote",
 	"steam_id", "1667310894",
@@ -24,6 +24,7 @@ return PlaceObj("ModDef", {
 	"description", [[It's an RC Remote or an RC RC. Use WASD to move.
 Press E to jump forward. It ignores pathing, so you can use it to get up/down hillsides.
 Press Q to fire a missile at the mouse cursor object (useful for removing rocks).
+Press Shift to toggle high speed.
 All the keys are re-bindable in the game controls.
 
 Known Issues:

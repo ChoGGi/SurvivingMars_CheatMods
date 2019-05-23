@@ -24,65 +24,6 @@ local MapFindNearest = MapFindNearest
 local Translate = ChoGGi.ComFuncs.Translate
 
 --~ 	local Strings = ChoGGi.Strings
-
-local function MoveRC(dir)
-	local self = SelectedObj
-	if self and self:IsKindOf("RCRemote") then
-		-- if already moving in the same dir then abort
-		if self.jumping or (self.command == "RemoteMove" and self.move_dir == dir) then
-			return
-		end
-		self:SetCommand("RemoteMove", dir)
-	end
-end
-
-local function JumpForward()
-	local self = SelectedObj
-	if self and self:IsKindOf("RCRemote") then
-		self.jumping = true
-		PlayFX("Moving", "start", self)
-		self:SetState("moveWalk")
-
-		self.fx_actor_class = "JumperShuttle"
-		PlayFX("Jump", "start", self)
-		PlayFX("JumpUp", "start", self)
-		PlayFX("Accelerate", "start", self)
-		Sleep(150)
-
-		local old_pos = self:GetPos()
-		local pos = MovePointAway(
-			old_pos,
-			self:GetSpotLoc(self:GetSpotBeginIndex(self.jump_move_spot)),
-			self.jump_move_dist
-		)
-		local points = self:RetParabola(old_pos, pos)
-		local count = #points
-		for i = 1, count do
-			if i == count then
-				self:SetPos(points[i]:SetTerrainZ(), 250)
-			else
-				self:SetPos(points[i], 250)
-			end
-			Sleep(250)
-		end
-		self.fx_actor_class = "ExplorerRover"
-		PlayFX("Moving", "end", self)
-		self:SetState("idle")
-
-		self.fx_actor_class = "JumperShuttle"
-		PlayFX("Accelerate", "end", self)
-		PlayFX("Jump", "end", self)
-		PlayFX("JumpUp", "end", self)
-		PlayFX("JumpDown", "start", self)
-		Sleep(250)
-		PlayFX("Jump", "end", self)
-		PlayFX("JumpDown", "end", self)
-
-		self.fx_actor_class = "ExplorerRover"
-		self.jumping = false
-	end
-end
-
 do -- add shortcut actions
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -106,7 +47,10 @@ do -- add shortcut actions
 	Actions[c] = {ActionName = "Remote: Jump Forward",
 		ActionId = "RCRemote.JumpForward",
 		OnAction = function()
-			CreateGameTimeThread(JumpForward)
+			local self = SelectedObj
+			if self and self:IsKindOf("RCRemote") then
+				CreateGameTimeThread(self.JumpForward,self)
+			end
 		end,
 		ActionToggle = true,
 		ActionShortcut = "E",
@@ -115,10 +59,28 @@ do -- add shortcut actions
 	}
 
 	c = c + 1
+	Actions[c] = {ActionName = "Remote: Toggle Speed",
+		ActionId = "RCRemote.ToggleSpeed",
+		OnAction = function()
+			local self = SelectedObj
+			if self and self:IsKindOf("RCRemote") then
+				self:ToggleSpeed()
+			end
+		end,
+		ActionToggle = true,
+		ActionShortcut = "Shift",
+		ActionBindable = true,
+		ActionMode = "RCRemote",
+	}
+
+	c = c + 1
 	Actions[c] = {ActionName = "Remote: Move Forward",
 		ActionId = "RCRemote.Forward",
 		OnAction = function()
-			MoveRC(1)
+			local self = SelectedObj
+			if self and self:IsKindOf("RCRemote") then
+				self:MoveRC(1)
+			end
 		end,
 		ActionToggle = true,
 
@@ -131,7 +93,10 @@ do -- add shortcut actions
 	Actions[c] = {ActionName = "Remote: Move Backward",
 		ActionId = "RCRemote.Backward",
 		OnAction = function()
-			MoveRC(2)
+			local self = SelectedObj
+			if self and self:IsKindOf("RCRemote") then
+				self:MoveRC(2)
+			end
 		end,
 		ActionShortcut = "S",
 		ActionBindable = true,
@@ -142,7 +107,10 @@ do -- add shortcut actions
 	Actions[c] = {ActionName = "Remote: Move Left",
 		ActionId = "RCRemote.Left",
 		OnAction = function()
-			MoveRC(3)
+			local self = SelectedObj
+			if self and self:IsKindOf("RCRemote") then
+				self:MoveRC(3)
+			end
 		end,
 		ActionShortcut = "A",
 		ActionBindable = true,
@@ -153,7 +121,10 @@ do -- add shortcut actions
 	Actions[c] = {ActionName = "Remote: Move Right",
 		ActionId = "RCRemote.Right",
 		OnAction = function()
-			MoveRC(4)
+			local self = SelectedObj
+			if self and self:IsKindOf("RCRemote") then
+				self:MoveRC(4)
+			end
 		end,
 		ActionShortcut = "D",
 		ActionBindable = true,
@@ -162,7 +133,12 @@ do -- add shortcut actions
 end -- do
 
 local name = [[RC Remote]]
-local description = [[Remote controlled RC]]
+local description = [[Remote controlled RC
+
+WASD to move.
+Q to fire rocket.
+E to jump forward.
+Shift to toggle high speed.]]
 local display_icon = CurrentModPath .. "UI/rover_rc.png"
 
 DefineClass.RCRemote = {
@@ -188,6 +164,8 @@ DefineClass.RCRemote = {
 
 	-- 3 times as fast
 	move_speed = 3000,
+	-- how fast we go with shift
+	move_speed_mul = 6,
 	-- how much to jump forward
 	jump_move_dist = 10000,
 	jump_move_spot = "Droneentrance",
@@ -262,6 +240,66 @@ function RCRemote:Getui_command()
 end
 
 -- 1 forward, 2 backwards, 3 left, 4 right
+function RCRemote:JumpForward()
+	self.jumping = true
+	PlayFX("Moving", "start", self)
+	self:SetState("moveWalk")
+
+	self.fx_actor_class = "JumperShuttle"
+	PlayFX("Jump", "start", self)
+	PlayFX("JumpUp", "start", self)
+	PlayFX("Accelerate", "start", self)
+	Sleep(150)
+
+	local old_pos = self:GetPos()
+	local pos = MovePointAway(
+		old_pos,
+		self:GetSpotLoc(self:GetSpotBeginIndex(self.jump_move_spot)),
+		self.jump_move_dist
+	)
+	local points = self:RetParabola(old_pos, pos)
+	local count = #points
+	for i = 1, count do
+		if i == count then
+			self:SetPos(points[i]:SetTerrainZ(), 250)
+		else
+			self:SetPos(points[i], 250)
+		end
+		Sleep(250)
+	end
+	self.fx_actor_class = "ExplorerRover"
+	PlayFX("Moving", "end", self)
+	self:SetState("idle")
+
+	self.fx_actor_class = "JumperShuttle"
+	PlayFX("Accelerate", "end", self)
+	PlayFX("Jump", "end", self)
+	PlayFX("JumpUp", "end", self)
+	PlayFX("JumpDown", "start", self)
+	Sleep(250)
+	PlayFX("Jump", "end", self)
+	PlayFX("JumpDown", "end", self)
+
+	self.fx_actor_class = "ExplorerRover"
+	self.jumping = false
+end
+
+function RCRemote:MoveRC(dir)
+	-- if already moving in the same dir then abort
+	if self.jumping or (self.command == "RemoteMove" and self.move_dir == dir) then
+		return
+	end
+	self:SetCommand("RemoteMove", dir)
+end
+
+function RCRemote:ToggleSpeed()
+	if self:GetMoveSpeed() == self.move_speed then
+		self:SetMoveSpeed(self.move_speed * self.move_speed_mul)
+	else
+		self:SetMoveSpeed(self.move_speed)
+	end
+end
+
 function RCRemote:RemoteMove(dir)
 	-- vrrrmmm
 	if not self.rc_moving then
@@ -288,6 +326,7 @@ function RCRemote:RemoteMove(dir)
 	elseif dir == 4 and IsKeyPressed(vkD) then
 		self:RemoteMove(dir)
 	else
+		-- vrrrmmm...
 		self.rc_moving = false
 		self.move_dir = 0
 		PlayFX("Moving", "end", self)

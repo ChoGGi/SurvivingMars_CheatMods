@@ -1,5 +1,27 @@
 -- See LICENSE for terms
 
+local mod_id = "ChoGGi_ResearchFilter"
+local mod = Mods[mod_id]
+
+local mod_HideCompleted = mod.options and mod.options.HideCompleted or false
+
+local function ModOptions()
+	mod_HideCompleted = mod.options.HideCompleted
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	ModOptions()
+end
+
+-- for some reason mod options aren't retrieved before this script is loaded...
+OnMsg.CityStart = ModOptions
+OnMsg.LoadGame = ModOptions
+
 -- stores list of tech dialog ui hexy things
 local tech_list = {}
 local count = 0
@@ -7,6 +29,7 @@ local count = 0
 -- local some globals
 local table_find = table.find
 local KbdShortcut = KbdShortcut
+local IsTechResearched = IsTechResearched
 local CreateRealTimeThread = CreateRealTimeThread
 local T, _InternalTranslate = T, _InternalTranslate
 
@@ -85,6 +108,14 @@ local function EditDlg(dlg)
 				local tech = techfield[j]
 				local c = tech.context[1]
 				count = count + 1
+
+				if mod_HideCompleted and IsTechResearched(c.id) then
+					tech.FoldWhenHidden= true
+					tech:SetVisible(false)
+				else
+					tech.FoldWhenHidden= true
+					tech:SetVisible(true)
+				end
 
 				if first_time == 0 then
 					tech_list[count] = {

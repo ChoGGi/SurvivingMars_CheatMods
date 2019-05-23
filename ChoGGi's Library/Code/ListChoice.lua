@@ -79,6 +79,7 @@ DefineClass.ChoGGi_DlgListChoice = {
 	custom_type = 0,
 	-- some different stuff fires off a func
 	custom_func = false,
+	callback_func = false,
 	-- if listitem has .obj and this is true we "flash" it
 	select_flash = false,
 	-- last value entered in idEditValue
@@ -97,6 +98,7 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 
 	self.obj = context.obj or self.items[1].obj
 	self.custom_func = self.list.custom_func or self.list.callback
+	self.callback_func = self.list.callback
 	self.custom_type = self.list.custom_type
 	self.close_func = self.list.close_func
 	self.title = self.list.title
@@ -867,7 +869,9 @@ function ChoGGi_DlgListChoice:CallbackSelectedList()
 		self:GetListItems("skip")
 	end
 	-- send selection back
-	if self.custom_func then
+	if self.custom_type == 6 and self.callback_func then
+		self.callback_func(self.choices, self)
+	elseif self.custom_func then
 		self.custom_func(self.choices, self)
 	end
 end

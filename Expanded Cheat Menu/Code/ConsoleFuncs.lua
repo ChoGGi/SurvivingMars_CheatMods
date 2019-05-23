@@ -62,6 +62,10 @@ local ToolsMenuPopupToggle_list = {
 			}
 		end,
 	},
+	{name = Strings[302535920000473--[[Flush Log--]]],
+		hint = Strings[302535920000474--[[Flushes log to file.--]]],
+		clicked = FlushLogFile,
+	},
 	{name = Strings[302535920000071--[[Show Mods Log--]]],
 		hint = Strings[302535920001123--[[Shows any mod msgs in the log.--]]],
 		clicked = function()

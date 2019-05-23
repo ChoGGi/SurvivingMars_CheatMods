@@ -7,6 +7,7 @@ local mod = Mods[mod_id]
 
 local mod_MoreSpecInfo = mod.options and mod.options.MoreSpecInfo or false
 local mod_PosPassList = mod.options and mod.options.PosPassList or false
+local mod_HideRocket = mod.options and mod.options.HideRocket or false
 local mod_PosX = mod.options and mod.options.PosX or 700
 local mod_PosY = mod.options and mod.options.PosY or 500
 
@@ -15,6 +16,7 @@ local function ModOptions()
 	mod_MoreSpecInfo = mod.options.MoreSpecInfo
 	ToggleSpecInfo()
 	mod_PosPassList = mod.options.PosPassList
+	mod_HideRocket = mod.options.HideRocket
 	mod_PosX = mod.options.PosX
 	mod_PosY = mod.options.PosY
 end
@@ -57,7 +59,6 @@ local function BuildSpecialistLists()
 	for i = 1, #workplaces do
 		local bld = workplaces[i]
 		local spec = bld.specialist
---~ 		if spec ~= "none" and not bld.destroyed and not bld.demolishing and not bld.bulldozed then
 		if not bld.destroyed and not bld.demolishing and not bld.bulldozed then
 			needed_specialist[spec] = needed_specialist[spec] + bld:GetFreeWorkSlots()
 		end
@@ -344,6 +345,11 @@ end
 local pass_thread
 
 local function ResDlg(dlg)
+	-- goodbye planet
+	if mod_HideRocket then
+		MapDelete("map", "PlanetEarth", "Rocket")
+	end
+
 	-- build list once per open (total count and needed count)
 	BuildSpecialistLists()
 

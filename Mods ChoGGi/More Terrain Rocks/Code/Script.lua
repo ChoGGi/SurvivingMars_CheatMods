@@ -1,5 +1,66 @@
 -- See LICENSE for terms
 
+-- manual list of rocks, maybe we'll do a sub EntityData ?
+local rocks = {
+	{"Rocks_01", "Rocks_02", "Rocks_03", "Rocks_04"},
+	{"RocksDark_01", "RocksDark_02", "RocksDark_03", "RocksDark_04", "RocksDark_05"},
+	{"RocksLight_01", "RocksLight_02", "RocksLight_03", "RocksLight_04", "RocksLight_05", "RocksLight_06"},
+	{"RocksLightSmall_01", "RocksLightSmall_02", "RocksLightSmall_03", "RocksLightSmall_04", "RocksLightSmall_05", "RocksLightSmall_06", "RocksLightSmall_07", "RocksLightSmall_08"},
+	{"RocksSlate_01", "RocksSlate_02", "RocksSlate_03", "RocksSlate_04", "RocksSlate_05", "RocksSlate_06", "RocksSlate_07"},
+	{"Cliff_01", "Cliff_02", "Cliff_03"},
+	{"CliffDark_01", "CliffDark_02", "CliffDark_03"},
+	{"Ice_Cliff_01", "Ice_Cliff_02", "Ice_Cliff_03", "Ice_Cliff_04", "Ice_Cliff_05", "Ice_Cliff_06"},
+}
+local cats = {
+	"LandscapeRockBuildingsRocks",
+	"LandscapeRockBuildingsDark",
+	"LandscapeRockBuildingsLight",
+	"LandscapeRockBuildingsLightSmall",
+	"LandscapeRockBuildingsSlate",
+	"LandscapeRockBuildingsCliff",
+	"LandscapeRockBuildingsCliffDark",
+	"LandscapeRockBuildingsCliffIce",
+}
+
+local r = const.ResourceScale
+local mod_id = "ChoGGi_MoreTerrainRocks"
+local mod = Mods[mod_id]
+
+local mod_LargeRocksCost = mod.options and mod.options.LargeRocksCost or 10
+
+local function ModOptions()
+	mod_LargeRocksCost = mod.options.LargeRocksCost
+	-- update rocks
+	local bt = BuildingTemplates
+	local ct = ClassTemplates.Building
+	for i = 1, #rocks do
+		local group = rocks[i]
+		local cat = cats[i]
+		for j = 1, #group do
+			local id = "ChoGGi_LandscapeRock_" .. group[j]
+			local rock = bt[id]
+			if rock then
+				local cost = cat == "LandscapeRockBuildingsLightSmall" and 1000 or (mod_LargeRocksCost * r)
+				rock.construction_cost_WasteRock = cost
+				ct[id].construction_cost_WasteRock = cost
+			end
+		end
+	end
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	ModOptions()
+end
+
+-- for some reason mod options aren't retrieved before this script is loaded...
+OnMsg.CityStart = ModOptions
+OnMsg.LoadGame = ModOptions
+
 local IsKindOf = IsKindOf
 -- we don't specifiy a PrefabMarkers to use, so we skip this to skip the error msg
 local orig_PlacePrefab = LevelPrefabController.PlacePrefab
@@ -144,10 +205,9 @@ local function AddToMenu(bt, cat, entity, desc, index)
 				"Group", cat,
 				"build_category", cat,
 				"Id", id,
---~ 				"template_class", "LevelPrefabBuilding",
 				"template_class", "ChoGGi_LevelPrefabBuilding",
-				"construction_cost_WasteRock", cat == "LandscapeRockBuildingsLightSmall" and 1000 or 10000,
-				"build_points", cat == "LandscapeRockBuildingsLightSmall" and 500 or 2500,
+				"construction_cost_WasteRock", cat == "LandscapeRockBuildingsLightSmall" and 1000,
+				"build_points", cat == "LandscapeRockBuildingsLightSmall" and 500 or 3500,
 				"is_tall", cat ~= "LandscapeRockBuildingsLightSmall" and true,
 				"use_demolished_state", false,
 				"build_pos", index,
@@ -201,28 +261,6 @@ function OnMsg.ClassesBuilt()
 		}
 	end
 end
-
--- going with a manual list of rocks, maybe we'll do a sub EntityData ?
-local rocks = {
-	{"Rocks_01", "Rocks_02", "Rocks_03", "Rocks_04"},
-	{"RocksDark_01", "RocksDark_02", "RocksDark_03", "RocksDark_04", "RocksDark_05"},
-	{"RocksLight_01", "RocksLight_02", "RocksLight_03", "RocksLight_04", "RocksLight_05", "RocksLight_06"},
-	{"RocksLightSmall_01", "RocksLightSmall_02", "RocksLightSmall_03", "RocksLightSmall_04", "RocksLightSmall_05", "RocksLightSmall_06", "RocksLightSmall_07", "RocksLightSmall_08"},
-	{"RocksSlate_01", "RocksSlate_02", "RocksSlate_03", "RocksSlate_04", "RocksSlate_05", "RocksSlate_06", "RocksSlate_07"},
-	{"Cliff_01", "Cliff_02", "Cliff_03"},
-	{"CliffDark_01", "CliffDark_02", "CliffDark_03"},
-	{"Ice_Cliff_01", "Ice_Cliff_02", "Ice_Cliff_03", "Ice_Cliff_04", "Ice_Cliff_05", "Ice_Cliff_06"},
-}
-local cats = {
-	"LandscapeRockBuildingsRocks",
-	"LandscapeRockBuildingsDark",
-	"LandscapeRockBuildingsLight",
-	"LandscapeRockBuildingsLightSmall",
-	"LandscapeRockBuildingsSlate",
-	"LandscapeRockBuildingsCliff",
-	"LandscapeRockBuildingsCliffDark",
-	"LandscapeRockBuildingsCliffIce",
-}
 
 function OnMsg.ClassesPostprocess()
 	-- if entities aren't loaded then wait it out

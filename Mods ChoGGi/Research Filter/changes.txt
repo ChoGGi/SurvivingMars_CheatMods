@@ -1,3 +1,6 @@
+v0.6
+Added mod option to hide completed tech.
+
 v0.5
 Armstrong update.
 

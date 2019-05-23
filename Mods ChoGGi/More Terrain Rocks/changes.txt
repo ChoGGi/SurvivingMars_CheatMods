@@ -1,2 +1,5 @@
+v0.3
+Mod Option to change the cost of rocks (larger rocks, small cost 1 waste rock).
+
 v0.2
 Build menu issue when certain mods are installed.

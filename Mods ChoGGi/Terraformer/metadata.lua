@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 			"version_minor", 4,
 		}),
 	},
-	"title", "Terraformer",
+	"title", "Terraformer (Obsolete)",
 	"version", 14,
 	"version_major", 1,
 	"version_minor", 4,

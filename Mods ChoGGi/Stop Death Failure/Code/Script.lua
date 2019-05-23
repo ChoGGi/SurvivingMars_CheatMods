@@ -1,3 +1,2 @@
-function IsGameOver()
-	return false
-end
+
+IsGameOver = empty_func

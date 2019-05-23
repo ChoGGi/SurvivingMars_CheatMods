@@ -4,22 +4,22 @@ local mod_id = "ChoGGi_ConstructionShowMapSectors"
 local mod = Mods[mod_id]
 local mod_Option1 = mod.options and mod.options.Option1 or true
 
+local function ModOptions()
+	mod_Option1 = mod.options.Option1
+end
+
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
 	if id ~= mod_id then
 		return
 	end
 
-	mod_Option1 = mod.options.Option1
+	ModOptions()
 end
 
 -- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	mod_Option1 = mod.options.Option1
-end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
+OnMsg.CityStart = ModOptions
+OnMsg.LoadGame = ModOptions
 
 local size = 100 * guim
 local green = green

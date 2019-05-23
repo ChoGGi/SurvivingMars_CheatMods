@@ -50,7 +50,7 @@ ChoGGi.Defaults = {
 	ConsoleSkipUndefinedGlobals = true,
 	-- the build/passibility grid in debug menu
 	DebugGridOpacity = 15,
-	DebugGridSize = 35,
+	DebugGridSize = 25,
 	-- disabling this will still leave them for the cheats menu and cheats section
 	EnableToolTips = true,
 	-- append text or create a new file each dump

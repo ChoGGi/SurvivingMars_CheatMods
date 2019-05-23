@@ -1,21 +1,30 @@
 -- See LICENSE for terms
 
+ChoGGi_ApartmentDoubleCapComfort = false
+
 local capacity
-local comfort
+local service_comfort
 
 function OnMsg.ClassesBuilt()
 	local a = BuildingTemplates.Apartments
-	capacity = a.capacity * 2
-	comfort = a.service_comfort * 2
-end
 
--- change settings on newly spawned apartments
-function OnMsg.BuildingInit(obj)
-	if not obj:IsKindOf("Apartments") then
+	-- it's called more than once
+	if ChoGGi_ApartmentDoubleCapComfort then
 		return
 	end
-	obj.capacity = capacity
-	obj.service_comfort = comfort
+
+	-- we need values for LoadGame
+	capacity = a.capacity * 2
+	service_comfort = a.service_comfort * 2
+	-- update values
+	a.capacity = capacity
+	a.service_comfort = service_comfort
+	-- and update again, cause...
+	a = ClassTemplates.Building.Apartments
+	a.capacity = capacity
+	a.service_comfort = service_comfort
+
+	ChoGGi_ApartmentDoubleCapComfort = true
 end
 
 -- this will update the settings for existing apartments
@@ -29,7 +38,7 @@ function OnMsg.LoadGame()
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.capacity = capacity
-		obj.service_comfort = comfort
+		obj.service_comfort = service_comfort
 	end
 
 	UICity.ChoGGi_ApartmentDoubleCapComfort = true

@@ -6,6 +6,12 @@ DefineClass("ModOptions_ChoGGi_PassengerRocketTweaks", {
 		{
 			default = false,
 			editor = "bool",
+			id = "HideRocket",
+			name = "Hide Rocket/Planet",
+		},
+		{
+			default = false,
+			editor = "bool",
 			id = "MoreSpecInfo",
 			name = "More Spec Info",
 		},

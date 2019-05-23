@@ -1,3 +1,6 @@
+v0.6
+Added mod option to remove the rocket/planet.
+
 v0.5
 Specialisation count section is now optional (default: disabled).
 Added Mod Options:

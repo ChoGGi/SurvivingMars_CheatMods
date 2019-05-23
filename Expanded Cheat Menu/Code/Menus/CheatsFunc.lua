@@ -1110,7 +1110,12 @@ end -- do
 
 -- loops through all the sequences and adds the logs we've already seen
 local function ShowMysteryLog(choice)
-	local myst_id = choice[1].value
+	local myst_id
+	if type(choice) == "string" then
+		myst_id = choice
+	else
+		myst_id = choice[1].value
+	end
 
 	local msgs = {myst_id .. "\n\n" .. Strings[302535920000272--[["To play back speech press the ""%s"" checkbox and type in
 g_Voice:Play(o.speech)"--]]]:format(Strings[302535920000040--[[Exec Code--]]]) .. "\n"}
@@ -1158,6 +1163,13 @@ function ChoGGi.MenuFuncs.MysteryLog()
 	if not s_SeqListPlayers then
 		return
 	end
+	if #s_SeqListPlayers == 1 then
+		MsgPopup(
+			"0",
+			Translate(5661--[[Mystery Log--]])
+		)
+		return
+	end
 
 	local item_list = {}
 	local c = 0
@@ -1190,11 +1202,13 @@ function ChoGGi.MenuFuncs.MysteryLog()
 		if choice.nothing_selected then
 			return
 		end
-		local value = choice[1].value
-		local mystery_idx = choice[1].mystery_idx
+		choice = choice[1]
+
+		local value = choice.value
+		local mystery_idx = choice.mystery_idx
 		local ThreadsMessageToThreads = ThreadsMessageToThreads
 
-		if choice[1].check2 then
+		if choice.check2 then
 			-- remove all
 			for i = #s_SeqListPlayers, 1, -1 do
 				if i > 1 then
@@ -1211,7 +1225,7 @@ function ChoGGi.MenuFuncs.MysteryLog()
 				Strings[302535920000277--[[Removed all!--]]],
 				Translate(5661--[[Mystery Log--]])
 			)
-		elseif choice[1].check1 then
+		elseif choice.check1 then
 			-- remove mystery
 			for i = #s_SeqListPlayers, 1, -1 do
 				if s_SeqListPlayers[i].mystery_idx == mystery_idx then
@@ -1226,7 +1240,7 @@ function ChoGGi.MenuFuncs.MysteryLog()
 				end
 			end
 			MsgPopup(
-				choice[1].text .. ": " .. Translate(3486--[[Mystery--]]) .. " " .. Strings[302535920000278--[[Removed--]]] .. "!",
+				choice.text .. ": " .. Translate(3486--[[Mystery--]]) .. " " .. Strings[302535920000278--[[Removed--]]] .. "!",
 				Translate(5661--[[Mystery Log--]])
 			)
 		elseif value then
