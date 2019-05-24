@@ -333,7 +333,7 @@ If this isn't a dumping site then waste rock will not be emptied.",
 302535920000311,"Stop the ""<color yellow>Attempt to use an undefined global</color>"" msgs.
 
 The number is a count of stored msgs, <right_click> to view the list."
-302535920001575,Show console log text when console is active (needs <color green>%s</color> enabled).,
+302535920001575,Only show console log text when console is active (needs <color green>%s</color> enabled).,
 302535920001576,Show Log When Console Active,
 302535920001123,Shows any mod msgs in the log.,
 302535920001102,Examine Errors,

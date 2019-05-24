@@ -6,9 +6,9 @@ local AveragePoint2D = AveragePoint2D
 local IsValid = IsValid
 local IsPoint = IsPoint
 local FixConstructPos = FixConstructPos
-local PlaceObject = PlaceObject
+--~ local PlaceObject = PlaceObject
 local _InternalTranslate = _InternalTranslate
-local PlaceText = PlaceText
+--~ local PlaceText = PlaceText
 
 local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
 
@@ -25,12 +25,16 @@ local function RemoveLine()
 end
 
 -- remove line when selection done
-function OnMsg.SelectionRemoved()
-	RemoveLine()
-end
+OnMsg.SelectionRemoved = RemoveLine
 -- make sure line isn't saved in the save file
-function OnMsg.SaveGame()
-	RemoveLine()
+OnMsg.SaveGame = RemoveLine
+
+local OPolyline,OText
+local res_list
+function OnMsg.ClassesBuilt()
+	OPolyline = ChoGGi_OPolyline
+	OText = ChoGGi_OText
+	res_list = Resources
 end
 
 local pt_1500 = point(0, 0, 1500)
@@ -49,35 +53,31 @@ function OnMsg.SelectionAdded(obj)
 		return
 	end
 
-	line = PlaceObject("Polyline")
+	line = OPolyline:new()
 	-- FixConstructPos sets z to ground height
 	PolylineSetParabola(line, FixConstructPos(route.from), FixConstructPos(route.to))
 	line:SetPos(AveragePoint2D(line.vertices))
 
 	-- add floating text
-	local res = obj.transport_resource
+	local res = obj.transport_resource or obj.can_pickup_from_resources
 	local res_type = type(res)
 	if res_type ~= "string" and res_type ~= "table" then
 		return
 	end
 
-	local is_res = Resources[res]
-	if is_res then
-		text = _InternalTranslate(is_res.display_name)
+	local name,res_item = "",res_list[res]
+	if res_item then
+		name = _InternalTranslate(res_item.display_name)
 	else
-		text = _InternalTranslate(T(4493, "All"))
+		name = _InternalTranslate(T(4493, "All"))
 	end
 
-	text = PlaceText(
-		text,
-		-- get centre(ish) point, AveragePoint2D doesn't work since it skips Z
-		line.vertices[#line.vertices/2]+pt_1500
-	)
+	text = OText:new()
+	text:SetText(name)
+	-- use centre(ish) point, AveragePoint2D doesn't work since it skips Z
+	text:SetPos(line.vertices[#line.vertices / 2] + pt_1500)
 
 	-- nice n big
 	text:SetTextStyle("Autosave")
---~ 	-- spins text to face camera
---~ 	text:Attach(PlaceObject("Orientation"))
-
 end
 

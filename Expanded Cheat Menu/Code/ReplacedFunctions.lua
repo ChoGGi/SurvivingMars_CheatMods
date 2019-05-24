@@ -978,7 +978,7 @@ function OnMsg.ClassesBuilt()
 					toggle = true
 				end
 				if setting then
-					UserSettings[setting] = toggle
+					ChoGGi.Temp[setting] = not toggle
 				end
 			end
 		end
@@ -1001,7 +1001,7 @@ function OnMsg.ClassesBuilt()
 				title.RolloverText = Strings[302535920001410--[[Toggle Visibility--]]]
 				title.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
 
-				local toggle = UserSettings.InfopanelMainButVis
+				local toggle = not ChoGGi.Temp.InfopanelMainButVis
 				local toolbar = main_buts[2]
 				toolbar.FoldWhenHidden = true
 				toolbar:SetVisible(toggle)
@@ -1053,7 +1053,7 @@ function OnMsg.ClassesBuilt()
 				section.RolloverText = Strings[302535920001410--[[Toggle Visibility--]]]
 				section.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
 
-				local toggle = UserSettings.InfopanelCheatsVis
+				local toggle = not ChoGGi.Temp.InfopanelCheatsVis
 				local toolbar = SetToolbar(section, "XToolBar", toggle)
 
 				ToggleVisSection(section, toolbar, toggle, "InfopanelCheatsVis")

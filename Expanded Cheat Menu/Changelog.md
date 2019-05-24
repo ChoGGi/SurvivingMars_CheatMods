@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v13.7 (Unreleased)
+### Changed:
+- Toggling visibility of selection cheats/button area is now temporary instead of saved.
 
 ## v13.6 (May 22 2019)
 ### Changed:

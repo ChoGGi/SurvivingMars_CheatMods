@@ -7,7 +7,7 @@ DefineClass("ModOptions_ChoGGi_PassengerRocketTweaks", {
 			default = false,
 			editor = "bool",
 			id = "HideRocket",
-			name = "Hide Rocket/Planet",
+			name = "Hide Background",
 		},
 		{
 			default = false,

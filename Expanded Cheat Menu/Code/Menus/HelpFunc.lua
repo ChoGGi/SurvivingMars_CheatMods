@@ -566,10 +566,10 @@ do -- ModUpload
 			print(mod.title, ":", Translate(1000107--[[Mod--]]), id_str, ":", item_id)
 		end
 
---~ 		if not test and not err then
---~ 			-- remove upload folder
---~ 			AsyncDeletePath(dest_path)
---~ 		end
+		if not test and not err then
+			-- remove upload folder
+			AsyncDeletePath(dest_path)
+		end
 
 		if choices_len == 1 then
 			uploading = false
@@ -712,15 +712,8 @@ do -- ModUpload
 			end
 			error_msgs = TableConcat(error_msgs)
 
-			-- update mod log and print it to console log
-			ModLog("\n" .. error_msgs)
-			local ModMessageLog = ModMessageLog
-			print(Strings[302535920001265--[[ModMessageLog--]]], ":")
-			for i = 1, #ModMessageLog do
-				print(ModMessageLog[i])
-			end
-
 			-- let user know if we're good or not
+			print(error_msgs)
 			ChoGGi.ComFuncs.MsgWait(
 				Strings[302535920000221--[[See log for any batch errors.--]]] .. "\n\n" .. error_msgs,
 				Strings[302535920001586--[[All Done!--]]],

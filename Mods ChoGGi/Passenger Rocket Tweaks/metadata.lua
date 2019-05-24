@@ -4,14 +4,14 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 4,
+			"version_minor", 6,
 		}),
 	},
 --~ 	"title", "Passenger Rocket Tweaks v0.2",
 	"title", "Passenger Rocket Tweaks",
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"saved", 1558612800,
 	"image", "Preview.png",
 	"id", "ChoGGi_PassengerRocketTweaks",
@@ -22,15 +22,11 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Various tweaks to the passenger list screen.
-
-Adds an "Are you sure?" question box to the back button to stop you from losing your applicant list (just the button, pressing ESC still works as usual).
-Optional:
-Add a specialisation count section to the passenger rocket screen (selected applicants / specialists needed by workplaces / specialists already in colony).
-Position passenger list using x/y coords.
+	"description", [[Adds an "Are you sure?" question box to the back button to stop you from losing your applicant list (just the button, pressing ESC still works as usual).
 
 Mod Options:
-More Spec Info: Show more specialist info.
+More Spec Info: Add a specialisation count section to the passenger rocket screen (selected applicants / specialists needed by workplaces / specialists already in colony).
+Hide Background: Shows a black background so you can see the text easier.
 Position Pass List: Enable changing position of passenger list.
 PosX/PosY: Margins to use for list.
 ]],

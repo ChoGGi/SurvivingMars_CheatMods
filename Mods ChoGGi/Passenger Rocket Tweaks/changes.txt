@@ -1,3 +1,6 @@
+v0.7
+Changed hide rocket/planet to hide background (since that was the original request).
+
 v0.6
 Added mod option to remove the rocket/planet.
 

@@ -3944,9 +3944,12 @@ end -- do
 
 function ChoGGi.ComFuncs.RetAllOfClass(cls)
 	local objects = UICity.labels[cls] or {}
-	if #objects == 0 and g_Classes[cls] then
-		-- if it isn't in g_Classes then MapGet will return *everything*
-		return MapGet(true, cls)
+	if #objects == 0 then
+		local g_cls = g_Classes[cls]
+		-- if it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
+		if g_cls and g_cls:IsKindOf("CObject") then
+			return MapGet(true, cls)
+		end
 	end
 	return objects
 end

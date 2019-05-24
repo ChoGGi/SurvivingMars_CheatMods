@@ -347,7 +347,7 @@ local pass_thread
 local function ResDlg(dlg)
 	-- goodbye planet
 	if mod_HideRocket then
-		MapDelete("map", "PlanetEarth", "Rocket")
+		dlg:SetBackground(black)
 	end
 
 	-- build list once per open (total count and needed count)
