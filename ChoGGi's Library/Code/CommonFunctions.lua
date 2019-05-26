@@ -2874,7 +2874,6 @@ do -- DeleteObject
 	end
 
 	function ChoGGi.ComFuncs.DeleteObject(objs, skip_demo)
-		local ChoGGi = ChoGGi
 		DeleteObject = DeleteObject or ChoGGi.ComFuncs.DeleteObject
 
 		if IsKindOf(objs, "XAction") then
@@ -3386,16 +3385,16 @@ do -- AddXTemplate/RemoveXTemplateSections
 end -- do
 
 local function CheatsMenu_Toggle()
-	local ChoGGi = ChoGGi
-	if ChoGGi.UserSettings.ShowCheatsMenu then
-		-- needs default
-		ChoGGi.UserSettings.ShowCheatsMenu = false
-		XShortcutsTarget:SetVisible()
-	else
-		ChoGGi.UserSettings.ShowCheatsMenu = true
-		XShortcutsTarget:SetVisible(true)
+	local menu = XShortcutsTarget
+	if ChoGGi.UserSettings.KeepCheatsMenuPosition then
+		ChoGGi.UserSettings.KeepCheatsMenuPosition = menu:GetPos()
 	end
-	ChoGGi.SettingFuncs.WriteSettings()
+	if menu:GetVisible() then
+		menu:SetVisible()
+	else
+		menu:SetVisible(true)
+	end
+	ChoGGi.ComFuncs.SetCheatsMenuPos()
 end
 ChoGGi.ComFuncs.CheatsMenu_Toggle = CheatsMenu_Toggle
 
@@ -3458,11 +3457,9 @@ function ChoGGi.ComFuncs.Editor_Toggle()
 		EditorDeactivate()
 		p.editor = false
 		p.developer = false
-		-- restore cheats menu if enabled
-		if ChoGGi.UserSettings.ShowCheatsMenu then
-			CheatsMenu_Toggle()
-			CheatsMenu_Toggle()
-		end
+		-- restore cheats menu
+		XShortcutsTarget:SetVisible()
+		XShortcutsTarget:SetVisible(true)
 	else
 		p.editor = true
 		p.developer = true
@@ -3492,7 +3489,6 @@ function ChoGGi.ComFuncs.TerrainEditor_Toggle()
 		MsgPopup(Strings[302535920001574--[[Crashes on XBOX!--]]])
 		return
 	end
-	local ChoGGi = ChoGGi
 	ChoGGi.ComFuncs.Editor_Toggle()
 	local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
 	if Platform.editor then

@@ -27,19 +27,10 @@ local cameraRTS = cameraRTS
 local terrain = terrain
 local transition_time = 0
 
-local RetName
-local GetParentOfKind
-local Strings
-local Translate
-
--- need to wait till Library mod is loaded
-function OnMsg.ClassesGenerate()
-	local ChoGGi = ChoGGi
-	Strings = ChoGGi.Strings
-	GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-	RetName = ChoGGi.ComFuncs.RetName
-	Translate = ChoGGi.ComFuncs.Translate
-end
+local RetName = ChoGGi.ComFuncs.RetName
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local Strings = ChoGGi.Strings
+local Translate = ChoGGi.ComFuncs.Translate
 
 local function GetRootDialog(dlg)
 	return GetParentOfKind(dlg, "ChoGGi_MinimapDlg")

@@ -44,10 +44,10 @@ function XShortcutsHost:SetPos(pt)
 	self:SetBox(pt:x(), pt:y(), self.box:sizex(), self.box:sizey())
 end
 function XShortcutsHost:GetPos()
-	return ChoGGi_Window.GetPos(self, "idMenuBar")
+	return ChoGGi_XWindow.GetPos(self, "idMenuBar")
 end
 function XShortcutsHost:GetSize()
-	local GetSize = ChoGGi_Window.GetSize
+	local GetSize = ChoGGi_XWindow.GetSize
 	return GetSize(self, "idMenuBar") + GetSize(self, "idBottomContainer")
 end
 

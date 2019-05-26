@@ -6,9 +6,7 @@ local AveragePoint2D = AveragePoint2D
 local IsValid = IsValid
 local IsPoint = IsPoint
 local FixConstructPos = FixConstructPos
---~ local PlaceObject = PlaceObject
 local _InternalTranslate = _InternalTranslate
---~ local PlaceText = PlaceText
 
 local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
 

@@ -85,8 +85,6 @@ ChoGGi.Defaults = {
 	FlushLogConstantly = false,
 	-- show Cheats section in the selection panel
 	InfopanelCheats = true,
-	-- show the cheats menu...
-	ShowCheatsMenu = true,
 	-- maybe you don't want to see the interface in screenshots
 	ShowInterfaceInScreenshots = true,
 	-- Mod Editor shows the help page every single time you open it.

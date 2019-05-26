@@ -40,7 +40,6 @@ function ChoGGi_DlgMonitorInfo:Init()
 
 
 
-	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 	local point = point
 

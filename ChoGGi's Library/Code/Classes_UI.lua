@@ -445,7 +445,6 @@ end
 -- parent, context
 function ChoGGi_XWindow:AddElements()
 	local g_Classes = g_Classes
-	local ChoGGi = ChoGGi
 
 	ChoGGi_dlgs_opened[self] = self.class
 

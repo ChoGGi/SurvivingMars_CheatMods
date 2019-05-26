@@ -5,7 +5,6 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Strings = ChoGGi.Strings
 
 function ChoGGi.MenuFuncs.SetConstMenu(action)
-	local ChoGGi = ChoGGi
 	local ConstsUS = ChoGGi.UserSettings.Consts
 	local ConstsC = ChoGGi.Consts
 

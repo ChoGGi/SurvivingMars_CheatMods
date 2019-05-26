@@ -1,9 +1,13 @@
 ## ECM Changelog
 
 ## v13.7 (Unreleased)
+### Added:
+- A Framerate Counter toggle to those too lazy to use the Options one.
+
 ### Changed:
 - Toggling visibility of selection cheats/button area is now temporary instead of saved.
 - Added negative values to Set Soil Quality.
+- The Cheats menu toggle (F2) is always a temporary one now.
 
 ## v13.6 (May 22 2019)
 ### Changed:

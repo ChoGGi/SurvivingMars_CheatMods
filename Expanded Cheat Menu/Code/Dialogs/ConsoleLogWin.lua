@@ -20,7 +20,6 @@ DefineClass.ChoGGi_DlgConsoleLogWin = {
 }
 
 function ChoGGi_DlgConsoleLogWin:Init(parent, context)
-	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 
 	self.title = Strings[302535920001120--[[Console Window--]]]
@@ -228,7 +227,6 @@ function ChoGGi_DlgConsoleLogWin:ScrollToBottom()
 end
 
 function ChoGGi_DlgConsoleLogWin:Done()
-	local ChoGGi = ChoGGi
 	-- closing means user doesn't want to see it next time (probably)
 	ChoGGi.UserSettings.ConsoleHistoryWin = false
 	dlgChoGGi_DlgConsoleLogWin = false

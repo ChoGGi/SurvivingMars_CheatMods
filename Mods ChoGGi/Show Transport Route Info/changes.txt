@@ -1,2 +1,5 @@
+v0.3
+Code cleanup/Armstrong.
+
 v0.2
 Now shows "All" instead of skipping text.

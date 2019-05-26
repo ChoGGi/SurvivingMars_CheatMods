@@ -540,7 +540,6 @@ function OnMsg.ClassesGenerate()
 	-- block certain traits from workplaces
 	SaveOrigFunc("Workplace", "AddWorker")
 	function Workplace:AddWorker(worker, shift, ...)
-		local ChoGGi = ChoGGi
 		local bs = UserSettings.BuildingSettings[self.template_name]
 		-- check that the tables contain at least one trait
 		local bt
@@ -761,7 +760,6 @@ function OnMsg.ClassesBuilt()
 	-- used to skip mystery sequences
 	do -- SkipMystStep
 		local function SkipMystStep(self, myst_func, ...)
-			local ChoGGi = ChoGGi
 			local StopWait = ChoGGi.Temp.SA_WaitMarsTime_StopWait
 			local p = self.meta.player
 

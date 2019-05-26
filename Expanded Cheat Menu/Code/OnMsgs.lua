@@ -402,10 +402,9 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 				toolbar:SetRolloverHint(Strings[302535920001441--[["<left_click> Activate MenuItem <right_click> Add/Remove"--]]])
 			end
 
-			-- always show menu on my computer
-			if testing or UserSettings.ShowCheatsMenu then
-				XShortcutsTarget:SetVisible(true)
-			end
+			-- always show menu
+			XShortcutsTarget:SetVisible(true)
+			XShortcutsTarget:SetPos(ChoGGi.UserSettings.KeepCheatsMenuPosition)
 
 			-- that info text about right-clicking expands the menu instead of just hiding or something
 			for i = 1, #XShortcutsTarget.idToolbar do
@@ -539,7 +538,6 @@ do -- ConstructionSitePlaced
 
 	-- regular build
 	function OnMsg.ConstructionSitePlaced(obj)
-		local ChoGGi = ChoGGi
 		if obj:IsKindOf("Building") then
 			ChoGGi.Temp.LastPlacedObject = obj
 		end
@@ -594,7 +592,6 @@ end
 
 -- :GameInit() (Msg.BuildingInit only does Building, not BaseBuilding)
 function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
-	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 
 	if obj:IsKindOf("ConstructionSite")
@@ -934,20 +931,21 @@ function OnMsg.NewHour()
 	-- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
 	if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
 		local labels = UICity.labels
+		local FuckingDrones = ChoGGi.ComFuncs.FuckingDrones
 
 		-- Hey. Do I preach at you when you're lying stoned in the gutter? No!
 		local prods = labels.ResourceProducer or ""
 		for i = 1, #prods do
 			local prod = prods[i]
-			ChoGGi.ComFuncs.FuckingDrones(prod:GetProducerObj())
+			FuckingDrones(prod:GetProducerObj())
 			if prod.wasterock_producer then
-				ChoGGi.ComFuncs.FuckingDrones(prod.wasterock_producer)
+				FuckingDrones(prod.wasterock_producer)
 			end
 		end
 
 		prods = labels.BlackCubeStockpiles or ""
 		for i = 1, #prods do
-			ChoGGi.ComFuncs.FuckingDrones(prods[i])
+			FuckingDrones(prods[i])
 		end
 
 	end
@@ -986,7 +984,6 @@ end
 
 -- if you pick a mystery from the cheat menu
 function OnMsg.MysteryBegin()
-	local ChoGGi = ChoGGi
 	if ChoGGi.UserSettings.ShowMysteryMsgs then
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
@@ -996,7 +993,6 @@ function OnMsg.MysteryBegin()
 	end
 end
 function OnMsg.MysteryChosen()
-	local ChoGGi = ChoGGi
 	if ChoGGi.UserSettings.ShowMysteryMsgs then
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
@@ -1006,7 +1002,6 @@ function OnMsg.MysteryChosen()
 	end
 end
 function OnMsg.MysteryEnd(outcome)
-	local ChoGGi = ChoGGi
 	if ChoGGi.UserSettings.ShowMysteryMsgs then
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "

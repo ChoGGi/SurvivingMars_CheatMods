@@ -26,7 +26,6 @@ DefineClass.ChoGGi_DlgExecCode = {
 
 local box10 = box(10, 0, 0, 0)
 function ChoGGi_DlgExecCode:Init(parent, context)
-	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 
 	if blacklist then

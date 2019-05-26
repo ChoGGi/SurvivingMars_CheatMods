@@ -14,6 +14,15 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RandomColour = ChoGGi.ComFuncs.RandomColour
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.SetFrameCounter()
+	local fps = hr.FpsCounter
+	fps = fps + 1
+	if fps > 2 then
+		fps = 0
+	end
+	hr.FpsCounter = fps
+end
+
 function ChoGGi.MenuFuncs.SetFrameCounterLocation(action)
 	local setting = action.setting_mask
 	hr.FpsCounterPos = setting

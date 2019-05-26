@@ -42,13 +42,16 @@ local function PlacePolyline(points, colours)
 end
 ChoGGi.ComFuncs.PlacePolyline = PlacePolyline
 
-function ChoGGi.ComFuncs.SetCheatsMenuPos(pos)
-	if pos or ChoGGi.UserSettings.KeepCheatsMenuPosition then
-		XShortcutsTarget:SetPos(pos or ChoGGi.UserSettings.KeepCheatsMenuPosition)
+local function SetCheatsMenuPos(pos)
+	pos = pos or ChoGGi.UserSettings.KeepCheatsMenuPosition
+	print(pos)
+	if pos then
+		XShortcutsTarget:SetPos(pos)
 	else
 		XShortcutsTarget:SetPos(GetSafeMargins():min())
 	end
 end
+ChoGGi.ComFuncs.SetCheatsMenuPos = SetCheatsMenuPos
 
 function ChoGGi.ComFuncs.DraggableCheatsMenu(enable)
 	local XShortcutsTarget = XShortcutsTarget
@@ -77,10 +80,8 @@ function ChoGGi.ComFuncs.DraggableCheatsMenu(enable)
 	else
 		-- remove my padding
 		XShortcutsTarget.idMenuBar:SetPadding(box(0, 0, 0, 0))
-		-- restore to original pos by toggling menu vis
-		if ChoGGi.UserSettings.ShowCheatsMenu then
-			ChoGGi.ComFuncs.SetCheatsMenuPos()
-		end
+		-- restore to original pos
+		SetCheatsMenuPos()
 	end
 
 end
@@ -3028,7 +3029,6 @@ do -- ShowAnimDebug_Toggle
 				AnimDebug_Show(obj, params.colour)
 			end
 		else
-			local ChoGGi = ChoGGi
 			ChoGGi.Temp.ShowAnimDebug = not ChoGGi.Temp.ShowAnimDebug
 			if ChoGGi.Temp.ShowAnimDebug then
 				AnimDebug_ShowAll("Building", params.colour)

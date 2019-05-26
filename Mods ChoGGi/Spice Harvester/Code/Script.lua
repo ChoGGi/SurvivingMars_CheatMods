@@ -198,8 +198,6 @@ function OnMsg.ClassesPostprocess()
 end --ClassesPostprocess
 
 function OnMsg.ClassesBuilt()
-	local ChoGGi = ChoGGi
-
 	local orig_Attach = Melanger.Attach
 	function Melanger:Attach(obj, ...)
 		local ret = orig_Attach(self, obj, ...)

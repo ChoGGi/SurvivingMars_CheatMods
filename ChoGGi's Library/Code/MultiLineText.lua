@@ -25,7 +25,6 @@ DefineClass.ChoGGi_DlgMultiLineText = {
 }
 
 function ChoGGi_DlgMultiLineText:Init(parent, context)
-	local ChoGGi = ChoGGi
 	local g_Classes = g_Classes
 --~ 	self.context = context
 

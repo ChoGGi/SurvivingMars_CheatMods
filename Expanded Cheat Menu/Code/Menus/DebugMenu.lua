@@ -547,6 +547,15 @@ Actions[c] = {ActionName = Translate(3578--[[Framerate Counter--]]) .. " " .. Tr
 }
 
 c = c + 1
+Actions[c] = {ActionName = Translate(3578--[[Framerate Counter--]]),
+	ActionMenubar = "ECM.Debug.Framerate Counter Location",
+	ActionId = ".Framerate Counter",
+	ActionIcon = "CommonAssets/UI/Menu/CountPointLights.tga",
+	RolloverText = Strings[302535920000905--[[Switch between FPS, ms, and off.--]]],
+	OnAction = ChoGGi.MenuFuncs.SetFrameCounter,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Translate(1000458--[[Up--]]) .. " " .. Translate(1000457--[[Left--]]),
 	ActionMenubar = "ECM.Debug.Framerate Counter Location",
 	ActionId = ".Up Left",
