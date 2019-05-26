@@ -40,14 +40,17 @@ local function FilterTech(str)
 		if str == "" or item.str:find_lower(str) then
 			-- only toggle vis if we need to
 			if not item.vis then
-				item.tech:SetVisible(true)
+				-- make sure option is off
+				if not (mod_HideCompleted and IsTechResearched(item.tech.context[1].id)) then
+					item.tech:SetVisible(true)
+					item.vis = true
+				end
 			end
-			item.vis = true
 		else
 			if item.vis then
 				item.tech:SetVisible(false)
+				item.vis = false
 			end
-			item.vis = false
 		end
 	end
 end
@@ -109,11 +112,13 @@ local function EditDlg(dlg)
 				local c = tech.context[1]
 				count = count + 1
 
-				if mod_HideCompleted and IsTechResearched(c.id) then
-					tech.FoldWhenHidden= true
-					tech:SetVisible(false)
+				if mod_HideCompleted then
+					tech.FoldWhenHidden = true
+					if IsTechResearched(c.id) then
+						tech:SetVisible(false)
+					end
 				else
-					tech.FoldWhenHidden= true
+					tech.FoldWhenHidden = false
 					tech:SetVisible(true)
 				end
 

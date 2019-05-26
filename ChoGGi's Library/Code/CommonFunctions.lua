@@ -202,7 +202,7 @@ do -- RetName
 	local func_tables = {
 		"g_CObjectFuncs", "camera", "camera3p", "cameraMax", "cameraRTS",
 		"coroutine", "DTM", "lpeg", "objlist", "pf", "srp", "string", "table",
-		"terrain", "terminal", "UIL","TFormat",
+		"terrain", "terminal", "UIL", "TFormat", "XInput",
 	}
 	for i = 1, #func_tables do
 		AddFuncs(func_tables[i])
@@ -3312,7 +3312,7 @@ GetComputerName(): %s
 	)
 end
 
-do -- RemoveXTemplateSections
+do -- AddXTemplate/RemoveXTemplateSections
 	local function RemoveTableItem(list, name, value)
 		local idx = table_find(list, name, value)
 		if idx then
@@ -3323,11 +3323,11 @@ do -- RemoveXTemplateSections
 	ChoGGi.ComFuncs.RemoveTableItem = RemoveTableItem
 
 	-- check for and remove old object (XTemplates are created on new game/new dlc ?)
-	function ChoGGi.ComFuncs.RemoveXTemplateSections(list, name, value)
+	local function RemoveXTemplateSections(list, name, value)
 		RemoveTableItem(list, name, value or true)
 	end
-end -- do
-do -- AddXTemplate
+	ChoGGi.ComFuncs.RemoveXTemplateSections = RemoveXTemplateSections
+
 	local empty_func = empty_func
 	local function RetTrue()
 		return true
@@ -3343,7 +3343,7 @@ do -- AddXTemplate
 		end
 		local stored_name = "ChoGGi_Template_" .. name
 
-		ChoGGi.ComFuncs.RemoveXTemplateSections(xt, stored_name)
+		RemoveXTemplateSections(xt, stored_name)
 		pos = pos or #xt
 		if pos < 1 then
 			pos = 1

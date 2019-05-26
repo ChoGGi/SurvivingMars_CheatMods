@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Omega Unlocks All Slowly",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
-	"saved", 1558526400,
+	"version_minor", 3,
+	"saved", 1558785600,
 	"image", "Preview.png",
 	"id", "ChoGGi_OmegaUnlocksAllSlowly",
 	"steam_id", "1732442747",
@@ -13,8 +13,11 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[The Omega Telescope will unlock a new breakthrough each Sol.
 
+Mod Options:
+Sols Between Unlock: How many Sols to wait before unlocking the next one (default 1).
 
 Requested by BrowncoatTrekky.]],
 })

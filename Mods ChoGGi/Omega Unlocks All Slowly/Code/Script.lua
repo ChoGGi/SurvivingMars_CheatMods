@@ -1,12 +1,47 @@
 -- See LICENSE for terms
 
+local mod_id = "ChoGGi_OmegaUnlocksAllSlowly"
+local mod = Mods[mod_id]
+
+local mod_SolsBetweenUnlock = mod.options and mod.options.SolsBetweenUnlock or 1
+
+local function ModOptions()
+	mod_SolsBetweenUnlock = mod.options.SolsBetweenUnlock
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= mod_id then
+		return
+	end
+
+	ModOptions()
+end
+
+-- for some reason mod options aren't retrieved before this script is loaded...
+OnMsg.CityStart = ModOptions
+OnMsg.LoadGame = ModOptions
+
+GlobalVar("ChoGGi_OmegaUnlocksAllSlowly_Sols", 0)
+
 -- unlock one per sol (assuming a telescope is working)
 function OnMsg.NewDay()
 --~ function OnMsg.NewHour()
+
 	-- no sense in checking if this isn't true
 	if not g_OmegaTelescopeBonusGiven then
 		return
 	end
+
+	local sols = ChoGGi_OmegaUnlocksAllSlowly_Sols
+	sols = sols + 1
+	-- wait another sol
+	if sols < mod_SolsBetweenUnlock then
+		ChoGGi_OmegaUnlocksAllSlowly_Sols = sols
+		return
+	end
+	-- hit the amount so reset
+	ChoGGi_OmegaUnlocksAllSlowly_Sols = 0
 
 	local UICity = UICity
 
@@ -30,7 +65,6 @@ function OnMsg.NewDay()
 		return
 	end
 
---~ 	StableShuffle(breakthroughs, UICity:CreateResearchRand("OmegaTelescope"), 100)
 	local def = TechDef[table.rand(breakthroughs)]
 
 	-- we already checked for breakthroughs[1], but why not check again :)

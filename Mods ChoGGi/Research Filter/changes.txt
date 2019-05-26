@@ -1,3 +1,6 @@
+v0.7
+Completed didn't stay hidden.
+
 v0.6
 Added mod option to hide completed tech.
 

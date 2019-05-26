@@ -204,13 +204,17 @@ function ChoGGi.MenuFuncs.SetSoilQuality()
 		return
 	end
 
-	local dbg_GetSoilQuality = GetSoilQuality(WorldToHex(GetTerrainCursor()))
+	local soil_quality = GetSoilQuality(WorldToHex(GetTerrainCursor()))
 
 	local item_list = {
-		{text = Strings[302535920000106--[[Current--]]], value = dbg_GetSoilQuality},
-		{text = 0, value = 0},
+		{text = Strings[302535920000106--[[Current--]]], value = soil_quality},
+		{text = -100, value = -100},
+		{text = -75, value = -75},
+		{text = -50, value = -50},
+		{text = -25, value = -25},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
+		{text = 75, value = 75},
 		{text = 100, value = 100},
 	}
 
@@ -222,6 +226,7 @@ function ChoGGi.MenuFuncs.SetSoilQuality()
 
 		if type(choice.value) == "number" then
 
+			-- copy pasta dbg_ChangeSoilQuality(change)
 			Soil_AddAmbient(SoilGrid, choice.value * const.SoilGridScale, -1000)
 			OnSoilGridChanged()
 

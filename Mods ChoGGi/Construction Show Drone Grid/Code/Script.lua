@@ -28,6 +28,25 @@ local IsKindOf = IsKindOf
 local pairs = pairs
 local green = green
 local yellow = yellow
+local CleanupHexRanges = CleanupHexRanges
+local table_insert = table.insert
+
+local orig_ShowBuildingHexes = ShowBuildingHexes
+function ShowBuildingHexes(bld, hex_range_class, bind_func, ...)
+  if IsKindOf(bld, "RCRover") and bld:IsValidPos() and not bld.destroyed then
+		CleanupHexRanges(bld, bind_func)
+		local obj = g_Classes[hex_range_class]:new()
+		obj:SetPos(bld:GetPos():SetStepZ())
+		local g_HexRanges = g_HexRanges
+		g_HexRanges[bld] = g_HexRanges[bld] or {}
+		table_insert(g_HexRanges[bld], obj)
+		g_HexRanges[obj] = bld
+		obj.bind_to = bind_func
+		obj:SetScale(bld[bind_func](bld))
+		return
+	end
+	return orig_ShowBuildingHexes(bld, hex_range_class, bind_func, ...)
+end
 
 -- GetSelectionRadiusScale normally returns 0 unless you have that rover selected
 function RCRover:GetSelectionRadiusScale_OverrideChoGGi()
@@ -42,6 +61,7 @@ function CursorBuilding:GameInit()
 	local UICity = UICity
 	ShowHexRanges(UICity, "SupplyRocket")
 	ShowHexRanges(UICity, "DroneHub")
+	-- function ShowHexRanges(city, class, cursor_obj, bind_func, single_obj)
 	ShowHexRanges(UICity, "RCRover", nil, "GetSelectionRadiusScale_OverrideChoGGi")
 
 	-- change colours

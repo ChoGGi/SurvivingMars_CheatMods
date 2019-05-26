@@ -228,6 +228,8 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 	self.omega_msg_count = const.BreakThroughTechsPerGame + 1
 	self.omega_msg = "\n\n" .. Translate(5182--[[Omega Telescope--]]) .. " " .. Translate(437247068170--[[LIST--]]) .. " (maybe):\n"
 
+	self.idText:SetText("Select location to update text")
+
 	self:PostInit()
 end
 

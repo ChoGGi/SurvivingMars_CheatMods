@@ -1,5 +1,8 @@
+v0.5
+Fix for devs blocking rovers from ShowBuildingHexes.
+
 v0.4
-Added ModConfig option to disable it.
+Added mod option to disable it.
 
 v0.3
 Now shows grid for RC Commanders as well.

@@ -468,6 +468,7 @@ function ChoGGi_XWindow:AddElements()
 	self.idDialog = g_Classes.ChoGGi_XDialog:new({
 		-- keep stuff from spilling outside the dialog
 		Clip = "self",
+		Id = "idDialog",
 	}, self)
 
 	-- x, y, w, h (start off with all dialogs at 100, 100, default size, and we move later)

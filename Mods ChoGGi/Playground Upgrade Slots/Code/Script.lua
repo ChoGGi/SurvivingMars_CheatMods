@@ -2,40 +2,40 @@
 
 -- add the upgrades
 function OnMsg.ClassesBuilt()
-	local n = BuildingTemplates.Playground
+	local p = BuildingTemplates.Playground
 
-	n.upgrade1_id = "Playground_max_visitors1"
-	n.upgrade1_display_name = T(109035890389, "Capacity")
-	n.upgrade1_description = T(0, "+<upgrade1_add_value_1> max_visitors, +1 <icon_Power> Consumption")
-	n.upgrade1_icon = "UI/Icons/Upgrades/home_collective_01.tga"
-	n.upgrade1_mod_prop_id_1 = "max_visitors"
-	n.upgrade1_add_value_1 = 7
-	n.upgrade1_mod_prop_id_2 = "electricity_consumption"
-	n.upgrade1_add_value_2 = 1000
-	n.upgrade1_upgrade_cost_Concrete = 5000
-	n.upgrade1_upgrade_cost_Metals = 1000
+	p.upgrade1_id = "Playground_max_visitors1"
+	p.upgrade1_display_name = T(109035890389, "Capacity")
+	p.upgrade1_description = T(0, "+<upgrade1_add_value_1> max_visitors, +1 <icon_Power> Consumption")
+	p.upgrade1_icon = "UI/Icons/Upgrades/home_collective_01.tga"
+	p.upgrade1_mod_prop_id_1 = "max_visitors"
+	p.upgrade1_add_value_1 = 7
+	p.upgrade1_mod_prop_id_2 = "electricity_consumption"
+	p.upgrade1_add_value_2 = 1000
+	p.upgrade1_upgrade_cost_Concrete = 5000
+	p.upgrade1_upgrade_cost_Metals = 1000
 
-	n.upgrade2_id = "Playground_max_visitors2"
-	n.upgrade2_display_name = T(109035890389, "Capacity")
-	n.upgrade2_description = T(0, "+<upgrade2_add_value_1> max_visitors, +1.5 <icon_Power> Consumption")
-	n.upgrade2_icon = "UI/Icons/Upgrades/home_collective_01.tga"
-	n.upgrade2_mod_prop_id_1 = "max_visitors"
-	n.upgrade2_add_value_1 = 12
-	n.upgrade2_mod_prop_id_2 = "electricity_consumption"
-	n.upgrade2_add_value_2 = 1500
-	n.upgrade2_upgrade_cost_Concrete = 10000
-	n.upgrade2_upgrade_cost_Metals = 3000
+	p.upgrade2_id = "Playground_max_visitors2"
+	p.upgrade2_display_name = T(109035890389, "Capacity")
+	p.upgrade2_description = T(0, "+<upgrade2_add_value_1> max_visitors, +1.5 <icon_Power> Consumption")
+	p.upgrade2_icon = "UI/Icons/Upgrades/home_collective_01.tga"
+	p.upgrade2_mod_prop_id_1 = "max_visitors"
+	p.upgrade2_add_value_1 = 12
+	p.upgrade2_mod_prop_id_2 = "electricity_consumption"
+	p.upgrade2_add_value_2 = 1500
+	p.upgrade2_upgrade_cost_Concrete = 10000
+	p.upgrade2_upgrade_cost_Metals = 3000
 
-	n.upgrade3_id = "Playground_max_visitors3"
-	n.upgrade3_display_name = T(109035890389, "Capacity")
-	n.upgrade3_description = T(0, "+<upgrade3_add_value_1> max_visitors, +2.5 <icon_Power> Consumption")
-	n.upgrade3_icon = "UI/Icons/Upgrades/home_collective_01.tga"
-	n.upgrade3_mod_prop_id_1 = "max_visitors"
-	n.upgrade3_add_value_1 = 40
-	n.upgrade3_mod_prop_id_2 = "electricity_consumption"
-	n.upgrade3_add_value_2 = 2500
-	n.upgrade3_upgrade_cost_Concrete = 15000
-	n.upgrade3_upgrade_cost_Metals = 10000
+	p.upgrade3_id = "Playground_max_visitors3"
+	p.upgrade3_display_name = T(109035890389, "Capacity")
+	p.upgrade3_description = T(0, "+<upgrade3_add_value_1> max_visitors, +2.5 <icon_Power> Consumption")
+	p.upgrade3_icon = "UI/Icons/Upgrades/home_collective_01.tga"
+	p.upgrade3_mod_prop_id_1 = "max_visitors"
+	p.upgrade3_add_value_1 = 40
+	p.upgrade3_mod_prop_id_2 = "electricity_consumption"
+	p.upgrade3_add_value_2 = 2500
+	p.upgrade3_upgrade_cost_Concrete = 15000
+	p.upgrade3_upgrade_cost_Metals = 10000
 end
 
 -- start with first upgrade unlocked

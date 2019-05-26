@@ -369,7 +369,7 @@ function OnMsg.ClassesBuilt()
 
 	-- hopefully this fixes the issue for people that don't have the buttons...
 	if type(idx) ~= "number" then
-		idx = #(building or "1")
+		idx = #(building or "0")
 	end
 
 	table.insert(

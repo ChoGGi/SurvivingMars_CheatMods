@@ -1,2 +1,5 @@
+v0.3
+Added mod option to pick how many Sols between unlocks.
+
 v0.2
 Unlocks random breakthroughs instead of using the StableShuffle method Omega uses.
