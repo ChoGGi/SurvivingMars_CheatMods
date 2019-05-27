@@ -523,16 +523,26 @@ do -- ModUpload
 			end
 		end
 
+		-- uploaded or failed?
 		if err and not blank_mod then
 			local msg = Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>", mod.title):gsub("<err>", Translate(err))
-			if batch then
-				print(Translate("<color red>" .. msg .. "</color>"))
-			end
 			result_msg[#result_msg+1] = msg
 			if choices_len == 1 then
 				result_title[#result_title+1] = Translate(1000592--[[Error--]])
 			else
 				result_title[#result_title+1] = mod.title
+			end
+			-- grab tail from log and show the actual error msg
+			local log_error = ChoGGi.ComFuncs.RetLastLineFromStr(LoadLogfile(), "Received errorMessage")
+				-- remove any ' and :
+				:gsub("'",""):gsub(":","")
+			-- print away
+			if batch then
+				print(Translate("<color red>" .. msg .. "\n" .. tostring(log_error) .. "</color>"))
+			end
+			if log_error then
+				result_title[#result_title+1] = "\n" .. Translate(1000592--[[Error--]])
+				result_msg[#result_msg+1] = log_error
 			end
 		else
 			if choices_len == 1 then

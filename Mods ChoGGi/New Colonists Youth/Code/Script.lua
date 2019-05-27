@@ -22,10 +22,5 @@ local function UpdateTraits(colonist)
 	colonist:AddTrait("Youth")
 end
 
-function OnMsg.ColonistArrived(colonist)
-	UpdateTraits(colonist)
-end
-
-function OnMsg.ColonistBorn(colonist)
-	UpdateTraits(colonist)
-end
+OnMsg.ColonistArrived = UpdateTraits
+OnMsg.ColonistBorn = UpdateTraits

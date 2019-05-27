@@ -44,7 +44,6 @@ ChoGGi.ComFuncs.PlacePolyline = PlacePolyline
 
 local function SetCheatsMenuPos(pos)
 	pos = pos or ChoGGi.UserSettings.KeepCheatsMenuPosition
-	print(pos)
 	if pos then
 		XShortcutsTarget:SetPos(pos)
 	else
@@ -4024,3 +4023,19 @@ do -- DisplayMonitorList
 		end
 	end
 end -- do
+
+function ChoGGi.ComFuncs.RetLastLineFromStr(str, text)
+	if not str then
+		return
+	end
+	-- no text than return last line
+	text = (text or "\n"):reverse()
+
+	-- need to reverse string so it finds the last one, since find looks ltr
+	local last = str:reverse():find(text, 1, true)
+	if last then
+		-- we need a neg number for sub + 1 to remove the slash
+		return str:sub((last * -1) + 1)
+	end
+	return ""
+end

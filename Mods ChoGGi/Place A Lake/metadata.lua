@@ -8,10 +8,10 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Place-a-lake",
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
-	"version", 2,
-	"saved", 1558440000,
+	"version_minor", 3,
+	"saved", 1558872000,
 	"image", "Preview.png",
 	"id", "ChoGGi_Placealake",
 	"steam_id", "1743037328",
@@ -22,6 +22,8 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[Adds a rock you place to mark a lake spot (with a button to raise/lower the level).
+This will ignore the uneven terrain limitation.
+
 For now rovers and whatnot will ignore the lake and walk through it.]],
 	"TagTerraforming", true,
 	"TagLandscaping", true,

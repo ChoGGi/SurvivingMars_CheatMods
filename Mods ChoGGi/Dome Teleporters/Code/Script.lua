@@ -72,7 +72,7 @@ DefineClass.DomeTeleporter = {
 --~ 		"OutsideBuildingWithShifts",
 		"ShiftsBuilding",
 	},
-	construction_mode = "dome_teleporter_construction",
+--~ 	construction_mode = "dome_teleporter_construction",
 	spinner_toggle_thread = false,
 
 	-- passage stuff

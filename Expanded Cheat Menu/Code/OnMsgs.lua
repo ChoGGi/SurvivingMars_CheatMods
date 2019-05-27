@@ -404,7 +404,9 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 
 			-- always show menu
 			XShortcutsTarget:SetVisible(true)
-			XShortcutsTarget:SetPos(ChoGGi.UserSettings.KeepCheatsMenuPosition)
+			if UserSettings.KeepCheatsMenuPosition then
+				XShortcutsTarget:SetPos(UserSettings.KeepCheatsMenuPosition)
+			end
 
 			-- that info text about right-clicking expands the menu instead of just hiding or something
 			for i = 1, #XShortcutsTarget.idToolbar do
