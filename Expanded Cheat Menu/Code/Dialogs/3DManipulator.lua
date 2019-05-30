@@ -109,6 +109,15 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 			Dock = "left",
 		}, self.idPosAreaTop)
 
+		self.idMousePos = g_Classes.ChoGGi_XButton:new({
+			Id = "idMousePos",
+			Text = "",
+			RolloverText = Strings[302535920000908--[[Move obj to mouse pos.--]]],
+			OnPress = self.idMousePos_OnPress,
+			Dock = "left",
+		}, self.idPosAreaTop)
+		self.idMousePos:SetImage("UI/Infopanel/middle_click.tga")
+
 		self.idAmount = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idAmount",
 			RolloverText = Strings[302535920000389--[[The amount used when a button is pressed (default: %s).--]]]:format(self.default_amount),
@@ -310,7 +319,7 @@ function ChoGGi_Dlg3DManipulator:idRollPitchYawButtons_OnPress()
 
 	local roll, pitch, yaw = GetRollPitchYaw(obj)
 
-print("A", roll, pitch, yaw)
+--~ print("A", roll, pitch, yaw)
 	if text == "Roll+" then
 		roll = self:CorrectNumber(roll)
 		roll = self:LimitDegree(roll)
@@ -332,7 +341,7 @@ print("A", roll, pitch, yaw)
 		yaw = self:LimitDegree(yaw)
 	end
 
-print("B", roll, pitch, yaw)
+--~ print("B", roll, pitch, yaw)
 	SetRollPitchYaw(obj, roll, pitch, yaw)
 end
 
@@ -360,6 +369,10 @@ function ChoGGi_Dlg3DManipulator:idPosButtons_OnPress()
 	end
 
 	obj:SetPos(obj:GetPos()+point(x, y, z))
+end
+
+function ChoGGi_Dlg3DManipulator:idMousePos_OnPress()
+	GetRootDialog(self).obj:SetPos(GetTerrainCursor())
 end
 
 function ChoGGi_Dlg3DManipulator:idPosClear_OnPress()

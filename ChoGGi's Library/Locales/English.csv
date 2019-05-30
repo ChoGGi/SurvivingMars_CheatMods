@@ -94,6 +94,7 @@ ID, Text, Translation, Old Translation, Gender
 302535920000033,Post a request on Nexus or Github or send an email to: <color green>%s</color>,
 302535920001092,Pins,
 302535920000004,Dump,
+302535920000908,Move obj to mouse pos.,
 302535920000528,Move %s by %s.,
 302535920000389,The amount used when a button is pressed (default: %s).,
 302535920000391,Roll,

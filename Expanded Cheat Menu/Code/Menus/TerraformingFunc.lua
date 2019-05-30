@@ -67,11 +67,9 @@ function ChoGGi.MenuFuncs.SetAllTerraformingParams(action)
 end
 
 function ChoGGi.MenuFuncs.OpenAirDomes_Toggle()
-	local current = OpenAirBuildings
-	SetOpenAirBuildings(not current)
-
+	SetOpenAirBuildings(not OpenAirBuildings)
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(not current),
+		ChoGGi.ComFuncs.SettingState(OpenAirBuildings),
 		Strings[302535920000559--[[Open Air Domes Toggle--]]]
 	)
 end

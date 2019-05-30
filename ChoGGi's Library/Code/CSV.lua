@@ -119,7 +119,7 @@ do -- MapData
 			breakthroughs = true
 		end
 
-		north, east, south, west = Translate(6887--[[N--]]), Translate(6888--[[E--]]), Translate(6886--[[Strings--]]), Translate(6889--[[W--]])
+		north, east, south, west = Translate(1000487--[[N--]]), Translate(1000478--[[E--]]), Translate(1000492--[[S--]]), Translate(1000496--[[W--]])
 
 		-- save current g_CurrentMapParams to restore later
 		local params = g_CurrentMapParams

@@ -472,6 +472,13 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 			if value > 1000 then
 				value = 1000
 			end
+
+			if value == 1 then
+				ChoGGi.UserSettings.DroneResourceCarryAmountFix = nil
+			else
+				ChoGGi.UserSettings.DroneResourceCarryAmountFix = true
+			end
+
 			ChoGGi.ComFuncs.SetConstsG("DroneResourceCarryAmount", value)
 			UpdateDroneResourceUnits()
 			ChoGGi.ComFuncs.SetSavedConstSetting("DroneResourceCarryAmount")

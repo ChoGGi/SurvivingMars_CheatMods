@@ -23,5 +23,5 @@ return PlaceObj("ModDef", {
 	"lua_revision", 245618,
 	"description", [[Restores "Request Maintenance" button.
 
-It says hidden when maintenance isn't required.]],
+It stays hidden when maintenance isn't required.]],
 })

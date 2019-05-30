@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v6.8 (Unreleased)
+- Export Map Data NESW strings were missing.
 
 ## v6.7 (May 30 2019)
 - Cernan.

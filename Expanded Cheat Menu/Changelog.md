@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v13.8 (Unreleased)
+### Fixed:
+- Drones carry amount fix wasn't applying (thanks RyanSpencer97).
 
 ## v13.7 (May 30 2019)
 ### Added:

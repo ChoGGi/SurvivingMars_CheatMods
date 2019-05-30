@@ -932,15 +932,24 @@ function OnMsg.NewHour()
 		local prods = labels.ResourceProducer or ""
 		for i = 1, #prods do
 			local prod = prods[i]
-			FuckingDrones(prod:GetProducerObj())
-			if prod.wasterock_producer then
-				FuckingDrones(prod.wasterock_producer)
+			-- most are fine with GetProducerObj, but some like water extractor don't have one
+			local obj = prod:GetProducerObj() or prod
+			local func = obj.GetStoredAmount and "GetStoredAmount" or obj.GetAmountStored and "GetAmountStored"
+			if obj[func](obj) > 1000 then
+				FuckingDrones(obj)
+			end
+			obj = prod.wasterock_producer
+			if obj and obj:GetStoredAmount() > 1000 then
+				FuckingDrones(obj, "single")
 			end
 		end
 
 		prods = labels.BlackCubeStockpiles or ""
 		for i = 1, #prods do
-			FuckingDrones(prods[i])
+			local obj = prods[i]
+			if obj:GetStoredAmount() > 1000 then
+				FuckingDrones(obj)
+			end
 		end
 
 	end
@@ -1181,6 +1190,15 @@ do -- LoadGame/CityStart
 
 
 
+
+		-- fucking drones
+		if UserSettings.DroneResourceCarryAmount then
+			if UserSettings.DroneResourceCarryAmount == 1 then
+				UserSettings.DroneResourceCarryAmountFix = nil
+			else
+				UserSettings.DroneResourceCarryAmountFix = true
+			end
+		end
 
 		if type(UserSettings.UnpinObjects) == "table" and #UserSettings.UnpinObjects > 0 then
 			local new = {}

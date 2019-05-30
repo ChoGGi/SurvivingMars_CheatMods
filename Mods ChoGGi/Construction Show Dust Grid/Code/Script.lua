@@ -58,7 +58,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 		return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 	end
 
-	local range_limit = mod_DistFromCursor > 1000 and mod_DistFromCursor
+	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
 	local cursor_pos = GetTerrainCursor()
 	local g_HexRanges = g_HexRanges
 
@@ -94,32 +94,8 @@ function CursorBuilding:UpdateShapeHexes(...)
 		end
 	end
 
---~ 	for range in pairs(g_HexRanges) do
---~ 		if range.bind_to == "GetDustRadius" and range:IsKindOf("RangeHexMultiSelectRadius") then
---~ 			if range_limit and cursor:Dist2D(obj:GetPos()) > range_limit then
---~ 				range:SetVisible(false)
---~ 			else
---~ 				range:SetVisible(true)
---~ 				for j = 1, #range.decals do
---~ 					-- light yellow
---~ 					range.decals[j]:SetColorModifier(-2143)
---~ 				end
---~ 			end
-
---~ 		end
---~ 	end
-
 	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 end
-
---~ local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
---~ function CursorBuilding:GameInit(...)
---~ 	-- skip if disable or not a dusty building
---~ 	if mod_Option1 and self.template:IsKindOf("RequiresMaintenance") then
---~ 		UpdateGridShapes()
---~ 	end
---~ 	return orig_CursorBuilding_GameInit(self)
---~ end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done(...)

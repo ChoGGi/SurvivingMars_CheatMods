@@ -2218,6 +2218,11 @@ do -- FuckingDrones (took quite a while to figure this fun one out)
 
 	local function GetNearestIdleDrone(bld)
 		if not bld or (bld and not bld.command_centers) then
+			if bld.parent.command_centers then
+				bld = bld.parent
+			end
+		end
+		if not bld or (bld and not bld.command_centers) then
 			return
 		end
 
@@ -2255,7 +2260,7 @@ do -- FuckingDrones (took quite a while to figure this fun one out)
 	end
 	ChoGGi.ComFuncs.GetNearestIdleDrone = GetNearestIdleDrone
 
-	function ChoGGi.ComFuncs.FuckingDrones(obj)
+	function ChoGGi.ComFuncs.FuckingDrones(obj,single)
 		if not IsValid(obj) then
 			return
 		end
@@ -2263,14 +2268,14 @@ do -- FuckingDrones (took quite a while to figure this fun one out)
 		-- Come on, Bender. Grab a jack. I told these guys you were cool.
 		-- Well, if jacking on will make strangers think I'm cool, I'll do it.
 
-		local stored
-		local is_single = obj:IsKindOf("SingleResourceProducer")
-		-- mines/farms/factories
-		if is_single then
-			stored = obj:GetAmountStored()
-		else
-			stored = obj:GetStoredAmount()
-		end
+		local is_single = single == "single" or obj:IsKindOf("SingleResourceProducer")
+		local stored = obj:GetStoredAmount()
+--~ 		-- mines/farms/factories
+--~ 		if is_single then
+--~ 			stored = obj:GetAmountStored()
+--~ 		else
+--~ 			stored = obj:GetStoredAmount()
+--~ 		end
 
 		-- only fire if more then one resource
 		if stored > 1000 then
