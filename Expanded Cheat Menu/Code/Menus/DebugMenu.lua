@@ -551,8 +551,19 @@ Actions[c] = {ActionName = Translate(3578--[[Framerate Counter--]]),
 	ActionMenubar = "ECM.Debug.Framerate Counter Location",
 	ActionId = ".Framerate Counter",
 	ActionIcon = "CommonAssets/UI/Menu/CountPointLights.tga",
-	RolloverText = Strings[302535920000905--[["Switch between FPS, ms, and off."--]]],
+	RolloverText = function()
+		local c = hr.FpsCounter
+		return SettingState(
+			c == 0 and Translate(847439380056--[[Disabled--]])
+				or c == 1 and Translate(3558--[[FPS--]])
+				or c == 2 and Translate(3559--[[ms--]]),
+			Strings[302535920000905--[["Switch between FPS, ms, and off.
+This is temporary, use Options>Video>Framerate Counter to permanently save it."--]]]
+		)
+	end,
+
 	OnAction = ChoGGi.MenuFuncs.SetFrameCounter,
+	ActionSortKey = "-1",
 }
 
 c = c + 1
