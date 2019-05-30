@@ -55,37 +55,14 @@ do -- non-class obj funcs
 		end
 	end -- do
 
-	-- work on these persist errors (func saved in lib mod)
-	function PersistGame(folder, ...)
-		-- collectgarbage is blacklisted, and I'm not sure what issue it'd cause if it doesn't fire (saving weird shit maybe)...
-		if not blacklist and UserSettings.DebugPersistSaves then
-			collectgarbage("collect")
-			Msg("SaveGame")
-			rawset(_G, "__error_table__", {})
-			local err = EngineSaveGame(folder .. "persist")
-			local error_amt = #__error_table__
-
-			for i = 1, error_amt do
-				local errors = __error_table__[i]
-				print("Persist error:", errors.error or "unknown")
-				print("Persist stack:")
-				for j = 1, #errors do
-					print("	", tostring(errors[j]))
-				end
-			end
-
-			if error_amt > 0 then
-				ChoGGi.ComFuncs.OpenInExamineDlg(__error_table__, nil, "__error_table__ (persists)")
-			end
-
-			-- be useful for restarting threads, see if devs will add it
-			Msg("PostSaveGame")
-			return err
+	function ReportPersistErrors(...)
+		if UserSettings.DebugPersistSaves and #__error_table__ > 0 then
+			ChoGGi.ComFuncs.OpenInExamineDlg(__error_table__, nil, "__error_table__ (persists)")
+		else
+			ChoGGi_OrigFuncs.ReportPersistErrors(...)
 		end
-
 		-- be useful for restarting threads, see if devs will add it
 		Msg("PostSaveGame")
-		return ChoGGi_OrigFuncs.PersistGame(folder, ...)
 	end
 
 	-- WARNING: Unable to retrieve a function's source code while saving!

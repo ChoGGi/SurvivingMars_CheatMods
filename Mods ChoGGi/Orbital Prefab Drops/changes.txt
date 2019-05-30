@@ -3,22 +3,22 @@ Uses supply pod model now.
 It now takes back off after prefab is setup.
 No more falling rockets.
 It doesn't do passages anymore, since they're a bit off hex.
-Added a ModConfig option for the model.
+Added a mod options option for the model.
 
 v0.4
-Dropping into a dome will crack it (turn off with ModConfig).
+Dropping into a dome will crack it (turn off with mod options).
 
 v0.3
 Container slides down while prefab slides up.
 Added a bottom to the container.
 Changed size of ground damage decals (rockets now smaller vs container).
-Whoops seems the rockets do cause damage :), added ModConfig option (default off).
+Whoops seems the rockets do cause damage :), added mod options option (default off).
 Also stopped the containers from doing damage.
 
 v0.2
 Halved the amount of rockets attached to containers.
 
-ModConfig options
+mod options options
 Inside/Outside buildings: If you don't want them being dropped off inside (or outside).
 Prefab Only: Only rocket drop prefabs (or all buildings dependant on above options).
 Detach Rockets: Rockets will detach and fall to the ground (the rockets are just visual, no damage will happen).

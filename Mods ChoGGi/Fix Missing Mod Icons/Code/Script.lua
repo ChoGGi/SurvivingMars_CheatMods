@@ -16,6 +16,12 @@ local function FixPath(image, mod_path)
 	return image:gsub(mod_path, "")
 end
 
+local icons = {
+	"CropPresets",
+	"BuildMenuSubcategories",
+	"TechDef",
+}
+
 local pairs = pairs
 local function StartupCode()
 	local ct = ClassTemplates.Building
@@ -34,11 +40,14 @@ local function StartupCode()
 			bld_ct.upgrade3_icon = FixPath(bld.upgrade3_icon, mod_path)
 		end
 	end
-	-- just for you enzo (and I guess anyone else)
-	local CropPresets = CropPresets
-	for id, crop in pairs(CropPresets) do
-		if crop.mod then
-			crop.icon = FixPath(crop.icon, crop.mod.env.CurrentModPath)
+
+	-- maybe think about adding all preset global maps
+	for i = 1, #icons do
+		local items = _G[icons[i]]
+		for _, item in pairs(items) do
+			if item.mod then
+				item.icon = FixPath(item.icon, item.mod.env.CurrentModPath)
+			end
 		end
 	end
 

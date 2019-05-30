@@ -33,10 +33,10 @@ Buy card packs to speed up mining.
 No more waiting around for your loot, now you can build your premium custom base sooner!
 v1.1
 Precious idle time wasn't changeable.
-Added some paint around mining area (toggle in ModConfig).
+Added some paint around mining area (toggle in mod options).
 v1.0
 Changed mining speeds of Metal/Precious to 50%/10%.
-Added support for ModConfig.
+Added support for mod options.
 Fixed issue with auto-mode not changing stack size.
 v0.9
 Concrete is fixed now.

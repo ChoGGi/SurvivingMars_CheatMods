@@ -1,0 +1,2 @@
+v0.2
+Because of when mod options are gathered it didn't research them.

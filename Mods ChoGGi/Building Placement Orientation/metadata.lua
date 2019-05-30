@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 	"title", "Building Placement Orientation",
@@ -21,7 +21,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"description", [[Any object you place will have the same orientation as the last placed object.
 
 Ctrl-Space to activate placement mode with the selected or last placed object (or object under mouse).]],

@@ -2,7 +2,7 @@ v0.5
 Hopefully fixed the NonSpecialistPerformancePenalty issue (thanks Dunkelzahn).
 
 v0.4
-Added ModConfig option to change how many Sols it takes.
+Added mod options option to change how many Sols it takes.
 
 v0.3
 Da Vinci

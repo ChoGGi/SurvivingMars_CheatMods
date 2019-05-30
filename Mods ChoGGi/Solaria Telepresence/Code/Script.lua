@@ -5,8 +5,6 @@ local RetName = ChoGGi.ComFuncs.RetName
 local FilterFromTable = ChoGGi.ComFuncs.FilterFromTable
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
-local type = type
-
 local OnMsg = OnMsg
 local IsValid = IsValid
 local RebuildInfopanel = RebuildInfopanel

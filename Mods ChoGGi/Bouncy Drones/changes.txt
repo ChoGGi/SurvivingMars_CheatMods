@@ -1,5 +1,6 @@
 v0.3
 Da Vinci
+
 v0.2
-Added support for ModConfig mod (change the gravity amount). 
+Added support for mod options mod (change the gravity amount).
 Added options for Colonists and Rovers.

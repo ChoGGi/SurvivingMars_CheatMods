@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 	"title", "Buildable/Controllable AttackRover",
@@ -19,6 +19,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"description", [[It doesn't do anything, that's your job.]],
 })

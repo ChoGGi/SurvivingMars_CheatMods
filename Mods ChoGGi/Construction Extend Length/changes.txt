@@ -1,2 +1,2 @@
 v0.2
-Added ModConfig options.
+Added mod options options.

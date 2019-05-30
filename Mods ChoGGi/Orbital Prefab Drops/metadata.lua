@@ -1,4 +1,5 @@
 return PlaceObj("ModDef", {
+--~ 	"title", "Orbital Prefab Drops v0.5",
 	"title", "Orbital Prefab Drops",
 	"version", 5,
 	"version_major", 0,
@@ -9,7 +10,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1545818603",
 	"pops_any_uuid", "20be6c5b-b62d-41c5-af97-de631190ea8a",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},
@@ -18,7 +19,7 @@ return PlaceObj("ModDef", {
 
 Something like this was removed from the beta builds? For shame ;)
 
-mod optionss
+Mod Options:
 Inside/Outside Buildings: If you don't want them being dropped off inside (or outside).
 Prefab Only: Only rocket drop prefabs (or all buildings depending on above options).
 Dome Crack: If the drop is in a dome, it'll crack the glass.

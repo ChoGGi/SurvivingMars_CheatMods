@@ -1,2 +1,2 @@
 v0.2
-Added ModConfig option to disable it.
+Added mod options option to disable it.

@@ -1,3 +1,6 @@
+v0.7
+Missing water markers (thanks Darkness).
+
 v0.6
 It needs water now, just 1 though.
 Added a warning msg to it when a dust storm is active.

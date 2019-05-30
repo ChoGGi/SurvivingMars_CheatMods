@@ -4,9 +4,10 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
+--~ 	"title", "Stop Current Disasters v0.4",
 	"title", "Stop Current Disasters",
 	"version", 5,
 	"version_major", 0,
@@ -20,7 +21,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua"
 	},
 	"image", "Preview.png",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"description", [[Stops any running disasters (duststorms, coldwaves, and current meteors/dustdevil) when you load a save (you don't need to leave it enabled afterwards).
 
 

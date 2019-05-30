@@ -27,9 +27,7 @@ local cameraRTS = cameraRTS
 local terrain = terrain
 local transition_time = 0
 
-local RetName = ChoGGi.ComFuncs.RetName
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
 
 local function GetRootDialog(dlg)

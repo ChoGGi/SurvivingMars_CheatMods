@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 	"title", "Rares Per Rocket",
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RaresPerRocket",
 	"pops_any_uuid", "6ba1c4f3-0855-450f-881a-0d33b5f6f64a",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},

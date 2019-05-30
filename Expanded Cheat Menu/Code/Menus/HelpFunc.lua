@@ -555,13 +555,17 @@ do -- ModUpload
 
 		-- show id in console/copy to clipb
 		if not test and item_id then
-			-- don't copy to clipb if batch or failed
-			if batch ~= "batch" and clipboard and not err then
-				if mod_params.uuid_property then
-					CopyToClipboard("	\"" .. mod_params.uuid_property .. "\", \"" .. item_id .. "\",")
-				else
-					CopyToClipboard("	\"steam_id\", \"" .. item_id .. "\",")
-				end
+--~ 			-- don't copy to clipb if batch or failed
+--~ 			if batch ~= "batch" and clipboard and not err then
+--~ 				if mod_params.uuid_property then
+--~ 					CopyToClipboard("	\"" .. mod_params.uuid_property .. "\", \"" .. item_id .. "\",")
+--~ 				else
+--~ 					CopyToClipboard("	\"steam_id\", \"" .. item_id .. "\",")
+--~ 				end
+--~ 			end
+			-- don't copy to clipb if batch or failed or not steam
+			if steam_upload and batch ~= "batch" and clipboard and not err then
+				CopyToClipboard("	\"steam_id\", \"" .. item_id .. "\",")
 			end
 
 			local id_str = Translate(1000021--[[Steam ID--]])

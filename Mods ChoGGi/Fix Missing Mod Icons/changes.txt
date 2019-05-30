@@ -1,2 +1,5 @@
+v0.3
+Fixed Tech and Build Submenu Cats.
+
 v0.2
 Fixed crop icons (thanks enzovirus).

@@ -56,7 +56,7 @@ Actions[c] = {ActionName = Strings[302535920001498--[[Examine Persist Errors--]]
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.DebugPersistSaves,
-			Strings[302535920001499--[[Shows an examine dialog with any persist errors when saving (needs ECM HelperMod).--]]]
+			Strings[302535920001499--[[Shows an examine dialog with any persist errors when saving.--]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.ExaminePersistErrors_Toggle,
@@ -551,7 +551,7 @@ Actions[c] = {ActionName = Translate(3578--[[Framerate Counter--]]),
 	ActionMenubar = "ECM.Debug.Framerate Counter Location",
 	ActionId = ".Framerate Counter",
 	ActionIcon = "CommonAssets/UI/Menu/CountPointLights.tga",
-	RolloverText = Strings[302535920000905--[[Switch between FPS, ms, and off.--]]],
+	RolloverText = Strings[302535920000905--[["Switch between FPS, ms, and off."--]]],
 	OnAction = ChoGGi.MenuFuncs.SetFrameCounter,
 }
 

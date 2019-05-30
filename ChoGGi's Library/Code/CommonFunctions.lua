@@ -1151,15 +1151,6 @@ function ChoGGi.ComFuncs.RemoveFromLabel(label, obj)
 	end
 end
 
-function toboolean(str)
-	if str == "true" then
-		return true
-	elseif str == "false" then
-		return false
-	end
---~ 	return 0/0
-end
-
 -- tries to convert "65" to 65, "boolean" to boolean, "nil" to nil, or just returns "str" as "str"
 function ChoGGi.ComFuncs.RetProperType(value)
 	-- boolean
@@ -4630,7 +4621,7 @@ function ChoGGi.ComFuncs.PlantRandomVegetation(amount)
 	local HexToWorld = HexToWorld
 	local DoesContainVegetation = DoesContainVegetation
 	local CanVegGrowAt_C = rawget(_G,"Vegetation_CanVegetationGrowAt_C")
-	local CanVegGrowAt = CanVegetationGrowAt
+	local CanVegetationGrowAt = CanVegetationGrowAt
 	local PlaceVegetation = PlaceVegetation
 
 	local ObjectGrid = ObjectGrid

@@ -3,16 +3,20 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-	"saved", 1556280000,
+	"saved", 1559044800,
 	"image", "Preview.png",
 	"id", "ChoGGi_UnlimitedWonders",
-	"pops_any_uuid", "09509380-3ac2-48a2-8755-9032a3ce8d9c",
+	"steam_id", "1754331978",
+	"pops_any_uuid", "ab3fc120-a161-4d9b-b7a9-c3fb685e51e7",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Build as many wonders as you want.
+	"description", [[Build as many as you want.
 
-Requested by Griffdy04.]],
+Requested by Griffdy04/BlueNightfury.
+
+
+Included in Expanded Cheat Menu.]],
 })

@@ -38,6 +38,15 @@ c = GetTerrainCursor -- cursor position on map
 cs = terminal.GetMousePos -- cursor pos on screen
 s = false -- used to store SelectedObj
 
+function toboolean(str)
+	if str == "true" then
+		return true
+	elseif str == "false" then
+		return false
+	end
+--~ 	return 0/0
+end
+
 -- add some simple functions to the cheatmenu for moving it/getting pos
 function XShortcutsHost:SetPos(pt)
 	-- doesn't "stick"

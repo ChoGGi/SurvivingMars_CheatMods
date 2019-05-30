@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 	"title", "Lock Residence",
@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_LockResidence",
 	"steam_id", "1635694550",
 	"pops_any_uuid", "eaa85815-b77c-416e-a71b-e23694489348",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},

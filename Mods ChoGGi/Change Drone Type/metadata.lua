@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 --~ 	"title", "Change Drone Type v0.3",
@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1592984375",
 	"pops_any_uuid", "0d35f043-f2eb-4f38-ac2c-12459370a41c",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},

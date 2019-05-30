@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 	"title", "Click To Move Camera",
@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1590473613",
 	"pops_any_uuid", "66775804-4873-47bf-8ffb-005195ebb5c8",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},

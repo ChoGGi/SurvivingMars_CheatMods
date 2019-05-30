@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RemoveConsoleDomeCap",
 	"pops_any_uuid", "13f69bda-3d6b-49d7-b6d4-ec041a954ea5",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},

@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_Logos_InitechOfficeSpace",
 	"steam_id", "1739994295",
 	"author", "BrowncoatTrekky & ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"TagColonyLogos", true,
 	"code", {
 		"Code/Script.lua",

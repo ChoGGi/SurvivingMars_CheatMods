@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 --~ 	"title", "Passenger Rocket Tweaks v0.2",
@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1641796120",
 	"pops_any_uuid", "e27f8c05-6999-4737-8615-5c9820b083ff",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},

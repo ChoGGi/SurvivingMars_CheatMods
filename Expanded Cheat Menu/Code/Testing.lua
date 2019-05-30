@@ -24,6 +24,13 @@ if not ChoGGi.testing then
 	return
 end
 
+function OnMsg.OnLuaError(err, stack)
+	print("OnLuaError", err, stack)
+end
+function OnMsg.OnModLuaError(err, stack)
+	print("OnModLuaError", err, stack)
+end
+
 local function StartUp()
 	-- print startup msgs to console log
 	local msgs = ChoGGi.Temp.StartupMsgs

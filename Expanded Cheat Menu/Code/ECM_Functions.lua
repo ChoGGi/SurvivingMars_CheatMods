@@ -2421,7 +2421,6 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 ~RCConstructor.CanInteractWithObject
 
 ~ChoGGi.ComFuncs.RetSourceFile
-~ModConfig.Set
 --]]
 		-- remove @
 		local at = path:sub(1, 1)

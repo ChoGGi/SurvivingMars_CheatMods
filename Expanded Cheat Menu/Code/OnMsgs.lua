@@ -53,18 +53,11 @@ function OnMsg.ClassesPreprocess()
 		end
 		ChoGGi.Tables.Consts_names = names
 
-		-- const.* (I don't think these have default values in-game anywhere, so manually set them.) _GameConst.lua
-		cConsts.RCRoverMaxRadius = const.RCRoverMaxRadius or 20
-		cConsts.CommandCenterMaxRadius = const.CommandCenterMaxRadius or 35
-	--~ 	cConsts.DroneRestrictRadius = const.DroneRestrictRadius or 70000
-		cConsts.BreakThroughTechsPerGame = const.BreakThroughTechsPerGame or 13
-		cConsts.OmegaTelescopeBreakthroughsCount = const.OmegaTelescopeBreakthroughsCount or 3
-		cConsts.ExplorationQueueMaxSize = const.ExplorationQueueMaxSize or 10
-		cConsts.fastGameSpeed = const.fastGameSpeed or 5
-		cConsts.MaxToxicRainPools = const.MaxToxicRainPools or 30
-		cConsts.mediumGameSpeed = const.mediumGameSpeed or 3
-		cConsts.MoistureVaporatorPenaltyPercent = const.MoistureVaporatorPenaltyPercent or 40
-		cConsts.MoistureVaporatorRange = const.MoistureVaporatorRange or 5
+		local const_names = ChoGGi.Tables.const_names
+		for i = 1, #const_names do
+			local name = const_names[i]
+			cConsts[name] = const[name]
+		end
 		cConsts.InvalidPos = InvalidPos()
 	end
 

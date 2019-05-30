@@ -1,4 +1,5 @@
 return PlaceObj("ModDef", {
+--~ 	"title", "Mars Companion v0.1",
 	"title", "Mars Companion",
 	"version", 1,
 	"version_major", 0,
@@ -9,7 +10,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1662943895",
 	"pops_any_uuid", "771dadc1-3f2c-443e-a695-b7534f782e75",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Companion.lua",
 		"Code/Script.lua",

@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 	"title", "Change Rocket Position",
@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1707472695",
 	"pops_any_uuid", "c2854565-a76e-473a-8464-47349176169f",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},

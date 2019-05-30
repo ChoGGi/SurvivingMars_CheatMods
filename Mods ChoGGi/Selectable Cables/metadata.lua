@@ -1,4 +1,5 @@
 return PlaceObj("ModDef", {
+--~ 	"title", "Selectable Cables v0.4",
 	"title", "Selectable Cables",
 	"version", 4,
 	"version_major", 0,
@@ -12,6 +13,6 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"description", [[Name pretty much says it all.]],
 })

@@ -1,4 +1,5 @@
 return PlaceObj("ModDef", {
+--~ 	"title", "Every Flag On Wikipedia v0.6",
 	"title", "Every Flag On Wikipedia",
 	"version", 7,
 	"version_major", 0,
@@ -9,7 +10,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "1455937967",
 	"pops_any_uuid", "72c38c74-3abc-4248-a29a-9209efbe94f3",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},

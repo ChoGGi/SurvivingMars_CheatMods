@@ -14,6 +14,14 @@ local IsValidThread = IsValidThread
 local NearestObject = NearestObject
 local Sleep = Sleep
 local Wakeup = Wakeup
+local testbit = testbit
+local HexNeighbours = HexNeighbours
+local HexGetBuilding = HexGetBuilding
+local WorldToHex = WorldToHex
+local IsBuildableZone = IsBuildableZone
+local GetMaxHeightInHex = GetMaxHeightInHex
+local PlaceObject = PlaceObject
+local Max = Max
 
 DefineClass.Carwash = {
 	__parents = {
@@ -185,52 +193,53 @@ function Carwash:OnDestroyed()
 		PlayFX("FarmWater", "end", self.sprinkler)
 		self.sprinkler:SetAnim(1, "workingEnd")
 	end
+end
 
+function Carwash:AddFakeMarkers(list)
+	-- we need to add extra marker and move them to the correct places
+	self:ForEachAttach("GridTileWater", function(a)
+		-- they're normally made invis because they're "under" a building
+		a:SetVisible(true)
+
+		local offset = a:GetAttachOffset()
+		local num = a:GetAttachSpot()
+
+		a:SetAttachOffset(offset:SetX(-325):SetY(-1000))
+
+		-- add 3 extra markers to each spot (SetObjWaterMarkers adds one to each spot)
+		for i = 1, 3 do
+			local marker = PlaceObject("GridTileWater", nil, const.cfComponentAttach)
+			self:Attach(marker, num)
+			marker:SetAttachAngle(- marker:GetAngle())
+			marker:SetAttachOffset(0, 0, offset:z())
+			if i == 1 then
+				marker:SetAttachOffset(offset:SetX(-325):SetY(1000))
+			elseif i == 2 then
+				marker:SetAttachOffset(offset:SetX(-1200):SetY(500))
+			elseif i == 3 then
+				marker:SetAttachOffset(offset:SetX(-1200):SetY(-500))
+			end
+
+			if list then
+				list[#list + 1] = marker
+			end
+		end
+
+	end)
 end
 
 -- fake the pipe hookups
-local PlaceObject = PlaceObject
-local orig_SetWaterMarkers = SetWaterMarkers
-function SetWaterMarkers(obj, show, list, ...)
-	local marked = orig_SetWaterMarkers(obj, show, list, ...)
+local orig_SetObjWaterMarkers = SetObjWaterMarkers
+function SetObjWaterMarkers(obj, show, list, ...)
+	local marked = orig_SetObjWaterMarkers(obj, show, list, ...)
 	-- means it found n added markers then made them invis since they're "touching" the building
-	if marked and show and show ~= "update" and obj:IsKindOf("Carwash") then
-
-		-- we need to add extra marker and move them to the correct places
-		obj:ForEachAttach("GridTileWater", function(a)
-			-- they're normally made invis because they're "under" a building
-			a:SetVisible(true)
-
-			local offset = a:GetAttachOffset()
-			local num = a:GetAttachSpot()
-
-			a:SetAttachOffset(offset:SetX(-325):SetY(-1000))
-
-			-- add 3 extra markers to each spot (SetWaterMarkers adds one to each spot
-			for i = 1, 3 do
-				local marker = PlaceObject("GridTileWater", nil, const.cfComponentAttach)
-				obj:Attach(marker, num)
-				marker:SetAttachAngle(- marker:GetAngle())
-				marker:SetAttachOffset(0, 0, offset:z())
-				if i == 1 then
-					marker:SetAttachOffset(offset:SetX(-325):SetY(1000))
-				elseif i == 2 then
-					marker:SetAttachOffset(offset:SetX(-1200):SetY(500))
-				elseif i == 3 then
-					marker:SetAttachOffset(offset:SetX(-1200):SetY(-500))
-				end
-
-				if list then
-					list[#list + 1] = marker
-				end
-			end
-
-		end)
+	if marked and show == true and obj:IsKindOf("Carwash") then
+		obj:AddFakeMarkers(list)
 	end
 	return marked
 end
 
--- needed by SetWaterMarkers() in construction.lua
+-- needed by SetObjWaterMarkers() in construction.lua
 local orig_HasSpot = g_CObjectFuncs.HasSpot
 function Carwash:HasSpot(name, ...)
 	if name == "Lifesupportgrid" then
@@ -273,15 +282,11 @@ local GetPipeConnections = {
 	{point(1, 1), 5, 6, "SignWater"},
 }
 
-function Carwash.GetPipeConnections(...)
+function Carwash.GetPipeConnections()
 	return GetPipeConnections
 end
 
 -- change the plugs to seams to hide our lack of tube
-local testbit = testbit
-local HexNeighbours = HexNeighbours
-local HexGetBuilding = HexGetBuilding
-local WorldToHex = WorldToHex
 local orig_LifeSupportGridElement_UpdateVisuals = LifeSupportGridElement.UpdateVisuals
 function LifeSupportGridElement:UpdateVisuals(supply_resource, ...)
 	local result = orig_LifeSupportGridElement_UpdateVisuals(self, supply_resource, ...)

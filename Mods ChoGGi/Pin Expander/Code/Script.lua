@@ -262,7 +262,7 @@ function PinsDlg:InitPinButton(button, ...)
 		if IsControlPressed() then
 			return orig_button_OnPress(button_obj, gamepad, ...)
 		end
-		local varargs = ...
+--~		local varargs = ...
 
 		local objs
 		local object = button_obj.context

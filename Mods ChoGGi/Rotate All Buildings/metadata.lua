@@ -1,4 +1,5 @@
 return PlaceObj("ModDef", {
+--~ 	"title", "Rotate All Buildings v0.1",
 	"title", "Rotate All Buildings",
 	"version", 1,
 	"version_major", 0,
@@ -9,7 +10,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1566471085",
 	"pops_any_uuid", "e22c2a8a-60a1-4736-9c11-b4ecbe14dce0",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},

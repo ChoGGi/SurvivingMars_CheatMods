@@ -1,6 +1,9 @@
 ## Library Changelog
 
-## v6.7 (Unreleased)
+## v6.8 (Unreleased)
+
+## v6.7 (May 30 2019)
+- Cernan.
 
 ## v6.6 (May 22 2019)
 - Bump.

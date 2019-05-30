@@ -1,4 +1,5 @@
 return PlaceObj("ModDef", {
+--~ 	"title", "Show Saved Colonies v0.9",
 	"title", "Show Saved Colonies",
 	"version", 9,
 	"version_major", 0,
@@ -12,7 +13,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"description", [[Puts a dome marker on areas you've already been to.
 This also adds the names of the saves to the pointer text.]],
 })

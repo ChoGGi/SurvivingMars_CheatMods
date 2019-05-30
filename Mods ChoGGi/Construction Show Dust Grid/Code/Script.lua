@@ -3,9 +3,11 @@
 local mod_id = "ChoGGi_ConstructionShowDustGrid"
 local mod = Mods[mod_id]
 local mod_Option1 = mod.options and mod.options.Option1 or true
+local mod_DistFromCursor = (mod.options and mod.options.DistFromCursor or 0) * 1000
 
 local function ModOptions()
 	mod_Option1 = mod.options.Option1
+	mod_DistFromCursor = mod.options.DistFromCursor * 1000
 end
 
 -- fired when option is changed
@@ -21,77 +23,110 @@ end
 OnMsg.CityStart = ModOptions
 OnMsg.LoadGame = ModOptions
 
--- local whatever globals we call
+-- local some globals
+local pairs = pairs
 local HideHexRanges = HideHexRanges
-local CleanupHexRanges = CleanupHexRanges
-local PlaceObject = PlaceObject
-local table_insert = table.insert
+local ShowBuildingHexes = ShowBuildingHexes
+local GetTerrainCursor = GetTerrainCursor
+local InvalidPos = InvalidPos()
 
 local dust_gens = {}
-local c = 0
+local dust_gens_c = 0
 -- just in case mods add custom dust buildings
 function OnMsg.ModsReloaded()
+	if dust_gens_c > 0 then
+		return
+	end
+
 	local g_Classes = g_Classes
 	local BuildingTemplates = BuildingTemplates
 
 	for id in pairs(BuildingTemplates) do
 		local o = g_Classes[id]
-		if o and o:IsKindOf("DustGenerator") then
-			c = c + 1
-			dust_gens[c] = id
+		-- dust gens and rockets, but not supply pods
+		if o and o.GetDustRadius and not o:IsKindOf("SupplyPod") then
+			dust_gens_c = dust_gens_c + 1
+			dust_gens[dust_gens_c] = id
 		end
 	end
 end
 
--- copy n paste from Lua\UI\InGameInterface.lua (pretty much)
-local function ShowBuildingHexes(bld)
-	if bld:IsValidPos() and not bld.destroyed then
-		local g_HexRanges = g_HexRanges
-
-		CleanupHexRanges(bld, "GetDustRadius")
-		local obj = PlaceObject("RangeHexMultiSelectRadius")
-		obj:SetPos(bld:GetPos():SetStepZ()) -- avoid attaching it in air in case of landing rockets
-		g_HexRanges[bld] = g_HexRanges[bld] or {}
-		table_insert(g_HexRanges[bld], obj)
-		g_HexRanges[obj] = bld
-		obj.bind_to = "GetDustRadius"
-		obj:SetScale(bld:GetDustRadius())
-		for i = 1, #obj.decals do
-			obj.decals[i]:SetColorModifier(16775073, 1500)
-		end
+local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
+function CursorBuilding:UpdateShapeHexes(...)
+	-- skip if disable or not a dusty building
+	if not (mod_Option1 or self.template:IsKindOf("RequiresMaintenance")) then
+		return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 	end
-end
 
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
-function CursorBuilding:GameInit()
-	if not mod_Option1 then
-		return orig_CursorBuilding_GameInit(self)
-	end
+	local range_limit = mod_DistFromCursor > 1000 and mod_DistFromCursor
+	local cursor_pos = GetTerrainCursor()
+	local g_HexRanges = g_HexRanges
+
+--~ ex(self)
 --~ ex(dust_gens)
 	local labels = UICity.labels
 
-	local rockets = labels.SupplyRocket or ""
-	for i = 1, #rockets do
-		ShowBuildingHexes(rockets[i])
-	end
+	for i = 1, dust_gens_c do
+		local objs = labels[dust_gens[i]] or ""
+		-- loop through them all and add the grid
+		for j = 1, #objs do
+			local obj = objs[j]
+			local obj_pos = obj:GetPos()
+			-- add hex to all buildings
+			if obj_pos ~= InvalidPos and not g_HexRanges[obj] then
+				ShowBuildingHexes(obj, "RangeHexMultiSelectRadius", "GetDustRadius")
+			end
+			-- change vis for any outside the range
+			local range = g_HexRanges[obj]
+			if range and range[1] then
+				range = range[1]
+				if range_limit and cursor_pos:Dist2D(obj_pos) > range_limit then
+					range:SetVisible(false)
+				else
+					range:SetVisible(true)
+					for k = 1, #range.decals do
+						-- light yellow
+						range.decals[k]:SetColorModifier(-2143)
+					end
+				end
+			end
 
-	for i = 1, #dust_gens do
-		local cls = labels[dust_gens[i]] or ""
-		for j = 1, #cls do
-			ShowBuildingHexes(cls[j])
 		end
 	end
 
-	return orig_CursorBuilding_GameInit(self)
+--~ 	for range in pairs(g_HexRanges) do
+--~ 		if range.bind_to == "GetDustRadius" and range:IsKindOf("RangeHexMultiSelectRadius") then
+--~ 			if range_limit and cursor:Dist2D(obj:GetPos()) > range_limit then
+--~ 				range:SetVisible(false)
+--~ 			else
+--~ 				range:SetVisible(true)
+--~ 				for j = 1, #range.decals do
+--~ 					-- light yellow
+--~ 					range.decals[j]:SetColorModifier(-2143)
+--~ 				end
+--~ 			end
+
+--~ 		end
+--~ 	end
+
+	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 end
 
+--~ local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+--~ function CursorBuilding:GameInit(...)
+--~ 	-- skip if disable or not a dusty building
+--~ 	if mod_Option1 and self.template:IsKindOf("RequiresMaintenance") then
+--~ 		UpdateGridShapes()
+--~ 	end
+--~ 	return orig_CursorBuilding_GameInit(self)
+--~ end
+
 local orig_CursorBuilding_Done = CursorBuilding.Done
-function CursorBuilding:Done()
+function CursorBuilding:Done(...)
 	local UICity = UICity
-	HideHexRanges(UICity, "SupplyRocket")
-	for i = 1, #dust_gens do
+	for i = 1, dust_gens_c do
 		HideHexRanges(UICity, dust_gens[i])
 	end
 
-	return orig_CursorBuilding_Done(self)
+	return orig_CursorBuilding_Done(self, ...)
 end

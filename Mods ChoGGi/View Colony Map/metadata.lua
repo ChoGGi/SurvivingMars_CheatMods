@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_MapImagesPack",
@@ -27,7 +27,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"description", [[Shows the map before you load it in the select colony screen.
 Optionally show anomaly breakthroughs for each location, omega breakthroughs are at best 1/3.
 

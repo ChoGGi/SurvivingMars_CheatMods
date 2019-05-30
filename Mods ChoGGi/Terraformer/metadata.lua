@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 	"title", "Terraformer (Obsolete)",
@@ -21,7 +21,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "1415296985",
 	"pops_any_uuid", "0d6e7eed-312b-4f3e-822c-4a3ff6e92abf",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"description", [[Simple guide: https://steamcommunity.com/sharedfiles/filedetails/?id=1530394137
 
 If you're feeling OCD about a perfect layout for your base then look no further.

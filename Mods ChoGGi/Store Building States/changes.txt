@@ -1,2 +1,5 @@
+v0.3
+Right-clicking some stuff may not have worked.
+
 v0.2
 Added an enforce specialists option.

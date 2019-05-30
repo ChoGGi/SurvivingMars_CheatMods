@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1736467180",
 	"pops_any_uuid", "cef541f6-a547-4bcf-a6ed-e4aa521bb937",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},
@@ -18,6 +18,8 @@ The slider will stop babies from being born in that dome (nothing else).
 
 It defaults to 0 (vanilla functionality), raise it to set a limit.
 Click the title to toggle between changing the value for that dome or all domes.
+
+The value is per-dome unless you change it for all domes.
 
 
 Requested by BrowncoatTrekky.]],

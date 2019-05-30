@@ -6,6 +6,7 @@ local mod = Mods[mod_id]
 local mod_EnableLog = mod.options and mod.options.EnableLog or true
 
 local function ModOptions()
+	ConsoleEnabled = true
 	mod_EnableLog = mod.options.EnableLog
 
 	if mod_EnableLog then
@@ -24,12 +25,6 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local function StartupCode()
-	ConsoleEnabled = true
-
-	-- for some reason mod options aren't retrieved before this script is loaded...
-	ModOptions()
-end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
+-- for some reason mod options aren't retrieved before this script is loaded...
+OnMsg.CityStart = ModOptions
+OnMsg.LoadGame = ModOptions

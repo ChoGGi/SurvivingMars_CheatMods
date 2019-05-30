@@ -1,9 +1,13 @@
+v0.5
+Changed options to Mod Options (no more changing from selecting one).
+ChoGGi's Library not needed anymore.
+
 v0.4
 Cleaning up code (ChoGGi's Library).
 
 v0.3
 Cleaned up code.
-Stopped use of ModConfig, you can change options when you select a dump site.
+Stopped use of mod options, you can change options when you select a dump site.
 
 v0.2
 Da Vinci

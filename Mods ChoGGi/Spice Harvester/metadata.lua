@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 --~ 	"title", "Spice Harvester v0.7",
@@ -22,7 +22,7 @@ return PlaceObj("ModDef", {
 	},
 	"steam_id", "1416040484",
 	"pops_any_uuid", "a2272002-7722-4290-bf84-63afec2c1100",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"description", [[It doesn't do much; but move around and make thumping sounds at the moment.
 
 Anyone up for making a better model?]],

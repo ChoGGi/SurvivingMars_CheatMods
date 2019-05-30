@@ -5,14 +5,11 @@ local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
 -- add PostSaveGame to be a companion for SaveGame
-SaveOrigFunc("PersistGame")
-function PersistGame(...)
-	local ret = ChoGGi_OrigFuncs.PersistGame(...)
-
-	-- useful for restarting threads, see if devs will add it
+SaveOrigFunc("ReportPersistErrors")
+function ReportPersistErrors(...)
+	ChoGGi_OrigFuncs.ReportPersistErrors(...)
+	-- be useful for restarting threads, see if devs will add it
 	Msg("PostSaveGame")
-
-	return ret
 end
 
 -- This updates my dlgs when the ui scale is changed

@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 --~	 "title", "RC Mechanic v0.7",
@@ -22,7 +22,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"description", [[Autonomous repair of Drones/RCs that have broken down due to driving into a dust devil or something equally smart.
 
 Ignores any that are within distance of working drone hubs/rockets.

@@ -7,8 +7,17 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowDustGrid", {
 			default = true,
 			editor = "bool",
 			id = "Option1",
-			name = "Show during construction",
-			desc = "Show during construction.",
+			name = "Show During Construction",
+			desc = "Show during construction",
 		},
+		{
+			default = 0,
+			editor = "number",
+			id = "DistFromCursor",
+			max = 100,
+			min = 0,
+			name = "Dist From Cursor",
+		},
+
 	},
 })

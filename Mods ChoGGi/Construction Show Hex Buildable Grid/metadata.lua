@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 	"title", "Construction: Show Hex Buildable Grid",
@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1743031290",
 	"pops_any_uuid", "79aaafdd-712c-40f8-873b-3a4d59273f1f",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},

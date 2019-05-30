@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 6,
+			"version_minor", 7,
 		}),
 	},
 --~	 "title", "RC Miner v1.8",
@@ -19,7 +19,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"steam_id", "1411113412",
 	"pops_any_uuid", "831c4ed8-d892-4815-bb77-3a028c3ea5b0",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},

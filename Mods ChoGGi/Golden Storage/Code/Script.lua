@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+local table_remove = table.remove
+local IsValid = IsValid
+
 DefineClass.GoldenStorage = {
 	__parents = {
 		"UniversalStorageDepot"
@@ -10,9 +13,11 @@ DefineClass.GoldenStorage = {
 
 function GoldenStorage:GameInit()
 	-- start off with all resource demands blocked
-	for i = 1, #self.resource do
-		if self.resource[i] ~= "Metals" then
-			self:ToggleAcceptResource(self.resource[i], true)
+	for i = #self.resource, 1, -1 do
+		local res = self.resource[i]
+		if res ~= "Metals" then
+			self:ToggleAcceptResource(res, "startup")
+			table_remove(self.resource, i)
 		end
 	end
 
@@ -55,22 +60,21 @@ function GoldenStorage:GameInit()
 end
 
 -- only allowed to toggle metals
-function GoldenStorage:ToggleAcceptResource(res, startup)
-	if not startup and res ~= "Metals" then
+function GoldenStorage:ToggleAcceptResource(res, startup, ...)
+	if startup ~= "startup" and res ~= "Metals" then
 		return
 	end
-	UniversalStorageDepot.ToggleAcceptResource(self, res)
+	UniversalStorageDepot.ToggleAcceptResource(self, res, ...)
 end
 
 function GoldenStorage:Done()
-	UniversalStorageDepot.Done(self)
 	if IsValidThread(self.metals_thread) then
 		DeleteThread(self.metals_thread)
 	end
 end
 
 -- don't allow drones/etc to pick stuff up
-GoldenStorage.DroneUnloadResource = Building.DroneUnloadResource
+--~ GoldenStorage.DroneUnloadResource = Building.DroneUnloadResource
 
 -- add building to building template list
 function OnMsg.ClassesPostprocess()

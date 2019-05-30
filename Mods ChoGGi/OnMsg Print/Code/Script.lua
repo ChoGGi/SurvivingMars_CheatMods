@@ -54,6 +54,12 @@ end
 function OnMsg.AssetsLoaded(...)
 	print("Msg.AssetsLoaded",...)
 end
+function OnMsg.AtmosphereChanged(...)
+	print("Msg.AtmosphereChanged",...)
+end
+function OnMsg.AtmosphereDecay(...)
+	print("Msg.AtmosphereDecay",...)
+end
 function OnMsg.AttackRoverDead(...)
 	print("Msg.AttackRoverDead",...)
 end
@@ -546,6 +552,12 @@ end
 function OnMsg.KeyboardDisconnected(...)
 	print("Msg.KeyboardDisconnected",...)
 end
+function OnMsg.LakeFull(...)
+	print("Msg.LakeFull",...)
+end
+function OnMsg.LakeVolumeChanged(...)
+	print("Msg.LakeVolumeChanged",...)
+end
 function OnMsg.LandingEnabled(...)
 	print("Msg.LandingEnabled",...)
 end
@@ -783,6 +795,12 @@ end
 function OnMsg.OnControllerTypeChanged(...)
 	print("Msg.OnControllerTypeChanged",...)
 end
+function OnMsg.OnLuaError(...)
+	print("Msg.OnLuaError",...)
+end
+function OnMsg.OnModLuaError(...)
+	print("Msg.OnModLuaError",...)
+end
 function OnMsg.OnPassabilityChanged(...)
 	print("Msg.OnPassabilityChanged",...)
 end
@@ -807,8 +825,14 @@ end
 function OnMsg.OrbisNPAvailabilityChecked(...)
 	print("Msg.OrbisNPAvailabilityChecked",...)
 end
+function OnMsg.OrbisPSNSigninChanged(...)
+	print("Msg.OrbisPSNSigninChanged",...)
+end
 function OnMsg.OurColonyPlaced(...)
 	print("Msg.OurColonyPlaced",...)
+end
+function OnMsg.OverlaySupplyGridChanged(...)
+	print("Msg.OverlaySupplyGridChanged",...)
 end
 function OnMsg.ParadoxFeedLoaded(...)
 	print("Msg.ParadoxFeedLoaded",...)
@@ -954,6 +978,18 @@ end
 function OnMsg.PropEditor_WindowClosed(...)
 	print("Msg.PropEditor_WindowClosed",...)
 end
+function OnMsg.RainDisasterEnd(...)
+	print("Msg.RainDisasterEnd",...)
+end
+function OnMsg.RainDisasterStart(...)
+	print("Msg.RainDisasterStart",...)
+end
+function OnMsg.RainStart(...)
+	print("Msg.RainStart",...)
+end
+function OnMsg.RainStop(...)
+	print("Msg.RainStop",...)
+end
 function OnMsg.RefugeeRocketTimeout(...)
 	print("Msg.RefugeeRocketTimeout",...)
 end
@@ -965,6 +1001,9 @@ function OnMsg.RejectSavegame(...)
 end
 function OnMsg.ReloadLua(...)
 	print("Msg.ReloadLua",...)
+end
+function OnMsg.ReloadSoundBanks(...)
+	print("Msg.ReloadSoundBanks",...)
 end
 function OnMsg.RemovedFromLabel(...)
 	print("Msg.RemovedFromLabel",...)
@@ -984,6 +1023,9 @@ end
 function OnMsg.ResourceGathered(...)
 	print("Msg.ResourceGathered",...)
 end
+function OnMsg.ResourcesInitialized(...)
+	print("Msg.ResourcesInitialized",...)
+end
 function OnMsg.RestoreInGameInterface(...)
 	print("Msg.RestoreInGameInterface",...)
 end
@@ -996,17 +1038,11 @@ end
 function OnMsg.ResupplyRocketLaunched(...)
 	print("Msg.ResupplyRocketLaunched",...)
 end
-function OnMsg.RivalMilestone(...)
-	print("Msg.RivalMilestone",...)
-end
 function OnMsg.RivalsInteraction(...)
 	print("Msg.RivalsInteraction",...)
 end
 function OnMsg.RivalsSpawned(...)
 	print("Msg.RivalsSpawned",...)
-end
-function OnMsg.RivalStartsAnomaly(...)
-	print("Msg.RivalStartsAnomaly",...)
 end
 function OnMsg.RocketInstantTravel(...)
 	print("Msg.RocketInstantTravel",...)
@@ -1164,8 +1200,14 @@ end
 function OnMsg.TechResearchedTrigger(...)
 	print("Msg.TechResearchedTrigger",...)
 end
+function OnMsg.TerraformingProduced(...)
+	print("Msg.TerraformingProduced",...)
+end
 function OnMsg.TerraformParamChanged(...)
 	print("Msg.TerraformParamChanged",...)
+end
+function OnMsg.TerraformThresholdPassed(...)
+	print("Msg.TerraformThresholdPassed",...)
 end
 function OnMsg.TerrainTexturesChanged(...)
 	print("Msg.TerrainTexturesChanged",...)
@@ -1194,6 +1236,9 @@ end
 function OnMsg.UserChanged(...)
 	print("Msg.UserChanged",...)
 end
+function OnMsg.VegetationPlanted(...)
+	print("Msg.VegetationPlanted",...)
+end
 function OnMsg.VerifyModItemEntity(...)
 	print("Msg.VerifyModItemEntity",...)
 end
@@ -1202,6 +1247,9 @@ function OnMsg.WasteRockConversion(...)
 end
 function OnMsg.WaterDepositRevealed(...)
 	print("Msg.WaterDepositRevealed",...)
+end
+function OnMsg.WaterPhysicalStateChange(...)
+	print("Msg.WaterPhysicalStateChange",...)
 end
 function OnMsg.Whisper(...)
 	print("Msg.Whisper",...)

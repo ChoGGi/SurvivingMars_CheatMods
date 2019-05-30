@@ -1,4 +1,5 @@
 return PlaceObj("ModDef", {
+--~ 	"title", "Standing Unlocks Sponsor Buildings v0.2",
 	"title", "Standing Unlocks Sponsor Buildings",
 	"version", 2,
 	"version_major", 0,
@@ -9,7 +10,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1569118695",
 	"pops_any_uuid", "118d2bb6-8210-4fda-b0d8-125713fe1ee9",
 	"author", "ChoGGi",
-	"lua_revision", 244677,
+	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
 	},

@@ -2,7 +2,7 @@ v0.5
 Added ranges to Core Heat Convector and Forestation Plant.
 
 v0.4
-Added ModConfig option to disable it.
+Added mod options option to disable it.
 
 v0.3
 Shows heat circles for Mohole Mine and Artificial Sun.

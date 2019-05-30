@@ -33,7 +33,7 @@ function Workplace:AddWorker(worker, shift)
 			self.ChoGGi_SpecByExp = {}
 		end
 		-- they shouldn't have a table already, but best to check I suppose
-		-- and add every worker even if they have a spec, since we have the modconfig option for any spec
+		-- and add every worker even if they have a spec, since we have the option for any spec
 		if not self.ChoGGi_SpecByExp[worker.handle] then
 			self.ChoGGi_SpecByExp[worker.handle] = {
 				started_on = UICity.day,
@@ -91,7 +91,7 @@ function OnMsg.NewDay(sol) -- NewSol...
 
 				-- just in case
 				if IsValid(c_table.obj) or not c_table.obj.dying then
-					-- only allow spec=none or if modconfig then any spec, then check if worked long enough
+					-- only allow spec=none or if mod option then any spec, then check if worked long enough
 					if (c_table.obj.specialist == "none" or IgnoreSpec) and (sol - c_table.started_on) >= mod_SolsToTrain then
 						c_table.obj:SetSpecialization(work.specialist)
 						-- needed to remove NonSpecialistPerformancePenalty

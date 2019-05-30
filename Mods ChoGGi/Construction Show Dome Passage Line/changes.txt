@@ -2,7 +2,7 @@ v0.9
 Parabola ftw.
 
 v0.8
-Added ModConfig option to disable it.
+Added mod options option to disable it.
 
 v0.7
 Thought I got all the marker objects, guess not.
@@ -16,7 +16,7 @@ Hex marks are coloured green to make them distinct from dome marks.
 Raised the height of my marks just above dome marks.
 Marks are updated when you rotate a dome.
 Marks show up on construction sites.
-Since you can rebuild ruins, it'll also mark them as well (if it's a horrid notion to you then I can add a ModConfig option)...
+Since you can rebuild ruins, it'll also mark them as well (if it's a horrid notion to you then I can add a mod options option)...
 
 v0.4
 Da Vinci

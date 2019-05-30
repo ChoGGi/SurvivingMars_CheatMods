@@ -249,6 +249,7 @@ Debug.Debug FX>Particles: Toggle showing FX debug info in console.
 Debug.Debug FX>Sound FX: Toggle showing FX debug info in console.
 Debug.Framerate Counter Location>Down Left
 Debug.Framerate Counter Location>Down Right
+Debug.Framerate Counter Location>Framerate Counter: Switch between FPS, ms, and off.
 Debug.Framerate Counter Location>Up Left
 Debug.Framerate Counter Location>Up Right: Default
 Debug.Grids>Follow Mouse Grid Size: 35: Sets the size of the Building/Flight grid.
@@ -276,7 +277,7 @@ Debug>Entity Spots Toggle: Toggle showing attachment spots on selected object.
 Debug>Entity Spots: Shows list of attach spots for use with .ent files.
 Debug>Examine Object: Opens the object examiner for the selected or moused-over obj.
 Use Shift-F4 or Ctrl-F4 to show a list of all objects in a radius around cursor.
-Debug>Examine Persist Errors: Shows an examine dialog with any persist errors when saving (needs ECM HelperMod).
+Debug>Examine Persist Errors: Shows an examine dialog with any persist errors when saving.
 Debug>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
 Warning: Leave welcome to Mars msg onscreen till map is loaded.
 Debug>Material Properties: Shows list of material settings/.dds files for use with .mtl files.
@@ -437,7 +438,7 @@ ECM.Misc>Change Entity Scale: You want them big, you want them small; have at it
 ECM.Misc>Change Entity: Changes the entity of selected object, all of same type or all of same type in selected object's dome.
 ECM.Misc>Clean All Objects: Removes all dust from all objects.
 ECM.Misc>Fix All Objects: Fixes all malfunctioned objects.
-ECM.Misc>Game Speed: 12: Change the game speed (only for medium/fast, normal is normal).
+ECM.Misc>Game Speed: 3: Change the game speed (only for medium/fast, normal is normal).
 ECM.Misc>Scanner Queue Larger: Queue up to 100 squares.
 ECM.Misc>Time Factor: 1000: Change the time factor (not permanently); for ease of screenshots or something.
 ECM.Mission.Disasters>Cold Waves: Set the occurrence level of Cold Wave disasters.

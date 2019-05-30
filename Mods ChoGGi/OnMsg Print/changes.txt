@@ -1,3 +1,27 @@
+v0.6
+Cernan added Msgs:
+AtmosphereChanged
+AtmosphereDecay
+LakeFull
+LakeVolumeChanged
+OnLuaError
+OnModLuaError
+OrbisPSNSigninChanged
+RainDisasterEnd
+RainDisasterStart
+RainStart
+RainStop
+ReloadSoundBanks
+ResourcesInitialized
+TerraformingProduced
+TerraformThresholdPassed
+VegetationPlanted
+WaterPhysicalStateChange
+
+Removed:
+RivalMilestone
+RivalStartsAnomaly
+
 v0.5
 Armstrong added Msgs:
 AddedToLabel

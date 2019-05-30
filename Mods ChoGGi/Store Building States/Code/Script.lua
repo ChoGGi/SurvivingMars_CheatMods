@@ -157,7 +157,7 @@ local function BuildRemoveFromList(dlg,obj)
 					hint_title = "Remove From: " .. profile.name,
 					hint = hint_str:format(class),
 					mouseup = function(_, _, _, button)
-						if mouse == "R" then
+						if button == "R" then
 							RemoveAllOfClass(profile,class)
 						else
 							table_remove(profile,idx)
