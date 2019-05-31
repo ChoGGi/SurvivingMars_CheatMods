@@ -86,163 +86,64 @@ function ChoGGi.ComFuncs.DraggableCheatsMenu(enable)
 end
 
 function ChoGGi.ComFuncs.SetCommanderBonuses(name)
-	local comm = table.find_value(MissionParams.idCommanderProfile.items, "id", g_CurrentMissionParams.idCommanderProfile)
+	local comm = GetCommanderProfile(g_CurrentMissionParams.idCommanderProfile)
 	if not comm then
 		return
 	end
-
-	local list = Presets.CommanderProfilePreset.Default[name] or ""
 	local c = #comm
-	for i = 1, #list do
-		-- i forgot why i had this in a thread...
-		CreateRealTimeThread(function()
-			c = c + 1
-			comm[c] = list[i]
-		end)
+
+	local comms = ChoGGi.Tables.Commanders[name] or ""
+	for i = 1, #comms do
+		c = c + 1
+		comm[c] = comms[i]
 	end
 end
 
 function ChoGGi.ComFuncs.SetSponsorBonuses(name)
-	local ChoGGi = ChoGGi
+	local CompareAmounts = ChoGGi.ComFuncs.CompareAmounts
 
-	local sponsor = table.find_value(MissionParams.idMissionSponsor.items, "id", g_CurrentMissionParams.idMissionSponsor)
+	local sponsor = GetMissionSponsor(g_CurrentMissionParams.idMissionSponsor)
 	if not sponsor then
 		return
 	end
+	local c = #sponsor
 
-	local bonus = Presets.MissionSponsorPreset.Default[name]
+	local bonus = ChoGGi.Tables.Sponsors[name]
+
 	-- bonuses multiple sponsors have (CompareAmounts returns equal or larger amount)
 	if sponsor.cargo then
-		sponsor.cargo = ChoGGi.ComFuncs.CompareAmounts(sponsor.cargo, bonus.cargo)
+		sponsor.cargo = CompareAmounts(sponsor.cargo, bonus.cargo)
 	end
 	if sponsor.additional_research_points then
-		sponsor.additional_research_points = ChoGGi.ComFuncs.CompareAmounts(sponsor.additional_research_points, bonus.additional_research_points)
+		sponsor.additional_research_points = CompareAmounts(sponsor.additional_research_points, bonus.additional_research_points)
 	end
 
-	local c = #sponsor
-	if name == "IMM" then
+	-- add extra bonuses to current sponsor
+	for i = 1, #bonus do
 		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "FoodPerRocketPassenger",
-			"Amount", 9000
-		})
-	elseif name == "NASA" then
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "SponsorFundingPerInterval",
-			"Amount", 500
-		})
-	elseif name == "BlueSun" then
-		sponsor.rocket_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.rocket_price, bonus.rocket_price)
-		sponsor.applicants_price = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_price, bonus.applicants_price)
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_GrantTech", {
-			"Field", "Physics",
-			"Research", "DeepMetalExtraction"
-		})
-	elseif name == "CNSA" then
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "ApplicantGenerationInterval",
-			"Percent", -50
-		})
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "MaxColonistsPerRocket",
-			"Amount", 10
-		})
-	elseif name == "ISRO" then
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_GrantTech", {
-			"Field", "Engineering",
-			"Research", "LowGEngineering"
-		})
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "Concrete_cost_modifier",
-			"Percent", -20
-		})
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "Electronics_cost_modifier",
-			"Percent", -20
-		})
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "MachineParts_cost_modifier",
-			"Percent", -20
-		})
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "ApplicantsPoolStartingSize",
-			"Percent", 50
-		})
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "Metals_cost_modifier",
-			"Percent", -20
-		})
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "Polymers_cost_modifier",
-			"Percent", -20
-		})
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "PreciousMetals_cost_modifier",
-			"Percent", -20
-		})
+		sponsor[c] = bonus[i]
+	end
+
+	-- figure out how to add this as a loop?
+	if name == "BlueSun" then
+		sponsor.rocket_price = CompareAmounts(sponsor.rocket_price, bonus.rocket_price)
+		sponsor.applicants_price = CompareAmounts(sponsor.applicants_price, bonus.applicants_price)
 	elseif name == "ESA" then
-		sponsor.funding_per_tech = ChoGGi.ComFuncs.CompareAmounts(sponsor.funding_per_tech, bonus.funding_per_tech)
-		sponsor.funding_per_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.funding_per_breakthrough, bonus.funding_per_breakthrough)
+		sponsor.funding_per_tech = CompareAmounts(sponsor.funding_per_tech, bonus.funding_per_tech)
+		sponsor.funding_per_breakthrough = CompareAmounts(sponsor.funding_per_breakthrough, bonus.funding_per_breakthrough)
 	elseif name == "SpaceY" then
-		sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1, bonus.modifier_name1)
-		sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1, bonus.modifier_value1)
-		sponsor.modifier_name2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name2, bonus.bonusmodifier_name2)
-		sponsor.modifier_value2 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value2, bonus.modifier_value2)
-		sponsor.modifier_name3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name3, bonus.modifier_name3)
-		sponsor.modifier_value3 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value3, bonus.modifier_value3)
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "CommandCenterMaxDrones",
-			"Percent", 20
-		})
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "starting_drones",
-			"Percent", 4
-		})
-	elseif name == "NewArk" then
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_ModifyLabel", {
-			"Label", "Consts",
-			"Prop", "BirthThreshold",
-			"Percent", -50
-		})
+		sponsor.modifier_name1 = CompareAmounts(sponsor.modifier_name1, bonus.modifier_name1)
+		sponsor.modifier_value1 = CompareAmounts(sponsor.modifier_value1, bonus.modifier_value1)
+		sponsor.modifier_name2 = CompareAmounts(sponsor.modifier_name2, bonus.bonusmodifier_name2)
+		sponsor.modifier_value2 = CompareAmounts(sponsor.modifier_value2, bonus.modifier_value2)
+		sponsor.modifier_name3 = CompareAmounts(sponsor.modifier_name3, bonus.modifier_name3)
+		sponsor.modifier_value3 = CompareAmounts(sponsor.modifier_value3, bonus.modifier_value3)
 	elseif name == "Roscosmos" then
-		sponsor.modifier_name1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_name1, bonus.modifier_name1)
-		sponsor.modifier_value1 = ChoGGi.ComFuncs.CompareAmounts(sponsor.modifier_value1, bonus.modifier_value1)
-		c = c + 1
-		sponsor[c] = PlaceObj("TechEffect_GrantTech", {
-			"Field", "Robotics",
-			"Research", "FueledExtractors"
-		})
+		sponsor.modifier_name1 = CompareAmounts(sponsor.modifier_name1, bonus.modifier_name1)
+		sponsor.modifier_value1 = CompareAmounts(sponsor.modifier_value1, bonus.modifier_value1)
 	elseif name == "Paradox" then
-		sponsor.applicants_per_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.applicants_per_breakthrough, bonus.applicants_per_breakthrough)
-		sponsor.anomaly_bonus_breakthrough = ChoGGi.ComFuncs.CompareAmounts(sponsor.anomaly_bonus_breakthrough, bonus.anomaly_bonus_breakthrough)
+		sponsor.applicants_per_breakthrough = CompareAmounts(sponsor.applicants_per_breakthrough, bonus.applicants_per_breakthrough)
+		sponsor.anomaly_bonus_breakthrough = CompareAmounts(sponsor.anomaly_bonus_breakthrough, bonus.anomaly_bonus_breakthrough)
 	end
 end
 

@@ -41,6 +41,7 @@ OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateDataTables
 OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateOtherTables
 
 OnMsg.ModsReloaded = ChoGGi.ComFuncs.UpdateDataTables
+OnMsg.ModsReloaded = ChoGGi.ComFuncs.UpdateTablesSponComm
 
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
 

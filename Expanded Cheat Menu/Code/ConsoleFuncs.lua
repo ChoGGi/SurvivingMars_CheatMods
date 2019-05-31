@@ -103,11 +103,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"--]]],
 	{name = Strings[302535920001378--[[XWindow Inspector--]]],
 		hint = Strings[302535920001379--[[Opens up the window inspector with terminal.desktop.--]]],
 		clicked = function()
-			local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos()) or terminal.desktop
-			local ged = ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
-			if ged then
-				GedXWindowInspectorSelectWindow(ged, target)
-			end
+			ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
 		end,
 	},
 }

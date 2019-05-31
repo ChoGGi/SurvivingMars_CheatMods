@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,
-	"saved", 1547726400,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_CommieMarxLogos",
 	"steam_id", "1502077662",
@@ -17,6 +17,7 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[Flags, Coats of Arms, Emblems, etc...
 94 different logos in all (and you thought one Space Communism logo was enough).
+If you're on the other side of the fence, see my sister mod Hakenkreuz Logos.
 
 From Marx with love.
 
@@ -28,6 +29,6 @@ I probably should've kept a list of credits... I didn't make any of these images
 
 
 This is for you (you know who you are):
-Commies are murders, so are Capitalists (and Christans and Muslims and so on).
+Commies are murders, so are Nazies (and Capitalists and Christans and Muslims and so on).
 Congratulations! You win an Interwebs!]],
 })

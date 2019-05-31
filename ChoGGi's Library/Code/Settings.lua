@@ -83,6 +83,8 @@ ChoGGi.ComFuncs.UpdateOtherTables()
 
 -- also called after mods are loaded, we call it now for any functions that use it before then
 ChoGGi.ComFuncs.UpdateDataTables()
+-- only updated when mods reloaded
+ChoGGi.ComFuncs.UpdateTablesSponComm()
 
 local function GetValueCls(obj, value, fallback)
 	if obj then

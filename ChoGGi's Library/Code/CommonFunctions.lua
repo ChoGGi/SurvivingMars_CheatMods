@@ -22,6 +22,7 @@ local table_clear = table.clear
 local table_iclear = table.iclear
 local table_sort = table.sort
 local table_copy = table.copy
+local table_icopy = table.icopy
 local table_rand = table.rand
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
@@ -1541,6 +1542,29 @@ do -- UpdateDataTables
 		CrystalsMystery = "UI/Messages/phylosophers_stone_mystery_01.tga",
 		MirrorSphereMystery = "UI/Messages/sphere_mystery_01.tga",
 	}
+
+	local function UpdateProfile(preset,list)
+		for id, preset_p in pairs(preset) do
+			if id ~= "None" and id ~= "random" then
+				list[id] = {}
+				local profile = list[id]
+				for key, value in pairs(preset_p) do
+					profile[key] = value
+				end
+			end
+		end
+	end
+
+	-- make copies of spon/comm profiles
+	function ChoGGi.ComFuncs.UpdateTablesSponComm()
+		local Tables = ChoGGi.Tables
+		local Presets = Presets
+
+		table_clear(Tables.Sponsors)
+		table_clear(Tables.Commanders)
+		UpdateProfile(Presets.MissionSponsorPreset.Default,Tables.Sponsors)
+		UpdateProfile(Presets.CommanderProfilePreset.Default,Tables.Commanders)
+	end
 
 	function ChoGGi.ComFuncs.UpdateDataTables()
 		local c
@@ -3757,7 +3781,10 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 end
 
 function ChoGGi.ComFuncs.OpenGedApp(name)
-	return OpenGedApp(name, terminal.desktop)
+	if type(name) ~= "string" then
+		name = "XWindowInspector"
+	end
+	OpenGedApp(name, terminal.desktop)
 end
 
 do -- MovePointAwayXY

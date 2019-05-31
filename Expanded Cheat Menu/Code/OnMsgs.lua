@@ -1289,19 +1289,23 @@ do -- LoadGame/CityStart
 			const.PassageConstructionGroupMaxSize = 1000
 		end
 
-		-- on by default, you know all them martian trees (might make a cpu difference, probably not)
-		hr.TreeWind = 0
-
+		-- render settings
+		if UserSettings.ShadowmapSize then
+			hr.ShadowmapSize = UserSettings.ShadowmapSize
+		end
+		if UserSettings.VideoMemory then
+			hr.DTM_VideoMemory = UserSettings.VideoMemory
+		end
+		if UserSettings.TerrainDetail then
+			hr.TR_MaxChunks = UserSettings.TerrainDetail
+		end
+		if UserSettings.LightsRadius then
+			hr.LightsRadiusModifier = UserSettings.LightsRadius
+		end
 		if UserSettings.DisableTextureCompression then
 			-- uses more vram (1 toggles it, not sure what 0 does...)
 			hr.TR_ToggleTextureCompression = 1
 		end
-
-		-- render settings
-		hr.ShadowmapSize = UserSettings.ShadowmapSize or hr.ShadowmapSize
-		hr.DTM_VideoMemory = UserSettings.VideoMemory or hr.DTM_VideoMemory
-		hr.TR_MaxChunks = UserSettings.TerrainDetail or hr.TR_MaxChunks
-		hr.LightsRadiusModifier = UserSettings.LightsRadius or hr.LightsRadiusModifier
 
 		if UserSettings.HigherRenderDist then
 			-- lot of lag for some small rocks in distance
@@ -1346,11 +1350,11 @@ do -- LoadGame/CityStart
 		local storages = UICity.labels.Storages or ""
 		procall(function()
 			for i = 1, #storages do
-				local storage = storages[i]
-				if storage:GetStoredAmount() < 0 then
+				local obj = storages[i]
+				if obj.GetStoredAmount and not obj:IsKindOf("ConstructionSite") and obj:GetStoredAmount() < 0 then
 					-- we have to empty it first (just filling doesn't fix the issue)
-					storage:CheatEmpty()
-					storage:CheatFill()
+					obj:CheatEmpty()
+					obj:CheatFill()
 				end
 			end
 		end)
