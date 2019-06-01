@@ -247,13 +247,21 @@ Cheats>Unpin All Pinned Objects: Removes all objects from the "Pin" menu.
 Debug.Debug FX>Debug FX: Toggle showing FX debug info in console.
 Debug.Debug FX>Particles: Toggle showing FX debug info in console.
 Debug.Debug FX>Sound FX: Toggle showing FX debug info in console.
-Debug.Framerate Counter Location>Down Left
-Debug.Framerate Counter Location>Down Right
-Debug.Framerate Counter Location>Framerate Counter: Switch between FPS, ms, and off.
-Debug.Framerate Counter Location>Up Left
-Debug.Framerate Counter Location>Up Right: Default
+Debug.Entity>Change Entity Scale: You want them big, you want them small; have at it.
+Debug.Entity>Change Entity: Changes the entity of selected object, all of same type or all of same type in selected object's dome.
+Debug.Entity>Entity Spawner: Shows list of objects, and spawns at mouse cursor.
+Debug.Entity>Entity Spots Toggle: Toggle showing attachment spots on selected object.
+Debug.Entity>Entity Spots: Shows list of attach spots for use with .ent files.
+Debug.Entity>Material Properties: Shows list of material settings/.dds files for use with .mtl files.
+Debug.Entity>View All Entities: Loads a blank map and places all entities in it.
+Debug.Framerate Counter>Down Left
+Debug.Framerate Counter>Down Right
+Debug.Framerate Counter>Toggle: Disabled: Switch between FPS, ms, and off.
+This is temporary, use Options>Video>Framerate Counter to permanently save it.
+Debug.Framerate Counter>Up Left
+Debug.Framerate Counter>Up Right: Default
 Debug.Grids>Follow Mouse Grid Size: 35: Sets the size of the Building/Flight grid.
-Debug.Grids>Follow Mouse Grid Trans: 15: How transparent the Building grid is.
+Debug.Grids>Follow Mouse Grid Trans: 15: How transparent the Building/Flight grid is.
 Debug.Grids>Show Grid 45 Square: Square 45 (use Disable to hide).
 Debug.Grids>Show Grid Disable: Hide the white ground grids.
 Debug.Grids>Show Grid Hex: Hex (use Disable to hide).
@@ -263,41 +271,38 @@ Debug.Grids>Toggle Building Grid: Show a hex grid around mouse:
 Green = pass/build, Yellow = no pass/build,
 Blue = pass/no build, Red = no pass/no build.
 Debug.Grids>Toggle Flight Grid: Shows a square grid with terrain/objects shape.
+Debug.Object>Anim State Set: Make selected object dance on command.
+Debug.Object>Delete All Of Selected Object: Will ask for confirmation beforehand (will not delete domes).
+Debug.Object>Delete Object(s): Deletes selected object or object under mouse cursor (most objs, not all).
+Debug.Object>Edit Object: Manipulate objects (selected or under mouse cursor)
+Debug.Object>Examine Object: Opens the object examiner for the selected or moused-over obj.
+Use Shift-F4 or Ctrl-F4 to show a list of all objects in a radius around cursor.
+Debug.Object>Object Cloner: Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).
+Debug.Object>Object Edit Flags: Shows list of flags set for selected object.
+Debug.Object>Open In Ged Object Editor: Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset).
+Debug.Object>Set Particles: Shows a list of particles you can use on the selected obj.
+Debug.Object>Visible Objects: Shows list of objects rendered in the current frame.
 Debug.Path Markers>Building Path Markers: Show inside waypoints colonists take to move around (not all buildings).
 Debug.Path Markers>Path Markers Game Time: Maps paths in real time (see Path Markers to mark more than one at a time).
 Debug.Path Markers>Path Markers: Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.
-Debug>Anim Debug Toggle: Attaches text to each object showing animation info (or just to selected object).
-Debug>Anim State Set: Make object dance on command.
-Debug>DTM Slots Display: Show DTM slots display
-Debug>Delete All Of Selected Object: Will ask for confirmation beforehand (will not delete domes).
-Debug>Delete Object(s): Deletes selected object or object under mouse cursor (most objs, not all).
-Debug>Edit Object: Manipulate objects (selected or under mouse cursor)
-Debug>Entity Spawner: Shows list of objects, and spawns at mouse cursor.
-Debug>Entity Spots Toggle: Toggle showing attachment spots on selected object.
-Debug>Entity Spots: Shows list of attach spots for use with .ent files.
-Debug>Examine Object: Opens the object examiner for the selected or moused-over obj.
-Use Shift-F4 or Ctrl-F4 to show a list of all objects in a radius around cursor.
-Debug>Examine Persist Errors: Shows an examine dialog with any persist errors when saving.
-Debug>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
+Debug.Reloads>Particles Reload: Reloads particles from "Data/Particles"...
+Debug.Reloads>Reload Lua: Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).
+Warning: Disables cheat menu submenus.
+Debug.Toggles>Anim Debug Toggle: Attaches text to each object showing animation info (or just to selected object).
+Debug.Toggles>DTM Slots Display: Show DTM slots display
+Debug.Toggles>Examine Persist Errors: Shows an examine dialog with any persist errors when saving.
+Debug.Toggles>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
 Warning: Leave welcome to Mars msg onscreen till map is loaded.
-Debug>Material Properties: Shows list of material settings/.dds files for use with .mtl files.
-Debug>Measure Tool: Measures stuff (press again to remove the lines).
-Debug>Object Cloner: Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).
-Debug>Object Edit Flags: Shows list of flags set for selected object.
-Debug>Open In Ged Object Editor: Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset).
-Debug>Particles Reload: Reloads particles from "Data/Particles"...
-Debug>Reload Lua: Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).
-Debug>Set Particles: Shows a list of particles you can use on the selected obj.
-Debug>Test Locale File: Test a CSV for malformed strings (can cause freezing when loaded normally).
-Debug>Test Story Bits: Test activate a story bit.
-Debug>Toggle Editor: Select object(s) then hold ctrl/shift/alt and drag mouse.
+Debug.Toggles>Measure Tool: Measures stuff (press again to remove the lines).
+Debug.Toggles>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
+Debug.Toggles>Toggle Editor: Select object(s) then hold ctrl/shift/alt and drag mouse.
 click+drag for multiple selection.
 It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).
-Debug>Toggle Object Collision: Select an object and activate this to toggle collision (if you have a rover stuck in a dome).
-Debug>Toggle Render: Toggle rendering certain stuff.
+Debug.Toggles>Toggle Object Collision: Select an object and activate this to toggle collision (if you have a rover stuck in a dome).
+Debug.Toggles>Toggle Render: Toggle rendering certain stuff.
+Debug>Test Locale File: Test a CSV for malformed strings (can cause freezing when loaded normally).
+Debug>Test Story Bits: Test activate a story bit.
 Debug>Used Terrain Textures: Show a list of terrain textures used in current map.
-Debug>View All Entities: Loads a blank map and places all entities in it.
-Debug>Visible Objects: Shows list of objects rendered in the current frame.
 ECM.Buildings.Buildings>Fully Automated Building: Work without workers (select a building and this will apply to all of type or selected).
 ECM.Buildings.Buildings>Oxygen-free Building: Toggle oxygen use for selected building type.
 ECM.Buildings.Buildings>Points To Train: How many points are needed to finish training.
@@ -433,14 +438,6 @@ ECM.Drones>DroneFactory Build Speed: Change how fast drone factories build drone
 ECM.Drones>RC Commander max Drones: 25: Maximum Drones an RC Commander can control
 ECM.Drones>Work Radius DroneHub: Change DroneHub drone radius (this ignores slider).
 ECM.Drones>Work Radius RC Rover: Change RC Rover drone radius (this ignores slider).
-ECM.Misc>Auto Unpin Objects: Will automagically stop any of these objects from being added to the pinned list.
-ECM.Misc>Change Entity Scale: You want them big, you want them small; have at it.
-ECM.Misc>Change Entity: Changes the entity of selected object, all of same type or all of same type in selected object's dome.
-ECM.Misc>Clean All Objects: Removes all dust from all objects.
-ECM.Misc>Fix All Objects: Fixes all malfunctioned objects.
-ECM.Misc>Game Speed: 3: Change the game speed (only for medium/fast, normal is normal).
-ECM.Misc>Scanner Queue Larger: Queue up to 100 squares.
-ECM.Misc>Time Factor: 1000: Change the time factor (not permanently); for ease of screenshots or something.
 ECM.Mission.Disasters>Cold Waves: Set the occurrence level of Cold Wave disasters.
 ECM.Mission.Disasters>Dust Devils: Set the occurrence level of Dust Devils disasters.
 ECM.Mission.Disasters>Dust Storms: Set the occurrence level of Dust Storm disasters.
@@ -498,9 +495,12 @@ Restart to disable.
 ECM.Terraforming>Soil Quality: Set Soil Quality
 ECM.Terraforming>Toxic Pools Max: 30: Max amount of pools that can form.
 ECM>Building Info: Shows info about building in text above it.
+ECM>Clean All Objects: Removes all dust from all objects.
 ECM>Close Dialogs: Close any dialogs opened by ECM (Examine, Object Editor, Change Colours, etc...).
 ECM>Find Nearest Resource: Select an object and click this to display a list of resources (Shows nearest resource to object).
+ECM>Fix All Objects: Fixes all malfunctioned objects.
 ECM>Grid Info: List objects in grids (air, electricity, and water).
+ECM>Scanner Queue Larger: Queue up to 100 squares.
 Game.Camera>Bird's Eye: 20: How far up the camera can move.
 Game.Camera>Border Scrolling: 2: Set size of activation for mouse border scrolling.
 Game.Camera>Reset: If something makes the camera view wonky you can use this to fix it.
@@ -520,6 +520,8 @@ Game.Export CSV>Map Data: Export map location data to C:\Users\ChoGGi\AppData\Ro
 See survivingmarsmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
 Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu).
+Game.Game Speed>Game Speed: 3: Change the game speed (only for medium/fast, normal is normal).
+Game.Game Speed>Time Factor: 1000: Change the time factor (not permanently); for ease of screenshots or something.
 Game.Interface>GUI Dock Side: Left: Change which side (most) GUI menus are on.
 Game.Interface>Never Show Hints: No more hints ever.
 Game.Interface>Reset on-screen hints: Just in case you wanted to see them again.
@@ -529,6 +531,18 @@ Game.Interface>Toggle on-screen hints: Don't show hints for this game.
 Game.Lightmodel>Light model: Changes the lighting mode (temporary or permanent).
 Game.Lightmodel>List Disaster: Overrides List Normal.
 Game.Lightmodel>List Normal: Changes the list of lightmodels to use (night/day/etc).
+Game.Map>Change Map: Change map (options to pick commander, sponsor, etc...
+Attention: If you get yellow ground areas; just load it again or try Reload Map.
+Game.Map>Reload Map: Reloads map as new game.
+Game.Object>Annoying Sounds: Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping).
+Game.Object>Auto Unpin Objects: Will automagically stop any of these objects from being added to the pinned list.
+Game.Object>Change Surface Signs To Materials: Changes all the ugly immersion breaking signs to materials (reversible).
+Game.Object>Color Modifier: Select/mouse over an object to change the colours
+Use Shift- or Ctrl- for random colours/reset colours.
+Game.Object>List All Objects: A list of objects; <image UI/Infopanel/left_click.tga 1400>*2 on one to select and move the camera to it.
+Game.Object>Object Planner: Places fake construction site objects at mouse cursor (collision disabled).
+Game.Object>Place Objects: Opens editor mode with the place objects dialog.
+Game.Object>Set Opacity: Change the opacity of objects.
 Game.Render>Higher Render Distance: Renders model from further away.
 Not noticeable unless using higher zoom.
 Game.Render>Higher Shadow Distance: Renders shadows from further away.
@@ -543,29 +557,18 @@ Game.Render>Video Memory: Sets hr.DTM_VideoMemory (Menu>Options>Video>Textures),
 Game.Screenshot>Screenshot Upsampled: Write screenshot upsampled
 Game.Screenshot>Screenshot: Write screenshot
 Game.Screenshot>Show Interface in Screenshots: Do you want to see the interface in screenshots?
-Game>Annoying Sounds: Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping).
-Game>Change Map: Change map (options to pick commander, sponsor, etc...
-Attention: If you get yellow ground areas; just load it again or try Reload Map.
-Game>Change Surface Signs To Materials: Changes all the ugly immersion breaking signs to materials (reversible).
-Game>Color Modifier: Select/mouse over an object to change the colours
-Use Shift- or Ctrl- for random colours/reset colours.
-Game>Delete Large Rocks: Removes rocks for that smooth map feel.
-Game>Delete Small Rocks: Removes rocks for that smooth map feel.
-Game>List All Objects: A list of objects; <image UI/Infopanel/left_click.tga 1400>*2 on one to select and move the camera to it.
-Game>Object Planner: Places fake construction site objects at mouse cursor (collision disabled).
-Game>Place Objects: Opens editor mode with the place objects dialog.
-Game>Pulsating Pins Disable: When true pins will no longer do the pulsating motion (hover over to stop).
-Game>Reload Map: Reloads map as new game.
-Game>Set Opacity: Change the opacity of objects.
-Game>Terrain Editor Toggle: Opens up the map editor with the brush tool visible.
-Game>Terrain Flatten Toggle: Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
+Game.Terrain>Delete Large Rocks: Removes rocks for that smooth map feel.
+Game.Terrain>Delete Small Rocks: Removes rocks for that smooth map feel.
+Game.Terrain>Terrain Editor Toggle: Opens up the map editor with the brush tool visible.
+Game.Terrain>Terrain Flatten Toggle: Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
 Use Shift + Arrow keys to change the height/radius.
-Game>Terrain Type Change: Green or Icy mars? Coming right up!
+Game.Terrain>Terrain Type Change: Green or Icy mars? Coming right up!
 (don't forget a light model)
-Game>Terrain Type Remap: Instead of replacing all textures with one then re-adding stuff, this will remap existing textures.
-Game>UI Transparency Mouseover: Toggle removing transparency on mouseover.
-Game>UI Transparency: Change the transparency of UI items (info panel, menu, pins).
-Game>Whiter Rocks: Helps the rocks blend in better when using the polar ground texture.
+Game.Terrain>Terrain Type Remap: Instead of replacing all textures with one then re-adding stuff, this will remap existing textures.
+Game.Terrain>Whiter Rocks: Helps the rocks blend in better when using the polar ground texture.
+Game.UI>Pulsating Pins Disable: When true pins will no longer do the pulsating motion (hover over to stop).
+Game.UI>UI Transparency Mouseover: Toggle removing transparency on mouseover.
+Game.UI>UI Transparency: Change the transparency of UI items (info panel, menu, pins).
 Shortcut Keys>Clear Log
 Shortcut Keys>Color Modifier Default Colour
 Shortcut Keys>Color Modifier Random Colour
