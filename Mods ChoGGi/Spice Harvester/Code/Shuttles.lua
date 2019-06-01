@@ -185,7 +185,7 @@ function SpiceHarvester_CargoShuttle:AttackWorm(worm)
 			Sleep(500)
 		end
 		-- make it pretty
-		PlayFX("FuelExplosion", "start", worm, nil, worm:GetPos())
+		PlayFX("GroundExplosion", "start", worm, nil, worm:GetPos())
 		worm:delete()
 	end)
 end

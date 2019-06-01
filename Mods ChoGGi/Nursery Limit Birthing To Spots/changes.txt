@@ -1,2 +1,8 @@
+v0.4
+Added mod option to allow Incubator mod to relocate newborns to incubator dome.
+
+v0.3
+Added mod option to bypass if there's no nurseries.
+
 v0.2
 Added mod option to check global spot count instead of per-dome count.

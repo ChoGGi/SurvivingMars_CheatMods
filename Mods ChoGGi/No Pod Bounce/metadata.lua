@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Pod: No Bounce",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_PodNoBounce",
@@ -13,7 +13,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Stop the pods from the landing bounce (they just go poof).
+	"description", [[Stop the pods from doing the landing bounce.
 
 
 Requested by BrowncoatTrekky.]],

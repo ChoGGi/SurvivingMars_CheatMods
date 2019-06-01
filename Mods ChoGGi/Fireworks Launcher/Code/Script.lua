@@ -204,7 +204,7 @@ function FireworksLauncher:LaunchFireworks(visual_only)
 			while rocket.move_thread do
 				Sleep(500)
 			end
-			PlayFX("FuelExplosion", "start", target, nil, target_pos)
+			PlayFX("GroundExplosion", "start", target, nil, target_pos)
 		end)
 	end
 

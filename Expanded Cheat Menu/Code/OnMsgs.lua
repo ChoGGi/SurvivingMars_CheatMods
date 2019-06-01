@@ -260,7 +260,6 @@ function OnMsg.ModsReloaded()
 			ActionId = ".Ged Presets",
 			ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 			OnActionEffect = "popup",
-			ActionSortKey = "1Ged Presets",
 		}
 
 		-- add preset menu items

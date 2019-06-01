@@ -8,7 +8,19 @@ DefineClass("ModOptions_ChoGGi_NurseryLimitBirthingToSpots", {
 			default = false,
 			editor = "bool",
 			id = "GlobalDomeCount",
-			name = "Global Dome Count",
+			name = "All Domes Count",
+		},
+		{
+			default = false,
+			editor = "bool",
+			id = "BypassNoNurseries",
+			name = "Bypass No Nurseries",
+		},
+		{
+			default = false,
+			editor = "bool",
+			id = "RespectIncubator",
+			name = "Respect Incubator",
 		},
 	},
 })

@@ -19,14 +19,14 @@ Also available at: [Steam](https://steamcommunity.com/sharedfiles/filedetails/?i
 ```
 If you forget where a menu item is: Menu>Help>List All Menu Items (use "Filter Items" at the bottom).
 
-F2: Toggle the cheats menu (Ctrl-F2 to toggle cheats panel).
+Enter or Tilde: Show the console.
+F2: Toggle the cheats menu (Ctrl-F2 to toggle selection panel cheats section).
 F3: Set object opacity.
 F4: Open object examiner (Shift/Ctrl-F4 for area examine).
 F5: Open object manipulator (or use Tools>Edit obj in Examine).
 F6: Change building colour (Shift-F6 or Ctrl-F6 to apply random/default).
 F7: Toggle using last building orientation.
 F9: Clear the console log.
-Enter or Tilde: Show the console.
 Ctrl+F: Fill resource of object.
 Number keys: Toggle build menu (Shift-*Num for menus above 10).
 Ctrl-Alt-Shift-R: Opens console and places "restart" in it.
@@ -38,7 +38,7 @@ Ctrl-Shift-T: Terrain Editor Mode (manipulate/paint ground).
 
 More shortcut keys are available; see cheat menu items.
 You can edit the shortcut keys; see in-game keybindings.
-If you want to be able to bind a menu item: msg me and I'll add it to keybindings.
+If you want to be able to bind a menu item: msg me and I'll add a keybinding.
 
 When I say object that means either the selected object or the object under the mouse cursor.
 
