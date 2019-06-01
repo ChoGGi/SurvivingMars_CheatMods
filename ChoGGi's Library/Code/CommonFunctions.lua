@@ -4693,9 +4693,10 @@ function ChoGGi.ComFuncs.GetDialogECM(cls)
 end
 
 function ChoGGi.ComFuncs.CloseDialogsECM(skip)
-	local ChoGGi_dlgs_opened = ChoGGi_dlgs_opened
-	for dlg in pairs(ChoGGi_dlgs_opened) do
-		if dlg ~= skip then
+	local desktop = terminal.desktop
+	for i = #desktop, 1, -1 do
+		local dlg = desktop[i]
+		if dlg ~= skip and dlg:IsKindOf("ChoGGi_XWindow") then
 			dlg:Close()
 		end
 	end

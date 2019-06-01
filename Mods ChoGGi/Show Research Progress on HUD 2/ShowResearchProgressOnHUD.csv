@@ -1,0 +1,6 @@
+ID,Text,Translation
+1301376827256,"Current Research: <em><name></em>
+Research Progress: <em><percent(progress)> (<done> / <ResearchPoints(total)>)</em>
+Approximate Time Remaining: <em><eta></em>
+
+Queue: <em><queue></em>",

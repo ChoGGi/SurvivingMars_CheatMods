@@ -1,3 +1,6 @@
+v0.4
+Added mod option to show construction site radiuses.
+
 v0.3
 Added Dist From Cursor mod option.
 

@@ -1,3 +1,6 @@
+v0.4
+Changed from MCR to Mod Options (not sure how I missed this single mod).
+
 v0.3
 Da Vinci
 

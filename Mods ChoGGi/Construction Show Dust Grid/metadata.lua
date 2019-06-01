@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Construction: Show Dust Grid",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
-	"saved", 1559131200,
+	"version_minor", 4,
+	"saved", 0,
 	"id", "ChoGGi_ConstructionShowDustGrid",
 	"author", "ChoGGi",
 	"image", "Preview.png",
@@ -17,9 +17,9 @@ return PlaceObj("ModDef", {
 	"description", [[Show dust grids for all dust generating buildings during construction of any building.
 
 Mod Options:
-Show During Construction: Use to disable temporarily.
+Show Grids: Use to disable temporarily.
 Dist From Cursor: Only show grids around buildings this close to the cursor (0 = disabled, 1 = 1000 and so on, 100 == over 2 map squares).
-
+Show Construction Site Grids: Show grid around sites.
 
 Requested by still__alive.]],
 })

@@ -7,8 +7,13 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowDustGrid", {
 			default = true,
 			editor = "bool",
 			id = "Option1",
-			name = "Show During Construction",
-			desc = "Show during construction",
+			name = "Show Grids",
+		},
+		{
+			default = false,
+			editor = "bool",
+			id = "ShowConSites",
+			name = "Show Construction Site Grids",
 		},
 		{
 			default = 0,
