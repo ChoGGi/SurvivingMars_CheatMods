@@ -28,10 +28,8 @@ F6: Change building colour (Shift-F6 or Ctrl-F6 to apply random/default).
 F7: Toggle using last building orientation.
 F9: Clear the console log.
 Ctrl+F: Fill resource of object.
-Number keys: Toggle build menu (Shift-*Num for menus above 10).
 Ctrl-Alt-Shift-R: Opens console and places "restart" in it.
-Ctrl-Space: Opens placement mode with the last built object.
-Ctrl-Shift-Space: Opens placement mode with selected object (works with deposits).
+Ctrl-Space: Opens placement mode with selected object/last built object.
 Ctrl-Alt-Shift-D: Delete object (select multiple objects in editor and use this to delete them all).
 Shift-Q: Clone selected object to mouse position.
 Ctrl-Shift-T: Terrain Editor Mode (manipulate/paint ground).

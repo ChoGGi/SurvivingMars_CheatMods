@@ -164,7 +164,7 @@ if not ChoGGi.blacklist then
 	as.Options.HintsEnabled = false
 	as.CompletedTutorials = as.CompletedTutorials or {}
 	as.CompletedTutorials.Tutorial1 = true
-	as.Shortcuts["ECM.Debug.Delete Object(s)"] = {"Ctrl-Shift-D"}
+	as.Shortcuts["ECM.Debug.Object.Delete Object(s)"] = {"Ctrl-Shift-D"}
 end
 
 --~ 		-- stop welcome to mars msg for LoadMapForScreenShot
