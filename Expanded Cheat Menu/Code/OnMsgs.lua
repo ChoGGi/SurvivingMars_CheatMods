@@ -564,8 +564,15 @@ function OnMsg.ChoGGi_SpawnedDrone(obj)
 		obj:SetGravity(UserSettings.GravityDrone)
 	end
 	if UserSettings.SpeedDrone then
-		obj:SetMoveSpeed(UserSettings.SpeedDrone)
+		if obj:IsKindOf("FlyingDrone") then
+			if UserSettings.SpeedWaspDrone then
+				obj:SetBase("move_speed", UserSettings.SpeedWaspDrone)
+			end
+		else
+			obj:SetBase("move_speed", UserSettings.SpeedDrone)
+		end
 	end
+
 end
 
 
@@ -629,7 +636,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 
 		-- applied to all rovers
 		if UserSettings.SpeedRC then
-			obj:SetMoveSpeed(UserSettings.SpeedRC)
+			obj:SetBase("move_speed", UserSettings.SpeedRC)
 		end
 		if UserSettings.GravityRC then
 			obj:SetGravity(UserSettings.GravityRC)
@@ -640,7 +647,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			obj.max_shared_storage = UserSettings.StorageShuttle
 		end
 		if UserSettings.SpeedShuttle then
-			obj.move_speed = UserSettings.SpeedShuttle
+			obj:SetBase("move_speed", UserSettings.SpeedShuttle)
 		end
 
 	elseif UserSettings.StorageUniversalDepot and obj:GetEntity() == "StorageDepot"
@@ -831,7 +838,7 @@ do -- ColonistCreated
 			ChoGGi.ComFuncs.ColonistUpdateTraits(obj, true, UserSettings.NewColonistTraits)
 		end
 		if UserSettings.SpeedColonist then
-			obj:SetMoveSpeed(UserSettings.SpeedColonist)
+			obj:SetBase("move_speed", UserSettings.SpeedColonist)
 		end
 		if UserSettings.DeathAgeColonist then
 			obj.death_age = UserSettings.DeathAgeColonist
@@ -1128,6 +1135,12 @@ do -- LoadGame/CityStart
 			end
 		end
 	end
+	local function UpdateLabelSpeed(labels, speed, cls)
+		local objs = labels[cls] or ""
+		for i = 1, #objs do
+			objs[i]:SetBase("move_speed", speed)
+		end
+	end
 
 	-- saved game is loaded
 	function OnMsg.LoadGame()
@@ -1155,6 +1168,7 @@ do -- LoadGame/CityStart
 		local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
 		local Presets = Presets
 		local hr = hr
+		local labels = UICity.labels
 
 		-- late enough that I can set g_Consts.
 		ChoGGi.SettingFuncs.SetConstsToSaved()
@@ -1174,9 +1188,9 @@ do -- LoadGame/CityStart
 		ChoGGi.Temp.UnitPathingHandles = {}
 
 		-- not needed, removing from old saves, so people don't notice them
-		UICity.labels.ChoGGi_GridElements = nil
-		UICity.labels.ChoGGi_LifeSupportGridElement = nil
-		UICity.labels.ChoGGi_ElectricityGridElement = nil
+		labels.ChoGGi_GridElements = nil
+		labels.ChoGGi_LifeSupportGridElement = nil
+		labels.ChoGGi_ElectricityGridElement = nil
 		-- re-binding is now an in-game thing, so keys are just defaults
 		UserSettings.KeyBindings = nil
 
@@ -1191,7 +1205,44 @@ do -- LoadGame/CityStart
 
 
 
-		-- fucking drones
+
+		-- update existing speeds
+		if UserSettings.SpeedColonist then
+			UpdateLabelSpeed(labels, UserSettings.SpeedColonist, "Colonist")
+		end
+		if UserSettings.SpeedRC then
+			UpdateLabelSpeed(labels, UserSettings.SpeedRC, "Rover")
+		end
+		if UserSettings.SpeedShuttle then
+			local speed = UserSettings.SpeedShuttle
+			local objs = labels.CargoShuttle or ""
+			for i = 1, #objs do
+				objs[i]:SetBase("move_speed", speed)
+			end
+		end
+		-- i figure looping through it twice is better then some complicated if else
+		if UserSettings.SpeedWaspDrone then
+			local speed = UserSettings.SpeedWaspDrone
+			local objs = labels.Drone or ""
+			for i = 1, #objs do
+				local obj = objs[i]
+				if obj:IsKindOf("FlyingDrone") then
+					obj:SetBase("move_speed", speed)
+				end
+			end
+		end
+		if UserSettings.SpeedDrone then
+			local speed = UserSettings.SpeedDrone
+			local objs = labels.Drone or ""
+			for i = 1, #objs do
+				local obj = objs[i]
+				if not obj:IsKindOf("FlyingDrone") then
+					obj:SetBase("move_speed", speed)
+				end
+			end
+		end
+
+		-- fucking drones, pick yer shit up
 		if UserSettings.DroneResourceCarryAmount then
 			if UserSettings.DroneResourceCarryAmount == 1 then
 				UserSettings.DroneResourceCarryAmountFix = nil
@@ -1338,7 +1389,7 @@ do -- LoadGame/CityStart
 		end
 
 		-- not sure why this would be false on a dome
-		local domes = UICity.labels.Dome or ""
+		local domes = labels.Dome or ""
 		for i = 1, #domes do
 			local dome = domes[i]
 			if dome.achievement == "FirstDome" and type(dome.connected_domes) ~= "table" then
@@ -1347,7 +1398,7 @@ do -- LoadGame/CityStart
 		end
 
 		-- something messed up if storage is negative (usually setting an amount then lowering it)
-		local storages = UICity.labels.Storages or ""
+		local storages = labels.Storages or ""
 		procall(function()
 			for i = 1, #storages do
 				local obj = storages[i]

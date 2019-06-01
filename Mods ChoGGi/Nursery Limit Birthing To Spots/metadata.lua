@@ -21,7 +21,7 @@ If you want something more random, see my Domes: Limit Births mod.
 
 Mod Options:
 All Domes Count: Check spot count of all domes instead of per-dome.
-Bypass No Nurseries: If there's no nurseries act like vanilla (no need to rush nursery building).
+Bypass No Nurseries: If there's no nurseries act like vanilla (default enabled).
 Respect Incubator: Allow SkiRich's Incubator mod to relocate newborns to incubator dome.
 
 Requested by BrowncoatTrekky.]],

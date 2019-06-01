@@ -4,13 +4,13 @@ local mod_id = "ChoGGi_NurseryLimitBirthingToSpots"
 local mod = Mods[mod_id]
 
 local mod_GlobalDomeCount = mod.options and mod.options.GlobalDomeCount or false
-local mod_BypassNoNurseries = mod.options and mod.options.BypassNoNurseries or false
 local mod_RespectIncubator = mod.options and mod.options.RespectIncubator or false
+local mod_BypassNoNurseries = mod.options and mod.options.BypassNoNurseries or true
 
 local function ModOptions()
 	mod_GlobalDomeCount = mod.options.GlobalDomeCount
-	mod_BypassNoNurseries = mod.options.BypassNoNurseries
 	mod_RespectIncubator = mod.options.RespectIncubator
+	mod_BypassNoNurseries = mod.options.BypassNoNurseries
 end
 
 -- fired when option is changed

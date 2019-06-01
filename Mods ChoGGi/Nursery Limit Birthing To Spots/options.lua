@@ -11,7 +11,7 @@ DefineClass("ModOptions_ChoGGi_NurseryLimitBirthingToSpots", {
 			name = "All Domes Count",
 		},
 		{
-			default = false,
+			default = true,
 			editor = "bool",
 			id = "BypassNoNurseries",
 			name = "Bypass No Nurseries",

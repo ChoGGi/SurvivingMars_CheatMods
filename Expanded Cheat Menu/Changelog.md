@@ -3,12 +3,16 @@
 ## v13.8 (Unreleased)
 ### Added:
 - Debug>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
+- Drones>Drone Wasp Move Speed: Same as Drone Move Speed.
 
 ### Changed:
 - Merged some menu items into submenus and other rearranging.
+- Examine>Exec Code box uses Up/Down arrows to browse console history.
+- * Move Speed is now set on map load.
 
 ### Fixed:
 - Drones carry amount fix wasn't applying (thanks RyanSpencer97).
+- Dust Devils overrode * Move Speed (thanks dukedom).
 
 ## v13.7 (May 30 2019)
 ### Added:

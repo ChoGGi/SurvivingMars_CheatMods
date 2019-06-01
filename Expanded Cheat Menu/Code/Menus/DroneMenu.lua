@@ -69,6 +69,24 @@ Actions[c] = {ActionName = Strings[302535920000511--[[Drone Move Speed--]]],
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDroneMoveSpeed,
+	setting_speed = "SpeedDrone",
+	setting_title = Strings[302535920000511--[[Drone Move Speed--]]],
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000702--[[Drone Wasp Move Speed--]]],
+	ActionMenubar = "ECM.ECM.Drones",
+	ActionId = ".Drone Wasp Move Speed",
+	ActionIcon = iconD,
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.SpeedWaspDrone,
+			Strings[302535920000512--[[How fast drones will move.--]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetDroneMoveSpeed,
+	setting_speed = "SpeedWaspDrone",
+	setting_title = Strings[302535920000702--[[Drone Wasp Move Speed--]]],
 }
 
 c = c + 1

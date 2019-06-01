@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 	"version", 11,
 	"version_major", 1,
 	"version_minor", 1,
-	"saved", 1555416000,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_ViewColonyMap",
 	"steam_id", "1491973763",

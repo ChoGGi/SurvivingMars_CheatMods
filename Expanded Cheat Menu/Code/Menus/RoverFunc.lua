@@ -97,7 +97,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedRC", value)
 			local objs = UICity.labels.Rover or ""
 			for i = 1, #objs do
-				objs[i]:SetMoveSpeed(value)
+				objs[i]:SetBase("move_speed", value)
 			end
 
 			ChoGGi.SettingFuncs.WriteSettings()

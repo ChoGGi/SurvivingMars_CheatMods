@@ -136,29 +136,13 @@ do -- SetEntityScale
 		CreateRealTimeThread(function()
 			Sleep(500)
 			if obj:IsKindOf("Drone") then
-				if UserSettings.SpeedDrone then
-					obj:SetMoveSpeed(UserSettings.SpeedDrone)
-				else
-					obj:SetMoveSpeed(ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone"))
-				end
+				obj:SetBase("move_speed", UserSettings.SpeedDrone or ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone"))
 			elseif obj:IsKindOf("CargoShuttle") then
-				if UserSettings.SpeedShuttle then
-					obj.move_speed = ChoGGi.Consts.SpeedShuttle
-				else
-					obj.move_speed = ChoGGi.Consts.SpeedShuttle
-				end
+				obj:SetBase("move_speed", UserSettings.SpeedShuttle or ChoGGi.Consts.SpeedShuttle)
 			elseif obj:IsKindOf("Colonist") then
-				if UserSettings.SpeedColonist then
-					obj:SetMoveSpeed(UserSettings.SpeedColonist)
-				else
-					obj:SetMoveSpeed(ChoGGi.Consts.SpeedColonist)
-				end
+				obj:SetBase("move_speed", UserSettings.SpeedColonist or ChoGGi.Consts.SpeedColonist)
 			elseif obj:IsKindOf("BaseRover") then
-				if UserSettings.SpeedRC then
-					obj:SetMoveSpeed(UserSettings.SpeedRC)
-				else
-					obj:SetMoveSpeed(ChoGGi.ComFuncs.GetResearchedTechValue("SpeedRC"))
-				end
+				obj:SetBase("move_speed", UserSettings.SpeedRC or ChoGGi.ComFuncs.GetResearchedTechValue("SpeedRC"))
 			end
 		end)
 	end
@@ -584,6 +568,10 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 							local states_str = obj:GetStates()
 							local idx = table_find(states_str, "working")
 								or table_find(states_str, "idleOpened")
+								or table_find(states_str, "rotate")
+								or table_find(states_str, "moveWalk")
+								or table_find(states_str, "walk")
+								or table_find(states_str, "run")
 							if idx then
 								obj:SetState(states_str[idx])
 							end

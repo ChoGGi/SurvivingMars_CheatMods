@@ -2,13 +2,21 @@
 
 -- used to examine objects
 
--- to add a clickable link use:
 --[[
+-- to add a clickable link use:
 XXXXX = {
 	ChoGGi_AddHyperLink = true,
 	name = "do something",
 	func = function(self, button, obj, argument, hyperlink_box, pos) end,
 }
+
+~obj
+ex(obj,pos/parent,title)
+ex(obj, {
+	ex_params = true,
+	parent = self,
+	title = "hello",
+})
 --]]
 
 local pairs, type, tostring, tonumber = pairs, type, tostring, tonumber
@@ -111,6 +119,8 @@ DefineClass.ChoGGi_DlgExamine = {
 	override_title = false,
 	-- close links
 	hyperlink_end = "</h></color>",
+	-- up/down arrow keys in exec code
+	history_queue_idx = false,
 
 	-- strings called repeatedly
 	string_Loadingresources = false,
@@ -460,7 +470,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Dock = "right",
 			Text = Strings[302535920000040--[[Exec Code--]]],
 			RolloverText = Strings[302535920001514--[[Toggle visibility of an input box for executing code.--]]]
-				.. "\n" .. Strings[302535920001517--[["Use ""o"" as a reference to the examined object."--]]],
+				.. "\n" .. Strings[302535920001517--[[Use <color green>o</color> as a reference to the examined object: <color yellow>IsValid(</color><color green>o</color><color yellow>)</color>.--]]],
 			OnChange = self.idToggleExecCode_OnChange,
 		}, self.idMenuArea)
 		--
@@ -474,8 +484,12 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		--
 		self.idExecCode = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idExecCode",
-			RolloverText = Strings[302535920001515--[[Press enter to execute code.--]]]
-				.. "\n" .. Strings[302535920001517--[["Use ""o"" as a reference to the examined object."--]]],
+			RolloverText = Strings[302535920001515--[["Press <color green>%s</color> to execute code.
+Use <color green>%s</color>/<color green>%s</color> to browse console history."--]]]:format(
+				Translate(1000447--[[Enter--]]),Translate(1000458--[[Up--]]),
+				Translate(1000460--[[Down--]])
+			)
+				.. "\n" .. Strings[302535920001517--[[Use <color green>o</color> as a reference to the examined object: <color yellow>IsValid(</color><color green>o</color><color yellow>)</color>.--]]],
 			Hint = Strings[302535920001516--[[o = examined object--]]],
 			OnKbdKeyDown = self.idExecCode_OnKbdKeyDown,
 		}, self.idExecCodeArea)
@@ -497,6 +511,12 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 
 		-- no need to have it fire one than once per dialog
 		self.is_chinese = GetLanguage():find("chinese")
+
+		-- make sure console dlg is around for history up/down in the main menu
+		if not GameState.gameplay then
+			self.ChoGGi.ComFuncs.ToggleConsole()
+			self.ChoGGi.ComFuncs.ToggleConsole()
+		end
 
 		-- do the magic
 		if self:SetObj(true) then
@@ -739,13 +759,42 @@ function ChoGGi_DlgExamine:HyperLink(obj, func, name)
 end
 
 function ChoGGi_DlgExamine:idExecCode_OnKbdKeyDown(vk, ...)
+	-- console exec code
 	if vk == const.vkEnter then
-		if dlgConsole then
+		local text = self:GetText()
+		if text ~= "" then
+			-- update global obj
 			o = GetRootDialog(self).obj_ref
-			dlgConsole:Exec(self:GetText())
+			-- fire!
+			dlgConsole:Exec(text)
+		end
+		return "break"
+
+	elseif vk == const.vkDown or vk == const.vkUp then
+		local con = dlgConsole
+		local dlg = GetRootDialog(self)
+		-- use current ex dlg pos or actual con pos
+		dlg.history_queue_idx = dlg.history_queue_idx or con.history_queue_idx
+
+		if vk == const.vkDown then
+			if dlg.history_queue_idx <= 1 then
+				dlg.history_queue_idx = #con.history_queue
+			else
+				dlg.history_queue_idx = dlg.history_queue_idx - 1
+			end
+		else
+			if dlg.history_queue_idx + 1 <= #con.history_queue then
+				dlg.history_queue_idx = dlg.history_queue_idx + 1
+			else
+				dlg.history_queue_idx = 1
+			end
 		end
 
+		local text = con.history_queue[dlg.history_queue_idx] or ""
+		self:SetText(text)
+		self:SetCursor(1, #text)
 		return "break"
+
 	end
 
 	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self, vk, ...)
@@ -3260,7 +3309,9 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 		SetWinObjectVis(self.idButDeleteObj,PropObjGetProperty(obj, "delete"))
 
 		-- can't mark if it isn't an object, and no sense in marking something off the map
-		SetWinObjectVis(self.idButMarkObject,IsValid(obj) and tostring(obj:GetPos()) ~= InvalidPos)
+		if obj.GetPos then
+			SetWinObjectVis(self.idButMarkObject,IsValid(obj) and obj:GetPos() ~= InvalidPos)
+		end
 
 		if not self.obj_entity and PropObjGetProperty(obj, "GetEntity") then
 			local entity = obj:GetEntity()

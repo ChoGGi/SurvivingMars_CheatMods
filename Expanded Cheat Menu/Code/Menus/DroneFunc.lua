@@ -194,10 +194,16 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
+function ChoGGi.MenuFuncs.SetDroneMoveSpeed(action)
+	local speed = action.setting_speed
+	local title = action.setting_title
+
 	local r = const.ResourceScale
-	local default_setting = ChoGGi.Consts.SpeedDrone
-	local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone")
+	local default_setting = ChoGGi.Consts[speed]
+	local UpgradedSetting
+	if speed == "SpeedDrone" then
+		UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone")
+	end
 	local item_list = {
 		{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r), value = default_setting, hint = Strings[302535920000889--[[base speed--]]]},
 		{text = 5, value = 5 * r},
@@ -209,13 +215,21 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 		{text = 1000, value = 1000 * r},
 		{text = 10000, value = 10000 * r},
 	}
-	if default_setting ~= UpgradedSetting then
+
+	-- only reg drones have upgraded speed tech (i think)
+	if UpgradedSetting and default_setting ~= UpgradedSetting then
 		table.insert(item_list, 2, {text = Strings[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r), value = UpgradedSetting, hint = Strings[302535920000891--[[apply tech unlocks--]]]})
 	end
 
-	local hint = UpgradedSetting
-	if ChoGGi.UserSettings.SpeedDrone then
-		hint = ChoGGi.UserSettings.SpeedDrone
+	local hint = UpgradedSetting or default_setting
+	if UpgradedSetting then
+		if ChoGGi.UserSettings.SpeedDrone then
+			hint = ChoGGi.UserSettings.SpeedDrone
+		end
+	else
+		if ChoGGi.UserSettings.SpeedWaspDrone then
+			hint = ChoGGi.UserSettings.SpeedWaspDrone
+		end
 	end
 
 	local function CallBackFunc(choice)
@@ -227,15 +241,29 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 		local value = choice.value
 		if type(value) == "number" then
 			local objs = UICity.labels.Drone or ""
-			for i = 1, #objs do
-				objs[i]:SetMoveSpeed(value)
+
+			if UpgradedSetting then
+				for i = 1, #objs do
+					local obj = objs[i]
+					if not obj:IsKindOf("FlyingDrone") then
+						obj:SetBase("move_speed", value)
+					end
+				end
+				ChoGGi.ComFuncs.SetSavedConstSetting("SpeedDrone", value)
+			else
+				for i = 1, #objs do
+					local obj = objs[i]
+					if obj:IsKindOf("FlyingDrone") then
+						obj:SetBase("move_speed", value)
+					end
+				end
+				ChoGGi.ComFuncs.SetSavedConstSetting("SpeedWaspDrone", value)
 			end
-			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedDrone", value)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				Strings[302535920000511--[[Drone Move Speed--]]]
+				title
 			)
 		end
 	end
@@ -243,7 +271,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000511--[[Drone Move Speed--]]],
+		title = title,
 		hint = Strings[302535920000106--[[Current--]]] .. ": " .. hint,
 		skip_sort = true,
 	}

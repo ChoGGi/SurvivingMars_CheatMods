@@ -422,7 +422,7 @@ function ChoGGi.MenuFuncs.TakeScreenshot(action)
 		-- MovieWriteScreenshot doesn't return jack, so
 		if created or which == 1 then
 			-- slight delay so it doesn't show up in the screenshot
-			Sleep(50)
+			WaitMsg("OnRender")
 			local msg = ConvertToOSPath(filename)
 			print("TakeScreenshot:", msg)
 			MsgPopup(

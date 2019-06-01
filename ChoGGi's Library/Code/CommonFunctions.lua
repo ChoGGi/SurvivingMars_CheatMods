@@ -2433,23 +2433,9 @@ local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
 
 do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRandom/ObjectColourDefault/ChangeObjectColour
 	local color_ass = {}
-	local SaveOldPalette,RestoreOldPalette,RandomColour
-	local colour_funcs = {
-		SetColours = function(obj, choice)
-			SaveOldPalette(obj)
-			for i = 1, 4 do
-				obj:SetColorizationMaterial(i,
-					choice[i].value,
-					choice[i+8].value,
-					choice[i+4].value
-				)
-			end
-			obj:SetColorModifier(choice[13].value)
-		end,
-		RestoreOldPalette = RestoreOldPalette,
-	}
+	local colour_funcs = {}
 
-	function ChoGGi.ComFuncs.SaveOldPalette(obj)
+	local function SaveOldPalette(obj)
 		if not IsValid(obj) then
 			return
 		end
@@ -2463,9 +2449,20 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			obj.ChoGGi_origcolors[-1] = obj:GetColorModifier()
 		end
 	end
-	SaveOldPalette = ChoGGi.ComFuncs.SaveOldPalette
+	ChoGGi.ComFuncs.SaveOldPalette = SaveOldPalette
+	colour_funcs.SetColours = function(obj, choice)
+		SaveOldPalette(obj)
+		for i = 1, 4 do
+			obj:SetColorizationMaterial(i,
+				choice[i].value,
+				choice[i+8].value,
+				choice[i+4].value
+			)
+		end
+		obj:SetColorModifier(choice[13].value)
+	end
 
-	function ChoGGi.ComFuncs.RestoreOldPalette(obj)
+	local function RestoreOldPalette(obj)
 		if not IsValid(obj) then
 			return
 		end
@@ -2479,9 +2476,10 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			obj.ChoGGi_origcolors = nil
 		end
 	end
-	RestoreOldPalette = ChoGGi.ComFuncs.RestoreOldPalette
+	ChoGGi.ComFuncs.RestoreOldPalette = RestoreOldPalette
+	colour_funcs.RestoreOldPalette = RestoreOldPalette
 
-	function ChoGGi.ComFuncs.GetPalette(obj)
+	local function GetPalette(obj)
 		if not IsValid(obj) then
 			return
 		end
@@ -2492,8 +2490,9 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		pal.Color4, pal.Roughness4, pal.Metallic4 = obj:GetColorizationMaterial(4)
 		return pal
 	end
+	ChoGGi.ComFuncs.GetPalette = GetPalette
 
-	function ChoGGi.ComFuncs.RandomColour(amount)
+	local function RandomColour(amount)
 		if amount and type(amount) == "number" and amount > 1 then
 			-- temp associative table of colour ids
 			table_clear(color_ass)
@@ -2532,7 +2531,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		-- return a single colour
 		return AsyncRand(16777217) + -16777216
 	end
-	RandomColour = ChoGGi.ComFuncs.RandomColour
+	ChoGGi.ComFuncs.RandomColour = RandomColour
 
 	function ChoGGi.ComFuncs.ObjectColourRandom(obj)
 		-- if fired from action menu
@@ -2650,7 +2649,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			)
 			return
 		end
-		local pal = ChoGGi.ComFuncs.GetPalette(obj)
+		local pal = GetPalette(obj)
 
 		local item_list = {}
 		local c = 0

@@ -1687,7 +1687,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
 		if type(value) == "number" then
 			if choice.check2 then
 				if obj then
-					obj:SetMoveSpeed(value)
+					obj:SetBase("move_speed", value)
 				end
 			else
 				local objs = UICity.labels.Colonist or ""
@@ -1695,10 +1695,10 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
 					if dome then
 						local o = objs[i]
 						if o.dome and o.dome.handle == dome.handle then
-							o:SetMoveSpeed(value)
+							o:SetBase("move_speed", value)
 						end
 					else
-						objs[i]:SetMoveSpeed(value)
+						objs[i]:SetBase("move_speed", value)
 					end
 				end
 			end

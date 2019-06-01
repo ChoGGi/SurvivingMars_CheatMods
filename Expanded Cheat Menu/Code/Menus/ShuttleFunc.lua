@@ -101,7 +101,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 			-- loop through and set all shuttles
 			local objs = UICity.labels.CargoShuttle or ""
 			for i = 1, #objs do
-				objs[i].move_speed = value
+				objs[i]:SetBase("move_speed", value)
 			end
 			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedShuttle", value)
 

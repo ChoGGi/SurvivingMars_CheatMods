@@ -245,6 +245,20 @@ end -- do
 
 function OnMsg.ClassesGenerate()
 
+	do -- DroneBase:RegisterDustDevil
+		local fake_devil = {drone_speed_down = 0}
+		-- stop drones/rovers from slowing down in dustdevils
+		SaveOrigFunc("DroneBase", "RegisterDustDevil")
+		function DroneBase:RegisterDustDevil(devil, ...)
+			if (UserSettings.SpeedWaspDrone and self:IsKindOf("FlyingDrone"))
+					or (UserSettings.SpeedDrone and self:IsKindOf("Drone") and not self:IsKindOf("FlyingDrone"))
+					or (UserSettings.SpeedRC and self:IsKindOf("BaseRover")) then
+				devil = fake_devil
+			end
+			return ChoGGi_OrigFuncs.DroneBase_RegisterDustDevil(self, devil, ...)
+		end
+	end -- do
+
 	-- all storybit/neg/etc options enabled
 	SaveOrigFunc("Condition", "Evaluate")
 	function Condition.Evaluate(...)
@@ -624,6 +638,7 @@ end -- ClassesGenerate
 --~ end -- ClassesPostprocess
 
 function OnMsg.ClassesBuilt()
+
 	SaveOrigFunc("SpaceElevator", "DroneUnloadResource")
 	function SpaceElevator:DroneUnloadResource(...)
 		local export_when = ChoGGi.ComFuncs.DotNameToObject("ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount")
@@ -1185,18 +1200,23 @@ function OnMsg.ClassesBuilt()
 		end
 	end
 
-	-- make it so caret is at the end of the text when you use history (who the heck wants it at the start...)
-	SaveOrigFunc("Console", "HistoryDown")
-	function Console:HistoryDown(...)
-		ChoGGi_OrigFuncs.Console_HistoryDown(self, ...)
-		self.idEdit:SetCursor(1, #self.idEdit:GetText())
-	end
+	do -- Console HistoryDown/HistoryUp
+		-- make it so caret is at the end of the text when you use history (who the heck wants it at the start...)
+		local function HistoryEnd(func, self, ...)
+			ChoGGi_OrigFuncs[func](self, ...)
+			self.idEdit:SetCursor(1, #self.idEdit:GetText())
+		end
 
-	SaveOrigFunc("Console", "HistoryUp")
-	function Console:HistoryUp(...)
-		ChoGGi_OrigFuncs.Console_HistoryUp(self, ...)
-		self.idEdit:SetCursor(1, #self.idEdit:GetText())
-	end
+		SaveOrigFunc("Console", "HistoryDown")
+		function Console:HistoryDown(...)
+			HistoryEnd("Console_HistoryDown", self, ...)
+		end
+
+		SaveOrigFunc("Console", "HistoryUp")
+		function Console:HistoryUp(...)
+			HistoryEnd("Console_HistoryUp", self, ...)
+		end
+	end -- do
 
 	do -- RequiresMaintenance:AddDust
 		-- it wasn't checking if it was a number so we got errors in log
