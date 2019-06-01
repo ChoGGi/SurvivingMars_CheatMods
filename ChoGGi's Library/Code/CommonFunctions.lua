@@ -4605,19 +4605,6 @@ do -- BuildableHexGrid
 	end
 end
 
--- not a ComFunc so much as me wanting to keep all refs to ChoGGi_dlgs_opened in this mod (just in case)
-function ChoGGi.ComFuncs.RetMapDlg_MiniMap()
-	local map_dlg
-	local ChoGGi_dlgs_opened = ChoGGi_dlgs_opened
-	for dlg in pairs(ChoGGi_dlgs_opened) do
-		if dlg:IsKindOf("ChoGGi_MinimapDlg") then
-			map_dlg = dlg
-			break
-		end
-	end
-	return map_dlg
-end
-
 function ChoGGi.ComFuncs.SetWinObjectVis(obj,visible)
 	-- XWindow:GetVisible()
 	if obj.target_visible then
@@ -4694,4 +4681,22 @@ function ChoGGi.ComFuncs.PlantRandomVegetation(amount)
 
 	ResumePassEdits("ChoGGi.ComFuncs.PlantRandomVegetation")
 	ResumeTerrainInvalidations("ChoGGi.ComFuncs.PlantRandomVegetation")
+end
+
+function ChoGGi.ComFuncs.GetDialogECM(cls)
+	local ChoGGi_dlgs_opened = ChoGGi_dlgs_opened
+	for dlg in pairs(ChoGGi_dlgs_opened) do
+		if dlg:IsKindOf(cls) then
+			return dlg
+		end
+	end
+end
+
+function ChoGGi.ComFuncs.CloseDialogsECM(skip)
+	local ChoGGi_dlgs_opened = ChoGGi_dlgs_opened
+	for dlg in pairs(ChoGGi_dlgs_opened) do
+		if dlg ~= skip then
+			dlg:Close()
+		end
+	end
 end

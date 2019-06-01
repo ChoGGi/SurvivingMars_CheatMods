@@ -1,3 +1,6 @@
+v0.3
+Forgot to add the DropPod entity from gagarin.
+
 v0.2
 Added rocket from Silva - International Fuel Corporation.
 Fixed palettes.

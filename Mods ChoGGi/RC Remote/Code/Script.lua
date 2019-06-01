@@ -203,6 +203,9 @@ DefineClass.RCRemote = {
 		"rover_accent",
 		"none"
 	},
+
+	-- show the pin info
+	pin_rollover = T(51, "<ui_command>"),
 }
 
 function RCRemote:GameInit()
@@ -216,9 +219,6 @@ function RCRemote:GameInit()
 	self:SetColorizationMaterial(2, -14710529, 12, 32)
 	-- color of bands
 	self:SetColorizationMaterial(3, -13028496, 0, 12)
-
-	-- show the pin info
-	self.pin_rollover = T(0, "<ui_command>")
 end
 
 function RCRemote:RetParabola(from, to)

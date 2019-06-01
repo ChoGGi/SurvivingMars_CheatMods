@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
---~ 	local Translate = ChoGGi.ComFuncs.Translate
+--~ local Translate = ChoGGi.ComFuncs.Translate
+local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -40,6 +41,38 @@ Actions[c] = {ActionName = Strings[302535920001307--[[Grid Info--]]],
 --~ 	RolloverText = Strings[302535920000556--[[Shows a list of updated information about your city.--]]],
 --~ 	OnAction = ChoGGi.MenuFuncs.MonitorInfo,
 --~ }
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000688--[[Clean All Objects--]]],
+	ActionMenubar = "ECM.ECM",
+	ActionId = ".Clean All Objects",
+	ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
+	RolloverText = Strings[302535920000689--[[Removes all dust from all objects.--]]],
+	OnAction = ChoGGi.MenuFuncs.CleanAllObjects,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000690--[[Fix All Objects--]]],
+	ActionMenubar = "ECM.ECM",
+	ActionId = ".Fix All Objects",
+	ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
+	RolloverText = Strings[302535920000691--[[Fixes all malfunctioned objects.--]]],
+	OnAction = ChoGGi.MenuFuncs.FixAllObjects,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000700--[[Scanner Queue Larger--]]],
+	ActionMenubar = "ECM.ECM",
+	ActionId = ".Scanner Queue Larger",
+	ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.ExplorationQueueMaxSize,
+			Strings[302535920000701--[[Queue up to 100 squares.--]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle,
+}
 
 c = c + 1
 Actions[c] = {ActionName = Strings[302535920000469--[[Close Dialogs--]]],

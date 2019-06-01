@@ -3,6 +3,11 @@
 --~ box(left/x, top/y, right/w, bottom/h) :minx() :miny() :sizex() :sizey()
 --~ box() or sizebox()
 
+-- store opened dialogs (make sure any refs to this table are only used in this mod)
+if not rawget(_G, "ChoGGi_dlgs_opened") then
+	ChoGGi_dlgs_opened = {}
+end
+
 local Translate = ChoGGi.ComFuncs.Translate
 local Random = ChoGGi.ComFuncs.Random
 --~ local RetName = ChoGGi.ComFuncs.RetName
@@ -436,11 +441,6 @@ DefineClass.ChoGGi_XWindow = {
 	action_close = false,
 	action_host = false,
 }
-
--- store opened dialogs (make sure any refs to this table are only used in this mod)
-if not rawget(_G, "ChoGGi_dlgs_opened") then
-	ChoGGi_dlgs_opened = {}
-end
 
 -- parent, context
 function ChoGGi_XWindow:AddElements()

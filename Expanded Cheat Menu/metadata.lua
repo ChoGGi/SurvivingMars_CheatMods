@@ -85,8 +85,6 @@ return PlaceObj("ModDef", {
 		"Code/Menus/GameMenu.lua",
 		"Code/Menus/HelpFunc.lua",
 		"Code/Menus/HelpMenu.lua",
-		"Code/Menus/MiscFunc.lua",
-		"Code/Menus/MiscMenu.lua",
 		"Code/Menus/MissionFunc.lua",
 		"Code/Menus/MissionMenu.lua",
 		"Code/Menus/ResourcesFunc.lua",

@@ -368,7 +368,7 @@ Actions[c] = {ActionName = Strings[302535920001367--[[Toggles--]]],
 	ActionId = ".Toggles",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
-	ActionSortKey = "1Toggle",
+	ActionSortKey = "1Toggles",
 }
 
 c = c + 1

@@ -1,3 +1,7 @@
+v1.9
+Added support for LukeH's Resources (not Hydrocarbons).
+Cleaned up the code a bit.
+
 v1.8
 Hopefully won't show up in the Buildings not working notification anymore...
 Doesn't spin wheels for a sec or two when it stops moving.

@@ -2,7 +2,7 @@
 
 -- OnMsgs (most of them)
 
-local type = type
+local type, pairs = type, pairs
 local table_sort = table.sort
 local table_remove = table.remove
 local table_find = table.find
@@ -256,25 +256,26 @@ function OnMsg.ModsReloaded()
 		c = c + 1
 		Actions[c] = {
 			ActionMenubar = "ECM.Debug",
-			ActionName = Strings[302535920001074--[[Ged Presets Editor--]]],
-			ActionId = ".Ged Presets Editor",
+			ActionName = Strings[302535920001074--[[Ged Presets--]]],
+			ActionId = ".Ged Presets",
 			ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 			OnActionEffect = "popup",
-			ActionSortKey = "1Ged Presets Editor",
+			ActionSortKey = "1Ged Presets",
 		}
 
 		-- add preset menu items
+		local Presets = Presets
 		ClassDescendantsList("Preset", function(name, class)
 			if not name:find("ChoGGi") then
 				c = c + 1
 				Actions[c] = {
-					ActionMenubar = "ECM.Debug.Ged Presets Editor",
+					ActionMenubar = "ECM.Debug.Ged Presets",
 					ActionName = name,
 					ActionId = "." .. name,
-					ActionIcon = class.EditorIcon or "CommonAssets/UI/Menu/CollectionsEditor.tga",
+					ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
 					RolloverText = Strings[302535920000733--[[Open a preset in the editor.--]]],
 					OnAction = function()
-						OpenGedApp(g_Classes[name].GedEditor, Presets[name], {
+						OpenGedApp(class.GedEditor, Presets[name], {
 							PresetClass = name,
 							SingleFile = class.SingleFile
 						})
@@ -492,8 +493,8 @@ function OnMsg.PersistPostLoad()
 			end
 		end
 
+		-- if there's a missing id print/return a warning
 		local printit = ChoGGi.UserSettings.FixMissingModBuildingsLog
-
 		-- GetFreeSpace, GetFreeLivingSpace, GetFreeWorkplaces, GetFreeWorkplacesAround
 		local labels = UICity.labels or empty_table
 		for label_id, label in pairs(labels) do

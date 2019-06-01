@@ -31,7 +31,7 @@ ChoGGi_Minimap_Options = {
 	image_str = image_mod and image_mod.env.CurrentModPath .. "Maps/",
 	UpdateTopoImage = function(value)
 		-- find our map dlg
-		local map_dlg = ChoGGi.ComFuncs.RetMapDlg_MiniMap()
+		local map_dlg = ChoGGi.ComFuncs.GetDialogECM("ChoGGi_MinimapDlg")
 
 		if not map_dlg then
 			return

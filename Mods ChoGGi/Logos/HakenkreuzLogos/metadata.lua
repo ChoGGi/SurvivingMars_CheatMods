@@ -29,5 +29,10 @@ I probably should've kept a list of credits... I didn't make any of these images
 
 This is for you (you know who you are):
 Nazies are murders, so are Commies (and Capitalists and Christans and Muslims and so on).
-Congratulations! You win an Interwebs!]],
+Congratulations! You win an Interwebs!
+
+
+
+I guess incompatible is better then just removing it.
+Thank you random Steam moderator! Those thumbs are for you.]],
 })

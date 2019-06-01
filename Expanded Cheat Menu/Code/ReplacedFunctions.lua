@@ -245,6 +245,15 @@ end -- do
 
 function OnMsg.ClassesGenerate()
 
+	-- all storybit/neg/etc options enabled
+	SaveOrigFunc("Condition", "Evaluate")
+	function Condition.Evaluate(...)
+		if UserSettings.OverrideConditionPrereqs then
+			return true
+		end
+		return ChoGGi_OrigFuncs.Condition_Evaluate(...)
+	end
+
 	-- limit size of crops to window width - selection panel size
 	do -- InfopanelItems:Open()
 		local GetScreenSize = UIL.GetScreenSize

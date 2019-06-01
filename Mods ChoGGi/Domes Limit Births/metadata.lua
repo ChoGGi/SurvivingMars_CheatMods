@@ -15,6 +15,8 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[Adds a slider to domes to limit amount of children born in each dome.
 The slider will stop babies from being born in that dome (nothing else).
+This is a slightly random birth limiter, once they're allowed it'll spawn however many are in the queue.
+If you want something more exact, see my Nursery: Limit Birthing To Spots mod.
 
 It defaults to 0 (vanilla functionality), raise it to set a limit.
 Click the title to toggle between changing the value for that dome or all domes.

@@ -14,6 +14,244 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RandomColour = ChoGGi.ComFuncs.RandomColour
 local Strings = ChoGGi.Strings
 
+do -- SetEntity
+	local function SetEntity(obj, entity)
+		--backup orig
+		if not obj.ChoGGi_OrigEntity then
+			obj.ChoGGi_OrigEntity = obj:GetEntity()
+		end
+		if entity == "Default" then
+			local orig = obj.ChoGGi_OrigEntity or obj:GetDefaultPropertyValue("entity")
+			obj.entity = orig
+			obj:ChangeEntity(orig)
+			obj.ChoGGi_OrigEntity = nil
+		else
+			obj.entity = entity
+			obj:ChangeEntity(entity)
+		end
+	end
+
+	function ChoGGi.MenuFuncs.ChangeEntity()
+		local obj = ChoGGi.ComFuncs.SelObject()
+		if not obj then
+			MsgPopup(
+				Strings[302535920001139--[[You need to select an object.--]]],
+				Strings[302535920000682--[[Change Entity--]]]
+			)
+			return
+		end
+
+		local hint_noanim = Strings[302535920001140--[[No animation.--]]]
+		local item_list = {
+			{text = " " .. Strings[302535920001141--[[Default Entity--]]], value = "Default"},
+			{text = " " .. Strings[302535920001142--[[Kosmonavt--]]], value = "Kosmonavt"},
+			{text = " " .. Strings[302535920001143--[[Jama--]]], value = "Lama"},
+			{text = " " .. Strings[302535920001144--[[Green Man--]]], value = "GreenMan"},
+			{text = " " .. Strings[302535920001145--[[Planet Mars--]]], value = "PlanetMars", hint = hint_noanim},
+			{text = " " .. Strings[302535920001146--[[Planet Earth--]]], value = "PlanetEarth", hint = hint_noanim},
+			{text = " " .. Strings[302535920001147--[[Rocket Small--]]], value = "RocketUI", hint = hint_noanim},
+			{text = " " .. Strings[302535920001148--[[Rocket Regular--]]], value = "Rocket", hint = hint_noanim},
+			{text = " " .. Strings[302535920001149--[[Combat Rover--]]], value = "CombatRover", hint = hint_noanim},
+			{text = " " .. Strings[302535920001150--[[PumpStation Demo--]]], value = "PumpStationDemo", hint = hint_noanim},
+		}
+		local c = #item_list
+		local EntityData = EntityData
+		for key in pairs(EntityData) do
+			c = c + 1
+			item_list[c] = {
+				text = key,
+				value = key,
+				hint = hint_noanim
+			}
+		end
+
+		local function CallBackFunc(choice)
+			if choice.nothing_selected then
+				return
+			end
+			local value = choice[1].value
+			local check1 = choice[1].check1
+			local check2 = choice[1].check2
+
+			local dome
+			if obj.dome and check1 then
+				dome = obj.dome
+			end
+			if EntityData[value] or value == "Default" then
+
+				if check2 then
+					SetEntity(obj, value)
+				else
+					MapForEach("map", obj.class, function(o)
+						if dome then
+							if o.dome and o.dome.handle == dome.handle then
+								SetEntity(o, value)
+							end
+						else
+							SetEntity(o, value)
+						end
+					end)
+				end
+				MsgPopup(
+					choice[1].text .. ": " .. RetName(obj),
+					Strings[302535920000682--[[Change Entity--]]]
+				)
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = item_list,
+			title = Strings[302535920000682--[[Change Entity--]]] .. ": " .. RetName(obj),
+			custom_type = 7,
+			hint = Strings[302535920000106--[[Current--]]] .. ": "
+				.. (obj.ChoGGi_OrigEntity or obj:GetEntity()) .. "\n"
+				.. Strings[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]]
+				.. "\n\n"
+				.. Strings[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
+
+Not permanent for colonists after they exit buildings (for now).--]]],
+			checkboxes = {
+				only_one = true,
+				{
+					title = Strings[302535920000750--[[Dome Only--]]],
+					hint = Strings[302535920001255--[[Will only apply to objects in the same dome as selected object.--]]],
+				},
+				{
+					title = Strings[302535920000752--[[Selected Only--]]],
+					hint = Strings[302535920001256--[[Will only apply to selected object.--]]],
+				},
+			},
+		}
+	end
+end -- do
+
+do -- SetEntityScale
+	local function SetScale(obj, Scale)
+		local UserSettings = ChoGGi.UserSettings
+		obj:SetScale(Scale)
+
+		--changing entity to a static one and changing scale can make things not move so re-apply speeds.
+		--and it needs a slight delay
+		CreateRealTimeThread(function()
+			Sleep(500)
+			if obj:IsKindOf("Drone") then
+				if UserSettings.SpeedDrone then
+					obj:SetMoveSpeed(UserSettings.SpeedDrone)
+				else
+					obj:SetMoveSpeed(ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone"))
+				end
+			elseif obj:IsKindOf("CargoShuttle") then
+				if UserSettings.SpeedShuttle then
+					obj.move_speed = ChoGGi.Consts.SpeedShuttle
+				else
+					obj.move_speed = ChoGGi.Consts.SpeedShuttle
+				end
+			elseif obj:IsKindOf("Colonist") then
+				if UserSettings.SpeedColonist then
+					obj:SetMoveSpeed(UserSettings.SpeedColonist)
+				else
+					obj:SetMoveSpeed(ChoGGi.Consts.SpeedColonist)
+				end
+			elseif obj:IsKindOf("BaseRover") then
+				if UserSettings.SpeedRC then
+					obj:SetMoveSpeed(UserSettings.SpeedRC)
+				else
+					obj:SetMoveSpeed(ChoGGi.ComFuncs.GetResearchedTechValue("SpeedRC"))
+				end
+			end
+		end)
+	end
+
+	function ChoGGi.MenuFuncs.SetEntityScale()
+		local obj = ChoGGi.ComFuncs.SelObject()
+		if not obj then
+			MsgPopup(
+				Strings[302535920001139--[[You need to select an object.--]]],
+				Strings[302535920000684--[[Change Entity Scale--]]]
+			)
+			return
+		end
+
+		local item_list = {
+			{text = Translate(1000121--[[Default--]]), value = 100},
+			{text = 25, value = 25},
+			{text = 50, value = 50},
+			{text = 100, value = 100},
+			{text = 250, value = 250},
+			{text = 500, value = 500},
+			{text = 1000, value = 1000},
+			{text = 10000, value = 10000},
+		}
+
+		local function CallBackFunc(choice)
+			if choice.nothing_selected then
+				return
+			end
+			local value = choice[1].value
+			local check1 = choice[1].check1
+			local check2 = choice[1].check2
+
+			local dome
+			if obj.dome and check1 then
+				dome = obj.dome
+			end
+			if type(value) == "number" then
+
+				if check2 then
+					SetScale(obj, value)
+				else
+					MapForEach("map", obj.class, function(o)
+						if dome then
+							if o.dome and o.dome.handle == dome.handle then
+								SetScale(o, value)
+							end
+						else
+							SetScale(o, value)
+						end
+					end)
+				end
+				MsgPopup(
+					choice[1].text .. ": " .. RetName(obj),
+					Strings[302535920000684--[[Change Entity Scale--]]],
+					nil,
+					nil,
+					obj
+				)
+			end
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = item_list,
+			title = Strings[302535920000684--[[Change Entity Scale--]]] .. ": " .. RetName(obj),
+			hint = Strings[302535920001156--[[Current object--]]] .. ": " .. obj:GetScale()
+				.. "\n" .. Strings[302535920001157--[[If you don't pick a checkbox it will change all of selected type.--]]],
+			skip_sort = true,
+			checkboxes = {
+				only_one = true,
+				{
+					title = Strings[302535920000750--[[Dome Only--]]],
+					hint = Strings[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.--]]],
+				},
+				{
+					title = Strings[302535920000752--[[Selected Only--]]],
+					hint = Strings[302535920000753--[[Will only apply to selected colonist.--]]],
+				},
+			},
+		}
+	end
+end -- do
+
+function ChoGGi.MenuFuncs.DTMSlotsDlg_Toggle()
+	local dlg = ChoGGi.ComFuncs.GetDialogECM("ChoGGi_DlgDTMSlots")
+	if dlg then
+		dlg:Close()
+	else
+		ChoGGi.ComFuncs.OpenInDTMSlotsDlg()
+	end
+end
+
 function ChoGGi.MenuFuncs.SetFrameCounter()
 	local fps = hr.FpsCounter
 	fps = fps + 1
@@ -385,7 +623,16 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 
 end
 
-function ChoGGi.MenuFuncs.ForceStoryBits()
+function ChoGGi.MenuFuncs.OverrideConditionPrereqs_Toggle()
+	ChoGGi.UserSettings.OverrideConditionPrereqs = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.OverrideConditionPrereqs)
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OverrideConditionPrereqs),
+		Strings[302535920000421--[[Override Condition Prereqs--]]]
+	)
+end
+
+function ChoGGi.MenuFuncs.TestStoryBits()
 --~ ~g_StoryBitStates
 --~ that'll show all the active story state thingss
 
@@ -469,6 +716,7 @@ function ChoGGi.MenuFuncs.ForceStoryBits()
 				title = Translate(4290--[[Colonist--]]),
 				hint = Strings[302535920001555--[[Choose a random %s to be the context for this storybit.--]]]:format(Translate(4290--[[Colonist--]])),
 			},
+
 			{
 				title = Translate(1681--[[Drone--]]),
 				hint = Strings[302535920001555--[[Choose a random %s to be the context for this storybit.--]]]:format(Translate(1681--[[Drone--]])),

@@ -6,217 +6,6 @@ local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000680--[[Annoying Sounds--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Annoying Sounds",
-	ActionIcon = "CommonAssets/UI/Menu/ToggleCutSmoothTrans.tga",
-	RolloverText = Strings[302535920000681--[[Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping).--]]],
-	OnAction = ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920001292--[[List All Objects--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".List All Objects",
-	ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
-	RolloverText = Strings[302535920001293--[[A list of objects; double-click on one to select and move the camera to it.--]]],
-	OnAction = ChoGGi.MenuFuncs.ListAllObjects,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000864--[[Delete Large Rocks--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Delete Large Rocks",
-	ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
-	RolloverText = Strings[302535920001238--[[Removes rocks for that smooth map feel.--]]],
-	OnAction = ChoGGi.ComFuncs.DeleteLargeRocks,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920001366--[[Delete Small Rocks--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Delete Small Rocks",
-	ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
-	RolloverText = Strings[302535920001238--[[Removes rocks for that smooth map feel.--]]],
-	OnAction = ChoGGi.ComFuncs.DeleteSmallRocks,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000674--[[Terrain Editor Toggle--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Terrain Editor Toggle",
-	ActionIcon = "CommonAssets/UI/Menu/smooth_terrain.tga",
-	RolloverText = Strings[302535920000675--[[Opens up the map editor with the brush tool visible.--]]],
-	OnAction = ChoGGi.ComFuncs.TerrainEditor_Toggle,
-	ActionShortcut = "Ctrl-Shift-T",
-	ActionBindable = true,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000485--[[Terrain Flatten Toggle--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Terrain Flatten Toggle",
-	ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
-	RolloverText = Strings[302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
-
-Use Shift + Arrow keys to change the height/radius.--]]],
-	OnAction = ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
-	ActionShortcut = "Shift-F",
-	ActionBindable = true,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000623--[[Terrain Texture Change--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Terrain Texture Change",
-	ActionIcon = "CommonAssets/UI/Menu/terrain_type.tga",
-	RolloverText = Strings[302535920000624--[[Green or Icy mars? Coming right up!
-(don't forget a light model)--]]],
-	OnAction = ChoGGi.MenuFuncs.TerrainTextureChange,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920001237--[[Terrain Texture Remap--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Terrain Texture Remap",
-	ActionIcon = "CommonAssets/UI/Menu/terrain_type.tga",
-	RolloverText = Strings[302535920001312--[["Instead of replacing all textures with one then re-adding stuff, this will remap existing textures."--]]],
-	OnAction = ChoGGi.MenuFuncs.TerrainTextureRemap,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920001111--[[Whiter Rocks--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Whiter Rocks",
-	ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
-	RolloverText = Strings[302535920001113--[[Helps the rocks blend in better when using the polar ground texture.--]]],
-	OnAction = ChoGGi.MenuFuncs.WhiterRocks,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000493--[[Change Map--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Change Map",
-	ActionIcon = "CommonAssets/UI/Menu/load_city.tga",
-	RolloverText = Strings[302535920000494--[[Change map (options to pick commander, sponsor, etc...
-
-Attention: If you get yellow ground areas; just load it again or try %s.--]]]:format(Strings[302535920001487--[[Reload Map--]]]),
-	OnAction = ChoGGi.MenuFuncs.ChangeMap,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920001487--[[Reload Map--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".ReloadMap",
-	ActionIcon = "CommonAssets/UI/Menu/reload.tga",
-	RolloverText = Strings[302535920001488--[[Reloads map as new game.--]]],
-	ActionSortKey = "1Change Map ReloadMap",
-	OnAction = ChoGGi.MenuFuncs.ReloadMap,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000265--[[Pulsating Pins--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Pulsating Pins",
-	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
-	RolloverText = function()
-		return SettingState(
-			ChoGGi.UserSettings.DisablePulsatingPinsMotion,
-			Strings[302535920000335--[[When true pins will no longer do the pulsating motion (hover over to stop).--]]]
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.PulsatingPins_Toggle,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000629--[[UI Transparency--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".UI Transparency",
-	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
-	RolloverText = Strings[302535920000630--[[Change the transparency of UI items (info panel, menu, pins).--]]],
-	OnAction = ChoGGi.MenuFuncs.SetTransparencyUI,
-	ActionShortcut = "Ctrl-F3",
-	ActionBindable = true,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000631--[[UI Transparency Mouseover--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".UI Transparency Mouseover",
-	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
-	RolloverText = function()
-		return SettingState(
-			ChoGGi.UserSettings.TransparencyToggle,
-			Strings[302535920000632--[[Toggle removing transparency on mouseover.--]]]
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.TransparencyUI_Toggle,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000694--[[Set Opacity--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Set Opacity",
-	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
-	RolloverText = function()
-		local obj = SelectedObj
-		if IsValid(obj) then
-			return SettingState(
-				obj:GetOpacity(),
-				Strings[302535920000695--[[Change the opacity of objects.--]]]
-			)
-		else
-			return Strings[302535920000695]
-		end
-	end,
-	OnAction = ChoGGi.MenuFuncs.SetObjectOpacity,
-	ActionShortcut = "F3",
-	ActionBindable = true,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Translate(174--[[Color Modifier--]]),
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Color Modifier",
-	ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
-	RolloverText = Strings[302535920000693--[[Select/mouse over an object to change the colours
-Use Shift- or Ctrl- for random colours/reset colours.--]]],
-	OnAction = ChoGGi.ComFuncs.CreateObjectListAndAttaches,
-	ActionShortcut = "F6",
-	ActionBindable = true,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000678--[[Change Surface Signs To Materials--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Change Surface Signs To Materials",
-	ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
-	RolloverText = Strings[302535920000679--[[Changes all the ugly immersion breaking signs to materials (reversible).--]]],
-	OnAction = ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000061--[[Place Objects--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Place Objects",
-	ActionIcon = "CommonAssets/UI/Menu/enrich_terrain.tga",
-	RolloverText = Strings[302535920000062--[[Opens editor mode with the place objects dialog.--]]],
-	OnAction = ChoGGi.ComFuncs.PlaceObjects_Toggle,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000862--[[Object Planner--]]],
-	ActionMenubar = "ECM.Game",
-	ActionId = ".Object Planner",
-	ActionIcon = "CommonAssets/UI/Menu/ShowOccluders.tga",
-	RolloverText = Strings[302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]]],
-	OnAction = ChoGGi.ComFuncs.EntitySpawner,
-	setting_planning = true,
-	ActionShortcut = "Ctrl-Shift-A",
-	ActionBindable = true,
-}
-
 -- menu
 c = c + 1
 Actions[c] = {ActionName = Strings[302535920001058--[[Camera--]]],
@@ -224,7 +13,6 @@ Actions[c] = {ActionName = Strings[302535920001058--[[Camera--]]],
 	ActionId = ".Camera",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
-	ActionSortKey = "1Camera",
 }
 
 c = c + 1
@@ -348,7 +136,6 @@ Actions[c] = {ActionName = Strings[302535920000845--[[Render--]]],
 	ActionId = ".Render",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
-	ActionSortKey = "1Render",
 }
 
 c = c + 1
@@ -460,7 +247,6 @@ Actions[c] = {ActionName = Strings[302535920001449--[[Export--]]] .. " " .. Stri
 	ActionId = ".Export CSV",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
-	ActionSortKey = "1Export CSV",
 }
 
 c = c + 1
@@ -516,7 +302,6 @@ Actions[c] = {ActionName = Strings[302535920000892--[[Screenshot--]]],
 	ActionId = ".Screenshot",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
-	ActionSortKey = "1Screenshot",
 }
 
 c = c + 1
@@ -564,7 +349,6 @@ Actions[c] = {ActionName = Strings[302535920000893--[[Interface--]]],
 	ActionId = ".Interface",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
-	ActionSortKey = "1Interface",
 }
 
 c = c + 1
@@ -648,7 +432,6 @@ Actions[c] = {ActionName = Translate(911432559058--[[Light model--]]),
 	ActionId = ".Lightmodel",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
-	ActionSortKey = "1Light model",
 }
 
 c = c + 1
@@ -695,4 +478,300 @@ Actions[c] = {ActionName = Strings[302535920001625--[[List Disaster--]]],
 	setting_func = SetDisasterLightmodelList,
 	setting_title = Strings[302535920001625--[[List Disaster--]]],
 	OnAction = ChoGGi.MenuFuncs.ChangeLightmodelList,
+}
+
+-- menu
+c = c + 1
+Actions[c] = {ActionName = Translate(904--[[Terrain--]]),
+	ActionMenubar = "ECM.Game",
+	ActionId = ".Terrain",
+	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	OnActionEffect = "popup",
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000674--[[Terrain Editor Toggle--]]],
+	ActionMenubar = "ECM.Game.Terrain",
+	ActionId = ".Terrain Editor Toggle",
+	ActionIcon = "CommonAssets/UI/Menu/smooth_terrain.tga",
+	RolloverText = Strings[302535920000675--[[Opens up the map editor with the brush tool visible.--]]],
+	OnAction = ChoGGi.ComFuncs.TerrainEditor_Toggle,
+	ActionShortcut = "Ctrl-Shift-T",
+	ActionBindable = true,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000485--[[Terrain Flatten Toggle--]]],
+	ActionMenubar = "ECM.Game.Terrain",
+	ActionId = ".Terrain Flatten Toggle",
+	ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
+	RolloverText = Strings[302535920000486--[[Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
+
+Use Shift + Arrow keys to change the height/radius.--]]],
+	OnAction = ChoGGi.MenuFuncs.FlattenTerrain_Toggle,
+	ActionShortcut = "Shift-F",
+	ActionBindable = true,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000623--[[Terrain Texture Change--]]],
+	ActionMenubar = "ECM.Game.Terrain",
+	ActionId = ".Terrain Texture Change",
+	ActionIcon = "CommonAssets/UI/Menu/terrain_type.tga",
+	RolloverText = Strings[302535920000624--[[Green or Icy mars? Coming right up!
+(don't forget a light model)--]]],
+	OnAction = ChoGGi.MenuFuncs.TerrainTextureChange,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001237--[[Terrain Texture Remap--]]],
+	ActionMenubar = "ECM.Game.Terrain",
+	ActionId = ".Terrain Texture Remap",
+	ActionIcon = "CommonAssets/UI/Menu/terrain_type.tga",
+	RolloverText = Strings[302535920001312--[["Instead of replacing all textures with one then re-adding stuff, this will remap existing textures."--]]],
+	OnAction = ChoGGi.MenuFuncs.TerrainTextureRemap,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000864--[[Delete Large Rocks--]]],
+	ActionMenubar = "ECM.Game.Terrain",
+	ActionId = ".Delete Large Rocks",
+	ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
+	RolloverText = Strings[302535920001238--[[Removes rocks for that smooth map feel.--]]],
+	OnAction = ChoGGi.ComFuncs.DeleteLargeRocks,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001366--[[Delete Small Rocks--]]],
+	ActionMenubar = "ECM.Game.Terrain",
+	ActionId = ".Delete Small Rocks",
+	ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
+	RolloverText = Strings[302535920001238--[[Removes rocks for that smooth map feel.--]]],
+	OnAction = ChoGGi.ComFuncs.DeleteSmallRocks,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001111--[[Whiter Rocks--]]],
+	ActionMenubar = "ECM.Game.Terrain",
+	ActionId = ".Whiter Rocks",
+	ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
+	RolloverText = Strings[302535920001113--[[Helps the rocks blend in better when using the polar ground texture.--]]],
+	OnAction = ChoGGi.MenuFuncs.WhiterRocks,
+}
+
+-- menu
+c = c + 1
+Actions[c] = {ActionName = Translate(4820--[[UI--]]),
+	ActionMenubar = "ECM.Game",
+	ActionId = ".UI",
+	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	OnActionEffect = "popup",
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000629--[[UI Transparency--]]],
+	ActionMenubar = "ECM.Game.UI",
+	ActionId = ".UI Transparency",
+	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
+	RolloverText = Strings[302535920000630--[[Change the transparency of UI items (info panel, menu, pins).--]]],
+	OnAction = ChoGGi.MenuFuncs.SetTransparencyUI,
+	ActionShortcut = "Ctrl-F3",
+	ActionBindable = true,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000631--[[UI Transparency Mouseover--]]],
+	ActionMenubar = "ECM.Game.UI",
+	ActionId = ".UI Transparency Mouseover",
+	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.TransparencyToggle,
+			Strings[302535920000632--[[Toggle removing transparency on mouseover.--]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.TransparencyUI_Toggle,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000265--[[Pulsating Pins--]]],
+	ActionMenubar = "ECM.Game.UI",
+	ActionId = ".Pulsating Pins",
+	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.DisablePulsatingPinsMotion,
+			Strings[302535920000335--[[When true pins will no longer do the pulsating motion (hover over to stop).--]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.PulsatingPins_Toggle,
+}
+
+-- menu
+c = c + 1
+Actions[c] = {ActionName = Translate(298035641454--[[Object--]]),
+	ActionMenubar = "ECM.Game",
+	ActionId = ".Object",
+	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	OnActionEffect = "popup",
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000686--[[Auto Unpin Objects--]]],
+	ActionMenubar = "ECM.Game.Object",
+	ActionId = ".Auto Unpin Objects",
+	ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
+	RolloverText = function()
+		-- it can get large, so for this one we stick the description first.
+		return Strings[302535920000687--[[Will automagically stop any of these objects from being added to the pinned list.--]]]
+			.. "\n<color 100 255 100>" .. ValueToLuaCode(ChoGGi.UserSettings.UnpinObjects) .. "</color>"
+	end,
+	OnAction = ChoGGi.MenuFuncs.ShowAutoUnpinObjectList,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000680--[[Annoying Sounds--]]],
+	ActionMenubar = "ECM.Game.Object",
+	ActionId = ".Annoying Sounds",
+	ActionIcon = "CommonAssets/UI/Menu/ToggleCutSmoothTrans.tga",
+	RolloverText = Strings[302535920000681--[[Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping).--]]],
+	OnAction = ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001292--[[List All Objects--]]],
+	ActionMenubar = "ECM.Game.Object",
+	ActionId = ".List All Objects",
+	ActionIcon = "CommonAssets/UI/Menu/select_objects.tga",
+	RolloverText = Strings[302535920001293--[[A list of objects; double-click on one to select and move the camera to it.--]]],
+	OnAction = ChoGGi.MenuFuncs.ListAllObjects,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000694--[[Set Opacity--]]],
+	ActionMenubar = "ECM.Game.Object",
+	ActionId = ".Set Opacity",
+	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
+	RolloverText = function()
+		local obj = SelectedObj
+		if IsValid(obj) then
+			return SettingState(
+				obj:GetOpacity(),
+				Strings[302535920000695--[[Change the opacity of objects.--]]]
+			)
+		else
+			return Strings[302535920000695]
+		end
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetObjectOpacity,
+	ActionShortcut = "F3",
+	ActionBindable = true,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Translate(174--[[Color Modifier--]]),
+	ActionMenubar = "ECM.Game.Object",
+	ActionId = ".Color Modifier",
+	ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
+	RolloverText = Strings[302535920000693--[[Select/mouse over an object to change the colours
+Use Shift- or Ctrl- for random colours/reset colours.--]]],
+	OnAction = ChoGGi.ComFuncs.CreateObjectListAndAttaches,
+	ActionShortcut = "F6",
+	ActionBindable = true,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000678--[[Change Surface Signs To Materials--]]],
+	ActionMenubar = "ECM.Game.Object",
+	ActionId = ".Change Surface Signs To Materials",
+	ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
+	RolloverText = Strings[302535920000679--[[Changes all the ugly immersion breaking signs to materials (reversible).--]]],
+	OnAction = ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000061--[[Place Objects--]]],
+	ActionMenubar = "ECM.Game.Object",
+	ActionId = ".Place Objects",
+	ActionIcon = "CommonAssets/UI/Menu/enrich_terrain.tga",
+	RolloverText = Strings[302535920000062--[[Opens editor mode with the place objects dialog.--]]],
+	OnAction = ChoGGi.ComFuncs.PlaceObjects_Toggle,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000862--[[Object Planner--]]],
+	ActionMenubar = "ECM.Game.Object",
+	ActionId = ".Object Planner",
+	ActionIcon = "CommonAssets/UI/Menu/ShowOccluders.tga",
+	RolloverText = Strings[302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]]],
+	OnAction = ChoGGi.ComFuncs.EntitySpawner,
+	setting_planning = true,
+	ActionShortcut = "Ctrl-Shift-A",
+	ActionBindable = true,
+}
+
+-- menu
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001355--[[Map--]]],
+	ActionMenubar = "ECM.Game",
+	ActionId = ".Map",
+	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	OnActionEffect = "popup",
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000493--[[Change Map--]]],
+	ActionMenubar = "ECM.Game.Map",
+	ActionId = ".Change Map",
+	ActionIcon = "CommonAssets/UI/Menu/load_city.tga",
+	RolloverText = Strings[302535920000494--[[Change map (options to pick commander, sponsor, etc...
+
+Attention: If you get yellow ground areas; just load it again or try %s.--]]]:format(Strings[302535920001487--[[Reload Map--]]]),
+	OnAction = ChoGGi.MenuFuncs.ChangeMap,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001487--[[Reload Map--]]],
+	ActionMenubar = "ECM.Game.Map",
+	ActionId = ".ReloadMap",
+	ActionIcon = "CommonAssets/UI/Menu/reload.tga",
+	RolloverText = Strings[302535920001488--[[Reloads map as new game.--]]],
+	OnAction = ChoGGi.MenuFuncs.ReloadMap,
+}
+
+-- menu
+c = c + 1
+Actions[c] = {ActionName = Translate(5505--[[Game Speed--]]),
+	ActionMenubar = "ECM.Game",
+	ActionId = ".Game Speed",
+	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	OnActionEffect = "popup",
+}
+
+c = c + 1
+Actions[c] = {ActionName = Translate(5505--[[Game Speed--]]),
+	ActionMenubar = "ECM.Game.Game Speed",
+	ActionId = ".Game Speed",
+	ActionIcon = "CommonAssets/UI/Menu/SelectionToTemplates.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.mediumGameSpeed,
+			Strings[302535920000703--[[Change the game speed (only for medium/fast, normal is normal).--]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetGameSpeed,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000356--[[Time Factor--]]],
+	ActionMenubar = "ECM.Game.Game Speed",
+	ActionId = ".Time Factor",
+	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
+	RolloverText = function()
+		return SettingState(
+			GetTimeFactor(),
+			Strings[302535920000387--[[Change the time factor (not permanently); for ease of screenshots or something.--]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetTimeFactor,
 }

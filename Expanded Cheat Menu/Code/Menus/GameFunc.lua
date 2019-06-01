@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local type, tostring = type, tostring
+local next, type, tostring = next, type, tostring
 
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -10,6 +10,219 @@ local RetIcon = ChoGGi.ComFuncs.RetIcon
 local RetHint = ChoGGi.ComFuncs.RetHint
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
+
+
+function ChoGGi.MenuFuncs.SetTimeFactor()
+	local item_list = {
+		{text = Translate(1000121--[[Default--]]) .. ": " .. 1000, value = 1000},
+		{text = 0, value = 0, hint = Translate(6869--[[Pause--]])},
+		{text = 100, value = 100},
+		{text = 150, value = 150},
+		{text = 250, value = 250},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000, hint = Translate(4020--[[Play at normal speed.--]])},
+		{text = 2500, value = 2500},
+		{text = 3000, value = 3000, hint = Translate(4023--[[Play at three times normal speed.--]])},
+		{text = 5000, value = 5000, hint = Translate(4025--[[Play at five times normal speed.--]])},
+		{text = 10000, value = 10000},
+		{text = 25000, value = 25000},
+		{text = 100000, value = 100000},
+	}
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		choice = choice[1]
+
+		local value = choice.value
+		if type(value) == "number" and value > -1 then
+			-- making the time factor neg = inf loop
+
+			SetTimeFactor(value)
+
+			MsgPopup(
+				choice.text,
+				Strings[302535920000356--[[Time Factor--]]]
+			)
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = Strings[302535920000356--[[Time Factor--]]],
+		hint = Strings[302535920000106--[[Current--]]] .. ": " .. GetTimeFactor(),
+		skip_sort = true,
+	}
+end
+
+function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
+
+	local item_list = {
+		{text = Translate(547--[[Colonists--]]), value = "Colonist"},
+		{text = Translate(1120--[[Space Elevator--]]), value = "SpaceElevator"},
+		{text = Translate(3518--[[Drone Hub--]]), value = "DroneHub"},
+		{text = Translate(1685--[[Rocket--]]), value = "SupplyRocket"},
+
+		{text = Translate(5017--[[Basic Dome--]]), value = "DomeBasic"},
+		{text = Translate(5146--[[Medium Dome--]]), value = "DomeMedium"},
+		{text = Translate(5152--[[Mega Dome--]]), value = "DomeMega"},
+		{text = Translate(5188--[[Oval Dome--]]), value = "DomeOval"},
+		{text = Translate(5093--[[Geoscape Dome--]]), value = "GeoscapeDome"},
+		{text = Translate(9000--[[Micro Dome--]]), value = "DomeMicro"},
+		{text = Translate(9003--[[Trigon Dome--]]), value = "DomeTrigon"},
+		{text = Translate(9009--[[Mega Trigon Dome--]]), value = "DomeMegaTrigon"},
+		{text = Translate(9012--[[Diamond Dome--]]), value = "DomeDiamond"},
+		{text = Strings[302535920000347--[[Star Dome--]]], value = "DomeStar"},
+		{text = Strings[302535920000351--[[Hexa Dome--]]], value = "DomeHexa"},
+	}
+	local c = #item_list
+
+	-- build list with .
+	local g_Classes = g_Classes
+	for key,value in pairs(g_Classes) do
+		-- it adds them all and i just check .class
+		if value.pin_on_start and key ~= "BaseRover" and key ~= "SpaceElevator" then
+			c = c + 1
+			item_list[c] = {
+				text = value.display_name and Translate(value.display_name) or key,
+				value = key,
+				icon = value.display_icon,
+			}
+		end
+	end
+
+	local UserSettings = ChoGGi.UserSettings
+	UserSettings.UnpinObjects = UserSettings.UnpinObjects or {}
+
+	-- add hints to enabled
+	for i = 1, #item_list do
+		local item = item_list[i]
+		if UserSettings.UnpinObjects[item] then
+			item.hint = Translate(12227--[[Enabled--]])
+		end
+	end
+
+	local function CallBackFunc(choices)
+		if choices.nothing_selected then
+			return
+		end
+		local checks = choices[1]
+
+		local pins = UserSettings.UnpinObjects
+		if checks.check1 then
+			for i = 1, #choices do
+				pins[choices[i].value] = true
+			end
+		elseif checks.check2 then
+			for i = 1, #choices do
+				pins[choices[i].value] = nil
+			end
+		end
+
+		--if it's empty then remove setting
+		if not next(UserSettings.UnpinObjects) then
+			UserSettings.UnpinObjects = nil
+		end
+		ChoGGi.SettingFuncs.WriteSettings()
+		MsgPopup(
+			Strings[302535920001093--[[Toggled: %s pinnable objects.--]]]:format(#choices),
+			Strings[302535920000686--[[Auto Unpin Objects--]]]
+		)
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = Strings[302535920000686--[[Auto Unpin Objects--]]],
+		hint = Strings[302535920001097--[[Enter a class name (SelectedObj.class) to add a custom entry.--]]],
+		multisel = true,
+		sortby = "value",
+		checkboxes = {
+			at_least_one = true,
+			only_one = true,
+			{
+				title = Strings[302535920001098--[[Add to list--]]],
+				hint = Strings[302535920001099--[[Add these items to the unpin list.--]]],
+				checked = true,
+			},
+			{
+				title = Strings[302535920001100--[[Remove from list--]]],
+				hint = Strings[302535920001101--[[Remove these items from the unpin list.--]]],
+			},
+		},
+	}
+end
+
+--~ 	SetTimeFactor(1000) = normal speed
+-- use GetTimeFactor() to check time for changing it so it can be paused?
+function ChoGGi.MenuFuncs.SetGameSpeed()
+	local hint_str = Strings[302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>--]]]
+	local item_list = {
+		{text = Translate(1000121--[[Default--]]), value = 1, hint = hint_str:format(1)},
+		{text = Strings[302535920001126--[[Double--]]], value = 2, hint = hint_str:format(2)},
+		{text = Strings[302535920001127--[[Triple--]]], value = 3, hint = hint_str:format(3)},
+		{text = Strings[302535920001128--[[Quadruple--]]], value = 4, hint = hint_str:format(4)},
+		{text = Strings[302535920001129--[[Octuple--]]], value = 8, hint = hint_str:format(8)},
+		{text = Strings[302535920001130--[[Sexdecuple--]]], value = 16, hint = hint_str:format(16)},
+		{text = Strings[302535920001131--[[Duotriguple--]]], value = 32, hint = hint_str:format(32)},
+		{text = Strings[302535920001132--[[Quattuorsexaguple--]]], value = 64, hint = hint_str:format(64)},
+	}
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		local value = choice[1].value
+		if type(value) == "number" then
+			local const = const
+			-- update values that are checked when speed is changed
+			const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * value
+			const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * value
+			-- so it changes the speed immediately
+			if UISpeedState == "pause" then
+				ChangeGameSpeedState(1)
+				ChangeGameSpeedState(-1)
+			else
+				ChangeGameSpeedState(-1)
+				ChangeGameSpeedState(1)
+			end
+
+			-- update settings
+			ChoGGi.UserSettings.mediumGameSpeed = const.mediumGameSpeed
+			ChoGGi.UserSettings.fastGameSpeed = const.fastGameSpeed
+
+			ChoGGi.SettingFuncs.WriteSettings()
+			MsgPopup(
+				Strings[302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.--]]]:format(choice[1].text),
+				Translate(5505--[[Game Speed--]]),
+				nil,
+				true
+			)
+		end
+	end
+
+	local speeds = {
+		[3] = Translate(1000121--[[Default--]]),
+		[6] = Strings[302535920001126--[[Double--]]],
+		[9] = Strings[302535920001127--[[Triple--]]],
+		[12] = Strings[302535920001128--[[Quadruple--]]],
+		[24] = Strings[302535920001129--[[Octuple--]]],
+		[48] = Strings[302535920001130--[[Sexdecuple--]]],
+		[96] = Strings[302535920001131--[[Duotriguple--]]],
+		[192] = Strings[302535920001132--[[Quattuorsexaguple--]]],
+	}
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = Translate(5505--[[Game Speed--]]),
+		hint = Strings[302535920000933--[[Current speed: %s--]]]:format(speeds[const.mediumGameSpeed])
+			.. "\n" .. Strings[302535920001134--[[%s = base number %s multipled by custom value amount.--]]]:format(Strings[302535920000078--[[Custom Value--]]], const.mediumGameSpeed),
+		skip_sort = true,
+	}
+end
 
 function ChoGGi.MenuFuncs.ChangeLightmodelList(action)
 	local setting_func = action.setting_func
@@ -577,6 +790,10 @@ do -- ListAllObjects
 	end
 
 	function ChoGGi.MenuFuncs.ListAllObjects()
+		if not GameState.gameplay then
+			return
+		end
+
 		local item_list = BuildItemList_All()
 
 		ChoGGi.ComFuncs.OpenInListChoice{

@@ -1,6 +1,12 @@
 ## ECM Changelog
 
 ## v13.8 (Unreleased)
+### Added:
+- Debug>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
+
+### Changed:
+- Merged some menu items into submenus and other rearranging.
+
 ### Fixed:
 - Drones carry amount fix wasn't applying (thanks RyanSpencer97).
 

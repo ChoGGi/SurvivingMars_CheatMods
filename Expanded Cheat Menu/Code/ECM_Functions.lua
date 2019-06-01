@@ -668,16 +668,6 @@ function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(parent)
 	})
 end
 
-function ChoGGi.ComFuncs.CloseDialogsECM(skip)
-	local desktop = terminal.desktop
-	for i = #desktop, 1, -1 do
-		local dlg = desktop[i]
-		if dlg ~= skip and dlg:IsKindOf("ChoGGi_XWindow") then
-			dlg:Close()
-		end
-	end
-end
-
 function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 
 	-- if fired from action menu

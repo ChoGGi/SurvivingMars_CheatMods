@@ -47,7 +47,7 @@ DefineClass.RCGarage = {
 	-- keeps a modifier obj to change power use
 	power_modifier = false,
 	-- show the pin info
-	pin_rollover = T(0, "<ui_command>"),
+	pin_rollover = T(51, "<ui_command>"),
 }
 
 function RCGarage:GameInit(...)
@@ -405,7 +405,7 @@ function OnMsg.ClassesBuilt()
 					if text_rovers .. #context.stored_rovers == context.status_text then
 						self:SetTitle([[Main Garage]])
 					else
-						self:SetTitle(T(0, "<ui_command>"))
+						self:SetTitle(context.pin_rollover)
 					end
 
 					---

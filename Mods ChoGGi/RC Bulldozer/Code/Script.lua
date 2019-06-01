@@ -79,7 +79,7 @@ DefineClass.RCBulldozer = {
 	-- store radius here, so we're not updating it all the time
 	visual_circle_size = false,
 	-- show the pin info
-	pin_rollover = T(0, "<ui_command>"),
+	pin_rollover = T(51, "<ui_command>"),
 	-- change texture when dozing
 	texture_terrain = table.find(TerrainTextures, "name", "Dig"),
 	-- used to place the circle

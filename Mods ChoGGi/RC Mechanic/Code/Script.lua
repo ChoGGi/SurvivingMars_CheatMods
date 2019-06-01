@@ -31,7 +31,7 @@ DefineClass.RCMechanic = {
 	on_demolish_resource_refund = { Metals = 20 * const.ResourceScale, MachineParts = 20 * const.ResourceScale , Electronics = 10 * const.ResourceScale },
 
 	-- show the pin info
-	pin_rollover = T(0, "<ui_command>"),
+	pin_rollover = T(51, "<ui_command>"),
 }
 
 DefineClass.RCMechanicBuilding = {

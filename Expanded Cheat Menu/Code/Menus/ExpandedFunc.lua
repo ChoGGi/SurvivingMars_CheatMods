@@ -6,6 +6,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetName = ChoGGi.ComFuncs.RetName
 local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 do -- BuildGridList
 	local IsValid = IsValid
@@ -413,4 +414,47 @@ function ChoGGi.MenuFuncs.MonitorInfo()
 		end,
 		skip_sort = true,
 	}
+end
+
+function ChoGGi.MenuFuncs.CleanAllObjects()
+	local dust = const.DustMaterialExterior
+	MapForEach("map", "BaseBuilding", function(o)
+		if o.SetDust then
+			o:SetDust(0, dust)
+		end
+	end)
+	MsgPopup(
+		"true",
+		Strings[302535920000688--[[Clean All Objects--]]]
+	)
+end
+
+function ChoGGi.MenuFuncs.FixAllObjects()
+	MapForEach("map", "BaseBuilding", function(o)
+		if o.Repair then
+			o:Repair()
+			o.accumulated_maintenance_points = 0
+		end
+	end)
+
+	MapForEach("map", "Drone", function(o)
+		o:CheatRechargeBattery()
+		o:SetCommand("RepairDrone", o)
+	end)
+
+	MsgPopup(
+		"true",
+		Strings[302535920000690--[[Fix All Objects--]]]
+	)
+end
+
+function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
+	const.ExplorationQueueMaxSize = ChoGGi.ComFuncs.ValueRetOpp(const.ExplorationQueueMaxSize, 100, ChoGGi.Consts.ExplorationQueueMaxSize)
+	ChoGGi.ComFuncs.SetSavedConstSetting("ExplorationQueueMaxSize")
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ExplorationQueueMaxSize),
+		Strings[302535920000700--[[Scanner Queue Larger--]]]
+	)
 end

@@ -1038,11 +1038,17 @@ end
 function OnMsg.ResupplyRocketLaunched(...)
 	print("Msg.ResupplyRocketLaunched",...)
 end
+function OnMsg.RivalMilestone(...)
+	print("Msg.RivalMilestone",...)
+end
 function OnMsg.RivalsInteraction(...)
 	print("Msg.RivalsInteraction",...)
 end
 function OnMsg.RivalsSpawned(...)
 	print("Msg.RivalsSpawned",...)
+end
+function OnMsg.RivalStartsAnomaly(...)
+	print("Msg.RivalStartsAnomaly",...)
 end
 function OnMsg.RocketInstantTravel(...)
 	print("Msg.RocketInstantTravel",...)

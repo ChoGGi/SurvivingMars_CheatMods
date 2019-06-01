@@ -492,7 +492,7 @@ function ChoGGi.MenuFuncs.SetCommander()
 				local UICity = UICity
 
 				comm:game_apply(UICity)
-				comm:OnApplyEffect(UICity)
+				comm:EffectsApply(self)
 				UICity:ApplyModificationsFromProperties()
 
 				-- and bonuses

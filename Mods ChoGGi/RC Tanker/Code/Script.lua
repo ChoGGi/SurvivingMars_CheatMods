@@ -148,7 +148,7 @@ DefineClass.RCTanker = {
 	},
 
 	-- show the pin info
-	pin_rollover = T(0, "<ui_command>"),
+	pin_rollover = T(51, "<ui_command>"),
 
 	-- skip anything else
 	cls_storage = {"AirStorage", "WaterStorage"},

@@ -1,0 +1,2 @@
+v0.2
+Added mod option to check global spot count instead of per-dome count.
