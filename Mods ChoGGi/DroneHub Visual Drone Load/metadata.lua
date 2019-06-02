@@ -20,5 +20,9 @@ Purple: No drones
 Green-Orange-Red: Low-Med-Heavy
 
 
-Requested by VladamirBegemot.]],
+Requested by VladamirBegemot.
+
+If you only want to know about heavy load ones:
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1759491711]DroneHub: Heavy Load Strobe[/url]
+]],
 })

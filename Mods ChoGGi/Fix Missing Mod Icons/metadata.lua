@@ -1,10 +1,10 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Fix: Missing Build/Upgrade Icons",
 	"title", "Fix: Missing Mod Icons",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
-	"saved", 1559044800,
+	"version_minor", 4,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixMissingBuildUpgradeIcons",
 	"steam_id", "1725437808",
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[If you have mods missing the build menu, upgrade, crop, etc icons; this is the mod for you.
 
-This will validate images for modded buildings/crops and try to fix the image path of missing ones.
+This will validate images for mod items and try to fix the image path of missing ones.
 
 
 

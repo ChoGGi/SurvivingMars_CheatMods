@@ -111,24 +111,6 @@ do -- ModUpload
 			item_id = mod[mod_params.uuid_property]
 		end
 
-		-- screenshots
-		local shots_path = "AppData/ModUpload/Screenshots/"
-		AsyncCreatePath(shots_path)
-		mod_params.screenshots = {}
-		for i = 1, 5 do
-			local screenshot = mod["screenshot" .. i]
-			if io.exists(screenshot) then
-				local _, name, ext = SplitPath(screenshot)
-				local new_name = ModsScreenshotPrefix .. name .. ext
-				local new_path = shots_path .. new_name
-				local err = AsyncCopyFile(screenshot, new_path)
-				if not err then
-					local os_path = ConvertToOSPath(new_path)
-					table.insert(mod_params.screenshots, os_path)
-				end
-			end
-		end
-
 		-- issue with mod platform (workshop/paradox mods)
 		if not prepare_worked then
 			local msg = Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>--]]):gsub("<ModLabel>", mod.title):gsub("<err>", Translate(prepare_results))
@@ -170,6 +152,24 @@ do -- ModUpload
 
 		end
 
+		-- screenshots
+		local shots_path = "AppData/ModUpload/Screenshots/"
+		AsyncCreatePath(shots_path)
+		mod_params.screenshots = {}
+		for i = 1, 5 do
+			local screenshot = mod["screenshot" .. i]
+			if io.exists(screenshot) then
+				local _, name, ext = SplitPath(screenshot)
+				local new_name = ModsScreenshotPrefix .. name .. ext
+				local new_path = shots_path .. new_name
+				local err = AsyncCopyFile(screenshot, new_path)
+				if not err then
+					local os_path = ConvertToOSPath(new_path)
+					table.insert(mod_params.screenshots, os_path)
+				end
+			end
+		end
+
 		if pack_mod then
 			local files_to_pack = {}
 			local substring_begin = #dest_path + 1
@@ -198,7 +198,6 @@ do -- ModUpload
 				end
 				err = AsyncPack(pack_path .. ModsPackFileName, dest_path, files_to_pack)
 			end
-
 		end
 
 		-- update mod on workshop
@@ -215,7 +214,8 @@ do -- ModUpload
 			mod_params.os_pack_path = os_dest
 			-- set last_changes to last_changes or version num
 			if not mod.last_changes or mod.last_changes == "" then
-				mod.last_changes = mod.version_major .. "." .. mod.version_minor
+				mod.last_changes = "https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/" .. mod.title .. "/changes.txt"
+--~ 				mod.last_changes = mod.version_major .. "." .. mod.version_minor
 			end
 
 			-- skip it for testing
@@ -388,6 +388,11 @@ do -- ModUpload
 							m_c = m_c + 1
 							upload_msg[m_c] = Strings[302535920001263--[["%s is different from your name, do you have permission to upload it?"--]]]:format(mod.author)
 						end
+					end
+
+					-- always start clean, or paradox platform will complain about 'Mod content is missing.'
+					if not steam_upload then
+						AsyncDeletePath(dest_path)
 					end
 
 					if choices_len == 1 then

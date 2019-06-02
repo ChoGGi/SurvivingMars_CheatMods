@@ -1,3 +1,6 @@
+v0.6
+Added a comment to get around the bug of a one liner script...
+
 v0.5
 Armstrong update.
 

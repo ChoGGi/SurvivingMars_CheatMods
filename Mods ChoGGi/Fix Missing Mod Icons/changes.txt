@@ -1,3 +1,6 @@
+v0.4
+Cleaner and faster way of fixing paths (no more checking presets, I just check mod items).
+
 v0.3
 Fixed Tech and Build Submenu Cats.
 

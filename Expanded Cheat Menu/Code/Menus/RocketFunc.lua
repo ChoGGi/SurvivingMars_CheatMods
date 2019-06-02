@@ -65,15 +65,25 @@ do -- ChangeResupplySettings
 	end
 
 	function ChoGGi.MenuFuncs.ChangeResupplySettings()
-		local Cargo = ChoGGi.Tables.Cargo or ""
 		local CargoPresets = ChoGGi.Tables.CargoPresets or ""
+		local BuildingTemplates = BuildingTemplates
 
 		local item_list = {}
+
+		local Cargo = ChoGGi.Tables.Cargo or ""
 		for i = 1, #Cargo do
+			local item = Cargo[i]
+			local template = BuildingTemplates[item.id]
+			if not template then
+				template = BuildingTemplates[item.id .. "Building"]
+			end
 			item_list[i] = {
-				text = Translate(Cargo[i].name),
-				value = Cargo[i].id,
-				meta = Cargo[i],
+				text = Translate(item.name),
+				value = item.id,
+				meta = item,
+				hint = template and (template.description
+					.. (template.encyclopedia_image ~= "" and "\n\n\n<image "
+					.. template.encyclopedia_image .. ">" or "")),
 			}
 		end
 

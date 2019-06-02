@@ -4402,7 +4402,23 @@ function ChoGGi.ComFuncs.DisastersStop()
 		table_remove(g_IonStorms, i)
 	end
 
+  if g_RainDisaster then
+		StopRainsDisaster()
+  end
+
+	-- make sure rains stop (remove this after an update or two)
+  local rain_type = "toxic"
+  local disaster_data = RainsDisasterThreads[rain_type]
+  if not disaster_data then
+    return
+  end
+  DeleteThread(disaster_data.soil_thread)
+  DeleteThread(disaster_data.main_thread)
+  DeleteThread(disaster_data.activation_thread)
+  disaster_data.activation_thread = false
+	FinishRainProcedure(rain_type)
 end
+
 function ChoGGi.ComFuncs.RetTableValue(obj, key)
 	local meta = getmetatable(obj)
 	if meta and meta.__index then

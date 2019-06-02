@@ -1,10 +1,10 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Stop Colonist Death Failure v0.1",
 	"title", "Stop Colonist Death Failure",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-	"saved", 1538308800,
+	"version_minor", 2,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_StopColonistDeathFailure",
 	"steam_id", "1526828043",

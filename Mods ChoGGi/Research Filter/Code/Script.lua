@@ -112,7 +112,7 @@ local function EditDlg(dlg)
 				local c = tech.context[1]
 				count = count + 1
 
-				if mod_HideCompleted then
+				if mod_HideCompleted and not c.repeatable then
 					tech.FoldWhenHidden = true
 					if IsTechResearched(c.id) then
 						tech:SetVisible(false)
