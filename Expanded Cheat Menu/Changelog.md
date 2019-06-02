@@ -6,6 +6,7 @@
 ### Added:
 - Debug>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
 - Drones>Drone Wasp Move Speed: Same as Drone Move Speed.
+- Cheats>Anomalies>Spawn POIs: Adds POI locations to Planetary View.
 
 ### Changed:
 - Merged some menu items into submenus and other rearranging.
