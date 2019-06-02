@@ -40,7 +40,7 @@ local table_iclear = table.iclear
 local const_HoursPerDay = const.HoursPerDay
 
 -- Randomly generated number to start counting from, to generate IDs for translatable strings
-local StringIdBase = 76827246
+-- local StringIdBase = 76827246
 
 -- ref to
 local dlg_frame
@@ -112,11 +112,11 @@ Queue: <em><queue></em>]],
 				return UICity:GetResearchProgress(research_queue[1] or UICity:GetCheapestTech())
 			end,
 			done = function()
-				local tech_id, points, max_points = UICity:GetResearchInfo(research_queue[1] or UICity:GetCheapestTech())
+				local tech_id, points, _ = UICity:GetResearchInfo(research_queue[1] or UICity:GetCheapestTech())
 				return tech_id and points or 0
 			end,
 			total = function()
-				local tech_id, points, max_points = UICity:GetResearchInfo(research_queue[1] or UICity:GetCheapestTech())
+				local tech_id, _, max_points = UICity:GetResearchInfo(research_queue[1] or UICity:GetCheapestTech())
 				return tech_id and max_points or 0
 			end,
 			eta = function()

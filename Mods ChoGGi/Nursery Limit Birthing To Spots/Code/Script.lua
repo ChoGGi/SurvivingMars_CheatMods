@@ -1,30 +1,33 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_NurseryLimitBirthingToSpots"
-local mod = Mods[mod_id]
+local options
+local mod_GlobalDomeCount
+local mod_RespectIncubator
+local mod_BypassNoNurseries
+local mod_UltimateNursery
 
-local mod_GlobalDomeCount = mod.options and mod.options.GlobalDomeCount or false
-local mod_RespectIncubator = mod.options and mod.options.RespectIncubator or false
-local mod_BypassNoNurseries = mod.options and mod.options.BypassNoNurseries or true
-
+-- fired when settings are changed and new/load
 local function ModOptions()
-	mod_GlobalDomeCount = mod.options.GlobalDomeCount
-	mod_RespectIncubator = mod.options.RespectIncubator
-	mod_BypassNoNurseries = mod.options.BypassNoNurseries
+	mod_GlobalDomeCount = options.GlobalDomeCount
+	mod_RespectIncubator = options.RespectIncubator
+	mod_BypassNoNurseries = options.BypassNoNurseries
+	mod_UltimateNursery = options.UltimateNursery
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_NurseryLimitBirthingToSpots" then
 		return
 	end
 
 	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
 
 local Max = Max
 
@@ -35,14 +38,16 @@ function Dome:SpawnChild(...)
 		return orig_SpawnChild(self, ...)
 	end
 
-	local objs_g = (self.city or UICity).labels.Nursery
+	local class = mod_UltimateNursery and "UltimateNursery" or "Nursery"
+
+	local objs_g = (self.city or UICity).labels[class]
 	local objs
 
 	-- not global so use dome count
 	if mod_GlobalDomeCount then
 		objs = objs_g
 	else
-		objs = self.labels.Nursery
+		objs = self.labels[class]
 	end
 
 	-- no nursery so abort

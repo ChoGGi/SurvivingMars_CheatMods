@@ -2,6 +2,7 @@
 
 ```
 Cheats.Anomalies>Anomaly Scanning: Scan all or certain types of anomalies.
+Cheats.Anomalies>Spawn POIs: Adds POI locations to Planetary View.
 Cheats.Anomalies>Spawn Planetary Anomalies: Adds Anomaly locations to Planetary View.
 Cheats.Anomalies>Unlock Anomaly BreakThroughs: Unlock any breakthroughs in anomalies (not planetary ones).
 Cheats.Consts.Buildings>Building dust accumulation per Sol: Dust accumulation per Sol
@@ -432,6 +433,7 @@ ECM.Drones>Drone Move Speed: How fast drones will move.
 ECM.Drones>Drone Repair Supply Leak Speed: The amount of time in seconds it takes a Drone to fix a supply leak
 ECM.Drones>Drone Rock To Concrete Speed: How long it takes drones to convert rock to concrete.
 ECM.Drones>Drone Type: Drone: Change what type of drones will spawn (doesn't effect existing).
+ECM.Drones>Drone Wasp Move Speed: How fast drones will move.
 ECM.Drones>Drone recharge time: The time it takes for a Drone to be fully recharged
 ECM.Drones>Drone resource carry amount: Change amount drones can carry.
 ECM.Drones>DroneFactory Build Speed: Change how fast drone factories build drones.

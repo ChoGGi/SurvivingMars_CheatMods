@@ -18,10 +18,7 @@ local testbit = testbit
 local HexNeighbours = HexNeighbours
 local HexGetBuilding = HexGetBuilding
 local WorldToHex = WorldToHex
-local IsBuildableZone = IsBuildableZone
-local GetMaxHeightInHex = GetMaxHeightInHex
 local PlaceObject = PlaceObject
-local Max = Max
 
 DefineClass.Carwash = {
 	__parents = {

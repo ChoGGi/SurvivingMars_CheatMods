@@ -1,3 +1,6 @@
+v0.6
+Library update.
+
 v0.5
 Added an Image checkbox (does the same as the mod option).
 It'll work without mod options, but it won't save the setting.

@@ -13,7 +13,7 @@ function OnMsg.ClassesBuilt()
 		local colour = white
 		if self.working then
 			-- no working drones
-			if #table_ifilter(self.drones, function(i, o)
+			if #table_ifilter(self.drones, function(_, o)
 						return not o:IsDisabled()
 					end) < 1 then
 				colour = purple

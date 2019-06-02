@@ -22,5 +22,11 @@ DefineClass("ModOptions_ChoGGi_NurseryLimitBirthingToSpots", {
 			id = "RespectIncubator",
 			name = "Respect Incubator",
 		},
+		{
+			default = false,
+			editor = "bool",
+			id = "UltimateNursery",
+			name = "Ultimate Nursery",
+		},
 	},
 })

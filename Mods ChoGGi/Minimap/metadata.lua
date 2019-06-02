@@ -4,14 +4,15 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 7,
+			"version_minor", 8,
 		}),
 	},
+--~ 	"title", "Minimap v0.5",
 	"title", "Minimap",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
-	"saved", 1551787200,
+	"version_minor", 6,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_Minimap",
 	"steam_id", "1571476937",
@@ -27,6 +28,6 @@ return PlaceObj("ModDef", {
 This is an image, so click target isn't perfect.
 
 For those of us using ultrawide the image doesn't work that well.
-There's a mod options to use my topography images instead:
+There's a mod option to use my topography images instead:
 https://steamcommunity.com/sharedfiles/filedetails/?id=1571465108]],
 })

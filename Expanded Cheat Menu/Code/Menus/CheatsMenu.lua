@@ -435,6 +435,15 @@ Actions[c] = {ActionName = Strings[302535920001394--[[Spawn Planetary Anomalies-
 	ActionMenubar = "ECM.Cheats.Anomalies",
 	ActionId = ".Spawn Planetary Anomalies",
 	ActionIcon = "CommonAssets/UI/Menu/LowerTerrainToLevel.tga",
-	RolloverText = Strings[302535920001395--[[Adds Anomaly locations to Planetary View.--]]],
+	RolloverText = Strings[302535920001395--[[Adds %s locations to Planetary View.--]]]:format(Translate(9--[[Anomaly--]])),
 	OnAction = ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000931--[[Spawn POIs--]]],
+	ActionMenubar = "ECM.Cheats.Anomalies",
+	ActionId = ".Spawn POIs",
+	ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
+	RolloverText = Strings[302535920001395--[[Adds %s locations to Planetary View.--]]]:format(Strings[302535920000934--[[POI--]]]),
+	OnAction = ChoGGi.MenuFuncs.SpawnPOIs,
 }

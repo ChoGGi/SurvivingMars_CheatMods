@@ -7,9 +7,6 @@ local reset = {
 	idle2 = true,
 }
 
-local PlaySound = PlaySound
-local PlayFX = PlayFX
-
 local SetAnim = g_CObjectFuncs.SetAnim
 
 function SupplyPod:SetAnim(num, anim, ...)

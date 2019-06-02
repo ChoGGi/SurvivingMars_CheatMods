@@ -22,7 +22,6 @@ local table_clear = table.clear
 local table_iclear = table.iclear
 local table_sort = table.sort
 local table_copy = table.copy
-local table_icopy = table.icopy
 local table_rand = table.rand
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits

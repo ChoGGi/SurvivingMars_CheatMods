@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v6.8 (Unreleased)
+## v6.9 (Unreleased)
+
+## v6.8 (June 01 2019)
 - Export Map Data NESW strings were missing.
 - Colour Modifier checkmarks were broked.
 

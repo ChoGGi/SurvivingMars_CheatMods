@@ -10,9 +10,7 @@ local table_remove = table.remove
 local CleanupHexRanges = CleanupHexRanges
 local HideHexRanges = HideHexRanges
 local ShowBuildingHexes = ShowBuildingHexes
-local DoneObject = DoneObject
 local GetTerrainCursor = GetTerrainCursor
-local IsValid = IsValid
 local InvalidPos = InvalidPos()
 
 -- mod options

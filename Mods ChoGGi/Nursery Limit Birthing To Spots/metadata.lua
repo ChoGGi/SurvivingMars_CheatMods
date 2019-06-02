@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Nursery: Limit Birthing To Spots",
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_NurseryLimitBirthingToSpots",
@@ -23,6 +23,8 @@ Mod Options:
 All Domes Count: Check spot count of all domes instead of per-dome.
 Bypass No Nurseries: If there's no nurseries act like vanilla (default enabled).
 Respect Incubator: Allow SkiRich's Incubator mod to relocate newborns to incubator dome.
+Ultimate Nursery: Count Ultimate Nurseries INSTEAD of regular ones.
+
 
 Requested by BrowncoatTrekky.]],
 })

@@ -9,6 +9,38 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local SelObject = ChoGGi.ComFuncs.SelObject
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.SpawnPOIs()
+	local item_list = {}
+	local c = 0
+
+	local POIPresets = POIPresets
+	for id, item in pairs(POIPresets) do
+		c = c + 1
+		item_list[c] = {
+			text = Translate(item.display_name),
+			value = id,
+			icon = item.display_icon,
+			hint = Translate(item.description),
+		}
+	end
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		local value = choice[1].value
+		if POIPresets[value] then
+			CheatSpawnSpecialProjects(value)
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = Strings[302535920000931--[[Spawn POIs--]]],
+	}
+end
+
 function ChoGGi.MenuFuncs.UnlockBreakthroughs()
 	local function reveal(anomaly)
 		if not IsValid(anomaly) or anomaly.tech_action ~= "breakthrough" then
@@ -132,11 +164,11 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 	local EngineCanUnlockAchievement = EngineCanUnlockAchievement
 
 	local XPlayerActive = XPlayerActive
-	local AchievementPresets = AchievementPresets
 
 	local item_list = {}
 	local c = 0
 
+	local AchievementPresets = AchievementPresets
 	for id, item in pairs(AchievementPresets) do
 		if EngineCanUnlockAchievement(XPlayerActive, id) then
 			c = c + 1

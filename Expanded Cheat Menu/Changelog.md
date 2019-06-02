@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v13.8 (Unreleased)
+## v13.9 (Unreleased)
+
+## v13.8 (June 01 2019)
 ### Added:
 - Debug>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
 - Drones>Drone Wasp Move Speed: Same as Drone Move Speed.
