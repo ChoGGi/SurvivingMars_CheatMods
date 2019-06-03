@@ -2,6 +2,7 @@
 
 local pairs, type = pairs, type
 local Sleep = Sleep
+local IsValid = IsValid
 
 local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -185,7 +186,6 @@ end -- do
 
 do -- Colonist stuff
 	local SpawnColonist = ChoGGi.ComFuncs.SpawnColonist
-	local IsValid = IsValid
 	local FindNearestObject = FindNearestObject
 	local GetPassablePointNearby = GetPassablePointNearby
 
@@ -300,7 +300,6 @@ end
 
 function ChoGGi.MenuFuncs.MirrorSphereStuck()
 	local type = type
-	local IsValid = IsValid
 
 	local objs = UICity.labels.MirrorSpheres or ""
 	for i = 1, #objs do
@@ -358,9 +357,7 @@ do -- DronesKeepTryingBlockedAreas
 		ResetPriorityQueue("RCRover")
 		ResetPriorityQueue("DroneHub")
 		-- toggle working state on all ConstructionSite (wakes up drones else they'll wait at hub)
-		MapForEach("map", "ConstructionSite", function(o)
-			ToggleWorking(o)
-		end)
+		MapForEach("map", "ConstructionSite", ToggleWorking)
 		MsgPopup(
 			Strings[302535920000599--[[Drones Keep Trying Blocked Areas--]]],
 			Translate(4493--[[All--]])
@@ -506,14 +503,13 @@ end
 
 do -- CablesAndPipesRepair
 	local function RepairBorkedObjects(borked)
-		local type = type
-		local IsValid = IsValid
 		local just_in_case = 0
 		while #borked > 0 do
 
 			for i = #borked, 1, -1 do
-				if IsValid(borked[i]) and type(borked[i].Repair) == "function" then
-					borked[i]:Repair()
+				local element = borked[i]
+				if element.Repair and IsValid(element) then
+					element:Repair()
 				end
 			end
 
@@ -537,38 +533,38 @@ do -- CablesAndPipesRepair
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.FireMostFixes()
-	CreateRealTimeThread(function()
-		local MenuFuncs = ChoGGi.MenuFuncs
+--~ function ChoGGi.MenuFuncs.FireMostFixes()
+--~ 	CreateRealTimeThread(function()
+--~ 		local MenuFuncs = ChoGGi.MenuFuncs
 
-		pcall(MenuFuncs.RemoveUnreachableConstructionSites)
-		pcall(MenuFuncs.ParticlesWithNullPolylines)
-		pcall(MenuFuncs.StutterWithHighFPS)
-		pcall(MenuFuncs.ColonistsTryingToBoardRocketFreezesGame)
-		pcall(MenuFuncs.AttachBuildingsToNearestWorkingDome)
-		pcall(MenuFuncs.DronesKeepTryingBlockedAreas)
-		pcall(MenuFuncs.RemoveYellowGridMarks)
-		pcall(MenuFuncs.RemoveBlueGridMarks)
-		pcall(MenuFuncs.CablesAndPipesRepair)
-		pcall(MenuFuncs.MirrorSphereStuck)
-		pcall(MenuFuncs.ProjectMorpheusRadarFellDown)
-		pcall(MenuFuncs.RemoveInvalidLabelObjects)
+--~ 		pcall(MenuFuncs.RemoveUnreachableConstructionSites)
+--~ 		pcall(MenuFuncs.ParticlesWithNullPolylines)
+--~ 		pcall(MenuFuncs.StutterWithHighFPS)
+--~ 		pcall(MenuFuncs.ColonistsTryingToBoardRocketFreezesGame)
+--~ 		pcall(MenuFuncs.AttachBuildingsToNearestWorkingDome)
+--~ 		pcall(MenuFuncs.DronesKeepTryingBlockedAreas)
+--~ 		pcall(MenuFuncs.RemoveYellowGridMarks)
+--~ 		pcall(MenuFuncs.RemoveBlueGridMarks)
+--~ 		pcall(MenuFuncs.CablesAndPipesRepair)
+--~ 		pcall(MenuFuncs.MirrorSphereStuck)
+--~ 		pcall(MenuFuncs.ProjectMorpheusRadarFellDown)
+--~ 		pcall(MenuFuncs.RemoveInvalidLabelObjects)
 
-		-- loop through and remove all my msgs from the onscreen popups
-		CreateRealTimeThread(function()
-			local MsgPopups = ChoGGi.Temp.MsgPopups
-			Sleep(500)
-			while #MsgPopups < 10 do
-				Sleep(100)
-			end
-			local popups = MsgPopups or ""
-			for i = #popups, 1, -1 do
-				popups[i]:delete()
-			end
-			table.iclear(MsgPopups)
-		end)
-	end)
-end
+--~ 		-- loop through and remove all my msgs from the onscreen popups
+--~ 		CreateRealTimeThread(function()
+--~ 			local MsgPopups = ChoGGi.Temp.MsgPopups
+--~ 			Sleep(500)
+--~ 			while #MsgPopups < 10 do
+--~ 				Sleep(100)
+--~ 			end
+--~ 			local popups = MsgPopups or ""
+--~ 			for i = #popups, 1, -1 do
+--~ 				popups[i]:delete()
+--~ 			end
+--~ 			table.iclear(MsgPopups)
+--~ 		end)
+--~ 	end)
+--~ end
 
 ------------------------- toggles
 

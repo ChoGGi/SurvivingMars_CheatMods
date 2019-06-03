@@ -17,6 +17,11 @@ return PlaceObj("ModDef", {
 	"description", [[Adds a blinking light above DroneHubs with heavy loads.
 It uses the demolish blinky, but set higher above (try not to be confused).
 
+
+Requested by McKaby?
+
+
+
 If you want more colours, but no blinky:
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1757808500]DroneHub: Visual Drone Load[/url]
 ]],

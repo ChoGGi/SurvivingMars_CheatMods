@@ -11,7 +11,7 @@ XXXXX = {
 }
 
 ~obj
-ex(obj,pos/parent,title)
+ex(obj, pos/parent, title)
 ex(obj, {
 	ex_params = true,
 	parent = self,
@@ -121,6 +121,8 @@ DefineClass.ChoGGi_DlgExamine = {
 	hyperlink_end = "</h></color>",
 	-- up/down arrow keys in exec code
 	history_queue_idx = false,
+	-- IsValid()
+	is_valid_obj = false,
 
 	-- strings called repeatedly
 	string_Loadingresources = false,
@@ -486,7 +488,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Id = "idExecCode",
 			RolloverText = Strings[302535920001515--[["Press <color green>%s</color> to execute code.
 Use <color green>%s</color>/<color green>%s</color> to browse console history."--]]]:format(
-				Translate(1000447--[[Enter--]]),Translate(1000458--[[Up--]]),
+				Translate(1000447--[[Enter--]]), Translate(1000458--[[Up--]]),
 				Translate(1000460--[[Down--]])
 			)
 				.. "\n" .. Strings[302535920001517--[[Use <color green>o</color> as a reference to the examined object: <color yellow>IsValid(</color><color green>o</color><color yellow>)</color>.--]]],
@@ -544,9 +546,9 @@ do -- SafeExamine
 	local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 	-- backup any funcs we replace (while dialog(s) are opened)
-	SaveOrigFunc("TFormat","Stat")
+	SaveOrigFunc("TFormat", "Stat")
 
-	local function Enable(self,replaced,name)
+	local function Enable(self, replaced, name)
 		if replaced[name] then
 			-- already exists, so don't rereplace func, just add new dlg
 			replaced[name][self.obj] = true
@@ -563,7 +565,7 @@ do -- SafeExamine
 
 	end
 
-	local function Disable(self,replaced,name)
+	local function Disable(self, replaced, name)
 		if replaced[name] then
 			replaced[name][self.obj] = nil
 			if not next(replaced[name]) then
@@ -574,7 +576,7 @@ do -- SafeExamine
 			end
 		else
 			-- should never happen (tm)
-			printC("EXAMINE ERROR! SafeExamine can't find dialog for disable:",name)
+			printC("EXAMINE ERROR! SafeExamine can't find dialog for disable:", name)
 		end
 	end
 
@@ -583,11 +585,11 @@ do -- SafeExamine
 		local replaced = ChoGGi_dlgs_examine_funcs
 		if enable then
 			if IsKindOf(self.obj_ref, "XTemplateTemplate") then
-				Enable(self,replaced,"TFormat.Stat")
+				Enable(self, replaced, "TFormat.Stat")
 			end
 		else
 			if IsKindOf(self.obj_ref, "XTemplateTemplate") then
-				Disable(self,replaced,"TFormat.Stat")
+				Disable(self, replaced, "TFormat.Stat")
 			end
 		end
 
@@ -971,7 +973,7 @@ function ChoGGi_DlgExamine:idAutoRefresh_OnChange()
 			self:SetObj()
 			Sleep(self.autorefresh_delay)
 			-- msg any of my monitoring funcs
-			Msg("ChoGGi_dlgs_examine_autorefresh",self)
+			Msg("ChoGGi_dlgs_examine_autorefresh", self)
 		end
 	end)
 end
@@ -1952,7 +1954,7 @@ function ChoGGi_DlgExamine:ShowEntitySpotsList()
 
 		-- remove waypoints from chain points so they count as one
 		if spot_annot:find("chain") then
-			spot_annot = spot_annot:gsub(",waypoint=%d", "")
+			spot_annot = spot_annot:gsub(", waypoint=%d", "")
 		end
 
 		local name = spot_name .. (spot_annot ~= "" and ";" .. spot_annot or "")
@@ -2778,7 +2780,8 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 	self:SortInfoList(list_obj_str, list_sort_num)
 
 	-- cobjects, not property objs? (IsKindOf)
-	local is_valid_obj = IsValid(obj)
+--~ 	local is_valid_obj = IsValid(obj)
+	local is_valid_obj = self.is_valid_obj
 	if is_valid_obj and obj:IsKindOf("CObject") then
 		local entity = self.ChoGGi.ComFuncs.RetObjectEntity(obj)
 
@@ -3210,79 +3213,92 @@ Decompiled code won't scroll correctly as the line numbers are different."--]]]:
 end
 ---------------------------------------------------------------------------------------------------------------------
 
-function ChoGGi_DlgExamine:BuildAttachesPopup(obj)
-	table_iclear(self.attaches_menu_popup)
-	local attaches = self.ChoGGi.ComFuncs.GetAllAttaches(obj, true)
-	local attach_amount = #attaches
-
-	for i = 1, attach_amount do
-		local a = attaches[i]
-		local pos = a.GetVisualPos and a:GetVisualPos()
-
-		local name = RetName(a)
-		if name ~= a.class then
-			name = name .. ": " .. a.class
+do -- BuildAttachesPopup
+	local function ParentClicked(item, _, _, button)
+		if button == "R" then
+			CopyToClipboard(item.showobj.class)
+		else
+			item.dlg.ChoGGi.ComFuncs.ClearShowObj(item.showobj)
+			item.dlg.ChoGGi.ComFuncs.OpenInExamineDlg(item.showobj, {
+				ex_params = true,
+				parent = item.dlg,
+			})
 		end
-
-		-- build hint
-		table_iclear(self.attaches_menu_popup_hint)
-		local c = 1
-		self.attaches_menu_popup_hint[c] = self.string_Classname .. ": " .. a.class
-
-		-- attached to name
-		if a.ChoGGi_Marked_Attach then
-			c = c + 1
-			self.attaches_menu_popup_hint[c] = Strings[302535920001544--[[Attached to--]]] .. ": " .. a.ChoGGi_Marked_Attach
-			a.ChoGGi_Marked_Attach = nil
-		end
-		if a.handle then
-			c = c + 1
-			self.attaches_menu_popup_hint[c] = Strings[302535920000955--[[Handle--]]] .. ": " .. a.handle
-		end
-		c = c + 1
-		self.attaches_menu_popup_hint[c] = Strings[302535920000461--[[Position--]]] .. ": " .. tostring(pos)
-
-		if a:IsKindOf("ParSystem") then
-			local par_name = a:GetParticlesName()
-			if par_name ~= "" then
-				c = c + 1
-				self.attaches_menu_popup_hint[c] = Strings[302535920001622--[[Particle--]]] .. ": " .. par_name
-			end
-		elseif a:IsKindOf("CObject") then
-			local entity = self.ChoGGi.ComFuncs.RetObjectEntity(a)
-			if entity then
-				c = c + 1
-				self.attaches_menu_popup_hint[c] = self.string_Entity .. ": " .. entity
-			end
-		end
-
-		self.attaches_menu_popup[i] = {
-			name = name,
-			hint = TableConcat(self.attaches_menu_popup_hint, "\n"),
-			showobj = a,
-			clicked = function()
-				self.ChoGGi.ComFuncs.ClearShowObj(a)
-				self.ChoGGi.ComFuncs.OpenInExamineDlg(a, {
-					ex_params = true,
-					parent = self,
-				})
-			end,
-		}
-
+	end
+	local function SortList(a, b)
+		return CmpLower(a.name, b.name)
 	end
 
-	if attach_amount > 0 then
-		table_sort(self.attaches_menu_popup, function(a, b)
-			return CmpLower(a.name, b.name)
-		end)
+	function ChoGGi_DlgExamine:BuildAttachesPopup(obj)
+		table_iclear(self.attaches_menu_popup)
+		local attaches = self.ChoGGi.ComFuncs.GetAllAttaches(obj, true)
+		local attach_amount = #attaches
 
-		SetWinObjectVis(self.idAttaches,true)
-		self.idAttaches.RolloverText = Strings[302535920000070--[["Shows list of attachments. This %s has %s.
+		for i = 1, attach_amount do
+			local a = attaches[i]
+			local pos = a.GetVisualPos and a:GetVisualPos()
+
+			local name = RetName(a)
+			if name ~= a.class then
+				name = name .. ": " .. a.class
+			end
+
+			-- build hint
+			table_iclear(self.attaches_menu_popup_hint)
+			local c = 1
+			self.attaches_menu_popup_hint[c] = self.string_Classname .. ": " .. a.class
+			c = c + 1
+			self.attaches_menu_popup_hint[c] = Strings[302535920000904--[[<right_click> to copy <color yellow>%s</color> to clipboard.--]]]:format(self.string_Classname)
+
+			-- attached to name
+			if a.ChoGGi_Marked_Attach then
+				c = c + 1
+				self.attaches_menu_popup_hint[c] = Strings[302535920001544--[[Attached to--]]] .. ": " .. a.ChoGGi_Marked_Attach
+				a.ChoGGi_Marked_Attach = nil
+			end
+			if a.handle then
+				c = c + 1
+				self.attaches_menu_popup_hint[c] = Strings[302535920000955--[[Handle--]]] .. ": " .. a.handle
+			end
+			c = c + 1
+			self.attaches_menu_popup_hint[c] = Strings[302535920000461--[[Position--]]] .. ": " .. tostring(pos)
+
+			if a:IsKindOf("ParSystem") then
+				local par_name = a:GetParticlesName()
+				if par_name ~= "" then
+					c = c + 1
+					self.attaches_menu_popup_hint[c] = Strings[302535920001622--[[Particle--]]] .. ": " .. par_name
+				end
+			elseif a:IsKindOf("CObject") then
+				local entity = self.ChoGGi.ComFuncs.RetObjectEntity(a)
+				if entity then
+					c = c + 1
+					self.attaches_menu_popup_hint[c] = self.string_Entity .. ": " .. entity
+				end
+			end
+
+			self.attaches_menu_popup[i] = {
+				name = name,
+				hint = TableConcat(self.attaches_menu_popup_hint, "\n"),
+				-- used for ref above as well
+				showobj = a,
+				hint_bottom = Strings[302535920000589--[[<left_click> Examine <right_click> Clipboard--]]],
+				mouseup = ParentClicked,
+				dlg = self,
+			}
+		end
+
+		if attach_amount > 0 then
+			table_sort(self.attaches_menu_popup, SortList)
+
+			SetWinObjectVis(self.idAttaches, true)
+			self.idAttaches.RolloverText = Strings[302535920000070--[["Shows list of attachments. This %s has %s.
 Use %s to hide green markers."--]]]:format(self.name, attach_amount, "<image CommonAssets/UI/Menu/NoblePreview.tga 2500>")
-	else
-		SetWinObjectVis(self.idAttaches)
+		else
+			SetWinObjectVis(self.idAttaches)
+		end
 	end
-end
+end -- do
 
 function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 	-- always hide all (if we're monitoring a "str" that switches from one type to another)
@@ -3298,19 +3314,21 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 	end
 
 	-- no sense in showing it in mainmenu/new game screens
-	SetWinObjectVis(self.idButClear,GameState.gameplay)
+	SetWinObjectVis(self.idButClear, GameState.gameplay)
 
-	SetWinObjectVis(self.idShowAllValues,obj_metatable and self.obj_type ~= "userdata")
+	SetWinObjectVis(self.idShowAllValues, obj_metatable and self.obj_type ~= "userdata")
 
 	-- none of it works on _G, and i'll take any bit of speed for _G
 	if self.obj_type == "table" and self.name ~= "_G" then
 
 		-- pretty much any class object
-		SetWinObjectVis(self.idButDeleteObj,PropObjGetProperty(obj, "delete"))
+		SetWinObjectVis(self.idButDeleteObj, PropObjGetProperty(obj, "delete"))
+
+		self.is_valid_obj = IsValid(obj)
 
 		-- can't mark if it isn't an object, and no sense in marking something off the map
 		if obj.GetPos then
-			SetWinObjectVis(self.idButMarkObject,IsValid(obj) and obj:GetPos() ~= InvalidPos)
+			SetWinObjectVis(self.idButMarkObject, self.is_valid_obj and obj:GetPos() ~= InvalidPos)
 		end
 
 		if not self.obj_entity and PropObjGetProperty(obj, "GetEntity") then
@@ -3320,17 +3338,17 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 			end
 		end
 		-- not a toolbar button, but since we're already calling IsValid then good enough
-		SetWinObjectVis(self.idObjects,self.obj_entity)
+		SetWinObjectVis(self.idObjects, self.obj_entity or self.is_valid_obj)
 
 		-- objlist objects let us do some easy for each
 		if IsObjlist(obj) then
-			SetWinObjectVis(self.idButMarkAll,true)
-			SetWinObjectVis(self.idButMarkAllLine,true)
-			SetWinObjectVis(self.idButDeleteAll,true)
+			SetWinObjectVis(self.idButMarkAll, true)
+			SetWinObjectVis(self.idButMarkAllLine, true)
+			SetWinObjectVis(self.idButDeleteAll, true)
 			-- we only want to show it for objlist or non-metatables, because I don't want to save/restore them
-			SetWinObjectVis(self.idButSetObjlist,true)
+			SetWinObjectVis(self.idButSetObjlist, true)
 		elseif not obj_metatable then
-			SetWinObjectVis(self.idButSetObjlist,true)
+			SetWinObjectVis(self.idButSetObjlist, true)
 		else
 			SetWinObjectVis(self.idButMarkAll)
 			SetWinObjectVis(self.idButMarkAllLine)
@@ -3340,10 +3358,10 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 
 		-- pretty rare occurrence
 		self.enum_vars = EnumVars(self.name)
-		SetWinObjectVis(self.idViewEnum,self.enum_vars and next(self.enum_vars))
+		SetWinObjectVis(self.idViewEnum, self.enum_vars and next(self.enum_vars))
 
 	elseif self.obj_type == "thread" then
-		SetWinObjectVis(self.idButDeleteObj,true)
+		SetWinObjectVis(self.idButDeleteObj, true)
 	else
 		SetWinObjectVis(self.idButDeleteObj)
 	end
@@ -3386,8 +3404,8 @@ do -- BuildParentsMenu
 						hint = Strings[302535920000069--[[Examine--]]] .. " "
 							.. self.string_Class .. " " .. self.string_Object
 							.. ": <color 100 255 100>" .. item .. "</color>\n"
-							.. Strings[302535920000904--[[<right_click> to copy <color green>%s</color> to clipboard.--]]]:format(self.string_Classname),
-						hint_bottom = Translate(608042494285--[[<left_click> Activate--]]) .. " " .. Strings[302535920000883--[[<right_click> Clipboard--]]],
+							.. Strings[302535920000904--[[<right_click> to copy <color yellow>%s</color> to clipboard.--]]]:format(self.string_Classname),
+						hint_bottom = Strings[302535920000589--[[<left_click> Examine <right_click> Clipboard--]]],
 						mouseup = ParentClicked,
 						dlg = self,
 					}
@@ -3448,7 +3466,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 			self:BuildParentsMenu(obj.__ancestors, "ancestors", Strings[302535920000525--[[Ancestors--]]], true)
 			-- if anything was added to the list then add to the menu
 			if #self.parents_menu_popup > 0 then
-				SetWinObjectVis(self.idParents,true)
+				SetWinObjectVis(self.idParents, true)
 			end
 		end
 

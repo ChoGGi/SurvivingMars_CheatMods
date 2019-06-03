@@ -1,7 +1,7 @@
 -- load settings before anything else (for anything in /Code that uses them)
 local new_settings_file = "AppData/LocalStorage_Settings.lua"
-g_LocalStorageFile = new_settings_file
 local settings = dofile(new_settings_file)
+g_LocalStorageFile = new_settings_file
 LocalStorage = settings
 
 if Platform.ged then
@@ -73,12 +73,13 @@ CreateRealTimeThread(function()
 						end
 					end
 				end
+				-- and a few others (_G, OnMsg)
 				mod.env = LuaModEnv(env)
 				-- add a warning to any mods without a blacklist, so user knows something is up
 				mod.title = mod.title .. " (Warning)"
 				if id ~= "ChoGGi_CheatMenu" then
 					mod.description = [[Warning: The blacklist function has been removed for this mod!
-This means it has no limitations and can access your Steam name, Friends list, and run any files on your computer.
+This means it has no limitations and can access your Steam name, Friends list, run any files on your computer, and so on.
 
 --~ ]] .. mod.description
 				end

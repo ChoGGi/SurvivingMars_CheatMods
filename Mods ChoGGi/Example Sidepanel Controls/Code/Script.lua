@@ -36,7 +36,9 @@ function OnMsg.ClassesBuilt()
 --~ 		"RolloverTemplate", "Rollover",
 
 		"RolloverTitle", "Hello, this needs to have something here for the hint to showup",
-		"RolloverHint",	"",
+		"RolloverHint", "",
+		-- defaults to false, have it fire OnContextUpdate when selection panel appears instead of after 1 sec
+--~ 		"ContextUpdateOnOpen", true,
 		"OnContextUpdate", function(self, context)
 			-- context is the object selected
 			if context.working then

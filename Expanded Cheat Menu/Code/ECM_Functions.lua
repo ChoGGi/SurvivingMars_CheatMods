@@ -748,18 +748,19 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 			obj.ChoGGi_orig_entity = obj:GetEntity()
 		end
 
-		-- if it's playing certain anims on certains objs, then crash if we don't idle it
+		-- crash prevention
 		obj:SetState("idle")
 
 		if value == default and IsValidEntity(obj.ChoGGi_orig_entity) then
 			obj:ChangeEntity(obj.ChoGGi_orig_entity)
+			obj.entity = obj.ChoGGi_orig_entity
 		else
 			obj:ChangeEntity(value)
+			obj.entity = value
 		end
 
 		if SelectedObj == obj then
-			SelectionRemove(obj)
-			SelectObj(obj)
+			ObjModified(obj)
 		end
 
 		-- needs to fire whenever entity changes

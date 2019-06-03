@@ -52,6 +52,7 @@ function OnMsg.ClassesBuilt()
 				"Min", 0,
 				"StepSize", 1,
 				"Scroll", 0,
+				"ContextUpdateOnOpen", true,
 				"OnContextUpdate", function(self, context)
 					---
 					-- slider won't do anything if this isn't a number

@@ -230,23 +230,18 @@ local function AddToMenu(bt, cat, entity, desc, index)
 end
 
 -- skip the Missing spot 'Top' in 'ConstructionSite' state 'idle' msg
-local function SkipTops(obj, spot_type)
-	if obj:GetSpotBeginIndex(spot_type) == -1 then
-		return "Origin"
-	end
-	return spot_type
-end
-
+-- remove ' or "Origin"' to just skip (it'll default to -1 i think?)
 local orig_AttachToObject = AttachToObject
 function AttachToObject(to, childclass, spot_type, ...)
-	spot_type = SkipTops(to, spot_type)
-	return orig_AttachToObject(to, childclass, spot_type, ...)
+	return orig_AttachToObject(to, childclass,
+		to:HasSpot(spot_type) and spot_type or "Origin", ...
+	)
 end
-
 local orig_AttachPartToObject = AttachPartToObject
 function AttachPartToObject(to, part, spot_type, ...)
-	spot_type = SkipTops(to, spot_type)
-	return orig_AttachPartToObject(to, part, spot_type, ...)
+	return orig_AttachPartToObject(to, part,
+		to:HasSpot(spot_type) and spot_type or "Origin", ...
+	)
 end
 
 function OnMsg.ClassesBuilt()

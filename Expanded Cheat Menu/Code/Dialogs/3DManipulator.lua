@@ -399,8 +399,8 @@ function ChoGGi_Dlg3DManipulator:idPosRestore_OnPress()
 		end
 	else
 		pos = self.saved_pos
-		angle = tonumber(orig.saved_angle)
-		axis = orig.saved_axis
+		angle = tonumber(self.saved_angle)
+		axis = self.saved_axis
 	end
 
 	if IsPoint(pos) then

@@ -143,7 +143,7 @@ do -- RetName
 	-- we use this table to display names of objects for RetName
 	local g = _G
 	if not rawget(g, "ChoGGi_lookup_names") then
-		g.ChoGGi_lookup_names = {}
+		g.ChoGGi_lookup_names = {[g.empty_func] = "empty_func"}
 	end
 	local lookup_table = g.ChoGGi_lookup_names
 
@@ -2000,24 +2000,23 @@ See the bottom of Gameplay>Controls if you've changed the shortcut."--]]]:format
 	end
 end -- do
 
--- if building requires a dome and that dome is borked then assign it to nearest dome
-function ChoGGi.ComFuncs.AttachToNearestDome(obj)
-	local workingdomes = MapFilter(UICity.labels.Dome, function(o)
-		if not o.destroyed and o.air then
-			return true
-		end
-	end)
+do -- AttachToNearestDome
+	local function CanWork(obj)
+		return obj:CanWork()
+	end
 
-	-- check for dome and ignore outdoor buildings *and* if there aren't any domes on map
-	if not obj.parent_dome and obj:GetDefaultPropertyValue("dome_required") and #workingdomes > 0 then
-		-- find the nearest dome
-		local dome = FindNearestObject(workingdomes, obj)
-		if dome and dome.labels then
-			obj.parent_dome = dome
+	-- if building requires a dome and that dome is borked then assign it to nearest dome
+	function ChoGGi.ComFuncs.AttachToNearestDome(obj)
+		local workingdomes = MapFilter(UICity.labels.Dome, CanWork)
+
+		-- check for dome and ignore outdoor buildings *and* if there aren't any domes on map
+		if not obj.parent_dome and #workingdomes > 0 and obj:GetDefaultPropertyValue("dome_required") then
+			-- find the nearest dome
+			local dome = FindNearestObject(workingdomes, obj)
+			obj:SetDome(dome)
+
 			-- add to dome labels
 			dome:AddToLabel("InsideBuildings", obj)
-
-			-- work/res
 			if obj:IsKindOf("Workplace") then
 				dome:AddToLabel("Workplace", obj)
 			elseif obj:IsKindOf("Residence") then
@@ -2025,15 +2024,13 @@ function ChoGGi.ComFuncs.AttachToNearestDome(obj)
 			end
 
 			-- spires
-			if obj:IsKindOf("WaterReclamationSpire") then
-				obj:SetDome(dome)
-			elseif obj:IsKindOf("NetworkNode") then
+			if obj:IsKindOf("NetworkNode") then
 				obj.parent_dome:SetLabelModifier("BaseResearchLab", "NetworkNode", obj.modifier)
 			end
-
 		end
 	end
-end
+
+end -- do
 
 -- toggle working status
 function ChoGGi.ComFuncs.ToggleWorking(obj)
@@ -2358,13 +2355,13 @@ do -- GetAllAttaches
 	local objlist = objlist
 	local attach_dupes = {}
 	local attaches_list, attaches_count
-	local obj_cls
+	local parent_obj
 --~ 	local skip = {"GridTile", "GridTileWater", "BuildingSign", "ExplorableObject", "TerrainDeposit", "DroneBase", "Dome"}
 	local skip = {"ExplorableObject", "TerrainDeposit", "DroneBase", "Dome"}
 
 	local function AddAttaches(obj)
 		for _, a in pairs(obj) do
-			if not attach_dupes[a] and IsValid(a) and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
+			if not attach_dupes[a] and IsValid(a) and a ~= parent_obj and not a:IsKindOfClasses(skip) then
 				attach_dupes[a] = true
 				attaches_count = attaches_count + 1
 				attaches_list[attaches_count] = a
@@ -2374,7 +2371,7 @@ do -- GetAllAttaches
 
 	local mark
 	local function ForEach(a, parent_cls)
-		if not attach_dupes[a] and a.class ~= obj_cls and not a:IsKindOfClasses(skip) then
+		if not attach_dupes[a] and a ~= parent_obj and not a:IsKindOfClasses(skip) then
 			attach_dupes[a] = true
 			attaches_count = attaches_count + 1
 			attaches_list[attaches_count] = a
@@ -2400,13 +2397,14 @@ do -- GetAllAttaches
 		-- we use objlist instead of {} for delete all button in examine
 		attaches_list = objlist:new()
 		attaches_count = 0
-		obj_cls = obj.class
+		parent_obj = obj
+
+--~ 		local attaches = obj:GetClassFlags(const.cfComponentAttach) ~= 0
 
 		-- add regular attachments
 		if obj.ForEachAttach then
 			obj:ForEachAttach(ForEach, obj.class)
 		end
---~ 		local attaches = obj:GetClassFlags(const.cfComponentAttach) ~= 0
 
 		-- add any non-attached attaches (stuff that's kinda attached, like the concrete arm thing)
 		AddAttaches(obj)
@@ -2420,9 +2418,11 @@ do -- GetAllAttaches
 		end
 
 		-- remove original obj if it's in the list
-		local idx = table_find(attaches_list, obj)
-		if idx then
-			table_remove(attaches_list, idx)
+		if obj.handle then
+			local idx = table_find(attaches_list, "handle", obj.handle)
+			if idx then
+				table_remove(attaches_list, idx)
+			end
 		end
 
 		return attaches_list
@@ -4572,6 +4572,10 @@ do -- BuildableHexGrid
 											-- green = pass/build, yellow = no pass/build, blue = pass/no build, red = no pass/no build
 
 											local obj = HexGridGetObject(ObjectGrid, q_i, r_i)
+											-- skip! (CameraObj, among others?)
+											if obj and obj.GetEntity and obj:GetEntity() == "InvisibleObject" then
+												obj = nil
+											end
 
 											-- geysers
 											if obj == g_DontBuildHere then

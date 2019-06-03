@@ -11,6 +11,7 @@ local FlushLogFile = FlushLogFile
 local Msg = Msg
 local OnMsg = OnMsg
 local CreateRealTimeThread = CreateRealTimeThread
+local T = T
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
@@ -147,39 +148,30 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
 					"RolloverTitle", Strings[302535920000682--[[Change Entity--]]],
-					"RolloverHint", Translate(608042494285--[[<left_click> Activate--]]),
-					"ContextUpdateOnOpen", false,
+					"RolloverHint", T(608042494285--[[<left_click> Activate--]]),
+					"ContextUpdateOnOpen", true,
 					"OnContextUpdate", function(self)
 						self:SetRolloverText(Strings[302535920001151--[[Set Entity For %s--]]]:format(RetName(self.context)))
 					end,
 					"OnPress", function(self)
-						if self.context.planning then
-							ChoGGi.ComFuncs.EntitySpawner(self.context, {
-								skip_msg = true,
-								list_type = 7,
-								planning = true,
-								title_postfix = RetName(self.context),
-							})
-						else
-							ChoGGi.ComFuncs.EntitySpawner(self.context, {
-								skip_msg = true,
-								list_type = 7,
-								title_postfix = RetName(self.context),
-							})
-						end
+						ChoGGi.ComFuncs.EntitySpawner(self.context, {
+							skip_msg = true,
+							list_type = 7,
+							planning = self.context.planning and true,
+							title_postfix = RetName(self.context),
+						})
 					end,
 					"Icon", "UI/Icons/IPButtons/shuttle.tga",
 				}),
 
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
-					"RolloverTitle", Translate(1000077--[[Rotate--]]),
-					"RolloverText", Translate(312752058553--[[Rotate Building Left--]]),
-					"RolloverHint", Translate(608042494285--[[<left_click> Activate--]]),
+					"RolloverTitle", T(1000077--[[Rotate--]]),
+					"RolloverText", T(312752058553--[[Rotate Building Left--]]),
+					"RolloverHint", T(608042494285--[[<left_click> Activate--]]),
 					"OnPress", function(self)
 						self.context:Rotate()
-						SelectionRemove(self.context)
-						SelectObj(self.context)
+						ObjModified(self.context)
 					end,
 					"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
 				}),
@@ -187,9 +179,8 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
 					"RolloverTitle", Strings[302535920000457--[[Anim State Set--]]],
-					"RolloverHint", Translate(608042494285--[[<left_click> Activate--]]),
+					"RolloverHint", T(608042494285--[[<left_click> Activate--]]),
 					"RolloverText", Strings[302535920000458--[[Make object dance on command.--]]],
-					"ContextUpdateOnOpen", false,
 					"OnPress", function(self)
 						ChoGGi.ComFuncs.SetAnimState(self.context)
 					end,
@@ -199,7 +190,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
 					"RolloverTitle", Strings[302535920000129--[[Set--]]] .. " " .. Strings[302535920001184--[[Particles--]]],
-					"RolloverHint", Translate(608042494285--[[<left_click> Activate--]]),
+					"RolloverHint", T(608042494285--[[<left_click> Activate--]]),
 					"RolloverText", Strings[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
 					"OnPress", function(self)
 						ChoGGi.ComFuncs.SetParticles(self.context)
@@ -224,7 +215,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		if ChoGGi.UserSettings.Building_hide_from_build_menu and not table_find(bc, "id", "HiddenX") then
 			bc[#bc+1] = {
 				id = "HiddenX",
-				name = Translate(1000155--[[Hidden--]]),
+				name = T(1000155--[[Hidden--]]),
 				image = "UI/Icons/bmc_placeholder.tga",
 				highlight = "UI/Icons/bmc_placeholder_shine.tga",
 			}
@@ -331,7 +322,7 @@ function OnMsg.ModsReloaded()
 			end
 
 			edit.RolloverTemplate = "Rollover"
-			edit.RolloverTitle = Strings[302535920001073--[[Console--]]] .. " " .. Translate(487939677892--[[Help--]])
+			edit.RolloverTitle = Strings[302535920001073--[[Console--]]] .. " " .. T(487939677892--[[Help--]])
 			-- add tooltip
 			edit.RolloverText = Strings[302535920001440--[["~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.
@@ -390,7 +381,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			if UserSettings.EnableToolTips then
 				local toolbar = XShortcutsTarget.idMenuBar
 				toolbar:SetRolloverTemplate("Rollover")
-				toolbar:SetRolloverTitle(Translate(126095410863--[[Info--]]))
+				toolbar:SetRolloverTitle(T(126095410863--[[Info--]]))
 				toolbar:SetRolloverText(Strings[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
 				toolbar:SetRolloverHint(Strings[302535920001441--[["<left_click> Activate MenuItem <right_click> Add/Remove"--]]])
 			end
