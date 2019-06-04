@@ -7,9 +7,9 @@ function OnMsg.ClassesBuilt()
 	ChoGGi.ComFuncs.AddXTemplate("EmptyMechDepot", "sectionStorage", {
 		__context_of_kind = "MechanizedDepot",
 		Icon = "UI/Icons/Sections/storage.tga",
-		Title = Strings[302535920000176--[[Empty Mech Depot--]]],
-		RolloverTitle = Strings[302535920000176--[[Empty Mech Depot--]]],
-		RolloverText = Strings[302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.--]]],
+		Title = Strings[302535920000176--[[Empty Mech Depot]]],
+		RolloverTitle = Strings[302535920000176--[[Empty Mech Depot]]],
+		RolloverText = Strings[302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.]]],
 		OnContextUpdate = function(self, context)
 			if context.stockpiled_amount > 0 then
 				self:SetVisible(true)

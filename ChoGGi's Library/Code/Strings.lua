@@ -122,7 +122,7 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 	-- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
 	if lang ~= "English" then
 			-- first get the unicode font name
-		local f = Translate(997--[[*font*, 15, aa--]])
+		local f = Translate(997--[[*font*, 15, aa]])
 		-- index of first , then crop out the rest
 		f = f:sub(1, f:find(", ")-1)
 		ChoGGi.font = f

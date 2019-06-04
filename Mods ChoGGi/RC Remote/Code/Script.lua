@@ -209,7 +209,7 @@ DefineClass.RCRemote = {
 }
 
 function RCRemote:GameInit()
-	self.status_text = Translate(6722--[[Idle--]])
+	self.status_text = Translate(6722--[[Idle]])
 	BaseRover.GameInit(self)
 
 	-- Colour #, Colour, Roughness, Metallic (r/m go from -128 to 127)
@@ -402,7 +402,7 @@ function RCRemote:Goto(...)
 end
 
 function RCRemote:GotoFromUser(...)
-	self.status_text = Translate(63--[[Travelling--]])
+	self.status_text = Translate(63--[[Travelling]])
 	return BaseRover.GotoFromUser(self, ...)
 end
 
@@ -413,7 +413,7 @@ function RCRemote:Idle()
 		PlayFX("Moving", "end", self)
 	end
 
-	self.status_text = Translate(6722--[[Idle--]])
+	self.status_text = Translate(6722--[[Idle]])
 
 	self:SetState("idle")
 	self:Gossip("Idle")

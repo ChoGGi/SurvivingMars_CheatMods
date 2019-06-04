@@ -198,7 +198,7 @@ function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 
 	-- let user know
 	if not skip_msg then
-		local msg = Strings[302535920000002--[[Dumped--]]] .. ": " .. RetName(obj)
+		local msg = Strings[302535920000002--[[Dumped]]] .. ": " .. RetName(obj)
 		print(filename,"\n",msg:sub(1,msg:find("\n")))
 		MsgPopup(
 			msg,
@@ -302,7 +302,7 @@ do -- DumpTableFunc
 	--[[
 	mode = -1 to append or nil to overwrite (default: append)
 	limit = how far down the rabbit hole (default 3)
-	--]]
+	]]
 	function ChoGGi.ComFuncs.DumpTable(obj, mode, limit)
 		if blacklist then
 			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.DumpTable")
@@ -310,8 +310,8 @@ do -- DumpTableFunc
 		end
 		if type(obj) ~= "table" then
 			MsgPopup(
-				Strings[302535920000003--[[Can't dump nothing--]]],
-				Strings[302535920000004--[[Dump--]]]
+				Strings[302535920000003--[[Can't dump nothing]]],
+				Strings[302535920000004--[[Dump]]]
 			)
 			return
 		end
@@ -328,7 +328,7 @@ do -- DumpTableFunc
 			local filename = "AppData/logs/DumpedTable.txt"
 			AsyncStringToFile(filename, TableConcat(output_list), mode or "-1")
 
-			local msg = Strings[302535920000002--[[Dumped--]]] .. ": " .. name
+			local msg = Strings[302535920000002--[[Dumped]]] .. ": " .. name
 			-- print msg to first newline
 			print(filename,"\n",msg:sub(1,msg:find("\n")))
 			MsgPopup(
@@ -341,11 +341,11 @@ do -- DumpTableFunc
 			return
 		end
 
-		local msg = Strings[302535920000003--[[Can't dump nothing--]]] .. ": " .. name .. "\n" .. ValueToLuaCode(obj)
+		local msg = Strings[302535920000003--[[Can't dump nothing]]] .. ": " .. name .. "\n" .. ValueToLuaCode(obj)
 		print(msg)
 		MsgPopup(
 			msg,
-			Strings[302535920000004--[[Dump--]]]
+			Strings[302535920000004--[[Dump]]]
 		)
 
 	end
@@ -685,15 +685,15 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 
 	local const = const
 
-	local title = params.planning and Strings[302535920000862--[[Object Planner--]]] or Strings[302535920000475--[[Entity Spawner--]]]
-	local hint = params.planning and Strings[302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).--]]] or Strings[302535920000476--[["Shows list of objects, and spawns at mouse cursor."--]]]
+	local title = params.planning and Strings[302535920000862--[[Object Planner]]] or Strings[302535920000475--[[Entity Spawner]]]
+	local hint = params.planning and Strings[302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).]]] or Strings[302535920000476--[["Shows list of objects, and spawns at mouse cursor."]]]
 
 	local default
 	local item_list = {}
 	local c = 0
 
 	if IsValid(obj) and IsValidEntity(obj.ChoGGi_orig_entity) then
-		default = Translate(1000121--[[Default--]])
+		default = Translate(1000121--[[Default]])
 		item_list[1] = {
 			text = " " .. default,
 			value = default,
@@ -768,7 +768,7 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 
 		if not params.skip_msg then
 			MsgPopup(
-				choice.text .. ": " .. Strings[302535920000014--[[Spawned--]]],
+				choice.text .. ": " .. Strings[302535920000014--[[Spawned]]],
 				title
 			)
 		end
@@ -778,8 +778,8 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 	if params.list_type ~= 7 then
 		checkboxes = {
 			{
-				title = Strings[302535920001578--[[Auto-Attach--]]],
-				hint = Strings[302535920001579--[[Activate any auto-attach spots this entity has.--]]],
+				title = Strings[302535920001578--[[Auto-Attach]]],
+				hint = Strings[302535920001579--[[Activate any auto-attach spots this entity has.]]],
 			},
 		}
 	end
@@ -822,7 +822,7 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 		local state = states_str[i]
 		local idx = states_num[i]
 		item_list[i] = {
-			text = Translate(1000037--[[Name--]]) .. ": " .. state .. ", " .. Strings[302535920000858--[[Index--]]] .. ": " .. idx,
+			text = Translate(1000037--[[Name]]) .. ": " .. state .. ", " .. Strings[302535920000858--[[Index]]] .. ": " .. idx,
 			value = state,
 		}
 	end
@@ -841,7 +841,7 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 			obj:SetState(value)
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				Strings[302535920000859--[[Anim State--]]]
+				Strings[302535920000859--[[Anim State]]]
 			)
 		end
 	end
@@ -849,15 +849,15 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000860--[[Set Anim State--]]],
-		hint = Strings[302535920000861--[[Current State: %s--]]]:format(obj:GetState()),
+		title = Strings[302535920000860--[[Set Anim State]]],
+		hint = Strings[302535920000861--[[Current State: %s]]]:format(obj:GetState()),
 		custom_type = 7,
 	}
 end
 
 function ChoGGi.ComFuncs.MonitorThreads()
 	local table_list = {}
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, nil, Strings[302535920000853--[[Monitor--]]] .. ": ThreadsRegister")
+	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, nil, Strings[302535920000853--[[Monitor]]] .. ": ThreadsRegister")
 	dlg:EnableAutoRefresh()
 	local RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
 
@@ -945,10 +945,10 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 		obj = obj or ChoGGi.ComFuncs.SelObject()
 	end
 
-	local name = Strings[302535920000129--[[Set--]]] .. " " .. Strings[302535920001184--[[Particles--]]]
+	local name = Strings[302535920000129--[[Set]]] .. " " .. Strings[302535920001184--[[Particles]]]
 	if not obj or obj and not obj:IsKindOf("FXObject") then
 		MsgPopup(
-			Strings[302535920000027--[[Nothing selected--]]] .. ": " .. "FXObject",
+			Strings[302535920000027--[[Nothing selected]]] .. ": " .. "FXObject",
 			name
 		)
 		return
@@ -962,7 +962,7 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 		spots[obj:GetSpotName(i)] = true
 	end
 
-	local default = Translate(1000121--[[Default--]])
+	local default = Translate(1000121--[[Default]])
 
 	local item_list = {
 		{text = " " .. default, value = default},
@@ -1040,7 +1040,7 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 		callback = CallBackFunc,
 		items = item_list,
 		title = name,
-		hint = Strings[302535920001421--[[Shows list of particles to quickly test out on objects.--]]],
+		hint = Strings[302535920001421--[[Shows list of particles to quickly test out on objects.]]],
 		custom_type = 7,
 		skip_icons = true,
 	}
@@ -1451,7 +1451,7 @@ do -- ExamineEntSpots
 		-- opener
 		table.insert(list, 1, Strings[302535920001068--[["The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
 Attachment bspheres are off (x and y are; z and rotate aren't).
-Some of the file names are guesses. <anim> is a guess, try removing it."--]]]
+Some of the file names are guesses. <anim> is a guess, try removing it."]]]
 			.. [[
 
 
@@ -1468,7 +1468,7 @@ Some of the file names are guesses. <anim> is a guess, try removing it."--]]]
 			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 				parent = parent_or_ret,
 				text = TableConcat(list, "\n"),
-				title = Strings[302535920000235--[[Entity Spots--]]] .. ": " .. RetName(obj),
+				title = Strings[302535920000235--[[Entity Spots]]] .. ": " .. RetName(obj),
 			}
 		end
 
@@ -1551,7 +1551,7 @@ do -- ObjFlagsList
 				else
 					flags_table[f .. " (" .. mask .. ")"] = {
 						ChoGGi_AddHyperLink = true,
-						hint = Strings[302535920001069--[[Toggle Boolean--]]],
+						hint = Strings[302535920001069--[[Toggle Boolean]]],
 						name = tostring(flagged),
 						colour = flagged and us.ExamineColourBool or us.ExamineColourBoolFalse,
 						func = function(ex_dlg, _, list_obj)
@@ -1755,7 +1755,7 @@ do -- GetMaterialProperties
 		ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 			parent = ex_dlg,
 			text = RetEntityMTLFile(mat),
-			title = Strings[302535920001458--[[Material Properties--]]] .. ": " .. mat.__mtl,
+			title = Strings[302535920001458--[[Material Properties]]] .. ": " .. mat.__mtl,
 		}
 	end
 
@@ -1791,8 +1791,8 @@ do -- GetMaterialProperties
 				mat.__state = li
 				mat[1] = {
 					ChoGGi_AddHyperLink = true,
-					hint = Strings[302535920001174--[[Show an example .mtl file for this material (not complete).--]]],
-					name = Strings[302535920001177--[[Generate .mtl--]]],
+					hint = Strings[302535920001174--[[Show an example .mtl file for this material (not complete).]]],
+					name = Strings[302535920001177--[[Generate .mtl]]],
 					func = function(ex_dlg)
 						ExamineExportMat(ex_dlg, mat)
 					end,
@@ -1840,7 +1840,7 @@ do -- GetMaterialProperties
 		if parent_or_ret == true then
 			return materials
 		else
-			ChoGGi.ComFuncs.OpenInExamineDlg(materials, parent_or_ret, Strings[302535920001458--[[Material Properties--]]])
+			ChoGGi.ComFuncs.OpenInExamineDlg(materials, parent_or_ret, Strings[302535920001458--[[Material Properties]]])
 		end
 
 	end
@@ -2013,7 +2013,7 @@ do -- BBoxLines_Toggle
 
 		SpawnBoxLine(bbox_lines, bbox, points_top, colour)
 		SpawnBoxLine(bbox_lines, bbox, points_bot, colour)
-		--]]
+		]]
 
 		return bbox_lines
 	end
@@ -2162,7 +2162,7 @@ do -- RetThreadInfo/FindThreadFunc
 				break
 			end
 			list[idx] = {
-				name = name ~= "" and name or Strings[302535920000723--[[Lua--]]],
+				name = name ~= "" and name or Strings[302535920000723--[[Lua]]],
 				value = value,
 				level = level,
 			}
@@ -2181,7 +2181,7 @@ do -- RetThreadInfo/FindThreadFunc
 				break
 			end
 			list[idx] = {
-				name = name ~= "" and name or Strings[302535920000723--[[Lua--]]],
+				name = name ~= "" and name or Strings[302535920000723--[[Lua]]],
 				value = value,
 			}
 			idx = idx + 1
@@ -2223,7 +2223,7 @@ do -- RetThreadInfo/FindThreadFunc
 						temp.func = value:sub(2, space)
 						-- change unknown to Lua
 						local n = value:sub(space + 2, -2)
-						temp.name = n ~= "unknown name" and n or Strings[302535920000723--[[Lua--]]]
+						temp.name = n ~= "unknown name" and n or Strings[302535920000723--[[Lua]]]
 					end
 				end
 
@@ -2243,7 +2243,7 @@ do -- RetThreadInfo/FindThreadFunc
 					for i = 0, nups do
 						local info_got = debug_getinfo(thread, i)
 						if info_got then
-							local name = info_got.name or info_got.what or Strings[302535920000723--[[Lua--]]]
+							local name = info_got.name or info_got.what or Strings[302535920000723--[[Lua]]]
 							funcs[i] = {
 								name = name,
 								func = info_got.func,
@@ -2313,7 +2313,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 ~RCConstructor.CanInteractWithObject
 
 ~ChoGGi.ComFuncs.RetSourceFile
---]]
+]]
 		-- remove @
 		local at = path:sub(1, 1)
 		if at == "@" then
@@ -2490,7 +2490,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 	it returns percentages in decimal for ease of mathing (SM has no math. funcs)
 	ie: SupportiveCommunity is -70 this returns it as 0.7
 	it also returns negative amounts as positive (I prefer num - Amt, not num + NegAmt)
-	--]]
+	]]
 	local function ReturnTechAmount(tech, prop)
 		local techdef = TechDef[tech]
 		local idx = table.find(techdef, "Prop", prop)
@@ -2596,7 +2596,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 				--[[
 				LowSanityNegativeTraitChance = 30%
 				SupportiveCommunity = -70%
-				--]]
+				]]
 				local LowSan = ChoGGi.Consts.LowSanityNegativeTraitChance + 0.0 --SM has no math.funcs so + 0.0
 				return p*LowSan/100*100
 			end
@@ -2954,8 +2954,8 @@ do -- ChangeSurfaceSignsToMaterials
 	function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
 
 		local item_list = {
-			{text = Translate(754117323318--[[Enable--]]), value = true, hint = Strings[302535920001081--[[Changes signs to materials.--]]]},
-			{text = Translate(251103844022--[[Disable--]]), value = false, hint = Strings[302535920001082--[[Changes materials to signs.--]]]},
+			{text = Translate(754117323318--[[Enable]]), value = true, hint = Strings[302535920001081--[[Changes signs to materials.]]]},
+			{text = Translate(251103844022--[[Disable]]), value = false, hint = Strings[302535920001082--[[Changes materials to signs.]]]},
 		}
 
 		local function CallBackFunc(choice)
@@ -2988,7 +2988,7 @@ do -- ChangeSurfaceSignsToMaterials
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = Strings[302535920001083--[[Change Surface Signs--]]],
+			title = Strings[302535920001083--[[Change Surface Signs]]],
 		}
 	end
 end -- do
@@ -3033,10 +3033,10 @@ function ChoGGi.ComFuncs.UpdateServiceComfortBld(obj, service_stats)
 end
 
 function ChoGGi.ComFuncs.BlacklistMsg(msg)
-	msg = Strings[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.--]]]:format(msg)
+	msg = Strings[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.]]]:format(msg)
 	MsgPopup(
 		msg,
-		Strings[302535920000000--[[Expanded Cheat Menu--]]]
+		Strings[302535920000000--[[Expanded Cheat Menu]]]
 	)
 	print(msg)
 end
@@ -3058,8 +3058,8 @@ do -- ToggleFuncHook
 			path = path or "@AppData/Mods/"
 			local str_len = #path
 
-			print(Strings[302535920000497--[[Hook Started--]]], path, line, mask, count)
-			MsgPopup(Strings[302535920000497--[[Hook Started--]]], Translate(1000113--[[Debug--]]))
+			print(Strings[302535920000497--[[Hook Started]]], path, line, mask, count)
+			MsgPopup(Strings[302535920000497--[[Hook Started]]], Translate(1000113--[[Debug]]))
 
 			collectgarbage()
 			local function hook_func(event)
@@ -3087,8 +3087,8 @@ do -- ToggleFuncHook
 			-- start capture (c = func call, r = func ret, l = enters new line of code)
 			debug.sethook(hook_func, mask or "c", count)
 		else
-			print(Strings[302535920000498--[[Hook Stopped--]]], path, line, mask, count)
-			MsgPopup(Strings[302535920000498--[[Hook Stopped--]]], Translate(1000113--[[Debug--]]))
+			print(Strings[302535920000498--[[Hook Stopped]]], path, line, mask, count)
+			MsgPopup(Strings[302535920000498--[[Hook Stopped]]], Translate(1000113--[[Debug]]))
 			ChoGGi.Temp.FunctionsHooked = false
 
 			-- stop capture
@@ -3208,9 +3208,9 @@ do -- TestLocaleFile
 			order = {"translated_new", "translated", "text"}
 		end
 
-		local prev_str = Translate(1000231--[[Previous--]])
-		local next_str = Translate(1000232--[[Next--]])
-		local cur_str = Strings[302535920000106--[[Current--]]]
+		local prev_str = Translate(1000231--[[Previous]])
+		local next_str = Translate(1000232--[[Next]])
+		local cur_str = Strings[302535920000106--[[Current]]]
 
 		for i = 1, #loaded_csv do
 			local entry = loaded_csv[i]
@@ -3272,7 +3272,7 @@ do -- TestLocaleFile
 		local omit_captions = "omit_captions"
 		local err, str = AsyncFileToString(filepath)
 		if err then
-			print(Strings[302535920001125--[[Test Locale File--]]], "ERROR:", err, "FILEPATH:", filepath)
+			print(Strings[302535920001125--[[Test Locale File]]], "ERROR:", err, "FILEPATH:", filepath)
 			return
 		end
 
@@ -3362,7 +3362,7 @@ do -- TestLocaleFile
 					filepath = my_locale
 				end
 			else
-				print(Strings[302535920001125--[[Test Locale File--]]], "FILEPATH ERROR:", filepath)
+				print(Strings[302535920001125--[[Test Locale File]]], "FILEPATH ERROR:", filepath)
 				return
 			end
 		end
@@ -3395,7 +3395,7 @@ do -- TestLocaleFile
 
 		if test_csv then
 			strings_failed[-1] = Strings[302535920001571--[["The way I test the CSV file means there might be some ""non-error"" errors added here.
-It's a tradeoff between erroneous errors and the game locking up."--]]]
+It's a tradeoff between erroneous errors and the game locking up."]]]
 		end
 
 		strings_count = 0
@@ -3412,9 +3412,9 @@ It's a tradeoff between erroneous errors and the game locking up."--]]]
 
 		local title
 		if strings_count > 0 or csv_count > 0 then
-			title = Strings[302535920001125--[[Test Locale File--]]] .. ": " .. Translate(951--[[Failed to complete operation.--]])
+			title = Strings[302535920001125--[[Test Locale File]]] .. ": " .. Translate(951--[[Failed to complete operation.]])
 		else
-			title = Strings[302535920001125--[[Test Locale File--]]] .. ": " .. Translate(1000015--[[Success--]])
+			title = Strings[302535920001125--[[Test Locale File]]] .. ": " .. Translate(1000015--[[Success]])
 		end
 		local results = {
 			loaded_csv = loaded_csv,
@@ -3599,7 +3599,7 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	if ret then
 		return textures
 	end
-	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, Strings[302535920001181--[[Used Terrain Textures--]]])
+	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, Strings[302535920001181--[[Used Terrain Textures]]])
 end
 
 do -- RetObjectCapAndGrid
@@ -3697,7 +3697,7 @@ function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(
 		results_list,
 		nil,
-		Strings[302535920000853--[[Monitor--]]] .. " " .. Strings[302535920000110--[[Function Results--]]]
+		Strings[302535920000853--[[Monitor]]] .. " " .. Strings[302535920000110--[[Function Results]]]
 	)
 	dlg:EnableAutoRefresh()
 
@@ -3747,8 +3747,8 @@ function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj)
 		if obj:GetAnim() > 0 and obj:GetPathLen() == 0 then
 			obj:InterruptCommand()
 			MsgPopup(
-				Strings[302535920001267--[[%s at position: %s was stopped.--]]]:format(RetName(obj), obj:GetVisualPos()),
-				Strings[302535920001266--[[Borked Transport Pathing--]]],
+				Strings[302535920001267--[[%s at position: %s was stopped.]]]:format(RetName(obj), obj:GetVisualPos()),
+				Strings[302535920001266--[[Borked Transport Pathing]]],
 				"UI/Icons/IPButtons/transport_route.tga",
 				nil,
 				obj
@@ -3783,8 +3783,8 @@ do -- DisplayMonitorList
 	function ChoGGi.ComFuncs.DisplayMonitorList(value, parent)
 		if value == "New" then
 			ChoGGi.ComFuncs.MsgWait(
-				Strings[302535920000033--[[Post a request on Nexus or Github or send an email to: %s--]]]:format(ChoGGi.email),
-				Strings[302535920000034--[[Request--]]]
+				Strings[302535920000033--[[Post a request on Nexus or Github or send an email to: %s]]]:format(ChoGGi.email),
+				Strings[302535920000034--[[Request]]]
 			)
 			return
 		end
@@ -3813,25 +3813,25 @@ do -- DisplayMonitorList
 		}
 		if value == "Grids" then
 			info = info_grid
-			info_grid.title = Strings[302535920000035--[[Grids--]]]
+			info_grid.title = Strings[302535920000035--[[Grids]]]
 			AddGrid(UICity, "air", info)
 			AddGrid(UICity, "electricity", info)
 			AddGrid(UICity, "water", info)
 		elseif value == "Air" then
 			info = info_grid
-			info_grid.title = Translate(891--[[Air--]])
+			info_grid.title = Translate(891--[[Air]])
 			AddGrid(UICity, "air", info)
 		elseif value == "Power" then
 			info = info_grid
-			info_grid.title = Translate(79--[[Power--]])
+			info_grid.title = Translate(79--[[Power]])
 			AddGrid(UICity, "electricity", info)
 		elseif value == "Water" then
 			info = info_grid
-			info_grid.title = Translate(681--[[Water--]])
+			info_grid.title = Translate(681--[[Water]])
 			AddGrid(UICity, "water", info)
 		elseif value == "Research" then
 			info = {
-				title = Translate(311--[[Research--]]),
+				title = Translate(311--[[Research]]),
 				listtype = "all",
 				tables = {UICity.tech_status},
 				values = {
@@ -3840,7 +3840,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "Colonists" then
 			info = {
-				title = Translate(547--[[Colonists--]]),
+				title = Translate(547--[[Colonists]]),
 				tables = UICity.labels.Colonist or "",
 				values = {
 					{name="handle", kind=0},
@@ -3866,7 +3866,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "Rockets" then
 			info = {
-				title = Translate(5238--[[Rockets--]]),
+				title = Translate(5238--[[Rockets]]),
 				tables = UICity.labels.AllRockets,
 				values = {
 					{name="name", kind=0},
@@ -3885,7 +3885,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "City" then
 			info = {
-				title = Strings[302535920000042--[[City--]]],
+				title = Strings[302535920000042--[[City]]],
 				tables = {UICity},
 				values = {
 					{name="rand_state", kind=0},

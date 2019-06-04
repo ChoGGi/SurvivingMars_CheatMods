@@ -44,7 +44,7 @@ function OnMsg.ModsReloaded()
 	local function AddMenuKey(num, key, name)
 		c = c + 1
 		Actions[c] = {
-			ActionName = Strings[302535920001414--[[Build menu key: %s--]]]:format(Translate(name)),
+			ActionName = Strings[302535920001414--[[Build menu key: %s]]]:format(Translate(name)),
 			ActionId = build_str:format(num),
 			OnAction = function()
 				ShowBuildMenu(num)

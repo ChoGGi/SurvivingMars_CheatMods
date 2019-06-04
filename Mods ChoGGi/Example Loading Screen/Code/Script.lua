@@ -20,4 +20,4 @@ g_LoadingScreens = {
 	"UI/LoadingScreens/010.tga",
 	"UI/LoadingScreens/011.tga",
 }
---]]
+]]

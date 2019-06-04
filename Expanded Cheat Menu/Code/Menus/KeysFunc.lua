@@ -13,14 +13,27 @@ function ChoGGi.MenuFuncs.ConsoleRestart()
 	end
 end
 
+local table_sort = table.sort
+local SelObjects = ChoGGi.ComFuncs.SelObjects
+local GetTerrainCursor = GetTerrainCursor
+local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+
 function ChoGGi.MenuFuncs.ExamineObjectRadius(action)
-	local objs = ChoGGi.ComFuncs.SelObjects(action.radius_amount or 2500)
+	local radius = action.radius_amount or 2500
+	local objs = SelObjects(radius)
 	if #objs > 0 then
 		-- sort by nearest
 		local pt = GetTerrainCursor()
-		table.sort(objs, function(a, b)
+		table_sort(objs, function(a, b)
 			return a:GetVisualDist(pt) < b:GetVisualDist(pt)
 		end)
-		ChoGGi.ComFuncs.OpenInExamineDlg(objs, nil, Strings[302535920000069--[[Examine--]]] .. " " .. Strings[302535920001103--[[Objects--]]] .. " " .. action.radius_amount or 2500)
+
+		OpenInExamineDlg(objs, {
+			ex_params = true,
+			override_title = true,
+			title = Strings[302535920000069--[[Examine]]] .. " "
+				.. Strings[302535920001103--[[Objects]]] .. " "
+				.. Strings[302535920000163--[[Radius]]] .. ": " .. radius,
+		})
 	end
 end

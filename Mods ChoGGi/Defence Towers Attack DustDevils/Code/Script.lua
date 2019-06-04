@@ -105,4 +105,4 @@ end -- ClassesBuilt
 		local descr = data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
 		GenerateDustDevil(GetTerrainCursor(), descr, nil):Start()
 	end
---]]
+]]

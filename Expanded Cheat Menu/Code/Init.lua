@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 -- I didn't get a harumph outta that guy!
-ModEnvBlacklist = {--[[Harumph!--]]}
+ModEnvBlacklist = {--[[Harumph!]]}
 
 -- defaults to 20 items
 const.nConsoleHistoryMaxSize = 100

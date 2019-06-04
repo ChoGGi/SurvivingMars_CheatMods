@@ -46,15 +46,15 @@ local function t(str)
 end
 
 local str = {
-	not_implemented = t(302535920010000--[[math.%s not implemented yet.--]]),
-	error = t(302535920010001--[[bad argument #%s to 'math.%s' (%s)--]]),
-	zero = t(302535920010002--[[zero--]]),
-	less_than_or_equals_zero = t(302535920010003--[[less than or equals zero--]]),
-	less_than_zero = t(302535920010004--[[less than zero--]]),
-	arg2_arg1_less_than_zero = t(302535920010005--[[arg#2 - arg#1 == less than zero--]]),
-	test_start = t(302535920010006--[[Testing math: Start--]]),
-	test_end = t(302535920010007--[[Testing math: End--]]),
-	test_error = t(302535920010008--[[Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s)--]]),
+	not_implemented = t(302535920010000--[[math.%s not implemented yet.]]),
+	error = t(302535920010001--[[bad argument #%s to 'math.%s' (%s)]]),
+	zero = t(302535920010002--[[zero]]),
+	less_than_or_equals_zero = t(302535920010003--[[less than or equals zero]]),
+	less_than_zero = t(302535920010004--[[less than zero]]),
+	arg2_arg1_less_than_zero = t(302535920010005--[[arg#2 - arg#1 == less than zero]]),
+	test_start = t(302535920010006--[[Testing math: Start]]),
+	test_end = t(302535920010007--[[Testing math: End]]),
+	test_error = t(302535920010008--[[Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s)]]),
 }
 
 -- whenever i get .cos etc added (needed for unit testing)

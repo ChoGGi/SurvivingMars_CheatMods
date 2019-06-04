@@ -29,7 +29,7 @@ function ChoGGi_DlgFindValue:Init(parent, context)
 
 	self.obj = context.obj
 	self.obj_name = RetName(self.obj)
-	self.title = Strings[302535920001305--[[Find Within--]]] .. ": " .. self.obj_name
+	self.title = Strings[302535920001305--[[Find Within]]] .. ": " .. self.obj_name
 	self.title_image = "CommonAssets/UI/Menu/EV_OpenFirst.tga"
 	self.title_image_single = true
 
@@ -45,8 +45,8 @@ function ChoGGi_DlgFindValue:Init(parent, context)
 		Id = "idEdit",
 		Dock = "left",
 		MinWidth = 550,
-		RolloverText = Strings[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
-		Hint = Strings[302535920001306--[[Enter text to find--]]],
+		RolloverText = Strings[302535920001303--[[Search for text within %s.]]]:format(self.obj_name),
+		Hint = Strings[302535920001306--[[Enter text to find]]],
 		OnKbdKeyDown = self.Input_OnKbdKeyDown,
 	}, self.idTextArea)
 
@@ -54,7 +54,7 @@ function ChoGGi_DlgFindValue:Init(parent, context)
 		Id = "idLimit",
 		Dock = "right",
 		MinWidth = 50,
-		RolloverText = Strings[302535920001304--[[Set how many levels within this table we search. <color red>Warning</color>: O(n).--]]],
+		RolloverText = Strings[302535920001304--[[Set how many levels within this table we search. <color red>Warning</color>: O(n).]]],
 		OnKbdKeyDown = self.Input_OnKbdKeyDown,
 	}, self.idTextArea)
 	self.idLimit:SetText("1")
@@ -68,9 +68,9 @@ function ChoGGi_DlgFindValue:Init(parent, context)
 	self.idFind = g_Classes.ChoGGi_XButton:new({
 		Id = "idFind",
 		Dock = "left",
-		Text = Strings[302535920001302--[[Find--]]],
+		Text = Strings[302535920001302--[[Find]]],
 		Background = g_Classes.ChoGGi_XButton.bg_green,
-		RolloverText = Strings[302535920001303--[[Search for text within %s.--]]]:format(self.obj_name),
+		RolloverText = Strings[302535920001303--[[Search for text within %s.]]]:format(self.obj_name),
 		Margins = box(10, 0, 0, 0),
 		OnPress = self.FindText,
 	}, self.idButtonContainer)
@@ -79,25 +79,25 @@ function ChoGGi_DlgFindValue:Init(parent, context)
 		Id = "idCaseSen",
 		Dock = "left",
 		Margins = box(15, 0, 0, 0),
-		Text = Strings[302535920000501--[[Case-sensitive--]]],
-		RolloverText = Strings[302535920000502--[[Treat uppercase and lowercase as distinct.--]]],
+		Text = Strings[302535920000501--[[Case-sensitive]]],
+		RolloverText = Strings[302535920000502--[[Treat uppercase and lowercase as distinct.]]],
 	}, self.idButtonContainer)
 
 	self.idThreads = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idThreads",
 		Dock = "left",
 		Margins = box(4, 0, 0, 0),
-		Text = Strings[302535920001360--[[Threads--]]],
-		RolloverText = Strings[302535920001361--[[Will also search thread func names for value (case is ignored for this).--]]],
+		Text = Strings[302535920001360--[[Threads]]],
+		RolloverText = Strings[302535920001361--[[Will also search thread func names for value (case is ignored for this).]]],
 	}, self.idButtonContainer)
 
 	self.idCancel = g_Classes.ChoGGi_XButton:new({
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 80,
-		Text = Translate(6879--[[Cancel--]]),
+		Text = Translate(6879--[[Cancel]]),
 		Background = g_Classes.ChoGGi_XButton.bg_red,
-		RolloverText = Strings[302535920000074--[[Cancel without changing anything.--]]],
+		RolloverText = Strings[302535920000074--[[Cancel without changing anything.]]],
 		Margins = box(0, 0, 10, 0),
 		OnPress = self.idCloseX.OnPress,
 	}, self.idButtonContainer)
@@ -148,7 +148,7 @@ function ChoGGi_DlgFindValue:FindText()
 	)
 
 	-- and fire off a new dialog
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(self.found_objs, nil, Strings[302535920000854--[[Results Found--]]])
+	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(self.found_objs, nil, Strings[302535920000854--[[Results Found]]])
 	-- should do this nicer, but whatever
 	CreateRealTimeThread(function()
 		Sleep(10)

@@ -101,11 +101,12 @@ function OnMsg.ClassesBuilt()
 			"comment", "fill/drain toggle",
 			"__context_of_kind", "InstantLake",
 			"__template", "InfopanelButton",
+			"Icon", "UI/Icons/IPButtons/drill.tga",
 			"RolloverText", T(0, [[Adjust lake level
 <left_click> Raise <right_click> Lower]]),
 			"RolloverTitle", [[Adjust Level]],
 			"RolloverHint", T(0, [[Ctrl + <left_click> Halve level adjust]]),
-			"Icon", "UI/Icons/IPButtons/drill.tga",
+			"RolloverHintGamepad", T(7518--[[ButtonA]]) .. " " .. T(7618--[[ButtonX]]),
 			"OnPress", function (self, gamepad)
 				self.context:AdjustLevel("up", not gamepad and IsMassUIModifierPressed())
 				ObjModified(self.context)

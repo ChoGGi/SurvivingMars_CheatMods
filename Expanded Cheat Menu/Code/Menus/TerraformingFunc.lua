@@ -7,11 +7,11 @@ local Translate = ChoGGi.ComFuncs.Translate
 local Strings = ChoGGi.Strings
 
 function ChoGGi.MenuFuncs.SetToxicPoolsMax()
-	local title = Translate(12026--[[Toxic Pools--]]) .. " " .. Strings[302535920000834--[[Max--]]]
+	local title = Translate(12026--[[Toxic Pools]]) .. " " .. Strings[302535920000834--[[Max]]]
 	local default_setting = ChoGGi.Consts.MaxToxicRainPools
 
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 0, value = 0},
 		{text = 10, value = 10},
 		{text = 20, value = 20},
@@ -55,8 +55,8 @@ end
 function ChoGGi.MenuFuncs.SetAllTerraformingParams(action)
 	if g_NoTerraforming then
 		MsgPopup(
-			Strings[302535920000562--[[Terraforming not enabled!--]]],
-			Translate(11719--[[Terraforming--]])
+			Strings[302535920000562--[[Terraforming not enabled!]]],
+			Translate(11719--[[Terraforming]])
 		)
 		return
 	end
@@ -70,7 +70,7 @@ function ChoGGi.MenuFuncs.OpenAirDomes_Toggle()
 	SetOpenAirBuildings(not OpenAirBuildings)
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(OpenAirBuildings),
-		Strings[302535920000559--[[Open Air Domes Toggle--]]]
+		Strings[302535920000559--[[Open Air Domes Toggle]]]
 	)
 end
 
@@ -80,15 +80,15 @@ function ChoGGi.MenuFuncs.RemoveLandScapingLimits_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RemoveLandScapingLimits),
-		Strings[302535920000560--[[Remove LandScaping Limits--]]]
+		Strings[302535920000560--[[Remove LandScaping Limits]]]
 	)
 end
 
 function ChoGGi.MenuFuncs.PlantRandomLichen()
 	if g_NoTerraforming then
 		MsgPopup(
-			Strings[302535920000562--[[Terraforming not enabled!--]]],
-			Strings[302535920000534--[[Plant Random Lichen--]]]
+			Strings[302535920000562--[[Terraforming not enabled!]]],
+			Strings[302535920000534--[[Plant Random Lichen]]]
 		)
 		return
 	end
@@ -131,7 +131,7 @@ function ChoGGi.MenuFuncs.PlantRandomLichen()
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.value),
-				Strings[302535920000534--[[Plant Random Lichen--]]]
+				Strings[302535920000534--[[Plant Random Lichen]]]
 			)
 		end
 	end
@@ -139,7 +139,7 @@ function ChoGGi.MenuFuncs.PlantRandomLichen()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000534--[[Plant Random Lichen--]]],
+		title = Strings[302535920000534--[[Plant Random Lichen]]],
 		skip_sort = true,
 	}
 end
@@ -147,13 +147,13 @@ end
 function ChoGGi.MenuFuncs.PlantRandomVegetation()
 	if g_NoTerraforming then
 		MsgPopup(
-			Strings[302535920000562--[[Terraforming not enabled!--]]],
-			Strings[302535920000529--[[Plant Random Vegetation--]]]
+			Strings[302535920000562--[[Terraforming not enabled!]]],
+			Strings[302535920000529--[[Plant Random Vegetation]]]
 		)
 		return
 	end
 
-	local hint = Strings[302535920000758--[[Will take some time for 25K and up.--]]]
+	local hint = Strings[302535920000758--[[Will take some time for 25K and up.]]]
 	local item_list = {
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -179,7 +179,7 @@ function ChoGGi.MenuFuncs.PlantRandomVegetation()
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.value),
-				Strings[302535920000529--[[Plant Random Vegetation--]]]
+				Strings[302535920000529--[[Plant Random Vegetation]]]
 			)
 		end
 	end
@@ -187,7 +187,7 @@ function ChoGGi.MenuFuncs.PlantRandomVegetation()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000529--[[Plant Random Vegetation--]]],
+		title = Strings[302535920000529--[[Plant Random Vegetation]]],
 		hint = hint,
 		skip_sort = true,
 	}
@@ -196,8 +196,8 @@ end
 function ChoGGi.MenuFuncs.SetSoilQuality()
 	if g_NoTerraforming then
 		MsgPopup(
-			Strings[302535920000562--[[Terraforming not enabled!--]]],
-			Translate(776100024488--[[Soil Quality--]])
+			Strings[302535920000562--[[Terraforming not enabled!]]],
+			Translate(776100024488--[[Soil Quality]])
 		)
 		return
 	end
@@ -205,7 +205,7 @@ function ChoGGi.MenuFuncs.SetSoilQuality()
 	local soil_quality = GetSoilQuality(WorldToHex(GetTerrainCursor()))
 
 	local item_list = {
-		{text = Strings[302535920000106--[[Current--]]], value = soil_quality},
+		{text = Strings[302535920000106--[[Current]]], value = soil_quality},
 		{text = -100, value = -100},
 		{text = -75, value = -75},
 		{text = -50, value = -50},
@@ -230,7 +230,7 @@ function ChoGGi.MenuFuncs.SetSoilQuality()
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.value),
-				Translate(776100024488--[[Soil Quality--]])
+				Translate(776100024488--[[Soil Quality]])
 			)
 		end
 	end
@@ -238,7 +238,7 @@ function ChoGGi.MenuFuncs.SetSoilQuality()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Translate(776100024488--[[Soil Quality--]]),
+		title = Translate(776100024488--[[Soil Quality]]),
 		skip_sort = true,
 	}
 end
@@ -246,7 +246,7 @@ end
 function ChoGGi.MenuFuncs.SetTerraformingParams(action)
 	if g_NoTerraforming then
 		MsgPopup(
-			Strings[302535920000562--[[Terraforming not enabled!--]]],
+			Strings[302535920000562--[[Terraforming not enabled!]]],
 			action.ActionName
 		)
 		return
@@ -255,7 +255,7 @@ function ChoGGi.MenuFuncs.SetTerraformingParams(action)
 	local setting_id = action.setting_id
 
 	local item_list = {
-		{text = Strings[302535920000106--[[Current--]]], value = GetTerraformParamPct(setting_id)},
+		{text = Strings[302535920000106--[[Current]]], value = GetTerraformParamPct(setting_id)},
 		{text = 0, value = 0},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -274,7 +274,7 @@ function ChoGGi.MenuFuncs.SetTerraformingParams(action)
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.value),
-				Translate(11719--[[Terraforming--]])
+				Translate(11719--[[Terraforming]])
 			)
 		end
 	end

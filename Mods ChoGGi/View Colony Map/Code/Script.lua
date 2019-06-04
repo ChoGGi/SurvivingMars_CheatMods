@@ -102,16 +102,16 @@ function ChoGGi_VCM_MapImageDlg:Init(parent, context)
 
 	self.idShowExtra = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idShowExtra",
-		Text = Translate(11451--[[Breakthrough--]]),
+		Text = Translate(11451--[[Breakthrough]]),
 		RolloverText = "Show breakthroughs for this location.",
 		OnChange = self.idShowExtraOnChange,
 		Margins = box(20,4,2,0),
 	}, self.idBottomArea)
 	-- add hint if random rule active
 	local tech_variety = IsGameRuleActive("TechVariety")
-		and " <color green>" .. Translate(607602869305--[[Tech Variety--]]) .. "</color>" or ""
+		and " <color green>" .. Translate(607602869305--[[Tech Variety]]) .. "</color>" or ""
 	local chaos_theory = IsGameRuleActive("ChaosTheory")
-		and " <color green>" .. Translate(621834127153--[[Chaos Theory--]]) .. "</color>" or ""
+		and " <color green>" .. Translate(621834127153--[[Chaos Theory]]) .. "</color>" or ""
 	if tech_variety ~= "" or chaos_theory ~= "" then
 		self.idShowExtra.RolloverText = Translate(self.idShowExtra.RolloverText .. [[
 
@@ -194,7 +194,7 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
-	self.title_text = Translate(11451--[[Breakthrough--]])
+	self.title_text = Translate(11451--[[Breakthrough]])
 	self.idCaption:SetText(self.title_text)
 
 	-- text box with obj info in it
@@ -226,7 +226,7 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 	end
 
 	self.omega_msg_count = const.BreakThroughTechsPerGame + 1
-	self.omega_msg = "\n\n" .. Translate(5182--[[Omega Telescope--]]) .. " " .. Translate(437247068170--[[LIST--]]) .. " (maybe):\n"
+	self.omega_msg = "\n\n" .. Translate(5182--[[Omega Telescope]]) .. " " .. Translate(437247068170--[[LIST]]) .. " (maybe):\n"
 
 	self.idText:SetText("Select location to update text")
 

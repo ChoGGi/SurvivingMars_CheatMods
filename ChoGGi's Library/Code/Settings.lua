@@ -10,35 +10,35 @@ function ChoGGi.ComFuncs.UpdateOtherTables()
 	-- display names only!
 	Tables.ColonistRaces = {
 		-- caucasian
-		Translate(1859--[[White--]]), [Translate(1859--[[White--]])] = true,
+		Translate(1859--[[White]]), [Translate(1859--[[White]])] = true,
 		-- african
-		Strings[302535920000739--[[Black--]]], [Strings[302535920000739--[[Black--]]]] = true,
+		Strings[302535920000739--[[Black]]], [Strings[302535920000739--[[Black]]]] = true,
 		-- asian
-		Strings[302535920000740--[[Asian--]]], [Strings[302535920000740--[[Asian--]]]] = true,
+		Strings[302535920000740--[[Asian]]], [Strings[302535920000740--[[Asian]]]] = true,
 		-- aryan (indo-iranian is too much of a mouthful and aryan will just make some people pissy)
-		Strings[302535920001283--[[Indian--]]], [Strings[302535920001283--[[Indian--]]]] = true,
+		Strings[302535920001283--[[Indian]]], [Strings[302535920001283--[[Indian]]]] = true,
 		-- hispanic
-		Strings[302535920001284--[[Hispanic--]]], [Strings[302535920001284--[[Hispanic--]]]] = true,
+		Strings[302535920001284--[[Hispanic]]], [Strings[302535920001284--[[Hispanic]]]] = true,
 	}
 	-- go with what you know (guess i could make it randomly pick one of each to be fairer?)
 	Tables.ColonistRacesImages = {
-		[Translate(1859--[[White--]])] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_01.tga",
-		[Strings[302535920000739--[[Black--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Af_Adult_01.tga",
-		[Strings[302535920000740--[[Asian--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_As_Adult_01.tga",
-		[Strings[302535920001283--[[Indian--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Ar_Adult_01.tga",
-		[Strings[302535920001284--[[Hispanic--]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Hs_Adult_01.tga",
+		[Translate(1859--[[White]])] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_01.tga",
+		[Strings[302535920000739--[[Black]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Af_Adult_01.tga",
+		[Strings[302535920000740--[[Asian]]]] = "UI/Icons/Colonists/Pin/Unit_Male_As_Adult_01.tga",
+		[Strings[302535920001283--[[Indian]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Ar_Adult_01.tga",
+		[Strings[302535920001284--[[Hispanic]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Hs_Adult_01.tga",
 		-- android
-		[Translate(3490--[[Random--]])] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
-		[Translate(1000121--[[Default--]])] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
+		[Translate(3490--[[Random]])] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
+		[Translate(1000121--[[Default]])] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
 	}
 	--~ Tables.ColonistRacesImagesFemale = {
-	--~ 	[Translate(1859--[[White--]])] = "UI/Icons/Colonists/Pin/Unit_Female_Ca_Adult_01.tga",
-	--~ 	[Strings[302535920000739--[[Black--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Af_Adult_01.tga",
-	--~ 	[Strings[302535920000740--[[Asian--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_As_Adult_01.tga",
-	--~ 	[Strings[302535920001283--[[Indian--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Ar_Adult_01.tga",
-	--~ 	[Strings[302535920001284--[[Hispanic--]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Hs_Adult_01.tga",
-	--~ 	[Translate(3490--[[Random--]])] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
-	--~ 	[Translate(1000121--[[Default--]])] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
+	--~ 	[Translate(1859--[[White]])] = "UI/Icons/Colonists/Pin/Unit_Female_Ca_Adult_01.tga",
+	--~ 	[Strings[302535920000739--[[Black]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Af_Adult_01.tga",
+	--~ 	[Strings[302535920000740--[[Asian]]]] = "UI/Icons/Colonists/Pin/Unit_Female_As_Adult_01.tga",
+	--~ 	[Strings[302535920001283--[[Indian]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Ar_Adult_01.tga",
+	--~ 	[Strings[302535920001284--[[Hispanic]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Hs_Adult_01.tga",
+	--~ 	[Translate(3490--[[Random]])] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
+	--~ 	[Translate(1000121--[[Default]])] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
 	--~ }
 end
 local Tables = ChoGGi.Tables
@@ -87,16 +87,12 @@ ChoGGi.ComFuncs.UpdateDataTables()
 ChoGGi.ComFuncs.UpdateTablesSponComm()
 
 local function GetValueCls(obj, value, fallback)
-	if obj then
-		return obj:GetDefaultPropertyValue(value)
-	end
-	return fallback
+	return obj and obj.GetDefaultPropertyValue
+		and obj:GetDefaultPropertyValue(value) or fallback
 end
+
 local function GetValueBT(bt, value, fallback)
-	if bt and bt[value] then
-		return bt[value]
-	end
-	return fallback
+	return bt and bt[value] or fallback
 end
 
 function OnMsg.ClassesBuilt()
@@ -123,14 +119,18 @@ function OnMsg.ClassesBuilt()
 	ChoGGi.Consts.SpeedShuttle = GetValueCls(g_Classes.CargoShuttle, "move_speed", 3 * r)
 	ChoGGi.Consts.ShuttleHubShuttleCapacity = GetValueCls(g_Classes.ShuttleHub, "max_shuttles", 10)
 	ChoGGi.Consts.SpeedDrone = GetValueCls(g_Classes.Drone, "move_speed", 1440)
-	ChoGGi.Consts.SpeedWaspDrone = GetValueCls(g_Classes.FlyingDrone, "move_speed", 1600)
 	ChoGGi.Consts.SpeedRC = GetValueCls(g_Classes.RCRover, "move_speed", 1 * r)
 	ChoGGi.Consts.SpeedColonist = GetValueCls(g_Classes.Colonist, "move_speed", 1 * r)
 	ChoGGi.Consts.RCTransportStorageCapacity = GetValueCls(g_Classes.RCTransport, "max_shared_storage", 30 * r)
-	if rawget(g_Classes, "RCConstructor") then
+	ChoGGi.Consts.StorageUniversalDepot = GetValueCls(g_Classes.UniversalStorageDepot, "max_storage_per_resource", 30 * r)
+	-- DLC objects
+	if g_Classes.FlyingDrone then
+		ChoGGi.Consts.SpeedWaspDrone = GetValueCls(g_Classes.FlyingDrone, "move_speed", 1600)
+	end
+	if g_Classes.RCConstructor then
 		ChoGGi.Consts.RCConstructorStorageCapacity = GetValueCls(g_Classes.RCConstructor, "max_shared_storage", 42 * r)
 	end
-	ChoGGi.Consts.StorageUniversalDepot = GetValueCls(g_Classes.UniversalStorageDepot, "max_storage_per_resource", 30 * r)
+
 	local bt = BuildingTemplates
 	ChoGGi.Consts.StorageWasteDepot = GetValueBT(bt.WasteRockDumpBig, "max_amount_WasteRock", 70 * r)
 	ChoGGi.Consts.StorageOtherDepot = GetValueBT(bt.StorageConcrete, "max_storage_per_resource", 180 * r)

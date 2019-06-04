@@ -19,4 +19,4 @@ function OnMsg.LoadGame()
 		objs[i].ChoGGi_AlwaysDust = nil
 	end
 end
---]]
+]]

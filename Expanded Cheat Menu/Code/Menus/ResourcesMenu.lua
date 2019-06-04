@@ -9,7 +9,7 @@ local LocaleInt = LocaleInt
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(692--[[Resources--]]),
+Actions[c] = {ActionName = Translate(692--[[Resources]]),
 	ActionMenubar = "ECM.ECM",
 	ActionId = ".Resources",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -17,7 +17,7 @@ Actions[c] = {ActionName = Translate(692--[[Resources--]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4604--[[Rare Metals Price (M)--]]),
+Actions[c] = {ActionName = Translate(4604--[[Rare Metals Price (M)]]),
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Rare Metals Price (M)",
 	ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
@@ -25,7 +25,7 @@ Actions[c] = {ActionName = Translate(4604--[[Rare Metals Price (M)--]]),
 		if GameState.gameplay then
 			return SettingState(
 				ChoGGi.UserSettings.ExportPricePreciousMetals,
-				Translate(4603--[[Amount of Funding (in millions) received by exporting one unit of Rare Metals--]])
+				Translate(4603--[[Amount of Funding (in millions) received by exporting one unit of Rare Metals]])
 			)
 		end
 		return Translate(4603)
@@ -34,7 +34,7 @@ Actions[c] = {ActionName = Translate(4604--[[Rare Metals Price (M)--]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000719--[[Add Orbital Probes--]]],
+Actions[c] = {ActionName = Strings[302535920000719--[[Add Orbital Probes]]],
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Add Orbital Probes",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
@@ -42,7 +42,7 @@ Actions[c] = {ActionName = Strings[302535920000719--[[Add Orbital Probes--]]],
 		if GameState.gameplay then
 			return SettingState(
 				#(UICity.labels.OrbitalProbe or "") + #(UICity.labels.AdvancedOrbitalProbe or ""),
-				Strings[302535920000720--[[Add more probes.--]]]
+				Strings[302535920000720--[[Add more probes.]]]
 			)
 		end
 		return Strings[302535920000720]
@@ -51,31 +51,31 @@ Actions[c] = {ActionName = Strings[302535920000719--[[Add Orbital Probes--]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4616--[[Food Per Rocket Passenger--]]),
+Actions[c] = {ActionName = Translate(4616--[[Food Per Rocket Passenger]]),
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Food Per Rocket Passenger",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.FoodPerRocketPassenger,
-			Translate(4615--[[The amount of Food (unscaled) supplied with each Colonist arrival--]])
+			Translate(4615--[[The amount of Food (unscaled) supplied with each Colonist arrival]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetFoodPerRocketPassenger,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(1110--[[Prefab Buildings--]]),
+Actions[c] = {ActionName = Translate(1110--[[Prefab Buildings]]),
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Prefab Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/gear.tga",
-	RolloverText = Translate(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.--]])
-		.. "\n\n" .. Strings[302535920000897--[[Drone prefabs--]]],
+	RolloverText = Translate(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.]])
+		.. "\n\n" .. Strings[302535920000897--[[Drone prefabs]]],
 	OnAction = ChoGGi.MenuFuncs.AddPrefabBuildings,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(3613--[[Funding--]]),
+Actions[c] = {ActionName = Translate(3613--[[Funding]]),
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Funding",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
@@ -83,7 +83,7 @@ Actions[c] = {ActionName = Translate(3613--[[Funding--]]),
 		if GameState.gameplay then
 			return SettingState(
 				LocaleInt(UICity.funding),
-				Strings[302535920000726--[[Add more funding (or reset back to 500 M).--]]]
+				Strings[302535920000726--[[Add more funding (or reset back to 500 M).]]]
 			)
 		end
 		return Strings[302535920000726]
@@ -92,11 +92,11 @@ Actions[c] = {ActionName = Translate(3613--[[Funding--]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000727--[[Fill Selected Resource--]]],
+Actions[c] = {ActionName = Strings[302535920000727--[[Fill Selected Resource]]],
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Fill Selected Resource",
 	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
-	RolloverText = Strings[302535920000728--[[Fill the selected/moused over object's resource(s)--]]],
+	RolloverText = Strings[302535920000728--[[Fill the selected/moused over object's resource(s)]]],
 	OnAction = ChoGGi.MenuFuncs.FillResource,
 	ActionShortcut = "Ctrl-F",
 	ActionBindable = true,

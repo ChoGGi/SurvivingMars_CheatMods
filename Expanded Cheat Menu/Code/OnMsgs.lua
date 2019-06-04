@@ -71,7 +71,7 @@ function OnMsg.ClassesPreprocess()
 	end
 end
 
--- where we can add new BuildingTemplates
+-- where we can add new BuildingTemplates, and other PlaceObjs
 -- use this message to make modifications to the built classes (before they are declared final)
 --~ function OnMsg.ClassesPostprocess()
 --~ end
@@ -147,11 +147,11 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
-					"RolloverTitle", Strings[302535920000682--[[Change Entity--]]],
-					"RolloverHint", T(608042494285--[[<left_click> Activate--]]),
+					"RolloverTitle", Strings[302535920000682--[[Change Entity]]],
+					"RolloverHint", T(608042494285--[[<left_click> Activate]]),
 					"ContextUpdateOnOpen", true,
 					"OnContextUpdate", function(self)
-						self:SetRolloverText(Strings[302535920001151--[[Set Entity For %s--]]]:format(RetName(self.context)))
+						self:SetRolloverText(Strings[302535920001151--[[Set Entity For %s]]]:format(RetName(self.context)))
 					end,
 					"OnPress", function(self)
 						ChoGGi.ComFuncs.EntitySpawner(self.context, {
@@ -166,21 +166,37 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
-					"RolloverTitle", T(1000077--[[Rotate--]]),
-					"RolloverText", T(312752058553--[[Rotate Building Left--]]),
-					"RolloverHint", T(608042494285--[[<left_click> Activate--]]),
-					"OnPress", function(self)
-						self.context:Rotate()
+					"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
+					"RolloverTitle", T(1000077--[[Rotate]]),
+					"RolloverText", T(7519--[[<left_click>]]) .. " "
+						.. T(312752058553--[[Rotate Building Left]])
+						.. "\n"
+						.. T(1000449--[[Ctrl]]) .. T(1000541--[[+]]) .. T(7519--[[<left_click>]])
+						.. " " .. T(306325555448--[[Rotate Building Right]]),
+					"RolloverHint", "",
+					"RolloverHintGamepad", T(7518--[[ButtonA]]) .. " "
+						.. T(312752058553--[[Rotate Building Left]]) .. " "
+						.. T(7618--[[ButtonX]]) .. " " .. T(306325555448--[[Rotate Building Right]]),
+					"OnPress", function (self, gamepad)
+						self.context:Rotate(not gamepad and IsMassUIModifierPressed())
 						ObjModified(self.context)
 					end,
-					"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
+					"AltPress", true,
+					"OnAltPress", function (self, gamepad)
+						if gamepad then
+							self.context:Rotate(gamepad)
+						else
+							self.context:Rotate(IsMassUIModifierPressed())
+						end
+						ObjModified(self.context)
+					end,
 				}),
 
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
-					"RolloverTitle", Strings[302535920000457--[[Anim State Set--]]],
-					"RolloverHint", T(608042494285--[[<left_click> Activate--]]),
-					"RolloverText", Strings[302535920000458--[[Make object dance on command.--]]],
+					"RolloverTitle", Strings[302535920000457--[[Anim State Set]]],
+					"RolloverHint", T(608042494285--[[<left_click> Activate]]),
+					"RolloverText", Strings[302535920000458--[[Make object dance on command.]]],
 					"OnPress", function(self)
 						ChoGGi.ComFuncs.SetAnimState(self.context)
 					end,
@@ -189,14 +205,65 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelButton",
-					"RolloverTitle", Strings[302535920000129--[[Set--]]] .. " " .. Strings[302535920001184--[[Particles--]]],
-					"RolloverHint", T(608042494285--[[<left_click> Activate--]]),
-					"RolloverText", Strings[302535920001421--[[Shows a list of particles you can use on the selected obj.--]]],
+					"RolloverTitle", Strings[302535920000129--[[Set]]] .. " " .. Strings[302535920001184--[[Particles]]],
+					"RolloverHint", T(608042494285--[[<left_click> Activate]]),
+					"RolloverText", Strings[302535920001421--[[Shows a list of particles you can use on the selected obj.]]],
 					"OnPress", function(self)
 						ChoGGi.ComFuncs.SetParticles(self.context)
 					end,
 					"Icon", "UI/Icons/IPButtons/status_effects.tga",
 				}),
+
+------------------- Salvage
+			PlaceObj('XTemplateTemplate', {
+				'comment', "salvage",
+				'__context_of_kind', "Demolishable",
+				'__condition', function (parent, context) return context:ShouldShowDemolishButton() end,
+				'__template', "InfopanelButton",
+				'RolloverTitle', T(3973, --[[XTemplate ipBuilding RolloverTitle]] "Salvage"),
+				'RolloverHintGamepad', T(7657, --[[XTemplate ipBuilding RolloverHintGamepad]] "<ButtonY> Activate"),
+				'Id', "idSalvage",
+				'OnContextUpdate', function (self, context, ...)
+					local refund = context:GetRefundResources() or empty_table
+					local rollover = T(7822, "Destroy this building.")
+					if IsKindOf(context, "LandscapeConstructionSiteBase") then
+						self:SetRolloverTitle(T(12171, "Cancel Landscaping"))
+						rollover = T(12172, "Cancel this landscaping project. The terrain will remain in its current state")
+					end
+					if #refund > 0 then
+						rollover = rollover .. "<newline><newline>" .. T(7823, "<UIRefundRes> will be refunded upon salvage.")
+					end
+					self:SetRolloverText(rollover)
+					context:ToggleDemolish_Update(self)
+				end,
+				'OnPressParam', "ToggleDemolish",
+				'Icon', "UI/Icons/IPButtons/salvage_1.tga",
+			}, {
+				PlaceObj('XTemplateFunc', {
+					'name', "OnXButtonDown(self, button)",
+					'func', function (self, button)
+						if button == "ButtonY" then
+							return self:OnButtonDown(false)
+						elseif button == "ButtonX" then
+							return self:OnButtonDown(true)
+						end
+						return (button == "ButtonA") and "break"
+					end,
+				}),
+				PlaceObj('XTemplateFunc', {
+					'name', "OnXButtonUp(self, button)",
+					'func', function (self, button)
+						if button == "ButtonY" then
+							return self:OnButtonUp(false)
+						elseif button == "ButtonX" then
+							return self:OnButtonUp(true)
+						end
+						return (button == "ButtonA") and "break"
+					end,
+				}),
+				}),
+------------------- Salvage
+
 
 				PlaceObj("XTemplateTemplate", {
 					"__template", "sectionCheats",
@@ -215,7 +282,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 		if ChoGGi.UserSettings.Building_hide_from_build_menu and not table_find(bc, "id", "HiddenX") then
 			bc[#bc+1] = {
 				id = "HiddenX",
-				name = T(1000155--[[Hidden--]]),
+				name = T(1000155--[[Hidden]]),
 				image = "UI/Icons/bmc_placeholder.tga",
 				highlight = "UI/Icons/bmc_placeholder_shine.tga",
 			}
@@ -247,7 +314,7 @@ function OnMsg.ModsReloaded()
 		c = c + 1
 		Actions[c] = {
 			ActionMenubar = "ECM.Debug",
-			ActionName = Strings[302535920001074--[[Ged Presets--]]],
+			ActionName = Strings[302535920001074--[[Ged Presets]]],
 			ActionId = ".Ged Presets",
 			ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 			OnActionEffect = "popup",
@@ -263,7 +330,7 @@ function OnMsg.ModsReloaded()
 					ActionName = name,
 					ActionId = "." .. name,
 					ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
-					RolloverText = Strings[302535920000733--[[Open a preset in the editor.--]]],
+					RolloverText = Strings[302535920000733--[[Open a preset in the editor.]]],
 					OnAction = function()
 						OpenGedApp(class.GedEditor, Presets[name], {
 							PresetClass = name,
@@ -322,7 +389,7 @@ function OnMsg.ModsReloaded()
 			end
 
 			edit.RolloverTemplate = "Rollover"
-			edit.RolloverTitle = Strings[302535920001073--[[Console--]]] .. " " .. T(487939677892--[[Help--]])
+			edit.RolloverTitle = Strings[302535920001073--[[Console]]] .. " " .. T(487939677892--[[Help]])
 			-- add tooltip
 			edit.RolloverText = Strings[302535920001440--[["~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.
@@ -341,8 +408,8 @@ $123 or $EffectDeposit.display_name prints translated string.
 
 !UICity.labels.TerrainDeposit[1] move camera and select obj.
 
-s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
-			edit.Hint = Strings[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."--]]]
+s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]]]
+			edit.Hint = Strings[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."]]]
 
 			dlgConsole.ChoGGi_MenuAdded = true
 			-- and buttons
@@ -381,9 +448,9 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"--]]]
 			if UserSettings.EnableToolTips then
 				local toolbar = XShortcutsTarget.idMenuBar
 				toolbar:SetRolloverTemplate("Rollover")
-				toolbar:SetRolloverTitle(T(126095410863--[[Info--]]))
-				toolbar:SetRolloverText(Strings[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.--]]])
-				toolbar:SetRolloverHint(Strings[302535920001441--[["<left_click> Activate MenuItem <right_click> Add/Remove"--]]])
+				toolbar:SetRolloverTitle(T(126095410863--[[Info]]))
+				toolbar:SetRolloverText(Strings[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.]]])
+				toolbar:SetRolloverHint(Strings[302535920001441--[["<left_click> Activate MenuItem <right_click> Add/Remove"]]])
 			end
 
 			-- always show menu
@@ -493,7 +560,7 @@ function OnMsg.PersistPostLoad()
 					local obj = label[i]
 					if obj:IsKindOf("UnpersistedMissingClass") then
 						if printit then
-							print(Strings[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"--]]]:format(label_id, RetName(obj), obj:GetEntity(), obj.handle))
+							print(Strings[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"]]]:format(label_id, RetName(obj), obj:GetEntity(), obj.handle))
 						end
 						obj:delete()
 						table_remove(label, i)
@@ -865,11 +932,11 @@ function OnMsg.ChangeMapDone(map)
 
 		ChoGGi.ComFuncs.MsgWait(
 			Strings[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]]
-				.. "\n\n" .. Strings[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."--]]]:format(Strings[302535920001308--[[Settings--]]], Strings[302535920001112--[[Console Log--]]]),
-			Translate(10126--[[Installed Mods--]]) .. ": " .. Strings[302535920000000--[[Expanded Cheat Menu--]]],
+If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]]]
+				.. "\n\n" .. Strings[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."]]]:format(Strings[302535920001308--[[Settings]]], Strings[302535920001112--[[Console Log]]]),
+			Translate(10126--[[Installed Mods]]) .. ": " .. Strings[302535920000000--[[Expanded Cheat Menu]]],
 			ChoGGi.mod_path .. "Preview.png",
-			Strings[302535920001465--[[Stop talking and start cheating!--]]]
+			Strings[302535920001465--[[Stop talking and start cheating!]]]
 		)
 	end
 end
@@ -989,8 +1056,8 @@ function OnMsg.MysteryBegin()
 	if ChoGGi.UserSettings.ShowMysteryMsgs then
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
-				.. Strings[302535920000729--[[You've started a mystery!--]]],
-			Translate(3486--[[Mystery--]])
+				.. Strings[302535920000729--[[You've started a mystery!]]],
+			Translate(3486--[[Mystery]])
 		)
 	end
 end
@@ -998,8 +1065,8 @@ function OnMsg.MysteryChosen()
 	if ChoGGi.UserSettings.ShowMysteryMsgs then
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
-				.. Strings[302535920000730--[[You've chosen a mystery!--]]],
-			Translate(3486--[[Mystery--]])
+				.. Strings[302535920000730--[[You've chosen a mystery!]]],
+			Translate(3486--[[Mystery]])
 		)
 	end
 end
@@ -1008,7 +1075,7 @@ function OnMsg.MysteryEnd(outcome)
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
 				.. tostring(outcome),
-			Translate(3486--[[Mystery--]])
+			Translate(3486--[[Mystery]])
 		)
 	end
 end
@@ -1087,7 +1154,7 @@ function OnMsg.ChoGGi_DaddysLittleHitler()
 	local MilestoneCompleted = MilestoneCompleted
 	PlaceObj("Milestone", {
 		base_score = 0,
-		display_name = Strings[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene--]]],
+		display_name = Strings[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene]]],
 		group = "Default",
 		id = "DaddysLittleHitler"
 	})
@@ -1100,7 +1167,7 @@ function OnMsg.ChoGGi_Childkiller()
 	local MilestoneCompleted = MilestoneCompleted
 	PlaceObj("Milestone", {
 		base_score = 0,
-		display_name = Strings[302535920000732--[[Childkiller (You evil, evil person.)--]]],
+		display_name = Strings[302535920000732--[[Childkiller (You evil, evil person.)]]],
 		group = "Default",
 		id = "Childkiller"
 	})
@@ -1299,7 +1366,7 @@ do -- LoadGame/CityStart
 		if UICity.ChoGGi.DaddysLittleHitler then
 			PlaceObj("Milestone", {
 				base_score = 0,
-				display_name = Strings[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene--]]],
+				display_name = Strings[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene]]],
 				group = "Default",
 				id = "DaddysLittleHitler"
 			})
@@ -1310,7 +1377,7 @@ do -- LoadGame/CityStart
 		if UICity.ChoGGi.Childkiller then
 			PlaceObj("Milestone", {
 				base_score = 0,
-				display_name = Strings[302535920000732--[[Childkiller (You evil, evil person.)--]]],
+				display_name = Strings[302535920000732--[[Childkiller (You evil, evil person.)]]],
 				group = "Default",
 				id = "Childkiller"
 			})
@@ -1434,7 +1501,7 @@ do -- LoadGame/CityStart
 
 		-- everyone loves a new titlebar, unless they don't
 		if UserSettings.ChangeWindowTitle then
-			terminal.SetOSWindowTitle(Translate(1079--[[Surviving Mars--]]) .. ": " .. Strings[302535920000887--[[ECM--]]] .. " " .. ChoGGi._VERSION)
+			terminal.SetOSWindowTitle(Translate(1079--[[Surviving Mars]]) .. ": " .. Strings[302535920000887--[[ECM]]] .. " " .. ChoGGi._VERSION)
 		end
 
 		-- first time run info
@@ -1445,11 +1512,11 @@ do -- LoadGame/CityStart
 
 			ChoGGi.ComFuncs.MsgWait(
 				Strings[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."--]]]
-					.. "\n\n" .. Strings[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."--]]]:format(Strings[302535920001308--[[Settings--]]], Strings[302535920001112--[[Console Log--]]]),
-			Translate(10126--[[Installed Mods--]]) .. ": " .. Strings[302535920000000--[[Expanded Cheat Menu--]]],
+If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]]]
+					.. "\n\n" .. Strings[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."]]]:format(Strings[302535920001308--[[Settings]]], Strings[302535920001112--[[Console Log]]]),
+			Translate(10126--[[Installed Mods]]) .. ": " .. Strings[302535920000000--[[Expanded Cheat Menu]]],
 				ChoGGi.mod_path .. "Preview.png",
-				Strings[302535920001465--[[Stop talking and start cheating!--]]]
+				Strings[302535920001465--[[Stop talking and start cheating!]]]
 			)
 		end
 
@@ -1477,12 +1544,12 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 		-- how long startup takes
 		if testing or UserSettings.ShowStartupTicks then
-			print("<color 200 200 200>", Strings[302535920000887--[[ECM--]]], "</color>:", Strings[302535920000247--[[Startup ticks--]]], ":", GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
+			print("<color 200 200 200>", Strings[302535920000887--[[ECM]]], "</color>:", Strings[302535920000247--[[Startup ticks]]], ":", GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
 		end
 
 		if not testing and UserSettings.ConsoleToggleHistory then
 			-- getting tired of people asking how to disable console log (really tired, guess even this is too much...)
-			print("<color 200 200 200>", Strings[302535920000887--[[ECM--]]], "</color>:", Strings[302535920001309--[["Stop showing console log: Press Tilde or Enter and click the ""<color green>%s</color>"" button then make sure ""<color green>%s</color>"" is unchecked."--]]]:format(Strings[302535920001308--[[Settings--]]], Strings[302535920001112--[[Console Log--]]]))
+			print("<color 200 200 200>", Strings[302535920000887--[[ECM]]], "</color>:", Strings[302535920001309--[["Stop showing console log: Press Tilde or Enter and click the ""<color green>%s</color>"" button then make sure ""<color green>%s</color>"" is unchecked."]]]:format(Strings[302535920001308--[[Settings]]], Strings[302535920001112--[[Console Log]]]))
 		end
 
 		-- used to check when game has started and it's safe to print() etc

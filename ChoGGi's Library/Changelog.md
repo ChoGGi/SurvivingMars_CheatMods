@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v6.9 (Unreleased)
+- Fixed bug in Settings.lua (thanks JajajTec).
 
 ## v6.8 (June 01 2019)
 - Export Map Data NESW strings were missing.

@@ -6,7 +6,7 @@ local c = #Actions
 local Translate = ChoGGi.ComFuncs.Translate
 
 c = c + 1
-Actions[c] = {ActionName = Translate(174--[[Color Modifier--]]),
+Actions[c] = {ActionName = Translate(174--[[Color Modifier]]),
 	ActionId = "ChangeObjectColour.Color Modifier",
 	OnAction = ChoGGi.ComFuncs.CreateObjectListAndAttaches,
 	ActionShortcut = "F6",
@@ -15,7 +15,7 @@ Actions[c] = {ActionName = Translate(174--[[Color Modifier--]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(298035641454--[[Object--]]) .. " " .. Strings[302535920001346--[[Random Colour--]]],
+Actions[c] = {ActionName = Translate(298035641454--[[Object]]) .. " " .. Strings[302535920001346--[[Random Colour]]],
 	ActionId = "ChangeObjectColour.ObjectColourRandom",
 	OnAction = ChoGGi.ComFuncs.ObjectColourRandom,
 	ActionShortcut = "Shift-F6",
@@ -23,7 +23,7 @@ Actions[c] = {ActionName = Translate(298035641454--[[Object--]]) .. " " .. Strin
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(298035641454--[[Object--]]) .. " " .. Strings[302535920000025--[[Default Colour--]]],
+Actions[c] = {ActionName = Translate(298035641454--[[Object]]) .. " " .. Strings[302535920000025--[[Default Colour]]],
 	ActionId = "ChangeObjectColour.ObjectColourDefault",
 	OnAction = ChoGGi.ComFuncs.ObjectColourDefault,
 	ActionShortcut = "Ctrl-F6",

@@ -33,7 +33,7 @@ function ChoGGi_DlgMultiLineText:Init(parent, context)
 	-- overwrite dumped file
 	self.overwrite = context.overwrite
 
-	self.title = context.title or Strings[302535920001301--[[Edit Text--]]]
+	self.title = context.title or Strings[302535920001301--[[Edit Text]]]
 
 	self.dialog_width = context.width or self.dialog_width
 	self.dialog_height = context.height or self.dialog_height
@@ -52,19 +52,19 @@ function ChoGGi_DlgMultiLineText:Init(parent, context)
 		--
 		self.idSearchText = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idSearchText",
-			RolloverText = Strings[302535920001529--[["Press <color 0 200 0>Enter</color> to select next found text, and <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text."--]]],
-			Hint = Strings[302535920000044--[[Go To Text--]]],
+			RolloverText = Strings[302535920001529--[["Press <color 0 200 0>Enter</color> to select next found text, and <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text."]]],
+			Hint = Strings[302535920000044--[[Go To Text]]],
 			OnKbdKeyDown = self.idSearchText_OnKbdKeyDown,
 		}, self.idSearchArea)
 		--
 		self.idSearch = g_Classes.ChoGGi_XButton:new({
 			Id = "idSearch",
-			Text = Translate(10123--[[Search--]]),
+			Text = Translate(10123--[[Search]]),
 			Dock = "right",
 			RolloverAnchor = "right",
-			RolloverHint = Strings[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"--]]],
+			RolloverHint = Strings[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"]]],
 			RolloverText = Strings[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
-Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top."--]]],
+Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top."]]],
 			OnMouseButtonDown = self.idSearch_OnMouseButtonDown,
 		}, self.idSearchArea)
 	end
@@ -77,9 +77,9 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idOkay = g_Classes.ChoGGi_XButton:new({
 		Id = "idOkay",
 		Dock = "left",
-		Text = Translate(6878--[[OK--]]),
+		Text = Translate(6878--[[OK]]),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
-		RolloverText = context.hint_ok or Translate(6878--[[OK--]]),
+		RolloverText = context.hint_ok or Translate(6878--[[OK]]),
 		OnPress = self.idOkay_OnPress,
 	}, self.idButtonContainer)
 
@@ -88,8 +88,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Id = "idOverwrite",
 			Dock = "left",
 			Margins = box(4, 0, 0, 0),
-			Text = Strings[302535920000721--[[Overwrite--]]],
-			RolloverText = Strings[302535920000827--[[Check this to overwrite file instead of appending to it.--]]],
+			Text = Strings[302535920000721--[[Overwrite]]],
+			RolloverText = Strings[302535920000827--[[Check this to overwrite file instead of appending to it.]]],
 			OnChange = self.idOverwrite_OnChange,
 		}, self.idButtonContainer)
 	end
@@ -97,8 +97,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idWrapLines = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idWrapLines",
 		Dock = "left",
-		Text = Strings[302535920001288--[[Wrap Lines--]]],
-		RolloverText = Strings[302535920001289--[[Wrap lines or show horizontal scrollbar.--]]],
+		Text = Strings[302535920001288--[[Wrap Lines]]],
+		RolloverText = Strings[302535920001289--[[Wrap lines or show horizontal scrollbar.]]],
 		Margins = box(10, 0, 0, 0),
 		OnChange = self.idWrapLines_OnChange,
 	}, self.idButtonContainer)
@@ -107,8 +107,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idToggleCode = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idToggleCode",
 		Dock = "left",
-		Text = Strings[302535920001474--[[Code Highlight--]]],
-		RolloverText = Strings[302535920001475--[[Toggle lua code highlighting.--]]],
+		Text = Strings[302535920001474--[[Code Highlight]]],
+		RolloverText = Strings[302535920001475--[[Toggle lua code highlighting.]]],
 		Margins = box(10, 0, 0, 0),
 		OnChange = self.idToggleCode_OnChange,
 	}, self.idButtonContainer)
@@ -116,9 +116,9 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idCancel = g_Classes.ChoGGi_XButton:new({
 		Id = "idCancel",
 		Dock = "right",
-		Text = Translate(6879--[[Cancel--]]),
+		Text = Translate(6879--[[Cancel]]),
 		Background = g_Classes.ChoGGi_XButton.bg_red,
-		RolloverText = context.hint_cancel or Strings[302535920001423--[[Close without doing anything.--]]],
+		RolloverText = context.hint_cancel or Strings[302535920001423--[[Close without doing anything.]]],
 		OnPress = self.idCancel_OnPress,
 	}, self.idButtonContainer)
 

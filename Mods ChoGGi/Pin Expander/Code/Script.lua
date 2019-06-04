@@ -5,14 +5,14 @@ local RetName = ChoGGi.ComFuncs.RetName
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 
-local str_dome = Translate(1234--[[Dome--]])
-local str_drones = Translate(71--[[Commanding Drones--]])
-local str_state = Translate(3722--[[State--]])
-local str_Overpopulated = Translate(10460--[[<em>Overpopulated Dome</em>--]])
-local str_NotWorking = Translate(7326--[[Not Working--]])
-local str_Power = Translate(79--[[Power--]])
-local str_Water = Translate(681--[[Water--]])
-local str_Oxygen = Translate(682--[[Oxygen--]])
+local str_dome = Translate(1234--[[Dome]])
+local str_drones = Translate(71--[[Commanding Drones]])
+local str_state = Translate(3722--[[State]])
+local str_Overpopulated = Translate(10460--[[<em>Overpopulated Dome</em>]])
+local str_NotWorking = Translate(7326--[[Not Working]])
+local str_Power = Translate(79--[[Power]])
+local str_Water = Translate(681--[[Water]])
+local str_Oxygen = Translate(682--[[Oxygen]])
 
 local T = T
 local IsT = IsT
@@ -345,7 +345,7 @@ function PinsDlg:InitPinButton(button, ...)
 					state_text = str_NotWorking
 					image = image or "UI/Icons/pin_not_working.tga"
 				elseif obj.fractures and #obj.fractures > 0 then
-					state_text = Translate(5626--[[Fractures: <count>--]]):gsub("<count>", #obj.fractures)
+					state_text = Translate(5626--[[Fractures: <count>]]):gsub("<count>", #obj.fractures)
 					image = image or "UI/Icons/pin_attack.tga"
 				elseif obj.electricity and obj:IsKindOf("ElectricityConsumer") and obj.electricity.consumption > obj.electricity.current_consumption then
 					state_text = str_Power
@@ -410,13 +410,13 @@ function PinsDlg:InitPinButton(button, ...)
 		end)
 
 		-- personal touch
-		local count = Translate(298035641454--[[Object--]]) .. " #: " .. #items
+		local count = Translate(298035641454--[[Object]]) .. " #: " .. #items
 		if #items > 1 then
 			table.insert(items, 1, {
 				name = count,
 				image = "UI/Icons/res_theoretical_research.tga",
 				hint = count,
-				hint_title = Translate(126095410863--[[Info--]]),
+				hint_title = Translate(126095410863--[[Info]]),
 			})
 		end
 

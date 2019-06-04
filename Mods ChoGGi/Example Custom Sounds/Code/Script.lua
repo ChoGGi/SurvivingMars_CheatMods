@@ -16,7 +16,7 @@ local function TestSound(snd)
 	snd_playing = PlaySound(snd)
 end
 TestSound("Object MOXIE Loop")
---]]
+]]
 
 function OnMsg.ClassesBuilt()
 	-- if you have ecm use OpenExamine(SoundPreset), to see the object properties

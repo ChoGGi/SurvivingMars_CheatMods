@@ -334,9 +334,9 @@ local function AddUIStuff(content)
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			Translate(5761--[[Are you sure you want to cancel the Rocket's launch order?--]]),
+			Translate(5761--[[Are you sure you want to cancel the Rocket's launch order?]]),
 			CallBackFunc,
-			Translate(3687--[[Cancel--]]) .. " " .. Translate(1116--[[Passenger Rocket--]])
+			Translate(3687--[[Cancel]]) .. " " .. Translate(1116--[[Passenger Rocket]])
 		)
 	end
 

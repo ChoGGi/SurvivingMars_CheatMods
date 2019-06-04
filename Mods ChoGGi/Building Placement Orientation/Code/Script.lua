@@ -6,7 +6,7 @@ local c = #Actions
 
 -- goes to placement mode with SelectedObj or last built object
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001350--[[Place Last Selected/Constructed Building--]]],
+Actions[c] = {ActionName = Strings[302535920001350--[[Place Last Selected/Constructed Building]]],
 	ActionId = "BuildingPlacementOrientation.LastSelectedObject",
 	OnAction = ChoGGi.ComFuncs.PlaceLastSelectedConstructedBld,
 	ActionShortcut = "Ctrl-Space",

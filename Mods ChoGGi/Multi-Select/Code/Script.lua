@@ -167,7 +167,7 @@ function OnMsg.ClassesBuilt()
 			end
 
 			SelectionRemove(Selection)
-			local units = MapGet(orig_pos, radius, "attached", false, "DroneBase"--[[, "Colonist"--]])
+			local units = MapGet(orig_pos, radius, "attached", false, "DroneBase"--[[, "Colonist"]])
 			if #units < 1000 then
 				SelectionAdd(units)
 			end

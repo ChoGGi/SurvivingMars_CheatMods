@@ -14,9 +14,9 @@ local RetName = ChoGGi.ComFuncs.RetName
 local Random = ChoGGi.ComFuncs.Random
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
-local text_disabled = "Main Garage: " .. ChoGGi.ComFuncs.Translate(847439380056--[[Disabled--]])
-local text_idle = "Main Garage: " .. ChoGGi.ComFuncs.Translate(6939--[[Idle--]])
-local text_rovers = ChoGGi.ComFuncs.Translate(5438--[[Rovers--]]) .. ": "
+local text_disabled = "Main Garage: " .. ChoGGi.ComFuncs.Translate(847439380056--[[Disabled]])
+local text_idle = "Main Garage: " .. ChoGGi.ComFuncs.Translate(6939--[[Idle]])
+local text_rovers = ChoGGi.ComFuncs.Translate(5438--[[Rovers]]) .. ": "
 
 -- stores rovers
 GlobalVar("g_ChoGGi_RCGarageRovers", {})

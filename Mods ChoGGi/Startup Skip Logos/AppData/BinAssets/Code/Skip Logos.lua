@@ -55,6 +55,6 @@ function OnMsg.DesktopCreated()
 			Dialogs.PGMainMenu.idContent.idParadoxNews:delete()
 		end
 	end)
-	--]]
+	]]
 
 end

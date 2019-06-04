@@ -140,13 +140,11 @@ local function OnMsgXTemplates()
 				"__template", "sectionCheats",
 			}),
 
--------------
+------------------- Salvage
 			PlaceObj('XTemplateTemplate', {
 				'comment', "salvage",
 				'__context_of_kind', "Demolishable",
-				'__condition', function (_, context)
-          return context:ShouldShowDemolishButton()
-        end,
+				'__condition', function (parent, context) return context:ShouldShowDemolishButton() end,
 				'__template', "InfopanelButton",
 				'RolloverTitle', T(3973, --[[XTemplate ipBuilding RolloverTitle]] "Salvage"),
 				'RolloverHintGamepad', T(7657, --[[XTemplate ipBuilding RolloverHintGamepad]] "<ButtonY> Activate"),
@@ -154,6 +152,10 @@ local function OnMsgXTemplates()
 				'OnContextUpdate', function (self, context, ...)
 					local refund = context:GetRefundResources() or empty_table
 					local rollover = T(7822, "Destroy this building.")
+					if IsKindOf(context, "LandscapeConstructionSiteBase") then
+						self:SetRolloverTitle(T(12171, "Cancel Landscaping"))
+						rollover = T(12172, "Cancel this landscaping project. The terrain will remain in its current state")
+					end
 					if #refund > 0 then
 						rollover = rollover .. "<newline><newline>" .. T(7823, "<UIRefundRes> will be refunded upon salvage.")
 					end
@@ -163,29 +165,30 @@ local function OnMsgXTemplates()
 				'OnPressParam', "ToggleDemolish",
 				'Icon', "UI/Icons/IPButtons/salvage_1.tga",
 			}, {
-			PlaceObj('XTemplateFunc', {
-				'name', "OnXButtonDown(self, button)",
-				'func', function (self, button)
-					if button == "ButtonY" then
-						return self:OnButtonDown(false)
-					elseif button == "ButtonX" then
-						return self:OnButtonDown(true)
-					end
-					return (button == "ButtonA") and "break"
-				end,
-			}),
-			PlaceObj('XTemplateFunc', {
-				'name', "OnXButtonUp(self, button)",
-				'func', function (self, button)
-					if button == "ButtonY" then
-						return self:OnButtonUp(false)
-					elseif button == "ButtonX" then
-						return self:OnButtonUp(true)
-					end
-					return (button == "ButtonA") and "break"
-				end,
-			}),
-		}),
+				PlaceObj('XTemplateFunc', {
+					'name', "OnXButtonDown(self, button)",
+					'func', function (self, button)
+						if button == "ButtonY" then
+							return self:OnButtonDown(false)
+						elseif button == "ButtonX" then
+							return self:OnButtonDown(true)
+						end
+						return (button == "ButtonA") and "break"
+					end,
+				}),
+				PlaceObj('XTemplateFunc', {
+					'name', "OnXButtonUp(self, button)",
+					'func', function (self, button)
+						if button == "ButtonY" then
+							return self:OnButtonUp(false)
+						elseif button == "ButtonX" then
+							return self:OnButtonUp(true)
+						end
+						return (button == "ButtonA") and "break"
+					end,
+				}),
+				}),
+------------------- Salvage
 	}),
 -------------
 	})

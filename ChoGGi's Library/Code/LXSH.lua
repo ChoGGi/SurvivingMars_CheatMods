@@ -11,7 +11,7 @@
 --~ 	--
 --~ 	--[[
 --~ 	print("bbbbb")
---~ 	--]]
+--~ 	]]
 --~ 	print("ccccc")
 --~ else
 --~ 	print("dddddd")

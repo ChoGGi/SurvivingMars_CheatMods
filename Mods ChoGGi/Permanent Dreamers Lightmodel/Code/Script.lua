@@ -10,7 +10,7 @@ Dreamers_Evening
 Dreamers_Night
 Dreamers_Night Green
 Dreamers_Noon
---]]
+]]
 
 local SetLightmodelOverride = SetLightmodelOverride
 local DelayedCall = DelayedCall

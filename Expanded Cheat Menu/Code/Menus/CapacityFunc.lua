@@ -25,7 +25,7 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
-		Strings[302535920000565--[[Storage Mechanized Depots Temp--]]]
+		Strings[302535920000565--[[Storage Mechanized Depots Temp]]]
 	)
 end
 
@@ -35,17 +35,17 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 
 	if not capacity then
 		MsgPopup(
-			Strings[302535920000954--[[You need to select a building that has workers.--]]],
-			Strings[302535920000567--[[Worker Capacity--]]]
+			Strings[302535920000954--[[You need to select a building that has workers.]]],
+			Strings[302535920000567--[[Worker Capacity]]]
 		)
 		return
 	end
 
 	local default_setting = capacity
-	local hint_toolarge = Translate(6779--[[Warning--]]) .. " " .. Strings[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
+	local hint_toolarge = Translate(6779--[[Warning]]) .. " " .. Strings[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).]]]
 
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -97,8 +97,8 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(obj), choice[1].text),
-				Strings[302535920000567--[[Worker Capacity--]]]
+				Strings[302535920000957--[[%s capacity is now %s.]]]:format(RetName(obj), choice[1].text),
+				Strings[302535920000567--[[Worker Capacity]]]
 			)
 		end
 	end
@@ -106,8 +106,8 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. Strings[302535920000567--[[Worker Capacity--]]],
-		hint = Strings[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
+		title = Strings[302535920000129--[[Set]]] .. " " .. RetName(obj) .. " " .. Strings[302535920000567--[[Worker Capacity]]],
+		hint = Strings[302535920000914--[[Current capacity]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 		skip_sort = true,
 	}
 end
@@ -118,13 +118,13 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 
 	if not cap_type then
 		MsgPopup(
-			Strings[302535920000958--[[You need to select a building that has capacity (colonists/air/water/elec).--]]],
-			Strings[302535920000569--[[Building Capacity--]]]
+			Strings[302535920000958--[[You need to select a building that has capacity (colonists/air/water/elec).]]],
+			Strings[302535920000569--[[Building Capacity]]]
 		)
 		return
 	end
 	local r = const.ResourceScale
-	local hint_toolarge = Translate(6779--[[Warning--]]) .. " " .. Strings[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).--]]]
+	local hint_toolarge = Translate(6779--[[Warning]]) .. " " .. Strings[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).]]]
 
 	local default_setting = capacity
 
@@ -134,7 +134,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	end
 
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -245,8 +245,8 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000957--[[%s capacity is now %s.--]]]:format(RetName(obj), choice[1].text),
-				Strings[302535920000569--[[Building Capacity--]]]
+				Strings[302535920000957--[[%s capacity is now %s.]]]:format(RetName(obj), choice[1].text),
+				Strings[302535920000569--[[Building Capacity]]]
 			)
 		end
 
@@ -255,8 +255,8 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. Translate(109035890389--[[Capacity--]]),
-		hint = Strings[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
+		title = Strings[302535920000129--[[Set]]] .. " " .. RetName(obj) .. " " .. Translate(109035890389--[[Capacity]]),
+		hint = Strings[302535920000914--[[Current capacity]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 		skip_sort = true,
 	}
 end
@@ -267,14 +267,14 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 
 	if not capacity then
 		MsgPopup(
-			Strings[302535920000959--[[You need to select something that has space for visitors (services/trainingbuildings).--]]],
-			Strings[302535920000571--[[Building Visitor Capacity--]]]
+			Strings[302535920000959--[[You need to select something that has space for visitors (services/trainingbuildings).]]],
+			Strings[302535920000571--[[Building Visitor Capacity]]]
 		)
 		return
 	end
 	local default_setting = capacity
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -319,8 +319,8 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920000960--[[%s visitor capacity is now %s.--]]]:format(RetName(obj), choice[1].text),
-				Strings[302535920000571--[[Building Visitor Capacity--]]]
+				Strings[302535920000960--[[%s visitor capacity is now %s.]]]:format(RetName(obj), choice[1].text),
+				Strings[302535920000571--[[Building Visitor Capacity]]]
 			)
 		end
 	end
@@ -328,8 +328,8 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000129--[[Set--]]] .. " " .. RetName(obj) .. " " .. Strings[302535920000961--[[Visitor Capacity--]]],
-		hint = Strings[302535920000914--[[Current capacity--]]] .. ": " .. hint,
+		title = Strings[302535920000129--[[Set]]] .. " " .. RetName(obj) .. " " .. Strings[302535920000961--[[Visitor Capacity]]],
+		hint = Strings[302535920000914--[[Current capacity]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -343,9 +343,9 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 Universal: 2, 500
 Other: 20, 000
 Waste: 1, 000, 000
-Mechanized: 1, 000, 000--]]]
+Mechanized: 1, 000, 000]]]
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 50, value = 50},
 		{text = 100, value = 100},
 		{text = 250, value = 250},
@@ -439,7 +439,7 @@ Mechanized: 1, 000, 000--]]]
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				choice[1].text .. ": " .. bld_type,
-				Strings[302535920000573--[[Storage Universal Depot--]]]
+				Strings[302535920000573--[[Storage Universal Depot]]]
 			)
 		end
 	end
@@ -447,8 +447,8 @@ Mechanized: 1, 000, 000--]]]
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000129--[[Set--]]] .. ": " .. bld_type .. " " .. Strings[302535920000963--[[Size--]]],
-		hint = Strings[302535920000914--[[Current capacity--]]] .. ": " .. hint .. "\n\n" .. hint_max,
+		title = Strings[302535920000129--[[Set]]] .. ": " .. bld_type .. " " .. Strings[302535920000963--[[Size]]],
+		hint = Strings[302535920000914--[[Current capacity]]] .. ": " .. hint .. "\n\n" .. hint_max,
 		skip_sort = true,
 	}
 end

@@ -24,7 +24,7 @@ CloningVats
 'palette_color1', "inside_base",
 'palette_color2', "inside_accent_medical",
 'palette_color3', "inside_metal",
---]]
+]]
 --[[
 telescope
 1 9980454
@@ -125,7 +125,7 @@ fusion
 
 subheat
 2 5510160
---]]
+]]
 
 -- this is just a copy n paste of one of the in-game schemes
 -- convert the numbers with ColorizationMaterialDecode(2209066747), this will return three numbers:

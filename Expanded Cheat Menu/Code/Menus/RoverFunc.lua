@@ -10,7 +10,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 	local default_setting = 0
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 1, value = 1},
 		{text = 2, value = 2},
 		{text = 3, value = 3},
@@ -48,7 +48,7 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				Strings[302535920000541--[[RC Set Charging Distance--]]]
+				Strings[302535920000541--[[RC Set Charging Distance]]]
 			)
 		end
 	end
@@ -56,8 +56,8 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000880--[[Set Rover Charge Radius--]]],
-		hint = Strings[302535920000106--[[Current--]]] .. ": " .. hint,
+		title = Strings[302535920000880--[[Set Rover Charge Radius]]],
+		hint = Strings[302535920000106--[[Current]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -67,7 +67,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 	local default_setting = ChoGGi.Consts.SpeedRC
 	local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedRC")
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. (default_setting / r), value = default_setting, hint = Strings[302535920000889--[[base speed--]]]},
+		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting, hint = Strings[302535920000889--[[base speed]]]},
 		{text = 5, value = 5 * r},
 		{text = 10, value = 10 * r},
 		{text = 15, value = 15 * r},
@@ -78,7 +78,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 		{text = 10000, value = 10000 * r},
 	}
 	if default_setting ~= UpgradedSetting then
-		table.insert(item_list, 2, {text = Strings[302535920000890--[[Upgraded--]]] .. ": " .. (UpgradedSetting / r), value = UpgradedSetting, hint = Strings[302535920000891--[[apply tech unlocks--]]]})
+		table.insert(item_list, 2, {text = Strings[302535920000890--[[Upgraded]]] .. ": " .. (UpgradedSetting / r), value = UpgradedSetting, hint = Strings[302535920000891--[[apply tech unlocks]]]})
 	end
 
 	local hint = UpgradedSetting
@@ -103,7 +103,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				Strings[302535920000543--[[RC Move Speed--]]]
+				Strings[302535920000543--[[RC Move Speed]]]
 			)
 		end
 	end
@@ -111,8 +111,8 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000543--[[RC Move Speed--]]],
-		hint = Strings[302535920000106--[[Current--]]] .. ": " .. hint,
+		title = Strings[302535920000543--[[RC Move Speed]]],
+		hint = Strings[302535920000106--[[Current]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -121,7 +121,7 @@ function ChoGGi.MenuFuncs.SetGravityRC()
 	local default_setting = ChoGGi.Consts.GravityRC
 	local r = const.ResourceScale
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 1, value = 1},
 		{text = 2, value = 2},
 		{text = 3, value = 3},
@@ -160,7 +160,7 @@ function ChoGGi.MenuFuncs.SetGravityRC()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				Strings[302535920000545--[[RC Gravity--]]]
+				Strings[302535920000545--[[RC Gravity]]]
 			)
 		end
 	end
@@ -168,8 +168,8 @@ function ChoGGi.MenuFuncs.SetGravityRC()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000920--[[Set RC Gravity--]]],
-		hint = Strings[302535920000841--[[Current gravity: %s--]]]:format(hint),
+		title = Strings[302535920000920--[[Set RC Gravity]]],
+		hint = Strings[302535920000841--[[Current gravity: %s]]]:format(hint),
 		skip_sort = true,
 	}
 end
@@ -183,7 +183,7 @@ function ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverTransferResourceWorkTime),
-		Strings[302535920000549--[[RC Instant Resource Transfer--]]]
+		Strings[302535920000549--[[RC Instant Resource Transfer]]]
 	)
 end
 
@@ -191,14 +191,14 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportStorageCapacity") / r
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 50, value = 50},
 		{text = 75, value = 75},
 		{text = 100, value = 100},
 		{text = 250, value = 250},
 		{text = 500, value = 500},
 		{text = 1000, value = 1000},
-		{text = 2000, value = 2000, hint = Strings[302535920000925--[[somewhere above 2000 will delete the save (when it's full)--]]]},
+		{text = 2000, value = 2000, hint = Strings[302535920000925--[[somewhere above 2000 will delete the save (when it's full)]]]},
 	}
 
 	local hint = default_setting
@@ -246,7 +246,7 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				Strings[302535920000551--[[RC Storage Capacity--]]]
+				Strings[302535920000551--[[RC Storage Capacity]]]
 			)
 		end
 	end
@@ -254,8 +254,8 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000927--[[Set RC Transport Capacity--]]],
-		hint = Strings[302535920000914--[[Current capacity--]]] .. ": " .. hint,
+		title = Strings[302535920000927--[[Set RC Transport Capacity]]],
+		hint = Strings[302535920000914--[[Current capacity]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -263,12 +263,12 @@ end
 function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 	local default_setting = ChoGGi.Consts.RCRoverMaxRadius
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 40, value = 40},
 		{text = 80, value = 80},
 		{text = 160, value = 160},
-		{text = 320, value = 320, hint = Strings[302535920000111--[[Cover the entire map from the centre.--]]]},
-		{text = 640, value = 640, hint = Strings[302535920000112--[[Cover the entire map from a corner.--]]]},
+		{text = 320, value = 320, hint = Strings[302535920000111--[[Cover the entire map from the centre.]]]},
+		{text = 640, value = 640, hint = Strings[302535920000112--[[Cover the entire map from a corner.]]]},
 	}
 
 	--other hint type
@@ -296,7 +296,7 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverMaxRadius),
-				Strings[302535920000505--[[Work Radius RC Rover--]]]
+				Strings[302535920000505--[[Work Radius RC Rover]]]
 			)
 		end
 	end
@@ -304,9 +304,9 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000884--[[Set Rover Work Radius--]]],
-		hint = Strings[302535920000106--[[Current--]]] .. ": " .. hint .. "\n\n"
-			.. Strings[302535920000115--[[Toggle selection to update visible hex grid.--]]],
+		title = Strings[302535920000884--[[Set Rover Work Radius]]],
+		hint = Strings[302535920000106--[[Current]]] .. ": " .. hint .. "\n\n"
+			.. Strings[302535920000115--[[Toggle selection to update visible hex grid.]]],
 		skip_sort = true,
 	}
 end

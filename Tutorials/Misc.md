@@ -124,6 +124,23 @@ function OnMsg.ClassesBuilt()
 	end
 end
 
+--~ Remove a parent/ancestor from an object class
+local function RemoveTableItem(list, name, value)
+	local idx = table.find(list, name, value)
+	if idx then
+		if not type(list[idx]) == "function" then
+			list[idx]:delete()
+		end
+		table.remove(list, idx)
+	end
+end
+function OnMsg.ClassesPreprocess()
+	RemoveTableItem(CLASSOBJ.__parents, "LifeSupportGridObject")
+end
+
+--~ Stop showing the no drone commander sign
+CLASSOBJ.ShouldShowNoCCSign = empty_func
+
 --~ Info from other people:
 
 --~ Crysm: 7200 units per revolution. So units = (degrees * 20)

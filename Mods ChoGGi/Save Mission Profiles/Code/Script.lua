@@ -124,7 +124,7 @@ local function DeleteProfile(name, settings_list)
 	ChoGGi.ComFuncs.QuestionBox(
 		"Delete profile: " .. name,
 		CallBackFunc,
-		Translate(6779--[[Warning--]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!--]]]
+		Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]]
 	)
 end
 
@@ -134,7 +134,7 @@ local function ProfileButtonPressed(pgmission, toolbar)
 	-- always show save
 	local menu = {
 		{
-			name = Translate(161964752558--[[Save--]]) .. " Profile",
+			name = Translate(161964752558--[[Save]]) .. " Profile",
 			hint = "Save current profile.",
 			clicked = function()
 				CreateRealTimeThread(SaveProfile, pgmission.context.params)
@@ -145,13 +145,13 @@ local function ProfileButtonPressed(pgmission, toolbar)
 	if next(settings_list) then
 
 		menu[#menu+1] = {
-			name = Translate(885629433849--[[Load--]]) .. " Profile >",
+			name = Translate(885629433849--[[Load]]) .. " Profile >",
 			hint = "Load saved profile.",
 			submenu = {},
 		}
 		local loadm = menu[#menu]
 		menu[#menu+1] = {
-			name = Translate(502364928914--[[Delete--]]) .. " Profile >",
+			name = Translate(502364928914--[[Delete]]) .. " Profile >",
 			hint = "Delete saved profile.",
 			submenu = {},
 		}
@@ -199,7 +199,7 @@ local function AddProfilesButton(pgmission, toolbar)
 		TextStyle = "Action",
 		MouseCursor = "UI/Cursors/Rollover.tga",
 		RolloverTemplate = "Rollover",
-		RolloverTitle = Translate(126095410863--[[Info--]]),
+		RolloverTitle = Translate(126095410863--[[Info]]),
 		RolloverText = [[Save/Load save profiles.]],
 		OnPress = function()
 			ProfileButtonPressed(pgmission, toolbar)

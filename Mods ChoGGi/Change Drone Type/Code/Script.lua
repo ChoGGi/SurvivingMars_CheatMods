@@ -62,10 +62,10 @@ function OnMsg.ClassesBuilt()
 	local Translate = ChoGGi.ComFuncs.Translate
 	local Strings = ChoGGi.Strings
 
-	local type_str = Strings[302535920000266--[[Spawn--]]] .. ": %s"
+	local type_str = Strings[302535920000266--[[Spawn]]] .. ": %s"
 	local name_table = {
-		FlyingDrone = Translate(10278--[[Wasp Drone--]]),
-		Drone = Translate(1681--[[Drone--]]),
+		FlyingDrone = Translate(10278--[[Wasp Drone]]),
+		Drone = Translate(1681--[[Drone]]),
 	}
 
 	local template_table = {

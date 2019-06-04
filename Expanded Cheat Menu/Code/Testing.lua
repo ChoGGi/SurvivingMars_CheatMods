@@ -304,7 +304,7 @@ for i = 1, #files do
 end
 end)
 end)
---]]
+]]
 --~ 	local size = io.getsize("D:/SteamGames/steamapps/common/Surviving Mars/!profile/ExportedSave/persist")
 --~ 	local str = select(2,
 --~ 	AsyncFileToString("D:/SteamGames/steamapps/common/Surviving Mars/!profile/ExportedSave/persist", size, 0, "string", "raw")
@@ -920,7 +920,7 @@ print(2, "stop")
 		StartDebugger()
 	--~	 ProjectSync()
 	end
---]]
+]]
 --~ end -- ClassesBuilt
 ------------------------------------------------------------------------------------------
 

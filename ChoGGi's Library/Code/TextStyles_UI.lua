@@ -17,7 +17,7 @@ ShadowType
 ShadowSize
 ShadowColor
 DisabledShadowColor
---]]
+]]
 
 -- rgb colours from in-game objects
 -- 0 0 0 48

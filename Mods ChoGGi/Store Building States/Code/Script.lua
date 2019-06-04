@@ -30,7 +30,7 @@ g_ChoGGi_BuildingStates = {
 		name = "blah zor dfdsf",
 	},
 }
---]]
+]]
 
 local function ToggleShift(obj,set_value,shift)
 	if type(set_value) == "boolean" then
@@ -195,10 +195,10 @@ local function AddNewState(profile,obj)
 end
 
 local function ShowList_AddTo(obj,profile)
-	local working_str = Translate(11230--[[Working--]])
-	local priority_str = Translate(172--[[Priority--]])
-	local shifts_str = Translate(217--[[Work Shifts--]])
-	local enforce_spec_str = Translate(8746--[[Workforce: Enforce Specialists--]])
+	local working_str = Translate(11230--[[Working]])
+	local priority_str = Translate(172--[[Priority]])
+	local shifts_str = Translate(217--[[Work Shifts]])
+	local enforce_spec_str = Translate(8746--[[Workforce: Enforce Specialists]])
 	local shifts1_str = shifts_str .. ": 1"
 	local shifts2_str = shifts_str .. ": 2"
 	local shifts3_str = shifts_str .. ": 3"
@@ -271,7 +271,7 @@ local function ShowList_AddTo(obj,profile)
 		-- don't even think about it
 		if choices[1].value == "" then
 			ChoGGi.ComFuncs.MsgPopup(
-				Translate(6774--[[Error--]]) .. ": Blank profile name!",
+				Translate(6774--[[Error]]) .. ": Blank profile name!",
 				"Building States"
 			)
 			return
@@ -298,7 +298,7 @@ local function ShowList_AddTo(obj,profile)
 
 			building_state = AddNewState(profile,obj)
 		else
-			local msg = Translate(6774--[[Error--]]) .. ": list choice 1 should be the profile name!"
+			local msg = Translate(6774--[[Error]]) .. ": list choice 1 should be the profile name!"
 			print(msg,obj_name,obj.handle)
 			ChoGGi.ComFuncs.MsgPopup(msg,"Building States")
 			return
@@ -361,18 +361,18 @@ local function ShowList_AddTo(obj,profile)
 		width = 600,
 		checkboxes = {
 			{
-				title = Translate(11230--[[Working--]]),
+				title = Translate(11230--[[Working]]),
 				hint = "Uncheck to exclude this setting from profile.",
 				checked = true,
 			},
 			{
-				title = Translate(172--[[Priority--]]),
+				title = Translate(172--[[Priority]]),
 				hint = "Uncheck to exclude this setting from profile.",
 				checked = is_task_obj,
 				visible = is_task_obj,
 			},
 			{
-				title = Translate(217--[[Work Shifts--]]),
+				title = Translate(217--[[Work Shifts]]),
 				hint = "Uncheck to exclude this setting from profile.",
 				checked = is_shift_obj,
 				visible = is_shift_obj,

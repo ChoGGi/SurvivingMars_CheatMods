@@ -8,7 +8,7 @@ local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000734--[[Clear Log--]]],
+Actions[c] = {ActionName = Strings[302535920000734--[[Clear Log]]],
 	ActionId = ".Keys.ClearConsoleLog",
 	OnAction = cls,
 	ActionShortcut = "F9",
@@ -16,7 +16,7 @@ Actions[c] = {ActionName = Strings[302535920000734--[[Clear Log--]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(174--[[Color Modifier--]]) .. " " .. Strings[302535920001346--[[Random Colour--]]],
+Actions[c] = {ActionName = Translate(174--[[Color Modifier]]) .. " " .. Strings[302535920001346--[[Random Colour]]],
 	ActionId = ".Keys.ObjectColourRandom",
 	OnAction = ChoGGi.ComFuncs.ObjectColourRandom,
 	ActionShortcut = "Shift-F6",
@@ -24,7 +24,7 @@ Actions[c] = {ActionName = Translate(174--[[Color Modifier--]]) .. " " .. String
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(174--[[Color Modifier--]]) .. " " .. Strings[302535920000025--[[Default Colour--]]],
+Actions[c] = {ActionName = Translate(174--[[Color Modifier]]) .. " " .. Strings[302535920000025--[[Default Colour]]],
 	ActionId = ".Keys.ObjectColourDefault",
 	OnAction = ChoGGi.ComFuncs.ObjectColourDefault,
 	ActionShortcut = "Ctrl-F6",
@@ -32,7 +32,7 @@ Actions[c] = {ActionName = Translate(174--[[Color Modifier--]]) .. " " .. String
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001347--[[Show Console--]]],
+Actions[c] = {ActionName = Strings[302535920001347--[[Show Console]]],
 	ActionId = ".Keys.ShowConsole",
 	OnAction = ChoGGi.ComFuncs.ToggleConsole,
 	ActionShortcut = "Enter",
@@ -40,7 +40,7 @@ Actions[c] = {ActionName = Strings[302535920001347--[[Show Console--]]],
 	ActionBindable = true,
 }
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001348--[[Restart--]]],
+Actions[c] = {ActionName = Strings[302535920001348--[[Restart]]],
 	ActionId = ".Keys.ConsoleRestart",
 	OnAction = ChoGGi.MenuFuncs.ConsoleRestart,
 	ActionShortcut = "Ctrl-Alt-R",
@@ -49,7 +49,7 @@ Actions[c] = {ActionName = Strings[302535920001348--[[Restart--]]],
 
 -- goes to placement mode with SelectedObj or last built object
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001350--[[Place Last Selected/Constructed Building--]]],
+Actions[c] = {ActionName = Strings[302535920001350--[[Place Last Selected/Constructed Building]]],
 	ActionId = ".Keys.PlaceLastSelectedConstructedBld",
 	OnAction = ChoGGi.ComFuncs.PlaceLastSelectedConstructedBld,
 	ActionShortcut = "Ctrl-Space",
@@ -57,7 +57,7 @@ Actions[c] = {ActionName = Strings[302535920001350--[[Place Last Selected/Constr
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000069--[[Examine--]]] .. " " .. Strings[302535920001103--[[Objects--]]] .. " " .. Translate(1000448--[[Shift--]]),
+Actions[c] = {ActionName = Strings[302535920000069--[[Examine]]] .. " " .. Strings[302535920001103--[[Objects]]] .. " " .. Translate(1000448--[[Shift]]),
 	ActionId = ".Keys.Examine Objects Shift",
 	OnAction = ChoGGi.MenuFuncs.ExamineObjectRadius,
 	radius_amount = 2500,
@@ -66,7 +66,7 @@ Actions[c] = {ActionName = Strings[302535920000069--[[Examine--]]] .. " " .. Str
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000069--[[Examine--]]] .. " " .. Strings[302535920001103--[[Objects--]]] .. " " .. Translate(1000449--[[Ctrl--]]),
+Actions[c] = {ActionName = Strings[302535920000069--[[Examine]]] .. " " .. Strings[302535920001103--[[Objects]]] .. " " .. Translate(1000449--[[Ctrl]]),
 	ActionId = ".Keys.Examine Objects Ctrl",
 	OnAction = ChoGGi.MenuFuncs.ExamineObjectRadius,
 	radius_amount = 10000,

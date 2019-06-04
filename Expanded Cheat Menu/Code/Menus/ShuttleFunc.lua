@@ -11,7 +11,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.StorageShuttle / r
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
@@ -20,7 +20,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 		{text = 100, value = 100},
 		{text = 250, value = 250},
 		{text = 500, value = 500},
-		{text = 1000, value = 1000, hint = Strings[302535920000928--[[somewhere above 1000 may delete the save (when it's full)--]]]},
+		{text = 1000, value = 1000, hint = Strings[302535920000928--[[somewhere above 1000 may delete the save (when it's full)]]]},
 	}
 
 	local hint = default_setting
@@ -52,7 +52,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 			end
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				Strings[302535920000930--[[Set Cargo Shuttle Capacity--]]]
+				Strings[302535920000930--[[Set Cargo Shuttle Capacity]]]
 			)
 		end
 	end
@@ -60,8 +60,8 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000930--[[Set Cargo Shuttle Capacity--]]],
-		hint = Strings[302535920000914--[[Current capacity--]]] .. ": " .. hint,
+		title = Strings[302535920000930--[[Set Cargo Shuttle Capacity]]],
+		hint = Strings[302535920000914--[[Current capacity]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -70,7 +70,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.SpeedShuttle / r
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 50, value = 50},
 		{text = 75, value = 75},
 		{text = 100, value = 100},
@@ -108,7 +108,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				Strings[302535920000932--[[Set Cargo Shuttle Speed--]]]
+				Strings[302535920000932--[[Set Cargo Shuttle Speed]]]
 			)
 		end
 	end
@@ -116,8 +116,8 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000932--[[Set Cargo Shuttle Speed--]]],
-		hint = Strings[302535920000933--[[Current speed: %s--]]]:format(hint),
+		title = Strings[302535920000932--[[Set Cargo Shuttle Speed]]],
+		hint = Strings[302535920000933--[[Current speed: %s]]]:format(hint),
 		skip_sort = true,
 	}
 end
@@ -125,7 +125,7 @@ end
 function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 	local default_setting = ChoGGi.Consts.ShuttleHubShuttleCapacity
 	local item_list = {
-		{text = Translate(1000121--[[Default--]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
 		{text = 75, value = 75},
@@ -169,15 +169,15 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(choice.text),
-			Strings[302535920000535--[[Set ShuttleHub Shuttle Capacity--]]]
+			Strings[302535920000535--[[Set ShuttleHub Shuttle Capacity]]]
 		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000535--[[Set ShuttleHub Shuttle Capacity--]]],
-		hint = Strings[302535920000914--[[Current capacity--]]] .. ": " .. hint,
+		title = Strings[302535920000535--[[Set ShuttleHub Shuttle Capacity]]],
+		hint = Strings[302535920000914--[[Current capacity]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end

@@ -13,7 +13,7 @@ local ThreadUnlockKey = ThreadUnlockKey
 
 -- used for loading/saving settings
 local function PrintError(err)
-	local err_str = Strings[302535920000000--[[Expanded Cheat Menu--]]] .. ": " .. Strings[302535920000243--[[Problem saving settings! Error: %s--]]]:format(err)
+	local err_str = Strings[302535920000000--[[Expanded Cheat Menu]]] .. ": " .. Strings[302535920000243--[[Problem saving settings! Error: %s]]]:format(err)
 	if ChoGGi.Temp.GameLoaded then
 		print(err_str)
 	else
@@ -182,7 +182,7 @@ function ChoGGi.SettingFuncs.WriteSettingsAdmin(settings)
 	ThreadUnlockKey(ChoGGi.settings_file)
 
 	if err then
-		print(Strings[302535920000006--[[Failed to save settings to %s : %s--]]]:format(
+		print(Strings[302535920000006--[[Failed to save settings to %s : %s]]]:format(
 			ChoGGi.settings_file and ConvertToOSPath(ChoGGi.settings_file) or ChoGGi.settings_file,
 			err
 		))

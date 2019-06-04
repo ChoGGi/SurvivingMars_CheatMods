@@ -12,10 +12,12 @@
 - Merged some menu items into submenus and other rearranging.
 - Examine>Exec Code box uses Up/Down arrows to browse console history.
 - * Move Speed is now set on map load.
+- Added Salvage button to Entity Spawner objs (rotate goes both ways and works on gamepad).
 
 ### Fixed:
 - Drones carry amount fix wasn't applying (thanks RyanSpencer97).
 - Dust Devils overrode * Move Speed (thanks dukedom).
+- Console history won't disappear anymore.
 
 ## v13.7 (May 30 2019)
 ### Added:

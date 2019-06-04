@@ -44,6 +44,7 @@ DefineClass.ChoGGi_OBuildingEntityClass = {
 	__parents = {
 		"ChoGGi_ODeleteObjs",
 
+		"Demolishable",
 		"BaseBuilding",
 		"BuildingEntityClass",
 		-- so we can have a selection panel for spawned entity objects
@@ -67,12 +68,12 @@ end
 -- add some info/functionality to spawned entity objects
 ChoGGi_OBuildingEntityClass.GetDisplayName = CObject.GetEntity
 function ChoGGi_OBuildingEntityClass:GetIPDescription()
-	return Strings[302535920001110--[[Spawned entity object--]]]
+	return Strings[302535920001110--[[Spawned entity object]]]
 end
 ChoGGi_OBuildingEntityClass.OnSelected = AddSelectionParticlesToObj
 -- prevent an error msg in log
 ChoGGi_OBuildingEntityClass.BuildWaypointChains = empty_func
--- round n round she goes
+-- round and round she goes, and where she stops BOB knows
 function ChoGGi_OBuildingEntityClass:Rotate(delta)
-	self:SetAngle((self:GetAngle() or 0) + (delta or -1)*60*60)
+	self:SetAngle((self:GetAngle() or 0) + (delta and -1 or 1)*60*60)
 end

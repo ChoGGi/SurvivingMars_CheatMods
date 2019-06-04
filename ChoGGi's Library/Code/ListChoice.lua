@@ -51,7 +51,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 		},
 	},
 }
---]]
+]]
 
 --~ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetProperType = ChoGGi.ComFuncs.RetProperType
@@ -138,7 +138,7 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 			self[name] = g_Classes.ChoGGi_XCheckButton:new({
 				Id = name,
 				Dock = "left",
-				Text = Translate(588--[[Empty--]]),
+				Text = Translate(588--[[Empty]]),
 			}, self[area_id])
 			local check = self[name]
 
@@ -201,8 +201,8 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 			Id = "idFilter",
 			RolloverText = Strings[302535920000806--[["Only show items containing this text.
 
-	Press Enter to show all items."--]]],
-			Hint = Strings[302535920000068--[[Filter Items--]]],
+	Press Enter to show all items."]]],
+			Hint = Strings[302535920000068--[[Filter Items]]],
 			OnTextChanged = self.FilterText,
 			OnKbdKeyDown = self.idFilter_OnKbdKeyDown
 		}, self.idFilterArea)
@@ -222,8 +222,8 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 The listitem <color 0 200 0>must</color> be selected for this to take effect (it's the last listitem).
 It won't be visible unless the ""%s"" checkbox is enabled.
 
-Warning: Entering the wrong value may crash the game or otherwise cause issues."--]]]:format(Strings[302535920000078--[[Custom Value--]]]),
-			Hint = Strings[302535920000078--[[Custom Value--]]],
+Warning: Entering the wrong value may crash the game or otherwise cause issues."]]]:format(Strings[302535920000078--[[Custom Value]]]),
+			Hint = Strings[302535920000078--[[Custom Value]]],
 			OnKbdKeyDown = self.idEditValue_OnKbdKeyDown
 		}, self.idEditArea)
 
@@ -231,7 +231,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			Id = "idShowCustomVal",
 			Dock = "left",
 			Margins = box(4, 0, 0, 0),
-			Text = Strings[302535920000078--[[Custom Value--]]],
+			Text = Strings[302535920000078--[[Custom Value]]],
 			RolloverText = Strings[302535920000077]:format(Strings[302535920000078]),
 			OnChange = self.idShowCustomVal_OnChange,
 		}, self.idEditArea)
@@ -257,10 +257,10 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idOK",
 		Dock = "left",
 		MinWidth = 50,
-		Text = Translate(6878--[[OK--]]),
+		Text = Translate(6878--[[OK]]),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = Strings[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>).
-This will always send back all items (not selection)."--]]],
+This will always send back all items (not selection)."]]],
 		OnPress = self.BuildReturnList
 	}, self.idButtonContainer)
 
@@ -268,9 +268,9 @@ This will always send back all items (not selection)."--]]],
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 70,
-		Text = Translate(6879--[[Cancel--]]),
+		Text = Translate(6879--[[Cancel]]),
 		Background = g_Classes.ChoGGi_XButton.bg_red,
-		RolloverText = Strings[302535920000074--[[Cancel without changing anything.--]]],
+		RolloverText = Strings[302535920000074--[[Cancel without changing anything.]]],
 		OnPress = self.idCloseX.OnPress,
 	}, self.idButtonContainer)
 
@@ -336,22 +336,22 @@ This will always send back all items (not selection)."--]]],
 
 		self.idColorCheckElec = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idColorCheckElec",
-			Text = Translate(79--[[Power--]]),
-			RolloverText = Strings[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
+			Text = Translate(79--[[Power]]),
+			RolloverText = Strings[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
 
 		self.idColorCheckAir = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idColorCheckAir",
-			Text = Translate(891--[[Air--]]),
-			RolloverText = Strings[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
+			Text = Translate(891--[[Air]]),
+			RolloverText = Strings[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
 
 		self.idColorCheckWater = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idColorCheckWater",
-			Text = Translate(681--[[Water--]]),
-			RolloverText = Strings[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."--]]],
+			Text = Translate(681--[[Water]]),
+			RolloverText = Strings[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
 		--
@@ -376,7 +376,7 @@ This will always send back all items (not selection)."--]]],
 	if self.list.multisel then
 		-- if it's a multiselect then add a hint
 		if self.list.hint then
-			self.list.hint = self.list.hint .. "\n\n" .. Strings[302535920001167--[[Use Ctrl/Shift for multiple selection.--]]]
+			self.list.hint = self.list.hint .. "\n\n" .. Strings[302535920001167--[[Use Ctrl/Shift for multiple selection.]]]
 		else
 			self.list.hint = Strings[302535920001167]
 		end
@@ -392,13 +392,13 @@ This will always send back all items (not selection)."--]]],
 
 	if self.custom_type == 7 or self.custom_type == 9 then
 		if self.list.hint then
-			self.list.hint = self.list.hint .. "\n\n" .. Strings[302535920001341--[[Double-click to apply without closing list.--]]]
+			self.list.hint = self.list.hint .. "\n\n" .. Strings[302535920001341--[[Double-click to apply without closing list.]]]
 		else
 			self.list.hint = Strings[302535920001341]
 		end
 	elseif self.custom_type == 8 then
 		if self.list.hint then
-			self.list.hint = self.list.hint .. "\n\n" .. Strings[302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."--]]]
+			self.list.hint = self.list.hint .. "\n\n" .. Strings[302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."]]]
 		else
 			self.list.hint = Strings[302535920001371]
 		end
@@ -439,10 +439,10 @@ function ChoGGi_DlgListChoice:idShowCustomVal_OnChange(check)
 		item:SetFocused(true)
 
 		self.idList:ScrollIntoView(item)
-		self.idShowCustomVal:SetText(Strings[302535920000104--[[Show--]]])
+		self.idShowCustomVal:SetText(Strings[302535920000104--[[Show]]])
 		self.idEditValue:SetVisible(true)
 	else
-		self.idShowCustomVal:SetText(Strings[302535920000078--[[Custom Value--]]])
+		self.idShowCustomVal:SetText(Strings[302535920000078--[[Custom Value]]])
 		self.idEditValue:SetVisible(false)
 	end
 end
@@ -586,7 +586,7 @@ function ChoGGi_DlgListChoice:idEditValueOnTextChanged()
 			local item = self.items[#self.items]
 			item.text = name_str
 			item.value = value
-			item.hint = Strings[302535920000079--[[* Use this custom value--]]]
+			item.hint = Strings[302535920000079--[[* Use this custom value]]]
 			local listitem = self.idList[#self.idList]
 			listitem.RolloverText = Strings[302535920000079]
 			listitem.RolloverTitle = item.text
@@ -676,7 +676,7 @@ function ChoGGi_DlgListChoice:BuildList(save_pos)
 		end
 
 		if self.custom_type > 4 and self.custom_type ~= 5 then
-			listitem.RolloverHint = Strings[302535920001444--[["<left_click> Activate, <right_click> Alt Activate"--]]]
+			listitem.RolloverHint = Strings[302535920001444--[["<left_click> Activate, <right_click> Alt Activate"]]]
 		end
 
 		-- easier access

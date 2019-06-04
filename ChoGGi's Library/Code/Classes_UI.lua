@@ -56,7 +56,7 @@ DefineClass.ChoGGi_XText = {
 	SelectionColor = black,
 
 	RolloverTemplate = "Rollover",
-	RolloverTitle = Translate(126095410863--[[Info--]]),
+	RolloverTitle = Translate(126095410863--[[Info]]),
 }
 
 DefineClass.ChoGGi_XLabel = {
@@ -99,7 +99,7 @@ DefineClass.ChoGGi_XMoveControl = {
 	Background = medium_gray,
 	FocusedBackground = dark_blue,
 	FocusedColor = light_gray,
-	RolloverTitle = Translate(126095410863--[[Info--]]),
+	RolloverTitle = Translate(126095410863--[[Info]]),
 	RolloverTemplate = "Rollover",
 }
 function ChoGGi_XMoveControl:OnKbdKeyDown(vk, ...)
@@ -145,8 +145,8 @@ end
 DefineClass.ChoGGi_XButtons = {
 	__parents = {"XTextButton"},
 	TextStyle = "ChoGGi_Buttons",
-	RolloverTitle = Translate(126095410863--[[Info--]]),
-	RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
+	RolloverTitle = Translate(126095410863--[[Info]]),
+	RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
 	RolloverTemplate = "Rollover",
 	RolloverBackground = rollover_blue,
 	Margins = box(4, 4, 4, 4),
@@ -169,7 +169,7 @@ DefineClass.ChoGGi_XToolbarButton = {
 DefineClass.ChoGGi_XButton = {
 	__parents = {"ChoGGi_XButtons"},
 --~ 	MinWidth = 60,
-	Text = Translate(6878--[[OK--]]),
+	Text = Translate(6878--[[OK]]),
 	Background = light_gray,
 	bg_green = -8192126,
 	bg_red = -41121,
@@ -184,8 +184,8 @@ DefineClass.ChoGGi_XCloseButton = {
 	VAlign = "center",
 	HAlign = "right",
 	Margins = box(0, 0, 2, 0),
-	RolloverTitle = Translate(1011--[[Close--]]),
-	RolloverText = Strings[302535920000074--[[Cancel without changing anything.--]]],
+	RolloverTitle = Translate(1011--[[Close]]),
+	RolloverText = Strings[302535920000074--[[Cancel without changing anything.]]],
 }
 
 DefineClass.ChoGGi_XConsoleButton = {
@@ -209,8 +209,8 @@ DefineClass.ChoGGi_XComboButton = {
 	TextStyle = "ChoGGi_ComboButton",
 	Background = light_gray,
 	RolloverBackground = rollover_blue,
-	RolloverTitle = Translate(126095410863--[[Info--]]),
-	RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
+	RolloverTitle = Translate(126095410863--[[Info]]),
+	RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
 	RolloverTemplate = "Rollover",
 	PressedBackground = medium_gray,
 	PressedTextColor = white,
@@ -239,11 +239,11 @@ DefineClass.ChoGGi_XComboButton = {
 DefineClass.ChoGGi_XCheckButton = {
 	__parents = {"XCheckButton"},
 	TextStyle = "ChoGGi_CheckButton",
-	RolloverTitle = Translate(126095410863--[[Info--]]),
-	RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
+	RolloverTitle = Translate(126095410863--[[Info]]),
+	RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
 	RolloverTemplate = "Rollover",
 	MinWidth = 60,
-	Text = Translate(6878--[[OK--]]),
+	Text = Translate(6878--[[OK]]),
 	RolloverZoom = 1100,
 	FoldWhenHidden = true,
 }
@@ -343,7 +343,7 @@ DefineClass.ChoGGi_XTextList = {
 	__parents = {"XText"},
 	TextStyle = text_style2,
 	RolloverTemplate = "Rollover",
-	RolloverTitle = Translate(126095410863--[[Info--]]),
+	RolloverTitle = Translate(126095410863--[[Info]]),
 	VAlign = "center",
 }
 
@@ -363,7 +363,7 @@ DefineClass.ChoGGi_XDialog = {
 	MinWidth = 150,
 	Dock = "ignore",
 	RolloverTemplate = "Rollover",
-	RolloverTitle = Translate(126095410863--[[Info--]]),
+	RolloverTitle = Translate(126095410863--[[Info]]),
 	Background = dark_gray,
 	BorderWidth = 2,
 	BorderColor = light_gray,
@@ -375,7 +375,7 @@ DefineClass.ChoGGi_XDialogSection = {
 	HandleMouse = true,
 	FoldWhenHidden = true,
 	RolloverTemplate = "Rollover",
-	RolloverTitle = Translate(126095410863--[[Info--]]),
+	RolloverTitle = Translate(126095410863--[[Info]]),
 	Clip = "self",
 }
 
@@ -525,9 +525,9 @@ function ChoGGi_XWindow:AddImageButton(UIScale)
 		self.idCaptionImage = ChoGGi_XImage:new({
 			Id = "idCaptionImage",
 			Dock = "left",
-			RolloverTitle = Strings[302535920000093--[[Go to Obj--]]],
-			RolloverText = Strings[302535920000094--[[View/select object on map.--]]],
-			RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
+			RolloverTitle = Strings[302535920000093--[[Go to Obj]]],
+			RolloverText = Strings[302535920000094--[[View/select object on map.]]],
+			RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
 			OnMouseButtonDown = self.idCaptionImageOnMouseButtonDown,
 			HandleMouse = true,
 			MaxWidth = 32 * UIScale,
@@ -552,7 +552,7 @@ function ChoGGi_XWindow:AddCloseXButton()
 	if self:IsKindOf("ChoGGi_DlgExamine") then
 		RolloverText = Strings[302535920000628--[["Close the examine dialog
 Hold Shift to close all ""parent"" examine dialogs.
-Hold Ctrl to close all ECM dialogs."--]]]
+Hold Ctrl to close all ECM dialogs."]]]
 	end
 	local g_Classes = g_Classes
 
@@ -767,9 +767,9 @@ function ChoGGi_XWindow:PostInit(parent, pt, title_skip)
 		local ok = ""
 		-- 1 hides the ok/cancel buttons, and it just looks weird for the colour Modifier
 		if is_list and self.custom_type ~= 1 then
-			ok = Strings[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."--]]] .. "\n\n"
+			ok = Strings[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."]]] .. "\n\n"
 		end
-		local str = Strings[302535920001518--[[Double-click <left_click> title to rollup into the title bar.--]]]
+		local str = Strings[302535920001518--[[Double-click <left_click> title to rollup into the title bar.]]]
 		if move.RolloverText == "" then
 			move.RolloverText = ok .. str
 		else
@@ -944,7 +944,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 	end
 
 	return {
-		{name = Translate(1000746--[[Undo--]]),
+		{name = Translate(1000746--[[Undo]]),
 			image = ChoGGi.library_path .. "UI/menu/undo.png",
 			clicked = function()
 				self:Undo()
@@ -952,7 +952,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 			end,
 			disable = not can_undo,
 		},
-		{name = Translate(1000222--[[Redo--]]),
+		{name = Translate(1000222--[[Redo]]),
 			image = ChoGGi.library_path .. "UI/menu/redo.png",
 			clicked = function()
 				self:Redo()
@@ -961,7 +961,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 			disable = not can_redo,
 		},
 		{is_spacer = true},
-		{name = Translate(1000234--[[Cut--]]),
+		{name = Translate(1000234--[[Cut]]),
 			image = ChoGGi.library_path .. "UI/menu/cut.png",
 			clicked = function()
 				CopyToClipboard(self:GetSelectedText())
@@ -970,7 +970,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 			end,
 			disable = not has_selection,
 		},
-		{name = Translate(1000233--[[Copy--]]),
+		{name = Translate(1000233--[[Copy]]),
 			image = ChoGGi.library_path .. "UI/menu/copy.png",
 			clicked = function()
 				CopyToClipboard(self:GetSelectedText())
@@ -978,7 +978,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 			end,
 			disable = not has_selection,
 		},
-		{name = Translate(1000235--[[Paste--]]),
+		{name = Translate(1000235--[[Paste]]),
 			image = ChoGGi.library_path .. "UI/menu/paste.png",
 			clicked = function()
 				self:EditOperation(GetFromClipboard(max_int))
@@ -986,7 +986,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 			end,
 			disable = has_clipboard == "",
 		},
-		{name = Translate(1000463--[[Delete--]]),
+		{name = Translate(1000463--[[Delete]]),
 			image = ChoGGi.library_path .. "UI/menu/delete.png",
 			clicked = function()
 				self:EditOperation()
@@ -995,7 +995,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 			disable = not has_selection,
 		},
 		{is_spacer = true},
-		{name = Translate(131775917427--[[Select--]]) .. " " .. Translate(4493--[[All--]]),
+		{name = Translate(131775917427--[[Select]]) .. " " .. Translate(4493--[[All]]),
 			image = ChoGGi.library_path .. "UI/menu/selectall.png",
 			clicked = function()
 				self:SelectAll()
@@ -1007,7 +1007,7 @@ end
 DefineClass.ChoGGi_XTextInput = {
 	__parents = {"ChoGGi_XInputContextMenu", "XEdit"},
 --~ 	AllowTabs = false,
-	RolloverTitle = Translate(126095410863--[[Info--]]),
+	RolloverTitle = Translate(126095410863--[[Info]]),
 	Background = light_gray,
 	TextStyle = "ChoGGi_TextInput",
 }

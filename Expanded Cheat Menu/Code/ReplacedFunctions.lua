@@ -486,7 +486,7 @@ function OnMsg.ClassesGenerate()
 					else
 						entry.RolloverText = action.RolloverText
 					end
-					entry.RolloverTitle = Translate(126095410863--[[Info--]])
+					entry.RolloverTitle = Translate(126095410863--[[Info]])
 					-- if this func added the id or something then i wouldn't need to do this copy n paste :(
 
 					function entry.OnPress(this, _)
@@ -770,8 +770,8 @@ function OnMsg.ClassesBuilt()
 					StopWait.skipmsg = nil
 				else
 					MsgPopup(
-						Strings[302535920000735--[[Timer delay skipped--]]],
-						Translate(3486--[[Mystery--]])
+						Strings[302535920000735--[[Timer delay skipped]]],
+						Translate(3486--[[Mystery]])
 					)
 				end
 
@@ -996,9 +996,9 @@ function OnMsg.ClassesBuilt()
 				title.FXMouseIn = "ActionButtonHover"
 				title.HandleMouse = true
 				title.RolloverTemplate = "Rollover"
-				title.RolloverTitle = Strings[302535920001367--[[Toggles--]]]
-				title.RolloverText = Strings[302535920001410--[[Toggle Visibility--]]]
-				title.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
+				title.RolloverTitle = Strings[302535920001367--[[Toggles]]]
+				title.RolloverText = Strings[302535920001410--[[Toggle Visibility]]]
+				title.RolloverHint = Translate(608042494285--[[<left_click> Activate]])
 
 				local toggle = not ChoGGi.Temp.InfopanelMainButVis
 				local toolbar = main_buts[2]
@@ -1049,8 +1049,8 @@ function OnMsg.ClassesBuilt()
 			if section then
 				section.idIcon.FXMouseIn = "ActionButtonHover"
 				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
-				section.RolloverText = Strings[302535920001410--[[Toggle Visibility--]]]
-				section.RolloverHint = Translate(608042494285--[[<left_click> Activate--]])
+				section.RolloverText = Strings[302535920001410--[[Toggle Visibility]]]
+				section.RolloverHint = Translate(608042494285--[[<left_click> Activate]])
 
 				local toggle = not ChoGGi.Temp.InfopanelCheatsVis
 				local toolbar = SetToolbar(section, "XToolBar", toggle)
@@ -1359,49 +1359,17 @@ end]]
 			},
 		}
 
-		-- no need to replace any funcs if ConsoleRules is a global
-		if LuaRevision > 240905 and ConsoleRules then
-			ConsoleRules = console_rules
-		else
-			SaveOrigFunc("Console", "Exec")
-			if blacklist then
-				local function load_match(text, rules)
-					for i = 1, #rules do
-						local rule = rules[i]
-						local capture1, capture2, capture3 = text:match(rule[1])
-						if capture1 then
-							return rule[2]:format(capture1, capture2, capture3)
-						end
-					end
-				end
+		-- override with my rules (thanks devs)
+		ConsoleRules = console_rules
 
-				function Console:Exec(text, ...)
-					text = load_match(text, console_rules)
-					ChoGGi_OrigFuncs.Console_Exec(self, text, ...)
-				end
-
-			else
-
-				local AddConsoleLog = AddConsoleLog
-				local ConsolePrint = ConsolePrint
-				local ConsoleExec = ConsoleExec
-
-				-- skip is used for ECM Scripts
-				function Console:Exec(text, skip)
-					if not skip then
-						self:AddHistory(text)
-						AddConsoleLog("> ", true)
-						AddConsoleLog(text, false)
-					end
-					-- i like my rules kthxbai
-					local err = ConsoleExec(text, console_rules)
-					if err then
-						ConsolePrint(err)
-					end
-				end
+		SaveOrigFunc("Console", "Exec")
+		function Console:Exec(...)
+			-- ReadHistory fires from :Show(), if it isn't loaded before you :Exec() then goodbye history
+			if not self.history_queue or #self.history_queue == 0 then
+				self:ReadHistory()
 			end
-
-		end -- rawget rules
+			return ChoGGi_OrigFuncs.Console_Exec(self, ...)
+		end
 
 		if not blacklist then
 			-- and now the console has a blacklist :), though i am a little suprised they left it unfettered this long, been using it as a workaround for months

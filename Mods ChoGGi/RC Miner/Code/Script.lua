@@ -169,7 +169,7 @@ DefineClass.PortableMiner = {
 		-- metals
 		"SubsurfaceDepositPreciousMetals", "SubsurfaceDepositMetals",
 		-- LukeH's Resources
-		"SubsurfaceDepositCrystals", "SubsurfaceDepositRadioactive", --[["SubsurfaceDepositHydrocarbon",--]]
+		"SubsurfaceDepositCrystals", "SubsurfaceDepositRadioactive", --[["SubsurfaceDepositHydrocarbon",]]
 	},
 
 	-- living just enough for the city
@@ -257,7 +257,7 @@ PortableMiner.ToggleAutoMode_Update = RCTransport.ToggleAutoMode_Update
 -- for auto mode
 function PortableMiner:ProcAutomation()
 	local unreachable_objects = self:GetUnreachableObjectsTable()
-	local deposit = MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit", --]] function(d)
+	local deposit = MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit", ]] function(d)
 		if d:IsKindOf("TerrainDepositConcrete") and d:GetDepositMarker() or
 				(d:IsKindOfClasses(self.mineable) and
 				(d.depth_layer < 2 or self.city:IsTechResearched("DeepMetalExtraction"))) then
@@ -322,7 +322,7 @@ function PortableMiner:Idle()
 end
 
 function PortableMiner:DepositNearby()
-	local d = MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit", --]] function(o)
+	local d = MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit", ]] function(o)
 		return self:GetVisualDist(o) < self.mine_dist
 	end)
 
@@ -501,7 +501,7 @@ function PortableMiner:DigErUp()
 	else
 		amount = self.nearby_deposits[1]:TakeAmount(amount)
 	end
---]]
+]]
 
 	local amount = pms.mine_amount
 	-- if there isn't much left get what's left

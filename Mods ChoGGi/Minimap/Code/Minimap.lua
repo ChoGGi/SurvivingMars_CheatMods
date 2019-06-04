@@ -72,7 +72,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		ZOrder = 0,
 		RolloverTitle = [[Toggle Controls]],
 		RolloverText = [[Toggle showing controls at bottom.]],
-		RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
+		RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
 		OnMouseButtonDown = self.idCaptionToggleOnMouseButtonDown,
 		MouseCursor = "UI/Cursors/Rollover.tga",
 		HandleMouse = true,
@@ -111,7 +111,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		Text = [[Dbl Size]],
 		RolloverTitle = [[Double Size]],
 		RolloverText = [[Toggle between original size and double.]],
-		RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
+		RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
 		OnPress = self.idToggleDblSizeOnPress,
 	}, self.idToggleArea)
 
@@ -121,7 +121,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		Text = [[Reset]],
 		RolloverTitle = [[Reset Dialog]],
 		RolloverText = [[Moves map back to original position and size.]],
-		RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
+		RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
 		OnPress = self.idResetDialogOnPress,
 	}, self.idToggleArea)
 
@@ -131,7 +131,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		Text = [[Image]],
 		RolloverTitle = [[Use ScreenShots]],
 		RolloverText = [[Screenshots or topography images (needs my map images pack mod)..]],
-		RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
+		RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
 		OnChange = self.idUseScreenShotsOnChange,
 	}, self.idToggleArea)
 
@@ -143,7 +143,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		Text = [[Update]],
 		RolloverTitle = [[Update Image]],
 		RolloverText = [[This will update the map image (resets camera orientation).]],
-		RolloverHint = Translate(608042494285--[[<left_click> Activate--]]),
+		RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
 		OnPress = self.idUpdateMapOnPress,
 	}, self.idToggleArea)
 	if not mod_UseScreenshots then
