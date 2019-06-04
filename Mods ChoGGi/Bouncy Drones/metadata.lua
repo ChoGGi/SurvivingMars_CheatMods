@@ -17,9 +17,5 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"description", [[Drones bounce when they move around (Colonists and Rovers default to no bounce).
 
-You can change the bounce amount in Mod Options.
-
-
-
-Included in Expanded Cheat Menu.]],
+You can change the bounce amount in Mod Options.]],
 })

@@ -1,18 +1,24 @@
 -- See LICENSE for terms
 
-local Sleep = Sleep
-
-local img = CurrentModPath .. "UI/pm_landed.png"
+local type = type
+local pairs = pairs
+local table_clear = table.clear
+local WaitMsg = WaitMsg
+local ScaleXY = ScaleXY
+local box = box
+local Min = Min
+local MulDivRound = MulDivRound
+local PlaceObject = PlaceObject
+local RotateAxis = RotateAxis
+local DrawImage = UIL.DrawImage
 
 -- stores saved game spots
 local new_markers = {}
 
 local LandingSite_object
 
+local img = CurrentModPath .. "UI/pm_landed.png"
 -- draws the saved game spot image (needed to slightly tweak LandingSiteObject:DrawSpot)
-local ScaleXY = ScaleXY
-local box = box
-local DrawImage = UIL.DrawImage
 local function DrawSpot(win)
 	local x = LandingSite_object.spot_image_size:x()
 	local y = LandingSite_object.spot_image_size:y()
@@ -25,17 +31,17 @@ local function DrawSpot(win)
 end
 
 -- add our visited icons
-local MulDivRound = MulDivRound
-local PlaceObject = PlaceObject
-local RotateAxis = RotateAxis
 local function BuildMySpots()
 	-- wait for it...
 	while not PlanetRotationObj do
-		Sleep(500)
+		WaitMsg("OnRender")
 	end
+	local PlanetRotationObj = PlanetRotationObj
+	local PlanetRotationObj_spot = PlanetRotationObj:GetSpotBeginIndex("Planet")
+	local PlanetRotationObj_pos = PlanetRotationObj:GetPos()
+	local PlanetRotationObj_axis = PlanetRotationObj:GetAxis()
 
 	local landing_dlg = LandingSite_object.dialog
-	local PlanetRotationObj = PlanetRotationObj
 
 	-- double maxwidth limit for text (some people have lots of saves)
 	landing_dlg.idtxtCoord:SetMaxWidth(800)
@@ -49,10 +55,10 @@ local function BuildMySpots()
 	template:SetVisible(true)
 
 	-- always start with a blank table
-	table.clear(new_markers)
+	table_clear(new_markers)
 
 	-- start above the default landing spots added
-	local idx = #Presets.LandingSpot.Default+1
+	local idx = #Presets.LandingSpot.Default
 
 	local SavegamesList = SavegamesList
 	-- get list of saves
@@ -75,6 +81,7 @@ local function BuildMySpots()
 				local marker = template:Clone()
 				marker:SetParent(landing_dlg)
 
+				idx = idx + 1
 				-- store new marker in our list
 				local marker_id = "idMarker" .. idx
 				new_markers[table_name] = {
@@ -83,19 +90,18 @@ local function BuildMySpots()
 					text = save.displayname,
 				}
 
-				idx = idx + 1
 				marker:SetId(marker_id)
 				marker.DrawContent = template.DrawContent
-				PlanetRotationObj:Attach(attach, PlanetRotationObj:GetSpotBeginIndex("Planet"))
+				PlanetRotationObj:Attach(attach, PlanetRotationObj_spot)
 				marker:AddDynamicPosModifier{id = "planet_pos", target = attach}
 
 				local lat, long = LandingSite_object:CalcPlanetCoordsFromScreenCoords(save.latitude * 60, save.longitude * 60)
 				local _, world_pt = LandingSite_object:CalcClickPosFromCoords(lat, long)
 
-				local offset = world_pt - PlanetRotationObj:GetPos()
+				local offset = world_pt - PlanetRotationObj_pos
 				--compensate for the planet's rotation
-				local planet_angle = 360*60 - MulDivRound(PlanetRotationObj:GetAnimPhase(1), 360 * 60, LandingSite_object.anim_duration)
-				offset = RotateAxis(offset, PlanetRotationObj:GetAxis(), -planet_angle)
+				local planet_angle = 360*60 - MulDivRound(PlanetRotationObj:GetAnimPhase(1), 360*60, LandingSite_object.anim_duration)
+				offset = RotateAxis(offset, PlanetRotationObj_axis, -planet_angle)
 				attach:SetAttachOffset(offset)
 			end
 		end
@@ -104,36 +110,6 @@ local function BuildMySpots()
 	template:SetId("idSpotTemplate")
 	template:SetVisible(false)
 	template.DrawContent = orig_template_DrawContent
-
-end
-
-local orig_LandingSiteObject_AttachPredefinedSpots = LandingSiteObject.AttachPredefinedSpots
-function LandingSiteObject:AttachPredefinedSpots(...)
-	orig_LandingSiteObject_AttachPredefinedSpots(self, ...)
-	-- we only want this to happen when picking a landing spot
-	if not GameState.gameplay then
-		LandingSite_object = self
-		-- if I don't thread it I get an error from LandingSiteObject:DrawSpot
-		CreateRealTimeThread(BuildMySpots)
-	end
-end
-
--- are our icons vis?
-local pairs = pairs
-local Min = Min
-local orig_LandingSiteObject_CalcMarkersVisibility = LandingSiteObject.CalcMarkersVisibility
-function LandingSiteObject:CalcMarkersVisibility()
-	if GameState.gameplay then
-		return orig_LandingSiteObject_CalcMarkersVisibility(self)
-	end
-
-	local cur_phase = PlanetRotationObj:GetAnimPhase()
-	for _, obj in pairs(new_markers) do
-		local phase = self:CalcAnimPhaseUsingLongitude(obj.longitude * 60)
-		local dist = Min((cur_phase-phase)%self.anim_duration, (phase-cur_phase)%self.anim_duration)
-		self.dialog[obj.id]:SetVisible(dist <= 2400)
-	end
-
 end
 
 function OnMsg.ClassesPostprocess()
@@ -144,16 +120,51 @@ function OnMsg.ClassesPostprocess()
 	})
 end
 
+local orig_LandingSiteObject_AttachPredefinedSpots = LandingSiteObject.AttachPredefinedSpots
+function LandingSiteObject:AttachPredefinedSpots(...)
+	orig_LandingSiteObject_AttachPredefinedSpots(self, ...)
+	-- we only want it to happen during the new game planet
+	if GameState.gameplay then
+		return
+	end
+
+	-- needed ref above
+	LandingSite_object = self
+	-- if I don't thread it I get an error from LandingSiteObject:DrawSpot
+	CreateRealTimeThread(BuildMySpots)
+end
+
+-- are our icons vis?
+local orig_LandingSiteObject_CalcMarkersVisibility = LandingSiteObject.CalcMarkersVisibility
+function LandingSiteObject:CalcMarkersVisibility(...)
+	-- we only want it to happen during the new game planet
+	if GameState.gameplay then
+		return orig_LandingSiteObject_CalcMarkersVisibility(self, ...)
+	end
+
+	local cur_phase = PlanetRotationObj:GetAnimPhase()
+	for _, obj in pairs(new_markers) do
+		local phase = self:CalcAnimPhaseUsingLongitude(obj.longitude * 60)
+		local dist = Min((cur_phase-phase)%self.anim_duration, (phase-cur_phase)%self.anim_duration)
+		self.dialog[obj.id]:SetVisible(dist <= 2400)
+	end
+
+	return orig_LandingSiteObject_CalcMarkersVisibility(self, ...)
+end
+
 local orig_LandingSiteObject_DisplayCoord = LandingSiteObject.DisplayCoord
-function LandingSiteObject:DisplayCoord(pt, lat, long, lat_org, long_org)
-	orig_LandingSiteObject_DisplayCoord(self, pt, lat, long, lat_org, long_org)
-	if not GameState.gameplay then
-		-- is it one of ours
-		local g_CurrentMapParams = g_CurrentMapParams
-		local marker = new_markers[g_CurrentMapParams.latitude .. "_" .. g_CurrentMapParams.longitude]
-		if marker then
-			local text = self.dialog.idtxtCoord.text
-			self.dialog.idtxtCoord:SetText("<style ChoGGi_PlanetUISavedGamesText>" .. marker.text .. "</style>\n" .. text)
-		end
+function LandingSiteObject:DisplayCoord(...)
+	orig_LandingSiteObject_DisplayCoord(self, ...)
+	-- we only want it to happen during the new game planet
+	if GameState.gameplay then
+		return
+	end
+
+	-- is it one of ours
+	local params = g_CurrentMapParams
+	local marker = new_markers[params.latitude .. "_" .. params.longitude]
+	if marker then
+		local text = self.dialog.idtxtCoord.text
+		self.dialog.idtxtCoord:SetText("<style ChoGGi_PlanetUISavedGamesText>" .. marker.text .. "</style>\n" .. text)
 	end
 end

@@ -4,6 +4,7 @@
 
 local type, rawget = type, rawget
 local table_unpack = table.unpack
+local Sleep = Sleep
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Translate = ChoGGi.ComFuncs.Translate
@@ -926,7 +927,6 @@ function OnMsg.ClassesBuilt()
 		local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 		local CreateRealTimeThread = CreateRealTimeThread
 		local DeleteThread = DeleteThread
-		local Sleep = Sleep
 		local function ToggleVis(idx, content, v, h)
 			for i = 6, idx do
 				local con = content[i]
@@ -1362,9 +1362,9 @@ end]]
 		-- override with my rules (thanks devs)
 		ConsoleRules = console_rules
 
+		-- ReadHistory fires from :Show(), if it isn't loaded before you :Exec() then goodbye history
 		SaveOrigFunc("Console", "Exec")
 		function Console:Exec(...)
-			-- ReadHistory fires from :Show(), if it isn't loaded before you :Exec() then goodbye history
 			if not self.history_queue or #self.history_queue == 0 then
 				self:ReadHistory()
 			end
@@ -1379,18 +1379,22 @@ end]]
 					WaitMsg("Autorun")
 				end
 				while not g_ConsoleFENV do
-					WaitMsg("OnRender")
+					Sleep(1000)
 				end
 
 				local original_G = _G
-				local run = rawget(g_ConsoleFENV, "__run")
+				local rawset = original_G.rawset
+				local run = original_G.rawget(g_ConsoleFENV, "__run")
+
 				g_ConsoleFENV = {__run = run}
 				setmetatable(g_ConsoleFENV, {
 					__index = function(_, key)
 						return original_G[key]
 					end,
 					__newindex = function(_, key, value)
-						original_G[key] = value
+						-- bye bye annoying [LUA ERROR] Attempt to create a new global xxx (well for the console at least)
+						rawset(original_G, key, value)
+--~ 						original_G[key] = value
 					end,
 				})
 			end)
