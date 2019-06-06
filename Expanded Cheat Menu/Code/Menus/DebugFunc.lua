@@ -891,39 +891,43 @@ function ChoGGi.MenuFuncs.ObjectCloner(flat)
 		return
 	end
 
-	local new
+	local clone
 	-- clone dome = crashy
 	if obj:IsKindOf("Dome") then
-		new = g_Classes[obj.class]:new()
-		new:CopyProperties(obj)
+		clone = g_Classes[obj.class]:new()
+		clone:CopyProperties(obj)
 	else
-		new = obj:Clone()
+		clone = obj:Clone()
+	end
+
+	if obj.GetEntity then
+		clone.entity = obj:GetEntity()
 	end
 
 	-- got me banners are weird like that
 	if obj:IsKindOf("Banner") then
-		new:ChangeEntity(obj:GetEntity())
+		clone:ChangeEntity(obj:GetEntity())
 	end
 
-	local hex = ChoGGi.ComFuncs.CursorNearestHex()
-	if flat == true or flat.flatten_to_ground == true then
-		new:SetPos(point(
-			hex:x(),
-			hex:y(),
-			new:GetPos():z()
-		))
-	else
-		new:SetPos(hex)
-	end
-
-	if new:IsKindOf("SubsurfaceDeposit") then
-		if new.CheatRefill then
-			new:CheatRefill()
+	-- we're already cheating by cloning, so fill 'er up
+	if clone:IsKindOf("SubsurfaceDeposit") then
+		if clone.CheatRefill then
+			clone:CheatRefill()
 		end
 	end
---~ 	if new.CheatFill then
---~ 		new:CheatFill()
---~ 	end
+
+	-- make sure it's hex worthy
+	local hex = ChoGGi.ComFuncs.CursorNearestHex()
+	if flat == true or flat.flatten_to_ground == true then
+		clone:SetPos(hex:SetTerrainZ())
+--~ 		clone:SetPos(point(
+--~ 			hex:x(),
+--~ 			hex:y(),
+--~ 			clone:GetZ()
+--~ 		))
+	else
+		clone:SetPos(hex)
+	end
 
 end
 
@@ -1199,14 +1203,17 @@ do -- path markers
 		local delay = 500
 		-- if fired from action menu (or shortcut)
 		if IsKindOf(obj, "XAction") then
-			obj = SelObjects(1500)
-			if #obj == 0 then
-				obj = nil
-			end
+			obj = SelectedObj or SelObjects(1500)
 			menu_fired = true
 		else
-			obj = obj or SelObjects(1500)
+			obj = obj or SelectedObj or SelObjects(1500)
 			delay = type(menu_delay) == "number" and menu_delay or delay
+		end
+		if obj and obj.objects then
+			obj = obj.objects
+		end
+		if not next(obj) then
+			obj = nil
 		end
 
 		if obj then

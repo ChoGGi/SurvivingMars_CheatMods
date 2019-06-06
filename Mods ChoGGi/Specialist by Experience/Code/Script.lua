@@ -1,28 +1,29 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_SpecialistByExperience"
-local mod = Mods[mod_id]
-local mod_IgnoreSpec = mod.options and mod.options.IgnoreSpec or false
-local mod_SolsToTrain = mod.options and mod.options.SolsToTrain or 25
+local options
+local mod_IgnoreSpec
+local mod_SolsToTrain
+
+-- fired when settings are changed and new/load
+local function ModOptions()
+	mod_IgnoreSpec = options.IgnoreSpec
+	mod_SolsToTrain = options.SolsToTrain
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_SpecialistByExperience" then
 		return
 	end
 
-	mod_IgnoreSpec = mod.options.IgnoreSpec
-	mod_SolsToTrain = mod.options.SolsToTrain
+	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	mod_IgnoreSpec = mod.options.IgnoreSpec
-	mod_SolsToTrain = mod.options.SolsToTrain
-end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
 
 local orig_Workplace_AddWorker = Workplace.AddWorker
 function Workplace:AddWorker(worker, shift)
@@ -92,7 +93,7 @@ function OnMsg.NewDay(sol) -- NewSol...
 				-- just in case
 				if IsValid(c_table.obj) or not c_table.obj.dying then
 					-- only allow spec=none or if mod option then any spec, then check if worked long enough
-					if (c_table.obj.specialist == "none" or IgnoreSpec) and (sol - c_table.started_on) >= mod_SolsToTrain then
+					if (c_table.obj.specialist == "none" or mod_IgnoreSpec) and (sol - c_table.started_on) >= mod_SolsToTrain then
 						c_table.obj:SetSpecialization(work.specialist)
 						-- needed to remove NonSpecialistPerformancePenalty
 						c_table.obj:ChangeWorkplacePerformance()

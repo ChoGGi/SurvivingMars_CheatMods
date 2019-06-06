@@ -1,2 +1,5 @@
+v0.3
+Checks standing on loaded game (thanks D_A_R_K_N_E_S_S).
+
 v0.2
 Didn't unlock rovers and maybe more (thanks Zend/Olaf).

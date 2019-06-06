@@ -7,10 +7,10 @@ local blacklist = ChoGGi.blacklist
 local Translate = ChoGGi.ComFuncs.Translate
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_DlgExecCode")
+	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgExecCode")
 end
 DefineClass.ChoGGi_DlgExecCode = {
 	__parents = {"ChoGGi_XWindow"},

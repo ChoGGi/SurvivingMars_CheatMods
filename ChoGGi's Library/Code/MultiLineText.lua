@@ -2,17 +2,15 @@
 
 -- displays text in an editable text box
 
+local CreateRealTimeThread = CreateRealTimeThread
 local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
-
-local CreateRealTimeThread = CreateRealTimeThread
-
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
+
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_DlgMultiLineText")
+	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgMultiLineText")
 end
-
 DefineClass.ChoGGi_DlgMultiLineText = {
 	__parents = {"ChoGGi_XWindow"},
 	retfunc = false,

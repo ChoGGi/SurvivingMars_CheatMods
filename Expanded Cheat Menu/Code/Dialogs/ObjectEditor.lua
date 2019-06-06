@@ -17,7 +17,7 @@ local RetProperType = ChoGGi.ComFuncs.RetProperType
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_DlgObjectEditor")
+	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgObjectEditor")
 end
 DefineClass.ChoGGi_DlgObjectEditor = {
 	__parents = {"ChoGGi_XWindow"},

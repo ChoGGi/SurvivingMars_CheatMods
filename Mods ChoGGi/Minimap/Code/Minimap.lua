@@ -27,11 +27,11 @@ local cameraRTS = cameraRTS
 local terrain = terrain
 local transition_time = 0
 
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local Translate = ChoGGi.ComFuncs.Translate
 
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_MinimapDlg")
+	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_MinimapDlg")
 end
 DefineClass.ChoGGi_MinimapDlg = {
 	__parents = {"ChoGGi_XWindow"},

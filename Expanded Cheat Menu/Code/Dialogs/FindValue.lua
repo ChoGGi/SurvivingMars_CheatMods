@@ -8,10 +8,10 @@ local Strings = ChoGGi.Strings
 local RetName = ChoGGi.ComFuncs.RetName
 local FindThreadFunc = ChoGGi.ComFuncs.FindThreadFunc
 local Translate = ChoGGi.ComFuncs.Translate
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_DlgFindValue")
+	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgFindValue")
 end
 DefineClass.ChoGGi_DlgFindValue = {
 	__parents = {"ChoGGi_XWindow"},

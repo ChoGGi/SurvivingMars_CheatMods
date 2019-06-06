@@ -23,6 +23,5 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowDustGrid", {
 			min = 0,
 			name = "Dist From Cursor",
 		},
-
 	},
 })

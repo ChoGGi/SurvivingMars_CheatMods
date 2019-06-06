@@ -169,10 +169,9 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 					"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
 					"RolloverTitle", T(1000077--[[Rotate]]),
 					"RolloverText", T(7519--[[<left_click>]]) .. " "
-						.. T(312752058553--[[Rotate Building Left]])
-						.. "\n"
-						.. T(1000449--[[Ctrl]]) .. T(1000541--[[+]]) .. T(7519--[[<left_click>]])
-						.. " " .. T(306325555448--[[Rotate Building Right]]),
+						.. T(312752058553--[[Rotate Building Left]]).. "\n"
+						.. T(7366--[[<right_click>]]) .. " "
+						.. T(306325555448--[[Rotate Building Right]]),
 					"RolloverHint", "",
 					"RolloverHintGamepad", T(7518--[[ButtonA]]) .. " "
 						.. T(312752058553--[[Rotate Building Left]]) .. " "
@@ -186,7 +185,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 						if gamepad then
 							self.context:Rotate(gamepad)
 						else
-							self.context:Rotate(IsMassUIModifierPressed())
+							self.context:Rotate(not IsMassUIModifierPressed())
 						end
 						ObjModified(self.context)
 					end,

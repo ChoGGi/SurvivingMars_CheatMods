@@ -1,10 +1,10 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Standing Unlocks Sponsor Buildings v0.2",
 	"title", "Standing Unlocks Sponsor Buildings",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
-	"saved", 1542628800,
+	"version_minor", 3,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_StandingUnlocksSponsorBuildings",
 	"steam_id", "1569118695",

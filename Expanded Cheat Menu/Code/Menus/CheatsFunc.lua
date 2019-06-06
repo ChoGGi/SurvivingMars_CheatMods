@@ -529,14 +529,17 @@ function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type)
 	end
 
 	local data = DataInstances.MapSettings_Meteor
-	local descr = data[severity] or data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
+	local descr = ChoGGi.ComFuncs.CopyTable(
+		data[severity] or data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
+	)
 	if meteors_type == "single" then
 		-- defaults to 50000, which is fine for multiple ones i suppose.
-		descr.storm_radius = 1000
-	else
-		-- reset it back to 50000 (maybe i should just copy the table?)
-		descr.storm_radius = descr:GetDefaultPropertyValue("storm_radius")
+		descr.storm_radius = 2500
+--~ 	else
+--~ 		-- reset it back to 50000 (maybe i should just copy the table?)
+--~ 		descr.storm_radius = descr:GetDefaultPropertyValue("storm_radius")
 	end
+
 	CreateGameTimeThread(function()
 		MeteorsDisaster(descr, meteors_type, pos)
 	end)
@@ -551,7 +554,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm()
 	local storm = MetatronIonStorm:new()
 	storm.expiration_time = Random(50 * const.HourDuration, 75 * const.HourDuration) + 14450
 	storm:SetPos(pos)
-	storm:SetAngle(Random(1, 21600))
+	storm:SetAngle(Random(0, 21600))
 end
 
 do -- DisasterTriggerLightningStrike
@@ -771,7 +774,12 @@ do -- DisastersTrigger
 				display = Translate(4146--[[Meteors]]),
 				types = {"storm", "multispawn"},
 			},
-			-- GreenPlanet
+			Marsquake = {
+				display = Translate(382404446864--[[Marsquake]]),
+			},
+			RainsDisaster = {
+				display = Translate(553301803055--[[Rain!]]),
+			},
 		}
 		for key, value in pairs(DataInstances) do
 			if key:sub(1, 12) == "MapSettings_" then
@@ -780,7 +788,7 @@ do -- DisastersTrigger
 				if lookup then
 					c = AddTableToList(item_list, c, value, lookup.display, name, lookup.types)
 				else
-					-- GreenPlanet
+					-- any new disasters not yet added
 					c = AddTableToList(item_list, c, value, name, name)
 				end
 			end

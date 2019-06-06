@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v13.9 (Unreleased)
+### Fixed:
+- Some log spam (thanks RustyDios).
+- Disaster>Meteor cheats weren't consistent (thanks eddy.dyer).
 
 ## v13.8 (June 01 2019)
 ### Added:

@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
---~	 "title", "Specialist By Experience v0.4",
+--~ 	 "title", "Specialist By Experience v0.4",
 	"title", "Specialist By Experience",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"saved", 1553342400,
 	"id", "ChoGGi_SpecialistByExperience",
 	"author", "ChoGGi",

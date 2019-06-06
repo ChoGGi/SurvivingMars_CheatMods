@@ -4,7 +4,8 @@ if not IsValidEntity("ApartmentsCP3") then
 	return
 end
 
-local function ChangeEntity(template)
+-- swap around default and "step" entity
+local function SwapEntity(template)
 	template.entity = "ApartmentsCP3"
 	template.entity5 = "HiveHabitat"
 	template.entitydlc5 = ""
@@ -14,7 +15,6 @@ local function ChangeEntity(template)
 	template.palette_color2 ="inside_wood"
 	template.palette_color3 ="none"
 
-
 	template.entity5 = "HiveHabitat"
 	template.palette5_color1 ="inside_accent_1"
 	template.palette5_color2 ="inside_base"
@@ -22,6 +22,6 @@ local function ChangeEntity(template)
 end
 
 function OnMsg.ClassesBuilt()
-	ChangeEntity(BuildingTemplates.Apartments)
-	ChangeEntity(ClassTemplates.Building.Apartments)
+	SwapEntity(BuildingTemplates.Apartments)
+	SwapEntity(ClassTemplates.Building.Apartments)
 end

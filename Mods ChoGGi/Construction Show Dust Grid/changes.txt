@@ -1,3 +1,10 @@
+v0.6
+Removed bandaid, if you have stuck grids: Select something from the build menu then cancel placing it.
+
+v0.5
+Rocket construction sites didn't show radius.
+Added on by default mod option to clear stuck rocket radii (fires when you apply mod options and load a save).
+
 v0.4
 Added mod option to show construction site radiuses.
 

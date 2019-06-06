@@ -64,7 +64,6 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Translate = ChoGGi.ComFuncs.Translate
 local IsObjlist = ChoGGi.ComFuncs.IsObjlist
 local SetWinObjectVis = ChoGGi.ComFuncs.SetWinObjectVis
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local Strings = ChoGGi.Strings
@@ -80,8 +79,9 @@ if debug then
 	debug_getlocal = debug.getlocal
 end
 
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_DlgExamine")
+	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgExamine")
 end
 DefineClass.ChoGGi_DlgExamine = {
 	__parents = {"ChoGGi_XWindow"},
@@ -1400,8 +1400,8 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 	if testing then
 
 		-- maybe i'll finish this one day :)
-		local name = Translate(327465361219--[[Edit]]) .. " " .. self.string_Object .. " " .. Strings[302535920001432--[[3D]]]
-		table.insert(list, 9, {name = name,
+		table.insert(list, 8, {name = Translate(327465361219--[[Edit]]) .. " "
+				.. self.string_Object .. " " .. Strings[302535920001432--[[3D]]],
 			hint = Strings[302535920001433--[[Fiddle with object angle/axis/pos and so forth.]]],
 			image = "CommonAssets/UI/Menu/Axis.tga",
 			clicked = function()
@@ -1420,7 +1420,9 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 					parent = self,
 					overwrite_check = not self.ChoGGi.UserSettings.ExamineAppendDump,
 					text = str,
-					title = Strings[302535920000048--[[View]]] .. "/" .. Strings[302535920000004--[[Dump]]] .. " " .. Translate(1000145--[[Text]]),
+					title = Strings[302535920000048--[[View]]] .. "/"
+							.. Strings[302535920000004--[[Dump]]] .. " "
+							.. Translate(1000145--[[Text]]),
 					custom_func = function(answer, overwrite)
 						if answer then
 							self:DumpExamineText(str, "DumpedExamine", overwrite and "w")
@@ -2157,12 +2159,13 @@ function ChoGGi_DlgExamine:ShowExecCodeWithCode(code)
 	self.idExecCode:SetCursor(1, #self.idExecCode:GetText())
 end
 
-function ChoGGi_DlgExamine:OpenListMenu(_, obj_name, _, hyperlink_box)
+function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 	-- id for PopupToggle
 	self.opened_list_menu_id = self.opened_list_menu_id or self.ChoGGi.ComFuncs.Random()
 
-	-- they're sent as strings, but I need to know if it's a number or string and so on
-	local obj_key, obj_type = self.ChoGGi.ComFuncs.RetProperType(obj_name)
+	local obj_name = RetName(obj)
+	-- i need to know if it's a number or string and so on
+	local obj_key, obj_type = self.ChoGGi.ComFuncs.RetProperType(obj)
 
 	local obj_value = self.obj_ref[obj_key]
 	local obj_value_str = tostring(obj_value)
@@ -2195,11 +2198,17 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj_name, _, hyperlink_box)
 			hint = Strings[302535920001539--[[Change the value of %s.]]]:format(obj_name),
 			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
 			clicked = function()
-				if obj_value_type == "string" then
-					self:ShowExecCodeWithCode([[o["]] .. obj_name .. [["] = "]] .. obj_value_str .. [["]])
+				-- numbers don't need ""
+				if obj_type == "number" then
+					obj_name = [[o[]] .. obj_name .. [[] = ]]
 				else
-					self:ShowExecCodeWithCode([[o["]] .. obj_name .. [["] = ]] .. obj_value_str)
+					obj_name = [[o["]] .. obj_name .. [["] = ]]
 				end
+				if obj_value_type == "string" then
+					obj_value_str = [["]] .. obj_value_str .. [["]]
+				end
+
+				self:ShowExecCodeWithCode(obj_name .. obj_value_str)
 			end,
 		},
 		{name = Strings[302535920000664--[[Clipboard]]],
@@ -2859,7 +2868,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 		-- parent object of attached obj
 		local parent = obj:GetParent()
 		if IsValid(parent) then
-			table_insert(list_obj_str, 2, "GetParent(): " .. self:ConvertValueToInfo(parent)
+			table_insert(list_obj_str, 2, "\nGetParent(): " .. self:ConvertValueToInfo(parent)
 				.. "\nGetAttachOffset(): " .. self:ConvertValueToInfo(obj:GetAttachOffset())
 				.. "\nGetAttachAxis(): " .. self:ConvertValueToInfo(obj:GetAttachAxis())
 				.. "\nGetAttachAngle(): " .. self:ConvertValueToInfo(obj:GetAttachAngle())
@@ -2870,21 +2879,23 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 		end
 
 		if entity then
-			if entity == "InvisibleObject" then
-				-- calling GetNumTris/GetNumVertices on InvisibleObject == CTD
-				table_insert(list_obj_str, 2,
-					"GetEntity(): " .. self:ConvertValueToInfo(entity)
-						.. ((parent or state_added) and "" or "\n"))
-			else
-				-- some entity details as well
-				table_insert(list_obj_str, 2,
-					"GetEntity(): " .. self:ConvertValueToInfo(entity)
-						.. "\nGetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
-						.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices())
-						.. ((parent or state_added) and "" or "\n"))
+			local ver_tris = ""
+			-- calling GetNumTris/GetNumVertices on InvisibleObject == CTD
+			if entity ~= "InvisibleObject" then
+				ver_tris = "\nGetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
+				.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices())
 			end
+
+			-- some entity details as well
+			table_insert(list_obj_str, 2, "GetEntity(): " .. self:ConvertValueToInfo(entity)
+				.. ver_tris
+				.. "\nGetAxis(): " .. self:ConvertValueToInfo(obj:GetAxis())
+				.. "\nGetAngle(): " .. self:ConvertValueToInfo(obj:GetAngle())
+				.. ", GetScale(): " .. self:ConvertValueToInfo(obj:GetScale())
+				.. ((parent or state_added) and "" or "\n")
+			)
 		end
-	end
+	end -- valid obj
 
 	if obj_type == "number" or obj_type == "boolean" or (obj_type == "string" and not show_all_values) then
 		if obj == "nil" then

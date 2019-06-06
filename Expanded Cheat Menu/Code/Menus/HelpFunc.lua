@@ -214,8 +214,11 @@ do -- ModUpload
 			mod_params.os_pack_path = os_dest
 			-- set last_changes to last_changes or version num
 			if not mod.last_changes or mod.last_changes == "" then
-				mod.last_changes = "https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/" .. mod.title .. "/changes.txt"
---~ 				mod.last_changes = mod.version_major .. "." .. mod.version_minor
+				if testing then
+					mod.last_changes = "https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods ChoGGi/" .. mod.title .. "/changes.txt"
+				else
+					mod.last_changes = mod.version_major .. "." .. mod.version_minor
+				end
 			end
 
 			-- skip it for testing
@@ -358,7 +361,7 @@ do -- ModUpload
 							m_c = m_c + 1
 							upload_msg[m_c] = "\n\n"
 							m_c = m_c + 1
-							upload_msg[m_c] = Strings[302535920001572--[[Warning: May instantly crash SM (not sure why).]]]
+							upload_msg[m_c] = Strings[302535920001572--[["Warning: Will instantly crash SM when calling it a second time, pack the mod manually instead."]]]
 						end
 
 						if not pack_mod then
@@ -503,7 +506,7 @@ Move archive to ""Mod folder/Pack/ModContent.hpk"""]]],
 				},
 				{title = Strings[302535920001427--[[Pack]]],
 					hint = Strings[302535920001428--[["Uploads as a packed mod (default for mod editor upload).
-This will always apply if uploading to Paradox."]]] .. "\n\n" .. Strings[302535920001572--[[Warning: Will instantly crash SM when calling it a second time.]]],
+This will always apply if uploading to Paradox."]]] .. "\n\n" .. Strings[302535920001572--[["Warning: Will instantly crash SM when calling it a second time, pack the mod manually."]]],
 					checked = true,
 				},
 				{title = Translate(186760604064--[[Test]]),
@@ -700,7 +703,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 			table.append(mod_folders, SteamWorkshopItems())
 		end
 		if Platform.pops then
-			table.append(mod_folders, io.listfiles(const.PopsModsDownloadPath, "*", "folders, non recursive"))
+			table.append(mod_folders, io.listfiles(PopsModsDownloadPath, "*", "folders, non recursive"))
 		end
 
 		-- loop through each mod and make a table of ids, so we don't have to loop for each mod below

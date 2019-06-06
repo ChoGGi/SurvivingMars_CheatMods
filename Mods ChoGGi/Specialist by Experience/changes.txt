@@ -1,3 +1,6 @@
+v0.6
+Update to Mod Options skipped a value and caused the mod not to work like it should.
+
 v0.5
 Hopefully fixed the NonSpecialistPerformancePenalty issue (thanks Dunkelzahn).
 

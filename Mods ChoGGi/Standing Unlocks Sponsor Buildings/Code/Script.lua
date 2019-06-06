@@ -39,8 +39,7 @@ function OnMsg.ModsReloaded()
 	end
 end
 
---~ function OnMsg.NewHour()
-function OnMsg.NewDay()
+local function UpdateStanding()
 	local BuildingTemplates = BuildingTemplates
 	local RivalAIs = RivalAIs
 	for id, rival in pairs(RivalAIs) do
@@ -61,3 +60,8 @@ function OnMsg.NewDay()
 		end
 	end
 end
+
+OnMsg.CityStart = UpdateStanding
+OnMsg.LoadGame = UpdateStanding
+--~ function OnMsg.NewHour()
+OnMsg.NewDay = UpdateStanding

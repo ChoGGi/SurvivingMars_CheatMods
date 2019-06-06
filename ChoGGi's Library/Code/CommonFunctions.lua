@@ -3943,9 +3943,12 @@ do -- SpawnColonist
 		if old_c then
 			colonist:SetSpecialization(old_c.specialist)
 		end
-		colonist:SetPos(pos or building and GetPassablePointNearby(building:GetPos()) or GetRandomPassablePoint())
+		colonist:SetPos((pos
+			or building and GetPassablePointNearby(building:GetPos())
+			or GetRandomPassablePoint()):SetTerrainZ()
+		)
 
-		-- if age/spec is different then updates to new entity
+		-- if age/spec is different this updates to new entity
 		colonist:ChooseEntity()
 
 		return colonist
@@ -3980,6 +3983,20 @@ function ChoGGi.ComFuncs.RetAllOfClass(cls)
 		end
 	end
 	return objects
+end
+
+function ChoGGi.ComFuncs.CopyTable(list)
+	local new
+	if list.class and g_Classes[list.class] then
+		new = list:Clone()
+	else
+		new = {}
+	end
+
+	for key, value in pairs(list) do
+		new[key] = value
+	end
+	return new
 end
 
 -- associative tables only, otherwise table.is_iequal(t1, t1)

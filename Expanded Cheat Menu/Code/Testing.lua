@@ -173,13 +173,17 @@ end
 
 --~ ChoGGi.testing.LoadMapForScreenShot("BlankBigTerraceCMix_13")
 
---~ CreateRealTimeThread(function()
---~ 	for map in pairs(MapData) do
---~ 		if map:sub(1, 5) == "Blank" then
---~ 			ChoGGi.testing.LoadMapForScreenShot(map)
+--~ if false then
+--~ 	CreateRealTimeThread(function()
+--~ 		for map in pairs(MapData) do
+--~ 			if map:sub(1, 5) == "Blank" then
+--~ 				ChoGGi.testing.LoadMapForScreenShot(map)
+--~ 				print(map)
+--~ 			end
 --~ 		end
---~ 	end
---~ end)
+--~ 	end)
+--~ end
+--~ LoadMapForScreenShot_cam_params = false
 local function Screenie(map)
 	-- a mystery without anything visible added to the ground
 	g_CurrentMissionParams.idMystery = "BlackCubeMystery"
@@ -208,7 +212,7 @@ local function Screenie(map)
 	-- wait a bit till we're sure the map is around
 	local GameState = GameState
 	while not GameState.gameplay do
-		Sleep(500)
+		Sleep(1000)
 	end
 
 	-- hide signs (just in case any are in the currently exposed sector)
@@ -217,7 +221,8 @@ local function Screenie(map)
 	local g_MapSectors = g_MapSectors
 	for sector in pairs(g_MapSectors) do
 		if type(sector) ~= "number" and sector.decal then
-			sector.decal:SetVisible(false)
+--~ 			sector.decal:SetVisible(false)
+			sector.decal:delete()
 		end
 	end
 
@@ -225,12 +230,16 @@ local function Screenie(map)
 	LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
 	SetLightmodelOverride(1, "TheMartian1_Night")
 
-	-- larger render dist (we zoom out a fair bit)
-	hr.FarZ = 7000000
-	-- zoom out for the whole map (more purple)
-	local cam_params = {GetCamera()}
-	cam_params[4] = 10500
-	SetCamera(table.unpack(cam_params))
+--~ 	if not cam_params then
+--~ 	print("cam_params",cam_params)
+		-- larger render dist (we zoom out a fair bit)
+		hr.FarZ = 7000000
+		-- zoom out for the whole map (more purple)
+--~ 		cam_params = {GetCamera()}
+		local cam_params = {GetCamera()}
+		cam_params[4] = 10500
+		SetCamera(table.unpack(cam_params))
+--~ 	end
 
 	-- remove black curtains on the sides
 	table.remove_entry(terminal.desktop, XTemplate, "OverviewMapCurtains")
@@ -241,6 +250,8 @@ local function Screenie(map)
 			value:delete()
 		end
 	end
+
+	ChoGGi.ComFuncs.CloseDialogsECM()
 	-- and a bit more delay
 	Sleep(250)
 	WaitMsg("OnRender")

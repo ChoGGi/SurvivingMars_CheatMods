@@ -102,7 +102,7 @@ ID, Text, Translation, Old Translation, Gender
 302535920000395,Yaw,
 302535920000396,"Store the position, roll, pitch, and yaw.",
 302535920000398,"Restore the position, roll, pitch, and yaw (hold Shift to restore the original instead of saved).",
-302535920000404,"Clear the position, roll, pitch, and yaw (hold Shift to also clear the originals).",
+302535920000404,"Clear the position, roll, pitch, and yaw (hold Shift to also clear the originals, also cleared when you close the dialog).",
 302535920001503,Map Name,
 302535920001505,°,
 302535920001504,Named,
@@ -1606,7 +1606,7 @@ Not noticeable unless using higher zoom.",
 302535920000656,Toggle between moving camera and selecting objects.,
 302535920000221,See log for any batch errors.,
 302535920001586,All Done!,
-302535920001572,Warning: Will instantly crash SM when calling it a second time.,
+302535920001572,"<color red>Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually instead.",
 302535920000323,Modding,
 302535920001511,"AsyncPack will crash SM after calling it once, you can use hpk to pack mods ahead of time.
 
@@ -1614,7 +1614,7 @@ https://github.com/nickelc/hpk
 <color green>hpk create ""Mod folder"" ModContent.hpk</color>
 Move archive to ""Mod folder/Pack/ModContent.hpk""",
 302535920001509,Platform,
-302535920001510,"Paradox mods platform: Leave <color 0 255 0>checked</color> to upload to Desktop only or <color 0 255 0>uncheck</color> to upload to Desktop and Console.
+302535920001510,"Paradox mods platform: Leave <color green>checked</color> to upload to Desktop only or <color green>uncheck</color> to upload to Desktop and Console.
 If you have only defined all/desktop in your metadata.lua then it'll ignore this and pick based on that.",
 302535920001506,Steam,
 302535920001507,Uncheck to upload to Paradox mods (instead of Steam).,

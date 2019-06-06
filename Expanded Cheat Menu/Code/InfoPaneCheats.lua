@@ -923,15 +923,17 @@ function Dome:CheatCrimeEvent()
 	}
 end
 
-local function LandscapeLakeCheatVol(self,num)
-	local five = 0.05 * self.volume_max
-	self:SetVolume(self.volume + (five * num))
-end
+if LandscapeLake then
+	local function LandscapeLakeCheatVol(self,num)
+		local five = 0.05 * self.volume_max
+		self:SetVolume(self.volume + (five * num))
+	end
 
-function LandscapeLake:CheatVolPlus5()
-	LandscapeLakeCheatVol(self,1)
-end
+	function LandscapeLake:CheatVolPlus5()
+		LandscapeLakeCheatVol(self,1)
+	end
 
-function LandscapeLake:CheatVolMinus5()
-	LandscapeLakeCheatVol(self,-1)
+	function LandscapeLake:CheatVolMinus5()
+		LandscapeLakeCheatVol(self,-1)
+	end
 end

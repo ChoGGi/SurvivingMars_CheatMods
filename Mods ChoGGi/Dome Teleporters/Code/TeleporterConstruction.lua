@@ -41,7 +41,8 @@ function OnMsg.LoadGame()
 --~ 	-- dbg
 --~ 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(CityDomeTeleporterConstruction[UICity])
 --~ 	dlg:EnableAutoRefresh()
---~ 	ex(CityTunnelConstruction[UICity])
+--~ 	dlg = ChoGGi.ComFuncs.OpenInExamineDlg(CityTunnelConstruction[UICity])
+--~ 	dlg:EnableAutoRefresh()
 --~ 	-- dbg
 
 	local AddPFTunnel = Tunnel.AddPFTunnel

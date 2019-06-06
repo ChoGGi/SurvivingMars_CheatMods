@@ -1301,9 +1301,12 @@ function OnMsg.ClassesBuilt()
 				-- ~anything
 				"^~(.*)",
 				[[local params = {%s}
+local t2 = type(params[2])
 if #params == 1 then
 	OpenExamine(params[1])
-elseif #params == 3 then
+elseif #params == 3
+		and type(params[3]) == "string"
+		and (t2 == "table" or t2 == "userdata") then
 	OpenExamine(params[1], {
 		parent = params[2],
 		title = params[3],

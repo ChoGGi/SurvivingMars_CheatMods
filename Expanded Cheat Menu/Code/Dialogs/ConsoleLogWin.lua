@@ -5,10 +5,10 @@
 local Translate = ChoGGi.ComFuncs.Translate
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Strings = ChoGGi.Strings
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_DlgConsoleLogWin")
+	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgConsoleLogWin")
 end
 DefineClass.ChoGGi_DlgConsoleLogWin = {
 	__parents = {"ChoGGi_XWindow"},

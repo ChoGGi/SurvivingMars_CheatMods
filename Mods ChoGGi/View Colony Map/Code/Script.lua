@@ -75,7 +75,7 @@ OnMsg.LoadGame = ResetFunc
 -- a dialog that shows an image
 --~ local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 --~ local function GetRootDialog(dlg)
---~ 	return GetParentOfKind(dlg,"ChoGGi_VCM_MapImageDlg")
+--~ 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_VCM_MapImageDlg")
 --~ end
 
 DefineClass.ChoGGi_VCM_MapImageDlg = {

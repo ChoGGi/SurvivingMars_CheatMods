@@ -56,7 +56,6 @@ ChoGGi.ComFuncs.OpenInListChoice{
 --~ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetProperType = ChoGGi.ComFuncs.RetProperType
 local Translate = ChoGGi.ComFuncs.Translate
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 local Strings = ChoGGi.Strings
@@ -66,8 +65,9 @@ local table_sort = table.sort
 local point = point
 local MeasureImage = UIL.MeasureImage
 
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_DlgListChoice")
+	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgListChoice")
 end
 DefineClass.ChoGGi_DlgListChoice = {
 	__parents = {"ChoGGi_XWindow"},

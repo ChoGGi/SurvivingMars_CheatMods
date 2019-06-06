@@ -6,12 +6,12 @@ local MeasureImage = UIL.MeasureImage
 
 local Strings = ChoGGi.Strings
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_DlgImageViewer")
+	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgImageViewer")
 end
 DefineClass.ChoGGi_DlgImageViewer = {
 	__parents = {"ChoGGi_XWindow"},
