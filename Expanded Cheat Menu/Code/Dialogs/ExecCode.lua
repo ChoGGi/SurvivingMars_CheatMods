@@ -17,8 +17,8 @@ DefineClass.ChoGGi_DlgExecCode = {
 	obj = false,
 	obj_name = false,
 
-	dialog_width = 750.0,
-	dialog_height = 240.0,
+	dialog_width = 850.0,
+	dialog_height = 650.0,
 	plugin_names = false,
 	external_cmd = false,
 	external_path = false,

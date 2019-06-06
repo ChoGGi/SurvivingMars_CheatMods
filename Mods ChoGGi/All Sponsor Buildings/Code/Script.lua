@@ -1,3 +1,7 @@
+-- See LICENSE for terms
+
+local table = table
+
 function OnMsg.ModsReloaded()
 	local BuildingTechRequirements = BuildingTechRequirements
 	local BuildingTemplates = BuildingTemplates
@@ -14,7 +18,7 @@ function OnMsg.ModsReloaded()
 
 		-- and this bugger screws me over on GetBuildingTechsStatus
 		local name = id
-		if name:find("RC") and name:find("Building") then
+		if name:sub(1, 2) == "RC" and name:sub(-8) == "Building" then
 			name = name:gsub("Building", "")
 		end
 		local idx = table.find(BuildingTechRequirements[id], "check_supply", name)

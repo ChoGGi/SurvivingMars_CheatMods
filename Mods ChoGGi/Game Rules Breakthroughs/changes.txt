@@ -1,2 +1,6 @@
+v0.3
+Fixed blackscreen (the translate func couldn't find UICity and barfed).
+Bug the devs if you want the missing descriptions (or install my library mod).
+
 v0.2
 Because of when mod options are gathered it didn't research them.

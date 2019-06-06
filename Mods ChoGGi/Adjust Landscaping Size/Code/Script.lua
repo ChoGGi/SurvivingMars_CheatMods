@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 -- we can't update mod options on our own, so we'll store per-game for now
-GlobalVar("g_ChoGGi_LandscapeSizes",false)
+GlobalVar("g_ChoGGi_LandscapeSizes", false)
 
 local mod_id = "ChoGGi_AdjustLandscapingSize"
 local mod = Mods[mod_id]
@@ -14,14 +14,16 @@ LandscapeRampController.brush_radius_min = 1
 local step_size
 local cursor_building
 local construct_type
-local function AdjustSize(size)
-	local ctrl
-	if construct_type == "Terrace" then
-		ctrl = CityLandscapeTerrace[UICity]
-	elseif construct_type == "Texture" then
-		ctrl = CityLandscapeTexture[UICity]
-	elseif construct_type == "Ramp" then
-		ctrl = CityLandscapeRamp[UICity]
+local function AdjustSize(action)
+	local ctrl = GetConstructionController()
+	if not ctrl then
+		if construct_type == "Terrace" then
+			ctrl = CityLandscapeTerrace[UICity]
+		elseif construct_type == "Texture" then
+			ctrl = CityLandscapeTexture[UICity]
+		elseif construct_type == "Ramp" then
+			ctrl = CityLandscapeRamp[UICity]
+		end
 	end
 	if not ctrl then
 		return
@@ -31,12 +33,13 @@ local function AdjustSize(size)
 		step_size = mod.options.StepSize * guim
 	end
 
-	if size == "larger" then
-		size = g_ChoGGi_LandscapeSizes[construct_type] + step_size
-	elseif size == "smaller" then
-		size = g_ChoGGi_LandscapeSizes[construct_type] - step_size
+	local size = g_ChoGGi_LandscapeSizes[construct_type]
+	if action.ActionId == "ChoGGi.AdjustLand.Larger" then
+		size = size + step_size
+	elseif action.ActionId == "ChoGGi.AdjustLand.Smaller" then
+		size = size - step_size
 	end
-	if size < 100 then
+	if size < 101 then
 		size = 100
 	end
 	-- update saved
@@ -55,9 +58,7 @@ do -- add shortcut actions
 	c = c + 1
 	Actions[c] = {ActionName = "AdjustLand: Larger",
 		ActionId = "ChoGGi.AdjustLand.Larger",
-		OnAction = function()
-			AdjustSize("larger")
-		end,
+		OnAction = AdjustSize,
 		ActionShortcut = "Shift-E",
 		ActionBindable = true,
 		ActionMode = "AdjustLandscapingSize",
@@ -66,9 +67,7 @@ do -- add shortcut actions
 	c = c + 1
 	Actions[c] = {ActionName = "AdjustLand: Smaller",
 		ActionId = "ChoGGi.AdjustLand.Smaller",
-		OnAction = function()
-			AdjustSize("smaller")
-		end,
+		OnAction = AdjustSize,
 		ActionShortcut = "Shift-Q",
 		ActionBindable = true,
 		ActionMode = "AdjustLandscapingSize",
@@ -79,7 +78,7 @@ local shortcuts_mode
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
 	local name = self.template and self.template.template_name
-	if name == "LandscapeTerrace" or name == "LandscapeRamp" or name:sub(1,16) == "LandscapeTexture" then
+	if name == "LandscapeTerrace" or name == "LandscapeRamp" or name:sub(1, 16) == "LandscapeTexture" then
 		if name == "LandscapeTerrace" then
 			construct_type = "Terrace"
 		elseif name == "LandscapeRamp" then
@@ -91,19 +90,19 @@ function CursorBuilding:GameInit(...)
 		shortcuts_mode = XShortcutsTarget and XShortcutsTarget:GetActionsMode()
 		XShortcutsSetMode("AdjustLandscapingSize")
 	end
-	return orig_CursorBuilding_GameInit(self,...)
+	return orig_CursorBuilding_GameInit(self, ...)
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done(...)
-	construct_type = false
+--~ 	construct_type = false
 	cursor_building = false
 	-- go back to normal controls
 	if shortcuts_mode then
 		XShortcutsSetMode(shortcuts_mode)
 		shortcuts_mode = false
 	end
-	return orig_CursorBuilding_Done(self,...)
+	return orig_CursorBuilding_Done(self, ...)
 end
 
 local function StartupCode()
@@ -133,7 +132,7 @@ function OnMsg.ClassesGenerate()
 	local ignore_status
 	local orig_UpdateConstructionStatuses = LandscapeConstructionController.UpdateConstructionStatuses
 	function LandscapeConstructionController:UpdateConstructionStatuses(...)
-		local ret = orig_UpdateConstructionStatuses(self,...)
+		local ret = orig_UpdateConstructionStatuses(self, ...)
 
 		-- skip doing this if ecm option is also enabled (since it does the same)
 		if mod.options.RemoveLandScapingLimits and not ChoGGi.UserSettings.RemoveLandScapingLimits then

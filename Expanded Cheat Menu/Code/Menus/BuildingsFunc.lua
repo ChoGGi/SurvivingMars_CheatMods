@@ -116,7 +116,7 @@ function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
 
 			-- and this bugger screws me over on GetBuildingTechsStatus
 			local name = id
-			if name:find("RC") and name:find("Building") then
+			if name:sub(1, 2) == "RC" and name:sub(-8) == "Building" then
 				name = name:gsub("Building", "")
 			end
 			local idx = table_find(BuildingTechRequirements[id], "check_supply", name)

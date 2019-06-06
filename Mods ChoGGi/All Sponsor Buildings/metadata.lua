@@ -1,10 +1,10 @@
 return PlaceObj("ModDef", {
-	"title", "All Sponsor Buildings v0.2",
---~ 	"title", "All Sponsor Buildings",
+--~ 	"title", "All Sponsor Buildings v0.2",
+	"title", "All Sponsor Buildings",
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-	"saved", 1542542400,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_AllSponsorBuildings",
 	"steam_id", "1568521664",

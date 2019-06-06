@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Game Rules: Breakthroughs",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
-	"saved", 1559131200,
+	"version_minor", 3,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_GameRulesBreakthroughs",
 	"steam_id", "1753933193",

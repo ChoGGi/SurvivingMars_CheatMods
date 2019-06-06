@@ -328,6 +328,8 @@ do -- RetName
 		"__class",
 		"__template",
 		"__mtl",
+		"text",
+		"value",
 	}
 
 	-- try to return a decent name for the obj, failing that return a string

@@ -1,0 +1,3 @@
+Pay 'n' Spray option (10m a spray or something)
+enabled = random colours
+disabled = reset colours
