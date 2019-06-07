@@ -230,6 +230,8 @@ do -- RetName
 
 			AddFuncs("lfs")
 			AddFuncs("debug")
+			AddFuncs("io")
+			AddFuncs("os")
 			AddFuncs("package")
 			AddFuncs("package.searchers")
 			if not ChoGGi.blacklist then

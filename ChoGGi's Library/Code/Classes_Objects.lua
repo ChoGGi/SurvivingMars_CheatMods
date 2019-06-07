@@ -74,6 +74,6 @@ ChoGGi_OBuildingEntityClass.OnSelected = AddSelectionParticlesToObj
 -- prevent an error msg in log
 ChoGGi_OBuildingEntityClass.BuildWaypointChains = empty_func
 -- round and round she goes, and where she stops BOB knows
-function ChoGGi_OBuildingEntityClass:Rotate(delta)
-	self:SetAngle((self:GetAngle() or 0) + (delta and -1 or 1)*60*60)
+function ChoGGi_OBuildingEntityClass:Rotate(toggle)
+	self:SetAngle((self:GetAngle() or 0) + (toggle and 1 or -1)*60*60)
 end

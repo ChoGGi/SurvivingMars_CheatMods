@@ -31,7 +31,8 @@ do -- MapData
 	local GetOverlayValues = GetOverlayValues
 	local FillRandomMapProps = FillRandomMapProps
 	-- exported data temp stored here
-	local export_data = objlist:new()
+	local export_data = {}
+	local export_data_dupes = {}
 	-- it's an index based table
 	local export_count = 0
 	-- stores temp landing spot
@@ -41,6 +42,17 @@ do -- MapData
 	local MapData = MapData
 	local MarsLocales = MarsLocales
 	local function AddLandingSpot(lat, long, breakthroughs)
+		-- coord names in csv
+		local lat_0, long_0 = lat < 0, long < 0
+		local lat_name, long_name = lat_0 and north or south, long_0 and west or east
+
+		-- no dupes (whoops)
+		local location = lat_name .. lat .. long_name .. long
+		if export_data_dupes[location] then
+			return
+		end
+		export_data_dupes[location] = true
+
 		-- updates map_params to location
 		GetOverlayValues(
 			lat * 60,
@@ -48,19 +60,17 @@ do -- MapData
 			landing.overlay_grids,
 			landing.map_params
 		)
-		-- updates threat/res map info
-		landing:RecalcThreatResourceLevels()
-		-- coord names in csv
-		local lat_name, long_name = south, east
+
 		-- we store all lat/long numbers as pos in csv
-		if lat < 0 then
-			lat_name = north
+		if lat_0 then
 			lat = lat - lat * 2
 		end
-		if long < 0 then
-			long_name = west
+		if long_0 then
 			long = long - long * 2
 		end
+
+		-- updates threat/res map info
+		landing:RecalcThreatResourceLevels()
 
 		local map_name, gen, params
 		if breakthroughs then
@@ -72,6 +82,7 @@ do -- MapData
 
 		local threat = landing.threat_resource_levels
 		local mapdata = MapData[map_name]
+
 		-- create item in export list
 		export_count = export_count + 1
 		export_data[export_count] = {
@@ -137,10 +148,11 @@ do -- MapData
 		landing:LoadOverlayGrids()
 
 		-- exported data temp stored here
-		export_data:Clear()
+		table.iclear(export_data)
 		export_count = 0
+		table.clear(export_data_dupes)
 
---~ ChoGGi.ComFuncs.TickStart("ExportMapDataToCSV")
+ChoGGi.ComFuncs.TickStart("ExportMapDataToCSV")
 
 		-- needed for RecalcThreatResourceLevels func
 		local orig_GameState = GameState.gameplay
@@ -165,7 +177,7 @@ do -- MapData
 		GameState.gameplay = orig_GameState
 		g_SelectedSpotChallengeMods = orig_spotchall
 
---~ ChoGGi.ComFuncs.TickEnd("ExportMapDataToCSV")
+ChoGGi.ComFuncs.TickEnd("ExportMapDataToCSV")
 
 		-- remove landing spot obj (not needed anymore)
 		landing:delete()

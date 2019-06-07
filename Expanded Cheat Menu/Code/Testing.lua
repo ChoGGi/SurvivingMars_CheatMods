@@ -45,6 +45,70 @@ end
 OnMsg.LoadGame = StartUp
 OnMsg.CityStart = StartUp
 
+local TGetID = TGetID
+-- export csv files containing translated strings
+function ChoGGi.testing.ExportTranslatedStrings()
+	local csv_columns = {
+		{"name_en", "name_en"},
+		{"name_br", "name_br"},
+		{"name_fr", "name_fr"},
+		{"name_ge", "name_ge"},
+		{"name_po", "name_po"},
+		{"name_ru", "name_ru"},
+		{"name_sc", "name_sc"},
+		{"name_sp", "name_sp"},
+	}
+	local export_bt_names = {}
+	local export_bt_desc = {}
+	local export_locations = {}
+	local export_topography = {}
+	local export_resources = {}
+	local export_threats = {}
+--~ GetLanguage()
+
+	local langs = {
+		br = ChoGGi.ComFuncs.RetLangTable("Brazilian.csv"),
+		en = TranslationTable,
+		fr = ChoGGi.ComFuncs.RetLangTable("French.csv"),
+		ge = ChoGGi.ComFuncs.RetLangTable("German.csv"),
+		po = ChoGGi.ComFuncs.RetLangTable("Polish.csv"),
+		ru = ChoGGi.ComFuncs.RetLangTable("Russian.csv"),
+		sc = ChoGGi.ComFuncs.RetLangTable("Schinese.csv"),
+		sp = ChoGGi.ComFuncs.RetLangTable("Spanish.csv"),
+	}
+
+	-- loop through and export names, then desc (two diff files)
+	local breakthroughs = Presets.TechPreset.Breakthroughs
+		for i = 1, #breakthroughs do
+			local tech = breakthroughs[i]
+			local str_id = TGetID(tech.display_name)
+			export_bt_names[i] = {
+				name_br = langs.br[str_id],
+				name_en = langs.en[str_id],
+				name_fr = langs.fr[str_id],
+				name_ge = langs.ge[str_id],
+				name_po = langs.po[str_id],
+				name_ru = langs.ru[str_id],
+				name_sc = langs.sc[str_id],
+				name_sp = langs.sp[str_id],
+			}
+			local str_id = TGetID(tech.description)
+			export_bt_desc[i] = {
+				name_br = langs.br[str_id],
+				name_en = langs.en[str_id],
+				name_fr = langs.fr[str_id],
+				name_ge = langs.ge[str_id],
+				name_po = langs.po[str_id],
+				name_ru = langs.ru[str_id],
+				name_sc = langs.sc[str_id],
+				name_sp = langs.sp[str_id],
+			}
+		end
+ex(export_bt_names)
+ex(export_bt_desc)
+
+end
+
 --~ local Translate = ChoGGi.ComFuncs.Translate
 
 --~ do -- TraceCall/Trace (commented out in CommonLua\PropertyObject.lua)
@@ -162,6 +226,7 @@ if not ChoGGi.blacklist then
 	as.Options.AutoPinRovers = false
 	as.Options.Autosave = false
 	as.Options.HintsEnabled = false
+	as.Options.TerraformingHintsEnabled = false
 	as.CompletedTutorials = as.CompletedTutorials or {}
 	as.CompletedTutorials.Tutorial1 = true
 	as.Shortcuts["ECM.Debug.Object.Delete Object(s)"] = {"Ctrl-Shift-D"}
@@ -170,9 +235,7 @@ end
 --~ 		-- stop welcome to mars msg for LoadMapForScreenShot
 --~ 		ShowStartGamePopup = empty_func
 -- this is just for Map Images Pack. it loads the map, positions camera to fixed pos, and takes named screenshot
-
 --~ ChoGGi.testing.LoadMapForScreenShot("BlankBigTerraceCMix_13")
-
 --~ if false then
 --~ 	CreateRealTimeThread(function()
 --~ 		for map in pairs(MapData) do

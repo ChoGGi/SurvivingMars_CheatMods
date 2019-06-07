@@ -3930,3 +3930,28 @@ function ChoGGi.ComFuncs.RetLastLineFromStr(str, text)
 	end
 	return ""
 end
+
+do -- RetLangTable
+	local LoadCSV = LoadCSV
+	local ProcessLoadedTables = ProcessLoadedTables
+
+	local loaded = {}
+	local empty = {}
+	local translate_gen = {}
+	local csv_load_fields = {
+		[1] = "id",
+		[2] = "text",
+		[5] = "translated",
+		[3] = "translated_new",
+		[7] = "gender"
+	}
+
+	function ChoGGi.ComFuncs.RetLangTable(filepath)
+		table_iclear(loaded)
+		table_iclear(translate_gen)
+		LoadCSV(filepath, loaded, csv_load_fields, "omit_captions")
+		local translate = {}
+		ProcessLoadedTables(loaded, nil, translate, translate_gen)
+		return translate, translate_gen
+	end
+end -- do

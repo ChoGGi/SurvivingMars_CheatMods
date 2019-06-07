@@ -2,6 +2,7 @@
 
 ## v6.9 (Unreleased)
 - Fixed bug in Settings.lua (thanks JajajTec).
+- Sped up CSV mapdata export / removed dupes (thanks ve2dmn/Gem).
 
 ## v6.8 (June 01 2019)
 - Export Map Data NESW strings were missing.
