@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-	"saved", 1534680000,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_TriboelectricScrubbersCleanDomeBuildings",
 	"pops_any_uuid", "bb7da91d-9d37-448f-9923-2c766a90f407",

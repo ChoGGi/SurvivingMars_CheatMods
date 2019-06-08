@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-	"saved", 1555070400,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_JapanSectorRewardForAll",
 	"pops_any_uuid", "2e6c3217-99de-4477-a782-a4babe735f9b",

@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-	"saved", 1534680000,
+	"saved", 0,
 	"id", "ChoGGi_PermanentDreamersLightmodel",
 	"author", "ChoGGi",
 	"image", "Preview.png",

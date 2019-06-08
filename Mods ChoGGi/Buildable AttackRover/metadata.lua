@@ -11,8 +11,7 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-	"saved", 1533297600,
-	"tags", "Buildings",
+	"saved", 0,
 	"id", "ChoGGi_BuildableAttackRover",
 	"author", "ChoGGi",
 	"code", {

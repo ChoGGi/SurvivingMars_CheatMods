@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
-	"saved", 1550664000,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixLockedWindTurbine",
 	"steam_id", "1576874324",

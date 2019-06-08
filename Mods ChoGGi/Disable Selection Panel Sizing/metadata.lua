@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-	"saved", 1546516800,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_DisableSelectionPanelSizing",
 	"steam_id", "1573994315",

@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,
-	"saved", 1553342400,
+	"saved", 0,
 	"id", "ChoGGi_SpecialistByExperience",
 	"author", "ChoGGi",
 	"code", {

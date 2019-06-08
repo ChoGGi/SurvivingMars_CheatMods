@@ -3,9 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-	"saved", 1533124800,
-	"image", "Preview.png",
-	"tags", "Gameplay",
+	"saved", 0,
 	"id", "ChoGGi_LighterDustDevils",
 	"author", "ChoGGi",
 	"code", {

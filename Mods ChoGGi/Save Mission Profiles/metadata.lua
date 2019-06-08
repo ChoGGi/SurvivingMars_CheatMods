@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-	"saved", 1551096000,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_SaveMissionProfiles",
 	"steam_id", "1667138652",

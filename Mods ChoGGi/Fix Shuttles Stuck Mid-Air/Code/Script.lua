@@ -13,7 +13,7 @@ local function CleanupShuttles()
 	-- get list of any shuttles on the GoHome command (all stuck ones are)
 	for i = 1, #FlyingObjs do
 		local obj = FlyingObjs[i]
-		if obj:isKindOf("CargoShuttle") and obj.command == "GoHome" then
+		if obj:IsKindOf("CargoShuttle") and obj.command == "GoHome" then
 			-- store it
 			c = c + 1
 			old_pos[c] = {

@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-	"saved", 1540209600,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_DomeStopFilterTraitsResetQuarantine",
 	"steam_id", "1545891654",

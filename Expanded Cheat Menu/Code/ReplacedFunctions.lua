@@ -21,7 +21,7 @@ local testing = ChoGGi.testing
 
 do -- non-class obj funcs
 
-	-- don't trigger quakes
+	-- don't trigger quakes if setting is enabled
 	SaveOrigFunc("TriggerMarsquake")
 	function TriggerMarsquake(...)
 		if not UserSettings.DisasterQuakeDisable then
@@ -29,7 +29,7 @@ do -- non-class obj funcs
 		end
 	end
 
-	-- don't trigger toxic rains
+	-- don't trigger toxic rains if setting is enabled
 	SaveOrigFunc("RainProcedure")
 	function RainProcedure(settings, ...)
 		if settings.type == "normal" or not UserSettings.DisasterRainsDisable then
@@ -44,17 +44,15 @@ do -- non-class obj funcs
 	end
 
 	-- get rid of "This savegame was loaded in the past without required mods or with an incompatible game version."
-	do -- WaitMarsMessage
-		if testing then
-			SaveOrigFunc("WaitMarsMessage")
-			function WaitMarsMessage(parent, title, msg, ...)
-				if IsT(msg) == 10888 then
-					return
-				end
-				return ChoGGi_OrigFuncs.WaitMarsMessage(parent, title, msg, ...)
+	if testing then -- WaitMarsMessage
+		SaveOrigFunc("WaitMarsMessage")
+		function WaitMarsMessage(parent, title, msg, ...)
+			if IsT(msg) == 10888 then
+				return
 			end
+			return ChoGGi_OrigFuncs.WaitMarsMessage(parent, title, msg, ...)
 		end
-	end -- do
+	end
 
 	function ReportPersistErrors(...)
 		if UserSettings.DebugPersistSaves and #__error_table__ > 0 then
@@ -201,6 +199,21 @@ do -- non-class obj funcs
 end -- do
 
 function OnMsg.ClassesGenerate()
+
+	do -- LandscapeConstructionController:Activate
+		local max_int = max_int
+
+		-- no more limit to R+T
+		SaveOrigFunc("LandscapeConstructionController", "Activate")
+		function LandscapeConstructionController:Activate(...)
+			if UserSettings.RemoveLandScapingLimits then
+				self.brush_radius_step = 100
+				self.brush_radius_max = max_int
+				self.brush_radius_min = 100
+			end
+			return ChoGGi_OrigFuncs.LandscapeConstructionController_Activate(self, ...)
+		end
+	end -- do
 
 	do -- DroneBase:RegisterDustDevil
 		local fake_devil = {drone_speed_down = 0}

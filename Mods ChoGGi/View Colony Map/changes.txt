@@ -1,3 +1,6 @@
+v1.2
+Added text to show Planetary Anomalies.
+
 v1.1
 Merged some funcs into Library mod.
 Added msg to breakthroughs telling how to update.

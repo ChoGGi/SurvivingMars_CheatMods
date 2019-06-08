@@ -13,7 +13,6 @@ return PlaceObj("ModDef", {
 	"version_minor", 1,
 	"saved", 0,
 	"image", "Preview.png",
-	"tags", "Building",
 	"id", "ChoGGi_DronesCarryAmountFix",
 	"steam_id", "1411107961",
 	"pops_any_uuid", "a100af94-09ad-46a4-8a79-95c18f590e58",

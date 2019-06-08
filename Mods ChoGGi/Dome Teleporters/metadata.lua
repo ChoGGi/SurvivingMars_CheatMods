@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 	"version", 8,
 	"version_major", 0,
 	"version_minor", 8,
-	"saved", 1558180800,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_DomeTeleporters",
 	"steam_id", "1572847416",

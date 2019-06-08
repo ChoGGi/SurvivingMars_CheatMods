@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-	"saved", 1538481600,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixGridNotWorking",
 	"steam_id", "1528605256",

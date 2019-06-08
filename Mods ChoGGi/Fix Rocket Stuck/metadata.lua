@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 13,
 	"version_major", 1,
 	"version_minor", 3,
-	"saved", 1558440000,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixExpeditionRocketStuckUnloading",
 	"steam_id", "1567028510",

@@ -1,10 +1,5 @@
 -- See LICENSE for terms
 
-if not Mods.ChoGGi_MapImagesPack then
-	ModLog("View Colony Map needs Map Images Pack installed!")
-	return
-end
-
 local table_insert = table.insert
 
 local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -80,8 +75,8 @@ OnMsg.LoadGame = ResetFunc
 
 DefineClass.ChoGGi_VCM_MapImageDlg = {
 	__parents = {"ChoGGi_XWindow"},
-	dialog_width = 500.0,
-	dialog_height = 500.0,
+	dialog_width = 525.0,
+	dialog_height = 525.0,
 }
 
 function ChoGGi_VCM_MapImageDlg:Init(parent, context)
@@ -174,7 +169,7 @@ end
 DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 	__parents = {"ChoGGi_XWindow"},
 	dialog_width = 400.0,
-	dialog_height = 500.0,
+	dialog_height = 525.0,
 
 	missing_desc = [[You need to be in-game to display this hint.
 Click to open Paradox Breakthroughs Wikipage.]],
@@ -182,6 +177,7 @@ Click to open Paradox Breakthroughs Wikipage.]],
 	translated_tech = false,
 	omega_msg = false,
 	omega_msg_count = false,
+	planet_msg = false,
 
 	onclick_count = false,
 	onclick_desc = false,
@@ -226,7 +222,8 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 	end
 
 	self.omega_msg_count = const.BreakThroughTechsPerGame + 1
-	self.omega_msg = "\n\n" .. Translate(5182--[[Omega Telescope]]) .. " " .. Translate(437247068170--[[LIST]]) .. " (maybe):\n"
+	self.omega_msg = "\n\n" .. Translate(5182--[[Omega Telescope]]) .. " " .. Translate(437247068170--[[LIST]]) .. " (maybe):"
+	self.planet_msg = "\n\n" .. Translate(11234--[[Planetary Anomaly]]) .. ":"
 
 	self.idText:SetText("Select location to update text")
 
@@ -291,6 +288,8 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(map, gen)
 	for i = 1, #display_list do
 		display_list[i] = self.translated_tech[display_list[i]]
 	end
+	-- last four are PAs
+	table_insert(display_list,9,self.planet_msg)
 
 	table_insert(display_list,self.omega_msg_count,self.omega_msg)
 	self.idText:SetText(TableConcat(display_list,"\n"))

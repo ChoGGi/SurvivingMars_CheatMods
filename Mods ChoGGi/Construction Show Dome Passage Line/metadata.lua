@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 	"version", 9,
 	"version_major", 0,
 	"version_minor", 9,
-	"saved", 1544702400,
+	"saved", 0,
 	"id", "ChoGGi_ConstructionShowDomePassageLine",
 	"author", "ChoGGi",
 	"image", "Preview.png",

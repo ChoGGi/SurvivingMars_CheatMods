@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,
-	"saved", 1554638400,
+	"saved", 0,
 	"id", "ChoGGi_EveryFlagOnWikipedia",
 	"author", "ChoGGi",
 	"image", "Preview.png",

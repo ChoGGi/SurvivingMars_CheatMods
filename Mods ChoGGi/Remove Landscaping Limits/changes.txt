@@ -1,0 +1,5 @@
+v0.3
+Reduced the min size, and re-added step size option.
+
+v0.2
+Actually removed limits.

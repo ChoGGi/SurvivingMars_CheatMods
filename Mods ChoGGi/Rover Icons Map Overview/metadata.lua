@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-	"saved", 1543924800,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_RoverIconsMapOverview",
 	"steam_id", "1582759681",

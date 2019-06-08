@@ -14,7 +14,6 @@ return PlaceObj("ModDef", {
 	"version_minor", 9,
 	"saved", 0,
 	"image", "Preview.png",
-	"tags", "Buildings",
 	"id", "ChoGGi_PortableMiner",
 	"author", "ChoGGi",
 	"steam_id", "1411113412",

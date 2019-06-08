@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
 	"title", "Medical Sanatorium",
 	"version_major", 0,
 	"version_minor", 1,
-	"saved", 1555416000,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_MedicalSanatorium",
 	"steam_id", "1714882321",

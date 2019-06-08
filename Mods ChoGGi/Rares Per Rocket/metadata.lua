@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-	"saved", 1555070400,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_RaresPerRocket",
 	"pops_any_uuid", "6ba1c4f3-0855-450f-881a-0d33b5f6f64a",
