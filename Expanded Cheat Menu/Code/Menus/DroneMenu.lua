@@ -121,20 +121,6 @@ Actions[c] = {ActionName = Strings[302535920000515--[[DroneFactory Build Speed]]
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000517--[[Drone Gravity]]],
-	ActionMenubar = "ECM.ECM.Drones",
-	ActionId = ".Drone Gravity",
-	ActionIcon = iconD,
-	RolloverText = function()
-		return SettingState(
-			ChoGGi.UserSettings.GravityDrone,
-			Strings[302535920000518--[[Change gravity of Drones.]]]
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.SetGravityDrones,
-}
-
-c = c + 1
 Actions[c] = {ActionName = Strings[302535920000519--[[Drone Battery Infinite]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Drone Battery Infinite",

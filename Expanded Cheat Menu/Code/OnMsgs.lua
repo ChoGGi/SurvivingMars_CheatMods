@@ -617,9 +617,6 @@ end
 
 function OnMsg.ChoGGi_SpawnedDrone(obj)
 	local UserSettings = ChoGGi.UserSettings
-	if UserSettings.GravityDrone then
-		obj:SetGravity(UserSettings.GravityDrone)
-	end
 	if UserSettings.SpeedDrone then
 		if obj:IsKindOf("FlyingDrone") then
 			if UserSettings.SpeedWaspDrone then
@@ -694,9 +691,6 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		-- applied to all rovers
 		if UserSettings.SpeedRC then
 			obj:SetBase("move_speed", UserSettings.SpeedRC)
-		end
-		if UserSettings.GravityRC then
-			obj:SetGravity(UserSettings.GravityRC)
 		end
 
 	elseif obj:IsKindOf("CargoShuttle") then
@@ -878,9 +872,6 @@ do -- ColonistCreated
 	local function ColonistCreated(obj, skip)
 		local UserSettings = ChoGGi.UserSettings
 
-		if UserSettings.GravityColonist then
-			obj:SetGravity(UserSettings.GravityColonist)
-		end
 		if UserSettings.NewColonistGender then
 			ChoGGi.ComFuncs.ColonistUpdateGender(obj, UserSettings.NewColonistGender)
 		end

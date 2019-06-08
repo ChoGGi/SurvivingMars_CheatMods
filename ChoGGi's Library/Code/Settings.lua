@@ -147,9 +147,6 @@ function OnMsg.ClassesBuilt()
 	-- ^ they're all UniversalStorageDepot
 	ChoGGi.Consts.RocketMaxExportAmount = GetValueBT(bt.SupplyRocket, "max_export_storage", 30 * r)
 	ChoGGi.Consts.LaunchFuelPerRocket = GetValueBT(bt.SupplyRocket, "launch_fuel", 60 * r)
-	ChoGGi.Consts.GravityColonist = 0
-	ChoGGi.Consts.GravityDrone = 0
-	ChoGGi.Consts.GravityRC = 0
 
 	ChoGGi.Consts.CameraScrollBorder = const.DefaultCameraRTS.ScrollBorder
 	ChoGGi.Consts.CameraLookatDist = const.DefaultCameraRTS.LookatDist

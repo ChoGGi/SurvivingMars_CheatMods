@@ -117,63 +117,6 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetGravityRC()
-	local default_setting = ChoGGi.Consts.GravityRC
-	local r = const.ResourceScale
-	local item_list = {
-		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
-		{text = 1, value = 1},
-		{text = 2, value = 2},
-		{text = 3, value = 3},
-		{text = 4, value = 4},
-		{text = 5, value = 5},
-		{text = 10, value = 10},
-		{text = 15, value = 15},
-		{text = 25, value = 25},
-		{text = 50, value = 50},
-		{text = 75, value = 75},
-		{text = 100, value = 100},
-		{text = 250, value = 250},
-		{text = 500, value = 500},
-	}
-
-	local hint = default_setting
-	if ChoGGi.UserSettings.GravityRC then
-		hint = ChoGGi.UserSettings.GravityRC / r
-	end
-
-	local function CallBackFunc(choice)
-		if choice.nothing_selected then
-			return
-		end
-		choice = choice[1]
-
-		local value = choice.value
-		if type(value) == "number" then
-			local value = value * r
-			local objs = UICity.labels.Rover or ""
-			for i = 1, #objs do
-				objs[i]:SetGravity(value)
-			end
-			ChoGGi.ComFuncs.SetSavedConstSetting("GravityRC", value)
-
-			ChoGGi.SettingFuncs.WriteSettings()
-			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
-				Strings[302535920000545--[[RC Gravity]]]
-			)
-		end
-	end
-
-	ChoGGi.ComFuncs.OpenInListChoice{
-		callback = CallBackFunc,
-		items = item_list,
-		title = Strings[302535920000920--[[Set RC Gravity]]],
-		hint = Strings[302535920000841--[[Current gravity: %s]]]:format(hint),
-		skip_sort = true,
-	}
-end
-
 function ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle()
 	ChoGGi.ComFuncs.SetConstsG("RCRoverTransferResourceWorkTime", ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverTransferResourceWorkTime, 0, ChoGGi.Consts.RCRoverTransferResourceWorkTime))
 	ChoGGi.ComFuncs.SetConstsG("RCTransportGatherResourceWorkTime", ChoGGi.ComFuncs.NumRetBool(Consts.RCTransportGatherResourceWorkTime, 0, ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportGatherResourceWorkTime")))

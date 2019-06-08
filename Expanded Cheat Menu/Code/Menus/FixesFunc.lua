@@ -110,20 +110,20 @@ do -- DronesNotRepairingDome
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle()
-	if ChoGGi.UserSettings.CheckForBorkedTransportPath then
-		ChoGGi.UserSettings.CheckForBorkedTransportPath = nil
-	else
-		ChoGGi.UserSettings.CheckForBorkedTransportPath = true
-		ChoGGi.MenuFuncs.StutterWithHighFPS(true)
-	end
+--~ function ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle()
+--~ 	if ChoGGi.UserSettings.CheckForBorkedTransportPath then
+--~ 		ChoGGi.UserSettings.CheckForBorkedTransportPath = nil
+--~ 	else
+--~ 		ChoGGi.UserSettings.CheckForBorkedTransportPath = true
+--~ 		ChoGGi.MenuFuncs.StutterWithHighFPS(true)
+--~ 	end
 
-	ChoGGi.SettingFuncs.WriteSettings()
-	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CheckForBorkedTransportPath),
-		Strings[302535920001266--[[Borked Transport Pathing]]]
-	)
-end
+--~ 	ChoGGi.SettingFuncs.WriteSettings()
+--~ 	MsgPopup(
+--~ 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CheckForBorkedTransportPath),
+--~ 		Strings[302535920001266--[[Borked Transport Pathing]]]
+--~ 	)
+--~ end
 
 do --ResetCommanders
 	local function ResetRover(rc)

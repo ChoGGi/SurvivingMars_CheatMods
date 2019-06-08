@@ -853,6 +853,9 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 		text = TableToLuaCode(ChoGGi.UserSettings),
 		hint_ok = Strings[302535920001244--[["Saves settings to file, and applies any changes."]]],
 		hint_cancel = Strings[302535920001245--[[Abort without touching anything.]]],
+		update_func = function()
+			return TableToLuaCode(ChoGGi.UserSettings)
+		end,
 		custom_func = function(answer, _, obj)
 			if answer then
 				-- get text and update settings file
@@ -860,10 +863,11 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 				if not err then
 					ChoGGi.UserSettings = ChoGGi.SettingFuncs.WriteSettings(settings)
 					-- for now just updates console examine list
-					Msg("ChoGGi_SettingsUpdated")
+					Msg("ChoGGi_SettingsUpdated", settings)
 					local d, m, h = FormatElapsedTime(os.time(), "dhm")
+					local msg = Translate(4273--[[Saved on <save_date>]]):gsub("<save_date>", ": " .. d .. ":" .. m .. ":" .. h)
 					MsgPopup(
-						Translate(4273--[[Saved on <save_date>]]):gsub("<save_date>", ": " .. d .. ":" .. m .. ":" .. h),
+						msg,
 						Strings[302535920001242--[[Edit ECM Settings]]]
 					)
 				end

@@ -106,7 +106,8 @@ return PlaceObj("ModDef", {
 		-- gee sure would be nice to load these like the devs do, but i suppose it's too much work to limit dofile env.
 	},
 
-	"description", [[and Modding Tools. Enables cheat menu, cheat info pane, console, examine object, adds a few hundred menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
+	"description", [[and Modding Tools. Enables cheat menu, cheat info pane, console, examine object, adds a few hundred menu items.
+Requests are welcome.
 
 If you forget where a menu item is: Menu>Help>List All Menu Items (use "Filter Items" at the bottom).
 

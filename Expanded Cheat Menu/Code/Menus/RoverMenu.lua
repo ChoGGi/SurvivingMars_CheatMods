@@ -44,20 +44,6 @@ Actions[c] = {ActionName = Strings[302535920000543--[[RC Move Speed]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000545--[[RC Gravity]]],
-	ActionMenubar = "ECM.ECM.Rovers",
-	ActionId = ".RC Gravity",
-	ActionIcon = iconRC,
-	RolloverText = function()
-		return SettingState(
-			ChoGGi.UserSettings.GravityRC,
-			Strings[302535920000546--[[Change gravity of RCs.]]]
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.SetGravityRC,
-}
-
-c = c + 1
 Actions[c] = {ActionName = Strings[302535920000549--[[RC Instant Resource Transfer]]],
 	ActionMenubar = "ECM.ECM.Rovers",
 	ActionId = ".RC Transport Instant Transfer",

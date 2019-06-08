@@ -177,6 +177,9 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 		local value = choice[1].value
 		if type(value) == "number" then
 			local const = const
+			ChoGGi.ComFuncs.SetSavedConstSetting("mediumGameSpeed", value)
+			ChoGGi.ComFuncs.SetSavedConstSetting("fastGameSpeed", value)
+
 			-- update values that are checked when speed is changed
 			const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * value
 			const.fastGameSpeed = ChoGGi.Consts.fastGameSpeed * value
@@ -189,9 +192,14 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 				ChangeGameSpeedState(1)
 			end
 
-			-- update settings
-			ChoGGi.UserSettings.mediumGameSpeed = const.mediumGameSpeed
-			ChoGGi.UserSettings.fastGameSpeed = const.fastGameSpeed
+			-- update saved settings
+			if const.mediumGameSpeed == ChoGGi.Consts.mediumGameSpeed then
+				ChoGGi.UserSettings.mediumGameSpeed = nil
+				ChoGGi.UserSettings.fastGameSpeed = nil
+			else
+				ChoGGi.UserSettings.mediumGameSpeed = const.mediumGameSpeed
+				ChoGGi.UserSettings.fastGameSpeed = const.fastGameSpeed
+			end
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(

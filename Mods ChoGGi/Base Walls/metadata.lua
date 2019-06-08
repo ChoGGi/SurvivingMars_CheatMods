@@ -33,5 +33,8 @@ The change skin will switch between the passage skins.
 Use Shift-E/Shift-Q while building to adjust the length (change in Options>Bindings).
 I tried adding gamepad bindings, but it seems to eat them (no error msgs).
 
-There are buttons you can use to rotate/adjust length once placed (gamepads do work with them).]],
+There are buttons you can use to rotate/adjust length once placed (gamepads do work with them).
+
+
+You may need to use [url=https://steamcommunity.com/sharedfiles/filedetails/1763802580]Remove Building Limits[/url] when adding more than one to a single hex area.]],
 })

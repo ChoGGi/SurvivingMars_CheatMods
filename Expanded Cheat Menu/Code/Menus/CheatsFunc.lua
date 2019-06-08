@@ -927,7 +927,7 @@ function ChoGGi.MenuFuncs.MapExploration()
 	local UICity = UICity
 	local title = Strings[302535920001355--[[Map]]] .. " " .. Translate(5422--[[Exploration]])
 	local hint_core = Strings[302535920000253--[[Core: Repeatable, exploit core resources.]]]
-	local hint_deep = Strings[302535920000254--[[Deep: Toggleable, exploit deep resources.]]]
+	local hint_deep = Strings[302535920000254--[[Deep: unlock tech to exploit deep resources.]]]
 	local item_list = {
 		{text = Strings[302535920000258--[[Reveal Map]]], value = 12, hint = Strings[302535920000259--[[Reveals the map squares]]]},
 		{text = Strings[302535920000260--[[Reveal Map (Deep)]]], value = 13, hint = Strings[302535920000261--[[Reveals the map and unlocks "Deep" resources]]]},
@@ -952,10 +952,13 @@ function ChoGGi.MenuFuncs.MapExploration()
 			return
 		end
 		local function ExploreDeep()
-			ChoGGi.ComFuncs.SetConstsG("DeepScanAvailable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
-			ChoGGi.ComFuncs.SetConstsG("IsDeepWaterExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
-			ChoGGi.ComFuncs.SetConstsG("IsDeepMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
-			ChoGGi.ComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+--~ 			ChoGGi.ComFuncs.SetConstsG("DeepScanAvailable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
+--~ 			ChoGGi.ComFuncs.SetConstsG("IsDeepWaterExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+--~ 			ChoGGi.ComFuncs.SetConstsG("IsDeepMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+--~ 			ChoGGi.ComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+			GrantTech("DeepScanning")
+			GrantTech("DeepWaterExtraction")
+			GrantTech("DeepMetalExtraction")
 		end
 		local function ExploreCore()
 			Msg("TechResearched", "CoreWater", UICity)
@@ -974,13 +977,17 @@ function ChoGGi.MenuFuncs.MapExploration()
 			elseif value == 3 then
 				ExploreCore()
 			elseif value == 4 then
-				ChoGGi.ComFuncs.SetConstsG("DeepScanAvailable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
+--~ 				ChoGGi.ComFuncs.SetConstsG("DeepScanAvailable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
+				GrantTech("DeepScanning")
 			elseif value == 5 then
-				ChoGGi.ComFuncs.SetConstsG("IsDeepWaterExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+--~ 				ChoGGi.ComFuncs.SetConstsG("IsDeepWaterExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+				GrantTech("DeepWaterExtraction")
 			elseif value == 6 then
-				ChoGGi.ComFuncs.SetConstsG("IsDeepMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+				GrantTech("DeepMetalExtraction")
+--~ 				ChoGGi.ComFuncs.SetConstsG("IsDeepMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
 			elseif value == 7 then
-				ChoGGi.ComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+				GrantTech("DeepMetalExtraction")
+--~ 				ChoGGi.ComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
 			elseif value == 8 then
 				Msg("TechResearched", "CoreWater", UICity)
 			elseif value == 9 then

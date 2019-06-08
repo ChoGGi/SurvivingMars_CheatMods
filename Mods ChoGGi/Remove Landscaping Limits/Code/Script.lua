@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ApplyModOptions(id)
-	if id ~= "ChoGGi_AdjustLandscapingSize" then
+	if id ~= "ChoGGi_RemoveLandscapingLimits" then
 		return
 	end
 

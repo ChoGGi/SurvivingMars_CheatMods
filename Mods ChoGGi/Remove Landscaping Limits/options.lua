@@ -1,4 +1,4 @@
-DefineClass("ModOptions_ChoGGi_AdjustLandscapingSize", {
+DefineClass("ModOptions_ChoGGi_RemoveLandscapingLimits", {
 	__parents = {
 		"ModOptionsObject",
 	},

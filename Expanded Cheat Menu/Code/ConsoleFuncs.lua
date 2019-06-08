@@ -59,6 +59,7 @@ local ToolsMenuPopupToggle_list = {
 				height = 1000,
 				text = LoadLogfile(),
 				title = Strings[302535920000563],
+				update_func = LoadLogfile,
 			}
 		end,
 	},
@@ -72,6 +73,7 @@ local ToolsMenuPopupToggle_list = {
 			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 				text = TableConcat(ModMessageLog, "\n"),
 				title = Strings[302535920000071],
+				update_func = ModMessageLog,
 			}
 		end,
 	},

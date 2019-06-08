@@ -103,20 +103,6 @@ Actions[c] = {ActionName = Strings[302535920000379--[[Add Or Remove Applicants]]
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000381--[[Colonists Gravity]]],
-	ActionMenubar = "ECM.ECM.Colonists",
-	ActionId = ".Colonists Gravity",
-	ActionIcon = StarkFistOfRemoval,
-	RolloverText = function()
-		return SettingState(
-			ChoGGi.UserSettings.GravityColonist,
-			Strings[302535920000382--[[Change gravity of Colonists.]]]
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.SetColonistsGravity,
-}
-
-c = c + 1
 Actions[c] = {ActionName = Translate(4565--[[Oxygen max outside time]]),
 	ActionMenubar = "ECM.ECM.Colonists",
 	ActionId = ".Oxygen max outside time",

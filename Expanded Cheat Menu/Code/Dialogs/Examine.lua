@@ -1218,6 +1218,13 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					parent = self,
 					overwrite_check = not not self.ChoGGi.UserSettings.ExamineAppendDump,
 					text = str,
+					update_func = function()
+						if self.ChoGGi.UserSettings.ExamineTextType then
+							return self:GetCleanText()
+						else
+							return ValueToLuaCode(self.obj_ref)
+						end
+					end,
 					scrollto = scrolled_text,
 					title = title,
 					hint_ok = Strings[302535920000047]:format(ConvertToOSPath("AppData/")),
@@ -1420,6 +1427,9 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 					parent = self,
 					overwrite_check = not self.ChoGGi.UserSettings.ExamineAppendDump,
 					text = str,
+					update_func = function()
+						return self.idText:GetText()
+					end,
 					title = Strings[302535920000048--[[View]]] .. "/"
 							.. Strings[302535920000004--[[Dump]]] .. " "
 							.. Translate(1000145--[[Text]]),

@@ -3,9 +3,10 @@
 -- displays text in an editable text box
 
 local CreateRealTimeThread = CreateRealTimeThread
-local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
+local TableConcat = ChoGGi.ComFuncs.TableConcat
+local Strings = ChoGGi.Strings
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
@@ -20,6 +21,9 @@ DefineClass.ChoGGi_DlgMultiLineText = {
 	dialog_height = 600.0,
 
 	plugin_names = {"ChoGGi_XCodeEditorPlugin"},
+
+	-- sent with context, used to update text (if viewing a log or something from examine etc)
+	update_func = false,
 }
 
 function ChoGGi_DlgMultiLineText:Init(parent, context)
@@ -28,8 +32,6 @@ function ChoGGi_DlgMultiLineText:Init(parent, context)
 
 	-- store func for calling from :OnShortcut
 	self.retfunc = context.custom_func
-	-- overwrite dumped file
-	self.overwrite = context.overwrite
 
 	self.title = context.title or Strings[302535920001301--[[Edit Text]]]
 
@@ -77,10 +79,24 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		Dock = "left",
 		Text = Translate(6878--[[OK]]),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
-		RolloverText = context.hint_ok or Translate(6878--[[OK]]),
+		RolloverText = context.hint_ok or Strings[302535920000382--[[Closes dialogs and sends positive return value.]]],
 		OnPress = self.idOkay_OnPress,
 	}, self.idButtonContainer)
 
+	self.update_func = context.update_func
+	if type(self.update_func) == "function" then
+		self.idUpdateText = g_Classes.ChoGGi_XButton:new({
+			Id = "idUpdateText",
+			Dock = "left",
+			Text = Strings[302535920001026--[[Update Text]]],
+--~ 			Background = g_Classes.ChoGGi_XButton.bg_green,
+			RolloverText = Strings[302535920000381--[[Replaces text using the same func that created it.]]],
+			OnPress = self.idUpdateText_OnPress,
+		}, self.idButtonContainer)
+	end
+
+	-- overwrite dumped file
+	self.overwrite = context.overwrite
 	if context.overwrite_check then
 		self.idOverwrite = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idOverwrite",
@@ -266,6 +282,20 @@ function ChoGGi_DlgMultiLineText:ShowCodeHighlights()
 end
 
 --
+function ChoGGi_DlgMultiLineText:idUpdateText_OnPress()
+	self = GetRootDialog(self)
+	local text = self.update_func()
+	local text_type = type(text)
+
+	if text_type == "string" then
+		self.idEdit:SetText(text)
+	elseif text_type == "table" then
+		self.idEdit:SetText(TableConcat(text, "\n"))
+	else
+		self.idEdit:SetText(tostring(text))
+	end
+end
+
 function ChoGGi_DlgMultiLineText:idOkay_OnPress()
 	GetRootDialog(self):Close(true)
 end

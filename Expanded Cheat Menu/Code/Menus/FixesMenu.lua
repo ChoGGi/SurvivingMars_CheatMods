@@ -234,21 +234,21 @@ Actions[c] = {ActionName = Strings[302535920000938--[[Toggles]]],
 	ActionSortKey = "6Toggles",
 }
 
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920001266--[[Borked Transport Pathing]]],
-	ActionMenubar = "ECM.ECM.Fixes.Toggles",
-	ActionId = ".Borked Transport Pathing",
-	ActionIcon = icon,
-	RolloverText = function()
-		return SettingState(
-			ChoGGi.UserSettings.CheckForBorkedTransportPath,
-			Strings[302535920001268--[["RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed).
+--~ c = c + 1
+--~ Actions[c] = {ActionName = Strings[302535920001266--[[Borked Transport Pathing]]],
+--~ 	ActionMenubar = "ECM.ECM.Fixes.Toggles",
+--~ 	ActionId = ".Borked Transport Pathing",
+--~ 	ActionIcon = icon,
+--~ 	RolloverText = function()
+--~ 		return SettingState(
+--~ 			ChoGGi.UserSettings.CheckForBorkedTransportPath,
+--~ 			Strings[302535920001268--[["RC Transports on a route have a certain tendency to get stuck and bog the game down (high speed feels like normal speed).
 
-This'll check for and stop any borked ones (it'll show a popup msg when it stops one)."]]]
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle,
-}
+--~ This'll check for and stop any borked ones (it'll show a popup msg when it stops one)."]]]
+--~ 		)
+--~ 	end,
+--~ 	OnAction = ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle,
+--~ }
 
 c = c + 1
 Actions[c] = {ActionName = Strings[302535920000248--[[Colonists Stuck Outside Service Buildings]]],

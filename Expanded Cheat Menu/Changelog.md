@@ -1,6 +1,11 @@
 ## ECM Changelog
 
 ## v14.0 (Unreleased)
+### Changed:
+- Added Update Text func/button to MultiLineText (only shows up for some stuff like view console text, or view text in examine).
+
+### Removed:
+- Gravity options (you can use Bouncy Drones if you want it).
 
 ## v13.9 (June 07 2019)
 ### Changed:

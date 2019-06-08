@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v7.0 (Unreleased)
+- Added Update Text func/button to MultiLineText.
 
 ## v6.9 (June 07 2019)
 - Fixed bug in Settings.lua (thanks JajajTec).
