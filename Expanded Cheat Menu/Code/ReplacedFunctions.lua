@@ -200,50 +200,6 @@ do -- non-class obj funcs
 	end
 end -- do
 
-do -- Class:Func needed before Generate
-	do -- LandscapeConstructionController:UpdateConstructionStatuses
-		local ignore_status
---~ -- per building
---~ ClassTemplates.Building.LandscapeTerrace.max_boundary = max_int
---~ -- none-marked
---~ const.Terraforming.LandscapeMaxBoundary = max_int
---~ const.Terraforming.LandscapeMaxHexes = max_int
-
-		SaveOrigFunc("LandscapeConstructionController", "UpdateConstructionStatuses")
-		function LandscapeConstructionController:UpdateConstructionStatuses(...)
-			local ret = ChoGGi_OrigFuncs.LandscapeConstructionController_UpdateConstructionStatuses(self, ...)
-			if UserSettings.RemoveLandScapingLimits then
-				-- build our list of error to warning statuses
-				if not ignore_status then
-					local cs = ConstructionStatus
-					ignore_status = {
-						[cs.LandscapeTooLarge] = true,
-						[cs.LandscapeUnavailable] = true,
-						[cs.LandscapeLowTerrain] = true,
-						[cs.BlockingObjects] = true,
-						[cs.LandscapeRampUnlinked] = true,
-					}
-					-- can cause crashing
-					if testing then
-						ignore_status[cs.LandscapeOutOfBounds] = true
-					end
-				end
-
-				-- change all the ones we care about to warnings
-				local statuses = self.construction_statuses or ""
-				for i = 1, #statuses do
-					local status = statuses[i]
-					if ignore_status[status] then
-						status.type = "warning"
-					end
-				end
-			end
-
-			return ret
-		end
-	end -- do
-end -- do
-
 function OnMsg.ClassesGenerate()
 
 	do -- DroneBase:RegisterDustDevil
@@ -1231,24 +1187,6 @@ function OnMsg.ClassesBuilt()
 			end
 		end
 	end -- do
-
-	-- so we can build without (as many) limits
-	SaveOrigFunc("ConstructionController", "UpdateConstructionStatuses")
-	function ConstructionController:UpdateConstructionStatuses(...)
-		local ret = ChoGGi_OrigFuncs.ConstructionController_UpdateConstructionStatuses(self, ...)
-		if UserSettings.RemoveBuildingLimits then
-
-			local statuses = self.construction_statuses or ""
-			for i = 1, #statuses do
-				local status = statuses[i]
-				if status.type == "error" then
-					status.type = "warning"
-				end
-			end
-
-		end
-		return ret
-	end -- ConstructionController:UpdateConstructionStatuses
 
 	-- so we can do long spaced tunnels
 	SaveOrigFunc("TunnelConstructionController", "UpdateConstructionStatuses")

@@ -15,8 +15,7 @@ end
 -- bugfix?
 -- got me, MapTools shouldn't be doing anything
 if not rawget(_G, "DroneDebug") then
-	DroneDebug = {}
-	DroneDebug.ShowInfo = empty_func
+	DroneDebug = {ShowInfo = empty_func}
 end
 
 -- makes the log visible during loading/saving
@@ -79,3 +78,11 @@ f.Rwin = nil
 f.MouseL = nil
 f.MouseR = nil
 f.MouseM = nil
+
+local us = ChoGGi.UserSettings
+if us.RemoveLandScapingLimits then
+	ChoGGi.ComFuncs.SetLandScapingLimits(true)
+end
+if us.RemoveBuildingLimits then
+	ChoGGi.ComFuncs.SetBuildingLimits(true)
+end

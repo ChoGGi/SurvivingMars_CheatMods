@@ -19,13 +19,17 @@ end
 do -- MapData
 	local function MapChallengeRatingToDifficulty(rating)
 		if rating <= 59 then
-			return 4154 -- Relatively Flat
+			-- Relatively Flat
+			return 4154
 		elseif rating <= 99 then
-			return 4155 -- Rough
+			-- Rough
+			return 4155
 		elseif rating <= 139 then
-			return 4156 -- Steep
+			-- Steep
+			return 4156
 		else
-			return 4157 -- Mountainous
+			-- Mountainous
+			return 4157
 		end
 	end
 	local GetOverlayValues = GetOverlayValues

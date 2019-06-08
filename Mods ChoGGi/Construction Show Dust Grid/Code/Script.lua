@@ -126,7 +126,7 @@ end
 
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
-	-- skip if disable or not a dusty building
+	-- skip if disabled or not a RequiresMaintenance building
 	if not (mod_Option1 or self.template:IsKindOf("RequiresMaintenance")) then
 		return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 	end

@@ -45,46 +45,57 @@ end
 OnMsg.LoadGame = StartUp
 OnMsg.CityStart = StartUp
 
-local TGetID = TGetID
--- export csv files containing translated strings
-function ChoGGi.testing.ExportTranslatedStrings()
+do -- ExportTranslatedStrings
+	local table_sort = table.sort
+	local CmpLower = CmpLower
+	local function SortList(list)
+		table_sort(list, function(a, b)
+			return CmpLower(a.name_en, b.name_en)
+		end)
+		return list
+	end
+
+	local TGetID = TGetID
 	local csv_columns = {
-		{"name_en", "name_en"},
-		{"name_br", "name_br"},
-		{"name_fr", "name_fr"},
-		{"name_ge", "name_ge"},
-		{"name_po", "name_po"},
-		{"name_ru", "name_ru"},
-		{"name_sc", "name_sc"},
-		{"name_sp", "name_sp"},
+		"name_en",
+		"name_br",
+		"name_fr",
+		"name_ge",
+		"name_po",
+		"name_ru",
+		"name_sc",
+		"name_sp",
 	}
-	local export_bt_names = {}
-	local export_bt_desc = {}
-	local export_locations = {}
-	local export_topography = {}
-	local export_resources = {}
-	local export_threats = {}
---~ GetLanguage()
+	local langs
+	local Translate = ChoGGi.ComFuncs.Translate
+	local export_data = {}
 
-	local langs = {
-		br = ChoGGi.ComFuncs.RetLangTable("Brazilian.csv"),
-		en = TranslationTable,
-		fr = ChoGGi.ComFuncs.RetLangTable("French.csv"),
-		ge = ChoGGi.ComFuncs.RetLangTable("German.csv"),
-		po = ChoGGi.ComFuncs.RetLangTable("Polish.csv"),
-		ru = ChoGGi.ComFuncs.RetLangTable("Russian.csv"),
-		sc = ChoGGi.ComFuncs.RetLangTable("Schinese.csv"),
-		sp = ChoGGi.ComFuncs.RetLangTable("Spanish.csv"),
-	}
+	-- export csv files containing translated strings
+	function ChoGGi.testing.ExportTranslatedStrings()
+		local time = os.time()
 
-	-- loop through and export names, then desc (two diff files)
-	local breakthroughs = Presets.TechPreset.Breakthroughs
+		-- lists of str_id > string
+		langs = {
+			en = TranslationTable,
+			br = ChoGGi.ComFuncs.RetLangTable("Brazilian.csv"),
+			fr = ChoGGi.ComFuncs.RetLangTable("French.csv"),
+			ge = ChoGGi.ComFuncs.RetLangTable("German.csv"),
+			po = ChoGGi.ComFuncs.RetLangTable("Polish.csv"),
+			ru = ChoGGi.ComFuncs.RetLangTable("Russian.csv"),
+			sc = ChoGGi.ComFuncs.RetLangTable("Schinese.csv"),
+			sp = ChoGGi.ComFuncs.RetLangTable("Spanish.csv"),
+		}
+
+		-- breakthroughs
+		local export_bt_names = {}
+		table.iclear(export_data)
+		local breakthroughs = Presets.TechPreset.Breakthroughs
 		for i = 1, #breakthroughs do
 			local tech = breakthroughs[i]
 			local str_id = TGetID(tech.display_name)
 			export_bt_names[i] = {
-				name_br = langs.br[str_id],
 				name_en = langs.en[str_id],
+				name_br = langs.br[str_id],
 				name_fr = langs.fr[str_id],
 				name_ge = langs.ge[str_id],
 				name_po = langs.po[str_id],
@@ -92,10 +103,33 @@ function ChoGGi.testing.ExportTranslatedStrings()
 				name_sc = langs.sc[str_id],
 				name_sp = langs.sp[str_id],
 			}
-			local str_id = TGetID(tech.description)
-			export_bt_desc[i] = {
-				name_br = langs.br[str_id],
+			str_id = TGetID(tech.description)
+			export_data[i] = {
+				-- we need to add the tech as context to update the string params
+				name_en = Translate(langs.en[str_id],tech),
+				name_br = Translate(langs.br[str_id],tech),
+				name_fr = Translate(langs.fr[str_id],tech),
+				name_ge = Translate(langs.ge[str_id],tech),
+				name_po = Translate(langs.po[str_id],tech),
+				name_ru = Translate(langs.ru[str_id],tech),
+				name_sc = Translate(langs.sc[str_id],tech),
+				name_sp = Translate(langs.sp[str_id],tech),
+			}
+
+		end
+		SaveCSV("AppData/export_bt_names-" .. time .. ".csv", export_bt_names, csv_columns, csv_columns)
+		SaveCSV("AppData/export_bt_desc-" .. time .. ".csv", export_data, csv_columns, csv_columns)
+
+		-- location names
+		table.iclear(export_data)
+		local MarsLocales = MarsLocales
+		local c = 0
+		for  _, location in pairs(MarsLocales) do
+			local str_id = TGetID(location)
+			c = c + 1
+			export_data[c] = {
 				name_en = langs.en[str_id],
+				name_br = langs.br[str_id],
 				name_fr = langs.fr[str_id],
 				name_ge = langs.ge[str_id],
 				name_po = langs.po[str_id],
@@ -104,12 +138,55 @@ function ChoGGi.testing.ExportTranslatedStrings()
 				name_sp = langs.sp[str_id],
 			}
 		end
-ex(export_bt_names)
-ex(export_bt_desc)
+		SortList(export_data)
+		SaveCSV("AppData/export_locations-" .. time .. ".csv", export_data, csv_columns, csv_columns)
 
-end
+		table.iclear(export_data)
+		local export_misc = {
+				-- topography
+				4154,-- Relatively Flat
+				4155,-- Rough
+				4156,-- Steep
+				4157,-- Mountainous
+				-- threats
+				4142,-- Dust Devils
+				4148,-- Cold Waves
+				4144,-- Dust Storms
+				4146,-- Meteors
+				-- resources
+				3514,-- Metals
+				4139,-- Rare Metals
+				3513,-- Concrete
+				681,-- Water
+				-- misc
+				284813068603,-- Topography
+				7396,-- Location
+				11457,-- Coordinates
+				11451,-- Breakthrough
+				4141,-- Temperature
+				4135,-- Altitude
+				692,-- Resources
+				4271,-- THREATS
+				10941,-- Rating (ASC)
+				10943,-- Rating (DESC)
+		}
+		for i = 1, #export_misc do
+			local str_id = export_misc[i]
+			export_data[i] = {
+				name_en = langs.en[str_id],
+				name_br = langs.br[str_id],
+				name_fr = langs.fr[str_id],
+				name_ge = langs.ge[str_id],
+				name_po = langs.po[str_id],
+				name_ru = langs.ru[str_id],
+				name_sc = langs.sc[str_id],
+				name_sp = langs.sp[str_id],
+			}
+		end
+		SaveCSV("AppData/export_misc-" .. time .. ".csv", export_data, csv_columns, csv_columns)
 
---~ local Translate = ChoGGi.ComFuncs.Translate
+	end
+end -- do
 
 --~ do -- TraceCall/Trace (commented out in CommonLua\PropertyObject.lua)
 --~ -- g_traceMeta

@@ -4,14 +4,6 @@ DefineClass("ModOptions_ChoGGi_AdjustLandscapingSize", {
 	},
 	properties = {
 		{
-			default = 5,
-			editor = "number",
-			id = "StepSize",
-			max = 100,
-			min = 1,
-			name = "Step Size",
-		},
-		{
 			default = true,
 			editor = "bool",
 			id = "RemoveLandScapingLimits",

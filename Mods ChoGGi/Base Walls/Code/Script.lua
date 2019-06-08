@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+-- I use the mirror ball thingy to hide my shame
 if not g_AvailableDlc.contentpack1 then
 	return
 end
@@ -52,6 +53,13 @@ local wall_types = {
 		display_name_pl = "Turn Walls Large",
 		display_icon = icon_path .. "wall_turnlarge.png",
 		description = description .. "Large turn gate.",
+	},
+	ChoGGi_BaseWallRamp = {
+		build_pos = 7,
+		display_name = "Drone Ramp",
+		display_name_pl = "Drone Ramps",
+		display_icon = "UI/Icons/Buildings/passage_ramp.tga",
+		description = description .. "Help the wee ones over the walls.",
 	},
 }
 
@@ -110,7 +118,7 @@ local corner_types = {
 	},
 }
 
--- - + numbers intertwined
+-- + - numbers intertwined (spacing between passages)
 local offsets = {}
 do -- offset points
 	local c_m = -1
@@ -372,6 +380,10 @@ function ChoGGi_BaseWalls:SpawnWallAttaches(cursor_obj, count)
 		shame:SetColorModifier(0)
 		shame:SetState("static")
 		self:Attach(shame)
+
+	elseif id == "ChoGGi_BaseWallRamp" then
+		self:SpawnBaseObj("PassageRamp")
+
 	end
 
 	-- we don't use attached_objs for the building placement version

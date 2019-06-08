@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v6.9 (Unreleased)
+## v7.0 (Unreleased)
+
+## v6.9 (June 07 2019)
 - Fixed bug in Settings.lua (thanks JajajTec).
 - Sped up CSV mapdata export / removed dupes (thanks ve2dmn/Gem).
 

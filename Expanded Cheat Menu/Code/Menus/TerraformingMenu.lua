@@ -110,7 +110,6 @@ Actions[c] = {ActionName = Strings[302535920000560--[[Remove LandScaping Limits]
 		return ChoGGi.ComFuncs.SettingState(
 			ChoGGi.UserSettings.RemoveLandScapingLimits,
 			Strings[302535920000709--[["Allows you to start building on uneven ground, and removes the size limits."]]]
-				.. "\n\n" .. Strings[302535920000866--[[Restart to disable.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.RemoveLandScapingLimits_Toggle,

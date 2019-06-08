@@ -1528,6 +1528,7 @@ end
 
 function ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle()
 	ChoGGi.UserSettings.RemoveBuildingLimits = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.RemoveBuildingLimits)
+	ChoGGi.ComFuncs.SetBuildingLimits(ChoGGi.UserSettings.RemoveBuildingLimits)
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
@@ -1535,6 +1536,7 @@ function ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle()
 		Strings[302535920000230--[[Remove Building Limits]]]
 	)
 end
+
 do -- Building_wonder_Toggle
 	local function SetWonders(bool)
 		local BuildingTemplates = BuildingTemplates

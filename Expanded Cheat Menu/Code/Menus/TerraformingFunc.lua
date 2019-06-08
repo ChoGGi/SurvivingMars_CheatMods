@@ -76,6 +76,7 @@ end
 
 function ChoGGi.MenuFuncs.RemoveLandScapingLimits_Toggle()
 	ChoGGi.UserSettings.RemoveLandScapingLimits = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.RemoveLandScapingLimits)
+	ChoGGi.ComFuncs.SetLandScapingLimits(ChoGGi.UserSettings.RemoveLandScapingLimits)
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(

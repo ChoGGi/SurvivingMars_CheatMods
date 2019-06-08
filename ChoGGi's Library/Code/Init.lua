@@ -69,6 +69,7 @@ ChoGGi = {
 		SanatoriumTraits = {},
 		Sponsors = {},
 		Commanders = {},
+		ConstructionStatus = {},
 		-- don't want to have to declare these more than i have to
 		const_names = {
 			"BreakThroughTechsPerGame",

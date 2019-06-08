@@ -1,0 +1,2 @@
+v0.2
+Shuttles with a task request that has an invalid building (thanks BrowncoatTrekky).

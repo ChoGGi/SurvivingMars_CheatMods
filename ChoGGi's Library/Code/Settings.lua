@@ -3,88 +3,97 @@
 local Translate = ChoGGi.ComFuncs.Translate
 local Strings = ChoGGi.Strings
 
--- called below and when translation changes
-function ChoGGi.ComFuncs.UpdateOtherTables()
-	-- easy access to colonist data, cargo, mystery
+do -- stored tables stuff
+	-- called below and when translation changes
+	function ChoGGi.ComFuncs.UpdateOtherTables()
+		-- easy access to colonist data, cargo, mystery
+		local Tables = ChoGGi.Tables
+		-- display names only!
+		Tables.ColonistRaces = {
+			-- caucasian
+			Translate(1859--[[White]]), [Translate(1859--[[White]])] = true,
+			-- african
+			Strings[302535920000739--[[Black]]], [Strings[302535920000739--[[Black]]]] = true,
+			-- asian
+			Strings[302535920000740--[[Asian]]], [Strings[302535920000740--[[Asian]]]] = true,
+			-- aryan (indo-iranian is too much of a mouthful and aryan will just make some people pissy)
+			Strings[302535920001283--[[Indian]]], [Strings[302535920001283--[[Indian]]]] = true,
+			-- hispanic
+			Strings[302535920001284--[[Hispanic]]], [Strings[302535920001284--[[Hispanic]]]] = true,
+		}
+		-- go with what you know (guess i could make it randomly pick one of each to be fairer?)
+		Tables.ColonistRacesImages = {
+			[Translate(1859--[[White]])] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_01.tga",
+			[Strings[302535920000739--[[Black]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Af_Adult_01.tga",
+			[Strings[302535920000740--[[Asian]]]] = "UI/Icons/Colonists/Pin/Unit_Male_As_Adult_01.tga",
+			[Strings[302535920001283--[[Indian]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Ar_Adult_01.tga",
+			[Strings[302535920001284--[[Hispanic]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Hs_Adult_01.tga",
+			-- android
+			[Translate(3490--[[Random]])] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
+			[Translate(1000121--[[Default]])] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
+		}
+		--~ Tables.ColonistRacesImagesFemale = {
+		--~ 	[Translate(1859--[[White]])] = "UI/Icons/Colonists/Pin/Unit_Female_Ca_Adult_01.tga",
+		--~ 	[Strings[302535920000739--[[Black]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Af_Adult_01.tga",
+		--~ 	[Strings[302535920000740--[[Asian]]]] = "UI/Icons/Colonists/Pin/Unit_Female_As_Adult_01.tga",
+		--~ 	[Strings[302535920001283--[[Indian]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Ar_Adult_01.tga",
+		--~ 	[Strings[302535920001284--[[Hispanic]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Hs_Adult_01.tga",
+		--~ 	[Translate(3490--[[Random]])] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
+		--~ 	[Translate(1000121--[[Default]])] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
+		--~ }
+	end
 	local Tables = ChoGGi.Tables
-	-- display names only!
-	Tables.ColonistRaces = {
-		-- caucasian
-		Translate(1859--[[White]]), [Translate(1859--[[White]])] = true,
-		-- african
-		Strings[302535920000739--[[Black]]], [Strings[302535920000739--[[Black]]]] = true,
-		-- asian
-		Strings[302535920000740--[[Asian]]], [Strings[302535920000740--[[Asian]]]] = true,
-		-- aryan (indo-iranian is too much of a mouthful and aryan will just make some people pissy)
-		Strings[302535920001283--[[Indian]]], [Strings[302535920001283--[[Indian]]]] = true,
-		-- hispanic
-		Strings[302535920001284--[[Hispanic]]], [Strings[302535920001284--[[Hispanic]]]] = true,
+	Tables.ColonistSpecImages = {
+		botanist = "UI/Icons/Colonists/Pin/Botanist_Male.tga",
+		engineer = "UI/Icons/Colonists/Pin/Engineer_Female.tga",
+		geologist = "UI/Icons/Colonists/Pin/Geologist_Female.tga",
+		medic = "UI/Icons/Colonists/Pin/Medic_Male.tga",
+		scientist = "UI/Icons/Colonists/Pin/Scientist_Male.tga",
+		security = "UI/Icons/Colonists/Pin/Security_Female.tga",
+		none = "UI/Icons/Colonists/Pin/Colonist_Male.tga",
 	}
-	-- go with what you know (guess i could make it randomly pick one of each to be fairer?)
-	Tables.ColonistRacesImages = {
-		[Translate(1859--[[White]])] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_01.tga",
-		[Strings[302535920000739--[[Black]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Af_Adult_01.tga",
-		[Strings[302535920000740--[[Asian]]]] = "UI/Icons/Colonists/Pin/Unit_Male_As_Adult_01.tga",
-		[Strings[302535920001283--[[Indian]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Ar_Adult_01.tga",
-		[Strings[302535920001284--[[Hispanic]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Hs_Adult_01.tga",
-		-- android
-		[Translate(3490--[[Random]])] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
-		[Translate(1000121--[[Default]])] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
+	Tables.ColonistAgeImages = {
+		Adult = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_02.tga",
+		Child = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Child_02.tga",
+		["Middle Aged"] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_03.tga",
+		Senior = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Retiree_01.tga",
+		Youth = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Child_01.tga",
 	}
-	--~ Tables.ColonistRacesImagesFemale = {
-	--~ 	[Translate(1859--[[White]])] = "UI/Icons/Colonists/Pin/Unit_Female_Ca_Adult_01.tga",
-	--~ 	[Strings[302535920000739--[[Black]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Af_Adult_01.tga",
-	--~ 	[Strings[302535920000740--[[Asian]]]] = "UI/Icons/Colonists/Pin/Unit_Female_As_Adult_01.tga",
-	--~ 	[Strings[302535920001283--[[Indian]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Ar_Adult_01.tga",
-	--~ 	[Strings[302535920001284--[[Hispanic]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Hs_Adult_01.tga",
-	--~ 	[Translate(3490--[[Random]])] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
-	--~ 	[Translate(1000121--[[Default]])] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
-	--~ }
-end
-local Tables = ChoGGi.Tables
-Tables.ColonistSpecImages = {
-	botanist = "UI/Icons/Colonists/Pin/Botanist_Male.tga",
-	engineer = "UI/Icons/Colonists/Pin/Engineer_Female.tga",
-	geologist = "UI/Icons/Colonists/Pin/Geologist_Female.tga",
-	medic = "UI/Icons/Colonists/Pin/Medic_Male.tga",
-	scientist = "UI/Icons/Colonists/Pin/Scientist_Male.tga",
-	security = "UI/Icons/Colonists/Pin/Security_Female.tga",
-	none = "UI/Icons/Colonists/Pin/Colonist_Male.tga",
-}
-Tables.ColonistAgeImages = {
-	Adult = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_02.tga",
-	Child = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Child_02.tga",
-	["Middle Aged"] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_03.tga",
-	Senior = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Retiree_01.tga",
-	Youth = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Child_01.tga",
-}
-Tables.ColonistGenderImages = {
-	Female = "UI/Icons/Colonists/Pin/Unit_Female_Ca_Adult_02.tga",
-	Male = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_02.tga",
-	OtherGender = "UI/Icons/Buildings/placeholder.tga",
-}
--- some names need to be fixed when doing construction placement
-Tables.ConstructionNamesListFix = {
-	SupplyRocket = "SupplyRocketBuilding",
-	Rocket = "SupplyRocketBuilding",
-	-- added when a rocket lands
-	RocketLandingSite = "LandingPad",
-	RCConstructor = "RCConstructorBuilding",
-	RCDriller = "RCDrillerBuilding",
-	ExplorerRover = "RCExplorerBuilding",
-	RCHarvester = "RCHarvesterBuilding",
-	RCRover = "RCRoverBuilding",
-	RCSensor = "RCSensorBuilding",
-	RCSolar = "RCSolarBuilding",
-	RCTerraformer = "RCTerraformerBuilding",
-	RCTransport = "RCTransportBuilding",
-}
-ChoGGi.ComFuncs.UpdateOtherTables()
+	Tables.ColonistGenderImages = {
+		Female = "UI/Icons/Colonists/Pin/Unit_Female_Ca_Adult_02.tga",
+		Male = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_02.tga",
+		OtherGender = "UI/Icons/Buildings/placeholder.tga",
+	}
+	-- some names need to be fixed when doing construction placement
+	Tables.ConstructionNamesListFix = {
+		SupplyRocket = "SupplyRocketBuilding",
+		Rocket = "SupplyRocketBuilding",
+		-- added when a rocket lands
+		RocketLandingSite = "LandingPad",
+		RCConstructor = "RCConstructorBuilding",
+		RCDriller = "RCDrillerBuilding",
+		ExplorerRover = "RCExplorerBuilding",
+		RCHarvester = "RCHarvesterBuilding",
+		RCRover = "RCRoverBuilding",
+		RCSensor = "RCSensorBuilding",
+		RCSolar = "RCSolarBuilding",
+		RCTerraformer = "RCTerraformerBuilding",
+		RCTransport = "RCTransportBuilding",
+	}
+	-- these are edited when removing building limits
+	local ConstructionStatus = ConstructionStatus
+	local table_copy = table.copy
+	for id, status in pairs(ConstructionStatus) do
+		Tables.ConstructionStatus[id] = table_copy(status)
+	end
 
--- also called after mods are loaded, we call it now for any functions that use it before then
-ChoGGi.ComFuncs.UpdateDataTables()
--- only updated when mods reloaded
-ChoGGi.ComFuncs.UpdateTablesSponComm()
+	ChoGGi.ComFuncs.UpdateOtherTables()
+
+	-- also called after mods are loaded, we call it now for any functions that use it before then
+	ChoGGi.ComFuncs.UpdateDataTables()
+	-- only updated when mods reloaded
+	ChoGGi.ComFuncs.UpdateTablesSponComm()
+end -- do
 
 local function GetValueCls(obj, value, fallback)
 	return obj and obj.GetDefaultPropertyValue

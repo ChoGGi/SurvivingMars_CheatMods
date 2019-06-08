@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Fix: Shuttles Stuck Mid-Air",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-	"saved", 1540641600,
+	"version_minor", 2,
+	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixShuttlesStuckMidAir",
 	"steam_id", "1549680063",

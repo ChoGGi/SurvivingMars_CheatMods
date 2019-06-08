@@ -2011,12 +2011,35 @@ do -- AttachToNearestDome
 
 	-- if building requires a dome and that dome is borked then assign it to nearest dome
 	function ChoGGi.ComFuncs.AttachToNearestDome(obj)
-		local workingdomes = MapFilter(UICity.labels.Dome, CanWork)
+		if not obj:GetDefaultPropertyValue("dome_required") then
+			return
+		end
 
-		-- check for dome and ignore outdoor buildings *and* if there aren't any domes on map
-		if not obj.parent_dome and #workingdomes > 0 and obj:GetDefaultPropertyValue("dome_required") then
-			-- find the nearest dome
-			local dome = FindNearestObject(workingdomes, obj)
+		-- find the nearest working dome
+		local working_domes = MapFilter(UICity.labels.Dome, CanWork)
+		local dome = FindNearestObject(working_domes, obj)
+
+		local current_dome_valid = IsValid(obj.parent_dome)
+		-- remove from old dome (assuming it's a different dome), or the dome is invalid
+		if obj.parent_dome and not current_dome_valid
+				or (current_dome_valid and dome and dome.handle ~= obj.parent_dome.handle) then
+			local current_dome = obj.parent_dome
+			-- add to dome labels
+			current_dome:RemoveFromLabel("InsideBuildings", obj)
+			if obj:IsKindOf("Workplace") then
+				current_dome:RemoveFromLabel("Workplace", obj)
+			elseif obj:IsKindOf("Residence") then
+				current_dome:RemoveFromLabel("Residence", obj)
+			end
+
+			if obj:IsKindOf("NetworkNode") then
+				current_dome:SetLabelModifier("BaseResearchLab", "NetworkNode")
+			end
+			obj.parent_dome = false
+		end
+
+		-- no need to fire if there's no dome, or the above didn't remove it
+		if dome and not IsValid(obj.parent_dome) then
 			obj:SetDome(dome)
 
 			-- add to dome labels
@@ -2029,7 +2052,7 @@ do -- AttachToNearestDome
 
 			-- spires
 			if obj:IsKindOf("NetworkNode") then
-				obj.parent_dome:SetLabelModifier("BaseResearchLab", "NetworkNode", obj.modifier)
+				dome:SetLabelModifier("BaseResearchLab", "NetworkNode", obj.modifier)
 			end
 		end
 	end
@@ -4748,6 +4771,48 @@ function ChoGGi.ComFuncs.CloseDialogsECM(skip)
 		local dlg = desktop[i]
 		if dlg ~= skip and dlg:IsKindOf("ChoGGi_XWindow") then
 			dlg:Close()
+		end
+	end
+end
+
+function ChoGGi.ComFuncs.SetLandScapingLimits(force)
+	local cs = ConstructionStatus
+	if force or ChoGGi.UserSettings.RemoveLandScapingLimits then
+		cs.LandscapeTooLarge.type = "warning"
+		cs.LandscapeUnavailable.type = "warning"
+		cs.LandscapeLowTerrain.type = "warning"
+		cs.BlockingObjects.type = "warning"
+		cs.LandscapeRampUnlinked.type = "warning"
+		-- can cause crashing
+		if testing then
+			cs.LandscapeOutOfBounds.type = "warning"
+		end
+	else
+		-- restore originals
+		local orig_cs = ChoGGi.Tables.ConstructionStatus
+		cs.LandscapeTooLarge.type = orig_cs.LandscapeTooLarge.type
+		cs.LandscapeUnavailable.type = orig_cs.LandscapeUnavailable.type
+		cs.LandscapeLowTerrain.type = orig_cs.LandscapeLowTerrain.type
+		cs.BlockingObjects.type = orig_cs.BlockingObjects.type
+		cs.LandscapeRampUnlinked.type = orig_cs.LandscapeRampUnlinked.type
+		cs.LandscapeOutOfBounds.type = orig_cs.LandscapeOutOfBounds.type
+	end
+end
+
+function ChoGGi.ComFuncs.SetBuildingLimits(force)
+	local cs = ConstructionStatus
+	if force or ChoGGi.UserSettings.RemoveBuildingLimits then
+		for id, status in pairs(cs) do
+			if id:sub(1, 9) ~= "Landscape" and status.type == "error" then
+				status.type = "warning"
+			end
+		end
+	else
+		local orig_cs = ChoGGi.Tables.ConstructionStatus
+		for id, status in pairs(cs) do
+			if id:sub(1, 9) ~= "Landscape" and status.type == "warning" then
+				cs[id].type = orig_cs[id].type
+			end
 		end
 	end
 end

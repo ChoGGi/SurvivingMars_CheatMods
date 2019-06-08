@@ -7,7 +7,6 @@ local table_sort = table.sort
 local table_remove = table.remove
 local table_find = table.find
 local FlushLogFile = FlushLogFile
---~ local IsValid = IsValid
 local Msg = Msg
 local OnMsg = OnMsg
 local CreateRealTimeThread = CreateRealTimeThread
@@ -16,6 +15,7 @@ local T = T
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
+local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -217,7 +217,7 @@ do -- OnMsg ClassesBuilt/XTemplatesLoaded
 			PlaceObj('XTemplateTemplate', {
 				'comment', "salvage",
 				'__context_of_kind', "Demolishable",
-				'__condition', function (parent, context) return context:ShouldShowDemolishButton() end,
+				'__condition', function (_, context) return context:ShouldShowDemolishButton() end,
 				'__template', "InfopanelButton",
 				'RolloverTitle', T(3973, --[[XTemplate ipBuilding RolloverTitle]] "Salvage"),
 				'RolloverHintGamepad', T(7657, --[[XTemplate ipBuilding RolloverHintGamepad]] "<ButtonY> Activate"),
@@ -746,12 +746,15 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 	end
 
 	-- if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
-	if obj:IsKindOf("Residence") or obj:IsKindOf("Workplace")
-			or obj:IsKindOf("SpireBase") then
-		-- seems to need a delay in DA
+	if obj:GetDefaultPropertyValue("dome_required") then
+		-- a slight delay is needed
 		CreateRealTimeThread(function()
-			Sleep(100)
-			ChoGGi.ComFuncs.AttachToNearestDome(obj)
+			if not IsValid(obj.parent_dome) then
+				-- we use this to update the parent_dome (if there's a working/closer one)
+				UICity:AddToLabel("ChoGGi_InsideForcedOutDome", obj)
+
+				AttachToNearestDome(obj)
+			end
 		end)
 	end
 
@@ -981,6 +984,19 @@ function OnMsg.NewDay() -- NewSol...
 			table_remove(popups, i)
 		end
 	end
+
+	local objs = UICity.labels.ChoGGi_InsideForcedOutDome or ""
+	for i = #objs, 1, -1 do
+		local obj = objs[i]
+		-- got removed or something
+		if not IsValid(obj) then
+			UICity:RemoveFromLabel("ChoGGi_InsideForcedOutDome", obj)
+		else
+			-- check if there's a nearer dome
+			AttachToNearestDome(obj)
+		end
+	end
+
 end
 
 -- const.Scale.hours is 30 000 ticks (GameTime)

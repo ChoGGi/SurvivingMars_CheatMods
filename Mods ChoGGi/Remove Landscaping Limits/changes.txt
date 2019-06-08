@@ -1,0 +1,5 @@
+v0.3
+Turns out you can adjust the size without this mod, so now it just removes the limit.
+
+v0.2
+Remove Landscaping Limits defaults to true.

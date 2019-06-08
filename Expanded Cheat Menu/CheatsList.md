@@ -344,7 +344,6 @@ ECM.Buildings.Toggles>Maintenance Free: Building maintenance points reverse (tak
 ECM.Buildings.Toggles>Pipes pillar spacing: 1000: Only place Pillars at start and end.
 ECM.Buildings.Toggles>Remove Building Limits: Buildings can be placed almost anywhere.
 See also Remove Spire Point Limit.
-Restart to disable.
 ECM.Buildings.Toggles>Remove Spire Point Limit: Build spires anywhere in domes.
 Use with Remove Building Limits to fill up a dome with spires.
 ECM.Buildings.Toggles>Remove Sponsor Limits: Allow you to build all buildings no matter your sponsor.
@@ -493,7 +492,6 @@ ECM.Terraforming>Parameter Water: Set Water Params
 ECM.Terraforming>Plant Random Lichen: Plants a bunch of Lichen/Grass.
 ECM.Terraforming>Plant Random Vegetation: Plants a bunch of Tree/Bush/Grass.
 ECM.Terraforming>Remove LandScaping Limits: Allows you to start building on uneven ground, and removes the size limits.
-Restart to disable.
 ECM.Terraforming>Soil Quality: Set Soil Quality
 ECM.Terraforming>Toxic Pools Max: 30: Max amount of pools that can form.
 ECM>Building Info: Shows info about building in text above it.
@@ -514,12 +512,12 @@ Game.Camera>Zoom Distance: 32000: Further zoom distance.
 Game.Export CSV>Colonist Data: Export colonist data to C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\Colonists.csv.
 Game.Export CSV>Graphs Data: Export command centre graph data to C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\Graphs.csv.
 Game.Export CSV>Map Data (Breakthroughs): Export map location data to C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\MapData.csv (will take awhile).
-See survivingmarsmaps.com for a filtered list.
+See survivingmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
 Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu).
 This will take longer (about 15s).
 Game.Export CSV>Map Data: Export map location data to C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\MapData.csv (will take awhile).
-See survivingmarsmaps.com for a filtered list.
+See survivingmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
 Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu).
 Game.Game Speed>Game Speed: 3: Change the game speed (only for medium/fast, normal is normal).

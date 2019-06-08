@@ -1,6 +1,11 @@
 ## ECM Changelog
 
-## v13.9 (Unreleased)
+## v14.0 (Unreleased)
+
+## v13.9 (June 07 2019)
+### Changed:
+- Remove Building/LandScaping Limits don't require a restart to disable anymore.
+
 ### Fixed:
 - Some log spam (thanks RustyDios).
 - Disaster>Meteor cheats weren't consistent (thanks eddy.dyer).

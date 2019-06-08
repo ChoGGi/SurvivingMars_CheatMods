@@ -438,7 +438,6 @@ Actions[c] = {ActionName = Strings[302535920000230--[[Remove Building Limits]]],
 			ChoGGi.UserSettings.RemoveBuildingLimits,
 			Strings[302535920000231--[["Buildings can be placed almost anywhere.
 See also %s."]]]:format(Strings[302535920000226--[[Remove Spire Point Limit]]])
-				.. "\n\n" .. Strings[302535920000866--[[Restart to disable.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle,

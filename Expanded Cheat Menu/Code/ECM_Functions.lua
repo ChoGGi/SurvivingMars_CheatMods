@@ -3936,7 +3936,6 @@ do -- RetLangTable
 	local ProcessLoadedTables = ProcessLoadedTables
 
 	local loaded = {}
-	local empty = {}
 	local translate_gen = {}
 	local csv_load_fields = {
 		[1] = "id",

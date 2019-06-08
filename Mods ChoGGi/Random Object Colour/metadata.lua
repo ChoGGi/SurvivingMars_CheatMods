@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 6,
-			"version_minor", 8,
+			"version_minor", 9,
 		}),
 	},
 	"title", "Random Object Colour",
