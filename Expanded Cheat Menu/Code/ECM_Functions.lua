@@ -1663,10 +1663,12 @@ do -- GetMaterialProperties
 		special = [[		<Property Special="%s"/>]],
 		terraindistorted = [[		<Property TerrainDistortedMesh="%s"/>]],
 		transparentdecal = [[		<Property TransparentDecal="%s"/>]],
+		transparent = [[		<Property Transparent="%s"/>]],
 		twosidedshading = [[		<Property TwoSidedShading="%s"/>]],
 		wind = [[		<Property Wind="%s"/>]],
 		flags = [[		<Property Flags="%s"/>]],
 		emflags = [[		<Property EMFlags="%s"/>]],
+		shader = [[		<Property shader="%s"/>]],
 
 --~ 			XX = [[		<Property Anisotropic="%s"/>]],
 --~ 			XX = [[		<Property DtmDisable="%s"/>]],

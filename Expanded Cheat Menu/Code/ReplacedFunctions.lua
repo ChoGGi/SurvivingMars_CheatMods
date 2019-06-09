@@ -21,6 +21,18 @@ local testing = ChoGGi.testing
 
 do -- non-class obj funcs
 
+	-- this will reset override, so we sleep and reset it
+	SaveOrigFunc("ClosePlanetCamera")
+	function ClosePlanetCamera(...)
+		if UserSettings.Lightmodel then
+			CreateRealTimeThread(function()
+				Sleep(100)
+				SetLightmodelOverride(1, UserSettings.Lightmodel)
+			end)
+		end
+		return ChoGGi_OrigFuncs.ClosePlanetCamera(...)
+	end
+
 	-- don't trigger quakes if setting is enabled
 	SaveOrigFunc("TriggerMarsquake")
 	function TriggerMarsquake(...)

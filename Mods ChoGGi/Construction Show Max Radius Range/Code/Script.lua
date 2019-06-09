@@ -45,12 +45,19 @@ function CursorBuilding:GameInit()
 			AddRadius(self, (uirange * GridSpacing) + HexSize)
 		end
 
-	elseif self.template:IsKindOf("MoholeMine") then
-		AddRadius(self, MoholeMine.GetHeatRange(self.template))
-	elseif self.template:IsKindOf("ArtificialSun") then
-		AddRadius(self, ArtificialSun.GetHeatRange(self.template))
-	elseif self.template:IsKindOf("AdvancedStirlingGenerator") then
-		AddRadius(self, AdvancedStirlingGenerator.GetHeatRange(self.template))
+	else
+		-- see if the cls obj has a GetHeatRange func
+		local cls = self.template
+		if cls.template_name and cls.template_name ~= "" then
+			cls = cls.template_name
+		elseif cls.template_class and cls.template_class ~= "" then
+			cls = cls.template_class
+		end
+		cls = g_Classes[cls]
+
+		if cls and cls.GetHeatRange then
+			AddRadius(self, cls.GetHeatRange(self.template))
+		end
 	end
 
 --~ 	ex(self)

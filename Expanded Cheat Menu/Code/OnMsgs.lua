@@ -1043,6 +1043,12 @@ end
 --~ 	FlushLogFile()
 --~ end
 
+function OnMsg.AfterLightmodelChange()
+	if ChoGGi.UserSettings.Lightmodel then
+		SetLightmodelOverride(1, ChoGGi.UserSettings.Lightmodel)
+	end
+end
+
 function OnMsg.ResearchQueueChange(city, tech_id)
 	if ChoGGi.UserSettings.InstantResearch then
 		CreateRealTimeThread(function()

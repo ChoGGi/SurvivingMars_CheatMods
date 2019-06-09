@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 --~ -- They don't use palettes, so we can just skip this (just leaving it here as an example, also see my change rocket skin mod)
 --~ local palettes = {
 --~ 	Object.palette,

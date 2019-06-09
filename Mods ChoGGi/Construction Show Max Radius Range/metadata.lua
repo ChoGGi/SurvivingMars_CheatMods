@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Construction: Show Max Radius Range v0.4",
 	"title", "Construction: Show Max Radius Range",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"saved", 0,
 	"id", "ChoGGi_ShowMaxRadiusRange",
 	"author", "ChoGGi",
@@ -21,7 +21,7 @@ Subsurface Heater
 Core Heat Convector
 Forestation Plant
 
-This also shows a circle for the heater, Mohole Mine,	Artificial Sun, and Core Heat Convector (since they heat a circle).
+This also shows a circle for any heater buildings (since they heat a circle).
 
 Toggle in-game with mod options.
 

@@ -1,3 +1,6 @@
+v0.6
+Updated to work with mod buildings (Silva's Geo plant).
+
 v0.5
 Added ranges to Core Heat Convector and Forestation Plant.
 

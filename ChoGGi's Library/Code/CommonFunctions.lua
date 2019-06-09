@@ -4075,6 +4075,12 @@ do -- LoadEntity
 				material_type = "Metal",
 			},
 		},
+		terrain = {
+			category_StonesRocksCliffs = true,
+			entity = {
+				material_type = "Rock",
+			},
+		},
 	}
 
 	-- local instead of global is quicker
